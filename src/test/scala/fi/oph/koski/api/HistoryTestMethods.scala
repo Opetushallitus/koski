@@ -1,7 +1,7 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.history.OpiskeluoikeusHistory
-import fi.oph.koski.koskiuser.UserWithPassword
+import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.schema.{Henkilö, KoskiSchema}
 import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.json4s.jackson.JsonMethods
@@ -22,7 +22,7 @@ trait HistoryTestMethods extends OpiskeluoikeusTestMethods {
     val historia: List[OpiskeluoikeusHistory] = getHistory(opiskeluoikeusOid)
     historia.map(_.versionumero) should equal(versions)
 
-    authGet("api/opiskeluoikeus/validate/" + opiskeluoikeusOid) {
+    authGet("api/opiskeluoikeus/validate/" + opiskeluoikeusOid, user = MockUsers.paakayttaja) {
       // Validates version history integrity by applying all history patches on top of first version and comparing to stored final value.
       verifyResponseStatusOk()
     }

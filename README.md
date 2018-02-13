@@ -50,7 +50,8 @@ sovellus | rooli | oid | selite
 ---|---|---|---
 KOSKI | READ | (organisaation oid) | Organisaatiokohtainen lukuoikeus
 KOSKI | READ_UPDATE | (organisaation oid) | Organisaatiokohtainen luku- ja kirjoitusoikeus. Kirjoittamiseen tarvitaan aina myös alla oleve LUOTTAMUKSELLINEN-rooli.
-KOSKI | LUOTTAMUKSELLINEN | (organisaation oid) | Oikeus katsella luottamukselliseksi määriteltyjä tietoja (ks. @SensiviveData -annotaatio). Tämä rooli vaaditaan aina myös tiedon kirjoittamiseen.
+KOSKI | LUOTTAMUKSELLINEN | (organisaation oid) | Oikeus katsella luottamukselliseksi määriteltyjä tietoja (ks. @SensitiveData -annotaatio). Tämä rooli vaaditaan aina myös tiedon kirjoittamiseen.
+KOSKI | TIEDONSIIRRON_MITATOINTI | (organisaation oid) | Oikeus mitätöidä myös tiedonsiirron kautta siirrettyjä tietoja (käsin syötettyjen tietojen mitätöintiin riitää READ_UPDATE).
 KOSKI | TIEDONSIIRTO | (organisaation oid) | Organisaatiokohtainen Kosken API:n palvelukäyttö
 KOSKI | OPHKATSELIJA | (OPH:n organisaation oid) | Globaali lukuoikeus kaikkiin organisaatioihin, jos _oid_ on OPH:n organisaation oid
 KOSKI | OPHPAAKAYTTAJA | (OPH:n organisaation oid) | Globaali luku- ja kirjoitusoikeus kaikkiin organisaatioihin, jos _oid_ on OPH:n organisaation oid

@@ -10,7 +10,7 @@ sealed trait EditorModel {
   def metadata: List[Metadata]
 }
 
-case class ObjectModel(classes: List[String], properties: List[EditorProperty], title: Option[String], editable: Boolean, prototypes: Map[String, EditorModel], metadata: List[Metadata]) extends EditorModel
+case class ObjectModel(classes: List[String], properties: List[EditorProperty], title: Option[String], editable: Boolean, invalidatable: Boolean, prototypes: Map[String, EditorModel], metadata: List[Metadata]) extends EditorModel
 
 case class PrototypeModel(key: String, metadata: List[Metadata]) extends EditorModel
 

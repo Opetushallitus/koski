@@ -19,7 +19,7 @@ object EditorModelSerializer extends Serializer[EditorModel] with Logging {
   override def serialize(implicit format: Formats): PartialFunction[Any, JValue] = {
     case (model: EditorModel) => {
       model match {
-        case (ObjectModel(c, properties, title, editable, prototypes, metadata)) =>
+        case (ObjectModel(c, properties, title, editable, invalidatable, prototypes, metadata)) =>
           val protos = if (prototypes.nonEmpty) { JObject(prototypes.toList.map { case (key, model) => JField(key, serialize(format)(model)) }) } else { JNothing }
           JObject(List(
             JField("type", JString("object")),
@@ -35,6 +35,7 @@ object EditorModelSerializer extends Serializer[EditorModel] with Logging {
               }))
             )),
             JField("editable", JBool(editable)),
+            JField("invalidatable", JBool(invalidatable)),
             JField("prototypes", protos)
           ) ++ metadataToFields(metadata))
         case (PrototypeModel(key, metadata)) =>
@@ -122,6 +123,6 @@ object EditorModelSerializer extends Serializer[EditorModel] with Logging {
     JField("type", JString(tyep)),
     JField("value", Extraction.decompose(value))
   ) ++ metadataToFields(metadata))
-  
+
   private def emptyObject = JObject()
 }

@@ -23,6 +23,7 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
   def isPalvelukäyttäjä = orgKäyttöoikeudet.flatMap(_.organisaatiokohtaisetPalveluroolit).contains(Palvelurooli(TIEDONSIIRTO))
   def hasReadAccess(organisaatio: Organisaatio.Oid) = hasAccess(organisaatio, AccessType.read)
   def hasWriteAccess(organisaatio: Organisaatio.Oid) = hasAccess(organisaatio, AccessType.write) && hasRole(LUOTTAMUKSELLINEN)
+  def hasTiedonsiirronMitätöintiAccess(organisaatio: Organisaatio.Oid) = hasAccess(organisaatio, AccessType.tiedonsiirronMitätöinti)
   def hasAccess(organisaatio: Organisaatio.Oid, accessType: AccessType.Value) = {
     val access = globalAccess.contains(accessType) || organisationOids(accessType).contains(organisaatio)
     access && (accessType != AccessType.write || hasRole(LUOTTAMUKSELLINEN))

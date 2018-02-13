@@ -5,12 +5,13 @@ import java.time.LocalDate
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.{MockOppijat, VerifiedHenkilöOid}
 import fi.oph.koski.json.JsonSerializer.parse
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.{KoskiSession, MockUsers}
 import fi.oph.koski.opiskeluoikeus.ValidationResult
 import org.scalatest.{FreeSpec, Matchers}
 
 class OpiskeluoikeusValidationSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethods with LocalJettyHttpSpecification {
   implicit val session: KoskiSession = KoskiSession.systemUser
+  override def defaultUser = MockUsers.paakayttaja
 
   "Validoi" - {
     "validi opiskeluoikeus" in {

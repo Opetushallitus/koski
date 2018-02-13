@@ -19,6 +19,10 @@ import rx.lang.scala.Observable
 
 class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Logging with NoCache with ObservableSupport with ContentEncodingSupport {
   get("/", request.getRemoteHost == "127.0.0.1") {
+    if (!koskiSession.isRoot) {
+      haltWithStatus(KoskiErrorCategory.forbidden())
+    }
+
     val errorsOnly = params.get("errorsOnly").map(_.toBoolean).getOrElse(false)
     val validateHistory = params.get("history").map(_.toBoolean).getOrElse(false)
     val validateHenkilö = params.get("henkilö").map(_.toBoolean).getOrElse(false)
@@ -47,6 +51,9 @@ class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication
   }
 
   get("/:oid") {
+    if (!koskiSession.isRoot) {
+      haltWithStatus(KoskiErrorCategory.forbidden())
+    }
     val context = ValidateContext(application.validator, application.historyRepository, application.henkilöRepository)
     renderEither(application.opiskeluoikeusRepository.findByOid(getStringParam("oid"))(koskiSession).map(context.validateAll))
   }

@@ -82,7 +82,7 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
   }
 
   get("/prototype/:key") {
-    val c = ModelBuilderContext(EditorSchema.deserializationContext, true)(koskiSession, application.koodistoViitePalvelu, application.localizationRepository)
+    val c = ModelBuilderContext(EditorSchema.deserializationContext, editable = true, invalidatable = true)(koskiSession, application.koodistoViitePalvelu, application.localizationRepository)
     val className = params("key")
     try {
       renderObject(EditorModelBuilder.buildPrototype(className)(c))

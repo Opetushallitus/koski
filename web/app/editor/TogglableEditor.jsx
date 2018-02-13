@@ -15,7 +15,7 @@ export class TogglableEditor extends React.Component {
     let editingAny = !!currentLocation().params.edit
     let modifiedContext = R.merge(context, { edit })
     let showEditLink = model.editable && !editingAny
-    let showDeleteLink = model.editable && editingAny
+    let showDeleteLink = model.invalidatable && !showEditLink
     let editLink = showEditLink
       ? <button className="toggle-edit" onClick={() => context.editBus.push(opiskeluoikeusOid)}><Text name="muokkaa"/></button>
       : showDeleteLink
