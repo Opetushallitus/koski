@@ -299,7 +299,6 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   private def validateStatus(suoritus: Suoritus, parent: List[Suoritus]): HttpStatus = {
-    val hasArviointi: Boolean = !suoritus.arviointi.toList.flatten.isEmpty
     val hasVahvistus: Boolean = suoritus.vahvistus.isDefined
     if (hasVahvistus && suoritus.arviointiPuuttuu) {
       KoskiErrorCategory.badRequest.validation.tila.vahvistusIlmanArviointia("Suorituksella " + suorituksenTunniste(suoritus) + " on vahvistus, vaikka arviointi puuttuu")
