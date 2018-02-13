@@ -81,7 +81,7 @@ case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta:
     }
   }
 
-  private def handleError(log: => String => Unit, error: HttpStatus) = {
+  private def handleError(log: (=> String) => Unit, error: HttpStatus) = {
     log("Oppijan lisäys henkilöpalveluun epäonnistui: " + error)
     Nil
   }
