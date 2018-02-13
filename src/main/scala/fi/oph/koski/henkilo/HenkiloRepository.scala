@@ -71,7 +71,7 @@ case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta:
     if (tiedot.isDefined) {
       tiedot.toList
     } else if (List(virta, ytr).iterator.exists(_.existsWithHetu(hetu))) {
-      opintopolku.findOrCreate(UusiHenkilö(hetu, nimitiedot.sukunimi, nimitiedot.kutsumanimi, nimitiedot.etunimet)) match {
+      opintopolku.findOrCreate(UusiHenkilö(hetu = hetu, etunimet = nimitiedot.etunimet, kutsumanimi = nimitiedot.kutsumanimi, sukunimi = nimitiedot.sukunimi)) match {
         case Right(henkilö) => List(henkilö.toHenkilötiedotJaOid)
         case Left(error) =>
           logger.error("Oppijan lisäys henkilöpalveluun epäonnistui: " + error)
