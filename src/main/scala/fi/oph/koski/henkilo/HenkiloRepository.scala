@@ -73,12 +73,16 @@ case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta:
     } else if (List(virta, ytr).iterator.exists(_.existsWithHetu(hetu))) {
       opintopolku.findOrCreate(UusiHenkilö(hetu = hetu, etunimet = nimitiedot.etunimet, kutsumanimi = nimitiedot.kutsumanimi, sukunimi = nimitiedot.sukunimi)) match {
         case Right(henkilö) => List(henkilö.toHenkilötiedotJaOid)
-        case Left(error) =>
-          logger.error("Oppijan lisäys henkilöpalveluun epäonnistui: " + error)
-          Nil
+        case Left(error @ HttpStatus(400, _)) => handleError(logger.warn, error)
+        case Left(error) => handleError(logger.error, error)
       }
     } else {
       Nil
     }
+  }
+
+  private def handleError(log: (=> String) => Unit, error: HttpStatus) = {
+    log("Oppijan lisäys henkilöpalveluun epäonnistui: " + error)
+    Nil
   }
 }
