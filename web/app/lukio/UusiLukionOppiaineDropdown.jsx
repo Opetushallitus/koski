@@ -1,20 +1,8 @@
 import React from 'baret'
 import {t} from '../i18n/i18n'
 import {UusiOppiaineDropdown} from '../oppiaine/UusiOppiaineDropdown'
-import {
-  contextualizeSubModel, ensureArrayKey, modelData, modelItems, modelLookup, modelSet, modelSetTitle, oneOfPrototypes,
-  pushModel,
-  wrapOptional
-} from '../editor/EditorModel'
-
-const createOppiaineenSuoritus = (model, suoritusClass) => {
-  const oppiaineet = wrapOptional(modelLookup(model, 'osasuoritukset'))
-  const newItemIndex = modelItems(oppiaineet).length
-  const oppiaineenSuoritusProto = contextualizeSubModel(oppiaineet.arrayPrototype, oppiaineet, newItemIndex)
-  const options = oneOfPrototypes(oppiaineenSuoritusProto)
-  const proto = suoritusClass && options.find(p => p.value.classes.includes(suoritusClass)) || options[0]
-  return contextualizeSubModel(proto, oppiaineet, newItemIndex)
-}
+import {ensureArrayKey, modelData, modelItems, modelSet, modelSetTitle, pushModel} from '../editor/EditorModel'
+import {createOppiaineenSuoritus} from './lukio'
 
 export const UusiLukionOppiaineDropdown = ({model, oppiaineenSuoritusClass}) => {
   if (!model || !model.context.edit) return null
