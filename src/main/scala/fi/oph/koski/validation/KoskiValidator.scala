@@ -286,7 +286,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
                 case (Nil, _) => HttpStatus.ok
                 case (_, _) =>
                   osasuoritustenLaajuudet.map(_.arvo).sum match {
-                    case summa if summa == laajuus.arvo =>
+                    case summa if Math.abs(summa - laajuus.arvo) < 0.001  =>
                       HttpStatus.ok
                     case summa =>
                       KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma("Suorituksen " + suorituksenTunniste(suoritus) + " osasuoritusten laajuuksien summa " + summa + " ei vastaa suorituksen laajuutta " + laajuus.arvo)
