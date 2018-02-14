@@ -67,7 +67,7 @@ export const perusopetuksenOppiaineenOppimääränSuoritus = opiskeluoikeudenSuo
 export const näyttötutkintoonValmistavanKoulutuksenSuoritus = opiskeluoikeudenSuoritusByTyyppi('nayttotutkintoonvalmistavakoulutus')
 export const ammatillisenTutkinnonSuoritus = opiskeluoikeudenSuoritusByTyyppi('ammatillinentutkinto')
 
-export const koulutustyyppiKoodi = suoritustyyppiKoodi => {
+export const koulutustyyppiKoodit = suoritustyyppiKoodi => {
   if (suoritustyyppiKoodi == 'perusopetuksenoppimaara' || suoritustyyppiKoodi == 'perusopetuksenvuosiluokka') {
     return '16'
   }
