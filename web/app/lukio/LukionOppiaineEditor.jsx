@@ -12,7 +12,7 @@ import {doActionWhileMounted} from '../util/util'
 import {createOppiaineenSuoritus} from './lukio'
 import {Nimi, KoulutusmoduuliPropertiesEditor, Arviointi} from './fragments/LukionOppiaine'
 
-export class LukionOppiaineRowEditor extends React.Component {
+export class LukionOppiaineEditor extends React.Component {
   saveChangedPreferences() {
     const {oppiaine} = this.props
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import R from 'ramda'
-import {LukionOppiaineRowEditor} from './LukionOppiaineEditor'
+import {LukionOppiaineEditor} from './LukionOppiaineEditor'
 import {LukionOppiaineetTableHead} from './fragments/LukionOppiaineetTable'
 import {UusiLukionOppiaineDropdown} from './UusiLukionOppiaineDropdown'
 import {modelErrorMessages, modelItems} from '../editor/EditorModel'
@@ -12,7 +12,7 @@ export const LukionOppiaineetEditor = ({suorituksetModel, classForUusiOppiaineen
   if (!edit && R.isEmpty(oppiaineet)) return null
 
   const oppiaineRows = oppiaineet.map((oppiaine, oppiaineIndex) =>
-    <LukionOppiaineRowEditor key={oppiaineIndex} oppiaine={oppiaine} />
+    <LukionOppiaineEditor key={oppiaineIndex} oppiaine={oppiaine} />
   )
   const errorRows = oppiaineet.map(oppiaine =>
     modelErrorMessages(oppiaine).map((error, i) =>
