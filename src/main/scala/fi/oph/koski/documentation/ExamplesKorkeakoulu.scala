@@ -1,6 +1,7 @@
 package fi.oph.koski.documentation
 
 import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -9,7 +10,7 @@ import fi.oph.koski.virta.MockVirtaOpiskeluoikeusRepository
 
 object ExamplesKorkeakoulu {
   lazy val opiskeluoikeudet = MockVirtaOpiskeluoikeusRepository.findByOppijaOid(MockOppijat.dippainssi.oid)(KoskiSession.systemUser)
-  lazy val oppija = Oppija(MockOppijat.dippainssi.henkilö, opiskeluoikeudet)
+  lazy val oppija = Oppija(asUusiOppija(MockOppijat.dippainssi.henkilö), opiskeluoikeudet)
   lazy val examples = List(
     Example("korkeakoulu - valmis diplomi-insinööri", "Diplomi-insinööriksi valmistunut opiskelija", oppija, 501)
   )

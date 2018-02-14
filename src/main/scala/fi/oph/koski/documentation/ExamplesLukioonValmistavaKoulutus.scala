@@ -6,13 +6,14 @@ import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.LukioExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
 
 object ExamplesLukioonValmistavaKoulutus {
   val luvaTodistus = Oppija(
-    MockOppijat.luva.henkilö,
+    asUusiOppija(MockOppijat.luva.henkilö),
     List(
       LukioonValmistavanKoulutuksenOpiskeluoikeus(
         päättymispäivä = Some(date(2016, 6, 4)),

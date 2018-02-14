@@ -5,13 +5,14 @@ import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.schema.{YhteisenTutkinnonOsanOsaAlueenSuoritus, Koodistokoodiviite, _}
+import fi.oph.koski.schema.{Koodistokoodiviite, YhteisenTutkinnonOsanOsaAlueenSuoritus, _}
 
 object AmmatillinenExampleData {
-  val exampleHenkilö = MockOppijat.ammattilainen.henkilö
+  val exampleHenkilö = asUusiOppija(MockOppijat.ammattilainen.henkilö)
 
   val autoalanPerustutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", "koulutus"), Some("39/011/2014"))
   val parturikampaaja: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("381301", "koulutus"), Some("43/011/2014"))
@@ -134,7 +135,7 @@ object AmmatillinenExampleData {
     )
   }
 
-  def oppija( henkilö: Henkilö = exampleHenkilö, opiskeluoikeus: Opiskeluoikeus = this.opiskeluoikeus()) = {
+  def oppija(henkilö: UusiHenkilö = exampleHenkilö, opiskeluoikeus: Opiskeluoikeus = this.opiskeluoikeus()) = {
     Oppija(
       henkilö,
       List(opiskeluoikeus)

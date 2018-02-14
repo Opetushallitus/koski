@@ -62,6 +62,9 @@ object MockOppijat {
   def generateOid(counter: Int) = "1.2.246.562.24." + "%011d".format(counter)
 
   def oids = (defaultOppijat.map(_.henkilö.oid) ++ (1 to defaultOppijat.length + 100).map(generateOid).toList).distinct // oids that should be considered when deleting fixture data
+
+  def asUusiOppija(oppija: HenkilöWithOid with Henkilötiedot) =
+    UusiHenkilö(oppija.hetu.get, oppija.etunimet, oppija.kutsumanimi, oppija.sukunimi)
 }
 
 class MockOppijat(private var oppijat: List[TäydellisetHenkilötiedotWithMasterInfo] = Nil) extends Logging {

@@ -3,12 +3,12 @@ package fi.oph.koski.documentation
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.ExampleData._
-import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.alkuvaiheenKurssinSuoritus
 import fi.oph.koski.documentation.PerusopetusExampleData.{suoritustapaErityinenTutkinto, äidinkieli, _}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.localization.LocalizedStringImplicits._
-import fi.oph.koski.schema.{annotation, _}
+import fi.oph.koski.schema._
 
 
 object ExamplesAikuistenPerusopetus {
@@ -19,7 +19,7 @@ object ExamplesAikuistenPerusopetus {
   )
 
   lazy val aineopiskelija = Oppija(
-    MockOppijat.eero.henkilö,
+    asUusiOppija(MockOppijat.eero),
     List(AikuistenPerusopetuksenOpiskeluoikeus(
       päättymispäivä = Some(date(2016, 6, 4)),
       oppilaitos = Some(jyväskylänNormaalikoulu),
