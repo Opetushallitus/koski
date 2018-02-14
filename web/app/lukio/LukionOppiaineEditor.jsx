@@ -1,80 +1,16 @@
 import React from 'baret'
 import R from 'ramda'
 
-import {t} from '../i18n/i18n'
-import {modelData, modelItems, modelLookup, modelTitle, pushRemoval} from '../editor/EditorModel.js'
+import {modelData, modelItems, modelLookup, pushRemoval} from '../editor/EditorModel.js'
 import {suorituksenTilaSymbol} from '../suoritus/Suoritustaulukko'
 import {KurssitEditor} from '../kurssi/KurssitEditor'
 import {tilaText} from '../suoritus/Suoritus'
-import {FootnoteHint} from '../components/footnote'
-import {isKieliaine, isLukionMatematiikka, isPaikallinen} from '../suoritus/Koulutusmoduuli'
-import {Editor} from '../editor/Editor'
-import {ArvosanaEditor} from '../suoritus/ArvosanaEditor'
-import {PropertiesEditor} from '../editor/PropertiesEditor'
+import {isPaikallinen} from '../suoritus/Koulutusmoduuli'
 import {saveOrganizationalPreference} from '../virkailija/organizationalPreferences'
 import {paikallinenOppiainePrototype} from '../perusopetus/PerusopetuksenOppiaineEditor'
 import {doActionWhileMounted} from '../util/util'
 import {createOppiaineenSuoritus} from './lukio'
-
-const Nimi = ({oppiaine}) => {
-  const {edit} = oppiaine.context
-  const koulutusmoduuli = modelLookup(oppiaine, 'koulutusmoduuli')
-  const nimi = t(modelData(oppiaine, 'koulutusmoduuli.tunniste.nimi'))
-  const nimiJaKieli = modelTitle(oppiaine, 'koulutusmoduuli')
-  const hasOptions = isKieliaine(koulutusmoduuli) || isLukionMatematiikka(koulutusmoduuli)
-
-  return (
-    edit && isPaikallinen(koulutusmoduuli)
-      ? (
-        <span className='koodi-ja-nimi'>
-          <span className='koodi'><Editor model={koulutusmoduuli} path='tunniste.koodiarvo' placeholder={t('Koodi')} /></span>
-          <span className='nimi'><Editor model={koulutusmoduuli} path='tunniste.nimi' placeholder={t('Oppiaineen nimi')} /></span>
-        </span>
-      )
-      : (
-        <span className='nimi'>
-          {edit && hasOptions ? `${nimi}, ` : nimiJaKieli}
-        </span>
-      )
-  )
-}
-
-const KoulutusmoduuliPropertiesEditor = ({oppiaine}) => {
-  if (!oppiaine.context.edit) return null
-
-  const koulutusmoduuli = modelLookup(oppiaine, 'koulutusmoduuli')
-
-  return (
-    <span className='properties'>
-      {isKieliaine(koulutusmoduuli) && <Editor model={koulutusmoduuli} path='kieli' inline={true}/>}
-      {isLukionMatematiikka(koulutusmoduuli) && <Editor model={koulutusmoduuli} path='oppimäärä' inline={true}/>}
-      {isPaikallinen(koulutusmoduuli) && <PropertiesEditor model={koulutusmoduuli} propertyFilter={p => p.key === 'kuvaus'} />}
-    </span>
-  )
-}
-
-const Arviointi = ({oppiaine, suoritetutKurssit, footnote}) => {
-  const {edit} = oppiaine.context
-
-  const arviointi = modelData(oppiaine, 'arviointi')
-  const numeerinenArvosana = kurssi => parseInt(kurssi.arviointi.last().arvosana.koodiarvo)
-  const kurssitNumeerisellaArvosanalla = suoritetutKurssit.filter(kurssi => !isNaN(numeerinenArvosana(kurssi)))
-  const keskiarvo = kurssitNumeerisellaArvosanalla.length > 0 && Math.round((kurssitNumeerisellaArvosanalla.map(numeerinenArvosana).reduce((a, b) => a + b) / kurssitNumeerisellaArvosanalla.length) * 10) / 10
-
-  return (
-    <div>
-      <div className='annettuArvosana'>
-        {
-          edit || arviointi
-            ? <ArvosanaEditor model={oppiaine}/>
-            : '-'
-        }
-        {arviointi && footnote && <FootnoteHint title={footnote.title} hint={footnote.hint} />}
-      </div>
-      <div className='keskiarvo'>{keskiarvo ? '(' + keskiarvo.toFixed(1).replace('.', ',') + ')' : ''}</div>
-    </div>
-  )
-}
+import {Nimi, KoulutusmoduuliPropertiesEditor, Arviointi} from './fragments/LukionOppiaine'
 
 export class LukionOppiaineRowEditor extends React.Component {
   saveChangedPreferences() {
