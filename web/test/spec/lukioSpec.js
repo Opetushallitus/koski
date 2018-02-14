@@ -169,7 +169,7 @@ describe('Lukiokoulutus', function( ){
                 )
 
                 it('tallennus toimii', function () {
-                  kotitalous.propertyBySelector('.arvosana').selectValue('9')
+                  expect(extractAsText(S('.oppiaineet'))).to.contain('Kotitalous')
                 })
               })
             })
