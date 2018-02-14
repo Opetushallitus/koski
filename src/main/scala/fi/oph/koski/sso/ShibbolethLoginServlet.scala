@@ -16,8 +16,7 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
   }
 
   private def checkAuth: Option[HttpStatus] = {
-    logger.debug(s"Shibboleth login request coming from ${request.remoteAddress}")
-    logger.debug(s"${request.headers.toList.sortBy(_._1).mkString("\n")}")
+    logger.debug(headers)
     request.header("security") match {
       case Some(password) if passwordOk(password) => None
       case Some(_) => Some(KoskiErrorCategory.unauthorized())
@@ -43,11 +42,15 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
     request.header("hetu").map(Hetu.validate(_, acceptSynthetic = true)).getOrElse(Left(KoskiErrorCategory.badRequest("hetu header missing")))
   }
 
-  private def nimitiedot: Option[Nimitiedot] = for {
-    etunimet <- utf8Header("FirstName")
-    kutsumanimi <- utf8Header("givenName")
-    sukunimi <- utf8Header("sn")
-  } yield Nimitiedot(etunimet = etunimet, kutsumanimi = kutsumanimi, sukunimi = sukunimi)
+  private def nimitiedot: Option[Nimitiedot] = {
+    val nimi = for {
+      etunimet <- utf8Header("FirstName")
+      kutsumanimi <- utf8Header("givenName")
+      sukunimi <- utf8Header("sn")
+    } yield Nimitiedot(etunimet = etunimet, kutsumanimi = kutsumanimi, sukunimi = sukunimi)
+    logger.debug(nimi.toString)
+    nimi
+  }
 
   private def utf8Header(headerName: String): Option[String] =
     request.header(headerName)
@@ -67,5 +70,17 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
   private def rootUrl = {
     val endsInSlash = """/$""".r
     endsInSlash.replaceAllIn(application.config.getString("koski.oppija.root.url"), "")
+  }
+
+  private val sensitiveHeaders = List("security", "hetu")
+  private val headersWhiteList = List("FirstName", "cn", "givenName", "hetu", "oid", "security", "sn")
+  private def headers: String = {
+    request.headers.toList.collect { case (name, value) if headersWhiteList.contains(name) =>
+      if (sensitiveHeaders.contains(name)) {
+        (name, "*********")
+      } else {
+        (name, value)
+      }
+    }.sortBy(_._1).mkString("\n")
   }
 }
