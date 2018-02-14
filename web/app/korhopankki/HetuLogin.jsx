@@ -1,3 +1,4 @@
+import R from 'ramda'
 import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
@@ -9,9 +10,13 @@ const LoginUrl = '/koski/user/shibbolethlogin'
 const RedirectUrl = '/koski/omattiedot'
 
 const HetuLogin = () => {
-  const state = Atom({id: '', name: ''})
+  const state = Atom({hetu: null, cn: null, FirstName: null, givenName: null, sn: null})
 
-  const valid = state.map(({id}) => id.length === 11)
+  const valid = state.map(({hetu}) => {
+    console.log(hetu && hetu.length === 11)
+    console.log(hetu)
+    return hetu && hetu.length === 11
+  })
   const inProgress = Atom(false)
   const error = Atom(null)
 
@@ -26,14 +31,15 @@ const HetuLogin = () => {
   loginTrigger
     .map(state)
     .flatMap(credentials => {
-      const headers = {hetu: credentials.id, security: 'mock', cn: credentials.name}
+      const headers = R.reject(R.isNil, R.merge(credentials, {security: 'mock'}))
+      console.log(headers)
       const errorHandler = e => {
         console.error('Fake shibboleth login fail')
         console.error(e)
         inProgress.set(false)
         error.set(e)
       }
-      console.log('Logging in with', credentials.id)
+      console.log('Logging in with', credentials.hetu)
       return Http.get(LoginUrl, {errorHandler}, headers)
     })
     .onValue(() => {
@@ -51,16 +57,32 @@ const HetuLogin = () => {
           id='hetu'
           type='password'
           disabled={inProgress}
-          value={state.view('id')}
+          value={state.view('hetu')}
           autofocus={true}
         />
       </label>
-      <label>{'Nimi'}
+      <label>{'Sukunimi'}
         <Input
-          id='nimi'
+          id='sn'
           type='text'
           disabled={inProgress}
-          value={state.view('name')}
+          value={state.view('sn')}
+        />
+      </label>
+      <label>{'Etunimet'}
+        <Input
+          id='FirstName'
+          type='text'
+          disabled={inProgress}
+          value={state.view('FirstName')}
+        />
+      </label>
+      <label>{'Kutsumanimi'}
+        <Input
+          id='givenName'
+          type='text'
+          disabled={inProgress}
+          value={state.view('givenName')}
         />
       </label>
       <button
