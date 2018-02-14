@@ -1257,6 +1257,7 @@ describe('Perusopetus', function() {
             editor.edit,
             uusiOppiaine.selectValue('Historia'),
             historia.propertyBySelector('.arvosana').selectValue('9'),
+            historia.propertyBySelector('.property.laajuus .value').setValue('1'),
             uusiOppiaine.selectValue('Historia'),
             historia2.propertyBySelector('.arvosana').selectValue('8'),
             editor.saveChanges,
