@@ -90,7 +90,7 @@ export const koulutustyyppiKoodi = suoritustyyppiKoodi => {
     return '5'
   }
   if (suoritustyyppiKoodi == 'lukionoppimaara' || suoritustyyppiKoodi == 'lukionoppiaineenoppimaara') {
-    return '2'
+    return ['2', '14']
   }
 }
 
