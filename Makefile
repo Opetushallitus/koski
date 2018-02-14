@@ -7,7 +7,6 @@ help:
 	@echo ""
 	@echo "make build	- Build the whole application, ready for running or testing"
 	@echo "make front	- Build front end"
-	@echo "make codegen	- Generate database access code from local Postgres database"
 	@echo "make test	- Run unit tests"
 	@echo "make run	- Run previously built application in local environment"
 	@echo "make postgres	- Run local postgres server"
@@ -31,11 +30,11 @@ purge:
 
 ### Building the application
 
-build: front
+build: logdir
 	mvn compile
 	# Built the whole application, ready for running or testing
 front: logdir
-	cd web && mkdir -p target && npm install
+	cd web && npm install
 watch:
 	cd web && npm run watch
 watch-prod:
@@ -46,9 +45,9 @@ source-to-image: clean build
 
 ### Running tests
 
-test: front
+test:
 	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test
-browserstack: front
+browserstack:
 	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pbrowserstack
 localizationtest:
 	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Plocalization
@@ -65,7 +64,7 @@ chrome-fronttest:
 screenshot:
 	ls -t web/target/screenshots|head -1|xargs -I{} open web/target/screenshots/{}
 
-### Running application and database 
+### Running application and database
 
 run:
 	mvn exec:java $(JAVA_OPTS) -Dexec.mainClass=fi.oph.koski.jettylauncher.JettyLauncher
@@ -82,7 +81,7 @@ eslint: front
 scalastyle:
 	mvn verify -DskipTests -P scalastyle
 lint: eslint scalastyle
-owasp: 
+owasp:
 	mvn dependency-check:check -P owasp
 owaspresults:
 	open target/dependency-check-report.html
