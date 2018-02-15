@@ -14,6 +14,7 @@ import io.prometheus.client.exporter.MetricsServlet
 import org.eclipse.jetty.jmx.MBeanContainer
 import org.eclipse.jetty.server.handler.{HandlerCollection, StatisticsHandler}
 import org.eclipse.jetty.server._
+import org.eclipse.jetty.server.handler.gzip.GzipHandler
 import org.eclipse.jetty.servlet.{ServletContextHandler, ServletHolder}
 import org.eclipse.jetty.util.thread.QueuedThreadPool
 import org.eclipse.jetty.webapp.WebAppContext
@@ -48,6 +49,7 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) e
   server.setHandler(handlers)
 
   setupKoskiApplicationContext
+  setupGzipForStaticResources
   setupJMX
   setupPrometheusMetrics
 
@@ -93,6 +95,14 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) e
       throw new RuntimeException("WebApplication resource base: " + base + " does not exist.")
     }
     base
+  }
+
+  private def setupGzipForStaticResources = {
+    val gzip = new GzipHandler
+    gzip.setIncludedMimeTypes("text/css", "text/html", "application/javascript")
+    gzip.setIncludedPaths("/koski/css/*", "/koski/external_css/*", "/koski/js/*", "/koski/json-schema-viewer/*")
+    gzip.setHandler(server.getHandler())
+    server.setHandler(gzip)
   }
 
   private def setupJMX = {
