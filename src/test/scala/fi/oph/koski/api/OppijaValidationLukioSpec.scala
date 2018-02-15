@@ -40,6 +40,22 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
       }
     }
 
+    "Suoritus valmis, laajuudet täsmää pyöristyksillä -> HTTP 200" in {
+      val oo = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
+        osasuoritukset = Some(List(suoritus(lukionOppiaine("GE", laajuus(1.0f, "4"))).copy(
+          arviointi = arviointi("9"),
+          osasuoritukset = Some(List(
+            kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1").copy(laajuus = laajuus(0.33333f, "4"))).copy(arviointi = numeerinenArviointi(9)),
+            kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE2").copy(laajuus = laajuus(0.33333f, "4"))).copy(arviointi = numeerinenArviointi(9)),
+            kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE3").copy(laajuus = laajuus(0.33333f, "4"))).copy(arviointi = numeerinenArviointi(9))
+          ))
+        )))
+      )))
+      putOpiskeluoikeus(oo) {
+        verifyResponseStatusOk()
+      }
+    }
+
     "Suoritus kesken, kurssien laajuuksien summa ei täsmää -> HTTP 200" in {
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
         vahvistus = None,
