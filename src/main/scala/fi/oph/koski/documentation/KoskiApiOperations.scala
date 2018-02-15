@@ -175,20 +175,6 @@ object KoskiApiOperations extends ApiGroup {
       )
     ))
 
-    val validateById = add(ApiOperation(
-      "GET", "/koski/api/opiskeluoikeus/validate/{oid}",
-      "Validoi opiskeluoikeuden datan oikeellisuuden",
-      <p>Validoi opiskeluoikeuden datan oikeellisuuden</p>,
-      Nil,
-      List(PathParameter("oid", "Opiskeluoikeuden oid", List("1.2.246.562.15.82898400641"))),
-      List(
-        KoskiErrorCategory.ok.maybeValidationErrorsInContent.copy(exampleResponse = serializeWithRoot(ValidationResult(MockOppijat.eero.oid, "1.2.246.562.15.82898400641", List()))),
-        KoskiErrorCategory.unauthorized,
-        KoskiErrorCategory.badRequest.queryParam.virheellinenHenkilöOid,
-        KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia
-      )
-    ))
-
     val historyById = add(ApiOperation(
       "GET", "/koski/api/opiskeluoikeus/historia/{opiskeluoikeus_oid}",
       "Listaa tiettyyn opiskeluoikeuteen kohdistuneet muutokset",
