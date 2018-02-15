@@ -17,7 +17,7 @@ import {
   wrapOptional
 } from '../editor/EditorModel'
 import R from 'ramda'
-import {arvioituTaiVahvistettu, osasuoritukset} from '../suoritus/Suoritus'
+import {arvioituTaiVahvistettu, osasuoritukset, suoritusValmis} from '../suoritus/Suoritus'
 import {accumulateExpandedState} from '../editor/ExpandableItems'
 import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
@@ -178,6 +178,7 @@ class Oppiainetaulukko extends React.Component {
     let { isExpandedP, setExpanded } = accumulateExpandedState({suoritukset, filter: s => expandableProperties(s).length > 0, component: this})
 
     const edit = model.context.edit
+    const showArvosana = edit || suoritusValmis(model) || !model.value.classes.includes('perusopetuksenoppimaaransuoritus')
     const uudellaSuorituksellaLaajuus = () => !!modelLookup(uusiOppiaineenSuoritus ? uusiOppiaineenSuoritus : createOppiaineenSuoritus(modelLookup(model, 'osasuoritukset')), 'koulutusmoduuli.laajuus')
     const sisältääLajuudellisiaSuorituksia = !!suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus'))
     const showLaajuus = !pakolliset && (sisältääLajuudellisiaSuorituksia || (edit && uudellaSuorituksellaLaajuus()))
@@ -207,7 +208,7 @@ class Oppiainetaulukko extends React.Component {
             <thead>
             <tr>
               <th className="oppiaine"><Text name={isToimintaAlueittain(model) ? 'Toiminta-alue' : 'Oppiaine'}/></th>
-              <th className="arvosana" colSpan={(showFootnotes && !showLaajuus) ? '2' : '1'}><Text name="Arvosana"/></th>
+              {showArvosana && <th className="arvosana" colSpan={(showFootnotes && !showLaajuus) ? '2' : '1'}><Text name="Arvosana"/></th>}
               {showLaajuus && <th className="laajuus" colSpan={showFootnotes ? '2' : '1'}><Text name="Laajuus"/></th>}
             </tr>
             </thead>
@@ -220,6 +221,7 @@ class Oppiainetaulukko extends React.Component {
                   uusiOppiaineenSuoritus={uusiOppiaineenSuoritus}
                   expanded={isExpandedP(suoritus)}
                   onExpand={setExpanded(suoritus)}
+                  showArvosana={showArvosana}
                   showLaajuus={showLaajuus}
                   footnotes={footnotesForSuoritus(suoritus)}
                 />
