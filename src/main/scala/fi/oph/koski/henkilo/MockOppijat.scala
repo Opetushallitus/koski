@@ -52,6 +52,8 @@ object MockOppijat {
   val eskari = oppijat.oppija("Eskari", "Essi", "300996-870E")
   val master = oppijat.oppija("of Puppets", "Master", "101097-6107")
   val slave = oppijat.addOppija(TäydellisetHenkilötiedotWithMasterInfo(TäydellisetHenkilötiedot(oppijat.generateId(), Some("101097-6107"), None, "Slave", "Slave", "of Puppets", None, None), Some(master.henkilö)))
+  val masterEiKoskessa = oppijat.addOppija(TäydellisetHenkilötiedot(oppijat.generateId(), Some("270366-697B"), None, "Master", "Master", "Master", None, None))
+  val slaveMasterEiKoskessa = oppijat.addOppija(TäydellisetHenkilötiedotWithMasterInfo(TäydellisetHenkilötiedot(oppijat.generateId(), Some("270366-697B"), None, "Slave", "Slave", "Slave", None, None), Some(masterEiKoskessa.henkilö)))
   val omattiedotSlave = oppijat.addOppija(TäydellisetHenkilötiedotWithMasterInfo(TäydellisetHenkilötiedot(oppijat.generateId(), Some("190751-739W"), None, MockUsers.omattiedot.ldapUser.etunimet, MockUsers.omattiedot.ldapUser.etunimet, MockUsers.omattiedot.ldapUser.sukunimi, None, None), Some(omattiedot.henkilö)))
   val opiskeluoikeudenOidKonflikti = oppijat.oppija("Oidkonflikti", "Oskari", "260539-745W", "1.2.246.562.24.09090909090")
   val eiKoskessa = oppijat.oppija("EiKoskessa", "Eino", "270181-5263", "1.2.246.562.24.99999555555")
