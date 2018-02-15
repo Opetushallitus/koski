@@ -15,6 +15,7 @@ postgresql/data
 node_modules
 bundle.js
 web/dist
+web/node/
 src/main/resources/*.conf
 src/test/scala/fi/oph/koski/ServiceTester.scala
 src/test/resources/opiskeluoikeudet.txt
