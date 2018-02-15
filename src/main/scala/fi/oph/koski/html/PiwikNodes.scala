@@ -36,8 +36,9 @@ trait PiwikNodes {
   private def mkPiwikInit: String =
     if (piwikSiteId.isEmpty) {
       // allow access to `window._paq` for tests, delete it after timeout to conserve memory
+      // if this value is too short, piwikTrackingSpec will fail occasionally (especially when run on slow server)
       """
-      setTimeout(function removePiwik() { delete window._paq }, 5000)
+      setTimeout(function removePiwik() { delete window._paq }, 15000)
       """
     } else {
       """
