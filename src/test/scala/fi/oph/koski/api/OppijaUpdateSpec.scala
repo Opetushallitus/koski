@@ -175,6 +175,10 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
           verifyResponseStatusOk()
         }
       }
+
+      "Opiskeluoikeuden luominen slave-henkilön tiedoilla" in {
+        createOrUpdate(MockOppijat.slaveMasterEiKoskessa.henkilö, defaultOpiskeluoikeus)
+      }
     }
 
     "Käytettäessä lähdejärjestelmä-id:tä" - {
