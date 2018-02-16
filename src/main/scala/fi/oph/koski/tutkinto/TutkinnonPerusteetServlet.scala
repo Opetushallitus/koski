@@ -15,9 +15,11 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
    })
   }
 
-  get("/diaarinumerot/koulutustyyppi/:koulutustyyppi") {
-    val koulutusTyyppi = params("koulutustyyppi")
-    application.koodistoViitePalvelu.getSisältyvätKoodiViitteet(application.koodistoViitePalvelu.getLatestVersion("koskikoulutustendiaarinumerot").get, Koodistokoodiviite(koulutusTyyppi, "koulutustyyppi"))
+  get("/diaarinumerot/koulutustyyppi/:koulutustyypit") {
+    val koulutustyypit = params("koulutustyypit").split(",").toSet
+    koulutustyypit.flatMap(koulutusTyyppi =>
+      application.koodistoViitePalvelu.getSisältyvätKoodiViitteet(application.koodistoViitePalvelu.getLatestVersion("koskikoulutustendiaarinumerot").get, Koodistokoodiviite(koulutusTyyppi, "koulutustyyppi"))
+    ).flatten.toList
   }
 
   get("/tutkinnonosat/:diaari") {

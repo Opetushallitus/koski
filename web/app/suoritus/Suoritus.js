@@ -67,30 +67,30 @@ export const perusopetuksenOppiaineenOppimääränSuoritus = opiskeluoikeudenSuo
 export const näyttötutkintoonValmistavanKoulutuksenSuoritus = opiskeluoikeudenSuoritusByTyyppi('nayttotutkintoonvalmistavakoulutus')
 export const ammatillisenTutkinnonSuoritus = opiskeluoikeudenSuoritusByTyyppi('ammatillinentutkinto')
 
-export const koulutustyyppiKoodi = suoritustyyppiKoodi => {
+export const koulutustyyppiKoodit = suoritustyyppiKoodi => {
   if (suoritustyyppiKoodi == 'perusopetuksenoppimaara' || suoritustyyppiKoodi == 'perusopetuksenvuosiluokka') {
-    return '16'
+    return ['16']
   }
   if (suoritustyyppiKoodi == 'aikuistenperusopetuksenoppimaara' || suoritustyyppiKoodi == 'perusopetuksenoppiaineenoppimaara' || suoritustyyppiKoodi == 'aikuistenperusopetuksenoppimaaranalkuvaihe'){
-    return '17'
+    return ['17']
   }
   if (suoritustyyppiKoodi == 'perusopetuksenlisaopetus') {
-    return '6'
+    return ['6']
   }
   if (suoritustyyppiKoodi == 'perusopetukseenvalmistavaopetus') {
-    return '22'
+    return ['22']
   }
   if (suoritustyyppiKoodi == 'esiopetuksensuoritus') {
-    return '15'
+    return ['15']
   }
   if (suoritustyyppiKoodi == 'valma') {
-    return '18'
+    return ['18']
   }
   if (suoritustyyppiKoodi == 'telma') {
-    return '5'
+    return ['5']
   }
   if (suoritustyyppiKoodi == 'lukionoppimaara' || suoritustyyppiKoodi == 'lukionoppiaineenoppimaara') {
-    return '2'
+    return ['2', '14']
   }
 }
 
