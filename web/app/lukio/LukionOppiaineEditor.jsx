@@ -1,96 +1,76 @@
-import React from 'react'
+import React from 'baret'
+import R from 'ramda'
 
-import {t} from '../i18n/i18n'
-import {modelData, modelItems} from '../editor/EditorModel.js'
+import {modelData, modelItems, modelLookup, pushRemoval} from '../editor/EditorModel.js'
 import {suorituksenTilaSymbol} from '../suoritus/Suoritustaulukko'
 import {KurssitEditor} from '../kurssi/KurssitEditor'
 import {tilaText} from '../suoritus/Suoritus'
-import {FootnoteHint} from '../components/footnote'
-import {modelLookup, modelTitle, pushRemoval} from '../editor/EditorModel'
-import {isKieliaine, isLukionMatematiikka} from '../suoritus/Koulutusmoduuli'
-import {Editor} from '../editor/Editor'
-import {ArvosanaEditor} from '../suoritus/ArvosanaEditor'
+import {isPaikallinen} from '../suoritus/Koulutusmoduuli'
+import {saveOrganizationalPreference} from '../virkailija/organizationalPreferences'
+import {paikallinenOppiainePrototype} from '../perusopetus/PerusopetuksenOppiaineEditor'
+import {doActionWhileMounted} from '../util/util'
+import {createOppiaineenSuoritus} from './lukio'
+import {Nimi, KoulutusmoduuliPropertiesEditor, Arviointi} from './fragments/LukionOppiaine'
 
-const Nimi = ({oppiaine}) => {
-  const {edit} = oppiaine.context
-  const koulutusmoduuli = modelLookup(oppiaine, 'koulutusmoduuli')
-  const nimi = t(modelData(oppiaine, 'koulutusmoduuli.tunniste.nimi'))
-  const nimiJaKieli = modelTitle(oppiaine, 'koulutusmoduuli')
-  const hasOptions = isKieliaine(koulutusmoduuli) || isLukionMatematiikka(koulutusmoduuli)
+export class LukionOppiaineEditor extends React.Component {
+  saveChangedPreferences() {
+    const {oppiaine} = this.props
 
-  return (
-    <span className='nimi'>
-      {edit && hasOptions ? `${nimi}, ` : nimiJaKieli}
-    </span>
-  )
-}
+    const data = modelData(oppiaine, 'koulutusmoduuli')
+    const organisaatioOid = modelData(oppiaine.context.toimipiste).oid
+    const key = data.tunniste.koodiarvo
 
-const KoulutusmoduuliPropertiesEditor = ({oppiaine}) => {
-  if (!oppiaine.context.edit) return null
+    saveOrganizationalPreference(
+      organisaatioOid,
+      paikallinenOppiainePrototype(createOppiaineenSuoritus(oppiaine.context.suoritus)).value.classes[0],
+      key,
+      data
+    )
+  }
 
-  const koulutusmoduuli = modelLookup(oppiaine, 'koulutusmoduuli')
+  render() {
+    const {oppiaine, footnote, allowOppiaineRemoval = true} = this.props
+    const kurssit = modelItems(oppiaine, 'osasuoritukset')
+    const suoritetutKurssit = kurssit.map(k => modelData(k)).filter(k => k.arviointi)
+    const {edit} = oppiaine.context
 
-  return (
-    <span className='properties'>
-      {isKieliaine(koulutusmoduuli) && <Editor model={koulutusmoduuli} path='kieli' inline={true}/>}
-      {isLukionMatematiikka(koulutusmoduuli) && <Editor model={koulutusmoduuli} path='oppimäärä' inline={true}/>}
-    </span>
-  )
-}
-
-const Arviointi = ({oppiaine, suoritetutKurssit, footnote}) => {
-  const {edit} = oppiaine.context
-
-  const arviointi = modelData(oppiaine, 'arviointi')
-  const numeerinenArvosana = kurssi => parseInt(kurssi.arviointi.last().arvosana.koodiarvo)
-  const kurssitNumeerisellaArvosanalla = suoritetutKurssit.filter(kurssi => !isNaN(numeerinenArvosana(kurssi)))
-  const keskiarvo = kurssitNumeerisellaArvosanalla.length > 0 && Math.round((kurssitNumeerisellaArvosanalla.map(numeerinenArvosana).reduce((a, b) => a + b) / kurssitNumeerisellaArvosanalla.length) * 10) / 10
-
-  return (
-    <div>
-      <div className='annettuArvosana'>
+    return (
+      <tr className={'oppiaine oppiaine-rivi ' + modelData(oppiaine, 'koulutusmoduuli.tunniste.koodiarvo')}>
+        <td className='suorituksentila' title={tilaText(oppiaine)}>
+          <div>
+            {suorituksenTilaSymbol(oppiaine)}
+          </div>
+        </td>
+        <td className='oppiaine'>
+          <div className='title'>
+            <Nimi oppiaine={oppiaine}/>
+            <KoulutusmoduuliPropertiesEditor oppiaine={oppiaine}/>
+          </div>
+          <KurssitEditor model={oppiaine}/>
+        </td>
+        <td className='maara'>{suoritetutKurssit.length}</td>
+        <td className='arvosana'>
+          <Arviointi oppiaine={oppiaine} suoritetutKurssit={suoritetutKurssit} footnote={footnote}/>
+        </td>
         {
-          edit || arviointi
-            ? <ArvosanaEditor model={oppiaine}/>
-            : '-'
+          edit && allowOppiaineRemoval && (
+            <td className='remove-row'>
+              <a className='remove-value' onClick={() => pushRemoval(oppiaine)}/>
+            </td>
+          )
         }
-        {arviointi && footnote && <FootnoteHint title={footnote.title} hint={footnote.hint} />}
-      </div>
-      <div className='keskiarvo'>{keskiarvo ? '(' + keskiarvo.toFixed(1).replace('.', ',') + ')' : ''}</div>
-    </div>
-  )
-}
+        {
+          this.state && this.state.changed && isPaikallinen(modelLookup(oppiaine, 'koulutusmoduuli')) &&
+          doActionWhileMounted(oppiaine.context.saveChangesBus, this.saveChangedPreferences.bind(this))
+        }
+      </tr>
+    )
+  }
 
-export const LukionOppiaineRowEditor = ({oppiaine, footnote, allowOppiaineRemoval = true}) => {
-  const kurssit = modelItems(oppiaine, 'osasuoritukset')
-  const suoritetutKurssit = kurssit.map(k => modelData(k)).filter(k => k.arviointi)
-  const {edit} = oppiaine.context
+  componentWillReceiveProps(nextProps) {
+    const currentData = modelData(this.props.oppiaine)
+    const newData = modelData(nextProps.oppiaine)
 
-  return (
-    <tr className={'oppiaine oppiaine-rivi ' + modelData(oppiaine, 'koulutusmoduuli.tunniste.koodiarvo')}>
-      <td className='suorituksentila' title={tilaText(oppiaine)}>
-        <div>
-          {suorituksenTilaSymbol(oppiaine)}
-        </div>
-      </td>
-      <td className='oppiaine'>
-        <div className='title'>
-          <Nimi oppiaine={oppiaine}/>
-          <KoulutusmoduuliPropertiesEditor oppiaine={oppiaine}/>
-        </div>
-        <KurssitEditor model={oppiaine}/>
-      </td>
-      <td className='maara'>{suoritetutKurssit.length}</td>
-      <td className='arvosana'>
-        <Arviointi oppiaine={oppiaine} suoritetutKurssit={suoritetutKurssit} footnote={footnote}/>
-      </td>
-      {
-        edit && allowOppiaineRemoval && (
-          <td className='remove-row'>
-            <a className='remove-value' onClick={() => pushRemoval(oppiaine)}/>
-          </td>
-        )
-      }
-    </tr>
-  )
+    if (!R.equals(currentData, newData)) this.setState({changed: true})
+  }
 }

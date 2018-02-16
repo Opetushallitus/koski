@@ -169,7 +169,7 @@ describe('Lukiokoulutus', function( ){
                 )
 
                 it('tallennus toimii', function () {
-                  kotitalous.propertyBySelector('.arvosana').selectValue('9')
+                  expect(extractAsText(S('.oppiaineet'))).to.contain('Kotitalous')
                 })
               })
             })
@@ -184,6 +184,71 @@ describe('Lukiokoulutus', function( ){
 
               it('toimii', function () {
                 expect(extractAsText(S('.oppiaineet'))).to.not.contain('Kotitalous')
+              })
+            })
+          })
+
+          describe('Paikallinen oppiaine', function() {
+            before(editor.edit)
+
+            var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine()
+            var paikallinen = editor.subEditor('.oppiaine.oppiaine-rivi:last')
+
+            it('alkutila', function() {
+              expect(editor.canSave()).to.equal(false)
+              expect(editor.getEditBarMessage()).to.equal('Ei tallentamattomia muutoksia')
+              expect(S('.oppiaineet .oppiaine-rivi').length).to.equal(21)
+            })
+
+            describe('Lisääminen', function () {
+              before(
+                editor.edit,
+                uusiOppiaine.selectValue('Lisää')
+              )
+
+              it('lisää oppiaineen', function () {
+                expect(S('.oppiaineet .oppiaine-rivi').length).to.equal(22)
+              })
+
+              it('estää tallennuksen kunnes pakolliset tiedot on täytetty', function () {
+                expect(editor.canSave()).to.equal(false)
+                expect(editor.getEditBarMessage()).to.equal('Korjaa virheelliset tiedot.')
+              })
+
+              describe('Tiedot täytettynä', function () {
+                before(
+                  paikallinen.propertyBySelector('.koodi').setValue('PAI'),
+                  paikallinen.propertyBySelector('.nimi').setValue('Paikallinen oppiaine'),
+                  paikallinen.propertyBySelector('.kuvaus').setValue('Pakollinen kuvaus'),
+                  paikallinen.propertyBySelector('.arvosana').selectValue(9),
+                  editor.saveChanges,
+                  wait.until(page.isSavedLabelShown)
+                )
+
+                it('tallennus toimii', function () {
+                  expect(extractAsText(S('.oppiaineet'))).to.contain('Paikallinen oppiaine')
+                })
+              })
+            })
+
+            describe('Poistaminen', function () {
+              before(
+                editor.edit,
+                paikallinen.propertyBySelector('.remove-row').removeValue,
+                editor.saveChanges,
+                wait.until(page.isSavedLabelShown)
+              )
+
+              it('toimii', function () {
+                expect(extractAsText(S('.oppiaineet'))).to.not.contain('Paikallinen oppiaine')
+              })
+            })
+
+            describe('Lisätty paikallinen oppiaine', function() {
+              before(editor.edit)
+
+              it('tallettuu organisaation preferenceihin', function() {
+                expect(uusiOppiaine.getOptions()).to.contain('Paikallinen oppiaine')
               })
             })
           })
