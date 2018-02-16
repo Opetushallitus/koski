@@ -112,7 +112,7 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
 
     val ePerusteetRakenne = oppimääränDiaarinumero.flatMap(application.ePerusteet.findRakenne)
 
-    def ePerusteidenMukaisetKurssit = {
+    val ePerusteidenMukaisetKurssit = {
       val oppiaine = for {
         rakenne <- ePerusteetRakenne
         lukiokoulutus <- rakenne.lukiokoulutus
@@ -140,7 +140,7 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
       case _ => oppiaineeseenSisältyvätKurssit
     }
     toKoodistoEnumValues(oppiaineeseenJaKieleenSisältyvätKurssit match {
-      case Nil if ePerusteetRakenne.isDefined => koodistojenKoodit(kurssiKoodistot)
+      case Nil if ePerusteidenMukaisetKurssit.nonEmpty => koodistojenKoodit(kurssiKoodistot)
         .filter(k => ePerusteidenMukaisetKurssit.map(_.koodiArvo).contains(k.koodiarvo))
       case Nil => koodistojenKoodit(kurssiKoodistot)
       case _ => oppiaineeseenJaKieleenSisältyvätKurssit
