@@ -1,3 +1,7 @@
+## 12.2.2018
+
+  - Näytön arvioinnin kentät arvioinnistaPäättäneet ja arviointikeskusteluunOsallistuneet muutettu valinnaisiksi
+
 ## 25.1.2018
 
   - Lisätty aikuisten perusopetuksen oppimäärän ja alkuvaiheen suorituksiin valinnainen luokka-kenttä

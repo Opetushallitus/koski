@@ -76,7 +76,7 @@ object ReforminMukainenErikoisammattitutkintoExample {
                 "Vuosihuoltojen suorittaminen",
                 "Volkswagen Center",
                 Some(näytönArviointi.copy(
-                  arvioinnistaPäättäneet = List(Koodistokoodiviite("5", Some("Muu koulutuksen järjestäjän edustaja"), "ammatillisennaytonarvioinnistapaattaneet", None))
+                  arvioinnistaPäättäneet = Some(List(Koodistokoodiviite("5", Some("Muu koulutuksen järjestäjän edustaja"), "ammatillisennaytonarvioinnistapaattaneet", None)))
                 ))
               )
             )

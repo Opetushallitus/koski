@@ -639,13 +639,11 @@ case class NäytönArviointi (
   @KoodistoUri("ammatillisennaytonarvioinnistapaattaneet")
   @Description("Arvioinnista päättäneet tahot, ilmaistuna 1-numeroisella koodilla.")
   @Tooltip("Näytön arvioinnista päättäneet tahot.")
-  @MinItems(1)
-  arvioinnistaPäättäneet: List[Koodistokoodiviite],
+  arvioinnistaPäättäneet: Option[List[Koodistokoodiviite]],
   @KoodistoUri("ammatillisennaytonarviointikeskusteluunosallistuneet")
   @Description("Arviointikeskusteluun osallistuneet tahot, ilmaistuna 1-numeroisella koodilla.")
   @Tooltip("Arviointikeskusteluun osallistuneet tahot.")
-  @MinItems(1)
-  arviointikeskusteluunOsallistuneet: List[Koodistokoodiviite],
+  arviointikeskusteluunOsallistuneet: Option[List[Koodistokoodiviite]],
   @Description("Jos näyttö on hylätty, kuvataan hylkäyksen perusteet tänne")
   hylkäyksenPeruste: Option[LocalizedString] = None
 ) extends AmmatillinenKoodistostaLöytyväArviointi

@@ -44,12 +44,12 @@ object AmmatillinenExampleData {
       NäytönArviointikohde(Koodistokoodiviite("2", Some("Työmenetelmien, -välineiden ja materiaalin hallinta"), "ammatillisennaytonarviointikohde", None), h2),
       NäytönArviointikohde(Koodistokoodiviite("3", Some("Työn perustana olevan tiedon hallinta"), "ammatillisennaytonarviointikohde", None), h2),
       NäytönArviointikohde(Koodistokoodiviite("4", Some("Elinikäisen oppimisen avaintaidot"), "ammatillisennaytonarviointikohde", None), k3))),
-    arvioinnistaPäättäneet = List(Koodistokoodiviite("1", Some("Opettaja"), "ammatillisennaytonarvioinnistapaattaneet", None)),
+    arvioinnistaPäättäneet = Some(List(Koodistokoodiviite("1", Some("Opettaja"), "ammatillisennaytonarvioinnistapaattaneet", None))),
     arviointikeskusteluunOsallistuneet =
-      List(
+      Some(List(
         Koodistokoodiviite("1", Some("Opettaja"), "ammatillisennaytonarviointikeskusteluunosallistuneet", None),
         Koodistokoodiviite("4", Some("Opiskelija"), "ammatillisennaytonarviointikeskusteluunosallistuneet", None)
-      )
+      ))
   )
 
   def näyttö(päivä: LocalDate, kuvaus: String, paikka: String, arviointi: Option[NäytönArviointi] = None) = Näyttö(
