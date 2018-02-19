@@ -32,7 +32,19 @@ case class Koodistokoodiviite(
   @Description("Käytetyn koodiston versio. Jos versiota ei määritellä, käytetään uusinta versiota")
   @Title("Koodistoversio")
   koodistoVersio: Option[Int]
-) extends KoodiViite {
+) extends KoodiViite with Equals {
+
+  override def canEqual(that: Any): Boolean = that.isInstanceOf[Koodistokoodiviite]
+  override def equals(that: Any): Boolean = that match {
+    case that: Koodistokoodiviite =>
+      that.canEqual(this) &&
+        (this.koodiarvo == that.koodiarvo) &&
+        (this.koodistoUri == that.koodistoUri) &&
+        (this.koodistoVersio.isEmpty || that.koodistoVersio.isEmpty || this.koodistoVersio == that.koodistoVersio)
+    case _ => false
+  }
+  override def hashCode(): Int = this.koodiarvo.hashCode
+
   override def toString = koodistoUri + "/" + koodiarvo
   def description: LocalizedString = koodistoUri match {
     case "arviointiasteikkoyleissivistava" | "arviointiasteikkoib" | "arviointiasteikkocorerequirementsib" => unlocalized(koodiarvo)
