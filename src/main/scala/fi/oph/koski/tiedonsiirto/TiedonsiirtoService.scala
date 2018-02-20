@@ -193,8 +193,17 @@ class TiedonsiirtoService(
                         "terms"-> Map( "field"-> "lähdejärjestelmä.keyword", "size" -> 20000, "missing"-> "-" ),
                         "aggs"-> Map(
                           "viimeisin" -> Map( "max" -> Map( "field" -> "aikaleima" ) ),
-                          "fail"-> Map(
-                            "filter"-> Map( "term"-> Map( "success"-> false )))
+                          "fail"-> Map( "filter"-> Map( "term"-> Map( "success"-> false )) ),
+                          "tuoreDokumentti" -> Map( "top_hits" ->
+                            Map (
+                              "sort" -> Array( Map( "aikaleima" -> Map( "order" -> "desc" ))),
+                              "_source" -> Map( "includes" -> Array(
+                                "oppilaitokset.oid",
+                                "oppilaitokset.nimi"
+                              )),
+                              "size" -> 1
+                            )
+                          )
                         )
                       )
                     )
@@ -211,7 +220,7 @@ class TiedonsiirtoService(
         orgResults <- extract[List[JValue]](response \ "aggregations" \ "organisaatio" \ "buckets")
         tallentajaOrganisaatio = getOrganisaatio(extract[String](orgResults \ "key"))
         oppilaitosResults <- extract[List[JValue]](orgResults \ "oppilaitos" \ "buckets")
-        oppilaitos = getOrganisaatio(extract[String](oppilaitosResults \ "key"))
+        oppilaitosOid = extract[String](oppilaitosResults \ "key")
         userResults <- extract[List[JValue]](oppilaitosResults \ "käyttäjä" \ "buckets")
         userOid = extract[String](userResults \ "key")
         käyttäjä = userRepository.findByOid(userOid) getOrElse {
@@ -225,6 +234,12 @@ class TiedonsiirtoService(
         epäonnistuneet = extract[Int](lähdejärjestelmäResults \ "fail" \ "doc_count")
         onnistuneet = siirretyt - epäonnistuneet
         viimeisin = new Timestamp(extract[Long](lähdejärjestelmäResults \ "viimeisin" \ "value"))
+
+        tuoreDokumentti = extract[JArray](lähdejärjestelmäResults \ "tuoreDokumentti" \ "hits" \ "hits" \ "_source").arr
+        oppilaitos = tuoreDokumentti
+          .flatMap(t => extract[List[OidOrganisaatio]](t \ "oppilaitokset"))
+          .find(_.oid == oppilaitosOid)
+          .getOrElse(getOrganisaatio(oppilaitosOid))
       } yield {
         TiedonsiirtoYhteenveto(tallentajaOrganisaatio, oppilaitos, käyttäjä, viimeisin, siirretyt, epäonnistuneet, onnistuneet, lähdejärjestelmä)
       }
