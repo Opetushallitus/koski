@@ -165,17 +165,17 @@ object ExamplesAikuistenPerusopetus {
     ))
 
   def kurssinSuoritus2015(koodiarvo: String) = AikuistenPerusopetuksenKurssinSuoritus(
-    ValtakunnallinenAikuistenPerusopetuksenKurssi2015(Koodistokoodiviite(koodiarvo, "aikuistenperusopetuksenkurssit2015")),
+    ValtakunnallinenAikuistenPerusopetuksenKurssi2015(Koodistokoodiviite(koodiarvo, "aikuistenperusopetuksenkurssit2015"), Some(LaajuusKursseissa(1))),
     arviointi = arviointi(9)
   )
 
   def kurssinSuoritus2017(koodiarvo: String) = AikuistenPerusopetuksenKurssinSuoritus(
-    ValtakunnallinenAikuistenPerusopetuksenPäättövaiheenKurssi2017(Koodistokoodiviite(koodiarvo, "aikuistenperusopetuksenpaattovaiheenkurssit2017")),
+    ValtakunnallinenAikuistenPerusopetuksenPäättövaiheenKurssi2017(Koodistokoodiviite(koodiarvo, "aikuistenperusopetuksenpaattovaiheenkurssit2017"), Some(LaajuusKursseissa(1))),
     arviointi = arviointi(9)
   )
 
   def kurssinSuoritusPaikallinen(koodiarvo: String, kuvaus: String) = AikuistenPerusopetuksenKurssinSuoritus(
-    PaikallinenAikuistenPerusopetuksenKurssi(PaikallinenKoodi(koodiarvo, kuvaus)),
+    PaikallinenAikuistenPerusopetuksenKurssi(PaikallinenKoodi(koodiarvo, kuvaus), Some(LaajuusKursseissa(1))),
     arviointi = arviointi(9)
   )
 
@@ -243,7 +243,8 @@ object ExamplesAikuistenPerusopetus {
     // Yhteiskuntatietous ja kulttuurintuntemus
     alkuvaiheenOppiaineenSuoritus(alkuvaiheenOppiaine("YH")).copy(arviointi = arviointi(8), osasuoritukset = Some(List(
       alkuvaiheenKurssinSuoritus("LYK1"),
-      alkuvaiheenKurssinSuoritus("LYK2")
+      alkuvaiheenKurssinSuoritus("LYK2"),
+      alkuvaiheenPaikallisenKurssinSuoritus("LYKX", "Kulttuurinen moniarvoisuus")
     ))),
     // Ympäristö- ja luonnontieto
     alkuvaiheenOppiaineenSuoritus(alkuvaiheenOppiaine("YL")).copy(arviointi = arviointi(8), osasuoritukset = Some(List(
@@ -266,7 +267,12 @@ object ExamplesAikuistenPerusopetus {
   )
 
   def alkuvaiheenKurssinSuoritus(koodiarvo: String) = AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus(
-    ValtakunnallinenAikuistenPerusopetuksenAlkuvaiheenKurssi2017(Koodistokoodiviite(koodiarvo, "aikuistenperusopetuksenalkuvaiheenkurssit2017")),
+    ValtakunnallinenAikuistenPerusopetuksenAlkuvaiheenKurssi2017(Koodistokoodiviite(koodiarvo, "aikuistenperusopetuksenalkuvaiheenkurssit2017"), Some(LaajuusKursseissa(1))),
+    arviointi = arviointi(9)
+  )
+
+  def alkuvaiheenPaikallisenKurssinSuoritus(koodiarvo: String, nimi: String) = AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus(
+    PaikallinenAikuistenPerusopetuksenAlkuvaiheenKurssi(PaikallinenKoodi(koodiarvo, nimi), Some(LaajuusKursseissa(1))),
     arviointi = arviointi(9)
   )
 }

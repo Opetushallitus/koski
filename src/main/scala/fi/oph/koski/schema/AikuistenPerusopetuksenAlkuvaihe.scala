@@ -108,13 +108,13 @@ case class AikuistenPerusopetuksenAlkuvaiheenVierasKieli(
 }
 
 sealed trait AikuistenPerusopetuksenAlkuvaiheenKurssi extends Koulutusmoduuli {
-  def laajuus: Option[LaajuusVuosiviikkotunneissa]
+  def laajuus: Option[LaajuusVuosiviikkotunneissaTaiKursseissa]
 }
 
 case class PaikallinenAikuistenPerusopetuksenAlkuvaiheenKurssi(
   @FlattenInUI
   tunniste: PaikallinenKoodi,
-  laajuus: Option[LaajuusVuosiviikkotunneissa] = None
+  laajuus: Option[LaajuusVuosiviikkotunneissaTaiKursseissa] = None
 ) extends AikuistenPerusopetuksenAlkuvaiheenKurssi with PaikallinenKoulutusmoduuli with StorablePreference {
   def kuvaus: LocalizedString = LocalizedString.empty
 }
@@ -124,5 +124,5 @@ case class ValtakunnallinenAikuistenPerusopetuksenAlkuvaiheenKurssi2017(
   @KoodistoUri("aikuistenperusopetuksenalkuvaiheenkurssit2017")
   @Title("Nimi")
   tunniste: Koodistokoodiviite,
-  laajuus: Option[LaajuusVuosiviikkotunneissa] = None
+  laajuus: Option[LaajuusVuosiviikkotunneissaTaiKursseissa] = None
 ) extends AikuistenPerusopetuksenAlkuvaiheenKurssi with KoodistostaLöytyväKoulutusmoduuli

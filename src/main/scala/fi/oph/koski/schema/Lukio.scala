@@ -316,12 +316,6 @@ case class LukionMatematiikka(
   override def identiteetti: AnyRef = (super.identiteetti, oppimäärä)
 }
 
-case class LaajuusKursseissa(
-  arvo: Float,
-  @KoodistoKoodiarvo("4")
-  yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodistoUri = "opintojenlaajuusyksikko", koodiarvo = "4", nimi = Some(finnish("kurssia")))
-) extends Laajuus
-
 @Description("Ks. tarkemmin lukion ja IB-tutkinnon opiskeluoikeuden tilat: [confluence](https://confluence.csc.fi/pages/viewpage.action?pageId=71953716)")
 case class LukionOpiskeluoikeudenTila(
   @MinItems(1)
