@@ -60,17 +60,6 @@ trait PaikallinenKoulutusmoduuli extends Koulutusmoduuli {
   def kuvaus: LocalizedString
 }
 
-@Description("Tutkinnon tai tutkinnon osan laajuus. Koostuu opintojen laajuuden arvosta ja yksiköstä")
-trait Laajuus {
-  @Description("Opintojen laajuuden arvo")
-  @Tooltip("Opintojen laajuus.")
-  @MinValueExclusive(0)
-  def arvo: Float
-  @Description("Opintojen laajuuden yksikkö")
-  @KoodistoUri("opintojenlaajuusyksikko")
-  def yksikkö: Koodistokoodiviite
-}
-
 trait Valinnaisuus {
   @Description("Onko pakollinen osa tutkinnossa (true/false)")
   def pakollinen: Boolean

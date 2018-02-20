@@ -120,13 +120,13 @@ case class AikuistenPerusopetuksenKurssinSuoritus(
 ) extends KurssinSuoritus with MahdollisestiSuorituskielellinen
 
 sealed trait AikuistenPerusopetuksenKurssi extends Koulutusmoduuli {
-  def laajuus: Option[LaajuusVuosiviikkotunneissa]
+  def laajuus: Option[LaajuusVuosiviikkotunneissaTaiKursseissa]
 }
 
 case class PaikallinenAikuistenPerusopetuksenKurssi(
   @FlattenInUI
   tunniste: PaikallinenKoodi,
-  laajuus: Option[LaajuusVuosiviikkotunneissa] = None
+  laajuus: Option[LaajuusVuosiviikkotunneissaTaiKursseissa] = None
 ) extends AikuistenPerusopetuksenKurssi with PaikallinenKoulutusmoduuli with StorablePreference {
   def kuvaus: LocalizedString = LocalizedString.empty
 }
@@ -139,7 +139,7 @@ case class ValtakunnallinenAikuistenPerusopetuksenKurssi2015(
   @KoodistoUri("aikuistenperusopetuksenkurssit2015")
   @Title("Nimi")
   tunniste: Koodistokoodiviite,
-  laajuus: Option[LaajuusVuosiviikkotunneissa] = None
+  laajuus: Option[LaajuusVuosiviikkotunneissaTaiKursseissa] = None
 ) extends AikuistenPerusopetuksenKurssi with KoodistostaLöytyväKoulutusmoduuli
 
 @Title("Aikuisten perusopetuksen päättövaiheen opetussuunnitelman 2017 mukainen kurssi")
@@ -150,7 +150,7 @@ case class ValtakunnallinenAikuistenPerusopetuksenPäättövaiheenKurssi2017(
   @KoodistoUri("aikuistenperusopetuksenpaattovaiheenkurssit2017")
   @Title("Nimi")
   tunniste: Koodistokoodiviite,
-  laajuus: Option[LaajuusVuosiviikkotunneissa] = None
+  laajuus: Option[LaajuusVuosiviikkotunneissaTaiKursseissa] = None
 ) extends AikuistenPerusopetuksenKurssi with KoodistostaLöytyväKoulutusmoduuli
 
 @Description("Perusopetuksen yksittäisen oppiaineen oppimäärän suoritus erillisenä kokonaisuutena")

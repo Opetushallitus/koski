@@ -313,8 +313,3 @@ case class IBOppiaineExtendedEssay(
   pakollinen: Boolean = true
 ) extends IBCoreElementOppiaine with Laajuudeton
 
-case class LaajuusTunneissa(
-  arvo: Float,
-  @KoodistoKoodiarvo("5")
-  yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodistoUri = "opintojenlaajuusyksikko", koodiarvo = "5", nimi = Some(english("hours")))
-) extends Laajuus

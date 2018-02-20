@@ -434,12 +434,6 @@ case class PeruskoulunVierasTaiToinenKotimainenKieli(
   override def description(texts: LocalizationRepository) = concat(nimi, unlocalized(", "), kieli.description)
 }
 
-case class LaajuusVuosiviikkotunneissa(
-  arvo: Float,
-  @KoodistoKoodiarvo("3")
-  yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "3", nimi = Some(finnish("Vuosiviikkotuntia")), koodistoUri = "opintojenlaajuusyksikko")
-) extends Laajuus
-
 @Description("Ks. tarkemmin perusopetuksen opiskeluoikeuden tilat: [confluence](https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-Perusopetus)")
 case class NuortenPerusopetuksenOpiskeluoikeudenTila(
   @MinItems(1)
