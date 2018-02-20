@@ -218,7 +218,8 @@ class TiedonsiirtoService(
     runSearch(query).map { response =>
       for {
         orgResults <- extract[List[JValue]](response \ "aggregations" \ "organisaatio" \ "buckets")
-        tallentajaOrganisaatio = getOrganisaatio(extract[String](orgResults \ "key"))
+        tallentajaOrganisaatioOid = extract[String](orgResults \ "key")
+        tallentajaOrganisaatio = OidOrganisaatio(tallentajaOrganisaatioOid, Some(LocalizedString.unlocalized(tallentajaOrganisaatioOid)))
         oppilaitosResults <- extract[List[JValue]](orgResults \ "oppilaitos" \ "buckets")
         oppilaitosOid = extract[String](oppilaitosResults \ "key")
         userResults <- extract[List[JValue]](oppilaitosResults \ "käyttäjä" \ "buckets")
