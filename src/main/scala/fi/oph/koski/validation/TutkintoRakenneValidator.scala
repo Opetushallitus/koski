@@ -35,7 +35,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
           HttpStatus.justStatus(getRakenne(d, Some(List(aikuistenPerusopetus))))
         case d: PerusopetuksenDiaarinumerollinenKoulutus =>
           HttpStatus.justStatus(getRakenne(d, Some(List(perusopetus))))
-        case d: PerusopetuksenOppiaine =>
+        case d: AikuistenPerusopetuksenOppiaine =>
           HttpStatus.justStatus(getRakenne(d, Some(List(aikuistenPerusopetus))))
         case d: LukionOppimäärä =>
           HttpStatus.justStatus(getRakenne(d, Some(lukionKoulutustyypit)))

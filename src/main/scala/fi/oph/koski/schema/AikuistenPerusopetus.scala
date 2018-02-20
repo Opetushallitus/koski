@@ -2,7 +2,8 @@ package fi.oph.koski.schema
 
 import java.time.{LocalDate, LocalDateTime}
 
-import fi.oph.koski.localization.LocalizedString
+import fi.oph.koski.localization.LocalizedString.{concat, unlocalized}
+import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation._
 
@@ -100,7 +101,7 @@ case class AikuistenPerusopetus(
 
 @Description("Perusopetuksen oppiaineen suoritus osana aikuisten perusopetuksen oppimäärän suoritusta")
 case class AikuistenPerusopetuksenOppiaineenSuoritus(
-  koulutusmoduuli: PerusopetuksenOppiaine,
+  koulutusmoduuli: AikuistenPerusopetuksenOppiaine,
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Title("Kurssit")
@@ -108,6 +109,50 @@ case class AikuistenPerusopetuksenOppiaineenSuoritus(
   @KoodistoKoodiarvo("aikuistenperusopetuksenoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "aikuistenperusopetuksenoppiaine", koodistoUri = "suorituksentyyppi")
 ) extends PerusopetuksenOppiaineenSuoritus with Vahvistukseton with MahdollisestiSuorituskielellinen
+
+trait AikuistenPerusopetuksenOppiaine extends PerusopetuksenOppiaine {
+  @Tooltip("Oppiaineen laajuus kursseina.")
+  def laajuus: Option[LaajuusVuosiviikkotunneissaTaiKursseissa]
+}
+
+trait AikuistenPerusopetuksenKoodistostaLöytyväOppiaine extends AikuistenPerusopetuksenOppiaine with YleissivistavaOppiaine {
+  def kuvaus: Option[LocalizedString]
+}
+
+case class AikuistenPerusopetuksenPaikallinenOppiaine(
+  tunniste: PaikallinenKoodi,
+  laajuus: Option[LaajuusVuosiviikkotunneissaTaiKursseissa] = None,
+  kuvaus: LocalizedString,
+  perusteenDiaarinumero: Option[String] = None,
+  @DefaultValue(false)
+  pakollinen: Boolean = false
+) extends AikuistenPerusopetuksenOppiaine with PerusopetuksenPaikallinenOppiaine
+
+case class MuuAikuistenPerusopetuksenOppiaine(
+  tunniste: Koodistokoodiviite,
+  pakollinen: Boolean = true,
+  perusteenDiaarinumero: Option[String] = None,
+  override val laajuus: Option[LaajuusVuosiviikkotunneissaTaiKursseissa] = None,
+  kuvaus: Option[LocalizedString] = None
+) extends MuuPerusopetuksenOppiaine with AikuistenPerusopetuksenKoodistostaLöytyväOppiaine
+
+case class AikuistenPerusopetuksenÄidinkieliJaKirjallisuus(
+  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "AI", koodistoUri = "koskioppiaineetyleissivistava"),
+  kieli: Koodistokoodiviite,
+  pakollinen: Boolean = true,
+  perusteenDiaarinumero: Option[String] = None,
+  override val laajuus: Option[LaajuusVuosiviikkotunneissaTaiKursseissa] = None,
+  kuvaus: Option[LocalizedString] = None
+) extends PerusopetuksenÄidinkieliJaKirjallisuus with AikuistenPerusopetuksenKoodistostaLöytyväOppiaine
+
+case class AikuistenPerusopetuksenVierasTaiToinenKotimainenKieli(
+  tunniste: Koodistokoodiviite,
+  kieli: Koodistokoodiviite,
+  pakollinen: Boolean = true,
+  perusteenDiaarinumero: Option[String] = None,
+  override val laajuus: Option[LaajuusVuosiviikkotunneissaTaiKursseissa] = None,
+  kuvaus: Option[LocalizedString] = None
+) extends PerusopetuksenVierasTaiToinenKotimainenKieli with AikuistenPerusopetuksenKoodistostaLöytyväOppiaine
 
 case class AikuistenPerusopetuksenKurssinSuoritus(
   @Description("Aikuisten perusopetuksen kurssin tunnistetiedot")
@@ -159,7 +204,7 @@ case class PerusopetuksenOppiaineenOppimääränSuoritus(
   @Tooltip("Päättötodistukseen liittyvät oppiaineen suoritukset.")
   @Title("Oppiaine")
   @FlattenInUI
-  koulutusmoduuli: PerusopetuksenOppiaine,
+  koulutusmoduuli: AikuistenPerusopetuksenOppiaine,
   toimipiste: OrganisaatioWithOid,
   @Title("Arvosana")
   @Tooltip("Oppiaineen kokonaisarvosana")

@@ -33,6 +33,7 @@ case class LaajuusKursseissa(
   yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodistoUri = "opintojenlaajuusyksikko", koodiarvo = "4", nimi = Some(finnish("kurssia")))
 ) extends LaajuusVuosiviikkotunneissaTaiKursseissa
 
+// TODO: tarvitaan aikuisten perusopetuksessa jotta voidaan siirtymäaikana käyttää useita laajuusyksiköitä, poistetaan siirtymäajan jälkeen
 trait LaajuusVuosiviikkotunneissaTaiKursseissa extends Laajuus
 
 case class LaajuusTunneissa(
