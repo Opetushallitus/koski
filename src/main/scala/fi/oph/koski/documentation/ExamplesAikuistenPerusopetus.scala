@@ -3,7 +3,7 @@ package fi.oph.koski.documentation
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.ExampleData._
-import fi.oph.koski.documentation.PerusopetusExampleData.{suoritustapaErityinenTutkinto, äidinkieli, _}
+import fi.oph.koski.documentation.PerusopetusExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
@@ -86,7 +86,7 @@ object ExamplesAikuistenPerusopetus {
     )
   }
 
-  def oppiaineenSuoritus(aine: PerusopetuksenOppiaine) = AikuistenPerusopetuksenOppiaineenSuoritus(
+  def oppiaineenSuoritus(aine: AikuistenPerusopetuksenOppiaine) = AikuistenPerusopetuksenOppiaineenSuoritus(
     koulutusmoduuli = aine,
     suorituskieli = None,
     arviointi = None
@@ -107,27 +107,27 @@ object ExamplesAikuistenPerusopetus {
           kurssinSuoritusPaikallinen("ÄI10", "Paikallinen äidinkielen kurssi")
         ))
       ),
-      oppiaineenSuoritus(kieli("B1", "SV")).copy(arviointi = arviointi(8)),
-      oppiaineenSuoritus(kieli("B1", "SV").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = hyväksytty),
-      oppiaineenSuoritus(kieli("A1", "EN")).copy(arviointi = arviointi(8)),
-      oppiaineenSuoritus(oppiaine("KT")).copy(arviointi = arviointi(10)),
-      oppiaineenSuoritus(oppiaine("HI")).copy(arviointi = arviointi(8)),
-      oppiaineenSuoritus(oppiaine("YH")).copy(arviointi = arviointi(10)),
-      oppiaineenSuoritus(oppiaine("MA")).copy(arviointi = arviointi(9)),
-      oppiaineenSuoritus(oppiaine("KE")).copy(arviointi = arviointi(7)),
-      oppiaineenSuoritus(oppiaine("FY")).copy(arviointi = arviointi(9)),
-      oppiaineenSuoritus(oppiaine("BI")).copy(arviointi = arviointi(9)),
-      oppiaineenSuoritus(oppiaine("GE")).copy(arviointi = arviointi(9)),
-      oppiaineenSuoritus(oppiaine("MU")).copy(arviointi = arviointi(7)),
-      oppiaineenSuoritus(oppiaine("KU")).copy(arviointi = arviointi(8)),
-      oppiaineenSuoritus(oppiaine("KO")).copy(arviointi = arviointi(8)),
-      oppiaineenSuoritus(oppiaine("KO").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = hyväksytty),
-      oppiaineenSuoritus(oppiaine("TE")).copy(arviointi = arviointi(8)),
-      oppiaineenSuoritus(oppiaine("KS")).copy(arviointi = arviointi(9)),
-      oppiaineenSuoritus(oppiaine("LI")).copy(arviointi = arviointi(9)),
-      oppiaineenSuoritus(oppiaine("LI").copy(pakollinen = false, laajuus = vuosiviikkotuntia(0.5))).copy(arviointi = hyväksytty),
-      oppiaineenSuoritus(kieli("B2", "DE").copy(pakollinen = false, laajuus = vuosiviikkotuntia(4))).copy(arviointi = arviointi(9)),
-      oppiaineenSuoritus(valinnainenOppiaine("TH", "Tietokoneen hyötykäyttö", "Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.")).copy(arviointi = arviointi(9))
+      oppiaineenSuoritus(aikuistenPerusopetuksenKieli("B1", "SV")).copy(arviointi = arviointi(8)),
+      oppiaineenSuoritus(aikuistenPerusopetuksenKieli("B1", "SV").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = hyväksytty),
+      oppiaineenSuoritus(aikuistenPerusopetuksenKieli("A1", "EN")).copy(arviointi = arviointi(8)),
+      oppiaineenSuoritus(aikuistenOppiaine("KT")).copy(arviointi = arviointi(10)),
+      oppiaineenSuoritus(aikuistenOppiaine("HI")).copy(arviointi = arviointi(8)),
+      oppiaineenSuoritus(aikuistenOppiaine("YH")).copy(arviointi = arviointi(10)),
+      oppiaineenSuoritus(aikuistenOppiaine("MA")).copy(arviointi = arviointi(9)),
+      oppiaineenSuoritus(aikuistenOppiaine("KE")).copy(arviointi = arviointi(7)),
+      oppiaineenSuoritus(aikuistenOppiaine("FY")).copy(arviointi = arviointi(9)),
+      oppiaineenSuoritus(aikuistenOppiaine("BI")).copy(arviointi = arviointi(9)),
+      oppiaineenSuoritus(aikuistenOppiaine("GE")).copy(arviointi = arviointi(9)),
+      oppiaineenSuoritus(aikuistenOppiaine("MU")).copy(arviointi = arviointi(7)),
+      oppiaineenSuoritus(aikuistenOppiaine("KU")).copy(arviointi = arviointi(8)),
+      oppiaineenSuoritus(aikuistenOppiaine("KO")).copy(arviointi = arviointi(8)),
+      oppiaineenSuoritus(aikuistenOppiaine("KO").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = hyväksytty),
+      oppiaineenSuoritus(aikuistenOppiaine("TE")).copy(arviointi = arviointi(8)),
+      oppiaineenSuoritus(aikuistenOppiaine("KS")).copy(arviointi = arviointi(9)),
+      oppiaineenSuoritus(aikuistenOppiaine("LI")).copy(arviointi = arviointi(9)),
+      oppiaineenSuoritus(aikuistenOppiaine("LI").copy(pakollinen = false, laajuus = vuosiviikkotuntia(0.5))).copy(arviointi = hyväksytty),
+      oppiaineenSuoritus(aikuistenPerusopetuksenKieli("B2", "DE").copy(pakollinen = false, laajuus = vuosiviikkotuntia(4))).copy(arviointi = arviointi(9)),
+      oppiaineenSuoritus(valinnainenAikuistenOppiaine("TH", "Tietokoneen hyötykäyttö", "Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.")).copy(arviointi = arviointi(9))
     ))
 
   lazy val oppiaineidenSuoritukset2017 = Some(
@@ -141,27 +141,27 @@ object ExamplesAikuistenPerusopetus {
           kurssinSuoritusPaikallinen("ÄI10", "Paikallinen äidinkielen kurssi")
         ))
       ),
-      oppiaineenSuoritus(kieli("B1", "SV")).copy(arviointi = arviointi(8)),
-      oppiaineenSuoritus(kieli("B1", "SV").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = hyväksytty),
-      oppiaineenSuoritus(kieli("A1", "EN")).copy(arviointi = arviointi(8)),
-      oppiaineenSuoritus(oppiaine("KT")).copy(arviointi = arviointi(10)),
-      oppiaineenSuoritus(oppiaine("HI")).copy(arviointi = arviointi(8)),
-      oppiaineenSuoritus(oppiaine("YH")).copy(arviointi = arviointi(10)),
-      oppiaineenSuoritus(oppiaine("MA")).copy(arviointi = arviointi(9)),
-      oppiaineenSuoritus(oppiaine("KE")).copy(arviointi = arviointi(7)),
-      oppiaineenSuoritus(oppiaine("FY")).copy(arviointi = arviointi(9)),
-      oppiaineenSuoritus(oppiaine("BI")).copy(arviointi = arviointi(9)),
-      oppiaineenSuoritus(oppiaine("GE")).copy(arviointi = arviointi(9)),
-      oppiaineenSuoritus(oppiaine("MU")).copy(arviointi = arviointi(7)),
-      oppiaineenSuoritus(oppiaine("KU")).copy(arviointi = arviointi(8)),
-      oppiaineenSuoritus(oppiaine("KO")).copy(arviointi = arviointi(8)),
-      oppiaineenSuoritus(oppiaine("KO").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = hyväksytty),
-      oppiaineenSuoritus(oppiaine("TE")).copy(arviointi = arviointi(8)),
-      oppiaineenSuoritus(oppiaine("KS")).copy(arviointi = arviointi(9)),
-      oppiaineenSuoritus(oppiaine("LI")).copy(arviointi = arviointi(9)),
-      oppiaineenSuoritus(oppiaine("LI").copy(pakollinen = false, laajuus = vuosiviikkotuntia(0.5))).copy(arviointi = hyväksytty),
-      oppiaineenSuoritus(kieli("B2", "DE").copy(pakollinen = false, laajuus = vuosiviikkotuntia(4))).copy(arviointi = arviointi(9)),
-      oppiaineenSuoritus(valinnainenOppiaine("TH", "Tietokoneen hyötykäyttö", "Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.")).copy(arviointi = arviointi(9))
+      oppiaineenSuoritus(aikuistenPerusopetuksenKieli("B1", "SV")).copy(arviointi = arviointi(8)),
+      oppiaineenSuoritus(aikuistenPerusopetuksenKieli("B1", "SV").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = hyväksytty),
+      oppiaineenSuoritus(aikuistenPerusopetuksenKieli("A1", "EN")).copy(arviointi = arviointi(8)),
+      oppiaineenSuoritus(aikuistenOppiaine("KT")).copy(arviointi = arviointi(10)),
+      oppiaineenSuoritus(aikuistenOppiaine("HI")).copy(arviointi = arviointi(8)),
+      oppiaineenSuoritus(aikuistenOppiaine("YH")).copy(arviointi = arviointi(10)),
+      oppiaineenSuoritus(aikuistenOppiaine("MA")).copy(arviointi = arviointi(9)),
+      oppiaineenSuoritus(aikuistenOppiaine("KE")).copy(arviointi = arviointi(7)),
+      oppiaineenSuoritus(aikuistenOppiaine("FY")).copy(arviointi = arviointi(9)),
+      oppiaineenSuoritus(aikuistenOppiaine("BI")).copy(arviointi = arviointi(9)),
+      oppiaineenSuoritus(aikuistenOppiaine("GE")).copy(arviointi = arviointi(9)),
+      oppiaineenSuoritus(aikuistenOppiaine("MU")).copy(arviointi = arviointi(7)),
+      oppiaineenSuoritus(aikuistenOppiaine("KU")).copy(arviointi = arviointi(8)),
+      oppiaineenSuoritus(aikuistenOppiaine("KO")).copy(arviointi = arviointi(8)),
+      oppiaineenSuoritus(aikuistenOppiaine("KO").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = hyväksytty),
+      oppiaineenSuoritus(aikuistenOppiaine("TE")).copy(arviointi = arviointi(8)),
+      oppiaineenSuoritus(aikuistenOppiaine("KS")).copy(arviointi = arviointi(9)),
+      oppiaineenSuoritus(aikuistenOppiaine("LI")).copy(arviointi = arviointi(9)),
+      oppiaineenSuoritus(aikuistenOppiaine("LI").copy(pakollinen = false, laajuus = vuosiviikkotuntia(0.5))).copy(arviointi = hyväksytty),
+      oppiaineenSuoritus(aikuistenPerusopetuksenKieli("B2", "DE").copy(pakollinen = false, laajuus = vuosiviikkotuntia(4))).copy(arviointi = arviointi(9)),
+      oppiaineenSuoritus(valinnainenAikuistenOppiaine("TH", "Tietokoneen hyötykäyttö", "Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.")).copy(arviointi = arviointi(9))
     ))
 
   def kurssinSuoritus2015(koodiarvo: String) = AikuistenPerusopetuksenKurssinSuoritus(
@@ -206,7 +206,7 @@ object ExamplesAikuistenPerusopetus {
     osasuoritukset = alkuvaiheenOppiaineet
   )
 
-  def kieli(oppiaine: String, kieli: String) = PeruskoulunVierasTaiToinenKotimainenKieli(
+  def kieli(oppiaine: String, kieli: String) = NuortenPerusopetuksenVierasTaiToinenKotimainenKieli(
     tunniste = Koodistokoodiviite(koodiarvo = oppiaine, koodistoUri = "koskioppiaineetyleissivistava"),
     kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima"))
 
@@ -243,8 +243,9 @@ object ExamplesAikuistenPerusopetus {
     // Yhteiskuntatietous ja kulttuurintuntemus
     alkuvaiheenOppiaineenSuoritus(alkuvaiheenOppiaine("YH")).copy(arviointi = arviointi(8), osasuoritukset = Some(List(
       alkuvaiheenKurssinSuoritus("LYK1"),
-      alkuvaiheenKurssinSuoritus("LYK2"),
-      alkuvaiheenPaikallisenKurssinSuoritus("LYKX", "Kulttuurinen moniarvoisuus")
+      alkuvaiheenKurssinSuoritus("LYK2", laajuus = LaajuusVuosiviikkotunneissa(1)),
+      alkuvaiheenPaikallisenKurssinSuoritus("LYKX", "Kulttuurinen moniarvoisuus"),
+      alkuvaiheenPaikallisenKurssinSuoritus("LYKY", "Tasa-arvo yhteiskunnassa", laajuus = LaajuusVuosiviikkotunneissa(1))
     ))),
     // Ympäristö- ja luonnontieto
     alkuvaiheenOppiaineenSuoritus(alkuvaiheenOppiaine("YL")).copy(arviointi = arviointi(8), osasuoritukset = Some(List(
@@ -266,13 +267,27 @@ object ExamplesAikuistenPerusopetus {
     arviointi = None
   )
 
-  def alkuvaiheenKurssinSuoritus(koodiarvo: String) = AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus(
-    ValtakunnallinenAikuistenPerusopetuksenAlkuvaiheenKurssi2017(Koodistokoodiviite(koodiarvo, "aikuistenperusopetuksenalkuvaiheenkurssit2017"), Some(LaajuusKursseissa(1))),
+  def alkuvaiheenKurssinSuoritus(koodiarvo: String, laajuus: LaajuusVuosiviikkotunneissaTaiKursseissa = LaajuusKursseissa(1)) = AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus(
+    ValtakunnallinenAikuistenPerusopetuksenAlkuvaiheenKurssi2017(Koodistokoodiviite(koodiarvo, "aikuistenperusopetuksenalkuvaiheenkurssit2017"), Some(laajuus)),
     arviointi = arviointi(9)
   )
 
-  def alkuvaiheenPaikallisenKurssinSuoritus(koodiarvo: String, nimi: String) = AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus(
-    PaikallinenAikuistenPerusopetuksenAlkuvaiheenKurssi(PaikallinenKoodi(koodiarvo, nimi), Some(LaajuusKursseissa(1))),
+  def alkuvaiheenPaikallisenKurssinSuoritus(koodiarvo: String, nimi: String, laajuus: LaajuusVuosiviikkotunneissaTaiKursseissa = LaajuusKursseissa(1)) = AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus(
+    PaikallinenAikuistenPerusopetuksenAlkuvaiheenKurssi(PaikallinenKoodi(koodiarvo, nimi), Some(laajuus)),
     arviointi = arviointi(9)
   )
+
+  def äidinkieli(kieli: String, diaarinumero: Option[String] = None) = AikuistenPerusopetuksenÄidinkieliJaKirjallisuus(
+    perusteenDiaarinumero = diaarinumero,
+    kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus")
+  )
+
+  def aikuistenPerusopetuksenKieli(oppiaine: String, kieli: String) = AikuistenPerusopetuksenVierasTaiToinenKotimainenKieli(
+    tunniste = Koodistokoodiviite(koodiarvo = oppiaine, koodistoUri = "koskioppiaineetyleissivistava"),
+    kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima"))
+
+  def aikuistenOppiaine(aine: String, laajuus: Option[LaajuusVuosiviikkotunneissa] = None) = MuuAikuistenPerusopetuksenOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), laajuus = laajuus)
+
+ def valinnainenAikuistenOppiaine(aine: String, nimi: String, kuvaus: String, laajuus: Option[LaajuusVuosiviikkotunneissa] = None) =
+    AikuistenPerusopetuksenPaikallinenOppiaine(tunniste = PaikallinenKoodi(koodiarvo = aine, nimi = nimi), laajuus = laajuus, kuvaus = kuvaus)
 }

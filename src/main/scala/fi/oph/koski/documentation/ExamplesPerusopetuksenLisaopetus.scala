@@ -9,7 +9,7 @@ import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema.{annotation, _}
 
 object ExamplesPerusopetuksenLisaopetus {
-  private def suoritus(aine: PerusopetuksenOppiaine) = PerusopetuksenLisäopetuksenOppiaineenSuoritus(
+  private def suoritus(aine: NuortenPerusopetuksenOppiaine) = PerusopetuksenLisäopetuksenOppiaineenSuoritus(
     koulutusmoduuli = aine,
     suorituskieli = None,
     arviointi = None,
