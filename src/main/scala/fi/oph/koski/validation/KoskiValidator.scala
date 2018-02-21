@@ -1,5 +1,6 @@
 package fi.oph.koski.validation
 
+import java.lang.Character.isDigit
 import java.time.LocalDate
 
 import fi.oph.koski.date.DateValidation
@@ -233,6 +234,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
           .onSuccess(validateDateOrder(alkamispäivä, ("suoritus.vahvistus.päivä", vahvistuspäivät), KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenAlkamispäivää)))
         :: validateToimipiste(suoritus)
         :: validateStatus(suoritus, parent)
+        :: validateArviointi(suoritus)
         :: validateLaajuus(suoritus)
         :: validateOppiaineet(suoritus)
         :: validateTutkinnonosanRyhmä(suoritus, parent)
@@ -312,6 +314,20 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
           HttpStatus.ok
       }
     }
+  }
+
+  private def validateArviointi(suoritus: Suoritus): HttpStatus = suoritus match {
+    case a: AmmatillinenPäätasonSuoritus =>
+      val käytetytArviointiasteikot = a.osasuoritusLista.flatMap(_.arviointi.toList.flatten).collect {
+        case arviointi: AmmatillinenKoodistostaLöytyväArviointi if arviointi.arvosana.koodiarvo.forall(isDigit) => arviointi.arvosana.koodistoUri
+      }.distinct
+
+      if (käytetytArviointiasteikot.size > 1) {
+        KoskiErrorCategory.badRequest.validation.arviointi.useitaArviointiasteikoita(s"Suoritus käyttää useampaa kuin yhtä numeerista arviointiasteikkoa: ${käytetytArviointiasteikot.mkString(", ")}")
+      } else {
+        HttpStatus.ok
+      }
+    case _ => HttpStatus.ok
   }
 
   private def validatePäätasonSuorituksenStatus(suoritus: PäätasonSuoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus =

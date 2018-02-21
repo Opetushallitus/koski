@@ -199,10 +199,8 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             tutkinnonOsaSuoritus.copy(arviointi = a, vahvistus = v, alkamispäivä = alkamispäivä)
           }
 
-          def put(suoritus: AmmatillisenTutkinnonOsanSuoritus)(f: => Unit) = {
-            putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(f)
-          }
-
+          def put(suoritus: AmmatillisenTutkinnonOsanSuoritus)(f: => Unit) = putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(f)
+          def putOsasuoritukset(suoritukset: List[AmmatillisenTutkinnonOsanSuoritus])(f: => Unit) = putTutkinnonOsaSuoritukset(suoritukset, tutkinnonSuoritustapaNäyttönä)(f)
 
           "Arviointi ja vahvistus puuttuu" - {
             "palautetaan HTTP 200" in (put(copySuoritus(None, None)) (
@@ -243,6 +241,12 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             "Arvosana ei kuulu perusteiden mukaiseen arviointiasteikkoon" - {
               "palautetaan HTTP 400" in (put(copySuoritus(Some(List(AmmatillinenArviointi(Koodistokoodiviite("x", "arviointiasteikkoammatillinent1k3"), date(2015, 5, 1)))), None))
                 (verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, """.*"message":"Koodia arviointiasteikkoammatillinent1k3/x ei löydy koodistosta","errorType":"tuntematonKoodi".*""".r))))
+            }
+
+            "Useita arviointiasteikoita käytetty" - {
+              "palautetaan HTTP 400" in (putOsasuoritukset(List(copySuoritus(arviointiHyvä(), None), copySuoritus(arviointiHyvä(arvosana = arvosanaViisi), None))) (
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.useitaArviointiasteikoita("Suoritus käyttää useampaa kuin yhtä numeerista arviointiasteikkoa: arviointiasteikkoammatillinent1k3, arviointiasteikkoammatillinen15"))
+              ))
             }
           }
 
@@ -495,7 +499,9 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     Some(HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla(date, Some(helsinki), stadinOpisto, List(OrganisaatiohenkilöValinnaisellaTittelillä("Teppo Testaaja", Some("rehtori"), stadinOpisto))))
   }
 
-  def arviointiHyvä(päivä: LocalDate = date(2015, 1, 1)): Some[List[AmmatillinenArviointi]] = Some(List(AmmatillinenArviointi(Koodistokoodiviite("2", "arviointiasteikkoammatillinent1k3"), päivä)))
+  def arviointiHyvä(päivä: LocalDate = date(2015, 1, 1), arvosana: Koodistokoodiviite = hyvä1k3): Some[List[AmmatillinenArviointi]] = Some(List(AmmatillinenArviointi(arvosana, päivä)))
+
+  lazy val hyvä1k3 = Koodistokoodiviite("2", "arviointiasteikkoammatillinent1k3")
 
   lazy val stadinOpisto: OidOrganisaatio = OidOrganisaatio(MockOrganisaatiot.stadinAmmattiopisto)
 
@@ -528,8 +534,15 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     putTutkintoSuoritus(withTutkinnonOsaSuoritus(tutkinnonOsaSuoritus, tutkinnonSuoritustapa))(f)
   }
 
+  def putTutkinnonOsaSuoritukset[A](tutkinnonOsaSuoritukset: List[AmmatillisenTutkinnonOsanSuoritus], tutkinnonSuoritustapa: Koodistokoodiviite)(f: => A) = {
+    putTutkintoSuoritus(withOsasuoritukset(tutkinnonOsaSuoritukset, tutkinnonSuoritustapa))(f)
+  }
+
   def withTutkinnonOsaSuoritus(tutkinnonOsaSuoritus: AmmatillisenTutkinnonOsanSuoritus, tutkinnonSuoritustapa: Koodistokoodiviite): AmmatillisenTutkinnonSuoritus =
-    autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapa, osasuoritukset = Some(List(tutkinnonOsaSuoritus)))
+    withOsasuoritukset(List(tutkinnonOsaSuoritus), tutkinnonSuoritustapa)
+
+  def withOsasuoritukset(osasuoritukset: List[AmmatillisenTutkinnonOsanSuoritus], tutkinnonSuoritustapa: Koodistokoodiviite): AmmatillisenTutkinnonSuoritus =
+    autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapa, osasuoritukset = Some(osasuoritukset))
 
   def putTutkintoSuoritus[A](suoritus: AmmatillisenTutkinnonSuoritus, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
     val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))
