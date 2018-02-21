@@ -13,7 +13,7 @@ class OppijaValidationPerusopetuksenOppiaineenOppimaaraSpec extends TutkinnonPer
     oppilaitos = Some(jyväskylänNormaalikoulu),
     suoritukset = List(
       PerusopetuksenOppiaineenOppimääränSuoritus(
-        koulutusmoduuli = MuuPeruskoulunOppiaine(
+        koulutusmoduuli = MuuAikuistenPerusopetuksenOppiaine(
           tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = "HI"),
           perusteenDiaarinumero = diaari
         ),

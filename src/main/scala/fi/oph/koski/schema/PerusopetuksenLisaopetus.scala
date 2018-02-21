@@ -62,7 +62,7 @@ trait PerusopetuksenLisäopetuksenAlisuoritus extends Suoritus with Mahdollisest
 
 @Description("Perusopetuksen oppiaineen suoritus osana perusopetuksen lisäopetusta")
 case class PerusopetuksenLisäopetuksenOppiaineenSuoritus(
-  koulutusmoduuli: PerusopetuksenOppiaine,
+  koulutusmoduuli: NuortenPerusopetuksenOppiaine,
   @Description("Jos oppilas opiskelee yhdessä tai useammassa oppiaineessa yksilöllistetyn oppimäärän mukaan, myös päättöarviointi voi näissä aineissa olla sanallinen")
   @Tooltip("Onko oppilas opiskellut oppiaineessa yksilöllisen oppimäärän. Jos oppilas opiskelee yhdessä yksilöllistetyn oppimäärän mukaan, myös päättöarviointi voi näissä aineissa olla sanallinen.")
   @DefaultValue(false)
