@@ -62,7 +62,7 @@ case class HenkilötiedotJaOid(
 case class UusiHenkilö(
   hetu: String,
   etunimet:String,
-  kutsumanimi: String,
+  kutsumanimi: Option[String],
   sukunimi: String
 ) extends Henkilö
 

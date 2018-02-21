@@ -105,6 +105,36 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
         }
       }
 
+      "Kun kutsumanimi" - {
+        "puuttuu" - {
+          "kutsumanimeksi kopioidaan ensimmäinen etunimi" in {
+            putHenkilö(UusiHenkilö("020785-515F", "Pekka Juhani", None, "Mykkänen"))(verifyResponseStatusOk())
+            oppijaByHetu("020785-515F").henkilö.asInstanceOf[TäydellisetHenkilötiedot].kutsumanimi should equal("Pekka")
+          }
+        }
+
+        "ei ole yksi etunimistä" - {
+          "kutsumanimeksi kopioidaan ensimmäinen etunimi" in {
+            putHenkilö(UusiHenkilö("131078-0816", "Pekka Juhani", Some("Ei etunimi"), "Mykkänen"))(verifyResponseStatusOk())
+            oppijaByHetu("131078-0816").henkilö.asInstanceOf[TäydellisetHenkilötiedot].kutsumanimi should equal("Pekka")
+          }
+        }
+
+        "on annettu ja oikein" - {
+          "käytetään annettua kutsumanimeä" in {
+            putHenkilö(UusiHenkilö("180808-760M", "Johanna Tia-Maria", Some("Tia-Maria"), "Mykkänen"))(verifyResponseStatusOk())
+            oppijaByHetu("180808-760M").henkilö.asInstanceOf[TäydellisetHenkilötiedot].kutsumanimi should equal("Tia-Maria")
+          }
+        }
+
+        "sisältää ylimääräisiä välilyöntejä" -{
+          "kutsumanimi päätellään tästä huolimatta oikein" in {
+            putHenkilö(UusiHenkilö("160863-795N", "      Johanna       Tia-Maria       ", None, "Mykkänen"))(verifyResponseStatusOk())
+            oppijaByHetu("160863-795N").henkilö.asInstanceOf[TäydellisetHenkilötiedot].kutsumanimi should equal("Johanna")
+          }
+        }
+      }
+
       "Käytettäessä oppijan oidia" - {
         "Oid ok" - {
           "palautetaan HTTP 200"  in (putHenkilö(OidHenkilö(MockOppijat.eero.oid)) (verifyResponseStatusOk()))

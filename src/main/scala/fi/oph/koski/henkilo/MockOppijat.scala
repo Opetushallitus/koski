@@ -10,7 +10,7 @@ object MockOppijat {
   private val oppijat = new MockOppijat
 
   // Tällä oppijalla ei ole fixtuureissa opiskeluoikeuksia, eikä tätä lisätä henkilöpalveluun.
-  val tyhjä = UusiHenkilö("230872-7258", "Tero", "Tero", "Tyhjä")
+  val tyhjä = UusiHenkilö("230872-7258", "Tero", Some("Tero"), "Tyhjä")
 
   val hetuton = oppijat.addOppija(TäydellisetHenkilötiedot("1.2.246.562.24.99999999123", None, Some(LocalDate.of(1977, 2, 24)), "Heikki", "Heikki", "Hetuton", None, None))
   val eero = oppijat.oppija("Esimerkki", "Eero", "010101-123N")
@@ -66,15 +66,15 @@ object MockOppijat {
   def oids = (defaultOppijat.map(_.henkilö.oid) ++ (1 to defaultOppijat.length + 100).map(generateOid).toList).distinct // oids that should be considered when deleting fixture data
 
   def asUusiOppija(oppija: HenkilöWithOid with Henkilötiedot) =
-    UusiHenkilö(oppija.hetu.get, oppija.etunimet, oppija.kutsumanimi, oppija.sukunimi)
+    UusiHenkilö(oppija.hetu.get, oppija.etunimet, Some(oppija.kutsumanimi), oppija.sukunimi)
 }
 
 class MockOppijat(private var oppijat: List[TäydellisetHenkilötiedotWithMasterInfo] = Nil) extends Logging {
   private var idCounter = oppijat.length
   val äidinkieli: Some[Koodistokoodiviite] = Some(Koodistokoodiviite("FI", None, "kieli", None))
 
-  def oppija(suku: String, etu: String, hetu: String, oid: String = generateId()): TäydellisetHenkilötiedotWithMasterInfo =
-    addOppija(TäydellisetHenkilötiedot(oid, Some(hetu), None, etu, etu, suku, äidinkieli, None))
+  def oppija(suku: String, etu: String, hetu: String, oid: String = generateId(), kutsumanimi: Option[String] = None): TäydellisetHenkilötiedotWithMasterInfo =
+    addOppija(TäydellisetHenkilötiedot(oid, Some(hetu), None, etu, kutsumanimi.getOrElse(etu), suku, äidinkieli, None))
 
   def addOppija(oppija: TäydellisetHenkilötiedot): TäydellisetHenkilötiedotWithMasterInfo = addOppija(TäydellisetHenkilötiedotWithMasterInfo(oppija, None))
 
