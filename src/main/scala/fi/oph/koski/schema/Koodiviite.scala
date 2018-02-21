@@ -39,8 +39,7 @@ case class Koodistokoodiviite(
     case that: Koodistokoodiviite =>
       that.canEqual(this) &&
         (this.koodiarvo == that.koodiarvo) &&
-        (this.koodistoUri == that.koodistoUri) &&
-        (this.koodistoVersio.isEmpty || that.koodistoVersio.isEmpty || this.koodistoVersio == that.koodistoVersio)
+        (this.koodistoUri == that.koodistoUri)
     case _ => false
   }
   override def hashCode(): Int = this.koodiarvo.hashCode

@@ -28,6 +28,7 @@ class TiedonsiirtoMigrator(tiedonsiirtoService: TiedonsiirtoService, val db: DB)
         row.virheet.map(extract[List[ErrorDetail]](_)),
         row.lahdejarjestelma,
         row.kayttajaOid,
+        None,
         row.aikaleima
       )
       count + 1

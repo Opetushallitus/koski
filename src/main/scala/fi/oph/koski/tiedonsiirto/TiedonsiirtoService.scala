@@ -132,7 +132,7 @@ class TiedonsiirtoService(
     juuriOrganisaatio.foreach((org: OrganisaatioWithOid) => {
       val (data: Option[JValue], virheet: Option[List[ErrorDetail]]) = error.map(e => (Some(e.data), Some(e.virheet))).getOrElse((None, None))
 
-      storeToElasticSearch(henkilö, org, oppilaitokset, data, virheet, lahdejarjestelma, koskiSession.oid, new Timestamp(System.currentTimeMillis))
+      storeToElasticSearch(henkilö, org, oppilaitokset, data, virheet, lahdejarjestelma, koskiSession.oid, Some(koskiSession.username), new Timestamp(System.currentTimeMillis))
 
       if (error.isDefined) {
         tiedonSiirtoVirheet.inc
@@ -144,8 +144,8 @@ class TiedonsiirtoService(
   def storeToElasticSearch(henkilö: Option[TiedonsiirtoOppija], org: OrganisaatioWithOid,
                                    oppilaitokset: Option[List[OidOrganisaatio]], data: Option[JValue],
                                    virheet: Option[List[ErrorDetail]], lahdejarjestelma: Option[String],
-                                    userOid: String, aikaleima: Timestamp) = {
-    val tiedonsiirtoDoc = TiedonsiirtoDocument(userOid, org.oid, henkilö, oppilaitokset, data, virheet.toList.flatten.isEmpty, virheet.getOrElse(Nil), lahdejarjestelma, aikaleima)
+                                    userOid: String, username: Option[String], aikaleima: Timestamp) = {
+    val tiedonsiirtoDoc = TiedonsiirtoDocument(userOid, username, org.oid, henkilö, oppilaitokset, data, virheet.toList.flatten.isEmpty, virheet.getOrElse(Nil), lahdejarjestelma, aikaleima)
     tiedonsiirtoBuffer.append(tiedonsiirtoDoc)
   }
 
@@ -193,8 +193,19 @@ class TiedonsiirtoService(
                         "terms"-> Map( "field"-> "lähdejärjestelmä.keyword", "size" -> 20000, "missing"-> "-" ),
                         "aggs"-> Map(
                           "viimeisin" -> Map( "max" -> Map( "field" -> "aikaleima" ) ),
-                          "fail"-> Map(
-                            "filter"-> Map( "term"-> Map( "success"-> false )))
+                          "fail"-> Map( "filter"-> Map( "term"-> Map( "success"-> false )) ),
+                          "tuoreDokumentti" -> Map( "top_hits" ->
+                            Map (
+                              "sort" -> Array( Map( "aikaleima" -> Map( "order" -> "desc" ))),
+                              "_source" -> Map( "includes" -> Array(
+                                "oppilaitokset.oid",
+                                "oppilaitokset.nimi",
+                                "tallentajaKäyttäjäOid",
+                                "tallentajaKäyttäjätunnus"
+                              )),
+                              "size" -> 1
+                            )
+                          )
                         )
                       )
                     )
@@ -209,15 +220,12 @@ class TiedonsiirtoService(
     runSearch(query).map { response =>
       for {
         orgResults <- extract[List[JValue]](response \ "aggregations" \ "organisaatio" \ "buckets")
-        tallentajaOrganisaatio = getOrganisaatio(extract[String](orgResults \ "key"))
+        tallentajaOrganisaatioOid = extract[String](orgResults \ "key")
+        tallentajaOrganisaatio = OidOrganisaatio(tallentajaOrganisaatioOid, Some(LocalizedString.unlocalized(tallentajaOrganisaatioOid)))
         oppilaitosResults <- extract[List[JValue]](orgResults \ "oppilaitos" \ "buckets")
-        oppilaitos = getOrganisaatio(extract[String](oppilaitosResults \ "key"))
+        oppilaitosOid = extract[String](oppilaitosResults \ "key")
         userResults <- extract[List[JValue]](oppilaitosResults \ "käyttäjä" \ "buckets")
         userOid = extract[String](userResults \ "key")
-        käyttäjä = userRepository.findByOid(userOid) getOrElse {
-          logger.warn(s"Käyttäjää ${userOid} ei löydy henkilöpalvelusta")
-          KoskiUserInfo(userOid, None, None)
-        }
         lähdejärjestelmäResults <- extract[List[JValue]](userResults \ "lähdejärjestelmä" \ "buckets")
         lähdejärjestelmäId = extract[String](lähdejärjestelmäResults \ "key")
         lähdejärjestelmä = koodistoviitePalvelu.getKoodistoKoodiViite("lahdejarjestelma", lähdejärjestelmäId)
@@ -225,6 +233,24 @@ class TiedonsiirtoService(
         epäonnistuneet = extract[Int](lähdejärjestelmäResults \ "fail" \ "doc_count")
         onnistuneet = siirretyt - epäonnistuneet
         viimeisin = new Timestamp(extract[Long](lähdejärjestelmäResults \ "viimeisin" \ "value"))
+
+        tuoreDokumentti = extract[JArray](lähdejärjestelmäResults \ "tuoreDokumentti" \ "hits" \ "hits" \ "_source").arr
+        oppilaitos = tuoreDokumentti
+          .flatMap(t => extract[List[OidOrganisaatio]](t \ "oppilaitokset"))
+          .find(_.oid == oppilaitosOid)
+          .getOrElse(getOrganisaatio(oppilaitosOid))
+        käyttäjä = tuoreDokumentti
+          .find(t => t \ "tallentajaKäyttäjäOid" match {
+            case JString(oid) if oid == userOid => true
+            case _ => false
+          })
+          .flatMap(t => extract[Option[String]](t \ "tallentajaKäyttäjätunnus"))
+          .map(username => KoskiUserInfo(userOid, Some(username), None))
+          .orElse(userRepository.findByOid(userOid))
+          .getOrElse {
+            logger.warn(s"Käyttäjää $userOid ei löydy henkilöpalvelusta")
+            KoskiUserInfo(userOid, None, None)
+          }
       } yield {
         TiedonsiirtoYhteenveto(tallentajaOrganisaatio, oppilaitos, käyttäjä, viimeisin, siirretyt, epäonnistuneet, onnistuneet, lähdejärjestelmä)
       }
@@ -321,7 +347,7 @@ case class TiedonsiirtoQuery(oppilaitos: Option[String], paginationSettings: Opt
 case class TiedonsiirtoKäyttäjä(oid: String, nimi: Option[String])
 case class TiedonsiirtoError(data: JValue, virheet: List[ErrorDetail])
 
-case class TiedonsiirtoDocument(tallentajaKäyttäjäOid: String, tallentajaOrganisaatioOid: String, oppija: Option[TiedonsiirtoOppija], oppilaitokset: Option[List[OidOrganisaatio]], data: Option[JValue], success: Boolean, virheet: List[ErrorDetail], lähdejärjestelmä: Option[String], aikaleima: Timestamp) {
+case class TiedonsiirtoDocument(tallentajaKäyttäjäOid: String, tallentajaKäyttäjätunnus: Option[String], tallentajaOrganisaatioOid: String, oppija: Option[TiedonsiirtoOppija], oppilaitokset: Option[List[OidOrganisaatio]], data: Option[JValue], success: Boolean, virheet: List[ErrorDetail], lähdejärjestelmä: Option[String], aikaleima: Timestamp) {
   def id: String = tallentajaOrganisaatioOid + "_" + oppijaId
   private def oppijaId: String = oppija.flatMap(h => h.hetu.orElse(h.oid)).getOrElse("")
 }
