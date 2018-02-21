@@ -233,11 +233,11 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         .onSuccess(validateDateOrder(("suoritus.arviointi.päivä", arviointipäivät), ("suoritus.vahvistus.päivä", vahvistuspäivät), KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenArviointia)
           .onSuccess(validateDateOrder(alkamispäivä, ("suoritus.vahvistus.päivä", vahvistuspäivät), KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenAlkamispäivää)))
         :: validateToimipiste(suoritus)
-        :: validateStatus(suoritus, parent)
+        :: validateStatus(suoritus)
         :: validateArviointi(suoritus)
         :: validateLaajuus(suoritus)
         :: validateOppiaineet(suoritus)
-        :: validateTutkinnonosanRyhmä(suoritus, parent)
+        :: validateTutkinnonosanRyhmä(suoritus)
         :: HttpStatus.validate(!suoritus.isInstanceOf[PäätasonSuoritus])(validateDuplicates(suoritus.osasuoritukset.toList.flatten))
         :: suoritus.osasuoritusLista.map(validateSuoritus(_, opiskeluoikeus, suoritus :: parent))
     )
@@ -301,7 +301,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     }
   }
 
-  private def validateStatus(suoritus: Suoritus, parent: List[Suoritus]): HttpStatus = {
+  private def validateStatus(suoritus: Suoritus): HttpStatus = {
     val hasVahvistus: Boolean = suoritus.vahvistus.isDefined
     if (hasVahvistus && suoritus.arviointiPuuttuu) {
       KoskiErrorCategory.badRequest.validation.tila.vahvistusIlmanArviointia("Suorituksella " + suorituksenTunniste(suoritus) + " on vahvistus, vaikka arviointi puuttuu")
@@ -341,7 +341,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     suoritus.koulutusmoduuli.tunniste
   }
 
-  private def validateTutkinnonosanRyhmä(suoritus: Suoritus, parent: List[Suoritus]): HttpStatus = {
+  private def validateTutkinnonosanRyhmä(suoritus: Suoritus): HttpStatus = {
     def validateTutkinnonosaSuoritus(tutkinnonSuoritus: AmmatillisenTutkinnonSuoritus, suoritus: AmmatillisenTutkinnonOsanSuoritus, koulutustyyppi: Koulutustyyppi): HttpStatus = {
       if (ammatillisenPerustutkinnonTyypit.contains(koulutustyyppi)) {
         if (tutkinnonSuoritus.suoritustapa.koodiarvo == "ops") {
