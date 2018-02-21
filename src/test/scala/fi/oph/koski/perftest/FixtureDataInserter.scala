@@ -13,7 +13,7 @@ abstract class FixtureDataInserterScenario extends PerfTestScenario {
   def operation(x: Int) = {
     val oikeudet = opiskeluoikeudet(x)
     val kutsumanimi = randomFirstName
-    val henkilö: UusiHenkilö = UusiHenkilö(hetu.nextHetu, kutsumanimi + " " + randomFirstName, kutsumanimi, randomLastName)
+    val henkilö: UusiHenkilö = UusiHenkilö(hetu.nextHetu, kutsumanimi + " " + randomFirstName, Some(kutsumanimi), randomLastName)
     oikeudet.map { oikeus =>
       val oppija: Oppija = Oppija(henkilö, List(oikeus))
       val body = JsonSerializer.writeWithRoot(oppija).getBytes("utf-8")

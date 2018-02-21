@@ -17,8 +17,16 @@ case class OpintopolkuHenkilöRepository(henkilöt: OpintopolkuHenkilöFacade, k
   }
 
   def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, TäydellisetHenkilötiedot] =  {
+    val validKutsumanimet = henkilö.etunimet.trim
+      .replaceAll("\\s+", " ")
+      .replaceAll("\\s*-\\s*", "-")
+      .split(" ")
+      .flatMap(n => n :: n.split("-").toList).toList.distinct
+
+    val kutsumanimi = henkilö.kutsumanimi.flatMap(n => validKutsumanimet.find(_ == n)).getOrElse(validKutsumanimet.head)
+
     henkilöt
-      .findOrCreate(oppijanumerorekisteriservice.UusiHenkilö.oppija(Some(henkilö.hetu), henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi))
+      .findOrCreate(oppijanumerorekisteriservice.UusiHenkilö.oppija(Some(henkilö.hetu), henkilö.sukunimi, henkilö.etunimet, kutsumanimi))
       .right.map(toTäydellisetHenkilötiedot)
   }
 
