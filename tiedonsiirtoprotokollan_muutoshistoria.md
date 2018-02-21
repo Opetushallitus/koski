@@ -1,3 +1,7 @@
+## 21.2.2018
+
+  - Aikuisten perusopetuksen oppiaineiden ja kurssien laajuudet voi antaa kursseina
+
 ## 12.2.2018
 
   - Näytön arvioinnin kentät arvioinnistaPäättäneet ja arviointikeskusteluunOsallistuneet muutettu valinnaisiksi
