@@ -415,20 +415,24 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       }
 
       "Osasuoritukset vanhojen perusteiden mukaan (siirtymäaika 2018)" - {
-        def suoritus(alkamispäivä: LocalDate, osasuoritus: AmmatillisenTutkinnonOsanSuoritus = tutkinnonOsaSuoritus) =
-          autoalanPerustutkinnonSuoritus().copy(alkamispäivä = Some(alkamispäivä), suoritustapa = tutkinnonSuoritustapaReformi, osasuoritukset = Some(List(osasuoritus)))
+        def suoritus(alkamispäivä: Option[LocalDate], osasuoritus: AmmatillisenTutkinnonOsanSuoritus = tutkinnonOsaSuoritus) =
+          autoalanPerustutkinnonSuoritus().copy(alkamispäivä = alkamispäivä, suoritustapa = tutkinnonSuoritustapaReformi, osasuoritukset = Some(List(osasuoritus)))
 
         "Alkamispäivä 2018, rakenne validi" - {
-          "palautetaan HTTP 200" in putTutkintoSuoritus(suoritus(LocalDate.of(2018, 1, 1)))(verifyResponseStatusOk())
+          "palautetaan HTTP 200" in putTutkintoSuoritus(suoritus(Some(LocalDate.of(2018, 1, 1))))(verifyResponseStatusOk())
         }
         "Alkamispäivä 2019" - {
-          "palautetaan HTTP 400" in putTutkintoSuoritus(suoritus(LocalDate.of(2019, 1, 1)))(
+          "palautetaan HTTP 400" in putTutkintoSuoritus(suoritus(Some(LocalDate.of(2019, 1, 1))))(
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.suoritustapaaEiLöydyRakenteesta("Suoritustapaa ei löydy tutkinnon rakenteesta")))
         }
         "Alkamispäivä 2018, rakenne ei validi" - {
           val johtaminenJaHenkilöstönKehittäminen = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite("104052", "tutkinnonosat"), true, None)
-          "palautetaan HTTP 400" in putTutkintoSuoritus(suoritus(LocalDate.of(2018, 1, 1), tutkinnonOsaSuoritus.copy(koulutusmoduuli = johtaminenJaHenkilöstönKehittäminen)))(
+          "palautetaan HTTP 400" in putTutkintoSuoritus(suoritus(Some(LocalDate.of(2018, 1, 1)), tutkinnonOsaSuoritus.copy(koulutusmoduuli = johtaminenJaHenkilöstönKehittäminen)))(
             verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonTutkinnonOsa("Tutkinnon osa tutkinnonosat/104052 ei löydy tutkintorakenteesta perusteelle 39/011/2014 - suoritustapa ops")))
+        }
+        "Jos suorituksen alkamispäivä puuttuu, käytetään ensimmäistä läsnä-opiskeluoikeusjaksoa" - {
+          val opiskeluoikeus = makeOpiskeluoikeus(alkamispäivä = LocalDate.of(2018, 1, 1)).copy(suoritukset = List(suoritus(None)))
+          "palautetaan HTTP 200" in putOppija(makeOppija(defaultHenkilö, List(JsonSerializer.serializeWithRoot(opiskeluoikeus))), headers = authHeaders() ++ jsonContent)(verifyResponseStatusOk())
         }
       }
     }

@@ -9,7 +9,7 @@ import fi.oph.koski.tutkinto.Koulutustyyppi._
 import fi.oph.koski.tutkinto._
 
 case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, koodistoViitePalvelu: KoodistoViitePalvelu) {
-  def validateTutkintoRakenne(suoritus: PäätasonSuoritus) = suoritus match {
+  def validateTutkintoRakenne(suoritus: PäätasonSuoritus, alkamispäiväLäsnä: Option[LocalDate]) = suoritus match {
     case tutkintoSuoritus: AmmatillisenTutkinnonSuoritus =>
       getRakenne(tutkintoSuoritus.koulutusmoduuli, Some(ammatillisetKoulutustyypit)) match {
         case Left(status) => status
@@ -18,7 +18,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
             case osaSuoritus: AmmatillisenTutkinnonOsanSuoritus =>
               HttpStatus.fold(osaSuoritus.koulutusmoduuli match {
                 case osa: ValtakunnallinenTutkinnonOsa =>
-                  validateTutkinnonOsa(osaSuoritus, osa, rakenne, tutkintoSuoritus.suoritustapa, tutkintoSuoritus.alkamispäivä)
+                  validateTutkinnonOsa(osaSuoritus, osa, rakenne, tutkintoSuoritus.suoritustapa, tutkintoSuoritus.alkamispäivä.orElse(alkamispäiväLäsnä))
                 case osa: PaikallinenTutkinnonOsa =>
                   HttpStatus.ok // vain OpsTutkinnonosatoteutukset validoidaan, muut sellaisenaan läpi, koska niiden rakennetta ei tunneta
               }, validateTutkintoField(tutkintoSuoritus, osaSuoritus))
