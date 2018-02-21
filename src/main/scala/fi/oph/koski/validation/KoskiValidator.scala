@@ -69,7 +69,8 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         (validateAccess(opiskeluoikeus.getOppilaitos)
           .onSuccess { validateLähdejärjestelmä(opiskeluoikeus) }
           .onSuccess {
-            HttpStatus.fold(opiskeluoikeus.suoritukset.map(TutkintoRakenneValidator(tutkintoRepository, koodistoPalvelu).validateTutkintoRakenne(_)))
+            HttpStatus.fold(opiskeluoikeus.suoritukset.map(TutkintoRakenneValidator(tutkintoRepository, koodistoPalvelu).validateTutkintoRakenne(_,
+              opiskeluoikeus.tila.opiskeluoikeusjaksot.find(_.tila.koodiarvo == "lasna").map(_.alku))))
           })
           .onSuccess { HttpStatus.fold(
             validateSisältyvyys(henkilö, opiskeluoikeus),
