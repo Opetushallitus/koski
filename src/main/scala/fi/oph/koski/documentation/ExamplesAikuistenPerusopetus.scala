@@ -103,8 +103,9 @@ object ExamplesAikuistenPerusopetus {
         osasuoritukset = Some(List(
           kurssinSuoritus2015("ÄI1"),
           kurssinSuoritus2015("ÄI2"),
-          kurssinSuoritus2015("ÄI3"),
-          kurssinSuoritusPaikallinen("ÄI10", "Paikallinen äidinkielen kurssi")
+          kurssinSuoritus2015("ÄI3", laajuus = LaajuusVuosiviikkotunneissa(1)),
+          kurssinSuoritusPaikallinen("ÄI10", "Paikallinen äidinkielen kurssi"),
+          kurssinSuoritusPaikallinen("ÄI11", "Toinen paikallinen äidinkielen kurssi", laajuus = LaajuusVuosiviikkotunneissa(1))
         ))
       ),
       oppiaineenSuoritus(aikuistenPerusopetuksenKieli("B1", "SV")).copy(arviointi = arviointi(8)),
@@ -137,13 +138,13 @@ object ExamplesAikuistenPerusopetus {
         osasuoritukset = Some(List(
           kurssinSuoritus2017("ÄI1"),
           kurssinSuoritus2017("ÄI2"),
-          kurssinSuoritus2017("ÄI3"),
+          kurssinSuoritus2017("ÄI3", laajuus = LaajuusVuosiviikkotunneissa(1)),
           kurssinSuoritusPaikallinen("ÄI10", "Paikallinen äidinkielen kurssi")
         ))
       ),
       oppiaineenSuoritus(aikuistenPerusopetuksenKieli("B1", "SV")).copy(arviointi = arviointi(8)),
       oppiaineenSuoritus(aikuistenPerusopetuksenKieli("B1", "SV").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = hyväksytty),
-      oppiaineenSuoritus(aikuistenPerusopetuksenKieli("A1", "EN")).copy(arviointi = arviointi(8)),
+      oppiaineenSuoritus(aikuistenPerusopetuksenKieli("A1", "EN").copy(laajuus = Some(LaajuusKursseissa(1)))).copy(arviointi = arviointi(8)),
       oppiaineenSuoritus(aikuistenOppiaine("KT")).copy(arviointi = arviointi(10)),
       oppiaineenSuoritus(aikuistenOppiaine("HI")).copy(arviointi = arviointi(8)),
       oppiaineenSuoritus(aikuistenOppiaine("YH")).copy(arviointi = arviointi(10)),
@@ -164,18 +165,18 @@ object ExamplesAikuistenPerusopetus {
       oppiaineenSuoritus(valinnainenAikuistenOppiaine("TH", "Tietokoneen hyötykäyttö", "Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.")).copy(arviointi = arviointi(9))
     ))
 
-  def kurssinSuoritus2015(koodiarvo: String) = AikuistenPerusopetuksenKurssinSuoritus(
-    ValtakunnallinenAikuistenPerusopetuksenKurssi2015(Koodistokoodiviite(koodiarvo, "aikuistenperusopetuksenkurssit2015"), Some(LaajuusKursseissa(1))),
+  def kurssinSuoritus2015(koodiarvo: String, laajuus: LaajuusVuosiviikkotunneissaTaiKursseissa = LaajuusKursseissa(1)) = AikuistenPerusopetuksenKurssinSuoritus(
+    ValtakunnallinenAikuistenPerusopetuksenKurssi2015(Koodistokoodiviite(koodiarvo, "aikuistenperusopetuksenkurssit2015"), Some(laajuus)),
     arviointi = arviointi(9)
   )
 
-  def kurssinSuoritus2017(koodiarvo: String) = AikuistenPerusopetuksenKurssinSuoritus(
-    ValtakunnallinenAikuistenPerusopetuksenPäättövaiheenKurssi2017(Koodistokoodiviite(koodiarvo, "aikuistenperusopetuksenpaattovaiheenkurssit2017"), Some(LaajuusKursseissa(1))),
+  def kurssinSuoritus2017(koodiarvo: String, laajuus: LaajuusVuosiviikkotunneissaTaiKursseissa = LaajuusKursseissa(1)) = AikuistenPerusopetuksenKurssinSuoritus(
+    ValtakunnallinenAikuistenPerusopetuksenPäättövaiheenKurssi2017(Koodistokoodiviite(koodiarvo, "aikuistenperusopetuksenpaattovaiheenkurssit2017"), Some(laajuus)),
     arviointi = arviointi(9)
   )
 
-  def kurssinSuoritusPaikallinen(koodiarvo: String, kuvaus: String) = AikuistenPerusopetuksenKurssinSuoritus(
-    PaikallinenAikuistenPerusopetuksenKurssi(PaikallinenKoodi(koodiarvo, kuvaus), Some(LaajuusKursseissa(1))),
+  def kurssinSuoritusPaikallinen(koodiarvo: String, kuvaus: String, laajuus: LaajuusVuosiviikkotunneissaTaiKursseissa = LaajuusKursseissa(1)) = AikuistenPerusopetuksenKurssinSuoritus(
+    PaikallinenAikuistenPerusopetuksenKurssi(PaikallinenKoodi(koodiarvo, kuvaus), Some(laajuus)),
     arviointi = arviointi(9)
   )
 
