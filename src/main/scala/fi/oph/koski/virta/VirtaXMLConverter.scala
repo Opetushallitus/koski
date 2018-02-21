@@ -84,7 +84,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     }.getOrElse(suoritukset)
   }
 
-  private def convertSuoritus(suoritus: Node, allNodes: List[Node]): Option[KorkeakouluSuoritus] = {
+  def convertSuoritus(suoritus: Node, allNodes: List[Node]): Option[KorkeakouluSuoritus] = {
     laji(suoritus) match {
       case "1" => // tutkinto
         koulutuskoodi(suoritus).map { koulutuskoodi =>
@@ -107,7 +107,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     }
   }
 
-  def convertOpintojaksonSuoritus(suoritus: Node, allNodes: List[Node]): KorkeakoulunOpintojaksonSuoritus = {
+  private def convertOpintojaksonSuoritus(suoritus: Node, allNodes: List[Node]): KorkeakoulunOpintojaksonSuoritus = {
     val osasuoritukset = childNodes(suoritus, allNodes).map(convertOpintojaksonSuoritus(_, allNodes))
 
     KorkeakoulunOpintojaksonSuoritus(
