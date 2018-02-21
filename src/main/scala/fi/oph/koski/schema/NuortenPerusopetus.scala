@@ -230,7 +230,7 @@ sealed trait OppiaineenTaiToiminta_AlueenSuoritus extends Suoritus with Mahdolli
 
 @Description("Perusopetuksen oppiaineen suoritus osana perusopetuksen oppimäärän tai vuosiluokan suoritusta")
 case class NuortenPerusopetuksenOppiaineenSuoritus(
-  koulutusmoduuli: PerusopetuksenOppiaine,
+  koulutusmoduuli: NuortenPerusopetuksenOppiaine,
   @Description("Jos oppilas opiskelee yhdessä yksilöllistetyn oppimäärän mukaan, myös päättöarviointi voi näissä aineissa olla sanallinen.")
   @Tooltip("Onko oppilas opiskellut oppiaineessa yksilöllisen oppimäärän. Jos oppilas opiskelee yhdessä yksilöllistetyn oppimäärän mukaan, myös päättöarviointi voi näissä aineissa olla sanallinen.")
   yksilöllistettyOppimäärä: Boolean = false,
@@ -352,27 +352,10 @@ trait PerusopetuksenOppiaine extends Koulutusmoduuli with Valinnaisuus with Diaa
   @Description("Oppiaineen tunnistetiedot")
   @Title("Oppiaine")
   def tunniste: KoodiViite
-  @Tooltip("Oppiaineen laajuus vuosiviikkotunteina.")
-  def laajuus: Option[LaajuusVuosiviikkotunneissa]
 }
-
-trait PerusopetuksenKoodistostaLöytyväOppiaine extends PerusopetuksenOppiaine with YleissivistavaOppiaine {
-  def kuvaus: Option[LocalizedString]
-}
-
-@Title("Paikallinen oppiaine")
-case class PerusopetuksenPaikallinenOppiaine(
-  tunniste: PaikallinenKoodi,
-  laajuus: Option[LaajuusVuosiviikkotunneissa] = None,
-  @Tooltip("Paikallisen oppiaineen vapaamuotoinen kuvaus.")
-  kuvaus: LocalizedString,
-  perusteenDiaarinumero: Option[String] = None,
-  @DefaultValue(false)
-  pakollinen: Boolean = false
-) extends PerusopetuksenOppiaine with PaikallinenKoulutusmoduuli with StorablePreference
 
 @Title("Muu oppiaine")
-case class MuuPeruskoulunOppiaine(
+trait MuuPerusopetuksenOppiaine extends PerusopetuksenOppiaine {
   @KoodistoKoodiarvo("HI")
   @KoodistoKoodiarvo("MU")
   @KoodistoKoodiarvo("BI")
@@ -392,53 +375,83 @@ case class MuuPeruskoulunOppiaine(
   @KoodistoKoodiarvo("MA")
   @KoodistoKoodiarvo("YL")
   @KoodistoKoodiarvo("OP")
-  tunniste: Koodistokoodiviite,
-  pakollinen: Boolean = true,
-  perusteenDiaarinumero: Option[String] = None,
-  override val laajuus: Option[LaajuusVuosiviikkotunneissa] = None,
-  kuvaus: Option[LocalizedString] = None
-) extends PerusopetuksenKoodistostaLöytyväOppiaine
+  def tunniste: Koodistokoodiviite
+}
 
 @Title("Äidinkieli ja kirjallisuus")
 @Description("Oppiaineena äidinkieli ja kirjallisuus")
-case class PeruskoulunÄidinkieliJaKirjallisuus(
+trait PerusopetuksenÄidinkieliJaKirjallisuus extends PerusopetuksenOppiaine with Äidinkieli {
   @KoodistoKoodiarvo("AI")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "AI", koodistoUri = "koskioppiaineetyleissivistava"),
+  def tunniste: Koodistokoodiviite
   @Description("Mikä kieli on kyseessä")
   @KoodistoUri("oppiaineaidinkielijakirjallisuus")
-  kieli: Koodistokoodiviite,
-  pakollinen: Boolean = true,
-  perusteenDiaarinumero: Option[String] = None,
-  override val laajuus: Option[LaajuusVuosiviikkotunneissa] = None,
-  kuvaus: Option[LocalizedString] = None
-) extends PerusopetuksenKoodistostaLöytyväOppiaine with Äidinkieli
-
+  def kieli: Koodistokoodiviite
+}
 
 @Title("Vieras tai toinen kotimainen kieli")
 @Description("Oppiaineena vieras tai toinen kotimainen kieli")
-case class PeruskoulunVierasTaiToinenKotimainenKieli(
+trait PerusopetuksenVierasTaiToinenKotimainenKieli extends PerusopetuksenOppiaine with Kieliaine {
   @KoodistoKoodiarvo("A1")
   @KoodistoKoodiarvo("A2")
   @KoodistoKoodiarvo("B1")
   @KoodistoKoodiarvo("B2")
   @KoodistoKoodiarvo("B3")
-  tunniste: Koodistokoodiviite,
+  def tunniste: Koodistokoodiviite
   @Description("Mikä kieli on kyseessä")
   @KoodistoUri("kielivalikoima")
+  def kieli: Koodistokoodiviite
+  override def description(texts: LocalizationRepository): LocalizedString = concat(nimi, unlocalized(", "), kieli.description)
+}
+
+@Title("Paikallinen oppiaine")
+trait PerusopetuksenPaikallinenOppiaine extends PerusopetuksenOppiaine with PaikallinenKoulutusmoduuli with StorablePreference {
+  @Tooltip("Paikallisen oppiaineen vapaamuotoinen kuvaus.")
+  def kuvaus: LocalizedString
+}
+
+trait NuortenPerusopetuksenOppiaine extends PerusopetuksenOppiaine {
+  @Tooltip("Oppiaineen laajuus vuosiviikkotunteina.")
+  def laajuus: Option[LaajuusVuosiviikkotunneissa]
+}
+
+trait NuortenPerusopetuksenKoodistostaLöytyväOppiaine extends NuortenPerusopetuksenOppiaine with YleissivistavaOppiaine {
+  def kuvaus: Option[LocalizedString]
+}
+
+case class NuortenPerusopetuksenPaikallinenOppiaine(
+  tunniste: PaikallinenKoodi,
+  laajuus: Option[LaajuusVuosiviikkotunneissa] = None,
+  kuvaus: LocalizedString,
+  perusteenDiaarinumero: Option[String] = None,
+  @DefaultValue(false)
+  pakollinen: Boolean = false
+) extends NuortenPerusopetuksenOppiaine with PerusopetuksenPaikallinenOppiaine
+
+case class MuuNuortenPerusopetuksenOppiaine(
+  tunniste: Koodistokoodiviite,
+  pakollinen: Boolean = true,
+  perusteenDiaarinumero: Option[String] = None,
+  override val laajuus: Option[LaajuusVuosiviikkotunneissa] = None,
+  kuvaus: Option[LocalizedString] = None
+) extends MuuPerusopetuksenOppiaine with NuortenPerusopetuksenKoodistostaLöytyväOppiaine
+
+case class NuortenPerusopetuksenÄidinkieliJaKirjallisuus(
+  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "AI", koodistoUri = "koskioppiaineetyleissivistava"),
   kieli: Koodistokoodiviite,
   pakollinen: Boolean = true,
   perusteenDiaarinumero: Option[String] = None,
   override val laajuus: Option[LaajuusVuosiviikkotunneissa] = None,
   kuvaus: Option[LocalizedString] = None
-) extends PerusopetuksenKoodistostaLöytyväOppiaine with Kieliaine {
-  override def description(texts: LocalizationRepository) = concat(nimi, unlocalized(", "), kieli.description)
-}
+) extends PerusopetuksenÄidinkieliJaKirjallisuus with NuortenPerusopetuksenKoodistostaLöytyväOppiaine
 
-case class LaajuusVuosiviikkotunneissa(
-  arvo: Float,
-  @KoodistoKoodiarvo("3")
-  yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "3", nimi = Some(finnish("Vuosiviikkotuntia")), koodistoUri = "opintojenlaajuusyksikko")
-) extends Laajuus
+case class NuortenPerusopetuksenVierasTaiToinenKotimainenKieli(
+  tunniste: Koodistokoodiviite,
+  kieli: Koodistokoodiviite,
+  pakollinen: Boolean = true,
+  perusteenDiaarinumero: Option[String] = None,
+  override val laajuus: Option[LaajuusVuosiviikkotunneissa] = None,
+  kuvaus: Option[LocalizedString] = None
+) extends PerusopetuksenVierasTaiToinenKotimainenKieli with NuortenPerusopetuksenKoodistostaLöytyväOppiaine
 
 @Description("Ks. tarkemmin perusopetuksen opiskeluoikeuden tilat: [confluence](https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-Perusopetus)")
 case class NuortenPerusopetuksenOpiskeluoikeudenTila(
@@ -457,8 +470,8 @@ case class PakollisetOppiaineet(koodistoViitePalvelu: KoodistoViitePalvelu) {
   }
   private def koodi(koodisto: String, arvo: String) = koodistoViitePalvelu.validateRequired(koodisto, arvo)
   private def aine(koodiarvo: String) = koodi("koskioppiaineetyleissivistava", koodiarvo)
-  private def nuortenSuoritus(aine: PerusopetuksenOppiaine) = NuortenPerusopetuksenOppiaineenSuoritus(koulutusmoduuli = aine)
-  private def aikuistenSuoritus(aine: PerusopetuksenOppiaine) = AikuistenPerusopetuksenOppiaineenSuoritus(koulutusmoduuli = aine)
+  private def nuortenSuoritus(aine: NuortenPerusopetuksenOppiaine) = NuortenPerusopetuksenOppiaineenSuoritus(koulutusmoduuli = aine)
+  private def aikuistenSuoritus(aine: AikuistenPerusopetuksenOppiaine) = AikuistenPerusopetuksenOppiaineenSuoritus(koulutusmoduuli = aine)
   def päättötodistuksenSuoritukset(suorituksenTyyppi: String, toimintaAlueittain: Boolean) = {
     suorituksenTyyppi match {
       case "perusopetuksenoppimaara" =>
@@ -468,7 +481,7 @@ case class PakollisetOppiaineet(koodistoViitePalvelu: KoodistoViitePalvelu) {
           päättötodistuksenOppiaineet.map(nuortenSuoritus)
         }
       case "aikuistenperusopetuksenoppimaara" =>
-        päättötodistuksenOppiaineet.map(aikuistenSuoritus)
+        aikuistenPäättötodistuksenOppiaineet.map(aikuistenSuoritus)
       case _ => Nil
     }
   }
@@ -487,50 +500,71 @@ case class PakollisetOppiaineet(koodistoViitePalvelu: KoodistoViitePalvelu) {
   }
 
   private lazy val luokkaAsteiden3_6Oppiaineet = List(
-        PeruskoulunÄidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = koodi("oppiaineaidinkielijakirjallisuus", "AI1")),
-        PeruskoulunVierasTaiToinenKotimainenKieli(tunniste = aine("A1"), kieli = koodi("kielivalikoima", "EN")),
-        MuuPeruskoulunOppiaine(aine("MA")),
-    MuuPeruskoulunOppiaine(aine("YL")),
-        MuuPeruskoulunOppiaine(aine("KT")),
-        MuuPeruskoulunOppiaine(aine("HI")),
-        MuuPeruskoulunOppiaine(aine("YH")),
-        MuuPeruskoulunOppiaine(aine("MU")),
-        MuuPeruskoulunOppiaine(aine("KU")),
-        MuuPeruskoulunOppiaine(aine("KS")),
-        MuuPeruskoulunOppiaine(aine("LI")),
-        MuuPeruskoulunOppiaine(aine("OP"))
+        NuortenPerusopetuksenÄidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = koodi("oppiaineaidinkielijakirjallisuus", "AI1")),
+        NuortenPerusopetuksenVierasTaiToinenKotimainenKieli(tunniste = aine("A1"), kieli = koodi("kielivalikoima", "EN")),
+        MuuNuortenPerusopetuksenOppiaine(aine("MA")),
+    MuuNuortenPerusopetuksenOppiaine(aine("YL")),
+        MuuNuortenPerusopetuksenOppiaine(aine("KT")),
+        MuuNuortenPerusopetuksenOppiaine(aine("HI")),
+        MuuNuortenPerusopetuksenOppiaine(aine("YH")),
+        MuuNuortenPerusopetuksenOppiaine(aine("MU")),
+        MuuNuortenPerusopetuksenOppiaine(aine("KU")),
+        MuuNuortenPerusopetuksenOppiaine(aine("KS")),
+        MuuNuortenPerusopetuksenOppiaine(aine("LI")),
+        MuuNuortenPerusopetuksenOppiaine(aine("OP"))
   )
 
   private lazy val päättötodistuksenOppiaineet = List(
-        PeruskoulunÄidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = koodi("oppiaineaidinkielijakirjallisuus", "AI1")),
-    PeruskoulunVierasTaiToinenKotimainenKieli(tunniste = aine("A1"), kieli = koodi("kielivalikoima", "EN")),
-    PeruskoulunVierasTaiToinenKotimainenKieli(tunniste = aine("B1"), kieli = koodi("kielivalikoima", "SV")),
-        MuuPeruskoulunOppiaine(aine("MA")),
-    MuuPeruskoulunOppiaine(aine("BI")),
-    MuuPeruskoulunOppiaine(aine("GE")),
-    MuuPeruskoulunOppiaine(aine("FY")),
-    MuuPeruskoulunOppiaine(aine("KE")),
-    MuuPeruskoulunOppiaine(aine("TE")),
-        MuuPeruskoulunOppiaine(aine("KT")),
-    MuuPeruskoulunOppiaine(aine("HI")),
-    MuuPeruskoulunOppiaine(aine("YH")),
-        MuuPeruskoulunOppiaine(aine("MU")),
-        MuuPeruskoulunOppiaine(aine("KU")),
-        MuuPeruskoulunOppiaine(aine("KS")),
-        MuuPeruskoulunOppiaine(aine("LI")),
-    MuuPeruskoulunOppiaine(aine("KO")),
-        MuuPeruskoulunOppiaine(aine("OP"))
+        NuortenPerusopetuksenÄidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = koodi("oppiaineaidinkielijakirjallisuus", "AI1")),
+    NuortenPerusopetuksenVierasTaiToinenKotimainenKieli(tunniste = aine("A1"), kieli = koodi("kielivalikoima", "EN")),
+    NuortenPerusopetuksenVierasTaiToinenKotimainenKieli(tunniste = aine("B1"), kieli = koodi("kielivalikoima", "SV")),
+        MuuNuortenPerusopetuksenOppiaine(aine("MA")),
+    MuuNuortenPerusopetuksenOppiaine(aine("BI")),
+    MuuNuortenPerusopetuksenOppiaine(aine("GE")),
+    MuuNuortenPerusopetuksenOppiaine(aine("FY")),
+    MuuNuortenPerusopetuksenOppiaine(aine("KE")),
+    MuuNuortenPerusopetuksenOppiaine(aine("TE")),
+        MuuNuortenPerusopetuksenOppiaine(aine("KT")),
+    MuuNuortenPerusopetuksenOppiaine(aine("HI")),
+    MuuNuortenPerusopetuksenOppiaine(aine("YH")),
+        MuuNuortenPerusopetuksenOppiaine(aine("MU")),
+        MuuNuortenPerusopetuksenOppiaine(aine("KU")),
+        MuuNuortenPerusopetuksenOppiaine(aine("KS")),
+        MuuNuortenPerusopetuksenOppiaine(aine("LI")),
+    MuuNuortenPerusopetuksenOppiaine(aine("KO")),
+        MuuNuortenPerusopetuksenOppiaine(aine("OP"))
+  )
+
+  private lazy val aikuistenPäättötodistuksenOppiaineet = List(
+    AikuistenPerusopetuksenÄidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = koodi("oppiaineaidinkielijakirjallisuus", "AI1")),
+    AikuistenPerusopetuksenVierasTaiToinenKotimainenKieli(tunniste = aine("A1"), kieli = koodi("kielivalikoima", "EN")),
+    AikuistenPerusopetuksenVierasTaiToinenKotimainenKieli(tunniste = aine("B1"), kieli = koodi("kielivalikoima", "SV")),
+    MuuAikuistenPerusopetuksenOppiaine(aine("MA")),
+    MuuAikuistenPerusopetuksenOppiaine(aine("BI")),
+    MuuAikuistenPerusopetuksenOppiaine(aine("GE")),
+    MuuAikuistenPerusopetuksenOppiaine(aine("FY")),
+    MuuAikuistenPerusopetuksenOppiaine(aine("KE")),
+    MuuAikuistenPerusopetuksenOppiaine(aine("TE")),
+    MuuAikuistenPerusopetuksenOppiaine(aine("KT")),
+    MuuAikuistenPerusopetuksenOppiaine(aine("HI")),
+    MuuAikuistenPerusopetuksenOppiaine(aine("YH")),
+    MuuAikuistenPerusopetuksenOppiaine(aine("MU")),
+    MuuAikuistenPerusopetuksenOppiaine(aine("KU")),
+    MuuAikuistenPerusopetuksenOppiaine(aine("KS")),
+    MuuAikuistenPerusopetuksenOppiaine(aine("LI")),
+    MuuAikuistenPerusopetuksenOppiaine(aine("KO")),
+    MuuAikuistenPerusopetuksenOppiaine(aine("OP"))
   )
 
   private lazy val luokkaAsteiden1_2Oppiaineet = List(
-        PeruskoulunÄidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = koodi("oppiaineaidinkielijakirjallisuus", "AI1")),
-        MuuPeruskoulunOppiaine(aine("MA")),
-        MuuPeruskoulunOppiaine(aine("YL")),
-        MuuPeruskoulunOppiaine(aine("KT")),
-        MuuPeruskoulunOppiaine(aine("MU")),
-        MuuPeruskoulunOppiaine(aine("KU")),
-        MuuPeruskoulunOppiaine(aine("KS")),
-        MuuPeruskoulunOppiaine(aine("LI")),
-        MuuPeruskoulunOppiaine(aine("OP"))
+        NuortenPerusopetuksenÄidinkieliJaKirjallisuus(tunniste = aine("AI"), kieli = koodi("oppiaineaidinkielijakirjallisuus", "AI1")),
+        MuuNuortenPerusopetuksenOppiaine(aine("MA")),
+        MuuNuortenPerusopetuksenOppiaine(aine("YL")),
+        MuuNuortenPerusopetuksenOppiaine(aine("KT")),
+        MuuNuortenPerusopetuksenOppiaine(aine("MU")),
+        MuuNuortenPerusopetuksenOppiaine(aine("KU")),
+        MuuNuortenPerusopetuksenOppiaine(aine("KS")),
+        MuuNuortenPerusopetuksenOppiaine(aine("LI")),
+        MuuNuortenPerusopetuksenOppiaine(aine("OP"))
   )
 }

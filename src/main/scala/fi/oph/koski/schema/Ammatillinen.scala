@@ -736,12 +736,6 @@ case class Hojks(
   loppu: Option[LocalDate] = None
 )
 
-case class LaajuusOsaamispisteissä(
-  arvo: Float,
-  @KoodistoKoodiarvo("6")
-  yksikkö: Koodistokoodiviite = Koodistokoodiviite("6", Some(finnish("Osaamispistettä")), "opintojenlaajuusyksikko")
-) extends Laajuus
-
 @Description("Suoritettavan näyttötutkintoon valmistavan koulutuksen osan tiedot")
 case class NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
   @Title("Koulutuksen osa")

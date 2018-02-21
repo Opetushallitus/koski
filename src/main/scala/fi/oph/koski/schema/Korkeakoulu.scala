@@ -113,9 +113,3 @@ case class KorkeakoulunPaikallinenArviointi(
 ) extends PaikallinenArviointi with KorkeakoulunArviointi {
   override def arvioitsijat: Option[List[Arvioitsija]] = None
 }
-
-case class LaajuusOpintopisteissä(
-  arvo: Float,
-  @KoodistoKoodiarvo("2")
-  yksikkö: Koodistokoodiviite = Koodistokoodiviite("2", Some(finnish("opintopistettä")), "opintojenlaajuusyksikko")
-) extends Laajuus
