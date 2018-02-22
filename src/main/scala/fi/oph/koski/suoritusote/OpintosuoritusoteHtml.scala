@@ -81,14 +81,6 @@ class OpintosuoritusoteHtml(implicit val user: KoskiSession, val localizationRep
 
   protected def suorituksetHtml(suoritukset: List[(Int, Suoritus)], title: String = "Opintosuoritukset") = {
     def suoritusHtml(t: (Int, Suoritus)) = {
-      def laajuus(suoritus: Suoritus) = if (suoritus.osasuoritukset.isDefined) {
-        decimalFormat.format(suoritus.osasuoritusLista.foldLeft(0f) { (laajuus: Float, suoritus: Suoritus) =>
-          laajuus + suoritus.koulutusmoduuli.laajuus.map(_.arvo).getOrElse(1f)
-        })
-      } else {
-        suoritus.koulutusmoduuli.laajuus.map(l => decimalFormat.format(l.arvo)).getOrElse("1")
-      }
-
       t match { case (depth, suoritus) =>
         <tr>
           <td class={"depth-" + depth}>{suoritus.koulutusmoduuli.tunniste.koodiarvo}</td>
@@ -116,6 +108,14 @@ class OpintosuoritusoteHtml(implicit val user: KoskiSession, val localizationRep
         { suoritukset.map(suoritusHtml) }
       </table>
     </section>
+  }
+
+  protected def laajuus(suoritus: Suoritus) = if (suoritus.osasuoritukset.isDefined) {
+    decimalFormat.format(suoritus.osasuoritusLista.foldLeft(0f) { (laajuus: Float, suoritus: Suoritus) =>
+      laajuus + suoritus.koulutusmoduuli.laajuus.map(_.arvo).getOrElse(0f)
+    })
+  } else {
+    suoritus.koulutusmoduuli.laajuus.map(l => decimalFormat.format(l.arvo)).getOrElse("")
   }
 
   protected def arvosana(suoritus: Suoritus) = i(suoritus.arvosanaNumeroin.getOrElse(suoritus.arvosanaKirjaimin))
