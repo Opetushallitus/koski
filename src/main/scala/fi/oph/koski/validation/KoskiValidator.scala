@@ -15,7 +15,7 @@ import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.Opiskeluoikeus.{koulutustoimijaTraversal, oppilaitosTraversal, toimipisteetTraversal}
-import fi.oph.koski.schema.{AmmatillisenTutkinnonSuoritus, _}
+import fi.oph.koski.schema.{AmmatillisenTutkinnonOsanSuoritus, AmmatillisenTutkinnonSuoritus, _}
 import fi.oph.koski.tutkinto.Koulutustyyppi._
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.util.Timing
@@ -318,9 +318,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
 
   private def validateArviointi(suoritus: Suoritus): HttpStatus = suoritus match {
     case a: AmmatillinenPäätasonSuoritus =>
-      val käytetytArviointiasteikot = a.osasuoritusLista.flatMap(_.arviointi.toList.flatten).collect {
-        case arviointi: AmmatillinenKoodistostaLöytyväArviointi if arviointi.arvosana.koodiarvo.forall(isDigit) => arviointi.arvosana.koodistoUri
-      }.distinct
+      val käytetytArviointiasteikot = a.osasuoritusLista.flatMap(extractNumeerisetArvioinnit).map(_.arvosana.koodistoUri).distinct.sorted
 
       if (käytetytArviointiasteikot.size > 1) {
         KoskiErrorCategory.badRequest.validation.arviointi.useitaArviointiasteikoita(s"Suoritus käyttää useampaa kuin yhtä numeerista arviointiasteikkoa: ${käytetytArviointiasteikot.mkString(", ")}")
@@ -328,6 +326,19 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         HttpStatus.ok
       }
     case _ => HttpStatus.ok
+  }
+
+  private def extractNumeerisetArvioinnit(suoritus: Suoritus): List[KoodistostaLöytyväArviointi] = {
+    def numeerisetArvioinnit(arvioinnit: List[Arviointi]) = arvioinnit.collect {
+      case k: KoodistostaLöytyväArviointi if k.arvosana.koodiarvo.forall(isDigit) => k
+    }
+
+    def näytönArviointi = suoritus match {
+      case atos: AmmatillisenTutkinnonOsanSuoritus => numeerisetArvioinnit(atos.näyttö.flatMap(_.arviointi).toList)
+      case _ => Nil
+    }
+
+    numeerisetArvioinnit(suoritus.arviointi.toList.flatten) ++ näytönArviointi ++ suoritus.osasuoritusLista.flatMap(extractNumeerisetArvioinnit)
   }
 
   private def validatePäätasonSuorituksenStatus(suoritus: PäätasonSuoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus =
