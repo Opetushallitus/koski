@@ -14,7 +14,8 @@ import fi.oph.koski.schema._
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoError
-import fi.oph.koski.util.{Pagination, Timing}
+import fi.oph.koski.util.{Pagination, Timing, XML}
+import fi.oph.koski.virta.VirtaHakuehtoHetu
 import org.json4s.JsonAST.{JObject, JString}
 import org.json4s.{JArray, JValue}
 import org.scalatra.ContentEncodingSupport
@@ -61,6 +62,31 @@ class OppijaServlet(implicit val application: KoskiApplication) extends ApiServl
 
   get("/:oid") {
     renderEither(findByOid(params("oid"), koskiSession))
+  }
+
+  get("/:oid/virta-opintotiedot-xml") {
+    if (!koskiSession.hasGlobalReadAccess) {
+      haltWithStatus(KoskiErrorCategory.forbidden())
+    }
+    findByOid(params("oid"), koskiSession).right
+      .flatMap { oppija =>
+        oppija.henkilö match {
+          case h: Henkilötiedot if h.hetu.nonEmpty =>
+            val hetu = h.hetu.get
+            application.virtaClient.opintotiedot(VirtaHakuehtoHetu(hetu)) match {
+              case Some(x) => Right(x)
+              case None => Left(KoskiErrorCategory.notFound("Tyhjä vastaus?"))
+            }
+          case _ =>
+            Left(KoskiErrorCategory.notFound("Hetu puuttuu?"))
+      }
+    } match {
+      case Right(xml) =>
+        contentType = "text/plain"
+        response.writer.print(XML.prettyPrint(xml))
+      case Left(status) =>
+        haltWithStatus(status)
+    }
   }
 
   get("/oids") {
