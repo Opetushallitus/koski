@@ -1,14 +1,9 @@
 {
   "henkilö" : {
-    "oid" : "1.2.246.562.24.00000000013",
     "hetu" : "280618-402H",
     "etunimet" : "Aarne",
     "kutsumanimi" : "Aarne",
-    "sukunimi" : "Ammattilainen",
-    "äidinkieli" : {
-      "koodiarvo" : "FI",
-      "koodistoUri" : "kieli"
-    }
+    "sukunimi" : "Ammattilainen"
   },
   "opiskeluoikeudet" : [ {
     "oppilaitos" : {
@@ -206,11 +201,12 @@
           "työssäoppimisenYhteydessä" : false,
           "arviointi" : {
             "arvosana" : {
-              "koodiarvo" : "3",
+              "koodiarvo" : "5",
               "nimi" : {
-                "fi" : "K3"
+                "fi" : "5"
               },
-              "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+              "koodistoUri" : "arviointiasteikkoammatillinen15",
+              "koodistoVersio" : 1
             },
             "päivä" : "2014-10-20",
             "arvioitsijat" : [ {
@@ -232,11 +228,12 @@
                 "koodistoUri" : "ammatillisennaytonarviointikohde"
               },
               "arvosana" : {
-                "koodiarvo" : "3",
+                "koodiarvo" : "5",
                 "nimi" : {
-                  "fi" : "K3"
+                  "fi" : "5"
                 },
-                "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+                "koodistoUri" : "arviointiasteikkoammatillinen15",
+                "koodistoVersio" : 1
               }
             }, {
               "tunniste" : {
@@ -247,11 +244,12 @@
                 "koodistoUri" : "ammatillisennaytonarviointikohde"
               },
               "arvosana" : {
-                "koodiarvo" : "2",
+                "koodiarvo" : "5",
                 "nimi" : {
-                  "fi" : "H2"
+                  "fi" : "5"
                 },
-                "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+                "koodistoUri" : "arviointiasteikkoammatillinen15",
+                "koodistoVersio" : 1
               }
             }, {
               "tunniste" : {
@@ -262,11 +260,12 @@
                 "koodistoUri" : "ammatillisennaytonarviointikohde"
               },
               "arvosana" : {
-                "koodiarvo" : "2",
+                "koodiarvo" : "Hyväksytty",
                 "nimi" : {
-                  "fi" : "H2"
+                  "fi" : "Hyväksytty"
                 },
-                "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+                "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
+                "koodistoVersio" : 1
               }
             }, {
               "tunniste" : {
@@ -277,11 +276,12 @@
                 "koodistoUri" : "ammatillisennaytonarviointikohde"
               },
               "arvosana" : {
-                "koodiarvo" : "3",
+                "koodiarvo" : "5",
                 "nimi" : {
-                  "fi" : "K3"
+                  "fi" : "5"
                 },
-                "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+                "koodistoUri" : "arviointiasteikkoammatillinen15",
+                "koodistoVersio" : 1
               }
             } ],
             "arvioinnistaPäättäneet" : [ {
