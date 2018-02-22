@@ -110,7 +110,7 @@ describe('IB', function( ) {
 
       it('näyttää oppiaineiden ja kurssien arvosanat', function() {
         expect(extractAsText(S('.osasuoritukset'))).to.equal(
-          'Oppiaine Kurssien määrä Arvosana (keskiarvo)\n' +
+          'Oppiaine Laajuus (kurssia) Arvosana (keskiarvo)\n' +
           'Studies in language and literature\n' +
           'Language A: literature, suomi\nFIN_S1\n4 FIN_S2\n4 FIN_S3\nS FIN_S4\n5 FIN_S5\n6 FIN_S6\n5 FIN_S7\n5 FIN_S8\nS FIN_S9\n5 9 4 *\n(4,9)\n' +
           'Language A: language and literature, englanti\nENG_B_H1\n6 ENG_B_H2\n7 ENG_B_H4\nS ENG_B_H5\n6 ENG_B_H6\n6 ENG_B_H8\n5 6 7 *\n(6,0)\n' +
