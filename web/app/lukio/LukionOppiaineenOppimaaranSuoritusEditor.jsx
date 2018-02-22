@@ -1,7 +1,7 @@
 import React from 'react'
 import {modelErrorMessages} from '../editor/EditorModel'
 import {LukionOppiaineEditor} from './LukionOppiaineEditor'
-import {LukionOppiaineetTableHead} from './fragments/LukionOppiaineetTable'
+import {LukionOppiaineetTableHead} from './fragments/LukionOppiaineetTableHead'
 
 export const LukionOppiaineenOppimaaranSuoritusEditor = ({model}) => (
   <section>

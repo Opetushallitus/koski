@@ -31,7 +31,7 @@ describe('IB', function( ) {
 
       it('näyttää oppiaineiden ja kurssien arvosanat', function() {
         expect(extractAsText(S('.osasuoritukset'))).to.equal(
-          'Oppiaine Kurssien määrä Arvosana (keskiarvo)\n' +
+          'Oppiaine Laajuus (kurssia) Arvosana (keskiarvo)\n' +
           'Äidinkieli ja kirjallisuus\n' +
           'ÄI1\n8 ÄI2\n8 ÄI3\n8 3 8\n(8,0)\n' +
           'A1-kieli, englanti\nENA1\n10 ENA2\n10 ENA5\n10 3 10\n(10,0)\n' +
