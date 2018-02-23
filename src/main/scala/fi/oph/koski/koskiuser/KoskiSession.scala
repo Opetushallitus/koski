@@ -54,6 +54,7 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
   }
 
   def organisaatiot: List[OrganisaatioWithOid] = orgKäyttöoikeudet.collect { case r: KäyttöoikeusOrg if r.juuri => r.organisaatio }.toList
+  def firstClientIp = clientIp.split(",").map(_.trim).headOption.getOrElse(clientIp)
 
   Future(käyttöoikeudet)(ExecutionContext.global) // haetaan käyttöoikeudet toisessa säikeessä rinnakkain
 }
