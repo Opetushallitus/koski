@@ -148,9 +148,13 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       .ifInstanceOf[Koulutus]
 
     t.modify(oo) { koulutus =>
-      val koulutustyyppiKoodisto = koodistoPalvelu.koodistoPalvelu.getLatestVersion("koulutustyyppi").get
-      val koulutusTyypit = koodistoPalvelu.getSisältyvätKoodiViitteet(koulutustyyppiKoodisto, koulutus.tunniste).toList.flatten
-      val koulutustyyppi = koulutusTyypit.filterNot(koodi => List(ammatillinenPerustutkintoErityisopetuksena.koodiarvo, valmaErityisopetuksena.koodiarvo).contains(koodi.koodiarvo)).headOption
+      val koulutustyyppi = koulutus match {
+        case np: NuortenPerusopetus => np.perusteenDiaarinumero.flatMap(tutkintoRepository.findPerusteRakenne(_).map(_.koulutustyyppi))
+        case _ =>
+          val koulutustyyppiKoodisto = koodistoPalvelu.koodistoPalvelu.getLatestVersion("koulutustyyppi").get
+          val koulutusTyypit = koodistoPalvelu.getSisältyvätKoodiViitteet(koulutustyyppiKoodisto, koulutus.tunniste).toList.flatten
+          koulutusTyypit.filterNot(koodi => List(ammatillinenPerustutkintoErityisopetuksena.koodiarvo, valmaErityisopetuksena.koodiarvo).contains(koodi.koodiarvo)).headOption
+      }
       lens[Koulutus].field[Option[Koodistokoodiviite]]("koulutustyyppi").set(koulutus)(koulutustyyppi)
     }
   }
