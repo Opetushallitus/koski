@@ -1,7 +1,7 @@
 import React from 'react'
 import R from 'ramda'
 import {LukionOppiaineEditor} from '../lukio/LukionOppiaineEditor'
-import {LukionOppiaineetTableHead} from '../lukio/fragments/LukionOppiaineetTable'
+import {LukionOppiaineetTableHead} from '../lukio/fragments/LukionOppiaineetTableHead'
 import {modelData, modelLookup} from '../editor/EditorModel'
 import {FootnoteDescriptions} from '../components/footnote'
 

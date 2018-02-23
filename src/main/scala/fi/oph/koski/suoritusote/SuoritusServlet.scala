@@ -17,7 +17,7 @@ class SuoritusServlet(implicit val application: KoskiApplication) extends HtmlSe
         val tyypit = opiskeluoikeudet.map(_.tyyppi.koodiarvo).toSet.toList
         tyypit match {
           case "korkeakoulutus" :: Nil => Right(new OpintosuoritusoteHtml().korkeakoulu(henkilö, opiskeluoikeudet.asInstanceOf[List[KorkeakoulunOpiskeluoikeus]] ))
-          case "lukiokoulutus" :: Nil => Right(new OpintosuoritusoteHtml().lukio(henkilö, opiskeluoikeudet.asInstanceOf[List[LukionOpiskeluoikeus]]))
+          case "lukiokoulutus" :: Nil => Right(new LukioOpintosuoritusoteHtml().lukio(henkilö, opiskeluoikeudet.asInstanceOf[List[LukionOpiskeluoikeus]]))
           case "ibtutkinto" :: Nil => Right(new IBOpintosuoritusoteHtml().ib(henkilö, opiskeluoikeudet.asInstanceOf[List[IBOpiskeluoikeus]]))
           case tyyppi :: Nil => Left(KoskiErrorCategory.notFound.opiskeluoikeuttaOppilaitoksessaEiLöydy())
           case Nil => Left(KoskiErrorCategory.notFound.opiskeluoikeuttaOppilaitoksessaEiLöydy())

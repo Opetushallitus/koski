@@ -1,9 +1,9 @@
 import React from 'react'
 import R from 'ramda'
 import {LukionOppiaineEditor} from './LukionOppiaineEditor'
-import {LukionOppiaineetTableHead} from './fragments/LukionOppiaineetTable'
 import {UusiLukionOppiaineDropdown} from './UusiLukionOppiaineDropdown'
 import {modelErrorMessages, modelItems} from '../editor/EditorModel'
+import {LukionOppiaineetTableHead} from './fragments/LukionOppiaineetTableHead'
 
 export const LukionOppiaineetEditor = ({suorituksetModel, classForUusiOppiaineenSuoritus, suoritusFilter}) => {
   const {edit, suoritus: päätasonSuoritusModel} = suorituksetModel.context

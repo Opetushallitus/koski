@@ -52,7 +52,7 @@ object ExamplesLukio {
               kurssisuoritus(valtakunnallinenKurssi("ÄI5")).copy(arviointi = numeerinenArviointi(9)),
               kurssisuoritus(valtakunnallinenKurssi("ÄI6")).copy(arviointi = numeerinenArviointi(9)),
               kurssisuoritus(valtakunnallinenKurssi("ÄI8")).copy(arviointi = numeerinenArviointi(9)),
-              kurssisuoritus(valtakunnallinenKurssi("ÄI9")).copy(arviointi = numeerinenArviointi(9))
+              kurssisuoritus(valtakunnallinenKurssi("ÄI9").copy(laajuus = None)).copy(arviointi = numeerinenArviointi(9))
             ))),
             suoritus(lukionKieli("A1", "EN")).copy(arviointi = arviointi(9)).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("ENA1")).copy(arviointi = numeerinenArviointi(10)),

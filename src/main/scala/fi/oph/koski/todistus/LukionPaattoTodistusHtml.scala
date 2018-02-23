@@ -8,6 +8,8 @@ import scala.xml.NodeSeq
 
 
 class LukionPaattoTodistusHtml(implicit val user: KoskiSession, val localizationRepository: LocalizationRepository) extends TodistusHtml {
+  override def laajuus(suoritus: Suoritus): Float = suoritus.koulutusmoduuli.laajuus.map(_.arvo).getOrElse(1f)
+
   def render(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: Suoritus) = {
     val oppiaineet: List[Suoritus] = päättötodistus.osasuoritukset.toList.flatten
 

@@ -10,7 +10,8 @@ import {saveOrganizationalPreference} from '../virkailija/organizationalPreferen
 import {paikallinenOppiainePrototype} from '../perusopetus/PerusopetuksenOppiaineEditor'
 import {doActionWhileMounted} from '../util/util'
 import {createOppiaineenSuoritus} from './lukio'
-import {Nimi, KoulutusmoduuliPropertiesEditor, Arviointi} from './fragments/LukionOppiaine'
+import {Arviointi, KoulutusmoduuliPropertiesEditor, Nimi} from './fragments/LukionOppiaine'
+import {laajuusNumberToString} from '../util/format'
 
 export class LukionOppiaineEditor extends React.Component {
   saveChangedPreferences() {
@@ -32,6 +33,10 @@ export class LukionOppiaineEditor extends React.Component {
     const {oppiaine, footnote, allowOppiaineRemoval = true} = this.props
     const kurssit = modelItems(oppiaine, 'osasuoritukset')
     const suoritetutKurssit = kurssit.map(k => modelData(k)).filter(k => k.arviointi)
+    const laajuudet = kurssit.map(k => {
+      const laajuus = modelData(k, 'koulutusmoduuli.laajuus.arvo')
+      return laajuus ? laajuus : 1
+    }).reduce((x, y) => x + y, 0)
     const {edit} = oppiaine.context
 
     return (
@@ -48,7 +53,7 @@ export class LukionOppiaineEditor extends React.Component {
           </div>
           <KurssitEditor model={oppiaine}/>
         </td>
-        <td className='maara'>{suoritetutKurssit.length}</td>
+        <td className='laajuus'>{laajuusNumberToString(Math.round(laajuudet * 10) / 10)}</td>
         <td className='arvosana'>
           <Arviointi oppiaine={oppiaine} suoritetutKurssit={suoritetutKurssit} footnote={footnote}/>
         </td>
