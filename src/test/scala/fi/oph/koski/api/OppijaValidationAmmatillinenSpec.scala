@@ -251,6 +251,15 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               ))
             }
 
+            "Useita arviointiasteikoita käytetty, näytön arvioinnin arviointikohteet" - {
+              val arviointikohteet = näytönArviointi.arviointikohteet.toList.flatten
+              val arviointi = näytönArviointi.copy(arviointikohteet = Some(arviointikohteet.head.copy(arvosana = arvosanaViisi) :: arviointikohteet.tail))
+              val näytöllinenSuoritus = copySuoritus(arviointiHyvä(), None).copy(näyttö = Some(näyttö(date(2016, 2, 1), "Näyttö", "Näyttöpaikka, Näyttölä", Some(arviointi))))
+              "palautetaan HTTP 400" in (putOsasuoritukset(List(copySuoritus(arviointiHyvä(), None), näytöllinenSuoritus)) (
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.useitaArviointiasteikoita("Suoritus käyttää useampaa kuin yhtä numeerista arviointiasteikkoa: arviointiasteikkoammatillinen15, arviointiasteikkoammatillinent1k3"))
+              ))
+            }
+
             "Useita arviointiasteikoita käytetty, tutkinnon osien osat" - {
               val suoritusOsienOsat = tutkinnonOsaSuoritus.copy(osasuoritukset = Some(List(osanOsa.copy(arviointi = arviointiHyvä()))))
               "palautetaan HTTP 400" in (putOsasuoritukset(List(copySuoritus(arviointiHyvä(arvosana = arvosanaViisi), None), suoritusOsienOsat)) (
