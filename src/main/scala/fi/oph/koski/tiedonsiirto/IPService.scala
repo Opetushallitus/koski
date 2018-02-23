@@ -25,9 +25,9 @@ class IPService(val db: DB) extends KoskiDatabaseMethods with Logging {
   def trackIPAddress(koskiSession: KoskiSession) {
     val ip = getIP(koskiSession.username)
 
-    if (ip != toInetAddress(koskiSession.lastClientIp)) {
+    if (ip != toInetAddress(koskiSession.firstClientIp)) {
       ip.foreach(IPTracking(koskiSession).logIPChange)
-      setIP(koskiSession.username, koskiSession.lastClientIp)
+      setIP(koskiSession.username, koskiSession.firstClientIp)
     }
   }
 
@@ -43,7 +43,7 @@ class IPService(val db: DB) extends KoskiDatabaseMethods with Logging {
 private case class IPTracking(koskiSession: KoskiSession) {
   def logIPChange(oldIP: InetAddress) {
     val user = koskiSession.user
-    IPTracking.logger.info(s"${user.username}(${user.oid}), vanha: ${oldIP.getHostAddress}, uusi: ${koskiSession.lastClientIp}")
+    IPTracking.logger.info(s"${user.username}(${user.oid}), vanha: ${oldIP.getHostAddress}, uusi: ${koskiSession.firstClientIp}")
   }
 }
 
