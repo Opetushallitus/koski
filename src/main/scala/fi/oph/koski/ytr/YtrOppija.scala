@@ -12,7 +12,7 @@ case class YtrOppija(
   graduationSchoolOphOid: Option[String],
   graduationSchoolYtlNumber: Option[Int],
   hasCompletedMandatoryExams: Boolean,
-  language: String
+  language: Option[String]
 )
 case class YtrExam(
   period: String, // Esim 2013S, TODO: tää pitäis palastella ja kielistää
