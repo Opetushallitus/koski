@@ -115,4 +115,23 @@ describe('Ylioppilastutkinto', function( ){
     })
   })
 
+  describe('Kieli puuttuu oppilastiedoista', function() {
+    before(page.openPage, page.oppijaHaku.searchAndSelect('120674-064R'))
+    before(opinnot.expandAll)
+
+    it('kaikki osasuoritukset näkyvissä', function() {
+      expect(extractAsText(S('.ylioppilastutkinnonsuoritus .osasuoritukset'))).to.equal(
+        'Tutkintokerta Koe Arvosana\n' +
+        '1996 kevät Reaali, elämänkatsomustiedon kysymykset Improbatur\n' +
+        '1996 syksy Englanninkielinen kypsyyskoe Cum laude approbatur\n' +
+        '1996 syksy Matematiikan koe, lyhyt oppimäärä Improbatur\n' +
+        '1996 syksy Reaali, elämänkatsomustiedon kysymykset Improbatur\n' +
+        '1997 kevät Suomi, lyhyt oppimäärä Improbatur\n' +
+        '1997 kevät Matematiikan koe, lyhyt oppimäärä Approbatur\n' +
+        '1997 kevät Reaali, elämänkatsomustiedon kysymykset Approbatur\n' +
+        '1997 syksy Suomi, lyhyt oppimäärä Improbatur\n' +
+        '1998 kevät Suomi, lyhyt oppimäärä Improbatur'
+      )
+    })
+  })
 })
