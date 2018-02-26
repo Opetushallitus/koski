@@ -29,6 +29,7 @@ object OpiskeluoikeusQueryFilter {
   case class Nimihaku(hakusana: String) extends OpiskeluoikeusQueryFilter
   case class SuoritusJsonHaku(json: JValue) extends OpiskeluoikeusQueryFilter
   case class IdHaku(ids: Seq[Int]) extends OpiskeluoikeusQueryFilter
+  case class MuuttunutEnnen(aikaleima: LocalDateTime) extends OpiskeluoikeusQueryFilter
   case class MuuttunutJälkeen(aikaleima: LocalDateTime) extends OpiskeluoikeusQueryFilter
 
   def parse(params: List[(String, String)])(implicit koodisto: KoodistoViitePalvelu, organisaatiot: OrganisaatioRepository, session: KoskiSession): Either[HttpStatus, List[OpiskeluoikeusQueryFilter]] = OpiskeluoikeusQueryFilterParser.parse(params)
@@ -52,7 +53,7 @@ private object OpiskeluoikeusQueryFilterParser {
       }
     }
 
-    val queryFilters: List[Either[HttpStatus, OpiskeluoikeusQueryFilter]] = params.filterNot{case (key, value) => List("sort", "pageSize", "pageNumber", "toimipisteNimi").contains(key)}.map {
+    val queryFilters: List[Either[HttpStatus, OpiskeluoikeusQueryFilter]] = params.filterNot { case (key, value) => List("sort", "pageSize", "pageNumber", "toimipisteNimi").contains(key) }.map {
       case (p, v) if p == "opiskeluoikeusPäättynytAikaisintaan" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytAikaisintaan(_))
       case (p, v) if p == "opiskeluoikeusPäättynytViimeistään" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytViimeistään(_))
       case (p, v) if p == "opiskeluoikeusAlkanutAikaisintaan" => dateParam((p, v)).right.map(OpiskeluoikeusAlkanutAikaisintaan(_))
@@ -76,6 +77,7 @@ private object OpiskeluoikeusQueryFilterParser {
         case Success(json) => Right(SuoritusJsonHaku(json))
         case Failure(e) => Left(KoskiErrorCategory.badRequest.queryParam("Epävalidi json-dokumentti parametrissa suoritusJson"))
       }
+      case (p, v) if (p == "muuttunutEnnen") => dateTimeParam((p, v)).right.map(MuuttunutEnnen(_))
       case (p, v) if (p == "muuttunutJälkeen") => dateTimeParam((p, v)).right.map(MuuttunutJälkeen(_))
       case (p, _) => Left(KoskiErrorCategory.badRequest.queryParam.unknown("Unsupported query parameter: " + p))
     }
