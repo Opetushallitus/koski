@@ -13,9 +13,9 @@ export const IBTutkinnonOppiaineetEditor = ({oppiaineet}) => {
     oppiaineet
   )
 
-  const footnotes = [
-    oppiaineet.find(s => modelData(s, 'arviointi.-1.predicted')) && ArvosanaFootnote
-  ] || []
+  const footnotes = R.any(s => modelData(s, 'arviointi.-1.predicted'), oppiaineet)
+    ? [ArvosanaFootnote]
+    : []
 
   return (
     <div>
