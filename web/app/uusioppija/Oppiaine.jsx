@@ -54,6 +54,7 @@ export default ({suoritusPrototypeP, oppiaineenSuoritusAtom, perusteAtom, oppila
               resultCallback={s => oppiainePrototypeAtom.set(s)}
               pakollinen={true}
               enableFilter={false}
+              allowPaikallinen={false}
               />
           </label>
           { suoritusModelP.map(model =>
