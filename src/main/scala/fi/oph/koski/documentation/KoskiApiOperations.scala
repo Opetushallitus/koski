@@ -109,7 +109,7 @@ object KoskiApiOperations extends ApiGroup {
             <li>Jos opiskeluoikeudessa on lähdejärjestelmänId-kenttä, päivitetään tällä id:llä löytyvää opiskeluoikeutta, tai tehdään uusi, jollei sellaista löydy.</li>
             <li>Jos opiskeluoikeudessa ei ole kumpaakaan em. kentistä, päivitetään samalla oppilaitos-oidilla ja tyypillä löytyvää opiskeluoikeutta, tai tehdään uusi, jollei sellaista löydy.</li>
           </ol>
-          Olemassa olevan opiskeluoikeuden oppilaitosta ja tyyppiä ei koskaan voi vaihtaa.
+          Olemassa olevan opiskeluoikeuden tyyppiä ei koskaan voi vaihtaa.
         </p>
         <p>
           Syötedata validoidaan json-schemaa ja tiettyjä sisäisiä sääntöjä vasten ja päivitys hyväksytään vain, mikäli validointi menee läpi. Ks. paluukoodit alla.
