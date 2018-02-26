@@ -6,7 +6,7 @@ export const UusiPerusopetuksenOppiaineDropdown = ({ suoritukset = [], organisaa
   <UusiOppiaineDropdown
     suoritukset={suoritukset}
     organisaatioOid={organisaatioOid}
-    oppiaineenSuoritus={oppiaineenSuoritus}
+    oppiaineenSuoritukset={oppiaineenSuoritus && [oppiaineenSuoritus] || []}
     pakollinen={pakollinen}
     selected={selected}
     resultCallback={resultCallback}

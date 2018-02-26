@@ -48,7 +48,7 @@ export default ({suoritusPrototypeP, oppiaineenSuoritusAtom, perusteAtom, oppila
           <label className="oppiaine">
             <Text name="Oppiaine" />{' '}
             <UusiOppiaineDropdown
-              oppiaineenSuoritus={oppiaineenSuoritus}
+              oppiaineenSuoritukset={oppiaineenSuoritus && [oppiaineenSuoritus] || []}
               organisaatioOid={modelData(oppiaineenSuoritus, 'toimipiste.oid')}
               selected={oppiainePrototypeAtom}
               resultCallback={s => oppiainePrototypeAtom.set(s)}
