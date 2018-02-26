@@ -151,6 +151,9 @@ function AddOppijaPage() {
     selectSuorituskieli: function(kieli) {
       return selectFromDropdown('.suorituskieli .dropdown', kieli)
     },
+    opintojenRahoitukset: function() {
+      return pageApi.getInputOptions('.opintojenrahoitus .dropdown')
+    },
     selectOpintojenRahoitus: function(rahoitus) {
       return rahoitus
         ? selectFromDropdown('.opintojenrahoitus .dropdown', rahoitus)
