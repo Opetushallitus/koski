@@ -19,6 +19,7 @@ import {ift} from '../util/util'
 import {esiopetuksenSuoritus} from './esiopetuksenSuoritus.js'
 import UusiAikuistenPerusopetuksenSuoritus from './UusiAikuistenPerusopetuksenSuoritus'
 import UusiLukionSuoritus from './UusiLukionSuoritus'
+import {sallitutRahoituskoodiarvot} from '../lukio/lukio'
 
 export default ({opiskeluoikeusAtom}) => {
   const dateAtom = Atom(new Date())
@@ -45,7 +46,7 @@ export default ({opiskeluoikeusAtom}) => {
   const tilatP = koodistoValues('koskiopiskeluoikeudentila/lasna,valmistunut,eronnut,katsotaaneronneeksi,valiaikaisestikeskeytynyt,peruutettu,loma')
   const opiskeluoikeudenTilatP = Bacon.combineAsArray(tilatP, tyyppiAtom.map('.koodiarvo')).map(([tilat,tyyppi]) => tyyppi === 'ammatillinenkoulutus' ? tilat : tilat.filter(tila => tila.koodiarvo !== 'loma'))
   const rahoituksetP = koodistoValues('opintojenrahoitus').map(R.sortBy(R.compose(parseInt, R.prop('koodiarvo'))))
-  const hasRahoituksetAvailable = tyyppiAtom.map(koodiarvoMatch('ammatillinenkoulutus'))
+  const hasRahoituksetAvailable = tyyppiAtom.map(koodiarvoMatch('ammatillinenkoulutus', 'lukiokoulutus'))
 
   opiskeluoikeudenTilatP.onValue(tilat => tilaAtom.set(tilat.find(koodiarvoMatch('lasna'))))
 
@@ -72,7 +73,7 @@ export default ({opiskeluoikeusAtom}) => {
     <Aloituspäivä dateAtom={dateAtom} />
     <OpiskeluoikeudenTila tilaAtom={tilaAtom} opiskeluoikeudenTilatP={opiskeluoikeudenTilatP} />
     {
-      ift(hasRahoituksetAvailable, <OpintojenRahoitus rahoitusAtom={rahoitusAtom} opintojenRahoituksetP={rahoituksetP} />)
+      ift(hasRahoituksetAvailable, <OpintojenRahoitus tyyppiAtom={tyyppiAtom} rahoitusAtom={rahoitusAtom} opintojenRahoituksetP={rahoituksetP} />)
     }
   </div>)
 }
@@ -118,12 +119,18 @@ const OpiskeluoikeudenTila = ({tilaAtom, opiskeluoikeudenTilatP}) => {
     selected={tilaAtom}/>)
 }
 
-const OpintojenRahoitus = ({rahoitusAtom, opintojenRahoituksetP}) => {
+const OpintojenRahoitus = ({tyyppiAtom, rahoitusAtom, opintojenRahoituksetP}) => {
+  const options = Bacon.combineWith(tyyppiAtom, opintojenRahoituksetP, (tyyppi, rahoitukset) =>
+    koodiarvoMatch('lukiokoulutus')(tyyppi)
+      ? rahoitukset.filter(v => sallitutRahoituskoodiarvot.includes(v.koodiarvo))
+      : rahoitukset
+  )
+
   return (
     <KoodistoDropdown
       className="opintojenrahoitus"
       title="Opintojen rahoitus"
-      options={opintojenRahoituksetP}
+      options={options}
       selected={rahoitusAtom}
     />
   )
