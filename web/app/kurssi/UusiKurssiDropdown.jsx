@@ -60,7 +60,11 @@ const completeWithFieldAlternatives = (oppiaine, kurssiPrototypes) => {
   const alternativesForField = (model) => {
     if (!oppiaineKoodisto) return []
 
-    const kurssiKoodistot = modelLookup(model, 'tunniste').alternativesPath.split('/').last()
+    const koodistoAlternativesPath = modelLookup(model, 'tunniste').alternativesPath
+    const kurssiKoodistot = koodistoAlternativesPath && koodistoAlternativesPath.split('/').last()
+
+    if (!kurssiKoodistot) return []
+
     const koodistot = kurssiKoodistot.split(',')
     const queryKoodistot = findKoodistoByDiaarinumero(koodistot, oppimaaraDiaarinumero) || kurssiKoodistot
     const loc = parseLocation(`/koski/api/editor/kurssit/${oppiaineKoodisto}/${oppiaineKoodiarvo}/${queryKoodistot}`)

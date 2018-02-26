@@ -6,7 +6,7 @@ import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
 import fi.oph.koski.localization.LocalizedString.{concat, english}
 import fi.oph.koski.localization.LocalizedStringImplicits._
-import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, OksaUri}
+import fi.oph.koski.schema.annotation.{FlattenInUI, KoodistoKoodiarvo, KoodistoUri, OksaUri}
 import fi.oph.scalaschema.annotation._
 
 @Description("IB-tutkinnon opiskeluoikeus")
@@ -192,6 +192,7 @@ trait PreIBKurssi extends Koulutusmoduuli
 case class IBKurssi(
   kuvaus: LocalizedString,
   @OksaUri("tmpOKSAID873", "kurssi")
+  @FlattenInUI
   tunniste: PaikallinenKoodi,
   @Discriminator
   pakollinen: Boolean = true,
