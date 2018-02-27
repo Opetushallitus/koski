@@ -445,7 +445,7 @@ object AmmatillisenTutkinnonOsa {
   val yhteisetTutkinnonOsat = List("101053", "101054", "101055", "101056").map(Koodistokoodiviite(_, "tutkinnonosat"))
 }
 
-trait ValtakunnallinenTutkinnonOsa extends AmmatillisenTutkinnonOsa with KoodistostaLöytyväKoulutusmoduuli with Valinnaisuus with ValmaKoulutuksenOsa with TelmaKoulutuksenOsa with NäyttötutkintoonValmistavanKoulutuksenOsa {
+trait ValtakunnallinenTutkinnonOsa extends AmmatillisenTutkinnonOsa with KoodistostaLöytyväKoulutusmoduuli with Valinnaisuus with TelmaKoulutuksenOsa with NäyttötutkintoonValmistavanKoulutuksenOsa {
   @Description("Tutkinnon osan kansallinen koodi")
   @KoodistoUri("tutkinnonosat")
   def tunniste: Koodistokoodiviite
@@ -462,14 +462,14 @@ case class YhteinenTutkinnonOsa(
   tunniste: Koodistokoodiviite,
   pakollinen: Boolean,
   override val laajuus: Option[LaajuusOsaamispisteissä]
-) extends ValtakunnallinenTutkinnonOsa
+) extends ValtakunnallinenTutkinnonOsa with ValmaKoulutuksenOsa
 
 @Description("Opetussuunnitelmaan kuuluvan tutkinnon osan tunnistetiedot")
 case class MuuValtakunnallinenTutkinnonOsa(
   tunniste: Koodistokoodiviite,
   pakollinen: Boolean,
   override val laajuus: Option[LaajuusOsaamispisteissä]
-) extends ValtakunnallinenTutkinnonOsa with MuuKuinYhteinenTutkinnonOsa
+) extends ValtakunnallinenTutkinnonOsa with MuuKuinYhteinenTutkinnonOsa with MuuKuinYhteinenValmakoulutuksenOsa
 
 @Description("Paikallisen tutkinnon osan tunnistetiedot")
 case class PaikallinenTutkinnonOsa(
@@ -781,28 +781,60 @@ case class ValmaKoulutuksenSuoritus(
   ryhmä: Option[String] = None
 ) extends ValmentavaSuoritus with AmmatillinenPäätasonSuoritus with Ryhmällinen
 
-@Description("Suoritettavan VALMA-koulutuksen osan / osien tiedot")
-@Title("VALMA-koulutuksen osan suoritus")
-case class ValmaKoulutuksenOsanSuoritus(
+trait ValmaKoulutuksenOsanSuoritus extends ValmentavanKoulutuksenOsanSuoritus with MahdollisestiSuorituskielellinen {
   @Title("Koulutuksen osa")
   @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osan tunnistetiedot")
-  koulutusmoduuli: ValmaKoulutuksenOsa,
+  def koulutusmoduuli: ValmaKoulutuksenOsa
+  def arviointi: Option[List[AmmatillinenArviointi]]
+  def vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä]
+  def alkamispäivä: Option[LocalDate]
+  def suorituskieli: Option[Koodistokoodiviite]
+  @Tooltip("Tiedot aiemmin hankitun osaamisen tunnustamisesta.")
+  @ComplexObject
+  def tunnustettu: Option[OsaamisenTunnustaminen]
+  @Tooltip("Suoritukseen liittyvät lisätiedot, kuten esimerkiksi mukautettu arviointi tai poikkeus arvioinnissa. Sisältää lisätiedon tyypin sekä vapaamuotoisen kuvauksen.")
+  def lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]]
+  @Description("Suoritukseen liittyvän näytön tiedot")
+  @Tooltip("Tutkinnon tai koulutuksen osan suoritukseen kuuluvan ammattiosaamisen näytön tiedot.")
+  @ComplexObject
+  def näyttö: Option[Näyttö]
+  @KoodistoKoodiarvo("valmakoulutuksenosa")
+  def tyyppi: Koodistokoodiviite
+}
+
+@Description("Suoritettavan, muun kuin yhteisen VALMA-koulutuksen osan / osien tiedot")
+@Title("Muun VALMA-koulutuksen osan suoritus")
+case class MuunValmaKoulutuksenOsanSuoritus(
+  @Discriminator
+  koulutusmoduuli: MuuKuinYhteinenValmakoulutuksenOsa,
   arviointi: Option[List[AmmatillinenArviointi]],
   vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä] = None,
   override val alkamispäivä: Option[LocalDate] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  @Tooltip("Tiedot aiemmin hankitun osaamisen tunnustamisesta.")
-  @ComplexObject
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
-  @Tooltip("Suoritukseen liittyvät lisätiedot, kuten esimerkiksi mukautettu arviointi tai poikkeus arvioinnissa. Sisältää lisätiedon tyypin sekä vapaamuotoisen kuvauksen.")
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
-  @Description("Suoritukseen liittyvän näytön tiedot")
-  @Tooltip("Tutkinnon tai koulutuksen osan suoritukseen kuuluvan ammattiosaamisen näytön tiedot.")
-  @ComplexObject
   näyttö: Option[Näyttö] = None,
-  @KoodistoKoodiarvo("valmakoulutuksenosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("valmakoulutuksenosa", koodistoUri = "suorituksentyyppi")
-) extends ValmentavanKoulutuksenOsanSuoritus with MahdollisestiSuorituskielellinen
+) extends ValmaKoulutuksenOsanSuoritus {
+  override def osasuoritukset = None
+}
+
+@Description("Suoritettavan yhteisen VALMA-koulutuksen osan / osien tiedot")
+@Title("Yhteisen VALMA-koulutuksen osan suoritus")
+case class YhteisenValmaKoulutuksenOsanSuoritus(
+  @Discriminator
+  koulutusmoduuli: YhteinenTutkinnonOsa,
+  arviointi: Option[List[AmmatillinenArviointi]],
+  vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä] = None,
+  override val alkamispäivä: Option[LocalDate] = None,
+  suorituskieli: Option[Koodistokoodiviite] = None,
+  tunnustettu: Option[OsaamisenTunnustaminen] = None,
+  lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
+  näyttö: Option[Näyttö] = None,
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("valmakoulutuksenosa", koodistoUri = "suorituksentyyppi"),
+  @Title("Osa-alueet")
+  override val osasuoritukset: Option[List[YhteisenTutkinnonOsanOsaAlueenSuoritus]] = None
+) extends ValmaKoulutuksenOsanSuoritus
 
 @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen (VALMA) tunnistetiedot")
 @Title("Valma-koulutus")
@@ -816,6 +848,7 @@ case class ValmaKoulutus(
 ) extends DiaarinumerollinenKoulutus with LaajuuttaEiValidoida
 
 trait ValmaKoulutuksenOsa extends Koulutusmoduuli with LaajuuttaEiValidoida
+trait MuuKuinYhteinenValmakoulutuksenOsa extends ValmaKoulutuksenOsa
 
 @Description("Ammatilliseen peruskoulutukseen valmentavan koulutuksen osan tunnistetiedot")
 @Title("Paikallinen Valma-koulutuksen osa")
@@ -826,7 +859,7 @@ case class PaikallinenValmaKoulutuksenOsa(
   kuvaus: LocalizedString,
   laajuus: Option[LaajuusOsaamispisteissä],
   pakollinen: Boolean
-) extends PaikallinenKoulutusmoduuli with Valinnaisuus with ValmaKoulutuksenOsa
+) extends PaikallinenKoulutusmoduuli with Valinnaisuus with MuuKuinYhteinenValmakoulutuksenOsa
 
 @Description("Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)")
 @Title("TELMA-koulutuksen suoritus")
@@ -871,7 +904,9 @@ case class TelmaKoulutuksenOsanSuoritus(
   näyttö: Option[Näyttö] = None,
   @KoodistoKoodiarvo("telmakoulutuksenosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("telmakoulutuksenosa", koodistoUri = "suorituksentyyppi")
-) extends ValmentavanKoulutuksenOsanSuoritus with MahdollisestiSuorituskielellinen
+) extends ValmentavanKoulutuksenOsanSuoritus with MahdollisestiSuorituskielellinen {
+  override def osasuoritukset = None
+}
 
 @Description("Työhön ja itsenäiseen elämään valmentavan koulutuksen (TELMA) tunnistetiedot")
 @Title("Telma-koulutus")
