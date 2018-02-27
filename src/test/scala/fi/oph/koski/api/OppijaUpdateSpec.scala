@@ -88,6 +88,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       }
       "Koulutustyyppi" - {
         "nuorten perusopetus" in {
+          resetFixtures
           val oo = PerusopetuksenOpiskeluoikeus(
             oppilaitos = Some(jyväskylänNormaalikoulu),
             suoritukset = List(perusopetuksenOppimääränSuoritus),
@@ -97,6 +98,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         }
 
         "aikuisten perusopetus" in {
+          resetFixtures
           val oo = AikuistenPerusopetuksenOpiskeluoikeus(
             oppilaitos = Some(jyväskylänNormaalikoulu),
             suoritukset = List(aikuistenPerusopetukseOppimääränSuoritus(aikuistenPerusopetus2017, oppiaineidenSuoritukset2017)),
@@ -106,12 +108,14 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         }
 
         "ammatillinen" in {
+          resetFixtures
           val oo = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus.copy(suoritukset = List(autoalanPerustutkinnonSuoritus())))
           oo.suoritukset.head.koulutusmoduuli.asInstanceOf[Koulutus].koulutustyyppi.get.koodiarvo should equal("1")
         }
       }
 
       "Koulutustoimijan tiedot" in {
+        resetFixtures
         val opiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus)
         opiskeluoikeus.koulutustoimija.map(_.oid) should equal(Some("1.2.246.562.10.346830761110"))
       }
