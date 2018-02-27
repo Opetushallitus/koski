@@ -51,8 +51,23 @@ describe('Ammatillinen koulutus', function() {
           addOppija.selectOppilaitos('Stadin'),
           addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen')
         )
+
         it('Näytetään opintojen rahoitus -kenttä', function() {
           expect(addOppija.rahoitusIsVisible()).to.equal(true)
+        })
+
+        it('Vaihtoehtoina on kaikki opintojenRahoitus-vaihtoehdot', function() {
+          expect(addOppija.opintojenRahoitukset()).to.deep.equal([
+            'Valtionosuusrahoitteinen koulutus',
+            'Työvoimakoulutus ely-keskukset ja työ- ja elinkeinotoimistot (kansallinen rahoitus)',
+            'Työvoimakoulutus (ESR-rahoitteinen)',
+            'Työnantajan kokonaan rahoittama',
+            'Muuta kautta rahoitettu',
+            'Nuorten aikuisten osaamisohjelma',
+            'Aikuisten osaamisperustan vahvistaminen',
+            'Maahanmuuttajien ammatillinen koulutus (valtionavustus)',
+            'Työvoimakoulutus (OKM rahoitus)'
+          ])
         })
       })
 

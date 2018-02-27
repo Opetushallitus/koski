@@ -20,7 +20,10 @@ const createOppiaineenSuoritus = (model, suoritusClass) => {
   return contextualizeSubModel(proto, oppiaineet, newItemIndex)
 }
 
+const sallitutRahoituskoodiarvot = ['1', '6']
+
 export {
   perusteenDiaarinumeroToOppimäärä,
-  createOppiaineenSuoritus
+  createOppiaineenSuoritus,
+  sallitutRahoituskoodiarvot
 }
