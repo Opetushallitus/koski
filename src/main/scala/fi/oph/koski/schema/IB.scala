@@ -197,7 +197,7 @@ case class IBKurssi(
   @Discriminator
   pakollinen: Boolean = true,
   override val laajuus: Option[LaajuusKursseissa]
-) extends Koulutusmoduuli with Valinnaisuus with PreIBKurssi {
+) extends Koulutusmoduuli with Valinnaisuus with PreIBKurssi with StorablePreference {
   def nimi: LocalizedString = tunniste.nimi
 }
 
