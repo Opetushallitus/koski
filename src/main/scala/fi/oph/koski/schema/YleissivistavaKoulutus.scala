@@ -60,5 +60,6 @@ trait NumeerinenYleissivistävänKoulutuksenArviointi extends YleissivistävänK
 trait SanallinenYleissivistävänKoulutuksenArviointi extends YleissivistävänKoulutuksenArviointi with SanallinenArviointi {
   @KoodistoKoodiarvo("S")
   @KoodistoKoodiarvo("H")
+  @KoodistoKoodiarvo("O")
   def arvosana: Koodistokoodiviite
 }
