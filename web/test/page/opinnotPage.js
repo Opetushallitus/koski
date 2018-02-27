@@ -1,41 +1,67 @@
 function OpinnotPage() {
+  function resolveOpiskeluoikeus(indexOrName) {
+    var all = S('.opiskeluoikeuksientiedot > li > div.opiskeluoikeus')
+    if (typeof indexOrName === 'undefined') {
+      // most common case, just a single opiskeluoikeus
+      if (all.length !== 1) {
+        throw new Error('opiskeluoikeus not found, expected one, got ' + all.length)
+      }
+      return all
+    } else if (typeof indexOrName === 'string') {
+      // find the right opiskeluoikeus by name (safe against changes in sorting)
+      var matching = all.filter(function(i,v) { return $(v).find(".otsikkotiedot").text().includes(indexOrName) })
+      if (matching.length !== 1) {
+        throw new Error('opiskeluoikeus not found, got ' + matching.length + ' matches for ' + indexOrName)
+      }
+      return matching
+    } else if (typeof indexOrName === 'number') {
+      // find the right opiskeluoikeus by position (will break when sorting is changed)
+      if (indexOrName >= all.length) {
+        throw new Error('opiskeluoikeus not found, got ' + all.length + ' items but wanted index ' + indexOrName)
+      }
+      return all.eq(indexOrName)
+    } else {
+      throw new Error('opiskeluoikeus not found, unknown type ' + typeof indexOrName)
+    }
+  }
   var api = {
-    getOpiskeluoikeudenTila: function(index) {
-      index = typeof index !== 'undefined' ? index : 0
-      var nth = S('.opiskeluoikeus .opiskeluoikeuden-tiedot .property.tila .value')[index]
-      return S(nth).text()
+    getOpiskeluoikeudenTila: function(indexOrName) {
+      var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
+      return findSingle('.opiskeluoikeuden-tiedot .property.tila .value', opiskeluoikeus)().text()
     },
-    getTutkinto: function(index) {
-      index = typeof index !== 'undefined' ? index : 0
-      var nth = S('.opiskeluoikeus .suoritus .property.koulutusmoduuli .koulutusmoduuli .tunniste')[index]
-      return S(nth).text()
+    getTutkinto: function(indexOrName) {
+      var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
+      return opiskeluoikeus.find('.suoritus .property.koulutusmoduuli .koulutusmoduuli .tunniste').text()
     },
-    getOppilaitos: function(index) {
-      index = typeof index !== 'undefined' ? index : 0
-      return S(S('.opiskeluoikeus > h3 .otsikkotiedot .oppilaitos')[index]).text().slice(0, -1)
+    getOppilaitos: function(indexOrName) {
+      var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
+      return opiskeluoikeus.find('h3 .otsikkotiedot .oppilaitos', opiskeluoikeus).text().slice(0, -1)
     },
-    getSuorituskieli: function(index) {
-      index = typeof index !== 'undefined' ? index : 0
-      var nth = S('.opiskeluoikeus .suoritus .property.suorituskieli .value')[index]
-      return S(nth).text()
+    getSuorituskieli: function(indexOrName) {
+      var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
+      return opiskeluoikeus.find('.suoritus .property.suorituskieli .value').text()
     },
-    valitseSuoritus: function(opiskeluoikeusIndex, nimi) {
+    valitseSuoritus: function(indexOrName, nimi) {
       return function() {
-        var tab = findSingle('.opiskeluoikeuksientiedot > li:nth-child('+opiskeluoikeusIndex+')')().find('.suoritus-tabs > ul > li:contains(' + nimi + ')')
+        var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
+        var tab = findFirst('.suoritus-tabs > ul > li:contains(' + nimi + ')', opiskeluoikeus)()
         if (!tab.hasClass('selected')) {
           return click(findSingle('a', tab.eq(0)))()
         }
       }
     },
-    suoritusOnValittu: function(opiskeluoikeusIndex, nimi) {
-      var tab = findSingle('.opiskeluoikeuksientiedot > li:nth-child('+opiskeluoikeusIndex+')')().find('.suoritus-tabs > ul > li:contains(' + nimi + ')')
+    suoritusOnValittu: function(indexOrName, nimi) {
+      var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
+      var tab = findSingle('.suoritus-tabs > ul > li:contains(' + nimi + ')', opiskeluoikeus)()
       return tab.hasClass('selected')
     },
-    suoritusTabs: function(opiskeluoikeusIndex) {
-      return textsOf(subElement(findSingle('.opiskeluoikeuksientiedot > li:nth-child('+opiskeluoikeusIndex+')'), ('.suoritus-tabs > ul > li')))
+    suoritusTabs: function(indexOrName) {
+      var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
+      return textsOf(subElement(opiskeluoikeus, '.suoritus-tabs > ul > li'))
     },
-    suoritusTabIndex: function(opiskeluoikeusIndex){
-      var tabs = toArray(subElement(findSingle('.opiskeluoikeuksientiedot > li:nth-child('+opiskeluoikeusIndex+')'), '.suoritus-tabs > ul > li'))
+    suoritusTabIndex: function(indexOrName){
+      var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
+      var tabs = toArray(subElement(opiskeluoikeus, '.suoritus-tabs > ul > li'))
       for (var i in tabs) {
         if (S(tabs[i]).hasClass('selected')) return parseInt(i)
       }
@@ -50,16 +76,21 @@ function OpinnotPage() {
     isDirty: function() {
       return S('.oppija-content.dirty').is(':visible')
     },
-    avaaOpintosuoritusote: function (index) {
+    avaaOpintosuoritusote: function(indexOrName) {
       return seq(
-        click(findSingle('.opiskeluoikeuksientiedot li:nth-child('+index+') a.opintosuoritusote')),
+        click(function() {
+          var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
+          return findSingle('a.opintosuoritusote', opiskeluoikeus)
+        }),
         wait.until(OpintosuoritusotePage().isVisible)
       )
     },
-    avaaTodistus: function(index) {
-      index = typeof index !== 'undefined' ? index : 0
+    avaaTodistus: function(indexOrName) {
       return seq(
-        click('a.todistus:eq(' + index + ')'),
+        click(function() {
+          var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
+          return findSingle('a.todistus', opiskeluoikeus)
+        }),
         wait.until(TodistusPage().isVisible)
       )
     },
@@ -70,8 +101,7 @@ function OpinnotPage() {
     },
     opiskeluoikeudet: Opiskeluoikeudet(),
     opiskeluoikeusEditor: function(index) {
-      index = index || 0
-      var elem = findSingle('.opiskeluoikeus-content:eq(' + index + ')')
+      var elem = findSingle('.opiskeluoikeus-content', function() { return resolveOpiskeluoikeus(index) })
       return _.merge(
         Editor(elem),
         {
@@ -427,7 +457,10 @@ function Opiskeluoikeudet() {
 
     valitseOpiskeluoikeudenTyyppi: function(tyyppi) {
       return function() {
-        return click(findSingle('.opiskeluoikeustyypit-nav .' + tyyppi + ' a'))()
+        var tab = findSingle('.opiskeluoikeustyypit-nav .' + tyyppi)()
+        if (!tab.hasClass('selected')) {
+          return click(findSingle('a', tab))()
+        }
       }
     },
     lisääOpiskeluoikeus: click(findSingle('.add-opiskeluoikeus a')),
@@ -543,7 +576,7 @@ function LisääSuoritusDialog() {
     },
     lisääSuoritus: function() {
       if (!api.isEnabled()) throw new Error('button not enabled')
-      function count() { return OpinnotPage().suoritusTabs(1).length }
+      function count() { return OpinnotPage().suoritusTabs().length }
       var prevCount = count()
       return Q()
         .then(click(buttonElem))

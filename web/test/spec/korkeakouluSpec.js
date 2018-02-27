@@ -13,8 +13,8 @@ describe('Korkeakoulutus', function() {
     )
     describe('Oppilaitos ja tutkinto', function() {
       it('näytetään', function() {
-        expect(opinnot.getTutkinto()).to.equal('Dipl.ins., konetekniikka')
-        expect(opinnot.getOppilaitos()).to.equal('Aalto-yliopisto')
+        expect(opinnot.getTutkinto('konetekniikka')).to.equal('Dipl.ins., konetekniikka')
+        expect(opinnot.getOppilaitos('konetekniikka')).to.equal('Aalto-yliopisto')
       })
     })
     describe('Kaikki tiedot näkyvissä', function() {
@@ -24,7 +24,7 @@ describe('Korkeakoulutus', function() {
       })
     })
     describe('Opintosuoritusote', function() {
-      before(opinnot.avaaOpintosuoritusote(1))
+      before(opinnot.avaaOpintosuoritusote('konetekniikka'))
 
       describe('Kun klikataan linkkiä', function() {
         it('näytetään', function() {
@@ -47,12 +47,12 @@ describe('Korkeakoulutus', function() {
     )
     describe('Oppilaitos ja tutkinto', function() {
       it('näytetään', function() {
-        expect(opinnot.getTutkinto(1)).to.equal('Dipl.ins., kemian tekniikka')
-        expect(opinnot.getOppilaitos(1)).to.equal('Aalto-yliopisto')
+        expect(opinnot.getTutkinto('Dipl.ins., kemian tekniikka')).to.equal('Dipl.ins., kemian tekniikka')
+        expect(opinnot.getOppilaitos('Dipl.ins., kemian tekniikka')).to.equal('Aalto-yliopisto')
       })
     })
     describe('Opiskeluoikeus', function() {
-      before(opinnot.avaaOpintosuoritusote(2))
+      before(opinnot.avaaOpintosuoritusote('Dipl.ins., kemian tekniikka'))
       it('näytetään', function() {
         expect(S('section.opiskeluoikeus h3').text()).to.equal('Ensisijainen opinto-oikeus')
       })
@@ -62,7 +62,7 @@ describe('Korkeakoulutus', function() {
     before(
       page.openPage,
       page.oppijaHaku.searchAndSelect('010675-9981'),
-      opinnot.avaaOpintosuoritusote(1)
+      opinnot.avaaOpintosuoritusote('Lääketieteen')
     )
     it('näytetään', function() {
       expect(S('section.opiskeluoikeus h3').text()).to.equal('Ensisijainen opinto-oikeus')

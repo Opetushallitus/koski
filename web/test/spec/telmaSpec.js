@@ -54,7 +54,7 @@ describe('Telma', function() {
     })
 
     describe('Tulostettava todistus', function() {
-      before(opinnot.avaaTodistus(0))
+      before(opinnot.avaaTodistus())
       it('näytetään', function() {
         // See more detailed content specification in TelmaSpec.scala
         expect(todistus.vahvistus()).to.equal('Helsinki 4.6.2016 Reijo Reksi rehtori')

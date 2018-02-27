@@ -12,7 +12,7 @@ describe('Perusopetus', function() {
   before(Authentication().login(), resetFixtures)
 
   describe('Perusopetuksen lukuvuositodistukset ja päättötodistus', function() {
-    before(page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'))
+    before(page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'), opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetus'))
 
     it('näyttää opiskeluoikeuden tiedot', function() {
       expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2016\n' +
@@ -79,7 +79,7 @@ describe('Perusopetus', function() {
     })
 
     describe('Lukuvuosisuoritus 8. luokka', function() {
-      before(TodistusPage().close, wait.until(page.isOppijaSelected('Kaisa')), opinnot.valitseSuoritus(1, '8. vuosiluokka'))
+      before(TodistusPage().close, wait.until(page.isOppijaSelected('Kaisa')), opinnot.valitseSuoritus(undefined, '8. vuosiluokka'))
       describe('Kaikki tiedot näkyvissä', function() {
         before(opinnot.expandAll)
         it('näyttää suorituksen tiedot', function() {
@@ -139,7 +139,7 @@ describe('Perusopetus', function() {
     })
 
     describe('Lukuvuosisuoritus 9. luokka', function() {
-      before(TodistusPage().close, wait.until(page.isOppijaSelected('Kaisa')), opinnot.valitseSuoritus(1, '9. vuosiluokka'))
+      before(TodistusPage().close, wait.until(page.isOppijaSelected('Kaisa')), opinnot.valitseSuoritus(undefined, '9. vuosiluokka'))
       describe('Kaikki tiedot näkyvissä', function() {
         before(opinnot.expandAll)
         it('näyttää suorituksen tiedot', function() {
@@ -160,7 +160,7 @@ describe('Perusopetus', function() {
     })
 
     describe('Luokalle jäänyt 7-luokkalainen', function() {
-      before(TodistusPage().close, wait.until(page.isOppijaSelected('Kaisa')), opinnot.valitseSuoritus(1, '7. vuosiluokka'))
+      before(TodistusPage().close, wait.until(page.isOppijaSelected('Kaisa')), opinnot.valitseSuoritus(undefined, '7. vuosiluokka'))
       describe('Kaikki tiedot näkyvissä', function() {
         before(opinnot.expandAll)
         it('näyttää suorituksen tiedot', function() {
@@ -269,7 +269,7 @@ describe('Perusopetus', function() {
       })
 
       describe('Tulostettava todistus', function() {
-        before(opinnot.valitseSuoritus(1, 'Päättötodistus'), opinnot.avaaTodistus(0))
+        before(opinnot.valitseSuoritus(undefined, 'Päättötodistus'), opinnot.avaaTodistus())
         it('näytetään', function() {
           // See more detailed content specification in PerusopetusSpec.scala
           expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
@@ -473,7 +473,7 @@ describe('Perusopetus', function() {
     })
 
     describe('Alkuvaiheen opinnot', function() {
-      before(opinnot.valitseSuoritus(1, 'Aikuisten perusopetuksen oppimäärän alkuvaihe'), opinnot.expandAll)
+      before(opinnot.valitseSuoritus(undefined, 'Aikuisten perusopetuksen oppimäärän alkuvaihe'), opinnot.expandAll)
       it('näyttää suorituksen tiedot', function() {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal('Koulutus Aikuisten perusopetuksen oppimäärän alkuvaihe OPH-1280-2017\n' +
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
@@ -546,7 +546,7 @@ describe('Perusopetus', function() {
   })
 
   describe('Tietojen muuttaminen', function() {
-    before(page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'))
+    before(page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'), opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetus'))
 
     describe('Opiskeluoikeuden tiedot', function() {
       it('Alkutila', function() {
@@ -647,7 +647,7 @@ describe('Perusopetus', function() {
           })
 
           describe('Kun suoritus on kesken', function() {
-            before(page.openPage, page.oppijaHaku.searchAndSelect('160932-311V'), opinnot.valitseSuoritus(1, 'Päättötodistus'), opinnot.opiskeluoikeusEditor().edit, opinnot.avaaLisaysDialogi)
+            before(page.openPage, page.oppijaHaku.searchAndSelect('160932-311V'), opinnot.valitseSuoritus(undefined, 'Päättötodistus'), opinnot.opiskeluoikeusEditor().edit, opinnot.avaaLisaysDialogi)
 
             it('Valmistunut-tilaa ei voi lisätä', function() {
               expect(OpiskeluoikeusDialog().radioEnabled('valmistunut')).to.equal(false)
@@ -679,7 +679,7 @@ describe('Perusopetus', function() {
         })
 
         describe('Peruutettu', function() {
-          before(page.oppijaHaku.searchAndSelect('220109-784L'), editor.edit)
+          before(page.oppijaHaku.searchAndSelect('220109-784L'), opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetus'), editor.edit)
           it('Alkutila', function() {
             expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal('')
           })
@@ -834,7 +834,7 @@ describe('Perusopetus', function() {
       })
 
       describe('Opiskeluoikeuden lisätiedot', function() {
-        before(page.oppijaHaku.selectOppija('220109-784L'))
+        before(page.oppijaHaku.selectOppija('220109-784L'), opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetus'))
         before(editor.edit, opinnot.expandAll, editor.property('perusopetuksenAloittamistaLykätty').setValue(true), editor.saveChanges, wait.until(page.isSavedLabelShown))
         describe('Lisätietojen lisäys', function() {
           it('Toimii', function() {
@@ -972,7 +972,7 @@ describe('Perusopetus', function() {
 
     describe('Suoritusten tiedot', function() {
       describe('Luokan muuttaminen', function() {
-        before(opinnot.valitseSuoritus(1, '9. vuosiluokka'), editor.edit)
+        before(opinnot.valitseSuoritus(undefined, '9. vuosiluokka'), editor.edit)
         describe('Tyhjäksi', function() {
           before(editor.property('luokka').setValue(''))
           it('Näyttää validaatiovirheen', function() {
@@ -1011,7 +1011,7 @@ describe('Perusopetus', function() {
         })
       })
       describe('Suorituskielen lisäys', function() {
-        before(opinnot.valitseSuoritus(1, 'Päättötodistus'), editor.edit)
+        before(opinnot.valitseSuoritus(undefined, 'Päättötodistus'), editor.edit)
         describe('Lisättäessä', function() {
           it('Näytetään oletus', function() {
             expect(editor.property('suorituskieli').getValue()).to.equal('suomi')
@@ -1027,14 +1027,14 @@ describe('Perusopetus', function() {
       describe('Todistuksella näkyvät lisätiedot', function() {
         describe('lisäys', function() {
           var lisätiedot = editor.property('todistuksellaNäkyvätLisätiedot')
-          before(opinnot.valitseSuoritus(1, 'Päättötodistus'), editor.edit, lisätiedot.setValue('Testitesti'), editor.saveChanges, wait.until(page.isSavedLabelShown))
+          before(opinnot.valitseSuoritus(undefined, 'Päättötodistus'), editor.edit, lisätiedot.setValue('Testitesti'), editor.saveChanges, wait.until(page.isSavedLabelShown))
           it('Uudet lisätiedot näytetään', function() {
             expect(lisätiedot.getValue()).to.equal('Testitesti')
           })
         })
         describe('poisto', function() {
           var lisätiedot = editor.property('todistuksellaNäkyvätLisätiedot')
-          before(opinnot.valitseSuoritus(1, 'Päättötodistus'),
+          before(opinnot.valitseSuoritus(undefined, 'Päättötodistus'),
             editor.edit,
             lisätiedot.setValue('Testitesti2'),
             editor.saveChanges,
@@ -1049,7 +1049,7 @@ describe('Perusopetus', function() {
         })
         describe('lisäys ja poisto kerralla', function() {
           var lisätiedot = editor.property('todistuksellaNäkyvätLisätiedot')
-          before(opinnot.valitseSuoritus(1, 'Päättötodistus'), editor.edit, lisätiedot.setValue('Testitesti'), wait.forAjax, lisätiedot.setValue(''), editor.saveChanges, wait.until(page.isSavedLabelShown))
+          before(opinnot.valitseSuoritus(undefined, 'Päättötodistus'), editor.edit, lisätiedot.setValue('Testitesti'), wait.forAjax, lisätiedot.setValue(''), editor.saveChanges, wait.until(page.isSavedLabelShown))
           it('Lisätiedot piilotetaan', function() {
             expect(lisätiedot.isVisible()).to.equal(false)
           })
@@ -1102,7 +1102,7 @@ describe('Perusopetus', function() {
       describe('Oppiaineen arvosanan muutos', function() {
         var äidinkieli = opinnot.oppiaineet.oppiaine(0)
         var arvosana = äidinkieli.propertyBySelector('.arvosana')
-        before(opinnot.valitseSuoritus(1, '7. vuosiluokka'))
+        before(opinnot.valitseSuoritus(undefined, '7. vuosiluokka'))
 
         describe('Kun annetaan numeerinen arvosana', function() {
           before(editor.edit, arvosana.selectValue('5'), editor.saveChanges)
@@ -1141,7 +1141,7 @@ describe('Perusopetus', function() {
         })
       })
       describe('Yksilöllistäminen', function() {
-        before(resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'),  editor.edit, opinnot.expandAll, editor.property('yksilöllistettyOppimäärä').setValue(true), editor.saveChanges)
+        before(resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'), opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetus'), editor.edit, opinnot.expandAll, editor.property('yksilöllistettyOppimäärä').setValue(true), editor.saveChanges)
         it('toimii', function() {
           expect(opinnot.oppiaineet.oppiaine(0).text()).to.equal('Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9 *')
         })
@@ -1156,7 +1156,7 @@ describe('Perusopetus', function() {
       })
       describe('Käyttäytymisen arvioinnin lisäys', function() {
         var arvosana = editor.subEditor('.kayttaytyminen').property('arvosana')
-        before(opinnot.valitseSuoritus(1, '7. vuosiluokka'), editor.edit, editor.propertyBySelector('.kayttaytyminen').addValue, editor.saveChanges)
+        before(opinnot.valitseSuoritus(undefined, '7. vuosiluokka'), editor.edit, editor.propertyBySelector('.kayttaytyminen').addValue, editor.saveChanges)
         describe('Muuttamatta arviointia', function() {
           it('Näyttää oletusarvon S', function() {
             expect(arvosana.getValue()).to.equal('S')
@@ -1180,7 +1180,7 @@ describe('Perusopetus', function() {
         // Liitetiedot testataan isolla testisetillä, joilla varmistetaan ArrayEditorin toiminta
         var liitetiedot = editor.property('liitetiedot')
         describe('Liitetietojen lisäys', function() {
-          before(opinnot.valitseSuoritus(1, '7. vuosiluokka'), editor.edit, liitetiedot.addItem, liitetiedot.property('kuvaus').setValue('TestiTesti'))
+          before(opinnot.valitseSuoritus(undefined, '7. vuosiluokka'), editor.edit, liitetiedot.addItem, liitetiedot.property('kuvaus').setValue('TestiTesti'))
           it('Editoinnin aikana ei näytetä ylimääräistä poistonappia', function() {
             expect(liitetiedot.isRemoveValueVisible()).to.equal(false)
           })
@@ -1229,7 +1229,7 @@ describe('Perusopetus', function() {
           })
         })
         describe('Useamman liitetiedon poisto kerralla', function() {
-          before(opinnot.valitseSuoritus(1, '7. vuosiluokka'),
+          before(opinnot.valitseSuoritus(undefined, '7. vuosiluokka'),
             editor.edit,
             liitetiedot.addItem, liitetiedot.itemEditor(0).property('kuvaus').setValue('T1'),
             liitetiedot.addItem, liitetiedot.itemEditor(1).property('kuvaus').setValue('T2'),
@@ -1247,7 +1247,7 @@ describe('Perusopetus', function() {
       })
 
       describe('Valinnainen oppiaine', function() {
-        before(opinnot.valitseSuoritus(1, '7. vuosiluokka'))
+        before(opinnot.valitseSuoritus(undefined, '7. vuosiluokka'))
         var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine('.valinnaiset')
         var uusiPakollinenOppiaine = opinnot.oppiaineet.uusiOppiaine('.pakolliset')
         describe('Valtakunnallisen oppiaineen lisääminen', function() {
@@ -1343,7 +1343,7 @@ describe('Perusopetus', function() {
         var uusiValinnainenOppiaine = opinnot.oppiaineet.uusiOppiaine('.valinnaiset')
         var filosofia = editor.subEditor('.pakollinen.FI')
         before(
-          opinnot.valitseSuoritus(1, 'Päättötodistus'),
+          opinnot.valitseSuoritus(undefined, 'Päättötodistus'),
           editor.edit,
           uusiOppiaine.selectValue('Filosofia'),
           filosofia.propertyBySelector('.arvosana').selectValue('8')
@@ -1439,7 +1439,7 @@ describe('Perusopetus', function() {
 
         it('Onnistuu normaalisti', function() {})
 
-        after(page.oppijaHaku.searchAndSelect('220109-784L'))
+        after(page.oppijaHaku.searchAndSelect('220109-784L'), opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetus'))
       })
 
       describe('Kun on tallentamattomia muutoksia', function() {
@@ -1466,7 +1466,7 @@ describe('Perusopetus', function() {
             expect(page.oppijataulukko.isVisible()).to.equal(true)
           })
 
-          after(page.oppijaHaku.selectOppija('220109-784L'))
+          after(page.oppijaHaku.selectOppija('220109-784L'), opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetus'))
         })
       })
     })
@@ -1518,7 +1518,7 @@ describe('Perusopetus', function() {
   describe('Opiskeluoikeuden versiot', function() {
     var versiohistoria = opinnot.versiohistoria
 
-    before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'), versiohistoria.avaa)
+    before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'), opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetus'), versiohistoria.avaa)
 
     it('Alussa on vain yksi versio', function() {
       expect(versiohistoria.listaa()).to.deep.equal(['v1'])
@@ -1528,7 +1528,7 @@ describe('Perusopetus', function() {
       var liitetiedot = editor.property('liitetiedot')
       before(
         versiohistoria.sulje,
-        opinnot.valitseSuoritus(1, '7. vuosiluokka'),
+        opinnot.valitseSuoritus(undefined, '7. vuosiluokka'),
         editor.edit,
         liitetiedot.addItem, liitetiedot.itemEditor(0).property('kuvaus').setValue('T2'),
         editor.saveChanges,
@@ -1587,25 +1587,25 @@ describe('Perusopetus', function() {
     before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('180497-112F'))
     describe('Alussa', function() {
       it('Uusimpien suoritusten välilehti valittu', function() {
-        expect(opinnot.suoritusOnValittu(1, '9. vuosiluokka')).to.equal(true)
-        expect(opinnot.suoritusOnValittu(2, '7. vuosiluokka')).to.equal(true)
+        expect(opinnot.suoritusOnValittu('Jyväskylän', '9. vuosiluokka')).to.equal(true)
+        expect(opinnot.suoritusOnValittu('Kulosaaren', '7. vuosiluokka')).to.equal(true)
       })
     })
     describe('Kun valitaan, ensimmäisestä opiskeluoikeudesta', function() {
-      before(opinnot.valitseSuoritus(1, '8. vuosiluokka'))
+      before(opinnot.valitseSuoritus('Jyväskylän', '8. vuosiluokka'))
       it('Toimii', function() {
-        expect(opinnot.suoritusOnValittu(1, '9. vuosiluokka')).to.equal(false)
-        expect(opinnot.suoritusOnValittu(1, '8. vuosiluokka')).to.equal(true)
-        expect(opinnot.suoritusOnValittu(2, '7. vuosiluokka')).to.equal(true)
+        expect(opinnot.suoritusOnValittu('Jyväskylän', '9. vuosiluokka')).to.equal(false)
+        expect(opinnot.suoritusOnValittu('Jyväskylän', '8. vuosiluokka')).to.equal(true)
+        expect(opinnot.suoritusOnValittu('Kulosaaren', '7. vuosiluokka')).to.equal(true)
       })
 
       describe('Kun valitaan, molemmista opiskeluoikeuksista', function() {
-        before(opinnot.valitseSuoritus(2, '6. vuosiluokka'), opinnot.valitseSuoritus(1, '9. vuosiluokka'))
+        before(opinnot.valitseSuoritus('Kulosaaren', '6. vuosiluokka'), opinnot.valitseSuoritus('Jyväskylän', '9. vuosiluokka'))
         it('Toimii', function() {
-          expect(opinnot.suoritusOnValittu(1, '9. vuosiluokka')).to.equal(true)
-          expect(opinnot.suoritusOnValittu(1, '8. vuosiluokka')).to.equal(false)
-          expect(opinnot.suoritusOnValittu(2, '7. vuosiluokka')).to.equal(false)
-          expect(opinnot.suoritusOnValittu(2, '6. vuosiluokka')).to.equal(true)
+          expect(opinnot.suoritusOnValittu('Jyväskylän', '9. vuosiluokka')).to.equal(true)
+          expect(opinnot.suoritusOnValittu('Jyväskylän', '8. vuosiluokka')).to.equal(false)
+          expect(opinnot.suoritusOnValittu('Kulosaaren', '7. vuosiluokka')).to.equal(false)
+          expect(opinnot.suoritusOnValittu('Kulosaaren', '6. vuosiluokka')).to.equal(true)
         })
       })
     })
@@ -1843,7 +1843,7 @@ describe('Perusopetus', function() {
         )
 
         it('Näytetään uusi suoritus', function() {
-          expect(opinnot.suoritusTabs(1)).to.deep.equal(['Aikuisten perusopetuksen oppimäärä', 'Aikuisten perusopetuksen oppimäärän alkuvaihe'])
+          expect(opinnot.suoritusTabs()).to.deep.equal(['Aikuisten perusopetuksen oppimäärä', 'Aikuisten perusopetuksen oppimäärän alkuvaihe'])
         })
       })
     })
@@ -1941,7 +1941,7 @@ describe('Perusopetus', function() {
         describe('Tallennuksen jälkeen', function() {
           before(editor.saveChanges)
           it('Näytetään uusi suoritus', function() {
-            expect(opinnot.suoritusTabs(1)).to.deep.equal(['Aikuisten perusopetuksen oppimäärä', 'Aikuisten perusopetuksen oppimäärän alkuvaihe'])
+            expect(opinnot.suoritusTabs()).to.deep.equal(['Aikuisten perusopetuksen oppimäärä', 'Aikuisten perusopetuksen oppimäärän alkuvaihe'])
           })
 
           it('Näytetään aikuisten perusopetuksen oppimäärä opiskeluoikeuden otsikossa', function() {
@@ -2001,7 +2001,7 @@ describe('Perusopetus', function() {
             )
 
             it('Näytetään uusi suoritus', function() {
-              expect(opinnot.suoritusTabs(1)).to.deep.equal(['A1-kieli', 'Matematiikka'])
+              expect(opinnot.suoritusTabs()).to.deep.equal(['A1-kieli', 'Matematiikka'])
             })
 
             it('Näytetään oppiaineiden määrä opiskeluoikeuden otsikossa', function() {
@@ -2085,7 +2085,7 @@ describe('Perusopetus', function() {
           expect(lisääSuoritus.isLinkVisible('lisää vuosiluokan suoritus')).to.equal(true)
         })
         it('Näytetään muut päätason suoritukset', function() {
-          expect(opinnot.suoritusTabs(1)).to.deep.equal(['Päättötodistus'])
+          expect(opinnot.suoritusTabs()).to.deep.equal(['Päättötodistus'])
         })
       })
       describe('Lisättäessä ensimmäinen', function() {
@@ -2110,7 +2110,7 @@ describe('Perusopetus', function() {
             before(lisääSuoritus.lisääSuoritus)
             describe('Käyttöliittymän tila', function() {
               it('Näytetään uusi suoritus', function() {
-                expect(opinnot.suoritusTabs(1)).to.deep.equal(['Päättötodistus', '1. vuosiluokka'])
+                expect(opinnot.suoritusTabs()).to.deep.equal(['Päättötodistus', '1. vuosiluokka'])
               })
               it('Uusi suoritus on valittuna', function() {
                 expect(opinnot.getTutkinto()).to.equal('1. vuosiluokka')
@@ -2220,7 +2220,7 @@ describe('Perusopetus', function() {
                         before(lisääSuoritus.property('luokka').setValue('2a'), lisääSuoritus.lisääSuoritus)
 
                         it('Uusin suoritus näytetään täbeissä viimeisenä', function() {
-                          expect(opinnot.suoritusTabs(1)).to.deep.equal(['Päättötodistus', '1. vuosiluokka', '2. vuosiluokka'])
+                          expect(opinnot.suoritusTabs()).to.deep.equal(['Päättötodistus', '1. vuosiluokka', '2. vuosiluokka'])
                         })
 
                         it('Uusi suoritus on valittuna', function() {
@@ -2276,7 +2276,7 @@ describe('Perusopetus', function() {
                                   })
 
                                   it('Uusi suoritus on täbeissä ennen vanhempaa 2.luokan suoritusta', function() {
-                                    expect(opinnot.suoritusTabIndex(1)).to.equal(1)
+                                    expect(opinnot.suoritusTabIndex()).to.equal(1)
                                   })
 
                                   describe('Kun kaikki luokka-asteet on lisätty', function() {
@@ -2294,7 +2294,7 @@ describe('Perusopetus', function() {
                                     })
 
                                     describe('Uudempi 2.luokan suoritus', function() {
-                                      before(editor.saveChanges, opinnot.valitseSuoritus(1, '2. vuosiluokka'))
+                                      before(editor.saveChanges, opinnot.valitseSuoritus(undefined, '2. vuosiluokka'))
                                       it('On edelleen täbeissä ennen vanhempaa 2.luokan suoritusta', function() {
                                         expect(editor.property('luokka').getValue()).to.equal('2x')
                                       })
@@ -2302,7 +2302,7 @@ describe('Perusopetus', function() {
 
                                     describe('Kun poistetaan myöntäjä listalta', function() {
                                       before(
-                                        opinnot.valitseSuoritus(1, '2. vuosiluokka'),
+                                        opinnot.valitseSuoritus(undefined, '2. vuosiluokka'),
                                         editor.edit,
                                         opinnot.oppiaineet.merkitseOppiaineetValmiiksi,
                                         tilaJaVahvistus.merkitseValmiiksi,
@@ -2424,7 +2424,7 @@ describe('Perusopetus', function() {
 
     describe('Aluksi', function() {
       it('Näytetään 9. luokan suoritus, koska oppijalla ei ole päättötodistusta', function() {
-        expect(opinnot.getTutkinto(0)).to.equal('9. vuosiluokka')
+        expect(opinnot.getTutkinto()).to.equal('9. vuosiluokka')
       })
 
       it('Oppiaineita ei näytetä', function() {
@@ -2494,7 +2494,7 @@ describe('Perusopetus', function() {
 
         describe('Perusopetuksen oppimäärän vahvistaminen', function() {
           before(
-            opinnot.valitseSuoritus(1, 'Päättötodistus'),
+            opinnot.valitseSuoritus(undefined, 'Päättötodistus'),
             wait.forAjax,
             opinnot.oppiaineet.uusiOppiaine('.pakolliset').selectValue('Matematiikka'),
             opinnot.oppiaineet.merkitseOppiaineetValmiiksi,
@@ -2524,7 +2524,7 @@ describe('Perusopetus', function() {
 
             describe('Käyttöliittymän tila', function() {
               before(
-                opinnot.valitseSuoritus(1, '9. vuosiluokka')
+                opinnot.valitseSuoritus(undefined, '9. vuosiluokka')
               )
               it('Merkitsee myös 9. vuosiluokan suorituksen valmiiksi', function() {
                 expect(tilaJaVahvistus.tila()).to.equal('Suoritus valmis')
@@ -2540,7 +2540,7 @@ describe('Perusopetus', function() {
                 editor.saveChanges
               )
               it('Pysytään päättötodistus -täbillä', function() {
-                expect(opinnot.getTutkinto(0)).to.equal('Perusopetus')
+                expect(opinnot.getTutkinto()).to.equal('Perusopetus')
               })
             })
           })
@@ -2574,7 +2574,7 @@ describe('Perusopetus', function() {
       })
     })
     describe('Tulostettava todistus', function() {
-      before(opinnot.avaaTodistus(0))
+      before(opinnot.avaaTodistus())
       it('näytetään', function() {
         expect(todistus.headings()).to.equal('Jyväskylän yliopisto Todistus perusopetuksen oppiaineen oppimäärän suorittamisesta Jyväskylän normaalikoulu Oppiaineenkorottaja, Olli 110738-839L')
         expect(todistus.arvosanarivi('.oppiaine.AI')).to.equal('Äidinkieli ja kirjallisuus Kiitettävä 9')
@@ -2707,7 +2707,7 @@ describe('Perusopetus', function() {
       })
     })
     describe('Tulostettava todistus', function() {
-      before(opinnot.avaaTodistus(0))
+      before(opinnot.avaaTodistus())
       it('näytetään', function() {
         expect(todistus.headings()).to.equal('Jyväskylän yliopisto Todistus lisäopetuksen suorittamisesta Jyväskylän normaalikoulu Kymppiluokkalainen, Kaisa 131025-6573')
         // See more detailed content specification in PerusopetusSpec.scala
@@ -2874,7 +2874,7 @@ describe('Perusopetus', function() {
       })
     })
     describe('Tulostettava todistus', function() {
-      before(opinnot.avaaTodistus(0))
+      before(opinnot.avaaTodistus())
       it('näytetään', function() {
         expect(todistus.vahvistus()).to.equal('Jyväskylä 1.6.2008 Reijo Reksi rehtori')
         // See more detailed content specification in PerusopetusSpec.scala

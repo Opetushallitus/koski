@@ -8,10 +8,10 @@ describe('Lukiokoulutus', function( ){
   before(Authentication().login(), resetFixtures)
 
   describe('Lukion päättötodistus', function() {
-    before(page.openPage, page.oppijaHaku.searchAndSelect('020655-2479'))
+    before(page.openPage, page.oppijaHaku.searchAndSelect('020655-2479'), opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('lukiokoulutus'))
     describe('Oppijan suorituksissa', function() {
       it('näytetään', function() {
-        expect(opinnot.getTutkinto(0)).to.equal("Lukion oppimäärä")
+        expect(opinnot.getTutkinto()).to.equal("Lukion oppimäärä")
         expect(opinnot.getOppilaitos()).to.equal("Jyväskylän normaalikoulu")
       })
     })
@@ -67,7 +67,7 @@ describe('Lukiokoulutus', function( ){
     })
 
     describe('Tulostettava todistus', function() {
-      before(opinnot.avaaTodistus(0))
+      before(opinnot.avaaTodistus())
       it('näytetään', function() {
         // See more detailed content specification in LukioSpec.scala
         expect(todistus.vahvistus()).to.equal('Jyväskylä 8.6.2016 Reijo Reksi rehtori')
@@ -76,7 +76,7 @@ describe('Lukiokoulutus', function( ){
 
     describe('Kurssin tiedot', function() {
       var kurssi = opinnot.oppiaineet.oppiaine('MA').kurssi('MAA16')
-      before(page.openPage, page.oppijaHaku.searchAndSelect('020655-2479'))
+      before(page.openPage, page.oppijaHaku.searchAndSelect('020655-2479'), opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('lukiokoulutus'))
       describe('Kun klikataan', function() {
         before(kurssi.toggleDetails)
         it('näyttää kurssin tiedot', function() {
@@ -305,8 +305,8 @@ describe('Lukiokoulutus', function( ){
   })
 
   describe('Opintosuoritusote', function() {
-    before(page.openPage, page.oppijaHaku.searchAndSelect('020655-2479'))
-    before(opinnot.avaaOpintosuoritusote(1))
+    before(page.openPage, page.oppijaHaku.searchAndSelect('020655-2479'), opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('lukiokoulutus'))
+    before(opinnot.avaaOpintosuoritusote())
 
     describe('Kun klikataan linkkiä', function() {
       it('näytetään', function() {
@@ -515,7 +515,7 @@ describe('Lukiokoulutus', function( ){
       })
     })
     describe('Tulostettava todistus', function() {
-      before(opinnot.avaaTodistus(0))
+      before(opinnot.avaaTodistus())
       it('näytetään', function() {
         // See more detailed content specification in LukioSpec.scala
         expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
