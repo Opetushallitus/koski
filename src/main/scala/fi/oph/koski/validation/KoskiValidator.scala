@@ -1,5 +1,6 @@
 package fi.oph.koski.validation
 
+import java.lang.Character.isDigit
 import java.time.LocalDate
 
 import fi.oph.koski.date.DateValidation
@@ -14,7 +15,7 @@ import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.Opiskeluoikeus.{koulutustoimijaTraversal, oppilaitosTraversal, toimipisteetTraversal}
-import fi.oph.koski.schema.{AmmatillisenTutkinnonSuoritus, _}
+import fi.oph.koski.schema.{AmmatillisenTutkinnonOsanSuoritus, AmmatillisenTutkinnonSuoritus, _}
 import fi.oph.koski.tutkinto.Koulutustyyppi._
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.util.Timing
@@ -232,10 +233,11 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         .onSuccess(validateDateOrder(("suoritus.arviointi.päivä", arviointipäivät), ("suoritus.vahvistus.päivä", vahvistuspäivät), KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenArviointia)
           .onSuccess(validateDateOrder(alkamispäivä, ("suoritus.vahvistus.päivä", vahvistuspäivät), KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenAlkamispäivää)))
         :: validateToimipiste(suoritus)
-        :: validateStatus(suoritus, parent)
+        :: validateStatus(suoritus)
+        :: validateArviointi(suoritus)
         :: validateLaajuus(suoritus)
         :: validateOppiaineet(suoritus)
-        :: validateTutkinnonosanRyhmä(suoritus, parent)
+        :: validateTutkinnonosanRyhmä(suoritus)
         :: HttpStatus.validate(!suoritus.isInstanceOf[PäätasonSuoritus])(validateDuplicates(suoritus.osasuoritukset.toList.flatten))
         :: suoritus.osasuoritusLista.map(validateSuoritus(_, opiskeluoikeus, suoritus :: parent))
     )
@@ -299,7 +301,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     }
   }
 
-  private def validateStatus(suoritus: Suoritus, parent: List[Suoritus]): HttpStatus = {
+  private def validateStatus(suoritus: Suoritus): HttpStatus = {
     val hasVahvistus: Boolean = suoritus.vahvistus.isDefined
     if (hasVahvistus && suoritus.arviointiPuuttuu) {
       KoskiErrorCategory.badRequest.validation.tila.vahvistusIlmanArviointia("Suorituksella " + suorituksenTunniste(suoritus) + " on vahvistus, vaikka arviointi puuttuu")
@@ -314,6 +316,34 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     }
   }
 
+  private def validateArviointi(suoritus: Suoritus): HttpStatus = suoritus match {
+    case a: AmmatillinenPäätasonSuoritus =>
+      val käytetytArviointiasteikot = a.osasuoritusLista.flatMap(extractNumeerisetArvosanat).map(_.koodistoUri).distinct.sorted
+
+      if (käytetytArviointiasteikot.size > 1) {
+        KoskiErrorCategory.badRequest.validation.arviointi.useitaArviointiasteikoita(s"Suoritus käyttää useampaa kuin yhtä numeerista arviointiasteikkoa: ${käytetytArviointiasteikot.mkString(", ")}")
+      } else {
+        HttpStatus.ok
+      }
+    case _ => HttpStatus.ok
+  }
+
+  private def extractNumeerisetArvosanat(suoritus: Suoritus): List[Koodistokoodiviite] = {
+    def numeerisetArvosanat(arvioinnit: List[Arviointi]) = arvioinnit.collect {
+      case k: KoodistostaLöytyväArviointi if k.arvosana.koodiarvo.forall(isDigit) => k.arvosana
+    }
+
+    def näytönArvosanat = suoritus match {
+      case atos: AmmatillisenTutkinnonOsanSuoritus =>
+        val näytönArviointi = atos.näyttö.flatMap(_.arviointi).toList
+        val arviointikohteidenArvosanat = näytönArviointi.flatMap(_.arviointikohteet.toList.flatten).filter(_.arvosana.koodiarvo.forall(isDigit)).map(_.arvosana)
+        numeerisetArvosanat(näytönArviointi) ++ arviointikohteidenArvosanat
+      case _ => Nil
+    }
+
+    numeerisetArvosanat(suoritus.arviointi.toList.flatten) ++ näytönArvosanat ++ suoritus.osasuoritusLista.flatMap(extractNumeerisetArvosanat)
+  }
+
   private def validatePäätasonSuorituksenStatus(suoritus: PäätasonSuoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus =
     if (suoritus.kesken && opiskeluoikeus.tila.opiskeluoikeusjaksot.last.tila.koodiarvo == "valmistunut") {
       KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta " + suorituksenTunniste(suoritus) + " puuttuu vahvistus, vaikka opiskeluoikeus on tilassa Valmistunut")
@@ -325,7 +355,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     suoritus.koulutusmoduuli.tunniste
   }
 
-  private def validateTutkinnonosanRyhmä(suoritus: Suoritus, parent: List[Suoritus]): HttpStatus = {
+  private def validateTutkinnonosanRyhmä(suoritus: Suoritus): HttpStatus = {
     def validateTutkinnonosaSuoritus(tutkinnonSuoritus: AmmatillisenTutkinnonSuoritus, suoritus: AmmatillisenTutkinnonOsanSuoritus, koulutustyyppi: Koulutustyyppi): HttpStatus = {
       if (ammatillisenPerustutkinnonTyypit.contains(koulutustyyppi)) {
         if (tutkinnonSuoritus.suoritustapa.koodiarvo == "ops") {

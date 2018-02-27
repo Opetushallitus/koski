@@ -35,15 +35,25 @@ object AmmatillinenExampleData {
 
   lazy val näytönArvioitsijat = Some(List(NäytönArvioitsija("Jaana Arstila", Some(true)), NäytönArvioitsija("Pekka Saurmann", Some(true)), NäytönArvioitsija("Juhani Mykkänen", Some(false))))
 
+  lazy val arviointikohteet1k3 = Some(List(
+    NäytönArviointikohde(Koodistokoodiviite("1", Some("Työprosessin hallinta"), "ammatillisennaytonarviointikohde", None), k3),
+    NäytönArviointikohde(Koodistokoodiviite("2", Some("Työmenetelmien, -välineiden ja materiaalin hallinta"), "ammatillisennaytonarviointikohde", None), h2),
+    NäytönArviointikohde(Koodistokoodiviite("3", Some("Työn perustana olevan tiedon hallinta"), "ammatillisennaytonarviointikohde", None), h2),
+    NäytönArviointikohde(Koodistokoodiviite("4", Some("Elinikäisen oppimisen avaintaidot"), "ammatillisennaytonarviointikohde", None), k3)
+  ))
+
+  lazy val arviointikohteet15 = Some(List(
+    NäytönArviointikohde(Koodistokoodiviite("1", Some("Työprosessin hallinta"), "ammatillisennaytonarviointikohde", None), arvosanaViisi),
+    NäytönArviointikohde(Koodistokoodiviite("2", Some("Työmenetelmien, -välineiden ja materiaalin hallinta"), "ammatillisennaytonarviointikohde", None), arvosanaViisi),
+    NäytönArviointikohde(Koodistokoodiviite("3", Some("Työn perustana olevan tiedon hallinta"), "ammatillisennaytonarviointikohde", None), hyväksytty),
+    NäytönArviointikohde(Koodistokoodiviite("4", Some("Elinikäisen oppimisen avaintaidot"), "ammatillisennaytonarviointikohde", None), arvosanaViisi)
+  ))
+
   lazy val näytönArviointi = NäytönArviointi(
     arvosana = arviointiKiitettävä.arvosana,
     päivä = arviointiKiitettävä.päivä,
     arvioitsijat = näytönArvioitsijat,
-    arviointikohteet = Some(List(
-      NäytönArviointikohde(Koodistokoodiviite("1", Some("Työprosessin hallinta"), "ammatillisennaytonarviointikohde", None), k3),
-      NäytönArviointikohde(Koodistokoodiviite("2", Some("Työmenetelmien, -välineiden ja materiaalin hallinta"), "ammatillisennaytonarviointikohde", None), h2),
-      NäytönArviointikohde(Koodistokoodiviite("3", Some("Työn perustana olevan tiedon hallinta"), "ammatillisennaytonarviointikohde", None), h2),
-      NäytönArviointikohde(Koodistokoodiviite("4", Some("Elinikäisen oppimisen avaintaidot"), "ammatillisennaytonarviointikohde", None), k3))),
+    arviointikohteet = arviointikohteet1k3,
     arvioinnistaPäättäneet = Some(List(Koodistokoodiviite("1", Some("Opettaja"), "ammatillisennaytonarvioinnistapaattaneet", None))),
     arviointikeskusteluunOsallistuneet =
       Some(List(
