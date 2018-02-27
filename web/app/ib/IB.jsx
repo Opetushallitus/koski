@@ -14,7 +14,7 @@ export const IBTutkinnonOppiaineetEditor = ({oppiaineet}) => {
   )
 
   const footnotes = [
-    oppiaineet.find(s => modelLookup(s, 'arviointi.-1.predicted')) && ArvosanaFootnote
+    oppiaineet.find(s => modelData(s, 'arviointi.-1.predicted')) && ArvosanaFootnote
   ] || []
 
   return (
@@ -28,7 +28,7 @@ export const IBTutkinnonOppiaineetEditor = ({oppiaineet}) => {
               <th colSpan='4'>{modelLookup(aineet[0], 'koulutusmoduuli.ryhmä').value.title}</th>
             </tr>,
             aineet.map((oppiaine, oppiaineIndex) => {
-              const footnote = modelLookup(oppiaine, 'arviointi.-1.predicted') && ArvosanaFootnote
+              const footnote = modelData(oppiaine, 'arviointi.-1.predicted') && ArvosanaFootnote
               return <LukionOppiaineEditor key={oppiaineIndex} oppiaine={oppiaine} footnote={footnote} />
             })
           ])
