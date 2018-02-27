@@ -2,12 +2,16 @@ import React from 'react'
 import R from 'ramda'
 import {LukionOppiaineEditor} from '../lukio/LukionOppiaineEditor'
 import {LukionOppiaineetTableHead} from '../lukio/fragments/LukionOppiaineetTableHead'
-import {modelData, modelLookup} from '../editor/EditorModel'
+import {modelData, modelItems, modelLookup} from '../editor/EditorModel'
 import {FootnoteDescriptions} from '../components/footnote'
+import {UusiIBOppiaineDropdown} from './UusiIBOppiaineDropdown'
 
 const ArvosanaFootnote = {title: 'Ennustettu arvosana', hint: '*'}
 
-export const IBTutkinnonOppiaineetEditor = ({oppiaineet}) => {
+export const IBTutkinnonOppiaineetEditor = ({suorituksetModel}) => {
+  const {suoritus: päätasonSuoritusModel} = suorituksetModel.context
+  const oppiaineet = modelItems(suorituksetModel)
+
   const aineryhmittäin = R.groupBy(
     oppiaine => modelData(oppiaine, 'koulutusmoduuli.ryhmä').koodiarvo,
     oppiaineet
@@ -30,7 +34,15 @@ export const IBTutkinnonOppiaineetEditor = ({oppiaineet}) => {
             aineet.map((oppiaine, oppiaineIndex) => {
               const footnote = modelData(oppiaine, 'arviointi.-1.predicted') && ArvosanaFootnote
               return <LukionOppiaineEditor key={oppiaineIndex} oppiaine={oppiaine} footnote={footnote} />
-            })
+            }),
+            <tr className='uusi-oppiaine'>
+              <td colSpan='4'>
+                <UusiIBOppiaineDropdown
+                  model={päätasonSuoritusModel}
+                  aineryhmä={modelData(aineet[0], 'koulutusmoduuli.ryhmä')}
+                />
+              </td>
+            </tr>
           ])
         }
         </tbody>

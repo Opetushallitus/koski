@@ -1,5 +1,5 @@
 import React from 'react'
-import {modelItems, modelLookup} from '../editor/EditorModel'
+import {modelLookup} from '../editor/EditorModel'
 
 import {PerusopetuksenOppiaineetEditor} from '../perusopetus/PerusopetuksenOppiaineetEditor'
 import PerusopetuksenOppiaineenOppimääränSuoritusEditor from '../perusopetus/PerusopetuksenOppiaineenOppimaaranSuoritusEditor'
@@ -46,7 +46,7 @@ export const resolveOsasuorituksetEditor = (mdl) => {
     return <LuvaEditor suorituksetModel={modelLookup(mdl, 'osasuoritukset')}/>
   }
   if (oneOf('ibtutkinnonsuoritus')) {
-    return <IBTutkinnonOppiaineetEditor oppiaineet={modelItems(mdl, 'osasuoritukset') || []} />
+    return <IBTutkinnonOppiaineetEditor suorituksetModel={modelLookup(mdl, 'osasuoritukset')} />
   }
   return <PropertyEditor model={mdl} propertyName="osasuoritukset"/>
 }
