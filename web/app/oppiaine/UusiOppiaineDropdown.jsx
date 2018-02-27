@@ -10,7 +10,7 @@ import {fetchAlternativesBasedOnPrototypes} from '../editor/EnumEditor'
 import {elementWithLoadingIndicator} from '../components/AjaxLoadingIndicator'
 import {t} from '../i18n/i18n'
 
-export const UusiOppiaineDropdown = ({suoritukset = [], organisaatioOid, oppiaineenSuoritus, pakollinen, selected = Bacon.constant(undefined), resultCallback, placeholder, enableFilter=true}) => {
+export const UusiOppiaineDropdown = ({suoritukset = [], organisaatioOid, oppiaineenSuoritus, pakollinen, selected = Bacon.constant(undefined), resultCallback, placeholder, enableFilter=true, allowPaikallinen = true}) => {
   if (!oppiaineenSuoritus || !oppiaineenSuoritus.context.edit) return null
   let käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli')).filter(k => !k.kieli).map(k => k.tunniste.koodiarvo)
 
@@ -40,7 +40,7 @@ export const UusiOppiaineDropdown = ({suoritukset = [], organisaatioOid, oppiain
           displayValue={oppiaine => isUusi(oppiaine) ? 'Lisää...' : modelLookup(oppiaine, 'tunniste').value.title}
           onSelectionChanged={resultCallback}
           selectionText={placeholder}
-          newItem={paikallinenProto}
+          newItem={allowPaikallinen && paikallinenProto}
           enableFilter={enableFilter}
           selected={selected}
           isRemovable={isPaikallinen}
