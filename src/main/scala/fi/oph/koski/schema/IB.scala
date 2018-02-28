@@ -256,10 +256,8 @@ case class IBOppiaineMuu(
   @Description("IB-lukion oppiaineen tunnistetiedot")
   @KoodistoKoodiarvo("BIO")
   @KoodistoKoodiarvo("BU")
-  @KoodistoKoodiarvo("CAS")
   @KoodistoKoodiarvo("CHE")
   @KoodistoKoodiarvo("ECO")
-  @KoodistoKoodiarvo("EE")
   @KoodistoKoodiarvo("GEO")
   @KoodistoKoodiarvo("HIS")
   @KoodistoKoodiarvo("MAT")
@@ -271,7 +269,6 @@ case class IBOppiaineMuu(
   @KoodistoKoodiarvo("PSY")
   @KoodistoKoodiarvo("REL")
   @KoodistoKoodiarvo("SOC")
-  @KoodistoKoodiarvo("TOK")
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusTunneissa],
   @Description("Oppiaineen taso (Higher Level (HL) tai Standard Level (SL)")
