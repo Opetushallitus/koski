@@ -52,7 +52,7 @@ class KoskiStats(application: KoskiApplication) extends KoskiPulssi {
   def metrics: KoskiMetriikka = application.prometheusRepository.koskiMetrics
 
   def oppilaitosMäärät = OppilaitosMäärät(Map(
-    "Perusopetus" -> 2941,
+    "Perusopetus" -> 2433,
     "Lukiokoulutus" -> 396,
     "Ammatillinen koulutus" -> 208
   ))

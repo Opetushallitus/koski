@@ -1,13 +1,15 @@
 package fi.oph.koski.perustiedot
 
 import fi.oph.koski.json.JsonSerializer.extract
+import org.json4s.JsonAST.JValue
 
 case class OpiskeluoikeudenPerustiedotStatistics(index: KoskiElasticSearchIndex) {
   def statistics: OpiskeluoikeusTilasto = {
-    rawStatistics.map { stats =>
+    rawStatistics.map { case (oppilaitosTotal, stats) =>
       OpiskeluoikeusTilasto(
-        stats.total,
-        stats.tyypit.map { tyyppi =>
+        siirtäneitäOppilaitoksiaYhteensä = oppilaitosTotal,
+        opiskeluoikeuksienMäärä = stats.total,
+        koulutusmuotoTilastot = stats.tyypit.map { tyyppi =>
           KoulutusmuotoTilasto(
             tyyppi.key,
             tyyppi.doc_count,
@@ -42,13 +44,19 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: KoskiElasticSearchIndex)
     result.map(r => extract[Int](r \ "aggregations" \ "henkilöcount" \ "value"))
   }
 
-  private def rawStatistics: Option[OpiskeluoikeudetTyypeittäin] = {
+  private def rawStatistics: Option[(Int, OpiskeluoikeudetTyypeittäin)] = {
     val result = index.runSearch("perustiedot",
       parse(
         """
           |{
           |  "size": 0,
           |  "aggs": {
+          |    "oppilaitos_total": {
+          |      "cardinality": {
+          |        "field": "oppilaitos.oid.keyword",
+          |        "precision_threshold": 10000
+          |      }
+          |    },
           |    "tyyppi": {
           |      "terms": {
           |        "field": "tyyppi.nimi.fi.keyword"
@@ -81,17 +89,18 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: KoskiElasticSearchIndex)
     )
     result.map { r =>
       val total = extract[Int](r \ "hits" \ "total")
-      OpiskeluoikeudetTyypeittäin(total, extract[List[Tyyppi]](r \ "aggregations" \ "tyyppi" \ "buckets", ignoreExtras = true))
+      val aggs = extract[JValue](r \ "aggregations")
+      val oppilaitosTotal = extract[Int](aggs \ "oppilaitos_total" \ "value")
+      (oppilaitosTotal, OpiskeluoikeudetTyypeittäin(total, extract[List[Tyyppi]](aggs \ "tyyppi" \ "buckets", ignoreExtras = true)))
     }
   }
 }
 
 case class OpiskeluoikeusTilasto(
+  siirtäneitäOppilaitoksiaYhteensä: Int = 0,
   opiskeluoikeuksienMäärä: Int = 0,
   koulutusmuotoTilastot: List[KoulutusmuotoTilasto] = Nil
-) {
-  def siirtäneitäOppilaitoksiaYhteensä: Int = koulutusmuotoTilastot.map(_.siirtäneitäOppilaitoksia).sum
-}
+)
 
 case class KoulutusmuotoTilasto(koulutusmuoto: String, opiskeluoikeuksienMäärä: Int, valmistuneidenMäärä: Int, siirtäneitäOppilaitoksia: Int) {
   def koulutusmuotoStr: String = koulutusmuoto.toLowerCase.replaceAll(" ", "-").replaceAll("[()]", "")

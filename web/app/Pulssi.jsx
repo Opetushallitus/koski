@@ -34,9 +34,6 @@ class Pulssi extends React.Component {
     )
 
     let schoolsTotal = R.values(pulssi.oppilaitosMäärät.koulutusmuodoittain).reduce((acc, k) => acc + k, 0)
-    let schoolsWhoHaveTransferredData = opiskeluoikeudet.koulutusmuotoTilastot.reduce((acc, koulutusmuoto) => {
-      return acc + koulutusmuoto.siirtäneitäOppilaitoksia
-    }, 0)
 
     return (
         <div className="statistics column">
@@ -48,8 +45,8 @@ class Pulssi extends React.Component {
             </section>
             <section className="primary-metric kattavuus-total kattavuus-panel">
               <h3><Text name="Kattavuus"/></h3>
-              <div className="metric-large">{toPercent(schoolsWhoHaveTransferredData / schoolsTotal)}{' %'}</div>
-              {schoolsWhoHaveTransferredData}{' / '}{schoolsTotal}
+              <div className="metric-large">{toPercent(opiskeluoikeudet.siirtäneitäOppilaitoksiaYhteensä / schoolsTotal)}{' %'}</div>
+              {opiskeluoikeudet.siirtäneitäOppilaitoksiaYhteensä}{' / '}{schoolsTotal}
             </section>
             <section className="primary-metric valmiit-tutkinnot-total valmiit-tutkinnot-panel">
               <h3><Text name="Suoritettujen koulutusten määrä"/></h3>
