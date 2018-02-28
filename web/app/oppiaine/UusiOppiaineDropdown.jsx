@@ -3,33 +3,37 @@ import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import DropDown from '../components/Dropdown'
 import R from 'ramda'
-import {modelData, modelLookup, modelSetData} from '../editor/EditorModel'
+import {hasModelProperty, modelData, modelLookup, modelSetData} from '../editor/EditorModel'
 import {deleteOrganizationalPreference, getOrganizationalPreferences} from '../virkailija/organizationalPreferences'
 import {isPaikallinen, isUusi, koulutusModuuliprototypes} from '../suoritus/Koulutusmoduuli'
 import {fetchAlternativesBasedOnPrototypes} from '../editor/EnumEditor'
 import {elementWithLoadingIndicator} from '../components/AjaxLoadingIndicator'
 import {t} from '../i18n/i18n'
 
-export const UusiOppiaineDropdown = ({suoritukset = [], organisaatioOid, oppiaineenSuoritus, pakollinen, selected = Bacon.constant(undefined), resultCallback, placeholder, enableFilter=true, allowPaikallinen = true}) => {
-  if (!oppiaineenSuoritus || !oppiaineenSuoritus.context.edit) return null
-  let käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli')).filter(k => !k.kieli).map(k => k.tunniste.koodiarvo)
+export const UusiOppiaineDropdown = ({suoritukset = [], organisaatioOid, oppiaineenSuoritukset, pakollinen, selected = Bacon.constant(undefined), resultCallback, placeholder, enableFilter=true, allowPaikallinen = true}) => {
+  if (!oppiaineenSuoritukset || R.any(s => !s.context.edit, oppiaineenSuoritukset)) return null
 
-  let setPakollisuus = oppiaineModel => pakollinen !== undefined ? modelSetData(oppiaineModel, pakollinen, 'pakollinen') : oppiaineModel
+  const käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli')).filter(k => !k.kieli).map(k => k.tunniste.koodiarvo)
 
-  let oppiaineModels = koulutusModuuliprototypes(oppiaineenSuoritus).map(setPakollisuus)
-  let valtakunnallisetOppiaineet = fetchAlternativesBasedOnPrototypes(oppiaineModels.filter(R.complement(isPaikallinen)), 'tunniste')
-  let paikallinenProto = oppiaineModels.find(isPaikallinen)
-  let paikallisetOppiaineet = Atom([])
-  let setPaikallisetOppiaineet = oppiaineet => paikallisetOppiaineet.set(oppiaineet.map(setPakollisuus))
+  const setPakollisuus = oppiaineModel => pakollinen !== undefined && hasModelProperty(oppiaineModel, 'pakollinen')
+    ? modelSetData(oppiaineModel, pakollinen, 'pakollinen')
+    : oppiaineModel
+
+  const prototypes = R.flatten(oppiaineenSuoritukset.map(koulutusModuuliprototypes))
+  const oppiaineModels = prototypes.map(setPakollisuus)
+  const valtakunnallisetOppiaineet = fetchAlternativesBasedOnPrototypes(oppiaineModels.filter(R.complement(isPaikallinen)), 'tunniste')
+  const paikallinenProto = oppiaineModels.find(isPaikallinen)
+  const paikallisetOppiaineet = Atom([])
+  const setPaikallisetOppiaineet = oppiaineet => paikallisetOppiaineet.set(oppiaineet.map(setPakollisuus))
 
   if (paikallinenProto) {
     getOrganizationalPreferences(organisaatioOid, paikallinenProto.value.classes[0]).onValue(setPaikallisetOppiaineet)
   }
 
-  let oppiaineet = Bacon.combineWith(paikallisetOppiaineet, valtakunnallisetOppiaineet, (x,y) => x.concat(y))
+  const oppiaineet = Bacon.combineWith(paikallisetOppiaineet, valtakunnallisetOppiaineet, (x,y) => x.concat(y))
     .map(aineet => aineet.filter(oppiaine => pakollinen ? !käytössäolevatKoodiarvot.includes(modelData(oppiaine, 'tunniste').koodiarvo) : true))
 
-  let poistaPaikallinenOppiaine = oppiaine => deleteOrganizationalPreference(organisaatioOid, paikallinenProto.value.classes[0], oppiaine).onValue(setPaikallisetOppiaineet)
+  const poistaPaikallinenOppiaine = oppiaine => deleteOrganizationalPreference(organisaatioOid, paikallinenProto.value.classes[0], oppiaine).onValue(setPaikallisetOppiaineet)
 
   return (<div className={'uusi-oppiaine'}>
     {
