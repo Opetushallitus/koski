@@ -94,5 +94,5 @@ class PulssiHtmlServlet(implicit val application: KoskiApplication) extends Scal
     </html>
 
   private def pulssi = application.koskiPulssi
-  private def percent(x: Int, y: Int) = round(1)(x.toDouble / y.toDouble * 100)
+  private def percent(x: Int, y: Int): Double = round(1)(x.toDouble / y.toDouble * 100)
 }
