@@ -39,14 +39,14 @@ export const IBTutkinnonOppiaineetEditor = ({suorituksetModel}) => {
         <tbody>
         {
           aineryhmät.map(ryhmät => ryhmät.map(r => [
-            <tr className='aineryhmä'>
+            <tr className='aineryhmä' key={r.ryhmä.koodiarvo}>
               <th colSpan='4'>{t(r.ryhmä.nimi)}</th>
             </tr>,
             r.aineet && r.aineet.map((oppiaine, oppiaineIndex) => {
               const footnote = modelData(oppiaine, 'arviointi.-1.predicted') && ArvosanaFootnote
               return <LukionOppiaineEditor key={oppiaineIndex} oppiaine={oppiaine} footnote={footnote} />
             }),
-            <tr className='uusi-oppiaine'>
+            <tr className='uusi-oppiaine' key={`uusi-oppiaine-${r.ryhmä.koodiarvo}`}>
               <td colSpan='4'>
                 <UusiIBOppiaineDropdown
                   model={päätasonSuoritusModel}
