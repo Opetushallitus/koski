@@ -14,10 +14,12 @@ import fi.oph.koski.koskiuser.KoskiSession._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, RemoteOrganisaatioRepository}
 import fi.oph.koski.schema._
+import fi.oph.koski.userdirectory.Password
+import fi.vm.sade.utils.cas.CasClientException
+import scalaz.concurrent.Task
 
 import scala.concurrent.duration._
 import scala.language.postfixOps
-import scalaz.concurrent.Task
 
 trait HealthCheck extends Logging {
   private implicit val user = systemUser
@@ -35,7 +37,8 @@ trait HealthCheck extends Logging {
       () => elasticCheck(oppija),
       () => koodistopalveluCheck,
       () => organisaatioPalveluCheck,
-      () => ePerusteetCheck
+      () => ePerusteetCheck,
+      () => casCheck
     )
 
     val status = HttpStatus.fold(checks.par.map(_.apply).toList)
@@ -68,6 +71,21 @@ trait HealthCheck extends Logging {
   private def ePerusteetCheck: HttpStatus = {
     val diaarinumerot = List("39/011/2014", "OPH-2664-2017")
     HttpStatus.fold(diaarinumerot.map(checkPeruste))
+  }
+
+  def casCheck: HttpStatus = {
+    val username = application.config.getString("opintopolku.virkailija.username")
+    val password = Password(application.config.getString("opintopolku.virkailija.password"))
+    def authenticate = try {
+      Some(application.directoryClient.authenticate(username, password))
+    } catch {
+      case e: CasClientException => None
+    }
+    get("cas", authenticate).flatMap(_.toRight(KoskiErrorCategory.internalError("CAS check failed"))) match {
+      case Right(authOk) if authOk => HttpStatus.ok
+      case Right(_) => KoskiErrorCategory.unauthorized.loginFail("Koski login failed")
+      case Left(status) => status
+    }
   }
 
   private def checkPeruste(diaarinumero: String) = get("ePerusteet", ePerusteet.findRakenne(diaarinumero), timeout = 10 seconds).flatMap {
