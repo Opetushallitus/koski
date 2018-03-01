@@ -30,7 +30,7 @@ trait OpintopolkuHenkilöFacade {
   def findChangedOppijaOids(since: Long, offset: Int, amount: Int): List[Oid]
   def findMasterOppija(oid: String): Option[OppijaHenkilö]
   def findOrCreate(createUserInfo: UusiHenkilö): Either[HttpStatus, OppijaHenkilö]
-  def organisaationYhteystiedot(ryhmä: String, organisaatioOid: String): List[Yhteystiedot]
+  def organisaationSähköpostit(organisaatioOid: String, ryhmä: String): List[String]
 }
 
 object OpintopolkuHenkilöFacade {
@@ -80,13 +80,8 @@ class RemoteOpintopolkuHenkilöFacade(authenticationServiceClient: Authenticatio
   def findOrCreate(createUserInfo: UusiHenkilö): Either[HttpStatus, OppijaHenkilö] =
     runTask(oppijanumeroRekisteriClient.findOrCreate(createUserInfo))
 
-  def organisaationYhteystiedot(ryhmä: String, organisaatioOid: String): List[Yhteystiedot] = runTask(
-    authenticationServiceClient.findByKäyttöoikeusryhmä(ryhmä, organisaatioOid).flatMap { resp =>
-      gatherUnordered(resp.results.map { henkilö =>
-        oppijanumeroRekisteriClient.findYhteystiedot(henkilö.oidHenkilo)
-      })
-    }
-  ).flatten
+  def organisaationSähköpostit(organisaatioOid: String, ryhmä: String): List[String] =
+    runTask(oppijanumeroRekisteriClient.findSähköpostit(organisaatioOid, ryhmä))
 }
 
 class RemoteOpintopolkuHenkilöFacadeWithMockOids(authenticationServiceClient: AuthenticationServiceClient, oppijanumeroRekisteriClient: OppijanumeroRekisteriClient, käyttöoikeusServiceClient: KäyttöoikeusServiceClient, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository, elasticSearch: ElasticSearch) extends RemoteOpintopolkuHenkilöFacade(authenticationServiceClient, oppijanumeroRekisteriClient, käyttöoikeusServiceClient) {
@@ -205,8 +200,8 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
     oppija.toString.toUpperCase
   }
 
-  override def organisaationYhteystiedot(ryhmä: String, organisaatioOid: String): List[Yhteystiedot] =
-    MockUsers.users.filter(_.käyttöoikeudet.contains((organisaatioOid, Käyttöoikeusryhmät.vastuukäyttäjä))).map(u => Yhteystiedot(u.username + "@example.com"))
+  override def organisaationSähköpostit(organisaatioOid: String, ryhmä: String): List[String] =
+    MockUsers.users.filter(_.käyttöoikeudet.contains((organisaatioOid, Käyttöoikeusryhmät.vastuukäyttäjä))).map(_.username + "@example.com")
 
   override def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] = synchronized {
     oppijat.getOppijat.find(_.hetu.contains(hetu)).map(h => h.master.map(toOppijaHenkilö).getOrElse(toOppijaHenkilö(h.henkilö)))
