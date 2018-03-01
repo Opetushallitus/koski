@@ -54,9 +54,9 @@ object UusiHenkilö {
 
 case class YhteystiedotHaku(organisaatioOids: List[String], kayttoOikeusRyhmaNimet: List[String]) {
   @SyntheticProperty
-  val duplikaatti = false
+  def duplikaatti = false
   @SyntheticProperty
-  val passivoitu = false
+  def passivoitu = false
 }
 
 case class Yhteystiedot(yhteystiedotRyhma: List[YhteystiedotRyhmä])
