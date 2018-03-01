@@ -11,7 +11,7 @@ object OmatTiedotEditorModel extends Timing {
   def toEditorModel(oppija: Oppija)(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = timed("createModel") {
     val view = OmatTiedotEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], oppija.opiskeluoikeudet.groupBy(_.getOppilaitosOrKoulutusToimija).map {
       case (oppilaitos, opiskeluoikeudet) => OppijaEditorModel.toOppilaitoksenOpiskeluoikeus(oppilaitos, opiskeluoikeudet)
-    }.toList.sorted(oppilaitoksenOpiskeluoikeudetOrdering.reverse))
+    }.toList.sorted(oppilaitoksenOpiskeluoikeudetOrdering))
     buildModel(view)
   }
 

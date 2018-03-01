@@ -15,7 +15,7 @@ object OppijaEditorModel extends Timing {
     Ordering.by { o: Opiskeluoikeus => o.alkamispäivä }(localDateOptionOrdering)
 
   val oppilaitoksenOpiskeluoikeudetOrdering: Ordering[OppilaitoksenOpiskeluoikeudet] =
-    Ordering.by { oo: OppilaitoksenOpiskeluoikeudet => oo.earliestAlkamispäiväForOrdering }(localDateOptionOrdering)
+    Ordering.by { oo: OppilaitoksenOpiskeluoikeudet => oo.latestAlkamispäiväForOrdering }(localDateOptionOrdering).reverse
 
   val opiskeluoikeudetTyypeittäinOrdering: Ordering[OpiskeluoikeudetTyypeittäin] =
     Ordering.by { ot: OpiskeluoikeudetTyypeittäin => ot.latestAlkamispäiväForOrdering }(localDateOptionOrdering).reverse
@@ -84,15 +84,11 @@ case class OppijaEditorView(
 )
 
 case class OpiskeluoikeudetTyypeittäin(@KoodistoUri("opiskeluoikeudentyyppi") tyyppi: Koodistokoodiviite, opiskeluoikeudet: List[OppilaitoksenOpiskeluoikeudet]) {
-  lazy val earliestAlkamispäiväForOrdering: Option[LocalDate] =
-    Some(opiskeluoikeudet.collect { case o if o.earliestAlkamispäiväForOrdering.nonEmpty => o.earliestAlkamispäiväForOrdering.get }).filter(_.nonEmpty).map(_.min(localDateOrdering))
   lazy val latestAlkamispäiväForOrdering: Option[LocalDate] =
     Some(opiskeluoikeudet.collect { case o if o.latestAlkamispäiväForOrdering.nonEmpty => o.latestAlkamispäiväForOrdering.get }).filter(_.nonEmpty).map(_.max(localDateOrdering))
 
 }
 case class OppilaitoksenOpiskeluoikeudet(oppilaitos: OrganisaatioWithOid, opiskeluoikeudet: List[Opiskeluoikeus]) {
-  lazy val earliestAlkamispäiväForOrdering: Option[LocalDate] =
-    Some(opiskeluoikeudet.collect { case o if o.alkamispäivä.nonEmpty => o.alkamispäivä.get }).filter(_.nonEmpty).map(_.min(localDateOrdering))
   lazy val latestAlkamispäiväForOrdering: Option[LocalDate] =
     Some(opiskeluoikeudet.collect { case o if o.alkamispäivä.nonEmpty => o.alkamispäivä.get }).filter(_.nonEmpty).map(_.max(localDateOrdering))
 }
