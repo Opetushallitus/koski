@@ -13,19 +13,19 @@ export const ArvosanaEditor = ({model}) => {
     return arvosanaModel ? <Editor model={ arvosanaModel }/> : null
   }
   model = fixArviointi(model)
-  let alternativesP = fetchAlternativesBasedOnPrototypes(oneOfPrototypes(wrapOptional(modelLookup(model, 'arviointi.-1'))), 'arvosana').startWith([])
-  let arvosanatP = alternativesP.map(alternatives => alternatives.map(m => modelLookup(m, 'arvosana').value))
+  const alternativesP = fetchAlternativesBasedOnPrototypes(oneOfPrototypes(wrapOptional(modelLookup(model, 'arviointi.-1'))), 'arvosana').startWith([])
+  const arvosanatP = alternativesP.map(alternatives => alternatives.map(m => modelLookup(m, 'arvosana').value))
   return (<span>{
     alternativesP.map(alternatives => {
-      let arvosanaLens = L.lens(
+      const arvosanaLens = L.lens(
         (m) => {
           return modelLookup(m, '-1.arvosana')
         },
         (v, m) => {
           if (modelData(v)) {
             // Arvosana valittu -> valitaan vastaava prototyyppi (eri prototyypit eri arvosanoille)
-            let valittuKoodiarvo = modelData(v).koodiarvo
-            let found = alternatives.find(alt => {
+            const valittuKoodiarvo = modelData(v).koodiarvo
+            const found = alternatives.find(alt => {
               return modelData(alt, 'arvosana').koodiarvo == valittuKoodiarvo
             })
             return modelSetValue(m, found.value, '-1')
@@ -35,8 +35,8 @@ export const ArvosanaEditor = ({model}) => {
           }
         }
       )
-      let arviointiModel = modelLookup(model, 'arviointi')
-      let arvosanaModel = lensedModel(arviointiModel, arvosanaLens)
+      const arviointiModel = modelLookup(model, 'arviointi')
+      const arvosanaModel = lensedModel(arviointiModel, arvosanaLens)
       // Use key to ensure re-render when alternatives are supplied
       return <Editor key={alternatives.length} model={ arvosanaModel } sortBy={sortGrades} fetchAlternatives={() => arvosanatP} showEmptyOption="true"/>
     })
