@@ -6,9 +6,8 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables.OpiskeluOikeudetWithAccessCheck
 import fi.oph.koski.db.{KoskiDatabaseMethods, PostgresDriverWithJsonSupport}
 import fi.oph.koski.elasticsearch.ElasticSearch
-import fi.oph.koski.henkilo.authenticationservice.AuthenticationServiceClient
 import fi.oph.koski.henkilo.kayttooikeusservice.KäyttöoikeusServiceClient
-import fi.oph.koski.henkilo.oppijanumerorekisteriservice.{KäyttäjäHenkilö, OppijaHenkilö, UusiHenkilö, Yhteystiedot, _}
+import fi.oph.koski.henkilo.oppijanumerorekisteriservice.{KäyttäjäHenkilö, OppijaHenkilö, UusiHenkilö, _}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory, _}
 import fi.oph.koski.koskiuser.KoskiSession.systemUser
@@ -19,8 +18,6 @@ import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.{Henkilö, TäydellisetHenkilötiedot, TäydellisetHenkilötiedotWithMasterInfo}
 import fi.oph.koski.util.Timing
 import org.http4s._
-
-import scalaz.concurrent.Task.gatherUnordered
 
 trait OpintopolkuHenkilöFacade {
   def findKäyttäjäByOid(oid: String): Option[KäyttäjäHenkilö]
@@ -45,16 +42,16 @@ object RemoteOpintopolkuHenkilöFacade {
     val serviceConfig = makeServiceConfig(config)
 
     if (config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid")) {
-      new RemoteOpintopolkuHenkilöFacadeWithMockOids(AuthenticationServiceClient(config), OppijanumeroRekisteriClient(config), KäyttöoikeusServiceClient(config), perustiedotRepository, elasticSearch)
+      new RemoteOpintopolkuHenkilöFacadeWithMockOids(OppijanumeroRekisteriClient(config), KäyttöoikeusServiceClient(config), perustiedotRepository, elasticSearch)
     } else {
-      new RemoteOpintopolkuHenkilöFacade(AuthenticationServiceClient(config), OppijanumeroRekisteriClient(config), KäyttöoikeusServiceClient(config))
+      new RemoteOpintopolkuHenkilöFacade(OppijanumeroRekisteriClient(config), KäyttöoikeusServiceClient(config))
     }
   }
 
   def makeServiceConfig(config: Config) = ServiceConfig.apply(config, "authentication-service", "authentication-service.virkailija", "opintopolku.virkailija")
 }
 
-class RemoteOpintopolkuHenkilöFacade(authenticationServiceClient: AuthenticationServiceClient, oppijanumeroRekisteriClient: OppijanumeroRekisteriClient, käyttöoikeusServiceClient: KäyttöoikeusServiceClient) extends OpintopolkuHenkilöFacade with EntityDecoderInstances with Timing {
+class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroRekisteriClient, käyttöoikeusServiceClient: KäyttöoikeusServiceClient) extends OpintopolkuHenkilöFacade with EntityDecoderInstances with Timing {
   def findOppijaByOid(oid: String): Option[OppijaHenkilö] =
     findOppijatByOids(List(oid)).headOption
 
@@ -84,7 +81,7 @@ class RemoteOpintopolkuHenkilöFacade(authenticationServiceClient: Authenticatio
     runTask(oppijanumeroRekisteriClient.findSähköpostit(organisaatioOid, ryhmä))
 }
 
-class RemoteOpintopolkuHenkilöFacadeWithMockOids(authenticationServiceClient: AuthenticationServiceClient, oppijanumeroRekisteriClient: OppijanumeroRekisteriClient, käyttöoikeusServiceClient: KäyttöoikeusServiceClient, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository, elasticSearch: ElasticSearch) extends RemoteOpintopolkuHenkilöFacade(authenticationServiceClient, oppijanumeroRekisteriClient, käyttöoikeusServiceClient) {
+class RemoteOpintopolkuHenkilöFacadeWithMockOids(oppijanumeroRekisteriClient: OppijanumeroRekisteriClient, käyttöoikeusServiceClient: KäyttöoikeusServiceClient, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository, elasticSearch: ElasticSearch) extends RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient, käyttöoikeusServiceClient) {
   override def findOppijatByOids(oids: List[String]): List[OppijaHenkilö] = {
     val found = super.findOppijatByOids(oids).map(henkilö => (henkilö.oidHenkilo, henkilö)).toMap
     oids.map { oid =>

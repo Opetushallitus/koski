@@ -1,6 +1,5 @@
 package fi.oph.koski.henkilo
 
-import fi.oph.koski.henkilo.authenticationservice.QueryHenkilö
 import fi.oph.koski.henkilo.oppijanumerorekisteriservice.OppijaHenkilö
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
@@ -62,5 +61,8 @@ case class OpintopolkuHenkilöRepository(henkilöt: OpintopolkuHenkilöFacade, k
 
   override def existsWithHetu(hetu: String)(implicit user: KoskiSession): Boolean = findByHetu(hetu).isDefined
 }
+
+case class QueryHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String])
+case class HenkilöQueryResult(totalCount: Int, results: List[QueryHenkilö])
 
 object MockOpintopolkuHenkilöRepository extends OpintopolkuHenkilöRepository(new MockOpintopolkuHenkilöFacade(), MockKoodistoViitePalvelu)
