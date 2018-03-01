@@ -6,9 +6,7 @@ import org.scalatest.{FreeSpec, Matchers}
 class ValmaSpec extends FreeSpec with Matchers with TodistusTestMethods with OpiskeluoikeusTestMethods with LocalJettyHttpSpecification {
   "Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)" - {
     "Päättötodistus" in {
-      val t = todistus(MockOppijat.valma.oid, "valma")
-      println(t)
-      t should equal(
+      todistus(MockOppijat.valma.oid, "valma") should equal(
         """Ammatilliseen peruskoulutukseen valmentava koulutus
           |HELSINGIN KAUPUNKI
           |Stadin ammattiopisto
