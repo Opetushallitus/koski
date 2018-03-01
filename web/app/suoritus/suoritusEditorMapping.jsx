@@ -60,7 +60,17 @@ export const resolvePropertyEditor = (property, model) => {
     case 'theoryOfKnowledge':
     case 'extendedEssay':
     case 'creativityActionService':
-      return <ArvosanaEditor model={wrapOptional(property.model)}/>
+      return [
+        <ArvosanaEditor
+          model={wrapOptional(property.model)}
+          key={'arvosana'}/>,
+        model.context.edit &&
+        <PropertiesEditor
+          model={modelLookup(property.model, 'arviointi.-1')}
+          propertyFilter={p => p.key === 'predicted'}
+          key={'properties'}
+        />
+      ]
 
     default: return null
   }
