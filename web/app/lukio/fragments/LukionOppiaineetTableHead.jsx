@@ -6,7 +6,7 @@ export const LukionOppiaineetTableHead = () => (
   <tr>
     <th className='suorituksentila'></th>
     <th className='oppiaine'><Text name='Oppiaine'/></th>
-    <th className='maara'><Text name='Laajuus (kurssia)'/></th>
+    <th className='laajuus'><Text name='Laajuus (kurssia)'/></th>
     <th className='arvosana'><Text name='Arvosana (keskiarvo)'/></th>
   </tr>
   <tr>
