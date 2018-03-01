@@ -53,7 +53,7 @@ class KoskiStats(application: KoskiApplication) extends KoskiPulssi {
 
   def oppilaitosMäärät = OppilaitosMäärät(Map(
     "Perusopetus" -> 2433,
-    "Lukiokoulutus" -> 378,
+    "Lukiokoulutus" -> 381,
     "Ammatillinen koulutus" -> 208
   ))
 }
