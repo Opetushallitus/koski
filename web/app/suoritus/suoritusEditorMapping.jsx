@@ -1,5 +1,5 @@
 import React from 'react'
-import {modelLookup} from '../editor/EditorModel'
+import {modelLookup, wrapOptional} from '../editor/EditorModel'
 
 import {PerusopetuksenOppiaineetEditor} from '../perusopetus/PerusopetuksenOppiaineetEditor'
 import PerusopetuksenOppiaineenOppimääränSuoritusEditor from '../perusopetus/PerusopetuksenOppiaineenOppimaaranSuoritusEditor'
@@ -60,7 +60,7 @@ export const resolvePropertyEditor = (property, model) => {
     case 'theoryOfKnowledge':
     case 'extendedEssay':
     case 'creativityActionService':
-      return <ArvosanaEditor model={property.model}/>
+      return <ArvosanaEditor model={wrapOptional(property.model)}/>
 
     default: return null
   }
