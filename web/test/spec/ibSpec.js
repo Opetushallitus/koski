@@ -66,28 +66,6 @@ describe('IB', function( ) {
       })
     })
 
-    describe('Oppiaineet', function () {
-      before(opinnot.expandAll)
-      it('ryhmitellään aineryhmittäin', function () {
-        var rivit = S('.oppiaineet tbody tr')
-        expect(S(rivit.get(0)).hasClass('aineryhmä')).to.equal(true)
-        expect(S(rivit.get(1)).hasClass('A')).to.equal(true)
-        expect(S(rivit.get(2)).hasClass('A2')).to.equal(true)
-        expect(S(rivit.get(3)).hasClass('aineryhmä')).to.equal(true)
-        expect(S(rivit.get(4)).hasClass('HIS')).to.equal(true)
-        expect(S(rivit.get(5)).hasClass('PSY')).to.equal(true)
-        expect(S(rivit.get(6)).hasClass('aineryhmä')).to.equal(true)
-        expect(S(rivit.get(7)).hasClass('BIO')).to.equal(true)
-        expect(S(rivit.get(8)).hasClass('aineryhmä')).to.equal(true)
-        expect(S(rivit.get(9)).hasClass('MATST')).to.equal(true)
-      })
-
-      it('arvosanalle näytetään alaviite, kun arvosana on ennakkoarvosana', function() {
-        expect(S('.oppiaineet tbody tr:eq(1) .arvosana .footnote-hint').text()).to.equal(' *')
-        expect(S('.osasuoritukset .selitteet').text()).to.equal('* = ennustettu arvosana')
-      })
-    })
-
     describe('Kaikki tiedot näkyvissä', function () {
       it('näyttää opiskeluoikeuden tiedot', function() {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
@@ -112,16 +90,64 @@ describe('IB', function( ) {
         expect(extractAsText(S('.osasuoritukset'))).to.equal(
           'Oppiaine Laajuus (kurssia) Arvosana (keskiarvo)\n' +
           'Studies in language and literature\n' +
-          'Language A: literature, suomi\nFIN_S1\n4 FIN_S2\n4 FIN_S3\nS FIN_S4\n5 FIN_S5\n6 FIN_S6\n5 FIN_S7\n5 FIN_S8\nS FIN_S9\n5 9 4 *\n(4,9)\n' +
-          'Language A: language and literature, englanti\nENG_B_H1\n6 ENG_B_H2\n7 ENG_B_H4\nS ENG_B_H5\n6 ENG_B_H6\n6 ENG_B_H8\n5 6 7 *\n(6,0)\n' +
+          'Language A: literature, suomi\nFIN_S1\n4 FIN_S2\n4 FIN_S3\nS FIN_S4\n5 FIN_S5\n6 FIN_S6\n5 FIN_S7\n5 FIN_S8\nS FIN_S9\n5 9 4\n(4,9)\n' +
+          'Language A: language and literature, englanti\nENG_B_H1\n6 ENG_B_H2\n7 ENG_B_H4\nS ENG_B_H5\n6 ENG_B_H6\n6 ENG_B_H8\n5 6 7\n(6,0)\n' +
           'Individuals and societies\n' +
-          'History\nHIS_H3\n6 HIS_H4\n6 HIS_H5\n7 HIS_H6\n6 HIS_H7\n1 HIS_H9\nS 6 6 *\n(5,2)\n' +
-          'Psychology\nPSY_S1\n6 PSY_S2\n6 PSY_S3\n6 PSY_S4\n5 PSY_S5\nS PSY_S6\n6 PSY_S7\n5 PSY_S8\n2 PSY_S9\nS 9 7 *\n(5,1)\n' +
-          'Experimental sciences\nBiology\nBIO_H1\n5 BIO_H2\n4 BIO_H3\nS BIO_H4\n5 BIO_H5\n5 BIO_H6\n2 BIO_H7\n3 BIO_H8\n4 BIO_H9\n1 9 5 *\n(3,6)\n' +
+          'History\nHIS_H3\n6 HIS_H4\n6 HIS_H5\n7 HIS_H6\n6 HIS_H7\n1 HIS_H9\nS 6 6\n(5,2)\n' +
+          'Psychology\nPSY_S1\n6 PSY_S2\n6 PSY_S3\n6 PSY_S4\n5 PSY_S5\nS PSY_S6\n6 PSY_S7\n5 PSY_S8\n2 PSY_S9\nS 9 7\n(5,1)\n' +
+          'Experimental sciences\nBiology\nBIO_H1\n5 BIO_H2\n4 BIO_H3\nS BIO_H4\n5 BIO_H5\n5 BIO_H6\n2 BIO_H7\n3 BIO_H8\n4 BIO_H9\n1 9 5\n(3,6)\n' +
           'Mathematics\n' +
-          'Mathematical studies\nMATST_S1\n5 MATST_S2\n7 MATST_S3\n6 MATST_S4\n6 MATST_S5\n4 MATST_S6\nS 6 5 *\n(5,6)\n' +
-          '* = ennustettu arvosana')
+          'Mathematical studies\nMATST_S1\n5 MATST_S2\n7 MATST_S3\n6 MATST_S4\n6 MATST_S5\n4 MATST_S6\nS 6 5\n(5,6)'
+        )
       })
+    })
+
+    describe('Oppiaineet', function () {
+      before(opinnot.expandAll)
+      it('ryhmitellään aineryhmittäin', function () {
+        var rivit = S('.oppiaineet tbody tr')
+        expect(S(rivit.get(0)).hasClass('aineryhmä')).to.equal(true)
+        expect(S(rivit.get(1)).hasClass('A')).to.equal(true)
+        expect(S(rivit.get(2)).hasClass('A2')).to.equal(true)
+        expect(S(rivit.get(3)).hasClass('uusi-oppiaine')).to.equal(true)
+        expect(S(rivit.get(4)).hasClass('aineryhmä')).to.equal(true)
+        expect(S(rivit.get(5)).hasClass('HIS')).to.equal(true)
+        expect(S(rivit.get(6)).hasClass('PSY')).to.equal(true)
+        expect(S(rivit.get(7)).hasClass('uusi-oppiaine')).to.equal(true)
+        expect(S(rivit.get(8)).hasClass('aineryhmä')).to.equal(true)
+        expect(S(rivit.get(9)).hasClass('BIO')).to.equal(true)
+        expect(S(rivit.get(10)).hasClass('uusi-oppiaine')).to.equal(true)
+        expect(S(rivit.get(11)).hasClass('aineryhmä')).to.equal(true)
+        expect(S(rivit.get(12)).hasClass('MATST')).to.equal(true)
+      })
+
+      describe('Kun oppiaineen arvosana ei ole ennakkoarvosana', function () {
+        it('arvosanalle ei näytetä alaviitettä', function() {
+          expect(S('.oppiaineet tbody tr:eq(1) > .arvosana').text()).to.equal('4(4,9)')
+        })
+
+        it('alaviitteiden selitteitä ei näytetä, kun yhtään alaviitettä (ennakkoarvosanaa) ei ole', function() {
+          expect(S('.osasuoritukset .selitteet').text()).to.equal('')
+        })
+      })
+
+      describe('Kun oppiaineen arvosana on ennakkoarvosana', function () {
+        before(
+          page.openPage,
+          page.oppijaHaku.searchAndSelect('071096-317K'),
+          opinnot.valitseSuoritus(1, 'IB-tutkinto'),
+          opinnot.expandAll
+        )
+
+        it('arvosanalle näytetään alaviite', function() {
+          expect(S('.oppiaineet tbody tr:eq(1) > .arvosana').text()).to.equal('4 *(4,9)')
+        })
+
+        it('ennakkoarvosana-alaviitteelle näyteään selite', function() {
+          expect(S('.osasuoritukset .selitteet').text()).to.equal('* = ennustettu arvosana')
+        })
+      })
+
     })
 
     describe('Tulostettava todistus', function () {
