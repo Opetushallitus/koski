@@ -197,14 +197,24 @@ export class Oppijataulukko extends React.Component {
 var edellisetRivit = null
 
 export const oppijataulukkoContentP = (query, params) => {
-  let pager = Pager('/koski/api/opiskeluoikeus/perustiedot' + query)
-  let taulukkoContentP = pager.rowsP.doAction((rivit) => edellisetRivit = rivit).startWith(null).map((rivit) => <Oppijataulukko rivit={rivit} edellisetRivit={edellisetRivit} pager={pager} params={params}/>)
-  return Bacon.combineWith(taulukkoContentP, (taulukko) => ({
+  let pager = Pager('/koski/api/opiskeluoikeus/perustiedot' + query, L.prop('tiedot'))
+  let taulukkoContentP = pager.rowsP
+    .doAction((result) => edellisetRivit = result.tiedot)
+    .startWith(null)
+    .map((rivit) => <Oppijataulukko rivit={rivit.tiedot} edellisetRivit={edellisetRivit} pager={pager} params={params}/>)
+  let totalP = pager.rowsP.map(r => r.total)
+  return Bacon.combineWith(taulukkoContentP, totalP, (taulukko, total) => ({
     content: (<div className='content-area oppijataulukko'>
       <div className="main-content">
         <OppijaHaku/>
         <EditLocalizationsLink/>
-        <h2 className="oppijataulukko-header"><Text name="Opiskelijat"/></h2>
+        <h2 className="oppijataulukko-header">
+          <Text name="Opiskelijat"/>
+          <div className="opiskeluoikeudet-total">
+            <span className="title label"><Text name="Opiskeluoikeuksia"/></span>
+            <span className="value">{': ' + total}</span>
+          </div>
+        </h2>
       { taulukko }
       </div>
     </div>),

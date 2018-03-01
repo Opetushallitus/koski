@@ -974,6 +974,7 @@
   "Ennustettu arvosana": "Ennustettu arvosana",
   "description:Muoto YYYY-MM-DD. Tiedon syötössä tietoa..." : "Muoto YYYY-MM-DD. Tiedon syötössä tietoa ei tarvita; tieto poimitaan tila-kentän ensimmäisestä opiskeluoikeusjaksosta.",
   "KOSKI-palvelun tietosuojaseloste (sisältää rekisteriselosteen)": "KOSKI-palvelun tietosuojaseloste (sisältää rekisteriselosteen)",
-  "tooltip:Oppiaineen laajuus kursseina." : "Oppiaineen laajuus kursseina."
+  "tooltip:Oppiaineen laajuus kursseina." : "Oppiaineen laajuus kursseina.",
+  "Opiskeluoikeuksia": "Opiskeluoikeuksia"
 }
 
