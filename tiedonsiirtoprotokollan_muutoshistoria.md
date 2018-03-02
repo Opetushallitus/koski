@@ -1,3 +1,7 @@
+## 1.3.2018
+
+  - Lisätty mahdollisuus syöttää yhteisen tutkinnon osan osa-alueen suorituksia Valma-kouluksen osan suoritukseen
+
 ## 21.2.2018
 
   - Aikuisten perusopetuksen oppiaineiden ja kurssien laajuudet voi antaa kursseina

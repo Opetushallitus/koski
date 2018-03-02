@@ -1869,8 +1869,9 @@ describe('Ammatillinen koulutus', function() {
         })
 
         it('näyttää tutkinnon osat', function() {
-          expect(extractAsText(S('.osasuoritukset'))).to.equalIgnoreNewlines(
-            'Sulje kaikki Koulutuksen osa Pakollisuus Laajuus (osp) Arvosana\n' +
+          expect(extractAsText(S('.suoritus > .osasuoritukset'))).to.equalIgnoreNewlines(
+            'Sulje kaikki\n' +
+            'Koulutuksen osa Pakollisuus Laajuus (osp) Arvosana\n' +
             'Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen kyllä 10 Hyväksytty\n' +
             'Kuvaus Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen\n' +
             'Opiskeluvalmiuksien vahvistaminen ei 10 Hyväksytty\n' +
@@ -1887,8 +1888,16 @@ describe('Ammatillinen koulutus', function() {
             'Tutkinto Kone- ja metallialan perustutkinto 39/011/2014\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 3.10.2015 Helsinki Reijo Reksi , rehtori\n' +
-            'Selite Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta\nRahoituksen piirissä ei\n' +
-            'Yhteensä 65 osp'
+            'Selite Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta\n' +
+            'Rahoituksen piirissä ei\n' +
+            'Viestintä- ja vuorovaikutusosaaminen kyllä 3 Hyväksytty\n' +
+            'Vahvistus 3.10.2015 Helsinki Reijo Reksi , rehtori\n' +
+            'Osa-alue Pakollisuus Laajuus (osp) Arvosana\n' +
+            'Äidinkieli, Suomen kieli ja kirjallisuus kyllä 5 3\n' +
+            'Äidinkieli, Suomen kieli ja kirjallisuus ei 3 3\n' +
+            'Toinen kotimainen kieli, ruotsi, ruotsi kyllä 1 3\n' +
+            'Vieraat kielet, englanti kyllä 2 3\n' +
+            'Yhteensä 68 osp'
           )
         })
       })
