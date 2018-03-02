@@ -136,7 +136,7 @@ describe('IB', function( ) {
         before(
           page.openPage,
           page.oppijaHaku.searchAndSelect('071096-317K'),
-          opinnot.valitseSuoritus(1, 'IB-tutkinto'),
+          opinnot.valitseSuoritus(undefined, 'IB-tutkinto'),
           opinnot.expandAll
         )
 
@@ -160,7 +160,7 @@ describe('IB', function( ) {
     })
 
     describe('Tietojen muuttaminen', function() {
-      before(page.openPage, page.oppijaHaku.searchAndSelect('040701-432D'), opinnot.valitseSuoritus(1, 'IB-tutkinto'))
+      before(page.openPage, page.oppijaHaku.searchAndSelect('040701-432D'), opinnot.valitseSuoritus(undefined, 'IB-tutkinto'))
       describe('Suoritusten tiedot', function() {
         describe('Oppiaine', function() {
           before(editor.edit)
