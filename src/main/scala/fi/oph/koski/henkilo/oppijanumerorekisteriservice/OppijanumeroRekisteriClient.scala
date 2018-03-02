@@ -11,7 +11,6 @@ import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.TäydellisetHenkilötiedot
-import fi.oph.scalaschema.annotation.SyntheticProperty
 import scalaz.concurrent.Task
 
 case class OppijanumeroRekisteriClient(config: Config) {
@@ -52,13 +51,7 @@ object UusiHenkilö {
   def oppija(hetu: Option[String], sukunimi: String, etunimet: String, kutsumanimi: String) = UusiHenkilö(hetu, sukunimi, etunimet, kutsumanimi, "OPPIJA", None)
 }
 
-case class YhteystiedotHaku(organisaatioOids: List[String], kayttoOikeusRyhmaNimet: List[String]) {
-  @SyntheticProperty
-  def duplikaatti = false
-  @SyntheticProperty
-  def passivoitu = false
-}
-
+case class YhteystiedotHaku(organisaatioOids: List[String], kayttoOikeusRyhmaNimet: List[String], duplikaatti: Boolean = false, passivoitu: Boolean = false)
 case class Yhteystiedot(yhteystiedotRyhma: List[YhteystiedotRyhmä])
 case class YhteystiedotRyhmä(yhteystieto: List[Yhteystieto])
 case class Yhteystieto(yhteystietoTyyppi: String, yhteystietoArvo: String)
