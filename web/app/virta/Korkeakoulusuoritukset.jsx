@@ -7,7 +7,7 @@ import {Suoritustaulukko} from '../suoritus/Suoritustaulukko'
 
 const Korkeakoulusuoritukset = ({opiskeluoikeus}) => {
   const suoritukset = modelItems(opiskeluoikeus, 'suoritukset')
-  const [tutkinnot, opintojaksot] = R.partition(s => modelData(s, 'tyyppi').koodiarvo === 'korkeakoulututkinto', suoritukset)
+  const [tutkinnot, opintojaksot] = R.partition(s => modelData(s, 'tyyppi').koodiarvo !== 'korkeakoulunopintojakso', suoritukset)
   const modelWithoutTutkinnot = modelSetValue(opiskeluoikeus, opintojaksot, 'suoritukset')
 
   const hasTutkintoja = tutkinnot.length > 0

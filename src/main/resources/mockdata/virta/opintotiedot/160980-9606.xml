@@ -1,0 +1,368 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+  <SOAP-ENV:Header/>
+  <SOAP-ENV:Body>
+    <virtaluku:OpiskelijanKaikkiTiedotResponse xmlns:virtaluku="http://tietovaranto.csc.fi/luku">
+      <virta:Virta xmlns:virta="urn:mace:funet.fi:virta/2015/09/01">
+        <virta:Opiskelija avain="10065_65933">
+          <virta:Henkilotunnus>160980-9606</virta:Henkilotunnus>
+          <virta:Opiskeluoikeudet>
+            <virta:Opiskeluoikeus opiskelijaAvain="10065_65933" avain="10065_1700969">
+              <virta:AlkuPvm>2017-05-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2017-11-20</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2017-05-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2017-11-20</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2017-11-21</virta:AlkuPvm>
+                <virta:LoppuPvm>2017-11-21</virta:LoppuPvm>
+                <virta:Koodi>3</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>8</virta:Tyyppi>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="AVOTEKN/">
+                <virta:AlkuPvm>2017-05-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2017-11-20</virta:LoppuPvm>
+                <virta:Koulutuskunta>853</virta:Koulutuskunta>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">7</virta:Koulutusala>
+              <virta:Laajuus>
+                <virta:Opintopiste>10.000000</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
+          </virta:Opiskeluoikeudet>
+          <virta:LukukausiIlmoittautumiset>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="10065_1700969" opiskelijaAvain="10065_65933">
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2017-08-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2017-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2017-12-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+          </virta:LukukausiIlmoittautumiset>
+          <virta:Opintosuoritukset>
+            <virta:Opintosuoritus opiskeluoikeusAvain="10065_1700969" opiskelijaAvain="10065_65933" koulutusmoduulitunniste="AVOTEKN/5021028/3" avain="10065_1700969_5021028_3_1">
+              <virta:SuoritusPvm>2017-11-17</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5.000000</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">World of Bioinformatics</virta:Nimi>
+              <virta:Nimi kieli="en">World of Bioinformatics</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+                <virta:Osuus>1.000000</virta:Osuus>
+              </virta:Koulutusala>
+              <virta:Luokittelu>3</virta:Luokittelu>
+            </virta:Opintosuoritus>
+          </virta:Opintosuoritukset>
+        </virta:Opiskelija>
+        <virta:Opiskelija avain="20804418">
+          <virta:Henkilotunnus>160980-9606</virta:Henkilotunnus>
+          <virta:Opiskeluoikeudet>
+            <virta:Opiskeluoikeus opiskelijaAvain="20804418" avain="46737839">
+              <virta:AlkuPvm>2015-10-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2016-10-02</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2016-10-03</virta:AlkuPvm>
+                <virta:Koodi>3</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2015-10-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2016-10-02</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>10</virta:Tyyppi>
+              <virta:Myontaja>01906</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="#Aducate/A2004/Täyd.koul. farm/Lääkehoidon arv">
+                <virta:AlkuPvm>2015-10-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2016-10-02</virta:LoppuPvm>
+                <virta:Koulutuskunta>297</virta:Koulutuskunta>
+              </virta:Jakso>
+              <virta:Ensisijaisuus>
+                <virta:AlkuPvm>2015-10-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2112-12-21</virta:LoppuPvm>
+              </virta:Ensisijaisuus>
+              <virta:Koulutusala versio="ohjausala">11</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+          </virta:Opiskeluoikeudet>
+          <virta:LukukausiIlmoittautumiset/>
+          <virta:Opintosuoritukset/>
+        </virta:Opiskelija>
+        <virta:Opiskelija avain="1656">
+          <virta:Henkilotunnus>160980-9606</virta:Henkilotunnus>
+          <virta:Opiskeluoikeudet>
+            <virta:Opiskeluoikeus opiskelijaAvain="1656" avain="1927">
+              <virta:AlkuPvm>2011-08-24</virta:AlkuPvm>
+              <virta:LoppuPvm>2013-06-20</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2011-08-24</virta:AlkuPvm>
+                <virta:LoppuPvm>2013-06-20</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2013-06-21</virta:AlkuPvm>
+                <virta:Koodi>3</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>12</virta:Tyyppi>
+              <virta:Myontaja>02536</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="TZ4 Tietoliikenne- ja tietotekniikan erikoistumisopinnot">
+                <virta:AlkuPvm>2011-08-24</virta:AlkuPvm>
+                <virta:LoppuPvm>2013-06-20</virta:LoppuPvm>
+                <virta:Koulutuskunta>049</virta:Koulutuskunta>
+                <virta:Koulutuskieli>en</virta:Koulutuskieli>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">7</virta:Koulutusala>
+              <virta:Laajuus>
+                <virta:Opintopiste>30</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
+          </virta:Opiskeluoikeudet>
+          <virta:LukukausiIlmoittautumiset>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="1927" opiskelijaAvain="1656">
+              <virta:Myontaja>02536</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2012-08-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2012-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2012-12-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="1927" opiskelijaAvain="1656">
+              <virta:Myontaja>02536</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2011-08-24</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2011-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2011-12-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="1927" opiskelijaAvain="1656">
+              <virta:Myontaja>02536</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2012-01-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2012-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2012-07-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="1927" opiskelijaAvain="1656">
+              <virta:Myontaja>02536</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2013-01-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2013-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2013-07-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+          </virta:LukukausiIlmoittautumiset>
+          <virta:Opintosuoritukset>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1927" opiskelijaAvain="1656" koulutusmoduulitunniste="TZ4L11S3 TZ40AA30-2004" avain="2978873">
+              <virta:SuoritusPvm>2013-05-27</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>1</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02536</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>IP-verkkojen hallinta</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">7</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1927" opiskelijaAvain="1656" koulutusmoduulitunniste="TZ4L11S3 TZ40AA34-2003" avain="2978878">
+              <virta:SuoritusPvm>2013-05-15</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02536</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Tietoverkkojen tietoturva</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">7</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1927" opiskelijaAvain="1656" koulutusmoduulitunniste="TZ4L11S3 TZ40AA27-2002" avain="2978872">
+              <virta:SuoritusPvm>2012-04-20</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02536</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Virtuaalilähiverkot (CCNA3)</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">7</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1927" opiskelijaAvain="1656" koulutusmoduulitunniste="TZ4L11S3 TZ40AA33-2003" avain="2978877">
+              <virta:SuoritusPvm>2013-02-25</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02536</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Tekninen tietoturva</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">7</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1927" opiskelijaAvain="1656" koulutusmoduulitunniste="TZ4L11S3 TZ40AA26-2002" avain="2978871">
+              <virta:SuoritusPvm>2012-02-07</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02536</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Reititinverkot (CCNA2)</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">7</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1927" opiskelijaAvain="1656" koulutusmoduulitunniste="TZ4L11S3 TZ40AA31-2002" avain="2978876">
+              <virta:SuoritusPvm>2011-11-01</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02536</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Mikrotietokoneen hallinta</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">7</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1927" opiskelijaAvain="1656" koulutusmoduulitunniste="TZ4L11S3 TI00AC29-2001" avain="2978881">
+              <virta:SuoritusPvm>2012-08-17</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02536</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Photoshopin perusteet</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">7</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1927" opiskelijaAvain="1656" koulutusmoduulitunniste="TZ4L11S3 TI00AA70-2008" avain="2978874">
+              <virta:SuoritusPvm>2013-05-27</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02536</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Laajaverkot</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">7</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1927" opiskelijaAvain="1656" koulutusmoduulitunniste="TZ4L11S3 TI00AA58-2002" avain="2978879">
+              <virta:SuoritusPvm>2012-12-22</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02536</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Linuxin asennus ja ylläpito</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">7</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1927" opiskelijaAvain="1656" koulutusmoduulitunniste="TZ4L11S3 TZ40AA25-2002" avain="2978870">
+              <virta:SuoritusPvm>2011-11-04</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02536</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Lähiverkot (CCNA1)</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">7</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1927" opiskelijaAvain="1656" koulutusmoduulitunniste="TZ4L11S3 TZ40AA32-2003" avain="2978875">
+              <virta:SuoritusPvm>2012-10-23</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>2</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02536</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Tietoturvallisuuden perusteet</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">7</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1927" opiskelijaAvain="1656" koulutusmoduulitunniste="TZ4L11S3 TI00AA49-2003" avain="2978880">
+              <virta:SuoritusPvm>2013-01-09</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02536</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Web-ohjelmointi</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">7</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+          </virta:Opintosuoritukset>
+        </virta:Opiskelija>
+      </virta:Virta>
+    </virtaluku:OpiskelijanKaikkiTiedotResponse>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

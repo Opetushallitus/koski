@@ -42,7 +42,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         päättymispäivä = loppuPvm(opiskeluoikeusNode),
         oppilaitos = optionalOppilaitos(opiskeluoikeusNode),
         koulutustoimija = None,
-        suoritukset = lisääKeskeneräinenTutkintosuoritus(suoritukset, opiskeluoikeusNode),
+        suoritukset = lisääKeskeneräinenTutkintosuoritus(suoritukset, opiskeluoikeusNode, opiskeluoikeudenTila),
         tila = opiskeluoikeudenTila,
         ensisijaisuus = (opiskeluoikeusNode \ "Ensisijaisuus").headOption.map { e => // TODO, should this be a list ?
           Ensisijaisuus(alkuPvm(e), loppuPvm(e))
@@ -70,7 +70,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     opiskeluoikeudet.filter(_.suoritukset.nonEmpty) ++ orphanages
   }
 
-  private def lisääKeskeneräinenTutkintosuoritus(suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node) = {
+  private def lisääKeskeneräinenTutkintosuoritus(suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node, tila: KorkeakoulunOpiskeluoikeudenTila) = {
     koulutuskoodi(opiskeluoikeusNode).map { koulutuskoodi =>
       val t = tutkinto(koulutuskoodi)
       if (suoritukset.exists(_.koulutusmoduuli == t)) suoritukset
@@ -82,6 +82,23 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         osasuoritukset = None,
         toimipiste = oppilaitos(opiskeluoikeusNode)
       ) :: suoritukset
+    }.orElse {
+      koodistoViitePalvelu.getKoodistoKoodiViite("virtaopiskeluoikeudentyyppi", (opiskeluoikeusNode \ "Tyyppi").text)
+        .map(virtaOpiskeluoikeudenTyyppi => {
+          val nimi = Some((opiskeluoikeusNode \\ "@koulutusmoduulitunniste").text.stripPrefix("#").stripSuffix("/").trim)
+            .filter(_.nonEmpty).map(finnish).getOrElse(virtaOpiskeluoikeudenTyyppi.description)
+          MuuKorkeakoulunSuoritus(
+            koulutusmoduuli = MuuKorkeakoulunOpinto(
+              tunniste = virtaOpiskeluoikeudenTyyppi,
+              nimi = nimi,
+              laajuus = laajuus(opiskeluoikeusNode)
+            ),
+            vahvistus = tila.opiskeluoikeusjaksot.lastOption.filter(_.tila.koodiarvo == "3").map(jakso => Päivämäärävahvistus(jakso.alku, oppilaitos(opiskeluoikeusNode))),
+            suorituskieli = None,
+            osasuoritukset = None,
+            toimipiste = oppilaitos(opiskeluoikeusNode)
+          ) :: suoritukset
+        })
     }.getOrElse(suoritukset)
   }
 
@@ -115,10 +132,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       koulutusmoduuli = KorkeakoulunOpintojakso(
         tunniste = PaikallinenKoodi((suoritus \\ "@koulutusmoduulitunniste").text, nimi(suoritus)),
         nimi = nimi(suoritus),
-        laajuus = for {
-          yksikko <- koodistoViitePalvelu.getKoodistoKoodiViite("opintojenlaajuusyksikko", "2")
-          laajuus <- (suoritus \ "Laajuus" \ "Opintopiste").headOption.map(_.text.toFloat).filter(_ > 0)
-        } yield LaajuusOpintopisteissä(laajuus, yksikko)
+        laajuus = laajuus(suoritus)
       ),
       arviointi = arviointi(suoritus),
       vahvistus = vahvistus(suoritus),
@@ -127,6 +141,11 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       osasuoritukset = optionalList(osasuoritukset)
     )
   }
+
+  private def laajuus(suoritusOrOpiskeluoikeus: Node): Option[LaajuusOpintopisteissä] = for {
+    yksikko <- koodistoViitePalvelu.getKoodistoKoodiViite("opintojenlaajuusyksikko", "2")
+    laajuus <- (suoritusOrOpiskeluoikeus \ "Laajuus" \ "Opintopiste").headOption.map(_.text.toFloat).filter(_ > 0)
+  } yield LaajuusOpintopisteissä(laajuus, yksikko)
 
   private def arviointi(suoritus: Node) =
     koodistoViitePalvelu.getKoodistoKoodiViite("virtaarvosana", suoritus \ "Arvosana" \ "_" text).map( arvosana =>

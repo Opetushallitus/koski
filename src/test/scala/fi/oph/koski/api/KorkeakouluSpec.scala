@@ -187,6 +187,7 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
           """|Suoritetut tutkinnot
             |Opintosuoritukset
             |Op Arvosana Suor.pvm
+            |13 05AVOIN/EISUVA
             |05AVOIN/MI00AX91/3 Graafisen suunnittelun perusteet 5 hyväksytty 7.11.2015
             |05AVOIN/MI00BB13/3 Typografian perusteet 4 hyväksytty 11.4.2016""".stripMargin
         )
