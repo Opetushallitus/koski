@@ -11,7 +11,6 @@ import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.TäydellisetHenkilötiedot
-
 import scalaz.concurrent.Task
 
 case class OppijanumeroRekisteriClient(config: Config) {
@@ -25,7 +24,10 @@ case class OppijanumeroRekisteriClient(config: Config) {
 
   def findKäyttäjäByOid(oid: String) = oidServiceHttp.get(uri"/oppijanumerorekisteri-service/henkilo/$oid")(Http.parseJsonOptional[KäyttäjäHenkilö])
 
-  def findYhteystiedot(oid: String) = oidServiceHttp.get(uri"/oppijanumerorekisteri-service/henkilo/${oid}/yhteystiedot/yhteystietotyyppi2")(Http.parseJsonOptional[Yhteystiedot])
+  def findSähköpostit(organisaatioOid: String, käyttöikeusRyhmä: String): Task[List[String]] =
+    oidServiceHttp.post(uri"/oppijanumerorekisteri-service/s2s/henkilo/yhteystiedot", YhteystiedotHaku(List(organisaatioOid), List(käyttöikeusRyhmä)))(json4sEncoderOf[YhteystiedotHaku])(Http.parseJson[List[Yhteystiedot]])
+        .map(_.flatMap(_.yhteystiedotRyhma.flatMap(_.yhteystieto.find(_.yhteystietoTyyppi == "YHTEYSTIETO_SAHKOPOSTI").map(_.yhteystietoArvo))))
+
   def findOppijatByOids(oids: List[Oid]): Task[List[OppijaHenkilö]] =
     oidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloOidList", oids)(json4sEncoderOf[List[String]])(Http.parseJson[List[OppijaNumerorekisteriOppija]]).map(_.map(_.toOppijaHenkilö))
 
@@ -48,7 +50,12 @@ object UusiHenkilö {
   def palvelu(nimi: String) = UusiHenkilö(None, nimi, "_", "_", "PALVELU", Some(Käyttäjätiedot(Some(nimi))))
   def oppija(hetu: Option[String], sukunimi: String, etunimet: String, kutsumanimi: String) = UusiHenkilö(hetu, sukunimi, etunimet, kutsumanimi, "OPPIJA", None)
 }
-case class Yhteystiedot(sahkoposti: String)
+
+case class YhteystiedotHaku(organisaatioOids: List[String], kayttoOikeusRyhmaNimet: List[String], duplikaatti: Boolean = false, passivoitu: Boolean = false)
+case class Yhteystiedot(yhteystiedotRyhma: List[YhteystiedotRyhmä])
+case class YhteystiedotRyhmä(yhteystieto: List[Yhteystieto])
+case class Yhteystieto(yhteystietoTyyppi: String, yhteystietoArvo: String)
+
 case class Kansalaisuus(kansalaisuusKoodi: String)
 case class Kieli(kieliKoodi: String)
 case class OppijaHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], syntymaika: Option[LocalDate], aidinkieli: Option[String], kansalaisuus: Option[List[String]], modified: Long) {
