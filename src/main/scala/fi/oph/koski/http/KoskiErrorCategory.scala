@@ -112,6 +112,7 @@ object KoskiErrorCategory {
 
       class Arviointi extends ErrorCategory(Validation.this, "arviointi", "Suoritusten arviointiin liittyvä validointivirhe") {
         val vääräHyväksyttyArvo = subcategory("vääräHyväksyttyArvo", "hyväksytty-kentän arvo ristiriidassa annetun arvosanan kanssa")
+        val useitaArviointiasteikoita = subcategory("useitaArviointiAsteikoita", "Ammatillinen päätason suoritus voi käyttää vain yhtä numeerista arviointiasteikkoa")
       }
       val arviointi = new Arviointi
     }

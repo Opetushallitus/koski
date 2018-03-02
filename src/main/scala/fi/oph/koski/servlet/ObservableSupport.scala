@@ -10,8 +10,8 @@ import rx.lang.scala.Observable
 import scala.reflect.runtime.universe.TypeTag
 
 trait ObservableSupport extends ApiServlet {
-  def streamResponse[T : TypeTag](in: Observable[T])(implicit user: KoskiSession): Unit = try {
-    writeJsonStreamSynchronously(in)
+  def streamResponse[T : TypeTag](in: Observable[T], user: KoskiSession): Unit = try {
+    writeJsonStreamSynchronously(in, user)
   } catch {
     case e: Exception if isEOF(e) =>
       // Client abort, ok
@@ -23,7 +23,7 @@ trait ObservableSupport extends ApiServlet {
 
   private def renderInternalError(log: Unit) = renderStatus(KoskiErrorCategory.internalError())
 
-  def writeJsonStreamSynchronously[T : TypeTag](in: Observable[T])(implicit user: KoskiSession): Unit = {
+  private def writeJsonStreamSynchronously[T : TypeTag](in: Observable[T], user: KoskiSession): Unit = {
     contentType = "application/json;charset=utf-8"
     val writer = response.getWriter
     var empty = true
@@ -35,6 +35,7 @@ trait ObservableSupport extends ApiServlet {
       if (index > 0) {
         writer.print(",")
       }
+      implicit val u = user
       val output: String = JsonSerializer.write(item)
       writer.print(output)
     }

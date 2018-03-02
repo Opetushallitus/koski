@@ -56,7 +56,7 @@ class OppijaServlet(implicit val application: KoskiApplication) extends ApiServl
 
   get("/") {
     val serialize = SensitiveDataFilter(koskiSession).rowSerializer
-    streamResponse(query.map(serialize))
+    streamResponse(query.map(serialize), koskiSession)
   }
 
   get("/:oid") {
@@ -64,7 +64,7 @@ class OppijaServlet(implicit val application: KoskiApplication) extends ApiServl
   }
 
   get("/oids") {
-    streamResponse[String](application.opiskeluoikeusQueryRepository.oppijaOidsQuery(paginationSettings)(koskiSession))
+    streamResponse[String](application.opiskeluoikeusQueryRepository.oppijaOidsQuery(paginationSettings)(koskiSession), koskiSession)
   }
 
   private def findByOid(oid: String, user: KoskiSession): Either[HttpStatus, Oppija] = {

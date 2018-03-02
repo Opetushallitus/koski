@@ -19,7 +19,7 @@ import rx.lang.scala.Observable
 
 class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Logging with NoCache with ObservableSupport with ContentEncodingSupport {
   get("/", request.getRemoteHost == "127.0.0.1") {
-    if (!koskiSession.isRoot) {
+    if (!koskiSession.hasGlobalReadAccess) {
       haltWithStatus(KoskiErrorCategory.forbidden())
     }
 
@@ -27,8 +27,10 @@ class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication
     val validateHistory = params.get("history").map(_.toBoolean).getOrElse(false)
     val validateHenkilö = params.get("henkilö").map(_.toBoolean).getOrElse(false)
     val extractOnly = params.get("extractOnly").map(_.toBoolean).getOrElse(false)
+    // Ensure that nobody uses koskiSession implicitely
+    implicit val systemUser = KoskiSession.systemUser
 
-    val context = ValidateContext(application.validator, application.historyRepository, application.henkilöRepository)
+    val context = ValidateContext(application.validator, application.historyRepository, application.henkilöRepository)(systemUser)
     def validate(row: OpiskeluoikeusRow): ValidationResult = {
       var result = if (extractOnly) {
         context.extractOpiskeluoikeus(row)
@@ -40,10 +42,10 @@ class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication
       result
     }
 
-    OpiskeluoikeusQueryFilter.parse(params.filterKeys(!List("errorsOnly", "history", "henkilö", "extractOnly").contains(_)).toList)(application.koodistoViitePalvelu, application.organisaatioRepository, koskiSession) match {
+    OpiskeluoikeusQueryFilter.parse(params.filterKeys(!List("errorsOnly", "history", "henkilö", "extractOnly").contains(_)).toList)(application.koodistoViitePalvelu, application.organisaatioRepository, systemUser) match {
       case Right(filters) =>
-        val rows: Observable[(OpiskeluoikeusRow, HenkilöRow, Option[HenkilöRow])] = application.opiskeluoikeusQueryRepository.opiskeluoikeusQuery(filters, None, None)(koskiSession)
-        streamResponse[ValidationResult](rows.map(_._1).map(validate).filter(result => !(errorsOnly && result.isOk)))
+        val rows: Observable[(OpiskeluoikeusRow, HenkilöRow, Option[HenkilöRow])] = application.opiskeluoikeusQueryRepository.opiskeluoikeusQuery(filters, None, None)(systemUser)
+        streamResponse[ValidationResult](rows.map(_._1).map(validate).filter(result => !(errorsOnly && result.isOk)), systemUser)
 
       case Left(status) =>
         haltWithStatus(status)
@@ -51,11 +53,13 @@ class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication
   }
 
   get("/:oid") {
-    if (!koskiSession.isRoot) {
+    if (!koskiSession.hasGlobalReadAccess) {
       haltWithStatus(KoskiErrorCategory.forbidden())
     }
-    val context = ValidateContext(application.validator, application.historyRepository, application.henkilöRepository)
-    renderEither(application.opiskeluoikeusRepository.findByOid(getStringParam("oid"))(koskiSession).map(context.validateAll))
+    // Ensure that nobody uses koskiSession implicitely
+    implicit val systemUser = KoskiSession.systemUser
+    val context = ValidateContext(application.validator, application.historyRepository, application.henkilöRepository)(systemUser)
+    renderEither(application.opiskeluoikeusRepository.findByOid(getStringParam("oid"))(systemUser).map(context.validateAll))
   }
 }
 
