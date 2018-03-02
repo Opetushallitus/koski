@@ -4,7 +4,7 @@ import {UusiOppiaineDropdown} from '../oppiaine/UusiOppiaineDropdown'
 import {ensureArrayKey, modelData, modelItems, modelSet, modelSetTitle, pushModel} from '../editor/EditorModel'
 import {createOppiaineenSuoritus} from './lukio'
 
-export const UusiLukionOppiaineDropdown = ({model, oppiaineenSuoritusClass}) => {
+export const UusiLukionOppiaineDropdown = ({model, oppiaineenSuoritusClasses}) => {
   if (!model || !model.context.edit) return null
 
   const addOppiaine = oppiaine => {
@@ -19,12 +19,9 @@ export const UusiLukionOppiaineDropdown = ({model, oppiaineenSuoritusClass}) => 
     ensureArrayKey(suoritusUudellaOppiaineella)
   }
 
-  const suoritusProtos = oppiaineenSuoritusClass
-    ? [createOppiaineenSuoritus(model, oppiaineenSuoritusClass)]
-    : [
-      createOppiaineenSuoritus(model, 'lukionoppiaineensuoritus'),
-      createOppiaineenSuoritus(model, 'muidenlukioopintojensuoritus')
-    ]
+  const suoritusProtos = oppiaineenSuoritusClasses
+    ? oppiaineenSuoritusClasses.map(c => createOppiaineenSuoritus(model, c))
+    : [createOppiaineenSuoritus(model)]
 
   return (
     <UusiOppiaineDropdown

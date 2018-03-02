@@ -5,7 +5,7 @@ import {UusiLukionOppiaineDropdown} from './UusiLukionOppiaineDropdown'
 import {modelErrorMessages, modelItems} from '../editor/EditorModel'
 import {LukionOppiaineetTableHead} from './fragments/LukionOppiaineetTableHead'
 
-export const LukionOppiaineetEditor = ({suorituksetModel, classForUusiOppiaineenSuoritus, suoritusFilter}) => {
+export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaineenSuoritus, suoritusFilter}) => {
   const {edit, suoritus: päätasonSuoritusModel} = suorituksetModel.context
   const oppiaineet = modelItems(suorituksetModel).filter(suoritusFilter || R.identity)
 
@@ -31,7 +31,7 @@ export const LukionOppiaineetEditor = ({suorituksetModel, classForUusiOppiaineen
       </table>
       <UusiLukionOppiaineDropdown
         model={päätasonSuoritusModel}
-        oppiaineenSuoritusClass={classForUusiOppiaineenSuoritus}
+        oppiaineenSuoritusClasses={classesForUusiOppiaineenSuoritus}
       />
     </section>
   )
