@@ -3,6 +3,7 @@ package fi.oph.koski.virta
 import java.time.LocalDate
 import java.time.LocalDate.{parse => date}
 
+import fi.oph.koski.config.Environment
 import fi.oph.koski.date.DateOrdering
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.localization.LocalizedString
@@ -10,7 +11,7 @@ import fi.oph.koski.localization.LocalizedString.{finnish, sanitize}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.henkilo.HenkilöRepository
-import fi.oph.koski.oppilaitos.OppilaitosRepository
+import fi.oph.koski.oppilaitos.{MockOppilaitosRepository, OppilaitosRepository}
 import fi.oph.koski.schema._
 import fi.oph.koski.util.OptionalLists
 import fi.oph.koski.util.OptionalLists.optionalList
@@ -41,7 +42,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         päättymispäivä = loppuPvm(opiskeluoikeusNode),
         oppilaitos = optionalOppilaitos(opiskeluoikeusNode),
         koulutustoimija = None,
-        suoritukset = lisääKeskeneräinenTutkintosuoritus(suoritukset, opiskeluoikeusNode),
+        suoritukset = lisääKeskeneräinenTutkintosuoritus(suoritukset, opiskeluoikeusNode, opiskeluoikeudenTila),
         tila = opiskeluoikeudenTila,
         ensisijaisuus = (opiskeluoikeusNode \ "Ensisijaisuus").headOption.map { e => // TODO, should this be a list ?
           Ensisijaisuus(alkuPvm(e), loppuPvm(e))
@@ -69,7 +70,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     opiskeluoikeudet.filter(_.suoritukset.nonEmpty) ++ orphanages
   }
 
-  private def lisääKeskeneräinenTutkintosuoritus(suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node) = {
+  private def lisääKeskeneräinenTutkintosuoritus(suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node, tila: KorkeakoulunOpiskeluoikeudenTila) = {
     koulutuskoodi(opiskeluoikeusNode).map { koulutuskoodi =>
       val t = tutkinto(koulutuskoodi)
       if (suoritukset.exists(_.koulutusmoduuli == t)) suoritukset
@@ -81,10 +82,27 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         osasuoritukset = None,
         toimipiste = oppilaitos(opiskeluoikeusNode)
       ) :: suoritukset
+    }.orElse {
+      koodistoViitePalvelu.getKoodistoKoodiViite("virtaopiskeluoikeudentyyppi", (opiskeluoikeusNode \ "Tyyppi").text)
+        .map(virtaOpiskeluoikeudenTyyppi => {
+          val nimi = Some((opiskeluoikeusNode \\ "@koulutusmoduulitunniste").text.stripPrefix("#").stripSuffix("/").trim)
+            .filter(_.nonEmpty).map(finnish).getOrElse(virtaOpiskeluoikeudenTyyppi.description)
+          MuuKorkeakoulunSuoritus(
+            koulutusmoduuli = MuuKorkeakoulunOpinto(
+              tunniste = virtaOpiskeluoikeudenTyyppi,
+              nimi = nimi,
+              laajuus = laajuus(opiskeluoikeusNode)
+            ),
+            vahvistus = tila.opiskeluoikeusjaksot.lastOption.filter(_.tila.koodiarvo == "3").map(jakso => Päivämäärävahvistus(jakso.alku, oppilaitos(opiskeluoikeusNode))),
+            suorituskieli = None,
+            osasuoritukset = None,
+            toimipiste = oppilaitos(opiskeluoikeusNode)
+          ) :: suoritukset
+        })
     }.getOrElse(suoritukset)
   }
 
-  private def convertSuoritus(suoritus: Node, allNodes: List[Node]): Option[KorkeakouluSuoritus] = {
+  def convertSuoritus(suoritus: Node, allNodes: List[Node]): Option[KorkeakouluSuoritus] = {
     laji(suoritus) match {
       case "1" => // tutkinto
         koulutuskoodi(suoritus).map { koulutuskoodi =>
@@ -107,17 +125,14 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     }
   }
 
-  def convertOpintojaksonSuoritus(suoritus: Node, allNodes: List[Node]): KorkeakoulunOpintojaksonSuoritus = {
+  private def convertOpintojaksonSuoritus(suoritus: Node, allNodes: List[Node]): KorkeakoulunOpintojaksonSuoritus = {
     val osasuoritukset = childNodes(suoritus, allNodes).map(convertOpintojaksonSuoritus(_, allNodes))
 
     KorkeakoulunOpintojaksonSuoritus(
       koulutusmoduuli = KorkeakoulunOpintojakso(
         tunniste = PaikallinenKoodi((suoritus \\ "@koulutusmoduulitunniste").text, nimi(suoritus)),
         nimi = nimi(suoritus),
-        laajuus = for {
-          yksikko <- koodistoViitePalvelu.getKoodistoKoodiViite("opintojenlaajuusyksikko", "2")
-          laajuus <- (suoritus \ "Laajuus" \ "Opintopiste").headOption.map(_.text.toFloat).filter(_ > 0)
-        } yield LaajuusOpintopisteissä(laajuus, yksikko)
+        laajuus = laajuus(suoritus)
       ),
       arviointi = arviointi(suoritus),
       vahvistus = vahvistus(suoritus),
@@ -126,6 +141,11 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       osasuoritukset = optionalList(osasuoritukset)
     )
   }
+
+  private def laajuus(suoritusOrOpiskeluoikeus: Node): Option[LaajuusOpintopisteissä] = for {
+    yksikko <- koodistoViitePalvelu.getKoodistoKoodiViite("opintojenlaajuusyksikko", "2")
+    laajuus <- (suoritusOrOpiskeluoikeus \ "Laajuus" \ "Opintopiste").headOption.map(_.text.toFloat).filter(_ > 0)
+  } yield LaajuusOpintopisteissä(laajuus, yksikko)
 
   private def arviointi(suoritus: Node) =
     koodistoViitePalvelu.getKoodistoKoodiViite("virtaarvosana", suoritus \ "Arvosana" \ "_" text).map( arvosana =>
@@ -238,16 +258,27 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   private def oppilaitos(node: Node): Oppilaitos = {
     val numero = oppilaitosnumero(node)
     numero.flatMap(oppilaitosRepository.findByOppilaitosnumero)
+      .orElse(possiblyMockOppilaitos)
       .getOrElse(throw new RuntimeException(s"Oppilaitosta ei löydy: $numero"))
   }
 
   private def optionalOppilaitos(node: Node): Option[Oppilaitos] = {
     val numero = oppilaitosnumero(node)
     numero.flatMap(oppilaitosRepository.findByOppilaitosnumero)
+      .orElse(possiblyMockOppilaitos)
       .orElse({
         logger.warn(s"Oppilaitosta ei löydy: $numero")
         None
       })
   }
 
+  // Jos ajetaan paikallista Koskea Virta-testiympäristön kanssa, useimpia oppilaitoksia ei löydy
+  // MockOppilaitosRepositorystä. Käytetään Aalto-yliopistoa, jotta pystytään näyttämään edes jotain.
+  private def possiblyMockOppilaitos: Option[Oppilaitos] = {
+    if (Environment.isLocalDevelopmentEnvironment && oppilaitosRepository == MockOppilaitosRepository) {
+      oppilaitosRepository.findByOppilaitosnumero("10076")
+    } else {
+      None
+    }
+  }
 }

@@ -1,0 +1,172 @@
+[ {
+  "koodiUri" : "virtaopiskeluoikeudentyyppi_1",
+  "koodiArvo" : "1",
+  "metadata" : [ {
+    "nimi" : "Ammattikorkeakoulututkinto",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaopiskeluoikeudentyyppi_10",
+  "koodiArvo" : "10",
+  "metadata" : [ {
+    "nimi" : "Täydennyskoulutus",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaopiskeluoikeudentyyppi_11",
+  "koodiArvo" : "11",
+  "metadata" : [ {
+    "nimi" : "Pätevöitymiskoulutus",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaopiskeluoikeudentyyppi_12",
+  "koodiArvo" : "12",
+  "metadata" : [ {
+    "nimi" : "Erikoistumisopinnot",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaopiskeluoikeudentyyppi_13",
+  "koodiArvo" : "13",
+  "metadata" : [ {
+    "nimi" : "Avoimen opinnot",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaopiskeluoikeudentyyppi_14",
+  "koodiArvo" : "14",
+  "metadata" : [ {
+    "nimi" : "Opettajan pedagogiset opinnot",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaopiskeluoikeudentyyppi_15",
+  "koodiArvo" : "15",
+  "metadata" : [ {
+    "nimi" : "Ammatillinen opettajankoulutus",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaopiskeluoikeudentyyppi_16",
+  "koodiArvo" : "16",
+  "metadata" : [ {
+    "nimi" : "Oppisopimus-tyyppinen koulutus",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaopiskeluoikeudentyyppi_17",
+  "koodiArvo" : "17",
+  "metadata" : [ {
+    "nimi" : "Valmentava koulutus",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaopiskeluoikeudentyyppi_18",
+  "koodiArvo" : "18",
+  "metadata" : [ {
+    "nimi" : "Erillisoikeus",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaopiskeluoikeudentyyppi_19",
+  "koodiArvo" : "19",
+  "metadata" : [ {
+    "nimi" : "Erikoistumiskoulutus",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaopiskeluoikeudentyyppi_2",
+  "koodiArvo" : "2",
+  "metadata" : [ {
+    "nimi" : "Alempi korkeakoulututkinto",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaopiskeluoikeudentyyppi_3",
+  "koodiArvo" : "3",
+  "metadata" : [ {
+    "nimi" : "Ylempi ammattikorkeakoulututkinto",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaopiskeluoikeudentyyppi_4",
+  "koodiArvo" : "4",
+  "metadata" : [ {
+    "nimi" : "Ylempi korkeakoulututkinto",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaopiskeluoikeudentyyppi_5",
+  "koodiArvo" : "5",
+  "metadata" : [ {
+    "nimi" : "Lääkärien erikoistumiskoulutus",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaopiskeluoikeudentyyppi_6",
+  "koodiArvo" : "6",
+  "metadata" : [ {
+    "nimi" : "Lisensiaatintutkinto",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaopiskeluoikeudentyyppi_7",
+  "koodiArvo" : "7",
+  "metadata" : [ {
+    "nimi" : "Tohtorintutkinto",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaopiskeluoikeudentyyppi_8",
+  "koodiArvo" : "8",
+  "metadata" : [ {
+    "nimi" : "Kotimainen opiskelijaliikkuvuus",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "virtaopiskeluoikeudentyyppi_9",
+  "koodiArvo" : "9",
+  "metadata" : [ {
+    "nimi" : "Kansainvälinen vaihto",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+} ]

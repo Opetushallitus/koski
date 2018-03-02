@@ -58,10 +58,10 @@ describe('IB', function( ) {
   })
 
   describe('IB-tutkinto', function () {
-    before(page.openPage, page.oppijaHaku.searchAndSelect('040701-432D'), opinnot.valitseSuoritus(1, 'IB-tutkinto'))
+    before(page.openPage, page.oppijaHaku.searchAndSelect('040701-432D'), opinnot.valitseSuoritus(undefined, 'IB-tutkinto'))
     describe('Oppijan suorituksissa', function () {
       it('näytetään', function () {
-        expect(opinnot.getTutkinto(0)).to.equal("IB-tutkinto (International Baccalaureate)")
+        expect(opinnot.getTutkinto()).to.equal("IB-tutkinto (International Baccalaureate)")
         expect(opinnot.getOppilaitos()).to.equal("Ressun lukio")
       })
     })
@@ -136,7 +136,7 @@ describe('IB', function( ) {
 
   describe('Opintosuoritusote', function () {
     before(page.openPage, page.oppijaHaku.searchAndSelect('040701-432D'))
-    before(opinnot.avaaOpintosuoritusote(1))
+    before(opinnot.avaaOpintosuoritusote())
     describe('Kun klikataan linkkiä', function () {
       it('näytetään', function () {
       })

@@ -31,6 +31,8 @@ trait ApiServlet extends KoskiBaseServlet with Logging with TimedServlet with Co
 
   def toJsonString[T: TypeTag](x: T): String = {
     implicit val session = koskiSessionOption getOrElse KoskiSession.untrustedUser
+    // Ajax request won't have "text/html" in Accept header, clicking "JSON" button will
+    val pretty = Option(request.getHeader("accept")).exists(_.contains("text/html"))
     val tag = implicitly[TypeTag[T]]
     tag.tpe match {
       case t: TypeRefApi if (t.typeSymbol.asClass.fullName == classOf[PaginatedResponse[_]].getName) =>
@@ -44,7 +46,7 @@ trait ApiServlet extends KoskiBaseServlet with Logging with TimedServlet with Co
           "mayHaveMore" -> JBool(paginated.mayHaveMore)
         ))
       case t =>
-        JsonSerializer.write(x)
+        JsonSerializer.write(x, pretty)
     }
   }
 

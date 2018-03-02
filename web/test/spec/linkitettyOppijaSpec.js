@@ -8,13 +8,14 @@ describe('Linkitetyt oppijat', function() {
     before(page.oppijaHaku.searchAndSelect('Master'))
     describe('Tietojen katsominen', function() {
       it('Näytetään myös slave-henkilön opiskeluoikeudet', function() {
-        expect(opinnot.opiskeluoikeudet.opiskeluoikeustyypit()).to.deep.equal([
+        expect(opinnot.opiskeluoikeudet.opiskeluoikeustyypit()).to.have.members([
           'Lukiokoulutus', 'Perusopetus'
         ])
       })
     })
     describe('Slaveen liitettyjen tietojen muuttaminen', function() {
       before(
+        opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('lukiokoulutus'),
         editor.edit,
         editor.property('oppimäärä').setValue('Lukio suoritetaan aikuisten opetussuunnitelman mukaan'),
         editor.saveChanges

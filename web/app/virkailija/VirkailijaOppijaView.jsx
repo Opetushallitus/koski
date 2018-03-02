@@ -192,6 +192,7 @@ export class Oppija extends React.Component {
     let syntymäaika = modelTitle(henkilö, 'syntymäaika')
     stateP.filter(e => e === 'invalidated').onValue(opiskeluoikeusInvalidated)
     let showHenkilöUiLink = userP.map('.hasHenkiloUiWriteAccess')
+    let showVirtaXmlLink = userP.map('.hasGlobalReadAccess')
     return oppija.loading
       ? <div className="loading"/>
       : (
@@ -201,6 +202,7 @@ export class Oppija extends React.Component {
               className='hetu'>{(hetu && '(' + hetu + ')') || (syntymäaika && '(' + ISO2FinnishDate(syntymäaika) + ')')}</span>
               <a href={`/koski/api/oppija/${modelData(henkilö, 'oid')}`}>{'JSON'}</a>
               {showHenkilöUiLink.map(show => show && <a href={`/henkilo-ui/oppija/${modelData(henkilö, 'oid')}?permissionCheckService=KOSKI`} target='_blank' title={t('OppijanumerorekisteriLinkTooltip')}><Text name="Oppijanumerorekisteri" /></a>)}
+              {showVirtaXmlLink.map(show => show && <a href={`/koski/api/oppija/${modelData(henkilö, 'oid')}/virta-opintotiedot-xml`} target='_blank'>{'Virta XML'}</a>)}
             </h2>
             {
               // Set location as key to ensure full re-render when context changes

@@ -5,7 +5,7 @@ import java.time.LocalDate
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedString._
 import fi.oph.koski.localization.LocalizedStringImplicits._
-import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
+import fi.oph.koski.schema.annotation.{FlattenInUI, KoodistoKoodiarvo, KoodistoUri}
 import fi.oph.scalaschema.annotation.{Description, Title}
 
 case class KorkeakoulunOpiskeluoikeus(
@@ -70,6 +70,20 @@ case class KorkeakoulunOpintojaksonSuoritus(
   override def tarvitseeVahvistuksen = false
 }
 
+@Description("Muut kuin tutkintoon johtavat opiskeluoikeudet, joilla ei ole koulutuskoodia")
+case class MuuKorkeakoulunSuoritus (
+   @Title("Opiskeluoikeus")
+   @FlattenInUI
+   koulutusmoduuli: MuuKorkeakoulunOpinto,
+   toimipiste: Oppilaitos,
+   vahvistus: Option[Päivämäärävahvistus],
+   suorituskieli: Option[Koodistokoodiviite],
+   override val osasuoritukset: Option[List[KorkeakoulunOpintojaksonSuoritus]],
+   @KoodistoKoodiarvo("muukorkeakoulunsuoritus")
+   tyyppi: Koodistokoodiviite = Koodistokoodiviite("muukorkeakoulunsuoritus", koodistoUri = "suorituksentyyppi")
+ ) extends KorkeakouluSuoritus with Arvioinniton {
+}
+
 @Description("Korkeakoulututkinnon tunnistetiedot")
 case class Korkeakoulututkinto(
   tunniste: Koodistokoodiviite,
@@ -79,6 +93,15 @@ case class Korkeakoulututkinto(
 @Description("Korkeakoulun opintojakson tunnistetiedot")
 case class KorkeakoulunOpintojakso(
   tunniste: PaikallinenKoodi,
+  nimi: LocalizedString,
+  laajuus: Option[LaajuusOpintopisteissä]
+) extends Koulutusmoduuli
+
+@Description("Muun korkeakoulun opinnon tunnistetiedot")
+case class MuuKorkeakoulunOpinto(
+  @Title("Opiskeluoikeuden tyyppi")
+  @KoodistoUri("virtaopiskeluoikeudentyyppi")
+  tunniste: Koodistokoodiviite,
   nimi: LocalizedString,
   laajuus: Option[LaajuusOpintopisteissä]
 ) extends Koulutusmoduuli

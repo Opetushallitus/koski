@@ -1486,7 +1486,7 @@ describe('Ammatillinen koulutus', function() {
       })
 
       describe('Tulostettava todistus', function() {
-        before(OpinnotPage().avaaTodistus(0))
+        before(OpinnotPage().avaaTodistus())
         it('näytetään', function() {
           expect(TodistusPage().headings()).to.equal('HELSINGIN KAUPUNKIStadin ammattiopistoPäättötodistusLuonto- ja ympäristöalan perustutkintoYmpäristöalan osaamisala, Ympäristönhoitaja Ammattilainen, Aarne (280618-402H)')
           expect(TodistusPage().arvosanarivi('.tutkinnon-osa.100431')).to.equal('Kestävällä tavalla toimiminen 40 Kiitettävä 3')
@@ -1606,7 +1606,7 @@ describe('Ammatillinen koulutus', function() {
   })
 
   describe('Näyttötutkinnot', function() {
-    before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('250989-419V'), OpinnotPage().valitseSuoritus(1, 'Näyttötutkintoon valmistava koulutus'))
+    before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('250989-419V'), OpinnotPage().valitseSuoritus(undefined, 'Näyttötutkintoon valmistava koulutus'))
     describe('Näyttötutkintoon valmistava koulutus', function() {
       describe('Kaikki tiedot näkyvissä', function() {
         before(opinnot.expandAll)
@@ -1641,7 +1641,7 @@ describe('Ammatillinen koulutus', function() {
       })
 
       describe('Tulostettava todistus', function() {
-        before(OpinnotPage().avaaTodistus(0))
+        before(OpinnotPage().avaaTodistus())
         it('näytetään', function() {
           expect(TodistusPage().vahvistus()).to.equal('Helsinki 31.5.2015 Reijo Reksi rehtori')
         })
@@ -1718,7 +1718,7 @@ describe('Ammatillinen koulutus', function() {
     })
 
     describe('Erikoisammattitutkinto', function() {
-      before(TodistusPage().close, wait.until(page.isOppijaSelected('Erja')), OpinnotPage().valitseSuoritus(1, 'Autoalan työnjohdon erikoisammattitutkinto'))
+      before(TodistusPage().close, wait.until(page.isOppijaSelected('Erja')), OpinnotPage().valitseSuoritus(undefined, 'Autoalan työnjohdon erikoisammattitutkinto'))
       describe('Kaikki tiedot näkyvissä', function() {
         before(opinnot.expandAll)
         it('näyttää opiskeluoikeuden tiedot', function() {
@@ -1903,7 +1903,7 @@ describe('Ammatillinen koulutus', function() {
       })
 
       describe('Tulostettava todistus', function() {
-        before(OpinnotPage().avaaTodistus(0))
+        before(OpinnotPage().avaaTodistus())
         it('näytetään', function() {
           // See more detailed content specification in ValmaSpec.scala
           expect(TodistusPage().vahvistus()).to.equal('4.6.2016 Reijo Reksi rehtori')

@@ -40,7 +40,7 @@ describe('Ylioppilastutkinto', function( ){
     })
 
     describe('Tulostettava todistus', function() {
-      before(opinnot.avaaTodistus(0))
+      before(opinnot.avaaTodistus())
       it('näytetään', function() {
         // See more detailed content specification in YlioppilastutkintoSpec.scala
       })

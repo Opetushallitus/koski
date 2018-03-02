@@ -70,7 +70,7 @@ describe('Käyttöoikeudet', function() {
     describe('Käyttäjällä on oikeudet henkilöpalveluun', function() {
       before(Authentication().logout, Authentication().login('pää'), page.openPage, page.oppijaHaku.searchAndSelect('080154-770R'))
       it('Linkki näytetään', function() {
-        expect(extractAsText(S('.oppija-content h2 a'))).to.equal('JSON Oppijanumerorekisteri')
+        expect(extractAsText(S('.oppija-content h2 a'))).to.equal('JSON Oppijanumerorekisteri Virta XML')
       })
     })
     describe('Käyttäjällä ei ole oikeuksia henkilöpalveluun', function() {

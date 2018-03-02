@@ -121,7 +121,7 @@ function AddOppijaPage() {
           .then(api.submit)
           .then(wait.until(function() {
             return KoskiPage().getSelectedOppija().indexOf(oppija) >= 0 &&
-              OpinnotPage().suoritusOnValittu(1, tutkinto)
+              OpinnotPage().suoritusOnValittu(0, tutkinto)
           }))
       }
     },
