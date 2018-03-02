@@ -73,7 +73,8 @@ object Koodistot {
     "tutkintonimikkeet",
     "virtaarvosana",
     "virtalukukausiilmtila",
-    "virtaopiskeluoikeudentila"
+    "virtaopiskeluoikeudentila",
+    "virtaopiskeluoikeudentyyppi"
   )
 
   val koodistot = (koskiKoodistot ++ muutKoodistot).sorted
@@ -85,10 +86,12 @@ object Koodistot {
 
     1a) Olemassa oleva koodisto QA-ympäristöstä: Aja KoodistoMockDataUpdater -Dconfig.resource=qa.conf, jolloin koodiston sisältö haetaan qa-ympäristöstä paikallisiin json-fileisiin.
         Lisää koodiston nimi yllä olevaan muutKoodistot-listaan
-    1b) Uusi Koski-spesifinen koodisto: Tee käsin koodistofileet src/main/resources/koodisto
+    1b) Olemassa oleva koodisto tuotantoympäristöstä: Lisää koodiston nimi ylläolevaan muutKoodistot listaan, ja aja
+        mvn exec:java -Dexec.mainClass=fi.oph.koski.koodisto.KoodistoMockDataUpdater -Dopintopolku.virkailija.url=https://virkailija.opintopolku.fi -DkoskiKoodistot=false -DmuutKoodistot=true
+    1c) Uusi Koski-spesifinen koodisto: Tee käsin koodistofileet src/main/resources/koodisto
         Lisää koodiston nimi yllä olevaan koskiKoodistot-listaan
 
-    3) Kommitoi uudet json-fileet. Muutoksia olemassa oleviin fileisiin ei kannattane tässä yhteydessä kommitoida.
-    4) Aja koski-applikaatio -Dconfig.resource=koskidev.conf -Dkoodisto.create=true, jolloin uusi koodisto kopioituu myös koskidev-ympäristöön.
+    2) Kommitoi uudet json-fileet. Muutoksia olemassa oleviin fileisiin ei kannattane tässä yhteydessä kommitoida.
+    3) Aja koski-applikaatio -Dconfig.resource=koskidev.conf -Dkoodisto.create=true, jolloin uusi koodisto kopioituu myös koskidev-ympäristöön.
    */
 }
