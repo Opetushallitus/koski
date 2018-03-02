@@ -6,7 +6,7 @@ import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
 import fi.oph.koski.localization.LocalizedString.{concat, english}
 import fi.oph.koski.localization.LocalizedStringImplicits._
-import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, OksaUri}
+import fi.oph.koski.schema.annotation.{FlattenInUI, KoodistoKoodiarvo, KoodistoUri, OksaUri}
 import fi.oph.scalaschema.annotation._
 
 @Description("IB-tutkinnon opiskeluoikeus")
@@ -192,11 +192,12 @@ trait PreIBKurssi extends Koulutusmoduuli
 case class IBKurssi(
   kuvaus: LocalizedString,
   @OksaUri("tmpOKSAID873", "kurssi")
+  @FlattenInUI
   tunniste: PaikallinenKoodi,
   @Discriminator
   pakollinen: Boolean = true,
   override val laajuus: Option[LaajuusKursseissa]
-) extends Koulutusmoduuli with Valinnaisuus with PreIBKurssi {
+) extends Koulutusmoduuli with Valinnaisuus with PreIBKurssi with StorablePreference {
   def nimi: LocalizedString = tunniste.nimi
 }
 
@@ -253,6 +254,21 @@ trait IBAineRyhmäOppiaine extends IBOppiaine with PreIBOppiaine {
 @Title("Muu IB-oppiaine")
 case class IBOppiaineMuu(
   @Description("IB-lukion oppiaineen tunnistetiedot")
+  @KoodistoKoodiarvo("BIO")
+  @KoodistoKoodiarvo("BU")
+  @KoodistoKoodiarvo("CHE")
+  @KoodistoKoodiarvo("ECO")
+  @KoodistoKoodiarvo("GEO")
+  @KoodistoKoodiarvo("HIS")
+  @KoodistoKoodiarvo("MAT")
+  @KoodistoKoodiarvo("MATFT")
+  @KoodistoKoodiarvo("MATST")
+  @KoodistoKoodiarvo("PHI")
+  @KoodistoKoodiarvo("PHY")
+  @KoodistoKoodiarvo("POL")
+  @KoodistoKoodiarvo("PSY")
+  @KoodistoKoodiarvo("REL")
+  @KoodistoKoodiarvo("SOC")
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusTunneissa],
   @Description("Oppiaineen taso (Higher Level (HL) tai Standard Level (SL)")

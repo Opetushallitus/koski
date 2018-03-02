@@ -25,7 +25,7 @@
     table.suoritukset {
       width: 100%;
 
-      > tbody > tr:not(.aineryhmä):not(.error) {
+      > tbody > tr:not(.aineryhmä):not(.uusi-oppiaine):not(.error) {
         background: @color-neutral-gray;
       }
 
@@ -113,6 +113,16 @@
     .selitteet {
       margin-top: 10px;
       font-size: 0.9em;
+    }
+  }
+}
+
+.oppija-content.edit .opiskeluoikeus .suoritukset {
+  .ibtutkinnonsuoritus {
+    table.suoritukset > tbody > tr > td {
+      &.arvosana {
+        max-width: 150px;
+      }
     }
   }
 }

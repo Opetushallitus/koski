@@ -1,5 +1,5 @@
 import React from 'react'
-import {modelItems, modelLookup} from '../editor/EditorModel'
+import {modelLookup, wrapOptional} from '../editor/EditorModel'
 
 import {PerusopetuksenOppiaineetEditor} from '../perusopetus/PerusopetuksenOppiaineetEditor'
 import PerusopetuksenOppiaineenOppimääränSuoritusEditor from '../perusopetus/PerusopetuksenOppiaineenOppimaaranSuoritusEditor'
@@ -46,7 +46,7 @@ export const resolveOsasuorituksetEditor = (mdl) => {
     return <LuvaEditor suorituksetModel={modelLookup(mdl, 'osasuoritukset')}/>
   }
   if (oneOf('ibtutkinnonsuoritus')) {
-    return <IBTutkinnonOppiaineetEditor oppiaineet={modelItems(mdl, 'osasuoritukset') || []} />
+    return <IBTutkinnonOppiaineetEditor suorituksetModel={modelLookup(mdl, 'osasuoritukset')} />
   }
   return <PropertyEditor model={mdl} propertyName="osasuoritukset"/>
 }
@@ -60,7 +60,17 @@ export const resolvePropertyEditor = (property, model) => {
     case 'theoryOfKnowledge':
     case 'extendedEssay':
     case 'creativityActionService':
-      return <ArvosanaEditor model={property.model}/>
+      return [
+        <ArvosanaEditor
+          model={wrapOptional(property.model)}
+          key={'arvosana'}/>,
+        model.context.edit &&
+        <PropertiesEditor
+          model={modelLookup(property.model, 'arviointi.-1')}
+          propertyFilter={p => p.key === 'predicted'}
+          key={'properties'}
+        />
+      ]
 
     default: return null
   }

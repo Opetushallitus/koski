@@ -61,7 +61,18 @@ const Arviointi = ({oppiaine, suoritetutKurssit, footnote}) => {
             ? <ArvosanaEditor model={oppiaine}/>
             : '-'
         }
-        {arviointi && footnote && <FootnoteHint title={footnote.title} hint={footnote.hint} />}
+        {
+          edit &&
+          <PropertiesEditor
+            model={modelLookup(oppiaine, 'arviointi.-1')}
+            propertyFilter={p => p.key !== 'arvosana' && !p.model.optional}
+            key={'properties'}
+          />
+        }
+        {
+          !edit && arviointi && footnote &&
+          <FootnoteHint title={footnote.title} hint={footnote.hint} />
+        }
       </div>
       <div className='keskiarvo'>{keskiarvo ? '(' + keskiarvo.toFixed(1).replace('.', ',') + ')' : ''}</div>
     </div>

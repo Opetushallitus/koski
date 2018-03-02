@@ -5,14 +5,14 @@ import {accumulateModelState, modelItems, modelLookup, modelValid} from '../edit
 import Text from '../i18n/Text'
 import ModalDialog from '../editor/ModalDialog'
 import {UusiKurssiDropdown} from './UusiKurssiDropdown'
-import {isLukionKurssi, isPaikallinen, koulutusModuuliprototypes} from '../suoritus/Koulutusmoduuli'
+import {isIBKurssi, isLukionKurssi, isPaikallinen, koulutusModuuliprototypes} from '../suoritus/Koulutusmoduuli'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {t} from '../i18n/i18n'
 
 const propertyFilterForPaikallinen = p => !['koodistoUri'].includes(p.key)
 const propertyFilterForLukio = p => !['tunniste'].includes(p.key)
 const propertyFilterForModel = model =>
-  isPaikallinen(model) ? propertyFilterForPaikallinen
+  isPaikallinen(model) || isIBKurssi(model) ? propertyFilterForPaikallinen
     : isLukionKurssi(model) ? propertyFilterForLukio
     : undefined
 
@@ -22,7 +22,7 @@ export default ({oppiaineenSuoritus, resultCallback, toimipiste, uusiKurssinSuor
   let selectedAtom = Atom()
   let validP = selectedAtom
   let valtakunnallisetKurssiProtot = koulutusModuuliprototypes(uusiKurssinSuoritus).filter(R.complement(isPaikallinen))
-  let paikallinenKurssiProto = koulutusModuuliprototypes(uusiKurssinSuoritus).find(isPaikallinen)
+  let paikallinenKurssiProto = koulutusModuuliprototypes(uusiKurssinSuoritus).find(R.either(isPaikallinen, isIBKurssi))
   let kurssiSuoritukset = modelItems(oppiaineenSuoritus, 'osasuoritukset')
   selectedPrototypeAtom.map(proto => isPaikallinen(proto) ? undefined : proto).forEach(proto => selectedAtom.set(proto))
 
@@ -41,7 +41,7 @@ export default ({oppiaineenSuoritus, resultCallback, toimipiste, uusiKurssinSuor
                                                      placeholder={t('Lisää kurssi')}/></span>
         { // TODO: check placeholders from i18n
           selectedPrototypeAtom.flatMap(selectedProto => {
-            if (!isPaikallinen(selectedProto) && !isLukionKurssi(selectedProto)) return null
+            if (!isPaikallinen(selectedProto) && !isLukionKurssi(selectedProto) && !isIBKurssi(selectedProto)) return null
             let modelP = accumulateModelState(selectedProto)
             modelP.map(model => modelValid(model) ? model : undefined).forEach(model => selectedAtom.set(model)) // set selected atom to non-empty only when valid data
             return modelP.map(model => <PropertiesEditor key="kurssi-props" model={model} propertyFilter={propertyFilterForModel(model)}/>)

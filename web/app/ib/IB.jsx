@@ -1,21 +1,36 @@
-import React from 'react'
+import React from 'baret'
 import R from 'ramda'
+import Bacon from 'baconjs'
 import {LukionOppiaineEditor} from '../lukio/LukionOppiaineEditor'
 import {LukionOppiaineetTableHead} from '../lukio/fragments/LukionOppiaineetTableHead'
-import {modelData, modelLookup} from '../editor/EditorModel'
+import {modelData, modelItems} from '../editor/EditorModel'
 import {FootnoteDescriptions} from '../components/footnote'
+import {UusiIBOppiaineDropdown} from './UusiIBOppiaineDropdown'
+import {koodistoValues} from '../uusioppija/koodisto'
+import {t} from '../i18n/i18n'
 
 const ArvosanaFootnote = {title: 'Ennustettu arvosana', hint: '*'}
 
-export const IBTutkinnonOppiaineetEditor = ({oppiaineet}) => {
-  const aineryhmittäin = R.groupBy(
-    oppiaine => modelData(oppiaine, 'koulutusmoduuli.ryhmä').koodiarvo,
-    oppiaineet
+export const IBTutkinnonOppiaineetEditor = ({suorituksetModel}) => {
+  const {edit, suoritus: päätasonSuoritusModel} = suorituksetModel.context
+  const oppiaineet = modelItems(suorituksetModel)
+
+  const oppiaineetAineryhmittäin = Bacon.constant(R.compose(
+    R.map(aineet => ({aineet})),
+    R.groupBy(oppiaine => modelData(oppiaine, 'koulutusmoduuli.ryhmä').koodiarvo)
+  )(oppiaineet))
+
+  const aineryhmäKoodistoArvot = koodistoValues('aineryhmaib')
+    .map(ryhmät => ryhmät.reduce((obj, r) => R.assoc(r.koodiarvo, {ryhmä: r}, obj), {}))
+
+  const aineryhmät = Bacon.combineWith(oppiaineetAineryhmittäin, aineryhmäKoodistoArvot,
+    (aineet, ryhmät) => Object.values(R.mergeDeepLeft(aineet, ryhmät))
+      .filter(edit ? R.identity : r => r.aineet)
   )
 
-  const footnotes = [
-    oppiaineet.find(s => modelLookup(s, 'arviointi.-1.predicted')) && ArvosanaFootnote
-  ] || []
+  const footnotes = R.any(s => modelData(s, 'arviointi.-1.predicted'), oppiaineet)
+    ? [ArvosanaFootnote]
+    : []
 
   return (
     <div>
@@ -23,15 +38,23 @@ export const IBTutkinnonOppiaineetEditor = ({oppiaineet}) => {
         <LukionOppiaineetTableHead />
         <tbody>
         {
-          Object.values(aineryhmittäin).map(aineet => [
-            <tr className='aineryhmä'>
-              <th colSpan='4'>{modelLookup(aineet[0], 'koulutusmoduuli.ryhmä').value.title}</th>
+          aineryhmät.map(ryhmät => ryhmät.map(r => [
+            <tr className='aineryhmä' key={r.ryhmä.koodiarvo}>
+              <th colSpan='4'>{t(r.ryhmä.nimi)}</th>
             </tr>,
-            aineet.map((oppiaine, oppiaineIndex) => {
-              const footnote = modelLookup(oppiaine, 'arviointi.-1.predicted') && ArvosanaFootnote
+            r.aineet && r.aineet.map((oppiaine, oppiaineIndex) => {
+              const footnote = modelData(oppiaine, 'arviointi.-1.predicted') && ArvosanaFootnote
               return <LukionOppiaineEditor key={oppiaineIndex} oppiaine={oppiaine} footnote={footnote} />
-            })
-          ])
+            }),
+            <tr className='uusi-oppiaine' key={`uusi-oppiaine-${r.ryhmä.koodiarvo}`}>
+              <td colSpan='4'>
+                <UusiIBOppiaineDropdown
+                  model={päätasonSuoritusModel}
+                  aineryhmä={r.ryhmä}
+                />
+              </td>
+            </tr>
+          ]))
         }
         </tbody>
       </table>
