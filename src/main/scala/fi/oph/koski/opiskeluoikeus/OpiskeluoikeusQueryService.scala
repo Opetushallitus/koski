@@ -52,7 +52,7 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
       case (query, IdHaku(ids)) => query.filter(_._1.id inSetBind ids)
       case (query, SuoritusJsonHaku(json)) => query.filter(_._1.data.+>("suoritukset").@>(json))
       case (query, MuuttunutEnnen(aikaleima)) => query.filter(_._1.aikaleima < Timestamp.valueOf(aikaleima))
-      case (query, MuuttunutJälkeen(aikaleima)) => query.filter(_._1.aikaleima > Timestamp.valueOf(aikaleima))
+      case (query, MuuttunutJälkeen(aikaleima)) => query.filter(_._1.aikaleima >= Timestamp.valueOf(aikaleima))
       case (query, filter) => throw new InvalidRequestException(KoskiErrorCategory.internalError("Hakua ei ole toteutettu: " + filter))
     }
 
