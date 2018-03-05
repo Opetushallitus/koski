@@ -66,7 +66,7 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
     }
 
     val updatedInKoskiHenkilöCache: List[Oid] = oppijatWithMaster
-      .filter(o => application.henkilöCache.updateHenkilöAction(o.tiedot) > 0)
+      .filter(o => application.henkilöCache.updateHenkilö(o.tiedot) > 0)
       .map(_.tiedot.henkilö.oid)
 
     if (updatedInKoskiHenkilöCache.isEmpty) {
