@@ -10,7 +10,11 @@ export const UusiLukionOppiaineDropdown = ({model, oppiaineenSuoritusClass}) => 
   const addOppiaine = oppiaine => {
     const nimi = t(modelData(oppiaine, 'tunniste.nimi'))
     const oppiaineWithTitle = modelSetTitle(oppiaine, nimi)
-    const suoritusUudellaOppiaineella = modelSet(oppiaine.parent, oppiaineWithTitle, 'koulutusmoduuli')
+    const suoritusUudellaOppiaineella = modelSet(
+      oppiaine.parent || createOppiaineenSuoritus(model),
+      oppiaineWithTitle,
+      'koulutusmoduuli'
+    )
     pushModel(suoritusUudellaOppiaineella, model.context.changeBus)
     ensureArrayKey(suoritusUudellaOppiaineella)
   }

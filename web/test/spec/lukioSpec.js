@@ -250,6 +250,23 @@ describe('Lukiokoulutus', function( ){
               it('tallettuu organisaation preferenceihin', function() {
                 expect(uusiOppiaine.getOptions()).to.contain('Paikallinen oppiaine')
               })
+
+              after(editor.cancelChanges)
+            })
+
+            describe('Organisaation preferenceistä löytyvä aine', function() {
+              describe('Lisääminen', function () {
+                before(
+                  editor.edit,
+                  uusiOppiaine.selectValue('Paikallinen oppiaine'),
+                  paikallinen.propertyBySelector('.arvosana').selectValue(9),
+                  editor.saveChanges
+                )
+
+                it('toimii', function () {
+                  expect(extractAsText(S('.oppiaineet'))).to.contain('Paikallinen oppiaine')
+                })
+              })
             })
           })
 
