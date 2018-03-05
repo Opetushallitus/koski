@@ -34,13 +34,18 @@ export const UusiOppiaineDropdown = ({suoritukset = [], organisaatioOid, oppiain
     .map(aineet => aineet.filter(oppiaine => pakollinen ? !käytössäolevatKoodiarvot.includes(modelData(oppiaine, 'tunniste').koodiarvo) : true))
 
   const poistaPaikallinenOppiaine = oppiaine => deleteOrganizationalPreference(organisaatioOid, paikallinenProto.value.classes[0], oppiaine).onValue(setPaikallisetOppiaineet)
+  const key = oppiaine => {
+    const tunniste = modelData(oppiaine, 'tunniste')
+    const koodisto = isPaikallinen(oppiaine) ? 'paikallinen' : tunniste.koodistoUri
+    return `${koodisto}-${tunniste.koodiarvo}`
+  }
 
   return (<div className={'uusi-oppiaine'}>
     {
       elementWithLoadingIndicator(oppiaineet.map('.length').map(length => length || paikallinenProto
         ? <DropDown
           options={oppiaineet}
-          keyValue={oppiaine => isUusi(oppiaine) ? 'uusi' : modelData(oppiaine, 'tunniste').koodiarvo}
+          keyValue={oppiaine => isUusi(oppiaine) ? 'uusi' : key(oppiaine)}
           displayValue={oppiaine => isUusi(oppiaine) ? 'Lisää...' : modelLookup(oppiaine, 'tunniste').value.title}
           onSelectionChanged={resultCallback}
           selectionText={placeholder}
