@@ -10,7 +10,7 @@ import {elementWithLoadingIndicator} from '../components/AjaxLoadingIndicator'
 import {t} from '../i18n/i18n'
 import Http from '../util/http'
 import {parseLocation} from '../util/location'
-import {findKoodistoByDiaarinumero} from './kurssi'
+import {findDefaultKoodisto, findKoodistoByDiaarinumero} from './kurssi'
 export const UusiKurssiDropdown = ({oppiaine, suoritukset, paikallinenKurssiProto, valtakunnallisetKurssiProtot, organisaatioOid, selected = Bacon.constant(undefined), resultCallback, placeholder, enableFilter=true}) => {
   let käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli.tunniste').koodiarvo)
   let valtakunnallisetKurssit = completeWithFieldAlternatives(oppiaine, valtakunnallisetKurssiProtot)
@@ -66,7 +66,10 @@ const completeWithFieldAlternatives = (oppiaine, kurssiPrototypes) => {
     if (!kurssiKoodistot) return []
 
     const koodistot = kurssiKoodistot.split(',')
-    const queryKoodistot = findKoodistoByDiaarinumero(koodistot, oppimaaraDiaarinumero) || kurssiKoodistot
+    const queryKoodistot =
+      findKoodistoByDiaarinumero(koodistot, oppimaaraDiaarinumero) ||
+      findDefaultKoodisto(koodistot) ||
+      kurssiKoodistot
     const loc = parseLocation(`/koski/api/editor/kurssit/${oppiaineKoodisto}/${oppiaineKoodiarvo}/${queryKoodistot}`)
       .addQueryParams({oppimaaraKoodisto, oppimaaraKoodiarvo, oppimaaraDiaarinumero})
 
