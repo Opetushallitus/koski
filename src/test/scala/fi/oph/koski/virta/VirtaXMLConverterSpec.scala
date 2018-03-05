@@ -102,6 +102,24 @@ class VirtaXMLConverterSpec extends FreeSpec with Matchers {
           (convertArviointi(arvosana)
             should equal(KorkeakoulunPaikallinenArviointi(PaikallinenKoodi("OIV", "OIV", Some("virta/310")), LocalDate.of(2014, 5, 30))))
         }
+        "Hanken - Poäng" in {
+          val arvosana =
+            <virta:Arvosana>
+              <virta:Muu>
+                <virta:Asteikko avain="4">
+                  <virta:Nimi>po&#xE4;ng (0-100), godk&#xE4;nd</virta:Nimi>
+                  <virta:AsteikkoArvosana avain="2006715">
+                    <virta:Koodi>76</virta:Koodi>
+                    <virta:Nimi>76</virta:Nimi>
+                    <virta:LaskennallinenArvo>76.0</virta:LaskennallinenArvo>
+                  </virta:AsteikkoArvosana>
+                </virta:Asteikko>
+                <virta:Koodi>2006715</virta:Koodi>
+              </virta:Muu>
+            </virta:Arvosana>
+          (convertArviointi(arvosana)
+            should equal(KorkeakoulunPaikallinenArviointi(PaikallinenKoodi("76", "76", Some("virta/4")), LocalDate.of(2014, 5, 30))))
+        }
       }
     }
   }
