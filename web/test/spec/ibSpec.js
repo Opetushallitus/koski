@@ -3,6 +3,7 @@ describe('IB', function( ) {
   var todistus = TodistusPage()
   var opinnot = OpinnotPage()
   var editor = opinnot.opiskeluoikeusEditor()
+  var addOppija = AddOppijaPage()
   before(Authentication().login(), resetFixtures)
 
   describe('Pre-IB', function () {
@@ -332,12 +333,61 @@ describe('IB', function( ) {
     })
   })
 
-
   describe('Opintosuoritusote', function () {
     before(page.openPage, page.oppijaHaku.searchAndSelect('040701-432D'))
     before(opinnot.avaaOpintosuoritusote())
     describe('Kun klikataan linkkiä', function () {
       it('näytetään', function () {
+      })
+    })
+  })
+
+  describe('Opiskeluoikeuden lisääminen', function() {
+    describe('IB-lukion oppimäärä', function() {
+      before(
+        prepareForNewOppija('kalle', '230872-7258'),
+        addOppija.enterValidDataIB(),
+        addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'IB-tutkinto (International Baccalaureate)')
+      )
+
+      describe('Lisäyksen jälkeen', function () {
+        describe('Opiskeluoikeuden tiedot', function() {
+          it('näytetään oikein', function () {
+            expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
+              'Koulutus IB-tutkinto (International Baccalaureate)\n' +
+              'Oppilaitos / toimipiste Ressun lukio\n' +
+              'Suorituskieli suomi\n' +
+              'Suoritus kesken'
+            )
+          })
+        })
+
+        describe('Oppiaineita', function () {
+          it('ei esitäytetä', function () {
+            expect(extractAsText(S('.oppiaineet'))).to.equal('Oppiaine Laajuus (kurssia) Arvosana (keskiarvo)')
+          })
+        })
+
+        describe('Muokattaessa', function() {
+          before(editor.edit)
+          it('näytetään editorit IB-tutkinnon ylätason oppiaineiden suorituksille', function () {
+            expect(editor.propertyBySelector('.theoryOfKnowledge').getValue()).to.equal('Ei valintaa')
+            expect(editor.propertyBySelector('.extendedEssay').getValue()).to.equal('Ei valintaa')
+            expect(editor.propertyBySelector('.creativityActionService').getValue()).to.equal('Ei valintaa')
+          })
+
+          it('näytetään tyhjät(kin) aineryhmät', function () {
+            expect(extractAsText(S('.oppiaineet .aineryhmä'))).to.equal('' +
+              'Studies in language and literature\n\n' +
+              'Language acquisition\n\n' +
+              'Individuals and societies\n\n' +
+              'Experimental sciences\n\n' +
+              'Mathematics\n\n' +
+              'The arts'
+            )
+            after(editor.cancelChanges)
+          })
+        })
       })
     })
   })
