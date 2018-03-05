@@ -136,6 +136,9 @@ function KoskiPage() {
     getSelectedOppija: function() {
       return S('.oppija h2').text().replace('JSON','')
     },
+    opiskeluoikeudeTotal: function() {
+      return S('.opiskeluoikeudet-total .value').text().slice(2)
+    },
     waitUntilOppijaSelected: function(oppija) {
       return wait.until(api.isOppijaSelected(oppija))
     },
