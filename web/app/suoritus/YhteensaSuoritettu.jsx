@@ -46,7 +46,8 @@ const laajuusRange = (l) => {
 }
 
 export const YhteensäSuoritettu = ({osasuoritukset, laajuusP, laajuusYksikkö=null}) => {
-  const laajuudetYhteensä = R.sum(R.map(item => modelData(item, 'koulutusmoduuli.laajuus.arvo') || 0, osasuoritukset))
+  const arvioidutSuoritukset = osasuoritukset.filter(s => !!modelData(s, 'arviointi'))
+  const laajuudetYhteensä = R.sum(R.map(item => modelData(item, 'koulutusmoduuli.laajuus.arvo') || 0, arvioidutSuoritukset))
 
   return (
     <div>

@@ -800,10 +800,24 @@ describe('Ammatillinen koulutus', function() {
                       describe('Kun syötetään laajuus ja tallennetaan', function() {
                         before(
                           opinnot.tutkinnonOsat(1).tutkinnonOsa(0).property('laajuus').setValue('10'),
+                          opinnot.tutkinnonOsat('1').tutkinnonOsa(0).propertyBySelector('.arvosana').setValue('3', 1),
                           editor.saveChanges
                         )
                         it('Näytetään laajuus', function() {
                           expect(opinnot.tutkinnonOsat().laajuudenOtsikko()).to.equal('Laajuus (osp)')
+                          expect(opinnot.tutkinnonOsat().laajuudetYhteensä()).to.equal('10')
+                        })
+
+                        describe('Kun poistetaan arvosana ja tallennetaan', function() {
+                          before(
+                            editor.edit,
+                            opinnot.tutkinnonOsat(1).tutkinnonOsa(0).propertyBySelector('.arvosana').setValue('Ei valintaa'),
+                            editor.saveChanges
+                          )
+
+                          it('Laajuutta ei lasketa arvioimattomista', function() {
+                            expect(opinnot.tutkinnonOsat().laajuudetYhteensä()).to.equal('0')
+                          })
                         })
 
                         describe('Kun poistetaan laajuus ja tallennetaan', function() {
