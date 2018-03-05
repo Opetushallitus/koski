@@ -3,8 +3,11 @@ package fi.oph.koski.schedule
 import java.lang.System.currentTimeMillis
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.henkilo.MockOpintopolkuHenkilöFacade
-import fi.oph.koski.henkilo.MockOppijat.{eero, eerola, slaveMasterEiKoskessa}
+import fi.oph.koski.documentation.ExamplesLukio.lukioKesken
+import fi.oph.koski.henkilo.MockOppijat.{eero, eerola, masterEiKoskessa, slaveMasterEiKoskessa}
+import fi.oph.koski.henkilo.{MockOpintopolkuHenkilöFacade, VerifiedHenkilöOid}
+import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedot.makePerustiedot
 import fi.oph.koski.schema.{TäydellisetHenkilötiedot, TäydellisetHenkilötiedotWithMasterInfo}
 import fi.oph.koski.util.Futures
 import org.json4s.jackson.JsonMethods.{parse => parseJson}
@@ -40,8 +43,16 @@ class UpdateHenkilotTaskSpec extends FreeSpec with Matchers with BeforeAndAfterE
     }
 
     "Lisää master tiedot jos ei löydy Koskesta" in {
-      modify(slaveMasterEiKoskessa.copy(henkilö = slaveMasterEiKoskessa.henkilö.copy(sukunimi = "Foo")))
-      application.perustiedotRepository.findHenkilöPerustiedotByHenkilöOid(slaveMasterEiKoskessa.henkilö.oid).map(_.sukunimi) should equal(slaveMasterEiKoskessa.master.map(_.sukunimi))
+      addToFixture(slaveMasterEiKoskessa.copy(master = None))
+      modify(slaveMasterEiKoskessa.copy(henkilö = slaveMasterEiKoskessa.henkilö.copy(etunimet = "Foo")))
+      application.perustiedotRepository.findHenkilöPerustiedotByHenkilöOid(slaveMasterEiKoskessa.henkilö.oid).map(_.sukunimi) should equal(Some(masterEiKoskessa.henkilö.sukunimi))
+    }
+  }
+
+  private def addToFixture(oppija: TäydellisetHenkilötiedotWithMasterInfo) = {
+    implicit val user = KoskiSession.systemUser
+    application.opiskeluoikeusRepository.createOrUpdate(VerifiedHenkilöOid(oppija.henkilö), lukioKesken, allowUpdate = true).map(_.id).foreach { id =>
+      application.perustiedotIndexer.updateBulk(List(makePerustiedot(id, lukioKesken, Some(oppija))), upsert = true)
     }
   }
 
