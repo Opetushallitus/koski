@@ -4,7 +4,7 @@ import java.lang.System.currentTimeMillis
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.MockOpintopolkuHenkilöFacade
-import fi.oph.koski.henkilo.MockOppijat.{eero, eerola}
+import fi.oph.koski.henkilo.MockOppijat.{eero, eerola, slaveMasterEiKoskessa}
 import fi.oph.koski.schema.{TäydellisetHenkilötiedot, TäydellisetHenkilötiedotWithMasterInfo}
 import fi.oph.koski.util.Futures
 import org.json4s.jackson.JsonMethods.{parse => parseJson}
@@ -37,6 +37,11 @@ class UpdateHenkilotTaskSpec extends FreeSpec with Matchers with BeforeAndAfterE
         henkilö = eero.henkilö.copy(etunimet = "asdf"))  // <- muutetaan myös etunimeä koska MockAuthenticationServiceClient.findChangedOppijaOids ei muuten huomaa muutosta
       )
       application.perustiedotRepository.findHenkilöPerustiedotByHenkilöOid(eero.oid).map(_.oid) should equal(Some(eero.oid))
+    }
+
+    "Lisää master tiedot jos ei löydy Koskesta" in {
+      modify(slaveMasterEiKoskessa.copy(henkilö = slaveMasterEiKoskessa.henkilö.copy(sukunimi = "Foo")))
+      application.perustiedotRepository.findHenkilöPerustiedotByHenkilöOid(slaveMasterEiKoskessa.henkilö.oid).map(_.sukunimi) should equal(slaveMasterEiKoskessa.master.map(_.sukunimi))
     }
   }
 

@@ -49,7 +49,7 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
 
 
   private def runUpdate(oids: List[Oid], koskiOids: List[Oid], lastContext: HenkilöUpdateContext) = {
-    val oppijat: List[OppijaHenkilö] = findOppijat(koskiOids.toList)
+    val oppijat: List[OppijaHenkilö] = findOppijat(koskiOids)
 
     val oppijatWithMaster: List[WithModifiedTime] = oppijat.map { oppija =>
       WithModifiedTime(application.henkilöRepository.opintopolku.withMasterInfo(oppija.toTäydellisetHenkilötiedot), oppija.modified)
@@ -66,7 +66,7 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
     }
 
     val updatedInKoskiHenkilöCache: List[Oid] = oppijatWithMaster
-      .filter(o => application.henkilöCache.updateHenkilöAction(o.tiedot) > 0)
+      .filter(o => application.henkilöCache.updateHenkilö(o.tiedot) > 0)
       .map(_.tiedot.henkilö.oid)
 
     if (updatedInKoskiHenkilöCache.isEmpty) {

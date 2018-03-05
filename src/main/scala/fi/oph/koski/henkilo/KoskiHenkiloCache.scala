@@ -8,27 +8,13 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{TäydellisetHenkilötiedot, TäydellisetHenkilötiedotWithMasterInfo}
 
 class KoskiHenkilöCache(val db: DB, val henkilöt: HenkilöRepository) extends Logging with DatabaseExecutionContext with KoskiDatabaseMethods {
-  def addHenkilöAction(data: TäydellisetHenkilötiedotWithMasterInfo) = {
-    def addHenkilö(oid: String, row: HenkilöRow) = {
-      Henkilöt.filter(_.oid === oid).result.map(_.toList).flatMap {
-        case Nil =>
-          Henkilöt += row
-        case _ =>
-          DBIO.successful(0)
-      }
-    }
-
-    val addMasterIfNecessary = data.master.map { m =>
-      addHenkilö(m.oid, toHenkilöRow(m, None))
-    }.getOrElse(DBIO.successful())
-
-    addMasterIfNecessary
+  def addHenkilöAction(data: TäydellisetHenkilötiedotWithMasterInfo) =
+    addMasterIfNecessary(data.master)
       .andThen(addHenkilö(data.henkilö.oid, toHenkilöRow(data.henkilö, data.master.map(_.oid))))
-  }
 
-  def updateHenkilöAction(data: TäydellisetHenkilötiedotWithMasterInfo): Int =
-    runDbSync(Henkilöt.filter(_.oid === data.henkilö.oid).update(toHenkilöRow(data.henkilö, data.master.map(_.oid))))
-
+  def updateHenkilö(data: TäydellisetHenkilötiedotWithMasterInfo): Int =
+    runDbSync(addMasterIfNecessary(data.master)
+      .andThen(Henkilöt.filter(_.oid === data.henkilö.oid).update(toHenkilöRow(data.henkilö, data.master.map(_.oid)))))
 
   def getCachedAction(oppijaOid: String): DBIOAction[Option[TäydellisetHenkilötiedotWithMasterInfo], NoStream, Effect.Read] = (Henkilöt.filter(_.oid === oppijaOid).joinLeft(Henkilöt).on(_.masterOid === _.oid)).result.map(x => x.headOption.map { case (row, masterRow) =>
     TäydellisetHenkilötiedotWithMasterInfo(row.toHenkilötiedot, masterRow.map(_.toHenkilötiedot))
@@ -37,6 +23,20 @@ class KoskiHenkilöCache(val db: DB, val henkilöt: HenkilöRepository) extends 
   def filterOidsByCache(oids: List[String]) = {
     // split to groups of 10000 to ensure this works with larger batches. Tested: 10000 works, 100000 does not.
     oids.grouped(10000).flatMap(group => runDbSync(Henkilöt.map(_.oid).filter(_ inSetBind(group)).result))
+  }
+
+  private def addMasterIfNecessary(master: Option[TäydellisetHenkilötiedot]) =
+    master.map { m =>
+      addHenkilö(m.oid, toHenkilöRow(m, None))
+    }.getOrElse(DBIO.successful())
+
+  private def addHenkilö(oid: String, row: HenkilöRow) = {
+    Henkilöt.filter(_.oid === oid).result.map(_.toList).flatMap {
+      case Nil =>
+        Henkilöt += row
+      case _ =>
+        DBIO.successful(0)
+    }
   }
 
   private def toHenkilöRow(data: TäydellisetHenkilötiedot, masterOid: Option[String]) = HenkilöRow(data.oid, data.sukunimi, data.etunimet, data.kutsumanimi, masterOid)
