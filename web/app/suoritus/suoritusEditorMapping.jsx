@@ -45,6 +45,7 @@ export const resolveOsasuorituksetEditor = (mdl) => {
   if (oneOf('preibsuoritus')) {
     return <LukionOppiaineetEditor
       suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
+      additionalEditableKoulutusmoduuliProperties={['ryhmä']}
     />
   }
   if (oneOf('lukionoppiaineenoppimaaransuoritus')) {

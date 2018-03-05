@@ -30,7 +30,7 @@ export class LukionOppiaineEditor extends React.Component {
   }
 
   render() {
-    const {oppiaine, footnote, allowOppiaineRemoval = true} = this.props
+    const {oppiaine, footnote, additionalEditableKoulutusmoduuliProperties, allowOppiaineRemoval = true} = this.props
     const kurssit = modelItems(oppiaine, 'osasuoritukset')
     const suoritetutKurssit = kurssit.map(k => modelData(k)).filter(k => k.arviointi)
     const laajuudet = kurssit.map(k => {
@@ -49,7 +49,7 @@ export class LukionOppiaineEditor extends React.Component {
         <td className='oppiaine'>
           <div className='title'>
             <Nimi oppiaine={oppiaine}/>
-            <KoulutusmoduuliPropertiesEditor oppiaine={oppiaine}/>
+            <KoulutusmoduuliPropertiesEditor oppiaine={oppiaine} additionalEditableProperties={additionalEditableKoulutusmoduuliProperties}/>
           </div>
           <KurssitEditor model={oppiaine}/>
         </td>

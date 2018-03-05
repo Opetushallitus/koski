@@ -31,7 +31,7 @@ const Nimi = ({oppiaine}) => {
   )
 }
 
-const KoulutusmoduuliPropertiesEditor = ({oppiaine}) => {
+const KoulutusmoduuliPropertiesEditor = ({oppiaine, additionalEditableProperties}) => {
   if (!oppiaine.context.edit) return null
 
   const koulutusmoduuli = modelLookup(oppiaine, 'koulutusmoduuli')
@@ -41,6 +41,12 @@ const KoulutusmoduuliPropertiesEditor = ({oppiaine}) => {
       {isKieliaine(koulutusmoduuli) && <Editor model={koulutusmoduuli} path='kieli' inline={true}/>}
       {isLukionMatematiikka(koulutusmoduuli) && <Editor model={koulutusmoduuli} path='oppimäärä' inline={true}/>}
       {isPaikallinen(koulutusmoduuli) && <PropertiesEditor model={koulutusmoduuli} propertyFilter={p => p.key === 'kuvaus'} />}
+      {additionalEditableProperties &&
+        <PropertiesEditor
+          model={koulutusmoduuli}
+          propertyFilter={p => additionalEditableProperties.includes(p.key)}
+        />
+      }
     </span>
   )
 }
