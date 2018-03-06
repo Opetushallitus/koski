@@ -3,10 +3,8 @@ package fi.oph.koski.schedule
 import java.lang.System.currentTimeMillis
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.documentation.ExamplesLukio.lukioKesken
-import fi.oph.koski.henkilo.MockOppijat.{eero, eerola, masterEiKoskessa, slaveMasterEiKoskessa}
-import fi.oph.koski.henkilo.{MockOpintopolkuHenkilöFacade, VerifiedHenkilöOid}
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.henkilo.MockOpintopolkuHenkilöFacade
+import fi.oph.koski.henkilo.MockOppijat._
 import fi.oph.koski.schema.{TäydellisetHenkilötiedot, TäydellisetHenkilötiedotWithMasterInfo}
 import fi.oph.koski.util.Futures
 import org.json4s.jackson.JsonMethods.{parse => parseJson}
@@ -41,18 +39,12 @@ class UpdateHenkilotTaskSpec extends FreeSpec with Matchers with BeforeAndAfterE
       application.perustiedotRepository.findHenkilöPerustiedotByHenkilöOid(eero.oid).map(_.oid) should equal(Some(eero.oid))
     }
 
-    /* TODO: korjaa ci:llä
     "Lisää master tiedot jos ei löydy Koskesta" in {
-      application.fixtureCreator.resetFixtures
-      addToFixture(slaveMasterEiKoskessa.copy(master = None))
-      modify(slaveMasterEiKoskessa.copy(henkilö = slaveMasterEiKoskessa.henkilö.copy(etunimet = "Foo")))
-      application.perustiedotRepository.findHenkilöPerustiedotByHenkilöOid(slaveMasterEiKoskessa.henkilö.oid).map(_.sukunimi) should equal(Some(masterEiKoskessa.henkilö.sukunimi))
+      modify(eero.copy(master = Some(masterEiKoskessa.henkilö)))
+      application.perustiedotRepository.findHenkilöPerustiedotByHenkilöOid(eero.oid)
+        .map(tiedot => (tiedot.oid, tiedot.sukunimi)) should equal(Some((masterEiKoskessa.oid, masterEiKoskessa.sukunimi)))
     }
-    */
   }
-
-  private def addToFixture(oppija: TäydellisetHenkilötiedotWithMasterInfo) =
-    application.opiskeluoikeusRepository.createOrUpdate(VerifiedHenkilöOid(oppija.henkilö), lukioKesken, allowUpdate = true)(KoskiSession.systemUser)
 
   private def modify(tiedot: TäydellisetHenkilötiedotWithMasterInfo): Unit = {
     henkilöFacade.modify(tiedot)
