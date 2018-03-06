@@ -26,7 +26,11 @@ export const UusiKurssiDropdown = ({oppiaine, suoritukset, paikallinenKurssiProt
     .map(aineet => aineet.filter(kurssi => !käytössäolevatKoodiarvot.includes(modelData(kurssi, 'tunniste').koodiarvo)))
     .map(R.sortBy(displayValue))
 
-  let poistaPaikallinenKurssi = kurssi => deleteOrganizationalPreference(organisaatioOid, paikallinenKurssiProto.value.classes[0], kurssi).onValue(setPaikallisetKurssit)
+  let poistaPaikallinenKurssi = kurssi => {
+    const data = modelData(kurssi)
+    const localKey = data.tunniste.koodiarvo
+    deleteOrganizationalPreference(organisaatioOid, paikallinenKurssiProto.value.classes[0], localKey).onValue(setPaikallisetKurssit)
+  }
 
   return (<div className={'uusi-kurssi'}>
     {
