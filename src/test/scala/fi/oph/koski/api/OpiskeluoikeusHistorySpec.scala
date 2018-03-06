@@ -89,7 +89,7 @@ class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecificatio
         authGet("api/opiskeluoikeus/historia/" + opiskeluoikeus.oid.get) {
           val JArray(muutokset) = readHistory.head.muutos
           muutokset should not(be(empty))
-          AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "MUUTOSHISTORIA_KATSOMINEN"))
+          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "MUUTOSHISTORIA_KATSOMINEN"))
         }
       }
 
@@ -97,7 +97,7 @@ class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecificatio
         val opiskeluoikeus = createOpiskeluoikeus(oppija, uusiOpiskeluoikeus, resetFixtures = true)
         authGet("api/opiskeluoikeus/historia/" + opiskeluoikeus.oid.get, user = MockUsers.stadinVastuukäyttäjä) {
           readHistory.map(_.muutos) should equal(List(JNothing))
-          AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "MUUTOSHISTORIA_KATSOMINEN"))
+          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "MUUTOSHISTORIA_KATSOMINEN"))
         }
       }
     }
@@ -109,7 +109,7 @@ class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecificatio
           verifyResponseStatusOk()
           val versio = readOpiskeluoikeus
           versio should equal(opiskeluoikeus)
-          AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "MUUTOSHISTORIA_KATSOMINEN"))
+          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "MUUTOSHISTORIA_KATSOMINEN"))
         }
       }
       "Tuntematon versionumero" - {
