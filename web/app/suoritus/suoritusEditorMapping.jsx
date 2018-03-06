@@ -37,16 +37,20 @@ export const resolveOsasuorituksetEditor = (mdl) => {
     return <Suoritustaulukko suorituksetModel={modelLookup(mdl, 'osasuoritukset')}/>
   }
   if (oneOf('lukionoppimaaransuoritus')) {
-    return <LukionOppiaineetEditor
-      suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
-      classesForUusiOppiaineenSuoritus={['lukionoppiaineensuoritus', 'muidenlukioopintojensuoritus']}
-    />
+    return (
+      <LukionOppiaineetEditor
+        suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
+        classesForUusiOppiaineenSuoritus={['lukionoppiaineensuoritus', 'muidenlukioopintojensuoritus']}
+      />
+    )
   }
   if (oneOf('preibsuoritus')) {
-    return <LukionOppiaineetEditor
-      suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
-      additionalEditableKoulutusmoduuliProperties={['ryhmä']}
-    />
+    return (
+      <LukionOppiaineetEditor
+        suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
+        additionalEditableKoulutusmoduuliProperties={['ryhmä']}
+      />
+    )
   }
   if (oneOf('lukionoppiaineenoppimaaransuoritus')) {
     return <LukionOppiaineenOppimaaranSuoritusEditor model={mdl} />
