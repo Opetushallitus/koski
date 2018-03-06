@@ -9,6 +9,7 @@ import fi.oph.koski.db.Tables.OppilaitosIPOsoite
 import fi.oph.koski.db.{KoskiDatabaseMethods, OppilaitosIPOsoiteRow}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
+import fi.oph.koski.util.IPUtil.toInetAddress
 import org.log4s.{Logger, getLogger}
 
 class IPService(val db: DB) extends KoskiDatabaseMethods with Logging {
@@ -29,14 +30,6 @@ class IPService(val db: DB) extends KoskiDatabaseMethods with Logging {
       ip.foreach(IPTracking(koskiSession).logIPChange)
       setIP(koskiSession.username, koskiSession.firstClientIp)
     }
-  }
-
-  private def toInetAddress(host: String): Option[InetAddress] = try {
-    Some(InetAddress.getByName(host))
-  } catch {
-    case e: Exception =>
-      logger.error(e)(s"Error converting host $host to inet address")
-      None
   }
 }
 

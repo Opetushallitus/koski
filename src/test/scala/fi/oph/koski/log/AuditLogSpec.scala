@@ -2,10 +2,10 @@ package fi.oph.koski.log
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.koskiuser.MockUsers
+import fi.vm.sade.auditlog.Logger
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito._
 import org.scalatest.{Assertions, FreeSpec, Matchers}
-import org.slf4j.Logger
 
 import scala.util.matching.Regex
 
@@ -25,7 +25,7 @@ class AuditLogSpec extends FreeSpec with Assertions with Matchers {
 
   private def verifyLogMessage(expectedMessage: Regex) {
     val infoCapture: ArgumentCaptor[String] = ArgumentCaptor.forClass(classOf[String])
-    verify(loggerMock, atLeastOnce).info(infoCapture.capture)
+    verify(loggerMock, atLeastOnce).log(infoCapture.capture)
     val logMessage: String = infoCapture.getValue
     logMessage should fullyMatch regex(expectedMessage)
   }
