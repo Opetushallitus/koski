@@ -52,13 +52,32 @@ describe('When sorting languages', () => {
 describe('Sorting grades', () => {
   describe('When sorting grades', () => {
     it('sorts character grades correctly', () => {
-      assert.deepEqual(sortGrades([{value: 'S'}, {value: 'H'}]), [{value: 'H'}, {value: 'S'}])
+      assert.deepEqual(
+        sortGrades([{value: 'arviointiasteikkoyleissivistava_S'}, {value: 'arviointiasteikkoyleissivistava_H'}]),
+        [{value: 'arviointiasteikkoyleissivistava_H'}, {value: 'arviointiasteikkoyleissivistava_S'}]
+      )
     })
     it('sorts numeric grades correctly', () => {
-      assert.deepEqual(sortGrades([{value: 6}, {value: 3}, {value: 10}]), [{value: 3}, {value: 6}, {value: 10}])
+      assert.deepEqual(
+        sortGrades([{value: 'arviointiasteikkoyleissivistava_6'}, {value: 'arviointiasteikkoyleissivistava_3'}, {value: 'arviointiasteikkoyleissivistava_10'}]),
+        [{value: 'arviointiasteikkoyleissivistava_3'}, {value: 'arviointiasteikkoyleissivistava_6'}, {value: 'arviointiasteikkoyleissivistava_10'}]
+      )
     })
     it('sorts mixed grades correctly', () => {
-      assert.deepEqual(sortGrades([{value: 6}, {value: 'H'}, {value: 3}, {value: 'S'}, {value: 10}]), [{value: 3}, {value: 6}, {value: 10}, {value: 'H'}, {value: 'S'}])
+      assert.deepEqual(
+        sortGrades([{value: 'arviointiasteikkoyleissivistava_6'}, {value: 'arviointiasteikkoyleissivistava_H'}, {value: 'arviointiasteikkoyleissivistava_3'}, {value: 'arviointiasteikkoyleissivistava_S'}, {value: 'arviointiasteikkoyleissivistava_10'}]),
+        [{value: 'arviointiasteikkoyleissivistava_3'}, {value: 'arviointiasteikkoyleissivistava_6'}, {value: 'arviointiasteikkoyleissivistava_10'}, {value: 'arviointiasteikkoyleissivistava_H'}, {value: 'arviointiasteikkoyleissivistava_S'}])
+    })
+    it('sorts mixed koodistot correctly', () => {
+      assert.deepEqual(
+        sortGrades([{value: 'arviointiasteikkoammatillinent1k3_2'}, {value: 'arviointiasteikkoammatillinen15_1'}, {value: 'arviointiasteikkoammatillinent1k3_1'}]),
+        [{value: 'arviointiasteikkoammatillinen15_1'}, {value: 'arviointiasteikkoammatillinent1k3_1'},{value: 'arviointiasteikkoammatillinent1k3_2'}]
+      )
+    })
+    it('does not modify original array', () => {
+      let original = [{value: 'arviointiasteikkoyleissivistava_6'}, {value: 'arviointiasteikkoyleissivistava_3'}]
+      let sorted = sortGrades(original)
+      assert.notDeepEqual(original, sorted)
     })
   })
 })
