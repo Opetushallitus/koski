@@ -14,12 +14,12 @@ class AuditLogSpec extends FreeSpec with Assertions with Matchers {
   val audit = new AuditLog(loggerMock)
   lazy val käyttöoikeuspalvelu = KoskiApplicationForTests.käyttöoikeusRepository
 
-  verifyLogMessage("""\{"logSeq":"0","bootTime":".*","hostname":"","timestamp":".*","serviceName":"koski","applicationType":"backend","message":"Server started!"}""".r)
+  verifyLogMessage("""\{"version":1,"logSeq":0,"type":"alive","bootTime":".*","hostname":"","timestamp":".*","serviceName":"koski","applicationType":"backend","message":"started"}""".r)
 
   "AuditLog" - {
     "Logs in JSON format" in {
       audit.log(AuditLogMessage(KoskiOperation.OPISKELUOIKEUS_LISAYS, MockUsers.omniaPalvelukäyttäjä.toKoskiUser(käyttöoikeuspalvelu), Map(KoskiMessageField.oppijaHenkiloOid ->  "1.2.246.562.24.00000000001")))
-      verifyLogMessage("""\{"logSeq":"\d+","bootTime":".*","hostname":"","timestamp":".*","serviceName":"koski","applicationType":"backend","kayttajaHenkiloNimi":"omnia-palvelukäyttäjä käyttäjä","oppijaHenkiloOid":"1.2.246.562.24.00000000001","clientIp":"192.168.0.10","kayttajaHenkiloOid":"1.2.246.562.24.99999999989","operaatio":"OPISKELUOIKEUS_LISAYS"}""".r)
+      verifyLogMessage("""\{"version":1,"logSeq":\d+,"type":"log","bootTime":".*","hostname":"","timestamp":".*","serviceName":"koski","applicationType":"backend","user":\{"oid":"1.2.246.562.24.99999999989","ip":"192.168.0.10","session":"","userAgent":""\},"operation":"OPISKELUOIKEUS_LISAYS","target":\{"oppijaHenkiloOid":"1.2.246.562.24.00000000001"\},"changes":\{\}\}""".r)
     }
   }
 

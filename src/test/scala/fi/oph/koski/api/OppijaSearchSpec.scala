@@ -31,7 +31,7 @@ class OppijaSearchSpec extends FreeSpec with Matchers with SearchTestMethods wit
     }
     "Audit logging" in {
       search("eero", defaultUser) {
-        AuditLogTester.verifyAuditLogMessage(Map("operaatio" -> "OPPIJA_HAKU", "hakuEhto" -> "EERO"))
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPPIJA_HAKU", "target" -> Map("hakuEhto" -> "EERO")))
       }
     }
     "When query is missing" - {
