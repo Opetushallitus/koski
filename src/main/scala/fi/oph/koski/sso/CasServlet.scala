@@ -24,7 +24,7 @@ class CasServlet(implicit val application: KoskiApplication) extends HtmlServlet
             case Some(user) =>
               setUser(Right(user.copy(serviceTicket = Some(ticket))))
               logger.info(s"Started session ${session.id} for ticket $ticket")
-              koskiSessions.store(ticket, user, LogUserContext.clientIpFromRequest(request))
+              koskiSessions.store(ticket, user, LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request))
               KoskiUserLanguage.setLanguageCookie(KoskiUserLanguage.getLanguageFromLDAP(user, application.directoryClient), response)
               redirectAfterLogin
             case None =>

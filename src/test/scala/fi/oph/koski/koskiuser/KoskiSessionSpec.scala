@@ -19,5 +19,5 @@ class KoskiSessionSpec extends FreeSpec with Matchers {
     }
   }
 
-  def mkSession(ip: String) = new KoskiSession(AuthenticationUser("", "", "", None), "fi", ip, Set())
+  def mkSession(ip: String) = new KoskiSession(AuthenticationUser("", "", "", None), "fi", ip, "", Set())
 }

@@ -115,7 +115,7 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
 
   def localLogin(user: AuthenticationUser): AuthenticationUser = {
     val fakeServiceTicket: String = "koski-" + UUID.randomUUID()
-    application.koskiSessionRepository.store(fakeServiceTicket, user, LogUserContext.clientIpFromRequest(request))
+    application.koskiSessionRepository.store(fakeServiceTicket, user, LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request))
     logger.info("Local session ticket created: " + fakeServiceTicket)
     KoskiUserLanguage.setLanguageCookie(KoskiUserLanguage.getLanguageFromLDAP(user, application.directoryClient), response)
     user.copy(serviceTicket = Some(fakeServiceTicket))
