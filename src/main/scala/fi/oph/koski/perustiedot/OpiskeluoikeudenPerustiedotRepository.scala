@@ -23,19 +23,19 @@ import org.json4s.JsonAST.{JObject, JString}
 
 class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opiskeluoikeusQueryService: OpiskeluoikeusQueryService) extends Logging {
 
-  def find(filters: List[OpiskeluoikeusQueryFilter], sorting: SortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): List[OpiskeluoikeudenPerustiedot] = {
+  def find(filters: List[OpiskeluoikeusQueryFilter], sorting: SortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): OpiskeluoikeudenPerustiedotResponse = {
     if (filters.find(_.isInstanceOf[SuoritusJsonHaku]).isDefined) {
       // JSON queries go to PostgreSQL
-      opiskeluoikeusQueryService.opiskeluoikeusQuery(filters, Some(sorting), Some(pagination)).toList.toBlocking.last.map {
+      OpiskeluoikeudenPerustiedotResponse(None, opiskeluoikeusQueryService.opiskeluoikeusQuery(filters, Some(sorting), Some(pagination)).toList.toBlocking.last.map {
         case (opiskeluoikeusRow, henkilöRow, masterHenkilöRow) => OpiskeluoikeudenPerustiedot.makePerustiedot(opiskeluoikeusRow, henkilöRow, masterHenkilöRow)
-      }
+      })
     } else {
       // Other queries got to ElasticSearch
       findFromIndex(filters, sorting, pagination)
     }
   }
 
-  private def findFromIndex(filters: List[OpiskeluoikeusQueryFilter], sorting: SortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): List[OpiskeluoikeudenPerustiedot] = {
+  private def findFromIndex(filters: List[OpiskeluoikeusQueryFilter], sorting: SortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): OpiskeluoikeudenPerustiedotResponse = {
     def nimi(order: String) = List(
       Map("henkilö.sukunimi.keyword" -> order),
       Map("henkilö.etunimet.keyword" -> order)
@@ -119,9 +119,12 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
 
     index.runSearch("perustiedot", doc)
       .map{ response =>
-        extract[List[JValue]](response \ "hits" \ "hits").map(j => extract[OpiskeluoikeudenPerustiedot](j \ "_source", ignoreExtras = true)).map(pt => pt.copy(tilat = pt.tilat.map(tilat => vainAktiivinen(tilat))))
+        OpiskeluoikeudenPerustiedotResponse(
+          Some(extract[Int](response \ "hits" \ "total")),
+          extract[List[JValue]](response \ "hits" \ "hits").map(j => extract[OpiskeluoikeudenPerustiedot](j \ "_source", ignoreExtras = true)).map(pt => pt.copy(tilat = pt.tilat.map(tilat => vainAktiivinen(tilat))))
+        )
       }
-      .getOrElse(Nil)
+      .getOrElse(OpiskeluoikeudenPerustiedotResponse(None, Nil))
   }
 
   private def nestedFilter(path: String, query: Map[String, AnyRef]) = Map(
@@ -208,3 +211,5 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
 }
 
 private object OpiskeluoikeudenPerustiedotRepository
+
+case class OpiskeluoikeudenPerustiedotResponse(total: Option[Int], tiedot: List[OpiskeluoikeudenPerustiedot])

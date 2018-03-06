@@ -31,12 +31,14 @@ describe('Oppijataulukko', function() {
       before(page.oppijataulukko.filterBy('nimi', 'Koululainen kAisa'))
       it('toimii', function() {
         expect(page.oppijataulukko.data().map(function(row) { return row[0]})).to.deep.equal([ 'Koululainen, Kaisa', 'Koululainen, Kaisa' ])
+        expect(page.opiskeluoikeudeTotal()).to.equal('2')
       })
     })
     describe('opiskeluoikeuden tyypillä', function() {
       before(page.oppijataulukko.filterBy('nimi', 'Koululainen Kaisa'), page.oppijataulukko.filterBy('tyyppi', 'Perusopetus'))
       it('toimii', function() {
         expect(page.oppijataulukko.data().map(function(row) { return row[0]})).to.deep.equal([ 'Koululainen, Kaisa' ])
+        expect(page.opiskeluoikeudeTotal()).to.equal('1')
       })
     })
 
@@ -44,6 +46,7 @@ describe('Oppijataulukko', function() {
       before(page.oppijataulukko.filterBy('nimi'), page.oppijataulukko.filterBy('tyyppi', 'Aikuisten perusopetus'), page.oppijataulukko.filterBy('koulutus', 'Perusopetuksen oppiaineen oppimäärä'))
       it('toimii', function() {
         expect(page.oppijataulukko.names()).to.deep.equal([ 'Oppiaineenkorottaja, Olli' ])
+        expect(page.opiskeluoikeudeTotal()).to.equal('1')
       })
     })
 
@@ -51,6 +54,7 @@ describe('Oppijataulukko', function() {
       before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('koulutus'), page.oppijataulukko.filterBy('tutkinto', 'telma'))
       it('toimii', function() {
         expect(page.oppijataulukko.names()).to.deep.equal([ 'Telmanen, Tuula' ])
+        expect(page.opiskeluoikeudeTotal()).to.equal('1')
       })
     })
 
@@ -58,6 +62,7 @@ describe('Oppijataulukko', function() {
       before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('koulutus'), page.oppijataulukko.filterBy('tutkinto', 'ympäristönhoitaja'))
       it('toimii', function() {
         expect(page.oppijataulukko.names()).to.deep.equal([ 'Amis, Antti', 'Ammattilainen, Aarne' ])
+        expect(page.opiskeluoikeudeTotal()).to.equal('2')
       })
     })
 
@@ -65,12 +70,14 @@ describe('Oppijataulukko', function() {
       before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('koulutus'), page.oppijataulukko.filterBy('tutkinto', 'ympäristöalan osaamisala'))
       it('toimii', function() {
         expect(page.oppijataulukko.names()).to.deep.equal([ 'Amis, Antti', 'Ammattilainen, Aarne', 'Osittainen, Outi' ])
+        expect(page.opiskeluoikeudeTotal()).to.equal('3')
       })
     })
     describe('tilalla', function() {
       before(page.oppijataulukko.filterBy('tyyppi', 'Ammatillinen koulutus'), page.oppijataulukko.filterBy('tutkinto'), page.oppijataulukko.filterBy('tila', 'Valmistunut'))
       it('toimii', function() {
         expect(page.oppijataulukko.names()).to.deep.equal([ 'Amikseenvalmistautuja, Anneli', 'Ammattilainen, Aarne', 'Erikoinen, Erja', 'Osittainen, Outi', 'Telmanen, Tuula' ])
+        expect(page.opiskeluoikeudeTotal()).to.equal('5')
       })
     })
 
@@ -78,12 +85,14 @@ describe('Oppijataulukko', function() {
       before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('tila'), page.oppijataulukko.filterBy('oppilaitos', 'Ressun lukio'))
       it('toimii', function() {
         expect(page.oppijataulukko.names()).to.deep.equal(['IB-final, Iina', 'IB-predicted, Petteri'])
+        expect(page.opiskeluoikeudeTotal()).to.equal('2')
       })
     })
     describe('alkamispäivällä', function() {
       before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('tila'),  page.oppijataulukko.filterBy('oppilaitos'), page.oppijataulukko.filterBy('alkamispäivä', '1.1.2001'))
       it('toimii', function() {
         expect(page.oppijataulukko.names()).to.deep.equal(['Eerola, Jouni', 'Esimerkki, Eero', 'Markkanen-Fagerström, Eéro Jorma-Petteri', 'Tekijä, Teija', 'Tiedonsiirto, Tiina'])
+        expect(page.opiskeluoikeudeTotal()).to.equal('5')
       })
     })
   })
