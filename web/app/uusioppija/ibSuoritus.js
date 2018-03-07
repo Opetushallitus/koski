@@ -20,7 +20,8 @@ export const makeSuoritus = (oppilaitos, suoritustyyppi, suorituskieli) => {
         suorituskieli : suorituskieli,
         koulutusmoduuli: {
           tunniste: {
-            koodiarvo: 'preiboppimaara'
+            koodiarvo: 'preiboppimaara',
+            koodistoUri: 'suorituksentyyppi'
           }
         },
         toimipiste: oppilaitos,

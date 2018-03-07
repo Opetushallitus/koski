@@ -66,6 +66,14 @@ function AddOppijaPage() {
           .then(api.selectOppimäärä(params.oppimäärä))
       }
     },
+    enterValidDataPreIB: function(params) {
+      params = _.merge({ oppilaitos: 'Ressun', oppimäärä: 'Pre-IB luokan oppimäärä' }, {}, params)
+      return function() {
+        return api.enterData(params)()
+          .then(api.selectOpiskeluoikeudenTyyppi('IB-tutkinto'))
+          .then(api.selectOppimäärä(params.oppimäärä))
+      }
+    },
     enterData: function(params) {
       return function() {
         return api.enterHenkilötiedot(params)()

@@ -728,5 +728,40 @@ describe('IB', function( ) {
         })
       })
     })
+
+    describe('Pre-IB-oppimäärä', function() {
+      before(
+        prepareForNewOppija('kalle', '230872-7258'),
+        addOppija.enterValidDataPreIB(),
+        addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Pre-IB luokan oppimäärä')
+      )
+
+      describe('Lisäyksen jälkeen', function () {
+        describe('Opiskeluoikeuden tiedot', function() {
+          it('näytetään oikein', function () {
+            expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
+              'Koulutus Pre-IB luokan oppimäärä\n' +
+              'Oppilaitos / toimipiste Ressun lukio\n' +
+              'Suorituskieli suomi\n' +
+              'Suoritus kesken'
+            )
+          })
+        })
+
+        describe('Oppiaineita', function () {
+          it('ei esitäytetä', function () {
+            expect(extractAsText(S('.osasuoritukset'))).to.equal('')
+          })
+        })
+
+        describe('Muokattaessa', function() {
+          before(editor.edit)
+          it('näytetään uuden oppiaineen lisäys-dropdown', function () {
+            expect(isElementVisible(S('.osasuoritukset .uusi-oppiaine .dropdown'))).to.equal(true)
+            after(editor.cancelChanges)
+          })
+        })
+      })
+    })
   })
 })
