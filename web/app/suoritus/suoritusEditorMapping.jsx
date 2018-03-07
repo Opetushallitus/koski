@@ -59,7 +59,12 @@ export const resolveOsasuorituksetEditor = (mdl) => {
     return <LuvaEditor suorituksetModel={modelLookup(mdl, 'osasuoritukset')}/>
   }
   if (oneOf('ibtutkinnonsuoritus')) {
-    return <IBTutkinnonOppiaineetEditor suorituksetModel={modelLookup(mdl, 'osasuoritukset')} />
+    return (
+      <IBTutkinnonOppiaineetEditor
+        suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
+        additionalEditableKoulutusmoduuliProperties={['taso']}
+      />
+    )
   }
   return <PropertyEditor model={mdl} propertyName="osasuoritukset"/>
 }

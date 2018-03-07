@@ -505,7 +505,8 @@ describe('IB', function( ) {
           before(editor.edit)
 
           var a = opinnot.oppiaineet.oppiaine('oppiaine.A')
-          var kieli = a.propertyBySelector('.title .properties')
+          var kieli = a.propertyBySelector('.title > .properties > .dropdown-wrapper')
+          var taso = a.propertyBySelector('.property.taso')
           var arvosana = a.propertyBySelector('td.arvosana')
 
           var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine('.A2 +')
@@ -514,6 +515,7 @@ describe('IB', function( ) {
             it('on oikein', function() {
               expect(editor.canSave()).to.equal(false)
               expect(kieli.getValue()).to.equal('suomi')
+              expect(taso.getValue()).to.equal('Standard Level')
               expect(arvosana.getValue()).to.equal('4')
             })
           })
@@ -523,6 +525,18 @@ describe('IB', function( ) {
 
             it('onnistuu', function() {
               expect(kieli.getValue()).to.equal('englanti')
+            })
+
+            it('tallennus on mahdollista', function() {
+              expect(editor.canSave()).to.equal(true)
+            })
+          })
+
+          describe('Tason muuttaminen', function() {
+            before(taso.selectValue('Higher Level'))
+
+            it('onnistuu', function() {
+              expect(taso.getValue()).to.equal('Higher Level')
             })
 
             it('tallennus on mahdollista', function() {
@@ -546,6 +560,7 @@ describe('IB', function( ) {
             )
 
             var b = opinnot.oppiaineet.oppiaine('oppiaine.B')
+            var kieliB = b.propertyBySelector('.title > .properties > .dropdown-wrapper')
 
             describe('Lisääminen', function () {
               before(uusiOppiaine.selectValue('B-language'))
@@ -561,7 +576,7 @@ describe('IB', function( ) {
 
               describe('Kielen kanssa', function () {
                 before(
-                  b.propertyBySelector('.title .properties').selectValue('espanja'),
+                  kieliB.selectValue('espanja'),
                   editor.saveChanges,
                   wait.until(page.isSavedLabelShown)
                 )

@@ -11,7 +11,7 @@ import {t} from '../i18n/i18n'
 
 const ArvosanaFootnote = {title: 'Ennustettu arvosana', hint: '*'}
 
-export const IBTutkinnonOppiaineetEditor = ({suorituksetModel}) => {
+export const IBTutkinnonOppiaineetEditor = ({suorituksetModel, additionalEditableKoulutusmoduuliProperties}) => {
   const {edit, suoritus: päätasonSuoritusModel} = suorituksetModel.context
   const oppiaineet = modelItems(suorituksetModel)
 
@@ -44,7 +44,14 @@ export const IBTutkinnonOppiaineetEditor = ({suorituksetModel}) => {
             </tr>,
             r.aineet && r.aineet.map((oppiaine, oppiaineIndex) => {
               const footnote = modelData(oppiaine, 'arviointi.-1.predicted') && ArvosanaFootnote
-              return <LukionOppiaineEditor key={oppiaineIndex} oppiaine={oppiaine} footnote={footnote} />
+              return (
+                <LukionOppiaineEditor
+                  key={oppiaineIndex}
+                  oppiaine={oppiaine}
+                  footnote={footnote}
+                  additionalEditableKoulutusmoduuliProperties={additionalEditableKoulutusmoduuliProperties}
+                />
+              )
             }),
             <tr className='uusi-oppiaine' key={`uusi-oppiaine-${r.ryhmä.koodiarvo}`}>
               <td colSpan='4'>
