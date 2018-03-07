@@ -86,7 +86,8 @@ owasp:
 owaspresults:
 	open target/dependency-check-report.html
 snyk: # javascript dependency vulnerability check
-	cd web && npm install && node_modules/snyk/cli/index.js test
+	mvn generate-resources # to download correct node/npm version via frontend-maven-plugin
+	cd web && ./node/node node_modules/snyk/cli/index.js test
 mvndeps:
 	mvn dependency:tree|less
 scala-console:
