@@ -8,6 +8,7 @@ import {accumulateModelStateAndValidity, pushModel, resetOptionalModel} from '..
 import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {addContext, modelLookup} from '../editor/EditorModel'
 import {Editor} from '../editor/Editor'
+import {sortGrades} from '../util/sorting'
 
 const NäyttöPopup = ({model, hasOldData, doneCallback}) => {
   const {modelP, errorP} = accumulateModelStateAndValidity(model)
@@ -38,6 +39,9 @@ const NäyttöPopup = ({model, hasOldData, doneCallback}) => {
               }
             </tr></tbody></table>
           )}
+          if (p.key === 'arvosana') {
+            return <Editor model={p.model} sortBy={sortGrades}/>
+          }
           return getDefault()
         }}
       />

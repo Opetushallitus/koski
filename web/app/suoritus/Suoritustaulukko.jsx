@@ -9,7 +9,7 @@ import {
 import R from 'ramda'
 import {buildClassNames} from '../components/classnames'
 import {accumulateExpandedState} from '../editor/ExpandableItems'
-import {fixArviointi, hasArvosana, suorituksenTyyppi, suoritusValmis, tilaText} from './Suoritus'
+import {hasArvosana, suorituksenTyyppi, suoritusValmis, tilaText} from './Suoritus'
 import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
 import {ammatillisentutkinnonosanryhmaKoodisto} from '../koodisto/koodistot'
@@ -19,8 +19,9 @@ import {
   createTutkinnonOsanSuoritusPrototype, isYhteinenTutkinnonOsa, osanOsa,
   placeholderForNonGrouped
 } from '../ammatillinen/TutkinnonOsa'
-import {sortGradesF, sortLanguages} from '../util/sorting'
+import {sortLanguages} from '../util/sorting'
 import {isKieliaine} from './Koulutusmoduuli'
+import {ArvosanaEditor} from './ArvosanaEditor'
 
 
 export class Suoritustaulukko extends React.Component {
@@ -266,25 +267,7 @@ const LaajuusColumn = {
 const ArvosanaColumn = {
   shouldShow: ({parentSuoritus, suoritukset, context}) => !näyttötutkintoonValmistava(parentSuoritus) && (context.edit || suoritukset.find(hasArvosana) !== undefined),
   renderHeader: () => <td key="arvosana" className="arvosana"><Text name="Arvosana"/></td>,
-  renderData: ({model}) => {
-    let arvosanaModel = modelLookup(fixArviointi(model), 'arviointi.-1.arvosana')
-    // TODO, Parempi tapa erotella eri koodistoista tulevat arvot
-    let sortByKoodistoUriAndGrade = (grades) => {
-      let sort = (x, y) => {
-        if (x.data.koodistoUri < y.data.koodistoUri) {
-          return -1
-        }
-        if (x.data.koodistoUri > y.data.koodistoUri) {
-          return 1
-        }
-        return sortGradesF(x, y)
-      }
-      return grades.sort(sort)
-    }
-    return arvosanaModel && <td key="arvosana" className="arvosana">
-        <Editor model={arvosanaModel} showEmptyOption="true" sortBy={sortByKoodistoUriAndGrade} />
-      </td>
-  }
+  renderData: ({model}) => <td key="arvosana" className="arvosana"><ArvosanaEditor model={model} /></td>
 }
 
 export const suorituksenTilaSymbol = (suoritus) => suoritusValmis(suoritus) ? '' : ''

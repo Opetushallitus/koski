@@ -1,14 +1,24 @@
 export const sortGrades = grades => {
-  return grades.sort(sortGradesF)
+  return grades.slice().sort(sortGradesF)
 }
 
 export const sortGradesF = (gradeX, gradeY) => {
-  let x = gradeX.value
-  let y = gradeY.value
-  let xAsFloat = parseFloat(x)
-  let yAsFloat = parseFloat(y)
+
+  let xParts = gradeX.value.split('_')
+  let yParts = gradeY.value.split('_')
+  let xKoodisto = xParts[0]
+  let yKoodisto = yParts[0]
+
+  if (xKoodisto < yKoodisto) {
+    return -1
+  } else if (xKoodisto > yKoodisto) {
+    return 1
+  }
+
+  let xAsFloat = parseFloat(xParts[1])
+  let yAsFloat = parseFloat(yParts[1])
   if (isNaN(xAsFloat) && isNaN(yAsFloat)) {
-    return (x < y) ? -1 : (x > y) ? 1 : 0
+    return (xParts[1] < yParts[1]) ? -1 : (xParts[1] > yParts[1]) ? 1 : 0
   }
   if (isNaN(xAsFloat)) {
     return 1
@@ -16,7 +26,7 @@ export const sortGradesF = (gradeX, gradeY) => {
   if (isNaN(yAsFloat)) {
     return -1
   }
-  return parseFloat(x) - parseFloat(y)
+  return xAsFloat - yAsFloat
 }
 
 // expects that the list is already sorted, just puts the preordered ones first

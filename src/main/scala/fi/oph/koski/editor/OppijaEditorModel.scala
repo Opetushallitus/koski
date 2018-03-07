@@ -11,8 +11,28 @@ import fi.oph.scalaschema.{ClassSchema, ExtractionContext}
 import fi.oph.koski.date.DateOrdering.{localDateOrdering,localDateOptionOrdering}
 
 object OppijaEditorModel extends Timing {
-  val opiskeluoikeusOrdering: Ordering[Opiskeluoikeus] =
-    Ordering.by { o: Opiskeluoikeus => o.alkamispäivä }(localDateOptionOrdering)
+
+  val opiskeluoikeusOrdering: Ordering[Opiskeluoikeus] = Ordering.by {
+    o: Opiskeluoikeus => o match {
+      case k: KorkeakoulunOpiskeluoikeus => (korkeakoulunOpiskeluoikeuksienJärjestysKriteeri(k), k.alkamispäivä)
+      case _ => (0, o.alkamispäivä)
+    }
+  } (Ordering.Tuple2(Ordering.Int, localDateOptionOrdering.reverse))
+
+  def korkeakoulunOpiskeluoikeuksienJärjestysKriteeri(oo: KorkeakoulunOpiskeluoikeus): Int = {
+    val suoritus = oo.suoritukset.headOption
+    val aktiivinenTaiOptio = oo.tila.opiskeluoikeusjaksot.lastOption.exists(!_.opiskeluoikeusPäättynyt)
+    val ensisijainen = oo.ensisijaisuus.exists(_.loppu.isEmpty)
+    (suoritus, aktiivinenTaiOptio, ensisijainen) match {
+      case (Some(s: KorkeakoulututkinnonSuoritus), _, _) if s.valmis => 1 // valmis tutkinto
+      case (Some(s: KorkeakouluSuoritus), _, _) if s.valmis => 2 // valmis muu opiskeluoikeus
+      case _ if oo.synteettinen => 3// ei-opiskeluoikeuteen liitetyt kurssit ("orphanages")
+      case (_, true, true) => 4 // aktiivinen/optio opiskeluoikeus, ensisijainen
+      case (_, true, _) => 5 // aktiivinen/optio opiskeluoikeus, ei ensisijainen
+      case (_, _, true) => 6 // passivoitu/luopunut, ensisijainen
+      case _ => 7 // passivoitu/luopunut, ei ensisijainen
+    }
+  }
 
   val oppilaitoksenOpiskeluoikeudetOrdering: Ordering[OppilaitoksenOpiskeluoikeudet] =
     Ordering.by { oo: OppilaitoksenOpiskeluoikeudet => oo.latestAlkamispäiväForOrdering }(localDateOptionOrdering).reverse
