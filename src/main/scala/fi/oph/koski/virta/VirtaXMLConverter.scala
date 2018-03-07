@@ -83,22 +83,24 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         toimipiste = oppilaitos(opiskeluoikeusNode)
       ) :: suoritukset
     }.orElse {
-      koodistoViitePalvelu.getKoodistoKoodiViite("virtaopiskeluoikeudentyyppi", (opiskeluoikeusNode \ "Tyyppi").text)
-        .map(virtaOpiskeluoikeudenTyyppi => {
-          val nimi = Some((opiskeluoikeusNode \\ "@koulutusmoduulitunniste").text.stripPrefix("#").stripSuffix("/").trim)
-            .filter(_.nonEmpty).map(finnish).getOrElse(virtaOpiskeluoikeudenTyyppi.description)
-          MuuKorkeakoulunSuoritus(
-            koulutusmoduuli = MuuKorkeakoulunOpinto(
-              tunniste = virtaOpiskeluoikeudenTyyppi,
-              nimi = nimi,
-              laajuus = laajuus(opiskeluoikeusNode)
-            ),
-            vahvistus = tila.opiskeluoikeusjaksot.lastOption.filter(_.tila.koodiarvo == "3").map(jakso => Päivämäärävahvistus(jakso.alku, oppilaitos(opiskeluoikeusNode))),
-            suorituskieli = None,
-            osasuoritukset = None,
-            toimipiste = oppilaitos(opiskeluoikeusNode)
-          ) :: suoritukset
-        })
+      optionalOppilaitos(opiskeluoikeusNode).flatMap(oppilaitos => {
+        koodistoViitePalvelu.getKoodistoKoodiViite("virtaopiskeluoikeudentyyppi", (opiskeluoikeusNode \ "Tyyppi").text)
+          .map(virtaOpiskeluoikeudenTyyppi => {
+            val nimi = Some((opiskeluoikeusNode \\ "@koulutusmoduulitunniste").text.stripPrefix("#").stripSuffix("/").trim)
+              .filter(_.nonEmpty).map(finnish).getOrElse(virtaOpiskeluoikeudenTyyppi.description)
+            MuuKorkeakoulunSuoritus(
+              koulutusmoduuli = MuuKorkeakoulunOpinto(
+                tunniste = virtaOpiskeluoikeudenTyyppi,
+                nimi = nimi,
+                laajuus = laajuus(opiskeluoikeusNode)
+              ),
+              vahvistus = tila.opiskeluoikeusjaksot.lastOption.filter(_.tila.koodiarvo == "3").map(jakso => Päivämäärävahvistus(jakso.alku, oppilaitos)),
+              suorituskieli = None,
+              osasuoritukset = None,
+              toimipiste = oppilaitos
+            ) :: suoritukset
+          })
+      })
     }.getOrElse(suoritukset)
   }
 
