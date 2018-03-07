@@ -12,11 +12,14 @@ import scala.xml.Elem
 import scala.reflect.runtime.{universe => ru}
 
 trait HtmlServlet extends KoskiBaseServlet with AuthenticationSupport with HtmlNodes {
-  lazy val buildVersion: Option[String] = Option(getServletContext.getResourceAsStream("/buildversion.txt")).map { i =>
+
+  lazy val buildVersionProperties = Option(getServletContext.getResourceAsStream("/buildversion.txt")).map { i =>
     val p = new Properties()
     p.load(i)
-    p.getProperty("vcsRevision", null)
+    p
   }
+
+  lazy val buildVersion: Option[String] = buildVersionProperties.map(_.getProperty("vcsRevision", null))
 
   lazy val piwikSiteId: String = application.config.getString("piwik.siteId")
 
