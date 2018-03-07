@@ -89,6 +89,81 @@ describe('IB', function( ) {
                 expect(findSingle('.oppiaine.BI .arvosana .annettuArvosana')().text()).to.equal('5')
               })
             })
+
+            describe('Oppiaineen kurssi', function() {
+              describe('Arvosanan muuttaminen', function() {
+                var kurssi = aine.kurssi('BI10')
+
+                before(
+                  editor.edit,
+                  kurssi.arvosana.selectValue('5'),
+                  editor.saveChanges,
+                  wait.until(page.isSavedLabelShown)
+                )
+
+                it('toimii', function() {
+                  expect(kurssi.arvosana.getText()).to.equal('5')
+                })
+              })
+
+              describe('Kurssivaihtoehdot', function() {
+                before(editor.edit, aine.avaaLisääKurssiDialog)
+
+                it('sisältää valtakunnalliset lukion kurssit', function() {
+                  expect(aine.lisääKurssiDialog.kurssit()).to.include('BI2 Ekologia ja ympäristö')
+                })
+
+                after(editor.cancelChanges)
+              })
+
+              describe('Paikallisen lukion kurssin', function () {
+                describe('lisäyksessä', function () {
+                  var dialog = aine.lisääKurssiDialog
+
+                  before(
+                    editor.edit,
+                    aine.avaaLisääKurssiDialog,
+                    aine.lisääKurssiDialog.valitseKurssi('paikallinen')
+                  )
+
+                  it('tyyppi kysytään', function() {
+                    expect(dialog.hasKurssinTyyppi()).to.equal(true)
+                  })
+
+                  after(
+                    dialog.sulje,
+                    editor.cancelChanges
+                  )
+                })
+
+                describe('lisääminen', function () {
+                  before(
+                    editor.edit,
+                    aine.lisääPaikallinenKurssi('PAIK'),
+                    aine.kurssi('PAIK').arvosana.selectValue('8'),
+                    editor.saveChanges,
+                    wait.until(page.isSavedLabelShown)
+                  )
+
+                  it('toimii', function () {
+                    expect(extractAsText(S('.oppiaineet .BI'))).to.contain('PAIK')
+                  })
+                })
+
+                describe('Poistaminen', function () {
+                  before(
+                    editor.edit,
+                    aine.kurssi('PAIK').poistaKurssi,
+                    editor.saveChanges,
+                    wait.until(page.isSavedLabelShown)
+                  )
+
+                  it('toimii', function () {
+                    expect(extractAsText(S('.oppiaineet .AI'))).to.not.contain('PAIK')
+                  })
+                })
+              })
+            })
           })
 
           describe('Lukion kieliaine', function() {
@@ -264,6 +339,68 @@ describe('IB', function( ) {
               after(editor.cancelChanges)
             })
 
+            describe('Oppiaineen kurssi', function() {
+              describe('Kurssivaihtoehdot', function() {
+                before(editor.edit, aine.avaaLisääKurssiDialog)
+
+                it('sisältää valtakunnalliset lukion kurssit', function() {
+                  expect(aine.lisääKurssiDialog.kurssit()).to.include('BI2 Ekologia ja ympäristö')
+                })
+
+                after(editor.cancelChanges)
+              })
+
+              describe('Paikallisen IB-kurssin', function () {
+                describe('lisäyksessä', function () {
+                  var dialog = aine.lisääKurssiDialog
+
+                  before(
+                    editor.edit,
+                    aine.avaaLisääKurssiDialog,
+                    aine.lisääKurssiDialog.valitseKurssi('paikallinen')
+                  )
+
+                  it('tyyppiä ei kysytä', function() {
+                    expect(dialog.hasKurssinTyyppi()).to.equal(false)
+                  })
+
+                  after(
+                    dialog.sulje,
+                    editor.cancelChanges
+                  )
+                })
+
+                describe('lisääminen', function () {
+                  before(
+                    editor.edit,
+                    aine.lisääPaikallinenKurssi('PAIK'),
+                    aine.kurssi('PAIK').arvosana.selectValue('8'),
+                    editor.saveChanges,
+                    wait.until(page.isSavedLabelShown)
+                  )
+
+                  it('toimii', function () {
+                    expect(extractAsText(S('.oppiaineet .CHE'))).to.contain('PAIK')
+                  })
+
+                })
+
+
+                describe('Poistaminen', function () {
+                  before(
+                    editor.edit,
+                    aine.kurssi('PAIK').poistaKurssi,
+                    editor.saveChanges,
+                    wait.until(page.isSavedLabelShown)
+                  )
+
+                  it('toimii', function () {
+                    expect(extractAsText(S('.oppiaineet .AI'))).to.not.contain('PAIK')
+                  })
+                })
+              })
+            })
+
             describe('Poistaminen', function () {
               before(
                 editor.edit,
@@ -342,63 +479,6 @@ describe('IB', function( ) {
             })
           })
 
-          describe('Oppiaineen kurssi', function() {
-            var aine = opinnot.oppiaineet.oppiaine('oppiaine.AI')
-
-            describe('Arvosanan muuttaminen', function() {
-              var kurssi = aine.kurssi('ÄI1')
-
-              before(
-                editor.edit,
-                kurssi.arvosana.selectValue('5'),
-                editor.saveChanges,
-                wait.until(page.isSavedLabelShown)
-              )
-
-              it('toimii', function() {
-                expect(kurssi.arvosana.getText()).to.equal('5')
-              })
-            })
-
-            describe('Kurssivaihtoehdot', function() {
-              before(editor.edit, aine.avaaLisääKurssiDialog)
-
-              it('sisältää lukion kurssit', function() {
-                expect(aine.lisääKurssiDialog.kurssit()).to.include('BI2 Ekologia ja ympäristö')
-              })
-
-              after(editor.cancelChanges)
-            })
-
-            describe('Paikallisen lukion kurssin', function () {
-              describe('lisääminen', function () {
-                before(
-                  editor.edit,
-                  aine.lisääPaikallinenKurssi('PAIK'),
-                  aine.kurssi('PAIK').arvosana.selectValue('8'),
-                  editor.saveChanges,
-                  wait.until(page.isSavedLabelShown)
-                )
-
-                it('toimii', function () {
-                  expect(extractAsText(S('.oppiaineet .AI'))).to.contain('PAIK')
-                })
-              })
-
-              describe('Poistaminen', function () {
-                before(
-                  editor.edit,
-                  aine.kurssi('PAIK').poistaKurssi,
-                  editor.saveChanges,
-                  wait.until(page.isSavedLabelShown)
-                )
-
-                it('toimii', function () {
-                  expect(extractAsText(S('.oppiaineet .AI'))).to.not.contain('PAIK')
-                })
-              })
-            })
-          })
         })
       })
     })
