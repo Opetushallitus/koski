@@ -430,6 +430,9 @@ function TutkinnonOsat(groupId) {
     laajuudenOtsikko: function() {
       return S('.suoritus-taulukko:eq(0) td.laajuus:eq(0)').text()
     },
+    laajuudetYhteensä: function() {
+      return S('.suoritus-taulukko:eq(0) .laajuudet-yhteensä').text()
+    },
     isSuoritusTaulukkoVisible: function() {
       return S('.suoritus-taulukko:eq(0)').is(':visible')
     },
