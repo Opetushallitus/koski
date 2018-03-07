@@ -76,7 +76,7 @@ describe('IB', function( ) {
               before(editor.edit)
 
               it('on oikea', function () {
-                expect(arvosana.getOptions()).to.deep.equal([ 'Ei valintaa', '10', '4', '5', '6', '7', '8', '9', 'H', 'O', 'S' ])
+                expect(arvosana.getOptions()).to.deep.equal([ 'Ei valintaa', '4', '5', '6', '7', '8', '9', '10', 'H', 'O', 'S' ])
               })
 
               after(editor.cancelChanges)
@@ -258,7 +258,7 @@ describe('IB', function( ) {
               before(editor.edit)
 
               it('on oikea', function () {
-                expect(arvosana.getOptions()).to.deep.equal([ 'Ei valintaa', '10', '4', '5', '6', '7', '8', '9', 'H', 'O', 'S' ])
+                expect(arvosana.getOptions()).to.deep.equal([ 'Ei valintaa', '4', '5', '6', '7', '8', '9', '10', 'H', 'O', 'S' ])
               })
 
               after(editor.cancelChanges)
