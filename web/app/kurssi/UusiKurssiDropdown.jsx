@@ -10,7 +10,7 @@ import {elementWithLoadingIndicator} from '../components/AjaxLoadingIndicator'
 import {t} from '../i18n/i18n'
 import Http from '../util/http'
 import {parseLocation} from '../util/location'
-import {findKoodistoByDiaarinumero} from './kurssi'
+import {findDefaultKoodisto, findKoodistoByDiaarinumero} from './kurssi'
 export const UusiKurssiDropdown = ({oppiaine, suoritukset, paikallinenKurssiProto, valtakunnallisetKurssiProtot, organisaatioOid, selected = Bacon.constant(undefined), resultCallback, placeholder, enableFilter=true}) => {
   let käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli.tunniste').koodiarvo)
   let valtakunnallisetKurssit = completeWithFieldAlternatives(oppiaine, valtakunnallisetKurssiProtot)
@@ -26,7 +26,11 @@ export const UusiKurssiDropdown = ({oppiaine, suoritukset, paikallinenKurssiProt
     .map(aineet => aineet.filter(kurssi => !käytössäolevatKoodiarvot.includes(modelData(kurssi, 'tunniste').koodiarvo)))
     .map(R.sortBy(displayValue))
 
-  let poistaPaikallinenKurssi = kurssi => deleteOrganizationalPreference(organisaatioOid, paikallinenKurssiProto.value.classes[0], kurssi).onValue(setPaikallisetKurssit)
+  let poistaPaikallinenKurssi = kurssi => {
+    const data = modelData(kurssi)
+    const localKey = data.tunniste.koodiarvo
+    deleteOrganizationalPreference(organisaatioOid, paikallinenKurssiProto.value.classes[0], localKey).onValue(setPaikallisetKurssit)
+  }
 
   return (<div className={'uusi-kurssi'}>
     {
@@ -66,7 +70,10 @@ const completeWithFieldAlternatives = (oppiaine, kurssiPrototypes) => {
     if (!kurssiKoodistot) return []
 
     const koodistot = kurssiKoodistot.split(',')
-    const queryKoodistot = findKoodistoByDiaarinumero(koodistot, oppimaaraDiaarinumero) || kurssiKoodistot
+    const queryKoodistot =
+      findKoodistoByDiaarinumero(koodistot, oppimaaraDiaarinumero) ||
+      findDefaultKoodisto(koodistot) ||
+      kurssiKoodistot
     const loc = parseLocation(`/koski/api/editor/kurssit/${oppiaineKoodisto}/${oppiaineKoodiarvo}/${queryKoodistot}`)
       .addQueryParams({oppimaaraKoodisto, oppimaaraKoodiarvo, oppimaaraDiaarinumero})
 

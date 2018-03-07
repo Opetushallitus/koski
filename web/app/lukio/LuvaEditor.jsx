@@ -20,7 +20,7 @@ export const LuvaEditor = ({suorituksetModel}) => {
           <h5><Text name="Lukioon valmistavat opinnot"/></h5>
           <LukionOppiaineetEditor
             suorituksetModel={suorituksetModel}
-            classForUusiOppiaineenSuoritus='lukioonvalmistavankoulutuksenoppiaineensuoritus'
+            classesForUusiOppiaineenSuoritus={['lukioonvalmistavankoulutuksenoppiaineensuoritus']}
             suoritusFilter={lukioonvalmistavankurssinsuorituksetFilter}
           />
         </div>
@@ -31,7 +31,7 @@ export const LuvaEditor = ({suorituksetModel}) => {
           <h5><Text name="Valinnaisena suoritetut lukiokurssit"/></h5>
           <LukionOppiaineetEditor
             suorituksetModel={suorituksetModel}
-            classForUusiOppiaineenSuoritus='lukionoppiaineenopintojensuorituslukioonvalmistavassakoulutuksessa'
+            classesForUusiOppiaineenSuoritus={['lukionoppiaineenopintojensuorituslukioonvalmistavassakoulutuksessa']}
             suoritusFilter={lukionkurssinsuorituksetFilter}
           />
         </div>

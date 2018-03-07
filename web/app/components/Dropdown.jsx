@@ -106,7 +106,7 @@ export default ({ options, keyValue = o => o.key, displayValue = o => o.value,
   let selectRemoval = (e, option) => {
     e.preventDefault()
     e.stopPropagation()
-    onRemoval(keyValue(option))
+    onRemoval(option)
   }
 
   return (<span>{

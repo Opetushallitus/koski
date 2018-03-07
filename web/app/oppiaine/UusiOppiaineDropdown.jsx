@@ -10,6 +10,12 @@ import {fetchAlternativesBasedOnPrototypes} from '../editor/EnumEditor'
 import {elementWithLoadingIndicator} from '../components/AjaxLoadingIndicator'
 import {t} from '../i18n/i18n'
 
+const key = oppiaine => {
+  const tunniste = modelData(oppiaine, 'tunniste')
+  const koodisto = isPaikallinen(oppiaine) ? 'paikallinen' : tunniste.koodistoUri
+  return `${koodisto}-${tunniste.koodiarvo}`
+}
+
 export const UusiOppiaineDropdown = ({suoritukset = [], organisaatioOid, oppiaineenSuoritukset, pakollinen, selected = Bacon.constant(undefined), resultCallback, placeholder, enableFilter=true, allowPaikallinen = true}) => {
   if (!oppiaineenSuoritukset || R.any(s => !s.context.edit, oppiaineenSuoritukset)) return null
 
@@ -33,14 +39,18 @@ export const UusiOppiaineDropdown = ({suoritukset = [], organisaatioOid, oppiain
   const oppiaineet = Bacon.combineWith(paikallisetOppiaineet, valtakunnallisetOppiaineet, (x,y) => x.concat(y))
     .map(aineet => aineet.filter(oppiaine => pakollinen ? !käytössäolevatKoodiarvot.includes(modelData(oppiaine, 'tunniste').koodiarvo) : true))
 
-  const poistaPaikallinenOppiaine = oppiaine => deleteOrganizationalPreference(organisaatioOid, paikallinenProto.value.classes[0], oppiaine).onValue(setPaikallisetOppiaineet)
+  const poistaPaikallinenOppiaine = oppiaine => {
+    const data = modelData(oppiaine)
+    const localKey = data.tunniste.koodiarvo
+    deleteOrganizationalPreference(organisaatioOid, paikallinenProto.value.classes[0], localKey).onValue(setPaikallisetOppiaineet)
+  }
 
   return (<div className={'uusi-oppiaine'}>
     {
       elementWithLoadingIndicator(oppiaineet.map('.length').map(length => length || paikallinenProto
         ? <DropDown
           options={oppiaineet}
-          keyValue={oppiaine => isUusi(oppiaine) ? 'uusi' : modelData(oppiaine, 'tunniste').koodiarvo}
+          keyValue={oppiaine => isUusi(oppiaine) ? 'uusi' : key(oppiaine)}
           displayValue={oppiaine => isUusi(oppiaine) ? 'Lisää...' : modelLookup(oppiaine, 'tunniste').value.title}
           onSelectionChanged={resultCallback}
           selectionText={placeholder}

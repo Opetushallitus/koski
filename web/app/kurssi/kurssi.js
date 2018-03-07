@@ -20,3 +20,6 @@ export const findKoodistoByDiaarinumero = (kurssiKoodistot, oppimaaranDiaarinume
     })
     : kurssiKoodistot[0]
 }
+
+export const findDefaultKoodisto = kurssiKoodistot =>
+  kurssiKoodistot.includes('lukionkurssit') ? 'lukionkurssit' : undefined

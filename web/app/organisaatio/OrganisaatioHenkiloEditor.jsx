@@ -43,7 +43,7 @@ export const OrganisaatioHenkilöEditor = ({model}) => {
       onSelectionChanged={h => pushModelValue(model, h.value)}
       newItem={newItem}
       isRemovable={() => true}
-      onRemoval={poistettavaNimi => removeBus.push(poistettavaNimi)}
+      onRemoval={poistettavaHlo => removeBus.push(nimi(poistettavaHlo))}
     />
     {
       isNewItem(model) && (<div className="uusi-henkilo">

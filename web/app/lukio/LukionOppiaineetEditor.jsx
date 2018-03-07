@@ -5,15 +5,19 @@ import {UusiLukionOppiaineDropdown} from './UusiLukionOppiaineDropdown'
 import {modelErrorMessages, modelItems} from '../editor/EditorModel'
 import {LukionOppiaineetTableHead} from './fragments/LukionOppiaineetTableHead'
 
-export const LukionOppiaineetEditor = ({suorituksetModel, classForUusiOppiaineenSuoritus, suoritusFilter}) => {
+export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaineenSuoritus, suoritusFilter, additionalEditableKoulutusmoduuliProperties}) => {
   const {edit, suoritus: päätasonSuoritusModel} = suorituksetModel.context
   const oppiaineet = modelItems(suorituksetModel).filter(suoritusFilter || R.identity)
 
   if (!edit && R.isEmpty(oppiaineet)) return null
 
-  const oppiaineRows = oppiaineet.map((oppiaine, oppiaineIndex) =>
-    <LukionOppiaineEditor key={oppiaineIndex} oppiaine={oppiaine} />
-  )
+  const oppiaineRows = oppiaineet.map((oppiaine, oppiaineIndex) => (
+    <LukionOppiaineEditor
+      key={oppiaineIndex}
+      oppiaine={oppiaine}
+      additionalEditableKoulutusmoduuliProperties={additionalEditableKoulutusmoduuliProperties}
+    />
+  ))
   const errorRows = oppiaineet.map(oppiaine =>
     modelErrorMessages(oppiaine).map((error, i) =>
       <tr key={'error-' + i} className='error'><td colSpan='42' className='error'>{error}</td></tr>
@@ -31,7 +35,7 @@ export const LukionOppiaineetEditor = ({suorituksetModel, classForUusiOppiaineen
       </table>
       <UusiLukionOppiaineDropdown
         model={päätasonSuoritusModel}
-        oppiaineenSuoritusClass={classForUusiOppiaineenSuoritus}
+        oppiaineenSuoritusClasses={classesForUusiOppiaineenSuoritus}
       />
     </section>
   )
