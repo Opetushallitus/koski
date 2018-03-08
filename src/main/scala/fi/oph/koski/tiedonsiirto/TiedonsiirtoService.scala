@@ -184,7 +184,7 @@ class TiedonsiirtoService(
             "terms"-> Map( "field"-> "tallentajaOrganisaatioOid.keyword", "size" -> 20000 ),
             "aggs"-> Map(
               "oppilaitos"-> Map(
-                "terms"-> Map( "field"-> "oppilaitokset.oid.keyword", "size" -> 20000 ),
+                "terms"-> Map( "field"-> "oppilaitokset.oid.keyword", "size" -> 20000, "missing" -> "-" ),
                 "aggs"-> Map(
                   "käyttäjä"-> Map(
                     "terms"-> Map( "field"-> "tallentajaKäyttäjäOid.keyword", "size" -> 20000 ),
@@ -217,13 +217,17 @@ class TiedonsiirtoService(
         )
     ) ++ tallentajaOrganisaatioFilter.map(filter => Map("query" -> filter)).getOrElse(Map()))
 
+    // uncomment this to see raw query for manual troubleshooting
+    // println(JsonMethods.pretty(query))
+
     runSearch(query).map { response =>
       for {
         orgResults <- extract[List[JValue]](response \ "aggregations" \ "organisaatio" \ "buckets")
         tallentajaOrganisaatioOid = extract[String](orgResults \ "key")
         tallentajaOrganisaatio = OidOrganisaatio(tallentajaOrganisaatioOid, Some(LocalizedString.unlocalized(tallentajaOrganisaatioOid)))
         oppilaitosResults <- extract[List[JValue]](orgResults \ "oppilaitos" \ "buckets")
-        oppilaitosOid = extract[String](oppilaitosResults \ "key")
+        oppilaitosOidOrMissing = extract[String](oppilaitosResults \ "key")
+        oppilaitosOid = if (oppilaitosOidOrMissing == "-") tallentajaOrganisaatioOid else oppilaitosOidOrMissing
         userResults <- extract[List[JValue]](oppilaitosResults \ "käyttäjä" \ "buckets")
         userOid = extract[String](userResults \ "key")
         lähdejärjestelmäResults <- extract[List[JValue]](userResults \ "lähdejärjestelmä" \ "buckets")
@@ -236,7 +240,10 @@ class TiedonsiirtoService(
 
         tuoreDokumentti = extract[JArray](lähdejärjestelmäResults \ "tuoreDokumentti" \ "hits" \ "hits" \ "_source").arr
         oppilaitos = tuoreDokumentti
-          .flatMap(t => extract[List[OidOrganisaatio]](t \ "oppilaitokset"))
+          .flatMap(t => t \ "oppilaitokset" match {
+            case oa: JArray => extract[List[OidOrganisaatio]](oa)
+            case _ => List()
+          })
           .find(_.oid == oppilaitosOid)
           .getOrElse(getOrganisaatio(oppilaitosOid))
         käyttäjä = tuoreDokumentti
