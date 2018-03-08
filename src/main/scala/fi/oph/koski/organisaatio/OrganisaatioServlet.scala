@@ -8,7 +8,7 @@ class OrganisaatioServlet(implicit val application: KoskiApplication) extends Ap
   get("/hierarkia") {
     val query = params.get("query")
     val all = getBooleanParam("all")
-    val filtered = if (all || koskiSession.isRoot) {
+    val filtered = if (all || koskiSession.hasGlobalReadAccess) {
       query match {
         case Some(query) if (query.length >= 3) =>
           application.organisaatioRepository.findHierarkia(query)
