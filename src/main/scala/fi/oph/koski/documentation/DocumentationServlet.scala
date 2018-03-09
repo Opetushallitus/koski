@@ -4,10 +4,12 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.KoodistoKoodiMetadata
 import fi.oph.koski.koskiuser.AuthenticationSupport
+import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.schema.{Henkilö, OsaamisenTunnustaminen}
 import fi.oph.koski.servlet.HtmlServlet
 import fi.oph.scalaschema.ClassSchema
 import org.scalatra.ScalatraServlet
+
 import scala.Function.const
 
 class DocumentationServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with AuthenticationSupport with KoodistoFinder {
@@ -34,6 +36,8 @@ class DocumentationServlet(implicit val application: KoskiApplication) extends S
 
   get("/koodisto/:name/:version") {
     contentType = "text/html"
+    val kieli = Some(params.get("kieli").getOrElse(lang).toUpperCase)
+    val kielet = LocalizedString.languages
     findKoodisto match {
       case Some((koodisto, koodit)) =>
         <html>
@@ -43,9 +47,11 @@ class DocumentationServlet(implicit val application: KoskiApplication) extends S
           <style>
             body {{ font-family: sans-serif; }}
             td, th {{ text-align: left; padding-right: 20px; }}
+            a {{ margin-right: 10px; }}
           </style>
           <body>
             <h1>Koodisto: { koodisto.koodistoUri }, versio { koodisto.versio } </h1>
+            <p>{kielet.map { kieli => <a href={request.getRequestURI + "?kieli=" + kieli}>{kieli}</a> } }</p>
             <table>
               <thead>
                 <tr>
@@ -58,7 +64,7 @@ class DocumentationServlet(implicit val application: KoskiApplication) extends S
               <tbody>
                 {
                 koodit.sortBy(_.koodiArvo).map { koodi =>
-                  val metadata: Option[KoodistoKoodiMetadata] = koodi.metadata.find(_.kieli == Some(lang.toUpperCase))
+                  val metadata: Option[KoodistoKoodiMetadata] = koodi.metadata.find(_.kieli == kieli)
                   <tr>
                     <td>{koodi.koodiArvo}</td>
                     <td>{metadata.flatMap(_.lyhytNimi).getOrElse("-")}</td>
