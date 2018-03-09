@@ -1,5 +1,5 @@
 import React from 'react'
-import {modelLookup, wrapOptional} from '../editor/EditorModel'
+import {modelLookup} from '../editor/EditorModel'
 
 import {PerusopetuksenOppiaineetEditor} from '../perusopetus/PerusopetuksenOppiaineetEditor'
 import PerusopetuksenOppiaineenOppimääränSuoritusEditor from '../perusopetus/PerusopetuksenOppiaineenOppimaaranSuoritusEditor'
@@ -13,6 +13,7 @@ import {Editor} from '../editor/Editor'
 import {sortLanguages} from '../util/sorting'
 import {ArvosanaEditor} from './ArvosanaEditor'
 import {LukionOppiaineenOppimaaranSuoritusEditor} from '../lukio/LukionOppiaineenOppimaaranSuoritusEditor'
+import {CreativityActionService, ExtendedEssay, TheoryOfKnowledge} from '../ib/IBYhteinenSuoritus'
 
 export const resolveOsasuorituksetEditor = (mdl) => {
   const oneOf = (...classes) => classes.some(c => mdl.value.classes.includes(c))
@@ -75,20 +76,9 @@ export const resolvePropertyEditor = (property, model) => {
     case 'arviointi': return <ArvosanaEditor model={model}/>
 
     // IB
-    case 'theoryOfKnowledge':
-    case 'extendedEssay':
-    case 'creativityActionService':
-      return [
-        <ArvosanaEditor
-          model={wrapOptional(property.model)}
-          key={'arvosana'}/>,
-        model.context.edit &&
-        <PropertiesEditor
-          model={modelLookup(property.model, 'arviointi.-1')}
-          propertyFilter={p => p.key === 'predicted'}
-          key={'properties'}
-        />
-      ]
+    case 'theoryOfKnowledge': return <TheoryOfKnowledge model={property.model}/>
+    case 'creativityActionService': return <CreativityActionService model={property.model}/>
+    case 'extendedEssay': return <ExtendedEssay model={property.model}/>
 
     default: return null
   }
