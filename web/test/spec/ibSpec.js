@@ -581,6 +581,93 @@ describe('IB', function( ) {
     describe('Tietojen muuttaminen', function() {
       before(page.openPage, page.oppijaHaku.searchAndSelect('040701-432D'), opinnot.valitseSuoritus(undefined, 'IB-tutkinto'))
       describe('Suoritusten tiedot', function() {
+        describe('Yhteinen IB-suoritus', function () {
+          var tok = opinnot.ibYhteisetSuoritukset.suoritus('theoryOfKnowledge')
+          var cas = opinnot.ibYhteisetSuoritukset.suoritus('creativityActionService')
+          var ee = opinnot.ibYhteisetSuoritukset.suoritus('extendedEssay')
+
+          describe('Alkutila', function () {
+            before(editor.edit)
+
+            it('on oikein', function() {
+              expect(editor.canSave()).to.equal(false)
+              expect(tok.getValue()).to.equal('A')
+              expect(cas.getValue()).to.equal('S')
+
+              expect(ee.arvosana.getValue()).to.equal('B')
+              expect(ee.taso.getValue()).to.equal('Higher Level')
+              expect(ee.ryhmä.getValue()).to.equal('Studies in language and literature')
+              expect(ee.aihe.getValue()).to.equal('How is the theme of racial injustice treated in Harper Lee\'s To Kill a Mockingbird and Solomon Northup\'s 12 Years a Slave')
+            })
+
+            after(editor.cancelChanges)
+          })
+
+          describe('Theory of Knowledge', function () {
+            describe('Arvosanan muuttaminen', function () {
+              before(editor.edit, tok.selectValue('B'), editor.saveChanges, wait.until(page.isSavedLabelShown))
+
+              it('onnistuu', function () {
+                expect(tok.getValue()).to.equal('B')
+              })
+            })
+          })
+
+          describe('Creativity, action, service', function () {
+            describe('Arvosanan muuttaminen', function () {
+              before(editor.edit, cas.selectValue('3'), editor.saveChanges, wait.until(page.isSavedLabelShown))
+
+              it('onnistuu', function () {
+                expect(cas.getValue()).to.equal('3')
+              })
+            })
+          })
+
+          describe('Extended Essay', function () {
+            before(editor.edit)
+
+            describe('Arvosanan muuttaminen', function () {
+              before(ee.arvosana.selectValue('C'))
+
+              it('onnistuu', function () {
+                expect(ee.arvosana.getValue()).to.equal('C')
+              })
+            })
+
+            describe('Tason muuttaminen muuttaminen', function () {
+              before(ee.taso.selectValue('Standard Level'))
+
+              it('onnistuu', function () {
+                expect(ee.taso.getValue()).to.equal('Standard Level')
+              })
+            })
+
+            describe('Ryhmän muuttaminen muuttaminen', function () {
+              before(ee.ryhmä.selectValue('Individuals and societies'))
+
+              it('onnistuu', function () {
+                expect(ee.ryhmä.getValue()).to.equal('Individuals and societies')
+              })
+            })
+
+            describe('Aiheen muuttaminen muuttaminen', function () {
+              before(ee.aihe.setValue('Testi'))
+
+              it('onnistuu', function () {
+                expect(ee.aihe.getValue()).to.equal('Testi')
+              })
+            })
+
+            describe('Muutosten tallennus', function() {
+              before(editor.saveChanges, wait.until(page.isSavedLabelShown))
+
+              it('onnistuu', function() {
+                expect(ee.arvosana.getText()).to.equal('C')
+              })
+            })
+          })
+        })
+
         describe('Oppiaine', function() {
           before(editor.edit)
 
