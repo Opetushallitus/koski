@@ -1,3 +1,11 @@
+## 6.3.2018
+
+ - Sallitaan saman oppiaineen suoritus useampaan kertaan perusopetuksen alkuvaiheessa
+
+## 2.3.2018
+
+ - Lisätty validointi: ammatillisen päätason suorituksen alla ei voi käyttää useampaa kuin yhtä numeerista arviointiasteikkoa
+
 ## 1.3.2018
 
   - Lisätty mahdollisuus syöttää yhteisen tutkinnon osan osa-alueen suorituksia Valma-kouluksen osan suoritukseen
