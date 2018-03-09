@@ -6,6 +6,7 @@ export const isÄidinkieli = (m) => m && m.value.classes.includes('aidinkieli')
 export const isUusi = (oppiaine) => {
   return !modelData(oppiaine, 'tunniste').koodiarvo
 }
+export const isIBOppiaine = (m) => m && m.value.classes.includes('iboppiaine')
 export const isLukionKurssi = (m) => m && m.value.classes.includes('lukionkurssi')
 export const isLukionMatematiikka = (m) => m && m.value.classes.includes('lukionmatematiikka')
 export const koulutusModuuliprototypes = (suoritus) => oneOfPrototypes(modelLookup(suoritus, 'koulutusmoduuli'))

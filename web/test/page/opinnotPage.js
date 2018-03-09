@@ -246,6 +246,9 @@ function Oppiaine(oppiaineElem) {
           }
         }
       },
+      hasKurssinTyyppi: function() {
+        return api.hasProperty('kurssinTyyppi')
+      },
       asetaTunniste: function(arvo) {
         return tunniste().setValue(arvo || 'PA')
       },
@@ -680,6 +683,9 @@ function Editor(elem) {
     cancelChanges: seq(click(findSingle('#edit-bar .cancel')), KoskiPage().verifyNoError),
     isEditable: function() {
       return elem().find('.toggle-edit').is(':visible')
+    },
+    hasProperty: function(key) {
+      return isElementVisible('.property.'+key+':eq(0)', elem)
     },
     property: function(key) {
       return Property(findSingle('.property.'+key+':eq(0)', elem))

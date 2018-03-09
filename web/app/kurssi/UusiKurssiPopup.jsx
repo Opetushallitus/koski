@@ -5,7 +5,10 @@ import {accumulateModelState, modelItems, modelLookup, modelValid} from '../edit
 import Text from '../i18n/Text'
 import ModalDialog from '../editor/ModalDialog'
 import {UusiKurssiDropdown} from './UusiKurssiDropdown'
-import {isIBKurssi, isLukionKurssi, isPaikallinen, koulutusModuuliprototypes} from '../suoritus/Koulutusmoduuli'
+import {
+  isIBKurssi, isIBOppiaine, isLukionKurssi, isPaikallinen,
+  koulutusModuuliprototypes
+} from '../suoritus/Koulutusmoduuli'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {t} from '../i18n/i18n'
 
@@ -22,7 +25,7 @@ export default ({oppiaineenSuoritus, resultCallback, toimipiste, uusiKurssinSuor
   let selectedAtom = Atom()
   let validP = selectedAtom
   let valtakunnallisetKurssiProtot = koulutusModuuliprototypes(uusiKurssinSuoritus).filter(R.complement(isPaikallinen))
-  let paikallinenKurssiProto = koulutusModuuliprototypes(uusiKurssinSuoritus).find(R.either(isPaikallinen, isIBKurssi))
+  let paikallinenKurssiProto = koulutusModuuliprototypes(uusiKurssinSuoritus).find(isIBOppiaine(oppiaine) ? isIBKurssi : isPaikallinen)
   let kurssiSuoritukset = modelItems(oppiaineenSuoritus, 'osasuoritukset')
   selectedPrototypeAtom.map(proto => isPaikallinen(proto) ? undefined : proto).forEach(proto => selectedAtom.set(proto))
 
