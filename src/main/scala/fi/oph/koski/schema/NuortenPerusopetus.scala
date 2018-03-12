@@ -249,7 +249,7 @@ case class NuortenPerusopetuksenOppiaineenOppimääränSuoritus(
   @Tooltip("Päättötodistukseen liittyvät oppiaineen suoritukset.")
   @Title("Oppiaine")
   @FlattenInUI
-  koulutusmoduuli: AikuistenPerusopetuksenOppiaine,
+  koulutusmoduuli: NuortenPerusopetuksenOppiaine,
   toimipiste: OrganisaatioWithOid,
   @Title("Arvosana")
   @Tooltip("Oppiaineen kokonaisarvosana")

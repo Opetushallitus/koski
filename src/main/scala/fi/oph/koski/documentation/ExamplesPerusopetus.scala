@@ -25,7 +25,7 @@ object ExamplesPerusopetus {
       oppilaitos = Some(jyväskylänNormaalikoulu),
       suoritukset = List(
         NuortenPerusopetuksenOppiaineenOppimääränSuoritus(
-          koulutusmoduuli = äidinkieli("AI1", diaarinumero = Some("19/011/2015")),
+          koulutusmoduuli = PerusopetusExampleData.äidinkieli("AI1", diaarinumero = Some(perusopetuksenDiaarinumero)),
           toimipiste = jyväskylänNormaalikoulu,
           arviointi = arviointi(9),
           suoritustapa = suoritustapaErityinenTutkinto,
