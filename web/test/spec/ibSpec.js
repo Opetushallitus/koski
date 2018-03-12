@@ -3,6 +3,7 @@ describe('IB', function( ) {
   var todistus = TodistusPage()
   var opinnot = OpinnotPage()
   var editor = opinnot.opiskeluoikeusEditor()
+  var opiskeluoikeus = OpiskeluoikeusDialog()
   var addOppija = AddOppijaPage()
   before(Authentication().login(), resetFixtures)
 
@@ -821,6 +822,61 @@ describe('IB', function( ) {
             after(editor.cancelChanges)
           })
         })
+
+        describe('Pre-IB-suorituksen lisääminen', function() {
+          var lisääSuoritus = opinnot.lisääSuoritusDialog
+          var lisäysTeksti = 'lisää pre-IB-luokan oppimäärän suoritus'
+
+          describe('Kun opiskeluoikeus on tilassa VALMIS', function() {
+            before(editor.edit, opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().aseta('valmistunut'), opiskeluoikeus.tallenna)
+
+            it('Pre-IB-suoritusta ei voi lisätä', function() {
+              expect(lisääSuoritus.isLinkVisible(lisäysTeksti)).to.equal(false)
+            })
+
+            after(editor.property('tila').removeItem(0))
+          })
+
+          describe('Kun opiskeluoikeus on tilassa LÄSNÄ', function() {
+            describe('Ennen lisäystä', function() {
+              it('Näytetään IB-tutkinto', function() {
+                expect(opinnot.suoritusTabs()).to.deep.equal(['IB-tutkinto (International Baccalaureate)'])
+              })
+
+                it('Pre-IB-suorituksen voi lisätä', function() {
+                expect(lisääSuoritus.isLinkVisible(lisäysTeksti)).to.equal(true)
+              })
+            })
+
+            describe('Lisäyksen jälkeen', function() {
+              before(lisääSuoritus.clickLink(lisäysTeksti))
+
+              it('Näytetään myös pre-IB-suoritus', function() {
+                expect(opinnot.suoritusTabs()).to.deep.equal([
+                  'IB-tutkinto (International Baccalaureate)',
+                  'Pre-IB luokan oppimäärä'
+                ])
+              })
+
+              it('Pre-IB-suoritusta ei voi enää lisätä', function() {
+                expect(lisääSuoritus.isLinkVisible(lisäysTeksti)).to.equal(false)
+              })
+
+              describe('Suorituksen tiedot', function() {
+                before(editor.saveChanges, wait.until(page.isSavedLabelShown))
+
+                it('näytetään oikein', function () {
+                  expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
+                    'Koulutus Pre-IB luokan oppimäärä\n' +
+                    'Oppilaitos / toimipiste Ressun lukio\n' +
+                    'Suorituskieli suomi\n' +
+                    'Suoritus kesken'
+                  )
+                })
+              })
+            })
+          })
+        })
       })
     })
 
@@ -854,6 +910,62 @@ describe('IB', function( ) {
           it('näytetään uuden oppiaineen lisäys-dropdown', function () {
             expect(isElementVisible(S('.osasuoritukset .uusi-oppiaine .dropdown'))).to.equal(true)
             after(editor.cancelChanges)
+          })
+        })
+
+        describe('IB-tutkinnon suorituksen lisääminen', function() {
+          var lisääSuoritus = opinnot.lisääSuoritusDialog
+          var lisäysTeksti = 'lisää IB-tutkinnon suoritus'
+
+          describe('Kun opiskeluoikeus on tilassa VALMIS', function() {
+            before(editor.edit, opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().aseta('valmistunut'), opiskeluoikeus.tallenna)
+
+            it('IB-tutkinnon suoritusta ei voi lisätä', function() {
+              expect(lisääSuoritus.isLinkVisible(lisäysTeksti)).to.equal(false)
+            })
+
+            after(editor.property('tila').removeItem(0))
+          })
+
+          describe('Kun opiskeluoikeus on tilassa LÄSNÄ', function() {
+            describe('Ennen lisäystä', function() {
+              it('Näytetään pre-IB-suoritus', function() {
+                expect(opinnot.suoritusTabs()).to.deep.equal(['Pre-IB luokan oppimäärä'])
+              })
+
+              it('IB-tutkinnon suorituksen voi lisätä', function() {
+                expect(lisääSuoritus.isLinkVisible(lisäysTeksti)).to.equal(true)
+              })
+            })
+
+            describe('Lisäyksen jälkeen', function() {
+              before(lisääSuoritus.clickLink(lisäysTeksti))
+
+              it('Näytetään myös pre-IB-suoritus', function() {
+                expect(opinnot.suoritusTabs()).to.deep.equal([
+                  'Pre-IB luokan oppimäärä',
+                  'IB-tutkinto (International Baccalaureate)'
+                ])
+              })
+
+              it('IB-tutkinnon suoritusta ei voi enää lisätä', function() {
+                expect(lisääSuoritus.isLinkVisible(lisäysTeksti)).to.equal(false)
+              })
+
+              describe('Suorituksen tiedot', function() {
+                before(editor.saveChanges, wait.until(page.isSavedLabelShown)
+                )
+
+                it('näytetään oikein', function () {
+                  expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
+                    'Koulutus IB-tutkinto (International Baccalaureate)\n' +
+                    'Oppilaitos / toimipiste Ressun lukio\n' +
+                    'Suorituskieli suomi\n' +
+                    'Suoritus kesken'
+                  )
+                })
+              })
+            })
           })
         })
       })
