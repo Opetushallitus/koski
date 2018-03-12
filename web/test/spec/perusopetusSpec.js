@@ -1782,13 +1782,13 @@ describe('Perusopetus', function() {
 
       describe('Käyttöliittymän tila', function() {
         it('Näytetään oppimäärävaihtoehdot', function() {
-          expect(addOppija.oppimäärät()).to.deep.equal(['Perusopetuksen oppiaineen oppimäärä', 'Perusopetuksen oppimäärä'])
+          expect(addOppija.oppimäärät()).to.deep.equal(['Nuorten perusopetuksen oppiaineen oppimäärä', 'Perusopetuksen oppimäärä'])
         })
       })
 
       describe('Kun valitaan oppiaineen oppimäärä ja oppiaine', function() {
         before(
-          addOppija.selectOppimäärä('Perusopetuksen oppiaineen oppimäärä'),
+          addOppija.selectOppimäärä('Nuorten perusopetuksen oppiaineen oppimäärä'),
           addOppija.selectOppiaine('A1-kieli')
         )
 
