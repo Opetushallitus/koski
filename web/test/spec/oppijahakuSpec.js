@@ -129,11 +129,7 @@ describe('Oppijahaku', function() {
   })
 
   describe('Navigointi suoraan oppijan sivulle', function() {
-    before(
-      Authentication().login(),
-      resetFixtures,
-      openPage('/koski/oppija/1.2.246.562.24.00000000001', page.isOppijaSelected('Eero'))
-    )
+    before(openPage('/koski/oppija/1.2.246.562.24.00000000001', page.isOppijaSelected('Eero')))
 
     it('Oppijan tiedot näytetään', function() {
       expect(page.getSelectedOppija()).to.equal(eero)

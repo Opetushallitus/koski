@@ -3,10 +3,10 @@ describe('Ylioppilastutkinto', function( ){
   var todistus = TodistusPage()
   var opinnot = OpinnotPage()
 
-  before(Authentication().login('pää'), resetFixtures)
+  before(Authentication().login('pää'), resetFixtures, page.openPage)
 
   describe('Kun tutkinto on valmis', function() {
-    before(page.openPage, page.oppijaHaku.searchAndSelect('010696-971K'))
+    before(page.oppijaHaku.searchAndSelect('010696-971K'))
     describe('Tutkinnon tiedot', function() {
       it('näytetään', function() {
         expect(OpinnotPage().getTutkinto()).to.equal("Ylioppilastutkinto")
@@ -44,11 +44,12 @@ describe('Ylioppilastutkinto', function( ){
       it('näytetään', function() {
         // See more detailed content specification in YlioppilastutkintoSpec.scala
       })
+      after(page.openPage)
     })
   })
 
   describe('Kun tutkinto on kesken', function() {
-    before(page.openPage, page.oppijaHaku.searchAndSelect('200695-889X'))
+    before(page.oppijaHaku.searchAndSelect('200695-889X'))
 
     describe('Tutkinnon tiedot', function() {
       it('näytetään', function() {
@@ -80,8 +81,7 @@ describe('Ylioppilastutkinto', function( ){
   })
 
   describe('Kypsyyskoe jne', function() {
-    before(page.openPage, page.oppijaHaku.searchAndSelect('120674-064R'))
-    before(opinnot.expandAll)
+    before(page.oppijaHaku.searchAndSelect('120674-064R'), opinnot.expandAll)
 
     it('kaikki osasuoritukset näkyvissä', function() {
         expect(extractAsText(S('.ylioppilastutkinnonsuoritus .osasuoritukset'))).to.equal(
@@ -100,8 +100,7 @@ describe('Ylioppilastutkinto', function( ){
   })
 
   describe('Vanha reaalikoe', function() {
-    before(page.openPage, page.oppijaHaku.searchAndSelect('120872-781Y'))
-    before(opinnot.expandAll)
+    before(page.oppijaHaku.searchAndSelect('120872-781Y'), opinnot.expandAll)
 
     it('kaikki osasuoritukset näkyvissä', function() {
       expect(extractAsText(S('.ylioppilastutkinnonsuoritus .osasuoritukset'))).to.equal(
@@ -116,8 +115,7 @@ describe('Ylioppilastutkinto', function( ){
   })
 
   describe('Kieli puuttuu oppilastiedoista', function() {
-    before(page.openPage, page.oppijaHaku.searchAndSelect('120674-064R'))
-    before(opinnot.expandAll)
+    before(page.oppijaHaku.searchAndSelect('120674-064R'), opinnot.expandAll)
 
     it('kaikki osasuoritukset näkyvissä', function() {
       expect(extractAsText(S('.ylioppilastutkinnonsuoritus .osasuoritukset'))).to.equal(
