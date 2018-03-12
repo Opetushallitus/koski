@@ -478,6 +478,18 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "suorituksentyyppi_nuortenperusopetuksenoppiaineenoppimaara",
+  "koodiArvo" : "nuortenperusopetuksenoppiaineenoppimaara",
+  "metadata" : [ {
+    "nimi" : "Lärokurs i ett läroämne i grundläggande utbildning",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Perusopetuksen oppiaineen oppimäärä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "suorituksentyyppi_perusopetuksenoppimaara",
   "koodiArvo" : "perusopetuksenoppimaara",
   "metadata" : [ {

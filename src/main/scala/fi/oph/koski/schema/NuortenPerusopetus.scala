@@ -243,6 +243,31 @@ case class NuortenPerusopetuksenOppiaineenSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenoppiaine", koodistoUri = "suorituksentyyppi")
 ) extends PerusopetuksenOppiaineenSuoritus with OppiaineenTaiToiminta_AlueenSuoritus with Vahvistukseton with Yksilöllistettävä with MahdollisestiSuorituskielellinen
 
+@Description("Perusopetuksen yksittäisen oppiaineen oppimäärän suoritus erillisenä kokonaisuutena")
+case class NuortenPerusopetuksenOppiaineenOppimääränSuoritus(
+  @Description("Päättötodistukseen liittyvät oppiaineen suoritukset.")
+  @Tooltip("Päättötodistukseen liittyvät oppiaineen suoritukset.")
+  @Title("Oppiaine")
+  @FlattenInUI
+  koulutusmoduuli: AikuistenPerusopetuksenOppiaine,
+  toimipiste: OrganisaatioWithOid,
+  @Title("Arvosana")
+  @Tooltip("Oppiaineen kokonaisarvosana")
+  @FlattenInUI
+  arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
+  override val vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
+  suoritustapa: Koodistokoodiviite,
+  suorituskieli: Koodistokoodiviite,
+  @Tooltip("Mahdolliset muut suorituskielet.")
+  muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
+  @Tooltip("Mahdolliset todistuksella näkyvät lisätiedot.")
+  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
+  @KoodistoKoodiarvo("nuortenperusopetuksenoppiaineenoppimaara")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("nuortenperusopetuksenoppiaineenoppimaara", koodistoUri = "suorituksentyyppi")
+) extends PerusopetuksenPäätasonSuoritus with OppiaineenSuoritus with Todistus with SuoritustavallinenPerusopetuksenSuoritus {
+  override def osasuoritukset = None
+}
+
 trait PerusopetuksenOppiaineenSuoritus extends OppiaineenSuoritus with PakollisenTaiValinnaisenSuoritus {
   override def salliDuplikaatit = !koulutusmoduuli.pakollinen
 }
