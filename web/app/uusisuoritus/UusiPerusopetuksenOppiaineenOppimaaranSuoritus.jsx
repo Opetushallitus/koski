@@ -43,6 +43,7 @@ const UusiPerusopetuksenOppiaineenSuoritusPopup = ({opiskeluoikeus, resultCallba
             getValueEditor={(p, getDefault) => {
               return p.key == 'tunniste'
                 ? <UusiPerusopetuksenOppiaineDropdown
+                  organisaatioOid={modelData(oppiaineenSuoritus, 'toimipiste.oid')}
                   oppiaineenSuoritus={oppiaineenSuoritus}
                   selected={koulutusmoduuli(oppiaineenSuoritus)}
                   resultCallback={oppiaine => pushModelValue(oppiaineenSuoritus, oppiaine.value, 'koulutusmoduuli')}
