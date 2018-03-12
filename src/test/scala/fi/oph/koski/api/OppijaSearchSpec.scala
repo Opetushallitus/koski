@@ -5,6 +5,8 @@ import java.time.LocalDate
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.documentation.AmmatillinenExampleData.stadinAmmattiopisto
 import fi.oph.koski.documentation.ExampleData
+import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.MockOppijat._
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.MockUsers.omniaKatselija
 import fi.oph.koski.log.AuditLogTester
@@ -13,7 +15,7 @@ import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.{Koodistokoodiviite, Oppilaitos}
 import org.scalatest.{FreeSpec, Matchers}
 
-class OppijaSearchSpec extends FreeSpec with Matchers with SearchTestMethods with LocalJettyHttpSpecification {
+class OppijaSearchSpec extends FreeSpec with Matchers with SearchTestMethods with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen {
   "/api/henkilo/search" - {
     "Finds by name" in {
       searchForNames("eero") should equal(List("Jouni Eerola", "Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström"))
@@ -28,6 +30,13 @@ class OppijaSearchSpec extends FreeSpec with Matchers with SearchTestMethods wit
     }
     "Finds by hetu" in {
       searchForNames("010101-123N") should equal(List("Eero Esimerkki"))
+    }
+    "Finds only those that are in Koski" in {
+      searchForNames(masterEiKoskessa.hetu.get) should equal(Nil)
+    }
+    "Finds with master info" in {
+      createOrUpdate(MockOppijat.slaveMasterEiKoskessa.henkilö, defaultOpiskeluoikeus)
+      searchForNames(masterEiKoskessa.hetu.get) should equal(List("Master Master"))
     }
     "Audit logging" in {
       search("eero", defaultUser) {

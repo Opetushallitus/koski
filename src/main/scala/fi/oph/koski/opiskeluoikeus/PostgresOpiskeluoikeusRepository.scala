@@ -19,19 +19,21 @@ import fi.oph.koski.schema.Opiskeluoikeus.VERSIO_1
 import fi.oph.koski.schema._
 import fi.oph.koski.util.OidGenerator
 import org.json4s.{JArray, JObject, JString}
+import slick.dbio
+import slick.dbio.DBIOAction.sequence
 import slick.dbio.Effect.{Read, Transactional, Write}
 import slick.dbio.{DBIOAction, NoStream}
-import slick.{dbio, lifted}
 
 class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: OpiskeluoikeusHistoryRepository, henkilöCache: KoskiHenkilöCache, oidGenerator: OidGenerator, henkilöRepository: OpintopolkuHenkilöRepository, perustiedotSyncRepository: PerustiedotSyncRepository) extends OpiskeluoikeusRepository with DatabaseExecutionContext with KoskiDatabaseMethods with Logging {
   override def filterOppijat(oppijat: List[HenkilötiedotJaOid])(implicit user: KoskiSession): List[HenkilötiedotJaOid] = {
-    val query: lifted.Query[OpiskeluoikeusTable, OpiskeluoikeusRow, Seq] = for {
-      oo <- OpiskeluOikeudetWithAccessCheck
-      if oo.oppijaOid inSetBind oppijat.map(_.oid)
-    } yield {
-      oo
-    }
-    val oppijatJoillaOpiskeluoikeuksia: Set[String] = runDbSync(query.map(_.oppijaOid).result).toSet
+    val queryOppijaOids = sequence(oppijat.map(_.oid).map { oppijaOid =>
+      findByOppijaOidAction(oppijaOid).map(opiskeluoikeusOids => (oppijaOid, opiskeluoikeusOids))
+    })
+
+    val oppijatJoillaOpiskeluoikeuksia: Set[Oid] = runDbSync(queryOppijaOids)
+      .collect { case (oppija, opiskeluoikeudet) if opiskeluoikeudet.nonEmpty => oppija }
+      .toSet
+
     oppijat.filter { oppija => oppijatJoillaOpiskeluoikeuksia.contains(oppija.oid)}
   }
 
@@ -116,7 +118,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
   }
 
   private def findByOppijaOidAction(oid: String)(implicit user: KoskiSession): dbio.DBIOAction[Seq[OpiskeluoikeusRow], NoStream, Read] = {
-   withSlavesQuery(oid)
+    withSlavesQuery(oid)
       .flatMap(oid => OpiskeluOikeudetWithAccessCheck.filter(_.oppijaOid === oid))
       .result
   }
