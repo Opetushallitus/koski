@@ -114,6 +114,7 @@ function OpinnotPage() {
     versiohistoria: Versiohistoria(),
     oppiaineet: Oppiaineet(),
     tutkinnonOsat: TutkinnonOsat,
+    ibYhteisetSuoritukset: IBSuoritukset(),
     avaaKaikki: click(findSingle('.expand-all')),
     anythingEditable: function() {
       return Editor(findSingle('.content-area') ).isEditable()
@@ -443,6 +444,35 @@ function TutkinnonOsat(groupId) {
       return S('.osasuoritukset').text()
     }
   }
+}
+
+function IBSuoritukset() {
+  var elem = findSingle('.ibtutkinnonsuoritus')
+
+  var api = {
+    suoritus: function(suoritusClass) {
+      switch (suoritusClass) {
+        case 'theoryOfKnowledge':
+          return Editor(elem).property('theoryOfKnowledge')
+        case 'creativityActionService':
+          return Editor(elem).property('creativityActionService')
+        case 'extendedEssay':
+          return function() {
+            var ee = Editor(elem)
+            return {
+              arvosana: ee.property('extendedEssay .arviointi'),
+              tunniste: ee.property('extendedEssay .tunniste'),
+              taso: ee.property('extendedEssay .taso'),
+              ryhmä: ee.property('extendedEssay .ryhmä'),
+              aihe: ee.property('extendedEssay .aihe')
+            }
+          }()
+        default:
+          throw new Error('No such IB-suoritus: ' + suoritusClass)
+      }
+    }
+  }
+  return api
 }
 
 function Opiskeluoikeudet() {
