@@ -30,12 +30,9 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
       findByOppijaOidAction(oppijaOid).map(opiskeluoikeusOids => (oppijaOid, opiskeluoikeusOids))
     })
 
-    val oppijatJoillaOpiskeluoikeuksia: Set[Oid] = (for {
-      (oppija, opiskeluoikeudet) <- runDbSync(queryOppijaOids)
-      if opiskeluoikeudet.nonEmpty
-    } yield {
-      oppija
-    }).toSet
+    val oppijatJoillaOpiskeluoikeuksia: Set[Oid] = runDbSync(queryOppijaOids)
+      .collect { case (oppija, opiskeluoikeudet) if opiskeluoikeudet.nonEmpty => oppija }
+      .toSet
 
     oppijat.filter { oppija => oppijatJoillaOpiskeluoikeuksia.contains(oppija.oid)}
   }

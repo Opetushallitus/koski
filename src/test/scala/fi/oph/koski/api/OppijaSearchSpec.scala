@@ -36,7 +36,7 @@ class OppijaSearchSpec extends FreeSpec with Matchers with SearchTestMethods wit
     }
     "Finds with master info" in {
       createOrUpdate(MockOppijat.slaveMasterEiKoskessa.henkilö, defaultOpiskeluoikeus)
-      searchForNames("270366-697B") should equal(List("Master Master"))
+      searchForNames(masterEiKoskessa.hetu.get) should equal(List("Master Master"))
     }
     "Audit logging" in {
       search("eero", defaultUser) {
