@@ -552,15 +552,16 @@ describe('Ammatillinen koulutus', function() {
   })
 
   describe('Opiskeluoikeuden mitätöiminen', function() {
+    before(resetFixtures, page.openPage)
     describe('Opiskeluoikeudelle jossa on valmiita suorituksia', function() {
-      before(resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('280618-402H'), editor.edit)
+      before(page.oppijaHaku.searchAndSelect('280618-402H'), editor.edit)
       it('Ei ole mahdollista', function() {
         expect(opinnot.invalidateOpiskeluoikeusIsShown()).to.equal(false)
       })
     })
 
     describe('Opiskeluoikeudelle jossa ei ole valmiita suorituksia', function() {
-      before(resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('010101-123N'), editor.edit)
+      before(page.oppijaHaku.searchAndSelect('010101-123N'), editor.edit)
       it('Näytetään mitätöintilinkki', function() {
         expect(opinnot.invalidateOpiskeluoikeusIsShown()).to.equal(true)
       })
@@ -595,7 +596,6 @@ describe('Ammatillinen koulutus', function() {
     })
 
     describe('Opiskeluoikeudelle jossa ei ole valmiita suorituksia, ja joka on peräisin ulkoisesta järjestelmästä', function() {
-      before(resetFixtures)
       describe('Kun kirjautunut oppilaitoksen tallentajana', function() {
         before(Authentication().logout, Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('270303-281N'))
         it('Ei näytetä mitätöintilinkkiä', function() {
