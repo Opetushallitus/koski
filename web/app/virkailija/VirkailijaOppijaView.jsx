@@ -204,6 +204,7 @@ export class Oppija extends React.Component {
               {showHenkilöUiLink.map(show => show && <a href={`/henkilo-ui/oppija/${modelData(henkilö, 'oid')}?permissionCheckService=KOSKI`} target='_blank' title={t('OppijanumerorekisteriLinkTooltip')}><Text name="Oppijanumerorekisteri" /></a>)}
               {showVirtaXmlLink.map(show => show && <a href={`/koski/api/oppija/${modelData(henkilö, 'oid')}/virta-opintotiedot-xml`} target='_blank'>{'Virta XML'}</a>)}
             </h2>
+            <div className="oppijanumero">{t('Oppijanumero')}{`: ${modelData(henkilö, 'oid')}`}</div>
             {
               // Set location as key to ensure full re-render when context changes
               oppija

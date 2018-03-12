@@ -139,6 +139,10 @@ describe('Oppijahaku', function() {
       expect(page.getSelectedOppija()).to.equal(eero)
     })
 
+    it('Oppijanumero näytetään', function() {
+      expect(extractAsText(S('.oppija .oppijanumero'))).to.equal('Oppijanumero : 1.2.246.562.24.00000000001')
+    })
+
     it('Oppijan tutkinto ja oppilaitos näytetään', function() {
       expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
       expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
