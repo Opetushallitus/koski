@@ -18,10 +18,11 @@ describe('IB', function( ) {
   })
 
   describe('Pre-IB', function () {
-    before(page.openPage, page.oppijaHaku.searchAndSelect('040701-432D'))
+    before(page.openPage, page.oppijaHaku.searchAndSelect('040701-432D'), opinnot.valitseSuoritus(undefined, 'Pre-IB'))
+
     describe('Oppijan suorituksissa', function () {
       it('näytetään', function () {
-        expect(opinnot.getTutkinto()).to.equal("Pre-IB luokan oppimäärä")
+        expect(opinnot.getTutkinto()).to.equal("Pre-IB")
         expect(opinnot.getOppilaitos()).to.equal("Ressun lukio")
       })
     })
@@ -29,7 +30,7 @@ describe('IB', function( ) {
     describe('Kaikki tiedot näkyvissä', function () {
       it('näyttää suorituksen tiedot', function() {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
-          'Koulutus Pre-IB luokan oppimäärä\n' +
+          'Koulutus Pre-IB\n' +
           'Oppilaitos / toimipiste Ressun lukio\n' +
           'Suorituskieli englanti\n' +
           'Suoritus valmis Vahvistus : 4.6.2016 Helsinki Reijo Reksi , rehtori')
@@ -63,8 +64,6 @@ describe('IB', function( ) {
     })
 
     describe('Tietojen muuttaminen', function() {
-      before(page.openPage, page.oppijaHaku.searchAndSelect('040701-432D'), opinnot.valitseSuoritus(undefined, 'Pre-IB luokan oppimäärä'))
-
       describe('Suoritusten tiedot', function() {
         describe('Oppiaine', function() {
           var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine()
@@ -486,7 +485,7 @@ describe('IB', function( ) {
   })
 
   describe('IB-tutkinto', function () {
-    before(resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('040701-432D'), opinnot.valitseSuoritus(undefined, 'IB-tutkinto'))
+    before(resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('040701-432D'))
     describe('Oppijan suorituksissa', function () {
       it('näytetään', function () {
         expect(opinnot.getTutkinto()).to.equal("IB-tutkinto (International Baccalaureate)")
@@ -864,7 +863,7 @@ describe('IB', function( ) {
   })
 
   describe('Opiskeluoikeuden lisääminen', function() {
-    describe('IB-lukion oppimäärä', function() {
+    describe('IB-tutkinto', function() {
       before(
         prepareForNewOppija('kalle', '230872-7258'),
         addOppija.enterValidDataIB(),
@@ -912,7 +911,7 @@ describe('IB', function( ) {
 
         describe('Pre-IB-suorituksen lisääminen', function() {
           var lisääSuoritus = opinnot.lisääSuoritusDialog
-          var lisäysTeksti = 'lisää pre-IB-luokan oppimäärän suoritus'
+          var lisäysTeksti = 'lisää pre-IB-suoritus'
 
           describe('Kun opiskeluoikeus on tilassa VALMIS', function() {
             before(editor.edit, opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().aseta('valmistunut'), opiskeluoikeus.tallenna)
@@ -941,7 +940,7 @@ describe('IB', function( ) {
               it('Näytetään myös pre-IB-suoritus', function() {
                 expect(opinnot.suoritusTabs()).to.deep.equal([
                   'IB-tutkinto (International Baccalaureate)',
-                  'Pre-IB luokan oppimäärä'
+                  'Pre-IB'
                 ])
               })
 
@@ -954,7 +953,7 @@ describe('IB', function( ) {
 
                 it('näytetään oikein', function () {
                   expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
-                    'Koulutus Pre-IB luokan oppimäärä\n' +
+                    'Koulutus Pre-IB\n' +
                     'Oppilaitos / toimipiste Ressun lukio\n' +
                     'Suorituskieli suomi\n' +
                     'Suoritus kesken'
@@ -967,18 +966,18 @@ describe('IB', function( ) {
       })
     })
 
-    describe('Pre-IB-oppimäärä', function() {
+    describe('Pre-IB', function() {
       before(
         prepareForNewOppija('kalle', '230872-7258'),
         addOppija.enterValidDataPreIB(),
-        addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Pre-IB luokan oppimäärä')
+        addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Pre-IB')
       )
 
       describe('Lisäyksen jälkeen', function () {
         describe('Opiskeluoikeuden tiedot', function() {
           it('näytetään oikein', function () {
             expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
-              'Koulutus Pre-IB luokan oppimäärä\n' +
+              'Koulutus Pre-IB\n' +
               'Oppilaitos / toimipiste Ressun lukio\n' +
               'Suorituskieli suomi\n' +
               'Suoritus kesken'
@@ -1017,7 +1016,7 @@ describe('IB', function( ) {
           describe('Kun opiskeluoikeus on tilassa LÄSNÄ', function() {
             describe('Ennen lisäystä', function() {
               it('Näytetään pre-IB-suoritus', function() {
-                expect(opinnot.suoritusTabs()).to.deep.equal(['Pre-IB luokan oppimäärä'])
+                expect(opinnot.suoritusTabs()).to.deep.equal(['Pre-IB'])
               })
 
               it('IB-tutkinnon suorituksen voi lisätä', function() {
@@ -1028,9 +1027,9 @@ describe('IB', function( ) {
             describe('Lisäyksen jälkeen', function() {
               before(lisääSuoritus.clickLink(lisäysTeksti))
 
-              it('Näytetään myös pre-IB-suoritus', function() {
+              it('Näytetään myös IB-tutkinnon suoritus', function() {
                 expect(opinnot.suoritusTabs()).to.deep.equal([
-                  'Pre-IB luokan oppimäärä',
+                  'Pre-IB',
                   'IB-tutkinto (International Baccalaureate)'
                 ])
               })
@@ -1040,8 +1039,7 @@ describe('IB', function( ) {
               })
 
               describe('Suorituksen tiedot', function() {
-                before(editor.saveChanges, wait.until(page.isSavedLabelShown)
-                )
+                before(editor.saveChanges, wait.until(page.isSavedLabelShown))
 
                 it('näytetään oikein', function () {
                   expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(

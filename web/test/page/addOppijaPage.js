@@ -59,7 +59,7 @@ function AddOppijaPage() {
       }
     },
     enterValidDataIB: function(params) {
-      params = _.merge({ oppilaitos: 'Ressun', oppimäärä: 'IB-lukion oppimäärä' }, {}, params)
+      params = _.merge({ oppilaitos: 'Ressun', oppimäärä: 'IB-tutkinto' }, {}, params)
       return function() {
         return api.enterData(params)()
           .then(api.selectOpiskeluoikeudenTyyppi('IB-tutkinto'))
@@ -67,7 +67,7 @@ function AddOppijaPage() {
       }
     },
     enterValidDataPreIB: function(params) {
-      params = _.merge({ oppilaitos: 'Ressun', oppimäärä: 'Pre-IB luokan oppimäärä' }, {}, params)
+      params = _.merge({ oppilaitos: 'Ressun', oppimäärä: 'Pre-IB' }, {}, params)
       return function() {
         return api.enterData(params)()
           .then(api.selectOpiskeluoikeudenTyyppi('IB-tutkinto'))

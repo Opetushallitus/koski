@@ -61,6 +61,7 @@ object OppijaEditorModel extends Timing {
       case oo: AikuistenPerusopetuksenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(aikuistenPerusopetuksenSuoritustenJärjestysKriteeri))
       case oo: PerusopetuksenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(perusopetuksenSuoritustenJärjestysKriteeri))
       case oo: AmmatillinenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(ammatillisenSuoritustenJärjestysKriteeri))
+      case oo: IBOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(ibSuoritustenJärjestysKriteeri))
       case oo: Any => oo
     })
   }
@@ -89,6 +90,14 @@ object OppijaEditorModel extends Timing {
 
   def ammatillisenSuoritustenJärjestysKriteeri(s: AmmatillinenPäätasonSuoritus): Int = {
     s.alkamispäivä.map(a => -a.toEpochDay.toInt).getOrElse(0)
+  }
+
+  def ibSuoritustenJärjestysKriteeri(s : IBPäätasonSuoritus): Int = {
+    s match {
+      case _: IBTutkinnonSuoritus => -1
+      case _: PreIBSuoritus => 0
+      case _ => 1
+    }
   }
 }
 

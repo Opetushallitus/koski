@@ -25,5 +25,5 @@ export const UusiPreIBSuoritus = {
     return suoritus(toimipisteellä)
   },
   canAddSuoritus: (opiskeluoikeus) => isIBTutkinto(opiskeluoikeus) && !preIBSuoritus(opiskeluoikeus),
-  addSuoritusTitle: () => <Text name="lisää pre-IB-luokan oppimäärän suoritus"/>
+  addSuoritusTitle: () => <Text name="lisää pre-IB-suoritus"/>
 }

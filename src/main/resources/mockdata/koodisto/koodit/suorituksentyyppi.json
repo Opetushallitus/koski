@@ -208,10 +208,10 @@
   "koodiUri" : "suorituksentyyppi_ibtutkinto",
   "koodiArvo" : "ibtutkinto",
   "metadata" : [ {
-    "nimi" : "Lärokurs i IB-gymnasium",
+    "nimi" : "IB-examen",
     "kieli" : "SV"
   }, {
-    "nimi" : "IB-lukion oppimäärä",
+    "nimi" : "IB-tutkinto",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -541,10 +541,10 @@
   "koodiUri" : "suorituksentyyppi_preiboppimaara",
   "koodiArvo" : "preiboppimaara",
   "metadata" : [ {
-    "nimi" : "Lärokurs i Pre-IB-klass",
+    "nimi" : "Pre-IB",
     "kieli" : "SV"
   }, {
-    "nimi" : "Pre-IB luokan oppimäärä",
+    "nimi" : "Pre-IB",
     "kieli" : "FI"
   } ],
   "versio" : 1,
