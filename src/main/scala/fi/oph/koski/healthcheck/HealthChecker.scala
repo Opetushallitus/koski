@@ -15,6 +15,7 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.{MockOrganisaatiot, RemoteOrganisaatioRepository}
 import fi.oph.koski.schema._
 import fi.oph.koski.userdirectory.Password
+import fi.oph.koski.util.Timing
 import fi.vm.sade.utils.cas.CasClientException
 import scalaz.concurrent.Task
 
@@ -68,7 +69,7 @@ trait HealthCheck extends Logging {
       case _ => HttpStatus.ok
     }
 
-  private def ePerusteetCheck: HttpStatus = {
+  private def ePerusteetCheck: HttpStatus = Timing.timed("ePerusteetCheck", 1000, this.getClass) {
     val diaarinumerot = List("39/011/2014", "OPH-2664-2017")
     HttpStatus.fold(diaarinumerot.map(checkPeruste))
   }
