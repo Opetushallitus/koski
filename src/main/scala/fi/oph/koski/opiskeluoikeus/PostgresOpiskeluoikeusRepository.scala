@@ -227,15 +227,14 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
 
         val täydennettyOpiskeluoikeus = OpiskeluoikeusChangeMigrator.kopioiValmiitSuorituksetUuteen(vanhaOpiskeluoikeus, uusiOpiskeluoikeus)
 
-        val updatedValues@(newData, _, _, _, _, _, _) = Tables.OpiskeluoikeusTable.updatedFieldValues(täydennettyOpiskeluoikeus, nextVersionumero)
-
-        val diff: JArray = jsonDiff(oldRow.data, newData)
-        diff.values.length match {
-          case 0 =>
-            DBIO.successful(Right(NotChanged(id, oid, uusiOpiskeluoikeus.lähdejärjestelmänId, oldRow.oppijaOid, versionumero, diff, newData)))
-          case _ =>
-            validateOpiskeluoikeusChange(vanhaOpiskeluoikeus, täydennettyOpiskeluoikeus) match {
-              case HttpStatus.ok =>
+        validateOpiskeluoikeusChange(vanhaOpiskeluoikeus, täydennettyOpiskeluoikeus) match {
+          case HttpStatus.ok =>
+            val updatedValues@(newData, _, _, _, _, _, _) = Tables.OpiskeluoikeusTable.updatedFieldValues(täydennettyOpiskeluoikeus, nextVersionumero)
+            val diff: JArray = jsonDiff(oldRow.data, newData)
+            diff.values.length match {
+              case 0 =>
+                DBIO.successful(Right(NotChanged(id, oid, uusiOpiskeluoikeus.lähdejärjestelmänId, oldRow.oppijaOid, versionumero, diff, newData)))
+              case _ =>
                 for {
                   rowsUpdated <- OpiskeluOikeudetWithAccessCheck.filter(_.id === id).map(_.updateableFields).update(updatedValues)
                   _ <- historyRepository.createAction(id, nextVersionumero, user.oid, diff)
@@ -246,8 +245,8 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
                       throw new RuntimeException("Unexpected number of updated rows: " + x) // throw exception to cause rollback!
                   }
                 }
-              case nonOk => DBIO.successful(Left(nonOk))
             }
+          case nonOk => DBIO.successful(Left(nonOk))
         }
     }
   }
