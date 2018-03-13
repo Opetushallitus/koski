@@ -198,30 +198,20 @@ case class ValtakunnallinenAikuistenPerusopetuksenPäättövaiheenKurssi2017(
   laajuus: Option[LaajuusVuosiviikkotunneissaTaiKursseissa] = None
 ) extends AikuistenPerusopetuksenKurssi with KoodistostaLöytyväKoulutusmoduuli
 
-@Description("Perusopetuksen yksittäisen oppiaineen oppimäärän suoritus erillisenä kokonaisuutena")
-case class PerusopetuksenOppiaineenOppimääränSuoritus(
-  @Description("Päättötodistukseen liittyvät oppiaineen suoritukset.")
-  @Tooltip("Päättötodistukseen liittyvät oppiaineen suoritukset.")
-  @Title("Oppiaine")
-  @FlattenInUI
+case class AikuistenPerusopetuksenOppiaineenOppimääränSuoritus(
   koulutusmoduuli: AikuistenPerusopetuksenOppiaine,
   toimipiste: OrganisaatioWithOid,
-  @Title("Arvosana")
-  @Tooltip("Oppiaineen kokonaisarvosana")
-  @FlattenInUI
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   override val vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suoritustapa: Koodistokoodiviite,
   suorituskieli: Koodistokoodiviite,
-  @Tooltip("Mahdolliset muut suorituskielet.")
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
-  @Tooltip("Mahdolliset todistuksella näkyvät lisätiedot.")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @Title("Kurssit")
   override val osasuoritukset: Option[List[AikuistenPerusopetuksenKurssinSuoritus]] = None,
   @KoodistoKoodiarvo("perusopetuksenoppiaineenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppiaineenoppimaara", koodistoUri = "suorituksentyyppi")
-) extends AikuistenPerusopetuksenPäätasonSuoritus with OppiaineenSuoritus with Todistus with SuoritustavallinenPerusopetuksenSuoritus
+) extends AikuistenPerusopetuksenPäätasonSuoritus with OppiaineenSuoritus with Todistus with SuoritustavallinenPerusopetuksenSuoritus with PerusopetuksenOppiaineenOppimääränSuoritus
 
 @Description("Ks. tarkemmin perusopetuksen opiskeluoikeuden tilat: [confluence](https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-Perusopetus)")
 case class AikuistenPerusopetuksenOpiskeluoikeudenTila(

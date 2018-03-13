@@ -28,7 +28,7 @@ export const resolveOsasuorituksetEditor = (mdl) => {
       'perusopetukseenvalmistavanopetuksensuoritus')) {
     return <PerusopetuksenOppiaineetEditor model={mdl}/>
   }
-  if (firstClassOneOf('perusopetuksenoppiaineenoppimaaransuoritus')) {
+  if (firstClassOneOf('aikuistenperusopetuksenoppiaineenoppimaaransuoritus')) {
     return <PerusopetuksenOppiaineenOppimääränSuoritusEditor model={mdl}/>
   }
   if (firstClassOneOf('esiopetuksensuoritus')) {

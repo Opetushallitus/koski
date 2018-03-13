@@ -244,27 +244,34 @@ case class NuortenPerusopetuksenOppiaineenSuoritus(
 ) extends PerusopetuksenOppiaineenSuoritus with OppiaineenTaiToiminta_AlueenSuoritus with Vahvistukseton with Yksilöllistettävä with MahdollisestiSuorituskielellinen
 
 @Description("Perusopetuksen yksittäisen oppiaineen oppimäärän suoritus erillisenä kokonaisuutena")
-case class NuortenPerusopetuksenOppiaineenOppimääränSuoritus(
+trait PerusopetuksenOppiaineenOppimääränSuoritus {
   @Description("Päättötodistukseen liittyvät oppiaineen suoritukset.")
   @Tooltip("Päättötodistukseen liittyvät oppiaineen suoritukset.")
   @Title("Oppiaine")
   @FlattenInUI
-  koulutusmoduuli: NuortenPerusopetuksenOppiaine,
-  toimipiste: OrganisaatioWithOid,
+  def koulutusmoduuli: PerusopetuksenOppiaine
   @Title("Arvosana")
   @Tooltip("Oppiaineen kokonaisarvosana")
   @FlattenInUI
+  def arviointi: Option[List[PerusopetuksenOppiaineenArviointi]]
+  @Tooltip("Mahdolliset muut suorituskielet.")
+  def muutSuorituskielet: Option[List[Koodistokoodiviite]]
+  @Tooltip("Mahdolliset todistuksella näkyvät lisätiedot.")
+  def todistuksellaNäkyvätLisätiedot: Option[LocalizedString]
+}
+
+case class NuortenPerusopetuksenOppiaineenOppimääränSuoritus(
+  koulutusmoduuli: NuortenPerusopetuksenOppiaine,
+  toimipiste: OrganisaatioWithOid,
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   override val vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suoritustapa: Koodistokoodiviite,
   suorituskieli: Koodistokoodiviite,
-  @Tooltip("Mahdolliset muut suorituskielet.")
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
-  @Tooltip("Mahdolliset todistuksella näkyvät lisätiedot.")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("nuortenperusopetuksenoppiaineenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("nuortenperusopetuksenoppiaineenoppimaara", koodistoUri = "suorituksentyyppi")
-) extends PerusopetuksenPäätasonSuoritus with OppiaineenSuoritus with Todistus with SuoritustavallinenPerusopetuksenSuoritus {
+) extends PerusopetuksenPäätasonSuoritus with OppiaineenSuoritus with Todistus with SuoritustavallinenPerusopetuksenSuoritus with PerusopetuksenOppiaineenOppimääränSuoritus {
   override def osasuoritukset = None
 }
 

@@ -24,7 +24,7 @@ const UusiPerusopetuksenOppiaineenSuoritusPopup = ({opiskeluoikeus, resultCallba
   let koulutusmoduuli = (suoritus) => modelLookup(suoritus, 'koulutusmoduuli')
   let submitBus = Bacon.Bus()
   let isAikuistenPerusopetus = modelData(opiskeluoikeus, 'tyyppi.koodiarvo') === 'aikuistenperusopetus'
-  let initialSuoritusModel = newSuoritusProto(opiskeluoikeus, isAikuistenPerusopetus ? 'perusopetuksenoppiaineenoppimaaransuoritus' : 'nuortenperusopetuksenoppiaineenoppimaaransuoritus')
+  let initialSuoritusModel = newSuoritusProto(opiskeluoikeus, isAikuistenPerusopetus ? 'aikuistenperusopetuksenoppiaineenoppimaaransuoritus' : 'nuortenperusopetuksenoppiaineenoppimaaransuoritus')
   let edellinenOppiaine = isAikuistenPerusopetus ? perusopetuksenOppiaineenOppimääränSuoritus(opiskeluoikeus) : nuortenPerusopetuksenOppiaineenOppimääränSuoritus(opiskeluoikeus)
   if (edellinenOppiaine) {
     initialSuoritusModel = copyToimipiste(edellinenOppiaine, initialSuoritusModel)

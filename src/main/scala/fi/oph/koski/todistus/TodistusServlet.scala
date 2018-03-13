@@ -32,7 +32,7 @@ class TodistusServlet(implicit val application: KoskiApplication) extends HtmlSe
                 Right((new PerusopetukseenValmistavanOpetuksenTodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.getOppilaitos, henkilötiedot, t)).todistusHtml)
               case t: PerusopetuksenOppimääränSuoritus =>
                 Right((new PerusopetuksenPaattotodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.getOppilaitos, henkilötiedot, t)).todistusHtml)
-              case t: PerusopetuksenOppiaineenOppimääränSuoritus =>
+              case t: AikuistenPerusopetuksenOppiaineenOppimääränSuoritus =>
                 Right((new PerusopetuksenOppiaineenOppimaaranTodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.getOppilaitos, henkilötiedot, t)).todistusHtml)
               case t: PerusopetuksenVuosiluokanSuoritus =>
                 Right((new PerusopetuksenLukuvuositodistusHtml(opiskeluoikeus.koulutustoimija, opiskeluoikeus.getOppilaitos, henkilötiedot, t)).todistusHtml)

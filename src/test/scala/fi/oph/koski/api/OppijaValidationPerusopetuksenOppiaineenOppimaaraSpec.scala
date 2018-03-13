@@ -12,7 +12,7 @@ class OppijaValidationPerusopetuksenOppiaineenOppimaaraSpec extends TutkinnonPer
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = AikuistenPerusopetuksenOpiskeluoikeus(
     oppilaitos = Some(jyväskylänNormaalikoulu),
     suoritukset = List(
-      PerusopetuksenOppiaineenOppimääränSuoritus(
+      AikuistenPerusopetuksenOppiaineenOppimääränSuoritus(
         koulutusmoduuli = MuuAikuistenPerusopetuksenOppiaine(
           tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = "HI"),
           perusteenDiaarinumero = diaari
