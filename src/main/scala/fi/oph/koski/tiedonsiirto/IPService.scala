@@ -9,7 +9,6 @@ import fi.oph.koski.db.Tables.OppilaitosIPOsoite
 import fi.oph.koski.db.{KoskiDatabaseMethods, OppilaitosIPOsoiteRow}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
-import fi.oph.koski.util.IPUtil.toInetAddress
 import org.log4s.{Logger, getLogger}
 
 class IPService(val db: DB) extends KoskiDatabaseMethods with Logging {
@@ -21,14 +20,14 @@ class IPService(val db: DB) extends KoskiDatabaseMethods with Logging {
   }
 
   def getIP(username: String): Option[InetAddress] =
-    runDbSync(OppilaitosIPOsoite.filter(_.username === username).map(_.ip).result.headOption).flatMap(toInetAddress)
+    runDbSync(OppilaitosIPOsoite.filter(_.username === username).map(_.ip).result.headOption).map(InetAddress.getByName)
 
   def trackIPAddress(koskiSession: KoskiSession) {
     val ip = getIP(koskiSession.username)
 
-    if (ip != toInetAddress(koskiSession.firstClientIp)) {
+    if (!ip.contains(koskiSession.clientIp)) {
       ip.foreach(IPTracking(koskiSession).logIPChange)
-      setIP(koskiSession.username, koskiSession.firstClientIp)
+      setIP(koskiSession.username, koskiSession.clientIp.getHostAddress)
     }
   }
 }
@@ -36,7 +35,7 @@ class IPService(val db: DB) extends KoskiDatabaseMethods with Logging {
 private case class IPTracking(koskiSession: KoskiSession) {
   def logIPChange(oldIP: InetAddress) {
     val user = koskiSession.user
-    IPTracking.logger.info(s"${user.username}(${user.oid}), vanha: ${oldIP.getHostAddress}, uusi: ${koskiSession.firstClientIp}")
+    IPTracking.logger.info(s"${user.username}(${user.oid}), vanha: ${oldIP.getHostAddress}, uusi: ${koskiSession.clientIp.getHostAddress}")
   }
 }
 

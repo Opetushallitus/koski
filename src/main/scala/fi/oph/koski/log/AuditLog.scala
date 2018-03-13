@@ -5,7 +5,6 @@ import java.net.InetAddress
 import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSession}
 import fi.oph.koski.log.KoskiMessageField.KoskiMessageField
 import fi.oph.koski.log.KoskiOperation.KoskiOperation
-import fi.oph.koski.util.IPUtil.toInetAddress
 import fi.vm.sade.auditlog._
 import io.prometheus.client.Counter
 import org.ietf.jgss.Oid
@@ -30,12 +29,12 @@ class AuditLog(logger: Logger) {
 case class AuditLogMessage(user: User, operation: Operation, target: Target, changes: Changes)
 
 object AuditLogMessage {
-  def apply(operation: KoskiOperation, user: AuthenticationUser, clientIp: String, serviceTicket: String, userAgent: String): AuditLogMessage = {
-    build(operation, new User(new Oid(user.oid), toInetAddress(clientIp).getOrElse(InetAddress.getLoopbackAddress), serviceTicket, userAgent), Map())
+  def apply(operation: KoskiOperation, user: AuthenticationUser, clientIp: InetAddress, serviceTicket: String, userAgent: String): AuditLogMessage = {
+    build(operation, new User(new Oid(user.oid), clientIp, serviceTicket, userAgent), Map())
   }
 
   def apply(operation: KoskiOperation, session: KoskiSession, extraFields: Map[KoskiMessageField, String]): AuditLogMessage = {
-    build(operation, new User(new Oid(session.user.oid), toInetAddress(session.firstClientIp).getOrElse(InetAddress.getLoopbackAddress), session.user.serviceTicket.getOrElse(""), session.userAgent), extraFields)
+    build(operation, new User(new Oid(session.user.oid), session.clientIp, session.user.serviceTicket.getOrElse(""), session.userAgent), extraFields)
   }
 
   private def build(operation: KoskiOperation, user: User, extraFields: Map[KoskiMessageField, String]): AuditLogMessage = {

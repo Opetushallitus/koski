@@ -1,6 +1,7 @@
 package fi.oph.koski.koskiuser
 
-import javax.servlet.http.HttpServletRequest
+import java.net.InetAddress
+
 import fi.oph.koski.koskiuser.Rooli._
 import fi.oph.koski.log.{LogUserContext, Loggable, Logging}
 import fi.oph.koski.schema.{Organisaatio, OrganisaatioWithOid}
@@ -8,7 +9,7 @@ import org.scalatra.servlet.RichRequest
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp: String, val userAgent: String, käyttöoikeudet: => Set[Käyttöoikeus]) extends LogUserContext with UserWithUsername with UserWithOid with Loggable with Logging {
+class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp: InetAddress, val userAgent: String, käyttöoikeudet: => Set[Käyttöoikeus]) extends LogUserContext with UserWithUsername with UserWithOid with Loggable with Logging {
   def oid = user.oid
   def username = user.username
   def userOption = Some(user)
@@ -54,7 +55,6 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
   }
 
   def organisaatiot: List[OrganisaatioWithOid] = orgKäyttöoikeudet.collect { case r: KäyttöoikeusOrg if r.juuri => r.organisaatio }.toList
-  def firstClientIp = clientIp.split(",").map(_.trim).headOption.getOrElse(clientIp)
 
   Future(käyttöoikeudet)(ExecutionContext.global) // haetaan käyttöoikeudet toisessa säikeessä rinnakkain
 }
@@ -67,8 +67,8 @@ object KoskiSession {
   private val KOSKI_SYSTEM_USER: String = "Koski system user"
   private val UNTRUSTED_SYSTEM_USER = "Koski untrusted system user"
   // Internal user with root access
-  val systemUser = new KoskiSession(AuthenticationUser(KOSKI_SYSTEM_USER, KOSKI_SYSTEM_USER, KOSKI_SYSTEM_USER, None), "fi", "KOSKI_SYSTEM", "", Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHPAAKAYTTAJA), Palvelurooli(LUOTTAMUKSELLINEN)))))
+  val systemUser = new KoskiSession(AuthenticationUser(KOSKI_SYSTEM_USER, KOSKI_SYSTEM_USER, KOSKI_SYSTEM_USER, None), "fi", InetAddress.getLoopbackAddress, "", Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHPAAKAYTTAJA), Palvelurooli(LUOTTAMUKSELLINEN)))))
 
-  val untrustedUser = new KoskiSession(AuthenticationUser(UNTRUSTED_SYSTEM_USER, UNTRUSTED_SYSTEM_USER, UNTRUSTED_SYSTEM_USER, None), "fi", "KOSKI_SYSTEM", "", Set())
+  val untrustedUser = new KoskiSession(AuthenticationUser(UNTRUSTED_SYSTEM_USER, UNTRUSTED_SYSTEM_USER, UNTRUSTED_SYSTEM_USER, None), "fi", InetAddress.getLoopbackAddress, "", Set())
 }
 
