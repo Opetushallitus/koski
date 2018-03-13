@@ -5,11 +5,12 @@ import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.AmmatillinenExampleData.{stadinAmmattiopisto, _}
 import fi.oph.koski.documentation.ExampleData.{helsinki, vahvistus}
+import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen
 import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.opiskeluoikeudenOidKonflikti
 import fi.oph.koski.http.ErrorMatcher.exact
-import fi.oph.koski.http.{ErrorMatcher, JsonErrorMessage, KoskiErrorCategory}
+import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.localization.LocalizedString
@@ -181,6 +182,13 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
           val opiskeluoikeus = lastOpiskeluoikeus(MockOppijat.eero.oid)
           putOppija(Oppija(MockOppijat.eero, List(opiskeluoikeus.withOidAndVersion(oid = Some("1.2.246.562.15.15285175178"), versionumero = None)))) {
             verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta 1.2.246.562.15.15285175178 ei löydy tai käyttäjällä ei ole oikeutta sen katseluun"))
+          }
+        }
+
+        "Tyypin muutos" in {
+          val opiskeluoikeus = lastOpiskeluoikeus(MockOppijat.ysiluokkalainen.oid)
+          putOppija(Oppija(MockOppijat.ysiluokkalainen, List(aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen.withOidAndVersion(opiskeluoikeus.oid, versionumero = None)))) {
+            verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyMuutos(s"Opiskeluoikeuden tyyppiä ei voi vaihtaa. Vanha tyyppi ${opiskeluoikeus.tyyppi.koodiarvo}. Uusi tyyppi ${aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen.tyyppi.koodiarvo}."))
           }
         }
       }
