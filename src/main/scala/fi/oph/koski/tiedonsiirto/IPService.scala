@@ -20,30 +20,22 @@ class IPService(val db: DB) extends KoskiDatabaseMethods with Logging {
   }
 
   def getIP(username: String): Option[InetAddress] =
-    runDbSync(OppilaitosIPOsoite.filter(_.username === username).map(_.ip).result.headOption).flatMap(toInetAddress)
+    runDbSync(OppilaitosIPOsoite.filter(_.username === username).map(_.ip).result.headOption).map(InetAddress.getByName)
 
   def trackIPAddress(koskiSession: KoskiSession) {
     val ip = getIP(koskiSession.username)
 
-    if (ip != toInetAddress(koskiSession.firstClientIp)) {
+    if (!ip.contains(koskiSession.clientIp)) {
       ip.foreach(IPTracking(koskiSession).logIPChange)
-      setIP(koskiSession.username, koskiSession.firstClientIp)
+      setIP(koskiSession.username, koskiSession.clientIp.getHostAddress)
     }
-  }
-
-  private def toInetAddress(host: String): Option[InetAddress] = try {
-    Some(InetAddress.getByName(host))
-  } catch {
-    case e: Exception =>
-      logger.error(e)(s"Error converting host $host to inet address")
-      None
   }
 }
 
 private case class IPTracking(koskiSession: KoskiSession) {
   def logIPChange(oldIP: InetAddress) {
     val user = koskiSession.user
-    IPTracking.logger.info(s"${user.username}(${user.oid}), vanha: ${oldIP.getHostAddress}, uusi: ${koskiSession.firstClientIp}")
+    IPTracking.logger.info(s"${user.username}(${user.oid}), vanha: ${oldIP.getHostAddress}, uusi: ${koskiSession.clientIp.getHostAddress}")
   }
 }
 

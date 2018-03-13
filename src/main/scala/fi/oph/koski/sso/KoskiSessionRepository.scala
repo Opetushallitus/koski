@@ -1,5 +1,6 @@
 package fi.oph.koski.sso
 
+import java.net.InetAddress
 import java.sql.Timestamp
 
 import fi.oph.koski.db.KoskiDatabase.DB
@@ -12,9 +13,9 @@ import fi.oph.koski.util.Timing
 class KoskiSessionRepository(val db: DB, sessionTimeout: SessionTimeout) extends KoskiDatabaseMethods with GlobalExecutionContext with Timing with Logging {
   private def now = new Timestamp(System.currentTimeMillis())
 
-  def store(ticket: String, user: AuthenticationUser, clientIp: String) = {
+  def store(ticket: String, user: AuthenticationUser, clientIp: InetAddress, userAgent: String) = {
     val operation = if (user.kansalainen) KoskiOperation.KANSALAINEN_LOGIN else KoskiOperation.LOGIN
-    AuditLog.log(AuditLogMessage(operation, user, clientIp, Map()))
+    AuditLog.log(AuditLogMessage(operation, user, clientIp, ticket, userAgent))
     runDbSync(Tables.CasServiceTicketSessions += SSOSessionRow(ticket, user.username, user.oid, user.name, now, now))
   }
 

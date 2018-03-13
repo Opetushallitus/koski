@@ -1,14 +1,15 @@
 package fi.oph.koski.log
 
-import javax.servlet.http.HttpServletRequest
+import java.net.InetAddress
 
+import javax.servlet.http.HttpServletRequest
 import fi.oph.koski.koskiuser.{UserWithOid, UserWithUsername}
 import org.scalatra.servlet.RichRequest
 
 object LogUserContext {
   def apply(request: HttpServletRequest) = new LogUserContext {
     def userOption = None
-    override def clientIp = clientIpFromRequest(request)
+    override def clientIp = clientIpFromRequest(new RichRequest(request))
   }
 
   def apply(request: HttpServletRequest, userOid: String, un: String) = new LogUserContext {
@@ -16,15 +17,20 @@ object LogUserContext {
       override def oid = userOid
       override def username = un
     })
-    override def clientIp = clientIpFromRequest(request)
+    override def clientIp = clientIpFromRequest(new RichRequest(request))
   }
 
-  def clientIpFromRequest(request: HttpServletRequest): String = {
-    RichRequest(request).headers.getOrElse("HTTP_X_FORWARDED_FOR", RichRequest(request).remoteAddress)
+  def clientIpFromRequest(request: RichRequest): InetAddress = {
+    toInetAddress(request.headers.getOrElse("HTTP_X_FORWARDED_FOR", request.remoteAddress))
   }
+
+  def toInetAddress(ips: String) =
+    InetAddress.getByName(ips.split(",").map(_.trim).headOption.getOrElse(ips))
+
+  def userAgent(request: RichRequest): String = request.header("User-Agent").getOrElse("")
 }
 
 trait LogUserContext {
   def userOption: Option[UserWithOid with UserWithUsername]
-  def clientIp: String
+  def clientIp: InetAddress
 }
