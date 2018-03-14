@@ -1,30 +1,53 @@
-import React from 'react'
+import React from 'baret'
+import Atom from 'bacon.atom'
 import Text from '../i18n/Text'
-import {modelData} from '../editor/EditorModel'
+import {ift} from '../util/util'
+import {ISO2FinnishDate} from '../date/date'
+import {modelData, modelTitle} from '../editor/EditorModel'
+import {Popup} from '../components/Popup'
+import {EiSuorituksia} from '../EiSuorituksia'
 
-export const Header = ({henkilö}) => {
-  const nimi = `${modelData(henkilö, 'etunimet')} ${modelData(henkilö, 'sukunimi')}`
-  const syntymäaika = modelData(henkilö, 'syntymäaika')
-    ? <span><Text name='syntynyt'/> {modelData(henkilö, 'syntymäaika')}</span>
-    : ''
+export class Header extends React.Component {
+  constructor(props) {
+    super(props)
+    this.showPopup = Atom(false)
+  }
 
-  return (
-    <header>
-      <h2 className='header__heading'>
-        <Text name='Opintoni'/>
-      </h2>
-      <div className='header__caption'>
-        <p>
-          <Text name='Opintoni ingressi'/>
-        </p>
-        <button className='text'>
-          <Text name='Mitkä tiedot palvelussa näkyvät?'/>
-        </button>
-      </div>
-      <p className='header__name'>
-        {nimi}
-        {syntymäaika}
+  render() {
+    const {henkilö} = this.props
+
+    const nimi = <p>{`${modelData(henkilö, 'etunimet')} ${modelData(henkilö, 'sukunimi')}`}</p>
+    const syntymäaika = modelTitle(henkilö, 'syntymäaika') &&
+      <p className='syntynyt'>
+        <Text name='syntynyt'/>
+        <span> {ISO2FinnishDate(modelTitle(henkilö, 'syntymäaika'))}</span>
       </p>
-    </header>
-  )
+
+    const togglePopup = () => this.showPopup.modify(v => !v)
+
+    return (
+      <header>
+        <h2 className='header__heading'>
+          <Text name='Opintoni'/>
+        </h2>
+        <div className='header__caption'>
+          <p>
+            <Text name='Opintoni ingressi'/>
+          </p>
+          <button className='text' onClick={togglePopup}>
+            <Text name='Mitkä tiedot palvelussa näkyvät?'/>
+          </button>
+        </div>
+        {ift(this.showPopup,
+          <Popup showStateAtom={this.showPopup} inline={true}>
+            <EiSuorituksia/>
+          </Popup>
+        )}
+        <div className='header__name'>
+          {nimi}
+          {syntymäaika}
+        </div>
+      </header>
+    )
+  }
 }
