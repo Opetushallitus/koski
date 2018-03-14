@@ -1,5 +1,3 @@
-import javax.servlet.ServletContext
-
 import fi.oph.koski.cache.CacheServlet
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db._
@@ -27,7 +25,8 @@ import fi.oph.koski.tiedonsiirto.TiedonsiirtoServlet
 import fi.oph.koski.todistus.TodistusServlet
 import fi.oph.koski.tutkinto.TutkinnonPerusteetServlet
 import fi.oph.koski.util.Futures
-import fi.oph.koski.{EiSuorituksiaServlet, IndexServlet, LoginPageServlet}
+import fi.oph.koski.{EiSuorituksiaServlet, IndexServlet, LoginPageServlet, VirhesivuServlet}
+import javax.servlet.ServletContext
 import org.scalatra._
 
 class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionContext {
@@ -46,6 +45,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     mount("/documentation", new RedirectServlet("/dokumentaatio", true))
     mount("/dokumentaatio", new DocumentationServlet)
     mount("/eisuorituksia", new EiSuorituksiaServlet)
+    mount("/virhesivu", new VirhesivuServlet)
     mount("/api/documentation", new DocumentationApiServlet)
     mount("/api/editor", new EditorServlet)
     mount("/api/healthcheck", new HealthCheckApiServlet)

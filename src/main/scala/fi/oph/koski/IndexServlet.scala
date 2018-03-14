@@ -71,6 +71,23 @@ class EiSuorituksiaServlet(implicit val application: KoskiApplication) extends S
   }
 }
 
+class VirhesivuServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet {
+  get("/") {
+    <html>
+      <head>
+        <title>Koski - Virhe</title>
+        <link type="text/css" rel="stylesheet" href="/koski/css/virhesivu.css"/>
+      </head>
+      <body>
+        <div class="odottamaton-virhe">
+          <h2>Koski-järjestelmässä tapahtui virhe, yritä myöhemmin uudelleen</h2>
+          <a href="/koski/">Palaa etusivulle</a>
+        </div>
+      </body>
+    </html>
+  }
+}
+
 class LoginPageServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with SSOSupport {
   get("/") {
     if (ssoConfig.isCasSsoUsed) {

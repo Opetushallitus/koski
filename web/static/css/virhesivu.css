@@ -1,0 +1,15 @@
+body {
+  font-family: 'Open Sans', sans-serif;
+}
+
+.odottamaton-virhe {
+  max-width: 600px;
+  margin: auto;
+  padding-top: 40px;
+}
+
+a {
+  color: #159ecb;
+  text-decoration: none;
+  cursor: pointer;
+}

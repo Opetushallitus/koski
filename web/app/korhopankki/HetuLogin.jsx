@@ -2,7 +2,6 @@ import R from 'ramda'
 import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
-import Http from '../util/http'
 import Text from '../i18n/Text'
 import Input from '../components/Input'
 
@@ -28,24 +27,33 @@ const HetuLogin = () => {
     loginTrigger.push()
   }
 
-  loginTrigger
+  const errorHandler = e => {
+    console.error('Fake shibboleth login fail')
+    console.error(e)
+    inProgress.set(false)
+    error.set(e)
+  }
+
+  const login = loginTrigger
     .map(state)
     .flatMap(credentials => {
       const headers = R.reject(R.isNil, R.merge(credentials, {security: 'mock'}))
       console.log(headers)
-      const errorHandler = e => {
-        console.error('Fake shibboleth login fail')
-        console.error(e)
-        inProgress.set(false)
-        error.set(e)
-      }
       console.log('Logging in with', credentials.hetu)
-      return Http.get(LoginUrl, {errorHandler}, headers)
+      return Bacon.fromPromise(fetch(LoginUrl, { credentials: 'include', headers}))
     })
-    .onValue(() => {
+
+  login.onValue((x) => {
+    if (x.redirected) {
+      document.location = x.url
+    } else {
+      console.log(x)
       console.log('Login ok')
       document.location = RedirectUrl
-    })
+    }
+  })
+
+  login.onError(errorHandler)
 
   const errorMessage = error.map('.jsonMessage.0.message')
 
