@@ -15,6 +15,20 @@ function OmatTiedotPage() {
     },
     virhe: function() {
       return S('.ei-suorituksia').text()
+    },
+    ingressi: function() {
+      return S('header .header__caption p').text()
+    },
+    palvelussaNäkyvätTiedotButton: function() {
+      return S('header span:contains(Mitkä tiedot palvelussa näkyvät?)')
+    },
+    palvelussaNäkyvätTiedotText: function() {
+      var el = findFirstNotThrowing('header .tiedot-palvelussa')
+      console.log(el)
+      return el ? extractAsText(el) : ''
+    },
+    palvelussaNäkyvätTiedotCloseButton: function() {
+      return S('header .popup__close-button')
     }
   }
   return api
