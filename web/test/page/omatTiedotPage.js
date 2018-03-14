@@ -24,7 +24,6 @@ function OmatTiedotPage() {
     },
     palvelussaNäkyvätTiedotText: function() {
       var el = findFirstNotThrowing('header .tiedot-palvelussa')
-      console.log(el)
       return el ? extractAsText(el) : ''
     },
     palvelussaNäkyvätTiedotCloseButton: function() {
