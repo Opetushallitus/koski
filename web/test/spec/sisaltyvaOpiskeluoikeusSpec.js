@@ -25,6 +25,14 @@ describe('Opiskeluoikeuden sisältyvyys', function() {
       editor.property('oppilaitos').organisaatioValitsin().select('Stadin ammattiopisto')
     )
 
+    describe('Kun oppilaitos on tyyppiä oppisopimustoimisto', function () {
+      before(editor.property('oppilaitos').organisaatioValitsin().select('Stadin oppisopimuskeskus'))
+
+      it('se voidaan voidaan valita', function() {})
+
+      after(editor.property('oppilaitos').organisaatioValitsin().select('Stadin ammattiopisto'))
+    })
+
     describe('Kun sisältävää opiskeluoikeutta ei löydy id:llä', function() {
       before(
         editor.property('sisältyyOpiskeluoikeuteen').property('oid').setValue(929292929),
