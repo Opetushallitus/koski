@@ -3,16 +3,43 @@ package fi.oph.koski.documentation
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.ExampleData._
+import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.äidinkieli
 import fi.oph.koski.documentation.PerusopetusExampleData._
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
+import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.localization.Finnish
 import fi.oph.koski.localization.LocalizedStringImplicits._
-import fi.oph.koski.schema.{annotation, _}
+import fi.oph.koski.schema._
 
 object ExamplesPerusopetus {
   val ysiluokkalainen = Oppija(
     exampleHenkilö,
     List(ysiluokkalaisenOpiskeluoikeus)
+  )
+
+  lazy val aineopiskelija = Oppija(
+    asUusiOppija(MockOppijat.eero),
+    List(PerusopetuksenOpiskeluoikeus(
+      päättymispäivä = Some(date(2016, 6, 4)),
+      oppilaitos = Some(jyväskylänNormaalikoulu),
+      suoritukset = List(
+        NuortenPerusopetuksenOppiaineenOppimääränSuoritus(
+          koulutusmoduuli = PerusopetusExampleData.äidinkieli("AI1", diaarinumero = Some(perusopetuksenDiaarinumero)),
+          toimipiste = jyväskylänNormaalikoulu,
+          arviointi = arviointi(9),
+          suoritustapa = suoritustapaErityinenTutkinto,
+          vahvistus = vahvistusPaikkakunnalla(),
+          suorituskieli = suomenKieli
+        )),
+      tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+        List(
+          NuortenPerusopetuksenOpiskeluoikeusjakso(date(2015, 8, 15), opiskeluoikeusLäsnä),
+          NuortenPerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
+        )
+      ),
+      lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(vaikeastiVammainen = Some(List(Aikajakso(date(2014, 6, 6), None)))))
+    ))
   )
 
   lazy val ysiluokkalaisenOpiskeluoikeus = PerusopetuksenOpiskeluoikeus(
@@ -117,6 +144,7 @@ object ExamplesPerusopetus {
   val examples = List(
     Example("perusopetuksen oppimäärä - ysiluokkalainen", "Oppija on suorittamassa 9. luokkaa", ysiluokkalainen),
     Example("perusopetuksen oppimäärä - päättötodistus", "Oppija on saanut perusopetuksen päättötodistuksen", päättötodistus),
-    Example("perusopetuksen oppimäärä - toiminta-alueittain opiskelija", "Oppija on suorittanut peruskoulun opiskellen toiminta-alueittain", toimintaAlueittainOpiskelija)
+    Example("perusopetuksen oppimäärä - toiminta-alueittain opiskelija", "Oppija on suorittanut peruskoulun opiskellen toiminta-alueittain", toimintaAlueittainOpiskelija),
+    Example("nuorten perusopetuksen oppiaineen oppimäärä - päättötodistus", "Oppija on suorittanut peruskoulun äidinkielen oppimäärän", aineopiskelija)
   )
 }

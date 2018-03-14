@@ -175,7 +175,8 @@ export const näytettävätPäätasonSuoritukset = (opiskeluoikeus) => {
   let päätasonSuoritukset = modelItems(opiskeluoikeus, 'suoritukset').filter(näytettäväPäätasonSuoritus)
   let makeGroupTitle = (suoritus) => {
     switch (suorituksenTyyppi(suoritus)) {
-      case 'perusopetuksenoppiaineenoppimaara': return 'oppiainetta'
+      case 'perusopetuksenoppiaineenoppimaara':
+      case 'nuortenperusopetuksenoppiaineenoppimaara': return 'oppiainetta'
       case 'korkeakoulunopintojakso': return 'opintojaksoa'
       default: return ''
     }

@@ -17,7 +17,7 @@ import ModalDialog from '../editor/ModalDialog'
 import {doActionWhileMounted} from '../util/util'
 import Text from '../i18n/Text'
 import {isToimintaAlueittain, luokkaAste, luokkaAsteenOsasuoritukset} from '../perusopetus/Perusopetus'
-import {copyToimipiste, newSuoritusProto} from '../suoritus/Suoritus'
+import {copyToimipiste, newSuoritusProto, nuortenPerusopetuksenOppiaineenOppimääränSuoritus} from '../suoritus/Suoritus'
 
 const UusiPerusopetuksenVuosiluokanSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
   let submitBus = Bacon.Bus()
@@ -61,7 +61,9 @@ const UusiPerusopetuksenVuosiluokanSuoritusPopup = ({opiskeluoikeus, resultCallb
   </div>)
 }
 
-UusiPerusopetuksenVuosiluokanSuoritusPopup.canAddSuoritus = (opiskeluoikeus) => modelData(opiskeluoikeus, 'tyyppi.koodiarvo') == 'perusopetus' && puuttuvatLuokkaAsteet(opiskeluoikeus).length > 0
+UusiPerusopetuksenVuosiluokanSuoritusPopup.canAddSuoritus = (opiskeluoikeus) => {
+  return modelData(opiskeluoikeus, 'tyyppi.koodiarvo') == 'perusopetus' && puuttuvatLuokkaAsteet(opiskeluoikeus).length > 0 && !nuortenPerusopetuksenOppiaineenOppimääränSuoritus(opiskeluoikeus)
+}
 
 UusiPerusopetuksenVuosiluokanSuoritusPopup.addSuoritusTitle = () => <Text name="lisää vuosiluokan suoritus"/>
 

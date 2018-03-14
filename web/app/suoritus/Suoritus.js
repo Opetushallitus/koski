@@ -64,13 +64,14 @@ export const opiskeluoikeudenSuoritusByTyyppi = (tyyppi) => (opiskeluoikeus) => 
 export const aikuistenPerusopetuksenOppimääränSuoritus = opiskeluoikeudenSuoritusByTyyppi('aikuistenperusopetuksenoppimaara')
 export const aikuistenPerusopetuksenAlkuvaiheenSuoritus = opiskeluoikeudenSuoritusByTyyppi('aikuistenperusopetuksenoppimaaranalkuvaihe')
 export const perusopetuksenOppiaineenOppimääränSuoritus = opiskeluoikeudenSuoritusByTyyppi('perusopetuksenoppiaineenoppimaara')
+export const nuortenPerusopetuksenOppiaineenOppimääränSuoritus = opiskeluoikeudenSuoritusByTyyppi('nuortenperusopetuksenoppiaineenoppimaara')
 export const näyttötutkintoonValmistavanKoulutuksenSuoritus = opiskeluoikeudenSuoritusByTyyppi('nayttotutkintoonvalmistavakoulutus')
 export const ammatillisenTutkinnonSuoritus = opiskeluoikeudenSuoritusByTyyppi('ammatillinentutkinto')
 export const preIBSuoritus = opiskeluoikeudenSuoritusByTyyppi('preiboppimaara')
 export const ibTutkinnonSuoritus = opiskeluoikeudenSuoritusByTyyppi('ibtutkinto')
 
 export const koulutustyyppiKoodit = suoritustyyppiKoodi => {
-  if (suoritustyyppiKoodi == 'perusopetuksenoppimaara' || suoritustyyppiKoodi == 'perusopetuksenvuosiluokka') {
+  if (suoritustyyppiKoodi == 'perusopetuksenoppimaara' || suoritustyyppiKoodi == 'perusopetuksenvuosiluokka' || suoritustyyppiKoodi == 'nuortenperusopetuksenoppiaineenoppimaara') {
     return ['16']
   }
   if (suoritustyyppiKoodi == 'aikuistenperusopetuksenoppimaara' || suoritustyyppiKoodi == 'perusopetuksenoppiaineenoppimaara' || suoritustyyppiKoodi == 'aikuistenperusopetuksenoppimaaranalkuvaihe'){

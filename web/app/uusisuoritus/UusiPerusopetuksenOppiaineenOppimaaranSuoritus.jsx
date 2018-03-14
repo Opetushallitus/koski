@@ -15,7 +15,7 @@ import {UusiPerusopetuksenOppiaineDropdown} from '../perusopetus/UusiPerusopetuk
 import Text from '../i18n/Text'
 import {
   copyToimipiste,
-  newSuoritusProto,
+  newSuoritusProto, nuortenPerusopetuksenOppiaineenOppimääränSuoritus,
   perusopetuksenOppiaineenOppimääränSuoritus,
   suorituksenTyyppi
 } from '../suoritus/Suoritus'
@@ -23,8 +23,9 @@ import {
 const UusiPerusopetuksenOppiaineenSuoritusPopup = ({opiskeluoikeus, resultCallback}) => {
   let koulutusmoduuli = (suoritus) => modelLookup(suoritus, 'koulutusmoduuli')
   let submitBus = Bacon.Bus()
-  let initialSuoritusModel = newSuoritusProto(opiskeluoikeus, 'perusopetuksenoppiaineenoppimaaransuoritus')
-  let edellinenOppiaine = perusopetuksenOppiaineenOppimääränSuoritus(opiskeluoikeus)
+  let isAikuistenPerusopetus = modelData(opiskeluoikeus, 'tyyppi.koodiarvo') === 'aikuistenperusopetus'
+  let initialSuoritusModel = newSuoritusProto(opiskeluoikeus, isAikuistenPerusopetus ? 'aikuistenperusopetuksenoppiaineenoppimaaransuoritus' : 'nuortenperusopetuksenoppiaineenoppimaaransuoritus')
+  let edellinenOppiaine = isAikuistenPerusopetus ? perusopetuksenOppiaineenOppimääränSuoritus(opiskeluoikeus) : nuortenPerusopetuksenOppiaineenOppimääränSuoritus(opiskeluoikeus)
   if (edellinenOppiaine) {
     initialSuoritusModel = copyToimipiste(edellinenOppiaine, initialSuoritusModel)
   }
@@ -42,6 +43,7 @@ const UusiPerusopetuksenOppiaineenSuoritusPopup = ({opiskeluoikeus, resultCallba
             getValueEditor={(p, getDefault) => {
               return p.key == 'tunniste'
                 ? <UusiPerusopetuksenOppiaineDropdown
+                  organisaatioOid={modelData(oppiaineenSuoritus, 'toimipiste.oid')}
                   oppiaineenSuoritus={oppiaineenSuoritus}
                   selected={koulutusmoduuli(oppiaineenSuoritus)}
                   resultCallback={oppiaine => pushModelValue(oppiaineenSuoritus, oppiaine.value, 'koulutusmoduuli')}
@@ -61,8 +63,9 @@ const UusiPerusopetuksenOppiaineenSuoritusPopup = ({opiskeluoikeus, resultCallba
 }
 
 UusiPerusopetuksenOppiaineenSuoritusPopup.canAddSuoritus = (opiskeluoikeus) => {
-  return modelData(opiskeluoikeus, 'tyyppi.koodiarvo') == 'aikuistenperusopetus' &&
-    !!modelItems(opiskeluoikeus, 'suoritukset').find(suoritus => suorituksenTyyppi(suoritus) == 'perusopetuksenoppiaineenoppimaara')
+  return ['aikuistenperusopetus', 'perusopetus'].includes(modelData(opiskeluoikeus, 'tyyppi.koodiarvo')) &&
+    !!modelItems(opiskeluoikeus, 'suoritukset')
+      .find(suoritus => suorituksenTyyppi(suoritus) === 'perusopetuksenoppiaineenoppimaara' || suorituksenTyyppi(suoritus) === 'nuortenperusopetuksenoppiaineenoppimaara')
 }
 
 UusiPerusopetuksenOppiaineenSuoritusPopup.addSuoritusTitle = () =>

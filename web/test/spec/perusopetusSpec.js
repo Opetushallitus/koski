@@ -1773,6 +1773,67 @@ describe('Perusopetus', function() {
       })
     })
 
+    describe('Nuorten perusopetuksen oppiaineen oppimäärä', function() {
+      before(
+        prepareForNewOppija('kalle', '230872-7258'),
+        addOppija.enterValidDataPerusopetus(),
+        addOppija.selectOpiskeluoikeudenTyyppi('Perusopetus')
+      )
+
+      describe('Käyttöliittymän tila', function() {
+        it('Näytetään oppimäärävaihtoehdot', function() {
+          expect(addOppija.oppimäärät()).to.deep.equal(['Nuorten perusopetuksen oppiaineen oppimäärä', 'Perusopetuksen oppimäärä'])
+        })
+      })
+
+      describe('Kun valitaan oppiaineen oppimäärä ja oppiaine', function() {
+        before(
+          addOppija.selectOppimäärä('Nuorten perusopetuksen oppiaineen oppimäärä'),
+          addOppija.selectOppiaine('A1-kieli')
+        )
+
+        describe('Kun kielivalinta puuttuu', function() {
+          it('Lisäys ei ole mahdollista', function() {
+            expect(addOppija.isEnabled()).to.equal(false)
+          })
+        })
+
+        describe('Kun valitaan kieli ja lisätään oppiaine', function() {
+          before(
+            addOppija.selectKieli('englanti'),
+            wait.forMilliseconds(1000),
+            addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'A1-kieli')
+          )
+
+          it('Luodaan opiskeluoikeus, jolla on oppiaineen oppimäärän suoritus', function() {
+            expect(opinnot.getSuorituskieli()).to.equal('suomi')
+            expect(editor.propertyBySelector('.perusteenDiaarinumero').getValue()).to.equal('104/011/2014')
+          })
+
+          it('Näytetään oppiaineen nimi opiskeluoikeuden otsikossa', function() {
+            expect(S('.opiskeluoikeus h3 .koulutus').text()).to.equal('A1-kieli')
+          })
+
+          describe('Toisen oppiaineen lisääminen', function() {
+            var lisääSuoritus = opinnot.lisääSuoritusDialog
+            before(editor.edit, lisääSuoritus.open('lisää oppiaineen suoritus'), wait.forAjax,
+              lisääSuoritus.property('tunniste').setValue('Matematiikka'),
+              lisääSuoritus.toimipiste.select('Jyväskylän normaalikoulu, alakoulu'),
+              lisääSuoritus.lisääSuoritus
+            )
+
+            it('Näytetään uusi suoritus', function() {
+              expect(opinnot.suoritusTabs()).to.deep.equal(['A1-kieli', 'Matematiikka'])
+            })
+
+            it('Näytetään oppiaineiden määrä opiskeluoikeuden otsikossa', function() {
+              expect(S('.opiskeluoikeus h3 .koulutus').text()).to.equal('2 oppiainetta')
+            })
+          })
+        })
+      })
+    })
+
     describe('Aikuisten perusopetus', function() {
       before(
         prepareForNewOppija('kalle', '230872-7258'),

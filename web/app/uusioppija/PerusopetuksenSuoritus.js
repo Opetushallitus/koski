@@ -9,7 +9,7 @@ export const makeSuoritus = (oppilaitos, oppimäärä, peruste, oppiaineet, suor
     return makePerusopetuksenOppimääränSuoritus(oppilaitos, oppimäärä, peruste, oppiaineet, suorituskieli)
   } else if (koodiarvoMatch('aikuistenperusopetuksenoppimaaranalkuvaihe')(oppimäärä)) {
     return makeAikuistenPerusopetuksenAlkuvaiheenSuoritus(oppilaitos, oppimäärä, peruste, oppiaineet, suorituskieli)
-  } else if (koodiarvoMatch('perusopetuksenoppiaineenoppimaara')(oppimäärä) && oppiaineenSuoritus) {
+  } else if (koodiarvoMatch('perusopetuksenoppiaineenoppimaara', 'nuortenperusopetuksenoppiaineenoppimaara')(oppimäärä) && oppiaineenSuoritus) {
     return oppiaineenSuoritus
   }
 }

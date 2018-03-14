@@ -70,7 +70,7 @@ object OppijaEditorModel extends Timing {
     val primary = s match {
       case s: AikuistenPerusopetuksenOppimääränSuoritus => 0
       case s: AikuistenPerusopetuksenAlkuvaiheenSuoritus => 1
-      case s: PerusopetuksenOppiaineenOppimääränSuoritus => 2
+      case s: AikuistenPerusopetuksenOppiaineenOppimääränSuoritus => 2
       case _ => 100
     }
     val secondary = s.valmis
@@ -80,7 +80,7 @@ object OppijaEditorModel extends Timing {
   def perusopetuksenSuoritustenJärjestysKriteeri(s: PerusopetuksenPäätasonSuoritus) = {
     val primary = s match {
       case s: PerusopetuksenOppimääränSuoritus => -100 // ensin oppimäärän suoritus
-      case s: PerusopetuksenOppiaineenOppimääränSuoritus => 0 // oppiaineiden oppimäärien suoritukset
+      case s: AikuistenPerusopetuksenOppiaineenOppimääränSuoritus => 0 // oppiaineiden oppimäärien suoritukset
       case s: PerusopetuksenVuosiluokanSuoritus => - s.koulutusmoduuli.tunniste.koodiarvo.toInt // sitten luokka-asteet
       case _ => 100
     }
