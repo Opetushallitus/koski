@@ -4,6 +4,7 @@
   position: absolute;
   left: 0;
   width: 100%;
+  margin: @popup-margin-vertical 0;
   background-color: @color-white;
   z-index: @z-index-popup;
 
@@ -13,14 +14,12 @@
 
   &__content {
     padding: 25px;
-    margin: @popup-margin-vertical 0;
     box-shadow: 0 2px 5px rgba(0, 0, 0, .15);
   }
 
   &__close-button {
     .CloseSymbol;
     position: absolute;
-    margin-top: @popup-margin-vertical;
     top: 14px;
     right: 18px;
   }
