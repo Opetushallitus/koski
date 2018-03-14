@@ -60,6 +60,7 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
       (MockOppijat.eero, OpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto)),
       (MockOppijat.eerola, OpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto)),
       (MockOppijat.teija, OpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto)),
+      (MockOppijat.syntymäajallinen, OpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto)),
       (MockOppijat.markkanen, OpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.omnia)),
       (MockOppijat.eskari, ExamplesEsiopetus.esioppilas.tallennettavatOpiskeluoikeudet.head),
       (MockOppijat.ysiluokkalainen, ysinOpiskeluoikeusKesken),

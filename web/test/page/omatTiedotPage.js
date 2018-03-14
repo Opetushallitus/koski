@@ -28,6 +28,10 @@ function OmatTiedotPage() {
     },
     palvelussaNäkyvätTiedotCloseButton: function() {
       return S('header .popup__close-button')
+    },
+    headerNimi: function() {
+      var el = findFirstNotThrowing('header .header__name')
+      return el ? extractAsText(el) : ''
     }
   }
   return api

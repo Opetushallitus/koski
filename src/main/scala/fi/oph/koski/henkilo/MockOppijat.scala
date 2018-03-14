@@ -13,6 +13,7 @@ object MockOppijat {
   val tyhjä = UusiHenkilö("230872-7258", "Tero", Some("Tero"), "Tyhjä")
 
   val hetuton = oppijat.addOppija(TäydellisetHenkilötiedot("1.2.246.562.24.99999999123", None, Some(LocalDate.of(1977, 2, 24)), "Heikki", "Heikki", "Hetuton", None, None))
+  val syntymäajallinen = oppijat.addOppija(TäydellisetHenkilötiedot("1.2.246.562.24.99999999124", Some("010170-9173"), Some(LocalDate.of(1970, 1, 1)), "Sylvi", "Sylvi", "Syntynyt", None, None))
   val eero = oppijat.oppija("Esimerkki", "Eero", "010101-123N")
   val eerola = oppijat.oppija("Eerola", "Jouni", "081165-793C")
   val markkanen = oppijat.oppija("Markkanen-Fagerström", "Eéro Jorma-Petteri", "080154-770R")

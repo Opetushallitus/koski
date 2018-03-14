@@ -55,6 +55,10 @@ describe('Omat tiedot', function() {
           )
         })
 
+        it("Näytetään nimi", function() {
+          expect(omattiedot.headerNimi()).to.equal("Väinö Tõnis Kansalainen")
+        })
+
         it("Näytetään 'Mitkä tiedot palvelussa näkyvät?' -painike", function() {
           expect(!!omattiedot.palvelussaNäkyvätTiedotButton().length).to.equal(true)
         })
@@ -107,6 +111,18 @@ describe('Omat tiedot', function() {
         before(click(findSingle('#logout')), wait.until(etusivu.isVisible))
         it("Näytetään länderi", function() {
 
+        })
+      })
+
+      describe("Kun henkilöllä on syntymäaika", function () {
+        before(authentication.logout, etusivu.openPage)
+        before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('010170-9173'), wait.until(omattiedot.isVisible))
+
+        it("Näytetään nimi ja syntymäaika", function() {
+          expect(omattiedot.headerNimi()).to.equal(
+            "Sylvi Syntynyt\n" +
+            "s. 1.1.1970"
+          )
         })
       })
 
