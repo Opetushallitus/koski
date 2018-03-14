@@ -8,7 +8,7 @@ describe('Omat tiedot', function() {
     describe("Kun virkailijalla on opiskeluoikeuksia", function() {
       before(authentication.login('Oili'), omattiedot.openPage)
       it('ne näytetään', function() {
-        expect(omattiedot.oppija()).to.equal("Opintosuorituksesi")
+        expect(omattiedot.oppija()).to.equal("Opintoni")
         expect(opinnot.opiskeluoikeudet.oppilaitokset()).to.have.members([
           'Stadin ammattiopisto', 'Jyväskylän normaalikoulu' ])
       })
@@ -44,7 +44,7 @@ describe('Omat tiedot', function() {
       describe("Sivun sisältö", function() {
         it("Näytetään opiskeluoikeudet", function() {
           expect(omattiedot.nimi()).to.equal("Väinö Tõnis Kansalainen")
-          expect(omattiedot.oppija()).to.equal("Opintosuorituksesi")
+          expect(omattiedot.oppija()).to.equal("Opintoni")
           expect(opinnot.opiskeluoikeudet.oppilaitokset()).to.deep.equal([
             'Itä-Suomen yliopisto' ])
         })
@@ -65,7 +65,7 @@ describe('Omat tiedot', function() {
         describe("Sivun sisältö", function() {
           it("Näytetään opiskeluoikeudet", function() {
             expect(omattiedot.nimi()).to.equal("Mia Orvokki Numminen")
-            expect(omattiedot.oppija()).to.equal("Opintosuorituksesi")
+            expect(omattiedot.oppija()).to.equal("Opintoni")
             expect(opinnot.opiskeluoikeudet.oppilaitokset()).to.deep.equal([
               'Ylioppilastutkintolautakunta' ])
           })
