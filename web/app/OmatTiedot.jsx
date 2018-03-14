@@ -11,9 +11,10 @@ import {Editor} from './editor/Editor'
 import Text from './i18n/Text'
 import editorMapping from './oppija/editors'
 import {userP} from './util/user'
-import {addContext, modelData} from './editor/EditorModel'
+import {addContext, modelData, modelLookup} from './editor/EditorModel'
 import {locationP} from './util/location'
 import {EiSuorituksia} from './EiSuorituksia'
+import {Header} from './omattiedot/Header'
 
 const omatTiedotP = () => Bacon.combineWith(
   Http.cachedGet('/koski/api/editor/omattiedot', { errorMapper: (e) => e.httpStatus === 404 ? null : new Bacon.Error}).toProperty(),
@@ -64,7 +65,7 @@ const Oppija = ({oppija}) => {
     : (
       <div>
         <div className="oppija-content">
-          <h2><Text name="Opintosuorituksesi" /></h2>
+          <Header henkilö={modelLookup(oppija, 'henkilö')}/>
           <Editor key={document.location.toString()} model={oppija}/>
         </div>
       </div>

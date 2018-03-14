@@ -5,8 +5,7 @@ hr {
   border-top-width: 0;
 }
 
-
-a {
+.link {
   color: @color-link-blue;
   text-decoration: none;
   cursor: pointer;
@@ -15,6 +14,10 @@ a {
     cursor: default;
     pointer-events: none;
   }
+}
+
+a {
+  .link();
 }
 
 .button, button {
@@ -44,6 +47,24 @@ a {
     font-size: 16px;
     width: 220px;
     height: 50px;
+  }
+
+  &.text {
+    .link();
+
+    background: none;
+    font-weight: 500;
+    height: 0;
+    line-height: 1.4rem;
+    padding: 0;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:focus {
+      outline: none;
+    }
   }
 
   &.confirm-delete {

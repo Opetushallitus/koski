@@ -36,6 +36,12 @@ function findFirst(selector, base) {
   }
 }
 
+function findFirstNotThrowing(selector, base) {
+  var baseElem = toElement(base)
+  var result = baseElem ? baseElem.find(selector) : S(selector)
+  return result.length > 0 ? result : undefined
+}
+
 wait = {
   waitIntervalMs: 10,
   until: function(condition, maxWaitMs) {

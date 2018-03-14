@@ -8,7 +8,7 @@ describe('Omat tiedot', function() {
     describe("Kun virkailijalla on opiskeluoikeuksia", function() {
       before(authentication.login('Oili'), omattiedot.openPage)
       it('ne näytetään', function() {
-        expect(omattiedot.oppija()).to.equal("Opintosuorituksesi")
+        expect(omattiedot.oppija()).to.equal("Opintoni")
         expect(opinnot.opiskeluoikeudet.oppilaitokset()).to.have.members([
           'Stadin ammattiopisto', 'Jyväskylän normaalikoulu' ])
       })
@@ -44,9 +44,62 @@ describe('Omat tiedot', function() {
       describe("Sivun sisältö", function() {
         it("Näytetään opiskeluoikeudet", function() {
           expect(omattiedot.nimi()).to.equal("Väinö Tõnis Kansalainen")
-          expect(omattiedot.oppija()).to.equal("Opintosuorituksesi")
+          expect(omattiedot.oppija()).to.equal("Opintoni")
           expect(opinnot.opiskeluoikeudet.oppilaitokset()).to.deep.equal([
             'Itä-Suomen yliopisto' ])
+        })
+
+        it("Näytetään opintoni-ingressi", function() {
+          expect(omattiedot.ingressi()).to.equal(
+            "Tällä sivulla näkyvät kaikki sähköisesti tallennetut opintosuoritukset yksittäisistä kursseista kokonaisiin tutkintoihin."
+          )
+        })
+
+        it("Näytetään 'Mitkä tiedot palvelussa näkyvät?' -painike", function() {
+          expect(!!omattiedot.palvelussaNäkyvätTiedotButton().length).to.equal(true)
+        })
+
+        describe("'Mitkä tiedot palvelussa näkyvät' -teksti", function () {
+          it("Aluksi ei näytetä tekstiä", function () {
+            expect(omattiedot.palvelussaNäkyvätTiedotText()).to.equal("")
+          })
+
+          describe("Kun painetaan painiketta", function () {
+            before(click(omattiedot.palvelussaNäkyvätTiedotButton))
+
+            it("näytetään teksti", function () {
+              expect(omattiedot.palvelussaNäkyvätTiedotText()).to.equal(
+                "Koski-palvelussa pystytään näyttämään seuraavat tiedot:\n" +
+                "Vuoden 2018 tammikuun jälkeen suoritetut peruskoulun, lukion ja ammattikoulun opinnot ja voimassa olevat opiskeluoikeudet.\n" +
+                "Vuoden 1990 jälkeen suoritetut ylioppilastutkinnot.\n" +
+                "Korkeakoulutusuoritukset ja opiskeluoikeudet ovat näkyvissä pääsääntöisesti vuodesta 1995 eteenpäin, mutta tässä voi olla korkeakoulukohtaisia poikkeuksia."
+              )
+            })
+          })
+
+          describe("Kun painetaan painiketta uudestaan", function () {
+            before(click(omattiedot.palvelussaNäkyvätTiedotButton))
+
+            it("teksti piilotetaan", function () {
+              expect(omattiedot.palvelussaNäkyvätTiedotText()).to.equal("")
+            })
+          })
+
+          describe("Kun teksti on näkyvissä", function () {
+            before(click(omattiedot.palvelussaNäkyvätTiedotButton))
+
+            it("alkutila (teksti näkyvissä)", function () {
+              expect(omattiedot.palvelussaNäkyvätTiedotText()).to.not.equal("")
+            })
+
+            describe("Pop-upin painikkeella", function () {
+              before(click(omattiedot.palvelussaNäkyvätTiedotCloseButton))
+
+              it("voidaan piilottaa teksti", function () {
+                expect(omattiedot.palvelussaNäkyvätTiedotText()).to.equal("")
+              })
+            })
+          })
         })
       })
 
@@ -65,7 +118,7 @@ describe('Omat tiedot', function() {
         describe("Sivun sisältö", function() {
           it("Näytetään opiskeluoikeudet", function() {
             expect(omattiedot.nimi()).to.equal("Mia Orvokki Numminen")
-            expect(omattiedot.oppija()).to.equal("Opintosuorituksesi")
+            expect(omattiedot.oppija()).to.equal("Opintoni")
             expect(opinnot.opiskeluoikeudet.oppilaitokset()).to.deep.equal([
               'Ylioppilastutkintolautakunta' ])
           })

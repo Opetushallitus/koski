@@ -1,4 +1,58 @@
 .omattiedot {
+  &.content-area {
+    margin-top: 0;
+
+    header {
+      padding: 0 17px;
+      margin: 4rem 0 1rem 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 220px;
+
+      .header {
+        &__caption {
+          display: flex;
+          justify-content: space-between;
+          flex-grow: 1;
+
+          p {
+            max-width: 600px;
+            margin: 0;
+            line-height: 1.4rem;
+          }
+        }
+
+        &__name {
+          font-weight: 600;
+          line-height: 1.6rem;
+
+          p {
+            margin: 0;
+          }
+
+          .syntynyt {
+            font-weight: 400;
+          }
+        }
+      }
+
+      .tiedot-palvelussa {
+        margin: auto;
+        max-width: 800px;
+
+        p {
+          margin: 2rem 0;
+        }
+
+        li {
+          max-width: 600px;
+          margin: 1rem 0;
+        }
+      }
+    }
+  }
+
   .sidebar.omattiedot-navi {
     width: ~"calc(50px + (100vw - 1200px) / 2)";
   }
