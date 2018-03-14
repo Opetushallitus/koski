@@ -7,10 +7,17 @@ import {modelData, modelTitle} from '../editor/EditorModel'
 import {Popup} from '../components/Popup'
 import {TiedotPalvelussa} from './TiedotPalvelussa'
 import {Virheraportointi} from './Virheraportointi'
+import {withFeatureFlag} from '../components/withFeatureFlag'
 
 const togglePopup = stateA => () => stateA.modify(v => !v)
 
+const ToggleButton = ({toggleA, text, style}) => style === 'text'
+  ? <a onClick={togglePopup(toggleA)}><Text name={text}/></a>
+  : <button onClick={togglePopup(toggleA)}><Text name={text}/></button>
+
 const HeaderInfo = ({henkilö, showPalvelussaNäkyvätTiedotA, showVirheraportointiA}) => {
+  const VirheraportointiButton = withFeatureFlag(FEATURE.OMAT_TIEDOT.VIRHERAPORTOINTI, ToggleButton)
+
   const nimi = <p>{`${modelData(henkilö, 'etunimet')} ${modelData(henkilö, 'sukunimi')}`}</p>
   const syntymäaika = modelTitle(henkilö, 'syntymäaika') &&
     <p className='syntynyt'>
@@ -27,9 +34,13 @@ const HeaderInfo = ({henkilö, showPalvelussaNäkyvätTiedotA, showVirheraportoi
         <p>
           <Text name='Opintoni ingressi'/>
         </p>
-        <a onClick={togglePopup(showPalvelussaNäkyvätTiedotA)}>
-          <Text name='Mitkä tiedot palvelussa näkyvät?'/>
-        </a>
+        <div>
+          <ToggleButton
+            toggleA={showPalvelussaNäkyvätTiedotA}
+            text={'Mitkä tiedot palvelussa näkyvät?'}
+            style='text'
+          />
+        </div>
       </div>
       {ift(showPalvelussaNäkyvätTiedotA,
         <Popup showStateAtom={showPalvelussaNäkyvätTiedotA} inline={true}>
@@ -42,13 +53,26 @@ const HeaderInfo = ({henkilö, showPalvelussaNäkyvätTiedotA, showVirheraportoi
           {syntymäaika}
         </div>
 
-        <button onClick={togglePopup(showVirheraportointiA)}>
-          <Text name='Suorituksissani on virhe'/>
-        </button>
+        <VirheraportointiButton
+          toggleA={showVirheraportointiA}
+          text={'Suorituksissani on virhe'}
+        />
       </div>
     </header>
   )
 }
+
+const VirheraportointiDialog = ({showVirheraportointiA}) => (
+  <div>
+    {ift(showVirheraportointiA,
+      <div className='virheraportointi'>
+        <Popup showStateAtom={showVirheraportointiA} inline={true}>
+          <Virheraportointi/>
+        </Popup>
+      </div>
+    )}
+  </div>
+)
 
 export class Header extends React.Component {
   constructor(props) {
@@ -59,6 +83,8 @@ export class Header extends React.Component {
   }
 
   render() {
+    const VirheraportointiFeature = withFeatureFlag(FEATURE.OMAT_TIEDOT.VIRHERAPORTOINTI, VirheraportointiDialog)
+
     return (
       <div>
         <HeaderInfo
@@ -67,13 +93,7 @@ export class Header extends React.Component {
           showVirheraportointiA={this.showVirheraportointi}
         />
 
-        {ift(this.showVirheraportointi,
-          <div className='virheraportointi'>
-            <Popup showStateAtom={this.showVirheraportointi} inline={true}>
-              <Virheraportointi/>
-            </Popup>
-          </div>
-        )}
+        <VirheraportointiFeature showVirheraportointiA={this.showVirheraportointi}/>
       </div>
     )
   }
