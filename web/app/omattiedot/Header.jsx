@@ -5,7 +5,7 @@ import {ift} from '../util/util'
 import {ISO2FinnishDate} from '../date/date'
 import {modelData, modelTitle} from '../editor/EditorModel'
 import {Popup} from '../components/Popup'
-import {EiSuorituksia} from '../EiSuorituksia'
+import {TiedotPalvelussa} from './TiedotPalvelussa'
 
 export class Header extends React.Component {
   constructor(props) {
@@ -40,7 +40,7 @@ export class Header extends React.Component {
         </div>
         {ift(this.showPopup,
           <Popup showStateAtom={this.showPopup} inline={true}>
-            <EiSuorituksia/>
+            <TiedotPalvelussa/>
           </Popup>
         )}
         <div className='header__name'>
