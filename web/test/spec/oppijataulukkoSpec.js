@@ -91,8 +91,15 @@ describe('Oppijataulukko', function() {
     describe('alkamispäivällä', function() {
       before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('tila'),  page.oppijataulukko.filterBy('oppilaitos'), page.oppijataulukko.filterBy('alkamispäivä', '1.1.2001'))
       it('toimii', function() {
-        expect(page.oppijataulukko.names()).to.deep.equal(['Eerola, Jouni', 'Esimerkki, Eero', 'Markkanen-Fagerström, Eéro Jorma-Petteri', 'Tekijä, Teija', 'Tiedonsiirto, Tiina'])
-        expect(page.opiskeluoikeudeTotal()).to.equal('5')
+        expect(page.oppijataulukko.names()).to.deep.equal([
+          'Eerola, Jouni',
+          'Esimerkki, Eero',
+          'Markkanen-Fagerström, Eéro Jorma-Petteri',
+          'Syntynyt, Sylvi',
+          'Tekijä, Teija',
+          'Tiedonsiirto, Tiina'
+        ])
+        expect(page.opiskeluoikeudeTotal()).to.equal('6')
       })
     })
   })
