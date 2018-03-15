@@ -119,5 +119,8 @@ case class OpiskeluoikeudetTyypeittäin(@KoodistoUri("opiskeluoikeudentyyppi") t
 }
 case class OppilaitoksenOpiskeluoikeudet(oppilaitos: OrganisaatioWithOid, opiskeluoikeudet: List[Opiskeluoikeus]) {
   lazy val latestAlkamispäiväForOrdering: Option[LocalDate] =
-    Some(opiskeluoikeudet.collect { case o if o.alkamispäivä.nonEmpty => o.alkamispäivä.get }).filter(_.nonEmpty).map(_.max(localDateOrdering))
+    Some(opiskeluoikeudet.collect {
+      case o if o.alkamispäivä.nonEmpty => o.alkamispäivä.get
+      case o: YlioppilastutkinnonOpiskeluoikeus if o.suoritukset.headOption.exists(_.vahvistus.nonEmpty) => o.suoritukset.head.vahvistus.get.päivä
+    }).filter(_.nonEmpty).map(_.max(localDateOrdering))
 }
