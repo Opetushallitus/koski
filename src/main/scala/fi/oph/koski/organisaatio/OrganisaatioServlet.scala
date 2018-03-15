@@ -1,7 +1,9 @@
 package fi.oph.koski.organisaatio
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{KäyttöoikeusOrg, RequiresAuthentication}
+import fi.oph.koski.schema.OrganisaatioOid
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
 class OrganisaatioServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with NoCache {
@@ -25,5 +27,15 @@ class OrganisaatioServlet(implicit val application: KoskiApplication) extends Ap
       }
     }
     filtered.toList.sortBy(_.nimi.get(koskiSession.lang))
+  }
+
+  get("/sahkoposti-virheiden-raportointiin") {
+    renderEither(
+      params.get("organisaatio")
+        .toRight(KoskiErrorCategory.badRequest.queryParam.missing("Missing organisaatio"))
+        .flatMap(OrganisaatioOid.validateOrganisaatioOid)
+        .map(application.organisaatioRepository.findSähköpostiVirheidenRaportointiin)
+        .flatMap(_.toRight(KoskiErrorCategory.notFound()))
+    )
   }
 }

@@ -45,6 +45,8 @@ trait OrganisaatioRepository {
   }
 
   def findHierarkia(query: String): List[OrganisaatioHierarkia]
+
+  def findSähköpostiVirheidenRaportointiin(oid: String): Option[SähköpostiVirheidenRaportointiin]
 }
 
 object OrganisaatioRepository {
@@ -121,8 +123,42 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(i
       .takeWhile(nimi => nimi.alkuPvm.isBefore(date) || nimi.alkuPvm.isEqual(date))
       .lastOption.flatMap(n => LocalizedString.sanitize(n.nimi))
   }
+
+  override def findSähköpostiVirheidenRaportointiin(oid: String): Option[SähköpostiVirheidenRaportointiin] = {
+    fetchV3(oid).flatMap(org => {
+      extractSähköpostiVirheidenRaportointiin(org)
+        .orElse { org.parentOid.flatMap(fetchV3).flatMap(extractSähköpostiVirheidenRaportointiin) }
+    })
+  }
+
+  private def fetchV3(oid: String): Option[OrganisaatioPalveluOrganisaatioV3] =
+    runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v3/${oid}")(Http.parseJsonOptional[OrganisaatioPalveluOrganisaatioV3]))
+
+  private def extractSähköpostiVirheidenRaportointiin(org: OrganisaatioPalveluOrganisaatioV3): Option[SähköpostiVirheidenRaportointiin] = {
+    val YhteystietojenTyyppiKoski = "Not yet known"
+    val YhteystietoElementtiTyyppiEmail = "Email"
+    if (org.status != "AKTIIVINEN") {
+      None
+    } else {
+      val koskiEmail = org.yhteystietoArvos
+        .filter(_.`YhteystietoElementti.kaytossa` == "true")
+        .filter(_.`YhteystietojenTyyppi.oid` == YhteystietojenTyyppiKoski)
+        .find(_.`YhteystietoElementti.tyyppi` == YhteystietoElementtiTyyppiEmail)
+        .map(_.`YhteystietoArvo.arvoText`)
+      val defaultEmail = org.yhteystiedot
+        .find(_.email.nonEmpty)
+        .flatMap(_.email)
+      koskiEmail.orElse(defaultEmail).map(email => SähköpostiVirheidenRaportointiin(org.oid, LocalizedString.sanitizeRequired(org.nimi, org.oid), email))
+    }
+  }
 }
 
 case class OrganisaatioHakuTulos(organisaatiot: List[OrganisaatioPalveluOrganisaatio])
 case class OrganisaatioPalveluOrganisaatio(oid: String, ytunnus: Option[String], nimi: Map[String, String], oppilaitosKoodi: Option[String], organisaatiotyypit: List[String], oppilaitostyyppi: Option[String], kotipaikkaUri: Option[String], lakkautusPvm: Option[Long], children: List[OrganisaatioPalveluOrganisaatio])
 case class OrganisaationNimihakuTulos(nimi: Map[String, String], alkuPvm: LocalDate)
+
+case class OrganisaatioPalveluOrganisaatioV3(oid: String, nimi: Map[String, String], parentOid: Option[String], status: String, yhteystiedot: List[YhteystietoV3], yhteystietoArvos: List[YhteystietoArvoV3])
+case class YhteystietoV3(email: Option[String])
+case class YhteystietoArvoV3(`YhteystietojenTyyppi.oid`: String, `YhteystietoElementti.tyyppi`: String, `YhteystietoElementti.kaytossa`: String, `YhteystietoArvo.arvoText`: String)
+
+case class SähköpostiVirheidenRaportointiin(organisaatioOid: String, organisaationNimi: LocalizedString, email: String)
