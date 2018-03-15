@@ -34,7 +34,7 @@ describe('Ammatillinen koulutus', function() {
     })
 
     describe('Uudelle henkilölle', function() {
-      before(resetFixtures, prepareForNewOppija('kalle', '230872-7258'))
+      before(prepareForNewOppija('kalle', '230872-7258'))
 
       describe('Tietojen näyttäminen', function() {
         it('Näytetään tyhjät nimitietokentät', function() {
@@ -99,7 +99,7 @@ describe('Ammatillinen koulutus', function() {
     })
 
     describe('Henkilöpalvelusta löytyvälle oppijalle, jolla on OID ja Hetu', function() {
-      before(resetFixtures, prepareForNewOppija('kalle', '1.2.246.562.24.99999555555'))
+      before(prepareForNewOppija('kalle', '1.2.246.562.24.99999555555'))
       describe('Tietojen näyttäminen', function() {
         it('Näytetään täydennetyt nimitietokentät', function() {
           expect(addOppija.henkilötiedot()).to.deep.equal([ 'Eino', 'Eino', 'EiKoskessa' ])
@@ -124,7 +124,7 @@ describe('Ammatillinen koulutus', function() {
     })
 
     describe('Henkilöpalvelusta löytyvälle oppijalle, jolla on vain OID', function() {
-      before(resetFixtures, prepareForNewOppija('kalle', '1.2.246.562.24.99999555556'))
+      before(prepareForNewOppija('kalle', '1.2.246.562.24.99999555556'))
       describe('Tietojen näyttäminen', function() {
         it('Näytetään täydennetyt nimitietokentät', function() {
           expect(addOppija.henkilötiedot()).to.deep.equal([ 'Eino', 'Eino', 'EiKoskessaHetuton' ])
@@ -146,7 +146,7 @@ describe('Ammatillinen koulutus', function() {
     })
 
     describe('Validointi', function() {
-      before(resetFixtures, prepareForNewOppija('kalle', '230872-7258'))
+      before(prepareForNewOppija('kalle', '230872-7258'))
 
       describe('Aluksi', function() {
         it('Lisää-nappi on disabloitu', function() {
@@ -311,7 +311,6 @@ describe('Ammatillinen koulutus', function() {
     describe('Näyttötutkintoon valmistava koulutus', function() {
       describe('Uutena opiskeluoikeutena', function() {
         before(
-          resetFixtures,
           prepareForNewOppija('kalle', '230872-7258'),
           addOppija.enterValidDataAmmatillinen({suorituskieli: 'ruotsi'}),
           addOppija.selectOppimäärä('Näyttötutkintoon valmistava koulutus'),
@@ -353,7 +352,6 @@ describe('Ammatillinen koulutus', function() {
       describe('Lisääminen olemassa olevaan opiskeluoikeuteen, jossa ammatillisen tutkinnon suoritus', function() {
         var lisääSuoritus = opinnot.lisääSuoritusDialog
         before(
-          resetFixtures,
           prepareForNewOppija('kalle', '230872-7258'),
           addOppija.enterValidDataAmmatillinen({suorituskieli: 'ruotsi'}),
           addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Autoalan perustutkinto'),
@@ -388,7 +386,6 @@ describe('Ammatillinen koulutus', function() {
         var lisääSuoritus = opinnot.lisääSuoritusDialog
 
         before(
-          resetFixtures,
           prepareForNewOppija('kalle', '230872-7258'),
           addOppija.enterValidDataAmmatillinen(),
           addOppija.selectOppimäärä('Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)'),
@@ -406,7 +403,6 @@ describe('Ammatillinen koulutus', function() {
 
     describe('Ammatillisen tutkinnon osittainen suoritus', function () {
       before(
-        resetFixtures,
         prepareForNewOppija('kalle', '230872-7258'),
         addOppija.enterHenkilötiedot({ etunimet: 'Tero', kutsumanimi: 'Tero', sukunimi: 'Tyhjä'}),
         addOppija.selectOppilaitos('Stadin'),
@@ -440,7 +436,6 @@ describe('Ammatillinen koulutus', function() {
 
     describe('VALMA suoritus', function () {
       before(
-        resetFixtures,
         prepareForNewOppija('kalle', '230872-7258'),
         addOppija.enterValidDataAmmatillinen(),
         addOppija.selectOppimäärä('Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)'),
@@ -484,7 +479,6 @@ describe('Ammatillinen koulutus', function() {
 
     describe('TELMA suoritus', function () {
       before(
-        resetFixtures,
         prepareForNewOppija('kalle', '230872-7258'),
         addOppija.enterValidDataAmmatillinen(),
         addOppija.selectOppimäärä('Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)'),
@@ -520,7 +514,7 @@ describe('Ammatillinen koulutus', function() {
     })
 
     describe('Opintojen rahoitus', function() {
-      before(resetFixtures, prepareForNewOppija('kalle', '230872-7258'))
+      before(prepareForNewOppija('kalle', '230872-7258'))
       before(addOppija.enterValidDataAmmatillinen({opintojenRahoitus: 'Aikuisten osaamisperustan vahvistaminen'}))
       before(addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Autoalan perustutkinto'))
 
@@ -612,7 +606,7 @@ describe('Ammatillinen koulutus', function() {
   })
 
   describe('Tietojen muuttaminen', function() {
-    before(resetFixtures, page.openPage, addNewOppija('kalle', '280608-6619'))
+    before(addNewOppija('kalle', '280608-6619'))
 
     it('Aluksi ei näytetä \"Kaikki tiedot tallennettu\" -tekstiä', function() {
       expect(page.isSavedLabelShown()).to.equal(false)
@@ -1257,7 +1251,6 @@ describe('Ammatillinen koulutus', function() {
           var sanallinenArviointi = opinnot.tutkinnonOsat().tutkinnonOsa(0).sanallinenArviointi()
 
           before(
-            resetFixtures,
             prepareForNewOppija('kalle', '230872-7258'),
             addOppija.enterValidDataAmmatillinen(),
             addOppija.selectOppimäärä('Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)'),
@@ -1311,8 +1304,6 @@ describe('Ammatillinen koulutus', function() {
 
       describe('Kun suoritustapana on näyttö', function() {
         before(
-          resetFixtures,
-          page.openPage,
           addNewOppija('kalle', '280608-6619', { suoritustapa: 'Näyttö'} ),
           editor.edit
         )
@@ -1818,7 +1809,6 @@ describe('Ammatillinen koulutus', function() {
 
     describe('Uusi erikoisammattitutkinto', function() {
       before(
-        page.openPage,
         addNewOppija('kalle', '250858-5188', {  oppilaitos: 'Stadin', tutkinto: 'Autoalan työnjohdon erikoisammattitutkinto', suoritustapa: ''})
       )
       describe('Uuden tutkinnonosan lisääminen', function() {
