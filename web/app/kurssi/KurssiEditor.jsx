@@ -8,23 +8,20 @@ import {buildClassNames} from '../components/classnames'
 export class KurssiEditor extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { open: false, tooltipPosition: 'bottom' }
+    this.state = { open: false }
     this.handleClickOutside = this.handleClickOutside.bind(this)
     this.handleEsc = this.handleEsc.bind(this)
   }
 
   render() {
     let {kurssi} = this.props
-    let {open, tooltipPosition} = this.state
+    let {open} = this.state
     let koulutusmoduuli = modelData(kurssi, 'koulutusmoduuli')
     let showDetails = () => {
       if (!open) {
         document.addEventListener('click', this.handleClickOutside, false)
         document.addEventListener('keyup', this.handleEsc)
-        this.setState({
-          open: true,
-          tooltipPosition: this.kurssiElement && getTooltipPosition(this.kurssiElement) || tooltipPosition
-        })
+        this.setState({ open: true })
       }
     }
     let hideDetails = () => {
@@ -41,20 +38,14 @@ export class KurssiEditor extends React.Component {
         }
         <div className="arvosana"><ArvosanaEditor model={kurssi}/></div>
         {
-          open && (<div className={'details details-' + tooltipPosition}>
-            <PropertiesEditor
-              model={kurssi}
-              propertyFilter={p => !['arviointi', 'koodistoUri'].includes(p.key)}
-              propertyEditable={p => !['tunniste', 'koodiarvo', 'nimi', 'tunnustettu'].includes(p.key)}
-            />
-          </div>)
+          open && <KurssiTooltip kurssi={kurssi} parentElemPosition={this.kurssiElement.getBoundingClientRect()}/>
         }
       </li>
     )
   }
 
   componentDidMount() {
-    this.setState({open: false, tooltipPosition: getTooltipPosition(this.kurssiElement)})
+    this.setState({open: false})
   }
 
   componentWillUnmount() {
@@ -79,14 +70,49 @@ export class KurssiEditor extends React.Component {
   }
 }
 
-let getTooltipPosition = (kurssiElement) => {
-  let tooltipwidth = 275
-  let rect = kurssiElement.getBoundingClientRect()
-  if (rect.left - tooltipwidth < 0) {
-    return 'right'
-  } else if (rect.right + tooltipwidth >= (window.innerWidth || document.documentElement.clientWidth)) {
+class KurssiTooltip extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = { tooltipAlignment: {x: 'middle', y: 'bottom'}}
+  }
+
+  render() {
+    let {kurssi} = this.props
+    return (<div ref={e => this.tooltipElem = e}
+      className={'details details-' + this.state.tooltipAlignment.x + ' details-' + this.state.tooltipAlignment.x + '-' + this.state.tooltipAlignment.y}>
+      <PropertiesEditor
+        model={kurssi}
+        propertyFilter={p => !['arviointi', 'koodistoUri'].includes(p.key)}
+        propertyEditable={p => !['tunniste', 'koodiarvo', 'nimi', 'tunnustettu'].includes(p.key)}
+      />
+    </div>)
+  }
+
+  componentDidMount() {
+    this.setState({tooltipAlignment: getTooltipAlignment(this.props.parentElemPosition, this.tooltipElem)})
+  }
+}
+
+const tooltipHorizontalAlignment = (kurssi, tooltip) => {
+  const windowWidth = window.innerWidth || document.documentElement.clientWidth
+  if (kurssi.left - tooltip.width < 0) {
     return 'left'
+  } else if (kurssi.right + tooltip.width >= windowWidth) {
+    return 'right'
   } else {
-    return 'bottom'
+    return 'middle'
+  }
+}
+
+const tooltipVerticalAlignment = (kurssi, tooltip) => {
+  const windowHeight = window.innerHeight || document.documentElement.clientHeight
+  return kurssi.top + kurssi.height + tooltip.height >= windowHeight ? 'top' : 'bottom'
+}
+
+const getTooltipAlignment = (rect, tooltipElem) => {
+  const tooltipRect = tooltipElem.getBoundingClientRect()
+  return {
+    x: tooltipHorizontalAlignment(rect, tooltipRect),
+    y: tooltipVerticalAlignment(rect, tooltipRect)
   }
 }

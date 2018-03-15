@@ -53,40 +53,28 @@
           }
         }
 
-        &-bottom {
-          top: 35px;
-          left: -265px;
-
-          &:after {
-            content: "";
-            .Triangle(15px, white, bottom);
-            position: absolute;
-            top: -29px;
-            left: ~"calc(50% - 15px)";
+        &-middle {
+          &-bottom {
+            .KurssiTooltip(middle, bottom);
+          }
+          &-top {
+            .KurssiTooltip(middle, top);
           }
         }
         &-left {
-          top: 35px;
-          right: 25px;
-
-          &:after {
-            content: "";
-            .Triangle(15px, white, bottom);
-            position: absolute;
-            top: -29px;
-            right: 10px;
+          &-bottom {
+            .KurssiTooltip(left, bottom);
+          }
+          &-top {
+            .KurssiTooltip(left, top);
           }
         }
         &-right {
-          top: 35px;
-          left: -10px;
-
-          &:after {
-            content: "";
-            .Triangle(15px, white, bottom);
-            position: absolute;
-            top: -29px;
-            left: 10px;
+          &-bottom {
+            .KurssiTooltip(right, bottom);
+          }
+          &-top {
+            .KurssiTooltip(right, top);
           }
         }
 
@@ -118,4 +106,57 @@
       }
     }
   }
+}
+
+.KurssiTooltip(@x-alignment, @y-alignment) when (@y-alignment = bottom) {
+  top: 35px;
+}
+
+.KurssiTooltip(@x-alignment, @y-alignment) when (@y-alignment = top) {
+  bottom: -25px;
+}
+
+.KurssiTooltip(@x-alignment, @y-alignment) when (@x-alignment = right) {
+  right: 25px;
+}
+
+.KurssiTooltip(@x-alignment, @y-alignment) when (@x-alignment = left) {
+  left: -10px;
+}
+
+.KurssiTooltip(@x-alignment, @y-alignment) when (@x-alignment = middle) {
+  left: 13px;
+  transform: translate(-50%, 0);
+}
+
+.KurssiTooltip(@x-alignment, @y-alignment) {
+  &:after {
+    .KurssiTriangle(@x-alignment, @y-alignment);
+  }
+}
+
+.KurssiTriangle(@x-alignment, @y-alignment) when (@y-alignment = bottom) {
+  top: -29px;
+}
+
+.KurssiTriangle(@x-alignment, @y-alignment) when (@y-alignment = top) {
+  bottom: -30px;
+}
+
+.KurssiTriangle(@x-alignment, @y-alignment) when (@x-alignment = left) {
+  left: 10px;
+}
+
+.KurssiTriangle(@x-alignment, @y-alignment) when (@x-alignment = middle) {
+  left: ~"calc(50% - 15px)";
+}
+
+.KurssiTriangle(@x-alignment, @y-alignment) when (@x-alignment = right) {
+  right: 10px;
+}
+
+.KurssiTriangle(@x-alignment, @y-alignment) {
+  content: "";
+  position: absolute;
+  .Triangle(15px, white, @y-alignment);
 }
