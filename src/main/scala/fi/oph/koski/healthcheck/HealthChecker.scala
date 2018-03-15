@@ -70,7 +70,7 @@ trait HealthCheck extends Logging {
     }
 
   private def ePerusteetCheck: HttpStatus = Timing.timed("ePerusteetCheck", 3000, this.getClass) {
-    val diaarinumerot = List("39/011/2014", "OPH-2664-2017")
+    val diaarinumerot = List("OPH-2664-2017")
     HttpStatus.fold(diaarinumerot.map(checkPeruste))
   }
 
