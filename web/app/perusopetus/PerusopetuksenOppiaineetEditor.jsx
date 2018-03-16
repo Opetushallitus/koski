@@ -17,7 +17,7 @@ import {
   wrapOptional
 } from '../editor/EditorModel'
 import R from 'ramda'
-import {arvioituTaiVahvistettu, osasuoritukset, suorituksenTyyppi, suoritusValmis} from '../suoritus/Suoritus'
+import {arvioituTaiVahvistettu, osasuoritukset, suoritusValmis} from '../suoritus/Suoritus'
 import {accumulateExpandedState} from '../editor/ExpandableItems'
 import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
