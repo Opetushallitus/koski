@@ -34,9 +34,11 @@ export class Header extends React.Component {
           <p>
             <Text name='Opintoni ingressi'/>
           </p>
-          <button className='text' onClick={togglePopup}>
-            <Text name='Mitkä tiedot palvelussa näkyvät?'/>
-          </button>
+          <div>
+            <a onClick={togglePopup}>
+              <Text name='Mitkä tiedot palvelussa näkyvät?'/>
+            </a>
+          </div>
         </div>
         {ift(this.showPopup,
           <Popup showStateAtom={this.showPopup} inline={true}>
