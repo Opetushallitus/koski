@@ -1637,6 +1637,25 @@ describe('Perusopetus', function() {
         describe('Kun painetaan Lisää-nappia', function() {
           before(addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Päättötodistus'))
 
+          var esitäytetytOppiaineet = ['Äidinkieli ja kirjallisuus,',
+            'A1-kieli,',
+            'B1-kieli,',
+            'Matematiikka',
+            'Biologia',
+            'Maantieto',
+            'Fysiikka',
+            'Kemia',
+            'Terveystieto',
+            'Uskonto',
+            'Historia',
+            'Yhteiskuntaoppi',
+            'Musiikki',
+            'Kuvataide',
+            'Käsityö',
+            'Liikunta',
+            'Kotitalous',
+            'Opinto-ohjaus']
+
           it('lisätty oppija näytetään', function() {})
 
           describe('Käyttöliittymän tila', function() {
@@ -1647,32 +1666,15 @@ describe('Perusopetus', function() {
               expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('104/011/2014')
             })
 
-            it('Oppiaineita ei näytetä', function() {
-              expect(opinnot.oppiaineet.isVisible()).to.equal(false)
+            it('Esitäytetyt oppiaineet näytetään', function() {
+              expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal(esitäytetytOppiaineet)
             })
           })
 
           describe('Painettaessa muokkaa-nappia', function() {
             before(editor.edit)
             it('Esitäytetyt oppiaineet näytetään', function() {
-              expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal(['Äidinkieli ja kirjallisuus,',
-                'A1-kieli,',
-                'B1-kieli,',
-                'Matematiikka',
-                'Biologia',
-                'Maantieto',
-                'Fysiikka',
-                'Kemia',
-                'Terveystieto',
-                'Uskonto',
-                'Historia',
-                'Yhteiskuntaoppi',
-                'Musiikki',
-                'Kuvataide',
-                'Käsityö',
-                'Liikunta',
-                'Kotitalous',
-                'Opinto-ohjaus'])
+              expect(textsOf(S('.oppiaineet .oppiaine .nimi'))).to.deep.equal(esitäytetytOppiaineet)
             })
 
             describe('Toiminta-alueittain opiskelevalle', function() {
@@ -2199,8 +2201,8 @@ describe('Perusopetus', function() {
                 before(editor.edit, opinnot.expandAll, arvosana.selectValue('Ei valintaa'), editor.saveChanges, wait.until(page.isSavedLabelShown))
 
                 it('Arvosana poistetaan', function() {
-                  // Koko arvosanataulukko piilotetaan, koska kaikki oppiaineet KESKEN-tilassa
-                  expect(opinnot.oppiaineet.isVisible()).to.equal(false)
+                  // Arvosanataulukko näytetään, vaikka kaikki oppiaineet ovat KESKEN-tilassa
+                  expect(opinnot.oppiaineet.isVisible()).to.equal(true)
                 })
               })
             })

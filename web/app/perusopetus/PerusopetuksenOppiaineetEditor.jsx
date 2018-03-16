@@ -31,7 +31,8 @@ import {
   jääLuokalle,
   luokkaAste,
   luokkaAsteenOsasuoritukset,
-  oppimääränOsasuoritukset
+  oppimääränOsasuoritukset,
+  isVuosiluokkaTaiPerusopetuksenOppimäärä
 } from './Perusopetus'
 import {expandableProperties, PerusopetuksenOppiaineRowEditor} from './PerusopetuksenOppiaineRowEditor'
 import {UusiPerusopetuksenOppiaineDropdown} from './UusiPerusopetuksenOppiaineDropdown'
@@ -63,7 +64,7 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
 
   const footnotes = footnoteDescriptions(oppiaineSuoritukset)
   let uusiOppiaineenSuoritus = model.context.edit ? createOppiaineenSuoritus(modelLookup(model, 'osasuoritukset')) : null
-  let showOppiaineet = !(isYsiluokka(model) && !jääLuokalle(model)) && (model.context.edit || valmiitaSuorituksia(oppiaineSuoritukset))
+  let showOppiaineet = !(isYsiluokka(model) && !jääLuokalle(model)) && (model.context.edit || valmiitaSuorituksia(oppiaineSuoritukset) || isVuosiluokkaTaiPerusopetuksenOppimäärä(model))
 
   if (model.context.edit) {
     if (!valmiitaSuorituksia(oppiaineSuoritukset)) {
@@ -213,7 +214,7 @@ class Oppiainetaulukko extends React.Component {
             </tr>
             </thead>
             {
-              suoritukset.filter(s => edit || arvioituTaiVahvistettu(s) || osasuoritukset(s).length).map((suoritus) => (
+              suoritukset.filter(s => edit || arvioituTaiVahvistettu(s) || osasuoritukset(s).length || isVuosiluokkaTaiPerusopetuksenOppimäärä(model)).map((suoritus) => (
                 <PerusopetuksenOppiaineRowEditor
                   baret-lift
                   key={suoritus.arrayKey}
