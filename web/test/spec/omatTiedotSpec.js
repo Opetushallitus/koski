@@ -125,7 +125,6 @@ describe('Omat tiedot', function() {
         })
       })
 
-      /*  Ei toimi phantomissa
       describe("Virhetilanne", function() {
         before(authentication.logout, etusivu.openPage)
 
@@ -137,7 +136,6 @@ describe('Omat tiedot', function() {
           })
         })
       })
-      */
     })
   })
 })

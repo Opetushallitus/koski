@@ -73,6 +73,7 @@ class EiSuorituksiaServlet(implicit val application: KoskiApplication) extends S
 
 class VirhesivuServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet {
   get("/") {
+    response.setHeader("X-Virhesivu", "1") // for korhopankki/HetuLogin.jsx
     <html>
       <head>
         <title>Koski - Virhe</title>

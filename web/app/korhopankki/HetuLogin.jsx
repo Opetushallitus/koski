@@ -44,7 +44,10 @@ const HetuLogin = () => {
     })
 
   login.onValue((x) => {
-    if (x.redirected) {
+    if (x.headers.map['x-virhesivu']) {
+      // For PhantomJS - the fetch polyfill doesn't set "x.redirected"
+      document.location = '/koski/virhesivu'
+    } else if (x.redirected) {
       document.location = x.url
     } else {
       console.log(x)
