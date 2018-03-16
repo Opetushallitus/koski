@@ -19,6 +19,8 @@ export const luokkaAste = (suoritus) => {
   let tunniste = modelData(suoritus, 'koulutusmoduuli.tunniste')
   return tunniste.koodistoUri == 'perusopetuksenluokkaaste' ? tunniste.koodiarvo : undefined
 }
+
+export const isVuosiluokkaTaiPerusopetuksenOppimäärä = (suoritus) => ['perusopetuksenoppimaara', 'perusopetuksenvuosiluokka'].includes(suorituksenTyyppi(suoritus))
 export const isYksilöllistetty = suoritus => modelData(suoritus, 'yksilöllistettyOppimäärä')
 export const isPainotettu = suoritus => modelData(suoritus, 'painotettuOpetus')
 export const isKorotus = suoritus => modelData(suoritus, 'korotus')
