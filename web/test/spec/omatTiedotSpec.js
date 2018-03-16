@@ -140,6 +140,18 @@ describe('Omat tiedot', function() {
           })
         })
       })
+
+      describe("Virhetilanne", function() {
+        before(authentication.logout, etusivu.openPage)
+
+        before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('010342-8413'), wait.until(VirhePage().isVisible))
+
+        describe("Sivun sisältö", function() {
+          it("Näytetään virhesivu", function() {
+            expect(VirhePage().teksti().trim()).to.equalIgnoreNewlines('Koski-järjestelmässä tapahtui virhe, yritä myöhemmin uudelleen\n          Palaa etusivulle')
+          })
+        })
+      })
     })
   })
 })

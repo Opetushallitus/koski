@@ -12,7 +12,13 @@ import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
 case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServlet with AuthenticationSupport with NoCache{
   get("/") {
-    checkAuth.getOrElse(login)
+    try {
+      checkAuth.getOrElse(login)
+    } catch {
+      case e: Exception =>
+        logger.error(s"Kansalaisen sisäänkirjautuminen epäonnistui ${e.getMessage}")
+        redirect(s"$rootUrl/virhesivu")
+    }
   }
 
   private def checkAuth: Option[HttpStatus] = {
@@ -25,22 +31,19 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
   }
 
   private def login = {
-    hetu match {
-      case Right(hetu) =>
-        application.henkilöRepository.findHenkilötiedotByHetu(hetu, nimitiedot)(KoskiSession.systemUser).headOption match {
-          case Some(oppija) =>
-            setUser(Right(localLogin(AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true))))
-            redirect(s"$rootUrl/omattiedot")
-          case _ =>
-            redirect(s"$rootUrl/eisuorituksia")
-        }
-      case Left(status) => haltWithStatus(status)
+    application.henkilöRepository.findHenkilötiedotByHetu(hetu, nimitiedot)(KoskiSession.systemUser).headOption match {
+      case Some(oppija) =>
+        setUser(Right(localLogin(AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true))))
+        redirect(s"$rootUrl/omattiedot")
+      case _ => redirect(s"$rootUrl/eisuorituksia")
     }
   }
 
-  private def hetu: Either[HttpStatus, String] = {
-    request.header("hetu").map(Hetu.validate(_, acceptSynthetic = true)).getOrElse(Left(KoskiErrorCategory.badRequest("hetu header missing")))
-  }
+  private def hetu: String =
+    request.header("hetu").map(Hetu.validate(_, acceptSynthetic = true)).getOrElse(Left(KoskiErrorCategory.badRequest("hetu header missing"))) match {
+      case Right(hetu) => hetu
+      case Left(status) => throw new Exception(status.toString)
+    }
 
   private def nimitiedot: Option[Nimitiedot] = {
     val nimi = for {
