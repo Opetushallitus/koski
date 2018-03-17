@@ -1,0 +1,40 @@
+@indent-left: 40px;
+
+.raportoi-virheestä-form {
+  h3 {
+    font-size: 1rem;
+  }
+
+  .form-section {
+    &[data-indent='1'] {
+      margin-left: @indent-left;
+    }
+  }
+
+  .puuttuvat-tiedot {
+    input#puuttuvat-tiedot__checkbox {
+      position: absolute;
+      margin-left: 1rem;
+      width: 0.5 * @indent-left;
+    }
+
+    label {
+      margin-left: @indent-left;
+    }
+  }
+
+  .oppilaitos-options {
+    ul {
+      list-style: none;
+      padding-left: 0.25 * @indent-left;
+
+      li {
+        margin: 1rem 0;
+
+        & > label {
+          margin-left: 0.5 * @indent-left;
+        }
+      }
+    }
+  }
+}

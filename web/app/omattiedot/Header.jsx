@@ -6,7 +6,7 @@ import {ISO2FinnishDate} from '../date/date'
 import {modelData, modelTitle} from '../editor/EditorModel'
 import {Popup} from '../components/Popup'
 import {TiedotPalvelussa} from './TiedotPalvelussa'
-import {Virheraportointi} from './Virheraportointi'
+import {RaportoiVirheestäForm} from './virheraportointi/RaportoiVirheestaForm'
 import {withFeatureFlag} from '../components/withFeatureFlag'
 
 const togglePopup = stateA => () => stateA.modify(v => !v)
@@ -67,7 +67,7 @@ const VirheraportointiDialog = ({showVirheraportointiA}) => (
     {ift(showVirheraportointiA,
       <div className='virheraportointi'>
         <Popup showStateAtom={showVirheraportointiA} inline={true}>
-          <Virheraportointi/>
+          <RaportoiVirheestäForm/>
         </Popup>
       </div>
     )}
