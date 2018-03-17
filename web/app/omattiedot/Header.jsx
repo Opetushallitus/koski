@@ -74,27 +74,21 @@ const VirheraportointiDialog = ({showVirheraportointiA}) => (
   </div>
 )
 
-export class Header extends React.Component {
-  constructor(props) {
-    super(props)
+export const Header = ({henkilö}) => {
+  const showPalvelussaNäkyvätTiedot = Atom(false)
+  const showVirheraportointi = Atom(false)
 
-    this.showPalvelussaNäkyvätTiedot = Atom(false)
-    this.showVirheraportointi = Atom(false)
-  }
+  const VirheraportointiFeature = withFeatureFlag(FEATURE.OMAT_TIEDOT.VIRHERAPORTOINTI, VirheraportointiDialog)
 
-  render() {
-    const VirheraportointiFeature = withFeatureFlag(FEATURE.OMAT_TIEDOT.VIRHERAPORTOINTI, VirheraportointiDialog)
+  return (
+    <div>
+      <HeaderInfo
+        henkilö={henkilö}
+        showPalvelussaNäkyvätTiedotA={showPalvelussaNäkyvätTiedot}
+        showVirheraportointiA={showVirheraportointi}
+      />
 
-    return (
-      <div>
-        <HeaderInfo
-          henkilö={this.props.henkilö}
-          showPalvelussaNäkyvätTiedotA={this.showPalvelussaNäkyvätTiedot}
-          showVirheraportointiA={this.showVirheraportointi}
-        />
-
-        <VirheraportointiFeature showVirheraportointiA={this.showVirheraportointi}/>
-      </div>
-    )
-  }
+      <VirheraportointiFeature showVirheraportointiA={showVirheraportointi}/>
+    </div>
+  )
 }
