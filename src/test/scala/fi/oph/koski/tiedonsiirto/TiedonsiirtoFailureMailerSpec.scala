@@ -10,17 +10,17 @@ class TiedonsiirtoFailureMailerSpec extends FreeSpec with Assertions with Matche
   private val mailer = new TiedonsiirtoFailureMailer(KoskiApplicationForTests.config, KoskiApplicationForTests.opintopolkuHenkilöFacade)
   "Lähettää sähköpostia" - {
     "oppilaitoksen KOSKI-pääkäyttäjä:lle jos mahdollista" in {
-      mailer.sendMail(OidOrganisaatio(helsinginKaupunki), List(OidOrganisaatio(stadinAmmattiopisto)))
+      mailer.sendMail(OidOrganisaatio(helsinginKaupunki), Some(OidOrganisaatio(stadinAmmattiopisto)))
       MockEmailSender.checkMail should equal(List(expectedEmail("stadinammattiopisto-admin@example.com")))
     }
 
     "sitten juuriorganisaation KOSKI-pääkäyttäjä:lle jos mahdollista" in {
-      mailer.sendMail(OidOrganisaatio(helsinginKaupunki), List(OidOrganisaatio(omnia)))
+      mailer.sendMail(OidOrganisaatio(helsinginKaupunki), Some(OidOrganisaatio(omnia)))
       MockEmailSender.checkMail should equal(List(expectedEmail("stadin-pää@example.com")))
     }
 
     "viimeiseksi juuriorganisaation Vastuukayttaja:lle" in {
-      mailer.sendMail(OidOrganisaatio(jyväskylänYliopisto), List(OidOrganisaatio(jyväskylänNormaalikoulu)))
+      mailer.sendMail(OidOrganisaatio(jyväskylänYliopisto), Some(OidOrganisaatio(jyväskylänNormaalikoulu)))
       MockEmailSender.checkMail should equal(List(expectedEmail("jyväs-vastuu@example.com")))
     }
   }
