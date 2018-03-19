@@ -4,9 +4,9 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.email.{Email, EmailContent, EmailRecipient, MockEmailSender}
 import fi.oph.koski.organisaatio.MockOrganisaatiot._
 import fi.oph.koski.schema.OidOrganisaatio
-import org.scalatest.{Assertions, FreeSpec, Matchers}
+import org.scalatest.{BeforeAndAfterEach, FreeSpec, Matchers}
 
-class TiedonsiirtoFailureMailerSpec extends FreeSpec with Assertions with Matchers {
+class TiedonsiirtoFailureMailerSpec extends FreeSpec with Matchers with BeforeAndAfterEach {
   private val mailer = new TiedonsiirtoFailureMailer(KoskiApplicationForTests.config, KoskiApplicationForTests.opintopolkuHenkilöFacade)
   "Lähettää sähköpostia" - {
     "oppilaitoksen KOSKI-pääkäyttäjä:lle jos mahdollista" in {
@@ -24,6 +24,8 @@ class TiedonsiirtoFailureMailerSpec extends FreeSpec with Assertions with Matche
       MockEmailSender.checkMail should equal(List(expectedEmail("jyväs-vastuu@example.com")))
     }
   }
+
+  override def beforeEach = MockEmailSender.checkMail
 
   private def expectedEmail(emailAddress: String) = Email(
     EmailContent(
