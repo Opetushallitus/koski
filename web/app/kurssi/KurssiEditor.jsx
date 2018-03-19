@@ -1,9 +1,9 @@
 import React from 'react'
 import {modelData, modelTitle} from '../editor/EditorModel.js'
-import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {ArvosanaEditor} from '../suoritus/ArvosanaEditor'
 import {pushRemoval} from '../editor/EditorModel'
 import {buildClassNames} from '../components/classnames'
+import {KurssiPopup} from './KurssiPopup'
 
 export class KurssiEditor extends React.Component {
   constructor(props) {
@@ -38,7 +38,7 @@ export class KurssiEditor extends React.Component {
         }
         <div className="arvosana"><ArvosanaEditor model={kurssi}/></div>
         {
-          open && <KurssiTooltip kurssi={kurssi} parentElemPosition={this.kurssiElement.getBoundingClientRect()}/>
+          open && <KurssiPopup kurssi={kurssi} parentElemPosition={this.kurssiElement.getBoundingClientRect()}/>
         }
       </li>
     )
@@ -67,52 +67,5 @@ export class KurssiEditor extends React.Component {
 
   handleEsc(e) {
     e.keyCode == 27 && this.setState({open: false})
-  }
-}
-
-class KurssiTooltip extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = { tooltipAlignment: {x: 'middle', y: 'bottom'}}
-  }
-
-  render() {
-    let {kurssi} = this.props
-    return (<div ref={e => this.tooltipElem = e}
-      className={'details details-' + this.state.tooltipAlignment.x + ' details-' + this.state.tooltipAlignment.x + '-' + this.state.tooltipAlignment.y}>
-      <PropertiesEditor
-        model={kurssi}
-        propertyFilter={p => !['arviointi', 'koodistoUri'].includes(p.key)}
-        propertyEditable={p => !['tunniste', 'koodiarvo', 'nimi', 'tunnustettu'].includes(p.key)}
-      />
-    </div>)
-  }
-
-  componentDidMount() {
-    this.setState({tooltipAlignment: getTooltipAlignment(this.props.parentElemPosition, this.tooltipElem)})
-  }
-}
-
-const tooltipHorizontalAlignment = (kurssi, tooltip) => {
-  const windowWidth = window.innerWidth || document.documentElement.clientWidth
-  if (kurssi.left - tooltip.width < 0) {
-    return 'left'
-  } else if (kurssi.right + tooltip.width >= windowWidth) {
-    return 'right'
-  } else {
-    return 'middle'
-  }
-}
-
-const tooltipVerticalAlignment = (kurssi, tooltip) => {
-  const windowHeight = window.innerHeight || document.documentElement.clientHeight
-  return kurssi.top + kurssi.height + tooltip.height >= windowHeight ? 'top' : 'bottom'
-}
-
-const getTooltipAlignment = (rect, tooltipElem) => {
-  const tooltipRect = tooltipElem.getBoundingClientRect()
-  return {
-    x: tooltipHorizontalAlignment(rect, tooltipRect),
-    y: tooltipVerticalAlignment(rect, tooltipRect)
   }
 }
