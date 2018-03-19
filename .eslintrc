@@ -47,5 +47,10 @@
   },
   "plugins": [
     "react"
-  ]
+  ],
+  "globals": {
+    /* Allow access to feature flags but disallow overwriting */
+    "FEATURE": false,
+    "PRODUCTION_DOMAIN": false
+  }
 }
