@@ -116,7 +116,7 @@ case class OsaAikaisuusJakso(
   loppu: Option[LocalDate],
   @Description("Osa-aikaisuuden suuruus prosentteina. Yksi täysipäiväinen opiskelupäivä viikossa = 20.")
   @Tooltip("Osa-aikaisuuden suuruus prosentteina. Yksi täysipäiväinen opiskelupäivä viikossa = 20.")
-  @MinValueExclusive(0)
+  @MinValue(0)
   @MaxValueExclusive(100)
   @UnitOfMeasure("%")
   @Title("Osa-aikaisuus")

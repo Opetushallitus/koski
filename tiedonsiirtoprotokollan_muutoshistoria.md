@@ -1,3 +1,7 @@
+## 19.3.2018
+
+- Sallitaan osa-aikaisuusjakson osa-aikaisuuden arvoksi 0%
+
 ## 6.3.2018
 
  - Sallitaan saman oppiaineen suoritus useampaan kertaan perusopetuksen alkuvaiheessa
