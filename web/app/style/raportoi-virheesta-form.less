@@ -1,4 +1,6 @@
 @indent-left: 40px;
+@copyable-text-height: 100px;
+@copyable-text-width: 450px;
 
 .raportoi-virheestä-form {
   h3 {
@@ -35,6 +37,51 @@
           margin-left: 0.5 * @indent-left;
         }
       }
+    }
+  }
+
+  .yhteystieto {
+    display: flex;
+    height: 80px;
+
+    &__heading {
+      width: 50%;
+      max-width: 350px;
+    }
+
+    &__contact-info {
+      width: 25%;
+
+      & > span {
+        display: block;
+      }
+    }
+
+    &__linkki {
+      width: 25%;
+    }
+  }
+
+  .copyable-text {
+    &__heading {
+      margin-bottom: 1rem;
+    }
+
+    & > textarea {
+      resize: none;
+      height: @copyable-text-height;
+      width: @copyable-text-width;
+      border-right: none;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      box-shadow: none;
+    }
+
+    & > button {
+      height: @copyable-text-height;
+      vertical-align: top;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
     }
   }
 }

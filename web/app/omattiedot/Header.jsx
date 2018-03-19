@@ -62,12 +62,15 @@ const HeaderInfo = ({henkilö, showPalvelussaNäkyvätTiedotA, showVirheraportoi
   )
 }
 
-const VirheraportointiDialog = ({showVirheraportointiA, opiskeluoikeudet}) => (
+const VirheraportointiDialog = ({showVirheraportointiA, henkilö, opiskeluoikeudet}) => (
   <div>
     {ift(showVirheraportointiA,
       <div className='virheraportointi'>
         <Popup showStateAtom={showVirheraportointiA} inline={true}>
-          <RaportoiVirheestäForm opiskeluoikeudet={opiskeluoikeudet}/>
+          <RaportoiVirheestäForm
+            henkilö={henkilö}
+            opiskeluoikeudet={opiskeluoikeudet}
+          />
         </Popup>
       </div>
     )}
@@ -93,6 +96,7 @@ export const Header = ({oppija}) => {
 
       <VirheraportointiFeature
         showVirheraportointiA={showVirheraportointi}
+        henkilö={henkilö}
         opiskeluoikeudet={opiskeluoikeudet}
       />
     </div>

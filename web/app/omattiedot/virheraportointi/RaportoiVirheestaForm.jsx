@@ -6,6 +6,7 @@ import Text from '../../i18n/Text'
 import {t} from '../../i18n/i18n'
 import {modelData} from '../../editor/EditorModel'
 import {ift} from '../../util/util'
+import {Yhteystiedot} from './Yhteystiedot'
 
 const OppilaitosOption = ({oppilaitos, selectedOppilaitosA}) => (
   <li className='oppilaitos-options__option'>
@@ -24,20 +25,13 @@ const OppilaitosOption = ({oppilaitos, selectedOppilaitosA}) => (
   </li>
 )
 
-const Yhteystiedot = ({yhteystiedot}) => (
-  <div>
-    {yhteystiedot.email}
-  </div>
-)
-
-
-export const RaportoiVirheestäForm = ({opiskeluoikeudet}) => {
+export const RaportoiVirheestäForm = ({henkilö, opiskeluoikeudet}) => {
   const hasAcceptedDisclaimer = Atom(false)
   const selectedOppilaitosA = Atom()
 
   const oppilaitokset = opiskeluoikeudet.map(o => modelData(o, 'oppilaitos'))
 
-  const yhteystiedotP = selectedOppilaitosA
+  const yhteystietoP = selectedOppilaitosA
     .filter(v => !!v)
     .flatMap(oid => Http.cachedGet(
       `/koski/api/organisaatio/sahkoposti-virheiden-raportointiin?organisaatio=${oid}`, {
@@ -77,7 +71,7 @@ export const RaportoiVirheestäForm = ({opiskeluoikeudet}) => {
             ))}
           </ul>
 
-          <Yhteystiedot baret-lift yhteystiedot={yhteystiedotP}/>
+          <Yhteystiedot baret-lift henkilö={henkilö} yhteystieto={yhteystietoP}/>
         </div>
       ))}
     </div>
