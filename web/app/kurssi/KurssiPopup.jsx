@@ -1,9 +1,5 @@
 import React from 'react'
-import {modelData, modelTitle} from '../editor/EditorModel.js'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
-import {ArvosanaEditor} from '../suoritus/ArvosanaEditor'
-import {pushRemoval} from '../editor/EditorModel'
-import {buildClassNames} from '../components/classnames'
 
 export class KurssiPopup extends React.Component {
   constructor(props) {
