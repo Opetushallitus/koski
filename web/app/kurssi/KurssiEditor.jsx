@@ -1,30 +1,27 @@
 import React from 'react'
 import {modelData, modelTitle} from '../editor/EditorModel.js'
-import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {ArvosanaEditor} from '../suoritus/ArvosanaEditor'
 import {pushRemoval} from '../editor/EditorModel'
 import {buildClassNames} from '../components/classnames'
+import {KurssiPopup} from './KurssiPopup'
 
 export class KurssiEditor extends React.Component {
   constructor(props) {
     super(props)
-    this.state = { open: false, tooltipPosition: 'bottom' }
+    this.state = { open: false }
     this.handleClickOutside = this.handleClickOutside.bind(this)
     this.handleEsc = this.handleEsc.bind(this)
   }
 
   render() {
     let {kurssi} = this.props
-    let {open, tooltipPosition} = this.state
+    let {open} = this.state
     let koulutusmoduuli = modelData(kurssi, 'koulutusmoduuli')
     let showDetails = () => {
       if (!open) {
         document.addEventListener('click', this.handleClickOutside, false)
         document.addEventListener('keyup', this.handleEsc)
-        this.setState({
-          open: true,
-          tooltipPosition: this.kurssiElement && getTooltipPosition(this.kurssiElement) || tooltipPosition
-        })
+        this.setState({ open: true })
       }
     }
     let hideDetails = () => {
@@ -41,20 +38,14 @@ export class KurssiEditor extends React.Component {
         }
         <div className="arvosana"><ArvosanaEditor model={kurssi}/></div>
         {
-          open && (<div className={'details details-' + tooltipPosition}>
-            <PropertiesEditor
-              model={kurssi}
-              propertyFilter={p => !['arviointi', 'koodistoUri'].includes(p.key)}
-              propertyEditable={p => !['tunniste', 'koodiarvo', 'nimi', 'tunnustettu'].includes(p.key)}
-            />
-          </div>)
+          open && <KurssiPopup kurssi={kurssi} parentElemPosition={this.kurssiElement.getBoundingClientRect()}/>
         }
       </li>
     )
   }
 
   componentDidMount() {
-    this.setState({open: false, tooltipPosition: getTooltipPosition(this.kurssiElement)})
+    this.setState({open: false})
   }
 
   componentWillUnmount() {
@@ -76,17 +67,5 @@ export class KurssiEditor extends React.Component {
 
   handleEsc(e) {
     e.keyCode == 27 && this.setState({open: false})
-  }
-}
-
-let getTooltipPosition = (kurssiElement) => {
-  let tooltipwidth = 275
-  let rect = kurssiElement.getBoundingClientRect()
-  if (rect.left - tooltipwidth < 0) {
-    return 'right'
-  } else if (rect.right + tooltipwidth >= (window.innerWidth || document.documentElement.clientWidth)) {
-    return 'left'
-  } else {
-    return 'bottom'
   }
 }
