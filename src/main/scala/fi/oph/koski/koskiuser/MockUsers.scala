@@ -29,12 +29,15 @@ object MockUsers {
   val helsinginKaupunkiPalvelukäyttäjä = MockUser("stadin-palvelu", "stadin-palvelu", "1.2.246.562.24.99999999994", Set((MockOrganisaatiot.helsinginKaupunki, oppilaitosPalvelukäyttäjä)))
   val stadinAmmattiopistoTallentaja = MockUser("tallentaja", "tallentaja", "1.2.246.562.24.99999999995", Set((MockOrganisaatiot.stadinAmmattiopisto, oppilaitosTallentaja)))
   val stadinAmmattiopistoKatselija = MockUser("katselija", "katselija", "1.2.246.562.24.99999999985", Set((MockOrganisaatiot.stadinAmmattiopisto, oppilaitosKatselija)))
+  val stadinAmmattiopistoPääkäyttäjä = MockUser("stadinammattiopisto-admin", "stadinammattiopisto-admin", "1.2.246.562.24.99999999986", Set((MockOrganisaatiot.stadinAmmattiopisto, oppilaitosPääkäyttäjä)))
   val stadinVastuukäyttäjä = MockUser("stadin-vastuu", "stadin-vastuu", "1.2.246.562.24.99999999996", Set((MockOrganisaatiot.helsinginKaupunki, vastuukäyttäjä)))
   val stadinPääkäyttäjä = MockUser("stadin-pää", "stadin-pää", "1.2.246.562.24.99999999997", Set((MockOrganisaatiot.helsinginKaupunki, oppilaitosPääkäyttäjä)))
   val hkiTallentaja = MockUser("hki-tallentaja", "hki-tallentaja", "1.2.246.562.24.99999999977", Set((MockOrganisaatiot.helsinginKaupunki, oppilaitosTallentaja)))
   val kahdenOrganisaatioPalvelukäyttäjä = MockUser("palvelu2", "palvelu2", "1.2.246.562.24.99999999998", Set((MockOrganisaatiot.helsinginKaupunki, oppilaitosPalvelukäyttäjä), (MockOrganisaatiot.omnia, oppilaitosPalvelukäyttäjä)))
   val omattiedot = MockUser("Oppija", "Oili", "1.2.246.562.24.99999999999", Set((omnia, oppilaitosTallentaja)))
   val eiOikkia = MockUser("EiOikkia", "Otto", "1.2.246.562.24.99999999902", Set())
+  val jyväskylänNormaalikoulunPalvelukäyttäjä = MockUser("jyväs-palvelu", "jyväs-palvelu", "1.2.246.562.24.99999999777", Set((MockOrganisaatiot.jyväskylänNormaalikoulu, oppilaitosPalvelukäyttäjä)))
+  val jyväskylänYliopistonVastuukäyttäjä = MockUser("jyväs-vastuu", "jyväs-vastuu", "1.2.246.562.24.99999997777", Set((MockOrganisaatiot.jyväskylänYliopisto, vastuukäyttäjä)))
 
   val users = List(
     kalle,
@@ -46,6 +49,7 @@ object MockUsers {
     paakayttaja,
     viranomainen,
     helsinginKaupunkiPalvelukäyttäjä,
+    stadinAmmattiopistoPääkäyttäjä,
     stadinAmmattiopistoTallentaja,
     stadinAmmattiopistoKatselija,
     kahdenOrganisaatioPalvelukäyttäjä,
@@ -54,7 +58,9 @@ object MockUsers {
     stadinPääkäyttäjä,
     tallentajaEiLuottamuksellinen,
     hkiTallentaja,
-    eiOikkia
+    eiOikkia,
+    jyväskylänNormaalikoulunPalvelukäyttäjä,
+    jyväskylänYliopistonVastuukäyttäjä
   )
 }
 

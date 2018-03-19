@@ -136,7 +136,7 @@ class TiedonsiirtoService(
 
       if (error.isDefined) {
         tiedonSiirtoVirheet.inc
-        mailer.sendMail(org.oid)
+        mailer.sendMail(org, oppilaitokset.toList.flatten)
       }
     })
   }

@@ -43,7 +43,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
             "Virheellinen Koski-tiedonsiirto",
             "<p>Automaattisessa tiedonsiirrossa tapahtui virhe.</p><p>Käykää ystävällisesti tarkistamassa tapahtuneet tiedonsiirrot osoitteessa: http://localhost:7021/koski/tiedonsiirrot</p>",
             true),
-          List(EmailRecipient("stadin-vastuu@example.com")))))
+          List(EmailRecipient("stadinammattiopisto-admin@example.com")))))
       }
 
       "toisesta peräkkäisestä epäonnistuneesta tiedonsiirrosta ei lähetetä emailia" in {
