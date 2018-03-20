@@ -2,7 +2,7 @@ import React from 'react'
 import {OppilaitoksenYhteystieto} from './OppilaitoksenYhteystieto'
 import {modelData, modelTitle} from '../../editor/EditorModel'
 import {ISO2FinnishDate} from '../../date/date'
-import {CopyableText} from './CopyableText'
+import {CopyableText} from '../../components/CopyableText'
 import Text from '../../i18n/Text'
 
 const Yhteystieto = ({henkilö, yhteystieto}) => {

@@ -1,7 +1,7 @@
 import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
-import Text from '../../i18n/Text'
+import Text from '../i18n/Text'
 
 const CopyState = {
   PENDING: 1,
