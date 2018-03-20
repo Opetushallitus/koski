@@ -110,6 +110,9 @@
     color: black;
     margin-left: 21px;
     line-height: 24px;
+    @media @media-phone {
+      display: none;
+    }
 
     &:after {
       content: "";
@@ -132,6 +135,11 @@
     margin-bottom: 9px;
     margin-top: 9px;
     margin-left: 30px;
+    @media @media-phone {
+      font-size: 12px;
+      margin-left: 8px;
+      max-width: 50%;
+    }
 
     a {
       color: white;
@@ -144,6 +152,19 @@
     .name {
       margin-right: 10px;
     }
+    @media @media-phone {
+      .name {
+        display: none;
+      }
+      margin-top: 9px;
+      .button {
+        height: 27px;
+        padding: 0 10px;
+        font-size: 12px;
+        line-height: 27px;
+      }
+    }
+
   }
 
   .edit-localizations {
