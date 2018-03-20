@@ -99,7 +99,7 @@ class LoginPageServlet(implicit val application: KoskiApplication) extends Scala
   }
 
   get("/shibboleth") {
-    if (Environment.isLocalDevelopmentEnvironment) {
+    if (application.features.shibboleth && application.config.getString("shibboleth.security") == "mock") {
       htmlIndex("koski-korhopankki.js")
     } else {
       haltWithStatus(KoskiErrorCategory.notFound())
