@@ -63,7 +63,7 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
 
   private def passwordOk(password: String) = {
     val security = application.config.getString("shibboleth.security")
-    if (!isLocalDevelopmentEnvironment && (security.isEmpty || security == "mock")) {
+    if (!isLocalDevelopmentEnvironment && security.isEmpty) {
       false
     } else {
       password == security
