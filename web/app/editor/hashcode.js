@@ -1,5 +1,5 @@
 export const hashCode = (x) => {
-  if (!x) return 0
+  if (x === undefined || x === null) return 0
   let hash = 0
   if (typeof x == 'string') {
     if (x.length == 0) return hash
@@ -10,7 +10,7 @@ export const hashCode = (x) => {
     return hash
   }
   if (typeof x == 'number') {
-    return x
+    return hashCode(x.toString())
   }
   if (typeof x == 'boolean') {
     return x ? 1 : 0

@@ -78,7 +78,7 @@ let calculateModelId = (m) => {
       id = hashAdd(id, getModelId(m.value[i]))
     }
   }
-  if (m.value && m.value.data) {
+  if (m.value && m.value.data !== undefined && m.value.data !== null) {
     id = hashAdd(id, hashCode(m.value.data))
   }
   return id
