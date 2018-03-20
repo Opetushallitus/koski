@@ -33,12 +33,6 @@ describe('Omat tiedot', function() {
     var korhopankki = KorhoPankki()
     before(authentication.logout, etusivu.openPage)
 
-    describe('Kun ei olla kirjauduttu sisään', function() {
-      it('Näytetään länderi', function() {
-
-      })
-    })
-
     describe('Kun kirjaudutaan sisään', function() {
       before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('030658-998X', 'Kansalainen', 'VÃ¤inÃ¶ TÃµnis', 'VÃ¤inÃ¶'), wait.until(omattiedot.isVisible))
       describe('Sivun sisältö', function() {
