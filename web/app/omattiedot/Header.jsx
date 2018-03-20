@@ -37,7 +37,7 @@ const HeaderInfo = ({henkilö, showPalvelussaNäkyvätTiedotA, showVirheraportoi
         <div>
           <ToggleButton
             toggleA={showPalvelussaNäkyvätTiedotA}
-            text={'Mitkä tiedot palvelussa näkyvät?'}
+            text='Mitkä tiedot palvelussa näkyvät?'
             style='text'
           />
         </div>
@@ -55,7 +55,7 @@ const HeaderInfo = ({henkilö, showPalvelussaNäkyvätTiedotA, showVirheraportoi
 
         <VirheraportointiButton
           toggleA={showVirheraportointiA}
-          text={'Suorituksissani on virhe'}
+          text='Onko suorituksissasi virhe?'
         />
       </div>
     </header>
