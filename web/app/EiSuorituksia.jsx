@@ -18,4 +18,3 @@ ReactDOM.render((
   </div>
 ), document.getElementById('content'))
 
-document.body.id = 'lander-page'

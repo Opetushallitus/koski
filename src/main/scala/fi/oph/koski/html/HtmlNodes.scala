@@ -17,12 +17,13 @@ trait HtmlNodes extends KoskiBaseServlet with PiwikNodes {
   def buildVersion: Option[String]
   def localizations: LocalizationRepository = application.localizationRepository
 
-  def htmlIndex(scriptBundleName: String, piwikHttpStatusCode: Option[Int] = None, raamitEnabled: Boolean = false, scripts: NodeSeq = Empty): Elem = {
+  def htmlIndex(scriptBundleName: String, piwikHttpStatusCode: Option[Int] = None, raamitEnabled: Boolean = false, scripts: NodeSeq = Empty, responsive: Boolean = false): Elem = {
+    var bodyClasses = scriptBundleName.replace("koski-", "").replace(".js", "") + "-page"
     <html>
       <head>
-        {commonHead ++ raamit(raamitEnabled) ++ piwikTrackingScriptLoader(piwikHttpStatusCode)}
+        {commonHead(responsive) ++ raamit(raamitEnabled) ++ piwikTrackingScriptLoader(piwikHttpStatusCode)}
       </head>
-      <body>
+      <body class={bodyClasses}>
         <div data-inraamit={if (raamitEnabled) "true" else ""} id="content"></div>
       </body>
       <script id="localization">
@@ -33,10 +34,11 @@ trait HtmlNodes extends KoskiBaseServlet with PiwikNodes {
     </html>
   }
 
-  def commonHead: NodeSeq =
+  def commonHead(responsive: Boolean = false): NodeSeq =
     <title>Koski - Opintopolku.fi</title> ++
     <meta http-equiv="X-UA-Compatible" content="IE=edge" /> ++
     <meta charset="UTF-8" /> ++
+    {if (responsive) <meta name="viewport" content="width=device-width,initial-scale=1" /> else NodeSeq.Empty} ++
     <link rel="shortcut icon" href="/koski/favicon.ico" /> ++
     <link rel="stylesheet" href="/koski/external_css/normalize.min.css" /> ++
     <link href="/koski/external_css/OpenSans.css" rel="stylesheet"/> ++

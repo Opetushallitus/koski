@@ -68,3 +68,11 @@
     color: @color-label-darker;
   }
 }
+
+@media-phone: ~"screen and (max-width: 767px)";
+
+.omattiedot-phone(@rules) {
+  @media @media-phone {
+    body.omattiedot-page & { @rules(); }
+  }
+}

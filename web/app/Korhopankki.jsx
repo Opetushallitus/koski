@@ -9,5 +9,3 @@ ReactDOM.render((
     <HetuLogin/>
   </div>
 ), document.getElementById('content'))
-
-document.body.id = 'korhopankki'

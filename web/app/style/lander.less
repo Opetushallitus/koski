@@ -1,8 +1,5 @@
-#korhopankki {
-  background-color: @color-warm-gray;
-}
 
-#lander-page {
+.lander-page, .eisuorituksia-page {
   background-color: white;
   font-family: 'Open Sans', sans-serif;
   .koski-heading {
@@ -34,6 +31,9 @@
     margin-right: auto;
     margin-left: auto;
     width: 700px;
+    @media @media-phone {
+      width: 100%;
+    }
     img {
       margin-left: 90px;
     }
@@ -59,10 +59,17 @@
     padding: 0 40px;
     border-radius: 3px;
     z-index: 10;
+    @media @media-phone {
+      position: initial;
+      margin-left: 20px;
+    }
   }
 
   &__caption {
     font-size: 24px;
+    @media @media-phone {
+      font-size: 16px;
+    }
   }
 
   &__column {
@@ -71,6 +78,13 @@
     padding-left: 40px;
     p {
       width: ~"calc(60% + 150px)";
+    }
+    @media @media-phone {
+      width: 100%;
+      padding-left: 20px;
+      p {
+        width: initial;
+      }
     }
   }
 
@@ -97,6 +111,9 @@
     }
     float:right;
     padding-left: 40px;
+    @media @media-phone {
+      padding-left: 20px;
+    }
   }
 
   .tietosuojaseloste {
@@ -106,7 +123,8 @@
   }
 }
 
-#korhopankki .login {
+.korhopankki-page {
+  background-color: @color-warm-gray;
   #logo {
     width: 207px;
     margin-bottom: 20px;
