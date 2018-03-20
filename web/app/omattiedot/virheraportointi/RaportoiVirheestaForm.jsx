@@ -35,10 +35,7 @@ export const RaportoiVirheestäForm = ({henkilö, opiskeluoikeudet}) => {
     .filter(v => !!v)
     .flatMap(oid => Http.cachedGet(
       `/koski/api/organisaatio/sahkoposti-virheiden-raportointiin?organisaatio=${oid}`, {
-        errorMapper: e => {
-          if (e.httpStatus === 404) return ({email: 'not found'})
-          else return ({email: 'error'})
-        }
+        errorMapper: e => e.httpStatus === 404 ? ({email: null}) : null
       }
     ))
     .toProperty()
