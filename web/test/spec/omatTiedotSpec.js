@@ -57,6 +57,10 @@ describe('Omat tiedot', function() {
           expect(!!omattiedot.palvelussaNäkyvätTiedotButton().length).to.equal(true)
         })
 
+        it('Näytetään virheraportointi-painike', function() {
+          expect(!!omattiedot.virheraportointiButton().length).to.equal(true)
+        })
+
         describe("'Mitkä tiedot palvelussa näkyvät' -teksti", function () {
           it('Aluksi ei näytetä tekstiä', function () {
             expect(omattiedot.palvelussaNäkyvätTiedotText()).to.equal('')
@@ -117,6 +121,95 @@ describe('Omat tiedot', function() {
             'Sylvi Syntynyt\n' +
             's. 1.1.1970'
           )
+        })
+      })
+
+      describe('Virheistä raportointi', function () {
+        before(authentication.logout, etusivu.openPage)
+        before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('180497-112F'), wait.until(omattiedot.isVisible))
+
+        it('Aluksi ei näytetä lomaketta', function () {
+          expect(omattiedot.virheraportointiForm.isVisible()).to.equal(false)
+        })
+
+        describe('Kun painetaan painiketta', function () {
+          before(click(omattiedot.virheraportointiButton))
+
+          var form = omattiedot.virheraportointiForm
+
+          it('näytetään lista tiedoista, joita palvelussa ei pystytä näyttämään', function () {
+            expect(form.contentsAsText()).to.equal(
+              'Koski-palvelussa ei pystytä näyttämään seuraavia tietoja:\n' +
+              'Korkeakoulututkintoja ennen vuotta 1995 . Tässä voi olla korkeakoulukohtaisia poikkeuksia.\n' +
+              'Ennen vuotta 1990 suoritettuja ylioppilastutkintoja.\n' +
+              'Ennen vuoden 2018 tammikuuta suoritettuja peruskoulun, lukion tai ammattikoulun suorituksia ja opiskeluoikeuksia.\n' +
+              'Opintojeni kuuluisi yllämainitun perusteella löytyä Koski-palvelusta *'
+            )
+          })
+
+          describe('Kun hyväksytään huomio palvelusta löytyvistä tiedoista', function () {
+            before(form.acceptDisclaimer)
+
+            it('näytetään oppilaitosvaihtoehdot', function () {
+              expect(form.oppilaitosNames()).to.deep.equal([
+                'Kulosaaren ala-aste',
+                'Jyväskylän normaalikoulu'
+              ])
+            })
+
+            it('oppilaitoksilla on oikeat OIDit', function () {
+              expect(form.oppilaitosOids()).to.deep.equal([
+                '1.2.246.562.10.64353470871',
+                '1.2.246.562.10.14613773812'
+              ])
+            })
+
+            it('ei vielä näytetä yhteystietoja', function () {
+              expect(form.oppilaitosOptionsText()).to.equal(
+                'Voit tiedustella asiaa oppilaitokseltasi.\n' +
+                'Kulosaaren ala-aste\n' +
+                'Jyväskylän normaalikoulu'
+              )
+            })
+          })
+
+          describe('Kun valitaan oppilaitos, jolle löytyy sähköpostiosoite', function () {
+            before(form.selectOppilaitos('1.2.246.562.10.14613773812'))
+
+            it('näytetään sähköpostiosoite ja oppilaitoksen nimi', function () {
+              expect(form.yhteystiedot()).to.equal(
+                'joku.osoite@example.com\n' +
+                'Jyväskylän normaalikoulu'
+              )
+            })
+
+            it('näytetään sähköposti-painike', function () {
+              expect(!!form.sähköpostiButton().length).to.equal(true)
+            })
+
+            it('näytetään yhteystiedot kopioitavana tekstinä', function () {
+              expect(form.yhteystiedotTekstinä()).to.equal(
+               'Muista mainita sähköpostissa seuraavat tiedot:\n' +
+               'Nimi: Miia Monikoululainen\n' +
+               'Oppijanumero (oid): 1.2.246.562.24.00000000009' +
+                ' ' +
+               'Kopioi'
+              )
+            })
+          })
+
+          describe('Kun valitaan oppilaitos, jolle ei löydy sähköpostiosoitetta', function () {
+            before(form.selectOppilaitos('1.2.246.562.10.64353470871'))
+
+            it('näytetään ainoastaan virheviesti', function () {
+              expect(form.oppilaitosOptionsText()).to.equal(
+                'Voit tiedustella asiaa oppilaitokseltasi.\n' +
+                'Kulosaaren ala-aste\n' +
+                'Jyväskylän normaalikoulu\n' +
+                'Oppilaitokselle ei löytynyt yhteystietoja.'
+              )
+            })
+          })
         })
       })
 
