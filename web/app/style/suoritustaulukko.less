@@ -19,6 +19,9 @@
         background: @color-neutral-gray;
         td {
           padding-left: 13px;
+          .omattiedot-phone({
+            padding-left: 0;
+          });
           font-style: italic;
           &:not(:last-child) {
             border-right: 3px solid white;
@@ -28,15 +31,30 @@
       > tbody > tr, > thead > tr {
         > td, > th {
           padding: 5px 13px 5px 0;
+          .omattiedot-phone({
+            padding: 3px 5px 3px 0;
+            &:last-child {
+              padding-right: 2px;
+            }
+          });
         }
         > td.suoritus {
           padding-left: 13px;
+          .omattiedot-phone({
+            padding-left: 0;
+          });
           .tila {
             .FontAwesomeSymbol;
             color: #333333;
             cursor: pointer;
           }
         }
+        .omattiedot-phone({
+          // hide these columns
+          > td.pakollisuus, > td.laajuus {
+            display: none;
+          }
+        });
         > td.pakollisuus, > td.laajuus, > td.arvosana {
           text-align: right;
           vertical-align: middle;
@@ -68,6 +86,10 @@
         > td {
           padding-left: 45px;
           padding-right: 35px;
+          .omattiedot-phone({
+            padding-left: 0;
+            padding-right: 0;
+          });
 
           .properties > table tr td {
             padding-top: 2px; // override for more compact layout
@@ -114,6 +136,9 @@
       &.expanded:before {
         content: '';
       }
+      .omattiedot-phone({
+        display: none;
+      });
     }
   }
 }

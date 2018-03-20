@@ -22,6 +22,10 @@
   display: inline-block;
   width: 11px;
   text-align: center;
+  @media @media-phone {
+    font-size: 10px;
+    width: 8px;
+  }
 }
 
 .RemoveSymbol {
@@ -71,6 +75,9 @@
 
 @media-phone: ~"screen and (max-width: 767px)";
 
+// Apply style to opiskeluoikeus stuff (shared between virkailija and omattiedot pages)
+// only when on omattiedot page, and media is phone. Used to accidentally avoid applying mobile
+// layouts to virkailija pages.
 .omattiedot-phone(@rules) {
   @media @media-phone {
     body.omattiedot-page & { @rules(); }

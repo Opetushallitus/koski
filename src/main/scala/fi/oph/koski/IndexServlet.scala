@@ -46,7 +46,7 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
   }
 
   get("/omattiedot") {
-    htmlIndex("koski-omattiedot.js", raamitEnabled = false)
+    htmlIndex("koski-omattiedot.js", raamitEnabled = false, responsive = true)
   }
 
   get("/tiedonsiirrot*") {
