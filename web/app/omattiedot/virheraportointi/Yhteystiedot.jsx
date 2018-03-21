@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'baret'
+import Bacon from 'baconjs'
 import {OppilaitoksenYhteystieto} from './OppilaitoksenYhteystieto'
 import {modelData, modelTitle} from '../../editor/EditorModel'
 import {ISO2FinnishDate} from '../../date/date'
@@ -28,14 +29,19 @@ const EiYhteystietoa = () => <Text name={'Oppilaitokselle ei löytynyt yhteystie
 
 const MuuVirhe = () => <Text name={'httpStatus.500'}/>
 
-export const Yhteystiedot = ({henkilö, yhteystieto}) => {
-  return (
-    <div>
-      <hr/>
+const wrapAsSection = Component => Component ? <div><hr/>{Component}</div> : Component
 
-      {!yhteystieto ? <MuuVirhe/>
-        : !yhteystieto.email ? <EiYhteystietoa/>
-          : <Yhteystieto henkilö={henkilö} yhteystieto={yhteystieto}/>}
-    </div>
-  )
+export const Yhteystiedot = ({henkilö, yhteystietoP}) => {
+  const values = yhteystietoP
+    .skipErrors()
+    .map(yhteystieto => !yhteystieto ? null
+      : !yhteystieto.email ? <EiYhteystietoa/>
+        : <Yhteystieto henkilö={henkilö} yhteystieto={yhteystieto}/>)
+
+  const errors = yhteystietoP
+    .errors()
+    .mapError()
+    .map(() => <MuuVirhe/>)
+
+  return <div>{Bacon.mergeAll(values, errors).map(wrapAsSection)}</div>
 }

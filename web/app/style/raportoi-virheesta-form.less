@@ -33,8 +33,27 @@
       li {
         margin: 1rem 0;
 
+        & > input[type='radio'] {
+          width: 0.5 * @indent-left;
+          min-width: 20px;
+        }
+
         & > label {
-          margin-left: 0.5 * @indent-left;
+          margin-left: 0.25 * @indent-left;
+        }
+      }
+    }
+
+    .oppilaitos-picker {
+      max-width: 410px;
+      & > label {
+        margin-bottom: 0.5rem;
+      }
+
+      & > .organisaatio {
+        & > .organisaatio-selection {
+          margin-top: 0.5rem;
+          line-height: 35px;
         }
       }
     }
