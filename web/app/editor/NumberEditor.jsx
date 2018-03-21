@@ -21,7 +21,7 @@ export class NumberEditor extends React.Component {
 const wrapWithUnitOfMeasure = (unitOfMeasure, content) => unitOfMeasure ? <span>{content}<span className="unit-of-measure">{unitOfMeasure}</span></span> : content
 
 NumberEditor.handlesOptional = () => true
-NumberEditor.isEmpty = m => !modelData(m)
+NumberEditor.isEmpty = m => modelData(m) === undefined || modelData(m) === null
 NumberEditor.createEmpty = (m) => modelSetValue(m, undefined)
 NumberEditor.validateModel = model => {
   let value = modelData(model)
