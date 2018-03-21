@@ -15,17 +15,23 @@ class TiedonsiirtoFailureMailer(config: Config, authenticationServiceClient: Opi
   private val koskiPääkäyttäjät = "KOSKI-pääkäyttäjä"
   private val vastuukayttajat = "Vastuukayttajat"
 
-  def sendMail(rootOrg: OrganisaatioWithOid, oppilaitos: Option[OrganisaatioWithOid]): Unit = {
+  def sendMail(rootOrg: OrganisaatioWithOid, oppilaitos: Option[OrganisaatioWithOid]): Unit = try {
     if (!shouldSendMail(rootOrg, oppilaitos)) {
       return
     }
+    send(rootOrg, oppilaitos)
+  } catch {
+    case e: Exception => logger.error(e)(s"Problem sending mail to organizations ${orgsToString(rootOrg, oppilaitos)}")
+  }
+
+  private def send(rootOrg: OrganisaatioWithOid, oppilaitos: Option[OrganisaatioWithOid]): Unit = {
     val emails = oppilaitosSähköpostit(oppilaitos) match {
       case Nil => rootOrgSähköpostit(rootOrg)
       case emailAddresses => emailAddresses
     }
 
     emails.distinct match {
-      case Nil => logger.info(s"Organisaatioille ${(rootOrg.oid +: oppilaitos.toList.map(_.oid)).mkString(" ja ")} ei löydy sähköpostiosoitetta")
+      case Nil => logger.info(s"No email address found for organizations ${orgsToString(rootOrg, oppilaitos)}")
       case emailAddresses =>
         val mail: Email = Email(EmailContent(
           "no-reply@opintopolku.fi",
@@ -37,6 +43,9 @@ class TiedonsiirtoFailureMailer(config: Config, authenticationServiceClient: Opi
         sender.sendEmail(mail)
     }
   }
+
+  private def orgsToString(rootOrg: OrganisaatioWithOid, oppilaitos: Option[OrganisaatioWithOid]) =
+    (rootOrg +: oppilaitos.toList).map(_.oid).distinct.mkString(" and ")
 
   private def shouldSendMail(rootOrg: OrganisaatioWithOid, organisaatio: Option[OrganisaatioWithOid]) = sendTimes.synchronized {
     val limit = now().minusHours(24)
