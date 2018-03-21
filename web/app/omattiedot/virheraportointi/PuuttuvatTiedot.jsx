@@ -1,7 +1,7 @@
 import React from 'react'
 
 export const PuuttuvatTiedot = () => (
-  <div className='puuttuvat-tiedot'>
+  <div className='puuttuvat-tiedot__info'>
     <h3>{'Huomioithan, että Koski-palvelussa ei pystytä näyttämään seuraavia tietoja:'}</h3>
     <ul>
       <li>

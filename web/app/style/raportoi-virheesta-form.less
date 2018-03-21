@@ -14,6 +14,10 @@
   }
 
   .puuttuvat-tiedot {
+    &__info {
+      margin-bottom: 1.5rem;
+    }
+
     input#puuttuvat-tiedot__checkbox {
       position: absolute;
       margin-left: 1rem;
@@ -26,12 +30,14 @@
   }
 
   .oppilaitos-options {
+    margin-top: 2.5rem;
+
     ul {
       list-style: none;
       padding-left: 0.25 * @indent-left;
 
       li {
-        margin: 1rem 0;
+        margin: 1.5rem 0;
 
         & > input[type='radio'] {
           width: 0.5 * @indent-left;
