@@ -174,44 +174,77 @@ describe('Omat tiedot', function() {
                 'Muu'
               )
             })
-          })
 
-          describe('Kun valitaan oppilaitos, jolle löytyy sähköpostiosoite', function () {
-            before(form.selectOppilaitos('1.2.246.562.10.14613773812'))
+            describe('Kun valitaan oppilaitos, jolle löytyy sähköpostiosoite', function () {
+              before(form.selectOppilaitos('1.2.246.562.10.14613773812'))
 
-            it('näytetään sähköpostiosoite ja oppilaitoksen nimi', function () {
-              expect(form.yhteystiedot()).to.equal(
-                'joku.osoite@example.com\n' +
-                'Jyväskylän normaalikoulu'
-              )
+              it('näytetään sähköpostiosoite ja oppilaitoksen nimi', function () {
+                expect(form.yhteystiedot()).to.equal(
+                  'joku.osoite@example.com\n' +
+                  'Jyväskylän normaalikoulu'
+                )
+              })
+
+              it('näytetään sähköposti-painike', function () {
+                expect(!!form.sähköpostiButton().length).to.equal(true)
+              })
+
+              it('näytetään yhteystiedot kopioitavana tekstinä', function () {
+                expect(form.yhteystiedotTekstinä()).to.equal(
+                  'Muista mainita sähköpostissa seuraavat tiedot:\n' +
+                  'Nimi: Miia Monikoululainen\n' +
+                  'Oppijanumero (oid): 1.2.246.562.24.00000000009' +
+                  ' ' +
+                  'Kopioi'
+                )
+              })
             })
 
-            it('näytetään sähköposti-painike', function () {
-              expect(!!form.sähköpostiButton().length).to.equal(true)
+            describe('Kun valitaan oppilaitos, jolle ei löydy sähköpostiosoitetta', function () {
+              before(form.selectOppilaitos('1.2.246.562.10.64353470871'))
+
+              it('näytetään ainoastaan virheviesti', function () {
+                expect(form.oppilaitosOptionsText()).to.equal(
+                  'Voit tiedustella asiaa oppilaitokseltasi.\n' +
+                  'Kulosaaren ala-aste\n' +
+                  'Jyväskylän normaalikoulu\n' +
+                  'Muu\n' +
+                  'Oppilaitokselle ei löytynyt yhteystietoja.'
+                )
+              })
             })
 
-            it('näytetään yhteystiedot kopioitavana tekstinä', function () {
-              expect(form.yhteystiedotTekstinä()).to.equal(
-               'Muista mainita sähköpostissa seuraavat tiedot:\n' +
-               'Nimi: Miia Monikoululainen\n' +
-               'Oppijanumero (oid): 1.2.246.562.24.00000000009' +
-                ' ' +
-               'Kopioi'
-              )
-            })
-          })
+            describe("Kun valitaan 'muu'", function () {
+              before(form.selectOppilaitos('other'))
 
-          describe('Kun valitaan oppilaitos, jolle ei löydy sähköpostiosoitetta', function () {
-            before(form.selectOppilaitos('1.2.246.562.10.64353470871'))
+              it('näytetään oppilaitos-picker', function () {
+                expect(isElementVisible(form.oppilaitosPicker)).to.equal(true)
+              })
 
-            it('näytetään ainoastaan virheviesti', function () {
-              expect(form.oppilaitosOptionsText()).to.equal(
-                'Voit tiedustella asiaa oppilaitokseltasi.\n' +
-                'Kulosaaren ala-aste\n' +
-                'Jyväskylän normaalikoulu\n' +
-                'Muu\n' +
-                'Oppilaitokselle ei löytynyt yhteystietoja.'
-              )
+              describe('Kun valitaan pickerillä oppilaitos', function () {
+                before(form.selectMuuOppilaitos('Ressun lukio'))
+
+                it('näytetään sähköpostiosoite ja oppilaitoksen nimi', function () {
+                  expect(form.yhteystiedot()).to.equal(
+                    'joku.osoite@example.com\n' +
+                    'Ressun lukio'
+                  )
+                })
+
+                it('näytetään sähköposti-painike', function () {
+                  expect(!!form.sähköpostiButton().length).to.equal(true)
+                })
+
+                it('näytetään yhteystiedot kopioitavana tekstinä', function () {
+                  expect(form.yhteystiedotTekstinä()).to.equal(
+                    'Muista mainita sähköpostissa seuraavat tiedot:\n' +
+                    'Nimi: Miia Monikoululainen\n' +
+                    'Oppijanumero (oid): 1.2.246.562.24.00000000009' +
+                    ' ' +
+                    'Kopioi'
+                  )
+                })
+              })
             })
           })
         })

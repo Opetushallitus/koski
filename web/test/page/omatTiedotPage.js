@@ -75,6 +75,12 @@ function VirheraportointiForm() {
     oppilaitosOptionsText: function() {
       return extractAsText(elem().find('.oppilaitos-options'))
     },
+    oppilaitosPicker: function() {
+      return findSingle('.oppilaitos-options .oppilaitos-picker')
+    },
+    selectMuuOppilaitos: function(nimi) {
+      return OrganisaatioHaku(this.oppilaitosPicker()).select(nimi)
+    },
     yhteystiedot: function() {
       return extractAsText(S('.oppilaitos-options .yhteystieto .yhteystieto__contact-info'))
     },
