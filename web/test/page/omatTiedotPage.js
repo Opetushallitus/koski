@@ -54,7 +54,7 @@ function VirheraportointiForm() {
     },
     acceptDisclaimer: function() {
       function disclaimerToggle() {
-        return S('.virheraportointi span:contains(Opintojeni kuuluisi yllämainitun perusteella löytyä Koski-palvelusta)')
+        return S('.virheraportointi span:contains(Asiani koskee tietoa, joka näkyy, tai kuuluisi yllämainitun perusteella näkyä Koski-palvelussa.)')
       }
 
       return click(disclaimerToggle)()

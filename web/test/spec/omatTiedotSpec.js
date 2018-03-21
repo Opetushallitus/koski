@@ -139,11 +139,11 @@ describe('Omat tiedot', function() {
 
           it('näytetään lista tiedoista, joita palvelussa ei pystytä näyttämään', function () {
             expect(form.contentsAsText()).to.equal(
-              'Koski-palvelussa ei pystytä näyttämään seuraavia tietoja:\n' +
+              'Huomioithan, että Koski-palvelussa ei pystytä näyttämään seuraavia tietoja:\n' +
               'Korkeakoulututkintoja ennen vuotta 1995 . Tässä voi olla korkeakoulukohtaisia poikkeuksia.\n' +
               'Ennen vuotta 1990 suoritettuja ylioppilastutkintoja.\n' +
               'Ennen vuoden 2018 tammikuuta suoritettuja peruskoulun, lukion tai ammattikoulun suorituksia ja opiskeluoikeuksia.\n' +
-              'Opintojeni kuuluisi yllämainitun perusteella löytyä Koski-palvelusta *'
+              'Asiani koskee tietoa, joka näkyy, tai kuuluisi yllämainitun perusteella näkyä Koski-palvelussa.'
             )
           })
 
@@ -153,14 +153,16 @@ describe('Omat tiedot', function() {
             it('näytetään oppilaitosvaihtoehdot', function () {
               expect(form.oppilaitosNames()).to.deep.equal([
                 'Kulosaaren ala-aste',
-                'Jyväskylän normaalikoulu'
+                'Jyväskylän normaalikoulu',
+                'Muu'
               ])
             })
 
             it('oppilaitoksilla on oikeat OIDit', function () {
               expect(form.oppilaitosOids()).to.deep.equal([
                 '1.2.246.562.10.64353470871',
-                '1.2.246.562.10.14613773812'
+                '1.2.246.562.10.14613773812',
+                'other'
               ])
             })
 
@@ -168,7 +170,8 @@ describe('Omat tiedot', function() {
               expect(form.oppilaitosOptionsText()).to.equal(
                 'Voit tiedustella asiaa oppilaitokseltasi.\n' +
                 'Kulosaaren ala-aste\n' +
-                'Jyväskylän normaalikoulu'
+                'Jyväskylän normaalikoulu\n' +
+                'Muu'
               )
             })
           })
@@ -206,6 +209,7 @@ describe('Omat tiedot', function() {
                 'Voit tiedustella asiaa oppilaitokseltasi.\n' +
                 'Kulosaaren ala-aste\n' +
                 'Jyväskylän normaalikoulu\n' +
+                'Muu\n' +
                 'Oppilaitokselle ei löytynyt yhteystietoja.'
               )
             })
