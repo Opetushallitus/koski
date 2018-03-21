@@ -198,6 +198,21 @@ describe('Omat tiedot', function() {
                   'Kopioi'
                 )
               })
+
+              it('mailto-linkissä on oikea viestipohja', function () {
+                expect(form.sähköpostiButtonMailtoContents()).to.equal(
+                  'mailto:joku.osoite@example.com?' +
+                  'subject=Tiedustelu%20opintopolun%20tiedoista&' +
+                  'body=' +
+                  encodeURIComponent(
+                    '***Kirjoita viestisi tähän***\n\n' +
+                    '———————————————————————————————\n\n' +
+                    'Allaoleva teksti on luotu automaattisesti Opintopolun tiedoista. Koulu tarvitsee näitä tietoja pystyäkseen käsittelemään kysymystäsi.\n\n' +
+                    'Nimi: Miia Monikoululainen\n' +
+                    'Oppijanumero (oid): 1.2.246.562.24.00000000009'
+                  )
+                )
+              })
             })
 
             describe('Kun valitaan oppilaitos, jolle ei löydy sähköpostiosoitetta', function () {

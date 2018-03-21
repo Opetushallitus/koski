@@ -87,6 +87,9 @@ function VirheraportointiForm() {
     sähköpostiButton: function() {
       return S('.oppilaitos-options .yhteystieto .yhteystieto__linkki a button:contains(Avaa sähköpostissa)')
     },
+    sähköpostiButtonMailtoContents: function() {
+      return S('.oppilaitos-options .yhteystieto .yhteystieto__linkki a').attr('href')
+    },
     yhteystiedotTekstinä: function() {
       return extractAsText(S('.oppilaitos-options .copyable-text'))
     },
