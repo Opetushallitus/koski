@@ -73,7 +73,7 @@ export const RaportoiVirheestäForm = ({henkilö, opiskeluoikeudet}) => {
           onChange={event => hasAcceptedDisclaimer.set(event.target.checked)}
         />
         <label htmlFor='puuttuvat-tiedot__checkbox'>
-          <Text name={'Opintojeni kuuluisi yllämainitun perusteella löytyä Koski-palvelusta'}/>{'*'}
+          <Text name='Asiani koskee tietoa, joka näkyy, tai kuuluisi yllämainitun perusteella näkyä Koski-palvelussa.'/>
         </label>
       </div>
 
