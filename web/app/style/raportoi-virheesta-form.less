@@ -10,6 +10,10 @@
   .form-section {
     &[data-indent='1'] {
       margin-left: @indent-left;
+
+      @media @media-phone {
+        margin-left: 0;
+      }
     }
   }
 
