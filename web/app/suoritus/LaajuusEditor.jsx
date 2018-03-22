@@ -5,6 +5,8 @@ import {EnumEditor} from '../editor/EnumEditor'
 import {wrapOptional} from '../editor/EditorModel'
 import {parseBool} from '../util/util'
 import {t} from '../i18n/i18n'
+import {hyphenate} from '../util/hyphenate'
+
 export class LaajuusEditor extends React.Component {
   render() {
     let { model, compact, showReadonlyScope = true } = this.props
@@ -48,6 +50,6 @@ const LaajuudenYksikköEditor = ({model, compact, showReadonlyScope}) => {
       ? null
       : <span className="yksikko"><Editor model={yksikköModel} edit={alternatives.length != 1}/></span>
     : showReadonlyScope
-      ? <span className={'yksikko ' + yksikkö.toLowerCase()}> {yksikkö}</span>
+      ? <span className={'yksikko ' + yksikkö.toLowerCase()}>{'\u00a0'}{hyphenate(yksikkö)}</span>
       : null
 }
