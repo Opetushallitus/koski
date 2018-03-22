@@ -17,11 +17,23 @@
     li {
       line-height: 22px;
     }
+
+    > span {
+      .omattiedot-phone({
+        width: 100%;
+      });
+    }
   }
 
   .aliorganisaatiot {
     padding-left: 25px;
     list-style: disc;
+
+    .omattiedot-phone({
+      width: 100%;
+      list-style: none;
+    });
+
     li {
       line-height: 24px;
     }
@@ -41,8 +53,19 @@
     background: white;
     padding: 21px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, .15);
+
+    .omattiedot-phone({
+      width: 100%;
+      position: relative;
+    });
+
     input.organisaatio-haku {
       width: 252px;
+
+      .omattiedot-phone({
+        width: 100%;
+      });
+
       a {
         width: 250px;
         display: inline-block;
@@ -59,6 +82,11 @@
       margin: 0 4px;
       margin-left: 8px;
       margin-right: 0;
+
+      .omattiedot-phone({
+        width: 100%;
+        margin: 0.5rem 0 0 0;
+      });
     }
   }
 

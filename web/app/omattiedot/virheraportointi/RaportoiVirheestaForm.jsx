@@ -67,14 +67,16 @@ export const RaportoiVirheestäForm = ({henkilö, opiskeluoikeudet}) => {
       <div className='puuttuvat-tiedot form-section' data-indent={0}>
         <PuuttuvatTiedot/>
 
-        <input
-          type='checkbox'
-          id='puuttuvat-tiedot__checkbox'
-          onChange={event => hasAcceptedDisclaimer.set(event.target.checked)}
-        />
-        <label htmlFor='puuttuvat-tiedot__checkbox'>
-          <Text name='Asiani koskee tietoa, joka näkyy, tai kuuluisi yllämainitun perusteella näkyä Koski-palvelussa.'/>
-        </label>
+        <div className='labeled-option'>
+          <input
+            type='checkbox'
+            id='puuttuvat-tiedot__checkbox'
+            onChange={event => hasAcceptedDisclaimer.set(event.target.checked)}
+          />
+          <label htmlFor='puuttuvat-tiedot__checkbox'>
+            <Text name='Asiani koskee tietoa, joka näkyy, tai kuuluisi yllämainitun perusteella näkyä Koski-palvelussa.'/>
+          </label>
+        </div>
       </div>
 
       {ift(hasAcceptedDisclaimer, (
