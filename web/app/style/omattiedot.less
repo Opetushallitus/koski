@@ -29,6 +29,20 @@
       justify-content: space-between;
       min-height: 220px;
 
+      h2 {
+        margin-bottom: 1rem;
+      }
+
+      @media @media-phone {
+        justify-content: flex-start;
+        margin-top: 1.5rem;
+
+        button {
+          width: 100%;
+          margin: 1rem 0;
+        }
+      }
+
       .header {
         &__caption {
           display: flex;
@@ -44,6 +58,17 @@
           a {
             font-size: 0.85rem;
             line-height: 1.4rem;
+          }
+
+          @media @media-phone {
+            flex-direction: column;
+            flex-grow: 0;
+          }
+        }
+
+        &__info-toggle {
+          @media @media-phone {
+            margin: 0.5rem 0;
           }
         }
 
@@ -63,6 +88,14 @@
         &__bottom-row {
           display: flex;
           justify-content: space-between;
+
+          @media @media-phone {
+            flex-direction: column;
+
+            .header__name {
+              order: 1;
+            }
+          }
         }
       }
 
