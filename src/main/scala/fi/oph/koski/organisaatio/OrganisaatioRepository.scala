@@ -135,7 +135,7 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(i
     runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v3/${oid}")(Http.parseJsonOptional[OrganisaatioPalveluOrganisaatioV3]))
 
   private def extractSähköpostiVirheidenRaportointiin(org: OrganisaatioPalveluOrganisaatioV3): Option[SähköpostiVirheidenRaportointiin] = {
-    val YhteystietojenTyyppiKoski = "Not yet known"
+    val YhteystietojenTyyppiKoski = "1.2.246.562.5.79385887983"
     val YhteystietoElementtiTyyppiEmail = "Email"
     if (org.status != "AKTIIVINEN") {
       None
