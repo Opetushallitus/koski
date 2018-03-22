@@ -101,7 +101,8 @@ trait SSOSupport extends ScalatraBase with Logging {
 
   def localLoginPage = "/login"
 
-  private def cookieDomain = application.config.getString("koski.cookieDomain")
+  // don't set cookie domain for localhost (so that local Koski works with non-localhost IP address, e.g. phone in the same wifi)
+  private def cookieDomain = Some(application.config.getString("koski.cookieDomain")).filter(_ != "localhost").getOrElse("")
 }
 
 case class SSOConfig(config: Config) {
