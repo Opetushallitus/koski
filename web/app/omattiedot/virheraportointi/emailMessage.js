@@ -12,7 +12,7 @@ const VirheraporttiMessage = (() => {
   const details = (nimi, syntymäaika, oppijaoid) => [
     `${t('Nimi')}: ${nimi}`,
     syntymäaika && `${t('Syntymäaika')}: ${syntymäaika}`,
-    `${t('Oppijanumero')} (oid): ${oppijaoid}`
+    `${t('Oppijanumero')}: ${oppijaoid}`
   ].filter(v => !!v).join('\n')
 
   return {

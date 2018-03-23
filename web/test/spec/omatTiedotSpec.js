@@ -193,7 +193,7 @@ describe('Omat tiedot', function() {
                 expect(form.yhteystiedotTekstinä()).to.equal(
                   'Muista mainita sähköpostissa seuraavat tiedot:\n' +
                   'Nimi: Miia Monikoululainen\n' +
-                  'Oppijanumero (oid): 1.2.246.562.24.00000000009' +
+                  'Oppijanumero: 1.2.246.562.24.00000000009' +
                   ' ' +
                   'Kopioi'
                 )
@@ -209,7 +209,7 @@ describe('Omat tiedot', function() {
                     '———————————————————————————————\n\n' +
                     'Allaoleva teksti on luotu automaattisesti Opintopolun tiedoista. Koulu tarvitsee näitä tietoja pystyäkseen käsittelemään kysymystäsi.\n\n' +
                     'Nimi: Miia Monikoululainen\n' +
-                    'Oppijanumero (oid): 1.2.246.562.24.00000000009'
+                    'Oppijanumero: 1.2.246.562.24.00000000009'
                   )
                 )
               })
@@ -254,7 +254,7 @@ describe('Omat tiedot', function() {
                   expect(form.yhteystiedotTekstinä()).to.equal(
                     'Muista mainita sähköpostissa seuraavat tiedot:\n' +
                     'Nimi: Miia Monikoululainen\n' +
-                    'Oppijanumero (oid): 1.2.246.562.24.00000000009' +
+                    'Oppijanumero: 1.2.246.562.24.00000000009' +
                     ' ' +
                     'Kopioi'
                   )
