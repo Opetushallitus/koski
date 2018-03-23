@@ -11,7 +11,7 @@ import {Editor} from './editor/Editor'
 import Text from './i18n/Text'
 import editorMapping from './oppija/editors'
 import {userP} from './util/user'
-import {addContext, modelData, modelLookup} from './editor/EditorModel'
+import {addContext, modelData} from './editor/EditorModel'
 import {locationP} from './util/location'
 import {EiSuorituksia} from './EiSuorituksia'
 import {Header} from './omattiedot/Header'
@@ -65,7 +65,7 @@ const Oppija = ({oppija}) => {
     : (
       <div>
         <div className="oppija-content">
-          <Header henkilö={modelLookup(oppija, 'henkilö')}/>
+          <Header oppija={oppija}/>
           <Editor key={document.location.toString()} model={oppija}/>
         </div>
       </div>

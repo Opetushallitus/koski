@@ -41,6 +41,7 @@ a {
 
   &:disabled {
     background: @color-disabled;
+    cursor: default;
   }
 
   &.large {
@@ -51,6 +52,14 @@ a {
 
   &.confirm-delete {
     background: @color-delete;
+  }
+
+  &--success, &--success:hover, &--success:disabled {
+    background-color: @color-green;
+  }
+
+  &--error, &--error:hover, &--error:disabled {
+    background-color: @color-red;
   }
 }
 

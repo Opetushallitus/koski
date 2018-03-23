@@ -1,5 +1,22 @@
 @header-padding: 0 17px;
 
+.info-text() {
+  max-width: 800px;
+
+  p {
+    margin: 0 0 2rem 0;
+  }
+
+  b {
+    font-weight: 600;
+  }
+
+  li {
+    max-width: 600px;
+    margin: 1.5rem 0;
+  }
+}
+
 .omattiedot {
   &.content-area {
     margin-top: 0;
@@ -50,22 +67,16 @@
       }
 
       .tiedot-palvelussa {
-        margin: auto;
-        max-width: 800px;
-
-        p {
-          margin: 2rem 0;
-        }
-
-        li {
-          max-width: 600px;
-          margin: 1rem 0;
-        }
+        .info-text;
       }
     }
 
     .virheraportointi {
       padding: @header-padding;
+
+      .puuttuvat-tiedot {
+        .info-text;
+      }
     }
   }
 

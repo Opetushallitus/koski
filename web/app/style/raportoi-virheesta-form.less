@@ -1,0 +1,112 @@
+@indent-left: 40px;
+@copyable-text-height: 100px;
+@copyable-text-width: 450px;
+
+.raportoi-virheestä-form {
+  h3 {
+    font-size: 1rem;
+  }
+
+  .form-section {
+    &[data-indent='1'] {
+      margin-left: @indent-left;
+    }
+  }
+
+  .puuttuvat-tiedot {
+    &__info {
+      margin-bottom: 1.5rem;
+    }
+
+    input#puuttuvat-tiedot__checkbox {
+      position: absolute;
+      margin-left: 1rem;
+      width: 0.5 * @indent-left;
+    }
+
+    label {
+      margin-left: @indent-left;
+    }
+  }
+
+  .oppilaitos-options {
+    margin-top: 2.5rem;
+
+    ul {
+      list-style: none;
+      padding-left: 0.25 * @indent-left;
+
+      li {
+        margin: 1.5rem 0;
+
+        & > input[type='radio'] {
+          width: 0.5 * @indent-left;
+          min-width: 20px;
+        }
+
+        & > label {
+          margin-left: 0.25 * @indent-left;
+        }
+      }
+    }
+
+    .oppilaitos-picker {
+      max-width: 410px;
+      & > label {
+        margin-bottom: 0.5rem;
+      }
+
+      & > .organisaatio {
+        & > .organisaatio-selection {
+          margin-top: 0.5rem;
+          line-height: 35px;
+        }
+      }
+    }
+  }
+
+  .yhteystieto {
+    display: flex;
+    height: 80px;
+
+    &__heading {
+      width: 50%;
+      max-width: 350px;
+    }
+
+    &__contact-info {
+      width: 25%;
+
+      & > span {
+        display: block;
+      }
+    }
+
+    &__linkki {
+      width: 25%;
+    }
+  }
+
+  .copyable-text {
+    &__heading {
+      margin-bottom: 1rem;
+    }
+
+    & > textarea {
+      resize: none;
+      height: @copyable-text-height;
+      width: @copyable-text-width;
+      border-right: none;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      box-shadow: none;
+    }
+
+    & > button {
+      height: @copyable-text-height;
+      vertical-align: top;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+}

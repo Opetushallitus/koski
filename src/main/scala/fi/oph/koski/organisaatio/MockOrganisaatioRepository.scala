@@ -91,4 +91,12 @@ object MockOrganisaatioRepository extends JsonOrganisaatioRepository(MockKoodist
       }
     }
   }
+
+  override def findSähköpostiVirheidenRaportointiin(oid: String): Option[SähköpostiVirheidenRaportointiin] = {
+    if (oid == MockOrganisaatiot.kulosaarenAlaAste) {
+      None
+    } else {
+      getOrganisaatioHierarkia(oid).map(h => SähköpostiVirheidenRaportointiin(h.oid, h.nimi, "joku.osoite@example.com"))
+    }
+  }
 }

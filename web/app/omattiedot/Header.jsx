@@ -3,10 +3,10 @@ import Atom from 'bacon.atom'
 import Text from '../i18n/Text'
 import {ift} from '../util/util'
 import {ISO2FinnishDate} from '../date/date'
-import {modelData, modelTitle} from '../editor/EditorModel'
+import {modelData, modelItems, modelLookup, modelTitle} from '../editor/EditorModel'
 import {Popup} from '../components/Popup'
 import {TiedotPalvelussa} from './TiedotPalvelussa'
-import {Virheraportointi} from './Virheraportointi'
+import {RaportoiVirheestäForm} from './virheraportointi/RaportoiVirheestaForm'
 import {withFeatureFlag} from '../components/withFeatureFlag'
 
 const togglePopup = stateA => () => stateA.modify(v => !v)
@@ -37,7 +37,7 @@ const HeaderInfo = ({henkilö, showPalvelussaNäkyvätTiedotA, showVirheraportoi
         <div>
           <ToggleButton
             toggleA={showPalvelussaNäkyvätTiedotA}
-            text={'Mitkä tiedot palvelussa näkyvät?'}
+            text='Mitkä tiedot palvelussa näkyvät?'
             style='text'
           />
         </div>
@@ -55,30 +55,36 @@ const HeaderInfo = ({henkilö, showPalvelussaNäkyvätTiedotA, showVirheraportoi
 
         <VirheraportointiButton
           toggleA={showVirheraportointiA}
-          text={'Suorituksissani on virhe'}
+          text='Onko suorituksissasi virhe?'
         />
       </div>
     </header>
   )
 }
 
-const VirheraportointiDialog = ({showVirheraportointiA}) => (
+const VirheraportointiDialog = ({showVirheraportointiA, henkilö, opiskeluoikeudet}) => (
   <div>
     {ift(showVirheraportointiA,
       <div className='virheraportointi'>
         <Popup showStateAtom={showVirheraportointiA} inline={true}>
-          <Virheraportointi/>
+          <RaportoiVirheestäForm
+            henkilö={henkilö}
+            opiskeluoikeudet={opiskeluoikeudet}
+          />
         </Popup>
       </div>
     )}
   </div>
 )
 
-export const Header = ({henkilö}) => {
+export const Header = ({oppija}) => {
   const showPalvelussaNäkyvätTiedot = Atom(false)
   const showVirheraportointi = Atom(false)
 
   const VirheraportointiFeature = withFeatureFlag(FEATURE.OMAT_TIEDOT.VIRHERAPORTOINTI, VirheraportointiDialog)
+
+  const henkilö = modelLookup(oppija, 'henkilö')
+  const opiskeluoikeudet = modelItems(oppija, 'opiskeluoikeudet')
 
   return (
     <div>
@@ -88,7 +94,11 @@ export const Header = ({henkilö}) => {
         showVirheraportointiA={showVirheraportointi}
       />
 
-      <VirheraportointiFeature showVirheraportointiA={showVirheraportointi}/>
+      <VirheraportointiFeature
+        showVirheraportointiA={showVirheraportointi}
+        henkilö={henkilö}
+        opiskeluoikeudet={opiskeluoikeudet}
+      />
     </div>
   )
 }
