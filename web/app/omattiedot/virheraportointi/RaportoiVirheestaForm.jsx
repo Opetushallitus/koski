@@ -48,10 +48,10 @@ export const RaportoiVirheestäForm = ({henkilö, opiskeluoikeudet}) => {
 
   const yhteystietoP = selectedOppilaitosA
     .map(oid => oid === OtherOppilaitosValue ? null : oid)
-    .flatMap(oid => oid
+    .flatMapLatest(oid => oid
       ? Http.cachedGet(
         `/koski/api/organisaatio/sahkoposti-virheiden-raportointiin?organisaatio=${oid}`, {
-          errorMapper: e => e.httpStatus === 404 ? ({email: null}) : e
+          errorMapper: e => e.httpStatus === 404 ? ({email: null}) : new Bacon.Error(e)
         }
       )
       : Bacon.once(null)
@@ -61,6 +61,11 @@ export const RaportoiVirheestäForm = ({henkilö, opiskeluoikeudet}) => {
   const isOtherOptionSelectedA = selectedOppilaitosA.map(
     selectedOption => selectedOption ? !oppilaitokset.map(o => o.oid).includes(selectedOption) : false
   )
+
+  const isLoadingP = Bacon.mergeAll(
+    yhteystietoP.map(false),
+    selectedOppilaitosA.filter(oid => oid !== OtherOppilaitosValue).map(true).changes()
+  ).startWith(false).skipDuplicates()
 
   return (
     <div className='raportoi-virheestä-form'>
@@ -99,7 +104,7 @@ export const RaportoiVirheestäForm = ({henkilö, opiskeluoikeudet}) => {
 
           {ift(isOtherOptionSelectedA, <OppilaitosPicker oppilaitosAtom={selectedOppilaitosA}/>)}
 
-          <Yhteystiedot henkilö={henkilö} yhteystietoP={yhteystietoP}/>
+          <Yhteystiedot henkilö={henkilö} yhteystietoP={yhteystietoP} isLoadingP={isLoadingP}/>
         </div>
       ))}
     </div>
