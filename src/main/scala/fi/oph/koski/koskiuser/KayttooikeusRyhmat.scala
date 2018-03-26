@@ -5,11 +5,11 @@ import fi.oph.koski.koskiuser.Rooli._
 object Käyttöoikeusryhmät {
   private var ryhmät: List[Käyttöoikeusryhmä] = Nil
 
-  val oppilaitosKatselija = add(OrganisaationKäyttöoikeusryhmä("KOSKI-katselija", "oman organisaation suoritus- ja opiskeluoikeustietojen katselu", List(Palvelurooli(READ), Palvelurooli(LUOTTAMUKSELLINEN))))
-  val oppilaitosTallentaja = add(OrganisaationKäyttöoikeusryhmä("KOSKI-tallentaja", "tietojen muokkaaminen (suoritus ja opiskelijatietojen tallentaja, oppilaitos: lisäys, muokkaus) käyttöliittymässä", List(Palvelurooli(READ), Palvelurooli(READ_UPDATE), Palvelurooli(LUOTTAMUKSELLINEN))))
-  val oppilaitosPalvelukäyttäjä = add(OrganisaationKäyttöoikeusryhmä("KOSKI-palvelukäyttäjä", "palvelutunnus tiedonsiirroissa: tietojen muokkaaminen (suoritus ja opiskelijatietojen tallentaja, oppilaitos: lisäys, muokkaus, passivointi)", List(Palvelurooli(READ), Palvelurooli(READ_UPDATE), Palvelurooli(TIEDONSIIRTO), Palvelurooli(LUOTTAMUKSELLINEN))))
-  val oppilaitosPääkäyttäjä = add(OrganisaationKäyttöoikeusryhmä("KOSKI-pääkäyttäjä", "tietojen katselu ja mitätöinti käyttöliittymässä", List(Palvelurooli(READ), Palvelurooli(TIEDONSIIRRON_MITATOINTI), Palvelurooli(LUOTTAMUKSELLINEN))))
-  val vastuukäyttäjä = add(OrganisaationKäyttöoikeusryhmä("Vastuukayttajat", "organisaation vastuukäyttäjä, jolle Koski lähettää tiedonsiirtojen virhe-sähköpostit", List(Palvelurooli(READ))))
+  val oppilaitosKatselija = add(OrganisaationKäyttöoikeusryhmä("KOSKI-katselija", "koski-oppilaitos-katselija_1477661680227", "oman organisaation suoritus- ja opiskeluoikeustietojen katselu", List(Palvelurooli(READ), Palvelurooli(LUOTTAMUKSELLINEN))))
+  val oppilaitosTallentaja = add(OrganisaationKäyttöoikeusryhmä("KOSKI-tallentaja", "koski-oppilaitos-tallentaja_1477661680083", "tietojen muokkaaminen (suoritus ja opiskelijatietojen tallentaja, oppilaitos: lisäys, muokkaus) käyttöliittymässä", List(Palvelurooli(READ), Palvelurooli(READ_UPDATE), Palvelurooli(LUOTTAMUKSELLINEN))))
+  val oppilaitosPalvelukäyttäjä = add(OrganisaationKäyttöoikeusryhmä("KOSKI-palvelukäyttäjä", "koski-oppilaitos-palvelukäyttäjä_1477661679970", "palvelutunnus tiedonsiirroissa: tietojen muokkaaminen (suoritus ja opiskelijatietojen tallentaja, oppilaitos: lisäys, muokkaus, passivointi)", List(Palvelurooli(READ), Palvelurooli(READ_UPDATE), Palvelurooli(TIEDONSIIRTO), Palvelurooli(LUOTTAMUKSELLINEN))))
+  val oppilaitosPääkäyttäjä = add(OrganisaationKäyttöoikeusryhmä("KOSKI-pääkäyttäjä", "koski-oppilaitos-pääkäyttäjä_1494486198456", "tietojen katselu ja mitätöinti käyttöliittymässä", List(Palvelurooli(READ), Palvelurooli(TIEDONSIIRRON_MITATOINTI), Palvelurooli(LUOTTAMUKSELLINEN))))
+  val vastuukäyttäjä = add(OrganisaationKäyttöoikeusryhmä("Vastuukayttajat", "Vastuukayttajat", "organisaation vastuukäyttäjä, jolle Koski lähettää tiedonsiirtojen virhe-sähköpostit", List(Palvelurooli(READ))))
 
   val ophPääkäyttäjä = add(GlobaaliKäyttöoikeusryhmä("koski-oph-pääkäyttäjä", "CRUP-oikeudet (lisäys, muokkaus, passivointi) Koskessa", List(Palvelurooli(OPHPAAKAYTTAJA), Palvelurooli(YLLAPITAJA), Palvelurooli(LUOTTAMUKSELLINEN))))
   val ophKatselija = add(GlobaaliKäyttöoikeusryhmä("koski-oph-katselija", "näkee kaikki Koski-tiedot", List(Palvelurooli(OPHKATSELIJA), Palvelurooli(LUOTTAMUKSELLINEN))))

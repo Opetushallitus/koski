@@ -11,7 +11,7 @@ import fi.oph.koski.henkilo.oppijanumerorekisteriservice.{KäyttäjäHenkilö, O
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory, _}
 import fi.oph.koski.koskiuser.KoskiSession.systemUser
-import fi.oph.koski.koskiuser.{Käyttöoikeusryhmä, Käyttöoikeusryhmät, MockUsers}
+import fi.oph.koski.koskiuser.{MockUsers, OrganisaationKäyttöoikeusryhmä}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotRepository
 import fi.oph.koski.schema.Henkilö.Oid
@@ -199,7 +199,10 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
 
   override def organisaationSähköpostit(organisaatioOid: String, ryhmä: String): List[String] =
     MockUsers.users.filter(_.käyttöoikeudet.exists { case (oid, käyttöoikeusryhmä) =>
-      organisaatioOid == oid && käyttöoikeusryhmä.nimi == ryhmä
+      käyttöoikeusryhmä match {
+        case o: OrganisaationKäyttöoikeusryhmä => organisaatioOid == oid && o.tunniste == ryhmä
+        case _ => false
+      }
     }).map(_.username + "@example.com")
 
   override def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] = synchronized {
