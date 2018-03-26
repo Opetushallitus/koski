@@ -249,7 +249,7 @@ function extractAsText(el, subElement) {
 
   var isBlockElement =
     element.tagName == "SECTION" ||
-    ["block", "table", "table-row", "table-row-group", "list-item"].indexOf((element.currentStyle || window.getComputedStyle(element, "")).display) >= 0
+    ["block", "table", "table-row", "table-row-group", "list-item", "flex"].indexOf((element.currentStyle || window.getComputedStyle(element, "")).display) >= 0
 
   var separator = (isBlockElement ? "\n" : "")
   var text = sanitizeText(separator + extractMultiple(element.childNodes) + separator)
