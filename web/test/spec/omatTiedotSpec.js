@@ -49,8 +49,11 @@ describe('Omat tiedot', function() {
           )
         })
 
-        it('Näytetään nimi', function() {
-          expect(omattiedot.headerNimi()).to.equal('Väinö Tõnis Kansalainen')
+        it("Näytetään nimi ja syntymäaika", function() {
+          expect(omattiedot.headerNimi()).to.equal(
+            'Väinö Tõnis Kansalainen\n' +
+            's. 3.6.1958'
+          )
         })
 
         it("Näytetään 'Mitkä tiedot palvelussa näkyvät?' -painike", function() {
@@ -112,7 +115,7 @@ describe('Omat tiedot', function() {
         })
       })
 
-      describe('Kun henkilöllä on syntymäaika', function () {
+      describe('Kun henkilöllä on syntymäaika-tieto', function () {
         before(authentication.logout, etusivu.openPage)
         before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('010170-9173'), wait.until(omattiedot.isVisible))
 
@@ -193,6 +196,7 @@ describe('Omat tiedot', function() {
                 expect(form.yhteystiedotTekstinä()).to.equal(
                   'Muista mainita sähköpostissa seuraavat tiedot:\n' +
                   'Nimi: Miia Monikoululainen\n' +
+                  'Syntymäaika: 18.4.1997\n' +
                   'Oppijanumero: 1.2.246.562.24.00000000009' +
                   ' ' +
                   'Kopioi'
@@ -209,6 +213,7 @@ describe('Omat tiedot', function() {
                     '———————————————————————————————\n\n' +
                     'Allaoleva teksti on luotu automaattisesti Opintopolun tiedoista. Koulu tarvitsee näitä tietoja pystyäkseen käsittelemään kysymystäsi.\n\n' +
                     'Nimi: Miia Monikoululainen\n' +
+                    'Syntymäaika: 18.4.1997\n' +
                     'Oppijanumero: 1.2.246.562.24.00000000009'
                   )
                 )
@@ -254,6 +259,7 @@ describe('Omat tiedot', function() {
                   expect(form.yhteystiedotTekstinä()).to.equal(
                     'Muista mainita sähköpostissa seuraavat tiedot:\n' +
                     'Nimi: Miia Monikoululainen\n' +
+                    'Syntymäaika: 18.4.1997\n' +
                     'Oppijanumero: 1.2.246.562.24.00000000009' +
                     ' ' +
                     'Kopioi'

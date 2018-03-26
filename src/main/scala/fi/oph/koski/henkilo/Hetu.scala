@@ -11,6 +11,17 @@ object Hetu {
   val checkChars = List('0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','H','J','K','L','M','N','P','R','S','T','U','V','W','X','Y')
   val hetuRegex: Regex = "^([012][0-9]|3[01])(0[1-9]|1[0-2])([0-9]{2})(A|-|\\+)([0-9]{3})([0-9A-FHJ-NPR-Y])$".r
 
+  private def century(hetu: String): Option[Int] = hetu.lift(6) match {
+    case Some('+') => Some(1800)
+    case Some('-') => Some(1900)
+    case Some('A') => Some(2000)
+    case _  => None
+  }
+
+  private def birthday(hetu: String, century: Int): LocalDate = {
+    date(century + hetu.slice(4, 6).toInt, hetu.slice(2, 4).toInt, hetu.slice(0, 2).toInt)
+  }
+
   def validFormat(hetu: String): Either[HttpStatus, String] with Product with Serializable = {
     hetuRegex.findFirstIn(hetu) match {
       case Some(_) => Right(hetu)
@@ -20,16 +31,9 @@ object Hetu {
 
   def validate(hetu: String, acceptSynthetic: Boolean = false): Either[HttpStatus, String] = {
     def validDate(hetu: String) = {
-      val century = hetu.lift(6) match {
-        case Some('+') => Some(1800)
-        case Some('-') => Some(1900)
-        case Some('A') => Some(2000)
-        case _  => None
-      }
       try {
-        century.flatMap { century =>
-          val birthday: LocalDate = date(century + hetu.slice(4, 6).toInt, hetu.slice(2, 4).toInt, hetu.slice(0, 2).toInt)
-          if (birthday.isBefore(now)) Some(hetu) else None
+        century(hetu).flatMap { century =>
+          if (birthday(hetu, century).isBefore(now)) Some(hetu) else None
         } match {
           case Some(_) =>
             if (!acceptSynthetic && hetu.substring(7, 8) == "9") {
@@ -49,5 +53,9 @@ object Hetu {
       if (checkChar == hetu.last) Right(hetu) else Left(KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu("Virheellinen tarkistusmerkki hetussa: " + hetu))
     }
     validFormat(hetu).right.flatMap(validDate(_).right.flatMap(validCheckChar))
+  }
+
+  def toBirthday(hetu: String): Option[LocalDate] = {
+    century(hetu).flatMap { century => Some(birthday(hetu, century)) }
   }
 }
