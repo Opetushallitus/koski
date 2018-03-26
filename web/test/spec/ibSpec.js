@@ -612,6 +612,47 @@ describe('IB', function( ) {
                 expect(tok.arvosana.getText()).to.equal('B')
               })
             })
+
+            describe('Kurssin', function() {
+              before(editor.edit)
+
+              describe('Arvosanan muuttaminen', function() {
+                var kurssi = tok.asOppiaine.kurssi('TOK1')
+
+                before(kurssi.arvosana.selectValue('5'), editor.saveChanges, wait.until(page.isSavedLabelShown))
+
+                it('toimii', function() {
+                  expect(kurssi.arvosana.getText()).to.equal('5')
+                })
+              })
+
+              describe('Lisääminen', function () {
+                before(
+                  editor.edit,
+                  tok.asOppiaine.lisääPaikallinenKurssi('PAIK'),
+                  tok.asOppiaine.kurssi('PAIK').arvosana.selectValue('3'),
+                  editor.saveChanges,
+                  wait.until(page.isSavedLabelShown)
+                )
+
+                it('toimii', function () {
+                  expect(extractAsText(S('.theoryOfKnowledge'))).to.contain('PAIK')
+                })
+              })
+
+              describe('Poistaminen', function () {
+                before(
+                  editor.edit,
+                  tok.asOppiaine.kurssi('PAIK').poistaKurssi,
+                  editor.saveChanges,
+                  wait.until(page.isSavedLabelShown)
+                )
+
+                it('toimii', function () {
+                  expect(extractAsText(S('.theoryOfKnowledge'))).to.not.contain('PAIK')
+                })
+              })
+            })
           })
 
           describe('Creativity, action, service', function () {

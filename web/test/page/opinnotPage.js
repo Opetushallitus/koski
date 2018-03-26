@@ -456,7 +456,8 @@ function IBSuoritukset() {
           return function() {
             var ee = Editor(elem)
             return {
-              arvosana: ee.property('theoryOfKnowledge .arviointi')
+              arvosana: ee.property('theoryOfKnowledge .arviointi'),
+              asOppiaine: Oppiaine('.theoryOfKnowledge')
             }
           }()
         case 'creativityActionService':
