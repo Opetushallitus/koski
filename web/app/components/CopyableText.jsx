@@ -12,19 +12,21 @@ const CopyState = {
 const ConfirmationDuration = 2000
 
 const copyToClipboard = (message, copyState) => () => {
+  const el = document.createElement('textarea')
+
   try {
-    const el = document.createElement('textarea')
     el.value = message
     el.setAttribute('readonly', '')
     document.body.appendChild(el)
     el.select()
     el.setSelectionRange(0, el.value.length)
     document.execCommand('copy')
-    document.body.removeChild(el)
     copyState.set(CopyState.SUCCESS)
     Bacon.later(ConfirmationDuration, CopyState.PENDING).onValue(v => copyState.set(v))
   } catch(e) {
     copyState.set(CopyState.ERROR)
+  } finally {
+    document.body.contains(el) && document.body.removeChild(el)
   }
 }
 
