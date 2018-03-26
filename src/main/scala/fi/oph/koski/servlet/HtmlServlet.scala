@@ -35,14 +35,12 @@ trait HtmlServlet extends KoskiBaseServlet with AuthenticationSupport with HtmlN
     }
 
     response.setStatus(status.statusCode)
-    contentType = "text/html"
-    response.writer.print(html)
+    renderHtml(html)
   }
 
   override def renderObject[T: ru.TypeTag](x: T) = x match {
     case e: Elem =>
-      contentType = "text/html"
-      response.writer.print(e.toString)
+      renderHtml(e)
     case _ =>
       logger.error("HtmlServlet cannot render " + x)
       renderStatus(KoskiErrorCategory.internalError())
