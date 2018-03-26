@@ -17,6 +17,7 @@ const copyToClipboard = (message, copyState) => () => {
     el.value = message
     document.body.appendChild(el)
     el.select()
+    el.setSelectionRange(0, el.value.length)
     document.execCommand('copy')
     document.body.removeChild(el)
     copyState.set(CopyState.SUCCESS)
