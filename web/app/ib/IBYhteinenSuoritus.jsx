@@ -1,16 +1,20 @@
 import React from 'react'
 
-import {ArvosanaEditor} from '../suoritus/ArvosanaEditor'
-import {modelLookup, wrapOptional} from '../editor/EditorModel'
+import {modelItems, modelLookup, wrapOptional} from '../editor/EditorModel'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {SelectAlternativeByEnumValueEditor} from '../editor/SelectAlternativeByEnumValueEditor'
+import {KurssitEditor} from '../kurssi/KurssitEditor'
+import {ArvosanaEditor} from '../suoritus/ArvosanaEditor'
 
-const yhteisetEditorit = model => (
+const YhteisetEditorit = ({model}) => (
+  (model.context.edit || modelItems(model, 'arviointi').length > 0) &&
   <div className='arviointi'>
-    <ArvosanaEditor
-      model={wrapOptional(model)}
-      key={'arvosana'}
-    />
+    {
+      <ArvosanaEditor
+        model={wrapOptional(model)}
+        key={'arvosana'}
+      />
+    }
     {model.context.edit &&
     <PropertiesEditor
       model={modelLookup(model, 'arviointi.-1')}
@@ -20,8 +24,14 @@ const yhteisetEditorit = model => (
   </div>
 )
 
-const TheoryOfKnowledge = ({model}) => <div>{yhteisetEditorit(model)}</div>
-const CreativityActionService = ({model}) => <div>{yhteisetEditorit(model)}</div>
+const CreativityActionService = ({model}) => <YhteisetEditorit model={model}/>
+
+const TheoryOfKnowledge = ({model}) => (
+  <div>
+    <YhteisetEditorit model={model}/>
+    <KurssitEditor model={wrapOptional(model)}/>
+  </div>
+)
 
 const ExtendedEssay = ({model}) => {
   const tunniste = (
@@ -51,7 +61,7 @@ const ExtendedEssay = ({model}) => {
   return (
     <div>
       {model.context.edit && aineJaAihe}
-      {yhteisetEditorit(model)}
+      <YhteisetEditorit model={model}/>
     </div>
   )
 }
