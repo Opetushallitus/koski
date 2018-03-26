@@ -9,6 +9,7 @@ import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
 import fi.oph.koski.schema.annotation._
 import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.scalaschema.annotation._
+import mojave.{Traversal, traversal}
 
 @Description("Perusopetuksen opiskeluoikeus")
 case class PerusopetuksenOpiskeluoikeus(
@@ -31,6 +32,35 @@ case class PerusopetuksenOpiskeluoikeus(
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
   override def arvioituPäättymispäivä = None
+}
+
+object PerusopetuksenOpiskeluoikeus {
+  val päätasonSuorituksetTraversal: Traversal[Oppija, Suoritus] = traversal[Oppija]
+    .field[Seq[Opiskeluoikeus]]("opiskeluoikeudet").items
+    .ifInstanceOf[PerusopetuksenOpiskeluoikeus]
+    .field[List[Suoritus]]("suoritukset").items
+
+  val oppimääränArvioinnitTraversal: Traversal[Suoritus, Option[List[Arviointi]]] = traversal[Suoritus]
+    .ifInstanceOf[PerusopetuksenOppimääränSuoritus]
+    .field[Option[List[Suoritus]]]("osasuoritukset").items.items
+    .field[Option[List[Arviointi]]]("arviointi")
+
+  val vuosiluokanArvioinnitTraversal: Traversal[Suoritus, Option[List[Arviointi]]] = {
+    traversal[Suoritus]
+      .ifInstanceOf[PerusopetuksenVuosiluokanSuoritus]
+      .field[Option[List[OppiaineenTaiToiminta_AlueenSuoritus]]]("osasuoritukset").items.items
+      .field[Option[List[Arviointi]]]("arviointi")
+  }
+
+  val käyttäytymisenArviointiTraversal: Traversal[Suoritus, Option[PerusopetuksenKäyttäytymisenArviointi]] = {
+    traversal[Suoritus]
+      .ifInstanceOf[PerusopetuksenVuosiluokanSuoritus]
+      .field[Option[PerusopetuksenKäyttäytymisenArviointi]]("käyttäytymisenArvio")
+  }
+
+  val oppiaineenOppimääränArvioinnitTraversal: Traversal[Suoritus, Option[List[Arviointi]]] = traversal[Suoritus]
+    .ifInstanceOf[NuortenPerusopetuksenOppiaineenOppimääränSuoritus]
+    .field[Option[List[Arviointi]]]("arviointi")
 }
 
 case class PerusopetuksenOpiskeluoikeudenLisätiedot(

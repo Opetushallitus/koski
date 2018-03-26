@@ -1,5 +1,7 @@
 package fi.oph.koski.editor
 
+import java.time.LocalDate
+
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.OppijaEditorModel.toEditorModel
 import fi.oph.koski.henkilo.HenkilöOid
@@ -9,10 +11,12 @@ import fi.oph.koski.json.LegacyJsonSerialization
 import fi.oph.koski.koodisto.KoodistoViite
 import fi.oph.koski.koskiuser.{AccessType, RequiresAuthentication}
 import fi.oph.koski.preferences.PreferencesService
+import fi.oph.koski.schema.PerusopetuksenOpiskeluoikeus._
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.todistus.LocalizedHtml
 import fi.oph.koski.validation.ValidationAndResolvingContext
+import mojave.{Traversal, traversal}
 import org.json4s.jackson.Serialization
 
 /**
@@ -191,6 +195,21 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
 
   private def findByUserOppija: Either[HttpStatus, EditorModel] = {
     val oppija: Either[HttpStatus, Oppija] = application.oppijaFacade.findUserOppija
-    oppija.right.map(oppija => OmatTiedotEditorModel.toEditorModel(oppija))
+    oppija.right.map { oppija =>
+      OmatTiedotEditorModel.toEditorModel(piilotaArvosanatKeskeneräisistäSuorituksista(oppija))
+    }
+  }
+
+  private def piilotaArvosanatKeskeneräisistäSuorituksista(oppija: Oppija) = {
+    val keskeneräisetTaiLiianÄskettäinVahvistetut = traversal[Suoritus].filter { s =>
+      s.vahvistus.isEmpty || !s.vahvistus.exists { v => v.päivä.plusDays(4).isBefore(LocalDate.now())}
+    }.compose(päätasonSuorituksetTraversal)
+
+    val piilotettavatOppiaineidenArvioinnit = (oppimääränArvioinnitTraversal ++ vuosiluokanArvioinnitTraversal ++ oppiaineenOppimääränArvioinnitTraversal).compose(keskeneräisetTaiLiianÄskettäinVahvistetut)
+    val piilotettavaKäyttäytymisenArviointi = käyttäytymisenArviointiTraversal.compose(keskeneräisetTaiLiianÄskettäinVahvistetut)
+
+    List(piilotettavaKäyttäytymisenArviointi, piilotettavatOppiaineidenArvioinnit).foldLeft(oppija) { (oppija, traversal) =>
+      traversal.set(oppija)(None)
+    }
   }
 }
