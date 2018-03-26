@@ -40,7 +40,7 @@ const OppilaitoksenOpiskeluoikeudet = ({oppijaOid, oppilaitos, selected}) => (
 const OppilaitosOtsikkotiedot = ({oppilaitos, selected}) => {
   // FIXME Refaktoroi tätä?
   return (
-    <div className="oppilaitos-nav-otsikkotiedot">
+    <Link className="oppilaitos-nav-otsikkotiedot" href={selected ? '?' : '?oppilaitos=' + modelData(oppilaitos, 'oppilaitos.oid')}>
       <div>
         <h3>{modelTitle(oppilaitos, 'oppilaitos')}</h3>
         <ul className="opiskeluoikeudet">
@@ -62,10 +62,8 @@ const OppilaitosOtsikkotiedot = ({oppilaitos, selected}) => {
         </ul>
       </div>
       <div>
-        {selected
-          ? <Link href="?" className="open"/>
-          : <Link href={'?oppilaitos=' + modelData(oppilaitos, 'oppilaitos.oid')}/>}
+        <span className={selected ? 'open' : ''}/>
       </div>
-    </div>
+    </Link>
   )
 }
