@@ -21,6 +21,7 @@ import fi.oph.koski.perustiedot.{KoskiElasticSearchIndex, OpiskeluoikeudenPerust
 import fi.oph.koski.pulssi.{KoskiPulssi, PrometheusRepository}
 import fi.oph.koski.schedule.{KoskiScheduledTasks, PerustiedotSyncScheduler}
 import fi.oph.koski.sso.KoskiSessionRepository
+import fi.oph.koski.suoritusjako.{SuoritusjakoRepository, SuoritusjakoService}
 import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoFailureMailer, TiedonsiirtoService}
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.userdirectory.DirectoryClient
@@ -73,6 +74,8 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val perustiedotIndexer = new OpiskeluoikeudenPerustiedotIndexer(config, koskiElasticSearchIndex, opiskeluoikeusQueryRepository, perustiedotSyncRepository)
   lazy val perustiedotSyncScheduler = new PerustiedotSyncScheduler(this)
   lazy val oppijaFacade = new KoskiOppijaFacade(henkilöRepository, henkilöCache, opiskeluoikeusRepository, historyRepository, perustiedotIndexer, config)
+  lazy val suoritusjakoRepository = new SuoritusjakoRepository(masterDatabase.db)
+  lazy val suoritusjakoService = new SuoritusjakoService(suoritusjakoRepository, oppijaFacade)
   lazy val sessionTimeout = SessionTimeout(config)
   lazy val koskiSessionRepository = new KoskiSessionRepository(masterDatabase.db, sessionTimeout)
   lazy val fixtureCreator = new FixtureCreator(this)

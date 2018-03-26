@@ -7,8 +7,10 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables.OpiskeluoikeusTable
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonManipulation.removeFields
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.schema._
+import fi.oph.koski.suoritusjako.SuoritusIdentifier
 import fi.oph.scalaschema.extraction.ValidationError
 import fi.oph.scalaschema.{Serializer, _}
 import org.json4s._
@@ -128,6 +130,16 @@ object Tables {
     def * = (organisaatioOid, `type`, key, value) <> (PreferenceRow.tupled, PreferenceRow.unapply)
   }
 
+  class SuoritusjakoTable(tag: Tag) extends Table[SuoritusjakoRow] (tag, "suoritusjako") {
+    val uuid = column[String]("uuid", O.PrimaryKey)
+    val oppijaOid = column[String]("oppija_oid")
+    val suoritusIds = column[JValue]("suoritus_ids")
+    val voimassaAsti = column[Timestamp]("voimassa_asti")
+    val aikaleima = column[Timestamp]("aikaleima")
+
+    def * = (uuid, oppijaOid, suoritusIds, voimassaAsti, aikaleima) <> (SuoritusjakoRow.tupled, SuoritusjakoRow.unapply)
+  }
+
   class FaileLoginAttemptTable(tag: Tag) extends Table[FailedLoginAttemptRow] (tag, "failed_login_attempt") {
     val username = column[String]("username", O.PrimaryKey)
     val time = column[Timestamp]("time", O.PrimaryKey)
@@ -163,6 +175,8 @@ object Tables {
   }
 
   val Preferences = TableQuery[PreferencesTable]
+
+  val SuoritusJako = TableQuery[SuoritusjakoTable]
 
   val FailedLoginAttempt = TableQuery[FaileLoginAttemptTable]
 
@@ -231,6 +245,8 @@ case class PerustiedotSyncRow(id: Int = 0, opiskeluoikeusId: Int, data: JValue, 
 case class OppilaitosIPOsoiteRow(username: String, ip: String)
 
 case class PreferenceRow(organisaatioOid: String, `type`: String, key: String, value: JValue)
+
+case class SuoritusjakoRow(uuid: String, oppijaOid: String, suoritusIds: JValue, voimassaAsti: Timestamp, aikaleima: Timestamp)
 
 case class FailedLoginAttemptRow(username: String, time: Timestamp, count: Int)
 
