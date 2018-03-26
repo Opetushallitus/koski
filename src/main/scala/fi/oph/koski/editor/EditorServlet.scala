@@ -204,7 +204,6 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
     val keskeneräisetTaiLiianÄskettäinVahvistetut = traversal[Suoritus].filter { s =>
       s.vahvistus.isEmpty || !s.vahvistus.exists { v => v.päivä.plusDays(4).isBefore(LocalDate.now())}
     }.compose(päätasonSuorituksetTraversal)
-
     val piilotettavatOppiaineidenArvioinnit = (oppimääränArvioinnitTraversal ++ vuosiluokanArvioinnitTraversal ++ oppiaineenOppimääränArvioinnitTraversal).compose(keskeneräisetTaiLiianÄskettäinVahvistetut)
     val piilotettavaKäyttäytymisenArviointi = käyttäytymisenArviointiTraversal.compose(keskeneräisetTaiLiianÄskettäinVahvistetut)
 
