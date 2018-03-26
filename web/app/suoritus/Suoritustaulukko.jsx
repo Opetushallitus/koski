@@ -68,7 +68,7 @@ export class Suoritustaulukko extends React.Component {
     let laajuusYksikkö = t(modelData(laajuusModel, 'yksikkö.lyhytNimi'))
     let showTila = !näyttötutkintoonValmistava(parentSuoritus)
     let showExpandAll = suoritukset.some(s => suoritusProperties(s).length > 0)
-    let columns = [TutkintokertaColumn, SuoritusColumn, PakollisuusColumn, LaajuusColumn, ArvosanaColumn].filter(column => column.shouldShow({parentSuoritus, suorituksetModel, suoritukset, suoritusProto, context}))
+    let columns = [TutkintokertaColumn, SuoritusColumn, LaajuusColumn, ArvosanaColumn].filter(column => column.shouldShow({parentSuoritus, suorituksetModel, suoritukset, suoritusProto, context}))
 
     return !suoritustapa && context.edit && isAmmatillinenTutkinto
         ? <Text name="Valitse ensin tutkinnon suoritustapa" />
@@ -188,16 +188,20 @@ const suoritusProperties = suoritus => {
     const simplifiedArviointi = modelProperties(modelLookup(suoritus, 'arviointi.-1'),
       p => !(['arvosana', 'päivä', 'arvioitsijat']).includes(p.key)
     )
+    let showPakollinen = (tyyppi !== 'nayttotutkintoonvalmistavakoulutus') && modelData(suoritus, 'koulutusmoduuli.pakollinen') !== undefined
+    const pakollinen = showPakollinen ? modelProperties(modelLookup(suoritus, 'koulutusmoduuli'), p => p.key === 'pakollinen') : []
 
-    const defaultsForEdit = includeProperties('näyttö', 'tunnustettu', 'lisätiedot')
-    const defaultsForView = excludeProperties('koulutusmoduuli', 'arviointi', 'tutkinnonOsanRyhmä', 'tutkintokerta')
+    const defaultsForEdit = pakollinen
+      .concat(includeProperties('näyttö', 'tunnustettu', 'lisätiedot'))
+    const defaultsForView = pakollinen
+      .concat(excludeProperties('koulutusmoduuli', 'arviointi', 'tutkinnonOsanRyhmä', 'tutkintokerta'))
       .concat(simplifiedArviointi)
 
     switch (tyyppi) {
       case 'valma':
       case 'telma':
         return isEdit
-          ? includeProperties('näyttö', 'tunnustettu', 'lisätiedot').concat(simplifiedArviointi)
+          ? pakollinen.concat(includeProperties('näyttö', 'tunnustettu', 'lisätiedot')).concat(simplifiedArviointi)
           : defaultsForView
 
       default: return isEdit ? defaultsForEdit : defaultsForView
@@ -246,12 +250,6 @@ const SuoritusColumn = {
       }
     </td>)
   }
-}
-
-const PakollisuusColumn = {
-  shouldShow: ({parentSuoritus, suoritukset, suoritusProto}) => !näyttötutkintoonValmistava(parentSuoritus) && (modelData(suoritusProto, 'koulutusmoduuli.pakollinen') !== undefined || suoritukset.find(s => modelData(s, 'koulutusmoduuli.pakollinen') !== undefined) !== undefined),
-  renderHeader: () => <td key="pakollisuus" className="pakollisuus"><Text name="Pakollisuus"/></td>,
-  renderData: ({model}) => <td key="pakollisuus" className="pakollisuus"><Editor model={model} path="koulutusmoduuli.pakollinen"/></td>
 }
 
 const LaajuusColumn = {

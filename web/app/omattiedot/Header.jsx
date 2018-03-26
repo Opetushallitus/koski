@@ -34,7 +34,7 @@ const HeaderInfo = ({henkilö, showPalvelussaNäkyvätTiedotA, showVirheraportoi
         <p>
           <Text name='Opintoni ingressi'/>
         </p>
-        <div>
+        <div className='header__info-toggle'>
           <ToggleButton
             toggleA={showPalvelussaNäkyvätTiedotA}
             text='Mitkä tiedot palvelussa näkyvät?'

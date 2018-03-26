@@ -46,7 +46,7 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
   }
 
   get("/omattiedot") {
-    htmlIndex("koski-omattiedot.js", raamitEnabled = false)
+    htmlIndex("koski-omattiedot.js", raamitEnabled = false, responsive = true)
   }
 
   get("/tiedonsiirrot*") {
@@ -61,13 +61,14 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
     scriptBundleName = "koski-lander.js",
     scripts = <script id="auth">
       {Unparsed(s"""window.kansalaisenAuthUrl="${application.config.getString("shibboleth.url")}"""")}
-    </script>
+    </script>,
+    responsive = true
   )
 }
 
 class EiSuorituksiaServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet {
   get("/") {
-    htmlIndex("koski-eisuorituksia.js")
+    htmlIndex("koski-eisuorituksia.js", responsive = true)
   }
 }
 
@@ -100,7 +101,7 @@ class LoginPageServlet(implicit val application: KoskiApplication) extends Scala
 
   get("/shibboleth") {
     if (application.features.shibboleth && application.config.getString("shibboleth.security") == "mock") {
-      htmlIndex("koski-korhopankki.js")
+      htmlIndex("koski-korhopankki.js", responsive = true)
     } else {
       haltWithStatus(KoskiErrorCategory.notFound())
     }

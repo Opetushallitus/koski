@@ -9,6 +9,7 @@ import {modelSetValue, pushModel, modelValid} from './EditorModel'
 import {t} from '../i18n/i18n.js'
 import {parseBool} from '../util/util'
 import {buildClassNames} from '../components/classnames'
+import {hyphenate} from '../util/hyphenate'
 
 export const EnumEditor = ({model, inline, asRadiogroup, disabledValue, sortBy, fetchAlternatives = EnumEditor.fetchAlternatives, showEmptyOption, className}) => {
   if (!sortBy) sortBy = R.identity
@@ -33,6 +34,9 @@ export const EnumEditor = ({model, inline, asRadiogroup, disabledValue, sortBy, 
         + (disabledValue === alternative.value ? ' disabled' : '')
         + (wrappedModel.value && wrappedModel.value.value === alternative.value ? ' checked' : '')
   }
+
+  // note: never used when editing
+  const useHyphenate = (model.path.length > 0) && (model.path[model.path.length-1] === 'arvosana')
 
   return wrappedModel.context.edit
     ? asRadiogroup
@@ -65,7 +69,7 @@ export const EnumEditor = ({model, inline, asRadiogroup, disabledValue, sortBy, 
              />
            </span>
         )
-    : <span className="inline enum">{modelTitle(model)}</span>
+    : <span className="inline enum">{useHyphenate ? hyphenate(modelTitle(model)) : modelTitle(model)}</span>
 }
 
 let zeroValue = {title: t('Ei valintaa'), value: 'eivalintaa'}

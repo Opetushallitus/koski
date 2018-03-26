@@ -17,6 +17,9 @@
       vertical-align: top;
       &.pakolliset, &.valinnaiset {
         width: 578px;
+        .omattiedot-phone({
+          width: 100%;
+        });
       }
       margin-top: 27px;
 
@@ -40,6 +43,9 @@
               color: black;
             }
             min-width: 470px;
+            .omattiedot-phone({
+              min-width: 0;
+            });
 
             .koodi-ja-nimi {
               .koodi {
@@ -74,6 +80,9 @@
             padding-left: 10px;
             text-align: right;
             white-space: nowrap;
+            .omattiedot-phone({
+              white-space: initial;
+            });
             .yksikko.vuosiviikkotuntia {
               font-size: 0.8em;
             }
@@ -103,6 +112,11 @@
             position: absolute;
             right: -45px;
             width: 40px;
+            .omattiedot-phone({
+              position: initial;
+              right: initial;
+              width: initial;
+            });
           }
           sup {
             line-height: initial;

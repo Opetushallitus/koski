@@ -17,10 +17,10 @@ function LandingPage() {
 }
 
 function KorhoPankki() {
-  var pageApi = Page(findSingle('#korhopankki .login'));
+  var pageApi = Page(findSingle('.korhopankki-page .login'));
   var api = {
     isReady: function() {
-      return isElementVisible('#korhopankki .login')
+      return isElementVisible('.korhopankki-page .login')
     },
     login: function(hetu, surname, firstNames, givenName) {
       return seq(

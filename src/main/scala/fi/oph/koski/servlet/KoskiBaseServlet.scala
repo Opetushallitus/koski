@@ -60,7 +60,7 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
     case s: HttpStatus =>
       renderStatus(s)
     case e: Elem =>
-      super.renderPipeline(e)
+      renderHtml(e)
     case x: AnyRef =>
       renderObject(x)
   }: RenderPipeline) orElse super.renderPipeline
@@ -87,6 +87,11 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
   def koskiSessionOption: Option[KoskiSession]
 
   def renderStatus(status: HttpStatus): Unit
+
+  def renderHtml(e: scala.xml.NodeSeq): Unit = {
+    contentType = "text/html"
+    response.writer.print("<!DOCTYPE html>\n" + e.toString)
+  }
 
   def renderObject[T: ru.TypeTag](x: T): Unit
 

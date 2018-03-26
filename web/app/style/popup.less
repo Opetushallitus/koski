@@ -8,6 +8,15 @@
   background-color: @color-white;
   z-index: @z-index-popup;
 
+  @media @media-phone {
+    margin: 0.5rem 0;
+
+    button {
+      width: 100%;
+      margin: 1rem 0;
+    }
+  }
+
   &--inline {
     position: relative;
   }
@@ -15,12 +24,19 @@
   &__content {
     padding: 25px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, .15);
+
+    @media @media-phone {
+      padding: 20px 15px;
+    }
   }
 
   &__close-button {
     .CloseSymbol;
-    position: absolute;
-    top: 14px;
-    right: 18px;
+    float: right;
+    margin: -10px -5px 15px 15px;
+
+    @media @media-phone {
+      margin-right: 0;
+    }
   }
 }

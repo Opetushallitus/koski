@@ -478,7 +478,7 @@ function IBSuoritukset() {
 function Opiskeluoikeudet() {
   return {
     oppilaitokset: function() {
-      return textsOf(S('.oppilaitokset-nav .oppilaitos-nav'))
+      return textsOf(S('.oppilaitokset-nav .oppilaitos-nav .oppilaitos-nav-otsikkotiedot h3'))
     },
     opiskeluoikeustyypit: function() {
       return textsOf(S('.opiskeluoikeustyypit-nav .opiskeluoikeustyyppi'))
