@@ -48,9 +48,9 @@ const OppilaitosOtsikkotiedot = ({oppilaitos, selected}) => {
             const hasAlkamispäivä = !!modelData(opiskeluoikeus, 'alkamispäivä')
             return (
               <li className="opiskeluoikeus" key={opiskeluoikeusIndex}>
-                <span className="koulutus inline-text">{(näytettävätPäätasonSuoritukset(opiskeluoikeus)[0] || {}).title}</span>
+                <span className="koulutus">{(näytettävätPäätasonSuoritukset(opiskeluoikeus)[0] || {}).title}</span>
                 {hasAlkamispäivä && (
-                  <span className="inline-text">{'('}
+                  <span>{' ('}
                     <span className="alku pvm">{yearFromIsoDateString(modelTitle(opiskeluoikeus, 'alkamispäivä'))}</span>{'—'}
                     <span className="loppu pvm">{yearFromIsoDateString(modelTitle(opiskeluoikeus, 'päättymispäivä'))}{', '}</span>
                     <span className="tila">{modelTitle(opiskeluoikeus, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()}</span>{')'}

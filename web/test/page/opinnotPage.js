@@ -35,7 +35,7 @@ function OpinnotPage() {
     },
     getOppilaitos: function(indexOrName) {
       var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
-      return opiskeluoikeus.find('h3 .otsikkotiedot .oppilaitos', opiskeluoikeus).text().slice(0, -1)
+      return opiskeluoikeus.find('h3 .otsikkotiedot .oppilaitos', opiskeluoikeus).text()
     },
     getSuorituskieli: function(indexOrName) {
       var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)

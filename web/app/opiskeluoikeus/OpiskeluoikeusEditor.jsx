@@ -37,10 +37,11 @@ export const OpiskeluoikeusEditor = ({model}) => {
       <div className="opiskeluoikeus">
         <h3>
           <span className="otsikkotiedot">
-            { hasOppilaitos && <span className="oppilaitos inline-text">{modelTitle(mdl, 'oppilaitos')}{','}</span> }
-            <span className="koulutus inline-text" style={hasOppilaitos ? { textTransform: 'lowercase' } : undefined}>{(näytettävätPäätasonSuoritukset(model)[0] || {}).title}</span>
+            { hasOppilaitos && <span className="oppilaitos">{modelTitle(mdl, 'oppilaitos')}</span> }
+            { hasOppilaitos && <span>{', '}</span> }
+            <span className="koulutus" style={hasOppilaitos ? { textTransform: 'lowercase' } : undefined}>{(näytettävätPäätasonSuoritukset(model)[0] || {}).title}</span>
             {hasAlkamispäivä && (
-              <span className="inline-text">{'('}
+              <span>{' ('}
                 <span className="alku pvm">{yearFromIsoDateString(modelTitle(mdl, 'alkamispäivä'))}</span>{'—'}
                 <span className="loppu pvm">{yearFromIsoDateString(modelTitle(mdl, 'päättymispäivä'))}{', '}</span>
                 <span className="tila">{modelTitle(mdl, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()}{')'}</span>
