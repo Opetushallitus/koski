@@ -12,7 +12,7 @@ import fi.oph.koski.schema.OrganisaatioWithOid
 class TiedonsiirtoFailureMailer(config: Config, authenticationServiceClient: OpintopolkuHenkilöFacade) extends Logging {
   private val sendTimes = scala.collection.mutable.Map[String, LocalDateTime]()
   private val sender = EmailSender(config)
-  private val koskiPääkäyttäjät = "KOSKI-pääkäyttäjä"
+  private val koskiPääkäyttäjät = "koski-oppilaitos-pääkäyttäjä_1494486198456"
   private val vastuukayttajat = "Vastuukayttajat"
 
   def sendMail(rootOrg: OrganisaatioWithOid, oppilaitos: Option[OrganisaatioWithOid]): Unit = try {
