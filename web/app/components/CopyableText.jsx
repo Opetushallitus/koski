@@ -15,6 +15,7 @@ const copyToClipboard = (message, copyState) => () => {
   try {
     const el = document.createElement('textarea')
     el.value = message
+    el.setAttribute('readonly', '')
     document.body.appendChild(el)
     el.select()
     el.setSelectionRange(0, el.value.length)
