@@ -136,7 +136,10 @@ class TiedonsiirtoService(
 
       if (error.isDefined) {
         tiedonSiirtoVirheet.inc
-        mailer.sendMail(org.oid)
+        oppilaitokset.toList.flatten match {
+          case Nil => mailer.sendMail(org, None)
+          case orgs => orgs.foreach(o => mailer.sendMail(org, Some(o)))
+        }
       }
     })
   }

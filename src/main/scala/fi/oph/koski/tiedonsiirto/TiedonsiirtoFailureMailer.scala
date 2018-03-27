@@ -7,37 +7,66 @@ import com.typesafe.config.Config
 import fi.oph.koski.email._
 import fi.oph.koski.henkilo.OpintopolkuHenkilöFacade
 import fi.oph.koski.log.Logging
+import fi.oph.koski.schema.OrganisaatioWithOid
 
 class TiedonsiirtoFailureMailer(config: Config, authenticationServiceClient: OpintopolkuHenkilöFacade) extends Logging {
-  val sendTimes = scala.collection.mutable.Map[String, LocalDateTime]()
-  val sender = EmailSender(config)
-  val ryhmä = "Vastuukayttajat"
+  private val sendTimes = scala.collection.mutable.Map[String, LocalDateTime]()
+  private val sender = EmailSender(config)
+  private val koskiPääkäyttäjät = "koski-oppilaitos-pääkäyttäjä_1494486198456"
+  private val vastuukayttajat = "Vastuukayttajat"
 
-  def sendMail(organisaatioOid: String): Unit = {
-    val emailAddresses: List[String] = authenticationServiceClient.organisaationSähköpostit(organisaatioOid, ryhmä)
+  def sendMail(rootOrg: OrganisaatioWithOid, oppilaitos: Option[OrganisaatioWithOid]): Unit = try {
+    if (!shouldSendMail(rootOrg, oppilaitos)) {
+      return
+    }
+    send(rootOrg, oppilaitos)
+  } catch {
+    case e: Exception => logger.error(e)(s"Problem sending mail to organizations ${orgsToString(rootOrg, oppilaitos)}")
+  }
 
-    emailAddresses match {
-      case Nil => logger.info("Organisaatiolle " + organisaatioOid + " ei löydy sähköpostiosoitetta henkilöille jotka kuuluvat ryhmään " + ryhmä)
-      case _ =>
-        if (shouldSendMail(organisaatioOid)) {
-          val mail: Email = Email(EmailContent(
-            "no-reply@opintopolku.fi",
-            "Virheellinen Koski-tiedonsiirto",
-            "<p>Automaattisessa tiedonsiirrossa tapahtui virhe.</p><p>Käykää ystävällisesti tarkistamassa tapahtuneet tiedonsiirrot osoitteessa: " + config.getString("koski.root.url") + "/tiedonsiirrot</p>",
-            html = true
-          ), emailAddresses.map(EmailRecipient))
-          sender.sendEmail(mail)
-        }
+  private def send(rootOrg: OrganisaatioWithOid, oppilaitos: Option[OrganisaatioWithOid]): Unit = {
+    val emails = oppilaitosSähköpostit(oppilaitos) match {
+      case Nil => rootOrgSähköpostit(rootOrg)
+      case emailAddresses => emailAddresses
+    }
+
+    emails.distinct match {
+      case Nil => logger.info(s"No email address found for organizations ${orgsToString(rootOrg, oppilaitos)}")
+      case emailAddresses =>
+        val mail: Email = Email(EmailContent(
+          "no-reply@opintopolku.fi",
+          "Virheellinen Koski-tiedonsiirto",
+          "<p>Automaattisessa tiedonsiirrossa tapahtui virhe.</p><p>Käykää ystävällisesti tarkistamassa tapahtuneet tiedonsiirrot osoitteessa: " + config.getString("koski.root.url") + "/tiedonsiirrot</p>",
+          html = true
+        ), emailAddresses.map(EmailRecipient))
+        logger.debug(s"Sending failure mail to ${emailAddresses.mkString(",")}")
+        sender.sendEmail(mail)
     }
   }
 
-  def shouldSendMail(organisaatio: String) = sendTimes.synchronized {
+  private def orgsToString(rootOrg: OrganisaatioWithOid, oppilaitos: Option[OrganisaatioWithOid]) =
+    (rootOrg +: oppilaitos.toList).map(_.oid).distinct.mkString(" and ")
+
+  private def shouldSendMail(rootOrg: OrganisaatioWithOid, organisaatio: Option[OrganisaatioWithOid]) = sendTimes.synchronized {
     val limit = now().minusHours(24)
-    if (!sendTimes.getOrElse(organisaatio, limit).isAfter(limit)) {
-      sendTimes.put(organisaatio, now())
+    val key = rootOrg.oid + organisaatio.map(_.oid).getOrElse("")
+    if (!sendTimes.getOrElse(key, limit).isAfter(limit)) {
+      sendTimes.put(key, now())
       true
     } else {
       false
     }
+  }
+
+  private def rootOrgSähköpostit(k: OrganisaatioWithOid) = organisaatioSähköpostit(k.oid, koskiPääkäyttäjät) match {
+    case Nil => organisaatioSähköpostit(k.oid, vastuukayttajat)
+    case emails => emails
+  }
+
+  private def oppilaitosSähköpostit(org: Option[OrganisaatioWithOid]) =
+    org.toList.flatMap(o => organisaatioSähköpostit(o.oid, koskiPääkäyttäjät))
+
+  private def organisaatioSähköpostit(oid: String, ryhmä: String): List[String] = {
+    authenticationServiceClient.organisaationSähköpostit(oid, ryhmä)
   }
 }
