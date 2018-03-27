@@ -453,7 +453,13 @@ function IBSuoritukset() {
     suoritus: function(suoritusClass) {
       switch (suoritusClass) {
         case 'theoryOfKnowledge':
-          return Editor(elem).property('theoryOfKnowledge')
+          return function() {
+            var ee = Editor(elem)
+            return {
+              arvosana: ee.property('theoryOfKnowledge .arviointi'),
+              asOppiaine: Oppiaine('.theoryOfKnowledge')
+            }
+          }()
         case 'creativityActionService':
           return Editor(elem).property('creativityActionService')
         case 'extendedEssay':

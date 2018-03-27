@@ -500,6 +500,7 @@ describe('IB', function( ) {
           'Oppilaitos / toimipiste Ressun lukio\n' +
           'Suorituskieli englanti\n' +
           'Theory of knowledge A\n' +
+          'TOK1\nS TOK2\nS\n' +
           'Extended essay B\n' +
           'Creativity action service S\n' +
           'Lisäpisteet 3\n' +
@@ -591,7 +592,7 @@ describe('IB', function( ) {
 
             it('on oikein', function() {
               expect(editor.canSave()).to.equal(false)
-              expect(tok.getValue()).to.equal('A')
+              expect(tok.arvosana.getValue()).to.equal('A')
               expect(cas.getValue()).to.equal('S')
 
               expect(ee.arvosana.getValue()).to.equal('B')
@@ -605,10 +606,51 @@ describe('IB', function( ) {
 
           describe('Theory of Knowledge', function () {
             describe('Arvosanan muuttaminen', function () {
-              before(editor.edit, tok.selectValue('B'), editor.saveChanges, wait.until(page.isSavedLabelShown))
+              before(editor.edit, tok.arvosana.selectValue('B'), editor.saveChanges, wait.until(page.isSavedLabelShown))
 
               it('onnistuu', function () {
-                expect(tok.getValue()).to.equal('B')
+                expect(tok.arvosana.getText()).to.equal('B')
+              })
+            })
+
+            describe('Kurssin', function() {
+              before(editor.edit)
+
+              describe('Arvosanan muuttaminen', function() {
+                var kurssi = tok.asOppiaine.kurssi('TOK1')
+
+                before(kurssi.arvosana.selectValue('5'), editor.saveChanges, wait.until(page.isSavedLabelShown))
+
+                it('toimii', function() {
+                  expect(kurssi.arvosana.getText()).to.equal('5')
+                })
+              })
+
+              describe('Lisääminen', function () {
+                before(
+                  editor.edit,
+                  tok.asOppiaine.lisääPaikallinenKurssi('PAIK'),
+                  tok.asOppiaine.kurssi('PAIK').arvosana.selectValue('3'),
+                  editor.saveChanges,
+                  wait.until(page.isSavedLabelShown)
+                )
+
+                it('toimii', function () {
+                  expect(extractAsText(S('.theoryOfKnowledge'))).to.contain('PAIK')
+                })
+              })
+
+              describe('Poistaminen', function () {
+                before(
+                  editor.edit,
+                  tok.asOppiaine.kurssi('PAIK').poistaKurssi,
+                  editor.saveChanges,
+                  wait.until(page.isSavedLabelShown)
+                )
+
+                it('toimii', function () {
+                  expect(extractAsText(S('.theoryOfKnowledge'))).to.not.contain('PAIK')
+                })
               })
             })
           })
