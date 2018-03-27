@@ -145,6 +145,24 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_220112004",
+  "koodiArvo" : "22/011/2004",
+  "metadata" : [ {
+    "nimi" : "Asiakirjahallinnon ja arkistotoimen ammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_250111997",
+  "koodiArvo" : "25/011/1997",
+  "metadata" : [ {
+    "nimi" : "Luontokartoittajan erikoisammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "koskikoulutustendiaarinumerot_250112008",
   "koodiArvo" : "25/011/2008",
   "metadata" : [ {
@@ -355,10 +373,28 @@
     "passive" : false
   } ]
 }, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_500112001",
+  "koodiArvo" : "50/011/2001",
+  "metadata" : [ {
+    "nimi" : "Elektroniikka-asentajan ammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "koskikoulutustendiaarinumerot_500112006",
   "koodiArvo" : "50/011/2006",
   "metadata" : [ {
     "nimi" : "Valmentajan erikoisammattitutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "koskikoulutustendiaarinumerot_510112001",
+  "koodiArvo" : "51/011/2001",
+  "metadata" : [ {
+    "nimi" : "Elektroniikkayliasentajan erikoisammattitutkinto",
     "kieli" : "FI"
   } ],
   "versio" : 1,
