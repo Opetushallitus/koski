@@ -3,7 +3,19 @@
   "koodiArvo" : "A",
   "metadata" : [ {
     "nimi" : "Language A: literature",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Language A: literature",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
+  }, {
+    "nimi" : "Language A: literature",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -12,7 +24,19 @@
   "koodiArvo" : "A2",
   "metadata" : [ {
     "nimi" : "Language A: language and literature",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
+  }, {
+    "nimi" : "Language A: language and literature",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Language A: language and literature",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -21,7 +45,19 @@
   "koodiArvo" : "B",
   "metadata" : [ {
     "nimi" : "B-language",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
+  }, {
+    "nimi" : "B-language",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "B-language",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -30,7 +66,19 @@
   "koodiArvo" : "BIO",
   "metadata" : [ {
     "nimi" : "Biology",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Biology",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
+  }, {
+    "nimi" : "Biology",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -39,7 +87,19 @@
   "koodiArvo" : "BU",
   "metadata" : [ {
     "nimi" : "Business and management",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
+  }, {
+    "nimi" : "Business and management",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Business and management",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -48,6 +108,18 @@
   "koodiArvo" : "CAS",
   "metadata" : [ {
     "nimi" : "Creativity, activity, service",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Creativity, activity, service",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Creativity, activity, service",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -57,7 +129,19 @@
   "koodiArvo" : "CHE",
   "metadata" : [ {
     "nimi" : "Chemistry",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Chemistry",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
+  }, {
+    "nimi" : "Chemistry",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -66,7 +150,19 @@
   "koodiArvo" : "ECO",
   "metadata" : [ {
     "nimi" : "Economics",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Economics",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
+  }, {
+    "nimi" : "Economics",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -75,6 +171,27 @@
   "koodiArvo" : "EE",
   "metadata" : [ {
     "nimi" : "Extended essay",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Extended essay",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Extended essay",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetib_ess",
+  "koodiArvo" : "ESS",
+  "metadata" : [ {
+    "nimi" : "Environmental systems and societies",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -84,6 +201,18 @@
   "koodiArvo" : "GEO",
   "metadata" : [ {
     "nimi" : "Geography",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Geography",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Geography",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -93,6 +222,18 @@
   "koodiArvo" : "HIS",
   "metadata" : [ {
     "nimi" : "History",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "History",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "History",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -102,7 +243,19 @@
   "koodiArvo" : "MAT",
   "metadata" : [ {
     "nimi" : "Mathematics",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Mathematics",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
+  }, {
+    "nimi" : "Mathematics",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -111,7 +264,19 @@
   "koodiArvo" : "MATFT",
   "metadata" : [ {
     "nimi" : "Further mathematics",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
+  }, {
+    "nimi" : "Further mathematics",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Further mathematics",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -120,7 +285,19 @@
   "koodiArvo" : "MATST",
   "metadata" : [ {
     "nimi" : "Mathematical studies",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
+  }, {
+    "nimi" : "Mathematical studies",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Mathematical studies",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -129,7 +306,19 @@
   "koodiArvo" : "PHI",
   "metadata" : [ {
     "nimi" : "Philosophy",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Philosophy",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
+  }, {
+    "nimi" : "Philosophy",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -138,6 +327,18 @@
   "koodiArvo" : "PHY",
   "metadata" : [ {
     "nimi" : "Physics",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Physics",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Physics",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -147,7 +348,19 @@
   "koodiArvo" : "POL",
   "metadata" : [ {
     "nimi" : "Global politics",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
+  }, {
+    "nimi" : "Global politics",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Global politics",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -156,6 +369,18 @@
   "koodiArvo" : "PSY",
   "metadata" : [ {
     "nimi" : "Psychology",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Psychology",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Psychology",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -165,7 +390,19 @@
   "koodiArvo" : "REL",
   "metadata" : [ {
     "nimi" : "World religions",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
+  }, {
+    "nimi" : "World religions",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "World religions",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -174,6 +411,18 @@
   "koodiArvo" : "SOC",
   "metadata" : [ {
     "nimi" : "Social and cultural anthropology",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Social and cultural anthropology",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Social and cultural anthropology",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -183,6 +432,33 @@
   "koodiArvo" : "TOK",
   "metadata" : [ {
     "nimi" : "Theory of knowledge",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Theory of knowledge",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  }, {
+    "nimi" : "Theory of knowledge",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetib_va",
+  "koodiArvo" : "VA",
+  "metadata" : [ {
+    "nimi" : "Visual arts",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Visual arts",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Visual arts",
     "kieli" : "EN"
   } ],
   "versio" : 1,

@@ -48,4 +48,13 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkocorerequirementsib_p",
+  "koodiArvo" : "P",
+  "metadata" : [ {
+    "nimi" : "Pass",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]
