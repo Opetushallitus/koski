@@ -7,7 +7,6 @@ import Text from '../i18n/Text'
 import {OrganisaatioEditor} from '../organisaatio/OrganisaatioEditor'
 import {SelectAlternativeByEnumValueEditor} from '../editor/SelectAlternativeByEnumValueEditor'
 import {AmmatillinenNäyttöEditor} from './AmmatillinenNayttoEditor'
-import {AmmatillinenTunnustettuEditor} from './AmmatillinenTunnustettuEditor'
 import {TutkinnonOsanSuoritusEditor} from '../suoritus/Suoritustaulukko'
 import {InlineJaksoEditor} from '../date/JaksoEditor'
 import {wrapOptional} from '../editor/EditorModel'
@@ -130,7 +129,6 @@ export default {
   'oppisopimuksellinenosaamisenhankkimistapa': OppisopimusEditor,
   'ammatillisentutkinnonosanlisatieto': TutkinnonOsanLisätietoEditor,
   'sisaltavaopiskeluoikeus': SisältäväOpiskeluoikeusEditor,
-  'osaamisentunnustaminen': AmmatillinenTunnustettuEditor,
   'naytto': AmmatillinenNäyttöEditor,
   'ammatillisentutkinnonosansuoritus': TutkinnonOsanSuoritusEditor,
   'ulkomaanjakso': InlineJaksoEditor,
