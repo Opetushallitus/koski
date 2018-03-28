@@ -160,6 +160,9 @@ case class IBOppiaineenArviointi(
   predicted: Boolean = true,
   @KoodistoUri("arviointiasteikkoib")
   arvosana: Koodistokoodiviite,
+  @Description("Effort-arvosana, kuvaa opiskelijan tunnollisuutta, aktiivisuutta ja yritteliäisyyttä. Arvosteluasteikko: A = very good, B = good, C = needs improvement")
+  @KoodistoUri("effortasteikkoib")
+  effort: Option[Koodistokoodiviite] = None,
   @Description("Arviointipäivämäärä")
   päivä: Option[LocalDate]
 ) extends IBArviointi {

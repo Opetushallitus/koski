@@ -190,7 +190,7 @@ object ExamplesIB {
   )
 
   def ibArviointi(arvosana: String, päivä: LocalDate = date(2016, 6, 4), predicted: Boolean): Some[List[IBOppiaineenArviointi]] = {
-    Some(List(IBOppiaineenArviointi(predicted = predicted, arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoib"), Some(päivä))))
+    Some(List(IBOppiaineenArviointi(predicted = predicted, arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoib"), päivä = Some(päivä))))
   }
 
   def ibCoreArviointi(arvosana: String, päivä: LocalDate = date(2016, 6, 4), predicted: Boolean): Some[List[IBCoreRequirementsArviointi]] = {
