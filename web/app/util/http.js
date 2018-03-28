@@ -64,7 +64,6 @@ const http = (url, optionsForFetch, options = {}) => {
     .mapError({status: 503, url: url})
     .flatMap(parseResponseFor(url))
     .toProperty()
-  result.onEnd(reqComplete)
   if (options.errorMapper) { // errors are mapped to values or other Error events and will be handled
     result = result.flatMapError(options.errorMapper).toProperty()
   } else if (options.errorHandler) { // explicit error handler given
@@ -72,6 +71,7 @@ const http = (url, optionsForFetch, options = {}) => {
   } else if (!options.willHandleErrors) { // unless the user promises to handle errors by { willHandleErrors: true}, we'll default to showing the internal error div
     result.onError(showInternalError)
   }
+  result.onEnd(reqComplete)
   return result
 }
 
