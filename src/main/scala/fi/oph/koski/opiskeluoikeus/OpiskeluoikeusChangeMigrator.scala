@@ -1,6 +1,6 @@
 package fi.oph.koski.opiskeluoikeus
 
-import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, PäätasonSuoritus}
+import fi.oph.koski.schema.KoskeenTallennettavaOpiskeluoikeus
 
 object OpiskeluoikeusChangeMigrator {
   def kopioiValmiitSuorituksetUuteen(vanhaOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
