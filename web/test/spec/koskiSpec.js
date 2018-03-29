@@ -44,7 +44,7 @@ describe('Koski', function() {
     })
 
     describe('Turvakielto', function() {
-      before(Authentication().login(), page.openPage, page.openPage, page.oppijaHaku.searchAndSelect('151067-2193'))
+      before(Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('151067-2193'))
 
       it('Turvakieltosymboli näytetään henkilölle jolla on turvakielto', function() {
         expect(isElementVisible(S('.turvakielto'))).to.equal(true)
