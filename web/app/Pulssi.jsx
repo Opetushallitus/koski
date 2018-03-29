@@ -125,7 +125,7 @@ class Pulssi extends React.Component {
   }
 }
 
-const toPercent = x => Math.round(x * 100 * 10) / 10
+const toPercent = x => Math.min(100, Math.round(x * 100 * 10) / 10)
 
 const Kattavuus = ({koulutusmuoto, pulssi}) => {
   let kmuoto = pulssi.opiskeluoikeudet.koulutusmuotoTilastot.find(o => o.koulutusmuoto === koulutusmuoto)
