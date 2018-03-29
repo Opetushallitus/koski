@@ -67,6 +67,6 @@
     "test": "phantomjs ./node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js http://localhost:7021/koski/test/runner.html?grep=${MOCHA_GREP}",
     "unit-test": "mocha --compilers js:babel-core/register --reporter spec ./test/unit-test",
     "unit-test-watch": "mocha -w --compilers js:babel-core/register --reporter spec ./test/unit-test",
-    "test-chrome": "node/node test/mocha-chrome-wrapper.js http://localhost:7021/koski/test/runner.html?grep=${MOCHA_GREP} --chrome-flags '[\"--use-mock-keychain\"]'"
+    "test-chrome": "node/node test/mocha-chrome-wrapper.js ${MOCHA_URL:=http://localhost:7021/koski/test/runner.html}?grep=${MOCHA_GREP} --chrome-flags '[\"--use-mock-keychain\"]'"
   }
 }
