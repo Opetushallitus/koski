@@ -286,6 +286,9 @@ function Kurssi(elem) {
     details: function() {
       return Editor(detailsElem)
     },
+    tunnustettu: Editor(elem).propertyBySelector('.tunnustettu'),
+    lisääTunnustettu: click(subElement(detailsElem, '.tunnustettu .add-value')),
+    poistaTunnustettu: click(subElement(detailsElem, '.tunnustettu .remove-value')),
     poistaKurssi: click(subElement(elem, '.remove-value'))
   }
   return api
