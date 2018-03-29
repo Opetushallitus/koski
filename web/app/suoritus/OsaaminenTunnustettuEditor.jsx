@@ -38,7 +38,7 @@ export class OsaaminenTunnustettuEditor extends React.Component {
                 <a className="remove-value" onClick={removeValue(model)}></a>
                 <PropertiesEditor model={model} propertyFilter={(p) => ['rahoituksenPiirissä'].includes(p.key)}/>
               </span>)
-            : <span><a className="add-value" onClick={addValue(model)}><Text name="Lisää ammattiosaamisen tunnustaminen"/></a></span>
+            : <span><a className="add-value" onClick={addValue(model)}><Text name="Lisää osaamisen tunnustaminen"/></a></span>
         }
       </div>
     )
