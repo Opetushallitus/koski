@@ -144,7 +144,7 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
   }
 
   private def toOppijaHenkilö(henkilö: TäydellisetHenkilötiedot) = {
-    OppijaHenkilö(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, henkilö.hetu, henkilö.syntymäaika, Some("FI"), None, 0, henkilö.turvakielto)
+    OppijaHenkilö(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, henkilö.hetu, henkilö.syntymäaika, Some("FI"), None, 0, henkilö.turvakielto.getOrElse(false))
   }
 
   override def findKäyttäjäByOid(oid: String): Option[KäyttäjäHenkilö] = {

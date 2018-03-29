@@ -77,7 +77,7 @@ class MockOppijat(private var oppijat: List[TäydellisetHenkilötiedotWithMaster
   val äidinkieli: Some[Koodistokoodiviite] = Some(Koodistokoodiviite("FI", None, "kieli", None))
 
   def oppija(suku: String, etu: String, hetu: String, oid: String = generateId(), kutsumanimi: Option[String] = None, turvakielto: Boolean = false): TäydellisetHenkilötiedotWithMasterInfo =
-    addOppija(TäydellisetHenkilötiedot(oid, Some(hetu), None, etu, kutsumanimi.getOrElse(etu), suku, äidinkieli, None, turvakielto))
+    addOppija(TäydellisetHenkilötiedot(oid, Some(hetu), None, etu, kutsumanimi.getOrElse(etu), suku, äidinkieli, None, Some(turvakielto)))
 
   def addOppija(oppija: TäydellisetHenkilötiedot): TäydellisetHenkilötiedotWithMasterInfo = addOppija(TäydellisetHenkilötiedotWithMasterInfo(oppija, None))
 

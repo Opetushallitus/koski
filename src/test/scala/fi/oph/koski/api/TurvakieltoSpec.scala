@@ -8,8 +8,8 @@ import org.scalatest.{FreeSpec, Matchers}
 class TurvakieltoSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods {
   "Turvakielto" - {
     "Oppijan tiedoissa näkyy turvakieltotieto" in {
-      oppija(eero.oid).henkilö.asInstanceOf[TäydellisetHenkilötiedot].turvakielto should equal(false)
-      oppija(MockOppijat.turvakielto.oid).henkilö.asInstanceOf[TäydellisetHenkilötiedot].turvakielto should equal(true)
+      oppija(eero.oid).henkilö.asInstanceOf[TäydellisetHenkilötiedot].turvakielto.get should equal(false)
+      oppija(MockOppijat.turvakielto.oid).henkilö.asInstanceOf[TäydellisetHenkilötiedot].turvakielto.get should equal(true)
     }
   }
 }
