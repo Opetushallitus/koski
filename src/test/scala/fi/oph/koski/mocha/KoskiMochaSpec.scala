@@ -5,6 +5,6 @@ import fi.oph.koski.jettylauncher.SharedJetty
 class KoskiMochaSpec extends KoskiCommandLineSpec {
   "Mocha tests" in {
     SharedJetty.start
-    runTestCommand("mocha-phantomjs", Seq("scripts/mocha-phantom-test.sh", SharedJetty.baseUrl + "/test/runner.html"))
+    runTestCommand("mocha-chrome", Seq("scripts/mocha-chrome-test.sh", SharedJetty.baseUrl + "/test/runner.html"))
   }
 }
