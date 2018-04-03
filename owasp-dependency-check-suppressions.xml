@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.1.xsd">
     <suppress>
-        <notes><![CDATA[file name: mailapi-1.4.3.jar]]></notes>
-        <gav regex="true">^javax\.mail:mailapi:.*$</gav>
-        <cpe>cpe:/a:sun:javamail</cpe>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[core, databind and annotations]]></notes>
-        <gav regex="true">^com\.fasterxml\.jackson\.core:jackson-.*:2\.8\..*$</gav>
-        <cve>CVE-2016-7051</cve>
-    </suppress>
-    <suppress>
         <notes><![CDATA[file name: postgresql-9.4.1207.jre7.jar]]></notes>
         <gav regex="true">^org\.postgresql:postgresql:.*$</gav>
         <cve>CVE-2017-8806</cve>
     </suppress>
     <suppress>
+        <notes><![CDATA[file name: postgresql-9.4.1207.jre7.jar]]></notes>
+        <gav regex="true">^org\.postgresql:postgresql:.*$</gav>
+        <cve>CVE-2017-14798</cve>
+    </suppress>
+    <suppress>
         <notes><![CDATA[file name: alpn-api-1.1.2.v20150522.jar]]></notes>
         <gav regex="true">^org\.eclipse\.jetty\.alpn:alpn-api:.*$</gav>
         <cpe>cpe:/a:eclipse:jetty</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[file name: log4j-1.2.17.jar]]></notes>
+        <gav regex="true">^org\.zenframework\.z8\.dependencies\.commons:log4j-1\.2\.17:.*$</gav>
+        <cpe>cpe:/a:apache:log4j</cpe>
     </suppress>
 </suppressions>
