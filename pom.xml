@@ -502,9 +502,11 @@
           <plugin>
             <groupId>org.owasp</groupId>
             <artifactId>dependency-check-maven</artifactId>
-            <version>1.4.4</version>
+            <version>3.1.2</version>
             <configuration>
-              <suppressionFile>owasp-dependency-check-suppressions.xml</suppressionFile>
+              <suppressionFiles>
+                <suppressionFile>owasp-dependency-check-suppressions.xml</suppressionFile>
+              </suppressionFiles>
               <failBuildOnCVSS>1</failBuildOnCVSS>
             </configuration>
             <executions>
