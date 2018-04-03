@@ -508,6 +508,7 @@
                 <suppressionFile>owasp-dependency-check-suppressions.xml</suppressionFile>
               </suppressionFiles>
               <failBuildOnCVSS>1</failBuildOnCVSS>
+              <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
             </configuration>
             <executions>
               <execution>
