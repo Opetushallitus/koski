@@ -29,7 +29,7 @@ case class OppijanumeroRekisteriClient(config: Config) {
         .map(_.flatMap(_.yhteystiedotRyhma.flatMap(_.yhteystieto.find(_.yhteystietoTyyppi == "YHTEYSTIETO_SAHKOPOSTI").map(_.yhteystietoArvo))))
 
   def findOppijatByOids(oids: List[Oid]): Task[List[OppijaHenkilö]] =
-    oidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkilotByHenkiloOidList", oids)(json4sEncoderOf[List[String]])(Http.parseJson[List[OppijaNumerorekisteriOppija]]).map(_.map(_.toOppijaHenkilö))
+    oidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloOidList", oids)(json4sEncoderOf[List[String]])(Http.parseJson[List[OppijaNumerorekisteriOppija]]).map(_.map(_.toOppijaHenkilö))
 
   def findChangedOppijaOids(since: Long, offset: Int, amount: Int): Task[List[Oid]] =
     oidServiceHttp.get(uri"/oppijanumerorekisteri-service/s2s/changedSince/$since?offset=$offset&amount=$amount")(Http.parseJson[List[String]])
