@@ -8,10 +8,10 @@
     "url": "https://github.com/Opetushallitus/koski.git"
   },
   "dependencies": {
-    "@skidding/react-codemirror": "^1.0.0",
+    "@skidding/react-codemirror": "^1.0.2",
     "bacon.atom": "^5.0.2",
     "baconjs": "^1",
-    "baret": "^1.0.6",
+    "baret": "github:pasieronen/baret#45635c1949b93075cb34fae1b72951a9d540daa8",
     "codemirror": "^5.30.0",
     "es6-promise": "^4.1.1",
     "fecha": "^2.3.1",
@@ -21,11 +21,11 @@
     "partial.lenses": "^9.8.0",
     "prop-types": "^15.6.0",
     "ramda": "^0.24.1",
-    "react": "^15.6.2",
+    "react": "^16.2.0",
     "react-day-picker": "^6.2.1",
-    "react-dom": "^15.6.2",
-    "react-highlight": "^0.10.0",
-    "react-highlighter": "github:Dentosal/react-highlighter",
+    "react-dom": "^16.2.0",
+    "react-highlight": "^0.12.0",
+    "react-highlighter": "github:Dentosal/react-highlighter#fa9392a55bacb418ef1b5327dba922f3829941ca",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
