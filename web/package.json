@@ -8,10 +8,10 @@
     "url": "https://github.com/Opetushallitus/koski.git"
   },
   "dependencies": {
-    "@skidding/react-codemirror": "^1.0.0",
+    "@skidding/react-codemirror": "^1.0.2",
     "bacon.atom": "^5.0.2",
     "baconjs": "^1",
-    "baret": "^1.0.6",
+    "baret": "github:pasieronen/baret#45635c1949b93075cb34fae1b72951a9d540daa8",
     "codemirror": "^5.30.0",
     "es6-promise": "^4.1.1",
     "fecha": "^2.3.1",
@@ -21,11 +21,11 @@
     "partial.lenses": "^9.8.0",
     "prop-types": "^15.6.0",
     "ramda": "^0.24.1",
-    "react": "^15.6.2",
+    "react": "^16.2.0",
     "react-day-picker": "^6.2.1",
-    "react-dom": "^15.6.2",
-    "react-highlight": "^0.10.0",
-    "react-highlighter": "github:Dentosal/react-highlighter",
+    "react-dom": "^16.2.0",
+    "react-highlight": "^0.12.0",
+    "react-highlighter": "github:Dentosal/react-highlighter#fa9392a55bacb418ef1b5327dba922f3829941ca",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
@@ -43,19 +43,14 @@
     "eslint-plugin-react": "^7.4.0",
     "html2canvas": "1.0.0-alpha.9",
     "jquery": "^3.2.1",
-    "json-loader": "^0.5.7",
     "less": "^2.7.2",
     "less-loader": "^4",
     "lodash": "^4.17.4",
     "mocha": "^4.1.0",
     "mocha-chrome": "1.0.3",
-    "mocha-phantomjs-core": "^2.1.2",
-    "nodemon": "^1.12.1",
-    "phantomjs-prebuilt": "^2.1.16",
     "postcss-loader": "^2.0.6",
     "puppeteer": "1.2.0",
     "q": "^1.5.0",
-    "reporter-file": "^1.0.0",
     "snyk": "^1.41.1",
     "style-loader": "^0.18",
     "webpack": "^3.6.0"
@@ -64,9 +59,8 @@
     "lint": "failOnWarning=true webpack --bail",
     "postinstall": "webpack -p --bail --define process.env.NODE_ENV=\"'production'\"",
     "watch": "webpack -d --progress --colors --watch --define process.env.NODE_ENV=${NODE_ENV:=undefined}",
-    "test": "phantomjs ./node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js http://localhost:7021/koski/test/runner.html?grep=${MOCHA_GREP}",
     "unit-test": "mocha --compilers js:babel-core/register --reporter spec ./test/unit-test",
     "unit-test-watch": "mocha -w --compilers js:babel-core/register --reporter spec ./test/unit-test",
-    "test-chrome": "node/node test/mocha-chrome-wrapper.js ${MOCHA_URL:=http://localhost:7021/koski/test/runner.html}?grep=${MOCHA_GREP} --chrome-flags '[\"--use-mock-keychain\"]'"
+    "test": "node/node test/mocha-chrome-wrapper.js ${MOCHA_URL:=http://localhost:7021/koski/test/runner.html}?grep=${MOCHA_GREP} --chrome-flags '[\"--use-mock-keychain\"]'"
   }
 }
