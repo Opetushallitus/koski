@@ -6,7 +6,17 @@ import {modelLookup, resetOptionalModel} from '../editor/EditorModel.js'
 import {modelEmpty, optionalPrototypeModel, pushModel} from '../editor/EditorModel'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
 
-export class AmmatillinenTunnustettuEditor extends React.Component {
+const addValue = model => event => {
+  event.nativeEvent.stopImmediatePropagation()
+  pushModel(optionalPrototypeModel(model))
+}
+
+const removeValue = model => event => {
+  event.nativeEvent.stopImmediatePropagation()
+  resetOptionalModel(model)
+}
+
+export class OsaaminenTunnustettuEditor extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -25,15 +35,15 @@ export class AmmatillinenTunnustettuEditor extends React.Component {
           hasData
             ? (<span>
                 <span className="selite"><Editor model={seliteModel} autoFocus={true}/></span>
-                <a className="remove-value" onClick={() => resetOptionalModel(model)}></a>
+                <a className="remove-value" onClick={removeValue(model)}></a>
                 <PropertiesEditor model={model} propertyFilter={(p) => ['rahoituksenPiirissä'].includes(p.key)}/>
               </span>)
-            : <span><a className="add-value" onClick={() => pushModel(optionalPrototypeModel(model))}><Text name="Lisää ammattiosaamisen tunnustaminen"/></a></span>
+            : <span><a className="add-value" onClick={addValue(model)}><Text name="Lisää osaamisen tunnustaminen"/></a></span>
         }
       </div>
     )
   }
 }
-AmmatillinenTunnustettuEditor.handlesOptional = () => true
-AmmatillinenTunnustettuEditor.writeOnly = true
+OsaaminenTunnustettuEditor.handlesOptional = () => true
+OsaaminenTunnustettuEditor.writeOnly = true
 

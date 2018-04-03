@@ -14,7 +14,7 @@ export class KurssiPopup extends React.Component {
       <PropertiesEditor
         model={kurssi}
         propertyFilter={p => !['arviointi', 'koodistoUri'].includes(p.key)}
-        propertyEditable={p => !['tunniste', 'koodiarvo', 'nimi', 'tunnustettu'].includes(p.key)}
+        propertyEditable={p => !['tunniste', 'koodiarvo', 'nimi'].includes(p.key)}
       />
     </div>)
   }

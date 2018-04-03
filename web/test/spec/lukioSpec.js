@@ -287,6 +287,72 @@ describe('Lukiokoulutus', function( ){
               })
             })
 
+            describe('Osaamisen tunnustaminen', function() {
+              var kurssi = opinnot.oppiaineet.oppiaine('MA').kurssi('MAA16')
+
+              before(
+                editor.edit,
+                kurssi.toggleDetails
+              )
+
+              describe('Alussa', function() {
+                it('ei osaamisen tunnustamistietoa, näytetään lisäysmahdollisuus', function() {
+                  expect(kurssi.tunnustettu.getValue()).to.equal('Lisää osaamisen tunnustaminen')
+                })
+              })
+
+              describe('Lisääminen', function () {
+                before(
+                  kurssi.lisääTunnustettu,
+                  kurssi.tunnustettu.propertyBySelector('.selite').setValue('Tunnustamisen esimerkkiselite'),
+                  editor.saveChanges,
+                  wait.until(page.isSavedLabelShown),
+                  kurssi.showDetails
+                )
+
+                it('toimii', function() {
+                  expect(kurssi.tunnustettu.getText()).to.equal(
+                    'Tunnustettu\nSelite Tunnustamisen esimerkkiselite\nRahoituksen piirissä ei'
+                  )
+                })
+              })
+
+              describe('Rahoituksen piirissä -tiedon lisääminen', function () {
+                before(
+                  editor.edit,
+                  kurssi.toggleDetails,
+                  kurssi.tunnustettu.property('rahoituksenPiirissä').setValue(true),
+                  editor.saveChanges,
+                  wait.until(page.isSavedLabelShown),
+                  kurssi.showDetails
+                )
+
+                it('toimii', function() {
+                  expect(kurssi.tunnustettu.getText()).to.equal(
+                    'Tunnustettu\nSelite Tunnustamisen esimerkkiselite\nRahoituksen piirissä kyllä'
+                  )
+                })
+              })
+
+              describe('Poistaminen', function () {
+                before(
+                  editor.edit,
+                  kurssi.toggleDetails,
+                  kurssi.poistaTunnustettu,
+                  editor.saveChanges,
+                  wait.until(page.isSavedLabelShown),
+                  editor.edit,
+                  kurssi.toggleDetails
+                )
+
+                it('toimii', function() {
+                  expect(kurssi.tunnustettu.getValue()).to.equal('Lisää osaamisen tunnustaminen')
+                })
+
+                after(editor.cancelChanges)
+              })
+            })
+
             describe('Lisääminen', function () {
               before(
                 editor.edit,

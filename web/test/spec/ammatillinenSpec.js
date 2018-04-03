@@ -1027,7 +1027,7 @@ describe('Ammatillinen koulutus', function() {
 
         describe('Alussa', function() {
           it('Ei osaamisen tunnustamistietoa, lisäysmahdollisuus', function() {
-            expect(tunnustaminen.getValue()).to.equal('Lisää ammattiosaamisen tunnustaminen')
+            expect(tunnustaminen.getValue()).to.equal('Lisää osaamisen tunnustaminen')
           })
         })
 
@@ -1069,7 +1069,7 @@ describe('Ammatillinen koulutus', function() {
               opinnot.expandAll
             )
             it('toimii', function() {
-              expect(tunnustaminen.getValue()).to.equal('Lisää ammattiosaamisen tunnustaminen')
+              expect(tunnustaminen.getValue()).to.equal('Lisää osaamisen tunnustaminen')
             })
           })
         })

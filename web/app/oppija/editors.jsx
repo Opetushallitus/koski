@@ -14,6 +14,7 @@ import {SuoritusEditor} from '../suoritus/SuoritusEditor'
 import {PerusteEditor} from '../suoritus/PerusteEditor'
 import {PerusopetuksenOppiaineRowEditor} from '../perusopetus/PerusopetuksenOppiaineRowEditor'
 import {OpiskeluoikeudenTilaEditor} from '../opiskeluoikeus/OpiskeluoikeudenTilaEditor'
+import {OsaaminenTunnustettuEditor} from '../suoritus/OsaaminenTunnustettuEditor'
 import genericEditors from '../editor/genericEditors'
 
 const oppijaEditors = {
@@ -33,6 +34,7 @@ const oppijaEditors = {
   'organisaatiowithoid': OrganisaatioEditor,
   'organisaatiohenkilo': OrganisaatioHenkilöEditor,
   'peruste': PerusteEditor,
+  'osaamisentunnustaminen': OsaaminenTunnustettuEditor,
   // Perusopetus
   'perusopetuksenoppiaineensuoritus': PerusopetuksenOppiaineRowEditor,
   'perusopetuksenlisaopetuksenoppiaineensuoritus': PerusopetuksenOppiaineRowEditor
