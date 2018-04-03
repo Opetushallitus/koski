@@ -10,8 +10,6 @@ import fi.oph.koski.schema.{OidOrganisaatio, Organisaatio}
 import fi.oph.koski.userdirectory.DirectoryUser
 
 object MockUsers {
-  implicit def stringToOrg(oid: String): OidOrganisaatio = OidOrganisaatio(oid)
-
   private def ilmanLuottamuksellisiaTietoja(orgOid: String) = {
     oppilaitosTallentaja(orgOid).copy(organisaatiokohtaisetPalveluroolit = oppilaitosTallentaja(orgOid).organisaatiokohtaisetPalveluroolit.filterNot(_.rooli == "LUOTTAMUKSELLINEN"))
   }
