@@ -59,8 +59,6 @@ js-unit-test-watch:
 	cd web && npm run unit-test-watch
 fronttest:
 	cd web && npm run test
-chrome-fronttest:
-	cd web && npm run test-chrome
 screenshot:
 	ls -t web/target/screenshots|head -1|xargs -I{} open web/target/screenshots/{}
 

@@ -49,9 +49,7 @@
     "lodash": "^4.17.4",
     "mocha": "^4.1.0",
     "mocha-chrome": "1.0.3",
-    "mocha-phantomjs-core": "^2.1.2",
     "nodemon": "^1.12.1",
-    "phantomjs-prebuilt": "^2.1.16",
     "postcss-loader": "^2.0.6",
     "puppeteer": "1.2.0",
     "q": "^1.5.0",
@@ -64,9 +62,8 @@
     "lint": "failOnWarning=true webpack --bail",
     "postinstall": "webpack -p --bail --define process.env.NODE_ENV=\"'production'\"",
     "watch": "webpack -d --progress --colors --watch --define process.env.NODE_ENV=${NODE_ENV:=undefined}",
-    "test": "phantomjs ./node_modules/mocha-phantomjs-core/mocha-phantomjs-core.js http://localhost:7021/koski/test/runner.html?grep=${MOCHA_GREP}",
     "unit-test": "mocha --compilers js:babel-core/register --reporter spec ./test/unit-test",
     "unit-test-watch": "mocha -w --compilers js:babel-core/register --reporter spec ./test/unit-test",
-    "test-chrome": "node/node test/mocha-chrome-wrapper.js ${MOCHA_URL:=http://localhost:7021/koski/test/runner.html}?grep=${MOCHA_GREP} --chrome-flags '[\"--use-mock-keychain\"]'"
+    "test": "node/node test/mocha-chrome-wrapper.js ${MOCHA_URL:=http://localhost:7021/koski/test/runner.html}?grep=${MOCHA_GREP} --chrome-flags '[\"--use-mock-keychain\"]'"
   }
 }
