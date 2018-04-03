@@ -8,6 +8,7 @@ import {KurssitEditor} from '../kurssi/KurssitEditor'
 import {ArvosanaEditor} from '../suoritus/ArvosanaEditor'
 import {tilaKoodi} from '../suoritus/Suoritus'
 import {FootnoteHint} from '../components/footnote'
+import {isToimintaAlueittain} from './Perusopetus'
 
 export class PerusopetuksenOppiaineRowEditor extends React.Component {
   render() {
@@ -87,6 +88,7 @@ export const expandableProperties = (model) => {
   let extraPropertiesFilter = p => {
     if (!edit && ['yksilöllistettyOppimäärä', 'painotettuOpetus', 'suorituskieli', 'korotus'].includes(p.key)) return false // these are only shown when editing
     if (['koulutusmoduuli', 'arviointi', 'tunniste', 'kieli', 'laajuus', 'pakollinen', 'arvosana', 'päivä', 'perusteenDiaarinumero', 'osasuoritukset'].includes(p.key)) return false // these are never shown
+    if (isToimintaAlueittain(model) && p.key === 'korotus') return false
     return shouldShowProperty(model.context)(p)
   }
 
