@@ -97,8 +97,8 @@ describe('Raportti', function() {
       expect(page.metric('käyttöoikeuksien-määrä').value() >= 0).to.equal(true)
     })
 
-    it('palvelukäyttäjäoikeuksien määrä', function () {
-      expect(page.metric('käyttöoikeusien-määrä-KOSKI-palvelukäyttäjä').value() >= 0).to.equal(true)
+    /*it('palvelukäyttäjäoikeuksien määrä', function () {
+      expect(page.metric('käyttöoikeusien-määrä-koski-oppilaitos-palvelukäyttäjä').value() >= 0).to.equal(true)
     })
 
     it('tallentajaoikeuksien määrä', function () {
@@ -119,7 +119,7 @@ describe('Raportti', function() {
 
     it('vastuukäyttäjien määrä', function () {
       expect(page.metric('käyttöoikeusien-määrä-Vastuukayttajat').value() >= 0).to.equal(true)
-    })
+    })*/
 
     it('tiedonsiirtovirheiden määrä', function () {
       expect(page.metric('tiedonsiirtovirheiden-määrä').value() >= 0).to.equal(true)

@@ -26,6 +26,7 @@ case class KäyttöoikeusGlobal(globalPalveluroolit: List[Palvelurooli]) extends
     case Palvelurooli("KOSKI", "OPHPAAKAYTTAJA") => List(AccessType.read, AccessType.write, AccessType.tiedonsiirronMitätöinti)
     case _ => Nil
   }
+  override def toString = globalPalveluroolit.mkString(",")
 }
 
 case class KäyttöoikeusOrg(organisaatio: OrganisaatioWithOid, organisaatiokohtaisetPalveluroolit: List[Palvelurooli], juuri: Boolean, oppilaitostyyppi: Option[String]) extends Käyttöoikeus {
@@ -37,4 +38,5 @@ case class KäyttöoikeusOrg(organisaatio: OrganisaatioWithOid, organisaatiokoht
   }
   def globalAccessType: List[AccessType.Value] = Nil
   def globalPalveluroolit = Nil
+  override def toString = organisaatiokohtaisetPalveluroolit.mkString(",")
 }
