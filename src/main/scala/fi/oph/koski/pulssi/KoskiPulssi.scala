@@ -4,7 +4,6 @@ import fi.oph.koski.cache._
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.kayttooikeusservice.KäyttöoikeusServiceClient
 import fi.oph.koski.http.Http
-import fi.oph.koski.koskiuser.Käyttöoikeusryhmät.käyttöoikeusryhmät
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedotStatistics, OpiskeluoikeusTilasto}
 
@@ -33,7 +32,7 @@ class KoskiStats(application: KoskiApplication) extends KoskiPulssi {
 
       Http.runTask(client.findKäyttöoikeusryhmät.flatMap { ryhmät =>
         gatherUnordered(ryhmät
-          .filter(_.description.texts.exists(t => t.lang == "FI" && käyttöoikeusryhmät.map(_.nimi).contains(t.text)))
+          .filter(_.description.texts.exists(t => t.lang == "FI" && List("koski-oph-pääkäyttäjä", "koski-oph-katselija").contains(t.text))) // TODO, Retrieve these dynamically from kayttooikeus-service
           .map { ryhmä =>
             client.findKäyttöoikeusRyhmänHenkilöt(ryhmä.id).map(henkilöOids => (ryhmä.nimi, henkilöOids))
           }
@@ -41,7 +40,7 @@ class KoskiStats(application: KoskiApplication) extends KoskiPulssi {
       }.map(_.toMap))
 
     } else {
-      MockUsers.users.flatMap(u => u.käyttöoikeudet.map(_._2.nimi).map(ko => (ko, u.ldapUser.oid))).groupBy(_._1).mapValues(_.map(_._2))
+      MockUsers.users.flatMap(u => u.käyttöoikeudet.map(_.toString).map(ko => (ko, u.ldapUser.oid))).groupBy(_._1).mapValues(_.map(_._2))
     }
 
     KäyttöoikeusTilasto(

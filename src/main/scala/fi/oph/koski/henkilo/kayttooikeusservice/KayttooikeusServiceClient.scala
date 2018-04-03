@@ -4,7 +4,6 @@ import com.typesafe.config.Config
 import fi.oph.koski.henkilo.RemoteOpintopolkuHenkilöFacade
 import fi.oph.koski.http.Http.{parseJson, _}
 import fi.oph.koski.http.{Http, VirkailijaHttpClient}
-import fi.oph.koski.koskiuser.Käyttöoikeusryhmät
 
 case class KäyttöoikeusServiceClient(config: Config) {
   private val http = VirkailijaHttpClient(RemoteOpintopolkuHenkilöFacade.makeServiceConfig(config), "/kayttooikeus-service", config.getBoolean("authentication-service.useCas"))
@@ -20,11 +19,6 @@ case class KäyttöoikeusServiceClient(config: Config) {
 
 case class KäyttöoikeusRyhmä(id: Int, name: String, description: KäyttöoikeusRyhmäDescriptions) {
   def nimi = description.texts.find(_.lang == "FI").map(_.text).getOrElse("")
-  def toKoskiKäyttöoikeusryhmä = {
-    val name: String = this.name.replaceAll("_.*", "")
-    Käyttöoikeusryhmät.byName(name)
-  }
-
 }
 case class KäyttöoikeusRyhmäDescriptions(texts: List[KäyttöoikeusRyhmäDescription])
 case class KäyttöoikeusRyhmäDescription(text: String, lang: String)

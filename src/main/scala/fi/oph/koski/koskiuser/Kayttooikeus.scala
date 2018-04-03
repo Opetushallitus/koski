@@ -11,13 +11,16 @@ object Rooli {
   val YLLAPITAJA = "YLLAPITAJA"
   val TIEDONSIIRTO = "TIEDONSIIRTO"
   val LUOTTAMUKSELLINEN = "LUOTTAMUKSELLINEN"
+  val GLOBAALI_LUKU_PERUSOPETUS = "GLOBAALI_LUKU_PERUSOPETUS"
+  val GLOBAALI_LUKU_TOINEN_ASTE = "GLOBAALI_LUKU_TOINEN_ASTE"
+  val GLOBAALI_LUKU_KORKEAKOULU = "GLOBAALI_LUKU_KORKEAKOULU"
 }
 
 trait Käyttöoikeus {
   // this trait is intentionally left blank to make it harder to accidentally mix global and organization-specific rights
 }
 
-case class KäyttöoikeusGlobal(val globalPalveluroolit: List[Palvelurooli]) extends Käyttöoikeus {
+case class KäyttöoikeusGlobal(globalPalveluroolit: List[Palvelurooli]) extends Käyttöoikeus {
   def globalAccessType: List[AccessType.Value] = globalPalveluroolit flatMap {
     case Palvelurooli("KOSKI", "OPHKATSELIJA") => List(AccessType.read)
     case Palvelurooli("KOSKI", "OPHPAAKAYTTAJA") => List(AccessType.read, AccessType.write, AccessType.tiedonsiirronMitätöinti)
@@ -25,7 +28,7 @@ case class KäyttöoikeusGlobal(val globalPalveluroolit: List[Palvelurooli]) ext
   }
 }
 
-case class KäyttöoikeusOrg(val organisaatio: OrganisaatioWithOid, val organisaatiokohtaisetPalveluroolit: List[Palvelurooli], juuri: Boolean, oppilaitostyyppi: Option[String]) extends Käyttöoikeus {
+case class KäyttöoikeusOrg(organisaatio: OrganisaatioWithOid, organisaatiokohtaisetPalveluroolit: List[Palvelurooli], juuri: Boolean, oppilaitostyyppi: Option[String]) extends Käyttöoikeus {
   def organisaatioAccessType: List[AccessType.Value] = organisaatiokohtaisetPalveluroolit flatMap {
     case Palvelurooli("KOSKI", "READ") => List(AccessType.read)
     case Palvelurooli("KOSKI", "READ_UPDATE") => List(AccessType.read, AccessType.write)
