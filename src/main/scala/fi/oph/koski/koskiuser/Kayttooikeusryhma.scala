@@ -8,6 +8,6 @@ sealed trait Käyttöoikeusryhmä {
   override def toString = "Käyttöoikeusryhmä " + nimi
 }
 
-case class OrganisaationKäyttöoikeusryhmä private[koskiuser](val nimi: String, val kuvaus: String, val palveluroolit: List[Palvelurooli] = Nil) extends Käyttöoikeusryhmä
+case class OrganisaationKäyttöoikeusryhmä private[koskiuser](nimi: String, tunniste: String, kuvaus: String, palveluroolit: List[Palvelurooli] = Nil) extends Käyttöoikeusryhmä
 
-case class GlobaaliKäyttöoikeusryhmä private[koskiuser](val nimi: String, val kuvaus: String, val palveluroolit: List[Palvelurooli] = Nil) extends Käyttöoikeusryhmä
+case class GlobaaliKäyttöoikeusryhmä private[koskiuser](nimi: String, kuvaus: String, palveluroolit: List[Palvelurooli] = Nil) extends Käyttöoikeusryhmä

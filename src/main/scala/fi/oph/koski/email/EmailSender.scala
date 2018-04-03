@@ -41,7 +41,7 @@ case class RyhmäsähköpostiSender(config: Config) extends EmailSender {
   val http = VirkailijaHttpClient(ServiceConfig.apply(config, "ryhmäsähköposti.virkailija"), "/ryhmasahkoposti-service")
 
   override def sendEmail(envelope: Email): Unit = {
-    http.post(uri"/ryhmasahkoposti-service/email", envelope)(json4sEncoderOf[Email])(Http.expectSuccess)
+    runTask(http.post(uri"/ryhmasahkoposti-service/email", envelope)(json4sEncoderOf[Email])(Http.expectSuccess))
   }
 }
 

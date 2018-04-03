@@ -76,7 +76,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val sessionTimeout = SessionTimeout(config)
   lazy val koskiSessionRepository = new KoskiSessionRepository(masterDatabase.db, sessionTimeout)
   lazy val fixtureCreator = new FixtureCreator(this)
-  lazy val tiedonsiirtoService = new TiedonsiirtoService(koskiElasticSearchIndex, new TiedonsiirtoFailureMailer(config, opintopolkuHenkilöFacade), organisaatioRepository, henkilöRepository, koodistoViitePalvelu, userRepository)
+  lazy val tiedonsiirtoService = new TiedonsiirtoService(koskiElasticSearchIndex, new TiedonsiirtoFailureMailer(this), organisaatioRepository, henkilöRepository, koodistoViitePalvelu, userRepository)
   lazy val healthCheck = HealthCheck(this)
   lazy val scheduledTasks = new KoskiScheduledTasks(this)
   lazy val ipService = new IPService(masterDatabase.db)
