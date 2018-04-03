@@ -7,7 +7,7 @@ import fi.oph.koski.schema.OidOrganisaatio
 import org.scalatest.{BeforeAndAfterEach, FreeSpec, Matchers}
 
 class TiedonsiirtoFailureMailerSpec extends FreeSpec with Matchers with BeforeAndAfterEach {
-  private val mailer = new TiedonsiirtoFailureMailer(KoskiApplicationForTests.config, KoskiApplicationForTests.opintopolkuHenkilöFacade)
+  private val mailer = new TiedonsiirtoFailureMailer(KoskiApplicationForTests)
   "Lähettää sähköpostia" - {
     "oppilaitoksen KOSKI-pääkäyttäjä:lle jos mahdollista" in {
       mailer.sendMail(OidOrganisaatio(helsinginKaupunki), Some(OidOrganisaatio(stadinAmmattiopisto)))

@@ -3,20 +3,19 @@ package fi.oph.koski.tiedonsiirto
 import java.time.LocalDateTime
 import java.time.LocalDateTime.now
 
-import com.typesafe.config.Config
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.email._
-import fi.oph.koski.henkilo.OpintopolkuHenkilöFacade
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.OrganisaatioWithOid
 
-class TiedonsiirtoFailureMailer(config: Config, authenticationServiceClient: OpintopolkuHenkilöFacade) extends Logging {
+class TiedonsiirtoFailureMailer(application: KoskiApplication) extends Logging {
   private val sendTimes = scala.collection.mutable.Map[String, LocalDateTime]()
-  private val sender = EmailSender(config)
+  private val sender = EmailSender(application.config)
   private val koskiPääkäyttäjät = "koski-oppilaitos-pääkäyttäjä_1494486198456"
   private val vastuukayttajat = "Vastuukayttajat"
 
   def sendMail(rootOrg: OrganisaatioWithOid, oppilaitos: Option[OrganisaatioWithOid]): Unit = try {
-    if (!shouldSendMail(rootOrg, oppilaitos)) {
+    if (!application.features.tiedonsiirtomail || !shouldSendMail(rootOrg, oppilaitos)) {
       return
     }
     send(rootOrg, oppilaitos)
@@ -36,7 +35,7 @@ class TiedonsiirtoFailureMailer(config: Config, authenticationServiceClient: Opi
         val mail: Email = Email(EmailContent(
           "no-reply@opintopolku.fi",
           "Virheellinen Koski-tiedonsiirto",
-          "<p>Automaattisessa tiedonsiirrossa tapahtui virhe.</p><p>Käykää ystävällisesti tarkistamassa tapahtuneet tiedonsiirrot osoitteessa: " + config.getString("koski.root.url") + "/tiedonsiirrot</p>",
+          "<p>Automaattisessa tiedonsiirrossa tapahtui virhe.</p><p>Käykää ystävällisesti tarkistamassa tapahtuneet tiedonsiirrot osoitteessa: " + application.config.getString("koski.root.url") + "/tiedonsiirrot</p>",
           html = true
         ), emailAddresses.map(EmailRecipient))
         logger.debug(s"Sending failure mail to ${emailAddresses.mkString(",")}")
@@ -67,6 +66,6 @@ class TiedonsiirtoFailureMailer(config: Config, authenticationServiceClient: Opi
     org.toList.flatMap(o => organisaatioSähköpostit(o.oid, koskiPääkäyttäjät))
 
   private def organisaatioSähköpostit(oid: String, ryhmä: String): List[String] = {
-    authenticationServiceClient.organisaationSähköpostit(oid, ryhmä)
+    application.opintopolkuHenkilöFacade.organisaationSähköpostit(oid, ryhmä)
   }
 }
