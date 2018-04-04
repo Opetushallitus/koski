@@ -65,7 +65,7 @@ const completeWithFieldAlternatives = (oppiaine, kurssiPrototypes) => {
     if (!oppiaineKoodisto) return []
 
     const koodistoAlternativesPath = modelLookup(model, 'tunniste').alternativesPath
-    const kurssiKoodistot = koodistoAlternativesPath && koodistoAlternativesPath.split('/').last()
+    const kurssiKoodistot = koodistoAlternativesPath && R.last(koodistoAlternativesPath.split('/'))
 
     if (!kurssiKoodistot) return []
 
@@ -81,5 +81,5 @@ const completeWithFieldAlternatives = (oppiaine, kurssiPrototypes) => {
       .map(alternatives => alternatives.map(enumValue => modelSetValue(model, enumValue, 'tunniste')))
   }
 
-  return Bacon.combineAsArray(kurssiPrototypes.map(alternativesForField)).last().map(x => x.flatten())
+  return Bacon.combineAsArray(kurssiPrototypes.map(alternativesForField)).last().map(R.unnest)
 }

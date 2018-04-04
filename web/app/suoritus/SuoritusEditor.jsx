@@ -6,6 +6,7 @@ import {TilaJaVahvistusEditor} from './TilaJaVahvistusEditor'
 import {arviointiPuuttuu, osasuoritukset, suoritusKesken, suoritusValmis} from './Suoritus'
 import Text from '../i18n/Text'
 import {resolveOsasuorituksetEditor, resolvePropertyEditor} from './suoritusEditorMapping'
+import {flatMapArray} from '../util/util'
 
 export class SuoritusEditor extends React.Component {
   render() {
@@ -42,8 +43,8 @@ SuoritusEditor.validateModel = (m) => {
   }
 
   const validateSuoritus = (s) =>
-    osasuoritukset(s)
-      .flatMap(osasuoritus => {
+    flatMapArray(osasuoritukset(s),
+      osasuoritus => {
         if (suoritusValmis(s) && suoritusKesken(osasuoritus)) {
           let subPath = removeCommonPath(osasuoritus.path, m.path)
           return [{

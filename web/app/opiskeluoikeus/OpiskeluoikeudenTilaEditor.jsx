@@ -106,7 +106,7 @@ const getActiveIndex = (jaksot) => {
   return jaksot.findIndex(j => parseISODate(modelData(j, 'alku')) <= today)
 }
 
-const viimeinenJakso = (opiskeluoikeus) => modelItems(opiskeluoikeusjaksot(opiskeluoikeus)).last()
+const viimeinenJakso = (opiskeluoikeus) => R.last(modelItems(opiskeluoikeusjaksot(opiskeluoikeus)))
 
 const opiskeluoikeusjaksot = (opiskeluoikeus) => {
   return modelLookup(opiskeluoikeus, 'tila.opiskeluoikeusjaksot')

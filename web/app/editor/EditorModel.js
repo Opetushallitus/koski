@@ -2,6 +2,7 @@ import R from 'ramda'
 import Bacon from 'baconjs'
 import * as L from 'partial.lenses'
 import {hashAdd, hashCode} from './hashcode'
+import {flatMapArray} from '../util/util'
 
 // Find submodel with given path
 export const modelLookupRequired = (mainModel, path) => {
@@ -45,7 +46,7 @@ let modelParentLens = L.lens(
 )
 let findParent = (model) => {
   if (!model.parent) return undefined
-  if (typeof model.path.last() == 'function') {
+  if (typeof R.last(model.path) == 'function') {
     // Skip lenses in path, only consider actual path elements
     return findParent(model.parent)
   }
@@ -320,7 +321,7 @@ export const modelProperty = (mainModel, path) => {
 
 export const modelProperties = (mainModel, pathsOrFilter) => {
   if (pathsOrFilter && pathsOrFilter instanceof Array) {
-    return pathsOrFilter.flatMap(p => {
+    return flatMapArray(pathsOrFilter, p => {
       let prop = modelProperty(mainModel, p)
       return prop ? [prop] : []
     })
@@ -376,8 +377,7 @@ export const modelValid = (model, recursive = true) => {
 }
 
 export const modelErrorMessages = (model, recursive = true) => {
-  return R.uniq(R.values(modelErrors(model, recursive))
-    .flatten()
+  return R.uniq(R.unnest(R.values(modelErrors(model, recursive)))
     .filter(e => e.message)
     .map(e => e.message))
 }
@@ -623,7 +623,7 @@ const itemsEmpty = (items) => {
 
 let lastL = L.lens(
   (xs) => {
-    return (xs && xs.length && xs.last()) || undefined
+    return (xs && xs.length && R.last(xs)) || undefined
   },
   (x, xs) => xs.slice(0, -1).concat([x])
 )

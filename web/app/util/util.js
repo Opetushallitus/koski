@@ -1,4 +1,5 @@
 import Bacon from 'baconjs'
+import R from 'ramda'
 
 export const doActionWhileMounted = (stream, action) => stream.doAction(action).map(null).toProperty().startWith(null)
 
@@ -31,3 +32,5 @@ export const scrollElementBottomVisible = elem => {
     }
   }
 }
+
+export const flatMapArray = (a, f) => R.unnest(a.map(f))

@@ -7,16 +7,16 @@ import Highlight from 'react-highlighter'
 import {buildClassNames} from '../components/classnames.js'
 import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
-import {parseBool} from '../util/util'
+import {flatMapArray, parseBool} from '../util/util'
 import {parseLocation} from '../util/location'
 
 let findSingleResult = (canSelectOrg = () => true) => (organisaatiot) => {
   let selectableOrgs = (org) => {
     let thisSelectable = canSelectOrg(org) ? [org] : []
-    let selectableChildren = org.children.flatMap(selectableOrgs)
+    let selectableChildren = flatMapArray(org.children, selectableOrgs)
     return thisSelectable.concat(selectableChildren)
   }
-  let selectables = organisaatiot.flatMap(selectableOrgs)
+  let selectables = flatMapArray(organisaatiot, selectableOrgs)
   return selectables.length == 1 && selectables[0]
 }
 export default class OrganisaatioPicker extends BaconComponent {

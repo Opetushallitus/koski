@@ -23,7 +23,7 @@ import {buildClassNames} from '../components/classnames'
 import {addExitHook, removeExitHook} from '../util/exitHook'
 import {listviewPath} from './Oppijataulukko'
 import {ISO2FinnishDate} from '../date/date'
-import {doActionWhileMounted} from '../util/util'
+import {doActionWhileMounted, flatMapArray} from '../util/util'
 import Text from '../i18n/Text'
 import {t} from '../i18n/i18n'
 import {EditLocalizationsLink} from '../i18n/EditLocalizationsLink'
@@ -125,7 +125,7 @@ const createState = (oppijaOid) => {
   const saveOppijaE = saveChangesBus.map(() => oppijaBeforeSave => {
     var oppijaData = modelData(oppijaBeforeSave)
     let opiskeluoikeusOid = oppijaBeforeSave.opiskeluoikeusOid
-    let opiskeluoikeudet = oppijaData.opiskeluoikeudet.flatMap(x => x.opiskeluoikeudet).flatMap(x => x.opiskeluoikeudet)
+    let opiskeluoikeudet = flatMapArray(flatMapArray(oppijaData.opiskeluoikeudet, x => x.opiskeluoikeudet), x => x.opiskeluoikeudet)
     let opiskeluoikeus = opiskeluoikeudet.find(x => x.oid == opiskeluoikeusOid)
 
     let oppijaUpdate = {
@@ -161,7 +161,7 @@ const createState = (oppijaOid) => {
 
   const stateP = oppijaP.map('.event').mapError(() => 'dirty').slidingWindow(2).flatMapLatest(events => {
     let prev = events[0]
-    let next = events.last()
+    let next = R.last(events)
     if(prev === 'saved' && next === 'view') {
       return Bacon.later(2000, 'view')
     }

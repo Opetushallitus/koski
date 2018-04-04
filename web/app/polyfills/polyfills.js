@@ -66,15 +66,6 @@ addArrayMethod('findIndex', function(predicate) {
   }
   return -1
 })
-addArrayMethod('flatMap', function (lambda) {
-    return Array.prototype.concat.apply([], this.map(lambda))
-})
-addArrayMethod('flatten', function () {
-  return this.flatMap((x) => x)
-})
-addArrayMethod('last', function () {
-  return this[this.length - 1]
-})
 addArrayMethod('includes', function (item) {
   return this.indexOf(item) >= 0
 })

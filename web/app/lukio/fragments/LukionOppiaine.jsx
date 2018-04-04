@@ -1,4 +1,5 @@
 import React from 'react'
+import R from 'ramda'
 
 import {t} from '../../i18n/i18n'
 import {modelData, modelLookup, modelTitle} from '../../editor/EditorModel.js'
@@ -55,7 +56,7 @@ const Arviointi = ({oppiaine, suoritetutKurssit, footnote}) => {
   const {edit} = oppiaine.context
 
   const arviointi = modelData(oppiaine, 'arviointi')
-  const numeerinenArvosana = kurssi => parseInt(kurssi.arviointi.last().arvosana.koodiarvo)
+  const numeerinenArvosana = kurssi => parseInt(R.last(kurssi.arviointi).arvosana.koodiarvo)
   const kurssitNumeerisellaArvosanalla = suoritetutKurssit.filter(kurssi => !isNaN(numeerinenArvosana(kurssi)))
   const keskiarvo = kurssitNumeerisellaArvosanalla.length > 0 && Math.round((kurssitNumeerisellaArvosanalla.map(numeerinenArvosana).reduce((a, b) => a + b) / kurssitNumeerisellaArvosanalla.length) * 10) / 10
 

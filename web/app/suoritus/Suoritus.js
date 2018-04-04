@@ -6,6 +6,7 @@ import * as L from 'partial.lenses'
 import R from 'ramda'
 import {t} from '../i18n/i18n'
 import {parseISODate} from '../date/date'
+import {flatMapArray} from '../util/util'
 
 const isInPast = dateStr => parseISODate(dateStr) < new Date()
 
@@ -39,7 +40,7 @@ export const onKeskeneräisiäOsasuorituksia  = (suoritus) => {
 }
 export const keskeneräisetOsasuoritukset = (suoritus) => osasuoritukset(suoritus).filter(R.either(suoritusKesken, onKeskeneräisiäOsasuorituksia))
 export const osasuoritukset = (suoritus) => modelItems(suoritus, 'osasuoritukset')
-export const rekursiivisetOsasuoritukset = (suoritus) => osasuoritukset(suoritus).flatMap(s => [s].concat(rekursiivisetOsasuoritukset(s)))
+export const rekursiivisetOsasuoritukset = (suoritus) => flatMapArray(osasuoritukset(suoritus), s => [s].concat(rekursiivisetOsasuoritukset(s)))
 export const suorituksenTyyppi = (suoritus) => modelData(suoritus, 'tyyppi').koodiarvo
 
 export const suoritusTitle = (suoritus) => {

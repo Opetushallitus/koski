@@ -95,8 +95,7 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
 }
 
 const valmiitaSuorituksia = oppiaineSuoritukset => {
-  const valmiitaKursseja = () => oppiaineSuoritukset.flatMap(oppiaine => modelItems(oppiaine, 'osasuoritukset')).filter(arvioituTaiVahvistettu)
-  return oppiaineSuoritukset.filter(arvioituTaiVahvistettu).length > 0 || valmiitaKursseja().length > 0
+  return oppiaineSuoritukset.some(oppiaine => arvioituTaiVahvistettu(oppiaine) || modelItems(oppiaine, 'osasuoritukset').some(arvioituTaiVahvistettu))
 }
 
 const prefillOsasuorituksetIfNeeded = (model, currentSuoritukset) => {

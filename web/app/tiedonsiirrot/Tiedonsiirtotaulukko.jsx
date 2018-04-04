@@ -5,6 +5,7 @@ import PaginationLink from '../components/PaginationLink'
 import Link from '../components/Link'
 import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
+import {flatMapArray} from '../util/util'
 
 export class Tiedonsiirtotaulukko extends React.Component {
   render() {
@@ -42,7 +43,7 @@ class Lokiriviryhmä extends React.Component {
     const isGroup = tiedonsiirtoRivit.length > 1
     return(<tbody className="alternating">
       {
-        tiedonsiirtoRivit.flatMap((rivi, j) => {
+        flatMapArray(tiedonsiirtoRivit, (rivi, j) => {
             const isParent = j == 0 && isGroup
             const isChild = j > 0 && isGroup
             const isHidden = isChild && !isExpanded

@@ -4,6 +4,7 @@ import {currentLocation} from '../util/location.js'
 import {OpiskeluoikeusEditor} from '../opiskeluoikeus/OpiskeluoikeusEditor'
 import {modelItems} from '../editor/EditorModel'
 import OpiskeluoikeudetNavBar from './OpiskeluoikeudetNavBar'
+import {flatMapArray} from '../util/util'
 
 export const OppijaEditor = ({model}) => {
   let oppijaOid = modelData(model, 'henkilö.oid')
@@ -19,7 +20,7 @@ export const OppijaEditor = ({model}) => {
       <OpiskeluoikeudetNavBar {...{ oppijaOid, opiskeluoikeusTyypit, selectedIndex }}/>
       <ul className="opiskeluoikeuksientiedot">
         {
-          modelItems(model, 'opiskeluoikeudet.' + selectedIndex + '.opiskeluoikeudet').flatMap((oppilaitoksenOpiskeluoikeudet, oppilaitosIndex) => {
+          flatMapArray(modelItems(model, 'opiskeluoikeudet.' + selectedIndex + '.opiskeluoikeudet'), (oppilaitoksenOpiskeluoikeudet, oppilaitosIndex) => {
             return modelItems(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').map((opiskeluoikeus, opiskeluoikeusIndex) =>
               (<li key={ oppilaitosIndex + '-' + opiskeluoikeusIndex }>
                 <OpiskeluoikeusEditor

@@ -90,7 +90,7 @@ EnumEditor.fetchAlternatives = (model) => {
 export const fetchAlternativesBasedOnPrototypes = (models, pathToFieldWithAlternatives) => {
   const alternativesForField = (model) => EnumEditor.fetchAlternatives(modelLookup(model, pathToFieldWithAlternatives))
     .map(alternatives => alternatives.map(enumValue => modelSetValue(model, enumValue, pathToFieldWithAlternatives)))
-  return Bacon.combineAsArray(models.map(alternativesForField)).last().map(x => x.flatten())
+  return Bacon.combineAsArray(models.map(alternativesForField)).last().map(R.unnest)
 }
 
 EnumEditor.knownAlternatives = (model) => model.alternativesPath && (model.alternativesPath.split('/')[6] || '').split(',').filter(R.identity)
