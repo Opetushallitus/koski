@@ -106,8 +106,18 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
     result
   }
 
+  // better name might be "requireVirkailijaOrPalvelukäyttäjä"
   def requireAuthentication = {
     getUser match {
+      case Right(user) if user.kansalainen => haltWithStatus(KoskiErrorCategory.forbidden.vainVirkailija())
+      case Right(user) =>
+      case Left(error) => haltWithStatus(error)
+    }
+  }
+
+  def requireKansalainen = {
+    getUser match {
+      case Right(user) if !user.kansalainen => haltWithStatus(KoskiErrorCategory.forbidden.vainKansalainen())
       case Right(user) =>
       case Left(error) => haltWithStatus(error)
     }

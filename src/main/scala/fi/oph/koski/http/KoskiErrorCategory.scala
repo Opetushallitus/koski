@@ -132,7 +132,8 @@ object KoskiErrorCategory {
     val juuriorganisaatioPuuttuu = subcategory("juuriorganisaatioPuuttuu", "Automaattisen tiedonsiirron palvelukäyttäjällä ei yksiselitteistä juuriorganisaatiota")
     val omienTietojenMuokkaus = subcategory("omienTietojenMuokkaus", "Omien tietojen muokkaus ei ole sallittua.")
     val oppijaOidinMuutos = subcategory("oppijaOidinMuutos", "Oppija OID ei vastaa opiskeluoikeuteen kuuluvaa oppija OID:a")
-
+    val vainVirkailija = subcategory("vainVirkailija", "Sallittu vain virkailija-käyttäjille")
+    val vainKansalainen = subcategory("vainKansalainen", "Sallittu vain kansalainen-käyttäjille")
   }
 
   object notFound extends ErrorCategory("notFound", 404, "Not found") {
