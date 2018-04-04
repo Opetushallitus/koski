@@ -20,6 +20,7 @@ import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
 import {lang} from '../i18n/i18n'
 import {EditLocalizationsLink} from '../i18n/EditLocalizationsLink'
+import {showOppijataulukko} from './accessCheck'
 
 export const listviewPath = () => {
   return sessionStorage.previousListViewPath || '/koski/'
@@ -36,13 +37,22 @@ export class Oppijataulukko extends React.Component {
   }
 
   render() {
-    let { rivit, edellisetRivit, pager, params } = this.props
+    let { total, rivit, edellisetRivit, pager, params } = this.props
     let { opiskeluoikeudenTyypit, koulutus, opiskeluoikeudenTila } = this.state
     let näytettävätRivit = rivit || edellisetRivit
     let nullSelection = {value : t('Ei valintaa')}
     sessionStorage.previousListViewPath = currentLocation().toString()
 
-    return (<div className="oppijataulukko">{ näytettävätRivit ? (
+    return (
+      <div>
+      <h2 className="oppijataulukko-header">
+        <Text name="Opiskelijat"/>
+        <div className="opiskeluoikeudet-total">
+          <span className="title label"><Text name="Opiskeluoikeuksia"/></span>
+          <span className="value">{': ' + total}</span>
+        </div>
+      </h2>
+      <div className="oppijataulukko">{ näytettävätRivit ? (
       <table>
         <thead>
           <tr>
@@ -165,6 +175,7 @@ export class Oppijataulukko extends React.Component {
           </tbody>
         </table>) : <div className="ajax-indicator-bg"><Text name="Ladataan..."/></div> }
       <PaginationLink pager={pager}/>
+    </div>
     </div>)
   }
 
@@ -198,23 +209,20 @@ var edellisetRivit = null
 
 export const oppijataulukkoContentP = (query, params) => {
   let pager = Pager('/koski/api/opiskeluoikeus/perustiedot' + query, L.prop('tiedot'))
+  let totalP = pager.rowsP.map(r => r.total)
   let taulukkoContentP = pager.rowsP
     .doAction((result) => edellisetRivit = result.tiedot)
     .startWith(null)
-    .map((rivit) => <Oppijataulukko rivit={rivit.tiedot} edellisetRivit={edellisetRivit} pager={pager} params={params}/>)
-  let totalP = pager.rowsP.map(r => r.total)
-  return Bacon.combineWith(taulukkoContentP, totalP, (taulukko, total) => ({
+
+  let taulukkoP = Bacon.combineWith(taulukkoContentP, totalP, (rivit, total) => {
+    return rivit && showOppijataulukko(<Oppijataulukko total={total} rivit={rivit.tiedot} edellisetRivit={edellisetRivit} pager={pager} params={params}/>)
+  })
+
+  return taulukkoP.map(taulukko => ({
     content: (<div className='content-area oppijataulukko'>
       <div className="main-content">
         <OppijaHaku/>
         <EditLocalizationsLink/>
-        <h2 className="oppijataulukko-header">
-          <Text name="Opiskelijat"/>
-          <div className="opiskeluoikeudet-total">
-            <span className="title label"><Text name="Opiskeluoikeuksia"/></span>
-            <span className="value">{': ' + total}</span>
-          </div>
-        </h2>
       { taulukko }
       </div>
     </div>),
