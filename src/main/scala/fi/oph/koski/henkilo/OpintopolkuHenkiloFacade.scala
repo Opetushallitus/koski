@@ -11,7 +11,7 @@ import fi.oph.koski.henkilo.oppijanumerorekisteriservice.{KäyttäjäHenkilö, O
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory, _}
 import fi.oph.koski.koskiuser.KoskiSession.systemUser
-import fi.oph.koski.koskiuser.{MockKäyttöoikeusryhmät, MockUsers}
+import fi.oph.koski.koskiuser.{KäyttöoikeusOrg, MockKäyttöoikeusryhmät, MockUsers}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotRepository
 import fi.oph.koski.schema.Henkilö.Oid
@@ -197,8 +197,14 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
     oppija.toString.toUpperCase
   }
 
-  override def organisaationSähköpostit(organisaatioOid: String, ryhmä: String): List[String] =
-    MockUsers.users.filter(_.käyttöoikeudet.contains(MockKäyttöoikeusryhmät.vastuukäyttäjä(organisaatioOid))).map(_.username + "@example.com")
+  override def organisaationSähköpostit(organisaatioOid: String, ryhmä: String): List[String] = {
+    MockUsers.users.filter { u =>
+      u.käyttöoikeudet.exists {
+        case k: KäyttöoikeusOrg => k.organisaatio.oid == organisaatioOid && u.käyttöoikeusRyhmät.contains(ryhmä)
+        case _ => false
+      }
+    }.map(_.username + "@example.com")
+  }
 
   override def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] = synchronized {
     oppijat.getOppijat.find(_.hetu.contains(hetu)).map(h => h.master.map(toOppijaHenkilö).getOrElse(toOppijaHenkilö(h.henkilö)))
