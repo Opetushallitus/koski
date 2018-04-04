@@ -14,7 +14,7 @@ class SuoritusjakoServlet(implicit val application: KoskiApplication) extends Ap
   put("/") {
     withJsonBody({ body =>
       val suoritusIds = JsonSerializer.extract[List[SuoritusIdentifier]](body)
-      renderObject(SuoritusjakoResponse(application.suoritusjakoService.put(koskiSession.oid, suoritusIds)))
+      renderEither(application.suoritusjakoService.put(koskiSession.oid, suoritusIds).right.map(SuoritusjakoResponse))
     })()
   }
 }

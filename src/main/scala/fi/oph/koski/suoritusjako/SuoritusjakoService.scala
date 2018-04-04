@@ -3,7 +3,7 @@ package fi.oph.koski.suoritusjako
 
 import java.util.UUID.randomUUID
 
-import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
@@ -11,10 +11,14 @@ import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.schema._
 
 class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppijaFacade: KoskiOppijaFacade) extends Logging {
-  def put(oppijaOid: String, suoritusIds: List[SuoritusIdentifier]): String = {
-    val uuid = randomUUID.toString.replaceAll("-", "")
-    suoritusjakoRepository.put(uuid, oppijaOid, suoritusIds)
-    uuid
+  def put(oppijaOid: String, suoritusIds: List[SuoritusIdentifier]): Either[HttpStatus, String] = {
+    assertSuorituksetExist(oppijaOid, suoritusIds) match {
+      case Right(_) =>
+        val uuid = randomUUID.toString.replaceAll("-", "")
+        suoritusjakoRepository.put(uuid, oppijaOid, suoritusIds)
+        Right(uuid)
+      case Left(status) => Left(status)
+    }
   }
 
   def get(uuid: String): Either[HttpStatus, Oppija] = {
@@ -36,14 +40,30 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
     }
   }
 
+  private def assertSuorituksetExist(oppijaOid: String, suoritusIds: List[SuoritusIdentifier]): Either[HttpStatus, Boolean] = {
+    oppijaFacade.findOppija(oppijaOid)(KoskiSession.systemUser).map { oppija =>
+      suoritusIds.map(suoritusId =>
+        oppija.opiskeluoikeudet.exists(oo =>
+          oo.suoritukset.exists(isMatchingSuoritus(oo, _, suoritusId))
+        )
+      )
+    } match {
+      case Right(matches) if matches.isEmpty => Left(KoskiErrorCategory.badRequest.format())
+      case Right(matches) if matches.exists(!_) => Left(KoskiErrorCategory.notFound.suoritustaEiLöydy())
+      case Right(_) => Right(true)
+      case Left(status) => Left(status)
+    }
+  }
+
   private def filterSuoritukset(opiskeluoikeus: Opiskeluoikeus, suoritusIds: List[SuoritusIdentifier]): List[Suoritus] =
     opiskeluoikeus.suoritukset.filter { suoritus =>
-      suoritusIds.exists(suoritusId =>
-        opiskeluoikeus.oppilaitos.exists(_.oid == suoritusId.oppilaitosOid) &&
-          suoritus.tyyppi.koodiarvo == suoritusId.suorituksenTyyppi &&
-          suoritus.koulutusmoduuli.tunniste.koodiarvo == suoritusId.koulutusmoduulinTunniste
-      )
+      suoritusIds.exists(suoritusId => isMatchingSuoritus(opiskeluoikeus, suoritus, suoritusId))
     }
+
+  private def isMatchingSuoritus(opiskeluoikeus: Opiskeluoikeus, suoritus: PäätasonSuoritus, suoritusId: SuoritusIdentifier): Boolean =
+    opiskeluoikeus.oppilaitos.exists(_.oid == suoritusId.oppilaitosOid) &&
+      suoritus.tyyppi.koodiarvo == suoritusId.suorituksenTyyppi &&
+      suoritus.koulutusmoduuli.tunniste.koodiarvo == suoritusId.koulutusmoduulinTunniste
 
   private def withSuoritukset(opiskeluoikeus: Opiskeluoikeus, suoritukset: List[Suoritus]): Opiskeluoikeus = {
     import mojave._
