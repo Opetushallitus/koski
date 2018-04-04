@@ -15,6 +15,8 @@ import 'core-js/fn/object/assign'
 import 'core-js/fn/object/values'
 import 'core-js/fn/number/is-nan'
 import 'core-js/fn/number/is-integer'
+import 'core-js/es6/map'
+import 'core-js/es6/set'
 
 if (!history.pushState) {
   console.log('history.pushState not available')
