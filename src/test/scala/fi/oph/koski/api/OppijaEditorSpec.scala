@@ -35,17 +35,17 @@ class OppijaEditorSpec extends FreeSpec with Matchers with LocalJettyHttpSpecifi
     }
   }
 
-  "GET /api/editor/omattiedot" - {
+  "GET /api/omattiedot/editor" - {
     "with virkailija login -> logs OPISKELUOIKEUS_KATSOMINEN" in {
       AuditLogTester.clearMessages
-      get("api/editor/omattiedot", headers = authHeaders(user = MockUsers.omattiedot)) {
+      get("api/omattiedot/editor", headers = authHeaders(user = MockUsers.omattiedot)) {
         verifyResponseStatusOk()
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN"))
       }
     }
     "with kansalainen login -> logs KANSALAINEN_OPISKELUOIKEUS_KATSOMINEN" in {
       AuditLogTester.clearMessages
-      get("api/editor/omattiedot", headers = kansalainenLoginHeaders("190751-739W")) {
+      get("api/omattiedot/editor", headers = kansalainenLoginHeaders("190751-739W")) {
         verifyResponseStatusOk()
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_OPISKELUOIKEUS_KATSOMINEN"))
       }
