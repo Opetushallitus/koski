@@ -42,8 +42,8 @@ case class OppijanumeroRekisteriClient(config: Config) {
 }
 
 case class KäyttäjäHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, kayttajatiedot: Option[Käyttäjätiedot], asiointiKieli: Option[Kieli])
-case class OppijaNumerorekisteriOppija(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], syntymaaika: Option[LocalDate], aidinkieli: Option[Kieli], kansalaisuus: Option[List[Kansalaisuus]], modified: Long, turvakielto: Boolean) {
-  def toOppijaHenkilö = OppijaHenkilö(oidHenkilo, sukunimi, etunimet, kutsumanimi, hetu, syntymaaika, aidinkieli.map(_.kieliKoodi), kansalaisuus.map(_.map(_.kansalaisuusKoodi)), modified, turvakielto)
+case class OppijaNumerorekisteriOppija(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], syntymaaika: Option[LocalDate], aidinkieli: Option[Kieli], kansalaisuus: Option[List[Kansalaisuus]], modified: Long, turvakielto: Option[Boolean]) {
+  def toOppijaHenkilö = OppijaHenkilö(oidHenkilo, sukunimi, etunimet, kutsumanimi, hetu, syntymaaika, aidinkieli.map(_.kieliKoodi), kansalaisuus.map(_.map(_.kansalaisuusKoodi)), modified, turvakielto.getOrElse(false))
 }
 case class UusiHenkilö(hetu: Option[String], sukunimi: String, etunimet: String, kutsumanimi: String, henkiloTyyppi: String, kayttajatiedot: Option[Käyttäjätiedot])
 object UusiHenkilö {
