@@ -35,7 +35,11 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
             val roolit = käyttöoikeudet.map { case PalveluJaOikeus(palvelu, oikeus) => Palvelurooli(palvelu, oikeus)}
             organisatioOid match {
               case Opetushallitus.organisaatioOid => KäyttöoikeusGlobal(roolit)
-              case _ => KäyttöoikeusOrg(OidOrganisaatio(organisatioOid), roolit, true, None)
+              case _ => if (hasGlobalKoulutusmuotoRoles(roolit)) {
+                KäyttöoikeusGlobalByKoulutusmuoto(roolit)
+              } else {
+                KäyttöoikeusOrg(OidOrganisaatio(organisatioOid), roolit, true, None)
+              }
             }
         })
       case Nil =>
@@ -48,6 +52,9 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
         }
     }
   }
+
+  private def hasGlobalKoulutusmuotoRoles(roolit: List[Palvelurooli]) =
+    roolit.map(_.rooli).exists(Rooli.globaalitKoulutusmuotoRoolit.contains)
 
   override def authenticate(userid: String, wrappedPassword: Password): Boolean = {
     val tgtUri: TGTUrl = resolve(Uri.fromString(virkailijaUrl).toOption.get, uri("/cas/v1/tickets"))

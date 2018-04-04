@@ -14,6 +14,8 @@ object Rooli {
   val GLOBAALI_LUKU_PERUSOPETUS = "GLOBAALI_LUKU_PERUSOPETUS"
   val GLOBAALI_LUKU_TOINEN_ASTE = "GLOBAALI_LUKU_TOINEN_ASTE"
   val GLOBAALI_LUKU_KORKEAKOULU = "GLOBAALI_LUKU_KORKEAKOULU"
+
+  def globaalitKoulutusmuotoRoolit = List(GLOBAALI_LUKU_PERUSOPETUS, GLOBAALI_LUKU_TOINEN_ASTE, GLOBAALI_LUKU_KORKEAKOULU)
 }
 
 trait Käyttöoikeus {
@@ -36,7 +38,16 @@ case class KäyttöoikeusOrg(organisaatio: OrganisaatioWithOid, organisaatiokoht
     case Palvelurooli("KOSKI", "TIEDONSIIRRON_MITATOINTI") => List(AccessType.tiedonsiirronMitätöinti)
     case _ => Nil
   }
+
   def globalAccessType: List[AccessType.Value] = Nil
   def globalPalveluroolit = Nil
   override def toString = organisaatiokohtaisetPalveluroolit.mkString(",")
+}
+
+case class KäyttöoikeusGlobalByKoulutusmuoto(globalKoulutusmuotoRoolit: List[Palvelurooli]) extends Käyttöoikeus {
+  def globalAccessType: List[AccessType.Value] = if (globalKoulutusmuotoRoolit.exists(r => Rooli.globaalitKoulutusmuotoRoolit.contains(r.rooli))) {
+    List(AccessType.read)
+  } else {
+    Nil
+  }
 }
