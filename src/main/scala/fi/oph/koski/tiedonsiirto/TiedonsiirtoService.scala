@@ -312,8 +312,8 @@ class TiedonsiirtoService(
     }
 
     haetutTiedot.orElse(oidHenkilö match {
-      case Some(oidHenkilö) => validateAndExtract[TiedonsiirtoOppija](annetutHenkilötiedot.merge(JsonSerializer.serializeWithRoot(oidHenkilö))).toOption
-      case None => annetutHenkilötiedot.toOption.flatMap(validateAndExtract[TiedonsiirtoOppija](_).toOption)
+      case Some(oidHenkilö) => validateAndExtract[TiedonsiirtoOppija](annetutHenkilötiedot.merge(JsonSerializer.serializeWithRoot(oidHenkilö)), ignoreExtras = true).toOption
+      case None => annetutHenkilötiedot.toOption.flatMap(validateAndExtract[TiedonsiirtoOppija](_, ignoreExtras = true).toOption)
     })
   }
 

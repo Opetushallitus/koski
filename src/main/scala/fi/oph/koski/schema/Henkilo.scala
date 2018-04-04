@@ -35,7 +35,9 @@ case class TäydellisetHenkilötiedot(
   äidinkieli: Option[Koodistokoodiviite],
   @Description("Opiskelijan kansalaisuudet")
   @KoodistoUri("maatjavaltiot2")
-  kansalaisuus: Option[List[Koodistokoodiviite]]
+  kansalaisuus: Option[List[Koodistokoodiviite]],
+  @Description("Henkilöllä on turvakielto")
+  turvakielto: Option[Boolean] = None
 ) extends HenkilöWithOid with Henkilötiedot {
   def toHenkilötiedotJaOid = HenkilötiedotJaOid(oid, hetu, etunimet, kutsumanimi, sukunimi)
 }

@@ -93,6 +93,16 @@
     &.edit, &.dirty {
       padding-bottom: 50px;
     }
+    .turvakielto {
+      cursor: pointer;
+      &:after {
+        .FontAwesomeSymbol;
+        content: "";
+        font-size: 25px;
+        margin-left: 8px;
+        color: @color-red;
+      }
+    }
   }
 
   .opiskeluoikeus-invalidated {
