@@ -34,7 +34,7 @@ object MockUsers {
   val kahdenOrganisaatioPalvelukäyttäjä = MockUser("palvelu2", "palvelu2", "1.2.246.562.24.99999999998", Set(oppilaitosPalvelukäyttäjä(MockOrganisaatiot.helsinginKaupunki), oppilaitosPalvelukäyttäjä(MockOrganisaatiot.omnia)))
   val omattiedot = MockUser("Oppija", "Oili", "1.2.246.562.24.99999999999", Set(oppilaitosTallentaja(omnia)))
   val eiOikkia = MockUser("EiOikkia", "Otto", "1.2.246.562.24.99999999902", Set())
-  val evira = MockUser("Evira", "Eeva", "1.2.246.562.24.99999999111", Set(KäyttöoikeusOrg(OidOrganisaatio(MockOrganisaatiot.evira), List(Palvelurooli(Rooli.GLOBAALI_LUKU_TOINEN_ASTE)), true, None)))
+  val evira = MockUser("Evira", "Eeva", "1.2.246.562.24.99999999111", Set(KäyttöoikeusGlobalByKoulutusmuoto(List(Palvelurooli(Rooli.GLOBAALI_LUKU_TOINEN_ASTE)))))
   val jyväskylänNormaalikoulunPalvelukäyttäjä = MockUser("jyväs-palvelu", "jyväs-palvelu", "1.2.246.562.24.99999999777", Set(oppilaitosPalvelukäyttäjä(MockOrganisaatiot.jyväskylänNormaalikoulu)))
   val jyväskylänYliopistonVastuukäyttäjä = MockUser("jyväs-vastuu", "jyväs-vastuu", "1.2.246.562.24.99999997777", Set(vastuukäyttäjä(MockOrganisaatiot.jyväskylänYliopisto)), "fi", List("Vastuukayttajat"))
 
@@ -59,7 +59,8 @@ object MockUsers {
     hkiTallentaja,
     eiOikkia,
     jyväskylänNormaalikoulunPalvelukäyttäjä,
-    jyväskylänYliopistonVastuukäyttäjä
+    jyväskylänYliopistonVastuukäyttäjä,
+    evira
   )
 }
 

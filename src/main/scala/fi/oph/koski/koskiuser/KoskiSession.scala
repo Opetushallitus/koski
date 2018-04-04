@@ -30,11 +30,14 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
     val access = globalAccess.contains(accessType) || organisationOids(accessType).contains(organisaatio)
     access && (accessType != AccessType.write || hasRole(LUOTTAMUKSELLINEN))
   }
-  def hasAnyGlobalReadAccess = hasGlobalReadAccess || globalKoulutusmuotoKäyttöoikeudet.nonEmpty
+
+  def hasGlobalKoulutusmuotoReadAccess: Boolean = globalKoulutusmuotoKäyttöoikeudet.flatMap(_.globalAccessType).contains(AccessType.read)
+
+  def allowedOpiskeluoikeusTyypit: Set[String] = globalKoulutusmuotoKäyttöoikeudet.flatMap(_.allowedOpiskeluoikeusTyypit)
   def hasGlobalReadAccess = globalAccess.contains(AccessType.read)
   def hasAnyWriteAccess = (globalAccess.contains(AccessType.write) || organisationOids(AccessType.write).nonEmpty) && hasRole(LUOTTAMUKSELLINEN)
   def hasLocalizationWriteAccess = globalKäyttöoikeudet.find(_.globalPalveluroolit.contains(Palvelurooli("LOKALISOINTI", "CRUD"))).isDefined
-  def hasAnyReadAccess = globalAccess.contains(AccessType.read) || orgKäyttöoikeudet.nonEmpty
+  def hasAnyReadAccess = globalAccess.contains(AccessType.read) || orgKäyttöoikeudet.nonEmpty || hasGlobalKoulutusmuotoReadAccess
 
   // Note: keep in sync with PermissionCheckServlet's hasSufficientRoles function. See PermissionCheckServlet for more comments.
   private val HenkilonhallintaCrud = Palvelurooli("HENKILONHALLINTA", "CRUD")

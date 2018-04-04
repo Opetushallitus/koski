@@ -1,5 +1,6 @@
 package fi.oph.koski.koskiuser
 
+import fi.oph.koski.koskiuser.Rooli.{GLOBAALI_LUKU_KORKEAKOULU, GLOBAALI_LUKU_PERUSOPETUS, GLOBAALI_LUKU_TOINEN_ASTE}
 import fi.oph.koski.schema.OrganisaatioWithOid
 
 object Rooli {
@@ -50,4 +51,10 @@ case class KäyttöoikeusGlobalByKoulutusmuoto(globalKoulutusmuotoRoolit: List[P
   } else {
     Nil
   }
+
+  def allowedOpiskeluoikeusTyypit: List[String] = globalKoulutusmuotoRoolit.flatMap(_.rooli match {
+    case GLOBAALI_LUKU_PERUSOPETUS => List("esiopetus", "perusopetus", "aikuistenperusopetus", "perusopetuksenlisaopetus", "perusopetukseenvalmistavaopetus")
+    case GLOBAALI_LUKU_TOINEN_ASTE => List("ammatillinenkoulutus", "ibtutkinto", "lukiokoulutus", "luva", "ylioppilastutkinto")
+    case GLOBAALI_LUKU_KORKEAKOULU => List("korkeakoulutus")
+  }).distinct
 }

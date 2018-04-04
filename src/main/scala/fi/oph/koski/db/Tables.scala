@@ -179,8 +179,10 @@ object Tables {
   val OpiskeluoikeusHistoria = TableQuery[OpiskeluoikeusHistoryTable]
 
   def OpiskeluOikeudetWithAccessCheck(implicit user: KoskiSession): Query[OpiskeluoikeusTable, OpiskeluoikeusRow, Seq] =
-    (if (user.hasAnyGlobalReadAccess) {
+    (if (user.hasGlobalReadAccess) {
       OpiskeluOikeudet
+    } else if (user.hasGlobalKoulutusmuotoReadAccess) {
+      OpiskeluOikeudet.filter(_.data.#>>(List("tyyppi", "koodiarvo")) inSet user.allowedOpiskeluoikeusTyypit)
     } else {
       val oids = user.organisationOids(AccessType.read).toList
       for {
