@@ -60,6 +60,7 @@ object MockOppijat {
   val opiskeluoikeudenOidKonflikti = oppijat.oppija("Oidkonflikti", "Oskari", "260539-745W", "1.2.246.562.24.09090909090")
   val eiKoskessa = oppijat.oppija("EiKoskessa", "Eino", "270181-5263", "1.2.246.562.24.99999555555")
   val eiKoskessaHetuton = oppijat.addOppija(TäydellisetHenkilötiedot("1.2.246.562.24.99999555556", None, None, "Eino", "Eino", "EiKoskessaHetuton", None, None))
+  val turvakielto = oppijat.oppija("Turvakielto", "Tero", "151067-2193", turvakielto = true)
 
   def defaultOppijat = oppijat.getOppijat
 
@@ -75,8 +76,8 @@ class MockOppijat(private var oppijat: List[TäydellisetHenkilötiedotWithMaster
   private var idCounter = oppijat.length
   val äidinkieli: Some[Koodistokoodiviite] = Some(Koodistokoodiviite("FI", None, "kieli", None))
 
-  def oppija(suku: String, etu: String, hetu: String, oid: String = generateId(), kutsumanimi: Option[String] = None): TäydellisetHenkilötiedotWithMasterInfo =
-    addOppija(TäydellisetHenkilötiedot(oid, Some(hetu), None, etu, kutsumanimi.getOrElse(etu), suku, äidinkieli, None))
+  def oppija(suku: String, etu: String, hetu: String, oid: String = generateId(), kutsumanimi: Option[String] = None, turvakielto: Boolean = false): TäydellisetHenkilötiedotWithMasterInfo =
+    addOppija(TäydellisetHenkilötiedot(oid, Some(hetu), None, etu, kutsumanimi.getOrElse(etu), suku, äidinkieli, None, Some(turvakielto)))
 
   def addOppija(oppija: TäydellisetHenkilötiedot): TäydellisetHenkilötiedotWithMasterInfo = addOppija(TäydellisetHenkilötiedotWithMasterInfo(oppija, None))
 

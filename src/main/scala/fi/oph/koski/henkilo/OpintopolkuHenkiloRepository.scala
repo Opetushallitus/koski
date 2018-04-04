@@ -46,7 +46,7 @@ case class OpintopolkuHenkilöRepository(henkilöt: OpintopolkuHenkilöFacade, k
 
   private def toTäydellisetHenkilötiedot(user: OppijaHenkilö): TäydellisetHenkilötiedot = {
     val syntymäpäivä = user.hetu.flatMap { hetu => Hetu.toBirthday(hetu) }
-    TäydellisetHenkilötiedot(user.oidHenkilo, user.hetu, user.syntymaika.orElse(syntymäpäivä), user.etunimet, user.kutsumanimi, user.sukunimi, convertÄidinkieli(user.aidinkieli), convertKansalaisuus(user.kansalaisuus))
+    TäydellisetHenkilötiedot(user.oidHenkilo, user.hetu, user.syntymaika.orElse(syntymäpäivä), user.etunimet, user.kutsumanimi, user.sukunimi, convertÄidinkieli(user.aidinkieli), convertKansalaisuus(user.kansalaisuus), Some(user.turvakielto))
   }
 
   private def convertÄidinkieli(äidinkieli: Option[String]) = äidinkieli.flatMap(äidinkieli => koodisto.getKoodistoKoodiViite("kieli", äidinkieli.toUpperCase))

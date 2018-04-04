@@ -42,8 +42,8 @@ case class OppijanumeroRekisteriClient(config: Config) {
 }
 
 case class KäyttäjäHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, kayttajatiedot: Option[Käyttäjätiedot], asiointiKieli: Option[Kieli])
-case class OppijaNumerorekisteriOppija(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], syntymaaika: Option[LocalDate], aidinkieli: Option[Kieli], kansalaisuus: Option[List[Kansalaisuus]], modified: Long) {
-  def toOppijaHenkilö = OppijaHenkilö(oidHenkilo, sukunimi, etunimet, kutsumanimi, hetu, syntymaaika, aidinkieli.map(_.kieliKoodi), kansalaisuus.map(_.map(_.kansalaisuusKoodi)), modified)
+case class OppijaNumerorekisteriOppija(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], syntymaaika: Option[LocalDate], aidinkieli: Option[Kieli], kansalaisuus: Option[List[Kansalaisuus]], modified: Long, turvakielto: Boolean) {
+  def toOppijaHenkilö = OppijaHenkilö(oidHenkilo, sukunimi, etunimet, kutsumanimi, hetu, syntymaaika, aidinkieli.map(_.kieliKoodi), kansalaisuus.map(_.map(_.kansalaisuusKoodi)), modified, turvakielto)
 }
 case class UusiHenkilö(hetu: Option[String], sukunimi: String, etunimet: String, kutsumanimi: String, henkiloTyyppi: String, kayttajatiedot: Option[Käyttäjätiedot])
 object UusiHenkilö {
@@ -58,6 +58,6 @@ case class Yhteystieto(yhteystietoTyyppi: String, yhteystietoArvo: String)
 
 case class Kansalaisuus(kansalaisuusKoodi: String)
 case class Kieli(kieliKoodi: String)
-case class OppijaHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], syntymaika: Option[LocalDate], aidinkieli: Option[String], kansalaisuus: Option[List[String]], modified: Long) {
+case class OppijaHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], syntymaika: Option[LocalDate], aidinkieli: Option[String], kansalaisuus: Option[List[String]], modified: Long, turvakielto: Boolean) {
   def toTäydellisetHenkilötiedot = TäydellisetHenkilötiedot(oidHenkilo, etunimet, kutsumanimi, sukunimi)
 }
