@@ -2,12 +2,12 @@ package fi.oph.koski.todistus
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.RequiresAuthentication
+import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.HtmlServlet
 import fi.oph.koski.suoritusote.OpiskeluoikeusFinder
 
-class TodistusServlet(implicit val application: KoskiApplication) extends HtmlServlet with RequiresAuthentication {
+class TodistusServlet(implicit val application: KoskiApplication) extends HtmlServlet with RequiresVirkailijaOrPalvelukäyttäjä {
   get("/:oppijaOid") {
     val oppijaOid = params("oppijaOid")
     implicit val localizations = application.localizationRepository

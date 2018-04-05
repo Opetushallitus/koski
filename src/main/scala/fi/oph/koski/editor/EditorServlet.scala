@@ -7,7 +7,7 @@ import fi.oph.koski.http.KoskiErrorCategory.badRequest.validation.koodisto.tunte
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.LegacyJsonSerialization
 import fi.oph.koski.koodisto.KoodistoViite
-import fi.oph.koski.koskiuser.{AccessType, RequiresAuthentication}
+import fi.oph.koski.koskiuser.{AccessType, RequiresVirkailijaOrPalvelukäyttäjä}
 import fi.oph.koski.preferences.PreferencesService
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
@@ -18,7 +18,7 @@ import org.json4s.jackson.Serialization
 /**
   *  Endpoints for the Koski UI
   */
-class EditorServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with NoCache {
+class EditorServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with NoCache {
   private val preferencesService = PreferencesService(application.masterDatabase.db)
   private def localization = LocalizedHtml.get(koskiSession, application.localizationRepository)
   get("/:oid") {

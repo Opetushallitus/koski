@@ -2,11 +2,11 @@ package fi.oph.koski.suoritusote
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.RequiresAuthentication
+import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.HtmlServlet
 
-class SuoritusServlet(implicit val application: KoskiApplication) extends HtmlServlet with RequiresAuthentication {
+class SuoritusServlet(implicit val application: KoskiApplication) extends HtmlServlet with RequiresVirkailijaOrPalvelukäyttäjä {
 
   get("/:oppijaOid") {
     val oppijaOid = params("oppijaOid")

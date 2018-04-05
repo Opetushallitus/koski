@@ -7,7 +7,7 @@ import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http._
 import fi.oph.koski.json.JsonDiff.jsonDiff
 import fi.oph.koski.json.JsonSerializer.serialize
-import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresAuthentication}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresVirkailijaOrPalvelukäyttäjä}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.annotation.SensitiveData
 import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus}
@@ -17,7 +17,7 @@ import org.json4s._
 import org.scalatra._
 import rx.lang.scala.Observable
 
-class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Logging with NoCache with ObservableSupport with ContentEncodingSupport {
+class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with Logging with NoCache with ObservableSupport with ContentEncodingSupport {
   get("/", request.getRemoteHost == "127.0.0.1") {
     if (!koskiSession.hasGlobalReadAccess) {
       haltWithStatus(KoskiErrorCategory.forbidden())

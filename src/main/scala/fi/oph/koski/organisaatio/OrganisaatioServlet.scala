@@ -2,7 +2,7 @@ package fi.oph.koski.organisaatio
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.{AuthenticationSupport, KäyttöoikeusOrg, RequiresAuthentication}
+import fi.oph.koski.koskiuser.{AuthenticationSupport, KäyttöoikeusOrg, RequiresVirkailijaOrPalvelukäyttäjä}
 import fi.oph.koski.schema.OrganisaatioOid
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 

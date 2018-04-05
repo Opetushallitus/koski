@@ -1,11 +1,11 @@
 package fi.oph.koski.oppilaitos
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.RequiresAuthentication
+import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.organisaatio.Oppilaitostyyppi._
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
-class OppilaitosServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with NoCache {
+class OppilaitosServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with NoCache {
   get("/") {
     application.oppilaitosRepository.oppilaitokset(koskiSession).toList
   }
