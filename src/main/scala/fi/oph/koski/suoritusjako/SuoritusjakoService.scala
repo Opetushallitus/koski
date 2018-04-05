@@ -7,6 +7,7 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
+import fi.oph.koski.omattiedot.OmatTiedotEditorModel
 import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.schema._
 
@@ -26,8 +27,16 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
       oppijaFacade.findOppija(suoritusjako.oppijaOid)(KoskiSession.systemUser).map { oppija =>
         val suoritusIdentifiers = JsonSerializer.extract[List[SuoritusIdentifier]](suoritusjako.suoritusIds)
         val filtered = filterOpiskeluoikeudet(oppija.opiskeluoikeudet, suoritusIdentifiers)
-        oppija.copy(opiskeluoikeudet = filtered)
+        OmatTiedotEditorModel.piilotaArvosanatKeskeneräisistäSuorituksista(oppija.copy(opiskeluoikeudet = filtered))
       }
+    }
+  }
+
+  def validateSuoritusjakoUuid(uuid: String): Either[HttpStatus, String] = {
+    if (uuid.matches("^[0-9a-f]{32}$")) {
+      Right(uuid)
+    } else {
+      Left(KoskiErrorCategory.badRequest.format())
     }
   }
 

@@ -72,6 +72,12 @@ class EiSuorituksiaServlet(implicit val application: KoskiApplication) extends S
   }
 }
 
+class SuoritusjakoHtmlServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet {
+  get("/:uuid") {
+    htmlIndex("koski-suoritusjako.js", raamitEnabled = false, responsive = true)
+  }
+}
+
 class VirhesivuServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet {
   get("/") {
     response.setHeader("X-Virhesivu", "1") // for korhopankki/HetuLogin.jsx
