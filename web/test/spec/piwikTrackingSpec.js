@@ -109,7 +109,7 @@ describe('Piwik-seuranta', function() {
         it('Sivu raportoi RuntimeError-tapahtuman', function() {
           expectPiwikTrackError(piwik.getQueuedMethodCalls()[0], 'RuntimeError', {
             location: /\/koski\/virkailija$/,
-            url: /\/koski\/api\/henkilo\/search\?query=%23error%23$/,
+            url: /\/koski\/api\/henkilo\/search$/,
             httpStatus: 500,
             message: 'http error 500'
           })

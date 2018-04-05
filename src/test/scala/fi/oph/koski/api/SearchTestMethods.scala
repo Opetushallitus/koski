@@ -9,7 +9,7 @@ import fi.oph.koski.schema.HenkilötiedotJaOid
 
 trait SearchTestMethods extends HttpSpecification {
   def search[T](query: String, user: UserWithPassword)(f: => T) = {
-    get("api/henkilo/search", params = List(("query" -> query)), headers = authHeaders(user)) {
+    post("api/henkilo/search", JsonSerializer.writeWithRoot(Map("query" -> query)), headers = authHeaders(user) ++ jsonContent) {
       f
     }
   }

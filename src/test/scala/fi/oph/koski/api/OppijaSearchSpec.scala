@@ -43,16 +43,9 @@ class OppijaSearchSpec extends FreeSpec with Matchers with SearchTestMethods wit
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPPIJA_HAKU", "target" -> Map("hakuEhto" -> "EERO")))
       }
     }
-    "When query is missing" - {
-      "Returns HTTP 400" in {
-        get("api/henkilo/search", headers = authHeaders()) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam.searchTermTooShort("Hakusanan pituus alle 3 merkkiä."))
-        }
-      }
-    }
     "When query is too short" - {
       "Returns HTTP 400" in {
-        get("api/henkilo/search", params = List(("query" -> "aa")), headers = authHeaders()) {
+        search("aa", user = defaultUser) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam.searchTermTooShort("Hakusanan pituus alle 3 merkkiä."))
         }
       }

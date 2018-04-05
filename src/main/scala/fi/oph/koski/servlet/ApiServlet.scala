@@ -13,7 +13,7 @@ import org.scalatra._
 import scala.reflect.runtime.universe.{TypeRefApi, TypeTag}
 
 trait ApiServlet extends KoskiBaseServlet with Logging with TimedServlet with ContentEncodingSupport with CacheControlSupport {
-  def withJsonBody(block: JValue => Any)(parseErrorHandler: HttpStatus => Any = haltWithStatus) = {
+  def withJsonBody[T: TypeTag](block: JValue => T)(parseErrorHandler: HttpStatus => T = haltWithStatus(_)): T = {
     JsonBodySnatcher.getJsonBody(request) match {
       case Right(x) => block(x)
       case Left(status: HttpStatus) => parseErrorHandler(status)

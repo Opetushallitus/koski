@@ -16,7 +16,7 @@ const capitalizeHetu = (h) => /\d{6}[+\-A]\d{3}[0-9A-Z]/i.test(h) ? h.toUpperCas
 
 const hakuTulosE = oppijaHakuE.debounce(delays().delay(500))
   .flatMapLatest(query => (acceptableQuery(query)
-    ? Http.get(`/koski/api/henkilo/search?query=${encodeURIComponent(capitalizeHetu(query))}`, { willHandleErrors: true })
+    ? Http.post('/koski/api/henkilo/search', { query: capitalizeHetu(query) }, { willHandleErrors: true })
     : Bacon.once({henkilöt: []})).map((response) => ({ response, query })
   ))
 

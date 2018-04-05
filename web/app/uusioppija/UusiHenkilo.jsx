@@ -17,7 +17,7 @@ export default ({ hetu, oid, henkilöAtom, henkilöValidAtom }) => {
   const henkilöValidP = etunimetAtom.and(sukunimiAtom).and(kutsumanimiAtom)
   henkilöValidP.changes().onValue((valid) => henkilöValidAtom.set(valid))
 
-  const existingHenkilöP = hetu ? Http.cachedGet('/koski/api/henkilo/hetu/' + hetu).map('.0') : Http.cachedGet('/koski/api/henkilo/oid/' + oid).map('.0')
+  const existingHenkilöP = hetu ? Http.post('/koski/api/henkilo/hetu', {hetu}).map('.0') : Http.cachedGet('/koski/api/henkilo/oid/' + oid).map('.0')
   existingHenkilöP.filter(R.identity).onValue((henkilö) => henkilöAtom.set(henkilö))
 
   const kutsumanimiChoicesP = etunimetAtom.skipErrors().skipDuplicates().map(sanitizeFirstnames).map(splitName)

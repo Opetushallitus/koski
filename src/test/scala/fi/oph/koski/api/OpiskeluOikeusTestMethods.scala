@@ -42,7 +42,7 @@ trait OpiskeluoikeusTestMethods extends HttpSpecification with Matchers {
   }
 
   def oppijaByHetu(hetu: String, user: UserWithPassword = defaultUser): Oppija = {
-    authGet("api/henkilo/hetu/" + hetu, user) {
+    post("api/henkilo/hetu", JsonSerializer.writeWithRoot(Map("hetu" -> hetu)), headers = authHeaders(user) ++ jsonContent) {
       verifyResponseStatusOk()
       val oid = JsonSerializer.parse[List[HenkilötiedotJaOid]](body).head.oid
       oppija(oid, user)
