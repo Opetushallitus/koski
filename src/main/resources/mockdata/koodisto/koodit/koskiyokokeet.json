@@ -585,9 +585,13 @@
   "koodiArvo" : "RO",
   "metadata" : [ {
     "nimi" : "Reaali",
+    "lyhytNimi" : "Reaali, ortod. uskonnon kysymykset",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Reaali",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -597,9 +601,13 @@
   "koodiArvo" : "RR",
   "metadata" : [ {
     "nimi" : "Reaali",
+    "lyhytNimi" : "Reaali, ev lut uskonnon kysymykset",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Reaali",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -609,9 +617,13 @@
   "koodiArvo" : "RY",
   "metadata" : [ {
     "nimi" : "Reaali",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Reaali",
+    "lyhytNimi" : "Reaali, elämänkatsomustiedon kysymykset",
+    "kuvaus" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1,
