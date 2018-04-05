@@ -215,8 +215,8 @@ export const oppijataulukkoContentP = (query, params) => {
     .startWith(null)
 
   let taulukkoP = Bacon.combineWith(taulukkoContentP, totalP, (rivit, total) => {
-    return rivit && showOppijataulukko(<Oppijataulukko total={total} rivit={rivit.tiedot} edellisetRivit={edellisetRivit} pager={pager} params={params}/>)
-  })
+    return <Oppijataulukko total={total} rivit={rivit.tiedot} edellisetRivit={edellisetRivit} pager={pager} params={params}/>
+  }).flatMap(showOppijataulukko)
 
   return taulukkoP.map(taulukko => ({
     content: (<div className='content-area oppijataulukko'>
