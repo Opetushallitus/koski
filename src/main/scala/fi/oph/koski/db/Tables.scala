@@ -27,8 +27,9 @@ object Tables {
     val sisältäväOpiskeluoikeusOppilaitosOid = column[Option[String]]("sisaltava_opiskeluoikeus_oppilaitos_oid")
     val luokka = column[Option[String]]("luokka")
     val mitätöity = column[Boolean]("mitatoity")
+    val koulutusmuoto = column[String]("koulutusmuoto")
 
-    def * = (id, oid, versionumero, aikaleima, oppijaOid, oppilaitosOid, koulutustoimijaOid, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, data, luokka, mitätöity) <> (OpiskeluoikeusRow.tupled, OpiskeluoikeusRow.unapply)
+    def * = (id, oid, versionumero, aikaleima, oppijaOid, oppilaitosOid, koulutustoimijaOid, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, data, luokka, mitätöity, koulutusmuoto) <> (OpiskeluoikeusRow.tupled, OpiskeluoikeusRow.unapply)
     def updateableFields = (data, versionumero, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, luokka, koulutustoimijaOid, oppilaitosOid, mitätöity)
   }
 
@@ -54,7 +55,8 @@ object Tables {
         opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oppilaitos.oid),
         serialize(opiskeluoikeus),
         opiskeluoikeus.luokka,
-        opiskeluoikeus.mitätöity)
+        opiskeluoikeus.mitätöity,
+        opiskeluoikeus.tyyppi.koodiarvo)
     }
 
     def readAsJValue(data: JValue, oid: String, versionumero: Int, aikaleima: Timestamp): JValue = {
@@ -182,7 +184,7 @@ object Tables {
     (if (user.hasGlobalReadAccess) {
       OpiskeluOikeudet
     } else if (user.hasGlobalKoulutusmuotoReadAccess) {
-      OpiskeluOikeudet.filter(_.data.#>>(List("tyyppi", "koodiarvo")) inSet user.allowedOpiskeluoikeusTyypit)
+      OpiskeluOikeudet.filter(_.koulutusmuoto inSet user.allowedOpiskeluoikeusTyypit)
     } else {
       val oids = user.organisationOids(AccessType.read).toList
       for {
@@ -197,7 +199,7 @@ object Tables {
 case class SSOSessionRow(serviceTicket: String, username: String, userOid: String, name: String, started: Timestamp, updated: Timestamp)
 
 // Note: the data json must not contain [id, versionumero] fields. This is enforced by DB constraint.
-case class OpiskeluoikeusRow(id: Int, oid: String, versionumero: Int, aikaleima: Timestamp, oppijaOid: String, oppilaitosOid: String, koulutustoimijaOid: Option[String], sisältäväOpiskeluoikeusOid: Option[String], sisältäväOpiskeluoikeusOppilaitosOid: Option[String], data: JValue, luokka: Option[String], mitätöity: Boolean) {
+case class OpiskeluoikeusRow(id: Int, oid: String, versionumero: Int, aikaleima: Timestamp, oppijaOid: String, oppilaitosOid: String, koulutustoimijaOid: Option[String], sisältäväOpiskeluoikeusOid: Option[String], sisältäväOpiskeluoikeusOppilaitosOid: Option[String], data: JValue, luokka: Option[String], mitätöity: Boolean, koulutusmuoto: String) {
   import fi.oph.koski.db.Tables.OpiskeluoikeusTable
   lazy val toOpiskeluoikeusData: JValue = {
     OpiskeluoikeusTable.readAsJValue(data, oid, versionumero, aikaleima)
