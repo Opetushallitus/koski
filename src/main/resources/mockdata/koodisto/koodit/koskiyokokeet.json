@@ -584,10 +584,10 @@
   "koodiUri" : "koskiyokokeet_ro",
   "koodiArvo" : "RO",
   "metadata" : [ {
-    "nimi" : "Reaali, ortod. uskonnon kysymykset",
+    "nimi" : "Reaali",
     "kieli" : "FI"
   }, {
-    "nimi" : "Reaali, ortod. uskonnon kysymykset",
+    "nimi" : "Reaali",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -596,10 +596,10 @@
   "koodiUri" : "koskiyokokeet_rr",
   "koodiArvo" : "RR",
   "metadata" : [ {
-    "nimi" : "Reaali, ev lut uskonnon kysymykset",
+    "nimi" : "Reaali",
     "kieli" : "FI"
   }, {
-    "nimi" : "Reaali, ev lut uskonnon kysymykset",
+    "nimi" : "Reaali",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -608,10 +608,10 @@
   "koodiUri" : "koskiyokokeet_ry",
   "koodiArvo" : "RY",
   "metadata" : [ {
-    "nimi" : "Reaali, elämänkatsomustiedon kysymykset",
+    "nimi" : "Reaali",
     "kieli" : "SV"
   }, {
-    "nimi" : "Reaali, elämänkatsomustiedon kysymykset",
+    "nimi" : "Reaali",
     "kieli" : "FI"
   } ],
   "versio" : 1,
