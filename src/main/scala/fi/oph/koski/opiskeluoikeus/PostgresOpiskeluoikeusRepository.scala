@@ -229,7 +229,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
 
         validateOpiskeluoikeusChange(vanhaOpiskeluoikeus, täydennettyOpiskeluoikeus) match {
           case HttpStatus.ok =>
-            val updatedValues@(newData, _, _, _, _, _, _) = Tables.OpiskeluoikeusTable.updatedFieldValues(täydennettyOpiskeluoikeus, nextVersionumero)
+            val updatedValues@(newData, _, _, _, _, _, _, _) = Tables.OpiskeluoikeusTable.updatedFieldValues(täydennettyOpiskeluoikeus, nextVersionumero)
             val diff: JArray = jsonDiff(oldRow.data, newData)
             diff.values.length match {
               case 0 =>
