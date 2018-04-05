@@ -1,10 +1,10 @@
 package fi.oph.koski.fixture
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.RequiresAuthentication
+import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
-class FixtureServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with NoCache {
+class FixtureServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with NoCache {
   post("/reset") {
     application.fixtureCreator.resetFixtures
     application.elasticSearch.refreshIndex

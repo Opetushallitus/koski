@@ -2,29 +2,12 @@ describe('Omat tiedot', function() {
   var omattiedot = OmatTiedotPage()
   var opinnot = OpinnotPage()
   var authentication = Authentication()
+  var login = LoginPage()
   before(authentication.login(), resetFixtures)
 
   describe('Virkailijana', function() {
-    describe('Kun virkailijalla on opiskeluoikeuksia', function() {
-      before(authentication.login('Oili'), omattiedot.openPage)
-      it('ne näytetään', function() {
-        expect(omattiedot.oppija()).to.equal('Opintoni')
-        expect(opinnot.opiskeluoikeudet.oppilaitokset()).to.have.members([
-          'Stadin ammattiopisto', 'Jyväskylän normaalikoulu' ])
-      })
-    })
-
-    describe('Kun virkailijalla ei ole opiskeluoikeuksia', function() {
-      before(authentication.login(), omattiedot.openPage)
-      it('näytetään viesti', function() {
-        expect(omattiedot.virhe()).to.equal(
-          'Tiedoillasi ei löydy opintosuorituksia eikä opiskeluoikeuksia.' +
-          'Koski-palvelussa pystytään näyttämään seuraavat tiedot:' +
-          'Vuoden 2018 tammikuun jälkeen suoritetut peruskoulun, lukion ja ammattikoulun opinnot ja voimassa olevat opiskeluoikeudet.' +
-          'Vuoden 1990 jälkeen suoritetut ylioppilastutkinnot.' +
-          'Korkeakoulutusuoritukset ja opiskeluoikeudet ovat näkyvissä pääsääntöisesti vuodesta 1995 eteenpäin, mutta tässä voi olla korkeakoulukohtaisia poikkeuksia.' +
-          'Mikäli tiedoistasi puuttuu opintosuorituksia tai opiskeluoikeuksia, joiden kuuluisi ylläolevien tietojen perusteella näkyä Koski-palvelussa, voit ilmoittaa asiasta oppilaitoksellesi.')
-      })
+    before(authentication.login('Oili'), openPage('/koski/omattiedot'), wait.until(login.isVisible))
+    it('siirrytään login-sivulle', function () {
     })
   })
 

@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{GlobalExecutionContext, HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.koskiuser.{KoskiSession, RequiresAuthentication}
+import fi.oph.koski.koskiuser.{KoskiSession, RequiresVirkailijaOrPalvelukäyttäjä}
 import fi.oph.koski.log.KoskiMessageField._
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
@@ -17,7 +17,7 @@ import fi.oph.koski.util.{Pagination, PaginationSettings}
 import org.scalatra._
 import rx.lang.scala.Observable
 
-trait OpiskeluoikeusQueries extends ApiServlet with RequiresAuthentication with Logging with GlobalExecutionContext with ObservableSupport with ContentEncodingSupport with Pagination {
+trait OpiskeluoikeusQueries extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with Logging with GlobalExecutionContext with ObservableSupport with ContentEncodingSupport with Pagination {
   def application: KoskiApplication
   def query = OpiskeluoikeusQueryContext(request, params, paginationSettings)(koskiSession, application).query match {
     case Right(observable) => observable

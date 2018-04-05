@@ -2,12 +2,12 @@ package fi.oph.koski.preferences
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.RequiresAuthentication
+import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.schema.StorablePreference
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import org.json4s.JValue
 
-class PreferencesServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with NoCache {
+class PreferencesServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with NoCache {
   private val service = PreferencesService(application.masterDatabase.db)
 
   put("/:organisaatioOid/:type") {

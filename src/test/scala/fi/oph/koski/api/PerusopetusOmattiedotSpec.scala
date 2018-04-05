@@ -21,7 +21,7 @@ class PerusopetusOmattiedotSpec extends FreeSpec with LocalJettyHttpSpecificatio
         putOpiskeluoikeus(opiskeluoikeus = defaultOpiskeluoikeus, henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
           verifyResponseStatusOk()
         }
-        get("api/editor/omattiedot", headers = kansalainenLoginHeaders("251014-5651")) {
+        get("api/omattiedot/editor", headers = kansalainenLoginHeaders("251014-5651")) {
           arvioinnit.length should equal(suoritustenLukumäärä)
         }
       }
@@ -31,7 +31,7 @@ class PerusopetusOmattiedotSpec extends FreeSpec with LocalJettyHttpSpecificatio
         putOpiskeluoikeus(opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(vahvistus = None))), henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
           verifyResponseStatusOk()
         }
-        get("api/editor/omattiedot", headers = kansalainenLoginHeaders("251014-5651")) {
+        get("api/omattiedot/editor", headers = kansalainenLoginHeaders("251014-5651")) {
           arvioinnit.length should equal(0)
         }
       }
@@ -42,7 +42,7 @@ class PerusopetusOmattiedotSpec extends FreeSpec with LocalJettyHttpSpecificatio
         putOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus, henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
           verifyResponseStatusOk()
         }
-        get("api/editor/omattiedot", headers = kansalainenLoginHeaders("251014-5651")) {
+        get("api/omattiedot/editor", headers = kansalainenLoginHeaders("251014-5651")) {
           arvioinnit.length should equal(0)
         }
       }
@@ -53,7 +53,7 @@ class PerusopetusOmattiedotSpec extends FreeSpec with LocalJettyHttpSpecificatio
         putOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus, henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
           verifyResponseStatusOk()
         }
-        get("api/editor/omattiedot", headers = kansalainenLoginHeaders("251014-5651")) {
+        get("api/omattiedot/editor", headers = kansalainenLoginHeaders("251014-5651")) {
           arvioinnit.length should equal(suoritustenLukumäärä)
         }
       }
@@ -66,7 +66,7 @@ class PerusopetusOmattiedotSpec extends FreeSpec with LocalJettyHttpSpecificatio
         putOpiskeluoikeus(opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(kahdeksannenLuokanSuoritus)), henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
           verifyResponseStatusOk()
         }
-        get("api/editor/omattiedot", headers = kansalainenLoginHeaders("251014-5651")) {
+        get("api/omattiedot/editor", headers = kansalainenLoginHeaders("251014-5651")) {
           arvioinnit.length should equal(suoritustenLukumäärä)
           käyttäytymisenArviointi.length should equal(1)
         }
@@ -77,7 +77,7 @@ class PerusopetusOmattiedotSpec extends FreeSpec with LocalJettyHttpSpecificatio
         putOpiskeluoikeus(opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(kahdeksannenLuokanSuoritus.copy(vahvistus = None))), henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
           verifyResponseStatusOk()
         }
-        get("api/editor/omattiedot", headers = kansalainenLoginHeaders("251014-5651")) {
+        get("api/omattiedot/editor", headers = kansalainenLoginHeaders("251014-5651")) {
           arvioinnit.length should equal(0)
           käyttäytymisenArviointi.length should equal(0)
         }
@@ -89,7 +89,7 @@ class PerusopetusOmattiedotSpec extends FreeSpec with LocalJettyHttpSpecificatio
         putOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus, henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
           verifyResponseStatusOk()
         }
-        get("api/editor/omattiedot", headers = kansalainenLoginHeaders("251014-5651")) {
+        get("api/omattiedot/editor", headers = kansalainenLoginHeaders("251014-5651")) {
           arvioinnit.length should equal(0)
           käyttäytymisenArviointi.length should equal(0)
         }
@@ -101,7 +101,7 @@ class PerusopetusOmattiedotSpec extends FreeSpec with LocalJettyHttpSpecificatio
         putOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus, henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
           verifyResponseStatusOk()
         }
-        get("api/editor/omattiedot", headers = kansalainenLoginHeaders("251014-5651")) {
+        get("api/omattiedot/editor", headers = kansalainenLoginHeaders("251014-5651")) {
           arvioinnit.length should equal(suoritustenLukumäärä)
           käyttäytymisenArviointi.length should equal(1)
         }
@@ -125,7 +125,7 @@ class PerusopetusOmattiedotSpec extends FreeSpec with LocalJettyHttpSpecificatio
         putOpiskeluoikeus(opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineenOppimääränSuoritus)), henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
           verifyResponseStatusOk()
         }
-        get("api/editor/omattiedot", headers = kansalainenLoginHeaders("251014-5651")) {
+        get("api/omattiedot/editor", headers = kansalainenLoginHeaders("251014-5651")) {
           arvioinnit.length should equal(1)
         }
       }
@@ -135,7 +135,7 @@ class PerusopetusOmattiedotSpec extends FreeSpec with LocalJettyHttpSpecificatio
         putOpiskeluoikeus(opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineenOppimääränSuoritus.copy(vahvistus = None))), henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
           verifyResponseStatusOk()
         }
-        get("api/editor/omattiedot", headers = kansalainenLoginHeaders("251014-5651")) {
+        get("api/omattiedot/editor", headers = kansalainenLoginHeaders("251014-5651")) {
           arvioinnit.length should equal(0)
         }
       }
@@ -146,7 +146,7 @@ class PerusopetusOmattiedotSpec extends FreeSpec with LocalJettyHttpSpecificatio
         putOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus, henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
           verifyResponseStatusOk()
         }
-        get("api/editor/omattiedot", headers = kansalainenLoginHeaders("251014-5651")) {
+        get("api/omattiedot/editor", headers = kansalainenLoginHeaders("251014-5651")) {
           arvioinnit.length should equal(0)
         }
       }
@@ -157,7 +157,7 @@ class PerusopetusOmattiedotSpec extends FreeSpec with LocalJettyHttpSpecificatio
         putOpiskeluoikeus(opiskeluoikeus = opiskeluoikeus, henkilö = defaultHenkilö.copy(hetu = "251014-5651")) {
           verifyResponseStatusOk()
         }
-        get("api/editor/omattiedot", headers = kansalainenLoginHeaders("251014-5651")) {
+        get("api/omattiedot/editor", headers = kansalainenLoginHeaders("251014-5651")) {
           arvioinnit.length should equal(1)
         }
       }

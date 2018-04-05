@@ -17,7 +17,7 @@ import {EiSuorituksia} from './EiSuorituksia'
 import {Header} from './omattiedot/Header'
 
 const omatTiedotP = () => Bacon.combineWith(
-  Http.cachedGet('/koski/api/editor/omattiedot', { errorMapper: (e) => e.httpStatus === 404 ? null : new Bacon.Error}).toProperty(),
+  Http.cachedGet('/koski/api/omattiedot/editor', { errorMapper: (e) => e.httpStatus === 404 ? null : new Bacon.Error(e)}).toProperty(),
   userP,
   (omattiedot, user) => {
     let kansalainen = user.oid === modelData(omattiedot, 'henkilö.oid')

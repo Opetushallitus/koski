@@ -1,9 +1,10 @@
 package fi.oph.koski.koskiuser
 
-trait RequiresAuthentication extends AuthenticationSupport {
+trait RequiresKansalainen extends AuthenticationSupport {
   implicit def koskiSession: KoskiSession = koskiSessionOption.get
 
   before() {
-    requireAuthentication
+    requireKansalainen
   }
 }
+

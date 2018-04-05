@@ -2,13 +2,13 @@ package fi.oph.koski.perustiedot
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.koskiuser.RequiresAuthentication
+import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.util.SortOrder.Ascending
 import fi.oph.koski.util.{PaginatedResponse, Pagination, PaginationSettings, SortOrder}
 
-class OpiskeluoikeudenPerustiedotServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresAuthentication with Pagination with NoCache {
+class OpiskeluoikeudenPerustiedotServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with Pagination with NoCache {
   // TODO: Pitäisikö näistäkin katseluista tehdä auditlog-merkintä?
   get("/") {
     renderEither({

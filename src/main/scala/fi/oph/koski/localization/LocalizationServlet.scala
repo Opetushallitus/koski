@@ -14,7 +14,7 @@ class LocalizationServlet(implicit val application: KoskiApplication) extends Ap
   }
 
   put("/") {
-    requireAuthentication
+    requireVirkailijaOrPalvelukäyttäjä
     if (koskiSessionOption.filter(_.hasLocalizationWriteAccess).isEmpty) {
       haltWithStatus(KoskiErrorCategory.forbidden("Ei oikeuksia muokata tekstejä"))
     }
