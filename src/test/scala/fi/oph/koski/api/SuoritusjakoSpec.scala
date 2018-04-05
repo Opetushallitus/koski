@@ -1,9 +1,14 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.suoritusjako.{SuoritusIdentifier, SuoritusjakoResponse}
 import org.scalatest.FreeSpec
 
-class SuoritusjakoSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods {
+class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods {
+  var uuidYksiSuoritus: Option[String] = None
+  var uuidKaksiSuoritusta: Option[String] = None
+
   "Suoritusjaon lisääminen" - {
     "onnistuu" - {
       "yhdellä oikeellisella suorituksella" in {
@@ -14,8 +19,9 @@ class SuoritusjakoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
           "koulutusmoduulinTunniste": "7"
         }]"""
 
-        put("api/suoritusjako", body = json, headers = kansalainenLoginHeaders("180497-112F") ++ jsonContent){
+        putSuoritusjako(json){
           verifyResponseStatusOk()
+          uuidYksiSuoritus = Option(JsonSerializer.parse[SuoritusjakoResponse](response.body).uuid)
         }
       }
 
@@ -33,6 +39,7 @@ class SuoritusjakoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
 
         put("api/suoritusjako", body = json, headers = kansalainenLoginHeaders("180497-112F") ++ jsonContent){
           verifyResponseStatusOk()
+          uuidKaksiSuoritusta = Option(JsonSerializer.parse[SuoritusjakoResponse](response.body).uuid)
         }
       }
     }
@@ -112,6 +119,49 @@ class SuoritusjakoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
 
         put("api/suoritusjako", body = json, headers = kansalainenLoginHeaders("180497-112F") ++ jsonContent){
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.format())
+        }
+      }
+    }
+  }
+
+  "Suoritusjaon hakeminen" - {
+    "onnistuu" - {
+      "yhden jaetun suorituksen UUID:lla" in {
+        getSuoritusjako(uuidYksiSuoritus.get){
+          verifyResponseStatusOk()
+
+          verifySuoritusIds(List(SuoritusIdentifier(
+            oppilaitosOid = "1.2.246.562.10.64353470871",
+            suorituksenTyyppi = "perusopetuksenvuosiluokka",
+            koulutusmoduulinTunniste = "7"
+          )))
+        }
+      }
+
+      "kahden jaetun suorituksen UUID:lla" in {
+        getSuoritusjako(uuidKaksiSuoritusta.get){
+          verifyResponseStatusOk()
+
+          verifySuoritusIds(List(
+            SuoritusIdentifier(
+              oppilaitosOid = "1.2.246.562.10.64353470871",
+              suorituksenTyyppi = "perusopetuksenvuosiluokka",
+              koulutusmoduulinTunniste = "7"
+            ),
+            SuoritusIdentifier(
+              oppilaitosOid = "1.2.246.562.10.64353470871",
+              suorituksenTyyppi = "perusopetuksenvuosiluokka",
+              koulutusmoduulinTunniste = "6"
+            )
+          ))
+        }
+      }
+    }
+
+    "epäonnistuu" - {
+      "epäkelvolla UUID:lla" in {
+        getSuoritusjako("2.2.246.562.10.64353470871"){
+          verifyResponseStatus(404, KoskiErrorCategory.notFound())
         }
       }
     }
