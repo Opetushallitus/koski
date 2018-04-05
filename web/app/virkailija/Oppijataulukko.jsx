@@ -210,12 +210,12 @@ var edellisetRivit = null
 export const oppijataulukkoContentP = (query, params) => {
   let pager = Pager('/koski/api/opiskeluoikeus/perustiedot' + query, L.prop('tiedot'))
   let totalP = pager.rowsP.map(r => r.total)
-  let taulukkoContentP = pager.rowsP
+  let searchResultsP = pager.rowsP
     .doAction((result) => edellisetRivit = result.tiedot)
     .startWith(null)
 
-  let taulukkoP = Bacon.combineWith(taulukkoContentP, totalP, (rivit, total) => {
-    return <Oppijataulukko total={total} rivit={rivit.tiedot} edellisetRivit={edellisetRivit} pager={pager} params={params}/>
+  let taulukkoP = Bacon.combineWith(searchResultsP, totalP, (searchResults, total) => {
+    return <Oppijataulukko total={total} rivit={searchResults.tiedot} edellisetRivit={edellisetRivit} pager={pager} params={params}/>
   }).flatMap(showOppijataulukko)
 
   return taulukkoP.map(taulukko => ({
