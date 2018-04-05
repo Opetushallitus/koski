@@ -22,6 +22,7 @@ import {
 import {sortLanguages} from '../util/sorting'
 import {isKieliaine} from './Koulutusmoduuli'
 import {ArvosanaEditor} from './ArvosanaEditor'
+import {flatMapArray} from '../util/util'
 
 
 export class Suoritustaulukko extends React.Component {
@@ -91,7 +92,7 @@ export class Suoritustaulukko extends React.Component {
               </tr>
               </thead>
               {
-                groupIds.flatMap((groupId, i) => suoritusGroup(groupId, i))
+                flatMapArray(groupIds, (groupId, i) => suoritusGroup(groupId, i))
               }
             </table>
           </div>)

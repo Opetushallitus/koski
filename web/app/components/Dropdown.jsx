@@ -2,7 +2,7 @@ import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import R from 'ramda'
-import {parseBool, scrollElementBottomVisible, toObservable} from '../util/util'
+import {flatMapArray, parseBool, scrollElementBottomVisible, toObservable} from '../util/util'
 import {elementWithLoadingIndicator} from './AjaxLoadingIndicator'
 import {t} from '../i18n/i18n'
 import {buildClassNames} from './classnames'
@@ -136,7 +136,7 @@ export default ({ options, keyValue = o => o.key, displayValue = o => o.value,
           {
             (allOptions.length > 0) && <ul className={openAtom.map(open => open ? 'options open' : 'options')} ref={ref => listElem = ref}>
               {
-                allOptions.flatMap((o,i) => {
+                flatMapArray(allOptions, (o,i) => {
                   let isNew = isNewItem(allOptions, o, i)
                   let isZeroValue = keyValue(o) == 'eivalintaa'
                   let itemClassName = Bacon.combineWith(

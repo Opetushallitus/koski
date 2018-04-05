@@ -5,6 +5,7 @@ import {ArrayEditor} from './ArrayEditor'
 import {checkOnlyWhen, modelProperties} from './EditorModel'
 import Text from '../i18n/Text'
 import {buildClassNames} from '../components/classnames'
+import {flatMapArray} from '../util/util'
 
 export class PropertiesEditor extends React.Component {
   render() {
@@ -24,10 +25,10 @@ export class PropertiesEditor extends React.Component {
 
     let munch = (prefix) => (property, i) => {
       if (property.flatten && property.model.value && property.model.value.properties) {
-        return modelProperties(property.model, shouldShow).flatMap(munch(prefix + property.key + '.'))
+        return flatMapArray(modelProperties(property.model, shouldShow), munch(prefix + property.key + '.'))
       } else if (!edit && property.flatten && (property.model.type === 'array')) {
-        return modelItems(property.model).flatMap((item, j) => {
-          return modelProperties(item, shouldShow).flatMap(munch(prefix + j + '.'))
+        return flatMapArray(modelItems(property.model), (item, j) => {
+          return flatMapArray(modelProperties(item, shouldShow), munch(prefix + j + '.'))
         })
       } else {
         let key = prefix + property.key + i
@@ -54,7 +55,7 @@ export class PropertiesEditor extends React.Component {
 
     return (<div className={ buildClassNames(['properties', className]) }>
       <table><tbody>
-      { properties.filter(shouldShow).flatMap(munch('')) }
+      { flatMapArray(properties.filter(shouldShow), munch('')) }
       </tbody></table>
     </div>)
   }
