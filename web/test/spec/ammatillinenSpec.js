@@ -547,16 +547,9 @@ describe('Ammatillinen koulutus', function() {
 
   describe('Opiskeluoikeuden mitätöiminen', function() {
     before(resetFixtures, page.openPage)
-    describe('Opiskeluoikeudelle jossa on valmiita suorituksia', function() {
-      before(page.oppijaHaku.searchAndSelect('280618-402H'), editor.edit)
-      it('Ei ole mahdollista', function() {
-        expect(opinnot.invalidateOpiskeluoikeusIsShown()).to.equal(false)
-      })
-    })
-
-    describe('Opiskeluoikeudelle jossa ei ole valmiita suorituksia', function() {
+    describe('Mitätöintilinkki', function() {
       before(page.oppijaHaku.searchAndSelect('010101-123N'), editor.edit)
-      it('Näytetään mitätöintilinkki', function() {
+      it('Näytetään', function() {
         expect(opinnot.invalidateOpiskeluoikeusIsShown()).to.equal(true)
       })
 

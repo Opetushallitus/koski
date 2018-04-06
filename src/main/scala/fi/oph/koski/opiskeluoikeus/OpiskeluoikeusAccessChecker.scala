@@ -9,7 +9,6 @@ object OpiskeluoikeusAccessChecker {
     val orgTiedonsiirronMitätöintiAccess = opiskeluoikeus.omistajaOrganisaatio.exists(o => session.hasTiedonsiirronMitätöintiAccess(o.oid))
     val lähdejärjestelmällinen = opiskeluoikeus.lähdejärjestelmänId.nonEmpty
     val koskeenTallennettava = opiskeluoikeus.isInstanceOf[KoskeenTallennettavaOpiskeluoikeus]
-    val sisältääValmiitaSuorituksia = opiskeluoikeus.suoritukset.exists(_.valmis) || opiskeluoikeus.suoritukset.exists(_.osasuoritukset.exists(_.exists(_.valmis)))
-    koskeenTallennettava && ((!lähdejärjestelmällinen && orgWriteAccess) || (lähdejärjestelmällinen && orgTiedonsiirronMitätöintiAccess)) && !sisältääValmiitaSuorituksia
+    koskeenTallennettava && ((!lähdejärjestelmällinen && orgWriteAccess) || (lähdejärjestelmällinen && orgTiedonsiirronMitätöintiAccess))
   }
 }
