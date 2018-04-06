@@ -180,6 +180,9 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
   private def oppilaitosFilter(session: KoskiSession): List[Map[String, Any]] =
     if (session.hasGlobalReadAccess) {
       Nil
+    }
+    else if (session.hasGlobalKoulutusmuotoReadAccess) {
+      List(Map("terms" -> Map("tyyppi.koodiarvo" -> session.allowedOpiskeluoikeusTyypit)))
     } else {
       List(anyFilter(List(
         Map("terms" -> Map("sisältyyOpiskeluoikeuteen.oppilaitos.oid" -> session.organisationOids(AccessType.read))),
