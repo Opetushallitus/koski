@@ -39,6 +39,7 @@ trait HtmlNodes extends KoskiBaseServlet with PiwikNodes {
     <meta http-equiv="X-UA-Compatible" content="IE=edge" /> ++
     <meta charset="UTF-8" /> ++
     {if (responsive) <meta name="viewport" content="width=device-width,initial-scale=1" /> else NodeSeq.Empty} ++
+    <meta name="robots" content="noindex" /> ++
     <link rel="shortcut icon" href="/koski/favicon.ico" /> ++
     <link rel="stylesheet" href="/koski/external_css/normalize.min.css" /> ++
     <link href="/koski/external_css/OpenSans.css" rel="stylesheet"/> ++
