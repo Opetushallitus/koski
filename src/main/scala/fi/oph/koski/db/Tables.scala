@@ -1,16 +1,12 @@
 package fi.oph.koski.db
 
-import java.sql.Timestamp
+import java.sql.{Date, Timestamp}
 import java.time.LocalDateTime
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.Tables.OpiskeluoikeusTable
-import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonManipulation.removeFields
-import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.schema._
-import fi.oph.koski.suoritusjako.SuoritusIdentifier
 import fi.oph.scalaschema.extraction.ValidationError
 import fi.oph.scalaschema.{Serializer, _}
 import org.json4s._
@@ -131,13 +127,14 @@ object Tables {
   }
 
   class SuoritusjakoTable(tag: Tag) extends Table[SuoritusjakoRow] (tag, "suoritusjako") {
-    val uuid = column[String]("uuid", O.PrimaryKey)
+    val id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+    val secret = column[String]("secret", O.Unique)
     val oppijaOid = column[String]("oppija_oid")
     val suoritusIds = column[JValue]("suoritus_ids")
-    val voimassaAsti = column[Timestamp]("voimassa_asti")
+    val voimassaAsti = column[Date]("voimassa_asti")
     val aikaleima = column[Timestamp]("aikaleima")
 
-    def * = (uuid, oppijaOid, suoritusIds, voimassaAsti, aikaleima) <> (SuoritusjakoRow.tupled, SuoritusjakoRow.unapply)
+    def * = (id, secret, oppijaOid, suoritusIds, voimassaAsti, aikaleima) <> (SuoritusjakoRow.tupled, SuoritusjakoRow.unapply)
   }
 
   class FaileLoginAttemptTable(tag: Tag) extends Table[FailedLoginAttemptRow] (tag, "failed_login_attempt") {
@@ -246,7 +243,7 @@ case class OppilaitosIPOsoiteRow(username: String, ip: String)
 
 case class PreferenceRow(organisaatioOid: String, `type`: String, key: String, value: JValue)
 
-case class SuoritusjakoRow(uuid: String, oppijaOid: String, suoritusIds: JValue, voimassaAsti: Timestamp, aikaleima: Timestamp)
+case class SuoritusjakoRow(id: Long, secret: String, oppijaOid: String, suoritusIds: JValue, voimassaAsti: Date, aikaleima: Timestamp)
 
 case class FailedLoginAttemptRow(username: String, time: Timestamp, count: Int)
 

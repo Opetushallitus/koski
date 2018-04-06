@@ -1,5 +1,6 @@
 package fi.oph.koski.suoritusjako
 
+import java.sql.Date
 import java.sql.Timestamp.{valueOf => timestamp}
 import java.time.LocalDateTime
 
@@ -12,13 +13,20 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
 
 class SuoritusjakoRepository(val db: DB) extends Logging with DatabaseExecutionContext with KoskiDatabaseMethods {
-  def get(uuid: String): Either[HttpStatus, SuoritusjakoRow] =
-    runDbSync(SuoritusJako.filter(r => r.uuid === uuid && r.voimassaAsti >= now).result.headOption)
+  def get(secret: String): Either[HttpStatus, SuoritusjakoRow] =
+    runDbSync(SuoritusJako.filter(r => r.secret === secret && r.voimassaAsti >= Date.valueOf(LocalDateTime.now.toLocalDate)).result.headOption)
       .toRight(KoskiErrorCategory.notFound())
 
   // TODO: voimassaoloaika
-  def put(uuid: String, oppijaOid: String, suoritusIds: List[SuoritusIdentifier]): Unit =
-    runDbSync(SuoritusJako.insertOrUpdate(SuoritusjakoRow(uuid, oppijaOid, JsonSerializer.serializeWithRoot(suoritusIds), timestamp(LocalDateTime.now.plusMonths(6)), now)))
+  def put(secret: String, oppijaOid: String, suoritusIds: List[SuoritusIdentifier]): Unit =
+    runDbSync(SuoritusJako.insertOrUpdate(SuoritusjakoRow(
+      0,
+      secret,
+      oppijaOid,
+      JsonSerializer.serializeWithRoot(suoritusIds),
+      Date.valueOf(LocalDateTime.now.plusMonths(6).toLocalDate),
+      now
+    )))
 
   private def now = timestamp(LocalDateTime.now)
 }

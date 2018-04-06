@@ -1,8 +1,9 @@
 CREATE TABLE suoritusjako (
-  uuid TEXT,
-  oppija_oid TEXT NOT NULL,
+  id BIGSERIAL UNIQUE,
+  secret TEXT UNIQUE NOT NULL,
+  oppija_oid TEXT REFERENCES henkilo (oid),
   suoritus_ids JSONB NOT NULL,
-  voimassa_asti TIMESTAMP NOT NULL,
-  aikaleima TIMESTAMP NOT NULL DEFAULT current_timestamp,
-  primary key (uuid)
+  voimassa_asti DATE NOT NULL,
+  aikaleima TIMESTAMPTZ NOT NULL,
+  primary key (id)
 );
