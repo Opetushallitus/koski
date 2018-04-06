@@ -5,12 +5,12 @@ import fi.oph.koski.schema.Oppija
 import fi.oph.koski.suoritusjako.SuoritusIdentifier
 
 trait SuoritusjakoTestMethods extends LocalJettyHttpSpecification with OpiskeluoikeusTestMethods {
-  def putSuoritusjako[A](body: Array[Byte])(f: => A): A = {
-    put("api/suoritusjako", body = body, headers = kansalainenLoginHeaders("180497-112F") ++ jsonContent)(f)
+  def putSuoritusjako[A](body: Array[Byte], hetu: String = "180497-112F")(f: => A): A = {
+    put("api/suoritusjako", body = body, headers = kansalainenLoginHeaders(hetu) ++ jsonContent)(f)
   }
 
-  def getSuoritusjako[A](secret: String)(f: => A): A = {
-    get(s"api/suoritusjako/$secret", headers = kansalainenLoginHeaders("180497-112F"))(f)
+  def getSuoritusjako[A](secret: String, hetu: String = "180497-112F")(f: => A): A = {
+    get(s"api/suoritusjako/$secret", headers = kansalainenLoginHeaders(hetu))(f)
   }
 
   def parseOppija() = {

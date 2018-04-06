@@ -71,7 +71,7 @@ object ExamplesPerusopetus {
     suoritukset = List(
       perusopetuksenOppimääränSuoritusKesken.copy(toimipiste = YleissivistavakoulutusExampleData.kulosaarenAlaAste),
       kuudennenLuokanSuoritus,
-      seitsemännenLuokanTuplaus.copy(toimipiste = YleissivistavakoulutusExampleData.kulosaarenAlaAste)
+      seitsemännenLuokanLuokallejääntiSuoritus.copy(toimipiste = YleissivistavakoulutusExampleData.kulosaarenAlaAste)
     ),
     tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
       List(

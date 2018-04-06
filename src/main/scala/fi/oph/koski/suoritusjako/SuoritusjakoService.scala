@@ -68,10 +68,44 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
     }
   }
 
-  private def filterSuoritukset(opiskeluoikeus: Opiskeluoikeus, suoritusIds: List[SuoritusIdentifier]): List[Suoritus] =
-    opiskeluoikeus.suoritukset.filter { suoritus =>
+  private def filterSuoritukset(opiskeluoikeus: Opiskeluoikeus, suoritusIds: List[SuoritusIdentifier]): List[Suoritus] = {
+    val filtered = opiskeluoikeus.suoritukset.filter { suoritus =>
       suoritusIds.exists(suoritusId => isMatchingSuoritus(opiskeluoikeus, suoritus, suoritusId))
     }
+
+    resolveDuplicateSuoritusMatches(filtered)
+  }
+
+  /**
+    * Suodattaa pois vanhan duplikaattisuorituksen siinä tilanteessa, jossa oppija suorittaa vuosiluokan uudestaan.
+    * Odottaa syötesuoritusten sisältyvän samaan opiskeluoikeuteen.
+    * @param suoritukset kyseisen opiskeluoikeuden päätason suoritukset
+    * @return suoritukset, joista on mahdollisesti suodatettu pois duplikaatteja
+    */
+  private def resolveDuplicateSuoritusMatches(suoritukset: List[Suoritus]): List[Suoritus] = {
+    def findMostRecentAlternative(alternatives: List[Suoritus]): List[Suoritus] = {
+      val areAllVuosiluokanSuoritus = alternatives.map {
+        case _: PerusopetuksenVuosiluokanSuoritus => true
+        case _ => false
+      }.forall(v => v)
+
+      if (areAllVuosiluokanSuoritus) {
+        alternatives.map { case s: PerusopetuksenVuosiluokanSuoritus => s }.filterNot(_.jääLuokalle) match {
+          case Nil => alternatives
+          case tuplaukset: List[Suoritus] => tuplaukset
+        }
+      } else {
+        alternatives
+      }
+    }
+
+    val (multipleMatches, singleMatches) = suoritukset
+      .groupBy(s => (s.tyyppi.koodiarvo, s.koulutusmoduuli.tunniste.koodiarvo))
+      .values.toList
+      .partition(_.lengthCompare(1) > 0)
+
+    multipleMatches.flatMap(findMostRecentAlternative) ++ singleMatches.flatten
+  }
 
   private def isMatchingSuoritus(opiskeluoikeus: Opiskeluoikeus, suoritus: PäätasonSuoritus, suoritusId: SuoritusIdentifier): Boolean =
     opiskeluoikeus.oppilaitos.exists(_.oid == suoritusId.oppilaitosOid) &&

@@ -2,12 +2,14 @@ package fi.oph.koski.api
 
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.schema.PerusopetuksenVuosiluokanSuoritus
 import fi.oph.koski.suoritusjako.{SuoritusIdentifier, SuoritusjakoResponse}
-import org.scalatest.FreeSpec
+import org.scalatest.{FreeSpec, Matchers}
 
-class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods {
+class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matchers {
   var secretYksiSuoritus: Option[String] = None
   var secretKaksiSuoritusta: Option[String] = None
+  var secretVuosiluokanTuplausSuoritus: Option[String] = None
 
   "Suoritusjaon lisääminen" - {
     "onnistuu" - {
@@ -40,6 +42,20 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods {
         put("api/suoritusjako", body = json, headers = kansalainenLoginHeaders("180497-112F") ++ jsonContent){
           verifyResponseStatusOk()
           secretKaksiSuoritusta = Option(JsonSerializer.parse[SuoritusjakoResponse](response.body).secret)
+        }
+      }
+
+      "duplikoidulla suorituksella (vuosiluokan tuplaus)" in {
+        val json =
+          """[{
+          "oppilaitosOid": "1.2.246.562.10.14613773812",
+          "suorituksenTyyppi": "perusopetuksenvuosiluokka",
+          "koulutusmoduulinTunniste": "7"
+        }]"""
+
+        putSuoritusjako(json, hetu = "060498-997J"){
+          verifyResponseStatusOk()
+          secretVuosiluokanTuplausSuoritus = Option(JsonSerializer.parse[SuoritusjakoResponse](response.body).secret)
         }
       }
     }
@@ -154,6 +170,25 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods {
               koulutusmoduulinTunniste = "6"
             )
           ))
+        }
+      }
+
+      "duplikoidun suorituksen salaisuudella" in {
+        getSuoritusjako(secretVuosiluokanTuplausSuoritus.get, hetu = "060498-997J"){
+          verifyResponseStatusOk()
+
+          // Palautetaan vain yksi suoritus
+          verifySuoritusIds(List(SuoritusIdentifier(
+            oppilaitosOid = "1.2.246.562.10.14613773812",
+            suorituksenTyyppi = "perusopetuksenvuosiluokka",
+            koulutusmoduulinTunniste = "7"
+          )))
+
+          // Palautetaan tuplaus (ei luokallejäänti-suoritusta)
+          parseOppija().opiskeluoikeudet.head.suoritukset.head match {
+            case s: PerusopetuksenVuosiluokanSuoritus => !s.jääLuokalle && s.luokka == "7A"
+            case _ => fail("Väärä palautettu suoritus")
+          }
         }
       }
     }

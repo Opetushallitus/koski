@@ -88,7 +88,17 @@ object PerusopetusExampleData {
   def päättötodistusOpiskeluoikeus(oppilaitos: Oppilaitos = jyväskylänNormaalikoulu, toimipiste: OrganisaatioWithOid = jyväskylänNormaalikoulu,  luokka: String = "C") = opiskeluoikeus(
     oppilaitos = oppilaitos,
     suoritukset = List(
-      seitsemännenLuokanTuplaus.copy(toimipiste = toimipiste, luokka = "7" + luokka),
+      seitsemännenLuokanLuokallejääntiSuoritus.copy(toimipiste = toimipiste, luokka = "7" + luokka),
+      kahdeksannenLuokanSuoritus.copy(toimipiste = toimipiste, luokka = "8" + luokka),
+      yhdeksännenLuokanSuoritus.copy(toimipiste = toimipiste, luokka = "9" + luokka),
+      perusopetuksenOppimääränSuoritus.copy(toimipiste = toimipiste))
+  )
+
+  def päättötodistusLuokanTuplauksellaOpiskeluoikeus(oppilaitos: Oppilaitos = jyväskylänNormaalikoulu, toimipiste: OrganisaatioWithOid = jyväskylänNormaalikoulu,  luokka: String = "C") = opiskeluoikeus(
+    oppilaitos = oppilaitos,
+    suoritukset = List(
+      seitsemännenLuokanSuoritus.copy(toimipiste = toimipiste, luokka = "7A"),
+      seitsemännenLuokanLuokallejääntiSuoritus.copy(toimipiste = toimipiste, luokka = "7" + luokka),
       kahdeksannenLuokanSuoritus.copy(toimipiste = toimipiste, luokka = "8" + luokka),
       yhdeksännenLuokanSuoritus.copy(toimipiste = toimipiste, luokka = "9" + luokka),
       perusopetuksenOppimääränSuoritus.copy(toimipiste = toimipiste))
@@ -105,7 +115,15 @@ object PerusopetusExampleData {
     vahvistus = vahvistusPaikkakunnalla(date(2015, 5, 30))
   )
 
-  val seitsemännenLuokanTuplaus = PerusopetuksenVuosiluokanSuoritus(
+  val seitsemännenLuokanSuoritus = PerusopetuksenVuosiluokanSuoritus(
+    koulutusmoduuli = PerusopetuksenLuokkaAste(7, perusopetuksenDiaarinumero), luokka = "7C", alkamispäivä = Some(date(2013, 8, 15)),
+    toimipiste = jyväskylänNormaalikoulu,
+    suorituskieli = suomenKieli,
+    osasuoritukset = kaikkiAineet,
+    vahvistus = vahvistusPaikkakunnalla(date(2015, 5, 30))
+  )
+
+  val seitsemännenLuokanLuokallejääntiSuoritus = PerusopetuksenVuosiluokanSuoritus(
     koulutusmoduuli = PerusopetuksenLuokkaAste(7, perusopetuksenDiaarinumero), luokka = "7C", alkamispäivä = Some(date(2013, 8, 15)),
     jääLuokalle = true,
     toimipiste = jyväskylänNormaalikoulu,
