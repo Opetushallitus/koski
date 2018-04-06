@@ -33,7 +33,7 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
 
   def hasGlobalKoulutusmuotoReadAccess: Boolean = globalKoulutusmuotoKäyttöoikeudet.flatMap(_.globalAccessType).contains(AccessType.read)
 
-  def allowedOpiskeluoikeusTyypit: Set[String] = globalKoulutusmuotoKäyttöoikeudet.flatMap(_.allowedOpiskeluoikeusTyypit)
+  lazy val allowedOpiskeluoikeusTyypit: Set[String] = globalKoulutusmuotoKäyttöoikeudet.flatMap(_.allowedOpiskeluoikeusTyypit)
   def hasGlobalReadAccess = globalAccess.contains(AccessType.read)
   def hasAnyWriteAccess = (globalAccess.contains(AccessType.write) || organisationOids(AccessType.write).nonEmpty) && hasRole(LUOTTAMUKSELLINEN)
   def hasLocalizationWriteAccess = globalKäyttöoikeudet.find(_.globalPalveluroolit.contains(Palvelurooli("LOKALISOINTI", "CRUD"))).isDefined

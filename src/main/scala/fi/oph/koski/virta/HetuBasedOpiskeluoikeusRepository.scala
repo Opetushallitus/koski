@@ -47,11 +47,14 @@ abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](henkilöR
   }
   private def getHenkilötiedot(oid: String)(implicit user: KoskiSession): Option[TäydellisetHenkilötiedot] = henkilöRepository.findByOid(oid)
   private def quickAccessCheck[T](list: => List[T])(implicit user: KoskiSession): List[T] = if (accessChecker.hasAccess(user)) { list } else { Nil }
-  private def findByHenkilö(henkilö: Henkilö with Henkilötiedot)(implicit user: KoskiSession): List[OO] = henkilö.hetu.toList.flatMap(h =>
-    quickAccessCheck(cache(h)).filter(oo => user.hasGlobalReadAccess || oo.oppilaitos.exists(oppilaitos => user.hasReadAccess(oppilaitos.oid)))
+  private def findByHenkilö(henkilö: Henkilö with Henkilötiedot)(implicit user: KoskiSession): List[OO] = henkilö.hetu.toList.flatMap( h =>
+    quickAccessCheck(cache(h)).filter { oo =>
+      accessChecker.hasGlobalAccess(user) ||
+      oo.oppilaitos.exists(oppilaitos => user.hasReadAccess(oppilaitos.oid))
+    }
   )
 
-  override def filterOppijat(oppijat: List[HenkilötiedotJaOid])(implicit user: KoskiSession): List[HenkilötiedotJaOid] = if (user.hasGlobalReadAccess) {
+  override def filterOppijat(oppijat: List[HenkilötiedotJaOid])(implicit user: KoskiSession): List[HenkilötiedotJaOid] = if (accessChecker.hasGlobalAccess(user)) {
     oppijat.filter(_.hetu.exists(cache(_).nonEmpty))
   } else {
     quickAccessCheck(oppijat.par.filter(_.hetu.exists(organizationsCache(_).exists(user.hasReadAccess))).toList)

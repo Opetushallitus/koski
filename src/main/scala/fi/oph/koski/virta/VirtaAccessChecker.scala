@@ -7,10 +7,13 @@ import fi.oph.koski.organisaatio.Oppilaitostyyppi._
     fetch can be prevented if user has no access
 */
 class VirtaAccessChecker(käyttöoikeudet: KäyttöoikeusRepository) extends AccessChecker {
-  def hasAccess(session: KoskiSession) = {
-    session.hasGlobalReadAccess ||
-    käyttöoikeudet.käyttäjänOppilaitostyypit(session.user)
+  def hasAccess(user: KoskiSession): Boolean = {
+    hasGlobalAccess(user) ||
+    käyttöoikeudet.käyttäjänOppilaitostyypit(user.user)
       .intersect(Set(lastentarhaopettajaopistot, yliopistot, sotilaskorkeakoulut, kesäyliopistot, väliaikaisetAmmattikorkeakoulut, ammattikorkeakoulut))
       .nonEmpty
   }
+
+  override def hasGlobalAccess(user: KoskiSession): Boolean =
+    user.hasGlobalReadAccess || user.allowedOpiskeluoikeusTyypit.contains("korkeakoulutus")
 }

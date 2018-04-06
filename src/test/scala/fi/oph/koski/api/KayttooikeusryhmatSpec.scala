@@ -5,6 +5,7 @@ import java.time.LocalDate
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.koskiuser.MockUsers.{evira, korkeakouluViranomainen, perusopetusViranomainen, toinenAsteViranomainen}
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
@@ -130,7 +131,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
 
   "vastuukäyttäjä" - {
     val user = MockUsers.stadinVastuukäyttäjä
-    "ei näe luottamusellista dataa" in {
+    "ei näe luottamuksellista dataa" in {
       authGet("api/oppija/" + MockOppijat.eero.oid, user) {
         verifyResponseStatusOk()
         sensitiveDataHidden(body)
@@ -195,6 +196,92 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
         putOpiskeluoikeus(opiskeluoikeusOmnia.copy(oid = Some(oid)), henkilö = oppija, headers = authHeaders(user) ++ jsonContent) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyMuutos("Opiskeluoikeuden lähdejärjestelmäId:tä ei voi poistaa."))
         }
+      }
+    }
+  }
+
+  "viranomainen jolla oikeudet kaikkiin koulutusmuotoihin" - {
+    "ei näe luottamuksellista dataa" in {
+      authGet("api/oppija/" + MockOppijat.eero.oid, evira) {
+        verifyResponseStatusOk()
+        sensitiveDataHidden(body)
+      }
+    }
+
+    "ei voi muokata opiskeluoikeuksia" in {
+      putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästä, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(evira) ++ jsonContent) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon 1.2.246.562.10.51720121923"))
+      }
+    }
+
+    "voi hakea kaikkia opiskeluoikeuksia" in {
+      searchForNames("eero", evira) should equal(List("Jouni Eerola", "Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström"))
+    }
+
+    "voi hakea ja katsella kaikkia opiskeluoikeuksia" in {
+      queryOppijat(user = evira).length should be >= 10
+      authGet("api/oppija/" + MockOppijat.ammattilainen.oid, evira) {
+        verifyResponseStatusOk()
+      }
+    }
+  }
+
+  "viranomainen jolla oikeudet vain perusopetukseen" - {
+    "voi hakea perusopetuksen opiskeluoikeuksia" in {
+      searchForNames("eero", perusopetusViranomainen) should be(empty)
+      searchForNames("kaisa", perusopetusViranomainen) should be(List("Kaisa Koululainen", "Kaisa Kymppiluokkalainen"))
+    }
+
+    "näkee vain perusopetuksen opiskeluoikeudet" in {
+      queryOppijat(user = perusopetusViranomainen).flatMap(_.opiskeluoikeudet).map(_.tyyppi.koodiarvo).distinct.sorted should be(List("aikuistenperusopetus", "esiopetus", "perusopetukseenvalmistavaopetus", "perusopetuksenlisaopetus", "perusopetus"))
+    }
+
+    "ei näe muun typpisiä opiskeluoikeuksia" in {
+      authGet("api/oppija/" + MockOppijat.ammattilainen.oid, perusopetusViranomainen) {
+        verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia(s"Oppijaa ${MockOppijat.ammattilainen.oid} ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
+      }
+    }
+  }
+
+  "viranomainen jolla oikeudet toiseen asteeseen" - {
+    "voi hakea toisen asteen opiskeluoikeuksia" in {
+      searchForNames("ylermi", toinenAsteViranomainen) should be(empty)
+      searchForNames(MockOppijat.dippainssi.hetu.get, toinenAsteViranomainen) should be(empty)
+      searchForNames(MockOppijat.ylioppilas.hetu.get, toinenAsteViranomainen) should be("Ylermi Ylioppilas")
+      searchForNames("eero", toinenAsteViranomainen) should equal(List("Jouni Eerola", "Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström"))
+    }
+
+    "näkee vain toisen asteen opiskeluoikeudet" in {
+      queryOppijat(user = toinenAsteViranomainen).flatMap(_.opiskeluoikeudet).map(_.tyyppi.koodiarvo).distinct.sorted should be(List("ammatillinenkoulutus", "ibtutkinto", "lukiokoulutus", "luva"))
+      authGet("api/oppija/" + MockOppijat.ylioppilas.oid, toinenAsteViranomainen) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "ei näe muun typpisiä opiskeluoikeuksia" in {
+      authGet("api/oppija/" + MockOppijat.ysiluokkalainen.oid, toinenAsteViranomainen) {
+        verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia(s"Oppijaa ${MockOppijat.ysiluokkalainen.oid} ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
+      }
+    }
+  }
+
+  "viranomainen jolla oikeudet korkeakouluun" - {
+    "voi hakea korkeakouluopiskeluoikeuksia" in {
+      searchForNames(MockOppijat.ylioppilas.hetu.get, korkeakouluViranomainen) should be(empty)
+      searchForNames(MockOppijat.dippainssi.hetu.get, korkeakouluViranomainen) should be(List("Dilbert Dippainssi"))
+      searchForNames("eero", korkeakouluViranomainen) should be(empty)
+    }
+
+    "näkee vain korkeakouluopiskeluoikeudet" in {
+      queryOppijat(user = korkeakouluViranomainen) should be(empty)
+      authGet("api/oppija/" + MockOppijat.dippainssi.oid, korkeakouluViranomainen) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "ei näe muun typpisiä opiskeluoikeuksia" in {
+      authGet("api/oppija/" + MockOppijat.ysiluokkalainen.oid, korkeakouluViranomainen) {
+        verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia(s"Oppijaa ${MockOppijat.ysiluokkalainen.oid} ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
       }
     }
   }
