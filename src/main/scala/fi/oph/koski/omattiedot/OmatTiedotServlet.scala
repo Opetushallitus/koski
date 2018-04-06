@@ -17,7 +17,7 @@ class OmatTiedotServlet(implicit val application: KoskiApplication) extends ApiS
   get("/editor") {
     val oppija: Either[HttpStatus, Oppija] = application.oppijaFacade.findUserOppija
     renderEither(oppija.right.map { o =>
-      OmatTiedotEditorModel.toEditorModel(OmatTiedotEditorModel.piilotaArvosanatKeskeneräisistäSuorituksista(o))
+      OmatTiedotEditorModel.toEditorModel(o)
     })
   }
 

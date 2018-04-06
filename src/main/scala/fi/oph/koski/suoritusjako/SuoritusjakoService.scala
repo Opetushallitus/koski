@@ -27,7 +27,7 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
       oppijaFacade.findOppija(suoritusjako.oppijaOid)(KoskiSession.systemUser).map { oppija =>
         val suoritusIdentifiers = JsonSerializer.extract[List[SuoritusIdentifier]](suoritusjako.suoritusIds)
         val filtered = filterOpiskeluoikeudet(oppija.opiskeluoikeudet, suoritusIdentifiers)
-        OmatTiedotEditorModel.piilotaArvosanatKeskeneräisistäSuorituksista(oppija.copy(opiskeluoikeudet = filtered))
+        oppija.copy(opiskeluoikeudet = filtered)
       }
     }
   }
