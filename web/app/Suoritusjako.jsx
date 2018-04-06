@@ -30,7 +30,7 @@ const SuoritusjakoTopBar = () => {
       <div id='logo'><Text name="Opintopolku.fi"/></div>
       <h1>
         <Link href="/koski/"><Text name="Koski"/></Link>
-        <span>{' - '}<Text name="Jaettu linkki"/></span>
+        <span>{' - '}<Text name="Opinnot"/></span>
       </h1>
     </header>
   )
@@ -53,16 +53,14 @@ const domP = Bacon.combineWith(contentP, allErrorsP, (content, error) =>
     {
       isTopLevel(error)
         ? <TopLevelError error={error} />
-        : (<div className="content-area omattiedot">
-            <nav className="sidebar omattiedot-navi"></nav>
+        : (<div className="content-area suoritusjako">
             {content}
           </div>)
     }
   </div>)
 )
 
-// FIXME
-document.querySelector('title').innerHTML = t('Omat tiedot') + ' - ' + t('Koski') + ' - ' + t('Opintopolku.fi')
+document.querySelector('title').innerHTML = t('Opinnot') + ' - ' + t('Koski') + ' - ' + t('Opintopolku.fi')
 
 // Render to DOM
 domP.onValue((component) => ReactDOM.render(component, document.getElementById('content')))

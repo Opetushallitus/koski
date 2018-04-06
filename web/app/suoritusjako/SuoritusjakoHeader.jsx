@@ -14,7 +14,7 @@ export const SuoritusjakoHeader = ({oppija}) => {
   return (
     <header>
       <h2 className='header__heading'>
-        <Text name='Opintoni'/>
+        <Text name='Opinnot'/>
       </h2>
       <div className='header__bottom-row'>
         <div className='header__name'>
