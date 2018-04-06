@@ -2,7 +2,7 @@ import React from 'baret'
 import {naviLink} from '../tiedonsiirrot/Tiedonsiirrot'
 
 export default ({location, user}) => {
-  if (!user || !user.hasAnyReadAccess) {
+  if (!user || !user.hasAnyReadAccess || !user.showOppijalistaus) {
     return null
   }
   return (<ul>
