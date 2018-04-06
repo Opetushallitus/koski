@@ -81,6 +81,6 @@
 // layouts to virkailija pages.
 .omattiedot-phone(@rules) {
   @media @media-phone {
-    body.omattiedot-page & { @rules(); }
+    body.omattiedot-page &, body.suoritusjako-page & { @rules(); }
   }
 }
