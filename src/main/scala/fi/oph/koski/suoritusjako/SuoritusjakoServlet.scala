@@ -18,7 +18,7 @@ class SuoritusjakoServlet(implicit val application: KoskiApplication) extends Ap
     withJsonBody({ body =>
       val request = JsonSerializer.extract[SuoritusjakoRequest](body)
       renderEither(
-        application.suoritusjakoService.validateSuoritusjakoUuid(request.uuid)
+        application.suoritusjakoService.validateSuoritusjakoSecret(request.secret)
           .flatMap(application.suoritusjakoService.get)
           .map(oppija => OmatTiedotEditorModel.toEditorModel(oppija)(application, KoskiSession.systemUser))
       )
@@ -26,8 +26,8 @@ class SuoritusjakoServlet(implicit val application: KoskiApplication) extends Ap
   }
 
   // FIXME: remove this endpoint, only intended for development
-  get("/:uuid") {
-    renderEither(application.suoritusjakoService.get(params("uuid")))
+  get("/:secret") {
+    renderEither(application.suoritusjakoService.get(params("secret")))
   }
 
   put("/") {
@@ -46,6 +46,6 @@ class SuoritusjakoServlet(implicit val application: KoskiApplication) extends Ap
   override def toJsonString[T: TypeTag](x: T): String = Serialization.write(x.asInstanceOf[AnyRef])(LegacyJsonSerialization.jsonFormats + EditorModelSerializer)
 }
 
-case class SuoritusjakoRequest(uuid: String)
+case class SuoritusjakoRequest(secret: String)
 
-case class SuoritusjakoResponse(uuid: String)
+case class SuoritusjakoResponse(secret: String)

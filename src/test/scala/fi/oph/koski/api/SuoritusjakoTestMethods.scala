@@ -9,8 +9,8 @@ trait SuoritusjakoTestMethods extends LocalJettyHttpSpecification with Opiskeluo
     put("api/suoritusjako", body = body, headers = kansalainenLoginHeaders("180497-112F") ++ jsonContent)(f)
   }
 
-  def getSuoritusjako[A](uuid: String)(f: => A): A = {
-    get(s"api/suoritusjako/$uuid", headers = kansalainenLoginHeaders("180497-112F"))(f)
+  def getSuoritusjako[A](secret: String)(f: => A): A = {
+    get(s"api/suoritusjako/$secret", headers = kansalainenLoginHeaders("180497-112F"))(f)
   }
 
   def parseOppija() = {

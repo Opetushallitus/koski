@@ -15,15 +15,15 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
   def put(oppijaOid: String, suoritusIds: List[SuoritusIdentifier]): Either[HttpStatus, String] = {
     assertSuorituksetExist(oppijaOid, suoritusIds) match {
       case Right(_) =>
-        val uuid = randomUUID.toString.replaceAll("-", "")
-        suoritusjakoRepository.put(uuid, oppijaOid, suoritusIds)
-        Right(uuid)
+        val secret = generateNewSecret()
+        suoritusjakoRepository.put(secret, oppijaOid, suoritusIds)
+        Right(secret)
       case Left(status) => Left(status)
     }
   }
 
-  def get(uuid: String): Either[HttpStatus, Oppija] = {
-    suoritusjakoRepository.get(uuid).flatMap { suoritusjako =>
+  def get(secret: String): Either[HttpStatus, Oppija] = {
+    suoritusjakoRepository.get(secret).flatMap { suoritusjako =>
       oppijaFacade.findOppija(suoritusjako.oppijaOid)(KoskiSession.systemUser).map { oppija =>
         val suoritusIdentifiers = JsonSerializer.extract[List[SuoritusIdentifier]](suoritusjako.suoritusIds)
         val filtered = filterOpiskeluoikeudet(oppija.opiskeluoikeudet, suoritusIdentifiers)
@@ -32,12 +32,16 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
     }
   }
 
-  def validateSuoritusjakoUuid(uuid: String): Either[HttpStatus, String] = {
-    if (uuid.matches("^[0-9a-f]{32}$")) {
-      Right(uuid)
+  def validateSuoritusjakoSecret(secret: String): Either[HttpStatus, String] = {
+    if (secret.matches("^[0-9a-f]{32}$")) {
+      Right(secret)
     } else {
       Left(KoskiErrorCategory.badRequest.format())
     }
+  }
+
+  private def generateNewSecret(): String = {
+    randomUUID.toString.replaceAll("-", "")
   }
 
   private def filterOpiskeluoikeudet(opiskeluoikeus: Seq[Opiskeluoikeus], suoritusIds: List[SuoritusIdentifier]): Seq[Opiskeluoikeus] = {

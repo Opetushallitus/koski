@@ -6,8 +6,8 @@ import fi.oph.koski.suoritusjako.{SuoritusIdentifier, SuoritusjakoResponse}
 import org.scalatest.FreeSpec
 
 class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods {
-  var uuidYksiSuoritus: Option[String] = None
-  var uuidKaksiSuoritusta: Option[String] = None
+  var secretYksiSuoritus: Option[String] = None
+  var secretKaksiSuoritusta: Option[String] = None
 
   "Suoritusjaon lisääminen" - {
     "onnistuu" - {
@@ -21,7 +21,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods {
 
         putSuoritusjako(json){
           verifyResponseStatusOk()
-          uuidYksiSuoritus = Option(JsonSerializer.parse[SuoritusjakoResponse](response.body).uuid)
+          secretYksiSuoritus = Option(JsonSerializer.parse[SuoritusjakoResponse](response.body).secret)
         }
       }
 
@@ -39,7 +39,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods {
 
         put("api/suoritusjako", body = json, headers = kansalainenLoginHeaders("180497-112F") ++ jsonContent){
           verifyResponseStatusOk()
-          uuidKaksiSuoritusta = Option(JsonSerializer.parse[SuoritusjakoResponse](response.body).uuid)
+          secretKaksiSuoritusta = Option(JsonSerializer.parse[SuoritusjakoResponse](response.body).secret)
         }
       }
     }
@@ -126,8 +126,8 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods {
 
   "Suoritusjaon hakeminen" - {
     "onnistuu" - {
-      "yhden jaetun suorituksen UUID:lla" in {
-        getSuoritusjako(uuidYksiSuoritus.get){
+      "yhden jaetun suorituksen salaisuudella" in {
+        getSuoritusjako(secretYksiSuoritus.get){
           verifyResponseStatusOk()
 
           verifySuoritusIds(List(SuoritusIdentifier(
@@ -138,8 +138,8 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods {
         }
       }
 
-      "kahden jaetun suorituksen UUID:lla" in {
-        getSuoritusjako(uuidKaksiSuoritusta.get){
+      "kahden jaetun suorituksen salaisuudella" in {
+        getSuoritusjako(secretKaksiSuoritusta.get){
           verifyResponseStatusOk()
 
           verifySuoritusIds(List(
@@ -159,7 +159,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods {
     }
 
     "epäonnistuu" - {
-      "epäkelvolla UUID:lla" in {
+      "epäkelvolla salaisuudella" in {
         getSuoritusjako("2.2.246.562.10.64353470871"){
           verifyResponseStatus(404, KoskiErrorCategory.notFound())
         }

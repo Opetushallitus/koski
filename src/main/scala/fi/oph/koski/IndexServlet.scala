@@ -73,7 +73,7 @@ class EiSuorituksiaServlet(implicit val application: KoskiApplication) extends S
 }
 
 class SuoritusjakoHtmlServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet {
-  get("/:uuid") {
+  get("/:secret") {
     htmlIndex("koski-suoritusjako.js", raamitEnabled = false, responsive = true)
   }
 }
