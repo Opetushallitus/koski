@@ -247,7 +247,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     "voi hakea toisen asteen opiskeluoikeuksia" in {
       searchForNames("ylermi", toinenAsteViranomainen) should be(empty)
       searchForNames(MockOppijat.dippainssi.hetu.get, toinenAsteViranomainen) should be(empty)
-      searchForNames(MockOppijat.ylioppilas.hetu.get, toinenAsteViranomainen) should be("Ylermi Ylioppilas")
+      searchForNames(MockOppijat.ylioppilas.hetu.get, toinenAsteViranomainen) should equal(List("Ynjevi Ylioppilas"))
       searchForNames("eero", toinenAsteViranomainen) should equal(List("Jouni Eerola", "Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström"))
     }
 
