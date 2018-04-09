@@ -1,7 +1,10 @@
 package fi.oph.koski.api
 
+import java.nio.charset.StandardCharsets
+
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.log.AccessLogTester
 import fi.oph.koski.schema.PerusopetuksenVuosiluokanSuoritus
 import fi.oph.koski.suoritusjako.{SuoritusIdentifier, SuoritusjakoResponse}
 import org.scalatest.{FreeSpec, Matchers}
@@ -193,6 +196,24 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
           case s: PerusopetuksenVuosiluokanSuoritus => !s.jääLuokalle && s.luokka == "7A"
           case _ => fail("Väärä palautettu suoritus")
         }
+      }
+    }
+
+    "ei sisällä hetua" in {
+      getSuoritusjako(secretYksiSuoritus.get) {
+        verifyResponseStatusOk()
+        val bodyString = new String(response.bodyBytes, StandardCharsets.UTF_8)
+        bodyString should not include(suoritusjakoHetu)
+      }
+    }
+
+    "salaisuus ei päädy lokiin" in {
+      val secret = secretYksiSuoritus.get
+      val maskedSecret = secret.take(8) + "*" * (32 - 8)
+      get(s"opinnot/$secret") {
+        verifyResponseStatusOk()
+        Thread.sleep(200) // wait for logging to catch up (there seems to be a slight delay)
+        AccessLogTester.getLogMessages.lastOption.get.getMessage.toString should include(maskedSecret)
       }
     }
   }
