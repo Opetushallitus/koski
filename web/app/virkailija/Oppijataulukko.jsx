@@ -219,7 +219,7 @@ export const oppijataulukkoContentP = (query, params) => {
   }).flatMap(showOppijataulukko)
 
   return taulukkoP.map(taulukko => ({
-    content: (<div className='content-area oppijataulukko'>
+    content: (<div className='content-area'>
       <div className="main-content">
         <OppijaHaku/>
         <EditLocalizationsLink/>

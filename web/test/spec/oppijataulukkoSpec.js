@@ -181,4 +181,12 @@ describe('Oppijataulukko', function() {
     before(page.openFromMenu, wait.until(page.oppijataulukko.isReady))
     it('avaa oppijataulukon', function() {})
   })
+
+  describe('Viranomaiselle', function() {
+    before(Authentication().login('Eeva'), page.openPage, wait.until(page.isReady))
+
+    it('ei näytetä', function() {
+      expect(page.oppijataulukko.isVisible()).to.equal(false)
+    })
+  })
 })
