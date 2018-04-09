@@ -32,7 +32,6 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      min-height: 220px;
 
       h2 {
         margin-bottom: 1rem;
@@ -48,61 +47,71 @@
         }
       }
 
-      .header {
-        &__caption {
-          display: flex;
-          justify-content: space-between;
-          flex-grow: 1;
+    .header {
+      &__caption {
+        display: flex;
+        justify-content: space-between;
+        flex-grow: 1;
 
-          p {
-            max-width: 600px;
-            margin: 0;
-            line-height: 1.4rem;
-          }
-
-          a {
-            font-size: 0.85rem;
-            line-height: 1.4rem;
-          }
-
-          @media @media-phone {
-            flex-direction: column;
-            flex-grow: 0;
-          }
+        p {
+          max-width: 600px;
+          margin: 0;
+          line-height: 1.4rem;
         }
 
-        &__info-toggle {
-          @media @media-phone {
-            margin: 0.5rem 0;
-          }
+        a {
+          font-size: 0.85rem;
+          line-height: 1.4rem;
         }
 
-        &__name {
-          font-weight: 600;
-          line-height: 1.6rem;
+        @media @media-phone {
+          flex-direction: column;
+          flex-grow: 0;
+        }
+      }
 
-          p {
-            margin: 0;
-          }
+      &__info {
+        min-height: 180px;
 
-          .syntynyt {
-            font-weight: 400;
-          }
+        @media @media-phone {
+          min-height: 0;
+        }
+      }
+
+      &__info-toggle {
+        @media @media-phone {
+          min-height: 0;
+          margin: 0.5rem 0;
+        }
+      }
+
+      &__name {
+        font-weight: 600;
+        line-height: 1.6rem;
+
+        p {
+          margin: 0;
         }
 
-        &__bottom-row {
-          display: flex;
-          justify-content: space-between;
+        .syntynyt {
+          font-weight: 400;
+        }
+      }
 
-          @media @media-phone {
-            flex-direction: column;
+      &__bottom-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
 
-            .header__name {
-              order: 1;
-            }
+        @media @media-phone {
+          flex-direction: column;
+
+          .header__name {
+            order: 1;
           }
         }
       }
+    }
 
       .tiedot-palvelussa {
         .info-text;
@@ -110,7 +119,7 @@
     }
 
     .virheraportointi {
-      padding: @header-padding;
+      flex-basis: 100%;
 
       .puuttuvat-tiedot {
         .info-text;

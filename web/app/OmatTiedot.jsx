@@ -14,7 +14,7 @@ import {userP} from './util/user'
 import {addContext, modelData} from './editor/EditorModel'
 import {locationP} from './util/location'
 import {EiSuorituksia} from './EiSuorituksia'
-import {Header} from './omattiedot/Header'
+import {Header} from './omattiedot/header/Header'
 
 const omatTiedotP = () => Bacon.combineWith(
   Http.cachedGet('/koski/api/omattiedot/editor', { errorMapper: (e) => e.httpStatus === 404 ? null : new Bacon.Error(e)}).toProperty(),
