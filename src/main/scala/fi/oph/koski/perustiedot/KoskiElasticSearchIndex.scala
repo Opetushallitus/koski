@@ -9,7 +9,7 @@ import org.http4s.EntityEncoder
 import org.json4s.jackson.JsonMethods
 import org.json4s.{JValue, _}
 
-class KoskiElasticSearchIndex(elastic: ElasticSearch) extends Logging {
+class KoskiElasticSearchIndex(val elastic: ElasticSearch) extends Logging {
   def http = elastic.http
   def reindexingNeededAtStartup = init
 
