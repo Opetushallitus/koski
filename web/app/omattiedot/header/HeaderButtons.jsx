@@ -1,19 +1,24 @@
 import React from 'react'
-import {ToggleButton} from '../../components/ToggleButton'
+import {MultistateToggleButton} from '../../components/ToggleButton'
 import {withFeatureFlag} from '../../components/withFeatureFlag'
+import {FormState} from './Header'
 
-const VirheraportointiButton = withFeatureFlag(FEATURE.OMAT_TIEDOT.VIRHERAPORTOINTI, ToggleButton)
-const SuoritusjakoButton = withFeatureFlag(FEATURE.OMAT_TIEDOT.SUORITUSJAKO, ToggleButton)
+const VirheraportointiButton = withFeatureFlag(FEATURE.OMAT_TIEDOT.VIRHERAPORTOINTI, MultistateToggleButton)
+const SuoritusjakoButton = withFeatureFlag(FEATURE.OMAT_TIEDOT.SUORITUSJAKO, MultistateToggleButton)
 
-export const HeaderButtons = ({showVirheraportointiA, showSuoritusjakoA}) => (
+export const HeaderButtons = ({uiModeA}) => (
   <div className='header__buttons'>
     <VirheraportointiButton
-      toggleA={showVirheraportointiA}
+      stateA={uiModeA}
+      value={FormState.VIRHERAPORTOINTI}
+      clearedStateValue={FormState.NONE}
       text='Onko suorituksissasi virhe?'
       style='text'
     />
     <SuoritusjakoButton
-      toggleA={showSuoritusjakoA}
+      stateA={uiModeA}
+      value={FormState.SUORITUSJAKO}
+      clearedStateValue={FormState.NONE}
       text='Suoritustietojen jakaminen'
     />
   </div>

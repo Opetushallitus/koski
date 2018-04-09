@@ -1,7 +1,7 @@
 import React from 'react'
 
-export const Popup = ({showStateAtom, inline, children}) => {
-  const dismiss = () => showStateAtom.set(false)
+export const Popup = ({showStateAtom, dismissedStateValue = false, inline, children}) => {
+  const dismiss = () => showStateAtom.set(dismissedStateValue)
 
   return (
     <div className={`popup${inline ? ' popup--inline' : ''}`}>

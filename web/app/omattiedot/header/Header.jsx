@@ -7,15 +7,19 @@ import {HeaderButtons} from './HeaderButtons'
 import {HeaderName} from './HeaderName'
 import {HeaderVirheraportointiSection} from './HeaderVirheraportointiSection'
 import {HeaderSuoritusjakoSection} from './HeaderSuoritusjakoSection'
-import {ift} from '../../util/util'
+
+export const FormState = {
+  VIRHERAPORTOINTI: 'virheraportointi',
+  SUORITUSJAKO: 'suoritusjako',
+  NONE: 'none'
+}
 
 const VirheraportointiFeature = withFeatureFlag(FEATURE.OMAT_TIEDOT.VIRHERAPORTOINTI, HeaderVirheraportointiSection)
 const SuoritusjakoFeature = withFeatureFlag(FEATURE.OMAT_TIEDOT.SUORITUSJAKO, HeaderSuoritusjakoSection)
 
 export const Header = ({oppija}) => {
   const showPalvelussaNäkyvätTiedot = Atom(false)
-  const showVirheraportointi = Atom(false)
-  const showSuoritusjako = Atom(false)
+  const uiMode = Atom(FormState.NONE)
 
   const henkilö = modelLookup(oppija, 'henkilö')
   const opiskeluoikeudet = modelItems(oppija, 'opiskeluoikeudet')
@@ -26,22 +30,9 @@ export const Header = ({oppija}) => {
 
       <div className='header__bottom-row'>
         <HeaderName henkilö={henkilö}/>
-        <HeaderButtons
-          showVirheraportointiA={showVirheraportointi}
-          showSuoritusjakoA={showSuoritusjako}
-        />
-
-        <VirheraportointiFeature
-          showVirheraportointiA={showVirheraportointi}
-          henkilö={henkilö}
-          opiskeluoikeudet={opiskeluoikeudet}
-        />
-
-        {ift(showSuoritusjako,
-          <SuoritusjakoFeature
-            showSuoritusjakoA={showSuoritusjako}
-          />
-        )}
+        <HeaderButtons uiModeA={uiMode} stateType={FormState}/>
+        <VirheraportointiFeature uiModeA={uiMode} henkilö={henkilö} opiskeluoikeudet={opiskeluoikeudet}/>
+        <SuoritusjakoFeature uiModeA={uiMode}/>
       </div>
     </header>
   )
