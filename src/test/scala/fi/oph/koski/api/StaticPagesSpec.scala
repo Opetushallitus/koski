@@ -14,7 +14,7 @@ class StaticPagesSpec extends FreeSpec with LocalJettyHttpSpecification with Mat
       "GET " + path in {
         authGet(path) {
           verifyResponseStatusOk(responseCode)
-          body.contains("<title>Koski - Opintopolku.fi</title>")
+          body should include("<title>Koski - Opintopolku.fi</title>")
         }
       }
     }
