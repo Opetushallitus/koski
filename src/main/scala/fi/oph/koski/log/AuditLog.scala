@@ -34,7 +34,12 @@ object AuditLogMessage {
   }
 
   def apply(operation: KoskiOperation, session: KoskiSession, extraFields: Map[KoskiMessageField, String]): AuditLogMessage = {
-    build(operation, new User(new Oid(session.user.oid), session.clientIp, session.user.serviceTicket.getOrElse(""), session.userAgent), extraFields)
+    val user = if (session.user.isSuoritusjakoKatsominen) {
+      new User(session.clientIp, "", session.userAgent)
+    } else {
+      new User(new Oid(session.user.oid), session.clientIp, session.user.serviceTicket.getOrElse(""), session.userAgent)
+    }
+    build(operation, user, extraFields)
   }
 
   private def build(operation: KoskiOperation, user: User, extraFields: Map[KoskiMessageField, String]): AuditLogMessage = {
@@ -53,7 +58,7 @@ object KoskiMessageField extends Enumeration {
 object KoskiOperation extends Enumeration {
   type KoskiOperation = Value
   val LOGIN, OPISKELUOIKEUS_LISAYS, OPISKELUOIKEUS_MUUTOS, OPISKELUOIKEUS_KATSOMINEN, OPISKELUOIKEUS_HAKU, MUUTOSHISTORIA_KATSOMINEN, OPPIJA_HAKU, TIEDONSIIRTO_KATSOMINEN,
-      KANSALAINEN_LOGIN, KANSALAINEN_OPISKELUOIKEUS_KATSOMINEN = Value
+      KANSALAINEN_LOGIN, KANSALAINEN_OPISKELUOIKEUS_KATSOMINEN, KANSALAINEN_SUORITUSJAKO_LISAYS, KANSALAINEN_SUORITUSJAKO_KATSOMINEN = Value
 }
 
 class AuditLogOperation(op: KoskiOperation) extends Operation {

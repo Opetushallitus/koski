@@ -6,25 +6,27 @@ import java.util.UUID.randomUUID
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.log.Logging
-import fi.oph.koski.omattiedot.OmatTiedotEditorModel
+import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
+import fi.oph.koski.log.KoskiOperation.KANSALAINEN_SUORITUSJAKO_LISAYS
+import fi.oph.koski.log.KoskiMessageField.oppijaHenkiloOid
 import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.schema._
 
 class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppijaFacade: KoskiOppijaFacade) extends Logging {
-  def put(oppijaOid: String, suoritusIds: List[SuoritusIdentifier]): Either[HttpStatus, String] = {
+  def put(oppijaOid: String, suoritusIds: List[SuoritusIdentifier])(implicit koskiSession: KoskiSession): Either[HttpStatus, String] = {
     assertSuorituksetExist(oppijaOid, suoritusIds) match {
       case Right(_) =>
         val secret = generateNewSecret()
         suoritusjakoRepository.put(secret, oppijaOid, suoritusIds)
+        AuditLog.log(AuditLogMessage(KANSALAINEN_SUORITUSJAKO_LISAYS, koskiSession, Map(oppijaHenkiloOid -> oppijaOid)))
         Right(secret)
       case Left(status) => Left(status)
     }
   }
 
-  def get(secret: String): Either[HttpStatus, Oppija] = {
+  def get(secret: String)(implicit koskiSession: KoskiSession): Either[HttpStatus, Oppija] = {
     suoritusjakoRepository.get(secret).flatMap { suoritusjako =>
-      oppijaFacade.findOppija(suoritusjako.oppijaOid)(KoskiSession.systemUser).map { oppija =>
+      oppijaFacade.findOppija(suoritusjako.oppijaOid)(koskiSession).map { oppija =>
         val suoritusIdentifiers = JsonSerializer.extract[List[SuoritusIdentifier]](suoritusjako.suoritusIds)
         val filtered = filterOpiskeluoikeudet(oppija.opiskeluoikeudet, suoritusIdentifiers)
         oppija.copy(opiskeluoikeudet = filtered)

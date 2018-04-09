@@ -15,12 +15,13 @@ import scala.util.Try
 class SuoritusjakoServlet(implicit val application: KoskiApplication) extends ApiServlet with AuthenticationSupport with Logging with NoCache {
 
   post("/editor") {
+    val koskiSession = KoskiSession.suoritusjakoKatsominenUser(request)
     withJsonBody({ body =>
       val request = JsonSerializer.extract[SuoritusjakoRequest](body)
       renderEither(
         application.suoritusjakoService.validateSuoritusjakoSecret(request.secret)
-          .flatMap(application.suoritusjakoService.get)
-          .map(oppija => OmatTiedotEditorModel.toEditorModel(oppija)(application, KoskiSession.systemUser))
+          .flatMap(secret => application.suoritusjakoService.get(secret)(koskiSession))
+          .map(oppija => OmatTiedotEditorModel.toEditorModel(oppija)(application, koskiSession))
       )
     })()
   }
@@ -30,7 +31,7 @@ class SuoritusjakoServlet(implicit val application: KoskiApplication) extends Ap
     withJsonBody({ body =>
       Try(JsonSerializer.extract[List[SuoritusIdentifier]](body)).toOption match {
         case Some(suoritusIds) =>
-          renderEither(application.suoritusjakoService.put(koskiSessionOption.get.oid, suoritusIds).right.map(SuoritusjakoResponse))
+          renderEither(application.suoritusjakoService.put(koskiSessionOption.get.oid, suoritusIds)(koskiSessionOption.get).right.map(SuoritusjakoResponse))
         case None =>
           haltWithStatus(KoskiErrorCategory.badRequest.format())
       }
