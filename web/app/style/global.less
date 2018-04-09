@@ -20,7 +20,14 @@ a {
   .link();
 }
 
+.BaseButton {
+  font-size: 15px;
+  font-weight: 600;
+}
+
 .button, button {
+  .BaseButton;
+
   background: @color-link-blue;
   border-radius: 2px;
   padding: 0 20px;
@@ -61,6 +68,10 @@ a {
   &--error, &--error:hover, &--error:disabled {
     background-color: @color-red;
   }
+}
+
+a.text-button {
+  .BaseButton;
 }
 
 th, td {

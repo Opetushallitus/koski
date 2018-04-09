@@ -60,7 +60,6 @@
         }
 
         a {
-          font-size: 0.85rem;
           line-height: 1.4rem;
         }
 
@@ -98,6 +97,12 @@
         }
       }
 
+      &__buttons {
+        & > .toggle-button:not(:last-child) {
+          margin-right: 1rem;
+        }
+      }
+
       &__bottom-row {
         display: flex;
         flex-wrap: wrap;
@@ -124,6 +129,10 @@
       .puuttuvat-tiedot {
         .info-text;
       }
+    }
+
+    .suoritusjako {
+      flex-basis: 100%;
     }
   }
 

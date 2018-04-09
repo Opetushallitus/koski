@@ -30,7 +30,7 @@ function OmatTiedotPage() {
       return S('header .popup__close-button')
     },
     virheraportointiButton: function() {
-      return S('header button span:contains(Onko suorituksissasi virhe?)')
+      return S('header a span:contains(Onko suorituksissasi virhe?)')
     },
     virheraportointiForm: VirheraportointiForm(),
     headerNimi: function() {
