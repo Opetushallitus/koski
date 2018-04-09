@@ -7,7 +7,7 @@ import {OpiskeluoikeusInvalidatedMessage} from '../opiskeluoikeus/Opiskeluoikeus
 
 export default ({location, user, titleKey}) => {
   return (
-    <header id='topbar' className="local">
+    <header id='topbar' className={'local' + (user && user.isViranomainen ? ' viranomainen' : '')}>
       <div id='logo'><Text name="Opintopolku.fi"/></div>
       <h1>
         <Link href="/koski/"><Text name="Koski"/></Link>
