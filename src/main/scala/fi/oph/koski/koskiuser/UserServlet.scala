@@ -7,12 +7,12 @@ class UserServlet(implicit val application: UserAuthenticationContext) extends A
   get("/") {
     renderEither(getUser.right.map { user =>
       koskiSessionOption.map { session => {
-        UserWithAccessRights(user.name, user.oid, session.hasAnyWriteAccess, session.hasLocalizationWriteAccess, session.hasGlobalReadAccess, session.hasAnyReadAccess, session.hasHenkiloUiWriteAccess, session.hasGlobalReadAccess || session.orgKäyttöoikeudet.nonEmpty)
+        UserWithAccessRights(user.name, user.oid, session.hasAnyWriteAccess, session.hasLocalizationWriteAccess, session.hasGlobalReadAccess, session.hasAnyReadAccess, session.hasHenkiloUiWriteAccess, session.hasGlobalKoulutusmuotoReadAccess)
       }
       }.getOrElse(UserWithAccessRights(user.name, user.oid))
     })
   }
 }
 
-case class UserWithAccessRights(name: String, oid: String, hasWriteAccess: Boolean = false, hasLocalizationWriteAccess: Boolean = false, hasGlobalReadAccess: Boolean = false, hasAnyReadAccess: Boolean = false, hasHenkiloUiWriteAccess: Boolean = false, showOppijalistaus: Boolean = false)
+case class UserWithAccessRights(name: String, oid: String, hasWriteAccess: Boolean = false, hasLocalizationWriteAccess: Boolean = false, hasGlobalReadAccess: Boolean = false, hasAnyReadAccess: Boolean = false, hasHenkiloUiWriteAccess: Boolean = false, isViranomainen: Boolean = false)
 

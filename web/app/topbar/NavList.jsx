@@ -2,7 +2,7 @@ import React from 'baret'
 import {naviLink} from '../tiedonsiirrot/Tiedonsiirrot'
 
 export default ({location, user}) => {
-  if (!user || !user.hasAnyReadAccess || !user.showOppijalistaus) {
+  if (!user || !user.hasAnyReadAccess || user.isViranomainen) {
     return null
   }
   return (<ul>
