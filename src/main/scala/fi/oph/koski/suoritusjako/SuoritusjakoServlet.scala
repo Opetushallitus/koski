@@ -25,11 +25,6 @@ class SuoritusjakoServlet(implicit val application: KoskiApplication) extends Ap
     })()
   }
 
-  // FIXME: remove this endpoint, only intended for development
-  get("/:secret") {
-    renderEither(application.suoritusjakoService.get(params("secret")))
-  }
-
   put("/") {
     requireKansalainen
     withJsonBody({ body =>

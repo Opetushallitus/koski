@@ -38,8 +38,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
           "suorituksenTyyppi": "perusopetuksenvuosiluokka",
           "koulutusmoduulinTunniste": "6"
         }]"""
-
-        put("api/suoritusjako", body = json, headers = kansalainenLoginHeaders("180497-112F") ++ jsonContent){
+        putSuoritusjako(json) {
           verifyResponseStatusOk()
           secretKaksiSuoritusta = Option(JsonSerializer.parse[SuoritusjakoResponse](response.body).secret)
         }
@@ -69,7 +68,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
           "koulutusmoduulinTunniste": "9"
         }]"""
 
-        put("api/suoritusjako", body = json, headers = kansalainenLoginHeaders("180497-112F") ++ jsonContent){
+        putSuoritusjako(json) {
           verifyResponseStatus(404, KoskiErrorCategory.notFound.suoritustaEiLöydy())
         }
       }
@@ -86,7 +85,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
           "koulutusmoduulinTunniste": "9"
         }]"""
 
-        put("api/suoritusjako", body = json, headers = kansalainenLoginHeaders("180497-112F") ++ jsonContent){
+        putSuoritusjako(json) {
           verifyResponseStatus(404, KoskiErrorCategory.notFound.suoritustaEiLöydy())
         }
       }
@@ -98,7 +97,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
           "suorituksenTyyppi": "perusopetuksenvuosiluokka"
         }]"""
 
-        put("api/suoritusjako", body = json, headers = kansalainenLoginHeaders("180497-112F") ++ jsonContent){
+        putSuoritusjako(json) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.format())
         }
       }
@@ -112,7 +111,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
           "extra": "extra"
         }]"""
 
-        put("api/suoritusjako", body = json, headers = kansalainenLoginHeaders("180497-112F") ++ jsonContent){
+        putSuoritusjako(json) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.format())
         }
       }
@@ -125,7 +124,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
           "koulutusmoduulinTunniste": "7
         }]"""
 
-        put("api/suoritusjako", body = json, headers = kansalainenLoginHeaders("180497-112F") ++ jsonContent){
+        putSuoritusjako(json) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.format.json("Epäkelpo JSON-dokumentti"))
         }
       }
@@ -133,7 +132,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
       "tyhjällä suorituslistalla" in {
         val json = "[]"
 
-        put("api/suoritusjako", body = json, headers = kansalainenLoginHeaders("180497-112F") ++ jsonContent){
+        putSuoritusjako(json) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.format())
         }
       }
@@ -141,62 +140,58 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
   }
 
   "Suoritusjaon hakeminen" - {
-    "onnistuu" - {
-      "yhden jaetun suorituksen salaisuudella" in {
-        getSuoritusjako(secretYksiSuoritus.get){
-          verifyResponseStatusOk()
-
-          verifySuoritusIds(List(SuoritusIdentifier(
-            oppilaitosOid = "1.2.246.562.10.64353470871",
-            suorituksenTyyppi = "perusopetuksenvuosiluokka",
-            koulutusmoduulinTunniste = "7"
-          )))
-        }
-      }
-
-      "kahden jaetun suorituksen salaisuudella" in {
-        getSuoritusjako(secretKaksiSuoritusta.get){
-          verifyResponseStatusOk()
-
-          verifySuoritusIds(List(
-            SuoritusIdentifier(
-              oppilaitosOid = "1.2.246.562.10.64353470871",
-              suorituksenTyyppi = "perusopetuksenvuosiluokka",
-              koulutusmoduulinTunniste = "7"
-            ),
-            SuoritusIdentifier(
-              oppilaitosOid = "1.2.246.562.10.64353470871",
-              suorituksenTyyppi = "perusopetuksenvuosiluokka",
-              koulutusmoduulinTunniste = "6"
-            )
-          ))
-        }
-      }
-
-      "duplikoidun suorituksen salaisuudella" in {
-        getSuoritusjako(secretVuosiluokanTuplausSuoritus.get, hetu = "060498-997J"){
-          verifyResponseStatusOk()
-
-          // Palautetaan vain yksi suoritus
-          verifySuoritusIds(List(SuoritusIdentifier(
-            oppilaitosOid = "1.2.246.562.10.14613773812",
-            suorituksenTyyppi = "perusopetuksenvuosiluokka",
-            koulutusmoduulinTunniste = "7"
-          )))
-
-          // Palautetaan tuplaus (ei luokallejäänti-suoritusta)
-          parseOppija().opiskeluoikeudet.head.suoritukset.head match {
-            case s: PerusopetuksenVuosiluokanSuoritus => !s.jääLuokalle && s.luokka == "7A"
-            case _ => fail("Väärä palautettu suoritus")
-          }
-        }
+    "onnistuu oikealla salaisuudella" in {
+      getSuoritusjako(secretYksiSuoritus.get) {
+        verifyResponseStatusOk()
       }
     }
 
-    "epäonnistuu" - {
-      "epäkelvolla salaisuudella" in {
-        getSuoritusjako("2.2.246.562.10.64353470871"){
-          verifyResponseStatus(404, KoskiErrorCategory.notFound())
+    "epäonnistuu epäkelvolla salaisuudella" in {
+      getSuoritusjako("2.2.246.562.10.64353470871") {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.format())
+      }
+    }
+
+    "sisältää oikeat suoritukset" - {
+      "yhden jaetun suorituksen salaisuudella" in {
+        val oppija = getSuoritusjakoOppija(secretYksiSuoritus.get)
+        verifySuoritusIds(oppija, List(SuoritusIdentifier(
+          oppilaitosOid = "1.2.246.562.10.64353470871",
+          suorituksenTyyppi = "perusopetuksenvuosiluokka",
+          koulutusmoduulinTunniste = "7"
+        )))
+      }
+
+      "kahden jaetun suorituksen salaisuudella" in {
+        val oppija = getSuoritusjakoOppija(secretKaksiSuoritusta.get)
+        verifySuoritusIds(oppija, List(
+          SuoritusIdentifier(
+            oppilaitosOid = "1.2.246.562.10.64353470871",
+            suorituksenTyyppi = "perusopetuksenvuosiluokka",
+            koulutusmoduulinTunniste = "7"
+          ),
+          SuoritusIdentifier(
+            oppilaitosOid = "1.2.246.562.10.64353470871",
+            suorituksenTyyppi = "perusopetuksenvuosiluokka",
+            koulutusmoduulinTunniste = "6"
+          )
+        ))
+      }
+
+      "duplikoidun suorituksen salaisuudella" in {
+        val oppija = getSuoritusjakoOppija(secretVuosiluokanTuplausSuoritus.get)
+
+        // Palautetaan vain yksi suoritus
+        verifySuoritusIds(oppija, List(SuoritusIdentifier(
+          oppilaitosOid = "1.2.246.562.10.14613773812",
+          suorituksenTyyppi = "perusopetuksenvuosiluokka",
+          koulutusmoduulinTunniste = "7"
+        )))
+
+        // Palautetaan tuplaus (ei luokallejäänti-suoritusta)
+        oppija.opiskeluoikeudet.head.suoritukset.head match {
+          case s: PerusopetuksenVuosiluokanSuoritus => !s.jääLuokalle && s.luokka == "7A"
+          case _ => fail("Väärä palautettu suoritus")
         }
       }
     }
