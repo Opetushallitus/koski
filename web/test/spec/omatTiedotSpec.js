@@ -180,7 +180,7 @@ describe('Omat tiedot', function() {
                   'Muista mainita sähköpostissa seuraavat tiedot:\n' +
                   'Nimi: Miia Monikoululainen\n' +
                   'Syntymäaika: 18.4.1997\n' +
-                  'Oppijanumero: 1.2.246.562.24.00000000009' +
+                  'Oppijanumero: 1.2.246.562.24.00000000010' +
                   ' ' +
                   'Kopioi'
                 )
@@ -197,7 +197,7 @@ describe('Omat tiedot', function() {
                     'Allaoleva teksti on luotu automaattisesti Opintopolun tiedoista. Koulu tarvitsee näitä tietoja pystyäkseen käsittelemään kysymystäsi.\n\n' +
                     'Nimi: Miia Monikoululainen\n' +
                     'Syntymäaika: 18.4.1997\n' +
-                    'Oppijanumero: 1.2.246.562.24.00000000009'
+                    'Oppijanumero: 1.2.246.562.24.00000000010'
                   )
                 )
               })
@@ -243,7 +243,7 @@ describe('Omat tiedot', function() {
                     'Muista mainita sähköpostissa seuraavat tiedot:\n' +
                     'Nimi: Miia Monikoululainen\n' +
                     'Syntymäaika: 18.4.1997\n' +
-                    'Oppijanumero: 1.2.246.562.24.00000000009' +
+                    'Oppijanumero: 1.2.246.562.24.00000000010' +
                     ' ' +
                     'Kopioi'
                   )

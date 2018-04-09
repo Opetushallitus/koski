@@ -109,11 +109,11 @@ describe('Oppijataulukko', function() {
     describe('nimellä', function() {
       before(page.oppijataulukko.filterBy('oppilaitos'), page.oppijataulukko.filterBy('tutkinto'), page.oppijataulukko.filterBy('tila'), page.oppijataulukko.filterBy('alkamispäivä'), page.oppijataulukko.filterBy('tyyppi', 'Perusopetus'))
       it('Oletusjärjestys nouseva nimen mukaan', function() {
-        expect(page.oppijataulukko.names()).to.deep.equal([ 'Hetuton, Heikki', 'Koululainen, Kaisa', 'Lukiolainen, Liisa', 'Monikoululainen, Miia', 'Monikoululainen, Miia',  'Oppija, Oili', 'Toiminta, Tommi', 'Ysiluokkalainen, Ylermi', 'of Puppets, Master' ])
+        expect(page.oppijataulukko.names()).to.deep.equal([ 'Hetuton, Heikki', 'Koululainen, Kaisa', 'Lukiolainen, Liisa', 'Luokallejäänyt, Lasse', 'Monikoululainen, Miia', 'Monikoululainen, Miia', 'Oppija, Oili', 'Toiminta, Tommi', 'Ysiluokkalainen, Ylermi', 'of Puppets, Master' ])
       })
       it('Laskeva järjestys klikkaamalla', function() {
         return page.oppijataulukko.sortBy('nimi')().then(function() {
-          expect(page.oppijataulukko.names()).to.deep.equal([ 'of Puppets, Master', 'Ysiluokkalainen, Ylermi', 'Toiminta, Tommi', 'Oppija, Oili', 'Monikoululainen, Miia', 'Monikoululainen, Miia', 'Lukiolainen, Liisa', 'Koululainen, Kaisa', 'Hetuton, Heikki' ])
+          expect(page.oppijataulukko.names()).to.deep.equal([ 'of Puppets, Master', 'Ysiluokkalainen, Ylermi', 'Toiminta, Tommi', 'Oppija, Oili', 'Monikoululainen, Miia', 'Monikoululainen, Miia', 'Luokallejäänyt, Lasse', 'Lukiolainen, Liisa', 'Koululainen, Kaisa', 'Hetuton, Heikki' ])
         })
       })
     })
@@ -136,12 +136,12 @@ describe('Oppijataulukko', function() {
       before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('tutkinto'), page.oppijataulukko.filterBy('nimi'), page.oppijataulukko.filterBy('luokka', '9'))
       it('Nouseva järjestys', function() {
         return page.oppijataulukko.sortBy('luokka')().then(function() {
-          expect(page.oppijataulukko.data().map(function(row) { return row[7]})).to.deep.equal([ '9B', '9C', '9C', '9C', '9C', '9C', '9D' ])
+          expect(page.oppijataulukko.data().map(function(row) { return row[7]})).to.deep.equal([ '9B', '9C', '9C', '9C', '9C', '9C', '9C', '9D' ])
         })
       })
       it('Laskeva järjestys', function() {
         return page.oppijataulukko.sortBy('luokka')().then(function() {
-          expect(page.oppijataulukko.data().map(function(row) { return row[7]})).to.deep.equal([ '9D', '9C', '9C', '9C', '9C', '9C', '9B' ])
+          expect(page.oppijataulukko.data().map(function(row) { return row[7]})).to.deep.equal([ '9D', '9C', '9C', '9C', '9C', '9C', '9C', '9B' ])
         })
       })
     })
