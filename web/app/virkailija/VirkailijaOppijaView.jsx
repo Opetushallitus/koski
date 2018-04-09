@@ -177,7 +177,7 @@ const stateToContent = ({ oppijaP, changeBus, editBus, saveChangesBus, cancelCha
   content: (<div className='content-area'><div className="main-content oppija">
     <OppijaHaku/>
     <EditLocalizationsLink />
-    <Link className="back-link" href={listviewPath()}><Text name="Opiskelijat"/></Link>
+    {userP.map((user) => !user.isViranomainen ? <Link className="back-link" href={listviewPath()}><Text name="Opiskelijat"/></Link> : null)}
     <Oppija {...{oppija, changeBus, editBus, saveChangesBus, cancelChangesBus, stateP}}/>
   </div></div>),
   title: modelData(oppija, 'henkilö') ? 'Oppijan tiedot' : ''
