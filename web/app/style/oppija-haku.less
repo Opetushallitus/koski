@@ -1,8 +1,6 @@
 @import "mixins";
 
 .oppija-haku {
-  @left-margin: 175px;
-
   font-size: 0.8em;
   padding: 7px 16px;
   background: white;
@@ -15,7 +13,7 @@
     font-size: 15px;
     font-weight: normal;
     display: inline-block;
-    width: @left-margin;
+    margin-right: 15px;
   }
 
   input {
@@ -40,10 +38,12 @@
   .hakutulokset {
     position: relative;
     font-size: 15px;
-    margin-left: @left-margin;
     ul {
       .CompactList;
       padding: 0;
+      li {
+        line-height: 20px;
+      }
     }
     .selected, .selected a {
       background: @color-blue;
