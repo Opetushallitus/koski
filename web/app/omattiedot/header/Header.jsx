@@ -31,13 +31,11 @@ export const Header = ({oppija}) => {
           showSuoritusjakoA={showSuoritusjako}
         />
 
-        {ift(showVirheraportointi,
-          <VirheraportointiFeature
-            showVirheraportointiA={showVirheraportointi}
-            henkilö={henkilö}
-            opiskeluoikeudet={opiskeluoikeudet}
-          />
-        )}
+        <VirheraportointiFeature
+          showVirheraportointiA={showVirheraportointi}
+          henkilö={henkilö}
+          opiskeluoikeudet={opiskeluoikeudet}
+        />
 
         {ift(showSuoritusjako,
           <SuoritusjakoFeature
