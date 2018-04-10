@@ -1,6 +1,4 @@
 @indent-left: 45px;
-@copyable-text-height: 100px;
-@copyable-text-width: 450px;
 
 .raportoi-virheestä-form {
   h3 {
@@ -126,32 +124,4 @@
     }
   }
 
-  .copyable-text {
-    &__heading {
-      margin-bottom: 1rem;
-    }
-
-    & > textarea {
-      resize: none;
-      width: 100%;
-      height: @copyable-text-height;
-      box-shadow: none;
-    }
-
-    @media @media-full {
-      & > textarea {
-        width: @copyable-text-width;
-        border-right: none;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-      }
-
-      & > button {
-        vertical-align: top;
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-        height: @copyable-text-height;
-      }
-    }
-  }
 }

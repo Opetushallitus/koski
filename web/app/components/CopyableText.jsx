@@ -30,7 +30,7 @@ const copyToClipboard = (message, copyState) => () => {
   }
 }
 
-export const CopyableText = ({heading, message}) => {
+export const CopyableText = ({heading, message, multiline = true, width, height}) => {
   const copyState = Atom(CopyState.PENDING)
 
   const buttonState = copyState.map(state => {
@@ -41,16 +41,24 @@ export const CopyableText = ({heading, message}) => {
     }
   })
 
+  const textAreaSize = {}
+  width && (textAreaSize.width = width)
+  height && (textAreaSize.height = height)
+
   return (
     <div className='copyable-text'>
-      <div className='copyable-text__heading'>
-        <Text name={heading}/>
-      </div>
-      <textarea readOnly cols='30' rows='10' defaultValue={message}/>
+      {heading &&
+        <div className='copyable-text__heading'>
+          <Text name={heading}/>
+        </div>}
+      {multiline
+        ? <textarea readOnly defaultValue={message} style={textAreaSize}/>
+        : <input readOnly type='text' value={message} style={width && {width}}/>}
       {buttonState.map(({isDisabled, style, text}) => (
         <button
           className={style ? `button button${style}` : 'button'}
           disabled={isDisabled}
+          style={height && {height}}
           onClick={copyToClipboard(message, copyState)}
         >
           <Text name={text}/>
