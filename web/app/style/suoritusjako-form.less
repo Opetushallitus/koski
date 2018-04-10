@@ -1,0 +1,69 @@
+.suoritusjako-form {
+  &__caption {
+    font-size: 0.9rem;
+    line-height: 1.3rem;
+    font-weight: 300;
+    padding-right: 1rem;
+    margin-bottom: 2rem;
+
+    @media @media-full {
+      width: 50%;
+      min-width: 500px;
+    }
+  }
+
+  &__create-suoritusjako {
+    padding: 0.5rem 1rem;
+    border: dashed 1px @color-gray-darker;
+
+    @media @media-full {
+      padding-right: 0;
+    }
+  }
+
+  .create-suoritusjako {
+    display: flex;
+    flex-direction: column;
+
+    @media @media-full {
+      flex-direction: row;
+      align-items: center;
+    }
+
+    &__list {
+      list-style: none;
+      padding-left: 0;
+
+      @media @media-full {
+        flex-basis: 50%;
+        border-right: solid 1px @color-gray-darker;
+      }
+
+      & > li {
+        .LabeledOption;
+        margin: 1rem 0;
+
+        & > label {
+          margin-left: 1rem;
+        }
+
+        &.oppilaitos-group-header {
+          font-weight: 600;
+
+          &:not(:first-child) {
+            margin-top: 2rem;
+          }
+        }
+      }
+    }
+
+    &__button {
+      flex-basis: 50%;
+
+      button {
+        display: block;
+        margin: auto;
+      }
+    }
+  }
+}

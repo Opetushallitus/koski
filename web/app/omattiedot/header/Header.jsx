@@ -32,7 +32,7 @@ export const Header = ({oppija}) => {
         <HeaderName henkilö={henkilö}/>
         <HeaderButtons uiModeA={uiMode} stateType={FormState}/>
         <VirheraportointiFeature uiModeA={uiMode} henkilö={henkilö} opiskeluoikeudet={opiskeluoikeudet}/>
-        <SuoritusjakoFeature uiModeA={uiMode}/>
+        <SuoritusjakoFeature uiModeA={uiMode} opiskeluoikeudet={opiskeluoikeudet}/>
       </div>
     </header>
   )

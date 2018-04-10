@@ -21,20 +21,16 @@
     }
   }
 
-  .labeled-option {
-    display: flex;
-
-    input {
-      height: 1.15rem;
-    }
-  }
-
   .puuttuvat-tiedot {
     &__info {
       margin-bottom: 1.5rem;
     }
 
-    input#puuttuvat-tiedot__checkbox {
+    &__checkbox {
+      .LabeledOption;
+    }
+
+    input {
       position: absolute;
       margin-left: 1rem;
       width: 0.5 * @indent-left;
