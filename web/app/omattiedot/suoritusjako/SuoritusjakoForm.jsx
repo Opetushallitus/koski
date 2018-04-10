@@ -1,14 +1,12 @@
 import React from 'react'
-import Text from '../../i18n/Text'
-import {modelData, modelItems, modelLookup, modelTitle} from '../../editor/EditorModel'
+import Http from '../../util/http'
 import {flatMapArray} from '../../util/util'
+import Text from '../../i18n/Text'
+import {modelItems, modelLookup, modelTitle} from '../../editor/EditorModel'
 import {suorituksenTyyppi, suoritusTitle} from '../../suoritus/Suoritus'
+import SuoritusIdentifier from './SuoritusIdentifier'
 
-const suoritusId = (oppilaitos, suoritus) => [
-  modelData(oppilaitos, 'oid'),
-  modelData(suoritus, 'tyyppi.koodiarvo'),
-  modelData(suoritus, 'koulutusmoduuli.tunniste.koodiarvo')
-].join('__')
+const doShare = suoritusIds => Http.put('/koski/api/suoritusjako', [...suoritusIds])
 
 const Ingressi = () => (
   <div className='suoritusjako-form__caption'>
@@ -19,7 +17,7 @@ const Ingressi = () => (
   </div>
 )
 
-const SelectableSuoritusList = ({opiskeluoikeudet}) => (
+const SelectableSuoritusList = ({opiskeluoikeudet, selectedSuoritusIds}) => (
   <ul className='create-suoritusjako__list'>
     {
       opiskeluoikeudet.map(oppilaitoksenOpiskeluoikeudet => {
@@ -35,14 +33,20 @@ const SelectableSuoritusList = ({opiskeluoikeudet}) => (
             {groupTitle}
           </li>,
           suoritukset.map(s => {
-            const id = suoritusId(oppilaitos, s)
+            const id = SuoritusIdentifier(oppilaitos, s)
             const title = suorituksenTyyppi(s) === 'perusopetuksenoppimaara'
               ? <Text name="Päättötodistus"/>
               : suoritusTitle(s)
 
             return (
               <li key={id}>
-                <input type='checkbox' id={id} name='suoritusjako' value='newsletter'/>
+                <input
+                  type='checkbox'
+                  id={id}
+                  name='suoritusjako'
+                  value='newsletter'
+                  onChange={event => event.target.checked ? selectedSuoritusIds.add(id) : selectedSuoritusIds.delete(id)}
+                />
                 <label htmlFor={id}>{title}</label>
               </li>
             )
@@ -53,23 +57,27 @@ const SelectableSuoritusList = ({opiskeluoikeudet}) => (
   </ul>
 )
 
-const CreateNewButton = () => (
+const CreateNewButton = ({selectedSuoritusIds}) => (
   <div className='create-suoritusjako__button'>
-    <button>
+    <button onClick={() => doShare(selectedSuoritusIds)}>
       <Text name='Jaa valitsemasi opinnot'/>
     </button>
   </div>
 )
 
-const CreateSuoritusjako = ({opiskeluoikeudet}) => (
-  <div className='suoritusjako-form__create-suoritusjako'>
-    <h2><Text name='Valitse jaettavat suoritustiedot'/></h2>
-    <div className='create-suoritusjako'>
-      <SelectableSuoritusList opiskeluoikeudet={opiskeluoikeudet}/>
-      <CreateNewButton/>
+const CreateSuoritusjako = ({opiskeluoikeudet}) => {
+  const selectedSuoritusIds = new Set()
+
+  return (
+    <div className='suoritusjako-form__create-suoritusjako'>
+      <h2><Text name='Valitse jaettavat suoritustiedot'/></h2>
+      <div className='create-suoritusjako'>
+        <SelectableSuoritusList opiskeluoikeudet={opiskeluoikeudet} selectedSuoritusIds={selectedSuoritusIds}/>
+        <CreateNewButton selectedSuoritusIds={selectedSuoritusIds}/>
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 export const SuoritusjakoForm = ({opiskeluoikeudet}) => {
   return (
