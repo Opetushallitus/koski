@@ -17,23 +17,32 @@ export const FormState = {
 const VirheraportointiFeature = withFeatureFlag(FEATURE.OMAT_TIEDOT.VIRHERAPORTOINTI, HeaderVirheraportointiSection)
 const SuoritusjakoFeature = withFeatureFlag(FEATURE.OMAT_TIEDOT.SUORITUSJAKO, HeaderSuoritusjakoSection)
 
-export const Header = ({oppija}) => {
-  const showPalvelussaNäkyvätTiedot = Atom(false)
-  const uiMode = Atom(FormState.NONE)
+export class Header extends React.Component {
+  shouldComponentUpdate() {
+    // The header for 'omat tiedot' is independent of other UI re-render triggers.
+    return false
+  }
 
-  const henkilö = modelLookup(oppija, 'henkilö')
-  const opiskeluoikeudet = modelItems(oppija, 'opiskeluoikeudet')
+  render() {
+    const {oppija} = this.props
 
-  return (
-    <header className='header'>
-      <HeaderInfo showPalvelussaNäkyvätTiedotA={showPalvelussaNäkyvätTiedot}/>
+    const showPalvelussaNäkyvätTiedot = Atom(false)
+    const uiMode = Atom(FormState.NONE)
 
-      <div className='header__bottom-row'>
-        <HeaderName henkilö={henkilö}/>
-        <HeaderButtons uiModeA={uiMode} stateType={FormState}/>
-        <VirheraportointiFeature uiModeA={uiMode} henkilö={henkilö} opiskeluoikeudet={opiskeluoikeudet}/>
-        <SuoritusjakoFeature uiModeA={uiMode} opiskeluoikeudet={opiskeluoikeudet}/>
-      </div>
-    </header>
-  )
+    const henkilö = modelLookup(oppija, 'henkilö')
+    const opiskeluoikeudet = modelItems(oppija, 'opiskeluoikeudet')
+
+    return (
+      <header className='header'>
+        <HeaderInfo showPalvelussaNäkyvätTiedotA={showPalvelussaNäkyvätTiedot}/>
+
+        <div className='header__bottom-row'>
+          <HeaderName henkilö={henkilö}/>
+          <HeaderButtons uiModeA={uiMode} stateType={FormState}/>
+          <VirheraportointiFeature uiModeA={uiMode} henkilö={henkilö} opiskeluoikeudet={opiskeluoikeudet}/>
+          <SuoritusjakoFeature uiModeA={uiMode} opiskeluoikeudet={opiskeluoikeudet}/>
+        </div>
+      </header>
+    )
+  }
 }
