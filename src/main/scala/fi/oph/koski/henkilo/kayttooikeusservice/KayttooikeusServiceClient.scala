@@ -11,15 +11,15 @@ import scalaz.concurrent.Task.gatherUnordered
 case class KäyttöoikeusServiceClient(config: Config) {
   private val http = VirkailijaHttpClient(RemoteOpintopolkuHenkilöFacade.makeServiceConfig(config), "/kayttooikeus-service", config.getBoolean("authentication-service.useCas"))
 
-  def getKäyttäjätiedot(oid: String) = http.get(uri"/kayttooikeus-service/henkilo/$oid/kayttajatiedot")(Http.parseJsonOptional[Käyttäjätiedot])
+  def getKäyttäjätiedot(oid: String): Task[Option[Käyttäjätiedot]] = http.get(uri"/kayttooikeus-service/henkilo/$oid/kayttajatiedot")(Http.parseJsonOptional[Käyttäjätiedot])
 
   def findKäyttöoikeusryhmät: Task[List[KäyttöoikeusRyhmä]] = http.get(uri"/kayttooikeus-service/kayttooikeus/KOSKI")(parseJson[List[KäyttöoikeusRooli]]).flatMap { roolit =>
     gatherUnordered(roolit.map(r => http.post(uri"/kayttooikeus-service/kayttooikeusryhma/ryhmasByKayttooikeus", Map("KOSKI" -> r.rooli))(Json4sHttp4s.json4sEncoderOf[Map[String, String]])(Http.parseJson[List[KäyttöoikeusRyhmä]])))
   }.map(_.flatten)
 
-  def findKäyttöoikeusRyhmänHenkilöt(ryhmäId: Int) = http.get(uri"/kayttooikeus-service/kayttooikeusryhma/${ryhmäId}/henkilot")(parseJson[KäyttöoikeusRyhmäHenkilöt]).map(_.personOids)
+  def findKäyttöoikeusRyhmänHenkilöt(ryhmäId: Int): Task[List[String]] = http.get(uri"/kayttooikeus-service/kayttooikeusryhma/$ryhmäId/henkilot")(parseJson[KäyttöoikeusRyhmäHenkilöt]).map(_.personOids)
 
-  def findKäyttöoikeudetByUsername(username: String) = http.get(uri"/kayttooikeus-service/kayttooikeus/kayttaja?username=$username")(parseJson[List[HenkilönKäyttöoikeudet]])
+  def findKäyttöoikeudetByUsername(username: String): Task[List[HenkilönKäyttöoikeudet]] = http.get(uri"/kayttooikeus-service/kayttooikeus/kayttaja?username=$username")(parseJson[List[HenkilönKäyttöoikeudet]])
 }
 
 case class KäyttöoikeusRyhmä(id: Int, nimi: KäyttöoikeusRyhmäDescriptions) {
