@@ -1,7 +1,7 @@
 import React from 'react'
 import Bacon from 'baconjs'
 import Pager from '../util/Pager'
-import {navigateWithQueryParams} from '../util/location'
+import {currentLocation, navigateWithQueryParams} from '../util/location'
 import {OppijaHaku} from './OppijaHaku'
 import PaginationLink from '../components/PaginationLink'
 import R from 'ramda'
@@ -15,12 +15,10 @@ import SortingTableHeader from '../components/SortingTableHeader'
 import delays from '../util/delays'
 import Highlight from 'react-highlighter'
 import Link from '../components/Link'
-import {currentLocation} from '../util/location'
-import {t} from '../i18n/i18n'
+import {lang, t} from '../i18n/i18n'
 import Text from '../i18n/Text'
-import {lang} from '../i18n/i18n'
 import {EditLocalizationsLink} from '../i18n/EditLocalizationsLink'
-import {showOppijataulukko} from './accessCheck'
+import {userP} from '../util/user'
 
 export const listviewPath = () => {
   return sessionStorage.previousListViewPath || '/koski/'
@@ -208,15 +206,19 @@ export class Oppijataulukko extends React.Component {
 var edellisetRivit = null
 
 export const oppijataulukkoContentP = (query, params) => {
-  let pager = Pager('/koski/api/opiskeluoikeus/perustiedot' + query, L.prop('tiedot'))
-  let totalP = pager.rowsP.map(r => r.total)
-  let searchResultsP = pager.rowsP
-    .doAction((result) => edellisetRivit = result.tiedot)
-    .startWith(null)
+  let isViranomainenP = userP.map(u => u.isViranomainen)
 
-  let taulukkoP = Bacon.combineWith(searchResultsP, totalP, (searchResults, total) => {
-    return <Oppijataulukko total={total} rivit={searchResults.tiedot} edellisetRivit={edellisetRivit} pager={pager} params={params}/>
-  }).flatMap(showOppijataulukko)
+  let taulukkoP = Bacon.mergeAll(
+    isViranomainenP.not().filter(R.identity)
+      .map(() => Pager('/koski/api/opiskeluoikeus/perustiedot' + query, L.prop('tiedot')))
+      .flatMap(pager => Bacon.combineTemplate({
+        pager: pager,
+        searchResults: pager.rowsP.doAction((result) => edellisetRivit = result.tiedot).startWith(null),
+        total: pager.rowsP.map(r => r.total)
+      }))
+      .map(r => <Oppijataulukko total={r.total} rivit={r.searchResults.tiedot} edellisetRivit={edellisetRivit} pager={r.pager} params={params}/>),
+    isViranomainenP.filter(R.identity).map(() => null)
+  ).toProperty()
 
   return taulukkoP.map(taulukko => ({
     content: (<div className='content-area'>
