@@ -21,6 +21,11 @@
     }
   }
 
+  &__link-list {
+    list-style: none;
+    padding-left: 0;
+  }
+
   .create-suoritusjako {
     display: flex;
     flex-direction: column;
@@ -64,6 +69,70 @@
         display: block;
         margin: auto;
       }
+    }
+  }
+
+  .suoritusjako-link {
+    padding: 1rem;
+    border: solid 2px @color-blue;
+    background-color: @color-blue-background;
+
+    h3 {
+      font-size: 0.85rem;
+    }
+
+    &__top-container {
+      display: flex;
+      align-items: center;
+    }
+
+    &__bottom-container {
+      display: flex;
+      align-items: flex-end;
+    }
+
+    &__url {
+      flex-grow: 2;
+
+      & > input {
+        font-weight: 300;
+        color: @color-blue;
+      }
+    }
+
+    &__preview {
+      margin: 0 3rem;
+    }
+
+    &__expiration {
+      flex-basis: 30%;
+
+      & > label > span {
+        &:first-of-type {
+          font-size: 0.85rem;
+          font-weight: 600;
+          display: block;
+          margin-bottom: 0.5rem;
+        }
+
+        &:last-of-type {
+          font-size: 0.85rem;
+          margin-right: 0.5rem;
+        }
+      }
+    }
+
+    &__suoritukset {
+      flex-grow: 2;
+      font-size: 0.85rem;
+
+      & > ul {
+        list-style-type: disc;
+      }
+    }
+
+    &__remove {
+      flex-basis: 30%;
     }
   }
 }

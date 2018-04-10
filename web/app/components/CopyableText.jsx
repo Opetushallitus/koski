@@ -30,7 +30,7 @@ const copyToClipboard = (message, copyState) => () => {
   }
 }
 
-export const CopyableText = ({heading, message, multiline = true, width, height}) => {
+export const CopyableText = ({heading, message, className, multiline = true, width, height}) => {
   const copyState = Atom(CopyState.PENDING)
 
   const buttonState = copyState.map(state => {
@@ -46,7 +46,7 @@ export const CopyableText = ({heading, message, multiline = true, width, height}
   height && (textAreaSize.height = height)
 
   return (
-    <div className='copyable-text'>
+    <div className={`copyable-text${className ? ' ' + className : ''}`}>
       {heading &&
         <div className='copyable-text__heading'>
           <Text name={heading}/>

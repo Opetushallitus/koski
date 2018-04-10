@@ -1,10 +1,13 @@
-import React from 'react'
+import React from 'baret'
+import Atom from 'bacon.atom'
+import R from 'ramda'
 import Http from '../../util/http'
 import {flatMapArray} from '../../util/util'
 import Text from '../../i18n/Text'
 import {modelItems, modelLookup, modelTitle} from '../../editor/EditorModel'
 import {suorituksenTyyppi, suoritusTitle} from '../../suoritus/Suoritus'
 import SuoritusIdentifier from './SuoritusIdentifier'
+import {SuoritusjakoLink} from './SuoritusjakoLink'
 
 const doShare = suoritusIds => Http.put('/koski/api/suoritusjako', [...suoritusIds])
 
@@ -57,15 +60,25 @@ const SelectableSuoritusList = ({opiskeluoikeudet, selectedSuoritusIds}) => (
   </ul>
 )
 
-const CreateNewButton = ({selectedSuoritusIds}) => (
+const SuoritusLinkList = ({secrets}) => (
+  <ul className='suoritusjako-form__link-list'>
+    {secrets.map(({secret}) => (
+      <li key={secret}>
+        <SuoritusjakoLink secret={secret}/>
+      </li>
+    ))}
+  </ul>
+)
+
+const CreateNewButton = ({selectedSuoritusIds, onCreate}) => (
   <div className='create-suoritusjako__button'>
-    <button onClick={() => doShare(selectedSuoritusIds)}>
+    <button onClick={() => doShare(selectedSuoritusIds).onValue(onCreate)}>
       <Text name='Jaa valitsemasi opinnot'/>
     </button>
   </div>
 )
 
-const CreateSuoritusjako = ({opiskeluoikeudet}) => {
+const CreateSuoritusjako = ({opiskeluoikeudet, onCreate}) => {
   const selectedSuoritusIds = new Set()
 
   return (
@@ -73,17 +86,21 @@ const CreateSuoritusjako = ({opiskeluoikeudet}) => {
       <h2><Text name='Valitse jaettavat suoritustiedot'/></h2>
       <div className='create-suoritusjako'>
         <SelectableSuoritusList opiskeluoikeudet={opiskeluoikeudet} selectedSuoritusIds={selectedSuoritusIds}/>
-        <CreateNewButton selectedSuoritusIds={selectedSuoritusIds}/>
+        <CreateNewButton selectedSuoritusIds={selectedSuoritusIds} onCreate={onCreate}/>
       </div>
     </div>
   )
 }
 
 export const SuoritusjakoForm = ({opiskeluoikeudet}) => {
+  const suoritusLinkSecrets = Atom([])
+  const addLink = secret => suoritusLinkSecrets.modify(secrets => R.append(secret, secrets))
+
   return (
     <section className='suoritusjako-form'>
       <Ingressi/>
-      <CreateSuoritusjako opiskeluoikeudet={opiskeluoikeudet}/>
+      <SuoritusLinkList baret-lift secrets={suoritusLinkSecrets}/>
+      <CreateSuoritusjako opiskeluoikeudet={opiskeluoikeudet} onCreate={addLink}/>
     </section>
   )
 }
