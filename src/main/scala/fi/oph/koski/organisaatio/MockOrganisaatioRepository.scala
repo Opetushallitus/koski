@@ -31,7 +31,7 @@ object MockOrganisaatiot {
   val aapajoenKoulu = "1.2.246.562.10.26197302388"
   val stadinOppisopimuskeskus = "1.2.246.562.10.88592529245"
   val ytl = "1.2.246.562.10.43628088406"
-  val evira = "1.2.246.562.10.55555555555" //TODO, korvaa oikealla
+  val evira = "1.2.246.562.10.25004584139"
 
   val oppilaitokset: List[String] = List(
     stadinAmmattiopisto,
