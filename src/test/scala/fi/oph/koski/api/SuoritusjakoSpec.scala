@@ -4,7 +4,7 @@ import java.nio.charset.StandardCharsets
 
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.log.AccessLogTester
+import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
 import fi.oph.koski.schema.PerusopetuksenVuosiluokanSuoritus
 import fi.oph.koski.suoritusjako.{SuoritusIdentifier, SuoritusjakoResponse}
 import org.scalatest.{FreeSpec, Matchers}
@@ -140,6 +140,21 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
         }
       }
     }
+
+    "tuottaa auditlog-merkinnän" in {
+      AuditLogTester.clearMessages
+      val json =
+        """[{
+          "oppilaitosOid": "1.2.246.562.10.64353470871",
+          "suorituksenTyyppi": "perusopetuksenvuosiluokka",
+          "koulutusmoduulinTunniste": "7"
+        }]"""
+
+      putSuoritusjako(json){
+        verifyResponseStatusOk()
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_LISAYS"))
+      }
+    }
   }
 
   "Suoritusjaon hakeminen" - {
@@ -214,6 +229,14 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
         verifyResponseStatusOk()
         Thread.sleep(200) // wait for logging to catch up (there seems to be a slight delay)
         AccessLogTester.getLogMessages.lastOption.get.getMessage.toString should include(maskedSecret)
+      }
+    }
+
+    "tuottaa auditlog-merkinnän" in {
+      AuditLogTester.clearMessages
+      getSuoritusjako(secretYksiSuoritus.get) {
+        verifyResponseStatusOk()
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN"))
       }
     }
   }
