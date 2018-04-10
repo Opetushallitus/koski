@@ -39,7 +39,7 @@ const SuoritusjakoTopBar = () => {
 const contentP = locationP.flatMapLatest(() => tiedotP().map(oppija =>
     oppija
       ? <div className="main-content oppija"><Oppija oppija={Editor.setupContext(oppija, {editorMapping})} stateP={Bacon.constant('viewing')}/></div>
-      : <div>{'Linkki ei toimi - poistettu ehkä FIXME?'}</div>
+      : <div className="main-content suoritusjako-virhe"><p><Text name="Suoritusjako virhe 1"/></p><p><Text name="Suoritusjako virhe 2"/></p></div>
     )
 ).toProperty().startWith(<div className="main-content ajax-indicator-bg"><Text name="Ladataan..."/></div>)
 

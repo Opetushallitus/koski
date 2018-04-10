@@ -48,6 +48,8 @@
   "httpStatus.409": "Muutoksia ei voida tallentaa, koska toinen käyttäjä on muuttanut tietoja sivun latauksen jälkeen. Lataa sivu uudelleen.",
   "httpStatus.500": "Järjestelmässä tapahtui odottamaton virhe. Yritä myöhemmin uudelleen.",
   "httpStatus.503": "Palvelimeen ei saatu yhteyttä. Yritä myöhemmin uudelleen.",
+  "Suoritusjako virhe 1": "Yritit päästä Opintopolkuun henkilökohtaisella linkillä, joka on jostain syystä virheellinen.",
+  "Suoritusjako virhe 2": "Tarkista, että käyttämäsi linkki on kirjoitettu oikein, tai että linkki ei ole vanhentunut tai poistettu.",
   "Avaa kaikki": "Avaa kaikki",
   "Sulje kaikki": "Sulje kaikki",
   "Pulssi": "Pulssi",
