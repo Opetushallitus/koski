@@ -206,19 +206,19 @@ export class Oppijataulukko extends React.Component {
 var edellisetRivit = null
 
 export const oppijataulukkoContentP = (query, params) => {
-  let isViranomainenP = userP.map(u => u.isViranomainen)
+  let taulukkoP = userP.flatMap(u => {
+    if (u.isViranomainen) {
+      return Bacon.once(null)
+    } else {
+      let pager = Pager('/koski/api/opiskeluoikeus/perustiedot' + query, L.prop('tiedot'))
+      let searchResultsP = pager.rowsP.doAction((result) => edellisetRivit = result.tiedot).startWith(null)
+      let totalP = pager.rowsP.map(r => r.total)
 
-  let taulukkoP = Bacon.mergeAll(
-    isViranomainenP.not().filter(R.identity)
-      .map(() => Pager('/koski/api/opiskeluoikeus/perustiedot' + query, L.prop('tiedot')))
-      .flatMap(pager => Bacon.combineTemplate({
-        pager: pager,
-        searchResults: pager.rowsP.doAction((result) => edellisetRivit = result.tiedot).startWith(null),
-        total: pager.rowsP.map(r => r.total)
-      }))
-      .map(r => <Oppijataulukko total={r.total} rivit={r.searchResults.tiedot} edellisetRivit={edellisetRivit} pager={r.pager} params={params}/>),
-    isViranomainenP.filter(R.identity).map(() => null)
-  ).toProperty()
+      return Bacon.combineWith(searchResultsP, totalP, (searchResults, total) =>
+        <Oppijataulukko total={total} rivit={searchResults.tiedot} edellisetRivit={edellisetRivit} pager={pager} params={params}/>
+      )
+    }
+  }).toProperty()
 
   return taulukkoP.map(taulukko => ({
     content: (<div className='content-area'>
