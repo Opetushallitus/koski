@@ -71,7 +71,7 @@ class PulssiHtmlServlet(implicit val application: KoskiApplication) extends Scal
             Käyttöoikeuksien määrät ryhmittäin:
             <ul>
               {pulssi.käyttöoikeudet.ryhmienMäärät.map { case (ryhmä, määrä) =>
-                <li class={"käyttöoikeusien-määrä-" + ryhmä}>{ryhmä}: <span class="value">{määrä}</span></li>
+                <li class={"käyttöoikeuksien-määrä-" + ryhmä}>{ryhmä}: <span class="value">{määrä}</span></li>
               }}
             </ul>
           </li>
