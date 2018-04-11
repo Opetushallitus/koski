@@ -89,7 +89,7 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @SensitiveData
   @OksaUri("tmpOKSAID281", "henkilökohtainen opetuksen järjestämistä koskeva suunnitelma")
   erityisenTuenPäätös: Option[ErityisenTuenPäätös] = None,
-  @Description("Tehostetun tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty. Rahoituksen laskennassa käytettävä tieto.")
+  @Description("Tehostetun tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty.")
   @Description("Mahdollisen tehostetun tuen päätös päätöksen alkamis- ja päättymispäivät.")
   @SensitiveData
   @OksaUri("tmpOKSAID511", "tehostettu tuki")

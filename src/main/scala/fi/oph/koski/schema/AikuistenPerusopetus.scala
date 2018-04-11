@@ -36,7 +36,7 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
   @Description("Opiskelijan saamat laissa säädetyt tukimuodot.")
   @Tooltip("Opiskelijan saamat laissa säädetyt tukimuodot (avustajapalvelut, erityiset apuvälineet, osa-aikainen erityisopetus, tukiopetus ja/tai tulkitsemispalvelut).")
   tukimuodot: Option[List[Koodistokoodiviite]] = None,
-  @Description("Tehostetun tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty. Rahoituksen laskennassa käytettävä tieto.")
+  @Description("Tehostetun tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty.")
   @Description("Mahdollisen tehostetun tuen päätös päätöksen alkamis- ja päättymispäivät.")
   @SensitiveData
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
