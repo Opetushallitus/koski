@@ -1923,11 +1923,6 @@ describe('Ammatillinen koulutus', function() {
             'Vahvistus 3.10.2015 Helsinki Reijo Reksi , rehtori\n' +
             'Selite Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta\n' +
             'Rahoituksen piirissä ei\n' +
-            'Viestintä- ja vuorovaikutusosaaminen 3 Hyväksytty\n' +
-            'Pakollinen kyllä\n' +
-            'Vahvistus 3.10.2015 Helsinki Reijo Reksi , rehtori\n' +
-            'Sulje kaikki\n' +
-            'Osa-alue Laajuus (osp) Arvosana\n' +
             'Äidinkieli, Suomen kieli ja kirjallisuus 5 3\n' +
             'Pakollinen kyllä\n' +
             'Äidinkieli, Suomen kieli ja kirjallisuus 3 3\n' +
@@ -1936,7 +1931,7 @@ describe('Ammatillinen koulutus', function() {
             'Pakollinen kyllä\n' +
             'Vieraat kielet, englanti 2 3\n' +
             'Pakollinen kyllä\n' +
-            'Yhteensä 68 osp'
+            'Yhteensä 76 osp'
           )
         })
       })
