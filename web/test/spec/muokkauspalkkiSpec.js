@@ -39,7 +39,7 @@ describe('Muokkauspalkki', function () {
       before(
         click('a.back-link'),
         wait.until(function () {
-          return currentURL().endsWith('/koski/virkailija') && S('#topbar + div').hasClass('oppijataulukko')
+          return currentURL().endsWith('/koski/virkailija') && isElementVisible('.oppijataulukko')
         }),
         goBack,
         wait.until(function () {
@@ -57,7 +57,7 @@ describe('Muokkauspalkki', function () {
         click('button.toggle-edit'),
         click('a.back-link'),
         wait.until(function () {
-          return currentURL().endsWith('/koski/virkailija') && S('#topbar + div').hasClass('oppijataulukko')
+          return currentURL().endsWith('/koski/virkailija') && isElementVisible('.oppijataulukko')
         }),
         goBack,
         wait.until(function () {

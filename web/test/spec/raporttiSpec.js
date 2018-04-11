@@ -93,32 +93,12 @@ describe('Raportti', function() {
       expect(page.metric('siirtäneiden-oppilaitosten-määrä-lukiokoulutus').value() >= 0).to.equal(true)
     })
 
-    it('käyttöoikeuksien määrä', function () {
-      expect(page.metric('käyttöoikeuksien-määrä').value() >= 0).to.equal(true)
-    })
-
-    it('palvelukäyttäjäoikeuksien määrä', function () {
-      expect(page.metric('käyttöoikeusien-määrä-KOSKI-palvelukäyttäjä').value() >= 0).to.equal(true)
-    })
-
-    it('tallentajaoikeuksien määrä', function () {
-      expect(page.metric('käyttöoikeusien-määrä-KOSKI-tallentaja').value() >= 0).to.equal(true)
-    })
-
     it('pääkäyttäjien määrä', function () {
-      expect(page.metric('käyttöoikeusien-määrä-koski-oph-pääkäyttäjä').value() >= 0).to.equal(true)
-    })
-
-    it('viranomaiskatselijaoikeuksien määrä', function () {
-      expect(page.metric('käyttöoikeusien-määrä-koski-viranomainen-katselija').value() >= 0).to.equal(true)
-    })
-
-    it('oppilaitoskatselijaoikeuksien määrä', function () {
-      expect(page.metric('käyttöoikeusien-määrä-KOSKI-katselija').value() >= 0).to.equal(true)
+      expect(page.metric('käyttöoikeuksien-määrä-koski-oppilaitos-pääkäyttäjä_1494486198456').value() >= 0).to.equal(true)
     })
 
     it('vastuukäyttäjien määrä', function () {
-      expect(page.metric('käyttöoikeusien-määrä-Vastuukayttajat').value() >= 0).to.equal(true)
+      expect(page.metric('käyttöoikeuksien-määrä-Vastuukayttajat').value() >= 0).to.equal(true)
     })
 
     it('tiedonsiirtovirheiden määrä', function () {

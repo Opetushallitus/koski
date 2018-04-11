@@ -1,7 +1,7 @@
 import React from 'react'
 import Bacon from 'baconjs'
 import Pager from '../util/Pager'
-import {navigateWithQueryParams} from '../util/location'
+import {currentLocation, navigateWithQueryParams} from '../util/location'
 import {OppijaHaku} from './OppijaHaku'
 import PaginationLink from '../components/PaginationLink'
 import R from 'ramda'
@@ -15,11 +15,10 @@ import SortingTableHeader from '../components/SortingTableHeader'
 import delays from '../util/delays'
 import Highlight from 'react-highlighter'
 import Link from '../components/Link'
-import {currentLocation} from '../util/location'
-import {t} from '../i18n/i18n'
+import {lang, t} from '../i18n/i18n'
 import Text from '../i18n/Text'
-import {lang} from '../i18n/i18n'
 import {EditLocalizationsLink} from '../i18n/EditLocalizationsLink'
+import {userP} from '../util/user'
 
 export const listviewPath = () => {
   return sessionStorage.previousListViewPath || '/koski/'
@@ -36,13 +35,22 @@ export class Oppijataulukko extends React.Component {
   }
 
   render() {
-    let { rivit, edellisetRivit, pager, params } = this.props
+    let { total, rivit, edellisetRivit, pager, params } = this.props
     let { opiskeluoikeudenTyypit, koulutus, opiskeluoikeudenTila } = this.state
     let näytettävätRivit = rivit || edellisetRivit
     let nullSelection = {value : t('Ei valintaa')}
     sessionStorage.previousListViewPath = currentLocation().toString()
 
-    return (<div className="oppijataulukko">{ näytettävätRivit ? (
+    return (
+      <div>
+      <h2 className="oppijataulukko-header">
+        <Text name="Opiskelijat"/>
+        <div className="opiskeluoikeudet-total">
+          <span className="title label"><Text name="Opiskeluoikeuksia"/></span>
+          <span className="value">{': ' + total}</span>
+        </div>
+      </h2>
+      <div className="oppijataulukko">{ näytettävätRivit ? (
       <table>
         <thead>
           <tr>
@@ -165,6 +173,7 @@ export class Oppijataulukko extends React.Component {
           </tbody>
         </table>) : <div className="ajax-indicator-bg"><Text name="Ladataan..."/></div> }
       <PaginationLink pager={pager}/>
+    </div>
     </div>)
   }
 
@@ -197,24 +206,25 @@ export class Oppijataulukko extends React.Component {
 var edellisetRivit = null
 
 export const oppijataulukkoContentP = (query, params) => {
-  let pager = Pager('/koski/api/opiskeluoikeus/perustiedot' + query, L.prop('tiedot'))
-  let taulukkoContentP = pager.rowsP
-    .doAction((result) => edellisetRivit = result.tiedot)
-    .startWith(null)
-    .map((rivit) => <Oppijataulukko rivit={rivit.tiedot} edellisetRivit={edellisetRivit} pager={pager} params={params}/>)
-  let totalP = pager.rowsP.map(r => r.total)
-  return Bacon.combineWith(taulukkoContentP, totalP, (taulukko, total) => ({
-    content: (<div className='content-area oppijataulukko'>
+  let taulukkoP = userP.flatMap(u => {
+    if (u.isViranomainen) {
+      return Bacon.once(null)
+    } else {
+      let pager = Pager('/koski/api/opiskeluoikeus/perustiedot' + query, L.prop('tiedot'))
+      let searchResultsP = pager.rowsP.doAction((result) => edellisetRivit = result.tiedot).startWith(null)
+      let totalP = pager.rowsP.map(r => r.total)
+
+      return Bacon.combineWith(searchResultsP, totalP, (searchResults, total) =>
+        <Oppijataulukko total={total} rivit={searchResults.tiedot} edellisetRivit={edellisetRivit} pager={pager} params={params}/>
+      )
+    }
+  }).toProperty()
+
+  return taulukkoP.map(taulukko => ({
+    content: (<div className='content-area'>
       <div className="main-content">
         <OppijaHaku/>
         <EditLocalizationsLink/>
-        <h2 className="oppijataulukko-header">
-          <Text name="Opiskelijat"/>
-          <div className="opiskeluoikeudet-total">
-            <span className="title label"><Text name="Opiskeluoikeuksia"/></span>
-            <span className="value">{': ' + total}</span>
-          </div>
-        </h2>
       { taulukko }
       </div>
     </div>),

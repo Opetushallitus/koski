@@ -8,6 +8,7 @@ import Link from '../components/Link'
 import Highlight from 'react-highlighter'
 import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
+import {userP} from '../util/user.js'
 
 export const searchStringAtom = Atom('')
 const oppijaHakuE = searchStringAtom.changes()
@@ -83,7 +84,9 @@ export const OppijaHaku = () => {
   return (<div className={searchInProgressP.map((searching) => searching ? 'oppija-haku searching' : 'oppija-haku')}>
       <div>
         <label>
-          <h3><Text name="Hae tai lisää opiskelija"/></h3>
+          <h3>
+            {userP.map((user) => user.hasWriteAccess ? <Text name="Hae tai lisää opiskelija"/> : <Text name="Hae opiskelija"/>)}
+          </h3>
           <input type="text" value={searchStringAtom} id='search-query' placeholder={t('henkilötunnus, nimi tai oppijanumero')} onChange={(e) => searchStringAtom.set(e.target.value)} onKeyDown={optionsP.map(onKeyDown)} autoFocus></input>
         </label>
       </div>
