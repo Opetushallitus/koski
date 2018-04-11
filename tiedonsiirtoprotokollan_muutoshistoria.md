@@ -1,3 +1,7 @@
+## 11.4.2018
+
+  - Muutettu Valma-koulutusta niin, että yhteisen tutkinnon osan osa-alueen suoritukset voi/pitää siirtää suoraan päätason suorituksen alle
+
 ## 19.3.2018
 
 - Sallitaan osa-aikaisuusjakson osa-aikaisuuden arvoksi 0%
