@@ -457,14 +457,51 @@
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "101053",
-            "nimi" : {
-              "fi" : "Viestintä- ja vuorovaikutusosaaminen"
-            },
-            "koodistoUri" : "tutkinnonosat",
-            "koodistoVersio" : 1
+            "koodiarvo" : "AI",
+            "koodistoUri" : "ammatillisenoppiaineet"
+          },
+          "kieli" : {
+            "koodiarvo" : "AI1",
+            "koodistoUri" : "oppiaineaidinkielijakirjallisuus"
           },
           "pakollinen" : true,
+          "laajuus" : {
+            "arvo" : 5.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "Osaamispistettä"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "3",
+            "nimi" : {
+              "fi" : "K3"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+          },
+          "päivä" : "2014-10-20",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosanosaalue",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "AI",
+            "koodistoUri" : "ammatillisenoppiaineet"
+          },
+          "kieli" : {
+            "koodiarvo" : "AI1",
+            "koodistoUri" : "oppiaineaidinkielijakirjallisuus"
+          },
+          "pakollinen" : false,
           "laajuus" : {
             "arvo" : 3.0,
             "yksikkö" : {
@@ -478,176 +515,93 @@
         },
         "arviointi" : [ {
           "arvosana" : {
-            "koodiarvo" : "Hyväksytty",
+            "koodiarvo" : "3",
             "nimi" : {
-              "fi" : "Hyväksytty"
+              "fi" : "K3"
             },
-            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty",
-            "koodistoVersio" : 1
+            "koodistoUri" : "arviointiasteikkoammatillinent1k3"
           },
-          "päivä" : "2013-03-20",
-          "arvioitsijat" : [ {
-            "nimi" : "Jaana Arstila"
-          }, {
-            "nimi" : "Pekka Saurmann"
-          }, {
-            "nimi" : "Juhani Mykkänen"
-          } ],
+          "päivä" : "2014-10-20",
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "valmakoulutuksenosa",
+          "koodiarvo" : "ammatillisentutkinnonosanosaalue",
           "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "TK1",
+            "koodistoUri" : "ammatillisenoppiaineet"
+          },
+          "kieli" : {
+            "koodiarvo" : "SV",
+            "koodistoUri" : "kielivalikoima"
+          },
+          "pakollinen" : true,
+          "laajuus" : {
+            "arvo" : 1.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
+              "nimi" : {
+                "fi" : "Osaamispistettä"
+              },
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
         },
-        "osasuoritukset" : [ {
-          "koulutusmoduuli" : {
-            "tunniste" : {
-              "koodiarvo" : "AI",
-              "koodistoUri" : "ammatillisenoppiaineet"
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "3",
+            "nimi" : {
+              "fi" : "K3"
             },
-            "kieli" : {
-              "koodiarvo" : "AI1",
-              "koodistoUri" : "oppiaineaidinkielijakirjallisuus"
-            },
-            "pakollinen" : true,
-            "laajuus" : {
-              "arvo" : 5.0,
-              "yksikkö" : {
-                "koodiarvo" : "6",
-                "nimi" : {
-                  "fi" : "Osaamispistettä"
-                },
-                "koodistoUri" : "opintojenlaajuusyksikko"
-              }
-            }
+            "koodistoUri" : "arviointiasteikkoammatillinent1k3"
           },
-          "arviointi" : [ {
-            "arvosana" : {
-              "koodiarvo" : "3",
-              "nimi" : {
-                "fi" : "K3"
-              },
-              "koodistoUri" : "arviointiasteikkoammatillinent1k3"
-            },
-            "päivä" : "2014-10-20",
-            "hyväksytty" : true
-          } ],
-          "tyyppi" : {
-            "koodiarvo" : "ammatillisentutkinnonosanosaalue",
-            "koodistoUri" : "suorituksentyyppi"
-          }
-        }, {
-          "koulutusmoduuli" : {
-            "tunniste" : {
-              "koodiarvo" : "AI",
-              "koodistoUri" : "ammatillisenoppiaineet"
-            },
-            "kieli" : {
-              "koodiarvo" : "AI1",
-              "koodistoUri" : "oppiaineaidinkielijakirjallisuus"
-            },
-            "pakollinen" : false,
-            "laajuus" : {
-              "arvo" : 3.0,
-              "yksikkö" : {
-                "koodiarvo" : "6",
-                "nimi" : {
-                  "fi" : "Osaamispistettä"
-                },
-                "koodistoUri" : "opintojenlaajuusyksikko"
-              }
-            }
+          "päivä" : "2014-10-20",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosanosaalue",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "VK",
+            "koodistoUri" : "ammatillisenoppiaineet"
           },
-          "arviointi" : [ {
-            "arvosana" : {
-              "koodiarvo" : "3",
-              "nimi" : {
-                "fi" : "K3"
-              },
-              "koodistoUri" : "arviointiasteikkoammatillinent1k3"
-            },
-            "päivä" : "2014-10-20",
-            "hyväksytty" : true
-          } ],
-          "tyyppi" : {
-            "koodiarvo" : "ammatillisentutkinnonosanosaalue",
-            "koodistoUri" : "suorituksentyyppi"
-          }
-        }, {
-          "koulutusmoduuli" : {
-            "tunniste" : {
-              "koodiarvo" : "TK1",
-              "koodistoUri" : "ammatillisenoppiaineet"
-            },
-            "kieli" : {
-              "koodiarvo" : "SV",
-              "koodistoUri" : "kielivalikoima"
-            },
-            "pakollinen" : true,
-            "laajuus" : {
-              "arvo" : 1.0,
-              "yksikkö" : {
-                "koodiarvo" : "6",
-                "nimi" : {
-                  "fi" : "Osaamispistettä"
-                },
-                "koodistoUri" : "opintojenlaajuusyksikko"
-              }
-            }
+          "kieli" : {
+            "koodiarvo" : "EN",
+            "koodistoUri" : "kielivalikoima"
           },
-          "arviointi" : [ {
-            "arvosana" : {
-              "koodiarvo" : "3",
+          "pakollinen" : true,
+          "laajuus" : {
+            "arvo" : 2.0,
+            "yksikkö" : {
+              "koodiarvo" : "6",
               "nimi" : {
-                "fi" : "K3"
+                "fi" : "Osaamispistettä"
               },
-              "koodistoUri" : "arviointiasteikkoammatillinent1k3"
-            },
-            "päivä" : "2014-10-20",
-            "hyväksytty" : true
-          } ],
-          "tyyppi" : {
-            "koodiarvo" : "ammatillisentutkinnonosanosaalue",
-            "koodistoUri" : "suorituksentyyppi"
-          }
-        }, {
-          "koulutusmoduuli" : {
-            "tunniste" : {
-              "koodiarvo" : "VK",
-              "koodistoUri" : "ammatillisenoppiaineet"
-            },
-            "kieli" : {
-              "koodiarvo" : "EN",
-              "koodistoUri" : "kielivalikoima"
-            },
-            "pakollinen" : true,
-            "laajuus" : {
-              "arvo" : 2.0,
-              "yksikkö" : {
-                "koodiarvo" : "6",
-                "nimi" : {
-                  "fi" : "Osaamispistettä"
-                },
-                "koodistoUri" : "opintojenlaajuusyksikko"
-              }
+              "koodistoUri" : "opintojenlaajuusyksikko"
             }
-          },
-          "arviointi" : [ {
-            "arvosana" : {
-              "koodiarvo" : "3",
-              "nimi" : {
-                "fi" : "K3"
-              },
-              "koodistoUri" : "arviointiasteikkoammatillinent1k3"
-            },
-            "päivä" : "2014-10-20",
-            "hyväksytty" : true
-          } ],
-          "tyyppi" : {
-            "koodiarvo" : "ammatillisentutkinnonosanosaalue",
-            "koodistoUri" : "suorituksentyyppi"
           }
-        } ]
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "3",
+            "nimi" : {
+              "fi" : "K3"
+            },
+            "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+          },
+          "päivä" : "2014-10-20",
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosanosaalue",
+          "koodistoUri" : "suorituksentyyppi"
+        }
       } ],
       "tyyppi" : {
         "koodiarvo" : "valma",
