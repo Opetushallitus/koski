@@ -38,6 +38,7 @@ trait SuoritusjakoTestMethods extends LocalJettyHttpSpecification with Opiskeluo
   def verifySuoritusIds(oppija: Oppija, expectedSuoritusIds: List[SuoritusIdentifier]): Unit = {
     val actualSuoritusIds = oppija.opiskeluoikeudet.flatMap(oo =>
       oo.suoritukset.map(s => SuoritusIdentifier(
+        oo.lähdejärjestelmänId.flatMap(_.id),
         oo.oppilaitos.get.oid,
         s.tyyppi.koodiarvo,
         s.koulutusmoduuli.tunniste.koodiarvo

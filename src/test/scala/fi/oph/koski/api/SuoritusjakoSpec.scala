@@ -13,6 +13,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
   var secretYksiSuoritus: Option[String] = None
   var secretKaksiSuoritusta: Option[String] = None
   var secretVuosiluokanTuplausSuoritus: Option[String] = None
+  var secretLähdejärjestelmällinenSuoritus: Option[String] = None
 
   "Suoritusjaon lisääminen" - {
     "onnistuu" - {
@@ -58,6 +59,21 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
         putSuoritusjako(json, hetu = "060498-997J"){
           verifyResponseStatusOk()
           secretVuosiluokanTuplausSuoritus = Option(JsonSerializer.parse[SuoritusjakoResponse](response.body).secret)
+        }
+      }
+
+      "lähdejärjestelmällisellä suorituksella" in {
+        val json =
+          """[{
+           "lähdejärjestelmänId": "12345",
+          "oppilaitosOid": "1.2.246.562.10.52251087186",
+          "suorituksenTyyppi": "ammatillinentutkinto",
+          "koulutusmoduulinTunniste": "351301"
+        }]"""
+
+        putSuoritusjako(json, hetu = "270303-281N"){
+          verifyResponseStatusOk()
+          secretLähdejärjestelmällinenSuoritus = Option(JsonSerializer.parse[SuoritusjakoResponse](response.body).secret)
         }
       }
     }
@@ -174,6 +190,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
       "yhden jaetun suorituksen salaisuudella" in {
         val oppija = getSuoritusjakoOppija(secretYksiSuoritus.get)
         verifySuoritusIds(oppija, List(SuoritusIdentifier(
+          lähdejärjestelmänId = None,
           oppilaitosOid = "1.2.246.562.10.64353470871",
           suorituksenTyyppi = "perusopetuksenvuosiluokka",
           koulutusmoduulinTunniste = "7"
@@ -184,11 +201,13 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
         val oppija = getSuoritusjakoOppija(secretKaksiSuoritusta.get)
         verifySuoritusIds(oppija, List(
           SuoritusIdentifier(
+            lähdejärjestelmänId = None,
             oppilaitosOid = "1.2.246.562.10.64353470871",
             suorituksenTyyppi = "perusopetuksenvuosiluokka",
             koulutusmoduulinTunniste = "7"
           ),
           SuoritusIdentifier(
+            lähdejärjestelmänId = None,
             oppilaitosOid = "1.2.246.562.10.64353470871",
             suorituksenTyyppi = "perusopetuksenvuosiluokka",
             koulutusmoduulinTunniste = "6"
@@ -201,6 +220,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
 
         // Palautetaan vain yksi suoritus
         verifySuoritusIds(oppija, List(SuoritusIdentifier(
+          lähdejärjestelmänId = None,
           oppilaitosOid = "1.2.246.562.10.14613773812",
           suorituksenTyyppi = "perusopetuksenvuosiluokka",
           koulutusmoduulinTunniste = "7"
@@ -211,6 +231,16 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
           case s: PerusopetuksenVuosiluokanSuoritus => !s.jääLuokalle && s.luokka == "7A"
           case _ => fail("Väärä palautettu suoritus")
         }
+      }
+
+      "lähdejärjestelmällisellä suorituksella" in {
+        val oppija = getSuoritusjakoOppija(secretLähdejärjestelmällinenSuoritus.get)
+        verifySuoritusIds(oppija, List(SuoritusIdentifier(
+          lähdejärjestelmänId = Some("12345"),
+          oppilaitosOid = "1.2.246.562.10.52251087186",
+          suorituksenTyyppi = "ammatillinentutkinto",
+          koulutusmoduulinTunniste = "351301"
+        )))
       }
     }
 

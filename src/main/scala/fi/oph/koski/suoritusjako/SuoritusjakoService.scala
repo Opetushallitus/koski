@@ -110,7 +110,8 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
   }
 
   private def isMatchingSuoritus(opiskeluoikeus: Opiskeluoikeus, suoritus: PäätasonSuoritus, suoritusId: SuoritusIdentifier): Boolean =
-    opiskeluoikeus.oppilaitos.exists(_.oid == suoritusId.oppilaitosOid) &&
+    opiskeluoikeus.lähdejärjestelmänId.flatMap(_.id) == suoritusId.lähdejärjestelmänId &&
+      opiskeluoikeus.oppilaitos.exists(_.oid == suoritusId.oppilaitosOid) &&
       suoritus.tyyppi.koodiarvo == suoritusId.suorituksenTyyppi &&
       suoritus.koulutusmoduuli.tunniste.koodiarvo == suoritusId.koulutusmoduulinTunniste
 
