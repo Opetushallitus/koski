@@ -1,9 +1,9 @@
 import React from 'baret'
 import Bacon from 'baconjs'
 import R from 'ramda'
-import {modelLookup, modelTitle} from '../../editor/EditorModel'
+import {modelItems, modelLookup, modelTitle} from '../../editor/EditorModel'
 import SuoritusIdentifier from './SuoritusIdentifier'
-import {oppilaitoksenPäätasonSuoritukset, suoritusjakoSuoritusTitle} from './suoritusjako'
+import {suoritusjakoSuoritusTitle} from './suoritusjako'
 
 export const SelectableSuoritusList = ({opiskeluoikeudet, selectedSuoritusIds}) => {
   const toggleSelection = id => event =>
@@ -12,18 +12,18 @@ export const SelectableSuoritusList = ({opiskeluoikeudet, selectedSuoritusIds}) 
   return (
     <ul className='create-suoritusjako__list'>
       {
-        opiskeluoikeudet.map(oppilaitoksenOpiskeluoikeudet => {
-          const oppilaitos = modelLookup(oppilaitoksenOpiskeluoikeudet, 'oppilaitos')
+        opiskeluoikeudet.map(oppilaitoksittain => {
+          const oppilaitos = modelLookup(oppilaitoksittain, 'oppilaitos')
           const groupTitle = modelTitle(oppilaitos)
-          const päätasonSuoritukset = Bacon.constant(oppilaitoksenPäätasonSuoritukset(oppilaitoksenOpiskeluoikeudet))
+          const oppilaitoksenOpiskeluoikeudet = Bacon.constant(modelItems(oppilaitoksittain, 'opiskeluoikeudet'))
 
           return [
             <li className='oppilaitos-group-header' key={groupTitle}>
               {groupTitle}
             </li>,
-            Bacon.combineWith(päätasonSuoritukset, selectedSuoritusIds, (suoritukset, selectedIds) =>
-              suoritukset.map(s => {
-                const id = SuoritusIdentifier(oppilaitos, s)
+            Bacon.combineWith(oppilaitoksenOpiskeluoikeudet, selectedSuoritusIds, (opiskeluoikeudeModels, selectedIds) =>
+              opiskeluoikeudeModels.map(oo => modelItems(oo, 'suoritukset').map(s => {
+                const id = SuoritusIdentifier(oo, s)
                 const title = suoritusjakoSuoritusTitle(s)
 
                 return (
@@ -38,7 +38,7 @@ export const SelectableSuoritusList = ({opiskeluoikeudet, selectedSuoritusIds}) 
                     <label htmlFor={id}>{title}</label>
                   </li>
                 )
-              })
+              }))
             )
           ]
         })
