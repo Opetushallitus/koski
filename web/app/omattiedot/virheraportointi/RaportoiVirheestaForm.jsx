@@ -1,4 +1,5 @@
 import React from 'baret'
+import R from 'ramda'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import Http from '../../util/http'
@@ -10,6 +11,7 @@ import {ift} from '../../util/util'
 import {Yhteystiedot} from './Yhteystiedot'
 import OrganisaatioPicker from '../../virkailija/OrganisaatioPicker'
 import {MuuOppilaitosOptions, OppilaitosOption, OtherOppilaitosValue} from './RadioOption'
+import {trackEvent} from '../../tracking/piwikTracking'
 
 const OppilaitosPicker = ({oppilaitosAtom}) => {
   const selectableOrgTypes = ['OPPILAITOS', 'OPPISOPIMUSTOIMIPISTE']
@@ -57,6 +59,10 @@ export const RaportoiVirheestäForm = ({henkilö, opiskeluoikeudet}) => {
       : Bacon.once(null)
     )
     .toProperty()
+
+  yhteystietoP.filter(R.identity).skipDuplicates(R.equals).onValue(v => {
+    trackEvent('virheraportointi', v.organisaationNimi.fi)
+  })
 
   const isOtherOptionSelectedA = selectedOppilaitosA.map(
     selectedOption => selectedOption ? !oppilaitokset.map(o => o.oid).includes(selectedOption) : false
