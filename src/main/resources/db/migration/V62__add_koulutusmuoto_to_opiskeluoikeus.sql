@@ -1,11 +1,12 @@
 ALTER TABLE opiskeluoikeus
-  ADD koulutusmuoto TEXT;
+  ADD IF NOT EXISTS koulutusmuoto TEXT;
 
 UPDATE opiskeluoikeus
-SET koulutusmuoto = (data -> 'tyyppi' ->> 'koodiarvo');
+SET koulutusmuoto = (data -> 'tyyppi' ->> 'koodiarvo')
+WHERE koulutusmuoto IS NULL;
 
 ALTER TABLE opiskeluoikeus
   ALTER COLUMN koulutusmuoto SET NOT NULL;
 
-CREATE INDEX opiskeluoikeus_koulutusmuoto_idx
+CREATE INDEX IF NOT EXISTS opiskeluoikeus_koulutusmuoto_idx
   ON opiskeluoikeus (koulutusmuoto);
