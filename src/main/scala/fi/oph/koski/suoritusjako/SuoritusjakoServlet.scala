@@ -2,9 +2,9 @@ package fi.oph.koski.suoritusjako
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.EditorModelSerializer
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.{JsonSerializer, LegacyJsonSerialization}
-import fi.oph.koski.koskiuser.{AuthenticationSupport, KoskiSession, RequiresKansalainen}
+import fi.oph.koski.koskiuser.{AuthenticationSupport, KoskiSession}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.omattiedot.OmatTiedotEditorModel
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
@@ -31,11 +31,16 @@ class SuoritusjakoServlet(implicit val application: KoskiApplication) extends Ap
     withJsonBody({ body =>
       Try(JsonSerializer.extract[List[SuoritusIdentifier]](body)).toOption match {
         case Some(suoritusIds) =>
-          renderEither(application.suoritusjakoService.put(koskiSessionOption.get.oid, suoritusIds)(koskiSessionOption.get).right.map(SuoritusjakoResponse))
+          renderEither(application.suoritusjakoService.put(koskiSessionOption.get.oid, suoritusIds)(koskiSessionOption.get))
         case None =>
           haltWithStatus(KoskiErrorCategory.badRequest.format())
       }
     })()
+  }
+
+  get("/") {
+    requireKansalainen
+    render(application.suoritusjakoService.getAll(koskiSessionOption.get.oid))
   }
 
   import reflect.runtime.universe.TypeTag
@@ -43,5 +48,3 @@ class SuoritusjakoServlet(implicit val application: KoskiApplication) extends Ap
 }
 
 case class SuoritusjakoRequest(secret: String)
-
-case class SuoritusjakoResponse(secret: String)

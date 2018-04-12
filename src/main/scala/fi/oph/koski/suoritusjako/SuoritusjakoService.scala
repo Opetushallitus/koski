@@ -13,13 +13,13 @@ import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.schema._
 
 class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppijaFacade: KoskiOppijaFacade) extends Logging {
-  def put(oppijaOid: String, suoritusIds: List[SuoritusIdentifier])(implicit koskiSession: KoskiSession): Either[HttpStatus, String] = {
+  def put(oppijaOid: String, suoritusIds: List[SuoritusIdentifier])(implicit koskiSession: KoskiSession): Either[HttpStatus, Suoritusjako] = {
     assertSuorituksetExist(oppijaOid, suoritusIds) match {
       case Right(_) =>
         val secret = generateNewSecret()
-        suoritusjakoRepository.put(secret, oppijaOid, suoritusIds)
+        val expirationDate = suoritusjakoRepository.put(secret, oppijaOid, suoritusIds)
         AuditLog.log(AuditLogMessage(KANSALAINEN_SUORITUSJAKO_LISAYS, koskiSession, Map(oppijaHenkiloOid -> oppijaOid)))
-        Right(secret)
+        Right(Suoritusjako(secret, expirationDate))
       case Left(status) => Left(status)
     }
   }
@@ -32,6 +32,10 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
         oppija.copy(opiskeluoikeudet = filtered)
       }
     }
+  }
+
+  def getAll(oppijaOid: String): Seq[Suoritusjako] = {
+    suoritusjakoRepository.getAll(oppijaOid).map(jako => Suoritusjako(jako.secret, jako.voimassaAsti.toLocalDate))
   }
 
   def validateSuoritusjakoSecret(secret: String): Either[HttpStatus, String] = {

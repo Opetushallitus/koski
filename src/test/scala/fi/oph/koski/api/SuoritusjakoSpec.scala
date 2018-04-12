@@ -6,7 +6,7 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
 import fi.oph.koski.schema.PerusopetuksenVuosiluokanSuoritus
-import fi.oph.koski.suoritusjako.{SuoritusIdentifier, SuoritusjakoResponse}
+import fi.oph.koski.suoritusjako.{SuoritusIdentifier, Suoritusjako}
 import org.scalatest.{FreeSpec, Matchers}
 
 class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matchers {
@@ -27,7 +27,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
 
         putSuoritusjako(json){
           verifyResponseStatusOk()
-          secretYksiSuoritus = Option(JsonSerializer.parse[SuoritusjakoResponse](response.body).secret)
+          secretYksiSuoritus = Option(JsonSerializer.parse[Suoritusjako](response.body).secret)
         }
       }
 
@@ -44,7 +44,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
         }]"""
         putSuoritusjako(json) {
           verifyResponseStatusOk()
-          secretKaksiSuoritusta = Option(JsonSerializer.parse[SuoritusjakoResponse](response.body).secret)
+          secretKaksiSuoritusta = Option(JsonSerializer.parse[Suoritusjako](response.body).secret)
         }
       }
 
@@ -58,7 +58,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
 
         putSuoritusjako(json, hetu = "060498-997J"){
           verifyResponseStatusOk()
-          secretVuosiluokanTuplausSuoritus = Option(JsonSerializer.parse[SuoritusjakoResponse](response.body).secret)
+          secretVuosiluokanTuplausSuoritus = Option(JsonSerializer.parse[Suoritusjako](response.body).secret)
         }
       }
 
@@ -73,7 +73,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
 
         putSuoritusjako(json, hetu = "270303-281N"){
           verifyResponseStatusOk()
-          secretLähdejärjestelmällinenSuoritus = Option(JsonSerializer.parse[SuoritusjakoResponse](response.body).secret)
+          secretLähdejärjestelmällinenSuoritus = Option(JsonSerializer.parse[Suoritusjako](response.body).secret)
         }
       }
     }
