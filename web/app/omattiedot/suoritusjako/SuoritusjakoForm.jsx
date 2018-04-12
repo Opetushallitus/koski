@@ -6,7 +6,8 @@ import Text from '../../i18n/Text'
 import {SuoritusjakoLink} from './SuoritusjakoLink'
 import {SelectableSuoritusList} from './SelectableSuoritusList'
 
-const doShare = suoritusIds => Http.put('/koski/api/suoritusjako', [...suoritusIds])
+const Url = '/koski/api/suoritusjako'
+const doShare = suoritusIds => Http.put(Url, [...suoritusIds])
 
 const Ingressi = () => (
   <div className='suoritusjako-form__caption'>
@@ -45,20 +46,36 @@ const NewSuoritusjako = ({opiskeluoikeudet, selectedSuoritusIds, onSuccess}) => 
   </div>
 )
 
-export const SuoritusjakoForm = ({opiskeluoikeudet}) => {
-  const selectedSuoritusIds = Atom([])
-  const suoritusjaot = Atom([])
+export class SuoritusjakoForm extends React.Component {
+  constructor(props) {
+    super(props)
 
-  const addLink = suoritusjako => {
-    suoritusjaot.modify(list => R.append(suoritusjako, list))
-    selectedSuoritusIds.set([])
+    this.selectedSuoritusIds = Atom([])
+    this.suoritusjaot = Atom([])
   }
 
-  return (
-    <section className='suoritusjako-form'>
-      <Ingressi/>
-      <SuoritusjakoList baret-lift opiskeluoikeudet={opiskeluoikeudet} suoritusjaot={suoritusjaot}/>
-      <NewSuoritusjako opiskeluoikeudet={opiskeluoikeudet} selectedSuoritusIds={selectedSuoritusIds} onSuccess={addLink}/>
-    </section>
-  )
+  componentDidMount() {
+    Http.get(Url).onValue(jaot => this.suoritusjaot.set(jaot))
+  }
+
+  addLink(suoritusjako) {
+    this.suoritusjaot.modify(list => R.append(suoritusjako, list))
+    this.selectedSuoritusIds.set([])
+  }
+
+  render() {
+    const {opiskeluoikeudet} = this.props
+
+    return (
+      <section className='suoritusjako-form'>
+        <Ingressi/>
+        <SuoritusjakoList baret-lift opiskeluoikeudet={opiskeluoikeudet} suoritusjaot={this.suoritusjaot}/>
+        <NewSuoritusjako
+          opiskeluoikeudet={opiskeluoikeudet}
+          selectedSuoritusIds={this.selectedSuoritusIds}
+          onSuccess={this.addLink.bind(this)}
+        />
+      </section>
+    )
+  }
 }
