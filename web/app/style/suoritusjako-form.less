@@ -15,9 +15,10 @@
   &__create-suoritusjako {
     padding: 0.5rem 1rem;
     border: dashed 1px @color-gray-darker;
+    min-height: 3rem;
 
-    @media @media-full {
-      padding-right: 0;
+    & > a {
+      line-height: 3rem;
     }
   }
 
@@ -28,6 +29,12 @@
     & > li:not(:last-child) {
       margin-bottom: 1.5rem;
     }
+  }
+
+  .create-suoritusjako-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .create-suoritusjako {
