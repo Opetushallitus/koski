@@ -46,8 +46,8 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
     randomUUID.toString.replaceAll("-", "")
   }
 
-  private def filterOpiskeluoikeudet(opiskeluoikeus: Seq[Opiskeluoikeus], suoritusIds: List[SuoritusIdentifier]): Seq[Opiskeluoikeus] = {
-    opiskeluoikeus.flatMap { oo =>
+  private def filterOpiskeluoikeudet(opiskeluoikeudet: Seq[Opiskeluoikeus], suoritusIds: List[SuoritusIdentifier]): Seq[Opiskeluoikeus] = {
+    opiskeluoikeudet.flatMap { oo =>
       filterSuoritukset(oo, suoritusIds) match {
         case Nil => Nil
         case filtered => List(withSuoritukset(oo, filtered))
