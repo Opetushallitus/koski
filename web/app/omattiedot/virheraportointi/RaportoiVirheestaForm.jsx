@@ -61,7 +61,7 @@ export const RaportoiVirheestäForm = ({henkilö, opiskeluoikeudet}) => {
     .toProperty()
 
   yhteystietoP.filter(R.identity).skipDuplicates(R.equals).onValue(v => {
-    trackEvent('virheraportointi', v.organisaationNimi.fi)
+    trackEvent('virheraportointi', (v.organisaationNimi && v.organisaationNimi.fi) || '-')
   })
 
   const isOtherOptionSelectedA = selectedOppilaitosA.map(
