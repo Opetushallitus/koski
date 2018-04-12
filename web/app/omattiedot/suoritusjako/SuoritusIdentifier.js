@@ -1,4 +1,5 @@
 import {modelData} from '../../editor/EditorModel'
+import {suorituksenTyyppi} from '../../suoritus/Suoritus'
 
 const suoritusIdProto = {
   lähdejärjestelmänId: undefined,
@@ -14,7 +15,9 @@ export default (opiskeluoikeus, suoritus) => {
   id.lähdejärjestelmänId = modelData(opiskeluoikeus, 'lähdejärjestelmänId.id')
   id.oppilaitosOid = modelData(opiskeluoikeus, 'oppilaitos.oid')
   id.suorituksenTyyppi = modelData(suoritus, 'tyyppi.koodiarvo')
-  id.koulutusmoduulinTunniste = modelData(suoritus, 'koulutusmoduuli.tunniste.koodiarvo')
+  id.koulutusmoduulinTunniste = suorituksenTyyppi(suoritus) === 'korkeakoulunopintojakso'
+    ? ''
+    : modelData(suoritus, 'koulutusmoduuli.tunniste.koodiarvo')
 
   return id
 }

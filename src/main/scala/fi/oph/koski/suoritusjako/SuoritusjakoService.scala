@@ -113,11 +113,20 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
     multipleMatches.flatMap(findMostRecentAlternative) ++ singleMatches.flatten
   }
 
-  private def isMatchingSuoritus(opiskeluoikeus: Opiskeluoikeus, suoritus: PäätasonSuoritus, suoritusId: SuoritusIdentifier): Boolean =
+  private def isMatchingSuoritus(opiskeluoikeus: Opiskeluoikeus, suoritus: PäätasonSuoritus, suoritusId: SuoritusIdentifier): Boolean = {
+    def checkKoulutusmoduulinTunniste(suoritusId: SuoritusIdentifier) = {
+      if (suoritusId.suorituksenTyyppi == "korkeakoulunopintojakso") {
+        suoritusId.koulutusmoduulinTunniste == ""
+      } else {
+        suoritus.koulutusmoduuli.tunniste.koodiarvo == suoritusId.koulutusmoduulinTunniste
+      }
+    }
+
     opiskeluoikeus.lähdejärjestelmänId.flatMap(_.id) == suoritusId.lähdejärjestelmänId &&
       opiskeluoikeus.oppilaitos.exists(_.oid == suoritusId.oppilaitosOid) &&
       suoritus.tyyppi.koodiarvo == suoritusId.suorituksenTyyppi &&
-      suoritus.koulutusmoduuli.tunniste.koodiarvo == suoritusId.koulutusmoduulinTunniste
+      checkKoulutusmoduulinTunniste(suoritusId)
+  }
 
   private def withSuoritukset(opiskeluoikeus: Opiskeluoikeus, suoritukset: List[Suoritus]): Opiskeluoikeus = {
     import mojave._
