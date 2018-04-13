@@ -37,5 +37,18 @@ class SuoritusjakoRepository(val db: DB) extends Logging with DatabaseExecutionC
     expirationDate
   }
 
+  def delete(oppijaOid: String, secret: String): HttpStatus = {
+    val deleted = runDbSync(SuoritusJako
+      .filter(r => r.oppijaOid === oppijaOid && r.secret === secret && r.voimassaAsti >= Date.valueOf(LocalDateTime.now.toLocalDate))
+      .delete
+    )
+
+    if (deleted == 0) {
+      KoskiErrorCategory.notFound()
+    } else {
+      HttpStatus.ok
+    }
+  }
+
   private def now = timestamp(LocalDateTime.now)
 }

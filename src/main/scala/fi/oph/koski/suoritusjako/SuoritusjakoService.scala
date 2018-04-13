@@ -24,6 +24,10 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
     }
   }
 
+  def delete(oppijaOid: String, secret: String): HttpStatus = {
+    suoritusjakoRepository.delete(oppijaOid, secret)
+  }
+
   def get(secret: String)(implicit koskiSession: KoskiSession): Either[HttpStatus, Oppija] = {
     suoritusjakoRepository.get(secret).flatMap { suoritusjako =>
       oppijaFacade.findOppija(suoritusjako.oppijaOid)(koskiSession).map { oppija =>

@@ -20,14 +20,14 @@ const Ingressi = () => (
   </div>
 )
 
-const SuoritusjakoList = ({opiskeluoikeudet, suoritusjaot}) => (
+const SuoritusjakoList = ({opiskeluoikeudet, suoritusjaot, onRemove}) => (
   <div>
     {!R.isEmpty(suoritusjaot) && <h2><Text name='Voimassaolevat linkit'/></h2>}
 
     <ul className='suoritusjako-form__link-list'>
       {suoritusjaot.map(suoritusjako => (
         <li key={suoritusjako.secret}>
-          <SuoritusjakoLink suoritusjako={suoritusjako} opiskeluoikeudet={opiskeluoikeudet}/>
+          <SuoritusjakoLink suoritusjako={suoritusjako} opiskeluoikeudet={opiskeluoikeudet} onRemove={onRemove}/>
         </li>
       ))}
     </ul>
@@ -83,13 +83,22 @@ export class SuoritusjakoForm extends React.Component {
     this.selectedSuoritusIds.set([])
   }
 
+  removeLink(suoritusjako) {
+    this.suoritusjaot.modify(list => R.without([suoritusjako], list))
+  }
+
   render() {
     const {opiskeluoikeudet} = this.props
 
     return (
       <section className='suoritusjako-form'>
         {this.suoritusjaot.map(suoritusjaot => R.isEmpty(suoritusjaot) && <Ingressi/>)}
-        <SuoritusjakoList baret-lift opiskeluoikeudet={opiskeluoikeudet} suoritusjaot={this.suoritusjaot}/>
+        <SuoritusjakoList
+          baret-lift
+          opiskeluoikeudet={opiskeluoikeudet}
+          suoritusjaot={this.suoritusjaot}
+          onRemove={this.removeLink.bind(this)}
+        />
         <NewSuoritusjako
           opiskeluoikeudet={opiskeluoikeudet}
           selectedSuoritusIds={this.selectedSuoritusIds}

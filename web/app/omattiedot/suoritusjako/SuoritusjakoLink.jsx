@@ -3,8 +3,11 @@ import {CopyableText} from '../../components/CopyableText'
 import Text from '../../i18n/Text'
 import DateInput from '../../date/DateInput'
 import {parseISODate} from '../../date/date'
+import Http from '../../util/http'
 
-export const SuoritusjakoLink = ({suoritusjako}) => {
+const doDelete = secret => Http.post('/koski/api/suoritusjako/delete', {secret})
+
+export const SuoritusjakoLink = ({suoritusjako, onRemove}) => {
   const {secret, expirationDate} = suoritusjako
   const url = `${window.location.origin}/koski/opinnot/${secret}`
 
@@ -25,7 +28,9 @@ export const SuoritusjakoLink = ({suoritusjako}) => {
           <a target='_blank' href={url}><Text name='Esikatsele'/></a>
         </div>
         <div className='suoritusjako-link__remove'>
-          <a href=''><Text name='Poista linkki käytöstä'/></a>
+          <a onClick={() => doDelete(secret).onValue(() => onRemove(suoritusjako))}>
+            <Text name='Poista linkki käytöstä'/>
+          </a>
         </div>
       </div>
     </div>

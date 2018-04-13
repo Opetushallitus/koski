@@ -38,6 +38,14 @@ class SuoritusjakoServlet(implicit val application: KoskiApplication) extends Ap
     })()
   }
 
+  post("/delete") {
+    requireKansalainen
+    withJsonBody({ body =>
+      val request = JsonSerializer.extract[SuoritusjakoRequest](body)
+      render(application.suoritusjakoService.delete(koskiSessionOption.get.oid, request.secret))
+    })()
+  }
+
   get("/") {
     requireKansalainen
     render(application.suoritusjakoService.getAll(koskiSessionOption.get.oid))
