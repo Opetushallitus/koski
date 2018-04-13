@@ -38,6 +38,14 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
     })
   }
 
+  get("/peruste/:diaari/linkki") {
+    val diaari = params("diaari")
+    val eperusteetUrl = application.config.getString("eperusteet.baseUrl")
+    renderEither(application.ePerusteet.findPerusteenYksilöintitiedot(diaari).map(peruste => {
+      Map("url" -> s"$eperusteetUrl/#/fi/kooste/${peruste.id}")
+    }).toRight(KoskiErrorCategory.notFound()))
+  }
+
   private def lisättävätTutkinnonOsat(ryhmä: Iterable[RakenneOsa], tutkinto: Iterable[RakenneOsa]) = {
     val diaari = params("diaari")
 

@@ -1,9 +1,12 @@
 package fi.oph.koski.eperusteet
 
+import fi.oph.koski.cache.{CacheManager, ExpiringCache, KeyValueCache}
 import fi.oph.koski.http.Http
 import fi.oph.koski.http.Http._
 
-class RemoteEPerusteetRepository(ePerusteetRoot: String) extends EPerusteetRepository {
+import scala.concurrent.duration._
+
+class RemoteEPerusteetRepository(ePerusteetRoot: String)(implicit cacheInvalidator: CacheManager) extends EPerusteetRepository {
   private val http: Http = Http(ePerusteetRoot)
 
   def findPerusteet(query: String): List[EPeruste] = {
@@ -15,7 +18,14 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String) extends EPerusteetRepos
   }
 
   def findRakenne(diaariNumero: String): Option[EPerusteRakenne] = {
-    runTask(http.get(uri"/api/perusteet/diaari?diaarinumero=${diaariNumero}")(Http.parseJsonOptional[EPerusteTunniste]))
+    findPerusteenYksilöintitiedot(diaariNumero)
       .map(e => runTask(http.get(uri"/api/perusteet/${e.id}/kaikki")(Http.parseJson[EPerusteRakenne])))
   }
+
+  def findPerusteenYksilöintitiedot(diaariNumero: String): Option[EPerusteTunniste] = yksilöintitiedotCache(diaariNumero)
+
+  private val yksilöintitiedotCache = KeyValueCache[String, Option[EPerusteTunniste]](
+    ExpiringCache("EPerusteetRepository.yksilöintitiedot", 1 hour, 1000),
+    diaariNumero => runTask(http.get(uri"/api/perusteet/diaari?diaarinumero=$diaariNumero")(Http.parseJsonOptional[EPerusteTunniste]))
+  )
 }
