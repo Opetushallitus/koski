@@ -96,24 +96,29 @@
     }
 
     &__heading {
-      width: 50%;
+      flex-basis: 50%;
       max-width: 350px;
     }
 
     &__contact-info {
-      width: 25%;
+      flex-basis: 25%;
+      margin-top: 1rem;
+
+      @media @media-full {
+        margin: 0 1rem;
+      }
 
       & > span {
         display: block;
       }
-
-      @media @media-phone {
-        margin-top: 1rem;
-      }
     }
 
     &__linkki {
-      width: 25%;
+      flex-basis: 25%;
+
+      & > a > button {
+        min-width: 185px;
+      }
     }
 
     &.loading {
