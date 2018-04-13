@@ -30,6 +30,6 @@ object MockEPerusteetRepository extends EPerusteetRepository {
   }
 
   def findPerusteenYksilöintitiedot(diaariNumero: String): Option[EPerusteTunniste] = {
-    rakenteet.find(_.diaarinumero == diaariNumero).map(r => EPerusteTunniste(r.id))
+    rakenteet.find(_.diaarinumero == diaariNumero).map(r => EPerusteTunniste(r.id, r.nimi))
   }
 }
