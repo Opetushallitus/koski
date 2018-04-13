@@ -811,6 +811,7 @@ describe('Perusopetus', function() {
 
             describe('Oppijataulukossa', function() {
               before(
+                syncPerustiedot,
                 opinnot.backToList,
                 page.oppijataulukko.filterBy('nimi', 'Koululainen Kaisa'), page.oppijataulukko.filterBy('tyyppi', 'Perusopetus')
               )
