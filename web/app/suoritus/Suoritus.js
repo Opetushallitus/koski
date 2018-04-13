@@ -7,6 +7,7 @@ import R from 'ramda'
 import {t} from '../i18n/i18n'
 import {parseISODate} from '../date/date'
 import {flatMapArray} from '../util/util'
+import {tutkinnonNimi} from './Koulutusmoduuli'
 
 const isInPast = dateStr => parseISODate(dateStr) < new Date()
 
@@ -44,7 +45,7 @@ export const rekursiivisetOsasuoritukset = (suoritus) => flatMapArray(osasuoritu
 export const suorituksenTyyppi = (suoritus) => modelData(suoritus, 'tyyppi').koodiarvo
 
 export const suoritusTitle = (suoritus) => {
-  let title = modelTitle(suoritus, 'koulutusmoduuli.tunniste')
+  let title = modelTitle(tutkinnonNimi(modelLookup(suoritus, 'koulutusmoduuli')))
   switch(suorituksenTyyppi(suoritus)) {
     case 'ammatillinentutkintoosittainen': return title + t(', osittainen')
     case 'aikuistenperusopetuksenoppimaara': return modelTitle(suoritus, 'tyyppi')
