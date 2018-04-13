@@ -1,4 +1,6 @@
 describe('EPerusteet', function() {
+  var page = KoskiPage()
+  var opinnot = OpinnotPage()
   before(page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'))
 
   describe('Kun peruste löytyy eperusteista', function() {
