@@ -8,7 +8,6 @@ import {saveOrganizationalPreference} from '../virkailija/organizationalPreferen
 import {doActionWhileMounted} from '../util/util'
 import {isKieliaine, isPaikallinen, koulutusModuuliprototypes} from '../suoritus/Koulutusmoduuli'
 import {t} from '../i18n/i18n'
-import Text from '../i18n/Text'
 
 export class PerusopetuksenOppiaineEditor extends React.Component {
   render() {
