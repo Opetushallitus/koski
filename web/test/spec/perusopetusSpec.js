@@ -55,11 +55,11 @@ describe('Perusopetus', function() {
             'Liikunta 9 **\n' +
             'Valinnaiset oppiaineet\n' +
             'Oppiaine Arvosana Laajuus\n' +
-            'Valinnainen B1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
-            'Valinnainen kotitalous S 1 vuosiviikkotuntia\n' +
-            'Valinnainen liikunta S 0,5 vuosiviikkotuntia\n' +
-            'Valinnainen B2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
-            'Valinnainen tietokoneen hyötykäyttö 9\n' +
+            'B1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
+            'Kotitalous S 1 vuosiviikkotuntia\n' +
+            'Liikunta S 0,5 vuosiviikkotuntia\n' +
+            'B2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
+            'Tietokoneen hyötykäyttö 9\n' +
             'Kuvaus Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.\n' +
             '* = yksilöllistetty oppimäärä, ** = painotettu opetus'
           )
@@ -119,11 +119,11 @@ describe('Perusopetus', function() {
             'Liikunta 9 **\n' +
             'Valinnaiset oppiaineet\n' +
             'Oppiaine Arvosana Laajuus\n' +
-            'Valinnainen B1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
-            'Valinnainen kotitalous S 1 vuosiviikkotuntia\n' +
-            'Valinnainen liikunta S 0,5 vuosiviikkotuntia\n' +
-            'Valinnainen B2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
-            'Valinnainen tietokoneen hyötykäyttö 9\n' +
+            'B1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
+            'Kotitalous S 1 vuosiviikkotuntia\n' +
+            'Liikunta S 0,5 vuosiviikkotuntia\n' +
+            'B2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
+            'Tietokoneen hyötykäyttö 9\n' +
             'Kuvaus Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.\n' +
             'Käyttäytymisen arviointi\n' +
             'Arvosana S\n' +
@@ -348,11 +348,11 @@ describe('Perusopetus', function() {
           'Liikunta 9\n' +
           'Valinnaiset oppiaineet\n' +
           'Oppiaine Arvosana Laajuus\n' +
-          'Valinnainen B1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
-          'Valinnainen kotitalous S 1 vuosiviikkotuntia\n' +
-          'Valinnainen liikunta S 0,5 vuosiviikkotuntia\n' +
-          'Valinnainen B2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
-          'Valinnainen tietokoneen hyötykäyttö 9\n' +
+          'B1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
+          'Kotitalous S 1 vuosiviikkotuntia\n' +
+          'Liikunta S 0,5 vuosiviikkotuntia\n' +
+          'B2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
+          'Tietokoneen hyötykäyttö 9\n' +
           'Kuvaus Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.'
         )
       })
@@ -811,6 +811,7 @@ describe('Perusopetus', function() {
 
             describe('Oppijataulukossa', function() {
               before(
+                syncPerustiedot,
                 opinnot.backToList,
                 page.oppijataulukko.filterBy('nimi', 'Koululainen Kaisa'), page.oppijataulukko.filterBy('tyyppi', 'Perusopetus')
               )
@@ -1264,14 +1265,14 @@ describe('Perusopetus', function() {
             wait.until(page.isSavedLabelShown)
           )
           it('Toimii', function () {
-            expect(extractAsText(S('.oppiaineet'))).to.contain('Valinnainen historia 9')
-            expect(extractAsText(S('.oppiaineet'))).to.contain('Valinnainen historia 8')
+            expect(extractAsText(S('.oppiaineet'))).to.contain('Historia 9')
+            expect(extractAsText(S('.oppiaineet'))).to.contain('Historia 8')
           })
 
           describe('Poistaminen', function () {
             before(editor.edit, historia.propertyBySelector('>tr:first-child').removeValue, editor.saveChanges, wait.until(page.isSavedLabelShown))
             it('toimii', function () {
-              expect(extractAsText(S('.oppiaineet'))).to.not.contain('Valinnainen historia 9')
+              expect(extractAsText(S('.oppiaineet'))).to.not.contain('Historia 9')
             })
           })
         })
@@ -1292,7 +1293,7 @@ describe('Perusopetus', function() {
           describe('Tallennuksen jälkeen', function() {
             before(editor.saveChanges, wait.until(page.isSavedLabelShown))
             it('Toimii', function () {
-              expect(extractAsText(S('.oppiaineet'))).to.contain('Valinnainen tanssi 7')
+              expect(extractAsText(S('.oppiaineet'))).to.contain('Tanssi 7')
             })
 
             describe('Lisäyksen jälkeen', function() {
@@ -1571,11 +1572,11 @@ describe('Perusopetus', function() {
             'Liikunta 9 **\n' +
             'Valinnaiset oppiaineet\n' +
             'Oppiaine Arvosana Laajuus\n' +
-            'Valinnainen B1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
-            'Valinnainen kotitalous S 1 vuosiviikkotuntia\n' +
-            'Valinnainen liikunta S 0,5 vuosiviikkotuntia\n' +
-            'Valinnainen B2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
-            'Valinnainen tietokoneen hyötykäyttö 9\n' +
+            'B1-kieli, ruotsi S 1 vuosiviikkotuntia\n' +
+            'Kotitalous S 1 vuosiviikkotuntia\n' +
+            'Liikunta S 0,5 vuosiviikkotuntia\n' +
+            'B2-kieli, saksa 9 4 vuosiviikkotuntia\n' +
+            'Tietokoneen hyötykäyttö 9\n' +
             '* = yksilöllistetty oppimäärä, ** = painotettu opetus'
           )
         })

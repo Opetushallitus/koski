@@ -60,8 +60,7 @@ export const paikallinenOppiainePrototype = (oppiaineenSuoritus) => {
 }
 
 const oppiaineTitle = aine => {
-  let pakollinen = modelData(aine, 'pakollinen')
   let kieliaine = isKieliaine(aine)
   let title = t(modelData(aine, 'tunniste.nimi')) + (kieliaine ? ', ' : '')
-  return pakollinen === false ? <span><Text name='Valinnainen'/>{ ' ' + (kieliaine ? title : title.toLowerCase())}</span> : title
+  return title
 }
