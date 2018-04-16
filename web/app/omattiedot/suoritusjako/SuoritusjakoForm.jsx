@@ -36,7 +36,7 @@ const SuoritusjakoList = ({opiskeluoikeudet, suoritusjaot, onRemove}) => (
 
 const CreateNewSuoritusjakoButton = ({selectedSuoritusIds, onSuccess}) => (
   <div className='create-suoritusjako__button'>
-    <button onClick={() => doShare(selectedSuoritusIds).onValue(onSuccess)}>
+    <button disabled={R.isEmpty(selectedSuoritusIds)} onClick={() => doShare(selectedSuoritusIds).onValue(onSuccess)}>
       <Text name='Jaa valitsemasi opinnot'/>
     </button>
   </div>
