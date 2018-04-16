@@ -1,9 +1,10 @@
 import React from 'baret'
+import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import R from 'ramda'
 import Http from '../../util/http'
 import Text from '../../i18n/Text'
-import {SuoritusjakoLink} from './SuoritusjakoLink'
+import {SuoritusjakoLink, SuoritusjakoLinkPlaceholder} from './SuoritusjakoLink'
 import {SelectableSuoritusList} from './SelectableSuoritusList'
 import {ToggleButton} from '../../components/ToggleButton'
 
@@ -34,33 +35,60 @@ const SuoritusjakoList = ({opiskeluoikeudet, suoritusjaot, onRemove}) => (
   </div>
 )
 
-const CreateNewSuoritusjakoButton = ({selectedSuoritusIds, onSuccess}) => (
-  <div className='create-suoritusjako__button'>
-    <button disabled={R.isEmpty(selectedSuoritusIds)} onClick={() => doShare(selectedSuoritusIds).onValue(onSuccess)}>
-      <Text name='Jaa valitsemasi opinnot'/>
-    </button>
-  </div>
-)
+const CreateNewSuoritusjakoButton = ({selectedSuoritusIds, onClick, onSuccess, onError}) => {
+  const clickAction = () => {
+    onClick()
 
-const NewSuoritusjako = ({opiskeluoikeudet, selectedSuoritusIds, onSuccess, showForm, canCancelForm}) => (
-  <div className='suoritusjako-form__create-suoritusjako'>
-    {showForm.map(show => show
-      ? (
-        <div>
-          <div className='create-suoritusjako-header-row'>
-            <h2><Text name='Valitse jaettavat suoritustiedot'/></h2>
-            {canCancelForm.map(canCancel => canCancel && <ToggleButton toggleA={showForm} text='Peruuta' style='text'/>)}
-          </div>
-          <div className='create-suoritusjako'>
-            <SelectableSuoritusList opiskeluoikeudet={opiskeluoikeudet} selectedSuoritusIds={selectedSuoritusIds}/>
-            <CreateNewSuoritusjakoButton baret-lift selectedSuoritusIds={selectedSuoritusIds} onSuccess={onSuccess}/>
-          </div>
-        </div>
-      )
-      : <ToggleButton toggleA={showForm} text='Luo uusi' style='text'/>
-    )}
-  </div>
-)
+    const res = doShare(selectedSuoritusIds)
+    res.onValue(onSuccess)
+    res.onError(onError)
+  }
+
+  return (
+    <div className='create-suoritusjako__button'>
+      <button disabled={R.isEmpty(selectedSuoritusIds)} onClick={clickAction}>
+        <Text name='Jaa valitsemasi opinnot'/>
+      </button>
+    </div>
+  )
+}
+
+const NewSuoritusjako = ({opiskeluoikeudet, selectedSuoritusIds, onSuccess, showForm, canCancelForm}) => {
+  const isPending = Atom(false)
+
+  return (
+    <div>
+      {Bacon.combineWith(showForm, isPending, (form, pending) =>
+        form ?
+          pending ? <SuoritusjakoLinkPlaceholder/>
+            : (
+              <div className='suoritusjako-form__create-suoritusjako'>
+                <div>
+                  <div className='create-suoritusjako-header-row'>
+                    <h2><Text name='Valitse jaettavat suoritustiedot'/></h2>
+                    {canCancelForm.map(canCancel => canCancel && <ToggleButton toggleA={showForm} text='Peruuta' style='text'/>)}
+                  </div>
+                  <div className='create-suoritusjako'>
+                    <SelectableSuoritusList opiskeluoikeudet={opiskeluoikeudet} selectedSuoritusIds={selectedSuoritusIds}/>
+                    <CreateNewSuoritusjakoButton
+                      baret-lift
+                      selectedSuoritusIds={selectedSuoritusIds}
+                      onClick={() => isPending.set(true)}
+                      onSuccess={res => {
+                        isPending.set(false)
+                        onSuccess(res)
+                      }}
+                      onError={() => isPending.set(false)}
+                    />
+                  </div>
+                </div>
+              </div>
+            )
+          : <ToggleButton toggleA={showForm} text='Luo uusi' style='text'/>
+      )}
+    </div>
+  )
+}
 
 export class SuoritusjakoForm extends React.Component {
   constructor(props) {

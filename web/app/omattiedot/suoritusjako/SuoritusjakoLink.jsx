@@ -10,6 +10,8 @@ const ApiBaseUrl = '/koski/api/suoritusjako'
 const doDelete = secret => Http.post(`${ApiBaseUrl}/delete`, {secret})
 const doUpdate = (secret, expirationDate) => Http.post(`${ApiBaseUrl}/update`, {secret, expirationDate})
 
+export const SuoritusjakoLinkPlaceholder = () => <div className='suoritusjako-link--placeholder'/>
+
 export const SuoritusjakoLink = ({suoritusjako, onRemove}) => {
   const {secret, expirationDate} = suoritusjako
   const url = `${window.location.origin}/koski/opinnot/${secret}`
