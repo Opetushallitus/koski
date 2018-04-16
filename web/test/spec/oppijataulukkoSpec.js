@@ -94,12 +94,13 @@ describe('Oppijataulukko', function() {
         expect(page.oppijataulukko.names()).to.deep.equal([
           'Eerola, Jouni',
           'Esimerkki, Eero',
+          'Liiketalous, Lilli',
           'Markkanen-Fagerström, Eéro Jorma-Petteri',
           'Syntynyt, Sylvi',
           'Tekijä, Teija',
           'Tiedonsiirto, Tiina'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('6')
+        expect(page.opiskeluoikeudeTotal()).to.equal('7')
       })
     })
   })

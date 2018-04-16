@@ -17,4 +17,14 @@ describe('EPerusteet', function() {
       expect(S('.diaarinumero').text()).to.equal('57/011/2015')
     })
   })
+
+  describe('Tutkinnon nimi', function() {
+    describe('haetaan e-perusteista', function () {
+      before(page.openPage, page.oppijaHaku.searchAndSelect('160525-780Y'), opinnot.valitseSuoritus(undefined, 'Liiketalouden perustutkinto'))
+      var koulutus = opinnot.opiskeluoikeusEditor().property('koulutusmoduuli')
+      it('toimii', function() {
+        expect(koulutus.getText()).to.equal('Koulutus Liiketalouden perustutkinto 59/011/2014')
+      })
+    })
+  })
 })

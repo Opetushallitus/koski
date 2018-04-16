@@ -5,6 +5,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.date.DateValidation
 import fi.oph.koski.date.DateValidation._
+import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.henkilo.OpintopolkuHenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
@@ -22,7 +23,7 @@ import fi.oph.koski.util.Timing
 import mojave._
 import org.json4s.{JArray, JValue}
 
-class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: KoodistoViitePalvelu, val organisaatioRepository: OrganisaatioRepository, opiskeluoikeudet: OpiskeluoikeusRepository, opintopolku: OpintopolkuHenkilöRepository) extends Timing {
+class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: KoodistoViitePalvelu, val organisaatioRepository: OrganisaatioRepository, opiskeluoikeudet: OpiskeluoikeusRepository, opintopolku: OpintopolkuHenkilöRepository, ePerusteet: EPerusteetRepository) extends Timing {
   def validateAsJson(oppija: Oppija)(implicit user: KoskiSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
     extractAndValidateOppija(JsonSerializer.serialize(oppija))
   }
@@ -66,7 +67,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
 
   private def validateOpiskeluoikeus(opiskeluoikeus: Opiskeluoikeus, henkilö: Option[Henkilö])(implicit user: KoskiSession, accessType: AccessType.Value): Either[HttpStatus, Opiskeluoikeus] = opiskeluoikeus match {
     case opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus =>
-      fillMissingOrganisations(opiskeluoikeus).right.flatMap { opiskeluoikeus =>
+      fillMissingFields(opiskeluoikeus).right.flatMap { opiskeluoikeus =>
         (validateAccess(opiskeluoikeus.getOppilaitos)
           .onSuccess { validateLähdejärjestelmä(opiskeluoikeus) }
           .onSuccess {
@@ -88,6 +89,27 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     case _ if accessType == AccessType.write => Left(KoskiErrorCategory.notImplemented.readOnly("Korkeakoulutuksen opiskeluoikeuksia ja ylioppilastutkintojen tietoja ei voi päivittää Koski-järjestelmässä"))
     case _ => Right(opiskeluoikeus)
   }
+
+  private def fillMissingFields(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
+    fillMissingOrganisations(oo).map(fillPerusteenNimi)
+  }
+
+  private def fillPerusteenNimi(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = oo match {
+    case a: AmmatillinenOpiskeluoikeus => a.withSuoritukset(
+      a.suoritukset.map {
+        case s: AmmatillisenTutkinnonSuoritus =>
+          s.copy(koulutusmoduuli = s.koulutusmoduuli.copy(perusteenNimi = s.koulutusmoduuli.perusteenDiaarinumero.flatMap(perusteenNimi)))
+        case s: NäyttötutkintoonValmistavanKoulutuksenSuoritus =>
+          s.copy(tutkinto = s.tutkinto.copy(perusteenNimi = s.tutkinto.perusteenDiaarinumero.flatMap(perusteenNimi)))
+        case s: AmmatillisenTutkinnonOsittainenSuoritus =>
+          s.copy(koulutusmoduuli = s.koulutusmoduuli.copy(perusteenNimi = s.koulutusmoduuli.perusteenDiaarinumero.flatMap(perusteenNimi)))
+        case o => o
+      })
+    case x => x
+  }
+
+  private def perusteenNimi(diaariNumero: String): Option[LocalizedString] =
+    ePerusteet.findPerusteenYksilöintitiedot(diaariNumero).map(_.nimi).flatMap(LocalizedString.sanitize)
 
   private def fillMissingOrganisations(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
     addOppilaitos(oo).flatMap(addKoulutustoimija).map(addKoulutustyyppi).map(setOrganizationNames)
