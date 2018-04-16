@@ -37,7 +37,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
   def createOrUpdate(oppija: Oppija, allowUpdate: Boolean)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
     val oppijaOid: Either[HttpStatus, PossiblyUnverifiedHenkilöOid] = oppija.henkilö match {
       case h:UusiHenkilö =>
-        Hetu.validate(h.hetu, acceptSynthetic = false).right.flatMap { hetu =>
+        Hetu.validate(h.hetu, acceptSynthetic = config.getBoolean("acceptSyntheticHetus")).right.flatMap { hetu =>
           henkilöRepository.findOrCreate(h).right.map(VerifiedHenkilöOid(_))
         }
       case h:TäydellisetHenkilötiedot if mockOids =>
