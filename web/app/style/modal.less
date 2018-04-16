@@ -46,6 +46,41 @@
   .actions {
     float: right;
   }
+
+  &.fullscreen {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+
+    & > .modal-content {
+      margin-left: 50%;
+      width: 80%;
+      top: 50%;
+      max-width: 585px;
+      transform: translateX(-50%) translateY(-50%);
+
+      @media @media-phone {
+        & > .actions {
+          float: none;
+          margin-top: 2rem;
+
+          & > a.peruuta {
+            display: block;
+            text-align: center;
+          }
+
+          & > button {
+            width: 100%;
+            margin-left: 0;
+            margin-top: 1rem;
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
 }
 
 .modal-with-arrow {

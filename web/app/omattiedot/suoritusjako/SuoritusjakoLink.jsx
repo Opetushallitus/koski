@@ -5,6 +5,7 @@ import Text from '../../i18n/Text'
 import DateInput from '../../date/DateInput'
 import {formatISODate, parseISODate} from '../../date/date'
 import Http from '../../util/http'
+import ModalDialog from '../../editor/ModalDialog'
 
 const ApiBaseUrl = '/koski/api/suoritusjako'
 
@@ -19,7 +20,8 @@ export class SuoritusjakoLink extends React.Component {
 
     this.state = {
       isDeletePending: false,
-      isDateUpdatePending: false
+      isDateUpdatePending: false,
+      showDeleteConfirmation: false
     }
 
     this.dateChangeBus = new Bacon.Bus()
@@ -48,7 +50,7 @@ export class SuoritusjakoLink extends React.Component {
     return date.getTime() >= tomorrow.getTime()
   }
 
-  removeHandler() {
+  deleteSelf() {
     const {isDateUpdatePending} = this.state
     const {suoritusjako, onRemove} = this.props
     const {secret} = suoritusjako
@@ -64,8 +66,16 @@ export class SuoritusjakoLink extends React.Component {
     )
   }
 
+  confirmDelete() {
+    this.setState({showDeleteConfirmation: true})
+  }
+
+  cancelConfimDelete() {
+    this.setState({showDeleteConfirmation: false})
+  }
+
   render() {
-    const {isDeletePending, isDateUpdatePending} = this.state
+    const {isDeletePending, isDateUpdatePending, showDeleteConfirmation} = this.state
     const {suoritusjako} = this.props
     const {secret, expirationDate} = suoritusjako
     const url = `${window.location.origin}/koski/opinnot/${secret}`
@@ -96,9 +106,21 @@ export class SuoritusjakoLink extends React.Component {
               <a className='text-button-small' target='_blank' href={url}><Text name='Esikatsele'/></a>
             </div>
             <div className='suoritusjako-link__remove'>
-              <a className={`text-button-small${(isDateUpdatePending ? '--disabled' : '')}`} onClick={this.removeHandler.bind(this)}>
+              <a className={`text-button-small${(isDateUpdatePending ? '--disabled' : '')}`} onClick={this.confirmDelete.bind(this)}>
                 <Text name='Poista linkki käytöstä'/>
               </a>
+
+              {showDeleteConfirmation && (
+                <ModalDialog
+                  fullscreen={true}
+                  onDismiss={this.cancelConfimDelete.bind(this)}
+                  onSubmit={this.deleteSelf.bind(this)}
+                  okTextKey='Kyllä, poista linkki käytöstä'
+                  cancelTextKey='Älä poista linkkiä'
+                >
+                  <Text name='Linkin poistamisen jälkeen kukaan ei pääse katsomaan opintosuorituksiasi, vaikka olisit jakanut tämän linkin heille.'/>
+                </ModalDialog>
+              )}
             </div>
           </div>
         </div>
