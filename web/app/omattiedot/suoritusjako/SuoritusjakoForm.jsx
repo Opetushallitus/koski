@@ -74,7 +74,14 @@ export class SuoritusjakoForm extends React.Component {
   }
 
   componentDidMount() {
-    this.suoritusjaot.onValue(suoritusjaot => this.showNewSuoritusjakoForm.set(R.isEmpty(suoritusjaot)))
+    this.suoritusjaot.slidingWindow(2).onValue(([prev, now]) => {
+      if (!prev) return
+
+      if (!now) this.showNewSuoritusjakoForm.set(R.isEmpty(prev))
+      else if (R.isEmpty(now)) this.showNewSuoritusjakoForm.set(true)
+      else if (now.length > prev.length) this.showNewSuoritusjakoForm.set(false)
+    })
+
     Http.get(Url).onValue(jaot => this.suoritusjaot.set(jaot))
   }
 
