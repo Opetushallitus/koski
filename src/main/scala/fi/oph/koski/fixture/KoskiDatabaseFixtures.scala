@@ -14,7 +14,7 @@ import fi.oph.koski.henkilo.{MockOppijat, VerifiedHenkilöOid}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedot
+import fi.oph.koski.perustiedot.{OpiskeluoikeudenOsittaisetTiedot, OpiskeluoikeudenPerustiedot}
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
@@ -25,26 +25,48 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
   val database = application.masterDatabase
   val db = database.db
   implicit val accessType = AccessType.write
+  var fixtureCacheCreated = false
+  var cachedPerustiedot: Option[Seq[OpiskeluoikeudenOsittaisetTiedot]] = None
 
   def resetFixtures: Unit = {
-    application.perustiedotSyncScheduler.sync
-
     if (database.config.isRemote) throw new IllegalStateException("Trying to reset fixtures in remote database")
 
-    val oids = MockOppijat.oids.sorted
+    application.perustiedotSyncScheduler.sync
 
-    runDbSync(OpiskeluOikeudet.filter(_.oppijaOid inSetBind (oids)).delete)
-    application.perustiedotIndexer.deleteByOppijaOids(oids)
+    val henkilöOids = MockOppijat.oids.sorted
 
-    val henkilöOids: List[Oid] = oids
-    runDbSync(Tables.Henkilöt.filter(_.oid inSetBind henkilöOids).delete)
-    runDbSync(Preferences.delete)
-    runDbSync(Tables.PerustiedotSync.delete)
+    runDbSync(DBIO.sequence(Seq(
+      OpiskeluOikeudet.filter(_.oppijaOid inSetBind (henkilöOids)).delete,
+      Tables.Henkilöt.filter(_.oid inSetBind henkilöOids).delete,
+      Preferences.delete,
+      Tables.PerustiedotSync.delete
+    ) ++ MockOppijat.defaultOppijat.map(application.henkilöCache.addHenkilöAction)))
 
-    application.perustiedotIndexer.updateBulk(validatedOpiskeluoikeudet.map { case (henkilö, opiskeluoikeus) =>
-      val id = application.opiskeluoikeusRepository.createOrUpdate(VerifiedHenkilöOid(henkilö), opiskeluoikeus, false).right.get.id
-      OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, Some(application.henkilöRepository.opintopolku.withMasterInfo(henkilö)))
-    }, true)
+    application.perustiedotIndexer.deleteByOppijaOids(henkilöOids)
+
+    if (!fixtureCacheCreated) {
+      cachedPerustiedot = Some(validatedOpiskeluoikeudet.map { case (henkilö, opiskeluoikeus) =>
+        val id = application.opiskeluoikeusRepository.createOrUpdate(VerifiedHenkilöOid(henkilö), opiskeluoikeus, false).right.get.id
+        OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, Some(application.henkilöRepository.opintopolku.withMasterInfo(henkilö)))
+      })
+      application.perustiedotIndexer.updateBulk(cachedPerustiedot.get, true)
+      val henkilöOidsIn = henkilöOids.map("'" + _ + "'").mkString(",")
+      runDbSync(DBIO.seq(
+        sqlu"drop table if exists opiskeluoikeus_fixture",
+        sqlu"create table opiskeluoikeus_fixture as select * from opiskeluoikeus where oppija_oid in (#$henkilöOidsIn)",
+        sqlu"drop table if exists opiskeluoikeushistoria_fixture",
+        sqlu"create table opiskeluoikeushistoria_fixture as select * from opiskeluoikeushistoria where opiskeluoikeus_id in (select id from opiskeluoikeus_fixture)"
+      ))
+      fixtureCacheCreated = true
+    } else {
+      runDbSync(DBIO.seq(
+        sqlu"alter table opiskeluoikeus disable trigger update_opiskeluoikeus_aikaleima",
+        sqlu"insert into opiskeluoikeus select * from opiskeluoikeus_fixture",
+        sqlu"insert into opiskeluoikeushistoria select * from opiskeluoikeushistoria_fixture",
+        sqlu"alter table opiskeluoikeus enable trigger update_opiskeluoikeus_aikaleima"
+      ))
+      application.perustiedotIndexer.updateBulk(cachedPerustiedot.get, true)
+    }
   }
 
   // cached for performance boost
