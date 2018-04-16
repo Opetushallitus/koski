@@ -1,6 +1,7 @@
 package fi.oph.koski.suoritusjako
 
 
+import java.time.LocalDate
 import java.util.UUID.randomUUID
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -17,7 +18,7 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
     assertSuorituksetExist(oppijaOid, suoritusIds) match {
       case Right(_) =>
         val secret = generateNewSecret()
-        val expirationDate = suoritusjakoRepository.put(secret, oppijaOid, suoritusIds)
+        val expirationDate = suoritusjakoRepository.create(secret, oppijaOid, suoritusIds)
         AuditLog.log(AuditLogMessage(KANSALAINEN_SUORITUSJAKO_LISAYS, koskiSession, Map(oppijaHenkiloOid -> oppijaOid)))
         Right(Suoritusjako(secret, expirationDate))
       case Left(status) => Left(status)
@@ -26,6 +27,14 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
 
   def delete(oppijaOid: String, secret: String): HttpStatus = {
     suoritusjakoRepository.delete(oppijaOid, secret)
+  }
+
+  def update(oppijaOid: String, secret: String, expirationDate: LocalDate): HttpStatus = {
+    if (expirationDate.isBefore(LocalDate.now)) {
+      KoskiErrorCategory.badRequest()
+    } else {
+      suoritusjakoRepository.update(oppijaOid, secret, expirationDate)
+    }
   }
 
   def get(secret: String)(implicit koskiSession: KoskiSession): Either[HttpStatus, Oppija] = {

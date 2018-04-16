@@ -1,5 +1,7 @@
 package fi.oph.koski.suoritusjako
 
+import java.time.LocalDate
+
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.EditorModelSerializer
 import fi.oph.koski.http.KoskiErrorCategory
@@ -46,6 +48,16 @@ class SuoritusjakoServlet(implicit val application: KoskiApplication) extends Ap
     })()
   }
 
+  post("/update") {
+    requireKansalainen
+    withJsonBody({ body =>
+      val request = JsonSerializer.extract[SuoritusjakoUpdateRequest](body)
+      val expirationDate = request.expirationDate
+      val status = application.suoritusjakoService.update(koskiSessionOption.get.oid, request.secret, expirationDate)
+      render(if (status.isOk) SuoritusjakoUpdateResponse(expirationDate) else status)
+    })()
+  }
+
   get("/") {
     requireKansalainen
     render(application.suoritusjakoService.getAll(koskiSessionOption.get.oid))
@@ -56,3 +68,5 @@ class SuoritusjakoServlet(implicit val application: KoskiApplication) extends Ap
 }
 
 case class SuoritusjakoRequest(secret: String)
+case class SuoritusjakoUpdateRequest(secret: String, expirationDate: LocalDate)
+case class SuoritusjakoUpdateResponse(expirationDate: LocalDate)

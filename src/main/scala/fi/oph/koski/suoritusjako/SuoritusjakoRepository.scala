@@ -6,7 +6,7 @@ import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.Tables.SuoritusJako
+import fi.oph.koski.db.Tables.{SuoritusJako, SuoritusjakoTable}
 import fi.oph.koski.db.{DatabaseExecutionContext, KoskiDatabaseMethods, SuoritusjakoRow}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
@@ -21,8 +21,7 @@ class SuoritusjakoRepository(val db: DB) extends Logging with DatabaseExecutionC
     runDbSync(SuoritusJako.filter(r => r.oppijaOid === oppijaOid && r.voimassaAsti >= Date.valueOf(LocalDateTime.now.toLocalDate)).result)
   }
 
-  // TODO: voimassaoloaika
-  def put(secret: String, oppijaOid: String, suoritusIds: List[SuoritusIdentifier]): LocalDate = {
+  def create(secret: String, oppijaOid: String, suoritusIds: List[SuoritusIdentifier]): LocalDate = {
     val expirationDate = LocalDateTime.now.plusMonths(6).toLocalDate
 
     runDbSync(SuoritusJako.insertOrUpdate(SuoritusjakoRow(
@@ -38,17 +37,23 @@ class SuoritusjakoRepository(val db: DB) extends Logging with DatabaseExecutionC
   }
 
   def delete(oppijaOid: String, secret: String): HttpStatus = {
-    val deleted = runDbSync(SuoritusJako
-      .filter(r => r.oppijaOid === oppijaOid && r.secret === secret && r.voimassaAsti >= Date.valueOf(LocalDateTime.now.toLocalDate))
-      .delete
+    val deleted = runDbSync(SuoritusJako.filter(suoritusjakoFilter(oppijaOid, secret)).delete)
+    if (deleted == 0) KoskiErrorCategory.notFound() else HttpStatus.ok
+  }
+
+  def update(oppijaOid: String, secret: String, expirationDate: LocalDate): HttpStatus = {
+    val updated = runDbSync(
+      SuoritusJako.filter(suoritusjakoFilter(oppijaOid, secret))
+        .map(r => r.voimassaAsti)
+        .update(Date.valueOf(expirationDate))
     )
 
-    if (deleted == 0) {
-      KoskiErrorCategory.notFound()
-    } else {
-      HttpStatus.ok
-    }
+    if (updated == 0) KoskiErrorCategory.notFound() else HttpStatus.ok
   }
 
   private def now = timestamp(LocalDateTime.now)
+  private def suoritusjakoFilter(oppijaOid: String, secret: String)(r: SuoritusjakoTable) =
+    r.oppijaOid === oppijaOid &&
+      r.secret === secret &&
+      r.voimassaAsti >= Date.valueOf(LocalDateTime.now.toLocalDate)
 }

@@ -2,10 +2,13 @@ import React from 'react'
 import {CopyableText} from '../../components/CopyableText'
 import Text from '../../i18n/Text'
 import DateInput from '../../date/DateInput'
-import {parseISODate} from '../../date/date'
+import {formatISODate, parseISODate} from '../../date/date'
 import Http from '../../util/http'
 
-const doDelete = secret => Http.post('/koski/api/suoritusjako/delete', {secret})
+const ApiBaseUrl = '/koski/api/suoritusjako'
+
+const doDelete = secret => Http.post(`${ApiBaseUrl}/delete`, {secret})
+const doUpdate = (secret, expirationDate) => Http.post(`${ApiBaseUrl}/update`, {secret, expirationDate})
 
 export const SuoritusjakoLink = ({suoritusjako, onRemove}) => {
   const {secret, expirationDate} = suoritusjako
@@ -19,7 +22,10 @@ export const SuoritusjakoLink = ({suoritusjako, onRemove}) => {
           <label>
             <Text name='Linkin voimassaoloaika'/>
             <Text name='Päättyy'/>
-            <DateInput value={parseISODate(expirationDate)}/>
+            <DateInput
+              value={parseISODate(expirationDate)}
+              valueCallback={date => doUpdate(secret, formatISODate(date))}
+            />
           </label>
         </div>
       </div>
