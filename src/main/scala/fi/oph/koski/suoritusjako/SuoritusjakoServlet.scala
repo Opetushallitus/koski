@@ -28,7 +28,7 @@ class SuoritusjakoServlet(implicit val application: KoskiApplication) extends Ap
     })()
   }
 
-  put("/") {
+  post("/") {
     requireKansalainen
     withJsonBody({ body =>
       Try(JsonSerializer.extract[List[SuoritusIdentifier]](body)).toOption match {

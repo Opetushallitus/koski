@@ -8,7 +8,7 @@ import {SelectableSuoritusList} from './SelectableSuoritusList'
 import {ToggleButton} from '../../components/ToggleButton'
 
 const Url = '/koski/api/suoritusjako'
-const doShare = suoritusIds => Http.put(Url, [...suoritusIds])
+const doShare = suoritusIds => Http.post(Url, [...suoritusIds])
 
 const Ingressi = () => (
   <div className='suoritusjako-form__caption'>
