@@ -1,4 +1,5 @@
 import React from 'react'
+import Bacon from 'baconjs'
 import {CopyableText} from '../../components/CopyableText'
 import Text from '../../i18n/Text'
 import DateInput from '../../date/DateInput'
@@ -19,6 +20,16 @@ export class SuoritusjakoLink extends React.Component {
     this.state = {
       isDeletePending: false
     }
+
+    this.dateValue = new Bacon.Bus()
+  }
+
+  componentDidMount() {
+    this.dateValue
+      .toProperty()
+      .changes()
+      .debounce(1000)
+      .onValue(date => doUpdate(this.props.suoritusjako.secret, formatISODate(date)))
   }
 
   render() {
@@ -37,7 +48,7 @@ export class SuoritusjakoLink extends React.Component {
                 <Text name='Päättyy'/>
                 <DateInput
                   value={parseISODate(expirationDate)}
-                  valueCallback={date => doUpdate(secret, formatISODate(date))}
+                  valueCallback={date => this.dateValue.push(date)}
                 />
               </label>
             </div>
