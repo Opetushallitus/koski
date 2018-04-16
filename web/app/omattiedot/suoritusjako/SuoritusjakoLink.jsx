@@ -93,10 +93,10 @@ export class SuoritusjakoLink extends React.Component {
           </div>
           <div className='suoritusjako-link__bottom-container'>
             <div className='suoritusjako-link__preview'>
-              <a target='_blank' href={url}><Text name='Esikatsele'/></a>
+              <a className='text-button-small' target='_blank' href={url}><Text name='Esikatsele'/></a>
             </div>
             <div className='suoritusjako-link__remove'>
-              <a className={`text-button${(isDateUpdatePending ? '--disabled' : '')}`} onClick={this.removeHandler.bind(this)}>
+              <a className={`text-button-small${(isDateUpdatePending ? '--disabled' : '')}`} onClick={this.removeHandler.bind(this)}>
                 <Text name='Poista linkki käytöstä'/>
               </a>
             </div>
