@@ -25,6 +25,11 @@ a {
   font-weight: 600;
 }
 
+.DisabledTextButton {
+  color: @color-disabled;
+  cursor: default;
+}
+
 .button, button {
   .BaseButton;
 
@@ -72,6 +77,11 @@ a {
 
 a.text-button {
   .BaseButton;
+
+  &--disabled {
+    .BaseButton;
+    .DisabledTextButton;
+  }
 }
 
 th, td {
