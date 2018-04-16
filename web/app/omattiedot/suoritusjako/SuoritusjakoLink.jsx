@@ -12,35 +12,52 @@ const doUpdate = (secret, expirationDate) => Http.post(`${ApiBaseUrl}/update`, {
 
 export const SuoritusjakoLinkPlaceholder = () => <div className='suoritusjako-link--placeholder'/>
 
-export const SuoritusjakoLink = ({suoritusjako, onRemove}) => {
-  const {secret, expirationDate} = suoritusjako
-  const url = `${window.location.origin}/koski/opinnot/${secret}`
+export class SuoritusjakoLink extends React.Component {
+  constructor(props) {
+    super(props)
 
-  return (
-    <div className='suoritusjako-link'>
-      <div className='suoritusjako-link__top-container'>
-        <CopyableText className='suoritusjako-link__url' message={url} multiline={false}/>
-        <div className='suoritusjako-link__expiration'>
-          <label>
-            <Text name='Linkin voimassaoloaika'/>
-            <Text name='Päättyy'/>
-            <DateInput
-              value={parseISODate(expirationDate)}
-              valueCallback={date => doUpdate(secret, formatISODate(date))}
-            />
-          </label>
+    this.state = {
+      isDeletePending: false
+    }
+  }
+
+  render() {
+    const {suoritusjako, onRemove} = this.props
+    const {secret, expirationDate} = suoritusjako
+    const url = `${window.location.origin}/koski/opinnot/${secret}`
+
+    return this.state.isDeletePending ? <SuoritusjakoLinkPlaceholder/>
+      : (
+        <div className='suoritusjako-link'>
+          <div className='suoritusjako-link__top-container'>
+            <CopyableText className='suoritusjako-link__url' message={url} multiline={false}/>
+            <div className='suoritusjako-link__expiration'>
+              <label>
+                <Text name='Linkin voimassaoloaika'/>
+                <Text name='Päättyy'/>
+                <DateInput
+                  value={parseISODate(expirationDate)}
+                  valueCallback={date => doUpdate(secret, formatISODate(date))}
+                />
+              </label>
+            </div>
+          </div>
+          <div className='suoritusjako-link__bottom-container'>
+            <div className='suoritusjako-link__preview'>
+              <a target='_blank' href={url}><Text name='Esikatsele'/></a>
+            </div>
+            <div className='suoritusjako-link__remove'>
+              <a onClick={() => this.setState({isDeletePending: true}, () => {
+                  const res = doDelete(secret)
+                  res.onValue(() => onRemove(suoritusjako))
+                  res.onError(() => this.setState({isDeletePending: false}))
+                }
+              )}>
+                <Text name='Poista linkki käytöstä'/>
+              </a>
+            </div>
+          </div>
         </div>
-      </div>
-      <div className='suoritusjako-link__bottom-container'>
-        <div className='suoritusjako-link__preview'>
-          <a target='_blank' href={url}><Text name='Esikatsele'/></a>
-        </div>
-        <div className='suoritusjako-link__remove'>
-          <a onClick={() => doDelete(secret).onValue(() => onRemove(suoritusjako))}>
-            <Text name='Poista linkki käytöstä'/>
-          </a>
-        </div>
-      </div>
-    </div>
-  )
+      )
+  }
 }
