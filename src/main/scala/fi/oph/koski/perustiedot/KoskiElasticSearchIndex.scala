@@ -11,6 +11,7 @@ import org.json4s.{JValue, _}
 
 class KoskiElasticSearchIndex(val elastic: ElasticSearch) extends Logging {
   def http = elastic.http
+  def refreshIndex = elastic.refreshIndex
   def reindexingNeededAtStartup = init
 
   lazy val init = {

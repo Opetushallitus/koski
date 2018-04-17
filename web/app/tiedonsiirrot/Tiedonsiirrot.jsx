@@ -13,7 +13,6 @@ export const tiedonsiirrotContentP = (location, contentP) => onlyIfHasReadAccess
         {naviLink('/koski/tiedonsiirrot/virheet', 'Virheet', location, 'virheet-link')}
       </nav>
       <div className="main-content tiedonsiirrot-content">
-        <button className="update-content" onClick={() => window.location.reload(true)}><Text name="Päivitä"/></button>
         { content.content }
       </div>
     </div>
@@ -26,3 +25,5 @@ export const naviLink = (path, textKey, location, linkClassName, isSelected = (p
   className = isSelected(path, location) ? className + ' selected' : className
   return (<span className={className}><Link href={path} className={linkClassName}><Text name={textKey}/></Link></span>)
 }
+
+export const ReloadButton = () => <button className="update-content" onClick={() => window.location.reload(true)}><Text name="Päivitä"/></button>

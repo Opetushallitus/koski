@@ -7,6 +7,7 @@ import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
 import {ISO2FinnishDateTime} from '../date/date'
 import {onlyIfHasReadAccess} from '../virkailija/accessCheck'
+import {ReloadButton} from './Tiedonsiirrot'
 
 const yhteenvetoP = (queryString) => Http.cachedGet('/koski/api/tiedonsiirrot/yhteenveto' + queryString, { willHandleErrors: true})
 
@@ -14,6 +15,7 @@ export const tiedonsiirtojenYhteenvetoContentP = (queryString) => onlyIfHasReadA
   ({
     content: (<div className="tiedonsiirto-yhteenveto">
       <Text name="Yhteenveto siirretyistä oppilaitoksittain"/>
+      <ReloadButton/>
       <table>
         <thead>
         <tr>

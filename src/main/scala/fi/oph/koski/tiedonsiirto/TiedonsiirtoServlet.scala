@@ -25,7 +25,7 @@ class TiedonsiirtoServlet(implicit val application: KoskiApplication) extends Ap
   post("/delete") {
     withJsonBody({ body =>
       val request = JsonSerializer.extract[TiedonsiirtoDeleteRequest](body)
-      application.tiedonsiirtoService.delete(request.id)(koskiSession)
+      application.tiedonsiirtoService.delete(request.ids)(koskiSession)
     })()
   }
 
@@ -38,4 +38,4 @@ class TiedonsiirtoServlet(implicit val application: KoskiApplication) extends Ap
   }
 }
 
-case class TiedonsiirtoDeleteRequest(id: String)
+case class TiedonsiirtoDeleteRequest(ids: List[String])
