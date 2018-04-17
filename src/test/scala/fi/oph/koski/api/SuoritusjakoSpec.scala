@@ -12,6 +12,7 @@ import org.scalatest.{FreeSpec, Matchers}
 import scala.collection.mutable
 
 class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matchers {
+  resetFixtures
   val secrets: mutable.Map[String, String] = mutable.Map()
 
   "Suoritusjaon lisääminen" - {
