@@ -14,25 +14,28 @@ import fi.oph.koski.log.{AuditLog, _}
 import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedot, OpiskeluoikeudenPerustiedotIndexer}
 import fi.oph.koski.schema._
-import fi.oph.koski.util.Timing
+import fi.oph.koski.util.{Timing, WithWarnings}
 
-class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: KoskiHenkilöCache, opiskeluoikeusRepository: OpiskeluoikeusRepository, historyRepository: OpiskeluoikeusHistoryRepository, perustiedotIndexer: OpiskeluoikeudenPerustiedotIndexer, config: Config, hetu: Hetu) extends Logging with Timing with GlobalExecutionContext {
+class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: KoskiHenkilöCache, opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository, historyRepository: OpiskeluoikeusHistoryRepository, perustiedotIndexer: OpiskeluoikeudenPerustiedotIndexer, config: Config, hetu: Hetu) extends Logging with Timing with GlobalExecutionContext {
   private lazy val mockOids = config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid")
-  def findOppija(oid: String)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(oid, opiskeluoikeusRepository.findByOppijaOid(oid))
+
+  def findOppija(oid: String)(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] =
+    toOppija(oid, opiskeluoikeusRepository.findByOppijaOid(oid))
+
+  def findUserOppija(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] =
+    toOppija(user.oid, opiskeluoikeusRepository.findByUserOid(user.oid))
 
   def findVersion(oppijaOid: String, opiskeluoikeusOid: String, versionumero: Int)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = {
     opiskeluoikeusRepository.getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid).right.flatMap {
       case oids if oids.contains(oppijaOid) =>
         historyRepository.findVersion(opiskeluoikeusOid, versionumero).right.flatMap { history =>
-          toOppija(oppijaOid, List(history))
+          toOppija(oppijaOid, WithWarnings(List(history), Nil)).map(_.get)
         }
       case _ =>
         logger(user).warn(s"Yritettiin hakea opiskeluoikeuden $opiskeluoikeusOid versiota $versionumero väärällä oppija-oidilla $oppijaOid")
         Left(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
     }
   }
-
-  def findUserOppija(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(user.oid, opiskeluoikeusRepository.findByUserOid(user.oid))
 
   def createOrUpdate(oppija: Oppija, allowUpdate: Boolean)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
     val oppijaOid: Either[HttpStatus, PossiblyUnverifiedHenkilöOid] = oppija.henkilö match {
@@ -74,7 +77,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
       if (!OpiskeluoikeusAccessChecker.isInvalidatable(row.toOpiskeluoikeus, user)) {
         Left(KoskiErrorCategory.forbidden("Mitätöinti ei sallittu"))
       } else {
-        findOppija(row.oppijaOid).flatMap(cancelOpiskeluoikeus(opiskeluoikeusOid))
+        findOppija(row.oppijaOid).map(_.getIgnoringWarnings).flatMap(cancelOpiskeluoikeus(opiskeluoikeusOid))
       }
     }.flatMap(oppija => createOrUpdate(oppija, allowUpdate = true))
 
@@ -146,15 +149,15 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
   }
 
   // Hakee oppijan oppijanumerorekisteristä ja liittää siihen opiskeluoikeudet. Opiskeluoikeudet haetaan vain, jos oppija löytyy.
-  private def toOppija(oid: Henkilö.Oid, opiskeluoikeudet: => Seq[Opiskeluoikeus])(implicit user: KoskiSession): Either[HttpStatus, Oppija] = {
+  private def toOppija(oid: Henkilö.Oid, opiskeluoikeudet: => WithWarnings[Seq[Opiskeluoikeus]])(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
     def notFound = Left(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa " + oid + " ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
     henkilöRepository.findByOid(oid) match {
       case Some(oppija) =>
         opiskeluoikeudet match {
-          case Nil => notFound
-          case opiskeluoikeudet: Seq[Opiskeluoikeus] =>
+          case WithWarnings(Nil, Nil) => notFound
+          case oo: WithWarnings[Seq[Opiskeluoikeus]] =>
             writeViewingEventToAuditLog(user, oid)
-            Right(Oppija(oppija, opiskeluoikeudet))
+            Right(oo.map(Oppija(oppija, _)))
         }
       case None => notFound
     }

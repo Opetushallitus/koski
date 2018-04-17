@@ -30,7 +30,7 @@ trait SuoritusjakoTestMethods extends LocalJettyHttpSpecification with Opiskeluo
   }
 
   def getSuoritusjakoOppija(secret: String): Oppija = {
-    KoskiApplicationForTests.suoritusjakoService.get(secret)(mockKoskiSession).right.get
+    KoskiApplicationForTests.suoritusjakoService.get(secret)(mockKoskiSession).flatMap(_.warningsToLeft).right.get
   }
 
   def getSuoritusjakoDescriptors[A](hetu: String = suoritusjakoHetu, authenticate: Boolean = true)(f: => A): A = {

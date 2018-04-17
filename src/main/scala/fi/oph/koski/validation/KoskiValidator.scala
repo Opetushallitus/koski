@@ -12,7 +12,7 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.localization.LocalizedString
-import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusRepository
+import fi.oph.koski.opiskeluoikeus.KoskiOpiskeluoikeusRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.Opiskeluoikeus.{koulutustoimijaTraversal, oppilaitosTraversal, toimipisteetTraversal}
@@ -23,7 +23,7 @@ import fi.oph.koski.util.Timing
 import mojave._
 import org.json4s.{JArray, JValue}
 
-class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: KoodistoViitePalvelu, val organisaatioRepository: OrganisaatioRepository, opiskeluoikeudet: OpiskeluoikeusRepository, opintopolku: OpintopolkuHenkilöRepository, ePerusteet: EPerusteetRepository) extends Timing {
+class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: KoodistoViitePalvelu, val organisaatioRepository: OrganisaatioRepository, koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository, opintopolku: OpintopolkuHenkilöRepository, ePerusteet: EPerusteetRepository) extends Timing {
   def validateAsJson(oppija: Oppija)(implicit user: KoskiSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
     extractAndValidateOppija(JsonSerializer.serialize(oppija))
   }
@@ -184,7 +184,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
 
   private def validateSisältyvyys(henkilö: Option[Henkilö], opiskeluoikeus: Opiskeluoikeus)(implicit user: KoskiSession, accessType: AccessType.Value): HttpStatus = opiskeluoikeus.sisältyyOpiskeluoikeuteen match {
     case Some(SisältäväOpiskeluoikeus(Oppilaitos(oppilaitosOid, _, _, _), oid)) if accessType == AccessType.write =>
-      opiskeluoikeudet.findByOid(oid)(KoskiSession.systemUser) match {
+      koskiOpiskeluoikeudet.findByOid(oid)(KoskiSession.systemUser) match {
         case Right(sisältäväOpiskeluoikeus) if sisältäväOpiskeluoikeus.oppilaitosOid != oppilaitosOid =>
           KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.vääräOppilaitos()
         case Right(sisältäväOpiskeluoikeus) =>

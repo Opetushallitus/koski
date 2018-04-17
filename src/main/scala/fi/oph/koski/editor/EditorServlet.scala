@@ -10,6 +10,7 @@ import fi.oph.koski.preferences.PreferencesService
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.todistus.LocalizedHtml
+import fi.oph.koski.util.WithWarnings
 import fi.oph.koski.validation.ValidationAndResolvingContext
 import org.json4s.jackson.Serialization
 
@@ -20,7 +21,7 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
   private val preferencesService = PreferencesService(application.masterDatabase.db)
   private def localization = LocalizedHtml.get(koskiSession, application.localizationRepository)
   get("/:oid") {
-    renderEither((params.get("opiskeluoikeus"), getOptionalIntegerParam("versionumero")) match {
+    renderEither[EditorModel]((params.get("opiskeluoikeus"), getOptionalIntegerParam("versionumero")) match {
       case (Some(opiskeluoikeusOid), Some(versionumero)) =>
         findVersion(params("oid"), opiskeluoikeusOid, versionumero)
       case _ =>
@@ -82,7 +83,7 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
       oid <- HenkilöOid.validateHenkilöOid(henkilöOid).right
       oppija <- application.oppijaFacade.findVersion(oid, opiskeluoikeusOid, versionumero)
     } yield {
-      toEditorModel(oppija, editable = false)
+      toEditorModel(WithWarnings(oppija, Nil), editable = false)
     }
   }
 }
