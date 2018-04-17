@@ -36,7 +36,7 @@ export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaine
         {oppiaineetWithErrorRows}
         </tbody>
       </table>
-      <div className="kurssit-yhteensä">{t('Kursseja yhteensä') + ': ' + kurssitTotal(oppiaineet)}</div>
+      <div className="kurssit-yhteensä">{t('Suoritettuja kursseja') + ': ' + kurssitTotal(oppiaineet)}</div>
       <UusiLukionOppiaineDropdown
         model={päätasonSuoritusModel}
         oppiaineenSuoritusClasses={classesForUusiOppiaineenSuoritus}

@@ -63,7 +63,7 @@ describe('Lukiokoulutus', function( ){
           'Tanssi ja liike\nITT1\n10 1 10\n(10,0)\n' +
           'Teemaopinnot\nMTA\nS 1 S\n' +
           'Oman äidinkielen opinnot\nOA1\nS 1 S\n' +
-          'Kursseja yhteensä: 91')
+          'Suoritettuja kursseja: 91')
       })
     })
 
@@ -575,14 +575,14 @@ describe('Lukiokoulutus', function( ){
           'Tietojenkäsittely\n' +
           'ATK1\n' +
           'S 1 S\n' +
-          'Kursseja yhteensä: 6\n' +
+          'Suoritettuja kursseja: 6\n' +
           'Valinnaisena suoritetut lukiokurssit\n' +
           'Oppiaine Laajuus (kurssia) Arvosana (keskiarvo)\n' +
           'A1-kieli, englanti\n' +
           'ENA1\n' +
           '8 1 S\n' +
           '(8,0)\n' +
-          'Kursseja yhteensä: 1'
+          'Suoritettuja kursseja: 1'
         )
       })
     })
