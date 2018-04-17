@@ -47,7 +47,7 @@ export class Suoritustaulukko extends React.Component {
 
     let grouped, groupIds, groupTitles
 
-    if (isAmmatillinenTutkinto && isAmmatillinenPerustutkinto && suoritustapa && suoritustapa.koodiarvo === 'ops') {
+    if (isAmmatillinenTutkinto && isAmmatillinenPerustutkinto && suoritustapa && ['ops', 'reformi'].includes(suoritustapa.koodiarvo)) {
       grouped = R.groupBy(s => modelData(s, 'tutkinnonOsanRyhmä.koodiarvo') || placeholderForNonGrouped)(suoritukset)
       groupTitles = R.merge(ammatillisentutkinnonosanryhmaKoodisto, { [placeholderForNonGrouped] : t('Muut suoritukset')})
       groupIds = R.keys(grouped).sort()
@@ -231,7 +231,7 @@ const TutkintokertaColumn = {
 
 const SuoritusColumn = {
   shouldShow : () => true,
-  renderHeader: ({groupTitles, groupId}) => <td key="suoritus">{groupTitles[groupId]}</td>,
+  renderHeader: ({groupTitles, groupId}) => <td key="suoritus" className="tutkinnon-osan-ryhma">{groupTitles[groupId]}</td>,
   renderData: ({model, showTila, onExpand, hasProperties, expanded}) => {
     let koulutusmoduuli = modelLookup(model, 'koulutusmoduuli')
     let titleAsExpandLink = hasProperties && (!osanOsa(koulutusmoduuli) || !model.context.edit)
