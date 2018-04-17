@@ -19,8 +19,8 @@ trait SuoritusjakoTestMethods extends LocalJettyHttpSpecification with Opiskeluo
     KoskiSession.suoritusjakoKatsominenUser(request)
   }
 
-  def putSuoritusjako[A](body: Array[Byte], hetu: String = suoritusjakoHetu)(f: => A): A = {
-    put("api/suoritusjako", body = body, headers = kansalainenLoginHeaders(hetu) ++ jsonContent)(f)
+  def createSuoritusjako[A](body: Array[Byte], hetu: String = suoritusjakoHetu)(f: => A): A = {
+    post("api/suoritusjako", body = body, headers = kansalainenLoginHeaders(hetu) ++ jsonContent)(f)
   }
 
   def getSuoritusjako[A](secret: String)(f: => A): A = {

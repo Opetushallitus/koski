@@ -25,7 +25,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
           "koulutusmoduulinTunniste": "7"
         }]"""
 
-        putSuoritusjako(json){
+        createSuoritusjako(json){
           verifyResponseStatusOk()
           secretYksiSuoritus = Option(JsonSerializer.parse[Suoritusjako](response.body).secret)
         }
@@ -42,7 +42,8 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
           "suorituksenTyyppi": "perusopetuksenvuosiluokka",
           "koulutusmoduulinTunniste": "6"
         }]"""
-        putSuoritusjako(json) {
+
+        createSuoritusjako(json) {
           verifyResponseStatusOk()
           secretKaksiSuoritusta = Option(JsonSerializer.parse[Suoritusjako](response.body).secret)
         }
@@ -56,7 +57,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
           "koulutusmoduulinTunniste": "7"
         }]"""
 
-        putSuoritusjako(json, hetu = "060498-997J"){
+        createSuoritusjako(json, hetu = "060498-997J"){
           verifyResponseStatusOk()
           secretVuosiluokanTuplausSuoritus = Option(JsonSerializer.parse[Suoritusjako](response.body).secret)
         }
@@ -71,7 +72,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
           "koulutusmoduulinTunniste": "351301"
         }]"""
 
-        putSuoritusjako(json, hetu = "270303-281N"){
+        createSuoritusjako(json, hetu = "270303-281N"){
           verifyResponseStatusOk()
           secretLähdejärjestelmällinenSuoritus = Option(JsonSerializer.parse[Suoritusjako](response.body).secret)
         }
@@ -87,7 +88,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
           "koulutusmoduulinTunniste": "9"
         }]"""
 
-        putSuoritusjako(json) {
+        createSuoritusjako(json) {
           verifyResponseStatus(404, KoskiErrorCategory.notFound.suoritustaEiLöydy())
         }
       }
@@ -104,7 +105,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
           "koulutusmoduulinTunniste": "9"
         }]"""
 
-        putSuoritusjako(json) {
+        createSuoritusjako(json) {
           verifyResponseStatus(404, KoskiErrorCategory.notFound.suoritustaEiLöydy())
         }
       }
@@ -116,7 +117,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
           "suorituksenTyyppi": "perusopetuksenvuosiluokka"
         }]"""
 
-        putSuoritusjako(json) {
+        createSuoritusjako(json) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.format())
         }
       }
@@ -130,7 +131,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
           "extra": "extra"
         }]"""
 
-        putSuoritusjako(json) {
+        createSuoritusjako(json) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.format())
         }
       }
@@ -143,7 +144,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
           "koulutusmoduulinTunniste": "7
         }]"""
 
-        putSuoritusjako(json) {
+        createSuoritusjako(json) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.format.json("Epäkelpo JSON-dokumentti"))
         }
       }
@@ -151,7 +152,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
       "tyhjällä suorituslistalla" in {
         val json = "[]"
 
-        putSuoritusjako(json) {
+        createSuoritusjako(json) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.format())
         }
       }
@@ -166,7 +167,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
           "koulutusmoduulinTunniste": "7"
         }]"""
 
-      putSuoritusjako(json){
+      createSuoritusjako(json){
         verifyResponseStatusOk()
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_LISAYS"))
       }
