@@ -8,7 +8,10 @@ import {suorituksenTyyppi} from '../../suoritus/Suoritus'
 import Text from '../../i18n/Text'
 
 const isKorkeakoulunOpintojakso = suoritus => suorituksenTyyppi(suoritus) === 'korkeakoulunopintojakso'
+
 const groupSuoritukset = suoritukset => isKorkeakoulunOpintojakso(suoritukset[0]) ? [suoritukset[0]] : suoritukset
+const withIdentifiers = opiskeluoikeus => suoritukset => suoritukset.map(suoritus => ({suoritus, id: SuoritusIdentifier(opiskeluoikeus, suoritus)}))
+const withoutDuplicates = suorituksetWithIdentifiers => R.uniqBy(sWithId => sWithId.id, suorituksetWithIdentifiers)
 
 export const SelectableSuoritusList = ({opiskeluoikeudet, selectedSuoritusIds}) => {
   const toggleSelection = id => event =>
@@ -28,16 +31,19 @@ export const SelectableSuoritusList = ({opiskeluoikeudet, selectedSuoritusIds}) 
             </li>,
             Bacon.combineWith(oppilaitoksenOpiskeluoikeudet, selectedSuoritusIds, (opiskeluoikeudeModels, selectedIds) =>
               opiskeluoikeudeModels.map(oo => {
+                const identifiersWithTitles = suorituksetWithIdentifiers => suorituksetWithIdentifiers.map(
+                  ({suoritus, id}) => ({
+                    id,
+                    Title: () => suorituksenTyyppi(suoritus) === 'korkeakoulunopintojakso'
+                      ? <span>{päätasonSuoritukset.length} <Text name='opintojaksoa'/></span>
+                      : <span>{suoritusjakoSuoritusTitle(suoritus)}</span>
+                  }))
+
                 const päätasonSuoritukset = modelItems(oo, 'suoritukset')
                 const näytettävätSuoritukset = groupSuoritukset(päätasonSuoritukset)
+                const options = R.compose(identifiersWithTitles, withoutDuplicates, withIdentifiers(oo))(näytettävätSuoritukset)
 
-                return näytettävätSuoritukset.map(suoritus => {
-                  const id = SuoritusIdentifier(oo, suoritus)
-                  const Title = () => suorituksenTyyppi(suoritus) === 'korkeakoulunopintojakso'
-                    ? <span>{päätasonSuoritukset.length} <Text name='opintojaksoa'/></span>
-                    : <span>{suoritusjakoSuoritusTitle(suoritus)}</span>
-
-                  return (
+                return options.map(({id, Title}) => (
                     <li key={id}>
                       <input
                         type='checkbox'
@@ -49,7 +55,7 @@ export const SelectableSuoritusList = ({opiskeluoikeudet, selectedSuoritusIds}) 
                       <label htmlFor={id}><Title/></label>
                     </li>
                   )
-                })
+                )
               })
             )
           ]
