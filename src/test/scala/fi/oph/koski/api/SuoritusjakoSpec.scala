@@ -9,11 +9,10 @@ import fi.oph.koski.schema.PerusopetuksenVuosiluokanSuoritus
 import fi.oph.koski.suoritusjako.{SuoritusIdentifier, Suoritusjako}
 import org.scalatest.{FreeSpec, Matchers}
 
+import scala.collection.mutable
+
 class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matchers {
-  var secretYksiSuoritus: Option[String] = None
-  var secretKaksiSuoritusta: Option[String] = None
-  var secretVuosiluokanTuplausSuoritus: Option[String] = None
-  var secretLähdejärjestelmällinenSuoritus: Option[String] = None
+  val secrets: mutable.Map[String, String] = mutable.Map()
 
   "Suoritusjaon lisääminen" - {
     "onnistuu" - {
@@ -27,7 +26,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
 
         createSuoritusjako(json){
           verifyResponseStatusOk()
-          secretYksiSuoritus = Option(JsonSerializer.parse[Suoritusjako](response.body).secret)
+          secrets += ("yksi suoritus" -> JsonSerializer.parse[Suoritusjako](response.body).secret)
         }
       }
 
@@ -45,7 +44,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
 
         createSuoritusjako(json) {
           verifyResponseStatusOk()
-          secretKaksiSuoritusta = Option(JsonSerializer.parse[Suoritusjako](response.body).secret)
+          secrets += ("kaksi suoritusta" -> JsonSerializer.parse[Suoritusjako](response.body).secret)
         }
       }
 
@@ -59,7 +58,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
 
         createSuoritusjako(json, hetu = "060498-997J"){
           verifyResponseStatusOk()
-          secretVuosiluokanTuplausSuoritus = Option(JsonSerializer.parse[Suoritusjako](response.body).secret)
+          secrets += ("vuosiluokan tuplaus" -> JsonSerializer.parse[Suoritusjako](response.body).secret)
         }
       }
 
@@ -74,7 +73,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
 
         createSuoritusjako(json, hetu = "270303-281N"){
           verifyResponseStatusOk()
-          secretLähdejärjestelmällinenSuoritus = Option(JsonSerializer.parse[Suoritusjako](response.body).secret)
+          secrets += ("lähdejärjestelmällinen" -> JsonSerializer.parse[Suoritusjako](response.body).secret)
         }
       }
     }
@@ -176,7 +175,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
 
   "Suoritusjaon hakeminen" - {
     "onnistuu oikealla salaisuudella" in {
-      getSuoritusjako(secretYksiSuoritus.get) {
+      getSuoritusjako(secrets("yksi suoritus")) {
         verifyResponseStatusOk()
       }
     }
@@ -189,7 +188,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
 
     "sisältää oikeat suoritukset" - {
       "yhden jaetun suorituksen salaisuudella" in {
-        val oppija = getSuoritusjakoOppija(secretYksiSuoritus.get)
+        val oppija = getSuoritusjakoOppija(secrets("yksi suoritus"))
         verifySuoritusIds(oppija, List(SuoritusIdentifier(
           lähdejärjestelmänId = None,
           oppilaitosOid = "1.2.246.562.10.64353470871",
@@ -199,7 +198,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
       }
 
       "kahden jaetun suorituksen salaisuudella" in {
-        val oppija = getSuoritusjakoOppija(secretKaksiSuoritusta.get)
+        val oppija = getSuoritusjakoOppija(secrets("kaksi suoritusta"))
         verifySuoritusIds(oppija, List(
           SuoritusIdentifier(
             lähdejärjestelmänId = None,
@@ -217,7 +216,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
       }
 
       "duplikoidun suorituksen salaisuudella" in {
-        val oppija = getSuoritusjakoOppija(secretVuosiluokanTuplausSuoritus.get)
+        val oppija = getSuoritusjakoOppija(secrets("vuosiluokan tuplaus"))
 
         // Palautetaan vain yksi suoritus
         verifySuoritusIds(oppija, List(SuoritusIdentifier(
@@ -235,7 +234,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
       }
 
       "lähdejärjestelmällisellä suorituksella" in {
-        val oppija = getSuoritusjakoOppija(secretLähdejärjestelmällinenSuoritus.get)
+        val oppija = getSuoritusjakoOppija(secrets("lähdejärjestelmällinen"))
         verifySuoritusIds(oppija, List(SuoritusIdentifier(
           lähdejärjestelmänId = Some("12345"),
           oppilaitosOid = "1.2.246.562.10.52251087186",
@@ -246,7 +245,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
     }
 
     "ei sisällä hetua" in {
-      getSuoritusjako(secretYksiSuoritus.get) {
+      getSuoritusjako(secrets("yksi suoritus")) {
         verifyResponseStatusOk()
         val bodyString = new String(response.bodyBytes, StandardCharsets.UTF_8)
         bodyString should not include(suoritusjakoHetu)
@@ -254,7 +253,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
     }
 
     "salaisuus ei päädy lokiin" in {
-      val secret = secretYksiSuoritus.get
+      val secret = secrets("yksi suoritus")
       val maskedSecret = secret.take(8) + "*" * (32 - 8)
       get(s"opinnot/$secret") {
         verifyResponseStatusOk()
@@ -265,7 +264,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
 
     "tuottaa auditlog-merkinnän" in {
       AuditLogTester.clearMessages
-      getSuoritusjako(secretYksiSuoritus.get) {
+      getSuoritusjako(secrets("yksi suoritus")) {
         verifyResponseStatusOk()
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN"))
       }
