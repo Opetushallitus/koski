@@ -1,6 +1,7 @@
 package fi.oph.koski.api
 
 import java.nio.charset.StandardCharsets
+import java.time.LocalDateTime
 
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
@@ -156,6 +157,19 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.format())
         }
       }
+
+      "tunnistautumattomalla käyttäjällä" in {
+        val json =
+          """[{
+          "oppilaitosOid": "1.2.246.562.10.64353470871",
+          "suorituksenTyyppi": "perusopetuksenvuosiluokka",
+          "koulutusmoduulinTunniste": "7"
+        }]"""
+
+        createSuoritusjako(json, authenticate = false){
+          verifyResponseStatus(401, KoskiErrorCategory.unauthorized.notAuthenticated())
+        }
+      }
     }
 
     "tuottaa auditlog-merkinnän" in {
@@ -170,6 +184,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
       createSuoritusjako(json){
         verifyResponseStatusOk()
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_LISAYS"))
+        secrets += ("auditlog" -> JsonSerializer.parse[Suoritusjako](response.body).secret)
       }
     }
   }
@@ -268,6 +283,190 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
       getSuoritusjako(secrets("yksi suoritus")) {
         verifyResponseStatusOk()
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUORITUSJAKO_KATSOMINEN"))
+      }
+    }
+  }
+
+  "Suoritusjakolinkkien hakeminen" - {
+    "onnistuu" - {
+      "kun jakoja on olemassa" in {
+        getSuoritusjakoDescriptors(){
+          verifyResponseStatusOk()
+        }
+      }
+
+      "kun jakoja ei ole olemassa" in {
+        getSuoritusjakoDescriptors(hetu = "160932-311V"){
+          verifyResponseStatusOk()
+        }
+      }
+    }
+
+    "sisältää" - {
+      "kaikki jaot kun useita jakoja" in {
+        val expirationDate = LocalDateTime.now().plusMonths(6).toLocalDate
+
+        getSuoritusjakoDescriptors(){
+          verifySuoritusjakoDescriptors(List(
+            Suoritusjako(secrets("yksi suoritus"), expirationDate),
+            Suoritusjako(secrets("kaksi suoritusta"), expirationDate),
+            Suoritusjako(secrets("auditlog"), expirationDate)
+          ))
+        }
+      }
+
+      "yksittäisen jaon kun duplikoitu suoritus jaettu (vuosiluokan tuplaus)" in {
+        val expirationDate = LocalDateTime.now().plusMonths(6).toLocalDate
+
+        getSuoritusjakoDescriptors(hetu = "060498-997J"){
+          verifySuoritusjakoDescriptors(List(
+            Suoritusjako(secrets("vuosiluokan tuplaus"), expirationDate)
+          ))
+        }
+      }
+
+      "yksittäisen jaon kun lähdejärjestelmällinen suoritus jaettu" in {
+        val expirationDate = LocalDateTime.now().plusMonths(6).toLocalDate
+
+        getSuoritusjakoDescriptors(hetu = "270303-281N"){
+          verifySuoritusjakoDescriptors(List(
+            Suoritusjako(secrets("lähdejärjestelmällinen"), expirationDate)
+          ))
+        }
+      }
+
+      "tyhjän listan kun jakoja ei ole olemassa" in {
+        getSuoritusjakoDescriptors(hetu = "160932-311V"){
+          verifySuoritusjakoDescriptors(List())
+        }
+      }
+    }
+
+    "epäonnistuu tunnistautumattomalla käyttäjällä" in {
+      getSuoritusjakoDescriptors(authenticate = false){
+        verifyResponseStatus(401, KoskiErrorCategory.unauthorized.notAuthenticated())
+      }
+    }
+  }
+
+  "Suoritusjaon päivämäärän muuttaminen" - {
+    "onnistuu" - {
+      "oikeellisella salaisuudella ja tulevalla päivämäärällä" in {
+        val expirationDate = LocalDateTime.now().plusMonths(1).toLocalDate
+        val json =
+          s"""{
+          "secret": "${secrets("yksi suoritus")}",
+          "expirationDate": "${expirationDate.toString}"
+        }"""
+
+        updateSuoritusjako(json){
+          verifyResponseStatusOk()
+          verifySuoritusjakoUpdate(expirationDate)
+        }
+      }
+    }
+
+    "epäonnistuu" - {
+      "oikeellisella salaisuudella mutta menneellä päivämäärällä" in {
+        val expirationDate = LocalDateTime.now().minusDays(1).toLocalDate
+        val json =
+          s"""{
+          "secret": "${secrets("yksi suoritus")}",
+          "expirationDate": "${expirationDate.toString}"
+        }"""
+
+        updateSuoritusjako(json){
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest())
+        }
+      }
+
+      "epäkelvolla salaisuudella" in {
+        val expirationDate = LocalDateTime.now().plusMonths(1).toLocalDate
+        val json =
+          s"""{
+          "secret": "2.2.246.562.10.64353470871",
+          "expirationDate": "${expirationDate.toString}"
+        }"""
+
+        updateSuoritusjako(json){
+          verifyResponseStatus(404, KoskiErrorCategory.notFound())
+        }
+      }
+
+      "väärällä käyttäjällä" in {
+        val expirationDate = LocalDateTime.now().plusMonths(1).toLocalDate
+        val json =
+          s"""{
+          "secret": "${secrets("yksi suoritus")}",
+          "expirationDate": "${expirationDate.toString}"
+        }"""
+
+        updateSuoritusjako(json, "160932-311V"){
+          verifyResponseStatus(404, KoskiErrorCategory.notFound())
+        }
+      }
+
+      "tunnistautumattomalla käyttäjällä" in {
+        val expirationDate = LocalDateTime.now().plusMonths(1).toLocalDate
+        val json =
+          s"""{
+          "secret": "${secrets("yksi suoritus")}",
+          "expirationDate": "${expirationDate.toString}"
+        }"""
+
+        updateSuoritusjako(json, authenticate = false){
+          verifyResponseStatus(401, KoskiErrorCategory.unauthorized.notAuthenticated())
+        }
+      }
+    }
+  }
+
+  "Suoritusjaon poistaminen" - {
+    "onnistuu" - {
+      "oikeellisella salaisuudella" in {
+        val json =
+          s"""{
+          "secret": "${secrets("yksi suoritus")}"
+        }"""
+
+        deleteSuoritusjako(json){
+          verifyResponseStatusOk()
+        }
+      }
+    }
+
+    "epäonnistuu" - {
+      "epäkelvolla salaisuudella" in {
+        val json =
+          s"""{
+          "secret": "2.2.246.562.10.64353470871"
+        }"""
+
+        deleteSuoritusjako(json){
+          verifyResponseStatus(404, KoskiErrorCategory.notFound())
+        }
+      }
+
+      "väärällä käyttäjällä" in {
+        val json =
+          s"""{
+          "secret": "${secrets("kaksi suoritusta")}"
+        }"""
+
+        deleteSuoritusjako(json, "160932-311V"){
+          verifyResponseStatus(404, KoskiErrorCategory.notFound())
+        }
+      }
+
+      "tunnistautumattomalla käyttäjällä" in {
+        val json =
+          s"""{
+          "secret": "${secrets("kaksi suoritusta")}"
+        }"""
+
+        deleteSuoritusjako(json, authenticate = false){
+          verifyResponseStatus(401, KoskiErrorCategory.unauthorized.notAuthenticated())
+        }
       }
     }
   }

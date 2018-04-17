@@ -1,8 +1,10 @@
 package fi.oph.koski.api
 
+import java.time.LocalDate
+
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.schema.Oppija
-import fi.oph.koski.suoritusjako.{SuoritusIdentifier, SuoritusjakoRequest}
+import fi.oph.koski.suoritusjako.{SuoritusIdentifier, Suoritusjako, SuoritusjakoRequest, SuoritusjakoUpdateResponse}
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.koskiuser.KoskiSession
 import org.mockito.Mockito.{mock, when, RETURNS_DEEP_STUBS}
@@ -19,8 +21,8 @@ trait SuoritusjakoTestMethods extends LocalJettyHttpSpecification with Opiskeluo
     KoskiSession.suoritusjakoKatsominenUser(request)
   }
 
-  def createSuoritusjako[A](body: Array[Byte], hetu: String = suoritusjakoHetu)(f: => A): A = {
-    post("api/suoritusjako", body = body, headers = kansalainenLoginHeaders(hetu) ++ jsonContent)(f)
+  def createSuoritusjako[A](body: Array[Byte], hetu: String = suoritusjakoHetu, authenticate: Boolean = true)(f: => A): A = {
+    post("api/suoritusjako", body = body, headers = (if (authenticate) kansalainenLoginHeaders(hetu) else Nil) ++ jsonContent)(f)
   }
 
   def getSuoritusjako[A](secret: String)(f: => A): A = {
@@ -29,6 +31,18 @@ trait SuoritusjakoTestMethods extends LocalJettyHttpSpecification with Opiskeluo
 
   def getSuoritusjakoOppija(secret: String): Oppija = {
     KoskiApplicationForTests.suoritusjakoService.get(secret)(mockKoskiSession).right.get
+  }
+
+  def getSuoritusjakoDescriptors[A](hetu: String = suoritusjakoHetu, authenticate: Boolean = true)(f: => A): A = {
+    get("api/suoritusjako", headers = (if (authenticate) kansalainenLoginHeaders(hetu) else Nil) ++ jsonContent)(f)
+  }
+
+  def updateSuoritusjako[A](body: Array[Byte], hetu: String = suoritusjakoHetu, authenticate: Boolean = true)(f: => A): A = {
+    post("api/suoritusjako/update", body = body, headers = (if (authenticate) kansalainenLoginHeaders(hetu) else Nil) ++ jsonContent)(f)
+  }
+
+  def deleteSuoritusjako[A](body: Array[Byte], hetu: String = suoritusjakoHetu, authenticate: Boolean = true)(f: => A): A = {
+    post("api/suoritusjako/delete", body = body, headers = (if (authenticate) kansalainenLoginHeaders(hetu) else Nil) ++ jsonContent)(f)
   }
 
   def parseOppija(): Oppija = {
@@ -46,5 +60,15 @@ trait SuoritusjakoTestMethods extends LocalJettyHttpSpecification with Opiskeluo
     )
 
     actualSuoritusIds should contain theSameElementsAs expectedSuoritusIds
+  }
+
+  def verifySuoritusjakoUpdate(expectedExpirationDate: LocalDate): Unit = {
+    val actualExpirationDate = JsonSerializer.parse[SuoritusjakoUpdateResponse](response.body).expirationDate
+    actualExpirationDate shouldEqual expectedExpirationDate
+  }
+
+  def verifySuoritusjakoDescriptors(expectedSuoritusjaot: List[Suoritusjako]): Unit = {
+    val actualSuoritusjaot = JsonSerializer.parse[List[Suoritusjako]](response.body)
+    actualSuoritusjaot should contain theSameElementsAs expectedSuoritusjaot
   }
 }
