@@ -11,7 +11,7 @@ function OmatTiedotPage() {
       return S('.user-info .name').text()
     },
     oppija: function() {
-      return S('.main-content.oppija h2').text().replace('JSON', '')
+      return S('.main-content.oppija h1').text().replace('JSON', '')
     },
     virhe: function() {
       return S('.ei-suorituksia').text()

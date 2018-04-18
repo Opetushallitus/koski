@@ -7,9 +7,9 @@ import {ToggleButton} from '../../components/ToggleButton'
 
 export const HeaderInfo = ({showPalvelussaNäkyvätTiedotA}) => (
   <div className='header__info'>
-    <h2 className='header__heading'>
+    <h1 className='header__heading'>
       <Text name='Opintoni'/>
-    </h2>
+    </h1>
     <div className='header__caption'>
       <p>
         <Text name='Opintoni ingressi'/>
