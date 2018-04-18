@@ -6,7 +6,9 @@ const suoritusIdProto = {
   oppilaitosOid: undefined,
   suorituksenTyyppi: undefined,
   koulutusmoduulinTunniste: undefined,
-  toString: function() { return [this.oppilaitosOid, this.suorituksenTyyppi, this.koulutusmoduulinTunniste].join('__') }
+  toString: function() {
+    return [this.lähdejärjestelmänId, this.oppilaitosOid, this.suorituksenTyyppi, this.koulutusmoduulinTunniste].join('__')
+  }
 }
 
 export default (opiskeluoikeus, suoritus) => {
