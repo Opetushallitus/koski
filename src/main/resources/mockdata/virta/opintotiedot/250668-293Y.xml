@@ -4,7 +4,7 @@
     <virtaluku:OpiskelijanKaikkiTiedotResponse xmlns:virtaluku="http://tietovaranto.csc.fi/luku">
       <virta:Virta xmlns:virta="urn:mace:funet.fi:virta/2015/09/01">
         <virta:Opiskelija avain="02470_55317">
-          <virta:Henkilotunnus>090888-929X</virta:Henkilotunnus>
+          <virta:Henkilotunnus>250668-293Y</virta:Henkilotunnus>
           <virta:Opiskeluoikeudet>
             <virta:Opiskeluoikeus opiskelijaAvain="02470_55317" avain="02470_1502434">
               <virta:AlkuPvm>2015-10-20</virta:AlkuPvm>
@@ -82,7 +82,7 @@
           </virta:Opintosuoritukset>
         </virta:Opiskelija>
         <virta:Opiskelija avain="34732584">
-          <virta:Henkilotunnus>090888-929X</virta:Henkilotunnus>
+          <virta:Henkilotunnus>250668-293Y</virta:Henkilotunnus>
           <virta:Opiskeluoikeudet>
             <virta:Opiskeluoikeus opiskelijaAvain="34732584" avain="34732586">
               <virta:AlkuPvm>2012-08-01</virta:AlkuPvm>
@@ -495,7 +495,7 @@
           </virta:Opintosuoritukset>
         </virta:Opiskelija>
         <virta:Opiskelija avain="73069557">
-          <virta:Henkilotunnus>090888-929X</virta:Henkilotunnus>
+          <virta:Henkilotunnus>250668-293Y</virta:Henkilotunnus>
           <virta:Opiskeluoikeudet>
             <virta:Opiskeluoikeus opiskelijaAvain="73069557" avain="84130989">
               <virta:AlkuPvm>2011-08-01</virta:AlkuPvm>
@@ -3054,7 +3054,7 @@
           </virta:Opintosuoritukset>
         </virta:Opiskelija>
         <virta:Opiskelija avain="10895922">
-          <virta:Henkilotunnus>090888-929X</virta:Henkilotunnus>
+          <virta:Henkilotunnus>250668-293Y</virta:Henkilotunnus>
           <virta:Opiskeluoikeudet>
             <virta:Opiskeluoikeus opiskelijaAvain="10895922" avain="10895924">
               <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>

@@ -17,7 +17,7 @@ describe('Omat tiedot', function() {
     before(authentication.logout, etusivu.openPage)
 
     describe('Kun kirjaudutaan sisään', function() {
-      before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('030658-998X', 'Kansalainen', 'VÃ¤inÃ¶ TÃµnis', 'VÃ¤inÃ¶'), wait.until(omattiedot.isVisible))
+      before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('251029-7230', 'Kansalainen', 'VÃ¤inÃ¶ TÃµnis', 'VÃ¤inÃ¶'), wait.until(omattiedot.isVisible))
       describe('Sivun sisältö', function() {
         it('Näytetään opiskeluoikeudet', function() {
           expect(omattiedot.nimi()).to.equal('Väinö Tõnis Kansalainen')
@@ -35,7 +35,7 @@ describe('Omat tiedot', function() {
         it("Näytetään nimi ja syntymäaika", function() {
           expect(omattiedot.headerNimi()).to.equal(
             'Väinö Tõnis Kansalainen\n' +
-            's. 3.6.1958'
+            's. 25.10.1929'
           )
         })
 
@@ -100,7 +100,7 @@ describe('Omat tiedot', function() {
 
       describe('Kun henkilöllä on syntymäaika-tieto', function () {
         before(authentication.logout, etusivu.openPage)
-        before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('010170-9173'), wait.until(omattiedot.isVisible))
+        before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('220627-833V'), wait.until(omattiedot.isVisible))
 
         it('Näytetään nimi ja syntymäaika', function() {
           expect(omattiedot.headerNimi()).to.equal(
@@ -398,7 +398,7 @@ describe('Omat tiedot', function() {
             etusivu.openPage,
             etusivu.login(),
             wait.until(korhopankki.isReady),
-            korhopankki.login('290492-9455', 'Dippainssi', 'Dilbert'),
+            korhopankki.login('100869-192W', 'Dippainssi', 'Dilbert'),
             wait.until(omattiedot.isVisible),
             click(omattiedot.suoritusjakoButton)
           )
@@ -456,7 +456,7 @@ describe('Omat tiedot', function() {
               etusivu.openPage,
               etusivu.login(),
               wait.until(korhopankki.isReady),
-              korhopankki.login('160980-9606', 'Korkeakoululainen', 'Kompleksi'),
+              korhopankki.login('060458-331R', 'Korkeakoululainen', 'Kompleksi'),
               wait.until(omattiedot.isVisible),
               click(omattiedot.suoritusjakoButton)
             )
@@ -537,7 +537,7 @@ describe('Omat tiedot', function() {
                   expect(suoritusjako.headerText()).to.equal(
                     'Opinnot' +
                     'Dilbert Dippainssi' +
-                    's. 29.4.1992'
+                    's. 10.8.1969'
                   )
                 })
 
@@ -570,7 +570,7 @@ describe('Omat tiedot', function() {
                   expect(suoritusjako.headerText()).to.equal(
                     'Opinnot' +
                     'Dilbert Dippainssi' +
-                    's. 29.4.1992'
+                    's. 10.8.1969'
                   )
                 })
 
@@ -599,7 +599,7 @@ describe('Omat tiedot', function() {
             etusivu.openPage,
             etusivu.login(),
             wait.until(korhopankki.isReady),
-            korhopankki.login('060498-997J', 'Luokallejäänyt', 'Lasse'),
+            korhopankki.login('170186-6520', 'Luokallejäänyt', 'Lasse'),
             wait.until(omattiedot.isVisible)
           )
 
@@ -647,7 +647,7 @@ describe('Omat tiedot', function() {
                 expect(suoritusjako.headerText()).to.equal(
                   'Opinnot' +
                   'Lasse Luokallejäänyt' +
-                  's. 6.4.1998'
+                  's. 17.1.1986'
                 )
               })
 

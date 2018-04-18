@@ -20,7 +20,7 @@ describe('Etusivu', function() {
   })
 
   describe('Kun kansalainen on kirjautunut sisään', function() {
-    before(authentication.logout, etusivu.openPage, etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('290492-9455'), wait.until(OmatTiedotPage().isVisible))
+    before(authentication.logout, etusivu.openPage, etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('100869-192W'), wait.until(OmatTiedotPage().isVisible))
 
     it('näytetään omattiedot sivu', function() {
       expect(extractAsText(S('.user-info .name'))).to.equal('Dilbert Dippainssi')
