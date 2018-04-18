@@ -254,6 +254,132 @@ describe('Omat tiedot', function() {
         })
       })
 
+      describe('Suoritusjako', function() {
+        var form = omattiedot.suoritusjakoForm
+
+        it('Aluksi ei näytetä lomaketta', function() {
+          expect(form.isVisible()).to.equal(false)
+        })
+
+        describe('Kun painetaan painiketta', function() {
+          before(click(omattiedot.suoritusjakoButton))
+
+          it('näytetään ingressi', function() {
+            expect(form.ingressi()).to.equal(
+              'Luomalla jakolinkin voit näyttää suoritustietosi haluamillesi henkilöille (esimerkiksi työtä tai opiskelupaikkaa hakiessasi). ' +
+              'Tiettyjä arkaluonteisia tietoja (muun muassa tietoa vammaisten opiskelijoiden tuesta) ei välitetä. ' +
+              'Luotuasi linkin voit tarkistaa tarkan sisällön Esikatsele-painikkeella.'
+            )
+          })
+
+          it('näytetään suoritusvaihtoehtojen otsikko', function() {
+            expect(form.suoritusvaihtoehdotOtsikkoText()).to.equal('Valitse jaettavat suoritustiedot')
+          })
+
+          it('näytetään suoritusvaihtoehdot', function() {
+            expect(form.suoritusvaihtoehdotText()).to.equal(
+              'Kulosaaren ala-aste\n' +
+              'Päättötodistus\n' +
+              '7. vuosiluokka\n' +
+              '6. vuosiluokka\n' +
+              'Jyväskylän normaalikoulu\n' +
+              'Päättötodistus\n' +
+              '9. vuosiluokka\n' +
+              '8. vuosiluokka'
+            )
+          })
+
+          it('jakopainike on disabloitu', function() {
+            expect(form.canCreateSuoritusjako()).to.equal(false)
+          })
+        })
+
+        describe('Kun valitaan suoritus', function() {
+          before(form.selectSuoritus(null, '1.2.246.562.10.14613773812', 'perusopetuksenvuosiluokka', '8'))
+
+          it('jakopainike on enabloitu', function() {
+            expect(form.canCreateSuoritusjako()).to.equal(true)
+          })
+
+          describe('Kun painetaan suoritusjaon luomispainiketta', function () {
+            before(form.createSuoritusjako(), wait.until(form.suoritusjako(1).isVisible))
+
+            it('suoritusjako näytetään', function() {
+              var jako = form.suoritusjako(1)
+              var secret = jako.url().split('/') // otetaan salaisuus talteen jaon hakemista varten
+              window.secret = secret[secret.length - 1]
+
+              expect(jako.isVisible()).to.equal(true)
+            })
+
+            it('suoritusjaon tiedot näytetään', function() {
+              var jako = form.suoritusjako(1)
+
+              var date = new Date()
+              date.setMonth(date.getMonth() + 6)
+
+              expect(jako.url()).to.match(/^.+\/opinnot\/[0-9a-f]{32}$/)
+              expect(jako.voimassaoloaika()).to.equal('' +
+                date.getDate() + '.' +
+                (date.getMonth() + 1) + '.' +
+                date.getFullYear()
+              )
+              expect(jako.esikatseluLinkHref()).to.equal(jako.url())
+            })
+          })
+        })
+
+        describe('Voimassaoloajan muuttaminen', function () {
+          var date = new Date()
+          date.setDate(date.getDate() + 1)
+          var dateFormatted = '' + date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear()
+
+          before(form.suoritusjako(1).setVoimassaoloaika(dateFormatted))
+
+          it('toimii', function() {
+            expect(form.suoritusjako(1).voimassaoloaika()).to.equal(dateFormatted)
+          })
+        })
+
+        describe('Katselu', function () {
+          var suoritusjako = SuoritusjakoPage()
+
+          before(authentication.logout, suoritusjako.openPage(), wait.until(suoritusjako.isVisible))
+
+          it('linkki toimii', function () {
+            expect(suoritusjako.isVisible()).to.equal(true)
+          })
+
+          describe('Sivun sisältö', function() {
+            it('Näytetään otsikko, nimi ja syntymäaika', function() {
+              expect(suoritusjako.headerText()).to.equal(
+                'Opinnot' +
+                'Miia Monikoululainen' +
+                's. 18.4.1997'
+              )
+            })
+
+            it('Näytetään opiskeluoikeudet', function() {
+              expect(opinnot.opiskeluoikeudet.oppilaitokset()).to.deep.equal([
+                'Jyväskylän normaalikoulu'
+              ])
+            })
+
+            it("Ei näytetä 'Mitkä tiedot palvelussa näkyvät?' -painiketta", function() {
+              expect(!!omattiedot.palvelussaNäkyvätTiedotButton().length).to.equal(false)
+            })
+
+            it('Ei näytetä virheraportointi-painiketta', function() {
+              expect(!!omattiedot.virheraportointiButton().length).to.equal(false)
+            })
+
+            it('Ei näytetä suoritusjako-painiketta', function() {
+              expect(!!omattiedot.suoritusjakoButton().length).to.equal(false)
+            })
+          })
+        })
+      })
+
       describe('Kun tiedot löytyvät vain YTR:stä', function() {
         before(authentication.logout, etusivu.openPage)
 
