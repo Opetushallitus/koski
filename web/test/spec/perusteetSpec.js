@@ -12,7 +12,7 @@ describe('EPerusteet', function() {
   describe('Kun perustetta ei löydy eperusteista', function() {
     before(opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetukseenvalmistavaopetus'))
 
-    it('linkki eperusteisiin näytetään', function() {
+    it('peruste näytetään ilman linkkiä', function() {
       expect(isElementVisible(S('.diaarinumero a'))).to.equal(false)
       expect(S('.diaarinumero').text()).to.equal('57/011/2015')
     })
