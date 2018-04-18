@@ -1,18 +1,28 @@
 function TiedonsiirrotPage() {
+  function poistaNappi() {
+    return S('button.remove-selected')
+  }
 
   var api = {
-    openPage: function() {
+    openPage: function () {
       return openPage('/koski/tiedonsiirrot', api.isVisible)()
     },
-    isVisible: function() {
+    isVisible: function () {
       return isElementVisible(S('#content .tiedonsiirrot-content .tiedonsiirto-taulukko'))
     },
-    tiedot: function() {
-      return S('.tiedonsiirrot-content table tbody tr').toArray().map(function(row) {
-        return $(row).find('td:not(.tila):not(.aika):not(.valitse)').toArray().map(function(td) {
+    tiedot: function () {
+      return S('.tiedonsiirrot-content table tbody tr').toArray().map(function (row) {
+        return $(row).find('td:not(.tila):not(.aika):not(.valitse)').toArray().map(function (td) {
           return $(td).text().trim()
         })
       })
+    },
+    poista: click('button.remove-selected'),
+    poistaNappiEnabloitu: function() {
+      return poistaNappi().is(':visible') && poistaNappi().is(':enabled')
+    },
+    setValinta: function(id, selected) {
+      return Page().setInputValue('#' + id.replace( /(\.)/g, '\\$1' ) + ' input', selected)
     },
     openVirhesivu: seq(
       click('.virheet-link'),

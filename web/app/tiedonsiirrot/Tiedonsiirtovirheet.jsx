@@ -24,7 +24,7 @@ export const tiedonsiirtovirheetContentP = (queryString) => {
     )
   }
 
-  let contentP = pagerAtom.log('pagerAtom').flatMap(pager => pager.rowsP.log('rowsP').map(({henkilöt, oppilaitos}) =>
+  let contentP = pagerAtom.flatMap(pager => pager.rowsP.map(({henkilöt, oppilaitos}) =>
     ({
       content: (
         <div className="tiedonsiirto-virheet">
