@@ -1,7 +1,7 @@
 package fi.oph.koski.virta
 
 import com.typesafe.config.Config
-import fi.oph.koski.http.Http
+import fi.oph.koski.http.{Http, HttpConnectionException}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.log.{Logging, TimedProxy}
 import fi.oph.koski.util.Files
@@ -36,6 +36,8 @@ object EmptyVirtaClient extends VirtaClient {
 object MockVirtaClient extends VirtaClient {
   override def opintotiedot(hakuehto: VirtaHakuehto) = {
     hakuehto match {
+      case VirtaHakuehtoHetu("020507-984V") =>
+        throw new HttpConnectionException("MockVirtaClient testing opintotiedot failure", "POST", "http://localhost:666/")
       case VirtaHakuehtoHetu(hetu) =>
         loadXml("src/main/resources/mockdata/virta/opintotiedot/" + hetu + ".xml")
       case _ =>
@@ -44,6 +46,8 @@ object MockVirtaClient extends VirtaClient {
   }
   override def henkilötiedot(hakuehto: VirtaHakuehto, oppilaitosNumero: String) = {
     hakuehto match {
+      case VirtaHakuehtoHetu("020507-984V") =>
+        throw new HttpConnectionException("MockVirtaClient testing henkilötiedot failure", "POST", "http://localhost:666/")
       case VirtaHakuehtoHetu(hetu) =>
         loadXml("src/main/resources/mockdata/virta/henkilotiedot/" + hetu + ".xml")
       case _ =>

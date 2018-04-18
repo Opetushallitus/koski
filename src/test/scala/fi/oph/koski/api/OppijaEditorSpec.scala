@@ -33,6 +33,12 @@ class OppijaEditorSpec extends FreeSpec with Matchers with LocalJettyHttpSpecifi
         verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa 1.2.246.562.24.90000000001 ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
       }
     }
+    "with Virta error" in {
+      get("api/editor/" + MockOppijat.virtaEiVastaa.oid, headers = authHeaders()) {
+        verifyResponseStatusOk()
+        body should include("\"unavailable.virta\"")
+      }
+    }
   }
 
   "GET /api/omattiedot/editor" - {
@@ -47,6 +53,12 @@ class OppijaEditorSpec extends FreeSpec with Matchers with LocalJettyHttpSpecifi
       get("api/omattiedot/editor", headers = kansalainenLoginHeaders("190751-739W")) {
         verifyResponseStatusOk()
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_OPISKELUOIKEUS_KATSOMINEN"))
+      }
+    }
+    "with Virta error" in {
+      get("api/omattiedot/editor", headers = kansalainenLoginHeaders(MockOppijat.virtaEiVastaa.hetu.get)) {
+        verifyResponseStatusOk()
+        body should include("\"unavailable.virta\"")
       }
     }
   }
