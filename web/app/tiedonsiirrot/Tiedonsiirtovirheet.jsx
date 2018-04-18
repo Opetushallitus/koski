@@ -9,22 +9,19 @@ import Atom from 'bacon.atom'
 import Http from '../util/http'
 
 export const tiedonsiirtovirheetContentP = (queryString) => {
-  const createPager = () => Pager('/koski/api/tiedonsiirrot/virheet' + queryString, L.prop('henkilöt'))
-
-  let pagerAtom = Atom(createPager())
+  const pager = Pager('/koski/api/tiedonsiirrot/virheet' + queryString, L.prop('henkilöt'))
 
   const selected = Atom([])
 
   const removeSelected = () => {
     Http.post('/koski/api/tiedonsiirrot/delete', {ids: selected.get()}).onValue(() => {
         selected.set([])
-        pagerAtom.get().clearCache('/koski/api/tiedonsiirrot/virheet' + queryString)
-        pagerAtom.set(createPager())
+        window.location.reload(true)
       }
     )
   }
 
-  let contentP = pagerAtom.flatMap(pager => pager.rowsP.map(({henkilöt, oppilaitos}) =>
+  let contentP = pager.rowsP.map(({henkilöt, oppilaitos}) =>
     ({
       content: (
         <div className="tiedonsiirto-virheet">
@@ -37,7 +34,7 @@ export const tiedonsiirtovirheetContentP = (queryString) => {
       ),
       title: 'Tiedonsiirtovirheet'
     })
-  )).toProperty()
+  )
 
   return tiedonsiirrotContentP('/koski/tiedonsiirrot/virheet', contentP)
 }

@@ -81,7 +81,9 @@ describe('Tiedonsiirrot', function() {
       describe('Kun poistetaan valittu rivi', function() {
         before(
           tiedonsiirrot.setValinta('tiedonsiirto-1.2.246.562.10.346830761110_', true),
-          tiedonsiirrot.poista
+          tiedonsiirrot.poista,
+          tiedonsiirrot.openPage,
+          tiedonsiirrot.openVirhesivu
         )
         it('Se poistuu listauksesta', function() {
           expect(tiedonsiirrot.tiedot()).to.deep.equal([
@@ -105,10 +107,15 @@ describe('Tiedonsiirrot', function() {
         insertExample('tiedonsiirto - epäonnistunut 2.json'),
         syncTiedonsiirrot,
         tiedonsiirrot.openPage,
+        tiedonsiirrot.openVirhesivu,
+        tiedonsiirrot.setValinta('tiedonsiirto-1.2.246.562.10.346830761110_280618-402H', true),
+        tiedonsiirrot.setValinta('tiedonsiirto-1.2.246.562.10.346830761110_270303-281N', true),
+        tiedonsiirrot.poista,
+        tiedonsiirrot.openPage,
         tiedonsiirrot.openVirhesivu
       )
       it('Kaikki valitut rivit poistuvat', function() {
-
+        expect(tiedonsiirrot.tiedot()).to.deep.equal([])
       })
     })
   })

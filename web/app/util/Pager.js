@@ -43,7 +43,6 @@ export default (baseUrl, rowsLens = L.identity) => {
   return {
     rowsP,
     mayHaveMore: () => mayHaveMore,
-    next: () => fetchingP.take(1).filter((fetching) => !fetching).onValue(() => nextPageBus.push()),
-    clearCache: () => pagerCache[baseUrl] = []
+    next: () => fetchingP.take(1).filter((fetching) => !fetching).onValue(() => nextPageBus.push())
   }
 }
