@@ -10,8 +10,6 @@
   background-image: url('/koski/images/loader.svg');
   background-repeat: no-repeat;
   background-position: center;
-  animation-name: fadein-to-full;
-  animation-duration: 1s;
 }
 .ajax-indicator-right {
   background: url('/koski/images/loader.svg') no-repeat;
@@ -36,10 +34,6 @@
 @keyframes fadein {
   0% { opacity: 0; }
   100% { opacity: 0.5;}
-}
-@keyframes fadein-to-full {
-  0% { opacity: 0; }
-  100% { opacity: 1;}
 }
 #pagination-marker {
   &.loading {

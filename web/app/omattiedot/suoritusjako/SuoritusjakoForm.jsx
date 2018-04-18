@@ -60,7 +60,7 @@ const NewSuoritusjako = ({opiskeluoikeudet, selectedSuoritusIds, onSuccess, show
     <div>
       {Bacon.combineWith(showForm, isPending, (form, pending) =>
         form ?
-          pending ? <SuoritusjakoLinkPlaceholder/>
+          pending ? <SuoritusjakoLinkPlaceholder transition='enter'/>
             : (
               <div className='suoritusjako-form__create-suoritusjako'>
                 <div>

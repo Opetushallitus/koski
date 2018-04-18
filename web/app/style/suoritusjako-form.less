@@ -171,6 +171,16 @@
       background-color: @color-blue-background;
       border: solid 2px @color-blue;
       height: 124px;
+
+      &.transition-enter {
+        animation-name: fadein-to-full;
+        animation-duration: 1s;
+      }
     }
   }
+}
+
+@keyframes fadein-to-full {
+  0% { opacity: 0; }
+  100% { opacity: 1;}
 }
