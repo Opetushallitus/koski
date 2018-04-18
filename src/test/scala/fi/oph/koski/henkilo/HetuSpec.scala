@@ -10,18 +10,18 @@ class HetuSpec extends FreeSpec with Matchers {
   "Hetu" - {
     "Valideja hetuja" in {
       VALID_HETU foreach {hetu =>
-        Hetu.validate(hetu) should equal(Right(hetu))
+        Hetu.validate(hetu, acceptSynthetic = false) should equal(Right(hetu))
       }
     }
     "Synteettisiä hetuja" in {
       SYNTHETIC_HETU foreach {hetu =>
-        Hetu.validate(hetu) shouldBe a [Left[_, _]]
+        Hetu.validate(hetu, acceptSynthetic = false) shouldBe a [Left[_, _]]
         Hetu.validate(hetu, acceptSynthetic = true) should equal(Right(hetu))
       }
     }
     "Virheellisiä hetuja" in {
       INVALID_HETU foreach {hetu =>
-        Hetu.validate(hetu) shouldBe a [Left[_, _]]
+        Hetu.validate(hetu, acceptSynthetic = false) shouldBe a [Left[_, _]]
       }
     }
   }

@@ -10,7 +10,7 @@ import fi.oph.koski.util.Timing
 import org.scalatra._
 
 class HenkilötiedotServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with Logging with ContentEncodingSupport with NoCache with Timing {
-  private val henkilötiedotFacade = HenkilötiedotFacade(application.henkilöRepository, application.opiskeluoikeusRepository, application.possu)
+  private val henkilötiedotFacade = HenkilötiedotFacade(application.henkilöRepository, application.opiskeluoikeusRepository, application.possu, application.hetu)
 
   // note: deprecated, use POST version instead, will be removed if nobody uses this
   get("/search") {

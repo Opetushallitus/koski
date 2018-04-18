@@ -7,7 +7,7 @@ import fi.oph.koski.elasticsearch.ElasticSearch
 import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.healthcheck.HealthCheck
-import fi.oph.koski.henkilo.{HenkilöRepository, KoskiHenkilöCache, OpintopolkuHenkilöFacade}
+import fi.oph.koski.henkilo.{HenkilöRepository, Hetu, KoskiHenkilöCache, OpintopolkuHenkilöFacade}
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.koodisto.{KoodistoCreator, KoodistoPalvelu, KoodistoViitePalvelu}
 import fi.oph.koski.koskiuser._
@@ -60,7 +60,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val ytrAccessChecker = new YtrAccessChecker(käyttöoikeusRepository)
   lazy val henkilöRepository = HenkilöRepository(this)
   lazy val historyRepository = OpiskeluoikeusHistoryRepository(masterDatabase.db)
-  lazy val virta = TimedProxy[AuxiliaryOpiskeluoikeusRepository](VirtaOpiskeluoikeusRepository(virtaClient, henkilöRepository, oppilaitosRepository, koodistoViitePalvelu, virtaAccessChecker, config.getBoolean("acceptSyntheticHetus"), Some(validator)))
+  lazy val virta = TimedProxy[AuxiliaryOpiskeluoikeusRepository](VirtaOpiskeluoikeusRepository(virtaClient, henkilöRepository, oppilaitosRepository, koodistoViitePalvelu, virtaAccessChecker, hetu, Some(validator)))
   lazy val henkilöCache = new KoskiHenkilöCache(masterDatabase.db, henkilöRepository)
   lazy val possu = TimedProxy[OpiskeluoikeusRepository](new PostgresOpiskeluoikeusRepository(masterDatabase.db, historyRepository, henkilöCache, oidGenerator, henkilöRepository.opintopolku, perustiedotSyncRepository))
   lazy val ytr = TimedProxy[AuxiliaryOpiskeluoikeusRepository](YtrOpiskeluoikeusRepository(ytrClient, henkilöRepository, organisaatioRepository, oppilaitosRepository, koodistoViitePalvelu, ytrAccessChecker, Some(validator), localizationRepository))
@@ -73,13 +73,13 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val perustiedotSyncRepository = new PerustiedotSyncRepository(masterDatabase.db)
   lazy val perustiedotIndexer = new OpiskeluoikeudenPerustiedotIndexer(config, koskiElasticSearchIndex, opiskeluoikeusQueryRepository, perustiedotSyncRepository)
   lazy val perustiedotSyncScheduler = new PerustiedotSyncScheduler(this)
-  lazy val oppijaFacade = new KoskiOppijaFacade(henkilöRepository, henkilöCache, opiskeluoikeusRepository, historyRepository, perustiedotIndexer, config)
+  lazy val oppijaFacade = new KoskiOppijaFacade(henkilöRepository, henkilöCache, opiskeluoikeusRepository, historyRepository, perustiedotIndexer, config, hetu)
   lazy val suoritusjakoRepository = new SuoritusjakoRepository(masterDatabase.db)
   lazy val suoritusjakoService = new SuoritusjakoService(suoritusjakoRepository, oppijaFacade)
   lazy val sessionTimeout = SessionTimeout(config)
   lazy val koskiSessionRepository = new KoskiSessionRepository(masterDatabase.db, sessionTimeout)
   lazy val fixtureCreator = new FixtureCreator(this)
-  lazy val tiedonsiirtoService = new TiedonsiirtoService(koskiElasticSearchIndex, new TiedonsiirtoFailureMailer(this), organisaatioRepository, henkilöRepository, koodistoViitePalvelu, userRepository)
+  lazy val tiedonsiirtoService = new TiedonsiirtoService(koskiElasticSearchIndex, new TiedonsiirtoFailureMailer(this), organisaatioRepository, henkilöRepository, koodistoViitePalvelu, userRepository, hetu)
   lazy val healthCheck = HealthCheck(this)
   lazy val scheduledTasks = new KoskiScheduledTasks(this)
   lazy val ipService = new IPService(masterDatabase.db)
@@ -88,6 +88,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val basicAuthSecurity = new BasicAuthSecurity(masterDatabase.db, config)
   lazy val localizationRepository = LocalizationRepository(config)
   lazy val oidGenerator = OidGenerator(config)
+  lazy val hetu = new Hetu(config.getBoolean("acceptSyntheticHetus"))
   lazy val env = Environment(this)
   lazy val features = Features(config)
 
