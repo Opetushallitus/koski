@@ -1,4 +1,11 @@
-import {wrapOptional, modelLookup, modelItems, contextualizeSubModel, oneOfPrototypes} from '../editor/EditorModel'
+import {
+  wrapOptional,
+  modelLookup,
+  modelItems,
+  contextualizeSubModel,
+  oneOfPrototypes,
+  modelData
+} from '../editor/EditorModel'
 
 const perusteenDiaarinumeroToOppimäärä = diaarinumero => {
   switch (diaarinumero) {
@@ -22,8 +29,11 @@ const createOppiaineenSuoritus = (model, suoritusClass) => {
 
 const sallitutRahoituskoodiarvot = ['1', '6']
 
+const suoritetutKurssit = kurssit => kurssit.map(k => modelData(k)).filter(k => k.arviointi)
+
 export {
   perusteenDiaarinumeroToOppimäärä,
   createOppiaineenSuoritus,
-  sallitutRahoituskoodiarvot
+  sallitutRahoituskoodiarvot,
+  suoritetutKurssit
 }
