@@ -1,6 +1,7 @@
 package fi.oph.koski.integrationtest
 
 import fi.oph.koski.api.{OpiskeluoikeusTestMethodsAmmatillinen, SearchTestMethods}
+import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema.{OidHenkilö, TäydellisetHenkilötiedot, YlioppilastutkinnonOpiskeluoikeus}
 import org.scalatest.{FreeSpec, Matchers}
 
@@ -36,6 +37,13 @@ class OppijaIntegrationTest extends FreeSpec with Matchers with KoskidevHttpSpec
     }
   }
   */
+
+  "Hetun ollessa" - {
+    "Keinotekoinen (yksilönumero on 9-alkuinen)" - {
+      "palautetaan HTTP 400 virhe" taggedAs(KoskiDevEnvironment) in (putHenkilö(defaultHenkilö.copy(hetu = "091196-935L"))
+      (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu("Keinotekoinen henkilötunnus: 091196-935L"))))
+    }
+  }
 
   "YTR-integraatio" taggedAs(KoskiDevEnvironment) in {
     searchForHenkilötiedot("140389-8638").map(_.oid).headOption match {
