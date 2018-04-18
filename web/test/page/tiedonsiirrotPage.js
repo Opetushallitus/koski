@@ -9,7 +9,7 @@ function TiedonsiirrotPage() {
     },
     tiedot: function() {
       return S('.tiedonsiirrot-content table tbody tr').toArray().map(function(row) {
-        return $(row).find('td:not(.tila):not(.aika)').toArray().map(function(td) {
+        return $(row).find('td:not(.tila):not(.aika):not(.valitse)').toArray().map(function(td) {
           return $(td).text().trim()
         })
       })
