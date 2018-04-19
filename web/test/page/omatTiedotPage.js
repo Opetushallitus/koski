@@ -108,6 +108,7 @@ function VirheraportointiForm() {
 function SuoritusjakoForm() {
   var elem = findSingle('.suoritusjako')
   var createSuoritusjakoButton = function() { return S('.create-suoritusjako__button > button') }
+  var openAdditionalSuoritusjakoFormButton = function() { return S('.suoritusjako-form > div:last-child > a.toggle-button') }
 
   var api = {
     contentsAsText: function() {
@@ -137,6 +138,9 @@ function SuoritusjakoForm() {
     },
     createSuoritusjako: function() {
       return click(createSuoritusjakoButton)
+    },
+    openAdditionalSuoritusjakoForm: function() {
+      return click(openAdditionalSuoritusjakoFormButton)
     },
     suoritusjako: function(index) {
       return Suoritusjako(index)
