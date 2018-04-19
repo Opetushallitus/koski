@@ -351,7 +351,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
 
   "Suoritusjaon päivämäärän muuttaminen" - {
     "onnistuu" - {
-      "oikeellisella salaisuudella ja tulevalla päivämäärällä" in {
+      "oikealla salaisuudella ja tulevalla päivämäärällä" in {
         val expirationDate = LocalDateTime.now().plusMonths(1).toLocalDate
         val json =
           s"""{
@@ -367,7 +367,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
     }
 
     "epäonnistuu" - {
-      "oikeellisella salaisuudella mutta menneellä päivämäärällä" in {
+      "oikealla salaisuudella mutta menneellä päivämäärällä" in {
         val expirationDate = LocalDateTime.now().minusDays(1).toLocalDate
         val json =
           s"""{
@@ -423,7 +423,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
 
   "Suoritusjaon poistaminen" - {
     "onnistuu" - {
-      "oikeellisella salaisuudella" in {
+      "oikealla salaisuudella" in {
         val json =
           s"""{
           "secret": "${secrets("yksi suoritus")}"
