@@ -595,7 +595,84 @@ describe('Omat tiedot', function() {
         })
 
         describe('Peruskoulun vuosiluokan tuplaus', function () {
+          before(
+            authentication.logout,
+            etusivu.openPage,
+            etusivu.login(),
+            wait.until(korhopankki.isReady),
+            korhopankki.login('060498-997J', 'Luokallejäänyt', 'Lasse'),
+            wait.until(omattiedot.isVisible)
+          )
 
+          describe('Suoritusvaihtoehdoissa', function () {
+            before(click(omattiedot.suoritusjakoButton))
+
+            it('näytetään tuplattu luokka vain kerran', function() {
+              expect(form.suoritusvaihtoehdotText()).to.equal(
+                'Jyväskylän normaalikoulu\n' +
+                'Päättötodistus\n' +
+                '9. vuosiluokka\n' +
+                '8. vuosiluokka\n' +
+                '7. vuosiluokka'
+              )
+            })
+          })
+
+          describe('Jakaminen', function () {
+            before(
+              form.selectSuoritus(null, '1.2.246.562.10.14613773812', 'perusopetuksenvuosiluokka', '7'),
+              form.createSuoritusjako(),
+              wait.until(form.suoritusjako(1).isVisible)
+            )
+
+            it('onnistuu', function() {
+              var jako = form.suoritusjako(1)
+              var secret = jako.url().split('/') // otetaan salaisuus talteen jaon hakemista varten
+              window.secrets.tuplattu = secret[secret.length - 1]
+
+              expect(jako.isVisible()).to.equal(true)
+            })
+          })
+
+          describe('Katselu', function () {
+            var suoritusjako = SuoritusjakoPage()
+
+            before(authentication.logout, suoritusjako.openPage('tuplattu'), wait.until(suoritusjako.isVisible))
+
+            it('linkki toimii', function () {
+              expect(suoritusjako.isVisible()).to.equal(true)
+            })
+
+            describe('Sivun sisältö', function() {
+              it('Näytetään oikea otsikko, nimi ja syntymäaika', function() {
+                expect(suoritusjako.headerText()).to.equal(
+                  'Opinnot' +
+                  'Lasse Luokallejäänyt' +
+                  's. 6.4.1998'
+                )
+              })
+
+              it('Näytetään jaetut opiskeluoikeudet oppilaitoksittain', function() {
+                expect(suoritusjako.opiskeluoikeudetText()).to.deep.equal(['Jyväskylän normaalikoulu (2008—2016, valmistunut)'])
+              })
+
+              describe('Kun avataan oppilaitos', function () {
+                before(suoritusjako.avaaOpiskeluoikeus('Jyväskylän normaalikoulu (2008—2016, valmistunut)'))
+
+                it('näytetään oikeat opiskeluoikeudet', function() {
+                  expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienMäärä()).to.equal(1)
+                  expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal([
+                    'Jyväskylän normaalikoulu,  (2008—2016, valmistunut)'
+                  ])
+                })
+
+                it('näytetään oikea suoritus (ei luokallejäänti-suoritusta)', function() {
+                  expect(opinnot.suoritusTabs('Jyväskylän normaalikoulu')).to.deep.equal(['7. vuosiluokka'])
+                  expect(opinnot.opiskeluoikeusEditor().property('luokka').getValue()).to.equal('7A')
+                })
+              })
+            })
+          })
         })
       })
 
