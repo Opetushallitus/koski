@@ -7,9 +7,14 @@ import {suoritusjakoSuoritusTitle} from './suoritusjako'
 import {suorituksenTyyppi} from '../../suoritus/Suoritus'
 import Text from '../../i18n/Text'
 
-const isKorkeakoulunOpintojakso = suoritus => suorituksenTyyppi(suoritus) === 'korkeakoulunopintojakso'
+const isIrrallinenKorkeakoulunSuoritus = suoritus => [
+  'korkeakoulunopintojakso',
+  'muukorkeakoulunsuoritus'
+].includes(suorituksenTyyppi(suoritus))
 
-const groupSuoritukset = suoritukset => isKorkeakoulunOpintojakso(suoritukset[0]) ? [suoritukset[0]] : suoritukset
+const groupSuoritukset = suoritukset => !R.isEmpty(suoritukset)
+  ? isIrrallinenKorkeakoulunSuoritus(suoritukset[0]) ? [suoritukset[0]] : suoritukset
+  : []
 const withIdentifiers = opiskeluoikeus => suoritukset => suoritukset.map(suoritus => ({suoritus, id: SuoritusIdentifier(opiskeluoikeus, suoritus)}))
 const withoutDuplicates = suorituksetWithIdentifiers => R.uniqBy(sWithId => sWithId.id, suorituksetWithIdentifiers)
 
