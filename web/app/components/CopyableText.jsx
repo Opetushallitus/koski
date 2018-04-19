@@ -30,14 +30,25 @@ const copyToClipboard = (message, copyState) => () => {
   }
 }
 
-export const CopyableText = ({heading, message, className, multiline = true, width, height}) => {
+export const CopyableText = (
+  {
+    heading,
+    message,
+    buttonText = 'Kopioi',
+    buttonTextSuccess = 'Kopioitu',
+    buttonTextFailure = 'Kopiointi epäonnistui',
+    className,
+    multiline = true,
+    width,
+    height
+  }) => {
   const copyState = Atom(CopyState.PENDING)
 
   const buttonState = copyState.map(state => {
     switch (state) {
-      case CopyState.PENDING: return {isDisabled: false, style: '', text: 'Kopioi'}
-      case CopyState.SUCCESS: return {isDisabled: true, style: '--success', text: 'Kopioitu'}
-      case CopyState.ERROR: return {isDisabled: true, style: '--error', text: 'Kopiointi epäonnistui'}
+      case CopyState.PENDING: return {isDisabled: false, style: '', text: buttonText}
+      case CopyState.SUCCESS: return {isDisabled: true, style: '--success', text: buttonTextSuccess}
+      case CopyState.ERROR: return {isDisabled: true, style: '--error', text: buttonTextFailure}
     }
   })
 

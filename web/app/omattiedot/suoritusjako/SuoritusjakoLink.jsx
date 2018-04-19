@@ -93,7 +93,12 @@ export class SuoritusjakoLink extends React.Component {
       : (
         <div className='suoritusjako-link'>
           <div className='suoritusjako-link__top-container'>
-            <CopyableText className='suoritusjako-link__url' message={url} multiline={false}/>
+            <CopyableText
+              className='suoritusjako-link__url'
+              message={url}
+              multiline={false}
+              buttonText='Kopioi linkki'
+            />
             <div className='suoritusjako-link__expiration'>
               <label>
                 <Text name='Linkin voimassaoloaika'/>
