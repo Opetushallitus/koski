@@ -16,7 +16,12 @@ export const tiedonsiirtovirheetContentP = (queryString) => {
 
   const removeSelected = () => {
     deleting.set(true)
-    Http.post('/koski/api/tiedonsiirrot/delete', {ids: selected.get()}).onValue(() => window.location.reload(true))
+    Http.post('/koski/api/tiedonsiirrot/delete', {ids: selected.get()})
+      .doError(() => {
+        selected.set([])
+        deleting.set(false)
+      })
+      .onValue(() => window.location.reload(true))
   }
 
   let contentP = deleting.not().flatMap(notDeleting => notDeleting
