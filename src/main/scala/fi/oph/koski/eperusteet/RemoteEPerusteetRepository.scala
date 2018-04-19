@@ -3,6 +3,7 @@ package fi.oph.koski.eperusteet
 import fi.oph.koski.cache.{CacheManager, ExpiringCache, KeyValueCache}
 import fi.oph.koski.http.Http
 import fi.oph.koski.http.Http._
+import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
 
 import scala.concurrent.duration._
 
@@ -15,6 +16,13 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String)(implicit cacheInvalidat
 
   def findPerusteetByDiaarinumero(diaarinumero: String): List[EPeruste] = {
     runTask(http.get(uri"/api/perusteet?diaarinumero=${diaarinumero}")(Http.parseJson[EPerusteet])).data
+  }
+
+  def findPerusteetByKoulutustyyppi(koulutustyypit: Set[Koulutustyyppi]): List[EPeruste] = if (koulutustyypit.isEmpty) {
+    Nil
+  } else {
+    val url = s"/api/perusteet?${koulutustyypit.map(k => s"koulutustyyppi=${k.koodiarvo}").mkString("&")}"
+    runTask(http.get(ParameterizedUriWrapper(uriFromString(url), url))(Http.parseJson[EPerusteet])).data
   }
 
   def findRakenne(diaariNumero: String): Option[EPerusteRakenne] = {

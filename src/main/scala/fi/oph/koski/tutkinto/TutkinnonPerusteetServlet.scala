@@ -16,10 +16,17 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
   }
 
   get("/diaarinumerot/koulutustyyppi/:koulutustyypit") {
-    val koulutustyypit = params("koulutustyypit").split(",").toSet
-    koulutustyypit.flatMap(koulutusTyyppi =>
-      application.koodistoViitePalvelu.getSisältyvätKoodiViitteet(application.koodistoViitePalvelu.getLatestVersion("koskikoulutustendiaarinumerot").get, Koodistokoodiviite(koulutusTyyppi, "koulutustyyppi"))
+    val koulutustyypit: Set[Koodistokoodiviite] = params("koulutustyypit").split(",").map(t => Koodistokoodiviite(t, "koulutustyyppi")).toSet
+
+    val diaaritEperusteista = application.ePerusteet.findPerusteetByKoulutustyyppi(koulutustyypit)
+      .sortBy(p => -p.id)
+      .map(p => Koodistokoodiviite(koodiarvo = p.diaarinumero, nimi = LocalizedString.sanitize(p.nimi), koodistoUri = "koskikoulutustendiaarinumerot"))
+
+    val diaaritKoskesta = koulutustyypit.flatMap(koulutusTyyppi =>
+      application.koodistoViitePalvelu.getSisältyvätKoodiViitteet(application.koodistoViitePalvelu.getLatestVersion("koskikoulutustendiaarinumerot").get, koulutusTyyppi)
     ).flatten.toList
+
+    (diaaritEperusteista ++ diaaritKoskesta).distinct
   }
 
   get("/tutkinnonosat/:diaari") {

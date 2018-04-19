@@ -1,6 +1,7 @@
 package fi.oph.koski.eperusteet
 
 import fi.oph.koski.json.{JsonFiles, JsonResources, JsonSerializer}
+import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
 
 object MockEPerusteetRepository extends EPerusteetRepository {
   lazy val rakenteet: List[EPerusteRakenne] = List(
@@ -24,6 +25,10 @@ object MockEPerusteetRepository extends EPerusteetRepository {
 
   def findPerusteetByDiaarinumero(diaarinumero: String): List[EPeruste] = {
     rakenteet.filter(_.diaarinumero == diaarinumero).map(_.toEPeruste)
+  }
+
+  def findPerusteetByKoulutustyyppi(koulutustyypit: Set[Koulutustyyppi]): List[EPeruste] = {
+    rakenteet.filter(r => koulutustyypit.map(_.koodiarvo).contains(r.koulutustyyppi)).map(_.toEPeruste)
   }
 
   def findRakenne(diaariNumero: String): Option[EPerusteRakenne] = {
