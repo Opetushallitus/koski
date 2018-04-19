@@ -12,7 +12,7 @@ import fi.oph.koski.json.JsonSerializer.{extract, validateAndExtract}
 import fi.oph.koski.json.LegacyJsonSerialization.toJValue
 import fi.oph.koski.json._
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.koskiuser.{AccessType, KoskiSession, KoskiUserInfo, KoskiUserRepository}
+import fi.oph.koski.koskiuser._
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.log.KoskiMessageField._
 import fi.oph.koski.log.KoskiOperation._
@@ -63,24 +63,24 @@ class TiedonsiirtoService(
   }
 
   def delete(ids: List[String])(implicit koskiSession: KoskiSession): Unit = {
-    val deleteQuery = toJValue(Map("query" -> ElasticSearch.allFilter(Map("terms" -> Map("_id" -> ids)) :: Map("exists" -> Map("field" -> "virheet.key")) :: tallentajaOrganisaatioFilters)))
+    val deleteQuery = toJValue(Map("query" -> ElasticSearch.allFilter(Map("terms" -> Map("_id" -> ids)) :: Map("exists" -> Map("field" -> "virheet.key")) :: tallentajaOrganisaatioFilters(AccessType.tiedonsiirronMitätöinti))))
     Http.runTask(index.http.post(uri"/koski/tiedonsiirto/_delete_by_query", deleteQuery)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.unitDecoder))
     index.refreshIndex
   }
 
   private def filtersFrom(query: TiedonsiirtoQuery)(implicit session: KoskiSession): List[Map[String, Any]] = {
-    query.oppilaitos.toList.map(oppilaitos => Map("term" -> Map("oppilaitokset.oid" -> oppilaitos))) ++ tallentajaOrganisaatioFilters
+    query.oppilaitos.toList.map(oppilaitos => Map("term" -> Map("oppilaitokset.oid" -> oppilaitos))) ++ tallentajaOrganisaatioFilters()
   }
 
-  private def tallentajaOrganisaatioFilters(implicit session: KoskiSession): List[Map[String, Any]] = tallentajaOrganisaatioFilter.toList
+  private def tallentajaOrganisaatioFilters(accessType: AccessType.Value = AccessType.read)(implicit session: KoskiSession): List[Map[String, Any]] = tallentajaOrganisaatioFilter(accessType).toList
 
-  private def tallentajaOrganisaatioFilter(implicit session: KoskiSession): Option[Map[String, Any]] =
+  private def tallentajaOrganisaatioFilter(accessType: AccessType.Value = AccessType.read)(implicit session: KoskiSession): Option[Map[String, Any]] =
     if (session.hasGlobalReadAccess) {
       None
     } else {
       Some(ElasticSearch.anyFilter(List(
-        Map("terms" -> Map("tallentajaOrganisaatioOid" -> session.organisationOids(AccessType.read))),
-        Map("terms" -> Map("oppilaitokset.oid" -> session.organisationOids(AccessType.read)))
+        Map("terms" -> Map("tallentajaOrganisaatioOid" -> session.organisationOids(accessType))),
+        Map("terms" -> Map("oppilaitokset.oid" -> session.organisationOids(accessType)))
       )))
     }
 
@@ -228,7 +228,7 @@ class TiedonsiirtoService(
             )
           )
         )
-    ) ++ tallentajaOrganisaatioFilter.map(filter => Map("query" -> filter)).getOrElse(Map()))
+    ) ++ tallentajaOrganisaatioFilter().map(filter => Map("query" -> filter)).getOrElse(Map()))
 
     // uncomment this to see raw query for manual troubleshooting
     // println(JsonMethods.pretty(query))

@@ -7,6 +7,7 @@ import Text from '../i18n/Text'
 import {OppilaitosTitle} from './Tiedonsiirtoloki'
 import Atom from 'bacon.atom'
 import Http from '../util/http'
+import {userP} from '../util/user'
 
 export const tiedonsiirtovirheetContentP = (queryString) => {
   const pager = Pager('/koski/api/tiedonsiirrot/virheet' + queryString, L.prop('henkilöt'))
@@ -30,13 +31,13 @@ export const tiedonsiirtovirheetContentP = (queryString) => {
         content: (
           <div className="tiedonsiirto-virheet">
             <ReloadButton/>
-            <button className="remove-selected" disabled={selected.map(s => !s.length)} onClick={removeSelected}>Poista
+            <button className="remove-selected" disabled={selected.map(s => !s.length)} style={userP.map(u => u.hasAnyInvalidateAccess ? ({}): ({display: 'none'}))} onClick={removeSelected}>Poista
               valitut
             </button>
             <span><Text name="Alla olevien opiskelijoiden tiedot ovat virhetilassa"/><OppilaitosTitle
               oppilaitos={oppilaitos}/>{'.'}</span>
             <p><Text name="Opiskelija poistuu virhelistalta"/></p>
-            <Tiedonsiirtotaulukko rivit={henkilöt} showError={true} pager={pager} selected={selected}/>
+            <Tiedonsiirtotaulukko rivit={henkilöt} showError={true} pager={pager} selected={selected} showSelected={userP.map(u => u.hasAnyInvalidateAccess)} baret-lift/>
           </div>
         ),
         title: 'Tiedonsiirtovirheet'
