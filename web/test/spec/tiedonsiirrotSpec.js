@@ -42,6 +42,8 @@ describe('Tiedonsiirrot', function() {
     })
 
     describe('Poistettaessa', function () {
+      before(Authentication().login('pää'), tiedonsiirrot.openPage, tiedonsiirrot.openVirhesivu)
+
       describe('Aluksi', function () {
         it('Poista valitut nappi on disabloitu', function () {
           expect(tiedonsiirrot.poistaNappiEnabloitu()).to.equal(false)
@@ -101,11 +103,14 @@ describe('Tiedonsiirrot', function() {
         })
       })
     })
+
     describe('Poistettaessa useampi kerralla', function() {
       before(
+        Authentication().login('stadin-palvelu'), tiedonsiirrot.openPage, tiedonsiirrot.openVirhesivu,
         insertExample('tiedonsiirto - epäonnistunut.json'),
         insertExample('tiedonsiirto - epäonnistunut 2.json'),
         syncTiedonsiirrot,
+        Authentication().login('pää'),
         tiedonsiirrot.openPage,
         tiedonsiirrot.openVirhesivu,
         tiedonsiirrot.setValinta('tiedonsiirto-1.2.246.562.10.346830761110_280618-402H', true),

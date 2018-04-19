@@ -80,7 +80,6 @@ class Lokirivi extends React.Component {
 
     const select = (value) => selected.modify(prev => R.contains(value, prev) ? R.without([value], prev) : R.append(value, prev))
 
-
     return (<tr className={className} id={'tiedonsiirto-' + row.id}>
       <td className="tila">
         {

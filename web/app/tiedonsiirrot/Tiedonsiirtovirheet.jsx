@@ -8,6 +8,7 @@ import {OppilaitosTitle} from './Tiedonsiirtoloki'
 import Atom from 'bacon.atom'
 import Http from '../util/http'
 import {userP} from '../util/user'
+import Bacon from 'baconjs'
 
 export const tiedonsiirtovirheetContentP = (queryString) => {
   const pager = Pager('/koski/api/tiedonsiirrot/virheet' + queryString, L.prop('henkilöt'))
@@ -26,24 +27,20 @@ export const tiedonsiirtovirheetContentP = (queryString) => {
   }
 
   let contentP = deleting.not().flatMap(notDeleting => notDeleting
-    ? pager.rowsP.map(({henkilöt, oppilaitos}) =>
+    ? Bacon.combineWith(pager.rowsP, userP, ({henkilöt, oppilaitos}, user) =>
       ({
         content: (
           <div className="tiedonsiirto-virheet">
             <ReloadButton/>
-            <button className="remove-selected" disabled={selected.map(s => !s.length)} style={userP.map(u => u.hasAnyInvalidateAccess ? ({}): ({display: 'none'}))} onClick={removeSelected}>Poista
-              valitut
-            </button>
-            <span><Text name="Alla olevien opiskelijoiden tiedot ovat virhetilassa"/><OppilaitosTitle
-              oppilaitos={oppilaitos}/>{'.'}</span>
+            <button className="remove-selected" disabled={selected.map(s => !s.length)} style={user.hasAnyInvalidateAccess ? ({}): ({display: 'none'})} onClick={removeSelected}>Poista valitut</button>
+            <span><Text name="Alla olevien opiskelijoiden tiedot ovat virhetilassa"/><OppilaitosTitle oppilaitos={oppilaitos}/>{'.'}</span>
             <p><Text name="Opiskelija poistuu virhelistalta"/></p>
-            <Tiedonsiirtotaulukko rivit={henkilöt} showError={true} pager={pager} selected={selected} showSelected={userP.map(u => u.hasAnyInvalidateAccess)} baret-lift/>
+            <Tiedonsiirtotaulukko rivit={henkilöt} showError={true} pager={pager} selected={selected} showSelected={user.hasAnyInvalidateAccess} />
           </div>
         ),
         title: 'Tiedonsiirtovirheet'
-      })
-    )
-    : ({content: <div className="ajax-loading-placeholder"><Text name='Poistetaan...'/></div>, title: 'Tiedonsiirtovirheet'})
+      }))
+    : Bacon.constant(({content: <div className="ajax-loading-placeholder"><Text name='Poistetaan...'/></div>, title: 'Tiedonsiirtovirheet'}))
   ).toProperty()
 
   return tiedonsiirrotContentP('/koski/tiedonsiirrot/virheet', contentP)
