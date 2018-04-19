@@ -15,8 +15,8 @@ const Ingressi = () => (
   <div className='suoritusjako-form__caption'>
     <Text name={
       'Luomalla jakolinkin voit näyttää suoritustietosi haluamillesi henkilöille (esimerkiksi työtä tai opiskelupaikkaa hakiessasi). ' +
-      'Tiettyjä arkaluonteisia tietoja (muun muassa tietoa vammaisten opiskelijoiden tuesta) ei välitetä. ' +
-      'Luotuasi linkin voit tarkistaa tarkan sisällön Esikatsele-painikkeella.'}
+      'Luotuasi linkin voit tarkistaa tarkan sisällön Esikatsele-painikkeella.'
+    }
     />
   </div>
 )

@@ -269,7 +269,6 @@ describe('Omat tiedot', function() {
             it('näytetään ingressi', function() {
               expect(form.ingressi()).to.equal(
                 'Luomalla jakolinkin voit näyttää suoritustietosi haluamillesi henkilöille (esimerkiksi työtä tai opiskelupaikkaa hakiessasi). ' +
-                'Tiettyjä arkaluonteisia tietoja (muun muassa tietoa vammaisten opiskelijoiden tuesta) ei välitetä. ' +
                 'Luotuasi linkin voit tarkistaa tarkan sisällön Esikatsele-painikkeella.'
               )
             })
