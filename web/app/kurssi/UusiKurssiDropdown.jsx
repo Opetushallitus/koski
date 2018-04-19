@@ -74,7 +74,7 @@ const completeWithFieldAlternatives = (oppiaine, kurssiPrototypes) => {
       findKoodistoByDiaarinumero(koodistot, oppimaaraDiaarinumero) ||
       findDefaultKoodisto(koodistot) ||
       kurssiKoodistot
-    const loc = parseLocation(`/koski/api/editor/kurssit/${oppiaineKoodisto}/${oppiaineKoodiarvo}/${queryKoodistot}`)
+    const loc = parseLocation(`/koski/api/editor/koodit/${oppiaineKoodisto}/${oppiaineKoodiarvo}/kurssit/${queryKoodistot}`)
       .addQueryParams({oppimaaraKoodisto, oppimaaraKoodiarvo, oppimaaraDiaarinumero})
 
     return Http.cachedGet(loc.toString())

@@ -15,18 +15,13 @@ export const IBTutkinnonOppiaineetEditor = ({suorituksetModel, additionalEditabl
   const {edit, suoritus: päätasonSuoritusModel} = suorituksetModel.context
   const oppiaineet = modelItems(suorituksetModel)
 
-  const oppiaineetAineryhmittäin = Bacon.constant(R.compose(
-    R.map(aineet => ({aineet})),
-    R.groupBy(oppiaine => modelData(oppiaine, 'koulutusmoduuli.ryhmä').koodiarvo)
-  )(oppiaineet))
+  const ryhmätOppiaineista = Bacon.constant(oppiaineet.map(oppiaine => modelData(oppiaine, 'koulutusmoduuli.ryhmä')))
+  const ryhmätKoodistosta = edit ? koodistoValues('aineryhmaib') : Bacon.constant([])
+  const ryhmätKaikki = Bacon.combineWith(ryhmätOppiaineista, ryhmätKoodistosta,
+    (oppiaineista, koodistosta) => R.pipe(R.uniqBy(R.prop('koodiarvo')), R.sortBy(R.prop('koodiarvo')))(koodistosta.concat(oppiaineista)))
 
-  const aineryhmäKoodistoArvot = koodistoValues('aineryhmaib')
-    .map(ryhmät => ryhmät.reduce((obj, r) => R.assoc(r.koodiarvo, {ryhmä: r}, obj), {}))
-
-  const aineryhmät = Bacon.combineWith(oppiaineetAineryhmittäin, aineryhmäKoodistoArvot,
-    (aineet, ryhmät) => Object.values(R.mergeDeepLeft(aineet, ryhmät))
-      .filter(edit ? R.identity : r => r.aineet)
-  )
+  const oppiaineetAineryhmittäin = R.groupBy(oppiaine => modelData(oppiaine, 'koulutusmoduuli.ryhmä').koodiarvo, oppiaineet)
+  const aineryhmät = ryhmätKaikki.map(ryhmät => ryhmät.map(ryhmä => ({ryhmä, aineet: oppiaineetAineryhmittäin[ryhmä.koodiarvo]})))
 
   const footnotes = R.any(s => modelData(s, 'arviointi.-1.predicted'), oppiaineet)
     ? [ArvosanaFootnote]
