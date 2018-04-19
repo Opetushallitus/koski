@@ -51,6 +51,14 @@ export class SuoritusjakoLink extends React.Component {
     return date.getTime() >= tomorrow.getTime()
   }
 
+  static isDateWithinYear(date) {
+    const today = new Date()
+    const limit = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate() + 1)
+    limit.setHours(0,0,0,0)
+
+    return date.getTime() < limit.getTime()
+  }
+
   deleteSelf() {
     const {isDateUpdatePending} = this.state
     const {suoritusjako, onRemove} = this.props
@@ -95,7 +103,7 @@ export class SuoritusjakoLink extends React.Component {
                     value={parseISODate(expirationDate)}
                     valueCallback={date => this.dateChangeBus.push(date)}
                     validityCallback={isValid => !isValid && this.dateChangeBus.push(null)}
-                    isAllowedDate={SuoritusjakoLink.isDateInFuture}
+                    isAllowedDate={d => SuoritusjakoLink.isDateInFuture(d) && SuoritusjakoLink.isDateWithinYear(d)}
                     isPending={isDateUpdatePending}
                   />
                 </div>

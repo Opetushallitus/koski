@@ -380,6 +380,19 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
         }
       }
 
+      "oikealla salaisuudella mutta yli vuoden päässä olevalla päivämäärällä" in {
+        val expirationDate = LocalDateTime.now().plusYears(1).plusDays(1).toLocalDate
+        val json =
+          s"""{
+          "secret": "${secrets("yksi suoritus")}",
+          "expirationDate": "${expirationDate.toString}"
+        }"""
+
+        updateSuoritusjako(json){
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest())
+        }
+      }
+
       "epäkelvolla salaisuudella" in {
         val expirationDate = LocalDateTime.now().plusMonths(1).toLocalDate
         val json =

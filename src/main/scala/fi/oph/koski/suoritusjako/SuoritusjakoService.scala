@@ -30,7 +30,7 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
   }
 
   def update(oppijaOid: String, secret: String, expirationDate: LocalDate): HttpStatus = {
-    if (expirationDate.isBefore(LocalDate.now)) {
+    if (expirationDate.isBefore(LocalDate.now) || expirationDate.isAfter(LocalDate.now.plusYears(1))) {
       KoskiErrorCategory.badRequest()
     } else {
       suoritusjakoRepository.update(oppijaOid, secret, expirationDate)
