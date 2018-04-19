@@ -329,7 +329,7 @@ class TiedonsiirtoService(
 
   private def toHenkilönTiedonsiirrot(tiedonsiirrot: Seq[TiedonsiirtoDocument]): List[HenkilönTiedonsiirrot] = {
     tiedonsiirrot.map { row =>
-      val rivi = TiedonsiirtoRivi(row.id /*TODO tarvitaanko id?*/, row.aikaleima, row.oppija, row.oppilaitokset.getOrElse(Nil), row.virheet, row.data, row.lähdejärjestelmä)
+      val rivi = TiedonsiirtoRivi(row.id, row.aikaleima, row.oppija, row.oppilaitokset.getOrElse(Nil), row.virheet, row.data, row.lähdejärjestelmä)
       HenkilönTiedonsiirrot(row.oppija, List(rivi))
     }.toList
   }

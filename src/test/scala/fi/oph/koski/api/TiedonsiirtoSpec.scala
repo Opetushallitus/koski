@@ -164,6 +164,48 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     }
   }
 
+  "Virheellisten tiedonsiirtojen poistaminen" - {
+    val stadinOpiskeluoikeus = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId))
+
+    "onnistuu omille virheellisille tiedonsiirtoriveille" in {
+      resetFixtures
+      putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö.copy(sukunimi = ""), headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
+        verifyResponseStatus(400, sukunimiPuuttuu)
+      }
+
+      val virheelliset = getVirheellisetTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä).flatMap(_.rivit).map(_.id)
+      virheelliset should have size 1
+
+      deleteVirheelliset(virheelliset, helsinginKaupunkiPalvelukäyttäjä)
+      getVirheellisetTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä) should be (empty)
+    }
+
+    "onnistuneita siirtoja ei voi poistaa" in {
+      resetFixtures
+      putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
+        verifyResponseStatusOk()
+      }
+
+      val tiedonsiirrot = getTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä).flatMap(_.rivit)
+      tiedonsiirrot should have length 1
+
+      deleteVirheelliset(tiedonsiirrot.map(_.id), helsinginKaupunkiPalvelukäyttäjä)
+      tiedonsiirrot should equal(getTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä).flatMap(_.rivit))
+    }
+
+    "vain ne virheelliset tiedonsiirtorivit voidaan poistaa, joihin käyttäjällä on oikeus" in {
+      resetFixtures
+      putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö.copy(sukunimi = ""), headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
+        verifyResponseStatus(400, sukunimiPuuttuu)
+      }
+      val virheelliset = getVirheellisetTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä).flatMap(_.rivit)
+      virheelliset should have size 1
+
+      deleteVirheelliset(virheelliset.map(_.id), MockUsers.omniaKatselija)
+      virheelliset should equal(getTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä).flatMap(_.rivit))
+    }
+  }
+
   private def verifyTiedonsiirtoLoki(user: UserWithPassword, expectedHenkilö: Option[UusiHenkilö], expectedOpiskeluoikeus: Option[Opiskeluoikeus], errorStored: Boolean, dataStored: Boolean, expectedLähdejärjestelmä: Option[String]) {
     Wait.until(getTiedonsiirrot(user).nonEmpty)
     val tiedonsiirto = getTiedonsiirrot(user).head
@@ -185,4 +227,10 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
   }
 
   private def getVirheellisetTiedonsiirrot(user: UserWithPassword) = getTiedonsiirrot(user, "api/tiedonsiirrot/virheet")
+
+  private def deleteVirheelliset(ids: List[String], user: UserWithPassword) = {
+    post("api/tiedonsiirrot/delete", JsonSerializer.writeWithRoot(Map("ids" -> ids)), headers = authHeaders(user) ++ jsonContent) {
+      verifyResponseStatusOk()
+    }
+  }
 }
