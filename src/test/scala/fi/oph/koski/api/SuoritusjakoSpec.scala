@@ -483,4 +483,36 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
       }
     }
   }
+
+  "Suoritusjakojen määrän rajoitus" - {
+    "Jaon lisääminen onnistuu kun käyttäjällä on alle maksimimäärä jakoja" in {
+      resetFixtures
+
+      val json =
+        """[{
+          "oppilaitosOid": "1.2.246.562.10.64353470871",
+          "suorituksenTyyppi": "perusopetuksenvuosiluokka",
+          "koulutusmoduulinTunniste": "7"
+        }]"""
+
+      (1 to 100).foreach(_ =>
+        createSuoritusjako(json){
+          verifyResponseStatusOk()
+        }
+      )
+    }
+
+    "Jaon lisääminen epäonnistuu kun käyttäjällä on jo maksimimäärä jakoja" in {
+      val json =
+        """[{
+          "oppilaitosOid": "1.2.246.562.10.64353470871",
+          "suorituksenTyyppi": "perusopetuksenvuosiluokka",
+          "koulutusmoduulinTunniste": "7"
+        }]"""
+
+      createSuoritusjako(json){
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.liianMontaSuoritusjakoa())
+      }
+    }
+  }
 }
