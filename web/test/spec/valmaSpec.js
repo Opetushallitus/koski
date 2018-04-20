@@ -6,8 +6,25 @@ describe('VALMA koulutus', function() {
   var opinnot = OpinnotPage()
   var editor = opinnot.opiskeluoikeusEditor()
 
+  describe('Opiskeluoikeuden lisääminen vanhalla perusteella', function() {
+    before(
+      prepareForNewOppija('kalle', '230872-7258'),
+      addOppija.enterValidDataAmmatillinen(),
+      addOppija.selectOppimäärä('Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)'),
+      addOppija.selectPeruste('5/011/2015'),
+      addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Ammatilliseen koulutukseen valmentava koulutus (VALMA)')
+    )
+
+    it('Lisätty opiskeluoikeus näytetään', function () {
+      expect(opinnot.getTutkinto()).to.equal('Ammatilliseen koulutukseen valmentava koulutus (VALMA)')
+      expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+      expect(editor.propertyBySelector('.koulutusmoduuli .diaarinumero').getValue()).to.equal('5/011/2015')
+    })
+  })
+
   describe('Opiskeluoikeuden lisääminen', function() {
     before(
+      resetFixtures,
       prepareForNewOppija('kalle', '230872-7258'),
       addOppija.enterValidDataAmmatillinen(),
       addOppija.selectOppimäärä('Ammatilliseen peruskoulutukseen valmentava koulutus (VALMA)'),
@@ -17,6 +34,7 @@ describe('VALMA koulutus', function() {
     it('Lisätty opiskeluoikeus näytetään', function () {
       expect(opinnot.getTutkinto()).to.equal('Ammatilliseen koulutukseen valmentava koulutus (VALMA)')
       expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+      expect(editor.propertyBySelector('.koulutusmoduuli .diaarinumero').getValue()).to.equal('OPH-2658-2017')
     })
 
     describe('Ammatillisen tutkinnon suorituksen lisääminen', function() {
@@ -29,7 +47,6 @@ describe('VALMA koulutus', function() {
         })
         after(editor.cancelChanges)
       })
-
     })
 
     var suoritustapa = editor.property('suoritustapa')

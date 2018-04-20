@@ -14,7 +14,8 @@ object MockEPerusteetRepository extends EPerusteetRepository {
     "rakenne-hiusalan-perustutkinto",
     "rakenne-puutarhatalouden-perustutkinto",
     "rakenne-automekaanikon-erikoisammattitutkinto",
-    "rakenne-liiketalouden-perustutkinto").map { id =>
+    "rakenne-liiketalouden-perustutkinto",
+    "rakenne-valma").map { id =>
     JsonSerializer.extract[EPerusteRakenne](JsonResources.readResourceIfExists("/mockdata/eperusteet/" + id + ".json").get, ignoreExtras = true)
   }
 
@@ -28,7 +29,7 @@ object MockEPerusteetRepository extends EPerusteetRepository {
   }
 
   def findPerusteetByKoulutustyyppi(koulutustyypit: Set[Koulutustyyppi]): List[EPeruste] = {
-    rakenteet.filter(r => koulutustyypit.map(_.koodiarvo).contains(r.koulutustyyppi)).map(_.toEPeruste)
+    rakenteet.filter(r => koulutustyypit.map(k => s"${k.koodistoUri}_${k.koodiarvo}").contains(r.koulutustyyppi)).map(_.toEPeruste)
   }
 
   def findRakenne(diaariNumero: String): Option[EPerusteRakenne] = {
