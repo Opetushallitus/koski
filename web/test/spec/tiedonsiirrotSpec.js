@@ -106,21 +106,32 @@ describe('Tiedonsiirrot', function() {
 
     describe('Poistettaessa useampi kerralla', function() {
       before(
-        Authentication().login('stadin-palvelu'), tiedonsiirrot.openPage, tiedonsiirrot.openVirhesivu,
+        authentication.login('stadin-palvelu'), tiedonsiirrot.openPage, tiedonsiirrot.openVirhesivu,
         insertExample('tiedonsiirto - epäonnistunut.json'),
         insertExample('tiedonsiirto - epäonnistunut 2.json'),
         syncTiedonsiirrot,
-        Authentication().login('pää'),
+        authentication.login('pää'),
         tiedonsiirrot.openPage,
         tiedonsiirrot.openVirhesivu,
         tiedonsiirrot.setValinta('tiedonsiirto-1.2.246.562.10.346830761110_280618-402H', true),
         tiedonsiirrot.setValinta('tiedonsiirto-1.2.246.562.10.346830761110_270303-281N', true),
         tiedonsiirrot.poista,
-        tiedonsiirrot.openPage,
-        tiedonsiirrot.openVirhesivu
+        wait.forAjax
       )
       it('Kaikki valitut rivit poistuvat', function() {
         expect(tiedonsiirrot.tiedot()).to.deep.equal([])
+      })
+    })
+
+    describe('Ilman tiedonsiirron mitätöintioikeutta', function() {
+      before(
+        authentication.login('stadin-palvelu'), tiedonsiirrot.openPage, tiedonsiirrot.openVirhesivu
+      )
+      it('Poista valitut nappi on piilotettu', function () {
+        expect(tiedonsiirrot.poistaNappiNäkyvissä()).to.equal(false)
+      })
+      it('Tiedonsiirto-rivien valinta on piilotettu', function() {
+        expect(tiedonsiirrot.rivinValintaNäkyvissä()).to.equal(false)
       })
     })
   })

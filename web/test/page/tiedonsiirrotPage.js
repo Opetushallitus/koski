@@ -18,8 +18,14 @@ function TiedonsiirrotPage() {
       })
     },
     poista: click('button.remove-selected'),
+    poistaNappiNäkyvissä: function() {
+      return isElementVisible(poistaNappi())
+    },
     poistaNappiEnabloitu: function() {
       return poistaNappi().is(':visible') && poistaNappi().is(':enabled')
+    },
+    rivinValintaNäkyvissä: function() {
+      return isElementVisible(S('.tiedonsiirto-taulukko .valitse'))
     },
     setValinta: function(id, selected) {
       return Page().setInputValue('#' + id.replace( /(\.)/g, '\\$1' ) + ' input', selected)
