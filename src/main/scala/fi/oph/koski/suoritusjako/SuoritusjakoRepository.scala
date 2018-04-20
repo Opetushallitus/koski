@@ -1,6 +1,6 @@
 package fi.oph.koski.suoritusjako
 
-import java.sql.Date
+import java.sql.{Date, SQLException}
 import java.sql.Timestamp.{valueOf => timestamp}
 import java.time.{LocalDate, LocalDateTime}
 
@@ -21,19 +21,28 @@ class SuoritusjakoRepository(val db: DB) extends Logging with DatabaseExecutionC
     runDbSync(SuoritusJako.filter(r => r.oppijaOid === oppijaOid && r.voimassaAsti >= Date.valueOf(LocalDateTime.now.toLocalDate)).result)
   }
 
-  def create(secret: String, oppijaOid: String, suoritusIds: List[SuoritusIdentifier]): LocalDate = {
+  def create(secret: String, oppijaOid: String, suoritusIds: List[SuoritusIdentifier]): Either[HttpStatus, LocalDate] = {
     val expirationDate = LocalDateTime.now.plusMonths(6).toLocalDate
+    val maxSuoritusjakoCount = 100
 
-    runDbSync(SuoritusJako.insertOrUpdate(SuoritusjakoRow(
-      0,
-      secret,
-      oppijaOid,
-      JsonSerializer.serializeWithRoot(suoritusIds),
-      Date.valueOf(expirationDate),
-      now
-    )))
+    val currentSuoritusjakoCount = runDbSync(SuoritusJako
+      .filter(r => r.oppijaOid === oppijaOid && r.voimassaAsti >= Date.valueOf(LocalDate.now)).length.result
+    )
 
-    expirationDate
+    if (currentSuoritusjakoCount < maxSuoritusjakoCount) {
+      runDbSync(SuoritusJako.insertOrUpdate(SuoritusjakoRow(
+        0,
+        secret,
+        oppijaOid,
+        JsonSerializer.serializeWithRoot(suoritusIds),
+        Date.valueOf(expirationDate),
+        now
+      )))
+
+      Right(expirationDate)
+    } else {
+      Left(KoskiErrorCategory.forbidden.liianMontaSuoritusjakoa())
+    }
   }
 
   def delete(oppijaOid: String, secret: String): HttpStatus = {

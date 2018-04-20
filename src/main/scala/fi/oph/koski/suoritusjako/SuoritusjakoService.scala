@@ -20,7 +20,7 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
         val secret = generateNewSecret()
         val expirationDate = suoritusjakoRepository.create(secret, oppijaOid, suoritusIds)
         AuditLog.log(AuditLogMessage(KANSALAINEN_SUORITUSJAKO_LISAYS, koskiSession, Map(oppijaHenkiloOid -> oppijaOid)))
-        Right(Suoritusjako(secret, expirationDate))
+        expirationDate.map(Suoritusjako(secret, _))
       case Left(status) => Left(status)
     }
   }
