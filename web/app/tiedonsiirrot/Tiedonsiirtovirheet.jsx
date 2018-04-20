@@ -32,7 +32,7 @@ export const tiedonsiirtovirheetContentP = (queryString) => {
         content: (
           <div className="tiedonsiirto-virheet">
             <ReloadButton/>
-            <button className="remove-selected" disabled={selected.map(s => !s.length)} style={user.hasAnyInvalidateAccess ? ({}): ({display: 'none'})} onClick={removeSelected}>Poista valitut</button>
+            <button className="remove-selected" disabled={selected.map(s => !s.length)} style={user.hasAnyInvalidateAccess ? ({}): ({display: 'none'})} onClick={removeSelected}><Text name="Poista valitut"/></button>
             <span><Text name="Alla olevien opiskelijoiden tiedot ovat virhetilassa"/><OppilaitosTitle oppilaitos={oppilaitos}/>{'.'}</span>
             <p><Text name="Opiskelija poistuu virhelistalta"/></p>
             <Tiedonsiirtotaulukko rivit={henkilöt} showError={true} pager={pager} selected={selected} showSelected={user.hasAnyInvalidateAccess} />
@@ -40,7 +40,7 @@ export const tiedonsiirtovirheetContentP = (queryString) => {
         ),
         title: 'Tiedonsiirtovirheet'
       }))
-    : Bacon.constant(({content: <div className="ajax-loading-placeholder"><Text name='Poistetaan...'/></div>, title: 'Tiedonsiirtovirheet'}))
+    : Bacon.constant(({content: <div className="ajax-loading-placeholder"><Text name='Poistetaan'/></div>, title: 'Tiedonsiirtovirheet'}))
   ).toProperty()
 
   return tiedonsiirrotContentP('/koski/tiedonsiirrot/virheet', contentP)
