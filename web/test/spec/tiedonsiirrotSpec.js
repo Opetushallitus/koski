@@ -31,6 +31,14 @@ describe('Tiedonsiirrot', function() {
     })
   })
 
+  describe('Yhteenveto', function() {
+    before(tiedonsiirrot.openYhteenveto)
+
+    it('Näytetään', function() {
+      expect(tiedonsiirrot.tiedot().map(function(row) { return row[0]})).to.deep.equal(['Aalto-yliopisto', 'HELSINGIN KAUPUNKI', 'Stadin ammattiopisto'])
+    })
+  })
+
   describe('Virhelistaus', function() {
     before(tiedonsiirrot.openVirhesivu)
 
@@ -135,15 +143,6 @@ describe('Tiedonsiirrot', function() {
       })
     })
   })
-
-  describe('Yhteenveto', function() {
-    before(tiedonsiirrot.openYhteenveto)
-
-    it('Näytetään', function() {
-      expect(tiedonsiirrot.tiedot().map(function(row) { return row[0]})).to.deep.equal(['Aalto-yliopisto', 'HELSINGIN KAUPUNKI', 'Stadin ammattiopisto'])
-    })
-  })
-
 
   function insertExample(name) {
     return function() {
