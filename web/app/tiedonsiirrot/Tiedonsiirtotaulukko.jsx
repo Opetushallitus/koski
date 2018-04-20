@@ -9,7 +9,7 @@ import {flatMapArray} from '../util/util'
 
 export class Tiedonsiirtotaulukko extends React.Component {
   render() {
-    const { rivit, showError, pager } = this.props
+    const { rivit, showError, pager, selected, showSelected = false } = this.props
 
     return (<div className="tiedonsiirto-taulukko">
       <table>
@@ -22,10 +22,11 @@ export class Tiedonsiirtotaulukko extends React.Component {
           <th className="oppilaitos"><Text name="Oppilaitos"/></th>
           <th className="virhe"><Text name="Virhe"/></th>
           <th className="tiedot"><Text name="Tiedot"/></th>
+          { selected && showSelected && <th className="valitse"></th> }
         </tr>
         </thead>
         {
-          rivit.map((oppijaRivi, i) => <Lokiriviryhmä oppijaRivi={oppijaRivi} i={i} showError={showError} key={i}/>)
+          rivit.map((oppijaRivi, i) => <Lokiriviryhmä oppijaRivi={oppijaRivi} i={i} showError={showError} key={i} selected={selected} showSelected={showSelected}/>)
         }
       </table>
       <PaginationLink pager={pager}/>
@@ -35,7 +36,7 @@ export class Tiedonsiirtotaulukko extends React.Component {
 
 class Lokiriviryhmä extends React.Component {
   render() {
-    let { oppijaRivi, i, showError } = this.props
+    let { oppijaRivi, i, showError, selected, showSelected } = this.props
 
     const setExpanded = (expanded) => this.setState({expanded})
     const isExpanded = this.state && this.state.expanded
@@ -49,7 +50,7 @@ class Lokiriviryhmä extends React.Component {
             const isHidden = isChild && !isExpanded
             return isHidden
               ? []
-              : [<Lokirivi key={rivi.id} row={rivi} isParent={isParent} isChild={isChild} isExpanded={isExpanded} isEven={i % 2 == 1} showError={showError} setExpanded={setExpanded}/>]
+              : [<Lokirivi key={rivi.id} row={rivi} isParent={isParent} isChild={isChild} isExpanded={isExpanded} isEven={i % 2 == 1} showError={showError} setExpanded={setExpanded} selected={selected} showSelected={showSelected}/>]
           }
         )
       }
@@ -59,7 +60,7 @@ class Lokiriviryhmä extends React.Component {
 
 class Lokirivi extends React.Component {
   render() {
-    const {row, isParent, isChild, isExpanded, isEven, showError, setExpanded} = this.props
+    const {row, isParent, isChild, isExpanded, isEven, showError, setExpanded, selected, showSelected} = this.props
     const dataToBeShown = this.state && this.state.dataToBeShown
     const showData = (data) => this.setState({dataToBeShown: data})
     const errorDetails = (virheet) => showError
@@ -76,6 +77,8 @@ class Lokirivi extends React.Component {
     const showErrors = (virheet) => showData(virheet)
     const nimi = row.oppija && ((row.oppija.kutsumanimi || '') + ' ' + (row.oppija.sukunimi || ''))
     const className = ((isParent || isChild) ? 'group ' : '') + (isEven ? 'even' : 'odd')
+
+    const select = (value) => selected.modify(prev => R.contains(value, prev) ? R.without([value], prev) : R.append(value, prev))
 
     return (<tr className={className} id={'tiedonsiirto-' + row.id}>
       <td className="tila">
@@ -110,6 +113,7 @@ class Lokirivi extends React.Component {
           dataToBeShown && <LokirivinData details={dataToBeShown} showData={showData}/>
         }
       </td>
+      { selected && showSelected && <td className="valitse"><input type="checkbox" onClick={() => select(row.id)}/></td> }
     </tr>)
   }
 }

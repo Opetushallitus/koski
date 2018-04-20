@@ -12,7 +12,7 @@ import fi.oph.koski.json.JsonSerializer.{extract, validateAndExtract}
 import fi.oph.koski.json.LegacyJsonSerialization.toJValue
 import fi.oph.koski.json._
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.koskiuser.{AccessType, KoskiSession, KoskiUserInfo, KoskiUserRepository}
+import fi.oph.koski.koskiuser._
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.log.KoskiMessageField._
 import fi.oph.koski.log.KoskiOperation._
@@ -36,6 +36,7 @@ class TiedonsiirtoService(
   koodistoviitePalvelu: KoodistoViitePalvelu,
   userRepository: KoskiUserRepository
 ) extends Logging with Timing with GlobalExecutionContext {
+
   private val serializationContext = SerializationContext(KoskiSchema.schemaFactory, omitEmptyFields = false)
   private val tiedonSiirtoVirheet = Counter.build().name("fi_oph_koski_tiedonsiirto_TiedonsiirtoService_virheet").help("Koski tiedonsiirto virheet").register()
   private val tiedonsiirtoBuffer = new ConcurrentBuffer[TiedonsiirtoDocument]
@@ -61,19 +62,25 @@ class TiedonsiirtoService(
     haeTiedonsiirrot(Map("exists" -> Map("field" -> "virheet.key")) :: filtersFrom(query), query.oppilaitos, query.paginationSettings)
   }
 
-  private def filtersFrom(query: TiedonsiirtoQuery)(implicit session: KoskiSession): List[Map[String, Any]] = {
-    query.oppilaitos.toList.map(oppilaitos => Map("term" -> Map("oppilaitokset.oid" -> oppilaitos))) ++ tallentajaOrganisaatioFilters
+  def delete(ids: List[String])(implicit koskiSession: KoskiSession): Unit = {
+    val deleteQuery = toJValue(Map("query" -> ElasticSearch.allFilter(Map("terms" -> Map("_id" -> ids)) :: Map("exists" -> Map("field" -> "virheet.key")) :: tallentajaOrganisaatioFilters(AccessType.tiedonsiirronMitätöinti))))
+    Http.runTask(index.http.post(uri"/koski/tiedonsiirto/_delete_by_query", deleteQuery)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.unitDecoder))
+    index.refreshIndex
   }
 
-  private def tallentajaOrganisaatioFilters(implicit session: KoskiSession): List[Map[String, Any]] = tallentajaOrganisaatioFilter.toList
+  private def filtersFrom(query: TiedonsiirtoQuery)(implicit session: KoskiSession): List[Map[String, Any]] = {
+    query.oppilaitos.toList.map(oppilaitos => Map("term" -> Map("oppilaitokset.oid" -> oppilaitos))) ++ tallentajaOrganisaatioFilters()
+  }
 
-  private def tallentajaOrganisaatioFilter(implicit session: KoskiSession): Option[Map[String, Any]] =
+  private def tallentajaOrganisaatioFilters(accessType: AccessType.Value = AccessType.read)(implicit session: KoskiSession): List[Map[String, Any]] = tallentajaOrganisaatioFilter(accessType).toList
+
+  private def tallentajaOrganisaatioFilter(accessType: AccessType.Value = AccessType.read)(implicit session: KoskiSession): Option[Map[String, Any]] =
     if (session.hasGlobalReadAccess) {
       None
     } else {
       Some(ElasticSearch.anyFilter(List(
-        Map("terms" -> Map("tallentajaOrganisaatioOid" -> session.organisationOids(AccessType.read))),
-        Map("terms" -> Map("oppilaitokset.oid" -> session.organisationOids(AccessType.read)))
+        Map("terms" -> Map("tallentajaOrganisaatioOid" -> session.organisationOids(accessType))),
+        Map("terms" -> Map("oppilaitokset.oid" -> session.organisationOids(accessType)))
       )))
     }
 
@@ -221,7 +228,7 @@ class TiedonsiirtoService(
             )
           )
         )
-    ) ++ tallentajaOrganisaatioFilter.map(filter => Map("query" -> filter)).getOrElse(Map()))
+    ) ++ tallentajaOrganisaatioFilter().map(filter => Map("query" -> filter)).getOrElse(Map()))
 
     // uncomment this to see raw query for manual troubleshooting
     // println(JsonMethods.pretty(query))
@@ -322,7 +329,7 @@ class TiedonsiirtoService(
 
   private def toHenkilönTiedonsiirrot(tiedonsiirrot: Seq[TiedonsiirtoDocument]): List[HenkilönTiedonsiirrot] = {
     tiedonsiirrot.map { row =>
-      val rivi = TiedonsiirtoRivi(Math.random().toInt /*TODO tarvitaanko id?*/, row.aikaleima, row.oppija, row.oppilaitokset.getOrElse(Nil), row.virheet, row.data, row.lähdejärjestelmä)
+      val rivi = TiedonsiirtoRivi(row.id, row.aikaleima, row.oppija, row.oppilaitokset.getOrElse(Nil), row.virheet, row.data, row.lähdejärjestelmä)
       HenkilönTiedonsiirrot(row.oppija, List(rivi))
     }.toList
   }
@@ -352,7 +359,7 @@ class TiedonsiirtoService(
 
 case class Tiedonsiirrot(henkilöt: List[HenkilönTiedonsiirrot], oppilaitos: Option[OidOrganisaatio])
 case class HenkilönTiedonsiirrot(oppija: Option[TiedonsiirtoOppija], rivit: Seq[TiedonsiirtoRivi])
-case class TiedonsiirtoRivi(id: Int, aika: Timestamp, oppija: Option[TiedonsiirtoOppija], oppilaitos: List[OidOrganisaatio], virhe: List[ErrorDetail], inputData: Option[JValue], lähdejärjestelmä: Option[String])
+case class TiedonsiirtoRivi(id: String, aika: Timestamp, oppija: Option[TiedonsiirtoOppija], oppilaitos: List[OidOrganisaatio], virhe: List[ErrorDetail], inputData: Option[JValue], lähdejärjestelmä: Option[String])
 case class TiedonsiirtoOppija(oid: Option[String], hetu: Option[String], syntymäaika: Option[LocalDate], etunimet: Option[String], kutsumanimi: Option[String], sukunimi: Option[String], äidinkieli: Option[Koodistokoodiviite], kansalaisuus: Option[List[Koodistokoodiviite]])
 case class HetuTaiOid(oid: Option[String], hetu: Option[String])
 case class TiedonsiirtoYhteenveto(tallentajaOrganisaatio: OidOrganisaatio, oppilaitos: OidOrganisaatio, käyttäjä: KoskiUserInfo, viimeisin: Timestamp, siirretyt: Int, virheelliset: Int, onnistuneet: Int, lähdejärjestelmä: Option[Koodistokoodiviite])
