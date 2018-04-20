@@ -14,11 +14,11 @@ import fi.oph.koski.log.Logging
 
 class SuoritusjakoRepository(val db: DB) extends Logging with DatabaseExecutionContext with KoskiDatabaseMethods {
   def get(secret: String): Either[HttpStatus, SuoritusjakoRow] =
-    runDbSync(SuoritusJako.filter(r => r.secret === secret && r.voimassaAsti >= Date.valueOf(LocalDateTime.now.toLocalDate)).result.headOption)
+    runDbSync(SuoritusJako.filter(r => r.secret === secret && r.voimassaAsti >= Date.valueOf(LocalDate.now)).result.headOption)
       .toRight(KoskiErrorCategory.notFound())
 
   def getAll(oppijaOid: String): Seq[SuoritusjakoRow] = {
-    runDbSync(SuoritusJako.filter(r => r.oppijaOid === oppijaOid && r.voimassaAsti >= Date.valueOf(LocalDateTime.now.toLocalDate)).result)
+    runDbSync(SuoritusJako.filter(r => r.oppijaOid === oppijaOid && r.voimassaAsti >= Date.valueOf(LocalDate.now)).result)
   }
 
   def create(secret: String, oppijaOid: String, suoritusIds: List[SuoritusIdentifier]): Either[HttpStatus, LocalDate] = {
