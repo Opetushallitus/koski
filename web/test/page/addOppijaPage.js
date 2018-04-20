@@ -5,6 +5,13 @@ function AddOppijaPage() {
   function selectedTutkinto() { return form().find('.tutkinto .selected') }
   var pageApi = Page(form)
   var api = {
+    addNewOppija: function(username, hetu, oppijaData) {
+      return function() {
+        return prepareForNewOppija(username, hetu)()
+          .then(api.enterValidDataAmmatillinen(oppijaData))
+          .then(api.submitAndExpectSuccess(hetu, (oppijaData || {}).tutkinto))
+        }
+    },
     isVisible: function() {
       return isElementVisible(form()) && isNotLoading()
     },
