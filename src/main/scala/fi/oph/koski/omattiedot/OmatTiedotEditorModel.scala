@@ -10,12 +10,15 @@ import fi.oph.koski.schema.PerusopetuksenOpiskeluoikeus._
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.Hidden
 import fi.oph.koski.util.Timing
-import mojave.{Traversal, traversal}
+import mojave._
 
 object OmatTiedotEditorModel extends Timing {
   def toEditorModel(oppija: Oppija)(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = timed("createModel") {
-    val piilotettuOppija = piilotaSensitiivisetHenkilötiedot(piilotaArvosanatKeskeneräisistäSuorituksista(oppija))
-    buildModel(buildView(piilotettuOppija))
+    val piilotetuillaTiedoilla = piilotaArvosanatKeskeneräisistäSuorituksista _ andThen
+      piilotaSensitiivisetHenkilötiedot andThen
+      piilotaKeskeneräisetPerusopetuksenPäättötodistukset
+
+    buildModel(buildView(piilotetuillaTiedoilla(oppija)))
   }
 
   private def buildView(oppija: Oppija) = {
@@ -43,6 +46,28 @@ object OmatTiedotEditorModel extends Timing {
   private def piilotaSensitiivisetHenkilötiedot(oppija: Oppija) = {
     val t: Traversal[Oppija, TäydellisetHenkilötiedot] = traversal[Oppija].field[Henkilö]("henkilö").ifInstanceOf[TäydellisetHenkilötiedot]
     t.modify(oppija)((th: TäydellisetHenkilötiedot) => th.copy(hetu = None, kansalaisuus = None, turvakielto = None))
+  }
+
+  def piilotaKeskeneräisetPerusopetuksenPäättötodistukset(oppija: Oppija): Oppija = {
+    def poistaKeskeneräisetPäättötodistukset = (suoritukset: List[PäätasonSuoritus]) => suoritukset.filter(_ match {
+      case s: PerusopetuksenOppimääränSuoritus if !s.valmis => false
+      case _ => true
+    })
+
+    def poistaOsasuoritukset = (suoritukset: List[PäätasonSuoritus]) => suoritukset.map(s =>
+      shapeless.lens[PäätasonSuoritus].field[Option[List[Suoritus]]]("osasuoritukset").set(s)(None)
+    )
+
+    shapeless.lens[Oppija].field[Seq[Opiskeluoikeus]]("opiskeluoikeudet").modify(oppija)(_.map(oo => {
+      val isKeskeneräinenPäättötodistusAinoaSuoritus = oo.suoritukset.lengthCompare(1) == 0 && (oo.suoritukset.head match {
+        case s: PerusopetuksenOppimääränSuoritus if !s.valmis => true
+        case _ => false
+      })
+
+      shapeless.lens[Opiskeluoikeus].field[List[PäätasonSuoritus]]("suoritukset").modify(oo)(
+        if (isKeskeneräinenPäättötodistusAinoaSuoritus) poistaOsasuoritukset else poistaKeskeneräisetPäättötodistukset
+      )
+    }))
   }
 }
 
