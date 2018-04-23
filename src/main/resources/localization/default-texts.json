@@ -1019,6 +1019,8 @@
   "KOSKI-palvelun tietosuojaseloste (sisältää rekisteriselosteen)": "KOSKI-palvelun tietosuojaseloste (sisältää rekisteriselosteen)",
   "tooltip:Oppiaineen laajuus kursseina." : "Oppiaineen laajuus kursseina.",
   "Varoitukset": "Varoitukset",
+  "warning:unavailable.virta": "Korkeakoulujen opintoja ei juuri nyt saada haettua. Yritä myöhemmin uudestaan.",
+  "warning:unavailable.ytr": "Ylioppilastutkinnon tietoja ei juuri nyt saada haettua. Yritä myöhemmin uudestaan.",
   "Opiskeluoikeuksia": "Opiskeluoikeuksia",
   "Turvakielto" : "Turvakielto",
   "description:Henkilöllä on turvakielto" : "Henkilöllä on turvakielto",

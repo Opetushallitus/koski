@@ -1,6 +1,6 @@
 import React from 'baret'
 import Atom from 'bacon.atom'
-import {modelItems, modelLookup} from '../../editor/EditorModel'
+import {modelData, modelItems, modelLookup} from '../../editor/EditorModel'
 import {HeaderInfo} from './HeaderInfo'
 import {withFeatureFlag} from '../../components/withFeatureFlag'
 import {HeaderButtons} from './HeaderButtons'
@@ -31,10 +31,11 @@ export class Header extends React.Component {
 
     const henkilö = modelLookup(oppija, 'henkilö')
     const opiskeluoikeudet = modelItems(oppija, 'opiskeluoikeudet')
+    let varoitukset = modelItems(oppija, 'varoitukset').map(modelData)
 
     return (
       <header className='header'>
-        <HeaderInfo showPalvelussaNäkyvätTiedotA={showPalvelussaNäkyvätTiedot}/>
+        <HeaderInfo showPalvelussaNäkyvätTiedotA={showPalvelussaNäkyvätTiedot} varoitukset={varoitukset}/>
 
         <div className='header__bottom-row'>
           <HeaderName henkilö={henkilö}/>

@@ -5,7 +5,7 @@ import {
   applyChangesAndValidate,
   getModelFromChange,
   getPathFromChange,
-  modelData,
+  modelData, modelItems,
   modelLookup,
   modelTitle,
   modelValid
@@ -29,6 +29,7 @@ import {t} from '../i18n/i18n'
 import {EditLocalizationsLink} from '../i18n/EditLocalizationsLink'
 import {setOpiskeluoikeusInvalidated} from '../opiskeluoikeus/OpiskeluoikeusInvalidation'
 import {userP} from '../util/user'
+import {Varoitukset} from '../util/Varoitukset'
 
 Bacon.Observable.prototype.flatScan = function(seed, f) {
   let current = seed
@@ -193,11 +194,13 @@ export class Oppija extends React.Component {
     stateP.filter(e => e === 'invalidated').onValue(opiskeluoikeusInvalidated)
     let showHenkilöUiLink = userP.map('.hasHenkiloUiWriteAccess')
     let showVirtaXmlLink = userP.map('.hasGlobalReadAccess')
+    let varoitukset = modelItems(oppija, 'varoitukset').map(modelData)
     return oppija.loading
       ? <div className="loading"/>
       : (
         <div>
           <div className={stateP.map(state => 'oppija-content ' + state)}>
+            <Varoitukset varoitukset={varoitukset}/>
             <h2>{`${modelTitle(henkilö, 'sukunimi')}, ${modelTitle(henkilö, 'etunimet')} `}<span
               className='hetu'>{(hetu && '(' + hetu + ')') || (syntymäaika && '(' + ISO2FinnishDate(syntymäaika) + ')')}</span>
               {modelData(henkilö, 'turvakielto') && <span title={t('Henkilöllä on turvakielto')} className="turvakielto"/>}
