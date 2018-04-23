@@ -551,6 +551,14 @@ describe('IB', function( ) {
         it('alaviitteiden selitteitä ei näytetä, kun yhtään alaviitettä (ennakkoarvosanaa) ei ole', function() {
           expect(S('.osasuoritukset .selitteet').text()).to.equal('')
         })
+
+        describe('Yhteiset IB-suoritukset (TOK, CAS, EE)', function () {
+          it('arvosanalle näytetään alaviite', function() {
+            expect(extractAsText(S('.theoryOfKnowledge'))).to.not.contain('*')
+            expect(extractAsText(S('.creativityActionService'))).to.not.contain('*')
+            expect(extractAsText(S('.extendedEssay'))).to.not.contain('*')
+          })
+        })
       })
 
       describe('Kun oppiaineen arvosana on ennakkoarvosana', function () {
@@ -567,6 +575,14 @@ describe('IB', function( ) {
 
         it('ennakkoarvosana-alaviitteelle näyteään selite', function() {
           expect(S('.osasuoritukset .selitteet').text()).to.equal('* = ennustettu arvosana')
+        })
+
+        describe('Yhteiset IB-suoritukset (TOK, CAS, EE)', function () {
+          it('arvosanalle näytetään alaviite', function() {
+            expect(extractAsText(S('.theoryOfKnowledge'))).to.contain('*')
+            expect(extractAsText(S('.creativityActionService'))).to.contain('*')
+            expect(extractAsText(S('.extendedEssay'))).to.contain('*')
+          })
         })
       })
 
@@ -611,6 +627,18 @@ describe('IB', function( ) {
 
               it('onnistuu', function () {
                 expect(tok.arvosana.getText()).to.equal('B')
+              })
+            })
+
+            describe('Arvosanan asettaminen ennakkoarvosanaksi', function () {
+              before(editor.edit, tok.predicted.setValue('on'), editor.saveChanges, wait.until(page.isSavedLabelShown))
+
+              it('näyttää alaviitteen', function () {
+                expect(tok.arvosana.getText()).to.equal('B *')
+              })
+
+              it('näyttää alaviitteen selitteen', function () {
+                expect(S('.osasuoritukset .selitteet').text()).to.equal('* = ennustettu arvosana')
               })
             })
 
