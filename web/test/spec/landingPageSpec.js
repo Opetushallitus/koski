@@ -24,7 +24,7 @@ describe('Etusivu', function() {
 
     it('näytetään omattiedot sivu', function() {
       expect(extractAsText(S('.user-info .name'))).to.equal('Dilbert Dippainssi')
-      expect(extractAsText(S('.oppija-content header h2'))).to.equal('Opintoni')
+      expect(extractAsText(S('.oppija-content header h1'))).to.equal('Opintoni')
     })
   })
 })

@@ -20,7 +20,19 @@ a {
   .link();
 }
 
+.BaseButton {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.DisabledTextButton {
+  color: @color-disabled;
+  cursor: default;
+}
+
 .button, button {
+  .BaseButton;
+
   background: @color-link-blue;
   border-radius: 2px;
   padding: 0 20px;
@@ -60,6 +72,26 @@ a {
 
   &--error, &--error:hover, &--error:disabled {
     background-color: @color-red;
+  }
+}
+
+a.text-button {
+  .BaseButton;
+
+  &--disabled {
+    .BaseButton;
+    .DisabledTextButton;
+  }
+}
+
+a.text-button-small {
+  .link();
+  font-size: 15px;
+
+  &--disabled {
+    .link();
+    .DisabledTextButton;
+    font-size: 15px;
   }
 }
 

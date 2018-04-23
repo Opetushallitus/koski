@@ -21,7 +21,7 @@ object LogUserContext {
   }
 
   def clientIpFromRequest(request: RichRequest): InetAddress = {
-    toInetAddress(request.headers.getOrElse("HTTP_X_FORWARDED_FOR", request.remoteAddress))
+    toInetAddress(request.header("HTTP_X_FORWARDED_FOR").getOrElse(request.remoteAddress))
   }
 
   def toInetAddress(ips: String) =

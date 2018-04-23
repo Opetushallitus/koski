@@ -39,7 +39,8 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
       OpiskeluOikeudet.filter(_.oppijaOid inSetBind (henkilöOids)).delete,
       Tables.Henkilöt.filter(_.oid inSetBind henkilöOids).delete,
       Preferences.delete,
-      Tables.PerustiedotSync.delete
+      Tables.PerustiedotSync.delete,
+      Tables.SuoritusJako.delete
     ) ++ MockOppijat.defaultOppijat.map(application.henkilöCache.addHenkilöAction)))
 
     application.perustiedotIndexer.deleteByOppijaOids(henkilöOids)
@@ -91,6 +92,7 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
       (MockOppijat.monessaKoulussaOllut, ExamplesPerusopetus.seiskaTuplattuOpiskeluoikeus),
       (MockOppijat.koululainen, PerusopetusExampleData.päättötodistusOpiskeluoikeus()),
       (MockOppijat.koululainen, ExamplesPerusopetukseenValmistavaOpetus.perusopetukseenValmistavaOpiskeluoikeus),
+      (MockOppijat.luokallejäänyt, PerusopetusExampleData.päättötodistusLuokanTuplauksellaOpiskeluoikeus()),
       (MockOppijat.toimintaAlueittainOpiskelija, ExamplesPerusopetus.toimintaAlueittainOpiskelija.tallennettavatOpiskeluoikeudet.head),
       (MockOppijat.oppiaineenKorottaja, ExamplesAikuistenPerusopetus.aineopiskelija.tallennettavatOpiskeluoikeudet.head),
       (MockOppijat.aikuisOpiskelija, ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen),

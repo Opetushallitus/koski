@@ -1,0 +1,56 @@
+@copyable-text-height-multiline: 100px;
+@copyable-text-height-singleline: 40px;
+@copyable-text-width: 450px;
+
+.copyable-text {
+  &__heading {
+    margin-bottom: 1rem;
+  }
+
+  & > textarea {
+    resize: none;
+    width: 100%;
+    height: @copyable-text-height-multiline;
+    box-shadow: none;
+  }
+
+  & > input[type=text] {
+    width: 100%;
+    height: @copyable-text-height-singleline;
+    box-shadow: none;
+    font-size: 18px;
+    line-height: 40px;
+  }
+
+  @media @media-full {
+    display: inline-block;
+
+    & > textarea, & > input {
+      width: @copyable-text-width;
+      border-right: none;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    & > input[type=text] {
+      width: 80%;
+
+      &:focus {
+        border-right: none;
+      }
+    }
+
+    & > button {
+      vertical-align: top;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      height: @copyable-text-height-multiline;
+      overflow: hidden;
+    }
+
+    & > input + button {
+      height: @copyable-text-height-singleline;
+      width: 20%;
+    }
+  }
+}

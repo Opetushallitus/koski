@@ -30,27 +30,46 @@ const copyToClipboard = (message, copyState) => () => {
   }
 }
 
-export const CopyableText = ({heading, message}) => {
+export const CopyableText = (
+  {
+    heading,
+    message,
+    buttonText = 'Kopioi',
+    buttonTextSuccess = 'Kopioitu',
+    buttonTextFailure = 'Kopiointi epäonnistui',
+    className,
+    multiline = true,
+    width,
+    height
+  }) => {
   const copyState = Atom(CopyState.PENDING)
 
   const buttonState = copyState.map(state => {
     switch (state) {
-      case CopyState.PENDING: return {isDisabled: false, style: '', text: 'Kopioi'}
-      case CopyState.SUCCESS: return {isDisabled: true, style: '--success', text: 'Kopioitu'}
-      case CopyState.ERROR: return {isDisabled: true, style: '--error', text: 'Kopiointi epäonnistui'}
+      case CopyState.PENDING: return {isDisabled: false, style: '', text: buttonText}
+      case CopyState.SUCCESS: return {isDisabled: true, style: '--success', text: buttonTextSuccess}
+      case CopyState.ERROR: return {isDisabled: true, style: '--error', text: buttonTextFailure}
     }
   })
 
+  const textAreaSize = {}
+  width && (textAreaSize.width = width)
+  height && (textAreaSize.height = height)
+
   return (
-    <div className='copyable-text'>
-      <div className='copyable-text__heading'>
-        <Text name={heading}/>
-      </div>
-      <textarea readOnly cols='30' rows='10' defaultValue={message}/>
+    <div className={`copyable-text${className ? ' ' + className : ''}`}>
+      {heading &&
+        <div className='copyable-text__heading'>
+          <Text name={heading}/>
+        </div>}
+      {multiline
+        ? <textarea readOnly defaultValue={message} style={textAreaSize}/>
+        : <input readOnly type='text' value={message} style={width && {width}}/>}
       {buttonState.map(({isDisabled, style, text}) => (
         <button
           className={style ? `button button${style}` : 'button'}
           disabled={isDisabled}
+          style={height && {height}}
           onClick={copyToClipboard(message, copyState)}
         >
           <Text name={text}/>

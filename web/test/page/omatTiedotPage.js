@@ -11,7 +11,7 @@ function OmatTiedotPage() {
       return S('.user-info .name').text()
     },
     oppija: function() {
-      return S('.main-content.oppija h2').text().replace('JSON', '')
+      return S('.main-content.oppija h1').text().replace('JSON', '')
     },
     virhe: function() {
       return S('.ei-suorituksia').text()
@@ -30,9 +30,13 @@ function OmatTiedotPage() {
       return S('header .popup__close-button')
     },
     virheraportointiButton: function() {
-      return S('header button span:contains(Onko suorituksissasi virhe?)')
+      return S('header a span:contains(Onko suorituksissasi virhe?)')
+    },
+    suoritusjakoButton: function() {
+      return S('header button:contains(Suoritustietojen jakaminen)')
     },
     virheraportointiForm: VirheraportointiForm(),
+    suoritusjakoForm: SuoritusjakoForm(),
     headerNimi: function() {
       var el = findFirstNotThrowing('header .header__name')
       return el ? extractAsText(el) : ''
@@ -95,6 +99,84 @@ function VirheraportointiForm() {
     },
     isVisible: function() {
       return isElementVisible(elem)
+    }
+  }
+
+  return api
+}
+
+function SuoritusjakoForm() {
+  var elem = findSingle('.suoritusjako')
+  var createSuoritusjakoButton = function() { return S('.create-suoritusjako__button > button') }
+  var openAdditionalSuoritusjakoFormButton = function() { return S('.suoritusjako-form > div:last-child > a.toggle-button') }
+
+  var api = {
+    contentsAsText: function() {
+      return extractAsText(elem)
+    },
+    ingressi: function() {
+      return extractAsText(elem().find('.suoritusjako-form__caption'))
+    },
+    suoritusvaihtoehdotOtsikkoText: function() {
+      return extractAsText(elem().find('.create-suoritusjako-header-row h2'))
+    },
+    suoritusvaihtoehdotText: function() {
+      return extractAsText(elem().find('.create-suoritusjako__list'))
+    },
+    canCreateSuoritusjako: function() {
+      return !createSuoritusjakoButton().is(':disabled')
+    },
+    selectSuoritus: function(lähdejärjestelmänId, oppilaitosOid, suorituksenTyyppi, koulutusmoduulinTunniste) {
+      function option() {
+        return S('.create-suoritusjako__list input[id="' +
+          [lähdejärjestelmänId, oppilaitosOid, suorituksenTyyppi, koulutusmoduulinTunniste].join('__') +
+          '"]'
+        )
+      }
+
+      return click(option)
+    },
+    createSuoritusjako: function() {
+      return click(createSuoritusjakoButton)
+    },
+    openAdditionalSuoritusjakoForm: function() {
+      return click(openAdditionalSuoritusjakoFormButton)
+    },
+    suoritusjako: function(index) {
+      return Suoritusjako(index)
+    },
+    isVisible: function() {
+      return isElementVisible(elem)
+    }
+  }
+
+  return api
+}
+
+function Suoritusjako(index) {
+  var elem = findSingle('.suoritusjako-form__link-list > li:nth-child(' + index + ') > .suoritusjako-link')
+  var pageApi = Page(elem)
+
+  var api = {
+    isVisible: function() {
+      return isElementVisible(elem)
+    },
+    url: function() {
+      return elem().find('.suoritusjako-link__url input').val()
+    },
+    voimassaoloaika: function() {
+      return elem().find('.suoritusjako-link__expiration input').val()
+    },
+    setVoimassaoloaika: function(value) {
+      return function() {
+        return pageApi.setInputValue('.suoritusjako-link__expiration input', value)()
+      }
+    },
+    esikatseluLinkHref: function() {
+      return elem().find('.suoritusjako-link__preview a').attr('href')
+    },
+    poistaButton: function() {
+
     }
   }
 

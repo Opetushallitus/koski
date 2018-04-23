@@ -73,6 +73,14 @@
   }
 }
 
+.LabeledOption {
+  display: flex;
+
+  input {
+    height: 1.15rem;
+  }
+}
+
 @media-phone: ~"screen and (max-width: 767px)";
 @media-full: ~"screen and (min-width: 768px)";
 
@@ -81,6 +89,6 @@
 // layouts to virkailija pages.
 .omattiedot-phone(@rules) {
   @media @media-phone {
-    body.omattiedot-page & { @rules(); }
+    body.omattiedot-page &, body.suoritusjako-page & { @rules(); }
   }
 }

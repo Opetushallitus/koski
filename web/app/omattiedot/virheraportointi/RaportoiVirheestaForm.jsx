@@ -78,13 +78,13 @@ export const RaportoiVirheestäForm = ({henkilö, opiskeluoikeudet}) => {
       <div className='puuttuvat-tiedot form-section' data-indent={0}>
         <PuuttuvatTiedot/>
 
-        <div className='labeled-option'>
+        <div className='puuttuvat-tiedot__checkbox'>
           <input
             type='checkbox'
-            id='puuttuvat-tiedot__checkbox'
+            id='puuttuvat-tiedot-checkbox'
             onChange={event => hasAcceptedDisclaimer.set(event.target.checked)}
           />
-          <label htmlFor='puuttuvat-tiedot__checkbox'>
+          <label htmlFor='puuttuvat-tiedot-checkbox'>
             <Text name='Asiani koskee tietoa, joka näkyy, tai kuuluisi yllämainitun perusteella näkyä Koski-palvelussa.'/>
           </label>
         </div>

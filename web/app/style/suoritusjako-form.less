@@ -1,0 +1,190 @@
+.suoritusjako-form {
+  &__caption {
+    font-size: 0.9rem;
+    line-height: 1.3rem;
+    font-weight: 300;
+    padding-right: 1rem;
+    margin-bottom: 2rem;
+
+    @media @media-full {
+      width: 50%;
+      min-width: 500px;
+    }
+  }
+
+  &__create-suoritusjako {
+    padding: 0.5rem 1rem;
+    border: dashed 1px @color-gray-darker;
+    min-height: 3rem;
+
+    & > a {
+      line-height: 3rem;
+    }
+  }
+
+  &__link-list {
+    list-style: none;
+    padding-left: 0;
+
+    & > li:not(:last-child) {
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  .create-suoritusjako-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .create-suoritusjako {
+    display: flex;
+    flex-direction: column;
+
+    @media @media-full {
+      flex-direction: row;
+      align-items: center;
+    }
+
+    &__list {
+      list-style: none;
+      padding-left: 0;
+
+      @media @media-full {
+        flex-basis: 50%;
+        border-right: solid 1px @color-gray-darker;
+      }
+
+      & > li {
+        .LabeledOption;
+        margin: 1rem 0;
+
+        & > label {
+          margin-left: 1rem;
+        }
+
+        &.oppilaitos-group-header {
+          font-weight: 600;
+
+          &:not(:first-child) {
+            margin-top: 2rem;
+          }
+        }
+      }
+    }
+
+    &__button {
+      flex-basis: 50%;
+
+      button {
+        display: block;
+        margin: auto;
+      }
+    }
+  }
+
+  .suoritusjako-link {
+    padding: 1rem;
+    border: solid 2px @color-blue;
+    background-color: @color-blue-background;
+
+    h3 {
+      font-size: 0.85rem;
+    }
+
+    &__top-container {
+      display: flex;
+      flex-direction: column;
+
+      @media @media-full {
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+
+    &__bottom-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1rem;
+
+      @media @media-full {
+        align-items: flex-end;
+        justify-content: flex-end;
+      }
+    }
+
+    &__url {
+      flex-grow: 2;
+
+      @media @media-full {
+        margin-right: 2rem;
+      }
+
+      & > input {
+        font-size: 0.85rem;
+        line-height: 1rem;
+        font-weight: 300;
+        color: @color-blue;
+      }
+
+      & > button {
+        padding: 0 5px;
+      }
+    }
+
+    &__preview {
+      @media @media-full {
+        flex-basis: 70%;
+      }
+    }
+
+    &__expiration {
+      @media @media-full {
+        flex-basis: 30%;
+        max-width: 30%;
+      }
+
+      & > label > span {
+        margin-bottom: 0.5rem;
+        font-size: 0.85rem;
+
+        &:first-of-type {
+          font-weight: 600;
+          display: block;
+        }
+
+        &:last-of-type {
+          margin-right: 0.5rem;
+          display: inline-block;
+        }
+      }
+
+      & input {
+        max-width: 75%;
+      }
+    }
+
+    &__remove {
+      @media @media-full {
+        flex-basis: 30%;
+      }
+    }
+
+    &--placeholder {
+      .ajax-indicator-center-image;
+      background-color: @color-blue-background;
+      border: solid 2px @color-blue;
+      height: 124px;
+
+      &.transition-enter {
+        animation-name: fadein-to-full;
+        animation-duration: 1s;
+      }
+    }
+  }
+}
+
+@keyframes fadein-to-full {
+  0% { opacity: 0; }
+  100% { opacity: 1;}
+}

@@ -1,11 +1,9 @@
 package fi.oph.koski.db
 
-import java.sql.Timestamp
+import java.sql.{Date, Timestamp}
 import java.time.LocalDateTime
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.Tables.OpiskeluoikeusTable
-import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonManipulation.removeFields
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.schema._
@@ -128,6 +126,17 @@ object Tables {
     def * = (organisaatioOid, `type`, key, value) <> (PreferenceRow.tupled, PreferenceRow.unapply)
   }
 
+  class SuoritusjakoTable(tag: Tag) extends Table[SuoritusjakoRow] (tag, "suoritusjako") {
+    val id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+    val secret = column[String]("secret", O.Unique)
+    val oppijaOid = column[String]("oppija_oid")
+    val suoritusIds = column[JValue]("suoritus_ids")
+    val voimassaAsti = column[Date]("voimassa_asti")
+    val aikaleima = column[Timestamp]("aikaleima")
+
+    def * = (id, secret, oppijaOid, suoritusIds, voimassaAsti, aikaleima) <> (SuoritusjakoRow.tupled, SuoritusjakoRow.unapply)
+  }
+
   class FaileLoginAttemptTable(tag: Tag) extends Table[FailedLoginAttemptRow] (tag, "failed_login_attempt") {
     val username = column[String]("username", O.PrimaryKey)
     val time = column[Timestamp]("time", O.PrimaryKey)
@@ -163,6 +172,8 @@ object Tables {
   }
 
   val Preferences = TableQuery[PreferencesTable]
+
+  val SuoritusJako = TableQuery[SuoritusjakoTable]
 
   val FailedLoginAttempt = TableQuery[FaileLoginAttemptTable]
 
@@ -231,6 +242,8 @@ case class PerustiedotSyncRow(id: Int = 0, opiskeluoikeusId: Int, data: JValue, 
 case class OppilaitosIPOsoiteRow(username: String, ip: String)
 
 case class PreferenceRow(organisaatioOid: String, `type`: String, key: String, value: JValue)
+
+case class SuoritusjakoRow(id: Long, secret: String, oppijaOid: String, suoritusIds: JValue, voimassaAsti: Date, aikaleima: Timestamp)
 
 case class FailedLoginAttemptRow(username: String, time: Timestamp, count: Int)
 

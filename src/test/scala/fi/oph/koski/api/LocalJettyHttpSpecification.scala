@@ -4,7 +4,7 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.http.HttpSpecification
 import fi.oph.koski.jettylauncher.{JettyLauncher, SharedJetty}
 import fi.oph.koski.koskiuser.MockUsers
-import fi.oph.koski.log.{AuditLogTester, Logging}
+import fi.oph.koski.log.{AccessLogTester, AuditLogTester, Logging}
 import fi.oph.koski.util.PortChecker
 
 trait LocalJettyHttpSpecification extends HttpSpecification {
@@ -34,6 +34,7 @@ object LocalJettyHttpSpecification extends Logging {
       running = true
       if (externalJettyPort.isEmpty) SharedJetty.start
       AuditLogTester.setup
+      AccessLogTester.setup
       spec.resetFixtures
     }
   }

@@ -2,13 +2,12 @@ package fi.oph.koski.jettylauncher
 
 import java.lang.management.ManagementFactory
 import java.nio.file.{Files, Paths}
-import javax.management.ObjectName
 
 import com.typesafe.config.ConfigValueFactory._
 import fi.oph.koski.cache.JMXCacheManager
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.executors.Pools
-import fi.oph.koski.log.{LogConfiguration, Logging}
+import fi.oph.koski.log.{LogConfiguration, Logging, MaskedSlf4jRequestLog}
 import fi.oph.koski.util.PortChecker
 import io.prometheus.client.exporter.MetricsServlet
 import org.eclipse.jetty.jmx.MBeanContainer
@@ -72,7 +71,7 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) e
 
   protected def configureLogging = {
     LogConfiguration.configureLoggingWithFileWatch
-    val requestLog = new Slf4jRequestLog()
+    val requestLog = new MaskedSlf4jRequestLog()
     requestLog.setLogLatency(true)
     server.setRequestLog(requestLog)
   }
