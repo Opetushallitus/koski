@@ -8,6 +8,7 @@ import {koodiarvoMatch, koodistoValues} from './koodisto'
 import SuoritustapaDropdown from './SuoritustapaDropdown'
 import Text from '../i18n/Text'
 import {setPeruste} from '../suoritus/PerusteDropdown'
+import Peruste from './Peruste'
 
 export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   const suoritustyypitP = koodistoValues('suorituksentyyppi/ammatillinentutkinto,nayttotutkintoonvalmistavakoulutus,ammatillinentutkintoosittainen,valma,telma')
@@ -97,7 +98,9 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   Bacon.combineWith(oppilaitosAtom, suoritustyyppiAtom, tutkintoAtom, suorituskieliAtom, suoritustapaAtom, perusteAtom, makeSuoritus).onValue(suoritus => suoritusAtom.set(suoritus))
   return (<div>
     <Suoritustyyppi suoritustyyppiAtom={suoritustyyppiAtom} suoritustyypitP={suoritustyypitP} title="Suoritustyyppi"/>
-
+    {
+      ift(suoritustyyppiAtom.map(koodiarvoMatch('valma')), <Peruste {...{suoritusTyyppiP: suoritustyyppiAtom, perusteAtom}} />)
+    }
     <div className="tutkinto-autocomplete">
       {
         ift(oppilaitosAtom.and(suoritustyyppiAtom.map(koodiarvoMatch('valma', 'telma')).not()), <TutkintoAutocomplete tutkintoAtom={tutkintoAtom} oppilaitosP={oppilaitosAtom} title={<Text name="Tutkinto"/>}/>)
