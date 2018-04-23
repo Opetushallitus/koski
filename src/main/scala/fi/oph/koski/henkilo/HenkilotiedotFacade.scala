@@ -8,7 +8,7 @@ import fi.oph.koski.log.{AuditLog, AuditLogMessage}
 import fi.oph.koski.opiskeluoikeus.{CompositeOpiskeluoikeusRepository, OpiskeluoikeusRepository}
 import fi.oph.koski.schema.HenkilötiedotJaOid
 
-case class HenkilötiedotFacade(henkilöRepository: HenkilöRepository, kaikkiOpiskeluoikeudet: CompositeOpiskeluoikeusRepository, koskiOpiskeluoikeudet: OpiskeluoikeusRepository) {
+case class HenkilötiedotFacade(henkilöRepository: HenkilöRepository, kaikkiOpiskeluoikeudet: CompositeOpiskeluoikeusRepository, koskiOpiskeluoikeudet: OpiskeluoikeusRepository, hetuValidator: Hetu) {
   def search(query: String)(implicit koskiSession: KoskiSession): HenkilötiedotSearchResponse = {
     AuditLog.log(AuditLogMessage(OPPIJA_HAKU, koskiSession, Map(hakuEhto -> query)))
     if (Hetu.validFormat(query).isRight) {
@@ -22,7 +22,7 @@ case class HenkilötiedotFacade(henkilöRepository: HenkilöRepository, kaikkiOp
 
   def findByHetu(hetu: String)(implicit user: KoskiSession): Either[HttpStatus, List[HenkilötiedotJaOid]] = {
     AuditLog.log(AuditLogMessage(OPPIJA_HAKU, user, Map(hakuEhto -> hetu)))
-    Hetu.validate(hetu).right.map(henkilöRepository.findHenkilötiedotByHetu(_))
+    hetuValidator.validate(hetu).right.map(henkilöRepository.findHenkilötiedotByHetu(_))
   }
 
   def findByOid(oid: String)(implicit user: KoskiSession): Either[HttpStatus, List[HenkilötiedotJaOid]] = {
@@ -39,7 +39,7 @@ case class HenkilötiedotFacade(henkilöRepository: HenkilöRepository, kaikkiOp
   // Sisällyttää vain henkilöt, joilta löytyy vähintään yksi opiskeluoikeus koskesta, ytr:stä tai virrasta
   private def searchByHetu(hetu: String)(implicit user: KoskiSession): HenkilötiedotSearchResponse = {
     val henkilöt = kaikkiOpiskeluoikeudet.filterOppijat(henkilöRepository.findHenkilötiedotByHetu(hetu))
-    Hetu.validate(hetu) match {
+    hetuValidator.validate(hetu) match {
       case Right(_) =>
         val canAddNew = henkilöt.isEmpty && user.hasAnyWriteAccess
         HenkilötiedotSearchResponse(henkilöt, canAddNew, hetu = Some(hetu))

@@ -34,7 +34,8 @@ class TiedonsiirtoService(
   organisaatioRepository: OrganisaatioRepository,
   henkilöRepository: HenkilöRepository,
   koodistoviitePalvelu: KoodistoViitePalvelu,
-  userRepository: KoskiUserRepository
+  userRepository: KoskiUserRepository,
+  hetu: Hetu
 ) extends Logging with Timing with GlobalExecutionContext {
 
   private val serializationContext = SerializationContext(KoskiSchema.schemaFactory, omitEmptyFields = false)
@@ -305,7 +306,7 @@ class TiedonsiirtoService(
     val annetutHenkilötiedot: JValue = data \ "henkilö"
     val annettuTunniste: Option[HetuTaiOid] = validateAndExtract[HetuTaiOid](annetutHenkilötiedot, ignoreExtras = true).map { tunniste =>
       tunniste.copy(
-        hetu = tunniste.hetu.flatMap(Hetu.validate(_).toOption),
+        hetu = tunniste.hetu.flatMap(hetu.validate(_).toOption),
         oid = tunniste.oid.flatMap(HenkilöOid.validateHenkilöOid(_).toOption)
       )
     }.toOption

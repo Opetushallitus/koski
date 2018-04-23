@@ -56,7 +56,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
 
     "voi hakea ja katsella virta-ylioppilastutkintosuorituksia" in {
-      haeOpiskeluoikeudetHetulla("090888-929X", user).filter(_.tyyppi.koodiarvo == "korkeakoulutus").length should be >= 1
+      haeOpiskeluoikeudetHetulla("250668-293Y", user).filter(_.tyyppi.koodiarvo == "korkeakoulutus").length should be >= 1
     }
   }
 
@@ -115,8 +115,8 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
 
     "voi hakea ja katsella virta-ylioppilastutkintosuorituksia" - {
       "vain omassa organisaatiossaan" in {
-        haeOpiskeluoikeudetHetulla("090888-929X", MockUsers.omniaPalvelukäyttäjä).filter(_.tyyppi.koodiarvo == "korkeakoulutus").length should equal(0)
-        haeOpiskeluoikeudetHetulla("090888-929X", MockUsers.kalle).filter(_.tyyppi.koodiarvo == "korkeakoulutus").length should be >= 1
+        haeOpiskeluoikeudetHetulla("250668-293Y", MockUsers.omniaPalvelukäyttäjä).filter(_.tyyppi.koodiarvo == "korkeakoulutus").length should equal(0)
+        haeOpiskeluoikeudetHetulla("250668-293Y", MockUsers.kalle).filter(_.tyyppi.koodiarvo == "korkeakoulutus").length should be >= 1
       }
     }
 

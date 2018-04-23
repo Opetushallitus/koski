@@ -29,7 +29,7 @@ object Hetu {
     }
   }
 
-  def validate(hetu: String, acceptSynthetic: Boolean = false): Either[HttpStatus, String] = {
+  def validate(hetu: String, acceptSynthetic: Boolean): Either[HttpStatus, String] = {
     def validDate(hetu: String) = {
       try {
         century(hetu).flatMap { century =>
@@ -58,4 +58,8 @@ object Hetu {
   def toBirthday(hetu: String): Option[LocalDate] = {
     century(hetu).flatMap { century => Some(birthday(hetu, century)) }
   }
+}
+
+class Hetu(acceptSyntheticHetus: Boolean) {
+  def validate(hetu: String): Either[HttpStatus, String] = Hetu.validate(hetu, acceptSyntheticHetus)
 }

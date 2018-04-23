@@ -29,7 +29,7 @@ class OppijaIntegrationTest extends FreeSpec with Matchers with KoskidevHttpSpec
 
   /*
   "Virta-integraatio" taggedAs(KoskiDevEnvironment) in {
-    searchForHenkilötiedot("290492-9455").map(_.oid).headOption match {
+    searchForHenkilötiedot("100869-192W").map(_.oid).headOption match {
       case None => fail("Virta-testihenkilöä ei löydy")
       case Some(oid) =>
         val o = oppija(oid)

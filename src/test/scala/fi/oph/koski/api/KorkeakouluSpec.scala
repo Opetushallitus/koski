@@ -19,10 +19,10 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
     "Haettaessa henkilötunnuksella" - {
       "Jos henkilöä ei löydy henkilöpalvelusta" - {
         "Haetaan Virrasta ja luodaan henkilö" in {
-          searchForHenkilötiedot("090888-929X").map(_.kokonimi) should equal(List("Harri Koskinen"))
+          searchForHenkilötiedot("250668-293Y").map(_.kokonimi) should equal(List("Harri Koskinen"))
         }
         "Seuraavalla haulla käytetään aiemmin luotua henkilöä" in {
-          searchForHenkilötiedot("090888-929X").map(_.oid) should equal(searchForHenkilötiedot("090888-929X").map(_.oid))
+          searchForHenkilötiedot("250668-293Y").map(_.oid) should equal(searchForHenkilötiedot("250668-293Y").map(_.oid))
         }
       }
     }
@@ -55,7 +55,7 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
 
     "Opintosuoritusote" - {
       "Valmistunut diplomi-insinööri" in {
-        opintosuoritusoteOppilaitokselle("290492-9455", "1.2.246.562.10.56753942459") should equal(
+        opintosuoritusoteOppilaitokselle("100869-192W", "1.2.246.562.10.56753942459") should equal(
           """Suoritetut tutkinnot
             |751101 Dipl.ins., konetekniikka 22.3.2016
             |Opintosuoritukset
@@ -103,7 +103,7 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
       }
 
       "Opinto-oikeus, keskeneräinen tutkinto" in {
-        opintosuoritusoteOppilaitokselle("090888-929X", "1.2.246.562.10.56753942459") should equal(
+        opintosuoritusoteOppilaitokselle("250668-293Y", "1.2.246.562.10.56753942459") should equal(
           """|Ensisijainen opinto-oikeus
             |Tavoitetutkinto Tekn. kand., kemian tekniikka
             |Voimassa 1.8.2008 - 31.7.2030
@@ -118,7 +118,7 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
       }
 
       "AMK, keskeyttänyt" in {
-        opintosuoritusoteOppilaitokselle("100193-948U", "1.2.246.562.10.25619624254") should equal(
+        opintosuoritusoteOppilaitokselle("170691-3962", "1.2.246.562.10.25619624254") should equal(
           """|Suoritetut tutkinnot
             |Opintosuoritukset
             |Op Arvosana Suor.pvm
@@ -139,7 +139,7 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
       }
 
       "AMK, valmistunut" in {
-        opintosuoritusoteOppilaitokselle("101291-954C", "1.2.246.562.10.25619624254") should equal(
+        opintosuoritusoteOppilaitokselle("250686-102E", "1.2.246.562.10.25619624254") should equal(
           """|Suoritetut tutkinnot
             |671112 Fysioterapeutti (AMK) 29.5.2015
             |Opintosuoritukset
@@ -183,7 +183,7 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
       }
 
       "Tutkintoon johtamaton opiskeluoikeus" in {
-        opintosuoritusoteOppilaitokselle("090888-929X", "1.2.246.562.10.27756776996") should equal(
+        opintosuoritusoteOppilaitokselle("250668-293Y", "1.2.246.562.10.27756776996") should equal(
           """|Suoritetut tutkinnot
             |Opintosuoritukset
             |Op Arvosana Suor.pvm

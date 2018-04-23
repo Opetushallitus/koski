@@ -1,8 +1,8 @@
-290492-9455
+100869-192W
 
 Valmistunut diplomi-insinööri
 
-090888-929X
+250668-293Y
 
 Aalto-yliopistonäytä
     Tekn. kand., kemian tekniikka
@@ -14,19 +14,19 @@ Itä-Suomen yliopisto
     Luonnont. kand., matematiikka
     Fil. maist., matematiikka
 
-101291-954C
+250686-102E
 
 AMK valmistunut
 
-100193-948U
+170691-3962
 
 AMK keskeyttänyt
 
-100292-980D
+090197-411W
 
 AMK opinnot kesken
 
-160980-9606
+060458-331R
 
 Monimutkainen tapaus, yhdistelmä erilaisia ei tutkintoon johtavia opiskeluoikeuksia. Koottu seuraavista Virta-testiympäristön oppijoista:
 

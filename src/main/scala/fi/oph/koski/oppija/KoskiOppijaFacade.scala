@@ -16,7 +16,7 @@ import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedot, OpiskeluoikeudenPe
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
 
-class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: KoskiHenkilöCache, opiskeluoikeusRepository: OpiskeluoikeusRepository, historyRepository: OpiskeluoikeusHistoryRepository, perustiedotIndexer: OpiskeluoikeudenPerustiedotIndexer, config: Config) extends Logging with Timing with GlobalExecutionContext {
+class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: KoskiHenkilöCache, opiskeluoikeusRepository: OpiskeluoikeusRepository, historyRepository: OpiskeluoikeusHistoryRepository, perustiedotIndexer: OpiskeluoikeudenPerustiedotIndexer, config: Config, hetu: Hetu) extends Logging with Timing with GlobalExecutionContext {
   private lazy val mockOids = config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid")
   def findOppija(oid: String)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = toOppija(oid, opiskeluoikeusRepository.findByOppijaOid(oid))
 
@@ -37,7 +37,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
   def createOrUpdate(oppija: Oppija, allowUpdate: Boolean)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
     val oppijaOid: Either[HttpStatus, PossiblyUnverifiedHenkilöOid] = oppija.henkilö match {
       case h:UusiHenkilö =>
-        Hetu.validate(h.hetu, acceptSynthetic = config.getBoolean("acceptSyntheticHetus")).right.flatMap { hetu =>
+        hetu.validate(h.hetu).right.flatMap { hetu =>
           henkilöRepository.findOrCreate(h).right.map(VerifiedHenkilöOid(_))
         }
       case h:TäydellisetHenkilötiedot if mockOids =>

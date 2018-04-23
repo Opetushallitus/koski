@@ -58,7 +58,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
           "koulutusmoduulinTunniste": "7"
         }]"""
 
-        createSuoritusjako(json, hetu = "060498-997J"){
+        createSuoritusjako(json, hetu = "170186-6520"){
           verifyResponseStatusOk()
           secrets += ("vuosiluokan tuplaus" -> JsonSerializer.parse[Suoritusjako](response.body).secret)
         }
@@ -318,7 +318,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
       "yksittäisen jaon kun duplikoitu suoritus jaettu (vuosiluokan tuplaus)" in {
         val expirationDate = LocalDateTime.now().plusMonths(6).toLocalDate
 
-        getSuoritusjakoDescriptors(hetu = "060498-997J"){
+        getSuoritusjakoDescriptors(hetu = "170186-6520"){
           verifySuoritusjakoDescriptors(List(
             Suoritusjako(secrets("vuosiluokan tuplaus"), expirationDate)
           ))

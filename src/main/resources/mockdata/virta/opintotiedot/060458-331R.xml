@@ -4,7 +4,7 @@
     <virtaluku:OpiskelijanKaikkiTiedotResponse xmlns:virtaluku="http://tietovaranto.csc.fi/luku">
       <virta:Virta xmlns:virta="urn:mace:funet.fi:virta/2015/09/01">
         <virta:Opiskelija avain="10065_65933">
-          <virta:Henkilotunnus>160980-9606</virta:Henkilotunnus>
+          <virta:Henkilotunnus>060458-331R</virta:Henkilotunnus>
           <virta:Opiskeluoikeudet>
             <virta:Opiskeluoikeus opiskelijaAvain="10065_65933" avain="10065_1700969">
               <virta:AlkuPvm>2017-05-01</virta:AlkuPvm>
@@ -64,7 +64,7 @@
           </virta:Opintosuoritukset>
         </virta:Opiskelija>
         <virta:Opiskelija avain="20804418">
-          <virta:Henkilotunnus>160980-9606</virta:Henkilotunnus>
+          <virta:Henkilotunnus>060458-331R</virta:Henkilotunnus>
           <virta:Opiskeluoikeudet>
             <virta:Opiskeluoikeus opiskelijaAvain="20804418" avain="46737839">
               <virta:AlkuPvm>2015-10-01</virta:AlkuPvm>
@@ -96,7 +96,7 @@
           <virta:Opintosuoritukset/>
         </virta:Opiskelija>
         <virta:Opiskelija avain="1656">
-          <virta:Henkilotunnus>160980-9606</virta:Henkilotunnus>
+          <virta:Henkilotunnus>060458-331R</virta:Henkilotunnus>
           <virta:Opiskeluoikeudet>
             <virta:Opiskeluoikeus opiskelijaAvain="1656" avain="1927">
               <virta:AlkuPvm>2011-08-24</virta:AlkuPvm>
