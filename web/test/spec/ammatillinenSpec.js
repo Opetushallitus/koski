@@ -411,9 +411,7 @@ describe('Ammatillinen koulutus', function() {
       it('Lisätty opiskeluoikeus näytetään', function () {
         expect(textsOf(toArray(S('.tutkinnon-osan-ryhma')))).to.deep.equal([
           'Ammatilliset tutkinnon osat',
-          'Yhteiset tutkinnon osat',
-          'Vapaasti valittavat tutkinnon osat',
-          'Tutkintoa yksilöllisesti laajentavat tutkinnon osat' ])
+          'Yhteiset tutkinnon osat' ])
       })
     })
 

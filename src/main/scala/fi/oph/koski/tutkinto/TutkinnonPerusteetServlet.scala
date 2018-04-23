@@ -45,6 +45,15 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
     })
   }
 
+  get("/tutkinnonosat/ryhmat/:diaari/:suoritustapa") {
+    val ryhmät = application.koodistoPalvelu.getLatestVersion("ammatillisentutkinnonosanryhma").flatMap(application.koodistoViitePalvelu.getKoodistoKoodiViitteet).toList.flatten
+    perusteenRakenne().map { osat =>
+      ryhmät.filter { ryhmä =>
+        osat.exists(osa => findRyhmä(ryhmä, osa).isDefined)
+      }
+    }.getOrElse(Nil)
+  }
+
   get("/peruste/:diaari/linkki") {
     val diaari = params("diaari")
     val eperusteetUrl = application.config.getString("eperusteet.baseUrl")
