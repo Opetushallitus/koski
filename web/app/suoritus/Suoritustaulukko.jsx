@@ -68,8 +68,6 @@ export class Suoritustaulukko extends React.Component {
     })
 
 
-    const laajuudetP = groupsP.flatMap(groups => fetchLaajuudet(parentSuoritus, groups.groupIds))
-
     let samaLaajuusYksikkö = suoritukset.every((s, i, xs) => modelData(s, 'koulutusmoduuli.laajuus.yksikkö.koodiarvo') === modelData(xs[0], 'koulutusmoduuli.laajuus.yksikkö.koodiarvo'))
     let laajuusModel = modelLookup(suoritusProto, 'koulutusmoduuli.laajuus')
     if (laajuusModel && laajuusModel.optional && !modelData(laajuusModel)) laajuusModel = optionalPrototypeModel(laajuusModel)
@@ -130,7 +128,7 @@ export class Suoritustaulukko extends React.Component {
         </tbody>,
         !nested && !näyttötutkintoonValmistava(parentSuoritus) && !ylioppilastutkinto(parentSuoritus) && <tbody key={'group- '+ i + '-footer'} className="yhteensä">
           <tr><td>
-            <YhteensäSuoritettu osasuoritukset={items} laajuusP={laajuudetP.map(l => l[groupId])} laajuusYksikkö={laajuusYksikkö}/>
+            <YhteensäSuoritettu osasuoritukset={items} laajuusP={fetchLaajuudet(parentSuoritus, groups.groupIds).map(l => l[groupId])} laajuusYksikkö={laajuusYksikkö}/>
           </td></tr>
         </tbody>
       ]
