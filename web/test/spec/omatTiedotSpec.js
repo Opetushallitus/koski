@@ -280,11 +280,9 @@ describe('Omat tiedot', function() {
             it('näytetään suoritusvaihtoehdot', function() {
               expect(form.suoritusvaihtoehdotText()).to.equal(
                 'Kulosaaren ala-aste\n' +
-                'Päättötodistus\n' +
                 '7. vuosiluokka\n' +
                 '6. vuosiluokka\n' +
                 'Jyväskylän normaalikoulu\n' +
-                'Päättötodistus\n' +
                 '9. vuosiluokka\n' +
                 '8. vuosiluokka'
               )
