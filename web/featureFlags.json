@@ -2,7 +2,7 @@
   "FEATURE": {
     "OMAT_TIEDOT": {
       "VIRHERAPORTOINTI": true,
-      "SUORITUSJAKO": false
+      "SUORITUSJAKO": true
     }
   }
 }
