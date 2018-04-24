@@ -64,6 +64,24 @@ describe('Perusopetus', function() {
             '* = yksilöllistetty oppimäärä, ** = painotettu opetus'
           )
         })
+
+        describe('Kun suoritus on kesken', function() {
+          before(editor.edit, editor.property('tila').removeItem(0), opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi, editor.saveChanges)
+
+          it('arvosanoja ei näytetä', function () {
+            expect(isElementVisible(S('.oppiaineet .arvosana'))).to.equal(false)
+          })
+
+          describe('Kun vahvistus on tulevaisuudessa', function () {
+            var future = new Date().getDate() + '.' + (1 + new Date().getMonth()) + '.' + (new Date().getFullYear() + 1)
+            before(editor.edit, tilaJaVahvistus.merkitseValmiiksi, opinnot.tilaJaVahvistus.lisääVahvistus(future), editor.saveChanges)
+
+            it('arvosanat näytetään', function () {
+              expect(isElementVisible(S('.oppiaineet .arvosana'))).to.equal(true)
+            })
+          })
+          after(resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'), opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetus'))
+        })
       })
 
       describe('Päättötodistus', function() {
@@ -655,17 +673,11 @@ describe('Perusopetus', function() {
 
             describe('Kun suorituksella on vahvistus tulevaisuudessa', function() {
               var tilaJaVahvistus = opinnot.tilaJaVahvistus
-              var dialog = tilaJaVahvistus.merkitseValmiiksiDialog;
-              var dialogEditor = dialog.editor
               before(
                 opiskeluoikeus.peruuta,
                 opinnot.oppiaineet.merkitseOppiaineetValmiiksi,
                 tilaJaVahvistus.merkitseValmiiksi,
-                dialogEditor.property('päivä').setValue('11.4.2117'),
-                dialog.myöntäjät.itemEditor(0).setValue('Lisää henkilö'),
-                dialog.myöntäjät.itemEditor(0).propertyBySelector('.nimi').setValue('Reijo Reksi'),
-                dialog.myöntäjät.itemEditor(0).propertyBySelector('.titteli').setValue('rehtori'),
-                dialog.merkitseValmiiksi,
+                tilaJaVahvistus.lisääVahvistus('11.4.2117'),
                 opinnot.avaaLisaysDialogi
               )
 

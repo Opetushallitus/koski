@@ -567,7 +567,16 @@ function TilaJaVahvistus() {
     tila: function( ) {
       return extractAsText(findSingle('.tila .tila', elem()))
     },
-    merkitseValmiiksiDialog: MerkitseValmiiksiDialog()
+    merkitseValmiiksiDialog: MerkitseValmiiksiDialog(),
+    lisääVahvistus: function(pvm) {
+      var dialog = MerkitseValmiiksiDialog()
+      var dialogEditor = dialog.editor
+      return seq(dialogEditor.property('päivä').setValue(pvm),
+        dialog.myöntäjät.itemEditor(0).setValue('Lisää henkilö'),
+        dialog.myöntäjät.itemEditor(0).propertyBySelector('.nimi').setValue('Reijo Reksi'),
+        dialog.myöntäjät.itemEditor(0).propertyBySelector('.titteli').setValue('rehtori'),
+        dialog.merkitseValmiiksi)
+    }
   }
   return api
 }
