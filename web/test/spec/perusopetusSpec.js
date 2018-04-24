@@ -1260,13 +1260,23 @@ describe('Perusopetus', function() {
             historia.propertyBySelector('.arvosana').selectValue('9'),
             historia.propertyBySelector('.property.laajuus .value').setValue('1'),
             uusiOppiaine.selectValue('Historia'),
-            historia2.propertyBySelector('.arvosana').selectValue('8'),
-            editor.saveChanges,
-            wait.until(page.isSavedLabelShown)
+            historia2.propertyBySelector('.arvosana').selectValue('8')
           )
-          it('Toimii', function () {
-            expect(extractAsText(S('.oppiaineet'))).to.contain('Historia 9')
-            expect(extractAsText(S('.oppiaineet'))).to.contain('Historia 8')
+
+          describe('Ennen tallennusta', function() {
+            it('Kuvaus näytetään', function () {
+              expect(historia.property('kuvaus').isVisible()).to.equal(true)
+            })
+            describe('Tallennus', function() {
+              before(
+                editor.saveChanges,
+                wait.until(page.isSavedLabelShown)
+              )
+              it('Toimii', function() {
+                expect(extractAsText(S('.oppiaineet'))).to.contain('Historia 9')
+                expect(extractAsText(S('.oppiaineet'))).to.contain('Historia 8')
+              })
+            })
           })
 
           describe('Poistaminen', function () {
@@ -1355,6 +1365,9 @@ describe('Perusopetus', function() {
             it('Uusi oppiaine näytetään avattuna', function() {
               expect(filosofia.property('yksilöllistettyOppimäärä').isVisible()).to.equal(true)
             })
+            it('Kuvaus on piilotettu', function() {
+              expect(filosofia.property('kuvaus').isVisible()).to.equal(false)
+            })
           })
           describe('Tallennuksen jälkeen', function() {
             before(editor.saveChanges, wait.until(page.isSavedLabelShown))
@@ -1380,6 +1393,9 @@ describe('Perusopetus', function() {
 
           describe('Ennen tallennusta', function() {
             it('Uusi oppiaine näytetään avattuna', function() {
+              expect(uusiPaikallinen.property('kuvaus').isVisible()).to.equal(true)
+            })
+            it('Kuvaus on näkyvissä', function() {
               expect(uusiPaikallinen.property('kuvaus').isVisible()).to.equal(true)
             })
           })
