@@ -80,6 +80,7 @@ describe('Perusopetus', function() {
               expect(isElementVisible(S('.oppiaineet .arvosana'))).to.equal(true)
             })
           })
+          after(resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'), opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetus'))
         })
       })
 
