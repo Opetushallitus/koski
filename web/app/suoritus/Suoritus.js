@@ -34,6 +34,7 @@ export const suoritusValmis = (suoritus) => {
 export const suoritusKesken = R.complement(suoritusValmis)
 export const tilaText = (suoritus) => t(suoritusValmis(suoritus) ? 'Suoritus valmis' : 'Suoritus kesken')
 export const tilaKoodi = (suoritus) => suoritusValmis(suoritus) ? 'valmis' : 'kesken'
+export const hasArviointi = (suoritus) => !!modelData(suoritus, 'arviointi.-1')
 export const hasArvosana = (suoritus) => !!modelData(suoritus, 'arviointi.-1.arvosana')
 export const arviointiPuuttuu = (m) => !m.value.classes.includes('arvioinniton') && !hasArvosana(m)
 export const onKeskeneräisiäOsasuorituksia  = (suoritus) => {

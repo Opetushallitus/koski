@@ -1,5 +1,10 @@
 import React from 'react'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
+import IBKurssinArviointiEditor from '../ib/IBKurssinArviointiEditor'
+import {isIBKurssi} from './kurssi'
+import {hasArviointi} from '../suoritus/Suoritus'
+
+const isIBKurssinArviointi = kurssi => property => isIBKurssi(kurssi) && property.key === 'arviointi' && hasArviointi(kurssi)
 
 export class KurssiPopup extends React.Component {
   constructor(props) {
@@ -13,8 +18,12 @@ export class KurssiPopup extends React.Component {
       className={'details details-' + this.state.popupAlignment.x + ' details-' + this.state.popupAlignment.x + '-' + this.state.popupAlignment.y}>
       <PropertiesEditor
         model={kurssi}
-        propertyFilter={p => !['arviointi', 'koodistoUri'].includes(p.key)}
+        propertyFilter={p => !['arviointi', 'koodistoUri'].includes(p.key) || isIBKurssinArviointi(kurssi)(p)}
         propertyEditable={p => !['tunniste', 'koodiarvo', 'nimi'].includes(p.key)}
+        getValueEditor={(prop, getDefault) => isIBKurssi(kurssi) && prop.key === 'arviointi'
+          ? <IBKurssinArviointiEditor model={kurssi}/>
+          : getDefault()
+        }
       />
     </div>)
   }

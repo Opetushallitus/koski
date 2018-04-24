@@ -23,3 +23,5 @@ export const findKoodistoByDiaarinumero = (kurssiKoodistot, oppimaaranDiaarinume
 
 export const findDefaultKoodisto = kurssiKoodistot =>
   kurssiKoodistot.includes('lukionkurssit') ? 'lukionkurssit' : undefined
+
+export const isIBKurssi = kurssi => kurssi.value.classes.includes('ibkurssinsuoritus')
