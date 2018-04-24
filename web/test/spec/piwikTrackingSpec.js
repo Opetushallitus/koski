@@ -68,7 +68,8 @@ describe('Piwik-seuranta', function() {
           before(
             piwik.reset,
             goForward,
-            wait.until(koskiPage.isReady))
+            wait.until(koskiPage.isReady),
+            wait.forAjax)
 
           it('Sivu raportoi lataamisen', function() {
             expectPiwikTrackAjaxPage(piwik.getQueuedMethodCalls(), '/koski/virkailija')
