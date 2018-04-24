@@ -1,10 +1,11 @@
 import React from 'react'
 
-import {modelItems, modelLookup, wrapOptional} from '../editor/EditorModel'
+import {modelData, modelItems, modelLookup, wrapOptional} from '../editor/EditorModel'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {SelectAlternativeByEnumValueEditor} from '../editor/SelectAlternativeByEnumValueEditor'
 import {KurssitEditor} from '../kurssi/KurssitEditor'
 import {ArvosanaEditor} from '../suoritus/ArvosanaEditor'
+import {FootnoteHint} from '../components/footnote'
 
 const YhteisetEditorit = ({model}) => (
   (model.context.edit || modelItems(model, 'arviointi').length > 0) &&
@@ -15,12 +16,16 @@ const YhteisetEditorit = ({model}) => (
         key={'arvosana'}
       />
     }
-    {model.context.edit &&
-    <PropertiesEditor
-      model={modelLookup(model, 'arviointi.-1')}
-      propertyFilter={p => p.key === 'predicted'}
-      key={'properties'}
-    />}
+    {model.context.edit
+      ? (
+        <PropertiesEditor
+          model={modelLookup(model, 'arviointi.-1')}
+          propertyFilter={p => p.key === 'predicted'}
+          key={'properties'}
+        />
+      )
+      : modelData(model, 'arviointi.-1.predicted') && <FootnoteHint title='Ennustettu arvosana' hint='*'/>
+    }
   </div>
 )
 

@@ -460,6 +460,7 @@ function IBSuoritukset() {
             var ee = Editor(elem)
             return {
               arvosana: ee.property('theoryOfKnowledge .arviointi'),
+              predicted: ee.property('theoryOfKnowledge .predicted'),
               asOppiaine: Oppiaine('.theoryOfKnowledge')
             }
           }()

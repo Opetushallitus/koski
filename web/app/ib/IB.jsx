@@ -3,7 +3,7 @@ import R from 'ramda'
 import Bacon from 'baconjs'
 import {LukionOppiaineEditor} from '../lukio/LukionOppiaineEditor'
 import {LukionOppiaineetTableHead} from '../lukio/fragments/LukionOppiaineetTableHead'
-import {modelData, modelItems} from '../editor/EditorModel'
+import {modelData, modelItems, modelLookup} from '../editor/EditorModel'
 import {FootnoteDescriptions} from '../components/footnote'
 import {UusiIBOppiaineDropdown} from './UusiIBOppiaineDropdown'
 import {koodistoValues} from '../uusioppija/koodisto'
@@ -23,7 +23,8 @@ export const IBTutkinnonOppiaineetEditor = ({suorituksetModel, additionalEditabl
   const oppiaineetAineryhmittäin = R.groupBy(oppiaine => modelData(oppiaine, 'koulutusmoduuli.ryhmä').koodiarvo, oppiaineet)
   const aineryhmät = ryhmätKaikki.map(ryhmät => ryhmät.map(ryhmä => ({ryhmä, aineet: oppiaineetAineryhmittäin[ryhmä.koodiarvo]})))
 
-  const footnotes = R.any(s => modelData(s, 'arviointi.-1.predicted'), oppiaineet)
+  const yhteisetIbSuoritukset = ['theoryOfKnowledge', 'creativityActionService', 'extendedEssay'].map(k => modelLookup(päätasonSuoritusModel, k))
+  const footnotes = R.any(s => modelData(s, 'arviointi.-1.predicted'), R.concat(oppiaineet, yhteisetIbSuoritukset))
     ? [ArvosanaFootnote]
     : []
 
