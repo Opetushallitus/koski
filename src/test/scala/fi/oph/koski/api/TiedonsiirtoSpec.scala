@@ -160,6 +160,8 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         verifyResponseStatusOk()
       }
 
+      refreshElasticSearchIndex
+
       getVirheellisetTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä).flatMap(_.oppija.flatMap(_.hetu)) should equal(List(eerola.hetu.get))
     }
   }
