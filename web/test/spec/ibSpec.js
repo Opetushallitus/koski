@@ -655,6 +655,47 @@ describe('IB', function( ) {
                 })
               })
 
+              describe('Arvioinnin effort-tiedon muuttaminen', function() {
+                var kurssi = tok.asOppiaine.kurssi('TOK1')
+
+                before(
+                  editor.edit,
+                  kurssi.toggleDetails,
+                  kurssi.details().property('effort').selectValue('good'),
+                  kurssi.toggleDetails,
+                  editor.saveChanges,
+                  wait.until(page.isSavedLabelShown),
+                  kurssi.toggleDetails
+                )
+
+                it('toimii', function() {
+                  expect(kurssi.details().property('arviointi').getText()).to.equal(
+                    'Arviointi Arvosana 5\n' +
+                    'Effort good'
+                  )
+                })
+              })
+
+              describe('Arvioinnin effort-tiedon poistaminen', function() {
+                var kurssi = tok.asOppiaine.kurssi('TOK1')
+
+                before(
+                  editor.edit,
+                  kurssi.toggleDetails,
+                  kurssi.details().property('effort').selectValue('Ei valintaa'),
+                  kurssi.toggleDetails,
+                  editor.saveChanges,
+                  wait.until(page.isSavedLabelShown),
+                  kurssi.toggleDetails
+                )
+
+                it('toimii', function() {
+                  expect(kurssi.details().property('arviointi').getText()).to.equal(
+                    'Arviointi Arvosana 5'
+                  )
+                })
+              })
+
               describe('Lisääminen', function () {
                 before(
                   editor.edit,
@@ -889,6 +930,47 @@ describe('IB', function( ) {
 
               it('toimii', function() {
                 expect(kurssi.arvosana.getText()).to.equal('5')
+              })
+            })
+
+            describe('Arvioinnin effort-tiedon muuttaminen', function() {
+              var kurssi = a.kurssi('FIN_S1')
+
+              before(
+                editor.edit,
+                kurssi.toggleDetails,
+                kurssi.details().property('effort').selectValue('needs improvement'),
+                kurssi.toggleDetails,
+                editor.saveChanges,
+                wait.until(page.isSavedLabelShown),
+                kurssi.toggleDetails
+              )
+
+              it('toimii', function() {
+                expect(kurssi.details().property('arviointi').getText()).to.equal(
+                  'Arviointi Arvosana 5\n' +
+                  'Effort needs improvement'
+                )
+              })
+            })
+
+            describe('Arvioinnin effort-tiedon poistaminen', function() {
+              var kurssi = a.kurssi('FIN_S1')
+
+              before(
+                editor.edit,
+                kurssi.toggleDetails,
+                kurssi.details().property('effort').selectValue('Ei valintaa'),
+                kurssi.toggleDetails,
+                editor.saveChanges,
+                wait.until(page.isSavedLabelShown),
+                kurssi.toggleDetails
+              )
+
+              it('toimii', function() {
+                expect(kurssi.details().property('arviointi').getText()).to.equal(
+                  'Arviointi Arvosana 5'
+                )
               })
             })
 
