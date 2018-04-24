@@ -33,7 +33,6 @@ export class Suoritustaulukko extends React.Component {
     let suoritukset = modelItems(suorituksetModel) || []
 
     let suoritusProto = context.edit ? createTutkinnonOsanSuoritusPrototype(suorituksetModel) : suoritukset[0]
-    let koulutustyyppi = modelData(parentSuoritus, 'koulutusmoduuli.koulutustyyppi.koodiarvo')
     let suoritustapa = modelData(parentSuoritus, 'suoritustapa')
     let isAmmatillinenTutkinto = parentSuoritus.value.classes.includes('ammatillisentutkinnonsuoritus')
     if (suoritukset.length === 0 && !context.edit) return null
