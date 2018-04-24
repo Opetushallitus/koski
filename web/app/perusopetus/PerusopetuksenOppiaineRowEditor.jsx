@@ -15,9 +15,10 @@ export class PerusopetuksenOppiaineRowEditor extends React.Component {
     let {model, showArvosana, showLaajuus, footnotes, uusiOppiaineenSuoritus, expanded, onExpand} = this.props
     const {edit} = model.context
 
+
     let oppiaine = modelLookup(model, 'koulutusmoduuli')
     let className = 'oppiaine oppiaine-rivi'
-      + ' ' + (modelData(model, 'koulutusmoduuli.pakollinen') ? 'pakollinen' : 'valinnainen')
+      + ' ' + (isPakollinen(model) ? 'pakollinen' : 'valinnainen')
       + ' ' + modelData(oppiaine, 'tunniste').koodiarvo
       + ' ' + tilaKoodi(model)
       + (expanded ? ' expanded' : '')
@@ -92,7 +93,9 @@ export const expandableProperties = (model) => {
     return shouldShowProperty(model.context)(p)
   }
 
-  return modelProperties(oppiaine)
+  return modelProperties(oppiaine, p => !(p.key === 'kuvaus' && isPakollinen(model) && !isPaikallinen(oppiaine)))
     .concat(modelProperties(model))
     .filter(extraPropertiesFilter)
 }
+
+const isPakollinen = model => modelData(model, 'koulutusmoduuli.pakollinen')
