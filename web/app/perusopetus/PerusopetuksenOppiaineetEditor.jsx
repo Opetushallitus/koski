@@ -17,7 +17,7 @@ import {
   wrapOptional
 } from '../editor/EditorModel'
 import R from 'ramda'
-import {arvioituTaiVahvistettu, osasuoritukset, suoritusValmis} from '../suoritus/Suoritus'
+import {arvioituTaiVahvistettu, osasuoritukset} from '../suoritus/Suoritus'
 import {accumulateExpandedState} from '../editor/ExpandableItems'
 import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
@@ -26,13 +26,13 @@ import {
   isPainotettu,
   isPäättötodistus,
   isToimintaAlueittain,
+  isVuosiluokkaTaiPerusopetuksenOppimäärä,
   isYksilöllistetty,
   isYsiluokka,
   jääLuokalle,
   luokkaAste,
   luokkaAsteenOsasuoritukset,
-  oppimääränOsasuoritukset,
-  isVuosiluokkaTaiPerusopetuksenOppimäärä
+  oppimääränOsasuoritukset
 } from './Perusopetus'
 import {expandableProperties, PerusopetuksenOppiaineRowEditor} from './PerusopetuksenOppiaineRowEditor'
 import {UusiPerusopetuksenOppiaineDropdown} from './UusiPerusopetuksenOppiaineDropdown'
@@ -178,7 +178,7 @@ class Oppiainetaulukko extends React.Component {
     let { isExpandedP, setExpanded } = accumulateExpandedState({suoritukset, filter: s => expandableProperties(s).length > 0, component: this})
 
     const edit = model.context.edit
-    const showArvosana = edit || suoritusValmis(model) || !model.value.classes.includes('perusopetuksenoppimaaransuoritus')
+    const showArvosana = edit || arvioituTaiVahvistettu(model) || !model.value.classes.includes('perusopetuksenoppimaaransuoritus')
     const uudellaSuorituksellaLaajuus = () => !!modelLookup(uusiOppiaineenSuoritus ? uusiOppiaineenSuoritus : createOppiaineenSuoritus(modelLookup(model, 'osasuoritukset')), 'koulutusmoduuli.laajuus')
     const sisältääLajuudellisiaSuorituksia = !!suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus'))
     const showLaajuus = !pakolliset && (sisältääLajuudellisiaSuorituksia || (edit && uudellaSuorituksellaLaajuus()))
