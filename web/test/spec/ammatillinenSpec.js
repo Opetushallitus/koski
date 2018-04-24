@@ -393,6 +393,28 @@ describe('Ammatillinen koulutus', function() {
       })
     })
 
+    describe('Ammatillinen perustutkinto, suoritustapa reformi', function () {
+      before(
+        prepareForNewOppija('kalle', '230872-7258'),
+        addOppija.enterHenkilötiedot({etunimet: 'Tero', kutsumanimi: 'Tero', sukunimi: 'Tyhjä'}),
+        addOppija.selectOppilaitos('Stadin'),
+        addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
+        function() {
+          return wait.until(Page().getInput('.tutkinto input').isVisible)()
+            .then(Page().setInputValue('.tutkinto input', 'Autoalan perustutkinto'))
+            .then(click('.results li:last()'))
+        },
+        addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)'),
+        editor.edit
+      )
+
+      it('Lisätty opiskeluoikeus näytetään', function () {
+        expect(textsOf(toArray(S('.tutkinnon-osan-ryhma')))).to.deep.equal([
+          'Ammatilliset tutkinnon osat',
+          'Yhteiset tutkinnon osat' ])
+      })
+    })
+
     describe('Ammatillisen tutkinnon osittainen suoritus', function () {
       before(
         prepareForNewOppija('kalle', '230872-7258'),

@@ -6,6 +6,7 @@ import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
 object MockEPerusteetRepository extends EPerusteetRepository {
   lazy val rakenteet: List[EPerusteRakenne] = List(
     "rakenne-autoalan-perustutkinto",
+    "rakenne-autoalan-perustutkinto2017",
     "rakenne-luonto-ja-ymparistoala",
     "rakenne-autoalan-tyonjohto",
     "rakenne-perusopetus",

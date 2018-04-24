@@ -12,7 +12,7 @@ import {accumulateExpandedState} from '../editor/ExpandableItems'
 import {hasArvosana, suorituksenTyyppi, suoritusValmis, tilaText} from './Suoritus'
 import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
-import {ammatillisentutkinnonosanryhmaKoodisto} from '../koodisto/koodistot'
+import {tutkinnonOsanRyhmät} from '../koodisto/koodistot'
 import {fetchLaajuudet, YhteensäSuoritettu} from './YhteensaSuoritettu'
 import UusiTutkinnonOsa  from '../ammatillinen/UusiTutkinnonOsa'
 import {
@@ -37,7 +37,6 @@ export class Suoritustaulukko extends React.Component {
     let suoritustapa = modelData(parentSuoritus, 'suoritustapa')
     let isAmmatillinenTutkinto = parentSuoritus.value.classes.includes('ammatillisentutkinnonsuoritus')
     if (suoritukset.length === 0 && !context.edit) return null
-    let isAmmatillinenPerustutkinto = koulutustyyppi === '1'
 
     const {isExpandedP, allExpandedP, toggleExpandAll, setExpanded} = accumulateExpandedState({
       suoritukset,
@@ -45,23 +44,29 @@ export class Suoritustaulukko extends React.Component {
       component: this
     })
 
-    let grouped, groupIds, groupTitles
-
-    if (isAmmatillinenTutkinto && isAmmatillinenPerustutkinto && suoritustapa && suoritustapa.koodiarvo === 'ops') {
-      grouped = R.groupBy(s => modelData(s, 'tutkinnonOsanRyhmä.koodiarvo') || placeholderForNonGrouped)(suoritukset)
-      groupTitles = R.merge(ammatillisentutkinnonosanryhmaKoodisto, { [placeholderForNonGrouped] : t('Muut suoritukset')})
-      groupIds = R.keys(grouped).sort()
-      if (context.edit) {
-        // Show the empty groups too
-        groupIds = R.uniq(R.keys(ammatillisentutkinnonosanryhmaKoodisto).concat(groupIds))
+    const groupsP = tutkinnonOsanRyhmät(modelData(parentSuoritus, 'koulutusmoduuli.perusteenDiaarinumero'), suoritustapa).map(ammatillisentutkinnonosanryhmaKoodisto => {
+      let grouped, groupIds, groupTitles
+      if (isAmmatillinenTutkinto && R.keys(ammatillisentutkinnonosanryhmaKoodisto).length > 1) {
+        grouped = R.groupBy(s => modelData(s, 'tutkinnonOsanRyhmä.koodiarvo') || placeholderForNonGrouped)(suoritukset)
+        groupTitles = R.merge(ammatillisentutkinnonosanryhmaKoodisto, { [placeholderForNonGrouped] : t('Muut suoritukset')})
+        groupIds = R.keys(grouped).sort()
+        if (context.edit) {
+          // Show the empty groups too
+          groupIds = R.uniq(R.keys(ammatillisentutkinnonosanryhmaKoodisto).concat(groupIds))
+        }
+      } else {
+        grouped = { [placeholderForNonGrouped] : suoritukset }
+        groupTitles = { [placeholderForNonGrouped] : t(modelProperty(suoritukset[0] || suoritusProto, 'koulutusmoduuli').title) }
+        groupIds = [placeholderForNonGrouped]
       }
-    } else {
-      grouped = { [placeholderForNonGrouped] : suoritukset }
-      groupTitles = { [placeholderForNonGrouped] : t(modelProperty(suoritukset[0] || suoritusProto, 'koulutusmoduuli').title) }
-      groupIds = [placeholderForNonGrouped]
-    }
 
-    const laajuudetP = fetchLaajuudet(parentSuoritus, groupIds)
+      return {
+        grouped: grouped,
+        groupTitles: groupTitles,
+        groupIds: groupIds
+      }
+    })
+
 
     let samaLaajuusYksikkö = suoritukset.every((s, i, xs) => modelData(s, 'koulutusmoduuli.laajuus.yksikkö.koodiarvo') === modelData(xs[0], 'koulutusmoduuli.laajuus.yksikkö.koodiarvo'))
     let laajuusModel = modelLookup(suoritusProto, 'koulutusmoduuli.laajuus')
@@ -92,13 +97,14 @@ export class Suoritustaulukko extends React.Component {
               </tr>
               </thead>
               {
-                flatMapArray(groupIds, (groupId, i) => suoritusGroup(groupId, i))
+                groupsP.map(groups => flatMapArray(groups.groupIds, (groupId, i) => suoritusGroup(groups, groupId, i)))
               }
             </table>
           </div>)
 
-    function suoritusGroup(groupId, i) {
-      const items = (grouped[groupId] || [])
+    function suoritusGroup(groups, groupId, i) {
+      const items = (groups.grouped[groupId] || [])
+      const groupTitles = groups.groupTitles
 
       return [
         <tbody key={'group-' + i} className={`group-header ${groupId}`}>
@@ -122,7 +128,7 @@ export class Suoritustaulukko extends React.Component {
         </tbody>,
         !nested && !näyttötutkintoonValmistava(parentSuoritus) && !ylioppilastutkinto(parentSuoritus) && <tbody key={'group- '+ i + '-footer'} className="yhteensä">
           <tr><td>
-            <YhteensäSuoritettu osasuoritukset={items} laajuusP={laajuudetP.map(l => l[groupId])} laajuusYksikkö={laajuusYksikkö}/>
+            <YhteensäSuoritettu osasuoritukset={items} laajuusP={fetchLaajuudet(parentSuoritus, groups.groupIds).map(l => l[groupId])} laajuusYksikkö={laajuusYksikkö}/>
           </td></tr>
         </tbody>
       ]
@@ -231,7 +237,7 @@ const TutkintokertaColumn = {
 
 const SuoritusColumn = {
   shouldShow : () => true,
-  renderHeader: ({groupTitles, groupId}) => <td key="suoritus">{groupTitles[groupId]}</td>,
+  renderHeader: ({groupTitles, groupId}) => <td key="suoritus" className="tutkinnon-osan-ryhma">{groupTitles[groupId]}</td>,
   renderData: ({model, showTila, onExpand, hasProperties, expanded}) => {
     let koulutusmoduuli = modelLookup(model, 'koulutusmoduuli')
     let titleAsExpandLink = hasProperties && (!osanOsa(koulutusmoduuli) || !model.context.edit)

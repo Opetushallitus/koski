@@ -45,6 +45,13 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
     })
   }
 
+  get("/tutkinnonosat/ryhmat/:diaari/:suoritustapa") {
+    val ryhmät: List[Koodistokoodiviite] = application.koodistoPalvelu.getLatestVersion("ammatillisentutkinnonosanryhma")
+      .flatMap(application.koodistoViitePalvelu.getKoodistoKoodiViitteet).toList.flatten
+
+    perusteenRakenne(failWhenNotFound = false).map(filterRyhmät(ryhmät)).getOrElse(Nil)
+  }
+
   get("/peruste/:diaari/linkki") {
     val diaari = params("diaari")
     val eperusteetUrl = application.config.getString("eperusteet.baseUrl")
@@ -144,6 +151,11 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
       case _ => None
     }
   }
+
+  private def filterRyhmät(ryhmät: List[Koodistokoodiviite])(rakenneOsat: List[RakenneOsa]) =
+    ryhmät.filter { ryhmä =>
+      rakenneOsat.exists(osa => findRyhmä(ryhmä, osa).isDefined)
+    }
 }
 
 case class LisättävätTutkinnonOsat(osat: List[Koodistokoodiviite], osaToisestaTutkinnosta: Boolean, paikallinenOsa: Boolean)
