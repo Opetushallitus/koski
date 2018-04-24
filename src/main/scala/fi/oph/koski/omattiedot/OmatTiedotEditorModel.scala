@@ -59,10 +59,10 @@ object OmatTiedotEditorModel extends Timing {
     )
 
     shapeless.lens[Oppija].field[Seq[Opiskeluoikeus]]("opiskeluoikeudet").modify(oppija)(_.map(oo => {
-      val isKeskeneräinenPäättötodistusAinoaSuoritus = oo.suoritukset.lengthCompare(1) == 0 && (oo.suoritukset.head match {
-        case s: PerusopetuksenOppimääränSuoritus if !s.valmis => true
+      val isKeskeneräinenPäättötodistusAinoaSuoritus = oo.suoritukset match {
+        case (s: PerusopetuksenOppimääränSuoritus) :: Nil if s.kesken => true
         case _ => false
-      })
+      }
 
       shapeless.lens[Opiskeluoikeus].field[List[PäätasonSuoritus]]("suoritukset").modify(oo)(
         if (isKeskeneräinenPäättötodistusAinoaSuoritus) poistaOsasuoritukset else poistaKeskeneräisetPäättötodistukset
