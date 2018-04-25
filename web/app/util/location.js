@@ -43,6 +43,11 @@ export const showInternalError = () => locationBus.error({ httpStatus: 500 })
 export const parsePath = (path) => {
   let a = document.createElement('a')
   a.href = path
+  if (a.pathname === '') {
+    // IE does not populate all fields when setting relative href. Href returns an absolute
+    // URL after set though, so this hack can be used to populate all fields on IE.
+    a.href = a.href
+  }
   return parseLocation(a)
 }
 

@@ -25,12 +25,12 @@ trait HtmlNodes extends KoskiBaseServlet with PiwikNodes {
       </head>
       <body class={bodyClasses}>
         <div data-inraamit={if (raamitEnabled) "true" else ""} id="content"></div>
+        <script id="localization">
+          {Unparsed("window.koskiLocalizationMap="+JsonSerializer.writeWithRoot(localizations.localizations))}
+        </script>
+        {scripts}
+        <script id="bundle" src={"/koski/js/" + scriptBundleName + "?" + buildVersion.getOrElse(scriptTimestamp(scriptBundleName))}></script>
       </body>
-      <script id="localization">
-        {Unparsed("window.koskiLocalizationMap="+JsonSerializer.writeWithRoot(localizations.localizations))}
-      </script>
-      {scripts}
-      <script id="bundle" src={"/koski/js/" + scriptBundleName + "?" + buildVersion.getOrElse(scriptTimestamp(scriptBundleName))}></script>
     </html>
   }
 
