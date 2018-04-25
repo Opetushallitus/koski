@@ -21,7 +21,7 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String)(implicit cacheInvalidat
   def findPerusteetByKoulutustyyppi(koulutustyypit: Set[Koulutustyyppi]): List[EPeruste] = if (koulutustyypit.isEmpty) {
     Nil
   } else {
-    val url = s"/api/perusteet?${koulutustyypit.map(k => s"koulutustyyppi=${k.koodiarvo}").mkString("&")}"
+    val url = s"/api/perusteet?${koulutustyypit.map(k => s"koulutustyyppi=koulutustyyppi_${k.koodiarvo}").mkString("&")}"
     runTask(http.get(ParameterizedUriWrapper(uriFromString(url), url))(Http.parseJson[EPerusteet])).data
   }
 
