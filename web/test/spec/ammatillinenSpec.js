@@ -408,10 +408,47 @@ describe('Ammatillinen koulutus', function() {
         editor.edit
       )
 
-      it('Lisätty opiskeluoikeus näytetään', function () {
+      it('Lisätty opiskeluoikeus näytetään', function() {
         expect(textsOf(toArray(S('.tutkinnon-osan-ryhma')))).to.deep.equal([
           'Ammatilliset tutkinnon osat',
-          'Yhteiset tutkinnon osat' ])
+          'Yhteiset tutkinnon osat'])
+      })
+
+      describe('Tutkinnon osan lisääminen', function() {
+        before(
+          editor.edit,
+          opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('Huolto- ja korjaustyöt'),
+          opinnot.tutkinnonOsat('1').tutkinnonOsa(0).propertyBySelector('.arvosana').setValue('3', 1),
+          editor.saveChanges,
+          wait.forAjax
+        )
+
+        it('näyttää oikeat tiedot', function() {
+          expect(opinnot.tutkinnonOsat().tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
+        })
+      })
+
+      describe('Yhteisen tutkinnon osan lisääminen', function() {
+        before(editor.edit)
+
+        describe('Ennen lisäystä', function () {
+          it('Näyttää e-perusteiden mukaisen vaihtoehtolistan', function () {
+            expect(opinnot.tutkinnonOsat('2').tutkinnonosavaihtoehdot()).to.deep.equal([
+              '400013 Matemaattis-luonnontieteellinen osaaminen',
+              '400012 Viestintä- ja vuorovaikutusosaaminen',
+              '400014 Yhteiskunta- ja työelämäosaaminen'
+            ])
+          })
+        })
+
+        describe('Lisäyksen jälkeen', function () {
+          before(
+            opinnot.tutkinnonOsat('2').lisääTutkinnonOsa('Matemaattis-luonnontieteellinen osaaminen')
+          )
+          it('lisätty osa näytetään', function () {
+            expect(opinnot.tutkinnonOsat('2').tutkinnonOsa(0).nimi()).to.equal('Matemaattis-luonnontieteellinen osaaminen')
+          })
+        })
       })
     })
 
