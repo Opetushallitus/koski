@@ -42,16 +42,6 @@ class IE11Test extends BrowserstackMochaTest {
   runMochaTests(IE11) // Some tests pass some fail
 }
 
-class IE10Test extends BrowserstackMochaTest {
-  object IE10 extends BrowserCapabilities {
-    caps.setCapability("browser", "IE")
-    caps.setCapability("browser_version", "10.0")
-    caps.setCapability("os", "Windows")
-    caps.setCapability("os_version", "7")
-  }
-  //runMochaTests(IE10) // 'openPage' is undefined
-}
-
 class Edge16Test extends BrowserstackMochaTest {
   object Edge16 extends BrowserCapabilities {
     caps.setCapability("browser", "Edge")
