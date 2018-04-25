@@ -14,7 +14,11 @@ object ExpiringCache {
 }
 
 class ExpiringCache(val name: String, val params: ExpiringCache.Params)(implicit manager: CacheManager) extends Cache with Logging {
-  logger.debug("Create expiring cache " + name)
+  private val debugCaching = false // don't enable in production, invocation parameters can contain hetus and other secrets
+
+  if (debugCaching) {
+    logger.debug("Create expiring cache " + name)
+  }
   manager.registerCache(this)
   /**
    *  Marker exception that's used for preventing caching values that we don't want to cache.
@@ -24,13 +28,17 @@ class ExpiringCache(val name: String, val params: ExpiringCache.Params)(implicit
   def apply(invocation: Invocation): AnyRef = {
     try {
       val newValue = cache.get(invocation)
-      logger.debug(s"$name.$invocation stored value $newValue")
+      if (debugCaching) {
+        logger.debug(s"$name.$invocation stored value $newValue")
+      }
       newValue
     } catch {
       case e: UncheckedExecutionException if e.getCause.isInstanceOf[DoNotStoreException] => e.getCause.asInstanceOf[DoNotStoreException].value
       case DoNotStoreException(value) => value
       case e: Throwable =>
-        logger.warn(e)(s"$name.$invocation fetch failed")
+        if (debugCaching) {
+          logger.warn(e)(s"$name.$invocation fetch failed")
+        }
         throw e
     }
   }
@@ -39,13 +47,17 @@ class ExpiringCache(val name: String, val params: ExpiringCache.Params)(implicit
 
   override def invalidateCache() = {
     cache.invalidateAll
-    logger.debug(s"$name invalidate (cache size ${cache.size})")
+    if (debugCaching) {
+      logger.debug(s"$name invalidate (cache size ${cache.size})")
+    }
   }
 
   private val cache: LoadingCache[Invocation, AnyRef] = {
     val cacheLoader: CacheLoader[Invocation, AnyRef] = new CacheLoader[Invocation, AnyRef] {
       override def load(invocation:  Invocation): AnyRef = {
-        logger.debug("->loading")
+        if (debugCaching) {
+          logger.debug("->loading")
+        }
         val value = invocation.invoke
         if (!params.storeValuePredicate(invocation, value)) {
           throw new DoNotStoreException(value)

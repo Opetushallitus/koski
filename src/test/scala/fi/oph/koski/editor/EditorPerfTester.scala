@@ -7,7 +7,7 @@ import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.perftest.LocalPerfTest
 import fi.oph.koski.schema.Oppija
-import fi.oph.koski.util.Timing
+import fi.oph.koski.util.{Timing, WithWarnings}
 
 object EditorPerfTester extends App with Timing {
   implicit val application = KoskiApplication.apply
@@ -18,7 +18,7 @@ object EditorPerfTester extends App with Timing {
   LocalPerfTest.runTest(LocalPerfTest.TestCase("serialize model", 10, (n) => EditorModelSerializer.serializeModel(prebuiltModel)))
 
   private def buildModel = {
-    OppijaEditorModel.toEditorModel(Oppija(asUusiOppija(MockOppijat.eero), AmmatillinenPerustutkintoExample.perustutkinto.opiskeluoikeudet), true)
+    OppijaEditorModel.toEditorModel(WithWarnings(Oppija(asUusiOppija(MockOppijat.eero), AmmatillinenPerustutkintoExample.perustutkinto.opiskeluoikeudet), Nil), true)
   }
 
 }

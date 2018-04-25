@@ -5,26 +5,27 @@ import java.time.LocalDate
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.OppijaEditorModel.oppilaitoksenOpiskeluoikeudetOrdering
 import fi.oph.koski.editor._
+import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema.PerusopetuksenOpiskeluoikeus._
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.Hidden
-import fi.oph.koski.util.Timing
+import fi.oph.koski.util.{Timing, WithWarnings}
 import mojave._
 
 object OmatTiedotEditorModel extends Timing {
-  def toEditorModel(oppija: Oppija)(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = timed("createModel") {
+  def toEditorModel(oppijaWithWarnings: WithWarnings[Oppija])(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = timed("createModel") {
     val piilotetuillaTiedoilla = piilotaArvosanatKeskeneräisistäSuorituksista _ andThen
       piilotaSensitiivisetHenkilötiedot andThen
       piilotaKeskeneräisetPerusopetuksenPäättötodistukset
 
-    buildModel(buildView(piilotetuillaTiedoilla(oppija)))
+    buildModel(buildView(piilotetuillaTiedoilla(oppijaWithWarnings.getIgnoringWarnings), oppijaWithWarnings.warnings))
   }
 
-  private def buildView(oppija: Oppija) = {
+  private def buildView(oppija: Oppija, warnings: Seq[HttpStatus]) = {
     OmatTiedotEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], oppija.opiskeluoikeudet.groupBy(_.getOppilaitosOrKoulutusToimija).map {
       case (oppilaitos, opiskeluoikeudet) => OppijaEditorModel.toOppilaitoksenOpiskeluoikeus(oppilaitos, opiskeluoikeudet)
-    }.toList.sorted(oppilaitoksenOpiskeluoikeudetOrdering))
+    }.toList.sorted(oppilaitoksenOpiskeluoikeudetOrdering), warnings.flatMap(_.errors).map(_.key).toList)
   }
 
   private def buildModel(obj: AnyRef)(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = {
@@ -74,5 +75,7 @@ object OmatTiedotEditorModel extends Timing {
 case class OmatTiedotEditorView(
   @Hidden
   henkilö: TäydellisetHenkilötiedot,
-  opiskeluoikeudet: List[OppilaitoksenOpiskeluoikeudet]
+  opiskeluoikeudet: List[OppilaitoksenOpiskeluoikeudet],
+  @Hidden
+  varoitukset: List[String]
 )

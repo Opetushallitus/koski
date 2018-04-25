@@ -688,6 +688,16 @@ describe('Omat tiedot', function() {
         })
       })
 
+      describe('Kun Virta-tietoja ei saada haettua', function() {
+        before(authentication.logout, etusivu.openPage)
+
+        before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('250390-680P'), wait.until(omattiedot.isVisible))
+        it('Näytetään varoitusteksti', function() {
+          expect(omattiedot.nimi()).to.equal('Eivastaa Virtanen')
+          expect(omattiedot.varoitukset()).to.equal('Korkeakoulujen opintoja ei juuri nyt saada haettua. Yritä myöhemmin uudestaan.')
+        })
+      })
+
       describe('Virhetilanne', function() {
         before(authentication.logout, etusivu.openPage)
 

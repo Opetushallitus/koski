@@ -36,6 +36,7 @@ object MockOppijat {
   val amkKesken = oppijat.oppija("Amiskesken", "Jalmari", "090197-411W")
   val amkKeskeytynyt = oppijat.oppija("Pudokas", "Valtteri", "170691-3962")
   val monimutkainenKorkeakoululainen = oppijat.oppija("Korkeakoululainen", "Kompleksi", "060458-331R")
+  val virtaEiVastaa = oppijat.oppija("Virtanen", "Eivastaa", "250390-680P")
   val oppiaineenKorottaja = oppijat.oppija("Oppiaineenkorottaja", "Olli", "110738-839L")
   val aikuisOpiskelija = oppijat.oppija("Aikuisopiskelija", "Aini", "280598-2415")
   val kymppiluokkalainen = oppijat.oppija("Kymppiluokkalainen", "Kaisa", "131025-6573")

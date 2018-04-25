@@ -12,6 +12,7 @@ import fi.oph.koski.log.KoskiOperation.KANSALAINEN_SUORITUSJAKO_LISAYS
 import fi.oph.koski.log.KoskiMessageField.oppijaHenkiloOid
 import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.schema._
+import fi.oph.koski.util.WithWarnings
 
 class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppijaFacade: KoskiOppijaFacade) extends Logging {
   def put(oppijaOid: String, suoritusIds: List[SuoritusIdentifier])(implicit koskiSession: KoskiSession): Either[HttpStatus, Suoritusjako] = {
@@ -37,13 +38,13 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
     }
   }
 
-  def get(secret: String)(implicit koskiSession: KoskiSession): Either[HttpStatus, Oppija] = {
+  def get(secret: String)(implicit koskiSession: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
     suoritusjakoRepository.get(secret).flatMap { suoritusjako =>
-      oppijaFacade.findOppija(suoritusjako.oppijaOid)(koskiSession).map { oppija =>
+      oppijaFacade.findOppija(suoritusjako.oppijaOid)(koskiSession).map(_.map { oppija =>
         val suoritusIdentifiers = JsonSerializer.extract[List[SuoritusIdentifier]](suoritusjako.suoritusIds)
         val filtered = filterOpiskeluoikeudet(oppija.opiskeluoikeudet, suoritusIdentifiers)
         oppija.copy(opiskeluoikeudet = filtered)
-      }
+      })
     }
   }
 
@@ -73,7 +74,7 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
   }
 
   private def assertSuorituksetExist(oppijaOid: String, suoritusIds: List[SuoritusIdentifier]): Either[HttpStatus, Boolean] = {
-    oppijaFacade.findOppija(oppijaOid)(KoskiSession.systemUser).map { oppija =>
+    oppijaFacade.findOppija(oppijaOid)(KoskiSession.systemUser).flatMap(_.warningsToLeft).map { oppija =>
       suoritusIds.map(suoritusId =>
         oppija.opiskeluoikeudet.exists(oo =>
           oo.suoritukset.exists(isMatchingSuoritus(oo, _, suoritusId))

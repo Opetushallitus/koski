@@ -2,6 +2,7 @@ describe('Oppijahaku', function() {
   var page = KoskiPage()
   var opinnot = OpinnotPage()
   var eero = 'Esimerkki, Eero (010101-123N)'
+  var eivastaa = 'Virtanen, Eivastaa (250390-680P)'
   var markkanen = 'Markkanen-Fagerström, Eéro Jorma-Petteri (080154-770R)'
   var eerola = 'Eerola, Jouni (081165-793C)'
   var teija = 'Tekijä, Teija (251019-039B)'
@@ -144,4 +145,19 @@ describe('Oppijahaku', function() {
       expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
     })
   })
+
+  describe('Kun haetaan henkilö ja Virta on alhaalla', function() {
+    before(Authentication().login('pää'), page.openPage)
+    it('Tulokset näytetään', function() {
+      return page.oppijaHaku.search('250390-680P', [eivastaa])()
+    })
+    describe('Oppijan sivulle navigointi toimii', function() {
+      before(page.oppijaHaku.searchAndSelect('250390-680P'))
+      it('Ja varoitus näytetään', function() {
+        expect(extractAsText(S('.varoitus'))).to.equal('Korkeakoulujen opintoja ei juuri nyt saada haettua. Yritä myöhemmin uudestaan.')
+      })
+
+    })
+  })
+
 })

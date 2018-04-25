@@ -18,7 +18,7 @@ class TodistusServlet(implicit val application: KoskiApplication) extends HtmlSe
       case (_, _) => None
     }
 
-    renderEither(OpiskeluoikeusFinder(application.oppijaFacade).opiskeluoikeudet(oppijaOid, params).right.flatMap {
+    renderEither(OpiskeluoikeusFinder(application.oppijaFacade).opiskeluoikeudet(oppijaOid, params).flatMap(_.warningsToLeft).right.flatMap {
       case Oppija(henkilötiedot: TäydellisetHenkilötiedot, opiskeluoikeudet) =>
         val suoritukset: Seq[(Opiskeluoikeus, Suoritus)] = opiskeluoikeudet.flatMap {
           opiskeluoikeus => opiskeluoikeus.suoritukset.filter(suoritus => suoritus.valmis && filters.forall(f => f(suoritus)))

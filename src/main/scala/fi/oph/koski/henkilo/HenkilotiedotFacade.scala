@@ -5,10 +5,10 @@ import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.KoskiMessageField.{apply => _, _}
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, AuditLogMessage}
-import fi.oph.koski.opiskeluoikeus.{CompositeOpiskeluoikeusRepository, OpiskeluoikeusRepository}
+import fi.oph.koski.opiskeluoikeus.{CompositeOpiskeluoikeusRepository, KoskiOpiskeluoikeusRepository}
 import fi.oph.koski.schema.HenkilötiedotJaOid
 
-case class HenkilötiedotFacade(henkilöRepository: HenkilöRepository, kaikkiOpiskeluoikeudet: CompositeOpiskeluoikeusRepository, koskiOpiskeluoikeudet: OpiskeluoikeusRepository, hetuValidator: Hetu) {
+case class HenkilötiedotFacade(henkilöRepository: HenkilöRepository, kaikkiOpiskeluoikeudet: CompositeOpiskeluoikeusRepository, koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository, hetuValidator: Hetu) {
   def search(query: String)(implicit koskiSession: KoskiSession): HenkilötiedotSearchResponse = {
     AuditLog.log(AuditLogMessage(OPPIJA_HAKU, koskiSession, Map(hakuEhto -> query)))
     if (Hetu.validFormat(query).isRight) {

@@ -24,7 +24,7 @@ import slick.dbio.DBIOAction.sequence
 import slick.dbio.Effect.{Read, Transactional, Write}
 import slick.dbio.{DBIOAction, NoStream}
 
-class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: OpiskeluoikeusHistoryRepository, henkilöCache: KoskiHenkilöCache, oidGenerator: OidGenerator, henkilöRepository: OpintopolkuHenkilöRepository, perustiedotSyncRepository: PerustiedotSyncRepository) extends OpiskeluoikeusRepository with DatabaseExecutionContext with KoskiDatabaseMethods with Logging {
+class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: OpiskeluoikeusHistoryRepository, henkilöCache: KoskiHenkilöCache, oidGenerator: OidGenerator, henkilöRepository: OpintopolkuHenkilöRepository, perustiedotSyncRepository: PerustiedotSyncRepository) extends KoskiOpiskeluoikeusRepository with DatabaseExecutionContext with KoskiDatabaseMethods with Logging {
   override def filterOppijat(oppijat: List[HenkilötiedotJaOid])(implicit user: KoskiSession): List[HenkilötiedotJaOid] = {
     val queryOppijaOids = sequence(oppijat.map(_.oid).map { oppijaOid =>
       findByOppijaOidAction(oppijaOid).map(opiskeluoikeusOids => (oppijaOid, opiskeluoikeusOids))

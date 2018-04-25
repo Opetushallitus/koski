@@ -16,6 +16,9 @@ function OmatTiedotPage() {
     virhe: function() {
       return S('.ei-suorituksia').text()
     },
+    varoitukset: function() {
+      return extractAsText(S('.varoitus'))
+    },
     ingressi: function() {
       return S('header .header__caption p').text()
     },

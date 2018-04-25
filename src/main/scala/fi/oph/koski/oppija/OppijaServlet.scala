@@ -1,7 +1,6 @@
 package fi.oph.koski.oppija
 
 import javax.servlet.http.HttpServletRequest
-
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{GlobalExecutionContext, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.HenkilöOid
@@ -14,7 +13,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoError
-import fi.oph.koski.util.{Pagination, Timing, XML}
+import fi.oph.koski.util.{Pagination, Timing, WithWarnings, XML}
 import fi.oph.koski.virta.VirtaHakuehtoHetu
 import org.json4s.JsonAST.{JObject, JString}
 import org.json4s.{JArray, JValue}
@@ -61,15 +60,16 @@ class OppijaServlet(implicit val application: KoskiApplication) extends ApiServl
   }
 
   get("/:oid") {
-    renderEither(findByOid(params("oid"), koskiSession))
+    renderEither[Oppija](findByOid(params("oid"), koskiSession).flatMap(_.warningsToLeft))
   }
 
   get("/:oid/virta-opintotiedot-xml") {
     if (!koskiSession.hasGlobalReadAccess) {
       haltWithStatus(KoskiErrorCategory.forbidden())
     }
-    findByOid(params("oid"), koskiSession).right
-      .flatMap { oppija =>
+    findByOid(params("oid"), koskiSession)
+      .flatMap(_.warningsToLeft)
+      .flatMap { oppija: Oppija =>
         oppija.henkilö match {
           case h: Henkilötiedot if h.hetu.nonEmpty =>
             val hetu = h.hetu.get
@@ -93,7 +93,7 @@ class OppijaServlet(implicit val application: KoskiApplication) extends ApiServl
     streamResponse[String](application.opiskeluoikeusQueryRepository.oppijaOidsQuery(paginationSettings)(koskiSession), koskiSession)
   }
 
-  private def findByOid(oid: String, user: KoskiSession): Either[HttpStatus, Oppija] = {
+  private def findByOid(oid: String, user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
     HenkilöOid.validateHenkilöOid(oid).right.flatMap { oid =>
       application.oppijaFacade.findOppija(oid)(user)
     }

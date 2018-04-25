@@ -169,4 +169,9 @@ object KoskiErrorCategory {
   object notImplemented extends ErrorCategory("notImplemented", 501, "Not implemented") {
     val readOnly = subcategory("readOnly", "Opiskeluoikeuden tietoja ei voi muuttaa")
   }
+
+  object unavailable extends ErrorCategory("unavailable", 503, "Service unavailable") {
+    val virta = subcategory("virta", "Korkeakoulutuksen opiskeluoikeuksia ei juuri nyt saada haettua. Yritä myöhemmin uudelleen.")
+    val ytr = subcategory("ytr", "Ylioppilastutkintojen tietoja ei juuri nyt saada haettua. Yritä myöhemmin uudelleen.")
+  }
 }

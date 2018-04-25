@@ -36,10 +36,13 @@ object RefreshingCache {
 }
 
 class RefreshingCache(val name: String, val params: RefreshingCache.Params)(implicit invalidator: CacheManager) extends Cache with Logging with GlobalExecutionContext {
+  private val debugCaching = false // don't enable in production, invocation parameters can contain hetus and other secrets
   private val statsCounter = new SimpleStatsCounter()
   private val maxExcess = (params.maxSize * params.maxExcessRatio).toInt
   private val entries: MutableMap[Invocation, CacheEntry] = MutableMap.empty
-  logger.debug("Create refreshing cache " + name)
+  if (debugCaching) {
+    logger.debug("Create refreshing cache " + name)
+  }
   invalidator.registerCache(this)
 
   override def stats: CacheStats = statsCounter.snapshot()
@@ -53,7 +56,9 @@ class RefreshingCache(val name: String, val params: RefreshingCache.Params)(impl
   }
 
   override def invalidateCache(): Unit = synchronized {
-    logger.debug(s"$name invalidate (cache size ${entries.size})")
+    if (debugCaching) {
+      logger.debug(s"$name invalidate (cache size ${entries.size})")
+    }
     entries.values.foreach(_.evict)
     entries.clear
   }
@@ -63,7 +68,9 @@ class RefreshingCache(val name: String, val params: RefreshingCache.Params)(impl
   private def cleanup = {
     val diff = entries.size - params.maxSize
     if (diff > maxExcess) {
-      logger.debug(s"$name cleanup (${entries.size} -> ${params.maxSize})")
+      if (debugCaching) {
+        logger.debug(s"$name cleanup (${entries.size} -> ${params.maxSize})")
+      }
       entries.values.toList.sortBy(_.lastReadTimestamp).take(diff).foreach { entry =>
         entry.evict
         entries.remove(entry.invocation)
@@ -84,11 +91,15 @@ class RefreshingCache(val name: String, val params: RefreshingCache.Params)(impl
       lastRead = System.currentTimeMillis
       currentValue match {
         case Some(value) =>
-          //logger.debug(s"$name.$invocation cache hit")
+          if (debugCaching) {
+            logger.debug(s"$name.$invocation cache hit")
+          }
           statsCounter.recordHits(1)
           value
         case None =>
-          //logger.debug(s"$name.$invocation cache miss")
+          if (debugCaching) {
+            logger.debug(s"$name.$invocation cache miss")
+          }
           statsCounter.recordMisses(1)
           fetcher.getOrElse(newFetcher)
       }
@@ -113,11 +124,15 @@ class RefreshingCache(val name: String, val params: RefreshingCache.Params)(impl
           CacheEntry.this.synchronized {
             currentValue = Some(Future(newValue))
           }
-          logger.debug(s"$name.$invocation stored value $newValue")
+          if (debugCaching) {
+            logger.debug(s"$name.$invocation stored value $newValue")
+          }
           newValue
         } catch {
           case e: Exception =>
-            logger.warn(e)(s"$name.$invocation fetch failed")
+            if (debugCaching) {
+              logger.warn(e)(s"$name.$invocation fetch failed")
+            }
             statsCounter.recordLoadException(System.nanoTime() - start)
             throw e
         }
@@ -143,7 +158,9 @@ class RefreshingCache(val name: String, val params: RefreshingCache.Params)(impl
         val randomizedFactor: Double = Math.random() * variation + (1.0 - variation)
         val delayMillis = (params.duration.toMillis * randomizedFactor).toLong
         scheduledRefreshTime = Some(System.currentTimeMillis() + delayMillis)
-        logger.debug(s"$name.$invocation scheduling new fetch at ${LocalDateTime.now().plus(delayMillis, MILLIS)}")
+        if (debugCaching) {
+          logger.debug(s"$name.$invocation scheduling new fetch at ${LocalDateTime.now().plus(delayMillis, MILLIS)}")
+        }
         RefreshingCache.refreshExecutor.schedule(new Runnable { override def run(): Unit = startScheduledRefresh }, delayMillis, MILLISECONDS)
       }
     }
@@ -151,7 +168,9 @@ class RefreshingCache(val name: String, val params: RefreshingCache.Params)(impl
     private def startScheduledRefresh = synchronized {
       scheduledRefreshTime = None
       if (fetcher.isEmpty && !cancelled) {
-        logger.debug(s"$name.$invocation starting scheduled refresh")
+        if (debugCaching) {
+          logger.debug(s"$name.$invocation starting scheduled refresh")
+        }
         newFetcher
       }
     }
