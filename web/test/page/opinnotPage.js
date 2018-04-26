@@ -559,7 +559,10 @@ function TilaJaVahvistus() {
     merkitseValmiiksiEnabled: function() {
       return merkitseValmiiksiButton().is(':visible') && !merkitseValmiiksiButton().is(':disabled')
     },
-    merkitseValmiiksi: click(merkitseValmiiksiButton),
+    merkitseValmiiksi: seq(
+      click(merkitseValmiiksiButton),
+      wait.until(function() { return isElementVisible(S('.merkitse-valmiiksi-modal')) })
+    ),
     merkitseKeskeneräiseksi: click(merkitseKeskeneräiseksiButton),
     text: function( ){
       return extractAsText(findSingle('.tiedot', elem()))
