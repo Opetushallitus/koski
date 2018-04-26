@@ -1,6 +1,6 @@
 #!/bin/bash
 WEEK=$(date "+%V")
-HASH=$(echo $WEEK | cat - pom.xml web/package.json web/package-lock.json | openssl sha256)
+HASH=$(echo $WEEK | cat - pom.xml web/package.json web/package-lock.json | shasum | sed 's/ .*//')
 PREFIX=/tmp/koski-build-cache
 FILE=$PREFIX-${HASH}.tar
 case "$1" in
