@@ -31,7 +31,7 @@ class OrganisaatioServlet(implicit val application: KoskiApplication) extends Ap
   }
 
   get("/sahkoposti-virheiden-raportointiin") {
-    renderEither(
+    renderEither[SähköpostiVirheidenRaportointiin](
       params.get("organisaatio")
         .toRight(KoskiErrorCategory.badRequest.queryParam.missing("Missing organisaatio"))
         .flatMap(OrganisaatioOid.validateOrganisaatioOid)

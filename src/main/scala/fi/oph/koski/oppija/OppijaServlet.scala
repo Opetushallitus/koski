@@ -31,7 +31,7 @@ class OppijaServlet(implicit val application: KoskiApplication) extends ApiServl
     withTracking { withJsonBody { (oppijaJson: JValue) =>
       val validationResult: Either[HttpStatus, Oppija] = application.validator.extractAndValidateOppija(oppijaJson)(koskiSession, AccessType.write)
       val result: Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = UpdateContext(koskiSession, application, request).putSingle(validationResult, oppijaJson, allowUpdate)
-      renderEither(result)
+      renderEither[HenkilönOpiskeluoikeusVersiot](result)
     }(parseErrorHandler = handleUnparseableJson)}
   }
 

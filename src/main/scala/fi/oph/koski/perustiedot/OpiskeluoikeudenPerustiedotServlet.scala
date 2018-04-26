@@ -11,7 +11,7 @@ import fi.oph.koski.util.{PaginatedResponse, Pagination, PaginationSettings, Sor
 class OpiskeluoikeudenPerustiedotServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with Pagination with NoCache {
   // TODO: Pitäisikö näistäkin katseluista tehdä auditlog-merkintä?
   get("/") {
-    renderEither({
+    renderEither[PaginatedResponse[OpiskeluoikeudenPerustiedotResponse]]({
       val sort = SortOrder.parseSortOrder(params.get("sort"), Ascending("nimi"))
 
       val thing: Either[HttpStatus, PaginatedResponse[OpiskeluoikeudenPerustiedotResponse]] = OpiskeluoikeusQueryFilter.parse(params.toList)(application.koodistoViitePalvelu, application.organisaatioRepository, koskiSession) match {

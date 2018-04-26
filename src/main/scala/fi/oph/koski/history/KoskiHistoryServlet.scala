@@ -28,7 +28,7 @@ class KoskiHistoryServlet(implicit val application: KoskiApplication)
 
     result.right.foreach { _ => logHistoryView(oid)}
 
-    renderEither(result)
+    renderEither[KoskeenTallennettavaOpiskeluoikeus](result)
   }
 
   private def logHistoryView(oid: String): Unit = {

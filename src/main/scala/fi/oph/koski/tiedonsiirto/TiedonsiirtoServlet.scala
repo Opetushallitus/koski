@@ -6,19 +6,19 @@ import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.schema.OrganisaatioOid
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.util.SortOrder.Ascending
-import fi.oph.koski.util.{Pagination, PaginationSettings, SortOrder}
+import fi.oph.koski.util.{PaginatedResponse, Pagination, PaginationSettings, SortOrder}
 
 class TiedonsiirtoServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with NoCache with Pagination {
 
   get("/") {
-    renderEither(application.tiedonsiirtoService.haeTiedonsiirrot(parseQuery)(koskiSession))
+    renderEither[PaginatedResponse[Tiedonsiirrot]](application.tiedonsiirtoService.haeTiedonsiirrot(parseQuery)(koskiSession))
   }
 
   get("/virheet") {
-    renderEither(application.tiedonsiirtoService.virheelliset(parseQuery)(koskiSession))
+    renderEither[PaginatedResponse[Tiedonsiirrot]](application.tiedonsiirtoService.virheelliset(parseQuery)(koskiSession))
   }
 
-  get("/yhteenveto") {
+  get[Seq[TiedonsiirtoYhteenveto]]("/yhteenveto") {
     application.tiedonsiirtoService.yhteenveto(koskiSession, SortOrder.parseSortOrder(params.get("sort"), Ascending("oppilaitos")))
   }
 

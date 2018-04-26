@@ -15,7 +15,7 @@ class LocalLoginServlet(implicit val application: UserAuthenticationContext) ext
 
     loginRequestInBody match {
       case Some(Login(username, password)) =>
-        renderEither(tryLogin(username, password).right.flatMap(user => setUser(Right(localLogin(user)))))
+        renderEither[AuthenticationUser](tryLogin(username, password).right.flatMap(user => setUser(Right(localLogin(user)))))
       case None =>
         haltWithStatus(KoskiErrorCategory.badRequest("Login request missing from body"))
     }

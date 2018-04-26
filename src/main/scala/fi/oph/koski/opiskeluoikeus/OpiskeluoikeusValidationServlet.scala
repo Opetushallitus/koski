@@ -59,7 +59,7 @@ class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication
     // Ensure that nobody uses koskiSession implicitely
     implicit val systemUser = KoskiSession.systemUser
     val context = ValidateContext(application.validator, application.historyRepository, application.henkilöRepository)(systemUser)
-    renderEither(application.opiskeluoikeusRepository.findByOid(getStringParam("oid"))(systemUser).map(context.validateAll))
+    renderEither[ValidationResult](application.opiskeluoikeusRepository.findByOid(getStringParam("oid"))(systemUser).map(context.validateAll))
   }
 }
 

@@ -3,7 +3,7 @@ package fi.oph.koski.suoritusjako
 import java.time.LocalDate
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.editor.EditorModelSerializer
+import fi.oph.koski.editor.{EditorModel, EditorModelSerializer}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.{JsonSerializer, LegacyJsonSerialization}
 import fi.oph.koski.koskiuser.{AuthenticationSupport, KoskiSession}
@@ -20,7 +20,7 @@ class SuoritusjakoServlet(implicit val application: KoskiApplication) extends Ap
     val koskiSession = KoskiSession.suoritusjakoKatsominenUser(request)
     withJsonBody({ body =>
       val request = JsonSerializer.extract[SuoritusjakoRequest](body)
-      renderEither(
+      renderEither[EditorModel](
         application.suoritusjakoService.validateSuoritusjakoSecret(request.secret)
           .flatMap(secret => application.suoritusjakoService.get(secret)(koskiSession))
           .map(oppija => OmatTiedotEditorModel.toEditorModel(oppija)(application, koskiSession))
@@ -33,7 +33,7 @@ class SuoritusjakoServlet(implicit val application: KoskiApplication) extends Ap
     withJsonBody({ body =>
       Try(JsonSerializer.extract[List[SuoritusIdentifier]](body)).toOption match {
         case Some(suoritusIds) =>
-          renderEither(application.suoritusjakoService.put(koskiSessionOption.get.oid, suoritusIds)(koskiSessionOption.get))
+          renderEither[Suoritusjako](application.suoritusjakoService.put(koskiSessionOption.get.oid, suoritusIds)(koskiSessionOption.get))
         case None =>
           haltWithStatus(KoskiErrorCategory.badRequest.format())
       }

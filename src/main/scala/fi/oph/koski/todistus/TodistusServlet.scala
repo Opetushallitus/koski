@@ -7,6 +7,8 @@ import fi.oph.koski.schema._
 import fi.oph.koski.servlet.HtmlServlet
 import fi.oph.koski.suoritusote.OpiskeluoikeusFinder
 
+import scala.xml.Elem
+
 class TodistusServlet(implicit val application: KoskiApplication) extends HtmlServlet with RequiresVirkailijaOrPalvelukäyttäjä {
   get("/:oppijaOid") {
     val oppijaOid = params("oppijaOid")
@@ -18,7 +20,7 @@ class TodistusServlet(implicit val application: KoskiApplication) extends HtmlSe
       case (_, _) => None
     }
 
-    renderEither(OpiskeluoikeusFinder(application.oppijaFacade).opiskeluoikeudet(oppijaOid, params).flatMap(_.warningsToLeft).right.flatMap {
+    renderEither[Elem](OpiskeluoikeusFinder(application.oppijaFacade).opiskeluoikeudet(oppijaOid, params).flatMap(_.warningsToLeft).right.flatMap {
       case Oppija(henkilötiedot: TäydellisetHenkilötiedot, opiskeluoikeudet) =>
         val suoritukset: Seq[(Opiskeluoikeus, Suoritus)] = opiskeluoikeudet.flatMap {
           opiskeluoikeus => opiskeluoikeus.suoritukset.filter(suoritus => suoritus.valmis && filters.forall(f => f(suoritus)))

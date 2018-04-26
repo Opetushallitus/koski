@@ -5,7 +5,7 @@ import fi.oph.scalaschema.annotation.SyntheticProperty
 
 class UserServlet(implicit val application: UserAuthenticationContext) extends ApiServlet with AuthenticationSupport with NoCache {
   get("/") {
-    renderEither(getUser.right.map { user =>
+    renderEither[UserWithAccessRights](getUser.right.map { user =>
       koskiSessionOption.map { session => {
         UserWithAccessRights(
           name = user.name,

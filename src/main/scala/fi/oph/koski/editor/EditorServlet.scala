@@ -29,18 +29,18 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
     })
   }
 
-  get("/organisaatiot") {
+  get[List[EnumValue]]("/organisaatiot") {
     def organisaatiot = koskiSession.organisationOids(AccessType.write).flatMap(context.organisaatioRepository.getOrganisaatio).toList
     organisaatiot.map(EditorModelBuilder.organisaatioEnumValue(localization)(_))
   }
 
-  get("/oppilaitokset") {
+  get[List[EnumValue]]("/oppilaitokset") {
     def organisaatiot = koskiSession.organisationOids(AccessType.write).flatMap(context.organisaatioRepository.getOrganisaatio).toList
     organisaatiot.flatMap(_.toOppilaitos).map(EditorModelBuilder.organisaatioEnumValue(localization)(_))
   }
 
   get("/organisaatio/:oid/kotipaikka") {
-    renderEither(OrganisaatioOid.validateOrganisaatioOid(params("oid")).right.flatMap { oid =>
+    renderEither[EnumValue](OrganisaatioOid.validateOrganisaatioOid(params("oid")).right.flatMap { oid =>
       application.organisaatioRepository.getOrganisaatio(oid).flatMap(_.kotipaikka) match {
         case None => Left(KoskiErrorCategory.notFound())
         case Some(kotipaikka) => Right(KoodistoEnumModelBuilder.koodistoEnumValue(kotipaikka)(localization, application.koodistoViitePalvelu))
@@ -52,7 +52,7 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
     val c = ModelBuilderContext(EditorSchema.deserializationContext, editable = true, invalidatable = true)(koskiSession, application.koodistoViitePalvelu, application.localizationRepository)
     val className = params("key")
     try {
-      renderObject(EditorModelBuilder.buildPrototype(className)(c))
+      renderObject[EditorModel](EditorModelBuilder.buildPrototype(className)(c))
     } catch {
       case e: RuntimeException => haltWithStatus(KoskiErrorCategory.notFound())
     }
@@ -61,7 +61,7 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
   get("/preferences/:organisaatioOid/:type") {
     val organisaatioOid = params("organisaatioOid")
     val `type` = params("type")
-    renderEither(preferencesService.get(organisaatioOid, `type`).right.map(_.map(OppijaEditorModel.buildModel(_, true))))
+    renderEither[List[EditorModel]](preferencesService.get(organisaatioOid, `type`).right.map(_.map(OppijaEditorModel.buildModel(_, true))))
   }
   import reflect.runtime.universe.TypeTag
 

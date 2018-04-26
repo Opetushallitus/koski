@@ -18,16 +18,16 @@ class EditorKooditServlet(implicit val application: KoskiApplication) extends Ap
 
   private def localization = LocalizedHtml.get(koskiSession, application.localizationRepository)
 
-  get("/:koodistoUri") {
+  get[List[EnumValue]]("/:koodistoUri") {
     toKoodistoEnumValues(getKooditFromRequestParams())
   }
 
-  get("/:koodistoUri/:koodiarvot") {
+  get[List[EnumValue]]("/:koodistoUri/:koodiarvot") {
     val koodiarvot = params("koodiarvot").split(",").toSet
     toKoodistoEnumValues(getKooditFromRequestParams().filter(k => koodiarvot.contains(k.koodiarvo)))
   }
 
-  get("/:koodistoUri/:koodiarvo/suoritukset/prefill") {
+  get[ListModel]("/:koodistoUri/:koodiarvo/suoritukset/prefill") {
     def toListModel(suoritukset: List[Suoritus]) = {
       val models = suoritukset.map { suoritus => OppijaEditorModel.buildModel(suoritus, true)}
       ListModel(models, None, Nil)
@@ -46,7 +46,7 @@ class EditorKooditServlet(implicit val application: KoskiApplication) extends Ap
     }
   }
 
-  get("/:oppiaineKoodistoUri/:oppiaineKoodiarvo/kurssit/:kurssiKoodistot") {
+  get[List[EnumValue]]("/:oppiaineKoodistoUri/:oppiaineKoodiarvo/kurssit/:kurssiKoodistot") {
     val kurssiKoodistot: List[KoodistoViite] = koodistotByString(params("kurssiKoodistot"))
     def sisältyvätKurssit(parentKoodistoUri: String, parentKoodiarvo: String) = {
       val parent = application.koodistoViitePalvelu.getKoodistoKoodiViite(parentKoodistoUri, parentKoodiarvo).getOrElse(haltWithStatus(tuntematonKoodi(s"Koodistosta ${parentKoodistoUri} ei löydy koodia ${parentKoodiarvo}")))

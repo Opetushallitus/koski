@@ -9,7 +9,7 @@ import fi.oph.koski.servlet.{ApiServlet, Cached24Hours}
 
 class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) extends ApiServlet with Unauthenticated with Cached24Hours {
   get("/oppilaitos/:oppilaitosId") {
-   renderEither((params.get("query"), params.get("oppilaitosId")) match {
+   renderEither[List[TutkintoPeruste]]((params.get("query"), params.get("oppilaitosId")) match {
      case (Some(query), Some(oppilaitosId)) if (query.length >= 3) => Right(application.tutkintoRepository.findTutkinnot(oppilaitosId, query))
      case _ => Left(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort())
    })
@@ -32,7 +32,7 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
   get("/tutkinnonosat/:diaari") {
     val ryhmä = params.get("tutkinnonOsanRyhmä")
 
-    renderEither(for {
+    renderEither[LisättävätTutkinnonOsat](for {
       tutkinnonRakenne <- perusteenRakenne(failWhenNotFound = false)
       ryhmänRakenne <- ryhmä match {
         case None => perusteenRakenne(failWhenNotFound = false)
@@ -55,7 +55,7 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
   get("/peruste/:diaari/linkki") {
     val diaari = params("diaari")
     val eperusteetUrl = application.config.getString("eperusteet.baseUrl")
-    renderEither(application.ePerusteet.findPerusteenYksilöintitiedot(diaari).map(peruste => {
+    renderEither[Map[String, String]](application.ePerusteet.findPerusteenYksilöintitiedot(diaari).map(peruste => {
       Map("url" -> s"$eperusteetUrl/#/fi/kooste/${peruste.id}")
     }).toRight(KoskiErrorCategory.notFound()))
   }
@@ -86,7 +86,7 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
 
   get("/suoritustavat/:diaari") {
     val diaari = params("diaari")
-    renderEither(application.tutkintoRepository.findPerusteRakenne(diaari) match {
+    renderEither[List[Koodistokoodiviite]](application.tutkintoRepository.findPerusteRakenne(diaari) match {
       case None => Left(KoskiErrorCategory.notFound.diaarinumeroaEiLöydy("Rakennetta ei löydy diaarinumerolla $diaari"))
       case Some(rakenne) => Right(rakenne.suoritustavat.map(_.suoritustapa))
     })
@@ -114,7 +114,7 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
       }.map(laajuus => (rk.koodiarvo, laajuus.getOrElse(TutkinnonOsanLaajuus(None, None))))
     }))
 
-    renderEither(laajuudet.map(_.toMap))
+    renderEither[Map[String,TutkinnonOsanLaajuus]](laajuudet.map(_.toMap))
   }
 
   private def perusteenRakenne(failWhenNotFound: Boolean = true): Either[HttpStatus, List[RakenneOsa]] = {
