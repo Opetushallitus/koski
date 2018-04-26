@@ -127,6 +127,7 @@ sealed trait BrowserCapabilities {
   caps.setCapability("resolution", "1024x768")
   caps.setCapability("browserstack.local", "true")
   caps.setCapability("browserstack.debug", "true")
+  caps.setCapability("browserstack.console", "verbose")
   //caps.setCapability("browserstack.networkLogs", "true")
   //caps.setCapability("browserstack.video", "true")
 }
