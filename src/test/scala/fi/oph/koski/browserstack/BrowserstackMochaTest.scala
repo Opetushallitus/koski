@@ -124,7 +124,7 @@ abstract class BrowserstackMochaTest extends FreeSpec with LocalJettyHttpSpecifi
 
 sealed trait BrowserCapabilities {
   val caps = new DesiredCapabilities
-  caps.setCapability("resolution", "1024x768")
+  caps.setCapability("resolution", "1920x1080")
   caps.setCapability("browserstack.local", "true")
   caps.setCapability("browserstack.debug", "true")
   caps.setCapability("browserstack.console", "verbose")
