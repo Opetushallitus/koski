@@ -31,17 +31,11 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
 
   get("/tutkinnonosat/:diaari") {
     val ryhmä = params.get("tutkinnonOsanRyhmä")
-
     renderEither[LisättävätTutkinnonOsat](for {
       tutkinnonRakenne <- perusteenRakenne(failWhenNotFound = false)
-      ryhmänRakenne <- ryhmä match {
-        case None => perusteenRakenne(failWhenNotFound = false)
-        case Some(ryhmä: String) =>
-          val ryhmäkoodi = application.koodistoViitePalvelu.getKoodistoKoodiViite("ammatillisentutkinnonosanryhma", ryhmä).getOrElse(haltWithStatus(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi(s"Tuntematon tutkinnon osan ryhmä: $ryhmä")))
-          perusteenRakenne().map(rakenne => rakenne.flatMap((rakenneOsa: RakenneOsa) => findRyhmä(ryhmäkoodi, rakenneOsa)))
-      }
+      ryhmänRakenne <- haeRakenne(ryhmä)
     } yield {
-      lisättävätTutkinnonOsat(ryhmänRakenne, tutkinnonRakenne)
+      lisättävätTutkinnonOsat(ryhmä.map(toRyhmäkoodi), ryhmänRakenne, tutkinnonRakenne)
     })
   }
 
@@ -60,27 +54,37 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
     }).toRight(KoskiErrorCategory.notFound()))
   }
 
-  private def lisättävätTutkinnonOsat(ryhmä: Iterable[RakenneOsa], tutkinto: Iterable[RakenneOsa]) = {
-    val diaari = params("diaari")
+  private def haeRakenne(ryhmä: Option[String]) =
+    ryhmä.map(r => perusteenRakenne()
+      .map(_.flatMap(rakenneOsa => findRyhmä(toRyhmäkoodi(r), rakenneOsa))))
+      .getOrElse(perusteenRakenne(failWhenNotFound = false))
 
-    val isTelma = {
-      val telmaDiaarit = application.koodistoViitePalvelu.getSisältyvätKoodiViitteet(
-        application.koodistoViitePalvelu.getLatestVersion("koskikoulutustendiaarinumerot").get,
-        Koulutustyyppi.telma
-      )
+  private def toRyhmäkoodi(ryhmä: String): Koodistokoodiviite =
+    application.koodistoViitePalvelu.getKoodistoKoodiViite("ammatillisentutkinnonosanryhma", ryhmä)
+      .getOrElse(haltWithStatus(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi(s"Tuntematon tutkinnon osan ryhmä: $ryhmä")))
 
-      telmaDiaarit match {
-        case Some(diaarit) => diaarit.map(_.koodiarvo).contains(diaari)
-        case None => false
-      }
-    }
+  private def lisättävätTutkinnonOsat(ryhmäkoodi: Option[Koodistokoodiviite], ryhmänRakenne: Iterable[RakenneOsa], tutkinto: Iterable[RakenneOsa]) = {
+    val diaari: String = params("diaari")
 
-    val määrittelemättömiä = ryhmä.isEmpty || ryhmä.exists(_.sisältääMäärittelemättömiäOsia)
-    val voiLisätäTutkinnonOsanToisestaTutkinnosta = if (isTelma) false else määrittelemättömiä
-    val osat = (if (määrittelemättömiä) tutkinto else ryhmä).flatMap(tutkinnonOsienKoodit).toList.distinct // Jos sisältää määrittelemättömiä, haetaan tutkinnon osia koko tutkinnon rakenteesta tähän ryhmään.
+    val määrittelemättömiä = ryhmänRakenne.isEmpty || ryhmänRakenne.exists(_.sisältääMäärittelemättömiäOsia)
+    val voiLisätäTutkinnonOsanToisestaTutkinnosta = if (isTelma(diaari)) false else määrittelemättömiä
+    val osat = (if (määrittelemättömiä && ryhmäkoodi != yhteisetTutkinnonOsat) tutkinto else ryhmänRakenne).flatMap(tutkinnonOsienKoodit).toList.distinct // Jos sisältää määrittelemättömiä, haetaan tutkinnon osia koko tutkinnon rakenteesta tähän ryhmään.
 
     LisättävätTutkinnonOsat(osat, voiLisätäTutkinnonOsanToisestaTutkinnosta, määrittelemättömiä)
   }
+
+  private def isTelma(diaari: String) = {
+    val telmaDiaarit = application.koodistoViitePalvelu.getSisältyvätKoodiViitteet(
+      application.koodistoViitePalvelu.getLatestVersion("koskikoulutustendiaarinumerot").get,
+      Koulutustyyppi.telma
+    )
+
+    telmaDiaarit match {
+      case Some(diaarit) => diaarit.map(_.koodiarvo).contains(diaari)
+      case None => false
+    }
+  }
+
   private def tutkinnonOsienKoodit(rakenne: Option[RakenneOsa]): List[Koodistokoodiviite] = rakenne.toList.flatMap(tutkinnonOsienKoodit)
   private def tutkinnonOsienKoodit(rakenneOsa: RakenneOsa): List[Koodistokoodiviite] = rakenneOsa.tutkinnonOsat.map(_.tunniste).distinct.sortBy(_.nimi.map(_.get(lang)))
 
@@ -156,6 +160,8 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
     ryhmät.filter { ryhmä =>
       rakenneOsat.exists(osa => findRyhmä(ryhmä, osa).isDefined)
     }
+
+  private lazy val yhteisetTutkinnonOsat: Option[Koodistokoodiviite] = application.koodistoViitePalvelu.validate(Koodistokoodiviite("2", "ammatillisentutkinnonosanryhma"))
 }
 
 case class LisättävätTutkinnonOsat(osat: List[Koodistokoodiviite], osaToisestaTutkinnosta: Boolean, paikallinenOsa: Boolean)

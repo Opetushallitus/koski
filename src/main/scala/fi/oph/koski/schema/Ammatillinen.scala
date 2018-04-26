@@ -461,6 +461,9 @@ case class YhteinenTutkinnonOsa(
   @KoodistoKoodiarvo("101054")
   @KoodistoKoodiarvo("101055")
   @KoodistoKoodiarvo("101056")
+  @KoodistoKoodiarvo("400012")
+  @KoodistoKoodiarvo("400013")
+  @KoodistoKoodiarvo("400014")
   tunniste: Koodistokoodiviite,
   pakollinen: Boolean,
   override val laajuus: Option[LaajuusOsaamispisteissä]
