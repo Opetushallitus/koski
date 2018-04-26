@@ -10,6 +10,9 @@ class MaskedSlf4jRequestLog extends Slf4jRequestLog {
   }
 
   private def maskSensitiveInformation(s: String): String = {
-    s.replaceAll("(/koski/opinnot/[0-9a-f]{8})([0-9a-f]+)", "$1************************")
+    s
+      .replaceAll("(/koski/opinnot/[0-9a-f]{8})([0-9a-f]+)", "$1************************")
+      .replaceAll("(/koski/api/henkilo/hetu/)(\\S+)", "$1*")
+      .replaceAll("(/koski/api/henkilo/search\\?query=)(\\S+)", "$1*")
   }
 }

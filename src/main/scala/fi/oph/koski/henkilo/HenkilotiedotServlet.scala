@@ -13,7 +13,7 @@ import org.scalatra._
 class HenkilötiedotServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with Logging with ContentEncodingSupport with NoCache with Timing {
   private val henkilötiedotFacade = HenkilötiedotFacade(application.henkilöRepository, application.opiskeluoikeusRepository, application.possu, application.hetu)
 
-  // note: deprecated, use POST version instead, will be removed if nobody uses this
+  // note: Koski UI uses the POST version, but this is part of our public API (and apparently used)
   get[HenkilötiedotSearchResponse]("/search") {
     params.get("query") match {
       case Some(query) if query.length >= 3 =>
@@ -36,7 +36,7 @@ class HenkilötiedotServlet(implicit val application: KoskiApplication) extends 
     })()
   }
 
-  // note: deprecated, use POST version instead, will be removed if nobody uses this
+  // note: Koski UI uses the POST version, but this is part of our public API (and apparently used)
   get("/hetu/:hetu") {
     renderEither[List[HenkilötiedotJaOid]](henkilötiedotFacade.findByHetu(params("hetu"))(koskiSession))
   }
