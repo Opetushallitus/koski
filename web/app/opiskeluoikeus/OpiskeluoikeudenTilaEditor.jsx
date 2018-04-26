@@ -40,7 +40,7 @@ export const OpiskeluoikeudenTilaEditor = ({model, alkuChangeBus}) => {
   }
 
   let showLisaaTila = wrappedModel.context.edit && !onLopputilassa(wrappedModel)
-  let edellisenTilanAlkupäivä = modelData(items[0], 'alku') && new Date(modelData(items[0], 'alku'))
+  let edellisenTilanAlkupäivä = modelData(items[0], 'alku') && parseISODate(modelData(items[0], 'alku'))
 
   return (
       <div>
