@@ -9,6 +9,7 @@ import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.todistus.LocalizedHtml
+import fi.oph.koski.tutkinto.TutkintoRakenne
 import org.json4s.jackson.Serialization
 
 /**
@@ -20,6 +21,14 @@ class EditorKooditServlet(implicit val application: KoskiApplication) extends Ap
 
   get[List[EnumValue]]("/:koodistoUri") {
     toKoodistoEnumValues(getKooditFromRequestParams())
+  }
+
+  get[List[EnumValue]]("/osaamisalat/osaamisala/:diaari") {
+    val osaamisalat = application.tutkintoRepository.findPerusteRakenne(params("diaari"))
+      .map(_.osaamisalat)
+      .getOrElse(koodistojenKoodit(koodistotByString("osaamisala")))
+
+    toKoodistoEnumValues(osaamisalat)
   }
 
   get[List[EnumValue]]("/:koodistoUri/:koodiarvot") {

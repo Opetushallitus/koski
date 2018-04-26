@@ -11,6 +11,8 @@ import {TutkinnonOsanSuoritusEditor} from '../suoritus/Suoritustaulukko'
 import {InlineJaksoEditor} from '../date/JaksoEditor'
 import {wrapOptional} from '../editor/EditorModel'
 import {hasModelProperty} from '../editor/EditorModel'
+import {EnumEditor} from '../editor/EnumEditor'
+import Http from '../util/http'
 
 class NäytönSuorituspaikkaEditor extends React.Component {
   render() {
@@ -108,13 +110,17 @@ const SisältäväOpiskeluoikeusEditor = ({model}) => {
 
 const OsaamisalajaksoEditor = ({model}) => {
   let wrappedModel = wrapOptional(model)
+  const diaarinumero = modelData(model.context.suoritus, 'koulutusmoduuli.perusteenDiaarinumero')
   return (
     <span className="osaamisalajakso">
-      <span className="property osaamisala"><Editor model={model} path="osaamisala"/></span>
+      <span className="property osaamisala"><EnumEditor model={modelLookup(model, 'osaamisala')} fetchAlternatives={fetchOsaamisalat(diaarinumero)} /></span>
       <PäivämääräväliEditor model={wrappedModel}/>
     </span>
   )
 }
+
+const fetchOsaamisalat = diaari => () => Http.cachedGet(`/koski/api/editor/koodit/osaamisalat/osaamisala/${encodeURIComponent(diaari)}`)
+
 OsaamisalajaksoEditor.handlesOptional = () => true
 OsaamisalajaksoEditor.validateModel = PäivämääräväliEditor.validateModel
 
