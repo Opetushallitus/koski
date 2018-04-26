@@ -5,10 +5,11 @@ import java.util.Date
 
 import fi.oph.koski.api.LocalJettyHttpSpecification
 import fi.oph.koski.integrationtest.EnvVariables
-import fi.oph.koski.jettylauncher.SharedJetty
 import fi.oph.koski.json.JsonSerializer
 import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.remote.{DesiredCapabilities, RemoteWebDriver}
+import org.scalatest.concurrent.{Signaler, TimeLimits}
+import org.scalatest.time.{Seconds, Span}
 import org.scalatest.{FreeSpec, Tag}
 
 class ChromeTest extends BrowserstackMochaTest {
@@ -70,21 +71,25 @@ class SafariTest extends BrowserstackMochaTest {
   *
   * To add more browsers, see https://www.browserstack.com/automate/junit
   */
-abstract class BrowserstackMochaTest extends FreeSpec with LocalJettyHttpSpecification with EnvVariables {
+abstract class BrowserstackMochaTest extends FreeSpec with LocalJettyHttpSpecification with EnvVariables with TimeLimits {
   lazy val USERNAME = requiredEnv("BROWSERSTACK_USERNAME")
   lazy val AUTOMATE_KEY = requiredEnv("BROWSERSTACK_AUTOMATE_KEY")
   lazy val URL: String = "https://" + USERNAME + ":" + AUTOMATE_KEY + "@hub-cloud.browserstack.com/wd/hub"
 
   def runMochaTests(capabilities: BrowserCapabilities) = {
-    "Mocha tests on BrowserStack" taggedAs(BrowserStack) in {
+    s"Mocha tests on BrowserStack ${this.getClass.getSimpleName}" taggedAs(BrowserStack) in {
       val driver = new RemoteWebDriver(new URL(URL), capabilities.caps)
       driver.get(baseUrl + "/test/runner.html?grep=BrowserStack") // <- add some grep params here if you want to run a subset
       verifyMochaStarted(driver)
       var stats = getMochaStats(driver)
-      while (!stats.ended) {
-        Thread.sleep(1000)
-        stats = getMochaStats(driver)
-      }
+      @volatile var timedOut = false
+      val signaler = new Signaler { override def apply(testThread: Thread): Unit = { timedOut = true } }
+      failAfter(Span(120, Seconds)) {
+        while (!stats.ended && !timedOut) {
+          Thread.sleep(1000)
+          stats = getMochaStats(driver)
+        }
+      }(signaler)
       println("Mocha tests ended")
 
       val errorLines = getMochaLog(driver).map(_.toOneLiner)
