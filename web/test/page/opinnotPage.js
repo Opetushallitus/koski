@@ -575,6 +575,7 @@ function TilaJaVahvistus() {
         dialog.myöntäjät.itemEditor(0).setValue('Lisää henkilö'),
         dialog.myöntäjät.itemEditor(0).propertyBySelector('.nimi').setValue('Reijo Reksi'),
         dialog.myöntäjät.itemEditor(0).propertyBySelector('.titteli').setValue('rehtori'),
+        wait.until(dialog.merkitseValmiiksiEnabled),
         dialog.merkitseValmiiksi)
     }
   }
@@ -588,6 +589,9 @@ function MerkitseValmiiksiDialog() {
     merkitseValmiiksi: function( ) {
       if (buttonElem().is(':disabled')) throw new Error('disabled button')
       return click(buttonElem())()
+    },
+    merkitseValmiiksiEnabled: function() {
+      return !buttonElem().is(':disabled')
     },
     peruuta: click(findSingle('.peruuta', elem)),
     organisaatio: OrganisaatioHaku(findSingle('.myöntäjäOrganisaatio', elem) ),
