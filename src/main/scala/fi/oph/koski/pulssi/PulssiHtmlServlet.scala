@@ -10,7 +10,7 @@ import org.scalatra.ScalatraServlet
 
 class PulssiHtmlServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet {
   get("/") {
-    htmlIndex("koski-pulssi.js", raamitEnabled = false)
+    htmlIndex("koski-pulssi.js", raamitEnabled = false, responsive = true)
   }
 
   get("/raportti") {
