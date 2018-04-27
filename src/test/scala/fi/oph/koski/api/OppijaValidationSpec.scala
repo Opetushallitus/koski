@@ -80,6 +80,10 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
       }
 
       "Hetun ollessa" - {
+        "keinotekoinen (yksilönumero on 9-alkuinen)" - {
+          "palautetaan HTTP 400 virhe" in (putHenkilö(defaultHenkilö.copy(hetu = "091196-935L"))
+          (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu("Keinotekoinen henkilötunnus: 091196-935L"))))
+        }
         "muodoltaan virheellinen" - {
           "palautetaan HTTP 400 virhe"  in (putHenkilö(defaultHenkilö.copy(hetu = "010101-123123"))
             (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu("Virheellinen muoto hetulla: 010101-123123"))))

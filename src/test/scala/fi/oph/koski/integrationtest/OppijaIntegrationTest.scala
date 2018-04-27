@@ -38,13 +38,6 @@ class OppijaIntegrationTest extends FreeSpec with Matchers with KoskidevHttpSpec
   }
   */
 
-  "Hetun ollessa" - {
-    "Keinotekoinen (yksilönumero on 9-alkuinen)" - {
-      "palautetaan HTTP 400 virhe" taggedAs(KoskiDevEnvironment) in (putHenkilö(defaultHenkilö.copy(hetu = "091196-935L"))
-      (verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu("Keinotekoinen henkilötunnus: 091196-935L"))))
-    }
-  }
-
   "YTR-integraatio" taggedAs(KoskiDevEnvironment) in {
     searchForHenkilötiedot("140389-8638").map(_.oid).headOption match {
       case None => fail("YTR-testihenkilöä ei löydy")
