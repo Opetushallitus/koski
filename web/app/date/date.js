@@ -1,14 +1,14 @@
 import fecha from 'fecha'
 
 const finnishDateRE = /([0-3]?\d)\.([0-2]?\d)\.(\d\d\d\d)/
-export const formatISODate = (date) => date.toISOString().substring(0, 10)
+export const formatISODate = (date) => format(date, 'YYYY-MM-DD')
 export const parseFinnishDate = (dateStr) => {
   let match = dateStr.match(finnishDateRE)
   if (match) {
     let year = parseInt(match[3], 10)
     let month = parseInt(match[2], 10) - 1
     let day = parseInt(match[1], 10)
-    var date = new Date(Date.UTC(year, month, day))
+    var date = new Date(year, month, day)
     if (date && date.getDate() === day && date.getMonth() === month) {
       return date
     }
@@ -20,9 +20,8 @@ export const ISO2FinnishDateTime = (date) => formatFinnishDateTime(parseISODateT
 export const parseISODate = (date) => fecha.parse(date, 'YYYY-MM-DD')
 export const formatFinnishDate = (date) => format(date, 'D.M.YYYY')
 export const yearFromIsoDateString = dateString => {
-  const year = dateString && new Date(dateString).getFullYear()
-  if (Number.isNaN(year)) return ''
-  return year
+  const date = parseISODate(dateString)
+  return (date && date.getFullYear()) || ''
 }
 
 export const ISO2FinnishDate = (date) => date && formatFinnishDate(parseISODate(date))
