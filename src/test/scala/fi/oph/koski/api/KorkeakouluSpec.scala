@@ -122,19 +122,20 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
           """|Suoritetut tutkinnot
             |Opintosuoritukset
             |Op Arvosana Suor.pvm
-            |106000 Anatomi och fysiologi 5 1 15.11.2013
-            |106000 Engelska, Akutvård 5 3 3.4.2014
+            |671116 Ensihoitaja (AMK) 60
             |106000 Hälsovård 5 4 13.9.2013
-            |106000 Inhemska språk 1, finska för akutvårdare och fysioterapeuter, 2 sp 2 3 14.2.2014
-            |106000 Inhemska språk 1, svenska för fysioterapeuter och akutvårdare, 3 sp 3 4 12.12.2013
-            |106000 Inremedicinsk vård 9 hyväksytty 6.6.2014
-            |106000 Introduktion till högskolestudier 5 hyväksytty 6.11.2013
+            |106000 Patientsäkerhet och evidensbaserat vårdande 5 hyväksytty 12.2.2014
             |106000 Kirurgisk vård 6 hyväksytty 6.6.2014
-            |106000 Klinisk vård I 5 3 17.12.2013
-            |106000 Klinisk vård II 5 1 20.3.2014
-            |106000 Läkemedelsräkning, terminstentamen för AV, februari, 5 tal hyväksytty 12.2.2014
             |106000 Medicinska ämnen I, Inremedicin 5 2 12.3.2014
-            |106000 Patientsäkerhet och evidensbaserat vårdande 5 hyväksytty 12.2.2014""".stripMargin
+            |106000 Engelska, Akutvård 5 3 3.4.2014
+            |106000 Introduktion till högskolestudier 5 hyväksytty 6.11.2013
+            |106000 Klinisk vård I 5 3 17.12.2013
+            |106000 Inremedicinsk vård 9 hyväksytty 6.6.2014
+            |106000 Inhemska språk 1, finska för akutvårdare och fysioterapeuter, 2 sp 2 3 14.2.2014
+            |106000 Läkemedelsräkning, terminstentamen för AV, februari, 5 tal hyväksytty 12.2.2014
+            |106000 Anatomi och fysiologi 5 1 15.11.2013
+            |106000 Inhemska språk 1, svenska för fysioterapeuter och akutvårdare, 3 sp 3 4 12.12.2013
+            |106000 Klinisk vård II 5 1 20.3.2014""".stripMargin
         )
       }
 

@@ -80,14 +80,18 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         suoritukset
       } else {
         val toimipiste = oppilaitos(opiskeluoikeusNode)
+        val (opintojaksot, muutSuoritukset) = suoritukset.partition {
+          case _: KorkeakoulunOpintojaksonSuoritus => true
+          case _ => false
+        }
         KorkeakoulututkinnonSuoritus(
           koulutusmoduuli = t,
           arviointi = None,
           vahvistus = vahvistusOpiskeluoikeudenTilausta(toimipiste),
           suorituskieli = None,
-          osasuoritukset = None,
+          osasuoritukset = Some(opintojaksot collect { case s: KorkeakoulunOpintojaksonSuoritus => s }),
           toimipiste = toimipiste
-        ) :: suoritukset
+        ) :: muutSuoritukset
       }
     }.orElse {
       optionalOppilaitos(opiskeluoikeusNode).flatMap(oppilaitos => {
