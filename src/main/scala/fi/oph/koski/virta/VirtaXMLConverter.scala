@@ -71,17 +71,24 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   }
 
   private def lisääKeskeneräinenTutkintosuoritus(suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node, tila: KorkeakoulunOpiskeluoikeudenTila) = {
+    def vahvistusOpiskeluoikeudenTilausta(organisaatio: Organisaatio): Option[Päivämäärävahvistus] =
+      tila.opiskeluoikeusjaksot.lastOption.filter(_.tila.koodiarvo == "3").map(jakso => Päivämäärävahvistus(jakso.alku, organisaatio))
+
     koulutuskoodi(opiskeluoikeusNode).map { koulutuskoodi =>
       val t = tutkinto(koulutuskoodi)
-      if (suoritukset.exists(_.koulutusmoduuli == t)) suoritukset
-      else KorkeakoulututkinnonSuoritus(
-        koulutusmoduuli = t,
-        arviointi = None,
-        vahvistus = None,
-        suorituskieli = None,
-        osasuoritukset = None,
-        toimipiste = oppilaitos(opiskeluoikeusNode)
-      ) :: suoritukset
+      if (suoritukset.exists(_.koulutusmoduuli == t)) {
+        suoritukset
+      } else {
+        val toimipiste = oppilaitos(opiskeluoikeusNode)
+        KorkeakoulututkinnonSuoritus(
+          koulutusmoduuli = t,
+          arviointi = None,
+          vahvistus = vahvistusOpiskeluoikeudenTilausta(toimipiste),
+          suorituskieli = None,
+          osasuoritukset = None,
+          toimipiste = toimipiste
+        ) :: suoritukset
+      }
     }.orElse {
       optionalOppilaitos(opiskeluoikeusNode).flatMap(oppilaitos => {
         koodistoViitePalvelu.getKoodistoKoodiViite("virtaopiskeluoikeudentyyppi", (opiskeluoikeusNode \ "Tyyppi").text)
@@ -94,7 +101,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
                 nimi = nimi,
                 laajuus = laajuus(opiskeluoikeusNode)
               ),
-              vahvistus = tila.opiskeluoikeusjaksot.lastOption.filter(_.tila.koodiarvo == "3").map(jakso => Päivämäärävahvistus(jakso.alku, oppilaitos)),
+              vahvistus = vahvistusOpiskeluoikeudenTilausta(oppilaitos),
               suorituskieli = None,
               osasuoritukset = None,
               toimipiste = oppilaitos
