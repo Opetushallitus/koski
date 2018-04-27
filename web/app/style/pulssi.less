@@ -1,7 +1,3 @@
-* {
-  box-sizing: border-box;
-}
-
 body {
   font-family: 'Open Sans', sans-serif;
   @media (max-width: 1200px) {
@@ -26,7 +22,15 @@ h1 {
   img.logo {
     float: right;
     width: 228px;
+    @media (max-width: 600px) {
+      display: none;
+    }
   }
+}
+
+.statistics-wrapper {
+  display: flex;
+  flex-flow: row wrap;
 }
 
 ul {
@@ -34,32 +38,18 @@ ul {
   padding: 0;
 }
 
-.lower-left-container {
-  width: 66.66%;
-}
-
 .column {
   display: flex;
   flex-direction: column;
-}
-
-.two-columns, .three-columns {
-  display: flex;
-}
-
-.two-columns > section {
-  width: 50%;
-  border-right: 1px solid white;
-}
-
-.three-columns > section {
-  width: 33.33%;
+  flex-grow: 1;
+  flex-basis: 33%;
+  min-width: 350px;
 }
 
 section {
+  display: flex;
+  flex-flow: column nowrap;
   color: white;
-  padding: 15px 20px 20px 20px;
-  display: inline-block;
   h3 {
     font-size: 22px;
     font-weight: bolder;
@@ -73,7 +63,18 @@ section {
   border-bottom: 1px solid white;
 }
 
-.primary-metric, .metric {
+.primary-metric {
+  min-height: 175px;
+  @media (max-width: 1200px) {
+    & {
+      min-height: 140px;
+    }
+  }
+  border-bottom: 1px solid white;
+}
+
+.primary-metric, .metric, .metric-details {
+  padding: 15px 20px 20px 20px;
   h3 {
     margin: 0 0 12px 0;
   }
@@ -101,11 +102,15 @@ section {
 
 .metric-details {
   text-align: left;
+  min-height: 270px;
   li {
     margin-bottom: 5px;
     @media (max-width: 1200px) {
       margin-bottom: 3px;
     }
+  }
+  @media (max-width: 600px) {
+    min-height: fit-content;
   }
 }
 
@@ -150,9 +155,14 @@ section {
 }
 
 .saavutettavuus {
+  flex-grow: 1;
   background: #033D50;
+  border-right: 1px solid white;
   h3 {
-    margin-top: 62px;
+    margin-top: 42px;
+    @media (max-width: 600px) {
+      margin-top: 20px;
+    }
   }
   .metric-medium {
     margin: 26px 0 40px 0;
@@ -163,11 +173,27 @@ section {
 }
 
 .operaatiot {
+  flex-grow: 1;
   background: #0E4D62;
+  border-right: 1px solid white;
+}
+
+.operaatiot-details {
+  text-align: left;
+  li {
+    margin-bottom: 5px;
+    @media (max-width: 1200px) {
+      margin-bottom: 3px;
+    }
+  }
+  @media (max-width: 600px) {
+    min-height: fit-content;
+  }
 }
 
 .valmiit-tutkinnot-panel {
   background: #585858;
+  flex-grow: 1;
   li {
     margin-bottom: 10px;
     @media (max-width: 1200px) {

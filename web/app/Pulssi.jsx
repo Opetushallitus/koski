@@ -36,28 +36,17 @@ class Pulssi extends React.Component {
     let schoolsTotal = R.values(pulssi.oppilaitosMäärät.koulutusmuodoittain).reduce((acc, k) => acc + k, 0)
 
     return (
-        <div className="statistics column">
+        <div className="column">
           <h1><span><Text name="Koski"/></span><img src="images/pulssi.png"/><span><Text name="Pulssi"/></span><img className="logo" src="images/oph_fin_vaaka.png" /></h1>
-          <div className="top-row three-columns">
-            <section className="primary-metric opiskeluoikeudet-total opiskeluoikeudet-panel">
-              <h3><Text name="Opiskeluoikeuksien määrä"/></h3>
-              <div className="metric-large">{opiskeluoikeudet.opiskeluoikeuksienMäärä}</div>
-            </section>
-            <section className="primary-metric kattavuus-total kattavuus-panel">
-              <h3><Text name="Kattavuus"/></h3>
-              <div className="metric-large">{toPercent(opiskeluoikeudet.siirtäneitäOppilaitoksiaYhteensä / schoolsTotal)}{' %'}</div>
-              {opiskeluoikeudet.siirtäneitäOppilaitoksiaYhteensä}{' / '}{schoolsTotal}
-            </section>
-            <section className="primary-metric valmiit-tutkinnot-total valmiit-tutkinnot-panel">
-              <h3><Text name="Suoritettujen koulutusten määrä"/></h3>
-              <div className="metric-large">{suoritettujenKoulutustenMäärä}</div>
-            </section>
-          </div>
-          <div className="three-columns">
-            <div className="lower-left-container column">
-              <div className="two-columns kattavuus-and-opiskeluoikeudet">
-                <section className="opiskeluoikeudet-koulutusmuodoittain opiskeluoikeudet-panel">
-                  <ul className="metric-details">
+          <div className="statistics-wrapper">
+            <div className="column">
+              <section className="opiskeluoikeudet-panel">
+                <div className="primary-metric opiskeluoikeudet-total">
+                  <h3><Text name="Opiskeluoikeuksien määrä"/></h3>
+                  <div className="metric-large">{opiskeluoikeudet.opiskeluoikeuksienMäärä}</div>
+                </div>
+                <div className="metric-details opiskeluoikeudet-koulutusmuodoittain">
+                  <ul>
                     {
                       opiskeluoikeudet.koulutusmuotoTilastot && opiskeluoikeudet.koulutusmuotoTilastot.map((stat, i) =>
                           (<li key={i}>
@@ -66,8 +55,24 @@ class Pulssi extends React.Component {
                       )
                     }
                   </ul>
-                </section>
-                <section className="kattavuus-koulutusmuodoittain kattavuus-panel">
+                </div>
+              </section>
+              <section className="metric saavutettavuus">
+                <h3><Text name="Saavutettavuus"/></h3>
+                <div className="metric-medium">{pulssi.metriikka.saavutettavuus}{'%'}</div>
+                <span className="description">
+                  <Text name="saatavilla viimeisen 30 päivän aikana"/>
+                </span>
+              </section>
+            </div>
+            <div className="column">
+              <section className="kattavuus-panel">
+                <div className="primary-metric kattavuus-total">
+                  <h3><Text name="Kattavuus"/></h3>
+                  <div className="metric-large">{toPercent(opiskeluoikeudet.siirtäneitäOppilaitoksiaYhteensä / schoolsTotal)}{' %'}</div>
+                  {opiskeluoikeudet.siirtäneitäOppilaitoksiaYhteensä}{' / '}{schoolsTotal}
+                </div>
+                <div className="metric-details kattavuus-koulutusmuodoittain">
                   <ul>
                     <li>
                       <Kattavuus koulutusmuoto="Perusopetus" pulssi={pulssi} />
@@ -79,18 +84,13 @@ class Pulssi extends React.Component {
                       <Kattavuus koulutusmuoto="Lukiokoulutus" pulssi={pulssi} />
                     </li>
                   </ul>
-                </section>
-              </div>
-              <div className="two-columns">
-                <section className="metric saavutettavuus">
-                  <h3><Text name="Saavutettavuus"/></h3>
-                  <div className="metric-medium">{pulssi.metriikka.saavutettavuus}{'%'}</div>
-                  <div className="description"><Text name="saatavilla viimeisen 30 päivän aikana"/></div>
-                </section>
-                <section className="metric operaatiot">
-                  <h3><Text name="Operaatiot / kk"/></h3>
-                  <div className="metric-medium">{R.values(pulssi.metriikka.operaatiot).reduce((acc, määrä) => acc + määrä, 0)}</div>
-                  <ul className="metric-details">
+                </div>
+              </section>
+              <section className="metric operaatiot">
+                <h3><Text name="Operaatiot / kk"/></h3>
+                <div className="metric-medium">{R.values(pulssi.metriikka.operaatiot).reduce((acc, määrä) => acc + määrä, 0)}</div>
+                <div className="operaatiot-details">
+                  <ul>
                     {
                       R.toPairs(pulssi.metriikka.operaatiot).sort((x , y) => y[1] - x[1]).map((op, i) => {
                         return (
@@ -101,18 +101,26 @@ class Pulssi extends React.Component {
                       })
                     }
                   </ul>
-                </section>
-              </div>
+                </div>
+              </section>
             </div>
-            <section className="valmiit-tutkinnot-koulutusmuodoittain valmiit-tutkinnot-panel">
-              <ul>
-                {
-                  opiskeluoikeudet.koulutusmuotoTilastot && opiskeluoikeudet.koulutusmuotoTilastot.map((tilasto,i) =>
-                      <KoulutusmuotoTilasto key={i} tilasto={tilasto} />
-                  )
-                }
-              </ul>
-            </section>
+            <div className="column">
+              <section className="valmiit-tutkinnot-panel">
+                <div className="primary-metric valmiit-tutkinnot-total">
+                  <h3><Text name="Suoritettujen koulutusten määrä"/></h3>
+                  <div className="metric-large">{suoritettujenKoulutustenMäärä}</div>
+                </div>
+                <div className="metric-details valmiit-tutkinnot-koulutusmuodoittain">
+                  <ul>
+                    {
+                      opiskeluoikeudet.koulutusmuotoTilastot && opiskeluoikeudet.koulutusmuotoTilastot.map((tilasto,i) =>
+                        <KoulutusmuotoTilasto key={i} tilasto={tilasto} />
+                      )
+                    }
+                  </ul>
+                </div>
+              </section>
+            </div>
           </div>
         </div>
     )

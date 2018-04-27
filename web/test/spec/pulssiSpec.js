@@ -27,13 +27,13 @@ describe('Pulssi', function() {
       expect(page.metric('valmiit-tutkinnot-koulutusmuodoittain').sum()).to.equal(page.metric('valmiit-tutkinnot-total').value())
     })
     it('Saavutettavuus näytetään', function() {
-      expect(page.metric('saavutettavuus').value() >= 0).to.equal(true)
+      expect(page.metric('saavutettavuus', elemType = 'section').value() >= 0).to.equal(true)
     })
     it('Operaatiot näytetään', function() {
-      expect(page.metric('operaatiot').value() >= 0).to.equal(true)
+      expect(page.metric('operaatiot', elemType = 'section').value() >= 0).to.equal(true)
     })
     it('Operaatiot tyypeittäin näytetään', function() {
-      expect(page.metric('operaatiot').sum()).to.equal(page.metric('operaatiot').value())
+      expect(page.metric('operaatiot', elemType = 'section').sum()).to.equal(page.metric('operaatiot', elemType = 'section').value())
     })
   })
 })

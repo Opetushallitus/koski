@@ -7,8 +7,8 @@ function PulssiPage() {
     isVisible: function() {
       return isElementVisible(S('#content h1'))
     },
-    metric: function(name) {
-      return Metric(findSingle('section.' + name))
+    metric: function(name, elemType = 'div') {
+      return Metric(findSingle(`${elemType}.` + name))
     }
   }
 
