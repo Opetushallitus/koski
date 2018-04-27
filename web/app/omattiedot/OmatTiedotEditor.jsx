@@ -3,8 +3,8 @@ import {addContext, modelData} from '../editor/EditorModel.js'
 import {currentLocation} from '../util/location.js'
 import {näytettävätPäätasonSuoritukset, OpiskeluoikeusEditor} from '../opiskeluoikeus/OpiskeluoikeusEditor'
 import {modelItems, modelTitle} from '../editor/EditorModel'
-import {yearFromIsoDateString} from '../date/date'
 import Link from '../components/Link'
+import {OpiskeluoikeudenTila} from './fragments/OpiskeluoikeudenTila'
 
 
 export const OmatTiedotEditor = ({model}) => {
@@ -49,13 +49,7 @@ const OppilaitosOtsikkotiedot = ({oppilaitos, selected}) => {
             return (
               <li className="opiskeluoikeus" key={opiskeluoikeusIndex}>
                 <span className="koulutus">{(näytettävätPäätasonSuoritukset(opiskeluoikeus)[0] || {}).title}</span>
-                {hasAlkamispäivä && (
-                  <span>{' ('}
-                    <span className="alku pvm">{yearFromIsoDateString(modelTitle(opiskeluoikeus, 'alkamispäivä'))}</span>{'—'}
-                    <span className="loppu pvm">{yearFromIsoDateString(modelTitle(opiskeluoikeus, 'päättymispäivä'))}{', '}</span>
-                    <span className="tila">{modelTitle(opiskeluoikeus, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()}</span>{')'}
-                  </span>
-                )}
+                {hasAlkamispäivä && <OpiskeluoikeudenTila opiskeluoikeus={opiskeluoikeus}/>}
               </li>
             )
           })}
