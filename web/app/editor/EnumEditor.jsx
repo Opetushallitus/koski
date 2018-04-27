@@ -19,7 +19,7 @@ export const EnumEditor = ({model, inline, asRadiogroup, disabledValue, sortBy, 
 
   let alternativesP = fetchAlternatives(wrappedModel, sortBy).map(sortBy)
   let valid = modelValid(model)
-  let classNameP = alternativesP.startWith([]).map(xs => buildClassNames([className, !xs.length && 'loading', !valid && 'error']))
+  let classNameP = alternativesP.startWith('loading').map(xs => buildClassNames([className, xs === 'loading' && 'loading', !valid && 'error']))
 
   let alternativesWithZeroValueP = alternativesP.map(xs => showEmptyOption ? R.prepend(zeroValue, xs) : xs)
 
