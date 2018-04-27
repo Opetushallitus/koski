@@ -1,15 +1,14 @@
 package fi.oph.koski.editor
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.http.KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.http.KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi
 import fi.oph.koski.json.LegacyJsonSerialization
 import fi.oph.koski.koodisto.KoodistoViite
 import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.todistus.LocalizedHtml
-import fi.oph.koski.tutkinto.TutkintoRakenne
 import org.json4s.jackson.Serialization
 
 /**

@@ -696,6 +696,50 @@ describe('Ammatillinen koulutus', function() {
     })
 
     describe('Osaamisala', function() {
+      describe('Osaamisalalista haetaan', function() {
+        before(editor.edit)
+
+        it('eperusteista', function() {
+          expect(textsOf(toArray(S('.osaamisala .options li')))).to.deep.equal([
+            'Ei valintaa',
+            'Autokorinkorjauksen osaamisala',
+            'Automaalauksen osaamisala',
+            'Automyynnin osaamisala',
+            'Autotekniikan osaamisala',
+            'Moottorikäyttöisten pienkoneiden korjauksen osaamisala',
+            'Varaosamyynnin osaamisala'
+          ])
+        })
+
+        describe('Kun perustetta ei löydy eperusteista', function() {
+          before(
+            page.openPage,
+            page.oppijaHaku.searchAndSelect('201137-361Y'),
+            editor.edit
+          )
+
+          it('eperusteista', function() {
+            var osaamisalat = textsOf(toArray(S('.osaamisala .options li')));
+
+            expect(osaamisalat.slice(0, 5)).to.deep.equal([
+              'Ei valintaa',
+              'Aikuisliikunnan osaamisala',
+              'Aikuisten perusopetus',
+              'Ajoneuvo- ja/tai konemyynnin osaamisala',
+              'Alkoholijuomien valmistuksen osaamisala'
+            ])
+
+            expect(osaamisalat.slice(-5)).to.deep.equal([
+              'Yritystoiminnan suunnittelun ja käynnistämisen osaamisala',
+              'Äänitekniikan osaamisala',
+              'Ääniteknikko',
+              'Äänitetuottaja',
+              'Äänityön osaamisala'
+            ])
+          })
+        })
+      })
+
       describe('Tallennus ilman päivämääriä', function() {
         before(
           editor.edit,
@@ -719,7 +763,6 @@ describe('Ammatillinen koulutus', function() {
         })
       })
     })
-
 
     describe('Tutkinnon osat', function() {
       var suoritustapa = editor.property('suoritustapa')
