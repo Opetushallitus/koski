@@ -11,7 +11,7 @@ import {parseBool} from '../util/util'
 import {buildClassNames} from '../components/classnames'
 import {hyphenate} from '../util/hyphenate'
 
-export const EnumEditor = ({model, inline, asRadiogroup, disabledValue, sortBy, fetchAlternatives = EnumEditor.fetchAlternatives, showEmptyOption, className}) => {
+export const EnumEditor = ({model, inline, asRadiogroup, disabledValue, sortBy, fetchAlternatives = EnumEditor.fetchAlternatives, displayValue = option => option.title, showEmptyOption, className}) => {
   if (!sortBy) sortBy = R.identity
   let wrappedModel = wrapOptional(model)
   showEmptyOption = parseBool(showEmptyOption, wrappedModel.optional)
@@ -62,7 +62,7 @@ export const EnumEditor = ({model, inline, asRadiogroup, disabledValue, sortBy, 
                inline={inline}
                options={alternativesWithZeroValueP}
                keyValue={ option => option.value }
-               displayValue={option => option.title}
+               displayValue={displayValue}
                onSelectionChanged={option => onChange(option)}
                selected={defaultValue}
                enableFilter={true}

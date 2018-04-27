@@ -702,12 +702,12 @@ describe('Ammatillinen koulutus', function() {
         it('eperusteista', function() {
           expect(textsOf(toArray(S('.osaamisala .options li')))).to.deep.equal([
             'Ei valintaa',
-            'Autokorinkorjauksen osaamisala',
-            'Automaalauksen osaamisala',
-            'Automyynnin osaamisala',
-            'Autotekniikan osaamisala',
-            'Moottorikäyttöisten pienkoneiden korjauksen osaamisala',
-            'Varaosamyynnin osaamisala'
+            'Autokorinkorjauksen osaamisala (1525)',
+            'Automaalauksen osaamisala (1526)',
+            'Automyynnin osaamisala (1527)',
+            'Autotekniikan osaamisala (1528)',
+            'Moottorikäyttöisten pienkoneiden korjauksen osaamisala (1622)',
+            'Varaosamyynnin osaamisala (1529)'
           ])
         })
 
@@ -718,23 +718,23 @@ describe('Ammatillinen koulutus', function() {
             editor.edit
           )
 
-          it('eperusteista', function() {
+          it('haetaan kaikki osaamisalat', function() {
             var osaamisalat = textsOf(toArray(S('.osaamisala .options li')));
 
             expect(osaamisalat.slice(0, 5)).to.deep.equal([
               'Ei valintaa',
-              'Aikuisliikunnan osaamisala',
-              'Aikuisten perusopetus',
-              'Ajoneuvo- ja/tai konemyynnin osaamisala',
-              'Alkoholijuomien valmistuksen osaamisala'
+              'Aikuisliikunnan osaamisala (2065)',
+              'Aikuisten perusopetus (0009)',
+              'Ajoneuvo- ja/tai konemyynnin osaamisala (3010)',
+              'Alkoholijuomien valmistuksen osaamisala (2327)'
             ])
 
             expect(osaamisalat.slice(-5)).to.deep.equal([
-              'Yritystoiminnan suunnittelun ja käynnistämisen osaamisala',
-              'Äänitekniikan osaamisala',
-              'Ääniteknikko',
-              'Äänitetuottaja',
-              'Äänityön osaamisala'
+              'Yritystoiminnan suunnittelun ja käynnistämisen osaamisala (2284)',
+              'Äänitekniikan osaamisala (2240)',
+              'Ääniteknikko (2128)',
+              'Äänitetuottaja (2127)',
+              'Äänityön osaamisala (2007)'
             ])
           })
         })

@@ -113,7 +113,9 @@ const OsaamisalajaksoEditor = ({model}) => {
   const diaarinumero = modelData(model.context.suoritus, 'tutkinto.perusteenDiaarinumero') || modelData(model.context.suoritus, 'koulutusmoduuli.perusteenDiaarinumero')
   return (
     <span className="osaamisalajakso">
-      <span className="property osaamisala"><EnumEditor model={modelLookup(model, 'osaamisala')} fetchAlternatives={fetchOsaamisalat(diaarinumero)} /></span>
+      <span className="property osaamisala">
+        <EnumEditor model={modelLookup(model, 'osaamisala')} fetchAlternatives={fetchOsaamisalat(diaarinumero)} displayValue={option => option.title + (option.data ? ' (' + option.data.koodiarvo + ')' : '')}/>
+      </span>
       <PäivämääräväliEditor model={wrappedModel}/>
     </span>
   )
