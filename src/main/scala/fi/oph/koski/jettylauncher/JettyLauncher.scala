@@ -17,6 +17,7 @@ import org.eclipse.jetty.server.handler.gzip.GzipHandler
 import org.eclipse.jetty.servlet.{ServletContextHandler, ServletHolder}
 import org.eclipse.jetty.util.thread.QueuedThreadPool
 import org.eclipse.jetty.webapp.WebAppContext
+import org.eclipse.jetty.util.resource.Resource
 
 object JettyLauncher extends App with Logging {
   lazy val globalPort = System.getProperty("koski.port","7021").toInt
@@ -87,6 +88,7 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) e
   }
 
   private def resourceBase = if (isRunningAws) {
+    Resource.setDefaultUseCaches(false) // avoid "zip file is closed" exceptions in some situations (exact cause unknown)
     JettyLauncher.getClass.getClassLoader.getResource("webapp").toExternalForm
   } else {
     val base = System.getProperty("resourcebase", "./target/webapp")
