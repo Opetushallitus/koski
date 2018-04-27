@@ -2,7 +2,7 @@ package fi.oph.koski
 
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.AuthenticationSupport
+import fi.oph.koski.koskiuser.{AuthenticationSupport, SessionStatusExpiredKansalainen}
 import fi.oph.koski.servlet.HtmlServlet
 import fi.oph.koski.sso.SSOSupport
 import org.scalatra.ScalatraServlet
@@ -10,6 +10,13 @@ import org.scalatra.ScalatraServlet
 import scala.xml.Unparsed
 
 class IndexServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with AuthenticationSupport {
+  before("/omattiedot") {
+    sessionOrStatus match {
+      case Left(_) => redirectToFrontpage
+      case Right(_) =>
+    }
+  }
+
   before("/.+".r) {
     if (!isAuthenticated) {
       redirectToLogin

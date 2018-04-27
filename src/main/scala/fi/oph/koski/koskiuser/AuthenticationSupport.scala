@@ -43,8 +43,9 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
         }
 
         val authUser: Either[HttpStatus, AuthenticationUser] = userFromCookie match {
-          case Some(user) => Right(user)
-          case None => userFromBasicAuth
+          case Right(user) => Right(user)
+          case Left(SessionStatusExpiredKansalainen) => Left(KoskiErrorCategory.unauthorized.notAuthenticated())
+          case Left(_) => userFromBasicAuth
         }
         setUser(authUser)
         authUser
@@ -52,22 +53,32 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
   }
 
 
-  private def userFromCookie: Option[AuthenticationUser] = {
-    def getUser(authUser: Option[AuthenticationUser]): Option[AuthenticationUser] =
+  private def userFromCookie: Either[KoskiSessionStatus, AuthenticationUser] = {
+    def getUser(authUser: Option[AuthenticationUser]): Either[KoskiSessionStatus, AuthenticationUser] =
       authUser.flatMap(_.serviceTicket).map(ticket => (ticket, application.koskiSessionRepository.getUserByTicket(ticket))) match {
-        case Some((_, Some(usr))) => Some(usr)
+        case Some((_, Some(usr))) => Right(usr)
         case Some((ticket, None)) =>
           removeUserCookie
           setUser(Left(KoskiErrorCategory.unauthorized.notAuthenticated())) // <- to prevent getLogger call from causing recursive calls here
           logger.warn("User not found by ticket " + ticket)
-          None
-        case noTicket => None
+          if (authUser.exists(_.kansalainen)) Left(SessionStatusExpiredKansalainen) else Left(SessionStatusExpiredVirkailija)
+        case _ => Left(SessionStatusNoSession)
       }
 
-    getUser(getUserCookie).orElse(getUser(getKansalaisCookie).map(u => u.copy(kansalainen = true)))
+    getUser(getUserCookie) match {
+      case Right(user) => Right(user)
+      case Left(SessionStatusNoSession) => getUser(getKansalaisCookie).map(u => u.copy(kansalainen = true))
+      case Left(sessionStatus) => Left(sessionStatus)
+    }
   }
 
   def isAuthenticated = getUser.isRight
+
+  def sessionOrStatus: Either[KoskiSessionStatus, KoskiSession] = {
+    userFromCookie.map { user: AuthenticationUser =>
+      KoskiSession(user, request, application.käyttöoikeusRepository)
+    }
+  }
 
   override def koskiSessionOption: Option[KoskiSession] = {
     getUser.right.toOption.map { user: AuthenticationUser =>

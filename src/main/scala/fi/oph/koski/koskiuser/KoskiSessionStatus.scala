@@ -1,0 +1,7 @@
+package fi.oph.koski.koskiuser
+
+trait KoskiSessionStatus
+
+case object SessionStatusExpiredKansalainen extends KoskiSessionStatus
+case object SessionStatusExpiredVirkailija extends KoskiSessionStatus
+case object SessionStatusNoSession extends KoskiSessionStatus
