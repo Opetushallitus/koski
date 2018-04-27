@@ -1,11 +1,18 @@
 import React from 'baret'
 import Bacon from 'baconjs'
 import R from 'ramda'
-import {modelItems, modelLookup, modelTitle} from '../../editor/EditorModel'
+import {modelData, modelItems, modelLookup, modelTitle} from '../../editor/EditorModel'
 import SuoritusIdentifier from './SuoritusIdentifier'
 import {suoritusjakoSuoritusTitle} from './suoritusjako'
 import {suorituksenTyyppi} from '../../suoritus/Suoritus'
+import {OpiskeluoikeudenTila} from '../fragments/OpiskeluoikeudenTila'
 import Text from '../../i18n/Text'
+
+const isKorkeakouluSuoritus = suoritus => [
+  'korkeakoulututkinto',
+  'korkeakoulunopintojakso',
+  'muukorkeakoulunsuoritus'
+].includes(suorituksenTyyppi(suoritus))
 
 const isIrrallinenKorkeakoulunSuoritus = suoritus => [
   'korkeakoulunopintojakso',
@@ -41,7 +48,15 @@ export const SelectableSuoritusList = ({opiskeluoikeudet, selectedSuoritusIds}) 
                     id,
                     Title: () => suorituksenTyyppi(suoritus) === 'korkeakoulunopintojakso'
                       ? <span>{päätasonSuoritukset.length} <Text name='opintojaksoa'/></span>
-                      : <span>{suoritusjakoSuoritusTitle(suoritus)}</span>
+                      : (
+                        <span>
+                          {suoritusjakoSuoritusTitle(suoritus)}
+                          {
+                            isKorkeakouluSuoritus(suoritus) && !!modelData(oo, 'alkamispäivä') &&
+                            <OpiskeluoikeudenTila opiskeluoikeus={oo}/>
+                          }
+                        </span>
+                      )
                   }))
 
                 const päätasonSuoritukset = modelItems(oo, 'suoritukset')
