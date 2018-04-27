@@ -441,7 +441,7 @@ describe('Omat tiedot', function() {
               it('valita jaettaviksi yksittäin', function() {
                 expect(form.suoritusvaihtoehdotText()).to.equal(
                   'Aalto-yliopisto\n' +
-                  'Dipl.ins., konetekniikka\n' +
+                  'Dipl.ins., konetekniikka ( 2013 — 2016 , päättynyt )\n' +
                   '8 opintojaksoa'
                 )
               })
@@ -509,10 +509,10 @@ describe('Omat tiedot', function() {
               it('ei voida valita jaettaviksi yksittäin', function() {
                 expect(form.suoritusvaihtoehdotText()).to.equal(
                   'Aalto-yliopisto\n' +
-                  'Kotimainen opiskelijaliikkuvuus\n' +
-                  'Erikoistumisopinnot\n' +
+                  'Kotimainen opiskelijaliikkuvuus ( 2017 — 2017 , päättynyt )\n' +
+                  'Erikoistumisopinnot ( 2011 — 2013 , päättynyt )\n' +
                   'Jyväskylän yliopisto\n' +
-                  'Täydennyskoulutus'
+                  'Täydennyskoulutus ( 2015 — 2016 , päättynyt )'
                 )
               })
             })
