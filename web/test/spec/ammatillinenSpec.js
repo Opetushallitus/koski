@@ -696,6 +696,50 @@ describe('Ammatillinen koulutus', function() {
     })
 
     describe('Osaamisala', function() {
+      describe('Osaamisalalista haetaan', function() {
+        before(editor.edit)
+
+        it('eperusteista', function() {
+          expect(textsOf(toArray(S('.osaamisala .options li')))).to.deep.equal([
+            'Ei valintaa',
+            'Autokorinkorjauksen osaamisala (1525)',
+            'Automaalauksen osaamisala (1526)',
+            'Automyynnin osaamisala (1527)',
+            'Autotekniikan osaamisala (1528)',
+            'Moottorikäyttöisten pienkoneiden korjauksen osaamisala (1622)',
+            'Varaosamyynnin osaamisala (1529)'
+          ])
+        })
+
+        describe('Kun perustetta ei löydy eperusteista', function() {
+          before(
+            page.openPage,
+            page.oppijaHaku.searchAndSelect('201137-361Y'),
+            editor.edit
+          )
+
+          it('haetaan kaikki osaamisalat', function() {
+            var osaamisalat = textsOf(toArray(S('.osaamisala .options li')));
+
+            expect(osaamisalat.slice(0, 5)).to.deep.equal([
+              'Ei valintaa',
+              'Aikuisliikunnan osaamisala (2065)',
+              'Aikuisten perusopetus (0009)',
+              'Ajoneuvo- ja/tai konemyynnin osaamisala (3010)',
+              'Alkoholijuomien valmistuksen osaamisala (2327)'
+            ])
+
+            expect(osaamisalat.slice(-5)).to.deep.equal([
+              'Yritystoiminnan suunnittelun ja käynnistämisen osaamisala (2284)',
+              'Äänitekniikan osaamisala (2240)',
+              'Ääniteknikko (2128)',
+              'Äänitetuottaja (2127)',
+              'Äänityön osaamisala (2007)'
+            ])
+          })
+        })
+      })
+
       describe('Tallennus ilman päivämääriä', function() {
         before(
           editor.edit,
@@ -718,8 +762,9 @@ describe('Ammatillinen koulutus', function() {
           expect(editor.property('osaamisala').getText()).to.equal('Osaamisala Automyynnin osaamisala 1.1.2017 —')
         })
       })
-    })
 
+      after(page.openPage, page.oppijaHaku.searchAndSelect('280608-6619'))
+    })
 
     describe('Tutkinnon osat', function() {
       var suoritustapa = editor.property('suoritustapa')
@@ -737,10 +782,6 @@ describe('Ammatillinen koulutus', function() {
             })
           })
           describe('Pakollisen tutkinnon osan lisääminen', function() {
-            before(
-              editor.edit
-            )
-
             describe('Ennen lisäystä', function() {
               it('Näyttää e-perusteiden mukaisen vaihtoehtolistan', function() {
                 expect(opinnot.tutkinnonOsat('1').tutkinnonosavaihtoehdot().length).to.equal(47)

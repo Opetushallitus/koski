@@ -1,8 +1,8 @@
 package fi.oph.koski.editor
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.http.KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.http.KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi
 import fi.oph.koski.json.LegacyJsonSerialization
 import fi.oph.koski.koodisto.KoodistoViite
 import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
@@ -20,6 +20,14 @@ class EditorKooditServlet(implicit val application: KoskiApplication) extends Ap
 
   get[List[EnumValue]]("/:koodistoUri") {
     toKoodistoEnumValues(getKooditFromRequestParams())
+  }
+
+  get[List[EnumValue]]("/osaamisalat/osaamisala/:diaari") {
+    val osaamisalat = application.tutkintoRepository.findPerusteRakenne(params("diaari"))
+      .map(_.osaamisalat)
+      .getOrElse(koodistojenKoodit(koodistotByString("osaamisala")))
+
+    toKoodistoEnumValues(osaamisalat)
   }
 
   get[List[EnumValue]]("/:koodistoUri/:koodiarvot") {
