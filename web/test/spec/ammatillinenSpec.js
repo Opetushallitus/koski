@@ -762,6 +762,8 @@ describe('Ammatillinen koulutus', function() {
           expect(editor.property('osaamisala').getText()).to.equal('Osaamisala Automyynnin osaamisala 1.1.2017 —')
         })
       })
+
+      after(page.openPage, page.oppijaHaku.searchAndSelect('280608-6619'))
     })
 
     describe('Tutkinnon osat', function() {
@@ -780,10 +782,6 @@ describe('Ammatillinen koulutus', function() {
             })
           })
           describe('Pakollisen tutkinnon osan lisääminen', function() {
-            before(
-              editor.edit
-            )
-
             describe('Ennen lisäystä', function() {
               it('Näyttää e-perusteiden mukaisen vaihtoehtolistan', function() {
                 expect(opinnot.tutkinnonOsat('1').tutkinnonosavaihtoehdot().length).to.equal(47)
