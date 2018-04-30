@@ -60,7 +60,7 @@ class SafariTest extends BrowserstackMochaTest {
     caps.setCapability("os", "OS X")
     caps.setCapability("os_version", "Sierra")
   }
-  //runMochaTests(Safari) // local tunneling doesn't seem to work
+  runMochaTests(Safari)
 }
 
 /**

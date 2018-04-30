@@ -20,7 +20,8 @@ object PortChecker {
   def waitUntilReservedLocalPort(port: Int) = Wait.until(!isFreeLocalPort(port))
 
   def findFreeLocalPort: Int = {
-    val range = 1024 to 60000
+    // Browserstack doesn't support all ports on Safari, see https://www.browserstack.com/question/664
+    val range = 9200 to 9400
     val port = ((range(new Random().nextInt(range length))))
     if (isFreeLocalPort(port)) {
       port
