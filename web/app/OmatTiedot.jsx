@@ -13,8 +13,8 @@ import editorMapping from './oppija/editors'
 import {userP} from './util/user'
 import {addContext, modelData} from './editor/EditorModel'
 import {locationP} from './util/location'
-import {EiSuorituksia} from './EiSuorituksia'
 import {Header} from './omattiedot/header/Header'
+import {EiSuorituksiaInfo} from './omattiedot/EiSuorituksiaInfo'
 
 const omatTiedotP = () => Bacon.combineWith(
   Http.cachedGet('/koski/api/omattiedot/editor', { errorMapper: (e) => e.httpStatus === 404 ? null : new Bacon.Error(e)}).toProperty(),
@@ -29,7 +29,7 @@ const topBarP = userP.map(user => <OmatTiedotTopBar user={user}/>)
 const contentP = locationP.flatMapLatest(() => omatTiedotP().map(oppija =>
     oppija
       ? <div className="main-content oppija"><Oppija oppija={Editor.setupContext(oppija, {editorMapping})} stateP={Bacon.constant('viewing')}/></div>
-      : <div className="main-content"><EiSuorituksia/></div>
+      : <div className="main-content"><EiSuorituksiaInfo/></div>
     )
 ).toProperty().startWith(<div className="main-content ajax-indicator-bg"><Text name="Ladataan..."/></div>)
 
