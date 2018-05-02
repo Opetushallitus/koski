@@ -5,6 +5,7 @@ import java.io.File
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.servlet.KoskiBaseServlet
 import fi.oph.koski.util.XML.CommentedPCData
@@ -17,14 +18,14 @@ trait HtmlNodes extends KoskiBaseServlet with PiwikNodes {
   def buildVersion: Option[String]
   def localizations: LocalizationRepository = application.localizationRepository
 
-  def htmlIndex(scriptBundleName: String, piwikHttpStatusCode: Option[Int] = None, raamitEnabled: Boolean = false, scripts: NodeSeq = Empty, responsive: Boolean = false): Elem = {
+  def htmlIndex(scriptBundleName: String, piwikHttpStatusCode: Option[Int] = None, raamit: Raamit = EiRaameja, scripts: NodeSeq = Empty, responsive: Boolean = false): Elem = {
     var bodyClasses = scriptBundleName.replace("koski-", "").replace(".js", "") + "-page"
     <html>
       <head>
-        {commonHead(responsive) ++ raamit(raamitEnabled) ++ piwikTrackingScriptLoader(piwikHttpStatusCode)}
+        {commonHead(responsive) ++ raamit.script ++ piwikTrackingScriptLoader(piwikHttpStatusCode)}
       </head>
       <body class={bodyClasses}>
-        <div data-inraamit={if (raamitEnabled) "true" else ""} id="content"></div>
+        <div data-inraamit={if (raamit != EiRaameja) "true" else ""} id="content"></div>
         <script id="localization">
           {Unparsed("window.koskiLocalizationMap="+JsonSerializer.writeWithRoot(localizations.localizations))}
         </script>
@@ -48,9 +49,6 @@ trait HtmlNodes extends KoskiBaseServlet with PiwikNodes {
     <link rel="stylesheet" type="text/css" href="/koski/css/codemirror/codemirror.css"/>
 
 
-
-  private def raamit(enabled: Boolean) = if (enabled) <script type="text/javascript" src="/virkailija-raamit/apply-raamit.js"/> else Empty
-
   def htmlErrorObjectScript(status: HttpStatus): Elem =
     <script type="text/javascript">
       {CommentedPCData("""
@@ -63,4 +61,33 @@ trait HtmlNodes extends KoskiBaseServlet with PiwikNodes {
     </script>
 
   private def scriptTimestamp(scriptBundleName: String) = new File(s"./target/webapp/js/$scriptBundleName").lastModified()
+}
+
+trait Raamit {
+  def script: NodeSeq
+}
+
+case object Virkailija extends Raamit {
+  override def script: NodeSeq = <script type="text/javascript" src="/virkailija-raamit/apply-raamit.js"/>
+}
+
+case class Oppija(session: Option[KoskiSession], shibbolethUrl: String) extends Raamit {
+  override def script: NodeSeq = {
+    <script>
+      {Unparsed(s"""
+        Service = {
+          getUser: function() { return Promise.resolve($user) },
+          login: function() { window.location = '$shibbolethUrl' },
+          logout: function() { window.location = '/koski/user/logout' }
+        }
+      """)}
+    </script> ++
+    <script id="apply-raamit" type="text/javascript" src="/oppija-raamit/js/apply-raamit.js"></script>
+  }
+
+  private def user = session.map(s => s"""{"name":"${s.user.name}", "oid": "${s.oid}"}""").getOrElse("null")
+}
+
+case object EiRaameja extends Raamit {
+  override def script: NodeSeq = Empty
 }

@@ -1,6 +1,7 @@
 package fi.oph.koski.documentation
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.html.{EiRaameja, Virkailija}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.KoodistoKoodiMetadata
 import fi.oph.koski.koskiuser.AuthenticationSupport
@@ -16,7 +17,7 @@ class DocumentationServlet(implicit val application: KoskiApplication) extends S
   val koodistoPalvelu = application.koodistoPalvelu
 
   get("/") {
-    htmlIndex("koski-main.js", raamitEnabled = raamitHeaderSet && isAuthenticated)
+    htmlIndex("koski-main.js", raamit = if (raamitHeaderSet && isAuthenticated) Virkailija else EiRaameja)
   }
 
   get("/koski-oppija-schema.html") {
