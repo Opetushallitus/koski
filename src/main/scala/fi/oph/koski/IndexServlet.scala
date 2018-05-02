@@ -1,6 +1,7 @@
 package fi.oph.koski
 
 import fi.oph.koski.config.{Environment, KoskiApplication}
+import fi.oph.koski.html.{EiRaameja, Oppija, Virkailija}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{AuthenticationSupport, SessionStatusExpiredKansalainen}
 import fi.oph.koski.servlet.HtmlServlet
@@ -37,32 +38,35 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
   }
 
   get("/virkailija") {
-    indexHtml()
+    indexHtml
   }
 
   get("/validointi") {
-    indexHtml()
+    indexHtml
   }
 
   get("/uusioppija") {
-    indexHtml()
+    indexHtml
   }
 
   get("/oppija/:oid") {
-    indexHtml()
+    indexHtml
   }
 
   get("/omattiedot") {
-    htmlIndex("koski-omattiedot.js", raamitEnabled = false, responsive = true)
+    htmlIndex(
+      scriptBundleName = "koski-omattiedot.js",
+      raamit = if (raamitHeaderSet) oppijaRaamit else EiRaameja,
+      responsive = true
+    )
   }
 
   get("/tiedonsiirrot*") {
-    indexHtml()
+    indexHtml
   }
 
-  private def indexHtml(disableRaamit: Boolean = false) = {
-    htmlIndex("koski-main.js", raamitEnabled = !disableRaamit && raamitHeaderSet)
-  }
+  private def indexHtml =
+    htmlIndex("koski-main.js", raamit = if (raamitHeaderSet) Virkailija else EiRaameja)
 
   private def landerHtml = htmlIndex(
     scriptBundleName = "koski-lander.js",
@@ -71,6 +75,8 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
     </script>,
     responsive = true
   )
+
+  private def oppijaRaamit = Oppija(koskiSessionOption, application.config.getString("shibboleth.url"))
 }
 
 class EiSuorituksiaServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet {
@@ -81,7 +87,7 @@ class EiSuorituksiaServlet(implicit val application: KoskiApplication) extends S
 
 class SuoritusjakoHtmlServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet {
   get("/:secret") {
-    htmlIndex("koski-suoritusjako.js", raamitEnabled = false, responsive = true)
+    htmlIndex("koski-suoritusjako.js", raamit = EiRaameja, responsive = true)
   }
 }
 
