@@ -194,10 +194,12 @@ const suoritusProperties = suoritus => {
     const simplifiedArviointi = modelProperties(modelLookup(suoritus, 'arviointi.-1'),
       p => !(['arvosana', 'päivä', 'arvioitsijat']).includes(p.key)
     )
+    const arviointipäivä = modelProperties(modelLookup(suoritus, 'arviointi.-1'), p => p.key === 'päivä')
     let showPakollinen = (tyyppi !== 'nayttotutkintoonvalmistavakoulutus') && modelData(suoritus, 'koulutusmoduuli.pakollinen') !== undefined
     const pakollinen = showPakollinen ? modelProperties(modelLookup(suoritus, 'koulutusmoduuli'), p => p.key === 'pakollinen') : []
 
     const defaultsForEdit = pakollinen
+      .concat(arviointipäivä)
       .concat(includeProperties('näyttö', 'tunnustettu', 'lisätiedot'))
     const defaultsForView = pakollinen
       .concat(excludeProperties('koulutusmoduuli', 'arviointi', 'tutkinnonOsanRyhmä', 'tutkintokerta'))
@@ -207,7 +209,7 @@ const suoritusProperties = suoritus => {
       case 'valma':
       case 'telma':
         return isEdit
-          ? pakollinen.concat(includeProperties('näyttö', 'tunnustettu', 'lisätiedot')).concat(simplifiedArviointi)
+          ? pakollinen.concat(includeProperties('näyttö', 'tunnustettu', 'lisätiedot')).concat(arviointipäivä).concat(simplifiedArviointi)
           : defaultsForView
 
       default: return isEdit ? defaultsForEdit : defaultsForView
