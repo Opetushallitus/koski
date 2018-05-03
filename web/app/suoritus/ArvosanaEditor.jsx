@@ -22,11 +22,12 @@ export const ArvosanaEditor = ({model}) => {
           return modelLookup(m, '-1.arvosana')
         },
         (v, m) => {
-          if (modelData(v)) {
+          const valittu = modelData(v)
+          if (valittu) {
             // Arvosana valittu -> valitaan vastaava prototyyppi (eri prototyypit eri arvosanoille)
-            const valittuKoodiarvo = modelData(v).koodiarvo
             const found = alternatives.find(alt => {
-              return modelData(alt, 'arvosana').koodiarvo == valittuKoodiarvo
+              const altData = modelData(alt, 'arvosana')
+              return altData.koodiarvo === valittu.koodiarvo && altData.koodistoUri === valittu.koodistoUri
             })
             return modelSetValue(m, found.value, '-1')
           } else {
