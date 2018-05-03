@@ -14,6 +14,16 @@ trait EPerusteetRepository {
   def findRakenne(diaariNumero: String): Option[EPerusteRakenne]
 
   def findPerusteenYksilöintitiedot(diaariNumero: String): Option[EPerusteTunniste]
+
+  def findLinkToEperusteetWeb(diaariNumero: String, lang: String): Option[String] = {
+    val linkLang = if (webLanguages.contains(lang)) lang else webLanguages.head
+    findPerusteenYksilöintitiedot(diaariNumero)
+      .map(peruste => s"$webBaseUrl/#/${linkLang}/kooste/${peruste.id}")
+  }
+
+  protected val webLanguages = List("fi", "sv")
+
+  protected def webBaseUrl: String
 }
 
 object EPerusteetRepository {
@@ -22,7 +32,7 @@ object EPerusteetRepository {
       case "mock" =>
         MockEPerusteetRepository
       case url =>
-        new RemoteEPerusteetRepository(url)
+        new RemoteEPerusteetRepository(url, config.getString("eperusteet.baseUrl"))
     }
   }
 }
