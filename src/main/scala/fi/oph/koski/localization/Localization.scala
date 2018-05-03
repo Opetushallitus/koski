@@ -50,7 +50,7 @@ case class English(@Representative en: String) extends LocalizedString {
 
 object LocalizedString extends Logging {
   val missingString = "???"
-  def languages = List("fi", "sv", "en")
+  val languages = List("fi", "sv", "en")
   /**
    * Sanitize map of localized values:
    * 1. lowercase all keys
