@@ -26,6 +26,7 @@ object Koodistot {
     KoodistoAsetus("arviointiasteikkoyleissivistava"),
     KoodistoAsetus("effortasteikkoib", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),
     KoodistoAsetus("erityinenkoulutustehtava"),
+    KoodistoAsetus("erityisopetuksentoteutuspaikka"),
     KoodistoAsetus("koskikoulutustendiaarinumerot"),
     KoodistoAsetus("koskiopiskeluoikeudentila"),
     KoodistoAsetus("koskioppiaineetyleissivistava"),
