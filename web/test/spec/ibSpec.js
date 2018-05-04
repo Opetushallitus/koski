@@ -60,7 +60,7 @@ describe('IB', function( ) {
           'Kuvataide\nKU1\n9 1 9\n(9,0)\n' +
           'Terveystieto\nTE1\n7 1 7\n(7,0)\n' +
           'Opinto-ohjaus\nOP1\nS 1 7\n' +
-          'Suoritettuja kursseja: 31')
+          'Suoritettujen kurssien laajuus yhteensä: 31')
       })
     })
 

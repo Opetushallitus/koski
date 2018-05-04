@@ -2,11 +2,12 @@ import React from 'react'
 import R from 'ramda'
 import {LukionOppiaineEditor} from './LukionOppiaineEditor'
 import {UusiLukionOppiaineDropdown} from './UusiLukionOppiaineDropdown'
-import {modelErrorMessages, modelItems} from '../editor/EditorModel'
+import {modelData, modelErrorMessages, modelItems} from '../editor/EditorModel'
 import {LukionOppiaineetTableHead} from './fragments/LukionOppiaineetTableHead'
 import {t} from '../i18n/i18n'
 import {flatMapArray} from '../util/util'
-import {suoritetutKurssit} from './lukio'
+import {laajuudet} from './lukio'
+import {laajuusNumberToString} from '../util/format.js'
 
 export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaineenSuoritus, suoritusFilter, additionalEditableKoulutusmoduuliProperties}) => {
   const {edit, suoritus: päätasonSuoritusModel} = suorituksetModel.context
@@ -36,7 +37,7 @@ export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaine
         {oppiaineetWithErrorRows}
         </tbody>
       </table>
-      <div className="kurssit-yhteensä">{t('Suoritettuja kursseja') + ': ' + kurssitTotal(oppiaineet)}</div>
+      <div className="kurssit-yhteensä">{t('Suoritettuja kursseja') + ': ' + laajuusNumberToString(laajuudet(arvioidutKurssit(oppiaineet)))}</div>
       <UusiLukionOppiaineDropdown
         model={päätasonSuoritusModel}
         oppiaineenSuoritusClasses={classesForUusiOppiaineenSuoritus}
@@ -45,6 +46,7 @@ export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaine
   )
 }
 
-const kurssitTotal = oppiaineet =>
-  suoritetutKurssit(flatMapArray(oppiaineet, oppiaine => modelItems(oppiaine, 'osasuoritukset'))).length
+const arvioidutKurssit = oppiaineet =>
+  flatMapArray(oppiaineet, oppiaine => modelItems(oppiaine, 'osasuoritukset'))
+    .filter(k => modelData(k, 'arviointi'))
 

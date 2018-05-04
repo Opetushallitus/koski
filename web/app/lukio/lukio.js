@@ -31,9 +31,15 @@ const sallitutRahoituskoodiarvot = ['1', '6']
 
 const suoritetutKurssit = kurssit => kurssit.map(k => modelData(k)).filter(k => k.arviointi)
 
+const laajuudet = kurssit => kurssit.map(k => {
+  const laajuus = modelData(k, 'koulutusmoduuli.laajuus.arvo')
+  return laajuus ? laajuus : 1
+}).reduce((x, y) => x + y, 0)
+
 export {
   perusteenDiaarinumeroToOppimäärä,
   createOppiaineenSuoritus,
   sallitutRahoituskoodiarvot,
-  suoritetutKurssit
+  suoritetutKurssit,
+  laajuudet
 }
