@@ -7,6 +7,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.json.JsonDiff.objectDiff
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
+import fi.oph.koski.koodisto.MockKoodistoPalvelu.{sortKoodistoMetadata, sortKoodistoKoodiMetadata}
 import org.json4s.jackson.JsonMethods
 
 case class KoodistoCreator(application: KoskiApplication) extends Logging {
@@ -43,11 +44,10 @@ case class KoodistoCreator(application: KoskiApplication) extends Logging {
       päivitäOlemassaOlevatKoodistot
 
       val päivitettävätJaLuotavat = codesToCheck.par.map { koodistoUri =>
-        def sortListsInside(k: KoodistoKoodi) = k.copy(metadata = k.metadata.sortBy(_.kieli), withinCodeElements = k.withinCodeElements.map(_.sortBy(_.codeElementUri)))
 
         val koodistoViite: KoodistoViite = kp.getLatestVersion(koodistoUri).getOrElse(throw new Exception("Koodistoa ei löydy: " + koodistoUri))
-        val olemassaOlevatKoodit: List[KoodistoKoodi] = kp.getKoodistoKoodit(koodistoViite).toList.flatten.map(sortListsInside)
-        val mockKoodit: List[KoodistoKoodi] = MockKoodistoPalvelu().getKoodistoKoodit(koodistoViite).toList.flatten.map(sortListsInside)
+        val olemassaOlevatKoodit: List[KoodistoKoodi] = kp.getKoodistoKoodit(koodistoViite).toList.flatten.map(sortKoodistoKoodiMetadata)
+        val mockKoodit: List[KoodistoKoodi] = MockKoodistoPalvelu().getKoodistoKoodit(koodistoViite).toList.flatten.map(sortKoodistoKoodiMetadata)
 
         val result = (luotavatKoodit(koodistoUri, olemassaOlevatKoodit, mockKoodit), päivitettävätKoodit(koodistoUri, olemassaOlevatKoodit, mockKoodit))
         result
@@ -97,9 +97,8 @@ case class KoodistoCreator(application: KoskiApplication) extends Logging {
             version = vanhaKoodi.version
           )
 
-          def järjestäMetadatat(koodi: KoodistoKoodi) = koodi.copy(metadata = koodi.metadata.sortBy(_.kieli))
-
-          if (järjestäMetadatat(uusiKoodiSamallaKoodiUrillaJaVersiolla) != järjestäMetadatat(vanhaKoodi)) {
+          // huom, olettaa että koodit prosessoitu sortKoodistoKoodiMetadata:lla
+          if (uusiKoodiSamallaKoodiUrillaJaVersiolla != vanhaKoodi) {
             Some(koodistoUri, vanhaKoodi, uusiKoodi)
           } else {
             None
@@ -126,10 +125,18 @@ case class KoodistoCreator(application: KoskiApplication) extends Logging {
     // update existing
     val olemassaOlevatKoodistot = Koodistot.koodistot.filter(updateable.contains(_)).filter(!kp.getLatestVersion(_).isEmpty).toList
     val päivitettävätKoodistot = olemassaOlevatKoodistot.flatMap { koodistoUri =>
-      val existing: Koodisto = kp.getLatestVersion(koodistoUri).flatMap(kp.getKoodisto).get
-      val mock: Koodisto = MockKoodistoPalvelu().getKoodisto(KoodistoViite(koodistoUri, 1)).get.copy(version = existing.version)
+      val existing: Koodisto = kp
+        .getLatestVersion(koodistoUri)
+        .flatMap(kp.getKoodisto)
+        .map(sortKoodistoMetadata)
+        .get
+      val mock: Koodisto = MockKoodistoPalvelu()
+        .getKoodisto(KoodistoViite(koodistoUri, 1))
+        .map(sortKoodistoMetadata)
+        .get
+        .copy(version = existing.version)
 
-      if (existing.withinCodes.map(_.sortBy(_.codesUri)) != mock.withinCodes.map(_.sortBy(_.codesUri))) {
+      if (existing.withinCodes != mock.withinCodes) {
         logger.info("Päivitetään koodisto " + existing.koodistoUri + " diff " + JsonMethods.compact(objectDiff(existing, mock)) + " original " + JsonSerializer.writeWithRoot(existing))
         Some(mock)
       } else {

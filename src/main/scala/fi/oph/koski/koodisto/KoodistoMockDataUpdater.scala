@@ -4,6 +4,7 @@ import com.typesafe.config.Config
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.json.JsonFiles
 import fi.oph.koski.log.Logging
+import fi.oph.koski.koodisto.MockKoodistoPalvelu.{sortKoodistoMetadata, sortKoodistoKoodiMetadata}
 
 object KoodistoMockDataUpdater extends App with Logging {
   updateMockDataFromKoodistoPalvelu(KoskiApplication.defaultConfig)
@@ -22,9 +23,9 @@ object KoodistoMockDataUpdater extends App with Logging {
         logger.info("Päivitetään testidata koodistolle " + koodistoUri + "/" + versio)
         JsonFiles.writeFile(
           MockKoodistoPalvelu.koodistoFileName(koodistoUri),
-          kp.getKoodisto(versio)
+          kp.getKoodisto(versio).map(sortKoodistoMetadata)
         )
-        val koodit: List[KoodistoKoodi] = kp.getKoodistoKoodit(versio).toList.flatten.sortBy(_.koodiArvo)
+        val koodit: List[KoodistoKoodi] = kp.getKoodistoKoodit(versio).toList.flatten.map(sortKoodistoKoodiMetadata).sortBy(_.koodiArvo)
         JsonFiles.writeFile(
           MockKoodistoPalvelu.koodistoKooditFileName(koodistoUri),
           koodit
