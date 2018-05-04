@@ -6,4 +6,8 @@ ignore:
     - '*':
         reason: None Given
         expires: 2017-10-27T10:04:18.788Z
+  'npm:ua-parser-js:20180227':
+    - '*':
+        reason: Doesn't matter when used in browser environment
+        expires: '2018-06-03T07:14:18.045Z'
 patch: {}
