@@ -8,6 +8,7 @@ import {wrapOptional} from '../editor/EditorModel'
 import {StringEditor} from '../editor/StringEditor'
 import {PerusteDropdown} from './PerusteDropdown'
 import Http from '../util/http'
+import {lang} from '../i18n/i18n'
 
 export const PerusteEditor = ({model}) => {
   if (!model.context.edit) {
@@ -20,11 +21,11 @@ export const PerusteEditor = ({model}) => {
   return <PerusteDropdown {...{perusteAtom, suoritusTyyppiP: Bacon.constant(modelData(model.context.suoritus, 'tyyppi'))}}/>
 }
 
-PerusteEditor.handlesOptional=() => true
+PerusteEditor.handlesOptional= () => true
 
 const perusteLinkki = (peruste, perusteEditor) => {
   const map404 = { errorMapper: (e) => e.httpStatus === 404 ? Bacon.never() : Bacon.Error(e) }
-  return Http.cachedGet(`/koski/api/tutkinnonperusteet/peruste/${encodeURIComponent(peruste)}/linkki`, map404).map('.url').map(linkki =>
-    <a target="top" href={linkki}>{perusteEditor}</a>
+  return Http.cachedGet(`/koski/api/tutkinnonperusteet/peruste/${encodeURIComponent(peruste)}/linkki?lang=${encodeURIComponent(lang)}`, map404).map('.url').map(linkki =>
+    <a target="_blank" href={linkki}>{perusteEditor}</a>
   ).startWith(perusteEditor)
 }

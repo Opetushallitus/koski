@@ -2,7 +2,7 @@ package fi.oph.koski.tutkinto
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.Unauthenticated
+import fi.oph.koski.koskiuser.{KoskiUserLanguage, Unauthenticated}
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.schema.Koodistokoodiviite
 import fi.oph.koski.servlet.{ApiServlet, Cached24Hours}
@@ -48,10 +48,12 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
 
   get("/peruste/:diaari/linkki") {
     val diaari = params("diaari")
-    val eperusteetUrl = application.config.getString("eperusteet.baseUrl")
-    renderEither[Map[String, String]](application.ePerusteet.findPerusteenYksilöintitiedot(diaari).map(peruste => {
-      Map("url" -> s"$eperusteetUrl/#/fi/kooste/${peruste.id}")
-    }).toRight(KoskiErrorCategory.notFound()))
+    val lang = KoskiUserLanguage.sanitizeLanguage(params.get("lang"))
+    renderEither[Map[String, String]](
+      application.ePerusteet.findLinkToEperusteetWeb(diaari, lang)
+        .map(url => Map("url" -> url))
+        .toRight(KoskiErrorCategory.notFound())
+    )
   }
 
   private def haeRakenne(ryhmä: Option[String]) =

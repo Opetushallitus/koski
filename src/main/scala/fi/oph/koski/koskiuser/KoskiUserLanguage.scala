@@ -1,6 +1,6 @@
 package fi.oph.koski.koskiuser
 
-import javax.servlet.http.HttpServletRequest
+import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.log.Logging
 import fi.oph.koski.userdirectory.DirectoryClient
 import org.scalatra.servlet.{RichRequest, RichResponse}
@@ -11,7 +11,7 @@ object KoskiUserLanguage extends Logging {
     val username = user.username
     directoryClient.findUser(username) match {
       case Some(ldapUser) =>
-        ldapUser.asiointikieli.map(_.toLowerCase).getOrElse("fi")
+        sanitizeLanguage(ldapUser.asiointikieli)
       case _ =>
         if (!user.kansalainen) {
           logger.warn(s"User $username not found")
@@ -20,9 +20,17 @@ object KoskiUserLanguage extends Logging {
     }
   }
 
-  def getLanguageFromCookie(request: RichRequest) = request.cookies.getOrElse("lang", "fi")
+  def getLanguageFromCookie(request: RichRequest) = sanitizeLanguage(request.cookies.get("lang"))
 
   def setLanguageCookie(lang: String, response: RichResponse) = {
     response.addCookie(Cookie("lang", lang)(CookieOptions(path = "/")))
+  }
+
+  def sanitizeLanguage(possibleLanguage: Option[String]): String = {
+    possibleLanguage
+      .map(_.toLowerCase)
+      .filter(LocalizedString.languages.contains)
+      .filterNot(_ == "en") // can be removed when our UI actually supports English
+      .getOrElse("fi")
   }
 }

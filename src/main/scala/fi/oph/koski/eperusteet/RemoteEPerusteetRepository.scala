@@ -7,8 +7,10 @@ import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
 
 import scala.concurrent.duration._
 
-class RemoteEPerusteetRepository(ePerusteetRoot: String)(implicit cacheInvalidator: CacheManager) extends EPerusteetRepository {
+class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: String)(implicit cacheInvalidator: CacheManager) extends EPerusteetRepository {
   private val http: Http = Http(ePerusteetRoot)
+
+  override protected def webBaseUrl: String = ePerusteetWebBaseUrl
 
   def findPerusteet(query: String): List[EPeruste] = {
     runTask(http.get(uri"/api/perusteet?sivukoko=100&nimi=${query}")(Http.parseJson[EPerusteet])).data

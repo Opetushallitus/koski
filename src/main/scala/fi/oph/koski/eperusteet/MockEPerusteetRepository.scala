@@ -40,4 +40,6 @@ object MockEPerusteetRepository extends EPerusteetRepository {
   def findPerusteenYksilöintitiedot(diaariNumero: String): Option[EPerusteTunniste] = {
     rakenteet.find(_.diaarinumero == diaariNumero).map(r => EPerusteTunniste(r.id, r.nimi))
   }
+
+  override protected def webBaseUrl = "https://eperusteet.opintopolku.fi"
 }

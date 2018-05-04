@@ -3,6 +3,7 @@ import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import Text from '../i18n/Text'
+import {t} from '../i18n/i18n'
 import Input from '../components/Input'
 
 const LoginUrl = '/koski/user/shibbolethlogin'
@@ -72,7 +73,7 @@ const HetuLogin = () => {
           autofocus={true}
         />
       </label>
-      <label>{'Sukunimi'}
+      <label><Text name="Sukunimi"/>
         <Input
           id='sn'
           type='text'
@@ -80,7 +81,7 @@ const HetuLogin = () => {
           value={state.view('sn')}
         />
       </label>
-      <label>{'Etunimet'}
+      <label><Text name="Etunimet"/>
         <Input
           id='FirstName'
           type='text'
@@ -88,7 +89,7 @@ const HetuLogin = () => {
           value={state.view('FirstName')}
         />
       </label>
-      <label>{'Kutsumanimi'}
+      <label><Text name="Kutsumanimi"/>
         <Input
           id='givenName'
           type='text'
@@ -100,7 +101,7 @@ const HetuLogin = () => {
         className='button blue'
         disabled={valid.not().or(inProgress)}
         onClick={doLogin}>
-        {'Kirjaudu sisään'}
+        {t('Kirjaudu sisään')}
       </button>
       <div className="error-message">{errorMessage}</div>
     </form>
