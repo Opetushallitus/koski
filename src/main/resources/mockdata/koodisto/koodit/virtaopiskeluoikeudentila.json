@@ -28,13 +28,13 @@
   "koodiUri" : "virtaopiskeluoikeudentila_3",
   "koodiArvo" : "3",
   "metadata" : [ {
-    "nimi" : "slutförd",
-    "lyhytNimi" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "päättynyt",
     "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "slutförd",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -54,13 +54,13 @@
   "koodiUri" : "virtaopiskeluoikeudentila_5",
   "koodiArvo" : "5",
   "metadata" : [ {
-    "nimi" : "avstått",
-    "lyhytNimi" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "luopunut",
     "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "avstått",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 } ]

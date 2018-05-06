@@ -2,15 +2,15 @@
   "koodistoUri" : "ammatillisentutkinnonsuoritustapa",
   "versio" : 1,
   "metadata" : [ {
-    "kieli" : "EN",
-    "nimi" : "Ammatillisen tutkinnon suoritustapa",
-    "kuvaus" : "Tutkinnon tai tutkinnon osan suoritustapa"
-  }, {
     "kieli" : "FI",
     "nimi" : "Ammatillisen tutkinnon suoritustapa",
     "kuvaus" : "Tutkinnon tai tutkinnon osan suoritustapa"
   }, {
     "kieli" : "SV",
+    "nimi" : "Ammatillisen tutkinnon suoritustapa",
+    "kuvaus" : "Tutkinnon tai tutkinnon osan suoritustapa"
+  }, {
+    "kieli" : "EN",
     "nimi" : "Ammatillisen tutkinnon suoritustapa",
     "kuvaus" : "Tutkinnon tai tutkinnon osan suoritustapa"
   } ],

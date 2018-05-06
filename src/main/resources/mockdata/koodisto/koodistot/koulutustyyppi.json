@@ -18,19 +18,35 @@
   "voimassaAlkuPvm" : "2015-03-27",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ {
-    "codesUri" : "koulutus",
-    "codesVersion" : 3,
-    "passive" : true
+    "codesUri" : "haunkohdejoukko",
+    "codesVersion" : 1,
+    "passive" : false
   }, {
     "codesUri" : "koulutus",
     "codesVersion" : 2,
     "passive" : true
   }, {
     "codesUri" : "koulutus",
+    "codesVersion" : 3,
+    "passive" : true
+  }, {
+    "codesUri" : "koulutus",
     "codesVersion" : 4,
     "passive" : true
   }, {
-    "codesUri" : "tutkintotyyppi",
+    "codesUri" : "koulutus",
+    "codesVersion" : 5,
+    "passive" : true
+  }, {
+    "codesUri" : "koulutus",
+    "codesVersion" : 6,
+    "passive" : true
+  }, {
+    "codesUri" : "koulutus",
+    "codesVersion" : 7,
+    "passive" : false
+  }, {
+    "codesUri" : "koulutustyyppifasetti",
     "codesVersion" : 1,
     "passive" : false
   }, {
@@ -38,25 +54,9 @@
     "codesVersion" : 1,
     "passive" : false
   }, {
-    "codesUri" : "haunkohdejoukko",
+    "codesUri" : "tutkintotyyppi",
     "codesVersion" : 1,
     "passive" : false
-  }, {
-    "codesUri" : "koulutustyyppifasetti",
-    "codesVersion" : 1,
-    "passive" : false
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 5,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 7,
-    "passive" : false
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 6,
-    "passive" : true
   } ],
   "tila" : "LUONNOS",
   "version" : 5

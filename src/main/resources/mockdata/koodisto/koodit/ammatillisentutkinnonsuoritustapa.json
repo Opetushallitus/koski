@@ -2,20 +2,20 @@
   "koodiUri" : "ammatillisentutkinnonsuoritustapa_naytto",
   "koodiArvo" : "naytto",
   "metadata" : [ {
-    "nimi" : "Näyttö",
+    "nimi" : "Näyttötutkinto",
     "lyhytNimi" : "",
     "kuvaus" : "",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Fristående examen",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
   }, {
-    "nimi" : "Näyttötutkinto",
+    "nimi" : "Näyttö",
     "lyhytNimi" : "",
     "kuvaus" : "",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -23,15 +23,15 @@
   "koodiUri" : "ammatillisentutkinnonsuoritustapa_ops",
   "koodiArvo" : "ops",
   "metadata" : [ {
-    "nimi" : "Läroplansbaserad",
-    "lyhytNimi" : "ops",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Ammatillinen perustutkinto",
     "lyhytNimi" : "ops",
     "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Läroplansbaserad",
+    "lyhytNimi" : "ops",
+    "kuvaus" : "",
+    "kieli" : "SV"
   }, {
     "nimi" : "Opetussuunnitelman mukainen",
     "lyhytNimi" : "ops",

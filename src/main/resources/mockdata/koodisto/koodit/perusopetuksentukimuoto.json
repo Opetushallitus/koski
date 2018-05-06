@@ -50,15 +50,15 @@
   "koodiUri" : "perusopetuksentukimuoto_4",
   "koodiArvo" : "4",
   "metadata" : [ {
-    "nimi" : "Tolkningstjäntser",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tulkitsemispalvelut",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Tolkningstjäntser",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -66,15 +66,15 @@
   "koodiUri" : "perusopetuksentukimuoto_5",
   "koodiArvo" : "5",
   "metadata" : [ {
-    "nimi" : "Särskilda hjälmedel",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Erityiset apuvälineet",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Särskilda hjälmedel",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

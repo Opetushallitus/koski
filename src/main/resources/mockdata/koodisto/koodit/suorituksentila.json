@@ -2,13 +2,13 @@
   "koodiUri" : "suorituksentila_kesken",
   "koodiArvo" : "KESKEN",
   "metadata" : [ {
-    "nimi" : "Prestationen icke slutförd",
-    "lyhytNimi" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Suoritus kesken",
     "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Prestationen icke slutförd",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {

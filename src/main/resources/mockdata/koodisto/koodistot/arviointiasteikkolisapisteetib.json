@@ -2,13 +2,13 @@
   "koodistoUri" : "arviointiasteikkolisapisteetib",
   "versio" : 1,
   "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Arviointiasteikko lisapisteet ib"
+  }, {
     "kieli" : "SV",
     "nimi" : "Arviointiasteikko lisapisteet ib"
   }, {
     "kieli" : "EN",
-    "nimi" : "Arviointiasteikko lisapisteet ib"
-  }, {
-    "kieli" : "FI",
     "nimi" : "Arviointiasteikko lisapisteet ib"
   } ],
   "codesGroupUri" : "http://koski",

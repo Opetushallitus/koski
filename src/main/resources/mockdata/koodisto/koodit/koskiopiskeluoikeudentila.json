@@ -32,15 +32,15 @@
   "koodiUri" : "koskiopiskeluoikeudentila_lasna",
   "koodiArvo" : "lasna",
   "metadata" : [ {
-    "nimi" : "Närvarande",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Läsnä",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Närvarande",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -80,15 +80,15 @@
   "koodiUri" : "koskiopiskeluoikeudentila_peruutettu",
   "koodiArvo" : "peruutettu",
   "metadata" : [ {
-    "nimi" : "Indragen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Peruutettu",
     "lyhytNimi" : "",
     "kuvaus" : "Opiskeluoikeus peruutettu",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Indragen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -96,15 +96,15 @@
   "koodiUri" : "koskiopiskeluoikeudentila_valiaikaisestikeskeytynyt",
   "koodiArvo" : "valiaikaisestikeskeytynyt",
   "metadata" : [ {
-    "nimi" : "Tillfälligt avbruten",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Väliaikaisesti keskeytynyt",
     "lyhytNimi" : "",
     "kuvaus" : "Opiskeluoikeus keskeytetty määräajaksi. Ei kuluta opiskeluoikeusaikaa.",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Tillfälligt avbruten",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

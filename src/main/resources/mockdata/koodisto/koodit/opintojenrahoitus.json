@@ -2,15 +2,15 @@
   "koodiUri" : "opintojenrahoitus_1",
   "koodiArvo" : "1",
   "metadata" : [ {
-    "nimi" : "Statsandelsfinansierad utbildning",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Valtionosuusrahoitteinen koulutus",
     "lyhytNimi" : "",
     "kuvaus" : "Valtionosuusrahoitteisella koulutuksella tarkoitetaan koulutusta, jonka kustannuksista\nosa on rahoitettu ammatillisen perus- tai lisäkoulutukseen tarkoitetulla valtion osuudella.",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Statsandelsfinansierad utbildning",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -27,15 +27,15 @@
   "koodiUri" : "opintojenrahoitus_2",
   "koodiArvo" : "2",
   "metadata" : [ {
-    "nimi" : "Arbetskraftspolitisk vuxenutbildning (nationell finansiering)",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Työvoimakoulutus ely-keskukset ja työ- ja elinkeinotoimistot (kansallinen rahoitus)",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Arbetskraftspolitisk vuxenutbildning (nationell finansiering)",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -75,15 +75,15 @@
   "koodiUri" : "opintojenrahoitus_6",
   "koodiArvo" : "6",
   "metadata" : [ {
-    "nimi" : "Finansierad på annat sätt",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Muuta kautta rahoitettu",
     "lyhytNimi" : "",
     "kuvaus" : "Esimerkiksi opiskelijan kokonaan itse maksama",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Finansierad på annat sätt",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -91,15 +91,15 @@
   "koodiUri" : "opintojenrahoitus_7",
   "koodiArvo" : "7",
   "metadata" : [ {
-    "nimi" : "Kompetensprogrammet för unga vuxna",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Nuorten aikuisten osaamisohjelma",
     "lyhytNimi" : "",
     "kuvaus" : "Nuorten\naikuisten osaamisohjelmalla tarkoitetaan hallituksen käynnistämää määräaikaista ohjelmaa, joka\ntarjoaa pelkän peruskoulun varassa oleville 20 - 29-vuotiaille lisämahdollisuuden hakea tutkintoon\njohtavaan koulutukseen.",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensprogrammet för unga vuxna",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

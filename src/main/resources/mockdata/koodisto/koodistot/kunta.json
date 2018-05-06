@@ -18,11 +18,11 @@
   "voimassaAlkuPvm" : "2014-03-27",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ {
-    "codesUri" : "oppilaitosnumero",
+    "codesUri" : "aluehallintovirasto",
     "codesVersion" : 1,
     "passive" : false
   }, {
-    "codesUri" : "aluehallintovirasto",
+    "codesUri" : "oppilaitosnumero",
     "codesVersion" : 1,
     "passive" : false
   } ],

@@ -152,6 +152,15 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "lahdejarjestelma_winnovasopro",
+  "koodiArvo" : "winnova-sopro",
+  "metadata" : [ {
+    "nimi" : "Winnova oppilashallintojärjestelmä, Sopro",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "lahdejarjestelma_winnovastudentaplus",
   "koodiArvo" : "winnova-studentaplus",
   "metadata" : [ {
@@ -161,15 +170,6 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "lahdejarjestelma_winnovasopro",
-  "koodiArvo" : "winnova-sopro",
-  "metadata" : [ {
-    "nimi" : "Winnova oppilashallintojärjestelmä, Sopro",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-},{
   "koodiUri" : "lahdejarjestelma_ytr",
   "koodiArvo" : "ytr",
   "metadata" : [ {

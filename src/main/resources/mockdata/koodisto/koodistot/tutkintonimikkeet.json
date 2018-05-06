@@ -6,11 +6,11 @@
     "nimi" : "tutkintonimikkeet",
     "kuvaus" : "tutkintonimikkeet"
   }, {
-    "kieli" : "EN",
+    "kieli" : "SV",
     "nimi" : "tutkintonimikkeet",
     "kuvaus" : "tutkintonimikkeet"
   }, {
-    "kieli" : "SV",
+    "kieli" : "EN",
     "nimi" : "tutkintonimikkeet",
     "kuvaus" : "tutkintonimikkeet"
   } ],
@@ -18,21 +18,9 @@
   "voimassaAlkuPvm" : "2015-10-05",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ {
-    "codesUri" : "koulutusohjelmaamm",
-    "codesVersion" : 1,
-    "passive" : false
-  }, {
-    "codesUri" : "osaamisala",
-    "codesVersion" : 3,
-    "passive" : false
-  }, {
     "codesUri" : "koulutus",
     "codesVersion" : 4,
     "passive" : true
-  }, {
-    "codesUri" : "lukiolinjat",
-    "codesVersion" : 1,
-    "passive" : false
   }, {
     "codesUri" : "koulutus",
     "codesVersion" : 5,
@@ -44,6 +32,18 @@
   }, {
     "codesUri" : "koulutus",
     "codesVersion" : 7,
+    "passive" : false
+  }, {
+    "codesUri" : "koulutusohjelmaamm",
+    "codesVersion" : 1,
+    "passive" : false
+  }, {
+    "codesUri" : "lukiolinjat",
+    "codesVersion" : 1,
+    "passive" : false
+  }, {
+    "codesUri" : "osaamisala",
+    "codesVersion" : 3,
     "passive" : false
   } ],
   "tila" : "LUONNOS",

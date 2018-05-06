@@ -47,11 +47,11 @@
   "koodiUri" : "erityinenkoulutustehtava_steiner",
   "koodiArvo" : "steiner",
   "metadata" : [ {
-    "nimi" : "Särskild utbildningsuppgift steinerskola",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Erityisenä koulutustehtävänä steinerkoulu",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Särskild utbildningsuppgift steinerskola",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

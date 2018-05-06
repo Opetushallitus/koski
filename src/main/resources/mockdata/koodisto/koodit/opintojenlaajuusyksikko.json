@@ -2,27 +2,23 @@
   "koodiUri" : "opintojenlaajuusyksikko_1",
   "koodiArvo" : "1",
   "metadata" : [ {
-    "nimi" : "study weeks",
-    "lyhytNimi" : "study weeks",
-    "kieli" : "EN"
+    "nimi" : "opintoviikkoa",
+    "lyhytNimi" : "ov",
+    "kieli" : "FI"
   }, {
     "nimi" : "studieveckor",
     "lyhytNimi" : "sv",
     "kieli" : "SV"
   }, {
-    "nimi" : "opintoviikkoa",
-    "lyhytNimi" : "ov",
-    "kieli" : "FI"
+    "nimi" : "study weeks",
+    "lyhytNimi" : "study weeks",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "opintojenlaajuusyksikko_2",
   "koodiArvo" : "2",
   "metadata" : [ {
-    "nimi" : "ECTS credits",
-    "lyhytNimi" : "ECTS cr",
-    "kieli" : "EN"
-  }, {
     "nimi" : "opintopistettä",
     "lyhytNimi" : "op",
     "kieli" : "FI"
@@ -30,6 +26,10 @@
     "nimi" : "studiepoäng",
     "lyhytNimi" : "sp",
     "kieli" : "SV"
+  }, {
+    "nimi" : "ECTS credits",
+    "lyhytNimi" : "ECTS cr",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -40,19 +40,23 @@
     "lyhytNimi" : "vuosiviikkotuntia",
     "kieli" : "FI"
   }, {
-    "nimi" : "weekly lessons per year",
-    "lyhytNimi" : "weekly lessons per year",
-    "kieli" : "EN"
-  }, {
     "nimi" : "årsveckotimmar",
     "lyhytNimi" : "årsveckotimmar",
     "kieli" : "SV"
+  }, {
+    "nimi" : "weekly lessons per year",
+    "lyhytNimi" : "weekly lessons per year",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "opintojenlaajuusyksikko_4",
   "koodiArvo" : "4",
   "metadata" : [ {
+    "nimi" : "kurssia",
+    "lyhytNimi" : "kurssia",
+    "kieli" : "FI"
+  }, {
     "nimi" : "kurser",
     "lyhytNimi" : "kurser",
     "kieli" : "SV"
@@ -60,23 +64,19 @@
     "nimi" : "course units",
     "lyhytNimi" : "courses",
     "kieli" : "EN"
-  }, {
-    "nimi" : "kurssia",
-    "lyhytNimi" : "kurssia",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "opintojenlaajuusyksikko_5",
   "koodiArvo" : "5",
   "metadata" : [ {
-    "nimi" : "timmar",
-    "lyhytNimi" : "timmar",
-    "kieli" : "SV"
-  }, {
     "nimi" : "tuntia",
     "lyhytNimi" : "tuntia",
     "kieli" : "FI"
+  }, {
+    "nimi" : "timmar",
+    "lyhytNimi" : "timmar",
+    "kieli" : "SV"
   }, {
     "nimi" : "hours",
     "lyhytNimi" : "hours",
@@ -87,13 +87,13 @@
   "koodiUri" : "opintojenlaajuusyksikko_6",
   "koodiArvo" : "6",
   "metadata" : [ {
-    "nimi" : "kompetenspoäng",
-    "lyhytNimi" : "kp",
-    "kieli" : "SV"
-  }, {
     "nimi" : "osaamispistettä",
     "lyhytNimi" : "osp",
     "kieli" : "FI"
+  }, {
+    "nimi" : "kompetenspoäng",
+    "lyhytNimi" : "kp",
+    "kieli" : "SV"
   }, {
     "nimi" : "ECVET competence points",
     "lyhytNimi" : "competence points",
@@ -108,13 +108,13 @@
     "lyhytNimi" : "vuotta",
     "kieli" : "FI"
   }, {
-    "nimi" : "years",
-    "lyhytNimi" : "years",
-    "kieli" : "EN"
-  }, {
     "nimi" : "år",
     "lyhytNimi" : "år",
     "kieli" : "SV"
+  }, {
+    "nimi" : "years",
+    "lyhytNimi" : "years",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 } ]

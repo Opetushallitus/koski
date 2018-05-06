@@ -67,26 +67,26 @@
   "koodiUri" : "ammatillisenoppiaineet_mlfk",
   "koodiArvo" : "MLFK",
   "metadata" : [ {
-    "nimi" : "fysikaliska och kemiska fenomen och tillämpning av dem",
-    "lyhytNimi" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "fysikaaliset ja kemialliset ilmiöt ja niiden soveltaminen",
     "lyhytNimi" : "fysikaaliset ja kemialliset ilmiöt ja niiden soveltaminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "fysikaliska och kemiska fenomen och tillämpning av dem",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "ammatillisenoppiaineet_mlma",
   "koodiArvo" : "MLMA",
   "metadata" : [ {
-    "nimi" : "matematik och tillämpad matematik",
-    "lyhytNimi" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "matematiikka ja matematiikan soveltaminen",
     "lyhytNimi" : "matematiikka ja matematiikan soveltaminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "matematik och tillämpad matematik",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -132,13 +132,13 @@
   "koodiUri" : "ammatillisenoppiaineet_tk1",
   "koodiArvo" : "TK1",
   "metadata" : [ {
-    "nimi" : "det andra inhemska språket, svenska",
-    "lyhytNimi" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Toinen kotimainen kieli, ruotsi",
     "lyhytNimi" : "Toinen kotimainen kieli, ruotsi",
     "kieli" : "FI"
+  }, {
+    "nimi" : "det andra inhemska språket, svenska",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -158,13 +158,13 @@
   "koodiUri" : "ammatillisenoppiaineet_tyt",
   "koodiArvo" : "TYT",
   "metadata" : [ {
-    "nimi" : "upprätthållande av arbetsförmåga, gymnastik och hälsokunskap",
-    "lyhytNimi" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Työkyvyn ylläpitäminen, liikunta ja terveystieto",
     "lyhytNimi" : "Työkyvyn ylläpitäminen, liikunta ja terveystieto",
     "kieli" : "FI"
+  }, {
+    "nimi" : "upprätthållande av arbetsförmåga, gymnastik och hälsokunskap",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -197,39 +197,39 @@
   "koodiUri" : "ammatillisenoppiaineet_vvtd",
   "koodiArvo" : "VVTD",
   "metadata" : [ {
-    "nimi" : "verksamhet i den digitala miljön",
-    "lyhytNimi" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "toiminta digitaalisessa ympäristössä",
     "lyhytNimi" : "toiminta digitaalisessa ympäristössä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "verksamhet i den digitala miljön",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "ammatillisenoppiaineet_vvtk",
   "koodiArvo" : "VVTK",
   "metadata" : [ {
-    "nimi" : "kommunikation och interaktion på det andra inhemska språket",
-    "lyhytNimi" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "viestintä ja vuorovaikutus toisella kotimaisella kielellä",
     "lyhytNimi" : "viestintä ja vuorovaikutus toisella kotimaisella kielellä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "kommunikation och interaktion på det andra inhemska språket",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "ammatillisenoppiaineet_vvtl",
   "koodiArvo" : "VVTL",
   "metadata" : [ {
-    "nimi" : "konst och kreativt uttryck",
-    "lyhytNimi" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "taide ja luova ilmaisu",
     "lyhytNimi" : "taide ja luova ilmaisu",
     "kieli" : "FI"
+  }, {
+    "nimi" : "konst och kreativt uttryck",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -262,39 +262,39 @@
   "koodiUri" : "ammatillisenoppiaineet_ym",
   "koodiArvo" : "YM",
   "metadata" : [ {
-    "nimi" : "miljökunnande",
-    "lyhytNimi" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Ympäristöosaaminen",
     "lyhytNimi" : "Ympäristöosaaminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "miljökunnande",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "ammatillisenoppiaineet_ytkk",
   "koodiArvo" : "YTKK",
   "metadata" : [ {
-    "nimi" : "främjande av hållbar utveckling",
-    "lyhytNimi" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "kestävän kehityksen edistäminen",
     "lyhytNimi" : "kestävän kehityksen edistäminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "främjande av hållbar utveckling",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "ammatillisenoppiaineet_ytou",
   "koodiArvo" : "YTOU",
   "metadata" : [ {
-    "nimi" : "färdigheter i studie- och karriärplanering",
-    "lyhytNimi" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "opiskelu- ja urasuunnitteluvalmiudet",
     "lyhytNimi" : "opiskelu- ja urasuunnitteluvalmiudet",
     "kieli" : "FI"
+  }, {
+    "nimi" : "färdigheter i studie- och karriärplanering",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -314,13 +314,13 @@
   "koodiUri" : "ammatillisenoppiaineet_yttt",
   "koodiArvo" : "YTTT",
   "metadata" : [ {
-    "nimi" : "att verka i arbetslivet",
-    "lyhytNimi" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "työelämässä toimiminen",
     "lyhytNimi" : "työelämässä toimiminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "att verka i arbetslivet",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -340,26 +340,26 @@
   "koodiUri" : "ammatillisenoppiaineet_ytyy",
   "koodiArvo" : "YTYY",
   "metadata" : [ {
-    "nimi" : "företagsamhet och företagarinriktad verksamhet",
-    "lyhytNimi" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "yrittäjyys ja yrittäjämäinen toiminta",
     "lyhytNimi" : "yrittäjyys ja yrittäjämäinen toiminta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "företagsamhet och företagarinriktad verksamhet",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "ammatillisenoppiaineet_yyt",
   "koodiArvo" : "YYT",
   "metadata" : [ {
-    "nimi" : "företagsamhet och företagsverksamhet",
-    "lyhytNimi" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Yrittäjyys ja yritystoiminta",
     "lyhytNimi" : "Yrittäjyys ja yritystoiminta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "företagsamhet och företagsverksamhet",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 } ]

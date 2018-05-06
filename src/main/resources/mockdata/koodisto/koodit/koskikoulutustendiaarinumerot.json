@@ -475,13 +475,13 @@
   "koodiArvo" : "60/011/2015",
   "metadata" : [ {
     "nimi" : "Lukio",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Lukio",
     "kieli" : "SV"
   }, {
     "nimi" : "Lukio",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {

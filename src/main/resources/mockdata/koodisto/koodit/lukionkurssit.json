@@ -842,33 +842,33 @@
   "koodiUri" : "lukionkurssit_lvhy1",
   "koodiArvo" : "LVHY1",
   "metadata" : [ {
-    "nimi" : "Grunderna i historia",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Historian perusteita",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i historia",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_lvhy2",
   "koodiArvo" : "LVHY2",
   "metadata" : [ {
-    "nimi" : "Samhället och kulturerna i Finland",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Suomen yhteiskunta ja kulttuurit",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samhället och kulturerna i Finland",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_lvka1",
   "koodiArvo" : "LVKA1",
   "metadata" : [ {
-    "nimi" : "Språkfärdighet som en del av studierna och andra livsområden",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kielitaito osana opiskelua ja muita elämänalueita",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språkfärdighet som en del av studierna och andra livsområden",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -908,22 +908,22 @@
   "koodiUri" : "lukionkurssit_lvkb2",
   "koodiArvo" : "LVKB2",
   "metadata" : [ {
-    "nimi" : "Vardagsärenden och fritid",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Asioiminen ja harrastukset",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vardagsärenden och fritid",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_lvkb3",
   "koodiArvo" : "LVKB3",
   "metadata" : [ {
-    "nimi" : "Livsmiljö och sociala nätverk",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Elinympäristö ja sosiaaliset verkostot",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Livsmiljö och sociala nätverk",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -941,11 +941,11 @@
   "koodiUri" : "lukionkurssit_lvluma2",
   "koodiArvo" : "LVLUMA2",
   "metadata" : [ {
-    "nimi" : "Biologi och geografi",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Biologiaa ja maantiedettä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Biologi och geografi",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -996,22 +996,22 @@
   "koodiUri" : "lukionkurssit_lvop2",
   "koodiArvo" : "LVOP2",
   "metadata" : [ {
-    "nimi" : "Studiehandledning 2",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Opinto-ohjaus 2",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studiehandledning 2",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_lvs1",
   "koodiArvo" : "LVS1",
   "metadata" : [ {
-    "nimi" : "Språkstrukturer ur funktionell synvinkel",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kielen rakenteet funktionaalisesta näkökulmasta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språkstrukturer ur funktionell synvinkel",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1051,33 +1051,33 @@
   "koodiUri" : "lukionkurssit_lvs4",
   "koodiArvo" : "LVS4",
   "metadata" : [ {
-    "nimi" : "Skriva texter",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Tekstejä kirjoittamaan",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Skriva texter",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_lvs5",
   "koodiArvo" : "LVS5",
   "metadata" : [ {
-    "nimi" : "Lyssna och tala 1",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kuunnellaan ja puhutaan 1",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Lyssna och tala 1",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "lukionkurssit_lvs6",
   "koodiArvo" : "LVS6",
   "metadata" : [ {
-    "nimi" : "Litteratur och kultur i Finland",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Suomalainen kirjallisuus ja kulttuuri",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Litteratur och kultur i Finland",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1095,11 +1095,11 @@
   "koodiUri" : "lukionkurssit_lvs8",
   "koodiArvo" : "LVS8",
   "metadata" : [ {
-    "nimi" : "Lyssna och tala 2",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kuunnellaan ja puhutaan 2",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Lyssna och tala 2",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {

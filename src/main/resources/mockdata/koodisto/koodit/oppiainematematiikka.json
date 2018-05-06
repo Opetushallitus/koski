@@ -11,11 +11,11 @@
   "koodiUri" : "oppiainematematiikka_mab",
   "koodiArvo" : "MAB",
   "metadata" : [ {
-    "nimi" : "Matematik, kort lärokurs",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Matematiikka, lyhyt oppimäärä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Matematik, kort lärokurs",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -23,11 +23,11 @@
   "koodiUri" : "oppiainematematiikka_may",
   "koodiArvo" : "MAY",
   "metadata" : [ {
-    "nimi" : "Matematik, gemensam studiehelhet",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Matematiikka, yhteinen opintokokonaisuus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Matematik, gemensam studiehelhet",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

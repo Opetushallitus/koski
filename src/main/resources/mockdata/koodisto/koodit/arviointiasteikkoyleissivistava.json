@@ -98,15 +98,15 @@
   "koodiUri" : "arviointiasteikkoyleissivistava_s",
   "koodiArvo" : "S",
   "metadata" : [ {
-    "nimi" : "godkänd",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "hyväksytty",
     "lyhytNimi" : "S",
     "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "godkänd",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

@@ -18,28 +18,8 @@
   "voimassaAlkuPvm" : "2013-01-01",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ {
-    "codesUri" : "lukiolinjat",
-    "codesVersion" : 1,
-    "passive" : false
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 4,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 3,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 7,
-    "passive" : false
-  }, {
     "codesUri" : "koulutus",
     "codesVersion" : 1,
-    "passive" : true
-  }, {
-    "codesUri" : "koulutus",
-    "codesVersion" : 6,
     "passive" : true
   }, {
     "codesUri" : "koulutus",
@@ -47,8 +27,28 @@
     "passive" : true
   }, {
     "codesUri" : "koulutus",
+    "codesVersion" : 3,
+    "passive" : true
+  }, {
+    "codesUri" : "koulutus",
+    "codesVersion" : 4,
+    "passive" : true
+  }, {
+    "codesUri" : "koulutus",
     "codesVersion" : 5,
     "passive" : true
+  }, {
+    "codesUri" : "koulutus",
+    "codesVersion" : 6,
+    "passive" : true
+  }, {
+    "codesUri" : "koulutus",
+    "codesVersion" : 7,
+    "passive" : false
+  }, {
+    "codesUri" : "lukiolinjat",
+    "codesVersion" : 1,
+    "passive" : false
   } ],
   "tila" : "LUONNOS",
   "version" : 0

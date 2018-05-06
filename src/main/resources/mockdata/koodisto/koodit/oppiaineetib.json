@@ -10,12 +10,12 @@
     "nimi" : "Language A: literature",
     "lyhytNimi" : "",
     "kuvaus" : "",
-    "kieli" : "EN"
+    "kieli" : "SV"
   }, {
     "nimi" : "Language A: literature",
     "lyhytNimi" : "",
     "kuvaus" : "",
-    "kieli" : "SV"
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -26,17 +26,17 @@
     "nimi" : "Language A: language and literature",
     "lyhytNimi" : "",
     "kuvaus" : "",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "Language A: language and literature",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Language A: language and literature",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Language A: language and literature",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -47,17 +47,17 @@
     "nimi" : "B-language",
     "lyhytNimi" : "",
     "kuvaus" : "",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "B-language",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "B-language",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "nimi" : "B-language",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -73,12 +73,12 @@
     "nimi" : "Biology",
     "lyhytNimi" : "",
     "kuvaus" : "",
-    "kieli" : "EN"
+    "kieli" : "SV"
   }, {
     "nimi" : "Biology",
     "lyhytNimi" : "",
     "kuvaus" : "",
-    "kieli" : "SV"
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -89,17 +89,17 @@
     "nimi" : "Business and management",
     "lyhytNimi" : "",
     "kuvaus" : "",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "Business and management",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Business and management",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Business and management",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -131,17 +131,17 @@
     "nimi" : "Chemistry",
     "lyhytNimi" : "",
     "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Chemistry",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Chemistry",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Chemistry",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -157,12 +157,12 @@
     "nimi" : "Economics",
     "lyhytNimi" : "",
     "kuvaus" : "",
-    "kieli" : "EN"
+    "kieli" : "SV"
   }, {
     "nimi" : "Economics",
     "lyhytNimi" : "",
     "kuvaus" : "",
-    "kieli" : "SV"
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -178,12 +178,12 @@
     "nimi" : "Extended essay",
     "lyhytNimi" : "",
     "kuvaus" : "",
-    "kieli" : "EN"
+    "kieli" : "SV"
   }, {
     "nimi" : "Extended essay",
     "lyhytNimi" : "",
     "kuvaus" : "",
-    "kieli" : "SV"
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -250,12 +250,12 @@
     "nimi" : "Mathematics",
     "lyhytNimi" : "",
     "kuvaus" : "",
-    "kieli" : "EN"
+    "kieli" : "SV"
   }, {
     "nimi" : "Mathematics",
     "lyhytNimi" : "",
     "kuvaus" : "",
-    "kieli" : "SV"
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -266,17 +266,17 @@
     "nimi" : "Further mathematics",
     "lyhytNimi" : "",
     "kuvaus" : "",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "Further mathematics",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Further mathematics",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Further mathematics",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -287,17 +287,17 @@
     "nimi" : "Mathematical studies",
     "lyhytNimi" : "",
     "kuvaus" : "",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "Mathematical studies",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Mathematical studies",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Mathematical studies",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -313,12 +313,12 @@
     "nimi" : "Philosophy",
     "lyhytNimi" : "",
     "kuvaus" : "",
-    "kieli" : "EN"
+    "kieli" : "SV"
   }, {
     "nimi" : "Philosophy",
     "lyhytNimi" : "",
     "kuvaus" : "",
-    "kieli" : "SV"
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -350,17 +350,17 @@
     "nimi" : "Global politics",
     "lyhytNimi" : "",
     "kuvaus" : "",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "Global politics",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Global politics",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Global politics",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -392,17 +392,17 @@
     "nimi" : "World religions",
     "lyhytNimi" : "",
     "kuvaus" : "",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "World religions",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "World religions",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "nimi" : "World religions",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -413,12 +413,12 @@
     "nimi" : "Social and cultural anthropology",
     "lyhytNimi" : "",
     "kuvaus" : "",
-    "kieli" : "SV"
+    "kieli" : "FI"
   }, {
     "nimi" : "Social and cultural anthropology",
     "lyhytNimi" : "",
     "kuvaus" : "",
-    "kieli" : "FI"
+    "kieli" : "SV"
   }, {
     "nimi" : "Social and cultural anthropology",
     "lyhytNimi" : "",
@@ -434,17 +434,17 @@
     "nimi" : "Theory of knowledge",
     "lyhytNimi" : "",
     "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Theory of knowledge",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Theory of knowledge",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Theory of knowledge",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

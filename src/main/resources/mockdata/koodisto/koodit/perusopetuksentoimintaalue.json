@@ -18,15 +18,15 @@
   "koodiUri" : "perusopetuksentoimintaalue_2",
   "koodiArvo" : "2",
   "metadata" : [ {
-    "nimi" : "språkliga och kommunikativa färdigheter",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "kieli ja kommunikaatio",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "språkliga och kommunikativa färdigheter",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -66,15 +66,15 @@
   "koodiUri" : "perusopetuksentoimintaalue_5",
   "koodiArvo" : "5",
   "metadata" : [ {
-    "nimi" : "kognitiva färdigheter",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "kognitiiviset taidot",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "kognitiva färdigheter",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
