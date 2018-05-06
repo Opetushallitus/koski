@@ -3,7 +3,14 @@
   "koodiArvo" : "1",
   "metadata" : [ {
     "nimi" : "Yleinen opetusryhmä",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Allmän undervisningsgrupp",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -12,7 +19,14 @@
   "koodiArvo" : "2",
   "metadata" : [ {
     "nimi" : "Erityisopetusryhmä",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grupp för specialundervisning",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
