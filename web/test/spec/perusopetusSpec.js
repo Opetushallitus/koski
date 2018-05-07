@@ -1087,6 +1087,7 @@ describe('Perusopetus', function() {
               'englanti',
               'Ei suoritusta',
               'espanja',
+              'heprea',
               'italia',
               'japani',
               'kiina',

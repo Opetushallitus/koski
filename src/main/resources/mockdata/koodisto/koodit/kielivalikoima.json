@@ -131,6 +131,23 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "kielivalikoima_he",
+  "koodiArvo" : "HE",
+  "metadata" : [ {
+    "nimi" : "heprea",
+    "lyhytNimi" : "heprea",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "hebreiska",
+    "lyhytNimi" : "hebreiska",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Hebrew",
+    "lyhytNimi" : "Hebrew",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "kielivalikoima_it",
   "koodiArvo" : "IT",
   "metadata" : [ {
