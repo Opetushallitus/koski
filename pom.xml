@@ -153,12 +153,12 @@
     <dependency>
       <groupId>io.reactivex</groupId>
       <artifactId>rxscala_2.12</artifactId>
-      <version>0.26.4</version>
+      <version>0.26.5</version>
     </dependency>
     <dependency>
       <groupId>io.reactivex</groupId>
       <artifactId>rxjava-reactive-streams</artifactId>
-      <version>1.0.1</version>
+      <version>1.2.1</version>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
