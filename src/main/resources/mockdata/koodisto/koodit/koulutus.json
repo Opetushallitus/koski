@@ -381,12 +381,15 @@
   "koodiArvo" : "201101",
   "metadata" : [ {
     "nimi" : "Perusopetus",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Grundläggande utbildning",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Basic education",
+    "lyhytNimi" : "",
     "kieli" : "EN"
   } ],
   "versio" : 9
@@ -530,16 +533,16 @@
   "koodiUri" : "koulutus_301103",
   "koodiArvo" : "301103",
   "metadata" : [ {
-    "nimi" : "Reifeprüfung-tutkinto",
-    "lyhytNimi" : "Reifeprüfung-tutkinto",
+    "nimi" : "Deutsche Internationale Abitur; Reifeprüfung",
+    "lyhytNimi" : "Deutsche Internationale Abitur; Reifeprüfung",
     "kieli" : "FI"
   }, {
-    "nimi" : "Reifeprüfung-examen",
-    "lyhytNimi" : "Reifeprüfung-examen",
+    "nimi" : "Deutsche Internationale Abitur; Reifeprüfung",
+    "lyhytNimi" : "Deutsche Internationale Abitur; Reifeprüfung",
     "kieli" : "SV"
   }, {
-    "nimi" : "Reifeprüfung Examination",
-    "lyhytNimi" : "Reifeprüfung Examination",
+    "nimi" : "Deutsche Internationale Abitur; Reifeprüfung",
+    "lyhytNimi" : "Deutsche Internationale Abitur; Reifeprüfung",
     "kieli" : "EN"
   } ],
   "versio" : 9
@@ -2192,11 +2195,11 @@
   "koodiArvo" : "324201",
   "metadata" : [ {
     "nimi" : "Musiikkituotannon ammattitutkinto",
-    "lyhytNimi" : "",
+    "lyhytNimi" : "Musiikkituotannon at",
     "kieli" : "FI"
   }, {
     "nimi" : "Yrkesexamen i musikproduktion",
-    "lyhytNimi" : "",
+    "lyhytNimi" : "Yrkesexamen i musikproduktion",
     "kieli" : "SV"
   } ],
   "versio" : 9
@@ -3195,15 +3198,15 @@
   "koodiArvo" : "331101",
   "metadata" : [ {
     "nimi" : "Liiketoiminnan perustutkinto",
-    "lyhytNimi" : "Liiketoim. perust",
+    "lyhytNimi" : "Liiketoiminnan pt",
     "kieli" : "FI"
   }, {
     "nimi" : "Grundexamen i affärsverksamhet",
     "lyhytNimi" : "Grundexamen i affärsverksamhet",
     "kieli" : "SV"
   }, {
-    "nimi" : "Business, Administration, VQ",
-    "lyhytNimi" : "Business and Administration, Vocational Qualification",
+    "nimi" : "Vocational qualification in Business",
+    "lyhytNimi" : "Vocational qualification in Business",
     "kieli" : "EN"
   } ],
   "versio" : 9
@@ -5629,7 +5632,7 @@
   "koodiArvo" : "351407",
   "metadata" : [ {
     "nimi" : "Sähkö- ja automaatioalan perustutkinto",
-    "lyhytNimi" : "Sähkö- ja autom. perustutk",
+    "lyhytNimi" : "Sähkö- ja automaatioalan pt",
     "kieli" : "FI"
   }, {
     "nimi" : "Grundexamen inom el- och automationsbranschen",
@@ -6258,11 +6261,11 @@
   "koodiArvo" : "351703",
   "metadata" : [ {
     "nimi" : "Veneenrakennusalan perustutkinto",
-    "lyhytNimi" : "Veneenrakennusalan perustutk",
+    "lyhytNimi" : "Veneenrakennusalan pt",
     "kieli" : "FI"
   }, {
-    "nimi" : "Grundexamen i båtbyggnadsbranschen",
-    "lyhytNimi" : "Grundexamen i båtbyggnadsbranschen",
+    "nimi" : "Grundexamen inom båtbyggnadsbranschen",
+    "lyhytNimi" : "Grundexamen inom båtbyggnadsbranschen",
     "kieli" : "SV"
   }, {
     "nimi" : "Boat-Building, VQ",
@@ -7257,6 +7260,10 @@
     "nimi" : "Grundexamen inom textil- och modebranschen",
     "lyhytNimi" : "",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Vocational qualification in the Textiles and Fashion Industry",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 4
 }, {
@@ -10010,8 +10017,8 @@
     "lyhytNimi" : "Talonrakennusalan at",
     "kieli" : "FI"
   }, {
-    "nimi" : "Yrkesexamen i husbyggnad",
-    "lyhytNimi" : "Yrkesexamen i husbyggnad",
+    "nimi" : "Yrkesexamen i husbyggnadsbranschen",
+    "lyhytNimi" : "Yrkesexamen i husbyggnadsbranschen",
     "kieli" : "SV"
   }, {
     "nimi" : "Building Construction, FQ",
@@ -12829,7 +12836,7 @@
   "koodiArvo" : "361201",
   "metadata" : [ {
     "nimi" : "Puutarha-alan perustutkinto",
-    "lyhytNimi" : "Puutarha-alan perust.",
+    "lyhytNimi" : "Puutarha-alan pt",
     "kieli" : "FI"
   }, {
     "nimi" : "Grundexamen inom trädgårdsbranschen",
@@ -13452,11 +13459,11 @@
   "koodiArvo" : "364145",
   "metadata" : [ {
     "nimi" : "Hevostalouden ammattitutkinto",
-    "lyhytNimi" : "",
+    "lyhytNimi" : "Hevostalouden ammattitutkinto",
     "kieli" : "FI"
   }, {
     "nimi" : "Yrkesexamen inom hästhushållning",
-    "lyhytNimi" : "",
+    "lyhytNimi" : "YA inom hästhushållning",
     "kieli" : "SV"
   } ],
   "versio" : 4
@@ -14040,11 +14047,11 @@
   "koodiArvo" : "364946",
   "metadata" : [ {
     "nimi" : "Luontoalan ammattitutkinto",
-    "lyhytNimi" : "",
+    "lyhytNimi" : "Luontoalan at",
     "kieli" : "FI"
   }, {
     "nimi" : "Yrkesexamen inom naturbranschen",
-    "lyhytNimi" : "",
+    "lyhytNimi" : "Yrkesexamen inom naturbranschen",
     "kieli" : "SV"
   } ],
   "versio" : 4
@@ -14569,8 +14576,8 @@
     "lyhytNimi" : "Grundexamen inom social- och hälsovård",
     "kieli" : "SV"
   }, {
-    "nimi" : "Practical Nurse, VQ",
-    "lyhytNimi" : "Practical Nurse, Social and Health Care, Vocational Qualification",
+    "nimi" : "Vocational qualification in Social and Health Care",
+    "lyhytNimi" : "Vocational qualification in Social and Health Care",
     "kieli" : "EN"
   } ],
   "versio" : 9
@@ -14961,11 +14968,11 @@
   "koodiUri" : "koulutus_374115",
   "koodiArvo" : "374115",
   "metadata" : [ {
-    "nimi" : "Päihdetyön ammattitutkinto",
-    "lyhytNimi" : "",
+    "nimi" : "Mielenterveys- ja päihdetyön ammattitutkinto",
+    "lyhytNimi" : "Mielenterveys- ja päihdetyön at",
     "kieli" : "FI"
   }, {
-    "nimi" : "Yrkesexamen i arbete bland missbrukare",
+    "nimi" : "Yrkesexamen i mentalhälsoarbete och missbrukarvård",
     "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
@@ -15337,8 +15344,8 @@
     "lyhytNimi" : "Mielenterveys- ja päihdetyön erikoisammattitutkinto",
     "kieli" : "FI"
   }, {
-    "nimi" : "Specialyrkesexamen i mentalvårds- och rusmedelsarbete",
-    "lyhytNimi" : "Specialyrkesexamen i mentalvårds- och rusmedelsarbete",
+    "nimi" : "Specialyrkesexamen i mentalhälsoarbete och missbrukarvård",
+    "lyhytNimi" : "Specialyrkesexamen i mentalhälsoarbete och missbrukarvård",
     "kieli" : "SV"
   }, {
     "nimi" : "Specialist Qualification in Mental Health and Intoxicant Abuse Welfare Work",
@@ -15657,11 +15664,11 @@
   "koodiArvo" : "381141",
   "metadata" : [ {
     "nimi" : "Puhtaus- ja kiinteistöpalvelualan perustutkinto",
-    "lyhytNimi" : "",
+    "lyhytNimi" : "Puhtaus- ja kiinteistöpalvelualan pt",
     "kieli" : "FI"
   }, {
     "nimi" : "Grundexamen inom rengörings- och fastighetsservicebranschen",
-    "lyhytNimi" : "",
+    "lyhytNimi" : "Grex inom rengörings- och fastighetsservicebranschen",
     "kieli" : "SV"
   } ],
   "versio" : 4
@@ -17456,11 +17463,11 @@
   "koodiArvo" : "384145",
   "metadata" : [ {
     "nimi" : "Puhtaus- ja kiinteistöpalvelualan ammattitutkinto",
-    "lyhytNimi" : "",
+    "lyhytNimi" : "Puhtaus- ja kiinteistöpalvelualan ammattitutkinto",
     "kieli" : "FI"
   }, {
     "nimi" : "Yrkesexamen inom rengörings- och fastighetsservicebranschen",
-    "lyhytNimi" : "",
+    "lyhytNimi" : "Yrkesexamen inom rengörings- och fastighetsservicebranschen",
     "kieli" : "SV"
   } ],
   "versio" : 4
@@ -17541,12 +17548,12 @@
   "koodiUri" : "koulutus_384201",
   "koodiArvo" : "384201",
   "metadata" : [ {
-    "nimi" : "Asioimistulkin ammattitutkinto",
-    "lyhytNimi" : "",
+    "nimi" : "Asioimistulkkauksen ammattitutkinto",
+    "lyhytNimi" : "Asioimistulkkauksen ammattitutkinto",
     "kieli" : "FI"
   }, {
-    "nimi" : "Yrkesexamen för kontakttolk",
-    "lyhytNimi" : "",
+    "nimi" : "Yrkesexamen i kontakttolkning",
+    "lyhytNimi" : "Yrkesexamen i kontakttolkning",
     "kieli" : "SV"
   } ],
   "versio" : 9
@@ -17554,12 +17561,12 @@
   "koodiUri" : "koulutus_384202",
   "koodiArvo" : "384202",
   "metadata" : [ {
-    "nimi" : "Liikuntapaikkojenhoitajan ammattitutkinto",
-    "lyhytNimi" : "",
+    "nimi" : "Liikuntapaikka-alan ammattitutkinto",
+    "lyhytNimi" : "Liikuntapaikka-alan ammattitutkinto",
     "kieli" : "FI"
   }, {
-    "nimi" : "Yrkesexamen för idrottsanläggningsföreståndare",
-    "lyhytNimi" : "",
+    "nimi" : "Yrkesexamen i skötsel av idrottsanläggningar",
+    "lyhytNimi" : "Yrkesexamen i skötsel av idrottsanläggningar",
     "kieli" : "SV"
   } ],
   "versio" : 9
@@ -17797,8 +17804,8 @@
     "lyhytNimi" : "Lentoasemapalvelujen at",
     "kieli" : "FI"
   }, {
-    "nimi" : "Yrkesexamen för flygfältsservice",
-    "lyhytNimi" : "Yrkesexamen för flygfältsservice",
+    "nimi" : "Yrkesexamen för flygplatsservice",
+    "lyhytNimi" : "Yrkesexamen för flygplatsservice",
     "kieli" : "SV"
   }, {
     "nimi" : "Airport Services, FQ",
@@ -17870,11 +17877,11 @@
   "koodiUri" : "koulutus_384501",
   "koodiArvo" : "384501",
   "metadata" : [ {
-    "nimi" : "Vartijan ammattitutkinto",
-    "lyhytNimi" : "",
+    "nimi" : "Turvallisuusalan ammattitutkinto",
+    "lyhytNimi" : "Turvallisuusalan at",
     "kieli" : "FI"
   }, {
-    "nimi" : "Yrkesexamen för väktare",
+    "nimi" : "Yrkesexamen inom säkerhetsbranschen",
     "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
@@ -20773,12 +20780,12 @@
   "koodiUri" : "koulutus_458103",
   "koodiArvo" : "458103",
   "metadata" : [ {
-    "nimi" : "Elintarviketekniikan erikoisammattitutkinto",
-    "lyhytNimi" : "Elintarviketekniikan eat",
+    "nimi" : "Elintarvikealan erikoisammattitutkinto",
+    "lyhytNimi" : "Elintarvikealan eat",
     "kieli" : "FI"
   }, {
-    "nimi" : "Specialyrkesexamen i livsmedelteknik",
-    "lyhytNimi" : "Specialyrkesexamen i livsmedelteknik",
+    "nimi" : "Specialyrkesexamen inom livsmedelsbranschen",
+    "lyhytNimi" : "Specialyrkesexamen inom livsmedelsbranschen",
     "kieli" : "SV"
   }, {
     "nimi" : "Food Technology, SQ",
@@ -21166,11 +21173,11 @@
   "koodiUri" : "koulutus_458412",
   "koodiArvo" : "458412",
   "metadata" : [ {
-    "nimi" : "Vaatetusalan erikoisammattitutkinto, tekstiili- ja vaatetustekniikka",
+    "nimi" : "Vaatetusalan erikoisammattitutkinto",
     "lyhytNimi" : "Vaatet.alan eat, tekst.-vaatet",
     "kieli" : "FI"
   }, {
-    "nimi" : "Specialyrkesexamen inom beklädnadsbranschen (textil- och beklädnadsteknik)",
+    "nimi" : "Specialyrkesexamen inom beklädnadsbranschen",
     "lyhytNimi" : "Specialyrkesexamen inom beklädnadsbranschen (textil- och beklädnadsteknik)",
     "kieli" : "SV"
   }, {
@@ -22026,12 +22033,12 @@
   "koodiUri" : "koulutus_477103",
   "koodiArvo" : "477103",
   "metadata" : [ {
-    "nimi" : "Kipsimestarin erikoisammattitutkinto",
-    "lyhytNimi" : "Kipsimestarin eat",
+    "nimi" : "Immobilisaatiohoidon erikoisammattitutkinto",
+    "lyhytNimi" : "Immobilisaatiohoidon eat",
     "kieli" : "FI"
   }, {
-    "nimi" : "Specialyrkesexamen för gipsningsmästare",
-    "lyhytNimi" : "Specialyrkesexamen för gipsningsmästare",
+    "nimi" : "Specialyrkesexamen i immobilisationsvård",
+    "lyhytNimi" : "Specialyrkesexamen i immobilisationsvård",
     "kieli" : "SV"
   }, {
     "nimi" : "Orthopaedic Technician, SQ",
@@ -22146,8 +22153,8 @@
     "lyhytNimi" : "Mielenterveys- ja päihdetyön erikoisammattitutkinto",
     "kieli" : "FI"
   }, {
-    "nimi" : "Specialyrkesexamen i mentalvårds- och rusmedelsarbete",
-    "lyhytNimi" : "Specialyrkesexamen i mentalvårds- och rusmedelsarbete",
+    "nimi" : "Specialyrkesexamen i mentalhälsoarbete och missbrukarvård",
+    "lyhytNimi" : "Specialyrkesexamen i mentalhälsoarbete och missbrukarvård",
     "kieli" : "SV"
   }, {
     "nimi" : "Specialist Qualification in Mental Health and Intoxicant Abuse Welfare Work",
@@ -22160,11 +22167,11 @@
   "koodiArvo" : "477143",
   "metadata" : [ {
     "nimi" : "Kuntoutus-, tuki- ja ohjauspalvelujen erikoisammattitutkinto",
-    "lyhytNimi" : "",
+    "lyhytNimi" : "Kuntoutus-, tuki- ja ohjauspalvelujen eat",
     "kieli" : "FI"
   }, {
     "nimi" : "Specialyrkesexamen i rehabiliterings- stöd- och handledningstjänster",
-    "lyhytNimi" : "",
+    "lyhytNimi" : "Specialyrkesexamen i rehabiliterings- stöd- och handledningstjänster",
     "kieli" : "SV"
   } ],
   "versio" : 4
@@ -22310,11 +22317,11 @@
   "koodiArvo" : "487141",
   "metadata" : [ {
     "nimi" : "Puhtaus- ja kiinteistöpalvelualan erikoisammattitutkinto",
-    "lyhytNimi" : "",
+    "lyhytNimi" : "Puhtaus- ja kiinteistöpalvelualan eat",
     "kieli" : "FI"
   }, {
     "nimi" : "Specialyrkesexamen inom rengörings- och fastighetsservicebranschen",
-    "lyhytNimi" : "",
+    "lyhytNimi" : "Specialyrkesexamen inom rengörings- och fastighetsservicebranschen",
     "kieli" : "SV"
   } ],
   "versio" : 4
@@ -22386,12 +22393,12 @@
   "koodiUri" : "koulutus_487203",
   "koodiArvo" : "487203",
   "metadata" : [ {
-    "nimi" : "Oikeustulkin erikoisammattitutkinto",
-    "lyhytNimi" : "Oikeustulkin eat",
+    "nimi" : "Oikeustulkkauksen erikoisammattitutkinto",
+    "lyhytNimi" : "Oikeustulkkauksen eat",
     "kieli" : "FI"
   }, {
-    "nimi" : "Specialyrkesexamen för rättstolk",
-    "lyhytNimi" : "Specialyrkesexamen för rättstolk",
+    "nimi" : "Specialyrkesexamen i rättstolkning",
+    "lyhytNimi" : "Specialyrkesexamen i rättstolkning",
     "kieli" : "SV"
   }, {
     "nimi" : "Court Interpreting, SQ",
@@ -35174,10 +35181,12 @@
   "koodiUri" : "koulutus_681503",
   "koodiArvo" : "681503",
   "metadata" : [ {
-    "nimi" : "Poliisin peruskoulutus (AMK)",
+    "nimi" : "Poliisi (AMK)",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Grundexamen för polis (YH)",
+    "nimi" : "Polis (YH)",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 5
@@ -40230,6 +40239,23 @@
   } ],
   "versio" : 4
 }, {
+  "koodiUri" : "koulutus_750506",
+  "koodiArvo" : "750506",
+  "metadata" : [ {
+    "nimi" : "Insinööri (ylempi AMK), materiaalitekn.",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Ingenjör (högre YH), materialteknik",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Master of Engineering (Polytechnic), Materials Engineering",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "koulutus_750509",
   "koodiArvo" : "750509",
   "metadata" : [ {
@@ -40393,6 +40419,40 @@
     "kieli" : "EN"
   } ],
   "versio" : 9
+}, {
+  "koodiUri" : "koulutus_750804",
+  "koodiArvo" : "750804",
+  "metadata" : [ {
+    "nimi" : "Insinööri (ylempi AMK), energia- ja ympäristötekn.",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Ingenjör (högre YH), energi- och miljöteknik",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Master of Engineering (Polytechnic), Energy and Enviromental Engineering",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "koulutus_750805",
+  "koodiArvo" : "750805",
+  "metadata" : [ {
+    "nimi" : "Insinööri (ylempi AMK), projekti- ja myyntijohtaminen",
+    "lyhytNimi" : "Insinööri (ylempi AMK), projekti- ja myyntijohtaminen",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Ingenjör (högre yh), projekt- och säljledning",
+    "lyhytNimi" : "Ingenjör (högre yh), projekt- och säljledning",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Master of Engineering (Polytechnic), project and sales management",
+    "lyhytNimi" : "Master of Engineering (Polytechnic), project and sales management",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
 }, {
   "koodiUri" : "koulutus_750899",
   "koodiArvo" : "750899",
@@ -42273,6 +42333,23 @@
   } ],
   "versio" : 9
 }, {
+  "koodiUri" : "koulutus_772601",
+  "koodiArvo" : "772601",
+  "metadata" : [ {
+    "nimi" : "Fil.Maist., Transitionaalinen lääket.",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Fil.mag., transitional medicin",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Master of Arts, Transitional Medicine",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "koulutus_772900",
   "koodiArvo" : "772900",
   "metadata" : [ {
@@ -42667,7 +42744,8 @@
   "koodiUri" : "koulutus_781501",
   "koodiArvo" : "781501",
   "metadata" : [ {
-    "nimi" : "Poliisin päällystökoulutus (Ylempi AMK)",
+    "nimi" : "Poliisi (ylempi AMK)",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   } ],
   "versio" : 4
