@@ -50,7 +50,8 @@ case class YlioppilastutkinnonTutkintokerta(koodiarvo: String, vuosi: Int, vuode
 
 case class YlioppilaskokeenArviointi(
   @KoodistoUri("koskiyoarvosanat")
-  arvosana: Koodistokoodiviite
+  arvosana: Koodistokoodiviite,
+  pisteet: Option[Int]
 ) extends KoodistostaLöytyväArviointi {
   override def arviointipäivä = None
   override def arvioitsijat = None

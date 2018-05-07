@@ -56,7 +56,7 @@ case class YtrOppijaConverter(oppilaitosRepository: OppilaitosRepository, koodis
     YlioppilastutkinnonKokeenSuoritus(
       koulutusmoduuli = YlioppilasTutkinnonKoe(tunniste),
       tutkintokerta = tutkintokerta,
-      arviointi = Some(List(YlioppilaskokeenArviointi(requiredKoodi("koskiyoarvosanat", exam.grade)))),
+      arviointi = Some(List(YlioppilaskokeenArviointi(requiredKoodi("koskiyoarvosanat", exam.grade), exam.points))),
       tyyppi = requiredKoodi("suorituksentyyppi", "ylioppilastutkinnonkoe")
     )
   }.orElse {
