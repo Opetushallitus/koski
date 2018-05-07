@@ -10,6 +10,7 @@ trait PiwikNodes {
   def piwikTrackingScriptLoader(piwikHttpStatusCode: Option[Int] = None): Seq[Node] =
     <script type="text/javascript">
       {CommentedPCData("""
+      console.log('piwikTrackingScriptLoader')
       window._paq = window._paq || []
       _paq.push(['trackPageView', """ + mkPageTitleForJsEval(piwikHttpStatusCode) + """])
       ;(function() {""" + mkPiwikInit + """})()
@@ -38,10 +39,12 @@ trait PiwikNodes {
       // allow access to `window._paq` for tests, delete it after timeout to conserve memory
       // if this value is too short, piwikTrackingSpec will fail occasionally (especially when run on slow server)
       """
-      setTimeout(function removePiwik() { delete window._paq }, 20000)
+      console.log('mkPiwikInit, piwikSiteId is empty')
+      setTimeout(function removePiwik() { console.log('deleting window._paq'); delete window._paq }, 20000)
       """
     } else {
       """
+      console.log('mkPiwikInit, piwikSiteId NOT EMPTY?')
       var u = 'https://analytiikka.opintopolku.fi/piwik/'
       _paq.push(['setTrackerUrl', u+'piwik.php'])
       _paq.push(['setSiteId', '""" + piwikSiteId + """'])
