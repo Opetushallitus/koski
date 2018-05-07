@@ -2,13 +2,13 @@
   "koodistoUri" : "arviointiasteikkoib",
   "versio" : 1,
   "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Arviointiasteikko ib"
+  }, {
     "kieli" : "SV",
     "nimi" : "Arviointiasteikko ib"
   }, {
     "kieli" : "EN",
-    "nimi" : "Arviointiasteikko ib"
-  }, {
-    "kieli" : "FI",
     "nimi" : "Arviointiasteikko ib"
   } ],
   "codesGroupUri" : "http://koski",

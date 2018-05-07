@@ -2,13 +2,13 @@
   "koodistoUri" : "aineryhmaib",
   "versio" : 1,
   "metadata" : [ {
-    "kieli" : "EN",
-    "nimi" : "Aineryhma ib"
-  }, {
     "kieli" : "FI",
     "nimi" : "Aineryhma ib"
   }, {
     "kieli" : "SV",
+    "nimi" : "Aineryhma ib"
+  }, {
+    "kieli" : "EN",
     "nimi" : "Aineryhma ib"
   } ],
   "codesGroupUri" : "http://koski",

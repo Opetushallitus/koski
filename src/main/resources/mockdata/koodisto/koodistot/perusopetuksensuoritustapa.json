@@ -2,15 +2,15 @@
   "koodistoUri" : "perusopetuksensuoritustapa",
   "versio" : 1,
   "metadata" : [ {
-    "kieli" : "EN",
-    "nimi" : "Perusopetuksen suoritustapa",
-    "kuvaus" : "Tutkinnon tai tutkinnon osan suoritustapa"
-  }, {
     "kieli" : "FI",
     "nimi" : "Perusopetuksen suoritustapa",
     "kuvaus" : "Tutkinnon tai tutkinnon osan suoritustapa"
   }, {
     "kieli" : "SV",
+    "nimi" : "Perusopetuksen suoritustapa",
+    "kuvaus" : "Tutkinnon tai tutkinnon osan suoritustapa"
+  }, {
+    "kieli" : "EN",
     "nimi" : "Perusopetuksen suoritustapa",
     "kuvaus" : "Tutkinnon tai tutkinnon osan suoritustapa"
   } ],

@@ -50,15 +50,15 @@
   "koodiUri" : "opiskeluoikeudentyyppi_ibtutkinto",
   "koodiArvo" : "ibtutkinto",
   "metadata" : [ {
-    "nimi" : "IB-examen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "IB-tutkinto",
     "lyhytNimi" : "IB-tutkinto",
     "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "IB-examen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -130,15 +130,15 @@
   "koodiUri" : "opiskeluoikeudentyyppi_perusopetuksenlisaopetus",
   "koodiArvo" : "perusopetuksenlisaopetus",
   "metadata" : [ {
-    "nimi" : "Påbyggnadsundervisning",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Perusopetuksen lisäopetus",
     "lyhytNimi" : "Perusopetuksen lisäopetus",
     "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Påbyggnadsundervisning",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -146,15 +146,15 @@
   "koodiUri" : "opiskeluoikeudentyyppi_perusopetus",
   "koodiArvo" : "perusopetus",
   "metadata" : [ {
-    "nimi" : "Grundläggande utbildning",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Perusopetus",
     "lyhytNimi" : "Perusopetus",
     "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grundläggande utbildning",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -162,15 +162,15 @@
   "koodiUri" : "opiskeluoikeudentyyppi_ylioppilastutkinto",
   "koodiArvo" : "ylioppilastutkinto",
   "metadata" : [ {
-    "nimi" : "Studentexamen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Ylioppilastutkinto",
     "lyhytNimi" : "Ylioppilastutkinto",
     "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studentexamen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

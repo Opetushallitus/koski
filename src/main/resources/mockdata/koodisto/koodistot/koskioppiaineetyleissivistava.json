@@ -2,15 +2,15 @@
   "koodistoUri" : "koskioppiaineetyleissivistava",
   "versio" : 1,
   "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Koski oppiaineet yleissivistava",
+    "kuvaus" : "Koski oppiaineet yleissivistava"
+  }, {
     "kieli" : "SV",
     "nimi" : "Koski oppiaineet yleissivistava",
     "kuvaus" : "Koski oppiaineet yleissivistava"
   }, {
     "kieli" : "EN",
-    "nimi" : "Koski oppiaineet yleissivistava",
-    "kuvaus" : "Koski oppiaineet yleissivistava"
-  }, {
-    "kieli" : "FI",
     "nimi" : "Koski oppiaineet yleissivistava",
     "kuvaus" : "Koski oppiaineet yleissivistava"
   } ],

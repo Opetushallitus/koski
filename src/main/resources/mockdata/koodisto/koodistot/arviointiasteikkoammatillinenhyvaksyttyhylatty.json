@@ -3,21 +3,18 @@
   "versio" : 1,
   "metadata" : [ {
     "kieli" : "FI",
-    "nimi" : "Arviointiasteikko hyväksytty/hylätty",
-    "kuvaus" : ""
-  }, {
-    "kieli" : "EN",
-    "nimi" : "Arviointiasteikko ammatillinen Hyväksytty/Hylätty",
-    "kuvaus" : ""
+    "nimi" : "Arviointiasteikko ammatillinen Hyväksytty/Hylätty"
   }, {
     "kieli" : "SV",
-    "nimi" : "Arviointiasteikko ammatillinen Hyväksytty/Hylätty",
-    "kuvaus" : ""
+    "nimi" : "Arviointiasteikko ammatillinen Hyväksytty/Hylätty"
+  }, {
+    "kieli" : "EN",
+    "nimi" : "Arviointiasteikko ammatillinen Hyväksytty/Hylätty"
   } ],
   "codesGroupUri" : "http://koski",
   "voimassaAlkuPvm" : "2015-10-05",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ ],
   "tila" : "LUONNOS",
-  "version" : 3
+  "version" : 0
 }

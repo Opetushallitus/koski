@@ -22,11 +22,11 @@
     "codesVersion" : 1,
     "passive" : false
   }, {
-    "codesUri" : "oppilaitostyyppifasetti",
+    "codesUri" : "oppilaitosnumero",
     "codesVersion" : 1,
     "passive" : false
   }, {
-    "codesUri" : "oppilaitosnumero",
+    "codesUri" : "oppilaitostyyppifasetti",
     "codesVersion" : 1,
     "passive" : false
   } ],

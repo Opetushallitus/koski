@@ -2,10 +2,6 @@
   "koodiUri" : "maatjavaltiot2_004",
   "koodiArvo" : "004",
   "metadata" : [ {
-    "nimi" : "Afghanistan",
-    "lyhytNimi" : "AF",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Afganistan",
     "lyhytNimi" : "AF",
     "kieli" : "FI"
@@ -13,6 +9,10 @@
     "nimi" : "Afghanistan",
     "lyhytNimi" : "AF",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Afghanistan",
+    "lyhytNimi" : "AF",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -21,7 +21,7 @@
   "metadata" : [ {
     "nimi" : "Albania",
     "lyhytNimi" : "AL",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Albanien",
     "lyhytNimi" : "AL",
@@ -29,7 +29,7 @@
   }, {
     "nimi" : "Albania",
     "lyhytNimi" : "AL",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -38,11 +38,11 @@
   "metadata" : [ {
     "nimi" : "Antarktis",
     "lyhytNimi" : "AQ",
-    "kieli" : "SV"
+    "kieli" : "FI"
   }, {
     "nimi" : "Antarktis",
     "lyhytNimi" : "AQ",
-    "kieli" : "FI"
+    "kieli" : "SV"
   }, {
     "nimi" : "Antarctica",
     "lyhytNimi" : "AQ",
@@ -55,15 +55,15 @@
   "metadata" : [ {
     "nimi" : "Algeria",
     "lyhytNimi" : "DZ",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "Algeria",
-    "lyhytNimi" : "DZ",
     "kieli" : "FI"
   }, {
     "nimi" : "Algeriet",
     "lyhytNimi" : "DZ",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Algeria",
+    "lyhytNimi" : "DZ",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -89,15 +89,15 @@
   "metadata" : [ {
     "nimi" : "Andorra",
     "lyhytNimi" : "AD",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Andorra",
+    "lyhytNimi" : "AD",
     "kieli" : "SV"
   }, {
     "nimi" : "Andorra",
     "lyhytNimi" : "AD",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Andorra",
-    "lyhytNimi" : "AD",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -106,21 +106,25 @@
   "metadata" : [ {
     "nimi" : "Angola",
     "lyhytNimi" : "AO",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "Angola",
-    "lyhytNimi" : "AO",
     "kieli" : "FI"
   }, {
     "nimi" : "Angola",
     "lyhytNimi" : "AO",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Angola",
+    "lyhytNimi" : "AO",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_028",
   "koodiArvo" : "028",
   "metadata" : [ {
+    "nimi" : "Antigua ja Barbuda",
+    "lyhytNimi" : "AG",
+    "kieli" : "FI"
+  }, {
     "nimi" : "Antigua och Barbuda",
     "lyhytNimi" : "AG",
     "kieli" : "SV"
@@ -128,10 +132,6 @@
     "nimi" : "Antigua and Barbuda",
     "lyhytNimi" : "AG",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Antigua ja Barbuda",
-    "lyhytNimi" : "AG",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -155,13 +155,13 @@
   "koodiUri" : "maatjavaltiot2_032",
   "koodiArvo" : "032",
   "metadata" : [ {
-    "nimi" : "Argentina",
-    "lyhytNimi" : "AR",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Argentiina",
     "lyhytNimi" : "AR",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Argentina",
+    "lyhytNimi" : "AR",
+    "kieli" : "SV"
   }, {
     "nimi" : "Argentina",
     "lyhytNimi" : "AR",
@@ -172,6 +172,10 @@
   "koodiUri" : "maatjavaltiot2_036",
   "koodiArvo" : "036",
   "metadata" : [ {
+    "nimi" : "Australia",
+    "lyhytNimi" : "AU",
+    "kieli" : "FI"
+  }, {
     "nimi" : "Australien",
     "lyhytNimi" : "AU",
     "kieli" : "SV"
@@ -179,44 +183,40 @@
     "nimi" : "Australia",
     "lyhytNimi" : "AU",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Australia",
-    "lyhytNimi" : "AU",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_040",
   "koodiArvo" : "040",
   "metadata" : [ {
-    "nimi" : "Austria",
+    "nimi" : "Itävalta",
     "lyhytNimi" : "AT",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Österrike",
     "lyhytNimi" : "AT",
     "kieli" : "SV"
   }, {
-    "nimi" : "Itävalta",
+    "nimi" : "Austria",
     "lyhytNimi" : "AT",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_044",
   "koodiArvo" : "044",
   "metadata" : [ {
-    "nimi" : "Bahamas",
+    "nimi" : "Bahama",
     "lyhytNimi" : "BS",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Bahamas",
     "lyhytNimi" : "BS",
     "kieli" : "SV"
   }, {
-    "nimi" : "Bahama",
+    "nimi" : "Bahamas",
     "lyhytNimi" : "BS",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -225,15 +225,15 @@
   "metadata" : [ {
     "nimi" : "Bahrain",
     "lyhytNimi" : "BH",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Bahrain",
+    "lyhytNimi" : "BH",
     "kieli" : "SV"
   }, {
     "nimi" : "Bahrain",
     "lyhytNimi" : "BH",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Bahrain",
-    "lyhytNimi" : "BH",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -259,15 +259,15 @@
   "metadata" : [ {
     "nimi" : "Armenia",
     "lyhytNimi" : "AM",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "Armenia",
-    "lyhytNimi" : "AM",
     "kieli" : "FI"
   }, {
     "nimi" : "Armenien",
     "lyhytNimi" : "AM",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Armenia",
+    "lyhytNimi" : "AM",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -276,11 +276,11 @@
   "metadata" : [ {
     "nimi" : "Barbados",
     "lyhytNimi" : "BB",
-    "kieli" : "SV"
+    "kieli" : "FI"
   }, {
     "nimi" : "Barbados",
     "lyhytNimi" : "BB",
-    "kieli" : "FI"
+    "kieli" : "SV"
   }, {
     "nimi" : "Barbados",
     "lyhytNimi" : "BB",
@@ -291,10 +291,6 @@
   "koodiUri" : "maatjavaltiot2_056",
   "koodiArvo" : "056",
   "metadata" : [ {
-    "nimi" : "Belgium",
-    "lyhytNimi" : "BE",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Belgia",
     "lyhytNimi" : "BE",
     "kieli" : "FI"
@@ -302,6 +298,10 @@
     "nimi" : "Belgien",
     "lyhytNimi" : "BE",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Belgium",
+    "lyhytNimi" : "BE",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -327,7 +327,7 @@
   "metadata" : [ {
     "nimi" : "Bhutan",
     "lyhytNimi" : "BT",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Bhutan",
     "lyhytNimi" : "BT",
@@ -335,7 +335,7 @@
   }, {
     "nimi" : "Bhutan",
     "lyhytNimi" : "BT",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -344,21 +344,25 @@
   "metadata" : [ {
     "nimi" : "Bolivia",
     "lyhytNimi" : "BO",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "Bolivia",
-    "lyhytNimi" : "BO",
     "kieli" : "FI"
   }, {
     "nimi" : "Bolivia",
     "lyhytNimi" : "BO",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Bolivia",
+    "lyhytNimi" : "BO",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_070",
   "koodiArvo" : "070",
   "metadata" : [ {
+    "nimi" : "Bosnia ja Hertsegovina",
+    "lyhytNimi" : "BA",
+    "kieli" : "FI"
+  }, {
     "nimi" : "Bosnien och Hercegovina",
     "lyhytNimi" : "BA",
     "kieli" : "SV"
@@ -366,10 +370,6 @@
     "nimi" : "Bosnia and Herzegovina",
     "lyhytNimi" : "BA",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Bosnia ja Hertsegovina",
-    "lyhytNimi" : "BA",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -378,7 +378,7 @@
   "metadata" : [ {
     "nimi" : "Botswana",
     "lyhytNimi" : "BW",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Botswana",
     "lyhytNimi" : "BW",
@@ -386,37 +386,37 @@
   }, {
     "nimi" : "Botswana",
     "lyhytNimi" : "BW",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_074",
   "koodiArvo" : "074",
   "metadata" : [ {
-    "nimi" : "Bouvet Island",
+    "nimi" : "Bouvet'nsaari",
     "lyhytNimi" : "BV",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Bouvetön",
     "lyhytNimi" : "BV",
     "kieli" : "SV"
   }, {
-    "nimi" : "Bouvet'nsaari",
+    "nimi" : "Bouvet Island",
     "lyhytNimi" : "BV",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_076",
   "koodiArvo" : "076",
   "metadata" : [ {
-    "nimi" : "Brasilien",
-    "lyhytNimi" : "BR",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Brasilia",
     "lyhytNimi" : "BR",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Brasilien",
+    "lyhytNimi" : "BR",
+    "kieli" : "SV"
   }, {
     "nimi" : "Brazil",
     "lyhytNimi" : "BR",
@@ -429,25 +429,21 @@
   "metadata" : [ {
     "nimi" : "Belize",
     "lyhytNimi" : "BZ",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "Belize",
-    "lyhytNimi" : "BZ",
     "kieli" : "FI"
   }, {
     "nimi" : "Belize",
     "lyhytNimi" : "BZ",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Belize",
+    "lyhytNimi" : "BZ",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_086",
   "koodiArvo" : "086",
   "metadata" : [ {
-    "nimi" : "British Indian Ocean Territory",
-    "lyhytNimi" : "IO",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Brittiläinen Intian valtameren alue",
     "lyhytNimi" : "IO",
     "kieli" : "FI"
@@ -455,16 +451,16 @@
     "nimi" : "Brittiska territoriet i Indiska Oceanen",
     "lyhytNimi" : "IO",
     "kieli" : "SV"
+  }, {
+    "nimi" : "British Indian Ocean Territory",
+    "lyhytNimi" : "IO",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_090",
   "koodiArvo" : "090",
   "metadata" : [ {
-    "nimi" : "Solomon Islands",
-    "lyhytNimi" : "SB",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Salomonsaaret",
     "lyhytNimi" : "SB",
     "kieli" : "FI"
@@ -472,23 +468,27 @@
     "nimi" : "Salomonöarna",
     "lyhytNimi" : "SB",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Solomon Islands",
+    "lyhytNimi" : "SB",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_092",
   "koodiArvo" : "092",
   "metadata" : [ {
-    "nimi" : "Virgin Island, British",
+    "nimi" : "Brittiläiset Neitsytsaaret",
     "lyhytNimi" : "VG",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Brittiska Jungfruöarna",
     "lyhytNimi" : "VG",
     "kieli" : "SV"
   }, {
-    "nimi" : "Brittiläiset Neitsytsaaret",
+    "nimi" : "Virgin Island, British",
     "lyhytNimi" : "VG",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -497,11 +497,11 @@
   "metadata" : [ {
     "nimi" : "Brunei",
     "lyhytNimi" : "BN",
-    "kieli" : "SV"
+    "kieli" : "FI"
   }, {
     "nimi" : "Brunei",
     "lyhytNimi" : "BN",
-    "kieli" : "FI"
+    "kieli" : "SV"
   }, {
     "nimi" : "Brunei",
     "lyhytNimi" : "BN",
@@ -514,7 +514,7 @@
   "metadata" : [ {
     "nimi" : "Bulgaria",
     "lyhytNimi" : "BG",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Bulgarien",
     "lyhytNimi" : "BG",
@@ -522,7 +522,7 @@
   }, {
     "nimi" : "Bulgaria",
     "lyhytNimi" : "BG",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -531,15 +531,15 @@
   "metadata" : [ {
     "nimi" : "Myanmar",
     "lyhytNimi" : "MM",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "Myanmar",
-    "lyhytNimi" : "MM",
     "kieli" : "FI"
   }, {
     "nimi" : "Myanmar",
     "lyhytNimi" : "MM",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Myanmar",
+    "lyhytNimi" : "MM",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -548,11 +548,11 @@
   "metadata" : [ {
     "nimi" : "Burundi",
     "lyhytNimi" : "BI",
-    "kieli" : "SV"
+    "kieli" : "FI"
   }, {
     "nimi" : "Burundi",
     "lyhytNimi" : "BI",
-    "kieli" : "FI"
+    "kieli" : "SV"
   }, {
     "nimi" : "Burundi",
     "lyhytNimi" : "BI",
@@ -563,6 +563,10 @@
   "koodiUri" : "maatjavaltiot2_112",
   "koodiArvo" : "112",
   "metadata" : [ {
+    "nimi" : "Valko-Venäjä",
+    "lyhytNimi" : "BY",
+    "kieli" : "FI"
+  }, {
     "nimi" : "Vitryssland",
     "lyhytNimi" : "BY",
     "kieli" : "SV"
@@ -570,20 +574,12 @@
     "nimi" : "Belarus",
     "lyhytNimi" : "BY",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Valko-Venäjä",
-    "lyhytNimi" : "BY",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_116",
   "koodiArvo" : "116",
   "metadata" : [ {
-    "nimi" : "Cambodia",
-    "lyhytNimi" : "KH",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Kambodza",
     "lyhytNimi" : "KH",
     "kieli" : "FI"
@@ -591,40 +587,44 @@
     "nimi" : "Kambodja",
     "lyhytNimi" : "KH",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Cambodia",
+    "lyhytNimi" : "KH",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_120",
   "koodiArvo" : "120",
   "metadata" : [ {
-    "nimi" : "Cameroon",
+    "nimi" : "Kamerun",
     "lyhytNimi" : "CM",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Kamerun",
     "lyhytNimi" : "CM",
     "kieli" : "SV"
   }, {
-    "nimi" : "Kamerun",
+    "nimi" : "Cameroon",
     "lyhytNimi" : "CM",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_124",
   "koodiArvo" : "124",
   "metadata" : [ {
-    "nimi" : "Canada",
+    "nimi" : "Kanada",
     "lyhytNimi" : "CA",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Kanada",
     "lyhytNimi" : "CA",
     "kieli" : "SV"
   }, {
-    "nimi" : "Kanada",
+    "nimi" : "Canada",
     "lyhytNimi" : "CA",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -635,36 +635,40 @@
     "lyhytNimi" : "CV",
     "kieli" : "FI"
   }, {
-    "nimi" : "Capo Verde",
-    "lyhytNimi" : "CV",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Kap Verde",
     "lyhytNimi" : "CV",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Capo Verde",
+    "lyhytNimi" : "CV",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_136",
   "koodiArvo" : "136",
   "metadata" : [ {
-    "nimi" : "Cayman Islands",
+    "nimi" : "Caymansaaret",
     "lyhytNimi" : "KY",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Caymanöarna",
     "lyhytNimi" : "KY",
     "kieli" : "SV"
   }, {
-    "nimi" : "Caymansaaret",
+    "nimi" : "Cayman Islands",
     "lyhytNimi" : "KY",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_140",
   "koodiArvo" : "140",
   "metadata" : [ {
+    "nimi" : "Keski-Afrikkan tasavalta",
+    "lyhytNimi" : "CF",
+    "kieli" : "FI"
+  }, {
     "nimi" : "Centralafrikanska republiken",
     "lyhytNimi" : "CF",
     "kieli" : "SV"
@@ -672,10 +676,6 @@
     "nimi" : "Central African Republic",
     "lyhytNimi" : "CF",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Keski-Afrikkan tasavalta",
-    "lyhytNimi" : "CF",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -684,21 +684,25 @@
   "metadata" : [ {
     "nimi" : "Sri Lanka",
     "lyhytNimi" : "LK",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "Sri Lanka",
-    "lyhytNimi" : "LK",
     "kieli" : "FI"
   }, {
     "nimi" : "Sri Lanka",
     "lyhytNimi" : "LK",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Sri Lanka",
+    "lyhytNimi" : "LK",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_148",
   "koodiArvo" : "148",
   "metadata" : [ {
+    "nimi" : "Tšad",
+    "lyhytNimi" : "TD",
+    "kieli" : "FI"
+  }, {
     "nimi" : "Tchad",
     "lyhytNimi" : "TD",
     "kieli" : "SV"
@@ -706,10 +710,6 @@
     "nimi" : "Chad",
     "lyhytNimi" : "TD",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Tšad",
-    "lyhytNimi" : "TD",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -718,7 +718,7 @@
   "metadata" : [ {
     "nimi" : "Chile",
     "lyhytNimi" : "CL",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Chile",
     "lyhytNimi" : "CL",
@@ -726,24 +726,24 @@
   }, {
     "nimi" : "Chile",
     "lyhytNimi" : "CL",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_156",
   "koodiArvo" : "156",
   "metadata" : [ {
-    "nimi" : "China",
+    "nimi" : "Kiina",
     "lyhytNimi" : "CN",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Kina",
     "lyhytNimi" : "CN",
     "kieli" : "SV"
   }, {
-    "nimi" : "Kiina",
+    "nimi" : "China",
     "lyhytNimi" : "CN",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -752,62 +752,62 @@
   "metadata" : [ {
     "nimi" : "Taiwan",
     "lyhytNimi" : "TW",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Taiwan",
+    "lyhytNimi" : "TW",
     "kieli" : "SV"
   }, {
     "nimi" : "Taiwan, Province of China",
     "lyhytNimi" : "TW",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Taiwan",
-    "lyhytNimi" : "TW",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_162",
   "koodiArvo" : "162",
   "metadata" : [ {
-    "nimi" : "Christmas Island",
+    "nimi" : "Joulusaari",
     "lyhytNimi" : "CX",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Julön",
     "lyhytNimi" : "CX",
     "kieli" : "SV"
   }, {
-    "nimi" : "Joulusaari",
+    "nimi" : "Christmas Island",
     "lyhytNimi" : "CX",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_166",
   "koodiArvo" : "166",
   "metadata" : [ {
-    "nimi" : "Cocos (Keeling) Islands",
+    "nimi" : "Kookossaaret",
     "lyhytNimi" : "CC",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Cocosöarna",
     "lyhytNimi" : "CC",
     "kieli" : "SV"
   }, {
-    "nimi" : "Kookossaaret",
+    "nimi" : "Cocos (Keeling) Islands",
     "lyhytNimi" : "CC",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_170",
   "koodiArvo" : "170",
   "metadata" : [ {
-    "nimi" : "Columbia",
-    "lyhytNimi" : "CO",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kolumbia",
     "lyhytNimi" : "CO",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Columbia",
+    "lyhytNimi" : "CO",
+    "kieli" : "SV"
   }, {
     "nimi" : "Colombia",
     "lyhytNimi" : "CO",
@@ -818,13 +818,13 @@
   "koodiUri" : "maatjavaltiot2_174",
   "koodiArvo" : "174",
   "metadata" : [ {
-    "nimi" : "Komorerna",
-    "lyhytNimi" : "KM",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Komorit",
     "lyhytNimi" : "KM",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Komorerna",
+    "lyhytNimi" : "KM",
+    "kieli" : "SV"
   }, {
     "nimi" : "Comoros",
     "lyhytNimi" : "KM",
@@ -837,7 +837,7 @@
   "metadata" : [ {
     "nimi" : "Mayotte",
     "lyhytNimi" : "YT",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Mayotte",
     "lyhytNimi" : "YT",
@@ -845,34 +845,30 @@
   }, {
     "nimi" : "Mayotte",
     "lyhytNimi" : "YT",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_178",
   "koodiArvo" : "178",
   "metadata" : [ {
-    "nimi" : "Congo",
+    "nimi" : "Kongo (Kongo-Brazzaville)",
     "lyhytNimi" : "CG",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Kongo (Kongo-Brazzaville)",
     "lyhytNimi" : "CG",
     "kieli" : "SV"
   }, {
-    "nimi" : "Kongo (Kongo-Brazzaville)",
+    "nimi" : "Congo",
     "lyhytNimi" : "CG",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_180",
   "koodiArvo" : "180",
   "metadata" : [ {
-    "nimi" : "Congo, The Democratic Republic of the",
-    "lyhytNimi" : "ZR",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Kongo (Kongo-Kinshasa)",
     "lyhytNimi" : "ZR",
     "kieli" : "FI"
@@ -880,6 +876,10 @@
     "nimi" : "Kongo (Kongo-Kinshasa)",
     "lyhytNimi" : "ZR",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Congo, The Democratic Republic of the",
+    "lyhytNimi" : "ZR",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -905,11 +905,11 @@
   "metadata" : [ {
     "nimi" : "Costa Rica",
     "lyhytNimi" : "CR",
-    "kieli" : "SV"
+    "kieli" : "FI"
   }, {
     "nimi" : "Costa Rica",
     "lyhytNimi" : "CR",
-    "kieli" : "FI"
+    "kieli" : "SV"
   }, {
     "nimi" : "Costa Rica",
     "lyhytNimi" : "CR",
@@ -920,34 +920,34 @@
   "koodiUri" : "maatjavaltiot2_191",
   "koodiArvo" : "191",
   "metadata" : [ {
-    "nimi" : "Croatia",
+    "nimi" : "Kroatia",
     "lyhytNimi" : "HR",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Kroatien",
     "lyhytNimi" : "HR",
     "kieli" : "SV"
   }, {
-    "nimi" : "Kroatia",
+    "nimi" : "Croatia",
     "lyhytNimi" : "HR",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_192",
   "koodiArvo" : "192",
   "metadata" : [ {
-    "nimi" : "Cuba",
+    "nimi" : "Kuuba",
     "lyhytNimi" : "CU",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Kuba",
     "lyhytNimi" : "CU",
     "kieli" : "SV"
   }, {
-    "nimi" : "Kuuba",
+    "nimi" : "Cuba",
     "lyhytNimi" : "CU",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -958,30 +958,30 @@
     "lyhytNimi" : "CY",
     "kieli" : "FI"
   }, {
-    "nimi" : "Cyprus",
-    "lyhytNimi" : "CY",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Cypern",
     "lyhytNimi" : "CY",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Cyprus",
+    "lyhytNimi" : "CY",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_203",
   "koodiArvo" : "203",
   "metadata" : [ {
-    "nimi" : "Czech Republic",
+    "nimi" : "Tšekki",
     "lyhytNimi" : "CZ",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Tjeckien",
     "lyhytNimi" : "CZ",
     "kieli" : "SV"
   }, {
-    "nimi" : "Tšekki",
+    "nimi" : "Czech Republic",
     "lyhytNimi" : "CZ",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -994,21 +994,17 @@
   }, {
     "nimi" : "Benin",
     "lyhytNimi" : "BJ",
-    "kieli" : "EN"
+    "kieli" : "SV"
   }, {
     "nimi" : "Benin",
     "lyhytNimi" : "BJ",
-    "kieli" : "SV"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_208",
   "koodiArvo" : "208",
   "metadata" : [ {
-    "nimi" : "Denmark",
-    "lyhytNimi" : "DK",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Tanska",
     "lyhytNimi" : "DK",
     "kieli" : "FI"
@@ -1016,6 +1012,10 @@
     "nimi" : "Danmark",
     "lyhytNimi" : "DK",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Denmark",
+    "lyhytNimi" : "DK",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -1024,11 +1024,11 @@
   "metadata" : [ {
     "nimi" : "Dominica",
     "lyhytNimi" : "DM",
-    "kieli" : "SV"
+    "kieli" : "FI"
   }, {
     "nimi" : "Dominica",
     "lyhytNimi" : "DM",
-    "kieli" : "FI"
+    "kieli" : "SV"
   }, {
     "nimi" : "Dominica",
     "lyhytNimi" : "DM",
@@ -1039,13 +1039,13 @@
   "koodiUri" : "maatjavaltiot2_214",
   "koodiArvo" : "214",
   "metadata" : [ {
-    "nimi" : "Dominikanska republiken",
-    "lyhytNimi" : "DO",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Dominikaaninen tasavalta",
     "lyhytNimi" : "DO",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Dominikanska republiken",
+    "lyhytNimi" : "DO",
+    "kieli" : "SV"
   }, {
     "nimi" : "Dominican Republic",
     "lyhytNimi" : "DO",
@@ -1062,11 +1062,11 @@
   }, {
     "nimi" : "Ecuador",
     "lyhytNimi" : "EC",
-    "kieli" : "EN"
+    "kieli" : "SV"
   }, {
     "nimi" : "Ecuador",
     "lyhytNimi" : "EC",
-    "kieli" : "SV"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -1075,7 +1075,7 @@
   "metadata" : [ {
     "nimi" : "El Salvador",
     "lyhytNimi" : "SV",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "El Salvador",
     "lyhytNimi" : "SV",
@@ -1083,7 +1083,7 @@
   }, {
     "nimi" : "El Salvador",
     "lyhytNimi" : "SV",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -1094,13 +1094,13 @@
     "lyhytNimi" : "GQ",
     "kieli" : "FI"
   }, {
-    "nimi" : "Equatorial Guinea",
-    "lyhytNimi" : "GQ",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Ekvatorialguinea",
     "lyhytNimi" : "GQ",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Equatorial Guinea",
+    "lyhytNimi" : "GQ",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -1111,13 +1111,13 @@
     "lyhytNimi" : "ET",
     "kieli" : "FI"
   }, {
-    "nimi" : "Ethiopia",
-    "lyhytNimi" : "ET",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Etiopien",
     "lyhytNimi" : "ET",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Ethiopia",
+    "lyhytNimi" : "ET",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -1126,28 +1126,28 @@
   "metadata" : [ {
     "nimi" : "Eritrea",
     "lyhytNimi" : "ER",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "Eritrea",
-    "lyhytNimi" : "ER",
     "kieli" : "FI"
   }, {
     "nimi" : "Eritrea",
     "lyhytNimi" : "ER",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Eritrea",
+    "lyhytNimi" : "ER",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_233",
   "koodiArvo" : "233",
   "metadata" : [ {
-    "nimi" : "Estland",
-    "lyhytNimi" : "EE",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Viro",
     "lyhytNimi" : "EE",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Estland",
+    "lyhytNimi" : "EE",
+    "kieli" : "SV"
   }, {
     "nimi" : "Estonia",
     "lyhytNimi" : "EE",
@@ -1158,47 +1158,47 @@
   "koodiUri" : "maatjavaltiot2_234",
   "koodiArvo" : "234",
   "metadata" : [ {
-    "nimi" : "Faroe Islands",
+    "nimi" : "Färsaaret",
     "lyhytNimi" : "FO",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Färöarna",
     "lyhytNimi" : "FO",
     "kieli" : "SV"
   }, {
-    "nimi" : "Färsaaret",
+    "nimi" : "Faroe Islands",
     "lyhytNimi" : "FO",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_238",
   "koodiArvo" : "238",
   "metadata" : [ {
-    "nimi" : "Falkland Islands",
+    "nimi" : "Falklandinsaaret",
     "lyhytNimi" : "FK",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Falklandsöarna",
     "lyhytNimi" : "FK",
     "kieli" : "SV"
   }, {
-    "nimi" : "Falklandinsaaret",
+    "nimi" : "Falkland Islands",
     "lyhytNimi" : "FK",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_239",
   "koodiArvo" : "239",
   "metadata" : [ {
-    "nimi" : "Sydgeorgien och Sydsandwichöarna",
-    "lyhytNimi" : "GS",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Etelä-Georgia ja Eteläiset Sandwichsaaret",
     "lyhytNimi" : "GS",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Sydgeorgien och Sydsandwichöarna",
+    "lyhytNimi" : "GS",
+    "kieli" : "SV"
   }, {
     "nimi" : "South Georgia and the South Sandwich Islands",
     "lyhytNimi" : "GS",
@@ -1226,17 +1226,17 @@
   "koodiUri" : "maatjavaltiot2_246",
   "koodiArvo" : "246",
   "metadata" : [ {
-    "nimi" : "Finland",
+    "nimi" : "Suomi",
     "lyhytNimi" : "FI",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Finland",
     "lyhytNimi" : "FI",
     "kieli" : "SV"
   }, {
-    "nimi" : "Suomi",
+    "nimi" : "Finland",
     "lyhytNimi" : "FI",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -1247,19 +1247,23 @@
     "lyhytNimi" : "AX",
     "kieli" : "FI"
   }, {
-    "nimi" : "Åland Islands",
-    "lyhytNimi" : "AX",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Åland",
     "lyhytNimi" : "AX",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Åland Islands",
+    "lyhytNimi" : "AX",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_250",
   "koodiArvo" : "250",
   "metadata" : [ {
+    "nimi" : "Ranska",
+    "lyhytNimi" : "FR",
+    "kieli" : "FI"
+  }, {
     "nimi" : "Frankrike",
     "lyhytNimi" : "FR",
     "kieli" : "SV"
@@ -1267,10 +1271,6 @@
     "nimi" : "France",
     "lyhytNimi" : "FR",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Ranska",
-    "lyhytNimi" : "FR",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -1281,19 +1281,23 @@
     "lyhytNimi" : "GF",
     "kieli" : "FI"
   }, {
-    "nimi" : "French Guiana",
-    "lyhytNimi" : "GF",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Franska Guyana",
     "lyhytNimi" : "GF",
     "kieli" : "SV"
+  }, {
+    "nimi" : "French Guiana",
+    "lyhytNimi" : "GF",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_258",
   "koodiArvo" : "258",
   "metadata" : [ {
+    "nimi" : "Ranskan Polynesia",
+    "lyhytNimi" : "PF",
+    "kieli" : "FI"
+  }, {
     "nimi" : "Franska Polynesien",
     "lyhytNimi" : "PF",
     "kieli" : "SV"
@@ -1301,27 +1305,23 @@
     "nimi" : "French Plynesia",
     "lyhytNimi" : "PF",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Ranskan Polynesia",
-    "lyhytNimi" : "PF",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_260",
   "koodiArvo" : "260",
   "metadata" : [ {
-    "nimi" : "French Southern Territories",
+    "nimi" : "Ranskan eteläiset alueet",
     "lyhytNimi" : "TF",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "De franska territorierna i södra Indiska Oceanen",
     "lyhytNimi" : "TF",
     "kieli" : "SV"
   }, {
-    "nimi" : "Ranskan eteläiset alueet",
+    "nimi" : "French Southern Territories",
     "lyhytNimi" : "TF",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -1330,11 +1330,11 @@
   "metadata" : [ {
     "nimi" : "Djibouti",
     "lyhytNimi" : "DJ",
-    "kieli" : "SV"
+    "kieli" : "FI"
   }, {
     "nimi" : "Djibouti",
     "lyhytNimi" : "DJ",
-    "kieli" : "FI"
+    "kieli" : "SV"
   }, {
     "nimi" : "Djibouti",
     "lyhytNimi" : "DJ",
@@ -1347,7 +1347,7 @@
   "metadata" : [ {
     "nimi" : "Gabon",
     "lyhytNimi" : "GA",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Gabon",
     "lyhytNimi" : "GA",
@@ -1355,20 +1355,20 @@
   }, {
     "nimi" : "Gabon",
     "lyhytNimi" : "GA",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_268",
   "koodiArvo" : "268",
   "metadata" : [ {
-    "nimi" : "Georgien",
-    "lyhytNimi" : "GE",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Georgia",
     "lyhytNimi" : "GE",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Georgien",
+    "lyhytNimi" : "GE",
+    "kieli" : "SV"
   }, {
     "nimi" : "Georgia",
     "lyhytNimi" : "GE",
@@ -1381,7 +1381,7 @@
   "metadata" : [ {
     "nimi" : "Gambia",
     "lyhytNimi" : "GM",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Gambia",
     "lyhytNimi" : "GM",
@@ -1389,7 +1389,7 @@
   }, {
     "nimi" : "Gambia",
     "lyhytNimi" : "GM",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -1400,30 +1400,30 @@
     "lyhytNimi" : "PS",
     "kieli" : "FI"
   }, {
-    "nimi" : "Palestine",
-    "lyhytNimi" : "PS",
-    "kieli" : "EN"
-  }, {
     "nimi" : "De palestinska områdena",
     "lyhytNimi" : "PS",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Palestine",
+    "lyhytNimi" : "PS",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_276",
   "koodiArvo" : "276",
   "metadata" : [ {
-    "nimi" : "Germany",
+    "nimi" : "Saksa",
     "lyhytNimi" : "DE",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Tyskland",
     "lyhytNimi" : "DE",
     "kieli" : "SV"
   }, {
-    "nimi" : "Saksa",
+    "nimi" : "Germany",
     "lyhytNimi" : "DE",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -1432,15 +1432,15 @@
   "metadata" : [ {
     "nimi" : "Ghana",
     "lyhytNimi" : "GH",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "Ghana",
-    "lyhytNimi" : "GH",
     "kieli" : "FI"
   }, {
     "nimi" : "Ghana",
     "lyhytNimi" : "GH",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Ghana",
+    "lyhytNimi" : "GH",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -1466,11 +1466,11 @@
   "metadata" : [ {
     "nimi" : "Kiribati",
     "lyhytNimi" : "KI",
-    "kieli" : "SV"
+    "kieli" : "FI"
   }, {
     "nimi" : "Kiribati",
     "lyhytNimi" : "KI",
-    "kieli" : "FI"
+    "kieli" : "SV"
   }, {
     "nimi" : "Kiribati",
     "lyhytNimi" : "KI",
@@ -1481,10 +1481,6 @@
   "koodiUri" : "maatjavaltiot2_300",
   "koodiArvo" : "300",
   "metadata" : [ {
-    "nimi" : "Greece",
-    "lyhytNimi" : "GR",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Kreikka",
     "lyhytNimi" : "GR",
     "kieli" : "FI"
@@ -1492,23 +1488,27 @@
     "nimi" : "Grekland",
     "lyhytNimi" : "GR",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Greece",
+    "lyhytNimi" : "GR",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_304",
   "koodiArvo" : "304",
   "metadata" : [ {
-    "nimi" : "Greenland",
+    "nimi" : "Grönlanti",
     "lyhytNimi" : "GL",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Grönland",
     "lyhytNimi" : "GL",
     "kieli" : "SV"
   }, {
-    "nimi" : "Grönlanti",
+    "nimi" : "Greenland",
     "lyhytNimi" : "GL",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -1517,7 +1517,7 @@
   "metadata" : [ {
     "nimi" : "Grenada",
     "lyhytNimi" : "GD",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Grenada",
     "lyhytNimi" : "GD",
@@ -1525,7 +1525,7 @@
   }, {
     "nimi" : "Grenada",
     "lyhytNimi" : "GD",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -1534,15 +1534,15 @@
   "metadata" : [ {
     "nimi" : "Guadeloupe",
     "lyhytNimi" : "GP",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "Guadeloupe",
-    "lyhytNimi" : "GP",
     "kieli" : "FI"
   }, {
     "nimi" : "Guadeloupe",
     "lyhytNimi" : "GP",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Guadeloupe",
+    "lyhytNimi" : "GP",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -1551,11 +1551,11 @@
   "metadata" : [ {
     "nimi" : "Guam",
     "lyhytNimi" : "GU",
-    "kieli" : "SV"
+    "kieli" : "FI"
   }, {
     "nimi" : "Guam",
     "lyhytNimi" : "GU",
-    "kieli" : "FI"
+    "kieli" : "SV"
   }, {
     "nimi" : "Guam",
     "lyhytNimi" : "GU",
@@ -1568,15 +1568,15 @@
   "metadata" : [ {
     "nimi" : "Guatemala",
     "lyhytNimi" : "GT",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Guatemala",
+    "lyhytNimi" : "GT",
     "kieli" : "SV"
   }, {
     "nimi" : "Guatemala",
     "lyhytNimi" : "GT",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Guatemala",
-    "lyhytNimi" : "GT",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -1602,11 +1602,11 @@
   "metadata" : [ {
     "nimi" : "Guyana",
     "lyhytNimi" : "GY",
-    "kieli" : "SV"
+    "kieli" : "FI"
   }, {
     "nimi" : "Guyana",
     "lyhytNimi" : "GY",
-    "kieli" : "FI"
+    "kieli" : "SV"
   }, {
     "nimi" : "Guyana",
     "lyhytNimi" : "GY",
@@ -1619,25 +1619,21 @@
   "metadata" : [ {
     "nimi" : "Haiti",
     "lyhytNimi" : "HT",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Haiti",
+    "lyhytNimi" : "HT",
     "kieli" : "SV"
   }, {
     "nimi" : "Haiti",
     "lyhytNimi" : "HT",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Haiti",
-    "lyhytNimi" : "HT",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_334",
   "koodiArvo" : "334",
   "metadata" : [ {
-    "nimi" : "Heard Island and McDonald Islands",
-    "lyhytNimi" : "HM",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Heard ja McDonaldinsaaret",
     "lyhytNimi" : "HM",
     "kieli" : "FI"
@@ -1645,6 +1641,10 @@
     "nimi" : "Heard och McDonaldöarna",
     "lyhytNimi" : "HM",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Heard Island and McDonald Islands",
+    "lyhytNimi" : "HM",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -1655,13 +1655,13 @@
     "lyhytNimi" : "VA",
     "kieli" : "FI"
   }, {
-    "nimi" : "Holy See (Vatican City State)",
-    "lyhytNimi" : "VA",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Vatikanstaten",
     "lyhytNimi" : "VA",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Holy See (Vatican City State)",
+    "lyhytNimi" : "VA",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -1689,13 +1689,13 @@
     "lyhytNimi" : "HK",
     "kieli" : "FI"
   }, {
-    "nimi" : "Hong Kong",
-    "lyhytNimi" : "HK",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Hongkong",
     "lyhytNimi" : "HK",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Hong Kong",
+    "lyhytNimi" : "HK",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -1706,26 +1706,26 @@
     "lyhytNimi" : "HU",
     "kieli" : "FI"
   }, {
-    "nimi" : "Hungary",
-    "lyhytNimi" : "HU",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Ungern",
     "lyhytNimi" : "HU",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Hungary",
+    "lyhytNimi" : "HU",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_352",
   "koodiArvo" : "352",
   "metadata" : [ {
-    "nimi" : "Island",
-    "lyhytNimi" : "IS",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Islanti",
     "lyhytNimi" : "IS",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Island",
+    "lyhytNimi" : "IS",
+    "kieli" : "SV"
   }, {
     "nimi" : "Iceland",
     "lyhytNimi" : "IS",
@@ -1736,6 +1736,10 @@
   "koodiUri" : "maatjavaltiot2_356",
   "koodiArvo" : "356",
   "metadata" : [ {
+    "nimi" : "Intia",
+    "lyhytNimi" : "IN",
+    "kieli" : "FI"
+  }, {
     "nimi" : "Indien",
     "lyhytNimi" : "IN",
     "kieli" : "SV"
@@ -1743,10 +1747,6 @@
     "nimi" : "India",
     "lyhytNimi" : "IN",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Intia",
-    "lyhytNimi" : "IN",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -1757,13 +1757,13 @@
     "lyhytNimi" : "ID",
     "kieli" : "FI"
   }, {
-    "nimi" : "Indonesia",
-    "lyhytNimi" : "ID",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Indonesien",
     "lyhytNimi" : "ID",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Indonesia",
+    "lyhytNimi" : "ID",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -1772,15 +1772,15 @@
   "metadata" : [ {
     "nimi" : "Iran",
     "lyhytNimi" : "IR",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "Iran",
-    "lyhytNimi" : "IR",
     "kieli" : "FI"
   }, {
     "nimi" : "Iran",
     "lyhytNimi" : "IR",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Iran",
+    "lyhytNimi" : "IR",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -1789,15 +1789,15 @@
   "metadata" : [ {
     "nimi" : "Irak",
     "lyhytNimi" : "IQ",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Irak",
+    "lyhytNimi" : "IQ",
     "kieli" : "SV"
   }, {
     "nimi" : "Iraq",
     "lyhytNimi" : "IQ",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Irak",
-    "lyhytNimi" : "IQ",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -1823,25 +1823,21 @@
   "metadata" : [ {
     "nimi" : "Israel",
     "lyhytNimi" : "IL",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Israel",
+    "lyhytNimi" : "IL",
     "kieli" : "SV"
   }, {
     "nimi" : "Israel",
     "lyhytNimi" : "IL",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Israel",
-    "lyhytNimi" : "IL",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_380",
   "koodiArvo" : "380",
   "metadata" : [ {
-    "nimi" : "Italy",
-    "lyhytNimi" : "IT",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Italia",
     "lyhytNimi" : "IT",
     "kieli" : "FI"
@@ -1849,6 +1845,10 @@
     "nimi" : "Italien",
     "lyhytNimi" : "IT",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Italy",
+    "lyhytNimi" : "IT",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -1859,19 +1859,23 @@
     "lyhytNimi" : "CI",
     "kieli" : "FI"
   }, {
-    "nimi" : "Côte d'lvoire",
-    "lyhytNimi" : "CI",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Elfenbenskusten",
     "lyhytNimi" : "CI",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Côte d'lvoire",
+    "lyhytNimi" : "CI",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_388",
   "koodiArvo" : "388",
   "metadata" : [ {
+    "nimi" : "Jamaika",
+    "lyhytNimi" : "JM",
+    "kieli" : "FI"
+  }, {
     "nimi" : "Jamaica",
     "lyhytNimi" : "JM",
     "kieli" : "SV"
@@ -1879,16 +1883,16 @@
     "nimi" : "Jamaica",
     "lyhytNimi" : "JM",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Jamaika",
-    "lyhytNimi" : "JM",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_392",
   "koodiArvo" : "392",
   "metadata" : [ {
+    "nimi" : "Japani",
+    "lyhytNimi" : "JP",
+    "kieli" : "FI"
+  }, {
     "nimi" : "Japan",
     "lyhytNimi" : "JP",
     "kieli" : "SV"
@@ -1896,10 +1900,6 @@
     "nimi" : "Japan",
     "lyhytNimi" : "JP",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Japani",
-    "lyhytNimi" : "JP",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -1908,11 +1908,11 @@
   "metadata" : [ {
     "nimi" : "Kazakstan",
     "lyhytNimi" : "KZ",
-    "kieli" : "SV"
+    "kieli" : "FI"
   }, {
     "nimi" : "Kazakstan",
     "lyhytNimi" : "KZ",
-    "kieli" : "FI"
+    "kieli" : "SV"
   }, {
     "nimi" : "Kazakhstan",
     "lyhytNimi" : "KZ",
@@ -1927,19 +1927,23 @@
     "lyhytNimi" : "JO",
     "kieli" : "FI"
   }, {
-    "nimi" : "Jordan",
-    "lyhytNimi" : "JO",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Jordanien",
     "lyhytNimi" : "JO",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Jordan",
+    "lyhytNimi" : "JO",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_404",
   "koodiArvo" : "404",
   "metadata" : [ {
+    "nimi" : "Kenia",
+    "lyhytNimi" : "KE",
+    "kieli" : "FI"
+  }, {
     "nimi" : "Kenya",
     "lyhytNimi" : "KE",
     "kieli" : "SV"
@@ -1947,10 +1951,6 @@
     "nimi" : "Kenya",
     "lyhytNimi" : "KE",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Kenia",
-    "lyhytNimi" : "KE",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -1993,7 +1993,7 @@
   "metadata" : [ {
     "nimi" : "Kuwait",
     "lyhytNimi" : "KW",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Kuwait",
     "lyhytNimi" : "KW",
@@ -2001,7 +2001,7 @@
   }, {
     "nimi" : "Kuwait",
     "lyhytNimi" : "KW",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -2012,13 +2012,13 @@
     "lyhytNimi" : "KG",
     "kieli" : "FI"
   }, {
-    "nimi" : "Kyrgyzstan",
-    "lyhytNimi" : "KG",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Kirgizistan",
     "lyhytNimi" : "KG",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Kyrgyzstan",
+    "lyhytNimi" : "KG",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -2027,11 +2027,11 @@
   "metadata" : [ {
     "nimi" : "Laos",
     "lyhytNimi" : "LA",
-    "kieli" : "SV"
+    "kieli" : "FI"
   }, {
     "nimi" : "Laos",
     "lyhytNimi" : "LA",
-    "kieli" : "FI"
+    "kieli" : "SV"
   }, {
     "nimi" : "Laos",
     "lyhytNimi" : "LA",
@@ -2042,17 +2042,17 @@
   "koodiUri" : "maatjavaltiot2_422",
   "koodiArvo" : "422",
   "metadata" : [ {
-    "nimi" : "Lebanon",
+    "nimi" : "Libanon",
     "lyhytNimi" : "LB",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Libanon",
     "lyhytNimi" : "LB",
     "kieli" : "SV"
   }, {
-    "nimi" : "Libanon",
+    "nimi" : "Lebanon",
     "lyhytNimi" : "LB",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -2095,11 +2095,11 @@
   "metadata" : [ {
     "nimi" : "Liberia",
     "lyhytNimi" : "LR",
-    "kieli" : "SV"
+    "kieli" : "FI"
   }, {
     "nimi" : "Liberia",
     "lyhytNimi" : "LR",
-    "kieli" : "FI"
+    "kieli" : "SV"
   }, {
     "nimi" : "Liberia",
     "lyhytNimi" : "LR",
@@ -2129,11 +2129,11 @@
   "metadata" : [ {
     "nimi" : "Liechtenstein",
     "lyhytNimi" : "LI",
-    "kieli" : "SV"
+    "kieli" : "FI"
   }, {
     "nimi" : "Liechtenstein",
     "lyhytNimi" : "LI",
-    "kieli" : "FI"
+    "kieli" : "SV"
   }, {
     "nimi" : "Liechtenstein",
     "lyhytNimi" : "LI",
@@ -2144,6 +2144,10 @@
   "koodiUri" : "maatjavaltiot2_440",
   "koodiArvo" : "440",
   "metadata" : [ {
+    "nimi" : "Liettua",
+    "lyhytNimi" : "LT",
+    "kieli" : "FI"
+  }, {
     "nimi" : "Litauen",
     "lyhytNimi" : "LT",
     "kieli" : "SV"
@@ -2151,10 +2155,6 @@
     "nimi" : "Lithuania",
     "lyhytNimi" : "LT",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Liettua",
-    "lyhytNimi" : "LT",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -2163,11 +2163,11 @@
   "metadata" : [ {
     "nimi" : "Luxemburg",
     "lyhytNimi" : "LU",
-    "kieli" : "SV"
+    "kieli" : "FI"
   }, {
     "nimi" : "Luxemburg",
     "lyhytNimi" : "LU",
-    "kieli" : "FI"
+    "kieli" : "SV"
   }, {
     "nimi" : "Luxembourg",
     "lyhytNimi" : "LU",
@@ -2180,7 +2180,7 @@
   "metadata" : [ {
     "nimi" : "Macao",
     "lyhytNimi" : "MO",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Macao",
     "lyhytNimi" : "MO",
@@ -2188,7 +2188,7 @@
   }, {
     "nimi" : "Macao",
     "lyhytNimi" : "MO",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -2199,13 +2199,13 @@
     "lyhytNimi" : "MG",
     "kieli" : "FI"
   }, {
-    "nimi" : "Madagascar",
-    "lyhytNimi" : "MG",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Madagaskar",
     "lyhytNimi" : "MG",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Madagascar",
+    "lyhytNimi" : "MG",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -2214,7 +2214,7 @@
   "metadata" : [ {
     "nimi" : "Malawi",
     "lyhytNimi" : "MW",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Malawi",
     "lyhytNimi" : "MW",
@@ -2222,13 +2222,17 @@
   }, {
     "nimi" : "Malawi",
     "lyhytNimi" : "MW",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_458",
   "koodiArvo" : "458",
   "metadata" : [ {
+    "nimi" : "Malesia",
+    "lyhytNimi" : "MY",
+    "kieli" : "FI"
+  }, {
     "nimi" : "Malaysia",
     "lyhytNimi" : "MY",
     "kieli" : "SV"
@@ -2236,16 +2240,16 @@
     "nimi" : "Malaysia",
     "lyhytNimi" : "MY",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Malesia",
-    "lyhytNimi" : "MY",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_462",
   "koodiArvo" : "462",
   "metadata" : [ {
+    "nimi" : "Malediivit",
+    "lyhytNimi" : "MV",
+    "kieli" : "FI"
+  }, {
     "nimi" : "Maldiverna",
     "lyhytNimi" : "MV",
     "kieli" : "SV"
@@ -2253,10 +2257,6 @@
     "nimi" : "Maldives",
     "lyhytNimi" : "MV",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Malediivit",
-    "lyhytNimi" : "MV",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -2265,11 +2265,11 @@
   "metadata" : [ {
     "nimi" : "Mali",
     "lyhytNimi" : "ML",
-    "kieli" : "SV"
+    "kieli" : "FI"
   }, {
     "nimi" : "Mali",
     "lyhytNimi" : "ML",
-    "kieli" : "FI"
+    "kieli" : "SV"
   }, {
     "nimi" : "Mali",
     "lyhytNimi" : "ML",
@@ -2282,11 +2282,11 @@
   "metadata" : [ {
     "nimi" : "Malta",
     "lyhytNimi" : "MT",
-    "kieli" : "SV"
+    "kieli" : "FI"
   }, {
     "nimi" : "Malta",
     "lyhytNimi" : "MT",
-    "kieli" : "FI"
+    "kieli" : "SV"
   }, {
     "nimi" : "Malta",
     "lyhytNimi" : "MT",
@@ -2303,17 +2303,21 @@
   }, {
     "nimi" : "Martinique",
     "lyhytNimi" : "MQ",
-    "kieli" : "EN"
+    "kieli" : "SV"
   }, {
     "nimi" : "Martinique",
     "lyhytNimi" : "MQ",
-    "kieli" : "SV"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_478",
   "koodiArvo" : "478",
   "metadata" : [ {
+    "nimi" : "Mauritania",
+    "lyhytNimi" : "MR",
+    "kieli" : "FI"
+  }, {
     "nimi" : "Mauretanien",
     "lyhytNimi" : "MR",
     "kieli" : "SV"
@@ -2321,10 +2325,6 @@
     "nimi" : "Mauritania",
     "lyhytNimi" : "MR",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Mauritania",
-    "lyhytNimi" : "MR",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -2352,13 +2352,13 @@
     "lyhytNimi" : "MX",
     "kieli" : "FI"
   }, {
-    "nimi" : "Mexico",
-    "lyhytNimi" : "MX",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Mexiko",
     "lyhytNimi" : "MX",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Mexico",
+    "lyhytNimi" : "MX",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -2384,7 +2384,7 @@
   "metadata" : [ {
     "nimi" : "Mongolia",
     "lyhytNimi" : "MN",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Mongoliet",
     "lyhytNimi" : "MN",
@@ -2392,7 +2392,7 @@
   }, {
     "nimi" : "Mongolia",
     "lyhytNimi" : "MN",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -2401,15 +2401,15 @@
   "metadata" : [ {
     "nimi" : "Moldova",
     "lyhytNimi" : "MD",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "Moldova",
-    "lyhytNimi" : "MD",
     "kieli" : "FI"
   }, {
     "nimi" : "Moldavien",
     "lyhytNimi" : "MD",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Moldova",
+    "lyhytNimi" : "MD",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -2418,7 +2418,7 @@
   "metadata" : [ {
     "nimi" : "Montenegro",
     "lyhytNimi" : "ME",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Montenegro",
     "lyhytNimi" : "ME",
@@ -2426,7 +2426,7 @@
   }, {
     "nimi" : "Montenegro",
     "lyhytNimi" : "ME",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -2435,7 +2435,7 @@
   "metadata" : [ {
     "nimi" : "Montserrat",
     "lyhytNimi" : "MS",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Montserrat",
     "lyhytNimi" : "MS",
@@ -2443,24 +2443,24 @@
   }, {
     "nimi" : "Montserrat",
     "lyhytNimi" : "MS",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_504",
   "koodiArvo" : "504",
   "metadata" : [ {
-    "nimi" : "Morocco",
+    "nimi" : "Marokko",
     "lyhytNimi" : "MA",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Marocko",
     "lyhytNimi" : "MA",
     "kieli" : "SV"
   }, {
-    "nimi" : "Marokko",
+    "nimi" : "Morocco",
     "lyhytNimi" : "MA",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -2486,15 +2486,15 @@
   "metadata" : [ {
     "nimi" : "Oman",
     "lyhytNimi" : "OM",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Oman",
+    "lyhytNimi" : "OM",
     "kieli" : "SV"
   }, {
     "nimi" : "Oman",
     "lyhytNimi" : "OM",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Oman",
-    "lyhytNimi" : "OM",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -2503,7 +2503,7 @@
   "metadata" : [ {
     "nimi" : "Namibia",
     "lyhytNimi" : "NA",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Namibia",
     "lyhytNimi" : "NA",
@@ -2511,7 +2511,7 @@
   }, {
     "nimi" : "Namibia",
     "lyhytNimi" : "NA",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -2524,11 +2524,11 @@
   }, {
     "nimi" : "Nauru",
     "lyhytNimi" : "NR",
-    "kieli" : "EN"
+    "kieli" : "SV"
   }, {
     "nimi" : "Nauru",
     "lyhytNimi" : "NR",
-    "kieli" : "SV"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -2537,7 +2537,7 @@
   "metadata" : [ {
     "nimi" : "Nepal",
     "lyhytNimi" : "NP",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Nepal",
     "lyhytNimi" : "NP",
@@ -2545,7 +2545,7 @@
   }, {
     "nimi" : "Nepal",
     "lyhytNimi" : "NP",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -2569,17 +2569,17 @@
   "koodiUri" : "maatjavaltiot2_530",
   "koodiArvo" : "530",
   "metadata" : [ {
-    "nimi" : "Former Netherlands Antilles",
+    "nimi" : "Alankomaiden Antillit",
     "lyhytNimi" : "",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Det forna Nederländska Antillerna",
     "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
-    "nimi" : "Alankomaiden Antillit",
+    "nimi" : "Former Netherlands Antilles",
     "lyhytNimi" : "",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -2588,15 +2588,15 @@
   "metadata" : [ {
     "nimi" : "Curacao",
     "lyhytNimi" : "CW",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Curacao",
+    "lyhytNimi" : "CW",
     "kieli" : "SV"
   }, {
     "nimi" : "Curaçao",
     "lyhytNimi" : "CW",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Curacao",
-    "lyhytNimi" : "CW",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -2605,7 +2605,7 @@
   "metadata" : [ {
     "nimi" : "Aruba",
     "lyhytNimi" : "AW",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Aruba",
     "lyhytNimi" : "AW",
@@ -2613,17 +2613,13 @@
   }, {
     "nimi" : "Aruba",
     "lyhytNimi" : "AW",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_534",
   "koodiArvo" : "534",
   "metadata" : [ {
-    "nimi" : "Sint Maarten (Dutch part)",
-    "lyhytNimi" : "SX",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Sint Maarten(Alankomaat)",
     "lyhytNimi" : "SX",
     "kieli" : "FI"
@@ -2631,6 +2627,10 @@
     "nimi" : "Sint Maarten(Alankomaat)",
     "lyhytNimi" : "SX",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Sint Maarten (Dutch part)",
+    "lyhytNimi" : "SX",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -2641,19 +2641,23 @@
     "lyhytNimi" : "BQ",
     "kieli" : "FI"
   }, {
-    "nimi" : "Bonaire, Sint Eustatius and Saba",
-    "lyhytNimi" : "BQ",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Bonaire,Sint Eustatius ja Saba",
     "lyhytNimi" : "BQ",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Bonaire, Sint Eustatius and Saba",
+    "lyhytNimi" : "BQ",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_540",
   "koodiArvo" : "540",
   "metadata" : [ {
+    "nimi" : "Uusi-Kaledonia",
+    "lyhytNimi" : "NC",
+    "kieli" : "FI"
+  }, {
     "nimi" : "Nya Kaledonien",
     "lyhytNimi" : "NC",
     "kieli" : "SV"
@@ -2661,10 +2665,6 @@
     "nimi" : "New Caledonia",
     "lyhytNimi" : "NC",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Uusi-Kaledonia",
-    "lyhytNimi" : "NC",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -2673,21 +2673,25 @@
   "metadata" : [ {
     "nimi" : "Vanuatu",
     "lyhytNimi" : "VU",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Vanuatu",
+    "lyhytNimi" : "VU",
     "kieli" : "SV"
   }, {
     "nimi" : "Vanuatu",
     "lyhytNimi" : "VU",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Vanuatu",
-    "lyhytNimi" : "VU",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_554",
   "koodiArvo" : "554",
   "metadata" : [ {
+    "nimi" : "Uusi-Seelanti",
+    "lyhytNimi" : "NZ",
+    "kieli" : "FI"
+  }, {
     "nimi" : "Nya Zeeland",
     "lyhytNimi" : "NZ",
     "kieli" : "SV"
@@ -2695,10 +2699,6 @@
     "nimi" : "New Zealand",
     "lyhytNimi" : "NZ",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Uusi-Seelanti",
-    "lyhytNimi" : "NZ",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -2711,11 +2711,11 @@
   }, {
     "nimi" : "Nicaragua",
     "lyhytNimi" : "NI",
-    "kieli" : "EN"
+    "kieli" : "SV"
   }, {
     "nimi" : "Nicaragua",
     "lyhytNimi" : "NI",
-    "kieli" : "SV"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -2724,15 +2724,15 @@
   "metadata" : [ {
     "nimi" : "Niger",
     "lyhytNimi" : "NE",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Niger",
+    "lyhytNimi" : "NE",
     "kieli" : "SV"
   }, {
     "nimi" : "Niger",
     "lyhytNimi" : "NE",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Niger",
-    "lyhytNimi" : "NE",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -2741,11 +2741,11 @@
   "metadata" : [ {
     "nimi" : "Nigeria",
     "lyhytNimi" : "NG",
-    "kieli" : "SV"
+    "kieli" : "FI"
   }, {
     "nimi" : "Nigeria",
     "lyhytNimi" : "NG",
-    "kieli" : "FI"
+    "kieli" : "SV"
   }, {
     "nimi" : "Nigeria",
     "lyhytNimi" : "NG",
@@ -2762,24 +2762,24 @@
   }, {
     "nimi" : "Niue",
     "lyhytNimi" : "NU",
-    "kieli" : "EN"
+    "kieli" : "SV"
   }, {
     "nimi" : "Niue",
     "lyhytNimi" : "NU",
-    "kieli" : "SV"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_574",
   "koodiArvo" : "574",
   "metadata" : [ {
-    "nimi" : "Norfolkön",
-    "lyhytNimi" : "NF",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Norfolkinsaari",
     "lyhytNimi" : "NF",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Norfolkön",
+    "lyhytNimi" : "NF",
+    "kieli" : "SV"
   }, {
     "nimi" : "Norfolk Island",
     "lyhytNimi" : "NF",
@@ -2790,13 +2790,13 @@
   "koodiUri" : "maatjavaltiot2_578",
   "koodiArvo" : "578",
   "metadata" : [ {
-    "nimi" : "Norge",
-    "lyhytNimi" : "NO",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Norja",
     "lyhytNimi" : "NO",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Norge",
+    "lyhytNimi" : "NO",
+    "kieli" : "SV"
   }, {
     "nimi" : "Norway",
     "lyhytNimi" : "NO",
@@ -2807,10 +2807,6 @@
   "koodiUri" : "maatjavaltiot2_580",
   "koodiArvo" : "580",
   "metadata" : [ {
-    "nimi" : "Northern Mariana Islands",
-    "lyhytNimi" : "MP",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Pohjois-Mariaanit",
     "lyhytNimi" : "MP",
     "kieli" : "FI"
@@ -2818,16 +2814,16 @@
     "nimi" : "Nordmarianerna",
     "lyhytNimi" : "MP",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Northern Mariana Islands",
+    "lyhytNimi" : "MP",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_581",
   "koodiArvo" : "581",
   "metadata" : [ {
-    "nimi" : "United States Minor Outlying Islands",
-    "lyhytNimi" : "UM",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Yhdysvaltain pienet erillissaaret",
     "lyhytNimi" : "UM",
     "kieli" : "FI"
@@ -2835,12 +2831,20 @@
     "nimi" : "Förenta Staternas mindre öar i Oceanien och Västindien",
     "lyhytNimi" : "UM",
     "kieli" : "SV"
+  }, {
+    "nimi" : "United States Minor Outlying Islands",
+    "lyhytNimi" : "UM",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_583",
   "koodiArvo" : "583",
   "metadata" : [ {
+    "nimi" : "Mikronesia",
+    "lyhytNimi" : "FM",
+    "kieli" : "FI"
+  }, {
     "nimi" : "Mikronesien",
     "lyhytNimi" : "FM",
     "kieli" : "SV"
@@ -2848,20 +2852,12 @@
     "nimi" : "Micronesia, Federated States of",
     "lyhytNimi" : "FM",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Mikronesia",
-    "lyhytNimi" : "FM",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_584",
   "koodiArvo" : "584",
   "metadata" : [ {
-    "nimi" : "Marshall Islands",
-    "lyhytNimi" : "MH",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Marshallinsaaret",
     "lyhytNimi" : "MH",
     "kieli" : "FI"
@@ -2869,6 +2865,10 @@
     "nimi" : "Marshallöarna",
     "lyhytNimi" : "MH",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Marshall Islands",
+    "lyhytNimi" : "MH",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -2881,11 +2881,11 @@
   }, {
     "nimi" : "Palau",
     "lyhytNimi" : "PW",
-    "kieli" : "EN"
+    "kieli" : "SV"
   }, {
     "nimi" : "Palau",
     "lyhytNimi" : "PW",
-    "kieli" : "SV"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -2894,15 +2894,15 @@
   "metadata" : [ {
     "nimi" : "Pakistan",
     "lyhytNimi" : "PK",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "Pakistan",
-    "lyhytNimi" : "PK",
     "kieli" : "FI"
   }, {
     "nimi" : "Pakistan",
     "lyhytNimi" : "PK",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Pakistan",
+    "lyhytNimi" : "PK",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -2911,11 +2911,11 @@
   "metadata" : [ {
     "nimi" : "Panama",
     "lyhytNimi" : "PA",
-    "kieli" : "SV"
+    "kieli" : "FI"
   }, {
     "nimi" : "Panama",
     "lyhytNimi" : "PA",
-    "kieli" : "FI"
+    "kieli" : "SV"
   }, {
     "nimi" : "Panama",
     "lyhytNimi" : "PA",
@@ -2926,10 +2926,6 @@
   "koodiUri" : "maatjavaltiot2_598",
   "koodiArvo" : "598",
   "metadata" : [ {
-    "nimi" : "Papua New Guinea",
-    "lyhytNimi" : "PG",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Papua-Uusi-Guinea",
     "lyhytNimi" : "PG",
     "kieli" : "FI"
@@ -2937,6 +2933,10 @@
     "nimi" : "Papua Nya Guinea",
     "lyhytNimi" : "PG",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Papua New Guinea",
+    "lyhytNimi" : "PG",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -2949,11 +2949,11 @@
   }, {
     "nimi" : "Paraguay",
     "lyhytNimi" : "PY",
-    "kieli" : "EN"
+    "kieli" : "SV"
   }, {
     "nimi" : "Paraguay",
     "lyhytNimi" : "PY",
-    "kieli" : "SV"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -2962,32 +2962,32 @@
   "metadata" : [ {
     "nimi" : "Peru",
     "lyhytNimi" : "PE",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Peru",
+    "lyhytNimi" : "PE",
     "kieli" : "SV"
   }, {
     "nimi" : "Peru",
     "lyhytNimi" : "PE",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Peru",
-    "lyhytNimi" : "PE",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_608",
   "koodiArvo" : "608",
   "metadata" : [ {
-    "nimi" : "Philippines",
+    "nimi" : "Filippiinit",
     "lyhytNimi" : "PH",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Filippinerna",
     "lyhytNimi" : "PH",
     "kieli" : "SV"
   }, {
-    "nimi" : "Filippiinit",
+    "nimi" : "Philippines",
     "lyhytNimi" : "PH",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -2996,7 +2996,7 @@
   "metadata" : [ {
     "nimi" : "Pitcairn",
     "lyhytNimi" : "PN",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Pitcairn",
     "lyhytNimi" : "PN",
@@ -3004,17 +3004,13 @@
   }, {
     "nimi" : "Pitcairn",
     "lyhytNimi" : "PN",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_616",
   "koodiArvo" : "616",
   "metadata" : [ {
-    "nimi" : "Poland",
-    "lyhytNimi" : "PL",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Puola",
     "lyhytNimi" : "PL",
     "kieli" : "FI"
@@ -3022,12 +3018,20 @@
     "nimi" : "Polen",
     "lyhytNimi" : "PL",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Poland",
+    "lyhytNimi" : "PL",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_620",
   "koodiArvo" : "620",
   "metadata" : [ {
+    "nimi" : "Portugali",
+    "lyhytNimi" : "PT",
+    "kieli" : "FI"
+  }, {
     "nimi" : "Portugal",
     "lyhytNimi" : "PT",
     "kieli" : "SV"
@@ -3035,10 +3039,6 @@
     "nimi" : "Portugal",
     "lyhytNimi" : "PT",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Portugali",
-    "lyhytNimi" : "PT",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -3047,21 +3047,25 @@
   "metadata" : [ {
     "nimi" : "Guinea-Bissau",
     "lyhytNimi" : "GW",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "Guinea-Bissau",
-    "lyhytNimi" : "GW",
     "kieli" : "FI"
   }, {
     "nimi" : "Guinea-Bissau",
     "lyhytNimi" : "GW",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Guinea-Bissau",
+    "lyhytNimi" : "GW",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_626",
   "koodiArvo" : "626",
   "metadata" : [ {
+    "nimi" : "Itä-Timor",
+    "lyhytNimi" : "TP",
+    "kieli" : "FI"
+  }, {
     "nimi" : "Östtimor",
     "lyhytNimi" : "TP",
     "kieli" : "SV"
@@ -3069,10 +3073,6 @@
     "nimi" : "Timor-Leste (East Timor)",
     "lyhytNimi" : "TP",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Itä-Timor",
-    "lyhytNimi" : "TP",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -3081,7 +3081,7 @@
   "metadata" : [ {
     "nimi" : "Puerto Rico",
     "lyhytNimi" : "PR",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Puerto Rico",
     "lyhytNimi" : "PR",
@@ -3089,7 +3089,7 @@
   }, {
     "nimi" : "Puerto Rico",
     "lyhytNimi" : "PR",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -3098,7 +3098,7 @@
   "metadata" : [ {
     "nimi" : "Qatar",
     "lyhytNimi" : "QA",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Qatar",
     "lyhytNimi" : "QA",
@@ -3106,7 +3106,7 @@
   }, {
     "nimi" : "Qatar",
     "lyhytNimi" : "QA",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -3115,21 +3115,25 @@
   "metadata" : [ {
     "nimi" : "Réunion",
     "lyhytNimi" : "RE",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Réunion",
+    "lyhytNimi" : "RE",
     "kieli" : "SV"
   }, {
     "nimi" : "Réunion",
     "lyhytNimi" : "RE",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Réunion",
-    "lyhytNimi" : "RE",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_642",
   "koodiArvo" : "642",
   "metadata" : [ {
+    "nimi" : "Romania",
+    "lyhytNimi" : "RO",
+    "kieli" : "FI"
+  }, {
     "nimi" : "Rumänien",
     "lyhytNimi" : "RO",
     "kieli" : "SV"
@@ -3137,10 +3141,6 @@
     "nimi" : "Romania",
     "lyhytNimi" : "RO",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Romania",
-    "lyhytNimi" : "RO",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -3170,11 +3170,11 @@
   }, {
     "nimi" : "Rwanda",
     "lyhytNimi" : "RW",
-    "kieli" : "EN"
+    "kieli" : "SV"
   }, {
     "nimi" : "Rwanda",
     "lyhytNimi" : "RW",
-    "kieli" : "SV"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -3200,11 +3200,11 @@
   "metadata" : [ {
     "nimi" : "Saint Helena",
     "lyhytNimi" : "SH",
-    "kieli" : "SV"
+    "kieli" : "FI"
   }, {
     "nimi" : "Saint Helena",
     "lyhytNimi" : "SH",
-    "kieli" : "FI"
+    "kieli" : "SV"
   }, {
     "nimi" : "Saint Helena",
     "lyhytNimi" : "SH",
@@ -3215,17 +3215,17 @@
   "koodiUri" : "maatjavaltiot2_659",
   "koodiArvo" : "659",
   "metadata" : [ {
-    "nimi" : "Saint Kitts and Nevis",
+    "nimi" : "Saint Kitts ja Nevis",
     "lyhytNimi" : "KN",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Saint Kitts och Nevis",
     "lyhytNimi" : "KN",
     "kieli" : "SV"
   }, {
-    "nimi" : "Saint Kitts ja Nevis",
+    "nimi" : "Saint Kitts and Nevis",
     "lyhytNimi" : "KN",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -3255,11 +3255,11 @@
   }, {
     "nimi" : "Saint Lucia",
     "lyhytNimi" : "LC",
-    "kieli" : "EN"
+    "kieli" : "SV"
   }, {
     "nimi" : "Saint Lucia",
     "lyhytNimi" : "LC",
-    "kieli" : "SV"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -3268,15 +3268,15 @@
   "metadata" : [ {
     "nimi" : "Saint Martin (Ranska)",
     "lyhytNimi" : "MF",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Saint Martin (Ranska)",
+    "lyhytNimi" : "MF",
     "kieli" : "SV"
   }, {
     "nimi" : "Saint Martin (French Part)",
     "lyhytNimi" : "MF",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Saint Martin (Ranska)",
-    "lyhytNimi" : "MF",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -3304,13 +3304,13 @@
     "lyhytNimi" : "VC",
     "kieli" : "FI"
   }, {
-    "nimi" : "Saint Vincent and the Grenadines",
-    "lyhytNimi" : "VC",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Saint Vincent och Grenadinerna",
     "lyhytNimi" : "VC",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Saint Vincent and the Grenadines",
+    "lyhytNimi" : "VC",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -3334,17 +3334,17 @@
   "koodiUri" : "maatjavaltiot2_678",
   "koodiArvo" : "678",
   "metadata" : [ {
-    "nimi" : "São Tomé and Príncipe",
+    "nimi" : "São Tomé ja Príncipe",
     "lyhytNimi" : "ST",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "São Tomé och Príncipe",
     "lyhytNimi" : "ST",
     "kieli" : "SV"
   }, {
-    "nimi" : "São Tomé ja Príncipe",
+    "nimi" : "São Tomé and Príncipe",
     "lyhytNimi" : "ST",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -3389,23 +3389,19 @@
     "lyhytNimi" : "RS",
     "kieli" : "FI"
   }, {
-    "nimi" : "Serbia",
-    "lyhytNimi" : "RS",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Serbien",
     "lyhytNimi" : "RS",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Serbia",
+    "lyhytNimi" : "RS",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_690",
   "koodiArvo" : "690",
   "metadata" : [ {
-    "nimi" : "Seychelles",
-    "lyhytNimi" : "SC",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Seychellit",
     "lyhytNimi" : "SC",
     "kieli" : "FI"
@@ -3413,6 +3409,10 @@
     "nimi" : "Seychellerna",
     "lyhytNimi" : "SC",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Seychelles",
+    "lyhytNimi" : "SC",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -3421,7 +3421,7 @@
   "metadata" : [ {
     "nimi" : "Sierra Leone",
     "lyhytNimi" : "SL",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Sierra Leone",
     "lyhytNimi" : "SL",
@@ -3429,7 +3429,7 @@
   }, {
     "nimi" : "Sierra Leone",
     "lyhytNimi" : "SL",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -3438,11 +3438,11 @@
   "metadata" : [ {
     "nimi" : "Singapore",
     "lyhytNimi" : "SG",
-    "kieli" : "SV"
+    "kieli" : "FI"
   }, {
     "nimi" : "Singapore",
     "lyhytNimi" : "SG",
-    "kieli" : "FI"
+    "kieli" : "SV"
   }, {
     "nimi" : "Singapore",
     "lyhytNimi" : "SG",
@@ -3453,6 +3453,10 @@
   "koodiUri" : "maatjavaltiot2_703",
   "koodiArvo" : "703",
   "metadata" : [ {
+    "nimi" : "Slovakia",
+    "lyhytNimi" : "SK",
+    "kieli" : "FI"
+  }, {
     "nimi" : "Slovakien",
     "lyhytNimi" : "SK",
     "kieli" : "SV"
@@ -3460,20 +3464,12 @@
     "nimi" : "Slovakia",
     "lyhytNimi" : "SK",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Slovakia",
-    "lyhytNimi" : "SK",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_704",
   "koodiArvo" : "704",
   "metadata" : [ {
-    "nimi" : "Viet Nam",
-    "lyhytNimi" : "VN",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Vietnam",
     "lyhytNimi" : "VN",
     "kieli" : "FI"
@@ -3481,6 +3477,10 @@
     "nimi" : "Vietnam",
     "lyhytNimi" : "VN",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Viet Nam",
+    "lyhytNimi" : "VN",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -3489,15 +3489,15 @@
   "metadata" : [ {
     "nimi" : "Slovenia",
     "lyhytNimi" : "SI",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "Slovenia",
-    "lyhytNimi" : "SI",
     "kieli" : "FI"
   }, {
     "nimi" : "Slovenien",
     "lyhytNimi" : "SI",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Slovenia",
+    "lyhytNimi" : "SI",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -3510,11 +3510,11 @@
   }, {
     "nimi" : "Somalia",
     "lyhytNimi" : "SO",
-    "kieli" : "EN"
+    "kieli" : "SV"
   }, {
     "nimi" : "Somalia",
     "lyhytNimi" : "SO",
-    "kieli" : "SV"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -3525,13 +3525,13 @@
     "lyhytNimi" : "ZA",
     "kieli" : "FI"
   }, {
-    "nimi" : "South Africa",
-    "lyhytNimi" : "ZA",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Sydafrika",
     "lyhytNimi" : "ZA",
     "kieli" : "SV"
+  }, {
+    "nimi" : "South Africa",
+    "lyhytNimi" : "ZA",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -3540,11 +3540,11 @@
   "metadata" : [ {
     "nimi" : "Zimbabwe",
     "lyhytNimi" : "ZW",
-    "kieli" : "SV"
+    "kieli" : "FI"
   }, {
     "nimi" : "Zimbabwe",
     "lyhytNimi" : "ZW",
-    "kieli" : "FI"
+    "kieli" : "SV"
   }, {
     "nimi" : "Zimbabwe",
     "lyhytNimi" : "ZW",
@@ -3559,13 +3559,13 @@
     "lyhytNimi" : "ES",
     "kieli" : "FI"
   }, {
-    "nimi" : "Spain",
-    "lyhytNimi" : "ES",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Spanien",
     "lyhytNimi" : "ES",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Spain",
+    "lyhytNimi" : "ES",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -3576,13 +3576,13 @@
     "lyhytNimi" : "SS",
     "kieli" : "FI"
   }, {
-    "nimi" : "South Sudan",
-    "lyhytNimi" : "SS",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Etelä-Sudan",
     "lyhytNimi" : "SS",
     "kieli" : "SV"
+  }, {
+    "nimi" : "South Sudan",
+    "lyhytNimi" : "SS",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -3591,7 +3591,7 @@
   "metadata" : [ {
     "nimi" : "Sudan",
     "lyhytNimi" : "SD",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Sudan",
     "lyhytNimi" : "SD",
@@ -3599,20 +3599,20 @@
   }, {
     "nimi" : "Sudan",
     "lyhytNimi" : "SD",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_732",
   "koodiArvo" : "732",
   "metadata" : [ {
-    "nimi" : "Västsahara",
-    "lyhytNimi" : "EH",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Länsi-Sahara",
     "lyhytNimi" : "EH",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Västsahara",
+    "lyhytNimi" : "EH",
+    "kieli" : "SV"
   }, {
     "nimi" : "Western Sahara",
     "lyhytNimi" : "EH",
@@ -3623,14 +3623,14 @@
   "koodiUri" : "maatjavaltiot2_736",
   "koodiArvo" : "736",
   "metadata" : [ {
+    "nimi" : "Entinen Sudan",
+    "kieli" : "FI"
+  }, {
     "nimi" : "Det forna Sudan",
     "kieli" : "SV"
   }, {
     "nimi" : "Former Sudan",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Entinen Sudan",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -3658,23 +3658,19 @@
     "lyhytNimi" : "SJ",
     "kieli" : "FI"
   }, {
-    "nimi" : "Svalbard and Jan Mayen",
-    "lyhytNimi" : "SJ",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Svalbard och Jan Mayen",
     "lyhytNimi" : "SJ",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Svalbard and Jan Mayen",
+    "lyhytNimi" : "SJ",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_748",
   "koodiArvo" : "748",
   "metadata" : [ {
-    "nimi" : "Swaziland",
-    "lyhytNimi" : "SZ",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Swazimaa",
     "lyhytNimi" : "SZ",
     "kieli" : "FI"
@@ -3682,12 +3678,20 @@
     "nimi" : "Swaziland",
     "lyhytNimi" : "SZ",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Swaziland",
+    "lyhytNimi" : "SZ",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_752",
   "koodiArvo" : "752",
   "metadata" : [ {
+    "nimi" : "Ruotsi",
+    "lyhytNimi" : "SE",
+    "kieli" : "FI"
+  }, {
     "nimi" : "Sverige",
     "lyhytNimi" : "SE",
     "kieli" : "SV"
@@ -3695,20 +3699,12 @@
     "nimi" : "Sweden",
     "lyhytNimi" : "SE",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Ruotsi",
-    "lyhytNimi" : "SE",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_756",
   "koodiArvo" : "756",
   "metadata" : [ {
-    "nimi" : "Switzerland",
-    "lyhytNimi" : "CH",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Sveitsi",
     "lyhytNimi" : "CH",
     "kieli" : "FI"
@@ -3716,6 +3712,10 @@
     "nimi" : "Schweiz",
     "lyhytNimi" : "CH",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Switzerland",
+    "lyhytNimi" : "CH",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -3743,26 +3743,26 @@
     "lyhytNimi" : "TJ",
     "kieli" : "FI"
   }, {
-    "nimi" : "Tajikistan",
-    "lyhytNimi" : "TJ",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Tadzjikistan",
     "lyhytNimi" : "TJ",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Tajikistan",
+    "lyhytNimi" : "TJ",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_764",
   "koodiArvo" : "764",
   "metadata" : [ {
-    "nimi" : "Thailand",
-    "lyhytNimi" : "TH",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Thaimaa",
     "lyhytNimi" : "TH",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Thailand",
+    "lyhytNimi" : "TH",
+    "kieli" : "SV"
   }, {
     "nimi" : "Thailand",
     "lyhytNimi" : "TH",
@@ -3775,15 +3775,15 @@
   "metadata" : [ {
     "nimi" : "Togo",
     "lyhytNimi" : "TG",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "Togo",
-    "lyhytNimi" : "TG",
     "kieli" : "FI"
   }, {
     "nimi" : "Togo",
     "lyhytNimi" : "TG",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Togo",
+    "lyhytNimi" : "TG",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -3813,17 +3813,21 @@
   }, {
     "nimi" : "Tonga",
     "lyhytNimi" : "TO",
-    "kieli" : "EN"
+    "kieli" : "SV"
   }, {
     "nimi" : "Tonga",
     "lyhytNimi" : "TO",
-    "kieli" : "SV"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_780",
   "koodiArvo" : "780",
   "metadata" : [ {
+    "nimi" : "Trinidad ja Tobago",
+    "lyhytNimi" : "TT",
+    "kieli" : "FI"
+  }, {
     "nimi" : "Trinidad och Tobago",
     "lyhytNimi" : "TT",
     "kieli" : "SV"
@@ -3831,20 +3835,12 @@
     "nimi" : "Trinidad and Tobago",
     "lyhytNimi" : "TT",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Trinidad ja Tobago",
-    "lyhytNimi" : "TT",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_784",
   "koodiArvo" : "784",
   "metadata" : [ {
-    "nimi" : "United Arab Emirates",
-    "lyhytNimi" : "AE",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Arabiemiirikunnat",
     "lyhytNimi" : "AE",
     "kieli" : "FI"
@@ -3852,6 +3848,10 @@
     "nimi" : "Förenade Arabemirate",
     "lyhytNimi" : "AE",
     "kieli" : "SV"
+  }, {
+    "nimi" : "United Arab Emirates",
+    "lyhytNimi" : "AE",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -3894,15 +3894,15 @@
   "metadata" : [ {
     "nimi" : "Turkmenistan",
     "lyhytNimi" : "TM",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "Turkmenistan",
-    "lyhytNimi" : "TM",
     "kieli" : "FI"
   }, {
     "nimi" : "Turkmenistan",
     "lyhytNimi" : "TM",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Turkmenistan",
+    "lyhytNimi" : "TM",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -3913,13 +3913,13 @@
     "lyhytNimi" : "TC",
     "kieli" : "FI"
   }, {
-    "nimi" : "Turks and Caicos Islands",
-    "lyhytNimi" : "TC",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Turks- och Caicosöarna",
     "lyhytNimi" : "TC",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Turks and Caicos Islands",
+    "lyhytNimi" : "TC",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -3928,15 +3928,15 @@
   "metadata" : [ {
     "nimi" : "Tuvalu",
     "lyhytNimi" : "TV",
-    "kieli" : "EN"
-  }, {
-    "nimi" : "Tuvalu",
-    "lyhytNimi" : "TV",
     "kieli" : "FI"
   }, {
     "nimi" : "Tuvalu",
     "lyhytNimi" : "TV",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Tuvalu",
+    "lyhytNimi" : "TV",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -3945,15 +3945,15 @@
   "metadata" : [ {
     "nimi" : "Uganda",
     "lyhytNimi" : "UG",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Uganda",
+    "lyhytNimi" : "UG",
     "kieli" : "SV"
   }, {
     "nimi" : "Uganda",
     "lyhytNimi" : "UG",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Uganda",
-    "lyhytNimi" : "UG",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -3964,26 +3964,26 @@
     "lyhytNimi" : "UA",
     "kieli" : "FI"
   }, {
-    "nimi" : "Ukraine",
-    "lyhytNimi" : "UA",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Ukraina",
     "lyhytNimi" : "UA",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Ukraine",
+    "lyhytNimi" : "UA",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_807",
   "koodiArvo" : "807",
   "metadata" : [ {
-    "nimi" : "Makedonien",
-    "lyhytNimi" : "MK",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Makedonia",
     "lyhytNimi" : "MK",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Makedonien",
+    "lyhytNimi" : "MK",
+    "kieli" : "SV"
   }, {
     "nimi" : "Macedonia",
     "lyhytNimi" : "MK",
@@ -3994,31 +3994,31 @@
   "koodiUri" : "maatjavaltiot2_810",
   "koodiArvo" : "810",
   "metadata" : [ {
+    "nimi" : "Entinen Neuvostoliitto",
+    "kieli" : "FI"
+  }, {
     "nimi" : "Det forna Sovietunionen",
     "kieli" : "SV"
   }, {
     "nimi" : "Former Soviet Union",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Entinen Neuvostoliitto",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_818",
   "koodiArvo" : "818",
   "metadata" : [ {
-    "nimi" : "Egypt",
+    "nimi" : "Egypti",
     "lyhytNimi" : "EG",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Egypten",
     "lyhytNimi" : "EG",
     "kieli" : "SV"
   }, {
-    "nimi" : "Egypti",
+    "nimi" : "Egypt",
     "lyhytNimi" : "EG",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -4048,11 +4048,11 @@
   }, {
     "nimi" : "Guernsey",
     "lyhytNimi" : "GG",
-    "kieli" : "EN"
+    "kieli" : "SV"
   }, {
     "nimi" : "Guernsey",
     "lyhytNimi" : "GG",
-    "kieli" : "SV"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -4061,15 +4061,15 @@
   "metadata" : [ {
     "nimi" : "Jersey",
     "lyhytNimi" : "JE",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Jersey",
+    "lyhytNimi" : "JE",
     "kieli" : "SV"
   }, {
     "nimi" : "Jersey",
     "lyhytNimi" : "JE",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Jersey",
-    "lyhytNimi" : "JE",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -4078,11 +4078,11 @@
   "metadata" : [ {
     "nimi" : "Mansaari",
     "lyhytNimi" : "IM",
-    "kieli" : "SV"
+    "kieli" : "FI"
   }, {
     "nimi" : "Mansaari",
     "lyhytNimi" : "IM",
-    "kieli" : "FI"
+    "kieli" : "SV"
   }, {
     "nimi" : "Isle of Man",
     "lyhytNimi" : "IM",
@@ -4093,27 +4093,23 @@
   "koodiUri" : "maatjavaltiot2_834",
   "koodiArvo" : "834",
   "metadata" : [ {
-    "nimi" : "Tanzania",
+    "nimi" : "Tansania",
     "lyhytNimi" : "TZ",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Tanzania",
     "lyhytNimi" : "TZ",
     "kieli" : "SV"
   }, {
-    "nimi" : "Tansania",
+    "nimi" : "Tanzania",
     "lyhytNimi" : "TZ",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_840",
   "koodiArvo" : "840",
   "metadata" : [ {
-    "nimi" : "United States, USA",
-    "lyhytNimi" : "US",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Yhdysvallat (USA)",
     "lyhytNimi" : "US",
     "kieli" : "FI"
@@ -4121,16 +4117,16 @@
     "nimi" : "Förenta Staterna (USA)",
     "lyhytNimi" : "US",
     "kieli" : "SV"
+  }, {
+    "nimi" : "United States, USA",
+    "lyhytNimi" : "US",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_850",
   "koodiArvo" : "850",
   "metadata" : [ {
-    "nimi" : "Virgin Islands, U.S.",
-    "lyhytNimi" : "VI",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Yhdysvaltain Neitsytsaaret",
     "lyhytNimi" : "VI",
     "kieli" : "FI"
@@ -4138,6 +4134,10 @@
     "nimi" : "Amerikanska Jungfruöarna",
     "lyhytNimi" : "VI",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Virgin Islands, U.S.",
+    "lyhytNimi" : "VI",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -4146,15 +4146,15 @@
   "metadata" : [ {
     "nimi" : "Burkina Faso",
     "lyhytNimi" : "BF",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Burkina Faso",
+    "lyhytNimi" : "BF",
     "kieli" : "SV"
   }, {
     "nimi" : "Burkina Faso",
     "lyhytNimi" : "BF",
     "kieli" : "EN"
-  }, {
-    "nimi" : "Burkina Faso",
-    "lyhytNimi" : "BF",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -4167,11 +4167,11 @@
   }, {
     "nimi" : "Uruguay",
     "lyhytNimi" : "UY",
-    "kieli" : "EN"
+    "kieli" : "SV"
   }, {
     "nimi" : "Uruguay",
     "lyhytNimi" : "UY",
-    "kieli" : "SV"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -4197,11 +4197,11 @@
   "metadata" : [ {
     "nimi" : "Venezuela",
     "lyhytNimi" : "VE",
-    "kieli" : "SV"
+    "kieli" : "FI"
   }, {
     "nimi" : "Venezuela",
     "lyhytNimi" : "VE",
-    "kieli" : "FI"
+    "kieli" : "SV"
   }, {
     "nimi" : "Venezuela",
     "lyhytNimi" : "VE",
@@ -4231,11 +4231,11 @@
   "metadata" : [ {
     "nimi" : "Samoa",
     "lyhytNimi" : "WS",
-    "kieli" : "SV"
+    "kieli" : "FI"
   }, {
     "nimi" : "Samoa",
     "lyhytNimi" : "WS",
-    "kieli" : "FI"
+    "kieli" : "SV"
   }, {
     "nimi" : "Samoa",
     "lyhytNimi" : "WS",
@@ -4246,44 +4246,44 @@
   "koodiUri" : "maatjavaltiot2_887",
   "koodiArvo" : "887",
   "metadata" : [ {
-    "nimi" : "Yemen",
+    "nimi" : "Jemen",
     "lyhytNimi" : "YE",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Jemen",
     "lyhytNimi" : "YE",
     "kieli" : "SV"
   }, {
-    "nimi" : "Jemen",
+    "nimi" : "Yemen",
     "lyhytNimi" : "YE",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_891",
   "koodiArvo" : "891",
   "metadata" : [ {
-    "nimi" : "Former Serbia and Montenegro",
-    "kieli" : "EN"
+    "nimi" : "Entinen Serbia ja Montenegro",
+    "kieli" : "FI"
   }, {
     "nimi" : "Det forna Serbien och Montenegro",
     "kieli" : "SV"
   }, {
-    "nimi" : "Entinen Serbia ja Montenegro",
-    "kieli" : "FI"
+    "nimi" : "Former Serbia and Montenegro",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_894",
   "koodiArvo" : "894",
   "metadata" : [ {
-    "nimi" : "Zambia",
-    "lyhytNimi" : "ZM",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Sambia",
     "lyhytNimi" : "ZM",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Zambia",
+    "lyhytNimi" : "ZM",
+    "kieli" : "SV"
   }, {
     "nimi" : "Zambia",
     "lyhytNimi" : "ZM",
@@ -4300,11 +4300,11 @@
   }, {
     "nimi" : "Kosovo",
     "lyhytNimi" : "Kosovo",
-    "kieli" : "EN"
+    "kieli" : "SV"
   }, {
     "nimi" : "Kosovo",
     "lyhytNimi" : "Kosovo",
-    "kieli" : "SV"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -4313,7 +4313,7 @@
   "metadata" : [ {
     "nimi" : "Kosovo",
     "lyhytNimi" : "XK",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Kosovo",
     "lyhytNimi" : "XK",
@@ -4321,34 +4321,30 @@
   }, {
     "nimi" : "Kosovo",
     "lyhytNimi" : "XK",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_998",
   "koodiArvo" : "998",
   "metadata" : [ {
-    "nimi" : "Without Citizenship",
+    "nimi" : "Ilman kansalaisuutta",
     "lyhytNimi" : "YY",
-    "kieli" : "EN"
+    "kieli" : "FI"
   }, {
     "nimi" : "Utan nationalitet",
     "lyhytNimi" : "YY",
     "kieli" : "SV"
   }, {
-    "nimi" : "Ilman kansalaisuutta",
+    "nimi" : "Without Citizenship",
     "lyhytNimi" : "YY",
-    "kieli" : "FI"
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "maatjavaltiot2_999",
   "koodiArvo" : "999",
   "metadata" : [ {
-    "nimi" : "Unknown",
-    "lyhytNimi" : "XX",
-    "kieli" : "EN"
-  }, {
     "nimi" : "Tuntematon",
     "lyhytNimi" : "XX",
     "kieli" : "FI"
@@ -4356,6 +4352,10 @@
     "nimi" : "Okänt land",
     "lyhytNimi" : "XX",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Unknown",
+    "lyhytNimi" : "XX",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 } ]

@@ -2,15 +2,15 @@
   "koodiUri" : "ammatillisennaytonarviointikohde_1",
   "koodiArvo" : "1",
   "metadata" : [ {
-    "nimi" : "Behärskande av arbetsprocessen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Työprosessin hallinta",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Behärskande av arbetsprocessen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

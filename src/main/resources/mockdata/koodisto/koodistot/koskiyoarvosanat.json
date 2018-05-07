@@ -2,7 +2,7 @@
   "koodistoUri" : "koskiyoarvosanat",
   "versio" : 1,
   "metadata" : [ {
-    "kieli" : "EN",
+    "kieli" : "FI",
     "nimi" : "Koski YO-arvosanat",
     "kuvaus" : "Koski YO-arvosanat"
   }, {
@@ -10,7 +10,7 @@
     "nimi" : "Koski YO-arvosanat",
     "kuvaus" : "Koski YO-arvosanat"
   }, {
-    "kieli" : "FI",
+    "kieli" : "EN",
     "nimi" : "Koski YO-arvosanat",
     "kuvaus" : "Koski YO-arvosanat"
   } ],

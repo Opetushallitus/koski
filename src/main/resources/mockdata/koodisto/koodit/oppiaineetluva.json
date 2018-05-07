@@ -3,7 +3,14 @@
   "koodiArvo" : "LVAIK",
   "metadata" : [ {
     "nimi" : "Äidinkieli ja kirjallisuus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Modersmål och litteratur",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -12,7 +19,14 @@
   "koodiArvo" : "LVMALUO",
   "metadata" : [ {
     "nimi" : "Matemaattiset ja luonnontieteelliset opinnot",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Matematiska och naturvetenskapliga studier",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -21,7 +35,14 @@
   "koodiArvo" : "LVMUUTK",
   "metadata" : [ {
     "nimi" : "Muut kielet",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Övriga språk",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -30,7 +51,14 @@
   "koodiArvo" : "LVOPO",
   "metadata" : [ {
     "nimi" : "Opinto-ohjaus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studiehandledning",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -39,7 +67,14 @@
   "koodiArvo" : "LVYHKU",
   "metadata" : [ {
     "nimi" : "Yhteiskuntatietous ja kulttuurintuntemus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samhällskunskap och kulturkännedom",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

@@ -2,15 +2,15 @@
   "koodiUri" : "perusopetuksensuoritustapa_erityinentutkinto",
   "koodiArvo" : "erityinentutkinto",
   "metadata" : [ {
-    "nimi" : "Särskild examen",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Erityinen tutkinto",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Särskild examen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -18,15 +18,15 @@
   "koodiUri" : "perusopetuksensuoritustapa_koulutus",
   "koodiArvo" : "koulutus",
   "metadata" : [ {
-    "nimi" : "Utbildning",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Koulutus",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Utbildning",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

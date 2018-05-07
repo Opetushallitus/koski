@@ -2,15 +2,15 @@
   "koodiUri" : "ammatillisennaytonsuorituspaikka_1",
   "koodiArvo" : "1",
   "metadata" : [ {
-    "nimi" : "arbetsplats",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "työpaikka",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "arbetsplats",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -18,15 +18,15 @@
   "koodiUri" : "ammatillisennaytonsuorituspaikka_2",
   "koodiArvo" : "2",
   "metadata" : [ {
-    "nimi" : "läroanstalt",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "oppilaitos",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "läroanstalt",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -34,15 +34,15 @@
   "koodiUri" : "ammatillisennaytonsuorituspaikka_3",
   "koodiArvo" : "3",
   "metadata" : [ {
-    "nimi" : "arbetsplats och läroanstalt",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "työpaikka ja oppilaitos",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "arbetsplats och läroanstalt",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

@@ -2,11 +2,11 @@
   "koodistoUri" : "oppiaineaidinkielijakirjallisuus",
   "versio" : 1,
   "metadata" : [ {
-    "kieli" : "SV",
+    "kieli" : "FI",
     "nimi" : "Oppiaine Äidinkieli ja kirjallisuus",
     "kuvaus" : "Oppiaine Äidinkieli ja kirjallisuus"
   }, {
-    "kieli" : "FI",
+    "kieli" : "SV",
     "nimi" : "Oppiaine Äidinkieli ja kirjallisuus",
     "kuvaus" : "Oppiaine Äidinkieli ja kirjallisuus"
   }, {

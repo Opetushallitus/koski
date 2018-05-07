@@ -2,40 +2,36 @@
   "koodiUri" : "kielivalikoima_97",
   "koodiArvo" : "97",
   "metadata" : [ {
-    "nimi" : "Ej avlagd",
-    "lyhytNimi" : "Ej avlagd",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Ei suoritusta",
     "lyhytNimi" : "Ei suoritusta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Ej avlagd",
+    "lyhytNimi" : "Ej avlagd",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "kielivalikoima_de",
   "koodiArvo" : "DE",
   "metadata" : [ {
-    "nimi" : "German",
-    "lyhytNimi" : "German",
-    "kieli" : "EN"
+    "nimi" : "saksa",
+    "lyhytNimi" : "saksa",
+    "kieli" : "FI"
   }, {
     "nimi" : "tyska",
     "lyhytNimi" : "tyska",
     "kieli" : "SV"
   }, {
-    "nimi" : "saksa",
-    "lyhytNimi" : "saksa",
-    "kieli" : "FI"
+    "nimi" : "German",
+    "lyhytNimi" : "German",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "kielivalikoima_el",
   "koodiArvo" : "EL",
   "metadata" : [ {
-    "nimi" : "Greek",
-    "lyhytNimi" : "Greek",
-    "kieli" : "EN"
-  }, {
     "nimi" : "kreikka",
     "lyhytNimi" : "kreikka",
     "kieli" : "FI"
@@ -43,6 +39,10 @@
     "nimi" : "grekiska",
     "lyhytNimi" : "grekiska",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Greek",
+    "lyhytNimi" : "Greek",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -66,34 +66,34 @@
   "koodiUri" : "kielivalikoima_es",
   "koodiArvo" : "ES",
   "metadata" : [ {
-    "nimi" : "Spanish",
-    "lyhytNimi" : "Spanish",
-    "kieli" : "EN"
+    "nimi" : "espanja",
+    "lyhytNimi" : "espanja",
+    "kieli" : "FI"
   }, {
     "nimi" : "spanska",
     "lyhytNimi" : "spanska",
     "kieli" : "SV"
   }, {
-    "nimi" : "espanja",
-    "lyhytNimi" : "espanja",
-    "kieli" : "FI"
+    "nimi" : "Spanish",
+    "lyhytNimi" : "Spanish",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "kielivalikoima_et",
   "koodiArvo" : "ET",
   "metadata" : [ {
-    "nimi" : "Estonian",
-    "lyhytNimi" : "Estonian",
-    "kieli" : "EN"
+    "nimi" : "viro, eesti",
+    "lyhytNimi" : "viro, eesti",
+    "kieli" : "FI"
   }, {
     "nimi" : "estniska",
     "lyhytNimi" : "estniska",
     "kieli" : "SV"
   }, {
-    "nimi" : "viro, eesti",
-    "lyhytNimi" : "viro, eesti",
-    "kieli" : "FI"
+    "nimi" : "Estonian",
+    "lyhytNimi" : "Estonian",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -117,6 +117,10 @@
   "koodiUri" : "kielivalikoima_fr",
   "koodiArvo" : "FR",
   "metadata" : [ {
+    "nimi" : "ranska",
+    "lyhytNimi" : "ranska",
+    "kieli" : "FI"
+  }, {
     "nimi" : "franska",
     "lyhytNimi" : "franska",
     "kieli" : "SV"
@@ -124,10 +128,6 @@
     "nimi" : "French",
     "lyhytNimi" : "French",
     "kieli" : "EN"
-  }, {
-    "nimi" : "ranska",
-    "lyhytNimi" : "ranska",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
@@ -151,6 +151,10 @@
   "koodiUri" : "kielivalikoima_ja",
   "koodiArvo" : "JA",
   "metadata" : [ {
+    "nimi" : "japani",
+    "lyhytNimi" : "japani",
+    "kieli" : "FI"
+  }, {
     "nimi" : "japanska",
     "lyhytNimi" : "japanska",
     "kieli" : "SV"
@@ -158,20 +162,12 @@
     "nimi" : "Japanese",
     "lyhytNimi" : "Japanese",
     "kieli" : "EN"
-  }, {
-    "nimi" : "japani",
-    "lyhytNimi" : "japani",
-    "kieli" : "FI"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "kielivalikoima_la",
   "koodiArvo" : "LA",
   "metadata" : [ {
-    "nimi" : "Latin",
-    "lyhytNimi" : "Latin",
-    "kieli" : "EN"
-  }, {
     "nimi" : "latina",
     "lyhytNimi" : "latina",
     "kieli" : "FI"
@@ -179,6 +175,10 @@
     "nimi" : "latin",
     "lyhytNimi" : "latin",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Latin",
+    "lyhytNimi" : "Latin",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -189,13 +189,13 @@
     "lyhytNimi" : "liettua",
     "kieli" : "FI"
   }, {
-    "nimi" : "Lithuanian",
-    "lyhytNimi" : "Lithuanian",
-    "kieli" : "EN"
-  }, {
     "nimi" : "litauiska",
     "lyhytNimi" : "litauiska",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Lithuanian",
+    "lyhytNimi" : "Lithuanian",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -219,13 +219,13 @@
   "koodiUri" : "kielivalikoima_pt",
   "koodiArvo" : "PT",
   "metadata" : [ {
-    "nimi" : "portugisiska",
-    "lyhytNimi" : "portugisiska",
-    "kieli" : "SV"
-  }, {
     "nimi" : "portugali",
     "lyhytNimi" : "portugali",
     "kieli" : "FI"
+  }, {
+    "nimi" : "portugisiska",
+    "lyhytNimi" : "portugisiska",
+    "kieli" : "SV"
   }, {
     "nimi" : "Portuguese",
     "lyhytNimi" : "Portuguese",
@@ -236,10 +236,6 @@
   "koodiUri" : "kielivalikoima_ru",
   "koodiArvo" : "RU",
   "metadata" : [ {
-    "nimi" : "Russian",
-    "lyhytNimi" : "Russian",
-    "kieli" : "EN"
-  }, {
     "nimi" : "venäjä",
     "lyhytNimi" : "venäjä",
     "kieli" : "FI"
@@ -247,6 +243,10 @@
     "nimi" : "ryska",
     "lyhytNimi" : "ryska",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Russian",
+    "lyhytNimi" : "Russian",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
@@ -257,26 +257,26 @@
     "lyhytNimi" : "saame, lappi",
     "kieli" : "FI"
   }, {
-    "nimi" : "Northern Sami",
-    "lyhytNimi" : "Northern Sami",
-    "kieli" : "EN"
-  }, {
     "nimi" : "samiska",
     "lyhytNimi" : "samiska",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Northern Sami",
+    "lyhytNimi" : "Northern Sami",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "kielivalikoima_sv",
   "koodiArvo" : "SV",
   "metadata" : [ {
-    "nimi" : "svenska",
-    "lyhytNimi" : "svenska",
-    "kieli" : "SV"
-  }, {
     "nimi" : "ruotsi",
     "lyhytNimi" : "ruotsi",
     "kieli" : "FI"
+  }, {
+    "nimi" : "svenska",
+    "lyhytNimi" : "svenska",
+    "kieli" : "SV"
   }, {
     "nimi" : "Swedish",
     "lyhytNimi" : "Swedish",
@@ -287,13 +287,13 @@
   "koodiUri" : "kielivalikoima_vk",
   "koodiArvo" : "VK",
   "metadata" : [ {
-    "nimi" : "teckenspråk",
-    "lyhytNimi" : "teckenspråk",
-    "kieli" : "SV"
-  }, {
     "nimi" : "viittomakieli",
     "lyhytNimi" : "viittomakieli",
     "kieli" : "FI"
+  }, {
+    "nimi" : "teckenspråk",
+    "lyhytNimi" : "teckenspråk",
+    "kieli" : "SV"
   }, {
     "nimi" : "Sign language",
     "lyhytNimi" : "Sign language",
@@ -325,13 +325,13 @@
     "lyhytNimi" : "kiina",
     "kieli" : "FI"
   }, {
-    "nimi" : "Chinese",
-    "lyhytNimi" : "Chinese",
-    "kieli" : "EN"
-  }, {
     "nimi" : "kinesiska",
     "lyhytNimi" : "kinesiska",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Chinese",
+    "lyhytNimi" : "Chinese",
+    "kieli" : "EN"
   } ],
   "versio" : 1
 } ]

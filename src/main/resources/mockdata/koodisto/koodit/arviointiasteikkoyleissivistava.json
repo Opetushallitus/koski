@@ -74,7 +74,13 @@
   "metadata" : [ {
     "nimi" : "hylätty",
     "lyhytNimi" : "H",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "underkänd",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -83,7 +89,7 @@
   "koodiArvo" : "O",
   "metadata" : [ {
     "nimi" : "osallistunut",
-    "lyhytNimi" : "",
+    "lyhytNimi" : "O",
     "kuvaus" : "",
     "kieli" : "FI"
   }, {
@@ -98,15 +104,15 @@
   "koodiUri" : "arviointiasteikkoyleissivistava_s",
   "koodiArvo" : "S",
   "metadata" : [ {
-    "nimi" : "godkänd",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "hyväksytty",
     "lyhytNimi" : "S",
     "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "godkänd",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

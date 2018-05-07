@@ -2,13 +2,13 @@
   "koodiUri" : "koskioppiaineetyleissivistava_a1",
   "koodiArvo" : "A1",
   "metadata" : [ {
-    "nimi" : "A1-språk",
-    "lyhytNimi" : "A1-språk",
-    "kieli" : "SV"
-  }, {
     "nimi" : "A1-kieli",
     "lyhytNimi" : "A1-kieli",
     "kieli" : "FI"
+  }, {
+    "nimi" : "A1-språk",
+    "lyhytNimi" : "A1-språk",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -30,13 +30,13 @@
   "koodiUri" : "koskioppiaineetyleissivistava_ai",
   "koodiArvo" : "AI",
   "metadata" : [ {
-    "nimi" : "Modersmålet och litteratur",
-    "lyhytNimi" : "Modersmålet och litteratur",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Äidinkieli ja kirjallisuus",
     "lyhytNimi" : "Äidinkieli ja kirjallisuus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Modersmålet och litteratur",
+    "lyhytNimi" : "Modersmålet och litteratur",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -44,13 +44,13 @@
   "koodiUri" : "koskioppiaineetyleissivistava_b1",
   "koodiArvo" : "B1",
   "metadata" : [ {
-    "nimi" : "B1-språk",
-    "lyhytNimi" : "B1-språk",
-    "kieli" : "SV"
-  }, {
     "nimi" : "B1-kieli",
     "lyhytNimi" : "B1-kieli",
     "kieli" : "FI"
+  }, {
+    "nimi" : "B1-språk",
+    "lyhytNimi" : "B1-språk",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -58,13 +58,13 @@
   "koodiUri" : "koskioppiaineetyleissivistava_b2",
   "koodiArvo" : "B2",
   "metadata" : [ {
-    "nimi" : "B2-språk",
-    "lyhytNimi" : "B2-språk",
-    "kieli" : "SV"
-  }, {
     "nimi" : "B2-kieli",
     "lyhytNimi" : "B2-kieli",
     "kieli" : "FI"
+  }, {
+    "nimi" : "B2-språk",
+    "lyhytNimi" : "B2-språk",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -86,13 +86,13 @@
   "koodiUri" : "koskioppiaineetyleissivistava_bi",
   "koodiArvo" : "BI",
   "metadata" : [ {
-    "nimi" : "Biologi",
-    "lyhytNimi" : "Biologi",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Biologia",
     "lyhytNimi" : "Biologia",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Biologi",
+    "lyhytNimi" : "Biologi",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -114,13 +114,13 @@
   "koodiUri" : "koskioppiaineetyleissivistava_fi",
   "koodiArvo" : "FI",
   "metadata" : [ {
-    "nimi" : "Filosofi",
-    "lyhytNimi" : "Filosofi",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Filosofia",
     "lyhytNimi" : "Filosofia",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Filosofi",
+    "lyhytNimi" : "Filosofi",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -142,13 +142,13 @@
   "koodiUri" : "koskioppiaineetyleissivistava_ge",
   "koodiArvo" : "GE",
   "metadata" : [ {
-    "nimi" : "Geografi",
-    "lyhytNimi" : "Geografi",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Maantieto",
     "lyhytNimi" : "Maantieto",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Geografi",
+    "lyhytNimi" : "Geografi",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -158,11 +158,11 @@
   "metadata" : [ {
     "nimi" : "Historia",
     "lyhytNimi" : "Historia",
-    "kieli" : "SV"
+    "kieli" : "FI"
   }, {
     "nimi" : "Historia",
     "lyhytNimi" : "Historia",
-    "kieli" : "FI"
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -170,13 +170,13 @@
   "koodiUri" : "koskioppiaineetyleissivistava_ke",
   "koodiArvo" : "KE",
   "metadata" : [ {
-    "nimi" : "Kemi",
-    "lyhytNimi" : "Kemi",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kemia",
     "lyhytNimi" : "Kemia",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kemi",
+    "lyhytNimi" : "Kemi",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -184,13 +184,13 @@
   "koodiUri" : "koskioppiaineetyleissivistava_ko",
   "koodiArvo" : "KO",
   "metadata" : [ {
-    "nimi" : "Huslig ekonomi",
-    "lyhytNimi" : "Huslig ekonomi",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kotitalous",
     "lyhytNimi" : "Kotitalous",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Huslig ekonomi",
+    "lyhytNimi" : "Huslig ekonomi",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -198,13 +198,13 @@
   "koodiUri" : "koskioppiaineetyleissivistava_ks",
   "koodiArvo" : "KS",
   "metadata" : [ {
-    "nimi" : "Slöjd",
-    "lyhytNimi" : "Slöjd",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Käsityö",
     "lyhytNimi" : "Käsityö",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Slöjd",
+    "lyhytNimi" : "Slöjd",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -226,13 +226,13 @@
   "koodiUri" : "koskioppiaineetyleissivistava_ku",
   "koodiArvo" : "KU",
   "metadata" : [ {
-    "nimi" : "Bildkonst",
-    "lyhytNimi" : "Bildkonst",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Kuvataide",
     "lyhytNimi" : "Kuvataide",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Bildkonst",
+    "lyhytNimi" : "Bildkonst",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -240,13 +240,13 @@
   "koodiUri" : "koskioppiaineetyleissivistava_li",
   "koodiArvo" : "LI",
   "metadata" : [ {
-    "nimi" : "Gymnastik",
-    "lyhytNimi" : "Gymnastik",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Liikunta",
     "lyhytNimi" : "Liikunta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Gymnastik",
+    "lyhytNimi" : "Gymnastik",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -254,13 +254,13 @@
   "koodiUri" : "koskioppiaineetyleissivistava_ma",
   "koodiArvo" : "MA",
   "metadata" : [ {
-    "nimi" : "Matematik",
-    "lyhytNimi" : "Matematik",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Matematiikka",
     "lyhytNimi" : "Matematiikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Matematik",
+    "lyhytNimi" : "Matematik",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -292,13 +292,13 @@
   "koodiUri" : "koskioppiaineetyleissivistava_ps",
   "koodiArvo" : "PS",
   "metadata" : [ {
-    "nimi" : "Psykologi",
-    "lyhytNimi" : "Psykologi",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Psykologia",
     "lyhytNimi" : "Psykologia",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Psykologi",
+    "lyhytNimi" : "Psykologi",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

@@ -2,11 +2,11 @@
   "koodistoUri" : "koskiyokokeet",
   "versio" : 1,
   "metadata" : [ {
-    "kieli" : "SV",
+    "kieli" : "FI",
     "nimi" : "Koski YO-kokeet",
     "kuvaus" : "Koski YO-kokeet"
   }, {
-    "kieli" : "FI",
+    "kieli" : "SV",
     "nimi" : "Koski YO-kokeet",
     "kuvaus" : "Koski YO-kokeet"
   }, {

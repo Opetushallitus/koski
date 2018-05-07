@@ -33,4 +33,29 @@ object MockKoodistoPalvelu {
 
   def koodistoKooditFileName(koodistoUri: String): String = "src/main/resources" + koodistoKooditResourceName(koodistoUri).get
   def koodistoFileName(koodistoUri: String): String = "src/main/resources" + koodistoResourceName(koodistoUri).get
+
+
+  private lazy val kieliOrdering: Ordering[String] = Ordering.by {
+    kieli: String =>
+      kieli match {
+        case "FI" => 1
+        case "SV" => 2
+        case "EN" => 3
+        case _ => 4
+      }
+  }(Ordering.Int)
+
+  // koodisto-service returns metadata as a list in some (unspecified, possibly changing) order.
+  // sort to avoid unnecessary diffs when updating
+  def sortKoodistoMetadata(koodisto: Koodisto): Koodisto =
+    koodisto.copy(
+      metadata = koodisto.metadata.sortBy(_.kieli)(kieliOrdering),
+      withinCodes = koodisto.withinCodes.map(_.sortBy(kr => (kr.codesUri, kr.codesVersion))(Ordering.Tuple2(Ordering.String, Ordering.Int)))
+    )
+
+  def sortKoodistoKoodiMetadata(koodistoKoodi: KoodistoKoodi): KoodistoKoodi =
+    koodistoKoodi.copy(
+      metadata = koodistoKoodi.metadata.sortBy(_.kieli)(Ordering.Option(kieliOrdering)),
+      withinCodeElements = koodistoKoodi.withinCodeElements.map(_.sortBy(cr => (cr.codeElementUri, cr.codeElementVersion))(Ordering.Tuple2(Ordering.String, Ordering.Int)))
+    )
 }

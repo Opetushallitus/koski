@@ -50,15 +50,15 @@
   "koodiUri" : "ammatillisennaytonarviointikeskusteluunosallistuneet_4",
   "koodiArvo" : "4",
   "metadata" : [ {
-    "nimi" : "Självständig yrkesutövare",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Itsenäinen ammatinharjoittaja",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Självständig yrkesutövare",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -66,15 +66,15 @@
   "koodiUri" : "ammatillisennaytonarviointikeskusteluunosallistuneet_5",
   "koodiArvo" : "5",
   "metadata" : [ {
-    "nimi" : "Studerande",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Opiskelija",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studerande",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

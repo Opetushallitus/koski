@@ -15,26 +15,26 @@
   "koodiUri" : "virtalukukausiilmtila_2",
   "koodiArvo" : "2",
   "metadata" : [ {
-    "nimi" : "Frånvarande",
-    "lyhytNimi" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Poissa",
     "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Frånvarande",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
   "koodiUri" : "virtalukukausiilmtila_3",
   "koodiArvo" : "3",
   "metadata" : [ {
-    "nimi" : "Frånvarande med lagstadgad orsak",
-    "lyhytNimi" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Poissa, ei kuluta opintoaikaa",
     "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Frånvarande med lagstadgad orsak",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {

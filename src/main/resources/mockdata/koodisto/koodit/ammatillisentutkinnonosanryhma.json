@@ -2,15 +2,15 @@
   "koodiUri" : "ammatillisentutkinnonosanryhma_1",
   "koodiArvo" : "1",
   "metadata" : [ {
-    "nimi" : "Yrkesinriktade examensdelar",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  }, {
     "nimi" : "Ammatilliset tutkinnon osat",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Yrkesinriktade examensdelar",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

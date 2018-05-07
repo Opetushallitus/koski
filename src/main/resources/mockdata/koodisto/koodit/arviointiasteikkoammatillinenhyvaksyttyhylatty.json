@@ -4,7 +4,13 @@
   "metadata" : [ {
     "nimi" : "Hylätty",
     "lyhytNimi" : "Hylätty",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Underkänd",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -14,7 +20,13 @@
   "metadata" : [ {
     "nimi" : "Hyväksytty",
     "lyhytNimi" : "Hyväksytty",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Godkänd",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
