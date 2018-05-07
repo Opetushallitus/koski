@@ -48,5 +48,5 @@ export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaine
 
 const arvioidutKurssit = oppiaineet =>
   flatMapArray(oppiaineet, oppiaine => modelItems(oppiaine, 'osasuoritukset'))
-    .filter(k => modelData(k, 'arviointi'))
+    .filter(k => modelData(k, 'arviointi.-1.hyväksytty'))
 
