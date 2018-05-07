@@ -159,7 +159,7 @@ Huom: toiminta-alue arviointeineen on kuvattu oppiaineen suorituksessa.""")
   @Tooltip("Suorittaako erityisoppilas koulutusta omassa erityisryhmässään vai inklusiivisesti opetuksen mukana.")
   @OksaUri("tmpOKSAID444", "opetusryhmä")
   @Title("Opiskelee erityisryhmässä")
-  erityisryhmässä: Boolean,
+  erityisryhmässä: Option[Boolean],
   @KoodistoUri("erityisopetuksentoteutuspaikka")
   toteutuspaikka: Option[Koodistokoodiviite] = None
 )

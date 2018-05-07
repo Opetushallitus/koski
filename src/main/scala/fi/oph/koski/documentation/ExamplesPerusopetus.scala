@@ -115,7 +115,7 @@ object ExamplesPerusopetus {
           alku = Some(date(2008, 8, 15)),
           loppu = Some(date(2016, 6, 4)),
           opiskeleeToimintaAlueittain = true,
-          erityisryhmässä = true
+          erityisryhmässä = Some(true)
         )),
         perusopetuksenAloittamistaLykätty = true,
         aloittanutEnnenOppivelvollisuutta = false,
