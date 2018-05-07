@@ -39,56 +39,10 @@ describe('Omat tiedot', function() {
           )
         })
 
-        it("Näytetään 'Mitkä tiedot palvelussa näkyvät?' -painike", function() {
-          expect(!!omattiedot.palvelussaNäkyvätTiedotButton().length).to.equal(true)
-        })
-
         it('Näytetään virheraportointi-painike', function() {
           expect(!!omattiedot.virheraportointiButton().length).to.equal(true)
         })
 
-        describe("'Mitkä tiedot palvelussa näkyvät' -teksti", function () {
-          it('Aluksi ei näytetä tekstiä', function () {
-            expect(omattiedot.palvelussaNäkyvätTiedotText()).to.equal('')
-          })
-
-          describe('Kun painetaan painiketta', function () {
-            before(click(omattiedot.palvelussaNäkyvätTiedotButton))
-
-            it('näytetään teksti', function () {
-              expect(omattiedot.palvelussaNäkyvätTiedotText()).to.equal(
-                'Koski-palvelussa pystytään näyttämään seuraavat tiedot:\n' +
-                'Vuoden 2018 tammikuun jälkeen suoritetut peruskoulun, lukion ja ammattikoulun opinnot ja voimassa olevat opiskeluoikeudet.\n' +
-                'Vuoden 1990 jälkeen suoritetut ylioppilastutkinnot.\n' +
-                'Korkeakoulutusuoritukset ja opiskeluoikeudet ovat näkyvissä pääsääntöisesti vuodesta 1995 eteenpäin, mutta tässä voi olla korkeakoulukohtaisia poikkeuksia.'
-              )
-            })
-          })
-
-          describe('Kun painetaan painiketta uudestaan', function () {
-            before(click(omattiedot.palvelussaNäkyvätTiedotButton))
-
-            it('teksti piilotetaan', function () {
-              expect(omattiedot.palvelussaNäkyvätTiedotText()).to.equal('')
-            })
-          })
-
-          describe('Kun teksti on näkyvissä', function () {
-            before(click(omattiedot.palvelussaNäkyvätTiedotButton))
-
-            it('alkutila (teksti näkyvissä)', function () {
-              expect(omattiedot.palvelussaNäkyvätTiedotText()).to.not.equal('')
-            })
-
-            describe('Pop-upin painikkeella', function () {
-              before(click(omattiedot.palvelussaNäkyvätTiedotCloseButton))
-
-              it('voidaan piilottaa teksti', function () {
-                expect(omattiedot.palvelussaNäkyvätTiedotText()).to.equal('')
-              })
-            })
-          })
-        })
       })
 
       describe('Kun kirjaudutaan ulos', function () {
@@ -363,10 +317,6 @@ describe('Omat tiedot', function() {
               expect(suoritusjako.opiskeluoikeudetText()).to.deep.equal([
                 'Jyväskylän normaalikoulu (2008—, läsnä)'
               ])
-            })
-
-            it("Ei näytetä 'Mitkä tiedot palvelussa näkyvät?' -painiketta", function() {
-              expect(!!omattiedot.palvelussaNäkyvätTiedotButton().length).to.equal(false)
             })
 
             it('Ei näytetä virheraportointi-painiketta', function() {

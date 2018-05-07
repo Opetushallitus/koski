@@ -26,7 +26,6 @@ export class Header extends React.Component {
   render() {
     const {oppija} = this.props
 
-    const showPalvelussaNäkyvätTiedot = Atom(false)
     const uiMode = Atom(FormState.NONE)
 
     const henkilö = modelLookup(oppija, 'henkilö')
@@ -35,7 +34,7 @@ export class Header extends React.Component {
 
     return (
       <header className='header'>
-        <HeaderInfo showPalvelussaNäkyvätTiedotA={showPalvelussaNäkyvätTiedot} varoitukset={varoitukset}/>
+        <HeaderInfo varoitukset={varoitukset}/>
 
         <div className='header__bottom-row'>
           <HeaderName henkilö={henkilö}/>

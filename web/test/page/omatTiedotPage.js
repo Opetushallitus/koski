@@ -22,16 +22,6 @@ function OmatTiedotPage() {
     ingressi: function() {
       return S('header .header__caption p').text()
     },
-    palvelussaNäkyvätTiedotButton: function() {
-      return S('header span:contains(Mitkä tiedot palvelussa näkyvät?)')
-    },
-    palvelussaNäkyvätTiedotText: function() {
-      var el = findFirstNotThrowing('header .tiedot-palvelussa')
-      return el ? extractAsText(el) : ''
-    },
-    palvelussaNäkyvätTiedotCloseButton: function() {
-      return S('header .popup__close-button')
-    },
     virheraportointiButton: function() {
       return S('header a span:contains(Onko suorituksissasi virhe?)')
     },
