@@ -47,76 +47,77 @@
         }
       }
 
-    .header {
-      &__caption {
-        display: flex;
-        justify-content: space-between;
-        flex-grow: 1;
+      .header {
+        &__caption {
+          display: flex;
+          justify-content: space-between;
+          flex-grow: 1;
 
-        p {
-          max-width: 600px;
-          margin: 0;
-          line-height: 1.4rem;
+          p {
+            max-width: 600px;
+            margin: 0;
+            line-height: 1.4rem;
+          }
+
+          a {
+            line-height: 1.4rem;
+          }
+
+          @media @media-phone {
+            flex-direction: column;
+            flex-grow: 0;
+          }
         }
 
-        a {
-          line-height: 1.4rem;
+        &__info {
+          min-height: 180px;
+          margin-bottom: 1rem;
+
+          @media @media-phone {
+            min-height: 0;
+          }
         }
 
-        @media @media-phone {
-          flex-direction: column;
-          flex-grow: 0;
-        }
-      }
-
-      &__info {
-        min-height: 180px;
-
-        @media @media-phone {
-          min-height: 0;
-        }
-      }
-
-      &__info-toggle {
-        @media @media-phone {
-          min-height: 0;
-          margin: 0.5rem 0;
-        }
-      }
-
-      &__name {
-        font-weight: 600;
-        line-height: 1.6rem;
-
-        p {
-          margin: 0;
+        &__info-toggle {
+          @media @media-phone {
+            min-height: 0;
+            margin: 0.5rem 0;
+          }
         }
 
-        .syntynyt {
-          font-weight: 400;
+        &__name {
+          font-weight: 600;
+          line-height: 1.6rem;
+
+          p {
+            margin: 0;
+          }
+
+          .syntynyt {
+            font-weight: 400;
+          }
         }
-      }
 
-      &__buttons {
-        & > .toggle-button:not(:last-child) {
-          margin-right: 1rem;
+        &__buttons {
+          & > .toggle-button:not(:last-child) {
+            margin-right: 1rem;
+          }
         }
-      }
 
-      &__bottom-row {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
+        &__bottom-row {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
 
-        @media @media-phone {
-          flex-direction: column;
+          @media @media-phone {
+            flex-direction: column;
 
-          .header__name {
-            order: 1;
+            .header__name {
+              order: 1;
+            }
           }
         }
       }
-    }
 
       .tiedot-palvelussa {
         .info-text;
