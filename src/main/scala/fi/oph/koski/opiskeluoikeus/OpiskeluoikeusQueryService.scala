@@ -2,6 +2,7 @@ package fi.oph.koski.opiskeluoikeus
 
 import java.sql.Timestamp
 
+import fi.oph.koski.db
 import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.jsonMethods.{parse => parseJson}
@@ -25,6 +26,14 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
   }
 
   def opiskeluoikeusQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[SortOrder], pagination: Option[PaginationSettings])(implicit user: KoskiSession): Observable[(OpiskeluoikeusRow, HenkilöRow, Option[HenkilöRow])] = {
+    streamingQuery(mkQuery(filters, sorting, pagination))
+  }
+
+  def opiskeluoikeusQuerySync(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[SortOrder], pagination: Option[PaginationSettings])(implicit user: KoskiSession): Seq[(OpiskeluoikeusRow, HenkilöRow, Option[HenkilöRow])] = {
+    runDbSync(mkQuery(filters, sorting, pagination).result)
+  }
+
+  private def mkQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[SortOrder], pagination: Option[PaginationSettings])(implicit user: KoskiSession) = {
     val baseQuery = OpiskeluOikeudetWithAccessCheck.asInstanceOf[Query[OpiskeluoikeusTable, OpiskeluoikeusRow, Seq]]
       .join(Tables.Henkilöt).on(_.oppijaOid === _.oid)
       .joinLeft(Tables.Henkilöt).on(_._2.masterOid === _.oid)
@@ -44,9 +53,9 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
         }
         query.filter(_._1.data.+>("suoritukset").@>(matchers.bind.any))
       case (query, Luokkahaku(hakusana)) =>
-        query.filter({ case t: (Tables.OpiskeluoikeusTable, Tables.HenkilöTable, _) => t._1.luokka ilike (hakusana + "%")})
+        query.filter({ case t: (OpiskeluoikeusTable, HenkilöTable, _) => t._1.luokka ilike (hakusana + "%") })
       case (query, Nimihaku(hakusana)) =>
-        query.filter{ case (_, henkilö, _) =>
+        query.filter { case (_, henkilö, _) =>
           KoskiHenkilöCache.filterByQuery(hakusana)(henkilö)
         }
       case (query, IdHaku(ids)) => query.filter(_._1.id inSetBind ids)
@@ -63,6 +72,7 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
 
     val sorted = sorting match {
       case None => query
+      case Some(Ascending("id")) => query.sortBy(_._1.id)
       case Some(Ascending("oppijaOid")) => query.sortBy(_._2.oid)
       case Some(Ascending("nimi")) => query.sortBy(nimi)
       case Some(Descending("nimi")) => query.sortBy(nimiDesc)
@@ -72,6 +82,7 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
       case Some(Descending("luokka")) => query.sortBy(tuple => (luokka(tuple).desc, nimiDesc(tuple)))
       case s => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("Epäkelpo järjestyskriteeri: " + s))
     }
-    streamingQuery(applyPagination(sorted, pagination))
+
+    applyPagination(sorted, pagination)
   }
 }
