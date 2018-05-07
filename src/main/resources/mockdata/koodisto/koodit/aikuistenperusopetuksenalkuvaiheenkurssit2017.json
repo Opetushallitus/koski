@@ -3,13 +3,9 @@
   "koodiArvo" : "A(X)A1",
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Lähtökohtia kielen opiskelulle",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Testing på svenska",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
+    "nimi" : "Grunderna i språket: Utgångspunkter för studier",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -20,6 +16,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Lähtökohtia kielen opiskelulle",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Utgångspunkter för studier",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -37,6 +36,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Grundläggande kommunikation i sociala situationer i vardagen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -54,6 +56,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Kommunikation vid uträttande av ärenden",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -71,6 +76,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Koulu ja opiskelu",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Utbildning och studier",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -88,6 +96,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Lähtökohtia englannin opiskelulle",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Utgångspunkter för studier i engelska",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -105,6 +116,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Grundläggande kommunikation i sociala situationer i vardagen ",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -122,6 +136,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Kommunikation vid uträttande av ärenden",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -139,6 +156,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Koulu ja opiskelu",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Utbildning och studier",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -156,6 +176,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Lähtökohtia kielen opiskelulle",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Utgångspunkter för studier",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -173,6 +196,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Grundläggande kommunikation i sociala situationer i vardagen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -190,6 +216,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Kommunikation vid uträttande av ärenden",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -207,6 +236,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Koulu ja opiskelu",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Utbildning och studier",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -224,6 +256,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Lähtökohtia kielen opiskelulle",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Utgångspunkter för studier",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -241,6 +276,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Grundläggande kommunikation i sociala situationer i vardagen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -258,6 +296,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Kommunikation vid uträttande av ärenden",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -275,6 +316,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Koulu ja opiskelu",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Utbildning och studier",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -292,6 +336,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Lähtökohtia kielen opiskelulle",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Utgångspunkter för studier",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -309,6 +356,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Grundläggande kommunikation i sociala situationer i vardagen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -326,6 +376,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Kommunikation vid uträttande av ärenden",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -343,6 +396,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Koulu ja opiskelu",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Utbildning och studier",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -360,6 +416,9 @@
   "metadata" : [ {
     "nimi" : "Luvut ja laskutoimitukset I",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Tal och räkneoperationer I",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -373,6 +432,9 @@
   "metadata" : [ {
     "nimi" : "Luvut ja laskutoimitukset II",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Tal och räkneoperationer II",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -386,6 +448,9 @@
   "metadata" : [ {
     "nimi" : "Geometria I",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Geometri I",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -399,6 +464,9 @@
   "metadata" : [ {
     "nimi" : "Geometria II",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Geometri II",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -412,6 +480,9 @@
   "metadata" : [ {
     "nimi" : "Matemaattinen ongelmanratkaisu",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Matematisk problemlösning",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -425,10 +496,13 @@
   "metadata" : [ {
     "nimi" : "Ura- ja elämänsuunnittelutaidot",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Karriär- och livsplaneringsfärdigheter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_te",
+    "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_op",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -438,10 +512,13 @@
   "metadata" : [ {
     "nimi" : "Työelämään tutustuminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Arbetslivsorientering",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_te",
+    "codeElementUri" : "aikuistenperusopetuksenalkuvaiheenoppiaineet_op",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -451,6 +528,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Lähtökohtia kielen opiskelulle",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Utgångspunkter för studier",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -468,6 +548,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Grundläggande kommunikation i sociala situationer i vardagen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -485,6 +568,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Kommunikation vid uträttande av ärenden",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -502,6 +588,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Koulu ja opiskelu",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Utbildning och studier",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -519,6 +608,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Lähtökohtia kielen opiskelulle",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Utgångspunkter för studier",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -536,6 +628,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Grundläggande kommunikation i sociala situationer i vardagen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -553,6 +648,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Kommunikation vid uträttande av ärenden",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -570,6 +668,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Koulu ja opiskelu",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Utbildning och studier",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -587,6 +688,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Lähtökohtia suomen kielen opiskelulle",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Utgångspunkter för studier i finska",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -600,6 +704,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Minun historiani",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Min historia",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -613,6 +720,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Asuminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Boende",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -626,6 +736,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Luonto ja lähiympäristö",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Naturen och lärmiljön",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -639,6 +752,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Harrastukset",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Fritidsaktiviteter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -652,6 +768,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Asiointi lääkärissä ja apteekissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Besök hos läkare och på apoteket",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -665,6 +784,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Koulutus ja työ Suomessa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Utbildning och arbete i Finland",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -678,6 +800,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Monimediainen ympäristö",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Multimediala miljöer",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -691,6 +816,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Kirjallisuus, kansalliset juhlapäivät ja tapakulttuuri",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Litteratur, nationella helgdagar och sedvänjor",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -704,6 +832,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän tilanteissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Grundläggande kommunikation i vardagliga situationer",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -717,6 +848,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Minä ja perheeni",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Jag och familjen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -730,6 +864,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Vuorovaikutusta asiointitilanteissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Kommunikation vid uträttande av ärenden",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -743,6 +880,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Asumisen arkea",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Vardagen i hemmet",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -756,6 +896,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Matkustaminen eri kulkuvälineissä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Att färdas med olika transportmedel",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -769,6 +912,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Terveys ja hyvinvointi",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Hälsa och välbefinnande",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -782,6 +928,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Minun päiväni",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Min dag",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -795,6 +944,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Työelämässä toimiminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Kommunikation i arbetslivet",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -808,6 +960,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Lähtökohtia kielen opiskelulle",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Utgångspunkter för studier",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -825,6 +980,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Grundläggande kommunikation i sociala situationer i vardagen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -842,6 +1000,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Kommunikation vid uträttande av ärenden",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -859,6 +1020,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Koulu ja opiskelu",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Utbildning och studier",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -876,6 +1040,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Lähtökohtia kielen opiskelulle",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Utgångspunkter för studier",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -893,6 +1060,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Grundläggande kommunikation i sociala situationer i vardagen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -910,6 +1080,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Kommunikation vid uträttande av ärenden",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -927,6 +1100,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Koulu ja opiskelu",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Utbildning och studier",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -944,6 +1120,9 @@
   "metadata" : [ {
     "nimi" : "Terve elämä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Ett sunt liv",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -957,6 +1136,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Lähtökohtia kielen opiskelulle",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Utgångspunkter för studier",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -974,6 +1156,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Grundläggande kommunikation i sociala situationer i vardagen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -991,6 +1176,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Kommunikation vid uträttande av ärenden",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1008,6 +1196,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Koulu ja opiskelu",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Utbildning och studier",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1025,6 +1216,9 @@
   "metadata" : [ {
     "nimi" : "Yhteiskunnan perusrakenteet ja arjen tiedot",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samhällets grundstrukturer och vardagskompetens",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1038,6 +1232,9 @@
   "metadata" : [ {
     "nimi" : "Historia, maatuntemus ja yhteiskunnan toiminta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Historia, landskännedom och samhällets funktioner",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1051,6 +1248,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri-identiteetti ja vuorovaikutus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kulturidentitet och kommunikation",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1064,6 +1264,9 @@
   "metadata" : [ {
     "nimi" : "Ihminen ja monimuotoinen maailma",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Människan och den mångfacetterade världen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1077,6 +1280,9 @@
   "metadata" : [ {
     "nimi" : "Luonnon rakenteet",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Naturens strukturer",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1090,6 +1296,9 @@
   "metadata" : [ {
     "nimi" : "Suomen kielen ja kirjallisuuden opiskelun perustaidot",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Utgångspunkter för studier i finska och litteratur",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1103,6 +1312,9 @@
   "metadata" : [ {
     "nimi" : "Tekstien tuottaminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att producera texter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1116,6 +1328,9 @@
   "metadata" : [ {
     "nimi" : "Tekstien tulkinnan perusteet",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i texttolkning",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1129,6 +1344,9 @@
   "metadata" : [ {
     "nimi" : "Tekstien tulkinta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att tolka texter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1142,6 +1360,9 @@
   "metadata" : [ {
     "nimi" : "Kaunokirjallisuuden lukeminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att läsa skönlitteratur",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1155,6 +1376,9 @@
   "metadata" : [ {
     "nimi" : "Mediatekstit",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Medietexter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1168,6 +1392,9 @@
   "metadata" : [ {
     "nimi" : "Tietokirjallisuus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Facklitteratur",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1181,6 +1408,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri ja kansanperinne",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur och folkliga traditioner",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1194,6 +1424,9 @@
   "metadata" : [ {
     "nimi" : "Nykykulttuurin ilmiöitä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samtidskulturella fenomen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1207,6 +1440,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelun ja tiedonhallinnan taidot",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studiefärdigheter och förmåga att hantera information",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1220,6 +1456,9 @@
   "metadata" : [ {
     "nimi" : "Tekstien moninaisuus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Texternas mångfald",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1233,6 +1472,9 @@
   "metadata" : [ {
     "nimi" : "Puhe- ja vuorovaikutustaidot",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Muntliga och kommunikativa färdigheter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1246,6 +1488,9 @@
   "metadata" : [ {
     "nimi" : "Kieli ja tekstit",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språk och texter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1259,6 +1504,9 @@
   "metadata" : [ {
     "nimi" : "Kieli ja vuorovaikutus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språk och kommunikation",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1272,6 +1520,9 @@
   "metadata" : [ {
     "nimi" : "Kieli ja kulttuuri",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språk och kultur",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1285,6 +1536,9 @@
   "metadata" : [ {
     "nimi" : "Kieli ja identiteetti",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språk och identitet",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1298,6 +1552,9 @@
   "metadata" : [ {
     "nimi" : "Tekstien tuottamisen perusteet",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i textproduktion",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1311,6 +1568,9 @@
   "metadata" : [ {
     "nimi" : "Lukujen maailma",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Talens värld",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1324,6 +1584,9 @@
   "metadata" : [ {
     "nimi" : "Luvut arjessa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Tal i vardagen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1337,6 +1600,9 @@
   "metadata" : [ {
     "nimi" : "Laskutoimituksia arjessa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Räkneoperationer i vardagen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1350,6 +1616,9 @@
   "metadata" : [ {
     "nimi" : "Koulutusjärjestelmä ja opiskelukäytänteet",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Utbildningssystemet och studierutiner",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1363,6 +1632,9 @@
   "metadata" : [ {
     "nimi" : "Ammatteihin tutustuminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att bekanta sig med olika yrken",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1376,6 +1648,9 @@
   "metadata" : [ {
     "nimi" : "Arkielämä ja yhteiskunnan palvelut",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vardagskompetens och samhälleliga tjänster",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1389,6 +1664,9 @@
   "metadata" : [ {
     "nimi" : "Demokraattinen yhteiskunta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Det demokratiska samhället",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1402,6 +1680,9 @@
   "metadata" : [ {
     "nimi" : "Ympäristö- ja luonnontiedon alkeet",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i miljö- och naturkunskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1415,6 +1696,9 @@
   "metadata" : [ {
     "nimi" : "Lähtökohtia luku- ja kirjoitustaidon opiskelulle",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Utgångspunkter för undervisningen i läs- och skrivfärdigheter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1428,6 +1712,9 @@
   "metadata" : [ {
     "nimi" : "Asuminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Boende",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1441,6 +1728,9 @@
   "metadata" : [ {
     "nimi" : "Toimitaan kotona",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Hemma",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1454,6 +1744,9 @@
   "metadata" : [ {
     "nimi" : "Annetaan henkilötietoja ja täytetään lomakkeita",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att lämna personuppgifter och fylla i blanketter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1467,6 +1760,9 @@
   "metadata" : [ {
     "nimi" : "Asioidaan terveyspalveluissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Hälsovårdstjänster",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1480,6 +1776,9 @@
   "metadata" : [ {
     "nimi" : "Viestintää päivähoidossa, koulussa ja työelämässä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunikation på daghemmet, i skolan och i arbetslivet",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1493,6 +1792,9 @@
   "metadata" : [ {
     "nimi" : "Vietetään vapaa-aikaa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fritidsaktiviteter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1506,6 +1808,9 @@
   "metadata" : [ {
     "nimi" : "Äänteestä ja kirjaimesta tavuksi",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Från ljud och bokstav till stavelse",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1519,6 +1824,9 @@
   "metadata" : [ {
     "nimi" : "Tavusta sanaksi",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Från stavelse till ord",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1532,6 +1840,9 @@
   "metadata" : [ {
     "nimi" : "Harjoitellaan sanoja",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Öva ord",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1545,6 +1856,9 @@
   "metadata" : [ {
     "nimi" : "Lisätään tavuja",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Läsningen automatiseras",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1558,6 +1872,9 @@
   "metadata" : [ {
     "nimi" : "Sanoista lauseisiin",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Från ord till meningar",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1571,6 +1888,9 @@
   "metadata" : [ {
     "nimi" : "Lauseista kohti tekstiä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Från meningar till texter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1584,6 +1904,9 @@
   "metadata" : [ {
     "nimi" : "Sujuvoitetaan luku- ja kirjoitustaitoja",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Mer flyt i läsningen och skrivningen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1597,6 +1920,9 @@
   "metadata" : [ {
     "nimi" : "Käydään ostoksilla",
     "kieli" : "FI"
+  }, {
+    "nimi" : "På uppköp",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {

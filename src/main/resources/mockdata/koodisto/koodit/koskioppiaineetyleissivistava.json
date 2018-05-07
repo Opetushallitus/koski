@@ -102,10 +102,12 @@
   "metadata" : [ {
     "nimi" : "Elämänkatsomustieto",
     "lyhytNimi" : "Elämänkatsomustieto",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Livsåskådningskunskap",
     "lyhytNimi" : "Livsåskådningskunskap",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -214,10 +216,12 @@
   "metadata" : [ {
     "nimi" : "Uskonto",
     "lyhytNimi" : "Uskonto",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Religion",
     "lyhytNimi" : "Religion",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -284,7 +288,13 @@
   "metadata" : [ {
     "nimi" : "Opinto-ohjaus",
     "lyhytNimi" : "Opinto-ohjaus",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Elevhandledning",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -336,7 +346,13 @@
   "metadata" : [ {
     "nimi" : "Ympäristöoppi",
     "lyhytNimi" : "Ympäristöoppi",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Omgivningslära",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

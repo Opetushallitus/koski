@@ -19,7 +19,14 @@
   "koodiArvo" : "10",
   "metadata" : [ {
     "nimi" : "Työvoimakoulutus (OKM rahoitus)",
+    "lyhytNimi" : "",
+    "kuvaus" : "Kyseessä on Opetus- ja kulttuuriministeriön valtionosuudella rahoitettu työvoimakoulutus. Koulutuksen järjestäjällä on tähän järjestämisluvassa erillinen lupa.",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Arbetskraftsutbildning (UKM finansiering)",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -32,7 +39,7 @@
     "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Arbetskraftspolitisk vuxenutbildning (nationell finansiering)",
+    "nimi" : "Arbetskraftsutbildning  NTM-centralen och arbets- och näringsbyrån (nationell finansiering)",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
@@ -48,7 +55,7 @@
     "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Arbetskraftspolitisk vuxenutbildning (ESF-finansierad)",
+    "nimi" : "Arbetskraftsutbildning (ESF-finansierad)",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
