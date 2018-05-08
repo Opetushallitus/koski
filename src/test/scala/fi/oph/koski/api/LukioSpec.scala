@@ -91,7 +91,7 @@ class LukioSpec extends FreeSpec with Matchers with OpintosuoritusoteTestMethods
           |MAA10 Todennäköisyys ja tilastot 1 8 4.6.2016
           |MAA11 Lukuteoria ja todistaminen 1 8 4.6.2016
           |MAA12 Algoritmit matematiikassa 1 10 4.6.2016
-          |MAA13 Differentiaali- ja integraalilaskennan jatkokurssi 1 8 4.6.2016
+          |MAA13 Differentiaali- ja integraalilaskennan jatkokurssi 1 hylätty 4.6.2016
           |MAA14 Kertauskurssi, ksy, vuositaso 3 1 9 4.6.2016
           |MAA16 Analyyttisten menetelmien lisäkurssi, ksy, vuositaso 2 1 9 4.6.2016
           |MU Musiikki 1 8

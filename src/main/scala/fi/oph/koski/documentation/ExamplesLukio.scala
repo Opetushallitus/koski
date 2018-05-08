@@ -92,7 +92,7 @@ object ExamplesLukio {
               kurssisuoritus(valtakunnallinenKurssi("MAA10")).copy(arviointi = numeerinenArviointi(8)),
               kurssisuoritus(valtakunnallinenKurssi("MAA11")).copy(arviointi = numeerinenArviointi(8)),
               kurssisuoritus(valtakunnallinenKurssi("MAA12")).copy(arviointi = numeerinenArviointi(10)),
-              kurssisuoritus(valtakunnallinenKurssi("MAA13")).copy(arviointi = numeerinenArviointi(8)),
+              kurssisuoritus(valtakunnallinenKurssi("MAA13")).copy(arviointi = sanallinenArviointi("H", kuvaus = None)),
               kurssisuoritus(syventäväKurssi("MAA14", "Kertauskurssi, ksy, vuositaso 3", "Harjoitellaan käyttämään opittuja tietoja ja taitoja monipuolisissa ongelmanratkaisutilanteissa."))
                 .copy(arviointi = numeerinenArviointi(9)),
               kurssisuoritus(syventäväKurssi("MAA16", "Analyyttisten menetelmien lisäkurssi, ksy, vuositaso 2", "Kurssilla syvennetään kurssien MAA4, MAA5 ja MAA7 sisältöjä."))

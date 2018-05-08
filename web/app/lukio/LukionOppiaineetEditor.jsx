@@ -2,11 +2,11 @@ import React from 'react'
 import R from 'ramda'
 import {LukionOppiaineEditor} from './LukionOppiaineEditor'
 import {UusiLukionOppiaineDropdown} from './UusiLukionOppiaineDropdown'
-import {modelData, modelErrorMessages, modelItems} from '../editor/EditorModel'
+import {modelErrorMessages, modelItems} from '../editor/EditorModel'
 import {LukionOppiaineetTableHead} from './fragments/LukionOppiaineetTableHead'
 import {t} from '../i18n/i18n'
 import {flatMapArray} from '../util/util'
-import {laajuudet} from './lukio'
+import {laajuudet, hyväksytystiSuoritetutKurssit} from './lukio'
 import {laajuusNumberToString} from '../util/format.js'
 
 export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaineenSuoritus, suoritusFilter, additionalEditableKoulutusmoduuliProperties}) => {
@@ -46,7 +46,5 @@ export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaine
   )
 }
 
-const arvioidutKurssit = oppiaineet =>
-  flatMapArray(oppiaineet, oppiaine => modelItems(oppiaine, 'osasuoritukset'))
-    .filter(k => modelData(k, 'arviointi'))
+const arvioidutKurssit = oppiaineet => flatMapArray(oppiaineet, oppiaine => hyväksytystiSuoritetutKurssit(modelItems(oppiaine, 'osasuoritukset')))
 
