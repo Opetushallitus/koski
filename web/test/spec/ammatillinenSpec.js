@@ -1602,6 +1602,7 @@ describe('Ammatillinen koulutus', function() {
           'Kuvaus Moottorin korjaus\n' +
           'Suorituspaikka Autokorjaamo Oy, Riihimäki\n' +
           'Suoritusaika 20.4.2002 — 20.4.2002\n' +
+          'Työssäoppimisen yhteydessä ei\n' +
           'Selite Tutkinnon osa on tunnustettu aiemmin suoritetusta autoalan perustutkinnon osasta (1.8.2000 nro 11/011/2000)\nRahoituksen piirissä ei\n' +
           'Yhteensä 15 osp'
         )

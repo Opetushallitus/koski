@@ -13,8 +13,6 @@ const HetuLogin = () => {
   const state = Atom({hetu: null, cn: null, FirstName: null, givenName: null, sn: null})
 
   const valid = state.map(({hetu}) => {
-    console.log(hetu && hetu.length === 11)
-    console.log(hetu)
     return hetu && hetu.length === 11
   })
   const inProgress = Atom(false)
@@ -29,8 +27,7 @@ const HetuLogin = () => {
   }
 
   const errorHandler = e => {
-    console.error('Fake shibboleth login fail')
-    console.error(e)
+    console.error('Fake shibboleth login fail', e)
     inProgress.set(false)
     error.set(e)
   }
@@ -39,8 +36,7 @@ const HetuLogin = () => {
     .map(state)
     .flatMap(credentials => {
       const headers = R.reject(R.isNil, R.merge(credentials, {security: 'mock'}))
-      console.log(headers)
-      console.log('Logging in with', credentials.hetu)
+      // console.log('Logging in with', headers)
       return Bacon.fromPromise(fetch(LoginUrl, { credentials: 'include', headers}))
     })
 
@@ -51,8 +47,6 @@ const HetuLogin = () => {
     } else if (x.redirected) {
       document.location = x.url
     } else {
-      console.log(x)
-      console.log('Login ok')
       document.location = RedirectUrl
     }
   })
