@@ -1,5 +1,5 @@
 import React from 'react'
-import R from 'ramda'
+import * as R from 'ramda'
 
 import {t} from '../../i18n/i18n'
 import {modelData, modelLookup, modelTitle} from '../../editor/EditorModel.js'

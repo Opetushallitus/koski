@@ -2,7 +2,7 @@ import React from 'baret'
 import {editAtom, cancelChanges, saveChanges, hasChanges, languages} from './i18n-edit'
 import {lang, setLang} from './i18n'
 import Text from './Text'
-import R from 'ramda'
+import * as R from 'ramda'
 import Atom from 'bacon.atom'
 
 export default ({user}) => {

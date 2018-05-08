@@ -1,6 +1,6 @@
 import React from 'baret'
 import Atom from 'bacon.atom'
-import R from 'ramda'
+import * as R from 'ramda'
 import {accumulateModelState, modelItems, modelLookup, modelValid} from '../editor/EditorModel'
 import Text from '../i18n/Text'
 import ModalDialog from '../editor/ModalDialog'

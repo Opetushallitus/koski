@@ -1,5 +1,5 @@
 import React from 'baret'
-import R from 'ramda'
+import * as R from 'ramda'
 import {modelData, modelTitle} from '../editor/EditorModel.js'
 import Link from '../components/Link'
 import {currentLocation} from '../util/location.js'

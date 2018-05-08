@@ -1,5 +1,5 @@
 import React from 'react'
-import R from 'ramda'
+import * as R from 'ramda'
 import {wrapOptional} from './EditorModel'
 import {StringEditor} from './StringEditor'
 import {modelLookup} from './EditorModel.js'

@@ -1,5 +1,5 @@
 import React from 'react'
-import R from 'ramda'
+import * as R from 'ramda'
 import {contextualizeModel, addContext, contextualizeSubModel, modelLookup} from './EditorModel'
 import {parseBool} from '../util/util'
 import PropTypes from 'prop-types'

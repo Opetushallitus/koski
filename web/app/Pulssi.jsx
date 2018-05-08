@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom'
 import Http from './util/http'
 import './style/pulssi.less'
 import Text from './i18n/Text'
-import R from 'ramda'
+import * as R from 'ramda'
 
 class Pulssi extends React.Component {
 

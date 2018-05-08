@@ -6,7 +6,7 @@ import {
   modelErrorMessages, modelItems, modelProperties, modelProperty, modelTitle, optionalPrototypeModel,
   pushRemoval
 } from '../editor/EditorModel'
-import R from 'ramda'
+import * as R from 'ramda'
 import {buildClassNames} from '../components/classnames'
 import {accumulateExpandedState} from '../editor/ExpandableItems'
 import {hasArvosana, suorituksenTyyppi, suoritusValmis, tilaText} from './Suoritus'

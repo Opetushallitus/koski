@@ -1,5 +1,5 @@
 import Bacon from 'baconjs'
-import R from 'ramda'
+import * as R from 'ramda'
 import {checkExitHook, removeExitHook} from './exitHook'
 import {trackPageView} from '../tracking/piwikTracking'
 

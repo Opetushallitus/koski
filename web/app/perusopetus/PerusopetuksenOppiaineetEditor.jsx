@@ -16,7 +16,7 @@ import {
   pushModel,
   wrapOptional
 } from '../editor/EditorModel'
-import R from 'ramda'
+import * as R from 'ramda'
 import {arvioituTaiVahvistettu, osasuoritukset} from '../suoritus/Suoritus'
 import {accumulateExpandedState} from '../editor/ExpandableItems'
 import {t} from '../i18n/i18n'

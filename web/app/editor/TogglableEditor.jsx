@@ -1,5 +1,5 @@
 import React from 'react'
-import R from 'ramda'
+import * as R from 'ramda'
 import {contextualizeModel} from './EditorModel.js'
 import {currentLocation} from '../util/location'
 import Text from '../i18n/Text'

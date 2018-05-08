@@ -1,7 +1,7 @@
 import React from 'baret'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
-import R from 'ramda'
+import * as R from 'ramda'
 import Http from '../util/http'
 import {elementWithLoadingIndicator} from '../components/AjaxLoadingIndicator'
 import Text from '../i18n/Text'

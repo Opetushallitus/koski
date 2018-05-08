@@ -1,4 +1,4 @@
-import R from 'ramda'
+import * as R from 'ramda'
 import Bacon from 'baconjs'
 import * as L from 'partial.lenses'
 import {hashAdd, hashCode} from './hashcode'

@@ -1,6 +1,6 @@
 import React from 'baret'
 import {Editor} from '../editor/Editor'
-import R from 'ramda'
+import * as R from 'ramda'
 import * as L from 'partial.lenses'
 import {hasModelProperty, lensedModel, modelData, modelLookup, modelSetValue} from '../editor/EditorModel'
 import {sortLanguages} from '../util/sorting'

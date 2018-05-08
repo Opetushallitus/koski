@@ -1,4 +1,4 @@
-import R from 'ramda'
+import * as R from 'ramda'
 import {LaajuusEditor} from '../suoritus/LaajuusEditor'
 import {VahvistusEditor} from '../suoritus/VahvistusEditor'
 import {KoulutusmoduuliEditor} from '../suoritus/KoulutusmoduuliEditor'

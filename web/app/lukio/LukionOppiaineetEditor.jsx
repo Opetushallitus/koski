@@ -1,5 +1,5 @@
 import React from 'react'
-import R from 'ramda'
+import * as R from 'ramda'
 import {LukionOppiaineEditor} from './LukionOppiaineEditor'
 import {UusiLukionOppiaineDropdown} from './UusiLukionOppiaineDropdown'
 import {modelData, modelErrorMessages, modelItems} from '../editor/EditorModel'

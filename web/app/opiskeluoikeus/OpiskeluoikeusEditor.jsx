@@ -1,5 +1,5 @@
 import React from 'baret'
-import R from 'ramda'
+import * as R from 'ramda'
 import Bacon from 'baconjs'
 import {addContext, modelData, modelItems, modelLookup, modelTitle, modelSetValues, pushModel} from '../editor/EditorModel.js'
 import {TogglableEditor} from '../editor/TogglableEditor'

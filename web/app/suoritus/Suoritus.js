@@ -3,7 +3,7 @@ import {
   modelTitle
 } from '../editor/EditorModel'
 import * as L from 'partial.lenses'
-import R from 'ramda'
+import * as R from 'ramda'
 import {t} from '../i18n/i18n'
 import {parseISODate} from '../date/date'
 import {flatMapArray} from '../util/util'

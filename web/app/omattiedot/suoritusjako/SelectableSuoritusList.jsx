@@ -1,6 +1,6 @@
 import React from 'baret'
 import Bacon from 'baconjs'
-import R from 'ramda'
+import * as R from 'ramda'
 import {modelData, modelItems, modelLookup, modelTitle} from '../../editor/EditorModel'
 import SuoritusIdentifier from './SuoritusIdentifier'
 import {suoritusjakoSuoritusTitle} from './suoritusjako'

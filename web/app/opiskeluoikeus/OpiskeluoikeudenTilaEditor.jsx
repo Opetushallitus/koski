@@ -1,5 +1,5 @@
 import React from 'baret'
-import R from 'ramda'
+import * as R from 'ramda'
 import * as L from 'partial.lenses'
 import Atom from 'bacon.atom'
 import {

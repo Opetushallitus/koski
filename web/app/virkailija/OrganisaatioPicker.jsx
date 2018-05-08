@@ -1,6 +1,6 @@
 import React from 'react'
 import Bacon from 'baconjs'
-import R from 'ramda'
+import * as R from 'ramda'
 import BaconComponent from '../components/BaconComponent'
 import Http from '../util/http'
 import Highlight from 'react-highlighter'
