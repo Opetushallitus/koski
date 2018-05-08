@@ -95,7 +95,7 @@ class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication
   *  Operating context for data validation. Operates outside the lecixal scope of OpiskeluoikeusServlet to ensure that none of the
   *  Scalatra threadlocals are used. This must be done because in batch mode, we are running in several threads.
   */
-case class ValidateContext(validator: KoskiValidator, historyRepository: OpiskeluoikeusHistoryRepository, henkilöRepository: HenkilöRepository)(implicit user: KoskiSession) {
+case class ValidateContext(validator: KoskiValidator, historyRepository: OpiskeluoikeusHistoryRepository, henkilöRepository: HenkilöRepository)(implicit user: KoskiSession) extends Logging {
   def validateHistory(row: OpiskeluoikeusRow): ValidationResult = {
     try {
       val opiskeluoikeus = row.toOpiskeluoikeus
@@ -128,7 +128,9 @@ case class ValidateContext(validator: KoskiValidator, historyRepository: Opiskel
       case Right(oppija) =>
         ValidationResult(row.oppijaOid, row.oid, Nil)
       case Left(status) =>
-        ValidationResult(row.oppijaOid, row.oid, status.errors)
+        val result = ValidationResult(row.oppijaOid, row.oid, status.errors)
+        logger.warn(s"Validation failed $result")
+        result
     }
   }
 
