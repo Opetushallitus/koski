@@ -1,6 +1,5 @@
 package fi.oph.koski.schema
 
-import java.sql.Timestamp
 import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
@@ -605,7 +604,6 @@ case class Näyttö(
   @Description("Onko näyttö suoritettu työssäoppimisen yhteydessä (true/false)")
   @Tooltip("Onko näyttö suoritettu työssäoppimisen yhteydessä?")
   @DefaultValue(false)
-  @OnlyWhen("../../../suoritustapa/koodiarvo", "ops")
   työssäoppimisenYhteydessä: Boolean = false,
   @Description("Näytön arvioinnin lisätiedot")
   @Tooltip("Näytön arviointitiedot (arvosana, arviointipäivä, arvioinnista päättäneet, arviointikeskusteluun osallistuneet)")
