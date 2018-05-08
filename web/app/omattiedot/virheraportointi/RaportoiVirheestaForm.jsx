@@ -74,7 +74,7 @@ export const RaportoiVirheestäForm = ({henkilö, opiskeluoikeudet}) => {
   ).startWith(false).skipDuplicates()
 
   return (
-    <div className='raportoi-virheestä-form'>
+    <div className='raportoi-virheestä-form textstyle-body'>
       <div className='puuttuvat-tiedot form-section' data-indent={0}>
         <PuuttuvatTiedot/>
 
@@ -92,7 +92,7 @@ export const RaportoiVirheestäForm = ({henkilö, opiskeluoikeudet}) => {
 
       {ift(hasAcceptedDisclaimer, (
         <div className='oppilaitos-options form-section' data-indent={1}>
-          <h3><Text name='Voit tiedustella asiaa oppilaitokseltasi.'/></h3>
+          <p><b><Text name='Voit tiedustella asiaa oppilaitokseltasi.'/></b></p>
           <ul>
             {oppilaitokset.map(o => (
               <OppilaitosOption

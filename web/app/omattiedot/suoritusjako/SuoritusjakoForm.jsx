@@ -126,7 +126,7 @@ export class SuoritusjakoForm extends React.Component {
     const {opiskeluoikeudet} = this.props
 
     return (
-      <section className='suoritusjako-form'>
+      <section className='suoritusjako-form textstyle-body'>
         {this.suoritusjaot.map(suoritusjaot => R.isEmpty(suoritusjaot) && <Ingressi/>)}
         <SuoritusjakoList
           baret-lift

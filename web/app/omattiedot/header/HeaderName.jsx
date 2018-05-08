@@ -4,9 +4,9 @@ import {ISO2FinnishDate} from '../../date/date'
 import Text from '../../i18n/Text'
 
 export const HeaderName = ({henkilö}) => {
-  const nimi = <p>{`${modelData(henkilö, 'etunimet')} ${modelData(henkilö, 'sukunimi')}`}</p>
+  const nimi = <p className='textstyle-like-h2'>{`${modelData(henkilö, 'etunimet')} ${modelData(henkilö, 'sukunimi')}`}</p>
   const syntymäaika = modelTitle(henkilö, 'syntymäaika') &&
-    <p className='syntynyt'>
+    <p className='syntynyt textstyle-lead'>
       <Text name='syntynyt'/>
       <span> {ISO2FinnishDate(modelTitle(henkilö, 'syntymäaika'))}</span>
     </p>
