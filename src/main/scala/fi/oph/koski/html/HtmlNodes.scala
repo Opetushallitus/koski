@@ -42,7 +42,7 @@ trait HtmlNodes extends KoskiBaseServlet with PiwikNodes {
     <meta name="robots" content="noindex" /> ++
     <link rel="shortcut icon" href="/koski/favicon.ico" /> ++
     <link rel="stylesheet" href="/koski/external_css/normalize.min.css" /> ++
-    <link href="/koski/external_css/OpenSans.css" rel="stylesheet"/> ++
+    <link href="/koski/external_css/SourceSansPro.css" rel="stylesheet"/> ++
     <link href="/koski/external_css/font-awesome.min.css" rel="stylesheet" type="text/css" /> ++
     <link rel="stylesheet" type="text/css" href="/koski/external_css/highlight-js.default.min.css"/> ++
     <link rel="stylesheet" type="text/css" href="/koski/css/codemirror/codemirror.css"/>
