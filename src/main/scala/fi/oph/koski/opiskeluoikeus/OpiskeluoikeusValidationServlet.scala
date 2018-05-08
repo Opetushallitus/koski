@@ -72,7 +72,7 @@ class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication
     import rx.lang.scala.JavaConverters._
     def validateRows(page: Int): (Seq[ValidationResult], Int) = {
       val opiskeluoikeusRows = application.opiskeluoikeusQueryRepository.opiskeluoikeusQuerySync(filters, Some(Ascending("id")), Some(PaginationSettings(page, 1000)))(systemUser).map(_._1)
-      (opiskeluoikeusRows.map(validateRow), page)
+      (opiskeluoikeusRows.par.map(validateRow).toList, page)
     }
 
     createObservable(createStateful[(Seq[ValidationResult], Int), Seq[ValidationResult]](
