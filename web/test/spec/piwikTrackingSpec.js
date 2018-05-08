@@ -66,12 +66,17 @@ describe('Piwik-seuranta', function() {
 
         describe('Klikatessa selaimen forward-nappia', function() {
           before(
+            function() { console.log('Calling piwik.reset') },
             piwik.reset,
+            function() { console.log('Calling goForward') },
             goForward,
+            function() { console.log('Waiting for koskiPage.isReady') },
             wait.until(koskiPage.isReady),
+            function() { console.log('Waiting for ajax') },
             wait.forAjax)
 
           it('Sivu raportoi lataamisen', function() {
+            console.log('Asserting', piwik.getQueuedMethodCalls())
             expectPiwikTrackAjaxPage(piwik.getQueuedMethodCalls(), '/koski/virkailija')
           })
         })

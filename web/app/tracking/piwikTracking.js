@@ -2,7 +2,10 @@ import R from 'ramda'
 
 const queuePiwikMethodCall = (methodName, ...methodArgs) => {
   if (window._paq) {
+    console.log('queuePiwikMethodCall', methodName, methodArgs[0])
     window._paq.push([methodName, ...methodArgs])
+  } else {
+    console.log('queuePiwikMethodCall: no window._paq')
   }
 }
 
