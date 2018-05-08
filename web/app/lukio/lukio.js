@@ -30,6 +30,7 @@ const createOppiaineenSuoritus = (model, suoritusClass) => {
 const sallitutRahoituskoodiarvot = ['1', '6']
 
 const suoritetutKurssit = kurssit => kurssit.map(k => modelData(k)).filter(k => k.arviointi)
+const hyväksytystiSuoritetutKurssit = kurssit => kurssit.filter(k => modelData(k, 'arviointi.-1.arvosana.koodiarvo') !== 'H')
 
 const laajuudet = kurssit => kurssit.map(k => {
   const laajuus = modelData(k, 'koulutusmoduuli.laajuus.arvo')
@@ -41,5 +42,6 @@ export {
   createOppiaineenSuoritus,
   sallitutRahoituskoodiarvot,
   suoritetutKurssit,
+  hyväksytystiSuoritetutKurssit,
   laajuudet
 }
