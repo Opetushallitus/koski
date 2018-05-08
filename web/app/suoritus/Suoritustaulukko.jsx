@@ -73,7 +73,7 @@ export class Suoritustaulukko extends React.Component {
     let laajuusYksikkö = t(modelData(laajuusModel, 'yksikkö.lyhytNimi'))
     let showTila = !näyttötutkintoonValmistava(parentSuoritus)
     let showExpandAll = suoritukset.some(s => suoritusProperties(s).length > 0)
-    let columns = [TutkintokertaColumn, SuoritusColumn, LaajuusColumn, ArvosanaColumn].filter(column => column.shouldShow({parentSuoritus, suorituksetModel, suoritukset, suoritusProto, context}))
+    let columns = [TutkintokertaColumn, SuoritusColumn, LaajuusColumn, KoepisteetColumn, ArvosanaColumn].filter(column => column.shouldShow({parentSuoritus, suorituksetModel, suoritukset, suoritusProto, context}))
 
     return !suoritustapa && context.edit && isAmmatillinenTutkinto
         ? <Text name="Valitse ensin tutkinnon suoritustapa" />
@@ -192,8 +192,9 @@ const suoritusProperties = suoritus => {
 
   const propertiesForSuoritustyyppi = (tyyppi, isEdit) => {
     const simplifiedArviointi = modelProperties(modelLookup(suoritus, 'arviointi.-1'),
-      p => !(['arvosana', 'päivä', 'arvioitsijat']).includes(p.key)
+      p => !(['arvosana', 'päivä', 'arvioitsijat', 'pisteet']).includes(p.key)
     )
+
     const arviointipäivä = modelProperties(modelLookup(suoritus, 'arviointi.-1'), p => p.key === 'päivä')
     let showPakollinen = (tyyppi !== 'nayttotutkintoonvalmistavakoulutus') && modelData(suoritus, 'koulutusmoduuli.pakollinen') !== undefined
     const pakollinen = showPakollinen ? modelProperties(modelLookup(suoritus, 'koulutusmoduuli'), p => p.key === 'pakollinen') : []
@@ -201,6 +202,7 @@ const suoritusProperties = suoritus => {
     const defaultsForEdit = pakollinen
       .concat(arviointipäivä)
       .concat(includeProperties('näyttö', 'tunnustettu', 'lisätiedot'))
+
     const defaultsForView = pakollinen
       .concat(excludeProperties('koulutusmoduuli', 'arviointi', 'tutkinnonOsanRyhmä', 'tutkintokerta'))
       .concat(simplifiedArviointi)
@@ -234,6 +236,14 @@ const TutkintokertaColumn = {
     {' '}
     <Editor model={model} path="tutkintokerta.vuodenaika" compact="true"/>
   </td>)
+}
+
+const KoepisteetColumn = {
+  shouldShow: ({parentSuoritus}) => ylioppilastutkinto(parentSuoritus),
+  renderHeader: () => {
+    return <td key="koepisteet" className="koepisteet"><Text name="Pisteet"/></td>
+  },
+  renderData: ({model}) => (<td key="koepisteet" className="koepisteet"><Editor model={modelLookup(model, 'arviointi.-1.pisteet')}/></td>)
 }
 
 const SuoritusColumn = {

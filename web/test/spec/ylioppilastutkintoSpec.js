@@ -30,11 +30,12 @@ describe('Ylioppilastutkinto', function( ){
       before(opinnot.expandAll)
 
       it('kaikki osasuoritukset näkyvissä', function() {
-        expect(extractAsText(S('.ylioppilastutkinnonsuoritus .osasuoritukset'))).to.equal('Tutkintokerta Koe Arvosana\n' +
-          '2012 kevät Äidinkielen koe, suomi Lubenter approbatur\n' +
-          '2012 kevät Ruotsi, keskipitkä oppimäärä Cum laude approbatur\n' +
-          '2012 kevät Englanti, pitkä oppimäärä Cum laude approbatur\n' +
-          '2012 kevät Maantiede Magna cum laude approbatur\n2012 kevät Matematiikan koe, lyhyt oppimäärä Laudatur'
+        expect(extractAsText(S('.ylioppilastutkinnonsuoritus .osasuoritukset'))).to.equal('Tutkintokerta Koe Pisteet Arvosana\n' +
+          '2012 kevät Äidinkielen koe, suomi 46 Lubenter approbatur\n' +
+          '2012 kevät Ruotsi, keskipitkä oppimäärä 166 Cum laude approbatur\n' +
+          '2012 kevät Englanti, pitkä oppimäärä 210 Cum laude approbatur\n' +
+          '2012 kevät Maantiede 26 Magna cum laude approbatur\n' +
+          '2012 kevät Matematiikan koe, lyhyt oppimäärä 59 Laudatur'
         )
       })
     })
@@ -72,9 +73,9 @@ describe('Ylioppilastutkinto', function( ){
       before(opinnot.expandAll)
 
       it('kaikki osasuoritukset näkyvissä', function() {
-        expect(extractAsText(S('.ylioppilastutkinnonsuoritus .osasuoritukset'))).to.equal('Tutkintokerta Koe Arvosana\n' +
-          '2012 kevät Fysiikka Lubenter approbatur\n' +
-          '2012 kevät Kemia Lubenter approbatur'
+        expect(extractAsText(S('.ylioppilastutkinnonsuoritus .osasuoritukset'))).to.equal('Tutkintokerta Koe Pisteet Arvosana\n' +
+          '2012 kevät Fysiikka 18 Lubenter approbatur\n' +
+          '2012 kevät Kemia 18 Lubenter approbatur'
         )
       })
     })
@@ -85,16 +86,16 @@ describe('Ylioppilastutkinto', function( ){
 
     it('kaikki osasuoritukset näkyvissä', function() {
         expect(extractAsText(S('.ylioppilastutkinnonsuoritus .osasuoritukset'))).to.equal(
-          'Tutkintokerta Koe Arvosana\n' +
-          '1996 kevät Reaali Improbatur\n' +
+          'Tutkintokerta Koe Pisteet Arvosana\n' +
+          '1996 kevät Reaali 8 Improbatur\n' +
           '1996 syksy Englanninkielinen kypsyyskoe Cum laude approbatur\n' +
-          '1996 syksy Matematiikan koe, lyhyt oppimäärä Improbatur\n' +
-          '1996 syksy Reaali Improbatur\n' +
-          '1997 kevät Suomi, lyhyt oppimäärä Improbatur\n' +
-          '1997 kevät Matematiikan koe, lyhyt oppimäärä Approbatur\n' +
-          '1997 kevät Reaali Approbatur\n' +
-          '1997 syksy Suomi, lyhyt oppimäärä Improbatur\n' +
-          '1998 kevät Suomi, lyhyt oppimäärä Improbatur'
+          '1996 syksy Matematiikan koe, lyhyt oppimäärä 6 Improbatur\n' +
+          '1996 syksy Reaali 10 Improbatur\n' +
+          '1997 kevät Suomi, lyhyt oppimäärä 67 Improbatur\n' +
+          '1997 kevät Matematiikan koe, lyhyt oppimäärä 11 Approbatur\n' +
+          '1997 kevät Reaali 15 Approbatur\n' +
+          '1997 syksy Suomi, lyhyt oppimäärä 65 Improbatur\n' +
+          '1998 kevät Suomi, lyhyt oppimäärä 83 Improbatur'
         )
     })
   })
@@ -104,12 +105,13 @@ describe('Ylioppilastutkinto', function( ){
 
     it('kaikki osasuoritukset näkyvissä', function() {
       expect(extractAsText(S('.ylioppilastutkinnonsuoritus .osasuoritukset'))).to.equal(
-        'Tutkintokerta Koe Arvosana\n1996 kevät Äidinkielen koe, suomi Magna cum laude approbatur\n' +
-        '1996 kevät Ruotsi, keskipitkä oppimäärä Approbatur\n' +
-        '1996 kevät Englanti, pitkä oppimäärä Cum laude approbatur\n' +
-        '1996 kevät Kreikka, lyhyt oppimäärä Improbatur\n' +
-        '1996 kevät Matematiikan koe, lyhyt oppimäärä Magna cum laude approbatur\n' +
-        '1996 kevät Reaali Lubenter approbatur'
+        'Tutkintokerta Koe Pisteet Arvosana\n' +
+        '1996 kevät Äidinkielen koe, suomi 85 Magna cum laude approbatur\n' +
+        '1996 kevät Ruotsi, keskipitkä oppimäärä 160 Approbatur\n' +
+        '1996 kevät Englanti, pitkä oppimäärä 220 Cum laude approbatur\n' +
+        '1996 kevät Kreikka, lyhyt oppimäärä 36 Improbatur\n' +
+        '1996 kevät Matematiikan koe, lyhyt oppimäärä 36 Magna cum laude approbatur\n' +
+        '1996 kevät Reaali 22 Lubenter approbatur'
       )
     })
   })
@@ -119,16 +121,16 @@ describe('Ylioppilastutkinto', function( ){
 
     it('kaikki osasuoritukset näkyvissä', function() {
       expect(extractAsText(S('.ylioppilastutkinnonsuoritus .osasuoritukset'))).to.equal(
-        'Tutkintokerta Koe Arvosana\n' +
-        '1996 kevät Reaali Improbatur\n' +
+        'Tutkintokerta Koe Pisteet Arvosana\n' +
+        '1996 kevät Reaali 8 Improbatur\n' +
         '1996 syksy Englanninkielinen kypsyyskoe Cum laude approbatur\n' +
-        '1996 syksy Matematiikan koe, lyhyt oppimäärä Improbatur\n' +
-        '1996 syksy Reaali Improbatur\n' +
-        '1997 kevät Suomi, lyhyt oppimäärä Improbatur\n' +
-        '1997 kevät Matematiikan koe, lyhyt oppimäärä Approbatur\n' +
-        '1997 kevät Reaali Approbatur\n' +
-        '1997 syksy Suomi, lyhyt oppimäärä Improbatur\n' +
-        '1998 kevät Suomi, lyhyt oppimäärä Improbatur'
+        '1996 syksy Matematiikan koe, lyhyt oppimäärä 6 Improbatur\n' +
+        '1996 syksy Reaali 10 Improbatur\n' +
+        '1997 kevät Suomi, lyhyt oppimäärä 67 Improbatur\n' +
+        '1997 kevät Matematiikan koe, lyhyt oppimäärä 11 Approbatur\n' +
+        '1997 kevät Reaali 15 Approbatur\n' +
+        '1997 syksy Suomi, lyhyt oppimäärä 65 Improbatur\n' +
+        '1998 kevät Suomi, lyhyt oppimäärä 83 Improbatur'
       )
     })
   })
