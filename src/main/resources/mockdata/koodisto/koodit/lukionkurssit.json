@@ -4,6 +4,9 @@
   "metadata" : [ {
     "nimi" : "Elämä ja evoluutio ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Livet och evolutionen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -12,6 +15,9 @@
   "metadata" : [ {
     "nimi" : "Ekologia ja ympäristö ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Ekologi och miljö",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -20,6 +26,9 @@
   "metadata" : [ {
     "nimi" : "Solu ja perinnöllisyys ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Cellen och ärftligheten",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -28,6 +37,9 @@
   "metadata" : [ {
     "nimi" : "Ihmisen biologia ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Människans biologi",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -36,6 +48,9 @@
   "metadata" : [ {
     "nimi" : "Biologian sovellukset ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Biologins tillämpningar",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -44,6 +59,9 @@
   "metadata" : [ {
     "nimi" : "Englannin kieli ja maailmani ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Engelskan och min värld",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -52,6 +70,9 @@
   "metadata" : [ {
     "nimi" : "Ihminen verkostoissa ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Människans sociala nätverk",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -60,6 +81,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri-ilmiöitä ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kulturella fenomen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -68,6 +92,9 @@
   "metadata" : [ {
     "nimi" : "Yhteiskunta ja ympäröivä maailma ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samhället och omvärlden",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -76,6 +103,9 @@
   "metadata" : [ {
     "nimi" : "Tiede ja tulevaisuus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vetenskap och framtid",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -84,6 +114,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu, työ ja toimeentulo ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier, arbete och ekonomi",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -92,6 +125,9 @@
   "metadata" : [ {
     "nimi" : "Kestävä elämäntapa ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Hållbar livsstil",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -100,6 +136,9 @@
   "metadata" : [ {
     "nimi" : "Viesti ja vaikuta puhuen ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Muntlig kommunikation och påverkan",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -108,6 +147,9 @@
   "metadata" : [ {
     "nimi" : "Maailmankatsomus ja kriittinen ajattelu ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Världsåskådning och kritiskt tänkande",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -116,6 +158,9 @@
   "metadata" : [ {
     "nimi" : "Ihminen, identiteetti ja hyvä elämä ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Människan, identiteten och ett gott liv",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -124,6 +169,9 @@
   "metadata" : [ {
     "nimi" : "Yksilö ja yhteisö ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Individen och samhället",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -132,6 +180,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuurit katsomuksen muovaajina ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kulturens inverkan på människans livsåskådning",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -140,6 +191,9 @@
   "metadata" : [ {
     "nimi" : "Katsomusten maailma ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Livsåskådningarnas värld",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -148,6 +202,9 @@
   "metadata" : [ {
     "nimi" : "Teknologia, maailmankatsomukset ja ihmiskunnan tulevaisuus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Teknologi, världsåskådningar och mänsklighetens framtid",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -156,6 +213,9 @@
   "metadata" : [ {
     "nimi" : "Johdatus filosofiseen ajatteluun ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Introduktion i filosofiskt tänkande",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -164,6 +224,9 @@
   "metadata" : [ {
     "nimi" : "Etiikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Etik",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -172,6 +235,9 @@
   "metadata" : [ {
     "nimi" : "Yhteiskuntafilosofia",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samhällsfilosofi",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -180,6 +246,9 @@
   "metadata" : [ {
     "nimi" : "Tieto, tiede ja todellisuus ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kunskap, vetenskap och verklighet",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -188,6 +257,9 @@
   "metadata" : [ {
     "nimi" : "Arkielämä, lähiympäristö ja terveys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vardagsliv, närmiljö och hälsa",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -196,6 +268,9 @@
   "metadata" : [ {
     "nimi" : "Luonto ja tiede ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Natur och vetenskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -204,6 +279,9 @@
   "metadata" : [ {
     "nimi" : "Tekniikka ja kulutus ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Teknik och konsumtion",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -212,6 +290,9 @@
   "metadata" : [ {
     "nimi" : "Yhteiskunta ja tiedotusvälineet ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Medierna och samhället",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -220,6 +301,9 @@
   "metadata" : [ {
     "nimi" : "Koulutus ja työelämä ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Utbildning och arbetsliv",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -228,6 +312,9 @@
   "metadata" : [ {
     "nimi" : "Suomalainen kulttuuri ja kirjallisuus ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Finsk kultur och litteratur",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -236,6 +323,9 @@
   "metadata" : [ {
     "nimi" : "Viesti kirjoittaen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunicera i skrift",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -244,6 +334,9 @@
   "metadata" : [ {
     "nimi" : "Viesti puhuen ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunicera i tal",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -252,6 +345,9 @@
   "metadata" : [ {
     "nimi" : "Arkielämä, lähiympäristö ja terveys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vardagsliv, närmiljö och hälsa",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -260,6 +356,9 @@
   "metadata" : [ {
     "nimi" : "Luonto ja tiede ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Natur och vetenskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -268,6 +367,9 @@
   "metadata" : [ {
     "nimi" : "Tekniikka ja kulutus ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Teknik och konsumtion",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -276,6 +378,9 @@
   "metadata" : [ {
     "nimi" : "Yhteiskunta ja tiedotusvälineet ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Medierna och samhället",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -284,6 +389,9 @@
   "metadata" : [ {
     "nimi" : "Koulutus ja työelämä ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Utbildning och arbetsliv",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -292,6 +400,9 @@
   "metadata" : [ {
     "nimi" : "Suomalainen kulttuuri ja kirjallisuus ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Finsk kultur och litteratur",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -300,6 +411,9 @@
   "metadata" : [ {
     "nimi" : "Viesti kirjoittaen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunicera i skrift",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -308,6 +422,9 @@
   "metadata" : [ {
     "nimi" : "Viesti puhuen ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunicera i tal",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -316,6 +433,9 @@
   "metadata" : [ {
     "nimi" : "Arkielämä, lähiympäristö ja terveys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vardagsliv, närmiljö och hälsa",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -324,6 +444,9 @@
   "metadata" : [ {
     "nimi" : "Luonto ja tiede ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Natur och vetenskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -332,6 +455,9 @@
   "metadata" : [ {
     "nimi" : "Tekniikka ja kulutus ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Teknik och konsumtion",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -340,6 +466,9 @@
   "metadata" : [ {
     "nimi" : "Yhteiskunta, kulttuuri ja tiedotusvälineet ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samhälle, kultur och medier",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -348,6 +477,9 @@
   "metadata" : [ {
     "nimi" : "Koulutus ja työelämä ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Utbildning och arbetsliv",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -356,6 +488,9 @@
   "metadata" : [ {
     "nimi" : "Viesti puhuen ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunicera i tal",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -364,6 +499,9 @@
   "metadata" : [ {
     "nimi" : "Viesti kirjoittaen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunicera i skrift",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -372,6 +510,9 @@
   "metadata" : [ {
     "nimi" : "Tutustutaan toisiimme ja suomenkieliseen kulttuuriympäristöön ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vi bekantar oss med varandra och den finskspråkiga kulturmiljön",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -380,6 +521,9 @@
   "metadata" : [ {
     "nimi" : "Suomessa suomeksi ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "På finska i Finland",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -388,6 +532,9 @@
   "metadata" : [ {
     "nimi" : "Elämän tärkeitä vaiheita ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Viktiga frågor i livet och vardagen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -396,6 +543,9 @@
   "metadata" : [ {
     "nimi" : "Monenlaista elämää ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Liv och levnadssätt",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -404,6 +554,9 @@
   "metadata" : [ {
     "nimi" : "Hyvinvointi ja terveys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Välbefinnande och omsorg",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -412,6 +565,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri ja mediat ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur och media",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -420,6 +576,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu- ja työelämää suomeksi ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studie- och arbetsliv på finska",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -428,6 +587,9 @@
   "metadata" : [ {
     "nimi" : "Yhteinen maapallomme ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vår gemensamma jord",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -436,6 +598,9 @@
   "metadata" : [ {
     "nimi" : "Fysiikka luonnontieteenä ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fysiken som naturvetenskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -444,6 +609,9 @@
   "metadata" : [ {
     "nimi" : "Lämpö",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Värme",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -452,6 +620,9 @@
   "metadata" : [ {
     "nimi" : "Sähkö ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Elektricitet",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -460,6 +631,9 @@
   "metadata" : [ {
     "nimi" : "Voima ja liike ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kraft och rörelse",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -468,6 +642,9 @@
   "metadata" : [ {
     "nimi" : "Jaksollinen liike ja aallot ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Periodisk rörelse och vågor",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -476,6 +653,9 @@
   "metadata" : [ {
     "nimi" : "Sähkömagnetismi",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Elektromagnetism",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -484,6 +664,9 @@
   "metadata" : [ {
     "nimi" : "Aine ja säteily ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Materia och strålning",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -492,6 +675,9 @@
   "metadata" : [ {
     "nimi" : "Maailma muutoksessa ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "En värld i förändring",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -500,6 +686,9 @@
   "metadata" : [ {
     "nimi" : "Sininen planeetta ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Den blå planeten",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -508,6 +697,9 @@
   "metadata" : [ {
     "nimi" : "Yhteinen maailma ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "En gemensam värld",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -516,6 +708,9 @@
   "metadata" : [ {
     "nimi" : "Geomedia – tutki, osallistu ja vaikuta ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Geomedia - undersök, delta och påverka",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -524,6 +719,9 @@
   "metadata" : [ {
     "nimi" : "Ihminen ympäristön ja yhteiskuntien muutoksessa ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Människan i en föränderlig omvärld",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -532,6 +730,9 @@
   "metadata" : [ {
     "nimi" : "Kansainväliset suhteet ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Internationella relationer",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -540,6 +741,9 @@
   "metadata" : [ {
     "nimi" : "Itsenäisen Suomen historia ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Det självständiga Finlands historia",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -548,6 +752,9 @@
   "metadata" : [ {
     "nimi" : "Eurooppalaisen maailmankuvan kehitys ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "En europeisk världsbild växer fram",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -556,6 +763,9 @@
   "metadata" : [ {
     "nimi" : "Ruotsin itämaasta Suomeksi ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Sveriges östra rikshalva blir Finland",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -564,6 +774,9 @@
   "metadata" : [ {
     "nimi" : "Maailman kulttuurit kohtaavat ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Globala kulturmöten",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -572,6 +785,9 @@
   "metadata" : [ {
     "nimi" : "Kemiaa kaikkialla ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kemi överallt",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -580,6 +796,9 @@
   "metadata" : [ {
     "nimi" : "Ihmisen ja elinympäristön kemiaa ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Människans kemi och kemin i livsmiljön",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -588,6 +807,9 @@
   "metadata" : [ {
     "nimi" : "Reaktiot ja energia ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Reaktioner och energi",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -596,6 +818,9 @@
   "metadata" : [ {
     "nimi" : "Materiaalit ja teknologia ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Material och teknologi",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -604,6 +829,9 @@
   "metadata" : [ {
     "nimi" : "Reaktiot ja tasapaino ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Reaktioner och jämvikt",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -612,6 +840,9 @@
   "metadata" : [ {
     "nimi" : "Kotitalouden lukiodiplomi ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Gymnasiediplom i huslig ekonomi",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -620,6 +851,9 @@
   "metadata" : [ {
     "nimi" : "Kuvat ja kulttuurit ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Bilder och kulturer",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -628,6 +862,9 @@
   "metadata" : [ {
     "nimi" : "Muotoillut ja rakennetut ympäristöt ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Formgivna och byggda miljöer",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -636,6 +873,9 @@
   "metadata" : [ {
     "nimi" : "Osallisena mediassa ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Medier och delaktighet",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -644,6 +884,9 @@
   "metadata" : [ {
     "nimi" : "Taiteen monet maailmat ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Konstens olika världar",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -652,6 +895,9 @@
   "metadata" : [ {
     "nimi" : "Kuvataiteen lukiodiplomi ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Gymnasiediplom i bildkonst",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -660,6 +906,9 @@
   "metadata" : [ {
     "nimi" : "Käsityön lukiodiplomi ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Gymnasiediplom i slöjd",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -668,6 +917,9 @@
   "metadata" : [ {
     "nimi" : "Rooman historian vaiheita ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Skeden i Roms historia",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -676,6 +928,9 @@
   "metadata" : [ {
     "nimi" : "Merkittäviä roomalaisia ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Framstående romare",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -684,6 +939,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuriperintömme",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vårt kulturarv",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -692,6 +950,9 @@
   "metadata" : [ {
     "nimi" : "Viestejä menneisyydestä ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Budskap från det förgångna",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -700,6 +961,9 @@
   "metadata" : [ {
     "nimi" : "Latinaa kautta vuosisatojen ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Latinet genom seklerna",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -708,6 +972,9 @@
   "metadata" : [ {
     "nimi" : "Epiikkaa ja lyriikkaa ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Epik och lyrik",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -716,6 +983,9 @@
   "metadata" : [ {
     "nimi" : "Retoriikkaa ja filosofiaa ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Retorik och filosofi",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -724,6 +994,9 @@
   "metadata" : [ {
     "nimi" : "Latina keskiajalla ja nykyaikana ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Latinet under medeltiden och nutiden",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -732,6 +1005,9 @@
   "metadata" : [ {
     "nimi" : "Ikkunat auki antiikkiin",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Antiken i fokus",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -740,6 +1016,9 @@
   "metadata" : [ {
     "nimi" : "Antiikin elämää ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Livet under antiken",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -748,6 +1027,9 @@
   "metadata" : [ {
     "nimi" : "Tietoa, taitoa ja taruperintöä ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kunskap, färdigheter och det mytologiska arvet",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -756,6 +1038,9 @@
   "metadata" : [ {
     "nimi" : "Rooman historian vaiheita ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Skeden i Roms historia",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -764,6 +1049,9 @@
   "metadata" : [ {
     "nimi" : "Merkittäviä roomalaisia ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Framstående romare",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -772,6 +1060,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuriperintömme ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vårt kulturarv",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -780,6 +1071,9 @@
   "metadata" : [ {
     "nimi" : "Viestejä menneisyydestä ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Budskap från det förgångna",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -788,6 +1082,9 @@
   "metadata" : [ {
     "nimi" : "Latinaa kautta vuosisatojen ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Latinet genom seklerna",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -796,6 +1093,9 @@
   "metadata" : [ {
     "nimi" : "Energiaa liikunnasta ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Motion ger energi",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -804,6 +1104,9 @@
   "metadata" : [ {
     "nimi" : "Aktiivinen elämäntapa ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "En aktiv livsstil",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -812,6 +1115,9 @@
   "metadata" : [ {
     "nimi" : "Terveyttä liikkuen ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Motion och hälsa",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -820,6 +1126,9 @@
   "metadata" : [ {
     "nimi" : "Yhdessä liikkuen ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att motionera tillsammans",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -828,6 +1137,9 @@
   "metadata" : [ {
     "nimi" : "Hyvinvointia liikkuen ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Motion och välbefinnande",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -836,6 +1148,9 @@
   "metadata" : [ {
     "nimi" : "Liikunnan lukiodiplomi ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Gymnasiediplom i gymnastik",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1119,6 +1434,9 @@
   "metadata" : [ {
     "nimi" : "Todennäköisyys ja tilastot ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Sannolikhet och statistik",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1127,6 +1445,9 @@
   "metadata" : [ {
     "nimi" : "Lukuteoria ja todistaminen ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Talteori och bevis",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1135,6 +1456,9 @@
   "metadata" : [ {
     "nimi" : "Algoritmit matematiikassa ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Algoritmer i matematiken",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1143,6 +1467,9 @@
   "metadata" : [ {
     "nimi" : "Differentiaali- ja integraalilaskennan jatkokurssi ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fortsättningskurs i differential- och integralkalkyl",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1151,6 +1478,9 @@
   "metadata" : [ {
     "nimi" : "Polynomifunktiot ja -yhtälöt ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Polynomfunktioner och polynomekvationer",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1159,6 +1489,9 @@
   "metadata" : [ {
     "nimi" : "Geometria",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Geometri",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1167,6 +1500,9 @@
   "metadata" : [ {
     "nimi" : "Vektorit",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vektorer",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1175,6 +1511,9 @@
   "metadata" : [ {
     "nimi" : "Analyyttinen geometria ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Analytisk geometri",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1183,6 +1522,9 @@
   "metadata" : [ {
     "nimi" : "Derivaatta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Derivatan",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1191,6 +1533,9 @@
   "metadata" : [ {
     "nimi" : "Trigonometriset funktiot ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Trigonometriska funktioner",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1199,6 +1544,9 @@
   "metadata" : [ {
     "nimi" : "Juuri- ja logaritmifunktiot ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Rot- och logaritmfunktioner",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1207,6 +1555,9 @@
   "metadata" : [ {
     "nimi" : "Integraalilaskenta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Integralkalkyl",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1215,6 +1566,9 @@
   "metadata" : [ {
     "nimi" : "Lausekkeet ja yhtälöt ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Uttryck och ekvationer",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1223,6 +1577,9 @@
   "metadata" : [ {
     "nimi" : "Geometria",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Geometri",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1231,6 +1588,9 @@
   "metadata" : [ {
     "nimi" : "Matemaattisia malleja ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Matematiska modeller",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1239,6 +1599,9 @@
   "metadata" : [ {
     "nimi" : "Tilastot ja todennäköisyys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Statistik och sannolikhet",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1247,6 +1610,9 @@
   "metadata" : [ {
     "nimi" : "Talousmatematiikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Ekonomisk matematik",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1255,6 +1621,9 @@
   "metadata" : [ {
     "nimi" : "Matemaattinen analyysi ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Matematisk analys",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1263,6 +1632,9 @@
   "metadata" : [ {
     "nimi" : "Tilastot ja todennäköisyys II ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Statistik och sannolikhet II",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1271,6 +1643,9 @@
   "metadata" : [ {
     "nimi" : "Luvut ja lukujonot ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Tal och talföljder",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1279,6 +1654,9 @@
   "metadata" : [ {
     "nimi" : "Median lukiodiplomi ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Gymnasiediplom i mediekunskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1287,6 +1665,9 @@
   "metadata" : [ {
     "nimi" : "Tekstien maailma",
     "kieli" : "FI"
+  }, {
+    "nimi" : "En värld av texter",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1295,6 +1676,9 @@
   "metadata" : [ {
     "nimi" : "Kieli, kulttuuri ja identiteetti",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språk, kultur och identitet",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1303,6 +1687,9 @@
   "metadata" : [ {
     "nimi" : "Kirjallisuuden keinoja ja tulkintaa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att analysera och tolka litteratur",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1311,6 +1698,9 @@
   "metadata" : [ {
     "nimi" : "Tekstit ja vaikuttaminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Text och påverkan",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1319,6 +1709,9 @@
   "metadata" : [ {
     "nimi" : "Teksti ja konteksti",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Text och kontext",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1327,6 +1720,9 @@
   "metadata" : [ {
     "nimi" : "Nykyajan kertomuksia ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Berättelser i samtiden",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1335,6 +1731,9 @@
   "metadata" : [ {
     "nimi" : "Puhe- ja vuorovaikutustaitojen syventäminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fördjupad muntlig kommunikation",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1343,6 +1742,9 @@
   "metadata" : [ {
     "nimi" : "Kirjoittamistaitojen syventäminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fördjupad skrivkompetens",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1351,6 +1753,9 @@
   "metadata" : [ {
     "nimi" : "Lukutaitojen syventäminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fördjupad läskompetens",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1359,6 +1764,9 @@
   "metadata" : [ {
     "nimi" : "Musiikki ja minä ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Musiken och jag",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1367,6 +1775,9 @@
   "metadata" : [ {
     "nimi" : "Moniääninen Suomi ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Ett flerstämmigt Finland",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1375,6 +1786,9 @@
   "metadata" : [ {
     "nimi" : "Ovet auki musiikille ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fritt fram för musik",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1383,6 +1797,9 @@
   "metadata" : [ {
     "nimi" : "Musiikki viestii ja vaikuttaa ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Musikens budskap och makt",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1391,6 +1808,9 @@
   "metadata" : [ {
     "nimi" : "Musiikin lukiodiplomi ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Gymnasiediplom i musik",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1399,6 +1819,9 @@
   "metadata" : [ {
     "nimi" : "Minä opiskelijana ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Jag som studerande",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1407,6 +1830,9 @@
   "metadata" : [ {
     "nimi" : "Jatko-opinnot ja työelämä ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fortsatta studier och arbetsliv",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1415,6 +1841,9 @@
   "metadata" : [ {
     "nimi" : "Psyykkinen toiminta ja oppiminen ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Psykisk aktivitet och lärande",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1423,6 +1852,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä ihminen ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Människans utveckling",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1431,6 +1863,9 @@
   "metadata" : [ {
     "nimi" : "Tietoa käsittelevä ihminen ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Människan som informationsbehandlare",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1439,6 +1874,9 @@
   "metadata" : [ {
     "nimi" : "Tunteet, psyykkinen hyvinvointi ja mielenterveys ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Känslor, psykiskt välbefinnande och mental hälsa",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1447,6 +1885,9 @@
   "metadata" : [ {
     "nimi" : "Yksilöllinen ja yhteisöllinen ihminen ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Människan som individ och social varelse",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1455,6 +1896,9 @@
   "metadata" : [ {
     "nimi" : "Paikallinen soveltava kurssi",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Lokal tillämpad kurs",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1463,6 +1907,9 @@
   "metadata" : [ {
     "nimi" : "Paikallinen syventävä kurssi",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Lokal fördjupad kurs",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1471,6 +1918,9 @@
   "metadata" : [ {
     "nimi" : "Ruotsinkielinen maailmani",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Min svenska värld",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1479,6 +1929,9 @@
   "metadata" : [ {
     "nimi" : "Ihminen verkostoissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Människans sociala nätverk",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1487,6 +1940,9 @@
   "metadata" : [ {
     "nimi" : "Pohjoismaisia kulttuuri-ilmiöitä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Nordiska kulturfenomen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1495,6 +1951,9 @@
   "metadata" : [ {
     "nimi" : "Yhteiskunta ja ympäröivä maailma",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samhället och omvärlden",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1503,6 +1962,9 @@
   "metadata" : [ {
     "nimi" : "Tiede ja tulevaisuus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vetenskap och framtid",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1511,6 +1973,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu, työ ja toimeentulo",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier, arbete och ekonomi",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1519,6 +1984,9 @@
   "metadata" : [ {
     "nimi" : "Kestävä elämäntapa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Hållbar livsstil",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1527,6 +1995,9 @@
   "metadata" : [ {
     "nimi" : "Viesti ja vaikuta puhuen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Muntlig kommunikation och påverkan",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1535,6 +2006,9 @@
   "metadata" : [ {
     "nimi" : "Minun ruotsini",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Min svenska",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1543,6 +2017,9 @@
   "metadata" : [ {
     "nimi" : "Hyvinvointi ja ihmissuhteet",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Välbefinnande och mänskliga relationer",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1551,6 +2028,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri ja mediat",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur och medier",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1559,6 +2039,9 @@
   "metadata" : [ {
     "nimi" : "Monenlaiset elinympäristömme",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vår mångskiftande livsmiljö",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1567,6 +2050,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu- ja työelämää ruotsiksi",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studie- och arbetsliv på svenska",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1575,6 +2061,9 @@
   "metadata" : [ {
     "nimi" : "Viesti ja vaikuta puhuen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Muntlig kommunikation och påverkan",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1583,6 +2072,9 @@
   "metadata" : [ {
     "nimi" : "Kestävä elämätapa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Hållbar livsstil",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1591,6 +2083,9 @@
   "metadata" : [ {
     "nimi" : "Tutustutaan toisiimme ja ruotsinkieliseen kulttuuriympäristöön",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vi bekantar oss med varandra och den svenska kulturmiljön",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1599,6 +2094,9 @@
   "metadata" : [ {
     "nimi" : "Matkalla Pohjoismaissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "På resa i Norden",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1607,6 +2105,9 @@
   "metadata" : [ {
     "nimi" : "Elämän tärkeitä asioita",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Viktiga frågor i livet och vardagen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1615,6 +2116,9 @@
   "metadata" : [ {
     "nimi" : "Monenlaista elämää",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Liv och levnadssätt",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1623,6 +2127,9 @@
   "metadata" : [ {
     "nimi" : "Hyvinvointi ja huolenpito",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Välbefinnande och omsorg",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1631,6 +2138,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri ja mediat",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur och medier",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1639,6 +2149,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu- ja työelämää ruotsiksi",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studie- och arbetsliv på svenska",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1647,6 +2160,9 @@
   "metadata" : [ {
     "nimi" : "Yhteinen maapallomme",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vår gemensamma jord",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1655,6 +2171,9 @@
   "metadata" : [ {
     "nimi" : "Ruotsinkielinen maailmani",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Min svenska värld",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1663,6 +2182,9 @@
   "metadata" : [ {
     "nimi" : "Ihminen verkostoissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Människans sociala nätverk",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1671,6 +2193,9 @@
   "metadata" : [ {
     "nimi" : "Pohjoismaisia kulttuuri-ilmiöitä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Nordiska kulturfenomen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1679,6 +2204,9 @@
   "metadata" : [ {
     "nimi" : "Yhteiskunta ja ympäröivä maailma",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samhället och omvärlden",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1687,6 +2215,9 @@
   "metadata" : [ {
     "nimi" : "Tiede ja tulevaisuus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vetenskap och framtid",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1695,6 +2226,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu, työ ja toimeentulo",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier, arbete och ekonomi",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1703,6 +2237,9 @@
   "metadata" : [ {
     "nimi" : "Kestävä elämäntapa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Hållbar livsstil",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1711,6 +2248,9 @@
   "metadata" : [ {
     "nimi" : "Viesti ja vaikuta puhuen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Muntlig kommunikation och påverkan",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1719,6 +2259,9 @@
   "metadata" : [ {
     "nimi" : "Tekstit ja vuorovaikutus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Text och kommunikation",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1727,6 +2270,9 @@
   "metadata" : [ {
     "nimi" : "Kieli, kulttuuri ja identiteetti",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språk, kultur och identitet",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1735,6 +2281,9 @@
   "metadata" : [ {
     "nimi" : "Kirjallisuuden keinoja ja tulkintaa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att analysera och tolka litteratur",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1743,6 +2292,9 @@
   "metadata" : [ {
     "nimi" : "Tekstit ja vaikuttaminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Text och påverkan",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1751,6 +2303,9 @@
   "metadata" : [ {
     "nimi" : "Teksti ja konteksti",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Text och kontext",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1759,6 +2314,9 @@
   "metadata" : [ {
     "nimi" : "Nykykulttuuri ja kertomukset",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samtidskultur och berättelser",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1767,6 +2325,9 @@
   "metadata" : [ {
     "nimi" : "Puhe- ja vuorovaikutustaitojen syventäminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fördjupad muntlig kommunikation",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1775,6 +2336,9 @@
   "metadata" : [ {
     "nimi" : "Kirjoittamistaitojen syventäminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fördjupad skrivkompetens",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1783,6 +2347,9 @@
   "metadata" : [ {
     "nimi" : "Lukutaitojen syventäminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fördjupad läskompetens",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1791,6 +2358,9 @@
   "metadata" : [ {
     "nimi" : "Saamen kieli ja maailmani ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samiskan och min värld",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1799,6 +2369,9 @@
   "metadata" : [ {
     "nimi" : "Ihminen verkostoissa ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Människans sociala nätverk",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1807,6 +2380,9 @@
   "metadata" : [ {
     "nimi" : "Saamelaisalueen kulttuuri-ilmiöitä ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur i Sameland",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1815,6 +2391,9 @@
   "metadata" : [ {
     "nimi" : "Sápmi – Saamenmaa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Sápmi - Samelandet",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1823,6 +2402,9 @@
   "metadata" : [ {
     "nimi" : "Saamelainen luontotieto ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samisk naturkunskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1831,6 +2413,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu, työ ja toimeentulo ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier, arbete och ekonomi",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1839,6 +2424,9 @@
   "metadata" : [ {
     "nimi" : "Kestävä elämäntapa ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Hållbar livsstil",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1847,6 +2435,9 @@
   "metadata" : [ {
     "nimi" : "Viesti ja vaikuta puhuen ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Muntlig kommunikation och påverkan",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1855,6 +2446,9 @@
   "metadata" : [ {
     "nimi" : "Kohtaamisia saamelaisalueella",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Möten i Sameland",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1863,6 +2457,9 @@
   "metadata" : [ {
     "nimi" : "Hyvinvointi ja huolenpito",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Välbefinnande och omsorg",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1871,6 +2468,9 @@
   "metadata" : [ {
     "nimi" : "Sápmi - Saamenmaa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Sápmi - Samelandet",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1879,6 +2479,9 @@
   "metadata" : [ {
     "nimi" : "Tutustutaan toisiimme ja saamen kieleen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vi bekantar oss med varandra och det samiska språket",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1887,6 +2490,9 @@
   "metadata" : [ {
     "nimi" : "Matkalla maailmassa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "På resa i världen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1895,6 +2501,9 @@
   "metadata" : [ {
     "nimi" : "Kohtaamisia saamelaisalueella",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Möten i Sameland",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1903,6 +2512,9 @@
   "metadata" : [ {
     "nimi" : "Hyvinvointi ja huolenpito",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Välbefinnande och omsorg",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1911,6 +2523,9 @@
   "metadata" : [ {
     "nimi" : "Sápmi - Saamenmaa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Sápmi - Samelandet",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1919,6 +2534,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri ja mediat",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur och medier",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1927,6 +2545,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu, työ ja tulevaisuus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier, arbete och framtid",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1935,6 +2556,9 @@
   "metadata" : [ {
     "nimi" : "Saamelainen luontotieto",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samisk naturkunskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1943,6 +2567,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri ja mediat",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur och medier",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1951,6 +2578,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu, työ ja tulevaisuus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier, arbete och framtid",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1959,6 +2589,9 @@
   "metadata" : [ {
     "nimi" : "Saamelainen luontotieto",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samisk naturkunskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1967,6 +2600,9 @@
   "metadata" : [ {
     "nimi" : "Kansainvälinen toiminta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Internationell verksamhet",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1975,6 +2611,9 @@
   "metadata" : [ {
     "nimi" : "Viesti puhuen ja kirjoittaen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Muntlig och skriftlig kommunikation",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1983,6 +2622,9 @@
   "metadata" : [ {
     "nimi" : "Saamen kieli ja maailmani ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samiskan och min värld",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1991,6 +2633,9 @@
   "metadata" : [ {
     "nimi" : "Ihminen verkostoissa ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Människans sociala nätverk",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -1999,6 +2644,9 @@
   "metadata" : [ {
     "nimi" : "Saamelaisalueen kulttuuri-ilmiöitä ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur i Sameland",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2007,6 +2655,9 @@
   "metadata" : [ {
     "nimi" : "Sápmi – Saamenmaa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Sápmi - Samelandet",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2015,6 +2666,9 @@
   "metadata" : [ {
     "nimi" : "Saamelainen luontotieto ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samisk naturkunskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2023,6 +2677,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu, työ ja toimeentulo ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier, arbete och ekonomi",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2031,6 +2688,9 @@
   "metadata" : [ {
     "nimi" : "Kestävä elämäntapa ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Hållbar livsstil",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2039,6 +2699,9 @@
   "metadata" : [ {
     "nimi" : "Viesti ja vaikuta puhuen ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Muntlig kommunikation och påverkan",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2047,6 +2710,9 @@
   "metadata" : [ {
     "nimi" : "Kohtaamisia saamelaisalueella",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Möten i Sameland",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2055,6 +2721,9 @@
   "metadata" : [ {
     "nimi" : "Hyvinvointi ja huolenpito",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Välbefinnande och omsorg",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2063,6 +2732,9 @@
   "metadata" : [ {
     "nimi" : "Kohtaamisia saamelaisalueella",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Möten i Sameland",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2071,6 +2743,9 @@
   "metadata" : [ {
     "nimi" : "Hyvinvointi ja huolenpito",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Välbefinnande och omsorg",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2079,6 +2754,9 @@
   "metadata" : [ {
     "nimi" : "Sápmi - Saamenmaa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Sápmi - Samelandet",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2087,6 +2765,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri ja mediat",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur och medier",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2095,6 +2776,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu, työ ja tulevaisuus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier, arbete och framtid",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2103,6 +2787,9 @@
   "metadata" : [ {
     "nimi" : "Saamelainen luontotieto",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samisk naturkunskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2111,6 +2798,9 @@
   "metadata" : [ {
     "nimi" : "Kansainvälinen toiminta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Internationell verksamhet",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2119,6 +2809,9 @@
   "metadata" : [ {
     "nimi" : "Viesti puhuen ja kirjoittaen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Muntlig och skriftlig kommunikation",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2127,6 +2820,9 @@
   "metadata" : [ {
     "nimi" : "Sápmi - Saamenmaa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Sápmi - Samelandet",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2135,6 +2831,9 @@
   "metadata" : [ {
     "nimi" : "Tutustutaan toisiimme ja saamen kieleen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vi bekantar oss med varandra och det samiska språket",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2143,6 +2842,9 @@
   "metadata" : [ {
     "nimi" : "Matkalla maailmassa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "På resa i världen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2151,6 +2853,9 @@
   "metadata" : [ {
     "nimi" : "Kohtaamisia saamelaisalueella",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Möten i Sameland",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2159,6 +2864,9 @@
   "metadata" : [ {
     "nimi" : "Hyvinvointi ja huolenpito",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Välbefinnande och omsorg",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2167,6 +2875,9 @@
   "metadata" : [ {
     "nimi" : "Sápmi - Saamenmaa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Sápmi - Samelandet",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2175,6 +2886,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri ja mediat",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur och medier",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2183,6 +2897,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu, työ ja tulevaisuus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier, arbete och framtid",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2191,6 +2908,9 @@
   "metadata" : [ {
     "nimi" : "Saamelainen luontotieto",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samisk naturkunskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2199,6 +2919,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri ja mediat",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur och medier",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2207,6 +2930,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu, työ ja tulevaisuus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier, arbete och framtid",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2215,6 +2941,9 @@
   "metadata" : [ {
     "nimi" : "Saamelainen luontotieto",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samisk naturkunskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2223,6 +2952,9 @@
   "metadata" : [ {
     "nimi" : "Kansainvälinen toiminta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Internationell verksamhet",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2231,6 +2963,9 @@
   "metadata" : [ {
     "nimi" : "Viesti puhuen ja kirjoittaen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Muntlig och skriftlig kommunikation",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2239,6 +2974,9 @@
   "metadata" : [ {
     "nimi" : "Tekstit ja vuorovaikutus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Text och kommunikation",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2247,6 +2985,9 @@
   "metadata" : [ {
     "nimi" : "Kieli, kulttuuri ja identiteetti",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språk, kultur och identitet",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2255,6 +2996,9 @@
   "metadata" : [ {
     "nimi" : "Kirjallisuuden keinoja ja tulkintaa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att analysera och tolka litteratur",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2263,6 +3007,9 @@
   "metadata" : [ {
     "nimi" : "Tekstit ja vaikuttaminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Text och påverkan",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2271,6 +3018,9 @@
   "metadata" : [ {
     "nimi" : "Teksti ja konteksti",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Text och kontext",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2279,6 +3029,9 @@
   "metadata" : [ {
     "nimi" : "Nykykulttuuri ja kertomukset",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Berättelser i samtiden",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2287,6 +3040,9 @@
   "metadata" : [ {
     "nimi" : "Puhe- ja vuorovaikutustaitojen syventäminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fördjupad muntlig kommunikation",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2295,6 +3051,9 @@
   "metadata" : [ {
     "nimi" : "Kirjoittamistaitojen syventäminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fördjupad skrivkompetens",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2303,6 +3062,9 @@
   "metadata" : [ {
     "nimi" : "Lukutaitojen syventäminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fördjupad läskompetens",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2311,6 +3073,9 @@
   "metadata" : [ {
     "nimi" : "Monitaiteellinen musiikkiprojekti ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Tvärkonstnärligt musikprojekt",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2319,6 +3084,9 @@
   "metadata" : [ {
     "nimi" : "Nykytaiteen keinoin ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samtidskonst",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2327,6 +3095,9 @@
   "metadata" : [ {
     "nimi" : "Taidetta kaikilla aisteilla ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Konst med alla sinnen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2335,6 +3106,9 @@
   "metadata" : [ {
     "nimi" : "Tanssin lukiodiplomi ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Gymnasiediplom i dans",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2343,6 +3117,9 @@
   "metadata" : [ {
     "nimi" : "Terveyden perusteet ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Hälsans byggstenar",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2351,6 +3128,9 @@
   "metadata" : [ {
     "nimi" : "Ihminen, ympäristö ja terveys ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Människan, miljön och hälsan",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2359,6 +3139,9 @@
   "metadata" : [ {
     "nimi" : "Terveyttä tutkimassa ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Hälsa och forskning",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2367,6 +3150,9 @@
   "metadata" : [ {
     "nimi" : "Teatterin lukiodiplomi ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Gymnasiediplom i teaterkonst",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2375,6 +3161,9 @@
   "metadata" : [ {
     "nimi" : "Monitieteinen ajattelu ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Tvärvetenskapligt tänkande",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2383,6 +3172,9 @@
   "metadata" : [ {
     "nimi" : "Tutkiva työskentely teknologialla ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Undersökande projektarbete med hjälp av digitala arbetssätt",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2391,6 +3183,9 @@
   "metadata" : [ {
     "nimi" : "Osaaminen arjessa ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vardagskompetens",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2399,6 +3194,9 @@
   "metadata" : [ {
     "nimi" : "Taiteiden väliset kurssit",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Ämnesövergripande kurser i konststudier",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2407,6 +3205,9 @@
   "metadata" : [ {
     "nimi" : "Uskonto ilmiönä – kristinuskon, juutalaisuuden ja islamin jäljillä ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religion som fenomen - i kristendomens, judendomens och islams fotspår",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2415,6 +3216,9 @@
   "metadata" : [ {
     "nimi" : "Maailmanlaajuinen kristinusko ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kristendomen som världsomfattande religion",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2423,6 +3227,9 @@
   "metadata" : [ {
     "nimi" : "Maailman uskontoja ja uskonnollisia liikkeitä ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religioner och religiösa rörelser i världen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2431,6 +3238,9 @@
   "metadata" : [ {
     "nimi" : "Uskonto suomalaisessa yhteiskunnassa ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religion i det finska samhället",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2439,6 +3249,9 @@
   "metadata" : [ {
     "nimi" : "Uskonnot tieteessä, taiteessa ja populaarikulttuurissa ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religion inom vetenskapen, konsten och populärkulturen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2447,6 +3260,9 @@
   "metadata" : [ {
     "nimi" : "Uskonnot ja media ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religioner och medier",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2455,6 +3271,9 @@
   "metadata" : [ {
     "nimi" : "Uskonto ilmiönä – islamin, juutalaisuuden ja kristinuskon jäljillä ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religion som fenomen - i islams, judendomens och kristendomens fotspår",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2463,6 +3282,9 @@
   "metadata" : [ {
     "nimi" : "Maailmanlaajuinen islam ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Islam som världsomfattande religion",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2471,6 +3293,9 @@
   "metadata" : [ {
     "nimi" : "Maailman uskontoja ja uskonnollisia liikkeitä ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religioner och religiösa rörelser i världen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2479,6 +3304,9 @@
   "metadata" : [ {
     "nimi" : "Uskonto suomalaisessa yhteiskunnassa ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religion i det finska samhället",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2487,6 +3315,9 @@
   "metadata" : [ {
     "nimi" : "Uskonnot tieteessä, taiteessa ja populaarikulttuurissa ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religion inom vetenskapen, konsten och populärkulturen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2495,6 +3326,9 @@
   "metadata" : [ {
     "nimi" : "Uskonnot ja media ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religioner och medier",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2503,6 +3337,9 @@
   "metadata" : [ {
     "nimi" : "Uskonto ilmiönä – juutalaisuuden, kristinuskon ja islamin jäljillä ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religion som fenomen - i judendomens, kristendomens och islams fotspår",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2511,6 +3348,9 @@
   "metadata" : [ {
     "nimi" : "Maailmanlaajuinen juutalaisuus ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Judendomen i världen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2519,6 +3359,9 @@
   "metadata" : [ {
     "nimi" : "Maailman uskontoja ja uskonnollisia liikkeitä ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religioner och religiösa rörelser i världen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2527,6 +3370,9 @@
   "metadata" : [ {
     "nimi" : "Uskonto suomalaisessa yhteiskunnassa ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religion i det finska samhället",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2535,6 +3381,9 @@
   "metadata" : [ {
     "nimi" : "Uskonnot tieteessä, taiteessa ja populaarikulttuurissa ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religion inom vetenskapen, konsten och populärkulturen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2543,6 +3392,9 @@
   "metadata" : [ {
     "nimi" : "Uskonnot ja media ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religioner och medier",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2551,6 +3403,9 @@
   "metadata" : [ {
     "nimi" : "Uskonto ilmiönä – kristinuskon, juutalaisuuden ja islamin jäljillä ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religion som fenomen - i kristendomens, judendomens och islams fotspår",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2559,6 +3414,9 @@
   "metadata" : [ {
     "nimi" : "Maailmanlaajuinen katolisuus ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Katolicismen i världen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2567,6 +3425,9 @@
   "metadata" : [ {
     "nimi" : "Maailman uskontoja ja uskonnollisia liikkeitä ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religioner och religiösa rörelser i världen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2575,6 +3436,9 @@
   "metadata" : [ {
     "nimi" : "Uskonto suomalaisessa yhteiskunnassa ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religion i det finska samhället",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2583,6 +3447,9 @@
   "metadata" : [ {
     "nimi" : "Uskonnot tieteessä, taiteessa ja populaarikulttuurissa ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religion inom vetenskapen, konsten och populärkulturen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2591,6 +3458,9 @@
   "metadata" : [ {
     "nimi" : "Uskonnot ja media ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religioner och medier",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2599,6 +3469,9 @@
   "metadata" : [ {
     "nimi" : "Uskonto ilmiönä – ortodoksisuus, juutalaisuus ja islam ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religion som fenomen - den ortodoxa läran, judendomen och islam",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2607,6 +3480,9 @@
   "metadata" : [ {
     "nimi" : "Ortodoksisuus maailmassa ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Ortodoxin i världen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2615,6 +3491,9 @@
   "metadata" : [ {
     "nimi" : "Maailman uskontoja ja uskonnollisia liikkeitä ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religioner och religiösa rörelser i världen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2623,6 +3502,9 @@
   "metadata" : [ {
     "nimi" : "Uskonto suomalaisessa yhteiskunnassa ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religion i det finska samhället",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2631,6 +3513,9 @@
   "metadata" : [ {
     "nimi" : "Taide ortodoksisuudessa ja muissa uskonnoissa ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Konsten i den ortodoxa kyrkan och andra religioner",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2639,6 +3524,9 @@
   "metadata" : [ {
     "nimi" : "Ortodoksisuus ja uskonnot mediassa ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Ortodox tro, religioner och medier",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2701,6 +3589,9 @@
   "metadata" : [ {
     "nimi" : "Kieli ja maailmani ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språket och min värld",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2709,6 +3600,9 @@
   "metadata" : [ {
     "nimi" : "Ihminen verkostoissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Människans sociala nätverk",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2717,6 +3611,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri-ilmiöitä ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kulturella fenomen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2725,6 +3622,9 @@
   "metadata" : [ {
     "nimi" : "Yhteiskunta ja ympäröivä maailma ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samhället och omvärlden",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2733,6 +3633,9 @@
   "metadata" : [ {
     "nimi" : "Tiede ja tulevaisuus ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vetenskap och framtid",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2741,6 +3644,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu, työ ja toimeentulo ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier, arbete och ekonomi",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2749,6 +3655,9 @@
   "metadata" : [ {
     "nimi" : "Kestävä elämäntapa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Hållbar livsstil",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2757,6 +3666,9 @@
   "metadata" : [ {
     "nimi" : "Viesti ja vaikuta puhuen ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Muntlig kommunikation och påverkan",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2765,6 +3677,9 @@
   "metadata" : [ {
     "nimi" : "Tutustutaan toisiimme ja uuteen kieleen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vi bekantar oss med varandra och det nya språket",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2773,6 +3688,9 @@
   "metadata" : [ {
     "nimi" : "Matkalla maailmassa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "På resa i världen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2781,6 +3699,9 @@
   "metadata" : [ {
     "nimi" : "Elämän tärkeitä asioita",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Viktiga frågor i livet och vardagen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2789,6 +3710,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuurikohtaamisia",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kulturmöten",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2797,6 +3721,9 @@
   "metadata" : [ {
     "nimi" : "Hyvinvointi ja huolenpito",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Välbefinnande och omsorg",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2805,6 +3732,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri ja mediat",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur och medier",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2813,6 +3743,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu, työ ja tulevaisuus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier, arbete och framtid",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2821,6 +3754,9 @@
   "metadata" : [ {
     "nimi" : "Yhteinen maapallomme",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vår gemensamma jord",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2829,6 +3765,9 @@
   "metadata" : [ {
     "nimi" : "Kieli ja maailmani ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språket och min värld",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2837,6 +3776,9 @@
   "metadata" : [ {
     "nimi" : "Hyvinvointi ja ihmissuhteet ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Välbefinnande och mänskliga relationer",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2845,6 +3787,9 @@
   "metadata" : [ {
     "nimi" : "Elämän tärkeitä asioita",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Viktiga frågor i livet och vardagen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2853,6 +3798,9 @@
   "metadata" : [ {
     "nimi" : "Monenlaista elämää",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Liv och levnadssätt",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2861,6 +3809,9 @@
   "metadata" : [ {
     "nimi" : "Hyvinvointi ja huolenpito",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Välbefinnande och omsorg",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2869,6 +3820,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri ja mediat",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur och medier",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2877,6 +3831,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu, työ ja tulevaisuus",
     "kieli" : "FI"
+  }, {
+    "nimi" : " työ ja tulevaisuus",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2885,6 +3842,9 @@
   "metadata" : [ {
     "nimi" : "Yhteinen maapallomme",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vår gemensamma jord",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2893,6 +3853,9 @@
   "metadata" : [ {
     "nimi" : "Kansainvälinen toiminta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Internationell verksamhet",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2901,6 +3864,9 @@
   "metadata" : [ {
     "nimi" : "Viesti puhuen ja kirjoittaen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Muntlig och skriftlig kommunikation",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2909,6 +3875,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri ja mediat ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur och medier",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2917,6 +3886,9 @@
   "metadata" : [ {
     "nimi" : "Tutustutaan toisiimme ja uuteen kieleen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vi bekantar oss med varandra och det nya språket",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2925,6 +3897,9 @@
   "metadata" : [ {
     "nimi" : "Matkalla maailmassa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "På resa i världen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2933,6 +3908,9 @@
   "metadata" : [ {
     "nimi" : "Elämän tärkeitä asioita",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Viktiga frågor i livet och vardagen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2941,6 +3919,9 @@
   "metadata" : [ {
     "nimi" : "Monenlaista elämää",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Liv och levnadssätt",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2949,6 +3930,9 @@
   "metadata" : [ {
     "nimi" : "Hyvinvointi ja huolenpito",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Välbefinnande och omsorg",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2957,6 +3941,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuuri ja mediat",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur och medier",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2965,6 +3952,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelu, työ ja tulevaisuus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier, arbete och framtid",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2973,6 +3963,9 @@
   "metadata" : [ {
     "nimi" : "Yhteinen maapallomme",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vår gemensamma jord",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2981,6 +3974,9 @@
   "metadata" : [ {
     "nimi" : "Monenlaiset elinympäristömme  ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vår mångskiftande livsmiljö",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2989,6 +3985,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelija- ja työelämää",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studie- och arbetsliv",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2997,6 +3996,9 @@
   "metadata" : [ {
     "nimi" : "Viesti ja vaikuta puhuen ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Muntlig kommunikation och påverkan",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3005,6 +4007,9 @@
   "metadata" : [ {
     "nimi" : "Kestävä elämäntapa ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Hållbar livsstil",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3013,6 +4018,9 @@
   "metadata" : [ {
     "nimi" : "Suomalainen yhteiskunta ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Det finländska samhället",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3021,6 +4029,9 @@
   "metadata" : [ {
     "nimi" : "Taloustieto",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Ekonomikunskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3029,6 +4040,9 @@
   "metadata" : [ {
     "nimi" : "Suomi, Eurooppa ja muuttuva maailma ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Finland, Europa och en värld i förändring",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3037,6 +4051,9 @@
   "metadata" : [ {
     "nimi" : "Kansalaisen lakitieto ",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Medborgarens lagkunskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3045,6 +4062,9 @@
   "metadata" : [ {
     "nimi" : "Tekstit ja vuorovaikutus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Text och kommunikation",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3053,6 +4073,9 @@
   "metadata" : [ {
     "nimi" : "Kieli, kulttuuri ja identiteetti",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språk, kultur och identitet",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3061,6 +4084,9 @@
   "metadata" : [ {
     "nimi" : "Kirjallisuuden keinoja ja tulkintaa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att analysera och tolka litteratur",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3069,6 +4095,9 @@
   "metadata" : [ {
     "nimi" : "Tekstit ja vaikuttaminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Text och påverkan",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3077,6 +4106,9 @@
   "metadata" : [ {
     "nimi" : "Teksti ja konteksti",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Text och kontext",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3085,6 +4117,9 @@
   "metadata" : [ {
     "nimi" : "Nykykulttuuri ja kertomukset",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samtidskultur och berättelser",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3093,6 +4128,9 @@
   "metadata" : [ {
     "nimi" : "Puhe- ja vuorovaikutustaitojen syventäminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fördjupad muntlig kommunikation",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3101,6 +4139,9 @@
   "metadata" : [ {
     "nimi" : "Kirjoittamistaitojen syventäminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fördjupad skrivkompetens",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3109,6 +4150,9 @@
   "metadata" : [ {
     "nimi" : "Lukutaitojen syventäminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fördjupad läskompetens",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3117,6 +4161,9 @@
   "metadata" : [ {
     "nimi" : "Tekstit ja vuorovaikutus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Text och kommunikation",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3125,6 +4172,9 @@
   "metadata" : [ {
     "nimi" : "Kieli, kulttuuri ja identiteetti",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språk, kultur och identitet",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3133,6 +4183,9 @@
   "metadata" : [ {
     "nimi" : "Kirjallisuuden keinoja ja tulkintaa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att analysera och tolka litteratur",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3141,6 +4194,9 @@
   "metadata" : [ {
     "nimi" : "Tekstit ja vaikuttaminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Text och påverkan",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3149,6 +4205,9 @@
   "metadata" : [ {
     "nimi" : "Teksti ja konteksti",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Text och kontext",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3157,6 +4216,9 @@
   "metadata" : [ {
     "nimi" : "Nykykulttuuri ja kertomukset",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samtidskultur och berättelser",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3165,6 +4227,9 @@
   "metadata" : [ {
     "nimi" : "Puhe- ja vuorovaikutustaitojen syventäminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fördjupad muntlig kommunikation",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3173,6 +4238,9 @@
   "metadata" : [ {
     "nimi" : "Kirjoittamistaitojen syventäminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fördjupad skrivkompetens",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3181,6 +4249,9 @@
   "metadata" : [ {
     "nimi" : "Lukutaitojen syventäminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fördjupad läskompetens",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3189,6 +4260,9 @@
   "metadata" : [ {
     "nimi" : "Tekstit ja vuorovaikutus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Text och kommunikation",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3197,6 +4271,9 @@
   "metadata" : [ {
     "nimi" : "Kieli, kulttuuri ja identiteetti",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språk, kultur och identitet",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3205,6 +4282,9 @@
   "metadata" : [ {
     "nimi" : "Kirjallisuuden keinoja ja tulkintaa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att analysera och tolka litteratur",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3213,6 +4293,9 @@
   "metadata" : [ {
     "nimi" : "Tekstit ja vaikuttaminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Text och påverkan",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3221,6 +4304,9 @@
   "metadata" : [ {
     "nimi" : "Teksti ja konteksti",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Text och kontext",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3229,6 +4315,9 @@
   "metadata" : [ {
     "nimi" : "Nykykulttuuri ja kertomukset",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samtidskultur och berättelser",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3237,6 +4326,9 @@
   "metadata" : [ {
     "nimi" : "Puhe- ja vuorovaikutustaitojen syventäminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fördjupad muntlig kommunikation",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3245,6 +4337,9 @@
   "metadata" : [ {
     "nimi" : "Kirjoittamistaitojen syventäminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fördjupad skrivkompetens",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3253,6 +4348,9 @@
   "metadata" : [ {
     "nimi" : "Lukutaitojen syventäminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fördjupad läskompetens",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3261,6 +4359,9 @@
   "metadata" : [ {
     "nimi" : "Tekstit ja vuorovaikutus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Text och kommunikation",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3269,6 +4370,9 @@
   "metadata" : [ {
     "nimi" : "Kieli, kulttuuri ja identiteetti",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språk, kultur och identitet",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3277,6 +4381,9 @@
   "metadata" : [ {
     "nimi" : "Kirjallisuuden keinoja ja tulkintaa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att analysera och tolka litteratur",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3285,6 +4392,9 @@
   "metadata" : [ {
     "nimi" : "Tekstit ja vaikuttaminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Text och påverkan",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3293,6 +4403,9 @@
   "metadata" : [ {
     "nimi" : "Teksti ja konteksti",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Text och kontext",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3301,6 +4414,9 @@
   "metadata" : [ {
     "nimi" : "Nykykulttuuri ja kertomukset",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samtidskultur och berättelser",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3309,6 +4425,9 @@
   "metadata" : [ {
     "nimi" : "Vuorovaikutustaitojen syventäminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fördjupad muntlig kommunikation",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3317,6 +4436,9 @@
   "metadata" : [ {
     "nimi" : "Tekstin tuottamistaitojen syventäminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fördjupad kompetens i textproduktion",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -3325,6 +4447,9 @@
   "metadata" : [ {
     "nimi" : "Lukutaitojen syventäminen viitotussa kielessä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fördjupad läskompetens i teckenspråk",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 } ]

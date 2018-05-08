@@ -4308,6 +4308,40 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "maatjavaltiot2_990",
+  "koodiArvo" : "990",
+  "metadata" : [ {
+    "nimi" : "Muu epäitsenäinen alue",
+    "lyhytNimi" : "Muu epäitsenäinen alue",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Annat icke-suveränt område",
+    "lyhytNimi" : "Annat icke-suveränt område",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Other dependent country",
+    "lyhytNimi" : "Other dependent country",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "maatjavaltiot2_991",
+  "koodiArvo" : "991",
+  "metadata" : [ {
+    "nimi" : "Ilman kansalaisuutta",
+    "lyhytNimi" : "Ilman kansalaisuutta",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Utan medborgarskap",
+    "lyhytNimi" : "Utan medborgarskap",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Without nationality",
+    "lyhytNimi" : "Without nationality",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "maatjavaltiot2_997",
   "koodiArvo" : "997",
   "metadata" : [ {

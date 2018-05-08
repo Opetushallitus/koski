@@ -44,6 +44,14 @@
   }, {
     "codesUri" : "koulutus",
     "codesVersion" : 7,
+    "passive" : true
+  }, {
+    "codesUri" : "koulutus",
+    "codesVersion" : 8,
+    "passive" : true
+  }, {
+    "codesUri" : "koulutus",
+    "codesVersion" : 9,
     "passive" : false
   }, {
     "codesUri" : "koulutustyyppifasetti",
@@ -59,5 +67,5 @@
     "passive" : false
   } ],
   "tila" : "LUONNOS",
-  "version" : 5
+  "version" : 6
 }

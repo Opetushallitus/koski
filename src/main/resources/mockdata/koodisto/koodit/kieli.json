@@ -707,8 +707,8 @@
     "lyhytNimi" : "spanska",
     "kieli" : "SV"
   }, {
-    "nimi" : "Castilian; Spanish",
-    "lyhytNimi" : "Castilian; Spanish",
+    "nimi" : "Spanish, Castilian",
+    "lyhytNimi" : "Spanish, Castilian",
     "kieli" : "EN"
   } ],
   "versio" : 1
@@ -2212,12 +2212,12 @@
     "lyhytNimi" : "oromo",
     "kieli" : "FI"
   }, {
-    "nimi" : "galla, oromo",
-    "lyhytNimi" : "galla, oromo",
+    "nimi" : "oromo",
+    "lyhytNimi" : "oromo",
     "kieli" : "SV"
   }, {
-    "nimi" : "Afan Oromo; Oromo; Galla",
-    "lyhytNimi" : "Afan Oromo; Oromo; Galla",
+    "nimi" : "Afan Oromo; Oromo",
+    "lyhytNimi" : "Afan Oromo; Oromo",
     "kieli" : "EN"
   } ],
   "versio" : 1

@@ -1156,13 +1156,13 @@ describe('Ammatillinen koulutus', function() {
             before(
                 editor.edit,
                 opinnot.expandAll,
-                lisätiedot().propertyBySelector('.ammatillisentutkinnonosanlisatieto .dropdown-wrapper').setValue('Arvioinnin mukauttaminen'),
+                lisätiedot().propertyBySelector('.ammatillisentutkinnonosanlisatieto .dropdown-wrapper').setValue('Osaamisen arvioinnin mukauttaminen'),
                 lisätiedot().propertyBySelector('.kuvaus').setValue('Arviointia on mukautettu'),
                 editor.saveChanges,
                 opinnot.expandAll
             )
             it('toimii', function() {
-              expect(lisätiedot().getText()).to.equal('Lisätiedot\nArvioinnin mukauttaminen\nArviointia on mukautettu')
+              expect(lisätiedot().getText()).to.equal('Lisätiedot\nOsaamisen arvioinnin mukauttaminen\nArviointia on mukautettu')
             })
           })
 
@@ -1511,7 +1511,7 @@ describe('Ammatillinen koulutus', function() {
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Lisätiedot\n' +
-            'Arvioinnin mukauttaminen\n' +
+            'Osaamisen arvioinnin mukauttaminen\n' +
             'Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella\n' +
             'Sulje kaikki\n' +
             'Osa-alue Laajuus (osp) Arvosana\n' +
@@ -1526,7 +1526,7 @@ describe('Ammatillinen koulutus', function() {
             'Tunnustettu\n' +
             'Tutkinnon osa Asennushitsaus\n' +
             'Selite Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta\nRahoituksen piirissä ei\n' +
-            'Lisätiedot Arvioinnin mukauttaminen\n' +
+            'Lisätiedot Osaamisen arvioinnin mukauttaminen\n' +
             'Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella\n' +
             'Yhteiskunnassa ja työelämässä tarvittava osaaminen 8 3\n' +
             'Pakollinen kyllä\n' +

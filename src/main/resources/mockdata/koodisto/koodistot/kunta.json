@@ -1,6 +1,6 @@
 {
   "koodistoUri" : "kunta",
-  "versio" : 1,
+  "versio" : 2,
   "metadata" : [ {
     "kieli" : "FI",
     "nimi" : "kunta",
@@ -15,7 +15,7 @@
     "kuvaus" : "municipality"
   } ],
   "codesGroupUri" : "http://alueet",
-  "voimassaAlkuPvm" : "2014-03-27",
+  "voimassaAlkuPvm" : "2018-02-08",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ {
     "codesUri" : "aluehallintovirasto",
@@ -27,5 +27,5 @@
     "passive" : false
   } ],
   "tila" : "LUONNOS",
-  "version" : 25
+  "version" : 3
 }
