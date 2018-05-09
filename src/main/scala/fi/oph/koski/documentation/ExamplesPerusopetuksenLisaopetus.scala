@@ -102,7 +102,7 @@ object ExamplesPerusopetuksenLisaopetus {
           alku = Some(date(2008, 8, 15)),
           loppu = Some(date(2016, 6, 4)),
           opiskeleeToimintaAlueittain = true,
-          erityisryhmässä = false
+          erityisryhmässä = Some(false)
         ))
       )),
       suoritukset = List(
