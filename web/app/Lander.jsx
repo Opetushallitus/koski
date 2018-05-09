@@ -3,6 +3,7 @@ import React from 'react'
 import Text from './i18n/Text'
 import ReactDOM from 'react-dom'
 import './style/main.less'
+import {lang} from './i18n/i18n'
 
 const LanderInfo = () => (
   <div>
@@ -19,7 +20,7 @@ const LanderInfo = () => (
           <p><Text name="Lander ingressi 4"/></p>
         </div>
       </div>
-      <p className="tietosuojaseloste"><a href="https://confluence.csc.fi/download/attachments/58828884/Tietosuojaseloste%20KOSKI%209.2.2018.pdf?api=v2"><Text name="KOSKI-palvelun tietosuojaseloste (sisältää rekisteriselosteen)"/></a></p>
+      <p className="tietosuojaseloste"><TietosuojaselosteLinkki><Text name="KOSKI-palvelun tietosuojaseloste (sisältää rekisteriselosteen)"/></TietosuojaselosteLinkki></p>
     </div>
     <div className="lander-logo">
       <img src="/koski/images/oph_fin_vaaka.png" />
@@ -27,6 +28,13 @@ const LanderInfo = () => (
     </div>
   </div>
 )
+
+const TietosuojaselosteLinkki = ({children}) => {
+  const linkki = (lang === 'sv')
+    ? 'https://confluence.csc.fi/download/attachments/58828884/Dataskyddsbeskrivning%20KOSKI%2012.2.2018.pdf?api=v2'
+    : 'https://confluence.csc.fi/download/attachments/58828884/Tietosuojaseloste%20KOSKI%209.2.2018.pdf?api=v2'
+  return <a href={linkki}>{children}</a>
+}
 
 ReactDOM.render((
   <div>
