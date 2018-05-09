@@ -5,6 +5,8 @@ import {näytettävätPäätasonSuoritukset, OpiskeluoikeusEditor} from '../opis
 import {modelItems, modelTitle} from '../editor/EditorModel'
 import Link from '../components/Link'
 import {OpiskeluoikeudenTila} from './fragments/OpiskeluoikeudenTila'
+import ChevronUpIcon from '../icons/ChevronUpIcon'
+import ChevronDownIcon from '../icons/ChevronDownIcon'
 
 
 export const OmatTiedotEditor = ({model}) => {
@@ -55,9 +57,11 @@ const OppilaitosOtsikkotiedot = ({oppilaitos, selected}) => {
           })}
         </ul>
       </div>
-      <div>
-        <span className={selected ? 'open' : ''}/>
-      </div>
+      {
+        selected
+          ? <ChevronUpIcon/>
+          : <ChevronDownIcon/>
+      }
     </Link>
   )
 }
