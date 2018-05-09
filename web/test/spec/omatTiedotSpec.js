@@ -43,6 +43,15 @@ describe('Omat tiedot', function() {
           expect(!!omattiedot.virheraportointiButton().length).to.equal(true)
         })
 
+        describe('Ruotsinkielinen sisältö', function () {
+          before(click(findSingle('#logout')), wait.until(etusivu.isVisible), etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('251029-7230', 'Kansalainen', 'VÃ¤inÃ¶ TÃµnis', 'VÃ¤inÃ¶', 'sv'), wait.until(omattiedot.isVisible))
+
+          it('Näytetään ruotsinkielinen ingressi', function() {
+            expect(omattiedot.ingressi()).to.equal(
+              'Opintoni ingressi'
+            )
+          })
+        })
       })
 
       describe('Kun kirjaudutaan ulos', function () {

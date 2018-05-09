@@ -33,7 +33,8 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
   private def login = {
     application.henkilöRepository.findHenkilötiedotByHetu(hetu, nimitiedot)(KoskiSession.systemUser).headOption match {
       case Some(oppija) =>
-        setUser(Right(localLogin(AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true))))
+        val user = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true)
+        setUser(Right(localLogin(user, params.get("lang").map(_.toLowerCase))))
         redirect(s"$rootUrl/omattiedot")
       case _ => redirect(s"$rootUrl/eisuorituksia")
     }

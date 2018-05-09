@@ -10,7 +10,7 @@ const LoginUrl = '/koski/user/shibbolethlogin'
 const RedirectUrl = '/koski/omattiedot'
 
 const HetuLogin = () => {
-  const state = Atom({hetu: null, cn: null, FirstName: null, givenName: null, sn: null})
+  const state = Atom({hetu: null, cn: null, FirstName: null, givenName: null, sn: null, lang: null})
 
   const valid = state.map(({hetu}) => {
     return hetu && hetu.length === 11
@@ -37,7 +37,8 @@ const HetuLogin = () => {
     .flatMap(credentials => {
       const headers = R.reject(R.isNil, R.merge(credentials, {security: 'mock'}))
       // console.log('Logging in with', headers)
-      return Bacon.fromPromise(fetch(LoginUrl, { credentials: 'include', headers}))
+      const lang = credentials.lang ? credentials.lang : 'FI'
+      return Bacon.fromPromise(fetch(`${LoginUrl}?lang=${lang}`, { credentials: 'include', headers}))
     })
 
   login.onValue((x) => {
@@ -89,6 +90,14 @@ const HetuLogin = () => {
           type='text'
           disabled={inProgress}
           value={state.view('givenName')}
+        />
+      </label>
+      <label><Text name="Kieli"/>
+        <Input
+          id='lang'
+          type='text'
+          disabled={inProgress}
+          value={state.view('lang')}
         />
       </label>
       <button
