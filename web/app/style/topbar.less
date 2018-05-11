@@ -15,6 +15,15 @@
   height: 48px;
   padding-left: @page-border-width;
   padding-right: @page-border-width;
+
+  &.topbar-omattiedot {
+    padding: 0;
+
+    & > .topbar-content-wrapper {
+      max-width: @max-content-width;
+      margin: auto;
+    }
+  }
 }
 
 #topbar.inraamit {
