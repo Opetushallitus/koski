@@ -106,7 +106,7 @@ class LukioSpec extends FreeSpec with Matchers with OpintosuoritusoteTestMethods
           |MTA Monitieteinen ajattelu 1 hyväksytty 8.6.2016
           |TE Terveystieto 1 9
           |TE1 Terveyden perusteet 1 8 4.6.2016
-          |KT Uskonto 3 8
+          |KT Uskonto/Elämänkatsomustieto 3 8
           |UE1 Uskonto ilmiönä – kristinuskon, juutalaisuuden ja islamin jäljillä 1 8 4.6.2016
           |UE2 Maailmanlaajuinen kristinusko 1 7 4.6.2016
           |UE3 Maailman uskontoja ja uskonnollisia liikkeitä 1 8 4.6.2016
@@ -148,7 +148,7 @@ class LukioSpec extends FreeSpec with Matchers with OpintosuoritusoteTestMethods
                                                             |Maantieto 2 Hyvä 8
                                                             |Fysiikka 13 Hyvä 8
                                                             |Kemia 8 Hyvä 8
-                                                            |Uskonto 3 Hyvä 8
+                                                            |Uskonto/Elämänkatsomustieto 3 Hyvä 8
                                                             |Filosofia 1 Hyvä 8
                                                             |Psykologia 1 Kiitettävä 9
                                                             |Historia 4 Tyydyttävä 7

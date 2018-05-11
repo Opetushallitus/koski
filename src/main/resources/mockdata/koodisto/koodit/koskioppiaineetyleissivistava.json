@@ -100,12 +100,12 @@
   "koodiUri" : "koskioppiaineetyleissivistava_et",
   "koodiArvo" : "ET",
   "metadata" : [ {
-    "nimi" : "Elämänkatsomustieto",
+    "nimi" : "Uskonto/Elämänkatsomustieto",
     "lyhytNimi" : "Elämänkatsomustieto",
     "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Livsåskådningskunskap",
+    "nimi" : "Religion/Livsåskådningskunskap",
     "lyhytNimi" : "Livsåskådningskunskap",
     "kuvaus" : "",
     "kieli" : "SV"
@@ -214,12 +214,12 @@
   "koodiUri" : "koskioppiaineetyleissivistava_kt",
   "koodiArvo" : "KT",
   "metadata" : [ {
-    "nimi" : "Uskonto",
+    "nimi" : "Uskonto/Elämänkatsomustieto",
     "lyhytNimi" : "Uskonto",
     "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Religion",
+    "nimi" : "Religion/Livsåskådningskunskap",
     "lyhytNimi" : "Religion",
     "kuvaus" : "",
     "kieli" : "SV"
@@ -294,6 +294,18 @@
     "nimi" : "Elevhandledning",
     "lyhytNimi" : "",
     "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "koskioppiaineetyleissivistava_opa",
+  "koodiArvo" : "OPA",
+  "metadata" : [ {
+    "nimi" : "Opinto-ohjaus ja työelämätaidot",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Studiehandledning och handledning i arbetslivsfärdigheter",
     "kieli" : "SV"
   } ],
   "versio" : 1,
