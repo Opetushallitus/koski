@@ -1,9 +1,10 @@
-describe('Lukioon valmistava koulutus', function( ){
+describe('Lukioon valmistava koulutus', function() {
 
   var page = KoskiPage()
   var todistus = TodistusPage()
   var opinnot = OpinnotPage()
   var editor = opinnot.opiskeluoikeusEditor()
+
   before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('211007-442N'))
 
   describe('Oppijan suorituksissa', function() {
@@ -42,19 +43,19 @@ describe('Lukioon valmistava koulutus', function( ){
         'Lukioon valmistavat opinnot\n' +
         'Oppiaine Laajuus (kurssia) Arvosana (keskiarvo)\n' +
         'Äidinkieli ja kirjallisuus, Suomi toisena kielenä ja kirjallisuus\n' +
-        'STK\n' +
+        'LVS1\n' +
         'S 2 S\n' +
-        'Muut kielet, ruotsi\n' +
-        'RU1\n' +
+        'Perusopetuksessa alkanut kieli, ruotsi\n' +
+        'LVKA1\n' +
         'S 1 S\n' +
         'Matemaattiset ja luonnontieteelliset opinnot\n' +
-        'MAT1\n' +
+        'LVLUMA1\n' +
         'S 1 S\n' +
         'Yhteiskuntatietous ja kulttuurintuntemus\n' +
-        'YHKU1\n' +
+        'LVHY1\n' +
         'S 1 S\n' +
         'Opinto-ohjaus\n' +
-        'OPO1\n' +
+        'LVOP1\n' +
         'S 1 S\n' +
         'Tietojenkäsittely\n' +
         'ATK1\n' +
@@ -72,15 +73,13 @@ describe('Lukioon valmistava koulutus', function( ){
   })
 
   describe('Kurssin tiedot', function() {
-    var kurssi = opinnot.oppiaineet.oppiaine('LVMALUO').kurssi('MAT1')
+    var kurssi = opinnot.oppiaineet.oppiaine('LVMALUO').kurssi('LVLUMA1')
     describe('Kun klikataan', function() {
       before(kurssi.toggleDetails)
       it('näyttää kurssin tiedot', function() {
         expect(kurssi.detailsText()).to.equal(
-          'Tunniste MAT1\n' +
-          'Nimi Matematiikan kertauskurssi\n' +
-          'Laajuus 1 kurssia\n' +
-          'Kuvaus Matematiikan kertauskurssi'
+          'Nimi Matematiikkaa, fysiikkaa ja kemiaa\n' +
+          'Laajuus 1 kurssia'
         )
       })
     })
@@ -227,21 +226,6 @@ describe('Lukioon valmistava koulutus', function( ){
             })
 
             describe('paikallisen kurssin', function () {
-              describe('arvosanan muuttaminen', function () {
-                var kurssi = opinnot.oppiaineet.oppiaine('LVAIK').kurssi('STK')
-
-                before(
-                  editor.edit,
-                  kurssi.arvosana.selectValue('5'),
-                  editor.saveChanges,
-                  wait.until(page.isSavedLabelShown)
-                )
-
-                it('toimii', function () {
-                  expect(kurssi.arvosana.getText()).to.equal('5')
-                })
-              })
-
               describe('lisääminen', function () {
                 before(
                   editor.edit,
@@ -253,6 +237,21 @@ describe('Lukioon valmistava koulutus', function( ){
 
                 it('toimii', function () {
                   expect(extractAsText(S('.oppiaineet .LVAIK'))).to.contain('PA')
+                })
+              })
+
+              describe('arvosanan muuttaminen', function () {
+                var kurssi = opinnot.oppiaineet.oppiaine('LVAIK').kurssi('PA')
+
+                before(
+                  editor.edit,
+                  kurssi.arvosana.selectValue('5'),
+                  editor.saveChanges,
+                  wait.until(page.isSavedLabelShown)
+                )
+
+                it('toimii', function () {
+                  expect(kurssi.arvosana.getText()).to.equal('5')
                 })
               })
 
@@ -272,23 +271,37 @@ describe('Lukioon valmistava koulutus', function( ){
               })
             })
 
-            // LuVa-kurssien koodistoa ei ole määritelty, mutta kursseille on olemassa OPS (56/011/2015)
-            describe('valtakunnallisia kursseja', function() {
-              before(
-                editor.edit,
-                opinnot.oppiaineet.oppiaine('LVAIK').avaaLisääKurssiDialog
-              )
-
-              it('ei ole mahdollista syöttää', function() {
-                expect(
-                  opinnot.oppiaineet.oppiaine('LVAIK').lisääKurssiDialog.kurssit()
-                ).to.deep.equal(['Lisää paikallinen kurssi...'])
+            describe('valtakunnallisen kurssin', function() {
+              describe('kurssivaihtoehdot', function() {
+                var lvyhku = opinnot.oppiaineet.oppiaine('LVYHKU')
+                before(
+                  editor.edit,
+                  lvyhku.avaaLisääKurssiDialog
+                )
+                it('näytetään vain oikean oppiaineen kurssit', function () {
+                  expect(lvyhku.lisääKurssiDialog.kurssit()).to.deep.equal(['LVHY2 Suomen yhteiskunta ja kulttuurit',
+                    'Lisää paikallinen kurssi...'])
+                })
+                after(
+                  lvyhku.lisääKurssiDialog.sulje,
+                  editor.cancelChanges
+                )
               })
 
-              after(
-                opinnot.oppiaineet.oppiaine('LVAIK').lisääKurssiDialog.sulje,
-                editor.cancelChanges
-              )
+              describe('lisääminen', function () {
+                var lvopo = opinnot.oppiaineet.oppiaine('LVOPO')
+                before(
+                  editor.edit,
+                  lvopo.avaaLisääKurssiDialog,
+                  lvopo.lisääKurssiDialog.valitseKurssi('LVOP2'),
+                  lvopo.lisääKurssiDialog.lisääKurssi,
+                  lvopo.kurssi('LVOP2').arvosana.setValue('S'),
+                  editor.saveChanges
+                )
+                it('Kurssin tiedot näytetään oikein', function() {
+                  expect(lvopo.text()).to.equal('Opinto-ohjaus\nLVOP1\nS LVOP2\nS 2 S')
+                })
+              })
             })
           })
         })

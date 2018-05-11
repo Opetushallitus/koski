@@ -34,6 +34,7 @@ object Koodistot {
     KoodistoAsetus("koskiyokokeet"),
     KoodistoAsetus("lahdejarjestelma", vaadiRuotsinkielinenNimi = false),
     KoodistoAsetus("lasnaolotila"),
+    KoodistoAsetus("lukioonvalmistavankoulutuksenkurssit2015"),
     KoodistoAsetus("lukionkurssintyyppi"),
     KoodistoAsetus("lukionkurssitops2003nuoret"),
     KoodistoAsetus("lukionkurssitops2004aikuiset"),

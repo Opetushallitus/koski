@@ -5,7 +5,7 @@ import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.localization.LocalizedString._
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
-import fi.oph.koski.schema.annotation.{FlattenInUI, KoodistoKoodiarvo, KoodistoUri, SensitiveData}
+import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation.{DefaultValue, Description, MaxItems, Title}
 
 @Description("Lukioon valmistava koulutus (LUVA)")
@@ -161,13 +161,27 @@ case class LukioonValmistavanKurssinSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("luvakurssi", koodistoUri = "suorituksentyyppi")
 ) extends KurssinSuoritus with MahdollisestiSuorituskielellinen
 
-@Description("Lukioon valmistavassa koulutuksessa suoritettava lukioon valmistavan kurssin tunnistetiedot")
-case class LukioonValmistavanKoulutuksenKurssi(
+sealed trait LukioonValmistavanKoulutuksenKurssi extends Koulutusmoduuli {
+  def laajuus: Option[LaajuusKursseissa]
+}
+
+@Description("Valtakunnallisen lukioon valmistavan koulutuksen kurssin tunnistetiedot")
+case class ValtakunnallinenLukioonValmistavanKoulutuksenKurssi(
+  @Description("Lukioon valmistavan koulutuksen kurssi")
+  @KoodistoUri("lukioonvalmistavankoulutuksenkurssit2015")
+  @OksaUri("tmpOKSAID873", "kurssi")
+  @Title("Nimi")
+  tunniste: Koodistokoodiviite,
+  override val laajuus: Option[LaajuusKursseissa]
+) extends LukioonValmistavanKoulutuksenKurssi with KoodistostaLöytyväKoulutusmoduuli
+
+@Description("Paikallisen lukioon valmistavan koulutuksen kurssin tunnistetiedot")
+case class PaikallinenLukioonValmistavanKoulutuksenKurssi(
   @FlattenInUI
   tunniste: PaikallinenKoodi,
-  laajuus: Option[LaajuusKursseissa],
+  override val laajuus: Option[LaajuusKursseissa],
   kuvaus: LocalizedString
-) extends PaikallinenKoulutusmoduuli
+) extends LukioonValmistavanKoulutuksenKurssi with PaikallinenKoulutusmoduuli with StorablePreference
 
 case class LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(
   @Description("Opiskeluajan pidennetty päättymispäivä (true/false). Lukiokoulutukseen valmistavan koulutuksen oppimäärä tulee suorittaa yhdessä vuodessa, jollei sairauden tai muun erityisen syyn vuoksi myönnetä suoritusaikaan pidennystä. (lukiolaki 21.8.1998/629 24 §)")

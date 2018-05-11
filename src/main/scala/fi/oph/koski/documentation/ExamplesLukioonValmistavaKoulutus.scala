@@ -34,42 +34,42 @@ object ExamplesLukioonValmistavaKoulutus {
               LukioonValmistavaÄidinkieliJaKirjallisuus(Koodistokoodiviite("LVAIK", "oppiaineetluva"), kieli = Koodistokoodiviite(koodiarvo = "AI7", koodistoUri = "oppiaineaidinkielijakirjallisuus")),
               arviointi = arviointi("S"),
               osasuoritukset = Some(List(
-                luvaKurssinSuoritus("STK", "Suomi toisena kielenä ja kirjallisuus", 2.0f)
+                luvaKurssinSuoritus(valtakunnallinenLuvaKurssi("LVS1").copy(laajuus = laajuus(2.0f)))
               ))
             ),
             LukioonValmistavanKoulutuksenOppiaineenSuoritus(
-              MuutKielet(Koodistokoodiviite("LVMUUTK", "oppiaineetluva"), kieli = Koodistokoodiviite(koodiarvo = "SV", koodistoUri = "kielivalikoima")),
+              MuutKielet(Koodistokoodiviite("LVPOAK", "oppiaineetluva"), kieli = Koodistokoodiviite(koodiarvo = "SV", koodistoUri = "kielivalikoima")),
               arviointi = arviointi("S"),
               osasuoritukset = Some(List(
-                luvaKurssinSuoritus("RU1", "Ruotsin alkeet", 1.0f)
+                luvaKurssinSuoritus(valtakunnallinenLuvaKurssi("LVKA1"))
               ))
             ),
             LukioonValmistavanKoulutuksenOppiaineenSuoritus(
               MuuValtakunnallinenLukioonValmistavanKoulutuksenOppiaine(Koodistokoodiviite("LVMALUO", "oppiaineetluva")),
               arviointi = arviointi("S"),
               osasuoritukset = Some(List(
-                luvaKurssinSuoritus("MAT1", "Matematiikan kertauskurssi", 1.0f)
+                luvaKurssinSuoritus(valtakunnallinenLuvaKurssi("LVLUMA1"))
               ))
             ),
             LukioonValmistavanKoulutuksenOppiaineenSuoritus(
               MuuValtakunnallinenLukioonValmistavanKoulutuksenOppiaine(Koodistokoodiviite("LVYHKU", "oppiaineetluva")),
               arviointi = arviointi("S"),
               osasuoritukset = Some(List(
-                luvaKurssinSuoritus("YHKU1", "Yhteiskuntatietous ja kulttuurintuntemus", 1.0f)
+                luvaKurssinSuoritus(valtakunnallinenLuvaKurssi("LVHY1"))
               ))
             ),
             LukioonValmistavanKoulutuksenOppiaineenSuoritus(
               MuuValtakunnallinenLukioonValmistavanKoulutuksenOppiaine(Koodistokoodiviite("LVOPO", "oppiaineetluva")),
               arviointi = arviointi("S"),
               osasuoritukset = Some(List(
-                luvaKurssinSuoritus("OPO1", "Opinto-ohjaus", 1.0f)
+                luvaKurssinSuoritus(valtakunnallinenLuvaKurssi("LVOP1"))
               ))
             ),
             LukioonValmistavanKoulutuksenOppiaineenSuoritus(
               PaikallinenLukioonValmistavanKoulutuksenOppiaine(PaikallinenKoodi("LVATK", "Tietojenkäsittely"), "Tietojenkäsittely", pakollinen = false),
               arviointi = arviointi("S"),
               osasuoritukset = Some(List(
-                luvaKurssinSuoritus("ATK1", "Tietokoneen käytön peruskurssi", 1.0f)
+                luvaKurssinSuoritus(paikallinenLuvaKurssi("ATK1", "Tietokoneen käytön peruskurssi", "Kurssilla opiskellaan tietokoneen, toimisto-ohjelmien sekä internetin ja sähköpostin peruskäyttöä."))
               ))
             ),
             LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa(
@@ -93,13 +93,14 @@ object ExamplesLukioonValmistavaKoulutus {
   )
   val examples = List(Example("lukioon valmistava koulutus", "Oppija on suorittanut lukioon valmistavan koulutuksen (LUVA)", luvaTodistus, 200))
 
-  private def luvaKurssinSuoritus(koodi: String, kuvaus: String, laajuusKursseissa: Float) = LukioonValmistavanKurssinSuoritus(
-    koulutusmoduuli = LukioonValmistavanKoulutuksenKurssi(
-      tunniste = PaikallinenKoodi(koodi, LocalizedString.finnish(kuvaus)),
-      laajuus = laajuus(laajuusKursseissa),
-      LocalizedString.finnish(kuvaus)
-    ),
+  private def luvaKurssinSuoritus(kurssi: LukioonValmistavanKoulutuksenKurssi) = LukioonValmistavanKurssinSuoritus(
+    koulutusmoduuli = kurssi,
     arviointi = sanallinenArviointi("S")
   )
 
+  private def valtakunnallinenLuvaKurssi(kurssi: String) =
+    ValtakunnallinenLukioonValmistavanKoulutuksenKurssi(Koodistokoodiviite(koodistoUri = "lukioonvalmistavankoulutuksenkurssit2015", koodiarvo = kurssi), laajuus(1.0f))
+
+  private def paikallinenLuvaKurssi(koodi: String, nimi: String, kuvaus: String) =
+    PaikallinenLukioonValmistavanKoulutuksenKurssi(PaikallinenKoodi(koodi, LocalizedString.finnish(nimi)), laajuus(1.0f), LocalizedString.finnish(kuvaus))
 }
