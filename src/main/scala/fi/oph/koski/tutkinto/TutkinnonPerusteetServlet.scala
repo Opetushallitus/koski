@@ -68,11 +68,15 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
   private def lisättävätTutkinnonOsat(ryhmäkoodi: Option[Koodistokoodiviite], ryhmänRakenne: Iterable[RakenneOsa], tutkinto: Iterable[RakenneOsa]) = {
     val diaari: String = params("diaari")
 
-    val määrittelemättömiä = ryhmänRakenne.isEmpty || ryhmänRakenne.exists(_.sisältääMäärittelemättömiäOsia)
+    val määrittelemättömiä = (ryhmänRakenne.isEmpty || ryhmänRakenne.exists(_.sisältääMäärittelemättömiäOsia)) && ryhmäkoodi != yhteisetTutkinnonOsat
     val voiLisätäTutkinnonOsanToisestaTutkinnosta = if (isTelma(diaari)) false else määrittelemättömiä
-    val osat = (if (määrittelemättömiä && ryhmäkoodi != yhteisetTutkinnonOsat) tutkinto else ryhmänRakenne).flatMap(tutkinnonOsienKoodit).toList.distinct // Jos sisältää määrittelemättömiä, haetaan tutkinnon osia koko tutkinnon rakenteesta tähän ryhmään.
+    val osat = (if (määrittelemättömiä) tutkinto else ryhmänRakenne).flatMap(tutkinnonOsienKoodit).toList.distinct // Jos sisältää määrittelemättömiä, haetaan tutkinnon osia koko tutkinnon rakenteesta tähän ryhmään.
 
-    LisättävätTutkinnonOsat(osat, voiLisätäTutkinnonOsanToisestaTutkinnosta, määrittelemättömiä)
+    LisättävätTutkinnonOsat(
+      osat = osat,
+      osaToisestaTutkinnosta = voiLisätäTutkinnonOsanToisestaTutkinnosta,
+      paikallinenOsa = määrittelemättömiä
+    )
   }
 
   private def isTelma(diaari: String) = {
