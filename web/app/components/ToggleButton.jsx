@@ -6,12 +6,12 @@ const setOrClearState = (stateA, value, clearedStateValue) => () =>
   stateA.modify(current => value === current ? clearedStateValue : value)
 
 export const ToggleButton = ({toggleA, text, style}) => style === 'text'
-  ? <a className='toggle-button text-button' onClick={toggleState(toggleA)}><Text name={text}/></a>
+  ? <a className='toggle-button text-button' onClick={toggleState(toggleA)} tabIndex='0'><Text name={text}/></a>
   : <button className='toggle-button' onClick={toggleState(toggleA)}><Text name={text}/></button>
 
 export const MultistateToggleButton = ({stateA, value, clearedStateValue = null, text, style}) => style === 'text'
   ? (
-    <a className='toggle-button text-button' onClick={setOrClearState(stateA, value, clearedStateValue)}>
+    <a className='toggle-button text-button' onClick={setOrClearState(stateA, value, clearedStateValue)} tabIndex='0'>
       <Text name={text}/>
     </a>
   ) : (
