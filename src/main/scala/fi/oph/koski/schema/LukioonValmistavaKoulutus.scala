@@ -119,6 +119,9 @@ case class LukioonValmistavaÄidinkieliJaKirjallisuus(
 case class MuutKielet(
   @Description("Oppiaineen tunniste")
   @KoodistoKoodiarvo("LVMUUTK")
+  @KoodistoKoodiarvo("LVAK")
+  @KoodistoKoodiarvo("LVMAI")
+  @KoodistoKoodiarvo("LVPOAK")
   @KoodistoUri("oppiaineetluva")
   tunniste: Koodistokoodiviite,
   @Description("Mikä kieli on kyseessä")
