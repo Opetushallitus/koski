@@ -129,6 +129,7 @@ case class AikuistenPerusopetuksenPaikallinenOppiaine(
 ) extends AikuistenPerusopetuksenOppiaine with PerusopetuksenPaikallinenOppiaine
 
 case class MuuAikuistenPerusopetuksenOppiaine(
+  @KoodistoKoodiarvo("OPA")
   tunniste: Koodistokoodiviite,
   pakollinen: Boolean = true,
   perusteenDiaarinumero: Option[String] = None,
