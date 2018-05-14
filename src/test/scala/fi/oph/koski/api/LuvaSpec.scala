@@ -13,7 +13,7 @@ class LuvaSpec extends FreeSpec with Matchers with TodistusTestMethods with Opis
                                                      |
                                                      |Lukioon valmistavat opinnot 7
                                                      |Äidinkieli ja kirjallisuus, Suomi toisena kielenä ja kirjallisuus 2 Hyväksytty
-                                                     |Muut kielet, ruotsi 1 Hyväksytty
+                                                     |Perusopetuksessa alkanut kieli, ruotsi 1 Hyväksytty
                                                      |Matemaattiset ja luonnontieteelliset opinnot 1 Hyväksytty
                                                      |Yhteiskuntatietous ja kulttuurintuntemus 1 Hyväksytty
                                                      |Opinto-ohjaus 1 Hyväksytty

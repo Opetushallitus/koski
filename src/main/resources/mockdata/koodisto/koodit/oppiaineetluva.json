@@ -11,6 +11,39 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Mother tongue and literature",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetluva_lvak",
+  "koodiArvo" : "LVAK",
+  "metadata" : [ {
+    "nimi" : "Lukiokoulutukseen valmistavassa koulutuksessa alkava kieli",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Språk som påbörjas i utbildningen som förbereder för gymnasieutbildning",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Language studies commenced during preparatory education for general upper secondary education",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetluva_lvmai",
+  "koodiArvo" : "LVMAI",
+  "metadata" : [ {
+    "nimi" : "Opiskelijan oma äidinkieli",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "De studerandes eget modersmål",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "The student's own native language",
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -27,6 +60,9 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Mathematics and natural sciences",
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -43,6 +79,9 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Other languages",
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -59,6 +98,24 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Guidance counselling",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetluva_lvpoak",
+  "koodiArvo" : "LVPOAK",
+  "metadata" : [ {
+    "nimi" : "Perusopetuksessa alkanut kieli",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Språk som påbörjats i den grundläggande utbildningen",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Language commenced in basic education",
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -75,6 +132,9 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Civic education and cultural knowledge",
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

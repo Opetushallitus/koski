@@ -11,7 +11,7 @@ export const UusiLukionOppiaineDropdown = ({model, oppiaineenSuoritusClasses}) =
     const nimi = t(modelData(oppiaine, 'tunniste.nimi'))
     const oppiaineWithTitle = modelSetTitle(oppiaine, nimi)
     const suoritusUudellaOppiaineella = modelSet(
-      oppiaine.parent || createOppiaineenSuoritus(model),
+      oppiaine.parent || createOppiaineenSuoritus(model, oppiaineenSuoritusClasses ? oppiaineenSuoritusClasses[0] : undefined),
       oppiaineWithTitle,
       'koulutusmoduuli'
     )
