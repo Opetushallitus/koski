@@ -22,7 +22,7 @@ class LogoutServlet(implicit val application: KoskiApplication) extends HtmlServ
   }
 
   private def kansalaisLogout = {
-    val shibbolethLogoutUrl = application.config.getString("shibboleth.logout.url")
+    val shibbolethLogoutUrl = application.config.getString("shibboleth.logout.url." + lang)
     if (shibbolethLogoutUrl.isEmpty) {
       redirectToFrontpage
     } else {

@@ -2,10 +2,8 @@ package fi.oph.koski.servlet
 
 import fi.oph.koski.http.{ErrorCategory, HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{KoskiSession, KoskiUserLanguage}
-import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.log.{LoggerWithContext, Logging}
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
-import org.json4s.JsonAST.JString
 import org.scalatra._
 
 import scala.reflect.runtime.{universe => ru}

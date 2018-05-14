@@ -5,7 +5,7 @@ import org.scalatra.ScalatraServlet
 
 import scala.xml.Unparsed
 
-class IndexServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with OppijaRaamitSupport {
+class IndexServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with OmaOpintopolkuSupport {
   before("/omattiedot") {
     sessionOrStatus match {
       case Left(_) => redirectToFrontpage

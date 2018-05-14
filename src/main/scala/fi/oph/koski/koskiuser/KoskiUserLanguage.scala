@@ -20,17 +20,18 @@ object KoskiUserLanguage extends Logging {
     }
   }
 
-  def getLanguageFromCookie(request: RichRequest) = sanitizeLanguage(request.cookies.get("lang"))
+  def getLanguageFromCookie(request: RichRequest, defaultLang: Option[String] = None) = sanitizeLanguage(request.cookies.get("lang"), defaultLang)
 
   def setLanguageCookie(lang: String, response: RichResponse) = {
     response.addCookie(Cookie("lang", lang)(CookieOptions(path = "/")))
   }
 
-  def sanitizeLanguage(possibleLanguage: Option[String]): String = {
+  def sanitizeLanguage(possibleLanguage: Option[String], defaultLang: Option[String] = None): String = {
     possibleLanguage
       .map(_.toLowerCase)
       .filter(LocalizedString.languages.contains)
       .filterNot(_ == "en") // can be removed when our UI actually supports English
+      .orElse(defaultLang)
       .getOrElse("fi")
   }
 }
