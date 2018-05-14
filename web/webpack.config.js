@@ -1,6 +1,5 @@
 const webpack = require('webpack')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const path = require('path')
 const autoprefixer = require('autoprefixer')
 const flags = require('./featureFlags.json')
 
@@ -30,9 +29,7 @@ module.exports = {
     path: __dirname + '/../target/webapp',
     filename: 'js/koski-[name].js'
   },
-  stats: {
-    minimal: true
-  },
+  stats: 'normal',
   resolve: {
     extensions: ['.js', '.jsx']
   },
@@ -52,7 +49,7 @@ module.exports = {
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loader: "eslint-loader",
+        loader: 'eslint-loader',
         options: {
           failOnWarning: !!process.env.failOnWarning,
           failOnError: true
@@ -62,10 +59,10 @@ module.exports = {
         test: /\.less$/,
         use: [
           {
-            loader: "style-loader"
+            loader: 'style-loader'
           },
           {
-            loader: "css-loader"
+            loader: 'css-loader'
           },
           {
             loader: 'postcss-loader',
@@ -76,7 +73,7 @@ module.exports = {
             }
           },
           {
-            loader: "less-loader"
+            loader: 'less-loader'
           }
         ]
       }

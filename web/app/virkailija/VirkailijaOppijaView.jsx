@@ -12,7 +12,7 @@ import {
 } from '../editor/EditorModel'
 import editorMapping from '../oppija/editors'
 import {Editor} from '../editor/Editor'
-import R from 'ramda'
+import * as R from 'ramda'
 import {currentLocation} from '../util/location.js'
 import {OppijaHaku} from '../virkailija/OppijaHaku'
 import Link from '../components/Link'

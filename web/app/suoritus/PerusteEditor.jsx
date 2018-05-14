@@ -1,7 +1,7 @@
 import React, {fromBacon} from 'baret'
 import Atom from 'bacon.atom'
 import Bacon from 'baconjs'
-import R from 'ramda'
+import * as R from 'ramda'
 import {modelData} from '../editor/EditorModel.js'
 import {pushModelValue} from '../editor/EditorModel'
 import {wrapOptional} from '../editor/EditorModel'

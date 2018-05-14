@@ -1,6 +1,6 @@
 import React from 'baret'
 import Bacon from 'baconjs'
-import R from 'ramda'
+import * as R from 'ramda'
 import Atom from 'bacon.atom'
 import Http from '../util/http'
 import {formatISODate} from '../date/date.js'

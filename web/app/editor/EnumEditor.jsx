@@ -1,5 +1,5 @@
 import React from 'baret'
-import R from 'ramda'
+import * as R from 'ramda'
 import Bacon from 'baconjs'
 import {modelTitle} from './EditorModel.js'
 import {modelLookup, wrapOptional} from './EditorModel'

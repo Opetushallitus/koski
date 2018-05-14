@@ -1,6 +1,6 @@
 import React from 'baret'
 import Bacon from 'baconjs'
-import R from 'ramda'
+import * as R from 'ramda'
 import * as L from 'partial.lenses'
 import {modelData, modelLookup} from './EditorModel.js'
 import {fetchAlternativesBasedOnPrototypes} from './EnumEditor'

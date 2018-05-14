@@ -1,5 +1,5 @@
 import React from 'react'
-import R from 'ramda'
+import * as R from 'ramda'
 import {Editor} from '../editor/Editor'
 import {addContext, modelData, modelItems, modelLookup, modelSetValue} from '../editor/EditorModel'
 import Text from '../i18n/Text'

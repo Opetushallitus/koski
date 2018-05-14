@@ -1,6 +1,6 @@
 import React from 'baret'
 import Bacon from 'baconjs'
-import R from 'ramda'
+import * as R from 'ramda'
 import Text from '../i18n/Text'
 import {modelData} from '../editor/EditorModel'
 import Http from '../util/http'

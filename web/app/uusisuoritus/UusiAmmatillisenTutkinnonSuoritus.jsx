@@ -1,7 +1,7 @@
 import React from 'baret'
 import Atom from 'bacon.atom'
 import Bacon from 'baconjs'
-import R from 'ramda'
+import * as R from 'ramda'
 import * as L from 'partial.lenses'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {

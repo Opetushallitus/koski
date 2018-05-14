@@ -1,5 +1,5 @@
 import React from 'baret'
-import R from 'ramda'
+import * as R from 'ramda'
 
 import {modelData, modelItems, modelLookup, pushRemoval} from '../editor/EditorModel.js'
 import {suorituksenTilaSymbol} from '../suoritus/Suoritustaulukko'

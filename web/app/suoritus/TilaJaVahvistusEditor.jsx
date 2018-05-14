@@ -1,6 +1,6 @@
 import {addContext, modelData, modelItems, modelLookup, modelSet, modelSetValue, pushModel} from '../editor/EditorModel'
 import React from 'baret'
-import R from 'ramda'
+import * as R from 'ramda'
 import Atom from 'bacon.atom'
 import {PropertyEditor} from '../editor/PropertyEditor'
 import {MerkitseSuoritusValmiiksiPopup} from './MerkitseSuoritusValmiiksiPopup'

@@ -1,5 +1,5 @@
 import React from 'baret'
-import R from 'ramda'
+import * as R from 'ramda'
 import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import Http from '../../util/http'

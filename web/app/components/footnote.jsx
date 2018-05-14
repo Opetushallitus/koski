@@ -1,5 +1,5 @@
 import React from 'react'
-import R from 'ramda'
+import * as R from 'ramda'
 import {t} from '../i18n/i18n'
 
 export const FootnoteHint = ({title = '', hint = '*'}) =>

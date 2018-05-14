@@ -1,6 +1,6 @@
 import {wrapOptional} from '../editor/EditorModel'
 import {contextualizeSubModel, modelItems, oneOfPrototypes} from '../editor/EditorModel'
-import R from 'ramda'
+import * as R from 'ramda'
 import {isKieliaine, isÄidinkieli} from '../suoritus/Koulutusmoduuli'
 
 export const placeholderForNonGrouped = '999999'

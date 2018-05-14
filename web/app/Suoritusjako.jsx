@@ -1,7 +1,7 @@
 import './polyfills/polyfills.js'
 import './style/main.less'
 import React from 'react'
-import R from 'ramda'
+import * as R from 'ramda'
 import ReactDOM from 'react-dom'
 import Bacon from 'baconjs'
 import {Error, errorP, handleError, isTopLevel, TopLevelError} from './util/Error'

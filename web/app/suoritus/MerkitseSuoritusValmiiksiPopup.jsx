@@ -12,7 +12,7 @@ import {
 import React from 'baret'
 import Http from '../util/http'
 import Bacon from 'baconjs'
-import R from 'ramda'
+import * as R from 'ramda'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
 import ModalDialog from '../editor/ModalDialog'
 import {JääLuokalleTaiSiirretäänEditor} from './JaaLuokalleTaiSiirretaanEditor'

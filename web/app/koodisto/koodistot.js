@@ -1,6 +1,6 @@
 import {lang, t} from '../i18n/i18n'
 import * as L from 'partial.lenses'
-import R from 'ramda'
+import * as R from 'ramda'
 import Bacon from 'baconjs'
 import Http from '../util/http'
 

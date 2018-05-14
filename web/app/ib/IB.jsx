@@ -1,5 +1,5 @@
 import React from 'baret'
-import R from 'ramda'
+import * as R from 'ramda'
 import Bacon from 'baconjs'
 import {LukionOppiaineEditor} from '../lukio/LukionOppiaineEditor'
 import {LukionOppiaineetTableHead} from '../lukio/fragments/LukionOppiaineetTableHead'

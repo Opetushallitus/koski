@@ -1,4 +1,4 @@
-import R from 'ramda'
+import * as R from 'ramda'
 
 const parseClassNames = (classNames) => typeof classNames == 'string'
   ? classNames.split(' ')

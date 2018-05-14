@@ -3,7 +3,7 @@ import {lang} from './i18n'
 import http from '../util/http'
 import {userP} from '../util/user'
 import * as L from 'partial.lenses'
-import R from 'ramda'
+import * as R from 'ramda'
 import {parseBool} from '../util/util'
 
 let changes = Atom({})

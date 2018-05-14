@@ -1,5 +1,5 @@
 import React from 'react'
-import R from 'ramda'
+import * as R from 'ramda'
 import { ISO2FinnishDateTime, ISO2FinnishDate } from '../date/date'
 import PaginationLink from '../components/PaginationLink'
 import Link from '../components/Link'

@@ -6,7 +6,7 @@ import {
   ensureArrayKey, modelLookup, modelSet, modelSetData, modelSetTitle, modelSetValue, modelSetValues,
   pushModel
 } from '../editor/EditorModel'
-import R from 'ramda'
+import * as R from 'ramda'
 import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
 import {enumValueToKoodiviiteLens, toKoodistoEnumValue} from '../koodisto/koodistot'
