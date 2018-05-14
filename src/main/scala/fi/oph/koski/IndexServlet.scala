@@ -70,13 +70,15 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
 
   private def landerHtml = htmlIndex(
     scriptBundleName = "koski-lander.js",
+    raamit = if (raamitHeaderSet) oppijaRaamit else EiRaameja,
     scripts = <script id="auth">
-      {Unparsed(s"""window.kansalaisenAuthUrl="${application.config.getString("shibboleth.url." + lang)}"""")}
+      {Unparsed(s"""window.kansalaisenAuthUrl="$shibbolethUrl"""")}
     </script>,
     responsive = true
   )
 
-  private def oppijaRaamit = Oppija(koskiSessionOption, application.config.getString("shibboleth.url"))
+  private def oppijaRaamit = Oppija(koskiSessionOption, shibbolethUrl)
+  private def shibbolethUrl = application.config.getString("shibboleth.url." + lang)
 }
 
 class EiSuorituksiaServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet {
