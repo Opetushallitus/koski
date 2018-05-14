@@ -1,0 +1,77 @@
+// Re-usable base style mixins
+
+.H2 {
+  font-size: 1.714rem;
+  line-height: 1.4em;
+  font-weight: 600;
+}
+
+.TextstyleLead {
+  font-size: 1.429rem;
+}
+
+// Base font size
+
+html {
+  font-size: 14px;
+
+  @media @media-phone {
+    font-size: 12px;
+  }
+}
+
+// Use light font weight for kansalainen
+// and normal weight & larger size for virkailija
+
+body.omattiedot-page,
+body.suoritusjako-page {
+  font-weight: 300;
+}
+
+body.main-page {
+  font-size: 16px;
+}
+
+// Semantic styles
+
+h1 {
+  font-size: 2.571rem;
+  font-weight: 700;
+
+  @media @media-phone {
+    font-size: 2.667rem;
+  }
+}
+
+h2 {
+  .H2
+}
+
+h3 {
+  font-size: 1.286rem;
+  font-weight: 400;
+}
+
+p {
+  line-height: 1.4em;
+}
+
+// Non-semantic styles
+
+.textstyle-lead {
+  .TextstyleLead;
+
+  &--white:extend(&) {
+    .TextstyleLead;
+    font-weight: 400;
+  }
+}
+
+.textstyle-body {
+  font-size: 1.143rem;
+  line-height: 1.4em;
+}
+
+.textstyle-like-h2 {
+  .H2
+}

@@ -9,7 +9,7 @@ export const HeaderInfo = ({varoitukset}) => (
       <Text name='Opintoni'/>
     </h1>
     <div className='header__caption'>
-      <p>
+      <p className='textstyle-lead'>
         <Text name='Opintoni ingressi'/>
       </p>
     </div>

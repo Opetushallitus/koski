@@ -4,7 +4,7 @@ import Text from '../../i18n/Text'
 
 export const PuuttuvatTiedot = () => (
   <div className='puuttuvat-tiedot__info'>
-    <h3>{t('Huomioithan, että Koski-palvelussa ei pystytä näyttämään seuraavia tietoja:')}</h3>
+    <p><b>{t('Huomioithan, että Koski-palvelussa ei pystytä näyttämään seuraavia tietoja:')}</b></p>
     <ul>
       <li>
         <Text name='Korkeakoulututkintoja ennen vuotta 1995. Tässä voi olla korkeakoulukohtaisia poikkeuksia.'/>

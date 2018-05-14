@@ -5,6 +5,8 @@ import {näytettävätPäätasonSuoritukset, OpiskeluoikeusEditor} from '../opis
 import {modelItems, modelTitle} from '../editor/EditorModel'
 import Link from '../components/Link'
 import {OpiskeluoikeudenTila} from './fragments/OpiskeluoikeudenTila'
+import ChevronUpIcon from '../icons/ChevronUpIcon'
+import ChevronDownIcon from '../icons/ChevronDownIcon'
 
 
 export const OmatTiedotEditor = ({model}) => {
@@ -42,12 +44,12 @@ const OppilaitosOtsikkotiedot = ({oppilaitos, selected}) => {
   return (
     <Link className="oppilaitos-nav-otsikkotiedot" href={selected ? '?' : '?oppilaitos=' + modelData(oppilaitos, 'oppilaitos.oid')}>
       <div>
-        <h3>{modelTitle(oppilaitos, 'oppilaitos')}</h3>
+        <h2>{modelTitle(oppilaitos, 'oppilaitos')}</h2>
         <ul className="opiskeluoikeudet">
           {modelItems(oppilaitos, 'opiskeluoikeudet').map((opiskeluoikeus, opiskeluoikeusIndex) => {
             const hasAlkamispäivä = !!modelData(opiskeluoikeus, 'alkamispäivä')
             return (
-              <li className="opiskeluoikeus" key={opiskeluoikeusIndex}>
+              <li className="opiskeluoikeus textstyle-lead--white" key={opiskeluoikeusIndex}>
                 <span className="koulutus">{(näytettävätPäätasonSuoritukset(opiskeluoikeus)[0] || {}).title}</span>
                 {hasAlkamispäivä && <OpiskeluoikeudenTila opiskeluoikeus={opiskeluoikeus}/>}
               </li>
@@ -55,9 +57,11 @@ const OppilaitosOtsikkotiedot = ({oppilaitos, selected}) => {
           })}
         </ul>
       </div>
-      <div>
-        <span className={selected ? 'open' : ''}/>
-      </div>
+      {
+        selected
+          ? <ChevronUpIcon/>
+          : <ChevronDownIcon/>
+      }
     </Link>
   )
 }

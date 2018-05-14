@@ -1,0 +1,42 @@
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Source Sans Pro Italic'), local(SourceSansPro-Italic), url(/koski/fonts/SourceSansPro-Italic.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: italic;
+  font-weight: 600;
+  src: local('Source Sans Pro SemiBold Italic'), local(SourceSansPro-SemiBoldItalic), url(/koski/fonts/SourceSansPro-SemiBoldItalic.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Source Sans Pro Bold Italic'), local(SourceSansPro-BoldItalic), url(/koski/fonts/SourceSansPro-BoldItalic.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Source Sans Pro Light'), local(SourceSansPro-Light), url(/koski/fonts/SourceSansPro-Light.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Source Sans Pro Regular'), local(SourceSansPro-Regular), url(/koski/fonts/SourceSansPro-Regular.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 600;
+  src: local('Source Sans Pro SemiBold'), local(SourceSansPro-SemiBold), url(/koski/fonts/SourceSansPro-SemiBold.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Source Sans Pro Bold'), local(SourceSansPro-Bold), url(/koski/fonts/SourceSansPro-Bold.ttf) format('truetype');
+}

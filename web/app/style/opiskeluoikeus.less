@@ -155,10 +155,8 @@
 
     .opiskeluoikeus-content {
       padding: 27px;
-      font-size: 15px;
       .omattiedot-phone({
         padding: 5px;
-        font-size: 14px;
       });
 
       .sisältyyOpiskeluoikeuteen {
@@ -234,6 +232,11 @@
 
       .opiskeluoikeuden-tiedot {
         position: relative;
+
+        @media @media-phone {
+          padding-left: 1rem;
+        }
+
         .property .jaksollinen {
           display: inline-block;
         }
@@ -488,6 +491,8 @@
               .add-suoritus-link {
                 margin-right: 20px;
               }
+
+              .omattiedot-phone({ display: none;});
             }
           }
         }

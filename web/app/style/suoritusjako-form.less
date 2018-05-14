@@ -1,7 +1,5 @@
 .suoritusjako-form {
   &__caption {
-    font-size: 0.9rem;
-    line-height: 1.3rem;
     font-weight: 300;
     padding-right: 1rem;
     margin-bottom: 2rem;
@@ -49,6 +47,7 @@
     &__list {
       list-style: none;
       padding-left: 0;
+      margin: 0;
 
       @media @media-full {
         flex-basis: 50%;
@@ -57,11 +56,6 @@
 
       & > li {
         .LabeledOption;
-        margin: 1rem 0;
-
-        & > label {
-          margin-left: 1rem;
-        }
 
         &.oppilaitos-group-header {
           font-weight: 600;
@@ -146,7 +140,6 @@
 
       & > label > span {
         margin-bottom: 0.5rem;
-        font-size: 0.85rem;
 
         &:first-of-type {
           font-weight: 600;
@@ -156,6 +149,10 @@
         &:last-of-type {
           margin-right: 0.5rem;
           display: inline-block;
+        }
+
+        @media @media-full {
+          font-size: 0.85rem;
         }
       }
 

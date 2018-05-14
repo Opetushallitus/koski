@@ -201,7 +201,7 @@ export class Oppija extends React.Component {
         <div>
           <div className={stateP.map(state => 'oppija-content ' + state)}>
             <Varoitukset varoitukset={varoitukset}/>
-            <h2>{`${modelTitle(henkilö, 'sukunimi')}, ${modelTitle(henkilö, 'etunimet')} `}<span
+            <h2 className='oppija-heading'>{`${modelTitle(henkilö, 'sukunimi')}, ${modelTitle(henkilö, 'etunimet')} `}<span
               className='hetu'>{(hetu && '(' + hetu + ')') || (syntymäaika && '(' + ISO2FinnishDate(syntymäaika) + ')')}</span>
               {modelData(henkilö, 'turvakielto') && <span title={t('Henkilöllä on turvakielto')} className="turvakielto"/>}
               <a href={`/koski/api/oppija/${modelData(henkilö, 'oid')}`}>{'JSON'}</a>

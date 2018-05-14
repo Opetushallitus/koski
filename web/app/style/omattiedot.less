@@ -4,7 +4,7 @@
   max-width: 800px;
 
   p {
-    margin: 0 0 2rem 0;
+    margin: 0 0 1rem 0;
   }
 
   b {
@@ -13,7 +13,7 @@
 
   li {
     max-width: 600px;
-    margin: 1.5rem 0;
+    margin: 1rem 0;
     padding-left: 5px;
   }
 
@@ -32,10 +32,6 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-
-      h2 {
-        margin-bottom: 1rem;
-      }
 
       @media @media-phone {
         justify-content: flex-start;
@@ -56,11 +52,6 @@
           p {
             max-width: 600px;
             margin: 0;
-            line-height: 1.4rem;
-          }
-
-          a {
-            line-height: 1.4rem;
           }
 
           @media @media-phone {
@@ -79,15 +70,10 @@
         }
 
         &__name {
-          font-weight: 600;
           line-height: 1.6rem;
 
           p {
             margin: 0;
-          }
-
-          .syntynyt {
-            font-weight: 400;
           }
         }
 
@@ -107,6 +93,7 @@
 
             .header__name {
               order: 1;
+              margin-top: 1rem;
             }
           }
         }
@@ -147,9 +134,7 @@
     padding: 17px 27px 17px 17px;
     background: @color-link-blue;
     color: @color-white;
-    h3 {
-      font-size: 20px;
-      font-weight: normal;
+    h2 {
       margin-top: 0;
       margin-bottom: 7px;
     }
@@ -163,17 +148,8 @@
     }
     > div:last-child {
       align-self: center;
-      > span {
-        color: white;
-        &:after {
-          font-family: FontAwesome;
-          content: '\f078';
-          font-size: 24px;
-        }
-        &.open:after {
-          content: '\f077';
-        }
-      }
+      width: 1.5rem;
+      fill: @color-white;
     }
   }
 

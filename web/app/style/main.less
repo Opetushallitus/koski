@@ -1,6 +1,8 @@
 @import "z-indices";
 @import "constants";
 @import "global";
+@import "typography";
+@import "icons";
 @import "ajax-indicators";
 @import "topbar";
 @import "leftnavi";
@@ -44,8 +46,12 @@
 @import "varoitukset";
 
 body {
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
   background-color: @color-lightgray;
+}
+
+button, input, optgroup, select, textarea {
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
 * {
@@ -58,9 +64,10 @@ header.local.viranomainen + .content-area {
 
 .content-area {
   width: 100%;
+  max-width: @max-content-width;
   margin-top: @topbar-height;
-  padding-left: @page-border-width;
-  padding-right: @page-border-width;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 #content[data-inraamit='true'] .content-area {
