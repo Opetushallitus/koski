@@ -1,30 +1,23 @@
 import './polyfills/polyfills.js'
 import React from 'react'
 import Text from './i18n/Text'
+import {t} from './i18n/i18n'
 import ReactDOM from 'react-dom'
 import './style/main.less'
 import {lang} from './i18n/i18n'
 
 const LanderInfo = () => (
   <div>
-    <div className="koski-heading"><h1>{'KOSKI'}</h1></div>
     <div className="lander">
-      <button className="login-button" onClick={() => window.location=window.kansalaisenAuthUrl}><Text name="Kirjaudu sisään" /></button>
-      <div className="lander__caption">
-        <div className="lander__column lander__left">
-          <p><Text name="Lander ingressi 1"/></p>
-          <p><Text name="Lander ingressi 2"/></p>
-        </div>
-        <div className="lander__column lander__right">
-          <p><Text name="Lander ingressi 3"/></p>
-          <p><Text name="Lander ingressi 4"/></p>
-        </div>
+      <h1>{t('Opintoni')}</h1>
+      <div>
+        <p className='textstyle-lead'><Text name='Lander ingressi 1'/></p>
+        <p><Text name='Lander ingressi 2'/></p>
+        <p><Text name='Lander ingressi 3'/></p>
+        <p><Text name='Lander ingressi 4'/></p>
       </div>
       <p className="tietosuojaseloste"><TietosuojaselosteLinkki><Text name="KOSKI-palvelun tietosuojaseloste (sisältää rekisteriselosteen)"/></TietosuojaselosteLinkki></p>
-    </div>
-    <div className="lander-logo">
-      <img src="/koski/images/oph_fin_vaaka.png" />
-      <img src="/koski/images/logo_okm.png" />
+      <button className='login-button' onClick={() => window.location=window.kansalaisenAuthUrl}><Text name="Kirjaudu sisään" /></button>
     </div>
   </div>
 )
