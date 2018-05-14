@@ -23,7 +23,7 @@ export class LukionOppiaineEditor extends React.Component {
 
     saveOrganizationalPreference(
       organisaatioOid,
-      paikallinenOppiainePrototype(createOppiaineenSuoritus(oppiaine.context.suoritus)).value.classes[0],
+      paikallinenOppiainePrototype(createOppiaineenSuoritus(oppiaine.context.suoritus, oppiaine.value.classes[0])).value.classes[0],
       key,
       data
     )
