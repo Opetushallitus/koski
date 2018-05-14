@@ -19,6 +19,7 @@ import fi.oph.koski.permission.PermissionCheckServlet
 import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotServlet
 import fi.oph.koski.preferences.PreferencesServlet
 import fi.oph.koski.pulssi.{PulssiHtmlServlet, PulssiServlet}
+import fi.oph.koski.raportointikanta.RaportointikantaServlet
 import fi.oph.koski.servlet.RedirectServlet
 import fi.oph.koski.sso.{CasServlet, LocalLoginServlet, SSOConfig, ShibbolethLoginServlet}
 import fi.oph.koski.suoritusjako.SuoritusjakoServlet
@@ -70,6 +71,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     mount("/api/tiedonsiirrot", new TiedonsiirtoServlet)
     mount("/api/tutkinnonperusteet", new TutkinnonPerusteetServlet)
     mount("/api/localization", new LocalizationServlet)
+    mount("/api/raportointikanta", new RaportointikantaServlet)
     mount("/healthcheck", new HealthCheckHtmlServlet)
     mount("/user", new UserServlet)
     if (!SSOConfig(application.config).isCasSsoUsed) {
