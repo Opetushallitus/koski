@@ -71,7 +71,7 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
   private def landerHtml = htmlIndex(
     scriptBundleName = "koski-lander.js",
     scripts = <script id="auth">
-      {Unparsed(s"""window.kansalaisenAuthUrl="${application.config.getString("shibboleth.url")}"""")}
+      {Unparsed(s"""window.kansalaisenAuthUrl="${application.config.getString("shibboleth.url." + lang)}"""")}
     </script>,
     responsive = true
   )
