@@ -8,6 +8,8 @@ import fi.oph.koski.koskiuser.{AuthenticationUser, UserAuthenticationContext}
 import fi.oph.koski.log.Logging
 import org.scalatra.{Cookie, CookieOptions, ScalatraBase}
 
+import scala.collection.JavaConverters._
+
 trait SSOSupport extends ScalatraBase with Logging {
   def application: UserAuthenticationContext
 
@@ -41,7 +43,7 @@ trait SSOSupport extends ScalatraBase with Logging {
   }
 
   def setKansalaisCookie(user: AuthenticationUser) = {
-    setCookie("koskiOppija", user, domain = cookieDomain)
+    cookieDomains.foreach(cookieDomain => setCookie("koskiOppija", user, domain = cookieDomain))
   }
 
   private def setCookie(name: String, user: AuthenticationUser, domain: String = "") =
@@ -64,7 +66,7 @@ trait SSOSupport extends ScalatraBase with Logging {
   }
 
   def removeUserCookie = {
-    removeCookie("koskiOppija", domain = cookieDomain)
+    cookieDomains.foreach(cookieDomain => removeCookie("koskiOppija", domain = cookieDomain))
     removeCookie("koskiUser")
   }
 
@@ -102,7 +104,11 @@ trait SSOSupport extends ScalatraBase with Logging {
   def localLoginPage = "/login"
 
   // don't set cookie domain for localhost (so that local Koski works with non-localhost IP address, e.g. phone in the same wifi)
-  private def cookieDomain = Some(application.config.getString("koski.cookieDomain")).filter(_ != "localhost").getOrElse("")
+  private def cookieDomains: Iterable[String] =
+    application.config.getStringList("koski.cookieDomains").asScala.map { d =>
+      if (d == "localhost") ""
+      else d
+    }
 }
 
 case class SSOConfig(config: Config) {

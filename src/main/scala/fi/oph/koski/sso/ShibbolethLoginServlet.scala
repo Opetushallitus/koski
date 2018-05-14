@@ -73,7 +73,7 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
 
   private def rootUrl = {
     val endsInSlash = """/$""".r
-    endsInSlash.replaceAllIn(application.config.getString("koski.oppija.root.url"), "")
+    endsInSlash.replaceAllIn(application.config.getString("koski.oppija.root.url." + lang), "")
   }
 
   private val sensitiveHeaders = List("security", "hetu")
