@@ -10,6 +10,7 @@ class VirhesivuServlet(implicit val application: KoskiApplication) extends Scala
       <head>
         <title>Koski - Virhe</title>
         <link type="text/css" rel="stylesheet" href="/koski/css/virhesivu.css"/>
+        {oppijaRaamit.script}
       </head>
       <body>
         <div class="odottamaton-virhe">
