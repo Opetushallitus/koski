@@ -2,12 +2,14 @@ import React from 'react'
 import * as R from 'ramda'
 import {LukionOppiaineEditor} from './LukionOppiaineEditor'
 import {UusiLukionOppiaineDropdown} from './UusiLukionOppiaineDropdown'
-import {modelErrorMessages, modelItems} from '../editor/EditorModel'
+import {modelErrorMessages, modelItems, modelLookup} from '../editor/EditorModel'
 import {LukionOppiaineetTableHead} from './fragments/LukionOppiaineetTableHead'
 import {t} from '../i18n/i18n'
 import {flatMapArray} from '../util/util'
-import {laajuudet, hyväksytystiSuoritetutKurssit} from './lukio'
+import {hyväksytystiSuoritetutKurssit, laajuudet} from './lukio'
 import {laajuusNumberToString} from '../util/format.js'
+import {isLukionOppiaine, isPaikallinen, isPreIBOppiaine} from '../suoritus/Koulutusmoduuli'
+import {FootnoteDescriptions} from '../components/footnote'
 
 export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaineenSuoritus, suoritusFilter, additionalEditableKoulutusmoduuliProperties}) => {
   const {edit, suoritus: päätasonSuoritusModel} = suorituksetModel.context
@@ -38,6 +40,7 @@ export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaine
         </tbody>
       </table>
       <div className="kurssit-yhteensä">{t('Suoritettujen kurssien laajuus yhteensä') + ': ' + laajuusNumberToString(laajuudet(arvioidutKurssit(oppiaineet)))}</div>
+      {paikallisiaLukionOppiaineitaTaiKursseja(oppiaineet) && <FootnoteDescriptions data={[{title: 'Paikallinen kurssi tai oppiaine', hint: '*'}]}/>}
       <UusiLukionOppiaineDropdown
         model={päätasonSuoritusModel}
         oppiaineenSuoritusClasses={classesForUusiOppiaineenSuoritus}
@@ -45,6 +48,14 @@ export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaine
     </section>
   )
 }
+
+export const paikallisiaLukionOppiaineitaTaiKursseja = oppiaineet =>
+  oppiaineet
+    .some(aine => {
+      const oppiaine = modelLookup(aine, 'koulutusmoduuli')
+      return (isLukionOppiaine(oppiaine) || isPreIBOppiaine(oppiaine)) &&
+        (isPaikallinen(oppiaine) || modelItems(aine, 'osasuoritukset').some(kurssi => isPaikallinen(modelLookup(kurssi, 'koulutusmoduuli'))))
+    })
 
 const arvioidutKurssit = oppiaineet => flatMapArray(oppiaineet, oppiaine => hyväksytystiSuoritetutKurssit(modelItems(oppiaine, 'osasuoritukset')))
 

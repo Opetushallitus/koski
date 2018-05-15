@@ -1,9 +1,11 @@
 import React from 'react'
-import {modelData, modelTitle} from '../editor/EditorModel.js'
+import {modelData, modelLookup, modelTitle} from '../editor/EditorModel.js'
 import {ArvosanaEditor} from '../suoritus/ArvosanaEditor'
 import {pushRemoval} from '../editor/EditorModel'
 import {buildClassNames} from '../components/classnames'
 import {KurssiPopup} from './KurssiPopup'
+import {isLukionKurssi, isPaikallinen, isPreIBKurssi} from '../suoritus/Koulutusmoduuli'
+import {FootnoteHint} from '../components/footnote'
 
 export class KurssiEditor extends React.Component {
   constructor(props) {
@@ -17,6 +19,7 @@ export class KurssiEditor extends React.Component {
     let {kurssi} = this.props
     let {open} = this.state
     let koulutusmoduuli = modelData(kurssi, 'koulutusmoduuli')
+    let koulutusmoduuliModel = modelLookup(kurssi, 'koulutusmoduuli')
     let showDetails = () => {
       if (!open) {
         document.addEventListener('click', this.handleClickOutside, false)
@@ -35,6 +38,11 @@ export class KurssiEditor extends React.Component {
         <a onClick={showDetails} onMouseEnter={!edit ? showDetails : undefined} onMouseLeave={!edit ? hideDetails : undefined} className={className} title={modelTitle(kurssi, 'koulutusmoduuli')}>{koulutusmoduuli.tunniste.koodiarvo}</a>
         {
           edit && <a className="remove-value" onClick={() => pushRemoval(kurssi)}/>
+        }
+        {
+          (isLukionKurssi(koulutusmoduuliModel) || isPreIBKurssi(koulutusmoduuliModel)) &&
+          isPaikallinen(koulutusmoduuliModel) &&
+          <FootnoteHint title={'Paikallinen kurssi'} />
         }
         <div className="arvosana"><ArvosanaEditor model={kurssi}/></div>
         {

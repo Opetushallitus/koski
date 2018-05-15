@@ -4,7 +4,13 @@ import * as R from 'ramda'
 import {t} from '../../i18n/i18n'
 import {modelData, modelLookup, modelTitle} from '../../editor/EditorModel.js'
 import {FootnoteHint} from '../../components/footnote'
-import {isKieliaine, isLukionMatematiikka, isPaikallinen} from '../../suoritus/Koulutusmoduuli'
+import {
+  isKieliaine,
+  isLukionMatematiikka,
+  isLukionOppiaine,
+  isPaikallinen,
+  isPreIBOppiaine
+} from '../../suoritus/Koulutusmoduuli'
 import {Editor} from '../../editor/Editor'
 import {ArvosanaEditor} from '../../suoritus/ArvosanaEditor'
 import {PropertiesEditor} from '../../editor/PropertiesEditor'
@@ -17,18 +23,22 @@ const Nimi = ({oppiaine}) => {
   const hasOptions = isKieliaine(koulutusmoduuli) || isLukionMatematiikka(koulutusmoduuli)
 
   return (
-    edit && isPaikallinen(koulutusmoduuli)
+      [edit && isPaikallinen(koulutusmoduuli)
       ? (
-        <span className='koodi-ja-nimi'>
+        <span key='nimi' className='koodi-ja-nimi'>
           <span className='koodi'><Editor model={koulutusmoduuli} path='tunniste.koodiarvo' placeholder={t('Koodi')} /></span>
           <span className='nimi'><Editor model={koulutusmoduuli} path='tunniste.nimi' placeholder={t('Oppiaineen nimi')} /></span>
         </span>
       )
       : (
-        <span className='nimi'>
+        <span key='nimi' className='nimi'>
           {edit && hasOptions ? `${nimi}, ` : nimiJaKieli}
         </span>
-      )
+      ),
+        (isPreIBOppiaine(koulutusmoduuli) || isLukionOppiaine(koulutusmoduuli))
+        && isPaikallinen(koulutusmoduuli)
+        && <FootnoteHint key='footnote' title={'Paikallinen oppiaine'} />
+      ]
   )
 }
 
