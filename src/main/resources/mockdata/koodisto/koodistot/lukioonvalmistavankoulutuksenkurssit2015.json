@@ -8,7 +8,11 @@
   "codesGroupUri" : "http://koski",
   "voimassaAlkuPvm" : "2018-05-11",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
+  "withinCodes" : [ {
+    "codesUri" : "oppiaineetluva",
+    "codesVersion" : 1,
+    "passive" : false
+  } ],
   "tila" : "LUONNOS",
   "version" : 0
 }
