@@ -27,7 +27,7 @@ const NäyttöPopup = ({model, hasOldData, doneCallback}) => {
       <PropertiesEditor
         baret-lift
         model={modelP}
-        propertyFilter={p => !['arviointikohteet', 'haluaaTodistuksen', 'arvioitsijat', 'hylkäyksenPeruste', 'suoritusaika'].includes(p.key)}
+        propertyFilter={p => !['arviointikohteet', 'haluaaTodistuksen', 'hylkäyksenPeruste', 'suoritusaika'].includes(p.key)}
         getValueEditor={(p, getDefault) => {
           if (p.key === 'suorituspaikka') {return (
             <table><tbody><tr>
