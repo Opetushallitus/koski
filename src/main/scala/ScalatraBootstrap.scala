@@ -20,7 +20,7 @@ import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotServlet
 import fi.oph.koski.preferences.PreferencesServlet
 import fi.oph.koski.pulssi.{PulssiHtmlServlet, PulssiServlet}
 import fi.oph.koski.raportointikanta.RaportointikantaServlet
-import fi.oph.koski.servlet.RedirectServlet
+import fi.oph.koski.servlet._
 import fi.oph.koski.sso.{CasServlet, LocalLoginServlet, SSOConfig, ShibbolethLoginServlet}
 import fi.oph.koski.suoritusjako.SuoritusjakoServlet
 import fi.oph.koski.suoritusote.SuoritusServlet
@@ -28,7 +28,6 @@ import fi.oph.koski.tiedonsiirto.TiedonsiirtoServlet
 import fi.oph.koski.todistus.TodistusServlet
 import fi.oph.koski.tutkinto.TutkinnonPerusteetServlet
 import fi.oph.koski.util.Futures
-import fi.oph.koski.{EiSuorituksiaServlet, IndexServlet, LoginPageServlet, VirhesivuServlet, SuoritusjakoHtmlServlet}
 import javax.servlet.ServletContext
 import org.scalatra._
 
