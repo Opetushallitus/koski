@@ -1,4 +1,5 @@
 import React from 'baret'
+import Bacon from 'baconjs'
 import {modelData, modelLookup, modelTitle} from '../editor/EditorModel.js'
 import {Editor} from '../editor/Editor'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
@@ -9,8 +10,7 @@ import {SelectAlternativeByEnumValueEditor} from '../editor/SelectAlternativeByE
 import {AmmatillinenNäyttöEditor} from './AmmatillinenNayttoEditor'
 import {TutkinnonOsanSuoritusEditor} from '../suoritus/Suoritustaulukko'
 import {InlineJaksoEditor} from '../date/JaksoEditor'
-import {wrapOptional} from '../editor/EditorModel'
-import {hasModelProperty} from '../editor/EditorModel'
+import {hasModelProperty, wrapOptional} from '../editor/EditorModel'
 import {EnumEditor} from '../editor/EnumEditor'
 import Http from '../util/http'
 
@@ -111,10 +111,12 @@ const SisältäväOpiskeluoikeusEditor = ({model}) => {
 const OsaamisalajaksoEditor = ({model}) => {
   const wrappedModel = wrapOptional(model)
   const diaarinumero = modelData(model.context.suoritus, 'tutkinto.perusteenDiaarinumero') || modelData(model.context.suoritus, 'koulutusmoduuli.perusteenDiaarinumero')
+  const osaamisalat = wrappedModel.context.edit ? fetchOsaamisalat(diaarinumero) : () => Bacon.never()
+
   return (
     <span className="osaamisalajakso">
       <span className="property osaamisala">
-        <EnumEditor model={modelLookup(model, 'osaamisala')} fetchAlternatives={fetchOsaamisalat(diaarinumero)} displayValue={option => option.title + (option.data ? ' (' + option.data.koodiarvo + ')' : '')}/>
+        <EnumEditor model={modelLookup(model, 'osaamisala')} fetchAlternatives={osaamisalat} displayValue={option => option.title + (option.data ? ' (' + option.data.koodiarvo + ')' : '')}/>
       </span>
       <PäivämääräväliEditor model={wrappedModel}/>
     </span>
