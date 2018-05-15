@@ -2,14 +2,14 @@ package fi.oph.koski.servlet
 
 import java.util.Properties
 
-import fi.oph.koski.html.{EiRaameja, HtmlNodes, Virkailija}
+import fi.oph.koski.html.{EiRaameja, HtmlNodes, Raamit, Virkailija}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.AuthenticationSupport
 import fi.oph.koski.util.XML
 
+import scala.reflect.runtime.{universe => ru}
 import scala.util.Try
 import scala.xml.Elem
-import scala.reflect.runtime.{universe => ru}
 
 trait HtmlServlet extends KoskiBaseServlet with AuthenticationSupport with HtmlNodes {
 
@@ -29,7 +29,7 @@ trait HtmlServlet extends KoskiBaseServlet with AuthenticationSupport with HtmlN
   }
 
   def renderStatus(status: HttpStatus): Unit = {
-    val html = XML.transform(htmlIndex("koski-main.js", piwikHttpStatusCode = Some(status.statusCode), raamit = if (raamitHeaderSet) Virkailija else EiRaameja)) {
+    val html = XML.transform(htmlIndex("koski-main.js", piwikHttpStatusCode = Some(status.statusCode), raamit = virkailijaRaamit)) {
       case e: Elem if e.label == "head" =>
         e copy (child = (e.child :+ htmlErrorObjectScript(status)) ++ piwikTrackErrorObject)
     }
@@ -46,5 +46,6 @@ trait HtmlServlet extends KoskiBaseServlet with AuthenticationSupport with HtmlN
       renderStatus(KoskiErrorCategory.internalError())
   }
 
-  def raamitHeaderSet = Option(request.getHeader("X-Raamit")).exists(r => Try(r.toBoolean).getOrElse(false))
+  def raamitHeaderSet: Boolean = Option(request.getHeader("X-Raamit")).exists(r => Try(r.toBoolean).getOrElse(false))
+  def virkailijaRaamit: Raamit = if (raamitHeaderSet) Virkailija else EiRaameja
 }
