@@ -52,7 +52,7 @@ describe('Lukiokoulutus', function( ){
           'Biologia\nBI1\n8 BI2\n9 BI3\n8 BI4\n9 BI5\n10 BI6\nS BI7\nS BI8\nS 7,5 9\n(8,8)\n' +
           'Maantieto\nGE1\n9 GE2\n7 2 8\n(8,0)\nFysiikka\nFY1\n8 FY2\n9 FY3\n9 FY4\n7 FY5\n8 FY6\n7 FY7\n8 FY8\n7 FY9\n7 FY10\nS FY11\nS FY12\nS FY13\nS 13 8\n(7,8)\n' +
           'Kemia\nKE1\n8 KE2\n9 KE3\n9 KE4\n5 KE5\n7 KE6\n5 KE7\nS KE8\nS 8 8\n(7,2)\n' +
-          'Uskonto\nUE1\n8 UE2\n7 UE3\n8 3 8\n(7,7)\nFilosofia\nFI1\n8 1 8\n(8,0)\n' +
+          'Uskonto/Elämänkatsomustieto\nUE1\n8 UE2\n7 UE3\n8 3 8\n(7,7)\nFilosofia\nFI1\n8 1 8\n(8,0)\n' +
           'Psykologia\nPS1\n9 1 9\n(9,0)\n' +
           'Historia\nHI1\n7 HI2\n8 HI3\n7 HI4\n6 4 7\n(7,0)\n' +
           'Yhteiskuntaoppi\nYH1\n8 YH2\n8 2 8\n(8,0)\n' +

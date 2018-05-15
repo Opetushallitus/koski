@@ -50,7 +50,7 @@ describe('IB', function( ) {
           'Maantieto\nGE2\n10 1 10\n(10,0)\n' +
           'Fysiikka\nFY1\n7 1 7\n(7,0)\n' +
           'Kemia\nKE1\n8 1 8\n(8,0)\n' +
-          'Uskonto\nUK4\n10 1 10\n(10,0)\n' +
+          'Uskonto/Elämänkatsomustieto\nUK4\n10 1 10\n(10,0)\n' +
           'Filosofia\nFI1\nS 1 7\n' +
           'Psykologia\nPS1\n8 1 8\n(8,0)\n' +
           'Historia\nHI3\n9 HI4\n8 HI10\nS 3 8\n(8,5)\n' +

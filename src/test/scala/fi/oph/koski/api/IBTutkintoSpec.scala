@@ -53,7 +53,7 @@ class IBTutkintoSpec extends FreeSpec with Matchers with OpintosuoritusoteTestMe
           |PS1 Psyykkinen toiminta ja oppiminen 1 8 4.6.2016
           |TE Terveystieto 1 7
           |TE1 Terveyden perusteet 1 7 4.6.2016
-          |KT Uskonto 1 10
+          |KT Uskonto/Elämänkatsomustieto 1 10
           |UK4 Uskonto suomalaisessa yhteiskunnassa 1 10 4.6.2016
           |YH Yhteiskuntaoppi 1 8
           |YH1 Suomalainen yhteiskunta 1 8 4.6.2016
