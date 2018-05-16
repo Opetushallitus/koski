@@ -17,7 +17,7 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
     } catch {
       case e: Exception =>
         logger.error(s"Kansalaisen sisäänkirjautuminen epäonnistui ${e.getMessage}")
-        redirect(s"$rootUrl/virhesivu")
+        redirect(s"$koskiRoot/virhesivu")
     }
   }
 
@@ -34,9 +34,10 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
     application.henkilöRepository.findHenkilötiedotByHetu(hetu, nimitiedot)(KoskiSession.systemUser).headOption match {
       case Some(oppija) =>
         val user = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true)
+        logger.debug(params.get("lang").mkString)
         setUser(Right(localLogin(user, params.get("lang").map(_.toLowerCase))))
-        redirect(s"$rootUrl/omattiedot")
-      case _ => redirect(s"$rootUrl/eisuorituksia")
+        redirect(s"$koskiRoot/omattiedot")
+      case _ => redirect(s"$koskiRoot/eisuorituksia")
     }
   }
 
@@ -69,11 +70,6 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
     } else {
       password == security
     }
-  }
-
-  private def rootUrl = {
-    val endsInSlash = """/$""".r
-    endsInSlash.replaceAllIn(application.config.getString("koski.oppija.root.url." + lang), "")
   }
 
   private val sensitiveHeaders = List("security", "hetu")
