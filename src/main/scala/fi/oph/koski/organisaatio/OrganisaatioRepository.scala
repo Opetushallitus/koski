@@ -47,6 +47,8 @@ trait OrganisaatioRepository {
   def findHierarkia(query: String): List[OrganisaatioHierarkia]
 
   def findSähköpostiVirheidenRaportointiin(oid: String): Option[SähköpostiVirheidenRaportointiin]
+
+  def findAllRaw: List[OrganisaatioPalveluOrganisaatio]
 }
 
 object OrganisaatioRepository {
@@ -150,6 +152,10 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(i
         .flatMap(_.email)
       koskiEmail.orElse(defaultEmail).map(email => SähköpostiVirheidenRaportointiin(org.oid, LocalizedString.sanitizeRequired(org.nimi, org.oid), email))
     }
+  }
+
+  override def findAllRaw: List[OrganisaatioPalveluOrganisaatio] = {
+    runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/hae?aktiiviset=true&lakkautetut=true&suunnitellut=true&searchStr=")(Http.parseJson[OrganisaatioHakuTulos])).organisaatiot
   }
 }
 

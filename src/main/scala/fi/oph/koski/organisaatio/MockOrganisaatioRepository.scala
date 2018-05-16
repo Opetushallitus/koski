@@ -100,4 +100,10 @@ object MockOrganisaatioRepository extends JsonOrganisaatioRepository(MockKoodist
       getOrganisaatioHierarkia(oid).map(h => SähköpostiVirheidenRaportointiin(h.oid, h.nimi, "joku.osoite@example.com"))
     }
   }
+
+  override def findAllRaw: List[OrganisaatioPalveluOrganisaatio] = {
+    MockOrganisaatiot.roots
+      .flatMap(oid => JsonResources.readResourceIfExists(hierarchyResourcename(oid)))
+      .flatMap(json => extract[OrganisaatioHakuTulos](json, ignoreExtras = true).organisaatiot)
+  }
 }

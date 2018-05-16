@@ -23,22 +23,28 @@ object KoskiDatabase {
     new KoskiDatabase(KoskiDatabaseConfig(config, readOnly = true))
 }
 
-case class KoskiDatabaseConfig(c: Config, readOnly: Boolean = false) {
+case class KoskiDatabaseConfig(c: Config, readOnly: Boolean = false, raportointi: Boolean = false) {
   private val masterHost: String = c.getString("db.host")
   private val replicaHost: String = if (c.hasPath("db.replica.host")) c.getString("db.replica.host") else masterHost
+  private val raportointiHost: String = if (c.hasPath("db.raportointi.host")) c.getString("db.raportointi.host") else masterHost
   private val masterPort: Int = c.getInt("db.port")
   private val replicaPort: Int = if (c.hasPath("db.replica.port")) c.getInt("db.replica.port") else masterPort
+  private val raportointiPort: Int = if (c.hasPath("db.raportointi.port")) c.getInt("db.raportointi.port") else masterPort
+  private val masterDbName = c.getString("db.name")
+  private val raportointiDbName = if (c.hasPath("db.raportointi.name")) c.getInt("db.raportointi.name") else masterDbName
 
-  val host: String = if (readOnly) replicaHost else masterHost
-  val port: Int =  if (readOnly) replicaPort else masterPort
-  val dbName: String = c.getString("db.name")
+  val (host, port, dbName, poolName) = (raportointi, readOnly) match {
+    case (true, _) => (raportointiHost, raportointiPort, raportointiDbName, "koskiRaportointiPool")
+    case (false, false) => (masterHost, masterPort, masterDbName, "koskiMasterPool")
+    case (false, true) => (replicaHost, replicaPort, masterDbName, "koskiReplicaPool")
+  }
   val jdbcDriverClassName = "org.postgresql.Driver"
   val password: String = c.getString("db.password")
   val user: String = c.getString("db.user")
   val jdbcUrl = "jdbc:postgresql://" + host + ":" + port + "/" + dbName  + "?user=" + user + "&password=" + password
 
   val config = c.getConfig("db")
-    .withValue("poolName", fromAnyRef(s"koski${if (readOnly) "Replica" else "Master"}Pool"))
+    .withValue("poolName", fromAnyRef(poolName))
     .withValue("readOnly", fromAnyRef(readOnly))
     .withValue("url", fromAnyRef(jdbcUrl))
     .withValue("numThreads", fromAnyRef(Pools.dbThreads))
