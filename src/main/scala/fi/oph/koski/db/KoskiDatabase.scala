@@ -31,7 +31,7 @@ case class KoskiDatabaseConfig(c: Config, readOnly: Boolean = false, raportointi
   private val replicaPort: Int = if (c.hasPath("db.replica.port")) c.getInt("db.replica.port") else masterPort
   private val raportointiPort: Int = if (c.hasPath("db.raportointi.port")) c.getInt("db.raportointi.port") else masterPort
   private val masterDbName = c.getString("db.name")
-  private val raportointiDbName = if (c.hasPath("db.raportointi.name")) c.getInt("db.raportointi.name") else masterDbName
+  private val raportointiDbName = if (c.hasPath("db.raportointi.name")) c.getString("db.raportointi.name") else masterDbName
 
   val (host, port, dbName, poolName) = (raportointi, readOnly) match {
     case (true, _) => (raportointiHost, raportointiPort, raportointiDbName, "koskiRaportointiPool")
