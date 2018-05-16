@@ -2,8 +2,12 @@
   .lukionoppimaaransuoritus, .lukionoppiaineenoppimaaransuoritus, .lukioonvalmistavankoulutuksensuoritus,
   .preibsuoritus, .ibtutkinnonsuoritus {
     .oppiaine {
+      .footnote-hint {
+        top: -0.4em;
+        cursor: pointer;
+      }
       .title {
-        > .nimi {
+        > .nimi, > .footnote-hint {
           color: @color-label;
         }
         > .properties {
