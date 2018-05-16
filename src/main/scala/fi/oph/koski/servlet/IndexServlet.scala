@@ -1,6 +1,7 @@
 package fi.oph.koski.servlet
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.koskiuser.KoskiUserLanguage
 import org.scalatra.ScalatraServlet
 
 import scala.xml.Unparsed
@@ -26,6 +27,9 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
     }.getOrElse("/virkailija")
 
     if (application.features.shibboleth && !isAuthenticated) {
+      if (langFromCookie.isEmpty) {
+        KoskiUserLanguage.setLanguageCookie(langFromDomain, response)
+      }
       landerHtml
     } else {
       redirect(redirectUrl)

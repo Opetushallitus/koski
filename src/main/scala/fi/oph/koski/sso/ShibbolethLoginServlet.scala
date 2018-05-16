@@ -8,9 +8,9 @@ import fi.oph.koski.henkilo.Hetu
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{AuthenticationSupport, AuthenticationUser, KoskiSession}
 import fi.oph.koski.schema.Nimitiedot
-import fi.oph.koski.servlet.{ApiServlet, NoCache}
+import fi.oph.koski.servlet.{ApiServlet, LanguageSupport, NoCache}
 
-case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServlet with AuthenticationSupport with NoCache{
+case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServlet with AuthenticationSupport with NoCache with LanguageSupport {
   get("/") {
     try {
       checkAuth.getOrElse(login)
@@ -33,9 +33,7 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
   private def login = {
     application.henkilöRepository.findHenkilötiedotByHetu(hetu, nimitiedot)(KoskiSession.systemUser).headOption match {
       case Some(oppija) =>
-        val user = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true)
-        logger.debug(params.get("lang").mkString)
-        setUser(Right(localLogin(user, params.get("lang").map(_.toLowerCase))))
+        setUser(Right(localLogin(AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true), Some(langFromCookie.getOrElse(langFromDomain)))))
         redirect(s"$koskiRoot/omattiedot")
       case _ => redirect(s"$koskiRoot/eisuorituksia")
     }
