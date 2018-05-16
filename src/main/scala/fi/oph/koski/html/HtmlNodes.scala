@@ -7,13 +7,13 @@ import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.localization.LocalizationRepository
-import fi.oph.koski.servlet.KoskiBaseServlet
+import fi.oph.koski.servlet.{KoskiBaseServlet, LanguageSupport}
 import fi.oph.koski.util.XML.CommentedPCData
 
 import scala.xml.NodeSeq.Empty
 import scala.xml.{Elem, NodeSeq, Unparsed}
 
-trait HtmlNodes extends KoskiBaseServlet with PiwikNodes {
+trait HtmlNodes extends KoskiBaseServlet with PiwikNodes with LanguageSupport {
   def application: KoskiApplication
   def buildVersion: Option[String]
   def localizations: LocalizationRepository = application.localizationRepository

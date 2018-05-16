@@ -10,7 +10,6 @@ import scala.reflect.runtime.{universe => ru}
 import scala.xml.Elem
 
 trait KoskiBaseServlet extends ScalatraServlet with Logging {
-
   override protected def logger: LoggerWithContext = {
     try {
       logger(koskiSessionOption)
@@ -18,8 +17,6 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
       case e: Throwable => super.logger
     }
   }
-
-  def lang = KoskiUserLanguage.getLanguageFromCookie(request)
 
   def getIntegerParam(name: String): Int = {
     params.getAs[Int](name) match {
