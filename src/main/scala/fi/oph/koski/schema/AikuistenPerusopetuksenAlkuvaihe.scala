@@ -55,7 +55,10 @@ case class AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus(
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("aikuistenperusopetuksenalkuvaiheenkurssi")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "aikuistenperusopetuksenalkuvaiheenkurssi", koodistoUri = "suorituksentyyppi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "aikuistenperusopetuksenalkuvaiheenkurssi", koodistoUri = "suorituksentyyppi"),
+  @Description("Jos kurssi on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot.")
+  @ComplexObject
+  tunnustettu: Option[OsaamisenTunnustaminen] = None
 ) extends KurssinSuoritus with MahdollisestiSuorituskielellinen
 
 @Description("Perusopetuksen oppiaineen tunnistetiedot")

@@ -162,7 +162,10 @@ case class AikuistenPerusopetuksenKurssinSuoritus(
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("aikuistenperusopetuksenkurssi")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "aikuistenperusopetuksenkurssi", koodistoUri = "suorituksentyyppi")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "aikuistenperusopetuksenkurssi", koodistoUri = "suorituksentyyppi"),
+  @Description("Jos kurssi on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot.")
+  @ComplexObject
+  tunnustettu: Option[OsaamisenTunnustaminen] = None
 ) extends KurssinSuoritus with MahdollisestiSuorituskielellinen
 
 sealed trait AikuistenPerusopetuksenKurssi extends Koulutusmoduuli {
