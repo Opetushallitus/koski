@@ -48,7 +48,7 @@ describe('Omat tiedot', function() {
 
           it('Näytetään ruotsinkielinen ingressi', function() {
             expect(omattiedot.ingressi()).to.equal(
-              'Opintoni ingressi'
+              'På denna sida syns alla studieprestationer som sparats elektroniskt, från enskilda kurser till hela examina.'
             )
           })
         })

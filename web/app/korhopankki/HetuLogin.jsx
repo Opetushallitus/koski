@@ -5,6 +5,7 @@ import Atom from 'bacon.atom'
 import Text from '../i18n/Text'
 import {t} from '../i18n/i18n'
 import Input from '../components/Input'
+import Cookie from 'js-cookie'
 
 const LoginUrl = '/koski/user/shibbolethlogin'
 const RedirectUrl = '/koski/omattiedot'
@@ -37,16 +38,17 @@ const HetuLogin = () => {
     .flatMap(credentials => {
       const headers = R.reject(R.isNil, R.merge(credentials, {security: 'mock'}))
       // console.log('Logging in with', headers)
-      const lang = credentials.lang ? credentials.lang : 'FI'
-      return Bacon.fromPromise(fetch(`${LoginUrl}?lang=${lang}`, { credentials: 'include', headers}))
+      const lang = credentials.lang ? credentials.lang : 'fi'
+      return Bacon.fromPromise(fetch(LoginUrl, { credentials: 'include', headers})).map(resp => ({resp: resp, lang: lang}))
     })
 
   login.onValue((x) => {
-    if (x.headers && x.headers.map && x.headers.map['x-virhesivu']) {
+    Cookie.set('lang', x.lang)
+    if (x.resp.headers && x.resp.headers.map && x.resp.headers.map['x-virhesivu']) {
       // For PhantomJS - the fetch polyfill doesn't set "x.redirected"
       document.location = '/koski/virhesivu'
-    } else if (x.redirected) {
-      document.location = x.url
+    } else if (x.resp.redirected) {
+      document.location = x.resp.url
     } else {
       document.location = RedirectUrl
     }
