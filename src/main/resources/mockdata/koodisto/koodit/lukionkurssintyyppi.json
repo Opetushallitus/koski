@@ -4,6 +4,9 @@
   "metadata" : [ {
     "nimi" : "Pakollinen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Obligatorisk",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -13,6 +16,9 @@
   "metadata" : [ {
     "nimi" : "Soveltava",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Tillämpad",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -22,6 +28,9 @@
   "metadata" : [ {
     "nimi" : "Syventävä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fördjupad",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

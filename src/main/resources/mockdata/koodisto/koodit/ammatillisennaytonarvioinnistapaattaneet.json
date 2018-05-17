@@ -70,6 +70,11 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Annan företrädare för utbildningsanordnaren",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

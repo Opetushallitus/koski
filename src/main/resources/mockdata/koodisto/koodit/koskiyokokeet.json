@@ -17,7 +17,7 @@
     "nimi" : "Suomi toisena kielenä",
     "kieli" : "FI"
   }, {
-    "nimi" : "Suomi toisena kielenä",
+    "nimi" : "Finska som andra språk",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -89,7 +89,7 @@
     "nimi" : "Suomi, lyhyt oppimäärä",
     "kieli" : "FI"
   }, {
-    "nimi" : "Suomi, lyhyt oppimäärä",
+    "nimi" : "Finska, kort lärokurs",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -112,6 +112,9 @@
   "metadata" : [ {
     "nimi" : "Englanti, pitkä oppimäärä erivapaudella",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Engelska, lång lärokurs, dispens",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -121,6 +124,9 @@
   "metadata" : [ {
     "nimi" : "Englanti, keskipitkä oppimäärä erivapaudella",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Engelska, medellång lärokurs, dispens",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -143,7 +149,7 @@
     "nimi" : "Englanti, keskipitkä oppimäärä",
     "kieli" : "FI"
   }, {
-    "nimi" : "Englanti, keskipitkä",
+    "nimi" : "Engelska, medellång lärokurs",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -178,6 +184,9 @@
   "metadata" : [ {
     "nimi" : "Ranska, pitkä oppimäärä erivapaudella",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Franska, lång lärokurs, dispens",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -187,6 +196,9 @@
   "metadata" : [ {
     "nimi" : "Ranska, keskipitkä oppimäärä erivapaudella",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Franska, medellång lärokurs, dispens",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -209,7 +221,7 @@
     "nimi" : "Ranska, keskipitkä oppimäärä",
     "kieli" : "FI"
   }, {
-    "nimi" : "Ranska, keskipitkä oppimäärä",
+    "nimi" : "Franska, medellång lärokurs",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -256,6 +268,9 @@
   "metadata" : [ {
     "nimi" : "Portugali, pitkä oppimäärä erivapaudella",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Portugisiska, lång lärokurs, dispens",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -265,6 +280,9 @@
   "metadata" : [ {
     "nimi" : "Portugali, keskipitkä oppimäärä erivapaudella",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Portugisiska, medellång lärokurs, dispens",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -275,7 +293,7 @@
     "nimi" : "Portugali, pitkä oppimäärä",
     "kieli" : "FI"
   }, {
-    "nimi" : "Portugali, pitkä oppimäärä",
+    "nimi" : "Portugisiska, lång lärokurs",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -287,7 +305,7 @@
     "nimi" : "Portugali, keskipitkä oppimäärä",
     "kieli" : "FI"
   }, {
-    "nimi" : "Portugali, keskipitkä oppimäärä",
+    "nimi" : "Portugisiska, medellång lärokurs",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -322,6 +340,9 @@
   "metadata" : [ {
     "nimi" : "Unkari, pitkä oppimäärä erivapaudella",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Ungerska, lång lärokurs, dispens",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -331,6 +352,9 @@
   "metadata" : [ {
     "nimi" : "Unkari, keskipitkä oppimäärä erivapaudella",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Ungerska, medellång lärokurs, dispens",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -341,7 +365,7 @@
     "nimi" : "Unkari, pitkä oppimäärä",
     "kieli" : "FI"
   }, {
-    "nimi" : "Unkari, pitkä oppimäärä",
+    "nimi" : "Ungerska, lång lärokurs",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -353,7 +377,7 @@
     "nimi" : "Unkari, keskipitkäoppimäärä",
     "kieli" : "FI"
   }, {
-    "nimi" : "Tämä perustettu konversiota varten",
+    "nimi" : "Ungerska, medellång lärokurs",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -413,7 +437,7 @@
     "nimi" : "Kreikka, lyhyt oppimäärä",
     "kieli" : "FI"
   }, {
-    "nimi" : "Kreikka, lyhyt oppimäärä",
+    "nimi" : "Grekiska, kort lärökurs",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -437,7 +461,7 @@
     "nimi" : "Latina, lyhyt oppimäärä",
     "kieli" : "FI"
   }, {
-    "nimi" : "Latin,  kort lärokurs",
+    "nimi" : "Latin, kort lärokurs",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -508,6 +532,9 @@
   "metadata" : [ {
     "nimi" : "Espanja, pitkä oppimäärä erivapaudella",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Spanska, lång lärokurs, dispens",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -517,6 +544,9 @@
   "metadata" : [ {
     "nimi" : "Espanja, keskipitkä oppimäärä erivapaudella",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Spanska, medellång lärokurs, dispens",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -586,12 +616,9 @@
   "metadata" : [ {
     "nimi" : "Reaali",
     "lyhytNimi" : "Reaali, ortod. uskonnon kysymykset",
-    "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Reaali",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
+    "nimi" : "Real",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -602,12 +629,9 @@
   "metadata" : [ {
     "nimi" : "Reaali",
     "lyhytNimi" : "Reaali, ev lut uskonnon kysymykset",
-    "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Reaali",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
+    "nimi" : "Real",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -618,12 +642,9 @@
   "metadata" : [ {
     "nimi" : "Reaali",
     "lyhytNimi" : "Reaali, elämänkatsomustiedon kysymykset",
-    "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Reaali",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
+    "nimi" : "Real",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -634,6 +655,9 @@
   "metadata" : [ {
     "nimi" : "Saksa, pitkä oppimäärä erivapaudella",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Tyska, lång lärokurs, dispens",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -643,6 +667,9 @@
   "metadata" : [ {
     "nimi" : "Saksa, keskipitkä oppimäärä erivapaudella",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Tyska, medellång lärokurs, dispens",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -653,7 +680,7 @@
     "nimi" : "Saksalaisen",
     "kieli" : "FI"
   }, {
-    "nimi" : "Saksalaisen",
+    "nimi" : "Tyska",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -677,7 +704,7 @@
     "nimi" : "Saksa, keskipitkä oppimäärä",
     "kieli" : "FI"
   }, {
-    "nimi" : "Saksa, keskipitkä oppimäärä",
+    "nimi" : "Tyska, medellång lärokurs",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -700,6 +727,9 @@
   "metadata" : [ {
     "nimi" : "Italia, pitkä oppimäärä erivapaudella",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Italienska, lång lärokurs, dispens",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -709,6 +739,9 @@
   "metadata" : [ {
     "nimi" : "Italia, keskipitkä oppimäärä erivapaudella",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Italienska, medellång lärokurs, dispens",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -719,7 +752,7 @@
     "nimi" : "Italia, pitkä oppimäärä",
     "kieli" : "FI"
   }, {
-    "nimi" : "Italia, pitkä oppimäärä",
+    "nimi" : "Italienska, lång lärokurs",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -731,7 +764,7 @@
     "nimi" : "Italia, keskipitkä oppimäärä",
     "kieli" : "FI"
   }, {
-    "nimi" : "Italia, keskipitkä oppimäärä",
+    "nimi" : "Italienska, medellång lärokurs",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -790,6 +823,9 @@
   "metadata" : [ {
     "nimi" : "Venäjä, pitkä oppimäärä erivapaudella",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Ryska, lång lärokurs, dispens",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -799,6 +835,9 @@
   "metadata" : [ {
     "nimi" : "Venäjä, keskipitkä oppimäärä erivapaudella",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Ryska, medellång lärokurs, dispens",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -821,7 +860,7 @@
     "nimi" : "Venäjä,keskipitkä oppimäärä",
     "kieli" : "FI"
   }, {
-    "nimi" : "Venäjä,keskipitkä oppimäärä",
+    "nimi" : "Ryska, medellång lärokurs",
     "kieli" : "SV"
   } ],
   "versio" : 1,

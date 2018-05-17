@@ -4,6 +4,9 @@
   "metadata" : [ {
     "nimi" : "Läsnä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Närvarande",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -13,6 +16,9 @@
   "metadata" : [ {
     "nimi" : "Poissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Frånvarande",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

@@ -6,8 +6,7 @@
     "lyhytNimi" : "Äidinkieli ",
     "kieli" : "FI"
   }, {
-    "nimi" : "Modersmålet",
-    "lyhytNimi" : "",
+    "nimi" : "Modersmål",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -20,7 +19,6 @@
     "kieli" : "FI"
   }, {
     "nimi" : "Etik",
-    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -33,7 +31,6 @@
     "kieli" : "FI"
   }, {
     "nimi" : "Fysik och kemi",
-    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -45,8 +42,7 @@
     "lyhytNimi" : "Kulttuurien tuntemus",
     "kieli" : "FI"
   }, {
-    "nimi" : "kännedom om olika kulturer",
-    "lyhytNimi" : "",
+    "nimi" : "Kännedom om olika kulturer",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -67,12 +63,11 @@
   "koodiUri" : "ammatillisenoppiaineet_mlfk",
   "koodiArvo" : "MLFK",
   "metadata" : [ {
-    "nimi" : "fysikaaliset ja kemialliset ilmiöt ja niiden soveltaminen",
+    "nimi" : "Fysikaaliset ja kemialliset ilmiöt ja niiden soveltaminen",
     "lyhytNimi" : "fysikaaliset ja kemialliset ilmiöt ja niiden soveltaminen",
     "kieli" : "FI"
   }, {
-    "nimi" : "fysikaliska och kemiska fenomen och tillämpning av dem",
-    "lyhytNimi" : "",
+    "nimi" : "Fysikaliska och kemiska fenomen och tillämpning av dem",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -80,12 +75,11 @@
   "koodiUri" : "ammatillisenoppiaineet_mlma",
   "koodiArvo" : "MLMA",
   "metadata" : [ {
-    "nimi" : "matematiikka ja matematiikan soveltaminen",
+    "nimi" : "Matematiikka ja matematiikan soveltaminen",
     "lyhytNimi" : "matematiikka ja matematiikan soveltaminen",
     "kieli" : "FI"
   }, {
-    "nimi" : "matematik och tillämpad matematik",
-    "lyhytNimi" : "",
+    "nimi" : "Matematik och tillämpad matematik",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -111,7 +105,6 @@
     "kieli" : "FI"
   }, {
     "nimi" : "Konst och kultur",
-    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -123,8 +116,7 @@
     "lyhytNimi" : "Työelämätaidot",
     "kieli" : "FI"
   }, {
-    "nimi" : "arbetslivsfärdighet",
-    "lyhytNimi" : "",
+    "nimi" : "Arbetslivsfärdighet",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -136,8 +128,7 @@
     "lyhytNimi" : "Toinen kotimainen kieli, ruotsi",
     "kieli" : "FI"
   }, {
-    "nimi" : "det andra inhemska språket, svenska",
-    "lyhytNimi" : "",
+    "nimi" : "Andra inhemska språket, svenska",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -149,8 +140,7 @@
     "lyhytNimi" : "Tieto- ja viestintätekniikka sekä sen hyödyntäminen",
     "kieli" : "FI"
   }, {
-    "nimi" : "informations- och kommunikationsteknik samt användningen av den",
-    "lyhytNimi" : "",
+    "nimi" : "Informations- och kommunikationsteknik samt användningen av den",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -162,8 +152,7 @@
     "lyhytNimi" : "Työkyvyn ylläpitäminen, liikunta ja terveystieto",
     "kieli" : "FI"
   }, {
-    "nimi" : "upprätthållande av arbetsförmåga, gymnastik och hälsokunskap",
-    "lyhytNimi" : "",
+    "nimi" : "Upprätthållande av arbetsförmåga, gymnastik och hälsokunskap",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -175,8 +164,7 @@
     "lyhytNimi" : "Vieraat kielet",
     "kieli" : "FI"
   }, {
-    "nimi" : "främmande språk",
-    "lyhytNimi" : "",
+    "nimi" : "Främmande språk",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -184,12 +172,11 @@
   "koodiUri" : "ammatillisenoppiaineet_vvai",
   "koodiArvo" : "VVAI",
   "metadata" : [ {
-    "nimi" : "viestintä ja vuorovaikutus äidinkielellä",
+    "nimi" : "Viestintä ja vuorovaikutus äidinkielellä",
     "lyhytNimi" : "viestintä ja vuorovaikutus äidinkielellä",
     "kieli" : "FI"
   }, {
-    "nimi" : "kommunikation och interaktion på modersmålet",
-    "lyhytNimi" : "",
+    "nimi" : "Kommunikation och interaktion på modersmålet",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -197,12 +184,11 @@
   "koodiUri" : "ammatillisenoppiaineet_vvtd",
   "koodiArvo" : "VVTD",
   "metadata" : [ {
-    "nimi" : "toiminta digitaalisessa ympäristössä",
+    "nimi" : "Toiminta digitaalisessa ympäristössä",
     "lyhytNimi" : "toiminta digitaalisessa ympäristössä",
     "kieli" : "FI"
   }, {
-    "nimi" : "verksamhet i den digitala miljön",
-    "lyhytNimi" : "",
+    "nimi" : "Verksamhet i den digitala miljön",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -210,12 +196,11 @@
   "koodiUri" : "ammatillisenoppiaineet_vvtk",
   "koodiArvo" : "VVTK",
   "metadata" : [ {
-    "nimi" : "viestintä ja vuorovaikutus toisella kotimaisella kielellä",
+    "nimi" : "Viestintä ja vuorovaikutus toisella kotimaisella kielellä",
     "lyhytNimi" : "viestintä ja vuorovaikutus toisella kotimaisella kielellä",
     "kieli" : "FI"
   }, {
-    "nimi" : "kommunikation och interaktion på det andra inhemska språket",
-    "lyhytNimi" : "",
+    "nimi" : "Kommunikation och interaktion på det andra inhemska språket",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -223,12 +208,11 @@
   "koodiUri" : "ammatillisenoppiaineet_vvtl",
   "koodiArvo" : "VVTL",
   "metadata" : [ {
-    "nimi" : "taide ja luova ilmaisu",
+    "nimi" : "Taide ja luova ilmaisu",
     "lyhytNimi" : "taide ja luova ilmaisu",
     "kieli" : "FI"
   }, {
-    "nimi" : "konst och kreativt uttryck",
-    "lyhytNimi" : "",
+    "nimi" : "Konst och kreativt uttryck",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -236,12 +220,11 @@
   "koodiUri" : "ammatillisenoppiaineet_vvvk",
   "koodiArvo" : "VVVK",
   "metadata" : [ {
-    "nimi" : "viestintä ja vuorovaikutus vieraalla kielellä",
+    "nimi" : "Viestintä ja vuorovaikutus vieraalla kielellä",
     "lyhytNimi" : "viestintä ja vuorovaikutus vieraalla kielellä",
     "kieli" : "FI"
   }, {
-    "nimi" : "kommunikation och interaktion på ett främmande språk",
-    "lyhytNimi" : "",
+    "nimi" : "Kommunikation och interaktion på ett främmande språk",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -253,8 +236,7 @@
     "lyhytNimi" : "Yhteiskuntataidot",
     "kieli" : "FI"
   }, {
-    "nimi" : "samhällsfärdighet",
-    "lyhytNimi" : "",
+    "nimi" : "Samhällsfärdighet",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -266,8 +248,7 @@
     "lyhytNimi" : "Ympäristöosaaminen",
     "kieli" : "FI"
   }, {
-    "nimi" : "miljökunnande",
-    "lyhytNimi" : "",
+    "nimi" : "Miljökunnande",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -275,12 +256,11 @@
   "koodiUri" : "ammatillisenoppiaineet_ytkk",
   "koodiArvo" : "YTKK",
   "metadata" : [ {
-    "nimi" : "kestävän kehityksen edistäminen",
+    "nimi" : "Kestävän kehityksen edistäminen",
     "lyhytNimi" : "kestävän kehityksen edistäminen",
     "kieli" : "FI"
   }, {
-    "nimi" : "främjande av hållbar utveckling",
-    "lyhytNimi" : "",
+    "nimi" : "Främjande av hållbar utveckling",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -288,12 +268,11 @@
   "koodiUri" : "ammatillisenoppiaineet_ytou",
   "koodiArvo" : "YTOU",
   "metadata" : [ {
-    "nimi" : "opiskelu- ja urasuunnitteluvalmiudet",
+    "nimi" : "Opiskelu- ja urasuunnitteluvalmiudet",
     "lyhytNimi" : "opiskelu- ja urasuunnitteluvalmiudet",
     "kieli" : "FI"
   }, {
-    "nimi" : "färdigheter i studie- och karriärplanering",
-    "lyhytNimi" : "",
+    "nimi" : "Färdigheter i studie- och karriärplanering",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -301,12 +280,11 @@
   "koodiUri" : "ammatillisenoppiaineet_ytth",
   "koodiArvo" : "YTTH",
   "metadata" : [ {
-    "nimi" : "työkyvyn ja hyvinvoinnin ylläpitäminen",
+    "nimi" : "Työkyvyn ja hyvinvoinnin ylläpitäminen",
     "lyhytNimi" : "työkyvyn ja hyvinvoinnin ylläpitäminen",
     "kieli" : "FI"
   }, {
-    "nimi" : "upprätthållande av arbetsförmågan och välbefinnandet",
-    "lyhytNimi" : "",
+    "nimi" : "Upprätthållande av arbetsförmågan och välbefinnandet",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -314,12 +292,11 @@
   "koodiUri" : "ammatillisenoppiaineet_yttt",
   "koodiArvo" : "YTTT",
   "metadata" : [ {
-    "nimi" : "työelämässä toimiminen",
+    "nimi" : "Työelämässä toimiminen",
     "lyhytNimi" : "työelämässä toimiminen",
     "kieli" : "FI"
   }, {
-    "nimi" : "att verka i arbetslivet",
-    "lyhytNimi" : "",
+    "nimi" : "Att verka i arbetslivet",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -327,12 +304,11 @@
   "koodiUri" : "ammatillisenoppiaineet_ytyk",
   "koodiArvo" : "YTYK",
   "metadata" : [ {
-    "nimi" : "yhteiskunnassa ja kansalaisena toimiminen",
+    "nimi" : "Yhteiskunnassa ja kansalaisena toimiminen",
     "lyhytNimi" : "yhteiskunnassa ja kansalaisena toimiminen",
     "kieli" : "FI"
   }, {
-    "nimi" : "att verka i samhället och som medborgare",
-    "lyhytNimi" : "",
+    "nimi" : "Att verka i samhället och som medborgare",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -340,12 +316,11 @@
   "koodiUri" : "ammatillisenoppiaineet_ytyy",
   "koodiArvo" : "YTYY",
   "metadata" : [ {
-    "nimi" : "yrittäjyys ja yrittäjämäinen toiminta",
+    "nimi" : "Yrittäjyys ja yrittäjämäinen toiminta",
     "lyhytNimi" : "yrittäjyys ja yrittäjämäinen toiminta",
     "kieli" : "FI"
   }, {
-    "nimi" : "företagsamhet och företagarinriktad verksamhet",
-    "lyhytNimi" : "",
+    "nimi" : "Företagsamhet och företagarinriktad verksamhet",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -357,8 +332,7 @@
     "lyhytNimi" : "Yrittäjyys ja yritystoiminta",
     "kieli" : "FI"
   }, {
-    "nimi" : "företagsamhet och företagsverksamhet",
-    "lyhytNimi" : "",
+    "nimi" : "Företagsamhet och företagsverksamhet",
     "kieli" : "SV"
   } ],
   "versio" : 1
