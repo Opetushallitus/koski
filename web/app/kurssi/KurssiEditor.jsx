@@ -4,7 +4,12 @@ import {ArvosanaEditor} from '../suoritus/ArvosanaEditor'
 import {pushRemoval} from '../editor/EditorModel'
 import {buildClassNames} from '../components/classnames'
 import {KurssiPopup} from './KurssiPopup'
-import {isLukionKurssi, isPaikallinen, isPreIBKurssi} from '../suoritus/Koulutusmoduuli'
+import {
+  isLukionKurssi,
+  isLukioonValmistavanKoulutuksenKurssi,
+  isPaikallinen,
+  isPreIBKurssi
+} from '../suoritus/Koulutusmoduuli'
 import {FootnoteHint} from '../components/footnote'
 
 export class KurssiEditor extends React.Component {
@@ -40,7 +45,11 @@ export class KurssiEditor extends React.Component {
           edit && <a className="remove-value" onClick={() => pushRemoval(kurssi)}/>
         }
         {
-          (isLukionKurssi(koulutusmoduuliModel) || isPreIBKurssi(koulutusmoduuliModel)) &&
+          (
+            isLukionKurssi(koulutusmoduuliModel) ||
+            isPreIBKurssi(koulutusmoduuliModel) ||
+            isLukioonValmistavanKoulutuksenKurssi(koulutusmoduuliModel)
+          ) &&
           isPaikallinen(koulutusmoduuliModel) &&
           <FootnoteHint title={'Paikallinen kurssi'} />
         }
