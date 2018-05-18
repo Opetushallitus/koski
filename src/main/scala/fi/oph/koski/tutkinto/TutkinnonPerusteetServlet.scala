@@ -5,9 +5,12 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{KoskiUserLanguage, Unauthenticated}
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.schema.Koodistokoodiviite
-import fi.oph.koski.servlet.{ApiServlet, Cached24Hours}
+import fi.oph.koski.servlet.{ApiServlet, Cached}
+import scala.concurrent.duration._
 
-class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) extends ApiServlet with Unauthenticated with Cached24Hours {
+import scala.concurrent.duration.Duration
+
+class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) extends ApiServlet with Unauthenticated with Cached {
   get("/oppilaitos/:oppilaitosId") {
    renderEither[List[TutkintoPeruste]]((params.get("query"), params.get("oppilaitosId")) match {
      case (Some(query), Some(oppilaitosId)) if (query.length >= 3) => Right(application.tutkintoRepository.findTutkinnot(oppilaitosId, query))
@@ -168,6 +171,8 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
     }
 
   private lazy val yhteisetTutkinnonOsat: Option[Koodistokoodiviite] = application.koodistoViitePalvelu.validate(Koodistokoodiviite("2", "ammatillisentutkinnonosanryhma"))
+
+  override def cacheDuration: Duration = 1 hours
 }
 
 case class LisättävätTutkinnonOsat(osat: List[Koodistokoodiviite], osaToisestaTutkinnosta: Boolean, paikallinenOsa: Boolean)

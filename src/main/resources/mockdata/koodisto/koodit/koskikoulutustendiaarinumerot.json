@@ -176,10 +176,16 @@
   "koodiArvo" : "3/011/2004",
   "metadata" : [ {
     "nimi" : "Perusopetuksen lisäopetuksen opetussuunitelman perusteet 2004",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1,
-  "withinCodeElements" : [ ]
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koulutustyyppi_6",
+    "codeElementVersion" : 2,
+    "passive" : false
+  } ]
 }, {
   "koodiUri" : "koskikoulutustendiaarinumerot_30112015",
   "koodiArvo" : "3/011/2015",
