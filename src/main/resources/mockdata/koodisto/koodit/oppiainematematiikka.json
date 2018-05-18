@@ -4,6 +4,9 @@
   "metadata" : [ {
     "nimi" : " Matematiikka, pitkä oppimäärä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Matematik, lång lärokurs",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

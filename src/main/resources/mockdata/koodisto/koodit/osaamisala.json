@@ -6962,6 +6962,10 @@
     "nimi" : "Audiovisuaalisen viestinnän osaamisala",
     "lyhytNimi" : "Audiovisuaalisen viestinnän osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för audiovisuell kommunikation",
+    "lyhytNimi" : "Kompetensområdet för audiovisuell kommunikation",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -6971,6 +6975,10 @@
     "nimi" : "Painoviestinnän osaamisala",
     "lyhytNimi" : "Painoviestinnän osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för grafisk kommunikation",
+    "lyhytNimi" : "Kompetensområdet för grafisk kommunikation",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -6980,6 +6988,10 @@
     "nimi" : "Palvelukuljetusten osaamisala",
     "lyhytNimi" : "Palvelukuljetusten osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för servicetransporter",
+    "lyhytNimi" : "Kompetensområdet för servicetransporter",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -6989,6 +7001,10 @@
     "nimi" : "Tavarakuljetusten osaamisala",
     "lyhytNimi" : "Tavarakuljetusten osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för varutransporter",
+    "lyhytNimi" : "Kompetensområdet för varutransporter",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -6998,6 +7014,10 @@
     "nimi" : "Metsäteollisuuden kuljetusten osaamisala",
     "lyhytNimi" : "Metsäteollisuuden kuljetusten osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för skogsindustrins transporter",
+    "lyhytNimi" : "Kompetensområdet för skogsindustrins transporter",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -7007,6 +7027,10 @@
     "nimi" : "Henkilökuljetusten osaamisala",
     "lyhytNimi" : "Henkilökuljetusten osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för persontransporter",
+    "lyhytNimi" : "Kompetensområdet för persontransporter",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -7016,6 +7040,10 @@
     "nimi" : "Kuljetusalan työnjohdon osaamisala",
     "lyhytNimi" : "Kuljetusalan työnjohdon osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för arbetsledning inom transportbranschen",
+    "lyhytNimi" : "Kompetensområdet för arbetsledning inom transportbranschen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -8142,6 +8170,10 @@
     "nimi" : "Hevostallin toiminnan johtamisen osaamisala",
     "lyhytNimi" : "Hevostallin toiminnan johtamisen osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för ledning av verksamheten vid häststall",
+    "lyhytNimi" : "Kompetensområdet för ledning av verksamheten vid häststall",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -8151,6 +8183,10 @@
     "nimi" : "Hevosten kengityksen asiantuntijana toimimisen osaamisala",
     "lyhytNimi" : "Hevosten kengityksen asiantuntijana toimimisen osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för expert inom hovslageri",
+    "lyhytNimi" : "Kompetensområdet för expert inom hovslageri",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -8160,6 +8196,10 @@
     "nimi" : "Hevosurheilun johtamisen osaamisala",
     "lyhytNimi" : "Hevosurheilun johtamisen osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för ledning inom hästsporten",
+    "lyhytNimi" : "Kompetensområdet för ledning inom hästsporten",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -8169,6 +8209,10 @@
     "nimi" : "Ratsastuksenopettamisen osaamisala",
     "lyhytNimi" : "Ratsastuksenopettamisen osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för ridundervisning",
+    "lyhytNimi" : "Kompetensområdet för ridundervisning",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -8286,6 +8330,10 @@
     "nimi" : "Audiovisuaalisen viestinnän osaamisala",
     "lyhytNimi" : "Audiovisuaalisen viestinnän osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för audiovisuell kommunikation",
+    "lyhytNimi" : "Kompetensområdet för audiovisuell kommunikation",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -8295,6 +8343,10 @@
     "nimi" : "Painoviestinnän osaamisala",
     "lyhytNimi" : "Painoviestinnän osaamisala",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kompetensområdet för grafisk kommunikation",
+    "lyhytNimi" : "Kompetensområdet för grafisk kommunikation",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {

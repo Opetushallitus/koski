@@ -1376,6 +1376,10 @@
     "nimi" : "Grundexamen inom mediebranschen och visuell framställning",
     "lyhytNimi" : "Grundexamen inom mediebranschen och visuell framställning",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Vocational qualification in Media and Visual Expression",
+    "lyhytNimi" : "Vocational qualification in Media and Visual Expression",
+    "kieli" : "EN"
   } ],
   "versio" : 3
 }, {
@@ -2201,6 +2205,10 @@
     "nimi" : "Yrkesexamen i musikproduktion",
     "lyhytNimi" : "Yrkesexamen i musikproduktion",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Further vocational qualification for Music Producers",
+    "lyhytNimi" : "Further vocational qualification for Music Producers",
+    "kieli" : "EN"
   } ],
   "versio" : 9
 }, {
@@ -3880,6 +3888,10 @@
     "nimi" : "Yrkesexamen i servicelogistik",
     "lyhytNimi" : "Yrkesexamen i servicelogistik",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Further vocational qualification in Service Logistics",
+    "lyhytNimi" : "Further vocational qualification in Service Logistics",
+    "kieli" : "EN"
   } ],
   "versio" : 4
 }, {
@@ -9258,6 +9270,10 @@
     "nimi" : "Yrkesexamen inom processindustrin",
     "lyhytNimi" : "",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Further vocational qualification in the Process Industry",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 4
 }, {
@@ -15552,8 +15568,8 @@
     "lyhytNimi" : "Grundexamen i turism",
     "kieli" : "SV"
   }, {
-    "nimi" : "Tourism Industry, VQ",
-    "lyhytNimi" : "Tourism Industry, Vocational Qualification",
+    "nimi" : "Vocational qualification in the Tourism Industry",
+    "lyhytNimi" : "Vocational qualification in the Tourism Industry",
     "kieli" : "EN"
   } ],
   "versio" : 9
@@ -17469,6 +17485,10 @@
     "nimi" : "Yrkesexamen inom rengörings- och fastighetsservicebranschen",
     "lyhytNimi" : "Yrkesexamen inom rengörings- och fastighetsservicebranschen",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Further vocational qualification in Cleaning and Property Services",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 4
 }, {

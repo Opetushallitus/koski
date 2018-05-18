@@ -4,6 +4,9 @@
   "metadata" : [ {
     "nimi" : "Mitä elämä on?",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vad är liv?",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -17,6 +20,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Työelämässä toimiminen ja muita muodollisia tilanteita",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Kommunikation i arbetslivet och i andra formella situationer",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -34,6 +40,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Kommunikation i servicesituationer och med myndigheter, aktivt medborgarskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -51,6 +60,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Jag och min miljö",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -68,6 +80,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Aktuella företeelser",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -81,6 +96,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuurikohtaamisia",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kulturmöten",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -98,6 +116,9 @@
   "metadata" : [ {
     "nimi" : "Kieli maailmassa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språket i världen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -115,6 +136,9 @@
   "metadata" : [ {
     "nimi" : "Liikkuvuus ja kansainvälisyys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Rörlighet och internationella kontakter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -132,6 +156,9 @@
   "metadata" : [ {
     "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Nycklar till livslångt språklärande",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -149,6 +176,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Työelämässä toimiminen ja muita muodollisia tilanteita",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Kommunikation i arbetslivet och i andra formella situationer",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -166,6 +196,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Kommunikation i servicesituationer och med myndigheter, aktivt medborgarskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -183,6 +216,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Jag och min miljö",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -200,6 +236,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Aktuella företeelser",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -217,6 +256,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuurikohtaamisia",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kulturmöten",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -234,6 +276,9 @@
   "metadata" : [ {
     "nimi" : "Globaalienglanti",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Global engelska",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -251,6 +296,9 @@
   "metadata" : [ {
     "nimi" : "Liikkuvuus ja kansainvälisyys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Rörlighet och internationella kontakter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -268,6 +316,9 @@
   "metadata" : [ {
     "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Nycklar till livslångt språklärande",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -285,6 +336,9 @@
   "metadata" : [ {
     "nimi" : "Katsomukset ja ihmisoikeudet",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Livsåskådningar och mänskliga rättigheter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -298,6 +352,9 @@
   "metadata" : [ {
     "nimi" : "Fysiikka omassa elämässä ja elinympäristössä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fysik i det egna livet och livsmiljön",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -311,6 +368,9 @@
   "metadata" : [ {
     "nimi" : "Muuttuva maapallo ja kestävä tulevaisuus",
     "kieli" : "FI"
+  }, {
+    "nimi" : "En föränderlig värld och en hållbar framtid",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -324,6 +384,9 @@
   "metadata" : [ {
     "nimi" : "Suomen historian käännekohdat",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vändpunkter i Finlands historia",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -337,6 +400,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Työelämässä toimiminen ja muita muodollisia tilanteita",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Kommunikation i arbetslivet och i andra formella situationer",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -354,6 +420,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Kommunikation i servicesituationer och med myndigheter, aktivt medborgarskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -371,6 +440,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Jag och min miljö",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -388,6 +460,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Aktuella företeelser",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -405,6 +480,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuurikohtaamisia",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kulturmöten",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -422,6 +500,9 @@
   "metadata" : [ {
     "nimi" : "Kieli maailmassa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språket i världen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -439,6 +520,9 @@
   "metadata" : [ {
     "nimi" : "Liikkuvuus ja kansainvälisyys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Rörlighet och internationella kontakter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -456,6 +540,9 @@
   "metadata" : [ {
     "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Nycklar till livslångt språklärande",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -473,6 +560,9 @@
   "metadata" : [ {
     "nimi" : "Kemia omassa elämässä ja elinympäristössä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kemi i det egna livet och livsmiljön",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -486,6 +576,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Työelämässä toimiminen ja muita muodollisia tilanteita",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Kommunikation i arbetslivet och i andra formella situationer",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -503,6 +596,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Kommunikation i servicesituationer och med myndigheter, aktivt medborgarskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -520,6 +616,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Jag och min miljö",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -537,6 +636,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Aktuella företeelser",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -554,6 +656,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuurikohtaamisia",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kulturmöten",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -571,6 +676,9 @@
   "metadata" : [ {
     "nimi" : "Kieli maailmassa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språket i världen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -588,6 +696,9 @@
   "metadata" : [ {
     "nimi" : "Liikkuvuus ja kansainvälisyys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Rörlighet och internationella kontakter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -605,6 +716,9 @@
   "metadata" : [ {
     "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Nycklar till livslångt språklärande",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -622,6 +736,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Työelämässä toimiminen ja muita muodollisia tilanteita",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Kommunikation i arbetslivet och i andra formella situationer",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -639,6 +756,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Kommunikation i servicesituationer och med myndigheter, aktivt medborgarskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -656,6 +776,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Jag och min miljö",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -673,6 +796,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Aktuella företeelser",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -690,6 +816,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuurikohtaamisia",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kulturmöten",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -707,6 +836,9 @@
   "metadata" : [ {
     "nimi" : "Kieli maailmassa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språket i världen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -724,6 +856,9 @@
   "metadata" : [ {
     "nimi" : "Liikkuvuus ja kansainvälisyys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Rörlighet och internationella kontakter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -741,6 +876,9 @@
   "metadata" : [ {
     "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Nycklar till livslångt språklärande",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -758,6 +896,9 @@
   "metadata" : [ {
     "nimi" : "Luvut ja laskutoimitukset I",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Tal och räkneoperationer I",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -771,6 +912,9 @@
   "metadata" : [ {
     "nimi" : "Luvut ja laskutoimitukset II",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Tal och räkneoperationer II",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -784,6 +928,9 @@
   "metadata" : [ {
     "nimi" : "Lausekkeet",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Uttryck",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -797,6 +944,9 @@
   "metadata" : [ {
     "nimi" : "Yhtälöt",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Ekvationer",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -810,6 +960,9 @@
   "metadata" : [ {
     "nimi" : "Geometria",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Geometri",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -823,6 +976,9 @@
   "metadata" : [ {
     "nimi" : "Prosentit",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Procent",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -836,6 +992,9 @@
   "metadata" : [ {
     "nimi" : "Funktiot ja tilastot",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Funktioner och statistik",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -849,6 +1008,9 @@
   "metadata" : [ {
     "nimi" : "Geometria ja trigonometria",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Geometri och trigonometri",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -862,6 +1024,9 @@
   "metadata" : [ {
     "nimi" : "Jatko-opinnot ja ammatinvalinta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fortsatta studier och arbetslivet",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -875,6 +1040,9 @@
   "metadata" : [ {
     "nimi" : "Työelämäosaaminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Arbetslivskompetens",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -888,6 +1056,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Työelämässä toimiminen ja muita muodollisia tilanteita",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Kommunikation i arbetslivet och i andra formella situationer",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -905,6 +1076,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Kommunikation i servicesituationer och med myndigheter, aktivt medborgarskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -922,6 +1096,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Jag och min miljö",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -939,6 +1116,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Aktuella företeelser",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -956,6 +1136,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuurikohtaamisia",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kulturmöten",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -973,6 +1156,9 @@
   "metadata" : [ {
     "nimi" : "Kieli maailmassa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språket i världen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -990,6 +1176,9 @@
   "metadata" : [ {
     "nimi" : "Liikkuvuus ja kansainvälisyys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Rörlighet och internationella kontakter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1007,6 +1196,9 @@
   "metadata" : [ {
     "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Nycklar till livslångt språklärande",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1024,6 +1216,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Työelämässä toimiminen ja muita muodollisia tilanteita",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Kommunikation i arbetslivet och i andra formella situationer",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1041,6 +1236,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Kommunikation i servicesituationer och med myndigheter, aktivt medborgarskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1058,6 +1256,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Jag och min miljö",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1075,6 +1276,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Aktuella företeelser",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1092,6 +1296,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuurikohtaamisia",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kulturmöten",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1109,6 +1316,9 @@
   "metadata" : [ {
     "nimi" : "Kieli maailmassa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språket i världen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1126,6 +1336,9 @@
   "metadata" : [ {
     "nimi" : "Liikkuvuus ja kansainvälisyys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Rörlighet och internationella kontakter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1143,6 +1356,9 @@
   "metadata" : [ {
     "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Nycklar till livslångt språklärande",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1160,6 +1376,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Lähtökohtia ruotsin opiskelulle",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Utgångspunkter för studier i svenska",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1177,6 +1396,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Grundläggande kommunikation i sociala situationer i vardagen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1194,6 +1416,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Kommunikation vid uträttande av ärenden",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1211,6 +1436,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Selviytyminen muodollisemmista tilanteista",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Kommunikation i mera formella situationer",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1228,6 +1456,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Palvelu- ja viranomaistilanteet",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Kommunikation i servicesituationer och med myndigheter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1245,6 +1476,9 @@
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Ajankohtaiset ilmiöt",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Aktuella företeelser",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1262,6 +1496,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Miksi Suomessa puhutaan ruotsia?",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Fakta om Finlands tvåspråkighet",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1279,6 +1516,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Avaimet elinikäiseen kieltenopiskeluun",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Nycklar till livslångt språklärande",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1296,6 +1536,9 @@
   "metadata" : [ {
     "nimi" : "Opiskelutaitojen vahvistaminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Utveckling av studiefärdigheterna",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1309,6 +1552,9 @@
   "metadata" : [ {
     "nimi" : "Ajankohtaiset ilmiöt Suomessa ja maailmalla",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Aktuella fenomen i Finland och i världen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1322,6 +1568,9 @@
   "metadata" : [ {
     "nimi" : "Luonnontieteen tekstit tutummiksi",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Analys av naturvetenskapliga texter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1335,6 +1584,9 @@
   "metadata" : [ {
     "nimi" : "Yhteiskunnallisten aineiden tekstit tutummiksi",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Analys av samhällsvetenskapliga texter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1348,6 +1600,9 @@
   "metadata" : [ {
     "nimi" : "Median tekstejä ja kuvia",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Medietexter och mediebilder",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1361,6 +1616,9 @@
   "metadata" : [ {
     "nimi" : "Tiedonhankintataitojen syventäminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Utveckling av färdigheterna att söka information ",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1374,6 +1632,9 @@
   "metadata" : [ {
     "nimi" : "Uutistekstit",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Nyhetstexter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1387,6 +1648,9 @@
   "metadata" : [ {
     "nimi" : "Mielipiteen ilmaiseminen ja perusteleminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att uttrycka och motivera sin åsikt",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1400,6 +1664,9 @@
   "metadata" : [ {
     "nimi" : "Kaunokirjalliset tekstit tutuiksi",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Analys av skönlitterära texter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1413,6 +1680,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuurinen moninaisuus - moninainen kulttuuri",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kulturell mångfald – mångfacetterad kultur",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1426,6 +1696,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Työelämässä toimiminen ja muita muodollisia tilanteita",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Kommunikation i arbetslivet och i andra formella situationer",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1443,6 +1716,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Kommunikation i servicesituationer och med myndigheter, aktivt medborgarskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1460,6 +1736,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Jag och min miljö",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1477,6 +1756,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Aktuella företeelser",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1494,6 +1776,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuurikohtaamisia",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kulturmöten",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1511,6 +1796,9 @@
   "metadata" : [ {
     "nimi" : "Kieli maailmassa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språket i världen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1528,6 +1816,9 @@
   "metadata" : [ {
     "nimi" : "Liikkuvuus ja kansainvälisyys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Rörlighet och internationella kontakter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1545,6 +1836,9 @@
   "metadata" : [ {
     "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Nycklar till livslångt språklärande",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1562,6 +1856,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Työelämässä toimiminen ja muita muodollisia tilanteita",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Kommunikation i arbetslivet och i andra formella situationer",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1579,6 +1876,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Kommunikation i servicesituationer och med myndigheter, aktivt medborgarskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1596,6 +1896,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Jag och min miljö",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1613,6 +1916,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Aktuella företeelser",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1630,6 +1936,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuurikohtaamisia",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kulturmöten",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1647,6 +1956,9 @@
   "metadata" : [ {
     "nimi" : "Kieli maailmassa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språket i världen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1664,6 +1976,9 @@
   "metadata" : [ {
     "nimi" : "Liikkuvuus ja kansainvälisyys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Rörlighet och internationella kontakter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1681,6 +1996,9 @@
   "metadata" : [ {
     "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Nycklar till livslångt språklärande",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1698,6 +2016,9 @@
   "metadata" : [ {
     "nimi" : "Terve elämä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Ett sunt liv",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1711,6 +2032,9 @@
   "metadata" : [ {
     "nimi" : "Uskonnot maailmassa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religionerna i världen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1724,6 +2048,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Työelämässä toimiminen ja muita muodollisia tilanteita",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Kommunikation i arbetslivet och i andra formella situationer",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1741,6 +2068,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Kommunikation i servicesituationer och med myndigheter, aktivt medborgarskap",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1758,6 +2088,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Jag och min miljö",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1775,6 +2108,9 @@
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Aktuella företeelser",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1792,6 +2128,9 @@
   "metadata" : [ {
     "nimi" : "Kulttuurikohtaamisia",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kulturmöten",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1809,6 +2148,9 @@
   "metadata" : [ {
     "nimi" : "Kieli maailmassa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språket i världen",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1826,6 +2168,9 @@
   "metadata" : [ {
     "nimi" : "Liikkuvuus ja kansainvälisyys",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Rörlighet och internationella kontakter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1843,6 +2188,9 @@
   "metadata" : [ {
     "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Nycklar till livslångt språklärande",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1860,6 +2208,9 @@
   "metadata" : [ {
     "nimi" : "Yhteiskuntajärjestelmä sekä julkiset palvelut",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samhällssystemet och offentliga tjänster",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1873,6 +2224,9 @@
   "metadata" : [ {
     "nimi" : "Työelämän tuntemus ja oma talous",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kunskap om arbetslivet, egen ekonom",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1886,6 +2240,9 @@
   "metadata" : [ {
     "nimi" : "Suomen kielen ja kirjallisuuden perusteet",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i finska och litteratur",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1899,6 +2256,9 @@
   "metadata" : [ {
     "nimi" : "Nykykulttuurin ilmiöitä ja kirjallisuutta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samtidskulturella fenomen och modern litteratur",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1912,6 +2272,9 @@
   "metadata" : [ {
     "nimi" : "Monimuotoiset tekstit",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Olika slag av texter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1925,6 +2288,9 @@
   "metadata" : [ {
     "nimi" : "Tekstien tuottaminen ja tulkitseminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att tolka och producera texter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1938,6 +2304,9 @@
   "metadata" : [ {
     "nimi" : "Kieli ja kulttuuri",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språk och kultur",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1951,6 +2320,9 @@
   "metadata" : [ {
     "nimi" : "Puhe- ja vuorovaikutustaidot",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Muntliga och kommunikativa färdigheter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1964,6 +2336,9 @@
   "metadata" : [ {
     "nimi" : "Median maailma",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Mediernas värld",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1977,6 +2352,9 @@
   "metadata" : [ {
     "nimi" : "Kauno- ja tietokirjallisuuden lukeminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att läsa skön- och facklitteratur",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1990,6 +2368,9 @@
   "metadata" : [ {
     "nimi" : "Tekstien tulkinta",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att tolka texter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2003,6 +2384,9 @@
   "metadata" : [ {
     "nimi" : "Tekstien tuottaminen",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att producera texter",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {

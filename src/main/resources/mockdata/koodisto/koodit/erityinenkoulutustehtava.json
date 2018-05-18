@@ -40,6 +40,9 @@
   "metadata" : [ {
     "nimi" : "Jokin muu erityinen koulutustehtävä",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Någon annan särskild utbildningsuppgift",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -61,6 +64,9 @@
   "metadata" : [ {
     "nimi" : "Erityisenä koulutustehtävänä taide",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Särskild utbildningsuppgift konst",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -70,6 +76,9 @@
   "metadata" : [ {
     "nimi" : "Erityisenä koulutustehtävänä urheilu",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Särskild utbildningsuppgift idrott",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

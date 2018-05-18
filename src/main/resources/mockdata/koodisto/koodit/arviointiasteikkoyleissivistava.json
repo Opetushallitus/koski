@@ -5,6 +5,9 @@
     "nimi" : "erinomainen",
     "lyhytNimi" : "10",
     "kieli" : "FI"
+  }, {
+    "nimi" : "utmärkt",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -15,6 +18,9 @@
     "nimi" : "hylätty",
     "lyhytNimi" : "4",
     "kieli" : "FI"
+  }, {
+    "nimi" : "underkänd",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -25,6 +31,9 @@
     "nimi" : "välttävä",
     "lyhytNimi" : "5",
     "kieli" : "FI"
+  }, {
+    "nimi" : "försvarlig",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -35,6 +44,9 @@
     "nimi" : "kohtalainen",
     "lyhytNimi" : "6",
     "kieli" : "FI"
+  }, {
+    "nimi" : "hjälplig",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -45,6 +57,9 @@
     "nimi" : "tyydyttävä",
     "lyhytNimi" : "7",
     "kieli" : "FI"
+  }, {
+    "nimi" : "nöjaktig",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -55,6 +70,9 @@
     "nimi" : "hyvä",
     "lyhytNimi" : "8",
     "kieli" : "FI"
+  }, {
+    "nimi" : "god",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -65,6 +83,9 @@
     "nimi" : "kiitettävä",
     "lyhytNimi" : "9",
     "kieli" : "FI"
+  }, {
+    "nimi" : "berömlig",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -74,12 +95,9 @@
   "metadata" : [ {
     "nimi" : "hylätty",
     "lyhytNimi" : "H",
-    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "underkänd",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -106,12 +124,9 @@
   "metadata" : [ {
     "nimi" : "hyväksytty",
     "lyhytNimi" : "S",
-    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "godkänd",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
