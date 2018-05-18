@@ -162,7 +162,7 @@ object KoskiSchemaDocumentHtml {
   private def descriptionHtml(p: ObjectWithMetadata[_]): List[Elem] = descriptionHtml(p.metadata)
   private def descriptionHtml(metadata: List[Metadata]): List[Elem] = (metadata flatMap {
     case Description(desc) => Some(<span class="description">{formatDescription(desc)}</span>)
-    case ReadOnly(desc) => Some(<div class="readonly">{desc}</div>)
+    case ReadOnly(desc) => Some(<div class="readonly">{formatDescription(desc)}</div>)
     case _ => None
   }) ++ onlyWhenHtml(metadata)
 
