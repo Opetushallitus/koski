@@ -4,13 +4,7 @@ import * as R from 'ramda'
 import {t} from '../../i18n/i18n'
 import {modelData, modelLookup, modelTitle} from '../../editor/EditorModel.js'
 import {FootnoteHint} from '../../components/footnote'
-import {
-  isKieliaine,
-  isLukionMatematiikka,
-  isLukionOppiaine,
-  isPaikallinen,
-  isPreIBOppiaine
-} from '../../suoritus/Koulutusmoduuli'
+import {isKieliaine, isLukionMatematiikka, isPaikallinen} from '../../suoritus/Koulutusmoduuli'
 import {Editor} from '../../editor/Editor'
 import {ArvosanaEditor} from '../../suoritus/ArvosanaEditor'
 import {PropertiesEditor} from '../../editor/PropertiesEditor'
@@ -35,9 +29,7 @@ const Nimi = ({oppiaine}) => {
           {edit && hasOptions ? `${nimi}, ` : nimiJaKieli}
         </span>
       ),
-        (isPreIBOppiaine(koulutusmoduuli) || isLukionOppiaine(koulutusmoduuli))
-        && isPaikallinen(koulutusmoduuli)
-        && <FootnoteHint key='footnote' title={'Paikallinen oppiaine'} />
+        isPaikallinen(koulutusmoduuli) && <FootnoteHint key='footnote' title={'Paikallinen oppiaine'} />
       ]
   )
 }

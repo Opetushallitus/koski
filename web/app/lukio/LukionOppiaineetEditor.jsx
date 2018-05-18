@@ -8,7 +8,7 @@ import {t} from '../i18n/i18n'
 import {flatMapArray} from '../util/util'
 import {hyväksytystiSuoritetutKurssit, laajuudet} from './lukio'
 import {laajuusNumberToString} from '../util/format.js'
-import {isLukionOppiaine, isPaikallinen, isPreIBOppiaine} from '../suoritus/Koulutusmoduuli'
+import {isPaikallinen} from '../suoritus/Koulutusmoduuli'
 import {FootnoteDescriptions} from '../components/footnote'
 
 export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaineenSuoritus, suoritusFilter, additionalEditableKoulutusmoduuliProperties}) => {
@@ -50,12 +50,7 @@ export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaine
 }
 
 export const paikallisiaLukionOppiaineitaTaiKursseja = oppiaineet =>
-  oppiaineet
-    .some(aine => {
-      const oppiaine = modelLookup(aine, 'koulutusmoduuli')
-      return (isLukionOppiaine(oppiaine) || isPreIBOppiaine(oppiaine)) &&
-        (isPaikallinen(oppiaine) || modelItems(aine, 'osasuoritukset').some(kurssi => isPaikallinen(modelLookup(kurssi, 'koulutusmoduuli'))))
-    })
+  oppiaineet.some(aine => isPaikallinen(modelLookup(aine, 'koulutusmoduuli')) || modelItems(aine, 'osasuoritukset').some(kurssi => isPaikallinen(modelLookup(kurssi, 'koulutusmoduuli'))))
 
 const arvioidutKurssit = oppiaineet => flatMapArray(oppiaineet, oppiaine => hyväksytystiSuoritetutKurssit(modelItems(oppiaine, 'osasuoritukset')))
 

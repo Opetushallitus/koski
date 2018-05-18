@@ -57,10 +57,11 @@ describe('Lukioon valmistava koulutus', function() {
         'Opinto-ohjaus\n' +
         'LVOP1\n' +
         'S 1 S\n' +
-        'Tietojenkäsittely\n' +
-        'ATK1\n' +
+        'Tietojenkäsittely *\n' +
+        'ATK1 *\n' +
         'S 1 S\n' +
         'Suoritettujen kurssien laajuus yhteensä: 7\n' +
+        '* = paikallinen kurssi tai oppiaine\n' +
         'Valinnaisena suoritetut lukiokurssit\n' +
         'Oppiaine Laajuus (kurssia) Arvosana (keskiarvo)\n' +
         'A1-kieli, englanti\n' +
