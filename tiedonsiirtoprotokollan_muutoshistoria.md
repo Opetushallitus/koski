@@ -1,3 +1,7 @@
+## 18.5.2018
+
+  - Lisätty tunnustettu-rakenne aikuisten perusopetuksen kursseihin
+
 ## 11.4.2018
 
   - Muutettu Valma-koulutusta niin, että yhteisen tutkinnon osan osa-alueen suoritukset voi/pitää siirtää suoraan päätason suorituksen alle
