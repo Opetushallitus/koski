@@ -25,7 +25,7 @@ trait HtmlNodes extends KoskiBaseServlet with PiwikNodes with LanguageSupport {
         {commonHead(responsive) ++ raamit.script ++ piwikTrackingScriptLoader(piwikHttpStatusCode)}
       </head>
       <body class={bodyClasses}>
-        <div data-inraamit={if (raamit != EiRaameja) "true" else ""} id="content"></div>
+        <div data-inraamit={if (raamit != EiRaameja) "true" else ""} id="content" class="koski-content"></div>
         <script id="localization">
           {Unparsed("window.koskiLocalizationMap="+JsonSerializer.writeWithRoot(localizations.localizations))}
         </script>
