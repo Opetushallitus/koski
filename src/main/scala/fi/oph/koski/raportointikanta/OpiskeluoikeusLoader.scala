@@ -2,7 +2,7 @@ package fi.oph.koski.raportointikanta
 
 import java.sql.{Date, Timestamp}
 
-import fi.oph.koski.db.OpiskeluoikeusRow
+import fi.oph.koski.db.{GlobalExecutionContext, OpiskeluoikeusRow}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryFilter, OpiskeluoikeusQueryService}
@@ -15,8 +15,10 @@ import rx.functions.{Func0, Func2}
 import rx.lang.scala.{Observable, Subscriber}
 import rx.observables.SyncOnSubscribe.createStateful
 
+import scala.util.Try
+
 object OpiskeluoikeusLoader extends Logging {
-  private val BatchSize = 1000
+  private val BatchSize = 250
 
   def loadOpiskeluoikeudet(opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService, filters: List[OpiskeluoikeusQueryFilter], systemUser: KoskiSession, raportointiDatabase: RaportointiDatabase): Observable[LoadResult] = {
     logger.info("Ladataan opiskeluoikeuksia...")
@@ -25,42 +27,63 @@ object OpiskeluoikeusLoader extends Logging {
     val result = processByPage[OpiskeluoikeusRow, LoadResult](
       page => opiskeluoikeusQueryRepository.opiskeluoikeusQuerySync(filters, Some(Ascending("id")), Some(PaginationSettings(page, BatchSize)))(systemUser).map(_._1),
       opiskeluoikeusRows => {
-        val rows = opiskeluoikeusRows.map(row => {
-          val oo = row.toOpiskeluoikeus
-          (buildROpiskeluoikeusRow(row.oppijaOid, row.aikaleima, oo), oo.suoritukset.map(s => buildRPäätasonSuoritusRow(row.oid, s)))
-        })
-        raportointiDatabase.loadOpiskeluoikeudet(rows.map(_._1))
-        raportointiDatabase.loadPäätasonSuoritukset(rows.map(_._2).flatten)
-        rows.map(r => LoadResult(r._1.opiskeluoikeusOid))
+        if (opiskeluoikeusRows.nonEmpty) {
+          val (errors, outputRows) = opiskeluoikeusRows.par.map(buildRow).seq.partition(_.isLeft)
+          raportointiDatabase.loadOpiskeluoikeudet(outputRows.map(_.right.get._1))
+          raportointiDatabase.loadPäätasonSuoritukset(outputRows.map(_.right.get._2).flatten)
+          errors.map(_.left.get) :+ LoadProgressResult(outputRows.size)
+        } else {
+          Seq(LoadCompleted())
+        }
       }
     )
     result.doOnEach(new Subscriber[LoadResult] {
+      val startTime = System.currentTimeMillis
       var count = 0
-      override def onNext(r: LoadResult) = { count += 1 }
+      var errors = 0
+      override def onNext(r: LoadResult) = r match {
+        case LoadErrorResult(_, _) => errors += 1
+        case LoadProgressResult(n) => count += n
+        case LoadCompleted(_) =>
+      }
       override def onError(e: Throwable) { logger.error(e)("Opiskeluoikeuksien lataus epäonnistui") }
-      override def onCompleted() { logger.info(s"Ladattiin $count opiskeluoikeutta") }
+      override def onCompleted() {
+        val elapsedSeconds = (System.currentTimeMillis - startTime) / 1000.0
+        val rate = (count + errors) / Math.max(1.0, elapsedSeconds)
+        logger.info(s"Ladattiin $count opiskeluoikeutta, $errors virhettä, ${(rate*60).round}/min")
+      }
     })
   }
 
   private def processByPage[A, B](loadRows: Int => Seq[A], processRows: Seq[A] => Seq[B]): Observable[B] = {
     import rx.lang.scala.JavaConverters._
-    def loadRowsInt(page: Int): (Seq[B], Int) = {
+    def loadRowsInt(page: Int): (Seq[B], Int, Boolean) = {
       val rows = loadRows(page)
-      (processRows(rows), page)
+      (processRows(rows), page, rows.isEmpty)
     }
-    createObservable(createStateful[(Seq[B], Int), Seq[B]](
-      (() => loadRowsInt(0)): Func0[_ <: (Seq[B], Int)],
+    createObservable(createStateful[(Seq[B], Int, Boolean), Seq[B]](
+      (() => loadRowsInt(0)): Func0[_ <: (Seq[B], Int, Boolean)],
       ((state, observer) => {
-        val (loadResults, page) = state
-        if (loadResults.isEmpty) {
+        val (loadResults, page, done) = state
+        observer.onNext(loadResults)
+        if (done) {
           observer.onCompleted()
-          (Nil, 0)
+          (Nil, 0, true)
         } else {
-          observer.onNext(loadResults)
           loadRowsInt(page + 1)
         }
-      }): Func2[_ >: (Seq[B], Int), _ >: Observer[_ >: Seq[B]], _ <: (Seq[B], Int)]
+      }): Func2[_ >: (Seq[B], Int, Boolean), _ >: Observer[_ >: Seq[B]], _ <: (Seq[B], Int, Boolean)]
     )).asScala.flatMap(Observable.from(_))
+  }
+
+  private def buildRow(inputRow: OpiskeluoikeusRow): Either[LoadErrorResult, Tuple2[ROpiskeluoikeusRow, Seq[RPäätasonSuoritusRow]]] = {
+    Try {
+      val oo = inputRow.toOpiskeluoikeus
+      (
+        buildROpiskeluoikeusRow(inputRow.oppijaOid, inputRow.aikaleima, oo),
+        oo.suoritukset.map(s => buildRPäätasonSuoritusRow(inputRow.oid, s))
+      )
+    }.toEither.left.map(t => LoadErrorResult(inputRow.oid, t.toString))
   }
 
   private def buildROpiskeluoikeusRow(_oppijaOid: String, _aikaleima: Timestamp, o: KoskeenTallennettavaOpiskeluoikeus) =
@@ -90,4 +113,7 @@ object OpiskeluoikeusLoader extends Logging {
     )
 }
 
-case class LoadResult(oid: String, error: Option[String] = None)
+sealed trait LoadResult
+case class LoadErrorResult(oid: String, error: String) extends LoadResult
+case class LoadProgressResult(count: Int) extends LoadResult
+case class LoadCompleted(done: Boolean = true) extends LoadResult
