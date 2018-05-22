@@ -236,7 +236,12 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
       throw new RuntimeException("None value not allowed for ClassSchema")
     }
     val objectContext = newContext(obj)
-    val properties: List[EditorProperty] = schema.properties.map(property => createModelProperty(obj, objectContext, property))
+    val sensitiveDataFilter = SensitiveDataFilter(context.user)
+
+    val properties: List[EditorProperty] = schema.properties
+      .filter(p => !sensitiveDataFilter.sensitiveHidden(p.metadata))
+      .map(property => createModelProperty(obj, objectContext, property))
+
     val objectTitle = obj match {
       case o: Localizable => Some(context.i(o))
       case _ => None
@@ -255,11 +260,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
 
   private def createModelProperty(obj: AnyRef, objectContext: ModelBuilderContext, property: Property): EditorProperty = {
     val value = schema.getPropertyValue(property, obj)
-    val propertyModel = if (SensitiveDataFilter(context.user).sensitiveHidden(property.metadata)) {
-      EditorModelBuilder.builder(property.schema).buildPrototype(Nil)
-    } else {
-      EditorModelBuilder.buildModel(value, property.schema, property.metadata)(objectContext)
-    }
+    val propertyModel = EditorModelBuilder.buildModel(value, property.schema, property.metadata)(objectContext)
 
     createModelProperty(property, propertyModel)
   }
