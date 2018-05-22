@@ -7,9 +7,11 @@ import scala.xml.Unparsed
 
 class IndexServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with OmaOpintopolkuSupport {
   before("/omattiedot") {
+    setLangCookieFromDomainIfNecessary
     sessionOrStatus match {
-      case Left(_) => redirectToFrontpage
-      case Right(_) =>
+      case Left(_) if shibbolethCookieFound => redirect("/user/shibbolethlogin")
+      case Left(_) => redirect(shibbolethUrl)
+      case _ =>
     }
   }
 
@@ -22,11 +24,7 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
   get("/") {
     if (application.features.shibboleth && !isAuthenticated) {
       setLangCookieFromDomainIfNecessary
-      if (shibbolethCookieFound) {
-        redirect("/user/shibbolethlogin")
-      } else {
-        landerHtml
-      }
+      landerHtml
     } else {
       val url = if (koskiSessionOption.exists(_.user.kansalainen)) {
         "/omattiedot"
