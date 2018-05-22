@@ -47,6 +47,7 @@ trait HtmlNodes extends KoskiBaseServlet with PiwikNodes with LanguageSupport {
     <link href="/koski/external_css/font-awesome.min.css" rel="stylesheet" type="text/css" /> ++
     <link rel="stylesheet" type="text/css" href="/koski/external_css/highlight-js.default.min.css"/> ++
     <link rel="stylesheet" type="text/css" href="/koski/css/codemirror/codemirror.css"/>
+    <link rel="stylesheet" type="text/css" href="/koski/css/koski-oppija-raamit.css"/>
 
 
   def htmlErrorObjectScript(status: HttpStatus): Elem =
