@@ -1,7 +1,6 @@
 package fi.oph.koski.servlet
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.koskiuser.KoskiUserLanguage
 import org.scalatra.ScalatraServlet
 
 import scala.xml.Unparsed
@@ -21,18 +20,20 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
   }
 
   get("/") {
-    def redirectUrl = koskiSessionOption.map { user =>
-      if (user.user.kansalainen) "/omattiedot"
-      else "/virkailija"
-    }.getOrElse("/virkailija")
-
     if (application.features.shibboleth && !isAuthenticated) {
-      if (langFromCookie.isEmpty) {
-        KoskiUserLanguage.setLanguageCookie(langFromDomain, response)
+      setLangCookieFromDomainIfNecessary
+      if (shibbolethCookieFound) {
+        redirect("/user/shibbolethlogin")
+      } else {
+        landerHtml
       }
-      landerHtml
     } else {
-      redirect(redirectUrl)
+      val url = if (koskiSessionOption.exists(_.user.kansalainen)) {
+        "/omattiedot"
+      } else {
+        "/virkailija"
+      }
+      redirect(url)
     }
   }
 
