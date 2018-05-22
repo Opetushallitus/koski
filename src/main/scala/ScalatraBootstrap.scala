@@ -10,6 +10,7 @@ import fi.oph.koski.history.KoskiHistoryServlet
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.localization.LocalizationServlet
 import fi.oph.koski.log.Logging
+import fi.oph.koski.mydata.MyDataHtmlServlet
 import fi.oph.koski.omattiedot.OmatTiedotServlet
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusServlet, OpiskeluoikeusValidationServlet}
 import fi.oph.koski.oppija.OppijaServlet
@@ -28,7 +29,7 @@ import fi.oph.koski.tiedonsiirto.TiedonsiirtoServlet
 import fi.oph.koski.todistus.TodistusServlet
 import fi.oph.koski.tutkinto.TutkinnonPerusteetServlet
 import fi.oph.koski.util.Futures
-import fi.oph.koski.{EiSuorituksiaServlet, IndexServlet, LoginPageServlet, VirhesivuServlet, SuoritusjakoHtmlServlet}
+import fi.oph.koski.{EiSuorituksiaServlet, IndexServlet, LoginPageServlet, SuoritusjakoHtmlServlet, VirhesivuServlet}
 import javax.servlet.ServletContext
 import org.scalatra._
 
@@ -49,6 +50,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     mount("/dokumentaatio", new DocumentationServlet)
     mount("/eisuorituksia", new EiSuorituksiaServlet)
     mount("/opinnot", new SuoritusjakoHtmlServlet)
+    mount("/mydata", new MyDataHtmlServlet)
     mount("/virhesivu", new VirhesivuServlet)
     mount("/api/documentation", new DocumentationApiServlet)
     mount("/api/editor", new EditorServlet)
