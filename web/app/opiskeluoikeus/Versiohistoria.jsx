@@ -24,7 +24,7 @@ export default class Versiohistoria extends BaconComponent {
     }
     let selectedVersion = this.versionumero() || history.length
     return (
-      <div className={'versiohistoria'+(showHistory?' open':'')}>
+      opiskeluoikeusOid ? <div className={'versiohistoria'+(showHistory?' open':'')}>
         <a onClick={() => toggle()}><Text name="Versiohistoria"/></a>
         {showHistory && (
           <div className="modal">
@@ -41,7 +41,7 @@ export default class Versiohistoria extends BaconComponent {
             }</ol>
           </div>
         )}
-      </div>
+      </div> : null
     )
   }
   componentWillMount() {
