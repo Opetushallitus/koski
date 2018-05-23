@@ -12,6 +12,7 @@ object RaportointiDatabaseSchema {
     sqlu"CREATE INDEX ON r_opiskeluoikeus(oppija_oid)",
     sqlu"CREATE INDEX ON r_opiskeluoikeus(oppilaitos_oid)",
     sqlu"CREATE INDEX ON r_opiskeluoikeus(koulutusmuoto)",
+    sqlu"CREATE INDEX ON r_opiskeluoikeusjakso(opiskeluoikeus_oid)",
     sqlu"CREATE INDEX ON r_paatason_suoritus(opiskeluoikeus_oid)",
     sqlu"CREATE INDEX ON r_osasuoritus(paatason_suoritus_id)",
     sqlu"CREATE INDEX ON r_osasuoritus(opiskeluoikeus_oid)",
@@ -22,6 +23,7 @@ object RaportointiDatabaseSchema {
 
   val dropAllIfExists = DBIO.seq(
     sqlu"DROP TABLE IF EXISTS r_opiskeluoikeus",
+    sqlu"DROP TABLE IF EXISTS r_opiskeluoikeusjakso",
     sqlu"DROP TABLE IF EXISTS r_paatason_suoritus",
     sqlu"DROP TABLE IF EXISTS r_osasuoritus",
     sqlu"DROP TABLE IF EXISTS r_henkilo",
@@ -51,6 +53,16 @@ object RaportointiDatabaseSchema {
       oppilaitosOid, oppilaitosNimi, oppilaitosKotipaikka, oppilaitosnumero, koulutustoimijaOid, koulutustoimijaNimi,
       koulutusmuoto, alkamispäivä, päättymispäivä, viimeisinTila,
       lisätiedotHenkilöstökoulutus, lisätiedotKoulutusvienti) <> (ROpiskeluoikeusRow.tupled, ROpiskeluoikeusRow.unapply)
+  }
+
+  class ROpiskeluoikeusjaksoTable(tag: Tag) extends Table[ROpiskeluoikeusjaksoRow](tag, "r_opiskeluoikeusjakso") {
+    val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid")
+    val alku = column[Date]("alku")
+    val loppu = column[Option[Date]]("loppu")
+    val tila = column[String]("tila")
+    val opiskeluoikeusPäättynyt = column[Boolean]("opiskeluoikeus_paattynyt")
+    val opintojenRahoitus = column[Option[String]]("opintojen_rahoitus")
+    def * = (opiskeluoikeusOid, alku, loppu, tila, opiskeluoikeusPäättynyt, opintojenRahoitus) <> (ROpiskeluoikeusjaksoRow.tupled, ROpiskeluoikeusjaksoRow.unapply)
   }
 
   class RPäätasonSuoritusTable(tag: Tag) extends Table[RPäätasonSuoritusRow](tag, "r_paatason_suoritus") {
@@ -134,6 +146,15 @@ case class ROpiskeluoikeusRow(
   viimeisinTila: Option[String],
   lisätiedotHenkilöstökoulutus: Boolean,
   lisätiedotKoulutusvienti: Boolean
+)
+
+case class ROpiskeluoikeusjaksoRow(
+  opiskeluoikeusOid: String,
+  alku: Date,
+  loppu: Option[Date],
+  tila: String,
+  opiskeluoikeusPäättynyt: Boolean,
+  opintojenRahoitus: Option[String]
 )
 
 case class RPäätasonSuoritusRow(

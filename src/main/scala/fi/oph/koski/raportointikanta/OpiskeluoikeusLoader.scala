@@ -26,6 +26,7 @@ object OpiskeluoikeusLoader extends Logging {
   def loadOpiskeluoikeudet(opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService, filters: List[OpiskeluoikeusQueryFilter], systemUser: KoskiSession, raportointiDatabase: RaportointiDatabase): Observable[LoadResult] = {
     logger.info("Ladataan opiskeluoikeuksia...")
     raportointiDatabase.deleteOpiskeluoikeudet
+    raportointiDatabase.deleteOpiskeluoikeusjaksot
     raportointiDatabase.deletePäätasonSuoritukset
     raportointiDatabase.deleteOsasuoritukset
     val result = processByPage[OpiskeluoikeusRow, LoadResult](
@@ -34,8 +35,10 @@ object OpiskeluoikeusLoader extends Logging {
         if (opiskeluoikeusRows.nonEmpty) {
           val (errors, outputRows) = opiskeluoikeusRows.par.map(buildRow).seq.partition(_.isLeft)
           raportointiDatabase.loadOpiskeluoikeudet(outputRows.map(_.right.get._1))
-          val päätasonSuoritusRows = outputRows.flatMap(_.right.get._2)
-          val osasuoritusRows = outputRows.flatMap(_.right.get._3)
+          val jaksoRows = outputRows.flatMap(_.right.get._2)
+          val päätasonSuoritusRows = outputRows.flatMap(_.right.get._3)
+          val osasuoritusRows = outputRows.flatMap(_.right.get._4)
+          raportointiDatabase.loadOpiskeluoikeusJaksot(jaksoRows)
           raportointiDatabase.loadPäätasonSuoritukset(päätasonSuoritusRows)
           raportointiDatabase.loadOsasuoritukset(osasuoritusRows)
           errors.map(_.left.get) :+ LoadProgressResult(outputRows.size, päätasonSuoritusRows.size + osasuoritusRows.size)
@@ -87,12 +90,15 @@ object OpiskeluoikeusLoader extends Logging {
     )).asScala.flatMap(Observable.from(_))
   }
 
-  private def buildRow(inputRow: OpiskeluoikeusRow): Either[LoadErrorResult, Tuple3[ROpiskeluoikeusRow, Seq[RPäätasonSuoritusRow], Seq[ROsasuoritusRow]]] = {
+  private def buildRow(inputRow: OpiskeluoikeusRow): Either[LoadErrorResult, Tuple4[ROpiskeluoikeusRow, Seq[ROpiskeluoikeusjaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROsasuoritusRow]]] = {
     Try {
       val oo = inputRow.toOpiskeluoikeus
       val ooRow = buildROpiskeluoikeusRow(inputRow.oppijaOid, inputRow.aikaleima, oo)
+      val jaksot = oo.tila.opiskeluoikeusjaksot
+      val jaksotLift = jaksot.lift
+      val jaksoRows = jaksot.indices.map(i => buildROpiskeluoikeusjaksoRow(inputRow.oid, jaksot(i), jaksotLift(i + 1)))
       val suoritusRows = oo.suoritukset.map(ps => buildSuoritusRows(inputRow.oid, oo.getOppilaitos, ps))
-      (ooRow, suoritusRows.map(_._1), suoritusRows.flatMap(_._2))
+      (ooRow, jaksoRows, suoritusRows.map(_._1), suoritusRows.flatMap(_._2))
     }.toEither.left.map(t => LoadErrorResult(inputRow.oid, t.toString))
   }
 
@@ -119,6 +125,19 @@ object OpiskeluoikeusLoader extends Logging {
       lisätiedotKoulutusvienti = o.lisätiedot.collect {
         case l: AmmatillisenOpiskeluoikeudenLisätiedot => l.koulutusvienti
       }.getOrElse(false)
+    )
+
+  private def buildROpiskeluoikeusjaksoRow(_opiskeluoikeusOid: String, jakso: Opiskeluoikeusjakso, seuraavaJakso: Option[Opiskeluoikeusjakso]) =
+    ROpiskeluoikeusjaksoRow(
+      opiskeluoikeusOid = _opiskeluoikeusOid,
+      alku = Date.valueOf(jakso.alku),
+      loppu = seuraavaJakso.map(sj => Date.valueOf(sj.alku)),
+      tila = jakso.tila.koodiarvo,
+      opiskeluoikeusPäättynyt = jakso.opiskeluoikeusPäättynyt,
+      opintojenRahoitus = jakso match {
+        case k: KoskiOpiskeluoikeusjakso => None
+        case _ => None
+      }
     )
 
   private val suoritusId = new AtomicLong()

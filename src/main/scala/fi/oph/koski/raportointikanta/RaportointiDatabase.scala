@@ -17,6 +17,7 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
   val db: DB = KoskiDatabaseConfig(config, raportointi = true).toSlickDatabase
 
   private val ROpiskeluoikeudet = TableQuery[ROpiskeluoikeusTable]
+  private val ROpiskeluoikeusjaksot = TableQuery[ROpiskeluoikeusjaksoTable]
   private val RPäätasonSuoritukset = TableQuery[RPäätasonSuoritusTable]
   private val ROsasuoritukset = TableQuery[ROsasuoritusTable]
   private val RHenkilöt = TableQuery[RHenkilöTable]
@@ -27,6 +28,7 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
     runDbSync(DBIO.seq(
       RaportointiDatabaseSchema.dropAllIfExists,
       ROpiskeluoikeudet.schema.create,
+      ROpiskeluoikeusjaksot.schema.create,
       RPäätasonSuoritukset.schema.create,
       ROsasuoritukset.schema.create,
       RHenkilöt.schema.create,
@@ -42,6 +44,11 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
     runDbSync(ROpiskeluoikeudet ++= opiskeluoikeudet)
   def oppijaOidsFromOpiskeluoikeudet: Seq[String] =
     runDbSync(ROpiskeluoikeudet.map(_.oppijaOid).distinct.result)
+
+  def deleteOpiskeluoikeusjaksot: Unit =
+    runDbSync(ROpiskeluoikeusjaksot.delete)
+  def loadOpiskeluoikeusJaksot(jaksot: Seq[ROpiskeluoikeusjaksoRow]): Unit =
+    runDbSync(ROpiskeluoikeusjaksot ++= jaksot)
 
   def deletePäätasonSuoritukset: Unit =
     runDbSync(RPäätasonSuoritukset.delete)
