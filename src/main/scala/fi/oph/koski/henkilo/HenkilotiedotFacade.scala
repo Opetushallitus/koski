@@ -38,18 +38,13 @@ case class HenkilötiedotFacade(henkilöRepository: HenkilöRepository, kaikkiOp
 
   // Sisällyttää vain henkilöt, joilta löytyy vähintään yksi opiskeluoikeus koskesta, ytr:stä tai virrasta
   private def searchByHetu(hetu: String)(implicit user: KoskiSession): HenkilötiedotSearchResponse = {
-    val henkilöt = kaikkiOpiskeluoikeudet.filterOppijat(henkilöRepository.findHenkilötiedotByHetu(hetu))
     hetuValidator.validate(hetu) match {
       case Right(_) =>
+        val henkilöt = kaikkiOpiskeluoikeudet.filterOppijat(henkilöRepository.findHenkilötiedotByHetu(hetu))
         val canAddNew = henkilöt.isEmpty && user.hasAnyWriteAccess
         HenkilötiedotSearchResponse(henkilöt, canAddNew, hetu = Some(hetu))
       case Left(status) =>
-        henkilöt match {
-          case Nil =>
-            HenkilötiedotSearchResponse(henkilöt, error = status.errorString) // TODO: i18n for error messages here
-          case _ =>
-            HenkilötiedotSearchResponse(henkilöt)
-        }
+        HenkilötiedotSearchResponse(Nil, error = status.errorString)
     }
   }
 
