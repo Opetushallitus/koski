@@ -24,7 +24,7 @@ class MyDataRepository(val db: DB) extends Logging with DatabaseExecutionContext
     runDbSync(MyDataJako.filter(r => r.oppijaOid === oppijaOid && r.voimassaAsti >= Date.valueOf(LocalDate.now)).result)
   }
 
-  def create(asiakas: String, oppijaOid: String): LocalDate = {
+  def create(oppijaOid: String, asiakas: String): LocalDate = {
     val expirationDate = LocalDateTime.now.plusMonths(12).toLocalDate
 
     runDbSync(MyDataJako.insertOrUpdate(MyDataJakoRow(
