@@ -9,9 +9,9 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
   before("/omattiedot") {
     setLangCookieFromDomainIfNecessary
     sessionOrStatus match {
+      case Right(_) if shibbolethCookieFound =>
       case Left(_) if shibbolethCookieFound => redirect("/user/shibbolethlogin")
-      case Left(_) => redirect(shibbolethUrl)
-      case _ =>
+      case _ => redirect(shibbolethUrl)
     }
   }
 
