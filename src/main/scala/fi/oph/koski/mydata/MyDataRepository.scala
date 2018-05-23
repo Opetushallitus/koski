@@ -6,53 +6,46 @@ import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.Tables.{SuoritusJako, SuoritusjakoTable}
-import fi.oph.koski.db.{DatabaseExecutionContext, KoskiDatabaseMethods, SuoritusjakoRow}
+import fi.oph.koski.db.Tables.{MyDataJako, MyDataJakoTable}
+import fi.oph.koski.db.{DatabaseExecutionContext, KoskiDatabaseMethods, MyDataJakoRow}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
 
 class MyDataRepository(val db: DB) extends Logging with DatabaseExecutionContext with KoskiDatabaseMethods {
-  def get(secret: String): Either[HttpStatus, SuoritusjakoRow] =
-    runDbSync(SuoritusJako.filter(r => r.secret === secret && r.voimassaAsti >= Date.valueOf(LocalDate.now)).result.headOption)
+  def get(asiakas: String): Either[HttpStatus, MyDataJakoRow] =
+    runDbSync(MyDataJako.filter(r => r.asiakas === asiakas && r.voimassaAsti >= Date.valueOf(LocalDate.now)).result.headOption)
       .toRight(KoskiErrorCategory.notFound())
 
-  def getAll(oppijaOid: String): Seq[SuoritusjakoRow] = {
-    runDbSync(SuoritusJako.filter(r => r.oppijaOid === oppijaOid && r.voimassaAsti >= Date.valueOf(LocalDate.now)).result)
+  def getAll(oppijaOid: String): Seq[MyDataJakoRow] = {
+    runDbSync(MyDataJako.filter(r => r.oppijaOid === oppijaOid).result)
   }
 
-  def create(secret: String, oppijaOid: String, suoritusIds: List[SuoritusIdentifier]): Either[HttpStatus, LocalDate] = {
-    val expirationDate = LocalDateTime.now.plusMonths(6).toLocalDate
-    val maxSuoritusjakoCount = 100
-
-    val currentSuoritusjakoCount = runDbSync(SuoritusJako
-      .filter(r => r.oppijaOid === oppijaOid && r.voimassaAsti >= Date.valueOf(LocalDate.now)).length.result
-    )
-
-    if (currentSuoritusjakoCount < maxSuoritusjakoCount) {
-      runDbSync(SuoritusJako.insertOrUpdate(SuoritusjakoRow(
-        0,
-        secret,
-        oppijaOid,
-        JsonSerializer.serializeWithRoot(suoritusIds),
-        Date.valueOf(expirationDate),
-        now
-      )))
-
-      Right(expirationDate)
-    } else {
-      Left(KoskiErrorCategory.forbidden.liianMontaSuoritusjakoa())
-    }
+  def getAllValid(oppijaOid: String): Seq[MyDataJakoRow] = {
+    runDbSync(MyDataJako.filter(r => r.oppijaOid === oppijaOid && r.voimassaAsti >= Date.valueOf(LocalDate.now)).result)
   }
 
-  def delete(oppijaOid: String, secret: String): HttpStatus = {
-    val deleted = runDbSync(SuoritusJako.filter(suoritusjakoFilter(oppijaOid, secret)).delete)
+  def create(asiakas: String, oppijaOid: String): LocalDate = {
+    val expirationDate = LocalDateTime.now.plusMonths(12).toLocalDate
+
+    runDbSync(MyDataJako.insertOrUpdate(MyDataJakoRow(
+      0,
+      asiakas,
+      oppijaOid,
+      Date.valueOf(expirationDate),
+      now
+    )))
+
+    expirationDate
+  }
+
+  def delete(oppijaOid: String, asiakas: String): HttpStatus = {
+    val deleted = runDbSync(MyDataJako.filter(myDataJakoFilter(oppijaOid, asiakas)).delete)
     if (deleted == 0) KoskiErrorCategory.notFound() else HttpStatus.ok
   }
 
-  def update(oppijaOid: String, secret: String, expirationDate: LocalDate): HttpStatus = {
+  def update(oppijaOid: String, asiakas: String, expirationDate: LocalDate): HttpStatus = {
     val updated = runDbSync(
-      SuoritusJako.filter(suoritusjakoFilter(oppijaOid, secret))
+      MyDataJako.filter(myDataJakoFilter(oppijaOid, asiakas))
         .map(r => r.voimassaAsti)
         .update(Date.valueOf(expirationDate))
     )
@@ -61,8 +54,7 @@ class MyDataRepository(val db: DB) extends Logging with DatabaseExecutionContext
   }
 
   private def now = timestamp(LocalDateTime.now)
-  private def suoritusjakoFilter(oppijaOid: String, secret: String)(r: SuoritusjakoTable) =
+  private def myDataJakoFilter(oppijaOid: String, asiakas: String)(r: MyDataJakoTable) =
     r.oppijaOid === oppijaOid &&
-      r.secret === secret &&
-      r.voimassaAsti >= Date.valueOf(LocalDateTime.now.toLocalDate)
+      r.asiakas === asiakas
 }
