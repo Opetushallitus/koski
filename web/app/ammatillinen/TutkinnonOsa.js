@@ -20,7 +20,7 @@ export const osanOsa = m => m && m.value.classes.includes('ammatillisentutkinnon
 
 export const isYhteinenTutkinnonOsa = suoritus => suoritus.value.classes.includes('yhteisenammatillisentutkinnonosansuoritus')
 
-const kieliAineet = ['TK1', 'VK', 'AI' ]
+const kieliAineet = ['TK1', 'VK', 'AI', 'VVAI', 'VVTK']
 
 export const isAmmatillisenKieliaine = koodiarvo => kieliAineet.includes(koodiarvo)
 
@@ -31,7 +31,7 @@ export const tutkinnonOsanOsaAlueenKoulutusmoduuli = (koulutusmoduulit, oppiaine
   if (oppiaine.koodiarvo === 'AI') {
     return koulutusmoduulit.find(isÄidinkieli)
   }
-  if (['TK1', 'VK'].includes(oppiaine.koodiarvo)) {
+  if (['TK1', 'VK', 'VVAI', 'VVTK'].includes(oppiaine.koodiarvo)) {
     return koulutusmoduulit.find(isKieliaine)
   }
 }
