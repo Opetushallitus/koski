@@ -137,7 +137,7 @@ object Tables {
     def * = (id, secret, oppijaOid, suoritusIds, voimassaAsti, aikaleima) <> (SuoritusjakoRow.tupled, SuoritusjakoRow.unapply)
   }
 
-  class MyDataJakoTable(tag: Tag) extends Table[MyDataJakoRow] (tag, "mydatajako") {
+  class MyDataJakoTable(tag: Tag) extends Table[MyDataJakoRow] (tag, "mydata_jako") {
     val id = column[Long]("id", O.AutoInc)
     val asiakas = column[String]("asiakas")
     val oppijaOid = column[String]("oppija_oid")
