@@ -137,6 +137,17 @@ object Tables {
     def * = (id, secret, oppijaOid, suoritusIds, voimassaAsti, aikaleima) <> (SuoritusjakoRow.tupled, SuoritusjakoRow.unapply)
   }
 
+  class MyDataJakoTable(tag: Tag) extends Table[MyDataJakoRow] (tag, "mydatajako") {
+    val id = column[Long]("id", O.AutoInc)
+    val asiakas = column[String]("asiakas")
+    val oppijaOid = column[String]("oppija_oid")
+    val voimassaAsti = column[Date]("voimassa_asti")
+    val aikaleima = column[Timestamp]("aikaleima")
+    val pk = primaryKey("mydata_jako_oppijaOid_asiakas_key", (oppijaOid, asiakas))
+
+    def * = (id, asiakas, oppijaOid, voimassaAsti, aikaleima) <> (MyDataJakoRow.tupled, MyDataJakoRow.unapply)
+  }
+
   class FaileLoginAttemptTable(tag: Tag) extends Table[FailedLoginAttemptRow] (tag, "failed_login_attempt") {
     val username = column[String]("username", O.PrimaryKey)
     val time = column[Timestamp]("time", O.PrimaryKey)
@@ -174,6 +185,8 @@ object Tables {
   val Preferences = TableQuery[PreferencesTable]
 
   val SuoritusJako = TableQuery[SuoritusjakoTable]
+
+  val MyDataJako = TableQuery[MyDataJakoTable]
 
   val FailedLoginAttempt = TableQuery[FaileLoginAttemptTable]
 
@@ -244,6 +257,8 @@ case class OppilaitosIPOsoiteRow(username: String, ip: String)
 case class PreferenceRow(organisaatioOid: String, `type`: String, key: String, value: JValue)
 
 case class SuoritusjakoRow(id: Long, secret: String, oppijaOid: String, suoritusIds: JValue, voimassaAsti: Date, aikaleima: Timestamp)
+
+case class MyDataJakoRow(id: Long, asiakas: String, oppijaOid: String, voimassaAsti: Date, aikaleima: Timestamp)
 
 case class FailedLoginAttemptRow(username: String, time: Timestamp, count: Int)
 
