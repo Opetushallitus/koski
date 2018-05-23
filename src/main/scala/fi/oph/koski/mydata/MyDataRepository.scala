@@ -1,0 +1,68 @@
+package fi.oph.koski.mydata
+
+import java.sql.Date
+import java.sql.Timestamp.{valueOf => timestamp}
+import java.time.{LocalDate, LocalDateTime}
+
+import fi.oph.koski.db.KoskiDatabase.DB
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.db.Tables.{SuoritusJako, SuoritusjakoTable}
+import fi.oph.koski.db.{DatabaseExecutionContext, KoskiDatabaseMethods, SuoritusjakoRow}
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.log.Logging
+
+class MyDataRepository(val db: DB) extends Logging with DatabaseExecutionContext with KoskiDatabaseMethods {
+  def get(secret: String): Either[HttpStatus, SuoritusjakoRow] =
+    runDbSync(SuoritusJako.filter(r => r.secret === secret && r.voimassaAsti >= Date.valueOf(LocalDate.now)).result.headOption)
+      .toRight(KoskiErrorCategory.notFound())
+
+  def getAll(oppijaOid: String): Seq[SuoritusjakoRow] = {
+    runDbSync(SuoritusJako.filter(r => r.oppijaOid === oppijaOid && r.voimassaAsti >= Date.valueOf(LocalDate.now)).result)
+  }
+
+  def create(secret: String, oppijaOid: String, suoritusIds: List[SuoritusIdentifier]): Either[HttpStatus, LocalDate] = {
+    val expirationDate = LocalDateTime.now.plusMonths(6).toLocalDate
+    val maxSuoritusjakoCount = 100
+
+    val currentSuoritusjakoCount = runDbSync(SuoritusJako
+      .filter(r => r.oppijaOid === oppijaOid && r.voimassaAsti >= Date.valueOf(LocalDate.now)).length.result
+    )
+
+    if (currentSuoritusjakoCount < maxSuoritusjakoCount) {
+      runDbSync(SuoritusJako.insertOrUpdate(SuoritusjakoRow(
+        0,
+        secret,
+        oppijaOid,
+        JsonSerializer.serializeWithRoot(suoritusIds),
+        Date.valueOf(expirationDate),
+        now
+      )))
+
+      Right(expirationDate)
+    } else {
+      Left(KoskiErrorCategory.forbidden.liianMontaSuoritusjakoa())
+    }
+  }
+
+  def delete(oppijaOid: String, secret: String): HttpStatus = {
+    val deleted = runDbSync(SuoritusJako.filter(suoritusjakoFilter(oppijaOid, secret)).delete)
+    if (deleted == 0) KoskiErrorCategory.notFound() else HttpStatus.ok
+  }
+
+  def update(oppijaOid: String, secret: String, expirationDate: LocalDate): HttpStatus = {
+    val updated = runDbSync(
+      SuoritusJako.filter(suoritusjakoFilter(oppijaOid, secret))
+        .map(r => r.voimassaAsti)
+        .update(Date.valueOf(expirationDate))
+    )
+
+    if (updated == 0) KoskiErrorCategory.notFound() else HttpStatus.ok
+  }
+
+  private def now = timestamp(LocalDateTime.now)
+  private def suoritusjakoFilter(oppijaOid: String, secret: String)(r: SuoritusjakoTable) =
+    r.oppijaOid === oppijaOid &&
+      r.secret === secret &&
+      r.voimassaAsti >= Date.valueOf(LocalDateTime.now.toLocalDate)
+}
