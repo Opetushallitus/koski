@@ -31,9 +31,13 @@ object RaportointiDatabaseSchema {
     val aikaleima = column[Timestamp]("aikaleima")
     val oppijaOid = column[String]("oppija_oid")
     val oppilaitosOid = column[String]("oppilaitos_oid")
+    val oppilaitosNimi = column[String]("oppilaitos_nimi")
+    val oppilaitosKotipaikka = column[Option[String]]("oppilaitos_kotipaikka")
+    val oppilaitosnumero = column[Option[String]]("oppilaitosnumero")
     val koulutustoimijaOid = column[String]("koulutustoimija_oid")
+    val koulutustoimijaNimi = column[String]("koulutustoimija_nimi")
     val koulutusmuoto = column[String]("koulutusmuoto")
-    def * = (opiskeluoikeusOid, versionumero, aikaleima, oppijaOid, oppilaitosOid, koulutustoimijaOid, koulutusmuoto) <> (ROpiskeluoikeusRow.tupled, ROpiskeluoikeusRow.unapply)
+    def * = (opiskeluoikeusOid, versionumero, aikaleima, oppijaOid, oppilaitosOid, oppilaitosNimi, oppilaitosKotipaikka, oppilaitosnumero, koulutustoimijaOid, koulutustoimijaNimi, koulutusmuoto) <> (ROpiskeluoikeusRow.tupled, ROpiskeluoikeusRow.unapply)
   }
 
   class RPäätasonSuoritusTable(tag: Tag) extends Table[RPäätasonSuoritusRow](tag, "r_paatason_suoritus") {
@@ -43,18 +47,21 @@ object RaportointiDatabaseSchema {
     val koulutusmoduuliKoodiarvo = column[String]("koulutusmoduuli_koodiarvo")
     val koulutustyyppi = column[Option[String]]("koulutustyyppi")
     val vahvistusPäivä = column[Option[Date]]("vahvistus_paiva")
-    def * = (opiskeluoikeusOid, suorituksenTyyppi, koulutusmoduuliKoodisto, koulutusmoduuliKoodiarvo, koulutustyyppi, vahvistusPäivä) <> (RPäätasonSuoritusRow.tupled, RPäätasonSuoritusRow.unapply)
+    val toimipisteOid = column[String]("toimipiste_oid")
+    val toimipisteNimi = column[String]("toimipiste_nimi")
+    def * = (opiskeluoikeusOid, suorituksenTyyppi, koulutusmoduuliKoodisto, koulutusmoduuliKoodiarvo, koulutustyyppi, vahvistusPäivä, toimipisteOid, toimipisteNimi) <> (RPäätasonSuoritusRow.tupled, RPäätasonSuoritusRow.unapply)
   }
 
   class RHenkilöTable(tag: Tag) extends Table[RHenkilöRow](tag, "r_henkilo") {
     val oppijaOid = column[String]("oppija_oid", O.PrimaryKey)
     val hetu = column[Option[String]]("hetu")
+    val syntymäaika = column[Option[Date]]("syntymaaika")
     val sukunimi = column[String]("sukunimi")
     val etunimet = column[String]("etunimet")
     val äidinkieli = column[Option[String]]("aidinkieli")
     val kansalaisuus = column[Option[String]]("kansalaisuus")
     val turvakielto = column[Boolean]("turvakielto")
-    def * = (oppijaOid, hetu, sukunimi, etunimet, äidinkieli, kansalaisuus, turvakielto) <> (RHenkilöRow.tupled, RHenkilöRow.unapply)
+    def * = (oppijaOid, hetu, syntymäaika, sukunimi, etunimet, äidinkieli, kansalaisuus, turvakielto) <> (RHenkilöRow.tupled, RHenkilöRow.unapply)
   }
 
   class ROrganisaatioTable(tag: Tag) extends Table[ROrganisaatioRow](tag, "r_organisaatio") {
@@ -63,7 +70,8 @@ object RaportointiDatabaseSchema {
     val organisaatiotyypit = column[String]("organisaatiotyypit")
     val oppilaitostyyppi = column[Option[String]]("oppilaitostyyppi")
     val oppilaitosnumero = column[Option[String]]("oppilaitosnumero")
-    def * = (organisaatioOid, nimi, organisaatiotyypit, oppilaitostyyppi, oppilaitosnumero) <> (ROrganisaatioRow.tupled, ROrganisaatioRow.unapply)
+    val kotipaikka = column[Option[String]]("kotipaikka")
+    def * = (organisaatioOid, nimi, organisaatiotyypit, oppilaitostyyppi, oppilaitosnumero, kotipaikka) <> (ROrganisaatioRow.tupled, ROrganisaatioRow.unapply)
   }
 
   class RKoodistoKoodiTable(tag: Tag) extends Table[RKoodistoKoodiRow](tag, "r_koodisto_koodi") {
@@ -81,7 +89,11 @@ case class ROpiskeluoikeusRow(
   aikaleima: Timestamp,
   oppijaOid: String,
   oppilaitosOid: String,
+  oppilaitosNimi: String,
+  oppilaitosKotipaikka: Option[String],
+  oppilaitosnumero: Option[String],
   koulutustoimijaOid: String,
+  koulutustoimijaNimi: String,
   koulutusmuoto: String
 )
 
@@ -91,12 +103,15 @@ case class RPäätasonSuoritusRow(
   koulutusmoduuliKoodisto: Option[String],
   koulutusmoduuliKoodiarvo: String,
   koulutustyyppi: Option[String],
-  vahvistusPäivä: Option[Date]
+  vahvistusPäivä: Option[Date],
+  toimipisteOid: String,
+  toimipisteNimi: String
 )
 
 case class RHenkilöRow(
   oppijaOid: String,
   hetu: Option[String],
+  syntymäaika: Option[Date],
   sukunimi: String,
   etunimet: String,
   aidinkieli: Option[String],
@@ -109,7 +124,8 @@ case class ROrganisaatioRow(
   nimi: String,
   organisaatiotyypit: String,
   oppilaitostyyppi: Option[String],
-  oppilaitosnumero: Option[String]
+  oppilaitosnumero: Option[String],
+  kotipaikka: Option[String]
 )
 
 case class RKoodistoKoodiRow(

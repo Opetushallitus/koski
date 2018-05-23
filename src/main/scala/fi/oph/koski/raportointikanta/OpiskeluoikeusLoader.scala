@@ -6,15 +6,15 @@ import fi.oph.koski.db.{GlobalExecutionContext, OpiskeluoikeusRow}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryFilter, OpiskeluoikeusQueryService}
-import fi.oph.koski.schema.{Koodistokoodiviite, KoskeenTallennettavaOpiskeluoikeus, Koulutus, PäätasonSuoritus}
+import fi.oph.koski.schema._
 import fi.oph.koski.util.PaginationSettings
 import fi.oph.koski.util.SortOrder.Ascending
+import fi.oph.koski.raportointikanta.LoaderUtils.convertLocalizedString
 import rx.Observable.{create => createObservable}
 import rx.Observer
 import rx.functions.{Func0, Func2}
 import rx.lang.scala.{Observable, Subscriber}
 import rx.observables.SyncOnSubscribe.createStateful
-
 import scala.util.Try
 
 object OpiskeluoikeusLoader extends Logging {
@@ -81,7 +81,7 @@ object OpiskeluoikeusLoader extends Logging {
       val oo = inputRow.toOpiskeluoikeus
       (
         buildROpiskeluoikeusRow(inputRow.oppijaOid, inputRow.aikaleima, oo),
-        oo.suoritukset.map(s => buildRPäätasonSuoritusRow(inputRow.oid, s))
+        oo.suoritukset.map(s => buildRPäätasonSuoritusRow(inputRow.oid, oo.getOppilaitos, s))
       )
     }.toEither.left.map(t => LoadErrorResult(inputRow.oid, t.toString))
   }
@@ -92,11 +92,19 @@ object OpiskeluoikeusLoader extends Logging {
       versionumero = o.versionumero.get,
       aikaleima = _aikaleima,
       oppijaOid = _oppijaOid,
-      oppilaitosOid = o.oppilaitos.get.oid,
-      koulutustoimijaOid = o.koulutustoimija.get.oid,
+      oppilaitosOid = o.getOppilaitos.oid,
+      oppilaitosNimi = convertLocalizedString(o.oppilaitos.flatMap(_.nimi)),
+      oppilaitosKotipaikka = o.oppilaitos.flatMap(_.kotipaikka).map(_.koodiarvo.stripPrefix("kunta_")),
+      oppilaitosnumero = o.oppilaitos.flatMap(_.oppilaitosnumero).map(_.koodiarvo),
+      koulutustoimijaOid = o.koulutustoimija.getOrElse(throw new RuntimeException("Koulutustoimija puuttuu")).oid,
+      koulutustoimijaNimi = convertLocalizedString(o.koulutustoimija.flatMap(_.nimi)),
       koulutusmuoto = o.tyyppi.koodiarvo
     )
-  private def buildRPäätasonSuoritusRow(opiskeluoikeusOid: String, s: PäätasonSuoritus) =
+  private def buildRPäätasonSuoritusRow(opiskeluoikeusOid: String, oppilaitos: OrganisaatioWithOid, s: PäätasonSuoritus) = {
+    val toimipiste = (s match {
+      case stp: MahdollisestiToimipisteellinen => stp.toimipiste
+      case _ => None
+    }).getOrElse(oppilaitos)
     RPäätasonSuoritusRow(
       opiskeluoikeusOid = opiskeluoikeusOid,
       suorituksenTyyppi = s.tyyppi.koodiarvo,
@@ -109,8 +117,11 @@ object OpiskeluoikeusLoader extends Logging {
         case _ => None
       },
       koulutusmoduuliKoodiarvo = s.koulutusmoduuli.tunniste.koodiarvo,
-      vahvistusPäivä = s.vahvistus.map(v => Date.valueOf(v.päivä))
+      vahvistusPäivä = s.vahvistus.map(v => Date.valueOf(v.päivä)),
+      toimipisteOid = toimipiste.oid,
+      toimipisteNimi = convertLocalizedString(toimipiste.nimi)
     )
+  }
 }
 
 sealed trait LoadResult

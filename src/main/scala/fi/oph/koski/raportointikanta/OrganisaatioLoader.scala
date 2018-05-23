@@ -25,8 +25,9 @@ object OrganisaatioLoader extends Logging {
     ROrganisaatioRow(
       organisaatioOid = org.oid,
       nimi = LocalizedString.sanitizeRequired(org.nimi, org.oid).get("fi"),
-      organisaatiotyypit = org.organisaatiotyypit.mkString(","),
+      organisaatiotyypit = org.organisaatiotyypit.sorted.mkString(","),
       oppilaitostyyppi = org.oppilaitostyyppi.map(_.split('#').head.split('_').last),
-      oppilaitosnumero = org.oppilaitosKoodi
+      oppilaitosnumero = org.oppilaitosKoodi,
+      kotipaikka = org.kotipaikkaUri.map(_.stripPrefix("kunta_"))
     )
 }
