@@ -36,6 +36,7 @@ const HetuLogin = () => {
   const login = loginTrigger
     .map(state)
     .flatMap(credentials => {
+      Cookie.set('_shibsession_', 'mock')
       const headers = R.reject(R.isNil, R.merge(credentials, {security: 'mock'}))
       // console.log('Logging in with', headers)
       const lang = credentials.lang ? credentials.lang : 'fi'
