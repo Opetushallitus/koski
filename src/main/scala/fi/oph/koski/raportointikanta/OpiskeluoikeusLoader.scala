@@ -1,8 +1,10 @@
 package fi.oph.koski.raportointikanta
 
 import java.sql.{Date, Timestamp}
+import java.util.concurrent.atomic.AtomicLong
 
 import fi.oph.koski.db.{GlobalExecutionContext, OpiskeluoikeusRow}
+import fi.oph.koski.json.{JsonManipulation, JsonSerializer}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryFilter, OpiskeluoikeusQueryService}
@@ -15,6 +17,7 @@ import rx.Observer
 import rx.functions.{Func0, Func2}
 import rx.lang.scala.{Observable, Subscriber}
 import rx.observables.SyncOnSubscribe.createStateful
+
 import scala.util.Try
 
 object OpiskeluoikeusLoader extends Logging {
@@ -24,14 +27,18 @@ object OpiskeluoikeusLoader extends Logging {
     logger.info("Ladataan opiskeluoikeuksia...")
     raportointiDatabase.deleteOpiskeluoikeudet
     raportointiDatabase.deletePäätasonSuoritukset
+    raportointiDatabase.deleteOsasuoritukset
     val result = processByPage[OpiskeluoikeusRow, LoadResult](
       page => opiskeluoikeusQueryRepository.opiskeluoikeusQuerySync(filters, Some(Ascending("id")), Some(PaginationSettings(page, BatchSize)))(systemUser).map(_._1),
       opiskeluoikeusRows => {
         if (opiskeluoikeusRows.nonEmpty) {
           val (errors, outputRows) = opiskeluoikeusRows.par.map(buildRow).seq.partition(_.isLeft)
           raportointiDatabase.loadOpiskeluoikeudet(outputRows.map(_.right.get._1))
-          raportointiDatabase.loadPäätasonSuoritukset(outputRows.map(_.right.get._2).flatten)
-          errors.map(_.left.get) :+ LoadProgressResult(outputRows.size)
+          val päätasonSuoritusRows = outputRows.flatMap(_.right.get._2)
+          val osasuoritusRows = outputRows.flatMap(_.right.get._3)
+          raportointiDatabase.loadPäätasonSuoritukset(päätasonSuoritusRows)
+          raportointiDatabase.loadOsasuoritukset(osasuoritusRows)
+          errors.map(_.left.get) :+ LoadProgressResult(outputRows.size, päätasonSuoritusRows.size + osasuoritusRows.size)
         } else {
           Seq(LoadCompleted())
         }
@@ -39,18 +46,22 @@ object OpiskeluoikeusLoader extends Logging {
     )
     result.doOnEach(new Subscriber[LoadResult] {
       val startTime = System.currentTimeMillis
-      var count = 0
+      var opiskeluoikeusCount = 0
+      var suoritusCount = 0
       var errors = 0
       override def onNext(r: LoadResult) = r match {
         case LoadErrorResult(_, _) => errors += 1
-        case LoadProgressResult(n) => count += n
+        case LoadProgressResult(o, s) => {
+          opiskeluoikeusCount += o
+          suoritusCount += s
+        }
         case LoadCompleted(_) =>
       }
       override def onError(e: Throwable) { logger.error(e)("Opiskeluoikeuksien lataus epäonnistui") }
       override def onCompleted() {
         val elapsedSeconds = (System.currentTimeMillis - startTime) / 1000.0
-        val rate = (count + errors) / Math.max(1.0, elapsedSeconds)
-        logger.info(s"Ladattiin $count opiskeluoikeutta, $errors virhettä, ${(rate*60).round}/min")
+        val rate = (opiskeluoikeusCount + errors) / Math.max(1.0, elapsedSeconds)
+        logger.info(s"Ladattiin $opiskeluoikeusCount opiskeluoikeutta, $suoritusCount suoritusta, $errors virhettä, ${(rate*60).round} opiskeluoikeutta/min")
       }
     })
   }
@@ -76,13 +87,12 @@ object OpiskeluoikeusLoader extends Logging {
     )).asScala.flatMap(Observable.from(_))
   }
 
-  private def buildRow(inputRow: OpiskeluoikeusRow): Either[LoadErrorResult, Tuple2[ROpiskeluoikeusRow, Seq[RPäätasonSuoritusRow]]] = {
+  private def buildRow(inputRow: OpiskeluoikeusRow): Either[LoadErrorResult, Tuple3[ROpiskeluoikeusRow, Seq[RPäätasonSuoritusRow], Seq[ROsasuoritusRow]]] = {
     Try {
       val oo = inputRow.toOpiskeluoikeus
-      (
-        buildROpiskeluoikeusRow(inputRow.oppijaOid, inputRow.aikaleima, oo),
-        oo.suoritukset.map(s => buildRPäätasonSuoritusRow(inputRow.oid, oo.getOppilaitos, s))
-      )
+      val ooRow = buildROpiskeluoikeusRow(inputRow.oppijaOid, inputRow.aikaleima, oo)
+      val suoritusRows = oo.suoritukset.map(ps => buildSuoritusRows(inputRow.oid, oo.getOppilaitos, ps))
+      (ooRow, suoritusRows.map(_._1), suoritusRows.flatMap(_._2))
     }.toEither.left.map(t => LoadErrorResult(inputRow.oid, t.toString))
   }
 
@@ -110,31 +120,69 @@ object OpiskeluoikeusLoader extends Logging {
         case l: AmmatillisenOpiskeluoikeudenLisätiedot => l.koulutusvienti
       }.getOrElse(false)
     )
-  private def buildRPäätasonSuoritusRow(opiskeluoikeusOid: String, oppilaitos: OrganisaatioWithOid, s: PäätasonSuoritus) = {
-    val toimipiste = (s match {
+
+  private val suoritusId = new AtomicLong()
+
+  private def buildSuoritusRows(opiskeluoikeusOid: String, oppilaitos: OrganisaatioWithOid, ps: PäätasonSuoritus) = {
+    val päätasonSuoritusId = suoritusId.incrementAndGet()
+    val toimipiste = (ps match {
       case stp: MahdollisestiToimipisteellinen => stp.toimipiste
       case _ => None
     }).getOrElse(oppilaitos)
-    RPäätasonSuoritusRow(
+    val päätaso = RPäätasonSuoritusRow(
+      päätasonSuoritusId = päätasonSuoritusId,
       opiskeluoikeusOid = opiskeluoikeusOid,
-      suorituksenTyyppi = s.tyyppi.koodiarvo,
-      koulutustyyppi = s.koulutusmoduuli match {
-        case k: Koulutus => k.koulutustyyppi.map(_.koodiarvo)
-        case _ => None
-      },
-      koulutusmoduuliKoodisto = s.koulutusmoduuli.tunniste match {
+      suorituksenTyyppi = ps.tyyppi.koodiarvo,
+      koulutusmoduuliKoodisto = ps.koulutusmoduuli.tunniste match {
         case k: Koodistokoodiviite => Some(k.koodistoUri)
         case _ => None
       },
-      koulutusmoduuliKoodiarvo = s.koulutusmoduuli.tunniste.koodiarvo,
-      vahvistusPäivä = s.vahvistus.map(v => Date.valueOf(v.päivä)),
+      koulutusmoduuliKoodiarvo = ps.koulutusmoduuli.tunniste.koodiarvo,
+      koulutusmoduuliKoulutustyyppi = ps.koulutusmoduuli match {
+        case k: Koulutus => k.koulutustyyppi.map(_.koodiarvo)
+        case _ => None
+      },
+      vahvistusPäivä = ps.vahvistus.map(v => Date.valueOf(v.päivä)),
       toimipisteOid = toimipiste.oid,
-      toimipisteNimi = convertLocalizedString(toimipiste.nimi)
+      toimipisteNimi = convertLocalizedString(toimipiste.nimi),
+      data = JsonManipulation.removeFields(JsonSerializer.serializeWithRoot(ps), Set("osasuoritukset", "tyyppi", "toimipiste", "koulutustyyppi"))
     )
+    val osat = ps.osasuoritukset.getOrElse(List.empty).flatMap(os => {
+      buildROsasuoritusRow(päätasonSuoritusId, None, opiskeluoikeusOid, os)
+    })
+    (päätaso, osat)
+  }
+
+  private def buildROsasuoritusRow(päätasonSuoritusId: Long, ylempiOsasuoritusId: Option[Long], opiskeluoikeusOid: String, os: Suoritus): Seq[ROsasuoritusRow] = {
+    val osasuoritusId = suoritusId.incrementAndGet()
+    ROsasuoritusRow(
+      osasuoritusId = osasuoritusId,
+      ylempiOsasuoritusId = ylempiOsasuoritusId,
+      päätasonSuoritusId = päätasonSuoritusId,
+      opiskeluoikeusOid = opiskeluoikeusOid,
+      suorituksenTyyppi = os.tyyppi.koodiarvo,
+      koulutusmoduuliKoodisto = os.koulutusmoduuli.tunniste match {
+        case k: Koodistokoodiviite => Some(k.koodistoUri)
+        case _ => None
+      },
+      koulutusmoduuliKoodiarvo = os.koulutusmoduuli.tunniste.koodiarvo,
+      koulutusmoduuliPaikallinen = os.koulutusmoduuli.tunniste match {
+        case k: Koodistokoodiviite => false
+        case k: PaikallinenKoodi => true
+      },
+      koulutusmoduuliPakollinen = os.koulutusmoduuli match {
+        case v: Valinnaisuus => Some(v.pakollinen)
+        case _ => None
+      },
+      vahvistusPäivä = os.vahvistus.map(v => Date.valueOf(v.päivä)),
+      data = JsonManipulation.removeFields(JsonSerializer.serializeWithRoot(os), Set("osasuoritukset", "tyyppi"))
+    ) +: os.osasuoritukset.getOrElse(List.empty).flatMap(os2 => {
+      buildROsasuoritusRow(päätasonSuoritusId, Some(osasuoritusId), opiskeluoikeusOid, os2)
+    })
   }
 }
 
 sealed trait LoadResult
 case class LoadErrorResult(oid: String, error: String) extends LoadResult
-case class LoadProgressResult(count: Int) extends LoadResult
+case class LoadProgressResult(opiskeluoikeusCount: Int, suoritusCount: Int) extends LoadResult
 case class LoadCompleted(done: Boolean = true) extends LoadResult

@@ -3,6 +3,7 @@ package fi.oph.koski.raportointikanta
 import java.sql.{Date, Timestamp}
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import org.json4s.JValue
 import slick.dbio.DBIO
 
 object RaportointiDatabaseSchema {
@@ -12,6 +13,8 @@ object RaportointiDatabaseSchema {
     sqlu"CREATE INDEX ON r_opiskeluoikeus(oppilaitos_oid)",
     sqlu"CREATE INDEX ON r_opiskeluoikeus(koulutusmuoto)",
     sqlu"CREATE INDEX ON r_paatason_suoritus(opiskeluoikeus_oid)",
+    sqlu"CREATE INDEX ON r_osasuoritus(paatason_suoritus_id)",
+    sqlu"CREATE INDEX ON r_osasuoritus(opiskeluoikeus_oid)",
     sqlu"CREATE INDEX ON r_henkilo(hetu)",
     sqlu"CREATE INDEX ON r_organisaatio(oppilaitosnumero)",
     sqlu"CREATE UNIQUE INDEX ON r_koodisto_koodi(koodisto_uri, koodiarvo)"
@@ -20,6 +23,7 @@ object RaportointiDatabaseSchema {
   val dropAllIfExists = DBIO.seq(
     sqlu"DROP TABLE IF EXISTS r_opiskeluoikeus",
     sqlu"DROP TABLE IF EXISTS r_paatason_suoritus",
+    sqlu"DROP TABLE IF EXISTS r_osasuoritus",
     sqlu"DROP TABLE IF EXISTS r_henkilo",
     sqlu"DROP TABLE IF EXISTS r_organisaatio",
     sqlu"DROP TABLE IF EXISTS r_koodisto_koodi"
@@ -43,19 +47,43 @@ object RaportointiDatabaseSchema {
     val viimeisinTila = column[Option[String]]("viimeisin_tila")
     val lisätiedotHenkilöstökoulutus = column[Boolean]("lisatiedot_henkilostokoulutus")
     val lisätiedotKoulutusvienti = column[Boolean]("lisatiedot_koulutusvienti")
-    def * = (opiskeluoikeusOid, versionumero, aikaleima, sisältyyOpiskeluoikeuteenOid, oppijaOid, oppilaitosOid, oppilaitosNimi, oppilaitosKotipaikka, oppilaitosnumero, koulutustoimijaOid, koulutustoimijaNimi, koulutusmuoto, alkamispäivä, päättymispäivä, viimeisinTila, lisätiedotHenkilöstökoulutus, lisätiedotKoulutusvienti) <> (ROpiskeluoikeusRow.tupled, ROpiskeluoikeusRow.unapply)
+    def * = (opiskeluoikeusOid, versionumero, aikaleima, sisältyyOpiskeluoikeuteenOid, oppijaOid,
+      oppilaitosOid, oppilaitosNimi, oppilaitosKotipaikka, oppilaitosnumero, koulutustoimijaOid, koulutustoimijaNimi,
+      koulutusmuoto, alkamispäivä, päättymispäivä, viimeisinTila,
+      lisätiedotHenkilöstökoulutus, lisätiedotKoulutusvienti) <> (ROpiskeluoikeusRow.tupled, ROpiskeluoikeusRow.unapply)
   }
 
   class RPäätasonSuoritusTable(tag: Tag) extends Table[RPäätasonSuoritusRow](tag, "r_paatason_suoritus") {
+    val päätasonSuoritusId = column[Long]("paatason_suoritus_id", O.PrimaryKey)
     val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid")
     val suorituksenTyyppi = column[String]("suorituksen_tyyppi")
     val koulutusmoduuliKoodisto = column[Option[String]]("koulutusmoduuli_koodisto")
     val koulutusmoduuliKoodiarvo = column[String]("koulutusmoduuli_koodiarvo")
-    val koulutustyyppi = column[Option[String]]("koulutustyyppi")
+    val koulutusmoduuliKoulutustyyppi = column[Option[String]]("koulutusmoduuli_koulutustyyppi")
     val vahvistusPäivä = column[Option[Date]]("vahvistus_paiva")
     val toimipisteOid = column[String]("toimipiste_oid")
     val toimipisteNimi = column[String]("toimipiste_nimi")
-    def * = (opiskeluoikeusOid, suorituksenTyyppi, koulutusmoduuliKoodisto, koulutusmoduuliKoodiarvo, koulutustyyppi, vahvistusPäivä, toimipisteOid, toimipisteNimi) <> (RPäätasonSuoritusRow.tupled, RPäätasonSuoritusRow.unapply)
+    val data = column[JValue]("data")
+    def * = (päätasonSuoritusId, opiskeluoikeusOid, suorituksenTyyppi,
+      koulutusmoduuliKoodisto, koulutusmoduuliKoodiarvo, koulutusmoduuliKoulutustyyppi,
+      vahvistusPäivä, toimipisteOid, toimipisteNimi, data) <> (RPäätasonSuoritusRow.tupled, RPäätasonSuoritusRow.unapply)
+  }
+
+  class ROsasuoritusTable(tag: Tag) extends Table[ROsasuoritusRow](tag, "r_osasuoritus") {
+    val osasuoritusId = column[Long]("osasuoritus_id", O.PrimaryKey)
+    val ylempiOsasuoritusId = column[Option[Long]]("ylempi_osasuoritus_id")
+    val päätasonSuoritusId = column[Long]("paatason_suoritus_id")
+    val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid")
+    val suorituksenTyyppi = column[String]("suorituksen_tyyppi")
+    val koulutusmoduuliKoodisto = column[Option[String]]("koulutusmoduuli_koodisto")
+    val koulutusmoduuliKoodiarvo = column[String]("koulutusmoduuli_koodiarvo")
+    val koulutusmoduuliPaikallinen = column[Boolean]("koulutusmoduuli_paikallinen")
+    val koulutusmoduuliPakollinen = column[Option[Boolean]]("koulutusmoduuli_pakollinen")
+    val vahvistusPäivä = column[Option[Date]]("vahvistus_paiva")
+    val data = column[JValue]("data")
+    def * = (osasuoritusId, ylempiOsasuoritusId, päätasonSuoritusId, opiskeluoikeusOid, suorituksenTyyppi,
+      koulutusmoduuliKoodisto, koulutusmoduuliKoodiarvo, koulutusmoduuliPaikallinen, koulutusmoduuliPakollinen,
+      vahvistusPäivä, data) <> (ROsasuoritusRow.tupled, ROsasuoritusRow.unapply)
   }
 
   class RHenkilöTable(tag: Tag) extends Table[RHenkilöRow](tag, "r_henkilo") {
@@ -86,7 +114,6 @@ object RaportointiDatabaseSchema {
     val nimi = column[String]("nimi")
     def * = (koodistoUri, koodiarvo, nimi) <> (RKoodistoKoodiRow.tupled, RKoodistoKoodiRow.unapply)
   }
-
 }
 
 case class ROpiskeluoikeusRow(
@@ -110,14 +137,30 @@ case class ROpiskeluoikeusRow(
 )
 
 case class RPäätasonSuoritusRow(
+  päätasonSuoritusId: Long,
   opiskeluoikeusOid: String,
   suorituksenTyyppi: String,
   koulutusmoduuliKoodisto: Option[String],
   koulutusmoduuliKoodiarvo: String,
-  koulutustyyppi: Option[String],
+  koulutusmoduuliKoulutustyyppi: Option[String],
   vahvistusPäivä: Option[Date],
   toimipisteOid: String,
-  toimipisteNimi: String
+  toimipisteNimi: String,
+  data: JValue
+)
+
+case class ROsasuoritusRow(
+  osasuoritusId: Long,
+  ylempiOsasuoritusId: Option[Long],
+  päätasonSuoritusId: Long,
+  opiskeluoikeusOid: String,
+  suorituksenTyyppi: String,
+  koulutusmoduuliKoodisto: Option[String],
+  koulutusmoduuliKoodiarvo: String,
+  koulutusmoduuliPaikallinen: Boolean,
+  koulutusmoduuliPakollinen: Option[Boolean],
+  vahvistusPäivä: Option[Date],
+  data: JValue
 )
 
 case class RHenkilöRow(

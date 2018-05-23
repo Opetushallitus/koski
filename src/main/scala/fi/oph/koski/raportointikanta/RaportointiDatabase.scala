@@ -18,6 +18,7 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
 
   private val ROpiskeluoikeudet = TableQuery[ROpiskeluoikeusTable]
   private val RPäätasonSuoritukset = TableQuery[RPäätasonSuoritusTable]
+  private val ROsasuoritukset = TableQuery[ROsasuoritusTable]
   private val RHenkilöt = TableQuery[RHenkilöTable]
   private val ROrganisaatiot = TableQuery[ROrganisaatioTable]
   private val RKoodistoKoodit = TableQuery[RKoodistoKoodiTable]
@@ -27,6 +28,7 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
       RaportointiDatabaseSchema.dropAllIfExists,
       ROpiskeluoikeudet.schema.create,
       RPäätasonSuoritukset.schema.create,
+      ROsasuoritukset.schema.create,
       RHenkilöt.schema.create,
       ROrganisaatiot.schema.create,
       RKoodistoKoodit.schema.create,
@@ -45,6 +47,11 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
     runDbSync(RPäätasonSuoritukset.delete)
   def loadPäätasonSuoritukset(suoritukset: Seq[RPäätasonSuoritusRow]): Unit =
     runDbSync(RPäätasonSuoritukset ++= suoritukset)
+  def deleteOsasuoritukset: Unit =
+    runDbSync(ROsasuoritukset.delete)
+  def loadOsasuoritukset(suoritukset: Seq[ROsasuoritusRow]): Unit =
+    runDbSync(ROsasuoritukset ++= suoritukset)
+
 
   def deleteHenkilöt: Unit =
     runDbSync(RHenkilöt.delete)
