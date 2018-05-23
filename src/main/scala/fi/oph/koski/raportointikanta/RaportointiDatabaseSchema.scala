@@ -29,6 +29,7 @@ object RaportointiDatabaseSchema {
     val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", O.PrimaryKey)
     val versionumero = column[Int]("versionumero")
     val aikaleima = column[Timestamp]("aikaleima")
+    val sisältyyOpiskeluoikeuteenOid = column[Option[String]]("sisaltyy_opiskeluoikeuteen_oid")
     val oppijaOid = column[String]("oppija_oid")
     val oppilaitosOid = column[String]("oppilaitos_oid")
     val oppilaitosNimi = column[String]("oppilaitos_nimi")
@@ -37,7 +38,12 @@ object RaportointiDatabaseSchema {
     val koulutustoimijaOid = column[String]("koulutustoimija_oid")
     val koulutustoimijaNimi = column[String]("koulutustoimija_nimi")
     val koulutusmuoto = column[String]("koulutusmuoto")
-    def * = (opiskeluoikeusOid, versionumero, aikaleima, oppijaOid, oppilaitosOid, oppilaitosNimi, oppilaitosKotipaikka, oppilaitosnumero, koulutustoimijaOid, koulutustoimijaNimi, koulutusmuoto) <> (ROpiskeluoikeusRow.tupled, ROpiskeluoikeusRow.unapply)
+    val alkamispäivä = column[Option[Date]]("alkamispaiva")
+    val päättymispäivä = column[Option[Date]]("paattymispaiva")
+    val viimeisinTila = column[Option[String]]("viimeisin_tila")
+    val lisätiedotHenkilöstökoulutus = column[Boolean]("lisatiedot_henkilostokoulutus")
+    val lisätiedotKoulutusvienti = column[Boolean]("lisatiedot_koulutusvienti")
+    def * = (opiskeluoikeusOid, versionumero, aikaleima, sisältyyOpiskeluoikeuteenOid, oppijaOid, oppilaitosOid, oppilaitosNimi, oppilaitosKotipaikka, oppilaitosnumero, koulutustoimijaOid, koulutustoimijaNimi, koulutusmuoto, alkamispäivä, päättymispäivä, viimeisinTila, lisätiedotHenkilöstökoulutus, lisätiedotKoulutusvienti) <> (ROpiskeluoikeusRow.tupled, ROpiskeluoikeusRow.unapply)
   }
 
   class RPäätasonSuoritusTable(tag: Tag) extends Table[RPäätasonSuoritusRow](tag, "r_paatason_suoritus") {
@@ -87,6 +93,7 @@ case class ROpiskeluoikeusRow(
   opiskeluoikeusOid: String,
   versionumero: Int,
   aikaleima: Timestamp,
+  sisältyyOpiskeluoikeuteenOid: Option[String],
   oppijaOid: String,
   oppilaitosOid: String,
   oppilaitosNimi: String,
@@ -94,7 +101,12 @@ case class ROpiskeluoikeusRow(
   oppilaitosnumero: Option[String],
   koulutustoimijaOid: String,
   koulutustoimijaNimi: String,
-  koulutusmuoto: String
+  koulutusmuoto: String,
+  alkamispäivä: Option[Date],
+  päättymispäivä: Option[Date],
+  viimeisinTila: Option[String],
+  lisätiedotHenkilöstökoulutus: Boolean,
+  lisätiedotKoulutusvienti: Boolean
 )
 
 case class RPäätasonSuoritusRow(

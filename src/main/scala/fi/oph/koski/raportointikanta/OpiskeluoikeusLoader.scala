@@ -91,6 +91,7 @@ object OpiskeluoikeusLoader extends Logging {
       opiskeluoikeusOid = o.oid.get,
       versionumero = o.versionumero.get,
       aikaleima = _aikaleima,
+      sisältyyOpiskeluoikeuteenOid = o.sisältyyOpiskeluoikeuteen.map(_.oid),
       oppijaOid = _oppijaOid,
       oppilaitosOid = o.getOppilaitos.oid,
       oppilaitosNimi = convertLocalizedString(o.oppilaitos.flatMap(_.nimi)),
@@ -98,7 +99,16 @@ object OpiskeluoikeusLoader extends Logging {
       oppilaitosnumero = o.oppilaitos.flatMap(_.oppilaitosnumero).map(_.koodiarvo),
       koulutustoimijaOid = o.koulutustoimija.getOrElse(throw new RuntimeException("Koulutustoimija puuttuu")).oid,
       koulutustoimijaNimi = convertLocalizedString(o.koulutustoimija.flatMap(_.nimi)),
-      koulutusmuoto = o.tyyppi.koodiarvo
+      koulutusmuoto = o.tyyppi.koodiarvo,
+      alkamispäivä = o.alkamispäivä.map(Date.valueOf),
+      päättymispäivä = o.tila.opiskeluoikeusjaksot.lastOption.filter(_.opiskeluoikeusPäättynyt).map(v => Date.valueOf(v.alku)),
+      viimeisinTila = o.tila.opiskeluoikeusjaksot.lastOption.map(_.tila.koodiarvo),
+      lisätiedotHenkilöstökoulutus = o.lisätiedot.collect {
+        case l: AmmatillisenOpiskeluoikeudenLisätiedot => l.henkilöstökoulutus
+      }.getOrElse(false),
+      lisätiedotKoulutusvienti = o.lisätiedot.collect {
+        case l: AmmatillisenOpiskeluoikeudenLisätiedot => l.koulutusvienti
+      }.getOrElse(false)
     )
   private def buildRPäätasonSuoritusRow(opiskeluoikeusOid: String, oppilaitos: OrganisaatioWithOid, s: PäätasonSuoritus) = {
     val toimipiste = (s match {
