@@ -29,8 +29,12 @@ class MyDataService(myDataRepository: MyDataRepository) extends Logging {
     }
   }
 
-  def getAll(oppijaOid: String): Seq[MyDataJakoItem] = {
-    myDataRepository.getAll(oppijaOid).map(jako => MyDataJakoItem(jako.asiakas, jako.voimassaAsti.toLocalDate))
+  def getAllValid(oppijaOid: String): Seq[MyDataJakoItem] = {
+    myDataRepository.getAllValid(oppijaOid).map(jako => MyDataJakoItem(jako.asiakas, jako.voimassaAsti.toLocalDate))
+  }
+
+  def hasAuthorizedMember(oppijaOid: String, memberId: String): Boolean = {
+    getAllValid(oppijaOid).exists(auth => memberId == auth.asiakas)
   }
 
 }
