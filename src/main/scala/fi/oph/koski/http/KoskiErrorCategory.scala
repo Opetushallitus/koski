@@ -33,7 +33,9 @@ object KoskiErrorCategory {
     val queryParam = new QueryParam
 
     class Header extends ErrorCategory(badRequest, "header", "Epäkelpo otsikkokenttä") {
-      val missingXRoadHeader = subcategory("missing", "Vaadittu X-ROAD-HEADER http-otsikkokenttä puuttuu")
+      val missingXRoadHeader = subcategory("missing", "Vaadittu X-ROAD-MEMBER http-otsikkokenttä puuttuu")
+      val invalidXRoadHeader = subcategory("unknown", "X-ROAD-MEMBER:n tunnistetta ei ole olemassa")
+      val unauthorizedXRoadHeader = subcategory("unauthorized", "X-ROAD-MEMBER:llä ei ole lupaa hakea opiskelijan tietoja")
     }
     val header = new Header
 
