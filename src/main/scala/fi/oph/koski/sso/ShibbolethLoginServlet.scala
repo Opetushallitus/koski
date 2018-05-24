@@ -17,7 +17,7 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
     } catch {
       case e: Exception =>
         logger.error(s"Kansalaisen sisäänkirjautuminen epäonnistui ${e.getMessage}")
-        redirect(s"$koskiRoot/virhesivu")
+        redirect("/virhesivu")
     }
   }
 
@@ -34,8 +34,8 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
     application.henkilöRepository.findHenkilötiedotByHetu(hetu, nimitiedot)(KoskiSession.systemUser).headOption match {
       case Some(oppija) =>
         setUser(Right(localLogin(AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true), Some(langFromCookie.getOrElse(langFromDomain)))))
-        redirect(s"$koskiRoot/omattiedot")
-      case _ => redirect(s"$koskiRoot/eisuorituksia")
+        redirect("/omattiedot")
+      case _ => redirect("/eisuorituksia")
     }
   }
 
