@@ -4,7 +4,7 @@ import java.sql.{Date, Timestamp}
 import java.util.concurrent.atomic.AtomicLong
 
 import fi.oph.koski.db.{GlobalExecutionContext, OpiskeluoikeusRow}
-import fi.oph.koski.json.{JsonManipulation, JsonSerializer}
+import fi.oph.koski.json.JsonManipulation
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryFilter, OpiskeluoikeusQueryService}
@@ -12,6 +12,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.util.PaginationSettings
 import fi.oph.koski.util.SortOrder.Ascending
 import fi.oph.koski.raportointikanta.LoaderUtils.convertLocalizedString
+import org.json4s.JValue
 import rx.Observable.{create => createObservable}
 import rx.Observer
 import rx.functions.{Func0, Func2}
@@ -97,7 +98,7 @@ object OpiskeluoikeusLoader extends Logging {
       val jaksot = oo.tila.opiskeluoikeusjaksot
       val jaksotLift = jaksot.lift
       val jaksoRows = jaksot.indices.map(i => buildROpiskeluoikeusjaksoRow(inputRow.oid, jaksot(i), jaksotLift(i + 1)))
-      val suoritusRows = oo.suoritukset.map(ps => buildSuoritusRows(inputRow.oid, oo.getOppilaitos, ps))
+      val suoritusRows = oo.suoritukset.zipWithIndex.map { case (ps, i) => buildSuoritusRows(inputRow.oid, oo.getOppilaitos, ps, (inputRow.data \ "suoritukset")(i)) }
       (ooRow, jaksoRows, suoritusRows.map(_._1), suoritusRows.flatMap(_._2))
     }.toEither.left.map(t => LoadErrorResult(inputRow.oid, t.toString))
   }
@@ -141,8 +142,10 @@ object OpiskeluoikeusLoader extends Logging {
     )
 
   private val suoritusId = new AtomicLong()
+  private val fieldsToExcludeFromPäätasonSuoritusJson = Set("osasuoritukset", "tyyppi", "toimipiste", "koulutustyyppi")
+  private val fieldsToExcludeFromOsasuoritusJson = Set("osasuoritukset", "tyyppi")
 
-  private def buildSuoritusRows(opiskeluoikeusOid: String, oppilaitos: OrganisaatioWithOid, ps: PäätasonSuoritus) = {
+  private def buildSuoritusRows(opiskeluoikeusOid: String, oppilaitos: OrganisaatioWithOid, ps: PäätasonSuoritus, data: JValue) = {
     val päätasonSuoritusId = suoritusId.incrementAndGet()
     val toimipiste = (ps match {
       case stp: MahdollisestiToimipisteellinen => stp.toimipiste
@@ -164,15 +167,15 @@ object OpiskeluoikeusLoader extends Logging {
       vahvistusPäivä = ps.vahvistus.map(v => Date.valueOf(v.päivä)),
       toimipisteOid = toimipiste.oid,
       toimipisteNimi = convertLocalizedString(toimipiste.nimi),
-      data = JsonManipulation.removeFields(JsonSerializer.serializeWithRoot(ps), Set("osasuoritukset", "tyyppi", "toimipiste", "koulutustyyppi"))
+      data = JsonManipulation.removeFields(data, fieldsToExcludeFromPäätasonSuoritusJson)
     )
-    val osat = ps.osasuoritukset.getOrElse(List.empty).flatMap(os => {
-      buildROsasuoritusRow(päätasonSuoritusId, None, opiskeluoikeusOid, os)
-    })
+    val osat = ps.osasuoritukset.getOrElse(List.empty).zipWithIndex.flatMap {
+      case (os, i) => buildROsasuoritusRow(päätasonSuoritusId, None, opiskeluoikeusOid, os, (data \ "osasuoritukset")(i))
+    }
     (päätaso, osat)
   }
 
-  private def buildROsasuoritusRow(päätasonSuoritusId: Long, ylempiOsasuoritusId: Option[Long], opiskeluoikeusOid: String, os: Suoritus): Seq[ROsasuoritusRow] = {
+  private def buildROsasuoritusRow(päätasonSuoritusId: Long, ylempiOsasuoritusId: Option[Long], opiskeluoikeusOid: String, os: Suoritus, data: JValue): Seq[ROsasuoritusRow] = {
     val osasuoritusId = suoritusId.incrementAndGet()
     ROsasuoritusRow(
       osasuoritusId = osasuoritusId,
@@ -194,10 +197,10 @@ object OpiskeluoikeusLoader extends Logging {
         case _ => None
       },
       vahvistusPäivä = os.vahvistus.map(v => Date.valueOf(v.päivä)),
-      data = JsonManipulation.removeFields(JsonSerializer.serializeWithRoot(os), Set("osasuoritukset", "tyyppi"))
-    ) +: os.osasuoritukset.getOrElse(List.empty).flatMap(os2 => {
-      buildROsasuoritusRow(päätasonSuoritusId, Some(osasuoritusId), opiskeluoikeusOid, os2)
-    })
+      data = JsonManipulation.removeFields(data, fieldsToExcludeFromOsasuoritusJson)
+    ) +: os.osasuoritukset.getOrElse(List.empty).zipWithIndex.flatMap {
+      case (os2, i) => buildROsasuoritusRow(päätasonSuoritusId, Some(osasuoritusId), opiskeluoikeusOid, os2, (data \ "osasuoritukset")(i))
+    }
   }
 }
 
