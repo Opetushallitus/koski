@@ -32,6 +32,11 @@ object KoskiErrorCategory {
     }
     val queryParam = new QueryParam
 
+    class Header extends ErrorCategory(badRequest, "header", "Epäkelpo otsikkokenttä") {
+      val missingXRoadHeader = subcategory("missing", "Vaadittu X-ROAD-HEADER http-otsikkokenttä puuttuu")
+    }
+    val header = new Header
+
     class Validation extends ErrorCategory(badRequest, "validation", "Syötteen validointi epäonnistui") {
       val jsonSchema = subcategory("jsonSchema", "JSON-schema -validointi epäonnistui. Paluuviestin sisällä virheilmoitukset JSON-muodossa.", JsonValidationErrorExample.example)
       val tyhjäOpiskeluoikeusLista = subcategory("tyhjäOpiskeluoikeusLista", "Annettiin tyhjä lista opiskeluoikeuksia.")
