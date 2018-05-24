@@ -2,7 +2,6 @@ package fi.oph.koski.sso
 
 import java.nio.charset.StandardCharsets
 
-import fi.oph.koski.config.Environment.isLocalDevelopmentEnvironment
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.Hetu
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
