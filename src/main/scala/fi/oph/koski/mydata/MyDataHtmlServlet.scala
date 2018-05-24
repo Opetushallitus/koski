@@ -30,8 +30,13 @@ class MyDataHtmlServlet(implicit val application: KoskiApplication) extends Scal
 
     if (share_data_response == share_data_yes) {
       logger.info(s"User ${userId} agreed to share student data with ${clientName}")
-      application.mydataService.put(userId, clientId)(koskiSessionOption.get)
+      if (application.mydataService.put(userId, clientId)(koskiSessionOption.get)) {
+        <html><body>Permission has been stored</body></html>
+      } else {
+        <html><body>Failed to store permission</body></html>
+      }
     } else {
+      <html><body>Permission has not been granted</body></html>
       logger.info(s"User ${userId} declined to share student data with ${clientName}")
     }
   }

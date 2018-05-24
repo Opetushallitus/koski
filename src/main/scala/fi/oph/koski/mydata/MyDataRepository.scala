@@ -24,18 +24,23 @@ class MyDataRepository(val db: DB) extends Logging with DatabaseExecutionContext
     runDbSync(MyDataJako.filter(r => r.oppijaOid === oppijaOid && r.voimassaAsti >= Date.valueOf(LocalDate.now)).result)
   }
 
-  def create(oppijaOid: String, asiakas: String): LocalDate = {
+  def create(oppijaOid: String, asiakas: String): Boolean = {
     val expirationDate = LocalDateTime.now.plusMonths(12).toLocalDate
 
-    runDbSync(MyDataJako.insertOrUpdate(MyDataJakoRow(
-      0,
-      asiakas,
-      oppijaOid,
-      Date.valueOf(expirationDate),
-      now
-    )))
+    try {
+      runDbSync(MyDataJako.insertOrUpdate(MyDataJakoRow(
+        0,
+        asiakas,
+        oppijaOid,
+        Date.valueOf(expirationDate),
+        now
+      )))
 
-    expirationDate
+      true
+    } catch {
+      case t:Throwable => logger.error(t)(s"Failed to add permissions for ${asiakas} to access student info of ${oppijaOid}")
+      false
+    }
   }
 
   def delete(oppijaOid: String, asiakas: String): HttpStatus = {
