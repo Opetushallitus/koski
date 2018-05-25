@@ -10,6 +10,7 @@ class LogoutServlet(implicit val application: KoskiApplication) extends HtmlServ
 
     val virkailija = sessionOrStatus match {
       case Right(session) if !session.user.kansalainen => true
+      case Left(SessionStatusExpiredVirkailija) => true
       case _ => false
     }
 
