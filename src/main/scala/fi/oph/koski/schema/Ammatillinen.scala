@@ -128,7 +128,9 @@ case class OpiskeluvalmiuksiaTukevienOpintojenJakso(
   @Description("Opiskeluvalmiuksia tukevien opintojen vapaamuotoinen kuvaus.")
   @Tooltip("Opiskeluvalmiuksia tukevien opintojen vapaamuotoinen kuvaus.")
   kuvaus: LocalizedString
-)
+) {
+  def contains(d: LocalDate): Boolean = !d.isBefore(alku) && !d.isAfter(loppu)
+}
 
 @Description("Ks. tarkemmin ammatillisen opiskeluoikeuden tilat: [confluence](https://confluence.csc.fi/pages/viewpage.action?pageId=71953716)")
 case class AmmatillinenOpiskeluoikeudenTila(

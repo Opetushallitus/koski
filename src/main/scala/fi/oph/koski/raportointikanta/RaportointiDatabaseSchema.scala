@@ -14,7 +14,8 @@ object RaportointiDatabaseSchema {
     sqlu"CREATE INDEX ON r_opiskeluoikeus(oppija_oid)",
     sqlu"CREATE INDEX ON r_opiskeluoikeus(oppilaitos_oid)",
     sqlu"CREATE INDEX ON r_opiskeluoikeus(koulutusmuoto)",
-    sqlu"CREATE INDEX ON r_opiskeluoikeusjakso(opiskeluoikeus_oid)",
+    sqlu"CREATE INDEX ON r_opiskeluoikeus_aikajakso(opiskeluoikeus_oid)",
+    sqlu"CREATE INDEX ON r_opiskeluoikeus_aikajakso(alku)",
     sqlu"CREATE UNIQUE INDEX ON r_paatason_suoritus(paatason_suoritus_id)",
     sqlu"CREATE INDEX ON r_paatason_suoritus(opiskeluoikeus_oid)",
     sqlu"CREATE UNIQUE INDEX ON r_osasuoritus(osasuoritus_id)",
@@ -30,7 +31,7 @@ object RaportointiDatabaseSchema {
 
   val dropAllIfExists = DBIO.seq(
     sqlu"DROP TABLE IF EXISTS r_opiskeluoikeus",
-    sqlu"DROP TABLE IF EXISTS r_opiskeluoikeusjakso",
+    sqlu"DROP TABLE IF EXISTS r_opiskeluoikeus_aikajakso",
     sqlu"DROP TABLE IF EXISTS r_paatason_suoritus",
     sqlu"DROP TABLE IF EXISTS r_osasuoritus",
     sqlu"DROP TABLE IF EXISTS r_henkilo",
@@ -64,14 +65,23 @@ object RaportointiDatabaseSchema {
       lisätiedotHenkilöstökoulutus, lisätiedotKoulutusvienti) <> (ROpiskeluoikeusRow.tupled, ROpiskeluoikeusRow.unapply)
   }
 
-  class ROpiskeluoikeusjaksoTable(tag: Tag) extends Table[ROpiskeluoikeusjaksoRow](tag, "r_opiskeluoikeusjakso") {
+  class ROpiskeluoikeusAikajaksoTable(tag: Tag) extends Table[ROpiskeluoikeusAikajaksoRow](tag, "r_opiskeluoikeus_aikajakso") {
     val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
     val alku = column[Date]("alku")
-    val loppu = column[Option[Date]]("loppu")
+    val loppu = column[Date]("loppu")
     val tila = column[String]("tila", StringIdentifierType)
     val opiskeluoikeusPäättynyt = column[Boolean]("opiskeluoikeus_paattynyt")
     val opintojenRahoitus = column[Option[String]]("opintojen_rahoitus", StringIdentifierType)
-    def * = (opiskeluoikeusOid, alku, loppu, tila, opiskeluoikeusPäättynyt, opintojenRahoitus) <> (ROpiskeluoikeusjaksoRow.tupled, ROpiskeluoikeusjaksoRow.unapply)
+    val erityinenTuki = column[Byte]("erityinen_tuki")
+    val vaativanErityisenTuenErityinenTehtävä = column[Byte]("vaativan_erityisen_tuen_erityinen_tehtava")
+    val vaikeastiVammainen = column[Byte]("vaikeasti_vammainen")
+    val vammainenJaAvustaja = column[Byte]("vammainen_ja_avustaja")
+    val osaAikaisuus = column[Byte]("osa_aikaisuus")
+    val opiskeluvalmiuksiaTukevatOpinnot = column[Byte]("opiskeluvalmiuksia_tukevat_opinnot")
+    val vankilaopetuksessa = column[Byte]("vankilaopetuksessa")
+    def * = (opiskeluoikeusOid, alku, loppu, tila, opiskeluoikeusPäättynyt,
+      opintojenRahoitus, erityinenTuki, vaativanErityisenTuenErityinenTehtävä, vaikeastiVammainen, vammainenJaAvustaja,
+      osaAikaisuus, opiskeluvalmiuksiaTukevatOpinnot, vankilaopetuksessa) <> (ROpiskeluoikeusAikajaksoRow.tupled, ROpiskeluoikeusAikajaksoRow.unapply)
   }
 
   class RPäätasonSuoritusTable(tag: Tag) extends Table[RPäätasonSuoritusRow](tag, "r_paatason_suoritus") {
@@ -157,13 +167,20 @@ case class ROpiskeluoikeusRow(
   lisätiedotKoulutusvienti: Boolean
 )
 
-case class ROpiskeluoikeusjaksoRow(
+case class ROpiskeluoikeusAikajaksoRow(
   opiskeluoikeusOid: String,
   alku: Date,
-  loppu: Option[Date],
+  loppu: Date,
   tila: String,
   opiskeluoikeusPäättynyt: Boolean,
-  opintojenRahoitus: Option[String]
+  opintojenRahoitus: Option[String],
+  erityinenTuki: Byte,
+  vaativanErityisenTuenErityinenTehtävä: Byte,
+  vaikeastiVammainen: Byte,
+  vammainenJaAvustaja: Byte,
+  osaAikaisuus: Byte,
+  opiskeluvalmiuksiaTukevatOpinnot: Byte,
+  vankilaopetuksessa: Byte
 )
 
 case class RPäätasonSuoritusRow(
