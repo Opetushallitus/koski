@@ -8,16 +8,15 @@ class LogoutServlet(implicit val application: KoskiApplication) extends HtmlServ
   get("/") {
     logger.info("Logged out")
     getUser.right.toOption.flatMap(_.serviceTicket).foreach(application.koskiSessionRepository.removeSessionByTicket)
-    val kansalainen = sessionOrStatus match {
-      case Right(session) if session.user.kansalainen => true
-      case Left(SessionStatusExpiredKansalainen) => true
-      case Right(_) | Left(_) => false
+    val virkailija = sessionOrStatus match {
+      case Right(session) if !session.user.kansalainen => true
+      case _ => false
     }
     removeUserCookie
-    if (kansalainen) {
-      kansalaisLogout
-    } else {
+    if (virkailija) {
       redirectToLogout
+    } else {
+      kansalaisLogout
     }
   }
 
