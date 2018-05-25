@@ -9,14 +9,20 @@ import slick.sql.SqlProfile.ColumnOption.SqlType
 
 object RaportointiDatabaseSchema {
 
-  val createIndexes = DBIO.seq(
+  val createOpiskeluoikeusIndexes = DBIO.seq(
+    sqlu"CREATE UNIQUE INDEX ON r_opiskeluoikeus(opiskeluoikeus_oid)",
     sqlu"CREATE INDEX ON r_opiskeluoikeus(oppija_oid)",
     sqlu"CREATE INDEX ON r_opiskeluoikeus(oppilaitos_oid)",
     sqlu"CREATE INDEX ON r_opiskeluoikeus(koulutusmuoto)",
     sqlu"CREATE INDEX ON r_opiskeluoikeusjakso(opiskeluoikeus_oid)",
+    sqlu"CREATE UNIQUE INDEX ON r_paatason_suoritus(paatason_suoritus_id)",
     sqlu"CREATE INDEX ON r_paatason_suoritus(opiskeluoikeus_oid)",
+    sqlu"CREATE UNIQUE INDEX ON r_osasuoritus(osasuoritus_id)",
     sqlu"CREATE INDEX ON r_osasuoritus(paatason_suoritus_id)",
-    sqlu"CREATE INDEX ON r_osasuoritus(opiskeluoikeus_oid)",
+    sqlu"CREATE INDEX ON r_osasuoritus(opiskeluoikeus_oid)"
+  )
+
+  val createOtherIndexes = DBIO.seq(
     sqlu"CREATE INDEX ON r_henkilo(hetu)",
     sqlu"CREATE INDEX ON r_organisaatio(oppilaitosnumero)",
     sqlu"CREATE UNIQUE INDEX ON r_koodisto_koodi(koodisto_uri, koodiarvo)"
@@ -35,7 +41,7 @@ object RaportointiDatabaseSchema {
   private val StringIdentifierType = SqlType("character varying collate \"C\"")
 
   class ROpiskeluoikeusTable(tag: Tag) extends Table[ROpiskeluoikeusRow](tag, "r_opiskeluoikeus") {
-    val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", O.PrimaryKey, StringIdentifierType)
+    val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
     val versionumero = column[Int]("versionumero")
     val aikaleima = column[Timestamp]("aikaleima")
     val sisältyyOpiskeluoikeuteenOid = column[Option[String]]("sisaltyy_opiskeluoikeuteen_oid", StringIdentifierType)
@@ -69,7 +75,7 @@ object RaportointiDatabaseSchema {
   }
 
   class RPäätasonSuoritusTable(tag: Tag) extends Table[RPäätasonSuoritusRow](tag, "r_paatason_suoritus") {
-    val päätasonSuoritusId = column[Long]("paatason_suoritus_id", O.PrimaryKey)
+    val päätasonSuoritusId = column[Long]("paatason_suoritus_id")
     val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
     val suorituksenTyyppi = column[String]("suorituksen_tyyppi", StringIdentifierType)
     val koulutusmoduuliKoodisto = column[Option[String]]("koulutusmoduuli_koodisto", StringIdentifierType)
@@ -85,7 +91,7 @@ object RaportointiDatabaseSchema {
   }
 
   class ROsasuoritusTable(tag: Tag) extends Table[ROsasuoritusRow](tag, "r_osasuoritus") {
-    val osasuoritusId = column[Long]("osasuoritus_id", O.PrimaryKey)
+    val osasuoritusId = column[Long]("osasuoritus_id")
     val ylempiOsasuoritusId = column[Option[Long]]("ylempi_osasuoritus_id")
     val päätasonSuoritusId = column[Long]("paatason_suoritus_id")
     val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)

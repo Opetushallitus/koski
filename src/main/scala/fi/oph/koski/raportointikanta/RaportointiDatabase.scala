@@ -34,9 +34,11 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
       RHenkilöt.schema.create,
       ROrganisaatiot.schema.create,
       RKoodistoKoodit.schema.create,
-      RaportointiDatabaseSchema.createIndexes
+      RaportointiDatabaseSchema.createOtherIndexes
     ))
   }
+  def createOpiskeluoikeusIndexes: Unit =
+    runDbSync(RaportointiDatabaseSchema.createOpiskeluoikeusIndexes)
 
   def deleteOpiskeluoikeudet: Unit =
     runDbSync(ROpiskeluoikeudet.delete)

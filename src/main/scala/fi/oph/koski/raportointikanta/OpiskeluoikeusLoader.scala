@@ -66,6 +66,11 @@ object OpiskeluoikeusLoader extends Logging {
         val elapsedSeconds = (System.currentTimeMillis - startTime) / 1000.0
         val rate = (opiskeluoikeusCount + errors) / Math.max(1.0, elapsedSeconds)
         logger.info(s"Ladattiin $opiskeluoikeusCount opiskeluoikeutta, $suoritusCount suoritusta, $errors virhettä, ${(rate*60).round} opiskeluoikeutta/min")
+        val indexStartTime = System.currentTimeMillis
+        logger.info("Luodaan indeksit opiskeluoikeuksille...")
+        raportointiDatabase.createOpiskeluoikeusIndexes
+        val indexElapsedSeconds = (System.currentTimeMillis - indexStartTime)/1000
+        logger.info(s"Luotiin indeksit opiskeluoikeuksille, ${indexElapsedSeconds} s")
       }
     })
   }
