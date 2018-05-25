@@ -53,7 +53,7 @@ export class PropertiesEditor extends React.Component {
       }
     }
 
-    const tableContents = flatMapArray(properties.filter(shouldShow), munch(''));
+    const tableContents = flatMapArray(properties.filter(shouldShow), munch(''))
     return (tableContents && tableContents.length > 0 ? <div className={ buildClassNames(['properties', className]) }>
       <table><tbody>
       { tableContents }
