@@ -286,7 +286,7 @@ describe('Ammatillinen koulutus', function() {
           Authentication().logout,
           addOppija.submit)
 
-        it('Siirrytään login-sivulle', wait.until(login.isVisible))
+        it('Siirrytään etusivulle', wait.until(LandingPage().isVisible))
       })
 
       describe('Kun tallennus epäonnistuu', function() {
