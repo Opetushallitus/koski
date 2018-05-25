@@ -7,12 +7,15 @@ import fi.oph.koski.sso.SSOSupport
 class LogoutServlet(implicit val application: KoskiApplication) extends HtmlServlet with SSOSupport {
   get("/") {
     logger.info("Logged out")
-    getUser.right.toOption.flatMap(_.serviceTicket).foreach(application.koskiSessionRepository.removeSessionByTicket)
+
     val virkailija = sessionOrStatus match {
       case Right(session) if !session.user.kansalainen => true
       case _ => false
     }
+
+    getUser.right.toOption.flatMap(_.serviceTicket).foreach(application.koskiSessionRepository.removeSessionByTicket)
     removeUserCookie
+
     if (virkailija) {
       redirectToLogout
     } else {
