@@ -29,6 +29,10 @@ class MyDataService(myDataRepository: MyDataRepository) extends Logging {
     }
   }
 
+  def getAll(oppijaOid: String): Seq[MyDataJakoItem] = {
+    myDataRepository.getAll(oppijaOid).map(jako => MyDataJakoItem(jako.asiakas, jako.voimassaAsti.toLocalDate))
+  }
+
   def getAllValid(oppijaOid: String): Seq[MyDataJakoItem] = {
     myDataRepository.getAllValid(oppijaOid).map(jako => MyDataJakoItem(jako.asiakas, jako.voimassaAsti.toLocalDate))
   }
