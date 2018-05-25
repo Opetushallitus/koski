@@ -1,6 +1,7 @@
 package fi.oph.koski.html
 
 import java.io.File
+import java.net.URLDecoder
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.HttpStatus
@@ -9,6 +10,7 @@ import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.servlet.{KoskiBaseServlet, LanguageSupport}
 import fi.oph.koski.util.XML.CommentedPCData
+import org.scalatra.servlet.RichRequest
 
 import scala.xml.NodeSeq.Empty
 import scala.xml.{Elem, NodeSeq, Unparsed}
@@ -72,7 +74,7 @@ case object Virkailija extends Raamit {
   override def script: NodeSeq = <script type="text/javascript" src="/virkailija-raamit/apply-raamit.js"/>
 }
 
-case class Oppija(session: Option[KoskiSession], shibbolethUrl: String) extends Raamit {
+case class Oppija(session: Option[KoskiSession], request: RichRequest, shibbolethUrl: String) extends Raamit {
   override def script: NodeSeq = {
     <script>
       {Unparsed(s"""
@@ -86,7 +88,11 @@ case class Oppija(session: Option[KoskiSession], shibbolethUrl: String) extends 
     <script id="apply-raamit" type="text/javascript" src="/oppija-raamit/js/apply-raamit.js"></script>
   }
 
-  private def user = session.map(s => s"""{"name":"${s.user.name}", "oid": "${s.oid}"}""").getOrElse("null")
+  private def user = session.map(s => s"""{"name":"${s.user.name}", "oid": "${s.oid}"}""")
+    .orElse(nimitiedotCookiesta).getOrElse("null")
+
+  private def nimitiedotCookiesta =
+    request.cookies.get("eisuorituksia").map(c => URLDecoder.decode(c, "UTF-8"))
 }
 
 case object EiRaameja extends Raamit {

@@ -68,6 +68,7 @@ trait SSOSupport extends ScalatraBase with Logging {
   def removeUserCookie = {
     cookieDomains.foreach(cookieDomain => removeCookie("koskiOppija", domain = cookieDomain))
     removeCookie("koskiUser")
+    removeCookie("eisuorituksia")
   }
 
   def casServiceUrl = {
