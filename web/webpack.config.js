@@ -22,6 +22,7 @@ module.exports = {
     login: './app/VirkailijaLogin.jsx',
     pulssi: './app/Pulssi.jsx',
     lander: './app/Lander.jsx',
+    omadata: './app/omadata/Hyvaksynta.jsx',
     eisuorituksia: './app/EiSuorituksia.jsx',
     korhopankki: './app/Korhopankki.jsx'
   },
