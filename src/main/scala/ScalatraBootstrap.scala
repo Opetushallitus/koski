@@ -50,7 +50,6 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     mount("/dokumentaatio", new DocumentationServlet)
     mount("/eisuorituksia", new EiSuorituksiaServlet)
     mount("/opinnot", new SuoritusjakoHtmlServlet)
-    mount("/mydata", new MyDataHtmlServlet)
     mount("/virhesivu", new VirhesivuServlet)
     mount("/api/documentation", new DocumentationApiServlet)
     mount("/api/editor", new EditorServlet)
@@ -76,6 +75,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     mount("/api/raportointikanta", new RaportointikantaServlet)
     mount("/api/omadata/oppija", new ApiProxyServlet)
     mount("/api/omadata", new MyDataServlet)
+    mount("/omadata", new MyDataHtmlServlet)
     mount("/healthcheck", new HealthCheckHtmlServlet)
     mount("/user", new UserServlet)
     if (!SSOConfig(application.config).isCasSsoUsed) {
