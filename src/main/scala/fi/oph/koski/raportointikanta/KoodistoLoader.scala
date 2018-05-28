@@ -1,9 +1,9 @@
 package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.koodisto.{KoodistoKoodi, KoodistoPalvelu}
-import fi.oph.koski.koodisto.MockKoodistoPalvelu.sortKoodistoKoodiMetadata
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.log.Logging
+import fi.oph.koski.raportointikanta.LoaderUtils.convertLocalizedString
 
 object KoodistoLoader extends Logging {
   private val BatchSize = 1000
@@ -28,6 +28,6 @@ object KoodistoLoader extends Logging {
     RKoodistoKoodiRow(
       koodistoUri = koodi.koodistoUri,
       koodiarvo = koodi.koodiArvo,
-      nimi = koodi.nimi.map(_.get("fi")).getOrElse(LocalizedString.missingString)
+      nimi = convertLocalizedString(koodi.nimi)
     )
 }

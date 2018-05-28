@@ -75,7 +75,9 @@ class Lokirivi extends React.Component {
     const dataLink = () => <a className="viestin-tiedot" onClick={() => showData(row.inputData)}><Text name="tiedot"/></a>
 
     const showErrors = (virheet) => showData(virheet)
-    const nimi = row.oppija && ((row.oppija.kutsumanimi || '') + ' ' + (row.oppija.sukunimi || ''))
+    const sukunimi = row.oppija && row.oppija.sukunimi || ''
+    const kutsumanimi = row.oppija && row.oppija.kutsumanimi || ''
+    const nimi = sukunimi + (sukunimi ? ', ' : '') + kutsumanimi
     const className = ((isParent || isChild) ? 'group ' : '') + (isEven ? 'even' : 'odd')
 
     const select = (value) => selected.modify(prev => R.contains(value, prev) ? R.without([value], prev) : R.append(value, prev))

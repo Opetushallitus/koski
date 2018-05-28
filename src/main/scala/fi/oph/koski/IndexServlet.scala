@@ -116,6 +116,7 @@ class LoginPageServlet(implicit val application: KoskiApplication) extends Scala
     if (application.features.shibboleth && application.config.getString("shibboleth.security") == "mock") {
       htmlIndex("koski-korhopankki.js", responsive = true)
     } else {
+      logger.error("Mock shibboleth in use, please check shibboleth.url config")
       haltWithStatus(KoskiErrorCategory.notFound())
     }
   }

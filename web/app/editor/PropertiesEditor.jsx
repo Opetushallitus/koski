@@ -53,11 +53,12 @@ export class PropertiesEditor extends React.Component {
       }
     }
 
-    return (<div className={ buildClassNames(['properties', className]) }>
+    const tableContents = flatMapArray(properties.filter(shouldShow), munch(''))
+    return (tableContents && tableContents.length > 0 ? <div className={ buildClassNames(['properties', className]) }>
       <table><tbody>
-      { flatMapArray(properties.filter(shouldShow), munch('')) }
+      { tableContents }
       </tbody></table>
-    </div>)
+    </div> : null)
   }
 }
 PropertiesEditor.canShowInline = () => false

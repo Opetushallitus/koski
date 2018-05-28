@@ -582,6 +582,23 @@ case class AmmatillisenTutkinnonÄidinkieli(
   override def description(text: LocalizationRepository) = concat(nimi, ", ", kieli)
 }
 
+@Title("Viestintä ja vuorovaikutus kielivalinnalla")
+case class AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(
+  @KoodistoKoodiarvo("VVTK")
+  @KoodistoKoodiarvo("VVAI")
+  @KoodistoUri("ammatillisenoppiaineet")
+  tunniste: Koodistokoodiviite,
+  @Description("Mikä kieli on kyseessä")
+  @KoodistoUri("kielivalikoima")
+  @Discriminator
+  kieli: Koodistokoodiviite,
+  @Description("Onko pakollinen tutkinnossa (true/false)")
+  pakollinen: Boolean,
+  laajuus: Option[LaajuusOsaamispisteissä]
+) extends AmmatillisenTutkinnonOsanOsaAlue with KoodistostaLöytyväKoulutusmoduuli with Kieliaine {
+  override def description(text: LocalizationRepository) = concat(nimi, ", ", kieli)
+}
+
 @Description("Suoritukseen liittyvät lisätiedot, kuten esimerkiksi mukautettu arviointi tai poikkeus arvioinnissa.")
 case class AmmatillisenTutkinnonOsanLisätieto(
   @Description("Lisätiedon tyyppi kooditettuna")

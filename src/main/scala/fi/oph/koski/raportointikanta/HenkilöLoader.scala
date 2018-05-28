@@ -1,8 +1,9 @@
 package fi.oph.koski.raportointikanta
 
-import fi.oph.koski.henkilo.OpintopolkuHenkilöFacade
+import fi.oph.koski.henkilo.{Hetu, OpintopolkuHenkilöFacade}
 import fi.oph.koski.henkilo.oppijanumerorekisteriservice.OppijaHenkilö
 import fi.oph.koski.log.Logging
+import java.sql.Date
 
 object HenkilöLoader extends Logging {
   private val BatchSize = 1000
@@ -27,10 +28,11 @@ object HenkilöLoader extends Logging {
     RHenkilöRow(
       oppijaOid = oppija.oidHenkilo,
       hetu = oppija.hetu,
+      syntymäaika = oppija.syntymaika.orElse(oppija.hetu.flatMap(Hetu.toBirthday)).map(Date.valueOf),
       sukunimi = oppija.sukunimi,
       etunimet = oppija.etunimet,
       aidinkieli = oppija.aidinkieli,
-      kansalaisuus = oppija.kansalaisuus.filter(_.nonEmpty).map(_.mkString(",")),
+      kansalaisuus = oppija.kansalaisuus.filter(_.nonEmpty).map(_.sorted.mkString(",")),
       turvakielto = oppija.turvakielto
     )
 }

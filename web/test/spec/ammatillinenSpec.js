@@ -1506,6 +1506,8 @@ describe('Ammatillinen koulutus', function() {
             'Pakollinen kyllä\n' +
             'Vieraat kielet, englanti 2 3\n' +
             'Pakollinen kyllä\n' +
+            'Viestintä ja vuorovaikutus toisella kotimaisella kielellä, englanti 2 3\n' +
+            'Pakollinen kyllä\n' +
             'Matemaattis-luonnontieteellinen osaaminen 9 3\n' +
             'Pakollinen kyllä\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +

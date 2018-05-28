@@ -58,7 +58,7 @@ class YlioppilastutkintoSpec extends FreeSpec with Matchers with OpiskeluoikeusT
         todistus(MockOppijat.ylioppilas.oid, "ylioppilastutkinto") should equal("""Ylioppilastutkintotodistus
                                                                                   |Ylioppilastutkintolautakunta
                                                                                   |Helsingin medialukio
-                                                                                  |Ylioppilas, Ynjevi 010696-971K
+                                                                                  |Ylioppilas, Ynjevi 210244-374K
                                                                                   |
                                                                                   |Äidinkielen koe, suomi Lubenter approbatur
                                                                                   |Ruotsi, keskipitkä oppimäärä Cum laude approbatur
