@@ -1050,6 +1050,16 @@
   "Pisteet": "Pisteet",
   "Paikallinen kurssi": "Paikallinen kurssi",
   "Paikallinen oppiaine": "Paikallinen oppiaine",
-  "Paikallinen kurssi tai oppiaine": "Paikallinen kurssi tai oppiaine"
+  "Paikallinen kurssi tai oppiaine": "Paikallinen kurssi tai oppiaine",
+  "Oma Opintopolku": "Oma Opintopolku",
+  "Henkilökohtaisten tietojen käyttö": "Henkilökohtaisten opintotietojen käyttö",
+  "Omadata hyväksyntä otsikko": "Hyväksymällä sallit kyseisen palveluntarjoajan näkevän tietojasi. Tietojasi ei luovuteta eteenpäin eikä käytetä markkinointitarkoituksiin.",
+  "Palveluntarjoaja näkee": "Palveluntarjoaja näkee",
+  "Näkee läsnäolotiedot": "läsnäolotiedot",
+  "Näkee oppilaitoksen tiedot": "oppilaitoksen tiedot",
+  "Hyväksy": "Hyväksy",
+  "Peruuta ja palaa": "Peruuta ja palaa palveluntarjoajan sivulle"
+
+
 }
 
