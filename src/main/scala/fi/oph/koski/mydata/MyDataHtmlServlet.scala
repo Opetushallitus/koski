@@ -1,9 +1,13 @@
 package fi.oph.koski.mydata
 
+import com.typesafe.config.Config
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSession}
-import fi.oph.koski.servlet.HtmlServlet
+import fi.oph.koski.servlet.{HtmlServlet, InvalidRequestException}
 import org.scalatra.ScalatraServlet
+
+import scala.collection.JavaConverters._
 
 class MyDataHtmlServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet {
   before() {
@@ -21,9 +25,9 @@ class MyDataHtmlServlet(implicit val application: KoskiApplication) extends Scal
 
 
   post("/:id") {
-    def requestClientId = params.getAs[String]("id").get
-    def clientName = application.config.getString(s"mydata.${requestClientId}.name")
-    def clientId = application.config.getString(s"mydata.${requestClientId}.id")
+    def memberConf = getConfigForMember(params.getAs[String]("id").get)
+    def clientName = memberConf.getString("name")
+    def clientId = memberConf.getString("id")
     def userId = getUser.right.get.oid
 
     def share_data_response = params.getAs[String]("allow").get
@@ -36,9 +40,15 @@ class MyDataHtmlServlet(implicit val application: KoskiApplication) extends Scal
         <html><body>Failed to store permission</body></html>
       }
     } else {
-      <html><body>Permission has not been granted</body></html>
       logger.info(s"User ${userId} declined to share student data with ${clientName}")
+      <html><body>Permission has not been granted</body></html>
     }
+  }
+
+  private def getConfigForMember(id: String): com.typesafe.config.Config = {
+    application.config.getConfigList("mydata.members").asScala.find(member =>
+      member.getString("id") == id)
+      .getOrElse(throw InvalidRequestException(KoskiErrorCategory.badRequest.header.invalidXRoadHeader))
   }
 
   get("/:id") {
@@ -46,8 +56,9 @@ class MyDataHtmlServlet(implicit val application: KoskiApplication) extends Scal
       redirectToLogin
     }
 
-    def clientId = params.getAs[String]("id").get
-    def clientName = application.config.getString(s"mydata.${clientId}.name")
+    def memberCode = params.getAs[String]("id").get
+
+    def clientName = getConfigForMember(memberCode).getString("name")
     def userId = getUser.right.get.oid
 
     logger.info(s"Requesting permissions for ${clientName} to access the data of student ${userId}")
