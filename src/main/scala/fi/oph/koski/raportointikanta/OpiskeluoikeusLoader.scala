@@ -25,7 +25,7 @@ import scala.concurrent.duration._
 import scala.util.Try
 
 object OpiskeluoikeusLoader extends Logging {
-  private val DefaultBatchSize = 250
+  private val DefaultBatchSize = 500
 
   def loadOpiskeluoikeudet(opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService, systemUser: KoskiSession, raportointiDatabase: RaportointiDatabase, batchSize: Int = DefaultBatchSize): Observable[LoadResult] = {
     deleteEverything(raportointiDatabase)
