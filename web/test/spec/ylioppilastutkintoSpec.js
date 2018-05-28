@@ -6,7 +6,7 @@ describe('Ylioppilastutkinto', function( ){
   before(Authentication().login('pää'), resetFixtures, page.openPage)
 
   describe('Kun tutkinto on valmis', function() {
-    before(page.oppijaHaku.searchAndSelect('010696-971K'))
+    before(page.oppijaHaku.searchAndSelect('210244-374K'))
     describe('Tutkinnon tiedot', function() {
       it('näytetään', function() {
         expect(OpinnotPage().getTutkinto()).to.equal("Ylioppilastutkinto")
