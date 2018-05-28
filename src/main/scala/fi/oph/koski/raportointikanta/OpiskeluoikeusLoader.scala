@@ -20,20 +20,17 @@ import rx.Observer
 import rx.functions.{Func0, Func2}
 import rx.lang.scala.{Observable, Subscriber}
 import rx.observables.SyncOnSubscribe.createStateful
+import scala.concurrent.duration._
 
 import scala.util.Try
 
 object OpiskeluoikeusLoader extends Logging {
   private val DefaultBatchSize = 250
 
-  def loadOpiskeluoikeudet(opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService, filters: List[OpiskeluoikeusQueryFilter], systemUser: KoskiSession, raportointiDatabase: RaportointiDatabase, batchSize: Int = DefaultBatchSize): Observable[LoadResult] = {
-    logger.info("Ladataan opiskeluoikeuksia...")
-    raportointiDatabase.deleteOpiskeluoikeudet
-    raportointiDatabase.deleteOpiskeluoikeusAikajaksot
-    raportointiDatabase.deletePäätasonSuoritukset
-    raportointiDatabase.deleteOsasuoritukset
+  def loadOpiskeluoikeudet(opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService, systemUser: KoskiSession, raportointiDatabase: RaportointiDatabase, batchSize: Int = DefaultBatchSize): Observable[LoadResult] = {
+    deleteEverything(raportointiDatabase)
     val result = processByPage[OpiskeluoikeusRow, LoadResult](
-      page => opiskeluoikeusQueryRepository.opiskeluoikeusQuerySync(filters, Some(Ascending("id")), Some(PaginationSettings(page, batchSize)))(systemUser).map(_._1),
+      page => opiskeluoikeusQueryRepository.kaikkiOpiskeluoikeudetSivuittain(PaginationSettings(page, batchSize))(systemUser),
       opiskeluoikeusRows => {
         if (opiskeluoikeusRows.nonEmpty) {
           val (errors, outputRows) = opiskeluoikeusRows.par.map(buildRow).seq.partition(_.isLeft)
@@ -46,16 +43,32 @@ object OpiskeluoikeusLoader extends Logging {
           raportointiDatabase.loadOsasuoritukset(osasuoritusRows)
           errors.map(_.left.get) :+ LoadProgressResult(outputRows.size, päätasonSuoritusRows.size + osasuoritusRows.size)
         } else {
+          createIndexes(raportointiDatabase)
           Seq(LoadCompleted())
         }
       }
     )
-    result.doOnEach(new Subscriber[LoadResult] {
-      val startTime = System.currentTimeMillis
-      var opiskeluoikeusCount = 0
-      var suoritusCount = 0
-      var errors = 0
-      override def onNext(r: LoadResult) = r match {
+    result.doOnEach(progressLogger)
+  }
+
+  private def deleteEverything(raportointiDatabase: RaportointiDatabase): Unit = {
+    raportointiDatabase.deleteOpiskeluoikeudet
+    raportointiDatabase.deleteOpiskeluoikeusAikajaksot
+    raportointiDatabase.deletePäätasonSuoritukset
+    raportointiDatabase.deleteOsasuoritukset
+  }
+
+  private def progressLogger: Subscriber[LoadResult] = new Subscriber[LoadResult] {
+    val LoggingInterval = 5.minutes.toMillis
+    val startTime = System.currentTimeMillis
+    logger.info("Ladataan opiskeluoikeuksia...")
+
+    var opiskeluoikeusCount = 0
+    var suoritusCount = 0
+    var errors = 0
+    var lastLogged = System.currentTimeMillis
+    override def onNext(r: LoadResult) = {
+      r match {
         case LoadErrorResult(_, _) => errors += 1
         case LoadProgressResult(o, s) => {
           opiskeluoikeusCount += o
@@ -63,18 +76,31 @@ object OpiskeluoikeusLoader extends Logging {
         }
         case LoadCompleted(_) =>
       }
-      override def onError(e: Throwable) { logger.error(e)("Opiskeluoikeuksien lataus epäonnistui") }
-      override def onCompleted() {
-        val elapsedSeconds = (System.currentTimeMillis - startTime) / 1000.0
-        val rate = (opiskeluoikeusCount + errors) / Math.max(1.0, elapsedSeconds)
-        logger.info(s"Ladattiin $opiskeluoikeusCount opiskeluoikeutta, $suoritusCount suoritusta, $errors virhettä, ${(rate*60).round} opiskeluoikeutta/min")
-        val indexStartTime = System.currentTimeMillis
-        logger.info("Luodaan indeksit opiskeluoikeuksille...")
-        raportointiDatabase.createOpiskeluoikeusIndexes
-        val indexElapsedSeconds = (System.currentTimeMillis - indexStartTime)/1000
-        logger.info(s"Luotiin indeksit opiskeluoikeuksille, ${indexElapsedSeconds} s")
+      val now = System.currentTimeMillis
+      if ((now - lastLogged) > LoggingInterval) {
+        logIt(false)
+        lastLogged = now
       }
-    })
+    }
+    override def onError(e: Throwable) {
+      logger.error(e)("Opiskeluoikeuksien lataus epäonnistui")
+    }
+    override def onCompleted() {
+      logIt(true)
+    }
+    private def logIt(done: Boolean) = {
+      val elapsedSeconds = (System.currentTimeMillis - startTime) / 1000.0
+      val rate = (opiskeluoikeusCount + errors) / Math.max(1.0, elapsedSeconds)
+      logger.info(s"${if (done) "Ladattiin" else "Ladattu tähän mennessä"} $opiskeluoikeusCount opiskeluoikeutta, $suoritusCount suoritusta, $errors virhettä, ${(rate*60).round} opiskeluoikeutta/min")
+    }
+  }
+
+  private def createIndexes(raportointiDatabase: RaportointiDatabase): Unit = {
+    val indexStartTime = System.currentTimeMillis
+    logger.info("Luodaan indeksit opiskeluoikeuksille...")
+    raportointiDatabase.createOpiskeluoikeusIndexes
+    val indexElapsedSeconds = (System.currentTimeMillis - indexStartTime)/1000
+    logger.info(s"Luotiin indeksit opiskeluoikeuksille, ${indexElapsedSeconds} s")
   }
 
   private def processByPage[A, B](loadRows: Int => Seq[A], processRows: Seq[A] => Seq[B]): Observable[B] = {

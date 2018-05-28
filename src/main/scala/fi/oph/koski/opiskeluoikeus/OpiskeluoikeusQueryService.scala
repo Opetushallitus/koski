@@ -33,6 +33,13 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
     runDbSync(mkQuery(filters, sorting, pagination).result)
   }
 
+  def kaikkiOpiskeluoikeudetSivuittain(pagination: PaginationSettings)(implicit user: KoskiSession): Seq[OpiskeluoikeusRow] = {
+    if (!user.hasGlobalReadAccess) throw new RuntimeException("Query does not make sense without global read access")
+    // this approach to pagination ("limit 500 offset 176500") is not perfect (the query gets slower as offset
+    // increases), but seems tolerable here (with join to henkilot, as in mkQuery below, it's much slower)
+    runDbSync(applyPagination(OpiskeluOikeudetWithAccessCheck.sortBy(_.id), pagination).result)
+  }
+
   private def mkQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[SortOrder], pagination: Option[PaginationSettings])(implicit user: KoskiSession) = {
     val baseQuery = OpiskeluOikeudetWithAccessCheck.asInstanceOf[Query[OpiskeluoikeusTable, OpiskeluoikeusRow, Seq]]
       .join(Tables.Henkilöt).on(_.oppijaOid === _.oid)
