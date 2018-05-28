@@ -385,9 +385,9 @@
   "id" : 20827,
   "key" : "Allaoleva teksti on luotu automaattisesti Opintopolun tiedoista. Koulu tarvitsee näitä tietoja pystyäkseen käsittelemään kysymystäsi.",
   "locale" : "sv",
-  "modified" : 1522146681930,
+  "modified" : 1526551258074,
   "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "value" : "Texten nedan har bildats automatiskt från Studieinfos uppgifter. För att\nkunna behandla din fråga behöver skolan dessa uppgifter."
 }, {
   "accesscount" : 0,
   "accessed" : 1507555670615,
@@ -1906,9 +1906,9 @@
   "id" : 20640,
   "key" : "Ennustettu arvosana",
   "locale" : "sv",
-  "modified" : 1516795178247,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1527238005298,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "Prognostiserat vitsord"
 }, {
   "accesscount" : 0,
   "accessed" : 1507555670949,
@@ -2101,9 +2101,9 @@
   "id" : 21102,
   "key" : "Erityisopetuksen toteutuspaikka",
   "locale" : "sv",
-  "modified" : 1526473123869,
+  "modified" : 1527238005298,
   "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "value" : "Plats för genomförande av specialundervisning"
 }, {
   "accesscount" : 0,
   "accessed" : 1524740783339,
@@ -2647,9 +2647,9 @@
   "id" : 20968,
   "key" : "Henkilöllä on turvakielto",
   "locale" : "sv",
-  "modified" : 1524740783257,
+  "modified" : 1527238005298,
   "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "value" : "Personen har spärrmarkering"
 }, {
   "accesscount" : 0,
   "accessed" : 1516353566147,
@@ -3336,9 +3336,9 @@
   "id" : 20660,
   "key" : "KOSKI-palvelun tietosuojaseloste (sisältää rekisteriselosteen)",
   "locale" : "fi",
-  "modified" : 1518185586458,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : "KOSKI-palvelun tietosuojaseloste (sisältää rekisteriselosteen)"
+  "modified" : 1527160135622,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "EU:n tietosuoja-asetuksen 2016/679 (GDPR) mukainen tietosuojaseloste"
 }, {
   "accesscount" : 0,
   "accessed" : 1518185586462,
@@ -3349,9 +3349,9 @@
   "id" : 20661,
   "key" : "KOSKI-palvelun tietosuojaseloste (sisältää rekisteriselosteen)",
   "locale" : "sv",
-  "modified" : 1526456509613,
-  "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : "Dataskyddsbeskrivning för KOSKI-tjänsten (innehåller registerbeskrivning))"
+  "modified" : 1527160142010,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Dataskyddsbeskrivning för KOSKI-tjänsten (innehåller registerbeskrivning)"
 }, {
   "accesscount" : 0,
   "accessed" : 1507555670592,
@@ -5611,9 +5611,9 @@
   "id" : 20693,
   "key" : "Laajuus (kurssia)",
   "locale" : "sv",
-  "modified" : 1519640465456,
+  "modified" : 1526884294756,
   "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "value" : "Omfattning (kurser)"
 }, {
   "accesscount" : 0,
   "accessed" : 1507555669177,
@@ -7717,9 +7717,9 @@
   "id" : 21081,
   "key" : "Mikäli tiedoistasi puuttuu opintosuorituksia tai opiskeluoikeuksia, joiden kuuluisi ylläolevien tietojen perusteella näkyä Koski-palvelussa, voit ilmoittaa asiasta oppilaitoksellesi.",
   "locale" : "sv",
-  "modified" : 1525863030991,
+  "modified" : 1526979729376,
   "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "value" : "Om studieprestationer eller studierätter som enligt uppgifterna ovan borde synas i Koski-tjänsten saknas i dina uppgifter, kan du meddela din läroanstalt om detta."
 }, {
   "accesscount" : 0,
   "accessed" : 1521099674228,
@@ -7834,9 +7834,9 @@
   "id" : 20839,
   "key" : "Muista mainita sähköpostissa seuraavat tiedot:",
   "locale" : "sv",
-  "modified" : 1522146681930,
+  "modified" : 1527238005298,
   "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "value" : "Kom ihåg att nämna följande uppgifter i e-postmeddelandet:"
 }, {
   "accesscount" : 0,
   "accessed" : 1507555670999,
@@ -7990,9 +7990,9 @@
   "id" : 20830,
   "key" : "Muu",
   "locale" : "sv",
-  "modified" : 1522146681930,
+  "modified" : 1526559787560,
   "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "value" : "Annan"
 }, {
   "accesscount" : 0,
   "accessed" : 1507555670731,
@@ -9511,9 +9511,9 @@
   "id" : 20705,
   "key" : "Opiskeluoikeus",
   "locale" : "sv",
-  "modified" : 1519994390020,
+  "modified" : 1526978981417,
   "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "value" : "Studierätt"
 }, {
   "accesscount" : 0,
   "accessed" : 1510233799081,
@@ -10096,9 +10096,9 @@
   "id" : 20646,
   "key" : "OppijanumerorekisteriLinkTooltip",
   "locale" : "sv",
-  "modified" : 1516879557162,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1527238005298,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "Visa elevens uppgifter i Studentnummerregistret"
 }, {
   "accesscount" : 0,
   "accessed" : 1522146681952,
@@ -10798,9 +10798,9 @@
   "id" : 21111,
   "key" : "Paikallinen kurssi",
   "locale" : "sv",
-  "modified" : 1526473123869,
+  "modified" : 1526890831606,
   "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "value" : "Lokal kurs"
 }, {
   "accesscount" : 0,
   "accessed" : 1526473123878,
@@ -10837,9 +10837,9 @@
   "id" : 21096,
   "key" : "Paikallinen kurssi tai oppiaine",
   "locale" : "sv",
-  "modified" : 1526473123869,
+  "modified" : 1526890831606,
   "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "value" : "Lokal kurs eller lokalt läroämne"
 }, {
   "accesscount" : 0,
   "accessed" : 1526473123887,
@@ -10876,9 +10876,9 @@
   "id" : 21108,
   "key" : "Paikallinen oppiaine",
   "locale" : "sv",
-  "modified" : 1526473123869,
+  "modified" : 1526890831606,
   "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "value" : "Lokalt läroämne"
 }, {
   "accesscount" : 0,
   "accessed" : 1507555671399,
@@ -11734,9 +11734,9 @@
   "id" : 20944,
   "key" : "Poista linkki käytöstä",
   "locale" : "sv",
-  "modified" : 1524740783256,
+  "modified" : 1526559787560,
   "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "value" : "Ta bort länken"
 }, {
   "accesscount" : 0,
   "accessed" : 1510233798987,
@@ -13060,9 +13060,9 @@
   "id" : 21072,
   "key" : "Suoritettujen kurssien laajuus yhteensä",
   "locale" : "sv",
-  "modified" : 1525863030991,
+  "modified" : 1526890831606,
   "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "value" : "Omfattningen av avlagda kurser sammanlagt"
 }, {
   "accesscount" : 0,
   "accessed" : 1507555669270,
@@ -13450,9 +13450,9 @@
   "id" : 21001,
   "key" : "Suoritusjako virhe 1",
   "locale" : "sv",
-  "modified" : 1524740783257,
+  "modified" : 1527238005298,
   "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "value" : "Du försökte komma in på Studieinfo med en personlig länk som av någon anledning är felaktig."
 }, {
   "accesscount" : 0,
   "accessed" : 1524740783306,
@@ -13489,9 +13489,9 @@
   "id" : 20938,
   "key" : "Suoritusjako virhe 2",
   "locale" : "sv",
-  "modified" : 1524740783256,
+  "modified" : 1527238005298,
   "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "value" : "Kontrollera att den länk du använde var rätt skriven eller att länken inte har gått ut eller avlägsnats."
 }, {
   "accesscount" : 0,
   "accessed" : 1507555669875,
@@ -13840,9 +13840,9 @@
   "id" : 16449,
   "key" : "Syy alle 18-vuotiaana aloitettuun opiskeluun aikuisten lukiokoulutuksessa",
   "locale" : "sv",
-  "modified" : 1507555669046,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1526982400244,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "Orsak till att den studerade inlett gymnasieutbildning för vuxna innan den studerande fyllt 18 år"
 }, {
   "accesscount" : 0,
   "accessed" : 1507555669589,
@@ -14269,9 +14269,9 @@
   "id" : 21051,
   "key" : "Tiedoillasi ei löydy opintosuorituksia eikä opiskeluoikeuksia.",
   "locale" : "sv",
-  "modified" : 1525863030991,
+  "modified" : 1527238005298,
   "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "value" : "Inga studieprestationer eller studierätter hittas med dina uppgifter."
 }, {
   "accesscount" : 0,
   "accessed" : 1507555669976,
@@ -14542,9 +14542,9 @@
   "id" : 20815,
   "key" : "Tiedustelu opintopolun tiedoista",
   "locale" : "sv",
-  "modified" : 1522146681930,
+  "modified" : 1526981496182,
   "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "value" : "Förfrågan om studievägsuppgifter"
 }, {
   "accesscount" : 0,
   "accessed" : 1507555670560,
@@ -14776,9 +14776,9 @@
   "id" : 17515,
   "key" : "Toiminta-alueiden arvosanat",
   "locale" : "sv",
-  "modified" : 1510233817183,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1527238005298,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "Vitsord för verksamhetsområden"
 }, {
   "accesscount" : 0,
   "accessed" : 1507555670181,
@@ -14893,9 +14893,9 @@
   "id" : 21057,
   "key" : "Toteutuspaikka",
   "locale" : "sv",
-  "modified" : 1525863030991,
+  "modified" : 1527238005298,
   "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "value" : "Plats för genomförande"
 }, {
   "accesscount" : 0,
   "accessed" : 1507555671639,
@@ -15127,9 +15127,9 @@
   "id" : 20912,
   "key" : "Turvakielto",
   "locale" : "sv",
-  "modified" : 1523004132030,
+  "modified" : 1527238005298,
   "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "value" : "Spärrmarkering"
 }, {
   "accesscount" : 0,
   "accessed" : 1507555671847,
@@ -15244,9 +15244,9 @@
   "id" : 16443,
   "key" : "Tutkinnon osan nimi",
   "locale" : "sv",
-  "modified" : 1507555669046,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1526981186152,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "Examensdelens namn "
 }, {
   "accesscount" : 0,
   "accessed" : 1515596436089,
@@ -15283,9 +15283,9 @@
   "id" : 20620,
   "key" : "Tutkinnon osan osa-alueen nimi",
   "locale" : "sv",
-  "modified" : 1515596436025,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1527238005298,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "Namn på examensdelens delområde"
 }, {
   "accesscount" : 0,
   "accessed" : 1507555671177,
@@ -15322,9 +15322,9 @@
   "id" : 17145,
   "key" : "Tutkinnon osan ryhmä",
   "locale" : "sv",
-  "modified" : 1507555669048,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1527238005298,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "Examensdelens grupp"
 }, {
   "accesscount" : 0,
   "accessed" : 1507555670202,
@@ -15517,9 +15517,9 @@
   "id" : 19151,
   "key" : "Tutkintokerta",
   "locale" : "sv",
-  "modified" : 1513861201048,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1526890831606,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "Examen avlagd"
 }, {
   "accesscount" : 0,
   "accessed" : 1507555671585,
@@ -16024,9 +16024,9 @@
   "id" : 18833,
   "key" : "Ulkomainen vaihto-opiskelija.",
   "locale" : "sv",
-  "modified" : 1513083622279,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1527238005298,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "Utländsk utbytesstuderande."
 }, {
   "accesscount" : 0,
   "accessed" : 1507555671987,
@@ -16141,9 +16141,9 @@
   "id" : 17572,
   "key" : "Vaativan erityisen tuen erityinen tehtävä",
   "locale" : "sv",
-  "modified" : 1511359563382,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1527238005298,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "Uppgift inom krävande särskilt stöd"
 }, {
   "accesscount" : 0,
   "accessed" : 1507555670412,
@@ -16531,9 +16531,9 @@
   "id" : 17394,
   "key" : "Valitse ensin tutkinto",
   "locale" : "sv",
-  "modified" : 1507555669048,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1527238005298,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "Välj examen"
 }, {
   "accesscount" : 0,
   "accessed" : 1524740783372,
@@ -16609,9 +16609,9 @@
   "id" : 20854,
   "key" : "Valitse oppilaitos",
   "locale" : "sv",
-  "modified" : 1522146681930,
+  "modified" : 1526559787560,
   "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "value" : "Välj läroanstalt"
 }, {
   "accesscount" : 0,
   "accessed" : 1507555671709,
@@ -16648,9 +16648,9 @@
   "id" : 17310,
   "key" : "Valitse tutkinnon osa",
   "locale" : "sv",
-  "modified" : 1507555669048,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1527238005298,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "Välj examensdel"
 }, {
   "accesscount" : 0,
   "accessed" : 1507555669235,
@@ -17350,9 +17350,9 @@
   "id" : 19805,
   "key" : "Virkailijapalvelut löydät jatkossa osoitteesta",
   "locale" : "sv",
-  "modified" : 1513861201058,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1527238005298,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "I fortsättningen hittar du tjänstemannatjänster via adressen"
 }, {
   "accesscount" : 0,
   "accessed" : 1514385608947,
@@ -17545,9 +17545,9 @@
   "id" : 21066,
   "key" : "Vuoden 1990 jälkeen suoritetut ylioppilastutkinnot.",
   "locale" : "sv",
-  "modified" : 1525863030991,
+  "modified" : 1526978981417,
   "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "value" : "Studentexamina som avlagts efter år 1990"
 }, {
   "accesscount" : 0,
   "accessed" : 1525863031012,
@@ -17584,9 +17584,9 @@
   "id" : 21063,
   "key" : "Vuoden 2018 tammikuun jälkeen suoritetut peruskoulun, lukion ja ammattikoulun opinnot ja voimassa olevat opiskeluoikeudet.",
   "locale" : "sv",
-  "modified" : 1525863030991,
+  "modified" : 1526978981417,
   "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "value" : "Prestationer och studierätter i grundskola, gymnasium och yrkesskola som registrerats efter januari 2018"
 }, {
   "accesscount" : 0,
   "accessed" : 1513861201753,
@@ -17623,9 +17623,9 @@
   "id" : 19016,
   "key" : "Vuodenaika",
   "locale" : "sv",
-  "modified" : 1513861201046,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1526980335575,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "Säsong"
 }, {
   "accesscount" : 0,
   "accessed" : 1513861201932,
@@ -17662,9 +17662,9 @@
   "id" : 19100,
   "key" : "Vuosi",
   "locale" : "sv",
-  "modified" : 1513861201047,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1526980335575,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "År"
 }, {
   "accesscount" : 0,
   "accessed" : 1510233799085,
@@ -17701,9 +17701,9 @@
   "id" : 17548,
   "key" : "Vuosiluokkiin sitomaton opetus",
   "locale" : "sv",
-  "modified" : 1510233817183,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1526981918288,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "Undervisning som inte är\nbunden till årskurserna"
 }, {
   "accesscount" : 0,
   "accessed" : 1507555671288,
@@ -36616,9 +36616,9 @@
   "id" : 20809,
   "key" : "syntynyt",
   "locale" : "sv",
-  "modified" : 1521099674155,
+  "modified" : 1526550501720,
   "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "value" : "f."
 }, {
   "accesscount" : 0,
   "accessed" : 1507555669511,
@@ -41725,9 +41725,9 @@
   "id" : 20998,
   "key" : "warning:unavailable.virta",
   "locale" : "sv",
-  "modified" : 1524740783257,
+  "modified" : 1527238005298,
   "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "value" : "Högskolestudier kan inte sökas just nu. Försök på nytt senare."
 }, {
   "accesscount" : 0,
   "accessed" : 1524740783319,
@@ -41764,9 +41764,9 @@
   "id" : 20947,
   "key" : "warning:unavailable.ytr",
   "locale" : "sv",
-  "modified" : 1524740783256,
+  "modified" : 1527238005298,
   "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "value" : "Uppgifter om studentexamen kan inte sökas just nu. Försök på nytt senare."
 }, {
   "accesscount" : 0,
   "accessed" : 1507555670977,
