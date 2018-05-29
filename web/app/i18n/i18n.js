@@ -30,5 +30,5 @@ export const t = (s, ignoreMissing, languageOverride) => {
     }
     return localizedString[usedLanguage]
   }
-  console.err('Trying to localize', s)
+  console.error('Trying to localize', s)
 }
