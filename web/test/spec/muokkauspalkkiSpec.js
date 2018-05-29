@@ -4,7 +4,7 @@ describe('Muokkauspalkki', function () {
   }
 
   function editBarVisible() {
-    return S('#edit-bar').hasClass('visible')
+    return S('#edit-bar-wrapper').hasClass('visible')
   }
 
   var page = KoskiPage()
