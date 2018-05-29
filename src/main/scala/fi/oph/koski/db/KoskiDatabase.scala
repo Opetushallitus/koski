@@ -43,11 +43,13 @@ case class KoskiDatabaseConfig(c: Config, readOnly: Boolean = false, raportointi
   val user: String = c.getString("db.user")
   val jdbcUrl = "jdbc:postgresql://" + host + ":" + port + "/" + dbName  + "?user=" + user + "&password=" + password
 
-  val config = c.getConfig("db")
+  var config = c.getConfig("db")
     .withValue("poolName", fromAnyRef(poolName))
     .withValue("readOnly", fromAnyRef(readOnly))
     .withValue("url", fromAnyRef(jdbcUrl))
     .withValue("numThreads", fromAnyRef(Pools.dbThreads))
+  if (raportointi && c.hasPath("db.raportointi.properties"))
+    config = config.withValue("properties", c.getObject("db.raportointi.properties"))
 
   val url: String = config.getString("url")
   def isLocal = host == "localhost"
