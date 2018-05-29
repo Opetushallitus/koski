@@ -28,9 +28,13 @@ const Hyvaksynta = () => (
             <li><Text name="Näkee oppilaitoksen tiedot"/></li>
           </ul>
         </div>
-        <div className="acceptance-button-container"> </div>
+        <div className="acceptance-button-container">
+          <div className="acceptance-button button"><Text name="Hyväksy"/></div>
+          <span className="decline-link"><Text name="Peruuta ja palaa"/></span>
+        </div>
       </div>
     </div>
+
     <div className="footer">
       <img src="/koski/images/oph_fin_vaaka.png" />
       <img src="/koski/images/logo_okm.png" />
