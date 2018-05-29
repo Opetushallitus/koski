@@ -24,14 +24,14 @@ const OppilaitosPicker = ({oppilaitosAtom}) => {
           (oid, selected) => (
             <OrganisaatioPicker
               preselectSingleOption={true}
-              selectedOrg={selected}
+              selectedOrg={{ oid: selected && selected.oid, nimi: selected && selected.nimi && t(selected.nimi) }}
               onSelectionChanged={org => {
-                oppilaitosAtom.set(org.oid)
+                oppilaitosAtom.set(org ? org.oid : OtherOppilaitosValue)
                 pickerSelection.set(org)
               }}
               shouldShowOrg={org => !org.organisaatiotyypit.some(tyyppi => tyyppi === 'TOIMIPISTE')}
               canSelectOrg={(org) => org.organisaatiotyypit.some(ot => selectableOrgTypes.includes(ot))}
-              clearText='tyhjennä'
+              clearText={t('tyhjennä')}
               noSelectionText={t('Valitse oppilaitos')}
               showAll={true}
             />
