@@ -29,7 +29,7 @@ class MyDataServlet(implicit val application: KoskiApplication) extends ApiServl
       member.getString("id") == memberCode)
 
     if (isValidCode) {
-      render(application.mydataService.put(koskiSessionOption.get.oid, memberCode)(koskiSessionOption.get))
+      renderObject(Map("success" -> application.mydataService.put(koskiSessionOption.get.oid, memberCode)(koskiSessionOption.get)))
     } else {
       throw InvalidRequestException(KoskiErrorCategory.badRequest.header.invalidXRoadHeader)
     }
