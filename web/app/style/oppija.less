@@ -91,7 +91,7 @@
       pointer-events: none;
     }
     &.edit, &.dirty {
-      padding-bottom: 50px;
+      padding-bottom: 40px;
     }
     .turvakielto {
       cursor: pointer;
@@ -169,11 +169,18 @@
     font-weight: normal;
   }
 
-  #edit-bar {
+  #edit-bar-wrapper {
     position: fixed;
-    bottom: -70px;
+    bottom: -60px;
     opacity: 0;
-    left: 0;
+    transition: bottom 1s, opacity 1s;
+    &.visible {
+      bottom: 0;
+      opacity: 1;
+    }
+  }
+
+  #edit-bar {
     width: 100vw;
     max-width: @max-content-width;
     margin: auto;
@@ -182,16 +189,12 @@
     background: white;
     box-shadow: 0 -2px 5px #eeeeee;
     z-index: @z-index-edit-bar;
+    .cancel {
+      margin-left: 20px;
+    }
     button {
       margin: 0 20px;
       transition: all 1s;
-    }
-    .state-indicator {
-    }
-    transition: bottom 1s, opacity 1s;
-    &.visible {
-      bottom: 0;
-      opacity: 1;
     }
   }
 }

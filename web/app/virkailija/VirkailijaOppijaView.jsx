@@ -245,11 +245,12 @@ const EditBar = ({stateP, saveChangesBus, cancelChangesBus, oppija}) => {
   let messageP = stateP.decode(messageMap)
   let classNameP = Bacon.combineAsArray(stateP, messageP.map(msg => msg ? 'visible' : '')).map(buildClassNames)
 
-  return (<div id="edit-bar" className={classNameP}>
+  return (<div id="edit-bar-wrapper" className={classNameP}><div id="edit-bar">
     <a className={stateP.map(state => ['edit', 'dirty'].includes(state) ? 'cancel' : 'cancel disabled')} onClick={ () => cancelChangesBus.push() }><Text name="Peruuta"/></a>
     <button disabled={canSaveP.not()} onClick={saveChanges}><Text name="Tallenna"/></button>
     <span className="state-indicator">{messageP.map(k => k ? <Text name={k}/> : null)}</span>
-  </div>)
+  </div></div>
+  )
 }
 
 const opiskeluoikeusInvalidated = () => {
