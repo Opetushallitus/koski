@@ -12,8 +12,12 @@
   "withinCodes" : [ {
     "codesUri" : "tutkinnonosat",
     "codesVersion" : 1,
+    "passive" : true
+  }, {
+    "codesUri" : "tutkinnonosat",
+    "codesVersion" : 2,
     "passive" : false
   } ],
   "tila" : "LUONNOS",
-  "version" : 4
+  "version" : 5
 }

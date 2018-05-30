@@ -3,7 +3,14 @@
   "koodiArvo" : "BI1",
   "metadata" : [ {
     "nimi" : "Mitä elämä on?",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vad är liv?",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -16,7 +23,14 @@
   "koodiArvo" : "BI2",
   "metadata" : [ {
     "nimi" : "Kaupunkiekologia ja kestävä tulevaisuus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Stadsekologi och hållbar utveckling",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -29,7 +43,14 @@
   "koodiArvo" : "BI3",
   "metadata" : [ {
     "nimi" : "Ihminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Människan",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -178,7 +199,14 @@
   "koodiArvo" : "ENA1",
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Lähtökohtia englannin opiskelulle",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Utgångspunkter för studier i engelska",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -195,7 +223,14 @@
   "koodiArvo" : "ENA10",
   "metadata" : [ {
     "nimi" : "Globaalienglanti",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Global engelska",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -212,7 +247,14 @@
   "koodiArvo" : "ENA11",
   "metadata" : [ {
     "nimi" : "Liikkuvuus ja kansainvälisyys",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Rörlighet och internationella kontakter",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -229,7 +271,14 @@
   "koodiArvo" : "ENA12",
   "metadata" : [ {
     "nimi" : "Avaimet elinikäiseen kieltenopiskeluun",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Nycklar till livslångt språklärande",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -246,7 +295,14 @@
   "koodiArvo" : "ENA2",
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Grundläggande kommunikation i sociala situationer i vardagen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -263,7 +319,14 @@
   "koodiArvo" : "ENA3",
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Kommunikation vid uträttande av ärenden",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -280,7 +343,14 @@
   "koodiArvo" : "ENA4",
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Opiskelu ja koulutus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Studier och utbildning",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -297,7 +367,14 @@
   "koodiArvo" : "ENA5",
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Työelämässä toiminen ja muita muodollisia tilanteita",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Kommunikation i arbetslivet och i andra formella situationer",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -314,7 +391,14 @@
   "koodiArvo" : "ENA6",
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Palvelu- ja viranomaistilanteet ja osallistuva kansalainen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Kommunikation i servicesituationer och med myndigheter, aktivt medborgarskap",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -331,7 +415,14 @@
   "koodiArvo" : "ENA7",
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Kertomuksia minusta ja ympäristöstäni",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Jag och min miljö",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -348,7 +439,14 @@
   "koodiArvo" : "ENA8",
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Ajankohtaiset ilmiöt",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Aktuella företeelser",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -365,7 +463,14 @@
   "koodiArvo" : "ENA9",
   "metadata" : [ {
     "nimi" : "Kulttuurikohtaamisia",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kulturmöten",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -382,7 +487,14 @@
   "koodiArvo" : "ET1",
   "metadata" : [ {
     "nimi" : "Katsomukset ja ihmisoikeudet",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Livsåskådningar och mänskliga rättigheter",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -395,7 +507,14 @@
   "koodiArvo" : "ET2",
   "metadata" : [ {
     "nimi" : "Ihmisenä kasvaminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att växa som människa",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -408,7 +527,14 @@
   "koodiArvo" : "FY1",
   "metadata" : [ {
     "nimi" : "Fysiikka omassa elämässä ja elinympäristössä",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fysik i det egna livet och livsmiljön",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -421,7 +547,14 @@
   "koodiArvo" : "FY2",
   "metadata" : [ {
     "nimi" : "Fysiikka maailmankuvan rakentajana",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fysiken som grund för världsbilden",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -434,7 +567,14 @@
   "koodiArvo" : "FY3",
   "metadata" : [ {
     "nimi" : "Fysiikka yhteiskunnassa",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fysik i samhället",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -447,7 +587,14 @@
   "koodiArvo" : "GE1",
   "metadata" : [ {
     "nimi" : "Toimiva maapallo",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vårt jordklot",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -460,7 +607,14 @@
   "koodiArvo" : "GE2",
   "metadata" : [ {
     "nimi" : "Maapallo ihmisen elinympäristönä",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Jorden som livsmiljö för människan",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -473,7 +627,14 @@
   "koodiArvo" : "GE3",
   "metadata" : [ {
     "nimi" : "Muuttuva maapallo ja kestävä tulevaisuus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "En föränderlig värld och en hållbar framtid",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -486,7 +647,14 @@
   "koodiArvo" : "HI1",
   "metadata" : [ {
     "nimi" : "Antiikista uuden ajan murrokseen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Från antiken till modern tid",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -499,7 +667,14 @@
   "koodiArvo" : "HI2",
   "metadata" : [ {
     "nimi" : "Teollisuusyhteiskunnan synnystä nykyaikaan",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Från industrisamhälle till nutid",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -512,7 +687,14 @@
   "koodiArvo" : "HI3",
   "metadata" : [ {
     "nimi" : "Suomen historian käännekohdat",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vändpunkter i Finlands historia",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -661,7 +843,14 @@
   "koodiArvo" : "KE1",
   "metadata" : [ {
     "nimi" : "Kemia omassa elämässä ja elinympäristössä",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kemi i det egna livet och livsmiljön",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -674,7 +863,14 @@
   "koodiArvo" : "KE2",
   "metadata" : [ {
     "nimi" : "Kemia maailmankuvan rakentajana",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kemin som grund för världsbilden",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -687,7 +883,14 @@
   "koodiArvo" : "KE3",
   "metadata" : [ {
     "nimi" : "Kemia yhteiskunnassa",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kemi i samhället",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -972,7 +1175,14 @@
   "koodiArvo" : "MA1",
   "metadata" : [ {
     "nimi" : "Luvut ja laskutoimitukset I",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Tal och räkneoperationer I",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -985,7 +1195,14 @@
   "koodiArvo" : "MA2",
   "metadata" : [ {
     "nimi" : "Luvut ja laskutoimitukset II",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Tal och räkneoperationer II",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -998,7 +1215,14 @@
   "koodiArvo" : "MA3",
   "metadata" : [ {
     "nimi" : "Lausekkeet",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Uttryck",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1011,7 +1235,14 @@
   "koodiArvo" : "MA4",
   "metadata" : [ {
     "nimi" : "Yhtälöt",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Ekvationer",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1024,7 +1255,14 @@
   "koodiArvo" : "MA5",
   "metadata" : [ {
     "nimi" : "Geometria",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Geometri",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1037,7 +1275,14 @@
   "koodiArvo" : "MA6",
   "metadata" : [ {
     "nimi" : "Prosentit",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Procent",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1050,7 +1295,14 @@
   "koodiArvo" : "MA7",
   "metadata" : [ {
     "nimi" : "Funktiot ja tilastot",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Funktioner och statistik",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1063,7 +1315,14 @@
   "koodiArvo" : "MA8",
   "metadata" : [ {
     "nimi" : "Geometria ja trigonometria",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Geometri och trigonometri",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1076,7 +1335,14 @@
   "koodiArvo" : "MA9",
   "metadata" : [ {
     "nimi" : "Lausekkeita ja yhtälöitä",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Uttryck och ekvationer",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1497,7 +1763,14 @@
   "koodiArvo" : "S21",
   "metadata" : [ {
     "nimi" : "Uutisia ja mielipiteitä",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Nyheter och opinion",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1510,7 +1783,14 @@
   "koodiArvo" : "S22",
   "metadata" : [ {
     "nimi" : "Tekstit tutuiksi",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Textanalys",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1523,7 +1803,14 @@
   "koodiArvo" : "S23",
   "metadata" : [ {
     "nimi" : "Kirjoittaminen prosessina",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Skrivprocessen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1536,7 +1823,14 @@
   "koodiArvo" : "S24",
   "metadata" : [ {
     "nimi" : "Kulttuuri ja identiteetti",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kultur och identitet",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1549,7 +1843,14 @@
   "koodiArvo" : "S25",
   "metadata" : [ {
     "nimi" : "Kieli avaimena maailmaan",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Språket som nyckel till världen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1834,7 +2135,14 @@
   "koodiArvo" : "U1",
   "metadata" : [ {
     "nimi" : "Uskonnot maailmassa",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Religionerna i världen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1847,7 +2155,14 @@
   "koodiArvo" : "U2",
   "metadata" : [ {
     "nimi" : "Ihmisenä kasvaminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Att växa som människa",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -1996,7 +2311,14 @@
   "koodiArvo" : "YH1",
   "metadata" : [ {
     "nimi" : "Yhteiskuntajärjestelmä sekä julkiset palvelut",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Samhällssystemet och offentliga tjänster",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2009,7 +2331,14 @@
   "koodiArvo" : "YH2",
   "metadata" : [ {
     "nimi" : "Työelämän tuntemus ja oma talous",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kunskap om arbetslivet, egen ekonomi",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -2022,7 +2351,14 @@
   "koodiArvo" : "YH3",
   "metadata" : [ {
     "nimi" : "Aktiivinen kansalaisuus ja vaikuttaminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Aktivt medborgarskap, att påverka",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {

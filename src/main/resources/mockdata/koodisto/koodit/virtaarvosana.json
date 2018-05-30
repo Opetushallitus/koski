@@ -3,8 +3,12 @@
   "koodiArvo" : "1",
   "metadata" : [ {
     "nimi" : "1",
-    "lyhytNimi" : "",
+    "lyhytNimi" : "1",
     "kieli" : "FI"
+  }, {
+    "nimi" : "1",
+    "lyhytNimi" : "1",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -12,8 +16,12 @@
   "koodiArvo" : "2",
   "metadata" : [ {
     "nimi" : "2",
-    "lyhytNimi" : "",
+    "lyhytNimi" : "2",
     "kieli" : "FI"
+  }, {
+    "nimi" : "2",
+    "lyhytNimi" : "2",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -23,6 +31,10 @@
     "nimi" : "3",
     "lyhytNimi" : "3",
     "kieli" : "FI"
+  }, {
+    "nimi" : "3",
+    "lyhytNimi" : "3",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -32,6 +44,10 @@
     "nimi" : "4",
     "lyhytNimi" : "4",
     "kieli" : "FI"
+  }, {
+    "nimi" : "4",
+    "lyhytNimi" : "4",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -41,6 +57,10 @@
     "nimi" : "5",
     "lyhytNimi" : "5",
     "kieli" : "FI"
+  }, {
+    "nimi" : "5",
+    "lyhytNimi" : "5",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -50,6 +70,10 @@
     "nimi" : "approbatur",
     "lyhytNimi" : "A",
     "kieli" : "FI"
+  }, {
+    "nimi" : "approbatur",
+    "lyhytNimi" : "A",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -59,6 +83,10 @@
     "nimi" : "Arvosana ei käytössä",
     "lyhytNimi" : "EiKaytossa",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Vitsord ej i bruk",
+    "lyhytNimi" : "EjIBruk",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -68,6 +96,10 @@
     "nimi" : "lubenter approbatur",
     "lyhytNimi" : "B",
     "kieli" : "FI"
+  }, {
+    "nimi" : "lubenter approbatur",
+    "lyhytNimi" : "B",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -77,6 +109,10 @@
     "nimi" : "cum laude approbatur",
     "lyhytNimi" : "C",
     "kieli" : "FI"
+  }, {
+    "nimi" : "cum laude approbatur",
+    "lyhytNimi" : "C",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -86,6 +122,10 @@
     "nimi" : "eximia cum laude approbatur",
     "lyhytNimi" : "E",
     "kieli" : "FI"
+  }, {
+    "nimi" : "eximia cum laude approbatur",
+    "lyhytNimi" : "E",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -95,6 +135,10 @@
     "nimi" : "hyvät tiedot",
     "lyhytNimi" : "HT",
     "kieli" : "FI"
+  }, {
+    "nimi" : "goda insikter",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -104,6 +148,10 @@
     "nimi" : "hyväksytty",
     "lyhytNimi" : "HYV",
     "kieli" : "FI"
+  }, {
+    "nimi" : "godkänd",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -113,6 +161,10 @@
     "nimi" : "kiittäen hyväksytty",
     "lyhytNimi" : "KH",
     "kieli" : "FI"
+  }, {
+    "nimi" : "med beröm godkänd",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -122,6 +174,10 @@
     "nimi" : "laudatur",
     "lyhytNimi" : "L",
     "kieli" : "FI"
+  }, {
+    "nimi" : "laudatur",
+    "lyhytNimi" : "L",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -131,6 +187,10 @@
     "nimi" : "magna cum laude approbatur",
     "lyhytNimi" : "M",
     "kieli" : "FI"
+  }, {
+    "nimi" : "magna cum laude approbatur",
+    "lyhytNimi" : "M",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -140,6 +200,10 @@
     "nimi" : "non sine laude approbatur",
     "lyhytNimi" : "N",
     "kieli" : "FI"
+  }, {
+    "nimi" : "non sine laude approbatur",
+    "lyhytNimi" : "N",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -149,6 +213,10 @@
     "nimi" : "tyydyttävät tiedot",
     "lyhytNimi" : "TT",
     "kieli" : "FI"
+  }, {
+    "nimi" : "nöjaktiga insikter",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 } ]

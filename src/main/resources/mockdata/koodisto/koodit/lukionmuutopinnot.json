@@ -3,7 +3,14 @@
   "koodiArvo" : "LD",
   "metadata" : [ {
     "nimi" : "Lukiodiplomit",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Gymnasiediplom",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -12,7 +19,14 @@
   "koodiArvo" : "MS",
   "metadata" : [ {
     "nimi" : "Muut suoritukset",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Övriga prestationer",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -21,7 +35,14 @@
   "koodiArvo" : "OA",
   "metadata" : [ {
     "nimi" : "Oman äidinkielen opinnot",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Studier i det egna modersmålet",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -30,7 +51,14 @@
   "koodiArvo" : "TO",
   "metadata" : [ {
     "nimi" : "Teemaopinnot",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Temastudier",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -39,7 +67,14 @@
   "koodiArvo" : "TVO",
   "metadata" : [ {
     "nimi" : "Taiteiden väliset opinnot",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Ämnesövergripande konststudier",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
