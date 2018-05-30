@@ -41,7 +41,7 @@ case class KoskiDatabaseConfig(c: Config, readOnly: Boolean = false, raportointi
   val jdbcDriverClassName = "org.postgresql.Driver"
   val password: String = c.getString("db.password")
   val user: String = c.getString("db.user")
-  val jdbcUrl = "jdbc:postgresql://" + host + ":" + port + "/" + dbName  + "?user=" + user + "&password=" + password
+  val jdbcUrl = "jdbc:postgresql://" + host + ":" + port + "/" + dbName
 
   var config = c.getConfig("db")
     .withValue("poolName", fromAnyRef(poolName))
