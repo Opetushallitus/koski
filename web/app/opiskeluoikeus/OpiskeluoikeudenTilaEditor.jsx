@@ -19,30 +19,36 @@ import {parseISODate} from '../date/date.js'
 import {Editor} from '../editor/Editor'
 import Text from '../i18n/Text'
 
-const showOpiskeluoikeudenTilaDialog = Atom(false)
-export const OpiskeluoikeudenTilaEditor = ({model, alkuChangeBus}) => {
-  let wrappedModel = fixOpiskeluoikeudenPäättymispäivä(model)
-  let jaksotModel = opiskeluoikeusjaksot(wrappedModel)
-  let items = modelItems(jaksotModel).slice(0).reverse()
-  let suorituksiaKesken = wrappedModel.context.edit && R.any(s => !arvioituTaiVahvistettu(s))(modelItems(wrappedModel, 'suoritukset'))
-  let showAddDialog = () => showOpiskeluoikeudenTilaDialog.modify(x => !x)
+export class OpiskeluoikeudenTilaEditor extends React.Component {
+  constructor(props) {
+    super(props)
+    this.showOpiskeluoikeudenTilaDialog = Atom(false)
+  }
 
-  let lisääJakso = (uusiJakso) => {
-    if (uusiJakso) {
-      pushModel(uusiJakso, wrappedModel.context.changeBus)
+  render() {
+    const {model, alkuChangeBus} = this.props
+    let wrappedModel = fixOpiskeluoikeudenPäättymispäivä(model)
+    let jaksotModel = opiskeluoikeusjaksot(wrappedModel)
+    let items = modelItems(jaksotModel).slice(0).reverse()
+    let suorituksiaKesken = wrappedModel.context.edit && R.any(s => !arvioituTaiVahvistettu(s))(modelItems(wrappedModel, 'suoritukset'))
+    let showAddDialog = () => this.showOpiskeluoikeudenTilaDialog.modify(x => !x)
+
+    let lisääJakso = (uusiJakso) => {
+      if (uusiJakso) {
+        pushModel(uusiJakso, wrappedModel.context.changeBus)
+      }
+      this.showOpiskeluoikeudenTilaDialog.set(false)
     }
-    showOpiskeluoikeudenTilaDialog.set(false)
-  }
 
-  let removeItem = () => {
-    pushRemoval(items[0], wrappedModel.context.changeBus)
-    showOpiskeluoikeudenTilaDialog.set(false)
-  }
+    let removeItem = () => {
+      pushRemoval(items[0], wrappedModel.context.changeBus)
+      this.showOpiskeluoikeudenTilaDialog.set(false)
+    }
 
-  let showLisaaTila = wrappedModel.context.edit && !onLopputilassa(wrappedModel)
-  let edellisenTilanAlkupäivä = modelData(items[0], 'alku') && parseISODate(modelData(items[0], 'alku'))
+    let showLisaaTila = wrappedModel.context.edit && !onLopputilassa(wrappedModel)
+    let edellisenTilanAlkupäivä = modelData(items[0], 'alku') && parseISODate(modelData(items[0], 'alku'))
 
-  return (
+    return (
       <div>
         <ul className="array">
           {
@@ -51,30 +57,39 @@ export const OpiskeluoikeudenTilaEditor = ({model, alkuChangeBus}) => {
                 <div className={'opiskeluoikeusjakso' + (i === getActiveIndex(items) ? ' active' : '')}>
                   <label className="date">
                     {i === items.length - 1
-                      ? <Editor model={item} path="alku" changeBus={alkuChangeBus}/>
-                      : <Editor model={item} path="alku" edit={false}/>
+                     ? <Editor model={item} path="alku" changeBus={alkuChangeBus}/>
+                     : <Editor model={item} path="alku" edit={false}/>
                     }
                   </label>
                   <label className="tila">
                     {modelTitle(item, 'tila')}
                     {
-                      rahoitusMuuttunut(items, i)&& <span className="rahoitus">{formatRahoitus(rahoitus(items, i))}</span>
+                      rahoitusMuuttunut(items, i) &&
+                      <span className="rahoitus">{formatRahoitus(rahoitus(items, i))}</span>
                     }
                   </label>
                 </div>
-                {wrappedModel.context.edit && i === 0 && items.length > 1 && <a className="remove-item" onClick={removeItem}/>}
+                {wrappedModel.context.edit && i === 0 && items.length > 1 &&
+                <a className="remove-item" onClick={removeItem}/>}
               </li>)
             )
           }
           {
-            showLisaaTila && <li className="add-item"><a onClick={showAddDialog}><Text name="Lisää opiskeluoikeuden tila"/></a></li>
+            showLisaaTila &&
+            <li className="add-item"><a onClick={showAddDialog}><Text name="Lisää opiskeluoikeuden tila"/></a></li>
           }
         </ul>
         {
-          showOpiskeluoikeudenTilaDialog.map(showDialog => showDialog && <OpiskeluoikeudenUusiTilaPopup tilaListModel={jaksotModel} suorituksiaKesken={suorituksiaKesken} edellisenTilanAlkupäivä={edellisenTilanAlkupäivä} resultCallback={(uusiJakso) => lisääJakso(uusiJakso)} />)
+          this.showOpiskeluoikeudenTilaDialog.map(showDialog => {
+            return showDialog &&
+              <OpiskeluoikeudenUusiTilaPopup tilaListModel={jaksotModel} suorituksiaKesken={suorituksiaKesken}
+                                             edellisenTilanAlkupäivä={edellisenTilanAlkupäivä}
+                                             resultCallback={(uusiJakso) => lisääJakso(uusiJakso)}/>
+          })
         }
       </div>
-  )
+    )
+  }
 }
 
 OpiskeluoikeudenTilaEditor.isEmpty = m => recursivelyEmpty(m, 'opiskeluoikeusjaksot')
@@ -114,8 +129,8 @@ const opiskeluoikeusjaksot = (opiskeluoikeus) => {
 
 let fixPäättymispäivä = (opiskeluoikeus) => {
   let päättymispäivä = onLopputilassa(opiskeluoikeus)
-    ? modelLookup(viimeinenJakso(opiskeluoikeus), 'alku').value
-    : null
+                       ? modelLookup(viimeinenJakso(opiskeluoikeus), 'alku').value
+                       : null
 
   return modelSetValue(opiskeluoikeus, päättymispäivä, 'päättymispäivä')
 }
