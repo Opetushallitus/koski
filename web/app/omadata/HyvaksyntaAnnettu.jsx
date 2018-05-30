@@ -5,13 +5,13 @@ import {lang} from '../i18n/i18n'
 
 export default ({ memberName, onAcceptClick }) => (
   <div className="acceptance-box">
-    <div className="acceptance-title"><Text name="Omadata hyväksytty otsikko"/></div>
-    <div className="acceptance-share-info">
+    <div className="acceptance-title-success"><Text name="Omadata hyväksytty otsikko"/></div>
+    <div className="acceptance-control-mydata">
       <Text name="Voit hallita tietojasi"/>
     </div>
-    <div className="acceptance-button-container">
-      <span className="decline-link"><Text name="Palataan palveluntarjoajan sivulle"/></span>
-      <div className="acceptance-button button" onClick={onAcceptClick}><Text name="Palaa palveluntarjoajan sivulle"/></div>
+    <div className="acceptance-return-container">
+      <div className="acceptance-return-automatically"><Text name="Palataan palveluntarjoajan sivulle"/></div>
+      <div className="acceptance-return-button button" onClick={onAcceptClick}><Text name="Palaa palveluntarjoajan sivulle"/></div>
     </div>
   </div>
 )
