@@ -43,8 +43,9 @@ case class AikuistenPerusopetuksenAlkuvaiheenOppiaineenSuoritus(
   @Title("Kurssit")
   override val osasuoritukset: Option[List[AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus]] = None,
   @KoodistoKoodiarvo("aikuistenperusopetuksenalkuvaiheenoppiaine")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "aikuistenperusopetuksenalkuvaiheenoppiaine", koodistoUri = "suorituksentyyppi")
-) extends OppiaineenSuoritus with Vahvistukseton with MahdollisestiSuorituskielellinen {
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "aikuistenperusopetuksenalkuvaiheenoppiaine", koodistoUri = "suorituksentyyppi"),
+  suoritustapa: Option[Koodistokoodiviite] = None
+) extends OppiaineenSuoritus with Vahvistukseton with MahdollisestiSuorituskielellinen with MahdollisestiSuoritustavallinenSuoritus {
   override def salliDuplikaatit: Boolean = true
 }
 
