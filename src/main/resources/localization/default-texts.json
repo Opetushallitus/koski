@@ -1058,8 +1058,11 @@
   "Näkee läsnäolotiedot": "läsnäolotiedot",
   "Näkee oppilaitoksen tiedot": "oppilaitoksen tiedot",
   "Hyväksy": "Hyväksy",
-  "Peruuta ja palaa": "Peruuta ja palaa palveluntarjoajan sivulle"
-
+  "Peruuta ja palaa": "Peruuta ja palaa palveluntarjoajan sivulle",
+  "Omadata hyväksytty otsikko": "Tietojen luovuttaminen onnistui",
+  "Palaa palveluntarjoajan sivulle": "Palaa palveluntarjoajan sivulle",
+  "Voit hallita tietojasi": "Voit hallita omien tietojesi jakamista Oma Opintopolku -palvelussa.",
+  "Palataan palveluntarjoajan sivulle": "Palataan palveluntarjoajan sivulle 3 sekunnin kuluttua"
 
 }
 

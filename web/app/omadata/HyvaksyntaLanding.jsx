@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import AnnaHyvaksynta from './AnnaHyvaksynta'
+import HyvaksyntaAnnettu from './HyvaksyntaAnnettu'
 import Footer from './Footer'
 import Header from './Header'
 import {formatFinnishDate} from '../date/date.js'
@@ -40,6 +41,11 @@ class HyvaksyntaLanding extends React.Component {
   }
 
   render() {
+
+    const acceptanceBox = this.state.authorizationGiven ?
+      <HyvaksyntaAnnettu/> :
+      <AnnaHyvaksynta memberName={this.state.memberName} onAcceptClick={this.postAuthorization} />
+
     return (
       <div>
         <Header firstName={this.state.firstName} lastName={this.state.lastName}/>
@@ -48,7 +54,7 @@ class HyvaksyntaLanding extends React.Component {
           <div className="heading"><h1><Text name="Henkilökohtaisten tietojen käyttö"/></h1></div>
           <div className="user">{this.state.firstName} {this.state.lastName}<span className="dateofbirth"> s. {formatFinnishDate(this.state.dateOfBirth)}</span></div>
 
-          <AnnaHyvaksynta memberName={this.state.memberName} onAcceptClick={this.postAuthorization} />
+          {acceptanceBox}
         </div>
 
         <Footer/>
