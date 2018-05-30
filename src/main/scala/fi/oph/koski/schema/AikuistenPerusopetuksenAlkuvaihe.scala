@@ -45,7 +45,7 @@ case class AikuistenPerusopetuksenAlkuvaiheenOppiaineenSuoritus(
   @KoodistoKoodiarvo("aikuistenperusopetuksenalkuvaiheenoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "aikuistenperusopetuksenalkuvaiheenoppiaine", koodistoUri = "suorituksentyyppi"),
   suoritustapa: Option[Koodistokoodiviite] = None
-) extends OppiaineenSuoritus with Vahvistukseton with MahdollisestiSuorituskielellinen with MahdollisestiSuoritustavallinenSuoritus {
+) extends OppiaineenSuoritus with Vahvistukseton with MahdollisestiSuorituskielellinen with SuoritustapanaMahdollisestiErityinenTutkinto {
   override def salliDuplikaatit: Boolean = true
 }
 

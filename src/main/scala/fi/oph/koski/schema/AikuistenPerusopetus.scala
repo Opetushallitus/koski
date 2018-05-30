@@ -109,7 +109,7 @@ case class AikuistenPerusopetuksenOppiaineenSuoritus(
   @KoodistoKoodiarvo("aikuistenperusopetuksenoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "aikuistenperusopetuksenoppiaine", koodistoUri = "suorituksentyyppi"),
   suoritustapa: Option[Koodistokoodiviite] = None
-) extends PerusopetuksenOppiaineenSuoritus with Vahvistukseton with MahdollisestiSuorituskielellinen with MahdollisestiSuoritustavallinenSuoritus
+) extends PerusopetuksenOppiaineenSuoritus with Vahvistukseton with MahdollisestiSuorituskielellinen with SuoritustapanaMahdollisestiErityinenTutkinto
 
 trait AikuistenPerusopetuksenOppiaine extends PerusopetuksenOppiaine {
   @Tooltip("Oppiaineen laajuus kursseina.")
