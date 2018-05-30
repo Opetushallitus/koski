@@ -34,21 +34,18 @@ const MuuVirhe = () => <Text name={'httpStatus.500'}/>
 
 const wrapAsSection = Component => Component ? <div><hr/>{Component}</div> : Component
 
-export const Yhteystiedot = ({henkilö, yhteystietoP, isLoadingP}) => {
-  const values = yhteystietoP
-    .skipErrors()
-    .map(yhteystieto => !yhteystieto ? null
+export const Yhteystiedot = ({henkilö, yhteystietoP, isLoadingA}) => {
+  const results = Bacon.combineWith(yhteystietoP.skipErrors(), isLoadingA, (yhteystieto, loading) =>
+    loading ? <div className='yhteystieto loading'><Text name='Haetaan'/></div>
+      : !yhteystieto ? null
       : !yhteystieto.email ? <EiYhteystietoa/>
-        : <Yhteystieto henkilö={henkilö} yhteystieto={yhteystieto}/>)
+        : <Yhteystieto henkilö={henkilö} yhteystieto={yhteystieto}/>
+  )
 
   const errors = yhteystietoP
     .errors()
     .mapError()
     .map(() => <MuuVirhe/>)
 
-  const loading = isLoadingP
-    .filter(v => !!v)
-    .map(<div className='yhteystieto loading'><Text name='Haetaan'/></div>)
-
-  return <div>{Bacon.mergeAll(values, errors, loading).map(wrapAsSection)}</div>
+  return <div>{Bacon.mergeAll(results, errors).map(wrapAsSection)}</div>
 }
