@@ -38,7 +38,7 @@ export default class Hyvaksynta extends React.Component {
               </ul>
             </div>
             <div className="acceptance-button-container">
-              <div className="acceptance-button button" onClick={acceptHandler}><Text name="Hyväksy"/></div>
+              <div className="acceptance-button button" onClick={this.props.onAcceptClick}><Text name="Hyväksy"/></div>
               <span className="decline-link"><Text name="Peruuta ja palaa"/></span>
             </div>
           </div>
@@ -50,18 +50,4 @@ export default class Hyvaksynta extends React.Component {
   }
 }
 
-const acceptHandler = () => {
-  console.log('Button clicked')
-  console.log(postAuthorization("hsl"));
-}
 
-
-const postAuthorization = (memberCode) => {
-  Http.post(`/koski/api/omadata/valtuutus/${memberCode}`, {})
-    .doError((e) => {
-      console.log(e)
-    })
-    .onValue((response) => {
-      console.log(response)
-    })
-}
