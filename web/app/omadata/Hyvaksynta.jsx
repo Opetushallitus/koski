@@ -8,46 +8,30 @@ import {formatFinnishDate} from '../date/date.js'
 import Footer from './Footer'
 import Header from './Header'
 
+export default ({ firstName, lastName, dateOfBirth, onAcceptClick }) => (
+  <div>
+    <Header firstName={firstName} lastName={lastName}/>
 
-export default class Hyvaksynta extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      firstName: this.props.firstName,
-      lastName: this.props.lastName,
-      dateOfBirth: this.props.dateOfBirth
-    }
-  }
-
-  render() {
-    return (
-      <div>
-        <Header firstName={this.state.firstName} lastName={this.state.lastName}/>
-
-        <div className="acceptance-container">
-          <div className="heading"><h1><Text name="Henkilökohtaisten tietojen käyttö"/></h1></div>
-          <div className="user">{this.state.firstName} {this.state.lastName}<span className="dateofbirth"> s. {formatFinnishDate(this.state.dateOfBirth)}</span></div>
-          <div className="acceptance-box">
-            <div className="acceptance-title"><Text name="Omadata hyväksyntä otsikko"/></div>
-            <div className="acceptance-member-name">HSL Helsingin Seudun Liikenne</div>
-            <div className="acceptance-share-info">
-              <Text name="Palveluntarjoaja näkee"/>
-              <ul>
-                <li><Text name="Näkee läsnäolotiedot"/></li>
-                <li><Text name="Näkee oppilaitoksen tiedot"/></li>
-              </ul>
-            </div>
-            <div className="acceptance-button-container">
-              <div className="acceptance-button button" onClick={this.props.onAcceptClick}><Text name="Hyväksy"/></div>
-              <span className="decline-link"><Text name="Peruuta ja palaa"/></span>
-            </div>
-          </div>
+    <div className="acceptance-container">
+      <div className="heading"><h1><Text name="Henkilökohtaisten tietojen käyttö"/></h1></div>
+      <div className="user">{firstName} {lastName}<span className="dateofbirth"> s. {formatFinnishDate(dateOfBirth)}</span></div>
+      <div className="acceptance-box">
+        <div className="acceptance-title"><Text name="Omadata hyväksyntä otsikko"/></div>
+        <div className="acceptance-member-name">HSL Helsingin Seudun Liikenne</div>
+        <div className="acceptance-share-info">
+          <Text name="Palveluntarjoaja näkee"/>
+          <ul>
+            <li><Text name="Näkee läsnäolotiedot"/></li>
+            <li><Text name="Näkee oppilaitoksen tiedot"/></li>
+          </ul>
         </div>
-
-        <Footer/>
+        <div className="acceptance-button-container">
+          <div className="acceptance-button button" onClick={onAcceptClick}><Text name="Hyväksy"/></div>
+          <span className="decline-link"><Text name="Peruuta ja palaa"/></span>
+        </div>
       </div>
-    )
-  }
-}
+    </div>
 
-
+    <Footer/>
+  </div>
+)
