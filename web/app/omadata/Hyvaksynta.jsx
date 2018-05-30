@@ -8,7 +8,7 @@ import {formatFinnishDate} from '../date/date.js'
 import Footer from './Footer'
 import Header from './Header'
 
-export default ({ firstName, lastName, dateOfBirth, onAcceptClick }) => (
+export default ({ firstName, lastName, dateOfBirth, memberName, onAcceptClick }) => (
   <div>
     <Header firstName={firstName} lastName={lastName}/>
 
@@ -17,7 +17,7 @@ export default ({ firstName, lastName, dateOfBirth, onAcceptClick }) => (
       <div className="user">{firstName} {lastName}<span className="dateofbirth"> s. {formatFinnishDate(dateOfBirth)}</span></div>
       <div className="acceptance-box">
         <div className="acceptance-title"><Text name="Omadata hyväksyntä otsikko"/></div>
-        <div className="acceptance-member-name">HSL Helsingin Seudun Liikenne</div>
+        <div className="acceptance-member-name">{memberName}</div>
         <div className="acceptance-share-info">
           <Text name="Palveluntarjoaja näkee"/>
           <ul>

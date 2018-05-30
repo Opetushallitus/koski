@@ -36,6 +36,7 @@ class HyvaksyntaLanding extends React.Component {
         firstName={'Clara'}
         lastName={'Nieminen'}
         dateOfBirth={new Date('December 17, 1995 03:24:00')}
+        memberName={'HSL Helsingin Seudun Liikenne'}
         onAcceptClick={this.postAuthorization}
       /> :
       <div>Hello world</div>
