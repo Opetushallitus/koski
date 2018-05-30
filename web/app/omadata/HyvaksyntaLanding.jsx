@@ -1,12 +1,21 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Hyvaksynta from './Hyvaksynta'
-import Http from '../util/http';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import AnnaHyvaksynta from './AnnaHyvaksynta'
+import Footer from './Footer'
+import Header from './Header'
+import {formatFinnishDate} from '../date/date.js'
+import Text from '../i18n/Text'
+import '../polyfills/polyfills.js'
+import Http from '../util/http'
 
 class HyvaksyntaLanding extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      firstName: 'Clara',
+      lastName: 'Nieminen',
+      dateOfBirth: new Date('December 17, 1995 03:24:00'),
+      memberName: 'HSL Helsingin Seudun Liikenne',
       authorizationGiven: true,
       memberCode: 'hsl'
     }
@@ -31,15 +40,20 @@ class HyvaksyntaLanding extends React.Component {
   }
 
   render() {
-    return this.state.authorizationGiven ?
-      <Hyvaksynta
-        firstName={'Clara'}
-        lastName={'Nieminen'}
-        dateOfBirth={new Date('December 17, 1995 03:24:00')}
-        memberName={'HSL Helsingin Seudun Liikenne'}
-        onAcceptClick={this.postAuthorization}
-      /> :
-      <div>Hello world</div>
+    return (
+      <div>
+        <Header firstName={this.state.firstName} lastName={this.state.lastName}/>
+
+        <div className="acceptance-container">
+          <div className="heading"><h1><Text name="Henkilökohtaisten tietojen käyttö"/></h1></div>
+          <div className="user">{this.state.firstName} {this.state.lastName}<span className="dateofbirth"> s. {formatFinnishDate(this.state.dateOfBirth)}</span></div>
+
+          <AnnaHyvaksynta memberName={this.state.memberName} onAcceptClick={this.postAuthorization} />
+        </div>
+
+        <Footer/>
+      </div>
+    )
   }
 }
 
