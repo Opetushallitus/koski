@@ -45,11 +45,13 @@ const OppilaitosPicker = ({oppilaitosAtom}) => {
 export const RaportoiVirheestäForm = ({henkilö, opiskeluoikeudet}) => {
   const hasAcceptedDisclaimer = Atom(false)
   const selectedOppilaitosA = Atom()
+  const isLoadingA = Atom(false)
 
   const oppilaitokset = opiskeluoikeudet.map(o => modelData(o, 'oppilaitos'))
 
   const yhteystietoP = selectedOppilaitosA
     .map(oid => oid === OtherOppilaitosValue ? null : oid)
+    .doAction(oid => !!oid && isLoadingA.set(true))
     .flatMapLatest(oid => oid
       ? Http.cachedGet(
         `/koski/api/organisaatio/sahkoposti-virheiden-raportointiin?organisaatio=${oid}`, {
@@ -60,6 +62,8 @@ export const RaportoiVirheestäForm = ({henkilö, opiskeluoikeudet}) => {
     )
     .toProperty()
 
+  yhteystietoP.onValue(() => isLoadingA.set(false))
+
   yhteystietoP.filter(R.identity).skipDuplicates(R.equals).onValue(v => {
     trackEvent('virheraportointi', (v.organisaationNimi && v.organisaationNimi.fi) || '-')
   })
@@ -67,11 +71,6 @@ export const RaportoiVirheestäForm = ({henkilö, opiskeluoikeudet}) => {
   const isOtherOptionSelectedA = selectedOppilaitosA.map(
     selectedOption => selectedOption ? !oppilaitokset.map(o => o.oid).includes(selectedOption) : false
   )
-
-  const isLoadingP = Bacon.mergeAll(
-    yhteystietoP.map(false),
-    selectedOppilaitosA.filter(oid => oid !== OtherOppilaitosValue).map(true).changes()
-  ).startWith(false).skipDuplicates()
 
   return (
     <div className='raportoi-virheestä-form textstyle-body'>
@@ -110,7 +109,7 @@ export const RaportoiVirheestäForm = ({henkilö, opiskeluoikeudet}) => {
 
           {ift(isOtherOptionSelectedA, <OppilaitosPicker oppilaitosAtom={selectedOppilaitosA}/>)}
 
-          <Yhteystiedot henkilö={henkilö} yhteystietoP={yhteystietoP} isLoadingP={isLoadingP}/>
+          <Yhteystiedot henkilö={henkilö} yhteystietoP={yhteystietoP} isLoadingA={isLoadingA}/>
         </div>
       ))}
     </div>
