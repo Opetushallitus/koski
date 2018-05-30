@@ -4,8 +4,13 @@ import '../style/main.less'
 import {lang} from '../i18n/i18n'
 
 export default ({ memberName, onAcceptClick }) => (
-  <div className="acceptance-box">
-    <div className="acceptance-title-success"><Text name="Omadata hyväksytty otsikko"/></div>
+  <div className="acceptance-success-box">
+    <div className="success-container">
+      <img className="acceptance-image" src="/koski/images/check_mark.svg" />
+      <div className="acceptance-title-success">
+        <Text name="Omadata hyväksytty otsikko"/>
+      </div>
+    </div>
     <div className="acceptance-control-mydata">
       <Text name="Voit hallita tietojasi"/>
     </div>
