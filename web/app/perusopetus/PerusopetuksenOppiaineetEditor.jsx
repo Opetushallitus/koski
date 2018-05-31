@@ -201,7 +201,7 @@ class Oppiainetaulukko extends React.Component {
             ? 'Lisää pakollinen oppiaine'
             : 'Lisää valinnainen oppiaine')))
 
-    return (<section>
+    return (<section className="oppiaine-taulukko">
         {title && <h5><Text name={title} /></h5>}
         { suoritukset.length > 0 && (
           <table>
