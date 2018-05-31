@@ -1030,7 +1030,6 @@
   "Tutkinnon osan osa-alueen nimi": "Tutkinnon osan osa-alueen nimi",
   "Ennustettu arvosana": "Ennustettu arvosana",
   "description:Muoto YYYY-MM-DD. Tiedon syötössä tietoa..." : "Muoto YYYY-MM-DD. Tiedon syötössä tietoa ei tarvita; tieto poimitaan tila-kentän ensimmäisestä opiskeluoikeusjaksosta.",
-  "KOSKI-palvelun tietosuojaseloste (sisältää rekisteriselosteen)": "EU:n tietosuoja-asetuksen 2016/679 (GDPR) mukainen tietosuojaseloste",
   "tooltip:Oppiaineen laajuus kursseina." : "Oppiaineen laajuus kursseina.",
   "Varoitukset": "Varoitukset",
   "warning:unavailable.virta": "Korkeakoulujen opintoja ei juuri nyt saada haettua. Yritä myöhemmin uudestaan.",
