@@ -17,7 +17,6 @@
     "element-closest": "^2.0.2",
     "es6-promise": "^4.2.4",
     "fecha": "^2.3.3",
-    "immutable": "^3.8.2",
     "js-cookie": "^2.2.0",
     "partial.lenses": "^9.8.0",
     "prop-types": "^15.6.1",
