@@ -57,7 +57,7 @@ class HyvaksyntaLanding extends React.Component {
   render() {
 
     const acceptanceBox = this.state.authorizationGiven ?
-      <HyvaksyntaAnnettu/> :
+      <HyvaksyntaAnnettu callback={this.state.callback}/> :
       <AnnaHyvaksynta memberName={this.state.memberName} onAcceptClick={this.postAuthorization} />
 
     return (
