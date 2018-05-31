@@ -18,7 +18,7 @@
     "lyhytNimi" : "Etiikka",
     "kieli" : "FI"
   }, {
-    "nimi" : "Etik",
+    "nimi" : "Etik ",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -133,6 +133,19 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "ammatillisenoppiaineet_tk2",
+  "koodiArvo" : "TK2",
+  "metadata" : [ {
+    "nimi" : "Toinen kotimainen kieli, suomi",
+    "lyhytNimi" : "Toinen kotimainen kieli, suomi",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Det andra inhemska språket, finska",
+    "lyhytNimi" : "Det andra inhemska språket, finska",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "ammatillisenoppiaineet_tvt",
   "koodiArvo" : "TVT",
   "metadata" : [ {
@@ -177,6 +190,90 @@
     "kieli" : "FI"
   }, {
     "nimi" : "Kommunikation och interaktion på modersmålet",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisenoppiaineet_vvai11",
+  "koodiArvo" : "VVAI11",
+  "metadata" : [ {
+    "nimi" : "Viestintä ja vuorovaikutus äidinkielellä, suomi viittomakielisille",
+    "lyhytNimi" : "Viestintä ja vuorovaikutus äidinkielellä, suomi viittomakielisille",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Viestintä ja vuorovaikutus äidinkielellä, suomi viittomakielisille",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisenoppiaineet_vvai15",
+  "koodiArvo" : "VVAI15",
+  "metadata" : [ {
+    "nimi" : "Viestintä ja vuorovaikutus äidinkielellä, suomalainen viittomakieli",
+    "lyhytNimi" : "Viestintä ja vuorovaikutus äidinkielellä, suomalainen viittomakieli",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Viestintä ja vuorovaikutus äidinkielellä, suomalainen viittomakieli",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisenoppiaineet_vvai16",
+  "koodiArvo" : "VVAI16",
+  "metadata" : [ {
+    "nimi" : "Viestintä ja vuorovaikutus äidinkielellä, opiskelijan äidinkieli",
+    "lyhytNimi" : "Viestintä ja vuorovaikutus äidinkielellä, opiskelijan äidinkieli",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunikation och interaktion på modersmålet, studerandens eget modersmål",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisenoppiaineet_vvai3",
+  "koodiArvo" : "VVAI3",
+  "metadata" : [ {
+    "nimi" : "Viestintä ja vuorovaikutus äidinkielellä, saame",
+    "lyhytNimi" : "Viestintä ja vuorovaikutus äidinkielellä, saame",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Viestintä ja vuorovaikutus äidinkielellä, saame",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisenoppiaineet_vvai4",
+  "koodiArvo" : "VVAI4",
+  "metadata" : [ {
+    "nimi" : "Viestintä ja vuorovaikutus äidinkielellä, romani",
+    "lyhytNimi" : "Viestintä ja vuorovaikutus äidinkielellä, romani",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Viestintä ja vuorovaikutus äidinkielellä, romani",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisenoppiaineet_vvai7",
+  "koodiArvo" : "VVAI7",
+  "metadata" : [ {
+    "nimi" : "Viestintä ja vuorovaikutus äidinkielellä, suomi toisena kielenä",
+    "lyhytNimi" : "Viestintä ja vuorovaikutus äidinkielellä, suomi toisena kielenä",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunikation och interaktion på modersmålet, finska som andraspråk",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "ammatillisenoppiaineet_vvai8",
+  "koodiArvo" : "VVAI8",
+  "metadata" : [ {
+    "nimi" : "Viestintä ja vuorovaikutus äidinkielellä, ruotsi toisena kielenä",
+    "lyhytNimi" : "Viestintä ja vuorovaikutus äidinkielellä, ruotsi toisena kielenä",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Kommunikation och interaktion på modersmålet, svenska som andraspråk",
     "kieli" : "SV"
   } ],
   "versio" : 1
@@ -248,7 +345,7 @@
     "lyhytNimi" : "Ympäristöosaaminen",
     "kieli" : "FI"
   }, {
-    "nimi" : "Miljökunnande",
+    "nimi" : "Miljökunnande ",
     "kieli" : "SV"
   } ],
   "versio" : 1

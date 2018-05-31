@@ -3,8 +3,10 @@
   "koodiArvo" : "1",
   "metadata" : [ {
     "nimi" : "Ammattikorkeakoulututkinto",
-    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Yrkeshögskoleexamen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -14,6 +16,10 @@
     "nimi" : "Täydennyskoulutus",
     "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Fortbildning",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -23,6 +29,10 @@
     "nimi" : "Pätevöitymiskoulutus",
     "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Behörighetsutbildning",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -32,6 +42,10 @@
     "nimi" : "Erikoistumisopinnot",
     "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Specialiseringsstudier",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -39,8 +53,10 @@
   "koodiArvo" : "13",
   "metadata" : [ {
     "nimi" : "Avoimen opinnot",
-    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Öppna universitetsstudier",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -50,6 +66,10 @@
     "nimi" : "Opettajan pedagogiset opinnot",
     "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Pedagogiska studier för lärare",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -59,6 +79,10 @@
     "nimi" : "Ammatillinen opettajankoulutus",
     "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Yrkeslärarutbildning",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -68,6 +92,10 @@
     "nimi" : "Oppisopimus-tyyppinen koulutus",
     "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Utbildning av läroavtalsformat",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -77,6 +105,10 @@
     "nimi" : "Valmentava koulutus",
     "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Handledande utbildning",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -86,6 +118,10 @@
     "nimi" : "Erillisoikeus",
     "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Särskild rätt",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -95,6 +131,10 @@
     "nimi" : "Erikoistumiskoulutus",
     "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Specialiseringsutbildning",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -102,8 +142,10 @@
   "koodiArvo" : "2",
   "metadata" : [ {
     "nimi" : "Alempi korkeakoulututkinto",
-    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Lägre högskoleexamen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -111,8 +153,10 @@
   "koodiArvo" : "3",
   "metadata" : [ {
     "nimi" : "Ylempi ammattikorkeakoulututkinto",
-    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Högre yrkeshögskoleexamen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -120,8 +164,10 @@
   "koodiArvo" : "4",
   "metadata" : [ {
     "nimi" : "Ylempi korkeakoulututkinto",
-    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Högre högskoleexamen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -131,6 +177,10 @@
     "nimi" : "Lääkärien erikoistumiskoulutus",
     "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Specialiseringsutbildning för läkare",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -138,8 +188,10 @@
   "koodiArvo" : "6",
   "metadata" : [ {
     "nimi" : "Lisensiaatintutkinto",
-    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Licentiatexamen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -147,8 +199,10 @@
   "koodiArvo" : "7",
   "metadata" : [ {
     "nimi" : "Tohtorintutkinto",
-    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Doktorsexamen",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -158,6 +212,10 @@
     "nimi" : "Kotimainen opiskelijaliikkuvuus",
     "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Inhemsk studerandemobilitet",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -167,6 +225,10 @@
     "nimi" : "Kansainvälinen vaihto",
     "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Internationellt utbyte",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 } ]
