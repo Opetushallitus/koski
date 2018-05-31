@@ -10,17 +10,9 @@ import org.scalatra.ScalatraServlet
 import scala.xml.Unparsed
 
 class MyDataReactServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with AuthenticationSupport {
-  before("/omattiedot") {
-    sessionOrStatus match {
-      case Left(_) => redirectToFrontpage
-      case Right(_) =>
-    }
-  }
 
-  before("/.+".r) {
-    if (!isAuthenticated) {
-      redirectToLogin
-    }
+  get("/:id") {
+      landerHtml
   }
 
   get("/") {

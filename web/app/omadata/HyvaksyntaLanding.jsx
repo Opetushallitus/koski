@@ -8,6 +8,10 @@ import {formatFinnishDate} from '../date/date.js'
 import Text from '../i18n/Text'
 import '../polyfills/polyfills.js'
 import Http from '../util/http'
+import { currentLocation, parseQuery } from '../util/location'
+
+const memberCodeRegex = /\/koski\/mydata\/(.*)/
+
 
 class HyvaksyntaLanding extends React.Component {
   constructor(props) {
@@ -18,12 +22,22 @@ class HyvaksyntaLanding extends React.Component {
       dateOfBirth: new Date('December 17, 1995 03:24:00'),
       memberName: 'HSL Helsingin Seudun Liikenne',
       authorizationGiven: true,
-      memberCode: 'hsl'
+      memberCode: this.getMemberCodeFromRequest(),
+      callback: parseQuery(currentLocation().queryString).callback
     }
 
     this.postAuthorization = this.postAuthorization.bind(this)
+
+    console.log(`Membercode: ${this.state.memberCode}, callback: ${this.state.callback}`)
   }
 
+  getMemberCodeFromRequest() {
+    const captureGroups = memberCodeRegex.exec(currentLocation().path)
+
+    return (captureGroups && captureGroups.length > 1 && captureGroups[1]) ?
+      captureGroups[1] :
+      null
+  }
 
   postAuthorization() {
     Http.post(`/koski/api/omadata/valtuutus/${this.state.memberCode}`, {})
