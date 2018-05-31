@@ -46,7 +46,7 @@ object PerusopetusExampleData {
 
   val kaikkiAineet = Some(
     List(
-      suoritus(äidinkieli("AI1")).copy(arviointi = arviointi(9)),
+      suoritus(äidinkieli("AI1")).copy(arviointi = arviointi(9)).copy(suoritustapa = Some(suoritustapaErityinenTutkinto)),
       suoritus(kieli("B1", "SV")).copy(arviointi = arviointi(8)),
       suoritus(kieli("B1", "SV").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = hyväksytty),
       suoritus(kieli("A1", "EN")).copy(arviointi = arviointi(8)),

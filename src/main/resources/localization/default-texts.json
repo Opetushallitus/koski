@@ -1050,6 +1050,7 @@
   "Pisteet": "Pisteet",
   "Paikallinen kurssi": "Paikallinen kurssi",
   "Paikallinen oppiaine": "Paikallinen oppiaine",
-  "Paikallinen kurssi tai oppiaine": "Paikallinen kurssi tai oppiaine"
+  "Paikallinen kurssi tai oppiaine": "Paikallinen kurssi tai oppiaine",
+  "description:Käytetään tilanteessa jossa oppija opiskelee..." : "Käytetään tilanteessa jossa oppija opiskelee yksittäisen oppiaineen erityisenä tutkintona"
 }
 
