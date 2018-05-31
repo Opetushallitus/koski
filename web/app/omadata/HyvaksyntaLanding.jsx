@@ -19,7 +19,6 @@ class HyvaksyntaLanding extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      memberName: 'HSL Helsingin Seudun Liikenne',
       authorizationGiven: false,
       memberCode: this.getMemberCodeFromRequest(),
       callback: parseQuery(currentLocation().queryString).callback
@@ -36,6 +35,7 @@ class HyvaksyntaLanding extends React.Component {
     })
 
     this.initializeBirthDate()
+    this.initializeMemberName(this.state.memberCode)
   }
 
   getMemberCodeFromRequest() {
@@ -49,7 +49,6 @@ class HyvaksyntaLanding extends React.Component {
   initializeBirthDate() {
     try {
       Http.cachedGet('/koski/api/omattiedot/editor', {})
-        .doError(() => {} )
         .onValue((response) => {
           const dateOfBirth = response.value.properties.find(p => p.key === 'henkilö')
             .model.value.properties.find(p => p.key === 'syntymäaika')
@@ -63,7 +62,21 @@ class HyvaksyntaLanding extends React.Component {
       console.log('Failed to get user birth date')
       console.log(e)
     }
+  }
 
+  initializeMemberName(memberId) {
+    try {
+      Http.cachedGet(`/koski/api/omadata/kumppani/${memberId}`, {})
+        .doError(() => {} )
+        .onValue((response) => {
+          this.setState({
+            memberName: response.name
+          })
+        })
+    } catch (e) {
+      console.log('Failed to get user birth date')
+      console.log(e)
+    }
   }
 
   postAuthorization() {
@@ -75,9 +88,11 @@ class HyvaksyntaLanding extends React.Component {
         console.log(`Failed to add permissions for ${this.state.memberCode}`)
         console.log(e)
       })
-      .onValue((response) => {
+      .onValue(() => {
         console.log(`Permissions added for ${this.state.memberCode}`)
-        console.log(response)
+        this.setState({
+          authorizationGiven: true
+        })
       })
   }
 
