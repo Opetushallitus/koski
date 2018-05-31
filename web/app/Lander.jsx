@@ -4,7 +4,6 @@ import Text from './i18n/Text'
 import {t} from './i18n/i18n'
 import ReactDOM from 'react-dom'
 import './style/main.less'
-import {lang} from './i18n/i18n'
 
 const LanderInfo = () => (
   <div>
