@@ -10,6 +10,15 @@ import scala.collection.JavaConverters._
 
 class MyDataServlet(implicit val application: KoskiApplication) extends ApiServlet with AuthenticationSupport with Logging with NoCache {
 
+  get("/kumppani/:memberCode") {
+    def memberConf = getConfigForMember(params.getAs[String]("memberCode").get)
+
+    renderObject(Map(
+      "id" -> memberConf.getString("id"),
+      "name" -> memberConf.getString("name")
+    ))
+  }
+
   get("/valtuutus") {
     logger.info(s"Requesting authorizations for user: ${koskiSessionOption.getOrElse()}")
     requireKansalainen
@@ -33,5 +42,11 @@ class MyDataServlet(implicit val application: KoskiApplication) extends ApiServl
     } else {
       throw InvalidRequestException(KoskiErrorCategory.badRequest.header.invalidXRoadHeader)
     }
+  }
+
+  private def getConfigForMember(id: String): com.typesafe.config.Config = {
+    application.config.getConfigList("mydata.members").asScala.find(member =>
+      member.getString("id") == id)
+      .getOrElse(throw InvalidRequestException(KoskiErrorCategory.badRequest.header.invalidXRoadHeader))
   }
 }
