@@ -68,3 +68,7 @@ td.kuvaus .description {
 .alternatives:not(.localizedstring) a {
     display: block;
 }
+
+.sensitive {
+  font-weight: bold;
+}

@@ -2,9 +2,8 @@ package fi.oph.koski.documentation
 
 import java.net.URLEncoder
 
-import com.tristanhunt.knockoff.DefaultDiscounter._
 import fi.oph.koski.schema._
-import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, OksaUri, ReadOnly}
+import fi.oph.koski.schema.annotation._
 import fi.oph.koski.util.Markdown
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation._
@@ -160,15 +159,20 @@ object KoskiSchemaDocumentHtml {
 
   private def descriptionHtml(p: Property): List[Elem] = descriptionHtml(p.metadata.reverse ++ p.schema.metadata)
   private def descriptionHtml(p: ObjectWithMetadata[_]): List[Elem] = descriptionHtml(p.metadata)
+
   private def descriptionHtml(metadata: List[Metadata]): List[Elem] = (metadata flatMap {
     case Description(desc) => Some(<span class="description">{formatDescription(desc)}</span>)
     case ReadOnly(desc) => Some(<div class="readonly">{formatDescription(desc)}</div>)
     case _ => None
-  }) ++ onlyWhenHtml(metadata)
+  }) ++ onlyWhenHtml(metadata) ++ sensitiveDataHtml(metadata)
 
   private def onlyWhenHtml(metadata: List[Metadata]): List[Elem] = metadata.collect { case o: OnlyWhen => o } match {
     case Nil => Nil
     case conditions => List(<div class="onlywhen">Vain kun { intersperse(<span>tai</span>, conditions.map(c => <code>{c.path}={JsonMethods.compact(c.serializableForm.value)}</code>)) }</div>)
+  }
+
+  private def sensitiveDataHtml(metadata: List[Metadata]): List[Elem] = metadata.collect {
+    case s: SensitiveData => <div class="sensitive">Arkaluontoinen tieto.</div>
   }
 
   def intersperse[E](x: E, xs:Seq[E]): Seq[E] = (x, xs) match {
