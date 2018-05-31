@@ -278,7 +278,13 @@ describe('Omat tiedot', function() {
                 var jako = form.suoritusjako(1)
 
                 var date = new Date()
-                date.setMonth(date.getMonth() + 6)
+                var targetMonth = date.getMonth() + 6
+                date.setMonth(targetMonth)
+                if (date.getMonth() != targetMonth) {
+                  // match java.time.LocalDate.plusMonths behavior, in case e.g. today is May 31st, and
+                  // November 31st doesn't exist
+                  date.setDate(0)
+                }
 
                 expect(jako.url()).to.match(/^.+\/opinnot\/[0-9a-f]{32}$/)
                 expect(jako.voimassaoloaika()).to.equal('' +
