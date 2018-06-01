@@ -1,12 +1,12 @@
-import React from 'react'
+import React from 'baret'
 import Text from '../i18n/Text'
 import '../style/main.less'
 import {lang} from '../i18n/i18n'
 
-export default ({ memberName, onAcceptClick }) => (
+export default ({ memberP, onAcceptClick }) => (
   <div className="acceptance-box">
     <div className="acceptance-title"><Text name="Omadata hyväksyntä otsikko"/></div>
-    <div className="acceptance-member-name">{memberName}</div>
+    <div className="acceptance-member-name">{memberP.map(member => member.name)}</div>
     <div className="acceptance-share-info">
       <Text name="Palveluntarjoaja näkee"/>
       <ul>

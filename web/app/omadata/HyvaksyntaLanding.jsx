@@ -11,6 +11,7 @@ import Http from '../util/http'
 import { currentLocation, parseQuery } from '../util/location'
 import {userP} from '../util/user'
 
+const memberP = memberId => Http.cachedGet(`/koski/api/omadata/kumppani/${memberId}`, { errorMapper: () => undefined }).toProperty()
 
 const memberCodeRegex = /\/koski\/mydata\/(.*)/
 
@@ -29,7 +30,6 @@ class HyvaksyntaLanding extends React.Component {
     console.log(`Membercode: ${this.state.memberCode}, callback: ${this.state.callback}`)
 
     this.initializeBirthDate()
-    this.initializeMemberName(this.state.memberCode)
   }
 
   getMemberCodeFromRequest() {
@@ -50,21 +50,6 @@ class HyvaksyntaLanding extends React.Component {
 
           this.setState({
             dateOfBirth: parseISODate(dateOfBirth)
-          })
-        })
-    } catch (e) {
-      console.log('Failed to get user birth date')
-      console.log(e)
-    }
-  }
-
-  initializeMemberName(memberId) {
-    try {
-      Http.cachedGet(`/koski/api/omadata/kumppani/${memberId}`, {})
-        .doError(() => {} )
-        .onValue((response) => {
-          this.setState({
-            memberName: response.name
           })
         })
     } catch (e) {
@@ -94,7 +79,7 @@ class HyvaksyntaLanding extends React.Component {
 
     const acceptanceBox = this.state.authorizationGiven ?
       <HyvaksyntaAnnettu callback={this.state.callback}/> :
-      <AnnaHyvaksynta memberName={this.state.memberName} onAcceptClick={this.postAuthorization} />
+      <AnnaHyvaksynta memberP={memberP(this.state.memberCode)} onAcceptClick={this.postAuthorization} />
 
     const birthDate = this.state.dateOfBirth ?
       ` s. ${formatFinnishDate(this.state.dateOfBirth)}` :
