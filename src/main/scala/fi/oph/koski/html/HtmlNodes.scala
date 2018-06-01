@@ -86,7 +86,7 @@ case class Oppija(session: Option[KoskiSession], request: RichRequest, shibbolet
         }
       """)}
     </script> ++
-    <script id="apply-raamit" type="text/javascript" src="/oppija-raamit/js/apply-raamit.js"></script>
+    <script defer="defer" id="apply-raamit" type="text/javascript" src="/oppija-raamit/js/apply-raamit.js"></script>
   }
 
   private def user = session.map(s => s"""{"name":"${s.user.name}", "oid": "${s.oid}"}""")
