@@ -206,11 +206,6 @@
       <version>${jetty.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.ryantenney.log4j</groupId>
-      <artifactId>redis-appender</artifactId>
-      <version>1.0.1</version>
-    </dependency>
-    <dependency>
       <groupId>com.github.raimohanska</groupId>
       <artifactId>knockoff</artifactId>
       <version>397efc3ff2a49cfaad1f5e76499715e3d617913a</version>
