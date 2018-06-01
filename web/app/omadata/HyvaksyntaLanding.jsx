@@ -4,40 +4,30 @@ import AnnaHyvaksynta from './AnnaHyvaksynta'
 import HyvaksyntaAnnettu from './HyvaksyntaAnnettu'
 import Footer from './Footer'
 import Header from './Header'
-import {formatFinnishDate, parseISODate} from '../date/date.js'
+import { formatFinnishDate, parseISODate } from '../date/date.js'
 import Text from '../i18n/Text'
 import '../polyfills/polyfills.js'
 import Http from '../util/http'
 import { currentLocation, parseQuery } from '../util/location'
-import {userP} from '../util/user'
+import { userP } from '../util/user'
 
 const memberP = memberId => Http.cachedGet(`/koski/api/omadata/kumppani/${memberId}`, { errorMapper: () => undefined }).toProperty()
 const editorP = Http.cachedGet('/koski/api/omattiedot/editor', { errorMapper: () => undefined }).toProperty()
 
 const memberCodeRegex = /\/koski\/mydata\/(.*)/
 
-
 class HyvaksyntaLanding extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       authorizationGiven: false,
-      memberCode: this.getMemberCodeFromRequest(),
+      memberCode: memberCodeRegex.exec(currentLocation().path)[1],
       callback: parseQuery(currentLocation().queryString).callback
     }
 
     this.authorizeMember = this.authorizeMember.bind(this)
-
-    console.log(`Membercode: ${this.state.memberCode}, callback: ${this.state.callback}`)
   }
 
-  getMemberCodeFromRequest() {
-    const captureGroups = memberCodeRegex.exec(currentLocation().path)
-
-    return (captureGroups && captureGroups.length > 1 && captureGroups[1]) ?
-      captureGroups[1] :
-      null
-  }
 
   getBirthDate(editorResponse) {
     return formatFinnishDate(
