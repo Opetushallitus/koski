@@ -162,7 +162,7 @@ object OpiskeluoikeusLoader extends Logging {
     )
 
 
-  private def buildROpiskeluoikeusAikajaksoRows(opiskeluoikeusOid: String, o: KoskeenTallennettavaOpiskeluoikeus): Seq[ROpiskeluoikeusAikajaksoRow] = {
+  private[raportointikanta] def buildROpiskeluoikeusAikajaksoRows(opiskeluoikeusOid: String, o: KoskeenTallennettavaOpiskeluoikeus): Seq[ROpiskeluoikeusAikajaksoRow] = {
     aikajaksot(o).map { case (alku, loppu) => buildROpiskeluoikeusAikajaksoRowForOneDay(opiskeluoikeusOid, o, alku).copy(loppu = Date.valueOf(loppu)) }
   }
 
@@ -218,14 +218,10 @@ object OpiskeluoikeusLoader extends Logging {
     val alkupäivät: Seq[LocalDate] = mahdollisetAikajaksojenAlkupäivät(o)
     val alkamispäivä: LocalDate = o.tila.opiskeluoikeusjaksot.headOption.map(_.alku).getOrElse(throw new RuntimeException(s"Alkamispäivä puuttuu ${o.oid}"))
     val päättymispäivä: LocalDate = o.tila.opiskeluoikeusjaksot.lastOption.filter(_.opiskeluoikeusPäättynyt).map(_.alku).getOrElse(IndefiniteFuture)
-    alkupäivät
+    val rajatutAlkupäivät = alkupäivät
       .filterNot(_.isBefore(alkamispäivä))
       .filterNot(_.isAfter(päättymispäivä))
-      .zipWithIndex
-      .map {
-        case (alkupäivä, index) if index < (alkupäivät.size - 1) => (alkupäivä, alkupäivät(index + 1))
-        case (alkupäivä, _) => (alkupäivä, päättymispäivä)
-      }
+    rajatutAlkupäivät.zip(rajatutAlkupäivät.tail.map(_.minusDays(1)) :+ päättymispäivä)
   }
 
   private def mahdollisetAikajaksojenAlkupäivät(o: KoskeenTallennettavaOpiskeluoikeus): Seq[LocalDate] = {
@@ -240,7 +236,8 @@ object OpiskeluoikeusLoader extends Logging {
           aol.vammainenJaAvustaja,
           aol.vankilaopetuksessa
         ).flatMap(_.getOrElse(List.empty)) ++
-        aol.opiskeluvalmiuksiaTukevatOpinnot.getOrElse(Seq.empty).map(j => Aikajakso(j.alku, Some(j.loppu)))
+        aol.opiskeluvalmiuksiaTukevatOpinnot.getOrElse(Seq.empty).map(j => Aikajakso(j.alku, Some(j.loppu))) ++
+        aol.osaAikaisuusjaksot.getOrElse(Seq.empty).map(j => Aikajakso(j.alku, j.loppu))
       case apol: AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot =>
         Seq(
           apol.vaikeastiVammainen

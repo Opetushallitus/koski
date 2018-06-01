@@ -172,15 +172,15 @@ case class ROpiskeluoikeusAikajaksoRow(
   alku: Date,
   loppu: Date,
   tila: String,
-  opiskeluoikeusPäättynyt: Boolean,
-  opintojenRahoitus: Option[String],
-  erityinenTuki: Byte,
-  vaativanErityisenTuenErityinenTehtävä: Byte,
-  vaikeastiVammainen: Byte,
-  vammainenJaAvustaja: Byte,
-  osaAikaisuus: Byte,
-  opiskeluvalmiuksiaTukevatOpinnot: Byte,
-  vankilaopetuksessa: Byte
+  opiskeluoikeusPäättynyt: Boolean = false,
+  opintojenRahoitus: Option[String] = None,
+  erityinenTuki: Byte = 0,
+  vaativanErityisenTuenErityinenTehtävä: Byte = 0,
+  vaikeastiVammainen: Byte = 0,
+  vammainenJaAvustaja: Byte = 0,
+  osaAikaisuus: Byte = 100,
+  opiskeluvalmiuksiaTukevatOpinnot: Byte = 0,
+  vankilaopetuksessa: Byte = 0
 )
 
 case class RPäätasonSuoritusRow(
