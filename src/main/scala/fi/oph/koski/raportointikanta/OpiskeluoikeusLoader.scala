@@ -162,7 +162,7 @@ object OpiskeluoikeusLoader extends Logging {
     )
 
 
-  private def buildROpiskeluoikeusAikajaksoRows(opiskeluoikeusOid: String, o: KoskeenTallennettavaOpiskeluoikeus): Seq[ROpiskeluoikeusAikajaksoRow] = {
+  private[raportointikanta] def buildROpiskeluoikeusAikajaksoRows(opiskeluoikeusOid: String, o: KoskeenTallennettavaOpiskeluoikeus): Seq[ROpiskeluoikeusAikajaksoRow] = {
     aikajaksot(o).map { case (alku, loppu) => buildROpiskeluoikeusAikajaksoRowForOneDay(opiskeluoikeusOid, o, alku).copy(loppu = Date.valueOf(loppu)) }
   }
 

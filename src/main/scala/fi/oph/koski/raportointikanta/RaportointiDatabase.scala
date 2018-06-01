@@ -18,13 +18,13 @@ object RaportointiDatabase {
 class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabaseMethods {
   val db: DB = KoskiDatabaseConfig(config, raportointi = true).toSlickDatabase
 
-  private val ROpiskeluoikeudet = TableQuery[ROpiskeluoikeusTable]
-  private val ROpiskeluoikeusAikajaksot = TableQuery[ROpiskeluoikeusAikajaksoTable]
-  private val RPäätasonSuoritukset = TableQuery[RPäätasonSuoritusTable]
-  private val ROsasuoritukset = TableQuery[ROsasuoritusTable]
-  private val RHenkilöt = TableQuery[RHenkilöTable]
-  private val ROrganisaatiot = TableQuery[ROrganisaatioTable]
-  private val RKoodistoKoodit = TableQuery[RKoodistoKoodiTable]
+  private[raportointikanta] val ROpiskeluoikeudet = TableQuery[ROpiskeluoikeusTable]
+  private[raportointikanta] val ROpiskeluoikeusAikajaksot = TableQuery[ROpiskeluoikeusAikajaksoTable]
+  private[raportointikanta] val RPäätasonSuoritukset = TableQuery[RPäätasonSuoritusTable]
+  private[raportointikanta] val ROsasuoritukset = TableQuery[ROsasuoritusTable]
+  private[raportointikanta] val RHenkilöt = TableQuery[RHenkilöTable]
+  private[raportointikanta] val ROrganisaatiot = TableQuery[ROrganisaatioTable]
+  private[raportointikanta] val RKoodistoKoodit = TableQuery[RKoodistoKoodiTable]
 
   def dropAndCreateSchema: Unit = {
     runDbSync(DBIO.seq(
