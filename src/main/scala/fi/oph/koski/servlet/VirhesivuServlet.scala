@@ -14,8 +14,8 @@ class VirhesivuServlet(implicit val application: KoskiApplication) extends Scala
       </head>
       <body>
         <div class="odottamaton-virhe">
-          <h2>Koski-järjestelmässä tapahtui virhe, yritä myöhemmin uudelleen</h2>
-          <a href="/oma-opintopolku/">Palaa etusivulle</a>
+          <h2>{t("Koski-järjestelmässä tapahtui virhe, ole hyvä ja yritä myöhemmin uudelleen")}</h2>
+          <a href="/oma-opintopolku/">{t("Palaa etusivulle")}</a>
         </div>
       </body>
     </html>
