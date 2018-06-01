@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'baret'
 import ReactDOM from 'react-dom'
 import AnnaHyvaksynta from './AnnaHyvaksynta'
 import HyvaksyntaAnnettu from './HyvaksyntaAnnettu'
@@ -27,12 +27,6 @@ class HyvaksyntaLanding extends React.Component {
     this.postAuthorization = this.postAuthorization.bind(this)
 
     console.log(`Membercode: ${this.state.memberCode}, callback: ${this.state.callback}`)
-
-    userP.onValue((value) => {
-      this.setState({
-        name: value.name
-      })
-    })
 
     this.initializeBirthDate()
     this.initializeMemberName(this.state.memberCode)
@@ -108,11 +102,11 @@ class HyvaksyntaLanding extends React.Component {
 
     return (
       <div>
-        <Header name={this.state.name}/>
+        <Header userP={userP}/>
 
         <div className="acceptance-container">
           <div className="heading"><h1><Text name="Henkilökohtaisten tietojen käyttö"/></h1></div>
-          <div className="user">{this.state.name}<span className="dateofbirth">{birthDate}</span></div>
+          <div className="user">{userP.map(user => user.name)}<span className="dateofbirth">{birthDate}</span></div>
 
           {acceptanceBox}
         </div>
