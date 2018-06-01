@@ -12,6 +12,7 @@ import { currentLocation, parseQuery } from '../util/location'
 import {userP} from '../util/user'
 
 const memberP = memberId => Http.cachedGet(`/koski/api/omadata/kumppani/${memberId}`, { errorMapper: () => undefined }).toProperty()
+const editorP = Http.cachedGet('/koski/api/omattiedot/editor', { errorMapper: () => undefined }).toProperty()
 
 const memberCodeRegex = /\/koski\/mydata\/(.*)/
 
@@ -25,11 +26,9 @@ class HyvaksyntaLanding extends React.Component {
       callback: parseQuery(currentLocation().queryString).callback
     }
 
-    this.postAuthorization = this.postAuthorization.bind(this)
+    this.authorizeMember = this.authorizeMember.bind(this)
 
     console.log(`Membercode: ${this.state.memberCode}, callback: ${this.state.callback}`)
-
-    this.initializeBirthDate()
   }
 
   getMemberCodeFromRequest() {
@@ -40,35 +39,27 @@ class HyvaksyntaLanding extends React.Component {
       null
   }
 
-  initializeBirthDate() {
-    try {
-      Http.cachedGet('/koski/api/omattiedot/editor', {})
-        .onValue((response) => {
-          const dateOfBirth = response.value.properties.find(p => p.key === 'henkilö')
-            .model.value.properties.find(p => p.key === 'syntymäaika')
-            .model.value.data
-
-          this.setState({
-            dateOfBirth: parseISODate(dateOfBirth)
-          })
-        })
-    } catch (e) {
-      console.log('Failed to get user birth date')
-      console.log(e)
-    }
+  getBirthDate(editorResponse) {
+    return formatFinnishDate(
+      parseISODate(
+        editorResponse.value.properties.find(p => p.key === 'henkilö')
+          .model.value.properties.find(p => p.key === 'syntymäaika')
+          .model.value.data
+      )
+    )
   }
 
-  postAuthorization() {
-    Http.post(`/koski/api/omadata/valtuutus/${this.state.memberCode}`, {})
+  authorizeMember(memberCode) {
+    Http.post(`/koski/api/omadata/valtuutus/${memberCode}`, {})
       .doError((e) => {
         if (e && e.httpStatus === 401) {
-          console.log(`Must be logged in before we can authorize ${this.state.memberCode}`)
+          console.log(`Must be logged in before we can authorize ${memberCode}`)
         }
-        console.log(`Failed to add permissions for ${this.state.memberCode}`)
+        console.log(`Failed to add permissions for ${memberCode}`)
         console.log(e)
       })
       .onValue(() => {
-        console.log(`Permissions added for ${this.state.memberCode}`)
+        console.log(`Permissions added for ${memberCode}`)
         this.setState({
           authorizationGiven: true
         })
@@ -79,11 +70,7 @@ class HyvaksyntaLanding extends React.Component {
 
     const acceptanceBox = this.state.authorizationGiven ?
       <HyvaksyntaAnnettu callback={this.state.callback}/> :
-      <AnnaHyvaksynta memberP={memberP(this.state.memberCode)} onAcceptClick={this.postAuthorization} />
-
-    const birthDate = this.state.dateOfBirth ?
-      ` s. ${formatFinnishDate(this.state.dateOfBirth)}` :
-      ''
+      <AnnaHyvaksynta memberP={memberP(this.state.memberCode)} onAcceptClick={() => this.authorizeMember(this.state.memberCode)} />
 
     return (
       <div>
@@ -91,8 +78,9 @@ class HyvaksyntaLanding extends React.Component {
 
         <div className="acceptance-container">
           <div className="heading"><h1><Text name="Henkilökohtaisten tietojen käyttö"/></h1></div>
-          <div className="user">{userP.map(user => user.name)}<span className="dateofbirth">{birthDate}</span></div>
-
+          <div className="user">{userP.map(user => user.name)}
+            <span className="dateofbirth"> {editorP.map(s => this.getBirthDate(s))}</span>
+          </div>
           {acceptanceBox}
         </div>
 
