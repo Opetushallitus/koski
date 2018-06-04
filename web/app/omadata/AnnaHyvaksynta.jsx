@@ -1,7 +1,6 @@
 import React from 'baret'
 import Text from '../i18n/Text'
 import '../style/main.less'
-import {lang} from '../i18n/i18n'
 
 export default ({ memberP, onAcceptClick, onCancelClick }) => (
   <div className="acceptance-box">

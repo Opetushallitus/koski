@@ -68,11 +68,12 @@ class HyvaksyntaLanding extends React.Component {
 
     const acceptanceBox = this.state.authorizationGiven ?
       <HyvaksyntaAnnettu callback={this.state.callback}/> :
-      <AnnaHyvaksynta
-        memberP={memberP(this.state.memberCode)}
+      (
+        <AnnaHyvaksynta memberP={memberP(this.state.memberCode)}
         onAcceptClick={() => this.authorizeMember(this.state.memberCode)}
         onCancelClick={() => window.location.href = this.state.callback}
-      />
+        />
+      )
 
     const error = this.state.error ?  <Error error={{text: this.state.error}} /> : null
 
