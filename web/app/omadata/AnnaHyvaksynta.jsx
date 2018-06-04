@@ -3,7 +3,7 @@ import Text from '../i18n/Text'
 import '../style/main.less'
 import {lang} from '../i18n/i18n'
 
-export default ({ memberP, onAcceptClick }) => (
+export default ({ memberP, onAcceptClick, onCancelClick }) => (
   <div className="acceptance-box">
     <div className="acceptance-title"><Text name="Omadata hyväksyntä otsikko"/></div>
     <div className="acceptance-member-name">{memberP.map(member => member.name)}</div>
@@ -16,7 +16,7 @@ export default ({ memberP, onAcceptClick }) => (
     </div>
     <div className="acceptance-button-container">
       <div className="acceptance-button button" onClick={onAcceptClick}><Text name="Hyväksy"/></div>
-      <span className="decline-link"><Text name="Peruuta ja palaa"/></span>
+      <span className="decline-link"><Text name="Peruuta ja palaa" onClick={onCancelClick}/></span>
     </div>
   </div>
 )
