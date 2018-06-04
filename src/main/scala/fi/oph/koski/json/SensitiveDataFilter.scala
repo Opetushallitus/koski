@@ -19,11 +19,8 @@ case class SensitiveDataFilter(user: KoskiSession) {
   def serializationContext = SerializationContext(KoskiSchema.schemaFactory, filterSensitiveData)
 
   def rowSerializer: ((TäydellisetHenkilötiedot, immutable.Seq[OpiskeluoikeusRow])) => JValue = {
-    def ser(tuple: (TäydellisetHenkilötiedot, immutable.Seq[OpiskeluoikeusRow])) = (tuple, sensitiveDataAllowed) match {
-      case ((henkilö, rivit), true) =>
-        JObject("henkilö" -> JsonSerializer.serialize(henkilö), "opiskeluoikeudet" -> JArray(rivit.toList.map(_.toOpiskeluoikeusData)))
-      case ((henkilö, rivit), false) =>
-        JsonSerializer.serialize(Oppija(henkilö, rivit.map(_.toOpiskeluoikeus)))
+    def ser(tuple: (TäydellisetHenkilötiedot, immutable.Seq[OpiskeluoikeusRow])) = {
+      JsonSerializer.serialize(Oppija(tuple._1, tuple._2.map(_.toOpiskeluoikeus)))
     }
     ser
   }
