@@ -11,6 +11,8 @@ import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.koskiuser.MockUsers.{stadinAmmattiopistoKatselija, stadinVastuukäyttäjä}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema._
+import org.json4s.JsonAST.{JArray, JBool}
+import org.json4s.jackson.JsonMethods
 import org.scalatest.{FreeSpec, Matchers}
 
 class OppijaQuerySpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with QueryTestMethods with Matchers {
@@ -164,6 +166,24 @@ class OppijaQuerySpec extends FreeSpec with LocalJettyHttpSpecification with Opi
       }
     }
 
+    "Lasketut kentät" - {
+      "Palautetaan käyttäjälle jolla on LUOTTAMUKSELLINEN-rooli " in {
+        authGet("api/oppija?nimihaku=anneli%20amikseenvalmistautuja", user = stadinAmmattiopistoKatselija) {
+          verifyResponseStatusOk()
+          val parsedJson = JsonMethods.parse(body)
+          val ensimmäisenOsasuorituksetArviointi = ((((parsedJson \ "opiskeluoikeudet")(0) \ "suoritukset")(0) \ "osasuoritukset")(0) \ "arviointi")(0)
+          (ensimmäisenOsasuorituksetArviointi \ "hyväksytty") should equal(JArray(List(JBool(true))))
+        }
+      }
+      "Palautetaan käyttäjälle jolta puuttuu LUOTTAMUKSELLINEN-rooli " in {
+        authGet("api/oppija?nimihaku=anneli%20amikseenvalmistautuja", user = stadinVastuukäyttäjä) {
+          verifyResponseStatusOk()
+          val parsedJson = JsonMethods.parse(body)
+          val ensimmäisenOsasuorituksetArviointi = ((((parsedJson \ "opiskeluoikeudet")(0) \ "suoritukset")(0) \ "osasuoritukset")(0) \ "arviointi")(0)
+          (ensimmäisenOsasuorituksetArviointi \ "hyväksytty") should equal(JArray(List(JBool(true))))
+        }
+      }
+    }
 
     def insert(opiskeluoikeus: Opiskeluoikeus, henkilö: Henkilö) = {
       putOpiskeluoikeus(opiskeluoikeus, henkilö) {
