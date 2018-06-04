@@ -37,6 +37,7 @@ describe('Perusopetus', function() {
             'Pakolliset oppiaineet\n' +
             'Oppiaine Arvosana\n' +
             'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\n' +
+            'Suoritustapa Erityinen tutkinto\n' +
             'B1-kieli, ruotsi 8\n' +
             'A1-kieli, englanti 8\n' +
             'Uskonto/Elämänkatsomustieto 10\n' +
@@ -119,6 +120,7 @@ describe('Perusopetus', function() {
             'Pakolliset oppiaineet\n' +
             'Oppiaine Arvosana\n' +
             'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\n' +
+            'Suoritustapa Erityinen tutkinto\n' +
             'B1-kieli, ruotsi 8\n' +
             'A1-kieli, englanti 8\n' +
             'Uskonto/Elämänkatsomustieto 10\n' +

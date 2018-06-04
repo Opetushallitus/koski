@@ -448,6 +448,7 @@
   "Voit tiedustella asiaasi lähettämällä sähköpostia osoitteeseen:": "Voit tiedustella asiaasi lähettämällä sähköpostia osoitteeseen:",
   "Muu": "Muu",
   "Valitse oppilaitos": "Valitse oppilaitos",
+  "tyhjennä": "tyhjennä",
   "Haetaan": "Haetaan",
   "Kopioi": "Kopioi",
   "Kopioitu": "Kopioitu",
@@ -1029,7 +1030,6 @@
   "Tutkinnon osan osa-alueen nimi": "Tutkinnon osan osa-alueen nimi",
   "Ennustettu arvosana": "Ennustettu arvosana",
   "description:Muoto YYYY-MM-DD. Tiedon syötössä tietoa..." : "Muoto YYYY-MM-DD. Tiedon syötössä tietoa ei tarvita; tieto poimitaan tila-kentän ensimmäisestä opiskeluoikeusjaksosta.",
-  "KOSKI-palvelun tietosuojaseloste (sisältää rekisteriselosteen)": "EU:n tietosuoja-asetuksen 2016/679 (GDPR) mukainen tietosuojaseloste",
   "tooltip:Oppiaineen laajuus kursseina." : "Oppiaineen laajuus kursseina.",
   "Varoitukset": "Varoitukset",
   "warning:unavailable.virta": "Korkeakoulujen opintoja ei juuri nyt saada haettua. Yritä myöhemmin uudestaan.",
@@ -1051,6 +1051,7 @@
   "Paikallinen kurssi": "Paikallinen kurssi",
   "Paikallinen oppiaine": "Paikallinen oppiaine",
   "Paikallinen kurssi tai oppiaine": "Paikallinen kurssi tai oppiaine",
+  "description:Käytetään tilanteessa jossa oppija opiskelee..." : "Käytetään tilanteessa jossa oppija opiskelee yksittäisen oppiaineen erityisenä tutkintona"
   "Oma Opintopolku": "Oma Opintopolku",
   "Henkilökohtaisten tietojen käyttö": "Henkilökohtaisten opintotietojen käyttö",
   "Omadata hyväksyntä otsikko": "Hyväksymällä sallit kyseisen palveluntarjoajan näkevän tietojasi. Tietojasi ei luovuteta eteenpäin eikä käytetä markkinointitarkoituksiin.",

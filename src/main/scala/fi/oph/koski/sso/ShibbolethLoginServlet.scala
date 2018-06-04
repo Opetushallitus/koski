@@ -1,23 +1,25 @@
 package fi.oph.koski.sso
 
+import java.net.URLEncoder.encode
 import java.nio.charset.StandardCharsets
 
-import fi.oph.koski.config.Environment.isLocalDevelopmentEnvironment
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.Hetu
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.json.JsonSerializer.writeWithRoot
 import fi.oph.koski.koskiuser.{AuthenticationSupport, AuthenticationUser, KoskiSession}
 import fi.oph.koski.schema.Nimitiedot
-import fi.oph.koski.servlet.{ApiServlet, NoCache}
+import fi.oph.koski.servlet.{ApiServlet, LanguageSupport, NoCache}
+import org.scalatra.{Cookie, CookieOptions}
 
-case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServlet with AuthenticationSupport with NoCache{
+case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServlet with AuthenticationSupport with NoCache with LanguageSupport {
   get("/") {
     try {
       checkAuth.getOrElse(login)
     } catch {
       case e: Exception =>
         logger.error(s"Kansalaisen sisäänkirjautuminen epäonnistui ${e.getMessage}")
-        redirect(s"$rootUrl/virhesivu")
+        redirect("/virhesivu")
     }
   }
 
@@ -33,10 +35,17 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
   private def login = {
     application.henkilöRepository.findHenkilötiedotByHetu(hetu, nimitiedot)(KoskiSession.systemUser).headOption match {
       case Some(oppija) =>
-        setUser(Right(localLogin(AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true))))
-        redirect(s"$rootUrl/omattiedot")
-      case _ => redirect(s"$rootUrl/eisuorituksia")
+        setUser(Right(localLogin(AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true), Some(langFromCookie.getOrElse(langFromDomain)))))
+        redirect("/omattiedot")
+      case _ =>
+        setNimitiedotCookie
+        redirect("/eisuorituksia")
     }
+  }
+
+  private def setNimitiedotCookie = {
+    val shibbolethName = nimitiedot.map(n => ShibbolethName(name = n.etunimet + " " + n.sukunimi))
+    response.addCookie(Cookie("eisuorituksia", encode(writeWithRoot(shibbolethName), "UTF-8"))(CookieOptions(secure = isHttps, path = "/", maxAge = application.sessionTimeout.seconds, httpOnly = true)))
   }
 
   private def hetu: String =
@@ -70,11 +79,6 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
     }
   }
 
-  private def rootUrl = {
-    val endsInSlash = """/$""".r
-    endsInSlash.replaceAllIn(application.config.getString("koski.oppija.root.url"), "")
-  }
-
   private val sensitiveHeaders = List("security", "hetu")
   private val headersWhiteList = List("FirstName", "cn", "givenName", "hetu", "oid", "security", "sn")
   private def headers: String = {
@@ -87,3 +91,5 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
     }.sortBy(_._1).mkString("\n")
   }
 }
+
+case class ShibbolethName(name: String)

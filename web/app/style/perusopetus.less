@@ -15,6 +15,15 @@
     section {
       display: inline-block;
       vertical-align: top;
+      &.pakolliset {
+        margin-right: 25px;
+        .oppiaine-taulukko {
+          width: 100%;
+          > table {
+            width: 100%;
+          }
+        }
+      }
       &.pakolliset, &.valinnaiset {
         width: 578px;
         .omattiedot-phone({

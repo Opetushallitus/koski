@@ -19054,6 +19054,11 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Utbildning inom räddningsbranschen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
@@ -22378,6 +22383,10 @@
     "passive" : false
   }, {
     "codeElementUri" : "oppilaitostyyppi_19",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "oppilaitostyyppi_21",
     "codeElementVersion" : 1,
     "passive" : false
   }, {

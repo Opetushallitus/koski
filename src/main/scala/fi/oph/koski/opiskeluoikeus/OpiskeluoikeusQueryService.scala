@@ -17,7 +17,11 @@ import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.koski.util.QueryPagination.applyPagination
 import fi.oph.koski.util.SortOrder.{Ascending, Descending}
 import fi.oph.koski.util.{PaginationSettings, SortOrder}
+import rx.Observer
+import rx.functions.{Func0, Func2}
 import rx.lang.scala.Observable
+import rx.Observable.{create => createObservable}
+import rx.observables.SyncOnSubscribe.createStateful
 import slick.lifted.Query
 
 class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext with KoskiDatabaseMethods with Logging {
@@ -29,8 +33,15 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
     streamingQuery(mkQuery(filters, sorting, pagination))
   }
 
-  def opiskeluoikeusQuerySync(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[SortOrder], pagination: Option[PaginationSettings])(implicit user: KoskiSession): Seq[(OpiskeluoikeusRow, HenkilöRow, Option[HenkilöRow])] = {
-    runDbSync(mkQuery(filters, sorting, pagination).result)
+  def kaikkiOpiskeluoikeudetSivuittain(pagination: PaginationSettings)(implicit user: KoskiSession): Seq[OpiskeluoikeusRow] = {
+    if (!user.hasGlobalReadAccess) throw new RuntimeException("Query does not make sense without global read access")
+    // this approach to pagination ("limit 500 offset 176500") is not perfect (the query gets slower as offset
+    // increases), but seems tolerable here (with join to henkilot, as in mkQuery below, it's much slower)
+    runDbSync(applyPagination(OpiskeluOikeudetWithAccessCheck.sortBy(_.id), pagination).result)
+  }
+
+  def mapKaikkiOpiskeluoikeudetSivuittain[A](pageSize: Int, user: KoskiSession)(f: Seq[OpiskeluoikeusRow] => Seq[A]): Observable[A] = {
+    processByPage[OpiskeluoikeusRow, A](page => kaikkiOpiskeluoikeudetSivuittain(PaginationSettings(page, pageSize))(user), f)
   }
 
   private def mkQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[SortOrder], pagination: Option[PaginationSettings])(implicit user: KoskiSession) = {
@@ -84,5 +95,26 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
     }
 
     applyPagination(sorted, pagination)
+  }
+
+  private def processByPage[A, B](loadRows: Int => Seq[A], processRows: Seq[A] => Seq[B]): Observable[B] = {
+    import rx.lang.scala.JavaConverters._
+    def loadRowsInt(page: Int): (Seq[B], Int, Boolean) = {
+      val rows = loadRows(page)
+      (processRows(rows), page, rows.isEmpty)
+    }
+    createObservable(createStateful[(Seq[B], Int, Boolean), Seq[B]](
+      (() => loadRowsInt(0)): Func0[_ <: (Seq[B], Int, Boolean)],
+      ((state, observer) => {
+        val (loadResults, page, done) = state
+        observer.onNext(loadResults)
+        if (done) {
+          observer.onCompleted()
+          (Nil, 0, true)
+        } else {
+          loadRowsInt(page + 1)
+        }
+      }): Func2[_ >: (Seq[B], Int, Boolean), _ >: Observer[_ >: Seq[B]], _ <: (Seq[B], Int, Boolean)]
+    )).asScala.flatMap(Observable.from(_))
   }
 }

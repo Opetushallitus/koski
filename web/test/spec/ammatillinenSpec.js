@@ -286,7 +286,7 @@ describe('Ammatillinen koulutus', function() {
           Authentication().logout,
           addOppija.submit)
 
-        it('Siirrytään login-sivulle', wait.until(login.isVisible))
+        it('Siirrytään etusivulle', wait.until(LandingPage().isVisible))
       })
 
       describe('Kun tallennus epäonnistuu', function() {
@@ -923,6 +923,7 @@ describe('Ammatillinen koulutus', function() {
                       'TVT Tieto- ja viestintätekniikka sekä sen hyödyntäminen',
                       'VVTD Toiminta digitaalisessa ympäristössä',
                       'TK1 Toinen kotimainen kieli, ruotsi',
+                      'TK2 Toinen kotimainen kieli, suomi',
                       'YTTT Työelämässä toimiminen',
                       'TET Työelämätaidot',
                       'YTTH Työkyvyn ja hyvinvoinnin ylläpitäminen',
@@ -931,6 +932,13 @@ describe('Ammatillinen koulutus', function() {
                       'VVTK Viestintä ja vuorovaikutus toisella kotimaisella kielellä',
                       'VVVK Viestintä ja vuorovaikutus vieraalla kielellä',
                       'VVAI Viestintä ja vuorovaikutus äidinkielellä',
+                      'VVAI16 Viestintä ja vuorovaikutus äidinkielellä, opiskelijan äidinkieli',
+                      'VVAI4 Viestintä ja vuorovaikutus äidinkielellä, romani',
+                      'VVAI8 Viestintä ja vuorovaikutus äidinkielellä, ruotsi toisena kielenä',
+                      'VVAI3 Viestintä ja vuorovaikutus äidinkielellä, saame',
+                      'VVAI15 Viestintä ja vuorovaikutus äidinkielellä, suomalainen viittomakieli',
+                      'VVAI7 Viestintä ja vuorovaikutus äidinkielellä, suomi toisena kielenä',
+                      'VVAI11 Viestintä ja vuorovaikutus äidinkielellä, suomi viittomakielisille',
                       'YTYK Yhteiskunnassa ja kansalaisena toimiminen',
                       'YKT Yhteiskuntataidot',
                       'YM Ympäristöosaaminen',

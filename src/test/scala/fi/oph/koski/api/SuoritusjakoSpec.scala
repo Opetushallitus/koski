@@ -1,7 +1,7 @@
 package fi.oph.koski.api
 
 import java.nio.charset.StandardCharsets
-import java.time.LocalDateTime
+import java.time.LocalDate
 
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
@@ -304,7 +304,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
 
     "sisältää" - {
       "kaikki jaot kun useita jakoja" in {
-        val expirationDate = LocalDateTime.now().plusMonths(6).toLocalDate
+        val expirationDate = LocalDate.now.plusMonths(6)
 
         getSuoritusjakoDescriptors(){
           verifySuoritusjakoDescriptors(List(
@@ -316,7 +316,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
       }
 
       "yksittäisen jaon kun duplikoitu suoritus jaettu (vuosiluokan tuplaus)" in {
-        val expirationDate = LocalDateTime.now().plusMonths(6).toLocalDate
+        val expirationDate = LocalDate.now.plusMonths(6)
 
         getSuoritusjakoDescriptors(hetu = "170186-6520"){
           verifySuoritusjakoDescriptors(List(
@@ -326,7 +326,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
       }
 
       "yksittäisen jaon kun lähdejärjestelmällinen suoritus jaettu" in {
-        val expirationDate = LocalDateTime.now().plusMonths(6).toLocalDate
+        val expirationDate = LocalDate.now.plusMonths(6)
 
         getSuoritusjakoDescriptors(hetu = "270303-281N"){
           verifySuoritusjakoDescriptors(List(
@@ -352,7 +352,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
   "Suoritusjaon päivämäärän muuttaminen" - {
     "onnistuu" - {
       "oikealla salaisuudella ja tulevalla päivämäärällä" in {
-        val expirationDate = LocalDateTime.now().plusMonths(1).toLocalDate
+        val expirationDate = LocalDate.now.plusMonths(1)
         val json =
           s"""{
           "secret": "${secrets("yksi suoritus")}",
@@ -368,7 +368,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
 
     "epäonnistuu" - {
       "oikealla salaisuudella mutta menneellä päivämäärällä" in {
-        val expirationDate = LocalDateTime.now().minusDays(1).toLocalDate
+        val expirationDate = LocalDate.now.minusDays(1)
         val json =
           s"""{
           "secret": "${secrets("yksi suoritus")}",
@@ -381,7 +381,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
       }
 
       "oikealla salaisuudella mutta yli vuoden päässä olevalla päivämäärällä" in {
-        val expirationDate = LocalDateTime.now().plusYears(1).plusDays(1).toLocalDate
+        val expirationDate = LocalDate.now.plusYears(1).plusDays(1)
         val json =
           s"""{
           "secret": "${secrets("yksi suoritus")}",
@@ -394,7 +394,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
       }
 
       "epäkelvolla salaisuudella" in {
-        val expirationDate = LocalDateTime.now().plusMonths(1).toLocalDate
+        val expirationDate = LocalDate.now.plusMonths(1)
         val json =
           s"""{
           "secret": "2.2.246.562.10.64353470871",
@@ -407,7 +407,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
       }
 
       "väärällä käyttäjällä" in {
-        val expirationDate = LocalDateTime.now().plusMonths(1).toLocalDate
+        val expirationDate = LocalDate.now.plusMonths(1)
         val json =
           s"""{
           "secret": "${secrets("yksi suoritus")}",
@@ -420,7 +420,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
       }
 
       "tunnistautumattomalla käyttäjällä" in {
-        val expirationDate = LocalDateTime.now().plusMonths(1).toLocalDate
+        val expirationDate = LocalDate.now.plusMonths(1)
         val json =
           s"""{
           "secret": "${secrets("yksi suoritus")}",

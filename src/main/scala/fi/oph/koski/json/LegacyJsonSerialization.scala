@@ -76,5 +76,5 @@ object GenericJsonFormats {
     }
 
     override val strictOptionParsing: Boolean = true
-  } ++ JodaTimeSerializers.all
+  }
 }

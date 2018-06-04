@@ -1,6 +1,6 @@
 package fi.oph.koski.suoritusjako
 
-import java.sql.{Date, SQLException}
+import java.sql.Date
 import java.sql.Timestamp.{valueOf => timestamp}
 import java.time.{LocalDate, LocalDateTime}
 
@@ -22,7 +22,7 @@ class SuoritusjakoRepository(val db: DB) extends Logging with DatabaseExecutionC
   }
 
   def create(secret: String, oppijaOid: String, suoritusIds: List[SuoritusIdentifier]): Either[HttpStatus, LocalDate] = {
-    val expirationDate = LocalDateTime.now.plusMonths(6).toLocalDate
+    val expirationDate = LocalDate.now.plusMonths(6)
     val maxSuoritusjakoCount = 100
 
     val currentSuoritusjakoCount = runDbSync(SuoritusJako
@@ -64,5 +64,5 @@ class SuoritusjakoRepository(val db: DB) extends Logging with DatabaseExecutionC
   private def suoritusjakoFilter(oppijaOid: String, secret: String)(r: SuoritusjakoTable) =
     r.oppijaOid === oppijaOid &&
       r.secret === secret &&
-      r.voimassaAsti >= Date.valueOf(LocalDateTime.now.toLocalDate)
+      r.voimassaAsti >= Date.valueOf(LocalDate.now)
 }

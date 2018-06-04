@@ -43,6 +43,15 @@ describe('Omat tiedot', function() {
           expect(!!omattiedot.virheraportointiButton().length).to.equal(true)
         })
 
+        describe('Ruotsinkielinen sisältö', function () {
+          before(click(findSingle('#logout')), wait.until(etusivu.isVisible), etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('251029-7230', 'Kansalainen', 'VÃ¤inÃ¶ TÃµnis', 'VÃ¤inÃ¶', 'sv'), wait.until(omattiedot.isVisible))
+
+          it('Näytetään ruotsinkielinen ingressi', function() {
+            expect(omattiedot.ingressi()).to.equal(
+              'På denna sida syns alla studieprestationer som sparats elektroniskt, från enskilda kurser till hela examina.'
+            )
+          })
+        })
       })
 
       describe('Kun kirjaudutaan ulos', function () {
@@ -269,7 +278,13 @@ describe('Omat tiedot', function() {
                 var jako = form.suoritusjako(1)
 
                 var date = new Date()
-                date.setMonth(date.getMonth() + 6)
+                var targetMonth = date.getMonth() + 6
+                date.setMonth(targetMonth)
+                if (date.getMonth() != targetMonth) {
+                  // match java.time.LocalDate.plusMonths behavior, in case e.g. today is May 31st, and
+                  // November 31st doesn't exist
+                  date.setDate(0)
+                }
 
                 expect(jako.url()).to.match(/^.+\/opinnot\/[0-9a-f]{32}$/)
                 expect(jako.voimassaoloaika()).to.equal('' +

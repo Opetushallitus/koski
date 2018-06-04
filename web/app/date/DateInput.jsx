@@ -6,9 +6,9 @@ import PropTypes from 'prop-types'
 
 const months = ['Tammikuu', 'Helmikuu', 'Maaliskuu', 'Huhtikuu', 'Toukokuu',
   'Kesäkuu', 'Heinäkuu', 'Elokuu', 'Syyskuu', 'Lokakuu', 'Marraskuu',
-  'Joulukuu'].map(t)
+  'Joulukuu'].map(v => t(v))
 
-const weekdaysShort = ['Su', 'Ma', 'Ti', 'Ke', 'To', 'Pe', 'La'].map(t)
+const weekdaysShort = ['Su', 'Ma', 'Ti', 'Ke', 'To', 'Pe', 'La'].map(v => t(v))
 
 class DateInput extends React.Component {
   constructor(props) {

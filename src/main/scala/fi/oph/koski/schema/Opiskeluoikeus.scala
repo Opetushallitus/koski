@@ -159,6 +159,8 @@ trait Alkupäivällinen {
 trait Jakso extends Alkupäivällinen {
   @Description("Jakson loppupäivämäärä. Muoto YYYY-MM-DD")
   def loppu: Option[LocalDate]
+
+  def contains(d: LocalDate): Boolean = !d.isBefore(alku) && (loppu.isEmpty || !d.isAfter(loppu.get))
 }
 
 trait Läsnäolojakso extends Alkupäivällinen {

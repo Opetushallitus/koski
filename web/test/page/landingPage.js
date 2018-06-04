@@ -22,12 +22,13 @@ function KorhoPankki() {
     isReady: function() {
       return isElementVisible('.korhopankki-page .login')
     },
-    login: function(hetu, surname, firstNames, givenName) {
+    login: function(hetu, surname, firstNames, givenName, lang) {
       return seq(
         pageApi.setInputValue('#hetu', hetu ? hetu : ''),
         pageApi.setInputValue('#sn', surname ? surname : ''),
         pageApi.setInputValue('#FirstName', firstNames ? firstNames : ''),
         pageApi.setInputValue('#givenName', givenName ? givenName : ''),
+        pageApi.setInputValue('#lang', lang ? lang : ''),
         click(findSingle('button'))
       )
     }

@@ -75,11 +75,12 @@ describe('Koski', function() {
       })
     })
 
+    var etusivu = LandingPage()
     describe('Session vanhennuttua', function() {
-      before(Authentication().login(), page.openPage, Authentication().logout, page.oppijaHaku.search('eero', login.isVisible))
+      before(Authentication().login(), page.openPage, Authentication().logout, page.oppijaHaku.search('eero', etusivu.isVisible))
 
-      it('Siirrytään login-sivulle', function() {
-        expect(login.isVisible()).to.equal(true)
+      it('Siirrytään etusivulle', function() {
+        expect(etusivu.isVisible()).to.equal(true)
       })
     })
   })

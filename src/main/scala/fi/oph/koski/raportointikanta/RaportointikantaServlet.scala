@@ -4,7 +4,6 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.{KoskiSession, RequiresVirkailijaOrPalvelukäyttäjä}
 import fi.oph.koski.log.Logging
-import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter
 import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}
 import org.scalatra._
 
@@ -25,12 +24,7 @@ class RaportointikantaServlet(implicit val application: KoskiApplication) extend
   get("/opiskeluoikeudet") {
     // Ensure that nobody uses koskiSession implicitely
     implicit val systemUser = KoskiSession.systemUser
-
-    val filters = OpiskeluoikeusQueryFilter.parse(params.filterKeys(!List().contains(_)).toList)(application.koodistoViitePalvelu, application.organisaatioRepository, systemUser)
-    if (filters.isLeft) {
-      haltWithStatus(filters.left.get)
-    }
-    val loadResults = OpiskeluoikeusLoader.loadOpiskeluoikeudet(application.opiskeluoikeusQueryRepository, filters.right.get, systemUser, application.raportointiDatabase)
+    val loadResults = OpiskeluoikeusLoader.loadOpiskeluoikeudet(application.opiskeluoikeusQueryRepository, systemUser, application.raportointiDatabase)
     streamResponse[LoadResult](loadResults, systemUser)
   }
 

@@ -103,20 +103,6 @@ object Tables {
     def * = (serviceTicket, username, userOid, name, started, updated) <> (SSOSessionRow.tupled, SSOSessionRow.unapply)
   }
 
-  class TiedonsiirtoTable(tag: Tag) extends Table[TiedonsiirtoRow] (tag, "tiedonsiirto") {
-    val id = column[Int]("id")
-    val kayttajaOid = column[String]("kayttaja_oid")
-    val tallentajaOrganisaatioOid = column[String]("tallentaja_organisaatio_oid")
-    val oppija = column[Option[JValue]]("oppija")
-    val oppilaitos = column[Option[JValue]]("oppilaitos")
-    val data = column[Option[JValue]]("data")
-    val virheet = column[Option[JValue]]("virheet")
-    val aikaleima = column[Timestamp]("aikaleima")
-    val lahdejarjestelma = column[Option[String]]("lahdejarjestelma")
-
-    def * = (id, kayttajaOid, tallentajaOrganisaatioOid, oppija, oppilaitos, data, virheet, aikaleima, lahdejarjestelma) <> (TiedonsiirtoRow.tupled, TiedonsiirtoRow.unapply)
-  }
-
   class PreferencesTable(tag: Tag) extends Table[PreferenceRow] (tag, "preferences") {
     val organisaatioOid = column[String]("organisaatio_oid", O.PrimaryKey)
     val `type` = column[String]("type", O.PrimaryKey)
@@ -190,8 +176,6 @@ object Tables {
 
   val FailedLoginAttempt = TableQuery[FaileLoginAttemptTable]
 
-  val Tiedonsiirto = TableQuery[TiedonsiirtoTable]
-
   val CasServiceTicketSessions = TableQuery[CasServiceTicketSessionTable]
 
   // OpiskeluOikeudet-taulu. Käytä kyselyissä aina OpiskeluOikeudetWithAccessCheck, niin tulee myös käyttöoikeudet tarkistettua samalla.
@@ -243,8 +227,6 @@ case class HenkilöRow(oid: String, sukunimi: String, etunimet: String, kutsuman
 }
 
 case class OpiskeluoikeusHistoryRow(opiskeluoikeusId: Int, versionumero: Int, aikaleima: Timestamp, kayttajaOid: String, muutos: JValue)
-
-case class TiedonsiirtoRow(id: Int, kayttajaOid: String, tallentajaOrganisaatioOid: String, oppija: Option[JValue], oppilaitos: Option[JValue], data: Option[JValue], virheet: Option[JValue], aikaleima: Timestamp, lahdejarjestelma: Option[String])
 
 case class SchedulerRow(name: String, nextFireTime: Timestamp, context: Option[JValue], status: Int) {
   def running: Boolean = status == 1

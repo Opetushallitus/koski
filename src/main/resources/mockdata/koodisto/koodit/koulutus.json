@@ -83,6 +83,10 @@
     "nimi" : "Välinehuoltoalan perustutkinto (kokeilu)",
     "lyhytNimi" : "Välinehuoltoalan perustutkinto (kokeilu)",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Grundexamen i instrumentvård (Försöksprogram)",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 9
 }, {
@@ -6313,6 +6317,10 @@
     "nimi" : "Grundexamen inom träindustrin",
     "lyhytNimi" : "",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Vocational Qualification in the Wood Industry",
+    "lyhytNimi" : "Vocational Qualification in the Wood Industry",
+    "kieli" : "EN"
   } ],
   "versio" : 4
 }, {
@@ -13481,6 +13489,10 @@
     "nimi" : "Yrkesexamen inom hästhushållning",
     "lyhytNimi" : "YA inom hästhushållning",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Further Vocational Qualification in Horse Care and Management",
+    "lyhytNimi" : "Further Vocational Qualification in Horse Care and Management",
+    "kieli" : "EN"
   } ],
   "versio" : 4
 }, {
@@ -14643,8 +14655,8 @@
     "lyhytNimi" : "Grundexamen inom läkemedelsbranschen",
     "kieli" : "SV"
   }, {
-    "nimi" : "Pharmaceutic, VQ",
-    "lyhytNimi" : "Pharmaceutic, Vocational Qualification",
+    "nimi" : "Vocational Qualification in Pharmaceutics",
+    "lyhytNimi" : "Vocational Qualification in Pharmaceutics",
     "kieli" : "EN"
   } ],
   "versio" : 9
@@ -14991,6 +15003,10 @@
     "nimi" : "Yrkesexamen i mentalhälsoarbete och missbrukarvård",
     "lyhytNimi" : "",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Further Vocational Qualification in Mental Health and Intoxicant Abuse Welfare Work",
+    "lyhytNimi" : "Further Vocational Qualification in Mental Health and Intoxicant Abuse Welfare Work",
+    "kieli" : "EN"
   } ],
   "versio" : 9
 }, {
@@ -15568,8 +15584,8 @@
     "lyhytNimi" : "Grundexamen i turism",
     "kieli" : "SV"
   }, {
-    "nimi" : "Vocational qualification in the Tourism Industry",
-    "lyhytNimi" : "Vocational qualification in the Tourism Industry",
+    "nimi" : "Vocational Qualification in the Tourism Industry",
+    "lyhytNimi" : "Vocational Qualification in the Tourism Industry",
     "kieli" : "EN"
   } ],
   "versio" : 9
@@ -15686,6 +15702,10 @@
     "nimi" : "Grundexamen inom rengörings- och fastighetsservicebranschen",
     "lyhytNimi" : "Grex inom rengörings- och fastighetsservicebranschen",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Vocational qualification in Cleaning and Property Services",
+    "lyhytNimi" : "Vocational qualification in Cleaning and Property Services",
+    "kieli" : "EN"
   } ],
   "versio" : 4
 }, {
@@ -15699,6 +15719,10 @@
     "nimi" : "Grundexamen inom restaurang- och cateringbranschen",
     "lyhytNimi" : "",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Vocational Qualification in Restaurant and Catering Services",
+    "lyhytNimi" : "Vocational Qualification in Restaurant and Catering Services",
+    "kieli" : "EN"
   } ],
   "versio" : 4
 }, {
@@ -16206,8 +16230,8 @@
     "lyhytNimi" : "Grundexamen i idrott",
     "kieli" : "SV"
   }, {
-    "nimi" : "Physical Education, VQ",
-    "lyhytNimi" : "Physical Education, Vocational Qualification",
+    "nimi" : "Vocational Qualification in Sports Instruction",
+    "lyhytNimi" : "Vocational Qualification in Sports Instruction",
     "kieli" : "EN"
   } ],
   "versio" : 9
@@ -16239,6 +16263,10 @@
     "nimi" : "Grundexamen i pedagogisk verksamhet och handledning",
     "lyhytNimi" : "Grundexamen i pedagogisk verksamhet och handledning",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Vocational Qualification in Education and Instruction",
+    "lyhytNimi" : "Vocational Qualification in Education and Instruction",
+    "kieli" : "EN"
   } ],
   "versio" : 4
 }, {
@@ -16521,8 +16549,8 @@
     "lyhytNimi" : "Grundexamen i sjöfart",
     "kieli" : "SV"
   }, {
-    "nimi" : "Seafaring, VQ",
-    "lyhytNimi" : "Seafaring, Vocational Qualification",
+    "nimi" : "Vocational Qualification in Seafaring",
+    "lyhytNimi" : "Vocational Qualification in Seafaring",
     "kieli" : "EN"
   } ],
   "versio" : 9
@@ -17486,8 +17514,8 @@
     "lyhytNimi" : "Yrkesexamen inom rengörings- och fastighetsservicebranschen",
     "kieli" : "SV"
   }, {
-    "nimi" : "Further vocational qualification in Cleaning and Property Services",
-    "lyhytNimi" : "",
+    "nimi" : "Further Vocational Qualification in Cleaning and Property Services",
+    "lyhytNimi" : "Further Vocational Qualification in Cleaning and Property Services",
     "kieli" : "EN"
   } ],
   "versio" : 4
@@ -17844,6 +17872,10 @@
     "nimi" : "Yrkesexamen i sjöfart",
     "lyhytNimi" : "",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Further Vocational Qualification in Seafaring",
+    "lyhytNimi" : "Further Vocational Qualification in Seafaring",
+    "kieli" : "EN"
   } ],
   "versio" : 4
 }, {
@@ -22343,6 +22375,10 @@
     "nimi" : "Specialyrkesexamen inom rengörings- och fastighetsservicebranschen",
     "lyhytNimi" : "Specialyrkesexamen inom rengörings- och fastighetsservicebranschen",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Specialist Vocational Qualification in Cleaning and Property Services",
+    "lyhytNimi" : "Specialist Vocational Qualification in Cleaning and Property Services",
+    "kieli" : "EN"
   } ],
   "versio" : 4
 }, {
@@ -22421,8 +22457,8 @@
     "lyhytNimi" : "Specialyrkesexamen i rättstolkning",
     "kieli" : "SV"
   }, {
-    "nimi" : "Court Interpreting, SQ",
-    "lyhytNimi" : "Court Interpreting, Specialist Qualification",
+    "nimi" : "Specialist Vocational Qualification in Court Interpreting",
+    "lyhytNimi" : "Specialist Vocational Qualification in Court Interpreting",
     "kieli" : "EN"
   } ],
   "versio" : 4
@@ -28167,6 +28203,10 @@
     "lyhytNimi" : "Tulkki (AMK)",
     "kieli" : "FI"
   }, {
+    "nimi" : "Tolk (YH)",
+    "lyhytNimi" : "Tolk (YH)",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Bachelor of Humanities",
     "lyhytNimi" : "Bachelor of Humanities",
     "kieli" : "EN"
@@ -32554,6 +32594,10 @@
     "lyhytNimi" : "Rakennusarkkitehti (AMK)",
     "kieli" : "FI"
   }, {
+    "nimi" : "Byggnadsarkitekt (YH)",
+    "lyhytNimi" : "Byggnadsarkitekt (YH)",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Bachelor of Construction Achitect",
     "lyhytNimi" : "Bachelor of Construction Achitect",
     "kieli" : "EN"
@@ -33467,6 +33511,10 @@
     "nimi" : "Tekn. kand., kaivos- ja rikastustekniikka",
     "lyhytNimi" : "Tekn. kand., kaivos- ja rikastustekniikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Tekn.kand., gruv- och anrikningsteknik",
+    "lyhytNimi" : "Tekn.kand., gruv- och anrikningsteknik",
+    "kieli" : "SV"
   } ],
   "versio" : 6
 }, {
@@ -35215,7 +35263,16 @@
   "koodiArvo" : "681504",
   "metadata" : [ {
     "nimi" : "Pelastusalan päällystötutkinto (AMK)",
+    "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Befälsexamen för räddningsbranschen (YH)",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Bachelor of Rescue Services",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 4
 }, {
@@ -36494,6 +36551,10 @@
     "nimi" : "Tulkki (Ylempi AMK)",
     "lyhytNimi" : "Tulkki (Ylempi AMK)",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Tolk (högre YH)",
+    "lyhytNimi" : "Tolk (h. YH)",
+    "kieli" : "SV"
   } ],
   "versio" : 9
 }, {
@@ -40109,6 +40170,10 @@
     "nimi" : "Insinööri (ylempi AMK), merenkulku",
     "lyhytNimi" : "Insinööri (ylempi AMK), merenkulku",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Ingenjör (högre YH), sjofart",
+    "lyhytNimi" : "Ingenjör (h. YH), sjofart",
+    "kieli" : "SV"
   } ],
   "versio" : 9
 }, {
@@ -40854,6 +40919,10 @@
     "nimi" : "Dipl. ins., kaivos- ja rikastustekniikka",
     "lyhytNimi" : "Dipl. ins., kaivos- ja rikastustekniikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Dipl.ing., gruv- och anrikningsteknik",
+    "lyhytNimi" : "DI, gruv- och anrikningsteknik",
+    "kieli" : "SV"
   } ],
   "versio" : 6
 }, {
@@ -42767,6 +42836,10 @@
     "nimi" : "Poliisi (ylempi AMK)",
     "lyhytNimi" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Polisbefälsexamen (högre YH)",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 4
 }, {
@@ -48935,6 +49008,10 @@
     "nimi" : "Tekn. lis., kaivos- ja rikastustekniikka",
     "lyhytNimi" : "Tekn. lis., kaivos- ja rikastustekniikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Tekn.lic., gruv- och anrikningsteknik",
+    "lyhytNimi" : "TkL, gruv- och anrikningsteknik",
+    "kieli" : "SV"
   } ],
   "versio" : 6
 }, {
@@ -49437,6 +49514,10 @@
     "nimi" : "Tekn. toht., kaivos- ja rikastustekniikka",
     "lyhytNimi" : "Tekn. toht., kaivos- ja rikastustekniikka",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Tekn.dr., gruv- och anrikningsteknik",
+    "lyhytNimi" : "TkD, gruv- och anrikningsteknik",
+    "kieli" : "SV"
   } ],
   "versio" : 6
 }, {

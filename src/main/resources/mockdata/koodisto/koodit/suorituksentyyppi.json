@@ -12,7 +12,14 @@
   "koodiArvo" : "aikuistenperusopetuksenalkuvaiheenoppiaine",
   "metadata" : [ {
     "nimi" : "Aikuisten perusopetuksen alkuvaiheen oppiaine",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Läroämne på grundnivån för grundläggande utbildning för vuxna",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -21,7 +28,14 @@
   "koodiArvo" : "aikuistenperusopetuksenkurssi",
   "metadata" : [ {
     "nimi" : "Aikuisten perusopetuksen kurssi",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Kurs inom den grundläggande utbildningen för vuxna",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -103,7 +117,7 @@
     "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Examensdel inom en yrkesinriktad examen",
+    "nimi" : "Yrkesexamensdel",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
@@ -115,7 +129,14 @@
   "koodiArvo" : "ammatillisentutkinnonosaapienempikokonaisuus",
   "metadata" : [ {
     "nimi" : "Ammatillisen tutkinnon osaa pienempi kokonaisuus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "En mindre helhet än en yrkesexamensdel",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -209,9 +230,13 @@
   "koodiArvo" : "ibtutkinto",
   "metadata" : [ {
     "nimi" : "IB-tutkinto",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "IB-examen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -257,7 +282,14 @@
   "koodiArvo" : "lukionmuuopinto",
   "metadata" : [ {
     "nimi" : "Lukion muu opinto",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Annan studieprestation i gymnasiet",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -362,7 +394,14 @@
   "koodiArvo" : "muukorkeakoulunsuoritus",
   "metadata" : [ {
     "nimi" : "Muu korkeakoulussa suoritettu opinto",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Annan studieprestation som avlagts vid högskola",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -371,7 +410,14 @@
   "koodiArvo" : "muuperusopetuksenlisaopetuksensuoritus",
   "metadata" : [ {
     "nimi" : "Muu perusopetuksen lisäopetuksessa suoritettu suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Annan prestation som avlagts i påbyggnadsundervisning i den grundläggande utbildningen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -392,7 +438,14 @@
   "koodiArvo" : "nayttotutkintoonvalmistavankoulutuksenosa",
   "metadata" : [ {
     "nimi" : "Näyttötutkintoon valmistavan koulutuksen osa",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Utbildningsdel som förbereder till fristående examen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -437,7 +490,14 @@
   "koodiArvo" : "perusopetuksenlisaopetuksenoppiaine",
   "metadata" : [ {
     "nimi" : "Perusopetuksen lisäopetuksen oppiaineen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Prestation av läroämne inom påbyggnadsundervisning i den grundläggande utbildningen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -554,9 +614,13 @@
   "koodiArvo" : "preiboppimaara",
   "metadata" : [ {
     "nimi" : "Pre-IB",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Pre-IB",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -578,7 +642,14 @@
   "koodiArvo" : "telmakoulutuksenosa",
   "metadata" : [ {
     "nimi" : "Työhön ja itsenäiseen elämään valmentavan koulutuksen osa",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Utbildningsdel som handleder för arbete och ett självständigt liv",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -599,7 +670,14 @@
   "koodiArvo" : "valmakoulutuksenosa",
   "metadata" : [ {
     "nimi" : "Ammatilliseen peruskoulutukseen valmentavan koulutuksen osa",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Utbildningsdel i handledande utbildning för den grundläggande yrkesutbildningen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

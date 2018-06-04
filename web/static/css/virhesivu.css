@@ -4,8 +4,10 @@ body {
 
 .odottamaton-virhe {
   max-width: 600px;
-  margin: auto;
   padding-top: 40px;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 200px;
 }
 
 a {
