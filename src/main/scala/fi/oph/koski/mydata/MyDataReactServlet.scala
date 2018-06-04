@@ -1,28 +1,21 @@
 package fi.oph.koski.mydata
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.AuthenticationSupport
-import fi.oph.koski.servlet.HtmlServlet
-import fi.oph.koski.sso.SSOSupport
+import fi.oph.koski.servlet.{HtmlServlet, OmaOpintopolkuSupport}
 import org.scalatra.ScalatraServlet
 
 import scala.xml.Unparsed
 
-class MyDataReactServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with AuthenticationSupport {
-
+class MyDataReactServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with AuthenticationSupport with OmaOpintopolkuSupport {
   get("/:id") {
-      landerHtml
-  }
-
-  get("/") {
       landerHtml
   }
 
   private def landerHtml = htmlIndex(
     scriptBundleName = "koski-omadata.js",
     scripts = <script id="auth">
-      {Unparsed(s"""window.kansalaisenAuthUrl="${application.config.getString("shibboleth.url")}"""")}
+      {Unparsed(s"""window.kansalaisenAuthUrl="$shibbolethUrl"""")}
     </script>,
     responsive = true
   )
