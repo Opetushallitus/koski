@@ -25,16 +25,16 @@ class KoodistotLocalizationTest extends FreeSpec with Matchers with AppendedClue
         def url = s"${root}/koski/dokumentaatio/koodisto/${koodistoViite.get.koodistoUri}/latest"
 
         withClue(s"Nimi puuttuu kokonaan, katso\n$url\n") {
-          koodit.get.filterNot(hasSomeName).map(_.koodiUri) shouldBe empty
+          koodit.get.filterNot(hasSomeName).map(_.koodiUri).sorted shouldBe empty
         }
         if (koodistoAsetus.vaadiSuomenkielinenNimi) {
           withClue(s"Suomenkielinen nimi puuttuu, katso\n$url?kieli=fi\n") {
-            koodit.get.filterNot(hasFinnishName).map(_.koodiUri) shouldBe empty
+            koodit.get.filterNot(hasFinnishName).map(_.koodiUri).sorted shouldBe empty
           }
         }
         if (koodistoAsetus.vaadiRuotsinkielinenNimi) {
           withClue(s"Ruotsinkielinen nimi puuttuu, katso\n$url?kieli=sv\n") {
-            koodit.get.filterNot(hasSwedishName).map(_.koodiUri) shouldBe empty
+            koodit.get.filterNot(hasSwedishName).map(_.koodiUri).sorted shouldBe empty
           }
         }
       }
