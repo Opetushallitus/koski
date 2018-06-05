@@ -160,13 +160,18 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     laajuus <- (suoritusOrOpiskeluoikeus \ "Laajuus" \ "Opintopiste").headOption.map(_.text.toFloat).filter(_ > 0)
   } yield LaajuusOpintopisteissä(laajuus, yksikko)
 
-  private def arviointi(suoritus: Node) =
-    koodistoViitePalvelu.validate("virtaarvosana", suoritus \ "Arvosana" \ "_" text).map(arvosana =>
-      List(KorkeakoulunKoodistostaLöytyväArviointi(
-        arvosana = arvosana,
-        päivä = LocalDate.parse(suoritus \ "SuoritusPvm" text)
-      ))
-    ).orElse(paikallinenArviointi(suoritus)) // TODO, Mitä jos arvosanaa ei löydy koodistosta eikä ole paikallinen arvosana ?
+  private def arviointi(suoritus: Node): Option[List[KorkeakoulunArviointi]] = {
+    if ((suoritus \ "Arvosana" \ "Muu").length > 0) {
+      paikallinenArviointi(suoritus)
+    } else {
+      koodistoViitePalvelu.validate("virtaarvosana", suoritus \ "Arvosana" \ "_" text).map(arvosana =>
+        List(KorkeakoulunKoodistostaLöytyväArviointi(
+          arvosana = arvosana,
+          päivä = LocalDate.parse(suoritus \ "SuoritusPvm" text)
+        ))
+      )
+    }
+  }
 
   private def paikallinenArviointi(suoritus: Node): Option[List[KorkeakoulunArviointi]] = {
     val asteikkoUri = "virta/" + (suoritus \ "Arvosana" \ "Muu" \ "Asteikko" \ "@avain").text
