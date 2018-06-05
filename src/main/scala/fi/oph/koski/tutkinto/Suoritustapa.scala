@@ -10,5 +10,5 @@ object Suoritustapa {
   val naytto = apply("naytto")
   val reformi = apply("reformi")
 
-  def apply(koodiarvo: String) = MockKoodistoViitePalvelu.validate(Koodistokoodiviite(koodiarvo, "ammatillisentutkinnonsuoritustapa")).get
+  def apply(koodiarvo: String) = MockKoodistoViitePalvelu.validateRequired(Koodistokoodiviite(koodiarvo, "ammatillisentutkinnonsuoritustapa"))
 }

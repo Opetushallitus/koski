@@ -57,7 +57,7 @@ class EditorKooditServlet(implicit val application: KoskiApplication) extends Ap
   get[List[EnumValue]]("/:oppiaineKoodistoUri/:oppiaineKoodiarvo/kurssit/:kurssiKoodistot") {
     val kurssiKoodistot: List[KoodistoViite] = koodistotByString(params("kurssiKoodistot"))
     def sisältyvätKurssit(parentKoodistoUri: String, parentKoodiarvo: String) = {
-      val parent = application.koodistoViitePalvelu.getKoodistoKoodiViite(parentKoodistoUri, parentKoodiarvo).getOrElse(haltWithStatus(tuntematonKoodi(s"Koodistosta ${parentKoodistoUri} ei löydy koodia ${parentKoodiarvo}")))
+      val parent = application.koodistoViitePalvelu.validate(parentKoodistoUri, parentKoodiarvo).getOrElse(haltWithStatus(tuntematonKoodi(s"Koodistosta ${parentKoodistoUri} ei löydy koodia ${parentKoodiarvo}")))
       for {
         kurssiKoodisto <- kurssiKoodistot
         kurssiKoodi <- application.koodistoViitePalvelu.getSisältyvätKoodiViitteet(kurssiKoodisto, parent).toList.flatten

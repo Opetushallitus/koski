@@ -246,7 +246,7 @@ class TiedonsiirtoService(
         userOid = extract[String](userResults \ "key")
         lähdejärjestelmäResults <- extract[List[JValue]](userResults \ "lähdejärjestelmä" \ "buckets")
         lähdejärjestelmäId = extract[String](lähdejärjestelmäResults \ "key")
-        lähdejärjestelmä = koodistoviitePalvelu.getKoodistoKoodiViite("lahdejarjestelma", lähdejärjestelmäId)
+        lähdejärjestelmä = koodistoviitePalvelu.validate("lahdejarjestelma", lähdejärjestelmäId)
         siirretyt = extract[Int](lähdejärjestelmäResults \ "doc_count")
         epäonnistuneet = extract[Int](lähdejärjestelmäResults \ "fail" \ "doc_count")
         onnistuneet = siirretyt - epäonnistuneet

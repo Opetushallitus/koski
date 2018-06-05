@@ -31,7 +31,9 @@ case class KoodistoViitePalvelu(val koodistoPalvelu: KoodistoPalvelu)(implicit c
 
   def getLatestVersionOptional(koodistoUri: String): Option[KoodistoViite] = koodistoPalvelu.getLatestVersionOptional(koodistoUri)
 
-  def getKoodistoKoodiViite(koodistoUri: String, koodiArvo: String): Option[Koodistokoodiviite] = getLatestVersionOptional(koodistoUri).flatMap(koodisto => getKoodistoKoodiViitteet(koodisto).toList.flatten.find(_.koodiarvo == koodiArvo))
+  def validate(koodistoUri: String, koodiArvo: String): Option[Koodistokoodiviite] = {
+    validate(Koodistokoodiviite(koodiArvo, koodistoUri))
+  }
 
   def validate(input: Koodistokoodiviite): Option[Koodistokoodiviite] = {
     val koodistoViite = toKoodistoViiteOptional(input)
@@ -60,6 +62,6 @@ case class KoodistoViitePalvelu(val koodistoPalvelu: KoodistoPalvelu)(implicit c
 
 object MockKoodistoViitePalvelu extends KoodistoViitePalvelu(MockKoodistoPalvelu())(GlobalCacheManager) {
   override def validate(input: Koodistokoodiviite) = super.validate(input).map(_.copy(koodistoVersio = None))
-  override def getKoodistoKoodiViite(koodistoUri: String, koodiArvo: String) = super.getKoodistoKoodiViite(koodistoUri, koodiArvo).map(_.copy(koodistoVersio = None))
+  override def validate(koodistoUri: String, koodiArvo: String) = super.validate(koodistoUri, koodiArvo).map(_.copy(koodistoVersio = None))
   override def getKoodistoKoodiViitteet(koodisto: KoodistoViite) = super.getKoodistoKoodiViitteet(koodisto).map(_.map(_.copy(koodistoVersio = None)))
 }

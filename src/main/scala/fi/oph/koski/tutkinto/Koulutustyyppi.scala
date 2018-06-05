@@ -21,7 +21,7 @@ object Koulutustyyppi {
   val valma = apply(18)
   val valmaErityisopetuksena = apply(19)
 
-  def apply(numero: Int) = MockKoodistoViitePalvelu.validate(Koodistokoodiviite(numero.toString, "koulutustyyppi")).get
+  def apply(numero: Int) = MockKoodistoViitePalvelu.validateRequired(Koodistokoodiviite(numero.toString, "koulutustyyppi"))
   def describe(koulutustyyppi: Koulutustyyppi) = koulutustyyppi.koodiarvo + koulutustyyppi.nimi.map(nimi => s"(${nimi.get("fi")})").getOrElse("")
 
   val ammatillisetKoulutustyypit = List(ammatillinenPerustutkinto, ammatillinenPerustutkintoErityisopetuksena, ammatillinenPerustutkintoNäyttötutkintona, ammattitutkinto, erikoisammattitutkinto)
