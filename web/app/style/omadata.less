@@ -42,14 +42,27 @@
     color: @color-black;
 
     .user {
-      height: 40px;
-      font-size: 16px;
-      font-weight: bold;
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 20px;
+
+      @media @media-phone {
+        flex-direction: column;
+      }
+
+      .username {
+        font-size: 16px;
+        font-weight: bold;
+      }
 
       .dateofbirth {
-        font-size: 16px;
-        font-weight: 300;
-        letter-spacing: 0.2px;
+          font-size: 16px;
+          font-weight: 300;
+          letter-spacing: 0.2px;
+
+          @media @media-full {
+            margin-left: 1ch;
+          }
       }
     }
 
@@ -84,12 +97,22 @@
       width: 50%;
       margin-bottom: 100px;
       padding: 34px 5% 50px 38px;
+
+      @media @media-phone {
+        width: 90%;
+        padding: 19px 6% 50px 7%;
+      }
     }
 
       .acceptance-title {
         font-size: 20px;
         letter-spacing: 0.3px;
         text-align: left;
+
+        @media @media-phone {
+          font-size: 14px;
+          font-weight: 300;
+        }
       }
 
       .acceptance-control-mydata {
@@ -144,8 +167,15 @@
         margin-top: 35px;
         align-items: center;
 
-        .acceptance-button {
+        @media @media-phone {
+          flex-direction: column;
+        }
 
+        .acceptance-button {
+          @media @media-phone {
+            width: 72.6%;
+            margin-bottom: 30px;
+          }
         }
 
         .decline-link {

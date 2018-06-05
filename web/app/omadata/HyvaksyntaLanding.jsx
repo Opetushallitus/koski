@@ -84,8 +84,9 @@ class HyvaksyntaLanding extends React.Component {
 
         <div className="acceptance-container">
           <div className="heading"><h1><Text name="Henkilökohtaisten tietojen käyttö"/></h1></div>
-          <div className="user">{userP.map(user => user && user.name)}
-            <span className="dateofbirth"> {editorP.map(s => this.getBirthDate(s))}</span>
+          <div className="user">
+            <div className="username">{userP.map(user => user && user.name)}</div>
+            <div className="dateofbirth"> {editorP.map(s => this.getBirthDate(s))}</div>
           </div>
           {acceptanceBox}
         </div>
