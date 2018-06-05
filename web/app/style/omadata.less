@@ -1,6 +1,8 @@
-.omadata-page {
+@import "colors.less";
 
-  font-family: SourceSansPro;
+@text-height-med: 20px;
+
+.omadata-page {
 
   .header {
     display: flex;
@@ -23,13 +25,13 @@
     }
 
     .username {
-      height: 20px;
+      height: @text-height-med;
       font-size: 16px;
       font-weight: bold;
     }
 
     .logout {
-      height: 20px;
+      height: @text-height-med;
       font-size: 12px;
       text-decoration: underline;
       text-align: right;
@@ -149,7 +151,7 @@
         .decline-link {
           margin-left: 4%;
           width: 358px;
-          height: 20px;
+          height: @text-height-med;
           font-size: 14px;
           text-align: center;
           color: @color-curious-blue;
