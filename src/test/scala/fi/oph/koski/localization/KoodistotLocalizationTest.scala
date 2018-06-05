@@ -13,16 +13,15 @@ class KoodistotLocalizationTest extends FreeSpec with Matchers with AppendedClue
 
     Koodistot.koodistoAsetukset.foreach { koodistoAsetus =>
       s"${koodistoAsetus.koodisto}" taggedAs (LocalizationTestTag) in {
-        val koodistoViite = koodistoPalvelu.getLatestVersion(koodistoAsetus.koodisto)
-        koodistoViite shouldBe defined
-        val koodit = koodistoPalvelu.getKoodistoKoodit(koodistoViite.get)
+        val koodistoViite = koodistoPalvelu.getLatestVersionRequired(koodistoAsetus.koodisto)
+        val koodit = koodistoPalvelu.getKoodistoKoodit(koodistoViite)
         koodit shouldBe defined
         koodit.get should not be empty
 
         def hasFinnishName(k: KoodistoKoodi) = k.getMetadata("fi").exists(_.nimi.exists(_.trim.nonEmpty))
         def hasSwedishName(k: KoodistoKoodi) = k.getMetadata("sv").exists(_.nimi.exists(_.trim.nonEmpty))
         def hasSomeName(k: KoodistoKoodi) = k.nimi.map(_.get("fi")).exists(n => n != LocalizedString.missingString && n.trim.nonEmpty)
-        def url = s"${root}/koski/dokumentaatio/koodisto/${koodistoViite.get.koodistoUri}/latest"
+        def url = s"${root}/koski/dokumentaatio/koodisto/${koodistoViite.koodistoUri}/latest"
 
         withClue(s"Nimi puuttuu kokonaan, katso\n$url\n") {
           koodit.get.filterNot(hasSomeName).map(_.koodiUri).sorted shouldBe empty

@@ -154,7 +154,7 @@ object KoodistoEnumModelBuilder {
   def koodistoEnumValue(k: Koodistokoodiviite)(localization: LocalizedHtml, koodisto: KoodistoViitePalvelu) = {
     def koodistoName(k: Koodistokoodiviite) = {
       val kp = koodisto.koodistoPalvelu
-      kp.getLatestVersion(k.koodistoUri).flatMap(kp.getKoodisto(_)).flatMap(_.nimi).map(_.get(localization.lang))
+      kp.getLatestVersionOptional(k.koodistoUri).flatMap(kp.getKoodisto(_)).flatMap(_.nimi).map(_.get(localization.lang))
     }
 
     val title = if (List("arviointiasteikkoammatillinent1k3").contains(k.koodistoUri)) {

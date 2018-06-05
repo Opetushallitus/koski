@@ -20,7 +20,7 @@ class KoodistotTest extends FreeSpec with Matchers {
   }
 
   private def getKoodisto(koodistoUri: String) = {
-    val versio = MockKoodistoPalvelu().getLatestVersion(koodistoUri).get
+    val versio = MockKoodistoPalvelu().getLatestVersionRequired(koodistoUri)
     MockKoodistoPalvelu().getKoodisto(versio).get
   }
 }

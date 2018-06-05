@@ -18,7 +18,7 @@ object KoodistoMockDataUpdater extends App with Logging {
   }
 
   private def updateMockDataForKoodisto(koodistoUri: String, kp: KoodistoPalvelu): Unit = {
-    kp.getLatestVersion(koodistoUri) match {
+    kp.getLatestVersionOptional(koodistoUri) match {
       case Some(versio) =>
         logger.info("Päivitetään testidata koodistolle " + koodistoUri + "/" + versio)
         JsonFiles.writeFile(

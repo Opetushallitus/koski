@@ -12,11 +12,11 @@ private class MockKoodistoPalvelu extends KoodistoPalvelu {
     getKoodisto(koodisto.koodistoUri)
   }
 
-  def getKoodisto(koodistoUri: String): Option[Koodisto] = {
+  private def getKoodisto(koodistoUri: String): Option[Koodisto] = {
     koodistoResourceName(koodistoUri).flatMap(JsonResources.readResourceIfExists(_)).map(JsonSerializer.extract[Koodisto](_, ignoreExtras = true))
   }
 
-  def getLatestVersion(koodistoUri: String): Option[KoodistoViite] = getKoodisto(koodistoUri).map { _.koodistoViite }
+  def getLatestVersionOptional(koodistoUri: String): Option[KoodistoViite] = getKoodisto(koodistoUri).map { _.koodistoViite }
 }
 
 

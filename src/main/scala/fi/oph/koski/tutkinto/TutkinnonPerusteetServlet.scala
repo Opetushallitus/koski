@@ -26,7 +26,7 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
       .map(p => Koodistokoodiviite(koodiarvo = p.diaarinumero, nimi = LocalizedString.sanitize(p.nimi), koodistoUri = "koskikoulutustendiaarinumerot"))
 
     val diaaritKoskesta = koulutustyypit.flatMap(koulutusTyyppi =>
-      application.koodistoViitePalvelu.getSisältyvätKoodiViitteet(application.koodistoViitePalvelu.getLatestVersion("koskikoulutustendiaarinumerot").get, koulutusTyyppi)
+      application.koodistoViitePalvelu.getSisältyvätKoodiViitteet(application.koodistoViitePalvelu.getLatestVersionRequired("koskikoulutustendiaarinumerot"), koulutusTyyppi)
     ).flatten.toList
 
     (diaaritEperusteista ++ diaaritKoskesta).distinct
@@ -43,9 +43,7 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
   }
 
   get("/tutkinnonosat/ryhmat/:diaari/:suoritustapa") {
-    val ryhmät: List[Koodistokoodiviite] = application.koodistoPalvelu.getLatestVersion("ammatillisentutkinnonosanryhma")
-      .flatMap(application.koodistoViitePalvelu.getKoodistoKoodiViitteet).toList.flatten
-
+    val ryhmät: List[Koodistokoodiviite] = application.koodistoViitePalvelu.getKoodistoKoodiViitteet(application.koodistoPalvelu.getLatestVersionRequired("ammatillisentutkinnonosanryhma")).get
     perusteenRakenne(failWhenNotFound = false).map(filterRyhmät(ryhmät)).getOrElse(Nil)
   }
 
@@ -84,7 +82,7 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
 
   private def isTelma(diaari: String) = {
     val telmaDiaarit = application.koodistoViitePalvelu.getSisältyvätKoodiViitteet(
-      application.koodistoViitePalvelu.getLatestVersion("koskikoulutustendiaarinumerot").get,
+      application.koodistoViitePalvelu.getLatestVersionRequired("koskikoulutustendiaarinumerot"),
       Koulutustyyppi.telma
     )
 

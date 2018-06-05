@@ -27,12 +27,14 @@ case class KoodistoViitePalvelu(val koodistoPalvelu: KoodistoPalvelu)(implicit c
     }
   }
 
-  def getLatestVersion(koodistoUri: String): Option[KoodistoViite] = koodistoPalvelu.getLatestVersion(koodistoUri)
+  def getLatestVersionRequired(koodistoUri: String): KoodistoViite = koodistoPalvelu.getLatestVersionRequired(koodistoUri)
 
-  def getKoodistoKoodiViite(koodistoUri: String, koodiArvo: String): Option[Koodistokoodiviite] = getLatestVersion(koodistoUri).flatMap(koodisto => getKoodistoKoodiViitteet(koodisto).toList.flatten.find(_.koodiarvo == koodiArvo))
+  def getLatestVersionOptional(koodistoUri: String): Option[KoodistoViite] = koodistoPalvelu.getLatestVersionOptional(koodistoUri)
 
-  def validate(input: Koodistokoodiviite):Option[Koodistokoodiviite] = {
-    val koodistoViite = toKoodistoViite(input)
+  def getKoodistoKoodiViite(koodistoUri: String, koodiArvo: String): Option[Koodistokoodiviite] = getLatestVersionOptional(koodistoUri).flatMap(koodisto => getKoodistoKoodiViitteet(koodisto).toList.flatten.find(_.koodiarvo == koodiArvo))
+
+  def validate(input: Koodistokoodiviite): Option[Koodistokoodiviite] = {
+    val koodistoViite = toKoodistoViiteOptional(input)
 
     val viite = koodistoViite.flatMap(getKoodistoKoodiViitteet).toList.flatten.find(_.koodiarvo == input.koodiarvo)
 
@@ -42,7 +44,7 @@ case class KoodistoViitePalvelu(val koodistoPalvelu: KoodistoPalvelu)(implicit c
     viite
   }
 
-  def toKoodistoViite(koodiviite: Koodistokoodiviite) = koodiviite.koodistoVersio.map(KoodistoViite(koodiviite.koodistoUri, _)).orElse(getLatestVersion(koodiviite.koodistoUri))
+  private def toKoodistoViiteOptional(koodiviite: Koodistokoodiviite) = koodiviite.koodistoVersio.map(KoodistoViite(koodiviite.koodistoUri, _)).orElse(getLatestVersionOptional(koodiviite.koodistoUri))
 
   def validateRequired(uri: String, koodi: String): Koodistokoodiviite = {
     validateRequired(Koodistokoodiviite(koodi, uri))

@@ -30,9 +30,15 @@ class RemoteKoodistoPalvelu(virkailijaUrl: String) extends KoodistoPalvelu with 
     runTask(http.get(uri"/koodisto-service/rest/codes/${koodisto.koodistoUri}/${koodisto.versio}${noCache}")(Http.parseJsonOptional[Koodisto]))
   }
 
-  def getLatestVersion(koodisto: String): Option[KoodistoViite] = {
-    val latestKoodisto: Option[KoodistoWithLatestVersion] = runTask(http.get(uri"/koodisto-service/rest/codes/${koodisto}${noCache}")(Http.parseJsonIgnoreError[KoodistoWithLatestVersion]))
-    latestKoodisto.flatMap { latest => Option(latest.latestKoodistoVersio).map(v => KoodistoViite(koodisto, v.versio)) }
+  def getLatestVersionOptional(koodistoUri: String): Option[KoodistoViite] = {
+    runTask(http.get(uri"/koodisto-service/rest/codes/${koodistoUri}${noCache}") {
+      case (404, _, _) => None
+      case (500, "error.codes.generic", _) => None // If codes are not found, the service actually returns 500 with this error text.
+      case (200, text, _) =>
+        val koodisto = JsonSerializer.parse[KoodistoWithLatestVersion](text, ignoreExtras = true)
+        Some(KoodistoViite(koodistoUri, koodisto.latestKoodistoVersio.versio))
+      case (status, text, uri) => throw HttpStatusException(status, text, uri)
+    })
   }
 
   private def noCache = uri"?noCache=${System.currentTimeMillis()}"

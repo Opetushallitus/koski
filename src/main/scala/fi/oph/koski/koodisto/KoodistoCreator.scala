@@ -45,7 +45,7 @@ case class KoodistoCreator(application: KoskiApplication) extends Logging {
 
       val päivitettävätJaLuotavat = codesToCheck.par.map { koodistoUri =>
 
-        val koodistoViite: KoodistoViite = kp.getLatestVersion(koodistoUri).getOrElse(throw new Exception("Koodistoa ei löydy: " + koodistoUri))
+        val koodistoViite: KoodistoViite = kp.getLatestVersionRequired(koodistoUri)
         val olemassaOlevatKoodit: List[KoodistoKoodi] = kp.getKoodistoKoodit(koodistoViite).toList.flatten.map(sortKoodistoKoodiMetadata)
         val mockKoodit: List[KoodistoKoodi] = MockKoodistoPalvelu().getKoodistoKoodit(koodistoViite).toList.flatten.map(sortKoodistoKoodiMetadata)
 
@@ -123,10 +123,10 @@ case class KoodistoCreator(application: KoskiApplication) extends Logging {
 
   private def päivitäOlemassaOlevatKoodistot = {
     // update existing
-    val olemassaOlevatKoodistot = Koodistot.koodistot.filter(updateable.contains(_)).filter(!kp.getLatestVersion(_).isEmpty).toList
+    val olemassaOlevatKoodistot = Koodistot.koodistot.filter(updateable.contains(_)).filter(!kp.getLatestVersionOptional(_).isEmpty).toList
     val päivitettävätKoodistot = olemassaOlevatKoodistot.flatMap { koodistoUri =>
       val existing: Koodisto = kp
-        .getLatestVersion(koodistoUri)
+        .getLatestVersionOptional(koodistoUri)
         .flatMap(kp.getKoodisto)
         .map(sortKoodistoMetadata)
         .get
@@ -150,7 +150,7 @@ case class KoodistoCreator(application: KoskiApplication) extends Logging {
 
   private def luoPuuttuvatKoodistot {
     // Create missing
-    val luotavatKoodistot = Koodistot.koodistot.filter(createable.contains(_)).filter(kp.getLatestVersion(_).isEmpty).toList
+    val luotavatKoodistot = Koodistot.koodistot.filter(createable.contains(_)).filter(kp.getLatestVersionOptional(_).isEmpty).toList
     luotavatKoodistot.foreach { koodistoUri =>
       MockKoodistoPalvelu().getKoodisto(KoodistoViite(koodistoUri, 1)) match {
         case None =>
