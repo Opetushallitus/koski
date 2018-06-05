@@ -122,6 +122,18 @@ export class Oppijataulukko extends React.Component {
                 }
               />
             </SortingTableHeader>
+            <SortingTableHeader field='päättymispäivä' titleKey='Päättyminen pvm'>
+              <DatePicker
+                selectedStartDay={params['opiskeluoikeusPäättynytAikaisintaan'] && ISO2FinnishDate(params['opiskeluoikeusPäättynytAikaisintaan'])}
+                selectedEndDay={params['opiskeluoikeusPäättynytViimeistään'] && ISO2FinnishDate(params['opiskeluoikeusPäättynytViimeistään'])}
+                onSelectionChanged={ range => this.filterBus.push(
+                  {
+                    'opiskeluoikeusPäättynytAikaisintaan': range.from ? formatISODate(range.from): undefined,
+                    'opiskeluoikeusPäättynytViimeistään': range.to ? formatISODate(range.to): undefined
+                  })
+                }
+              />
+            </SortingTableHeader>
             <SortingTableHeader field='luokka' titleKey='Luokka / ryhmä'>
               <input
                 placeholder={t('hae')}
@@ -166,6 +178,7 @@ export class Oppijataulukko extends React.Component {
                   <li key={j} className="toimipiste">{t(suoritus.toimipiste.nimi)}</li>)
                 }</ul></td>
                 <td className="aloitus pvm">{ ISO2FinnishDate(opiskeluoikeus.alkamispäivä) }</td>
+                <td className="päättyminen pvm">{ ISO2FinnishDate(opiskeluoikeus.päättymispäivä) }</td>
                 <td className="luokka"><Highlight search={params['luokkahaku'] || ''}>{ opiskeluoikeus.luokka }</Highlight></td>
               </tr>)
             })
