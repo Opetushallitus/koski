@@ -17,7 +17,7 @@ import {t} from '../i18n/i18n'
 const memberP = memberId => Http.cachedGet(`/koski/api/omadata/kumppani/${memberId}`, { errorMapper: () => undefined }).toProperty()
 const editorP = Http.cachedGet('/koski/api/omattiedot/editor', { errorMapper: () => undefined }).toProperty()
 
-const memberCodeRegex = /\/koski\/mydata\/(.*)/
+const memberCodeRegex = /\/koski\/omadata\/(.*)/
 
 class HyvaksyntaLanding extends React.Component {
   constructor(props) {
