@@ -94,7 +94,7 @@ function KoskiPage() {
           return OrganisaatioHaku(Oppijataulukko.tableElem).select(value)()
         } else if (className == 'alkamispäivä') {
           return seq(
-            click(S('.date-range-selection')),
+            click(S("." + className + ' .date-range-selection')),
             Page(Oppijataulukko.tableElem).setInputValue(".date-range-input input.end", value || ""),
             click('body')
           )()

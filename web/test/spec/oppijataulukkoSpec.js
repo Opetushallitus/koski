@@ -22,6 +22,7 @@ describe('Oppijataulukko', function() {
         'Valmistunut',
         'Jyväskylän normaalikoulu',
         '15.8.2008',
+        '4.6.2016',
         '9C' ])
     })
   })
@@ -34,6 +35,7 @@ describe('Oppijataulukko', function() {
         expect(page.opiskeluoikeudeTotal()).to.equal('2')
       })
     })
+
     describe('opiskeluoikeuden tyypillä', function() {
       before(page.oppijataulukko.filterBy('nimi', 'Koululainen Kaisa'), page.oppijataulukko.filterBy('tyyppi', 'Perusopetus'))
       it('toimii', function() {
@@ -73,6 +75,7 @@ describe('Oppijataulukko', function() {
         expect(page.opiskeluoikeudeTotal()).to.equal('3')
       })
     })
+
     describe('tilalla', function() {
       before(page.oppijataulukko.filterBy('tyyppi', 'Ammatillinen koulutus'), page.oppijataulukko.filterBy('tutkinto'), page.oppijataulukko.filterBy('tila', 'Valmistunut'))
       it('toimii', function() {
@@ -88,6 +91,7 @@ describe('Oppijataulukko', function() {
         expect(page.opiskeluoikeudeTotal()).to.equal('2')
       })
     })
+
     describe('alkamispäivällä', function() {
       before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('tila'),  page.oppijataulukko.filterBy('oppilaitos'), page.oppijataulukko.filterBy('alkamispäivä', '1.1.2001'))
       it('toimii', function() {
@@ -137,12 +141,12 @@ describe('Oppijataulukko', function() {
       before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('tutkinto'), page.oppijataulukko.filterBy('nimi'), page.oppijataulukko.filterBy('luokka', '9'))
       it('Nouseva järjestys', function() {
         return page.oppijataulukko.sortBy('luokka')().then(function() {
-          expect(page.oppijataulukko.data().map(function(row) { return row[7]})).to.deep.equal([ '9B', '9C', '9C', '9C', '9C', '9C', '9C', '9D' ])
+          expect(page.oppijataulukko.data().map(function(row) { return row[8]})).to.deep.equal([ '9B', '9C', '9C', '9C', '9C', '9C', '9C', '9D' ])
         })
       })
       it('Laskeva järjestys', function() {
         return page.oppijataulukko.sortBy('luokka')().then(function() {
-          expect(page.oppijataulukko.data().map(function(row) { return row[7]})).to.deep.equal([ '9D', '9C', '9C', '9C', '9C', '9C', '9C', '9B' ])
+          expect(page.oppijataulukko.data().map(function(row) { return row[8]})).to.deep.equal([ '9D', '9C', '9C', '9C', '9C', '9C', '9C', '9B' ])
         })
       })
     })
