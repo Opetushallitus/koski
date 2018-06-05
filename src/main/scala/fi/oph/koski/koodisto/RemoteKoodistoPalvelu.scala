@@ -8,7 +8,11 @@ import fi.oph.koski.log.Logging
 class RemoteKoodistoPalvelu(virkailijaUrl: String) extends KoodistoPalvelu with Logging {
   val http = Http(virkailijaUrl)
 
-  def getKoodistoKoodit(koodisto: KoodistoViite): Option[List[KoodistoKoodi]] = {
+  def getKoodistoKoodit(koodisto: KoodistoViite): List[KoodistoKoodi] = {
+    getKoodistoKooditOptional(koodisto).getOrElse(throw new RuntimeException(s"Koodistoa ei löydy: $koodisto"))
+  }
+
+  private def getKoodistoKooditOptional(koodisto: KoodistoViite): Option[List[KoodistoKoodi]] = {
     runTask(http.get(uri"/koodisto-service/rest/codeelement/codes/${koodisto.koodistoUri}/${koodisto.versio}${noCache}") {
       case (404, _, _) => None
       case (500, "error.codes.not.found", _) => None // If codes are not found, the service actually returns 500 with this error text.

@@ -22,7 +22,7 @@ class KoodistoServlet(implicit val application: KoskiApplication) extends ApiSer
 
   get("/suoritustyypit") {
     val opiskeluoikeudenTyyppi = params.get("opiskeluoikeudentyyppi").map(tyyppi => opiskeluoikeudet.filter(oo => oo.tyyppi.koodiarvo == tyyppi)).getOrElse(opiskeluoikeudet)
-    koodistoPalvelu.getKoodistoKoodit(koodistoPalvelu.getLatestVersionRequired("suorituksentyyppi")).get
+    koodistoPalvelu.getKoodistoKoodit(koodistoPalvelu.getLatestVersionRequired("suorituksentyyppi"))
       .filter(koodi => koodiarvot(opiskeluoikeudenTyyppi).contains(koodi.koodiArvo))
       .filterNot(_.koodiArvo == "perusopetuksenvuosiluokka")
   }
@@ -41,10 +41,6 @@ trait KoodistoFinder extends KoskiBaseServlet {
       case _ =>
         Some(KoodistoViite(koodistoUri, getIntegerParam("version")))
     }
-    versio.flatMap{ koodisto =>
-      koodistoPalvelu.getKoodistoKoodit(koodisto).map { koodit =>
-        (koodisto, koodit)
-      }
-    }
+    versio.map { koodisto => (koodisto, koodistoPalvelu.getKoodistoKoodit(koodisto)) }
   }
 }

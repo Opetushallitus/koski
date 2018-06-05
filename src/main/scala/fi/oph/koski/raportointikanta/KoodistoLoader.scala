@@ -14,7 +14,7 @@ object KoodistoLoader extends Logging {
     var count = 0
     LadattavatKoodistot.foreach(koodistoUri => {
       val versio = koodistoPalvelu.getLatestVersionRequired(koodistoUri)
-      val koodit = koodistoPalvelu.getKoodistoKoodit(versio).get
+      val koodit = koodistoPalvelu.getKoodistoKoodit(versio)
       val rows = koodit.map(buildRKoodistoKoodiRow)
       raportointiDatabase.deleteKoodistoKoodit(koodistoUri)
       raportointiDatabase.loadKoodistoKoodit(rows)

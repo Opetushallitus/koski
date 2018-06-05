@@ -116,7 +116,7 @@ class EditorKooditServlet(implicit val application: KoskiApplication) extends Ap
 
   private def getKooditFromRequestParams() = koodistojenKoodit(koodistotByString(params("koodistoUri")))
 
-  private def koodistojenKoodit(koodistot: List[KoodistoViite]) = koodistot.flatMap(application.koodistoViitePalvelu.getKoodistoKoodiViitteet(_).toList.flatten)
+  private def koodistojenKoodit(koodistot: List[KoodistoViite]) = koodistot.flatMap(application.koodistoViitePalvelu.getKoodistoKoodiViitteet(_))
 
   private def toKoodistoEnumValues(koodit: List[Koodistokoodiviite]) = koodit.map(KoodistoEnumModelBuilder.koodistoEnumValue(_)(localization, application.koodistoViitePalvelu)).sortBy(_.title)
 

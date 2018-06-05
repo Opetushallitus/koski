@@ -43,7 +43,7 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
   }
 
   get("/tutkinnonosat/ryhmat/:diaari/:suoritustapa") {
-    val ryhmät: List[Koodistokoodiviite] = application.koodistoViitePalvelu.getKoodistoKoodiViitteet(application.koodistoPalvelu.getLatestVersionRequired("ammatillisentutkinnonosanryhma")).get
+    val ryhmät: List[Koodistokoodiviite] = application.koodistoViitePalvelu.getKoodistoKoodiViitteet(application.koodistoPalvelu.getLatestVersionRequired("ammatillisentutkinnonosanryhma"))
     perusteenRakenne(failWhenNotFound = false).map(filterRyhmät(ryhmät)).getOrElse(Nil)
   }
 

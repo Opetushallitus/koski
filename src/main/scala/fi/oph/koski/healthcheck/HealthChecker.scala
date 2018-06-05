@@ -57,7 +57,7 @@ trait HealthCheck extends Logging {
   }.left.getOrElse(HttpStatus.ok)
 
   private def koodistopalveluCheck: HttpStatus =
-    get("koodistopalvelu", koodistoPalvelu.getKoodistoKoodit(KoodistoViite("suorituksentila", 1)).toList.flatten)
+    get("koodistopalvelu", koodistoPalvelu.getKoodistoKoodit(KoodistoViite("suorituksentila", 1)))
       .filterOrElse(_.nonEmpty, KoskiErrorCategory.notFound.koodistoaEiLöydy())
       .left.getOrElse(HttpStatus.ok)
 

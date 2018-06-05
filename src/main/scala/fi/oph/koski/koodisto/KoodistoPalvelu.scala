@@ -20,7 +20,7 @@ object KoodistoPalvelu {
 }
 
 trait KoodistoPalvelu {
-  def getKoodistoKoodit(koodisto: KoodistoViite): Option[List[KoodistoKoodi]]
+  def getKoodistoKoodit(koodisto: KoodistoViite): List[KoodistoKoodi]
   def getKoodisto(koodisto: KoodistoViite): Option[Koodisto]
   def getLatestVersionRequired(koodistoUri: String): KoodistoViite = {
     getLatestVersionOptional(koodistoUri).getOrElse(throw new RuntimeException(s"Koodistoa ei löydy: $koodistoUri"))

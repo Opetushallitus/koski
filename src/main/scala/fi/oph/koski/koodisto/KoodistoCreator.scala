@@ -46,8 +46,8 @@ case class KoodistoCreator(application: KoskiApplication) extends Logging {
       val päivitettävätJaLuotavat = codesToCheck.par.map { koodistoUri =>
 
         val koodistoViite: KoodistoViite = kp.getLatestVersionRequired(koodistoUri)
-        val olemassaOlevatKoodit: List[KoodistoKoodi] = kp.getKoodistoKoodit(koodistoViite).toList.flatten.map(sortKoodistoKoodiMetadata)
-        val mockKoodit: List[KoodistoKoodi] = MockKoodistoPalvelu().getKoodistoKoodit(koodistoViite).toList.flatten.map(sortKoodistoKoodiMetadata)
+        val olemassaOlevatKoodit: List[KoodistoKoodi] = kp.getKoodistoKoodit(koodistoViite).map(sortKoodistoKoodiMetadata)
+        val mockKoodit: List[KoodistoKoodi] = MockKoodistoPalvelu().getKoodistoKoodit(koodistoViite).map(sortKoodistoKoodiMetadata)
 
         val result = (luotavatKoodit(koodistoUri, olemassaOlevatKoodit, mockKoodit), päivitettävätKoodit(koodistoUri, olemassaOlevatKoodit, mockKoodit))
         result

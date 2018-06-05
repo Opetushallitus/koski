@@ -4,8 +4,11 @@ import fi.oph.koski.json.{JsonResources, JsonSerializer}
 import fi.oph.koski.koodisto.MockKoodistoPalvelu._
 
 private class MockKoodistoPalvelu extends KoodistoPalvelu {
-  def getKoodistoKoodit(koodisto: KoodistoViite): Option[List[KoodistoKoodi]] = {
-    koodistoKooditResourceName(koodisto.koodistoUri).flatMap(JsonResources.readResourceIfExists(_)).map(JsonSerializer.extract[List[KoodistoKoodi]](_, ignoreExtras = true))
+  def getKoodistoKoodit(koodisto: KoodistoViite): List[KoodistoKoodi] = {
+    koodistoKooditResourceName(koodisto.koodistoUri)
+      .flatMap(JsonResources.readResourceIfExists(_))
+      .map(JsonSerializer.extract[List[KoodistoKoodi]](_, ignoreExtras = true))
+      .getOrElse(throw new RuntimeException(s"Koodistoa ei löydy: $koodisto"))
   }
 
   def getKoodisto(koodisto: KoodistoViite): Option[Koodisto] = {
