@@ -459,6 +459,15 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       }
     }
 
+    "Valma" - {
+      "suoritus.vahvistus.päivä > päättymispäivä" - {
+        val suoritus = autoalanPerustutkinnonSuoritusValma().copy(vahvistus = vahvistus(date(2017, 5, 31)))
+        "palautetaan HTTP 200" in putOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(2016, 5, 31)).copy(suoritukset = List(suoritus)))(
+          verifyResponseStatusOk()
+        )
+      }
+    }
+
     "Ammatti- tai erikoisammattitutkinto" - {
       val tutkinnonOsanSuoritus = tutkinnonOsaSuoritus.copy(
         koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite("104052", "tutkinnonosat"), true, None)
