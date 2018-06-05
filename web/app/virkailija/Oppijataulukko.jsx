@@ -124,6 +124,7 @@ export class Oppijataulukko extends React.Component {
             </SortingTableHeader>
             <SortingTableHeader field='päättymispäivä' titleKey='Päättyminen pvm'>
               <DatePicker
+                label='Päättymispäivä'
                 selectedStartDay={params['opiskeluoikeusPäättynytAikaisintaan'] && ISO2FinnishDate(params['opiskeluoikeusPäättynytAikaisintaan'])}
                 selectedEndDay={params['opiskeluoikeusPäättynytViimeistään'] && ISO2FinnishDate(params['opiskeluoikeusPäättynytViimeistään'])}
                 onSelectionChanged={ range => this.filterBus.push(
