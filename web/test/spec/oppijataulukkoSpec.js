@@ -108,11 +108,40 @@ describe('Oppijataulukko', function() {
         expect(page.opiskeluoikeudeTotal()).to.equal('8')
       })
     })
+
+    describe('päättymispäivällä', function() {
+      before(
+        page.oppijataulukko.filterBy('tyyppi'),
+        page.oppijataulukko.filterBy('tila'),
+        page.oppijataulukko.filterBy('oppilaitos'),
+        page.oppijataulukko.filterBy('alkamispäivä'),
+        page.oppijataulukko.filterBy('päättymispäivä', '1.6.2016')
+      )
+
+      it('toimii', function() {
+        expect(page.oppijataulukko.names()).to.deep.equal([
+          'Ammattilainen, Aarne',
+          'Erikoinen, Erja',
+          'Eskari, Essi',
+          'Koululainen, Kaisa',
+          'Lukioaineopiskelija, Aino'
+        ])
+        expect(page.opiskeluoikeudeTotal()).to.equal('5')
+      })
+    })
   })
 
   describe('Sorttaus', function() {
     describe('nimellä', function() {
-      before(page.oppijataulukko.filterBy('oppilaitos'), page.oppijataulukko.filterBy('tutkinto'), page.oppijataulukko.filterBy('tila'), page.oppijataulukko.filterBy('alkamispäivä'), page.oppijataulukko.filterBy('tyyppi', 'Perusopetus'))
+      before(
+        page.oppijataulukko.filterBy('oppilaitos'),
+        page.oppijataulukko.filterBy('tutkinto'),
+        page.oppijataulukko.filterBy('tila'),
+        page.oppijataulukko.filterBy('alkamispäivä'),
+        page.oppijataulukko.filterBy('päättymispäivä'),
+        page.oppijataulukko.filterBy('tyyppi', 'Perusopetus')
+      )
+
       it('Oletusjärjestys nouseva nimen mukaan', function() {
         expect(page.oppijataulukko.names()).to.deep.equal([ 'Hetuton, Heikki', 'Koululainen, Kaisa', 'Lukiolainen, Liisa', 'Luokallejäänyt, Lasse', 'Monikoululainen, Miia', 'Monikoululainen, Miia', 'Oppija, Oili', 'Toiminta, Tommi', 'Ysiluokkalainen, Ylermi', 'of Puppets, Master' ])
       })
@@ -133,6 +162,20 @@ describe('Oppijataulukko', function() {
       it('Laskeva järjestys', function() {
         return page.oppijataulukko.sortBy('alkamispäivä')().then(function() {
           expect(page.oppijataulukko.data().map(function(row) { return row[6]})).to.deep.equal(['15.8.2008', '15.8.2007'])
+        })
+      })
+    })
+
+    describe('päättymispäivällä', function() {
+      before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('tutkinto'), page.oppijataulukko.filterBy('nimi', 'koululainen'))
+      it('Nouseva järjestys', function() {
+        return page.oppijataulukko.sortBy('päättymispäivä')().then(function() {
+          expect(page.oppijataulukko.data().map(function(row) { return row[7]})).to.deep.equal(['1.6.2008', '4.6.2016'])
+        })
+      })
+      it('Laskeva järjestys', function() {
+        return page.oppijataulukko.sortBy('päättymispäivä')().then(function() {
+          expect(page.oppijataulukko.data().map(function(row) { return row[7]})).to.deep.equal(['4.6.2016', '1.6.2008'])
         })
       })
     })
