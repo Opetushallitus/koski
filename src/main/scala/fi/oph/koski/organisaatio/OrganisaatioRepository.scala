@@ -64,9 +64,9 @@ object OrganisaatioRepository {
 
 abstract class JsonOrganisaatioRepository(koodisto: KoodistoViitePalvelu) extends OrganisaatioRepository {
   protected def convertOrganisaatio(org: OrganisaatioPalveluOrganisaatio): OrganisaatioHierarkia = {
-    val oppilaitosnumero = org.oppilaitosKoodi.flatMap(oppilaitosnumero => koodisto.getKoodistoKoodiViite("oppilaitosnumero", oppilaitosnumero))
+    val oppilaitosnumero = org.oppilaitosKoodi.flatMap(oppilaitosnumero => koodisto.validate("oppilaitosnumero", oppilaitosnumero))
     val kotipaikka = org.kotipaikkaUri.map(str => str.split("_")).flatMap {
-      case Array(koodistoUri, koodi) => koodisto.getKoodistoKoodiViite(koodistoUri, koodi)
+      case Array(koodistoUri, koodi) => koodisto.validate(koodistoUri, koodi)
       case _ => None
     }
     val oppilaitostyyppi: Option[String] = org.oppilaitostyyppi.map(_.replace("oppilaitostyyppi_", "").replaceAll("#.*", ""))

@@ -174,7 +174,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       val koulutustyyppi = koulutus match {
         case np: NuortenPerusopetus => np.perusteenDiaarinumero.flatMap(tutkintoRepository.findPerusteRakenne(_).map(_.koulutustyyppi))
         case _ =>
-          val koulutustyyppiKoodisto = koodistoPalvelu.koodistoPalvelu.getLatestVersion("koulutustyyppi").get
+          val koulutustyyppiKoodisto = koodistoPalvelu.koodistoPalvelu.getLatestVersionRequired("koulutustyyppi")
           val koulutusTyypit = koodistoPalvelu.getSisältyvätKoodiViitteet(koulutustyyppiKoodisto, koulutus.tunniste).toList.flatten
           koulutusTyypit.filterNot(koodi => List(ammatillinenPerustutkintoErityisopetuksena.koodiarvo, valmaErityisopetuksena.koodiarvo).contains(koodi.koodiarvo)).headOption
       }

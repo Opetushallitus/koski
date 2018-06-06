@@ -18,14 +18,14 @@ object KoodistoMockDataUpdater extends App with Logging {
   }
 
   private def updateMockDataForKoodisto(koodistoUri: String, kp: KoodistoPalvelu): Unit = {
-    kp.getLatestVersion(koodistoUri) match {
+    kp.getLatestVersionOptional(koodistoUri) match {
       case Some(versio) =>
         logger.info("Päivitetään testidata koodistolle " + koodistoUri + "/" + versio)
         JsonFiles.writeFile(
           MockKoodistoPalvelu.koodistoFileName(koodistoUri),
           kp.getKoodisto(versio).map(sortKoodistoMetadata)
         )
-        val koodit: List[KoodistoKoodi] = kp.getKoodistoKoodit(versio).toList.flatten.map(sortKoodistoKoodiMetadata).sortBy(_.koodiArvo)
+        val koodit: List[KoodistoKoodi] = kp.getKoodistoKoodit(versio).map(sortKoodistoKoodiMetadata).sortBy(_.koodiArvo)
         JsonFiles.writeFile(
           MockKoodistoPalvelu.koodistoKooditFileName(koodistoUri),
           koodit

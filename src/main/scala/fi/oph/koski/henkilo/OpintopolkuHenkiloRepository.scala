@@ -49,10 +49,10 @@ case class OpintopolkuHenkilöRepository(henkilöt: OpintopolkuHenkilöFacade, k
     TäydellisetHenkilötiedot(user.oidHenkilo, user.hetu, user.syntymaika.orElse(syntymäpäivä), user.etunimet, user.kutsumanimi, user.sukunimi, convertÄidinkieli(user.aidinkieli), convertKansalaisuus(user.kansalaisuus), Some(user.turvakielto))
   }
 
-  private def convertÄidinkieli(äidinkieli: Option[String]) = äidinkieli.flatMap(äidinkieli => koodisto.getKoodistoKoodiViite("kieli", äidinkieli.toUpperCase))
+  private def convertÄidinkieli(äidinkieli: Option[String]) = äidinkieli.flatMap(äidinkieli => koodisto.validate("kieli", äidinkieli.toUpperCase))
 
   private def convertKansalaisuus(kansalaisuus: Option[List[String]]) = {
-    kansalaisuus.flatMap(_.flatMap(kansalaisuus => koodisto.getKoodistoKoodiViite("maatjavaltiot2", kansalaisuus)) match {
+    kansalaisuus.flatMap(_.flatMap(kansalaisuus => koodisto.validate("maatjavaltiot2", kansalaisuus)) match {
       case Nil => None
       case xs: List[Koodistokoodiviite] => Some(xs)
     })

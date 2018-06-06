@@ -23,6 +23,6 @@ class OppilaitosServlet(implicit val application: KoskiApplication) extends ApiS
       case tyyppi if List(lukio).contains(tyyppi) => perusopetuksenTyypit ++ lukionTyypit
       case tyyppi if List(perusJaLukioasteenKoulut).contains(tyyppi) => perusopetuksenTyypit ++ esiopetuksenTyypit ++ lukionTyypit
       case _ => perusopetuksenTyypit ++ ammatillisenTyypit
-    }.flatMap(application.koodistoViitePalvelu.getKoodistoKoodiViite("opiskeluoikeudentyyppi", _))
+    }.flatMap(application.koodistoViitePalvelu.validate("opiskeluoikeudentyyppi", _))
   }
 }

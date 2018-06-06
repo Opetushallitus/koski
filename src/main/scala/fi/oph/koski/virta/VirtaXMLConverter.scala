@@ -95,7 +95,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       }
     }.orElse {
       optionalOppilaitos(opiskeluoikeusNode).flatMap(oppilaitos => {
-        koodistoViitePalvelu.getKoodistoKoodiViite("virtaopiskeluoikeudentyyppi", (opiskeluoikeusNode \ "Tyyppi").text)
+        koodistoViitePalvelu.validate("virtaopiskeluoikeudentyyppi", (opiskeluoikeusNode \ "Tyyppi").text)
           .map(virtaOpiskeluoikeudenTyyppi => {
             val nimi = Some((opiskeluoikeusNode \\ "@koulutusmoduulitunniste").text.stripPrefix("#").stripSuffix("/").trim)
               .filter(_.nonEmpty).map(finnish).getOrElse(virtaOpiskeluoikeudenTyyppi.description)
@@ -156,17 +156,22 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   }
 
   private def laajuus(suoritusOrOpiskeluoikeus: Node): Option[LaajuusOpintopisteissä] = for {
-    yksikko <- koodistoViitePalvelu.getKoodistoKoodiViite("opintojenlaajuusyksikko", "2")
+    yksikko <- koodistoViitePalvelu.validate("opintojenlaajuusyksikko", "2")
     laajuus <- (suoritusOrOpiskeluoikeus \ "Laajuus" \ "Opintopiste").headOption.map(_.text.toFloat).filter(_ > 0)
   } yield LaajuusOpintopisteissä(laajuus, yksikko)
 
-  private def arviointi(suoritus: Node) =
-    koodistoViitePalvelu.getKoodistoKoodiViite("virtaarvosana", suoritus \ "Arvosana" \ "_" text).map( arvosana =>
-      List(KorkeakoulunKoodistostaLöytyväArviointi(
-        arvosana = arvosana,
-        päivä = LocalDate.parse(suoritus \ "SuoritusPvm" text)
-      ))
-    ).orElse(paikallinenArviointi(suoritus)) // TODO, Mitä jos arvosanaa ei löydy koodistosta eikä ole paikallinen arvosana ?
+  private def arviointi(suoritus: Node): Option[List[KorkeakoulunArviointi]] = {
+    if ((suoritus \ "Arvosana" \ "Muu").length > 0) {
+      paikallinenArviointi(suoritus)
+    } else {
+      koodistoViitePalvelu.validate("virtaarvosana", suoritus \ "Arvosana" \ "_" text).map(arvosana =>
+        List(KorkeakoulunKoodistostaLöytyväArviointi(
+          arvosana = arvosana,
+          päivä = LocalDate.parse(suoritus \ "SuoritusPvm" text)
+        ))
+      )
+    }
+  }
 
   private def paikallinenArviointi(suoritus: Node): Option[List[KorkeakoulunArviointi]] = {
     val asteikkoUri = "virta/" + (suoritus \ "Arvosana" \ "Muu" \ "Asteikko" \ "@avain").text

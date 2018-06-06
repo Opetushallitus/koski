@@ -57,7 +57,7 @@ class EditorKooditServlet(implicit val application: KoskiApplication) extends Ap
   get[List[EnumValue]]("/:oppiaineKoodistoUri/:oppiaineKoodiarvo/kurssit/:kurssiKoodistot") {
     val kurssiKoodistot: List[KoodistoViite] = koodistotByString(params("kurssiKoodistot"))
     def sisältyvätKurssit(parentKoodistoUri: String, parentKoodiarvo: String) = {
-      val parent = application.koodistoViitePalvelu.getKoodistoKoodiViite(parentKoodistoUri, parentKoodiarvo).getOrElse(haltWithStatus(tuntematonKoodi(s"Koodistosta ${parentKoodistoUri} ei löydy koodia ${parentKoodiarvo}")))
+      val parent = application.koodistoViitePalvelu.validate(parentKoodistoUri, parentKoodiarvo).getOrElse(haltWithStatus(tuntematonKoodi(s"Koodistosta ${parentKoodistoUri} ei löydy koodia ${parentKoodiarvo}")))
       for {
         kurssiKoodisto <- kurssiKoodistot
         kurssiKoodi <- application.koodistoViitePalvelu.getSisältyvätKoodiViitteet(kurssiKoodisto, parent).toList.flatten
@@ -116,14 +116,15 @@ class EditorKooditServlet(implicit val application: KoskiApplication) extends Ap
 
   private def getKooditFromRequestParams() = koodistojenKoodit(koodistotByString(params("koodistoUri")))
 
-  private def koodistojenKoodit(koodistot: List[KoodistoViite]) = koodistot.flatMap(application.koodistoViitePalvelu.getKoodistoKoodiViitteet(_).toList.flatten)
+  private def koodistojenKoodit(koodistot: List[KoodistoViite]) = koodistot.flatMap(application.koodistoViitePalvelu.getKoodistoKoodiViitteet(_))
 
   private def toKoodistoEnumValues(koodit: List[Koodistokoodiviite]) = koodit.map(KoodistoEnumModelBuilder.koodistoEnumValue(_)(localization, application.koodistoViitePalvelu)).sortBy(_.title)
 
   private def koodistotByString(str: String): List[KoodistoViite] = {
+    // note: silently omits non-existing koodistot from result
     val koodistoUriParts = str.split(",").toList
     koodistoUriParts flatMap {part: String =>
-      application.koodistoViitePalvelu.getLatestVersion(part)
+      application.koodistoViitePalvelu.getLatestVersionOptional(part)
     }
   }
 }

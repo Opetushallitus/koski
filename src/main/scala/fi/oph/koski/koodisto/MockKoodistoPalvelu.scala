@@ -4,19 +4,22 @@ import fi.oph.koski.json.{JsonResources, JsonSerializer}
 import fi.oph.koski.koodisto.MockKoodistoPalvelu._
 
 private class MockKoodistoPalvelu extends KoodistoPalvelu {
-  def getKoodistoKoodit(koodisto: KoodistoViite): Option[List[KoodistoKoodi]] = {
-    koodistoKooditResourceName(koodisto.koodistoUri).flatMap(JsonResources.readResourceIfExists(_)).map(JsonSerializer.extract[List[KoodistoKoodi]](_, ignoreExtras = true))
+  def getKoodistoKoodit(koodisto: KoodistoViite): List[KoodistoKoodi] = {
+    koodistoKooditResourceName(koodisto.koodistoUri)
+      .flatMap(JsonResources.readResourceIfExists(_))
+      .map(JsonSerializer.extract[List[KoodistoKoodi]](_, ignoreExtras = true))
+      .getOrElse(throw new RuntimeException(s"Koodistoa ei löydy: $koodisto"))
   }
 
   def getKoodisto(koodisto: KoodistoViite): Option[Koodisto] = {
     getKoodisto(koodisto.koodistoUri)
   }
 
-  def getKoodisto(koodistoUri: String): Option[Koodisto] = {
+  private def getKoodisto(koodistoUri: String): Option[Koodisto] = {
     koodistoResourceName(koodistoUri).flatMap(JsonResources.readResourceIfExists(_)).map(JsonSerializer.extract[Koodisto](_, ignoreExtras = true))
   }
 
-  def getLatestVersion(koodistoUri: String): Option[KoodistoViite] = getKoodisto(koodistoUri).map { _.koodistoViite }
+  def getLatestVersionOptional(koodistoUri: String): Option[KoodistoViite] = getKoodisto(koodistoUri).map { _.koodistoViite }
 }
 
 
