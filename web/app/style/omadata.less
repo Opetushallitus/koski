@@ -1,12 +1,13 @@
 @import "colors.less";
 
 @text-height-med: 20px;
+@element-header-height: 80px;
 
 .omadata-page {
 
   .header {
     display: flex;
-    height: 80px;
+    height: @element-header-height;
     background-color: @color-curious-blue;
     color: @color-white;
     justify-content: space-around;
@@ -18,6 +19,42 @@
     line-height: normal;
     letter-spacing: normal;
 
+    #header-mobile-menu-button {
+      display: flex;
+
+      img {
+        height: 100%;
+      }
+    }
+
+    #header-mobile-menu {
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      flex-direction: column;
+      position: absolute;
+      font-family: 'Source Sans Pro', sans-serif;
+      height: calc(100% - @element-header-height);
+      background-color: #06526b;
+      z-index: 1;
+      left: 0;
+      top: @element-header-height;
+      width: 250px;
+
+      .top {
+        min-height: 130px;
+        padding-top: 10px;
+        background-color: @color-curious-blue;
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        flex-direction: column;
+      }
+
+      .logout {
+        margin-top: 10px;
+        text-align: center;
+      }
+    }
 
     .title {
       font-size: 24px;
@@ -25,13 +62,11 @@
     }
 
     .username {
-      height: @text-height-med;
       font-size: 16px;
       font-weight: bold;
     }
 
     .logout {
-      height: @text-height-med;
       font-size: 12px;
       text-decoration: underline;
       text-align: right;
