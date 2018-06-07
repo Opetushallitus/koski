@@ -6,12 +6,17 @@ import Http from '../../util/http'
 import {PuuttuvatTiedot} from './PuuttuvatTiedot'
 import Text from '../../i18n/Text'
 import {t} from '../../i18n/i18n'
-import {modelData} from '../../editor/EditorModel'
-import {ift} from '../../util/util'
+import {modelData, modelItems} from '../../editor/EditorModel'
+import {flatMapArray, ift} from '../../util/util'
 import {Yhteystiedot} from './Yhteystiedot'
 import OrganisaatioPicker from '../../virkailija/OrganisaatioPicker'
 import {MuuOppilaitosOptions, OppilaitosOption, OtherOppilaitosValue} from './RadioOption'
 import {trackEvent} from '../../tracking/piwikTracking'
+
+const resolveResponsibleOrganization = opiskeluoikeus =>
+  modelData(opiskeluoikeus, 'tyyppi.koodiarvo') === 'ylioppilastutkinto'
+    ? modelData(opiskeluoikeus, 'koulutustoimija')
+    : modelData(opiskeluoikeus, 'oppilaitos')
 
 const OppilaitosPicker = ({oppilaitosAtom}) => {
   const selectableOrgTypes = ['OPPILAITOS', 'OPPISOPIMUSTOIMIPISTE']
@@ -47,7 +52,9 @@ export const RaportoiVirheestäForm = ({henkilö, opiskeluoikeudet}) => {
   const selectedOppilaitosA = Atom()
   const isLoadingA = Atom(false)
 
-  const oppilaitokset = opiskeluoikeudet.map(o => modelData(o, 'oppilaitos'))
+  const oppilaitokset = R.uniqBy(oppilaitos => oppilaitos.oid,
+    flatMapArray(opiskeluoikeudet, o => modelItems(o, 'opiskeluoikeudet').map(resolveResponsibleOrganization))
+  )
 
   const yhteystietoP = selectedOppilaitosA
     .map(oid => oid === OtherOppilaitosValue ? null : oid)
