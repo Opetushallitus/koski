@@ -169,6 +169,7 @@ object OpiskeluoikeusLoader extends Logging {
       },
       erityinenTuki = ammatillinenAikajakso(_.erityinenTuki),
       vaativanErityisenTuenErityinenTehtävä = ammatillinenAikajakso(_.vaativanErityisenTuenErityinenTehtävä),
+      hojks = ammatillisenLisätiedot.flatMap(_.hojks).find(_.contains(päivä)).size.toByte,
       vaikeastiVammainen = (
         ammatillinenAikajakso(_.vaikeastiVammainen) +
         aikuistenPerusopetuksenLisätiedot.flatMap(_.vaikeastiVammainen).flatMap(_.find(_.contains(päivä))).size +
@@ -207,7 +208,8 @@ object OpiskeluoikeusLoader extends Logging {
           aol.vankilaopetuksessa
         ).flatMap(_.getOrElse(List.empty)) ++
         aol.opiskeluvalmiuksiaTukevatOpinnot.getOrElse(Seq.empty).map(j => Aikajakso(j.alku, Some(j.loppu))) ++
-        aol.osaAikaisuusjaksot.getOrElse(Seq.empty).map(j => Aikajakso(j.alku, j.loppu))
+        aol.osaAikaisuusjaksot.getOrElse(Seq.empty).map(j => Aikajakso(j.alku, j.loppu)) ++
+        aol.hojks.toList.map(h => Aikajakso(h.alku.getOrElse(o.alkamispäivä.getOrElse(throw new RuntimeException(s"Alkamispäivä puuttuu ${o.oid}"))), h.loppu))
       case apol: AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot =>
         Seq(
           apol.vaikeastiVammainen
