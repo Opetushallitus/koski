@@ -80,9 +80,10 @@ object RaportointiDatabaseSchema {
     val osaAikaisuus = column[Byte]("osa_aikaisuus")
     val opiskeluvalmiuksiaTukevatOpinnot = column[Byte]("opiskeluvalmiuksia_tukevat_opinnot")
     val vankilaopetuksessa = column[Byte]("vankilaopetuksessa")
+    val oppisopimusJossainPäätasonSuorituksessa = column[Byte]("oppisopimus_jossain_paatason_suorituksessa")
     def * = (opiskeluoikeusOid, alku, loppu, tila, opiskeluoikeusPäättynyt,
       opintojenRahoitus, erityinenTuki, vaativanErityisenTuenErityinenTehtävä, hojks, vaikeastiVammainen, vammainenJaAvustaja,
-      osaAikaisuus, opiskeluvalmiuksiaTukevatOpinnot, vankilaopetuksessa) <> (ROpiskeluoikeusAikajaksoRow.tupled, ROpiskeluoikeusAikajaksoRow.unapply)
+      osaAikaisuus, opiskeluvalmiuksiaTukevatOpinnot, vankilaopetuksessa, oppisopimusJossainPäätasonSuorituksessa) <> (ROpiskeluoikeusAikajaksoRow.tupled, ROpiskeluoikeusAikajaksoRow.unapply)
   }
 
   class RPäätasonSuoritusTable(tag: Tag) extends Table[RPäätasonSuoritusRow](tag, "r_paatason_suoritus") {
@@ -182,7 +183,8 @@ case class ROpiskeluoikeusAikajaksoRow(
   vammainenJaAvustaja: Byte = 0,
   osaAikaisuus: Byte = 100,
   opiskeluvalmiuksiaTukevatOpinnot: Byte = 0,
-  vankilaopetuksessa: Byte = 0
+  vankilaopetuksessa: Byte = 0,
+  oppisopimusJossainPäätasonSuorituksessa: Byte = 0
 )
 
 case class RPäätasonSuoritusRow(

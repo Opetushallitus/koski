@@ -157,6 +157,8 @@ object OpiskeluoikeusLoader extends Logging {
     def ammatillinenAikajakso(lisätieto: AmmatillisenOpiskeluoikeudenLisätiedot => Option[List[Aikajakso]]): Byte =
       ammatillisenLisätiedot.flatMap(lisätieto).flatMap(_.find(_.contains(päivä))).size.toByte
 
+    val oppisopimus = oppisopimusAikajaksot(o)
+
     ROpiskeluoikeusAikajaksoRow(
       opiskeluoikeusOid = opiskeluoikeusOid,
       alku = Date.valueOf(päivä),
@@ -178,7 +180,8 @@ object OpiskeluoikeusLoader extends Logging {
       vammainenJaAvustaja = ammatillinenAikajakso(_.vammainenJaAvustaja),
       osaAikaisuus = ammatillisenLisätiedot.flatMap(_.osaAikaisuusjaksot).flatMap(_.find(_.contains(päivä))).map(_.osaAikaisuus).getOrElse(100).toByte,
       opiskeluvalmiuksiaTukevatOpinnot = ammatillisenLisätiedot.flatMap(_.opiskeluvalmiuksiaTukevatOpinnot).flatMap(_.find(_.contains(päivä))).size.toByte,
-      vankilaopetuksessa = ammatillinenAikajakso(_.vankilaopetuksessa)
+      vankilaopetuksessa = ammatillinenAikajakso(_.vankilaopetuksessa),
+      oppisopimusJossainPäätasonSuorituksessa = oppisopimus.find(_.contains(päivä)).size.toByte
     )
     // Note: When adding something here, remember to update aikajaksojenAlkupäivät (below), too
   }
@@ -221,10 +224,28 @@ object OpiskeluoikeusLoader extends Logging {
       case _ => Seq()
     } else Seq()
 
+    val jaksot = lisätiedotAikajaksot ++ oppisopimusAikajaksot(o)
+
     (o.tila.opiskeluoikeusjaksot.map(_.alku) ++
-      lisätiedotAikajaksot.map(_.alku) ++
-      lisätiedotAikajaksot.map(_.loppu).filter(_.nonEmpty).map(_.get.plusDays(1)))
-      .sorted(DateOrdering.localDateOrdering).distinct
+      jaksot.map(_.alku) ++
+      jaksot.map(_.loppu).filter(_.nonEmpty).map(_.get.plusDays(1))
+    ).sorted(DateOrdering.localDateOrdering).distinct
+  }
+
+  private val JarjestamismuotoOppisopimus = Koodistokoodiviite("20", "jarjestamismuoto")
+  private val OsaamisenhankkimistapaOppisopimus = Koodistokoodiviite("oppisopimus", "osaamisenhankkimistapa")
+
+  private def oppisopimusAikajaksot(o: KoskeenTallennettavaOpiskeluoikeus): Seq[Jakso] = {
+    def convert(järjestämismuodot: Option[List[Järjestämismuotojakso]], osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]]): Seq[Jakso] = {
+      järjestämismuodot.getOrElse(List.empty).filter(_.järjestämismuoto.tunniste == JarjestamismuotoOppisopimus) ++
+      osaamisenHankkimistavat.getOrElse(List.empty).filter(_.osaamisenHankkimistapa.tunniste == OsaamisenhankkimistapaOppisopimus)
+    }
+    o.suoritukset.flatMap {
+      case s: NäyttötutkintoonValmistavanKoulutuksenSuoritus => convert(s.järjestämismuodot, s.osaamisenHankkimistavat)
+      case s: AmmatillisenTutkinnonSuoritus => convert(s.järjestämismuodot, s.osaamisenHankkimistavat)
+      case s: AmmatillisenTutkinnonOsittainenSuoritus => convert(s.järjestämismuodot, s.osaamisenHankkimistavat)
+      case _ => Seq.empty
+    }
   }
 
   private val fieldsToExcludeFromPäätasonSuoritusJson = Set("osasuoritukset", "tyyppi", "toimipiste", "koulutustyyppi")
