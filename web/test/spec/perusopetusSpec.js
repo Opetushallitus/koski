@@ -839,6 +839,7 @@ describe('Perusopetus', function() {
                   'Läsnä',
                   'Jyväskylän normaalikoulu',
                   '15.8.2008',
+                  '',
                   '9C' ])
 
               })

@@ -42,13 +42,16 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
     )
     def luokka(order: String) = Map("luokka.keyword" -> order) :: nimi(order)
     def alkamispäivä(order: String) = Map("alkamispäivä" -> order):: nimi(order)
+    def päättymispäivä(order: String) = Map("päättymispäivä" -> order):: nimi(order)
     val elasticSort = sorting match {
       case Ascending("nimi") => nimi("asc")
       case Ascending("luokka") => luokka("asc")
       case Ascending("alkamispäivä") => alkamispäivä("asc")
+      case Ascending("päättymispäivä") => päättymispäivä("asc")
       case Descending("nimi") => nimi("desc")
       case Descending("luokka") => luokka("desc")
       case Descending("alkamispäivä") => alkamispäivä("desc")
+      case Descending("päättymispäivä") => päättymispäivä("desc")
       case _ => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("Epäkelpo järjestyskriteeri: " + sorting.field))
     }
 
@@ -103,6 +106,10 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
         List(Map("range" -> Map("alkamispäivä" -> Map("gte" -> day, "format" -> "yyyy-MM-dd"))))
       case OpiskeluoikeusAlkanutViimeistään(day) =>
         List(Map("range" -> Map("alkamispäivä" -> Map("lte" -> day, "format" -> "yyyy-MM-dd"))))
+      case OpiskeluoikeusPäättynytAikaisintaan(day) =>
+        List(Map("range" -> Map("päättymispäivä" -> Map("gte" -> day, "format" -> "yyyy-MM-dd"))))
+      case OpiskeluoikeusPäättynytViimeistään(day) =>
+        List(Map("range" -> Map("päättymispäivä" -> Map("lte" -> day, "format" -> "yyyy-MM-dd"))))
       case SuoritusJsonHaku(json) => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("suoritusJson-parametriä ei tueta"))
       case _ => Nil
     } ++ oppilaitosFilter(session) ++ suoritusFilter ++ mitätöityFilter

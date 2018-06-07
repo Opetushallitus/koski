@@ -92,9 +92,9 @@ function KoskiPage() {
           return Page(Oppijataulukko.tableElem).setInputValue("th." + className + " input", value || "")().then(wait.forMilliseconds(500)).then(wait.forAjax) // <- TODO 500ms throttle in input is slowing tests down
         } else if (className == "oppilaitos") {
           return OrganisaatioHaku(Oppijataulukko.tableElem).select(value)()
-        } else if (className == 'alkamispäivä') {
+        } else if (className == 'alkamispäivä' || className == 'päättymispäivä') {
           return seq(
-            click(S('.date-range-selection')),
+            click(S("." + className + ' .date-range-selection')),
             Page(Oppijataulukko.tableElem).setInputValue(".date-range-input input.end", value || ""),
             click('body')
           )()
