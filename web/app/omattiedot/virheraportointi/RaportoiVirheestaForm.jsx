@@ -6,7 +6,7 @@ import Http from '../../util/http'
 import {PuuttuvatTiedot} from './PuuttuvatTiedot'
 import Text from '../../i18n/Text'
 import {t} from '../../i18n/i18n'
-import {modelData, modelItems} from '../../editor/EditorModel'
+import {modelData, modelItems, modelTitle} from '../../editor/EditorModel'
 import {flatMapArray, ift} from '../../util/util'
 import {Yhteystiedot} from './Yhteystiedot'
 import OrganisaatioPicker from '../../virkailija/OrganisaatioPicker'
@@ -15,7 +15,7 @@ import {trackEvent} from '../../tracking/piwikTracking'
 
 const resolveResponsibleOrganization = opiskeluoikeus =>
   modelData(opiskeluoikeus, 'tyyppi.koodiarvo') === 'ylioppilastutkinto'
-    ? modelData(opiskeluoikeus, 'koulutustoimija')
+    ? R.assoc('suoritus', modelTitle(opiskeluoikeus, 'suoritukset.0.tyyppi'), modelData(opiskeluoikeus, 'koulutustoimija'))
     : modelData(opiskeluoikeus, 'oppilaitos')
 
 const OppilaitosPicker = ({oppilaitosAtom}) => {
