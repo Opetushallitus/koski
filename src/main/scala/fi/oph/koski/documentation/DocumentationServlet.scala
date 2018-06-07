@@ -3,7 +3,7 @@ package fi.oph.koski.documentation
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.html.{EiRaameja, Virkailija}
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koodisto.KoodistoKoodiMetadata
+import fi.oph.koski.koodisto.{Koodisto, KoodistoKoodiMetadata}
 import fi.oph.koski.koskiuser.AuthenticationSupport
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.schema.{Henkilö, OsaamisenTunnustaminen}
@@ -12,6 +12,7 @@ import fi.oph.scalaschema.ClassSchema
 import org.scalatra.ScalatraServlet
 
 import scala.Function.const
+import scala.xml.NodeSeq
 
 class DocumentationServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with AuthenticationSupport with KoodistoFinder {
   val koodistoPalvelu = application.koodistoPalvelu
@@ -52,6 +53,7 @@ class DocumentationServlet(implicit val application: KoskiApplication) extends S
           </style>
           <body>
             <h1>Koodisto: { koodisto.koodistoUri }, versio { koodisto.versio } </h1>
+            <p>{koodistonKuvausJaLinkki(koodisto, kieli.get)}</p>
             <p>{kielet.map { kieli => <a href={request.getRequestURI + "?kieli=" + kieli}>{kieli}</a> } }</p>
             <table>
               <thead>
@@ -79,6 +81,17 @@ class DocumentationServlet(implicit val application: KoskiApplication) extends S
           </body>
         </html>
       case None => haltWithStatus(KoskiErrorCategory.notFound.koodistoaEiLöydy())
+    }
+  }
+
+  private def koodistonKuvausJaLinkki(koodisto: Koodisto, kieli: String): NodeSeq = {
+    val KuvausLinkillä = "^(.*)(https?://[^ )]+)(.*)$".r
+    koodisto.kuvaus.map(_.get(kieli)) match {
+      case None => NodeSeq.Empty
+      case Some(k) => k match {
+        case KuvausLinkillä(prefix, link, suffix) => <p>{prefix}<a href={link} rel="nofollow">{link}</a>{suffix}</p>
+        case _ => <p>{k}</p>
+      }
     }
   }
 }

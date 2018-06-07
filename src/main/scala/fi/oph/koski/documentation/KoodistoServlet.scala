@@ -2,7 +2,7 @@ package fi.oph.koski.documentation
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koodisto.{KoodistoKoodi, KoodistoPalvelu, KoodistoViite}
+import fi.oph.koski.koodisto.{Koodisto, KoodistoKoodi, KoodistoPalvelu, KoodistoViite}
 import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.schema.Opiskeluoikeus
 import fi.oph.koski.servlet.{ApiServlet, KoskiBaseServlet, NoCache}
@@ -33,7 +33,7 @@ class KoodistoServlet(implicit val application: KoskiApplication) extends ApiSer
 trait KoodistoFinder extends KoskiBaseServlet {
   def koodistoPalvelu: KoodistoPalvelu
 
-  def findKoodisto: Option[(KoodistoViite, List[KoodistoKoodi])] = {
+  def findKoodisto: Option[(Koodisto, List[KoodistoKoodi])] = {
     val koodistoUri: String = params("name")
     val versio: Option[KoodistoViite] = params("version") match {
       case "latest" =>
@@ -41,6 +41,6 @@ trait KoodistoFinder extends KoskiBaseServlet {
       case _ =>
         Some(KoodistoViite(koodistoUri, getIntegerParam("version")))
     }
-    versio.map { koodisto => (koodisto, koodistoPalvelu.getKoodistoKoodit(koodisto)) }
+    versio.map { koodisto => (koodistoPalvelu.getKoodisto(koodisto).get, koodistoPalvelu.getKoodistoKoodit(koodisto)) }
   }
 }
