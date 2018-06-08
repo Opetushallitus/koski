@@ -38,15 +38,26 @@
       flex-direction: column;
       position: absolute;
       font-family: 'Source Sans Pro', sans-serif;
-      height: calc(100% - @element-header-height);
       background-color: #06526b;
       z-index: 1;
       left: 0;
       top: @element-header-height;
+      height: 0;
       width: 250px;
+      overflow: hidden;
 
       @media @media-phone {
         display: flex;
+      }
+
+      &.menu-open {
+        height: calc(100% - @element-header-height);
+        -webkit-transition: height 300ms ease-out;
+      }
+
+      &.menu-closed {
+        height: 0;
+        -webkit-transition: height 300ms ease-out;
       }
 
       .top {

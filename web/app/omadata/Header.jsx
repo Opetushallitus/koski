@@ -14,15 +14,14 @@ export default ({ userP }) => (
     </div>
 
     {menuOpened.map((opened) => {
-      return opened ?
-        <div id="header-mobile-menu">
+      return (
+        <div id="header-mobile-menu" className={opened ? 'menu-open' : 'menu-closed'}>
           <div className="top">
             <div className="username">{ userP.map(user => user && user.name ) }</div>
             <div className="logout"><Text name="Kirjaudu ulos"/></div>
           </div>
         </div>
-        :
-        null
+      )
     })}
   </div>
 )
