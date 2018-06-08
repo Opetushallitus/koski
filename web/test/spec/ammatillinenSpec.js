@@ -537,10 +537,9 @@ describe('Ammatillinen koulutus', function() {
 
     describe('Ammatillisen koulutuksen tilat', function () {
       before(editor.edit, opinnot.avaaLisaysDialogi)
-      it('Sisältää loma-tilan', function () {
+      it('Sisältää loma-tilan, mutta ei eronnut-tilaa', function () {
         expect(OpiskeluoikeusDialog().tilat()).to.deep.equal(
             [
-              'koskiopiskeluoikeudentila_eronnut',
               'koskiopiskeluoikeudentila_katsotaaneronneeksi',
               'koskiopiskeluoikeudentila_loma',
               'koskiopiskeluoikeudentila_lasna',

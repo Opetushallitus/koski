@@ -2,7 +2,7 @@ import React from 'baret'
 import Bacon from 'baconjs'
 import {
   accumulateModelStateAndValidity,
-  contextualizeSubModel,
+  contextualizeSubModel, modelData,
   modelItems,
   modelLookup,
   modelLookupRequired
@@ -49,6 +49,13 @@ export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, suorit
   </ModalDialog>)
 }
 
-const fetchTilat = model => {
-  return EnumEditor.fetchAlternatives(model).map(alts => alts.filter(a => a.data.koodiarvo !== 'mitatoity'))
-}
+const fetchTilat = model => EnumEditor.fetchAlternatives(model).map(alts => alts
+  .filter(a => {
+    const opiskeluoikeudenTyyppi = modelData(model.context.opiskeluoikeus, 'tyyppi.koodiarvo')
+    const excludedValues = opiskeluoikeudenTyyppi === 'ammatillinenkoulutus'
+      ? ['mitatoity', 'eronnut']
+      : ['mitatoity']
+
+    return !excludedValues.includes(a.data.koodiarvo)
+  })
+)
