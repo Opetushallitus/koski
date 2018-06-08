@@ -7,7 +7,10 @@ const menuOpened = Atom(false)
 export default ({ userP }) => (
   <div className="header">
     <button id="header-mobile-menu-button" onClick={() => menuOpened.set(!menuOpened.get())}><img src="/koski/images/baseline-menu-24px.svg" /></button>
-    <div className="title"><h1><Text name="Oma Opintopolku"/></h1></div>
+    <div className="title">
+      <img src="/koski/images/opintopolku_logo.svg" alt="" />
+      <h1><Text name="Oma Opintopolku"/></h1>
+    </div>
     <div className="user">
       <div className="username">
         <img src="/koski/images/profiili.svg" alt="user-icon" />
