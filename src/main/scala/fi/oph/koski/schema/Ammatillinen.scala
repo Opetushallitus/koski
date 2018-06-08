@@ -756,7 +756,9 @@ case class Hojks(
   alku: Option[LocalDate] = None,
   @Description("HOJKS:n voimassaolon loppupäivämäärä.")
   loppu: Option[LocalDate] = None
-)
+) {
+  def contains(d: LocalDate): Boolean = (alku.isEmpty || !d.isBefore(alku.get)) && (loppu.isEmpty || !d.isAfter(loppu.get))
+}
 
 @Description("Suoritettavan näyttötutkintoon valmistavan koulutuksen osan tiedot")
 case class NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
