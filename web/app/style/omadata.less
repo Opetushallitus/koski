@@ -2,6 +2,7 @@
 
 @text-height-med: 20px;
 @element-header-height: 80px;
+@margin-mobile-left: 5%;
 
 .omadata-page {
 
@@ -19,16 +20,23 @@
     line-height: normal;
     letter-spacing: normal;
 
+    @media @media-phone {
+      justify-content: flex-start;
+    }
+
     #header-mobile-menu-button {
       display: none;
+      padding: 0;
+      margin-left: @margin-mobile-left;
 
       @media @media-phone {
         display: flex;
       }
 
       img {
-        height: 100%;
-        width: auto;
+        height: 40px;
+        width: 40px;
+        margin: 0;
       }
     }
 
@@ -86,6 +94,9 @@
       align-items: center;
       font-size: 24px;
       font-weight: bold;
+      @media @media-phone {
+        margin: auto;
+      }
 
       img {
         height: 44px;
@@ -126,6 +137,10 @@
   .acceptance-container {
     margin-left: 8.1%;
     color: @color-black;
+
+    @media @media-phone {
+      margin-left: @margin-mobile-left;
+    }
 
     .user {
       display: flex;
