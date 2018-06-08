@@ -23,7 +23,7 @@ object KoskiApiOperations extends ApiGroup {
         PathParameter("versio", "Koodiston versio", List("latest"))
       ),
       List(
-        KoskiErrorCategory.ok.searchOk.copy(exampleResponse = serializeWithRoot(MockKoodistoPalvelu().getLatestVersion("koskiopiskeluoikeudentila").flatMap(MockKoodistoPalvelu().getKoodistoKoodit))),
+        KoskiErrorCategory.ok.searchOk.copy(exampleResponse = serializeWithRoot(MockKoodistoPalvelu().getKoodistoKoodit(MockKoodistoPalvelu().getLatestVersionRequired("koskiopiskeluoikeudentila")))),
         KoskiErrorCategory.notFound.koodistoaEiLöydy
       )
     ))

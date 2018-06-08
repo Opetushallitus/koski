@@ -12,6 +12,20 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "kielivalikoima_ar",
+  "koodiArvo" : "AR",
+  "metadata" : [ {
+    "nimi" : "arabia",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "arabiska",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Arabic",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "kielivalikoima_de",
   "koodiArvo" : "DE",
   "metadata" : [ {

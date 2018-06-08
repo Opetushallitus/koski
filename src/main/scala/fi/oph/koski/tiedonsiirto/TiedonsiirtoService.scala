@@ -70,7 +70,16 @@ class TiedonsiirtoService(
   }
 
   private def filtersFrom(query: TiedonsiirtoQuery)(implicit session: KoskiSession): List[Map[String, Any]] = {
-    query.oppilaitos.toList.map(oppilaitos => Map("term" -> Map("oppilaitokset.oid" -> oppilaitos))) ++ tallentajaOrganisaatioFilters()
+    // vastaavasti kuin yhteenveto-kyselyssä, käytä tallentajaOrganisaatioOid:ia jos ja vain jos oppilaitos-OID puuttuu
+    query.oppilaitos.toList.map(oppilaitos => {
+      ElasticSearch.anyFilter(List(
+        Map("term" -> Map("oppilaitokset.oid" -> oppilaitos)),
+        Map("bool" -> Map(
+          "must_not" -> Map("exists" -> Map("field" -> "oppilaitokset.oid")),
+          "must" -> Map("term" -> Map("tallentajaOrganisaatioOid" -> oppilaitos))
+        ))
+      ))
+    }) ++ tallentajaOrganisaatioFilters()
   }
 
   private def tallentajaOrganisaatioFilters(accessType: AccessType.Value = AccessType.read)(implicit session: KoskiSession): List[Map[String, Any]] = tallentajaOrganisaatioFilter(accessType).toList
@@ -92,6 +101,9 @@ class TiedonsiirtoService(
       "query" -> ElasticSearch.allFilter(filters),
       "sort" -> List(Map("aikaleima" -> "desc"), Map("oppija.sukunimi.keyword" -> "asc"), Map("oppija.etunimet.keyword" -> "asc"))
     )))
+
+    // uncomment this to see raw query for manual troubleshooting
+    // println(JsonMethods.pretty(doc))
 
     val rows: Seq[TiedonsiirtoDocument] = runSearch(doc)
       .map(response => extract[List[JValue]](response \ "hits" \ "hits").map(j => extract[TiedonsiirtoDocument](j \ "_source")))
@@ -246,7 +258,7 @@ class TiedonsiirtoService(
         userOid = extract[String](userResults \ "key")
         lähdejärjestelmäResults <- extract[List[JValue]](userResults \ "lähdejärjestelmä" \ "buckets")
         lähdejärjestelmäId = extract[String](lähdejärjestelmäResults \ "key")
-        lähdejärjestelmä = koodistoviitePalvelu.getKoodistoKoodiViite("lahdejarjestelma", lähdejärjestelmäId)
+        lähdejärjestelmä = koodistoviitePalvelu.validate("lahdejarjestelma", lähdejärjestelmäId)
         siirretyt = extract[Int](lähdejärjestelmäResults \ "doc_count")
         epäonnistuneet = extract[Int](lähdejärjestelmäResults \ "fail" \ "doc_count")
         onnistuneet = siirretyt - epäonnistuneet

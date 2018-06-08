@@ -39,7 +39,7 @@ export default class DateRangeSelection extends React.Component {
         { this.state.open &&
         <div className="date-range-container">
           <div className="date-range-input">
-            <label><Text name="Aloituspäivä"/></label>
+            <label><Text name={this.props.label || 'Aloituspäivä'}/></label>
             <input
               className={invalidStartDate ? 'start error' : 'start'}
               type="text"

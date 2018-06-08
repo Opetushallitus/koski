@@ -22,7 +22,7 @@ case class YtrOppijaConverter(oppilaitosRepository: OppilaitosRepository, koodis
     })
 
     val vahvistus = ytrOppija.graduationDate.map { graduationDate =>
-      val helsinki: Koodistokoodiviite = koodistoViitePalvelu.getKoodistoKoodiViite("kunta", "091").getOrElse(throw new IllegalStateException("Helsingin kaupunkia ei löytynyt koodistopalvelusta"))
+      val helsinki: Koodistokoodiviite = koodistoViitePalvelu.validate("kunta", "091").getOrElse(throw new IllegalStateException("Helsingin kaupunkia ei löytynyt koodistopalvelusta"))
       Organisaatiovahvistus(graduationDate, helsinki, ytl.toOidOrganisaatio)
     }
 
@@ -42,7 +42,7 @@ case class YtrOppijaConverter(oppilaitosRepository: OppilaitosRepository, koodis
       )
     ))
   }
-  private def convertExam(exam: YtrExam) = koodistoViitePalvelu.getKoodistoKoodiViite("koskiyokokeet", exam.examId).map { tunniste =>
+  private def convertExam(exam: YtrExam) = koodistoViitePalvelu.validate("koskiyokokeet", exam.examId).map { tunniste =>
     val Pattern = "(\\d\\d\\d\\d)(K|S)".r
     val tutkintokerta = exam.period match {
       case Pattern(year, season) =>

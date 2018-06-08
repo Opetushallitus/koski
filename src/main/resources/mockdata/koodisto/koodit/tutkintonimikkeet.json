@@ -788,8 +788,8 @@
     "lyhytNimi" : "Matkailupalvelujen tuottaja",
     "kieli" : "FI"
   }, {
-    "nimi" : "Producent av resetjänster",
-    "lyhytNimi" : "Producent av resetjänster",
+    "nimi" : "Producent av turismservice",
+    "lyhytNimi" : "Producent av turismservice",
     "kieli" : "SV"
   } ],
   "versio" : 2
@@ -1849,6 +1849,10 @@
     "nimi" : "Matka-asiantuntija",
     "lyhytNimi" : "Matka-asiantuntija",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Reseexpert",
+    "lyhytNimi" : "Reseexpert",
+    "kieli" : "SV"
   } ],
   "versio" : 1
 }, {
@@ -2506,6 +2510,105 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "tutkintonimikkeet_20051",
+  "koodiArvo" : "20051",
+  "metadata" : [ {
+    "nimi" : "Ajoneuvomaalari",
+    "lyhytNimi" : "Ajoneuvomaalari",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkintonimikkeet_20052",
+  "koodiArvo" : "20052",
+  "metadata" : [ {
+    "nimi" : "Korikorjaaja",
+    "lyhytNimi" : "Korikorjaaja",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkintonimikkeet_20054",
+  "koodiArvo" : "20054",
+  "metadata" : [ {
+    "nimi" : "Konemyyjä",
+    "lyhytNimi" : "Konemyyjä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkintonimikkeet_20056",
+  "koodiArvo" : "20056",
+  "metadata" : [ {
+    "nimi" : "Korjaamopalvelumyyjä",
+    "lyhytNimi" : "Korjaamopalvelumyyjä",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkintonimikkeet_20057",
+  "koodiArvo" : "20057",
+  "metadata" : [ {
+    "nimi" : "Ravintolakokki",
+    "lyhytNimi" : "Ravintolakokki",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkintonimikkeet_20058",
+  "koodiArvo" : "20058",
+  "metadata" : [ {
+    "nimi" : "Suurtalouskokki",
+    "lyhytNimi" : "Suurtalouskokki",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkintonimikkeet_20059",
+  "koodiArvo" : "20059",
+  "metadata" : [ {
+    "nimi" : "Baarimestari",
+    "lyhytNimi" : "Baarimestari",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkintonimikkeet_20060",
+  "koodiArvo" : "20060",
+  "metadata" : [ {
+    "nimi" : "Tarjoilija (AT)",
+    "lyhytNimi" : "Tarjoilija (AT)",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkintonimikkeet_20061",
+  "koodiArvo" : "20061",
+  "metadata" : [ {
+    "nimi" : "Koulunkäynnin ja aamu- ja iltapäivätoiminnan ohjaaja",
+    "lyhytNimi" : "Koulunkäynnin ja aamu- ja iltapäivätoiminnan ohjaaja",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkintonimikkeet_20062",
+  "koodiArvo" : "20062",
+  "metadata" : [ {
+    "nimi" : "Perhepäivähoitaja",
+    "lyhytNimi" : "Perhepäivähoitaja",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkintonimikkeet_20063",
+  "koodiArvo" : "20063",
+  "metadata" : [ {
+    "nimi" : "Matkaopas",
+    "lyhytNimi" : "Matkaopas",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "tutkintonimikkeet_30001",
   "koodiArvo" : "30001",
   "metadata" : [ {
@@ -2946,6 +3049,24 @@
   "metadata" : [ {
     "nimi" : "Kosmetiikkaneuvoja (EAT)",
     "lyhytNimi" : "Kosmetiikkaneuvoja (EAT)",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkintonimikkeet_30041",
+  "koodiArvo" : "30041",
+  "metadata" : [ {
+    "nimi" : "Dieettikokki",
+    "lyhytNimi" : "Dieettikokki",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "tutkintonimikkeet_30042",
+  "koodiArvo" : "30042",
+  "metadata" : [ {
+    "nimi" : "Työnjohtaja",
+    "lyhytNimi" : "Työnjohtaja",
     "kieli" : "FI"
   } ],
   "versio" : 1

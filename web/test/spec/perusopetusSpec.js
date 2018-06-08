@@ -839,6 +839,7 @@ describe('Perusopetus', function() {
                   'Läsnä',
                   'Jyväskylän normaalikoulu',
                   '15.8.2008',
+                  '',
                   '9C' ])
 
               })
@@ -1088,6 +1089,7 @@ describe('Perusopetus', function() {
               'ruotsi',
               'englanti',
               'Ei suoritusta',
+              'arabia',
               'espanja',
               'heprea',
               'italia',

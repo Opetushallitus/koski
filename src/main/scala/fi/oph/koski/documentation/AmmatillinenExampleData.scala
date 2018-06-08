@@ -15,11 +15,13 @@ object AmmatillinenExampleData {
   val exampleHenkilö = asUusiOppija(MockOppijat.ammattilainen.henkilö)
 
   val autoalanPerustutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", "koulutus"), Some("39/011/2014"))
+  val valmaKoulutus: ValmaKoulutus = ValmaKoulutus(Koodistokoodiviite("999901", "koulutus"), Some("OPH-2658-2017"))
   val parturikampaaja: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("381301", "koulutus"), Some("43/011/2014"))
   val puutarhuri: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("361255", "koulutus"), Some("75/011/2014"))
   val autoalanTyönjohto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("357305", "koulutus"), Some("40/011/2001"))
 
   def autoalanPerustutkinnonSuoritus(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = ammatillinenTutkintoSuoritus(autoalanPerustutkinto, toimipiste)
+  def autoalanPerustutkinnonSuoritusValma(toimipiste: OrganisaatioWithOid = stadinToimipiste): ValmaKoulutuksenSuoritus = valmaSuoritus(valmaKoulutus, toimipiste)
   def autoalanErikoisammattitutkinnonSuoritus(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = ammatillinenTutkintoSuoritus(autoalanTyönjohto, toimipiste)
 
   def ammatillinenTutkintoSuoritus(koulutusmoduuli: AmmatillinenTutkintoKoulutus, toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = AmmatillisenTutkinnonSuoritus(
@@ -28,6 +30,13 @@ object AmmatillinenExampleData {
     toimipiste = toimipiste,
     suorituskieli = suomenKieli,
     suoritustapa = suoritustapaOps
+  )
+
+  def valmaSuoritus(koulutusmoduuli: ValmaKoulutus, toimipiste: OrganisaatioWithOid = stadinToimipiste): ValmaKoulutuksenSuoritus = ValmaKoulutuksenSuoritus(
+    koulutusmoduuli = valmaKoulutus,
+    toimipiste = toimipiste,
+    suorituskieli = suomenKieli,
+    osasuoritukset = None
   )
 
   lazy val h2: Koodistokoodiviite = Koodistokoodiviite("2", Some("H2"), "arviointiasteikkoammatillinent1k3", None)

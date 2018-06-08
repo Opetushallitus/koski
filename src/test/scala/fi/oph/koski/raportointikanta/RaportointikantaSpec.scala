@@ -91,7 +91,7 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
         )
         val aikajaksoRows = OpiskeluoikeusLoader.buildROpiskeluoikeusAikajaksoRows(oid, opiskeluoikeus)
         aikajaksoRows should equal(Seq(
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf(OpiskeluoikeusLoader.IndefiniteFuture), "lasna", false, None, 0, 0, 0, 0, 100, 0, 0)
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf(OpiskeluoikeusLoader.IndefiniteFuture), "lasna")
         ))
       }
       "Opiskeluoikeusjaksot, päättynyt" in {
@@ -159,7 +159,7 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-04-21"), Date.valueOf(OpiskeluoikeusLoader.IndefiniteFuture), "lasna")
         ))
       }
-      "Ammatillien opiskeluoikeuden lisätiedot, monimutkainen 2" in {
+      "Ammatillisen opiskeluoikeuden lisätiedot, monimutkainen 2" in {
         val opiskeluoikeus = ammatillinenOpiskeluoikeus.copy(
           tila = AmmatillinenOpiskeluoikeudenTila(opiskeluoikeusjaksot = List(
             AmmatillinenOpiskeluoikeusjakso(alku = LocalDate.of(2016, 1, 15), tila = Läsnä)
@@ -182,6 +182,86 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-03-01"), Date.valueOf("2016-03-31"), "lasna", vaikeastiVammainen = 1),
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-04-01"), Date.valueOf(OpiskeluoikeusLoader.IndefiniteFuture), "lasna")
         ))
+      }
+      "Ammatillisen opiskeluoikeuden lisätiedot, hojks" - {
+        "Ei alku/loppupäivää" in {
+          val opiskeluoikeus = ammatillinenOpiskeluoikeus.copy(
+            tila = AmmatillinenOpiskeluoikeudenTila(opiskeluoikeusjaksot = List(
+              AmmatillinenOpiskeluoikeusjakso(alku = LocalDate.of(2016, 1, 15), tila = Läsnä)
+            )),
+            lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
+              hojks = Some(Hojks(Koodistokoodiviite("valmistunut", "koskiopiskeluoikeudentila"), None, None))
+            ))
+          )
+          val aikajaksoRows = OpiskeluoikeusLoader.buildROpiskeluoikeusAikajaksoRows(oid, opiskeluoikeus)
+          aikajaksoRows should equal(Seq(
+            ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf(OpiskeluoikeusLoader.IndefiniteFuture), "lasna", hojks = 1)
+          ))
+        }
+        "Alku/loppupäivä" in {
+          val opiskeluoikeus = ammatillinenOpiskeluoikeus.copy(
+            tila = AmmatillinenOpiskeluoikeudenTila(opiskeluoikeusjaksot = List(
+              AmmatillinenOpiskeluoikeusjakso(alku = LocalDate.of(2016, 1, 15), tila = Läsnä)
+            )),
+            lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
+              hojks = Some(Hojks(Koodistokoodiviite("valmistunut", "koskiopiskeluoikeudentila"), Some(LocalDate.of(2016, 2, 1)), Some(LocalDate.of(2016, 2, 29))))
+            ))
+          )
+          val aikajaksoRows = OpiskeluoikeusLoader.buildROpiskeluoikeusAikajaksoRows(oid, opiskeluoikeus)
+          aikajaksoRows should equal(Seq(
+            ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2016-01-31"), "lasna"),
+            ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-29"), "lasna", hojks = 1),
+            ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-03-01"), Date.valueOf(OpiskeluoikeusLoader.IndefiniteFuture), "lasna")
+          ))
+        }
+      }
+      "Oppisopimus" - {
+        val suoritus = ammatillinenOpiskeluoikeus.suoritukset.head.asInstanceOf[AmmatillisenTutkinnonSuoritus]
+        val oppisopimus = Oppisopimus(Yritys(LocalizedString.finnish("Autokorjaamo Oy"), "1234567-8"))
+        val järjestämismuoto = OppisopimuksellinenJärjestämismuoto(Koodistokoodiviite("20", "jarjestamismuoto"), oppisopimus)
+        val osaamisenHankkimistapa = OppisopimuksellinenOsaamisenHankkimistapa(Koodistokoodiviite("oppisopimus", "osaamisenhankkimistapa"), oppisopimus)
+
+        "järjestämismuodot-kentässä" in {
+          val opiskeluoikeus = ammatillinenOpiskeluoikeus.copy(
+            tila = AmmatillinenOpiskeluoikeudenTila(opiskeluoikeusjaksot = List(
+              AmmatillinenOpiskeluoikeusjakso(alku = LocalDate.of(2016, 1, 15), tila = Läsnä)
+            )),
+            suoritukset = List(
+              suoritus.copy(
+                järjestämismuodot = Some(List(
+                  Järjestämismuotojakso(LocalDate.of(2016, 2, 1), None, järjestämismuoto)
+                )),
+                osaamisenHankkimistavat = None
+              )
+            )
+          )
+          val aikajaksoRows = OpiskeluoikeusLoader.buildROpiskeluoikeusAikajaksoRows(oid, opiskeluoikeus)
+          aikajaksoRows should equal(Seq(
+            ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2016-01-31"), "lasna"),
+            ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf(OpiskeluoikeusLoader.IndefiniteFuture), "lasna", oppisopimusJossainPäätasonSuorituksessa = 1)
+          ))
+        }
+        "osaamisenHankkimistavat-kentässä" in {
+          val opiskeluoikeus = ammatillinenOpiskeluoikeus.copy(
+            tila = AmmatillinenOpiskeluoikeudenTila(opiskeluoikeusjaksot = List(
+              AmmatillinenOpiskeluoikeusjakso(alku = LocalDate.of(2016, 1, 15), tila = Läsnä)
+            )),
+            suoritukset = List(
+              suoritus.copy(
+                järjestämismuodot = None,
+                osaamisenHankkimistavat = Some(List(
+                  OsaamisenHankkimistapajakso(LocalDate.of(2001, 1, 1), Some(LocalDate.of(2016, 1, 31)), osaamisenHankkimistapa)
+                ))
+              )
+            )
+          )
+          val aikajaksoRows = OpiskeluoikeusLoader.buildROpiskeluoikeusAikajaksoRows(oid, opiskeluoikeus)
+          aikajaksoRows should equal(Seq(
+            ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2016-01-31"), "lasna", oppisopimusJossainPäätasonSuorituksessa = 1),
+            ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf(OpiskeluoikeusLoader.IndefiniteFuture), "lasna")
+          ))
+        }
+
       }
       "Perusopetuksen opiskeluoikeuden lisätiedot" in {
         val opiskeluoikeus = perusopetuksenOpiskeluoikeus.copy(

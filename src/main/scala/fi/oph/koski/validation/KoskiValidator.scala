@@ -174,7 +174,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       val koulutustyyppi = koulutus match {
         case np: NuortenPerusopetus => np.perusteenDiaarinumero.flatMap(tutkintoRepository.findPerusteRakenne(_).map(_.koulutustyyppi))
         case _ =>
-          val koulutustyyppiKoodisto = koodistoPalvelu.koodistoPalvelu.getLatestVersion("koulutustyyppi").get
+          val koulutustyyppiKoodisto = koodistoPalvelu.koodistoPalvelu.getLatestVersionRequired("koulutustyyppi")
           val koulutusTyypit = koodistoPalvelu.getSisältyvätKoodiViitteet(koulutustyyppiKoodisto, koulutus.tunniste).toList.flatten
           koulutusTyypit.filterNot(koodi => List(ammatillinenPerustutkintoErityisopetuksena.koodiarvo, valmaErityisopetuksena.koodiarvo).contains(koodi.koodiarvo)).headOption
       }
@@ -271,8 +271,10 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
 
   private def validateVahvistusAndPäättymispäiväDateOrder(suoritus: Suoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, vahvistuspäivät: Option[LocalDate]): HttpStatus = {
     // Kun suoritetaan ammatillista tutkintoa näyttönä, voi tutkinnon vahvistus (tutkintotoimikunnalta) tulla opiskeluoikeuden päättymisen jälkeen.
+    // Kun suoritetaan VALMA-koulutusta on tyypillistä, että opiskelija saa opiskelupaikan muualta, jolloin opiskeluoikeus päättyy välittömästi, mutta hänen suorituksensa arviointi ja vahvistus tapahtuu myöhemmin.
     suoritus match {
       case s: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus if s.suoritustapa.koodiarvo == "naytto" => HttpStatus.ok
+      case s: ValmaKoulutuksenSuoritus => HttpStatus.ok
       case _ => validateDateOrder(("suoritus.vahvistus.päivä", vahvistuspäivät), ("päättymispäivä", opiskeluoikeus.päättymispäivä), KoskiErrorCategory.badRequest.validation.date.päättymispäiväEnnenVahvistusta)
     }
   }

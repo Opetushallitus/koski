@@ -17,7 +17,7 @@ class LocalizationLanguagesTest extends FreeSpec with Matchers {
     s"Suomenkieliset tekstit" taggedAs(LocalizationTestTag) in {
       val missingKeys = localLocalizations.keySet -- remoteLocalizations.keySet
 
-      missingKeys shouldBe(empty)
+      missingKeys.toList.sorted shouldBe(empty)
     }
 
     s"Ruotsinkieliset tekstit" taggedAs(LocalizationTestTag) in {
@@ -25,7 +25,7 @@ class LocalizationLanguagesTest extends FreeSpec with Matchers {
 
       val missingKeys = localLocalizations.keySet.filterNot(ignoredKey) -- remoteLocalizations.filter(_._2.hasLanguage("sv")).keySet
 
-      missingKeys shouldBe(empty)
+      missingKeys.toList.sorted shouldBe(empty)
     }
   }
 }

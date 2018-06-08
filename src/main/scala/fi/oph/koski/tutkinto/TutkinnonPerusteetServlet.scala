@@ -26,7 +26,7 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
       .map(p => Koodistokoodiviite(koodiarvo = p.diaarinumero, nimi = LocalizedString.sanitize(p.nimi), koodistoUri = "koskikoulutustendiaarinumerot"))
 
     val diaaritKoskesta = koulutustyypit.flatMap(koulutusTyyppi =>
-      application.koodistoViitePalvelu.getSisältyvätKoodiViitteet(application.koodistoViitePalvelu.getLatestVersion("koskikoulutustendiaarinumerot").get, koulutusTyyppi)
+      application.koodistoViitePalvelu.getSisältyvätKoodiViitteet(application.koodistoViitePalvelu.getLatestVersionRequired("koskikoulutustendiaarinumerot"), koulutusTyyppi)
     ).flatten.toList
 
     (diaaritEperusteista ++ diaaritKoskesta).distinct
@@ -43,9 +43,7 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
   }
 
   get("/tutkinnonosat/ryhmat/:diaari/:suoritustapa") {
-    val ryhmät: List[Koodistokoodiviite] = application.koodistoPalvelu.getLatestVersion("ammatillisentutkinnonosanryhma")
-      .flatMap(application.koodistoViitePalvelu.getKoodistoKoodiViitteet).toList.flatten
-
+    val ryhmät: List[Koodistokoodiviite] = application.koodistoViitePalvelu.getKoodistoKoodiViitteet(application.koodistoPalvelu.getLatestVersionRequired("ammatillisentutkinnonosanryhma"))
     perusteenRakenne(failWhenNotFound = false).map(filterRyhmät(ryhmät)).getOrElse(Nil)
   }
 
@@ -65,7 +63,7 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
       .getOrElse(perusteenRakenne(failWhenNotFound = false))
 
   private def toRyhmäkoodi(ryhmä: String): Koodistokoodiviite =
-    application.koodistoViitePalvelu.getKoodistoKoodiViite("ammatillisentutkinnonosanryhma", ryhmä)
+    application.koodistoViitePalvelu.validate("ammatillisentutkinnonosanryhma", ryhmä)
       .getOrElse(haltWithStatus(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi(s"Tuntematon tutkinnon osan ryhmä: $ryhmä")))
 
   private def lisättävätTutkinnonOsat(ryhmäkoodi: Option[Koodistokoodiviite], ryhmänRakenne: Iterable[RakenneOsa], tutkinto: Iterable[RakenneOsa]) = {
@@ -84,7 +82,7 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
 
   private def isTelma(diaari: String) = {
     val telmaDiaarit = application.koodistoViitePalvelu.getSisältyvätKoodiViitteet(
-      application.koodistoViitePalvelu.getLatestVersion("koskikoulutustendiaarinumerot").get,
+      application.koodistoViitePalvelu.getLatestVersionRequired("koskikoulutustendiaarinumerot"),
       Koulutustyyppi.telma
     )
 
@@ -112,7 +110,7 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
   get("/tutkinnonosaryhma/laajuus/:diaari/:suoritustapa/:ryhmat") {
     val ryhmät = params("ryhmat").split(',')
     val ryhmäkoodit: Array[Koodistokoodiviite] = ryhmät.map(ryhmä =>
-      application.koodistoViitePalvelu.getKoodistoKoodiViite("ammatillisentutkinnonosanryhma", ryhmä)
+      application.koodistoViitePalvelu.validate("ammatillisentutkinnonosanryhma", ryhmä)
         .getOrElse(haltWithStatus(KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi(s"Tuntematon tutkinnon osan ryhmä: $ryhmä")))
     )
 

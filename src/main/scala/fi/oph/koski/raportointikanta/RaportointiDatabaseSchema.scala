@@ -74,14 +74,16 @@ object RaportointiDatabaseSchema {
     val opintojenRahoitus = column[Option[String]]("opintojen_rahoitus", StringIdentifierType)
     val erityinenTuki = column[Byte]("erityinen_tuki")
     val vaativanErityisenTuenErityinenTehtävä = column[Byte]("vaativan_erityisen_tuen_erityinen_tehtava")
+    val hojks = column[Byte]("hojks")
     val vaikeastiVammainen = column[Byte]("vaikeasti_vammainen")
     val vammainenJaAvustaja = column[Byte]("vammainen_ja_avustaja")
     val osaAikaisuus = column[Byte]("osa_aikaisuus")
     val opiskeluvalmiuksiaTukevatOpinnot = column[Byte]("opiskeluvalmiuksia_tukevat_opinnot")
     val vankilaopetuksessa = column[Byte]("vankilaopetuksessa")
+    val oppisopimusJossainPäätasonSuorituksessa = column[Byte]("oppisopimus_jossain_paatason_suorituksessa")
     def * = (opiskeluoikeusOid, alku, loppu, tila, opiskeluoikeusPäättynyt,
-      opintojenRahoitus, erityinenTuki, vaativanErityisenTuenErityinenTehtävä, vaikeastiVammainen, vammainenJaAvustaja,
-      osaAikaisuus, opiskeluvalmiuksiaTukevatOpinnot, vankilaopetuksessa) <> (ROpiskeluoikeusAikajaksoRow.tupled, ROpiskeluoikeusAikajaksoRow.unapply)
+      opintojenRahoitus, erityinenTuki, vaativanErityisenTuenErityinenTehtävä, hojks, vaikeastiVammainen, vammainenJaAvustaja,
+      osaAikaisuus, opiskeluvalmiuksiaTukevatOpinnot, vankilaopetuksessa, oppisopimusJossainPäätasonSuorituksessa) <> (ROpiskeluoikeusAikajaksoRow.tupled, ROpiskeluoikeusAikajaksoRow.unapply)
   }
 
   class RPäätasonSuoritusTable(tag: Tag) extends Table[RPäätasonSuoritusRow](tag, "r_paatason_suoritus") {
@@ -176,11 +178,13 @@ case class ROpiskeluoikeusAikajaksoRow(
   opintojenRahoitus: Option[String] = None,
   erityinenTuki: Byte = 0,
   vaativanErityisenTuenErityinenTehtävä: Byte = 0,
+  hojks: Byte = 0,
   vaikeastiVammainen: Byte = 0,
   vammainenJaAvustaja: Byte = 0,
   osaAikaisuus: Byte = 100,
   opiskeluvalmiuksiaTukevatOpinnot: Byte = 0,
-  vankilaopetuksessa: Byte = 0
+  vankilaopetuksessa: Byte = 0,
+  oppisopimusJossainPäätasonSuorituksessa: Byte = 0
 )
 
 case class RPäätasonSuoritusRow(
