@@ -182,6 +182,9 @@ function AddOppijaPage() {
         ? selectFromDropdown('.opintojenrahoitus .dropdown', rahoitus)
         : function() {}
     },
+    opiskeluoikeudenTilat: function() {
+      return pageApi.getInputOptions('.opiskeluoikeudentila .dropdown')
+    },
     selectPeruste: function(peruste) {
       return selectFromDropdown('.peruste .dropdown', peruste)
     },

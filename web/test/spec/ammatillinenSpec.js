@@ -61,6 +61,17 @@ describe('Ammatillinen koulutus', function() {
             'Työvoimakoulutus (OKM rahoitus)'
           ])
         })
+
+        it('Näytetään tilavaihtoehdoissa loma-tila, mutta ei eronnut-tilaa', function() {
+          expect(addOppija.opiskeluoikeudenTilat()).to.deep.equal([
+            'Katsotaan eronneeksi',
+            'Loma',
+            'Läsnä',
+            'Peruutettu',
+            'Valmistunut',
+            'Väliaikaisesti keskeytynyt'
+          ])
+        })
       })
 
       describe('Kun lisätään oppija', function() {
