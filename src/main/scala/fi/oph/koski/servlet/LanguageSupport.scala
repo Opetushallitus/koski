@@ -7,6 +7,7 @@ trait LanguageSupport extends KoskiBaseServlet {
   def application: KoskiApplication
 
   def lang: String = getLanguageFromCookie(request)
+  def t(key: String): String = application.localizationRepository.get(key).get(lang)
 
   def langFromDomain: String = if (request.getServerName == swedishDomain) {
     "sv"
