@@ -719,7 +719,7 @@ describe('Omat tiedot', function() {
 
         describe('Sivun sisältö', function() {
           it('Näytetään virhesivu', function() {
-            expect(VirhePage().teksti().trim()).to.equalIgnoreNewlines('Koski-järjestelmässä tapahtui virhe, yritä myöhemmin uudelleen\n          Palaa etusivulle')
+            expect(VirhePage().teksti().trim()).to.equalIgnoreNewlines('Koski-järjestelmässä tapahtui virhe, ole hyvä ja yritä myöhemmin uudelleen\n          Palaa etusivulle')
           })
         })
       })
