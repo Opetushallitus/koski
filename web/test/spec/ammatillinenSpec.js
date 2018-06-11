@@ -61,6 +61,17 @@ describe('Ammatillinen koulutus', function() {
             'Työvoimakoulutus (OKM rahoitus)'
           ])
         })
+
+        it('Näytetään tilavaihtoehdoissa loma-tila, mutta ei eronnut-tilaa', function() {
+          expect(addOppija.opiskeluoikeudenTilat()).to.deep.equal([
+            'Katsotaan eronneeksi',
+            'Loma',
+            'Läsnä',
+            'Peruutettu',
+            'Valmistunut',
+            'Väliaikaisesti keskeytynyt'
+          ])
+        })
       })
 
       describe('Kun lisätään oppija', function() {
@@ -537,10 +548,9 @@ describe('Ammatillinen koulutus', function() {
 
     describe('Ammatillisen koulutuksen tilat', function () {
       before(editor.edit, opinnot.avaaLisaysDialogi)
-      it('Sisältää loma-tilan', function () {
+      it('Sisältää loma-tilan, mutta ei eronnut-tilaa', function () {
         expect(OpiskeluoikeusDialog().tilat()).to.deep.equal(
             [
-              'koskiopiskeluoikeudentila_eronnut',
               'koskiopiskeluoikeudentila_katsotaaneronneeksi',
               'koskiopiskeluoikeudentila_loma',
               'koskiopiskeluoikeudentila_lasna',

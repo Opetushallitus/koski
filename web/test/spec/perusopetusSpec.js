@@ -1666,6 +1666,17 @@ describe('Perusopetus', function() {
           it('Ei näytetä opintojen rahoitus -kenttää', function() {
             expect(addOppija.rahoitusIsVisible()).to.equal(false)
           })
+
+          it('Oikeat tilat tilavaihtoehtoina', function() {
+            expect(addOppija.opiskeluoikeudenTilat()).to.deep.equal([
+              'Eronnut',
+              'Katsotaan eronneeksi',
+              'Läsnä',
+              'Peruutettu',
+              'Valmistunut',
+              'Väliaikaisesti keskeytynyt'
+            ])
+          })
         })
 
         describe('Kun painetaan Lisää-nappia', function() {

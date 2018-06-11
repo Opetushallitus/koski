@@ -45,7 +45,11 @@ export default ({opiskeluoikeusAtom}) => {
   suorituskieletP.onValue(kielet => suorituskieliAtom.set(kielet[0]))
 
   const tilatP = koodistoValues('koskiopiskeluoikeudentila/lasna,valmistunut,eronnut,katsotaaneronneeksi,valiaikaisestikeskeytynyt,peruutettu,loma')
-  const opiskeluoikeudenTilatP = Bacon.combineAsArray(tilatP, tyyppiAtom.map('.koodiarvo')).map(([tilat,tyyppi]) => tyyppi === 'ammatillinenkoulutus' ? tilat : tilat.filter(tila => tila.koodiarvo !== 'loma'))
+  const opiskeluoikeudenTilatP = Bacon.combineAsArray(tilatP, tyyppiAtom.map('.koodiarvo')).map(([tilat,tyyppi]) =>
+    tyyppi === 'ammatillinenkoulutus'
+      ? tilat.filter(tila => tila.koodiarvo !== 'eronnut')
+      : tilat.filter(tila => tila.koodiarvo !== 'loma')
+  )
   const rahoituksetP = koodistoValues('opintojenrahoitus').map(R.sortBy(R.compose(parseInt, R.prop('koodiarvo'))))
   const hasRahoituksetAvailable = tyyppiAtom.map(koodiarvoMatch('ammatillinenkoulutus', 'lukiokoulutus'))
 
