@@ -48,8 +48,10 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
     runDbSync(ROpiskeluoikeudet.schema.truncate)
   def loadOpiskeluoikeudet(opiskeluoikeudet: Seq[ROpiskeluoikeusRow]): Unit =
     runDbSync(ROpiskeluoikeudet ++= opiskeluoikeudet)
-  def oppijaOidsFromOpiskeluoikeudet: Seq[String] =
-    runDbSync(ROpiskeluoikeudet.map(_.oppijaOid).distinct.result)
+  def oppijaOidsFromOpiskeluoikeudet: Seq[String] = {
+    // plain "runDbSync" times out after 1 minute, which is too short here
+    Futures.await(db.run(ROpiskeluoikeudet.map(_.oppijaOid).distinct.result), atMost = 15.minutes)
+  }
 
   def deleteOpiskeluoikeusAikajaksot: Unit =
     runDbSync(ROpiskeluoikeusAikajaksot.schema.truncate)
