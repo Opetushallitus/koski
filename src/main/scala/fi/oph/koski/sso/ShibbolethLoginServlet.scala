@@ -12,14 +12,19 @@ import fi.oph.koski.schema.Nimitiedot
 import fi.oph.koski.servlet.{ApiServlet, LanguageSupport, NoCache}
 import org.scalatra.{Cookie, CookieOptions}
 
-case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServlet with AuthenticationSupport with NoCache with LanguageSupport {
+case class ShibbolethLoginServlet(application: KoskiApplication,
+                                   redirectSuccess : String = "/omattiedot",
+                                   redirectUserNotFound: String = "/eisuorituksia",
+                                   redirectFailed: String = "/virhesivu" )
+  extends ApiServlet with AuthenticationSupport with NoCache with LanguageSupport {
+
   get("/") {
     try {
       checkAuth.getOrElse(login)
     } catch {
       case e: Exception =>
         logger.error(s"Kansalaisen sisäänkirjautuminen epäonnistui ${e.getMessage}")
-        redirect("/virhesivu")
+        redirect(redirectFailed)
     }
   }
 
@@ -36,10 +41,10 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
     application.henkilöRepository.findHenkilötiedotByHetu(hetu, nimitiedot)(KoskiSession.systemUser).headOption match {
       case Some(oppija) =>
         setUser(Right(localLogin(AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true), Some(langFromCookie.getOrElse(langFromDomain)))))
-        redirect("/omattiedot")
+        redirect(redirectSuccess)
       case _ =>
         setNimitiedotCookie
-        redirect("/eisuorituksia")
+        redirect(redirectUserNotFound)
     }
   }
 
