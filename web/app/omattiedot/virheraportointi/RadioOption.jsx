@@ -23,7 +23,7 @@ const RadioOption = ({selectedOppilaitosA, label, value, styleModifier, checked}
 const OppilaitosOption = ({oppilaitos, selectedOppilaitosA}) => (
   <RadioOption
     selectedOppilaitosA={selectedOppilaitosA}
-    label={t(oppilaitos.nimi)}
+    label={t(oppilaitos.nimi) + (oppilaitos.suoritus ? ` (${oppilaitos.suoritus.toLowerCase()})` : '')}
     value={oppilaitos.oid}
   />
 )

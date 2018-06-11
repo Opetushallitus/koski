@@ -215,9 +215,58 @@ describe('Omat tiedot', function() {
             })
           })
         })
+
+        describe('Ylioppilastutkinnoille', () => {
+          var form = omattiedot.virheraportointiForm
+
+          describe('kun ei lukiosuorituksia', () => {
+            before(authentication.logout, etusivu.openPage)
+            before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('210244-374K'), wait.until(omattiedot.isVisible))
+            before(click(omattiedot.virheraportointiButton), form.acceptDisclaimer)
+
+            it('näytetään oppilaitoksissa ylioppilastutkintolautakunta, ei lukiota, lisäksi suorituksen tyyppi (ylioppilastutkinto)', () => {
+              expect(form.oppilaitosNames()).to.deep.equal([
+                'Ylioppilastutkintolautakunta (ylioppilastutkinto)',
+                'Muu'
+              ])
+            })
+
+            it('ylioppilastutkintolautakunnalla on oikea OID', function () {
+              expect(form.oppilaitosOids()).to.deep.equal([
+                '1.2.246.562.10.43628088406',
+                'other'
+              ])
+            })
+          })
+
+          describe('kun myös lukiosuorituksia', () => {
+            before(authentication.logout, etusivu.openPage)
+            before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('080698-967F'), wait.until(omattiedot.isVisible))
+            before(click(omattiedot.virheraportointiButton), form.acceptDisclaimer)
+
+            it('näytetään oppilaitoksissa ylioppilastutkintolautakunta ja lukio', () => {
+              expect(form.oppilaitosNames()).to.deep.equal([
+                'Ylioppilastutkintolautakunta (ylioppilastutkinto)',
+                'Jyväskylän normaalikoulu',
+                'Muu'
+              ])
+            })
+
+            it('oppilaitoksilla on oikeat OIDit', function () {
+              expect(form.oppilaitosOids()).to.deep.equal([
+                '1.2.246.562.10.43628088406',
+                '1.2.246.562.10.14613773812',
+                'other'
+              ])
+            })
+          })
+        })
       })
 
       describe('Suoritusjako', function() {
+        before(authentication.logout, etusivu.openPage)
+        before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('180497-112F'), wait.until(omattiedot.isVisible))
+
         var form = omattiedot.suoritusjakoForm
         window.secrets = {}
 
