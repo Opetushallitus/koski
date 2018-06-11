@@ -7,8 +7,6 @@ Tässä git-repositoriossa on Koski-järjestelmän ohjelmakoodi, tietokannan rak
 
 Koski on [EUPL](LICENSE.txt)-lisensoitu sovellus, josta on mahdollista käynnistää kehitysinstanssi omalla työasemalla, alla olevien kehitysohjeiden mukaisesti. Koski-sovellus on alustariippumaton, sillä se pyörii Java-virtuaalikoneella. Kehitysympäristö toimii sellaisenaan ainakin Linux ja OSX-käyttöjärjestelmissä.
 
-*Huom!* Koski-järjestelmän kehitys on vielä alkuvaiheessa ja kaikki tässä dokumentissa kuvattu voi vielä muuttua matkan varrella.
-
 ## Käsitteet
 
 Keskeiset entiteetit, ja järjestelmät, joihin nämä tallennetaan.
