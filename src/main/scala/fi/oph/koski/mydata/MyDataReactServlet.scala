@@ -14,7 +14,7 @@ class MyDataReactServlet(implicit val application: KoskiApplication) extends Sca
     sessionOrStatus match {
       case Right(_) if shibbolethCookieFound =>
       case Left(_) if shibbolethCookieFound => redirect("/user/omadatalogin/hsl")
-      case _ => redirect(getLoginUrlForMember(params.getAs[String]("memberCode").get))
+      case _ => redirect(getLoginUrlForMember(params("memberCode")))
     }
   }
 

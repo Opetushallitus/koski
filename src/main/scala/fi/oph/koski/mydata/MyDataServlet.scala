@@ -12,7 +12,7 @@ class MyDataServlet(implicit val application: KoskiApplication) extends ApiServl
   with AuthenticationSupport with Logging with NoCache with MyDataSupport {
 
   get("/kumppani/:memberCode") {
-    def memberConf = getConfigForMember(params.getAs[String]("memberCode").get)
+    def memberConf = getConfigForMember(params("memberCode"))
 
     renderObject(Map(
       "id" -> memberConf.getString("id"),
