@@ -402,6 +402,24 @@ describe('Omat tiedot', function() {
               })
             })
           })
+
+          describe('Kielen vaihto', function() {
+            before(
+              click(suoritusjako.changeLanguageButton),
+              wait.forMilliseconds(150), // page reloads
+              wait.until(function() { return isElementVisible(suoritusjako.header()) })
+            )
+
+            it('toimii', function() {
+              expect(suoritusjako.headerText()).to.equal(
+                'Studier' +
+                'Miia Monikoululainen' +
+                'f. 18.4.1997'
+              )
+            })
+
+            after(click(suoritusjako.changeLanguageButton))
+          })
         })
 
         describe('Korkeakoulusuoritukset', function () {

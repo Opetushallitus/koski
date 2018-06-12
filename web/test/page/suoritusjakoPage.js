@@ -3,6 +3,12 @@ function SuoritusjakoPage() {
     openPage: function(secretKey) {
       return function() {openPage('/koski/opinnot/' + window.secrets[secretKey], api.isVisible)()}
     },
+    changeLanguageButton: function() {
+      return S('#topbar .change-lang')
+    },
+    header: function() {
+      return S('.suoritusjako-page .oppija header')
+    },
     headerText: function() {
       return S('.suoritusjako-page .oppija header').text()
     },
