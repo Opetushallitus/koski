@@ -216,15 +216,15 @@ describe('Omat tiedot', function() {
           })
         })
 
-        describe('Ylioppilastutkinnoille', () => {
+        describe('Ylioppilastutkinnoille', function () => {
           var form = omattiedot.virheraportointiForm
 
-          describe('kun ei lukiosuorituksia', () => {
+          describe('kun ei lukiosuorituksia', function () => {
             before(authentication.logout, etusivu.openPage)
             before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('210244-374K'), wait.until(omattiedot.isVisible))
             before(click(omattiedot.virheraportointiButton), form.acceptDisclaimer)
 
-            it('näytetään oppilaitoksissa ylioppilastutkintolautakunta, ei lukiota, lisäksi suorituksen tyyppi (ylioppilastutkinto)', () => {
+            it('näytetään oppilaitoksissa ylioppilastutkintolautakunta, ei lukiota, lisäksi suorituksen tyyppi (ylioppilastutkinto)', function () => {
               expect(form.oppilaitosNames()).to.deep.equal([
                 'Ylioppilastutkintolautakunta (ylioppilastutkinto)',
                 'Muu'
@@ -239,12 +239,12 @@ describe('Omat tiedot', function() {
             })
           })
 
-          describe('kun myös lukiosuorituksia', () => {
+          describe('kun myös lukiosuorituksia', function () => {
             before(authentication.logout, etusivu.openPage)
             before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('080698-967F'), wait.until(omattiedot.isVisible))
             before(click(omattiedot.virheraportointiButton), form.acceptDisclaimer)
 
-            it('näytetään oppilaitoksissa ylioppilastutkintolautakunta ja lukio', () => {
+            it('näytetään oppilaitoksissa ylioppilastutkintolautakunta ja lukio', function () => {
               expect(form.oppilaitosNames()).to.deep.equal([
                 'Ylioppilastutkintolautakunta (ylioppilastutkinto)',
                 'Jyväskylän normaalikoulu',
