@@ -4,11 +4,12 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.AuthenticationSupport
 import fi.oph.koski.log.Logging
-import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, NoCache}
+import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, MyDataSupport, NoCache}
 
 import scala.collection.JavaConverters._
 
-class MyDataServlet(implicit val application: KoskiApplication) extends ApiServlet with AuthenticationSupport with Logging with NoCache {
+class MyDataServlet(implicit val application: KoskiApplication) extends ApiServlet
+  with AuthenticationSupport with Logging with NoCache with MyDataSupport {
 
   get("/kumppani/:memberCode") {
     def memberConf = getConfigForMember(params.getAs[String]("memberCode").get)
@@ -42,11 +43,5 @@ class MyDataServlet(implicit val application: KoskiApplication) extends ApiServl
     } else {
       throw InvalidRequestException(KoskiErrorCategory.badRequest.header.invalidXRoadHeader)
     }
-  }
-
-  private def getConfigForMember(id: String): com.typesafe.config.Config = {
-    application.config.getConfigList("mydata.members").asScala.find(member =>
-      member.getString("id") == id)
-      .getOrElse(throw InvalidRequestException(KoskiErrorCategory.badRequest.header.invalidXRoadHeader))
   }
 }
