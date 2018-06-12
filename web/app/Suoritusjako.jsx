@@ -5,7 +5,7 @@ import * as R from 'ramda'
 import ReactDOM from 'react-dom'
 import Bacon from 'baconjs'
 import {Error, errorP, handleError, isTopLevel, TopLevelError} from './util/Error'
-import {t} from './i18n/i18n'
+import {lang, setLang, t} from './i18n/i18n'
 import Http from './util/http'
 import {Editor} from './editor/Editor'
 import Text from './i18n/Text'
@@ -26,15 +26,20 @@ const tiedotP = () => Bacon.combineWith(
 
 const SuoritusjakoTopBar = () => {
   return (
-    <header id='topbar' className="local">
-      <div id='logo'><Text name="Opintopolku.fi"/></div>
+    <header id="topbar" className="suoritusjako">
+      <img className="opintopolku-logo" src="/koski/images/oma-opintopolku_ikoni.svg"  />
       <h1>
-        <Link href="/koski/"><Text name="Koski"/></Link>
-        <span>{' - '}<Text name="Opinnot"/></span>
+        <Link href="/oma-opintopolku/"><Text name="Oma Opintopolku" /></Link>
       </h1>
+      <ChangeLang />
     </header>
   )
 }
+
+const ChangeLang = () =>
+ (<span className="change-lang" onClick={() => lang === 'sv' ? setLang('fi') : setLang('sv')}>
+    {lang === 'sv' ? 'Suomeksi' : 'På svenska'}
+  </span>)
 
 const contentP = locationP.flatMapLatest(() => tiedotP().map(oppija =>
     oppija
