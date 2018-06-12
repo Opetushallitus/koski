@@ -8,6 +8,15 @@ import org.scalatra.ScalatraServlet
 import scala.xml.Unparsed
 
 class MyDataReactServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with AuthenticationSupport with OmaOpintopolkuSupport {
+  before("/:id") {
+    setLangCookieFromDomainIfNecessary
+    sessionOrStatus match {
+      case Right(_) if shibbolethCookieFound =>
+      case Left(_) if shibbolethCookieFound => redirect("/user/omadatalogin/hsl")
+      case _ => redirect("/koski/login/shibboleth")
+    }
+  }
+
   get("/:id") {
       landerHtml
   }
