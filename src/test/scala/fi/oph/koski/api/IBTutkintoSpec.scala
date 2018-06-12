@@ -51,6 +51,8 @@ class IBTutkintoSpec extends FreeSpec with Matchers with OpintosuoritusoteTestMe
           |OP1 Minä opiskelijana 1 hyväksytty 4.6.2016
           |PS Psykologia 1 8
           |PS1 Psyykkinen toiminta ja oppiminen 1 8 4.6.2016
+          |TO Teemaopinnot 1 hyväksytty
+          |MTA Monitieteinen ajattelu 1 hyväksytty 8.6.2016
           |TE Terveystieto 1 7
           |TE1 Terveyden perusteet 1 7 4.6.2016
           |KT Uskonto/Elämänkatsomustieto 1 10

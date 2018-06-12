@@ -58,7 +58,14 @@ object ExamplesIB {
       preIBAineSuoritus(lukionOppiaine("MU"), List((valtakunnallinenKurssi("MU1"), "8"))).copy(arviointi = arviointi("8")),
       preIBAineSuoritus(lukionOppiaine("KU"), List((valtakunnallinenKurssi("KU1"), "9"))).copy(arviointi = arviointi("9")),
       preIBAineSuoritus(lukionOppiaine("TE"), List((valtakunnallinenKurssi("TE1"), "7"))).copy(arviointi = arviointi("7")),
-      preIBAineSuoritus(lukionOppiaine("OP"), List((valtakunnallinenKurssi("OP1"), "S"))).copy(arviointi = arviointi("7"))
+      preIBAineSuoritus(lukionOppiaine("OP"), List((valtakunnallinenKurssi("OP1"), "S"))).copy(arviointi = arviointi("7")),
+      MuidenLukioOpintojenSuoritus(
+        koulutusmoduuli = MuuLukioOpinto(Koodistokoodiviite("TO", "lukionmuutopinnot")),
+        osasuoritukset = Some(List(
+          kurssisuoritus(soveltavaKurssi("MTA", "Monitieteinen ajattelu", "Monitieteisen ajattelun kurssi")).copy(arviointi = sanallinenArviointi("S", päivä = date(2016, 6, 8)))
+        )),
+        arviointi = arviointi("S")
+      )
     ))
   )
 

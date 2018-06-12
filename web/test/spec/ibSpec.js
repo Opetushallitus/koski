@@ -60,7 +60,8 @@ describe('IB', function( ) {
           'Kuvataide\nKU1\n9 1 9\n(9,0)\n' +
           'Terveystieto\nTE1\n7 1 7\n(7,0)\n' +
           'Opinto-ohjaus\nOP1\nS 1 7\n' +
-          'Suoritettujen kurssien laajuus yhteensä: 31\n' +
+          'Teemaopinnot\nMTA *\nS 1 S\n' +
+          'Suoritettujen kurssien laajuus yhteensä: 32\n' +
           '* = paikallinen kurssi tai oppiaine')
       })
     })
@@ -206,7 +207,7 @@ describe('IB', function( ) {
             it('alkutila', function() {
               expect(editor.canSave()).to.equal(false)
               expect(editor.getEditBarMessage()).to.equal('Ei tallentamattomia muutoksia')
-              expect(S('.oppiaineet .oppiaine-rivi').length).to.equal(20)
+              expect(S('.oppiaineet .oppiaine-rivi').length).to.equal(21)
             })
 
             describe('Lisääminen', function () {
@@ -216,7 +217,7 @@ describe('IB', function( ) {
               )
 
               it('lisää oppiaineen', function () {
-                expect(S('.oppiaineet .oppiaine-rivi').length).to.equal(21)
+                expect(S('.oppiaineet .oppiaine-rivi').length).to.equal(22)
               })
 
               it('estää tallennuksen kunnes pakolliset tiedot on täytetty', function () {
@@ -299,7 +300,7 @@ describe('IB', function( ) {
             it('alkutila', function() {
               expect(editor.canSave()).to.equal(false)
               expect(editor.getEditBarMessage()).to.equal('Ei tallentamattomia muutoksia')
-              expect(S('.oppiaineet .oppiaine-rivi').length).to.equal(20)
+              expect(S('.oppiaineet .oppiaine-rivi').length).to.equal(21)
             })
 
             describe('Lisääminen', function () {
@@ -310,7 +311,7 @@ describe('IB', function( ) {
               )
 
               it('lisää oppiaineen', function () {
-                expect(S('.oppiaineet .oppiaine-rivi').length).to.equal(21)
+                expect(S('.oppiaineet .oppiaine-rivi').length).to.equal(22)
               })
 
               it('estää tallennuksen kunnes aineryhmä on valittu', function () {
@@ -435,7 +436,7 @@ describe('IB', function( ) {
               )
 
               it('lisää oppiaineen', function () {
-                expect(S('.oppiaineet .oppiaine-rivi').length).to.equal(21)
+                expect(S('.oppiaineet .oppiaine-rivi').length).to.equal(22)
               })
 
               it('estää tallennuksen kunnes aineryhmä ja kieli on valittu', function () {

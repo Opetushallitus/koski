@@ -12,8 +12,8 @@ class IBOpintosuoritusoteHtml(implicit override val user: KoskiSession, override
       val ibTutkinnonSuoritukset: List[IBTutkinnonSuoritus] = opiskeluoikeudet.flatMap(_.suoritukset.collect { case s: IBTutkinnonSuoritus => s })
       val theoryOfKnowledgeSuoritukset: List[IBTheoryOfKnowledgeSuoritus] = ibTutkinnonSuoritukset.flatMap(_.theoryOfKnowledge)
       val ibAineidenSuoritukset: List[IBOppiaineenSuoritus] = ibTutkinnonSuoritukset.flatMap(_.osasuoritukset.toList.flatten)
-      val preIBSuoritukset: List[PreIBOppiaineenSuoritus] = opiskeluoikeudet.flatMap(_.suoritukset.collect{ case s: PreIBSuoritus => s }).flatMap(_.osasuoritukset.toList.flatten)
-      
+      val preIBSuoritukset: List[PreIBSuorituksenOsasuoritus] = opiskeluoikeudet.flatMap(_.suoritukset.collect{ case s: PreIBSuoritus => s }).flatMap(_.osasuoritukset.toList.flatten)
+
       val ibSuorituksetRyhmittäin: Map[String, List[Suoritus]] = (ibAineidenSuoritukset ++ theoryOfKnowledgeSuoritukset).groupBy { s =>
         s.koulutusmoduuli match {
           case x: IBAineRyhmäOppiaine => i(x.ryhmä.lyhytNimi)
