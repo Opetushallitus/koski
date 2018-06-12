@@ -9,16 +9,16 @@ import org.scalatra.ScalatraServlet
 class MyDataReactServlet(implicit val application: KoskiApplication) extends ScalatraServlet
   with HtmlServlet with AuthenticationSupport with OmaOpintopolkuSupport with MyDataSupport {
 
-  before("/:id") {
+  before("/:memberCode") {
     setLangCookieFromDomainIfNecessary
     sessionOrStatus match {
       case Right(_) if shibbolethCookieFound =>
       case Left(_) if shibbolethCookieFound => redirect("/user/omadatalogin/hsl")
-      case _ => redirect(getLoginUrlForMember("hsl"))
+      case _ => redirect(getLoginUrlForMember(params.getAs[String]("memberCode").get))
     }
   }
 
-  get("/:id") {
+  get("/:memberCode") {
       landerHtml
   }
 
