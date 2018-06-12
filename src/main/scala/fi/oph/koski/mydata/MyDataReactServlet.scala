@@ -11,11 +11,10 @@ class MyDataReactServlet(implicit val application: KoskiApplication) extends Sca
 
   before("/:id") {
     setLangCookieFromDomainIfNecessary
-    logger.info(getConfigForMember("hsl").getString("login.fi"))
     sessionOrStatus match {
       case Right(_) if shibbolethCookieFound =>
       case Left(_) if shibbolethCookieFound => redirect("/user/omadatalogin/hsl")
-      case _ => redirect(getConfigForMember("hsl").getString("login.fi"))
+      case _ => redirect(getLoginUrlForMember("hsl"))
     }
   }
 
