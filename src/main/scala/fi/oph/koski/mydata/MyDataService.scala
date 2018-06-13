@@ -21,11 +21,11 @@ class MyDataService(myDataRepository: MyDataRepository) extends Logging {
     myDataRepository.delete(oppijaOid, asiakas)
   }
 
-  def update(oppijaOid: String, secret: String, expirationDate: LocalDate): HttpStatus = {
+  def update(oppijaOid: String, asiakas: String, expirationDate: LocalDate): HttpStatus = {
     if (expirationDate.isBefore(LocalDate.now) || expirationDate.isAfter(LocalDate.now.plusYears(1))) {
       KoskiErrorCategory.badRequest()
     } else {
-      myDataRepository.update(oppijaOid, secret, expirationDate)
+      myDataRepository.update(oppijaOid, asiakas, expirationDate)
     }
   }
 
