@@ -13,6 +13,9 @@ import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.SchemaValidatingExtractor
+import org.json4s.JValue
+import org.json4s.JsonAST.JBool
+import org.json4s.jackson.JsonMethods
 
 class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification with Matchers {
 
@@ -26,6 +29,10 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
         henkiloCount should equal(0)
         organisaatioCount should equal(0)
         koodistoKoodiCount should equal(0)
+      }
+      authGet("api/raportointikanta/status") {
+        verifyResponseStatusOk()
+        JsonMethods.parse(body) \ "complete" should equal(JBool(false))
       }
     }
     "Opiskeluoikeuksien lataus" in {
@@ -66,6 +73,12 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
         koodistoKoodiCount should be > 500
         val koodi = raportointiDatabase.runDbSync(raportointiDatabase.RKoodistoKoodit.filter(_.koodistoUri === "opiskeluoikeudentyyppi").filter(_.koodiarvo === "korkeakoulutus").result)
         koodi should equal(Seq(RKoodistoKoodiRow("opiskeluoikeudentyyppi", "korkeakoulutus", "Korkeakoulutus")))
+      }
+    }
+    "Status-rajapinta" in {
+      authGet("api/raportointikanta/status") {
+        verifyResponseStatusOk()
+        JsonMethods.parse(body) \ "complete" should equal(JBool(true))
       }
     }
   }

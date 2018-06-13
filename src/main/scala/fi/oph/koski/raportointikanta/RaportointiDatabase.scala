@@ -10,6 +10,7 @@ import slick.dbio.DBIO
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema._
 import fi.oph.koski.util.Futures
+import java.sql.Timestamp
 
 object RaportointiDatabase {
   type DB = PostgresDriver.backend.DatabaseDef
@@ -25,6 +26,7 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
   private[raportointikanta] val RHenkilöt = TableQuery[RHenkilöTable]
   private[raportointikanta] val ROrganisaatiot = TableQuery[ROrganisaatioTable]
   private[raportointikanta] val RKoodistoKoodit = TableQuery[RKoodistoKoodiTable]
+  private[raportointikanta] val RaportointikantaStatus = TableQuery[RaportointikantaStatusTable]
 
   def dropAndCreateSchema: Unit = {
     runDbSync(DBIO.seq(
@@ -36,7 +38,8 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
       RHenkilöt.schema.create,
       ROrganisaatiot.schema.create,
       RKoodistoKoodit.schema.create,
-      RaportointiDatabaseSchema.createOtherIndexes
+      RaportointikantaStatus.schema.create,
+      RaportointiDatabaseSchema.createOtherIndexes,
     ))
   }
   def createOpiskeluoikeusIndexes: Unit = {
@@ -82,4 +85,11 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
     runDbSync(RKoodistoKoodit.filter(_.koodistoUri === koodistoUri).delete)
   def loadKoodistoKoodit(koodit: Seq[RKoodistoKoodiRow]): Unit =
     runDbSync(RKoodistoKoodit ++= koodit)
+
+  def setStatusLoadStarted(name: String): Unit =
+    runDbSync(sqlu"insert into raportointikanta_status (name, load_started, load_completed) values ($name, now(), null) on conflict (name) do update set load_started = now(), load_completed = null")
+  def setStatusLoadCompleted(name: String): Unit =
+    runDbSync(sqlu"update raportointikanta_status set load_completed=now() where name = $name")
+  def statuses: Seq[RaportointikantaStatusRow] =
+    runDbSync(RaportointikantaStatus.result)
 }

@@ -36,7 +36,8 @@ object RaportointiDatabaseSchema {
     sqlu"DROP TABLE IF EXISTS r_osasuoritus",
     sqlu"DROP TABLE IF EXISTS r_henkilo",
     sqlu"DROP TABLE IF EXISTS r_organisaatio",
-    sqlu"DROP TABLE IF EXISTS r_koodisto_koodi"
+    sqlu"DROP TABLE IF EXISTS r_koodisto_koodi",
+    sqlu"DROP TABLE IF EXISTS raportointikanta_status"
   )
 
   private val StringIdentifierType = SqlType("character varying collate \"C\"")
@@ -168,6 +169,13 @@ object RaportointiDatabaseSchema {
     val nimi = column[String]("nimi")
     def * = (koodistoUri, koodiarvo, nimi) <> (RKoodistoKoodiRow.tupled, RKoodistoKoodiRow.unapply)
   }
+
+  class RaportointikantaStatusTable(tag: Tag) extends Table[RaportointikantaStatusRow](tag, "raportointikanta_status") {
+    val name = column[String]("name", O.PrimaryKey)
+    val loadStarted = column[Option[Timestamp]]("load_started")
+    val loadCompleted = column[Option[Timestamp]]("load_completed")
+    def * = (name, loadStarted, loadCompleted) <> (RaportointikantaStatusRow.tupled, RaportointikantaStatusRow.unapply)
+  }
 }
 
 case class ROpiskeluoikeusRow(
@@ -275,4 +283,10 @@ case class RKoodistoKoodiRow(
   koodistoUri: String,
   koodiarvo: String,
   nimi: String
+)
+
+case class RaportointikantaStatusRow(
+  name: String,
+  loadStarted: Option[Timestamp],
+  loadCompleted: Option[Timestamp]
 )

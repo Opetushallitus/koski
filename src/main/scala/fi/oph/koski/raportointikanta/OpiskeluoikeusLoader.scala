@@ -22,6 +22,7 @@ object OpiskeluoikeusLoader extends Logging {
   private val DefaultBatchSize = 500
 
   def loadOpiskeluoikeudet(opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService, systemUser: KoskiSession, raportointiDatabase: RaportointiDatabase, batchSize: Int = DefaultBatchSize): Observable[LoadResult] = {
+    raportointiDatabase.setStatusLoadStarted("opiskeluoikeudet")
     deleteEverything(raportointiDatabase)
     val result = opiskeluoikeusQueryRepository.mapKaikkiOpiskeluoikeudetSivuittain(batchSize, systemUser) { opiskeluoikeusRows =>
       if (opiskeluoikeusRows.nonEmpty) {
@@ -36,6 +37,7 @@ object OpiskeluoikeusLoader extends Logging {
         errors.map(_.left.get) :+ LoadProgressResult(outputRows.size, päätasonSuoritusRows.size + osasuoritusRows.size)
       } else {
         createIndexes(raportointiDatabase)
+        raportointiDatabase.setStatusLoadCompleted("opiskeluoikeudet")
         Seq(LoadCompleted())
       }
     }

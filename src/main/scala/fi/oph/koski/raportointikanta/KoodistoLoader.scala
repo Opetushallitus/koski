@@ -11,6 +11,7 @@ object KoodistoLoader extends Logging {
 
   def loadKoodistot(koodistoPalvelu: KoodistoPalvelu, raportointiDatabase: RaportointiDatabase): Int = {
     logger.info("Ladataan koodistoja...")
+    raportointiDatabase.setStatusLoadStarted("koodistot")
     var count = 0
     LadattavatKoodistot.foreach(koodistoUri => {
       val versio = koodistoPalvelu.getLatestVersionRequired(koodistoUri)
@@ -20,6 +21,7 @@ object KoodistoLoader extends Logging {
       raportointiDatabase.loadKoodistoKoodit(rows)
       count += rows.length
     })
+    raportointiDatabase.setStatusLoadCompleted("koodistot")
     logger.info(s"Ladattiin $count koodiarvoa")
     count
   }
