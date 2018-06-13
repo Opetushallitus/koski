@@ -183,6 +183,33 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-04-01"), Date.valueOf(OpiskeluoikeusLoader.IndefiniteFuture), "lasna")
         ))
       }
+      "Ammatillisen opiskeluoikeuden lisätiedot, majoitustiedot" in {
+        val opiskeluoikeus = ammatillinenOpiskeluoikeus.copy(
+          tila = AmmatillinenOpiskeluoikeudenTila(opiskeluoikeusjaksot = List(
+            AmmatillinenOpiskeluoikeusjakso(alku = LocalDate.of(2016, 1, 15), tila = Läsnä)
+          )),
+          lisätiedot = Some(AmmatillisenOpiskeluoikeudenLisätiedot(
+            hojks = None,
+            majoitus = Some(List(
+              Aikajakso(LocalDate.of(2016, 2, 1), Some(LocalDate.of(2016, 2, 29)))
+            )),
+            sisäoppilaitosmainenMajoitus = Some(List(
+              Aikajakso(LocalDate.of(2016, 3, 1), Some(LocalDate.of(2016, 3, 31)))
+            )),
+            vaativanErityisenTuenYhteydessäJärjestettäväMajoitus = Some(List(
+              Aikajakso(LocalDate.of(2016, 4, 1), Some(LocalDate.of(2016, 4, 30)))
+            ))
+          ))
+        )
+        val aikajaksoRows = OpiskeluoikeusLoader.buildROpiskeluoikeusAikajaksoRows(oid, opiskeluoikeus)
+        aikajaksoRows should equal(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2016-01-31"), "lasna"),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-29"), "lasna", majoitus = 1),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-03-01"), Date.valueOf("2016-03-31"), "lasna", sisäoppilaitosmainenMajoitus = 1),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-04-01"), Date.valueOf("2016-04-30"), "lasna", vaativanErityisenTuenYhteydessäJärjestettäväMajoitus = 1),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-05-01"), Date.valueOf(OpiskeluoikeusLoader.IndefiniteFuture), "lasna")
+        ))
+      }
       "Ammatillisen opiskeluoikeuden lisätiedot, hojks" - {
         "Ei alku/loppupäivää" in {
           val opiskeluoikeus = ammatillinenOpiskeluoikeus.copy(

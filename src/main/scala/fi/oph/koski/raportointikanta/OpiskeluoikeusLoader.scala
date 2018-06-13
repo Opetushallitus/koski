@@ -153,6 +153,14 @@ object OpiskeluoikeusLoader extends Logging {
       case l: PerusopetuksenOpiskeluoikeudenLisätiedot => Some(l)
       case _ => None
     } else None
+    val lukionLisätiedot: Option[LukionOpiskeluoikeudenLisätiedot] = if (o.lisätiedot.nonEmpty) o.lisätiedot.get match {
+      case l: LukionOpiskeluoikeudenLisätiedot => Some(l)
+      case _ => None
+    } else None
+    val lukioonValmistavanLisätiedot: Option[LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot] = if (o.lisätiedot.nonEmpty) o.lisätiedot.get match {
+      case l: LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot => Some(l)
+      case _ => None
+    } else None
 
     def ammatillinenAikajakso(lisätieto: AmmatillisenOpiskeluoikeudenLisätiedot => Option[List[Aikajakso]]): Byte =
       ammatillisenLisätiedot.flatMap(lisätieto).flatMap(_.find(_.contains(päivä))).size.toByte
@@ -169,6 +177,15 @@ object OpiskeluoikeusLoader extends Logging {
         case k: KoskiOpiskeluoikeusjakso => k.opintojenRahoitus.map(_.koodiarvo)
         case _ => None
       },
+      majoitus = ammatillinenAikajakso(_.majoitus),
+      sisäoppilaitosmainenMajoitus = (
+        ammatillinenAikajakso(_.sisäoppilaitosmainenMajoitus) +
+        aikuistenPerusopetuksenLisätiedot.flatMap(_.sisäoppilaitosmainenMajoitus).flatMap(_.find(_.contains(päivä))).size +
+        perusopetuksenLisätiedot.flatMap(_.sisäoppilaitosmainenMajoitus).flatMap(_.find(_.contains(päivä))).size +
+        lukionLisätiedot.flatMap(_.sisäoppilaitosmainenMajoitus).flatMap(_.find(_.contains(päivä))).size +
+        lukioonValmistavanLisätiedot.flatMap(_.sisäoppilaitosmainenMajoitus).flatMap(_.find(_.contains(päivä))).size
+      ).toByte,
+      vaativanErityisenTuenYhteydessäJärjestettäväMajoitus = ammatillinenAikajakso(_.vaativanErityisenTuenYhteydessäJärjestettäväMajoitus),
       erityinenTuki = ammatillinenAikajakso(_.erityinenTuki),
       vaativanErityisenTuenErityinenTehtävä = ammatillinenAikajakso(_.vaativanErityisenTuenErityinenTehtävä),
       hojks = ammatillisenLisätiedot.flatMap(_.hojks).find(_.contains(päivä)).size.toByte,
@@ -204,6 +221,9 @@ object OpiskeluoikeusLoader extends Logging {
     val lisätiedotAikajaksot: Seq[Aikajakso] = if (o.lisätiedot.nonEmpty) o.lisätiedot.get match {
       case aol: AmmatillisenOpiskeluoikeudenLisätiedot =>
         Seq(
+          aol.majoitus,
+          aol.sisäoppilaitosmainenMajoitus,
+          aol.vaativanErityisenTuenYhteydessäJärjestettäväMajoitus,
           aol.erityinenTuki,
           aol.vaativanErityisenTuenErityinenTehtävä,
           aol.vaikeastiVammainen,
@@ -215,11 +235,21 @@ object OpiskeluoikeusLoader extends Logging {
         aol.hojks.toList.map(h => Aikajakso(h.alku.getOrElse(o.alkamispäivä.getOrElse(throw new RuntimeException(s"Alkamispäivä puuttuu ${o.oid}"))), h.loppu))
       case apol: AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot =>
         Seq(
+          apol.sisäoppilaitosmainenMajoitus,
           apol.vaikeastiVammainen
         ).flatMap(_.getOrElse(List.empty))
       case pol: PerusopetuksenOpiskeluoikeudenLisätiedot =>
         Seq(
+          pol.sisäoppilaitosmainenMajoitus,
           pol.vaikeastiVammainen
+        ).flatMap(_.getOrElse(List.empty))
+      case lol: LukionOpiskeluoikeudenLisätiedot =>
+        Seq(
+          lol.sisäoppilaitosmainenMajoitus
+        ).flatMap(_.getOrElse(List.empty))
+      case lvol: LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot =>
+        Seq(
+          lvol.sisäoppilaitosmainenMajoitus
         ).flatMap(_.getOrElse(List.empty))
       case _ => Seq()
     } else Seq()
