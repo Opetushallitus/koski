@@ -174,22 +174,51 @@
       margin-bottom: 100px;
       padding: 35px 5% 50px 10.9%;
 
+      @media @media-phone {
+        width: 90%;
+        padding: 19px 6% 50px 7%;
+
+        text-align: center;
+      }
+
+      .acceptance-control-mydata {
+        @media @media-phone {
+          font-size: 14px;
+          font-weight: 300;
+        }
+      }
+
       .success-container {
         display: flex;
         align-items: center;
+
+        @media @media-phone {
+          flex-direction: column;
+        }
 
         .acceptance-title-success {
           font-size: 24px;
           font-weight: 600;
           color: @color-black;
           text-transform: uppercase;
+
+          @media @media-phone {
+            font-size: 18px;
+            font-weight: 600;
+          }
         }
 
         .acceptance-image {
           height: 40px;
           width: 40px;
-          margin-left: -60px;
-          margin-right: 20px;
+
+          @media @media-full {
+            margin-left: -60px;
+            margin-right: 20px;
+          }
+          @media @media-phone {
+            margin-bottom: 20px;
+          }
         }
       }
     }
