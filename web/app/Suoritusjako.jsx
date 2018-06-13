@@ -27,11 +27,13 @@ const tiedotP = () => Bacon.combineWith(
 const SuoritusjakoTopBar = () => {
   return (
     <header id='topbar' className='suoritusjako'>
-      <img className='opintopolku-logo' src='/koski/images/oma-opintopolku_ikoni.svg'  />
-      <h1>
-        <Link href='/oma-opintopolku/'><Text name='Oma Opintopolku' /></Link>
-      </h1>
-      <ChangeLang />
+      <div className='topbar-content-wrapper'>
+        <img className='opintopolku-logo' src='/koski/images/oma-opintopolku_ikoni.svg'  />
+        <h1>
+          <Link href='/oma-opintopolku/'><Text name='Oma Opintopolku' /></Link>
+        </h1>
+        <ChangeLang />
+      </div>
     </header>
   )
 }
