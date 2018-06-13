@@ -97,12 +97,15 @@ object RaportointiDatabaseSchema {
     val koulutusmoduuliKoodisto = column[Option[String]]("koulutusmoduuli_koodisto", StringIdentifierType)
     val koulutusmoduuliKoodiarvo = column[String]("koulutusmoduuli_koodiarvo", StringIdentifierType)
     val koulutusmoduuliKoulutustyyppi = column[Option[String]]("koulutusmoduuli_koulutustyyppi", StringIdentifierType)
+    val koulutusmoduuliLaajuusArvo = column[Option[Float]]("koulutusmoduuli_laajuus_arvo", SqlType("numeric"))
+    val koulutusmoduuliLaajuusYksikkö = column[Option[String]]("koulutusmoduuli_laajuus_yksikko", StringIdentifierType)
     val vahvistusPäivä = column[Option[Date]]("vahvistus_paiva")
     val toimipisteOid = column[String]("toimipiste_oid", StringIdentifierType)
     val toimipisteNimi = column[String]("toimipiste_nimi")
     val data = column[JValue]("data")
     def * = (päätasonSuoritusId, opiskeluoikeusOid, suorituksenTyyppi,
       koulutusmoduuliKoodisto, koulutusmoduuliKoodiarvo, koulutusmoduuliKoulutustyyppi,
+      koulutusmoduuliLaajuusArvo, koulutusmoduuliLaajuusYksikkö,
       vahvistusPäivä, toimipisteOid, toimipisteNimi, data) <> (RPäätasonSuoritusRow.tupled, RPäätasonSuoritusRow.unapply)
   }
 
@@ -114,12 +117,15 @@ object RaportointiDatabaseSchema {
     val suorituksenTyyppi = column[String]("suorituksen_tyyppi", StringIdentifierType)
     val koulutusmoduuliKoodisto = column[Option[String]]("koulutusmoduuli_koodisto", StringIdentifierType)
     val koulutusmoduuliKoodiarvo = column[String]("koulutusmoduuli_koodiarvo", StringIdentifierType)
+    val koulutusmoduuliLaajuusArvo = column[Option[Float]]("koulutusmoduuli_laajuus_arvo", SqlType("numeric"))
+    val koulutusmoduuliLaajuusYksikkö = column[Option[String]]("koulutusmoduuli_laajuus_yksikko", StringIdentifierType)
     val koulutusmoduuliPaikallinen = column[Boolean]("koulutusmoduuli_paikallinen")
     val koulutusmoduuliPakollinen = column[Option[Boolean]]("koulutusmoduuli_pakollinen")
     val vahvistusPäivä = column[Option[Date]]("vahvistus_paiva")
     val data = column[JValue]("data")
     def * = (osasuoritusId, ylempiOsasuoritusId, päätasonSuoritusId, opiskeluoikeusOid, suorituksenTyyppi,
-      koulutusmoduuliKoodisto, koulutusmoduuliKoodiarvo, koulutusmoduuliPaikallinen, koulutusmoduuliPakollinen,
+      koulutusmoduuliKoodisto, koulutusmoduuliKoodiarvo, koulutusmoduuliLaajuusArvo, koulutusmoduuliLaajuusYksikkö,
+      koulutusmoduuliPaikallinen, koulutusmoduuliPakollinen,
       vahvistusPäivä, data) <> (ROsasuoritusRow.tupled, ROsasuoritusRow.unapply)
   }
 
@@ -201,6 +207,8 @@ case class RPäätasonSuoritusRow(
   koulutusmoduuliKoodisto: Option[String],
   koulutusmoduuliKoodiarvo: String,
   koulutusmoduuliKoulutustyyppi: Option[String],
+  koulutusmoduuliLaajuusArvo: Option[Float],
+  koulutusmoduuliLaajuusYksikkö: Option[String],
   vahvistusPäivä: Option[Date],
   toimipisteOid: String,
   toimipisteNimi: String,
@@ -215,6 +223,8 @@ case class ROsasuoritusRow(
   suorituksenTyyppi: String,
   koulutusmoduuliKoodisto: Option[String],
   koulutusmoduuliKoodiarvo: String,
+  koulutusmoduuliLaajuusArvo: Option[Float],
+  koulutusmoduuliLaajuusYksikkö: Option[String],
   koulutusmoduuliPaikallinen: Boolean,
   koulutusmoduuliPakollinen: Option[Boolean],
   vahvistusPäivä: Option[Date],

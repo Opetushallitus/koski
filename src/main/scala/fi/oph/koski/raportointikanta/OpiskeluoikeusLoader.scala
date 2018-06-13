@@ -300,6 +300,8 @@ object OpiskeluoikeusLoader extends Logging {
         case k: Koulutus => k.koulutustyyppi.map(_.koodiarvo)
         case _ => None
       },
+      koulutusmoduuliLaajuusArvo = ps.koulutusmoduuli.laajuus.map(_.arvo),
+      koulutusmoduuliLaajuusYksikkö = ps.koulutusmoduuli.laajuus.map(_.yksikkö.koodiarvo),
       vahvistusPäivä = ps.vahvistus.map(v => Date.valueOf(v.päivä)),
       toimipisteOid = toimipiste.oid,
       toimipisteNimi = convertLocalizedString(toimipiste.nimi),
@@ -324,6 +326,8 @@ object OpiskeluoikeusLoader extends Logging {
         case _ => None
       },
       koulutusmoduuliKoodiarvo = os.koulutusmoduuli.tunniste.koodiarvo,
+      koulutusmoduuliLaajuusArvo = os.koulutusmoduuli.laajuus.map(_.arvo),
+      koulutusmoduuliLaajuusYksikkö = os.koulutusmoduuli.laajuus.map(_.yksikkö.koodiarvo),
       koulutusmoduuliPaikallinen = os.koulutusmoduuli.tunniste match {
         case k: Koodistokoodiviite => false
         case k: PaikallinenKoodi => true
