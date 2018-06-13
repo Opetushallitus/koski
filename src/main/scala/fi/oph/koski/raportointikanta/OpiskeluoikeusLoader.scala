@@ -303,6 +303,7 @@ object OpiskeluoikeusLoader extends Logging {
       koulutusmoduuliLaajuusArvo = ps.koulutusmoduuli.laajuus.map(_.arvo),
       koulutusmoduuliLaajuusYksikkö = ps.koulutusmoduuli.laajuus.map(_.yksikkö.koodiarvo),
       vahvistusPäivä = ps.vahvistus.map(v => Date.valueOf(v.päivä)),
+      arviointiPäivä = ps.viimeisinArviointi.flatMap(_.arviointipäivä).map(v => Date.valueOf(v)),
       toimipisteOid = toimipiste.oid,
       toimipisteNimi = convertLocalizedString(toimipiste.nimi),
       data = JsonManipulation.removeFields(data, fieldsToExcludeFromPäätasonSuoritusJson)
@@ -337,6 +338,13 @@ object OpiskeluoikeusLoader extends Logging {
         case _ => None
       },
       vahvistusPäivä = os.vahvistus.map(v => Date.valueOf(v.päivä)),
+      arviointiPäivä = os.viimeisinArviointi.flatMap(_.arviointipäivä).map(v => Date.valueOf(v)),
+      näytönArviointiPäivä = os match {
+        case atos: AmmatillisenTutkinnonOsanSuoritus => atos.näyttö.flatMap(_.arviointi).map(v => Date.valueOf(v.päivä))
+        case vkos: ValmaKoulutuksenOsanSuoritus => vkos.näyttö.flatMap(_.arviointi).map(v => Date.valueOf(v.päivä))
+        case tkos: TelmaKoulutuksenOsanSuoritus => tkos.näyttö.flatMap(_.arviointi).map(v => Date.valueOf(v.päivä))
+        case _ => None
+      },
       data = JsonManipulation.removeFields(data, fieldsToExcludeFromOsasuoritusJson)
     ) +: os.osasuoritukset.getOrElse(List.empty).zipWithIndex.flatMap {
       case (os2, i) => buildROsasuoritusRow(päätasonSuoritusId, Some(osasuoritusId), opiskeluoikeusOid, os2, (data \ "osasuoritukset")(i), idGenerator)

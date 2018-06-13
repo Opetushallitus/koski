@@ -100,13 +100,14 @@ object RaportointiDatabaseSchema {
     val koulutusmoduuliLaajuusArvo = column[Option[Float]]("koulutusmoduuli_laajuus_arvo", SqlType("numeric"))
     val koulutusmoduuliLaajuusYksikkö = column[Option[String]]("koulutusmoduuli_laajuus_yksikko", StringIdentifierType)
     val vahvistusPäivä = column[Option[Date]]("vahvistus_paiva")
+    val arviointiPäivä = column[Option[Date]]("arviointi_paiva")
     val toimipisteOid = column[String]("toimipiste_oid", StringIdentifierType)
     val toimipisteNimi = column[String]("toimipiste_nimi")
     val data = column[JValue]("data")
     def * = (päätasonSuoritusId, opiskeluoikeusOid, suorituksenTyyppi,
       koulutusmoduuliKoodisto, koulutusmoduuliKoodiarvo, koulutusmoduuliKoulutustyyppi,
       koulutusmoduuliLaajuusArvo, koulutusmoduuliLaajuusYksikkö,
-      vahvistusPäivä, toimipisteOid, toimipisteNimi, data) <> (RPäätasonSuoritusRow.tupled, RPäätasonSuoritusRow.unapply)
+      vahvistusPäivä, arviointiPäivä, toimipisteOid, toimipisteNimi, data) <> (RPäätasonSuoritusRow.tupled, RPäätasonSuoritusRow.unapply)
   }
 
   class ROsasuoritusTable(tag: Tag) extends Table[ROsasuoritusRow](tag, "r_osasuoritus") {
@@ -122,11 +123,13 @@ object RaportointiDatabaseSchema {
     val koulutusmoduuliPaikallinen = column[Boolean]("koulutusmoduuli_paikallinen")
     val koulutusmoduuliPakollinen = column[Option[Boolean]]("koulutusmoduuli_pakollinen")
     val vahvistusPäivä = column[Option[Date]]("vahvistus_paiva")
+    val arviointiPäivä = column[Option[Date]]("arviointi_paiva")
+    val näytönArviointiPäivä = column[Option[Date]]("nayton_arviointi_paiva")
     val data = column[JValue]("data")
     def * = (osasuoritusId, ylempiOsasuoritusId, päätasonSuoritusId, opiskeluoikeusOid, suorituksenTyyppi,
       koulutusmoduuliKoodisto, koulutusmoduuliKoodiarvo, koulutusmoduuliLaajuusArvo, koulutusmoduuliLaajuusYksikkö,
       koulutusmoduuliPaikallinen, koulutusmoduuliPakollinen,
-      vahvistusPäivä, data) <> (ROsasuoritusRow.tupled, ROsasuoritusRow.unapply)
+      vahvistusPäivä, arviointiPäivä, näytönArviointiPäivä, data) <> (ROsasuoritusRow.tupled, ROsasuoritusRow.unapply)
   }
 
   class RHenkilöTable(tag: Tag) extends Table[RHenkilöRow](tag, "r_henkilo") {
@@ -210,6 +213,7 @@ case class RPäätasonSuoritusRow(
   koulutusmoduuliLaajuusArvo: Option[Float],
   koulutusmoduuliLaajuusYksikkö: Option[String],
   vahvistusPäivä: Option[Date],
+  arviointiPäivä: Option[Date],
   toimipisteOid: String,
   toimipisteNimi: String,
   data: JValue
@@ -228,6 +232,8 @@ case class ROsasuoritusRow(
   koulutusmoduuliPaikallinen: Boolean,
   koulutusmoduuliPakollinen: Option[Boolean],
   vahvistusPäivä: Option[Date],
+  arviointiPäivä: Option[Date],
+  näytönArviointiPäivä: Option[Date],
   data: JValue
 )
 
