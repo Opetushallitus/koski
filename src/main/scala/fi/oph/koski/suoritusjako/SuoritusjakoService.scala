@@ -56,7 +56,7 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
     if (secret.matches("^[0-9a-f]{32}$")) {
       Right(secret)
     } else {
-      Left(KoskiErrorCategory.badRequest.format())
+      Left(KoskiErrorCategory.notFound())
     }
   }
 

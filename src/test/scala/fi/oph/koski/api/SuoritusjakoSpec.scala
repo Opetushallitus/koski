@@ -198,7 +198,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
 
     "epäonnistuu epäkelvolla salaisuudella" in {
       getSuoritusjako("2.2.246.562.10.64353470871") {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.format())
+        verifyResponseStatus(404, KoskiErrorCategory.notFound())
       }
     }
 

@@ -1,3 +1,45 @@
+#topbar.suoritusjako  {
+  background: rgb(21, 158, 203);
+  box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.10);
+  color: white;
+  height: 60px;
+
+  h1 {
+    display: inline-block;
+    color: white;
+    line-height: 30px;
+    max-width: 415px;
+    vertical-align: middle;
+    margin-top: -30px;
+    @media @media-phone {
+      max-width: 50%;
+    }
+    a {
+      color: white;
+    }
+  }
+
+  .change-lang {
+    float: right;
+    font-size: 1.1em;
+    line-height: 47px;
+    cursor: pointer;
+    margin-top: 5px;
+    margin-right: 10px;
+    font-weight: 400;
+  }
+
+  img.opintopolku-logo {
+    width: 44px;
+    height: 44px;
+    margin: 7px 10px 4px 10px;
+    @media @media-phone {
+      margin-top: 12px;
+      width: 35px;
+      height: 35px;
+    }
+  }
+}
 
 .suoritusjako {
   &.content-area {
