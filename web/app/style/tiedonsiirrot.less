@@ -1,15 +1,17 @@
 .content-area.tiedonsiirrot {
-  display: table;
+  display: flex;
 
   .sidebar {
-    display: table-cell;
-    width: @sidebar-width;
+    flex-grow: 1;
+    max-width: @sidebar-width;
     padding-top: 35px;
     vertical-align: top;
   }
 
   .main-content {
-    display: table-cell;
+    flex-grow: 1;
+    flex-basis: 80%;
+    max-width: @max-content-width - @sidebar-width;
     padding-left: 60px;
     padding-right: 20px;
     vertical-align: top;
@@ -33,10 +35,6 @@
   }
 }
 
-.sidebar.tiedonsiirrot-navi {
-  width: ~"calc(50px + (100vw - 1200px) / 2)";
-}
-
 .tiedonsiirrot-content {
   position: relative;
   button.update-content {
@@ -56,13 +54,8 @@
     margin-top: 20px;
     font-size: 0.80em;
     width: 100%;
-    .tila { width: 5em; }
-    .aika { width: 10em; }
     .hetu { padding-right: 10px; }
     .tiedot { padding-right: 5px; }
-    .oppilaitos { width: 14em;}
-    .opiskeluoikeudet, .siirretyt, .virheelliset { width: 7em;}
-    .lahdejarjestelma { width: 5em;}
     .tiedonsiirto-errors {
       list-style: none;
       padding: 0;
@@ -71,6 +64,12 @@
     }
     td {
       position: relative;
+
+      ul.cell-listing {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
     }
     .group {
       .expand, .collapse {
@@ -100,7 +99,7 @@
       max-width: 500px;
     }
     .status {
-      margin-left: 10px;
+      margin-left: 5px;
       &.fail {
         color: red;
       }
