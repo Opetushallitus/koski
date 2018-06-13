@@ -11,7 +11,7 @@ import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryService
 import fi.oph.koski.schema._
-import fi.oph.koski.raportointikanta.LoaderUtils.convertLocalizedString
+import fi.oph.koski.raportointikanta.LoaderUtils.{convertLocalizedString, convertKoodisto}
 import org.json4s.JValue
 import rx.lang.scala.{Observable, Subscriber}
 import scala.concurrent.duration._
@@ -291,10 +291,7 @@ object OpiskeluoikeusLoader extends Logging {
       päätasonSuoritusId = päätasonSuoritusId,
       opiskeluoikeusOid = opiskeluoikeusOid,
       suorituksenTyyppi = ps.tyyppi.koodiarvo,
-      koulutusmoduuliKoodisto = ps.koulutusmoduuli.tunniste match {
-        case k: Koodistokoodiviite => Some(k.koodistoUri)
-        case _ => None
-      },
+      koulutusmoduuliKoodisto = convertKoodisto(ps.koulutusmoduuli.tunniste),
       koulutusmoduuliKoodiarvo = ps.koulutusmoduuli.tunniste.koodiarvo,
       koulutusmoduuliKoulutustyyppi = ps.koulutusmoduuli match {
         case k: Koulutus => k.koulutustyyppi.map(_.koodiarvo)
@@ -303,6 +300,9 @@ object OpiskeluoikeusLoader extends Logging {
       koulutusmoduuliLaajuusArvo = ps.koulutusmoduuli.laajuus.map(_.arvo),
       koulutusmoduuliLaajuusYksikkö = ps.koulutusmoduuli.laajuus.map(_.yksikkö.koodiarvo),
       vahvistusPäivä = ps.vahvistus.map(v => Date.valueOf(v.päivä)),
+      arviointiArvosanaKoodiarvo = ps.viimeisinArviointi.map(_.arvosana.koodiarvo),
+      arviointiArvosanaKoodisto = ps.viimeisinArviointi.flatMap(a => convertKoodisto(a.arvosana)),
+      arviointiHyväksytty = ps.viimeisinArviointi.map(_.hyväksytty),
       arviointiPäivä = ps.viimeisinArviointi.flatMap(_.arviointipäivä).map(v => Date.valueOf(v)),
       toimipisteOid = toimipiste.oid,
       toimipisteNimi = convertLocalizedString(toimipiste.nimi),
@@ -322,10 +322,7 @@ object OpiskeluoikeusLoader extends Logging {
       päätasonSuoritusId = päätasonSuoritusId,
       opiskeluoikeusOid = opiskeluoikeusOid,
       suorituksenTyyppi = os.tyyppi.koodiarvo,
-      koulutusmoduuliKoodisto = os.koulutusmoduuli.tunniste match {
-        case k: Koodistokoodiviite => Some(k.koodistoUri)
-        case _ => None
-      },
+      koulutusmoduuliKoodisto = convertKoodisto(os.koulutusmoduuli.tunniste),
       koulutusmoduuliKoodiarvo = os.koulutusmoduuli.tunniste.koodiarvo,
       koulutusmoduuliLaajuusArvo = os.koulutusmoduuli.laajuus.map(_.arvo),
       koulutusmoduuliLaajuusYksikkö = os.koulutusmoduuli.laajuus.map(_.yksikkö.koodiarvo),
@@ -338,6 +335,9 @@ object OpiskeluoikeusLoader extends Logging {
         case _ => None
       },
       vahvistusPäivä = os.vahvistus.map(v => Date.valueOf(v.päivä)),
+      arviointiArvosanaKoodiarvo = os.viimeisinArviointi.map(_.arvosana.koodiarvo),
+      arviointiArvosanaKoodisto = os.viimeisinArviointi.flatMap(a => convertKoodisto(a.arvosana)),
+      arviointiHyväksytty = os.viimeisinArviointi.map(_.hyväksytty),
       arviointiPäivä = os.viimeisinArviointi.flatMap(_.arviointipäivä).map(v => Date.valueOf(v)),
       näytönArviointiPäivä = os match {
         case atos: AmmatillisenTutkinnonOsanSuoritus => atos.näyttö.flatMap(_.arviointi).map(v => Date.valueOf(v.päivä))
