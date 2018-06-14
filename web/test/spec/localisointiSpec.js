@@ -74,6 +74,25 @@ describe('Lokalisointi', function() {
     })
   })
 
+  describe('Ruotsinkielisen virkailijan syöttämä paikallinen oppiaine', function() {
+    var oppiaineet = opinnot.oppiaineet.uusiOppiaine('.pakolliset')
+    var paikallinen = editor.subEditor('.pakollinen.paikallinen')
+    before(
+      Authentication().login('pärre'), resetFixtures,
+      page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'),
+      editor.edit, oppiaineet.selectValue('Lisää'),
+      paikallinen.propertyBySelector('.arvosana').selectValue('7'),
+      paikallinen.propertyBySelector('.koodi').setValue('TNS'),
+      paikallinen.propertyBySelector('.nimi').setValue('Dans'),
+      editor.saveChanges,
+      Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'),
+    )
+
+    it('Näkyy myös suomenkieliselle virkailijalle', function() {
+      expect(paikallinen.propertyBySelector('.oppiaine').getText()).to.equal('Dans')
+    })
+  })
+
   describe('Monikieliset tekstit muokattavassa datassa', function() {
     var property = editor.property('todistuksellaNäkyvätLisätiedot')
 
