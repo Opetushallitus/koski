@@ -8385,6 +8385,45 @@
   "value" : "Rätt till avgiftsfri plats i elevhem/internatboende"
 }, {
   "accesscount" : 0,
+  "accessed" : 1528960774125,
+  "category" : "koski",
+  "created" : 1528960774125,
+  "createdBy" : "1.2.246.562.24.69579810115",
+  "force" : false,
+  "id" : 21161,
+  "key" : "Oma Opintopolku",
+  "locale" : "en",
+  "modified" : 1528960774125,
+  "modifiedBy" : "1.2.246.562.24.69579810115",
+  "value" : "My Studyinfo"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1528960641308,
+  "category" : "koski",
+  "created" : 1528960641308,
+  "createdBy" : "1.2.246.562.24.69579810115",
+  "force" : false,
+  "id" : 21159,
+  "key" : "Oma Opintopolku",
+  "locale" : "fi",
+  "modified" : 1528960641308,
+  "modifiedBy" : "1.2.246.562.24.69579810115",
+  "value" : "Oma Opintopolku"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1528960748303,
+  "category" : "koski",
+  "created" : 1528960748303,
+  "createdBy" : "1.2.246.562.24.69579810115",
+  "force" : false,
+  "id" : 21160,
+  "key" : "Oma Opintopolku",
+  "locale" : "sv",
+  "modified" : 1528960748303,
+  "modifiedBy" : "1.2.246.562.24.69579810115",
+  "value" : "Min Studieinfo"
+}, {
+  "accesscount" : 0,
   "accessed" : 1507555672142,
   "category" : "koski",
   "created" : 1507555672142,
@@ -41611,6 +41650,45 @@
   "modified" : 1514469563791,
   "modifiedBy" : "1.2.246.562.24.34119902638",
   "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1527743685634,
+  "category" : "koski",
+  "created" : 1527743685634,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21127,
+  "key" : "tyhjennä",
+  "locale" : "en",
+  "modified" : 1527753435572,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "clear"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1527743685631,
+  "category" : "koski",
+  "created" : 1527743685631,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21125,
+  "key" : "tyhjennä",
+  "locale" : "fi",
+  "modified" : 1527743685630,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "tyhjennä"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1527743685633,
+  "category" : "koski",
+  "created" : 1527743685633,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21126,
+  "key" : "tyhjennä",
+  "locale" : "sv",
+  "modified" : 1527753435571,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "töm"
 }, {
   "accesscount" : 0,
   "accessed" : 1507555672104,
