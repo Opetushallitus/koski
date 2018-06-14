@@ -65,7 +65,7 @@ const HetuLogin = () => {
       <label><Text name="Henkilötunnus"/>
         <Input
           id='hetu'
-          type='password'
+          type='text'
           disabled={inProgress}
           value={state.view('hetu')}
           autofocus={true}
