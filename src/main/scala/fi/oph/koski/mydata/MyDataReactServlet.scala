@@ -23,6 +23,7 @@ class MyDataReactServlet(implicit val application: KoskiApplication) extends Sca
   }
 
   private def landerHtml = htmlIndex(
-    scriptBundleName = "koski-omadata.js"
+    scriptBundleName = "koski-omadata.js",
+    responsive = true
   )
 }
