@@ -51,7 +51,7 @@ export const UusiOppiaineDropdown = ({suoritukset = [], organisaatioOid, oppiain
         ? <DropDown
           options={oppiaineet}
           keyValue={oppiaine => isUusi(oppiaine) ? 'uusi' : key(oppiaine)}
-          displayValue={oppiaine => isUusi(oppiaine) ? 'Lisää...' : modelLookup(oppiaine, 'tunniste').value.title}
+          displayValue={oppiaine => isUusi(oppiaine) ? t('Lisää') + '...' : modelLookup(oppiaine, 'tunniste').value.title}
           onSelectionChanged={resultCallback}
           selectionText={placeholder}
           newItem={allowPaikallinen && paikallinenProto}
