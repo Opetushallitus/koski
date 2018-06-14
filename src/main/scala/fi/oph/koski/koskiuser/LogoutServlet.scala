@@ -25,7 +25,7 @@ class LogoutServlet(implicit val application: KoskiApplication) extends HtmlServ
   }
 
   private def getLogoutUrl: String = {
-    if (!params("target").isEmpty) {
+    if (request.parameters.contains("target")) {
       params("target")
     } else if (!application.config.getString("logout.url." + langFromDomain).isEmpty) {
       application.config.getString("logout.url." + langFromDomain)
