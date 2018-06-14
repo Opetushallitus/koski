@@ -30,7 +30,7 @@ const SuoritusjakoTopBar = () => {
       <div className='topbar-content-wrapper'>
         <img className='opintopolku-logo' src='/koski/images/oma-opintopolku_ikoni.svg'  />
         <h1>
-          <Link href='/oma-opintopolku/'><Text name='Oma Opintopolku' /></Link>
+          <a href='/oma-opintopolku/'><Text name='Oma Opintopolku' /></a>
         </h1>
         <ChangeLang />
       </div>
