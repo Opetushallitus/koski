@@ -80,7 +80,7 @@ describe('Lokalisointi', function() {
     before(
       Authentication().login('pärre'), resetFixtures,
       page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'),
-      editor.edit, oppiaineet.selectValue('Lisää'),
+      editor.edit, oppiaineet.selectValue('Lägg till'),
       paikallinen.propertyBySelector('.arvosana').selectValue('7'),
       paikallinen.propertyBySelector('.koodi').setValue('TNS'),
       paikallinen.propertyBySelector('.nimi').setValue('Dans'),
