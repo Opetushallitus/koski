@@ -13,7 +13,6 @@ import editorMapping from './oppija/editors'
 import {addContext} from './editor/EditorModel'
 import {locationP} from './util/location'
 import {SuoritusjakoHeader} from './suoritusjako/SuoritusjakoHeader'
-import Link from './components/Link'
 
 const secret = R.last(document.location.pathname.split('/'))
 
