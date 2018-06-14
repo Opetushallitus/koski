@@ -12,6 +12,7 @@ describe('Tiedonsiirrot', function() {
     insertExample('tiedonsiirto - onnistunut.json'),
     insertExample('tiedonsiirto - epäonnistunut 2.json'),
     insertExample('tiedonsiirto - vain syntymäaika.json'),
+    insertExample('tiedonsiirto - epäonnistunut 3.json'),
     syncTiedonsiirrot,
     tiedonsiirrot.openPage
   )
@@ -23,6 +24,7 @@ describe('Tiedonsiirrot', function() {
 
     it('Näytetään', function() {
       expect(tiedonsiirrot.tiedot().sort(sortByName)).to.deep.equal([
+        ['epävalidiHetu', 'Tiedonsiirto, Tiina', 'Stadin ammattiopisto', 'Luonto- ja ympäristöalan perustutkintoAutokorinkorjauksen osaamisalaAutokorinkorjaaja', 'virhe', 'tiedot'],
         ['280618-402H', 'Ammattilainen, Aarne', 'Aalto-yliopisto', '', 'virhe', 'tiedot'],
         ['24.2.1977', 'Hetuton, Heikki', 'Stadin ammattiopisto', 'Autoalan perustutkinto', '', ''],
         ['270303-281N', 'Tiedonsiirto, Tiina', 'Stadin ammattiopisto', 'Autoalan perustutkinto', '', ''],
@@ -44,6 +46,7 @@ describe('Tiedonsiirrot', function() {
 
     it('Näytetään', function() {
       expect(tiedonsiirrot.tiedot()).to.deep.equal([
+        ['epävalidiHetu', 'Tiedonsiirto, Tiina', 'Stadin ammattiopisto', 'Luonto- ja ympäristöalan perustutkintoAutokorinkorjauksen osaamisalaAutokorinkorjaaja', 'Virheellinen muoto hetulla: epävalidiHetuvirhe', 'tiedot'],
         ['280618-402H', 'Ammattilainen, Aarne', 'Aalto-yliopisto', '', 'Ei oikeuksia organisatioon 1.2.246.562.10.56753942459virhe', 'tiedot'],
         ['', '', '', '', 'Viesti ei ole skeeman mukainen (notAnyOf henkilö)virhe', 'tiedot']
       ])
@@ -97,6 +100,7 @@ describe('Tiedonsiirrot', function() {
         )
         it('Se poistuu listauksesta', function() {
           expect(tiedonsiirrot.tiedot()).to.deep.equal([
+            ['epävalidiHetu', 'Tiedonsiirto, Tiina', 'Stadin ammattiopisto', 'Luonto- ja ympäristöalan perustutkintoAutokorinkorjauksen osaamisalaAutokorinkorjaaja', 'Virheellinen muoto hetulla: epävalidiHetuvirhe', 'tiedot'],
             ['280618-402H', 'Ammattilainen, Aarne', 'Aalto-yliopisto', '', 'Ei oikeuksia organisatioon 1.2.246.562.10.56753942459virhe', 'tiedot']
           ])
         })
