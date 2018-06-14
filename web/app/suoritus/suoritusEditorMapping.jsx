@@ -49,6 +49,7 @@ export const resolveOsasuorituksetEditor = (mdl) => {
     return (
       <LukionOppiaineetEditor
         suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
+        classesForUusiOppiaineenSuoritus={['preiboppiaineensuoritus', 'muidenlukioopintojensuoritus']}
         additionalEditableKoulutusmoduuliProperties={['ryhmä']}
       />
     )
