@@ -30,6 +30,7 @@ class HyvaksyntaLanding extends React.Component {
     }
 
     this.authorizeMember = this.authorizeMember.bind(this)
+    this.onLogoutButtonClicked = this.onLogoutButtonClicked.bind(this)
   }
 
 
@@ -64,6 +65,10 @@ class HyvaksyntaLanding extends React.Component {
       })
   }
 
+  onLogoutButtonClicked() {
+    window.location.href = `/koski/user/logout?target=${this.state.callback}`
+  }
+
   render() {
 
     const acceptanceBox = this.state.authorizationGiven ?
@@ -79,7 +84,7 @@ class HyvaksyntaLanding extends React.Component {
 
     return (
       <div>
-        <Header userP={userP}/>
+        <Header userP={userP} onLogoutClicked={this.onLogoutButtonClicked}/>
         {error}
 
         <div className="acceptance-container">
