@@ -42,4 +42,14 @@ class RaportointikantaServlet(implicit val application: KoskiApplication) extend
     val count = KoodistoLoader.loadKoodistot(application.koodistoPalvelu, application.raportointiDatabase)
     renderObject(Map("count" -> count))
   }
+
+  get("/status") {
+    val statuses = application.raportointiDatabase.statuses
+    val statusByName: Map[String, RaportointikantaStatusRow] = statuses.groupBy(_.name).map { case (name, rows) => name -> rows.head }
+    val AllNames = Seq("opiskeluoikeudet", "henkilot", "organisaatiot", "koodistot")
+    val complete = AllNames.forall(name => statusByName.get(name).exists(_.loadCompleted.nonEmpty))
+    renderObject(RaportointikantaStatusResponse(complete, statuses.map(_.toString)))
+  }
 }
+
+case class RaportointikantaStatusResponse(complete: Boolean, statuses: Seq[String])

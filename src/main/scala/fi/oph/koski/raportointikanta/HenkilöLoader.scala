@@ -13,6 +13,7 @@ object HenkilöLoader extends Logging {
     // note: this list has 1-2M oids in production.
     val oids = raportointiDatabase.oppijaOidsFromOpiskeluoikeudet
     logger.info(s"Löytyi ${oids.size} henkilö-OIDia")
+    raportointiDatabase.setStatusLoadStarted("henkilot")
     raportointiDatabase.deleteHenkilöt
     val count = oids.toList.grouped(BatchSize).map(batchOids => {
       val batchOppijat = opintopolkuHenkilöFacade.findOppijatByOids(batchOids)
@@ -20,6 +21,7 @@ object HenkilöLoader extends Logging {
       raportointiDatabase.loadHenkilöt(batchRows)
       batchRows.size
     }).sum
+    raportointiDatabase.setStatusLoadCompleted("henkilot")
     logger.info(s"Ladattiin $count henkilöä")
     count
   }

@@ -36,7 +36,8 @@ object RaportointiDatabaseSchema {
     sqlu"DROP TABLE IF EXISTS r_osasuoritus",
     sqlu"DROP TABLE IF EXISTS r_henkilo",
     sqlu"DROP TABLE IF EXISTS r_organisaatio",
-    sqlu"DROP TABLE IF EXISTS r_koodisto_koodi"
+    sqlu"DROP TABLE IF EXISTS r_koodisto_koodi",
+    sqlu"DROP TABLE IF EXISTS raportointikanta_status"
   )
 
   private val StringIdentifierType = SqlType("character varying collate \"C\"")
@@ -72,6 +73,9 @@ object RaportointiDatabaseSchema {
     val tila = column[String]("tila", StringIdentifierType)
     val opiskeluoikeusPäättynyt = column[Boolean]("opiskeluoikeus_paattynyt")
     val opintojenRahoitus = column[Option[String]]("opintojen_rahoitus", StringIdentifierType)
+    val majoitus = column[Byte]("majoitus")
+    val sisäoppilaitosmainenMajoitus = column[Byte]("sisaoppilaitosmainen_majoitus")
+    val vaativanErityisenTuenYhteydessäJärjestettäväMajoitus = column[Byte]("vaativan_erityisen_tuen_yhteydessa_jarjestettäva_majoitus")
     val erityinenTuki = column[Byte]("erityinen_tuki")
     val vaativanErityisenTuenErityinenTehtävä = column[Byte]("vaativan_erityisen_tuen_erityinen_tehtava")
     val hojks = column[Byte]("hojks")
@@ -82,7 +86,8 @@ object RaportointiDatabaseSchema {
     val vankilaopetuksessa = column[Byte]("vankilaopetuksessa")
     val oppisopimusJossainPäätasonSuorituksessa = column[Byte]("oppisopimus_jossain_paatason_suorituksessa")
     def * = (opiskeluoikeusOid, alku, loppu, tila, opiskeluoikeusPäättynyt,
-      opintojenRahoitus, erityinenTuki, vaativanErityisenTuenErityinenTehtävä, hojks, vaikeastiVammainen, vammainenJaAvustaja,
+      opintojenRahoitus, majoitus, sisäoppilaitosmainenMajoitus, vaativanErityisenTuenYhteydessäJärjestettäväMajoitus,
+      erityinenTuki, vaativanErityisenTuenErityinenTehtävä, hojks, vaikeastiVammainen, vammainenJaAvustaja,
       osaAikaisuus, opiskeluvalmiuksiaTukevatOpinnot, vankilaopetuksessa, oppisopimusJossainPäätasonSuorituksessa) <> (ROpiskeluoikeusAikajaksoRow.tupled, ROpiskeluoikeusAikajaksoRow.unapply)
   }
 
@@ -93,13 +98,21 @@ object RaportointiDatabaseSchema {
     val koulutusmoduuliKoodisto = column[Option[String]]("koulutusmoduuli_koodisto", StringIdentifierType)
     val koulutusmoduuliKoodiarvo = column[String]("koulutusmoduuli_koodiarvo", StringIdentifierType)
     val koulutusmoduuliKoulutustyyppi = column[Option[String]]("koulutusmoduuli_koulutustyyppi", StringIdentifierType)
+    val koulutusmoduuliLaajuusArvo = column[Option[Float]]("koulutusmoduuli_laajuus_arvo", SqlType("numeric"))
+    val koulutusmoduuliLaajuusYksikkö = column[Option[String]]("koulutusmoduuli_laajuus_yksikko", StringIdentifierType)
     val vahvistusPäivä = column[Option[Date]]("vahvistus_paiva")
+    val arviointiArvosanaKoodiarvo = column[Option[String]]("arviointi_arvosana_koodiarvo", StringIdentifierType)
+    val arviointiArvosanaKoodisto = column[Option[String]]("arviointi_arvosana_koodisto", StringIdentifierType)
+    val arviointiHyväksytty = column[Option[Boolean]]("arviointi_hyvaksytty")
+    val arviointiPäivä = column[Option[Date]]("arviointi_paiva")
     val toimipisteOid = column[String]("toimipiste_oid", StringIdentifierType)
     val toimipisteNimi = column[String]("toimipiste_nimi")
     val data = column[JValue]("data")
     def * = (päätasonSuoritusId, opiskeluoikeusOid, suorituksenTyyppi,
       koulutusmoduuliKoodisto, koulutusmoduuliKoodiarvo, koulutusmoduuliKoulutustyyppi,
-      vahvistusPäivä, toimipisteOid, toimipisteNimi, data) <> (RPäätasonSuoritusRow.tupled, RPäätasonSuoritusRow.unapply)
+      koulutusmoduuliLaajuusArvo, koulutusmoduuliLaajuusYksikkö, vahvistusPäivä,
+      arviointiArvosanaKoodiarvo, arviointiArvosanaKoodisto, arviointiHyväksytty, arviointiPäivä,
+      toimipisteOid, toimipisteNimi, data) <> (RPäätasonSuoritusRow.tupled, RPäätasonSuoritusRow.unapply)
   }
 
   class ROsasuoritusTable(tag: Tag) extends Table[ROsasuoritusRow](tag, "r_osasuoritus") {
@@ -110,13 +123,22 @@ object RaportointiDatabaseSchema {
     val suorituksenTyyppi = column[String]("suorituksen_tyyppi", StringIdentifierType)
     val koulutusmoduuliKoodisto = column[Option[String]]("koulutusmoduuli_koodisto", StringIdentifierType)
     val koulutusmoduuliKoodiarvo = column[String]("koulutusmoduuli_koodiarvo", StringIdentifierType)
+    val koulutusmoduuliLaajuusArvo = column[Option[Float]]("koulutusmoduuli_laajuus_arvo", SqlType("numeric"))
+    val koulutusmoduuliLaajuusYksikkö = column[Option[String]]("koulutusmoduuli_laajuus_yksikko", StringIdentifierType)
     val koulutusmoduuliPaikallinen = column[Boolean]("koulutusmoduuli_paikallinen")
     val koulutusmoduuliPakollinen = column[Option[Boolean]]("koulutusmoduuli_pakollinen")
     val vahvistusPäivä = column[Option[Date]]("vahvistus_paiva")
+    val arviointiArvosanaKoodiarvo = column[Option[String]]("arviointi_arvosana_koodiarvo", StringIdentifierType)
+    val arviointiArvosanaKoodisto = column[Option[String]]("arviointi_arvosana_koodisto", StringIdentifierType)
+    val arviointiHyväksytty = column[Option[Boolean]]("arviointi_hyvaksytty")
+    val arviointiPäivä = column[Option[Date]]("arviointi_paiva")
+    val näytönArviointiPäivä = column[Option[Date]]("nayton_arviointi_paiva")
     val data = column[JValue]("data")
     def * = (osasuoritusId, ylempiOsasuoritusId, päätasonSuoritusId, opiskeluoikeusOid, suorituksenTyyppi,
-      koulutusmoduuliKoodisto, koulutusmoduuliKoodiarvo, koulutusmoduuliPaikallinen, koulutusmoduuliPakollinen,
-      vahvistusPäivä, data) <> (ROsasuoritusRow.tupled, ROsasuoritusRow.unapply)
+      koulutusmoduuliKoodisto, koulutusmoduuliKoodiarvo, koulutusmoduuliLaajuusArvo, koulutusmoduuliLaajuusYksikkö,
+      koulutusmoduuliPaikallinen, koulutusmoduuliPakollinen, vahvistusPäivä,
+      arviointiArvosanaKoodiarvo, arviointiArvosanaKoodisto, arviointiHyväksytty, arviointiPäivä,
+      näytönArviointiPäivä, data) <> (ROsasuoritusRow.tupled, ROsasuoritusRow.unapply)
   }
 
   class RHenkilöTable(tag: Tag) extends Table[RHenkilöRow](tag, "r_henkilo") {
@@ -147,6 +169,13 @@ object RaportointiDatabaseSchema {
     val nimi = column[String]("nimi")
     def * = (koodistoUri, koodiarvo, nimi) <> (RKoodistoKoodiRow.tupled, RKoodistoKoodiRow.unapply)
   }
+
+  class RaportointikantaStatusTable(tag: Tag) extends Table[RaportointikantaStatusRow](tag, "raportointikanta_status") {
+    val name = column[String]("name", O.PrimaryKey)
+    val loadStarted = column[Option[Timestamp]]("load_started")
+    val loadCompleted = column[Option[Timestamp]]("load_completed")
+    def * = (name, loadStarted, loadCompleted) <> (RaportointikantaStatusRow.tupled, RaportointikantaStatusRow.unapply)
+  }
 }
 
 case class ROpiskeluoikeusRow(
@@ -176,6 +205,9 @@ case class ROpiskeluoikeusAikajaksoRow(
   tila: String,
   opiskeluoikeusPäättynyt: Boolean = false,
   opintojenRahoitus: Option[String] = None,
+  majoitus: Byte = 0,
+  sisäoppilaitosmainenMajoitus: Byte = 0,
+  vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Byte = 0,
   erityinenTuki: Byte = 0,
   vaativanErityisenTuenErityinenTehtävä: Byte = 0,
   hojks: Byte = 0,
@@ -194,7 +226,13 @@ case class RPäätasonSuoritusRow(
   koulutusmoduuliKoodisto: Option[String],
   koulutusmoduuliKoodiarvo: String,
   koulutusmoduuliKoulutustyyppi: Option[String],
+  koulutusmoduuliLaajuusArvo: Option[Float],
+  koulutusmoduuliLaajuusYksikkö: Option[String],
   vahvistusPäivä: Option[Date],
+  arviointiArvosanaKoodiarvo: Option[String],
+  arviointiArvosanaKoodisto: Option[String],
+  arviointiHyväksytty: Option[Boolean],
+  arviointiPäivä: Option[Date],
   toimipisteOid: String,
   toimipisteNimi: String,
   data: JValue
@@ -208,9 +246,16 @@ case class ROsasuoritusRow(
   suorituksenTyyppi: String,
   koulutusmoduuliKoodisto: Option[String],
   koulutusmoduuliKoodiarvo: String,
+  koulutusmoduuliLaajuusArvo: Option[Float],
+  koulutusmoduuliLaajuusYksikkö: Option[String],
   koulutusmoduuliPaikallinen: Boolean,
   koulutusmoduuliPakollinen: Option[Boolean],
   vahvistusPäivä: Option[Date],
+  arviointiArvosanaKoodiarvo: Option[String],
+  arviointiArvosanaKoodisto: Option[String],
+  arviointiHyväksytty: Option[Boolean],
+  arviointiPäivä: Option[Date],
+  näytönArviointiPäivä: Option[Date],
   data: JValue
 )
 
@@ -238,4 +283,10 @@ case class RKoodistoKoodiRow(
   koodistoUri: String,
   koodiarvo: String,
   nimi: String
+)
+
+case class RaportointikantaStatusRow(
+  name: String,
+  loadStarted: Option[Timestamp],
+  loadCompleted: Option[Timestamp]
 )
