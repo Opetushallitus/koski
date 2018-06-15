@@ -19,7 +19,7 @@ trait MyDataSupport extends LanguageSupport {
 
   def getLoginUrlForMember(memberId: String): String = {
     getConfigForMember(memberId).getString("login.fi.shibboleth") +
-    "?login=" + getConfigForMember(memberId).getString("login.fi.shibbolethCallback") +
+    getConfigForMember(memberId).getString("login.fi.target") +
     URLEncoder.encode(s"?onLoginSuccess=${getCurrentURL}" , "UTF-8")
   }
 
