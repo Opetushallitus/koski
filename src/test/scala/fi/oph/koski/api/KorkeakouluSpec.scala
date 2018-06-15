@@ -51,6 +51,32 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
           _ should equal(true)
         }
       }
+
+      "Ilmoittautumisjaksot" - {
+        "Kohdennettu opiskeluoikeusavaimen perusteella" in {
+          val opiskeluoikeus = opiskeluoikeudet("250668-293Y", "10076").head
+
+          val ilmoittautumisjaksot = opiskeluoikeus.lisätiedot.get.lukukausiIlmoittautuminen.get.ilmoittautumisjaksot.map(_.alku.toString)
+          ilmoittautumisjaksot should equal(List("2008-08-01", "2009-01-01", "2009-08-01", "2010-01-01", "2010-08-01", "2011-01-01"))
+        }
+
+        "Kohdennettu myöntäjän ja päivämäärän perusteella" in {
+          val opiskeluoikeus = opiskeluoikeudet("250668-293Y", "10088")
+            .find(_.tila.opiskeluoikeusjaksot.lastOption.exists(_.tila.koodiarvo == "1"))
+            .get
+
+          val ilmoittautumisjaksot = opiskeluoikeus.lisätiedot.get.lukukausiIlmoittautuminen.get.ilmoittautumisjaksot.map(_.alku.toString)
+          ilmoittautumisjaksot should equal(List("2012-08-01", "2013-01-01", "2013-08-01", "2014-01-01", "2014-08-01", "2015-01-01", "2015-08-01", "2016-01-01"))
+        }
+
+        "Inaktiiviseen opiskeluoikeuteen ei kohdenneta ilmoittautumisjaksoja" in {
+          val opiskeluoikeus = opiskeluoikeudet("250668-293Y", "10088")
+            .find(_.tila.opiskeluoikeusjaksot.lastOption.exists(_.tila.koodiarvo == "2"))
+            .get
+
+          opiskeluoikeus.lisätiedot.get.lukukausiIlmoittautuminen should equal(None)
+        }
+      }
     }
 
     "Opintosuoritusote" - {
@@ -194,5 +220,11 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
         )
       }
     }
+  }
+
+  private def opiskeluoikeudet(hetu: String, myöntäjä: String) = {
+    oppijaByHetu(hetu).opiskeluoikeudet
+      .collect { case o: KorkeakoulunOpiskeluoikeus => o }
+      .filter(_.oppilaitos.exists(_.oppilaitosnumero.exists(_.koodiarvo == myöntäjä)))
   }
 }

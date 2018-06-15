@@ -63,7 +63,7 @@ export class PropertiesEditor extends React.Component {
 }
 PropertiesEditor.canShowInline = () => false
 
-const PropertyTitle = ({property}) => {
+export const PropertyTitle = ({property}) => {
   let description = property.description && property.description.join(' ')
   if (description) {
     return <Text name={property.title} title={description} className="with-description"/>
