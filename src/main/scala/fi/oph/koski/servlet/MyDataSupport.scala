@@ -18,8 +18,8 @@ trait MyDataSupport extends LanguageSupport {
   }
 
   def getLoginUrlForMember(memberId: String): String = {
-    getConfigForMember(memberId).getString("login.fi.shibboleth") +
-    getConfigForMember(memberId).getString("login.fi.target") +
+    getConfigForMember(memberId).getString(s"login.${lan}.shibboleth") +
+    getConfigForMember(memberId).getString(s"login.${lan}.target") +
     URLEncoder.encode(s"?onLoginSuccess=${getCurrentURL}" , "UTF-8")
   }
 
@@ -29,6 +29,10 @@ trait MyDataSupport extends LanguageSupport {
     } else {
       httpServletRequest.getRequestURI + s"?${httpServletRequest.queryString}"
     }
+  }
+
+  def lan(): String = {
+    langFromCookie.getOrElse(langFromDomain)
   }
 }
 
