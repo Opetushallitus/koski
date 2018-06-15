@@ -23,7 +23,7 @@ trait MyDataSupport extends LanguageSupport {
     URLEncoder.encode(s"?onLoginSuccess=${getCurrentURL}" , "UTF-8")
   }
 
-  def getCurrentURL(implicit httpServletRequest: HttpServletRequest): String = { // this will return /koski/omadata/hsl, old one did not have 'koski'
+  def getCurrentURL(implicit httpServletRequest: HttpServletRequest): String = {
     if (httpServletRequest.queryString.isEmpty) {
       httpServletRequest.getRequestURI
     } else {

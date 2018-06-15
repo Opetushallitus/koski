@@ -32,9 +32,6 @@ class HyvaksyntaLanding extends React.Component {
     this.authorizeMember = this.authorizeMember.bind(this)
     this.onLogoutClicked = this.onLogoutClicked.bind(this)
     this.getLogoutURL = this.getLogoutURL.bind(this)
-
-
-    console.log(this.state.callback)
   }
 
 
