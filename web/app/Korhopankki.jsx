@@ -6,6 +6,7 @@ import HetuLogin from './korhopankki/HetuLogin'
 import { currentLocation } from './util/location'
 
 const getParam = (parameter) => {
+  console.log(currentLocation().params[parameter])
   return currentLocation().params ?
     currentLocation().params[parameter] :
     undefined

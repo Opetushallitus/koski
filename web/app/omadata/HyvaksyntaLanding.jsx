@@ -30,7 +30,11 @@ class HyvaksyntaLanding extends React.Component {
     }
 
     this.authorizeMember = this.authorizeMember.bind(this)
-    this.onLogoutButtonClicked = this.onLogoutButtonClicked.bind(this)
+    this.onLogoutClicked = this.onLogoutClicked.bind(this)
+    this.getLogoutURL = this.getLogoutURL.bind(this)
+
+
+    console.log(this.state.callback)
   }
 
 
@@ -65,18 +69,22 @@ class HyvaksyntaLanding extends React.Component {
       })
   }
 
-  onLogoutButtonClicked() {
-    window.location.href = `/koski/user/logout?target=${this.state.callback}`
+  onLogoutClicked() {
+    window.location.href = this.getLogoutURL()
+  }
+
+  getLogoutURL() {
+    return `/koski/user/logout?target=${this.state.callback}`
   }
 
   render() {
 
     const acceptanceBox = this.state.authorizationGiven ?
-      <HyvaksyntaAnnettu callback={this.state.callback}/> :
+      <HyvaksyntaAnnettu logoutURL={this.getLogoutURL()}/> :
       (
         <AnnaHyvaksynta memberP={memberP(this.state.memberCode)}
         onAcceptClick={() => this.authorizeMember(this.state.memberCode)}
-        onCancelClick={() => window.location.href = this.state.callback}
+        onCancelClick={() => this.onLogoutClicked}
         />
       )
 
@@ -84,7 +92,7 @@ class HyvaksyntaLanding extends React.Component {
 
     return (
       <div>
-        <Header userP={userP} onLogoutClicked={this.onLogoutButtonClicked}/>
+        <Header userP={userP} onLogoutClicked={this.onLogoutClicked}/>
         {error}
 
         <div className="acceptance-container">

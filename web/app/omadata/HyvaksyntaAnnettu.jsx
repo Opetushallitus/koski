@@ -6,7 +6,7 @@ export default class HyvaksyntaAnnettu extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      callback: this.props.callback,
+      logoutURL: this.props.logoutURL,
       timeout: this.props.timeout || 3000
     }
   }
@@ -17,7 +17,7 @@ export default class HyvaksyntaAnnettu extends React.Component {
 
   moveToCallbackURL() {
     setTimeout(() => {
-      window.location.href = this.state.callback
+      window.location.href = this.state.logoutURL
     }, this.state.timeout)
   }
 
@@ -35,7 +35,7 @@ export default class HyvaksyntaAnnettu extends React.Component {
         </div>
         <div className="acceptance-return-container">
           <div className="acceptance-return-automatically"><Text name="Palataan palveluntarjoajan sivulle"/></div>
-          <a href={this.state.callback}>
+          <a href={this.state.logoutURL}>
             <div className="acceptance-return-button button"><Text name="Palaa palveluntarjoajan sivulle"/></div>
           </a>
         </div>
