@@ -19,7 +19,7 @@ trait MyDataSupport extends LanguageSupport {
 
   def getLoginUrlForMember(memberId: String): String = {
     getConfigForMember(memberId).getString(s"login.${lan}.shibboleth") +
-    "?" + getConfigForMember(memberId).getString("login.targetparam") + "=" + getLoginSuccessTarget(memberId, encode = true)
+    application.config.getString("mydata.login.targetparam") + getLoginSuccessTarget(memberId, encode = true)
   }
 
   def getLoginSuccessTarget(memberId: String, encode: Boolean = false ): String = {
