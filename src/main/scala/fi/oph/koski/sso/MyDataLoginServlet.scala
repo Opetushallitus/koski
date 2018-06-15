@@ -8,7 +8,7 @@ case class MyDataLoginServlet(override val application: KoskiApplication) extend
      get all traffic, regardless of mount path.
      So we'll create a new class to bypass this issue and just override the required functions.
    */
-  override protected def onSuccess: String = "/omadata/hsl"
+  override protected def onSuccess: String = s"${params("onLoginSuccess")}" // "/omadata/hsl?callback=www.hsl.fi"
   override protected def onFailure: String = "/omadata/failed"
   override protected def onUserNotFound: String = "/omadata/usernotfound"
 }

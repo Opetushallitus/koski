@@ -1,5 +1,7 @@
 package fi.oph.koski.servlet
 
+import java.net.URLEncoder
+
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import javax.servlet.http.HttpServletRequest
@@ -15,22 +17,17 @@ trait MyDataSupport extends LanguageSupport {
       member.getString("id") == id).getOrElse(throw InvalidRequestException(KoskiErrorCategory.notFound.myDataMemberEiLöydy))
   }
 
-  def getLoginUrlForMember(id: String): String = {
-    getCallbackParameter match {
-      case Some(param) => getConfiguredLoginUrl(id).concat(s"?callback=${param}")
-      case None => getConfiguredLoginUrl(id)
-    }
+  def getLoginUrlForMember(memberId: String): String = {
+    getConfigForMember(memberId).getString("login.fi.shibboleth") +
+    "?login=" + getConfigForMember(memberId).getString("login.fi.shibbolethCallback") +
+    URLEncoder.encode(s"?onLoginSuccess=${getCurrentURL}" , "UTF-8")
   }
 
-  private def getConfiguredLoginUrl(memberId: String): String = {
-    getConfigForMember(memberId).getString("login." + langFromCookie.getOrElse(langFromDomain))
-  }
-
-  def getCallbackParameter(implicit request: HttpServletRequest): Option[String] = {
-    if (request.parameters.contains("callback")) {
-      Some(params("callback"))
+  def getCurrentURL(implicit httpServletRequest: HttpServletRequest): String = { // this will return /koski/omadata/hsl, old one did not have 'koski'
+    if (httpServletRequest.queryString.isEmpty) {
+      httpServletRequest.getRequestURI
     } else {
-      None
+      httpServletRequest.getRequestURI + s"?${httpServletRequest.queryString}"
     }
   }
 }
