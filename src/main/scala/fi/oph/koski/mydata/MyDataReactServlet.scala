@@ -9,6 +9,12 @@ import org.scalatra.ScalatraServlet
 class MyDataReactServlet(implicit val application: KoskiApplication) extends ScalatraServlet
   with HtmlServlet with AuthenticationSupport with OmaOpintopolkuSupport with MyDataSupport {
 
+  /*
+    If user has not logger in, then:
+    -redirect to Tupas, which
+    -redirects to our Shibboleth page (based on 'login' parameter, or 'target' parameter in production), which
+    -redirects back here (based on 'onLoginSuccess' parameter).
+   */
   before("/:memberCode") {
     setLangCookieFromDomainIfNecessary
     sessionOrStatus match {
