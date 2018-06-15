@@ -20,6 +20,7 @@ export class Tiedonsiirtotaulukko extends React.Component {
           <th className="hetu"><Text name="Henkilötunnus / Syntymäaika"/></th>
           <th className="nimi"><Text name="Nimi"/></th>
           <th className="oppilaitos"><Text name="Oppilaitos"/></th>
+          <th className="tutkinto"><Text name="Tutkinto / osaamisala / nimike"/></th>
           <th className="virhe"><Text name="Virhe"/></th>
           <th className="tiedot"><Text name="Tiedot"/></th>
           { selected && showSelected && <th className="valitse"></th> }
@@ -108,6 +109,15 @@ class Lokirivi extends React.Component {
           <Link key={i} href={'/koski/tiedonsiirrot' + (showError ? '/virheet' : '') + '?oppilaitos=' + oppilaitos.oid}>{oppilaitos && oppilaitos.nimi && t(oppilaitos.nimi)}</Link>
         )
       }</td>
+      <td className="tutkinto">{ row.suoritustiedot.map((suoritus, j) => (
+          <ul className="cell-listing" key={j}>
+            <li className="koulutusmoduuli">{t(suoritus.koulutusmoduuli.nimi)}</li>
+            {(suoritus.osaamisalat || []).map((osaamisala, k) => <li className="osaamisala" key={k}>{t(osaamisala.nimi)}</li>)}
+            {(suoritus.tutkintonimike || []).map((nimike, k) => <li className="tutkintonimike" key={k}>{t(nimike.nimi)}</li>)}
+          </ul>
+        )
+      )}
+      </td>
       <td className="virhe">{row.virhe.length > 0 && <span>{errorDetails(row.virhe)}</span>}</td>
       <td className="tiedot">
         {!!row.inputData && dataLink()}
