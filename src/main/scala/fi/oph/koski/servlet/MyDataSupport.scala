@@ -19,8 +19,19 @@ trait MyDataSupport extends LanguageSupport {
 
   def getLoginUrlForMember(memberId: String): String = {
     getConfigForMember(memberId).getString(s"login.${lan}.shibboleth") +
-    getConfigForMember(memberId).getString(s"login.${lan}.target") +
-    URLEncoder.encode(s"?onLoginSuccess=${getCurrentURL}" , "UTF-8")
+    "?" + getConfigForMember(memberId).getString("login.targetparam") + "=" + getLoginSuccessTarget(memberId, encode = true)
+  }
+
+  def getLoginSuccessTarget(memberId: String, encode: Boolean = false ): String = {
+    getConfigForMember(memberId).getString(s"login.${lan}.target") + getCurrentUrlAsFinalTargetParameter(encode)
+  }
+
+  private def getCurrentUrlAsFinalTargetParameter(encode: Boolean): String = {
+    if (encode) {
+      URLEncoder.encode(s"?onLoginSuccess=${getCurrentURL}" , "UTF-8")
+    } else {
+      s"?onLoginSuccess=${getCurrentURL}"
+    }
   }
 
   def getCurrentURL(implicit httpServletRequest: HttpServletRequest): String = {
