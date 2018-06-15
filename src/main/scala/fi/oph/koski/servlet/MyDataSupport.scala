@@ -22,7 +22,7 @@ trait MyDataSupport extends LanguageSupport {
     application.config.getString("mydata.login.targetparam") + getLoginSuccessTarget(memberId, encode = true)
   }
 
-  def getLoginSuccessTarget(memberId: String, encode: Boolean = false ): String = {
+  def getLoginSuccessTarget(memberId: String, encode: Boolean = false): String = {
     getConfigForMember(memberId).getString(s"login.${lan}.target") + getCurrentUrlAsFinalTargetParameter(encode)
   }
 
