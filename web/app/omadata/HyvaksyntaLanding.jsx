@@ -81,7 +81,7 @@ class HyvaksyntaLanding extends React.Component {
       (
         <AnnaHyvaksynta memberP={memberP(this.state.memberCode)}
         onAcceptClick={() => this.authorizeMember(this.state.memberCode)}
-        onCancelClick={() => this.onLogoutClicked}
+        onCancelClick={() => this.onLogoutClicked()}
         />
       )
 
