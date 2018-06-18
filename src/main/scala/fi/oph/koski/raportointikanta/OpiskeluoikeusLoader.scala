@@ -11,7 +11,7 @@ import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryService
 import fi.oph.koski.schema._
-import fi.oph.koski.raportointikanta.LoaderUtils.convertLocalizedString
+import fi.oph.koski.raportointikanta.LoaderUtils.{convertLocalizedString, convertKoodisto}
 import org.json4s.JValue
 import rx.lang.scala.{Observable, Subscriber}
 import scala.concurrent.duration._
@@ -22,6 +22,7 @@ object OpiskeluoikeusLoader extends Logging {
   private val DefaultBatchSize = 500
 
   def loadOpiskeluoikeudet(opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService, systemUser: KoskiSession, raportointiDatabase: RaportointiDatabase, batchSize: Int = DefaultBatchSize): Observable[LoadResult] = {
+    raportointiDatabase.setStatusLoadStarted("opiskeluoikeudet")
     deleteEverything(raportointiDatabase)
     val result = opiskeluoikeusQueryRepository.mapKaikkiOpiskeluoikeudetSivuittain(batchSize, systemUser) { opiskeluoikeusRows =>
       if (opiskeluoikeusRows.nonEmpty) {
@@ -36,6 +37,7 @@ object OpiskeluoikeusLoader extends Logging {
         errors.map(_.left.get) :+ LoadProgressResult(outputRows.size, päätasonSuoritusRows.size + osasuoritusRows.size)
       } else {
         createIndexes(raportointiDatabase)
+        raportointiDatabase.setStatusLoadCompleted("opiskeluoikeudet")
         Seq(LoadCompleted())
       }
     }
@@ -153,6 +155,14 @@ object OpiskeluoikeusLoader extends Logging {
       case l: PerusopetuksenOpiskeluoikeudenLisätiedot => Some(l)
       case _ => None
     } else None
+    val lukionLisätiedot: Option[LukionOpiskeluoikeudenLisätiedot] = if (o.lisätiedot.nonEmpty) o.lisätiedot.get match {
+      case l: LukionOpiskeluoikeudenLisätiedot => Some(l)
+      case _ => None
+    } else None
+    val lukioonValmistavanLisätiedot: Option[LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot] = if (o.lisätiedot.nonEmpty) o.lisätiedot.get match {
+      case l: LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot => Some(l)
+      case _ => None
+    } else None
 
     def ammatillinenAikajakso(lisätieto: AmmatillisenOpiskeluoikeudenLisätiedot => Option[List[Aikajakso]]): Byte =
       ammatillisenLisätiedot.flatMap(lisätieto).flatMap(_.find(_.contains(päivä))).size.toByte
@@ -169,6 +179,15 @@ object OpiskeluoikeusLoader extends Logging {
         case k: KoskiOpiskeluoikeusjakso => k.opintojenRahoitus.map(_.koodiarvo)
         case _ => None
       },
+      majoitus = ammatillinenAikajakso(_.majoitus),
+      sisäoppilaitosmainenMajoitus = (
+        ammatillinenAikajakso(_.sisäoppilaitosmainenMajoitus) +
+        aikuistenPerusopetuksenLisätiedot.flatMap(_.sisäoppilaitosmainenMajoitus).flatMap(_.find(_.contains(päivä))).size +
+        perusopetuksenLisätiedot.flatMap(_.sisäoppilaitosmainenMajoitus).flatMap(_.find(_.contains(päivä))).size +
+        lukionLisätiedot.flatMap(_.sisäoppilaitosmainenMajoitus).flatMap(_.find(_.contains(päivä))).size +
+        lukioonValmistavanLisätiedot.flatMap(_.sisäoppilaitosmainenMajoitus).flatMap(_.find(_.contains(päivä))).size
+      ).toByte,
+      vaativanErityisenTuenYhteydessäJärjestettäväMajoitus = ammatillinenAikajakso(_.vaativanErityisenTuenYhteydessäJärjestettäväMajoitus),
       erityinenTuki = ammatillinenAikajakso(_.erityinenTuki),
       vaativanErityisenTuenErityinenTehtävä = ammatillinenAikajakso(_.vaativanErityisenTuenErityinenTehtävä),
       hojks = ammatillisenLisätiedot.flatMap(_.hojks).find(_.contains(päivä)).size.toByte,
@@ -204,6 +223,9 @@ object OpiskeluoikeusLoader extends Logging {
     val lisätiedotAikajaksot: Seq[Aikajakso] = if (o.lisätiedot.nonEmpty) o.lisätiedot.get match {
       case aol: AmmatillisenOpiskeluoikeudenLisätiedot =>
         Seq(
+          aol.majoitus,
+          aol.sisäoppilaitosmainenMajoitus,
+          aol.vaativanErityisenTuenYhteydessäJärjestettäväMajoitus,
           aol.erityinenTuki,
           aol.vaativanErityisenTuenErityinenTehtävä,
           aol.vaikeastiVammainen,
@@ -215,11 +237,21 @@ object OpiskeluoikeusLoader extends Logging {
         aol.hojks.toList.map(h => Aikajakso(h.alku.getOrElse(o.alkamispäivä.getOrElse(throw new RuntimeException(s"Alkamispäivä puuttuu ${o.oid}"))), h.loppu))
       case apol: AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot =>
         Seq(
+          apol.sisäoppilaitosmainenMajoitus,
           apol.vaikeastiVammainen
         ).flatMap(_.getOrElse(List.empty))
       case pol: PerusopetuksenOpiskeluoikeudenLisätiedot =>
         Seq(
+          pol.sisäoppilaitosmainenMajoitus,
           pol.vaikeastiVammainen
+        ).flatMap(_.getOrElse(List.empty))
+      case lol: LukionOpiskeluoikeudenLisätiedot =>
+        Seq(
+          lol.sisäoppilaitosmainenMajoitus
+        ).flatMap(_.getOrElse(List.empty))
+      case lvol: LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot =>
+        Seq(
+          lvol.sisäoppilaitosmainenMajoitus
         ).flatMap(_.getOrElse(List.empty))
       case _ => Seq()
     } else Seq()
@@ -261,16 +293,19 @@ object OpiskeluoikeusLoader extends Logging {
       päätasonSuoritusId = päätasonSuoritusId,
       opiskeluoikeusOid = opiskeluoikeusOid,
       suorituksenTyyppi = ps.tyyppi.koodiarvo,
-      koulutusmoduuliKoodisto = ps.koulutusmoduuli.tunniste match {
-        case k: Koodistokoodiviite => Some(k.koodistoUri)
-        case _ => None
-      },
+      koulutusmoduuliKoodisto = convertKoodisto(ps.koulutusmoduuli.tunniste),
       koulutusmoduuliKoodiarvo = ps.koulutusmoduuli.tunniste.koodiarvo,
       koulutusmoduuliKoulutustyyppi = ps.koulutusmoduuli match {
         case k: Koulutus => k.koulutustyyppi.map(_.koodiarvo)
         case _ => None
       },
+      koulutusmoduuliLaajuusArvo = ps.koulutusmoduuli.laajuus.map(_.arvo),
+      koulutusmoduuliLaajuusYksikkö = ps.koulutusmoduuli.laajuus.map(_.yksikkö.koodiarvo),
       vahvistusPäivä = ps.vahvistus.map(v => Date.valueOf(v.päivä)),
+      arviointiArvosanaKoodiarvo = ps.viimeisinArviointi.map(_.arvosana.koodiarvo),
+      arviointiArvosanaKoodisto = ps.viimeisinArviointi.flatMap(a => convertKoodisto(a.arvosana)),
+      arviointiHyväksytty = ps.viimeisinArviointi.map(_.hyväksytty),
+      arviointiPäivä = ps.viimeisinArviointi.flatMap(_.arviointipäivä).map(v => Date.valueOf(v)),
       toimipisteOid = toimipiste.oid,
       toimipisteNimi = convertLocalizedString(toimipiste.nimi),
       data = JsonManipulation.removeFields(data, fieldsToExcludeFromPäätasonSuoritusJson)
@@ -289,11 +324,10 @@ object OpiskeluoikeusLoader extends Logging {
       päätasonSuoritusId = päätasonSuoritusId,
       opiskeluoikeusOid = opiskeluoikeusOid,
       suorituksenTyyppi = os.tyyppi.koodiarvo,
-      koulutusmoduuliKoodisto = os.koulutusmoduuli.tunniste match {
-        case k: Koodistokoodiviite => Some(k.koodistoUri)
-        case _ => None
-      },
+      koulutusmoduuliKoodisto = convertKoodisto(os.koulutusmoduuli.tunniste),
       koulutusmoduuliKoodiarvo = os.koulutusmoduuli.tunniste.koodiarvo,
+      koulutusmoduuliLaajuusArvo = os.koulutusmoduuli.laajuus.map(_.arvo),
+      koulutusmoduuliLaajuusYksikkö = os.koulutusmoduuli.laajuus.map(_.yksikkö.koodiarvo),
       koulutusmoduuliPaikallinen = os.koulutusmoduuli.tunniste match {
         case k: Koodistokoodiviite => false
         case k: PaikallinenKoodi => true
@@ -303,6 +337,16 @@ object OpiskeluoikeusLoader extends Logging {
         case _ => None
       },
       vahvistusPäivä = os.vahvistus.map(v => Date.valueOf(v.päivä)),
+      arviointiArvosanaKoodiarvo = os.viimeisinArviointi.map(_.arvosana.koodiarvo),
+      arviointiArvosanaKoodisto = os.viimeisinArviointi.flatMap(a => convertKoodisto(a.arvosana)),
+      arviointiHyväksytty = os.viimeisinArviointi.map(_.hyväksytty),
+      arviointiPäivä = os.viimeisinArviointi.flatMap(_.arviointipäivä).map(v => Date.valueOf(v)),
+      näytönArviointiPäivä = os match {
+        case atos: AmmatillisenTutkinnonOsanSuoritus => atos.näyttö.flatMap(_.arviointi).map(v => Date.valueOf(v.päivä))
+        case vkos: ValmaKoulutuksenOsanSuoritus => vkos.näyttö.flatMap(_.arviointi).map(v => Date.valueOf(v.päivä))
+        case tkos: TelmaKoulutuksenOsanSuoritus => tkos.näyttö.flatMap(_.arviointi).map(v => Date.valueOf(v.päivä))
+        case _ => None
+      },
       data = JsonManipulation.removeFields(data, fieldsToExcludeFromOsasuoritusJson)
     ) +: os.osasuoritukset.getOrElse(List.empty).zipWithIndex.flatMap {
       case (os2, i) => buildROsasuoritusRow(päätasonSuoritusId, Some(osasuoritusId), opiskeluoikeusOid, os2, (data \ "osasuoritukset")(i), idGenerator)

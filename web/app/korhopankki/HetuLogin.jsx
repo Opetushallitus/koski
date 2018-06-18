@@ -62,7 +62,7 @@ const HetuLogin = ( { LoginUrl = '/koski/user/shibbolethlogin', RedirectUrl = '/
       <label><Text name="Henkilötunnus"/>
         <Input
           id='hetu'
-          type='password'
+          type='text'
           disabled={inProgress}
           value={state.view('hetu')}
           autofocus={true}

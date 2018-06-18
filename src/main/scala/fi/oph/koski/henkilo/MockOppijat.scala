@@ -44,6 +44,7 @@ object MockOppijat {
   val luva = oppijat.oppija("Lukioonvalmistautuja", "Luke", "211007-442N")
   val valma = oppijat.oppija("Amikseenvalmistautuja", "Anneli", "130404-054C")
   val ylioppilas = oppijat.oppija("Ylioppilas", "Ynjevi", "210244-374K")
+  val ylioppilasLukiolainen = oppijat.oppija("Ylioppilaslukiolainen", "Ynjevi", "080698-967F")
   val ylioppilasEiOppilaitosta = oppijat.oppija("Ylioppilas", "Yrjänä", "240775-720P")
   val toimintaAlueittainOpiskelija = oppijat.oppija("Toiminta", "Tommi", "031112-020J")
   val telma = oppijat.oppija("Telmanen", "Tuula", "021080-725C")

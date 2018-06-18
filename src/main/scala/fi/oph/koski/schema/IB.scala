@@ -61,13 +61,14 @@ case class PreIBSuoritus(
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
   @Title("Oppiaineet")
-  override val osasuoritukset: Option[List[PreIBOppiaineenSuoritus]],
+  override val osasuoritukset: Option[List[PreIBSuorituksenOsasuoritus]],
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("preiboppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("preiboppimaara", koodistoUri = "suorituksentyyppi")
 ) extends IBPäätasonSuoritus
 
 trait IBPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Arvioinniton with Suorituskielellinen
+trait PreIBSuorituksenOsasuoritus extends Suoritus
 
 @Title("Pre IB -koulutus")
 @Description("Pre IB-koulutuksen tunnistetiedot")
@@ -150,7 +151,7 @@ case class PreIBOppiaineenSuoritus(
   override val osasuoritukset: Option[List[PreIBKurssinSuoritus]],
   @KoodistoKoodiarvo("preiboppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "preiboppiaine", koodistoUri = "suorituksentyyppi")
-) extends IBSuoritus
+) extends IBSuoritus with PreIBSuorituksenOsasuoritus
 
 trait PreIBOppiaine extends Koulutusmoduuli
 

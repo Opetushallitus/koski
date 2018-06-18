@@ -96,6 +96,8 @@ object MockOrganisaatioRepository extends JsonOrganisaatioRepository(MockKoodist
   override def findSähköpostiVirheidenRaportointiin(oid: String): Option[SähköpostiVirheidenRaportointiin] = {
     if (oid == MockOrganisaatiot.kulosaarenAlaAste) {
       None
+    } else if (oid == MockOrganisaatiot.ytl) {
+      getOrganisaatioHierarkia(oid).map(h => SähköpostiVirheidenRaportointiin(h.oid, h.nimi, "ytl.ytl@example.com"))
     } else {
       getOrganisaatioHierarkia(oid).map(h => SähköpostiVirheidenRaportointiin(h.oid, h.nimi, "joku.osoite@example.com"))
     }

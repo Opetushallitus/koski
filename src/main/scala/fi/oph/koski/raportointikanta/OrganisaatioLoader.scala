@@ -11,12 +11,14 @@ object OrganisaatioLoader extends Logging {
     logger.info("Ladataan organisaatioita...")
     val organisaatiot = organisaatioRepository.findAllRaw
     logger.info(s"Löytyi ${organisaatiot.size} organisaatioita")
+    raportointiDatabase.setStatusLoadStarted("organisaatiot")
     raportointiDatabase.deleteOrganisaatiot
     val count = organisaatiot.grouped(BatchSize).map(batch => {
       val batchRows = batch.map(buildROrganisaatioRow)
       raportointiDatabase.loadOrganisaatiot(batchRows)
       batchRows.size
     }).sum
+    raportointiDatabase.setStatusLoadCompleted("organisaatiot")
     logger.info(s"Ladattiin $count organisaatiota")
     count
   }

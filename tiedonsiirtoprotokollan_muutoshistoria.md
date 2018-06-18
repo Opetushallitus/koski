@@ -1,3 +1,7 @@
+## 12.6.2018
+
+  - Lisätty mahdollisuus suorittaa muita lukion opintoja (Esimerkiksi lukiodiplomi, taiteiden väliset opinnot, teemaopinnot) Pre IB -suorituksen osasuorituksina
+
 ## 18.5.2018
 
   - Lisätty tunnustettu-rakenne aikuisten perusopetuksen kursseihin

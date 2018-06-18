@@ -215,9 +215,58 @@ describe('Omat tiedot', function() {
             })
           })
         })
+
+        describe('Ylioppilastutkinnoille', function () {
+          var form = omattiedot.virheraportointiForm
+
+          describe('kun ei lukiosuorituksia', function () {
+            before(authentication.logout, etusivu.openPage)
+            before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('210244-374K'), wait.until(omattiedot.isVisible))
+            before(click(omattiedot.virheraportointiButton), form.acceptDisclaimer)
+
+            it('näytetään oppilaitoksissa ylioppilastutkintolautakunta, ei lukiota, lisäksi suorituksen tyyppi (ylioppilastutkinto)', function () {
+              expect(form.oppilaitosNames()).to.deep.equal([
+                'Ylioppilastutkintolautakunta (ylioppilastutkinto)',
+                'Muu'
+              ])
+            })
+
+            it('ylioppilastutkintolautakunnalla on oikea OID', function () {
+              expect(form.oppilaitosOids()).to.deep.equal([
+                '1.2.246.562.10.43628088406',
+                'other'
+              ])
+            })
+          })
+
+          describe('kun myös lukiosuorituksia', function () {
+            before(authentication.logout, etusivu.openPage)
+            before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('080698-967F'), wait.until(omattiedot.isVisible))
+            before(click(omattiedot.virheraportointiButton), form.acceptDisclaimer)
+
+            it('näytetään oppilaitoksissa ylioppilastutkintolautakunta ja lukio', function () {
+              expect(form.oppilaitosNames()).to.deep.equal([
+                'Ylioppilastutkintolautakunta (ylioppilastutkinto)',
+                'Jyväskylän normaalikoulu',
+                'Muu'
+              ])
+            })
+
+            it('oppilaitoksilla on oikeat OIDit', function () {
+              expect(form.oppilaitosOids()).to.deep.equal([
+                '1.2.246.562.10.43628088406',
+                '1.2.246.562.10.14613773812',
+                'other'
+              ])
+            })
+          })
+        })
       })
 
       describe('Suoritusjako', function() {
+        before(authentication.logout, etusivu.openPage)
+        before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('180497-112F'), wait.until(omattiedot.isVisible))
+
         var form = omattiedot.suoritusjakoForm
         window.secrets = {}
 
@@ -352,6 +401,24 @@ describe('Omat tiedot', function() {
                 ])
               })
             })
+          })
+
+          describe('Kielen vaihto', function() {
+            before(
+              click(suoritusjako.changeLanguageButton),
+              wait.forMilliseconds(150), // page reloads
+              wait.until(function() { return isElementVisible(suoritusjako.header()) })
+            )
+
+            it('toimii', function() {
+              expect(suoritusjako.headerText()).to.equal(
+                'Studier' +
+                'Miia Monikoululainen' +
+                'f. 18.4.1997'
+              )
+            })
+
+            after(click(suoritusjako.changeLanguageButton))
           })
         })
 
@@ -670,7 +737,7 @@ describe('Omat tiedot', function() {
 
         describe('Sivun sisältö', function() {
           it('Näytetään virhesivu', function() {
-            expect(VirhePage().teksti().trim()).to.equalIgnoreNewlines('Koski-järjestelmässä tapahtui virhe, yritä myöhemmin uudelleen\n          Palaa etusivulle')
+            expect(VirhePage().teksti().trim()).to.equalIgnoreNewlines('Koski-järjestelmässä tapahtui virhe, ole hyvä ja yritä myöhemmin uudelleen\n          Palaa etusivulle')
           })
         })
       })

@@ -1052,8 +1052,6 @@
   "Paikallinen kurssi": "Paikallinen kurssi",
   "Paikallinen oppiaine": "Paikallinen oppiaine",
   "Paikallinen kurssi tai oppiaine": "Paikallinen kurssi tai oppiaine",
-  "description:Käytetään tilanteessa jossa oppija opiskelee..." : "Käytetään tilanteessa jossa oppija opiskelee yksittäisen oppiaineen erityisenä tutkintona",
-  "Oma Opintopolku": "Oma Opintopolku",
   "Henkilökohtaisten tietojen käyttö": "Henkilökohtaisten opintotietojen käyttö",
   "Omadata hyväksyntä otsikko": "Hyväksymällä sallit kyseisen palveluntarjoajan näkevän tietojasi. Tietojasi ei luovuteta eteenpäin eikä käytetä markkinointitarkoituksiin.",
   "Palveluntarjoaja näkee": "Palveluntarjoaja näkee",
@@ -1066,7 +1064,10 @@
   "Voit hallita tietojasi": "Voit hallita omien tietojesi jakamista Oma Opintopolku -palvelussa.",
   "Palataan palveluntarjoajan sivulle": "Palataan palveluntarjoajan sivulle 3 sekunnin kuluttua...",
   "Sinun tulee olla kirjautunut sisään" : "Sinun tulee olla kirjautunut sisään",
-  "Tallennus epäonnistui": "Tallennus epäonnistui"
-
+  "Tallennus epäonnistui": "Tallennus epäonnistui",
+  "description:Käytetään tilanteessa jossa oppija opiskelee..." : "Käytetään tilanteessa jossa oppija opiskelee yksittäisen oppiaineen erityisenä tutkintona",
+  "Koski-järjestelmässä tapahtui virhe, ole hyvä ja yritä myöhemmin uudelleen": "Koski-järjestelmässä tapahtui virhe, ole hyvä ja yritä myöhemmin uudelleen",
+  "Palaa etusivulle": "Palaa etusivulle",
+  "Oma Opintopolku" : "Oma Opintopolku"
 }
 

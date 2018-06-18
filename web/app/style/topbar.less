@@ -3,7 +3,7 @@
 @import "constants";
 @import "colors";
 
-@sidebar-width: 300px;
+@sidebar-width: 200px;
 @topbar-height: 93px;
 
 #content[data-inraamit='oppija'] #topbar {
@@ -17,10 +17,8 @@
   top: 0;
   z-index: @z-index-topbar;
   height: 48px;
-  padding-left: @page-border-width;
-  padding-right: @page-border-width;
 
-  &.topbar-omattiedot {
+  &.topbar-omattiedot, &.suoritusjako {
     padding: 0;
 
     & > .topbar-content-wrapper {
