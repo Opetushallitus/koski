@@ -17,10 +17,12 @@ class MyDataReactServlet(implicit val application: KoskiApplication) extends Sca
    */
   before("/:memberCode") {
     setLangCookieFromDomainIfNecessary
+    val lang = langFromCookie.getOrElse(langFromDomain)
+
     sessionOrStatus match {
       case Right(_) if shibbolethCookieFound =>
-      case Left(_) if shibbolethCookieFound => redirect(getLoginSuccessTarget(params("memberCode")))
-      case _ => redirect(getLoginUrlForMember(params("memberCode")))
+      case Left(_) if shibbolethCookieFound => redirect(getLoginSuccessTarget(params("memberCode"), lang))
+      case _ => redirect(getLoginUrlForMember(params("memberCode"), lang))
     }
   }
 
