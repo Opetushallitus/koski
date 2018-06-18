@@ -29,6 +29,8 @@ object KoskiErrorCategory {
       val virheellinenHenkilöOid = subcategory("virheellinenHenkilöOid", "Henkilö-oidin muoto on virheellinen. Esimerkki oikeasta muodosta: 1.2.246.562.24.00000000001.")
       val virheellinenOpiskeluoikeusOid = subcategory("virheellinenOpiskeluoikeusOid", "Opiskeluoikeus-oidin muoto on virheellinen. Esimerkki oikeasta muodosta: 1.2.246.562.15.00000000001.")
       val missing = subcategory ("missing", "Vaadittu kyselyparametri puuttuu")
+      val missingXRoadMemberId = subcategory("missing", "Vaadittu valtuutuksen kumppani-parametri puuttuu")
+      val invalidXRoadMemberId = subcategory("missing", "Annettua valtuutuksen kumppani-parametria ei ole olemassa")
     }
     val queryParam = new QueryParam
 

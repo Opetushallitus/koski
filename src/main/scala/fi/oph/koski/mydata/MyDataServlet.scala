@@ -29,7 +29,7 @@ class MyDataServlet(implicit val application: KoskiApplication) extends ApiServl
   post("/valtuutus/:memberCode") {
     def memberCode = params("memberCode")
 
-    if (memberCode == null) throw InvalidRequestException(KoskiErrorCategory.badRequest.header.missingXRoadHeader)
+    if (memberCode == null) throw InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.missingXRoadMemberId)
 
     logger.info(s"Authorizing ${memberCode} for user: ${koskiSessionOption.getOrElse()}")
 
@@ -41,7 +41,7 @@ class MyDataServlet(implicit val application: KoskiApplication) extends ApiServl
     if (isValidCode) {
       renderObject(Map("success" -> application.mydataService.put(koskiSessionOption.get.oid, memberCode)(koskiSessionOption.get)))
     } else {
-      throw InvalidRequestException(KoskiErrorCategory.badRequest.header.invalidXRoadHeader)
+      throw InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.invalidXRoadMemberId)
     }
   }
 }
