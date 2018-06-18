@@ -10,7 +10,7 @@ class MyDataReactServlet(implicit val application: KoskiApplication) extends Sca
   with HtmlServlet with AuthenticationSupport with OmaOpintopolkuSupport with MyDataSupport {
 
   /*
-    If user has not logger in, then:
+    If user has not logged in, then:
     -redirect to Tupas, which
     -redirects to our Shibboleth page (based on 'login' parameter, or 'target' parameter in production), which
     -redirects back here (based on 'onLoginSuccess' parameter).
