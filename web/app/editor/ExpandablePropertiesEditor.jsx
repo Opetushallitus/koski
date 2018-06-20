@@ -1,7 +1,7 @@
 import React from 'react'
-import {modelData, modelLookup} from './EditorModel.js'
-import {PropertiesEditor} from './PropertiesEditor'
-import {wrapOptional} from './EditorModel'
+import {modelLookup} from './EditorModel.js'
+import {PropertiesEditor, shouldShowProperty} from './PropertiesEditor'
+import {modelProperties, wrapOptional} from './EditorModel'
 import {modelProperty} from './EditorModel'
 import {navigateWithQueryParams, currentLocation} from '../util/location'
 import {parseBool} from '../util/util'
@@ -16,8 +16,9 @@ export const ExpandablePropertiesEditor = ({model, propertyName, propertyFilter 
   let toggleOpen = () => {
     navigateWithQueryParams({[paramName]: !expanded ? 'true' : undefined})
   }
+  let zeroVisibleProperties = modelProperties(wrappedModel, shouldShowProperty(model.context)).filter(propertyFilter).length === 0
 
-  return modelData(model, propertyName) || wrappedModel.context.edit ?
+  return !zeroVisibleProperties || wrappedModel.context.edit ?
     <div className={'expandable-container ' + propertyName}>
       <a className={expanded ? 'open expandable' : 'expandable'} onClick={toggleOpen}><Text name={modelProperty(model, propertyName).title}/></a>
       { expanded ?
