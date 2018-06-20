@@ -45,7 +45,8 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         suoritukset = lisääKeskeneräinenTutkintosuoritus(suoritukset, opiskeluoikeusNode, opiskeluoikeudenTila),
         tila = opiskeluoikeudenTila,
         lisätiedot = Some(KorkeakoulunOpiskeluoikeudenLisätiedot(
-          ensisijaisuus = Some((opiskeluoikeusNode \ "Ensisijaisuus").toList.map { e => Aikajakso(alkuPvm(e), loppuPvm(e)) }).filter(_.nonEmpty)
+          ensisijaisuus = Some((opiskeluoikeusNode \ "Ensisijaisuus").toList.map { e => Aikajakso(alkuPvm(e), loppuPvm(e)) }).filter(_.nonEmpty),
+          virtaOpiskeluoikeudenTyyppi = Some(opiskeluoikeudenTyyppi(opiskeluoikeusNode))
         ))
       )
 
@@ -94,23 +95,21 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         ) :: muutSuoritukset
       }
     }.orElse {
-      optionalOppilaitos(opiskeluoikeusNode).flatMap(oppilaitos => {
-        koodistoViitePalvelu.validate("virtaopiskeluoikeudentyyppi", (opiskeluoikeusNode \ "Tyyppi").text)
-          .map(virtaOpiskeluoikeudenTyyppi => {
-            val nimi = Some((opiskeluoikeusNode \\ "@koulutusmoduulitunniste").text.stripPrefix("#").stripSuffix("/").trim)
-              .filter(_.nonEmpty).map(finnish).getOrElse(virtaOpiskeluoikeudenTyyppi.description)
-            MuuKorkeakoulunSuoritus(
-              koulutusmoduuli = MuuKorkeakoulunOpinto(
-                tunniste = virtaOpiskeluoikeudenTyyppi,
-                nimi = nimi,
-                laajuus = laajuus(opiskeluoikeusNode)
-              ),
-              vahvistus = vahvistusOpiskeluoikeudenTilausta(oppilaitos),
-              suorituskieli = None,
-              osasuoritukset = None,
-              toimipiste = oppilaitos
-            ) :: suoritukset
-          })
+      optionalOppilaitos(opiskeluoikeusNode).map(oppilaitos => {
+        val virtaOpiskeluoikeudenTyyppi = opiskeluoikeudenTyyppi(opiskeluoikeusNode)
+        val nimi = Some((opiskeluoikeusNode \\ "@koulutusmoduulitunniste").text.stripPrefix("#").stripSuffix("/").trim)
+          .filter(_.nonEmpty).map(finnish).getOrElse(virtaOpiskeluoikeudenTyyppi.description)
+        MuuKorkeakoulunSuoritus(
+          koulutusmoduuli = MuuKorkeakoulunOpinto(
+            tunniste = virtaOpiskeluoikeudenTyyppi,
+            nimi = nimi,
+            laajuus = laajuus(opiskeluoikeusNode)
+          ),
+          vahvistus = vahvistusOpiskeluoikeudenTilausta(oppilaitos),
+          suorituskieli = None,
+          osasuoritukset = None,
+          toimipiste = oppilaitos
+        ) +: suoritukset
       })
     }.getOrElse(suoritukset)
   }
@@ -223,6 +222,10 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
 
   private def requiredKoodi(uri: String, koodi: String) = {
     koodistoViitePalvelu.validateRequired(uri, koodi)
+  }
+
+  private def opiskeluoikeudenTyyppi(opiskeluoikeus: Node): Koodistokoodiviite = {
+    requiredKoodi("virtaopiskeluoikeudentyyppi", (opiskeluoikeus \ "Tyyppi").text)
   }
 
   private def tutkinto(koulutuskoodi: String): Korkeakoulututkinto = {
