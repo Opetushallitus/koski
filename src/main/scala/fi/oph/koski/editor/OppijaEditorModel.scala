@@ -22,7 +22,7 @@ object OppijaEditorModel extends Timing {
   def korkeakoulunOpiskeluoikeuksienJärjestysKriteeri(oo: KorkeakoulunOpiskeluoikeus): Int = {
     val suoritus = oo.suoritukset.headOption
     val aktiivinenTaiOptio = oo.tila.opiskeluoikeusjaksot.lastOption.exists(!_.opiskeluoikeusPäättynyt)
-    val ensisijainen = oo.ensisijaisuus.exists(_.loppu.isEmpty)
+    val ensisijainen = oo.lisätiedot.exists(_.ensisijaisuusVoimassa(LocalDate.now))
     (suoritus, aktiivinenTaiOptio, ensisijainen) match {
       case (Some(s: KorkeakoulututkinnonSuoritus), _, _) if s.valmis => 1 // valmis tutkinto
       case (Some(s: KorkeakouluSuoritus), _, _) if s.valmis => 2 // valmis muu opiskeluoikeus

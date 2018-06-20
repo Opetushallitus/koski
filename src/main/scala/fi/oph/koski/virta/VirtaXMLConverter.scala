@@ -44,9 +44,9 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         koulutustoimija = None,
         suoritukset = lisääKeskeneräinenTutkintosuoritus(suoritukset, opiskeluoikeusNode, opiskeluoikeudenTila),
         tila = opiskeluoikeudenTila,
-        ensisijaisuus = (opiskeluoikeusNode \ "Ensisijaisuus").headOption.map { e => // TODO, should this be a list ?
-          Ensisijaisuus(alkuPvm(e), loppuPvm(e))
-        }
+        lisätiedot = Some(KorkeakoulunOpiskeluoikeudenLisätiedot(
+          ensisijaisuus = Some((opiskeluoikeusNode \ "Ensisijaisuus").toList.map { e => Aikajakso(alkuPvm(e), loppuPvm(e)) }).filter(_.nonEmpty)
+        ))
       )
 
       (muutSuoritukset, opiskeluoikeus :: opiskeluOikeudet)

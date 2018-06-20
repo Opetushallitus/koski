@@ -17,22 +17,22 @@ case class KorkeakoulunOpiskeluoikeus(
   päättymispäivä: Option[LocalDate] = None,
   @Description("Jos tämä on opiskelijan ensisijainen opiskeluoikeus tässä oppilaitoksessa, ilmoitetaan tässä ensisijaisuuden tiedot")
   tila: KorkeakoulunOpiskeluoikeudenTila,
-  ensisijaisuus: Option[Ensisijaisuus] = None,
+  lisätiedot: Option[KorkeakoulunOpiskeluoikeudenLisätiedot] = None,
   suoritukset: List[KorkeakouluSuoritus],
   @KoodistoKoodiarvo("korkeakoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulutus", Some("Korkeakoulutus"), "opiskeluoikeudentyyppi", None),
   synteettinen: Boolean = false
 ) extends Opiskeluoikeus {
   override def versionumero = None
-  override def lisätiedot = None
   override def sisältyyOpiskeluoikeuteen = None
 }
 
-@Description("Ensisijaisuustiedot sisältävät alku- ja loppupäivämäärän")
-case class Ensisijaisuus(
-  alku: LocalDate,
-  loppu: Option[LocalDate]
-) extends Jakso
+@Description("Korkeakoulun opiskeluoikeuden lisätiedot")
+case class KorkeakoulunOpiskeluoikeudenLisätiedot(
+  ensisijaisuus: Option[List[Aikajakso]] = None
+) extends OpiskeluoikeudenLisätiedot {
+  def ensisijaisuusVoimassa(d: LocalDate): Boolean = ensisijaisuus.exists(_.exists((j: Aikajakso) => j.contains(d)))
+}
 
 trait KorkeakouluSuoritus extends PäätasonSuoritus with MahdollisestiSuorituskielellinen with Toimipisteellinen {
   def toimipiste: Oppilaitos
