@@ -85,7 +85,7 @@ describe('Lokalisointi', function() {
       paikallinen.propertyBySelector('.koodi').setValue('TNS'),
       paikallinen.propertyBySelector('.nimi').setValue('Dans'),
       editor.saveChanges,
-      Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'),
+      Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('220109-784L')
     )
 
     it('Näkyy myös suomenkieliselle virkailijalle', function() {
