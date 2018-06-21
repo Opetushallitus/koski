@@ -5,7 +5,7 @@ import java.time.LocalDate
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedString._
 import fi.oph.koski.localization.LocalizedStringImplicits._
-import fi.oph.koski.schema.annotation.{FlattenInUI, KoodistoKoodiarvo, KoodistoUri}
+import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation.{Description, Title}
 
 case class KorkeakoulunOpiskeluoikeus(
@@ -32,7 +32,8 @@ case class KorkeakoulunOpiskeluoikeudenLisätiedot(
   ensisijaisuus: Option[List[Aikajakso]] = None,
   @Title("Korkeakoulun opiskeluoikeuden tyyppi")
   @KoodistoUri("virtaopiskeluoikeudentyyppi")
-  virtaOpiskeluoikeudenTyyppi: Option[Koodistokoodiviite]
+  virtaOpiskeluoikeudenTyyppi: Option[Koodistokoodiviite],
+  lukukausiIlmoittautuminen: Option[Lukukausi_Ilmoittautuminen] = None
 ) extends OpiskeluoikeudenLisätiedot {
   def ensisijaisuusVoimassa(d: LocalDate): Boolean = ensisijaisuus.exists(_.exists((j: Aikajakso) => j.contains(d)))
 }
@@ -139,3 +140,16 @@ case class KorkeakoulunPaikallinenArviointi(
 ) extends PaikallinenArviointi with KorkeakoulunArviointi {
   override def arvioitsijat: Option[List[Arvioitsija]] = None
 }
+
+case class Lukukausi_Ilmoittautuminen(
+  ilmoittautumisjaksot: List[Lukukausi_Ilmoittautumisjakso]
+)
+
+case class Lukukausi_Ilmoittautumisjakso(
+  alku: LocalDate,
+  loppu: Option[LocalDate],
+  @KoodistoUri("virtalukukausiilmtila")
+  tila: Koodistokoodiviite,
+  ylioppilaskunnanJäsen: Option[Boolean] = None,
+  ythsMaksettu: Option[Boolean] = None
+) extends Jakso

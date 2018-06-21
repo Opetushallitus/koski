@@ -161,6 +161,9 @@ trait Jakso extends Alkupäivällinen {
   def loppu: Option[LocalDate]
 
   def contains(d: LocalDate): Boolean = !d.isBefore(alku) && (loppu.isEmpty || !d.isAfter(loppu.get))
+
+  def overlaps(other: Jakso): Boolean =
+    contains(other.alku) || other.loppu.exists(contains) || other.contains(alku) || loppu.exists(other.contains)
 }
 
 trait Läsnäolojakso extends Alkupäivällinen {
