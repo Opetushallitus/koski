@@ -13,7 +13,6 @@ describe('MyData', () => {
     wait.until(korhopankki.isReady),
     korhopankki.login('100869-192W', 'Dippainssi', 'Dilbert'),
     wait.until(mydata.isVisible),
-    //click(omattiedot.suoritusjakoButton)
   )
 
   describe('Kun käyttäjä on kirjautunut sisään', () => {
@@ -22,6 +21,23 @@ describe('MyData', () => {
     })
     it('Näytetään käyttäjälle syntymäaika', () => {
       expect(mydata.getBirthDate()).equal('10.8.1969')
+    })
+  })
+
+  describe('Kun ollaan kumppanin sivulla kirjautuneena sisään', () => {
+    it('Näytetään kumppanin nimi', () => {
+      expect(mydata.getMemberName()).equal('HSL Helsingin Seudun Liikenne')
+    })
+    describe('Ja sallitaan kumppanin hakea käyttäjästä tietoja', () => {
+      before(
+        seq(
+          click('.acceptance-button-container > .acceptance-button'),
+          wait.untilVisible('.acceptance-title-success')
+        )
+      )
+      it('Näytetään nappi josta voidaan palata palveluntarjoajan sivulle', () => {
+        expect(S('.acceptance-return-button').isVisible)
+      })
     })
   })
 

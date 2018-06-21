@@ -7,7 +7,7 @@ const MyDataPage = () => {
       return openPage('/koski/omadata/hsl')()
     },
     isVisible: () => {
-      return isElementVisible(S('.username'))
+      return isElementVisible(S('.username')) && isElementVisible(S('.user > .dateofbirth'))
     },
     login: ()  => {
       return click(findSingle('.lander button'))
@@ -20,6 +20,12 @@ const MyDataPage = () => {
     },
     getBirthDate: () => {
       return extractAsText(S('.user > .dateofbirth'))
+    },
+    getMemberName: () => {
+      return extractAsText(S('.acceptance-member-name'))
+    },
+    getAcceptButton: () => {
+      return S('.acceptance-button-container > .acceptance-button')
     }
   }
   return api
