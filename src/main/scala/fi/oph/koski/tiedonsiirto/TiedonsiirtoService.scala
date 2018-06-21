@@ -200,6 +200,9 @@ class TiedonsiirtoService(
     var ordering = sorting.field match {
       case "aika" => Ordering.by{x: TiedonsiirtoYhteenveto => x.viimeisin.getTime}
       case "oppilaitos" => Ordering.by{x: TiedonsiirtoYhteenveto => x.oppilaitos.description.get(koskiSession.lang)}
+      case "siirretyt" => Ordering.by{x: TiedonsiirtoYhteenveto => x.siirretyt}
+      case "virheelliset" => Ordering.by{x: TiedonsiirtoYhteenveto => x.virheelliset}
+      case "onnistuneet" => Ordering.by{x: TiedonsiirtoYhteenveto => x.onnistuneet}
     }
     if (sorting.descending) ordering = ordering.reverse
 
