@@ -5,6 +5,7 @@ import java.net.URLEncoder
 import fi.oph.koski.executors.Pools
 import fi.oph.koski.http.Http.{Decode, ParameterizedUriWrapper}
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.log.LogUtils.maskSensitiveInformation
 import fi.oph.koski.log.{LoggerWithContext, Logging}
 import io.prometheus.client.{Counter, Summary}
 import org.http4s._
@@ -192,10 +193,6 @@ protected case class HttpResponseLog(request: Request, uriTemplate: String) {
     }}).map("request body " + _).filter(_ => request.uri.toString.contains(logFailedRequestBodiesForUrisContaining)).getOrElse("")
 
     HttpResponseLog.logger.debug(maskSensitiveInformation(s"${request.method} ${request.uri} status ${status} took ${elapsedMillis} ms ${requestBody}"))
-  }
-  // At least oppijanumerorekisteri-service and ytr URLs can contain hetus
-  private def maskSensitiveInformation(s: String): String = {
-    s.replaceAll("\\b[0-9]{6}[-A+][0-9]{3}[0-9A-Z]\\b", "******-****")
   }
 }
 
