@@ -16,15 +16,13 @@ describe('MyData', () => {
     //click(omattiedot.suoritusjakoButton)
   )
 
-  describe('Kun foo', () => {
-    it('Onnistuu, näyttää henkilöpalvelussa olevat nimitiedot', () => {
-      expect("foo").equal("fuzz")
+  describe('Kun käyttäjä on kirjautunut sisään', () => {
+    it('Näytetään käyttäjälle nimi', () => {
+      expect(mydata.getUserName()).equal('Dilbert Dippainssi')
+    })
+    it('Näytetään käyttäjälle syntymäaika', () => {
+      expect(mydata.getBirthDate()).equal('10.8.1969')
     })
   })
 
-  describe('Kun bar', () => {
-    it('Ei muuten onnistu', () => {
-      expect('bar').equal('foo')
-    })
-  })
 })
