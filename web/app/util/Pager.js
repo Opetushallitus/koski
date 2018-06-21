@@ -3,10 +3,10 @@ import Bacon from 'baconjs'
 import * as L from 'partial.lenses'
 import {appendQueryParams} from './location'
 
-let pageSize = 100
+let defaultPageSize = 100
 let pagerCache = {} // URL -> pages
 
-export default (baseUrl, rowsLens = L.identity) => {
+export default (baseUrl, rowsLens = L.identity, pageSize = defaultPageSize) => {
   let nextPageBus = Bacon.Bus()
   let cachedPages = pagerCache[baseUrl] || []
   pagerCache[baseUrl] = cachedPages
