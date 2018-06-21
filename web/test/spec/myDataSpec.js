@@ -1,9 +1,6 @@
 describe('MyData', () => {
   const authentication = Authentication()
   const korhopankki = KorhoPankki()
-  const etusivu = LandingPage()
-  const omattiedot = OmatTiedotPage()
-
   const mydata = MyDataPage()
 
   before(
@@ -31,8 +28,8 @@ describe('MyData', () => {
     describe('Ja sallitaan kumppanin hakea käyttäjästä tietoja', () => {
       before(
         seq(
-          click('.acceptance-button-container > .acceptance-button'),
-          wait.untilVisible('.acceptance-title-success')
+          mydata.clickAccept,
+          wait.until(mydata.accepted.isVisible)
         )
       )
       it('Näytetään nappi josta voidaan palata palveluntarjoajan sivulle', () => {

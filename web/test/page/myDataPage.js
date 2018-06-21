@@ -24,6 +24,14 @@ const MyDataPage = () => {
     getMemberName: () => {
       return extractAsText(S('.acceptance-member-name'))
     },
+    clickAccept: () => {
+      return click('.acceptance-button-container > .acceptance-button')()
+    },
+    accepted: {
+      isVisible: () => {
+        return isElementVisible(S('.acceptance-title-success'))
+      }
+    },
     getAcceptButton: () => {
       return S('.acceptance-button-container > .acceptance-button')
     }
