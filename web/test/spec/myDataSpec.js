@@ -26,16 +26,14 @@ describe('MyData', () => {
       expect(mydata.getMemberName()).equal('HSL Helsingin Seudun Liikenne')
     })
     describe('Ja sallitaan kumppanin hakea käyttäjästä tietoja', () => {
-      before(
-        seq(
+      before(seq(
           mydata.clickAccept,
           wait.until(mydata.accepted.isVisible)
-        )
-      )
+      ))
       it('Näytetään nappi josta voidaan palata palveluntarjoajan sivulle', () => {
-        expect(S('.acceptance-return-button').isVisible)
+        expect(mydata.accepted.isReturnButtonVisible()).to.equal(true)
+        expect(extractAsText(S('a[href^="/koski/user/logout?target=http://example.org"]'))).equal('Palaa palveluntarjoajan sivulle')
       })
     })
   })
-
 })

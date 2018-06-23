@@ -1,7 +1,7 @@
 const MyDataPage = () => {
   const api = {
     openPage: () => {
-      return openPage('/koski/omadata/hsl', () => true )()
+      return openPage('/koski/omadata/hsl?callback=http://example.org', () => true )()
     },
     go: () => {
       return openPage('/koski/omadata/hsl')()
@@ -30,6 +30,9 @@ const MyDataPage = () => {
     accepted: {
       isVisible: () => {
         return isElementVisible(S('.acceptance-title-success'))
+      },
+      isReturnButtonVisible: () => {
+        return isElementVisible(S('.acceptance-return-button'))
       }
     },
     getAcceptButton: () => {
