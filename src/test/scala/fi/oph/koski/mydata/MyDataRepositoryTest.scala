@@ -11,6 +11,8 @@ class MyDataRepositoryTest extends FreeSpec with Matchers {
   val oid = "1.2.3.4.5" // student ID
   val memberId = "hsl"
 
+  val anotherOid = "5.4.3.2.1" // another student ID
+
   "MyDataRepository" - {
     "Kannan tyhjennys" in {
       KoskiApplicationForTests.mydataRepository.delete(oid, memberId)
@@ -22,6 +24,17 @@ class MyDataRepositoryTest extends FreeSpec with Matchers {
       KoskiApplicationForTests.mydataRepository.create(oid, memberId) should equal(true)
       KoskiApplicationForTests.mydataRepository.getAll(oid).toList.length should equal(1)
       KoskiApplicationForTests.mydataRepository.getAll(oid).toList.head.asiakas should equal(memberId)
+    }
+    "Käyttäjä voi antaa monta hyväksyntää" in {
+      KoskiApplicationForTests.mydataRepository.create(oid, memberId) should equal(true)
+      KoskiApplicationForTests.mydataRepository.create(oid, memberId) should equal(true)
+      KoskiApplicationForTests.mydataRepository.create(oid, memberId) should equal(true)
+      KoskiApplicationForTests.mydataRepository.getAll(oid).toList.length should equal(1)
+      KoskiApplicationForTests.mydataRepository.getAll(oid).toList.head.asiakas should equal(memberId)
+    }
+    "Useat käyttäjät voivat antaa hyväksynnän" in {
+      KoskiApplicationForTests.mydataRepository.create(anotherOid, memberId) should equal(true)
+      KoskiApplicationForTests.mydataRepository.getAll(anotherOid).toList.length should equal(1)
     }
     "Käyttäjä voi poistaa hyväksynnän" in {
       KoskiApplicationForTests.mydataRepository.delete(oid, memberId) should equal(HttpStatus.ok)
