@@ -58,11 +58,15 @@ class HyvaksyntaLanding extends React.Component {
           this.setState({error: t('Tallennus epäonnistui')})
         }
       })
-      .onValue(() => {
-        console.log(`Permissions added for ${memberCode}`)
-        this.setState({
-          authorizationGiven: true
-        })
+      .onValue((response) => {
+        if (response.success === true) {
+          console.log(`Permissions added for ${memberCode}`)
+          this.setState({
+            authorizationGiven: true
+          })
+        } else {
+          this.setState({error: t('Tallennus epäonnistui')})
+        }
       })
   }
 
