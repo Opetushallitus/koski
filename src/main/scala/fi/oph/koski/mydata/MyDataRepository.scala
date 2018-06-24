@@ -29,7 +29,6 @@ class MyDataRepository(val db: DB) extends Logging with DatabaseExecutionContext
 
     try {
       runDbSync(MyDataJako.insertOrUpdate(MyDataJakoRow(
-        0,
         asiakas,
         oppijaOid,
         Date.valueOf(expirationDate),
