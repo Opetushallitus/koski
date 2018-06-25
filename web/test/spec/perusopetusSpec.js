@@ -2605,11 +2605,12 @@ describe('Perusopetus', function() {
             opinnot.valitseSuoritus(undefined, 'Päättötodistus'),
             wait.forAjax,
             opinnot.oppiaineet.uusiOppiaine('.pakolliset').selectValue('Matematiikka'),
-            opinnot.oppiaineet.merkitseOppiaineetValmiiksi,
+            opinnot.oppiaineet.oppiaine(0).propertyBySelector('.arvosana').selectValue('S'),
+            opinnot.oppiaineet.oppiaine(0).propertyBySelector('.sanallinen-arviointi .kuvaus').setValue('Hienoa työtä'),
             editor.saveChanges
           )
 
-          it('Ensin piilottaa oppiaineiden arvosanat', function() {
+          it('Ensin piilottaa oppiaineiden arvosanat (ja sanallisen arvioinnin)', function() {
             expect(extractAsText(S('.oppiaineet'))).to.equal(
               'Oppiaineiden arvosanat\nArvostelu 4-10, S (suoritettu) tai H (hylätty)\nPakolliset oppiaineet\nOppiaine\nMatematiikka'
             )
@@ -2626,7 +2627,7 @@ describe('Perusopetus', function() {
 
             it('näyttää oppiaineiden arvosanat', function() {
               expect(extractAsText(S('.oppiaineet'))).to.equal(
-                'Oppiaineiden arvosanat\nArvostelu 4-10, S (suoritettu) tai H (hylätty)\nPakolliset oppiaineet\nOppiaine Arvosana\nMatematiikka 5'
+                'Oppiaineiden arvosanat\nArvostelu 4-10, S (suoritettu) tai H (hylätty)\nPakolliset oppiaineet\nOppiaine Arvosana\nMatematiikka S\nSanallinen arviointi Hienoa työtä'
               )
             })
 
