@@ -1,7 +1,7 @@
 package fi.oph.koski.ytr
 
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.localization.LocalizationRepository
+import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
@@ -13,18 +13,21 @@ case class YtrOppijaConverter(oppilaitosRepository: OppilaitosRepository, koodis
       .flatMap(_.toKoulutustoimija)
       .getOrElse(throw new IllegalStateException(("Ylioppilastutkintolautakuntaorganisaatiota ei löytynyt organisaatiopalvelusta")))
 
+    val vahvistus: Option[Organisaatiovahvistus] = ytrOppija.graduationDate.map { graduationDate =>
+      val helsinki: Koodistokoodiviite = koodistoViitePalvelu.validate("kunta", "091").getOrElse(throw new IllegalStateException("Helsingin kaupunkia ei löytynyt koodistopalvelusta"))
+      Organisaatiovahvistus(graduationDate, helsinki, ytl.toOidOrganisaatio)
+    }
+
     val oppilaitos = ytrOppija.graduationSchoolOphOid.flatMap(oid => oppilaitosRepository.findByOid(oid) match  {
       case None =>
         logger.error(s"Oppilaitosta $oid ei löydy")
         None
       case Some(oppilaitos) =>
-        Some(oppilaitos)
+        vahvistus
+          .flatMap(v => organisaatioRepository.getOrganisaationNimiHetkellä(oppilaitos.oid, v.päivä))
+          .map(n => oppilaitos.copy(nimi = Some(n)))
+          .orElse(Some(oppilaitos))
     })
-
-    val vahvistus = ytrOppija.graduationDate.map { graduationDate =>
-      val helsinki: Koodistokoodiviite = koodistoViitePalvelu.validate("kunta", "091").getOrElse(throw new IllegalStateException("Helsingin kaupunkia ei löytynyt koodistopalvelusta"))
-      Organisaatiovahvistus(graduationDate, helsinki, ytl.toOidOrganisaatio)
-    }
 
     Some(YlioppilastutkinnonOpiskeluoikeus(
       lähdejärjestelmänId = Some(LähdejärjestelmäId(None, requiredKoodi("lahdejarjestelma", "ytr"))),
