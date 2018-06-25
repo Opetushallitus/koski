@@ -20,6 +20,10 @@ class MyDataAPIProxyServletTest extends FreeSpec with LocalJettyHttpSpecificatio
     }
 
     "Ei palauta mitään mikäli käyttäjä ei ole antanut lupaa" in {
+      authGet(s"api/omadata/oppija/${oid}", headers = Map("X-ROAD-MEMBER" -> "2769790-1")) {
+        status should equal(400)
+        body should include("X-ROAD-MEMBER:llä ei ole lupaa hakea opiskelijan tietoja")
+      }
     }
 
   }
