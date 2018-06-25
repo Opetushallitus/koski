@@ -29,12 +29,7 @@ class OpintosuoritusoteHtml(implicit val user: KoskiSession, val localizationRep
 
   def korkeakoulu(ht: TäydellisetHenkilötiedot, opiskeluoikeudet: List[KorkeakoulunOpiskeluoikeus]): Elem = {
     def ensisijainenOpiskeluoikeus(opiskeluoikeudet: List[Opiskeluoikeus]): Option[KorkeakoulunOpiskeluoikeus] = {
-      opiskeluoikeudet.collect { case oo: KorkeakoulunOpiskeluoikeus => oo }
-        .find(_.ensisijaisuus.exists { _.loppu match {
-        case None => true
-        case Some(pp) => pp.isAfter(LocalDate.now())
-      }
-      })
+      opiskeluoikeudet.collectFirst { case oo: KorkeakoulunOpiskeluoikeus if oo.lisätiedot.exists(_.ensisijaisuusVoimassa(LocalDate.now)) => oo }
     }
 
     def tutkinnotHtml(oo: Opiskeluoikeus) = oo.suoritukset.filter(s => s.valmis && s.koulutusmoduuli.isTutkinto).map { t =>
@@ -58,7 +53,7 @@ class OpintosuoritusoteHtml(implicit val user: KoskiSession, val localizationRep
               </tr>
               <tr>
                 <td>Voimassa</td>
-                <td>{ensisijainen.ensisijaisuus.toList.map(e => dateFormatter.format(e.alku) + " - " + e.loppu.map(dateFormatter.format(_)).getOrElse(""))}</td>
+                <td>{ensisijainen.lisätiedot.flatMap(_.ensisijaisuus).getOrElse(List.empty).map((e: Aikajakso) => dateFormatter.format(e.alku) + " - " + e.loppu.map(dateFormatter.format(_)).getOrElse("")).mkString(", ")}</td>
               </tr>
             </table>
           </section>

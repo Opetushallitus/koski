@@ -5,7 +5,7 @@ import java.time.LocalDate
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedString._
 import fi.oph.koski.localization.LocalizedStringImplicits._
-import fi.oph.koski.schema.annotation.{FlattenInUI, KoodistoKoodiarvo, KoodistoUri}
+import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation.{Description, Title}
 
 case class KorkeakoulunOpiskeluoikeus(
@@ -17,22 +17,26 @@ case class KorkeakoulunOpiskeluoikeus(
   päättymispäivä: Option[LocalDate] = None,
   @Description("Jos tämä on opiskelijan ensisijainen opiskeluoikeus tässä oppilaitoksessa, ilmoitetaan tässä ensisijaisuuden tiedot")
   tila: KorkeakoulunOpiskeluoikeudenTila,
-  ensisijaisuus: Option[Ensisijaisuus] = None,
+  lisätiedot: Option[KorkeakoulunOpiskeluoikeudenLisätiedot] = None,
   suoritukset: List[KorkeakouluSuoritus],
   @KoodistoKoodiarvo("korkeakoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulutus", Some("Korkeakoulutus"), "opiskeluoikeudentyyppi", None),
   synteettinen: Boolean = false
 ) extends Opiskeluoikeus {
   override def versionumero = None
-  override def lisätiedot = None
   override def sisältyyOpiskeluoikeuteen = None
 }
 
-@Description("Ensisijaisuustiedot sisältävät alku- ja loppupäivämäärän")
-case class Ensisijaisuus(
-  alku: LocalDate,
-  loppu: Option[LocalDate]
-) extends Jakso
+@Description("Korkeakoulun opiskeluoikeuden lisätiedot")
+case class KorkeakoulunOpiskeluoikeudenLisätiedot(
+  ensisijaisuus: Option[List[Aikajakso]] = None,
+  @Title("Korkeakoulun opiskeluoikeuden tyyppi")
+  @KoodistoUri("virtaopiskeluoikeudentyyppi")
+  virtaOpiskeluoikeudenTyyppi: Option[Koodistokoodiviite],
+  lukukausiIlmoittautuminen: Option[Lukukausi_Ilmoittautuminen] = None
+) extends OpiskeluoikeudenLisätiedot {
+  def ensisijaisuusVoimassa(d: LocalDate): Boolean = ensisijaisuus.exists(_.exists((j: Aikajakso) => j.contains(d)))
+}
 
 trait KorkeakouluSuoritus extends PäätasonSuoritus with MahdollisestiSuorituskielellinen with Toimipisteellinen {
   def toimipiste: Oppilaitos
@@ -136,3 +140,16 @@ case class KorkeakoulunPaikallinenArviointi(
 ) extends PaikallinenArviointi with KorkeakoulunArviointi {
   override def arvioitsijat: Option[List[Arvioitsija]] = None
 }
+
+case class Lukukausi_Ilmoittautuminen(
+  ilmoittautumisjaksot: List[Lukukausi_Ilmoittautumisjakso]
+)
+
+case class Lukukausi_Ilmoittautumisjakso(
+  alku: LocalDate,
+  loppu: Option[LocalDate],
+  @KoodistoUri("virtalukukausiilmtila")
+  tila: Koodistokoodiviite,
+  ylioppilaskunnanJäsen: Option[Boolean] = None,
+  ythsMaksettu: Option[Boolean] = None
+) extends Jakso

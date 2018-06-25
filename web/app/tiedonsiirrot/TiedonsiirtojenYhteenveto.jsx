@@ -21,9 +21,9 @@ export const tiedonsiirtojenYhteenvetoContentP = (queryString) => onlyIfHasReadA
         <tr>
           <SortingTableHeader field="oppilaitos" titleKey='Oppilaitos' default="asc"/>
           <SortingTableHeader field="aika" titleKey='Viimeisin siirto'/>
-          <th className="siirretyt"><Text name="Siirrettyjen lukumäärä"/></th>
-          <th className="virheelliset"><Text name="Virheellisten lukumäärä"/></th>
-          <th className="opiskeluoikeudet"><Text name="Onnistuneiden lukumäärä"/></th>
+          <SortingTableHeader field="siirretyt" titleKey='Siirrettyjen lukumäärä'/>
+          <SortingTableHeader field="virheelliset" titleKey='Virheellisten lukumäärä'/>
+          <SortingTableHeader field="onnistuneet" titleKey='Onnistuneiden lukumäärä'/>
           <th className="lähdejärjestelmä"><Text name="Lähdejärjestelmä"/></th>
           <th className="lähdejärjestelmä"><Text name="Käyttäjä"/></th>
         </tr>

@@ -30,7 +30,7 @@ export class PerusopetuksenOppiaineRowEditor extends React.Component {
     let showExpand = extraProperties.length > 0
 
     let sanallinenArvioProperties = modelProperties(modelLookup(model, 'arviointi.-1'), p => p.key === 'kuvaus')
-    let showSanallinenArvio = (model.context.edit && sanallinenArvioProperties.length > 0) || sanallinenArvioProperties.filter(p => !modelEmpty(p.model)).length > 0
+    let showSanallinenArvio = (model.context.edit && sanallinenArvioProperties.length > 0) || (showArvosana && sanallinenArvioProperties.filter(p => !modelEmpty(p.model)).length > 0)
 
     return (<tbody className={className}>
     <tr>

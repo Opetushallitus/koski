@@ -1937,7 +1937,7 @@ describe('Ammatillinen koulutus', function() {
     describe('Kun käyttäjällä ei ole luottamuksellinen-roolia', function() {
       before(Authentication().logout, Authentication().login('stadin-vastuu'), page.openPage, page.oppijaHaku.searchAndSelect('010101-123N'), opinnot.expandAll)
       it('piilotettu', function() {
-        expect(extractAsText(S('.lisätiedot'))).to.equal('Lisätiedot')
+        expect(isElementVisible(S('.lisätiedot'))).to.equal(false)
       })
     })
   })

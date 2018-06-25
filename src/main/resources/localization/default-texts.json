@@ -614,6 +614,7 @@
   "description:Lukiokoulutuksen tunnistetiedot" : "Lukiokoulutuksen tunnistetiedot",
   "description:Näyttötutkintoon valmistavan koulutuksen tunnistetiedot" : "Näyttötutkintoon valmistavan koulutuksen tunnistetiedot",
   "description:Korkeakoulun opintojakson tunnistetiedot" : "Korkeakoulun opintojakson tunnistetiedot",
+  "description:Korkeakoulun opiskeluoikeuden lisätiedot" : "Korkeakoulun opiskeluoikeuden lisätiedot",
   "description:Muut kuin tutkintoon johtavat opiskeluoikeudet,..." : "Muut kuin tutkintoon johtavat opiskeluoikeudet, joilla ei ole koulutuskoodia",
   "description:Muun korkeakoulun opinnon tunnistetiedot" : "Muun korkeakoulun opinnon tunnistetiedot",
   "description:Opintojen suorituskieli" : "Opintojen suorituskieli",
@@ -1052,6 +1053,17 @@
   "Paikallinen kurssi": "Paikallinen kurssi",
   "Paikallinen oppiaine": "Paikallinen oppiaine",
   "Paikallinen kurssi tai oppiaine": "Paikallinen kurssi tai oppiaine",
+  "Korkeakoulun opiskeluoikeuden tyyppi" : "Korkeakoulun opiskeluoikeuden tyyppi",
+  "description:Käytetään tilanteessa jossa oppija opiskelee..." : "Käytetään tilanteessa jossa oppija opiskelee yksittäisen oppiaineen erityisenä tutkintona",
+  "Koski-järjestelmässä tapahtui virhe, ole hyvä ja yritä myöhemmin uudelleen": "Koski-järjestelmässä tapahtui virhe, ole hyvä ja yritä myöhemmin uudelleen",
+  "Palaa etusivulle": "Palaa etusivulle",
+  "Oma Opintopolku" : "Oma Opintopolku",
+  "Myöntäjä" : "Myöntäjä",
+  "Ilmoittautumispäivä" : "Ilmoittautumispäivä",
+  "Yths maksettu" : "Yths maksettu",
+  "Ylioppilaskunnan jäsen" : "Ylioppilaskunnan jäsen",
+  "Lukukausi ilmoittautuminen" : "Lukukausi-ilmoittautuminen",
+  "Ilmoittautumisjaksot" : "Ilmoittautumisjaksot",
   "Henkilökohtaisten tietojen käyttö": "Henkilökohtaisten opintotietojen käyttö",
   "Omadata hyväksyntä otsikko": "Hyväksymällä sallit kyseisen palveluntarjoajan näkevän tietojasi. Tietojasi ei luovuteta eteenpäin eikä käytetä markkinointitarkoituksiin.",
   "Palveluntarjoaja näkee": "Palveluntarjoaja näkee",
@@ -1064,10 +1076,6 @@
   "Voit hallita tietojasi": "Voit hallita omien tietojesi jakamista Oma Opintopolku -palvelussa.",
   "Palataan palveluntarjoajan sivulle": "Palataan palveluntarjoajan sivulle 3 sekunnin kuluttua...",
   "Sinun tulee olla kirjautunut sisään" : "Sinun tulee olla kirjautunut sisään",
-  "Tallennus epäonnistui": "Tallennus epäonnistui",
-  "description:Käytetään tilanteessa jossa oppija opiskelee..." : "Käytetään tilanteessa jossa oppija opiskelee yksittäisen oppiaineen erityisenä tutkintona",
-  "Koski-järjestelmässä tapahtui virhe, ole hyvä ja yritä myöhemmin uudelleen": "Koski-järjestelmässä tapahtui virhe, ole hyvä ja yritä myöhemmin uudelleen",
-  "Palaa etusivulle": "Palaa etusivulle",
-  "Oma Opintopolku" : "Oma Opintopolku"
+  "Tallennus epäonnistui": "Tallennus epäonnistui"
 }
 

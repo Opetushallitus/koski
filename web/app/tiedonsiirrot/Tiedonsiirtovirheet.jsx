@@ -11,7 +11,7 @@ import {userP} from '../util/user'
 import Bacon from 'baconjs'
 
 export const tiedonsiirtovirheetContentP = (queryString) => {
-  const pager = Pager('/koski/api/tiedonsiirrot/virheet' + queryString, L.prop('henkilöt'))
+  const pager = Pager('/koski/api/tiedonsiirrot/virheet' + queryString, L.prop('henkilöt'), 1000)
 
   const selected = Atom([])
   const deleting = Atom(false)

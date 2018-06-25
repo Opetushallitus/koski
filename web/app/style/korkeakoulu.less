@@ -1,0 +1,19 @@
+.oppija .opiskeluoikeus .opiskeluoikeus-content .properties:not(.inline) > table .lukukausiIlmoittautuminen table.tabular-array {
+  &.lukukausi-ilmoittautumiset {
+    margin-top: 0;
+  }
+
+  tr.active {
+    font-weight: 600;
+  }
+
+  @media @media-phone {
+    &.lukukausi-ilmoittautumiset {
+      margin-top: 4px;
+    }
+
+    & > thead > tr > th, & > tbody > tr > td {
+      padding: 2px 5px;
+    }
+  }
+}

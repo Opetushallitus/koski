@@ -10,11 +10,10 @@ import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedString.{finnish, sanitize}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.log.Logging
-import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.oppilaitos.{MockOppilaitosRepository, OppilaitosRepository}
 import fi.oph.koski.schema._
-import fi.oph.koski.util.OptionalLists
 import fi.oph.koski.util.OptionalLists.optionalList
+import fi.oph.koski.virta.VirtaXMLConverterUtils._
 
 import scala.xml.Node
 case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu) extends Logging {
@@ -36,17 +35,20 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
 
       val suoritukset: List[KorkeakouluSuoritus] = opiskeluOikeudenSuoritukset.flatMap(convertSuoritus(_, suoritusNodeList))
 
+      val oppilaitos: Option[Oppilaitos] = optionalOppilaitos(opiskeluoikeusNode)
       val opiskeluoikeus = KorkeakoulunOpiskeluoikeus(
         lähdejärjestelmänId = Some(LähdejärjestelmäId(Some(opiskeluoikeusNode \ "@avain" text), requiredKoodi("lahdejarjestelma", "virta"))),
         arvioituPäättymispäivä = None,
         päättymispäivä = loppuPvm(opiskeluoikeusNode),
-        oppilaitos = optionalOppilaitos(opiskeluoikeusNode),
+        oppilaitos = oppilaitos,
         koulutustoimija = None,
         suoritukset = lisääKeskeneräinenTutkintosuoritus(suoritukset, opiskeluoikeusNode, opiskeluoikeudenTila),
         tila = opiskeluoikeudenTila,
-        ensisijaisuus = (opiskeluoikeusNode \ "Ensisijaisuus").headOption.map { e => // TODO, should this be a list ?
-          Ensisijaisuus(alkuPvm(e), loppuPvm(e))
-        }
+        lisätiedot = Some(KorkeakoulunOpiskeluoikeudenLisätiedot(
+          ensisijaisuus = Some((opiskeluoikeusNode \ "Ensisijaisuus").toList.map { e => Aikajakso(alkuPvm(e), loppuPvm(e)) }).filter(_.nonEmpty),
+          virtaOpiskeluoikeudenTyyppi = Some(opiskeluoikeudenTyyppi(opiskeluoikeusNode)),
+          lukukausiIlmoittautuminen = lukukausiIlmoittautuminen(oppilaitos, opiskeluoikeudenTila, avain(opiskeluoikeusNode), virtaXml)
+        ))
       )
 
       (muutSuoritukset, opiskeluoikeus :: opiskeluOikeudet)
@@ -94,23 +96,21 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         ) :: muutSuoritukset
       }
     }.orElse {
-      optionalOppilaitos(opiskeluoikeusNode).flatMap(oppilaitos => {
-        koodistoViitePalvelu.validate("virtaopiskeluoikeudentyyppi", (opiskeluoikeusNode \ "Tyyppi").text)
-          .map(virtaOpiskeluoikeudenTyyppi => {
-            val nimi = Some((opiskeluoikeusNode \\ "@koulutusmoduulitunniste").text.stripPrefix("#").stripSuffix("/").trim)
-              .filter(_.nonEmpty).map(finnish).getOrElse(virtaOpiskeluoikeudenTyyppi.description)
-            MuuKorkeakoulunSuoritus(
-              koulutusmoduuli = MuuKorkeakoulunOpinto(
-                tunniste = virtaOpiskeluoikeudenTyyppi,
-                nimi = nimi,
-                laajuus = laajuus(opiskeluoikeusNode)
-              ),
-              vahvistus = vahvistusOpiskeluoikeudenTilausta(oppilaitos),
-              suorituskieli = None,
-              osasuoritukset = None,
-              toimipiste = oppilaitos
-            ) :: suoritukset
-          })
+      optionalOppilaitos(opiskeluoikeusNode).map(oppilaitos => {
+        val virtaOpiskeluoikeudenTyyppi = opiskeluoikeudenTyyppi(opiskeluoikeusNode)
+        val nimi = Some((opiskeluoikeusNode \\ "@koulutusmoduulitunniste").text.stripPrefix("#").stripSuffix("/").trim)
+          .filter(_.nonEmpty).map(finnish).getOrElse(virtaOpiskeluoikeudenTyyppi.description)
+        MuuKorkeakoulunSuoritus(
+          koulutusmoduuli = MuuKorkeakoulunOpinto(
+            tunniste = virtaOpiskeluoikeudenTyyppi,
+            nimi = nimi,
+            laajuus = laajuus(opiskeluoikeusNode)
+          ),
+          vahvistus = vahvistusOpiskeluoikeudenTilausta(oppilaitos),
+          suorituskieli = None,
+          osasuoritukset = None,
+          toimipiste = oppilaitos
+        ) +: suoritukset
       })
     }.getOrElse(suoritukset)
   }
@@ -137,6 +137,28 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         None
     }
   }
+
+  private def lukukausiIlmoittautuminen(oppilaitos: Option[Oppilaitos], tila: KorkeakoulunOpiskeluoikeudenTila, opiskeluoikeusAvain: String, virtaXml: Node): Option[Lukukausi_Ilmoittautuminen] = {
+    val ilmo = Ilmoittautuminen(oppilaitos, tila, opiskeluoikeusAvain, virtaXml)
+    val ilmot = (virtaXml \\ "LukukausiIlmoittautuminen").toList
+      .filter(ilmo.kuuluuOpiskeluoikeuteen)
+      .map(lukukausiIlmo)
+      .sortBy(_.alku)(DateOrdering.localDateOrdering)
+
+    optionalList(ilmot).map(Lukukausi_Ilmoittautuminen)
+  }
+
+  private def lukukausiIlmo(n: Node) = Lukukausi_Ilmoittautumisjakso(
+    alku = alkuPvm(n),
+    loppu = loppuPvm(n),
+    tila = koodistoViitePalvelu.validate(Koodistokoodiviite((n \ "Tila").text, "virtalukukausiilmtila")).getOrElse(lukukausiIlmottautuminenPuuttuu),
+    ylioppilaskunnanJäsen = (n \ "YlioppilaskuntaJasen").headOption.map(toBoolean),
+    ythsMaksettu = (n \ "YTHSMaksu").headOption.map(toBoolean)
+  )
+
+  private val virtaTruths = List("1", "true")
+  private def toBoolean(n: Node) = virtaTruths.contains(n.text.toLowerCase)
+  private lazy val lukukausiIlmottautuminenPuuttuu = koodistoViitePalvelu.validateRequired(Koodistokoodiviite("4", "virtalukukausiilmtila"))
 
   private def convertOpintojaksonSuoritus(suoritus: Node, allNodes: List[Node]): KorkeakoulunOpintojaksonSuoritus = {
     val osasuoritukset = childNodes(suoritus, allNodes).map(convertOpintojaksonSuoritus(_, allNodes))
@@ -225,53 +247,17 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     koodistoViitePalvelu.validateRequired(uri, koodi)
   }
 
+  private def opiskeluoikeudenTyyppi(opiskeluoikeus: Node): Koodistokoodiviite = {
+    requiredKoodi("virtaopiskeluoikeudentyyppi", (opiskeluoikeus \ "Tyyppi").text)
+  }
+
   private def tutkinto(koulutuskoodi: String): Korkeakoulututkinto = {
     Korkeakoulututkinto(requiredKoodi("koulutus", koulutuskoodi))
-  }
-
-  private def loppuPvm(n: Node): Option[LocalDate] = {
-    (n \ "LoppuPvm").headOption.flatMap(l => optionalDate(l.text))
-  }
-
-  private def opiskelijaAvain(node: Node) = {
-    (node \ "@opiskelijaAvain").text
-  }
-
-  private def avain(node: Node) = {
-    (node \ "@avain").text
-  }
-
-  private def alkuPvm(node: Node) = {
-    date((node \ "AlkuPvm").text)
-  }
-
-  private def myöntäjä(node: Node) = {
-    (node \ "Myontaja" \ "Koodi").text
-  }
-
-  private def laji(node: Node) = {
-    (node \ "Laji").text
-  }
-
-  private def optionalDate(str: String): Option[LocalDate] = {
-    if (str == "2112-12-21") {
-      None
-    } else {
-      Some(date(str))
-    }
-  }
-
-  private def koulutuskoodi(node: Node): Option[String] = {
-    (node \\ "Koulutuskoodi").headOption.map(_.text)
   }
 
   private def nimi(suoritus: Node): LocalizedString = {
     sanitize((suoritus \\ "Nimi" map (nimi => (nimi \ "@kieli" text, nimi text))).toMap).getOrElse(finnish("Suoritus: " + avain(suoritus)))
   }
-
-  // huom, tässä kentässä voi olla oppilaitosnumeron lisäksi muitakin arvoja, esim. "UK" = "Ulkomainen korkeakoulu"
-  // https://confluence.csc.fi/display/VIRTA/Tietovarannon+koodistot#Tietovarannonkoodistot-Organisaatio
-  private def oppilaitosnumero(node: Node): Option[String] = (node \ "Myontaja" headOption).map(_.text)
 
   private def oppilaitos(node: Node): Oppilaitos = {
     val numero = oppilaitosnumero(node)
@@ -299,4 +285,75 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       None
     }
   }
+}
+
+case class Ilmoittautuminen(oppilaitos: Option[Oppilaitos], tila: KorkeakoulunOpiskeluoikeudenTila, ooAvain: String, virtaXml: Node) {
+  private lazy val jaksot = tila.opiskeluoikeusjaksot.map(Some.apply)
+  private lazy val kaikkiJaksot = jaksot.zipAll(jaksot.drop(1), None, None)
+  private lazy val aktiivisetJaksot = kaikkiJaksot.collect {
+    case (Some(a), b) if a.tila.koodiarvo == "1" => LoppupäivällinenOpiskeluoikeusJakso(a.alku, b.map(_.alku))
+  }
+
+  def kuuluuOpiskeluoikeuteen(n: Node): Boolean = {
+    val jaksonOpiskeluoikeusAvain = opiskeluoikeusAvain(n)
+    if (jaksonOpiskeluoikeusAvain.nonEmpty) {
+      ooAvain == jaksonOpiskeluoikeusAvain
+    } else {
+      oppilaitosnumero(n).exists(myöntäjä => kuuluuOpiskeluoikeuteen(LoppupäivällinenOpiskeluoikeusJakso(alkuPvm(n), loppuPvm(n)), myöntäjä))
+    }
+  }
+
+  private def kuuluuOpiskeluoikeuteen(ilmoittautuminen: Jakso, myöntäjä: String) = {
+    val oppilaitosNumero = oppilaitos.flatMap(_.oppilaitosnumero.map(_.koodiarvo))
+    oppilaitosNumero.contains(myöntäjä) && aktiivisetJaksot.exists(_.overlaps(ilmoittautuminen))
+  }
+
+  private def opiskeluoikeusAvain(node: Node) = (node \ "@opiskeluoikeusAvain").text
+}
+
+case class LoppupäivällinenOpiskeluoikeusJakso(
+  alku: LocalDate,
+  loppu: Option[LocalDate]
+) extends Jakso
+
+object VirtaXMLConverterUtils {
+  def loppuPvm(n: Node): Option[LocalDate] = {
+    (n \ "LoppuPvm").headOption.flatMap(l => optionalDate(l.text))
+  }
+
+  def opiskelijaAvain(node: Node) = {
+    (node \ "@opiskelijaAvain").text
+  }
+
+  def avain(node: Node) = {
+    (node \ "@avain").text
+  }
+
+  def alkuPvm(node: Node) = {
+    date((node \ "AlkuPvm").text)
+  }
+
+  def myöntäjä(node: Node) = {
+    (node \ "Myontaja" \ "Koodi").text
+  }
+
+  def laji(node: Node) = {
+    (node \ "Laji").text
+  }
+
+  def optionalDate(str: String): Option[LocalDate] = {
+    if (str == "2112-12-21") {
+      None
+    } else {
+      Some(date(str))
+    }
+  }
+
+  def koulutuskoodi(node: Node): Option[String] = {
+    (node \\ "Koulutuskoodi").headOption.map(_.text)
+  }
+
+  // huom, tässä kentässä voi olla oppilaitosnumeron lisäksi muitakin arvoja, esim. "UK" = "Ulkomainen korkeakoulu"
+  // https://confluence.csc.fi/display/VIRTA/Tietovarannon+koodistot#Tietovarannonkoodistot-Organisaatio
+  def oppilaitosnumero(node: Node): Option[String] = (node \ "Myontaja" headOption).map(_.text)
 }

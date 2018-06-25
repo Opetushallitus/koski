@@ -1,5 +1,6 @@
 package fi.oph.koski.http
 
+import fi.oph.koski.log.LogUtils.maskSensitiveInformation
 import fi.oph.koski.log.Loggable
 import org.http4s.Request
 
@@ -20,4 +21,5 @@ object HttpConnectionException {
 
 abstract class LoggableException(msg: String) extends RuntimeException(msg) with Loggable {
   def logString = getMessage
+  override def getMessage: String = maskSensitiveInformation(super.getMessage)
 }

@@ -16,6 +16,7 @@ import {PerusopetuksenOppiaineRowEditor} from '../perusopetus/PerusopetuksenOppi
 import {OpiskeluoikeudenTilaEditor} from '../opiskeluoikeus/OpiskeluoikeudenTilaEditor'
 import {OsaaminenTunnustettuEditor} from '../suoritus/OsaaminenTunnustettuEditor'
 import genericEditors from '../editor/genericEditors'
+import {LukukausiIlmoittautuminenEditor} from '../opiskeluoikeus/LukukausiIlmoittautuminenEditor'
 
 const oppijaEditors = {
   'oppijaeditorview': OppijaEditor,
@@ -37,8 +38,9 @@ const oppijaEditors = {
   'osaamisentunnustaminen': OsaaminenTunnustettuEditor,
   // Perusopetus
   'perusopetuksenoppiaineensuoritus': PerusopetuksenOppiaineRowEditor,
-  'perusopetuksenlisaopetuksenoppiaineensuoritus': PerusopetuksenOppiaineRowEditor
-
+  'perusopetuksenlisaopetuksenoppiaineensuoritus': PerusopetuksenOppiaineRowEditor,
+  // Korkeakoulu
+  'lukukausi_ilmoittautuminen': LukukausiIlmoittautuminenEditor
 }
 
 // Combine all editor mappings into one object
