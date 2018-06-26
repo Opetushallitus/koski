@@ -380,7 +380,13 @@ class TiedonsiirtoService(
       "virheet" -> Map(
         "properties" -> Map(
           "key" -> Map(
-            "type" -> "text"
+            "type" -> "text",
+            "fields" -> Map(
+              "keyword" -> Map(
+                "ignore_above" -> 256,
+                "type" -> "keyword"
+              )
+            )
           )
         ),
         "dynamic" -> false
