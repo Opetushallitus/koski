@@ -1063,6 +1063,19 @@
   "Yths maksettu" : "Yths maksettu",
   "Ylioppilaskunnan jäsen" : "Ylioppilaskunnan jäsen",
   "Lukukausi ilmoittautuminen" : "Lukukausi-ilmoittautuminen",
-  "Ilmoittautumisjaksot" : "Ilmoittautumisjaksot"
+  "Ilmoittautumisjaksot" : "Ilmoittautumisjaksot",
+  "Henkilökohtaisten tietojen käyttö": "Henkilökohtaisten opintotietojen käyttö",
+  "Omadata hyväksyntä otsikko": "Hyväksymällä sallit kyseisen palveluntarjoajan näkevän tietojasi. Tietojasi ei luovuteta eteenpäin eikä käytetä markkinointitarkoituksiin.",
+  "Palveluntarjoaja näkee": "Palveluntarjoaja näkee",
+  "Näkee läsnäolotiedot": "läsnäolotiedot",
+  "Näkee oppilaitoksen tiedot": "oppilaitoksen tiedot",
+  "Hyväksy": "Hyväksy",
+  "Peruuta ja palaa": "Peruuta ja palaa palveluntarjoajan sivulle",
+  "Omadata hyväksytty otsikko": "Tietojen luovuttaminen onnistui",
+  "Palaa palveluntarjoajan sivulle": "Palaa palveluntarjoajan sivulle",
+  "Voit hallita tietojasi": "Voit hallita omien tietojesi jakamista Oma Opintopolku -palvelussa.",
+  "Palataan palveluntarjoajan sivulle": "Palataan palveluntarjoajan sivulle 3 sekunnin kuluttua...",
+  "Sinun tulee olla kirjautunut sisään" : "Sinun tulee olla kirjautunut sisään",
+  "Tallennus epäonnistui": "Tallennus epäonnistui"
 }
 

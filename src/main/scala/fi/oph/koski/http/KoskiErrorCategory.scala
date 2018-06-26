@@ -29,8 +29,17 @@ object KoskiErrorCategory {
       val virheellinenHenkilöOid = subcategory("virheellinenHenkilöOid", "Henkilö-oidin muoto on virheellinen. Esimerkki oikeasta muodosta: 1.2.246.562.24.00000000001.")
       val virheellinenOpiskeluoikeusOid = subcategory("virheellinenOpiskeluoikeusOid", "Opiskeluoikeus-oidin muoto on virheellinen. Esimerkki oikeasta muodosta: 1.2.246.562.15.00000000001.")
       val missing = subcategory ("missing", "Vaadittu kyselyparametri puuttuu")
+      val missingXRoadMemberId = subcategory("missing", "Vaadittu valtuutuksen kumppani-parametri puuttuu")
+      val invalidXRoadMemberId = subcategory("missing", "Annettua valtuutuksen kumppani-parametria ei ole olemassa")
     }
     val queryParam = new QueryParam
+
+    class Header extends ErrorCategory(badRequest, "header", "Epäkelpo otsikkokenttä") {
+      val missingXRoadHeader = subcategory("missing", "Vaadittu X-ROAD-MEMBER http-otsikkokenttä puuttuu")
+      val invalidXRoadHeader = subcategory("unknown", "X-ROAD-MEMBER:n tunnistetta ei ole olemassa")
+      val unauthorizedXRoadHeader = subcategory("unauthorized", "X-ROAD-MEMBER:llä ei ole lupaa hakea opiskelijan tietoja")
+    }
+    val header = new Header
 
     class Validation extends ErrorCategory(badRequest, "validation", "Syötteen validointi epäonnistui") {
       val jsonSchema = subcategory("jsonSchema", "JSON-schema -validointi epäonnistui. Paluuviestin sisällä virheilmoitukset JSON-muodossa.", JsonValidationErrorExample.example)
@@ -151,6 +160,7 @@ object KoskiErrorCategory {
     val oppilaitostaEiLöydy = subcategory("oppilaitostaEiLöydy", "Oppilaitosta ei löydy organisaatiopalvelusta.")
     val tutkintoaEiLöydy = subcategory("tutkintoaEiLöydy", "Tutkintoa ei löydy hakusanalla")
     val ryhmääEiLöydyRakenteesta = subcategory("ryhmääEiLöydyRakenteesta", "Pyydettyä tutkinnon osien ryhmää ei löydy tutkintorakenteesta")
+    val myDataMemberEiLöydy = subcategory("myDataMemberEilöydy", "OmaData kumppania ei löydy")
   }
 
   object conflict extends ErrorCategory("conflict", 409, "Ristiriitainen päivitys")  {

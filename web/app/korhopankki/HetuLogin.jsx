@@ -7,10 +7,7 @@ import {t} from '../i18n/i18n'
 import Input from '../components/Input'
 import Cookie from 'js-cookie'
 
-const LoginUrl = '/koski/user/shibbolethlogin'
-const RedirectUrl = '/koski/omattiedot'
-
-const HetuLogin = () => {
+const HetuLogin = ( { LoginUrl = '/koski/user/shibbolethlogin', RedirectUrl = '/koski/omattiedot' } ) => {
   const state = Atom({hetu: null, cn: null, FirstName: null, givenName: null, sn: null, lang: null})
 
   const valid = state.map(({hetu}) => {
