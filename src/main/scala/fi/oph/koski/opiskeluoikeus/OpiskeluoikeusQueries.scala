@@ -19,7 +19,7 @@ import rx.lang.scala.Observable
 
 trait OpiskeluoikeusQueries extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with Logging with GlobalExecutionContext with ObservableSupport with ContentEncodingSupport with Pagination {
   def application: KoskiApplication
-  def query = OpiskeluoikeusQueryContext(request, params, paginationSettings)(koskiSession, application).query match {
+  def query = OpiskeluoikeusQueryContext(request)(koskiSession, application).query(params, paginationSettings) match {
     case Right(observable) => observable
     case Left(status) => haltWithStatus(status)
   }
@@ -29,21 +29,26 @@ trait OpiskeluoikeusQueries extends ApiServlet with RequiresVirkailijaOrPalveluk
   *  Operating context for data streaming in queries. Operates outside the lecixal scope of OpiskeluoikeusQueries to ensure that none of the
   *  Scalatra threadlocals are used.
   */
-case class OpiskeluoikeusQueryContext(request: HttpServletRequest, params: Map[String, String], paginationSettings: Option[PaginationSettings])(implicit koskiSession: KoskiSession, application: KoskiApplication) extends Logging {
-  def query: Either[HttpStatus, Observable[(TäydellisetHenkilötiedot, List[OpiskeluoikeusRow])]] = {
+case class OpiskeluoikeusQueryContext(request: HttpServletRequest)(implicit koskiSession: KoskiSession, application: KoskiApplication) extends Logging {
+  def query(params: Map[String, String], paginationSettings: Option[PaginationSettings]): Either[HttpStatus, Observable[(TäydellisetHenkilötiedot, List[OpiskeluoikeusRow])]] = {
     logger(koskiSession).info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
 
     OpiskeluoikeusQueryFilter.parse(params.toList)(application.koodistoViitePalvelu, application.organisaatioRepository, koskiSession) match {
       case Right(filters) =>
-        AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_HAKU, koskiSession, Map(hakuEhto -> params.toList.map { case (p,v) => p + "=" + v }.mkString("&"))))
-        Right(query(filters))
+        AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_HAKU, koskiSession, Map(hakuEhto -> OpiskeluoikeusQueryContext.queryForAuditLog(params))))
+        Right(query(filters, paginationSettings))
       case Left(status) =>
         Left(status)
     }
   }
 
-  private def query(filters: List[OpiskeluoikeusQueryFilter]): Observable[(TäydellisetHenkilötiedot, List[OpiskeluoikeusRow])] = {
-    val oikeudetPerOppijaOid: Observable[(Oid, List[OpiskeluoikeusRow])] = streamingQueryGroupedByOid(filters)
+  def queryWithoutHenkilötiedotRaw(filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings], queryForAuditLog: String): Observable[(Oid, List[OpiskeluoikeusRow])] = {
+    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_HAKU, koskiSession, Map(hakuEhto -> queryForAuditLog)))
+    streamingQueryGroupedByOid(filters, paginationSettings)
+  }
+
+  private def query(filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings]): Observable[(TäydellisetHenkilötiedot, List[OpiskeluoikeusRow])] = {
+    val oikeudetPerOppijaOid: Observable[(Oid, List[OpiskeluoikeusRow])] = streamingQueryGroupedByOid(filters, paginationSettings)
     oikeudetPerOppijaOid.tumblingBuffer(10).flatMap {
       oppijatJaOidit: Seq[(Oid, List[OpiskeluoikeusRow])] =>
         val oids: List[String] = oppijatJaOidit.map(_._1).toList
@@ -63,7 +68,7 @@ case class OpiskeluoikeusQueryContext(request: HttpServletRequest, params: Map[S
     }
   }
 
-  def streamingQueryGroupedByOid(filters: List[OpiskeluoikeusQueryFilter]): Observable[(Oid, List[(OpiskeluoikeusRow)])] = {
+  private def streamingQueryGroupedByOid(filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings]): Observable[(Oid, List[(OpiskeluoikeusRow)])] = {
     val rows = application.opiskeluoikeusQueryRepository.opiskeluoikeusQuery(filters, Some(Ascending("oppijaOid")), paginationSettings)
 
     val groupedByPerson: Observable[List[(OpiskeluoikeusRow, HenkilöRow, Option[HenkilöRow])]] = rows
@@ -79,4 +84,9 @@ case class OpiskeluoikeusQueryContext(request: HttpServletRequest, params: Map[S
         Observable.empty
     }
   }
+}
+
+object OpiskeluoikeusQueryContext {
+  def queryForAuditLog(params: Map[String, String]) =
+    params.toList.sortBy(_._1).map { case (p,v) => p + "=" + v }.mkString("&")
 }
