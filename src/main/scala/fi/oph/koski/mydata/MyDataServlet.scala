@@ -29,7 +29,7 @@ class MyDataServlet(implicit val application: KoskiApplication) extends ApiServl
   post("/valtuutus/:memberCode") {
     def memberCode = params("memberCode")
 
-    if (memberCode == null) throw InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.missingXRoadMemberId)
+    if (memberCode == null) throw InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.missing("Vaadittu valtuutuksen kumppani-parametri puuttuu"))
 
     logger.info(s"Authorizing ${memberCode} for user: ${koskiSessionOption.getOrElse()}")
 
