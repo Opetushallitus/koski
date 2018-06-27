@@ -12,7 +12,7 @@ export default class HyvaksyntaAnnettu extends React.Component {
   }
 
   componentDidMount() {
-    // this.moveToCallbackURL()
+    this.moveToCallbackURL()
   }
 
   moveToCallbackURL() {
