@@ -41,10 +41,10 @@ describe('Muokkauspalkki', function () {
         wait.until(function () {
           return currentURL().endsWith('/koski/virkailija') && isElementVisible('.oppijataulukko')
         }),
+        wait.prepareForNavigation,
         goBack,
-        wait.until(function () {
-          return !currentURL().endsWith('/koski/')
-        })
+        wait.forNavigation,
+        wait.until(page.isVisible)
       )
 
       it('Pysyy piilossa', function () {
@@ -59,10 +59,10 @@ describe('Muokkauspalkki', function () {
         wait.until(function () {
           return currentURL().endsWith('/koski/virkailija') && isElementVisible('.oppijataulukko')
         }),
+        wait.prepareForNavigation,
         goBack,
-        wait.until(function () {
-          return !currentURL().endsWith('/koski/')
-        })
+        wait.forNavigation,
+        wait.until(page.isVisible)
       )
 
       it('Pysyy näkyvillä', function () {

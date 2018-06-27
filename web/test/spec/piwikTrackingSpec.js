@@ -56,7 +56,9 @@ describe('Piwik-seuranta', function() {
         describe('Klikatessa selaimen back-nappia', function() {
           before(
             piwik.reset,
+            wait.prepareForNavigation,
             goBack,
+            wait.forNavigation,
             koskiPage.waitUntilAnyOppijaSelected())
 
           it('Sivu raportoi lataamisen', function() {
@@ -67,7 +69,9 @@ describe('Piwik-seuranta', function() {
         describe('Klikatessa selaimen forward-nappia', function() {
           before(
             piwik.reset,
+            wait.prepareForNavigation,
             goForward,
+            wait.forNavigation,
             wait.until(koskiPage.isReady),
             wait.forAjax)
 
