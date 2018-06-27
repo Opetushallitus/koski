@@ -393,6 +393,7 @@ case class JatkoOpintovalmiuksiaTukeviaOpintoja(
 }
 
 @Title("Muun tutkinnon osan suoritus, korkeakouluopinnot")
+@OnlyWhen("../../suoritustapa/koodiarvo", "reformi")
 case class Korkeakouluopinnot(
   koulutusmoduuli: KorkeakouluopinnotTutkinnonOsa,
   @Description("Tieto siitä mihin tutkinnon osan ryhmään osan suoritus (Ammatilliset tutkinnon osat, Yhteiset tutkinnon osat, Vapaavalintaiset tutkinnon osat, Tutkintoa yksilöllisesti laajentavat tutkinnon osat) kuuluu")
