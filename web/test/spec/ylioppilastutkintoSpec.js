@@ -134,4 +134,18 @@ describe('Ylioppilastutkinto', function( ){
       )
     })
   })
+
+  describe('Oppilaitoksen nimi', function () {
+    before(page.oppijaHaku.searchAndSelect('120872-781Y'))
+    it('Näytetään oppilaitoksen nimi',  function() {
+      expect(OpinnotPage().getOppilaitos()).to.equal('Ressun lukio')
+    })
+
+    describe('Kun nimi on muuttunut', function () {
+      before(page.oppijaHaku.searchAndSelect('080640-881R'))
+      it('Näytetään oppilaitoksen nimi valmistumishetkellä', function () {
+        expect(OpinnotPage().getOppilaitos()).to.equal('Ressun lukio -vanha')
+      })
+    })
+  })
 })
