@@ -87,15 +87,15 @@ describe('Ylioppilastutkinto', function( ){
     it('kaikki osasuoritukset näkyvissä', function() {
         expect(extractAsText(S('.ylioppilastutkinnonsuoritus .osasuoritukset'))).to.equal(
           'Tutkintokerta Koe Pisteet Arvosana\n' +
-          '1996 kevät Reaali 8 Improbatur\n' +
-          '1996 syksy Englanninkielinen kypsyyskoe Cum laude approbatur\n' +
-          '1996 syksy Matematiikan koe, lyhyt oppimäärä 6 Improbatur\n' +
-          '1996 syksy Reaali 10 Improbatur\n' +
+          '1998 kevät Suomi, lyhyt oppimäärä 83 Improbatur\n' +
+          '1997 syksy Suomi, lyhyt oppimäärä 65 Improbatur\n' +
           '1997 kevät Suomi, lyhyt oppimäärä 67 Improbatur\n' +
           '1997 kevät Matematiikan koe, lyhyt oppimäärä 11 Approbatur\n' +
           '1997 kevät Reaali 15 Approbatur\n' +
-          '1997 syksy Suomi, lyhyt oppimäärä 65 Improbatur\n' +
-          '1998 kevät Suomi, lyhyt oppimäärä 83 Improbatur'
+          '1996 syksy Englanninkielinen kypsyyskoe Cum laude approbatur\n' +
+          '1996 syksy Matematiikan koe, lyhyt oppimäärä 6 Improbatur\n' +
+          '1996 syksy Reaali 10 Improbatur\n' +
+          '1996 kevät Reaali 8 Improbatur'
         )
     })
   })
@@ -122,15 +122,15 @@ describe('Ylioppilastutkinto', function( ){
     it('kaikki osasuoritukset näkyvissä', function() {
       expect(extractAsText(S('.ylioppilastutkinnonsuoritus .osasuoritukset'))).to.equal(
         'Tutkintokerta Koe Pisteet Arvosana\n' +
-        '1996 kevät Reaali 8 Improbatur\n' +
-        '1996 syksy Englanninkielinen kypsyyskoe Cum laude approbatur\n' +
-        '1996 syksy Matematiikan koe, lyhyt oppimäärä 6 Improbatur\n' +
-        '1996 syksy Reaali 10 Improbatur\n' +
+        '1998 kevät Suomi, lyhyt oppimäärä 83 Improbatur\n' +
+        '1997 syksy Suomi, lyhyt oppimäärä 65 Improbatur\n' +
         '1997 kevät Suomi, lyhyt oppimäärä 67 Improbatur\n' +
         '1997 kevät Matematiikan koe, lyhyt oppimäärä 11 Approbatur\n' +
         '1997 kevät Reaali 15 Approbatur\n' +
-        '1997 syksy Suomi, lyhyt oppimäärä 65 Improbatur\n' +
-        '1998 kevät Suomi, lyhyt oppimäärä 83 Improbatur'
+        '1996 syksy Englanninkielinen kypsyyskoe Cum laude approbatur\n' +
+        '1996 syksy Matematiikan koe, lyhyt oppimäärä 6 Improbatur\n' +
+        '1996 syksy Reaali 10 Improbatur\n' +
+        '1996 kevät Reaali 8 Improbatur'
       )
     })
   })
