@@ -26,12 +26,14 @@ class DocumentationServlet(implicit val application: KoskiApplication) extends S
     params.get("entity") match {
       case None => KoskiSchemaDocumentHtml.html(
         expandEntities = isHenkilöSchema,
-        shallowEntities = const(true)
+        shallowEntities = const(true),
+        lang = lang
       )
       case Some(focusEntityName) => KoskiSchemaDocumentHtml.html(
         focusEntities = { schema => schema.simpleName == focusEntityName },
         expandEntities = isHenkilöSchema,
-        shallowEntities = { schema: ClassSchema => schema.fullClassName == classOf[OsaamisenTunnustaminen].getName }
+        shallowEntities = { schema: ClassSchema => schema.fullClassName == classOf[OsaamisenTunnustaminen].getName },
+        lang = lang
       )
     }
   }
@@ -42,7 +44,7 @@ class DocumentationServlet(implicit val application: KoskiApplication) extends S
     val kielet = LocalizedString.languages
     findKoodisto match {
       case Some((koodisto, koodit)) =>
-        <html>
+        <html lang={lang}>
           <head>
             <title>Koodisto: { koodisto.koodistoUri } - Koski - Opintopolku.fi</title>
           </head>

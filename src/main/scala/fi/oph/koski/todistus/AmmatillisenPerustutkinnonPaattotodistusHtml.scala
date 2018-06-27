@@ -22,7 +22,7 @@ class AmmatillisenPerustutkinnonPaattotodistusHtml(implicit val user: KoskiSessi
     var kaikkiLisätiedot: List[AmmatillisenTutkinnonOsanLisätieto] = Nil
 
 
-    <html>
+    <html lang={lang}>
       <head>
         <link rel="stylesheet" type="text/css" href="/koski/css/todistus-common.css"></link>
         <link rel="stylesheet" type="text/css" href="/koski/css/todistus-ammatillinen-perustutkinto.css"></link>

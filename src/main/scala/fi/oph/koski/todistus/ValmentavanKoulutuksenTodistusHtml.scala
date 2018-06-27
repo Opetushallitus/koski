@@ -16,7 +16,7 @@ trait ValmentavanKoulutuksenTodistusHtml extends TodistusHtml {
   private def oppiaineet = todistus.osasuoritukset.toList.flatten
 
   def todistusHtml: Elem = {
-    <html>
+    <html lang={lang}>
       <head>
         <link rel="stylesheet" type="text/css" href="/koski/css/todistus-common.css"></link>
         <link rel="stylesheet" type="text/css" href="/koski/css/todistus-valmentava.css"></link>

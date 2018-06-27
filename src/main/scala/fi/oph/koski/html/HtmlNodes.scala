@@ -22,7 +22,7 @@ trait HtmlNodes extends KoskiBaseServlet with PiwikNodes with LanguageSupport {
 
   def htmlIndex(scriptBundleName: String, piwikHttpStatusCode: Option[Int] = None, raamit: Raamit = EiRaameja, scripts: NodeSeq = Empty, responsive: Boolean = false): Elem = {
     var bodyClasses = scriptBundleName.replace("koski-", "").replace(".js", "") + "-page"
-    <html>
+    <html lang={lang}>
       <head>
         {commonHead(responsive) ++ raamit.script ++ piwikTrackingScriptLoader(piwikHttpStatusCode)}
       </head>
