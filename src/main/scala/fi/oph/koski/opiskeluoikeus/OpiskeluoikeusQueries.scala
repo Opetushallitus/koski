@@ -35,7 +35,7 @@ case class OpiskeluoikeusQueryContext(request: HttpServletRequest)(implicit kosk
 
     OpiskeluoikeusQueryFilter.parse(params.toList)(application.koodistoViitePalvelu, application.organisaatioRepository, koskiSession) match {
       case Right(filters) =>
-        AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_HAKU, koskiSession, Map(hakuEhto -> params.toList.map { case (p,v) => p + "=" + v }.mkString("&"))))
+        AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_HAKU, koskiSession, Map(hakuEhto -> OpiskeluoikeusQueryContext.queryForAuditLog(params))))
         Right(query(filters, paginationSettings))
       case Left(status) =>
         Left(status)
@@ -84,4 +84,9 @@ case class OpiskeluoikeusQueryContext(request: HttpServletRequest)(implicit kosk
         Observable.empty
     }
   }
+}
+
+object OpiskeluoikeusQueryContext {
+  def queryForAuditLog(params: Map[String, String]) =
+    params.toList.sortBy(_._1).map { case (p,v) => p + "=" + v }.mkString("&")
 }
