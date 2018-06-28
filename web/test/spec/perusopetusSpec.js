@@ -2125,7 +2125,9 @@ describe('Perusopetus', function() {
         before(
           prepareForNewOppija('kalle', '230872-7258'),
           addOppija.enterValidDataPerusopetus(),
+          wait.prepareForNavigation,
           goBack,
+          wait.forNavigation,
           wait.until(page.oppijataulukko.isVisible)
         )
         describe('Käyttöliittymän tila', function() {
@@ -2148,8 +2150,9 @@ describe('Perusopetus', function() {
         describe('Back-nappi lisäyksen jälkeen', function() {
           before(
             addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Päättötodistus'),
+            wait.prepareForNavigation,
             goBack,
-            wait.forAjax,
+            wait.forNavigation,
             addOppija.enterValidDataPerusopetus()
           )
           it('Uuden oppijan lisäys on mahdollista', function() {

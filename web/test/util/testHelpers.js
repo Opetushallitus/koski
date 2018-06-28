@@ -81,6 +81,16 @@ wait = {
   forAjax: function() {
     return wait.forMilliseconds(1)().then(wait.until(isNotLoading)).then(wait.forMilliseconds(1))
   },
+  prepareForNavigation: function() {
+    var frame = testFrame()
+    frame.myWaitForNavigation = frame.location.href
+  },
+  forNavigation: function() {
+    return wait.until(() => {
+      var frame = testFrame()
+      return frame.myWaitForNavigation !== frame.location.href
+    })().then(wait.forAjax)
+  },
   untilVisible: function(el) {
     return wait.until(function() { return isElementVisible(el) })
   }

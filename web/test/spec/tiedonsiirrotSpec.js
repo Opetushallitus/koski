@@ -94,9 +94,11 @@ describe('Tiedonsiirrot', function() {
       describe('Kun poistetaan valittu rivi', function() {
         before(
           tiedonsiirrot.setValinta('tiedonsiirto-1.2.246.562.10.346830761110_', true),
+          // tiedonsiirrot.poista does page reload, so wait.forAjax is not enough
+          wait.prepareForNavigation,
           tiedonsiirrot.poista,
-          tiedonsiirrot.openPage,
-          tiedonsiirrot.openVirhesivu
+          wait.forNavigation,
+          wait.until(tiedonsiirrot.isVisible)
         )
         it('Se poistuu listauksesta', function() {
           expect(tiedonsiirrot.tiedot()).to.deep.equal([
@@ -118,6 +120,7 @@ describe('Tiedonsiirrot', function() {
 
     describe('Poistettaessa useampi kerralla', function() {
       before(
+        resetFixtures,
         authentication.login('stadin-palvelu'), tiedonsiirrot.openPage, tiedonsiirrot.openVirhesivu,
         insertExample('tiedonsiirto - epäonnistunut.json'),
         insertExample('tiedonsiirto - epäonnistunut 2.json'),
@@ -127,8 +130,11 @@ describe('Tiedonsiirrot', function() {
         tiedonsiirrot.openVirhesivu,
         tiedonsiirrot.setValinta('tiedonsiirto-1.2.246.562.10.346830761110_280618-402H', true),
         tiedonsiirrot.setValinta('tiedonsiirto-1.2.246.562.10.346830761110_270303-281N', true),
+        // tiedonsiirrot.poista does page reload, so wait.forAjax is not enough
+        wait.prepareForNavigation,
         tiedonsiirrot.poista,
-        wait.forAjax
+        wait.forNavigation,
+        wait.until(tiedonsiirrot.isVisible)
       )
       it('Kaikki valitut rivit poistuvat', function() {
         expect(tiedonsiirrot.tiedot()).to.deep.equal([])
