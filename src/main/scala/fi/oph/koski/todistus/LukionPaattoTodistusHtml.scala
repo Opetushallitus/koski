@@ -15,7 +15,7 @@ class LukionPaattoTodistusHtml(implicit val user: KoskiSession, val localization
 
     def oppiaineenKurssimäärä(oppiaine: Suoritus): Float = oppiaine.osasuoritukset.toList.flatten.map(laajuus).sum
 
-    <html>
+    <html lang={lang}>
       <head>
         <link rel="stylesheet" type="text/css" href="/koski/css/todistus-common.css"></link>
         <link rel="stylesheet" type="text/css" href="/koski/css/todistus-lukio.css"></link>

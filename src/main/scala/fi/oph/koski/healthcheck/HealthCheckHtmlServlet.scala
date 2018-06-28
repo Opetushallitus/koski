@@ -24,7 +24,7 @@ class HealthCheckHtmlServlet(implicit val application: KoskiApplication) extends
           <div style="font-size: 4vw; padding-bottom: 4vw;">{version} — {buildDate}</div>
         </div>
     }
-    <html style="text-align: center;">
+    <html lang={lang} style="text-align: center;">
       {status}
     </html>
   }

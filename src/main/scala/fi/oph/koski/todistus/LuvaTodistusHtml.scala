@@ -9,7 +9,7 @@ class LuvaTodistusHtml(implicit val user: KoskiSession, val localizationReposito
   def render(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: Suoritus) = {
     val oppiaineet: List[Suoritus] = päättötodistus.osasuoritukset.toList.flatten
 
-    <html>
+    <html lang={lang}>
       <head>
         <link rel="stylesheet" type="text/css" href="/koski/css/todistus-common.css"></link>
         <link rel="stylesheet" type="text/css" href="/koski/css/todistus-lukio.css"></link>
