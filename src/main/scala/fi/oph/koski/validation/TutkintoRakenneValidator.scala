@@ -108,7 +108,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
     })
   }
 
-  private def validateTutkinnonOsanTutkinto(suoritus: AmmatillisenTutkinnonOsanSuoritus) = {
+  private def validateTutkinnonOsanTutkinto(suoritus: TutkinnonOsanSuoritus) = {
     suoritus.tutkinto match {
       case Some(tutkinto) => HttpStatus.justStatus(getRakenne(tutkinto, Some(ammatillisetKoulutustyypit)))
       case None => HttpStatus.ok

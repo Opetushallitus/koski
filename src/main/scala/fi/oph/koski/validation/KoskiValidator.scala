@@ -381,7 +381,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   private def validateTutkinnonosanRyhmä(suoritus: Suoritus): HttpStatus = {
-    def validateTutkinnonosaSuoritus(tutkinnonSuoritus: AmmatillisenTutkinnonSuoritus, suoritus: AmmatillisenTutkinnonOsanSuoritus, koulutustyyppi: Koulutustyyppi): HttpStatus = {
+    def validateTutkinnonosaSuoritus(tutkinnonSuoritus: AmmatillisenTutkinnonSuoritus, suoritus: TutkinnonOsanSuoritus, koulutustyyppi: Koulutustyyppi): HttpStatus = {
       if (ammatillisenPerustutkinnonTyypit.contains(koulutustyyppi)) {
         if (tutkinnonSuoritus.suoritustapa.koodiarvo == "ops") {
           // OPS-suoritustapa => vaaditaan ryhmittely
@@ -400,7 +400,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       }
     }
 
-    def validateTutkinnonosaSuoritukset(tutkinnonSuoritus: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus, suoritukset: Option[List[AmmatillisenTutkinnonOsanSuoritus]]) = {
+    def validateTutkinnonosaSuoritukset(tutkinnonSuoritus: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus, suoritukset: Option[List[TutkinnonOsanSuoritus]]) = {
       koulutustyyppi(tutkinnonSuoritus.koulutusmoduuli.perusteenDiaarinumero.get)
         .map(tyyppi => tutkinnonSuoritus match {
           case tutkinnonSuoritus: AmmatillisenTutkinnonSuoritus => HttpStatus.fold(suoritukset.toList.flatten.map(s => validateTutkinnonosaSuoritus(tutkinnonSuoritus, s, tyyppi)))

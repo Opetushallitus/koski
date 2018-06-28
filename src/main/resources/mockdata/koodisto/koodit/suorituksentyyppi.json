@@ -141,6 +141,17 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "suorituksentyyppi_korkeakouluopintojentutkinnonosaapienempikokonaisuus",
+  "koodiArvo" : "korkeakouluopintojentutkinnonosaapienempikokonaisuus",
+  "metadata" : [ {
+    "nimi" : "Korkeakouluopintojen tutkinnon osaa pienempi kokonaisuus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "suorituksentyyppi_ammatillisentutkinnonosanosaalue",
   "koodiArvo" : "ammatillisentutkinnonosanosaalue",
   "metadata" : [ {
