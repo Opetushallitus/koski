@@ -41,8 +41,8 @@ case class YtrOppijaConverter(oppilaitosRepository: OppilaitosRepository, koodis
         toimipiste = oppilaitos,
         koulutusmoduuli = Ylioppilastutkinto(requiredKoodi("koulutus", "301000"), None),
         pakollisetKokeetSuoritettu = ytrOppija.hasCompletedMandatoryExams,
-        osasuoritukset = Some(ytrOppija.exams.flatMap(convertExam)))
-      )
+        osasuoritukset = Some(ytrOppija.exams.flatMap(convertExam).sorted(examOrdering))
+      ))
     ))
   }
   private def convertExam(exam: YtrExam) = koodistoViitePalvelu.validate("koskiyokokeet", exam.examId).map { tunniste =>
@@ -70,4 +70,8 @@ case class YtrOppijaConverter(oppilaitosRepository: OppilaitosRepository, koodis
   private def requiredKoodi(uri: String, koodi: String) = {
     koodistoViitePalvelu.validateRequired(uri, koodi)
   }
+
+  private lazy val examOrdering = Ordering.by {
+    s: YlioppilastutkinnonKokeenSuoritus => (s.tutkintokerta.koodiarvo, s.koulutusmoduuli.tunniste.koodiarvo)
+  } (Ordering.Tuple2(Ordering.String.reverse, Ordering.String))
 }
