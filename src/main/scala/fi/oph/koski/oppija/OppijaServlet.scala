@@ -45,10 +45,7 @@ class OppijaServlet(implicit val application: KoskiApplication) extends ApiServl
         putter.putSingle(results._1, results._2, true)
       }.toList
 
-      response.setStatus(batchResults.map {
-        case Left(status) => status.statusCode
-        case _ => 200
-      }.max)
+      setStatusOnBatch(batchResults)
 
       batchResults
     }(parseErrorHandler = handleUnparseableJson)}
@@ -61,6 +58,18 @@ class OppijaServlet(implicit val application: KoskiApplication) extends ApiServl
 
   get("/:oid") {
     renderEither[Oppija](findByOid(params("oid"), koskiSession).flatMap(_.warningsToLeft))
+  }
+
+  post("/oids") {
+    withJsonBody { parsedJson =>
+      val batchResults = parsedJson.asInstanceOf[JArray].arr.map {
+        case JString(oid) => findByOid(oid, koskiSession).flatMap(_.warningsToLeft)
+      }
+
+      setStatusOnBatch(batchResults)
+
+      batchResults
+    }(parseErrorHandler = handleUnparseableJson)
   }
 
   get("/:oid/virta-opintotiedot-xml") {
@@ -116,6 +125,13 @@ class OppijaServlet(implicit val application: KoskiApplication) extends ApiServl
         application.tiedonsiirtoService.storeTiedonsiirtoResult(koskiSession, None, None, None, Some(TiedonsiirtoError(JObject("unparseableJson" -> JString(request.body)), KoskiErrorCategory.internalError().errors)))
         throw e
     }
+  }
+
+  private def setStatusOnBatch(batchResults: List[Either[HttpStatus, _]]) {
+    response.setStatus(batchResults.map {
+      case Left(status) => status.statusCode
+      case _ => 200
+    }.max)
   }
 }
 
