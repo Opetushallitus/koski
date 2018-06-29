@@ -1,8 +1,8 @@
 package fi.oph.koski.suoritusjako
 
 import java.sql.Date
-import java.sql.Timestamp.{valueOf => timestamp}
-import java.time.{LocalDate, LocalDateTime}
+import java.sql.Timestamp
+import java.time.{Instant, LocalDate}
 
 import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
@@ -36,7 +36,7 @@ class SuoritusjakoRepository(val db: DB) extends Logging with DatabaseExecutionC
         oppijaOid,
         JsonSerializer.serializeWithRoot(suoritusIds),
         Date.valueOf(expirationDate),
-        now
+        Timestamp.from(Instant.now)
       )))
 
       Right(expirationDate)
@@ -60,7 +60,6 @@ class SuoritusjakoRepository(val db: DB) extends Logging with DatabaseExecutionC
     if (updated == 0) KoskiErrorCategory.notFound() else HttpStatus.ok
   }
 
-  private def now = timestamp(LocalDateTime.now)
   private def suoritusjakoFilter(oppijaOid: String, secret: String)(r: SuoritusjakoTable) =
     r.oppijaOid === oppijaOid &&
       r.secret === secret &&
