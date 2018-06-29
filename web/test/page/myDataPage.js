@@ -15,6 +15,9 @@ const MyDataPage = () => {
     delAuthCookie: () => {
       document.cookie = '_shibsession_=; path=/; expires=Thu, 01 Jan 1980 00:00:01 GMT; Max-Age=0'
     },
+    addLangCookie: (lang) => {
+      document.cookie = `lang=${lang}; path=/`
+    },
     getUserName: () => {
       return extractAsText(S('.header > .user > .username'))
     },

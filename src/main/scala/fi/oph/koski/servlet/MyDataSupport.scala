@@ -19,12 +19,12 @@ trait MyDataSupport extends ScalatraServlet {
   }
 
   def getLoginUrlForMember(memberId: String, lang: String): String = {
-    application.config.getString("mydata.login.shibboleth") +
-    application.config.getString("mydata.login.targetparam") + getLoginSuccessTarget(memberId, lang, encode = true)
+    application.config.getString(s"mydata.login.shibboleth.${lang}") +
+    application.config.getString("mydata.login.targetparam") + getLoginSuccessTarget(memberId, encode = true)
   }
 
-  def getLoginSuccessTarget(memberId: String, lang: String, encode: Boolean = false): String = {
-    getConfigForMember(memberId).getString(s"login.${lang}.target") + getCurrentUrlAsFinalTargetParameter(encode)
+  def getLoginSuccessTarget(memberId: String, encode: Boolean = false): String = {
+    getConfigForMember(memberId).getString(s"login.target") + getCurrentUrlAsFinalTargetParameter(encode)
   }
 
   private def getCurrentUrlAsFinalTargetParameter(encode: Boolean): String = {

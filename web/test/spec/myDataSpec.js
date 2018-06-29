@@ -3,14 +3,17 @@ describe('MyData', () => {
   const korhopankki = KorhoPankki()
   const mydata = MyDataPage()
 
-  before(
+  const login = (lang) => [
     authentication.logout,
     mydata.delAuthCookie,
+    () => mydata.addLangCookie(lang),
     mydata.openPage,
     wait.until(korhopankki.isReady),
     korhopankki.login('100869-192W', 'Dippainssi', 'Dilbert'),
-    wait.until(mydata.isVisible),
-  )
+    wait.until(mydata.isVisible)
+  ]
+
+  before(...login('fi'))
 
   describe('Kun käyttäjä on kirjautunut sisään', () => {
     it('Näytetään käyttäjälle nimi', () => {
@@ -34,6 +37,13 @@ describe('MyData', () => {
         expect(mydata.accepted.isReturnButtonVisible()).to.equal(true)
         expect(extractAsText(S('a[href^="/koski/user/logout?target=http://example.org"]'))).equal('Palaa palveluntarjoajan sivulle')
       })
+    })
+  })
+
+  describe('Ruotsinkielisenä voidaan kirjautua sisään', () => {
+    before(...login('sv'))
+
+    it('Voidaan kirjautua sisään', () => {
     })
   })
 })
