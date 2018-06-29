@@ -25,7 +25,7 @@ class MyDataSupportTest extends FreeSpec with Matchers with MockFactory {
       (mockRequest.getRequestURI _).expects().returning("/koski/omadata/hsl")
 
       support(mockRequest).getLoginUrlForMember(memberId, lang) should
-        equal("/koski/login/shibboleth?login=/koski/user/omadatalogin/hsl%3FonLoginSuccess%3D%2Fkoski%2Fomadata%2Fhsl%3Fcallback%3Dhttp%3A%2F%2Fwww.hsl.fi")
+        equal("/koski/login/shibboleth?login=/koski/user/omadatalogin%3FonLoginSuccess%3D%2Fkoski%2Fomadata%2Fhsl%3Fcallback%3Dhttp%3A%2F%2Fwww.hsl.fi")
 
     }
     "Palauttaa oikean URL:n sisään loganneille" in {
@@ -34,7 +34,7 @@ class MyDataSupportTest extends FreeSpec with Matchers with MockFactory {
       (mockRequest.getRequestURI _).expects().returning("/koski/omadata/hsl")
 
       support(mockRequest).getLoginSuccessTarget(memberId, lang) should
-        equal("/koski/user/omadatalogin/hsl?onLoginSuccess=/koski/omadata/hsl?callback=http://www.hsl.fi/alennus")
+        equal("/koski/user/omadatalogin?onLoginSuccess=/koski/omadata/hsl?callback=http://www.hsl.fi/alennus")
     }
   }
 }
