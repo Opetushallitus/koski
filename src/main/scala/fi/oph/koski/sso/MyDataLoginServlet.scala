@@ -10,5 +10,5 @@ case class MyDataLoginServlet(override val application: KoskiApplication) extend
    */
   override protected def onSuccess: String = s"${params("onLoginSuccess")}"
   override protected def onFailure: String = "/omadata/failed"
-  override protected def onUserNotFound: String = "/omadata/usernotfound"
+  override protected def onUserNotFound: String = "/omadata/failed/usernotfound"
 }
