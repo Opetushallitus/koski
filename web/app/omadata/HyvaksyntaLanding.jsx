@@ -2,6 +2,7 @@ import React from 'baret'
 import ReactDOM from 'react-dom'
 import UusiHyvaksynta from './UusiHyvaksynta'
 import ErrorPage from './ErrorPage'
+import Spinner from './Spinner'
 import Footer from './Footer'
 import Header from './Header'
 import '../polyfills/polyfills.js'
@@ -18,6 +19,7 @@ class HyvaksyntaLanding extends React.Component {
     super(props)
 
     this.state = {
+      loading: true,
       authorizationGiven: false,
       callback: parseQuery(currentLocation().queryString).callback,
       error: undefined
@@ -29,10 +31,15 @@ class HyvaksyntaLanding extends React.Component {
 
   componentDidMount() {
     const pathParam = memberCodeRegex.exec(currentLocation().path)[1]
-    Http.cachedGet(`/koski/api/omadata/kumppani/${pathParam}`).onValue(member => this.setState({
+    Http.cachedGet(`/koski/api/omadata/kumppani/${pathParam}`)
+      .doError(
+        this.setState({ loading: false })
+      )
+      .onValue(member => this.setState({
         memberName: member.name,
-        memberCode: member.id
-    }))
+        memberCode: member.id,
+        loading: false
+      }))
   }
 
   authorizeMember() {
@@ -82,7 +89,7 @@ class HyvaksyntaLanding extends React.Component {
               onAuthorization={this.authorizeMember}
               authorizationGiven={this.state.authorizationGiven}
             /> :
-            <ErrorPage />
+            this.state.loading ? <Spinner /> : <ErrorPage />
         }
 
         <Footer/>
