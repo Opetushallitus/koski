@@ -23,10 +23,8 @@ class HyvaksyntaLanding extends React.Component {
       error: undefined
     }
 
-
     this.authorizeMember = this.authorizeMember.bind(this)
     this.onLogoutClicked = this.onLogoutClicked.bind(this)
-
   }
 
   componentDidMount() {
@@ -39,7 +37,7 @@ class HyvaksyntaLanding extends React.Component {
 
   authorizeMember() {
     Http.post(`/koski/api/omadata/valtuutus/${this.state.memberCode}`, {})
-      .doError((e) => {
+      .doError(e => {
         if (e && e.httpStatus === 401) {
           console.log(`Must be logged in before we can authorize ${this.state.memberCode}`)
           this.setState({error: t('Sinun tulee olla kirjautunut sisään')})
@@ -48,7 +46,7 @@ class HyvaksyntaLanding extends React.Component {
           this.setState({error: t('Tallennus epäonnistui')})
         }
       })
-      .onValue((response) => {
+      .onValue(response => {
         if (response.success === true) {
           console.log(`Permissions added for ${this.state.memberCode}`)
           this.setState({
