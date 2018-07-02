@@ -34,7 +34,7 @@ export default ({memberCode, logoutURL, onAuthorization, authorizationGiven}) =>
       <HyvaksyntaAnnettu logoutURL={logoutURL}/> :
       <AnnaHyvaksynta memberP={memberP(memberCode)}
                       onAcceptClick={() => onAuthorization()}
-                      onCancelClick={() => this.onLogoutClicked()} />
+                      onCancelClick={() => window.location.href = logoutURL} />
     }
 
   </div>
