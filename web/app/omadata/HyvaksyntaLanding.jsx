@@ -1,6 +1,7 @@
 import React from 'baret'
 import ReactDOM from 'react-dom'
 import UusiHyvaksynta from './UusiHyvaksynta'
+import ErrorPage from './ErrorPage'
 import Footer from './Footer'
 import Header from './Header'
 import '../polyfills/polyfills.js'
@@ -15,12 +16,15 @@ const memberCodeRegex = /\/koski\/omadata\/(.*)/
 class HyvaksyntaLanding extends React.Component {
   constructor(props) {
     super(props)
+    const pathParam = memberCodeRegex.exec(currentLocation().path)[1]
+
     this.state = {
       authorizationGiven: false,
-      memberCode: memberCodeRegex.exec(currentLocation().path)[1],
+      memberCode: pathParam.startsWith('failed') ? undefined : pathParam,
       callback: parseQuery(currentLocation().queryString).callback,
       error: undefined
     }
+
 
     this.authorizeMember = this.authorizeMember.bind(this)
     this.onLogoutClicked = this.onLogoutClicked.bind(this)
@@ -67,12 +71,16 @@ class HyvaksyntaLanding extends React.Component {
         <Header userP={userP} onLogoutClicked={this.onLogoutClicked}/>
         {error}
 
-        <UusiHyvaksynta
-          memberCode={this.state.memberCode}
-          logoutURL={this.getLogoutURL()}
-          onAuthorization={this.authorizeMember}
-          authorizationGiven={this.state.authorizationGiven}
-        />
+        {
+          this.state.memberCode ?
+            <UusiHyvaksynta
+              memberCode={this.state.memberCode}
+              logoutURL={this.getLogoutURL()}
+              onAuthorization={this.authorizeMember}
+              authorizationGiven={this.state.authorizationGiven}
+            /> :
+            <ErrorPage />
+        }
 
         <Footer/>
       </div>
