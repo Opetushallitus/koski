@@ -15,7 +15,7 @@ import scala.xml.{Elem, Node}
 
 object KoskiSchemaDocumentHtml {
   def mainSchema = KoskiSchema.schema
-  def html(shallowEntities: ClassSchema => Boolean = const(false), focusEntities: ClassSchema => Boolean = const(false), expandEntities: ClassSchema => Boolean = const(true)) = {
+  def html(shallowEntities: ClassSchema => Boolean = const(false), focusEntities: ClassSchema => Boolean = const(false), expandEntities: ClassSchema => Boolean = const(true), lang: String) = {
     val backlog: List[(String, Option[List[Breadcrumb]])] = buildBacklog(mainSchema, Some(Nil), new ArrayBuffer[(String, Option[List[Breadcrumb]])], shallowEntities, focusEntities, expandEntities).toList
       .sortBy(-_._2.toList.length) // Nones last
     val schemaBacklog = backlog.map {
@@ -25,7 +25,7 @@ object KoskiSchemaDocumentHtml {
     val focusSchema = schemaBacklog.map(_._1).find(focusEntities)
     val title = "Koski-tietomalli" + focusSchema.toList.map(s => " - " + s.title).mkString
 
-    <html>
+    <html lang={lang}>
       <head>
         <title>{title}</title>
         <link type="text/css" rel="stylesheet" href="/koski/css/schema-printable.css"/>

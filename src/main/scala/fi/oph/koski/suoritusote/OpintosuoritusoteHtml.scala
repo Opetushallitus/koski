@@ -116,7 +116,7 @@ class OpintosuoritusoteHtml(implicit val user: KoskiSession, val localizationRep
   protected def arvosana(suoritus: Suoritus) = i(suoritus.arvosanaNumeroin.getOrElse(suoritus.arvosanaKirjaimin))
 
   protected def bodyHtml(ht: TäydellisetHenkilötiedot, content: Node) = {
-    <html>
+    <html lang={lang}>
       <head>
         <link rel="stylesheet" type="text/css" href="/koski/css/opintosuoritusote.css"></link>
         <style>{ indentCss }</style>

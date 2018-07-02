@@ -17,7 +17,7 @@ class IBPaattoTodistusHtml(implicit val user: KoskiSession, val localizationRepo
       päättötodistus.extendedEssay.exists(coreArviointiIsFinal) ||
       päättötodistus.creativityActionService.exists(arviointiIsFinal)
 
-    <html>
+    <html lang={lang}>
       <head>
         <link rel="stylesheet" type="text/css" href="/koski/css/todistus-common.css"></link>
         <link rel="stylesheet" type="text/css" href="/koski/css/todistus-ib.css"></link>

@@ -26,7 +26,7 @@ class PulssiHtmlServlet(implicit val application: KoskiApplication) extends Scal
   }
 
   private def raportti =
-    <html>
+    <html lang={lang}>
       <head>
         {commonHead() ++ piwikTrackingScriptLoader()}
         <link rel="stylesheet" type="text/css" href="/koski/css/raportti.css"></link>

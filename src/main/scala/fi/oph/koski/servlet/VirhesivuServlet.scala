@@ -6,7 +6,7 @@ import org.scalatra.ScalatraServlet
 class VirhesivuServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with OmaOpintopolkuSupport {
   get("/") {
     response.setHeader("X-Virhesivu", "1") // for korhopankki/HetuLogin.jsx
-    <html>
+    <html lang={lang}>
       <head>
         <title>Koski - Virhe</title>
         <link type="text/css" rel="stylesheet" href="/koski/css/virhesivu.css"/>
