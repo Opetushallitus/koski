@@ -7,7 +7,6 @@ import HyvaksyntaAnnettu from './HyvaksyntaAnnettu'
 import {formatFinnishDate, parseISODate} from '../date/date'
 
 const editorP = Http.cachedGet('/koski/api/omattiedot/editor', { errorMapper: () => undefined }).toProperty()
-const memberP = memberId => Http.cachedGet(`/koski/api/omadata/kumppani/${memberId}`, { errorMapper: () => undefined }).toProperty()
 
 const getBirthDate = (editorResponse) => {
   if (!editorResponse) return
@@ -22,7 +21,7 @@ const getBirthDate = (editorResponse) => {
 }
 
 
-export default ({memberCode, logoutURL, onAuthorization, authorizationGiven}) => (
+export default ({memberName, logoutURL, onAuthorization, authorizationGiven}) => (
   <div className="acceptance-container">
     <div className="heading"><h1><Text name="Henkilökohtaisten tietojen käyttö"/></h1></div>
     <div className="user">
@@ -32,7 +31,7 @@ export default ({memberCode, logoutURL, onAuthorization, authorizationGiven}) =>
 
     { authorizationGiven ?
       <HyvaksyntaAnnettu logoutURL={logoutURL}/> :
-      <AnnaHyvaksynta memberP={memberP(memberCode)}
+      <AnnaHyvaksynta memberName={memberName}
                       onAcceptClick={() => onAuthorization()}
                       onCancelClick={() => window.location.href = logoutURL} />
     }

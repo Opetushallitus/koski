@@ -16,11 +16,9 @@ const memberCodeRegex = /\/koski\/omadata\/(.*)/
 class HyvaksyntaLanding extends React.Component {
   constructor(props) {
     super(props)
-    const pathParam = memberCodeRegex.exec(currentLocation().path)[1]
 
     this.state = {
       authorizationGiven: false,
-      memberCode: pathParam.startsWith('error') ? undefined : pathParam,
       callback: parseQuery(currentLocation().queryString).callback,
       error: undefined
     }
@@ -29,6 +27,14 @@ class HyvaksyntaLanding extends React.Component {
     this.authorizeMember = this.authorizeMember.bind(this)
     this.onLogoutClicked = this.onLogoutClicked.bind(this)
 
+  }
+
+  componentDidMount() {
+    const pathParam = memberCodeRegex.exec(currentLocation().path)[1]
+    Http.cachedGet(`/koski/api/omadata/kumppani/${pathParam}`).onValue(member => this.setState({
+        memberName: member.name,
+        memberCode: member.id
+    }))
   }
 
   authorizeMember() {
@@ -71,9 +77,9 @@ class HyvaksyntaLanding extends React.Component {
         {error}
 
         {
-          this.state.memberCode ?
+          this.state.memberName ?
             <UusiHyvaksynta
-              memberCode={this.state.memberCode}
+              memberName={this.state.memberName}
               logoutURL={this.getLogoutURL()}
               onAuthorization={this.authorizeMember}
               authorizationGiven={this.state.authorizationGiven}
