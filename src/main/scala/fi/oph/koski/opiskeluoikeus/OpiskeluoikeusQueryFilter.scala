@@ -1,5 +1,5 @@
 package fi.oph.koski.opiskeluoikeus
-import java.time.{LocalDate, LocalDateTime}
+import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
 import java.time.format.DateTimeParseException
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -29,8 +29,9 @@ object OpiskeluoikeusQueryFilter {
   case class Nimihaku(hakusana: String) extends OpiskeluoikeusQueryFilter
   case class SuoritusJsonHaku(json: JValue) extends OpiskeluoikeusQueryFilter
   case class IdHaku(ids: Seq[Int]) extends OpiskeluoikeusQueryFilter
-  case class MuuttunutEnnen(aikaleima: LocalDateTime) extends OpiskeluoikeusQueryFilter
-  case class MuuttunutJälkeen(aikaleima: LocalDateTime) extends OpiskeluoikeusQueryFilter
+  case class OppijaOidHaku(oids: Seq[String]) extends OpiskeluoikeusQueryFilter
+  case class MuuttunutEnnen(aikaleima: Instant) extends OpiskeluoikeusQueryFilter
+  case class MuuttunutJälkeen(aikaleima: Instant) extends OpiskeluoikeusQueryFilter
 
   def parse(params: List[(String, String)])(implicit koodisto: KoodistoViitePalvelu, organisaatiot: OrganisaatioRepository, session: KoskiSession): Either[HttpStatus, List[OpiskeluoikeusQueryFilter]] = OpiskeluoikeusQueryFilterParser.parse(params)
 }
@@ -45,11 +46,17 @@ private object OpiskeluoikeusQueryFilterParser {
       }
     }
 
-    def dateTimeParam(q: (String, String)): Either[HttpStatus, LocalDateTime] = q match {
+    // Accept both with and without time zone due to legacy reasons
+    // (of course, without time zone the conversion is ambiguous when changing to/from DST...)
+    def dateTimeParam(q: (String, String)): Either[HttpStatus, Instant] = q match {
       case (p, v) => try {
-        Right(LocalDateTime.parse(v))
+        Right(Instant.parse(v))
       } catch {
-        case e: DateTimeParseException => Left(KoskiErrorCategory.badRequest.format.pvm("Invalid datetime parameter: " + p + "=" + v))
+        case e: DateTimeParseException => try {
+          Right(LocalDateTime.parse(v).atZone(ZoneId.systemDefault).toInstant)
+        } catch {
+          case e: DateTimeParseException => Left(KoskiErrorCategory.badRequest.format.pvm("Invalid datetime parameter: " + p + "=" + v))
+        }
       }
     }
 
@@ -80,6 +87,7 @@ private object OpiskeluoikeusQueryFilterParser {
       case (p, v) if (p == "muuttunutEnnen") => dateTimeParam((p, v)).right.map(MuuttunutEnnen(_))
       case (p, v) if (p == "muuttunutJälkeen") => dateTimeParam((p, v)).right.map(MuuttunutJälkeen(_))
       case (p, _) => Left(KoskiErrorCategory.badRequest.queryParam.unknown("Unsupported query parameter: " + p))
+      // IdHaku, OppijaOidHaku missing from here (intentionally)
     }
 
     queryFilters.partition(_.isLeft) match {

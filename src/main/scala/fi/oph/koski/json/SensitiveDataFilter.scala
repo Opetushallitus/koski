@@ -3,7 +3,7 @@ package fi.oph.koski.json
 import fi.oph.koski.db.OpiskeluoikeusRow
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema.annotation.SensitiveData
-import fi.oph.koski.schema.{KoskiSchema, Oppija, TäydellisetHenkilötiedot}
+import fi.oph.koski.schema.{Henkilö, KoskiSchema, Oppija}
 import fi.oph.scalaschema.{ClassSchema, Metadata, Property, SerializationContext}
 import org.json4s.JsonAST.JObject
 import org.json4s.{JArray, JValue}
@@ -18,8 +18,8 @@ case class SensitiveDataFilter(user: KoskiSession) {
 
   def serializationContext = SerializationContext(KoskiSchema.schemaFactory, filterSensitiveData)
 
-  def rowSerializer: ((TäydellisetHenkilötiedot, immutable.Seq[OpiskeluoikeusRow])) => JValue = {
-    def ser(tuple: (TäydellisetHenkilötiedot, immutable.Seq[OpiskeluoikeusRow])) = {
+  def rowSerializer: ((Henkilö, immutable.Seq[OpiskeluoikeusRow])) => JValue = {
+    def ser(tuple: (Henkilö, immutable.Seq[OpiskeluoikeusRow])) = {
       JsonSerializer.serialize(Oppija(tuple._1, tuple._2.map(_.toOpiskeluoikeus)))
     }
     ser
