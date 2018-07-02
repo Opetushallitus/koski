@@ -20,7 +20,7 @@ class HyvaksyntaLanding extends React.Component {
 
     this.state = {
       authorizationGiven: false,
-      memberCode: pathParam.startsWith('failed') ? undefined : pathParam,
+      memberCode: pathParam.startsWith('error') ? undefined : pathParam,
       callback: parseQuery(currentLocation().queryString).callback,
       error: undefined
     }
@@ -29,7 +29,6 @@ class HyvaksyntaLanding extends React.Component {
     this.authorizeMember = this.authorizeMember.bind(this)
     this.onLogoutClicked = this.onLogoutClicked.bind(this)
 
-    console.log(`Member code: ${this.state.memberCode}`)
   }
 
   authorizeMember() {

@@ -16,8 +16,6 @@ class MyDataReactServlet(implicit val application: KoskiApplication) extends Sca
     -redirects back here (based on 'onLoginSuccess' parameter).
    */
   before("/:memberCode") {
-    if (params("memberCode") == "failed") { status = 404; pass() }
-
     setLangCookieFromDomainIfNecessary
     val lang = langFromCookie.getOrElse(langFromDomain)
 
@@ -30,6 +28,11 @@ class MyDataReactServlet(implicit val application: KoskiApplication) extends Sca
 
   get("/:memberCode") {
       landerHtml
+  }
+
+  get("/error/:message") {
+    status = 404
+    landerHtml
   }
 
   private def landerHtml = htmlIndex(
