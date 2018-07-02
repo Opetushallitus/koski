@@ -10,6 +10,7 @@ import fi.oph.scalaschema.annotation._
 import org.json4s.jackson.JsonMethods
 
 import scala.Function.const
+import scala.annotation.tailrec
 import scala.collection.mutable.ArrayBuffer
 import scala.xml.{Elem, Node}
 
@@ -23,7 +24,7 @@ object KoskiSchemaDocumentHtml {
     }
 
     val focusSchema = schemaBacklog.map(_._1).find(focusEntities)
-    val title = "Koski-tietomalli" + focusSchema.toList.map(s => " - " + s.title).mkString
+    val title = "Koski-tietomalli" + focusSchema.map(s => " - " + s.title).mkString
 
     <html lang={lang}>
       <head>
@@ -34,7 +35,7 @@ object KoskiSchemaDocumentHtml {
         <h1>{title}</h1>
         {
           schemaBacklog.map{case (s, breadcrumbs) =>
-            classHtml(s, breadcrumbs, backlog.map(_._1))
+            classHtml(s, breadcrumbs, backlog.map(_._1), shallowEntities)
           }
         }
       </body>
@@ -47,17 +48,11 @@ object KoskiSchemaDocumentHtml {
     if (index < 0) {
       backlog +=((name, breadcrumbs))
       if (!shallowEntities(x)) {
-        val moreSchemas: Seq[(ClassSchema, Breadcrumb)] = x.properties.flatMap { p =>
-          val (itemSchema, _) = cardinalityAndItemSchema(p.schema, p.metadata)
-          val resolvedItemSchema = resolveSchema(itemSchema)
-          classSchemasIn(resolvedItemSchema)
-            .filter{ s => focusEntities(s) || expandEntities(s) }
-            .map(s => (s, Breadcrumb(x, p)))
-        }
-
-        moreSchemas.foreach { case (s, breadcrumb) =>
-          buildBacklog(s, breadcrumbs.map(_ ++ List(breadcrumb)), backlog, shallowEntities, const(false), const(true))
-        }
+        resolveSchemas(x)
+          .filter { case (s, _) => focusEntities(s) || expandEntities(s) }
+          .foreach { case (s, breadcrumb) =>
+            buildBacklog(s, breadcrumbs.map(_ ++ List(breadcrumb)), backlog, shallowEntities, const(false), const(true))
+          }
       }
     } else if (backlog(index)._2.nonEmpty) {
       // remove breadcrumb from this one, because it's contained in multiple contexts
@@ -77,8 +72,7 @@ object KoskiSchemaDocumentHtml {
     case _ => Nil
   }
 
-
-  def classHtml(schema: ClassSchema, breadcrumbs: Option[List[Breadcrumb]], includedEntities: List[String]) = <div class="entity">
+  private def classHtml(schema: ClassSchema, breadcrumbs: Option[List[Breadcrumb]], includedEntities: List[String], shallowEntities: ClassSchema => Boolean) = <div class="entity">
     <h3 id={schema.simpleName}>{breadcrumbs.toList.flatten.map(bc => <span class="breadcrum"><a href={"#" + urlEncode(bc.schema.simpleName)}>{bc.schema.title}</a> &gt; </span>)}{schema.title}</h3>
     {descriptionHtml(schema)}
     <table>
@@ -99,7 +93,7 @@ object KoskiSchemaDocumentHtml {
               <td class="nimi">{p.key}</td>
               <td class="lukumäärä">{cardinality}</td>
               <td class="tyyppi">
-                {schemaTypeHtml(resolvedItemSchema, includedEntities)}
+                {schemaTypeHtml(schema, resolvedItemSchema, includedEntities, shallowEntities)}
                 {metadataHtml(p.metadata ++ p.schema.metadata)}
               </td>
               <td class="kuvaus">
@@ -112,11 +106,11 @@ object KoskiSchemaDocumentHtml {
     </table>
   </div>
 
-  def urlEncode(s: String) = URLEncoder.encode(s, "UTF-8")
+  private def urlEncode(s: String) = URLEncoder.encode(s, "UTF-8")
 
-  def schemaTypeHtml(s: Schema, includedEntities: List[String]): Elem = s match {
-    case s: ClassSchema => <a href={(if (includedEntities.contains(s.fullClassName)) {""} else { "?entity=" + urlEncode(s.simpleName)}) + "#" + urlEncode(s.simpleName)}>{s.title}</a>
-    case s: AnyOfSchema => <span class={"alternatives " + s.simpleName}>{s.alternatives.map(a => schemaTypeHtml(resolveSchema(a), includedEntities))}</span>
+  private def schemaTypeHtml(parentSchema: ClassSchema, itemSchema: Schema, includedEntities: List[String], shallowEntities: ClassSchema => Boolean): Elem = itemSchema match {
+    case s: ClassSchema => <a href={(if (includedEntities.contains(s.fullClassName)) {""} else { "?entity=" + urlEncode(getEntity(parentSchema, s, shallowEntities)) }) + "#" + urlEncode(s.simpleName)}>{s.title}</a>
+    case s: AnyOfSchema => <span class={"alternatives " + s.simpleName}>{s.alternatives.map(a => schemaTypeHtml(parentSchema, resolveSchema(a), includedEntities, shallowEntities))}</span>
     case s: StringSchema => <span>merkkijono</span> // TODO: schemarajoitukset annotaatioista jne
     case s: NumberSchema => <span>numero</span>
     case s: BooleanSchema => <span>true/false</span>
@@ -126,6 +120,12 @@ object KoskiSchemaDocumentHtml {
   private def resolveSchema(schema: Schema): Schema = schema match {
     case s: ClassRefSchema => s.resolve(KoskiSchema.schemaFactory)
     case _ => schema
+  }
+
+  private def resolveSchemas(x: ClassSchema): Seq[(ClassSchema, Breadcrumb)] = x.properties.flatMap { p =>
+    val (itemSchema, _) = cardinalityAndItemSchema(p.schema, p.metadata)
+    val resolvedItemSchema: Schema = resolveSchema(itemSchema)
+    classSchemasIn(resolvedItemSchema).map(s => (s, Breadcrumb(x, p)))
   }
 
   private def cardinalityAndItemSchema(s: Schema, metadata: List[Metadata]):(ElementSchema, Cardinality) = s match {
@@ -193,4 +193,35 @@ object KoskiSchemaDocumentHtml {
     val v = if (s.endsWith(".")) { s } else { s + "." }
     v.split("\n").map(Markdown.markdownToXhtml)
   }
+
+  private val cachedEntities: collection.mutable.Map[Schema, Option[String]] = collection.mutable.Map.empty
+  private def getEntity(parentSchema: ClassSchema, schema: ClassSchema, shallowEntities: ClassSchema => Boolean) = if (shallowEntities(parentSchema)) {
+    synchronized {
+      cachedEntities.getOrElseUpdate(schema, OpiskeluoikeusSchemaFinder(schema, shallowEntities).findOpiskeluoikeusSchema.map(_.simpleName)).getOrElse(schema.simpleName)
+    }
+  } else {
+    schema.simpleName
+  }
+
+  case class OpiskeluoikeusSchemaFinder(itemSchema: ClassSchema, shallowEntities: ClassSchema => Boolean) {
+    def findOpiskeluoikeusSchema: Option[ClassSchema] =
+      opiskeluoikeusSchemas.find(ooSchema => containsItem(nonShallowItemsFrom(ooSchema)))
+
+    private def nonShallowItemsFrom(s: ClassSchema): Seq[ClassSchema] = resolveSchemas(s).map(_._1)
+      .filterNot(shallowEntities)
+
+    @tailrec private def containsItem(schemas: Seq[ClassSchema], alreadySearched: List[ClassSchema] = Nil): Boolean = {
+      val filteredSchemas = schemas.filterNot(alreadySearched.contains)
+      if (filteredSchemas.isEmpty) {
+        false
+      } else {
+        filteredSchemas.exists(_.fullClassName == itemSchema.fullClassName) ||
+          containsItem(filteredSchemas.flatMap(nonShallowItemsFrom), alreadySearched ++ filteredSchemas)
+      }
+    }
+  }
+
+  private lazy val opiskeluoikeusSchemas = resolveSchemas(mainSchema).map(_._1).filter(isOpiskeluoikeusSchema)
+  private def isOpiskeluoikeusSchema(s: ClassSchema) =
+    classOf[Opiskeluoikeus].isAssignableFrom(Class.forName(s.fullClassName))
 }
