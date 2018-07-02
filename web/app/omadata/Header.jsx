@@ -22,13 +22,13 @@ export default ({ userP, onLogoutClicked }) => (
             <img src="/koski/images/profiili.svg" alt="user-icon" />
             {user.name}
           </div>
-          <div className="logout" onClick={() => { onLogoutClicked() }}><Text name="Kirjaudu ulos"/></div>
+          <div className="logout" tabIndex={0} onClick={() => { onLogoutClicked() }}><Text name="Kirjaudu ulos"/></div>
         </div>
 
         <div id="header-mobile-menu" className={menuOpened.map(opened => opened ? 'menu-open' : 'menu-closed')}>
           <div className="top">
             <div className="username">{user.name}</div>
-            <div className="logout" onClick={() => { onLogoutClicked() }}><Text name="Kirjaudu ulos"/></div>
+            <div className="logout" tabIndex={0} onClick={() => { onLogoutClicked() }}><Text name="Kirjaudu ulos"/></div>
           </div>
         </div>
 

@@ -14,8 +14,8 @@ export default ({ memberP, onAcceptClick, onCancelClick }) => (
       </ul>
     </div>
     <div className="acceptance-button-container">
-      <div className="acceptance-button button" onClick={onAcceptClick}><Text name="Hyväksy"/></div>
-      <span className="decline-link"><Text name="Peruuta ja palaa" onClick={onCancelClick}/></span>
+      <div className="acceptance-button button" tabIndex={1} onClick={onAcceptClick}><Text name="Hyväksy"/></div>
+      <span className="decline-link" onClick={onCancelClick} tabIndex={1}><Text name="Peruuta ja palaa"/></span>
     </div>
   </div>
 )
