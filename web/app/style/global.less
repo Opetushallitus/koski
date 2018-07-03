@@ -76,8 +76,14 @@ a {
   cursor: default;
 }
 
-a.text-button {
+button.text-button {
   .BaseButton;
+  .link();
+
+  border: 0;
+  background: none;
+  text-align: left;
+  padding: 0;
 
   &--disabled {
     .BaseButton;

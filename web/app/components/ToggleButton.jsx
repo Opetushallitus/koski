@@ -11,9 +11,9 @@ export const ToggleButton = ({toggleA, text, style}) => style === 'text'
 
 export const MultistateToggleButton = ({stateA, value, clearedStateValue = null, text, style}) => style === 'text'
   ? (
-    <a className='toggle-button text-button' onClick={setOrClearState(stateA, value, clearedStateValue)} tabIndex='0'>
+    <button className='toggle-button text-button' onClick={setOrClearState(stateA, value, clearedStateValue)}>
       <Text name={text}/>
-    </a>
+    </button>
   ) : (
     <button className='koski-button toggle-button' onClick={setOrClearState(stateA, value, clearedStateValue)}>
       <Text name={text}/>
