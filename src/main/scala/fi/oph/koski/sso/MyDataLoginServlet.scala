@@ -9,6 +9,6 @@ case class MyDataLoginServlet(override val application: KoskiApplication) extend
      So we'll create a new class to bypass this issue and just override the required functions.
    */
   override protected def onSuccess: String = s"${params("onLoginSuccess")}"
-  override protected def onFailure: String = "/omadata/error"
+  override protected def onFailure: String = "/omadata/error/loginfailed"
   override protected def onUserNotFound: String = "/omadata/error/usernotfound"
 }
