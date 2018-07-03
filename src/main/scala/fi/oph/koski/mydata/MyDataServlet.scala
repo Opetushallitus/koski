@@ -28,16 +28,9 @@ class MyDataServlet(implicit val application: KoskiApplication) extends ApiServl
 
   post("/valtuutus/:memberCode") {
     logger.info(s"Authorizing $memberCode for user: ${koskiSessionOption.getOrElse()}")
-
     requireKansalainen
 
-    def isValidCode = application.config.getConfigList("mydata.members").asScala.exists(member =>
-      member.getString("id") == memberCode)
-
-    if (isValidCode) {
-      renderObject(Map("success" -> application.mydataService.put(koskiSessionOption.get.oid, memberCode)(koskiSessionOption.get)))
-    } else {
-      throw InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.invalidXRoadMemberId)
-    }
+    val id = getConfigForMember.getString("id") // will throw if memberCode is not valid
+    renderObject(Map("success" -> application.mydataService.put(koskiSessionOption.get.oid, id)(koskiSessionOption.get)))
   }
 }
