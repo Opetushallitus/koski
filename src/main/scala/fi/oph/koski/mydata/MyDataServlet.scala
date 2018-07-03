@@ -12,7 +12,7 @@ class MyDataServlet(implicit val application: KoskiApplication) extends ApiServl
   with AuthenticationSupport with Logging with NoCache with MyDataSupport {
 
   get("/kumppani/:memberCode") {
-    def memberConf = getConfigForMember(params("memberCode"))
+    def memberConf = getConfigForMember
 
     renderObject(Map(
       "id" -> memberConf.getString("id"),
@@ -27,11 +27,7 @@ class MyDataServlet(implicit val application: KoskiApplication) extends ApiServl
   }
 
   post("/valtuutus/:memberCode") {
-    def memberCode = params("memberCode")
-
-    if (memberCode == null) throw InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.missing("Vaadittu valtuutuksen kumppani-parametri puuttuu"))
-
-    logger.info(s"Authorizing ${memberCode} for user: ${koskiSessionOption.getOrElse()}")
+    logger.info(s"Authorizing $memberCode for user: ${koskiSessionOption.getOrElse()}")
 
     requireKansalainen
 

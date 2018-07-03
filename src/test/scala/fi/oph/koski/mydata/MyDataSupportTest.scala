@@ -5,6 +5,8 @@ import fi.oph.koski.servlet.MyDataSupport
 import javax.servlet.http.HttpServletRequest
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{FreeSpec, Matchers}
+import scala.collection.JavaConverters._
+
 
 class MyDataSupportTest extends FreeSpec with Matchers with MockFactory {
 
@@ -13,6 +15,7 @@ class MyDataSupportTest extends FreeSpec with Matchers with MockFactory {
 
   def support(mockRequest: HttpServletRequest): MyDataSupport = {
     new MyDataSupport {
+      override implicit val request: HttpServletRequest = mockRequest
       override def application = KoskiApplicationForTests
       override def getCurrentURL(implicit httpServletRequest: HttpServletRequest): String = super.getCurrentURL(mockRequest)
     }
@@ -35,6 +38,13 @@ class MyDataSupportTest extends FreeSpec with Matchers with MockFactory {
 
       support(mockRequest).getLoginSuccessTarget(memberId) should
         equal("/koski/user/omadatalogin?onLoginSuccess=/koski/omadata/hsl?callback=http://www.hsl.fi/alennus")
+    }
+    "Palauttaa oikean member ID:n" in {
+      val request: HttpServletRequest = stub[HttpServletRequest]
+      (request.getAttribute _).when("MultiParamsRead").returns("")
+      (request.getParameterMap _).when().returns(mapAsJavaMap(Map("memberCode" -> Array("hsl"))))
+
+      support(request).memberCode should equal("hsl")
     }
   }
 }
