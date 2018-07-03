@@ -7,6 +7,7 @@ import {suoritusjakoSuoritusTitle} from './suoritusjako'
 import {suorituksenTyyppi} from '../../suoritus/Suoritus'
 import {OpiskeluoikeudenTila} from '../fragments/OpiskeluoikeudenTila'
 import Text from '../../i18n/Text'
+import Checkbox from '../../components/Checkbox'
 
 const isKorkeakouluSuoritus = suoritus => [
   'korkeakoulututkinto',
@@ -65,14 +66,13 @@ export const SelectableSuoritusList = ({opiskeluoikeudet, selectedSuoritusIds}) 
 
                 return options.map(({id, Title}) => (
                     <li key={id}>
-                      <input
-                        type='checkbox'
+                      <Checkbox
                         id={id}
-                        name='suoritusjako'
                         checked={R.contains(id, selectedIds)}
                         onChange={toggleSelection(id)}
+                        LabelComponent={Title}
+                        listStylePosition='inside'
                       />
-                      <label htmlFor={id}><Title/></label>
                     </li>
                   )
                 )
