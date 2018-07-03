@@ -102,15 +102,19 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
     handlers.addHandler(context)
   }
 
-  private def resourceBase = if (isRunningAws) {
-    Resource.setDefaultUseCaches(false) // avoid "zip file is closed" exceptions in some situations (exact cause unknown)
-    JettyLauncher.getClass.getClassLoader.getResource("webapp").toExternalForm
-  } else {
-    val base = System.getProperty("resourcebase", "./target/webapp")
-    if (!Files.exists(Paths.get(base))) {
-      throw new RuntimeException("WebApplication resource base: " + base + " does not exist.")
+  private def resourceBase: String = {
+    val jarWebapp = JettyLauncher.getClass.getClassLoader.getResource("webapp").toExternalForm
+    val isRunningFromUberjar = jarWebapp.startsWith("jar:")
+    if (isRunningFromUberjar) {
+      Resource.setDefaultUseCaches(false) // avoid "zip file is closed" exceptions in some situations (exact cause unknown)
+      jarWebapp
+    } else {
+      val base = System.getProperty("resourcebase", "./target/webapp")
+      if (!Files.exists(Paths.get(base))) {
+        throw new RuntimeException("WebApplication resource base: " + base + " does not exist.")
+      }
+      base
     }
-    base
   }
 
   private def setupGzipForStaticResources = {

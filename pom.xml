@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>fi.vm.sade</groupId>
   <artifactId>koski</artifactId>
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
   <description>Kansallisten opiskeluoikeuksien ja suoritusten keskitetty integraatiopalvelu - KOSKI</description>
   <version>master-SNAPSHOT</version>
   <name>koski</name>
@@ -331,6 +331,27 @@
         </executions>
       </plugin>
       <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <version>2.6</version>
+        <executions>
+          <execution>
+            <id>copy-resources</id>
+            <phase>process-resources</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.outputDirectory}/webapp</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${basedir}/target/webapp</directory>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>3.0.0-M1</version>
@@ -416,19 +437,24 @@
         </configuration>
       </plugin>
       <plugin>
-        <artifactId>maven-war-plugin</artifactId>
-        <version>2.2</version>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.1.1</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
         <configuration>
-          <archive>
-            <addMavenDescriptor>false</addMavenDescriptor>
-          </archive>
-          <archiveClasses>true</archiveClasses>
-          <attachClasses>true</attachClasses>
-          <webResources>
-            <resource>
-              <directory>${basedir}/target/webapp</directory>
-            </resource>
-          </webResources>
+          <createDependencyReducedPom>false</createDependencyReducedPom>
+          <transformers>
+            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+              <mainClass>fi.oph.koski.jettylauncher.JettyLauncher</mainClass>
+            </transformer>
+          </transformers>
         </configuration>
       </plugin>
     </plugins>
@@ -563,43 +589,6 @@
                 </goals>
               </execution>
             </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>uberjar</id>
-      <build>
-        <plugins>
-          <plugin>
-            <artifactId>maven-war-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>default-war</id>
-                <phase>none</phase>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <executions>
-              <execution>
-                <phase>package</phase>
-                <goals>
-                  <goal>single</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <archive>
-                <manifest>
-                  <mainClass>fi.oph.koski.jettylauncher.JettyLauncher</mainClass>
-                </manifest>
-              </archive>
-              <descriptors>
-                <descriptor>src/main/assembly/assembly.xml</descriptor>
-              </descriptors>
-            </configuration>
           </plugin>
         </plugins>
       </build>

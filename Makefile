@@ -41,7 +41,7 @@ watch-prod:
 	NODE_ENV="'production'" make watch
 source-to-image: clean build
 	echo "TODO" > target/webapp/buildversion.txt
-	mvn package -P uberjar -DskipTests
+	mvn package -DskipTests
 
 ### Running tests
 
