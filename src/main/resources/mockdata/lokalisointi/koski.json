@@ -3081,6 +3081,84 @@
   "value" : "Id"
 }, {
   "accesscount" : 0,
+  "accessed" : 1529910936364,
+  "category" : "koski",
+  "created" : 1529910936364,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21205,
+  "key" : "Ilmoittautumisjaksot",
+  "locale" : "en",
+  "modified" : 1529910936352,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1529910936360,
+  "category" : "koski",
+  "created" : 1529910936360,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21203,
+  "key" : "Ilmoittautumisjaksot",
+  "locale" : "fi",
+  "modified" : 1529910936352,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "Ilmoittautumisjaksot"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1529910936362,
+  "category" : "koski",
+  "created" : 1529910936362,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21204,
+  "key" : "Ilmoittautumisjaksot",
+  "locale" : "sv",
+  "modified" : 1529910936352,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1529910936374,
+  "category" : "koski",
+  "created" : 1529910936374,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21211,
+  "key" : "Ilmoittautumispäivä",
+  "locale" : "en",
+  "modified" : 1529910936352,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1529910936371,
+  "category" : "koski",
+  "created" : 1529910936371,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21209,
+  "key" : "Ilmoittautumispäivä",
+  "locale" : "fi",
+  "modified" : 1529910936352,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "Ilmoittautumispäivä"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1529910936372,
+  "category" : "koski",
+  "created" : 1529910936372,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21210,
+  "key" : "Ilmoittautumispäivä",
+  "locale" : "sv",
+  "modified" : 1529910936352,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : ""
+}, {
+  "accesscount" : 0,
   "accessed" : 1524740783331,
   "category" : "koski",
   "created" : 1524740783331,
@@ -4290,6 +4368,45 @@
   "value" : "Korrigera felaktiga uppgifter."
 }, {
   "accesscount" : 0,
+  "accessed" : 1529910936359,
+  "category" : "koski",
+  "created" : 1529910936359,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21202,
+  "key" : "Korkeakoulun opiskeluoikeuden tyyppi",
+  "locale" : "en",
+  "modified" : 1529910936352,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1529910936354,
+  "category" : "koski",
+  "created" : 1529910936354,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21200,
+  "key" : "Korkeakoulun opiskeluoikeuden tyyppi",
+  "locale" : "fi",
+  "modified" : 1529910936352,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "Korkeakoulun opiskeluoikeuden tyyppi"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1529910936357,
+  "category" : "koski",
+  "created" : 1529910936357,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21201,
+  "key" : "Korkeakoulun opiskeluoikeuden tyyppi",
+  "locale" : "sv",
+  "modified" : 1529910936352,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : ""
+}, {
+  "accesscount" : 0,
   "accessed" : 1525863031004,
   "category" : "koski",
   "created" : 1525863031004,
@@ -4444,6 +4561,45 @@
   "modified" : 1514385608609,
   "modifiedBy" : "1.2.246.562.24.34119902638",
   "value" : "Koski"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1528791766696,
+  "category" : "koski",
+  "created" : 1528791766696,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21155,
+  "key" : "Koski-järjestelmässä tapahtui virhe, ole hyvä ja yritä myöhemmin uudelleen",
+  "locale" : "en",
+  "modified" : 1528791766681,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1528791766692,
+  "category" : "koski",
+  "created" : 1528791766692,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21153,
+  "key" : "Koski-järjestelmässä tapahtui virhe, ole hyvä ja yritä myöhemmin uudelleen",
+  "locale" : "fi",
+  "modified" : 1528791766681,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "Koski-järjestelmässä tapahtui virhe, ole hyvä ja yritä myöhemmin uudelleen"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1528791766694,
+  "category" : "koski",
+  "created" : 1528791766694,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21154,
+  "key" : "Koski-järjestelmässä tapahtui virhe, ole hyvä ja yritä myöhemmin uudelleen",
+  "locale" : "sv",
+  "modified" : 1528791766681,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : ""
 }, {
   "accesscount" : 0,
   "accessed" : 1513083622346,
@@ -6981,6 +7137,45 @@
   "value" : "Studier som förbereder för gymnasiet"
 }, {
   "accesscount" : 0,
+  "accessed" : 1529910936392,
+  "category" : "koski",
+  "created" : 1529910936392,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21223,
+  "key" : "Lukukausi ilmoittautuminen",
+  "locale" : "en",
+  "modified" : 1529910936352,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1529910936389,
+  "category" : "koski",
+  "created" : 1529910936389,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21221,
+  "key" : "Lukukausi ilmoittautuminen",
+  "locale" : "fi",
+  "modified" : 1529910936352,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "Lukukausi-ilmoittautuminen"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1529910936390,
+  "category" : "koski",
+  "created" : 1529910936390,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21222,
+  "key" : "Lukukausi ilmoittautuminen",
+  "locale" : "sv",
+  "modified" : 1529910936352,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : ""
+}, {
+  "accesscount" : 0,
   "accessed" : 1507555671144,
   "category" : "koski",
   "created" : 1507555671144,
@@ -8071,6 +8266,45 @@
   "modified" : 1514385608610,
   "modifiedBy" : "1.2.246.562.24.34119902638",
   "value" : "Övriga studiespråk"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1529910936369,
+  "category" : "koski",
+  "created" : 1529910936369,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21208,
+  "key" : "Myöntäjä",
+  "locale" : "en",
+  "modified" : 1529910936352,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1529910936366,
+  "category" : "koski",
+  "created" : 1529910936366,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21206,
+  "key" : "Myöntäjä",
+  "locale" : "fi",
+  "modified" : 1529910936352,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "Myöntäjä"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1529910936367,
+  "category" : "koski",
+  "created" : 1529910936367,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21207,
+  "key" : "Myöntäjä",
+  "locale" : "sv",
+  "modified" : 1529910936352,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : ""
 }, {
   "accesscount" : 0,
   "accessed" : 1507555671866,
@@ -11232,6 +11466,45 @@
   "value" : "Obligatorisk"
 }, {
   "accesscount" : 0,
+  "accessed" : 1528791766701,
+  "category" : "koski",
+  "created" : 1528791766701,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21158,
+  "key" : "Palaa etusivulle",
+  "locale" : "en",
+  "modified" : 1528791766681,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1528791766698,
+  "category" : "koski",
+  "created" : 1528791766698,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21156,
+  "key" : "Palaa etusivulle",
+  "locale" : "fi",
+  "modified" : 1528791766681,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "Palaa etusivulle"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1528791766699,
+  "category" : "koski",
+  "created" : 1528791766699,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21157,
+  "key" : "Palaa etusivulle",
+  "locale" : "sv",
+  "modified" : 1528791766681,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : ""
+}, {
+  "accesscount" : 0,
   "accessed" : 1510233799070,
   "category" : "koski",
   "created" : 1510233799070,
@@ -12127,6 +12400,45 @@
   "modified" : 1514385608610,
   "modifiedBy" : "1.2.246.562.24.34119902638",
   "value" : "Datum"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1528791766689,
+  "category" : "koski",
+  "created" : 1528791766689,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21152,
+  "key" : "Päättyminen pvm",
+  "locale" : "en",
+  "modified" : 1528791766681,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1528791766683,
+  "category" : "koski",
+  "created" : 1528791766683,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21150,
+  "key" : "Päättyminen pvm",
+  "locale" : "fi",
+  "modified" : 1528791766681,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "Päättyminen pvm"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1528791766687,
+  "category" : "koski",
+  "created" : 1528791766687,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21151,
+  "key" : "Päättyminen pvm",
+  "locale" : "sv",
+  "modified" : 1529475893971,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "Avslutningsdatum"
 }, {
   "accesscount" : 0,
   "accessed" : 1507555669928,
@@ -18096,6 +18408,45 @@
   "value" : "Privatstuderande"
 }, {
   "accesscount" : 0,
+  "accessed" : 1529910936387,
+  "category" : "koski",
+  "created" : 1529910936387,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21220,
+  "key" : "Ylioppilaskunnan jäsen",
+  "locale" : "en",
+  "modified" : 1529910936352,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1529910936384,
+  "category" : "koski",
+  "created" : 1529910936384,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21218,
+  "key" : "Ylioppilaskunnan jäsen",
+  "locale" : "fi",
+  "modified" : 1529910936352,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "Ylioppilaskunnan jäsen"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1529910936386,
+  "category" : "koski",
+  "created" : 1529910936386,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21219,
+  "key" : "Ylioppilaskunnan jäsen",
+  "locale" : "sv",
+  "modified" : 1529910936352,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : ""
+}, {
+  "accesscount" : 0,
   "accessed" : 1507555672191,
   "category" : "koski",
   "created" : 1507555672191,
@@ -18172,6 +18523,45 @@
   "modified" : 1514385608609,
   "modifiedBy" : "1.2.246.562.24.34119902638",
   "value" : "Försök på nytt"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1529910936378,
+  "category" : "koski",
+  "created" : 1529910936378,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21214,
+  "key" : "Yths maksettu",
+  "locale" : "en",
+  "modified" : 1529910936352,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1529910936375,
+  "category" : "koski",
+  "created" : 1529910936375,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21212,
+  "key" : "Yths maksettu",
+  "locale" : "fi",
+  "modified" : 1529910936352,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "Yths maksettu"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1529910936377,
+  "category" : "koski",
+  "created" : 1529910936377,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21213,
+  "key" : "Yths maksettu",
+  "locale" : "sv",
+  "modified" : 1529910936352,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : ""
 }, {
   "accesscount" : 0,
   "accessed" : 1513861201990,
@@ -20982,6 +21372,45 @@
   "value" : ""
 }, {
   "accesscount" : 0,
+  "accessed" : 1529910936383,
+  "category" : "koski",
+  "created" : 1529910936383,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21217,
+  "key" : "description:Korkeakoulun opiskeluoikeuden lisätiedot",
+  "locale" : "en",
+  "modified" : 1529910936352,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1529910936380,
+  "category" : "koski",
+  "created" : 1529910936380,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21215,
+  "key" : "description:Korkeakoulun opiskeluoikeuden lisätiedot",
+  "locale" : "fi",
+  "modified" : 1529910936352,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "Korkeakoulun opiskeluoikeuden lisätiedot"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1529910936381,
+  "category" : "koski",
+  "created" : 1529910936381,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21216,
+  "key" : "description:Korkeakoulun opiskeluoikeuden lisätiedot",
+  "locale" : "sv",
+  "modified" : 1529910936352,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : ""
+}, {
+  "accesscount" : 0,
   "accessed" : 1513861202905,
   "category" : "koski",
   "created" : 1513861202905,
@@ -22071,6 +22500,45 @@
   "locale" : "sv",
   "modified" : 1513861201048,
   "modifiedBy" : "1.2.246.562.24.34119902638",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1528108462943,
+  "category" : "koski",
+  "created" : 1528108462943,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21130,
+  "key" : "description:Käytetään tilanteessa jossa oppija opiskelee...",
+  "locale" : "en",
+  "modified" : 1528108462940,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : ""
+}, {
+  "accesscount" : 0,
+  "accessed" : 1528108462941,
+  "category" : "koski",
+  "created" : 1528108462941,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21128,
+  "key" : "description:Käytetään tilanteessa jossa oppija opiskelee...",
+  "locale" : "fi",
+  "modified" : 1528108462940,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "Käytetään tilanteessa jossa oppija opiskelee yksittäisen oppiaineen erityisenä tutkintona"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1528108462942,
+  "category" : "koski",
+  "created" : 1528108462942,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21129,
+  "key" : "description:Käytetään tilanteessa jossa oppija opiskelee...",
+  "locale" : "sv",
+  "modified" : 1528108462940,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
   "value" : ""
 }, {
   "accesscount" : 0,
@@ -36772,9 +37240,9 @@
   "id" : 20341,
   "key" : "tooltip:Ammatillinen tutkinto, johon näyttötutkintoon valmistava...",
   "locale" : "sv",
-  "modified" : 1514551963531,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676723,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Yrkesexamen, som den utbildning som förbereder för en fristående examen ansluter sig till, och diarienummer för läroplansgrunderna för denna examen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325350,
@@ -36811,9 +37279,9 @@
   "id" : 20164,
   "key" : "tooltip:Ammatillinen tutkinto, johon suoritettava tutkinnon...",
   "locale" : "sv",
-  "modified" : 1514469563791,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676514,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Yrkesexamen, till vilken den examensdel/de examensdelar som avläggs hör."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325538,
@@ -36850,9 +37318,9 @@
   "id" : 20284,
   "key" : "tooltip:Arviointikeskusteluun osallistuneet tahot.",
   "locale" : "sv",
-  "modified" : 1514469563792,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676658,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Parter som deltagit i utvärderingssamtalet."
 }, {
   "accesscount" : 0,
   "accessed" : 1514463761225,
@@ -36889,9 +37357,9 @@
   "id" : 20101,
   "key" : "tooltip:HOJKS:n voimassaolon alkamispäivämäärä.",
   "locale" : "sv",
-  "modified" : 1514463786627,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676444,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Begynnelsedagen för den individuella planens (IP) giltighet"
 }, {
   "accesscount" : 0,
   "accessed" : 1514463761214,
@@ -36928,9 +37396,9 @@
   "id" : 20086,
   "key" : "tooltip:Koulutuksen järjestäjän tarjoama majoitus. Huoneeseen...",
   "locale" : "sv",
-  "modified" : 1514463786627,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676443,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Inkvartering som utbildningsanordnaren erbjuder. Dagen för inflyttning i rummet och avresedagen. Du kan lägga till flera inkvarteringsperioder med knapp ”lägg till ny”. Uppgift som används vid beräkningen av finansieringen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325444,
@@ -36967,9 +37435,9 @@
   "id" : 20251,
   "key" : "tooltip:Koulutuksen järjestäjän tarjoama(t) majoitusjakso(t). Huoneeseen...",
   "locale" : "sv",
-  "modified" : 1514469563792,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676591,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Inkvarteringsperiod(er) som utbildningsanordnaren erbjuder. Dagen för inflyttning i rummet och avresedagen. Uppgift som används vid beräkningen av finansieringen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325378,
@@ -37006,9 +37474,9 @@
   "id" : 20194,
   "key" : "tooltip:Koulutuksen järjestämismuoto jaksotietona (alku- ja...",
   "locale" : "sv",
-  "modified" : 1514469563791,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676519,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "I vilken form utbildningen anordnas som perioduppgift (begynnelse- och slutdatum). Utbildning i läroanstalt eller läroavtalsutbildning. Det kan finnas flera separata perioder. Ifall det är fråga om en prestation enligt yrkesutbildningsreformen används i stället fältet ”Sätt att förvärva kompetens”."
 }, {
   "accesscount" : 0,
   "accessed" : 1514551963434,
@@ -37045,9 +37513,9 @@
   "id" : 20344,
   "key" : "tooltip:Koulutuksen laajuus osaamispisteinä",
   "locale" : "sv",
-  "modified" : 1514551963531,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676727,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Utbildningens omfattning i kompetenspoäng"
 }, {
   "accesscount" : 0,
   "accessed" : 1514551963421,
@@ -37084,9 +37552,9 @@
   "id" : 20323,
   "key" : "tooltip:Koulutuksen osan kuvaus sisältäen ammattitaitovaatimukset.",
   "locale" : "sv",
-  "modified" : 1514551963531,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676721,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Beskrivning av utbildningsdel, inkl. krav på yrkeskunskap."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325431,
@@ -37123,9 +37591,9 @@
   "id" : 20239,
   "key" : "tooltip:Kunta, jossa työssäoppiminen on tapahtunut.",
   "locale" : "sv",
-  "modified" : 1514469563791,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676591,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Kommun, i vilken inlärningen i arbete skett."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724719,
@@ -37162,9 +37630,9 @@
   "id" : 20443,
   "key" : "tooltip:Kuvaus esiopetuksesta. Esiopetuksen päätteeksi voidaan...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676844,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Beskrivning av förskoleundervisning. Som avslutning på förskoleundervisningen kan ges ett deltagarintyg, där förskoleundervisning beskrivs."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325328,
@@ -37201,9 +37669,9 @@
   "id" : 20137,
   "key" : "tooltip:Kuvaus siitä, miten aikaisemmin hankittu...",
   "locale" : "sv",
-  "modified" : 1514469563791,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676454,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Beskrivning av hur den tidigare förvärvade kompetensen erkänts."
 }, {
   "accesscount" : 0,
   "accessed" : 1514463761226,
@@ -37240,9 +37708,9 @@
   "id" : 20104,
   "key" : "tooltip:Kuvaus ulkomaanjakson sisällöstä. Esimerkiksi tieto...",
   "locale" : "sv",
-  "modified" : 1514463786627,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676446,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Beskrivning av innehållet i en utlandsperiod. Exempelvis information om den studerande studerar vid en utländsk läroanstalt eller om det är fråga om arbetspraktik eller inlärning i arbete."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724874,
@@ -37279,9 +37747,9 @@
   "id" : 20584,
   "key" : "tooltip:Käyttäytymisen arvosana.",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676914,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Vitsord i uppförande."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724681,
@@ -37318,9 +37786,9 @@
   "id" : 20407,
   "key" : "tooltip:Käyttäytymisen sanallinen arviointi.",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676783,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Verbal bedömning av uppförande."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724673,
@@ -37357,9 +37825,9 @@
   "id" : 20395,
   "key" : "tooltip:Liitetiedon kuvaus, eli sanallinen käyttäytymisen...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676782,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Beskrivning av bifogad uppgift, dvs. en verbal bedömning av uppförande eller arbete."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724707,
@@ -37396,9 +37864,9 @@
   "id" : 20434,
   "key" : "tooltip:Liitetiedon tyyppi, eli onko kyseessä...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676785,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Typ av bifogad uppgift, dvs. om det är fråga om bedömning av uppförande eller av arbete."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724736,
@@ -37435,9 +37903,9 @@
   "id" : 20467,
   "key" : "tooltip:Luokan tunniste, esimerkiksi 9C.",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676848,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Klassens identifikation, t.ex. 9C."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325593,
@@ -37474,9 +37942,9 @@
   "id" : 20302,
   "key" : "tooltip:Maa, jossa työssäoppiminen on tapahtunut.",
   "locale" : "sv",
-  "modified" : 1514469563792,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676663,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Land, där inlärningen i arbete skett."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724683,
@@ -37513,9 +37981,9 @@
   "id" : 20410,
   "key" : "tooltip:Mahdollisen erityisen tuen päätöksen alkamis-...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676784,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Begynnelse- och slutdag för eventuellt beslut om särskilt stöd. Uppgift som används vid beräkningen av finansieringen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724709,
@@ -37552,9 +38020,9 @@
   "id" : 20437,
   "key" : "tooltip:Mahdollisen joustavan perusopetuksen (JOPO) alkamis-...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676791,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Begynnelse- och slutdagar för eventuell flexibel grundläggande utbildning (JOPO). Uppgift som används vid beräkning av finansieringen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724740,
@@ -37591,9 +38059,9 @@
   "id" : 20473,
   "key" : "tooltip:Mahdollisen pidennetyn oppivelvollisuuden alkamis- ja...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676852,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Begynnelse- och slutdagar för eventuell förlängd läroplikt. Uppgift som används vid beräkning av finansieringen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724717,
@@ -37630,9 +38098,9 @@
   "id" : 20440,
   "key" : "tooltip:Mahdollisen sisäoppilaitosmuotoisen majoituksen aloituspäivä ja...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676792,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Begynnelse- och slutdagar för eventuell inkvartering i internatform. Det kan finnas flera separata perioder. Uppgift som används vid beräkningen av finansieringen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724732,
@@ -37669,9 +38137,9 @@
   "id" : 20461,
   "key" : "tooltip:Mahdolliset muut suorituskielet.",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676848,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Eventuella andra språk som prestationen avlagts på."
 }, {
   "accesscount" : 0,
   "accessed" : 1514551963424,
@@ -37708,9 +38176,9 @@
   "id" : 20329,
   "key" : "tooltip:Mahdolliset todistuksella näkyvät lisätiedot.",
   "locale" : "sv",
-  "modified" : 1514551963531,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676722,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Eventuella tilläggsuppgifter som syns på betyget."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325576,
@@ -37747,9 +38215,9 @@
   "id" : 20296,
   "key" : "tooltip:Myöntäjähenkilö/-henkilöt, eli suorituksen/todistuksen allekirjoittajat.",
   "locale" : "sv",
-  "modified" : 1514469563792,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676662,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Beviljande person/er, dvs. de som undertecknat prestationen/betyget."
 }, {
   "accesscount" : 0,
   "accessed" : 1514551963431,
@@ -37786,9 +38254,9 @@
   "id" : 20338,
   "key" : "tooltip:Näyttötutkintoon valmistavaan koulutukseen liittyvässä ammatillisessa...",
   "locale" : "sv",
-  "modified" : 1514551963531,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676723,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Kompetensområden som avläggs i yrkesexamen i samband med utbildning som förbereder för fristående examen. Kan finnas i flera olika perioder."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325558,
@@ -37825,9 +38293,9 @@
   "id" : 20290,
   "key" : "tooltip:Näytön arvioinnista päättäneet tahot.",
   "locale" : "sv",
-  "modified" : 1514469563792,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676659,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Parter som beslutat om bedömningen av fristående examen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325384,
@@ -37864,9 +38332,9 @@
   "id" : 20200,
   "key" : "tooltip:Näytön arviointipäivä",
   "locale" : "sv",
-  "modified" : 1514469563791,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676590,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Dag för bedömning av fristående examen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514551963399,
@@ -37903,9 +38371,9 @@
   "id" : 20314,
   "key" : "tooltip:Näytön arviointitiedot (arvosana, arviointipäivä, arvioinnista...",
   "locale" : "sv",
-  "modified" : 1514551963531,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676663,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Uppgifter om bedömning av fristående examen (vitsord, bedömningsdag, vilka som beslutat om bedömningen, deltagarna i bedömningssamtalet)."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325361,
@@ -37942,9 +38410,9 @@
   "id" : 20176,
   "key" : "tooltip:Näytön arvosana",
   "locale" : "sv",
-  "modified" : 1514469563791,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676516,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Vitsord för fristående examen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325426,
@@ -37981,9 +38449,9 @@
   "id" : 20233,
   "key" : "tooltip:Näytön suorituspaikka (suorituspaikan tyyppi ja...",
   "locale" : "sv",
-  "modified" : 1514469563791,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676590,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Plats för avläggande av fristående examen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325343,
@@ -38020,9 +38488,9 @@
   "id" : 20155,
   "key" : "tooltip:Onko kyse uuden osaamisalan suorituksesta...",
   "locale" : "sv",
-  "modified" : 1514469563791,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676511,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Är det fråga om avläggande av ett nytt kompetensområde i förhållande till examen som avlagts tidigare."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325413,
@@ -38059,9 +38527,9 @@
   "id" : 20221,
   "key" : "tooltip:Onko kyse uuden tutkintonimikkeen suorituksesta...",
   "locale" : "sv",
-  "modified" : 1514469563791,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676590,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Är det fråga om avläggande av en ny examensbenämning i förhållande till examen som avlagts tidigare."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724894,
@@ -38098,9 +38566,9 @@
   "id" : 20605,
   "key" : "tooltip:Onko kyseessä peruskoulun päättötodistuksen arvosanan...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676916,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Är det fråga om förhöjning av vitsord i avgångsbetyget från grundskolan."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325315,
@@ -38137,9 +38605,9 @@
   "id" : 20119,
   "key" : "tooltip:Onko näyttö suoritettu työssäoppimisen yhteydessä?",
   "locale" : "sv",
-  "modified" : 1514469563791,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676452,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Har den fristående examen avlagts i samband med inlärning i arbetet?"
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724664,
@@ -38176,9 +38644,9 @@
   "id" : 20386,
   "key" : "tooltip:Onko opiskelija vuosiluokkiin sitomattomassa opetuksessa.",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676728,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Är den studerande i undervisning som inte är bunden till årskurser."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325330,
@@ -38215,9 +38683,9 @@
   "id" : 20140,
   "key" : "tooltip:Onko oppija vammainen ja hänellä...",
   "locale" : "sv",
-  "modified" : 1514469563791,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676511,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Är eleven funktionshindrad och har eleven en assistent (begynnelse- och slutdag). Det kan finnas flera separata perioder. Uppgift som används vid beräkningen av finansieringen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724759,
@@ -38254,9 +38722,9 @@
   "id" : 20485,
   "key" : "tooltip:Onko oppilas ollut oppiaineessa painotetussa...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676853,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Har eleven i deltagit i intensifierad undervisning i läroämnet.  Den intensifierade undervisningens (läroämne eller läroämneshelhet, tvåspråkig undervisning) mål och bedömningsgrunder följer de riksomfattande läroplansgrunderna."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724883,
@@ -38293,9 +38761,9 @@
   "id" : 20593,
   "key" : "tooltip:Onko oppilas opiskellut oppiaineessa yksilöllisen...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676915,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Har eleven i läroämnet studerat enligt individuell lärokurs. Om eleven studerar i ett ämne enligt individuell lärokurs kan också slutbedömningen i dessa ämnen vara verbal."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724798,
@@ -38332,9 +38800,9 @@
   "id" : 20512,
   "key" : "tooltip:Onko oppilas vuosiluokkiin sitomattomassa opetuksessa.",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676854,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Är eleven i undervisning som inte är årskursbunden."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724851,
@@ -38371,9 +38839,9 @@
   "id" : 20560,
   "key" : "tooltip:Opintojen laajuus.",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676909,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Studiernas omfattning."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325437,
@@ -38410,9 +38878,9 @@
   "id" : 20245,
   "key" : "tooltip:Opintojen suorituskieli",
   "locale" : "sv",
-  "modified" : 1514469563792,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676593,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "På vilket språk avläggs studierna (studiespråk)"
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724811,
@@ -38449,9 +38917,9 @@
   "id" : 20524,
   "key" : "tooltip:Opiskeleeko oppilas toiminta-alueittain? Toiminta-alueittain opiskelussa...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676905,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Studerar eleven enligt verksamhetsområde? Vid studier enligt verksamhetsområde har eleven en individuell lärokurs och undervisningen ordnas enligt verksamhetsområde. Då har eleven alltid ett beslut om särskilt stöd. De verksamhetsområden som ingår i elevens läroplan är motoriska färdigheter, kommunikativa färdigheter, sociala färdigheter, dagliga färdigheter och kognitiva färdigheter)."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724897,
@@ -38488,9 +38956,9 @@
   "id" : 20608,
   "key" : "tooltip:Opiskelijan saamat laissa säädetyt tukimuodot...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676969,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Lagstadgade stödformer som eleven fått (assistenttjänster, särskilda hjälpmedel, specialundervisning på deltid, stödundervisning och/eller tolkningstjänster)."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724840,
@@ -38527,9 +38995,9 @@
   "id" : 20551,
   "key" : "tooltip:Opiskeltava kieli.",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676907,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Språk som studeras."
 }, {
   "accesscount" : 0,
   "accessed" : 1514463761233,
@@ -38566,9 +39034,9 @@
   "id" : 20113,
   "key" : "tooltip:Opiskeluoikeuden tila, joka muodostuu opiskeluoikeusjaksoista....",
   "locale" : "sv",
-  "modified" : 1514463786627,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676450,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Studierättens status, vilken består av studierättsperioder. Beskrivningar av status finns under [täältä](https://confluence.csc.fi/pages/viewpage.action?pageId=71953716#KOSKI-palveluuntallennettavattiedotjatiedonsiirto/tietojenmanuaalinentallentaminen-tilat)."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325479,
@@ -38605,9 +39073,9 @@
   "id" : 20266,
   "key" : "tooltip:Opiskeluvalmiuksia tukevat opinnot (Laki ammatillisesta...",
   "locale" : "sv",
-  "modified" : 1514469563792,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676659,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Studier som stöder studiefärdigheter (Yrkesutbildningslagen 531/2017 63 §) sparas som perioder (begynnelse- och slutdatum) när det är fråga om heltidsstudier. Utom uppgifterna om begynnelse- och slutdatum sparas en fritt formulerad beskrivning av studierna. Det kan finnas flera separata perioder."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325338,
@@ -38644,9 +39112,9 @@
   "id" : 20149,
   "key" : "tooltip:Opiskeluvalmiuksia tukevien opintojen vapaamuotoinen kuvaus.",
   "locale" : "sv",
-  "modified" : 1514469563791,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530535676511,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "En fritt formulerad beskrivning av studier som stöder studiefärdigheter."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724817,
@@ -38683,9 +39151,9 @@
   "id" : 20530,
   "key" : "tooltip:Oppiaineen arvosana.",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157756,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Läroämnets vitsord."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724671,
@@ -38722,9 +39190,9 @@
   "id" : 20392,
   "key" : "tooltip:Oppiaineen kokonaisarvosana",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157575,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Läroämnets helhetsvitsord."
 }, {
   "accesscount" : 0,
   "accessed" : 1519304148653,
@@ -38761,9 +39229,9 @@
   "id" : 20664,
   "key" : "tooltip:Oppiaineen laajuus kursseina.",
   "locale" : "sv",
-  "modified" : 1519304148647,
-  "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "modified" : 1530536157878,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Läroämnets omfattning i kurser."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724795,
@@ -38800,9 +39268,9 @@
   "id" : 20509,
   "key" : "tooltip:Oppiaineen laajuus vuosiviikkotunteina.",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157712,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Läroämnets omfattning i årsveckotimmar."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724688,
@@ -38839,9 +39307,9 @@
   "id" : 20416,
   "key" : "tooltip:Oppiaineen opetuksen sisältö.",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157587,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Innehållet i undervisningen i läroämnet."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724865,
@@ -38878,9 +39346,9 @@
   "id" : 20575,
   "key" : "tooltip:Oppiaineen sanallinen arviointi.",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157840,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Verbal bedömning av läroämnet."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325373,
@@ -38917,9 +39385,9 @@
   "id" : 20188,
   "key" : "tooltip:Oppijan opetusryhmä",
   "locale" : "sv",
-  "modified" : 1514469563791,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157273,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Elevens undervisningsgrupp."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724703,
@@ -38956,9 +39424,9 @@
   "id" : 20428,
   "key" : "tooltip:Oppilaan kotimaisten kielten kielikylvyn kieli.",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157637,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Språket för elevens språkbad i inhemska språk."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724829,
@@ -38995,9 +39463,9 @@
   "id" : 20542,
   "key" : "tooltip:Oppilaan saamat laissa säädetyt tukimuodot....",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157775,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Lagstadgade stödformer som eleven får. Kan vara flera."
 }, {
   "accesscount" : 0,
   "accessed" : 1513861203356,
@@ -39034,9 +39502,9 @@
   "id" : 19727,
   "key" : "tooltip:Oppilaitoksen toimipiste, jossa opinnot on...",
   "locale" : "sv",
-  "modified" : 1513861201057,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157147,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Läroanstaltens verksamhetsställe, där studierna fullgjorts. Om läroanstalten inte har verksamhetsställen skrivs här läroanstaltens uppgifter."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325620,
@@ -39073,9 +39541,9 @@
   "id" : 20311,
   "key" : "tooltip:Organisaatio, joka on vahvistanut suorituksen.",
   "locale" : "sv",
-  "modified" : 1514469563792,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157459,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Organisation som bestyrkt prestationen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325376,
@@ -39112,9 +39580,9 @@
   "id" : 20191,
   "key" : "tooltip:Osa-aikaisuuden suuruus prosentteina. Yksi täysipäiväinen...",
   "locale" : "sv",
-  "modified" : 1514469563791,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157273,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Deltid i procent. En full studiedag i veckan = 20."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325387,
@@ -39151,9 +39619,9 @@
   "id" : 20203,
   "key" : "tooltip:Osa-aikaisuusjaksojen tiedot (jakson alku- ja...",
   "locale" : "sv",
-  "modified" : 1514469563791,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157275,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Uppgifter om perioder på deltid (periodens begynnelse- och slutdag samt deltid i procent). Det kan finnas flera separata perioder. Uppgift som används vid beräkningen av finansieringen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325496,
@@ -39190,9 +39658,9 @@
   "id" : 20272,
   "key" : "tooltip:Osaamisen hankkimistavat (oppisopimus, koulutussopimus, oppilaitosmuotoinen...",
   "locale" : "sv",
-  "modified" : 1514469563792,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157403,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "På vilka sätt kompetensen förvärvats (läroavtal, utbildningsavtal, utbildning i läroanstaltsform) under olika tidsperioder. Vid överföring av prestationer enligt reformen används detta fält i stället för anordningsform."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724824,
@@ -39229,9 +39697,9 @@
   "id" : 20536,
   "key" : "tooltip:Paikallisen oppiaineen vapaamuotoinen kuvaus.",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157772,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Fritt formulerad beskrivning av obligatoriskt läroämne."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325530,
@@ -39268,9 +39736,9 @@
   "id" : 20281,
   "key" : "tooltip:Paikkakunta, jossa suoritus on vahvistettu...",
   "locale" : "sv",
-  "modified" : 1514469563792,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157453,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Ort, där prestationen har bestyrkts (ort för underskrift)."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724765,
@@ -39307,9 +39775,9 @@
   "id" : 20491,
   "key" : "tooltip:Perusopetuksen aloittamisesta lykkäys. Oppilas saanut...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157697,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Uppskov med inledande av grundläggande utbildning. Eleven har fått tillstånd att inleda den grundläggande utbildningen senare."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724690,
@@ -39346,9 +39814,9 @@
   "id" : 20419,
   "key" : "tooltip:Perusopetuksen aloitusta aikaistettu, eli oppilas...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157589,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Den grundläggande utbildningen har inletts tidigare, dvs. eleven har börjat i grundskolan före läropliktsåldern."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724730,
@@ -39385,9 +39853,9 @@
   "id" : 20458,
   "key" : "tooltip:Perusopetuksen vuosiluokkatodistuksen liitetieto (liitteenä annettu...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157648,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Bifogad uppgift till grundskolans årskursbetyg (i bilagan ges bedömning av uppförande och arbete)."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724748,
@@ -39424,9 +39892,9 @@
   "id" : 20479,
   "key" : "tooltip:Päättötodistukseen liittyvät oppiaineen suoritukset.",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157650,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Prestationer i läroämnet som ansluter sig till avgångsbetyget."
 }, {
   "accesscount" : 0,
   "accessed" : 1514463761235,
@@ -39463,9 +39931,9 @@
   "id" : 20116,
   "key" : "tooltip:Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden...",
   "locale" : "sv",
-  "modified" : 1514463786627,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157210,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Identifikation för studierätten som skapats av den utbildningsanordnare som har huvudansvaret."
 }, {
   "accesscount" : 0,
   "accessed" : 1514463761223,
@@ -39502,9 +39970,9 @@
   "id" : 20098,
   "key" : "tooltip:Sisäoppilaitosmuotoisen majoituksen aloituspäivä ja loppupäivä....",
   "locale" : "sv",
-  "modified" : 1514463786627,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530537370416,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Begynnelse- och slutdag för inkvartering i internatform. Du kan lägga till flera inkvarteringsperioder i internatform genom att trycka på 'lägg till ny'. Uppgift som används vid beräkningen av finansieringen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325567,
@@ -39541,9 +40009,9 @@
   "id" : 20293,
   "key" : "tooltip:Suoritetaanko tutkinnon osa/tutkinnon osat näyttötutkintona...",
   "locale" : "sv",
-  "modified" : 1514469563792,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157455,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Avläggs examensdelen/examensdelarna som fristående examen eller som utbildning enligt läroplansgrunderna."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325341,
@@ -39580,9 +40048,9 @@
   "id" : 20152,
   "key" : "tooltip:Suoritetaanko tutkinto näyttötutkintona vai opetussuunnitelmaperustaisena...",
   "locale" : "sv",
-  "modified" : 1514469563791,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157213,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Avläggs examen som fristående examen eller som utbildning enligt läroplansgrunderna."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325382,
@@ -39619,9 +40087,9 @@
   "id" : 20197,
   "key" : "tooltip:Suoritettava ammatillinen tutkinto ja tutkinnon...",
   "locale" : "sv",
-  "modified" : 1514469563791,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157275,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Yrkesexamen som avläggs och diarienummer för läroplansgrunderna för examen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514551963440,
@@ -39658,9 +40126,9 @@
   "id" : 20353,
   "key" : "tooltip:Suoritettava koulutus",
   "locale" : "sv",
-  "modified" : 1514551963531,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157522,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Utbildning som fullgörs."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724776,
@@ -39697,9 +40165,9 @@
   "id" : 20497,
   "key" : "tooltip:Suoritettava koulutus ja koulutuksen opetussuunnitelman...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157710,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Utbildning som fullgörs och diarienummer för läroplansgrunderna för utbildningen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325416,
@@ -39736,9 +40204,9 @@
   "id" : 20224,
   "key" : "tooltip:Suoritettava osaamisala. Voi olla useampia...",
   "locale" : "sv",
-  "modified" : 1514469563791,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157334,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Kompetensområde som avläggs. Kan finnas flera under olika perioder."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724756,
@@ -39775,9 +40243,9 @@
   "id" : 20482,
   "key" : "tooltip:Suorittaako erityisoppilas koulutusta omassa erityisryhmässään...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157693,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Fullgör en specialelev utbildningen i sin egen specialgrupp eller inkluderad i undervisningen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325421,
@@ -39814,9 +40282,9 @@
   "id" : 20230,
   "key" : "tooltip:Suoritukseen kuuluvien koulutussopimusjaksojen tiedot (aika,...",
   "locale" : "sv",
-  "modified" : 1514469563791,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157339,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Uppgifter om utbildningsavtalsperioder som ingår i prestationen (tid, plats, arbetsuppgifter, omfattning)."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325466,
@@ -39853,9 +40321,9 @@
   "id" : 20263,
   "key" : "tooltip:Suoritukseen kuuluvien työssäoppimisjaksojen tiedot (aika,...",
   "locale" : "sv",
-  "modified" : 1514469563792,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157399,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Uppgifter om perioder av inlärning i arbete som ingår i prestationen (tid, plats, arbetsuppgifter, omfattning)."
 }, {
   "accesscount" : 0,
   "accessed" : 1514551963427,
@@ -39892,9 +40360,9 @@
   "id" : 20332,
   "key" : "tooltip:Suoritukseen liittyvät lisätiedot, kuten esimerkiksi...",
   "locale" : "sv",
-  "modified" : 1514551963531,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157512,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Tilläggsuppgifter i anslutning till prestationen, såsom t.ex. anpassad bedömning eller undantag i bedömningen. Innehåller typen av tilläggsuppgift samt en fritt formulerad beskrivning."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325332,
@@ -39931,9 +40399,9 @@
   "id" : 20143,
   "key" : "tooltip:Suorituksen alkamispäivä.",
   "locale" : "sv",
-  "modified" : 1514469563791,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157210,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Begynnelsedag för prestationen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724836,
@@ -39970,9 +40438,9 @@
   "id" : 20548,
   "key" : "tooltip:Suorituksen laajuus vuosiviikkotunteina.",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157818,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Prestationens omfattning i årsveckotimmar."
 }, {
   "accesscount" : 0,
   "accessed" : 1514551963439,
@@ -40009,9 +40477,9 @@
   "id" : 20350,
   "key" : "tooltip:Suorituksen päättymispäivä.",
   "locale" : "sv",
-  "modified" : 1514551963531,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157521,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Slutdag för prestationen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514551963408,
@@ -40048,9 +40516,9 @@
   "id" : 20317,
   "key" : "tooltip:Tiedot aiemmin hankitun osaamisen tunnustamisesta.",
   "locale" : "sv",
-  "modified" : 1514551963531,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157460,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Uppgifter om erkännande av tidigare förvärvad kompetens."
 }, {
   "accesscount" : 0,
   "accessed" : 1526473123881,
@@ -40087,9 +40555,9 @@
   "id" : 21099,
   "key" : "tooltip:Tieto erityisopetuksen toteutuspaikasta.",
   "locale" : "sv",
-  "modified" : 1526473123869,
-  "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "modified" : 1530536157895,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Uppgift om var specialundervisningen ordnats."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724805,
@@ -40126,9 +40594,9 @@
   "id" : 20518,
   "key" : "tooltip:Tieto mahdollisesta opiskelusta kotiopetuksessa huoltajan...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157754,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Uppgift om eventuella studier i hemundervisning enligt vårdnadshavarens beslut med begynnelse- och slutdag. Uppgift som används vid beräkning av finansieringen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724694,
@@ -40165,9 +40633,9 @@
   "id" : 20425,
   "key" : "tooltip:Tieto opiskelusta ulkomailla alkamis- ja...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157634,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Uppgift om studier utomlands med begynnelse- och slutdag. Uppgift som används vid beräkning av finansieringen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724871,
@@ -40204,9 +40672,9 @@
   "id" : 20581,
   "key" : "tooltip:Tieto opiskelusta ulkomailla huoltajan ilmoituksesta...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157841,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Uppgift om studier utomlands enligt vårdnadshavarens anmälan, med begynnelse- och slutdag. Uppgift som används vid beräkning av finansieringen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514463761230,
@@ -40243,9 +40711,9 @@
   "id" : 20110,
   "key" : "tooltip:Tieto siitä että oppija on...",
   "locale" : "sv",
-  "modified" : 1514463786627,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530537370418,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Uppgift om att eleven omfattas av särskilt stöd i särskild uppgift i krävande särskilt stöd (begynnelsedag och slutdag). Du kan lägga till flera perioder av särskilt stöd för en särskild uppgift med krävande särskilt stöd med tangenten 'lägg till ny'. Uppgift för krävande särskilt stöd bör ha beviljats i läroanstaltens utbildningstillstånd. Uppgift som används vid beräkningen av finansieringen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724692,
@@ -40282,9 +40750,9 @@
   "id" : 20422,
   "key" : "tooltip:Tieto siitä, jos opiskelijalla on...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157633,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Uppgift om att eleven har rätt till avgiftsfri internatplats (begynnelse- och slutdag)."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724677,
@@ -40321,9 +40789,9 @@
   "id" : 20401,
   "key" : "tooltip:Tieto siitä, jos oppija on...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157575,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Uppgift om att eleven omfattas av skolhemsförhöjning (begynnelse- och slutdag). Det kan finnas flera separata perioder. Uppgift som används vid beräkningen av finansieringen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724669,
@@ -40360,9 +40828,9 @@
   "id" : 20389,
   "key" : "tooltip:Tieto siitä, jos oppilaalla on...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157572,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Uppgift om att eleven har transportförmån (begynnelse- och slutdag)."
 }, {
   "accesscount" : 0,
   "accessed" : 1514463761218,
@@ -40399,9 +40867,9 @@
   "id" : 20092,
   "key" : "tooltip:Tieto siitä, missä maassa jakso...",
   "locale" : "sv",
-  "modified" : 1514463786627,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157151,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Uppgift om i vilket land perioden har avlagts. Välj land i rullgardinsmenyn."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724826,
@@ -40438,9 +40906,9 @@
   "id" : 20539,
   "key" : "tooltip:Tieto siitä, onko opiskelija vaikeasti...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157774,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Uppgift om huruvida eleven är gravt handikappad (begynnelse- och slutdag). Det kan finnas flera separata perioder. Uppgift som används vid beräkning av finansieringen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724862,
@@ -40477,9 +40945,9 @@
   "id" : 20572,
   "key" : "tooltip:Tieto siitä, onko opiskelija vammainen...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157834,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Uppgift om huruvida eleven är handikappad (begynnelse- och slutdag). Det kan finnas flera separata perioder. Uppgift som används vid beräkningen av finansieringen."
 }, {
   "accesscount" : 0,
   "accessed" : 1515596436084,
@@ -40516,9 +40984,9 @@
   "id" : 20614,
   "key" : "tooltip:Tieto siitä, onko oppija muu...",
   "locale" : "sv",
-  "modified" : 1515596436025,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157877,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Uppgift om huruvida eleven har annan än grav utvecklingsstörning (begynnelse- och slutdag). Det kan finnas flera separata perioder. Uppgift som används vid beräkningen av finansieringen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325389,
@@ -40555,9 +41023,9 @@
   "id" : 20206,
   "key" : "tooltip:Tieto siitä, onko oppija vaikeasti...",
   "locale" : "sv",
-  "modified" : 1514469563791,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157279,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Uppgift om huruvida eleven är gravt handikappad (begynnelse- och slutdag). Det kan finnas flera separata perioder. Uppgift som används vid beräkningen av finansieringen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724762,
@@ -40594,9 +41062,9 @@
   "id" : 20488,
   "key" : "tooltip:Tieto siitä, onko oppija vammainen...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157694,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Uppgift om huruvida eleven är handikappad (begynnelse- och slutdag). Det kan finnas flera separata perioder. Uppgift som används vid beräkning av finansieringen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724738,
@@ -40633,9 +41101,9 @@
   "id" : 20470,
   "key" : "tooltip:Tieto siitä, suoritetaanko perusopetusta normaalina...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157649,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Uppgift om huruvida den grundläggande utbildningen fullgörs som normal utbildning eller som specialexamen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325517,
@@ -40672,9 +41140,9 @@
   "id" : 20278,
   "key" : "tooltip:Tieto vankilaopetusjaksoista (alku- ja loppupäivämäärä)....",
   "locale" : "sv",
-  "modified" : 1514469563792,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157452,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Uppgifter om studieperioder i fängelse (begynnelse- och slutdag). Det kan finnas flera separata perioder. Uppgift som används vid beräkning av finansieringen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325410,
@@ -40711,9 +41179,9 @@
   "id" : 20218,
   "key" : "tooltip:Todistuksella näkyvät lisätiedot. Esim. erikoistuminen,...",
   "locale" : "sv",
-  "modified" : 1514469563791,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157333,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Tilläggsuppgifter som syns i betyget. T.ex. specialisering, påvisande av specialkunnande som inte ingår i examen osv."
 }, {
   "accesscount" : 0,
   "accessed" : 1514551963436,
@@ -40750,9 +41218,9 @@
   "id" : 20347,
   "key" : "tooltip:Todistuksella näkyvät lisätiedot. Esim. jos...",
   "locale" : "sv",
-  "modified" : 1514551963531,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157515,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Tilläggsuppgifter som syns i betyget. T.ex. om något innehåll i förberedande utbildning har valts från en annan examen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724789,
@@ -40789,9 +41257,9 @@
   "id" : 20503,
   "key" : "tooltip:Todistuksella näkyvät lisätiedot. Esimerkiksi merkintä...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157711,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Tilläggsuppgifter som syns i betyget. T.ex. anteckning om att eleven har studerat de läroämnen som anges med stjärna (*) enligt individuell lärokurs."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724679,
@@ -40828,9 +41296,9 @@
   "id" : 20404,
   "key" : "tooltip:Todistuksella näkyvät lisätiedot. Esimerkiksi tieto...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157587,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Tilläggsuppgifter som syns i betyget. Exempelvis uppgift om varför en del av studerandens studier har avlagts i en annan läroanstalt, på en arbetsplats eller annan plats som är jämförbar med en arbetsplats."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724833,
@@ -40867,9 +41335,9 @@
   "id" : 20545,
   "key" : "tooltip:Todistuksella näkyvät lisätiedot. Esimerkiksi, jos...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157815,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Tilläggsuppgifter som syns i betyget. T.ex. om minst 25 procent av elevens lektioner under läsåret har undervisats på något annat språk än skolans undervisningsspråk."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325345,
@@ -40906,9 +41374,9 @@
   "id" : 20158,
   "key" : "tooltip:Todistuksella näkyvät lisätiedot. Esimerkiksi, kun...",
   "locale" : "sv",
-  "modified" : 1514469563791,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157216,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Tilläggsuppgifter som syns i betyget. Exempelvis när det är fråga om ett annat kompetensområde eller en annan examensbenämning antecknas hänvisningen till den tidigare prestationen här."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724885,
@@ -40945,9 +41413,9 @@
   "id" : 20596,
   "key" : "tooltip:Tutkinnon perusteen diaarinumero.",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157875,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Diarienummer för examensgrund."
 }, {
   "accesscount" : 0,
   "accessed" : 1514551963443,
@@ -40984,9 +41452,9 @@
   "id" : 20356,
   "key" : "tooltip:Tutkinnon tai koulutuksen osan suoritukseen...",
   "locale" : "sv",
-  "modified" : 1514551963531,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157526,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Uppgifter om prov på yrkeskunskap som ingår i avläggande av en examen eller en del av en utbildning."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325456,
@@ -41023,9 +41491,9 @@
   "id" : 20260,
   "key" : "tooltip:Tutkinnon tai tutkinnonosan vahvistettu suorituspäivämäärä,...",
   "locale" : "sv",
-  "modified" : 1514469563792,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157398,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Det bestyrkta datumet för avläggande av en examen eller en examensdel, dvs. det datum då prestationen är godkänd som verifierad kompetens."
 }, {
   "accesscount" : 0,
   "accessed" : 1514551963429,
@@ -41062,9 +41530,9 @@
   "id" : 20335,
   "key" : "tooltip:Tutkinnonosan kuvaus sisältäen ammattitaitovaatimukset",
   "locale" : "sv",
-  "modified" : 1514551963531,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157514,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "En beskrivning av en examensdel inklusive krav på yrkeskunskap."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325429,
@@ -41101,9 +41569,9 @@
   "id" : 20236,
   "key" : "tooltip:Tutkintonimike/-nimikkeet, johon koulutus johtaa.",
   "locale" : "sv",
-  "modified" : 1514469563791,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157341,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Examensbenämning/-ar, som utbildningen leder till."
 }, {
   "accesscount" : 0,
   "accessed" : 1514551963423,
@@ -41140,9 +41608,9 @@
   "id" : 20326,
   "key" : "tooltip:Tutkintonimike/-nimikkeet, johon koulutus näyttötutkintoon valmistavaan...",
   "locale" : "sv",
-  "modified" : 1514551963531,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157464,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Examensbenämning/-ar, som yrkesexamen i anslutning till den förberedande utbildningen för utbildning för fristående examen, leder till."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325393,
@@ -41179,9 +41647,9 @@
   "id" : 20209,
   "key" : "tooltip:Tutkintonimike/-nimikkeet, joiden suorittamiseen tutkinnon osat...",
   "locale" : "sv",
-  "modified" : 1514469563791,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530537370418,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Examensbenämning/-ar, för vars avläggande examensdelarna kan leda till."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325336,
@@ -41218,9 +41686,9 @@
   "id" : 20146,
   "key" : "tooltip:Työssäoppimisjakson laajuus osaamispisteissä.",
   "locale" : "sv",
-  "modified" : 1514469563791,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157212,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Omfattningen i kompetenspoäng av period med inlärning i arbete."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325434,
@@ -41257,9 +41725,9 @@
   "id" : 20242,
   "key" : "tooltip:Työssäoppimispaikan nimi",
   "locale" : "sv",
-  "modified" : 1514469563792,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157392,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Namnet på platsen för inlärning i arbete."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325395,
@@ -41296,9 +41764,9 @@
   "id" : 20212,
   "key" : "tooltip:Työtehtävien vapaamuotoinen kuvaus",
   "locale" : "sv",
-  "modified" : 1514469563791,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157331,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Fritt formulerad beskrivning av arbetsuppgifterna"
 }, {
   "accesscount" : 0,
   "accessed" : 1514463761228,
@@ -41335,9 +41803,9 @@
   "id" : 20107,
   "key" : "tooltip:Vaativan erityisen tuen yhteydessä järjestettävä...",
   "locale" : "sv",
-  "modified" : 1514463786627,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530537370416,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Inkvartering som ordnas i samband med krävande särskilt stöd (begynnelse- och slutdag). Du kan lägga till flera inkvarteringsperioder i samband med krävande särskilt stöd med tangenten 'lägg till ny'. Uppgift som används vid beräkningen av finansieringen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325369,
@@ -41374,9 +41842,9 @@
   "id" : 20185,
   "key" : "tooltip:Valitse valintaruutu, jos kyseessä on...",
   "locale" : "sv",
-  "modified" : 1514469563791,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157270,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Välj urvalsrutan om det är fråga om personalutbildning."
 }, {
   "accesscount" : 0,
   "accessed" : 1514463761216,
@@ -41413,9 +41881,9 @@
   "id" : 20089,
   "key" : "tooltip:Valitse valintaruutu, jos opiskelijalla on...",
   "locale" : "sv",
-  "modified" : 1514463786627,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157148,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Välj urvalsrutan om den studerande har rätt till avgiftsfri internatplats."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325448,
@@ -41452,9 +41920,9 @@
   "id" : 20254,
   "key" : "tooltip:Valitse valintaruutu, mikäli oppija on...",
   "locale" : "sv",
-  "modified" : 1514469563792,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157393,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Välj urvalsrutan, ifall den studerande avlägger dubbelexamen, och mottagaren av finansieringen är den yrkesläroanstalt som erkänner kompetensen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325453,
@@ -41491,9 +41959,9 @@
   "id" : 20257,
   "key" : "tooltip:Vapaamuotoinen kuvaus suoritetusta näytöstä",
   "locale" : "sv",
-  "modified" : 1514469563792,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157395,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Fritt formulerad beskrivning av den avlagda fristående examen."
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724808,
@@ -41530,9 +41998,9 @@
   "id" : 20521,
   "key" : "tooltip:Vuosiluokan alkamispäivä",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157755,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Årskursens begynnelsedag"
 }, {
   "accesscount" : 0,
   "accessed" : 1514986724844,
@@ -41569,9 +42037,9 @@
   "id" : 20554,
   "key" : "tooltip:Vuosiluokkasuorituksen luokka-aste ja vuosiluokkasuorituksen opetussuunnitelman...",
   "locale" : "sv",
-  "modified" : 1514986750045,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157817,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Årskursprestationens klasstadium och diarienummer för årskursprestationens läroplansgrund."
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325358,
@@ -41608,9 +42076,9 @@
   "id" : 20173,
   "key" : "tooltip:Yrityksen Y-tunnus",
   "locale" : "sv",
-  "modified" : 1514469563791,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157218,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Företagets FO-nummer"
 }, {
   "accesscount" : 0,
   "accessed" : 1514469325419,
@@ -41647,9 +42115,9 @@
   "id" : 20227,
   "key" : "tooltip:Yrityksen nimi",
   "locale" : "sv",
-  "modified" : 1514469563791,
-  "modifiedBy" : "1.2.246.562.24.34119902638",
-  "value" : ""
+  "modified" : 1530536157338,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Företagets namn"
 }, {
   "accesscount" : 0,
   "accessed" : 1527743685634,

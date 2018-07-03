@@ -6,12 +6,14 @@ import fi.oph.koski.henkilo.kayttooikeusservice.KäyttöoikeusServiceClient
 import fi.oph.koski.http.Http
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedotStatistics, OpiskeluoikeusTilasto}
+import fi.oph.koski.tiedonsiirto.{TiedonsiirtoStatistics, TiedonsiirtoTilasto}
 
 import scala.concurrent.duration._
 
 
 trait KoskiPulssi {
   def opiskeluoikeusTilasto: OpiskeluoikeusTilasto
+  def tiedonsiirtoTilasto: TiedonsiirtoTilasto
   def metriikka: JulkinenMetriikka
   def oppilaitosMäärät: OppilaitosMäärät
   def oppijoidenMäärä: Int
@@ -21,8 +23,10 @@ trait KoskiPulssi {
 
 class KoskiStats(application: KoskiApplication) extends KoskiPulssi {
   private val perustiedotStats = OpiskeluoikeudenPerustiedotStatistics(application.koskiElasticSearchIndex)
+  private val tiedonsiirtoStats = TiedonsiirtoStatistics(application.koskiElasticSearchIndex)
 
   def opiskeluoikeusTilasto: OpiskeluoikeusTilasto = perustiedotStats.statistics
+  def tiedonsiirtoTilasto: TiedonsiirtoTilasto = tiedonsiirtoStats.statistics
   def metriikka: JulkinenMetriikka = metrics.toPublic
   def oppijoidenMäärä: Int = perustiedotStats.henkilöCount.getOrElse(0)
   def käyttöoikeudet: KäyttöoikeusTilasto = {
