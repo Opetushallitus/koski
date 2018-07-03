@@ -12,15 +12,16 @@ import scala.collection.JavaConverters._
 
 trait MyDataSupport extends ScalatraServlet {
   def application: KoskiApplication
+  private def conf: com.typesafe.config.Config = application.config.getConfig("mydata")
 
   def getConfigForMember(id: String =  memberCode): com.typesafe.config.Config = {
-    application.config.getConfigList("mydata.members").asScala.find(member =>
+    conf.getConfigList("members").asScala.find(member =>
       member.getString("id") == id).getOrElse(throw InvalidRequestException(KoskiErrorCategory.notFound.myDataMemberEiLöydy))
   }
 
   def getLoginUrlForMember(lang: String, memberId: String = memberCode): String = {
-    application.config.getString(s"mydata.login.shibboleth.$lang") +
-    application.config.getString("mydata.login.targetparam") + getLoginSuccessTarget(memberId, encode = true)
+    conf.getString(s"login.shibboleth.$lang") +
+    conf.getString("login.targetparam") + getLoginSuccessTarget(memberId, encode = true)
   }
 
   def getLoginSuccessTarget(memberId: String = memberCode, encode: Boolean = false): String = {
