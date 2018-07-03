@@ -15,10 +15,8 @@ export const OppilaitoksenYhteystieto = ({yhteystieto, message}) => (
       <span className='yhteytieto__name'>{t(yhteystieto.organisaationNimi)}</span>
     </div>
     <div className='yhteystieto__linkki'>
-      <a href={mailTo(yhteystieto.email, message)}>
-        <button className='koski-button'>
-          <Text name='Avaa sähköpostissa' className='yhteytieto__email'/>
-        </button>
+      <a href={mailTo(yhteystieto.email, message)} className='koski-button'>
+        <Text name='Avaa sähköpostissa' className='yhteytieto__email'/>
       </a>
     </div>
   </div>
