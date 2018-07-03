@@ -40,8 +40,7 @@ watch:
 watch-prod:
 	NODE_ENV="'production'" make watch
 source-to-image: clean build
-	echo "TODO" > target/webapp/buildversion.txt
-	mvn package -DskipTests
+	KOSKI_VERSION=TODO mvn package -DskipTests
 
 ### Running tests
 

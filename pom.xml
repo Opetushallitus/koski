@@ -331,6 +331,33 @@
         </executions>
       </plugin>
       <plugin>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.4.0</version>
+        <groupId>org.codehaus.mojo</groupId>
+        <executions>
+          <execution>
+            <id>Create buildversion.txt</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>bash</executable>
+              <commandlineArgs>scripts/createbuildversion.sh ${basedir}/target/webapp/buildversion.txt</commandlineArgs>
+            </configuration>
+          </execution>
+          <execution>
+            <id>Run a main class from command line</id>
+            <goals>
+              <goal>java</goal>
+            </goals>
+            <configuration>
+              <classpathScope>test</classpathScope>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <artifactId>maven-resources-plugin</artifactId>
         <version>2.6</version>
         <executions>
@@ -411,21 +438,6 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.4.0</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>java</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <classpathScope>test</classpathScope>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
