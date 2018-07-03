@@ -12,7 +12,7 @@ class MyDataServlet(implicit val application: KoskiApplication) extends ApiServl
   with AuthenticationSupport with Logging with NoCache with MyDataSupport {
 
   get("/kumppani/:memberCode") {
-    def memberConf = getConfigForMember
+    def memberConf = getConfigForMember()
 
     renderObject(Map(
       "id" -> memberConf.getString("id"),
@@ -30,7 +30,7 @@ class MyDataServlet(implicit val application: KoskiApplication) extends ApiServl
     logger.info(s"Authorizing $memberCode for user: ${koskiSessionOption.getOrElse()}")
     requireKansalainen
 
-    val id = getConfigForMember.getString("id") // will throw if memberCode is not valid
+    val id = getConfigForMember().getString("id") // will throw if memberCode is not valid
     renderObject(Map("success" -> application.mydataService.put(koskiSessionOption.get.oid, id)(koskiSessionOption.get)))
   }
 }

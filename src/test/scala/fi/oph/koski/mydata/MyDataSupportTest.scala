@@ -27,7 +27,7 @@ class MyDataSupportTest extends FreeSpec with Matchers with MockFactory {
       (mockRequest.getQueryString _).expects().returning("callback=http://www.hsl.fi").repeat(2)
       (mockRequest.getRequestURI _).expects().returning("/koski/omadata/hsl")
 
-      support(mockRequest).getLoginUrlForMember(memberId, lang) should
+      support(mockRequest).getLoginUrlForMember(lang, memberId) should
         equal("/koski/login/shibboleth?login=/koski/user/omadatalogin%3FonLoginSuccess%3D%2Fkoski%2Fomadata%2Fhsl%3Fcallback%3Dhttp%3A%2F%2Fwww.hsl.fi")
 
     }

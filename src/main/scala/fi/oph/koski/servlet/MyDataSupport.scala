@@ -13,27 +13,25 @@ import scala.collection.JavaConverters._
 trait MyDataSupport extends ScalatraServlet {
   def application: KoskiApplication
 
-  def getConfigForMember: com.typesafe.config.Config = getConfigForMember(memberCode)
-
-  def getConfigForMember(id: String): com.typesafe.config.Config = {
+  def getConfigForMember(id: String =  memberCode): com.typesafe.config.Config = {
     application.config.getConfigList("mydata.members").asScala.find(member =>
       member.getString("id") == id).getOrElse(throw InvalidRequestException(KoskiErrorCategory.notFound.myDataMemberEiLöydy))
   }
 
-  def getLoginUrlForMember(memberId: String, lang: String): String = {
-    application.config.getString(s"mydata.login.shibboleth.${lang}") +
+  def getLoginUrlForMember(lang: String, memberId: String = memberCode): String = {
+    application.config.getString(s"mydata.login.shibboleth.$lang") +
     application.config.getString("mydata.login.targetparam") + getLoginSuccessTarget(memberId, encode = true)
   }
 
-  def getLoginSuccessTarget(memberId: String, encode: Boolean = false): String = {
+  def getLoginSuccessTarget(memberId: String = memberCode, encode: Boolean = false): String = {
     getConfigForMember(memberId).getString(s"login.target") + getCurrentUrlAsFinalTargetParameter(encode)
   }
 
   private def getCurrentUrlAsFinalTargetParameter(encode: Boolean): String = {
     if (encode) {
-      URLEncoder.encode(s"?onLoginSuccess=${getCurrentURL}" , "UTF-8")
+      URLEncoder.encode(s"?onLoginSuccess=$getCurrentURL" , "UTF-8")
     } else {
-      s"?onLoginSuccess=${getCurrentURL}"
+      s"?onLoginSuccess=$getCurrentURL"
     }
   }
 
