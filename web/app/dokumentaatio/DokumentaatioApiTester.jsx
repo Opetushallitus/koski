@@ -155,11 +155,11 @@ const ApiOperationTester = ({operation}) => {
     <div className="api-tester">
       <ApiOperationTesterParameters operation={operation} queryParametersAtom={queryParametersAtom} postDataAtom={postDataAtom}/>
       <div className="buttons">
-        <button disabled={loadingA} className="try button blue" onClick={tryRequest}>{'Kokeile'}</button>
+        <button disabled={loadingA} className="try koski-button blue" onClick={tryRequest}>{'Kokeile'}</button>
         {operation.method === 'GET' &&
-        <button disabled={loadingA} className="try-newwindow button blue" onClick={tryRequestNewWindow}>{'Uuteen ikkunaan'}</button>
+        <button disabled={loadingA} className="try-newwindow koski-button blue" onClick={tryRequestNewWindow}>{'Uuteen ikkunaan'}</button>
         }
-        <button className="curl button" onClick={() => curlVisibleA.modify(v => !v)}>{curlVisibleA.map(v => v ? 'Piilota curl' : 'Näytä curl')}</button>
+        <button className="curl koski-button" onClick={() => curlVisibleA.modify(v => !v)}>{curlVisibleA.map(v => v ? 'Piilota curl' : 'Näytä curl')}</button>
       </div>
       <div>{curlVisibleA.map(v => v ? <code ref={e => e && selectElementContents(e)} className="curlcmd" onClick={e => selectElementContents(e.target)}>{curlValueA}</code> : null)}</div>
       <div className="result">{resultA}</div>

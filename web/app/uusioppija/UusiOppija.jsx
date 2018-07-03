@@ -37,7 +37,7 @@ export const UusiOppija = ({hetu, oid}) => {
         <UusiHenkilö {...{ hetu, oid, henkilöAtom, henkilöValidAtom }}/>
         <hr/>
         <UusiOpiskeluoikeus opiskeluoikeusAtom={opiskeluoikeusAtom}/>
-        <button className='button' disabled={submitEnabledP.not()} onClick={() => submitBus.push()}>{buttonTextP}</button>
+        <button className='koski-button' disabled={submitEnabledP.not()} onClick={() => submitBus.push()}>{buttonTextP}</button>
       </form>
     </div>
   )

@@ -40,7 +40,7 @@ const MerkitseKeskeneräiseksiButton = ({model}) => {
     pushModel(modelSetValue(model, undefined, 'vahvistus'))
   }
   let valmistunut = opiskeluoikeudenTila === 'valmistunut'
-  return <button className="merkitse-kesken" title={valmistunut ? t('Ei voi merkitä keskeneräiseksi, koska opiskeluoikeuden tila on Valmistunut.') : ''} disabled={valmistunut} onClick={merkitseKeskeneräiseksi}><Text name="Merkitse keskeneräiseksi"/></button>
+  return <button className="koski-button merkitse-kesken" title={valmistunut ? t('Ei voi merkitä keskeneräiseksi, koska opiskeluoikeuden tila on Valmistunut.') : ''} disabled={valmistunut} onClick={merkitseKeskeneräiseksi}><Text name="Merkitse keskeneräiseksi"/></button>
 }
 
 const MerkitseValmiiksiButton = ({model}) => {
@@ -63,7 +63,7 @@ const MerkitseValmiiksiButton = ({model}) => {
   let keskeneräisiä = onKeskeneräisiäOsasuorituksia(model) || arviointiPuuttuu(model)
   let buttonText = arvioituTaiVahvistettu(model) ? t('Muokkaa vahvistusta') : t('Merkitse valmiiksi')
   return (<span>
-    <button className="merkitse-valmiiksi" title={keskeneräisiä ? t('Ei voi merkitä valmiiksi, koska suorituksessa on keskeneräisiä tai arvioimattomia osasuorituksia.') : ''} disabled={keskeneräisiä} onClick={() => addingAtom.modify(x => !x)}>{buttonText}</button>
+    <button className="koski-button merkitse-valmiiksi" title={keskeneräisiä ? t('Ei voi merkitä valmiiksi, koska suorituksessa on keskeneräisiä tai arvioimattomia osasuorituksia.') : ''} disabled={keskeneräisiä} onClick={() => addingAtom.modify(x => !x)}>{buttonText}</button>
     {
       addingAtom.map(adding => adding && <MerkitseSuoritusValmiiksiPopup suoritus={model} resultCallback={merkitseValmiiksiCallback}/>)
     }

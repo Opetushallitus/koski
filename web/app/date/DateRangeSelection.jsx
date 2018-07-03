@@ -56,15 +56,15 @@ export default class DateRangeSelection extends React.Component {
           </div>
           <div className="date-range-shortcuts">
             <button
-              className="button"
+              className="koski-button"
               onClick={() => this.handleRangeSelection({from: undefined, to: undefined})}><Text name="kaikki"/>
             </button>
             <button
-              className="button"
+              className="koski-button"
               onClick={() => this.handleRangeSelection({from: new Date(new Date().getFullYear(), 0, 1), to: new Date()})}><Text name="kuluva vuosi"/>
             </button>
             <button
-              className="button"
+              className="koski-button"
               onClick={() => this.handleRangeSelection({from: new Date(new Date().getFullYear() - 1, 0, 1), to: new Date(new Date().getFullYear() - 1, 11, 31)})}><Text name="edellinen vuosi"/>
             </button>
           </div>

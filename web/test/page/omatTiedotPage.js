@@ -23,7 +23,7 @@ function OmatTiedotPage() {
       return S('header .header__caption p').text()
     },
     virheraportointiButton: function() {
-      return S('header a span:contains(Onko suorituksissasi virhe?)')
+      return S('header button:contains(Onko suorituksissasi virhe?)')
     },
     suoritusjakoButton: function() {
       return S('header button:contains(Suoritustietojen jakaminen)')
@@ -101,7 +101,7 @@ function VirheraportointiForm() {
 function SuoritusjakoForm() {
   var elem = findSingle('.suoritusjako')
   var createSuoritusjakoButton = function() { return S('.create-suoritusjako__button > button') }
-  var openAdditionalSuoritusjakoFormButton = function() { return S('.suoritusjako-form > div:last-child > a.toggle-button') }
+  var openAdditionalSuoritusjakoFormButton = function() { return S('.suoritusjako-form > div:last-child > button.toggle-button') }
 
   var api = {
     contentsAsText: function() {

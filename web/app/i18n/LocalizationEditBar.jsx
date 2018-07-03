@@ -18,7 +18,7 @@ export default ({user}) => {
     <div className={classNameP}>
       {'Lokalisoitujen tekstien muokkaus'}
       <a className="cancel" onClick={ cancelChanges }>{'Peruuta'}</a>
-      <button disabled={hasChanges.not()} onClick={saveChanges}>{'Tallenna'}</button>
+      <button className='koski-button' disabled={hasChanges.not()} onClick={saveChanges}>{'Tallenna'}</button>
       {
         hasChanges.not().map(show => show && <span className="languages">{'Vaihda kieli: '}{
           languages.map(l => <a key={l} className={l + (l == lang ? ' selected': '')} onClick={() => {localStorage.editLocalizations = true; setLang(l)}}>{l}</a>)

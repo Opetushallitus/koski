@@ -67,7 +67,7 @@ export const CopyableText = (
         : <input readOnly type='text' value={message} style={width && {width}}/>}
       {buttonState.map(({isDisabled, style, text}) => (
         <button
-          className={style ? `button button${style}` : 'button'}
+          className={style ? `koski-button koski-button${style}` : 'koski-button'}
           disabled={isDisabled}
           style={height && {height}}
           onClick={copyToClipboard(message, copyState)}

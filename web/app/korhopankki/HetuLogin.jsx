@@ -104,7 +104,7 @@ const HetuLogin = () => {
         />
       </label>
       <button
-        className='button blue'
+        className='koski-button blue'
         disabled={valid.not().or(inProgress)}
         onClick={doLogin}>
         {t('Kirjaudu sisään')}
