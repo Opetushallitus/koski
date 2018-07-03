@@ -36,11 +36,11 @@ trait MyDataSupport extends ScalatraServlet {
     }
   }
 
-  def getCurrentURL(implicit httpServletRequest: HttpServletRequest): String = {
-    if (httpServletRequest.queryString.isEmpty) {
-      httpServletRequest.getRequestURI
+  def getCurrentURL: String = {
+    if (request.queryString.isEmpty) {
+      request.getRequestURI
     } else {
-      httpServletRequest.getRequestURI + s"?${httpServletRequest.queryString}"
+      request.getRequestURI + s"?${request.queryString}"
     }
   }
 

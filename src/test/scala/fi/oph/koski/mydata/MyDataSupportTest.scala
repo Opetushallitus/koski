@@ -17,7 +17,6 @@ class MyDataSupportTest extends FreeSpec with Matchers with MockFactory {
     new MyDataSupport {
       override implicit val request: HttpServletRequest = mockRequest
       override def application = KoskiApplicationForTests
-      override def getCurrentURL(implicit httpServletRequest: HttpServletRequest): String = super.getCurrentURL(mockRequest)
     }
   }
 
