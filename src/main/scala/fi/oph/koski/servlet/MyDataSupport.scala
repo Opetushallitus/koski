@@ -4,19 +4,21 @@ import java.net.URLEncoder
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
-import javax.servlet.http.HttpServletRequest
+import fi.oph.koski.log.Logging
 import org.scalatra.ScalatraServlet
-
 import scala.collection.JavaConverters._
 
 
-trait MyDataSupport extends ScalatraServlet {
+trait MyDataSupport extends ScalatraServlet with Logging {
   def application: KoskiApplication
   private def conf: com.typesafe.config.Config = application.config.getConfig("mydata")
 
-  def getConfigForMember(id: String =  memberCode): com.typesafe.config.Config = {
+  def getConfigForMember(id: String = memberCode): com.typesafe.config.Config = {
     conf.getConfigList("members").asScala.find(member =>
-      member.getString("id") == id).getOrElse(throw InvalidRequestException(KoskiErrorCategory.notFound.myDataMemberEiLöydy))
+      member.getString("id") == id).getOrElse({
+        logger.warn("No MyData configuration found for member: " + id)
+        throw InvalidRequestException(KoskiErrorCategory.notFound.myDataMemberEiLöydy)
+      })
   }
 
   def getLoginUrlForMember(lang: String, memberId: String = memberCode): String = {

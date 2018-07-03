@@ -1,10 +1,14 @@
 package fi.oph.koski.mydata
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.servlet.MyDataSupport
+import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.log.LoggerWithContext
+import fi.oph.koski.servlet.{InvalidRequestException, MyDataSupport}
 import javax.servlet.http.HttpServletRequest
+import org.log4s.Logger
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{FreeSpec, Matchers}
+
 import scala.collection.JavaConverters._
 
 
@@ -12,6 +16,8 @@ class MyDataSupportTest extends FreeSpec with Matchers with MockFactory {
 
   val memberId = "hsl"
   val lang = "fi"
+
+  def support: MyDataSupport = support(mock[HttpServletRequest])
 
   def support(mockRequest: HttpServletRequest): MyDataSupport = {
     new MyDataSupport {
@@ -44,6 +50,12 @@ class MyDataSupportTest extends FreeSpec with Matchers with MockFactory {
       (request.getParameterMap _).when().returns(mapAsJavaMap(Map("memberCode" -> Array("hsl"))))
 
       support(request).memberCode should equal("hsl")
+    }
+
+    "Heittää exceptionin väärällä member ID:llä" in {
+      assertThrows[InvalidRequestException] {
+        support.getConfigForMember("000000-00")
+      }
     }
   }
 }
