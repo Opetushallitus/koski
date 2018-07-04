@@ -66,6 +66,13 @@ a {
   .link();
 }
 
+.BorderlessButton {
+  border: 0;
+  background: none;
+  text-align: left;
+  padding: 0;
+}
+
 .BaseButton {
   font-size: 14px;
   font-weight: 700;
@@ -78,28 +85,30 @@ a {
 
 .text-button {
   .BaseButton;
+  .BorderlessButton;
   .link();
 
-  border: 0;
-  background: none;
-  text-align: left;
-  padding: 0;
-
-  &.small {
-    font-weight: 300;
-  }
-
   &--disabled {
-    .BaseButton;
     .DisabledTextButton;
   }
+}
 
-  @media @media-phone {
-    &:not(.small) {
-      display: block;
-      margin: 1rem 0;
-    }
+.text-button-small {
+  .BorderlessButton;
+  .link();
+
+  &--disabled {
+    .DisabledTextButton;
   }
+}
+
+.inline-text-button {
+  .BorderlessButton;
+}
+
+.inline-link-button {
+  .BorderlessButton;
+  .link();
 }
 
 th, td {
