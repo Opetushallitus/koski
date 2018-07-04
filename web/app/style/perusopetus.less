@@ -48,8 +48,16 @@
             > .toggle-expand {
               font-size: 15px;
             }
-            a.nimi {
+            button.nimi {
               color: black;
+              padding-right: 4px;
+              @media @media-phone {
+                font-size: 12px;
+              }
+              &.edit {
+                font-size: 16px;
+                font-weight: 400;
+              }
             }
             min-width: 470px;
             .omattiedot-phone({

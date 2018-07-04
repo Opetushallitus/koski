@@ -260,7 +260,7 @@ const SuoritusColumn = {
       {showTila && <span className="tila" title={tilaText(model)}>{suorituksenTilaSymbol(model)}</span>}
       {
         titleAsExpandLink
-          ? <a className="nimi" onClick={() => onExpand(!expanded)}>{modelTitle(model, 'koulutusmoduuli')}</a>
+          ? <button className='text-button small' onClick={() => onExpand(!expanded)}>{modelTitle(model, 'koulutusmoduuli')}</button>
           : <span className="nimi">
             {t(modelData(koulutusmoduuli, 'tunniste.nimi')) + (kieliaine ? ', ' : '')}
             {kieliaine && <span className="value kieli"><Editor model={koulutusmoduuli} inline={true} path="kieli" sortBy={sortLanguages}/></span>}
