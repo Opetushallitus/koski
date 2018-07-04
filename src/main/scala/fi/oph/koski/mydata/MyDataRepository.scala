@@ -57,7 +57,7 @@ class MyDataRepository(val db: DB) extends Logging with DatabaseExecutionContext
     if (updated == 0) KoskiErrorCategory.notFound() else HttpStatus.ok
   }
 
-  private def now = timestamp(LocalDateTime.now)
+  private val now = timestamp(LocalDateTime.now)
   private def myDataJakoFilter(oppijaOid: String, asiakas: String)(r: MyDataJakoTable) =
     r.oppijaOid === oppijaOid &&
       r.asiakas === asiakas
