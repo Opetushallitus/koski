@@ -21,7 +21,7 @@ class HyvaksyntaLanding extends React.Component {
     this.state = {
       loading: true,
       authorizationGiven: false,
-      callback: parseQuery(currentLocation().queryString).callback,
+      callback: this.parseCallbackURL(),
       error: undefined
     }
 
@@ -70,6 +70,13 @@ class HyvaksyntaLanding extends React.Component {
 
   getLogoutURL() {
     return `/koski/user/logout?target=${this.state.callback}`
+  }
+
+  parseCallbackURL() {
+    const callbackURL = parseQuery(currentLocation().queryString).callback
+
+    if (!callbackURL) return '/'
+    return callbackURL.includes('://') ? callbackURL : `https://${callbackURL}`
   }
 
   render() {
