@@ -13,15 +13,16 @@ class ApiProxyServlet(implicit val application: KoskiApplication) extends ApiSer
   with Logging with GlobalExecutionContext with OpiskeluoikeusQueries with ContentEncodingSupport with NoCache with MyDataSupport {
 
   get("/:oid") {
-    def studentId = params("oid")
-
-    proxyRequestDispatcher(request.header("X-ROAD-MEMBER").getOrElse({
+    val studentId = params("oid")
+    val memberCode = request.header("X-ROAD-MEMBER").getOrElse({
       logger.warn(s"Missing X-ROAD-MEMBER header when requesting student data for ${studentId}")
-      throw InvalidRequestException(KoskiErrorCategory.badRequest.header.missingXRoadHeader)}
-    ), studentId)
+      throw InvalidRequestException(KoskiErrorCategory.badRequest.header.missingXRoadHeader)
+    })
+
+    proxyRequestDispatcher(studentId, memberCode)
   }
 
-  private def proxyRequestDispatcher(memberCode: String, studentId: String) = {
+  private def proxyRequestDispatcher(studentId: String, memberCode: String) = {
     logger.info(s"Requesting MyData content for user ${studentId} by client ${memberCode}")
 
     val memberId = findMemberForMemberCode(memberCode).getOrElse(
@@ -36,5 +37,4 @@ class ApiProxyServlet(implicit val application: KoskiApplication) extends ApiSer
       throw InvalidRequestException(KoskiErrorCategory.badRequest.header.unauthorizedXRoadHeader)
     }
   }
-
 }
