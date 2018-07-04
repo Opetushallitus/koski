@@ -76,7 +76,7 @@ a {
   cursor: default;
 }
 
-button.text-button {
+.text-button {
   .BaseButton;
   .link();
 
@@ -85,25 +85,21 @@ button.text-button {
   text-align: left;
   padding: 0;
 
+  &.small {
+    font-size: 15px;
+    font-weight: 300;
+  }
+
   &--disabled {
     .BaseButton;
     .DisabledTextButton;
   }
 
   @media @media-phone {
-    display: block;
-    margin: 1rem 0;
-  }
-}
-
-a.text-button-small {
-  .link();
-  font-size: 15px;
-
-  &--disabled {
-    .link();
-    .DisabledTextButton;
-    font-size: 15px;
+    &:not(.small) {
+      display: block;
+      margin: 1rem 0;
+    }
   }
 }
 

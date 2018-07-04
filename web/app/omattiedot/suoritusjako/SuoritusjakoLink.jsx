@@ -117,18 +117,19 @@ export class SuoritusjakoLink extends React.Component {
           </div>
           <div className='suoritusjako-link__bottom-container'>
             <div className='suoritusjako-link__preview'>
-              <a className='text-button-small' target='_blank' href={url}><Text name='Esikatsele'/></a>
+              <a className='text-button small' target='_blank' href={url}><Text name='Esikatsele'/></a>
             </div>
             <div className='suoritusjako-link__remove'>
-              <a className={`text-button-small${(isDateUpdatePending ? '--disabled' : '')}`} onClick={this.confirmDelete.bind(this)}>
+              <button className={`text-button${(isDateUpdatePending ? '--disabled' : '')} small`} onClick={this.confirmDelete.bind(this)}>
                 <Text name='Poista linkki käytöstä'/>
-              </a>
+              </button>
 
               {showDeleteConfirmation && (
                 <ModalDialog
                   fullscreen={true}
                   onDismiss={this.cancelConfimDelete.bind(this)}
                   onSubmit={this.deleteSelf.bind(this)}
+                  submitOnEnterKey={false}
                   okTextKey='Kyllä, poista linkki käytöstä'
                   cancelTextKey='Älä poista linkkiä'
                 >
