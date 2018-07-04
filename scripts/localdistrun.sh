@@ -15,8 +15,7 @@ JAVA_OPTS="\
 -Dlog4j.log.dir=$ROOT_DIR/log \
 -Dconfig.file=$KOSKI_CONFIG \
 -Dfile.encoding=UTF-8 \
--Dresourcebase=$RUN_DIR \
 "
 
-JAR=`ls $RUN_DIR/WEB-INF/lib/koski*`
-java $JAVA_OPTS -classpath "$JAR:$RUN_DIR/WEB-INF/lib/*" "fi.oph.koski.jettylauncher.JettyLauncher"
+JAR="$ROOT_DIR/target/dist/target/koski-master-SNAPSHOT.jar"
+java $JAVA_OPTS -jar $JAR
