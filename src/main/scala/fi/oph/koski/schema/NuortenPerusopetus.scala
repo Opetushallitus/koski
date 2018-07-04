@@ -2,7 +2,6 @@ package fi.oph.koski.schema
 
 import java.time.{LocalDate, LocalDateTime}
 
-import fi.oph.koski.localization.LocalizedString.{concat, unlocalized}
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation._
@@ -472,7 +471,7 @@ trait PerusopetuksenVierasTaiToinenKotimainenKieli extends PerusopetuksenOppiain
   @Description("Mikä kieli on kyseessä")
   @KoodistoUri("kielivalikoima")
   def kieli: Koodistokoodiviite
-  override def description = concat(nimi, unlocalized(", "), kieli.description)
+  override def description = kieliaineDescription
 }
 
 @Title("Paikallinen oppiaine")

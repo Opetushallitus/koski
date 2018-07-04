@@ -2,8 +2,6 @@ package fi.oph.koski.schema
 
 import java.time.{LocalDate, LocalDateTime}
 
-import fi.oph.koski.localization.LocalizedString._
-import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation.{DefaultValue, Description, MaxItems, Title}
@@ -113,7 +111,7 @@ case class LukioonValmistavaÄidinkieliJaKirjallisuus(
   pakollinen: Boolean = true,
   override val laajuus: Option[LaajuusKursseissa] = None
 ) extends LukioonValmistavanKoulutuksenOppiaine with KoodistostaLöytyväKoulutusmoduuli with Äidinkieli {
-  override def description = concat(nimi, ", ", kieli)
+  override def description = kieliaineDescription
 }
 
 case class MuutKielet(
@@ -130,7 +128,7 @@ case class MuutKielet(
   pakollinen: Boolean = true,
   override val laajuus: Option[LaajuusKursseissa] = None
 ) extends LukioonValmistavanKoulutuksenOppiaine with KoodistostaLöytyväKoulutusmoduuli with Kieliaine {
-  override def description = concat(nimi, ", ", kieli)
+  override def description = kieliaineDescription
 }
 
 case class MuuValtakunnallinenLukioonValmistavanKoulutuksenOppiaine(

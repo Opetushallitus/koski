@@ -6,7 +6,6 @@ import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation._
 
-
 @Description("Aikuisten perusopetuksen opiskeluoikeus")
 case class AikuistenPerusopetuksenOpiskeluoikeus(
   oid: Option[String] = None,

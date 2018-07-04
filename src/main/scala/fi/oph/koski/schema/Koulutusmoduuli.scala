@@ -3,7 +3,7 @@ package fi.oph.koski.schema
 import fi.oph.koski.localization.LocalizedString._
 import fi.oph.koski.localization.{Localized, LocalizedString}
 import fi.oph.koski.schema.annotation._
-import fi.oph.scalaschema.annotation.{Description, Discriminator, MinValueExclusive, Title}
+import fi.oph.scalaschema.annotation.{Description, Discriminator, Title}
 
 trait Koulutusmoduuli extends Localized {
   @Representative
@@ -69,6 +69,7 @@ trait Kieliaine extends Koulutusmoduuli {
   @Tooltip("Opiskeltava kieli.")
   def kieli: Koodistokoodiviite
   override def identiteetti: AnyRef = (super.identiteetti, kieli)
+  protected def kieliaineDescription = concat(nimi, unlocalized(", "), kieli.nimi.getOrElse(unlocalized(kieli.koodiarvo)))
 }
 
 trait Äidinkieli extends Kieliaine

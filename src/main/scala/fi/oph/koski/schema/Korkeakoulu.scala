@@ -3,8 +3,6 @@ package fi.oph.koski.schema
 import java.time.LocalDate
 
 import fi.oph.koski.localization.LocalizedString
-import fi.oph.koski.localization.LocalizedString._
-import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation.{Description, Title}
 
@@ -20,7 +18,7 @@ case class KorkeakoulunOpiskeluoikeus(
   lisätiedot: Option[KorkeakoulunOpiskeluoikeudenLisätiedot] = None,
   suoritukset: List[KorkeakouluSuoritus],
   @KoodistoKoodiarvo("korkeakoulutus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulutus", Some("Korkeakoulutus"), "opiskeluoikeudentyyppi", None),
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("korkeakoulutus", "opiskeluoikeudentyyppi"),
   synteettinen: Boolean = false
 ) extends Opiskeluoikeus {
   override def versionumero = None

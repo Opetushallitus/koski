@@ -1,6 +1,5 @@
 package fi.oph.koski.schema
 
-
 import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.localization.LocalizedString
