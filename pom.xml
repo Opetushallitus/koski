@@ -462,6 +462,18 @@
         </executions>
         <configuration>
           <createDependencyReducedPom>false</createDependencyReducedPom>
+          <filters>
+            <!-- apache-log4j-extras jar includes some .class files that are also in plain log4j.jar.
+             To avoid warnings from maven-shade-plugin, include only the ones we need-->
+            <filter>
+              <artifact>log4j:apache-log4j-extras</artifact>
+              <includes>
+                <include>org/apache/log4j/extras/**</include>
+                <include>org/apache/log4j/rolling/**</include>
+                <include>org/apache/log4j/pattern/Extras*</include>
+              </includes>
+            </filter>
+          </filters>
           <transformers>
             <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
               <mainClass>fi.oph.koski.jettylauncher.JettyLauncher</mainClass>
