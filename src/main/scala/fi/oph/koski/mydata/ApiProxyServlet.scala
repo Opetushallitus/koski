@@ -16,24 +16,28 @@ class ApiProxyServlet(implicit val application: KoskiApplication) extends ApiSer
     def studentId = params("oid")
     request.header("X-ROAD-MEMBER") match {
       case Some(memberCode) => {
-        logger.info(s"Requesting MyData content for user ${studentId} by client ${memberCode}")
-
-        val memberId = findMemberForMemberCode(memberCode).getOrElse(
-          throw InvalidRequestException(KoskiErrorCategory.badRequest.header.invalidXRoadHeader))
-          .getString("id")
-
-        if (application.mydataService.hasAuthorizedMember(studentId, memberId)) {
-          logger.info(s"Student ${studentId} has authorized ${memberId} to access their student data")
-          servletContext.getRequestDispatcher("/api/oppija").forward(request, response)
-        } else {
-          logger.warn(s"Student ${studentId} has not authorized ${memberId} to access their student data")
-          throw InvalidRequestException(KoskiErrorCategory.badRequest.header.unauthorizedXRoadHeader)
-        }
+        proxyRequestDispatcher(memberCode, studentId)
       }
       case None => {
         logger.warn(s"Missing X-ROAD-MEMBER header when requesting student data for ${studentId}")
         throw InvalidRequestException(KoskiErrorCategory.badRequest.header.missingXRoadHeader)
       }
+    }
+  }
+
+  private def proxyRequestDispatcher(memberCode: String, studentId: String) = {
+    logger.info(s"Requesting MyData content for user ${studentId} by client ${memberCode}")
+
+    val memberId = findMemberForMemberCode(memberCode).getOrElse(
+      throw InvalidRequestException(KoskiErrorCategory.badRequest.header.invalidXRoadHeader))
+      .getString("id")
+
+    if (application.mydataService.hasAuthorizedMember(studentId, memberId)) {
+      logger.info(s"Student ${studentId} has authorized ${memberId} to access their student data")
+      servletContext.getRequestDispatcher("/api/oppija").forward(request, response)
+    } else {
+      logger.warn(s"Student ${studentId} has not authorized ${memberId} to access their student data")
+      throw InvalidRequestException(KoskiErrorCategory.badRequest.header.unauthorizedXRoadHeader)
     }
   }
 
