@@ -9,7 +9,7 @@ import '../polyfills/polyfills.js'
 import Http from '../util/http'
 import { currentLocation, parseQuery } from '../util/location'
 import { userP } from '../util/user'
-import { Error } from '../util/Error'
+import { Error as ErrorDisplay, logError } from '../util/Error'
 import {t} from '../i18n/i18n'
 
 const memberCodeRegex = /\/koski\/omadata\/(.*)/
@@ -46,16 +46,15 @@ class HyvaksyntaLanding extends React.Component {
     Http.post(`/koski/api/omadata/valtuutus/${this.state.memberCode}`, {})
       .doError(e => {
         if (e && e.httpStatus === 401) {
-          console.log(`Must be logged in before we can authorize ${this.state.memberCode}`)
+          logError(Error(`Must be logged in before we can authorize ${this.state.memberCode}`))
           this.setState({error: t('Sinun tulee olla kirjautunut sisään')})
         } else {
-          console.log(`Failed to add permissions for ${this.state.memberCode}`, e)
+          [e, Error(`Failed to add permissions for ${this.state.memberCode}`)].map(logError)
           this.setState({error: t('Tallennus epäonnistui')})
         }
       })
       .onValue(response => {
         if (response.success === true) {
-          console.log(`Permissions added for ${this.state.memberCode}`)
           this.setState({
             authorizationGiven: true
           })
@@ -74,7 +73,7 @@ class HyvaksyntaLanding extends React.Component {
   }
 
   render() {
-    const error = this.state.error ?  <Error error={{text: this.state.error}} /> : null
+    const error = this.state.error ?  <ErrorDisplay error={{text: this.state.error}} /> : null
 
     return (
       <div>
