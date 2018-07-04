@@ -17,7 +17,7 @@ trait MyDataSupport extends ScalatraServlet with Logging {
   def hasConfigForMember(id: String = memberCodeParam): Boolean = getConfigOption(id).isDefined
 
   def getConfigForMember(id: String = memberCodeParam): TypeSafeConfig = {
-    getConfigOption(memberCodeParam).getOrElse({
+    getConfigOption(id).getOrElse({
       logger.warn("No MyData configuration found for member: " + id)
       throw InvalidRequestException(KoskiErrorCategory.notFound.myDataMemberEiLöydy)
     })
