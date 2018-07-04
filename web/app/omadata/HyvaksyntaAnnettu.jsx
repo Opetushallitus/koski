@@ -23,20 +23,20 @@ export default class HyvaksyntaAnnettu extends React.Component {
 
   render() {
     return (
-      <div className="acceptance-success-box">
-        <div className="success-container">
-          <img className="acceptance-image" src="/koski/images/check_mark.svg" />
-          <div className="acceptance-title-success">
-            <Text name="Omadata hyväksytty otsikko"/>
+      <div className='acceptance-success-box'>
+        <div className='success-container'>
+          <img className='acceptance-image' src='/koski/images/check_mark.svg' />
+          <div className='acceptance-title-success'>
+            <Text name='Omadata hyväksytty otsikko'/>
           </div>
         </div>
-        <div className="acceptance-control-mydata">
-          <Text name="Voit hallita tietojasi"/>
+        <div className='acceptance-control-mydata'>
+          <Text name='Voit hallita tietojasi'/>
         </div>
-        <div className="acceptance-return-container">
-          <div className="acceptance-return-automatically"><Text name="Palataan palveluntarjoajan sivulle"/></div>
+        <div className='acceptance-return-container'>
+          <div className='acceptance-return-automatically'><Text name='Palataan palveluntarjoajan sivulle'/></div>
           <a href={this.state.logoutURL}>
-            <div className="acceptance-return-button button"><Text name="Palaa palveluntarjoajan sivulle"/></div>
+            <div className='acceptance-return-button button'><Text name='Palaa palveluntarjoajan sivulle'/></div>
           </a>
         </div>
       </div>

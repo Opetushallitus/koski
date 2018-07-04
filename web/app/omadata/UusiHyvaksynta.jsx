@@ -22,11 +22,11 @@ const getBirthDate = (editorResponse) => {
 
 
 export default ({memberName, logoutURL, onAuthorization, authorizationGiven}) => (
-  <div className="acceptance-container">
-    <div className="heading"><h1><Text name="Henkilökohtaisten tietojen käyttö"/></h1></div>
-    <div className="user">
-      <div className="username">{userP.map(user => user && user.name)}</div>
-      <div className="dateofbirth"> {editorP.map(s => getBirthDate(s))}</div>
+  <div className='acceptance-container'>
+    <div className='heading'><h1><Text name='Henkilökohtaisten tietojen käyttö'/></h1></div>
+    <div className='user'>
+      <div className='username'>{userP.map(user => user && user.name)}</div>
+      <div className='dateofbirth'> {editorP.map(s => getBirthDate(s))}</div>
     </div>
 
     { authorizationGiven ?
