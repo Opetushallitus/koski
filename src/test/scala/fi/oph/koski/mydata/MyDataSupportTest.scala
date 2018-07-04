@@ -49,7 +49,7 @@ class MyDataSupportTest extends FreeSpec with Matchers with MockFactory {
       (request.getAttribute _).when("MultiParamsRead").returns("")
       (request.getParameterMap _).when().returns(mapAsJavaMap(Map("memberCode" -> Array("hsl"))))
 
-      support(request).memberCode should equal("hsl")
+      support(request).memberCodeParam should equal("hsl")
     }
 
     "Heittää exceptionin väärällä member ID:llä" in {

@@ -27,7 +27,7 @@ class MyDataServlet(implicit val application: KoskiApplication) extends ApiServl
   }
 
   post("/valtuutus/:memberCode") {
-    logger.info(s"Authorizing $memberCode for user: ${koskiSessionOption.getOrElse()}")
+    logger.info(s"Authorizing $memberCodeParam for user: ${koskiSessionOption.getOrElse()}")
     requireKansalainen
 
     val id = getConfigForMember().getString("id") // will throw if memberCode is not valid

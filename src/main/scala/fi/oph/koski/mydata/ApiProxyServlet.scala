@@ -18,7 +18,9 @@ class ApiProxyServlet(implicit val application: KoskiApplication) extends ApiSer
       case Some(memberCode) => {
         logger.info(s"Requesting MyData content for user ${studentId} by client ${memberCode}")
 
-        val memberId = getConfigForMember(memberCode).getString("id")
+        val memberId = findMemberForMemberCode(memberCode).getOrElse(
+          throw InvalidRequestException(KoskiErrorCategory.badRequest.header.invalidXRoadHeader))
+          .getString("id")
 
         if (application.mydataService.hasAuthorizedMember(studentId, memberId)) {
           logger.info(s"Student ${studentId} has authorized ${memberId} to access their student data")
