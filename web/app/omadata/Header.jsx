@@ -6,7 +6,7 @@ const menuOpened = Atom(false)
 
 export default ({ userP, onLogoutClicked }) => (
   <div className='header'>
-    <button id='header-mobile-menu-button' onClick={() => menuOpened.set(!menuOpened.get())}>
+    <button id='header-mobile-menu-button' onClick={() => menuOpened.modify(x => !x)}>
       <img src='/koski/images/baseline-menu-24px.svg' />
     </button>
     <div className='title'>
