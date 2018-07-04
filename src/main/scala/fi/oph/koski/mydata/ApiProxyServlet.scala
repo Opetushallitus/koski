@@ -14,15 +14,11 @@ class ApiProxyServlet(implicit val application: KoskiApplication) extends ApiSer
 
   get("/:oid") {
     def studentId = params("oid")
-    request.header("X-ROAD-MEMBER") match {
-      case Some(memberCode) => {
-        proxyRequestDispatcher(memberCode, studentId)
-      }
-      case None => {
-        logger.warn(s"Missing X-ROAD-MEMBER header when requesting student data for ${studentId}")
-        throw InvalidRequestException(KoskiErrorCategory.badRequest.header.missingXRoadHeader)
-      }
-    }
+
+    proxyRequestDispatcher(request.header("X-ROAD-MEMBER").getOrElse({
+      logger.warn(s"Missing X-ROAD-MEMBER header when requesting student data for ${studentId}")
+      throw InvalidRequestException(KoskiErrorCategory.badRequest.header.missingXRoadHeader)}
+    ), studentId)
   }
 
   private def proxyRequestDispatcher(memberCode: String, studentId: String) = {
