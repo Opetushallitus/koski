@@ -5,7 +5,7 @@ import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.localization.LocalizedString.{concat, finnish, unlocalized}
-import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
+import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.schema.annotation._
 import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.scalaschema.annotation._
@@ -475,7 +475,7 @@ trait PerusopetuksenVierasTaiToinenKotimainenKieli extends PerusopetuksenOppiain
   @Description("Mikä kieli on kyseessä")
   @KoodistoUri("kielivalikoima")
   def kieli: Koodistokoodiviite
-  override def description(texts: LocalizationRepository): LocalizedString = concat(nimi, unlocalized(", "), kieli.description)
+  override def description = concat(nimi, unlocalized(", "), kieli.description)
 }
 
 @Title("Paikallinen oppiaine")

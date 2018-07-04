@@ -2,7 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.{LocalDate, LocalDateTime}
 
-import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
+import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedString._
 import fi.oph.scalaschema.annotation._
 import fi.oph.koski.localization.LocalizedStringImplicits._
@@ -565,7 +565,7 @@ case class AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli(
   pakollinen: Boolean,
   laajuus: Option[LaajuusOsaamispisteissä]
 ) extends AmmatillisenTutkinnonOsanOsaAlue with KoodistostaLöytyväKoulutusmoduuli with Kieliaine {
-  override def description(text: LocalizationRepository) = concat(nimi, ", ", kieli)
+  override def description = concat(nimi, ", ", kieli)
 }
 
 @Title("Äidinkieli")
@@ -581,7 +581,7 @@ case class AmmatillisenTutkinnonÄidinkieli(
   pakollinen: Boolean,
   laajuus: Option[LaajuusOsaamispisteissä]
 ) extends AmmatillisenTutkinnonOsanOsaAlue with KoodistostaLöytyväKoulutusmoduuli with Äidinkieli {
-  override def description(text: LocalizationRepository) = concat(nimi, ", ", kieli)
+  override def description = concat(nimi, ", ", kieli)
 }
 
 @Title("Viestintä ja vuorovaikutus kielivalinnalla")
@@ -598,7 +598,7 @@ case class AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(
   pakollinen: Boolean,
   laajuus: Option[LaajuusOsaamispisteissä]
 ) extends AmmatillisenTutkinnonOsanOsaAlue with KoodistostaLöytyväKoulutusmoduuli with Kieliaine {
-  override def description(text: LocalizationRepository) = concat(nimi, ", ", kieli)
+  override def description = concat(nimi, ", ", kieli)
 }
 
 @Description("Suoritukseen liittyvät lisätiedot, kuten esimerkiksi mukautettu arviointi tai poikkeus arvioinnissa.")

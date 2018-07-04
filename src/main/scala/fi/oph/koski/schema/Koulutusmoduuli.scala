@@ -1,17 +1,17 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.localization.LocalizedString._
-import fi.oph.koski.localization.{Localizable, LocalizationRepository, LocalizedString}
+import fi.oph.koski.localization.{Localized, LocalizedString}
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation.{Description, Discriminator, MinValueExclusive, Title}
 
-trait Koulutusmoduuli extends Localizable {
+trait Koulutusmoduuli extends Localized {
   @Representative
   @Discriminator
   def tunniste: KoodiViite
   def laajuus: Option[Laajuus]
   def nimi: LocalizedString
-  def description(texts: LocalizationRepository): LocalizedString = nimi
+  def description = nimi
   def isTutkinto = false
   // Vertailutekijä tarkistettaessa duplikaatteja
   def identiteetti: AnyRef = tunniste

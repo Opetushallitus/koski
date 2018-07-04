@@ -1,7 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.localization.{Localizable, Localized, LocalizedString}
+import fi.oph.koski.localization.{Localized, LocalizedString}
 import fi.oph.koski.schema.annotation.{Example, KoodistoUri, ReadOnly, Tooltip}
 import fi.oph.scalaschema.annotation._
 

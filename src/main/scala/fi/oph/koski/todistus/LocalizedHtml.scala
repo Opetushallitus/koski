@@ -3,15 +3,15 @@ package fi.oph.koski.todistus
 import java.time.format.DateTimeFormatter
 
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.localization.{Localizable, LocalizationRepository}
+import fi.oph.koski.localization.{LocalizationRepository, Localized}
 
 trait LocalizedHtml {
   implicit val user: KoskiSession
   implicit val localizationRepository: LocalizationRepository
   val dateFormatter = DateTimeFormatter.ofPattern("d.M.yyyy")
   def lang = user.lang
-  def i(s: Localizable): String = s.description(localizationRepository).get(lang)
-  def i(s: Option[Localizable]): String = s.map(i).getOrElse("")
+  def i(s: Localized): String = s.description.get(lang)
+  def i(s: Option[Localized]): String = s.map(i).getOrElse("")
 }
 
 object LocalizedHtml {

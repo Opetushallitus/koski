@@ -4,8 +4,6 @@ import fi.oph.koski.localization.LocalizedString.missingString
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.annotation.Representative
 import fi.oph.scalaschema.annotation.{Description, Title}
-import org.json4s.{Formats, JObject, JValue, Serializer}
-import org.json4s.reflect.TypeInfo
 
 @Description("Lokalisoitu teksti. Vähintään yksi kielistä (fi/sv/en) vaaditaan")
 trait LocalizedString extends Localized {
@@ -20,13 +18,8 @@ trait LocalizedString extends Localized {
   def hasLanguage(lang: String): Boolean = valueList.map(_._1).contains(lang)
 }
 
-trait Localizable {
-  def description(texts: LocalizationRepository): LocalizedString
-}
-
-trait Localized extends Localizable {
+trait Localized {
   def description: LocalizedString
-  def description(texts: LocalizationRepository): LocalizedString = description
 }
 
 @Description("Lokalisoitu teksti, jossa mukana suomi")

@@ -3,7 +3,7 @@ package fi.oph.koski.schema
 import java.sql.Timestamp
 import java.time.{LocalDate, LocalDateTime}
 
-import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
+import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedString.{concat, english}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema.annotation.{FlattenInUI, KoodistoKoodiarvo, KoodistoUri, OksaUri}
@@ -300,7 +300,7 @@ case class IBOppiaineLanguage(
   ryhmä: Koodistokoodiviite,
   pakollinen: Boolean = true
 ) extends IBAineRyhmäOppiaine with Kieliaine {
-  override def description(text: LocalizationRepository) = concat(nimi, ", ",  kieli)
+  override def description = concat(nimi, ", ",  kieli)
 }
 
 trait IBCoreElementOppiaine extends IBOppiaine {
