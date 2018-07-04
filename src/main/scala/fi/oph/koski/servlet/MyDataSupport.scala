@@ -7,27 +7,38 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.Logging
 import org.scalatra.ScalatraServlet
 import scala.collection.JavaConverters._
+import com.typesafe.config.{Config => TypeSafeConfig}
 
 
 trait MyDataSupport extends ScalatraServlet with Logging {
   def application: KoskiApplication
-  private def conf: com.typesafe.config.Config = application.config.getConfig("mydata")
+  private def conf: TypeSafeConfig = application.config.getConfig("mydata")
 
-  def getConfigForMember(id: String = memberCode): com.typesafe.config.Config = {
+  def hasConfigForMember(id: String = memberCodeParam): Boolean = getConfigOption(id).isDefined
+
+  def getConfigForMember(id: String = memberCodeParam): TypeSafeConfig = {
+    getConfigOption(memberCodeParam).getOrElse({
+      logger.warn("No MyData configuration found for member: " + id)
+      throw InvalidRequestException(KoskiErrorCategory.notFound.myDataMemberEiLöydy)
+    })
+  }
+
+  def findMemberForMemberCode(memberCode: String): Option[TypeSafeConfig] = {
     conf.getConfigList("members").asScala.find(member =>
-      member.getString("id") == id).getOrElse({
-        logger.warn("No MyData configuration found for member: " + id)
-        throw InvalidRequestException(KoskiErrorCategory.notFound.myDataMemberEiLöydy)
-      })
+      member.getStringList("membercodes").contains(memberCode))
   }
 
-  def getLoginUrlForMember(lang: String, memberId: String = memberCode): String = {
+  private def getConfigOption(id: String = memberCodeParam): Option[TypeSafeConfig] = {
+    conf.getConfigList("members").asScala.find(member => member.getString("id") == id)
+  }
+
+  def getLoginUrlForMember(lang: String, id: String = memberCodeParam): String = {
     conf.getString(s"login.shibboleth.$lang") +
-    conf.getString("login.targetparam") + getLoginSuccessTarget(memberId, encode = true)
+    conf.getString("login.targetparam") + getLoginSuccessTarget(id, encode = true)
   }
 
-  def getLoginSuccessTarget(memberId: String = memberCode, encode: Boolean = false): String = {
-    getConfigForMember(memberId).getString(s"login.target") + getCurrentUrlAsFinalTargetParameter(encode)
+  def getLoginSuccessTarget(id: String = memberCodeParam, encode: Boolean = false): String = {
+    getConfigForMember(id).getString(s"login.target") + getCurrentUrlAsFinalTargetParameter(encode)
   }
 
   private def getCurrentUrlAsFinalTargetParameter(encode: Boolean): String = {
@@ -46,7 +57,7 @@ trait MyDataSupport extends ScalatraServlet with Logging {
     }
   }
 
-  def memberCode: String = {
+  def memberCodeParam: String = {
     if (params("memberCode") == null) {
       throw InvalidRequestException(KoskiErrorCategory.badRequest.queryParam.missing("Vaadittu valtuutuksen kumppani-parametri puuttuu"))
     }
