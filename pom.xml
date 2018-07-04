@@ -372,6 +372,9 @@
               <resources>
                 <resource>
                   <directory>${basedir}/target/webapp</directory>
+                  <excludes>
+                    <exclude>test/**</exclude>
+                  </excludes>
                 </resource>
               </resources>
             </configuration>
