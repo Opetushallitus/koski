@@ -1,7 +1,7 @@
 package fi.oph.koski.ytr
 
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
+import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository

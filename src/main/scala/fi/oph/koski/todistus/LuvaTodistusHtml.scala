@@ -2,7 +2,7 @@ package fi.oph.koski.todistus
 
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.localization.LocalizationRepository
-import fi.oph.koski.localization.LocalizedString._
+import fi.oph.koski.schema.LocalizedString._
 import fi.oph.koski.schema._
 
 class LuvaTodistusHtml(implicit val user: KoskiSession, val localizationRepository: LocalizationRepository) extends TodistusHtml {

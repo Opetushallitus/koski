@@ -1,7 +1,7 @@
 package fi.oph.koski.koskiuser
 
-import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.log.Logging
+import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.userdirectory.DirectoryClient
 import org.scalatra.servlet.{RichRequest, RichResponse}
 import org.scalatra.{Cookie, CookieOptions}

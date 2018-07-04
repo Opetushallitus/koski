@@ -1,7 +1,6 @@
 package fi.oph.koski.schema
 
-import fi.oph.koski.localization.LocalizedString._
-import fi.oph.koski.localization.{Localized, LocalizedString}
+import fi.oph.koski.schema.LocalizedString._
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation.{Description, Discriminator, Title}
 

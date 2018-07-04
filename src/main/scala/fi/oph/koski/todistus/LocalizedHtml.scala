@@ -3,7 +3,8 @@ package fi.oph.koski.todistus
 import java.time.format.DateTimeFormatter
 
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.localization.{LocalizationRepository, Localized}
+import fi.oph.koski.localization.LocalizationRepository
+import fi.oph.koski.schema.Localized
 
 trait LocalizedHtml {
   implicit val user: KoskiSession

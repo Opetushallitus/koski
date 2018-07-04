@@ -3,7 +3,6 @@ import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
-import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
 

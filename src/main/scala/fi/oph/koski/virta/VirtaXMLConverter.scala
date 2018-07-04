@@ -6,8 +6,7 @@ import java.time.LocalDate.{parse => date}
 import fi.oph.koski.config.Environment
 import fi.oph.koski.date.DateOrdering
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.localization.LocalizedString
-import fi.oph.koski.localization.LocalizedString.{finnish, sanitize}
+import fi.oph.koski.schema.LocalizedString.{finnish, sanitize}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppilaitos.{MockOppilaitosRepository, OppilaitosRepository}

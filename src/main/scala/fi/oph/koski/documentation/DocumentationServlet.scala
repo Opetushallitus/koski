@@ -5,8 +5,7 @@ import fi.oph.koski.html.{EiRaameja, Virkailija}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.{Koodisto, KoodistoKoodiMetadata}
 import fi.oph.koski.koskiuser.AuthenticationSupport
-import fi.oph.koski.localization.LocalizedString
-import fi.oph.koski.schema.{Henkilö, OsaamisenTunnustaminen}
+import fi.oph.koski.schema.{Henkilö, LocalizedString, OsaamisenTunnustaminen}
 import fi.oph.koski.servlet.HtmlServlet
 import fi.oph.scalaschema.ClassSchema
 import org.scalatra.ScalatraServlet

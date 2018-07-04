@@ -5,7 +5,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.localization.Locale._
-import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
+import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.schema._
 import fi.oph.koski.suoritusote.KoulutusModuuliOrdering.orderByTunniste
 import fi.oph.koski.todistus.LocalizedHtml

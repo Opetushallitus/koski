@@ -5,9 +5,8 @@ import java.time.LocalDate
 import fi.oph.koski.json.JsonResources
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
-import fi.oph.koski.localization.LocalizedString
-import fi.oph.koski.localization.LocalizedString.finnish
-import fi.oph.koski.schema.Oppilaitos
+import fi.oph.koski.schema.LocalizedString.finnish
+import fi.oph.koski.schema.{LocalizedString, Oppilaitos}
 
 // Testeissä käytetyt organisaatio-oidit
 object MockOrganisaatiot {

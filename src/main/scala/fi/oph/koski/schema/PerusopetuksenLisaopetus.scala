@@ -2,7 +2,6 @@ package fi.oph.koski.schema
 
 import java.time.{LocalDate, LocalDateTime}
 
-import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.schema.annotation.{Hidden, KoodistoKoodiarvo, SensitiveData, Tooltip}
 import fi.oph.scalaschema.annotation._
 

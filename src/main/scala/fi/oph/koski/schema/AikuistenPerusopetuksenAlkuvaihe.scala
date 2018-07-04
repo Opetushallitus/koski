@@ -1,6 +1,5 @@
 package fi.oph.koski.schema
 
-import fi.oph.koski.localization.LocalizedString
 import fi.oph.scalaschema.annotation.{Description, Title}
 import fi.oph.koski.schema.annotation._
 
