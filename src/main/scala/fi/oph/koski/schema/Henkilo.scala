@@ -2,7 +2,6 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
-import fi.oph.koski.perustiedot.NimitiedotJaOid
 import fi.oph.koski.schema.annotation.{KoodistoUri, OksaUri}
 import fi.oph.scalaschema.annotation._
 
@@ -10,7 +9,9 @@ object Henkilö {
   type Oid = String
   type Hetu = String
   def withOid(oid: String) = OidHenkilö(oid)
-  def isHenkilöOid(s: String) = s.matches("""1\.2\.246\.562\.24\.\d{11}""")
+  def isValidHenkilöOid(oid: String) = {
+    """^1\.2\.246\.562\.24\.\d{11}$""".r.findFirstIn(oid).isDefined
+  }
 }
 
 @Description("Henkilötiedot. Syötettäessä vaaditaan joko oppijanumero `oid` tai kaikki muut kentät, jolloin järjestelmään voidaan tarvittaessa luoda uusi henkilö")
@@ -27,7 +28,7 @@ case class TäydellisetHenkilötiedot(
   hetu: Option[Henkilö.Hetu],
   @Description("Henkilön syntymäaika. Muoto YYYY-MM-DD")
   syntymäaika: Option[LocalDate],
-  etunimet:String,
+  etunimet: String,
   kutsumanimi: String,
   sukunimi: String,
   @Description("Opiskelijan äidinkieli (vrkn mukainen äidinkieli)")
@@ -55,7 +56,7 @@ case class TäydellisetHenkilötiedotWithMasterInfo(henkilö: TäydellisetHenkil
 case class HenkilötiedotJaOid(
   oid: Henkilö.Oid,
   hetu: Option[Henkilö.Hetu],
-  etunimet:String,
+  etunimet: String,
   kutsumanimi: String,
   sukunimi: String
 ) extends HenkilöWithOid with Henkilötiedot
@@ -63,7 +64,7 @@ case class HenkilötiedotJaOid(
 @Description("Henkilö, jonka oppijanumero 'oid' ei ole tiedossa. Tietoja syötettäessä luodaan mahdollisesti uusi henkilö Henkilöpalveluun, jolloin henkilölle muodostuu oppijanumero")
 case class UusiHenkilö(
   hetu: String,
-  etunimet:String,
+  etunimet: String,
   kutsumanimi: Option[String],
   sukunimi: String
 ) extends Henkilö
@@ -71,7 +72,7 @@ case class UusiHenkilö(
 @Title("Henkilö-OID")
 @Description("Henkilö, jonka oppijanumero 'oid' on tiedossa. Tietoja syötettäessä henkilö haetaan henkilöpalvelusta")
 case class OidHenkilö(
-  oid: String
+  oid: Henkilö.Oid
 ) extends HenkilöWithOid
 
 trait Henkilötiedot extends NimellinenHenkilö {
@@ -82,7 +83,7 @@ trait Henkilötiedot extends NimellinenHenkilö {
 
 trait NimellinenHenkilö {
   @Description("Henkilön kaikki etunimet. Esimerkiksi Sanna Katariina")
-  def etunimet:String
+  def etunimet: String
   @Description("Kutsumanimi, oltava yksi etunimistä. Esimerkiksi etunimille \"Juha-Matti Petteri\" kelpaavat joko \"Juha-Matti\", \"Juha\", \"Matti\" tai \"Petteri\"")
   def kutsumanimi: String
   @Description("Henkilön sukunimi. Henkilön sukunimen etuliite tulee osana sukunimeä")
@@ -97,5 +98,5 @@ trait HenkilöWithOid extends Henkilö {
   @Description("Oppijanumero 'oid' on oppijan yksilöivä tunniste Opintopolku-palvelussa ja Koskessa")
   @OksaUri("tmpOKSAID760", "oppijanumero")
   @RegularExpression("""^1\.2\.246\.562\.24\.\d{11}$""")
-  def oid: String
+  def oid: Henkilö.Oid
 }

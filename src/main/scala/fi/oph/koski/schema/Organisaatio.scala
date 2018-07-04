@@ -1,6 +1,5 @@
 package fi.oph.koski.schema
 
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.localization.{Localized, LocalizedString}
 import fi.oph.koski.schema.annotation.{Example, KoodistoUri, ReadOnly, Tooltip}
 import fi.oph.scalaschema.annotation._
@@ -9,19 +8,8 @@ sealed trait Organisaatio extends Localized
 
 object Organisaatio {
   type Oid = String
-}
-
-object OrganisaatioOid {
   def isValidOrganisaatioOid(oid: String) = {
     """^1\.2\.246\.562\.10\.\d{11,24}$""".r.findFirstIn(oid).isDefined
-  }
-
-  def validateOrganisaatioOid(oid: String): Either[HttpStatus, String] = {
-    if (isValidOrganisaatioOid(oid)) {
-      Right(oid)
-    } else {
-      Left(KoskiErrorCategory.badRequest.queryParam.virheellinenHenkilöOid("Virheellinen oid: " + oid + ". Esimerkki oikeasta muodosta: 1.2.246.562.10.00000000001."))
-    }
   }
 }
 
@@ -54,7 +42,7 @@ case class Koulutustoimija(
 
 @Description("Opintopolun organisaatiopalvelusta löytyvä oppilaitos-tyyppinen organisaatio")
 case class Oppilaitos(
-  oid: String,
+  oid: Organisaatio.Oid,
   @Description("5-numeroinen oppilaitosnumero, esimerkiksi 00001")
   @ReadOnly("Tiedon syötössä oppilaitosnumeroa ei tarvita; numero haetaan Organisaatiopalvelusta")
   @KoodistoUri("oppilaitosnumero")
@@ -70,7 +58,7 @@ case class Oppilaitos(
 @Description("Opintopolun organisaatiopalvelusta löytyvä toimipiste-tyyppinen organisaatio")
 @IgnoreInAnyOfDeserialization
 case class Toimipiste(
-  oid: String,
+  oid: Organisaatio.Oid,
   nimi: Option[LocalizedString] = None,
   @Description("Toimipisteen kotipaikka")
   kotipaikka: Option[Koodistokoodiviite] = None
@@ -109,7 +97,7 @@ trait OrganisaatioWithOid extends Organisaatio {
   @Description("Organisaation tunniste Opintopolku-palvelussa. Oid numero, joka on kaikilla organisaatiotasoilla: toimipisteen oid, koulun oid, koulutuksen järjestäjän oid")
   @RegularExpression("""^1\.2\.246\.562\.10\.\d{11,24}$""")
   @Discriminator
-  def oid: String
+  def oid: Organisaatio.Oid
   @Description("Organisaation (kielistetty) nimi")
   @ReadOnly("Tiedon syötössä nimeä ei tarvita; kuvaus haetaan Organisaatiopalvelusta")
   def nimi: Option[LocalizedString]
