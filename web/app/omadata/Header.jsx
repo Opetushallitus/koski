@@ -1,10 +1,12 @@
 import React from 'baret'
-import Text from '../i18n/Text'
 import Atom from 'bacon.atom'
+import Text from '../i18n/Text'
+import Logout from './fragments/Logout'
+
 const menuOpened = Atom(false)
 
 
-export default ({ userP, onLogoutClicked }) => (
+export default ({ userP, logoutURL }) => (
   <div className='header'>
     <button id='header-mobile-menu-button' onClick={() => menuOpened.modify(x => !x)}>
       <img src='/koski/images/baseline-menu-24px.svg' />
@@ -18,17 +20,12 @@ export default ({ userP, onLogoutClicked }) => (
       <div>
 
         <div className='user'>
-          <div className='username'>
-            <img src='/koski/images/profiili.svg' alt='user-icon' />
-            {user.name}
-          </div>
-          <div className='logout' tabIndex={0} onClick={() => { onLogoutClicked() }}><Text name='Kirjaudu ulos'/></div>
+          <Logout logoutURL={logoutURL} />
         </div>
 
         <div id='header-mobile-menu' className={menuOpened.map(opened => opened ? 'menu-open' : 'menu-closed')}>
           <div className='top'>
-            <div className='username'>{user.name}</div>
-            <div className='logout' tabIndex={0} onClick={() => { onLogoutClicked() }}><Text name='Kirjaudu ulos'/></div>
+            <Logout logoutURL={logoutURL} />
           </div>
         </div>
 

@@ -85,12 +85,6 @@
         text-align: center;
         flex-direction: column;
       }
-
-      .logout {
-        margin-top: 10px;
-        text-align: center;
-        cursor: pointer;
-      }
     }
 
     .title {
@@ -132,11 +126,17 @@
       margin-right: 20px;
     }
 
-    .logout {
+    .logout > a > span {
+      display: block;
       font-size: 12px;
       text-decoration: underline;
       text-align: right;
-      cursor: pointer;
+      color: @color-white;
+
+      @media @media-phone {
+        text-align: center;
+        margin-top: 10px;
+      }
     }
   }
   .acceptance-container {

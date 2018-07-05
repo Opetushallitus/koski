@@ -84,7 +84,7 @@ class HyvaksyntaLanding extends React.Component {
 
     return (
       <div>
-        <Header userP={userP} onLogoutClicked={this.onLogoutClicked}/>
+        <Header userP={userP} logoutURL={this.getLogoutURL()} />
         {error}
 
         {
