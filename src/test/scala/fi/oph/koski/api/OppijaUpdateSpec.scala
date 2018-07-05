@@ -152,7 +152,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     "Käytettäessä opiskeluoikeus-oid:ia" - {
       "Muokkaa olemassaolevaa opiskeluoikeutta" in {
         resetFixtures
-        import fi.oph.koski.date.DateOrdering._
+        import fi.oph.koski.util.DateOrdering._
         val d: LocalDate = date(2020, 1, 1)
         var aikaleima: Option[LocalDateTime] = None
         verifyChange(change = {existing: AmmatillinenOpiskeluoikeus => aikaleima = existing.aikaleima ; existing.copy(arvioituPäättymispäivä = Some(d))}) {

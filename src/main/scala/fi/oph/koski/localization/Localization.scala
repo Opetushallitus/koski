@@ -1,7 +1,5 @@
 package fi.oph.koski.localization
 
-import fi.oph.koski.schema.LocalizedString.missingString
-import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{Localized, LocalizedString}
 
 object LocalizedStringImplicits {

@@ -19,7 +19,7 @@ class ElasticSearchRunner(dataDirName: String, httpPort: Int, tcpPort: Int) exte
   def start = ElasticSearchRunner.synchronized {
 
     if (!serverProcess.isDefined && PortChecker.isFreeLocalPort(httpPort)) {
-      import Http._
+      import fi.oph.koski.http.Http._
       val url = s"http://localhost:$httpPort"
       val elasticSearchHttp = Http(url)
 

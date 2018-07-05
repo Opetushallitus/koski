@@ -23,7 +23,7 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
   }
 
   def putHenkilö[A](henkilö: Henkilö)(f: => A): Unit = {
-    import KoskiSchema.deserializationContext
+    import fi.oph.koski.schema.KoskiSchema.deserializationContext
     putOppija(JsonSerializer.serializeWithRoot(SchemaValidatingExtractor.extract[Oppija](makeOppija(opiskeluOikeudet = List(defaultOpiskeluoikeus))(tag)).right.get.copy(henkilö = henkilö)))(f)
   }
 

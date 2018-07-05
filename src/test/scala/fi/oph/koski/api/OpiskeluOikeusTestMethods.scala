@@ -9,7 +9,7 @@ import org.json4s.jackson.JsonMethods
 import org.scalatest.Matchers
 
 trait OpiskeluoikeusTestMethods extends HttpSpecification with Matchers {
-  import KoskiSchema.deserializationContext
+  import fi.oph.koski.schema.KoskiSchema.deserializationContext
 
   def lastOpiskeluoikeusByHetu(oppija: Henkilö, user: UserWithPassword = defaultUser): KoskeenTallennettavaOpiskeluoikeus = {
     val hetu = oppija match {

@@ -1,7 +1,6 @@
 package fi.oph.koski.henkilo
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Loggable
 import fi.oph.koski.schema.{Henkilö, TäydellisetHenkilötiedot}
 
@@ -27,6 +26,6 @@ case class VerifiedHenkilöOid(henkilö: TäydellisetHenkilötiedot) extends Pos
   override def verified = Some(henkilö)
 }
 
-case class UnverifiedHenkilöOid(val oppijaOid: Henkilö.Oid, henkilöRepository: HenkilöRepository)(implicit user: KoskiSession) extends PossiblyUnverifiedHenkilöOid {
+case class UnverifiedHenkilöOid(val oppijaOid: Henkilö.Oid, henkilöRepository: HenkilöRepository) extends PossiblyUnverifiedHenkilöOid {
   override lazy val verified = henkilöRepository.findByOid(oppijaOid)
 }

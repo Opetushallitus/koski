@@ -1,7 +1,6 @@
 package fi.oph.koski.koskiuser
 
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
-import fi.oph.scalaschema.annotation.SyntheticProperty
 
 class UserServlet(implicit val application: UserAuthenticationContext) extends ApiServlet with AuthenticationSupport with NoCache {
   get("/") {

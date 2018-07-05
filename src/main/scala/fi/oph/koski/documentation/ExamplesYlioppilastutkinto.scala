@@ -8,7 +8,7 @@ import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.organisaatio.MockOrganisaatioRepository
 import fi.oph.koski.schema.Oppija
 import fi.oph.koski.ytr.{MockYrtClient, YtrOppijaConverter}
-import GlobalCacheManager._
+import fi.oph.koski.cache.GlobalCacheManager._
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 
 object ExamplesYlioppilastutkinto {

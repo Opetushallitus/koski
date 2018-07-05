@@ -4,7 +4,7 @@ import java.sql.{Date, Timestamp}
 import java.time.LocalDate
 import java.util.concurrent.atomic.AtomicLong
 
-import fi.oph.koski.date.DateOrdering
+import fi.oph.koski.util.DateOrdering
 import fi.oph.koski.db.OpiskeluoikeusRow
 import fi.oph.koski.json.JsonManipulation
 import fi.oph.koski.koskiuser.KoskiSession

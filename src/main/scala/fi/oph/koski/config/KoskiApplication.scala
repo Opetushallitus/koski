@@ -91,7 +91,6 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val localizationRepository = LocalizationRepository(config)
   lazy val oidGenerator = OidGenerator(config)
   lazy val hetu = new Hetu(config.getBoolean("acceptSyntheticHetus"))
-  lazy val env = Environment(this)
   lazy val features = Features(config)
 
   lazy val init: Future[Unit] = {

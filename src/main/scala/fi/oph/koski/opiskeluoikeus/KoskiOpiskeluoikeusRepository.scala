@@ -1,7 +1,7 @@
 package fi.oph.koski.opiskeluoikeus
 
 import fi.oph.koski.db.OpiskeluoikeusRow
-import fi.oph.koski.henkilo.{KoskiHenkilöCache, PossiblyUnverifiedHenkilöOid}
+import fi.oph.koski.henkilo.PossiblyUnverifiedHenkilöOid
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema.Henkilö.Oid

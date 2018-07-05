@@ -1,7 +1,6 @@
 package fi.oph.koski.suoritusjako
 
-import java.sql.Date
-import java.sql.Timestamp
+import java.sql.{Date, Timestamp}
 import java.time.{Instant, LocalDate}
 
 import fi.oph.koski.db.KoskiDatabase.DB

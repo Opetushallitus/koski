@@ -2,7 +2,6 @@ package fi.oph.koski.koodisto
 
 import java.time.LocalDate
 
-import com.typesafe.config.Config
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.json.JsonDiff.objectDiff
 import fi.oph.koski.json.JsonSerializer

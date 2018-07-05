@@ -4,7 +4,6 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.HenkilöOid
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KoskiSession, Unauthenticated}
-import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus, Organisaatio}
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
