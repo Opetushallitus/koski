@@ -329,13 +329,14 @@
 
   .footer {
     display: flex;
-    height: 99px;
+    height: 112px;
     justify-content: space-between;
     margin: 0 12% 43px 5.5%;
     border-top: 2px @color-curious-blue solid;
     padding-top: 34px;
 
     @media @media-full {
+      height: 154px;
       width: 80%;
       justify-content: center;
     }
@@ -343,15 +344,6 @@
     @media screen and (max-width: 560px) {
       margin-left: 5px;
       margin-right: 5px;
-    }
-
-    @media screen and (max-width: 475px) {
-      flex-direction: column;
-      align-items: center;
-
-      img {
-        margin-bottom: 15px;
-      }
     }
 
     img {
