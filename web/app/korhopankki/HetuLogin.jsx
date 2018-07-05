@@ -7,7 +7,7 @@ import {t} from '../i18n/i18n'
 import Input from '../components/Input'
 import Cookie from 'js-cookie'
 
-const HetuLogin = ( { LoginUrl = '/koski/user/shibbolethlogin', RedirectUrl = '/koski/omattiedot' } ) => {
+const HetuLogin = ( { loginUrl = '/koski/user/shibbolethlogin', redirectUrl = '/koski/omattiedot' } ) => {
   const state = Atom({hetu: null, cn: null, FirstName: null, givenName: null, sn: null, lang: null})
 
   const valid = state.map(({hetu}) => {
@@ -37,7 +37,7 @@ const HetuLogin = ( { LoginUrl = '/koski/user/shibbolethlogin', RedirectUrl = '/
       const headers = R.reject(R.isNil, R.merge(credentials, {security: 'mock'}))
       // console.log('Logging in with', headers)
       const lang = credentials.lang ? credentials.lang : 'fi'
-      return Bacon.fromPromise(fetch(LoginUrl, { credentials: 'include', headers})).map(resp => ({resp: resp, lang: lang}))
+      return Bacon.fromPromise(fetch(loginUrl, { credentials: 'include', headers})).map(resp => ({resp: resp, lang: lang}))
     })
 
   login.onValue((x) => {
@@ -48,7 +48,7 @@ const HetuLogin = ( { LoginUrl = '/koski/user/shibbolethlogin', RedirectUrl = '/
     } else if (x.resp.redirected) {
       document.location = x.resp.url
     } else {
-      document.location = RedirectUrl
+      document.location = redirectUrl
     }
   })
 

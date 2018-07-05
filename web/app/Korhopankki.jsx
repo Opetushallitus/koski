@@ -27,7 +27,7 @@ const MockUsers = () =>
 
 ReactDOM.render((
   <div>
-    <HetuLogin LoginUrl={getParam('login')} RedirectUrl={getParam('redirect')} />
+    <HetuLogin loginUrl={getParam('login')} redirectUrl={getParam('redirect')} />
     <MockUsers/>
   </div>
 ), document.getElementById('content'))
