@@ -1,7 +1,6 @@
 package fi.oph.koski.todistus
 
-import fi.oph.koski.localization.LocalizedString
-import fi.oph.koski.localization.LocalizedString._
+import fi.oph.koski.schema.LocalizedString._
 import fi.oph.koski.schema._
 
 import scala.xml.NodeSeq.Empty

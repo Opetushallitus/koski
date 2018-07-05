@@ -9,8 +9,7 @@ import fi.oph.koski.date.DateOrdering
 import fi.oph.koski.http.Http
 import fi.oph.koski.http.Http._
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.localization.LocalizedString
-import fi.oph.koski.schema.{Koodistokoodiviite, Koulutustoimija, Oppilaitos, OrganisaatioWithOid}
+import fi.oph.koski.schema._
 
 import scala.concurrent.duration._
 trait OrganisaatioRepository {

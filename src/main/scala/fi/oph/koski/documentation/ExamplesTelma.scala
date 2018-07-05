@@ -6,8 +6,7 @@ import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.TelmaExampleData.{arviointiHyväksytty, _}
 import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.localization.LocalizedString
-import fi.oph.koski.localization.LocalizedString.finnish
+import fi.oph.koski.schema.LocalizedString.finnish
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
 

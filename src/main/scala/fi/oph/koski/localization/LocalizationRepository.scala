@@ -8,9 +8,10 @@ import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.json.{JsonResources, JsonSerializer}
 import fi.oph.koski.localization.LocalizationRepository.parseLocalizations
-import fi.oph.koski.localization.LocalizedString.sanitize
+import fi.oph.koski.schema.LocalizedString.sanitize
 import fi.oph.koski.localization.MockLocalizationRepository.readLocalLocalizations
 import fi.oph.koski.log.Logging
+import fi.oph.koski.schema.{Finnish, LocalizedString}
 import org.json4s._
 
 import scala.collection.immutable

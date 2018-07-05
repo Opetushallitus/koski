@@ -1,9 +1,9 @@
 package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.koodisto.{KoodistoKoodi, KoodistoPalvelu}
-import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.log.Logging
 import fi.oph.koski.raportointikanta.LoaderUtils.convertLocalizedString
+import fi.oph.koski.schema.LocalizedString
 
 object KoodistoLoader extends Logging {
   private val BatchSize = 1000

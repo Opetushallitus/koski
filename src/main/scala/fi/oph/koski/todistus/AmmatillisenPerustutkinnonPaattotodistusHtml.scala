@@ -1,7 +1,7 @@
 package fi.oph.koski.todistus
 
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
+import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.schema._
 
 class AmmatillisenPerustutkinnonPaattotodistusHtml(implicit val user: KoskiSession, val localizationRepository: LocalizationRepository) extends TodistusHtml {

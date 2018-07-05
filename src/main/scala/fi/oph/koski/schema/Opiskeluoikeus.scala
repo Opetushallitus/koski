@@ -1,9 +1,7 @@
 package fi.oph.koski.schema
 
-import java.sql.Timestamp
 import java.time.{LocalDate, LocalDateTime}
 
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation._
 import mojave.Traversal
@@ -13,6 +11,8 @@ object Opiskeluoikeus {
   type Oid = String
   type Versionumero = Int
   val VERSIO_1 = 1
+
+  def isValidOpiskeluoikeusOid(oid: String) = oid.matches("""^1\.2\.246\.562\.15\.\d{11}$""")
 
   def oppilaitosTraversal: Traversal[KoskeenTallennettavaOpiskeluoikeus, Oppilaitos] = {
     import mojave._
@@ -27,18 +27,6 @@ object Opiskeluoikeus {
   def toimipisteetTraversal: Traversal[KoskeenTallennettavaOpiskeluoikeus, OrganisaatioWithOid] = {
     import mojave._
     Suoritus.toimipisteetTraversal.compose(traversal[KoskeenTallennettavaOpiskeluoikeus].field[List[Suoritus]]("suoritukset").items)
-  }
-}
-
-object OpiskeluoikeusOid {
-  def isValidOpiskeluoikeusOid(oid: String) = oid.matches("""^1\.2\.246\.562\.15\.\d{11}$""")
-
-  def validateOpiskeluoikeusOid(oid: String): Either[HttpStatus, String] = {
-    if (isValidOpiskeluoikeusOid(oid)) {
-      Right(oid)
-    } else {
-      Left(KoskiErrorCategory.badRequest.queryParam.virheellinenOpiskeluoikeusOid("Virheellinen oid: " + oid + ". Esimerkki oikeasta muodosta: 1.2.246.562.15.00000000001."))
-    }
   }
 }
 

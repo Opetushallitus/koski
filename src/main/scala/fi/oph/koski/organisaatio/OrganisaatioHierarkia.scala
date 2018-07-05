@@ -1,6 +1,5 @@
 package fi.oph.koski.organisaatio
 
-import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.schema._
 
 case class OrganisaatioHierarkia(oid: String, oppilaitosnumero: Option[Koodistokoodiviite], nimi: LocalizedString, yTunnus: Option[String], kotipaikka: Option[Koodistokoodiviite], organisaatiotyypit: List[String], oppilaitostyyppi: Option[String], aktiivinen: Boolean, children: List[OrganisaatioHierarkia]) {

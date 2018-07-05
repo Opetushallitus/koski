@@ -9,7 +9,6 @@ import org.scalatest.{FreeSpec, Matchers}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.json.JsonFiles
-import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.SchemaValidatingExtractor

@@ -1,8 +1,6 @@
 package fi.oph.koski.schema
 
-import fi.oph.koski.localization.{LocalizationRepository, LocalizedString}
 import fi.oph.scalaschema.annotation.{Description, Title}
-import LocalizedString._
 import fi.oph.koski.schema.annotation._
 
 case class AikuistenPerusopetuksenAlkuvaiheenSuoritus(
@@ -110,7 +108,7 @@ case class AikuistenPerusopetuksenAlkuvaiheenVierasKieli(
   @KoodistoUri("kielivalikoima")
   kieli: Koodistokoodiviite
 ) extends AikuistenPerusopetuksenAlkuvaiheenKoodistostaLöytyväOppiaine with Kieliaine {
-  override def description(texts: LocalizationRepository) = concat(nimi, unlocalized(", "), kieli.description)
+  override def description = kieliaineDescription
 }
 
 sealed trait AikuistenPerusopetuksenAlkuvaiheenKurssi extends Koulutusmoduuli {
