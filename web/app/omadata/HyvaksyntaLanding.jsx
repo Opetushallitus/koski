@@ -25,7 +25,6 @@ class HyvaksyntaLanding extends React.Component {
     }
 
     this.authorizeMember = this.authorizeMember.bind(this)
-    this.onLogoutClicked = this.onLogoutClicked.bind(this)
   }
 
   componentDidMount() {
@@ -64,10 +63,6 @@ class HyvaksyntaLanding extends React.Component {
       })
   }
 
-  onLogoutClicked() {
-    window.location.href = this.getLogoutURL()
-  }
-
   getLogoutURL() {
     return `/koski/user/logout?target=${this.state.callback}`
   }
@@ -98,7 +93,7 @@ class HyvaksyntaLanding extends React.Component {
             this.state.loading ? <Spinner /> : <ErrorPage />
         }
 
-        <Footer/>
+        <Footer />
       </div>
     )
   }
