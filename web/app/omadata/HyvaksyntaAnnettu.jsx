@@ -12,13 +12,13 @@ export default class HyvaksyntaAnnettu extends React.Component {
   }
 
   componentDidMount() {
-    this.moveToCallbackURL()
+    setTimeout(() => {
+      this.moveToCallbackURL()
+    }, this.state.timeout)
   }
 
   moveToCallbackURL() {
-    setTimeout(() => {
-      window.location.href = this.state.logoutURL
-    }, this.state.timeout)
+    window.location.href = this.state.logoutURL
   }
 
   render() {
@@ -36,7 +36,9 @@ export default class HyvaksyntaAnnettu extends React.Component {
         <div className='acceptance-return-container'>
           <div className='acceptance-return-automatically'><Text name='Palataan palveluntarjoajan sivulle'/></div>
           <a href={this.state.logoutURL}>
-            <button className='acceptance-return-button button'><Text name='Palaa palveluntarjoajan sivulle'/></button>
+            <button className='acceptance-return-button button' onClick={this.moveToCallbackURL}>
+              <Text name='Palaa palveluntarjoajan sivulle' />
+            </button>
           </a>
         </div>
       </div>
