@@ -8,7 +8,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.{Hidden, KoodistoUri}
 import fi.oph.koski.util.{Timing, WithWarnings}
 import fi.oph.scalaschema.{ClassSchema, ExtractionContext}
-import fi.oph.koski.date.DateOrdering.{localDateOptionOrdering, localDateOrdering}
+import fi.oph.koski.util.DateOrdering.{localDateOptionOrdering, localDateOrdering}
 
 object OppijaEditorModel extends Timing {
 

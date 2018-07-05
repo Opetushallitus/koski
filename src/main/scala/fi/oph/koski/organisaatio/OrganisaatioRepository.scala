@@ -5,11 +5,11 @@ import java.time.LocalDate
 
 import com.typesafe.config.Config
 import fi.oph.koski.cache._
-import fi.oph.koski.date.DateOrdering
 import fi.oph.koski.http.Http
 import fi.oph.koski.http.Http._
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.schema._
+import fi.oph.koski.util.DateOrdering
 
 import scala.concurrent.duration._
 trait OrganisaatioRepository {
@@ -118,9 +118,8 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(i
   }
 
   override def getOrganisaationNimiHetkellä(oid: String, date: LocalDate) = {
-    import fi.oph.koski.date.DateOrdering._
     val nimet: List[OrganisaationNimihakuTulos] = nimetCache(oid)
-    nimet.sortBy(_.alkuPvm)
+    nimet.sortBy(_.alkuPvm)(DateOrdering.localDateOrdering)
       .takeWhile(nimi => nimi.alkuPvm.isBefore(date) || nimi.alkuPvm.isEqual(date))
       .lastOption.flatMap(n => LocalizedString.sanitize(n.nimi))
   }

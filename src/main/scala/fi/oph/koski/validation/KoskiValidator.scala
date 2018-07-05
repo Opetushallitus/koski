@@ -3,8 +3,6 @@ package fi.oph.koski.validation
 import java.lang.Character.isDigit
 import java.time.LocalDate
 
-import fi.oph.koski.date.DateValidation
-import fi.oph.koski.date.DateValidation._
 import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.henkilo.OpintopolkuHenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -18,6 +16,7 @@ import fi.oph.koski.schema.Opiskeluoikeus.{koulutustoimijaTraversal, oppilaitosT
 import fi.oph.koski.schema._
 import fi.oph.koski.tutkinto.Koulutustyyppi._
 import fi.oph.koski.tutkinto.TutkintoRepository
+import fi.oph.koski.validation.DateValidation._
 import fi.oph.koski.util.Timing
 import mojave._
 import org.json4s.{JArray, JValue}
