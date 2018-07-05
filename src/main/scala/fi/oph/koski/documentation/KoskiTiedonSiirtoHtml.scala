@@ -1,7 +1,6 @@
 package fi.oph.koski.documentation
 
 import fi.oph.koski.schema.KoskiSchema
-import fi.oph.koski.util.Markdown
 import fi.oph.scalaschema.ClassSchema
 
 object KoskiTiedonSiirtoHtml {

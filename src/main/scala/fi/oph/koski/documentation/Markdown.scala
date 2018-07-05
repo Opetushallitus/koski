@@ -1,4 +1,4 @@
-package fi.oph.koski.util
+package fi.oph.koski.documentation
 
 import com.tristanhunt.knockoff.DefaultDiscounter.{knockoff, toXHTML}
 import fi.oph.koski.log.Logging
