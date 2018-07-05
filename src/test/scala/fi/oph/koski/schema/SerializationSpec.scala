@@ -10,7 +10,7 @@ import org.scalatest.{FreeSpec, Matchers}
 
 class SerializationSpec extends FreeSpec with Matchers with Logging {
   "Serialization / deserialization" - {
-    import KoskiSchema.deserializationContext
+    import fi.oph.koski.schema.KoskiSchema.deserializationContext
     "Tunnustaminen" in {
       val json = JsonSerializer.serializeWithRoot(AmmatillinenExampleData.tunnustettu)
       val tunnustettu = SchemaValidatingExtractor.extract[OsaamisenTunnustaminen](json).right.get

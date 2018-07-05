@@ -18,7 +18,7 @@ import scala.xml.Node
 case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu) extends Logging {
 
   def convertToOpiskeluoikeudet(virtaXml: Node): List[KorkeakoulunOpiskeluoikeus] = {
-    import DateOrdering._
+    import fi.oph.koski.date.DateOrdering._
 
     val suoritusNodeList: List[Node] = suoritusNodes(virtaXml)
     val suoritusRoots: List[Node] = suoritusNodeList.filter(isRoot(suoritusNodeList)(_))

@@ -156,7 +156,7 @@ object AmmattitutkintoExample {
 
 object AmmatillinenPerustutkintoExample {
 
-  import AmmatillinenExampleData._
+  import fi.oph.koski.documentation.AmmatillinenExampleData._
 
   val perustutkinto = oppija(opiskeluoikeus = perustutkintoOpiskeluoikeusValmis())
 

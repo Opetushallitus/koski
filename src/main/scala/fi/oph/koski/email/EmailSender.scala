@@ -36,7 +36,7 @@ object MockEmailSender extends EmailSender with Logging {
 }
 
 case class RyhmäsähköpostiSender(config: Config) extends EmailSender {
-  import Http._
+  import fi.oph.koski.http.Http._
 
   val http = VirkailijaHttpClient(ServiceConfig.apply(config, "ryhmäsähköposti.virkailija"), "/ryhmasahkoposti-service")
 

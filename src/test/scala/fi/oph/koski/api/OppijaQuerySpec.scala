@@ -15,7 +15,7 @@ import org.json4s.jackson.JsonMethods
 import org.scalatest.{FreeSpec, Matchers}
 
 class OppijaQuerySpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with QueryTestMethods with Matchers {
-  import DateOrdering._
+  import fi.oph.koski.date.DateOrdering._
   val teija = MockOppijat.teija.henkilö
   val eero = MockOppijat.eero.henkilö
 

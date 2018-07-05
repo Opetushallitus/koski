@@ -114,7 +114,7 @@ object Http extends Logging {
 }
 
 case class Http(root: String, client: Client = Http.newClient) extends Logging {
-  import Http.UriInterpolator
+  import fi.oph.koski.http.Http.UriInterpolator
   private val rootUri = Http.uriFromString(root)
 
   def get[ResultType](uri: ParameterizedUriWrapper)(decode: Decode[ResultType]): Task[ResultType] = {

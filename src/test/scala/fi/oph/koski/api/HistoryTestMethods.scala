@@ -7,7 +7,7 @@ import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.json4s.jackson.JsonMethods
 
 trait HistoryTestMethods extends OpiskeluoikeusTestMethods {
-  import KoskiSchema.deserializationContext
+  import fi.oph.koski.schema.KoskiSchema.deserializationContext
 
   def readHistory = SchemaValidatingExtractor.extract[List[OpiskeluoikeusHistory]](JsonMethods.parse(body)).right.get
 

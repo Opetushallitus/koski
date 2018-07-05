@@ -11,7 +11,7 @@ import org.json4s._
 import scala.reflect.runtime.{universe => ru}
 
 object ValidatingAndResolvingExtractor {
-  import KoskiSchema.deserializationContext
+  import fi.oph.koski.schema.KoskiSchema.deserializationContext
   /**
    *  Extracts object from json value, and validates/resolves all KoodistoKoodiViite objects on the way.
    */

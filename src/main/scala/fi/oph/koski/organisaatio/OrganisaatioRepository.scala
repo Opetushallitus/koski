@@ -118,7 +118,7 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(i
   }
 
   override def getOrganisaationNimiHetkellä(oid: String, date: LocalDate) = {
-    import DateOrdering._
+    import fi.oph.koski.date.DateOrdering._
     val nimet: List[OrganisaationNimihakuTulos] = nimetCache(oid)
     nimet.sortBy(_.alkuPvm)
       .takeWhile(nimi => nimi.alkuPvm.isBefore(date) || nimi.alkuPvm.isEqual(date))

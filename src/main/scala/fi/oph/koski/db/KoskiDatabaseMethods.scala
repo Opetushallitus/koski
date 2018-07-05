@@ -18,7 +18,7 @@ trait KoskiDatabaseMethods {
   }
 
   def streamingQuery[E, U, C[_]](query: Query[E, U, C]) = {
-    import ReactiveStreamsToRx._
+    import fi.oph.koski.util.ReactiveStreamsToRx._
     // Note: it won't actually stream unless you use both `transactionally` and `fetchSize`. It'll collect all the data into memory.
     db.stream(query.result.transactionally.withStatementParameters(fetchSize = 1000)).publish.refCount
   }
