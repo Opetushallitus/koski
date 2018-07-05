@@ -30,7 +30,10 @@ class HyvaksyntaLanding extends React.Component {
 
   componentDidMount() {
     const pathParam = memberCodeRegex.exec(currentLocation().path)[1]
-    Http.cachedGet(`/koski/api/omadata/kumppani/${pathParam}`, { errorHandler: () => this.setState({ loading: false }) })
+    Http.cachedGet(`/koski/api/omadata/kumppani/${pathParam}`, { errorHandler: (e) => {
+        logError(e)
+        this.setState({loading: false})
+    }})
       .onValue(member => this.setState({
         memberName: member.name,
         memberCode: member.id,
