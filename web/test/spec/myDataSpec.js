@@ -35,7 +35,7 @@ describe('MyData', () => {
       ))
       it('Näytetään nappi josta voidaan palata palveluntarjoajan sivulle', () => {
         expect(mydata.accepted.isReturnButtonVisible()).to.equal(true)
-        expect(extractAsText(S('a[href^="/koski/user/logout?target=https://example.org"]'))).equal('Palaa palveluntarjoajan sivulle')
+        expect(extractAsText(S('a[href^="/koski/user/logout?target=https://example.org"] > .acceptance-return-button'))).equal('Palaa palveluntarjoajan sivulle')
       })
     })
   })

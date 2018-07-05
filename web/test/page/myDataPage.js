@@ -19,7 +19,7 @@ const MyDataPage = () => {
       document.cookie = `lang=${lang}; path=/`
     },
     getUserName: () => {
-      return extractAsText(S('.header > div > .user > .username'))
+      return extractAsText(S('.user > .username'))
     },
     getBirthDate: () => {
       return extractAsText(S('.user > .dateofbirth'))
