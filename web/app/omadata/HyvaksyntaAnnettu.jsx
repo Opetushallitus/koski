@@ -36,7 +36,7 @@ export default class HyvaksyntaAnnettu extends React.Component {
         <div className='acceptance-return-container'>
           <div className='acceptance-return-automatically'><Text name='Palataan palveluntarjoajan sivulle'/></div>
           <a href={this.state.logoutURL}>
-            <div className='acceptance-return-button button'><Text name='Palaa palveluntarjoajan sivulle'/></div>
+            <button className='acceptance-return-button button'><Text name='Palaa palveluntarjoajan sivulle'/></button>
           </a>
         </div>
       </div>
