@@ -30,10 +30,11 @@ export default ({memberName, logoutURL, onAuthorization, authorizationGiven}) =>
     </div>
 
     { authorizationGiven ?
-      <HyvaksyntaAnnettu logoutURL={logoutURL}/> :
-      <AnnaHyvaksynta memberName={memberName}
-                      onAcceptClick={() => onAuthorization()}
-                      onCancelClick={() => window.location.href = logoutURL} />
+      <HyvaksyntaAnnettu logoutURL={logoutURL} /> :
+      <AnnaHyvaksynta
+        memberName={memberName}
+        onAcceptClick={() => onAuthorization()}
+        logoutURL={logoutURL} />
     }
 
   </div>
