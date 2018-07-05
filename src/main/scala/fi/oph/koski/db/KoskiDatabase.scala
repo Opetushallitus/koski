@@ -6,7 +6,9 @@ import fi.oph.koski.config.Environment
 import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.executors.Pools
 import fi.oph.koski.log.Logging
+import fi.oph.koski.util.Futures
 import org.flywaydb.core.Flyway
+import org.postgresql.util.PSQLException
 import slick.driver.PostgresDriver
 import slick.driver.PostgresDriver.api._
 
@@ -92,13 +94,27 @@ class KoskiDatabase(val config: KoskiDatabaseConfig) extends Logging {
       if (System.getProperty("koski.db.clean", "false").equals("true")) {
         flyway.clean
       }
-      if (Environment.databaseIsLarge(db) && Environment.isLocalDevelopmentEnvironment) {
+      if (databaseIsLarge && Environment.isLocalDevelopmentEnvironment) {
         logger.warn("Skipping database migration for database larger than 100 rows, when running in local development environment")
       } else {
         flyway.migrate
       }
     } catch {
       case e: Exception => logger.warn(e)("Migration failure")
+    }
+  }
+
+  def databaseIsLarge: Boolean = {
+    try {
+      val count = Futures.await(db.run(sql"select count(*) from opiskeluoikeus".as[Int]))(0)
+      count > 100
+    } catch {
+      case e: PSQLException =>
+        if (e.getMessage.contains("""relation "opiskeluoikeus" does not exist""")) {
+          false // Allow for an uninitialized db
+        } else {
+          throw e
+        }
     }
   }
 }
