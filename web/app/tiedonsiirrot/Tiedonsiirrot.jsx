@@ -26,4 +26,4 @@ export const naviLink = (path, textKey, location, linkClassName, isSelected = (p
   return (<span className={className}><Link href={path} className={linkClassName}><Text name={textKey}/></Link></span>)
 }
 
-export const ReloadButton = () => <button className="update-content" onClick={() => window.location.reload(true)}><Text name="Päivitä"/></button>
+export const ReloadButton = () => <button className="koski-button update-content" onClick={() => window.location.reload(true)}><Text name="Päivitä"/></button>

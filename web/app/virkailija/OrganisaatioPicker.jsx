@@ -74,7 +74,7 @@ export default class OrganisaatioPicker extends BaconComponent {
             if (e.target.value.length >= 3 || e.target.value.length == 0) this.searchStringBus.push(e.target.value)
           }}/>
           {
-            clearText && <button className="button kaikki" onClick={() => { this.searchStringBus.push(''); selectOrg(undefined)}}>{clearText}</button>
+            clearText && <button className="koski-button kaikki" onClick={() => { this.searchStringBus.push(''); selectOrg(undefined)}}>{clearText}</button>
           }
           {
             organisaatiot.length > 0 && <div className="scroll-container">

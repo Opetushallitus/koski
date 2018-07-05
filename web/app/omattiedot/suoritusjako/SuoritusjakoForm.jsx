@@ -46,7 +46,7 @@ const CreateNewSuoritusjakoButton = ({selectedSuoritusIds, onClick, onSuccess, o
 
   return (
     <div className='create-suoritusjako__button'>
-      <button disabled={R.isEmpty(selectedSuoritusIds)} onClick={clickAction}>
+      <button className='koski-button' disabled={R.isEmpty(selectedSuoritusIds)} onClick={clickAction}>
         <Text name='Jaa valitsemasi opinnot'/>
       </button>
     </div>

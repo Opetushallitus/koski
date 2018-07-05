@@ -15,7 +15,7 @@ const LanderInfo = () => (
         <p><Text name='Lander ingressi 3'/></p>
         <p><Text name='Lander ingressi 4'/></p>
       </div>
-      <button className='login-button' onClick={() => window.location=window.kansalaisenAuthUrl}><Text name="Kirjaudu sisään" /></button>
+      <button className='koski-button login-button' onClick={() => window.location=window.kansalaisenAuthUrl}><Text name="Kirjaudu sisään" /></button>
     </div>
   </div>
 )

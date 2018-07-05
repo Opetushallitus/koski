@@ -21,7 +21,7 @@ export class PerusopetuksenOppiaineEditor extends React.Component {
               <span className="koodi"><Editor model={oppiaine} path="tunniste.koodiarvo" placeholder={t('Koodi')}/></span>
               <span className="nimi"><Editor model={fixKuvaus(oppiaine)} path="tunniste.nimi" placeholder={t('Oppiaineen nimi')}/></span>
           </span>
-        : showExpand ? <a className="nimi" onClick={() => onExpand(!expanded)}>{oppiaineTitle(oppiaine)}</a> : <span className="nimi">{oppiaineTitle(oppiaine)}</span>
+        : showExpand ? <button className='nimi inline-text-button' onClick={() => onExpand(!expanded)}>{oppiaineTitle(oppiaine)}</button> : <span className="nimi">{oppiaineTitle(oppiaine)}</span>
     }
       {
         // kielivalinta

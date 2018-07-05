@@ -86,9 +86,9 @@ export class Suoritustaulukko extends React.Component {
                   {showExpandAll &&
                   <div>
                     {allExpandedP.map(allExpanded => (
-                      <a className={'expand-all button' + (allExpanded ? ' expanded' : '')} onClick={toggleExpandAll}>
+                      <button className={'expand-all koski-button' + (allExpanded ? ' expanded' : '')} onClick={toggleExpandAll}>
                         <Text name={allExpanded ? 'Sulje kaikki' : 'Avaa kaikki'}/>
-                      </a>)
+                      </button>)
                     )}
                   </div>
                   }
@@ -260,7 +260,7 @@ const SuoritusColumn = {
       {showTila && <span className="tila" title={tilaText(model)}>{suorituksenTilaSymbol(model)}</span>}
       {
         titleAsExpandLink
-          ? <a className="nimi" onClick={() => onExpand(!expanded)}>{modelTitle(model, 'koulutusmoduuli')}</a>
+          ? <button className='nimi inline-link-button' onClick={() => onExpand(!expanded)}>{modelTitle(model, 'koulutusmoduuli')}</button>
           : <span className="nimi">
             {t(modelData(koulutusmoduuli, 'tunniste.nimi')) + (kieliaine ? ', ' : '')}
             {kieliaine && <span className="value kieli"><Editor model={koulutusmoduuli} inline={true} path="kieli" sortBy={sortLanguages}/></span>}

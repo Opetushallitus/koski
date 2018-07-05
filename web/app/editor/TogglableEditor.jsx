@@ -17,7 +17,7 @@ export class TogglableEditor extends React.Component {
     let showEditLink = model.editable && !editingAny
     let showDeleteLink = model.invalidatable && !showEditLink
     let editLink = showEditLink
-      ? <button className="toggle-edit" onClick={() => context.editBus.push(opiskeluoikeusOid)}><Text name="muokkaa"/></button>
+      ? <button className="koski-button toggle-edit" onClick={() => context.editBus.push(opiskeluoikeusOid)}><Text name="muokkaa"/></button>
       : showDeleteLink
         ? <InvalidateOpiskeluoikeusButton opiskeluoikeus={model.context.opiskeluoikeus} />
         : null
