@@ -106,7 +106,7 @@ object Http extends Logging {
 
   type Decode[ResultType] = (Int, String, Request) => ResultType
 
-  object Encoders extends Logging {
+  object Encoders {
     def xml: EntityEncoder[Elem] = EntityEncoder.stringEncoder(Charset.`UTF-8`).contramap[Elem](item => item.toString)
       .withContentType(`Content-Type`(MediaType.`text/xml`))
     def formData: EntityEncoder[String] = EntityEncoder.stringEncoder.withContentType(`Content-Type`(MediaType.`application/x-www-form-urlencoded`))
