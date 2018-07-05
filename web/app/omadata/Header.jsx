@@ -6,7 +6,7 @@ import Logout from './fragments/Logout'
 const menuOpened = Atom(false)
 
 
-export default ({ userP, logoutURL }) => (
+export default ({ logoutURL }) => (
   <div className='header'>
     <button id='header-mobile-menu-button' onClick={() => menuOpened.modify(x => !x)}>
       <img src='/koski/images/baseline-menu-24px.svg' />
@@ -16,9 +16,7 @@ export default ({ userP, logoutURL }) => (
       <h1><Text name='Oma Opintopolku'/></h1>
     </div>
 
-    { userP.map(user => ( user &&
       <div>
-
         <div className='user'>
           <Logout logoutURL={logoutURL} />
         </div>
@@ -28,9 +26,6 @@ export default ({ userP, logoutURL }) => (
             <Logout logoutURL={logoutURL} />
           </div>
         </div>
-
       </div>
-    ))}
-
   </div>
 )

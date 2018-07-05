@@ -8,7 +8,6 @@ import Header from './Header'
 import '../polyfills/polyfills.js'
 import Http from '../util/http'
 import { currentLocation, parseQuery } from '../util/location'
-import { userP } from '../util/user'
 import { Error as ErrorDisplay, logError } from '../util/Error'
 import {t} from '../i18n/i18n'
 
@@ -84,7 +83,7 @@ class HyvaksyntaLanding extends React.Component {
 
     return (
       <div>
-        <Header userP={userP} logoutURL={this.getLogoutURL()} />
+        <Header logoutURL={this.getLogoutURL()} />
         {error}
 
         {
