@@ -1,7 +1,5 @@
 package fi.oph.koski.schedule
 
-import java.time.LocalDate.now
-
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethods}
 import fi.oph.koski.db.KoskiDatabase.DB

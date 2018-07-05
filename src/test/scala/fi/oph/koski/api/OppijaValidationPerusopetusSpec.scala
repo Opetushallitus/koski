@@ -4,7 +4,6 @@ import fi.oph.koski.documentation.PerusopetusExampleData.{suoritus, _}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
 import mojave._
-import shapeless.Lens
 
 // Perusopetuksen validointi perustuu tässä testattua diaarinumeroa lukuunottamatta domain-luokista generoituun JSON-schemaan.
 // Schemavalidoinnille on tehty kattavat testit ammatillisten opiskeluoikeuksien osalle. Yleissivistävän koulutuksen validoinnissa luotamme

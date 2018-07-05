@@ -2,7 +2,7 @@ package fi.oph.koski.date
 
 import java.time.LocalDate
 
-import fi.oph.koski.http.{ErrorCategory, HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.http.{ErrorCategory, HttpStatus}
 import fi.oph.koski.schema.Alkupäivällinen
 
 object DateValidation {

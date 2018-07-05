@@ -15,7 +15,6 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenOsittaisetTiedot, OpiskeluoikeudenPerustiedot}
-import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
 import slick.dbio.DBIO

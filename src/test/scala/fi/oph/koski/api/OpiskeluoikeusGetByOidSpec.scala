@@ -1,14 +1,11 @@
 package fi.oph.koski.api
 
-import java.time.LocalDate
-
-import fi.oph.koski.documentation.ExampleData.opiskeluoikeusMitätöity
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.{HttpTester, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.koskiuser.MockUsers.{stadinAmmattiopistoKatselija, stadinVastuukäyttäjä}
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, AmmatillinenOpiskeluoikeusjakso}
+import fi.oph.koski.schema.AmmatillinenOpiskeluoikeus
 import org.scalatest.{FreeSpec, Matchers}
 
 class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods with HttpTester with OpiskeluoikeusTestMethodsAmmatillinen {

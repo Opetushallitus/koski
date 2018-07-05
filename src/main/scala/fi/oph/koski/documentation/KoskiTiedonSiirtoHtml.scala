@@ -1,6 +1,5 @@
 package fi.oph.koski.documentation
 
-import com.tristanhunt.knockoff.DefaultDiscounter._
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.util.Markdown
 import fi.oph.scalaschema.ClassSchema

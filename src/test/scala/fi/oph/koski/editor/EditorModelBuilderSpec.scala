@@ -1,6 +1,5 @@
 package fi.oph.koski.editor
 
-import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.{KäyttöoikeusRepository, MockUsers}

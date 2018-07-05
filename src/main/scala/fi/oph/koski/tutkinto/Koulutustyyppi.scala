@@ -1,6 +1,6 @@
 package fi.oph.koski.tutkinto
 
-import fi.oph.koski.koodisto.{MockKoodistoPalvelu, MockKoodistoViitePalvelu}
+import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
 import fi.oph.koski.schema.Koodistokoodiviite
 
 object Koulutustyyppi {

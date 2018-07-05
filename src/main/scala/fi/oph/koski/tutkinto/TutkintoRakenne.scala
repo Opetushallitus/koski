@@ -1,6 +1,5 @@
 package fi.oph.koski.tutkinto
 
-import fi.oph.koski.eperusteet.ELaajuus
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
 import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
 

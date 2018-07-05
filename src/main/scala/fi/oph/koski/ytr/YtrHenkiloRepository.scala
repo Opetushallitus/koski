@@ -1,6 +1,6 @@
 package fi.oph.koski.ytr
 
-import fi.oph.koski.henkilo.{FindByHetu, Hetu, OpintopolkuHenkilöRepository}
+import fi.oph.koski.henkilo.{FindByHetu, OpintopolkuHenkilöRepository}
 import fi.oph.koski.koskiuser.{AccessChecker, KoskiSession}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.UusiHenkilö

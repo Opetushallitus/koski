@@ -8,7 +8,6 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer.serializeWithRoot
 import fi.oph.koski.koodisto.{Koodistot, MockKoodistoPalvelu}
 import fi.oph.koski.koskiuser.MockUsers
-import fi.oph.koski.opiskeluoikeus.ValidationResult
 import org.json4s.JsonAST.JObject
 
 object KoskiApiOperations extends ApiGroup {
