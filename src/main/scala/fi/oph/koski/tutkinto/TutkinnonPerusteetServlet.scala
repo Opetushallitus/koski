@@ -3,8 +3,7 @@ package fi.oph.koski.tutkinto
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{KoskiUserLanguage, Unauthenticated}
-import fi.oph.koski.localization.LocalizedString
-import fi.oph.koski.schema.Koodistokoodiviite
+import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
 import fi.oph.koski.servlet.{ApiServlet, Cached, LanguageSupport}
 
 import scala.concurrent.duration._

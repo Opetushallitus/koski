@@ -9,7 +9,6 @@ import org.scalatest.{FreeSpec, Matchers}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.json.JsonFiles
-import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.SchemaValidatingExtractor
@@ -84,7 +83,7 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
   }
 
   "Opiskeluoikeuksien lataus" - {
-    import KoskiSchema.deserializationContext
+    import fi.oph.koski.schema.KoskiSchema.deserializationContext
     val ammatillinenJson = JsonFiles.readFile("src/test/resources/backwardcompatibility/ammatillinen-perustutkinto_2018-02-14.json")
     val oid = "1.2.246.562.15.123456"
     val ammatillinenOpiskeluoikeus = SchemaValidatingExtractor.extract[Oppija](ammatillinenJson).right.get.opiskeluoikeudet.head.asInstanceOf[AmmatillinenOpiskeluoikeus].copy(oid = Some(oid))

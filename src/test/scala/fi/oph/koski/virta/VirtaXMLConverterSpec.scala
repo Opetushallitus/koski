@@ -8,7 +8,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import org.scalatest.{FreeSpec, Matchers}
 
-import scala.xml.{Elem, Node}
+import scala.xml.Elem
 
 class VirtaXMLConverterSpec extends FreeSpec with Matchers {
 

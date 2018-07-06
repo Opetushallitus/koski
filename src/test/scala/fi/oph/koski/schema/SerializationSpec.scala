@@ -3,7 +3,6 @@ package fi.oph.koski.schema
 import fi.oph.koski.documentation.{AmmatillinenExampleData, Examples}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.log.Logging
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenOsittaisetTiedot, OpiskeluoikeudenPerustiedot}
 import fi.oph.scalaschema.SchemaValidatingExtractor
@@ -11,7 +10,7 @@ import org.scalatest.{FreeSpec, Matchers}
 
 class SerializationSpec extends FreeSpec with Matchers with Logging {
   "Serialization / deserialization" - {
-    import KoskiSchema.deserializationContext
+    import fi.oph.koski.schema.KoskiSchema.deserializationContext
     "Tunnustaminen" in {
       val json = JsonSerializer.serializeWithRoot(AmmatillinenExampleData.tunnustettu)
       val tunnustettu = SchemaValidatingExtractor.extract[OsaamisenTunnustaminen](json).right.get

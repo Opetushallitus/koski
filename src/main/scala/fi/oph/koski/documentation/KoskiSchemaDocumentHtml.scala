@@ -4,7 +4,6 @@ import java.net.URLEncoder
 
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation._
-import fi.oph.koski.util.Markdown
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation._
 import org.json4s.jackson.JsonMethods

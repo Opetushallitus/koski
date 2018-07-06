@@ -2,7 +2,7 @@ package fi.oph.koski.koodisto
 
 import java.time.LocalDate
 
-import fi.oph.koski.localization.LocalizedString
+import fi.oph.koski.schema.LocalizedString
 import fi.oph.scalaschema.annotation.DefaultValue
 
 // Tätä oliota käytetään myös koodistojen luonnissa. Älä poista kenttiä!

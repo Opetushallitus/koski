@@ -8,7 +8,7 @@ import fi.oph.koski.editor.MetadataToModel.classesFromMetadata
 import fi.oph.koski.json.{JsonSerializer, SensitiveDataFilter}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.localization.{Localizable, LocalizationRepository, LocalizedString, SchemaLocalization}
+import fi.oph.koski.localization._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusAccessChecker
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation._
@@ -243,7 +243,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
       .map(property => createModelProperty(obj, objectContext, property))
 
     val objectTitle = obj match {
-      case o: Localizable => Some(context.i(o))
+      case o: Localized => Some(context.i(o))
       case _ => None
     }
     context.prototypesRequested = context.prototypesRequested ++ objectContext.prototypesRequested

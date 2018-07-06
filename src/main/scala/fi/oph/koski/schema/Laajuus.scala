@@ -1,6 +1,6 @@
 package fi.oph.koski.schema
 
-import fi.oph.koski.localization.LocalizedString.{finnish, english}
+import fi.oph.koski.schema.LocalizedString.{finnish, english}
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, Tooltip}
 import fi.oph.scalaschema.annotation.{Description, MinValueExclusive}
 

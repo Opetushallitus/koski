@@ -1,12 +1,7 @@
 package fi.oph.koski.perftest
 import java.time.LocalDate
-import java.util.UUID
 
-import fi.oph.koski.documentation._
-import fi.oph.koski.perftest.OppilaitosImuri.{ammatillisetOppilaitokset, lukiot, peruskoulut}
-import fi.oph.koski.schema.{Koodistokoodiviite, _}
-
-import scala.util.Random
+import fi.oph.koski.schema._
 
 object MixedOpiskeluoikeusInserterUpdater extends App {
   PerfTestRunner.executeTest(MixedOpiskeluoikeusInserterUpdaterScenario)

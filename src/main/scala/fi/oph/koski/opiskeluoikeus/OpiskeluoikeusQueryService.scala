@@ -2,7 +2,6 @@ package fi.oph.koski.opiskeluoikeus
 
 import java.sql.Timestamp
 
-import fi.oph.koski.db
 import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.jsonMethods.{parse => parseJson}
@@ -11,7 +10,6 @@ import fi.oph.koski.db.{Tables, _}
 import fi.oph.koski.henkilo.KoskiHenkilöCache
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{SuoritusJsonHaku, _}
 import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.koski.util.QueryPagination.applyPagination
@@ -24,7 +22,7 @@ import rx.Observable.{create => createObservable}
 import rx.observables.SyncOnSubscribe.createStateful
 import slick.lifted.Query
 
-class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext with KoskiDatabaseMethods with Logging {
+class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext with KoskiDatabaseMethods {
   def oppijaOidsQuery(pagination: Option[PaginationSettings])(implicit user: KoskiSession): Observable[String] = {
     streamingQuery(applyPagination(OpiskeluOikeudetWithAccessCheck.map(_.oppijaOid), pagination))
   }

@@ -1,6 +1,6 @@
 // Scope Koski-global styles (separate from raamit)
 .koski-content {
-  .button, button {
+  .koski-button {
     .BaseButton;
 
     background: @color-link-blue;
@@ -66,6 +66,13 @@ a {
   .link();
 }
 
+.BorderlessButton {
+  border: 0;
+  background: none;
+  text-align: left;
+  padding: 0;
+}
+
 .BaseButton {
   font-size: 14px;
   font-weight: 700;
@@ -76,29 +83,32 @@ a {
   cursor: default;
 }
 
-a.text-button {
+.text-button {
   .BaseButton;
+  .BorderlessButton;
+  .link();
 
   &--disabled {
-    .BaseButton;
     .DisabledTextButton;
-  }
-
-  @media @media-phone {
-    display: block;
-    margin: 1rem 0;
   }
 }
 
-a.text-button-small {
+.text-button-small {
+  .BorderlessButton;
   .link();
-  font-size: 15px;
 
   &--disabled {
-    .link();
     .DisabledTextButton;
-    font-size: 15px;
   }
+}
+
+.inline-text-button {
+  .BorderlessButton;
+}
+
+.inline-link-button {
+  .BorderlessButton;
+  .link();
 }
 
 th, td {

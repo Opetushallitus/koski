@@ -5,8 +5,7 @@ import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema.annotation.SensitiveData
 import fi.oph.koski.schema.{Henkilö, KoskiSchema, Oppija}
 import fi.oph.scalaschema.{ClassSchema, Metadata, Property, SerializationContext}
-import org.json4s.JsonAST.JObject
-import org.json4s.{JArray, JValue}
+import org.json4s.JValue
 
 import scala.collection.immutable
 

@@ -32,7 +32,7 @@ export const tiedonsiirtovirheetContentP = (queryString) => {
         content: (
           <div className="tiedonsiirto-virheet">
             <ReloadButton/>
-            <button className="remove-selected" disabled={selected.map(s => !s.length)} style={user.hasAnyInvalidateAccess ? ({}): ({display: 'none'})} onClick={removeSelected}><Text name="Poista valitut"/></button>
+            <button className="koski-button remove-selected" disabled={selected.map(s => !s.length)} style={user.hasAnyInvalidateAccess ? ({}): ({display: 'none'})} onClick={removeSelected}><Text name="Poista valitut"/></button>
             <span><Text name="Alla olevien opiskelijoiden tiedot ovat virhetilassa"/><OppilaitosTitle oppilaitos={oppilaitos}/>{'.'}</span>
             <p><Text name="Opiskelija poistuu virhelistalta"/></p>
             <Tiedonsiirtotaulukko rivit={henkilöt} showError={true} pager={pager} selected={selected} showSelected={user.hasAnyInvalidateAccess} />

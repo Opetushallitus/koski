@@ -1,7 +1,6 @@
 package fi.oph.koski.oppilaitos
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.config.KoskiApplication
 import org.scalatest.{FreeSpec, Matchers}
 
 class OppilaitosRepositorySpec extends FreeSpec with Matchers {

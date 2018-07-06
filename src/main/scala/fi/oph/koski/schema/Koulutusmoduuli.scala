@@ -1,17 +1,16 @@
 package fi.oph.koski.schema
 
-import fi.oph.koski.localization.LocalizedString._
-import fi.oph.koski.localization.{Localizable, LocalizationRepository, LocalizedString}
+import fi.oph.koski.schema.LocalizedString._
 import fi.oph.koski.schema.annotation._
-import fi.oph.scalaschema.annotation.{Description, Discriminator, MinValueExclusive, Title}
+import fi.oph.scalaschema.annotation.{Description, Discriminator, Title}
 
-trait Koulutusmoduuli extends Localizable {
+trait Koulutusmoduuli extends Localized {
   @Representative
   @Discriminator
   def tunniste: KoodiViite
   def laajuus: Option[Laajuus]
   def nimi: LocalizedString
-  def description(texts: LocalizationRepository): LocalizedString = nimi
+  def description = nimi
   def isTutkinto = false
   // Vertailutekijä tarkistettaessa duplikaatteja
   def identiteetti: AnyRef = tunniste
@@ -69,6 +68,7 @@ trait Kieliaine extends Koulutusmoduuli {
   @Tooltip("Opiskeltava kieli.")
   def kieli: Koodistokoodiviite
   override def identiteetti: AnyRef = (super.identiteetti, kieli)
+  protected def kieliaineDescription = concat(nimi, unlocalized(", "), kieli.nimi.getOrElse(unlocalized(kieli.koodiarvo)))
 }
 
 trait Äidinkieli extends Kieliaine

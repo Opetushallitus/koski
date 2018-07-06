@@ -2,7 +2,6 @@ package fi.oph.koski.editor
 
 import java.time.{LocalDate, LocalDateTime}
 
-import fi.oph.koski.schema.KoskiSchema
 import fi.oph.scalaschema.Metadata
 import org.json4s.JValue
 

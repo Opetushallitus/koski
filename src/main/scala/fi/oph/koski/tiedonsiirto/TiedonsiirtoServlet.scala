@@ -3,7 +3,7 @@ package fi.oph.koski.tiedonsiirto
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
-import fi.oph.koski.schema.OrganisaatioOid
+import fi.oph.koski.organisaatio.OrganisaatioOid
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.util.SortOrder.Ascending
 import fi.oph.koski.util.{PaginatedResponse, Pagination, PaginationSettings, SortOrder}

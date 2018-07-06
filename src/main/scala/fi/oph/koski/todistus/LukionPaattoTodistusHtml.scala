@@ -4,8 +4,6 @@ import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.schema._
 
-import scala.xml.NodeSeq
-
 
 class LukionPaattoTodistusHtml(implicit val user: KoskiSession, val localizationRepository: LocalizationRepository) extends TodistusHtml {
   override def laajuus(suoritus: Suoritus): Float = suoritus.koulutusmoduuli.laajuus.map(_.arvo).getOrElse(1f)

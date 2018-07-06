@@ -6,7 +6,6 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.schema.{Opiskeluoikeus, Suoritus}
 import fi.oph.koski.servlet.InvalidRequestException
 import org.json4s.JsonAST.{JDouble, JInt, JNull, JString}
-import org.json4s.ext.JodaTimeSerializers
 import org.json4s.{CustomSerializer, DefaultFormats, Extraction, Formats, JValue, Serializer}
 
 /**

@@ -6,8 +6,8 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{Luokkahaku, Nimihaku, SuoritusJsonHaku, _}
-import fi.oph.koski.organisaatio.OrganisaatioRepository
-import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioOid, OrganisaatioWithOid}
+import fi.oph.koski.organisaatio.{OrganisaatioOid, OrganisaatioRepository}
+import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioWithOid}
 import org.json4s.JsonAST.JValue
 import org.json4s.jackson.JsonMethods
 

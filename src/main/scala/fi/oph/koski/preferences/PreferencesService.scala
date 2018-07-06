@@ -60,7 +60,7 @@ case class PreferencesService(protected val db: DB) extends Logging with KoskiDa
   }
 
   private def extract[T : TypeTag](value: JValue, klass: Class[_ <: T]): Either[List[ValidationError], T] = {
-    import KoskiSchema.deserializationContext
+    import fi.oph.koski.schema.KoskiSchema.deserializationContext
     SchemaValidatingExtractor.extract(value, klass).right.map(_.asInstanceOf[T])
   }
 

@@ -11,7 +11,7 @@ import fi.oph.koski.henkilo.oppijanumerorekisteriservice.{KäyttäjäHenkilö, O
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory, _}
 import fi.oph.koski.koskiuser.KoskiSession.systemUser
-import fi.oph.koski.koskiuser.{KäyttöoikeusOrg, MockKäyttöoikeusryhmät, MockUsers}
+import fi.oph.koski.koskiuser.{KäyttöoikeusOrg, MockUsers}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotRepository
 import fi.oph.koski.schema.Henkilö.Oid

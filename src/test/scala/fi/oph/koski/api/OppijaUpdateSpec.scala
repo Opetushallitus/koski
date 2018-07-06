@@ -15,7 +15,6 @@ import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.{helsinginKaupunkiPalvelukäyttäjä, hkiTallentaja, kalle, paakayttaja}
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
-import fi.oph.koski.localization.LocalizedString
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
@@ -153,7 +152,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     "Käytettäessä opiskeluoikeus-oid:ia" - {
       "Muokkaa olemassaolevaa opiskeluoikeutta" in {
         resetFixtures
-        import fi.oph.koski.date.DateOrdering._
+        import fi.oph.koski.util.DateOrdering._
         val d: LocalDate = date(2020, 1, 1)
         var aikaleima: Option[LocalDateTime] = None
         verifyChange(change = {existing: AmmatillinenOpiskeluoikeus => aikaleima = existing.aikaleima ; existing.copy(arvioituPäättymispäivä = Some(d))}) {

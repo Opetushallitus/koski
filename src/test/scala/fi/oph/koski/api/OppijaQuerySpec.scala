@@ -3,20 +3,19 @@ package fi.oph.koski.api
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
-import fi.oph.koski.date.DateOrdering
-import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData, PerusopetusExampleData}
+import fi.oph.koski.documentation.{ExampleData, PerusopetusExampleData}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.koskiuser.MockUsers.{stadinAmmattiopistoKatselija, stadinVastuukäyttäjä}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema._
+import fi.oph.koski.util.DateOrdering
 import org.json4s.JsonAST.{JArray, JBool}
 import org.json4s.jackson.JsonMethods
 import org.scalatest.{FreeSpec, Matchers}
 
 class OppijaQuerySpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with QueryTestMethods with Matchers {
-  import DateOrdering._
+  import fi.oph.koski.util.DateOrdering._
   val teija = MockOppijat.teija.henkilö
   val eero = MockOppijat.eero.henkilö
 

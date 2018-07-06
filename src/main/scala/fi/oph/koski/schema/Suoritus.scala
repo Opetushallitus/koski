@@ -2,8 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
-import fi.oph.koski.localization.LocalizedString
-import fi.oph.koski.localization.LocalizedString.unlocalized
+import fi.oph.koski.schema.LocalizedString.unlocalized
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation._
 import mojave.{Traversal, traversal}

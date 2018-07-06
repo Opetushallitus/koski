@@ -12,6 +12,7 @@ import {Yhteystiedot} from './Yhteystiedot'
 import OrganisaatioPicker from '../../virkailija/OrganisaatioPicker'
 import {MuuOppilaitosOptions, OppilaitosOption, OtherOppilaitosValue} from './RadioOption'
 import {trackEvent} from '../../tracking/piwikTracking'
+import Checkbox from '../../components/Checkbox'
 
 const resolveResponsibleOrganization = opiskeluoikeus =>
   modelData(opiskeluoikeus, 'tyyppi.koodiarvo') === 'ylioppilastutkinto'
@@ -83,17 +84,11 @@ export const RaportoiVirheestäForm = ({henkilö, opiskeluoikeudet}) => {
     <div className='raportoi-virheestä-form textstyle-body'>
       <div className='puuttuvat-tiedot form-section' data-indent={0}>
         <PuuttuvatTiedot/>
-
-        <div className='puuttuvat-tiedot__checkbox'>
-          <input
-            type='checkbox'
-            id='puuttuvat-tiedot-checkbox'
-            onChange={event => hasAcceptedDisclaimer.set(event.target.checked)}
-          />
-          <label htmlFor='puuttuvat-tiedot-checkbox'>
-            <Text name='Asiani koskee tietoa, joka näkyy, tai kuuluisi yllämainitun perusteella näkyä Koski-palvelussa.'/>
-          </label>
-        </div>
+        <Checkbox
+          id='puuttuvat-tiedot-checkbox'
+          label='Asiani koskee tietoa, joka näkyy, tai kuuluisi yllämainitun perusteella näkyä Koski-palvelussa.'
+          onChange={event => hasAcceptedDisclaimer.set(event.target.checked)}
+        />
       </div>
 
       {ift(hasAcceptedDisclaimer, (

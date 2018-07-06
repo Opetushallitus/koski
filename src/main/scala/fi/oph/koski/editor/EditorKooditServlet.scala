@@ -45,14 +45,16 @@ class EditorKooditServlet(implicit val application: KoskiApplication) extends Ap
 
     (params("koodistoUri"), params("koodiarvo")) match {
       case ("perusopetuksenluokkaaste", luokkaAstePattern(luokkaAste)) =>
-        toListModel(PakollisetOppiaineet(application.koodistoViitePalvelu).pakollistenOppiaineidenTaiToimintaAlueidenSuoritukset(luokkaAste.toInt, toimintaAlueittain))
+        toListModel(NuortenPerusopetusPakollisetOppiaineet(application.koodistoViitePalvelu).pakollistenOppiaineidenTaiToimintaAlueidenSuoritukset(luokkaAste.toInt, toimintaAlueittain))
       case ("koulutus", "201101") =>
-        toListModel(PakollisetOppiaineet(application.koodistoViitePalvelu).päättötodistuksenSuoritukset(params("tyyppi"), toimintaAlueittain))
+        toListModel(NuortenPerusopetusPakollisetOppiaineet(application.koodistoViitePalvelu).päättötodistuksenSuoritukset(params("tyyppi"), toimintaAlueittain))
       case _ =>
         logger.error(s"Prefill failed for unexpected code ${params("koodistoUri")}/${params("koodiarvo")}")
         haltWithStatus(KoskiErrorCategory.notFound())
     }
   }
+
+
 
   get[List[EnumValue]]("/:oppiaineKoodistoUri/:oppiaineKoodiarvo/kurssit/:kurssiKoodistot") {
     val kurssiKoodistot: List[KoodistoViite] = koodistotByString(params("kurssiKoodistot"))

@@ -2,7 +2,7 @@ package fi.oph.koski.koodisto
 
 import java.time.LocalDate
 
-import fi.oph.koski.localization.LocalizedString
+import fi.oph.koski.schema.LocalizedString
 import fi.oph.scalaschema.annotation.DefaultValue
 
 case class KoodistoKoodi(koodiUri: String, koodiArvo: String, metadata: List[KoodistoKoodiMetadata], versio: Int, version: Option[Long] = None, voimassaAlkuPvm: Option[LocalDate] = None, tila: Option[String] = None, withinCodeElements: Option[List[CodeRelationship]] = None) {

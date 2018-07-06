@@ -1,7 +1,6 @@
 package fi.oph.koski.integrationtest
 
 import fi.oph.koski.api.{OpiskeluoikeusTestMethodsAmmatillinen, SearchTestMethods}
-import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema.{OidHenkilö, TäydellisetHenkilötiedot, YlioppilastutkinnonOpiskeluoikeus}
 import org.scalatest.{FreeSpec, Matchers}
 

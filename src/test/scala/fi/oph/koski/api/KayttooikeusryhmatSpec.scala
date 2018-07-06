@@ -13,7 +13,7 @@ import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.scalatest.{FreeSpec, Matchers}
 
 class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods with QueryTestMethods {
-  import KoskiSchema.deserializationContext
+  import fi.oph.koski.schema.KoskiSchema.deserializationContext
   "koski-oph-pääkäyttäjä" - {
     val user = MockUsers.paakayttaja
     "voi muokata kaikkia opiskeluoikeuksia" in {

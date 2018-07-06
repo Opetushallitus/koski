@@ -29,10 +29,10 @@ class FixtureCreator(application: KoskiApplication) extends Logging with Timing 
     if (useFixtures && !Environment.isLocalDevelopmentEnvironment) {
       throw new RuntimeException("Trying to use fixtures when running in a server environment")
     }
-    if (useFixtures && application.env.databaseIsLarge) {
+    if (useFixtures && application.masterDatabase.databaseIsLarge) {
       throw new RuntimeException("Trying to use fixtures against a database with more than 100 rows")
     }
-    if (useFixtures && application.env.indexIsLarge) {
+    if (useFixtures && application.koskiElasticSearchIndex.indexIsLarge) {
       throw new RuntimeException("Trying to use fixtures against an ElasticSearch index with more than 100 rows")
     }
     useFixtures

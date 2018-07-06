@@ -1,6 +1,6 @@
 package fi.oph.koski.servlet
 
-import java.io.{EOFException, PrintWriter}
+import java.io.EOFException
 
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer

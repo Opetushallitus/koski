@@ -2,10 +2,10 @@ package fi.oph.koski.oppija
 
 import javax.servlet.http.HttpServletRequest
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.{GlobalExecutionContext, OpiskeluoikeusRow}
+import fi.oph.koski.db.GlobalExecutionContext
 import fi.oph.koski.henkilo.HenkilöOid
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.json.{JsonSerializer, SensitiveDataFilter}
+import fi.oph.koski.json.SensitiveDataFilter
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueries
@@ -18,8 +18,6 @@ import fi.oph.koski.virta.VirtaHakuehtoHetu
 import org.json4s.JsonAST.{JObject, JString}
 import org.json4s.{JArray, JValue}
 import org.scalatra.ContentEncodingSupport
-
-import scala.collection.immutable
 
 class OppijaServlet(implicit val application: KoskiApplication) extends ApiServlet with Logging with GlobalExecutionContext with OpiskeluoikeusQueries with ContentEncodingSupport with NoCache with Timing with Pagination {
 

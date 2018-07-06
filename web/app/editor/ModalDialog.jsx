@@ -20,7 +20,7 @@ export default ({className, onDismiss, onSubmit, children, submitOnEnterKey, okT
       { children }
       <div className='actions'>
         <a className='peruuta' onClick={() => onDismiss()}><Text name={cancelTextKey}/></a>
-        <button disabled={validP.not().or(submittedAtom)} onClick={(e) => {e.preventDefault(); submittedAtom.set(true); onSubmit()}}><Text name={okTextKey}/></button>
+        <button className='koski-button' disabled={validP.not().or(submittedAtom)} onClick={(e) => {e.preventDefault(); submittedAtom.set(true); onSubmit()}}><Text name={okTextKey}/></button>
       </div>
     </div>
     { doActionWhileMounted(keyE, handleKeys) }
