@@ -9,6 +9,8 @@ export default class HyvaksyntaAnnettu extends React.Component {
       logoutURL: this.props.logoutURL,
       timeout: this.props.timeout || 3000
     }
+
+    this.moveToCallbackURL = this.moveToCallbackURL.bind(this)
   }
 
   componentDidMount() {

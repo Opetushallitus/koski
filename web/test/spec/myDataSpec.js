@@ -29,16 +29,31 @@ describe('MyData', () => {
       expect(mydata.getMemberName()).equal('HSL Helsingin Seudun Liikenne')
     })
     describe('Ja sallitaan kumppanin hakea käyttäjästä tietoja', () => {
-      before(seq(
-          mydata.clickAccept,
-          wait.until(mydata.accepted.isVisible)
-      ))
+      before(
+        mydata.clickAccept,
+        wait.until(mydata.accepted.isVisible),
+    )
+
       it('Näytetään nappi josta voidaan palata palveluntarjoajan sivulle', () => {
         expect(mydata.accepted.isReturnButtonVisible()).to.equal(true)
         expect(extractAsText(S('.acceptance-return-button'))).equal('Palaa palveluntarjoajan sivulle')
       })
+
+      describe('Kun klikataan hyväksy-nappia', () => {
+        before(
+          wait.until(mydata.accepted.isReturnButtonVisible),
+          mydata.accepted.clickReturn,
+          wait.forMilliseconds(1000),
+        )
+
+        it('Päädytään oikealle sivulle', () => {
+          expect(document.getElementById('testframe').contentWindow.document.URL).to.equal('http://localhost:7021/koski/pulssi')
+        })
+
+      })
     })
   })
+
 
   describe('Ruotsinkielisenä voidaan kirjautua sisään', () => {
     before(...login('sv'))

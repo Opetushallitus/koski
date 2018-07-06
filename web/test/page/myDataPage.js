@@ -1,7 +1,9 @@
 const MyDataPage = () => {
   const api = {
     openPage: () => {
-      return openPage('/koski/omadata/hsl?callback=example.org', () => true )()
+      const currentURL = new URL(window.location.href)
+      const callbackURL = `${currentURL.protocol}//${currentURL.hostname}:${currentURL.port}/koski/pulssi`
+      return openPage(`/koski/omadata/hsl?callback=${callbackURL.toString()}`, () => true )()
     },
     go: () => {
       return openPage('/koski/omadata/hsl')()
@@ -31,12 +33,10 @@ const MyDataPage = () => {
       return click('.acceptance-button-container > .acceptance-button')()
     },
     accepted: {
-      isVisible: () => {
-        return isElementVisible(S('.acceptance-title-success'))
-      },
-      isReturnButtonVisible: () => {
-        return isElementVisible(S('.acceptance-return-button'))
-      }
+      isVisible: () => isElementVisible(S('.acceptance-title-success')),
+      isReturnButtonVisible: () => isElementVisible(S('.acceptance-return-button')),
+      clickReturn: () => click('.acceptance-return-button')()
+
     }
   }
   return api
