@@ -26,7 +26,7 @@
     }
 
     &.large {
-      font-size: 16px;
+      font-size: 1.142rem;
       width: 220px;
       height: 50px;
     }
@@ -74,8 +74,12 @@ a {
 }
 
 .BaseButton {
-  font-size: 14px;
+  font-size: 1rem;
   font-weight: 700;
+
+  @media @media-phone {
+    font-size: 1.166rem
+  }
 }
 
 .DisabledTextButton {
@@ -124,5 +128,5 @@ th, td {
 
 .plus {
   .FontAwesomeSymbol;
-  font-size: 16px;
+  font-size: 1.142rem;
 }

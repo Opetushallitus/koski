@@ -12,19 +12,21 @@
 }
 
 // Base font size
+// To take browser font size in account (accessibility), this was changed to em instead of px.
+// Default browser font size is usually 16px, so 0.875em should be 14px, and 0.75 should be 12px.
 
 html {
-  font-size: 14px;
+  font-size: 0.875em;
 
   @media @media-phone {
-    font-size: 12px;
+    font-size: 0.75em;
   }
 }
 
-// Use larger font size for virkailija
+// Use larger font size for virkailija (16px)
 
 body.main-page {
-  font-size: 16px;
+  font-size: 1.142rem;
 }
 
 // Semantic styles
@@ -39,10 +41,10 @@ h1 {
 }
 
 .suoritusjako h1 {
-  font-size: 24px;
+  font-size: 1.714rem;
   font-weight: bold;
   @media @media-phone {
-    font-size: 16px;
+    font-size: 1.142rem;
   }
 }
 
