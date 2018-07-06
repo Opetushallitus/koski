@@ -63,6 +63,7 @@ SuoritusEditor.validateModel = (m) => {
 class TodistusLink extends React.Component {
   render() {
     let {suoritus} = this.props
+    const {kansalainen} = suoritus.context
     let oppijaOid = suoritus.context.oppijaOid
     let suoritustyyppi = modelData(suoritus, 'tyyppi').koodiarvo
     let koulutusmoduuliKoodistoUri = modelData(suoritus, 'koulutusmoduuli').tunniste.koodistoUri
@@ -73,6 +74,7 @@ class TodistusLink extends React.Component {
            && suoritustyyppi !== 'preiboppimaara'
            && suoritustyyppi !== 'esiopetuksensuoritus'
            && !(koulutusmoduuliKoodistoUri === 'perusopetuksenluokkaaste' && koulutusmoduuliKoodiarvo === '9')
+           && !kansalainen
         ? <a className="todistus" href={href}><Text name="näytä todistus"/></a>
         : null
   }
