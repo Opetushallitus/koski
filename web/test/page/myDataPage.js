@@ -37,9 +37,6 @@ const MyDataPage = () => {
       isReturnButtonVisible: () => {
         return isElementVisible(S('.acceptance-return-button'))
       }
-    },
-    getAcceptButton: () => {
-      return S('.acceptance-button-container > .acceptance-button')
     }
   }
   return api
