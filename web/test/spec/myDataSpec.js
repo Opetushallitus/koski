@@ -56,11 +56,21 @@ describe('MyData', () => {
 
   describe('Kun klikataan logout-nappia', () => {
     before(...login('fi'))
-    before(() => click('.user .logout > a > span')())
+    before(mydata.clickLogout)
     before(wait.until(() => isElementVisible(S('.statistics-wrapper'))))
 
     it('Päädytään oikealle sivulle', () => {
-      expect(document.getElementById('testframe').contentWindow.document.URL).to.equal('http://localhost:7021/koski/pulssi')
+      expect(document.getElementById('testframe').contentWindow.document.URL).to.equal(mydata.callbackURL)
+    })
+  })
+
+  describe('Kun klikataan peruuta-nappia', () => {
+    before(...login('fi'))
+    before(mydata.clickCancel)
+    before(wait.until(() => isElementVisible(S('.statistics-wrapper'))))
+
+    it('Päädytään oikealle sivulle', () => {
+      expect(document.getElementById('testframe').contentWindow.document.URL).to.equal(mydata.callbackURL)
     })
   })
 

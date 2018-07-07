@@ -1,6 +1,5 @@
 import React from 'baret'
 import Text from '../i18n/Text'
-import Link from '../components/Link'
 import '../style/main.less'
 
 export default ({ memberName, onAcceptClick, logoutURL }) => (
@@ -16,7 +15,7 @@ export default ({ memberName, onAcceptClick, logoutURL }) => (
     </div>
     <div className='acceptance-button-container'>
       <button className='acceptance-button button' onClick={onAcceptClick}><Text name='Hyväksy'/></button>
-      <Link href={logoutURL}><span className='decline-link'><Text name='Peruuta ja palaa'/></span></Link>
+      <a href={logoutURL}><span className='decline-link'><Text name='Peruuta ja palaa'/></span></a>
     </div>
   </div>
 )

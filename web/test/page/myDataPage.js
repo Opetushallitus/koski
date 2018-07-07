@@ -1,10 +1,14 @@
 const MyDataPage = () => {
+
+  const currentURL = new URL(window.location.href)
+  const callbackURL = `${currentURL.protocol}//${currentURL.hostname}:${currentURL.port}/koski/pulssi`
+
   const api = {
     openPage: () => {
-      const currentURL = new URL(window.location.href)
-      const callbackURL = `${currentURL.protocol}//${currentURL.hostname}:${currentURL.port}/koski/pulssi`
-      return openPage(`/koski/omadata/hsl?callback=${callbackURL.toString()}`, () => true )()
+      return openPage(`/koski/omadata/hsl?callback=${callbackURL}`, () => true )()
     },
+    currentURL,
+    callbackURL,
     go: () => {
       return openPage('/koski/omadata/hsl')()
     },
@@ -33,6 +37,7 @@ const MyDataPage = () => {
       return click('.acceptance-button-container > .acceptance-button')()
     },
     clickLogout: () => click('.logout > a')(),
+    clickCancel: () => click('a > .decline-link')(),
     accepted: {
       isVisible: () => isElementVisible(S('.acceptance-title-success')),
       isReturnButtonVisible: () => isElementVisible(S('.acceptance-return-button')),
