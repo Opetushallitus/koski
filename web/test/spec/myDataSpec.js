@@ -43,7 +43,7 @@ describe('MyData', () => {
         before(
           wait.until(mydata.accepted.isReturnButtonVisible),
           mydata.accepted.clickReturn,
-          wait.forMilliseconds(1000),
+          wait.forMilliseconds(1000), // will redirect automatically, but we don't test that now
         )
 
         it('Päädytään oikealle sivulle', () => {
@@ -51,6 +51,16 @@ describe('MyData', () => {
         })
 
       })
+    })
+  })
+
+  describe('Kun klikataan logout-nappia', () => {
+    before(...login('fi'))
+    before(() => click('.user .logout > a > span')())
+    before(wait.until(() => isElementVisible(S('.statistics-wrapper'))))
+
+    it('Päädytään oikealle sivulle', () => {
+      expect(document.getElementById('testframe').contentWindow.document.URL).to.equal('http://localhost:7021/koski/pulssi')
     })
   })
 

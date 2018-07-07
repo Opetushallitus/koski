@@ -32,6 +32,7 @@ const MyDataPage = () => {
     clickAccept: () => {
       return click('.acceptance-button-container > .acceptance-button')()
     },
+    clickLogout: () => click('.logout > a')(),
     accepted: {
       isVisible: () => isElementVisible(S('.acceptance-title-success')),
       isReturnButtonVisible: () => isElementVisible(S('.acceptance-return-button')),
