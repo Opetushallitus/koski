@@ -1,4 +1,5 @@
 import React from 'react'
+import {t} from '../i18n/i18n'
 
 export const Popup = ({showStateAtom, dismissedStateValue = false, inline, children}) => {
   const dismiss = () => showStateAtom.set(dismissedStateValue)
@@ -6,7 +7,7 @@ export const Popup = ({showStateAtom, dismissedStateValue = false, inline, child
   return (
     <div className={`popup${inline ? ' popup--inline' : ''}`}>
       <div className='popup__content'>
-        <a className='popup__close-button' onClick={dismiss}/>
+        <button className='popup__close-button' onClick={dismiss} aria-label={t('Sulje')}/>
         {children}
       </div>
     </div>
