@@ -21,7 +21,7 @@ export default ({className, onDismiss, onSubmit, children, submitOnEnterKey, okT
       { children }
       <div className='actions'>
         <button className='peruuta text-button-small' onClick={() => onDismiss()}><Text name={cancelTextKey}/></button>
-        <button className='koski-button' disabled={validP.not().or(submittedAtom)} onClick={(e) => {e.preventDefault(); submittedAtom.set(true); onSubmit()}}><Text name={okTextKey}/></button>
+        <button className='vahvista koski-button' disabled={validP.not().or(submittedAtom)} onClick={(e) => {e.preventDefault(); submittedAtom.set(true); onSubmit()}}><Text name={okTextKey}/></button>
       </div>
     </div>
     { doActionWhileMounted(keyE, handleKeys) }

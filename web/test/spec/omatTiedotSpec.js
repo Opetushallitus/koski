@@ -118,9 +118,7 @@ describe('Omat tiedot', function() {
             it('ei vielä näytetä yhteystietoja', function () {
               expect(form.oppilaitosOptionsText()).to.equal(
                 'Voit tiedustella asiaa oppilaitokseltasi.\n' +
-                'Kulosaaren ala-aste\n' +
-                'Jyväskylän normaalikoulu\n' +
-                'Muu'
+                'Kulosaaren ala-aste Jyväskylän normaalikoulu Muu'
               )
             })
 
@@ -172,9 +170,7 @@ describe('Omat tiedot', function() {
               it('näytetään ainoastaan virheviesti', function () {
                 expect(form.oppilaitosOptionsText()).to.equal(
                   'Voit tiedustella asiaa oppilaitokseltasi.\n' +
-                  'Kulosaaren ala-aste\n' +
-                  'Jyväskylän normaalikoulu\n' +
-                  'Muu\n' +
+                  'Kulosaaren ala-aste Jyväskylän normaalikoulu Muu\n' +
                   'Oppilaitokselle ei löytynyt yhteystietoja.'
                 )
               })
