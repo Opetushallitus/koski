@@ -24,6 +24,7 @@
     "react": "^16.3.2",
     "react-day-picker": "^7.1.8",
     "react-dom": "^16.3.2",
+    "react-focus-lock": "^1.11.1",
     "react-highlight": "^0.12.0",
     "react-highlighter": "github:Dentosal/react-highlighter#fa9392a55bacb418ef1b5327dba922f3829941ca",
     "whatwg-fetch": "^2.0.4"
