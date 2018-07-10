@@ -5,7 +5,7 @@ import {FormState} from './Header'
 
 export const HeaderVirheraportointiSection = ({uiModeA, henkilö, opiskeluoikeudet}) => (
   <section className='virheraportointi' data-show={uiModeA.map(mode => mode === FormState.VIRHERAPORTOINTI)}>
-    <Popup showStateAtom={uiModeA} dismissedStateValue={FormState.NONE} inline={true}>
+    <Popup showStateAtom={uiModeA} dismissedStateValue={FormState.NONE} inline={true} closeTitle='Onko suorituksissasi virhe?'>
       <RaportoiVirheestäForm
         henkilö={henkilö}
         opiskeluoikeudet={opiskeluoikeudet}
