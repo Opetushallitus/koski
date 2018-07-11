@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'baret'
 import Text from '../i18n/Text'
 
 const toggleState = stateA => () => stateA.modify(v => !v)
@@ -11,11 +11,11 @@ export const ToggleButton = ({toggleA, text, style}) => style === 'text'
 
 export const MultistateToggleButton = ({stateA, value, clearedStateValue = null, text, style}) => style === 'text'
   ? (
-    <button className='toggle-button text-button' onClick={setOrClearState(stateA, value, clearedStateValue)}>
+    <button className='toggle-button text-button' aria-pressed={stateA.map(mode => mode === value)} onClick={setOrClearState(stateA, value, clearedStateValue)}>
       <Text name={text}/>
     </button>
   ) : (
-    <button className='koski-button toggle-button' onClick={setOrClearState(stateA, value, clearedStateValue)}>
+    <button className='koski-button toggle-button' aria-pressed={stateA.map(mode => mode === value)} onClick={setOrClearState(stateA, value, clearedStateValue)}>
       <Text name={text}/>
     </button>
   )

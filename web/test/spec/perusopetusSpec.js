@@ -1767,7 +1767,7 @@ describe('Perusopetus', function() {
             before(
               opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
               addOppija.selectOppilaitos('Jyväskylän normaalikoulu'),
-              addOppija.submit,
+              addOppija.submitModal,
               wait.until(page.isErrorShown)
             )
             it('Lisääminen ei onnistu', function() {
@@ -1781,7 +1781,7 @@ describe('Perusopetus', function() {
               editor.edit, opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().aseta('eronnut'), opiskeluoikeus.tallenna, editor.saveChanges,
               opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
               addOppija.selectOppilaitos('Jyväskylän normaalikoulu'),
-              addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Päättötodistus'),
+              addOppija.submitAndExpectSuccessModal('Tyhjä, Tero (230872-7258)', 'Päättötodistus'),
               wait.until(function() { return opinnot.opiskeluoikeudet.opiskeluoikeuksienMäärä() == 2 })
             )
             it('Lisääminen onnistuu', function() {
@@ -1797,7 +1797,7 @@ describe('Perusopetus', function() {
               addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
               addOppija.selectTutkinto('Autoalan perustutkinto'),
               addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
-              addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Autoalan perustutkinto')
+              addOppija.submitAndExpectSuccessModal('Tyhjä, Tero (230872-7258)', 'Autoalan perustutkinto')
             )
             it('Onnistuu ja uusi ammatillinen opiskeluoikeus tulee valituksi', function( ){
             })
@@ -1809,7 +1809,7 @@ describe('Perusopetus', function() {
                 addOppija.selectOpiskeluoikeudenTyyppi('Aikuisten perusopetus'),
                 addOppija.selectOppimäärä('Perusopetuksen oppiaineen oppimäärä'),
                 addOppija.selectOppiaine('Fysiikka'),
-                addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Fysiikka')
+                addOppija.submitAndExpectSuccessModal('Tyhjä, Tero (230872-7258)', 'Fysiikka')
               )
               it('toimii', function( ){
 

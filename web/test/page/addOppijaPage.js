@@ -1,6 +1,7 @@
 function AddOppijaPage() {
   function form() { return S('form.uusi-oppija') }
   function button() { return form().find('button') }
+  function modalButton() { return form().find('button.vahvista') }
   function selectedOppilaitos() { return form().find('.oppilaitos .selected') }
   function selectedTutkinto() { return form().find('.tutkinto .selected') }
   var pageApi = Page(form)
@@ -17,6 +18,9 @@ function AddOppijaPage() {
     },
     isEnabled: function() {
       return button().is(":visible") && !button().is(':disabled')
+    },
+    isModalButtonEnabled: function () {
+      return modalButton().is(":visible") && !modalButton().is(':disabled')
     },
     tutkintoIsEnabled: function() {
       return S('.tutkinto input').is(':visible') && !S('.tutkinto input').is(':disabled')
@@ -132,16 +136,33 @@ function AddOppijaPage() {
       return extractAsText(S('.hetu .value'))
     },
     submit: function() {
-      if (!api.isEnabled) {
+      if (!api.isEnabled()) {
         throw new Error('Button not enabled')
       }
       return click(button)()
+    },
+    submitModal: function() {
+      if (!api.isModalButtonEnabled()) {
+        throw new Error('Button not enabled')
+      }
+      return click(modalButton)()
     },
     submitAndExpectSuccess: function(oppija, tutkinto) {
       tutkinto = tutkinto || "Autoalan perustutkinto"
       return function() {
         return wait.until(api.isEnabled)()
           .then(api.submit)
+          .then(wait.until(function() {
+            return KoskiPage().getSelectedOppija().indexOf(oppija) >= 0 &&
+              OpinnotPage().suoritusOnValittu(0, tutkinto)
+          }))
+      }
+    },
+    submitAndExpectSuccessModal: function(oppija, tutkinto) {
+      tutkinto = tutkinto || "Autoalan perustutkinto"
+      return function() {
+        return wait.until(api.isModalButtonEnabled)()
+          .then(api.submitModal)
           .then(wait.until(function() {
             return KoskiPage().getSelectedOppija().indexOf(oppija) >= 0 &&
               OpinnotPage().suoritusOnValittu(0, tutkinto)

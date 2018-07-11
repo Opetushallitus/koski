@@ -259,7 +259,7 @@ function Oppiaine(oppiaineElem) {
       asetaKuvaus: function(arvo) {
         return kuvaus().setValue(arvo || 'Paikallisen kurssin kuvaus')
       },
-      lisääKurssi: click(subElement(modalElem, 'button')),
+      lisääKurssi: click(subElement(modalElem, 'button.vahvista')),
       kurssit: function() {
         return kurssiDropdown().getOptions()
       },
@@ -394,13 +394,13 @@ function TutkinnonOsat(groupId) {
               Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .suorituspaikka .value input:not(.select)').setValue(tiedot.suorituspaikka[1])
               Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .työssäoppimisenYhteydessä .value input').setValue(tiedot.työssäoppimisenYhteydessä)
 
-              if (findSingle('.näyttö .modal-content button', tutkinnonOsaElement)().prop('disabled')) {
+              if (findSingle('.näyttö .modal-content button.vahvista', tutkinnonOsaElement)().prop('disabled')) {
                 throw new Error('Invalid model')
               }
             })
           }
         },
-        painaOkNäyttöModal: click(findSingle('.näyttö .modal-content button', tutkinnonOsaElement)),
+        painaOkNäyttöModal: click(findSingle('.näyttö .modal-content button.vahvista', tutkinnonOsaElement)),
         poistaNäyttö: click(findSingle('.näyttö .remove-value', tutkinnonOsaElement))
       }, {}, Editor(tutkinnonOsaElement))
       return api
@@ -416,7 +416,7 @@ function TutkinnonOsat(groupId) {
         var modalElement = subElement(uusiTutkinnonOsaElement, '.lisaa-paikallinen-tutkinnon-osa-modal')
         return click(subElement(uusiTutkinnonOsaElement, ('.paikallinen-tutkinnon-osa a')))()
           .then(Page(modalElement).setInputValue('input', nimi))
-          .then(click(subElement(modalElement, 'button:not(:disabled)')))
+          .then(click(subElement(modalElement, 'button.vahvista:not(:disabled)')))
       }
     },
     lisääTutkinnonOsaToisestaTutkinnosta: function(tutkinto, nimi) {
@@ -425,7 +425,7 @@ function TutkinnonOsat(groupId) {
         return click(subElement(uusiTutkinnonOsaElement, ('.osa-toisesta-tutkinnosta a')))()
           .then(Page(modalElement).setInputValue('.tutkinto .autocomplete', tutkinto))
           .then(Page(modalElement).setInputValue('.tutkinnon-osat .dropdown', nimi))
-          .then(click(subElement(modalElement, 'button:not(:disabled)')))
+          .then(click(subElement(modalElement, 'button.vahvista:not(:disabled)')))
       }
     },
     isLisääTutkinnonOsaToisestaTutkinnostaVisible: function() {
@@ -587,7 +587,7 @@ function TilaJaVahvistus() {
 
 function MerkitseValmiiksiDialog() {
   var elem = findSingle('.merkitse-valmiiksi-modal')
-  var buttonElem = findSingle('button', elem)
+  var buttonElem = findSingle('button.vahvista', elem)
   var api = {
     merkitseValmiiksi: function( ) {
       if (buttonElem().is(':disabled')) throw new Error('disabled button')
@@ -613,7 +613,7 @@ function MerkitseValmiiksiDialog() {
 
 function LisääSuoritusDialog() {
   var elem = findSingle('.lisaa-suoritus-modal')
-  var buttonElem = findSingle('button', elem)
+  var buttonElem = findSingle('button.vahvista', elem)
   function link(text) { return findSingle(".add-suoritus a:contains(" + (text || '') + ")") }
   var api = _.merge({
     isLinkVisible: function(text) {
@@ -688,7 +688,7 @@ function Päivämääräväli(elem) {
 
 function OpiskeluoikeusDialog() {
   var elem = findSingle('.lisaa-opiskeluoikeusjakso-modal')
-  var button = findSingle('button', elem)
+  var button = findSingle('button.vahvista', elem)
   return {
     tila: function() {
       var p = Property(function() {return findSingle('.lisaa-opiskeluoikeusjakso-modal')})
