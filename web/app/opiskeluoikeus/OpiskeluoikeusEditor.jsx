@@ -14,13 +14,13 @@ import {suorituksenTyyppi, suoritusTitle} from '../suoritus/Suoritus'
 import Text from '../i18n/Text'
 import {assignTabNames, suoritusTabIndex, SuoritusTabs, urlForTab} from '../suoritus/SuoritusTabs'
 import {Korkeakoulusuoritukset} from '../virta/Korkeakoulusuoritukset'
+import {OpiskeluoikeudenTila} from '../omattiedot/fragments/OpiskeluoikeudenTila'
+
+export const excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot', 'synteettinen']
 
 export const OpiskeluoikeusEditor = ({model}) => {
-  let oid = modelData(model, 'oid')
-  model = addContext(model, {opiskeluoikeus: model})
-  return (<TogglableEditor model={model} renderChild={ (mdl, editLink) => {
-    let context = mdl.context
-    let excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot', 'synteettinen']
+  return (<TogglableEditor model={addContext(model, {opiskeluoikeus: model})} renderChild={ (mdl, editLink) => {
+    const context = mdl.context
 
     const alkuChangeBus = Bacon.Bus()
     alkuChangeBus.onValue(v => {
@@ -28,7 +28,7 @@ export const OpiskeluoikeusEditor = ({model}) => {
       pushModel(modelSetValues(model, {'alkamispäivä' : value, 'tila.opiskeluoikeusjaksot.0.alku': value}))
     })
 
-    let hasOppilaitos = !!modelData(mdl, 'oppilaitos')
+    const hasOppilaitos = !!modelData(mdl, 'oppilaitos')
     const hasAlkamispäivä = !!modelData(mdl, 'alkamispäivä')
     const isSyntheticOpiskeluoikeus = !!modelData(model, 'synteettinen')
 
@@ -38,23 +38,16 @@ export const OpiskeluoikeusEditor = ({model}) => {
           <span className="otsikkotiedot">
             { hasOppilaitos && <span className="oppilaitos">{modelTitle(mdl, 'oppilaitos')}</span> }
             { hasOppilaitos && <span>{', '}</span> }
-            <span className="koulutus" style={hasOppilaitos ? { textTransform: 'lowercase' } : undefined}>{(näytettävätPäätasonSuoritukset(model)[0] || {}).title}</span>
-            {hasAlkamispäivä && (
-              <span>{' ('}
-                <span className="alku pvm">{yearFromIsoDateString(modelTitle(mdl, 'alkamispäivä'))}</span>{'—'}
-                <span className="loppu pvm">{yearFromIsoDateString(modelTitle(mdl, 'päättymispäivä'))}{', '}</span>
-                <span className="tila">{modelTitle(mdl, 'tila.opiskeluoikeusjaksot.-1.tila').toLowerCase()}{')'}</span>
-              </span>
-            )}
+            <span className="koulutus" style={hasOppilaitos ? { textTransform: 'lowercase' } : undefined}>{(näytettävätPäätasonSuoritukset(mdl)[0] || {}).title}</span>
+            {hasAlkamispäivä && <OpiskeluoikeudenTila opiskeluoikeus={mdl}/>}
           </span>
-          {!model.context.kansalainen && <Versiohistoria opiskeluoikeusOid={oid} oppijaOid={context.oppijaOid}/>}
-          {!model.context.kansalainen && <OpiskeluoikeudenId opiskeluoikeus={mdl}/>}
+          <Versiohistoria opiskeluoikeusOid={modelData(mdl, 'oid')} oppijaOid={context.oppijaOid}/>
+          <OpiskeluoikeudenId opiskeluoikeus={mdl}/>
         </h3>
         <div className={mdl.context.edit ? 'opiskeluoikeus-content editing' : 'opiskeluoikeus-content'}>
           {!isSyntheticOpiskeluoikeus &&
             <OpiskeluoikeudenTiedot
               opiskeluoikeus={mdl}
-              excludedProperties={excludedProperties}
               editLink={editLink}
               alkuChangeBus={alkuChangeBus}
             />
@@ -66,7 +59,7 @@ export const OpiskeluoikeusEditor = ({model}) => {
   } />)
 }
 
-const OpiskeluoikeudenTiedot = ({opiskeluoikeus, excludedProperties, editLink, alkuChangeBus}) => (
+const OpiskeluoikeudenTiedot = ({opiskeluoikeus, editLink, alkuChangeBus}) => (
   <div className="opiskeluoikeuden-tiedot">
     {editLink}
     <OpiskeluoikeudenOpintosuoritusoteLink opiskeluoikeus={opiskeluoikeus}/>
@@ -107,7 +100,7 @@ const OpiskeluoikeudenId = ({opiskeluoikeus}) => {
   return opiskeluoikeusOid ? <span className="id"><Text name="Opiskeluoikeuden oid"/>{': '}<span className="value" onClick={selectAllText}>{opiskeluoikeusOid}</span></span> : null
 }
 
-const OpiskeluoikeudenVoimassaoloaika = ({opiskeluoikeus}) => {
+export const OpiskeluoikeudenVoimassaoloaika = ({opiskeluoikeus}) => {
   let päättymispäiväProperty = (modelData(opiskeluoikeus, 'arvioituPäättymispäivä') && !modelData(opiskeluoikeus, 'päättymispäivä')) ? 'arvioituPäättymispäivä' : 'päättymispäivä'
   return (<div className="alku-loppu opiskeluoikeuden-voimassaoloaika">
     <Text name="Opiskeluoikeuden voimassaoloaika"/>{': '}
@@ -152,7 +145,7 @@ const TabulatedSuoritukset = ({model}) => {
   )
 }
 
-class OpiskeluoikeudenOpintosuoritusoteLink extends React.Component {
+export class OpiskeluoikeudenOpintosuoritusoteLink extends React.Component {
   render() {
     let {opiskeluoikeus} = this.props
     let oppijaOid = opiskeluoikeus.context.oppijaOid
