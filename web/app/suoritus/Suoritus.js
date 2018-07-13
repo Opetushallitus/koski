@@ -47,6 +47,7 @@ export const suorituksenTyyppi = (suoritus) => modelData(suoritus, 'tyyppi').koo
 
 export const suoritusTitle = (suoritus) => {
   let title = modelTitle(tutkinnonNimi(modelLookup(suoritus, 'koulutusmoduuli')))
+  console.log(title)
   switch(suorituksenTyyppi(suoritus)) {
     case 'ammatillinentutkintoosittainen': return title + t(', osittainen')
     case 'aikuistenperusopetuksenoppimaara': return modelTitle(suoritus, 'tyyppi')
