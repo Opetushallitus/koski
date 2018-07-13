@@ -1,6 +1,9 @@
 function OpinnotPage() {
-  function resolveOpiskeluoikeus(indexOrName) {
-    var all = S('.opiskeluoikeuksientiedot > li > div.opiskeluoikeus')
+  function resolveOpiskeluoikeus(indexOrName, omatTiedot = false) {
+    const all = !omatTiedot
+      ? S('.opiskeluoikeuksientiedot > li > div.opiskeluoikeus')
+      : S('.opiskeluoikeudet-list > li > div.opiskeluoikeus-container')
+
     if (typeof indexOrName === 'undefined') {
       // most common case, just a single opiskeluoikeus
       if (all.length !== 1) {
@@ -9,7 +12,7 @@ function OpinnotPage() {
       return all
     } else if (typeof indexOrName === 'string') {
       // find the right opiskeluoikeus by name (safe against changes in sorting)
-      var matching = all.filter(function(i,v) { return $(v).find(".otsikkotiedot").text().includes(indexOrName) })
+      var matching = all.filter(function(i,v) { return $(v).find(!omatTiedot ? '.otsikkotiedot' : 'button.opiskeluoikeus-button .opiskeluoikeus-button-content .opiskeluoikeus-title').text().includes(indexOrName) })
       if (matching.length !== 1) {
         throw new Error('opiskeluoikeus not found, got ' + matching.length + ' matches for ' + indexOrName)
       }
@@ -56,7 +59,7 @@ function OpinnotPage() {
       return tab.hasClass('selected')
     },
     suoritusTabs: function(indexOrName) {
-      var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
+      var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName, true)
       return textsOf(subElement(opiskeluoikeus, '.suoritus-tabs > ul > li'))
     },
     suoritusTabIndex: function(indexOrName){
@@ -101,7 +104,7 @@ function OpinnotPage() {
     },
     opiskeluoikeudet: Opiskeluoikeudet(),
     opiskeluoikeusEditor: function(index) {
-      var elem = findSingle('.opiskeluoikeus-content', function() { return resolveOpiskeluoikeus(index) })
+      var elem = findSingle('.opiskeluoikeus-content', function() { return resolveOpiskeluoikeus(index, true) })
       return _.merge(
         Editor(elem),
         {
@@ -488,17 +491,17 @@ function IBSuoritukset() {
 function Opiskeluoikeudet() {
   return {
     oppilaitokset: function() {
-      return textsOf(S('.oppilaitokset-nav .oppilaitos-nav .oppilaitos-nav-otsikkotiedot h2'))
+      return textsOf(S('.oppilaitos-list .oppilaitos-container h2.oppilaitos-title'))
     },
     opiskeluoikeustyypit: function() {
       return textsOf(S('.opiskeluoikeustyypit-nav .opiskeluoikeustyyppi'))
     },
     opiskeluoikeuksienMäärä: function() {
-      return S('.opiskeluoikeuksientiedot .opiskeluoikeus').length
+      return S('.oppilaitos-list .oppilaitos-container .opiskeluoikeudet-list button.opiskeluoikeus-button').length
     },
 
     opiskeluoikeuksienOtsikot: function() {
-      return textsOf(S('.opiskeluoikeuksientiedot .opiskeluoikeus h3 .otsikkotiedot'))
+      return textsOf(S('.oppilaitos-list .oppilaitos-container .opiskeluoikeudet-list button.opiskeluoikeus-button h3'))
     },
 
     valitseOpiskeluoikeudenTyyppi: function(tyyppi) {
