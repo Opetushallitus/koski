@@ -15,12 +15,15 @@ function SuoritusjakoPage() {
     isVisible: function() {
       return isElementVisible(S('.suoritusjako-page')) && !isLoading()
     },
-    opiskeluoikeudetText: function() {
-      return textsOf(S('.oppilaitokset-nav .oppilaitos-nav .oppilaitos-nav-otsikkotiedot'))
+    oppilaitosTitleText: () => {
+      return textsOf(S('.oppilaitos-list .oppilaitos-container h2.oppilaitos-title'))
+    },
+    opiskeluoikeusTitleText: function() {
+      return textsOf(S('.oppilaitos-list .oppilaitos-container .opiskeluoikeudet-list button'))
     },
     avaaOpiskeluoikeus: function(teksti) {
       return function() {
-        return click(findSingle('.oppilaitokset-nav .oppilaitos-nav .oppilaitos-nav-otsikkotiedot:contains(' + teksti + ')'))()
+        return click(findSingle('.oppilaitos-list .oppilaitos-container .opiskeluoikeudet-list button.opiskeluoikeus-button:contains(' + teksti + ')'))()
       }
     }
   }
