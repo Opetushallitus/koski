@@ -378,7 +378,7 @@ describe('Omat tiedot', function() {
                 'Jyväskylän normaalikoulu'
               ])
               expect(suoritusjako.opiskeluoikeusTitleText()).to.deep.equal([
-                '(2008—, läsnä)'
+                'Perusopetus (2008—, läsnä)'
               ])
             })
 
@@ -396,7 +396,7 @@ describe('Omat tiedot', function() {
               it('näytetään oikeat opiskeluoikeudet', function() {
                 expect(opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienMäärä()).to.equal(1)
                 expect(opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienOtsikot()).to.deep.equal([
-                  '(2008—, läsnä)'
+                  'Perusopetus (2008—, läsnä)'
                 ])
               })
             })
@@ -684,7 +684,7 @@ describe('Omat tiedot', function() {
 
               it('Näytetään jaetut opiskeluoikeudet oppilaitoksittain', function() {
                 expect(suoritusjako.oppilaitosTitleText()).to.deep.equal(['Jyväskylän normaalikoulu'])
-                expect(suoritusjako.opiskeluoikeusTitleText()).to.deep.equal(['(2008—2016, valmistunut)'])
+                expect(suoritusjako.opiskeluoikeusTitleText()).to.deep.equal(['Perusopetus (2008—2016, valmistunut)'])
               })
 
               describe('Kun avataan oppilaitos', function () {
@@ -693,7 +693,7 @@ describe('Omat tiedot', function() {
                 it('näytetään oikeat opiskeluoikeudet', function() {
                   expect(opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienMäärä()).to.equal(1)
                   expect(opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienOtsikot()).to.deep.equal([
-                    '(2008—2016, valmistunut)'
+                    'Perusopetus (2008—2016, valmistunut)'
                   ])
                 })
 

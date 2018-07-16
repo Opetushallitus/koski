@@ -59,7 +59,7 @@ class Opiskeluoikeus extends React.Component {
 
     return (
       <div className='opiskeluoikeus-container'>
-        <button className='opiskeluoikeus-button' aria-pressed={expanded} onClick={this.toggleExpand}>
+        <button className={`opiskeluoikeus-button ${expanded ? 'opiskeluoikeus-button--selected' : ''}`} aria-pressed={expanded} onClick={this.toggleExpand}>
           <div className='opiskeluoikeus-button-content'>
             <div className='opiskeluoikeus-title'>
               <h3>

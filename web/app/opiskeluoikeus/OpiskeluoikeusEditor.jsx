@@ -6,7 +6,6 @@ import {TogglableEditor} from '../editor/TogglableEditor'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {OpiskeluoikeudenTilaEditor} from './OpiskeluoikeudenTilaEditor'
 import Versiohistoria from './Versiohistoria'
-import {yearFromIsoDateString} from '../date/date'
 import {ExpandablePropertiesEditor} from '../editor/ExpandablePropertiesEditor'
 import {Editor} from '../editor/Editor'
 import {navigateTo} from '../util/location'
@@ -162,11 +161,23 @@ export class OpiskeluoikeudenOpintosuoritusoteLink extends React.Component {
   }
 }
 
-let näytettäväPäätasonSuoritus = s => !['perusopetuksenvuosiluokka'].includes(modelData(s).tyyppi.koodiarvo)
+const näytettäväPäätasonSuoritus = s => !['perusopetuksenvuosiluokka'].includes(modelData(s).tyyppi.koodiarvo)
+
+// Näytetään "Perusopetus" myös sellaisille suorituksille, joissa ei ole vielä valmistuttu peruskoulusta.
+// Aiemmin ei näytetty mitään, joka näytti tyhmälle opiskeluoikeuslistassa.
+const suorituksenOtsikko = (päätasonSuoritukset, kaikkiSuoritukset) => {
+  if (päätasonSuoritukset.length > 0) {
+    return suoritusTitle(päätasonSuoritukset[0])
+  } else {
+    const perusopetuksenVuosiluokanSuoritus = s => ['9. vuosiluokka', '8. vuosiluokka', '7. vuosiluokka'].includes(s)
+    const suoritustenOtsikot = kaikkiSuoritukset.map(suoritusTitle)
+    return suoritustenOtsikot.some(perusopetuksenVuosiluokanSuoritus) ? 'Perusopetus' : ''
+  }
+}
 
 export const näytettävätPäätasonSuoritukset = (opiskeluoikeus) => {
-  let päätasonSuoritukset = modelItems(opiskeluoikeus, 'suoritukset').filter(näytettäväPäätasonSuoritus)
-  let makeGroupTitle = (suoritus) => {
+  const kaikkiSuoritukset = modelItems(opiskeluoikeus, 'suoritukset')
+  const makeGroupTitle = (suoritus) => {
     switch (suorituksenTyyppi(suoritus)) {
       case 'perusopetuksenoppiaineenoppimaara':
       case 'nuortenperusopetuksenoppiaineenoppimaara': return 'oppiainetta'
@@ -175,11 +186,13 @@ export const näytettävätPäätasonSuoritukset = (opiskeluoikeus) => {
     }
   }
 
-  let grouped = R.toPairs(R.groupBy(makeGroupTitle, päätasonSuoritukset)).map(([groupTitle, suoritukset]) => {
-    let title = groupTitle && (suoritukset.length > 1)
-      ? <span>{suoritukset.length}{' '}<Text name={groupTitle}/></span>
-      : suoritusTitle(suoritukset[0])
+  const grouped = R.toPairs(R.groupBy(makeGroupTitle, kaikkiSuoritukset)).map(([groupTitle, suoritukset]) => {
+    const päätasonSuoritukset = suoritukset.filter(näytettäväPäätasonSuoritus)
+    const title = groupTitle && (päätasonSuoritukset.length > 1)
+      ? <span>{päätasonSuoritukset.length}{' '}<Text name={groupTitle}/></span>
+      : suorituksenOtsikko(päätasonSuoritukset, kaikkiSuoritukset)
     return { title, suoritukset }
   })
+
   return grouped
 }

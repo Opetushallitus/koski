@@ -83,7 +83,7 @@ class OpiskeluoikeudenLisätiedot extends React.Component {
 
     return (
       <div className='expandable-container lisätiedot'>
-        <button className={`inline-link-button ${expanded ? 'open' : ''}`} onClick={this.toggleExpand}><Text name='Lisätiedot'/></button>
+        <button className={`inline-link-button ${expanded ? 'open' : ''}`} onClick={this.toggleExpand} aria-pressed={expanded}><Text name='Lisätiedot'/></button>
         {expanded && <div className='value'>
           <PropertiesEditor model={modelLookup(model, 'lisätiedot')} propertyFilter={propertyFilter}/>
         </div>}
