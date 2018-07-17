@@ -20,21 +20,28 @@ import {Editor} from '../editor/Editor'
 import {suorituksenTyyppi, suoritusTitle} from '../suoritus/Suoritus'
 
 
-export const OmatTiedotOpiskeluoikeus = ({model}) => {
-  const mdl = addContext(model, {opiskeluoikeus: model})
-  const isSyntheticOpiskeluoikeus = !!modelData(mdl, 'synteettinen')
+export class OmatTiedotOpiskeluoikeus extends React.Component {
+  componentDidMount() {
+    this.opiskeluoikeusContent.focus()
+  }
 
-  return (
-    <div className="opiskeluoikeus">
-      <div className='opiskeluoikeus-content'>
-        {!isSyntheticOpiskeluoikeus &&
-        <OpiskeluoikeudenTiedot
-          opiskeluoikeus={mdl}
-        />}
-        <Suoritukset opiskeluoikeus={mdl}/>
+  render() {
+    const {model} = this.props
+    const mdl = addContext(model, {opiskeluoikeus: model})
+    const isSyntheticOpiskeluoikeus = !!modelData(mdl, 'synteettinen')
+
+    return (
+      <div className="opiskeluoikeus">
+        <div className='opiskeluoikeus-content' ref={elm => this.opiskeluoikeusContent = elm} tabIndex="-1">
+          {!isSyntheticOpiskeluoikeus &&
+          <OpiskeluoikeudenTiedot
+            opiskeluoikeus={mdl}
+          />}
+          <Suoritukset opiskeluoikeus={mdl}/>
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
 }
 
 const OpiskeluoikeudenTiedot = ({opiskeluoikeus}) => {
