@@ -18,11 +18,12 @@ import {Korkeakoulusuoritukset} from '../virta/Korkeakoulusuoritukset'
 import Text from '../i18n/Text'
 import {Editor} from '../editor/Editor'
 import {suorituksenTyyppi, suoritusTitle} from '../suoritus/Suoritus'
+import {focusWithoutScrolling} from '../util/util'
 
 
 export class OmatTiedotOpiskeluoikeus extends React.Component {
   componentDidMount() {
-    this.opiskeluoikeusContent.focus()
+    focusWithoutScrolling(this.opiskeluoikeusContent)
   }
 
   render() {

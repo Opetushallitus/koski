@@ -1,11 +1,12 @@
 import React from 'react'
 import {t} from '../i18n/i18n'
+import {focusWithoutScrolling} from '../util/util'
 
 export class Popup extends React.Component {
   componentDidMount() {
     const {showStateAtom, onFocusValue} = this.props
     // FIXME: setTimeout is really nasty, but without it this fires before the button press is finished, and the button gets the focus back
-    showStateAtom.onValue(e => e === onFocusValue && setTimeout(() => this.popupContainer.focus(), 10))
+    showStateAtom.onValue(e => e === onFocusValue && setTimeout(() => focusWithoutScrolling(this.popupContainer), 10))
   }
 
   render() {
