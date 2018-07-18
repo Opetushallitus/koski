@@ -6,6 +6,7 @@ import DateInput from '../../date/DateInput'
 import {formatISODate, parseISODate} from '../../date/date'
 import Http from '../../util/http'
 import ModalDialog from '../../editor/ModalDialog'
+import {DateInputFeedback} from "../../date/DateInputFeedback"
 
 const ApiBaseUrl = '/koski/api/suoritusjako'
 
@@ -26,9 +27,11 @@ export class SuoritusjakoLink extends React.Component {
     }
 
     this.dateChangeBus = new Bacon.Bus()
+
+    this.initUpdateBus()
   }
 
-  componentDidMount() {
+  initUpdateBus() {
     const debounced = this.dateChangeBus
       .toProperty()
       .changes()
@@ -36,10 +39,10 @@ export class SuoritusjakoLink extends React.Component {
 
     debounced.onValue(() => this.setState({isDateUpdatePending: true}))
 
-    const update = debounced
+    this.updateBus = debounced
       .flatMapLatest(date => date && doUpdate(this.props.suoritusjako.secret, formatISODate(date)))
 
-    update.onValue(() => this.setState({isDateUpdatePending: false}))
+    this.updateBus.onValue(() => this.setState({isDateUpdatePending: false}))
   }
 
   static isDateInFuture(date) {
@@ -112,6 +115,10 @@ export class SuoritusjakoLink extends React.Component {
                     isPending={isDateUpdatePending}
                   />
                 </div>
+                  <DateInputFeedback
+                    dateChangeBus={this.dateChangeBus}
+                    updateBus={this.updateBus}
+                  />
               </label>
             </div>
           </div>

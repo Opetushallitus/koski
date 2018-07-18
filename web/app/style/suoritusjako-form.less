@@ -156,6 +156,46 @@
       & input {
         max-width: 75%;
       }
+
+      .date-input-feedback {
+        height: 2rem;
+
+        .save-confirmation {
+          background: @color-blue;
+          border-radius: 50%;
+          display: inline-block;
+          height: 1.6rem;
+          width: 1.6rem;
+          text-align: center;
+          margin: 0.4rem 0.4rem 0 0;
+
+          &:before {
+            font-family: FontAwesome;
+            content: '\f00c';
+            font-size: 0.7rem;
+            color: @color-white;
+            vertical-align: middle;
+          }
+        }
+
+        .invalid-date-input {
+          background: @color-red;
+          border-radius: 50%;
+          display: inline-block;
+          height: 1.6rem;
+          width: 1.6rem;
+          text-align: center;
+          margin: 0.4rem 0.4rem 0 0;
+
+          &:before {
+            font-family: FontAwesome;
+            content: '\f12a';
+            font-size: 0.7rem;
+            color: @color-white;
+            vertical-align: middle;
+          }
+        }
+      }
     }
 
     &__remove {
