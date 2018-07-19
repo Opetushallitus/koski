@@ -10,6 +10,29 @@
     }
   }
 
+  .link-successful-h2 {
+    margin-top: 0;
+  }
+
+  .link-successful-icon {
+    background: @color-blue;
+    border-radius: 50%;
+    display: inline-block;
+    height: 3.2rem;
+    width: 3.2rem;
+    text-align: center;
+    margin-right: 0.8rem;
+    padding: 0.3rem 0 0 0;
+
+    &:before {
+      font-family: FontAwesome;
+      content: '\f00c';
+      font-size: 1.6rem;
+      color: @color-white;
+      vertical-align: middle;
+    }
+  }
+
   &__create-suoritusjako {
     padding: 0.5rem 1rem;
     border: dashed 1px @color-gray-darker;

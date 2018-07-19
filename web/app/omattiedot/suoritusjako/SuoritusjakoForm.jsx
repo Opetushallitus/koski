@@ -23,6 +23,7 @@ const Ingressi = () => (
 
 const SuoritusjakoList = ({opiskeluoikeudet, suoritusjaot, onRemove}) => (
   <div>
+    {!R.isEmpty(suoritusjaot) && <h2 className="link-successful-h2"><div className="link-successful-icon"/><Text name="Jakolinkin luominen onnistui."/></h2>}
     {!R.isEmpty(suoritusjaot) && <h2><Text name='Voimassaolevat linkit'/></h2>}
 
     <ul className='suoritusjako-form__link-list'>
