@@ -6,7 +6,7 @@ import DateInput from '../../date/DateInput'
 import {formatISODate, parseISODate} from '../../date/date'
 import Http from '../../util/http'
 import ModalDialog from '../../editor/ModalDialog'
-import {DateInputFeedback} from "../../date/DateInputFeedback"
+import {DateInputFeedback} from "./DateInputFeedback"
 
 const ApiBaseUrl = '/koski/api/suoritusjako'
 
@@ -115,10 +115,7 @@ export class SuoritusjakoLink extends React.Component {
                     isPending={isDateUpdatePending}
                   />
                 </div>
-                  <DateInputFeedback
-                    dateChangeBus={this.dateChangeBus}
-                    updateBus={this.updateBus}
-                  />
+                  <DateInputFeedback updateBus={this.updateBus} />
               </label>
             </div>
           </div>
