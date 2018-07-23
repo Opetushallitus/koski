@@ -10,6 +10,10 @@
     }
   }
 
+  .link-information {
+    max-width: 570px;
+  }
+
   .link-successful-h2 {
     margin-top: 0;
   }
@@ -117,6 +121,13 @@
       }
     }
 
+    &__link-container {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 2;
+      margin-bottom: 2rem;
+    }
+
     &__bottom-container {
       display: flex;
       justify-content: space-between;
@@ -126,6 +137,12 @@
         align-items: flex-end;
         justify-content: flex-end;
       }
+    }
+
+    &__timestamp {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
     }
 
     &__url {
