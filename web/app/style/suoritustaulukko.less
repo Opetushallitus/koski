@@ -17,7 +17,7 @@
       }
       > tbody.group-header {
         background: @color-neutral-gray;
-        td {
+        th {
           padding-left: 13px;
           .omattiedot-phone({
             padding-left: 0;
@@ -140,6 +140,147 @@
       .omattiedot-phone({
         display: none;
       });
+    }
+  }
+
+  .omattiedot-suoritus-taulukko {
+    .suoritus-group {
+      margin-bottom: 1rem;
+
+      > table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 8px;
+
+        &.nested {
+          td.suoritus {
+            margin-left: -1.6rem;
+          }
+
+          @media @media-phone {
+            td.suoritus {
+              margin-left: 0;
+            }
+
+            > tbody > tr.details > td > .properties {
+              padding-left: 1.6rem;
+            }
+          }
+        }
+
+        > tbody, > thead {
+          > tr {
+            > td {
+              padding: 4px;
+              min-width: 8rem;
+
+              @media @media-phone {
+                min-width: 6rem;
+
+                &.koepisteet.ylioppilas {
+                  min-width: 3rem;
+                }
+
+                &.laajuus {
+                  min-width: 3rem;
+                }
+              }
+            }
+
+            > td.arvosana.ylioppilas {
+              min-width: 14rem;
+
+              @media @media-phone {
+                min-width: 6rem;
+              }
+            }
+
+            > td.arvosana, > th.arvosana,
+            > td.laajuus, > th.laajuus,
+            > td.koepisteet, > th.koepisteet {
+              text-align: center;
+            }
+
+            > th.tutkinnon-osan-ryhma, > td.suoritus {
+              width: 100%;
+              text-align: left;
+            }
+
+            > td.suoritus {
+              display: flex;
+              font-weight: 600;
+
+              button {
+                font-weight: 600;
+              }
+
+              span > .kesken {
+                text-transform: lowercase;
+                font-weight: normal;
+              }
+            }
+
+            > td.arvosana {
+              font-weight: 600;
+            }
+
+            &.nested-header {
+              > th {
+                border-bottom: 1px solid #eeeeee;
+                padding-bottom: 0.5rem;
+
+                @media @media-phone {
+                  &:first-child {
+                    padding-left: 1.6rem;
+                  }
+                }
+              }
+            }
+
+            &.expandable-row {
+              cursor: pointer;
+
+              button {
+                cursor: pointer;
+              }
+            }
+
+            .expanded-indicator {
+              text-align: center;
+              flex: 0 0 1.6rem;
+              margin-left: -4px;
+            }
+
+            &.suoritus-row {
+              .expanded-indicator {
+                color: @color-link-blue;
+              }
+
+              &--expanded, &--expanded button {
+                color: @color-link-blue;
+              }
+            }
+
+            &.paatason-suoritus-row {
+              background: @color-light-blue;
+
+              &--expanded {
+                background: @color-medium-blue;
+              }
+            }
+          }
+        }
+
+        tr.details, tr.osasuoritukset {
+          > td {
+            padding-left: 1.6rem;
+
+            @media @media-phone {
+              padding-left: 0;
+            }
+          }
+        }
+      }
     }
   }
 }

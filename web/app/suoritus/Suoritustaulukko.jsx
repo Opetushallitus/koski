@@ -1,28 +1,30 @@
 import React from 'baret'
 import {modelData, modelLookup} from '../editor/EditorModel.js'
 import {Editor} from '../editor/Editor'
-import {PropertiesEditor, shouldShowProperty} from '../editor/PropertiesEditor'
+import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {
-  modelErrorMessages, modelItems, modelProperties, modelProperty, modelTitle, optionalPrototypeModel,
+  modelErrorMessages, modelItems, modelTitle,
   pushRemoval
 } from '../editor/EditorModel'
-import * as R from 'ramda'
 import {buildClassNames} from '../components/classnames'
 import {accumulateExpandedState} from '../editor/ExpandableItems'
-import {hasArvosana, suorituksenTyyppi, suoritusValmis, tilaText} from './Suoritus'
+import {suoritusValmis, tilaText} from './Suoritus'
 import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
-import {tutkinnonOsanRyhmät} from '../koodisto/koodistot'
 import {fetchLaajuudet, YhteensäSuoritettu} from './YhteensaSuoritettu'
 import UusiTutkinnonOsa  from '../ammatillinen/UusiTutkinnonOsa'
-import {
-  createTutkinnonOsanSuoritusPrototype, isYhteinenTutkinnonOsa, osanOsa,
-  placeholderForNonGrouped
-} from '../ammatillinen/TutkinnonOsa'
+import {createTutkinnonOsanSuoritusPrototype, isYhteinenTutkinnonOsa, osanOsa} from '../ammatillinen/TutkinnonOsa'
 import {sortLanguages} from '../util/sorting'
 import {isKieliaine} from './Koulutusmoduuli'
-import {ArvosanaEditor} from './ArvosanaEditor'
 import {flatMapArray} from '../util/util'
+import {
+  ArvosanaColumn, getLaajuusYksikkö,
+  groupSuoritukset,
+  isAmmatillinentutkinto,
+  isNäyttötutkintoonValmistava,
+  isYlioppilastutkinto, KoepisteetColumn, LaajuusColumn, suoritusProperties,
+  TutkintokertaColumn
+} from './SuoritustaulukkoCommon'
 
 
 export class Suoritustaulukko extends React.Component {
@@ -34,7 +36,6 @@ export class Suoritustaulukko extends React.Component {
 
     let suoritusProto = context.edit ? createTutkinnonOsanSuoritusPrototype(suorituksetModel) : suoritukset[0]
     let suoritustapa = modelData(parentSuoritus, 'suoritustapa')
-    let isAmmatillinenTutkinto = parentSuoritus.value.classes.includes('ammatillisentutkinnonsuoritus')
     if (suoritukset.length === 0 && !context.edit) return null
 
     const {isExpandedP, allExpandedP, toggleExpandAll, setExpanded} = accumulateExpandedState({
@@ -43,39 +44,16 @@ export class Suoritustaulukko extends React.Component {
       component: this
     })
 
-    const groupsP = tutkinnonOsanRyhmät(modelData(parentSuoritus, 'koulutusmoduuli.perusteenDiaarinumero'), suoritustapa).map(ammatillisentutkinnonosanryhmaKoodisto => {
-      let grouped, groupIds, groupTitles
-      if (isAmmatillinenTutkinto && R.keys(ammatillisentutkinnonosanryhmaKoodisto).length > 1) {
-        grouped = R.groupBy(s => modelData(s, 'tutkinnonOsanRyhmä.koodiarvo') || placeholderForNonGrouped)(suoritukset)
-        groupTitles = R.merge(ammatillisentutkinnonosanryhmaKoodisto, { [placeholderForNonGrouped] : t('Muut suoritukset')})
-        groupIds = R.keys(grouped).sort()
-        if (context.edit) {
-          // Show the empty groups too
-          groupIds = R.uniq(R.keys(ammatillisentutkinnonosanryhmaKoodisto).concat(groupIds))
-        }
-      } else {
-        grouped = { [placeholderForNonGrouped] : suoritukset }
-        groupTitles = { [placeholderForNonGrouped] : t(modelProperty(suoritukset[0] || suoritusProto, 'koulutusmoduuli').title) }
-        groupIds = [placeholderForNonGrouped]
-      }
-
-      return {
-        grouped: grouped,
-        groupTitles: groupTitles,
-        groupIds: groupIds
-      }
-    })
+    const groupsP = groupSuoritukset(parentSuoritus, suoritukset, context, suoritusProto)
 
 
     let samaLaajuusYksikkö = suoritukset.every((s, i, xs) => modelData(s, 'koulutusmoduuli.laajuus.yksikkö.koodiarvo') === modelData(xs[0], 'koulutusmoduuli.laajuus.yksikkö.koodiarvo'))
-    let laajuusModel = modelLookup(suoritusProto, 'koulutusmoduuli.laajuus')
-    if (laajuusModel && laajuusModel.optional && !modelData(laajuusModel)) laajuusModel = optionalPrototypeModel(laajuusModel)
-    let laajuusYksikkö = t(modelData(laajuusModel, 'yksikkö.lyhytNimi'))
-    let showTila = !näyttötutkintoonValmistava(parentSuoritus)
+    const laajuusYksikkö = getLaajuusYksikkö(suoritusProto)
+    let showTila = !isNäyttötutkintoonValmistava(parentSuoritus)
     let showExpandAll = suoritukset.some(s => suoritusProperties(s).length > 0)
-    let columns = [TutkintokertaColumn, SuoritusColumn, LaajuusColumn, KoepisteetColumn, ArvosanaColumn].filter(column => column.shouldShow({parentSuoritus, suorituksetModel, suoritukset, suoritusProto, context}))
+    let columns = [TutkintokertaColumn, SuoritusColumn, LaajuusColumn, KoepisteetColumn, ArvosanaColumn].filter(column => column.shouldShow({parentSuoritus, suorituksetModel, suoritukset, context}))
 
-    return !suoritustapa && context.edit && isAmmatillinenTutkinto
+    return !suoritustapa && context.edit && isAmmatillinentutkinto(parentSuoritus)
         ? <Text name="Valitse ensin tutkinnon suoritustapa" />
         : (suoritukset.length > 0 || context.edit) && (
           <div className="suoritus-taulukko">
@@ -125,7 +103,7 @@ export class Suoritustaulukko extends React.Component {
             </td>
           </tr>
         </tbody>,
-        !nested && !näyttötutkintoonValmistava(parentSuoritus) && !ylioppilastutkinto(parentSuoritus) && <tbody key={'group- '+ i + '-footer'} className="yhteensä">
+        !nested && !isNäyttötutkintoonValmistava(parentSuoritus) && !isYlioppilastutkinto(parentSuoritus) && <tbody key={'group- '+ i + '-footer'} className="yhteensä">
           <tr><td>
             <YhteensäSuoritettu osasuoritukset={items} laajuusP={fetchLaajuudet(parentSuoritus, groups.groupIds).map(l => l[groupId])} laajuusYksikkö={laajuusYksikkö}/>
           </td></tr>
@@ -141,9 +119,6 @@ export class Suoritustaulukko extends React.Component {
     }
   }
 }
-
-let näyttötutkintoonValmistava = suoritus => suoritus.value.classes.includes('nayttotutkintoonvalmistavankoulutuksensuoritus')
-let ylioppilastutkinto = suoritus => suoritus.value.classes.includes('ylioppilastutkinnonsuoritus')
 
 export class TutkinnonOsanSuoritusEditor extends React.Component {
   render() {
@@ -185,67 +160,6 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
   }
 }
 
-const suoritusProperties = suoritus => {
-  const filterProperties = filter => modelProperties(suoritus, filter)
-  const includeProperties = (...properties) => filterProperties(p => properties.includes(p.key))
-  const excludeProperties = (...properties) => filterProperties(p => !properties.includes(p.key))
-
-  const propertiesForSuoritustyyppi = (tyyppi, isEdit) => {
-    const simplifiedArviointi = modelProperties(modelLookup(suoritus, 'arviointi.-1'),
-      p => !(['arvosana', 'päivä', 'arvioitsijat', 'pisteet']).includes(p.key)
-    )
-
-    const arviointipäivä = modelProperties(modelLookup(suoritus, 'arviointi.-1'), p => p.key === 'päivä')
-    let showPakollinen = (tyyppi !== 'nayttotutkintoonvalmistavakoulutus') && modelData(suoritus, 'koulutusmoduuli.pakollinen') !== undefined
-    const pakollinen = showPakollinen ? modelProperties(modelLookup(suoritus, 'koulutusmoduuli'), p => p.key === 'pakollinen') : []
-
-    const defaultsForEdit = pakollinen
-      .concat(arviointipäivä)
-      .concat(includeProperties('näyttö', 'tunnustettu', 'lisätiedot'))
-
-    const defaultsForView = pakollinen
-      .concat(excludeProperties('koulutusmoduuli', 'arviointi', 'tutkinnonOsanRyhmä', 'tutkintokerta'))
-      .concat(simplifiedArviointi)
-
-    switch (tyyppi) {
-      case 'valma':
-      case 'telma':
-        return isEdit
-          ? pakollinen.concat(includeProperties('näyttö', 'tunnustettu', 'lisätiedot')).concat(arviointipäivä).concat(simplifiedArviointi)
-          : defaultsForView
-
-      default: return isEdit ? defaultsForEdit : defaultsForView
-    }
-  }
-
-  const kuvaus = modelProperties(modelLookup(suoritus, 'koulutusmoduuli'), p => p.key === 'kuvaus')
-  const parentSuorituksenTyyppi = suorituksenTyyppi(suoritus.context.suoritus)
-
-  return kuvaus
-    .concat(propertiesForSuoritustyyppi(parentSuorituksenTyyppi, suoritus.context.edit))
-    .filter(shouldShowProperty(suoritus.context))
-}
-
-const TutkintokertaColumn = {
-  shouldShow: ({parentSuoritus}) => ylioppilastutkinto(parentSuoritus),
-  renderHeader: () => {
-    return <td key="tutkintokerta" className="tutkintokerta"><Text name="Tutkintokerta"/></td>
-  },
-  renderData: ({model}) => (<td key="tutkintokerta" className="tutkintokerta">
-    <Editor model={model} path="tutkintokerta.vuosi" compact="true"/>
-    {' '}
-    <Editor model={model} path="tutkintokerta.vuodenaika" compact="true"/>
-  </td>)
-}
-
-const KoepisteetColumn = {
-  shouldShow: ({parentSuoritus}) => ylioppilastutkinto(parentSuoritus),
-  renderHeader: () => {
-    return <td key="koepisteet" className="koepisteet"><Text name="Pisteet"/></td>
-  },
-  renderData: ({model}) => (<td key="koepisteet" className="koepisteet"><Editor model={modelLookup(model, 'arviointi.-1.pisteet')}/></td>)
-}
-
 const SuoritusColumn = {
   shouldShow : () => true,
   renderHeader: ({groupTitles, groupId}) => <td key="suoritus" className="tutkinnon-osan-ryhma">{groupTitles[groupId]}</td>,
@@ -268,22 +182,6 @@ const SuoritusColumn = {
       }
     </td>)
   }
-}
-
-const LaajuusColumn = {
-  shouldShow: ({parentSuoritus, suoritukset, suorituksetModel, context}) => (!näyttötutkintoonValmistava(parentSuoritus) && (context.edit
-    ? modelProperty(createTutkinnonOsanSuoritusPrototype(suorituksetModel), 'koulutusmoduuli.laajuus') !== null
-    : suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus.arvo') !== undefined) !== undefined)),
-  renderHeader: ({laajuusYksikkö}) => {
-    return <td key="laajuus" className="laajuus"><Text name="Laajuus"/>{((laajuusYksikkö && ' (' + laajuusYksikkö + ')') || '')}</td>
-  },
-  renderData: ({model, showScope}) => <td key="laajuus" className="laajuus"><Editor model={model} path="koulutusmoduuli.laajuus" compact="true" showReadonlyScope={showScope}/></td>
-}
-
-const ArvosanaColumn = {
-  shouldShow: ({parentSuoritus, suoritukset, context}) => !näyttötutkintoonValmistava(parentSuoritus) && (context.edit || suoritukset.find(hasArvosana) !== undefined),
-  renderHeader: () => <td key="arvosana" className="arvosana"><Text name="Arvosana"/></td>,
-  renderData: ({model}) => <td key="arvosana" className="arvosana"><ArvosanaEditor model={model} /></td>
 }
 
 export const suorituksenTilaSymbol = (suoritus) => suoritusValmis(suoritus) ? '' : ''
