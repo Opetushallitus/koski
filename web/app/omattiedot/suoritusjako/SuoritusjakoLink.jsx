@@ -27,8 +27,11 @@ export class SuoritusjakoLink extends React.Component {
     }
 
     this.dateChangeBus = new Bacon.Bus()
+    this.inputChangeBus = new Bacon.Bus()
 
     this.initUpdateBus()
+
+    this.feedbackBus = this.inputChangeBus.merge(this.updateBus)
   }
 
   initUpdateBus() {
@@ -110,12 +113,19 @@ export class SuoritusjakoLink extends React.Component {
                   <DateInput
                     value={parseISODate(expirationDate)}
                     valueCallback={date => this.dateChangeBus.push(date)}
-                    validityCallback={isValid => !isValid && this.dateChangeBus.push(null)}
+                    validityCallback={(isValid, stringInput)=> {
+                      !isValid && this.dateChangeBus.push(null)
+                      this.inputChangeBus.push(stringInput)
+                    }}
                     isAllowedDate={d => SuoritusjakoLink.isDateInFuture(d) && SuoritusjakoLink.isDateWithinYear(d)}
                     isPending={isDateUpdatePending}
                   />
                 </div>
-                  <DateInputFeedback updateBus={this.updateBus} />
+                  <DateInputFeedback
+                    feedbackBus={this.feedbackBus}
+                    futureValidator={SuoritusjakoLink.isDateInFuture}
+                    yearValidator={SuoritusjakoLink.isDateWithinYear}
+                  />
               </label>
             </div>
           </div>
