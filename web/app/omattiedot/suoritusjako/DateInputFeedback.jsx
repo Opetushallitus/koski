@@ -21,14 +21,14 @@ export class DateInputFeedback extends React.Component {
   }
 
   handleError() {
-    this.setState({isVisible: true, renderFn: this.renderError})
+    this.setState({isVisible: true, renderFn: Error})
   }
 
   handleValue(value) {
     if (this.timeoutID) clearTimeout(this.timeoutID)
 
     if (value.expirationDate) {
-      this.setState({isVisible: true, renderFn: this.renderUpdated})
+      this.setState({isVisible: true, renderFn: UpdatedSuccess})
       this.timeoutID = setTimeout(() => this.setState({isVisible: false}), 2000)
       return
     }
@@ -36,34 +36,9 @@ export class DateInputFeedback extends React.Component {
     const {futureValidator, yearValidator} = this.props
     const date = parseFinnishDate(value)
 
-    if (!date) this.setState({isVisible: true, renderFn: this.renderInvalid})
-    else if (!yearValidator(date)) this.setState({isVisible: true, renderFn: this.renderMaxYear})
-    else if (!futureValidator(date)) this.setState({isVisible: true, renderFn: this.renderInvalid})
-
-  }
-
-  renderMaxYear() {
-    return (
-      <div><div className="invalid-date-input"/><Text name="Maksimi voimassaoloaika on vuosi"/></div>
-    )
-  }
-
-  renderInvalid() {
-    return (
-      <div><div className="invalid-date-input"/><Text name="Virheellinen päivämäärä"/></div>
-    )
-  }
-
-  renderUpdated() {
-    return (
-      <div><div className="save-confirmation"/><Text name="Muutokset tallennettu"/></div>
-    )
-  }
-
-  renderError() {
-    return (
-      <div><div className="invalid-date-input"/><Text name="Päivitys epäonnistui"/></div>
-    )
+    if (!date) this.setState({isVisible: true, renderFn: InvalidInput})
+    else if (!yearValidator(date)) this.setState({isVisible: true, renderFn: MaxYear})
+    else if (!futureValidator(date)) this.setState({isVisible: true, renderFn: InvalidInput})
   }
 
   render() {
@@ -76,3 +51,8 @@ export class DateInputFeedback extends React.Component {
     )
   }
 }
+
+const InvalidInput = () => <div><div className="invalid-date-input"/><Text name="Virheellinen päivämäärä"/></div>
+const MaxYear = () => <div><div className="invalid-date-input"/><Text name="Maksimi voimassaoloaika on vuosi"/></div>
+const Error = () => <div><div className="invalid-date-input"/><Text name="Päivitys epäonnistui"/></div>
+const UpdatedSuccess = () => <div><div className="save-confirmation"/><Text name="Muutokset tallennettu"/></div>
