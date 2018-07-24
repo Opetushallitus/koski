@@ -24,25 +24,24 @@ const Ingressi = () => (
 const SuoritusjakoList = ({opiskeluoikeudet, suoritusjaot, onRemove, showLinkCreationSuccess}) => (
     <div>
       {!R.isEmpty(suoritusjaot) &&
-      <div>
-        { showLinkCreationSuccess && <h2 className="link-successful-h2"><div className="link-successful-icon"/><Text name="Jakolinkin luominen onnistui."/></h2>}
-        <h2><Text name='Voimassaolevat linkit'/></h2>
-        <div className="link-information">
-          <Text name={
-            'Jakolinkillä voit näyttää suoritustietosi haluamillesi henkilöille (esimerkiksi työtä tai opiskelupaikkaa hakiessasi). ' +
-            'Linkin saajan ei tarvitse kirjautua Oma Opintopolku-palveluun. ' +
-            'Voit tarkistaa tarkan sisällön Esikatsele-painikkeella.'
-            }
-          />
-        </div>
-        <ul className='suoritusjako-form__link-list'>
-          {suoritusjaot.map(suoritusjako => (
-            <li key={suoritusjako.secret}>
-              <SuoritusjakoLink suoritusjako={suoritusjako} opiskeluoikeudet={opiskeluoikeudet} onRemove={onRemove}/>
-            </li>
-          ))}
-        </ul>
-      </div>}
+        <div>
+          {showLinkCreationSuccess && <h2 className="link-successful-h2"><div className="link-successful-icon"/><Text name="Jakolinkin luominen onnistui."/></h2>}
+          <h2><Text name='Voimassaolevat linkit'/></h2>
+          <div className="link-information">
+            <Text name={
+              'Jakolinkillä voit näyttää suoritustietosi haluamillesi henkilöille (esimerkiksi työtä tai opiskelupaikkaa hakiessasi). ' +
+              'Linkin saajan ei tarvitse kirjautua Oma Opintopolku-palveluun. ' +
+              'Voit tarkistaa tarkan sisällön Esikatsele-painikkeella.'}
+            />
+          </div>
+          <ul className='suoritusjako-form__link-list'>
+            {suoritusjaot.map(suoritusjako => (
+              <li key={suoritusjako.secret}>
+                <SuoritusjakoLink suoritusjako={suoritusjako} opiskeluoikeudet={opiskeluoikeudet} onRemove={onRemove}/>
+              </li>
+            ))}
+          </ul>
+        </div>}
     </div>
 )
 
