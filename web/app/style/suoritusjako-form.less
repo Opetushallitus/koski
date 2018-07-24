@@ -18,22 +18,30 @@
     margin-top: 0;
   }
 
-  .link-successful-icon {
-    background: @color-blue;
+  .SuoritusjakoIconBackground() {
     border-radius: 50%;
     display: inline-block;
+    text-align: center;
+  }
+
+  .SuoritusjakoIcon() {
+    font-family: FontAwesome;
+    vertical-align: middle;
+    color: @color-white
+  }
+
+  .link-successful-icon {
+    .SuoritusjakoIconBackground();
+    background: @color-blue;
     height: 3.2rem;
     width: 3.2rem;
-    text-align: center;
     margin-right: 0.8rem;
     padding: 0.3rem 0 0 0;
 
     &:before {
-      font-family: FontAwesome;
+      .SuoritusjakoIcon();
       content: '\f00c';
       font-size: 1.6rem;
-      color: @color-white;
-      vertical-align: middle;
     }
   }
 
@@ -199,39 +207,35 @@
       .date-input-feedback {
         height: 2rem;
 
-        .save-confirmation {
-          background: @color-blue;
-          border-radius: 50%;
-          display: inline-block;
+        .FeedBackIcon() {
+          .SuoritusjakoIcon();
+          font-size: 0.7rem;
+        }
+
+        .FeedBackIconContainer() {
+          .SuoritusjakoIconBackground();
           height: 1.6rem;
           width: 1.6rem;
-          text-align: center;
           margin: 0.4rem 0.4rem 0 0;
+        }
+
+        .save-confirmation {
+          .FeedBackIconContainer();
+          background: @color-blue;
 
           &:before {
-            font-family: FontAwesome;
+            .FeedBackIcon();
             content: '\f00c';
-            font-size: 0.7rem;
-            color: @color-white;
-            vertical-align: middle;
           }
         }
 
         .invalid-date-input {
+          .FeedBackIconContainer();
           background: @color-red;
-          border-radius: 50%;
-          display: inline-block;
-          height: 1.6rem;
-          width: 1.6rem;
-          text-align: center;
-          margin: 0.4rem 0.4rem 0 0;
 
           &:before {
-            font-family: FontAwesome;
+            .FeedBackIcon();
             content: '\f12a';
-            font-size: 0.7rem;
-            color: @color-white;
-            vertical-align: middle;
           }
         }
       }
