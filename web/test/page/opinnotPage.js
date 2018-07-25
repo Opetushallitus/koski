@@ -438,7 +438,7 @@ function TutkinnonOsat(groupId) {
       return Page(uusiTutkinnonOsaElement).getInputOptions(".dropdown")
     },
     laajuudenOtsikko: function() {
-      return S('.suoritus-taulukko:eq(0) td.laajuus:eq(0)').text()
+      return S('.suoritus-taulukko:eq(0) th.laajuus:eq(0)').text()
     },
     laajuudetYhteensä: function() {
       return S('.suoritus-taulukko:eq(0) .laajuudet-yhteensä').text()

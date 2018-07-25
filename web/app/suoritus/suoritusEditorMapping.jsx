@@ -14,10 +14,12 @@ import {sortLanguages} from '../util/sorting'
 import {ArvosanaEditor} from './ArvosanaEditor'
 import {LukionOppiaineenOppimaaranSuoritusEditor} from '../lukio/LukionOppiaineenOppimaaranSuoritusEditor'
 import {CreativityActionService, ExtendedEssay, TheoryOfKnowledge} from '../ib/IBYhteinenSuoritus'
+import OmatTiedotSuoritustaulukko from './OmatTiedotSuoritustaulukko'
 
 export const resolveOsasuorituksetEditor = (mdl) => {
   const oneOf = (...classes) => classes.some(c => mdl.value.classes.includes(c))
   const firstClassOneOf = (...classes) => classes.includes(mdl.value.classes[0])
+  const {kansalainen} = mdl.context
 
   if (firstClassOneOf(
       'perusopetuksenvuosiluokansuoritus',
@@ -35,7 +37,8 @@ export const resolveOsasuorituksetEditor = (mdl) => {
     return <PropertiesEditor model={modelLookup(mdl, 'koulutusmoduuli')} propertyFilter={p => p.key === 'kuvaus'} />
   }
   if (oneOf('ammatillinenpaatasonsuoritus', 'ylioppilastutkinnonsuoritus', 'korkeakoulusuoritus')) {
-    return <Suoritustaulukko suorituksetModel={modelLookup(mdl, 'osasuoritukset')}/>
+    const SuoritustaulukkoComponent = kansalainen ? OmatTiedotSuoritustaulukko : Suoritustaulukko
+    return <SuoritustaulukkoComponent suorituksetModel={modelLookup(mdl, 'osasuoritukset')} />
   }
   if (oneOf('lukionoppimaaransuoritus')) {
     return (
