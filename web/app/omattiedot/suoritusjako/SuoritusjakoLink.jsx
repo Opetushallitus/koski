@@ -137,7 +137,7 @@ export class SuoritusjakoLink extends React.Component {
               <a className='text-button-small' target='_blank' href={url}><Text name='Esikatsele'/></a>
             </div>
             <div className='suoritusjako-link__remove'>
-              <button className={`text-button-small${(isDateUpdatePending ? '--disabled' : '')}`} onClick={this.confirmDelete.bind(this)}>
+              <button className={`text-button-small${(isDateUpdatePending ? '--disabled' : '')}`} onClick={this.confirmDelete.bind(this)} disabled={isDateUpdatePending}>
                 <Text name='Poista linkki käytöstä'/>
               </button>
 

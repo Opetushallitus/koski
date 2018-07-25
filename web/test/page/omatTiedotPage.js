@@ -168,8 +168,9 @@ function Suoritusjako(index) {
     esikatseluLinkHref: function() {
       return elem().find('.suoritusjako-link__preview a').attr('href')
     },
-    poistaButton: function() {
-
+    feedbackText: {
+      isVisible: () => isElementVisible(elem().find('.suoritusjako-link__expiration .date-input-feedback .feedback')),
+      value: () => extractAsText(elem().find('.suoritusjako-link__expiration .date-input-feedback .feedback'))
     }
   }
 
