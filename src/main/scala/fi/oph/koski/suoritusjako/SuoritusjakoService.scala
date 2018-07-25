@@ -19,9 +19,9 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
     assertSuorituksetExist(oppijaOid, suoritusIds) match {
       case Right(_) =>
         val secret = generateNewSecret()
-        val expirationDate = suoritusjakoRepository.create(secret, oppijaOid, suoritusIds)
+        val suoritusjako = suoritusjakoRepository.create(secret, oppijaOid, suoritusIds)
         AuditLog.log(AuditLogMessage(KANSALAINEN_SUORITUSJAKO_LISAYS, koskiSession, Map(oppijaHenkiloOid -> oppijaOid)))
-        expirationDate.map(Suoritusjako(secret, _))
+        suoritusjako
       case Left(status) => Left(status)
     }
   }
@@ -49,7 +49,7 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
   }
 
   def getAll(oppijaOid: String): Seq[Suoritusjako] = {
-    suoritusjakoRepository.getAll(oppijaOid).map(jako => Suoritusjako(jako.secret, jako.voimassaAsti.toLocalDate))
+    suoritusjakoRepository.getAll(oppijaOid).map(jako => Suoritusjako(jako.secret, jako.voimassaAsti.toLocalDate, jako.aikaleima))
   }
 
   def validateSuoritusjakoSecret(secret: String): Either[HttpStatus, String] = {

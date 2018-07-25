@@ -1,5 +1,6 @@
 package fi.oph.koski.api
 
+import java.sql.Timestamp
 import java.time.LocalDate
 
 import fi.oph.koski.json.JsonSerializer
@@ -67,8 +68,23 @@ trait SuoritusjakoTestMethods extends LocalJettyHttpSpecification with Opiskeluo
     actualExpirationDate shouldEqual expectedExpirationDate
   }
 
+  private case class AlmostSameTimestamp(secret: String, expirationDate: LocalDate, timestamp: Timestamp) {
+    override def equals(that: Any): Boolean = {
+      that match {
+        case that: AlmostSameTimestamp => {
+          secret == that.secret &&
+          expirationDate == that.expirationDate &&
+          Math.abs(timestamp.getTime() - that.timestamp.getTime()) < 10000
+        }
+        case _ => false
+      }
+    }
+  }
+
   def verifySuoritusjakoDescriptors(expectedSuoritusjaot: List[Suoritusjako]): Unit = {
     val actualSuoritusjaot = JsonSerializer.parse[List[Suoritusjako]](response.body)
-    actualSuoritusjaot should contain theSameElementsAs expectedSuoritusjaot
+    val expected = expectedSuoritusjaot.map { s => AlmostSameTimestamp(s.secret, s.expirationDate, s.timestamp) }
+    val actual = actualSuoritusjaot.map { s => AlmostSameTimestamp(s.secret, s.expirationDate, s.timestamp) }
+    actual should contain theSameElementsAs expected
   }
 }

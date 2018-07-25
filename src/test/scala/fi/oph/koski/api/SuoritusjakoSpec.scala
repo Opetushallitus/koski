@@ -1,7 +1,8 @@
 package fi.oph.koski.api
 
 import java.nio.charset.StandardCharsets
-import java.time.LocalDate
+import java.sql.Timestamp
+import java.time.{Instant, LocalDate}
 
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
@@ -305,32 +306,35 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
     "sisältää" - {
       "kaikki jaot kun useita jakoja" in {
         val expirationDate = LocalDate.now.plusMonths(6)
+        val timestamp = Timestamp.from(Instant.now())
 
         getSuoritusjakoDescriptors(){
           verifySuoritusjakoDescriptors(List(
-            Suoritusjako(secrets("yksi suoritus"), expirationDate),
-            Suoritusjako(secrets("kaksi suoritusta"), expirationDate),
-            Suoritusjako(secrets("auditlog"), expirationDate)
+            Suoritusjako(secrets("yksi suoritus"), expirationDate, timestamp),
+            Suoritusjako(secrets("kaksi suoritusta"), expirationDate, timestamp),
+            Suoritusjako(secrets("auditlog"), expirationDate, timestamp)
           ))
         }
       }
 
       "yksittäisen jaon kun duplikoitu suoritus jaettu (vuosiluokan tuplaus)" in {
         val expirationDate = LocalDate.now.plusMonths(6)
+        val timestamp = Timestamp.from(Instant.now())
 
         getSuoritusjakoDescriptors(hetu = "170186-6520"){
           verifySuoritusjakoDescriptors(List(
-            Suoritusjako(secrets("vuosiluokan tuplaus"), expirationDate)
+            Suoritusjako(secrets("vuosiluokan tuplaus"), expirationDate, timestamp)
           ))
         }
       }
 
       "yksittäisen jaon kun lähdejärjestelmällinen suoritus jaettu" in {
         val expirationDate = LocalDate.now.plusMonths(6)
+        val timestamp = Timestamp.from(Instant.now())
 
         getSuoritusjakoDescriptors(hetu = "270303-281N"){
           verifySuoritusjakoDescriptors(List(
-            Suoritusjako(secrets("lähdejärjestelmällinen"), expirationDate)
+            Suoritusjako(secrets("lähdejärjestelmällinen"), expirationDate, timestamp)
           ))
         }
       }

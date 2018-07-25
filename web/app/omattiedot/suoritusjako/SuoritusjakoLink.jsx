@@ -3,9 +3,10 @@ import Bacon from 'baconjs'
 import {CopyableText} from '../../components/CopyableText'
 import Text from '../../i18n/Text'
 import DateInput from '../../date/DateInput'
-import {formatISODate, parseISODate} from '../../date/date'
+import {formatISODate, ISO2FinnishDateTime, parseISODate} from '../../date/date'
 import Http from '../../util/http'
 import ModalDialog from '../../editor/ModalDialog'
+import {DateInputFeedback} from './DateInputFeedback'
 
 const ApiBaseUrl = '/koski/api/suoritusjako'
 
@@ -26,9 +27,14 @@ export class SuoritusjakoLink extends React.Component {
     }
 
     this.dateChangeBus = new Bacon.Bus()
+    this.inputChangeBus = new Bacon.Bus()
+
+    this.initUpdateBus()
+
+    this.feedbackBus = this.inputChangeBus.merge(this.updateBus)
   }
 
-  componentDidMount() {
+  initUpdateBus() {
     const debounced = this.dateChangeBus
       .toProperty()
       .changes()
@@ -36,10 +42,10 @@ export class SuoritusjakoLink extends React.Component {
 
     debounced.onValue(() => this.setState({isDateUpdatePending: true}))
 
-    const update = debounced
+    this.updateBus = debounced
       .flatMapLatest(date => date && doUpdate(this.props.suoritusjako.secret, formatISODate(date)))
 
-    update.onValue(() => this.setState({isDateUpdatePending: false}))
+    this.updateBus.onValue(() => this.setState({isDateUpdatePending: false}))
   }
 
   static isDateInFuture(date) {
@@ -86,19 +92,22 @@ export class SuoritusjakoLink extends React.Component {
   render() {
     const {isDeletePending, isDateUpdatePending, showDeleteConfirmation} = this.state
     const {suoritusjako} = this.props
-    const {secret, expirationDate} = suoritusjako
+    const {secret, expirationDate, timestamp} = suoritusjako
     const url = `${window.location.origin}/koski/opinnot/${secret}`
 
     return isDeletePending ? <SuoritusjakoLinkPlaceholder/>
       : (
         <div className='suoritusjako-link'>
           <div className='suoritusjako-link__top-container'>
-            <CopyableText
-              className='suoritusjako-link__url'
-              message={url}
-              multiline={false}
-              buttonText='Kopioi linkki'
-            />
+            <div className="suoritusjako-link__link-container">
+              <span className="suoritusjako-link__timestamp"><Text name="Jakolinkki luotu"/> {ISO2FinnishDateTime(timestamp).replace(' ', ' klo ')}</span>
+              <CopyableText
+                className='suoritusjako-link__url'
+                message={url}
+                multiline={false}
+                buttonText='Kopioi linkki'
+              />
+            </div>
             <div className='suoritusjako-link__expiration'>
               <label>
                 <Text name='Linkin voimassaoloaika'/>
@@ -107,11 +116,19 @@ export class SuoritusjakoLink extends React.Component {
                   <DateInput
                     value={parseISODate(expirationDate)}
                     valueCallback={date => this.dateChangeBus.push(date)}
-                    validityCallback={isValid => !isValid && this.dateChangeBus.push(null)}
+                    validityCallback={(isValid, stringInput)=> {
+                      !isValid && this.dateChangeBus.push(null)
+                      this.inputChangeBus.push(stringInput)
+                    }}
                     isAllowedDate={d => SuoritusjakoLink.isDateInFuture(d) && SuoritusjakoLink.isDateWithinYear(d)}
                     isPending={isDateUpdatePending}
                   />
                 </div>
+                  <DateInputFeedback
+                    feedbackBus={this.feedbackBus}
+                    futureValidator={SuoritusjakoLink.isDateInFuture}
+                    yearValidator={SuoritusjakoLink.isDateWithinYear}
+                  />
               </label>
             </div>
           </div>

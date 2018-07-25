@@ -3,6 +3,7 @@ import {parseFinnishDate, formatFinnishDate} from './date.js'
 import DayPicker, {DateUtils} from 'react-day-picker'
 import {t} from '../i18n/i18n'
 import PropTypes from 'prop-types'
+import {HiddenDescription} from '../components/HiddenDescription'
 
 const months = ['Tammikuu', 'Helmikuu', 'Maaliskuu', 'Huhtikuu', 'Toukokuu',
   'Kesäkuu', 'Heinäkuu', 'Elokuu', 'Syyskuu', 'Lokakuu', 'Marraskuu',
@@ -61,7 +62,8 @@ class DateInput extends React.Component {
 
     return (
       <div className="calendar-input" ref={input => this.calendarInput = input}>
-        <input type="text" value={this.state.value || ''} onChange={ onChange } className={invalidDate ? 'editor-input date-editor error' : 'editor-input date-editor'} />
+        <HiddenDescription id={'aria-description:date-input'} />
+        <input type="text" value={this.state.value || ''} onChange={ onChange } className={invalidDate ? 'editor-input date-editor error' : 'editor-input date-editor'} aria-invalid={invalidDate} aria-describedby='aria-description:date-input' />
         <a className="toggle-calendar" onClick={toggleCalendarOpen}>{''}</a>
         { this.state.calendarOpen &&
         <div className="date-picker-wrapper">
