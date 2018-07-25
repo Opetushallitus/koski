@@ -342,16 +342,38 @@ describe('Omat tiedot', function() {
             })
           })
 
-          describe('Voimassaoloajan muuttaminen', function () {
-            var date = new Date()
-            date.setDate(date.getDate() + 1)
-            var dateFormatted = '' + date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear()
+          describe('Voimassaoloajan muuttaminen', () => {
+            const formattedDate = (dayDiff) => {
+              const date = new Date()
+              date.setDate(date.getDate() + dayDiff)
+              return '' + date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear()
+            }
 
-            before(form.suoritusjako(1).setVoimassaoloaika(dateFormatted))
+            const validDate = formattedDate(1)
+            const tooBigDate = formattedDate(1337)
+            const invalidDate = formattedDate(-10)
 
-            it('toimii', function() {
-              expect(form.suoritusjako(1).voimassaoloaika()).to.equal(dateFormatted)
+            describe('kun voimassaoloaika on validi', () => {
+              before(form.suoritusjako(1).setVoimassaoloaika(validDate), wait.until(form.suoritusjako(1).feedbackText.isVisible))
+              it('päivittäminen onnistuu', () => {
+                expect(form.suoritusjako(1).feedbackText.value()).to.equal('Muutokset tallennettu')
+              })
             })
+
+            describe('kun voimassaoloaika on liian suuri', () => {
+              before(form.suoritusjako(1).setVoimassaoloaika(tooBigDate), wait.until(form.suoritusjako(1).feedbackText.isVisible))
+              it('näytetään virheilmoitus', () => {
+                expect(form.suoritusjako(1).feedbackText.value()).to.equal('Pisin voimassaoloaika on vuosi')
+              })
+            })
+
+            describe('kun voimassaoloaika on menneisyydessä', () => {
+              before(form.suoritusjako(1).setVoimassaoloaika(invalidDate), wait.until(form.suoritusjako(1).feedbackText.isVisible))
+              it('näytetään virheilmoitus', () => {
+                expect(form.suoritusjako(1).feedbackText.value()).to.equal('Virheellinen päivämäärä')
+              })
+            })
+
           })
         })
 

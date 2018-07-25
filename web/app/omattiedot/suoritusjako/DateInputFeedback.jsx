@@ -46,13 +46,13 @@ export class DateInputFeedback extends React.Component {
 
     return (
       <div className='date-input-feedback'>
-        {isVisible && renderFn()}
+        {isVisible && <div className='feedback'>{renderFn()}</div>}
       </div>
     )
   }
 }
 
-const InvalidInput = () => <div><div className='invalid-date-input'/><Text name='Virheellinen päivämäärä'/></div>
-const MaxYear = () => <div><div className='invalid-date-input'/><Text name='Pisin voimassaoloaika on vuosi'/></div>
-const Error = () => <div><div className='invalid-date-input'/><Text name='Päivitys epäonnistui'/></div>
-const UpdatedSuccess = () => <div><div className='save-confirmation'/><Text name='Muutokset tallennettu'/></div>
+const InvalidInput = () => [<div key='icon' className='invalid-date-input'/>, <Text key='text' name='Virheellinen päivämäärä'/>]
+const MaxYear = () => [<div key='icon' className='invalid-date-input'/>, <Text key='text' name='Pisin voimassaoloaika on vuosi'/>]
+const Error = () => [<div key='icon' className='invalid-date-input'/>, <Text key='text' name='Päivitys epäonnistui'/>]
+const UpdatedSuccess = () => [<div key='icon' className='save-confirmation'/>, <Text key='text' name='Muutokset tallennettu'/>]
