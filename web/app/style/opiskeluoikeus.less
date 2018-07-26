@@ -625,7 +625,7 @@
                   padding-right: 12px;
                   white-space: nowrap;
                   .omattiedot-phone({
-                    font-size: 12px;
+                    font-size: 1rem;
                     white-space: initial;
                   });
                 }
@@ -693,6 +693,13 @@
         &.kansalainen {
           .label, td.label, .tabular-array th {
             color: black !important;
+            font-weight: normal;
+          }
+
+          tr.property > td.value > .properties {
+            @media @media-phone {
+              padding-left: 1.2rem;
+            }
           }
 
           td.value {

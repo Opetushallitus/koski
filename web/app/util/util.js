@@ -35,6 +35,8 @@ export const scrollElementBottomVisible = elem => {
 
 export const flatMapArray = (a, f) => R.unnest(a.map(f))
 
+export const nothing = () => null
+
 // FIXME: because element.focus() option preventScroll is still experimental API, it can't really be used
 // This is kind of a dirty solution to keep the page from jumping on focus, but at the time of writing at least
 // Safari doesn't support focus options. Should be replaced with the use of focusOptions when properly supported by browsers

@@ -1,6 +1,6 @@
 import React from 'baret'
 import {modelItems, modelLookup, modelTitle} from '../editor/EditorModel'
-import {flatMapArray} from '../util/util'
+import {flatMapArray, nothing} from '../util/util'
 import {
   ArvosanaColumn, getLaajuusYksikkö,
   groupSuoritukset, isNäyttötutkintoonValmistava, isYlioppilastutkinto,
@@ -105,8 +105,6 @@ class Suoritus extends React.Component {
 
     const baseClassName = nested ? 'suoritus-row' : 'paatason-suoritus-row'
     const className = `${baseClassName} ${expanded ? `${baseClassName}--expanded` : ''} ${expandable ? 'expandable-row' : ''}`
-
-    const nothing = () => null
 
     return [
       <tr key='suoritus' className={className} onClick={expandable ? this.toggleExpand : nothing}>

@@ -7,19 +7,24 @@ import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {Suoritustaulukko} from './Suoritustaulukko'
 import {LukionOppiaineetEditor} from '../lukio/LukionOppiaineetEditor'
 import {LuvaEditor} from '../lukio/LuvaEditor'
-import {IBTutkinnonOppiaineetEditor} from '../ib/IB'
+import {IBTutkinnonOppiaineetEditor, OmatTiedotIBTutkinnonOppiaineet} from '../ib/IB'
 import {PropertyEditor} from '../editor/PropertyEditor'
 import {Editor} from '../editor/Editor'
 import {sortLanguages} from '../util/sorting'
 import {ArvosanaEditor} from './ArvosanaEditor'
-import {LukionOppiaineenOppimaaranSuoritusEditor} from '../lukio/LukionOppiaineenOppimaaranSuoritusEditor'
+import {
+  LukionOppiaineenOppimaaranSuoritus,
+  OmatTiedotLukionOppiaineenOppimaaranSuoritus
+} from '../lukio/LukionOppiaineenOppimaaranSuoritus'
 import {CreativityActionService, ExtendedEssay, TheoryOfKnowledge} from '../ib/IBYhteinenSuoritus'
 import OmatTiedotSuoritustaulukko from './OmatTiedotSuoritustaulukko'
+import OmatTiedotLukionOppiaineet from '../lukio/OmatTiedotLukionOppiaineet'
 
 export const resolveOsasuorituksetEditor = (mdl) => {
   const oneOf = (...classes) => classes.some(c => mdl.value.classes.includes(c))
   const firstClassOneOf = (...classes) => classes.includes(mdl.value.classes[0])
   const {kansalainen} = mdl.context
+  const LukionOppiaineetComponent = kansalainen ? OmatTiedotLukionOppiaineet : LukionOppiaineetEditor
 
   if (firstClassOneOf(
       'perusopetuksenvuosiluokansuoritus',
@@ -42,7 +47,7 @@ export const resolveOsasuorituksetEditor = (mdl) => {
   }
   if (oneOf('lukionoppimaaransuoritus')) {
     return (
-      <LukionOppiaineetEditor
+      <LukionOppiaineetComponent
         suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
         classesForUusiOppiaineenSuoritus={['lukionoppiaineensuoritus', 'muidenlukioopintojensuoritus']}
       />
@@ -50,7 +55,7 @@ export const resolveOsasuorituksetEditor = (mdl) => {
   }
   if (oneOf('preibsuoritus')) {
     return (
-      <LukionOppiaineetEditor
+      <LukionOppiaineetComponent
         suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
         classesForUusiOppiaineenSuoritus={['preiboppiaineensuoritus', 'muidenlukioopintojensuoritus']}
         additionalEditableKoulutusmoduuliProperties={['ryhmä']}
@@ -58,14 +63,18 @@ export const resolveOsasuorituksetEditor = (mdl) => {
     )
   }
   if (oneOf('lukionoppiaineenoppimaaransuoritus')) {
-    return <LukionOppiaineenOppimaaranSuoritusEditor model={mdl} />
+    const LukionOppiaineenOppimaaranSuoritusComponent = kansalainen
+      ? OmatTiedotLukionOppiaineenOppimaaranSuoritus
+      : LukionOppiaineenOppimaaranSuoritus
+    return <LukionOppiaineenOppimaaranSuoritusComponent model={mdl} />
   }
   if (oneOf('lukioonvalmistavankoulutuksensuoritus')) {
     return <LuvaEditor suorituksetModel={modelLookup(mdl, 'osasuoritukset')}/>
   }
   if (oneOf('ibtutkinnonsuoritus')) {
+    const IBTutkinnonOppiaineetComponent = kansalainen ? OmatTiedotIBTutkinnonOppiaineet : IBTutkinnonOppiaineetEditor
     return (
-      <IBTutkinnonOppiaineetEditor
+      <IBTutkinnonOppiaineetComponent
         suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
         additionalEditableKoulutusmoduuliProperties={['taso']}
       />
