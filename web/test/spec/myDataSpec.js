@@ -47,7 +47,7 @@ describe('MyData', () => {
         )
 
         it('Päädytään oikealle sivulle', () => {
-          expect(document.getElementById('testframe').contentWindow.document.URL).to.equal('http://localhost:7021/koski/pulssi')
+          expect(document.getElementById('testframe').contentWindow.document.URL).to.equal(mydata.callbackURL)
         })
 
       })
