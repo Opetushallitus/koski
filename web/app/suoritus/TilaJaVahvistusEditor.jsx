@@ -35,7 +35,7 @@ export const TilaJaVahvistusEditor = ({model}) => {
 
 const MerkitseKeskeneräiseksiButton = ({model}) => {
   if (!model.context.edit || suoritusKesken(model)) return null
-  var opiskeluoikeudenTila = modelData(model.context.opiskeluoikeus, 'tila.opiskeluoikeusjaksot.-1.tila').koodiarvo
+  var opiskeluoikeudenTila = modelData(model.context.opiskeluoikeus, 'tila.opiskeluoikeusjaksot.-1.tila.koodiarvo')
   let merkitseKeskeneräiseksi = () => {
     pushModel(modelSetValue(model, undefined, 'vahvistus'))
   }
