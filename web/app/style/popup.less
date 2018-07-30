@@ -19,6 +19,7 @@
 
   &--inline {
     position: relative;
+    outline: none;
   }
 
   &__content {
@@ -32,8 +33,11 @@
 
   &__close-button {
     .CloseSymbol;
+    .BorderlessButton;
+
     float: right;
     margin: -10px -5px 15px 15px;
+    cursor: pointer;
 
     @media @media-phone {
       margin-right: 0;

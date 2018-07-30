@@ -1,67 +1,81 @@
 import React from 'baret'
 import {addContext, modelData} from '../editor/EditorModel.js'
-import {currentLocation} from '../util/location.js'
-import {näytettävätPäätasonSuoritukset, OpiskeluoikeusEditor} from '../opiskeluoikeus/OpiskeluoikeusEditor'
+import {näytettävätPäätasonSuoritukset} from '../opiskeluoikeus/OpiskeluoikeusEditor'
 import {modelItems, modelTitle} from '../editor/EditorModel'
-import Link from '../components/Link'
 import {OpiskeluoikeudenTila} from './fragments/OpiskeluoikeudenTila'
 import ChevronUpIcon from '../icons/ChevronUpIcon'
 import ChevronDownIcon from '../icons/ChevronDownIcon'
+import {OmatTiedotOpiskeluoikeus} from './OmatTiedotOpiskeluoikeus'
 
 
 export const OmatTiedotEditor = ({model}) => {
-  let oppijaOid = modelData(model, 'henkilö.oid')
-  let selectedOppilaitos = currentLocation().params.oppilaitos
-  let oppilaitokset = modelItems(model, 'opiskeluoikeudet')
+  const oppijaOid = modelData(model, 'henkilö.oid')
+  const oppilaitokset = modelItems(model, 'opiskeluoikeudet')
   return (
-    <div className="oppilaitokset-nav">
+    <div className="oppilaitos-list">
       {oppilaitokset.map((oppilaitos, oppilaitosIndex) => (
-        <OppilaitoksenOpiskeluoikeudet
+        <Oppilaitokset
           key={oppilaitosIndex}
-          oppijaOid={oppijaOid}
           oppilaitos={oppilaitos}
-          selected={selectedOppilaitos === modelData(oppilaitos, 'oppilaitos').oid}
+          oppijaOid={oppijaOid}
         />))}
-    </div>)
+    </div>
+  )
 }
 
-const OppilaitoksenOpiskeluoikeudet = ({oppijaOid, oppilaitos, selected}) => (
-  <div className="oppilaitos-nav">
-    <OppilaitosOtsikkotiedot oppilaitos={oppilaitos} selected={selected}/>
-    {selected &&
-      <ul className="opiskeluoikeuksientiedot">
+
+const Oppilaitokset = ({oppilaitos, oppijaOid}) => {
+  return (
+    <div className='oppilaitos-container'>
+      <h2 className='oppilaitos-title'>{modelTitle(oppilaitos, 'oppilaitos')}</h2>
+      <ul className='opiskeluoikeudet-list'>
         {modelItems(oppilaitos, 'opiskeluoikeudet').map((opiskeluoikeus, opiskeluoikeusIndex) => (
           <li key={opiskeluoikeusIndex}>
-            <OpiskeluoikeusEditor model={ addContext(opiskeluoikeus, { oppijaOid: oppijaOid, opiskeluoikeusIndex }) }/>
-          </li>)
-        )}
-      </ul>}
-  </div>
-)
-
-const OppilaitosOtsikkotiedot = ({oppilaitos, selected}) => {
-  // FIXME Refaktoroi tätä?
-  return (
-    <Link className="oppilaitos-nav-otsikkotiedot" href={selected ? '?' : '?oppilaitos=' + modelData(oppilaitos, 'oppilaitos.oid')}>
-      <div>
-        <h2>{modelTitle(oppilaitos, 'oppilaitos')}</h2>
-        <ul className="opiskeluoikeudet">
-          {modelItems(oppilaitos, 'opiskeluoikeudet').map((opiskeluoikeus, opiskeluoikeusIndex) => {
-            const hasAlkamispäivä = !!modelData(opiskeluoikeus, 'alkamispäivä')
-            return (
-              <li className="opiskeluoikeus textstyle-lead--white" key={opiskeluoikeusIndex}>
-                <span className="koulutus">{(näytettävätPäätasonSuoritukset(opiskeluoikeus)[0] || {}).title}</span>
-                {hasAlkamispäivä && <OpiskeluoikeudenTila opiskeluoikeus={opiskeluoikeus}/>}
-              </li>
-            )
-          })}
-        </ul>
-      </div>
-      {
-        selected
-          ? <ChevronUpIcon/>
-          : <ChevronDownIcon/>
-      }
-    </Link>
+            <Opiskeluoikeus opiskeluoikeus={opiskeluoikeus} oppijaOid={oppijaOid} />
+          </li>
+        ))}
+      </ul>
+    </div>
   )
+}
+
+class Opiskeluoikeus extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      expanded: false
+    }
+    this.toggleExpand = this.toggleExpand.bind(this)
+  }
+
+  toggleExpand() {
+    this.setState(prevState => ({expanded: !prevState.expanded}))
+  }
+
+  render() {
+    const {opiskeluoikeus, oppijaOid} = this.props
+    const {expanded} = this.state
+    const hasAlkamispäivä = !!modelData(opiskeluoikeus, 'alkamispäivä')
+
+    return (
+      <div className='opiskeluoikeus-container'>
+        <button className={`opiskeluoikeus-button ${expanded ? 'opiskeluoikeus-button--selected' : ''}`} aria-pressed={expanded} onClick={this.toggleExpand}>
+          <div className='opiskeluoikeus-button-content'>
+            <div className='opiskeluoikeus-title'>
+              <h3>
+                {(näytettävätPäätasonSuoritukset(opiskeluoikeus)[0] || {}).title}
+                {hasAlkamispäivä && <OpiskeluoikeudenTila opiskeluoikeus={opiskeluoikeus}/>}
+              </h3>
+            </div>
+            <div className='opiskeluoikeus-expand-icon'>
+              {expanded
+                ? <ChevronUpIcon/>
+                : <ChevronDownIcon/>}
+            </div>
+          </div>
+        </button>
+        {expanded && <OmatTiedotOpiskeluoikeus model={addContext(opiskeluoikeus, {oppijaOid: oppijaOid})}/>}
+      </div>
+    )
+  }
 }

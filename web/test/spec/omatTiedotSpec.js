@@ -118,9 +118,7 @@ describe('Omat tiedot', function() {
             it('ei vielä näytetä yhteystietoja', function () {
               expect(form.oppilaitosOptionsText()).to.equal(
                 'Voit tiedustella asiaa oppilaitokseltasi.\n' +
-                'Kulosaaren ala-aste\n' +
-                'Jyväskylän normaalikoulu\n' +
-                'Muu'
+                'Kulosaaren ala-aste Jyväskylän normaalikoulu Muu'
               )
             })
 
@@ -172,9 +170,7 @@ describe('Omat tiedot', function() {
               it('näytetään ainoastaan virheviesti', function () {
                 expect(form.oppilaitosOptionsText()).to.equal(
                   'Voit tiedustella asiaa oppilaitokseltasi.\n' +
-                  'Kulosaaren ala-aste\n' +
-                  'Jyväskylän normaalikoulu\n' +
-                  'Muu\n' +
+                  'Kulosaaren ala-aste Jyväskylän normaalikoulu Muu\n' +
                   'Oppilaitokselle ei löytynyt yhteystietoja.'
                 )
               })
@@ -346,16 +342,38 @@ describe('Omat tiedot', function() {
             })
           })
 
-          describe('Voimassaoloajan muuttaminen', function () {
-            var date = new Date()
-            date.setDate(date.getDate() + 1)
-            var dateFormatted = '' + date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear()
+          describe('Voimassaoloajan muuttaminen', () => {
+            const formattedDate = (dayDiff) => {
+              const date = new Date()
+              date.setDate(date.getDate() + dayDiff)
+              return '' + date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear()
+            }
 
-            before(form.suoritusjako(1).setVoimassaoloaika(dateFormatted))
+            const validDate = formattedDate(1)
+            const tooBigDate = formattedDate(1337)
+            const invalidDate = formattedDate(-10)
 
-            it('toimii', function() {
-              expect(form.suoritusjako(1).voimassaoloaika()).to.equal(dateFormatted)
+            describe('kun voimassaoloaika on validi', () => {
+              before(form.suoritusjako(1).setVoimassaoloaika(validDate), wait.until(form.suoritusjako(1).feedbackText.isVisible))
+              it('päivittäminen onnistuu', () => {
+                expect(form.suoritusjako(1).feedbackText.value()).to.equal('Muutokset tallennettu')
+              })
             })
+
+            describe('kun voimassaoloaika on liian suuri', () => {
+              before(form.suoritusjako(1).setVoimassaoloaika(tooBigDate), wait.until(form.suoritusjako(1).feedbackText.isVisible))
+              it('näytetään virheilmoitus', () => {
+                expect(form.suoritusjako(1).feedbackText.value()).to.equal('Pisin voimassaoloaika on vuosi')
+              })
+            })
+
+            describe('kun voimassaoloaika on menneisyydessä', () => {
+              before(form.suoritusjako(1).setVoimassaoloaika(invalidDate), wait.until(form.suoritusjako(1).feedbackText.isVisible))
+              it('näytetään virheilmoitus', () => {
+                expect(form.suoritusjako(1).feedbackText.value()).to.equal('Virheellinen päivämäärä')
+              })
+            })
+
           })
         })
 
@@ -378,8 +396,11 @@ describe('Omat tiedot', function() {
             })
 
             it('Näytetään jaetut opiskeluoikeudet oppilaitoksittain', function() {
-              expect(suoritusjako.opiskeluoikeudetText()).to.deep.equal([
-                'Jyväskylän normaalikoulu (2008—, läsnä)'
+              expect(suoritusjako.oppilaitosTitleText()).to.deep.equal([
+                'Jyväskylän normaalikoulu'
+              ])
+              expect(suoritusjako.opiskeluoikeusTitleText()).to.deep.equal([
+                'Perusopetus (2008—, läsnä)'
               ])
             })
 
@@ -392,12 +413,12 @@ describe('Omat tiedot', function() {
             })
 
             describe('Kun avataan oppilaitos', function () {
-              before(suoritusjako.avaaOpiskeluoikeus('Jyväskylän normaalikoulu (2008—, läsnä)'))
+              before(suoritusjako.avaaOpiskeluoikeus('(2008—, läsnä)'))
 
               it('näytetään oikeat opiskeluoikeudet', function() {
-                expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienMäärä()).to.equal(1)
-                expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal([
-                  'Jyväskylän normaalikoulu,  (2008—, läsnä)'
+                expect(opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienMäärä()).to.equal(1)
+                expect(opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienOtsikot()).to.deep.equal([
+                  'Perusopetus (2008—, läsnä)'
                 ])
               })
             })
@@ -572,16 +593,17 @@ describe('Omat tiedot', function() {
                 })
 
                 it('Näytetään jaetut opiskeluoikeudet oppilaitoksittain', function() {
-                  expect(suoritusjako.opiskeluoikeudetText()).to.deep.equal(['Aalto-yliopistoDipl.ins., konetekniikka (2013—2016, päättynyt)'])
+                  expect(suoritusjako.oppilaitosTitleText()).to.deep.equal(['Aalto-yliopisto'])
+                  expect(suoritusjako.opiskeluoikeusTitleText()).to.deep.equal(['Dipl.ins., konetekniikka (2013—2016, päättynyt)'])
                 })
 
                 describe('Kun avataan oppilaitos', function () {
-                  before(suoritusjako.avaaOpiskeluoikeus('Aalto-yliopistoDipl.ins., konetekniikka (2013—2016, päättynyt)'))
+                  before(suoritusjako.avaaOpiskeluoikeus('Dipl.ins., konetekniikka (2013—2016, päättynyt)'))
 
                   it('näytetään oikeat opiskeluoikeudet', function() {
-                    expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienMäärä()).to.equal(1)
-                    expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal([
-                      'Aalto-yliopisto, Dipl.ins., konetekniikka (2013—2016, päättynyt)'
+                    expect(opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienMäärä()).to.equal(1)
+                    expect(opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienOtsikot()).to.deep.equal([
+                      'Dipl.ins., konetekniikka (2013—2016, päättynyt)'
                     ])
                   })
                 })
@@ -605,16 +627,17 @@ describe('Omat tiedot', function() {
                 })
 
                 it('Näytetään jaetut opiskeluoikeudet oppilaitoksittain', function() {
-                  expect(suoritusjako.opiskeluoikeudetText()).to.deep.equal(['Aalto-yliopisto8 opintojaksoa'])
+                  expect(suoritusjako.oppilaitosTitleText()).to.deep.equal(['Aalto-yliopisto'])
+                  expect(suoritusjako.opiskeluoikeusTitleText()).to.deep.equal(['8 opintojaksoa'])
                 })
 
                 describe('Kun avataan oppilaitos', function () {
-                  before(suoritusjako.avaaOpiskeluoikeus('Aalto-yliopisto8 opintojaksoa'))
+                  before(suoritusjako.avaaOpiskeluoikeus('8 opintojaksoa'))
 
                   it('näytetään oikeat opiskeluoikeudet', function() {
-                    expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienMäärä()).to.equal(1)
-                    expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal([
-                      'Aalto-yliopisto, 8 opintojaksoa'
+                    expect(opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienMäärä()).to.equal(1)
+                    expect(opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienOtsikot()).to.deep.equal([
+                      '8 opintojaksoa'
                     ])
                   })
                 })
@@ -682,22 +705,23 @@ describe('Omat tiedot', function() {
               })
 
               it('Näytetään jaetut opiskeluoikeudet oppilaitoksittain', function() {
-                expect(suoritusjako.opiskeluoikeudetText()).to.deep.equal(['Jyväskylän normaalikoulu (2008—2016, valmistunut)'])
+                expect(suoritusjako.oppilaitosTitleText()).to.deep.equal(['Jyväskylän normaalikoulu'])
+                expect(suoritusjako.opiskeluoikeusTitleText()).to.deep.equal(['Perusopetus (2008—2016, valmistunut)'])
               })
 
               describe('Kun avataan oppilaitos', function () {
-                before(suoritusjako.avaaOpiskeluoikeus('Jyväskylän normaalikoulu (2008—2016, valmistunut)'))
+                before(suoritusjako.avaaOpiskeluoikeus('(2008—2016, valmistunut)'))
 
                 it('näytetään oikeat opiskeluoikeudet', function() {
-                  expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienMäärä()).to.equal(1)
-                  expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal([
-                    'Jyväskylän normaalikoulu,  (2008—2016, valmistunut)'
+                  expect(opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienMäärä()).to.equal(1)
+                  expect(opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienOtsikot()).to.deep.equal([
+                    'Perusopetus (2008—2016, valmistunut)'
                   ])
                 })
 
                 it('näytetään oikea suoritus (ei luokallejäänti-suoritusta)', function() {
-                  expect(opinnot.suoritusTabs('Jyväskylän normaalikoulu')).to.deep.equal(['7. vuosiluokka'])
-                  expect(opinnot.opiskeluoikeusEditor().property('luokka').getValue()).to.equal('7A')
+                  expect(opinnot.suoritusTabs('(2008—2016, valmistunut)', true)).to.deep.equal(['7. vuosiluokka'])
+                  expect(opinnot.opiskeluoikeusEditor(undefined, true).property('luokka').getValue()).to.equal('7A')
                 })
               })
             })

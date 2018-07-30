@@ -20,9 +20,10 @@ class SuoritusjakoRepository(val db: DB) extends Logging with DatabaseExecutionC
     runDbSync(SuoritusJako.filter(r => r.oppijaOid === oppijaOid && r.voimassaAsti >= Date.valueOf(LocalDate.now)).result)
   }
 
-  def create(secret: String, oppijaOid: String, suoritusIds: List[SuoritusIdentifier]): Either[HttpStatus, LocalDate] = {
+  def create(secret: String, oppijaOid: String, suoritusIds: List[SuoritusIdentifier]): Either[HttpStatus, Suoritusjako] = {
     val expirationDate = LocalDate.now.plusMonths(6)
     val maxSuoritusjakoCount = 100
+    val timestamp = Timestamp.from(Instant.now())
 
     val currentSuoritusjakoCount = runDbSync(SuoritusJako
       .filter(r => r.oppijaOid === oppijaOid && r.voimassaAsti >= Date.valueOf(LocalDate.now)).length.result
@@ -35,10 +36,10 @@ class SuoritusjakoRepository(val db: DB) extends Logging with DatabaseExecutionC
         oppijaOid,
         JsonSerializer.serializeWithRoot(suoritusIds),
         Date.valueOf(expirationDate),
-        Timestamp.from(Instant.now)
+        timestamp
       )))
 
-      Right(expirationDate)
+      Right(Suoritusjako(secret, expirationDate, timestamp))
     } else {
       Left(KoskiErrorCategory.forbidden.liianMontaSuoritusjakoa())
     }

@@ -21,18 +21,28 @@ const Ingressi = () => (
   </div>
 )
 
-const SuoritusjakoList = ({opiskeluoikeudet, suoritusjaot, onRemove}) => (
-  <div>
-    {!R.isEmpty(suoritusjaot) && <h2><Text name='Voimassaolevat linkit'/></h2>}
-
-    <ul className='suoritusjako-form__link-list'>
-      {suoritusjaot.map(suoritusjako => (
-        <li key={suoritusjako.secret}>
-          <SuoritusjakoLink suoritusjako={suoritusjako} opiskeluoikeudet={opiskeluoikeudet} onRemove={onRemove}/>
-        </li>
-      ))}
-    </ul>
-  </div>
+const SuoritusjakoList = ({opiskeluoikeudet, suoritusjaot, onRemove, showLinkCreationSuccess}) => (
+    <div>
+      {!R.isEmpty(suoritusjaot) &&
+        <div>
+          {showLinkCreationSuccess && <h2 className="link-successful-h2"><div className="link-successful-icon"/><Text name="Jakolinkin luominen onnistui."/></h2>}
+          <h2><Text name='Voimassaolevat linkit'/></h2>
+          <div className="link-information">
+            <Text name={
+              'Jakolinkillä voit näyttää suoritustietosi haluamillesi henkilöille (esimerkiksi työtä tai opiskelupaikkaa hakiessasi). ' +
+              'Linkin saajan ei tarvitse kirjautua Oma Opintopolku-palveluun. ' +
+              'Voit tarkistaa tarkan sisällön Esikatsele-painikkeella.'}
+            />
+          </div>
+          <ul className='suoritusjako-form__link-list'>
+            {suoritusjaot.map(suoritusjako => (
+              <li key={suoritusjako.secret}>
+                <SuoritusjakoLink suoritusjako={suoritusjako} opiskeluoikeudet={opiskeluoikeudet} onRemove={onRemove}/>
+              </li>
+            ))}
+          </ul>
+        </div>}
+    </div>
 )
 
 const CreateNewSuoritusjakoButton = ({selectedSuoritusIds, onClick, onSuccess, onError}) => {
@@ -98,6 +108,7 @@ export class SuoritusjakoForm extends React.Component {
     this.suoritusjaot = Atom([])
 
     this.showNewSuoritusjakoForm = Atom(false)
+    this.showLinkCreationSuccess = Atom(false)
     this.canCancelForm = this.suoritusjaot.map(R.complement(R.isEmpty))
   }
 
@@ -110,16 +121,23 @@ export class SuoritusjakoForm extends React.Component {
       else if (now.length > prev.length) this.showNewSuoritusjakoForm.set(false)
     })
 
+    this.showNewSuoritusjakoForm.onValue(() => this.showLinkCreationSuccess.set(false))
+    this.props.showFormAtom.onValue(() => this.showLinkCreationSuccess.set(false))
+
     Http.get(Url).onValue(jaot => this.suoritusjaot.set(jaot))
   }
 
   addLink(suoritusjako) {
     this.suoritusjaot.modify(list => R.append(suoritusjako, list))
     this.selectedSuoritusIds.set([])
+
+    this.showLinkCreationSuccess.set(true)
   }
 
   removeLink(suoritusjako) {
     this.suoritusjaot.modify(list => R.without([suoritusjako], list))
+
+    this.showLinkCreationSuccess.set(false)
   }
 
   render() {
@@ -133,6 +151,7 @@ export class SuoritusjakoForm extends React.Component {
           opiskeluoikeudet={opiskeluoikeudet}
           suoritusjaot={this.suoritusjaot}
           onRemove={this.removeLink.bind(this)}
+          showLinkCreationSuccess={this.showLinkCreationSuccess}
         />
         <NewSuoritusjako
           opiskeluoikeudet={opiskeluoikeudet}

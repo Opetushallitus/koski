@@ -3,7 +3,7 @@ import * as R from 'ramda'
 import {Editor} from '../editor/Editor'
 import {addContext, modelData, modelItems, modelLookup, modelSetValue} from '../editor/EditorModel'
 import Text from '../i18n/Text'
-import {Suoritustaulukko} from '../suoritus/Suoritustaulukko'
+import OmatTiedotSuoritustaulukko from '../suoritus/OmatTiedotSuoritustaulukko'
 
 const Korkeakoulusuoritukset = ({opiskeluoikeus}) => {
   const suoritukset = modelItems(opiskeluoikeus, 'suoritukset')
@@ -29,7 +29,7 @@ const Korkeakoulusuoritukset = ({opiskeluoikeus}) => {
 
 const IrrallisetOpintojaksot = ({opiskeluoikeus}) => {
   const model = addContext(opiskeluoikeus, {suoritus: opiskeluoikeus})
-  return <Suoritustaulukko suorituksetModel={modelLookup(model, 'suoritukset')}/>
+  return <OmatTiedotSuoritustaulukko suorituksetModel={modelLookup(model, 'suoritukset')}/>
 }
 
 export {Korkeakoulusuoritukset}

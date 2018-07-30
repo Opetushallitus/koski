@@ -1,4 +1,4 @@
-@header-padding: 0 17px;
+@header-padding: 0 16px;
 
 .info-text() {
   max-width: 800px;
@@ -61,8 +61,8 @@
         }
 
         &__info {
-          min-height: 180px;
-          margin-bottom: 1rem;
+          min-height: 100px;
+          margin-bottom: 2rem;
 
           @media @media-phone {
             min-height: 0;
@@ -126,37 +126,101 @@
   }
 }
 
-.oppilaitos-nav {
-  margin-bottom: 16px;
-  .oppilaitos-nav-otsikkotiedot {
-    display: flex;
-    margin: 0;
-    padding: 17px 27px 17px 17px;
-    background: @color-link-blue;
-    color: @color-white;
-    h2 {
-      margin-top: 0;
-      margin-bottom: 7px;
+.oppilaitos-list {
+  padding: 0 16px;
+  margin: 2rem 0;
+
+  .oppilaitos-container {
+    margin: 0 0 48px;
+
+    .oppilaitos-title {
+      text-transform: uppercase;
+      padding-bottom: 8px;
+      border-bottom: 2px solid @color-link-blue;
+      margin: 0 0 8px 0;
     }
-    .opiskeluoikeudet {
+
+    .opiskeluoikeudet-list {
       list-style: none;
       margin: 0;
       padding: 0;
     }
-    > div:first-child {
-      flex: 1;
-    }
-    > div:last-child {
-      align-self: center;
-      width: 1.5rem;
-      fill: @color-white;
+
+    .opiskeluoikeus-container {
+      border: 1px solid #F5F5F5;
+      margin: 0 0 8px;
+
+      .opiskeluoikeus-button {
+        background: #FFFFFF;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        border: 0;
+        cursor: pointer;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.4);
+
+        &--selected {
+          background: @color-light-blue;
+        }
+
+        .opiskeluoikeus-button-content {
+          display: flex;
+
+          .opiskeluoikeus-title {
+            padding: 24px;
+            flex: 1;
+            text-align: left;
+            color: black;
+
+            @media @media-phone {
+              padding: 18px 10px;
+            }
+
+            h3 {
+              margin: 0;
+            }
+          }
+
+          .opiskeluoikeus-expand-icon {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex: 0 0 4rem;
+            color: @color-white;
+            background: @color-link-blue;
+
+            .svg-icon {
+              width: 1.6rem;
+            }
+          }
+        }
+      }
+
+      .opiskeluoikeus {
+        margin-top: 4px;
+        background: #FFFFFF;
+
+        .opiskeluoikeus-content {
+          outline: none;
+        }
+
+        .opiskeluoikeuden-tiedot {
+          .inline-link-button {
+            &.open {
+              margin-bottom: 8px;
+            }
+            &:after {
+              font-family: FontAwesome;
+              content: '';
+              margin-left: 6px;
+              font-size: 11px;
+            }
+            &.open:after {
+              content: '';
+            }
+          }
+        }
+      }
     }
   }
-
-  // overrides compared to virkailija view
-  .opiskeluoikeus h3 {
-    color: black;
-    background: @color-neutral-gray;
-  }
-
 }

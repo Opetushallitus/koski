@@ -1,6 +1,9 @@
 function OpinnotPage() {
-  function resolveOpiskeluoikeus(indexOrName) {
-    var all = S('.opiskeluoikeuksientiedot > li > div.opiskeluoikeus')
+  function resolveOpiskeluoikeus(indexOrName, omatTiedot = false) {
+    const all = !omatTiedot
+      ? S('.opiskeluoikeuksientiedot > li > div.opiskeluoikeus')
+      : S('.opiskeluoikeudet-list > li > div.opiskeluoikeus-container')
+
     if (typeof indexOrName === 'undefined') {
       // most common case, just a single opiskeluoikeus
       if (all.length !== 1) {
@@ -9,7 +12,7 @@ function OpinnotPage() {
       return all
     } else if (typeof indexOrName === 'string') {
       // find the right opiskeluoikeus by name (safe against changes in sorting)
-      var matching = all.filter(function(i,v) { return $(v).find(".otsikkotiedot").text().includes(indexOrName) })
+      var matching = all.filter(function(i,v) { return $(v).find(!omatTiedot ? '.otsikkotiedot' : 'button.opiskeluoikeus-button .opiskeluoikeus-button-content .opiskeluoikeus-title').text().includes(indexOrName) })
       if (matching.length !== 1) {
         throw new Error('opiskeluoikeus not found, got ' + matching.length + ' matches for ' + indexOrName)
       }
@@ -55,8 +58,8 @@ function OpinnotPage() {
       var tab = findSingle('.suoritus-tabs > ul > li:contains(' + nimi + ')', opiskeluoikeus)()
       return tab.hasClass('selected')
     },
-    suoritusTabs: function(indexOrName) {
-      var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
+    suoritusTabs: function(indexOrName, omatTiedot = false) {
+      var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName, omatTiedot)
       return textsOf(subElement(opiskeluoikeus, '.suoritus-tabs > ul > li'))
     },
     suoritusTabIndex: function(indexOrName){
@@ -100,8 +103,8 @@ function OpinnotPage() {
       }
     },
     opiskeluoikeudet: Opiskeluoikeudet(),
-    opiskeluoikeusEditor: function(index) {
-      var elem = findSingle('.opiskeluoikeus-content', function() { return resolveOpiskeluoikeus(index) })
+    opiskeluoikeusEditor: function(index, omatTiedot = false) {
+      var elem = findSingle('.opiskeluoikeus-content', function() { return resolveOpiskeluoikeus(index, omatTiedot) })
       return _.merge(
         Editor(elem),
         {
@@ -259,7 +262,7 @@ function Oppiaine(oppiaineElem) {
       asetaKuvaus: function(arvo) {
         return kuvaus().setValue(arvo || 'Paikallisen kurssin kuvaus')
       },
-      lisääKurssi: click(subElement(modalElem, 'button')),
+      lisääKurssi: click(subElement(modalElem, 'button.vahvista')),
       kurssit: function() {
         return kurssiDropdown().getOptions()
       },
@@ -394,13 +397,13 @@ function TutkinnonOsat(groupId) {
               Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .suorituspaikka .value input:not(.select)').setValue(tiedot.suorituspaikka[1])
               Page(tutkinnonOsaElement).getInput('.näyttö .modal-content .työssäoppimisenYhteydessä .value input').setValue(tiedot.työssäoppimisenYhteydessä)
 
-              if (findSingle('.näyttö .modal-content button', tutkinnonOsaElement)().prop('disabled')) {
+              if (findSingle('.näyttö .modal-content button.vahvista', tutkinnonOsaElement)().prop('disabled')) {
                 throw new Error('Invalid model')
               }
             })
           }
         },
-        painaOkNäyttöModal: click(findSingle('.näyttö .modal-content button', tutkinnonOsaElement)),
+        painaOkNäyttöModal: click(findSingle('.näyttö .modal-content button.vahvista', tutkinnonOsaElement)),
         poistaNäyttö: click(findSingle('.näyttö .remove-value', tutkinnonOsaElement))
       }, {}, Editor(tutkinnonOsaElement))
       return api
@@ -416,7 +419,7 @@ function TutkinnonOsat(groupId) {
         var modalElement = subElement(uusiTutkinnonOsaElement, '.lisaa-paikallinen-tutkinnon-osa-modal')
         return click(subElement(uusiTutkinnonOsaElement, ('.paikallinen-tutkinnon-osa a')))()
           .then(Page(modalElement).setInputValue('input', nimi))
-          .then(click(subElement(modalElement, 'button:not(:disabled)')))
+          .then(click(subElement(modalElement, 'button.vahvista:not(:disabled)')))
       }
     },
     lisääTutkinnonOsaToisestaTutkinnosta: function(tutkinto, nimi) {
@@ -425,7 +428,7 @@ function TutkinnonOsat(groupId) {
         return click(subElement(uusiTutkinnonOsaElement, ('.osa-toisesta-tutkinnosta a')))()
           .then(Page(modalElement).setInputValue('.tutkinto .autocomplete', tutkinto))
           .then(Page(modalElement).setInputValue('.tutkinnon-osat .dropdown', nimi))
-          .then(click(subElement(modalElement, 'button:not(:disabled)')))
+          .then(click(subElement(modalElement, 'button.vahvista:not(:disabled)')))
       }
     },
     isLisääTutkinnonOsaToisestaTutkinnostaVisible: function() {
@@ -435,7 +438,7 @@ function TutkinnonOsat(groupId) {
       return Page(uusiTutkinnonOsaElement).getInputOptions(".dropdown")
     },
     laajuudenOtsikko: function() {
-      return S('.suoritus-taulukko:eq(0) td.laajuus:eq(0)').text()
+      return S('.suoritus-taulukko:eq(0) th.laajuus:eq(0)').text()
     },
     laajuudetYhteensä: function() {
       return S('.suoritus-taulukko:eq(0) .laajuudet-yhteensä').text()
@@ -488,7 +491,7 @@ function IBSuoritukset() {
 function Opiskeluoikeudet() {
   return {
     oppilaitokset: function() {
-      return textsOf(S('.oppilaitokset-nav .oppilaitos-nav .oppilaitos-nav-otsikkotiedot h2'))
+      return textsOf(S('.oppilaitos-list .oppilaitos-container h2.oppilaitos-title'))
     },
     opiskeluoikeustyypit: function() {
       return textsOf(S('.opiskeluoikeustyypit-nav .opiskeluoikeustyyppi'))
@@ -496,9 +499,14 @@ function Opiskeluoikeudet() {
     opiskeluoikeuksienMäärä: function() {
       return S('.opiskeluoikeuksientiedot .opiskeluoikeus').length
     },
-
+    omatTiedotOpiskeluoikeuksienMäärä: function() {
+      return S('.oppilaitos-list .oppilaitos-container .opiskeluoikeudet-list button.opiskeluoikeus-button').length
+    },
     opiskeluoikeuksienOtsikot: function() {
       return textsOf(S('.opiskeluoikeuksientiedot .opiskeluoikeus h3 .otsikkotiedot'))
+    },
+    omatTiedotOpiskeluoikeuksienOtsikot: function() {
+      return textsOf(S('.oppilaitos-list .oppilaitos-container .opiskeluoikeudet-list button.opiskeluoikeus-button h3'))
     },
 
     valitseOpiskeluoikeudenTyyppi: function(tyyppi) {
@@ -587,7 +595,7 @@ function TilaJaVahvistus() {
 
 function MerkitseValmiiksiDialog() {
   var elem = findSingle('.merkitse-valmiiksi-modal')
-  var buttonElem = findSingle('button', elem)
+  var buttonElem = findSingle('button.vahvista', elem)
   var api = {
     merkitseValmiiksi: function( ) {
       if (buttonElem().is(':disabled')) throw new Error('disabled button')
@@ -613,7 +621,7 @@ function MerkitseValmiiksiDialog() {
 
 function LisääSuoritusDialog() {
   var elem = findSingle('.lisaa-suoritus-modal')
-  var buttonElem = findSingle('button', elem)
+  var buttonElem = findSingle('button.vahvista', elem)
   function link(text) { return findSingle(".add-suoritus a:contains(" + (text || '') + ")") }
   var api = _.merge({
     isLinkVisible: function(text) {
@@ -688,7 +696,7 @@ function Päivämääräväli(elem) {
 
 function OpiskeluoikeusDialog() {
   var elem = findSingle('.lisaa-opiskeluoikeusjakso-modal')
-  var button = findSingle('button', elem)
+  var button = findSingle('button.vahvista', elem)
   return {
     tila: function() {
       var p = Property(function() {return findSingle('.lisaa-opiskeluoikeusjakso-modal')})

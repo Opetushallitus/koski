@@ -41,7 +41,6 @@
       margin: 0;
       padding: 17px 27px 17px 17px;
       background: @color-dark-blue 100%;
-      font-size: 18px;
       color: @color-white;
       letter-spacing: 0;
       font-weight: normal;
@@ -422,7 +421,7 @@
 
       h4 {
         text-transform: none;
-        font-size: 24px;
+        font-size: 1.714rem;
         margin-top: 0;
       }
 
@@ -624,7 +623,6 @@
                 &.label {
                   min-width: 100px;
                   padding-right: 12px;
-                  color: @color-label;
                   white-space: nowrap;
                   .omattiedot-phone({
                     font-size: 12px;
@@ -686,6 +684,19 @@
                 }
               }
             }
+          }
+        }
+
+        // FIXME: This is just a small adjustment to make properties style match new styles even a little
+        // The properties style is scoped pretty problematically and would require major refactoring in order
+        // to style properties differently for kansalainen.
+        &.kansalainen {
+          .label, td.label, .tabular-array th {
+            color: black !important;
+          }
+
+          td.value {
+            font-weight: 600;
           }
         }
       }
