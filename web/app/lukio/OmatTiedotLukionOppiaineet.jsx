@@ -22,7 +22,6 @@ import {
 import IBKurssinArviointiEditor from '../ib/IBKurssinArviointiEditor'
 import {isIBKurssinArviointi} from '../kurssi/KurssiPopup'
 import {isIBKurssi} from '../kurssi/kurssi'
-import {nothing} from '../util/util'
 import {OmatTiedotLukionOppiaineetTableHead} from './fragments/LukionOppiaineetTableHead'
 
 
@@ -75,7 +74,7 @@ export class OmatTiedotLukionOppiaine extends React.Component {
     const Kurssit = isMobile ? KurssitListMobile : KurssitListDesktop
 
     return [
-      <tr key='header' className={`oppiaine-header ${(expandable && expanded) ? 'expanded' : ''}`} onClick={expandable ? this.toggleExpand : nothing}>
+      <tr key='header' className={`oppiaine-header ${(expandable && expanded) ? 'expanded' : ''}`} onClick={expandable ? this.toggleExpand : undefined}>
         <td className='oppiaine'>
           <div className='otsikko-content'>
             {isMobile && <span className='expand-icon' aria-hidden={true}>{expandable && (expanded ? ' - ' : ' + ')}</span>}
