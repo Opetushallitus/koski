@@ -18,8 +18,8 @@ export const LukionOppiaineetTableHead = () => (
 export const OmatTiedotLukionOppiaineetTableHead = () => (
   <thead>
   <tr>
-    <th className='oppiaine'><Text name='Oppiaine'/></th>
-    <th className='arvosana'><Text name='Arvosana'/></th>
+    <th className='oppiaine' scope='col'><Text name='Oppiaine'/></th>
+    <th className='arvosana' scope='col'><Text name='Arvosana'/></th>
   </tr>
   </thead>
 )

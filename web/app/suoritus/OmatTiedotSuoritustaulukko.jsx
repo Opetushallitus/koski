@@ -126,7 +126,7 @@ class Suoritus extends React.Component {
 
 const SuoritusColumn = {
   shouldShow : () => true,
-  renderHeader: ({groupTitles, groupId}) => <th key='suoritus' className='tutkinnon-osan-ryhma'>{groupTitles[groupId]}</th>,
+  renderHeader: ({groupTitles, groupId}) => <th key='suoritus' className='tutkinnon-osan-ryhma' scope='col'>{groupTitles[groupId]}</th>,
   renderData: ({model, onExpand, expandable, expanded}) => {
     const suoritusTitle = suoritusValmis(model)
       ? modelTitle(model, 'koulutusmoduuli')
