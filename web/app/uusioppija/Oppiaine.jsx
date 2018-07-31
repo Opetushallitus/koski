@@ -57,9 +57,10 @@ export default ({suoritusPrototypeP, oppiaineenSuoritusAtom, perusteAtom, oppila
               allowPaikallinen={false}
               />
           </label>
-          { suoritusModelP.map(model =>
-            model && <label><PropertyEditor model={modelLookup(model, 'koulutusmoduuli')} propertyName="kieli"/></label> )
-          }
+          { suoritusModelP.map(model => model && (<React.Fragment>
+            <label><PropertyEditor model={modelLookup(model, 'koulutusmoduuli')} propertyName="kieli"/></label>
+            <label><PropertyEditor model={modelLookup(model, 'koulutusmoduuli')} propertyName="oppimäärä"/></label>
+          </React.Fragment>))}
         </span>)
       })
     }
