@@ -7,10 +7,12 @@ import {sortGrades} from '../util/sorting'
 import {fetchAlternativesBasedOnPrototypes} from '../editor/EnumEditor'
 import {fixArviointi} from './Suoritus'
 
-export const ArvosanaEditor = ({model}) => {
+export const ArvosanaEditor = ({model, notFoundText}) => {
   if (!model.context.edit) {
     const arvosanaModel = resolveArvosanaModel(model)
-    return arvosanaModel ? <Editor model={ arvosanaModel }/> : null
+    return arvosanaModel
+      ? <Editor model={ arvosanaModel }/>
+      : (notFoundText ? <span>{notFoundText}</span> : null)
   }
   model = fixArviointi(model)
   const alternativesP = fetchAlternativesBasedOnPrototypes(oneOfPrototypes(wrapOptional(modelLookup(model, 'arviointi.-1'))), 'arvosana').startWith([])

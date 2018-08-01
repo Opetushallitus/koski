@@ -2,19 +2,21 @@ import React from 'baret'
 import * as R from 'ramda'
 import Bacon from 'baconjs'
 import {LukionOppiaineEditor} from '../lukio/LukionOppiaineEditor'
-import {LukionOppiaineetTableHead} from '../lukio/fragments/LukionOppiaineetTableHead'
+import {
+  LukionOppiaineetTableHead,
+  OmatTiedotLukionOppiaineetTableHead
+} from '../lukio/fragments/LukionOppiaineetTableHead'
 import {modelData, modelItems, modelLookup} from '../editor/EditorModel'
 import {FootnoteDescriptions} from '../components/footnote'
 import {UusiIBOppiaineDropdown} from './UusiIBOppiaineDropdown'
 import {koodistoValues} from '../uusioppija/koodisto'
 import {t} from '../i18n/i18n'
+import {OmatTiedotLukionOppiaine} from '../lukio/OmatTiedotLukionOppiaineet'
+import {isMobileAtom} from '../util/isMobileAtom'
 
 const ArvosanaFootnote = {title: 'Ennustettu arvosana', hint: '*'}
 
-export const IBTutkinnonOppiaineetEditor = ({suorituksetModel, additionalEditableKoulutusmoduuliProperties}) => {
-  const {edit, suoritus: päätasonSuoritusModel} = suorituksetModel.context
-  const oppiaineet = modelItems(suorituksetModel)
-
+const IBRyhmät = (oppiaineet, päätasonSuoritusModel, edit) => {
   const ryhmätOppiaineista = Bacon.constant(oppiaineet.map(oppiaine => modelData(oppiaine, 'koulutusmoduuli.ryhmä')))
   const ryhmätKoodistosta = edit ? koodistoValues('aineryhmaib') : Bacon.constant([])
   const ryhmätKaikki = Bacon.combineWith(ryhmätOppiaineista, ryhmätKoodistosta,
@@ -27,6 +29,15 @@ export const IBTutkinnonOppiaineetEditor = ({suorituksetModel, additionalEditabl
   const footnotes = R.any(s => modelData(s, 'arviointi.-1.predicted'), R.concat(oppiaineet, yhteisetIbSuoritukset))
     ? [ArvosanaFootnote]
     : []
+
+  return {aineryhmät, footnotes}
+}
+
+export const IBTutkinnonOppiaineetEditor = ({suorituksetModel, additionalEditableKoulutusmoduuliProperties}) => {
+  const {edit, suoritus: päätasonSuoritusModel} = suorituksetModel.context
+  const oppiaineet = modelItems(suorituksetModel)
+
+  const {aineryhmät, footnotes} = IBRyhmät(oppiaineet, päätasonSuoritusModel, edit)
 
   return (
     <div>
@@ -64,4 +75,43 @@ export const IBTutkinnonOppiaineetEditor = ({suorituksetModel, additionalEditabl
       {!R.isEmpty(footnotes) && <FootnoteDescriptions data={footnotes}/>}
     </div>
   )
+}
+
+export const OmatTiedotIBTutkinnonOppiaineet = ({suorituksetModel}) => {
+  const {suoritus: päätasonSuoritusModel} = suorituksetModel.context
+  const oppiaineet = modelItems(suorituksetModel)
+
+  const {aineryhmät, footnotes} = IBRyhmät(oppiaineet, päätasonSuoritusModel)
+
+  return (
+    <div className='ib-aineryhmat'>
+      {
+        aineryhmät.map(ryhmät => ryhmät.map(r => [
+          <h4 key={r.ryhmä.koodiarvo} className='aineryhma-title'>
+            {t(r.ryhmä.nimi)}
+          </h4>,
+          <table key={`suoritustable-${r.ryhmä.koodiarvo}`} className='omattiedot-suoritukset'>
+            <OmatTiedotLukionOppiaineetTableHead />
+            <tbody>
+            {r.aineet && Bacon.combineWith(isMobileAtom, mobile =>
+              r.aineet.map((oppiaine, oppiaineIndex) => {
+                const footnote = modelData(oppiaine, 'arviointi.-1.predicted') && ArvosanaFootnote
+                return (
+                  <OmatTiedotLukionOppiaine
+                    key={oppiaineIndex}
+                    oppiaine={oppiaine}
+                    isMobile={mobile}
+                    footnote={footnote}
+                  />
+                )
+              })
+            )}
+            </tbody>
+          </table>
+        ]))
+      }
+      {!R.isEmpty(footnotes) && <FootnoteDescriptions data={footnotes}/>}
+    </div>
+  )
+
 }

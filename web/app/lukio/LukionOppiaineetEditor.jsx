@@ -49,8 +49,7 @@ export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaine
   )
 }
 
-export const paikallisiaLukionOppiaineitaTaiKursseja = oppiaineet =>
-  oppiaineet.some(aine => isPaikallinen(modelLookup(aine, 'koulutusmoduuli')) || modelItems(aine, 'osasuoritukset').some(kurssi => isPaikallinen(modelLookup(kurssi, 'koulutusmoduuli'))))
+export const paikallisiaLukionOppiaineitaTaiKursseja = oppiaineet => oppiaineet.some(aine => isPaikallinen(modelLookup(aine, 'koulutusmoduuli')) || paikallisiaKursseja(aine))
+export const paikallisiaKursseja = oppiaine => modelItems(oppiaine, 'osasuoritukset').some(kurssi => isPaikallinen(modelLookup(kurssi, 'koulutusmoduuli')))
 
-const arvioidutKurssit = oppiaineet => flatMapArray(oppiaineet, oppiaine => hyväksytystiSuoritetutKurssit(modelItems(oppiaine, 'osasuoritukset')))
-
+export const arvioidutKurssit = oppiaineet => flatMapArray(oppiaineet, oppiaine => hyväksytystiSuoritetutKurssit(modelItems(oppiaine, 'osasuoritukset')))

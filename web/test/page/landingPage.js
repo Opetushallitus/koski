@@ -3,6 +3,9 @@ function LandingPage() {
     openPage: function() {
       return openPage('/koski/', api.isVisible)()
     },
+    openMobilePage: function() {
+      return openPage('/koski/', api.isVisible, 375)()
+    },
     go: function() {
       return openPage('/koski/')()
     },

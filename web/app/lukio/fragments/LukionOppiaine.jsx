@@ -54,13 +54,20 @@ const KoulutusmoduuliPropertiesEditor = ({oppiaine, additionalEditableProperties
   )
 }
 
+const kurssienKeskiarvo = suoritetutKurssit => {
+  const numeerinenArvosana = kurssi => parseInt(R.last(kurssi.arviointi).arvosana.koodiarvo)
+  const kurssitNumeerisellaArvosanalla = suoritetutKurssit.filter(kurssi => !isNaN(numeerinenArvosana(kurssi)))
+  if (kurssitNumeerisellaArvosanalla.length > 0) {
+    const keskiarvo = Math.round((kurssitNumeerisellaArvosanalla.map(numeerinenArvosana).reduce((a, b) => a + b) / kurssitNumeerisellaArvosanalla.length) * 10) / 10
+    return keskiarvo.toFixed(1).replace('.', ',')
+  }
+}
+
 const Arviointi = ({oppiaine, suoritetutKurssit, footnote}) => {
   const {edit} = oppiaine.context
 
   const arviointi = modelData(oppiaine, 'arviointi')
-  const numeerinenArvosana = kurssi => parseInt(R.last(kurssi.arviointi).arvosana.koodiarvo)
-  const kurssitNumeerisellaArvosanalla = suoritetutKurssit.filter(kurssi => !isNaN(numeerinenArvosana(kurssi)))
-  const keskiarvo = kurssitNumeerisellaArvosanalla.length > 0 && Math.round((kurssitNumeerisellaArvosanalla.map(numeerinenArvosana).reduce((a, b) => a + b) / kurssitNumeerisellaArvosanalla.length) * 10) / 10
+  const keskiarvo = kurssienKeskiarvo(suoritetutKurssit)
 
   return (
     <div>
@@ -83,7 +90,7 @@ const Arviointi = ({oppiaine, suoritetutKurssit, footnote}) => {
           <FootnoteHint title={footnote.title} hint={footnote.hint} />
         }
       </div>
-      <div className='keskiarvo'>{keskiarvo ? '(' + keskiarvo.toFixed(1).replace('.', ',') + ')' : ''}</div>
+      <div className='keskiarvo'>{keskiarvo ? `(${keskiarvo})` : ''}</div>
     </div>
   )
 }
@@ -91,5 +98,6 @@ const Arviointi = ({oppiaine, suoritetutKurssit, footnote}) => {
 export {
   Nimi,
   KoulutusmoduuliPropertiesEditor,
-  Arviointi
+  Arviointi,
+  kurssienKeskiarvo
 }

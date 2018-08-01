@@ -29,6 +29,10 @@
     .osasuoritukset .kurssit-yhteensä {
       float: right;
       margin-right: 3px;
+
+      .omattiedot-phone({
+        float: none;
+      });
     }
     table.suoritukset {
       width: 100%;
@@ -118,6 +122,162 @@
           &.error {
             td.error {
               color: @color-red;
+            }
+          }
+        }
+      }
+    }
+
+    .ib-aineryhmat {
+      > .aineryhma-title {
+        font-size: 1.1428rem;
+        margin-bottom: 0;
+        padding-bottom: 0.4rem;
+        border-bottom: 1px solid @color-neutral-gray;
+      }
+
+      > table.omattiedot-suoritukset {
+        margin-bottom: 2rem;
+
+        @media @media-phone {
+          margin-bottom: 1.4rem;
+        }
+      }
+    }
+
+    table.omattiedot-suoritukset {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 5px;
+      table-layout: fixed; // The normal layout doesn't really like flexbox inside table cell...
+
+      .screenreader-info {
+        height: 1px;
+        width: 1px;
+        position: absolute;
+        overflow: hidden;
+      }
+
+      > thead > tr > th.oppiaine,
+      > tbody > tr > td.oppiaine {
+        width: 100%;
+      }
+
+      > thead > tr > th.arvosana,
+      > tbody > tr > td.arvosana {
+        text-align: center;
+        width: 8rem;
+
+        @media @media-phone {
+          width: 6rem;
+        }
+      }
+
+      > tbody {
+        > tr.oppiaine-header {
+          > td {
+            font-weight: 600;
+            background: @color-light-blue;
+            padding: 8px;
+
+            &.oppiaine {
+              padding-left: 1rem;
+
+              > .otsikko-content {
+                display: flex;
+
+                > button {
+                  flex: 0 1 auto;
+                  font-weight: 600;
+                  overflow: hidden;
+                  white-space: nowrap;
+                  text-overflow: ellipsis;
+                }
+
+                .nimi {
+                  margin-right: 0.2rem;
+                }
+
+                > .laajuus {
+                  flex: 0 0 auto;
+                }
+
+                > .expand-icon {
+                  flex: 0 0 1.6rem;
+                  margin-left: -1rem;
+                  text-align: center;
+                }
+              }
+            }
+          }
+
+          &.expanded > td {
+            background: @color-medium-blue;
+          }
+
+          @media @media-phone {
+            cursor: pointer;
+
+            button {
+              cursor: pointer;
+            }
+          }
+        }
+
+        > tr.oppiaine-kurssit {
+          > td.kurssilista {
+            padding-left: 2rem;
+
+            > .kurssit > ul > li.kurssi {
+              min-width: 50px;
+
+              &:not(:last-of-type) {
+                padding-right: 20px;
+              }
+            }
+          }
+
+          > td > table.kurssilista-mobile {
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 1rem;
+
+            > thead > tr > th {
+              padding: 0 8px 8px 8px;
+              border-bottom: 1px solid @color-neutral-gray;
+            }
+
+            > thead > tr, > tbody > tr {
+              > .nimi {
+                width: 20%;
+              }
+
+              > .arvosana, > .lisatiedot {
+                width: 40%;
+                text-align: center;
+
+                &.keskiarvo {
+                  font-weight: 600;
+                }
+              }
+            }
+
+            > tbody {
+              > tr > td {
+                padding: 8px;
+              }
+
+              > tr.kurssi {
+                &.even { // nth-child/nth-of-type do not support matching classes, so this is needed. (properties adds one tr to the DOM causing the colors to switch)
+                  background: @color-neutral-gray;
+                }
+
+                > td.nimi {
+                  font-weight: 600;
+                }
+              }
             }
           }
         }
