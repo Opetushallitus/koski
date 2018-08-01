@@ -1,0 +1,159 @@
+.omattiedot-kayttoluvat {
+  margin: 160px auto 46px auto;
+  max-width: 1320px;
+  padding: 16px;
+  width: 100%;
+
+  @media @media-phone {
+    margin: 126px auto 46px auto;
+    max-width: 767px;
+  }
+
+  > div div.kayttoluvat-info {
+    > div span.info {
+      font-size: 1.4rem;
+      max-width: 826px;
+    }
+  }
+
+  > div h3.oppija-nimi {
+    margin-top: 3rem;
+    margin-bottom: 0;
+
+    > span.nimi {
+      font-weight: 600;
+    }
+  }
+
+  > .kayttoluvat-container {
+    > .divider {
+      color: @color-link-blue;
+    }
+
+    .kayttoluvat-expander {
+      display: flex;
+
+      > .expander-text {
+        flex: 1;
+        text-align: left;
+
+        > h2 {
+          margin-bottom: 0;
+        }
+      }
+
+      > .expand-icon {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        color: @color-link-blue;
+
+        .svg-icon {
+          width: 2.2rem;
+        }
+      }
+    }
+
+    > .no-permission {
+      border: solid 1px @color-link-blue;
+      padding: 2rem 4rem 3rem 2rem;
+
+      > span {
+        font-size: 1.4rem;
+      }
+    }
+
+    .kayttolupa-container {
+      border: solid 1px @color-link-blue;
+      display: flex;
+      margin-top: 1.2rem;
+
+      @media @media-phone {
+        display: inline-block;
+        align-content: center;
+        padding: 1rem;
+        width: 100%;
+      }
+
+      > .lupa-info {
+        width: 60%;
+        padding-left: 24px;
+        padding-bottom: 1.25rem;
+
+        @media @media-phone {
+          padding: 0;
+          width: 100%;
+        }
+
+        >.list-label {
+          font-weight: 600;
+        }
+
+        > ul {
+          list-style-position: inside;
+          padding-left: 0;
+        }
+      }
+
+      > .voimassaolo {
+        width: 20%;
+        margin-top: 4rem;
+
+        @media @media-phone {
+          margin-top: 0;
+          width: 100%;
+          display: flex;
+        }
+
+        span {
+          font-size: 1.1rem;
+        }
+
+        > .teksti {
+          margin-bottom: 1rem;
+          text-align: center;
+        }
+
+        .aikaleima {
+          text-align: center;
+
+          > .mobile-whitespace {
+            display: none;
+
+            @media @media-phone {
+              display: initial;
+            }
+          }
+        }
+      }
+
+      .peru-lupa {
+        width: 20%;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+
+        @media @media-phone {
+          width: 100%;
+          margin-top: 1rem;
+        }
+
+        > button {
+          font-size: 1.1rem;
+          font-weight: 600;
+          color: @color-blue;
+
+          @media @media-phone {
+            font-size: 1.2rem;
+          }
+        }
+      }
+    }
+  }
+
+  .kayttoluvat-modal-container {
+    span {
+      font-size: 1.2rem;
+    }
+  }
+}
