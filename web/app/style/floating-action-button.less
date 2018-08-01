@@ -1,0 +1,39 @@
+@floating-action-button-height: 30px;
+@floating-action-button-width: 230px;
+
+.FloatingActionButton {
+  @media @media-full {
+    display: none;
+  }
+
+  .link();
+  .DropShadow;
+
+  position: fixed;
+  height: @floating-action-button-height;
+  left: calc(50% - @floating-action-button-width * 0.5);
+  padding: 0 @floating-action-button-height * 0.5;
+  background: @color-white;
+  border: 2px solid @color-link-blue;
+  border-radius: @floating-action-button-height * 0.5;
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1rem;
+  cursor: pointer;
+  text-align: center;
+  z-index: @z-index-popup;
+  transition: bottom 0.25s;
+  min-width: @floating-action-button-width;
+}
+
+.floating-action-button {
+  &--visible {
+    .FloatingActionButton;
+    bottom: 0.5rem;
+  }
+
+  &--hidden {
+    .FloatingActionButton;
+    bottom: -@floating-action-button-height;
+  }
+}
