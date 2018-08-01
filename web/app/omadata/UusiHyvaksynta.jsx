@@ -5,6 +5,7 @@ import Text from '../i18n/Text'
 import AnnaHyvaksynta from './AnnaHyvaksynta'
 import HyvaksyntaAnnettu from './HyvaksyntaAnnettu'
 import {formatFinnishDate, parseISODate} from '../date/date'
+import {getBirthdayFromEditorRes} from '../util/util'
 
 const editorP = Http.cachedGet('/koski/api/omattiedot/editor', { errorMapper: () => undefined }).toProperty()
 
@@ -13,9 +14,7 @@ const getBirthDate = (editorResponse) => {
 
   return formatFinnishDate(
     parseISODate(
-      editorResponse.value.properties.find(p => p.key === 'henkilö')
-        .model.value.properties.find(p => p.key === 'syntymäaika')
-        .model.value.data
+      getBirthdayFromEditorRes(editorResponse)
     )
   )
 }
