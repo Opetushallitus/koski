@@ -31,25 +31,35 @@
     }
 
     .kayttoluvat-expander {
-      display: flex;
+      > .kayttolupa-button {
+        width: 100%;
+        border: 0;
+        margin: 0;
+        background: none;
+        cursor: pointer;
 
-      > .expander-text {
-        flex: 1;
-        text-align: left;
+        > .button-container {
+          display: flex;
+          
+          > .expander-text {
+            flex: 1;
+            text-align: left;
 
-        > h2 {
-          margin-bottom: 0;
-        }
-      }
+            > h2 {
+              margin-bottom: 0;
+            }
+          }
 
-      > .expand-icon {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        color: @color-link-blue;
+          > .expand-icon {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            color: @color-link-blue;
 
-        .svg-icon {
-          width: 2.2rem;
+            .svg-icon {
+              width: 2.2rem;
+            }
+          }
         }
       }
     }

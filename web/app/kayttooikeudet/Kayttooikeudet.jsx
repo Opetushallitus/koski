@@ -28,7 +28,7 @@ export class Kayttooikeudet extends React.Component {
       loading: true,
       showDeleteConfirm: false,
       removeId: '',
-      valtuudet: [],
+      valtuudet: []
     }
 
     this.removePermission = this.removePermission.bind(this)
@@ -87,12 +87,12 @@ export class Kayttooikeudet extends React.Component {
             fullscreen={true}
             onDismiss={this.hideDeleteConfirm}
             onSubmit={() => this.removePermission(removeId)}
-            okTextKey='Kyllä, poista lupa'
+            okTextKey={'Kyllä, poista lupa'}
             cancelTextKey='Älä poista lupaa'
             children={
               <div className='kayttoluvat-modal-container'>
-                <Text name={`Olet poistamassa palveluntarjoajalle`}/>
-                <span>" {removeName} "</span>
+                <Text name={'Olet poistamassa palveluntarjoajalle'}/>
+                <span> "{removeName}" </span>
                 <Text name={'annettua lupaa nähdä opintoihisi liittyviä tietoja. ' +
                   'Poistaessasi luvan, voit menettää palveluntarjoajan opintoihisi liittyvät edut'}/>
               </div>}
@@ -138,13 +138,17 @@ class Kayttoluvat extends React.Component {
 
     return (
       <div className='kayttoluvat-container'>
-        <div className='kayttoluvat-expander' onClick={() => this.toggleExpand()}>
-          <div className='expander-text'><h2><Text name='Annetut käyttöluvat' /></h2></div>
-          <div className='expand-icon'>
-            {expanded
-              ? <ChevronUpIcon/>
-              : <ChevronDownIcon/>}
-          </div>
+        <div className='kayttoluvat-expander'>
+          <button className='kayttolupa-button' onClick={() => this.toggleExpand()} aria-pressed={expanded}>
+            <div className='button-container'>
+              <div className='expander-text'><h2><Text name='Annetut käyttöluvat' /></h2></div>
+              <div className='expand-icon'>
+                {expanded
+                  ? <ChevronUpIcon/>
+                  : <ChevronDownIcon/>}
+              </div>
+            </div>
+          </button>
         </div>
         <hr className='divider' />
         {
@@ -168,7 +172,7 @@ const Kayttolupa = ({kayttolupa, removeCallback}) => {
   const timestampInFinnish = ISO2FinnishDate(timestamp)
 
   return (
-    <div className='kayttolupa-container'>
+    <div className='kayttolupa-container' tabIndex={0}>
 
       <div className='lupa-info'>
         <h2>{asiakasName}</h2>
