@@ -24,7 +24,8 @@ module.exports = {
     lander: './app/Lander.jsx',
     omadata: './app/omadata/HyvaksyntaLanding.jsx',
     eisuorituksia: './app/EiSuorituksia.jsx',
-    korhopankki: './app/Korhopankki.jsx'
+    korhopankki: './app/Korhopankki.jsx',
+    kayttooikeudet: './app/Kayttooikeudet.jsx'
   },
   output: {
     path: __dirname + '/../target/webapp',
