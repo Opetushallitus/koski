@@ -80,7 +80,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val suoritusjakoRepository = new SuoritusjakoRepository(masterDatabase.db)
   lazy val suoritusjakoService = new SuoritusjakoService(suoritusjakoRepository, oppijaFacade)
   lazy val mydataRepository = new MyDataRepository(masterDatabase.db)
-  lazy val mydataService = new MyDataService(mydataRepository)
+  lazy val mydataService = new MyDataService(mydataRepository, this)
   lazy val sessionTimeout = SessionTimeout(config)
   lazy val koskiSessionRepository = new KoskiSessionRepository(masterDatabase.db, sessionTimeout)
   lazy val fixtureCreator = new FixtureCreator(this)

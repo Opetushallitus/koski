@@ -2,35 +2,16 @@ package fi.oph.koski.servlet
 
 import java.net.URLEncoder
 
-import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.log.Logging
 import org.scalatra.ScalatraServlet
-import scala.collection.JavaConverters._
 import com.typesafe.config.{Config => TypeSafeConfig}
+import fi.oph.koski.mydata.MyDataConfig
 
 
-trait MyDataSupport extends ScalatraServlet with Logging {
-  def application: KoskiApplication
-  private def conf: TypeSafeConfig = application.config.getConfig("mydata")
+trait MyDataSupport extends ScalatraServlet with MyDataConfig {
+  override def hasConfigForMember(id: String = memberCodeParam): Boolean;
 
-  def hasConfigForMember(id: String = memberCodeParam): Boolean = getConfigOption(id).isDefined
-
-  def getConfigForMember(id: String = memberCodeParam): TypeSafeConfig = {
-    getConfigOption(id).getOrElse({
-      logger.warn("No MyData configuration found for member: " + id)
-      throw InvalidRequestException(KoskiErrorCategory.notFound.myDataMemberEiLöydy)
-    })
-  }
-
-  def findMemberForMemberCode(memberCode: String): Option[TypeSafeConfig] = {
-    conf.getConfigList("members").asScala.find(member =>
-      member.getStringList("membercodes").contains(memberCode))
-  }
-
-  private def getConfigOption(id: String = memberCodeParam): Option[TypeSafeConfig] = {
-    conf.getConfigList("members").asScala.find(member => member.getString("id") == id)
-  }
+  override def getConfigForMember(id: String = memberCodeParam): TypeSafeConfig;
 
   def getLoginUrlForMember(lang: String, id: String = memberCodeParam): String = {
     conf.getString(s"login.shibboleth.$lang") +

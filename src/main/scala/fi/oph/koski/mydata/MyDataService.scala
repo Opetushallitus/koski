@@ -2,13 +2,14 @@ package fi.oph.koski.mydata
 
 import java.time.LocalDate
 
+import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.KoskiMessageField.oppijaHenkiloOid
 import fi.oph.koski.log.KoskiOperation.KANSALAINEN_MYDATA_LISAYS
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
 
-class MyDataService(myDataRepository: MyDataRepository) extends Logging {
+class MyDataService(myDataRepository: MyDataRepository, implicit val application: KoskiApplication) extends Logging with MyDataConfig {
   def put(oppijaOid: String, asiakas: String)(implicit koskiSession: KoskiSession): Boolean = {
     def permissionAdded = myDataRepository.create(oppijaOid, asiakas)
     if (permissionAdded) {
@@ -30,15 +31,16 @@ class MyDataService(myDataRepository: MyDataRepository) extends Logging {
   }
 
   def getAll(oppijaOid: String): Seq[MyDataJakoItem] = {
-    myDataRepository.getAll(oppijaOid).map(jako => MyDataJakoItem(jako.asiakas, jako.voimassaAsti.toLocalDate))
+    myDataRepository.getAll(oppijaOid).map(jako => MyDataJakoItem(jako.asiakas, getAsiakasName(jako.asiakas), jako.voimassaAsti.toLocalDate, jako.aikaleima))
   }
 
   def getAllValid(oppijaOid: String): Seq[MyDataJakoItem] = {
-    myDataRepository.getAllValid(oppijaOid).map(jako => MyDataJakoItem(jako.asiakas, jako.voimassaAsti.toLocalDate))
+    myDataRepository.getAllValid(oppijaOid).map(jako => MyDataJakoItem(jako.asiakas, getAsiakasName(jako.asiakas), jako.voimassaAsti.toLocalDate, jako.aikaleima))
   }
 
   def hasAuthorizedMember(oppijaOid: String, memberId: String): Boolean = {
-    getAllValid(oppijaOid).exists(auth => memberId == auth.asiakas)
+    getAllValid(oppijaOid).exists(auth => memberId == auth.asiakasId)
   }
 
+  private def getAsiakasName(id: String): String = getConfigForMember(id).getString("name")
 }

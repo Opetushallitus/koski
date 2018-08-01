@@ -59,6 +59,14 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
     )
   }
 
+  get("/kayttooikeudet") {
+    htmlIndex(
+      scriptBundleName = "koski-kayttooikeudet.js",
+      raamit = oppijaRaamit,
+      responsive = true
+    )
+  }
+
   get("/tiedonsiirrot*") {
     indexHtml
   }
