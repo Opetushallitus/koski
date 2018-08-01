@@ -79,7 +79,7 @@ export class OmatTiedotLukionOppiaine extends React.Component {
           <div className='otsikko-content'>
             {isMobile && <span className='expand-icon' aria-hidden={true}>{expandable && (expanded ? ' - ' : ' + ')}</span>}
             {expandable
-              ? <button className='inline-text-button' onClick={this.toggleExpand}><Nimi oppiaine={oppiaine}/></button>
+              ? <button className='inline-text-button' onClick={this.toggleExpand} aria-pressed={expanded}><Nimi oppiaine={oppiaine}/></button>
               : <Nimi oppiaine={oppiaine} />}
             <span className='laajuus'>{`(${laajuusYhteensä} ${t('kurssia')})`}</span>
           </div>
@@ -164,7 +164,11 @@ class MobileKurssi extends React.Component {
       <tr key='kurssi-row' className={`kurssi ${even ? 'even' : ''}`}>
         <td className='nimi'>{koulutusmoduuli.tunniste.koodiarvo} {hasFootnoteHint(koulutusmoduuliModel) && <FootnoteHint title={'Paikallinen kurssi'}/>}</td>
         <td className='arvosana'><ArvosanaEditor model={kurssi}/></td>
-        <td className='lisatiedot'><button className='inline-link-button' onClick={this.toggleExpand}><Text name={expanded ? 'Sulje' : 'Avaa'}/></button></td>
+        <td className='lisatiedot'>
+          <button className='inline-link-button' onClick={this.toggleExpand} aria-pressed={expanded}>
+            <Text name={expanded ? 'Sulje' : 'Avaa'}/>
+          </button>
+        </td>
       </tr>,
       expanded && <tr key='kurssi-details'>
         <td colSpan='3'>
