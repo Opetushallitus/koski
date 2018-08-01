@@ -15,7 +15,7 @@ function SuoritusjakoPage() {
     isVisible: function() {
       return isElementVisible(S('.suoritusjako-page')) && !isLoading()
     },
-    oppilaitosTitleText: () => {
+    oppilaitosTitleText: function() {
       return textsOf(S('.oppilaitos-list .oppilaitos-container h2.oppilaitos-title'))
     },
     opiskeluoikeusTitleText: function() {

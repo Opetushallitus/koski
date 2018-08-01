@@ -86,7 +86,7 @@ wait = {
     frame.myWaitForNavigation = frame.location.href
   },
   forNavigation: function() {
-    return wait.until(() => {
+    return wait.until(function() {
       var frame = testFrame()
       return frame.myWaitForNavigation !== frame.location.href
     })().then(wait.forAjax)

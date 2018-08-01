@@ -169,8 +169,8 @@ function Suoritusjako(index) {
       return elem().find('.suoritusjako-link__preview a').attr('href')
     },
     feedbackText: {
-      isVisible: () => isElementVisible(elem().find('.suoritusjako-link__expiration .date-input-feedback .feedback')),
-      value: () => extractAsText(elem().find('.suoritusjako-link__expiration .date-input-feedback .feedback'))
+      isVisible: function() { return isElementVisible(elem().find('.suoritusjako-link__expiration .date-input-feedback .feedback')) },
+      value: function() { return extractAsText(elem().find('.suoritusjako-link__expiration .date-input-feedback .feedback')) }
     }
   }
 

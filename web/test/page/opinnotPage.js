@@ -1,5 +1,6 @@
 function OpinnotPage() {
-  function resolveOpiskeluoikeus(indexOrName, omatTiedot = false) {
+  function resolveOpiskeluoikeus(indexOrName, omatTiedot) {
+    omatTiedot = omatTiedot || false	
     const all = !omatTiedot
       ? S('.opiskeluoikeuksientiedot > li > div.opiskeluoikeus')
       : S('.opiskeluoikeudet-list > li > div.opiskeluoikeus-container')
@@ -58,7 +59,8 @@ function OpinnotPage() {
       var tab = findSingle('.suoritus-tabs > ul > li:contains(' + nimi + ')', opiskeluoikeus)()
       return tab.hasClass('selected')
     },
-    suoritusTabs: function(indexOrName, omatTiedot = false) {
+    suoritusTabs: function(indexOrName, omatTiedot) {
+      omatTiedot = omatTiedot || false	  
       var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName, omatTiedot)
       return textsOf(subElement(opiskeluoikeus, '.suoritus-tabs > ul > li'))
     },
@@ -103,7 +105,8 @@ function OpinnotPage() {
       }
     },
     opiskeluoikeudet: Opiskeluoikeudet(),
-    opiskeluoikeusEditor: function(index, omatTiedot = false) {
+    opiskeluoikeusEditor: function(index, omatTiedot) { 
+      omatTiedot = omatTiedot || false	  
       var elem = findSingle('.opiskeluoikeus-content', function() { return resolveOpiskeluoikeus(index, omatTiedot) })
       return _.merge(
         Editor(elem),
