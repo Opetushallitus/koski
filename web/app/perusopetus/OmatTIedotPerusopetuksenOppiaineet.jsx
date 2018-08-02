@@ -1,10 +1,10 @@
 import React from 'react'
 import * as R from 'ramda'
 import {
-  footnoteDescriptions, isToimintaAlueittain,
+  footnoteDescriptions, groupTitleForSuoritus, isToimintaAlueittain,
   isVuosiluokkaTaiPerusopetuksenOppimäärä,
   isYsiluokka,
-  jääLuokalle,
+  jääLuokalle, pakollisetTitle, valinnaisetTitle,
   valmiitaSuorituksia
 } from './Perusopetus'
 import {modelData, modelItems, modelLookup} from '../editor/EditorModel'
@@ -22,6 +22,7 @@ export default ({model}) => {
   return showOppiaineet && (
     <div className='omattiedot-perusopetuksen-suoritukset'>
       <ArvosteluInfo model={model}/>
+      <GroupedOppiaineet model={model} />
       <KäyttäytymisenArvio model={model}/>
       {!R.isEmpty(footnotes) && <FootnoteDescriptions data={footnotes}/>}
     </div>
@@ -29,19 +30,41 @@ export default ({model}) => {
 }
 
 const ArvosteluInfo = ({model}) => (
-  <div className='arvostelu'>
+  <section className='arvostelu'>
     <h4><Text name={(isToimintaAlueittain(model) ? 'Toiminta-alueiden' : 'Oppiaineiden') + ' arvosanat'} /></h4>
     <Text name='Arvostelu 4-10, S (suoritettu) tai H (hylätty)'/>
-  </div>
+  </section>
 )
 
 const KäyttäytymisenArvio = ({model}) => {
   const käyttäytymisenArvioModel = modelLookup(model, 'käyttäytymisenArvio')
   const shouldShow = käyttäytymisenArvioModel && modelData(käyttäytymisenArvioModel)
   return shouldShow ? (
-      <div className='kayttaytymisen-arvio'>
+      <section className='kayttaytymisen-arvio'>
         <h4><Text name="Käyttäytymisen arviointi"/></h4>
         <PropertiesEditor model={käyttäytymisenArvioModel} className='kansalainen'/>
-      </div>
+      </section>
     ) : null
+}
+
+const GroupedOppiaineet = ({model}) => {
+  const groups = [pakollisetTitle, valinnaisetTitle]
+  const groupedSuoritukset = R.groupBy(groupTitleForSuoritus, modelItems(model, 'osasuoritukset'))
+
+  return groups.map(groupTitle => {
+    const suoritukset = groupedSuoritukset[groupTitle]
+    const showLaajuus = groupTitle === valinnaisetTitle
+    if (!suoritukset) return null
+
+    return (
+      <section className='suoritus-group' key={groupTitle}>
+        <h4><Text name={groupTitle}/></h4>
+        <Oppiainetaulukko model={model} suoritukset={suoritukset} showLaajuus={showLaajuus}/>
+      </section>
+    )
+  })
+}
+
+const Oppiainetaulukko = ({model, suoritukset, showLaajuus}) => {
+  return null
 }

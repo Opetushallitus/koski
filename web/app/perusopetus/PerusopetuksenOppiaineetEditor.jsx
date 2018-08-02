@@ -22,7 +22,7 @@ import {accumulateExpandedState} from '../editor/ExpandableItems'
 import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
 import {
-  footnoteDescriptions, footnotesForSuoritus,
+  footnoteDescriptions, footnotesForSuoritus, groupTitleForSuoritus,
   isPäättötodistus,
   isToimintaAlueittain,
   isVuosiluokkaTaiPerusopetuksenOppimäärä,
@@ -30,15 +30,12 @@ import {
   jääLuokalle,
   luokkaAste,
   luokkaAsteenOsasuoritukset,
-  oppimääränOsasuoritukset, valmiitaSuorituksia
+  oppimääränOsasuoritukset, pakollisetTitle, valinnaisetTitle, valmiitaSuorituksia
 } from './Perusopetus'
 import {expandableProperties, PerusopetuksenOppiaineRowEditor} from './PerusopetuksenOppiaineRowEditor'
 import {UusiPerusopetuksenOppiaineDropdown} from './UusiPerusopetuksenOppiaineDropdown'
 import {FootnoteDescriptions} from '../components/footnote'
 
-var pakollisetTitle = 'Pakolliset oppiaineet'
-var valinnaisetTitle = 'Valinnaiset oppiaineet'
-let groupTitleForSuoritus = suoritus => modelData(suoritus).koulutusmoduuli.pakollinen ? pakollisetTitle : valinnaisetTitle
 
 export const PerusopetuksenOppiaineetEditor = ({model}) => {
   model = addContext(model, { suoritus: model })

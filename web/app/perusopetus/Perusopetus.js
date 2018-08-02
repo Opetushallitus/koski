@@ -48,3 +48,8 @@ export const footnotesForSuoritus = suoritus => [
 
 export const valmiitaSuorituksia = oppiaineSuoritukset =>
   oppiaineSuoritukset.some(oppiaine => arvioituTaiVahvistettu(oppiaine) || modelItems(oppiaine, 'osasuoritukset').some(arvioituTaiVahvistettu))
+
+export const pakollisetTitle = 'Pakolliset oppiaineet'
+export const valinnaisetTitle = 'Valinnaiset oppiaineet'
+export const groupTitleForSuoritus = suoritus => modelData(suoritus).koulutusmoduuli.pakollinen ? pakollisetTitle : valinnaisetTitle
+
