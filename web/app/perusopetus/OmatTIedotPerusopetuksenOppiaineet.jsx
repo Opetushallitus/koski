@@ -7,9 +7,10 @@ import {
   jääLuokalle,
   valmiitaSuorituksia
 } from './Perusopetus'
-import {modelItems} from '../editor/EditorModel'
+import {modelData, modelItems, modelLookup} from '../editor/EditorModel'
 import {FootnoteDescriptions} from '../components/footnote'
 import Text from '../i18n/Text'
+import {PropertiesEditor} from '../editor/PropertiesEditor'
 
 export default ({model}) => {
   // Tarviiko kontekstia?   model = addContext(model, { suoritus: model })
@@ -21,6 +22,7 @@ export default ({model}) => {
   return showOppiaineet && (
     <div className='omattiedot-perusopetuksen-suoritukset'>
       <ArvosteluInfo model={model}/>
+      <KäyttäytymisenArvio model={model}/>
       {!R.isEmpty(footnotes) && <FootnoteDescriptions data={footnotes}/>}
     </div>
   )
@@ -32,3 +34,14 @@ const ArvosteluInfo = ({model}) => (
     <Text name='Arvostelu 4-10, S (suoritettu) tai H (hylätty)'/>
   </div>
 )
+
+const KäyttäytymisenArvio = ({model}) => {
+  const käyttäytymisenArvioModel = modelLookup(model, 'käyttäytymisenArvio')
+  const shouldShow = käyttäytymisenArvioModel && modelData(käyttäytymisenArvioModel)
+  return shouldShow ? (
+      <div className='kayttaytymisen-arvio'>
+        <h4><Text name="Käyttäytymisen arviointi"/></h4>
+        <PropertiesEditor model={käyttäytymisenArvioModel} className='kansalainen'/>
+      </div>
+    ) : null
+}
