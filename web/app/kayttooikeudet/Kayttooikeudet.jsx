@@ -92,7 +92,7 @@ export class Kayttooikeudet extends React.Component {
             children={
               <div className='kayttoluvat-modal-container'>
                 <Text name={'Olet poistamassa palveluntarjoajalle'}/>
-                <span> "{removeName}" </span>
+                <span>{`"${removeName}"`} </span>
                 <Text name={'annettua lupaa nähdä opintoihisi liittyviä tietoja. ' +
                   'Poistaessasi luvan, voit menettää palveluntarjoajan opintoihisi liittyvät edut'}/>
               </div>}
@@ -112,7 +112,7 @@ const Headline = ({birthday}) => (
       />
       </div>
     </div>
-    <h3 className='oppija-nimi'><span className='nimi'>{userP.map(user => user && user.name)}</span> s. <span className='pvm'>{birthday}</span></h3>
+    <h3 className='oppija-nimi'><span className='nimi'>{userP.map(user => user && user.name)}</span><span className='pvm'>{` s. ${birthday}`}</span></h3>
   </div>
 )
 
@@ -154,11 +154,11 @@ class Kayttoluvat extends React.Component {
         {
           expanded && (hasKayttolupia
             ? kayttoluvat.map((lupa, index) =>
-              <Kayttolupa
+              (<Kayttolupa
                 key={index}
                 kayttolupa={lupa}
                 removeCallback={removeCallback}
-              />)
+              />))
             : <NoMyDataPermissions/>)
         }
       </div>
@@ -176,7 +176,7 @@ const Kayttolupa = ({kayttolupa, removeCallback}) => {
 
       <div className='lupa-info'>
         <h2>{asiakasName}</h2>
-        <span className='list-label'><Text name='Palveluntarjoaja näkee seuraavat opintoihisi liittyvät tiedot'/>:</span>
+        <span className='list-label'><Text name='Palveluntarjoaja näkee seuraavat opintoihisi liittyvät tiedot'/>{':'}</span>
         <ul>
           <li>
             <Text name='Oppilaitosten läsnäolotiedot' />
@@ -187,7 +187,7 @@ const Kayttolupa = ({kayttolupa, removeCallback}) => {
       <div className='voimassaolo'>
         <div className='teksti' ><Text name='Lupa voimassa'/></div>
         <div className='aikaleima'>
-          <span className='mobile-whitespace'>: </span><span> {timestampInFinnish} - {expDateInFinnish}</span>
+          <span className='mobile-whitespace'>{': '}</span><span> {`${timestampInFinnish} - ${expDateInFinnish}`}</span>
         </div>
       </div>
 
