@@ -1085,6 +1085,18 @@
   "Omadata virhe" : "Omadata virhe",
   "Tapahtuman käsittelyssä tapahtui virhe" : "Tapahtuman käsittelyssä tapahtui virhe",
   "Sinun tulee olla kirjautunut sisään" : "Sinun tulee olla kirjautunut sisään",
-  "Tallennus epäonnistui": "Tallennus epäonnistui"
+  "Tallennus epäonnistui": "Tallennus epäonnistui",
+  "Olet poistamassa palveluntarjoajalle": "Olet poistamassa palveluntarjoajalle",
+  "annettua lupaa nähdä opintoihisi liittyviä tietoja. Poistaessasi luvan, voit menettää palveluntarjoajan opintoihisi liittyvät edut": "annettua lupaa nähdä opintoihisi liittyviä tietoja. Poistaessasi luvan, voit menettää palveluntarjoajan opintoihisi liittyvät edut",
+  "Tietojeni käyttöluvat": "Tietojeni käyttöluvat",
+  "Tällä sivulla voit tarkastella ja hallinnoida antamiasi käyttölupia tietoihisi. Lisäksi näet mitkä tahot, esim. viranomaiset, ovat katsoneet tietojasi.": "Tällä sivulla voit tarkastella ja hallinnoida antamiasi käyttölupia tietoihisi. Lisäksi näet mitkä tahot, esim. viranomaiset, ovat katsoneet tietojasi.",
+  "Annetut käyttöluvat": "Annetut käyttöluvat",
+  "Lupa voimassa": "Lupa voimassa",
+  "Palveluntarjoaja näkee seuraavat opintoihisi liittyvät tiedot": "Palveluntarjoaja näkee seuraavat opintoihisi liittyvät tiedot",
+  "Oppilaitosten läsnäolotiedot": "Oppilaitosten läsnäolotiedot",
+  "Peru lupa": "Peru lupa",
+  "Et ole tällä hetkellä antanut millekään palveluntarjoajalle lupaa nähdä opintotietojasi Oma Opintopolusta. Luvan myöntäminen tapahtuu kyseisen palvelutarjoajan sivun kautta.": "Et ole tällä hetkellä antanut millekään palveluntarjoajalle lupaa nähdä opintotietojasi Oma Opintopolusta. Luvan myöntäminen tapahtuu kyseisen palvelutarjoajan sivun kautta.",
+  "Kyllä, poista lupa": "Kyllä, poista lupa",
+  "Älä poista lupaa": "Älä poista lupaa"
 }
 
