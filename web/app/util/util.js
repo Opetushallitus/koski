@@ -45,8 +45,6 @@ export const focusWithoutScrolling = (elem) => {
 }
 
 export const getBirthdayFromEditorRes = editorResponse => {
-  if (!editorResponse) return
-
   return editorResponse.value.properties.find(p => p.key === 'henkilö')
     .model.value.properties.find(p => p.key === 'syntymäaika')
     .model.value.data
