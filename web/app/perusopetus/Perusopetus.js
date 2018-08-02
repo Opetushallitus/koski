@@ -1,7 +1,7 @@
-import {modelData} from '../editor/EditorModel'
+import {findModelProperty, modelData, modelItems, modelLookup, oneOfPrototypes} from '../editor/EditorModel'
 import Bacon from 'baconjs'
 import Http from '../util/http'
-import {suorituksenTyyppi} from '../suoritus/Suoritus'
+import {arvioituTaiVahvistettu, suorituksenTyyppi} from '../suoritus/Suoritus'
 
 export const isToimintaAlueittain = (suoritus) => !!modelData(suoritus && suoritus.context.opiskeluoikeus, 'lisätiedot.erityisenTuenPäätös.opiskeleeToimintaAlueittain')
 export const isYsiluokka = (suoritus) => luokkaAste(suoritus) == '9'
@@ -29,3 +29,22 @@ export const luokkaAsteenOsasuoritukset = (luokkaAste_, toimintaAlueittain) => H
 
 export const oppimääränOsasuoritukset = (suoritustyyppi, toimintaAlueittain = false) =>
   suoritustyyppi ? Http.cachedGet(`/koski/api/editor/koodit/koulutus/201101/suoritukset/prefill?tyyppi=${suoritustyyppi.koodiarvo}&toimintaAlueittain=${toimintaAlueittain}`) : Bacon.constant([])
+
+const YksilöllistettyFootnote = {title: 'Yksilöllistetty oppimäärä', hint: '*'}
+const PainotettuFootnote = {title: 'Painotettu opetus', hint: '**'}
+const KorotusFootnote = {title: 'Perusopetuksen päättötodistuksen arvosanan korotus', hint: '†'}
+
+export const footnoteDescriptions = oppiaineSuoritukset => [
+  oppiaineSuoritukset.find(isYksilöllistetty) && YksilöllistettyFootnote,
+  oppiaineSuoritukset.find(isPainotettu) && PainotettuFootnote,
+  oppiaineSuoritukset.find(isKorotus) && KorotusFootnote
+].filter(v => !!v)
+
+export const footnotesForSuoritus = suoritus => [
+  isYksilöllistetty(suoritus) && YksilöllistettyFootnote,
+  isPainotettu(suoritus) && PainotettuFootnote,
+  isKorotus(suoritus) && KorotusFootnote
+].filter(v => !!v)
+
+export const valmiitaSuorituksia = oppiaineSuoritukset =>
+  oppiaineSuoritukset.some(oppiaine => arvioituTaiVahvistettu(oppiaine) || modelItems(oppiaine, 'osasuoritukset').some(arvioituTaiVahvistettu))

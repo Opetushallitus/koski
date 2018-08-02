@@ -19,6 +19,7 @@ import {
 import {CreativityActionService, ExtendedEssay, TheoryOfKnowledge} from '../ib/IBYhteinenSuoritus'
 import OmatTiedotSuoritustaulukko from './OmatTiedotSuoritustaulukko'
 import OmatTiedotLukionOppiaineet from '../lukio/OmatTiedotLukionOppiaineet'
+import OmatTIedotPerusopetuksenOppiaineet from '../perusopetus/OmatTIedotPerusopetuksenOppiaineet'
 
 export const resolveOsasuorituksetEditor = (mdl) => {
   const oneOf = (...classes) => classes.some(c => mdl.value.classes.includes(c))
@@ -33,7 +34,8 @@ export const resolveOsasuorituksetEditor = (mdl) => {
       'aikuistenperusopetuksenalkuvaiheensuoritus',
       'perusopetuksenlisaopetuksensuoritus',
       'perusopetukseenvalmistavanopetuksensuoritus')) {
-    return <PerusopetuksenOppiaineetEditor model={mdl}/>
+    const PerusopetuksenOppiaineetComponent = kansalainen ? OmatTIedotPerusopetuksenOppiaineet : PerusopetuksenOppiaineetEditor
+    return <PerusopetuksenOppiaineetComponent model={mdl}/>
   }
   if (firstClassOneOf('aikuistenperusopetuksenoppiaineenoppimaaransuoritus')) {
     return <PerusopetuksenOppiaineenOppimääränSuoritusEditor model={mdl}/>
