@@ -103,7 +103,7 @@ export class Kayttooikeudet extends React.Component {
 }
 
 const Headline = ({birthday}) => (
-  <div>
+  <div tabIndex={0}>
     <div className='kayttoluvat-info'>
       <h1><Text name='Tietojeni käyttöluvat'/></h1>
       <div className='ebin'>
