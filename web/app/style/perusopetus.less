@@ -188,19 +188,23 @@
   }
 
   .omattiedot-perusopetuksen-suoritukset {
-    h4 {
-      font-size: 1.2857rem;
-      border-bottom: 1px solid @color-neutral-gray;
-      padding-bottom: 2px;
-      margin-bottom: 0.6rem;
-    }
-
     > .arvostelu, > .kayttaytymisen-arvio, > .suoritus-group  {
       margin-bottom: 2rem;
+
+      > h4 {
+        font-size: 1.2857rem;
+        border-bottom: 1px solid @color-neutral-gray;
+        padding-bottom: 2px;
+        margin-bottom: 0.6rem;
+      }
 
       > .properties.kansalainen > table {
         border-spacing: 0;
       }
+    }
+
+    > .suoritus-group > table.suoritus-table {
+      width: 100%;
     }
   }
 }
