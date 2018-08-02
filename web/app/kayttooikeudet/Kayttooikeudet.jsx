@@ -103,7 +103,7 @@ export class Kayttooikeudet extends React.Component {
 }
 
 const Headline = ({birthday}) => (
-  <div tabIndex={0}>
+  <div className='kayttoluvat-headline' tabIndex={0}>
     <div className='kayttoluvat-info'>
       <h1><Text name='Tietojeni käyttöluvat'/></h1>
       <div className='ebin'>
@@ -174,25 +174,34 @@ const Kayttolupa = ({kayttolupa, removeCallback}) => {
   return (
     <div className='kayttolupa-container' tabIndex={0}>
 
-      <div className='lupa-info'>
-        <h2>{asiakasName}</h2>
-        <span className='list-label'><Text name='Palveluntarjoaja näkee seuraavat opintoihisi liittyvät tiedot'/>{':'}</span>
-        <ul>
-          <li>
-            <Text name='Oppilaitosten läsnäolotiedot' />
-          </li>
-        </ul>
-      </div>
+      <h3 className='asiakas'>{asiakasName}</h3>
 
-      <div className='voimassaolo'>
-        <div className='teksti' ><Text name='Lupa voimassa'/></div>
-        <div className='aikaleima'>
-          <span className='mobile-whitespace'>{': '}</span><span> {`${timestampInFinnish} - ${expDateInFinnish}`}</span>
+      <div className='bottom-items'>
+
+        <div className='container'>
+
+          <div className='voimassaolo'>
+            <div className='teksti' ><Text name='Lupa voimassa'/></div>
+            <div className='aikaleima'>
+              <span className='mobile-whitespace'>{': '}</span><span> {`${timestampInFinnish} - ${expDateInFinnish}`}</span>
+            </div>
+          </div>
+
+          <div className='oikeudet'>
+            <span className='list-label'><Text name='Palveluntarjoaja näkee seuraavat opintoihisi liittyvät tiedot'/>{':'}</span>
+            <ul>
+              <li>
+                <Text name='Oppilaitosten läsnäolotiedot' />
+              </li>
+            </ul>
+          </div>
+
         </div>
-      </div>
 
-      <div className='peru-lupa'>
-        <button className='inline-link-button' onClick={() => removeCallback(asiakasId)}><Text name='Peru lupa'/></button>
+        <div className='peru-lupa'>
+          <button className='inline-link-button' onClick={() => removeCallback(asiakasId)}><Text name='Peru lupa'/></button>
+        </div>
+
       </div>
 
     </div>

@@ -9,19 +9,22 @@
     max-width: 767px;
   }
 
-  > div div.kayttoluvat-info {
-    > div span.info {
-      font-size: 1.4rem;
-      max-width: 826px;
+  .kayttoluvat-headline {
+    outline: none;
+    > mydiv.kayttoluvat-info {
+      > div span.info {
+        font-size: 1.4rem;
+        max-width: 826px;
+      }
     }
-  }
 
-  > div h3.oppija-nimi {
-    margin-top: 3rem;
-    margin-bottom: 0;
+    > div h3.oppija-nimi {
+      margin-top: 3rem;
+      margin-bottom: 0;
 
-    > span.nimi {
-      font-weight: 600;
+      > span.nimi {
+        font-weight: 600;
+      }
     }
   }
 
@@ -79,8 +82,9 @@
 
     .kayttolupa-container {
       border: solid 1px @color-link-blue;
-      display: flex;
+      height: 120px;
       margin-top: 1.2rem;
+      padding: 1rem 1rem 1rem 2rem;
       outline: none;
 
       @media @media-phone {
@@ -90,74 +94,108 @@
         width: 100%;
         border: solid 8px @color-light-blue;
         margin-top: 0;
+        height: auto;
       }
 
-      > .lupa-info {
-        width: 45%;
-        padding-left: 24px;
-        padding-bottom: 1.25rem;
+      > .asiakas {
+        font-size: 1.8rem;
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+        color: @color-dark-blue;
+        font-weight: 600;
 
         @media @media-phone {
-          padding: 0;
-          width: 100%;
-        }
-
-        >.list-label {
-          font-weight: 600;
-        }
-
-        > ul {
-          list-style-position: inside;
-          padding-left: 0;
-        }
-      }
-
-      > .voimassaolo {
-        width: 35%;
-        margin-top: 4rem;
-
-        @media @media-phone {
-          margin-top: 0;
-          width: 100%;
-          display: flex;
-        }
-
-        span {
-          font-size: 1.1rem;
-        }
-
-        > .teksti {
           margin-bottom: 1rem;
         }
+      }
 
-        .aikaleima {
-          > .mobile-whitespace {
-            display: none;
+
+      > .bottom-items {
+        display: flex;
+
+        @media @media-phone {
+          display: initial;
+        }
+
+        > .container {
+          display: flex;
+          flex: 1;
+          flex-flow: row nowrap;
+          flex-direction: row-reverse;
+
+          @media @media-phone {
+            padding: 0;
+            width: 100%;
+            display: initial;
+            flex-direction: column;
+          }
+
+          .oikeudet {
+            flex: 0.4 1 auto;
+
+            > .list-label {
+              font-weight: 600;
+            }
+
+            > ul {
+              list-style-position: inside;
+              padding-left: 0;
+            }
+          }
+
+          > .voimassaolo {
+            flex: 1 1 auto;
+            float: right;
 
             @media @media-phone {
-              display: initial;
+              width: 100%;
+              display: flex;
+              margin-bottom: 1rem;
+            }
+
+            span {
+              font-size: 1.1rem;
+            }
+
+            > .teksti {
+              margin-bottom: 0.2rem;
+
+              @media @media-phone {
+                margin-bottom: 0;
+              }
+
+            }
+
+            .aikaleima {
+              > .mobile-whitespace {
+                display: none;
+
+                @media @media-phone {
+                  display: initial;
+                }
+              }
             }
           }
         }
-      }
 
-      .peru-lupa {
-        width: 20%;
-        justify-content: center;
-        align-items: center;
-        display: flex;
-        text-decoration: underline;
-        text-decoration-color: @color-blue;
+        .peru-lupa {
+          flex: 0 0 126px;
 
-        @media @media-phone {
-          width: 100%;
-          margin-top: 1rem;
-        }
+          @media @media-phone {
+            float: right;
+            margin-right: 8%;
+          }
 
-        > button {
-          font-size: 1.2rem;
-          font-weight: 600;
-          color: @color-blue;
+          > button {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: @color-blue;
+
+            > span {
+              text-decoration: underline;
+              text-decoration-color: @color-blue;
+            }
+          }
         }
       }
     }
