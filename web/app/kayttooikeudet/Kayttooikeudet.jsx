@@ -92,7 +92,7 @@ export class Kayttooikeudet extends React.Component {
             children={
               <div className='kayttoluvat-modal-container'>
                 <Text name={'Olet poistamassa palveluntarjoajalle'}/>
-                <span>{`"${removeName}"`} </span>
+                <span>{` "${removeName}" `}</span>
                 <Text name={'annettua lupaa nähdä opintoihisi liittyviä tietoja. ' +
                   'Poistaessasi luvan, voit menettää palveluntarjoajan opintoihisi liittyvät edut'}/>
               </div>}
@@ -107,7 +107,7 @@ const Headline = ({birthday}) => (
     <div className='kayttoluvat-info'>
       <h1><Text name='Tietojeni käyttöluvat'/></h1>
       <div className='ebin'>
-      <Text className='info' name={'Tällä sivulla voit tarkastella ja hallinnoida antamiasi käyttölupia tietoihisi.' +
+      <Text className='info' name={'Tällä sivulla voit tarkastella ja hallinnoida antamiasi käyttölupia tietoihisi. ' +
         'Lisäksi näet mitkä tahot, esim. viranomaiset, ovat katsoneet tietojasi.'}
       />
       </div>
