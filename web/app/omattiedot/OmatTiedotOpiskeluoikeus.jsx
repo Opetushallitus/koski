@@ -136,7 +136,6 @@ class TabulatedSuoritukset extends React.Component {
 
     return (
       <div className="suoritukset">
-        <h4><Text name="Suoritukset"/></h4>
         <SuoritusTabs selectedTabIndex={selectedTabIndex} suoritukset={suoritukset} onChange={this.onTabChange} />
         <Editor key={valittuSuoritus.tabName} model={valittuSuoritus} alwaysUpdate="true" />
       </div>
