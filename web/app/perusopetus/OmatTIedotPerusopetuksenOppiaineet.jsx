@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'baret'
+import Bacon from 'baconjs'
 import * as R from 'ramda'
 import {
   footnoteDescriptions, footnotesForSuoritus, groupTitleForSuoritus, isToimintaAlueittain,
@@ -18,6 +19,8 @@ import {isKieliaine, isPaikallinen} from '../suoritus/Koulutusmoduuli'
 import {Editor} from '../editor/Editor'
 import {expandableProperties} from './PerusopetuksenOppiaineRowEditor'
 import {KurssitEditor} from '../kurssi/KurssitEditor'
+import {isMobileAtom} from '../util/isMobileAtom'
+import {KurssitListMobile} from '../kurssi/OmatTiedotKurssit'
 
 export default ({model}) => {
   // Tarviiko kontekstia?   model = addContext(model, { suoritus: model })
@@ -88,15 +91,16 @@ const Oppiainetaulukko = ({model, suoritukset, showLaajuus}) => {
       </thead>
       <tbody>
       {
-        filteredSuoritukset.map(suoritus => (
+        Bacon.combineWith(isMobileAtom, mobile => filteredSuoritukset.map(suoritus => (
           <OppiaineRow
             key={suoritus.arrayKey}
             model={suoritus}
             showLaajuus={showLaajuus}
             showArvosana={showArvosana}
+            isMobile={mobile}
             footnotes={footnotesForSuoritus(suoritus)}
           />
-        ))
+        )))
       }
       </tbody>
     </table>
@@ -119,7 +123,7 @@ class OppiaineRow extends React.Component {
   }
 
   render() {
-    const {model, showLaajuus, showArvosana, footnotes} = this.props
+    const {model, showLaajuus, showArvosana, isMobile, footnotes} = this.props
     const {expanded} = this.state
 
     const extraProperties = expandableProperties(model)
@@ -168,11 +172,13 @@ class OppiaineRow extends React.Component {
           {showExtraProperties && <PropertiesEditor className='kansalainen' properties={extraProperties} context={model.context}/>}
         </td>
       </tr>,
-      showKurssit && <tr className='kurssit-row' key='kurssit-row'>
-        <td colSpan='2'>
-          <KurssitEditor model={model}/>
-        </td>
-      </tr>
+      showKurssit && (isMobile
+        ? (expandable && expanded && <tr className='kurssit-row' key='kurssit-row'><KurssitListMobile oppiaine={model}/></tr>)
+        : <tr className='kurssit-row' key='kurssit-row'>
+            <td colSpan='2'>
+              <KurssitEditor model={model}/>
+            </td>
+          </tr>)
     ]
   }
 }

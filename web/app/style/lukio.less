@@ -236,50 +236,6 @@
               }
             }
           }
-
-          > td > table.kurssilista-mobile {
-            width: 100%;
-            table-layout: fixed;
-            border-collapse: separate;
-            border-spacing: 0;
-            margin-bottom: 1rem;
-
-            > thead > tr > th {
-              padding: 0 8px 8px 8px;
-              border-bottom: 1px solid @color-neutral-gray;
-            }
-
-            > thead > tr, > tbody > tr {
-              > .nimi {
-                width: 20%;
-              }
-
-              > .arvosana, > .lisatiedot {
-                width: 40%;
-                text-align: center;
-
-                &.keskiarvo {
-                  font-weight: 600;
-                }
-              }
-            }
-
-            > tbody {
-              > tr > td {
-                padding: 8px;
-              }
-
-              > tr.kurssi {
-                &.even { // nth-child/nth-of-type do not support matching classes, so this is needed. (properties adds one tr to the DOM causing the colors to switch)
-                  background: @color-neutral-gray;
-                }
-
-                > td.nimi {
-                  font-weight: 600;
-                }
-              }
-            }
-          }
         }
       }
     }
