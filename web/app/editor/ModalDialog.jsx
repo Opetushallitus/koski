@@ -15,7 +15,8 @@ export default ({className, onDismiss, onSubmit, children, submitOnEnterKey, okT
     if (e.keyCode == 13 && submitOnEnterKey) onSubmit()
   }
   let classNameP = submittedAtom.map(submitted => (className ? className : '') + ' modal' + (submitted ? ' submitted' : '') + (fullscreen ? ' fullscreen' : ''))
-  return (<FocusLock autoFocus={false} returnFocus={true}>
+
+  const Modal = () => (
     <div className={classNameP} role='dialog' aria-modal={true} aria-describedby='modal-main-content'>
       <div className='modal-shield' onClick={() => onDismiss()}/>
       <div className='modal-content'>
@@ -28,5 +29,13 @@ export default ({className, onDismiss, onSubmit, children, submitOnEnterKey, okT
       </div>
       { doActionWhileMounted(keyE, handleKeys) }
     </div>
-  </FocusLock>)
+  )
+
+  return fullscreen
+    ? (
+      <FocusLock autoFocus={false} returnFocus={true}>
+        <Modal/>
+      </FocusLock>
+    )
+    : <Modal/>
 }
