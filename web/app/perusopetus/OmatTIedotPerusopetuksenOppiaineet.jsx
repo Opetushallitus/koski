@@ -8,7 +8,7 @@ import {
   jääLuokalle, pakollisetTitle, valinnaisetTitle,
   valmiitaSuorituksia
 } from './Perusopetus'
-import {modelData, modelEmpty, modelItems, modelLookup, modelProperties} from '../editor/EditorModel'
+import {modelData, modelItems, modelLookup} from '../editor/EditorModel'
 import {FootnoteDescriptions, FootnoteHint} from '../components/footnote'
 import Text from '../i18n/Text'
 import {t} from '../i18n/i18n'
@@ -23,8 +23,6 @@ import {isMobileAtom} from '../util/isMobileAtom'
 import {KurssitListMobile} from '../kurssi/OmatTiedotKurssit'
 
 export default ({model}) => {
-  // Tarviiko kontekstia?   model = addContext(model, { suoritus: model })
-
   const oppiaineSuoritukset = modelItems(model, 'osasuoritukset')
   const footnotes = footnoteDescriptions(oppiaineSuoritukset)
   const showOppiaineet = !(isYsiluokka(model) && !jääLuokalle(model)) && (valmiitaSuorituksia(oppiaineSuoritukset) || isVuosiluokkaTaiPerusopetuksenOppimäärä(model))
@@ -162,7 +160,7 @@ class OppiaineRow extends React.Component {
               <table>
                 <tbody>
                 <tr className='property'>
-                  <td className='label'>Laajuus</td>
+                  <td className='label'><Text name='Laajuus'/></td>
                   <td className='value'><Editor model={model} path='koulutusmoduuli.laajuus'/></td>
                 </tr>
                 </tbody>

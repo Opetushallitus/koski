@@ -1,4 +1,4 @@
-import {findModelProperty, modelData, modelItems, modelLookup, oneOfPrototypes} from '../editor/EditorModel'
+import {modelData, modelItems} from '../editor/EditorModel'
 import Bacon from 'baconjs'
 import Http from '../util/http'
 import {arvioituTaiVahvistettu, suorituksenTyyppi} from '../suoritus/Suoritus'
