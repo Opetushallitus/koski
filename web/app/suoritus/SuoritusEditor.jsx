@@ -25,6 +25,7 @@ export class SuoritusEditor extends React.Component {
           model={model}
           propertyFilter={p => !excludedProperties.includes(p.key) && (model.context.edit || modelData(p.model) !== false)}
           getValueEditor={(prop, getDefault) => resolvePropertyEditor(prop, model) || getDefault()}
+          className={model.context.kansalainen ? 'kansalainen' : ''}
         />
         <TilaJaVahvistusEditor model={model} />
         <div className="osasuoritukset">{osasuorituksetEditor}</div>

@@ -24,6 +24,7 @@ export class KurssiPopup extends React.Component {
           ? <IBKurssinArviointiEditor model={kurssi}/>
           : getDefault()
         }
+        className={kurssi.context.kansalainen ? 'kansalainen' : ''}
       />
     </div>)
   }
