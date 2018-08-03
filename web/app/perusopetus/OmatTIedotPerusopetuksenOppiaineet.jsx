@@ -10,9 +10,11 @@ import {
 import {modelData, modelItems, modelLookup} from '../editor/EditorModel'
 import {FootnoteDescriptions, FootnoteHint} from '../components/footnote'
 import Text from '../i18n/Text'
+import {t} from '../i18n/i18n'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {arvioituTaiVahvistettu, osasuoritukset} from '../suoritus/Suoritus'
 import {ArvosanaEditor} from '../suoritus/ArvosanaEditor'
+import {isKieliaine} from '../suoritus/Koulutusmoduuli'
 
 export default ({model}) => {
   // Tarviiko kontekstia?   model = addContext(model, { suoritus: model })
@@ -110,10 +112,12 @@ class OppiaineRow extends React.Component {
     const {model, showLaajuus, showArvosana, footnotes} = this.props
     const {expanded} = this.state
 
+    const oppiaine = modelLookup(model, 'koulutusmoduuli')
+
     return (
       <tr>
         <td className='oppiaine'>
-          Oppiaineen nimi
+          {oppiaineTitle(oppiaine)}
         </td>
         {showArvosana && <td className='arvosana'>
           <ArvosanaEditor model={model}/>
@@ -126,4 +130,11 @@ class OppiaineRow extends React.Component {
       </tr>
     )
   }
+}
+
+const oppiaineTitle = aine => {
+  const kieliaine = isKieliaine(aine)
+  const oppiaineenNimi = t(modelData(aine, 'tunniste.nimi'))
+  const kielenNimi = kieliaine && t(modelData(aine, 'kieli.nimi'))
+  return kieliaine ? `${oppiaineenNimi}, ${kielenNimi.toLowerCase()}` : oppiaineenNimi
 }
