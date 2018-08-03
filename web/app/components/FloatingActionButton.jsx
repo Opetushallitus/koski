@@ -25,7 +25,7 @@ class FloatingActionButton extends React.Component {
     const visibility = this.state.isVisible ? 'visible' : 'hidden'
 
     return (
-      <button className={`floating-action-button--${visibility}`} onClick={onClick}>
+      <button className={`floating-action-button--${visibility}`} onClick={onClick} aria-hidden={true} tabIndex={-1}>
         <Text name={text}/>
       </button>
     )
