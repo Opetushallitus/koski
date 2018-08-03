@@ -14,7 +14,7 @@ import {t} from '../i18n/i18n'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {arvioituTaiVahvistettu, osasuoritukset} from '../suoritus/Suoritus'
 import {ArvosanaEditor} from '../suoritus/ArvosanaEditor'
-import {isKieliaine} from '../suoritus/Koulutusmoduuli'
+import {isKieliaine, isPaikallinen} from '../suoritus/Koulutusmoduuli'
 import {Editor} from '../editor/Editor'
 import {expandableProperties} from './PerusopetuksenOppiaineRowEditor'
 import {KurssitEditor} from '../kurssi/KurssitEditor'
@@ -113,7 +113,8 @@ class OppiaineRow extends React.Component {
     this.toggleExpand = this.toggleExpand.bind(this)
   }
 
-  toggleExpand() {
+  toggleExpand(e) {
+    e.stopPropagation()
     this.setState(prevState => ({expanded: !prevState.expanded}))
   }
 
@@ -123,34 +124,54 @@ class OppiaineRow extends React.Component {
 
     const extraProperties = expandableProperties(model)
     const showExtraProperties = extraProperties.length > 0
-    const expandable = showLaajuus || showExtraProperties
+    const hasLaajuus =  modelData(model, 'koulutusmoduuli.laajuus')
+    const expandable = (showLaajuus && hasLaajuus) || showExtraProperties
+    const kurssit = osasuoritukset(model)
+    const showKurssit = kurssit && kurssit.length > 0
 
     const oppiaine = modelLookup(model, 'koulutusmoduuli')
-    const kurssit = osasuoritukset(model)
+
+    const oppiaineRowClassName = 'oppiaine-row'
+      + (expandable ? ' expandable' : '')
+      + (expanded ? ' expanded' : '')
+
+    const oppiaineClassName = `oppiaine ${isPaikallinen(oppiaine) ? 'paikallinen' : ''}`
 
     return [
-      <tr className='oppiaine-row' key='oppiaine-row' onClick={expandable ? this.toggleExpand : undefined}>
-        <td className='oppiaine'>
-          {expandable && (expanded ? '-' : '+')}
-          {oppiaineTitle(oppiaine)}
+      <tr className={oppiaineRowClassName} key='oppiaine-row' onClick={expandable ? this.toggleExpand : undefined}>
+        <td className={oppiaineClassName}>
+          {expandable && <span className='expand-icon'>{(expanded ? '-' : '+')}</span>}
+          {expandable
+            ? <button className='inline-text-button' onClick={this.toggleExpand} aria-pressed={expanded}>{oppiaineTitle(oppiaine)}</button>
+            : <span className='nimi'>{oppiaineTitle(oppiaine)}</span>}
         </td>
         {showArvosana && <td className='arvosana'>
           <ArvosanaEditor model={model}/>
-          {footnotes && footnotes.length > 0 && (
-            <div className="footnotes-container">
-              {footnotes.map(note => <FootnoteHint key={note.hint} title={note.title} hint={note.hint} />)}
-            </div>
-          )}
+          {footnotes && footnotes.length > 0 &&
+            footnotes.map(note => <FootnoteHint key={note.hint} title={note.title} hint={note.hint} />)}
         </td>}
       </tr>,
       expandable && expanded && <tr className='properties-row' key='properties-row'>
-        <td colSpan='3'>
-          {showLaajuus && <Editor model={model} path='koulutusmoduuli.laajuus'/>}
+        <td colSpan='2'>
+          {(showLaajuus && hasLaajuus) && (
+            <div className='properties kansalainen'>
+              <table>
+                <tbody>
+                <tr className='property'>
+                  <td className='label'>Laajuus</td>
+                  <td className='value'><Editor model={model} path='koulutusmoduuli.laajuus'/></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          )}
           {showExtraProperties && <PropertiesEditor className='kansalainen' properties={extraProperties} context={model.context}/>}
         </td>
       </tr>,
-      kurssit && <tr className='kurssit-row' key='kurssit-row'>
-        <td><KurssitEditor model={model}/></td>
+      showKurssit && <tr className='kurssit-row' key='kurssit-row'>
+        <td colSpan='2'>
+          <KurssitEditor model={model}/>
+        </td>
       </tr>
     ]
   }

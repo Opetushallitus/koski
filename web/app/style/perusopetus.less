@@ -205,6 +205,74 @@
 
     > .suoritus-group > table.suoritus-table {
       width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 5px;
+      table-layout: fixed;
+
+      > thead > tr > th.oppiaine,
+      > tbody > tr > td.oppiaine {
+        width: 100%;
+      }
+
+      > thead > tr > th.arvosana,
+      > tbody > tr > td.arvosana {
+        text-align: center;
+        width: 8rem;
+      }
+
+      > tbody {
+        > tr.oppiaine-row {
+          > td {
+            font-weight: 600;
+            background: @color-light-blue;
+            padding: 8px;
+
+            &.oppiaine {
+              padding-left: 1.6rem;
+              display: flex;
+
+              &.paikallinen, &.paikallinen > button {
+                font-style: italic;
+              }
+
+              > button {
+                font-weight: 600;
+              }
+
+              > .expand-icon {
+                flex: 0 0 1.6rem;
+                margin-left: -1.6rem;
+                text-align: center;
+              }
+            }
+          }
+
+          &.expandable,
+          &.expandable > td > button {
+            cursor: pointer;
+          }
+
+          &.expanded > td {
+            background: @color-medium-blue;
+          }
+        }
+
+        > tr.kurssit-row, > tr.properties-row {
+          > td {
+            padding: 8px 8px 8px 1.6rem;
+
+            > div.laajuus {
+              > .laajuus-label {
+                min-width: 100px;
+              }
+
+              > .laajuus-value {
+                font-weight: 600;
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
