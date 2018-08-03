@@ -9,6 +9,24 @@ const SuoritusjakoButton = withFeatureFlag(FEATURE.OMAT_TIEDOT.SUORITUSJAKO, Mul
 const FloatingSuoritusjakoButton = withFeatureFlag(FEATURE.OMAT_TIEDOT.SUORITUSJAKO, FloatingActionButton)
 
 const ACTION_BUTTON_OFFSET = 270
+const ACTION_BUTTON_ID = 'suoritusjako-button'
+
+const moveToSuoritusjako = (completionHandler) => {
+  let timer = null
+
+  const onScroll = () => {
+    if (timer !== null) clearTimeout(timer)
+
+    timer = setTimeout(() => {
+      completionHandler()
+      window.removeEventListener('scroll', onScroll)
+    }, 100)
+  }
+
+  window.addEventListener('scroll', onScroll)
+
+  document.getElementById(ACTION_BUTTON_ID).scrollIntoView({behavior: 'smooth'})
+}
 
 export const HeaderButtons = ({uiModeA}) => (
   <div className='header__buttons'>
@@ -20,6 +38,7 @@ export const HeaderButtons = ({uiModeA}) => (
       style='secondary'
     />
     <SuoritusjakoButton
+      id={ACTION_BUTTON_ID}
       stateA={uiModeA}
       value={FormState.SUORITUSJAKO}
       clearedStateValue={FormState.NONE}
@@ -28,7 +47,7 @@ export const HeaderButtons = ({uiModeA}) => (
 
     <FloatingSuoritusjakoButton
       text={'Suoritustietojen jakaminen'}
-      onClick={() => uiModeA.set(FormState.SUORITUSJAKO)}
+      onClick={() => moveToSuoritusjako(() => uiModeA.set(FormState.SUORITUSJAKO))}
       visibilityOffset={ACTION_BUTTON_OFFSET}
     />
   </div>
