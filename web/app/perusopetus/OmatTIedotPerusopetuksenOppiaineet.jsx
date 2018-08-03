@@ -7,7 +7,7 @@ import {
   jääLuokalle, pakollisetTitle, valinnaisetTitle,
   valmiitaSuorituksia
 } from './Perusopetus'
-import {modelData, modelItems, modelLookup} from '../editor/EditorModel'
+import {modelData, modelEmpty, modelItems, modelLookup, modelProperties} from '../editor/EditorModel'
 import {FootnoteDescriptions, FootnoteHint} from '../components/footnote'
 import Text from '../i18n/Text'
 import {t} from '../i18n/i18n'
@@ -15,6 +15,8 @@ import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {arvioituTaiVahvistettu, osasuoritukset} from '../suoritus/Suoritus'
 import {ArvosanaEditor} from '../suoritus/ArvosanaEditor'
 import {isKieliaine} from '../suoritus/Koulutusmoduuli'
+import {Editor} from '../editor/Editor'
+import {expandableProperties} from './PerusopetuksenOppiaineRowEditor'
 
 export default ({model}) => {
   // Tarviiko kontekstia?   model = addContext(model, { suoritus: model })
@@ -106,17 +108,28 @@ class OppiaineRow extends React.Component {
     this.state = {
       expanded: false
     }
+
+    this.toggleExpand = this.toggleExpand.bind(this)
+  }
+
+  toggleExpand() {
+    this.setState(prevState => ({expanded: !prevState.expanded}))
   }
 
   render() {
     const {model, showLaajuus, showArvosana, footnotes} = this.props
     const {expanded} = this.state
 
+    const extraProperties = expandableProperties(model)
+    const showExtraProperties = extraProperties.length > 0
+    const expandable = showLaajuus || showExtraProperties
+
     const oppiaine = modelLookup(model, 'koulutusmoduuli')
 
-    return (
-      <tr>
+    return [
+      <tr className='oppiaine-row' key='oppiaine-row' onClick={expandable ? this.toggleExpand : undefined}>
         <td className='oppiaine'>
+          {expandable && (expanded ? '-' : '+')}
           {oppiaineTitle(oppiaine)}
         </td>
         {showArvosana && <td className='arvosana'>
@@ -127,8 +140,14 @@ class OppiaineRow extends React.Component {
             </div>
           )}
         </td>}
+      </tr>,
+      expandable && expanded && <tr className='properties-row' key='properties-row'>
+        <td colSpan='3'>
+          {showLaajuus && <Editor model={model} path='koulutusmoduuli.laajuus'/>}
+          {showExtraProperties && <PropertiesEditor className='kansalainen' properties={extraProperties} context={model.context}/>}
+        </td>
       </tr>
-    )
+    ]
   }
 }
 
