@@ -17,6 +17,7 @@ import {ArvosanaEditor} from '../suoritus/ArvosanaEditor'
 import {isKieliaine} from '../suoritus/Koulutusmoduuli'
 import {Editor} from '../editor/Editor'
 import {expandableProperties} from './PerusopetuksenOppiaineRowEditor'
+import {KurssitEditor} from '../kurssi/KurssitEditor'
 
 export default ({model}) => {
   // Tarviiko kontekstia?   model = addContext(model, { suoritus: model })
@@ -125,6 +126,7 @@ class OppiaineRow extends React.Component {
     const expandable = showLaajuus || showExtraProperties
 
     const oppiaine = modelLookup(model, 'koulutusmoduuli')
+    const kurssit = osasuoritukset(model)
 
     return [
       <tr className='oppiaine-row' key='oppiaine-row' onClick={expandable ? this.toggleExpand : undefined}>
@@ -146,6 +148,9 @@ class OppiaineRow extends React.Component {
           {showLaajuus && <Editor model={model} path='koulutusmoduuli.laajuus'/>}
           {showExtraProperties && <PropertiesEditor className='kansalainen' properties={extraProperties} context={model.context}/>}
         </td>
+      </tr>,
+      kurssit && <tr className='kurssit-row' key='kurssit-row'>
+        <td><KurssitEditor model={model}/></td>
       </tr>
     ]
   }
