@@ -173,7 +173,7 @@ class OppiaineRow extends React.Component {
         </td>
       </tr>,
       showKurssitRow && (isMobile
-        ? (expandable && expanded && <tr className='kurssit-row' key='kurssit-row'><KurssitListMobile oppiaine={model}/></tr>)
+        ? (expandable && expanded && <tr className='kurssit-row-mobile' key='kurssit-row'><KurssitListMobile oppiaine={model}/></tr>)
         : <tr className='kurssit-row' key='kurssit-row'>
             <td colSpan='2'>
               <KurssitEditor model={model}/>
