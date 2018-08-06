@@ -127,15 +127,17 @@ class OppiaineRow extends React.Component {
     const extraProperties = expandableProperties(model)
     const showExtraProperties = extraProperties.length > 0
     const hasLaajuus =  modelData(model, 'koulutusmoduuli.laajuus')
-    const expandable = (showLaajuus && hasLaajuus) || showExtraProperties
     const kurssit = osasuoritukset(model)
-    const showKurssit = kurssit && kurssit.length > 0
+
+    const showKurssitRow = kurssit && kurssit.length > 0
+    const showPropertiesRow = (showLaajuus && hasLaajuus) || showExtraProperties
+    const expandable = showPropertiesRow || (isMobile && showKurssitRow)
 
     const oppiaine = modelLookup(model, 'koulutusmoduuli')
 
     const oppiaineRowClassName = 'oppiaine-row'
       + (expandable ? ' expandable' : '')
-      + (expanded ? ' expanded' : '')
+      + (expandable && expanded ? ' expanded' : '')
 
     const oppiaineClassName = `oppiaine ${isPaikallinen(oppiaine) ? 'paikallinen' : ''}`
 
@@ -153,7 +155,7 @@ class OppiaineRow extends React.Component {
             footnotes.map(note => <FootnoteHint key={note.hint} title={note.title} hint={note.hint} />)}
         </td>}
       </tr>,
-      expandable && expanded && <tr className='properties-row' key='properties-row'>
+      showPropertiesRow && expanded && <tr className='properties-row' key='properties-row'>
         <td colSpan='2'>
           {(showLaajuus && hasLaajuus) && (
             <div className='properties kansalainen'>
@@ -170,7 +172,7 @@ class OppiaineRow extends React.Component {
           {showExtraProperties && <PropertiesEditor className='kansalainen' properties={extraProperties} context={model.context}/>}
         </td>
       </tr>,
-      showKurssit && (isMobile
+      showKurssitRow && (isMobile
         ? (expandable && expanded && <tr className='kurssit-row' key='kurssit-row'><KurssitListMobile oppiaine={model}/></tr>)
         : <tr className='kurssit-row' key='kurssit-row'>
             <td colSpan='2'>
