@@ -1,5 +1,4 @@
 import React from 'baret'
-import Bacon from 'baconjs'
 import * as R from 'ramda'
 import {
   footnoteDescriptions, footnotesForSuoritus, groupTitleForSuoritus, isToimintaAlueittain,
@@ -74,7 +73,7 @@ const GroupedOppiaineet = ({model}) => {
 }
 
 const Oppiainetaulukko = ({model, suoritukset, showLaajuus}) => {
-  const showArvosana = arvioituTaiVahvistettu(model) || !model.value.classes.includes('perusopetuksenoppimaaransuoritus') // TODO: Selvitä mikä logiikka täs oli
+  const showArvosana = arvioituTaiVahvistettu(model) || !model.value.classes.includes('perusopetuksenoppimaaransuoritus')
   const filteredSuoritukset = isVuosiluokkaTaiPerusopetuksenOppimäärä(model)
     ? suoritukset
     : suoritukset.filter(s => arvioituTaiVahvistettu(s) || osasuoritukset(s).length)
@@ -89,16 +88,17 @@ const Oppiainetaulukko = ({model, suoritukset, showLaajuus}) => {
       </thead>
       <tbody>
       {
-        Bacon.combineWith(isMobileAtom, mobile => filteredSuoritukset.map(suoritus => (
+        filteredSuoritukset.map(suoritus => (
           <OppiaineRow
+            baret-lift
             key={suoritus.arrayKey}
             model={suoritus}
             showLaajuus={showLaajuus}
             showArvosana={showArvosana}
-            isMobile={mobile}
+            isMobile={isMobileAtom}
             footnotes={footnotesForSuoritus(suoritus)}
           />
-        )))
+        ))
       }
       </tbody>
     </table>
@@ -149,36 +149,44 @@ class OppiaineRow extends React.Component {
             ? <button className='inline-text-button' onClick={this.toggleExpand} aria-pressed={expanded}>{oppiaineTitle(oppiaine)}</button>
             : <span className='nimi'>{oppiaineTitle(oppiaine)}</span>}
         </td>
-        {showArvosana && <td className='arvosana'>
-          <ArvosanaEditor model={model}/>
-          {footnotes && footnotes.length > 0 &&
-            footnotes.map(note => <FootnoteHint key={note.hint} title={note.title} hint={note.hint} />)}
-        </td>}
+        {showArvosana && (
+          <td className='arvosana'>
+            <ArvosanaEditor model={model}/>
+            {footnotes && footnotes.length > 0 &&
+              footnotes.map(note => <FootnoteHint key={note.hint} title={note.title} hint={note.hint} />)}
+          </td>
+        )}
       </tr>,
-      showPropertiesRow && expanded && <tr className='properties-row' key='properties-row'>
-        <td colSpan='2'>
-          {(showLaajuus && hasLaajuus) && (
-            <div className='properties kansalainen'>
-              <table>
-                <tbody>
-                <tr className='property'>
-                  <td className='label'><Text name='Laajuus'/></td>
-                  <td className='value'><Editor model={model} path='koulutusmoduuli.laajuus'/></td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-          )}
-          {showExtraProperties && <PropertiesEditor className='kansalainen' properties={extraProperties} context={model.context}/>}
-        </td>
-      </tr>,
-      showKurssitRow && (isMobile
-        ? (expandable && expanded && <tr className='kurssit-row-mobile' key='kurssit-row'><KurssitListMobile oppiaine={model}/></tr>)
-        : <tr className='kurssit-row' key='kurssit-row'>
-            <td colSpan='2'>
-              <KurssitEditor model={model}/>
-            </td>
-          </tr>)
+      showPropertiesRow && expanded && (
+        <tr className='properties-row' key='properties-row'>
+          <td colSpan='2'>
+            {(showLaajuus && hasLaajuus) && (
+              <div className='properties kansalainen'>
+                <table>
+                  <tbody>
+                  <tr className='property'>
+                    <td className='label'><Text name='Laajuus'/></td>
+                    <td className='value'><Editor model={model} path='koulutusmoduuli.laajuus'/></td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            )}
+            {showExtraProperties && <PropertiesEditor className='kansalainen' properties={extraProperties} context={model.context}/>}
+          </td>
+        </tr>
+      ),
+      showKurssitRow && (
+        isMobile
+          ? (expandable && expanded && <tr className='kurssit-row-mobile' key='kurssit-row'><KurssitListMobile oppiaine={model}/></tr>)
+          : (
+              <tr className='kurssit-row' key='kurssit-row'>
+                <td colSpan='2'>
+                  <KurssitEditor model={model}/>
+                </td>
+              </tr>
+            )
+      )
     ]
   }
 }

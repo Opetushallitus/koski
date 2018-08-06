@@ -93,19 +93,18 @@ export const OmatTiedotIBTutkinnonOppiaineet = ({suorituksetModel}) => {
           <table key={`suoritustable-${r.ryhmä.koodiarvo}`} className='omattiedot-suoritukset'>
             <OmatTiedotLukionOppiaineetTableHead />
             <tbody>
-            {r.aineet && Bacon.combineWith(isMobileAtom, mobile =>
-              r.aineet.map((oppiaine, oppiaineIndex) => {
-                const footnote = modelData(oppiaine, 'arviointi.-1.predicted') && ArvosanaFootnote
-                return (
-                  <OmatTiedotLukionOppiaine
-                    key={oppiaineIndex}
-                    oppiaine={oppiaine}
-                    isMobile={mobile}
-                    footnote={footnote}
-                  />
-                )
-              })
-            )}
+            {r.aineet && r.aineet.map((oppiaine, oppiaineIndex) => {
+              const footnote = modelData(oppiaine, 'arviointi.-1.predicted') && ArvosanaFootnote
+              return (
+                <OmatTiedotLukionOppiaine
+                  baret-lift
+                  key={oppiaineIndex}
+                  oppiaine={oppiaine}
+                  isMobile={isMobileAtom}
+                  footnote={footnote}
+                />
+              )
+            })}
             </tbody>
           </table>
         ]))

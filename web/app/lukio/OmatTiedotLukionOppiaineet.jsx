@@ -25,11 +25,14 @@ export default ({suorituksetModel, suoritusFilter}) => {
       <table className='omattiedot-suoritukset'>
         <OmatTiedotLukionOppiaineetTableHead />
         <tbody>
-          {Bacon.combineWith(isMobileAtom, mobile =>
-            oppiaineet.map((oppiaine, oppiaineIndex) =>
-              <OmatTiedotLukionOppiaine key={oppiaineIndex} oppiaine={oppiaine} isMobile={mobile}/>
-            )
-          )}
+          {oppiaineet.map((oppiaine, oppiaineIndex) => (
+            <OmatTiedotLukionOppiaine
+              baret-lift
+              key={oppiaineIndex}
+              oppiaine={oppiaine}
+              isMobile={isMobileAtom}
+            />
+          ))}
         </tbody>
       </table>
       <div className='kurssit-yhteensä'>{t('Suoritettujen kurssien laajuus yhteensä') + ': ' + laajuusNumberToString(laajuudet(arvioidutKurssit(oppiaineet)))}</div>

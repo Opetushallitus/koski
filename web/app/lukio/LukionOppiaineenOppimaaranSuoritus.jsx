@@ -1,5 +1,4 @@
 import React from 'baret'
-import Bacon from 'baconjs'
 import {modelErrorMessages} from '../editor/EditorModel'
 import {LukionOppiaineEditor} from './LukionOppiaineEditor'
 import {LukionOppiaineetTableHead, OmatTiedotLukionOppiaineetTableHead} from './fragments/LukionOppiaineetTableHead'
@@ -30,9 +29,7 @@ export const OmatTiedotLukionOppiaineenOppimaaranSuoritus = ({model}) => (
     <table className='omattiedot-suoritukset'>
       <OmatTiedotLukionOppiaineetTableHead />
       <tbody>
-        {Bacon.combineWith(isMobileAtom, mobile =>
-          <OmatTiedotLukionOppiaine oppiaine={model} isMobile={mobile}/>
-        )}
+        <OmatTiedotLukionOppiaine baret-lift oppiaine={model} isMobile={isMobileAtom}/>
       </tbody>
     </table>
     {paikallisiaKursseja(model) && <FootnoteDescriptions data={[{title: 'Paikallinen kurssi tai oppiaine', hint: '*'}]}/>}
