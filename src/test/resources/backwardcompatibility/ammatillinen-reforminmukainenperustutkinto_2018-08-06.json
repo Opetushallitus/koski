@@ -603,13 +603,179 @@
           "tunniste" : {
             "koodiarvo" : "2",
             "koodistoUri" : "tutkinnonosatvalinnanmahdollisuus"
-          },
-          "pakollinen" : false
+          }
         },
         "tutkinnonOsanRyhmä" : {
           "koodiarvo" : "1",
           "koodistoUri" : "ammatillisentutkinnonosanryhma"
         },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "de",
+              "nimi" : {
+                "fi" : "Saksa"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Saksa"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "5",
+              "nimi" : {
+                "fi" : "5"
+              },
+              "koodistoUri" : "arviointiasteikkoammatillinen15",
+              "koodistoVersio" : 1
+            },
+            "päivä" : "2014-10-20",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "korkeakouluopintojentutkinnonosaapienempikokonaisuus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "ammatillisentutkinnonosa",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "1",
+            "koodistoUri" : "tutkinnonosatvalinnanmahdollisuus"
+          }
+        },
+        "tutkinnonOsanRyhmä" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "ammatillisentutkinnonosanryhma"
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "AI",
+              "koodistoUri" : "koskioppiaineetyleissivistava"
+            },
+            "kieli" : {
+              "koodiarvo" : "AI1",
+              "koodistoUri" : "oppiaineaidinkielijakirjallisuus"
+            },
+            "pakollinen" : true
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "5",
+              "nimi" : {
+                "fi" : "5"
+              },
+              "koodistoUri" : "arviointiasteikkoammatillinen15",
+              "koodistoVersio" : 1
+            },
+            "päivä" : "2014-10-20",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "jatkoopintovalmiuksiatukeviaopintojatutkinnonosaapienempikokonaisuus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "HI2",
+              "koodistoUri" : "lukionkurssit"
+            },
+            "kurssinTyyppi" : {
+              "koodiarvo" : "pakollinen",
+              "koodistoUri" : "lukionkurssintyyppi"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "5",
+              "nimi" : {
+                "fi" : "5"
+              },
+              "koodistoUri" : "arviointiasteikkoammatillinen15",
+              "koodistoVersio" : 1
+            },
+            "päivä" : "2014-10-20",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "jatkoopintovalmiuksiatukeviaopintojatutkinnonosaapienempikokonaisuus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "TVT",
+              "koodistoUri" : "ammatillisenoppiaineet"
+            },
+            "pakollinen" : true,
+            "laajuus" : {
+              "arvo" : 3.0,
+              "yksikkö" : {
+                "koodiarvo" : "6",
+                "nimi" : {
+                  "fi" : "Osaamispistettä"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "5",
+              "nimi" : {
+                "fi" : "5"
+              },
+              "koodistoUri" : "arviointiasteikkoammatillinen15",
+              "koodistoVersio" : 1
+            },
+            "päivä" : "2014-10-20",
+            "hyväksytty" : true
+          } ],
+          "alkamispäivä" : "2014-01-01",
+          "tunnustettu" : {
+            "osaaminen" : {
+              "koulutusmoduuli" : {
+                "tunniste" : {
+                  "koodiarvo" : "100238",
+                  "nimi" : {
+                    "fi" : "Asennushitsaus"
+                  },
+                  "koodistoUri" : "tutkinnonosat",
+                  "koodistoVersio" : 1
+                },
+                "pakollinen" : true
+              },
+              "tyyppi" : {
+                "koodiarvo" : "ammatillisentutkinnonosa",
+                "koodistoUri" : "suorituksentyyppi"
+              }
+            },
+            "selite" : {
+              "fi" : "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"
+            },
+            "rahoituksenPiirissä" : false
+          },
+          "lisätiedot" : [ {
+            "tunniste" : {
+              "koodiarvo" : "mukautettu",
+              "koodistoUri" : "ammatillisentutkinnonosanlisatieto"
+            },
+            "kuvaus" : {
+              "fi" : "Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella"
+            }
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "jatkoopintovalmiuksiatukeviaopintojatutkinnonosaapienempikokonaisuus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
         "tyyppi" : {
           "koodiarvo" : "ammatillisentutkinnonosa",
           "koodistoUri" : "suorituksentyyppi"

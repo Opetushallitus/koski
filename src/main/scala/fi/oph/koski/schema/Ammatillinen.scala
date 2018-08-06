@@ -425,13 +425,13 @@ case class MuunAmmatillisenTutkinnonOsanSuoritus(
 
 @Description("Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja")
 @Title("Muun tutkinnon osan suoritus, jatko-opintovalmiuksia tukevia opintoja")
+@OnlyWhen("../../suoritustapa/koodiarvo", "reformi")
 case class JatkoOpintovalmiuksiaTukeviaOpintoja(
   koulutusmoduuli: JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsa,
   @Description("Tieto siitä mihin tutkinnon osan ryhmään osan suoritus (Ammatilliset tutkinnon osat, Yhteiset tutkinnon osat, Vapaavalintaiset tutkinnon osat, Tutkintoa yksilöllisesti laajentavat tutkinnon osat) kuuluu")
   @KoodistoKoodiarvo("1") // Ammatilliset tutkinnon osat
   tutkinnonOsanRyhmä: Option[Koodistokoodiviite] = Some(Koodistokoodiviite("1", "ammatillisentutkinnonosanryhma")),
   toimipiste: Option[OrganisaatioWithOid] = None,
-  arviointi: Option[List[AmmatillinenArviointi]] = None,
   vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä] = None,
   override val alkamispäivä: Option[LocalDate] = None,
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
@@ -442,6 +442,7 @@ case class JatkoOpintovalmiuksiaTukeviaOpintoja(
 ) extends AmmatillisenTutkinnonOsanSuoritus with MahdollisestiToimipisteellinen {
   override def tutkinto: Option[AmmatillinenTutkintoKoulutus] = None
   override def näyttö: Option[Näyttö] = None
+  override def arviointi: Option[List[AmmatillinenArviointi]] = None
 }
 
 @Title("Muun tutkinnon osan suoritus, korkeakouluopinnot")
@@ -452,7 +453,6 @@ case class Korkeakouluopinnot(
   @KoodistoKoodiarvo("1") // Ammatilliset tutkinnon osat
   tutkinnonOsanRyhmä: Option[Koodistokoodiviite] = Some(Koodistokoodiviite("1", "ammatillisentutkinnonosanryhma")),
   toimipiste: Option[OrganisaatioWithOid] = None,
-  arviointi: Option[List[AmmatillinenArviointi]] = None,
   vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä] = None,
   override val alkamispäivä: Option[LocalDate] = None,
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
@@ -463,6 +463,7 @@ case class Korkeakouluopinnot(
 ) extends AmmatillisenTutkinnonOsanSuoritus with MahdollisestiToimipisteellinen {
   override def tutkinto: Option[AmmatillinenTutkintoKoulutus] = None
   override def näyttö: Option[Näyttö] = None
+  override def arviointi: Option[List[AmmatillinenArviointi]] = None
 }
 
 trait ValinnanMahdollisuus extends AmmatillisenTutkinnonOsa with KoodistostaLöytyväKoulutusmoduuli {
