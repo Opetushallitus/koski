@@ -144,7 +144,7 @@ class OppiaineRow extends React.Component {
     return [
       <tr className={oppiaineRowClassName} key='oppiaine-row' onClick={expandable ? this.toggleExpand : undefined}>
         <td className={oppiaineClassName}>
-          {expandable && <span className='expand-icon'>{(expanded ? '-' : '+')}</span>}
+          {expandable && <span className='expand-icon' aria-hidden={true}>{(expanded ? '-' : '+')}</span>}
           {expandable
             ? <button className='inline-text-button' onClick={this.toggleExpand} aria-pressed={expanded}>{oppiaineTitle(oppiaine)}</button>
             : <span className='nimi'>{oppiaineTitle(oppiaine)}</span>}
