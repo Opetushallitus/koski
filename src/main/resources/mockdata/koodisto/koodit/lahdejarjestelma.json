@@ -107,6 +107,15 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "lahdejarjestelma_varda",
+  "koodiArvo" : "varda",
+  "metadata" : [ {
+    "nimi" : "Varda",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "lahdejarjestelma_virta",
   "koodiArvo" : "virta",
   "metadata" : [ {
