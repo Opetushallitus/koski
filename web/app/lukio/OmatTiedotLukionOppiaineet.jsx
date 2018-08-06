@@ -1,5 +1,4 @@
 import React from 'baret'
-import Bacon from 'baconjs'
 import * as R from 'ramda'
 import {modelData, modelItems} from '../editor/EditorModel'
 import {t} from '../i18n/i18n'
