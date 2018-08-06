@@ -7,6 +7,7 @@ import {formatISODate, ISO2FinnishDateTime, parseISODate} from '../../date/date'
 import Http from '../../util/http'
 import ModalDialog from '../../editor/ModalDialog'
 import {DateInputFeedback} from './DateInputFeedback'
+import ModalMount from '../../components/ModalMount'
 
 const ApiBaseUrl = '/koski/api/suoritusjako'
 
@@ -142,16 +143,18 @@ export class SuoritusjakoLink extends React.Component {
               </button>
 
               {showDeleteConfirmation && (
-                <ModalDialog
-                  fullscreen={true}
-                  onDismiss={this.cancelConfimDelete.bind(this)}
-                  onSubmit={this.deleteSelf.bind(this)}
-                  submitOnEnterKey={false}
-                  okTextKey='Kyllä, poista linkki käytöstä'
-                  cancelTextKey='Älä poista linkkiä'
-                >
-                  <Text name='Linkin poistamisen jälkeen kukaan ei pääse katsomaan opintosuorituksiasi, vaikka olisit jakanut tämän linkin heille.'/>
-                </ModalDialog>
+                <ModalMount>
+                  <ModalDialog
+                    fullscreen={true}
+                    onDismiss={this.cancelConfimDelete.bind(this)}
+                    onSubmit={this.deleteSelf.bind(this)}
+                    submitOnEnterKey={false}
+                    okTextKey='Kyllä, poista linkki käytöstä'
+                    cancelTextKey='Älä poista linkkiä'
+                  >
+                    <Text name='Linkin poistamisen jälkeen kukaan ei pääse katsomaan opintosuorituksiasi, vaikka olisit jakanut tämän linkin heille.'/>
+                  </ModalDialog>
+                </ModalMount>
               )}
             </div>
           </div>
