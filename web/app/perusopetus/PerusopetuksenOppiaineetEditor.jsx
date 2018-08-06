@@ -22,41 +22,20 @@ import {accumulateExpandedState} from '../editor/ExpandableItems'
 import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
 import {
-  isKorotus,
-  isPainotettu,
+  footnoteDescriptions, footnotesForSuoritus, groupTitleForSuoritus,
   isPäättötodistus,
   isToimintaAlueittain,
   isVuosiluokkaTaiPerusopetuksenOppimäärä,
-  isYksilöllistetty,
   isYsiluokka,
   jääLuokalle,
   luokkaAste,
   luokkaAsteenOsasuoritukset,
-  oppimääränOsasuoritukset
+  oppimääränOsasuoritukset, pakollisetTitle, valinnaisetTitle, valmiitaSuorituksia
 } from './Perusopetus'
 import {expandableProperties, PerusopetuksenOppiaineRowEditor} from './PerusopetuksenOppiaineRowEditor'
 import {UusiPerusopetuksenOppiaineDropdown} from './UusiPerusopetuksenOppiaineDropdown'
 import {FootnoteDescriptions} from '../components/footnote'
 
-var pakollisetTitle = 'Pakolliset oppiaineet'
-var valinnaisetTitle = 'Valinnaiset oppiaineet'
-let groupTitleForSuoritus = suoritus => modelData(suoritus).koulutusmoduuli.pakollinen ? pakollisetTitle : valinnaisetTitle
-
-const YksilöllistettyFootnote = {title: 'Yksilöllistetty oppimäärä', hint: '*'}
-const PainotettuFootnote = {title: 'Painotettu opetus', hint: '**'}
-const KorotusFootnote = {title: 'Perusopetuksen päättötodistuksen arvosanan korotus', hint: '†'}
-
-const footnoteDescriptions = oppiaineSuoritukset => [
-  oppiaineSuoritukset.find(isYksilöllistetty) && YksilöllistettyFootnote,
-  oppiaineSuoritukset.find(isPainotettu) && PainotettuFootnote,
-  oppiaineSuoritukset.find(isKorotus) && KorotusFootnote
-].filter(v => !!v)
-
-const footnotesForSuoritus = suoritus => [
-  isYksilöllistetty(suoritus) && YksilöllistettyFootnote,
-  isPainotettu(suoritus) && PainotettuFootnote,
-  isKorotus(suoritus) && KorotusFootnote
-].filter(v => !!v)
 
 export const PerusopetuksenOppiaineetEditor = ({model}) => {
   model = addContext(model, { suoritus: model })
@@ -94,10 +73,6 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
   </div>)
 }
 
-const valmiitaSuorituksia = oppiaineSuoritukset => {
-  return oppiaineSuoritukset.some(oppiaine => arvioituTaiVahvistettu(oppiaine) || modelItems(oppiaine, 'osasuoritukset').some(arvioituTaiVahvistettu))
-}
-
 const prefillOsasuorituksetIfNeeded = (model, currentSuoritukset) => {
   const wrongOsasuorituksetTemplateP = fetchOsasuorituksetTemplate(model, !isToimintaAlueittain(model))
   const hasWrongPrefillP = wrongOsasuorituksetTemplateP.map(wrongOsasuorituksetTemplate =>
@@ -120,7 +95,7 @@ const fetchOsasuorituksetTemplate = (model, toimintaAlueittain) => isPäättöto
 const modelDataIlmanTyyppiä = suoritus => R.dissoc('tyyppi', modelData(suoritus))
 
 const hasPakollisuus = (model, uusiOppiaineenSuoritus) => {
-  let oppiaineHasPakollisuus = (oppiaine) => findModelProperty(oppiaine, p=>p.key=='pakollinen')
+  let oppiaineHasPakollisuus = (oppiaine) => findModelProperty(oppiaine, p => p.key === 'pakollinen')
   let koulutusmoduuliProtos = oneOfPrototypes(modelLookup(uusiOppiaineenSuoritus, 'koulutusmoduuli'))
   return !isToimintaAlueittain(model) && (koulutusmoduuliProtos.some(oppiaineHasPakollisuus) || modelItems(model, 'osasuoritukset').map(m => modelLookup(m, 'koulutusmoduuli')).some(oppiaineHasPakollisuus))
 }

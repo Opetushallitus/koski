@@ -186,6 +186,96 @@
       }
     }
   }
+
+  .omattiedot-perusopetuksen-suoritukset {
+    > .arvostelu, > .kayttaytymisen-arvio, > .suoritus-group  {
+      margin-bottom: 3rem;
+
+      > h4 {
+        font-size: 1.2857rem;
+        border-bottom: 1px solid @color-neutral-gray;
+        padding-bottom: 2px;
+        margin-bottom: 0.6rem;
+      }
+
+      .properties.kansalainen > table {
+        border-spacing: 0;
+      }
+    }
+
+    > .suoritus-group > table.suoritus-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 5px;
+      table-layout: fixed;
+
+      > thead > tr > th.oppiaine,
+      > tbody > tr > td.oppiaine {
+        width: 100%;
+      }
+
+      > thead > tr > th.arvosana,
+      > tbody > tr > td.arvosana {
+        text-align: center;
+        width: 8rem;
+      }
+
+      > tbody {
+        > tr.oppiaine-row {
+          > td {
+            font-weight: 600;
+            background: @color-light-blue;
+            padding: 8px;
+
+            &.oppiaine {
+              padding-left: 1.6rem;
+              display: flex;
+
+              &.paikallinen, &.paikallinen > button {
+                font-style: italic;
+              }
+
+              > button {
+                font-weight: 600;
+              }
+
+              > .expand-icon {
+                flex: 0 0 1.6rem;
+                margin-left: -1.6rem;
+                text-align: center;
+              }
+            }
+          }
+
+          &.expandable,
+          &.expandable > td > button {
+            cursor: pointer;
+          }
+
+          &.expanded > td {
+            background: @color-medium-blue;
+          }
+        }
+
+        > tr.kurssit-row, > tr.properties-row {
+          > td {
+            padding: 8px 1.6rem;
+          }
+        }
+
+        > tr.kurssit-row-mobile > td > table.kurssilista-mobile {
+          > thead > tr > th.nimi,
+          > tbody > tr > td.nimi {
+            padding-left: 1.6rem;
+          }
+
+          > tbody > tr > td > div.properties {
+            padding-left: calc(1.6rem - 8px);
+          }
+        }
+      }
+    }
+  }
 }
 
 
