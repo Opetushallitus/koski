@@ -1,12 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './style/main.less'
-import {Kayttooikeudet} from './kayttooikeudet/Kayttooikeudet'
+import {LuvanHallinta} from './omadata/luvanhallinta/LuvanHallinta'
 import OmatTiedotTopBar from './topbar/OmatTiedotTopBar'
 
 ReactDOM.render((
   <div>
     <OmatTiedotTopBar />
-    <Kayttooikeudet/>
+    <LuvanHallinta/>
   </div>
 ), document.getElementById('content'))
