@@ -12,7 +12,7 @@
   .kayttoluvat-headline {
     outline: none;
     > div.kayttoluvat-info {
-      > div span.info {
+      > span.info {
         font-size: 1.4rem;
         max-width: 826px;
       }
@@ -29,7 +29,7 @@
   }
 
   > .kayttoluvat-container {
-    .divider {
+    > .divider {
       color: @color-link-blue;
 
       @media @media-phone {
@@ -37,7 +37,7 @@
       }
     }
 
-    .kayttoluvat-expander {
+    > .kayttoluvat-expander {
       > .kayttolupa-button {
         width: 100%;
         border: 0;
@@ -71,107 +71,118 @@
       }
     }
 
-    > .no-permission {
-      border: solid 1px @color-link-blue;
-      padding: 2rem 4rem 3rem 2rem;
+    > .kayttolupa-list {
+      list-style-position: inside;
+      padding-left: 0;
+      list-style-type: none;
 
-      > span {
-        font-size: 1.4rem;
-      }
-    }
+      > .no-permission {
+        border: solid 1px @color-link-blue;
+        padding: 2rem 4rem 3rem 2rem;
 
-    .kayttolupa-container {
-      border: solid 1px @color-link-blue;
-      height: 120px;
-      margin-top: 1.2rem;
-      padding: 1rem 1rem 1rem 2rem;
-      outline: none;
-
-      @media @media-phone {
-        display: inline-block;
-        align-content: center;
-        padding: 1rem;
-        width: 100%;
-        border: solid 8px @color-light-blue;
-        margin-top: 0;
-        height: auto;
-      }
-
-      > .asiakas {
-        font-size: 1.8rem;
-        margin-top: 0;
-        margin-bottom: 0.5rem;
-        color: @color-dark-blue;
-        font-weight: 600;
-
-        @media @media-phone {
-          margin-bottom: 1rem;
+        > span {
+          font-size: 1.4rem;
         }
       }
 
-
-      > .bottom-items {
-        display: flex;
+      > .kayttolupa-container {
+        border: solid 1px @color-link-blue;
+        height: 120px;
+        margin-top: 1.2rem;
+        padding: 1rem 1rem 1rem 2rem;
+        outline: none;
 
         @media @media-phone {
-          display: initial;
+          display: inline-block;
+          align-content: center;
+          padding: 1rem;
+          width: 100%;
+          border: solid 8px @color-light-blue;
+          margin-top: 0;
+          height: auto;
         }
 
-        > .container {
-          display: flex;
-          flex: 1;
-          flex-flow: row nowrap;
-          flex-direction: row-reverse;
+        > .asiakas {
+          font-size: 1.8rem;
+          margin-top: 0;
+          margin-bottom: 0.5rem;
+          color: @color-link-blue;
+          font-weight: 600;
 
           @media @media-phone {
-            padding: 0;
-            width: 100%;
+            margin-bottom: 1rem;
+          }
+        }
+
+
+        > .bottom-items {
+          display: flex;
+
+          @media @media-phone {
             display: initial;
-            flex-direction: column;
           }
 
-          .oikeudet {
-            flex: 0.4 1 auto;
-
-            > .list-label {
-              font-weight: 600;
-            }
-
-            > ul {
-              list-style-position: inside;
-              padding-left: 0;
-            }
-          }
-
-          > .voimassaolo {
-            flex: 1 1 auto;
-            float: right;
+          > .container {
+            display: flex;
+            flex: 1;
+            flex-flow: row nowrap;
+            flex-direction: row-reverse;
 
             @media @media-phone {
+              padding: 0;
               width: 100%;
-              display: flex;
-              margin-bottom: 1rem;
+              display: initial;
+              flex-direction: column;
             }
 
-            span {
-              font-size: 1.1rem;
-            }
+            .oikeudet {
+              flex: 0.4 1 auto;
 
-            > .teksti {
-              margin-bottom: 0.2rem;
-
-              @media @media-phone {
-                margin-bottom: 0;
+              > .list-label {
+                font-weight: 600;
               }
 
+              > ul {
+                list-style-position: inside;
+                padding-left: 0;
+
+                > li {
+                  margin-top: 0.5rem;
+                  list-style-type: initial;
+                }
+              }
             }
 
-            .aikaleima {
-              > .mobile-whitespace {
-                display: none;
+            > .voimassaolo {
+              flex: 1 1 auto;
+              float: right;
+
+              @media @media-phone {
+                width: 100%;
+                display: flex;
+                margin-bottom: 1rem;
+              }
+
+              span {
+                font-size: 1.1rem;
+              }
+
+              > .teksti {
+                margin-bottom: 0.2rem;
 
                 @media @media-phone {
-                  display: initial;
+                  margin-bottom: 0;
+                }
+
+              }
+
+              .aikaleima {
+                > .mobile-whitespace {
+                  display: none;
+
+                  @media @media-phone {
+                    display: initial;
+                  }
                 }
               }
             }
@@ -189,11 +200,11 @@
           > button {
             font-size: 1.2rem;
             font-weight: 600;
-            color: @color-blue;
+            color: @color-link-blue;
 
             > span {
               text-decoration: underline;
-              text-decoration-color: @color-blue;
+              text-decoration-color: @color-link-blue;
             }
           }
         }
