@@ -143,7 +143,18 @@ class TiedonsiirtoService(
 
     val henkilö = data.flatMap(extractHenkilö(_, oppijaOid))
     val lahdejarjestelma: Option[String] = data.flatMap(extractLahdejarjestelma)
-    val oppilaitokset: Option[List[OidOrganisaatio]] = data.map(_ \ "opiskeluoikeudet" \ "oppilaitos" \ "oid").map(jsonStringList).map(_.flatMap(organisaatioRepository.getOrganisaatio).map(_.toOidOrganisaatio))
+
+    // "oppilaitos" is not required on input (it's filled in automatically in some cases), so prefer validatedOppija if it's available.
+    lazy val oppilaitoksetFromData: Option[List[OidOrganisaatio]] = data
+      .map(_ \ "opiskeluoikeudet" \ "oppilaitos" \ "oid")
+      .map(jsonStringList)
+      .map(_.flatMap(organisaatioRepository.getOrganisaatio).map(_.toOidOrganisaatio))
+    val oppilaitokset = validatedOppija
+      .map(_.opiskeluoikeudet.toList.filter(_.oppilaitos.isDefined).map(_.oppilaitos.get.toOidOrganisaatio))
+      .filter(_.nonEmpty)
+      .orElse(oppilaitoksetFromData)
+      .map(_.distinct)
+
     val koulutustoimija: Option[OidOrganisaatio] = validatedOppija.flatMap(_.opiskeluoikeudet.headOption.flatMap(_.koulutustoimija.map(_.toOidOrganisaatio)))
     val suoritustiedot: Option[List[TiedonsiirtoSuoritusTiedot]] = validatedOppija.map(toSuoritustiedot)
 
