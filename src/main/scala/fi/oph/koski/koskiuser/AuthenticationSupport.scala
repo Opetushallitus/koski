@@ -88,7 +88,7 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
 
   def tryLogin(username: String, password: String): Either[HttpStatus, AuthenticationUser] = {
     // prevent brute-force login by blocking incorrect logins with progressive delay
-    lazy val loginFail = Left(KoskiErrorCategory.unauthorized.loginFail(s"Sisäänkirjautuminen käyttäjätunnuksella $username epäonnistui."))
+    lazy val loginFail = Left(KoskiErrorCategory.unauthorized.loginFail(s"Sisäänkirjautuminen epäonnistui, väärä käyttäjätunnus tai salasana."))
     val blockedUntil = application.basicAuthSecurity.getLoginBlocked(username)
     if (blockedUntil.isDefined) {
       logger(LogUserContext(request)).warn(s"Too many failed login attempts for username ${username}, blocking login until ${blockedUntil.get}")
