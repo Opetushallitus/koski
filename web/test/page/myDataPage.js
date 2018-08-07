@@ -38,6 +38,9 @@ const MyDataPage = () => {
     },
     clickLogout: () => click('.logout > a')(),
     clickCancel: () => click('a > .decline-link')(),
+    clickChangeLang: () => click('.lang > .change-lang')(),
+    isInFinnish: () => isElementVisible(S('.change-lang')) && extractAsText(S('.change-lang')) === 'På svenska',
+    isInSwedish: () => isElementVisible(S('.change-lang')) && extractAsText(S('.change-lang')) === 'Suomeksi',
     accepted: {
       isVisible: () => isElementVisible(S('.acceptance-title-success')),
       isReturnButtonVisible: () => isElementVisible(S('.acceptance-return-button')),
