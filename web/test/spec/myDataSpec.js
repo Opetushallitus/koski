@@ -59,7 +59,9 @@ describe('MyData', () => {
     before(
       ...login('fi'),
       tietojenkaytto.go,
-      wait.until(tietojenkaytto.isVisible)
+      wait.until(tietojenkaytto.isVisible),
+      tietojenkaytto.expandPermissions,
+      wait.until(tietojenkaytto.isPermissionsExpanded)
     )
 
     it('Käyttäjälle näytetään oma nimi', () => {
@@ -67,7 +69,8 @@ describe('MyData', () => {
     })
 
     it('Nähdään annettu lupa', () => {
-      //expect(extractAsText(S('.acceptance-return-button'))).equal('Palaa palveluntarjoajan sivulle')
+      expect(extractAsText(S('ul.kayttolupa-list > li:first-child > h3'))).equal('HSL Helsingin Seudun Liikenne')
+      expect(extractAsText(S('.voimassaolo > .teksti > span'))).equal('Lupa voimassa')
     })
   })
 
