@@ -33,7 +33,7 @@ export default ({className, onDismiss, onSubmit, children, submitOnEnterKey, okT
 
   return fullscreen
     ? (
-      <FocusLock autoFocus={false} returnFocus={true}>
+      <FocusLock autoFocus={true} returnFocus={true}>
         <Modal/>
       </FocusLock>
     )
