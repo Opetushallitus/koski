@@ -551,6 +551,29 @@
             "päivä" : "2014-10-20",
             "hyväksytty" : true
           } ],
+          "näyttö" : {
+            "kuvaus" : {
+              "fi" : "Kirjaesitelmä"
+            },
+            "suorituspaikka" : {
+              "tunniste" : {
+                "koodiarvo" : "1",
+                "nimi" : {
+                  "fi" : "työpaikka"
+                },
+                "koodistoUri" : "ammatillisennaytonsuorituspaikka",
+                "koodistoVersio" : 1
+              },
+              "kuvaus" : {
+                "fi" : "Stadin ammattiopisto"
+              }
+            },
+            "suoritusaika" : {
+              "alku" : "2014-05-18",
+              "loppu" : "2014-05-18"
+            },
+            "työssäoppimisenYhteydessä" : false
+          },
           "tyyppi" : {
             "koodiarvo" : "ammatillisentutkinnonosanosaalue",
             "koodistoUri" : "suorituksentyyppi"
@@ -634,7 +657,7 @@
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "korkeakouluopintojentutkinnonosaapienempikokonaisuus",
+            "koodiarvo" : "ammatillinenkorkeakouluopintoja",
             "koodistoUri" : "suorituksentyyppi"
           }
         } ],
@@ -656,14 +679,15 @@
         "osasuoritukset" : [ {
           "koulutusmoduuli" : {
             "tunniste" : {
-              "koodiarvo" : "AI",
-              "koodistoUri" : "koskioppiaineetyleissivistava"
+              "koodiarvo" : "MAA",
+              "nimi" : {
+                "fi" : "Maantieto"
+              }
             },
-            "kieli" : {
-              "koodiarvo" : "AI1",
-              "koodistoUri" : "oppiaineaidinkielijakirjallisuus"
+            "kuvaus" : {
+              "fi" : "Lukion maantiedon oppimäärä"
             },
-            "pakollinen" : true
+            "perusteenDiaarinumero" : "33/011/2003"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -678,19 +702,31 @@
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "jatkoopintovalmiuksiatukeviaopintojatutkinnonosaapienempikokonaisuus",
+            "koodiarvo" : "ammatillinenlukionopintoja",
             "koodistoUri" : "suorituksentyyppi"
           }
         }, {
           "koulutusmoduuli" : {
             "tunniste" : {
-              "koodiarvo" : "HI2",
-              "koodistoUri" : "lukionkurssit"
+              "koodiarvo" : "EN",
+              "nimi" : {
+                "fi" : "Englanti"
+              }
             },
-            "kurssinTyyppi" : {
-              "koodiarvo" : "pakollinen",
-              "koodistoUri" : "lukionkurssintyyppi"
-            }
+            "kuvaus" : {
+              "fi" : "Englannin kurssi"
+            },
+            "laajuus" : {
+              "arvo" : 3.0,
+              "yksikkö" : {
+                "koodiarvo" : "6",
+                "nimi" : {
+                  "fi" : "Osaamispistettä"
+                },
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "perusteenDiaarinumero" : "33/011/2003"
           },
           "arviointi" : [ {
             "arvosana" : {
@@ -705,7 +741,7 @@
             "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "jatkoopintovalmiuksiatukeviaopintojatutkinnonosaapienempikokonaisuus",
+            "koodiarvo" : "ammatillinenlukionopintoja",
             "koodistoUri" : "suorituksentyyppi"
           }
         }, {
@@ -738,41 +774,36 @@
             "päivä" : "2014-10-20",
             "hyväksytty" : true
           } ],
-          "alkamispäivä" : "2014-01-01",
-          "tunnustettu" : {
-            "osaaminen" : {
-              "koulutusmoduuli" : {
-                "tunniste" : {
-                  "koodiarvo" : "100238",
-                  "nimi" : {
-                    "fi" : "Asennushitsaus"
-                  },
-                  "koodistoUri" : "tutkinnonosat",
-                  "koodistoVersio" : 1
-                },
-                "pakollinen" : true
-              },
-              "tyyppi" : {
-                "koodiarvo" : "ammatillisentutkinnonosa",
-                "koodistoUri" : "suorituksentyyppi"
+          "tyyppi" : {
+            "koodiarvo" : "ammatillisentutkinnonosanosaalue",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "htm",
+              "nimi" : {
+                "fi" : "Hoitotarpeen määrittäminen"
               }
             },
-            "selite" : {
-              "fi" : "Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta"
-            },
-            "rahoituksenPiirissä" : false
-          },
-          "lisätiedot" : [ {
-            "tunniste" : {
-              "koodiarvo" : "mukautettu",
-              "koodistoUri" : "ammatillisentutkinnonosanlisatieto"
-            },
             "kuvaus" : {
-              "fi" : "Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella"
+              "fi" : "Hoitotarpeen määrittäminen"
             }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "5",
+              "nimi" : {
+                "fi" : "5"
+              },
+              "koodistoUri" : "arviointiasteikkoammatillinen15",
+              "koodistoVersio" : 1
+            },
+            "päivä" : "2014-10-20",
+            "hyväksytty" : true
           } ],
           "tyyppi" : {
-            "koodiarvo" : "jatkoopintovalmiuksiatukeviaopintojatutkinnonosaapienempikokonaisuus",
+            "koodiarvo" : "ammatillinenmuitaopintovalmiuksiatukeviaopintoja",
             "koodistoUri" : "suorituksentyyppi"
           }
         } ],
