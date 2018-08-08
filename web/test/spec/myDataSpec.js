@@ -2,6 +2,7 @@ describe('MyData', () => {
   const authentication = Authentication()
   const korhopankki = KorhoPankki()
   const mydata = MyDataPage()
+  const tietojenkaytto = TietojenKayttoPage()
 
   const login = (lang) => [
     authentication.logout,
@@ -51,6 +52,22 @@ describe('MyData', () => {
         })
 
       })
+    })
+  })
+
+  describe('Kun ollaan hyväksytty tietojen jakaminen', () => {
+    before(
+      ...login('fi'),
+      tietojenkaytto.go,
+      wait.until(tietojenkaytto.isVisible)
+    )
+
+    it('Käyttäjälle näytetään oma nimi', () => {
+      expect(extractAsText(S('.oppija-nimi > .nimi'))).equal('Dilbert Dippainssi')
+    })
+
+    it('Nähdään annettu lupa', () => {
+      //expect(extractAsText(S('.acceptance-return-button'))).equal('Palaa palveluntarjoajan sivulle')
     })
   })
 
