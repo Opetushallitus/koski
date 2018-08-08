@@ -69,8 +69,21 @@ describe('MyData', () => {
     })
 
     it('Nähdään annettu lupa', () => {
-      expect(extractAsText(S('ul.kayttolupa-list > li:first-child > h3'))).equal('HSL Helsingin Seudun Liikenne')
+      expect(extractAsText(tietojenkaytto.firstPermission)).equal('HSL Helsingin Seudun Liikenne')
       expect(extractAsText(S('.voimassaolo > .teksti > span'))).equal('Lupa voimassa')
+    })
+
+    describe('Kun perutaan annettu lupa', () => {
+      before(
+        tietojenkaytto.cancelPermission.cancelFirstPermission,
+        wait.until(tietojenkaytto.cancelPermission.isWaitingForVerification),
+        tietojenkaytto.cancelPermission.verifyCancel
+      )
+
+      it('Lupa poistuu näkyvistä', () => {
+        expect(isElementVisible(tietojenkaytto.firstPermission)).to.equal(false)
+        expect(isElementVisible(S('ul.kayttolupa-list > li.no-permission'))).to.equal(true)
+      })
     })
   })
 
