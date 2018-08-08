@@ -18,12 +18,12 @@ class AuthenticationSpec extends FreeSpec with Matchers with LocalJettyHttpSpeci
     }
     "Invalid credentials" in {
       post("user/login", JsonSerializer.writeWithRoot(Login("kalle", "asdf")), headers = jsonContent) {
-        verifyResponseStatus(401, KoskiErrorCategory.unauthorized.loginFail("Sisäänkirjautuminen käyttäjätunnuksella kalle epäonnistui."))
+        verifyResponseStatus(401, KoskiErrorCategory.unauthorized.loginFail("Sisäänkirjautuminen epäonnistui, väärä käyttäjätunnus tai salasana."))
       }
 
       // blocking because of too many login attempts
       post("user/login", JsonSerializer.writeWithRoot(Login("kalle", "kalle")), headers = jsonContent) {
-        verifyResponseStatus(401, KoskiErrorCategory.unauthorized.loginFail("Sisäänkirjautuminen käyttäjätunnuksella kalle epäonnistui."))
+        verifyResponseStatus(401, KoskiErrorCategory.unauthorized.loginFail("Sisäänkirjautuminen epäonnistui, väärä käyttäjätunnus tai salasana."))
       }
 
       sleep(1000)
