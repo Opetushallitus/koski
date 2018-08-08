@@ -14,7 +14,7 @@ export default ({className, onDismiss, onSubmit, children, submitOnEnterKey, okT
     if (e.keyCode == 27) onDismiss()
     if (e.keyCode == 13 && submitOnEnterKey) onSubmit()
   }
-  let classNameP = submittedAtom.map(submitted => (className ? className : '') + ' modal' + (submitted ? ' submitted' : '') + (fullscreen ? ' fullscreen' : ''))
+  let classNameP = submittedAtom.map(submitted => (className ? className : '') + ' modal' + (submitted ? ' submitted' : '') + (fullscreen ? ' fullscreen textstyle-body' : ''))
 
   const Modal = () => (
     <div className={classNameP} role='dialog' aria-modal={true} aria-describedby='modal-main-content'>
