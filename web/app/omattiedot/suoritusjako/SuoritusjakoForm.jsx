@@ -23,27 +23,27 @@ const Ingressi = () => (
 )
 
 const SuoritusjakoList = ({opiskeluoikeudet, suoritusjaot, onRemove}) => (
-    <div>
-      {!R.isEmpty(suoritusjaot) && (
-        <div>
-          <h2><Text name='Voimassaolevat linkit'/></h2>
-          <div className="link-information">
-            <Text name={
-              'Jakolinkillä voit näyttää suoritustietosi haluamillesi henkilöille (esimerkiksi työtä tai opiskelupaikkaa hakiessasi). ' +
-              'Linkin saajan ei tarvitse kirjautua Oma Opintopolku-palveluun. ' +
-              'Voit tarkistaa tarkan sisällön Esikatsele-painikkeella.'}
-            />
-          </div>
-          <ul className='suoritusjako-form__link-list'>
-            {suoritusjaot.map(suoritusjako => (
-              <li key={suoritusjako.secret}>
-                <SuoritusjakoLink suoritusjako={suoritusjako} opiskeluoikeudet={opiskeluoikeudet} onRemove={onRemove}/>
-              </li>
-            ))}
-          </ul>
+  <div>
+    {!R.isEmpty(suoritusjaot) && (
+      <div>
+        <h2><Text name='Voimassaolevat linkit'/></h2>
+        <div className="link-information">
+          <Text name={
+            'Jakolinkillä voit näyttää suoritustietosi haluamillesi henkilöille (esimerkiksi työtä tai opiskelupaikkaa hakiessasi). ' +
+            'Linkin saajan ei tarvitse kirjautua Oma Opintopolku-palveluun. ' +
+            'Voit tarkistaa tarkan sisällön Esikatsele-painikkeella.'}
+          />
         </div>
-      )}
-    </div>
+        <ul className='suoritusjako-form__link-list'>
+          {suoritusjaot.map(suoritusjako => (
+            <li key={suoritusjako.secret}>
+              <SuoritusjakoLink suoritusjako={suoritusjako} opiskeluoikeudet={opiskeluoikeudet} onRemove={onRemove}/>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </div>
 )
 
 const CreateNewSuoritusjakoButton = ({selectedSuoritusIds, onClick, onSuccess, onError}) => {
