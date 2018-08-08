@@ -83,7 +83,7 @@ export class LuvanHallinta extends React.Component {
     const removeName = valtuudet.reduce((acc, i) => i.asiakasId === removeId ? i.asiakasName : acc, '')
     const renderError = error ? <ErrorDisplay error={{text: error}} /> :null
 
-    if (loading) return <Spinner />
+    if (loading) return <div className='omattiedot-kayttoluvat'><Spinner /></div>
 
     return (
       <div>
