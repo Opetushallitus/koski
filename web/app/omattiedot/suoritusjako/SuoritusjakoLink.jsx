@@ -95,6 +95,7 @@ export class SuoritusjakoLink extends React.Component {
     const {suoritusjako} = this.props
     const {secret, expirationDate, timestamp} = suoritusjako
     const url = `${window.location.origin}/koski/opinnot/${secret}`
+    const labelId = `date-input-${timestamp}`
 
     return isDeletePending ? <SuoritusjakoLinkPlaceholder/>
       : (
@@ -110,27 +111,23 @@ export class SuoritusjakoLink extends React.Component {
               />
             </div>
             <div className='suoritusjako-link__expiration'>
-              <label>
-                <Text name='Linkin voimassaoloaika'/>
-                <Text name='Päättyy'/>
-                <div style={{display: 'inline'}} className={isDateUpdatePending ? 'ajax-indicator-right' : ''}>
-                  <DateInput
-                    value={parseISODate(expirationDate)}
-                    valueCallback={date => this.dateChangeBus.push(date)}
-                    validityCallback={(isValid, stringInput)=> {
-                      !isValid && this.dateChangeBus.push(null)
-                      this.inputChangeBus.push(stringInput)
-                    }}
-                    isAllowedDate={d => SuoritusjakoLink.isDateInFuture(d) && SuoritusjakoLink.isDateWithinYear(d)}
-                    isPending={isDateUpdatePending}
-                  />
-                </div>
-                  <DateInputFeedback
-                    feedbackBus={this.feedbackBus}
-                    futureValidator={SuoritusjakoLink.isDateInFuture}
-                    yearValidator={SuoritusjakoLink.isDateWithinYear}
-                  />
-              </label>
+              <label htmlFor={labelId}><Text name='Linkin voimassaoloaika päättyy'/></label>
+              <DateInput
+                value={parseISODate(expirationDate)}
+                valueCallback={date => this.dateChangeBus.push(date)}
+                validityCallback={(isValid, stringInput)=> {
+                  !isValid && this.dateChangeBus.push(null)
+                  this.inputChangeBus.push(stringInput)
+                }}
+                isAllowedDate={d => SuoritusjakoLink.isDateInFuture(d) && SuoritusjakoLink.isDateWithinYear(d)}
+                isPending={isDateUpdatePending}
+                inputId={labelId}
+              />
+              <DateInputFeedback
+                feedbackBus={this.feedbackBus}
+                futureValidator={SuoritusjakoLink.isDateInFuture}
+                yearValidator={SuoritusjakoLink.isDateWithinYear}
+              />
             </div>
           </div>
           <div className='suoritusjako-link__bottom-container'>
