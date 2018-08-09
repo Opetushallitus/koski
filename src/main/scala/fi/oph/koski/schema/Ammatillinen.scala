@@ -444,8 +444,8 @@ case class JatkoOpintovalmiuksiaTukevienOpintojenSuoritus(
   override def näyttö: Option[Näyttö] = None
 }
 
-@Description("Korkeakouluopinnot")
-@Title("Korkeakouluopinnot")
+@Description("Korkeakouluopintoja")
+@Title("Korkeakouluopintoja")
 @OnlyWhen("../../suoritustapa/koodiarvo", "reformi")
 case class KorkeakouluopintoSuoritus(
   koulutusmoduuli: KorkeakouluopinnotTutkinnonOsa,
