@@ -42,8 +42,8 @@ export const SelectableSuoritusList = ({opiskeluoikeudet, selectedSuoritusIds}) 
             <li className='oppilaitos-group-header' key={groupTitle}>
               {groupTitle}
             </li>,
-            Bacon.combineWith(oppilaitoksenOpiskeluoikeudet, selectedSuoritusIds, (opiskeluoikeudeModels, selectedIds) =>
-              opiskeluoikeudeModels.map(oo => {
+            Bacon.combineWith(oppilaitoksenOpiskeluoikeudet, selectedSuoritusIds, (opiskeluoikeudetModels, selectedIds) =>
+              opiskeluoikeudetModels.map(oo => {
                 const identifiersWithTitles = suorituksetWithIdentifiers => suorituksetWithIdentifiers.map(
                   ({suoritus, id}) => ({
                     id,
