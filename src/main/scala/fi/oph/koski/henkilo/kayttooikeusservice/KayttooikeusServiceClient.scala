@@ -17,7 +17,7 @@ case class KäyttöoikeusServiceClient(config: Config) {
     gatherUnordered(roolit.map(r => http.post(uri"/kayttooikeus-service/kayttooikeusryhma/ryhmasByKayttooikeus", Map("KOSKI" -> r.rooli))(Json4sHttp4s.json4sEncoderOf[Map[String, String]])(Http.parseJson[List[KäyttöoikeusRyhmä]])))
   }.map(_.flatten)
 
-  def findKäyttöoikeusRyhmänHenkilöt(ryhmäId: Int): Task[List[String]] = http.get(uri"/kayttooikeus-service/kayttooikeusryhma/$ryhmäId/henkilot")(parseJson[KäyttöoikeusRyhmäHenkilöt]).map(_.personOids)
+  def findKäyttöoikeusRyhmänHenkilöt(ryhmäId: Int): Task[List[String]] = http.get(uri"/kayttooikeus-service/kayttooikeusryhma/$ryhmäId/henkilot")(parseJson[KäyttöoikeusRyhmäHenkilöt]).map(_.personOids.getOrElse(List.empty))
 
   def findKäyttöoikeudetByUsername(username: String): Task[List[HenkilönKäyttöoikeudet]] = http.get(uri"/kayttooikeus-service/kayttooikeus/kayttaja?username=$username")(parseJson[List[HenkilönKäyttöoikeudet]])
 }
@@ -27,7 +27,7 @@ case class KäyttöoikeusRyhmä(id: Int, nimi: KäyttöoikeusRyhmäDescriptions)
 }
 case class KäyttöoikeusRyhmäDescriptions(texts: List[KäyttöoikeusRyhmäDescription])
 case class KäyttöoikeusRyhmäDescription(text: String, lang: String)
-case class KäyttöoikeusRyhmäHenkilöt(personOids: List[String])
+case class KäyttöoikeusRyhmäHenkilöt(personOids: Option[List[String]])
 case class Käyttäjätiedot(username: Option[String])
 case class HenkilönKäyttöoikeudet(oidHenkilo: String, organisaatiot: List[OrganisaatioJaKäyttöoikeudet])
 case class OrganisaatioJaKäyttöoikeudet(organisaatioOid: String, kayttooikeudet: List[PalveluJaOikeus])
