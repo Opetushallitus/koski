@@ -30,7 +30,8 @@
     }
 
     &:disabled {
-      background: @color-disabled;
+      background-color: @color-neutral-gray;
+      color: @color-disabled-text;
       cursor: default;
     }
 
@@ -45,10 +46,12 @@
     }
 
     &--success, &--success:hover, &--success:disabled {
+      color: @color-white;
       background-color: @color-green;
     }
 
     &--error, &--error:hover, &--error:disabled {
+      color: @color-white;
       background-color: @color-red;
     }
 
