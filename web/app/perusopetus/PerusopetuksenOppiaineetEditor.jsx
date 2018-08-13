@@ -42,7 +42,9 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
   let oppiaineSuoritukset = modelItems(model, 'osasuoritukset')
 
   const footnotes = footnoteDescriptions(oppiaineSuoritukset)
-  let uusiOppiaineenSuoritus = model.context.edit ? createOppiaineenSuoritus(modelLookup(model, 'osasuoritukset')) : null
+  let osasuorituksetModel = modelLookup(model, 'osasuoritukset')
+  let uusiOppiaineenSuoritus = model.context.edit ? createOppiaineenSuoritus(osasuorituksetModel) : null
+  let uusiPerusopetukseenValmistavanOppiaineenSuoritus = model.context.edit && isPerusopetukseenValmistava(model) ? createOppiaineenSuoritus(osasuorituksetModel, () => 'perusopetukseenvalmistavanopetuksenoppiaineensuoritus') : null
   let showOppiaineet = !(isYsiluokka(model) && !jääLuokalle(model)) && (model.context.edit || valmiitaSuorituksia(oppiaineSuoritukset) || isVuosiluokkaTaiPerusopetuksenOppimäärä(model))
 
   if (model.context.edit) {
@@ -63,9 +65,9 @@ export const PerusopetuksenOppiaineetEditor = ({model}) => {
         <h5><Text name={(isToimintaAlueittain(model) ? 'Toiminta-alueiden' : 'Oppiaineiden') + ' arvosanat'} /></h5>
         <p><Text name="Arvostelu 4-10, S (suoritettu) tai H (hylätty)"/></p>
         {
-          hasPakollisuus(model, uusiOppiaineenSuoritus)
+          hasPakollisuus(model, uusiOppiaineenSuoritus) && !isPerusopetukseenValmistava(model)
             ? <GroupedOppiaineetEditor model={model} uusiOppiaineenSuoritus={uusiOppiaineenSuoritus}/>
-            : <SimpleOppiaineetEditor model={model} uusiOppiaineenSuoritus={uusiOppiaineenSuoritus}/>
+            : <SimpleOppiaineetEditor model={model} uusiOppiaineenSuoritus={uusiOppiaineenSuoritus} uusiPerusopetukseenValmistavanOppiaineenSuoritus={uusiPerusopetukseenValmistavanOppiaineenSuoritus} />
         }
         {!R.isEmpty(footnotes) && <FootnoteDescriptions data={footnotes}/>}
       </div>)
@@ -116,10 +118,10 @@ const GroupedOppiaineetEditor = ({model, uusiOppiaineenSuoritus}) => {
   })}</span>)
 }
 
-const SimpleOppiaineetEditor = ({model, uusiOppiaineenSuoritus}) => {
+const SimpleOppiaineetEditor = ({model, uusiOppiaineenSuoritus, uusiPerusopetukseenValmistavanOppiaineenSuoritus}) => {
   let suoritukset = modelItems(model, 'osasuoritukset')
   return (<span>
-    <Oppiainetaulukko model={model} suoritukset={suoritukset} uusiOppiaineenSuoritus={uusiOppiaineenSuoritus}/>
+    <Oppiainetaulukko model={model} suoritukset={suoritukset} uusiOppiaineenSuoritus={uusiOppiaineenSuoritus} uusiPerusopetukseenValmistavanOppiaineenSuoritus={uusiPerusopetukseenValmistavanOppiaineenSuoritus} />
     <KäyttäytymisenArvioEditor model={model}/>
   </span>)
 }
@@ -136,11 +138,12 @@ const KäyttäytymisenArvioEditor = ({model}) => {
 
 }
 
-let createOppiaineenSuoritus = (suoritukset) => {
+const isPerusopetukseenValmistava = model => model.value.classes.includes('perusopetukseenvalmistavanopetuksensuoritus')
+const createOppiaineenSuoritus = (suoritukset, preferredClassF = proto => isToimintaAlueittain(proto) ? 'toiminta_alueensuoritus' : 'oppiaineensuoritus') => {
   suoritukset = wrapOptional(suoritukset)
   let newItemIndex = modelItems(suoritukset).length
   let oppiaineenSuoritusProto = contextualizeSubModel(suoritukset.arrayPrototype, suoritukset, newItemIndex)
-  let preferredClass = isToimintaAlueittain(oppiaineenSuoritusProto) ? 'toiminta_alueensuoritus' : 'oppiaineensuoritus'
+  let preferredClass = preferredClassF(oppiaineenSuoritusProto)
   let sortValue = (suoritusProto) => suoritusProto.value.classes.includes(preferredClass) ? 0 : 1
   let options = oneOfPrototypes(oppiaineenSuoritusProto).sort((a, b) => sortValue(a) - sortValue(b))
   oppiaineenSuoritusProto = options[0]
@@ -149,7 +152,7 @@ let createOppiaineenSuoritus = (suoritukset) => {
 
 class Oppiainetaulukko extends React.Component {
   render() {
-    let {model, suoritukset, title, pakolliset, uusiOppiaineenSuoritus} = this.props
+    let {model, suoritukset, title, pakolliset, uusiOppiaineenSuoritus, uusiPerusopetukseenValmistavanOppiaineenSuoritus} = this.props
     let { isExpandedP, setExpanded } = accumulateExpandedState({suoritukset, filter: s => expandableProperties(s).length > 0, component: this})
 
     const edit = model.context.edit
@@ -159,12 +162,16 @@ class Oppiainetaulukko extends React.Component {
     const showLaajuus = !pakolliset && (sisältääLajuudellisiaSuorituksia || (edit && uudellaSuorituksellaLaajuus()))
     const showFootnotes = !edit && !R.isEmpty(footnoteDescriptions(suoritukset))
 
-    let addOppiaine = oppiaine => {
-      var suoritusUudellaOppiaineella = modelSet(uusiOppiaineenSuoritus, oppiaine, 'koulutusmoduuli')
+    let addOppiaine = oppiaineenSuoritus => oppiaine => {
+      var suoritusUudellaOppiaineella = modelSet(oppiaineenSuoritus, oppiaine, 'koulutusmoduuli')
       pushModel(suoritusUudellaOppiaineella, model.context.changeBus)
       ensureArrayKey(suoritusUudellaOppiaineella)
       setExpanded(suoritusUudellaOppiaineella)(true)
     }
+
+    let selectSuoritusProto = suoritus => suoritus.value.classes[0] === 'perusopetukseenvalmistavanopetuksenoppiaineensuoritus'
+      ? uusiPerusopetukseenValmistavanOppiaineenSuoritus
+      : uusiOppiaineenSuoritus
 
     if (suoritukset.length == 0 && !model.context.edit) return null
     let placeholder = t(
@@ -193,7 +200,7 @@ class Oppiainetaulukko extends React.Component {
                   baret-lift
                   key={suoritus.arrayKey}
                   model={suoritus}
-                  uusiOppiaineenSuoritus={uusiOppiaineenSuoritus}
+                  uusiOppiaineenSuoritus={selectSuoritusProto(suoritus)}
                   expanded={isExpandedP(suoritus)}
                   onExpand={setExpanded(suoritus)}
                   showArvosana={showArvosana}
@@ -205,9 +212,17 @@ class Oppiainetaulukko extends React.Component {
           </table>
         )}
         <UusiPerusopetuksenOppiaineDropdown suoritukset={suoritukset} oppiaineenSuoritus={uusiOppiaineenSuoritus}
-                                            pakollinen={pakolliset} resultCallback={addOppiaine}
+                                            pakollinen={pakolliset} resultCallback={addOppiaine(uusiOppiaineenSuoritus)}
                                             organisaatioOid={modelData(model.context.toimipiste).oid}
                                             placeholder={placeholder}/>
+        {
+          uusiPerusopetukseenValmistavanOppiaineenSuoritus &&
+          <UusiPerusopetuksenOppiaineDropdown suoritukset={suoritukset} oppiaineenSuoritus={uusiPerusopetukseenValmistavanOppiaineenSuoritus}
+                                              pakollinen={pakolliset} resultCallback={addOppiaine(uusiPerusopetukseenValmistavanOppiaineenSuoritus)}
+                                              organisaatioOid={modelData(model.context.toimipiste).oid}
+                                              placeholder={placeholder}/>
+        }
+
       </section>
     )
   }
