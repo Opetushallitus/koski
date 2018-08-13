@@ -97,11 +97,21 @@
       }
 
       & > li {
-        &.oppilaitos-group-header {
-          font-weight: 600;
-
+        &.oppilaitos-group {
           &:not(:first-child) {
             margin-top: 2rem;
+          }
+
+          &:first-child {
+            & > .oppilaitos-group__header {
+              margin-top: 0;
+            }
+          }
+
+          & > .oppilaitos-group__list {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
           }
         }
       }
