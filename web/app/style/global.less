@@ -16,6 +16,15 @@
     text-align: center;
     border: none;
 
+    // Match 14pt (~18px) both in mobile and full layouts for accessibility (contrast ratio)
+    .omattiedot-only({
+      font-size: 1.286rem;
+
+      @media @media-phone {
+        font-size: 1.5rem;
+      }
+    });
+
     &:hover {
       background: @color-link-hover-blue;
     }
@@ -87,10 +96,6 @@ a {
 .BaseButton {
   font-size: 1rem;
   font-weight: 700;
-
-  @media @media-phone {
-    font-size: 1.166rem
-  }
 }
 
 .DisabledTextButton {
