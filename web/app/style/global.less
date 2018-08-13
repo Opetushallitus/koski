@@ -42,6 +42,17 @@
     &--error, &--error:hover, &--error:disabled {
       background-color: @color-red;
     }
+
+    &.koski-button-secondary {
+      background-color: @color-white;
+      box-shadow: inset 0 0 0 1px @color-link-blue;
+      color: @color-link-blue;
+
+      &:hover {
+        background-color: @color-white;
+        box-shadow: inset 0 0 0 1px @color-link-hover-blue, 0 0 1px 1px lighten(@color-link-hover-blue, 35%);
+      }
+    }
   }
 }
 
