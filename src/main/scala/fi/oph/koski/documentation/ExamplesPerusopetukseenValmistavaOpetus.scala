@@ -3,7 +3,7 @@ package fi.oph.koski.documentation
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.ExampleData._
-import fi.oph.koski.documentation.PerusopetusExampleData.{arviointi, kieli, suoritus}
+import fi.oph.koski.documentation.PerusopetusExampleData.{arviointi, oppiaine, suoritus, vuosiviikkotuntia}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
@@ -33,7 +33,7 @@ object ExamplesPerusopetukseenValmistavaOpetus {
             ),
             arviointi = Some(List(SanallinenPerusopetuksenOppiaineenArviointi(kuvaus = Some(finnish("Keskustelee sujuvasti suomeksi")))))
           ),
-          suoritus(kieli("A1", "EN")).copy(arviointi = arviointi(8))
+          suoritus(oppiaine("FY").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = arviointi(9))
         ))
       )
     )

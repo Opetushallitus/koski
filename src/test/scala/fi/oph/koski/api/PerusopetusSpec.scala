@@ -129,7 +129,8 @@ class PerusopetusSpec extends FreeSpec with Matchers with TodistusTestMethods wi
           |Jyväskylän normaalikoulu
           |Koululainen, Kaisa 220109-784L
           |
-          |Äidinkieli Suullinen ilmaisu ja kuullun ymmärtäminen 10 Keskustelee sujuvasti suomeksi""".stripMargin
+          |Äidinkieli Suullinen ilmaisu ja kuullun ymmärtäminen 10 Keskustelee sujuvasti suomeksi
+          |Fysiikka 1""".stripMargin
       )
     }
   }
