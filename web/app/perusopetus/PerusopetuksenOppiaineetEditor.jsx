@@ -220,7 +220,7 @@ class Oppiainetaulukko extends React.Component {
           <UusiPerusopetuksenOppiaineDropdown suoritukset={suoritukset} oppiaineenSuoritus={uusiPerusopetukseenValmistavanOppiaineenSuoritus}
                                               pakollinen={pakolliset} resultCallback={addOppiaine(uusiPerusopetukseenValmistavanOppiaineenSuoritus)}
                                               organisaatioOid={modelData(model.context.toimipiste).oid}
-                                              placeholder={placeholder}/>
+                                              placeholder={t('Lisää perusopetukseen valmistava oppiaine')}/>
         }
 
       </section>
