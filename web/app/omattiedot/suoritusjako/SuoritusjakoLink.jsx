@@ -7,6 +7,7 @@ import {formatISODate, ISO2FinnishDateTime, parseISODate} from '../../date/date'
 import Http from '../../util/http'
 import ModalDialog from '../../editor/ModalDialog'
 import {DateInputFeedback} from './DateInputFeedback'
+import ModalMount from '../../components/ModalMount'
 
 const ApiBaseUrl = '/koski/api/suoritusjako'
 
@@ -94,6 +95,7 @@ export class SuoritusjakoLink extends React.Component {
     const {suoritusjako} = this.props
     const {secret, expirationDate, timestamp} = suoritusjako
     const url = `${window.location.origin}/koski/opinnot/${secret}`
+    const labelId = `date-input-${timestamp}`
 
     return isDeletePending ? <SuoritusjakoLinkPlaceholder/>
       : (
@@ -109,27 +111,23 @@ export class SuoritusjakoLink extends React.Component {
               />
             </div>
             <div className='suoritusjako-link__expiration'>
-              <label>
-                <Text name='Linkin voimassaoloaika'/>
-                <Text name='Päättyy'/>
-                <div style={{display: 'inline'}} className={isDateUpdatePending ? 'ajax-indicator-right' : ''}>
-                  <DateInput
-                    value={parseISODate(expirationDate)}
-                    valueCallback={date => this.dateChangeBus.push(date)}
-                    validityCallback={(isValid, stringInput)=> {
-                      !isValid && this.dateChangeBus.push(null)
-                      this.inputChangeBus.push(stringInput)
-                    }}
-                    isAllowedDate={d => SuoritusjakoLink.isDateInFuture(d) && SuoritusjakoLink.isDateWithinYear(d)}
-                    isPending={isDateUpdatePending}
-                  />
-                </div>
-                  <DateInputFeedback
-                    feedbackBus={this.feedbackBus}
-                    futureValidator={SuoritusjakoLink.isDateInFuture}
-                    yearValidator={SuoritusjakoLink.isDateWithinYear}
-                  />
-              </label>
+              <label htmlFor={labelId}><Text name='Linkin voimassaoloaika päättyy'/></label>
+              <DateInput
+                value={parseISODate(expirationDate)}
+                valueCallback={date => this.dateChangeBus.push(date)}
+                validityCallback={(isValid, stringInput)=> {
+                  !isValid && this.dateChangeBus.push(null)
+                  this.inputChangeBus.push(stringInput)
+                }}
+                isAllowedDate={d => SuoritusjakoLink.isDateInFuture(d) && SuoritusjakoLink.isDateWithinYear(d)}
+                isPending={isDateUpdatePending}
+                inputId={labelId}
+              />
+              <DateInputFeedback
+                feedbackBus={this.feedbackBus}
+                futureValidator={SuoritusjakoLink.isDateInFuture}
+                yearValidator={SuoritusjakoLink.isDateWithinYear}
+              />
             </div>
           </div>
           <div className='suoritusjako-link__bottom-container'>
@@ -142,16 +140,18 @@ export class SuoritusjakoLink extends React.Component {
               </button>
 
               {showDeleteConfirmation && (
-                <ModalDialog
-                  fullscreen={true}
-                  onDismiss={this.cancelConfimDelete.bind(this)}
-                  onSubmit={this.deleteSelf.bind(this)}
-                  submitOnEnterKey={false}
-                  okTextKey='Kyllä, poista linkki käytöstä'
-                  cancelTextKey='Älä poista linkkiä'
-                >
-                  <Text name='Linkin poistamisen jälkeen kukaan ei pääse katsomaan opintosuorituksiasi, vaikka olisit jakanut tämän linkin heille.'/>
-                </ModalDialog>
+                <ModalMount>
+                  <ModalDialog
+                    fullscreen={true}
+                    onDismiss={this.cancelConfimDelete.bind(this)}
+                    onSubmit={this.deleteSelf.bind(this)}
+                    submitOnEnterKey={false}
+                    okTextKey='Kyllä, poista linkki käytöstä'
+                    cancelTextKey='Älä poista linkkiä'
+                  >
+                    <Text name='Linkin poistamisen jälkeen kukaan ei pääse katsomaan opintosuorituksiasi, vaikka olisit jakanut tämän linkin heille.'/>
+                  </ModalDialog>
+                </ModalMount>
               )}
             </div>
           </div>

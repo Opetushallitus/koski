@@ -21,7 +21,7 @@ class DateInput extends React.Component {
   }
 
   render() {
-    let {isAllowedDate = () => true, validityCallback = () => {}, valueCallback = () => {}, optional = false } = this.props
+    let {isAllowedDate = () => true, validityCallback = () => {}, valueCallback = () => {}, optional = false, inputId = 'date-input'} = this.props
     let {invalidDate} = this.state
 
     let toggleCalendarOpen = (e) => {
@@ -63,7 +63,7 @@ class DateInput extends React.Component {
     return (
       <div className="calendar-input" ref={input => this.calendarInput = input}>
         <HiddenDescription id={'aria-description:date-input'} />
-        <input type="text" value={this.state.value || ''} onChange={ onChange } className={invalidDate ? 'editor-input date-editor error' : 'editor-input date-editor'} aria-invalid={invalidDate} aria-describedby='aria-description:date-input' />
+        <input type="text" id={inputId} value={this.state.value || ''} onChange={ onChange } className={invalidDate ? 'editor-input date-editor error' : 'editor-input date-editor'} aria-invalid={invalidDate} aria-describedby='aria-description:date-input' />
         <a className="toggle-calendar" onClick={toggleCalendarOpen}>{''}</a>
         { this.state.calendarOpen &&
         <div className="date-picker-wrapper">

@@ -342,8 +342,8 @@ describe('Omat tiedot', function() {
             })
           })
 
-          describe('Voimassaoloajan muuttaminen', () => {
-            const formattedDate = (dayDiff) => {
+          describe('Voimassaoloajan muuttaminen', function() {
+            const formattedDate = function(dayDiff) {
               const date = new Date()
               date.setDate(date.getDate() + dayDiff)
               return '' + date.getDate() + '.' + (date.getMonth() + 1) + '.' + date.getFullYear()
@@ -353,23 +353,23 @@ describe('Omat tiedot', function() {
             const tooBigDate = formattedDate(1337)
             const invalidDate = formattedDate(-10)
 
-            describe('kun voimassaoloaika on validi', () => {
+            describe('kun voimassaoloaika on validi', function() {
               before(form.suoritusjako(1).setVoimassaoloaika(validDate), wait.until(form.suoritusjako(1).feedbackText.isVisible))
-              it('päivittäminen onnistuu', () => {
+              it('päivittäminen onnistuu', function() {
                 expect(form.suoritusjako(1).feedbackText.value()).to.equal('Muutokset tallennettu')
               })
             })
 
-            describe('kun voimassaoloaika on liian suuri', () => {
+            describe('kun voimassaoloaika on liian suuri', function() {
               before(form.suoritusjako(1).setVoimassaoloaika(tooBigDate), wait.until(form.suoritusjako(1).feedbackText.isVisible))
-              it('näytetään virheilmoitus', () => {
+              it('näytetään virheilmoitus', function() {
                 expect(form.suoritusjako(1).feedbackText.value()).to.equal('Pisin voimassaoloaika on vuosi')
               })
             })
 
-            describe('kun voimassaoloaika on menneisyydessä', () => {
+            describe('kun voimassaoloaika on menneisyydessä', function() {
               before(form.suoritusjako(1).setVoimassaoloaika(invalidDate), wait.until(form.suoritusjako(1).feedbackText.isVisible))
-              it('näytetään virheilmoitus', () => {
+              it('näytetään virheilmoitus', function() {
                 expect(form.suoritusjako(1).feedbackText.value()).to.equal('Virheellinen päivämäärä')
               })
             })

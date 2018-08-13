@@ -4,7 +4,7 @@ import IBKurssinArviointiEditor from '../ib/IBKurssinArviointiEditor'
 import {isIBKurssi} from './kurssi'
 import {hasArviointi} from '../suoritus/Suoritus'
 
-const isIBKurssinArviointi = kurssi => property => isIBKurssi(kurssi) && property.key === 'arviointi' && hasArviointi(kurssi)
+export const isIBKurssinArviointi = kurssi => property => isIBKurssi(kurssi) && property.key === 'arviointi' && hasArviointi(kurssi)
 
 export class KurssiPopup extends React.Component {
   constructor(props) {
@@ -24,6 +24,7 @@ export class KurssiPopup extends React.Component {
           ? <IBKurssinArviointiEditor model={kurssi}/>
           : getDefault()
         }
+        className={kurssi.context.kansalainen ? 'kansalainen' : ''}
       />
     </div>)
   }

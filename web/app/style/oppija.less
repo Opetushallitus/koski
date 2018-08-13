@@ -173,6 +173,7 @@
     position: fixed;
     bottom: -60px;
     opacity: 0;
+    z-index: @z-index-edit-bar;
     transition: bottom 1s, opacity 1s;
     &.visible {
       bottom: 0;
@@ -188,7 +189,6 @@
     padding-bottom: 8px;
     background: white;
     box-shadow: 0 -2px 5px #eeeeee;
-    z-index: @z-index-edit-bar;
     .cancel {
       margin-left: 20px;
     }

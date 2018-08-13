@@ -43,9 +43,8 @@ export class DateInputFeedback extends React.Component {
 
   render() {
     const {isVisible, renderFn} = this.state
-
     return (
-      <div className='date-input-feedback'>
+      <div className='date-input-feedback' aria-live='polite'>
         {isVisible && <div className='feedback'>{renderFn()}</div>}
       </div>
     )

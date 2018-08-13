@@ -14,3 +14,12 @@ export const LukionOppiaineetTableHead = () => (
   </tr>
   </thead>
 )
+
+export const OmatTiedotLukionOppiaineetTableHead = () => (
+  <thead>
+  <tr>
+    <th className='oppiaine' scope='col'><Text name='Oppiaine'/></th>
+    <th className='arvosana' scope='col'><Text name='Arvosana'/></th>
+  </tr>
+  </thead>
+)

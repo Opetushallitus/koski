@@ -5,7 +5,7 @@ import java.nio.file.{Files, Paths}
 
 import com.typesafe.config.ConfigValueFactory._
 import fi.oph.koski.cache.JMXCacheManager
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.executors.Pools
 import fi.oph.koski.log.{LogConfiguration, Logging, MaskedSlf4jRequestLog}
 import fi.oph.koski.util.PortChecker
@@ -84,6 +84,12 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) e
     context.setContextPath("/koski")
     context.setResourceBase(resourceBase)
     context.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed", "false")
+    if (Environment.isLocalDevelopmentEnvironment) {
+      // Avoid random SIGBUS errors when static files memory-mapped by Jetty (and being sent to client)
+      // are modified (by "make watch"). Can be reproduced somewhat reliably with Java 8 by editing
+      // a .less file and quickly doing a reload in the browser.
+      context.setInitParameter("org.eclipse.jetty.servlet.Default.useFileMappedBuffer", "false")
+    }
     handlers.addHandler(context)
   }
 

@@ -39,6 +39,7 @@ export const flatMapArray = (a, f) => R.unnest(a.map(f))
 // This is kind of a dirty solution to keep the page from jumping on focus, but at the time of writing at least
 // Safari doesn't support focus options. Should be replaced with the use of focusOptions when properly supported by browsers
 export const focusWithoutScrolling = (elem) => {
+  if (!elem) return
   const {scrollX, scrollY} = window
   elem.focus()
   window.scrollTo(scrollX, scrollY)

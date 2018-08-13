@@ -7,6 +7,7 @@ import Text from '../../i18n/Text'
 import {SuoritusjakoLink, SuoritusjakoLinkPlaceholder} from './SuoritusjakoLink'
 import {SelectableSuoritusList} from './SelectableSuoritusList'
 import {ToggleButton} from '../../components/ToggleButton'
+import {focusWithoutScrolling} from '../../util/util'
 
 const Url = '/koski/api/suoritusjako'
 const doShare = suoritusIds => Http.post(Url, [...suoritusIds])
@@ -21,28 +22,28 @@ const Ingressi = () => (
   </div>
 )
 
-const SuoritusjakoList = ({opiskeluoikeudet, suoritusjaot, onRemove, showLinkCreationSuccess}) => (
-    <div>
-      {!R.isEmpty(suoritusjaot) &&
-        <div>
-          {showLinkCreationSuccess && <h2 className="link-successful-h2"><div className="link-successful-icon"/><Text name="Jakolinkin luominen onnistui."/></h2>}
-          <h2><Text name='Voimassaolevat linkit'/></h2>
-          <div className="link-information">
-            <Text name={
-              'Jakolinkillä voit näyttää suoritustietosi haluamillesi henkilöille (esimerkiksi työtä tai opiskelupaikkaa hakiessasi). ' +
-              'Linkin saajan ei tarvitse kirjautua Oma Opintopolku-palveluun. ' +
-              'Voit tarkistaa tarkan sisällön Esikatsele-painikkeella.'}
-            />
-          </div>
-          <ul className='suoritusjako-form__link-list'>
-            {suoritusjaot.map(suoritusjako => (
-              <li key={suoritusjako.secret}>
-                <SuoritusjakoLink suoritusjako={suoritusjako} opiskeluoikeudet={opiskeluoikeudet} onRemove={onRemove}/>
-              </li>
-            ))}
-          </ul>
-        </div>}
-    </div>
+const SuoritusjakoList = ({opiskeluoikeudet, suoritusjaot, onRemove}) => (
+  <div>
+    {!R.isEmpty(suoritusjaot) && (
+      <div>
+        <h2><Text name='Voimassaolevat linkit'/></h2>
+        <div className="link-information">
+          <Text name={
+            'Jakolinkillä voit näyttää suoritustietosi haluamillesi henkilöille (esimerkiksi työtä tai opiskelupaikkaa hakiessasi). ' +
+            'Linkin saajan ei tarvitse kirjautua Oma Opintopolku-palveluun. ' +
+            'Voit tarkistaa tarkan sisällön Esikatsele-painikkeella.'}
+          />
+        </div>
+        <ul className='suoritusjako-form__link-list'>
+          {suoritusjaot.map(suoritusjako => (
+            <li key={suoritusjako.secret}>
+              <SuoritusjakoLink suoritusjako={suoritusjako} opiskeluoikeudet={opiskeluoikeudet} onRemove={onRemove}/>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </div>
 )
 
 const CreateNewSuoritusjakoButton = ({selectedSuoritusIds, onClick, onSuccess, onError}) => {
@@ -63,11 +64,11 @@ const CreateNewSuoritusjakoButton = ({selectedSuoritusIds, onClick, onSuccess, o
   )
 }
 
-const NewSuoritusjako = ({opiskeluoikeudet, selectedSuoritusIds, onSuccess, showForm, canCancelForm}) => {
+const NewSuoritusjako = ({opiskeluoikeudet, selectedSuoritusIds, onSuccess, showForm, canCancelForm, setRef}) => {
   const isPending = Atom(false)
 
   return (
-    <div>
+    <div className='new-suoritusjako-wrapper' ref={setRef} tabIndex={-1}>
       {Bacon.combineWith(showForm, isPending, (form, pending) =>
         form ?
           pending ? <SuoritusjakoLinkPlaceholder transition='enter'/>
@@ -109,6 +110,7 @@ export class SuoritusjakoForm extends React.Component {
 
     this.showNewSuoritusjakoForm = Atom(false)
     this.showLinkCreationSuccess = Atom(false)
+    this.showLinkRemovalSuccess = Atom(false)
     this.canCancelForm = this.suoritusjaot.map(R.complement(R.isEmpty))
   }
 
@@ -121,8 +123,19 @@ export class SuoritusjakoForm extends React.Component {
       else if (now.length > prev.length) this.showNewSuoritusjakoForm.set(false)
     })
 
-    this.showNewSuoritusjakoForm.onValue(() => this.showLinkCreationSuccess.set(false))
-    this.props.showFormAtom.onValue(() => this.showLinkCreationSuccess.set(false))
+    this.showNewSuoritusjakoForm.onValue(() => {
+      this.showLinkCreationSuccess.set(false)
+      this.showLinkRemovalSuccess.set(false)
+    })
+
+    Bacon.combineWith(this.showNewSuoritusjakoForm, this.suoritusjaot, (show, suoritusjaot) => show && !R.isEmpty(suoritusjaot))
+      .map(v => v ? this.newSuoritusjakoFormElem : this.formSectionElem)
+      .onValue(focusWithoutScrolling)
+
+    this.props.showFormAtom.onValue(() => {
+      this.showLinkCreationSuccess.set(false)
+      this.showLinkRemovalSuccess.set(false)
+    })
 
     Http.get(Url).onValue(jaot => this.suoritusjaot.set(jaot))
   }
@@ -132,19 +145,37 @@ export class SuoritusjakoForm extends React.Component {
     this.selectedSuoritusIds.set([])
 
     this.showLinkCreationSuccess.set(true)
+    this.showLinkRemovalSuccess.set(false)
+    focusWithoutScrolling(this.linkCreationSuccessElem)
   }
 
   removeLink(suoritusjako) {
     this.suoritusjaot.modify(list => R.without([suoritusjako], list))
 
     this.showLinkCreationSuccess.set(false)
+    this.showLinkRemovalSuccess.set(true)
+    focusWithoutScrolling(this.linkRemovalSuccessElem)
+  }
+
+  setNewSuoritusjakoRef(ref) {
+    this.newSuoritusjakoFormElem = ref
   }
 
   render() {
     const {opiskeluoikeudet} = this.props
 
     return (
-      <section className='suoritusjako-form textstyle-body'>
+      <section className='suoritusjako-form textstyle-body' tabIndex={-1} ref={e => this.formSectionElem = e}>
+        {this.showLinkRemovalSuccess.map(shouldShow => shouldShow && (
+          <h2 tabIndex={-1} ref={e => this.linkRemovalSuccessElem = e} className='link-successful-h2'>
+            <div className='link-successful-icon'/>
+            <Text name='Jakolinkin poistaminen onnistui.'/>
+          </h2>))}
+        {this.showLinkCreationSuccess.map(shouldShow => shouldShow && (
+          <h2 ref={e => this.linkCreationSuccessElem = e} tabIndex={-1} className='link-successful-h2'>
+            <div className='link-successful-icon'/>
+            <Text name='Jakolinkin luominen onnistui.'/>
+          </h2>))}
         {this.suoritusjaot.map(suoritusjaot => R.isEmpty(suoritusjaot) && <Ingressi/>)}
         <SuoritusjakoList
           baret-lift
@@ -159,6 +190,7 @@ export class SuoritusjakoForm extends React.Component {
           onSuccess={this.addLink.bind(this)}
           showForm={this.showNewSuoritusjakoForm}
           canCancelForm={this.canCancelForm}
+          setRef={this.setNewSuoritusjakoRef.bind(this)}
         />
       </section>
     )

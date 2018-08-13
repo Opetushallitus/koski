@@ -1,4 +1,6 @@
 .suoritusjako-form {
+  outline: none;
+
   &__caption {
     font-weight: 300;
     padding-right: 1rem;
@@ -10,12 +12,17 @@
     }
   }
 
+  .new-suoritusjako-wrapper {
+    outline: none;
+  }
+
   .link-information {
     max-width: 570px;
   }
 
   .link-successful-h2 {
     margin-top: 0;
+    outline: none;
   }
 
   .SuoritusjakoIconBackground() {
@@ -90,11 +97,21 @@
       }
 
       & > li {
-        &.oppilaitos-group-header {
-          font-weight: 600;
-
+        &.oppilaitos-group {
           &:not(:first-child) {
             margin-top: 2rem;
+          }
+
+          &:first-child {
+            & > .oppilaitos-group__header {
+              margin-top: 0;
+            }
+          }
+
+          & > .oppilaitos-group__list {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
           }
         }
       }
@@ -184,20 +201,9 @@
 
       & > label > span {
         margin-bottom: 0.5rem;
-
-        &:first-of-type {
-          font-weight: 600;
-          display: block;
-        }
-
-        &:last-of-type {
-          margin-right: 0.5rem;
-          display: inline-block;
-        }
-
-        @media @media-full {
-          font-size: 0.85rem;
-        }
+        font-weight: 600;
+        display: block;
+        font-size: 1rem;
       }
 
       & input {

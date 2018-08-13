@@ -62,6 +62,7 @@ const OpiskeluoikeudenTiedot = ({opiskeluoikeus}) => {
             default: return getDefault()
           }
         }}
+        className='kansalainen'
       />
       {additionalInformation && modelProperties(additionalInformation).filter(additionalInfoPropertyFilter).length > 0 &&
         <OpiskeluoikeudenLisätiedot
@@ -93,7 +94,7 @@ class OpiskeluoikeudenLisätiedot extends React.Component {
       <div className='expandable-container lisätiedot'>
         <button className={`inline-link-button ${expanded ? 'open' : ''}`} onClick={this.toggleExpand} aria-pressed={expanded}><Text name='Lisätiedot'/></button>
         {expanded && <div className='value'>
-          <PropertiesEditor model={modelLookup(model, 'lisätiedot')} propertyFilter={propertyFilter}/>
+          <PropertiesEditor model={modelLookup(model, 'lisätiedot')} propertyFilter={propertyFilter} className='kansalainen'/>
         </div>}
       </div>
     )
@@ -136,7 +137,6 @@ class TabulatedSuoritukset extends React.Component {
 
     return (
       <div className="suoritukset">
-        <h4><Text name="Suoritukset"/></h4>
         <SuoritusTabs selectedTabIndex={selectedTabIndex} suoritukset={suoritukset} onChange={this.onTabChange} />
         <Editor key={valittuSuoritus.tabName} model={valittuSuoritus} alwaysUpdate="true" />
       </div>

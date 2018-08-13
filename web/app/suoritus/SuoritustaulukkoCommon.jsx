@@ -101,7 +101,7 @@ export const suoritusProperties = suoritus => {
 export const TutkintokertaColumn = {
   shouldShow: ({parentSuoritus}) => isYlioppilastutkinto(parentSuoritus),
   renderHeader: () => {
-    return <th key='tutkintokerta' className='tutkintokerta'><Text name='Tutkintokerta'/></th>
+    return <th key='tutkintokerta' className='tutkintokerta' scope='col'><Text name='Tutkintokerta'/></th>
   },
   renderData: ({model}) => (<td key='tutkintokerta' className='tutkintokerta'>
     <Editor model={model} path='tutkintokerta.vuosi' compact='true'/>
@@ -113,7 +113,7 @@ export const TutkintokertaColumn = {
 export const KoepisteetColumn = {
   shouldShow: ({parentSuoritus}) => isYlioppilastutkinto(parentSuoritus),
   renderHeader: () => {
-    return <th key='koepisteet' className='koepisteet'><Text name='Pisteet'/></th>
+    return <th key='koepisteet' className='koepisteet' scope='col'><Text name='Pisteet'/></th>
   },
   renderData: ({model, ylioppilastutkinto}) => (<td key='koepisteet' className={`koepisteet ${ylioppilastutkinto ? 'ylioppilas' : ''}`}><Editor model={modelLookup(model, 'arviointi.-1.pisteet')}/></td>)
 }
@@ -123,13 +123,13 @@ export const LaajuusColumn = {
     ? modelProperty(createTutkinnonOsanSuoritusPrototype(suorituksetModel), 'koulutusmoduuli.laajuus') !== null
     : suoritukset.find(s => modelData(s, 'koulutusmoduuli.laajuus.arvo') !== undefined) !== undefined)),
   renderHeader: ({laajuusYksikkö}) => {
-    return <th key='laajuus' className='laajuus'><Text name='Laajuus'/>{((laajuusYksikkö && ' (' + laajuusYksikkö + ')') || '')}</th>
+    return <th key='laajuus' className='laajuus' scope='col'><Text name='Laajuus'/>{((laajuusYksikkö && ' (' + laajuusYksikkö + ')') || '')}</th>
   },
   renderData: ({model, showScope}) => <td key='laajuus' className='laajuus'><Editor model={model} path='koulutusmoduuli.laajuus' compact='true' showReadonlyScope={showScope}/></td>
 }
 
 export const ArvosanaColumn = {
   shouldShow: ({parentSuoritus, suoritukset, context}) => !isNäyttötutkintoonValmistava(parentSuoritus) && (context.edit || suoritukset.find(hasArvosana) !== undefined),
-  renderHeader: () => <th key='arvosana' className='arvosana'><Text name='Arvosana'/></th>,
+  renderHeader: () => <th key='arvosana' className='arvosana' scope='col'><Text name='Arvosana'/></th>,
   renderData: ({model, ylioppilastutkinto}) => <td key='arvosana' className={`arvosana ${ylioppilastutkinto ? 'ylioppilas' : ''}`}><ArvosanaEditor model={model} /></td>
 }

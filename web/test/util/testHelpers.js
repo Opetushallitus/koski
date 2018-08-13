@@ -86,7 +86,7 @@ wait = {
     frame.myWaitForNavigation = frame.location.href
   },
   forNavigation: function() {
-    return wait.until(() => {
+    return wait.until(function() {
       var frame = testFrame()
       return frame.myWaitForNavigation !== frame.location.href
     })().then(wait.forAjax)
@@ -195,9 +195,12 @@ if (!$("#testframe").length) {
   $(document.body).append("<iframe id='testframe'></iframe>")
 }
 
-function openPage(path, predicate) {
+function openPage(path, predicate, width) {
   if (!predicate) {
     predicate = function() { return testFrame().jQuery }
+  }
+  if (!width) {
+    width = 1400
   }
   function addScriptToDocument(w, src) {
     var jquery = document.createElement("script")
@@ -206,7 +209,7 @@ function openPage(path, predicate) {
     $(w).contents().find("head")[0].appendChild(jquery)
   }
   return function() {
-    var newTestFrame = $('<iframe>').attr({src: path, width: 1400, height: 2000, id: "testframe"}).on("load", function() {
+    var newTestFrame = $('<iframe>').attr({src: path, width: width, height: 2000, id: "testframe"}).on("load", function() {
       addScriptToDocument(this, "/koski/test/lib/jquery.js")
     })
     $("#testframe").replaceWith(newTestFrame)

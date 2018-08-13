@@ -69,7 +69,7 @@ export class OpiskeluoikeudenTilaEditor extends React.Component {
                     }
                   </label>
                 </div>
-                {wrappedModel.context.edit && i === 0 && items.length > 1 &&
+                {wrappedModel.context.edit && i === 0 &&
                 <a className="remove-item" onClick={removeItem}/>}
               </li>)
             )
