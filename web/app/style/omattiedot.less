@@ -36,11 +36,6 @@
       @media @media-phone {
         justify-content: flex-start;
         margin-top: 1.5rem;
-
-        .koski-button {
-          width: 100%;
-          margin: 1rem 0;
-        }
       }
 
       .header {
@@ -80,6 +75,13 @@
         &__buttons {
           & > .toggle-button:not(:last-child) {
             margin-right: 1rem;
+          }
+
+          @media @media-phone {
+            .koski-button {
+              width: 100%;
+              margin: 1rem 0;
+            }
           }
         }
 
