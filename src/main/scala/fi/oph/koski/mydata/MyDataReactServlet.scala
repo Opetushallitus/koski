@@ -23,8 +23,8 @@ class MyDataReactServlet(implicit val application: KoskiApplication) extends Sca
 
     sessionOrStatus match {
       case Right(_) if shibbolethCookieFound =>
-      case Left(_) if shibbolethCookieFound => redirect(loginWithTarget(getCurrentURL))
-      case _ => redirect(shibbolethLoginWithTarget(getCurrentURL, lang))
+      case Left(_) if shibbolethCookieFound => redirect(getLoginURL(getCurrentURL))
+      case _ => redirect(getShibbolethLoginURL(getCurrentURL, lang))
     }
   }
 
@@ -34,8 +34,8 @@ class MyDataReactServlet(implicit val application: KoskiApplication) extends Sca
 
     sessionOrStatus match {
       case Right(_) if shibbolethCookieFound =>
-      case Left(_) if shibbolethCookieFound => redirect(loginWithTarget("/koski/omadata/kayttooikeudet"))
-      case _ => redirect(shibbolethLoginWithTarget("/koski/omadata/kayttooikeudet", lang))
+      case Left(_) if shibbolethCookieFound => redirect(getLoginURL("/koski/omadata/kayttooikeudet"))
+      case _ => redirect(getShibbolethLoginURL("/koski/omadata/kayttooikeudet", lang))
     }
   }
 

@@ -11,36 +11,19 @@ import fi.oph.koski.mydata.MyDataConfig
 trait MyDataSupport extends ScalatraServlet with MyDataConfig {
   override def hasConfigForMember(id: String = memberCodeParam): Boolean
   override def getConfigForMember(id: String = memberCodeParam): TypeSafeConfig
-  def mydataLoginServlet: String = conf.getString("login.servlet")
+  def mydataLoginServletURL: String = conf.getString("login.servlet")
 
-  def loginWithTarget(target: String = getCurrentURL, encode: Boolean = false): String = {
+  def getLoginURL(target: String = getCurrentURL, encode: Boolean = false): String = {
     if (encode) {
-      s"${mydataLoginServlet}${URLEncoder.encode(s"?onLoginSuccess=${target}", "UTF-8")}"
+      s"${mydataLoginServletURL}${URLEncoder.encode(s"?onLoginSuccess=${target}", "UTF-8")}"
     } else {
-      s"${mydataLoginServlet}?onLoginSuccess=${target}"
+      s"${mydataLoginServletURL}?onLoginSuccess=${target}"
     }
   }
 
-  def shibbolethLoginWithTarget(target: String = getCurrentURL, lang: String) = {
+  def getShibbolethLoginURL(target: String = getCurrentURL, lang: String) = {
     conf.getString(s"login.shibboleth.$lang") +
-      conf.getString("login.shibboleth.targetparam") + loginWithTarget(target, encode = true)
-  }
-
-  def getLoginUrlForMember(lang: String, id: String = memberCodeParam): String = {
-    conf.getString(s"login.shibboleth.$lang") +
-    conf.getString("login.targetparam") + getLoginSuccessTarget(id, encode = true)
-  }
-
-  def getLoginSuccessTarget(id: String = memberCodeParam, encode: Boolean = false): String = {
-    getConfigForMember(id).getString(s"login.target") + getCurrentUrlAsFinalTargetParameter(encode)
-  }
-
-  private def getCurrentUrlAsFinalTargetParameter(encode: Boolean): String = {
-    if (encode) {
-      URLEncoder.encode(s"?onLoginSuccess=$getCurrentURL" , "UTF-8")
-    } else {
-      s"?onLoginSuccess=$getCurrentURL"
-    }
+      conf.getString("login.shibboleth.targetparam") + getLoginURL(target, encode = true)
   }
 
   def getCurrentURL: String = {
