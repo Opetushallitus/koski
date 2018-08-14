@@ -30,7 +30,7 @@ class PerusopetukseenValmistavanOpetuksenTodistusHtml(val koulutustoimija: Optio
               <tr class="oppiaine">
                 <td class="oppiaine">
                   <span class="nimi">{i(oppiaine.koulutusmoduuli.nimi)}</span>
-                  <span class="kuvaus">{i(oppiaine.koulutusmoduuli.opetuksenSisältö)}</span>
+                  <span class="kuvaus">{opetuksenSisältö(oppiaine)}</span>
                 </td>
                 <td class="laajuus">{decimalFormat.format(laajuus(oppiaine))}</td>
                 <td class="arvosana">{i(oppiaine.sanallinenArviointi)}</td>
@@ -43,4 +43,8 @@ class PerusopetukseenValmistavanOpetuksenTodistusHtml(val koulutustoimija: Optio
     </body>
   </html>
 
+  private def opetuksenSisältö(oppiaineenSuoritus: PerusopetukseenValmistavanOpetuksenOsasuoritus) = i(oppiaineenSuoritus match {
+    case v: PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus => v.koulutusmoduuli.opetuksenSisältö
+    case _ => None
+  })
 }
