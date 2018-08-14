@@ -1518,6 +1518,7 @@ describe('Ammatillinen koulutus', function() {
             'Osa-alue Laajuus (osp) Arvosana\n' +
             'Äidinkieli, Suomen kieli ja kirjallisuus 5 3\n' +
             'Pakollinen kyllä\n' +
+            'Näyttö Kuvaus Kirjaesitelmä\nSuorituspaikka Stadin ammattiopisto\nSuoritusaika 18.5.2014 — 18.5.2014\nTyössäoppimisen yhteydessä ei\n' +
             'Äidinkieli, Suomen kieli ja kirjallisuus 3 3\n' +
             'Pakollinen ei\n' +
             'Toinen kotimainen kieli, ruotsi, ruotsi 1 3\n' +
