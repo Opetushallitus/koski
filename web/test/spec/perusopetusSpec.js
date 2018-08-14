@@ -2928,7 +2928,8 @@ describe('Perusopetus', function() {
           'Oppiaine Arvosana Laajuus\n' +
           'Äidinkieli S 10 vuosiviikkotuntia\n' +
           'Sanallinen arviointi Keskustelee sujuvasti suomeksi\n' +
-          'Opetuksen sisältö Suullinen ilmaisu ja kuullun ymmärtäminen')
+          'Opetuksen sisältö Suullinen ilmaisu ja kuullun ymmärtäminen\n' +
+          'Fysiikka 9 1 vuosiviikkotuntia')
       })
     })
     describe('Tietojen muuttaminen', function() {
@@ -2942,9 +2943,9 @@ describe('Perusopetus', function() {
         after(editor.edit, arvosana.selectValue('S'), editor.saveChanges, wait.until(page.isSavedLabelShown))
       })
       describe('Oppiaine', function() {
-        var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine()
+        var uusiOppiaine = opinnot.oppiaineet.uusiOppiaine('.uusi-perusopetukseen-valmistava-oppiaine')
         describe('Uuden oppiaineen lisääminen', function() {
-          var uusiPaikallinen = editor.subEditor('.valinnainen.paikallinen:nth-child(3)')
+          var uusiPaikallinen = editor.subEditor('.paikallinen:nth-child(4)')
           before(editor.edit, uusiOppiaine.selectValue('Lisää'),
             uusiPaikallinen.propertyBySelector('.koodi').setValue('TNS'),
             uusiPaikallinen.propertyBySelector('.nimi').setValue('Tanssi'),
@@ -2981,6 +2982,28 @@ describe('Perusopetus', function() {
                 after(editor.cancelChanges)
               })
             })
+          })
+        })
+
+        describe('Uuden nuorten perusopetuksen oppiaineen lisääminen', function () {
+          var uusiNuortenOppiaine = OpinnotPage().opiskeluoikeusEditor().propertyBySelector('.uusi-oppiaine:nth-child(2)')
+          var historia = editor.subEditor('.HI')
+          before(
+            editor.edit,
+            uusiNuortenOppiaine.selectValue('Historia'),
+            historia.propertyBySelector('.arvosana').selectValue('8')
+          )
+
+          it('Uusi oppiaine näytetään', function() {
+            expect(historia.property('yksilöllistettyOppimäärä').isVisible()).to.equal(true)
+          })
+
+          describe('Nuorten perusopetuksen oppiaineen tallentaminen', function () {
+            before(
+              editor.saveChanges
+            )
+
+            it('toimii', function() {})
           })
         })
       })

@@ -1,3 +1,7 @@
+## 13.8.2018
+
+- Sallitaan perusopetuksen valmistavan opetuksen osasuorituksena nuorten perusopetuksen oppiaineen suoritus
+
 ## 12.6.2018
 
   - Lisätty mahdollisuus suorittaa muita lukion opintoja (Esimerkiksi lukiodiplomi, taiteiden väliset opinnot, teemaopinnot) Pre IB -suorituksen osasuorituksina

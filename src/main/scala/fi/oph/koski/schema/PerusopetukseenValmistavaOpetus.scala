@@ -41,12 +41,14 @@ case class PerusopetukseenValmistavanOpetuksenSuoritus(
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
-  override val osasuoritukset: Option[List[PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus]],
+  override val osasuoritukset: Option[List[PerusopetukseenValmistavanOpetuksenOsasuoritus]],
   @Tooltip("Todistuksella näkyvät lisätiedot. Esimerkiksi tieto oppilaan perusopetuksen aloittamisesta (luokkataso).")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("perusopetukseenvalmistavaopetus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetukseenvalmistavaopetus", koodistoUri = "suorituksentyyppi")
 ) extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Todistus with Arvioinniton with MonikielinenSuoritus with Suorituskielellinen
+
+trait PerusopetukseenValmistavanOpetuksenOsasuoritus extends Suoritus
 
 @Description("Perusopetukseen valmistavan opetuksen oppiaineen suoritustiedot")
 case class PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus(
@@ -56,7 +58,7 @@ case class PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("perusopetukseenvalmistavanopetuksenoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetukseenvalmistavanopetuksenoppiaine", koodistoUri = "suorituksentyyppi")
-) extends Vahvistukseton with MahdollisestiSuorituskielellinen
+) extends Vahvistukseton with MahdollisestiSuorituskielellinen with PerusopetukseenValmistavanOpetuksenOsasuoritus
 
 @Description("Perusopetukseen valmistavan opetuksen tunnistetiedot")
 case class PerusopetukseenValmistavaOpetus(
