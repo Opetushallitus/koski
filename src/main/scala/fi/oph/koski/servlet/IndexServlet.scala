@@ -15,6 +15,15 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
     }
   }
 
+  before("/kayttooikeudet") {
+    setLangCookieFromDomainIfNecessary
+    sessionOrStatus match {
+      case Right(_) if shibbolethCookieFound =>
+      case Left(_) if shibbolethCookieFound => redirect("/koski/user/omadatalogin?onLoginSuccess=/koski/kayttooikeudet")
+      case _ => redirect("/koski/login/shibboleth?login=/koski/user/omadatalogin%3FonLoginSuccess%3D%2Fkoski%2Fkayttooikeudet")
+    }
+  }
+
   before("/.+".r) {
     if (!isAuthenticated) {
       redirectToLogin
