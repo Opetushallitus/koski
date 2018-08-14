@@ -1,15 +1,17 @@
 package fi.oph.koski.mydata
 
-import java.net.URLEncoder
-
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.AuthenticationSupport
 import fi.oph.koski.servlet.{HtmlServlet, MyDataSupport, OmaOpintopolkuSupport}
 import org.scalatra.ScalatraServlet
 
+import scala.util.matching.Regex
+
 
 class MyDataReactServlet(implicit val application: KoskiApplication) extends ScalatraServlet
   with HtmlServlet with AuthenticationSupport with OmaOpintopolkuSupport with MyDataSupport {
+
+  val nonErrorPage: Regex = "^(?!/error)\\S+$".r
 
   /*
     If user has not logged in, then:
@@ -17,7 +19,8 @@ class MyDataReactServlet(implicit val application: KoskiApplication) extends Sca
     -redirects to our Shibboleth page (based on 'login' parameter, or 'target' parameter in production), which
     -redirects back here (based on 'onLoginSuccess' parameter).
    */
-  before("/valtuutus/:memberCode") {
+
+  before(nonErrorPage) {
     setLangCookieFromDomainIfNecessary
     val lang = langFromCookie.getOrElse(langFromDomain)
 
@@ -25,17 +28,6 @@ class MyDataReactServlet(implicit val application: KoskiApplication) extends Sca
       case Right(_) if shibbolethCookieFound =>
       case Left(_) if shibbolethCookieFound => redirect(getLoginURL(getCurrentURL))
       case _ => redirect(getShibbolethLoginURL(getCurrentURL, lang))
-    }
-  }
-
-  before("/kayttooikeudet") {
-    setLangCookieFromDomainIfNecessary
-    val lang = langFromCookie.getOrElse(langFromDomain)
-
-    sessionOrStatus match {
-      case Right(_) if shibbolethCookieFound =>
-      case Left(_) if shibbolethCookieFound => redirect(getLoginURL("/koski/omadata/kayttooikeudet"))
-      case _ => redirect(getShibbolethLoginURL("/koski/omadata/kayttooikeudet", lang))
     }
   }
 
