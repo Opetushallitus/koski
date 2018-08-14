@@ -23,30 +23,20 @@ class MyDataReactServlet(implicit val application: KoskiApplication) extends Sca
 
     sessionOrStatus match {
       case Right(_) if shibbolethCookieFound =>
-      case Left(_) if shibbolethCookieFound => redirect(getLoginSuccessTarget())
-      case _ => redirect(getLoginUrlForMember(lang))
+      case Left(_) if shibbolethCookieFound => redirect(loginWithTarget(getCurrentURL))
+      case _ => redirect(shibbolethLoginWithTarget(getCurrentURL, lang))
     }
   }
 
   before("/kayttooikeudet") {
     setLangCookieFromDomainIfNecessary
+    val lang = langFromCookie.getOrElse(langFromDomain)
+
     sessionOrStatus match {
       case Right(_) if shibbolethCookieFound =>
       case Left(_) if shibbolethCookieFound => redirect(loginWithTarget("/koski/omadata/kayttooikeudet"))
-      case _ => redirect(shibbolethLoginWithTarget("/koski/omadata/kayttooikeudet"))
+      case _ => redirect(shibbolethLoginWithTarget("/koski/omadata/kayttooikeudet", lang))
     }
-  }
-
-  def loginWithTarget(target: String, encode: Boolean = false): String = {
-    if (encode) {
-      s"/koski/user/omadatalogin${URLEncoder.encode(s"?onLoginSuccess=${target}", "UTF-8")}"
-    } else {
-      s"/koski/user/omadatalogin?onLoginSuccess=${target}"
-    }
-  }
-
-  def shibbolethLoginWithTarget(target: String) = {
-    s"/koski/login/shibboleth?login=${loginWithTarget(target, encode = true)}"
   }
 
   get("/valtuutus/:memberCode") {
