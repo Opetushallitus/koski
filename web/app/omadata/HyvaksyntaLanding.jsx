@@ -11,7 +11,7 @@ import { currentLocation, parseQuery } from '../util/location'
 import { Error as ErrorDisplay, logError } from '../util/Error'
 import {t} from '../i18n/i18n'
 
-const memberCodeRegex = /\/koski\/omadata\/(.*)/
+const memberCodeRegex = /\/koski\/omadata\/valtuutus\/(.*)/
 
 class HyvaksyntaLanding extends React.Component {
   constructor(props) {

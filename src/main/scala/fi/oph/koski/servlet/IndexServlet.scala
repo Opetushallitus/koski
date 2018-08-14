@@ -15,15 +15,6 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
     }
   }
 
-  before("/kayttooikeudet") {
-    setLangCookieFromDomainIfNecessary
-    sessionOrStatus match {
-      case Right(_) if shibbolethCookieFound =>
-      case Left(_) if shibbolethCookieFound => redirect("/koski/user/omadatalogin?onLoginSuccess=/koski/kayttooikeudet")
-      case _ => redirect("/koski/login/shibboleth?login=/koski/user/omadatalogin%3FonLoginSuccess%3D%2Fkoski%2Fkayttooikeudet")
-    }
-  }
-
   before("/.+".r) {
     if (!isAuthenticated) {
       redirectToLogin
@@ -63,14 +54,6 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
   get("/omattiedot") {
     htmlIndex(
       scriptBundleName = "koski-omattiedot.js",
-      raamit = oppijaRaamit,
-      responsive = true
-    )
-  }
-
-  get("/kayttooikeudet") {
-    htmlIndex(
-      scriptBundleName = "koski-kayttooikeudet.js",
       raamit = oppijaRaamit,
       responsive = true
     )

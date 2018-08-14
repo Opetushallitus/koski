@@ -5,12 +5,12 @@ const MyDataPage = () => {
 
   const api = {
     openPage: () => {
-      return openPage(`/koski/omadata/hsl?callback=${callbackURL}`, () => true )()
+      return openPage(`/koski/omadata/valtuutus/hsl?callback=${callbackURL}`, () => true )()
     },
     currentURL,
     callbackURL,
     go: () => {
-      return openPage('/koski/omadata/hsl')()
+      return openPage('/koski/omadata/valtuutus/hsl')()
     },
     isVisible: () => {
       return isElementVisible(S('.username')) && isElementVisible(S('.user > .dateofbirth'))
