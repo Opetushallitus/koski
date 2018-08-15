@@ -1,0 +1,20 @@
+{
+  "koodistoUri" : "tutkinnonosatvalinnanmahdollisuus",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Tutkinnonosat joissa valinnan mahdollisuus"
+  }, {
+    "kieli" : "SV",
+    "nimi" : "Tutkinnonosat joissa valinnan mahdollisuus"
+  }, {
+    "kieli" : "EN",
+    "nimi" : "Tutkinnonosat joissa valinnan mahdollisuus"
+  } ],
+  "codesGroupUri" : "http://koski",
+  "voimassaAlkuPvm" : "2018-06-26",
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
+  "withinCodes" : [ ],
+  "tila" : "LUONNOS",
+  "version" : 0
+}
