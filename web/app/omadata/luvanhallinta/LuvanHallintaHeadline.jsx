@@ -6,8 +6,7 @@ export const LuvanHallintaHeadline = ({birthday}) => (
   <div className='kayttoluvat-headline' tabIndex={0}>
     <div className='kayttoluvat-info'>
       <h1><Text name='Tietojeni käyttöluvat'/></h1>
-      <Text className='info' name={'Tällä sivulla voit tarkastella ja hallinnoida antamiasi käyttölupia tietoihisi. ' +
-      'Lisäksi näet mitkä tahot, esim. viranomaiset, ovat katsoneet tietojasi.'}
+      <Text className='info' name={'Tällä sivulla voit tarkastella ja hallinnoida antamiasi käyttölupia tietoihisi'}
       />
     </div>
     <h3 className='oppija-nimi'><span className='nimi'>{userP.map(user => user && user.name)}</span><span className='pvm'>{` s. ${birthday}`}</span></h3>
