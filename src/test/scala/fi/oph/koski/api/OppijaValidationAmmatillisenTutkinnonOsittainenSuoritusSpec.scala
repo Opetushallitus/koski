@@ -91,7 +91,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
         "Tutkinnon osa toisesta tutkinnosta" - {
           val autoalanTyönjohdonErikoisammattitutkinto = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("357305", "koulutus"), Some("40/011/2001"))
 
-          def osanSuoritusToisestaTutkinnosta(tutkinto: AmmatillinenTutkintoKoulutus, tutkinnonOsa: MuuKuinYhteinenTutkinnonOsa): AmmatillisenTutkinnonOsanSuoritus = tutkinnonOsaSuoritus.copy(
+          def osanSuoritusToisestaTutkinnosta(tutkinto: AmmatillinenTutkintoKoulutus, tutkinnonOsa: MuuKuinYhteinenTutkinnonOsa): OsittaisenAmmatillisenTutkinnonOsanSuoritus = tutkinnonOsaSuoritus.copy(
             tutkinto = Some(tutkinto),
             koulutusmoduuli = tutkinnonOsa
           )
@@ -129,12 +129,12 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
         }
 
         "Suorituksen tila" - {
-          def copySuoritus(a: Option[List[AmmatillinenArviointi]], v: Option[HenkilövahvistusValinnaisellaTittelillä], ap: Option[LocalDate] = None): AmmatillisenTutkinnonOsanSuoritus = {
+          def copySuoritus(a: Option[List[AmmatillinenArviointi]], v: Option[HenkilövahvistusValinnaisellaTittelillä], ap: Option[LocalDate] = None): OsittaisenAmmatillisenTutkinnonOsanSuoritus = {
             val alkamispäivä = ap.orElse(tutkinnonOsaSuoritus.alkamispäivä)
             tutkinnonOsaSuoritus.copy(arviointi = a, vahvistus = v, alkamispäivä = alkamispäivä)
           }
 
-          def put(suoritus: AmmatillisenTutkinnonOsanSuoritus)(f: => Unit) = {
+          def put(suoritus: OsittaisenAmmatillisenTutkinnonOsanSuoritus)(f: => Unit) = {
             putTutkinnonOsaSuoritus(suoritus)(f)
           }
 
@@ -269,7 +269,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
 
   private lazy val tutkinnonSuoritustapaNäyttönä = Koodistokoodiviite("naytto", "ammatillisentutkinnonsuoritustapa")
 
-  private lazy val tutkinnonOsaSuoritus = MuunAmmatillisenTutkinnonOsanSuoritus(
+  private lazy val tutkinnonOsaSuoritus = MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus(
     koulutusmoduuli = tutkinnonOsa,
     toimipiste = Some(OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))),
     arviointi = arviointiHyvä(),
@@ -280,14 +280,14 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
     PaikallinenKoodi("1", "paikallinen osa"), "Paikallinen tutkinnon osa", false, Some(laajuus)
   )
 
-  private lazy val paikallinenTutkinnonOsaSuoritus = MuunAmmatillisenTutkinnonOsanSuoritus(
+  private lazy val paikallinenTutkinnonOsaSuoritus = MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus(
     koulutusmoduuli = paikallinenTutkinnonOsa,
     toimipiste = Some(OidOrganisaatio("1.2.246.562.10.42456023292", Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))),
     arviointi = arviointiHyvä(),
     tutkinnonOsanRyhmä = vapaavalintaisetTutkinnonOsat
   )
 
-  private def putTutkinnonOsaSuoritus[A](tutkinnonOsaSuoritus: AmmatillisenTutkinnonOsanSuoritus)(f: => A) = {
+  private def putTutkinnonOsaSuoritus[A](tutkinnonOsaSuoritus: OsittaisenAmmatillisenTutkinnonOsanSuoritus)(f: => A) = {
     val s = osittainenSuoritusKesken.copy(osasuoritukset = Some(List(tutkinnonOsaSuoritus)))
 
     putTutkintoSuoritus(s)(f)
@@ -302,7 +302,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = List(osittainenSuoritusKesken.copy(
     koulutusmoduuli = osittainenSuoritusKesken.koulutusmoduuli.copy(perusteenDiaarinumero = diaari),
     osasuoritukset = Some(List(
-      tutkinnonOsanSuoritus("100432", "Ympäristön hoitaminen", None, k3, 35)
+      osittaisenTutkinnonTutkinnonOsanSuoritus(k3, ammatillisetTutkinnonOsat, "100432", "Ympäristön hoitaminen", 35)
     ))
   )))
 

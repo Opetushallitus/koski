@@ -275,7 +275,7 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   koulutussopimukset: Option[List[Koulutussopimusjakso]] = None,
   @Description("Ammatilliseen tutkintoon liittyvät tutkinnonosan suoritukset")
   @Title("Tutkinnon osat")
-  override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsanSuoritus]] = None,
+  override val osasuoritukset: Option[List[OsittaisenAmmatillisenTutkinnonOsanSuoritus]] = None,
   @Description("Kun kyseessä on toinen osaamisala tai tutkintonimike, viittaus aiempaan suoritukseen välitetään tässä.")
   @Tooltip("Todistuksella näkyvät lisätiedot. Esimerkiksi, kun kyseessä on toinen osaamisala tai tutkintonimike, viittaus aiempaan suoritukseen välitetään tässä.")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
@@ -327,6 +327,51 @@ trait AmmatillisenTutkinnonOsanSuoritus extends Suoritus with MahdollisestiSuori
 
   override def salliDuplikaatit: Boolean = true
 }
+
+trait OsittaisenAmmatillisenTutkinnonOsanSuoritus extends AmmatillisenTutkinnonOsanSuoritus
+
+@Description("Ammatilliseen tutkintoon liittyvän yhteisen tutkinnonosan suoritus")
+@Title("Yhteisen tutkinnon osan suoritus")
+case class YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus(
+  koulutusmoduuli: YhteinenTutkinnonOsa,
+  tutkinto: Option[AmmatillinenTutkintoKoulutus] = None,
+  @Description("Tieto siitä mihin tutkinnon osan ryhmään osan suoritus (Ammatilliset tutkinnon osat, Yhteiset tutkinnon osat, Vapaavalintaiset tutkinnon osat, Tutkintoa yksilöllisesti laajentavat tutkinnon osat) kuuluu")
+  @KoodistoKoodiarvo("2") // Yhteiset tutkinnon osat
+  tutkinnonOsanRyhmä: Option[Koodistokoodiviite] = None,
+  toimipiste: Option[OrganisaatioWithOid],
+  arviointi: Option[List[AmmatillinenArviointi]] = None,
+  vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä] = None,
+  override val alkamispäivä: Option[LocalDate] = None,
+  tunnustettu: Option[OsaamisenTunnustaminen] = None,
+  lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
+  suorituskieli: Option[Koodistokoodiviite] = None,
+  näyttö: Option[Näyttö] = None,
+  @Title("Osa-alueet")
+  override val osasuoritukset: Option[List[YhteisenTutkinnonOsanOsaAlueenSuoritus]] = None,
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
+) extends OsittaisenAmmatillisenTutkinnonOsanSuoritus with MahdollisestiToimipisteellinen
+
+@Description("Ammatilliseen tutkintoon liittyvän, muun kuin yhteisen tutkinnonosan suoritus")
+@Title("Muun tutkinnon osan suoritus")
+case class MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus(
+  koulutusmoduuli: MuuKuinYhteinenTutkinnonOsa,
+  tutkinto: Option[AmmatillinenTutkintoKoulutus] = None,
+  @Description("Tieto siitä mihin tutkinnon osan ryhmään osan suoritus (Ammatilliset tutkinnon osat, Yhteiset tutkinnon osat, Vapaavalintaiset tutkinnon osat, Tutkintoa yksilöllisesti laajentavat tutkinnon osat) kuuluu")
+  @KoodistoKoodiarvo("1") // Ammatilliset tutkinnon osat
+  @KoodistoKoodiarvo("3") // Vapaavalintaiset tutkinnon osat
+  @KoodistoKoodiarvo("4") // Tutkintoa yksilöllisesti laajentavat tutkinnon osat
+  tutkinnonOsanRyhmä: Option[Koodistokoodiviite] = None,
+  toimipiste: Option[OrganisaatioWithOid],
+  arviointi: Option[List[AmmatillinenArviointi]] = None,
+  vahvistus: Option[HenkilövahvistusValinnaisellaTittelillä] = None,
+  override val alkamispäivä: Option[LocalDate] = None,
+  tunnustettu: Option[OsaamisenTunnustaminen] = None,
+  lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
+  suorituskieli: Option[Koodistokoodiviite] = None,
+  näyttö: Option[Näyttö] = None,
+  override val osasuoritukset: Option[List[AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus]] = None,
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
+) extends OsittaisenAmmatillisenTutkinnonOsanSuoritus with MahdollisestiToimipisteellinen
 
 @Description("Ammatilliseen tutkintoon liittyvän yhteisen tutkinnonosan suoritus")
 @Title("Yhteisen tutkinnon osan suoritus")
