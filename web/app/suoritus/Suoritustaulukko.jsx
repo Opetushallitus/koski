@@ -125,7 +125,7 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
     let {model, showScope, showTila, onExpand, expanded, groupId, columns} = this.props
     let properties = suoritusProperties(model)
     let displayProperties = properties.filter(p => p.key !== 'osasuoritukset')
-    let hasProperties = displayProperties.length > 0
+    let hasProperties = properties.length > 0
     let osasuoritukset = modelLookup(model, 'osasuoritukset')
     let showOsasuoritukset = (osasuoritukset && osasuoritukset.value) || isYhteinenTutkinnonOsa(model)
     return (<tbody className={buildClassNames(['tutkinnon-osa', (expanded && 'expanded'), (groupId)])}>
@@ -143,7 +143,7 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
       modelErrorMessages(model).map((error, i) => <tr key={'error-' + i} className="error"><td colSpan="42" className="error">{error}</td></tr>)
     }
     {
-      expanded && hasProperties && (<tr className="details" key="details">
+      expanded && displayProperties.length > 0 && (<tr className="details" key="details">
         <td colSpan="4">
           <PropertiesEditor model={model} properties={displayProperties}/>
         </td>
