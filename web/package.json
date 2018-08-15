@@ -26,7 +26,7 @@
     "react-dom": "^16.3.3",
     "react-focus-lock": "^1.11.1",
     "react-highlight": "^0.12.0",
-    "react-highlighter": "github:Dentosal/react-highlighter#fa9392a55bacb418ef1b5327dba922f3829941ca",
+    "react-highlighter": "github:helior/react-highlighter#f3b24bcb1f8853d61f101783e8cdad5eb84fa8da",
     "whatwg-fetch": "^2.0.4"
   },
   "devDependencies": {
