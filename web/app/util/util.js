@@ -44,3 +44,9 @@ export const focusWithoutScrolling = (elem) => {
   elem.focus()
   window.scrollTo(scrollX, scrollY)
 }
+
+export const getBirthdayFromEditorRes = editorResponse => {
+  return editorResponse.value.properties.find(p => p.key === 'henkilö')
+    .model.value.properties.find(p => p.key === 'syntymäaika')
+    .model.value.data
+}

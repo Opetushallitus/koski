@@ -12,23 +12,27 @@ import fi.oph.koski.schema.Nimitiedot
 import fi.oph.koski.servlet.{ApiServlet, LanguageSupport, NoCache}
 import org.scalatra.{Cookie, CookieOptions}
 
-case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServlet with AuthenticationSupport with NoCache with LanguageSupport {
+abstract class AbstractLoginServlet(application: KoskiApplication) extends ApiServlet with AuthenticationSupport with NoCache with LanguageSupport {
   get("/") {
     try {
       checkAuth.getOrElse(login)
     } catch {
       case e: Exception =>
         logger.error(s"Kansalaisen sisäänkirjautuminen epäonnistui ${e.getMessage}")
-        redirect("/virhesivu")
+        redirect(onFailure)
     }
   }
+
+  protected def onSuccess: String = "/omattiedot"
+  protected def onFailure: String = "/virhesivu"
+  protected def onUserNotFound: String = "/eisuorituksia"
 
   private def checkAuth: Option[HttpStatus] = {
     logger.debug(headers)
     request.header("security") match {
       case Some(password) if passwordOk(password) => None
       case Some(_) => Some(KoskiErrorCategory.unauthorized())
-      case None => Some(KoskiErrorCategory.badRequest("auth header missing"))
+      case None => Some(KoskiErrorCategory.badRequest(s"auth header missing, will not redirect to $onSuccess"))
     }
   }
 
@@ -36,10 +40,10 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
     application.henkilöRepository.findHenkilötiedotByHetu(hetu, nimitiedot)(KoskiSession.systemUser).headOption match {
       case Some(oppija) =>
         setUser(Right(localLogin(AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true), Some(langFromCookie.getOrElse(langFromDomain)))))
-        redirect("/omattiedot")
+        redirect(onSuccess)
       case _ =>
         setNimitiedotCookie
-        redirect("/eisuorituksia")
+        redirect(onUserNotFound)
     }
   }
 
@@ -91,5 +95,7 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
     }.sortBy(_._1).mkString("\n")
   }
 }
+
+case class ShibbolethLoginServlet(application: KoskiApplication) extends AbstractLoginServlet(application)
 
 case class ShibbolethName(name: String)

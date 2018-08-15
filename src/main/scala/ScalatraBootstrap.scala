@@ -10,6 +10,7 @@ import fi.oph.koski.history.KoskiHistoryServlet
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.localization.LocalizationServlet
 import fi.oph.koski.log.Logging
+import fi.oph.koski.mydata.{ApiProxyServlet, MyDataReactServlet, MyDataServlet}
 import fi.oph.koski.omattiedot.OmatTiedotServlet
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusServlet, OpiskeluoikeusValidationServlet}
 import fi.oph.koski.oppija.OppijaServlet
@@ -21,7 +22,7 @@ import fi.oph.koski.preferences.PreferencesServlet
 import fi.oph.koski.pulssi.{PulssiHtmlServlet, PulssiServlet}
 import fi.oph.koski.raportointikanta.RaportointikantaServlet
 import fi.oph.koski.servlet._
-import fi.oph.koski.sso.{CasServlet, LocalLoginServlet, SSOConfig, ShibbolethLoginServlet}
+import fi.oph.koski.sso.{CasServlet, LocalLoginServlet, SSOConfig, ShibbolethLoginServlet, MyDataLoginServlet}
 import fi.oph.koski.suoritusjako.SuoritusjakoServlet
 import fi.oph.koski.suoritusote.SuoritusServlet
 import fi.oph.koski.sure.SureServlet
@@ -73,6 +74,9 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     mount("/api/localization", new LocalizationServlet)
     mount("/api/raportointikanta", new RaportointikantaServlet)
     mount("/api/sure", new SureServlet)
+    mount("/api/omadata/oppija", new ApiProxyServlet)
+    mount("/api/omadata", new MyDataServlet)
+    mount("/omadata", new MyDataReactServlet)
     mount("/healthcheck", new HealthCheckHtmlServlet)
     mount("/user", new UserServlet)
     if (!SSOConfig(application.config).isCasSsoUsed) {
@@ -82,6 +86,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     if (application.features.shibboleth) {
       mount("/user/shibbolethlogin", ShibbolethLoginServlet(application))
     }
+    mount("/user/omadatalogin", MyDataLoginServlet(application))
     mount("/cas", new CasServlet)
     mount("/cache", new CacheServlet)
 

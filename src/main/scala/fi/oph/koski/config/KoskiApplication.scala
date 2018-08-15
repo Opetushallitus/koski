@@ -13,6 +13,7 @@ import fi.oph.koski.koodisto.{KoodistoCreator, KoodistoPalvelu, KoodistoViitePal
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.log.{Logging, TimedProxy}
+import fi.oph.koski.mydata.{MyDataRepository, MyDataService}
 import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.oppilaitos.OppilaitosRepository
@@ -78,6 +79,8 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val oppijaFacade = new KoskiOppijaFacade(henkilöRepository, henkilöCache, opiskeluoikeusRepository, historyRepository, perustiedotIndexer, config, hetu)
   lazy val suoritusjakoRepository = new SuoritusjakoRepository(masterDatabase.db)
   lazy val suoritusjakoService = new SuoritusjakoService(suoritusjakoRepository, oppijaFacade)
+  lazy val mydataRepository = new MyDataRepository(masterDatabase.db)
+  lazy val mydataService = new MyDataService(mydataRepository, this)
   lazy val sessionTimeout = SessionTimeout(config)
   lazy val koskiSessionRepository = new KoskiSessionRepository(masterDatabase.db, sessionTimeout)
   lazy val fixtureCreator = new FixtureCreator(this)

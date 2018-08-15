@@ -8,7 +8,7 @@ import Text from '../i18n/Text'
 import {ift} from './util'
 import {t} from '../i18n/i18n'
 
-const logError = (error) => {
+export const logError = (error) => {
   console.log('ERROR', error)
   trackRuntimeError(R.assoc('location', '' + document.location, error))
 }

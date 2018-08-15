@@ -4,6 +4,14 @@ import ReactDOM from 'react-dom'
 import './style/main.less'
 import HetuLogin from './korhopankki/HetuLogin'
 import Text from './i18n/Text'
+import { currentLocation } from './util/location'
+
+const getParam = (parameter) => {
+  return currentLocation().params ?
+    currentLocation().params[parameter] :
+    undefined
+}
+
 
 const MockUsers = () =>
   (<table className='mock-users'>
@@ -19,7 +27,7 @@ const MockUsers = () =>
 
 ReactDOM.render((
   <div>
-    <HetuLogin/>
+    <HetuLogin loginUrl={getParam('login')} redirectUrl={getParam('redirect')} />
     <MockUsers/>
   </div>
 ), document.getElementById('content'))
