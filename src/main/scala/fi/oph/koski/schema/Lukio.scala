@@ -150,7 +150,7 @@ case class LukionOppiaineenSuoritus(
   override val osasuoritukset: Option[List[LukionKurssinSuoritus]],
   @KoodistoKoodiarvo("lukionoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionoppiaine", koodistoUri = "suorituksentyyppi")
-) extends OppiaineenSuoritus with Vahvistukseton with LukionOppimääränOsasuoritus with MahdollisestiSuorituskielellinen with JatkoOpintovalmiuksiaTukeviaOpintojenOsasuoritus
+) extends OppiaineenSuoritus with Vahvistukseton with LukionOppimääränOsasuoritus with MahdollisestiSuorituskielellinen
 
 @Description("Lukion kurssin suoritustiedot")
 case class LukionKurssinSuoritus(
@@ -166,7 +166,7 @@ case class LukionKurssinSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionkurssi", koodistoUri = "suorituksentyyppi"),
   suoritettuLukiodiplomina: Option[Boolean] = None,
   suoritettuSuullisenaKielikokeena: Option[Boolean] = None
-) extends KurssinSuoritus with MahdollisestiSuorituskielellinen with JatkoOpintovalmiuksiaTukeviaOpintojenOsasuoritus
+) extends KurssinSuoritus with MahdollisestiSuorituskielellinen
 
 case class LukionOppiaineenArviointi(
   @Description("Oppiaineen suorituksen arvosana on kokonaisarvosana oppiaineelle")
@@ -194,7 +194,7 @@ case class SanallinenLukionKurssinArviointi(
   päivä: LocalDate
 ) extends LukionKurssinArviointi with SanallinenYleissivistävänKoulutuksenArviointi
 
-sealed trait LukionKurssi extends Koulutusmoduuli with PreIBKurssi {
+sealed trait LukionKurssi extends Koulutusmoduuli with PreIBKurssi with JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsaaPienempiKokonaisuus {
   def laajuus: Option[LaajuusKursseissa]
   @KoodistoUri("lukionkurssintyyppi")
   @Description("Kurssin tyyppi voi olla joko syventävä, soveltava tai pakollinen")
@@ -224,7 +224,7 @@ case class PaikallinenLukionKurssi(
 ) extends LukionKurssi with PaikallinenKoulutusmoduuli with StorablePreference
 
 @Description("Lukion/IB-lukion oppiaineen tunnistetiedot")
-trait LukionOppiaine extends Koulutusmoduuli with Valinnaisuus with PreIBOppiaine with Diaarinumerollinen {
+trait LukionOppiaine extends Koulutusmoduuli with Valinnaisuus with PreIBOppiaine with Diaarinumerollinen with JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsaaPienempiKokonaisuus {
   def laajuus: Option[LaajuusKursseissa]
   @Title("Oppiaine")
   def tunniste: KoodiViite
