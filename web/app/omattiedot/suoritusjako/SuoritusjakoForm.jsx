@@ -30,8 +30,7 @@ const SuoritusjakoList = ({opiskeluoikeudet, suoritusjaot, onRemove}) => (
         <div className="link-information">
           <Text name={
             'Jakolinkillä voit näyttää suoritustietosi haluamillesi henkilöille (esimerkiksi työtä tai opiskelupaikkaa hakiessasi). ' +
-            'Linkin saajan ei tarvitse kirjautua Oma Opintopolku-palveluun. ' +
-            'Voit tarkistaa tarkan sisällön Esikatsele-painikkeella.'}
+            'Linkin saajan ei tarvitse kirjautua Oma Opintopolku-palveluun.'}
           />
         </div>
         <ul className='suoritusjako-form__link-list'>
