@@ -1168,29 +1168,6 @@
             "päivä" : "2014-10-20",
             "hyväksytty" : true
           } ],
-          "näyttö" : {
-            "kuvaus" : {
-              "fi" : "Kirjaesitelmä"
-            },
-            "suorituspaikka" : {
-              "tunniste" : {
-                "koodiarvo" : "1",
-                "nimi" : {
-                  "fi" : "työpaikka"
-                },
-                "koodistoUri" : "ammatillisennaytonsuorituspaikka",
-                "koodistoVersio" : 1
-              },
-              "kuvaus" : {
-                "fi" : "Stadin ammattiopisto"
-              }
-            },
-            "suoritusaika" : {
-              "alku" : "2014-05-18",
-              "loppu" : "2014-05-18"
-            },
-            "työssäoppimisenYhteydessä" : false
-          },
           "tyyppi" : {
             "koodiarvo" : "ammatillisentutkinnonosanosaalue",
             "koodistoUri" : "suorituksentyyppi"
