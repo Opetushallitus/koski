@@ -141,10 +141,10 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_korkeakouluopintojentutkinnonosaapienempikokonaisuus",
-  "koodiArvo" : "korkeakouluopintojentutkinnonosaapienempikokonaisuus",
+  "koodiUri" : "suorituksentyyppi_ammatillinenlukionopintoja",
+  "koodiArvo" : "ammatillinenlukionopintoja",
   "metadata" : [ {
-    "nimi" : "Korkeakouluopintojen tutkinnon osaa pienempi kokonaisuus",
+    "nimi" : "Lukionopintoja",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
@@ -152,8 +152,19 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_ammatillisenmuuopintovalmiuksiatukevaopinto",
-  "koodiArvo" : "ammatillisenmuuopintovalmiuksiatukevaopinto",
+  "koodiUri" : "suorituksentyyppi_ammatillinenkorkeakouluopintoja",
+  "koodiArvo" : "ammatillinenkorkeakouluopintoja",
+  "metadata" : [ {
+    "nimi" : "Korkeakouluopintoja",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_ammatillinenmuuopintovalmiuksiatukevaopintoja",
+  "koodiArvo" : "ammatillinenmuuopintovalmiuksiatukevaopintoja",
   "metadata" : [ {
     "nimi" : "Muita opintovalmiuksia tukevia opintoja",
     "kieli" : "FI"

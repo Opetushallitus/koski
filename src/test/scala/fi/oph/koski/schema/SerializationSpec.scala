@@ -53,8 +53,7 @@ class SerializationSpec extends FreeSpec with Matchers with Logging {
           val kaikkiSuoritukset: Seq[Suoritus] = e.data.opiskeluoikeudet.flatMap(_.suoritukset.flatMap(_.rekursiivisetOsasuoritukset))
             .filterNot {
               // Suoritukset, jotka riippuvat ylemmällä hierarkiassa olevista kentistä, eivät deserialisoidu oikein yksinään (esim @OnlyWhen-annotaation kautta)
-              case l: LukioOpintojenSuoritus | j: JatkoOpintovalmiuksiaTukeviaOpintoja | a: AikuistenPerusopetuksenOppiaineenSuoritus | k: Korkeakouluopinnot | m: MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus | y: YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus =>
-                true
+              case x: AikuistenPerusopetuksenOppiaineenSuoritus | y: KorkeakouluopintoSuoritus | z: JatkoOpintovalmiuksiaTukevienOpintojenSuoritus | a: MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus | b: YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus => true
               case s: YhteisenAmmatillisenTutkinnonOsanSuoritus =>  s.osasuoritukset.toList.flatten.exists(_.näyttö.isDefined)
               case s: YhteisenTutkinnonOsanOsaAlueenSuoritus => s.näyttö.isDefined
               case _ => false
