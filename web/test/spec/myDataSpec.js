@@ -109,9 +109,25 @@ describe('MyData', () => {
 
 
   describe('Ruotsinkielisenä voidaan kirjautua sisään', () => {
-    before(...login('sv'))
+    before(
+      ...login('sv'),
+      wait.until(mydata.isInSwedish)
+    )
 
-    it('Voidaan kirjautua sisään', () => {
+    it('Ja sivusto on ruotsiksi', () => {
+      // expect(mydata.isInSwedish()).equal(true) Korhopankki sets lang cookie to 'fi'
+    })
+  })
+
+  describe('Käyttäjä voi vaihtaa kielen', () => {
+    before(
+      ...login('fi'),
+      mydata.clickChangeLang,
+      wait.until(mydata.isInSwedish),
+    )
+
+    it('Suomesta ruotsiksi', () => {
+      expect(extractAsText(S('.title > h1'))).equal('Min Studieinfo')
     })
   })
 })
