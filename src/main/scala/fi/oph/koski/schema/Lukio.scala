@@ -194,7 +194,7 @@ case class SanallinenLukionKurssinArviointi(
   päivä: LocalDate
 ) extends LukionKurssinArviointi with SanallinenYleissivistävänKoulutuksenArviointi
 
-sealed trait LukionKurssi extends Koulutusmoduuli with PreIBKurssi with JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsaaPienempiKokonaisuus {
+sealed trait LukionKurssi extends Koulutusmoduuli with PreIBKurssi {
   def laajuus: Option[LaajuusKursseissa]
   @KoodistoUri("lukionkurssintyyppi")
   @Description("Kurssin tyyppi voi olla joko syventävä, soveltava tai pakollinen")
@@ -224,7 +224,7 @@ case class PaikallinenLukionKurssi(
 ) extends LukionKurssi with PaikallinenKoulutusmoduuli with StorablePreference
 
 @Description("Lukion/IB-lukion oppiaineen tunnistetiedot")
-trait LukionOppiaine extends Koulutusmoduuli with Valinnaisuus with PreIBOppiaine with Diaarinumerollinen with JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsaaPienempiKokonaisuus {
+trait LukionOppiaine extends Koulutusmoduuli with Valinnaisuus with PreIBOppiaine with Diaarinumerollinen {
   def laajuus: Option[LaajuusKursseissa]
   @Title("Oppiaine")
   def tunniste: KoodiViite

@@ -424,7 +424,7 @@ case class MuunAmmatillisenTutkinnonOsanSuoritus(
 ) extends AmmatillisenTutkinnonOsanSuoritus with MahdollisestiToimipisteellinen
 
 @Description("Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja")
-@Title("Muun tutkinnon osan suoritus, jatko-opintovalmiuksia tukevia opintoja")
+@Title("Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja")
 @OnlyWhen("../../suoritustapa/koodiarvo", "reformi")
 case class JatkoOpintovalmiuksiaTukeviaOpintoja(
   koulutusmoduuli: JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsa,
@@ -437,7 +437,7 @@ case class JatkoOpintovalmiuksiaTukeviaOpintoja(
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  override val osasuoritukset: Option[List[JatkoOpintovalmiuksiaTukevienOpintojenOsasuoritus]] = None,
+  override val osasuoritukset: Option[List[YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus]] = None,
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
 ) extends AmmatillisenTutkinnonOsanSuoritus with MahdollisestiToimipisteellinen {
   override def tutkinto: Option[AmmatillinenTutkintoKoulutus] = None
@@ -445,7 +445,6 @@ case class JatkoOpintovalmiuksiaTukeviaOpintoja(
   override def arviointi: Option[List[AmmatillinenArviointi]] = None
 }
 
-@Title("Muun tutkinnon osan suoritus, korkeakouluopinnot")
 @OnlyWhen("../../suoritustapa/koodiarvo", "reformi")
 case class Korkeakouluopinnot(
   koulutusmoduuli: KorkeakouluopinnotTutkinnonOsa,
@@ -616,18 +615,50 @@ case class AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosaapienempikokonaisuus", "suorituksentyyppi")
 ) extends Suoritus with Vahvistukseton with MahdollisestiSuorituskielellinen
 
-case class JatkoOpintovalmiuksiaTukevienOpintojenOsasuoritus(
-  @Title("Kokonaisuus")
-  koulutusmoduuli: JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsaaPienempiKokonaisuus,
+case class MuidenOpintovalmiuksiaTukevienOpintojenSuoritus(
+  koulutusmoduuli: PaikallinenOpintovalmiuksiaTukevaOpinto,
   arviointi: Option[List[AmmatillinenArviointi]] = None,
   override val alkamispäivä: Option[LocalDate] = None,
   @ComplexObject
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  @KoodistoKoodiarvo("jatkoopintovalmiuksiatukeviaopintojatutkinnonosaapienempikokonaisuus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("jatkoopintovalmiuksiatukeviaopintojatutkinnonosaapienempikokonaisuus", "suorituksentyyppi")
-) extends Suoritus with Vahvistukseton with MahdollisestiSuorituskielellinen
+  @KoodistoKoodiarvo("ammatillisenmuuopintovalmiuksiatukevaopinto")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisenmuuopintovalmiuksiatukevaopinto", "suorituksentyyppi")
+) extends Suoritus with Vahvistukseton with MahdollisestiSuorituskielellinen with YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus
+
+@Title("Lukion oppiaineen tai lukion kurssin suoritus")
+case class LukioOpintojenSuoritus(
+  koulutusmoduuli: PaikallinenLukionOpinto,
+  arviointi: Option[List[AmmatillinenArviointi]] = None,
+  override val alkamispäivä: Option[LocalDate] = None,
+  @ComplexObject
+  tunnustettu: Option[OsaamisenTunnustaminen] = None,
+  lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
+  suorituskieli: Option[Koodistokoodiviite] = None,
+  @KoodistoKoodiarvo("lukionoppiaine")
+  @KoodistoKoodiarvo("lukionkurssi")
+  tyyppi: Koodistokoodiviite
+) extends Suoritus with Vahvistukseton with MahdollisestiSuorituskielellinen with YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus
+
+trait YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus extends Suoritus
+
+case class PaikallinenOpintovalmiuksiaTukevaOpinto(
+  tunniste: PaikallinenKoodi,
+  kuvaus: LocalizedString,
+  laajuus: Option[LaajuusOsaamispisteissä] = None
+) extends PaikallinenKoulutusmoduuli
+
+case class PaikallinenLukionOpinto(
+  tunniste: PaikallinenKoodi,
+  kuvaus: LocalizedString,
+  laajuus: Option[LaajuusOsaamispisteissä] = None,
+  @Description("Tutkinnon perusteen diaarinumero. Ks. ePerusteet-palvelu.")
+  @Tooltip("Tutkinnon perusteen diaarinumero.")
+  @Title("Peruste")
+  @ClassName("peruste")
+  perusteenDiaarinumero: String
+) extends PaikallinenKoulutusmoduuli
 
 case class KorkeakouluopintojenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
   @Title("Kokonaisuus")
@@ -660,7 +691,7 @@ case class YhteisenTutkinnonOsanOsaAlueenSuoritus(
   näyttö: Option[Näyttö] = None,
   @KoodistoKoodiarvo("ammatillisentutkinnonosanosaalue")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosanosaalue", "suorituksentyyppi")
-) extends Suoritus with Vahvistukseton with MahdollisestiSuorituskielellinen with PakollisenTaiValinnaisenSuoritus with ValmaKoulutuksenOsanTaiOsanOsaAlueenSuoritus
+) extends Suoritus with Vahvistukseton with MahdollisestiSuorituskielellinen with PakollisenTaiValinnaisenSuoritus with ValmaKoulutuksenOsanTaiOsanOsaAlueenSuoritus with YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus
 
 @Description("Korkeakouluopintojen tutkinnon osaa pienemmän kokonaisuuden tunnistetiedot")
 case class KorkeakouluopintojenTutkinnonOsaaPienempiKokonaisuus(
@@ -670,8 +701,6 @@ case class KorkeakouluopintojenTutkinnonOsaaPienempiKokonaisuus(
   laajuus: Option[LaajuusOsaamispisteissä] = None
 ) extends PaikallinenKoulutusmoduuli with LaajuuttaEiValidoida
 
-trait JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsaaPienempiKokonaisuus extends Koulutusmoduuli
-
 @Description("Ammatillisen tutkinnon osaa pienemmän kokonaisuuden tunnistetiedot")
 case class AmmatillisenTutkinnonOsaaPienempiKokonaisuus(
   tunniste: PaikallinenKoodi,
@@ -680,7 +709,7 @@ case class AmmatillisenTutkinnonOsaaPienempiKokonaisuus(
   laajuus: Option[LaajuusOsaamispisteissä] = None
 ) extends PaikallinenKoulutusmoduuli with LaajuuttaEiValidoida
 
-trait AmmatillisenTutkinnonOsanOsaAlue extends Koulutusmoduuli with LaajuuttaEiValidoida with Valinnaisuus with JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsaaPienempiKokonaisuus
+trait AmmatillisenTutkinnonOsanOsaAlue extends Koulutusmoduuli with LaajuuttaEiValidoida with Valinnaisuus
 
 @Description("Paikallisen tutkinnon osan osa-alueen tunnistetiedot")
 @Title("Paikallinen tutkinnon osan osa-alue")

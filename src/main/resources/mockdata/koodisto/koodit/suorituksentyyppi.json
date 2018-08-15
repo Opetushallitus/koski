@@ -152,12 +152,10 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_jatkoopintovalmiuksiatukeviaopintojatutkinnonosaapienempikokonaisuus",
-  "koodiArvo" : "jatkoopintovalmiuksiatukeviaopintojatutkinnonosaapienempikokonaisuus",
+  "koodiUri" : "suorituksentyyppi_ammatillisenmuuopintovalmiuksiatukevaopinto",
+  "koodiArvo" : "ammatillisenmuuopintovalmiuksiatukevaopinto",
   "metadata" : [ {
-    "nimi" : "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
+    "nimi" : "Muita opintovalmiuksia tukevia opintoja",
     "kieli" : "FI"
   } ],
   "versio" : 1,
