@@ -163,8 +163,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_ammatillinenmuuopintovalmiuksiatukevaopintoja",
-  "koodiArvo" : "ammatillinenmuuopintovalmiuksiatukevaopintoja",
+  "koodiUri" : "suorituksentyyppi_ammatillinenmuitaopintovalmiuksiatukeviaopintoja",
+  "koodiArvo" : "ammatillinenmuitaopintovalmiuksiatukeviaopintoja",
   "metadata" : [ {
     "nimi" : "Muita opintovalmiuksia tukevia opintoja",
     "kieli" : "FI"

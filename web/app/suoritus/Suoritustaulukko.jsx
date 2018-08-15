@@ -8,7 +8,7 @@ import {
 } from '../editor/EditorModel'
 import {buildClassNames} from '../components/classnames'
 import {accumulateExpandedState} from '../editor/ExpandableItems'
-import {suoritusValmis, tilaText} from './Suoritus'
+import {suoritusValmis, tilaText, valinnanMahdollisuus} from './Suoritus'
 import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
 import {fetchLaajuudet, YhteensäSuoritettu} from './YhteensaSuoritettu'
@@ -184,4 +184,6 @@ const SuoritusColumn = {
   }
 }
 
-export const suorituksenTilaSymbol = (suoritus) => suoritusValmis(suoritus) ? '' : ''
+export const suorituksenTilaSymbol = (suoritus) => valinnanMahdollisuus(suoritus)
+  ? ''
+  : suoritusValmis(suoritus) ? '' : ''
