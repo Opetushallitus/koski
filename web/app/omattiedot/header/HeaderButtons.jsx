@@ -19,7 +19,7 @@ export const HeaderButtons = ({uiModeA}) => (
       stateA={uiModeA}
       value={FormState.SUORITUSJAKO}
       clearedStateValue={FormState.NONE}
-      text='Suoritustietojen jakaminen'
+      text='Jaa suoritustietoja'
     />
   </div>
 )
