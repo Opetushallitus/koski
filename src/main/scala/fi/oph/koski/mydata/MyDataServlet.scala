@@ -1,22 +1,22 @@
 package fi.oph.koski.mydata
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.AuthenticationSupport
 import fi.oph.koski.log.Logging
-import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, MyDataSupport, NoCache}
-
-import scala.collection.JavaConverters._
+import fi.oph.koski.servlet._
 
 class MyDataServlet(implicit val application: KoskiApplication) extends ApiServlet
-  with AuthenticationSupport with Logging with NoCache with MyDataSupport {
+  with AuthenticationSupport with Logging with NoCache with MyDataSupport with LanguageSupport {
 
   get("/kumppani/:memberCode") {
     def memberConf = getConfigForMember()
 
+    val lang = s"name.${langFromCookie.getOrElse(langFromDomain)}"
+    val memberName = if (memberConf.hasPath(lang)) memberConf.getString(lang) else memberConf.getString("name.fi")
+
     renderObject(Map(
       "id" -> memberConf.getString("id"),
-      "name" -> memberConf.getString("name")
+      "name" -> memberName
     ))
   }
 
