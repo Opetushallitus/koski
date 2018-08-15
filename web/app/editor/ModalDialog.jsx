@@ -23,7 +23,7 @@ export default ({className, onDismiss, onSubmit, children, submitOnEnterKey, okT
         <button className='close-modal' onClick={() => onDismiss()} aria-label={t('Sulje')}/>
         <div id='modal-main-content'>{ children }</div>
         <div className='actions'>
-          <button className='peruuta text-button-small' onClick={() => onDismiss()}><Text name={cancelTextKey}/></button>
+          <button className='peruuta koski-button koski-button-secondary' onClick={() => onDismiss()}><Text name={cancelTextKey}/></button>
           <button className='vahvista koski-button' disabled={validP.not().or(submittedAtom)} onClick={(e) => {e.preventDefault(); submittedAtom.set(true); onSubmit()}}><Text name={okTextKey}/></button>
         </div>
       </div>

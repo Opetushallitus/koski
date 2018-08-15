@@ -77,7 +77,7 @@ const NewSuoritusjako = ({opiskeluoikeudet, selectedSuoritusIds, onSuccess, show
                 <div>
                   <div className='create-suoritusjako-header-row'>
                     <h2><Text name='Valitse jaettavat suoritustiedot'/></h2>
-                    {canCancelForm.map(canCancel => canCancel && <ToggleButton toggleA={showForm} text='Peruuta' style='text'/>)}
+                    {canCancelForm.map(canCancel => canCancel && <ToggleButton toggleA={showForm} text='Peruuta' style='secondary'/>)}
                   </div>
                   <div className='create-suoritusjako'>
                     <SelectableSuoritusList opiskeluoikeudet={opiskeluoikeudet} selectedSuoritusIds={selectedSuoritusIds}/>
@@ -95,7 +95,7 @@ const NewSuoritusjako = ({opiskeluoikeudet, selectedSuoritusIds, onSuccess, show
                 </div>
               </div>
             )
-          : <ToggleButton toggleA={showForm} text='Luo uusi' style='text'/>
+          : <ToggleButton toggleA={showForm} text='Luo uusi' style='secondary'/>
       )}
     </div>
   )

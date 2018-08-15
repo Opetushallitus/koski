@@ -13,7 +13,7 @@ export const HeaderButtons = ({uiModeA}) => (
       value={FormState.VIRHERAPORTOINTI}
       clearedStateValue={FormState.NONE}
       text='Onko suorituksissasi virhe?'
-      style='text'
+      style='secondary'
     />
     <SuoritusjakoButton
       stateA={uiModeA}
