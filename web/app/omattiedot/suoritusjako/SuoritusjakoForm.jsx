@@ -166,15 +166,15 @@ export class SuoritusjakoForm extends React.Component {
     return (
       <section className='suoritusjako-form textstyle-body' tabIndex={-1} ref={e => this.formSectionElem = e}>
         {this.showLinkRemovalSuccess.map(shouldShow => shouldShow && (
-          <h2 tabIndex={-1} ref={e => this.linkRemovalSuccessElem = e} className='link-successful-h2'>
+          <div tabIndex={-1} ref={e => this.linkRemovalSuccessElem = e} className='link-successful'>
             <div className='link-successful-icon'/>
             <Text name='Jakolinkin poistaminen onnistui.'/>
-          </h2>))}
+          </div>))}
         {this.showLinkCreationSuccess.map(shouldShow => shouldShow && (
-          <h2 ref={e => this.linkCreationSuccessElem = e} tabIndex={-1} className='link-successful-h2'>
+          <div ref={e => this.linkCreationSuccessElem = e} tabIndex={-1} className='link-successful'>
             <div className='link-successful-icon'/>
             <Text name='Jakolinkin luominen onnistui.'/>
-          </h2>))}
+          </div>))}
         {this.suoritusjaot.map(suoritusjaot => R.isEmpty(suoritusjaot) && <Ingressi/>)}
         <SuoritusjakoList
           baret-lift
