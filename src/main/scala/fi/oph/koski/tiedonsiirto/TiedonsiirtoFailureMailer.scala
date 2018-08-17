@@ -15,10 +15,9 @@ class TiedonsiirtoFailureMailer(application: KoskiApplication) extends Logging {
   private val vastuukayttajat = "Vastuukayttajat"
 
   def sendMail(rootOrg: OrganisaatioWithOid, oppilaitos: Option[OrganisaatioWithOid]): Unit = try {
-    if (!application.features.tiedonsiirtomail || !shouldSendMail(rootOrg, oppilaitos)) {
-      return
+    if (mailEnabled(rootOrg, oppilaitos) && !alreadySent(rootOrg, oppilaitos)) {
+      send(rootOrg, oppilaitos)
     }
-    send(rootOrg, oppilaitos)
   } catch {
     case e: Exception => logger.error(e)(s"Problem sending mail to organizations ${orgsToString(rootOrg, oppilaitos)}")
   }
@@ -46,14 +45,14 @@ class TiedonsiirtoFailureMailer(application: KoskiApplication) extends Logging {
   private def orgsToString(rootOrg: OrganisaatioWithOid, oppilaitos: Option[OrganisaatioWithOid]) =
     (rootOrg +: oppilaitos.toList).map(_.oid).distinct.mkString(" and ")
 
-  private def shouldSendMail(rootOrg: OrganisaatioWithOid, organisaatio: Option[OrganisaatioWithOid]) = sendTimes.synchronized {
+  private def alreadySent(rootOrg: OrganisaatioWithOid, organisaatio: Option[OrganisaatioWithOid]) = sendTimes.synchronized {
     val limit = now().minusHours(24)
     val key = rootOrg.oid + organisaatio.map(_.oid).getOrElse("")
     if (!sendTimes.getOrElse(key, limit).isAfter(limit)) {
       sendTimes.put(key, now())
-      true
-    } else {
       false
+    } else {
+      true
     }
   }
 
@@ -67,5 +66,11 @@ class TiedonsiirtoFailureMailer(application: KoskiApplication) extends Logging {
 
   private def organisaatioSähköpostit(oid: String, ryhmä: String): List[String] = {
     application.opintopolkuHenkilöFacade.organisaationSähköpostit(oid, ryhmä)
+  }
+
+  private def mailEnabled(rootOrg: OrganisaatioWithOid, oppilaitos: Option[OrganisaatioWithOid]) = {
+    val enabledOrgs = application.config.getStringList("tiedonsiirtomail.enabledForOrganizations")
+    val orgEnabled = enabledOrgs.contains(rootOrg.oid) || oppilaitos.map(_.oid).exists(enabledOrgs.contains)
+    application.features.tiedonsiirtomail || orgEnabled
   }
 }
