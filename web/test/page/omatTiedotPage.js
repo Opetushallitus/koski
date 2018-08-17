@@ -26,7 +26,7 @@ function OmatTiedotPage() {
       return S('header button:contains(Onko suorituksissasi virhe?)')
     },
     suoritusjakoButton: function() {
-      return S('header button:contains(Suoritustietojen jakaminen)')
+      return S('header button:contains(Jaa suoritustietoja)')
     },
     virheraportointiForm: VirheraportointiForm(),
     suoritusjakoForm: SuoritusjakoForm(),
