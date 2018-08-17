@@ -512,6 +512,9 @@ case class YhteisenTutkinnonOsanOsaAlueenSuoritus(
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
   lisätiedot: Option[List[AmmatillisenTutkinnonOsanLisätieto]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
+  @ComplexObject
+  @OnlyWhen("../../../../suoritustapa/koodiarvo","reformi")
+  näyttö: Option[Näyttö] = None,
   @KoodistoKoodiarvo("ammatillisentutkinnonosanosaalue")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosanosaalue", "suorituksentyyppi")
 ) extends Suoritus with Vahvistukseton with MahdollisestiSuorituskielellinen with PakollisenTaiValinnaisenSuoritus with ValmaKoulutuksenOsanTaiOsanOsaAlueenSuoritus
