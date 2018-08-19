@@ -23,9 +23,9 @@ abstract class AbstractLoginServlet(application: KoskiApplication) extends ApiSe
     }
   }
 
-  protected def onSuccess: String = "/omattiedot"
-  protected def onFailure: String = "/virhesivu"
-  protected def onUserNotFound: String = "/eisuorituksia"
+  protected def onSuccess: String = params.get("onSuccess").getOrElse("/omattiedot")
+  protected def onFailure: String = params.get("onFailure").getOrElse("/virhesivu")
+  protected def onUserNotFound: String = params.get("onUserNotFound").getOrElse("/eisuorituksia")
 
   private def checkAuth: Option[HttpStatus] = {
     logger.debug(headers)
