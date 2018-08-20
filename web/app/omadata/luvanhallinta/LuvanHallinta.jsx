@@ -40,9 +40,9 @@ export class LuvanHallinta extends React.Component {
 
   componentDidMount() {
     const valtuutusS = Http.cachedGet('/koski/api/omadata/valtuutus', {errorHandler: () => this.onHttpGetError()})
-    const birhtdayS = Http.cachedGet('/koski/api/omattiedot/editor', {errorHandler: () => this.onHttpGetError()}).map(getBirthDate)
+    const birthDayS = Http.cachedGet('/koski/api/omattiedot/editor', {errorHandler: () => this.onHttpGetError()}).map(getBirthDate)
 
-    Bacon.combineAsArray(valtuutusS, birhtdayS)
+    Bacon.combineAsArray(valtuutusS, birthDayS)
       .onValue(([valtuudet, birthday]) => this.setState({valtuudet, birthday, loading: false}))
   }
 
