@@ -33,7 +33,7 @@ class MyDataSupportTest extends FreeSpec with Matchers with MockFactory {
       (mockRequest.getRequestURI _).expects().returning("/koski/omadata/valtuutus/hsl")
 
       support(mockRequest).getShibbolethLoginURL(lang = lang) should
-        equal("/koski/login/shibboleth?login=/koski/user/omadatalogin%3FonSuccess%3D%2Fkoski%2Fomadata%2Fvaltuutus%2Fhsl%3Fcallback%3Dhttp%3A%2F%2Fwww.hsl.fi")
+        equal("/koski/login/shibboleth?login=/koski/user/shibbolethlogin%3FonSuccess%3D%2Fkoski%2Fomadata%2Fvaltuutus%2Fhsl%3Fcallback%3Dhttp%3A%2F%2Fwww.hsl.fi")
 
     }
     "Palauttaa oikean URL:n sisään loganneille" in {
@@ -42,7 +42,7 @@ class MyDataSupportTest extends FreeSpec with Matchers with MockFactory {
       (mockRequest.getRequestURI _).expects().returning("/koski/omadata/valtuutus/hsl")
 
       support(mockRequest).getLoginURL() should
-        equal("/koski/user/omadatalogin?onSuccess=/koski/omadata/valtuutus/hsl?callback=http://www.hsl.fi/alennus")
+        equal("/koski/user/shibbolethlogin?onSuccess=/koski/omadata/valtuutus/hsl?callback=http://www.hsl.fi/alennus")
     }
     "Palauttaa oikean member ID:n" in {
       val request: HttpServletRequest = stub[HttpServletRequest]
