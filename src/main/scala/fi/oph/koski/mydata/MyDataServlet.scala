@@ -23,7 +23,7 @@ class MyDataServlet(implicit val application: KoskiApplication) extends ApiServl
   get("/valtuutus") {
     logger.info(s"Requesting authorizations for user: ${koskiSessionOption.getOrElse()}")
     requireKansalainen
-    render(application.mydataService.getAllValid(koskiSessionOption.get.oid))
+    render(application.mydataService.getAllValid(koskiSessionOption.get.oid, lang))
   }
 
   post("/valtuutus/:memberCode") {

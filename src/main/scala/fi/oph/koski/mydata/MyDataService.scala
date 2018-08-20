@@ -30,17 +30,17 @@ class MyDataService(myDataRepository: MyDataRepository, implicit val application
     }
   }
 
-  def getAll(oppijaOid: String): Seq[MyDataJakoItem] = {
-    myDataRepository.getAll(oppijaOid).map(jako => MyDataJakoItem(jako.asiakas, getAsiakasName(jako.asiakas), jako.voimassaAsti.toLocalDate, jako.aikaleima))
+  def getAll(oppijaOid: String, lang: String = "fi"): Seq[MyDataJakoItem] = {
+    myDataRepository.getAll(oppijaOid).map(jako => MyDataJakoItem(jako.asiakas, getAsiakasName(jako.asiakas, lang), jako.voimassaAsti.toLocalDate, jako.aikaleima))
   }
 
-  def getAllValid(oppijaOid: String): Seq[MyDataJakoItem] = {
-    myDataRepository.getAllValid(oppijaOid).map(jako => MyDataJakoItem(jako.asiakas, getAsiakasName(jako.asiakas), jako.voimassaAsti.toLocalDate, jako.aikaleima))
+  def getAllValid(oppijaOid: String, lang: String = "fi"): Seq[MyDataJakoItem] = {
+    myDataRepository.getAllValid(oppijaOid).map(jako => MyDataJakoItem(jako.asiakas, getAsiakasName(jako.asiakas, lang), jako.voimassaAsti.toLocalDate, jako.aikaleima))
   }
 
   def hasAuthorizedMember(oppijaOid: String, memberId: String): Boolean = {
     getAllValid(oppijaOid).exists(auth => memberId == auth.asiakasId)
   }
 
-  private def getAsiakasName(id: String): String = getConfigForMember(id).getString("name")
+  private def getAsiakasName(id: String, lang: String): String = getConfigForMember(id).getString(s"name.${lang}")
 }

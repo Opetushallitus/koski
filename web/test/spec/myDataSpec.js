@@ -130,5 +130,9 @@ describe('MyData', () => {
     it('Suomesta ruotsiksi', () => {
       expect(extractAsText(S('.title > h1'))).equal('Min Studieinfo')
     })
+
+    it('Ja kumppanin nimi vaihtuu ruotsinkieliseksi', () => {
+      expect(mydata.getMemberName()).equal('HRT Helsingforsregionens trafik')
+    })
   })
 })
