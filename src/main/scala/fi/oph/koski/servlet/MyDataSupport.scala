@@ -15,7 +15,7 @@ trait MyDataSupport extends ScalatraServlet with MyDataConfig {
 
   def getLoginURL(target: String = getCurrentURL, encode: Boolean = false): String = {
     if (encode) {
-      s"${mydataLoginServletURL}${URLEncoder.encode(s"?onSuccess=${target}", "UTF-8")}"
+      URLEncoder.encode(s"${mydataLoginServletURL}?onSuccess=${target}", "UTF-8")
     } else {
       s"${mydataLoginServletURL}?onSuccess=${target}"
     }
