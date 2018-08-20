@@ -1,6 +1,8 @@
 package fi.oph.koski.tiedonsiirto
 
-import com.typesafe.config.ConfigValueFactory.{fromIterable => listToConfig, fromAnyRef => toConfig}
+import java.time.LocalDateTime
+
+import com.typesafe.config.ConfigValueFactory.{fromAnyRef => toConfig, fromIterable => listToConfig}
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.config.KoskiApplication.defaultConfig
@@ -35,12 +37,28 @@ class TiedonsiirtoFailureMailerSpec extends FreeSpec with Matchers with BeforeAn
       new TiedonsiirtoFailureMailer(application).sendMail(OidOrganisaatio(jyväskylänYliopisto), Some(OidOrganisaatio(jyväskylänNormaalikoulu)))
       MockEmailSender.checkMail should equal(List(expectedEmail("jyväs-vastuu@example.com")))
     }
+
+    "uudelleen jos sähköposti on lähetetty yli 24 tuntia sitten" in {
+      val mail = new TiedonsiirtoFailureMailer(KoskiApplicationForTests, timeNow = fakeTime _)
+      mail.sendMail(OidOrganisaatio(jyväskylänYliopisto), Some(OidOrganisaatio(jyväskylänNormaalikoulu)))
+      MockEmailSender.checkMail should equal(List(expectedEmail("jyväs-vastuu@example.com")))
+      mail.sendMail(OidOrganisaatio(jyväskylänYliopisto), Some(OidOrganisaatio(jyväskylänNormaalikoulu)))
+      MockEmailSender.checkMail should equal(List(expectedEmail("jyväs-vastuu@example.com")))
+    }
   }
 
   "Ei lähetä sähköpostia" - {
     "jos ominaisuus on disabloitu" in {
       val application = KoskiApplication(defaultConfig.withValue("features.tiedonsiirtomail", toConfig(false)))
       new TiedonsiirtoFailureMailer(application).sendMail(OidOrganisaatio(jyväskylänYliopisto), Some(OidOrganisaatio(jyväskylänNormaalikoulu)))
+      MockEmailSender.checkMail should equal(Nil)
+    }
+
+    "jos sähköposti on lähetetty alle 24 tuntia sitten" in {
+      val mail = new TiedonsiirtoFailureMailer(KoskiApplicationForTests)
+      mail.sendMail(OidOrganisaatio(jyväskylänYliopisto), Some(OidOrganisaatio(jyväskylänNormaalikoulu)))
+      MockEmailSender.checkMail should equal(List(expectedEmail("jyväs-vastuu@example.com")))
+      mail.sendMail(OidOrganisaatio(jyväskylänYliopisto), Some(OidOrganisaatio(jyväskylänNormaalikoulu)))
       MockEmailSender.checkMail should equal(Nil)
     }
   }
@@ -54,4 +72,13 @@ class TiedonsiirtoFailureMailerSpec extends FreeSpec with Matchers with BeforeAn
       "<p>Automaattisessa tiedonsiirrossa tapahtui virhe.</p><p>Käykää ystävällisesti tarkistamassa tapahtuneet tiedonsiirrot osoitteessa: http://localhost:7021/koski/tiedonsiirrot</p>",
       html = true),
     List(EmailRecipient(emailAddress)))
+
+  private var timePassed = false
+  private def fakeTime = if (timePassed) {
+    LocalDateTime.now().plusHours(25)
+  } else {
+    timePassed = true
+    LocalDateTime.now()
+  }
+
 }

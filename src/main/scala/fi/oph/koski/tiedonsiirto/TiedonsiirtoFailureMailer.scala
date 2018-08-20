@@ -8,8 +8,8 @@ import fi.oph.koski.email._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.OrganisaatioWithOid
 
-class TiedonsiirtoFailureMailer(application: KoskiApplication) extends Logging {
-  private val sendTimes = scala.collection.mutable.Map[String, LocalDateTime]()
+class TiedonsiirtoFailureMailer(application: KoskiApplication, timeNow: () => LocalDateTime = now) extends Logging {
+  private val sendTime = scala.collection.mutable.Map[String, LocalDateTime]()
   private val sender = EmailSender(application.config)
   private val koskiPääkäyttäjät = "koski-oppilaitos-pääkäyttäjä_1494486198456"
   private val vastuukayttajat = "Vastuukayttajat"
@@ -45,11 +45,13 @@ class TiedonsiirtoFailureMailer(application: KoskiApplication) extends Logging {
   private def orgsToString(rootOrg: OrganisaatioWithOid, oppilaitos: Option[OrganisaatioWithOid]) =
     (rootOrg +: oppilaitos.toList).map(_.oid).distinct.mkString(" and ")
 
-  private def alreadySent(rootOrg: OrganisaatioWithOid, organisaatio: Option[OrganisaatioWithOid]) = sendTimes.synchronized {
-    val limit = now().minusHours(24)
-    val key = rootOrg.oid + organisaatio.map(_.oid).getOrElse("")
-    if (!sendTimes.getOrElse(key, limit).isAfter(limit)) {
-      sendTimes.put(key, now())
+  private def alreadySent(rootOrg: OrganisaatioWithOid, organisaatio: Option[OrganisaatioWithOid]) = sendTime.synchronized {
+    val currentTime = timeNow()
+    val yesterday = currentTime.minusHours(24)
+    val orgKey = rootOrg.oid + organisaatio.map(_.oid).getOrElse("")
+
+    if (sendTime.get(orgKey).forall(_.isBefore(yesterday))) {
+      sendTime.put(orgKey, currentTime)
       false
     } else {
       true
