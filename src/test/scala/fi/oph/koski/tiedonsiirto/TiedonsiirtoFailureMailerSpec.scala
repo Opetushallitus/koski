@@ -1,13 +1,19 @@
 package fi.oph.koski.tiedonsiirto
 
+import com.typesafe.config.ConfigValueFactory.{fromIterable => listToConfig, fromAnyRef => toConfig}
 import fi.oph.koski.KoskiApplicationForTests
+import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.KoskiApplication.defaultConfig
 import fi.oph.koski.email.{Email, EmailContent, EmailRecipient, MockEmailSender}
 import fi.oph.koski.organisaatio.MockOrganisaatiot._
 import fi.oph.koski.schema.OidOrganisaatio
 import org.scalatest.{BeforeAndAfterEach, FreeSpec, Matchers}
 
+import scala.collection.JavaConverters._
+
 class TiedonsiirtoFailureMailerSpec extends FreeSpec with Matchers with BeforeAndAfterEach {
   private val mailer = new TiedonsiirtoFailureMailer(KoskiApplicationForTests)
+
   "Lähettää sähköpostia" - {
     "oppilaitoksen KOSKI-pääkäyttäjä:lle jos mahdollista" in {
       mailer.sendMail(OidOrganisaatio(helsinginKaupunki), Some(OidOrganisaatio(stadinAmmattiopisto)))
@@ -22,6 +28,20 @@ class TiedonsiirtoFailureMailerSpec extends FreeSpec with Matchers with BeforeAn
     "viimeiseksi juuriorganisaation Vastuukayttaja:lle" in {
       mailer.sendMail(OidOrganisaatio(jyväskylänYliopisto), Some(OidOrganisaatio(jyväskylänNormaalikoulu)))
       MockEmailSender.checkMail should equal(List(expectedEmail("jyväs-vastuu@example.com")))
+    }
+
+    "jos ominaisuus on enabloitu organisaatiolle" in {
+      val application = KoskiApplication(defaultConfig.withValue("features.tiedonsiirtomail", toConfig(false)).withValue("tiedonsiirtomail.enabledForOrganizations", listToConfig(List(jyväskylänNormaalikoulu).asJava)))
+      new TiedonsiirtoFailureMailer(application).sendMail(OidOrganisaatio(jyväskylänYliopisto), Some(OidOrganisaatio(jyväskylänNormaalikoulu)))
+      MockEmailSender.checkMail should equal(List(expectedEmail("jyväs-vastuu@example.com")))
+    }
+  }
+
+  "Ei lähetä sähköpostia" - {
+    "jos ominaisuus on disabloitu" in {
+      val application = KoskiApplication(defaultConfig.withValue("features.tiedonsiirtomail", toConfig(false)))
+      new TiedonsiirtoFailureMailer(application).sendMail(OidOrganisaatio(jyväskylänYliopisto), Some(OidOrganisaatio(jyväskylänNormaalikoulu)))
+      MockEmailSender.checkMail should equal(Nil)
     }
   }
 
