@@ -47,10 +47,17 @@ class SerializationSpec extends FreeSpec with Matchers with Logging {
     }
 
     "Suoritukset" - {
+
       Examples.examples.foreach { e =>
         (e.name + " serialisoituu") in {
           val kaikkiSuoritukset: Seq[Suoritus] = e.data.opiskeluoikeudet.flatMap(_.suoritukset.flatMap(_.rekursiivisetOsasuoritukset))
-            .filterNot { x => x.isInstanceOf[AikuistenPerusopetuksenOppiaineenSuoritus]}
+            .filterNot { x => x.isInstanceOf[AikuistenPerusopetuksenOppiaineenSuoritus] }
+            .filterNot {
+              // YhteisenTutkinnonOsanOsaAlueenSuoritus näytöllä deserialisoituu vain, kun se on ammatillisentutkinnonsuorituksen osana (@OnlyWhen -annotaatio viittaa päätason suoritukseen)
+              case s: YhteisenAmmatillisenTutkinnonOsanSuoritus =>  s.osasuoritukset.toList.flatten.exists(_.näyttö.isDefined)
+              case s: YhteisenTutkinnonOsanOsaAlueenSuoritus => s.näyttö.isDefined
+              case _ => false
+            }
 
           kaikkiSuoritukset.foreach { s =>
             val jsonString = JsonSerializer.serializeWithRoot(s)

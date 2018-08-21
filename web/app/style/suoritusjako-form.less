@@ -20,9 +20,12 @@
     max-width: 570px;
   }
 
-  .link-successful-h2 {
+  .link-successful {
     margin-top: 0;
     outline: none;
+    font-size: 1.714rem;
+    font-weight: 600;
+    line-height: 1.4em;
   }
 
   .SuoritusjakoIconBackground() {
@@ -75,6 +78,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    @media @media-phone {
+      .koski-button {
+        width: auto;
+      }
+    }
   }
 
   .create-suoritusjako {
@@ -156,6 +165,7 @@
       display: flex;
       justify-content: space-between;
       margin-top: 1rem;
+      line-height: 1;
 
       @media @media-full {
         align-items: flex-end;
@@ -179,7 +189,7 @@
       & > input {
         font-size: 1rem;
         line-height: 1rem;
-        color: @color-blue;
+        color: @color-black;
       }
 
       & > button {
@@ -188,7 +198,10 @@
     }
 
     &__preview {
+      margin-right: 1rem;
+
       @media @media-full {
+        margin-right: 0;
         flex-basis: 70%;
       }
     }

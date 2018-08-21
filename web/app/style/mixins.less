@@ -84,3 +84,7 @@
     body.omattiedot-page &, body.suoritusjako-page & { @rules(); }
   }
 }
+
+.omattiedot-only(@rules) {
+  body.omattiedot-page &, body.suoritusjako-page &, body.lander-page & { @rules(); }
+}

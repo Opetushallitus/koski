@@ -21,13 +21,16 @@ class LocalizationLanguagesTest extends FreeSpec with Matchers {
     }
 
     s"Ruotsinkieliset tekstit" taggedAs(LocalizationTestTag) in {
-      val ignoredKey = (key: String) => key.startsWith("description:")
+      val ignoredKey = (key: String) => key.startsWith("description:") || eiTarvitseRuotsinkielistäKäännöstä.contains(key)
 
       val missingKeys = localLocalizations.keySet.filterNot(ignoredKey) -- remoteLocalizations.filter(_._2.hasLanguage("sv")).keySet
 
       missingKeys.toList.sorted shouldBe(empty)
     }
   }
+
+  private val eiTarvitseRuotsinkielistäKäännöstä =
+    List("Creativity action service", "Effort", "Extended essay", "Synteettinen", "Varoitukset").toSet
 }
 
 object LocalizationTestTag extends Tag("localization")

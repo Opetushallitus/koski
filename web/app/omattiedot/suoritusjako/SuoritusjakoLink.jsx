@@ -132,7 +132,7 @@ export class SuoritusjakoLink extends React.Component {
           </div>
           <div className='suoritusjako-link__bottom-container'>
             <div className='suoritusjako-link__preview'>
-              <a className='text-button-small' target='_blank' href={url}><Text name='Esikatsele'/></a>
+              <a className='text-button-small' target='_blank' href={url}><Text name='Katso, miltä suoritusote näyttää selaimessa'/></a>
             </div>
             <div className='suoritusjako-link__remove'>
               <button className={`text-button-small${(isDateUpdatePending ? '--disabled' : '')}`} onClick={this.confirmDelete.bind(this)} disabled={isDateUpdatePending}>
