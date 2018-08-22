@@ -22,7 +22,7 @@ import fi.oph.koski.preferences.PreferencesServlet
 import fi.oph.koski.pulssi.{PulssiHtmlServlet, PulssiServlet}
 import fi.oph.koski.raportointikanta.RaportointikantaServlet
 import fi.oph.koski.servlet._
-import fi.oph.koski.sso.{CasServlet, LocalLoginServlet, SSOConfig, ShibbolethLoginServlet, MyDataLoginServlet}
+import fi.oph.koski.sso.{CasServlet, LocalLoginServlet, SSOConfig, ShibbolethLoginServlet}
 import fi.oph.koski.suoritusjako.SuoritusjakoServlet
 import fi.oph.koski.suoritusote.SuoritusServlet
 import fi.oph.koski.sure.SureServlet
@@ -86,7 +86,6 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     if (application.features.shibboleth) {
       mount("/user/shibbolethlogin", ShibbolethLoginServlet(application))
     }
-    mount("/user/omadatalogin", MyDataLoginServlet(application))
     mount("/cas", new CasServlet)
     mount("/cache", new CacheServlet)
 
