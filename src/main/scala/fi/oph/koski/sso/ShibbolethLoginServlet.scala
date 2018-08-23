@@ -12,7 +12,7 @@ import fi.oph.koski.schema.Nimitiedot
 import fi.oph.koski.servlet.{ApiServlet, LanguageSupport, NoCache}
 import org.scalatra.{Cookie, CookieOptions}
 
-abstract class AbstractLoginServlet(application: KoskiApplication) extends ApiServlet with AuthenticationSupport with NoCache with LanguageSupport {
+case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServlet with AuthenticationSupport with NoCache with LanguageSupport {
   get("/") {
     try {
       checkAuth.getOrElse(login)
@@ -95,7 +95,5 @@ abstract class AbstractLoginServlet(application: KoskiApplication) extends ApiSe
     }.sortBy(_._1).mkString("\n")
   }
 }
-
-case class ShibbolethLoginServlet(application: KoskiApplication) extends AbstractLoginServlet(application)
 
 case class ShibbolethName(name: String)
