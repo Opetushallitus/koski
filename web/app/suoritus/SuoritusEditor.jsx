@@ -43,8 +43,10 @@ SuoritusEditor.validateModel = (m) => {
     return [{key: 'missing', message: <Text name='Suoritus valmis, mutta arvosana puuttuu'/>}]
   }
 
+  // aikuisten perusopetuksen alkuvaiheessa arvioinnit tulee kurssisuoritusten yhteydessä
+  const eiValidoitavatOsasuoritukset = ['aikuistenperusopetuksenalkuvaiheenoppiaineensuoritus']
   const validateSuoritus = (s) =>
-    flatMapArray(osasuoritukset(s),
+    flatMapArray(osasuoritukset(s).filter(o => !eiValidoitavatOsasuoritukset.includes(o.value.classes[0])),
       osasuoritus => {
         if (suoritusValmis(s) && suoritusKesken(osasuoritus)) {
           let subPath = removeCommonPath(osasuoritus.path, m.path)

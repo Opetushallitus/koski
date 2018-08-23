@@ -332,12 +332,12 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     if (hasVahvistus && suoritus.arviointiPuuttuu) {
       KoskiErrorCategory.badRequest.validation.tila.vahvistusIlmanArviointia("Suorituksella " + suorituksenTunniste(suoritus) + " on vahvistus, vaikka arviointi puuttuu")
     } else {
-      (suoritus.valmis, suoritus.rekursiivisetOsasuoritukset.find(_.kesken)) match {
+      // aikuisten perusopetuksen alkuvaiheessa arvioinnit tulee kurssisuoritusten yhteydessä
+      (suoritus.valmis, suoritus.rekursiivisetOsasuoritukset.find(os => os.kesken && !os.isInstanceOf[AikuistenPerusopetuksenAlkuvaiheenOppiaineenSuoritus])) match {
         case (true, Some(keskeneräinenOsasuoritus)) =>
           KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus(
             "Valmiiksi merkityllä suorituksella " + suorituksenTunniste(suoritus) + " on keskeneräinen osasuoritus " + suorituksenTunniste(keskeneräinenOsasuoritus))
-        case _ =>
-          HttpStatus.ok
+        case _ => HttpStatus.ok
       }
     }
   }

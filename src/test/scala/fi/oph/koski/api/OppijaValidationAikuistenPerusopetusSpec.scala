@@ -39,6 +39,37 @@ class OppijaValidationAikuistenPerusopetusSpec extends TutkinnonPerusteetTest[Ai
     }
   }
 
+  "Vahvistetussa alkuvaiheen suorituksessa" - {
+    "oppiaineen arviointia" - {
+      "ei vaadita" in {
+        val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+          suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus.copy(
+            osasuoritukset = aikuistenPerusopetuksenAlkuvaiheenSuoritus.osasuoritukset.map(_.map(_.copy(arviointi = None)))
+          ))
+        )
+        putOpiskeluoikeus(opiskeluoikeus) {
+          verifyResponseStatusOk()
+        }
+      }
+    }
+    "kurssin arviointi" - {
+      "vaaditaan" in {
+        val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+          suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus.copy(
+            osasuoritukset = aikuistenPerusopetuksenAlkuvaiheenSuoritus.osasuoritukset.map(xs =>
+              List(xs.head.copy(
+                arviointi = None,
+                osasuoritukset = xs.head.osasuoritukset.map(x => List(x.head.copy(arviointi = None))))
+              ))
+            ))
+        )
+        putOpiskeluoikeus(opiskeluoikeus) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella suorituksentyyppi/aikuistenperusopetuksenoppimaaranalkuvaihe on keskeneräinen osasuoritus aikuistenperusopetuksenalkuvaiheenkurssit2017/LÄI1"))
+        }
+      }
+    }
+  }
+
   "Sama oppiaine" - {
     "aikuisten perusopetuksen oppivaiheessa" - {
       "sallitaan" in {
