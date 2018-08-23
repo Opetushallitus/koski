@@ -33,14 +33,21 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
   }
 
   private def login = {
-    application.henkilöRepository.findHenkilötiedotByHetu(hetu, nimitiedot)(KoskiSession.systemUser).headOption match {
-      case Some(oppija) =>
-        setUser(Right(localLogin(AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true), Some(langFromCookie.getOrElse(langFromDomain)))))
-        redirect("/omattiedot")
-      case _ =>
-        setNimitiedotCookie
-        redirect("/eisuorituksia")
+    hetu match {
+      case None => eiSuorituksia
+      case Some(h) =>
+        application.henkilöRepository.findHenkilötiedotByHetu(h, nimitiedot)(KoskiSession.systemUser).headOption match {
+          case Some(oppija) =>
+            setUser(Right(localLogin(AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true), Some(langFromCookie.getOrElse(langFromDomain)))))
+            redirect("/omattiedot")
+          case _ => eiSuorituksia
+        }
     }
+  }
+
+  private def eiSuorituksia = {
+    setNimitiedotCookie
+    redirect("/eisuorituksia")
   }
 
   private def setNimitiedotCookie = {
@@ -48,11 +55,18 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
     response.addCookie(Cookie("eisuorituksia", encode(writeWithRoot(shibbolethName), "UTF-8"))(CookieOptions(secure = isHttps, path = "/", maxAge = application.sessionTimeout.seconds, httpOnly = true)))
   }
 
-  private def hetu: String =
-    request.header("hetu").map(Hetu.validate(_, acceptSynthetic = true)).getOrElse(Left(KoskiErrorCategory.badRequest("hetu header missing"))) match {
-      case Right(hetu) => hetu
-      case Left(status) => throw new Exception(status.toString)
+  private def hetu: Option[String] = {
+    val hetu = request.header("hetu")
+
+    if (hetu.exists(_.isEmpty)) {
+      None
+    } else {
+      hetu.map(Hetu.validate(_, acceptSynthetic = true)).getOrElse(Left(KoskiErrorCategory.badRequest("hetu header missing"))) match {
+        case Right(h) => Some(h)
+        case Left(status) => throw new Exception(status.toString)
+      }
     }
+  }
 
   private def nimitiedot: Option[Nimitiedot] = {
     val nimi = for {
