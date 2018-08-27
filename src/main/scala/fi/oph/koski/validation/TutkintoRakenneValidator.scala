@@ -58,7 +58,8 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
   }
 
   private def getRakenne(tutkinto: Diaarinumerollinen, koulutustyypit: Option[List[Koulutustyyppi.Koulutustyyppi]], suoritusVirheilmoitukseen: Option[PäätasonSuoritus] = None): Either[HttpStatus, TutkintoRakenne] = {
-      tutkinto.perusteenDiaarinumero.map { diaarinumero =>
+    validateDiaarinumero(tutkinto.perusteenDiaarinumero)
+      .flatMap { diaarinumero =>
         tutkintoRepository.findPerusteRakenne(diaarinumero) match {
           case None =>
             if (koodistoViitePalvelu.validate("koskikoulutustendiaarinumerot", diaarinumero).isEmpty) {
@@ -81,9 +82,19 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
                 Right(rakenne)
             }
         }
-      }.getOrElse(Left(KoskiErrorCategory.badRequest.validation.rakenne.diaariPuuttuu()))
+      }
   }
 
+  private def validateDiaarinumero(diaarinumero: Option[String]): Either[HttpStatus, String] = {
+    // Avoid sending totally bogus diaarinumeros to ePerusteet (e.g. 3000 characters long), as that leads
+    // to "414 Request-URI Too Large" and eventually "Internal server error". Other than that, don't validate
+    // the format (at least not yet), since in theory diaarinumero could contain spaces etc.
+    diaarinumero match {
+      case None => Left(KoskiErrorCategory.badRequest.validation.rakenne.diaariPuuttuu())
+      case Some(d) if (d.length < 1) || (d.length > 30) => Left(KoskiErrorCategory.badRequest.validation.rakenne.tuntematonDiaari("Diaarinumeron muoto on virheellinen: " + diaarinumero.get.take(30)))
+      case Some(d) => Right(d)
+    }
+  }
 
   private def validateOsaamisalat(osaamisalat: List[Koodistokoodiviite], rakenne: TutkintoRakenne): HttpStatus = {
     val tuntemattomatOsaamisalat: List[Koodistokoodiviite] = osaamisalat.filter(osaamisala => !findOsaamisala(rakenne, osaamisala.koodiarvo).isDefined)
