@@ -31,7 +31,7 @@ trait TutkinnonPerusteetTest[T <: Opiskeluoikeus] extends FreeSpec with PutOpisk
 
     "Kun yritetään liittää suoritus väärään koulutustyyppiin liittyvään perusteeseen" - {
       "palautetaan HTTP 400 virhe"  in {
-        putTodistus(opiskeluoikeusWithPerusteenDiaarinumero(Some(vääräntyyppisenPerusteenDiaarinumero))) (verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi, (".*Perusteella " + vääräntyyppisenPerusteenDiaarinumero + " on väärä koulutustyyppi .* Hyväksytyt koulutustyypit .*").r)))
+        putTodistus(opiskeluoikeusWithPerusteenDiaarinumero(Some(vääräntyyppisenPerusteenDiaarinumero))) (verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi, (".*ei voi käyttää perustetta " + vääräntyyppisenPerusteenDiaarinumero + ", jonka koulutustyyppi on .*. Tälle suoritukselle hyväksytyt perusteen koulutustyypit ovat.*").r)))
       }
     }
 
