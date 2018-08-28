@@ -67,9 +67,7 @@ object HttpStatus {
 trait ErrorMessage {
   def asJValue: JValue
 }
-object ErrorMessage {
-  implicit def str2ErrorMessage(str: String) = StringErrorMessage(str)
-}
+
 case class StringErrorMessage(str: String) extends ErrorMessage {
   override def asJValue: JValue = JString(str)
 }
