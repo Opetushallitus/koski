@@ -212,7 +212,10 @@ describe('Perusopetus', function() {
             'Erityisen tuen päätös 15.8.2008 — 4.6.2016\n' +
             'Opiskelee toiminta-alueittain kyllä\n' +
             'Opiskelee erityisryhmässä kyllä\n' +
-            'Tehostetun tuen päätös 15.8.2008 — 4.6.2016\n' +
+            'Erityisen tuen päätökset 15.8.2008 — 4.6.2016\n' +
+            'Opiskelee toiminta-alueittain kyllä\n' +
+            'Opiskelee erityisryhmässä kyllä\n' +
+            'Tehostetun tuen päätökset 15.8.2008 — 4.6.2016\n' +
             'Joustava perusopetus 15.8.2008 — 4.6.2016\n' +
             'Kotiopetus 15.8.2008 — 4.6.2016\n' +
             'Ulkomailla 15.8.2008 — 4.6.2016\n' +
@@ -253,7 +256,15 @@ describe('Perusopetus', function() {
           var sosiaalisetTaidot = editor.subEditor('.3')
 
           describe('Poistaminen', function () {
-            before(editor.edit, sosiaalisetTaidot.propertyBySelector('>tr:first-child').removeValue, editor.saveChanges, wait.until(page.isSavedLabelShown))
+            before(
+              editor.edit,
+              opinnot.expandAll,
+              editor.property('erityisenTuenPäätös').removeValue,
+              sosiaalisetTaidot.propertyBySelector('>tr:first-child').removeValue,
+              editor.saveChanges,
+              wait.until(page.isSavedLabelShown)
+            )
+
             it('toimii', function () {
               expect(extractAsText(S('.oppiaineet'))).to.not.contain('Filosofia 8')
             })
@@ -289,7 +300,12 @@ describe('Perusopetus', function() {
       })
 
       describe('Deprekoidut kentät', function() {
-        before(opinnot.expandAll, editor.edit, editor.property('opiskeleeToimintaAlueittain').setValue(false))
+        before(
+          resetFixtures,
+          page.openPage,
+          page.oppijaHaku.searchAndSelect('031112-020J'),
+          opinnot.expandAll, editor.edit, editor.property('opiskeleeToimintaAlueittain').setValue(false)
+        )
 
         it('muokkaus estetty', function() {
           expect(extractAsText(findSingle('.lisätiedot .erityisenTuenPäätös .propertyError'))).to.equal('Käytä korvaavaa kenttää Erityisen tuen päätökset')
@@ -917,12 +933,12 @@ describe('Perusopetus', function() {
             before(
               editor.edit,
               opinnot.expandAll,
-              editor.property('erityisenTuenPäätös').addValue,
+              editor.property('erityisenTuenPäätökset').addItem,
               editor.saveChanges,
               wait.until(page.isSavedLabelShown)
             )
             it('Toimii', function() {
-              expect(isElementVisible(S('.property.erityisenTuenPäätös'))).to.equal(true)
+              expect(isElementVisible(S('.property.erityisenTuenPäätökset'))).to.equal(true)
               expect(editor.property('opiskeleeToimintaAlueittain').getValue()).to.equal('ei')
             })
           })
@@ -942,12 +958,12 @@ describe('Perusopetus', function() {
             before(
               editor.edit,
               opinnot.expandAll,
-              editor.property('erityisenTuenPäätös').removeValue,
+              editor.property('erityisenTuenPäätökset').removeItem(0),
               editor.saveChanges,
               wait.until(page.isSavedLabelShown)
             )
             it('Toimii', function() {
-              expect(isElementVisible(S('.property.erityisenTuenPäätös'))).to.equal(false)
+              expect(isElementVisible(S('.property.erityisenTuenPäätökset'))).to.equal(false)
             })
           })
         })
@@ -1842,7 +1858,7 @@ describe('Perusopetus', function() {
             describe('Toiminta-alueittain opiskelevalle', function() {
               before(
                 opinnot.expandAll,
-                editor.property('erityisenTuenPäätös').addValue,
+                editor.property('erityisenTuenPäätökset').addItem,
                 editor.property('opiskeleeToimintaAlueittain').setValue(true)
               )
 
@@ -2996,7 +3012,7 @@ describe('Perusopetus', function() {
           before(
             editor.edit,
             opinnot.expandAll,
-            editor.property('erityisenTuenPäätös').addValue,
+            editor.property('erityisenTuenPäätökset').addItem,
             editor.property('opiskeleeToimintaAlueittain').setValue(true),
             uusiOppiaine.selectValue('kognitiiviset taidot'),
             kognitiivisetTaidot.propertyBySelector('.arvosana').selectValue('8'),
