@@ -23,7 +23,7 @@ export const suoritusValmis = (suoritus) => {
   if (suoritus.value.classes.includes('paatasonsuoritus')) {
     let vahvistuspäivä = modelData(suoritus, 'vahvistus.päivä')
     return vahvistuspäivä && isInPast(vahvistuspäivä)
-  } else if (suoritus.value.classes.includes('arvioinniton')) {
+  } else if (R.intersection(suoritus.value.classes, ['arvioinniton', 'mahdollisestiarvioinniton']).length !== 0) {
     return true
   } else {
     let arviointi = modelData(suoritus, 'arviointi.0')

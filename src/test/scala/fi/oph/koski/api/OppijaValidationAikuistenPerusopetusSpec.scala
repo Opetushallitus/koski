@@ -4,7 +4,7 @@ import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetuksenAlkuvaiheenSuoritus, oppiaineidenSuoritukset2015, oppiaineidenSuoritukset2017}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
-import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
+import fi.oph.koski.http._
 import fi.oph.koski.schema._
 
 class OppijaValidationAikuistenPerusopetusSpec extends TutkinnonPerusteetTest[AikuistenPerusopetuksenOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAikuistenPerusopetus {
@@ -35,6 +35,40 @@ class OppijaValidationAikuistenPerusopetusSpec extends TutkinnonPerusteetTest[Ai
     "OPS 2017, mutta kurssisuorituksissa 2015 koodisto -> HTTP 400" in {
       putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(aikuistenPerusopetuksenOppimääränSuoritus(Some("OPH-1280-2017")).copy(osasuoritukset = oppiaineidenSuoritukset2015)))) {
         verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*aikuistenperusopetuksenkurssit2015.*".r))
+      }
+    }
+  }
+
+  "Vahvistetussa alkuvaiheen suorituksessa" - {
+    "oppiaineen arviointia" - {
+      "ei vaadita" in {
+        val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+          suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus.copy(
+            osasuoritukset = aikuistenPerusopetuksenAlkuvaiheenSuoritus.osasuoritukset.map(_.map(_.copy(arviointi = None)))
+          ))
+        )
+        putOpiskeluoikeus(opiskeluoikeus) {
+          verifyResponseStatusOk()
+        }
+      }
+    }
+    "kurssin arviointi" - {
+      "vaaditaan" in {
+        val opiskeluoikeus = defaultOpiskeluoikeus.copy(
+          suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus.copy(
+            osasuoritukset = aikuistenPerusopetuksenAlkuvaiheenSuoritus.osasuoritukset.map(xs =>
+              List(xs.head.copy(
+                arviointi = None,
+                osasuoritukset = xs.head.osasuoritukset.map(x => List(x.head.copy(arviointi = None))))
+              ))
+            ))
+        )
+        putOpiskeluoikeus(opiskeluoikeus) {
+          verifyResponseStatus(400, HttpStatus.append(
+            KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella suorituksentyyppi/aikuistenperusopetuksenoppimaaranalkuvaihe on keskeneräinen osasuoritus aikuistenperusopetuksenalkuvaiheenkurssit2017/LÄI1"),
+            KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella aikuistenperusopetuksenalkuvaiheenoppiaineet/AI on keskeneräinen osasuoritus aikuistenperusopetuksenalkuvaiheenkurssit2017/LÄI1"))
+          )
+        }
       }
     }
   }

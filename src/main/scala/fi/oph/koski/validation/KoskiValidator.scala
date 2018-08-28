@@ -336,8 +336,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         case (true, Some(keskeneräinenOsasuoritus)) =>
           KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus(
             "Valmiiksi merkityllä suorituksella " + suorituksenTunniste(suoritus) + " on keskeneräinen osasuoritus " + suorituksenTunniste(keskeneräinenOsasuoritus))
-        case _ =>
-          HttpStatus.ok
+        case _ => HttpStatus.ok
       }
     }
   }
