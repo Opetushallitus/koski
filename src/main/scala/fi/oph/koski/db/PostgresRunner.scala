@@ -25,8 +25,8 @@ class PostgresRunner(dataDirName: String, configFile: String, port: Integer) ext
   private def createDataDir = {
     logger.info("Initializing data directory")
     Files.createDirectory(dataPath)
-    s"chmod 0700 $dataDirName" !;
-    s"initdb -D $dataDirName" !;
+    s"chmod 0700 $dataDirName".!
+    s"initdb -D $dataDirName".!
   }
 
   def jdbcUrl: String = s"jdbc:postgresql://localhost:$port/$dataDirName"

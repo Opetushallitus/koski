@@ -34,9 +34,9 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
       case Some(user) => user
       case _ =>
         def userFromBasicAuth: Either[HttpStatus, AuthenticationUser] = {
-          implicit def request2BasicAuthRequest(r: HttpServletRequest) = new BasicAuthStrategy.BasicAuthRequest(r)
-          if (request.isBasicAuth && request.providesAuth) {
-            tryLogin(request.username, request.password)
+          val basicAuthRequest = new BasicAuthStrategy.BasicAuthRequest(request)
+          if (basicAuthRequest.isBasicAuth && basicAuthRequest.providesAuth) {
+            tryLogin(basicAuthRequest.username, basicAuthRequest.password)
           } else {
             Left(KoskiErrorCategory.unauthorized.notAuthenticated())
           }

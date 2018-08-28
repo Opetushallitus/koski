@@ -451,7 +451,7 @@ trait ValtakunnallinenTutkinnonOsa extends AmmatillisenTutkinnonOsa with Koodist
   def tunniste: Koodistokoodiviite
 }
 
-trait MuuKuinYhteinenTutkinnonOsa extends AmmatillisenTutkinnonOsa
+sealed trait MuuKuinYhteinenTutkinnonOsa extends AmmatillisenTutkinnonOsa
 
 @Description("Yhteisen tutkinnon osan tunnistetiedot")
 case class YhteinenTutkinnonOsa(

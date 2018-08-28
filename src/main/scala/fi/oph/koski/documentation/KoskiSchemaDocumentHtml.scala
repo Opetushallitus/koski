@@ -67,6 +67,7 @@ object KoskiSchemaDocumentHtml {
     case s: AnyOfSchema => s.alternatives.map {
       case s: ClassSchema => s
       case s: ClassRefSchema => resolveSchema(s).asInstanceOf[ClassSchema]
+      case _ => ???
     }
     case _ => Nil
   }
@@ -114,6 +115,7 @@ object KoskiSchemaDocumentHtml {
     case s: NumberSchema => <span>numero</span>
     case s: BooleanSchema => <span>true/false</span>
     case s: DateSchema => <span>päivämäärä</span>
+    case _ => ???
   }
 
   private def resolveSchema(schema: Schema): Schema = schema match {
@@ -135,6 +137,7 @@ object KoskiSchemaDocumentHtml {
     case OptionalSchema(itemSchema: ElementSchema) =>
       (itemSchema, Cardinality(0, Some(1)))
     case s: ElementSchema => (s, Cardinality(1, Some(1)))
+    case _ => ???
   }
 
   private def minItems(s: ListSchema, metadata: List[Metadata]): Int = (metadata ++ s.metadata).collect {

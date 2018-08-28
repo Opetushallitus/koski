@@ -19,9 +19,11 @@ object LocalizationMockDataUpdater extends App {
     entries
       .sortBy {
         case j: JObject => (extract[String](j \ "key"), extract[String](j \ "locale"))
+        case _ => ???
       }
       .map {
         case JObject(fields) => JObject(fields.sortBy(_._1))
+        case _ => ???
       }
   }
 }

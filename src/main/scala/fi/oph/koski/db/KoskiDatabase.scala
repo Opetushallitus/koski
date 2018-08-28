@@ -76,13 +76,13 @@ class KoskiDatabase(val config: KoskiDatabaseConfig) extends Logging {
   private def createDatabase = {
     val dbName = config.dbName
     val port = config.port
-    s"createdb -p $port -T template0 -E UTF-8 $dbName" !;
+    s"createdb -p $port -T template0 -E UTF-8 $dbName".!
   }
 
   private def createUser = {
     val user = config.user
     val port = config.port
-    s"createuser -p $port -s $user -w"!
+    s"createuser -p $port -s $user -w".!
   }
 
   private def migrateSchema = {

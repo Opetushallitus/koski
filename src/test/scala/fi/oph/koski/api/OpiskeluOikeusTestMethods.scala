@@ -15,6 +15,7 @@ trait OpiskeluoikeusTestMethods extends HttpSpecification with Matchers {
     val hetu = oppija match {
       case u: UusiHenkilö => u.hetu
       case h: Henkilötiedot => h.hetu.get
+      case _ => ???
     }
     oppijaByHetu(hetu, user).tallennettavatOpiskeluoikeudet.last
   }
