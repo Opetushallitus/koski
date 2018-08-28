@@ -1114,6 +1114,13 @@
   "Suoritus poistettu": "Suoritus poistettu",
   "Poista suoritus": "Poista suoritus",
   "Vahvista poisto, operaatiota ei voi peruuttaa": "Vahvista poisto, operaatiota ei voi peruuttaa",
-  "Peruuta poisto": "Peruuta poisto"
+  "Peruuta poisto": "Peruuta poisto",
+  "Tehostetun tuen päätökset" : "Tehostetun tuen päätökset",
+  "tooltip:Mahdollisen tehostetun tuen päätös päätöksen..." : "Mahdollisen tehostetun tuen päätös päätöksen alkamis- ja päättymispäivät.",
+  "Erityisen tuen päätökset" : "Erityisen tuen päätökset",
+  "tooltip:Mahdollisen tehostetun tuen päätösten alkamis-..." : "Mahdollisen tehostetun tuen päätösten alkamis- ja päättymispäivät. Voi olla useita erillisiä jaksoja.",
+  "tooltip:Mahdollisen erityisen tuen päätösten alkamis-..." : "Mahdollisen erityisen tuen päätösten alkamis- ja päättymispäivät. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.",
+  "description:Erityisen tuen päätökset alkamis- ja..." : "Erityisen tuen päätökset alkamis- ja päättymispäivineen. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.",
+  "description:Tehostetun tuen päätös. Lista alku-loppu..." : "Tehostetun tuen päätös. Lista alku-loppu päivämääräpareja."
 }
 
