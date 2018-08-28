@@ -36,7 +36,7 @@ case class EsiopetuksenOpiskeluoikeudenLisätiedot(
   @Description("Tieto mahdollisesta pidennetystä oppivelvollisuudesta alkamis- ja päättymispäivineen.")
   @SensitiveData
   @OksaUri("tmpOKSAID517", "pidennetty oppivelvollisuus")
-  pidennettyOppivelvollisuus: Option[Päätösjakso] = None,
+  pidennettyOppivelvollisuus: Option[Aikajakso] = None,
   @Description("Erityisen tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Mahdollisen erityisen tuen päätöksen alkamis- ja päättymispäivät. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData

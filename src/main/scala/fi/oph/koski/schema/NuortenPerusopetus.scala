@@ -73,7 +73,7 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Tooltip("Mahdollisen pidennetyn oppivelvollisuuden alkamis- ja päättymispäivät. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData
   @OksaUri("tmpOKSAID517", "pidennetty oppivelvollisuus")
-  pidennettyOppivelvollisuus: Option[Päätösjakso] = None,
+  pidennettyOppivelvollisuus: Option[Aikajakso] = None,
   @KoodistoUri("perusopetuksentukimuoto")
   @Description("Oppilaan saamat laissa säädetyt tukimuodot.")
   @Tooltip("Oppilaan saamat laissa säädetyt tukimuodot. Voi olla useita.")
@@ -88,18 +88,18 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Description("Mahdollisen tehostetun tuen päätös päätöksen alkamis- ja päättymispäivät.")
   @SensitiveData
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
-  tehostetunTuenPäätös: Option[Päätösjakso] = None,
+  tehostetunTuenPäätös: Option[Aikajakso] = None,
   @Description("Opiskelu joustavassa perusopetuksessa (JOPO) alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole joustavassa perusopetuksessa. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Mahdollisen joustavan perusopetuksen (JOPO) alkamis- ja päättymispäivät. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData
   @OksaUri("tmpOKSAID453", "joustava perusopetus")
-  joustavaPerusopetus: Option[Päätösjakso] = None,
+  joustavaPerusopetus: Option[Aikajakso] = None,
   @Description("Tieto opiskelusta kotiopetuksessa huoltajan päätöksestä alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole kotiopetuksessa. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto mahdollisesta opiskelusta kotiopetuksessa huoltajan päätöksestä alkamis- ja päättymispäivineen. Rahoituksen laskennassa käytettävä tieto.")
-  kotiopetus: Option[Päätösjakso] = None,
+  kotiopetus: Option[Aikajakso] = None,
   @Description("Tieto opiskelusta ulkomailla huoltajan ilmoituksesta alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole ulkomailla. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto opiskelusta ulkomailla huoltajan ilmoituksesta alkamis- ja päättymispäivineen. Rahoituksen laskennassa käytettävä tieto.")
-  ulkomailla: Option[Päätösjakso] = None,
+  ulkomailla: Option[Aikajakso] = None,
   @Description("Oppilas on vuosiluokkiin sitomattomassa opetuksessa (kyllä/ei).")
   @Tooltip("Onko oppilas vuosiluokkiin sitomattomassa opetuksessa.")
   @SensitiveData
@@ -117,15 +117,15 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Description("Oppilaalla on majoitusetu (alku- ja loppupäivämäärä). Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto siitä, jos oppilaalla on majoitusetu (alku- ja loppupäivämäärät). Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData
-  majoitusetu: Option[Päätösjakso] = None,
+  majoitusetu: Option[Aikajakso] = None,
   @Description("Oppilaalla on kuljetusetu (alku- ja loppupäivämäärät).")
   @Tooltip("Tieto siitä, jos oppilaalla on kuljetusetu (alku- ja loppupäivämäärät).")
   @SensitiveData
-  kuljetusetu: Option[Päätösjakso] = None,
+  kuljetusetu: Option[Aikajakso] = None,
   @Description("Oppilaalla on oikeus maksuttomaan asuntolapaikkaan (alku- ja loppupäivämäärät).")
   @Tooltip("Tieto siitä, jos oppilaalla on oikeus maksuttomaan asuntolapaikkaan (alku- ja loppupäivämäärät).")
   @SensitiveData
-  oikeusMaksuttomaanAsuntolapaikkaan: Option[Päätösjakso] = None,
+  oikeusMaksuttomaanAsuntolapaikkaan: Option[Aikajakso] = None,
   @Description("Sisäoppilaitosmuotoinen majoitus, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Mahdollisen sisäoppilaitosmuotoisen majoituksen aloituspäivä ja loppupäivä. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData

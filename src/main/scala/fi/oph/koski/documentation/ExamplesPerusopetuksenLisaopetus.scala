@@ -76,7 +76,7 @@ object ExamplesPerusopetuksenLisaopetus {
       oppilaitos = Some(jyväskylänNormaalikoulu),
       koulutustoimija = None,
       lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
-        pidennettyOppivelvollisuus = Some(Päätösjakso(date(2008, 8, 15), Some(date(2016, 6, 4))))
+        pidennettyOppivelvollisuus = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4))))
       )),
       suoritukset = List(
         lisäopetuksenSuoritus
@@ -97,7 +97,7 @@ object ExamplesPerusopetuksenLisaopetus {
       oppilaitos = Some(jyväskylänNormaalikoulu),
       koulutustoimija = None,
       lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
-        pidennettyOppivelvollisuus = Some(Päätösjakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
+        pidennettyOppivelvollisuus = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
         erityisenTuenPäätös = Some(ErityisenTuenPäätös(
           alku = Some(date(2008, 8, 15)),
           loppu = Some(date(2016, 6, 4)),

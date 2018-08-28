@@ -37,10 +37,10 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
   @Description("Mahdollisen tehostetun tuen päätös päätöksen alkamis- ja päättymispäivät.")
   @SensitiveData
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
-  tehostetunTuenPäätös: Option[Päätösjakso] = None,
+  tehostetunTuenPäätös: Option[Aikajakso] = None,
   @Description("Opiskelu ulkomailla alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole ulkomailla.")
   @Tooltip("Tieto opiskelusta ulkomailla alkamis- ja päättymispäivineen. Rahoituksen laskennassa käytettävä tieto.")
-  ulkomailla: Option[Päätösjakso] = None,
+  ulkomailla: Option[Aikajakso] = None,
   @Description("Opiskelija on vuosiluokkiin sitomattomassa opetuksessa (true/false).")
   @Tooltip("Onko opiskelija vuosiluokkiin sitomattomassa opetuksessa.")
   @DefaultValue(false)
@@ -57,10 +57,10 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
   vaikeastiVammainen: Option[List[Aikajakso]] = None,
   @Description("Opiskelijalla on majoitusetu. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto siitä, jos opiskelijalla on majoitusetu (alku- ja loppupäivämäärät). Rahoituksen laskennassa käytettävä tieto.")
-  majoitusetu: Option[Päätösjakso] = None,
+  majoitusetu: Option[Aikajakso] = None,
   @Description("Opiskelijalla on oikeus maksuttomaan asuntolapaikkaan. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto siitä, jos opiskelijalla on oikeus maksuttomaan asuntolapaikkaan (alku- ja loppupäivämäärät).")
-  oikeusMaksuttomaanAsuntolapaikkaan: Option[Päätösjakso] = None,
+  oikeusMaksuttomaanAsuntolapaikkaan: Option[Aikajakso] = None,
   @Description("Sisäoppilaitosmuotoinen majoitus, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
   @Tooltip("Mahdollisen sisäoppilaitosmuotoisen majoituksen aloituspäivä ja loppupäivä. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]] = None
