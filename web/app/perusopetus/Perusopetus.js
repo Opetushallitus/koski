@@ -3,7 +3,11 @@ import Bacon from 'baconjs'
 import Http from '../util/http'
 import {arvioituTaiVahvistettu, suorituksenTyyppi} from '../suoritus/Suoritus'
 
-export const isToimintaAlueittain = (suoritus) => !!modelData(suoritus && suoritus.context.opiskeluoikeus, 'lisätiedot.erityisenTuenPäätös.opiskeleeToimintaAlueittain')
+export const isToimintaAlueittain = suoritus => suoritus
+  ? !!modelData(suoritus.context.opiskeluoikeus, 'lisätiedot.erityisenTuenPäätös.opiskeleeToimintaAlueittain') ||
+    modelItems(suoritus.context.opiskeluoikeus, 'lisätiedot.erityisenTuenPäätökset').some(etp => modelData(etp, 'opiskeleeToimintaAlueittain'))
+  : false
+
 export const isYsiluokka = (suoritus) => luokkaAste(suoritus) == '9'
 
 export const isPäättötodistus = (suoritus) => {
