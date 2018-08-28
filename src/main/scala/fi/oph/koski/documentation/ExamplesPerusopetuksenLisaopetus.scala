@@ -98,12 +98,12 @@ object ExamplesPerusopetuksenLisaopetus {
       koulutustoimija = None,
       lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
         pidennettyOppivelvollisuus = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
-        erityisenTuenPäätös = Some(ErityisenTuenPäätös(
+        erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(
           alku = Some(date(2008, 8, 15)),
           loppu = Some(date(2016, 6, 4)),
           opiskeleeToimintaAlueittain = true,
           erityisryhmässä = Some(false)
-        ))
+        )))
       )),
       suoritukset = List(
         lisäopetuksenSuoritusToimintaAlueittain
