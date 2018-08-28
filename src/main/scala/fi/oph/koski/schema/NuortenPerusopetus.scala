@@ -84,11 +84,22 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @SensitiveData
   @OksaUri("tmpOKSAID281", "henkilökohtainen opetuksen järjestämistä koskeva suunnitelma")
   erityisenTuenPäätös: Option[ErityisenTuenPäätös] = None,
+  @Description("Erityisen tuen päätökset alkamis- ja päättymispäivineen. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
+  @Tooltip("Mahdollisen erityisen tuen päätösten alkamis- ja päättymispäivät. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
+  @Description("Tehostetun tuen päätös. Lista alku-loppu päivämääräpareja.")
+  @SensitiveData
+  @OksaUri("tmpOKSAID281", "henkilökohtainen opetuksen järjestämistä koskeva suunnitelma")
+  erityisenTuenPäätökset: Option[List[ErityisenTuenPäätös]] = None,
   @Description("Tehostetun tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty.")
   @Description("Mahdollisen tehostetun tuen päätös päätöksen alkamis- ja päättymispäivät.")
   @SensitiveData
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
   tehostetunTuenPäätös: Option[Aikajakso] = None,
+  @Description("Tehostetun tuen päätös. Lista alku-loppu päivämääräpareja.")
+  @Description("Mahdollisen tehostetun tuen päätösten alkamis- ja päättymispäivät. Voi olla useita erillisiä jaksoja.")
+  @SensitiveData
+  @OksaUri("tmpOKSAID511", "tehostettu tuki")
+  tehostetunTuenPäätökset: Option[List[Aikajakso]] = None,
   @Description("Opiskelu joustavassa perusopetuksessa (JOPO) alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole joustavassa perusopetuksessa. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Mahdollisen joustavan perusopetuksen (JOPO) alkamis- ja päättymispäivät. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData
