@@ -283,8 +283,8 @@ object OpiskeluoikeusLoader extends Logging {
   private val fieldsToExcludeFromPäätasonSuoritusJson = Set("osasuoritukset", "tyyppi", "toimipiste", "koulutustyyppi")
   private val fieldsToExcludeFromOsasuoritusJson = Set("osasuoritukset", "tyyppi")
 
-  private def buildSuoritusRows(opiskeluoikeusOid: String, oppilaitos: OrganisaatioWithOid, ps: PäätasonSuoritus, data: JValue, idGenerator: () => Long) = {
-    val päätasonSuoritusId: Long = idGenerator()
+  private def buildSuoritusRows(opiskeluoikeusOid: String, oppilaitos: OrganisaatioWithOid, ps: PäätasonSuoritus, data: JValue, idGenerator: => Long) = {
+    val päätasonSuoritusId: Long = idGenerator
     val toimipiste = (ps match {
       case stp: MahdollisestiToimipisteellinen => stp.toimipiste
       case _ => None
@@ -316,8 +316,8 @@ object OpiskeluoikeusLoader extends Logging {
     (päätaso, osat)
   }
 
-  private def buildROsasuoritusRow(päätasonSuoritusId: Long, ylempiOsasuoritusId: Option[Long], opiskeluoikeusOid: String, os: Suoritus, data: JValue, idGenerator: () => Long): Seq[ROsasuoritusRow] = {
-    val osasuoritusId: Long = idGenerator()
+  private def buildROsasuoritusRow(päätasonSuoritusId: Long, ylempiOsasuoritusId: Option[Long], opiskeluoikeusOid: String, os: Suoritus, data: JValue, idGenerator: => Long): Seq[ROsasuoritusRow] = {
+    val osasuoritusId: Long = idGenerator
     ROsasuoritusRow(
       osasuoritusId = osasuoritusId,
       ylempiOsasuoritusId = ylempiOsasuoritusId,
