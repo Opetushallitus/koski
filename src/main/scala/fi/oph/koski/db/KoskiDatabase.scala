@@ -9,13 +9,13 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.util.Futures
 import org.flywaydb.core.Flyway
 import org.postgresql.util.PSQLException
-import slick.driver.PostgresDriver
-import slick.driver.PostgresDriver.api._
+import slick.jdbc.PostgresProfile
+import slick.jdbc.PostgresProfile.api._
 
 import scala.sys.process._
 
 object KoskiDatabase {
-  type DB = PostgresDriver.backend.DatabaseDef
+  type DB = PostgresProfile.backend.DatabaseDef
 
   def master(config: Config): KoskiDatabase =
     new KoskiDatabase(KoskiDatabaseConfig(config))
