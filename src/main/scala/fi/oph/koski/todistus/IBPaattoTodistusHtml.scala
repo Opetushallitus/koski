@@ -13,8 +13,8 @@ class IBPaattoTodistusHtml(implicit val user: KoskiSession, val localizationRepo
   def render(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: IBTutkinnonSuoritus) = {
     def oppiaineet: List[IBOppiaineenSuoritus] = päättötodistus.osasuoritukset.toList.flatten
     val someArviointiIsFinal: Boolean = oppiaineet.exists(arviointiIsFinal) ||
-      päättötodistus.theoryOfKnowledge.exists(coreArviointiIsFinal) ||
-      päättötodistus.extendedEssay.exists(coreArviointiIsFinal) ||
+      päättötodistus.theoryOfKnowledge.exists(arviointiIsFinal) ||
+      päättötodistus.extendedEssay.exists(arviointiIsFinal) ||
       päättötodistus.creativityActionService.exists(arviointiIsFinal)
 
     <html lang={lang}>
@@ -56,7 +56,7 @@ class IBPaattoTodistusHtml(implicit val user: KoskiSession, val localizationRepo
           </div>
           <div class="core-elements">
             {
-              päättötodistus.theoryOfKnowledge.filter(!someArviointiIsFinal || coreArviointiIsFinal(_)).map { o =>
+              päättötodistus.theoryOfKnowledge.filter(!someArviointiIsFinal || arviointiIsFinal(_)).map { o =>
                 <div class="theory-of-knowledge">
                   <span class="label">{i(o.koulutusmoduuli)}</span>
                   <span class="grade">{i(o.arvosanaKirjaimin)}</span>
@@ -73,7 +73,7 @@ class IBPaattoTodistusHtml(implicit val user: KoskiSession, val localizationRepo
               }.getOrElse(Empty)
             }
             {
-              päättötodistus.extendedEssay.filter(!someArviointiIsFinal || coreArviointiIsFinal(_)).map { o =>
+              päättötodistus.extendedEssay.filter(!someArviointiIsFinal || arviointiIsFinal(_)).map { o =>
                 <div class="extended-essay">
                   <div class="label">{i(o.koulutusmoduuli)}</div>
                   <table>
@@ -103,9 +103,12 @@ class IBPaattoTodistusHtml(implicit val user: KoskiSession, val localizationRepo
 
   override def lang: String = "en"
 
-  def arviointiIsFinal(suoritus :{def arviointi: Option[List[IBOppiaineenArviointi]]}) =
+  private def arviointiIsFinal(suoritus: IBOppiaineenSuoritus) =
     suoritus.arviointi.exists(_.headOption.exists(!_.predicted))
-
-  def coreArviointiIsFinal(suoritus :{def arviointi: Option[List[IBCoreRequirementsArviointi]]}) =
+  private def arviointiIsFinal(suoritus: IBCASSuoritus) =
+    suoritus.arviointi.exists(_.headOption.exists(!_.predicted))
+  private def arviointiIsFinal(suoritus: IBTheoryOfKnowledgeSuoritus) =
+    suoritus.arviointi.exists(_.headOption.exists(!_.predicted))
+  private def arviointiIsFinal(suoritus: IBExtendedEssaySuoritus) =
     suoritus.arviointi.exists(_.headOption.exists(!_.predicted))
 }
