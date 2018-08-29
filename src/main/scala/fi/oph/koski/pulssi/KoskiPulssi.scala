@@ -64,7 +64,7 @@ class KoskiStats(application: KoskiApplication) extends KoskiPulssi {
 object KoskiPulssi {
   def apply(application: KoskiApplication)(implicit cm: CacheManager): KoskiPulssi with Cached = {
     CachingProxy[KoskiPulssi](
-      ExpiringCache("KoskiPulssi", 10 minutes, maxSize = 5),
+      ExpiringCache("KoskiPulssi", 10.minutes, maxSize = 5),
       new KoskiStats(application)
     )
   }

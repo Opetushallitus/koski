@@ -9,7 +9,7 @@ object KoodistoPalvelu {
     cached(withoutCache(config))
   }
 
-  def cached(palvelu: KoodistoPalvelu)(implicit cacheInvalidator: CacheManager) = CachingProxy(RefreshingCache("KoodistoPalvelu", 1 hour, 100), palvelu)
+  def cached(palvelu: KoodistoPalvelu)(implicit cacheInvalidator: CacheManager) = CachingProxy(RefreshingCache("KoodistoPalvelu", 1.hour, 100), palvelu)
 
   def withoutCache(config: Config): KoodistoPalvelu = {
     config.getString("opintopolku.virkailija.url") match {

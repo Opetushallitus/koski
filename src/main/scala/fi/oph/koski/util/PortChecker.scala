@@ -21,7 +21,7 @@ object PortChecker {
 
   def findFreeLocalPort: Int = {
     val range = 1024 to 60000
-    val port = ((range(new Random().nextInt(range length))))
+    val port = ((range(new Random().nextInt(range.length))))
     if (isFreeLocalPort(port)) {
       port
     } else {

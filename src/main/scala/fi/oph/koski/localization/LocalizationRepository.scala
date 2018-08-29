@@ -40,7 +40,7 @@ object DefaultLocalizations {
 abstract class CachedLocalizationService(implicit cacheInvalidator: CacheManager) extends LocalizationRepository {
   import scala.concurrent.duration._
   protected val cache = KeyValueCache[String, Map[String, LocalizedString]](
-    new RefreshingCache("LocalizationRepository.localizations", RefreshingCache.Params(60 seconds, 1)),
+    new RefreshingCache("LocalizationRepository.localizations", RefreshingCache.Params(60.seconds, 1)),
     key => fetch()
   )
 

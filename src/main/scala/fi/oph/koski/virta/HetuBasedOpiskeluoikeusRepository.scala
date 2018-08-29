@@ -18,8 +18,8 @@ abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](henkilöR
   def opiskeluoikeudetByHetu(hetu: String): List[OO]
 
   // hetu -> org.oids cache for filtering only
-  private val organizationsCache = KeyValueCache[Henkilö.Hetu, List[Organisaatio.Oid]](ExpiringCache(getClass.getSimpleName + ".organisations", 1 hour, 100000), doFindOrgs)
-  private val cache = KeyValueCache[Henkilö.Hetu, List[OO]](ExpiringCache(getClass.getSimpleName + ".opiskeluoikeudet", 1 hour, 100), doFindByHenkilö)
+  private val organizationsCache = KeyValueCache[Henkilö.Hetu, List[Organisaatio.Oid]](ExpiringCache(getClass.getSimpleName + ".organisations", 1.hour, 100000), doFindOrgs)
+  private val cache = KeyValueCache[Henkilö.Hetu, List[OO]](ExpiringCache(getClass.getSimpleName + ".opiskeluoikeudet", 1.hour, 100), doFindByHenkilö)
 
   private def doFindOrgs(hetu: Henkilö.Hetu): List[Organisaatio.Oid] = {
     cache(hetu).flatMap(_.oppilaitos).map(_.oid)

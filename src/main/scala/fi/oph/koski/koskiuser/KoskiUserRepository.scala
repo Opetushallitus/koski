@@ -7,7 +7,7 @@ import fi.oph.koski.schema.HenkilöWithOid
 import scala.concurrent.duration._
 
 class KoskiUserRepository(henkilöt: OpintopolkuHenkilöFacade)(implicit cacheManager: CacheManager) {
-  private val oidCache = KeyValueCache(ExpiringCache("KoskiUserRepository", 1 hour, 15000), { oid: String =>
+  private val oidCache = KeyValueCache(ExpiringCache("KoskiUserRepository", 1.hour, 15000), { oid: String =>
     henkilöt.findKäyttäjäByOid(oid).map { henkilö =>
       KoskiUserInfo(henkilö.oidHenkilo, henkilö.kayttajatiedot.flatMap(_.username), Some(henkilö.etunimet + " " + henkilö.sukunimi))
     }

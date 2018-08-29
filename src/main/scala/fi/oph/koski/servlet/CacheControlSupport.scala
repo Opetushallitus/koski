@@ -22,7 +22,7 @@ trait Cached extends CacheControlSupport {
 }
 
 trait Cached24Hours extends Cached {
-  def cacheDuration = 24 hours
+  def cacheDuration = 24.hours
 }
 
 trait CacheForUserSession extends CacheControlSupport {
