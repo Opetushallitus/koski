@@ -62,7 +62,9 @@ object OpiskeluoikeusLoader extends Logging {
     var lastLogged = System.currentTimeMillis
     override def onNext(r: LoadResult) = {
       r match {
-        case LoadErrorResult(_, _) => errors += 1
+        case LoadErrorResult(oid, error) =>
+          logger.warn(s"Opiskeluoikeuden lataus epäonnistui: $oid $error")
+          errors += 1
         case LoadProgressResult(o, s) => {
           opiskeluoikeusCount += o
           suoritusCount += s
@@ -101,14 +103,16 @@ object OpiskeluoikeusLoader extends Logging {
   private def buildRow(inputRow: OpiskeluoikeusRow): Either[LoadErrorResult, Tuple4[ROpiskeluoikeusRow, Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROsasuoritusRow]]] = {
     Try {
       val oo = inputRow.toOpiskeluoikeus
-      val ooRow = buildROpiskeluoikeusRow(inputRow.oppijaOid, inputRow.aikaleima, oo)
+      val ooRow = buildROpiskeluoikeusRow(inputRow.oppijaOid, inputRow.aikaleima, oo, inputRow.data)
       val aikajaksoRows = buildROpiskeluoikeusAikajaksoRows(inputRow.oid, oo)
       val suoritusRows = oo.suoritukset.zipWithIndex.map { case (ps, i) => buildSuoritusRows(inputRow.oid, oo.getOppilaitos, ps, (inputRow.data \ "suoritukset")(i), suoritusIds.incrementAndGet) }
       (ooRow, aikajaksoRows, suoritusRows.map(_._1), suoritusRows.flatMap(_._2))
     }.toEither.left.map(t => LoadErrorResult(inputRow.oid, t.toString))
   }
 
-  private def buildROpiskeluoikeusRow(oppijaOid: String, aikaleima: Timestamp, o: KoskeenTallennettavaOpiskeluoikeus) =
+  private val fieldsToExcludeFromOpiskeluoikeusJson = Set("oid", "versionumero", "aikaleima", "oppilaitos", "koulutustoimija", "suoritukset", "tyyppi", "alkamispäivä", "päättymispäivä")
+
+  private def buildROpiskeluoikeusRow(oppijaOid: String, aikaleima: Timestamp, o: KoskeenTallennettavaOpiskeluoikeus, data: JValue) =
     ROpiskeluoikeusRow(
       opiskeluoikeusOid = o.oid.get,
       versionumero = o.versionumero.get,
@@ -130,7 +134,8 @@ object OpiskeluoikeusLoader extends Logging {
       }.getOrElse(false),
       lisätiedotKoulutusvienti = o.lisätiedot.collect {
         case l: AmmatillisenOpiskeluoikeudenLisätiedot => l.koulutusvienti
-      }.getOrElse(false)
+      }.getOrElse(false),
+      data = JsonManipulation.removeFields(data, fieldsToExcludeFromOpiskeluoikeusJson)
     )
 
 

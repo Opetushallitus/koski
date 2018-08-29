@@ -3,7 +3,7 @@ package fi.oph.koski.jettylauncher
 import java.lang.management.ManagementFactory
 import java.nio.file.{Files, Paths}
 
-import com.typesafe.config.ConfigValueFactory._
+import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.koski.cache.JMXCacheManager
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.executors.Pools
@@ -25,7 +25,8 @@ import org.eclipse.jetty.util.ssl.SslContextFactory
 object JettyLauncher extends App with Logging {
   lazy val globalPort = System.getProperty("koski.port","7021").toInt
   try {
-    new JettyLauncher(globalPort).start.join
+    val application = new KoskiApplication(KoskiApplication.defaultConfig, new JMXCacheManager)
+    new JettyLauncher(globalPort, application).start.join
   } catch {
     case e: Throwable =>
       logger.error(e)("Error in server startup")
@@ -33,12 +34,10 @@ object JettyLauncher extends App with Logging {
   }
 }
 
-class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) extends Logging {
+class JettyLauncher(val port: Int, val application: KoskiApplication) extends Logging {
+  private val config = application.config
 
-  private val config = overrides.toList.foldLeft(KoskiApplication.defaultConfig)({ case (config, (key, value)) => config.withValue(key, fromAnyRef(value)) })
-  val application = new KoskiApplication(config, new JMXCacheManager)
-
-  private val threadPool = new ManagedQueuedThreadPool(Pools.jettyThreads, 10);
+  private val threadPool = new ManagedQueuedThreadPool(Pools.jettyThreads, 10)
 
   private val server = new Server(threadPool)
 
@@ -153,10 +152,16 @@ class JettyLauncher(val port: Int, overrides: Map[String, String] = Map.empty) e
 }
 
 object TestConfig {
-  val overrides = Map("db.name" -> "koskitest", "fixtures.use" -> "true", "authenticationFailed.initialDelay" -> "1s", "authenticationFailed.resetAfter" -> "1s", "mockoidgenerator" -> "true")
+  val overrides = ConfigFactory.parseString(
+    """
+      |db.name = koskitest
+      |fixtures.use = true
+      |authenticationFailed.initialDelay = 1s
+      |authenticationFailed.resetAfter = 1s
+      |mockoidgenerator = true
+      |oppijavuosiraportti.enabledForUsers = ["kalle"]
+    """.stripMargin)
 }
-
-object SharedJetty extends JettyLauncher(PortChecker.findFreeLocalPort, TestConfig.overrides)
 
 class ManagedQueuedThreadPool(maxThreads: Int, minThreads: Int) extends QueuedThreadPool(maxThreads, minThreads) with QueuedThreadPoolMXBean
 

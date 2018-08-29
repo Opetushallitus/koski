@@ -1,6 +1,7 @@
 package fi.oph.koski.raportointikanta
 
 import java.sql.{Date, Timestamp}
+import java.time.temporal.ChronoUnit
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import org.json4s.JValue
@@ -60,10 +61,11 @@ object RaportointiDatabaseSchema {
     val viimeisinTila = column[Option[String]]("viimeisin_tila", StringIdentifierType)
     val lisätiedotHenkilöstökoulutus = column[Boolean]("lisatiedot_henkilostokoulutus")
     val lisätiedotKoulutusvienti = column[Boolean]("lisatiedot_koulutusvienti")
+    val data = column[JValue]("data")
     def * = (opiskeluoikeusOid, versionumero, aikaleima, sisältyyOpiskeluoikeuteenOid, oppijaOid,
       oppilaitosOid, oppilaitosNimi, oppilaitosKotipaikka, oppilaitosnumero, koulutustoimijaOid, koulutustoimijaNimi,
       koulutusmuoto, alkamispäivä, päättymispäivä, viimeisinTila,
-      lisätiedotHenkilöstökoulutus, lisätiedotKoulutusvienti) <> (ROpiskeluoikeusRow.tupled, ROpiskeluoikeusRow.unapply)
+      lisätiedotHenkilöstökoulutus, lisätiedotKoulutusvienti, data) <> (ROpiskeluoikeusRow.tupled, ROpiskeluoikeusRow.unapply)
   }
 
   class ROpiskeluoikeusAikajaksoTable(tag: Tag) extends Table[ROpiskeluoikeusAikajaksoRow](tag, "r_opiskeluoikeus_aikajakso") {
@@ -195,7 +197,8 @@ case class ROpiskeluoikeusRow(
   päättymispäivä: Option[Date],
   viimeisinTila: Option[String],
   lisätiedotHenkilöstökoulutus: Boolean,
-  lisätiedotKoulutusvienti: Boolean
+  lisätiedotKoulutusvienti: Boolean,
+  data: JValue
 )
 
 case class ROpiskeluoikeusAikajaksoRow(
@@ -217,7 +220,14 @@ case class ROpiskeluoikeusAikajaksoRow(
   opiskeluvalmiuksiaTukevatOpinnot: Byte = 0,
   vankilaopetuksessa: Byte = 0,
   oppisopimusJossainPäätasonSuorituksessa: Byte = 0
-)
+) {
+  def truncateToDates(start: Date, end: Date): ROpiskeluoikeusAikajaksoRow = this.copy(
+    alku = if (alku.after(start)) alku else start,
+    loppu = if (loppu.before(end)) loppu else end
+  )
+  lazy val lengthInDays: Int = ChronoUnit.DAYS.between(alku.toLocalDate, loppu.toLocalDate).toInt + 1
+
+}
 
 case class RPäätasonSuoritusRow(
   päätasonSuoritusId: Long,
