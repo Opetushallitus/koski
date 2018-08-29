@@ -6,7 +6,6 @@ import java.time.LocalDate.{parse => date}
 import fi.oph.koski.config.Environment
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.schema.LocalizedString.{finnish, sanitize}
-import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppilaitos.{MockOppilaitosRepository, OppilaitosRepository}
 import fi.oph.koski.schema._
@@ -202,7 +201,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       .find(a => (a \ "@avain").text == (suoritus \ "Arvosana" \ "Muu" \ "Koodi").text)
       .map { a => List(
         KorkeakoulunPaikallinenArviointi(
-          PaikallinenKoodi((a \ "Koodi").text, nimi(a), Some(asteikkoUri)),
+          PaikallinenKoodi((a \ "Koodi").text, LocalizedString.finnish(nimi(a)), Some(asteikkoUri)),
           LocalDate.parse((suoritus \ "SuoritusPvm").text)
         ))
       }

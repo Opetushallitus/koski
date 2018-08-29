@@ -28,7 +28,7 @@ class KoskiHenkilöCache(val db: DB, val henkilöt: HenkilöRepository) extends 
   private def addMasterIfNecessary(master: Option[TäydellisetHenkilötiedot]) =
     master.map { m =>
       addHenkilö(m.oid, toHenkilöRow(m, None))
-    }.getOrElse(DBIO.successful())
+    }.getOrElse(DBIO.successful(Unit))
 
   private def addHenkilö(oid: String, row: HenkilöRow) = {
     Henkilöt.filter(_.oid === oid).result.map(_.toList).flatMap {
