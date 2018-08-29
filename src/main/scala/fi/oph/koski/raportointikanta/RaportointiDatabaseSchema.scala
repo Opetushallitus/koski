@@ -60,10 +60,11 @@ object RaportointiDatabaseSchema {
     val viimeisinTila = column[Option[String]]("viimeisin_tila", StringIdentifierType)
     val lisätiedotHenkilöstökoulutus = column[Boolean]("lisatiedot_henkilostokoulutus")
     val lisätiedotKoulutusvienti = column[Boolean]("lisatiedot_koulutusvienti")
+    val data = column[JValue]("data")
     def * = (opiskeluoikeusOid, versionumero, aikaleima, sisältyyOpiskeluoikeuteenOid, oppijaOid,
       oppilaitosOid, oppilaitosNimi, oppilaitosKotipaikka, oppilaitosnumero, koulutustoimijaOid, koulutustoimijaNimi,
       koulutusmuoto, alkamispäivä, päättymispäivä, viimeisinTila,
-      lisätiedotHenkilöstökoulutus, lisätiedotKoulutusvienti) <> (ROpiskeluoikeusRow.tupled, ROpiskeluoikeusRow.unapply)
+      lisätiedotHenkilöstökoulutus, lisätiedotKoulutusvienti, data) <> (ROpiskeluoikeusRow.tupled, ROpiskeluoikeusRow.unapply)
   }
 
   class ROpiskeluoikeusAikajaksoTable(tag: Tag) extends Table[ROpiskeluoikeusAikajaksoRow](tag, "r_opiskeluoikeus_aikajakso") {
@@ -195,7 +196,8 @@ case class ROpiskeluoikeusRow(
   päättymispäivä: Option[Date],
   viimeisinTila: Option[String],
   lisätiedotHenkilöstökoulutus: Boolean,
-  lisätiedotKoulutusvienti: Boolean
+  lisätiedotKoulutusvienti: Boolean,
+  data: JValue
 )
 
 case class ROpiskeluoikeusAikajaksoRow(
