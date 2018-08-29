@@ -25,7 +25,8 @@ import org.eclipse.jetty.util.ssl.SslContextFactory
 object JettyLauncher extends App with Logging {
   lazy val globalPort = System.getProperty("koski.port","7021").toInt
   try {
-    new JettyLauncher(globalPort).start.join
+    val application = new KoskiApplication(KoskiApplication.defaultConfig, new JMXCacheManager)
+    new JettyLauncher(globalPort, application).start.join
   } catch {
     case e: Throwable =>
       logger.error(e)("Error in server startup")
@@ -33,9 +34,8 @@ object JettyLauncher extends App with Logging {
   }
 }
 
-class JettyLauncher(val port: Int, overrides: Config = ConfigFactory.empty) extends Logging {
-  private val config = overrides.withFallback(KoskiApplication.defaultConfig)
-  val application = new KoskiApplication(config, new JMXCacheManager)
+class JettyLauncher(val port: Int, val application: KoskiApplication) extends Logging {
+  private val config = application.config
 
   private val threadPool = new ManagedQueuedThreadPool(Pools.jettyThreads, 10)
 
@@ -161,8 +161,6 @@ object TestConfig {
       |mockoidgenerator = true
     """.stripMargin)
 }
-
-object SharedJetty extends JettyLauncher(PortChecker.findFreeLocalPort, TestConfig.overrides)
 
 class ManagedQueuedThreadPool(maxThreads: Int, minThreads: Int) extends QueuedThreadPool(maxThreads, minThreads) with QueuedThreadPoolMXBean
 
