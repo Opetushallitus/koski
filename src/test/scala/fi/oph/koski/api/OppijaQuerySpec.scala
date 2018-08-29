@@ -9,7 +9,6 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.MockUsers.{stadinAmmattiopistoKatselija, stadinVastuukäyttäjä}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema._
-import fi.oph.koski.util.DateOrdering
 import org.json4s.JsonAST.{JArray, JBool}
 import org.json4s.jackson.JsonMethods
 import org.scalatest.{FreeSpec, Matchers}

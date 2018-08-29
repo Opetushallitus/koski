@@ -3,8 +3,6 @@ import fi.oph.koski.http.ErrorCategory._
 import fi.oph.koski.json.JsonSerializer
 import org.json4s.JValue
 
-import scala.reflect.runtime.{universe => ru}
-
 private object ErrorCategory {
   def makeKey(key: String, subkey: String) = key + "." + subkey
   def defaultErrorContent(key: String, message: ErrorMessage): List[ErrorDetail] = {

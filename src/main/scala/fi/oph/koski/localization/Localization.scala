@@ -1,6 +1,6 @@
 package fi.oph.koski.localization
 
-import fi.oph.koski.schema.{Localized, LocalizedString}
+import fi.oph.koski.schema.LocalizedString
 
 import scala.math.Ordering.OptionOrdering
 import scala.language.implicitConversions

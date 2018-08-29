@@ -8,8 +8,7 @@ import fi.oph.koski.schema.Oppija
 import fi.oph.koski.suoritusjako.{SuoritusIdentifier, Suoritusjako, SuoritusjakoRequest, SuoritusjakoUpdateResponse}
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.koskiuser.KoskiSession
-import org.mockito.Mockito.{mock, when, RETURNS_DEEP_STUBS}
-import org.mockito.Matchers.anyObject
+import org.mockito.Mockito.{mock, when}
 import org.scalatra.servlet.RichRequest
 
 trait SuoritusjakoTestMethods extends LocalJettyHttpSpecification with OpiskeluoikeusTestMethods {
