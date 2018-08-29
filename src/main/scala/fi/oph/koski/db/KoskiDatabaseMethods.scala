@@ -7,6 +7,7 @@ import fi.oph.koski.util.Futures
 import fi.oph.koski.util.ReactiveStreamsToRx.publisherToObservable
 import slick.dbio.{DBIOAction, NoStream}
 import slick.lifted.Query
+import scala.language.higherKinds
 
 trait KoskiDatabaseMethods {
   protected def db: DB

@@ -15,6 +15,7 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot.{omnia, stadinAmmattiopisto}
 import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, OidOrganisaatio, Oppilaitos, SisältäväOpiskeluoikeus}
 import fi.oph.koski.util.Wait
 import org.scalatest.{FreeSpec, Matchers}
+import scala.language.reflectiveCalls
 
 class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods with LocalJettyHttpSpecification with KoskiDatabaseMethods {
   "Sisältyvä opiskeluoikeus" - {
