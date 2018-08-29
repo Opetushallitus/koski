@@ -62,7 +62,9 @@ object OpiskeluoikeusLoader extends Logging {
     var lastLogged = System.currentTimeMillis
     override def onNext(r: LoadResult) = {
       r match {
-        case LoadErrorResult(_, _) => errors += 1
+        case LoadErrorResult(oid, error) =>
+          logger.warn(s"Opiskeluoikeuden lataus epäonnistui: $oid $error")
+          errors += 1
         case LoadProgressResult(o, s) => {
           opiskeluoikeusCount += o
           suoritusCount += s
