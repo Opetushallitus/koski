@@ -1,0 +1,28 @@
+[
+  {
+    "koodiUri": "tutkinnonosatvalinnanmahdollisuus_1",
+    "koodiArvo": "1",
+    "metadata": [
+      {
+        "nimi": "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja",
+        "lyhytNimi": "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "tutkinnonosatvalinnanmahdollisuus_2",
+    "koodiArvo": "2",
+    "metadata": [
+      {
+        "nimi": "Korkeakouluopinnot",
+        "lyhytNimi": "Korkeakouluopinnot",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

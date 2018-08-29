@@ -1,6 +1,6 @@
 import React from 'baret'
 import {Editor} from '../editor/Editor'
-import {wrapOptional, modelEmpty} from '../editor/EditorModel'
+import {wrapOptional, modelEmpty, modelProperty} from '../editor/EditorModel'
 import * as L from 'partial.lenses'
 import {lensedModel, modelData, modelLookup, modelSetValue, oneOfPrototypes} from '../editor/EditorModel'
 import {sortGrades} from '../util/sorting'
@@ -14,6 +14,11 @@ export const ArvosanaEditor = ({model, notFoundText}) => {
       ? <Editor model={ arvosanaModel }/>
       : (notFoundText ? <span>{notFoundText}</span> : null)
   }
+
+  if (!modelProperty(model, 'arviointi')) {
+    return null
+  }
+
   model = fixArviointi(model)
   const alternativesP = fetchAlternativesBasedOnPrototypes(oneOfPrototypes(wrapOptional(modelLookup(model, 'arviointi.-1'))), 'arvosana').startWith([])
   const arvosanatP = alternativesP.map(alternatives => alternatives.map(m => modelLookup(m, 'arvosana').value))

@@ -141,6 +141,37 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "suorituksentyyppi_ammatillinenlukionopintoja",
+  "koodiArvo" : "ammatillinenlukionopintoja",
+  "metadata" : [ {
+    "nimi" : "Lukionopintoja",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_ammatillinenkorkeakouluopintoja",
+  "koodiArvo" : "ammatillinenkorkeakouluopintoja",
+  "metadata" : [ {
+    "nimi" : "Korkeakouluopintoja",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_ammatillinenmuitaopintovalmiuksiatukeviaopintoja",
+  "koodiArvo" : "ammatillinenmuitaopintovalmiuksiatukeviaopintoja",
+  "metadata" : [ {
+    "nimi" : "Muita opintovalmiuksia tukevia opintoja",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "suorituksentyyppi_ammatillisentutkinnonosanosaalue",
   "koodiArvo" : "ammatillisentutkinnonosanosaalue",
   "metadata" : [ {

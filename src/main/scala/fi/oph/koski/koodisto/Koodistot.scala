@@ -54,7 +54,8 @@ object Koodistot {
     KoodistoAsetus("perusopetuksensuoritustapa"),
     KoodistoAsetus("perusopetuksentoimintaalue"),
     KoodistoAsetus("perusopetuksentukimuoto"),
-    KoodistoAsetus("suorituksentyyppi")
+    KoodistoAsetus("suorituksentyyppi"),
+    KoodistoAsetus("tutkinnonosatvalinnanmahdollisuus")
   )
   val koskiKoodistot = koskiKoodistoAsetukset.map(_.koodisto)
 
