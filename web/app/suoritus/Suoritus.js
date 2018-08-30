@@ -23,7 +23,7 @@ export const suoritusValmis = (suoritus) => {
   if (suoritus.value.classes.includes('paatasonsuoritus')) {
     let vahvistuspäivä = modelData(suoritus, 'vahvistus.päivä')
     return vahvistuspäivä && isInPast(vahvistuspäivä)
-  } else if (suoritus.value.classes.includes('arvioinniton')) {
+  } else if (R.intersection(suoritus.value.classes, ['arvioinniton', 'mahdollisestiarvioinniton']).length !== 0) {
     return true
   } else {
     let arviointi = modelData(suoritus, 'arviointi.0')
@@ -44,6 +44,7 @@ export const keskeneräisetOsasuoritukset = (suoritus) => osasuoritukset(suoritu
 export const osasuoritukset = (suoritus) => modelItems(suoritus, 'osasuoritukset')
 export const rekursiivisetOsasuoritukset = (suoritus) => flatMapArray(osasuoritukset(suoritus), s => [s].concat(rekursiivisetOsasuoritukset(s)))
 export const suorituksenTyyppi = (suoritus) => modelData(suoritus, 'tyyppi').koodiarvo
+export const valinnanMahdollisuus = suoritus => suoritus.value.classes.includes('valinnanmahdollisuus')
 
 export const suoritusTitle = (suoritus) => {
   let title = modelTitle(tutkinnonNimi(modelLookup(suoritus, 'koulutusmoduuli')))

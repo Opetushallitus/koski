@@ -10,8 +10,8 @@ object AuditLogTester extends Matchers with LogTester {
   def verifyAuditLogMessage(params: Map[String, Any]): Unit = {
     val message = getLogMessages.lastOption.map(m => parse(m.getMessage.toString))
     message match {
-      case None => throw new IllegalStateException("No audit log message found")
       case Some(msg: JObject) => verifyAuditLogMessage(msg, params)
+      case _ => throw new IllegalStateException("No audit log message found")
     }
   }
 
@@ -20,8 +20,9 @@ object AuditLogTester extends Matchers with LogTester {
     params.foreach {
       case (key, expectedValue: String) =>
         msg.values.get(key) should equal(Some(expectedValue))
-      case (key, newParams: Map[String, Any]) =>
+      case (key, newParams: Map[String, Any] @unchecked) =>
         verifyAuditLogMessage((msg \ key).extract[JObject], newParams)
+      case _ => ???
     }
   }
 

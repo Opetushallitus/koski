@@ -10,7 +10,10 @@ import slick.dbio.DBIO
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema._
 import fi.oph.koski.util.Futures
-import java.sql.Timestamp
+import java.sql.Date
+import java.time.LocalDate
+import fi.oph.koski.util.DateOrdering.sqlDateOrdering
+import fi.oph.koski.schema.Organisaatio
 
 object RaportointiDatabase {
   type DB = PostgresDriver.backend.DatabaseDef
@@ -92,4 +95,27 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
     runDbSync(sqlu"update raportointikanta_status set load_completed=now() where name = $name")
   def statuses: Seq[RaportointikantaStatusRow] =
     runDbSync(RaportointikantaStatus.result)
+
+  def opiskeluoikeusAikajaksot(oppilaitos: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate): Seq[(ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow])] = {
+    val alkuDate = Date.valueOf(alku)
+    val loppuDate = Date.valueOf(loppu)
+    val query1 = ROpiskeluoikeudet
+      .filter(_.oppilaitosOid === oppilaitos)
+      .join(ROpiskeluoikeusAikajaksot.filterNot(_.alku > loppuDate).filterNot(_.loppu < alkuDate))
+      .on(_.opiskeluoikeusOid === _.opiskeluoikeusOid)
+      .joinLeft(RHenkilöt)
+      .on(_._1.oppijaOid === _.oppijaOid)
+      .map { case ((opiskeluoikeus, aikajakso), henkilo) => (opiskeluoikeus, henkilo, aikajakso) }
+      .sortBy(_._1.opiskeluoikeusOid)
+    val result1: Seq[(ROpiskeluoikeusRow, Option[RHenkilöRow], ROpiskeluoikeusAikajaksoRow)] = runDbSync(query1.result)
+    val query2 = RPäätasonSuoritukset.filter(_.opiskeluoikeusOid inSet result1.map(_._1.opiskeluoikeusOid).distinct)
+    val result2: Map[String, Seq[RPäätasonSuoritusRow]] = runDbSync(query2.result).groupBy(_.opiskeluoikeusOid)
+    // group rows belonging to same opiskeluoikeus
+    result1
+      .foldRight[List[(ROpiskeluoikeusRow, Option[RHenkilöRow], List[ROpiskeluoikeusAikajaksoRow])]](List.empty) {
+        case (t, head :: tail) if t._1.opiskeluoikeusOid == head._1.opiskeluoikeusOid => (head._1, head._2, t._3 :: head._3) :: tail
+        case (t, acc) => (t._1, t._2, List(t._3)) :: acc
+      }
+      .map(t => (t._1, t._2, t._3.map(_.truncateToDates(alkuDate, loppuDate)).sortBy(_.alku)(sqlDateOrdering), result2.getOrElse(t._1.opiskeluoikeusOid, Seq.empty).sortBy(_.päätasonSuoritusId)))
+  }
 }

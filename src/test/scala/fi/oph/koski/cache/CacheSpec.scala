@@ -11,7 +11,7 @@ class CacheSpec extends FreeSpec with Matchers {
   "Cache" - {
     "Without background refresh" - {
       val counter = new Counter()
-      val cache = ExpiringCache("testcache", 100 milliseconds, 100)
+      val cache = ExpiringCache("testcache", 100.milliseconds, 100)
 
       "Caching" in {
         cache(counter.incInvocation("a")) should equal("a1")
@@ -23,7 +23,7 @@ class CacheSpec extends FreeSpec with Matchers {
     "With background refresh" - {
       "Evicts oldest entry" in {
         val counter = new Counter()
-        val cache = RefreshingCache("testcache", 100 milliseconds, 2)
+        val cache = RefreshingCache("testcache", 100.milliseconds, 2)
         cache(counter.incInvocation("a")) should equal("a1")
         cache(counter.incInvocation("b")) should equal("b1")
         cache(counter.incInvocation("c")) should equal("c1")
@@ -32,7 +32,7 @@ class CacheSpec extends FreeSpec with Matchers {
       }
       "Performs eviction only when maxSize exceeded by 10%" in {
         val counter = new Counter()
-        val cache = RefreshingCache("testcache", 1 second, 10)
+        val cache = RefreshingCache("testcache", 1.second, 10)
         (1 to 11) foreach { n =>
           cache(counter.incInvocation(n + ".")) should equal(n + ".1")
           Thread.sleep(1)
@@ -50,7 +50,7 @@ class CacheSpec extends FreeSpec with Matchers {
       }
       "Refreshes all keys on background" in {
         val counter = new Counter()
-        val cache = RefreshingCache("testcache", 100 milliseconds, 100)
+        val cache = RefreshingCache("testcache", 100.milliseconds, 100)
         cache(counter.incInvocation("a")) should equal("a1")
         cache(counter.incInvocation("a")) should equal("a1")
         cache(counter.incInvocation("b")) should equal("b1")
@@ -64,7 +64,7 @@ class CacheSpec extends FreeSpec with Matchers {
       }
       "Randomizes scheduled refresh time" in {
         val counter = new Counter()
-        val cache = RefreshingCache("testcache", 100 days, 100).asInstanceOf[RefreshingCache]
+        val cache = RefreshingCache("testcache", 100.days, 100).asInstanceOf[RefreshingCache]
         cache.callAsync(counter.incInvocation("a"))
         cache.callAsync(counter.incInvocation("b"))
         Thread.sleep(100)
@@ -76,7 +76,7 @@ class CacheSpec extends FreeSpec with Matchers {
       "When fetch fails" - {
         class TestException extends RuntimeException("testing")
         "Initial fetch -> throws exception and tries again on next call" in {
-          val cache = RefreshingCache("testcache", 10 milliseconds, 10)
+          val cache = RefreshingCache("testcache", 10.milliseconds, 10)
           var perform: (String => String) = {x: String => throw new TestException}
           val invocation = Invocation({ x: String => perform(x) }, "a")
 
@@ -88,7 +88,7 @@ class CacheSpec extends FreeSpec with Matchers {
           cache.apply(invocation) should equal("hello")
         }
         "Initial fetch -> throws exception, schedules fetch" in {
-          val cache = RefreshingCache("testcache", 10 milliseconds, 10)
+          val cache = RefreshingCache("testcache", 10.milliseconds, 10)
           var perform: (String => String) = {x: String => throw new TestException}
           val invocation = Invocation({ x: String => perform(x) }, "a")
 
@@ -101,7 +101,7 @@ class CacheSpec extends FreeSpec with Matchers {
           Futures.await(currentValue) should equal("hello")
         }
         "Background fetch -> tries again after cache period" in {
-          val cache = RefreshingCache("testcache", 10 milliseconds, 10)
+          val cache = RefreshingCache("testcache", 10.milliseconds, 10)
           var result = {x: String => x}
           val invocation = Invocation({ x: String => result(x) }, "b")
           cache.apply(invocation) should equal("b")
@@ -113,7 +113,7 @@ class CacheSpec extends FreeSpec with Matchers {
           cache.apply(invocation) should equal("b2")
         }
         "Throws exception from underlying impl without wrapping by Java reflection APIs" in {
-          val cache = RefreshingCache("testcache", 10 milliseconds, 10)
+          val cache = RefreshingCache("testcache", 10.milliseconds, 10)
           val counter = new Counter()
           val invocation = counter.incInvocation("666")
           val caught = intercept[Exception] {
@@ -126,7 +126,7 @@ class CacheSpec extends FreeSpec with Matchers {
       }
       "Multiple clients requesting at same time -> fetch only once" in {
         val counter = new Counter()
-        val cache = RefreshingCache("testcache", 100 days, 100)
+        val cache = RefreshingCache("testcache", 100.days, 100)
         (1 to 20).par.map { n => cache.apply(counter.incInvocation("a")) }.toList.distinct should equal(List("a1"))
       }
     }

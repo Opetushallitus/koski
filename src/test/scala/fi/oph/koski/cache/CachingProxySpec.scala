@@ -43,7 +43,7 @@ class CachingProxySpec extends FreeSpec with Matchers {
     }
   }
 
-  def makeCache(service: TestService) = CachingProxy[TestService](RefreshingCache("spec", 10 seconds, 1)(GlobalCacheManager), service)
+  def makeCache(service: TestService) = CachingProxy[TestService](RefreshingCache("spec", 10.seconds, 1)(GlobalCacheManager), service)
 
 }
 

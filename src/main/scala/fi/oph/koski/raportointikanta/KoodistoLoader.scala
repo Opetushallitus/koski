@@ -5,7 +5,6 @@ import fi.oph.koski.log.Logging
 import fi.oph.koski.raportointikanta.LoaderUtils.convertLocalizedString
 
 object KoodistoLoader extends Logging {
-  private val BatchSize = 1000
   private val LadattavatKoodistot = List("opiskeluoikeudentyyppi", "oppilaitostyyppi", "koulutustyyppi", "kunta", "suorituksentyyppi")
 
   def loadKoodistot(koodistoPalvelu: KoodistoPalvelu, raportointiDatabase: RaportointiDatabase): Int = {

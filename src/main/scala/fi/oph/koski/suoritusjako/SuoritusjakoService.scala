@@ -22,7 +22,9 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
         val suoritusjako = suoritusjakoRepository.create(secret, oppijaOid, suoritusIds)
         AuditLog.log(AuditLogMessage(KANSALAINEN_SUORITUSJAKO_LISAYS, koskiSession, Map(oppijaHenkiloOid -> oppijaOid)))
         suoritusjako
-      case Left(status) => Left(status)
+      case Left(status) =>
+        logger.warn(s"Suoritusjaon luonti epäonnistui: oppija: $oppijaOid, suoritukset: ${suoritusIds.mkString}: ${status.errorString.mkString}")
+        Left(status)
     }
   }
 

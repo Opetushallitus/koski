@@ -1,6 +1,5 @@
 package fi.oph.koski.json
 
-import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema.KoskiSchema.schemaFactory
 import fi.oph.scalaschema.extraction.ValidationError
 import fi.oph.scalaschema.{SchemaValidatingExtractor, _}
@@ -14,18 +13,18 @@ import scala.reflect.runtime.universe.TypeTag
   */
 object JsonSerializer {
   def writeWithRoot[T: TypeTag](x: T, pretty: Boolean = false): String = {
-    implicit val u = KoskiSession.systemUser
+    implicit val u = SensitiveDataAllowed.SystemUser
     write(x, pretty)
   }
 
-  def serializeWithRoot[T: TypeTag](obj: T): JValue = serializeWithUser(KoskiSession.systemUser)(obj)
+  def serializeWithRoot[T: TypeTag](obj: T): JValue = serializeWithUser(SensitiveDataAllowed.SystemUser)(obj)
 
-  def serializeWithUser[T: TypeTag](user: KoskiSession)(obj: T): JValue = {
+  def serializeWithUser[T: TypeTag](user: SensitiveDataAllowed)(obj: T): JValue = {
     implicit val u = user
     serialize(obj)
   }
 
-  def write[T: TypeTag](x: T, pretty: Boolean = false)(implicit user: KoskiSession): String = {
+  def write[T: TypeTag](x: T, pretty: Boolean = false)(implicit user: SensitiveDataAllowed): String = {
     if (pretty) {
       JsonMethods.pretty(serialize(x))
     } else {
@@ -33,11 +32,11 @@ object JsonSerializer {
     }
   }
 
-  def serialize[T: TypeTag](obj: T)(implicit user: KoskiSession): JValue = {
+  def serialize[T: TypeTag](obj: T)(implicit user: SensitiveDataAllowed): JValue = {
     Serializer.serialize(obj, SensitiveDataFilter(user).serializationContext)
   }
 
-  def serialize(obj: Any, schema: Schema)(implicit user: KoskiSession): JValue = {
+  def serialize(obj: Any, schema: Schema)(implicit user: SensitiveDataAllowed): JValue = {
     Serializer.serialize(obj, schema, SensitiveDataFilter(user).serializationContext)
   }
 

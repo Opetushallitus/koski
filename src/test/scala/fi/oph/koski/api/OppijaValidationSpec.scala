@@ -293,7 +293,7 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
 
           "suoritus.vahvistus.päivä > päättymispäivä" in {
             val oo = päättymispäivällä(defaultOpiskeluoikeus, date(2017, 5, 31))
-            val tutkinto: AmmatillinenPäätasonSuoritus = oo.suoritukset.map { case s: AmmatillisenTutkinnonSuoritus => s.copy(vahvistus = vahvistus(date(2017, 6, 30), stadinAmmattiopisto, Some(helsinki)))}.head
+            val tutkinto: AmmatillinenPäätasonSuoritus = oo.suoritukset.collect { case s: AmmatillisenTutkinnonSuoritus => s.copy(vahvistus = vahvistus(date(2017, 6, 30), stadinAmmattiopisto, Some(helsinki)))}.head
 
             putOpiskeluoikeus(oo.copy(suoritukset = List(tutkinto))) {
               verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.päättymispäiväEnnenVahvistusta("suoritus.vahvistus.päivä (2017-06-30) oltava sama tai aiempi kuin päättymispäivä(2017-05-31)"))

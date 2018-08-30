@@ -43,6 +43,7 @@ class SchemaLocalizationSpec extends FreeSpec with Matchers {
         case s: ClassSchema =>
           s :: s.properties.map(_.schema).flatMap(allSchemas)
         case s: AnyOfSchema => s :: s.alternatives.flatMap(allSchemas)
+        case _ => ???
       }
     case s: OptionalSchema => s :: allSchemas(s.itemSchema)
     case s: ListSchema => s :: allSchemas(s.itemSchema)

@@ -30,6 +30,7 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
 
             case None => throw new RuntimeException("Tutkinnonosaviitettä ei löydy: " + x._tutkinnonOsaViite)
           }
+          case x: ERakenneLukio => throw new RuntimeException("Lukion rakenteita ei vielä tueta")
         }
       }
 

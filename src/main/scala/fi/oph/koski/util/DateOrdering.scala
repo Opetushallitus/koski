@@ -15,4 +15,6 @@ object DateOrdering {
       case (Some(x), Some(y)) => if (x.isBefore(y)) { -1 } else { 1 }
     }
   }
+
+  lazy val sqlDateOrdering: Ordering[java.sql.Date] = Ordering.fromLessThan(_ before _)
 }

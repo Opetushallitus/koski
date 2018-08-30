@@ -14,5 +14,6 @@ object KoskiSchema {
   def createSchema(clazz: Class[_]) = schemaFactory.createSchema(clazz) match {
     case s: AnyOfSchema => s
     case s: ClassSchema => s.moveDefinitionsToTopLevel
+    case _ => ???
   }
 }

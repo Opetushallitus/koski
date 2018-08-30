@@ -75,17 +75,17 @@ abstract class JsonOrganisaatioRepository(koodisto: KoodistoViitePalvelu) extend
 
 class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(implicit cacheInvalidator: CacheManager) extends JsonOrganisaatioRepository(koodisto) {
   private val hierarkiaCache = KeyValueCache[String, Option[OrganisaatioHierarkia]](
-    RefreshingCache("OrganisaatioRepository.hierarkia", 1 hour, 15000),
+    RefreshingCache("OrganisaatioRepository.hierarkia", 1.hour, 15000),
     oid => fetch(oid).organisaatiot.map(convertOrganisaatio).headOption
   )
 
   private val nimetCache = KeyValueCache[String, List[OrganisaationNimihakuTulos]](
-    RefreshingCache("OrganisaatioRepository.nimet", 1 hour, 15000),
+    RefreshingCache("OrganisaatioRepository.nimet", 1.hour, 15000),
     oid => runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/${oid}/nimet")(Http.parseJson[List[OrganisaationNimihakuTulos]]))
   )
 
   private val oppilaitosnumeroCache = KeyValueCache[String, Option[Oppilaitos]](
-    ExpiringCache("OrganisaatioRepository.oppilaitos", 1 hour, maxSize = 1000),
+    ExpiringCache("OrganisaatioRepository.oppilaitos", 1.hour, maxSize = 1000),
     { numero: String =>
       search(numero).flatMap {
         case o@Oppilaitos(_, Some(Koodistokoodiviite(koodiarvo, _, _, _, _)), _, _) if koodiarvo == numero => Some(o)

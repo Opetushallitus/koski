@@ -2,6 +2,7 @@ package fi.oph.koski.util
 
 import fi.oph.koski.servlet.KoskiBaseServlet
 import slick.lifted.Query
+import scala.language.higherKinds
 
 trait Pagination extends KoskiBaseServlet {
   def pageNumber = getOptionalIntegerParam("pageNumber")

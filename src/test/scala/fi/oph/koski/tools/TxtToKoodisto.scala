@@ -25,6 +25,7 @@ object TxtToKoodisto extends App {
       case arvo :: nimenosat =>
         val koodiarvo = arvo.toUpperCase
         KoodistoKoodi(KoodistoKoodi.koodiUri(koodistoUri, koodiarvo), koodiarvo, List(KoodistoKoodiMetadata(kieli = Some("FI"), nimi = Some(nimenosat.mkString(" ")))), 1, None, None)
+      case _ => ???
     }
   JsonFiles.writeFile(
     MockKoodistoPalvelu.koodistoKooditFileName(koodistoUri),

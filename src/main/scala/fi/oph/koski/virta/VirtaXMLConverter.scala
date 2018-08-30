@@ -6,7 +6,6 @@ import java.time.LocalDate.{parse => date}
 import fi.oph.koski.config.Environment
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.schema.LocalizedString.{finnish, sanitize}
-import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppilaitos.{MockOppilaitosRepository, OppilaitosRepository}
 import fi.oph.koski.schema._
@@ -185,10 +184,10 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     if ((suoritus \ "Arvosana" \ "Muu").length > 0) {
       paikallinenArviointi(suoritus)
     } else {
-      koodistoViitePalvelu.validate("virtaarvosana", suoritus \ "Arvosana" \ "_" text).map(arvosana =>
+      koodistoViitePalvelu.validate("virtaarvosana", (suoritus \ "Arvosana" \ "_").text).map(arvosana =>
         List(KorkeakoulunKoodistostaLöytyväArviointi(
           arvosana = arvosana,
-          päivä = LocalDate.parse(suoritus \ "SuoritusPvm" text)
+          päivä = LocalDate.parse((suoritus \ "SuoritusPvm").text)
         ))
       )
     }
@@ -202,8 +201,8 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       .find(a => (a \ "@avain").text == (suoritus \ "Arvosana" \ "Muu" \ "Koodi").text)
       .map { a => List(
         KorkeakoulunPaikallinenArviointi(
-          PaikallinenKoodi((a \ "Koodi").text, nimi(a), Some(asteikkoUri)),
-          LocalDate.parse(suoritus \ "SuoritusPvm" text)
+          PaikallinenKoodi((a \ "Koodi").text, LocalizedString.finnish(nimi(a)), Some(asteikkoUri)),
+          LocalDate.parse((suoritus \ "SuoritusPvm").text)
         ))
       }
   }
@@ -255,7 +254,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   }
 
   private def nimi(suoritus: Node): LocalizedString = {
-    sanitize((suoritus \\ "Nimi" map (nimi => (nimi \ "@kieli" text, nimi text))).toMap).getOrElse(finnish("Suoritus: " + avain(suoritus)))
+    sanitize((suoritus \\ "Nimi" map (nimi => ((nimi \ "@kieli").text, nimi.text))).toMap).getOrElse(finnish("Suoritus: " + avain(suoritus)))
   }
 
   private def oppilaitos(node: Node): Oppilaitos = {
@@ -354,5 +353,5 @@ object VirtaXMLConverterUtils {
 
   // huom, tässä kentässä voi olla oppilaitosnumeron lisäksi muitakin arvoja, esim. "UK" = "Ulkomainen korkeakoulu"
   // https://confluence.csc.fi/display/VIRTA/Tietovarannon+koodistot#Tietovarannonkoodistot-Organisaatio
-  def oppilaitosnumero(node: Node): Option[String] = (node \ "Myontaja" headOption).map(_.text)
+  def oppilaitosnumero(node: Node): Option[String] = (node \ "Myontaja").headOption.map(_.text)
 }

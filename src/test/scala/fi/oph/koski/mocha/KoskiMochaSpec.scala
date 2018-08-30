@@ -1,6 +1,6 @@
 package fi.oph.koski.mocha
 
-import fi.oph.koski.jettylauncher.SharedJetty
+import fi.oph.koski.api.SharedJetty
 
 class KoskiMochaSpec extends KoskiCommandLineSpec {
   "Mocha tests" in {

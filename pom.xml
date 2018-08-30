@@ -211,6 +211,11 @@
       <version>${jetty.version}</version>
     </dependency>
     <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-proxy</artifactId>
+      <version>${jetty.version}</version>
+    </dependency>
+    <dependency>
       <groupId>com.github.raimohanska</groupId>
       <artifactId>knockoff</artifactId>
       <version>397efc3ff2a49cfaad1f5e76499715e3d617913a</version>
@@ -232,7 +237,6 @@
       <version>${prometheus.client.version}</version>
       <scope>test</scope>
     </dependency>
-
     <dependency>
       <groupId>io.prometheus</groupId>
       <artifactId>simpleclient_log4j</artifactId>
@@ -242,6 +246,11 @@
       <groupId>io.prometheus</groupId>
       <artifactId>simpleclient_servlet</artifactId>
       <version>${prometheus.client.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.poi</groupId>
+      <artifactId>poi-ooxml</artifactId>
+      <version>3.17</version>
     </dependency>
     <!-- test deps -->
     <dependency>

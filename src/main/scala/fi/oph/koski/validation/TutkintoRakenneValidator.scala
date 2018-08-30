@@ -11,7 +11,7 @@ import fi.oph.koski.tutkinto._
 case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, koodistoViitePalvelu: KoodistoViitePalvelu) {
   def validateTutkintoRakenne(suoritus: PäätasonSuoritus, alkamispäiväLäsnä: Option[LocalDate]) = suoritus match {
     case tutkintoSuoritus: AmmatillisenTutkinnonSuoritus =>
-      getRakenne(tutkintoSuoritus.koulutusmoduuli, Some(ammatillisetKoulutustyypit)) match {
+      getRakenne(tutkintoSuoritus.koulutusmoduuli, Some(ammatillisetKoulutustyypit), Some(tutkintoSuoritus)) match {
         case Left(status) => status
         case Right(rakenne) =>
           validateOsaamisalat(tutkintoSuoritus.osaamisala.toList.flatten.map(_.osaamisala), rakenne).onSuccess(HttpStatus.fold(suoritus.osasuoritusLista.map {
@@ -19,15 +19,19 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
               HttpStatus.fold(osaSuoritus.koulutusmoduuli match {
                 case osa: ValtakunnallinenTutkinnonOsa =>
                   validateTutkinnonOsa(osaSuoritus, osa, rakenne, tutkintoSuoritus.suoritustapa, alkamispäiväLäsnä)
-                case osa: PaikallinenTutkinnonOsa =>
+                case osa: PaikallinenTutkinnonOsa  =>
                   HttpStatus.ok // vain OpsTutkinnonosatoteutukset validoidaan, muut sellaisenaan läpi, koska niiden rakennetta ei tunneta
+                case osa: KorkeakouluopinnotTutkinnonOsa =>
+                  HttpStatus.ok
+                case osa: JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsa =>
+                  HttpStatus.ok
               }, validateTutkintoField(tutkintoSuoritus, osaSuoritus))
           }))
       }
     case suoritus: AikuistenPerusopetuksenOppimääränSuoritus =>
-      HttpStatus.justStatus(getRakenne(suoritus.koulutusmoduuli, Some(List(aikuistenPerusopetus))))
+      HttpStatus.justStatus(getRakenne(suoritus.koulutusmoduuli, Some(List(aikuistenPerusopetus)), Some(suoritus)))
     case suoritus: AmmatillisenTutkinnonOsittainenSuoritus =>
-      HttpStatus.justStatus(getRakenne(suoritus.koulutusmoduuli, Some(ammatillisetKoulutustyypit)))
+      HttpStatus.justStatus(getRakenne(suoritus.koulutusmoduuli, Some(ammatillisetKoulutustyypit), Some(suoritus)))
         .onSuccess(HttpStatus.fold(suoritus.osasuoritukset.toList.flatten.map(validateTutkinnonOsanTutkinto)))
     case _ =>
       suoritus.koulutusmoduuli match {
@@ -57,8 +61,9 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
       HttpStatus.ok
   }
 
-  private def getRakenne(tutkinto: Diaarinumerollinen, koulutustyypit: Option[List[Koulutustyyppi.Koulutustyyppi]]): Either[HttpStatus, TutkintoRakenne] = {
-      tutkinto.perusteenDiaarinumero.map { diaarinumero =>
+  private def getRakenne(tutkinto: Diaarinumerollinen, koulutustyypit: Option[List[Koulutustyyppi.Koulutustyyppi]], suoritusVirheilmoitukseen: Option[PäätasonSuoritus] = None): Either[HttpStatus, TutkintoRakenne] = {
+    validateDiaarinumero(tutkinto.perusteenDiaarinumero)
+      .flatMap { diaarinumero =>
         tutkintoRepository.findPerusteRakenne(diaarinumero) match {
           case None =>
             if (koodistoViitePalvelu.validate("koskikoulutustendiaarinumerot", diaarinumero).isEmpty) {
@@ -69,14 +74,31 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
           case Some(rakenne) =>
             koulutustyypit match {
               case Some(koulutustyypit) if !koulutustyypit.contains(rakenne.koulutustyyppi) =>
-                Left(KoskiErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi("Perusteella " + rakenne.diaarinumero + s" on väärä koulutustyyppi ${Koulutustyyppi.describe(rakenne.koulutustyyppi)}. Hyväksytyt koulutustyypit tälle suoritukselle ovat ${koulutustyypit.map(Koulutustyyppi.describe).mkString(", ")}"))
+                val tyyppiStr = suoritusVirheilmoitukseen.getOrElse(tutkinto) match {
+                  case p: Product => p.productPrefix
+                  case x: AnyRef => x.getClass.getSimpleName
+                }
+                Left(KoskiErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi(
+                  s"Suoritukselle $tyyppiStr ei voi käyttää perustetta ${rakenne.diaarinumero}, jonka koulutustyyppi on ${Koulutustyyppi.describe(rakenne.koulutustyyppi)}. " +
+                  s"Tälle suoritukselle hyväksytyt perusteen koulutustyypit ovat ${koulutustyypit.map(Koulutustyyppi.describe).mkString(", ")}"
+                ))
               case _ =>
                 Right(rakenne)
             }
         }
-      }.getOrElse(Left(KoskiErrorCategory.badRequest.validation.rakenne.diaariPuuttuu()))
+      }
   }
 
+  private def validateDiaarinumero(diaarinumero: Option[String]): Either[HttpStatus, String] = {
+    // Avoid sending totally bogus diaarinumeros to ePerusteet (e.g. 3000 characters long), as that leads
+    // to "414 Request-URI Too Large" and eventually "Internal server error". Other than that, don't validate
+    // the format (at least not yet), since in theory diaarinumero could contain spaces etc.
+    diaarinumero match {
+      case None => Left(KoskiErrorCategory.badRequest.validation.rakenne.diaariPuuttuu())
+      case Some(d) if (d.length < 1) || (d.length > 30) => Left(KoskiErrorCategory.badRequest.validation.rakenne.tuntematonDiaari("Diaarinumeron muoto on virheellinen: " + diaarinumero.get.take(30)))
+      case Some(d) => Right(d)
+    }
+  }
 
   private def validateOsaamisalat(osaamisalat: List[Koodistokoodiviite], rakenne: TutkintoRakenne): HttpStatus = {
     val tuntemattomatOsaamisalat: List[Koodistokoodiviite] = osaamisalat.filter(osaamisala => !findOsaamisala(rakenne, osaamisala.koodiarvo).isDefined)
@@ -86,7 +108,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
     })
   }
 
-  private def validateTutkinnonOsanTutkinto(suoritus: AmmatillisenTutkinnonOsanSuoritus) = {
+  private def validateTutkinnonOsanTutkinto(suoritus: TutkinnonOsanSuoritus) = {
     suoritus.tutkinto match {
       case Some(tutkinto) => HttpStatus.justStatus(getRakenne(tutkinto, Some(ammatillisetKoulutustyypit)))
       case None => HttpStatus.ok

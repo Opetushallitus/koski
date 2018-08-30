@@ -190,8 +190,8 @@ object AmmatillinenExampleData {
     )
   }
 
-  def tutkinnonOsanSuoritus(koodi: String, nimi: String, ryhmä: Option[Koodistokoodiviite], arvosana: Koodistokoodiviite, laajuus: Option[Float] = None): MuunAmmatillisenTutkinnonOsanSuoritus = {
-    val osa = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite(koodi, Some(nimi), "tutkinnonosat", Some(1)), true, laajuus.map(l =>LaajuusOsaamispisteissä(l)))
+  def tutkinnonOsanSuoritus(koodi: String, nimi: String, ryhmä: Option[Koodistokoodiviite], arvosana: Koodistokoodiviite, laajuus: Option[Float] = None, pakollinen: Boolean = true): MuunAmmatillisenTutkinnonOsanSuoritus = {
+    val osa = MuuValtakunnallinenTutkinnonOsa(tunniste = Koodistokoodiviite(koodi, Some(nimi), "tutkinnonosat", Some(1)), pakollinen, laajuus = laajuus.map(l => LaajuusOsaamispisteissä(l)))
     tutkinnonOsanSuoritus(arvosana, osa, ryhmä)
   }
 
@@ -202,6 +202,20 @@ object AmmatillinenExampleData {
 
   def tutkinnonOsanSuoritus(arvosana: Koodistokoodiviite, osa: MuuKuinYhteinenTutkinnonOsa, ryhmä: Option[Koodistokoodiviite]): MuunAmmatillisenTutkinnonOsanSuoritus = {
     MuunAmmatillisenTutkinnonOsanSuoritus(
+      koulutusmoduuli = osa,
+      tutkinnonOsanRyhmä = ryhmä,
+      näyttö = None,
+      suorituskieli = None,
+      alkamispäivä = None,
+      toimipiste = Some(stadinToimipiste),
+      arviointi = Some(List(AmmatillinenArviointi(arvosana = arvosana, date(2014, 10, 20)))),
+      vahvistus = vahvistusValinnaisellaTittelillä(date(2016, 5, 31), stadinAmmattiopisto)
+    )
+  }
+
+  def osittaisenTutkinnonTutkinnonOsanSuoritus(arvosana: Koodistokoodiviite, ryhmä: Option[Koodistokoodiviite], koodi: String, nimi: String, laajuus: Int): MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus = {
+    val osa = MuuValtakunnallinenTutkinnonOsa(tunniste = Koodistokoodiviite(koodi, Some(nimi), "tutkinnonosat", Some(1)), true, Some(LaajuusOsaamispisteissä(laajuus)))
+    MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus(
       koulutusmoduuli = osa,
       tutkinnonOsanRyhmä = ryhmä,
       näyttö = None,
@@ -379,7 +393,7 @@ object AmmatillinenExampleData {
     alkamispäivä = None,
     toimipiste = stadinToimipiste,
     osasuoritukset = Some(List(
-      tutkinnonOsanSuoritus("100432", "Ympäristön hoitaminen", ammatillisetTutkinnonOsat, k3, 35)
+      osittaisenTutkinnonTutkinnonOsanSuoritus(k3, ammatillisetTutkinnonOsat, "100432", "Ympäristön hoitaminen", 35)
     )),
     todistuksellaNäkyvätLisätiedot = Some("Suorittaa toista osaamisalaa")
   )

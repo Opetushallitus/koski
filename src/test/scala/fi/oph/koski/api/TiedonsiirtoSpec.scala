@@ -1,12 +1,10 @@
 package fi.oph.koski.api
 
-
 import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjestelmäId
 import fi.oph.koski.email.{Email, EmailContent, EmailRecipient, MockEmailSender}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.eerola
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.jettylauncher.SharedJetty
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.{helsinginKaupunkiPalvelukäyttäjä, omniaPääkäyttäjä, stadinPääkäyttäjä}
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}

@@ -1,3 +1,9 @@
+## 29.8.2018
+
+- Lisätty ammatilliseen reformin mukaiseen perustutkintoon valinnan mahdollisuus, eli kaksi uutta tutkinnon osaa:
+  - Yhteisten tutkinnon osien osa-alueet, lukio-opinnot tai muita jatko-opintovalmiuksia tukevat opinnot sekä
+  - Korkeakouluopinnot
+
 ## 13.8.2018
 
 - Sallitaan perusopetuksen valmistavan opetuksen osasuorituksena nuorten perusopetuksen oppiaineen suoritus

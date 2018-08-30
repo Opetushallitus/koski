@@ -8,8 +8,7 @@ import fi.oph.koski.schema.Oppija
 import fi.oph.koski.suoritusjako.{SuoritusIdentifier, Suoritusjako, SuoritusjakoRequest, SuoritusjakoUpdateResponse}
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.koskiuser.KoskiSession
-import org.mockito.Mockito.{mock, when, RETURNS_DEEP_STUBS}
-import org.mockito.Matchers.anyObject
+import org.mockito.Mockito.{mock, when}
 import org.scalatra.servlet.RichRequest
 
 trait SuoritusjakoTestMethods extends LocalJettyHttpSpecification with OpiskeluoikeusTestMethods {
@@ -19,6 +18,7 @@ trait SuoritusjakoTestMethods extends LocalJettyHttpSpecification with Opiskeluo
     val request = mock(classOf[RichRequest])
     when(request.header("User-Agent")).thenReturn(Some("MockUserAgent/1.0"))
     when(request.header("HTTP_X_FORWARDED_FOR")).thenReturn(Some("10.1.2.3"))
+    when(request.cookies).thenReturn(Map[String, String]())
     KoskiSession.suoritusjakoKatsominenUser(request)
   }
 

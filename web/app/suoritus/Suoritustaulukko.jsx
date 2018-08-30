@@ -2,27 +2,28 @@ import React from 'baret'
 import {modelData, modelLookup} from '../editor/EditorModel.js'
 import {Editor} from '../editor/Editor'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
-import {
-  modelErrorMessages, modelItems, modelTitle,
-  pushRemoval
-} from '../editor/EditorModel'
+import {modelErrorMessages, modelItems, modelTitle, pushRemoval} from '../editor/EditorModel'
 import {buildClassNames} from '../components/classnames'
 import {accumulateExpandedState} from '../editor/ExpandableItems'
-import {suoritusValmis, tilaText} from './Suoritus'
+import {suoritusValmis, tilaText, valinnanMahdollisuus} from './Suoritus'
 import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
 import {fetchLaajuudet, YhteensäSuoritettu} from './YhteensaSuoritettu'
-import UusiTutkinnonOsa  from '../ammatillinen/UusiTutkinnonOsa'
+import UusiTutkinnonOsa from '../ammatillinen/UusiTutkinnonOsa'
 import {createTutkinnonOsanSuoritusPrototype, isYhteinenTutkinnonOsa, osanOsa} from '../ammatillinen/TutkinnonOsa'
 import {sortLanguages} from '../util/sorting'
 import {isKieliaine} from './Koulutusmoduuli'
 import {flatMapArray} from '../util/util'
 import {
-  ArvosanaColumn, getLaajuusYksikkö,
+  ArvosanaColumn,
+  getLaajuusYksikkö,
   groupSuoritukset,
   isAmmatillinentutkinto,
   isNäyttötutkintoonValmistava,
-  isYlioppilastutkinto, KoepisteetColumn, LaajuusColumn, suoritusProperties,
+  isYlioppilastutkinto,
+  KoepisteetColumn,
+  LaajuusColumn,
+  suoritusProperties,
   TutkintokertaColumn
 } from './SuoritustaulukkoCommon'
 
@@ -125,12 +126,11 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
     let {model, showScope, showTila, onExpand, expanded, groupId, columns} = this.props
     let properties = suoritusProperties(model)
     let displayProperties = properties.filter(p => p.key !== 'osasuoritukset')
-    let hasProperties = displayProperties.length > 0
     let osasuoritukset = modelLookup(model, 'osasuoritukset')
     let showOsasuoritukset = (osasuoritukset && osasuoritukset.value) || isYhteinenTutkinnonOsa(model)
     return (<tbody className={buildClassNames(['tutkinnon-osa', (expanded && 'expanded'), (groupId)])}>
     <tr>
-      {columns.map(column => column.renderData({model, showScope, showTila, onExpand, hasProperties, expanded}))}
+      {columns.map(column => column.renderData({model, showScope, showTila, onExpand, hasProperties: properties.length > 0 || showOsasuoritukset, expanded}))}
       {
         model.context.edit && (
           <td className="remove">
@@ -143,7 +143,7 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
       modelErrorMessages(model).map((error, i) => <tr key={'error-' + i} className="error"><td colSpan="42" className="error">{error}</td></tr>)
     }
     {
-      expanded && hasProperties && (<tr className="details" key="details">
+      expanded && displayProperties.length > 0 && (<tr className="details" key="details">
         <td colSpan="4">
           <PropertiesEditor model={model} properties={displayProperties}/>
         </td>
@@ -184,4 +184,6 @@ const SuoritusColumn = {
   }
 }
 
-export const suorituksenTilaSymbol = (suoritus) => suoritusValmis(suoritus) ? '' : ''
+export const suorituksenTilaSymbol = (suoritus) => valinnanMahdollisuus(suoritus)
+  ? ''
+  : suoritusValmis(suoritus) ? '' : ''

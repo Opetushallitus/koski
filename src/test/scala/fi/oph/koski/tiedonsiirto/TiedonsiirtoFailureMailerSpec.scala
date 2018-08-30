@@ -39,7 +39,7 @@ class TiedonsiirtoFailureMailerSpec extends FreeSpec with Matchers with BeforeAn
     }
 
     "uudelleen jos sähköposti on lähetetty yli 24 tuntia sitten" in {
-      val mail = new TiedonsiirtoFailureMailer(KoskiApplicationForTests, timeNow = fakeTime _)
+      val mail = new TiedonsiirtoFailureMailer(KoskiApplicationForTests, timeNow = fakeTime)
       mail.sendMail(OidOrganisaatio(jyväskylänYliopisto), Some(OidOrganisaatio(jyväskylänNormaalikoulu)))
       MockEmailSender.checkMail should equal(List(expectedEmail("jyväs-vastuu@example.com")))
       mail.sendMail(OidOrganisaatio(jyväskylänYliopisto), Some(OidOrganisaatio(jyväskylänNormaalikoulu)))

@@ -11,7 +11,8 @@ export const createTutkinnonOsanSuoritusPrototype = (osasuoritukset, groupId) =>
   let suoritusProto = contextualizeSubModel(osasuoritukset.arrayPrototype, osasuoritukset, newItemIndex)
   let preferredClass = groupId == '2' ? 'yhteisenammatillisentutkinnonosansuoritus' : 'muunammatillisentutkinnonosansuoritus'
   let sortValue = (oneOfProto) => oneOfProto.value.classes.includes(preferredClass) ? 0 : 1
-  let alternatives = oneOfPrototypes(suoritusProto)
+  // TODO: onlyWhen is wrongly copied from implementing case class to traits prototype. This should really be fixed in the backend.
+  let alternatives = oneOfPrototypes(R.dissoc('onlyWhen', suoritusProto))
   suoritusProto = alternatives.sort((a, b) => sortValue(a) - sortValue(b))[0]
   return contextualizeSubModel(suoritusProto, osasuoritukset, newItemIndex)
 }

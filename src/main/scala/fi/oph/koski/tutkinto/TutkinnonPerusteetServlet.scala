@@ -169,7 +169,7 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
 
   private lazy val yhteisetTutkinnonOsat: Option[Koodistokoodiviite] = application.koodistoViitePalvelu.validate(Koodistokoodiviite("2", "ammatillisentutkinnonosanryhma"))
 
-  override def cacheDuration: Duration = 1 hours
+  override def cacheDuration: Duration = 1.hours
 }
 
 case class LisättävätTutkinnonOsat(osat: List[Koodistokoodiviite], osaToisestaTutkinnosta: Boolean, paikallinenOsa: Boolean)

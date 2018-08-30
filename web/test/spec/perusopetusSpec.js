@@ -514,6 +514,18 @@ describe('Perusopetus', function() {
       })
 
       describe('Tietojen muuttaminen', function() {
+        describe('Oppiaineen arvosana', function() {
+          var matematiikka = editor.subEditor('.MA > tr:first-child')
+          before(
+            editor.edit,
+            matematiikka.propertyBySelector('.arvosana').selectValue('Ei valintaa'),
+            editor.saveChanges,
+            wait.until(page.isSavedLabelShown)
+          )
+
+          it('Ei ole pakollinen', function () { })
+        })
+
         describe('Kurssin lisääminen', function() {
           var äidinkieli = opinnot.oppiaineet.oppiaine(0)
           describe('Valtakunnallinen kurssi', function() {

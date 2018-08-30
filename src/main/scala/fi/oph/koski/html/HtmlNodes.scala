@@ -27,12 +27,16 @@ trait HtmlNodes extends KoskiBaseServlet with PiwikNodes with LanguageSupport {
         {commonHead(responsive) ++ raamit.script ++ piwikTrackingScriptLoader(piwikHttpStatusCode)}
       </head>
       <body class={bodyClasses}>
+        <!-- virkailija-raamit header is inserted here -->
+        {if (raamit.includeJumpToContentLink) <a href="#content" class="jump-to-main-content" tabindex="1">{t("Hyppää sisältöön")}</a> else NodeSeq.Empty}
+        <div id="oppija-raamit-header-here"><!-- oppija-raamit header is inserted here --></div>
         <div data-inraamit={raamit.toString} id="content" class="koski-content"></div>
         <script id="localization">
           {Unparsed("window.koskiLocalizationMap="+JsonSerializer.writeWithRoot(localizations.localizations))}
         </script>
         {scripts}
         <script id="bundle" src={"/koski/js/" + scriptBundleName + "?" + buildVersion.getOrElse(scriptTimestamp(scriptBundleName))}></script>
+        <!-- oppija-raamit footer is inserted here -->
       </body>
     </html>
   }
@@ -68,6 +72,7 @@ trait HtmlNodes extends KoskiBaseServlet with PiwikNodes with LanguageSupport {
 
 trait Raamit {
   def script: NodeSeq
+  def includeJumpToContentLink: Boolean = false
 }
 
 case object Virkailija extends Raamit {
@@ -96,6 +101,8 @@ case class Oppija(session: Option[KoskiSession], request: RichRequest, shibbolet
     request.cookies.get("eisuorituksia").map(c => URLDecoder.decode(c, "UTF-8"))
 
   override def toString: String = "oppija"
+
+  override def includeJumpToContentLink: Boolean = true
 }
 
 case object EiRaameja extends Raamit {

@@ -47,5 +47,6 @@ trait HtmlServlet extends KoskiBaseServlet with AuthenticationSupport with HtmlN
   }
 
   def raamitHeaderSet: Boolean = Option(request.getHeader("X-Raamit")).exists(r => Try(r.toBoolean).getOrElse(false))
-  def virkailijaRaamit: Raamit = if (raamitHeaderSet) Virkailija else EiRaameja
+  def virkailijaRaamit: Raamit = if (raamitHeaderSet || useVirkailijaRaamitProxy) Virkailija else EiRaameja
+  private val useVirkailijaRaamitProxy = application.config.hasPath("virkailijaRaamitProxy")
 }

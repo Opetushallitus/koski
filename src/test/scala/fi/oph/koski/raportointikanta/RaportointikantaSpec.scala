@@ -3,7 +3,7 @@ package fi.oph.koski.raportointikanta
 import java.time.LocalDate
 import java.sql.Date
 
-import fi.oph.koski.{KoskiApplicationForTests, schema}
+import fi.oph.koski.{KoskiApplicationForTests}
 import fi.oph.koski.api.LocalJettyHttpSpecification
 import org.scalatest.{FreeSpec, Matchers}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
@@ -12,7 +12,6 @@ import fi.oph.koski.json.JsonFiles
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.SchemaValidatingExtractor
-import org.json4s.JValue
 import org.json4s.JsonAST.JBool
 import org.json4s.jackson.JsonMethods
 

@@ -181,6 +181,13 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                 verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonDiaari("Tutkinnon perustetta ei löydy diaarinumerolla Boom boom kah"))))
           }
 
+          "Kun tutkinnon diaarinumero on muodoltaan virheellinen" - {
+            "palautetaan HTTP 400" in (putTutkinnonOsaSuoritus(osanSuoritusToisestaTutkinnosta(
+              autoalanTyönjohdonErikoisammattitutkinto.copy(perusteenDiaarinumero = Some("Lorem ipsum dolor sit amet, consectetur adipiscing elit")),
+              johtaminenJaHenkilöstönKehittäminen), tutkinnonSuoritustapaNäyttönä)(
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tuntematonDiaari("Diaarinumeron muoto on virheellinen: Lorem ipsum dolor sit amet, co"))))
+          }
+
           "Kun tutkinnon osalle ilmoitetaan tutkintotieto, joka on sama kuin päätason tutkinto" - {
             val suoritus = osanSuoritusToisestaTutkinnosta(autoalanPerustutkinto, johtaminenJaHenkilöstönKehittäminen)
             "palautetaan HTTP 400" in (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(
