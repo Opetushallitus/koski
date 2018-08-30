@@ -18,6 +18,13 @@
     koski_deploy_dir: "{{ koski_home }}/deploy"
   serial: 1
   tasks:
+  - name: Read buildversion
+    shell: cat ~tomcat/koski/deploy/buildversion.txt
+    register: buildversion
+    ignore_errors: true
+  - name: Previous version
+    debug: var=buildversion.stdout_lines
+    when: not buildversion.failed
   - name: Stop koski service
     service: name=koski state=stopped
   - name: Remove old application directory
