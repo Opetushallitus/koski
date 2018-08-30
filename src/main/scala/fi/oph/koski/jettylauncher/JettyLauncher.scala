@@ -3,12 +3,11 @@ package fi.oph.koski.jettylauncher
 import java.lang.management.ManagementFactory
 import java.nio.file.{Files, Paths}
 
-import com.typesafe.config.{Config, ConfigFactory}
+import com.typesafe.config.ConfigFactory
 import fi.oph.koski.cache.JMXCacheManager
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.executors.Pools
 import fi.oph.koski.log.{LogConfiguration, Logging, MaskedSlf4jRequestLog}
-import fi.oph.koski.util.PortChecker
 import io.prometheus.client.exporter.MetricsServlet
 import org.eclipse.jetty.client.HttpClient
 import org.eclipse.jetty.jmx.MBeanContainer

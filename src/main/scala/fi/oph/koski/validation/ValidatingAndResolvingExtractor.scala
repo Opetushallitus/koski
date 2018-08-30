@@ -3,7 +3,6 @@ package fi.oph.koski.validation
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.koodisto.{KoodistoResolvingCustomDeserializer, KoodistoViitePalvelu}
 import fi.oph.koski.organisaatio.{OrganisaatioRepository, OrganisaatioResolvingCustomDeserializer}
-import fi.oph.koski.schema._
 import fi.oph.scalaschema.SchemaValidatingExtractor
 import fi.oph.scalaschema.extraction.ValidationError
 import org.json4s._

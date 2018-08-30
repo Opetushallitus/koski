@@ -16,7 +16,7 @@ trait DirectoryClient {
 
 object DirectoryClient {
   def apply(config: Config)(implicit cacheInvalidator: CacheManager): DirectoryClient with Cached = {
-    val cacheStrategy = ExpiringCache("DirectoryClient", 60 seconds, maxSize = 100)
+    val cacheStrategy = ExpiringCache("DirectoryClient", 60.seconds, maxSize = 100)
     CachingProxy[DirectoryClient](cacheStrategy, config.getString("opintopolku.virkailija.url") match {
       case "mock" =>
         MockDirectoryClient

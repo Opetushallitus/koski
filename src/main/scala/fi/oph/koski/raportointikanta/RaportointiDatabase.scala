@@ -10,11 +10,10 @@ import slick.dbio.DBIO
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema._
 import fi.oph.koski.util.Futures
-import java.sql.{Date, Timestamp}
+import java.sql.Date
 import java.time.LocalDate
 import fi.oph.koski.util.DateOrdering.sqlDateOrdering
 import fi.oph.koski.schema.Organisaatio
-import slick.lifted.QueryBase
 
 object RaportointiDatabase {
   type DB = PostgresDriver.backend.DatabaseDef

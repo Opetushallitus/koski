@@ -47,7 +47,7 @@ class RefreshingCache(val name: String, val params: RefreshingCache.Params)(impl
 
   override def stats: CacheStats = statsCounter.snapshot()
 
-  override def apply(invocation: Invocation): AnyRef = Futures.await(callAsync(invocation), 1 day)
+  override def apply(invocation: Invocation): AnyRef = Futures.await(callAsync(invocation), 1.day)
 
   def callAsync(invocation: Invocation): Future[AnyRef] = synchronized {
     val current = entries.getOrElseUpdate(invocation, new CacheEntry(invocation))

@@ -7,6 +7,7 @@ import fi.oph.koski.schema._
 import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.json4s._
 import org.json4s.jackson.JsonMethods
+import scala.language.implicitConversions
 
 import scala.reflect.runtime.universe.TypeTag
 

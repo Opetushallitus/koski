@@ -35,7 +35,7 @@ object HenkilöRepository {
 
 case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta: FindByHetu, ytr: FindByHetu, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository)(implicit cacheInvalidator: CacheManager) extends FindByOid with Logging {
   private val oidCache: KeyValueCache[String, Option[TäydellisetHenkilötiedot]] =
-    KeyValueCache(new ExpiringCache("HenkilöRepository", ExpiringCache.Params(1 hour, maxSize = 100, storeValuePredicate = {
+    KeyValueCache(new ExpiringCache("HenkilöRepository", ExpiringCache.Params(1.hour, maxSize = 100, storeValuePredicate = {
       case (_, value) => value != None // Don't cache None results
     })), opintopolku.findByOid)
   // findByOid is locally cached

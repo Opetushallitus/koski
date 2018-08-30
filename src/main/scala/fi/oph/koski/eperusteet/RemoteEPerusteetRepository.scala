@@ -35,7 +35,7 @@ class RemoteEPerusteetRepository(ePerusteetRoot: String, ePerusteetWebBaseUrl: S
   def findPerusteenYksilöintitiedot(diaariNumero: String): Option[EPerusteTunniste] = yksilöintitiedotCache(diaariNumero)
 
   private val yksilöintitiedotCache = KeyValueCache[String, Option[EPerusteTunniste]](
-    ExpiringCache("EPerusteetRepository.yksilöintitiedot", 1 hour, 1000),
+    ExpiringCache("EPerusteetRepository.yksilöintitiedot", 1.hour, 1000),
     diaariNumero => runTask(http.get(uri"/api/perusteet/diaari?diaarinumero=$diaariNumero")(Http.parseJsonOptional[EPerusteTunniste]))
   )
 }

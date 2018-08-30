@@ -1,12 +1,10 @@
 package fi.oph.koski.http
 
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.scalaschema.extraction.ValidationError
 import org.json4s.JValue
 import org.json4s.JsonAST.JString
 import org.json4s.jackson.JsonMethods
 
-import scala.reflect.runtime.{universe => ru}
 import reflect.runtime.universe.TypeTag
 
 case class HttpStatus(statusCode: Int, errors: List[ErrorDetail]) {

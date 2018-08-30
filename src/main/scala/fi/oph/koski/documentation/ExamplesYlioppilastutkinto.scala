@@ -1,6 +1,5 @@
 package fi.oph.koski.documentation
 
-import fi.oph.koski.cache.GlobalCacheManager
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
 import fi.oph.koski.localization.MockLocalizationRepository
