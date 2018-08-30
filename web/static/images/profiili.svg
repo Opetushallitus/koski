@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>Page 1</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Login">
+            <g id="Page-1">
+                <g id="Group-5" transform="translate(4.000000, 3.000000)" fill="#FEFEFE">
+                    <path d="M6,2 C6,3.10477688 5.10438372,4 4,4 C2.89561628,4 2,3.10477688 2,2 C2,0.895223118 2.89561628,0 4,0 C5.10438372,0 6,0.895223118 6,2" id="Fill-1"></path>
+                    <path d="M7.5,8.71939626 C7.5,10.7735349 0.5,10.7735349 0.5,8.71939626 C0.5,6.66525764 2.06702899,5 4,5 C5.93297101,5 7.5,6.66525764 7.5,8.71939626" id="Fill-3"></path>
+                </g>
+                <circle id="Oval" stroke="#FFFFFF" cx="8" cy="8" r="7.5"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

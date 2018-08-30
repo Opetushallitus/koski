@@ -19,16 +19,20 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
     } catch {
       case e: Exception =>
         logger.error(s"Kansalaisen sisäänkirjautuminen epäonnistui ${e.getMessage}")
-        redirect("/virhesivu")
+        redirect(onFailure)
     }
   }
+
+  protected def onSuccess: String = params.get("onSuccess").getOrElse("/omattiedot")
+  protected def onFailure: String = params.get("onFailure").getOrElse("/virhesivu")
+  protected def onUserNotFound: String = params.get("onUserNotFound").getOrElse("/eisuorituksia")
 
   private def checkAuth: Option[HttpStatus] = {
     logger.debug(headers)
     request.header("security") match {
       case Some(password) if passwordOk(password) => None
       case Some(_) => Some(KoskiErrorCategory.unauthorized())
-      case None => Some(KoskiErrorCategory.badRequest("auth header missing"))
+      case None => Some(KoskiErrorCategory.badRequest(s"auth header missing, will not redirect to $onSuccess"))
     }
   }
 
@@ -39,7 +43,7 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
         application.henkilöRepository.findHenkilötiedotByHetu(h, nimitiedot)(KoskiSession.systemUser).headOption match {
           case Some(oppija) =>
             setUser(Right(localLogin(AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true), Some(langFromCookie.getOrElse(langFromDomain)))))
-            redirect("/omattiedot")
+            redirect(onSuccess)
           case _ => eiSuorituksia
         }
     }
@@ -47,7 +51,7 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
 
   private def eiSuorituksia = {
     setNimitiedotCookie
-    redirect("/eisuorituksia")
+    redirect(onUserNotFound)
   }
 
   private def setNimitiedotCookie = {

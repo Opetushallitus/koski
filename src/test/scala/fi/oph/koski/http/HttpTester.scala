@@ -14,7 +14,7 @@ trait HttpTester extends HttpComponentsClient {
     Map(BasicAuthentication.basicAuthHeader(user.username, user.password))
   }
 
-  def authGet[A](uri: String, user: UserWithPassword = defaultUser)(f: => A) = {
-    get(uri, headers = authHeaders(user))(f)
+  def authGet[A](uri: String, user: UserWithPassword = defaultUser, headers: Map[String, String] = Map.empty)(f: => A) = {
+    get(uri, headers = authHeaders(user) ++ headers)(f)
   }
 }
