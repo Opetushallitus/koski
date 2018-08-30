@@ -210,7 +210,7 @@ object OpiskeluoikeusLoader extends Logging {
     // Note: When adding something here, remember to update aikajaksojenAlkupäivät (below), too
   }
 
-  val IndefiniteFuture = LocalDate.of(2112, 12, 21) // no special meaning, but same value used in Virta to mean "forever"
+  val IndefiniteFuture = LocalDate.of(9999, 12, 31) // no special meaning, but must be after any possible real alkamis/päättymispäivä
 
   private def aikajaksot(o: KoskeenTallennettavaOpiskeluoikeus): Seq[(LocalDate, LocalDate)] = {
     val alkupäivät: Seq[LocalDate] = mahdollisetAikajaksojenAlkupäivät(o)
@@ -219,6 +219,10 @@ object OpiskeluoikeusLoader extends Logging {
     val rajatutAlkupäivät = alkupäivät
       .filterNot(_.isBefore(alkamispäivä))
       .filterNot(_.isAfter(päättymispäivä))
+    if (rajatutAlkupäivät.isEmpty) {
+      // Can happen only if alkamispäivä or päättymispäivä are totally bogus (e.g. in year 10000)
+      throw new RuntimeException(s"Virheelliset alkamis-/päättymispäivät: ${o.oid} $alkamispäivä $päättymispäivä")
+    }
     rajatutAlkupäivät.zip(rajatutAlkupäivät.tail.map(_.minusDays(1)) :+ päättymispäivä)
   }
 
