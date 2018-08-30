@@ -47,7 +47,7 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
   }
   def createOpiskeluoikeusIndexes: Unit = {
     // plain "runDbSync" times out after 1 minute, which is too short here
-    Futures.await(db.run(RaportointiDatabaseSchema.createOpiskeluoikeusIndexes), atMost = 15.minutes)
+    Futures.await(db.run(RaportointiDatabaseSchema.createOpiskeluoikeusIndexes), atMost = 30.minutes)
   }
 
   def deleteOpiskeluoikeudet: Unit =
