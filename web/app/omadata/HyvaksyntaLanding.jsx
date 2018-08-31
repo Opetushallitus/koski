@@ -1,3 +1,4 @@
+import '../polyfills/polyfills.js'
 import React from 'baret'
 import ReactDOM from 'react-dom'
 import UusiHyvaksynta from './UusiHyvaksynta'
