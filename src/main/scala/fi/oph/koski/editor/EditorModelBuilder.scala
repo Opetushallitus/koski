@@ -267,19 +267,14 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
   }
 
   def createModelProperty(property: Property, propertyModel: EditorModel): EditorProperty = {
-    val hidden = property.metadata.contains(Hidden())
-    val representative: Boolean = property.metadata.contains(Representative())
-    val flatten: Boolean = property.metadata.contains(FlattenInUI())
-    val complexObject: Boolean = property.metadata.contains(ComplexObject())
-    val tabular: Boolean = property.metadata.contains(Tabular())
-    val readOnly: Boolean = property.metadata.find(_.isInstanceOf[ReadOnly]).isDefined
+    val readOnly: Boolean = property.metadata.exists(_.isInstanceOf[ReadOnly])
     val onlyWhen = property.metadata.collect{case o:OnlyWhen => EditorModelSerializer.serializeOnlyWhen(o)}
     var props  = Map.empty[String, JValue]
-    if (hidden) props += ("hidden" -> JBool(true))
-    if (representative) props += ("representative" -> JBool(true))
-    if (flatten) props += ("flatten" -> JBool(true))
-    if (complexObject) props += ("complexObject" -> JBool(true))
-    if (tabular) props += ("tabular" -> JBool(true))
+    if (property.metadata.contains(Hidden())) props += ("hidden" -> JBool(true))
+    if (property.metadata.contains(Representative())) props += ("representative" -> JBool(true))
+    if (property.metadata.contains(FlattenInUI())) props += ("flatten" -> JBool(true))
+    if (property.metadata.contains(ComplexObject())) props += ("complexObject" -> JBool(true))
+    if (property.metadata.contains(Tabular())) props += ("tabular" -> JBool(true))
     if (!readOnly) props += ("editable" -> JBool(true))
     if (SensitiveDataFilter(context.user).sensitiveHidden(property.metadata)) props += ("sensitiveHidden" -> JBool(true))
     if (!onlyWhen.isEmpty) props +=("onlyWhen" -> JArray(onlyWhen))
