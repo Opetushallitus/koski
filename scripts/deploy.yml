@@ -24,7 +24,7 @@
     ignore_errors: true
   - name: Previous version
     debug: var=buildversion.stdout_lines
-    when: not buildversion.failed
+    when: buildversion.failed is not defined or not buildversion.failed
   - name: Stop koski service
     service: name=koski state=stopped
   - name: Remove old application directory
