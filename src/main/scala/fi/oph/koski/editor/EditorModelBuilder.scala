@@ -16,7 +16,7 @@ import fi.oph.koski.todistus.LocalizedHtml
 import fi.oph.koski.util.OptionalLists
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation._
-import org.json4s.JsonAST.JBool
+import org.json4s.JsonAST.{JBool, JString}
 import org.json4s.{JArray, JValue}
 
 object EditorModelBuilder {
@@ -278,6 +278,9 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
     if (!readOnly) props += ("editable" -> JBool(true))
     if (SensitiveDataFilter(context.user).sensitiveHidden(property.metadata)) props += ("sensitiveHidden" -> JBool(true))
     if (!onlyWhen.isEmpty) props +=("onlyWhen" -> JArray(onlyWhen))
+    SchemaLocalization.deprecated(property)
+      .map { case (key, _) => context.localizationRepository.get(key).get(context.user.lang) }
+      .foreach { d => props += ("deprecated" -> JString(d)) }
 
     val description = SchemaLocalization.tooltip(property).map{ case (key, text) => context.localizationRepository.get(key).get(context.user.lang) }
 
