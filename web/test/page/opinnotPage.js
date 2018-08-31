@@ -1,7 +1,7 @@
 function OpinnotPage() {
   function resolveOpiskeluoikeus(indexOrName, omatTiedot) {
     omatTiedot = omatTiedot || false
-    const all = !omatTiedot
+    var all = !omatTiedot
       ? S('.opiskeluoikeuksientiedot > li > div.opiskeluoikeus')
       : S('.opiskeluoikeudet-list > li > div.opiskeluoikeus-container')
 

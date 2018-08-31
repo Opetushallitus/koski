@@ -1,51 +1,64 @@
-const MyDataPage = () => {
+function MyDataPage() {
 
-  const currentURL = new URL(window.location.href)
-  const callbackURL = `${currentURL.protocol}//${currentURL.hostname}:${currentURL.port}/koski/pulssi`
+  var callbackURL = window.location.origin + "/koski/pulssi"
 
-  const api = {
-    openPage: () => {
-      return openPage(`/koski/omadata/valtuutus/hsl?callback=${callbackURL}`, () => true )()
+  var api = {
+    openPage: function() {
+      return openPage("/koski/omadata/valtuutus/hsl?callback=" + callbackURL, function() { return true  })()
     },
-    currentURL,
-    callbackURL,
-    go: () => {
+    callbackURL: callbackURL,
+    go: function() {
       return openPage('/koski/omadata/valtuutus/hsl')()
     },
-    isVisible: () => {
+    isVisible: function() {
       return isElementVisible(S('.username')) && isElementVisible(S('.user > .dateofbirth'))
     },
-    login: ()  => {
+    login: function() {
       return click(findSingle('.lander button'))
     },
-    delAuthCookie: () => {
+    delAuthCookie: function() {
       document.cookie = '_shibsession_=; path=/; expires=Thu, 01 Jan 1980 00:00:01 GMT; Max-Age=0'
     },
-    addLangCookie: (lang) => {
-      document.cookie = `lang=${lang}; path=/`
+    addLangCookie: function(lang) {
+      document.cookie = "lang=" + lang + "; path=/"
     },
-    getUserName: () => {
+    getUserName: function() {
       return extractAsText(S('.user > .username'))
     },
-    getBirthDate: () => {
+    getBirthDate: function() {
       return extractAsText(S('.user > .dateofbirth'))
     },
-    getMemberName: () => {
+    getMemberName: function() {
       return extractAsText(S('.acceptance-member-name'))
     },
-    clickAccept: () => {
+    clickAccept: function() {
       return click('.acceptance-button-container > .acceptance-button')()
     },
-    clickLogout: () => click('.logout > a')(),
-    clickCancel: () => click('a > .decline-link')(),
-    clickChangeLang: () => click('.lang > .change-lang')(),
-    isInFinnish: () => isElementVisible(S('.change-lang')) && extractAsText(S('.change-lang')) === 'På svenska',
-    isInSwedish: () => isElementVisible(S('.change-lang')) && extractAsText(S('.change-lang')) === 'Suomeksi',
+    clickLogout: function() {
+      return click('.logout > a')()
+    },
+    clickCancel: function() {
+      return click('a > .decline-link')()
+    },
+    clickChangeLang: function() {
+      return click('.lang > .change-lang')()
+    },
+    isInFinnish: function() {
+      return isElementVisible(S('.change-lang')) && extractAsText(S('.change-lang')) === 'På svenska'
+    },
+    isInSwedish: function() {
+      return isElementVisible(S('.change-lang')) && extractAsText(S('.change-lang')) === 'Suomeksi'
+    },
     accepted: {
-      isVisible: () => isElementVisible(S('.acceptance-title-success')),
-      isReturnButtonVisible: () => isElementVisible(S('.acceptance-return-button')),
-      clickReturn: () => click('.acceptance-return-button')()
-
+      isVisible: function() {
+        return isElementVisible(S('.acceptance-title-success'))
+      },
+      isReturnButtonVisible: function() {
+        return isElementVisible(S('.acceptance-return-button'))
+      },
+      clickReturn: function() {
+        return click('.acceptance-return-button')()
+      }
     }
   }
   return api
