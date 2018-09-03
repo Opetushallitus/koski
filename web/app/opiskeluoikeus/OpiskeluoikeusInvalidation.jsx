@@ -3,6 +3,7 @@ import Bacon from 'baconjs'
 import Text from '../i18n/Text'
 import {modelData} from '../editor/EditorModel'
 import {invalidateOpiskeluoikeus} from '../virkailija/VirkailijaOppijaView'
+import ButtonWithConfirmation from '../components/ButtonWithConfirmation'
 
 export const setOpiskeluoikeusInvalidated = () => sessionStorage.setItem('opiskeluoikeusInvalidated', true)
 export const resetOpiskeluoikeusInvalidated = () => sessionStorage.removeItem('opiskeluoikeusInvalidated')
@@ -20,17 +21,14 @@ export const OpiskeluoikeusInvalidatedMessage = ({location}) => {
   </div>)
 }
 
-export class InvalidateOpiskeluoikeusButton extends React.Component {
-  render() {
-    let { opiskeluoikeus } = this.props
-    let deleteRequested = this.state && this.state.deleteRequested
-
-    return deleteRequested
-      ? (<div className="invalidate">
-        <a onClick={() => this.setState({deleteRequested: false})}><Text name="Peruuta mitätöinti" /></a>
-        <button className="koski-button confirm-invalidate" onClick={() => invalidateOpiskeluoikeus(modelData(opiskeluoikeus, 'oid'))}><Text name="Vahvista mitätöinti, operaatiota ei voi peruuttaa" /></button>
-      </div>)
-      : <a className="invalidate" onClick={() => this.setState({deleteRequested: true})}><Text name="Mitätöi opiskeluoikeus" /></a>
-  }
-}
+export const InvalidateOpiskeluoikeusButton = ({opiskeluoikeus}) => (
+  <ButtonWithConfirmation
+    text='Mitätöi opiskeluoikeus'
+    confirmationText='Vahvista mitätöinti, operaatiota ei voi peruuttaa'
+    cancelText='Peruuta mitätöinti'
+    action={() => invalidateOpiskeluoikeus(modelData(opiskeluoikeus, 'oid'))}
+    className='invalidate'
+    confirmationClassName='confirm-invalidate'
+  />
+)
 
