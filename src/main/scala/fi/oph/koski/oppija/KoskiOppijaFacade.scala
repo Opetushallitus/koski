@@ -165,8 +165,12 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
     if (oo.suoritukset.length == 1) {
       Left(KoskiErrorCategory.forbidden.ainoanPäätasonSuorituksenPoisto())
     } else {
-      val (l, r) = oo.suoritukset.splitAt(päätasonSuoritusIndex)
-      Right(oo.withSuoritukset(l ::: r.drop(1)))
+      oo match {
+        case _: PerusopetuksenOpiskeluoikeus | _: AikuistenPerusopetuksenOpiskeluoikeus =>
+          val (l, r) = oo.suoritukset.splitAt(päätasonSuoritusIndex)
+          Right(oo.withSuoritukset(l ::: r.drop(1)))
+        case _ => Left(KoskiErrorCategory.badRequest())
+      }
     }
   }
 
