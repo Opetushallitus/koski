@@ -72,23 +72,20 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
     }
   }
 
-  def invalidateOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] =
+  def invalidate(opiskeluoikeusOid: String, invalidationFn: Oppija => Either[HttpStatus, Oppija], updateFn: Oppija => Either[HttpStatus, HenkilönOpiskeluoikeusVersiot])(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] =
     opiskeluoikeusRepository.findByOid(opiskeluoikeusOid).flatMap { row =>
       if (!OpiskeluoikeusAccessChecker.isInvalidatable(row.toOpiskeluoikeus, user)) {
         Left(KoskiErrorCategory.forbidden("Mitätöinti ei sallittu"))
       } else {
-        findOppija(row.oppijaOid).map(_.getIgnoringWarnings).flatMap(cancelOpiskeluoikeus(opiskeluoikeusOid))
+        findOppija(row.oppijaOid).map(_.getIgnoringWarnings).flatMap(invalidationFn)
       }
-    }.flatMap(oppija => createOrUpdate(oppija, allowUpdate = true))
+    }.flatMap(updateFn)
+
+  def invalidateOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] =
+    invalidate(opiskeluoikeusOid, cancelOpiskeluoikeus(opiskeluoikeusOid), oppija => createOrUpdate(oppija, allowUpdate = true))
 
   def invalidatePäätasonSuoritus(opiskeluoikeusOid: String, päätasonSuoritusIndex: Int)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] =
-    opiskeluoikeusRepository.findByOid(opiskeluoikeusOid).flatMap { row =>
-      if (!OpiskeluoikeusAccessChecker.isInvalidatable(row.toOpiskeluoikeus, user)) {
-        Left(KoskiErrorCategory.forbidden("Mitätöinti ei sallittu"))
-      } else {
-        findOppija(row.oppijaOid).map(_.getIgnoringWarnings).flatMap(cancelPäätasonSuoritus(opiskeluoikeusOid, päätasonSuoritusIndex))
-      }
-    }.flatMap(oppija => createOrUpdate(oppija, allowUpdate = true))
+    invalidate(opiskeluoikeusOid, cancelPäätasonSuoritus(opiskeluoikeusOid, päätasonSuoritusIndex), oppija => createOrUpdate(oppija, allowUpdate = true))
 
   private def createOrUpdateOpiskeluoikeus(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowUpdate: Boolean)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusVersio] = {
     if (oppijaOid.oppijaOid == user.oid) {
