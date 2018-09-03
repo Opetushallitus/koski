@@ -81,6 +81,15 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
       }
     }.flatMap(oppija => createOrUpdate(oppija, allowUpdate = true))
 
+  def invalidatePäätasonSuoritus(opiskeluoikeusOid: String, päätasonSuoritusIndex: Int)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] =
+    opiskeluoikeusRepository.findByOid(opiskeluoikeusOid).flatMap { row =>
+      if (!OpiskeluoikeusAccessChecker.isInvalidatable(row.toOpiskeluoikeus, user)) {
+        Left(KoskiErrorCategory.forbidden("Mitätöinti ei sallittu"))
+      } else {
+        findOppija(row.oppijaOid).map(_.getIgnoringWarnings).flatMap(cancelPäätasonSuoritus(opiskeluoikeusOid, päätasonSuoritusIndex))
+      }
+    }.flatMap(oppija => createOrUpdate(oppija, allowUpdate = true))
+
   private def createOrUpdateOpiskeluoikeus(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowUpdate: Boolean)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusVersio] = {
     if (oppijaOid.oppijaOid == user.oid) {
       Left(KoskiErrorCategory.forbidden.omienTietojenMuokkaus())
@@ -133,6 +142,13 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
       .map(oo => oppija.copy(opiskeluoikeudet = List(oo)))
   }
 
+  private def cancelPäätasonSuoritus(opiskeluoikeusOid: String, päätasonSuoritusIndex: Int)(oppija: Oppija): Either[HttpStatus, Oppija] = {
+    oppija.tallennettavatOpiskeluoikeudet.find(_.oid.exists(_ == opiskeluoikeusOid))
+      .toRight(KoskiErrorCategory.notFound())
+      .map(invalidatedPäätasonSuoritus(päätasonSuoritusIndex))
+      .map(oo => oppija.copy(opiskeluoikeudet = List(oo)))
+  }
+
   private def invalidated(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, Opiskeluoikeus] = {
     (oo.tila match {
       case t: AmmatillinenOpiskeluoikeudenTila =>
@@ -146,6 +162,11 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
       case t: KorkeakoulunOpiskeluoikeudenTila => Left(KoskiErrorCategory.badRequest())
       case t: YlioppilastutkinnonOpiskeluoikeudenTila => Left(KoskiErrorCategory.badRequest())
     }).map(oo.withTila).map(_.withPäättymispäivä(now))
+  }
+
+  private def invalidatedPäätasonSuoritus(päätasonSuoritusIndex: Int)(oo: KoskeenTallennettavaOpiskeluoikeus): Opiskeluoikeus = {
+    val (l, r) = oo.suoritukset.splitAt(päätasonSuoritusIndex)
+    oo.withSuoritukset(l ::: r.drop(1))
   }
 
   // Hakee oppijan oppijanumerorekisteristä ja liittää siihen opiskeluoikeudet. Opiskeluoikeudet haetaan vain, jos oppija löytyy.
