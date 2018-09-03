@@ -84,8 +84,8 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
   def invalidateOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] =
     invalidate(opiskeluoikeusOid, cancelOpiskeluoikeus(opiskeluoikeusOid), oppija => createOrUpdate(oppija, allowUpdate = true))
 
-  def invalidatePäätasonSuoritus(opiskeluoikeusOid: String, päätasonSuoritusIndex: Int, versionumero: Int)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] =
-    invalidate(opiskeluoikeusOid, cancelPäätasonSuoritus(opiskeluoikeusOid, päätasonSuoritusIndex, versionumero), oppija => createOrUpdate(oppija, allowUpdate = true, allowDeleteCompleted = true))
+  def invalidatePäätasonSuoritus(opiskeluoikeusOid: String, päätasonSuoritus: PäätasonSuoritus, versionumero: Int)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] =
+    invalidate(opiskeluoikeusOid, cancelPäätasonSuoritus(opiskeluoikeusOid, päätasonSuoritus, versionumero), oppija => createOrUpdate(oppija, allowUpdate = true, allowDeleteCompleted = true))
 
   private def createOrUpdateOpiskeluoikeus(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowUpdate: Boolean, allowDeleteCompleted: Boolean = false)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusVersio] = {
     if (oppijaOid.oppijaOid == user.oid) {
@@ -139,7 +139,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
       .map(oo => oppija.copy(opiskeluoikeudet = List(oo)))
   }
 
-  private def cancelPäätasonSuoritus(opiskeluoikeusOid: String, päätasonSuoritusIndex: Int, versionumero: Int)(oppija: Oppija): Either[HttpStatus, Oppija] = {
+  private def cancelPäätasonSuoritus(opiskeluoikeusOid: String, päätasonSuoritus: PäätasonSuoritus, versionumero: Int)(oppija: Oppija): Either[HttpStatus, Oppija] = {
     oppija.tallennettavatOpiskeluoikeudet.find(_.oid.exists(_ == opiskeluoikeusOid))
       .toRight(KoskiErrorCategory.notFound())
       .flatMap(oo => oo.versionumero match {
@@ -147,7 +147,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
         case v: Option[Int] if v.isDefined => Left(KoskiErrorCategory.conflict.versionumero())
         case _ => Left(KoskiErrorCategory.badRequest())
       })
-      .flatMap(withoutPäätasonSuoritus(päätasonSuoritusIndex))
+      .flatMap(withoutPäätasonSuoritus(päätasonSuoritus))
       .map(oo => oppija.copy(opiskeluoikeudet = List(oo)))
   }
 
@@ -166,14 +166,18 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
     }).map(oo.withTila).map(_.withPäättymispäivä(now))
   }
 
-  private def withoutPäätasonSuoritus(päätasonSuoritusIndex: Int)(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, Opiskeluoikeus] = {
+  private def withoutPäätasonSuoritus(päätasonSuoritus: PäätasonSuoritus)(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, Opiskeluoikeus] = {
     if (oo.suoritukset.length == 1) {
       Left(KoskiErrorCategory.forbidden.ainoanPäätasonSuorituksenPoisto())
     } else {
       oo match {
         case _: PerusopetuksenOpiskeluoikeus | _: AikuistenPerusopetuksenOpiskeluoikeus =>
-          val (l, r) = oo.suoritukset.splitAt(päätasonSuoritusIndex)
-          Right(oo.withSuoritukset(l ::: r.drop(1)))
+          val poistetullaSuorituksella = oo.suoritukset.filterNot(_ == päätasonSuoritus)
+          if (poistetullaSuorituksella.length != (oo.suoritukset.length - 1)) {
+            Left(KoskiErrorCategory.internalError())
+          } else {
+            Right(oo.withSuoritukset(poistetullaSuorituksella))
+          }
         case _ => Left(KoskiErrorCategory.badRequest())
       }
     }
