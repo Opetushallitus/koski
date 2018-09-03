@@ -18,8 +18,13 @@ class OpiskeluoikeusServlet(implicit val application: KoskiApplication) extends 
     renderEither[KoskeenTallennettavaOpiskeluoikeus](result.map(_.toOpiskeluoikeus))
   }
 
-  delete("/:oid/:index") {
-    val result = application.oppijaFacade.invalidatePäätasonSuoritus(getStringParam("oid"), getIntegerParam("index"))
+  delete("/:oid/:versionumero/:index") {
+    val result = application.oppijaFacade.invalidatePäätasonSuoritus(
+      getStringParam("oid"),
+      getIntegerParam("index"),
+      getIntegerParam("versionumero")
+    )
+
     result.foreach(_ => application.elasticSearch.refreshIndex)
     renderEither[HenkilönOpiskeluoikeusVersiot](result)
   }

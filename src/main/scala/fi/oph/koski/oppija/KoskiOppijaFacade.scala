@@ -84,8 +84,8 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
   def invalidateOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] =
     invalidate(opiskeluoikeusOid, cancelOpiskeluoikeus(opiskeluoikeusOid), oppija => createOrUpdate(oppija, allowUpdate = true))
 
-  def invalidatePäätasonSuoritus(opiskeluoikeusOid: String, päätasonSuoritusIndex: Int)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] =
-    invalidate(opiskeluoikeusOid, cancelPäätasonSuoritus(opiskeluoikeusOid, päätasonSuoritusIndex), oppija => createOrUpdate(oppija, allowUpdate = true, allowDeleteCompleted = true))
+  def invalidatePäätasonSuoritus(opiskeluoikeusOid: String, päätasonSuoritusIndex: Int, versionumero: Int)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] =
+    invalidate(opiskeluoikeusOid, cancelPäätasonSuoritus(opiskeluoikeusOid, päätasonSuoritusIndex, versionumero), oppija => createOrUpdate(oppija, allowUpdate = true, allowDeleteCompleted = true))
 
   private def createOrUpdateOpiskeluoikeus(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowUpdate: Boolean, allowDeleteCompleted: Boolean = false)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusVersio] = {
     if (oppijaOid.oppijaOid == user.oid) {
@@ -139,9 +139,14 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
       .map(oo => oppija.copy(opiskeluoikeudet = List(oo)))
   }
 
-  private def cancelPäätasonSuoritus(opiskeluoikeusOid: String, päätasonSuoritusIndex: Int)(oppija: Oppija): Either[HttpStatus, Oppija] = {
+  private def cancelPäätasonSuoritus(opiskeluoikeusOid: String, päätasonSuoritusIndex: Int, versionumero: Int)(oppija: Oppija): Either[HttpStatus, Oppija] = {
     oppija.tallennettavatOpiskeluoikeudet.find(_.oid.exists(_ == opiskeluoikeusOid))
       .toRight(KoskiErrorCategory.notFound())
+      .flatMap(oo => oo.versionumero match {
+        case v: Option[Int] if v.contains(versionumero) => Right(oo)
+        case v: Option[Int] if v.isDefined => Left(KoskiErrorCategory.conflict.versionumero())
+        case _ => Left(KoskiErrorCategory.badRequest())
+      })
       .flatMap(invalidatedPäätasonSuoritus(päätasonSuoritusIndex))
       .map(oo => oppija.copy(opiskeluoikeudet = List(oo)))
   }
