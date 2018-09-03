@@ -147,7 +147,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
         case v: Option[Int] if v.isDefined => Left(KoskiErrorCategory.conflict.versionumero())
         case _ => Left(KoskiErrorCategory.badRequest())
       })
-      .flatMap(invalidatedPäätasonSuoritus(päätasonSuoritusIndex))
+      .flatMap(withoutPäätasonSuoritus(päätasonSuoritusIndex))
       .map(oo => oppija.copy(opiskeluoikeudet = List(oo)))
   }
 
@@ -166,7 +166,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
     }).map(oo.withTila).map(_.withPäättymispäivä(now))
   }
 
-  private def invalidatedPäätasonSuoritus(päätasonSuoritusIndex: Int)(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, Opiskeluoikeus] = {
+  private def withoutPäätasonSuoritus(päätasonSuoritusIndex: Int)(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, Opiskeluoikeus] = {
     if (oo.suoritukset.length == 1) {
       Left(KoskiErrorCategory.forbidden.ainoanPäätasonSuorituksenPoisto())
     } else {
