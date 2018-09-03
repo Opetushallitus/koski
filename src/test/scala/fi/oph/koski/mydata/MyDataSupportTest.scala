@@ -33,7 +33,7 @@ class MyDataSupportTest extends FreeSpec with Matchers with MockFactory {
       (mockRequest.getRequestURI _).expects().returning("/koski/omadata/valtuutus/hsl")
 
       support(mockRequest).getShibbolethLoginURL(lang = lang) should
-        equal("/koski/login/shibboleth?login=%2Fkoski%2Fuser%2Fshibbolethlogin%3FonSuccess%3D%2Fkoski%2Fomadata%2Fvaltuutus%2Fhsl%3Fcallback%3Dhttp%3A%2F%2Fwww.hsl.fi")
+        equal("/koski/login/shibboleth?login=%2Fkoski%2Fuser%2Fshibbolethlogin%3FonSuccess%3D%2Fkoski%2Fomadata%2Fvaltuutus%2Fhsl%3Fcallback%3Dhttp%3A%2F%2Fwww.hsl.fi&redirect=%2Fkoski%2Fomadata%2Fvaltuutus%2Fhsl%3Fcallback%3Dhttp%3A%2F%2Fwww.hsl.fi")
     }
     "Palauttaa oikean URL:n sisään loganneille" in {
       val mockRequest = mock[HttpServletRequest]

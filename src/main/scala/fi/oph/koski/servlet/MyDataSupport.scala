@@ -23,7 +23,16 @@ trait MyDataSupport extends ScalatraServlet with MyDataConfig {
 
   def getShibbolethLoginURL(target: String = getCurrentURL, lang: String) = {
     conf.getString(s"login.shibboleth.$lang") +
-      conf.getString("login.shibboleth.targetparam") + getLoginURL(target, encode = true)
+      conf.getString("login.shibboleth.targetparam") + getLoginURL(target, encode = true) +
+      getKorhopankkiRedirectURLParameter(target)
+  }
+
+  def getKorhopankkiRedirectURLParameter(target: String): String = {
+    if(application.config.getString("shibboleth.security") == "mock") {
+      s"&redirect=${URLEncoder.encode(target, "UTF-8")}"
+    } else {
+      ""
+    }
   }
 
   def getCurrentURL: String = {
