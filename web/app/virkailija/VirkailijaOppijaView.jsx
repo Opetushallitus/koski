@@ -27,7 +27,7 @@ import {doActionWhileMounted, flatMapArray} from '../util/util'
 import Text from '../i18n/Text'
 import {t} from '../i18n/i18n'
 import {EditLocalizationsLink} from '../i18n/EditLocalizationsLink'
-import {setOpiskeluoikeusInvalidated} from '../opiskeluoikeus/OpiskeluoikeusInvalidation'
+import {setInvalidationNotification} from '../components/InvalidationNotification'
 import {userP} from '../util/user'
 import {Varoitukset} from '../util/Varoitukset'
 
@@ -254,6 +254,6 @@ const EditBar = ({stateP, saveChangesBus, cancelChangesBus, oppija}) => {
 }
 
 const opiskeluoikeusInvalidated = () => {
-  setOpiskeluoikeusInvalidated()
+  setInvalidationNotification('Opiskeluoikeus mitätöity')
   window.location = '/koski/virkailija'
 }
