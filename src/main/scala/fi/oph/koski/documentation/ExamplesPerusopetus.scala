@@ -81,6 +81,13 @@ object ExamplesPerusopetus {
 
   lazy val päättötodistus = oppija(opiskeluoikeus = päättötodistusOpiskeluoikeus())
 
+  lazy val erityisenTuenPäätös = ErityisenTuenPäätös(
+    alku = Some(date(2008, 8, 15)),
+    loppu = Some(date(2016, 6, 4)),
+    opiskeleeToimintaAlueittain = true,
+    erityisryhmässä = Some(true)
+  )
+
   lazy val toimintaAlueittainOpiskelija = Oppija(
     exampleHenkilö,
     List(PerusopetuksenOpiskeluoikeus(
@@ -109,12 +116,8 @@ object ExamplesPerusopetus {
         )
       ),
       lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
-        erityisenTuenPäätökset = Some(List(ErityisenTuenPäätös(
-          alku = Some(date(2008, 8, 15)),
-          loppu = Some(date(2016, 6, 4)),
-          opiskeleeToimintaAlueittain = true,
-          erityisryhmässä = Some(true)
-        ))),
+        erityisenTuenPäätös = Some(erityisenTuenPäätös),
+        erityisenTuenPäätökset = Some(List(erityisenTuenPäätös)),
         perusopetuksenAloittamistaLykätty = true,
         aloittanutEnnenOppivelvollisuutta = false,
         pidennettyOppivelvollisuus = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),

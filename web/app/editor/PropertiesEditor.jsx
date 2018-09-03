@@ -2,7 +2,7 @@ import React from 'react'
 import {addContext, modelEmpty, modelItems} from './EditorModel.js'
 import {Editor} from './Editor'
 import {ArrayEditor} from './ArrayEditor'
-import {checkOnlyWhen, modelProperties} from './EditorModel'
+import {checkOnlyWhen, modelErrorMessages, modelProperties} from './EditorModel'
 import Text from '../i18n/Text'
 import {buildClassNames} from '../components/classnames'
 import {flatMapArray} from '../util/util'
@@ -34,9 +34,9 @@ export class PropertiesEditor extends React.Component {
         let key = prefix + property.key + i
         let propertyClassName = 'property ' + property.key
         let valueClass = modelEmpty(property.model) ? 'value empty' : 'value'
-        let valueEditor = property.tabular
+        let valueEditor = (<ErrorDecorator model={property.model} parentKey={key} editor={property.tabular
           ? <TabularArrayEditor model={property.model} />
-          : getValueEditor(property, () => <Editor model={propertyEditable(property) ? property.model : addContext(property.model, { edit: false })}/> )
+          : getValueEditor(property, () => <Editor model={propertyEditable(property) ? property.model : addContext(property.model, { edit: false })}/> )} />)
 
         return [(<tr className={propertyClassName} key={key}>
           {
@@ -63,6 +63,11 @@ export class PropertiesEditor extends React.Component {
 }
 PropertiesEditor.canShowInline = () => false
 
+const ErrorDecorator = ({editor, model, parentKey}) => {
+  const errorMsgs = model.context && modelErrorMessages(model).map((error, i) => <div key={parentKey + '-' + i} className="propertyError error">{error}</div>) || []
+  return [<React.Fragment key={'editor-' + parentKey}>{editor}</React.Fragment>].concat(errorMsgs)
+}
+
 export const PropertyTitle = ({property}) => {
   let description = property.description && property.description.join(' ')
   if (description) {
@@ -75,6 +80,7 @@ export const PropertyTitle = ({property}) => {
 export const shouldShowProperty = (context) => (property) => {
   if (!context.edit && modelEmpty(property.model)) return false
   if (property.hidden) return false
+  if (property.deprecated && modelEmpty(property.model)) return false
   if (property.onlyWhen && !checkOnlyWhen(property.owner, property.onlyWhen)) return false
   return true
 }

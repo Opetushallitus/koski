@@ -288,6 +288,33 @@ describe('Perusopetus', function() {
         })
       })
 
+      describe('Deprekoidut kentät', function() {
+        before(opinnot.expandAll, editor.edit, editor.property('opiskeleeToimintaAlueittain').setValue(false))
+
+        it('muokkaus estetty', function() {
+          expect(extractAsText(findSingle('.lisätiedot .erityisenTuenPäätös .propertyError'))).to.equal('Käytä korvaavaa kenttää Erityisen tuen päätökset')
+          expect(editor.canSave()).to.equal(false)
+        })
+
+        describe('Jos ei sisällä dataa', function() {
+          before(
+            page.openPage,
+            page.oppijaHaku.searchAndSelect('220109-784L'),
+            editor.edit,
+            wait.untilVisible(findSingle('.lisätiedot .expandable')),
+            opinnot.expandAll
+          )
+
+          it('piilotetaan', function() {
+            var lisätiedot = textsOf(S('.lisätiedot .property .label'))
+            expect(lisätiedot.includes('Erityisen tuen päätös')).to.equal(false)
+            expect(lisätiedot.includes('Erityisen tuen päätökset')).to.equal(true)
+            expect(lisätiedot.includes('Tehostetun tuen päätös')).to.equal(false)
+            expect(lisätiedot.includes('Tehostetun tuen päätökset')).to.equal(true)
+          })
+        })
+      })
+
       describe('Tulostettava todistus', function() {
         before(opinnot.valitseSuoritus(undefined, 'Päättötodistus'), opinnot.avaaTodistus())
         it('näytetään', function() {
