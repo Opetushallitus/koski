@@ -17,7 +17,7 @@ export default ({location, user, titleKey}) => {
       {(user !== null) &&
       <div className='topbarnav'>
         <NavList location={location} user={user}/>
-        <InvalidationNotification location={location} />
+        <InvalidationNotification/>
       </div>
       }
     </header>
