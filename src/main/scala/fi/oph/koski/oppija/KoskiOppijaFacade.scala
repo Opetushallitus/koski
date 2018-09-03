@@ -142,7 +142,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
   private def cancelPäätasonSuoritus(opiskeluoikeusOid: String, päätasonSuoritusIndex: Int)(oppija: Oppija): Either[HttpStatus, Oppija] = {
     oppija.tallennettavatOpiskeluoikeudet.find(_.oid.exists(_ == opiskeluoikeusOid))
       .toRight(KoskiErrorCategory.notFound())
-      .map(invalidatedPäätasonSuoritus(päätasonSuoritusIndex))
+      .flatMap(invalidatedPäätasonSuoritus(päätasonSuoritusIndex))
       .map(oo => oppija.copy(opiskeluoikeudet = List(oo)))
   }
 
@@ -161,9 +161,13 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
     }).map(oo.withTila).map(_.withPäättymispäivä(now))
   }
 
-  private def invalidatedPäätasonSuoritus(päätasonSuoritusIndex: Int)(oo: KoskeenTallennettavaOpiskeluoikeus): Opiskeluoikeus = {
-    val (l, r) = oo.suoritukset.splitAt(päätasonSuoritusIndex)
-    oo.withSuoritukset(l ::: r.drop(1))
+  private def invalidatedPäätasonSuoritus(päätasonSuoritusIndex: Int)(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, Opiskeluoikeus] = {
+    if (oo.suoritukset.length == 1) {
+      Left(KoskiErrorCategory.forbidden.ainoanPäätasonSuorituksenPoisto())
+    } else {
+      val (l, r) = oo.suoritukset.splitAt(päätasonSuoritusIndex)
+      Right(oo.withSuoritukset(l ::: r.drop(1)))
+    }
   }
 
   // Hakee oppijan oppijanumerorekisteristä ja liittää siihen opiskeluoikeudet. Opiskeluoikeudet haetaan vain, jos oppija löytyy.
