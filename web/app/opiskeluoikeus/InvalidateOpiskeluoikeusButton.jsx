@@ -3,7 +3,7 @@ import {modelData} from '../editor/EditorModel'
 import {invalidateOpiskeluoikeus} from '../virkailija/VirkailijaOppijaView'
 import ButtonWithConfirmation from '../components/ButtonWithConfirmation'
 
-export const InvalidateOpiskeluoikeusButton = ({opiskeluoikeus}) => (
+export default ({opiskeluoikeus}) => (
   <ButtonWithConfirmation
     text='Mitätöi opiskeluoikeus'
     confirmationText='Vahvista mitätöinti, operaatiota ei voi peruuttaa'

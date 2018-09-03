@@ -4,7 +4,7 @@ import {contextualizeModel} from './EditorModel.js'
 import {currentLocation} from '../util/location'
 import Text from '../i18n/Text'
 import {modelData} from './EditorModel'
-import {InvalidateOpiskeluoikeusButton} from '../opiskeluoikeus/OpiskeluoikeusInvalidation'
+import InvalidateOpiskeluoikeusButton from '../opiskeluoikeus/InvalidateOpiskeluoikeusButton'
 
 export class TogglableEditor extends React.Component {
   render() {
