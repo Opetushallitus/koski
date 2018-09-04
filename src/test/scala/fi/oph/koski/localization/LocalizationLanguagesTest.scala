@@ -1,7 +1,7 @@
 package fi.oph.koski.localization
 
 import fi.oph.koski.cache.GlobalCacheManager
-import org.scalatest.{FreeSpec, Matchers, Tag}
+import org.scalatest.{FreeSpec, Matchers}
 
 /**
   * Tests that Swedish translations exist in the environment defined by the VIRKAILIJA_ROOT environment variable
@@ -32,5 +32,3 @@ class LocalizationLanguagesTest extends FreeSpec with Matchers {
   private val eiTarvitseRuotsinkielistäKäännöstä =
     List("Creativity action service", "Effort", "Extended essay", "Synteettinen", "Varoitukset").toSet
 }
-
-object LocalizationTestTag extends Tag("localization")
