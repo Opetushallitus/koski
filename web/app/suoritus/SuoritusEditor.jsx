@@ -8,8 +8,24 @@ import Text from '../i18n/Text'
 import {resolveOsasuorituksetEditor, resolvePropertyEditor} from './suoritusEditorMapping'
 import {flatMapArray} from '../util/util'
 import DeletePaatasonSuoritusButton from './DeletePaatasonSuoritusButton'
+import {currentLocation} from '../util/location'
 
 export class SuoritusEditor extends React.Component {
+  showDeleteButtonIfAllowed() {
+    const {model} = this.props
+
+    const editingAny = !!currentLocation().params.edit
+    const showEditLink = model.editable && !editingAny
+    const showDeleteLink = model.invalidatable && !showEditLink
+
+    return showDeleteLink && (
+      <DeletePaatasonSuoritusButton
+        opiskeluoikeus={model.context.opiskeluoikeus}
+        päätasonSuoritus={model}
+      />
+    )
+  }
+
   render() {
     const excludedProperties = ['osasuoritukset', 'käyttäytymisenArvio', 'vahvistus', 'jääLuokalle', 'pakollinen']
 
@@ -21,10 +37,7 @@ export class SuoritusEditor extends React.Component {
 
     return (
       <div className={className}>
-        <DeletePaatasonSuoritusButton
-          opiskeluoikeus={model.context.opiskeluoikeus}
-          päätasonSuoritus={model}
-        />
+        {this.showDeleteButtonIfAllowed()}
         <TodistusLink suoritus={model} />
         <PropertiesEditor
           model={model}
