@@ -1110,6 +1110,10 @@
   "Peru lupa": "Peru lupa",
   "Et ole tällä hetkellä antanut millekään palveluntarjoajalle lupaa nähdä opintotietojasi Oma Opintopolusta. Luvan myöntäminen tapahtuu kyseisen palvelutarjoajan sivun kautta.": "Et ole tällä hetkellä antanut millekään palveluntarjoajalle lupaa nähdä opintotietojasi Oma Opintopolusta. Luvan myöntäminen tapahtuu kyseisen palvelutarjoajan sivun kautta.",
   "Kyllä, poista lupa": "Kyllä, poista lupa",
-  "Älä poista lupaa": "Älä poista lupaa"
+  "Älä poista lupaa": "Älä poista lupaa",
+  "Suoritus poistettu": "Suoritus poistettu",
+  "Poista suoritus": "Poista suoritus",
+  "Vahvista poisto, operaatiota ei voi peruuttaa": "Vahvista poisto, operaatiota ei voi peruuttaa",
+  "Peruuta poisto": "Peruuta poisto"
 }
 

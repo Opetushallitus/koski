@@ -7,6 +7,7 @@ import {arviointiPuuttuu, osasuoritukset, suoritusKesken, suoritusValmis} from '
 import Text from '../i18n/Text'
 import {resolveOsasuorituksetEditor, resolvePropertyEditor} from './suoritusEditorMapping'
 import {flatMapArray} from '../util/util'
+import DeletePaatasonSuoritusButton from './DeletePaatasonSuoritusButton'
 
 export class SuoritusEditor extends React.Component {
   render() {
@@ -20,6 +21,10 @@ export class SuoritusEditor extends React.Component {
 
     return (
       <div className={className}>
+        <DeletePaatasonSuoritusButton
+          opiskeluoikeus={model.context.opiskeluoikeus}
+          päätasonSuoritus={model}
+        />
         <TodistusLink suoritus={model} />
         <PropertiesEditor
           model={model}
