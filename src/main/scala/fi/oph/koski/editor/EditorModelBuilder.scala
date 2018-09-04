@@ -349,10 +349,19 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
       case _ => false
     }
     val editable = context.editable && !lähdejärjestelmällinen && orgWriteAccess
+
     val invalidatable = obj match {
       case o: Opiskeluoikeus => context.invalidatable && OpiskeluoikeusAccessChecker.isInvalidatable(o, context.user)
-      case _ => context.invalidatable // currently this flag is only used for Opiskeluoikeus
+      /*
+      In case of properties (such as Päätason suoritukset), context is relative to containing object (Opiskeluoikeus, in this case).
+      Here, we have already resolved invalidatability for Opiskeluoikeus, so we can 'inherit' the invalidatability for these Päätason suoritukset.
+      For other Päätason suoritukset, we explicitly mark invalidatability as false (which may be in contrast to their Opiskeluoikeus).
+       */
+      case _: PerusopetuksenPäätasonSuoritus | _: AikuistenPerusopetuksenPäätasonSuoritus => context.invalidatable
+      case _: PäätasonSuoritus => false
+      case _ => context.invalidatable
     }
+
     context.copy(editable = editable, invalidatable = invalidatable, root = false, prototypesBeingCreated = SchemaSet.empty)(context.user, context.koodisto, context.localizationRepository)
   }
 }
