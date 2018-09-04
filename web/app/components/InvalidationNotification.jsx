@@ -10,7 +10,8 @@ export const resetInvalidationNotification = () => sessionStorage.removeItem(NOT
 
 export class InvalidationNotification extends React.PureComponent {
   render() {
-    if (!sessionStorage.getItem(NOTIFICATION_STORAGE_KEY)) return null
+    const notification = sessionStorage.getItem(NOTIFICATION_STORAGE_KEY)
+    if (!notification) return null
 
     const hideBus = Bacon.Bus()
     const later = Bacon.later(5000)
@@ -19,7 +20,7 @@ export class InvalidationNotification extends React.PureComponent {
 
     return (
       <div id="invalidated" className={hideP.map(hideClass => 'opiskeluoikeus-invalidated ' + hideClass)}>
-        <Text name="Opiskeluoikeus mitätöity"/>
+        <Text name={notification}/>
         <a onClick={() => hideBus.push()} className="hide-invalidated-message"/>
       </div>
     )
