@@ -28,14 +28,10 @@ export class SuoritusjakoLink extends React.Component {
     }
 
     this.dateChangeBus = new Bacon.Bus()
-    this.inputChangeBus = new Bacon.Bus()
-
-    this.initUpdateBus()
-
-    this.feedbackBus = this.inputChangeBus.merge(this.updateBus)
+    this.feedbackBus = new Bacon.Bus()
   }
 
-  initUpdateBus() {
+  componentDidMount() {
     const debounced = this.dateChangeBus
       .toProperty()
       .changes()
@@ -46,7 +42,10 @@ export class SuoritusjakoLink extends React.Component {
     this.updateBus = debounced
       .flatMapLatest(date => date && doUpdate(this.props.suoritusjako.secret, formatISODate(date)))
 
-    this.updateBus.onValue(() => this.setState({isDateUpdatePending: false}))
+    this.updateBus.onValue(val => {
+      this.setState({isDateUpdatePending: false})
+      this.feedbackBus.push(val)
+    })
   }
 
   static isDateInFuture(date) {
