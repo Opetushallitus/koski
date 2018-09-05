@@ -69,7 +69,7 @@ class TiedonsiirtoFailureMailerSpec extends FreeSpec with Matchers with BeforeAn
     EmailContent(
       "no-reply@opintopolku.fi",
       "Virheellinen Koski-tiedonsiirto",
-      "<p>Automaattisessa tiedonsiirrossa tapahtui virhe.</p><p>Käykää ystävällisesti tarkistamassa tapahtuneet tiedonsiirrot osoitteessa: http://localhost:7021/koski/tiedonsiirrot</p>",
+      "<p>Automaattisessa tiedonsiirrossa tapahtui virhe.</p><p>Käykää ystävällisesti tarkistamassa tapahtuneet tiedonsiirrot osoitteessa: http://localhost:7021/koski/tiedonsiirrot/virheet</p>",
       html = true),
     List(EmailRecipient(emailAddress)))
 

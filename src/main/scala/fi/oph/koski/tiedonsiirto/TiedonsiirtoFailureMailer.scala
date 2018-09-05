@@ -33,7 +33,7 @@ class TiedonsiirtoFailureMailer(application: KoskiApplication, timeNow: => Local
         val mail: Email = Email(EmailContent(
           "no-reply@opintopolku.fi",
           "Virheellinen Koski-tiedonsiirto",
-          "<p>Automaattisessa tiedonsiirrossa tapahtui virhe.</p><p>Käykää ystävällisesti tarkistamassa tapahtuneet tiedonsiirrot osoitteessa: " + application.config.getString("koski.root.url") + "/tiedonsiirrot</p>",
+          "<p>Automaattisessa tiedonsiirrossa tapahtui virhe.</p><p>Käykää ystävällisesti tarkistamassa tapahtuneet tiedonsiirrot osoitteessa: " + application.config.getString("koski.root.url") + "/tiedonsiirrot/virheet</p>",
           html = true
         ), emailAddresses.map(EmailRecipient))
         logger.debug(s"Sending failure mail to ${emailAddresses.mkString(",")}")
