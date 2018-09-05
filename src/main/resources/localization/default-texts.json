@@ -1123,6 +1123,7 @@
   "tooltip:Mahdollisen tehostetun tuen päätösten alkamis-..." : "Mahdollisen tehostetun tuen päätösten alkamis- ja päättymispäivät. Voi olla useita erillisiä jaksoja.",
   "tooltip:Mahdollisen erityisen tuen päätösten alkamis-..." : "Mahdollisen erityisen tuen päätösten alkamis- ja päättymispäivät. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.",
   "description:Erityisen tuen päätökset alkamis- ja..." : "Erityisen tuen päätökset alkamis- ja päättymispäivineen. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.",
-  "description:Tehostetun tuen päätös. Lista alku-loppu..." : "Tehostetun tuen päätös. Lista alku-loppu päivämääräpareja."
+  "description:Tehostetun tuen päätös. Lista alku-loppu..." : "Tehostetun tuen päätös. Lista alku-loppu päivämääräpareja.",
+  "Pisin voimassaoloaika on vuosi": "Pisin voimassaoloaika on vuosi"
 }
 
