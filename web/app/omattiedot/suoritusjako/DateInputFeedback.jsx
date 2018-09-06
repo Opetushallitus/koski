@@ -39,6 +39,7 @@ export class DateInputFeedback extends React.Component {
     if (!date) this.setState({isVisible: true, renderFn: InvalidInput})
     else if (!yearValidator(date)) this.setState({isVisible: true, renderFn: MaxYear})
     else if (!futureValidator(date)) this.setState({isVisible: true, renderFn: InvalidInput})
+    else this.setState({isVisible: false})
   }
 
   render() {
