@@ -180,7 +180,7 @@ function OpinnotPage() {
     },
     invalidateOpiskeluoikeus: click(findSingle('.invalidate.invalidate-opiskeluoikeus')),
     confirmInvalidateOpiskeluoikeus: click(findSingle('.confirm-invalidate.invalidate-opiskeluoikeus__confirm')),
-    hideInvalidateMessage: click(findSingle('.hide-invalidated-message')),
+    hideInvalidateMessage: click(findSingle('.hide-invalidation-notification')),
     deletePäätasonSuoritus: click(findSingle('.invalidate.delete-paatason-suoritus')),
     confirmDeletePäätasonSuoritus: click(findSingle('.confirm-invalidate.delete-paatason-suoritus__confirm')),
     backToList: click(findSingle('.back-link'))
