@@ -13,8 +13,24 @@
       }
     }
 
-    .suoritus > .properties .dropdown {
-      width: 300px;
+    .suoritus {
+      &  > .properties .dropdown {
+        width: 300px;
+      }
+
+      & > .delete-paatason-suoritus-container {
+        margin-top: -25px;
+        height: 40px;
+        text-align: right;
+
+        & > .delete-paatason-suoritus {
+          position: relative;
+        }
+
+        & > a.delete-paatason-suoritus {
+          top: 10px;
+        }
+      }
     }
 
     .text-like-input, .dropdown {
