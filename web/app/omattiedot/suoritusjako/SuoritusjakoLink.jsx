@@ -111,6 +111,7 @@ export class SuoritusjakoLink extends React.Component {
             </div>
             <div className='suoritusjako-link__expiration'>
               <label htmlFor={labelId}><Text name='Linkin voimassaoloaika päättyy'/></label>
+              <div style={{display: 'inline'}} className={isDateUpdatePending ? 'ajax-indicator-right' : ''}>
               <DateInput
                 value={parseISODate(expirationDate)}
                 valueCallback={date => this.dateChangeBus.push(date)}
@@ -127,6 +128,7 @@ export class SuoritusjakoLink extends React.Component {
                 futureValidator={SuoritusjakoLink.isDateInFuture}
                 yearValidator={SuoritusjakoLink.isDateWithinYear}
               />
+             </div>
             </div>
           </div>
           <div className='suoritusjako-link__bottom-container'>
