@@ -8,7 +8,7 @@ export default ({opiskeluoikeus, päätasonSuoritus}) => (
     confirmationText='Vahvista poisto, operaatiota ei voi peruuttaa'
     cancelText='Peruuta poisto'
     action={() => deletePäätasonSuoritus(opiskeluoikeus, päätasonSuoritus)}
-    className='invalidate'
-    confirmationClassName='confirm-invalidate'
+    className='invalidate delete-paatason-suoritus'
+    confirmationClassName='confirm-invalidate delete-paatason-suoritus__confirm'
   />
 )

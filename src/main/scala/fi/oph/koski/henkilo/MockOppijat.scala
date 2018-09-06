@@ -53,6 +53,7 @@ object MockOppijat {
   val osittainenammattitutkinto = oppijat.oppija("Osittainen", "Outi", "230297-6448")
   val paikallinenTunnustettu = oppijat.oppija("Tunnustettu", "Teuvo", "140176-449X")
   val tiedonsiirto = oppijat.oppija("Tiedonsiirto", "Tiina", "270303-281N")
+  val perusopetuksenTiedonsiirto = oppijat.oppija("Perusopetuksensiirto", "Pertti", "010100-071R")
   val omattiedot = oppijat.oppija(MockUsers.omattiedot.ldapUser.sukunimi, MockUsers.omattiedot.ldapUser.etunimet, "190751-739W", MockUsers.omattiedot.ldapUser.oid)
   val ibFinal = oppijat.oppija("IB-final", "Iina", "040701-432D")
   val ibPredicted = oppijat.oppija("IB-predicted", "Petteri", "071096-317K")

@@ -9,7 +9,7 @@ export default ({opiskeluoikeus}) => (
     confirmationText='Vahvista mitätöinti, operaatiota ei voi peruuttaa'
     cancelText='Peruuta mitätöinti'
     action={() => invalidateOpiskeluoikeus(modelData(opiskeluoikeus, 'oid'))}
-    className='invalidate'
-    confirmationClassName='confirm-invalidate'
+    className='invalidate invalidate-opiskeluoikeus'
+    confirmationClassName='confirm-invalidate invalidate-opiskeluoikeus__confirm'
   />
 )

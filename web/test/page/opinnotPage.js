@@ -167,14 +167,22 @@ function OpinnotPage() {
       }
     },
     invalidateOpiskeluoikeusIsShown: function() {
-      return isElementVisible(findSingle('.invalidate'))
+      return isElementVisible(findSingle('.invalidate.invalidate-opiskeluoikeus'))
     },
     confirmInvalidateOpiskeluoikeusIsShown: function() {
-      return isElementVisible(findSingle('.confirm-invalidate'))
+      return isElementVisible(findSingle('.confirm-invalidate.invalidate-opiskeluoikeus__confirm'))
     },
-    invalidateOpiskeluoikeus: click(findSingle('.invalidate')),
-    confirmInvalidateOpiskeluoikeus: click(findSingle('.confirm-invalidate')),
+    deletePäätasonSuoritusIsShown: function() {
+      return isElementVisible(findSingle('.invalidate.delete-paatason-suoritus'))
+    },
+    confirmDeletePäätasonSuoritusIsShown: function() {
+      return isElementVisible(findSingle('.confirm-invalidate.delete-paatason-suoritus__confirm'))
+    },
+    invalidateOpiskeluoikeus: click(findSingle('.invalidate.invalidate-opiskeluoikeus')),
+    confirmInvalidateOpiskeluoikeus: click(findSingle('.confirm-invalidate.invalidate-opiskeluoikeus__confirm')),
     hideInvalidateMessage: click(findSingle('.hide-invalidated-message')),
+    deletePäätasonSuoritus: click(findSingle('.invalidate.delete-paatason-suoritus')),
+    confirmDeletePäätasonSuoritus: click(findSingle('.confirm-invalidate.delete-paatason-suoritus__confirm')),
     backToList: click(findSingle('.back-link'))
   }
 

@@ -19,9 +19,9 @@ export class InvalidationNotification extends React.PureComponent {
     hideP.filter(e => e === 'hide').onValue(resetInvalidationNotification)
 
     return (
-      <div id="invalidated" className={hideP.map(hideClass => 'opiskeluoikeus-invalidated ' + hideClass)}>
+      <div id="invalidated" className={hideP.map(hideClass => 'invalidation-notification ' + hideClass)}>
         <Text name={notification}/>
-        <a onClick={() => hideBus.push()} className="hide-invalidated-message"/>
+        <a onClick={() => hideBus.push()} className="hide-invalidation-notification"/>
       </div>
     )
   }
