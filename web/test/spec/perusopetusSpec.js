@@ -1480,47 +1480,59 @@ describe('Perusopetus', function() {
     })
 
     describe('Päätason suorituksen poistaminen', function() {
-      before(editor.edit)
+      describe('Nuorten perusopetus', function() {
+        before(editor.edit)
 
-      describe('Mitätöintilinkki', function() {
-        it('Näytetään', function() {
-          expect(opinnot.deletePäätasonSuoritusIsShown()).to.equal(true)
-        })
-
-        describe('Painettaessa', function() {
-          before(opinnot.deletePäätasonSuoritus)
-          it('Pyydetään vahvistus', function() {
-            expect(opinnot.confirmDeletePäätasonSuoritusIsShown()).to.equal(true)
+        describe('Mitätöintilinkki', function() {
+          it('Näytetään', function() {
+            expect(opinnot.deletePäätasonSuoritusIsShown()).to.equal(true)
           })
 
-          describe('Painettaessa uudestaan', function() {
-            before(opinnot.confirmDeletePäätasonSuoritus, wait.until(page.isPäätasonSuoritusDeletedMessageShown))
-            it('Päätason suoritus poistetaan', function() {
-              expect(page.isPäätasonSuoritusDeletedMessageShown()).to.equal(true)
+          describe('Painettaessa', function() {
+            before(opinnot.deletePäätasonSuoritus)
+            it('Pyydetään vahvistus', function() {
+              expect(opinnot.confirmDeletePäätasonSuoritusIsShown()).to.equal(true)
             })
 
-            describe('Poistettua päätason suoritusta', function() {
-              before(wait.until(page.isReady), opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetus'))
-
-              it('Ei näytetä', function () {
-                expect(opinnot.suoritusTabs()).to.deep.equal([ '9. vuosiluokka', '8. vuosiluokka', '7. vuosiluokka' ])
+            describe('Painettaessa uudestaan', function() {
+              before(opinnot.confirmDeletePäätasonSuoritus, wait.until(page.isPäätasonSuoritusDeletedMessageShown))
+              it('Päätason suoritus poistetaan', function() {
+                expect(page.isPäätasonSuoritusDeletedMessageShown()).to.equal(true)
               })
+
+              describe('Poistettua päätason suoritusta', function() {
+                before(wait.until(page.isReady), opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetus'))
+
+                it('Ei näytetä', function () {
+                  expect(opinnot.suoritusTabs()).to.deep.equal([ '9. vuosiluokka', '8. vuosiluokka', '7. vuosiluokka' ])
+                })
+              })
+            })
+          })
+        })
+
+        describe('Opiskeluoikeudelle, joka on peräisin ulkoisesta järjestelmästä', function() {
+          describe('Kun kirjautunut oppilaitoksen tallentajana', function() {
+            before(Authentication().logout, Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('010100-071R'))
+            it('Ei näytetä poistopainiketta', function() {
+              expect(opinnot.deletePäätasonSuoritusIsShown()).to.equal(false)
+            })
+          })
+
+          describe('Kun kirjautunut oppilaitoksen pääkäyttäjänä', function() {
+            before(Authentication().logout, Authentication().login('stadin-pää'), page.openPage, page.oppijaHaku.searchAndSelect('010100-071R'))
+            it('Näytetään poistopainike', function() {
+              expect(opinnot.deletePäätasonSuoritusIsShown()).to.equal(true)
             })
           })
         })
       })
 
-      describe('Opiskeluoikeudelle, joka on peräisin ulkoisesta järjestelmästä', function() {
-        describe('Kun kirjautunut oppilaitoksen tallentajana', function() {
-          before(Authentication().logout, Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('010100-071R'))
-          it('Ei näytetä poistopainiketta', function() {
-            expect(opinnot.deletePäätasonSuoritusIsShown()).to.equal(false)
-          })
-        })
+      describe('Aikuisten perusopetus', function() {
+        before(Authentication().logout, Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('280598-2415'), editor.edit)
 
-        describe('Kun kirjautunut oppilaitoksen pääkäyttäjänä', function() {
-          before(Authentication().logout, Authentication().login('stadin-pää'), page.openPage, page.oppijaHaku.searchAndSelect('010100-071R'))
-          it('Näytetään poistopainike', function() {
+        describe('Mitätöintilinkki', function () {
+          it('Näytetään', function () {
             expect(opinnot.deletePäätasonSuoritusIsShown()).to.equal(true)
           })
         })
