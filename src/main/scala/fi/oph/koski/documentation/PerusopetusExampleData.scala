@@ -103,6 +103,11 @@ object PerusopetusExampleData {
       perusopetuksenOppimääränSuoritus.copy(toimipiste = toimipiste))
   )
 
+  def vuosiluokanOpiskeluoikeus(oppilaitos: Oppilaitos = jyväskylänNormaalikoulu, toimipiste: OrganisaatioWithOid = jyväskylänNormaalikoulu,  luokka: String = "C") = opiskeluoikeus(
+    oppilaitos = oppilaitos,
+    suoritukset = List(seitsemännenLuokanSuoritus.copy(toimipiste = toimipiste, luokka = "7A"))
+  )
+
   val kahdeksannenLuokanSuoritus = PerusopetuksenVuosiluokanSuoritus(
     koulutusmoduuli = PerusopetuksenLuokkaAste(8, perusopetuksenDiaarinumero), luokka = "8C", alkamispäivä = Some(date(2014, 8, 15)),
     toimipiste = jyväskylänNormaalikoulu,

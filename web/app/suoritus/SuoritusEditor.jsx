@@ -1,4 +1,4 @@
-import {addContext, modelData, modelLookup, removeCommonPath} from '../editor/EditorModel'
+import {addContext, modelData, modelItems, modelLookup, removeCommonPath} from '../editor/EditorModel'
 import React from 'baret'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {Editor} from '../editor/Editor'
@@ -16,7 +16,8 @@ export class SuoritusEditor extends React.Component {
 
     const editingAny = !!currentLocation().params.edit
     const showEditLink = model.editable && !editingAny
-    const showDeleteLink = model.invalidatable && !showEditLink
+    const isSingleSuoritus = modelItems(model.context.opiskeluoikeus, 'suoritukset').length == 1
+    const showDeleteLink = model.invalidatable && !showEditLink && !isSingleSuoritus
 
     return showDeleteLink && (
       <DeletePaatasonSuoritusButton

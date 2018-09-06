@@ -1511,6 +1511,14 @@ describe('Perusopetus', function() {
           })
         })
 
+        describe('Opiskeluoikeudelle, jossa on vain yksi päätason suoritus', function() {
+          before(Authentication().logout, Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('010100-325X'), editor.edit)
+
+          it('Ei näytetä', function() {
+            expect(opinnot.confirmDeletePäätasonSuoritusIsShown()).to.equal(false)
+          })
+        })
+
         describe('Opiskeluoikeudelle, joka on peräisin ulkoisesta järjestelmästä', function() {
           describe('Kun kirjautunut oppilaitoksen tallentajana', function() {
             before(Authentication().logout, Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('010100-071R'))
