@@ -173,7 +173,9 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
       oo match {
         case _: PerusopetuksenOpiskeluoikeus | _: AikuistenPerusopetuksenOpiskeluoikeus =>
           val poistetullaSuorituksella = oo.suoritukset.filterNot(_ == päätasonSuoritus)
-          if (poistetullaSuorituksella.length != (oo.suoritukset.length - 1)) {
+          if (poistetullaSuorituksella.length == oo.suoritukset.length) {
+            Left(KoskiErrorCategory.notFound())
+          } else if (poistetullaSuorituksella.length != oo.suoritukset.length - 1) {
             Left(KoskiErrorCategory.internalError())
           } else {
             Right(oo.withSuoritukset(poistetullaSuorituksella))

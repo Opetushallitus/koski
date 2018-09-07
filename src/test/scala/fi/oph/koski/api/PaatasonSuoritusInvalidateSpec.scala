@@ -122,8 +122,8 @@ class PaatasonSuoritusInvalidateSpec extends FreeSpec with Matchers with LocalJe
         val oo = oppija(MockOppijat.koululainen.oid).tallennettavatOpiskeluoikeudet.head
         val suoritus = oppija(MockOppijat.ysiluokkalainen.oid).tallennettavatOpiskeluoikeudet.head.suoritukset.head
 
-        deletePäätasonSuoritus(oo.oid.get, 3, suoritus) {
-          verifyResponseStatus(500, KoskiErrorCategory.internalError())
+        deletePäätasonSuoritus(oo.oid.get, oo.versionumero.get, suoritus) {
+          verifyResponseStatus(404, KoskiErrorCategory.notFound())
         }
       }
     }
