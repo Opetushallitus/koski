@@ -143,8 +143,8 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
     oppija.tallennettavatOpiskeluoikeudet.find(_.oid.exists(_ == opiskeluoikeusOid))
       .toRight(KoskiErrorCategory.notFound())
       .flatMap(oo => oo.versionumero match {
-        case v: Option[Int] if v.contains(versionumero) => Right(oo)
-        case v: Option[Int] if v.isDefined => Left(KoskiErrorCategory.conflict.versionumero())
+        case Some(v) if v == versionumero => Right(oo)
+        case Some(_) => Left(KoskiErrorCategory.conflict.versionumero())
         case _ => Left(KoskiErrorCategory.badRequest())
       })
       .flatMap(withoutPäätasonSuoritus(päätasonSuoritus))
