@@ -386,7 +386,7 @@ const modelErrors = (model, recursive = true) => {
   let context = model.context
   let pathString = justPath(model.path).join('.')
   let keyMatch = ([key]) => recursive ? pathString === key || R.startsWith(pathString + '.', key) : pathString === key
-  let validationResult = context.validationResult || {}
+  let validationResult = context && context.validationResult || {}
 
   return pathString.length
     ? R.fromPairs(R.toPairs(validationResult).filter(keyMatch))
@@ -413,19 +413,25 @@ export const applyChangesAndValidate = (modelBeforeChange, changes) => {
 export const validateModel = (mainModel) => {
   let context = mainModel.context
   if (!context) throwError('context missing')
+  const pushError = (model, results) => error => {
+    let path = justPath(model.path)
+    let fullPath = path.concat(error.path || []).join('.')
+    results[fullPath] ? results[fullPath].push(error) : results[fullPath] = [error]
+  }
   const validateInner = (model, results) => {
     let validator = getValidator(model, context)
     if (validator) {
       let myResult = validator(model)
       if (myResult) {
-        myResult.forEach(error => {
-          let path = justPath(model.path)
-          let fullPath = path.concat(error.path || []).join('.')
-          results[fullPath] ? results[fullPath].push(error) : results[fullPath] = [error]
-        })
+        myResult.forEach(pushError(model, results))
       }
     }
-    modelProperties(model).forEach(p => validateInner(p.model, results))
+    modelProperties(model).forEach(p => {
+      if (p.deprecated && !modelEmpty(p.model)) {
+        pushError(p.model, results)({key: 'deprecated', message: p.deprecated})
+      }
+      validateInner(p.model, results)
+    })
     modelItems(model).forEach(item => validateInner(item, results))
     return results
   }

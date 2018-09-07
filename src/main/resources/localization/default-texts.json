@@ -468,6 +468,8 @@
   "Lander ingressi 2": "Palvelu sisältää myös tiedot opinto-oikeuksista sekä suoritettujen tutkintojen keskeisistä sisällöistä ja osaamisvaatimuksista.",
   "Lander ingressi 3": "Lisäksi tietoja voidaan jakaa niitä toiminnassaan tarvitseville viranomaisille, esimerkiksi koulutuksen järjestäjille, kunnille, Kelalle ja työvoimatoimistolle.",
   "Lander ingressi 4": "Koski palvelussa tiedot ovat turvallisesti tallessa ja kansalaiset voivat selata omia tietojaan.",
+  "deprecated:Käytä korvaavaa kenttää Erityisen tuen..." : "Käytä korvaavaa kenttää Erityisen tuen päätökset",
+  "deprecated:Käytä korvaavaa kenttää Tehostetun tuen..." : "Käytä korvaavaa kenttää Tehostetun tuen päätökset",
   "description:Tieto onko oppijalla maksuton asuntolapaikka...." : "Tieto onko oppijalla maksuton asuntolapaikka. Rahoituksen laskennassa hyödynnettävä tieto.",
   "description:Oppisopimuksen tiedot" : "Oppisopimuksen tiedot",
   "description:Opiskeluoikeuden tila, joka muodostuu opiskeluoikeusjaksoista" : "Opiskeluoikeuden tila, joka muodostuu opiskeluoikeusjaksoista",
@@ -1114,6 +1116,13 @@
   "Suoritus poistettu": "Suoritus poistettu",
   "Poista suoritus": "Poista suoritus",
   "Vahvista poisto, operaatiota ei voi peruuttaa": "Vahvista poisto, operaatiota ei voi peruuttaa",
-  "Peruuta poisto": "Peruuta poisto"
+  "Peruuta poisto": "Peruuta poisto",
+  "Tehostetun tuen päätökset" : "Tehostetun tuen päätökset",
+  "tooltip:Mahdollisen tehostetun tuen päätös päätöksen..." : "Mahdollisen tehostetun tuen päätös päätöksen alkamis- ja päättymispäivät.",
+  "Erityisen tuen päätökset" : "Erityisen tuen päätökset",
+  "tooltip:Mahdollisen tehostetun tuen päätösten alkamis-..." : "Mahdollisen tehostetun tuen päätösten alkamis- ja päättymispäivät. Voi olla useita erillisiä jaksoja.",
+  "tooltip:Mahdollisen erityisen tuen päätösten alkamis-..." : "Mahdollisen erityisen tuen päätösten alkamis- ja päättymispäivät. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.",
+  "description:Erityisen tuen päätökset alkamis- ja..." : "Erityisen tuen päätökset alkamis- ja päättymispäivineen. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.",
+  "description:Tehostetun tuen päätös. Lista alku-loppu..." : "Tehostetun tuen päätös. Lista alku-loppu päivämääräpareja."
 }
 

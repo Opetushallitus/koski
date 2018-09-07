@@ -21,13 +21,6 @@ trait Yksilöllistettävä {
   def yksilöllistettyOppimäärä: Boolean
 }
 
-case class Päätösjakso(
-  @Description("Jakson alkamispäivämäärä. Muoto YYYY-MM-DD")
-  alku: LocalDate,
-  @Description("Jakson loppumispäivämäärä. Muoto YYYY-MM-DD")
-  loppu: Option[LocalDate]
-)
-
 trait YleissivistavaOppiaine extends KoodistostaLöytyväKoulutusmoduuli with Valinnaisuus {
   @Description("Oppiaine")
   @KoodistoUri("koskioppiaineetyleissivistava")

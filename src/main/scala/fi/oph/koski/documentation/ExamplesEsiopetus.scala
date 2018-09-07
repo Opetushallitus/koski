@@ -30,7 +30,7 @@ object ExamplesEsiopetus {
           NuortenPerusopetuksenOpiskeluoikeusjakso(date(2007, 6, 3), opiskeluoikeusValmistunut)
         )
       ),
-      lisätiedot = Some(EsiopetuksenOpiskeluoikeudenLisätiedot(pidennettyOppivelvollisuus = Some(Päätösjakso(date(2008, 8, 15), Some(date(2016, 6, 4))))))
+      lisätiedot = Some(EsiopetuksenOpiskeluoikeudenLisätiedot(pidennettyOppivelvollisuus = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4))))))
     ))
   )
 

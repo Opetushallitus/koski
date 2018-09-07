@@ -81,6 +81,13 @@ object ExamplesPerusopetus {
 
   lazy val päättötodistus = oppija(opiskeluoikeus = päättötodistusOpiskeluoikeus())
 
+  lazy val erityisenTuenPäätös = ErityisenTuenPäätös(
+    alku = Some(date(2008, 8, 15)),
+    loppu = Some(date(2016, 6, 4)),
+    opiskeleeToimintaAlueittain = true,
+    erityisryhmässä = Some(true)
+  )
+
   lazy val toimintaAlueittainOpiskelija = Oppija(
     exampleHenkilö,
     List(PerusopetuksenOpiskeluoikeus(
@@ -109,26 +116,22 @@ object ExamplesPerusopetus {
         )
       ),
       lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
-        erityisenTuenPäätös = Some(ErityisenTuenPäätös(
-          alku = Some(date(2008, 8, 15)),
-          loppu = Some(date(2016, 6, 4)),
-          opiskeleeToimintaAlueittain = true,
-          erityisryhmässä = Some(true)
-        )),
+        erityisenTuenPäätös = Some(erityisenTuenPäätös),
+        erityisenTuenPäätökset = Some(List(erityisenTuenPäätös)),
         perusopetuksenAloittamistaLykätty = true,
         aloittanutEnnenOppivelvollisuutta = false,
-        pidennettyOppivelvollisuus = Some(Päätösjakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
+        pidennettyOppivelvollisuus = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
         tukimuodot = Some(List(Koodistokoodiviite("1", Some("Osa-aikainen erityisopetus"), "perusopetuksentukimuoto"))),
-        tehostetunTuenPäätös = Some(Päätösjakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
-        joustavaPerusopetus = Some(Päätösjakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
-        kotiopetus = Some(Päätösjakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
-        ulkomailla = Some(Päätösjakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
+        tehostetunTuenPäätökset = Some(List(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4))))),
+        joustavaPerusopetus = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
+        kotiopetus = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
+        ulkomailla = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
         vuosiluokkiinSitoutumatonOpetus = true,
         vammainen = Some(List(Aikajakso(date(2010, 8, 14), None))),
         vaikeastiVammainen = Some(List(Aikajakso(date(2010, 8, 14), None))),
-        majoitusetu = Some(Päätösjakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
-        kuljetusetu = Some(Päätösjakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
-        oikeusMaksuttomaanAsuntolapaikkaan = Some(Päätösjakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
+        majoitusetu = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
+        kuljetusetu = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
+        oikeusMaksuttomaanAsuntolapaikkaan = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
         sisäoppilaitosmainenMajoitus = Some(List(Aikajakso(date(2012, 9, 1), Some(date(2013, 9, 1))))),
         koulukoti = Some(List(Aikajakso(date(2013, 9, 1), Some(date(2014, 9, 1)))))
       ))
