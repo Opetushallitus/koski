@@ -2,20 +2,41 @@ package fi.oph.koski.opiskeluoikeus
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.OpiskeluoikeusRow
-import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.log.KoskiMessageField.{apply => _, _}
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
-import fi.oph.koski.schema.KoskeenTallennettavaOpiskeluoikeus
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, PäätasonSuoritus}
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
+import fi.oph.scalaschema.SchemaValidatingExtractor
+import fi.oph.scalaschema.extraction.ValidationError
+import org.json4s.JValue
 
 class OpiskeluoikeusServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with Logging with NoCache {
   get("/:oid") {
     val result: Either[HttpStatus, OpiskeluoikeusRow] = application.opiskeluoikeusRepository.findByOid(getStringParam("oid"))(koskiSession)
     result.map(oo => AuditLogMessage(OPISKELUOIKEUS_KATSOMINEN, koskiSession, Map(oppijaHenkiloOid -> oo.oppijaOid))).foreach(AuditLog.log)
     renderEither[KoskeenTallennettavaOpiskeluoikeus](result.map(_.toOpiskeluoikeus))
+  }
+
+  post("/:oid/:versionumero/delete-paatason-suoritus") {
+    withJsonBody { oppijaJson: JValue =>
+      import fi.oph.koski.schema.KoskiSchema.deserializationContext
+
+      val validationResult = SchemaValidatingExtractor.extract[PäätasonSuoritus](oppijaJson) match {
+        case Right(t) => Right(t)
+        case Left(errors: List[ValidationError]) => Left(KoskiErrorCategory.badRequest.validation.jsonSchema.apply(JsonErrorMessage(errors)))
+      }
+
+      val result = validationResult.flatMap(
+        application.oppijaFacade.invalidatePäätasonSuoritus(getStringParam("oid"), _, getIntegerParam("versionumero"))
+      )
+
+      result.foreach(_ => application.elasticSearch.refreshIndex)
+      renderEither[HenkilönOpiskeluoikeusVersiot](result)
+    }(parseErrorHandler = haltWithStatus)
   }
 
   delete("/:oid") {

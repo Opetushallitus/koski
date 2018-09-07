@@ -386,6 +386,16 @@ describe('Lukiokoulutus', function( ){
           })
         })
       })
+
+      describe('Päätason suorituksen poistaminen', function() {
+        before(editor.edit)
+
+        describe('Mitätöintilinkki', function() {
+          it('Ei näytetä', function() {
+            expect(opinnot.deletePäätasonSuoritusIsShown()).to.equal(false)
+          })
+        })
+      })
     })
   })
 

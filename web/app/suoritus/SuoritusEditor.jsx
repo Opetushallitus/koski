@@ -1,4 +1,4 @@
-import {addContext, modelData, modelLookup, removeCommonPath} from '../editor/EditorModel'
+import {addContext, modelData, modelItems, modelLookup, removeCommonPath} from '../editor/EditorModel'
 import React from 'baret'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {Editor} from '../editor/Editor'
@@ -7,8 +7,26 @@ import {arviointiPuuttuu, osasuoritukset, suoritusKesken, suoritusValmis} from '
 import Text from '../i18n/Text'
 import {resolveOsasuorituksetEditor, resolvePropertyEditor} from './suoritusEditorMapping'
 import {flatMapArray} from '../util/util'
+import DeletePaatasonSuoritusButton from './DeletePaatasonSuoritusButton'
+import {currentLocation} from '../util/location'
 
 export class SuoritusEditor extends React.Component {
+  showDeleteButtonIfAllowed() {
+    const {model} = this.props
+
+    const editingAny = !!currentLocation().params.edit
+    const showEditLink = model.editable && !editingAny
+    const isSingleSuoritus = modelItems(model.context.opiskeluoikeus, 'suoritukset').length == 1
+    const showDeleteLink = model.invalidatable && !showEditLink && !isSingleSuoritus
+
+    return showDeleteLink && (
+      <DeletePaatasonSuoritusButton
+        opiskeluoikeus={model.context.opiskeluoikeus}
+        päätasonSuoritus={model}
+      />
+    )
+  }
+
   render() {
     const excludedProperties = ['osasuoritukset', 'käyttäytymisenArvio', 'vahvistus', 'jääLuokalle', 'pakollinen']
 
@@ -20,6 +38,7 @@ export class SuoritusEditor extends React.Component {
 
     return (
       <div className={className}>
+        {this.showDeleteButtonIfAllowed()}
         <TodistusLink suoritus={model} />
         <PropertiesEditor
           model={model}

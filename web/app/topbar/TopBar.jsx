@@ -1,7 +1,7 @@
 import React from 'baret'
-import {OpiskeluoikeusInvalidatedMessage} from '../opiskeluoikeus/OpiskeluoikeusInvalidation'
 import LocalTopBar from './LocalTopBar'
 import NavList from './NavList'
+import InvalidationNotification from '../components/InvalidationNotification'
 
 export const TopBar = ({user, titleKey, inRaamit, location}) => {
   return (inRaamit
@@ -13,6 +13,6 @@ export const TopBar = ({user, titleKey, inRaamit, location}) => {
 const RaamitTopBar = ({location, user}) => {
   return (<header id="topbar" className="inraamit topbarnav">
     <NavList location={location} user={user}/>
-    <OpiskeluoikeusInvalidatedMessage location={location} />
+    <InvalidationNotification/>
   </header>)
 }

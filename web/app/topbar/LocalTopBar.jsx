@@ -3,7 +3,7 @@ import {UserInfo} from './UserInfo'
 import Link from '../components/Link'
 import Text from '../i18n/Text'
 import NavList from './NavList'
-import {OpiskeluoikeusInvalidatedMessage} from '../opiskeluoikeus/OpiskeluoikeusInvalidation'
+import InvalidationNotification from '../components/InvalidationNotification'
 
 export default ({location, user, titleKey}) => {
   return (
@@ -17,7 +17,7 @@ export default ({location, user, titleKey}) => {
       {(user !== null) &&
       <div className='topbarnav'>
         <NavList location={location} user={user}/>
-        <OpiskeluoikeusInvalidatedMessage location={location} />
+        <InvalidationNotification/>
       </div>
       }
     </header>

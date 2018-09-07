@@ -190,7 +190,14 @@ function KoskiPage() {
       return S('.user-info .name').text()
     },
     isOpiskeluoikeusInvalidatedMessageShown: function() {
-      return isElementVisible(S(".opiskeluoikeus-invalidated")) && !isElementVisible(S(".opiskeluoikeus-invalidated.hide"));
+      return isElementVisible(S(".invalidation-notification")) &&
+        !isElementVisible(S(".invalidation-notification.hide")) &&
+        S(".invalidation-notification").text() == "Opiskeluoikeus mitätöity";
+    },
+    isPäätasonSuoritusDeletedMessageShown: function() {
+      return isElementVisible(S(".invalidation-notification")) &&
+        !isElementVisible(S(".invalidation-notification.hide")) &&
+        S(".invalidation-notification").text() == "Suoritus poistettu";
     }
   }
 

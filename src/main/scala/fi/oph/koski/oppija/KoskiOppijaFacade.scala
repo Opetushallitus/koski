@@ -37,7 +37,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
     }
   }
 
-  def createOrUpdate(oppija: Oppija, allowUpdate: Boolean)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
+  def createOrUpdate(oppija: Oppija, allowUpdate: Boolean, allowDeleteCompleted: Boolean = false)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
     val oppijaOid: Either[HttpStatus, PossiblyUnverifiedHenkilöOid] = oppija.henkilö match {
       case h:UusiHenkilö =>
         hetu.validate(h.hetu).right.flatMap { hetu =>
@@ -57,7 +57,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
           Left(KoskiErrorCategory.forbidden.omienTietojenMuokkaus())
         } else {
           val opiskeluoikeusCreationResults: Seq[Either[HttpStatus, OpiskeluoikeusVersio]] = opiskeluoikeudet.map { opiskeluoikeus =>
-            createOrUpdateOpiskeluoikeus(oppijaOid, opiskeluoikeus, allowUpdate)
+            createOrUpdateOpiskeluoikeus(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted)
           }
 
           opiskeluoikeusCreationResults.find(_.isLeft) match {
@@ -72,20 +72,26 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
     }
   }
 
-  def invalidateOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] =
+  def invalidate(opiskeluoikeusOid: String, invalidationFn: Oppija => Either[HttpStatus, Oppija], updateFn: Oppija => Either[HttpStatus, HenkilönOpiskeluoikeusVersiot])(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] =
     opiskeluoikeusRepository.findByOid(opiskeluoikeusOid).flatMap { row =>
       if (!OpiskeluoikeusAccessChecker.isInvalidatable(row.toOpiskeluoikeus, user)) {
         Left(KoskiErrorCategory.forbidden("Mitätöinti ei sallittu"))
       } else {
-        findOppija(row.oppijaOid).map(_.getIgnoringWarnings).flatMap(cancelOpiskeluoikeus(opiskeluoikeusOid))
+        findOppija(row.oppijaOid).map(_.getIgnoringWarnings).flatMap(invalidationFn)
       }
-    }.flatMap(oppija => createOrUpdate(oppija, allowUpdate = true))
+    }.flatMap(updateFn)
 
-  private def createOrUpdateOpiskeluoikeus(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowUpdate: Boolean)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusVersio] = {
+  def invalidateOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] =
+    invalidate(opiskeluoikeusOid, cancelOpiskeluoikeus(opiskeluoikeusOid), oppija => createOrUpdate(oppija, allowUpdate = true))
+
+  def invalidatePäätasonSuoritus(opiskeluoikeusOid: String, päätasonSuoritus: PäätasonSuoritus, versionumero: Int)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] =
+    invalidate(opiskeluoikeusOid, cancelPäätasonSuoritus(opiskeluoikeusOid, päätasonSuoritus, versionumero), oppija => createOrUpdate(oppija, allowUpdate = true, allowDeleteCompleted = true))
+
+  private def createOrUpdateOpiskeluoikeus(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowUpdate: Boolean, allowDeleteCompleted: Boolean = false)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusVersio] = {
     if (oppijaOid.oppijaOid == user.oid) {
       Left(KoskiErrorCategory.forbidden.omienTietojenMuokkaus())
     } else {
-      val result = opiskeluoikeusRepository.createOrUpdate(oppijaOid, opiskeluoikeus, allowUpdate)
+      val result = opiskeluoikeusRepository.createOrUpdate(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted)
       result.right.map { (result: CreateOrUpdateResult) =>
         applicationLog(oppijaOid, opiskeluoikeus, result)
         auditLog(oppijaOid, result)
@@ -133,6 +139,18 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
       .map(oo => oppija.copy(opiskeluoikeudet = List(oo)))
   }
 
+  private def cancelPäätasonSuoritus(opiskeluoikeusOid: String, päätasonSuoritus: PäätasonSuoritus, versionumero: Int)(oppija: Oppija): Either[HttpStatus, Oppija] = {
+    oppija.tallennettavatOpiskeluoikeudet.find(_.oid.exists(_ == opiskeluoikeusOid))
+      .toRight(KoskiErrorCategory.notFound())
+      .flatMap(oo => oo.versionumero match {
+        case Some(v) if v == versionumero => Right(oo)
+        case Some(_) => Left(KoskiErrorCategory.conflict.versionumero())
+        case _ => Left(KoskiErrorCategory.badRequest())
+      })
+      .flatMap(withoutPäätasonSuoritus(päätasonSuoritus))
+      .map(oo => oppija.copy(opiskeluoikeudet = List(oo)))
+  }
+
   private def invalidated(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, Opiskeluoikeus] = {
     (oo.tila match {
       case t: AmmatillinenOpiskeluoikeudenTila =>
@@ -146,6 +164,25 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
       case t: KorkeakoulunOpiskeluoikeudenTila => Left(KoskiErrorCategory.badRequest())
       case t: YlioppilastutkinnonOpiskeluoikeudenTila => Left(KoskiErrorCategory.badRequest())
     }).map(oo.withTila).map(_.withPäättymispäivä(now))
+  }
+
+  private def withoutPäätasonSuoritus(päätasonSuoritus: PäätasonSuoritus)(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, Opiskeluoikeus] = {
+    if (oo.suoritukset.length == 1) {
+      Left(KoskiErrorCategory.forbidden.ainoanPäätasonSuorituksenPoisto())
+    } else {
+      oo match {
+        case _: PerusopetuksenOpiskeluoikeus | _: AikuistenPerusopetuksenOpiskeluoikeus =>
+          val poistetullaSuorituksella = oo.suoritukset.filterNot(_ == päätasonSuoritus)
+          if (poistetullaSuorituksella.length == oo.suoritukset.length) {
+            Left(KoskiErrorCategory.notFound())
+          } else if (poistetullaSuorituksella.length != oo.suoritukset.length - 1) {
+            Left(KoskiErrorCategory.internalError())
+          } else {
+            Right(oo.withSuoritukset(poistetullaSuorituksella))
+          }
+        case _ => Left(KoskiErrorCategory.badRequest())
+      }
+    }
   }
 
   // Hakee oppijan oppijanumerorekisteristä ja liittää siihen opiskeluoikeudet. Opiskeluoikeudet haetaan vain, jos oppija löytyy.

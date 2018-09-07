@@ -484,6 +484,16 @@ describe('IB', function( ) {
 
         })
       })
+
+      describe('Päätason suorituksen poistaminen', function() {
+        before(editor.edit)
+
+        describe('Mitätöintilinkki', function() {
+          it('Ei näytetä', function() {
+            expect(opinnot.deletePäätasonSuoritusIsShown()).to.equal(false)
+          })
+        })
+      })
     })
   })
 
@@ -1002,6 +1012,16 @@ describe('IB', function( ) {
                 expect(extractAsText(S('.oppiaineet .A'))).to.not.contain('PAIK')
               })
             })
+          })
+        })
+      })
+
+      describe('Päätason suorituksen poistaminen', function() {
+        before(editor.edit)
+
+        describe('Mitätöintilinkki', function() {
+          it('Ei näytetä', function() {
+            expect(opinnot.deletePäätasonSuoritusIsShown()).to.equal(false)
           })
         })
       })

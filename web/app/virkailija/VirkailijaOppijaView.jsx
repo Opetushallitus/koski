@@ -27,7 +27,7 @@ import {doActionWhileMounted, flatMapArray} from '../util/util'
 import Text from '../i18n/Text'
 import {t} from '../i18n/i18n'
 import {EditLocalizationsLink} from '../i18n/EditLocalizationsLink'
-import {setOpiskeluoikeusInvalidated} from '../opiskeluoikeus/OpiskeluoikeusInvalidation'
+import {setInvalidationNotification} from '../components/InvalidationNotification'
 import {userP} from '../util/user'
 import {Varoitukset} from '../util/Varoitukset'
 
@@ -65,6 +65,18 @@ const invalidateE = invalidateBus.flatMapLatest(oid =>
   Http.delete(`/koski/api/opiskeluoikeus/${oid}`, {
     invalidateCache: ['/koski/api/oppija', '/koski/api/opiskeluoikeus', '/koski/api/editor']
   })).map(() => oppija => Bacon.once(R.merge(oppija, {event: 'invalidated'})))
+
+const deletePäätasonSuoritusBus = Bacon.Bus()
+export const deletePäätasonSuoritus = (opiskeluoikeus, päätasonSuoritus) =>
+  deletePäätasonSuoritusBus.push({
+    opiskeluoikeusOid: modelData(opiskeluoikeus, 'oid'),
+    versionumero: modelData(opiskeluoikeus, 'versionumero'),
+    päätasonSuoritus: modelData(päätasonSuoritus)
+  })
+
+const deletePäätasonSuoritusE = deletePäätasonSuoritusBus.flatMapLatest(({opiskeluoikeusOid, versionumero, päätasonSuoritus}) =>
+  Http.post(`/koski/api/opiskeluoikeus/${opiskeluoikeusOid}/${versionumero}/delete-paatason-suoritus`, päätasonSuoritus)
+).map(() => oppija => Bacon.once(R.merge(oppija, {event: 'päätasonSuoritusDeleted'})))
 
 const createState = (oppijaOid) => {
   const changeBus = Bacon.Bus()
@@ -152,7 +164,7 @@ const createState = (oppijaOid) => {
 
   const editE = editingP.changes().filter(R.identity).map(() => (oppija) => Bacon.once(R.merge(oppija, { event: 'edit' })))
 
-  let allUpdatesE = Bacon.mergeAll(loadOppijaE, localModificationE, saveOppijaE, editE, invalidateE) // :: EventStream [Model -> EventStream[Model]]
+  let allUpdatesE = Bacon.mergeAll(loadOppijaE, localModificationE, saveOppijaE, editE, invalidateE, deletePäätasonSuoritusE) // :: EventStream [Model -> EventStream[Model]]
 
   let oppijaP = allUpdatesE.flatScan({ loading: true }, (currentOppija, updateF) => {
     increaseLoading()
@@ -192,6 +204,7 @@ export class Oppija extends React.Component {
     let hetu = modelTitle(henkilö, 'hetu')
     let syntymäaika = modelTitle(henkilö, 'syntymäaika')
     stateP.filter(e => e === 'invalidated').onValue(opiskeluoikeusInvalidated)
+    stateP.filter(e => e === 'päätasonSuoritusDeleted').onValue(päätasonSuoritusDeleted)
     let showHenkilöUiLink = userP.map('.hasHenkiloUiWriteAccess')
     let showVirtaXmlLink = userP.map('.hasGlobalReadAccess')
     let varoitukset = modelItems(oppija, 'varoitukset').map(modelData)
@@ -254,6 +267,11 @@ const EditBar = ({stateP, saveChangesBus, cancelChangesBus, oppija}) => {
 }
 
 const opiskeluoikeusInvalidated = () => {
-  setOpiskeluoikeusInvalidated()
+  setInvalidationNotification('Opiskeluoikeus mitätöity')
   window.location = '/koski/virkailija'
+}
+
+const päätasonSuoritusDeleted = () => {
+  setInvalidationNotification('Suoritus poistettu')
+  window.location.reload(true)
 }
