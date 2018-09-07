@@ -1543,7 +1543,16 @@ describe('Perusopetus', function() {
           it('Näytetään', function () {
             expect(opinnot.deletePäätasonSuoritusIsShown()).to.equal(true)
           })
+
+          describe('Vahvistusviestin', function() {
+            before(opinnot.hideInvalidateMessage, wait.untilFalse(page.isOpiskeluoikeusInvalidatedMessageShown))
+            it('Voi piilottaa', function () {
+              expect(page.isOpiskeluoikeusInvalidatedMessageShown()).to.equal(false)
+            })
+          })
         })
+
+        after(resetFixtures)
       })
     })
 
