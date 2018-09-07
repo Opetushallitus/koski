@@ -1,4 +1,5 @@
 import './polyfills/polyfills.js'
+import './polyfills/omattiedot-polyfills.js'
 import './style/main.less'
 import React from 'react'
 import ReactDOM from 'react-dom'

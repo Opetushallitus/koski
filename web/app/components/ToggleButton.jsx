@@ -9,13 +9,13 @@ export const ToggleButton = ({toggleA, text, style}) => style === 'secondary'
   ? <button className='koski-button toggle-button koski-button-secondary' onClick={toggleState(toggleA)}><Text name={text}/></button>
   : <button className='koski-button toggle-button' onClick={toggleState(toggleA)}><Text name={text}/></button>
 
-export const MultistateToggleButton = ({stateA, value, clearedStateValue = null, text, style}) => style === 'secondary'
+export const MultistateToggleButton = ({id, stateA, value, clearedStateValue = null, text, style}) => style === 'text'
   ? (
-    <button className='koski-button toggle-button koski-button-secondary' aria-pressed={stateA.map(mode => mode === value)} onClick={setOrClearState(stateA, value, clearedStateValue)}>
+    <button id={id} className='koski-button toggle-button koski-button-secondary' aria-pressed={stateA.map(mode => mode === value)} onClick={setOrClearState(stateA, value, clearedStateValue)}>
       <Text name={text}/>
     </button>
   ) : (
-    <button className='koski-button toggle-button' aria-pressed={stateA.map(mode => mode === value)} onClick={setOrClearState(stateA, value, clearedStateValue)}>
+    <button id={id} className='koski-button toggle-button' aria-pressed={stateA.map(mode => mode === value)} onClick={setOrClearState(stateA, value, clearedStateValue)}>
       <Text name={text}/>
     </button>
   )
