@@ -17,9 +17,7 @@ import {t} from '../i18n/i18n'
 export const TilaJaVahvistusEditor = ({model}) => {
   return (<div className={ suoritusValmis(model) ? 'tila-vahvistus valmis' : 'tila-vahvistus' }>
       <span className="tiedot">
-        <span className="tila">
-          <span className='tila'>{ tilaText(model) }</span>
-        </span>
+        <span className='tila'>{ tilaText(model) }</span>
         {
           modelData(model).vahvistus && <PropertyEditor model={model} propertyName="vahvistus" edit="false"/>
         }
