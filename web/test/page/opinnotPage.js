@@ -600,7 +600,7 @@ function TilaJaVahvistus() {
       return extractAsText(findSingle('.tiedot', elem()))
     },
     tila: function( ) {
-      return extractAsText(findSingle('.tila .tila', elem()))
+      return extractAsText(findSingle('.tila', elem()))
     },
     merkitseValmiiksiDialog: MerkitseValmiiksiDialog(),
     lisääVahvistus: function(pvm) {
