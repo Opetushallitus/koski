@@ -63,6 +63,10 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
     indexHtml
   }
 
+  get("/raportit*") {
+    indexHtml
+  }
+
   private def indexHtml =
     htmlIndex("koski-main.js", raamit = virkailijaRaamit)
 

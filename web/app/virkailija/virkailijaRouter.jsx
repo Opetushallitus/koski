@@ -8,6 +8,7 @@ import {tiedonsiirtojenYhteenvetoContentP} from '../tiedonsiirrot/Tiedonsiirtoje
 import {oppijataulukkoContentP} from './Oppijataulukko'
 import {dokumentaatioContentP} from '../dokumentaatio/Dokumentaatio'
 import {onlyIfHasReadAccess} from './accessCheck'
+import {raportitContentP} from '../raportit/Raportit'
 
 export const routeP = locationP.flatMapLatest(({path, queryString, params, hash}) => {
   let oppijaId = (path.match(new RegExp('/koski/oppija/(.*)')) || [])[1]
@@ -25,6 +26,8 @@ export const routeP = locationP.flatMapLatest(({path, queryString, params, hash}
     return tiedonsiirtovirheetContentP(queryString)
   } else if (path === '/koski/tiedonsiirrot/yhteenveto') {
     return tiedonsiirtojenYhteenvetoContentP(queryString)
+  } else if (path === '/koski/raportit') {
+    return raportitContentP()
   } else if (path === '/koski/dokumentaatio') {
     return dokumentaatioContentP()
   }

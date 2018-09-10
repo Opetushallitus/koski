@@ -16,7 +16,7 @@ import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.{LähdejärjestelmäId, Organisaatio, Osaamisalajakso}
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.util.FinnishDateFormat.{finnishDateFormat, finnishDateTimeFormat}
-import org.scalatra.ContentEncodingSupport
+import org.scalatra.{ContentEncodingSupport, Cookie, CookieOptions}
 
 class RaportitServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with Logging with NoCache with ContentEncodingSupport {
 
@@ -47,6 +47,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
       haltWithStatus(KoskiErrorCategory.badRequest.format.pvm("loppu ennen alkua"))
     }
     val password = params.get("password")
+    val downloadToken = params.get("downloadToken")
 
     // temporary restriction
     if (application.config.getStringList("oppijavuosiraportti.enabledForUsers").indexOf(koskiSession.username) < 0) {
@@ -63,6 +64,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
     } else {
       contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
       response.setHeader("Content-Disposition", s"""attachment; filename="oppijavuosiraportti_${oppilaitosOid}_$alku-$loppu.xlsx""")
+      downloadToken.foreach { t => response.addCookie(Cookie("koskiDownloadToken", t)(CookieOptions(path = "/", maxAge = 600))) }
       ExcelWriter.writeExcel(
         WorkbookSettings(s"Oppijavuosiraportti $oppilaitosOid $alku - $loppu", password),
         Seq(
