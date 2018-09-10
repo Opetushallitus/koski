@@ -53,5 +53,7 @@ class RaportitSpec extends FreeSpec with LocalJettyHttpSpecification with Opiske
     authGet("api/raportointikanta/clear") { verifyResponseStatusOk() }
     authGet("api/raportointikanta/opiskeluoikeudet") { verifyResponseStatusOk() }
     authGet("api/raportointikanta/henkilot") { verifyResponseStatusOk() }
+    authGet("api/raportointikanta/organisaatiot") { verifyResponseStatusOk() }
+    authGet("api/raportointikanta/koodistot") { verifyResponseStatusOk() }
   }
 }

@@ -184,5 +184,6 @@ object KoskiErrorCategory {
   object unavailable extends ErrorCategory("unavailable", 503, "Service unavailable") {
     val virta = subcategory("virta", "Korkeakoulutuksen opiskeluoikeuksia ei juuri nyt saada haettua. Yritä myöhemmin uudelleen.")
     val ytr = subcategory("ytr", "Ylioppilastutkintojen tietoja ei juuri nyt saada haettua. Yritä myöhemmin uudelleen.")
+    val raportit = subcategory("raportit", "Raportit eivät ole juuri nyt käytettävissä. Yritä myöhemmin uudelleen.")
   }
 }

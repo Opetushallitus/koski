@@ -10,9 +10,9 @@ import slick.dbio.DBIO
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema._
 import fi.oph.koski.util.Futures
-import java.sql.Date
+import java.sql.{Date, Timestamp}
 import java.time.LocalDate
-import fi.oph.koski.util.DateOrdering.sqlDateOrdering
+import fi.oph.koski.util.DateOrdering.{sqlDateOrdering, sqlTimestampOrdering}
 import fi.oph.koski.schema.Organisaatio
 
 object RaportointiDatabase {
@@ -95,6 +95,15 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
     runDbSync(sqlu"update raportointikanta_status set load_completed=now() where name = $name")
   def statuses: Seq[RaportointikantaStatusRow] =
     runDbSync(RaportointikantaStatus.result)
+  def fullLoadCompleted(statuses: Seq[RaportointikantaStatusRow]): Option[Timestamp] = {
+    val AllNames = Seq("opiskeluoikeudet", "henkilot", "organisaatiot", "koodistot")
+    val allDates = statuses.collect { case s if AllNames.contains(s.name) && s.loadCompleted.nonEmpty => s.loadCompleted.get }
+    if (allDates.length == AllNames.length) {
+      Some(allDates.max(sqlTimestampOrdering))
+    } else {
+      None
+    }
+  }
 
   def opiskeluoikeusAikajaksot(oppilaitos: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate): Seq[(ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow])] = {
     val alkuDate = Date.valueOf(alku)

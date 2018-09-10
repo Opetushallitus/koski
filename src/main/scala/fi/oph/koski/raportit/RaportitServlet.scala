@@ -18,7 +18,14 @@ import org.scalatra.ContentEncodingSupport
 
 class RaportitServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with Logging with NoCache with ContentEncodingSupport {
 
+  private lazy val raportointiDatabase = application.raportointiDatabase
+
   get("/oppijavuosiraportti") {
+
+    val loadCompleted = raportointiDatabase.fullLoadCompleted(raportointiDatabase.statuses)
+    if (loadCompleted.isEmpty) {
+      haltWithStatus(KoskiErrorCategory.unavailable.raportit())
+    }
 
     val oppilaitosOid = OrganisaatioOid.validateOrganisaatioOid(getStringParam("oppilaitosOid")) match {
       case Left(error) => haltWithStatus(error)
@@ -41,7 +48,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
 
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=oppijavuosiraportti&oppilaitosOid=$oppilaitosOid&alku=$alku&loppu=$loppu")))
 
-    val rows = Oppijavuosiraportti.buildOppijavuosiraportti(application.raportointiDatabase, oppilaitosOid, alku, loppu)
+    val rows = Oppijavuosiraportti.buildOppijavuosiraportti(raportointiDatabase, oppilaitosOid, alku, loppu)
 
     if (Environment.isLocalDevelopmentEnvironment && params.contains("text")) {
       contentType = "text/plain"
