@@ -109,6 +109,7 @@ describe('VALMA koulutus', function() {
             'Kuvaus Tietokoneen käyttäjän AB-kortti\n' +
             'Pakollinen ei\n' +
             'Auton lisävarustetyöt 15 Hyväksytty\n' +
+            'Kuvaus Tuunaus\n' +
             'Pakollinen ei\n' +
             'Tunnustettu\n' +
             'Tutkinnon osa Asennuksen ja automaation perustyöt\n' +

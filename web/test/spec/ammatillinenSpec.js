@@ -1737,7 +1737,8 @@ describe('Ammatillinen koulutus', function() {
             'Koulutuksen osa\n' +
             'Johtaminen ja henkilöstön kehittäminen\n' +
             'Kuvaus Johtamisen ja henkilöstön kehittämisen valmistava koulutus\n' +
-            'Auton lisävarustetyöt'
+            'Auton lisävarustetyöt\n' +
+            'Kuvaus Tuunaus'
           )
         })
       })
