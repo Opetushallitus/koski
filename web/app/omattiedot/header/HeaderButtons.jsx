@@ -46,7 +46,7 @@ export const HeaderButtons = ({uiModeA}) => (
     />
 
     <FloatingSuoritusjakoButton
-      text={'Suoritustietojen jakaminen'}
+      text='Jaa suoritustietoja'
       onClick={() => moveToSuoritusjako(() => uiModeA.set(FormState.SUORITUSJAKO))}
       visibilityOffset={ACTION_BUTTON_OFFSET}
     />
