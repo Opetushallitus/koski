@@ -15,10 +15,10 @@ import {isPerusopetuksenOppimäärä, isYsiluokka, jääLuokalle} from '../perus
 import {t} from '../i18n/i18n'
 
 export const TilaJaVahvistusEditor = ({model}) => {
-  return (<div className="tila-vahvistus">
+  return (<div className={ suoritusValmis(model) ? 'tila-vahvistus valmis' : 'tila-vahvistus' }>
       <span className="tiedot">
         <span className="tila">
-          <span className={ suoritusValmis(model) ? 'tila valmis' : 'tila'}>{ tilaText(model) }</span>
+          <span className='tila'>{ tilaText(model) }</span>
         </span>
         {
           modelData(model).vahvistus && <PropertyEditor model={model} propertyName="vahvistus" edit="false"/>

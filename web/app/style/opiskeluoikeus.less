@@ -519,32 +519,33 @@
         }
 
         .tila-vahvistus {
-          background: @color-neutral-gray;
+          background: @color-info-box-background--neutral;
+          color: @color-black;
           padding: 12px;
           display: inline-block;
           margin: 15px 0;
+
+          .label {
+            color: @color-black;
+          }
+
+          &.valmis {
+            background: @color-info-box-background--ok;
+          }
 
           .tiedot {
             display: inline-block;
             .tila {
               & > span {
                 display: inline-block;
-                text-transform: lowercase;
-                margin-right: 4px;
-              }
-              & > span:first-letter {
                 text-transform: uppercase;
-              }
-              & > span.valmis {
-                color: #74b419;
+                margin-right: 4px;
               }
               margin-right: 13px;
               font-weight: 600;
             }
 
             .vahvistus {
-              color: @color-label;
-
               > span:not(:nth-child(1)):not(:nth-child(2)) {
                 margin-left: 10px;
               }
