@@ -1,3 +1,9 @@
+## 10.9.2018
+
+- Lisätty kentät erityisenTuenPäätökset ja tehostetunTuenPäätökset nuorten perusopetuksen ja perusopetuksen lisäopetuksen lisätietoihin
+- Lisätty kenttä erityisenTuenPäätökset esiopetuksen lisäopetuksen lisätietoihin
+- Lisätty kenttä tehostetunTuenPäätökset aikuisten perusopetuksen lisätietoihin
+
 ## 29.8.2018
 
 - Lisätty ammatilliseen reformin mukaiseen perustutkintoon valinnan mahdollisuus, eli kaksi uutta tutkinnon osaa:
