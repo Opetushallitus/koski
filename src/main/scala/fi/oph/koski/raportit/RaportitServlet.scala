@@ -1,6 +1,7 @@
 package fi.oph.koski.raportit
 
-import java.time.LocalDate
+import java.sql.Timestamp
+import java.time.{LocalDate, LocalDateTime}
 import java.time.format.DateTimeParseException
 
 import fi.oph.koski.config.{Environment, KoskiApplication}
@@ -14,6 +15,7 @@ import fi.oph.koski.organisaatio.OrganisaatioOid
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.{LähdejärjestelmäId, Organisaatio, Osaamisalajakso}
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
+import fi.oph.koski.util.FinnishDateFormat.{finnishDateFormat, finnishDateTimeFormat}
 import org.scalatra.ContentEncodingSupport
 
 class RaportitServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with Logging with NoCache with ContentEncodingSupport {
@@ -60,7 +62,14 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
     } else {
       contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
       response.setHeader("Content-Disposition", s"""attachment; filename="oppijavuosiraportti_${oppilaitosOid}_$alku-$loppu.xlsx""")
-      ExcelWriter.writeExcel(s"Oppijavuosiraportti $oppilaitosOid $alku - $loppu", rows, OppijavuosiraporttiRow.columnSettings, response.getOutputStream)
+      ExcelWriter.writeExcel(
+        WorkbookSettings(s"Oppijavuosiraportti $oppilaitosOid $alku - $loppu"),
+        Seq(
+          DataSheet("Opiskeluoikeudet", rows, OppijavuosiraporttiRow.columnSettings),
+          DocumentationSheet("Ohjeet", OppijavuosiraporttiRow.documentation(oppilaitosOid, alku, loppu, loadCompleted.get))
+        ),
+        response.getOutputStream
+      )
     }
   }
 
@@ -141,6 +150,28 @@ object OppijavuosiraporttiRow {
     "lisätiedotHenkilöstökoulutus" -> Column("Henkilöstökoulutus", width = Some(2000)),
     "lisätiedotKoulutusvienti" -> Column("Koulutusvienti", width = Some(2000))
   )
+
+  def documentation(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, loadCompleted: Timestamp) =
+    s"""
+      |Ammatilliset opiskeluoikeudet
+      |Oppilaitos: $oppilaitosOid
+      |Aikaväli: ${finnishDateFormat.format(alku)} - ${finnishDateFormat.format(loppu)}
+      |Raportti luotu: ${finnishDateTimeFormat.format(LocalDateTime.now)} (${finnishDateTimeFormat.format(loadCompleted.toLocalDateTime)} tietojen pohjalta)
+      |
+      |Tarkempia ohjeita taulukon sisällöstä:
+      |
+      |- Tutkinnot: kaikki opiskeluoikeudella olevat päätason suoritusten tutkinnot pilkulla erotettuna (myös ennen raportin aikaväliä valmistuneet, ja raportin aikavälin jälkeen alkaneet)
+      |- Osaamisalat: kaikkien ym. tutkintojen osaamisalat pilkulla erotettuna (myös ennen/jälkeen raportin aikaväliä)
+      |
+      |- Viimeisin tila: opiskeluoikeuden tila raportin aikavälin lopussa
+      |- Rahoitukset: raportin aikavälillä esiintyvät rahoitusmuodot pilkulla erotettuna
+      |- Päättynyt: kertoo onko opiskeluoikeus päättynyt raportin aikavälillä
+      |- Päättymispäivä: mukana vain jos opiskeluoikeus on päättynyt raportin aikavälillä
+      |
+      |- Osa-aikaisuusjaksot (prosentit): raportin aikavälin osa-aikaisuusprosentit pilkulla erotettuna
+      |- Osa-aikaisuus keskimäärin (%): raportin aikavälin osa-aikaisuusprosenttien päivillä painotettu keskiarvo
+      |- Oppisopimus (pv): opiskeluoikeuden jollain päätason suorituksella on oppisopimusjakso, joka mahtuu kokonaan tai osittain raportin aikaväliin
+    """.stripMargin.trim.stripPrefix("\n").stripSuffix("\n")
 
   def build(alku: LocalDate, loppu: LocalDate, data: (ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow])): OppijavuosiraporttiRow = {
     val (opiskeluoikeus, henkilö, aikajaksot, päätasonSuoritukset) = data
