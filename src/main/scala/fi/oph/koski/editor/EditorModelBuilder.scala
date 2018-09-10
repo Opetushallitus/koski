@@ -256,7 +256,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
       val propertyPrototype = Prototypes.getPrototypePlaceholder(property.schema, property.metadata).get
       createModelProperty(property, propertyPrototype)
     }
-    ObjectModel(classes(schema.fullClassName), properties, title = None, editable = true, invalidatable = true, createRequestedPrototypes, metadata ++ schema.metadata)
+    ObjectModel(classes(schema.fullClassName), properties, title = None, editable = true, invalidatable = false, createRequestedPrototypes, metadata ++ schema.metadata)
   }
 
   private def createModelProperty(obj: AnyRef, objectContext: ModelBuilderContext, property: Property): EditorProperty = {
