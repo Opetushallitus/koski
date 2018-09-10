@@ -47,7 +47,7 @@ case class EsiopetuksenOpiskeluoikeudenLisätiedot(
   @Tooltip("Mahdollisen erityisen tuen päätösten alkamis- ja päättymispäivät. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData
   @OksaUri("tmpOKSAID281", "henkilökohtainen opetuksen järjestämistä koskeva suunnitelma")
-  erityisenTuenPäätökset: Option[List[ErityisenTuenPäätös]] = None,
+  erityisenTuenPäätökset: Option[List[ErityisenTuenPäätös]] = None
 ) extends OpiskeluoikeudenLisätiedot
 
 case class EsiopetuksenSuoritus(
