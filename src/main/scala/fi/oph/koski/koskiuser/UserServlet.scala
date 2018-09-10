@@ -15,7 +15,10 @@ class UserServlet(implicit val application: UserAuthenticationContext) extends A
           hasAnyReadAccess = session.hasAnyReadAccess,
           hasHenkiloUiWriteAccess = session.hasHenkiloUiWriteAccess,
           hasAnyInvalidateAccess = session.hasAnyTiedonsiirronMitätöintiAccess,
-          isViranomainen = session.hasGlobalKoulutusmuotoReadAccess
+          isViranomainen = session.hasGlobalKoulutusmuotoReadAccess,
+          hasRaportitAccess = session.hasRaportitAccess
+            // temporary restriction
+            && (application.config.getStringList("oppijavuosiraportti.enabledForUsers").indexOf(session.username) >= 0)
         )
       }
       }.getOrElse(UserWithAccessRights(user.name, user.oid))
@@ -32,6 +35,7 @@ case class UserWithAccessRights(
   hasAnyReadAccess: Boolean = false,
   hasHenkiloUiWriteAccess: Boolean = false,
   hasAnyInvalidateAccess: Boolean = false,
-  isViranomainen: Boolean = false
+  isViranomainen: Boolean = false,
+  hasRaportitAccess: Boolean = false
 )
 

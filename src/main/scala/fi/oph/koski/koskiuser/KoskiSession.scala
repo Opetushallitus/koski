@@ -40,6 +40,7 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
   def hasLocalizationWriteAccess = globalKäyttöoikeudet.find(_.globalPalveluroolit.contains(Palvelurooli("LOKALISOINTI", "CRUD"))).isDefined
   def hasAnyReadAccess = hasGlobalReadAccess || orgKäyttöoikeudet.nonEmpty || hasGlobalKoulutusmuotoReadAccess
   def hasAnyTiedonsiirronMitätöintiAccess = globalAccess.contains(AccessType.tiedonsiirronMitätöinti) || organisationOids(AccessType.tiedonsiirronMitätöinti).nonEmpty
+  def hasRaportitAccess = hasAnyReadAccess && sensitiveDataAllowed && !hasGlobalKoulutusmuotoReadAccess
   lazy val sensitiveDataAllowed = hasRole(LUOTTAMUKSELLINEN)
 
   // Note: keep in sync with PermissionCheckServlet's hasSufficientRoles function. See PermissionCheckServlet for more comments.

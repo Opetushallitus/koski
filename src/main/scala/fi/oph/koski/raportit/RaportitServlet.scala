@@ -27,9 +27,13 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
       haltWithStatus(KoskiErrorCategory.unavailable.raportit())
     }
 
+    if (!koskiSession.hasRaportitAccess) {
+      haltWithStatus(KoskiErrorCategory.forbidden.organisaatio())
+    }
+
     val oppilaitosOid = OrganisaatioOid.validateOrganisaatioOid(getStringParam("oppilaitosOid")) match {
       case Left(error) => haltWithStatus(error)
-      case Right(oid) if !koskiSession.hasReadAccess(oid) || !koskiSession.sensitiveDataAllowed => haltWithStatus(KoskiErrorCategory.forbidden.organisaatio())
+      case Right(oid) if !koskiSession.hasReadAccess(oid) => haltWithStatus(KoskiErrorCategory.forbidden.organisaatio())
       case Right(oid) => oid
     }
     val (alku, loppu) = try {
