@@ -117,7 +117,7 @@ export class SuoritusjakoLink extends React.Component {
                 valueCallback={date => this.dateChangeBus.push(date)}
                 validityCallback={(isValid, stringInput)=> {
                   !isValid && this.dateChangeBus.push(null)
-                  this.inputChangeBus.push(stringInput)
+                  this.feedbackBus.push(stringInput)
                 }}
                 isAllowedDate={d => SuoritusjakoLink.isDateInFuture(d) && SuoritusjakoLink.isDateWithinYear(d)}
                 isPending={isDateUpdatePending}
