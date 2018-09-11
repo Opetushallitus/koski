@@ -15,13 +15,13 @@ class ButtonWithConfirmation extends React.Component {
     return isActionRequested
       ? (
         <div className={className}>
-          <a onClick={() => this.setState({ isActionRequested: false })}>
-            <Text name={cancelText}/>
-          </a>
-
           <button className={`koski-button ${(confirmationClassName ? confirmationClassName : '')}`} onClick={action}>
             <Text name={confirmationText}/>
           </button>
+
+          <a onClick={() => this.setState({ isActionRequested: false })}>
+            <Text name={cancelText}/>
+          </a>
         </div>
       )
       : (
