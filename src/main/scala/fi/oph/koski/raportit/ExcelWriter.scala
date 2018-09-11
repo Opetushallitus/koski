@@ -4,6 +4,10 @@ import java.io.OutputStream
 import java.time.{LocalDate, ZoneId}
 import java.util.Date
 
+import org.apache.poi.openxml4j.opc.OPCPackage
+import org.apache.poi.poifs.crypt.{EncryptionInfo, EncryptionMode, Encryptor}
+import org.apache.poi.poifs.crypt.temp.{EncryptedTempData, SXSSFWorkbookWithCustomZipEntrySource}
+import org.apache.poi.poifs.filesystem.POIFSFileSystem
 import org.apache.poi.ss.usermodel._
 import org.apache.poi.ss.util.CellRangeAddress
 import org.apache.poi.xssf.streaming.{SXSSFSheet, SXSSFWorkbook}
@@ -13,7 +17,7 @@ object ExcelWriter {
 
   def writeExcel(workbookSettings: WorkbookSettings, sheets: Seq[Sheet], out: OutputStream): Unit = {
 
-    val wb = new SXSSFWorkbook(100)
+    val wb = if (workbookSettings.password.isEmpty) new SXSSFWorkbook else new SXSSFWorkbookWithCustomZipEntrySource
     try {
       val coreProps = wb.getXSSFWorkbook.getProperties.getCoreProperties
       coreProps.setTitle(workbookSettings.title)
@@ -25,7 +29,23 @@ object ExcelWriter {
           case ds: DocumentationSheet => writeDocumentationSheet(wb, sh, ds)
         }
       }
-      wb.write(out)
+      if (workbookSettings.password.isEmpty) {
+        wb.write(out)
+      } else {
+        // based on https://github.com/apache/poi/blob/f509d1deae86866ed531f10f2eba7db17e098473/src/examples/src/org/apache/poi/xssf/streaming/examples/SavePasswordProtectedXlsx.java
+        val tempData = new EncryptedTempData
+        try {
+          wb.write(tempData.getOutputStream)
+          val opc = OPCPackage.open(tempData.getInputStream)
+          val fs = new POIFSFileSystem
+          val enc = Encryptor.getInstance(new EncryptionInfo(EncryptionMode.agile))
+          enc.confirmPassword(workbookSettings.password.get)
+          opc.save(enc.getDataStream(fs))
+          fs.writeFilesystem(out)
+        } finally {
+          tempData.dispose()
+        }
+      }
       out.close()
     } finally {
       // deletes temporary files from disk
@@ -129,4 +149,4 @@ case class DataSheet(title: String, rows: Seq[Product], columnSettings: Seq[(Str
 
 case class DocumentationSheet(title: String, text: String) extends Sheet
 
-case class WorkbookSettings(title: String)
+case class WorkbookSettings(title: String, password: Option[String])

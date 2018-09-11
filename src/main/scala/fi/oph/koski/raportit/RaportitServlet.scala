@@ -46,6 +46,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
     if (loppu.isBefore(alku)) {
       haltWithStatus(KoskiErrorCategory.badRequest.format.pvm("loppu ennen alkua"))
     }
+    val password = params.get("password")
 
     // temporary restriction
     if (application.config.getStringList("oppijavuosiraportti.enabledForUsers").indexOf(koskiSession.username) < 0) {
@@ -63,7 +64,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
       contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
       response.setHeader("Content-Disposition", s"""attachment; filename="oppijavuosiraportti_${oppilaitosOid}_$alku-$loppu.xlsx""")
       ExcelWriter.writeExcel(
-        WorkbookSettings(s"Oppijavuosiraportti $oppilaitosOid $alku - $loppu"),
+        WorkbookSettings(s"Oppijavuosiraportti $oppilaitosOid $alku - $loppu", password),
         Seq(
           DataSheet("Opiskeluoikeudet", rows, OppijavuosiraporttiRow.columnSettings),
           DocumentationSheet("Ohjeet", OppijavuosiraporttiRow.documentation(oppilaitosOid, alku, loppu, loadCompleted.get))
