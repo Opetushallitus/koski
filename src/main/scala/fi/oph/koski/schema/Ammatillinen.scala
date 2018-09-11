@@ -294,7 +294,7 @@ trait AmmatillisenTutkinnonOsittainenTaiKokoSuoritus extends  AmmatillinenPäät
   def suoritustapa: Koodistokoodiviite
 }
 
-trait TutkinnonOsanSuoritus extends Suoritus with MahdollisestiSuorituskielellinen with MahdollisestiToimipisteellinen {
+trait TutkinnonOsanSuoritus extends Suoritus with MahdollisestiSuorituskielellinen with MahdollisestiToimipisteellinen with DuplikaatitSallittu {
   @Description("Suoritettavan tutkinnon osan tunnistetiedot")
   @Title("Tutkinnon osa")
   @Discriminator
@@ -323,8 +323,6 @@ trait TutkinnonOsanSuoritus extends Suoritus with MahdollisestiSuorituskielellin
   def tyyppi: Koodistokoodiviite
 
   override def ryhmittelytekijä: Option[String] = tutkinnonOsanRyhmä.map(_.toString)
-
-  override def salliDuplikaatit: Boolean = true
 }
 
 trait AmmatillisenTutkinnonOsanSuoritus extends TutkinnonOsanSuoritus {
@@ -944,7 +942,7 @@ case class NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("nayttotutkintoonvalmistavankoulutuksenosa")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("nayttotutkintoonvalmistavankoulutuksenosa", koodistoUri = "suorituksentyyppi")
-) extends Vahvistukseton with MahdollisestiSuorituskielellinen with Arvioinniton
+) extends Vahvistukseton with MahdollisestiSuorituskielellinen with Arvioinniton with DuplikaatitSallittu
 
 trait NäyttötutkintoonValmistavanKoulutuksenOsa extends Koulutusmoduuli with LaajuuttaEiValidoida
 

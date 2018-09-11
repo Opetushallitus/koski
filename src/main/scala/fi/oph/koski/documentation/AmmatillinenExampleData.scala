@@ -123,11 +123,11 @@ object AmmatillinenExampleData {
     tutkinnonOsanRyhmä = ammatillisetTutkinnonOsat
   )
 
-  def autonLisävarustetyöt(pakollinen: Boolean) = MuuValtakunnallinenTutkinnonOsa(
+  def autonLisävarustetyöt(pakollinen: Boolean, kuvaus: String = "Tuunaus") = MuuValtakunnallinenTutkinnonOsa(
     Koodistokoodiviite("100037", Some("Auton lisävarustetyöt"), "tutkinnonosat", Some(1)),
     pakollinen,
     Some(LaajuusOsaamispisteissä(15)),
-    Some("Tuunaus")
+    Some(kuvaus)
   )
 
   def arviointi(arvosana: Koodistokoodiviite) = AmmatillinenArviointi(

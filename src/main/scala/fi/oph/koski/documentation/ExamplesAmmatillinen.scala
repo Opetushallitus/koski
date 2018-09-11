@@ -122,7 +122,10 @@ object AmmattitutkintoExample {
             )
           ),
           NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
-            koulutusmoduuli = autonLisävarustetyöt(false)
+            koulutusmoduuli = autonLisävarustetyöt(false, "valojärjestelmät")
+          ),
+          NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
+            koulutusmoduuli = autonLisävarustetyöt(false, "lämmitysjärjestelmät")
           )
         ))
       ),
