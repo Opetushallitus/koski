@@ -99,22 +99,22 @@ object Opiskelijavuositiedot {
   def documentation(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, loadCompleted: Timestamp): String = s"""
     |Opiskelijavuositiedot
     |Oppilaitos: $oppilaitosOid
-    |Aikaväli: ${finnishDateFormat.format(alku)} - ${finnishDateFormat.format(loppu)}
+    |Aikajakso: ${finnishDateFormat.format(alku)} - ${finnishDateFormat.format(loppu)}
     |Raportti luotu: ${finnishDateTimeFormat.format(LocalDateTime.now)} (${finnishDateTimeFormat.format(loadCompleted.toLocalDateTime)} tietojen pohjalta)
     |
     |Tarkempia ohjeita taulukon sisällöstä:
     |
-    |- Tutkinnot: kaikki opiskeluoikeudella olevat päätason suoritusten tutkinnot pilkulla erotettuna (myös ennen raportin aikaväliä valmistuneet, ja raportin aikavälin jälkeen alkaneet)
-    |- Osaamisalat: kaikkien ym. tutkintojen osaamisalat pilkulla erotettuna (myös ennen/jälkeen raportin aikaväliä)
+    |- Tutkinnot: kaikki opiskeluoikeudella olevat päätason suoritusten tutkinnot pilkulla erotettuna (myös ennen raportin aikajaksoa valmistuneet, ja raportin aikajakson jälkeen alkaneet)
+    |- Osaamisalat: kaikkien ym. tutkintojen osaamisalat pilkulla erotettuna (myös ennen/jälkeen raportin aikajaksoa)
     |
-    |- Viimeisin tila: opiskeluoikeuden tila raportin aikavälin lopussa
-    |- Rahoitukset: raportin aikavälillä esiintyvät rahoitusmuodot pilkulla erotettuna
-    |- Päättynyt: kertoo onko opiskeluoikeus päättynyt raportin aikavälillä
-    |- Päättymispäivä: mukana vain jos opiskeluoikeus on päättynyt raportin aikavälillä
+    |- Viimeisin tila: opiskeluoikeuden tila raportin aikajakson lopussa
+    |- Rahoitukset: raportin aikajaksolla esiintyvät rahoitusmuodot pilkulla erotettuna
+    |- Päättynyt: kertoo onko opiskeluoikeus päättynyt raportin aikajaksolla
+    |- Päättymispäivä: mukana vain jos opiskeluoikeus on päättynyt raportin aikajaksolla
     |
-    |- Osa-aikaisuusjaksot (prosentit): raportin aikavälin osa-aikaisuusprosentit pilkulla erotettuna
-    |- Osa-aikaisuus keskimäärin (%): raportin aikavälin osa-aikaisuusprosenttien päivillä painotettu keskiarvo
-    |- Oppisopimus (pv): opiskeluoikeuden jollain päätason suorituksella on oppisopimusjakso, joka mahtuu kokonaan tai osittain raportin aikaväliin
+    |- Osa-aikaisuusjaksot (prosentit): raportin aikajakson osa-aikaisuusprosentit pilkulla erotettuna
+    |- Osa-aikaisuus keskimäärin (%): raportin aikajakson osa-aikaisuusprosenttien päivillä painotettu keskiarvo
+    |- Oppisopimus (pv): opiskeluoikeuden jollain päätason suorituksella on oppisopimusjakso, joka mahtuu kokonaan tai osittain raportin aikajaksoon
     """.stripMargin.trim.stripPrefix("\n").stripSuffix("\n")
 
   def buildRow(alku: LocalDate, loppu: LocalDate, data: (ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow])): OpiskelijavuositiedotRow = {

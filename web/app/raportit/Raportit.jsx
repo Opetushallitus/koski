@@ -29,7 +29,7 @@ export const raportitContentP = () => {
 
   const inProgressP = submitBus.awaiting(downloadExcelE.mapError())
   const submitEnabledP = downloadExcelP.map(x => !!x).and(inProgressP.not())
-  const buttonTextP = inProgressP.map((inProgress) => <Text name={!inProgress ? 'Lataa raportti (Excel-tiedosto)' : 'Ladataan...'}/>)
+  const buttonTextP = inProgressP.map((inProgress) => <Text name={!inProgress ? 'Lataa Excel-tiedosto' : 'Ladataan...'}/>)
 
   return Bacon.constant({
     content: (<div className='content-area'>
@@ -38,7 +38,7 @@ export const raportitContentP = () => {
         <p><Text name='Opiskelijavuositiedot-description'/></p>
         <Oppilaitos oppilaitosAtom={oppilaitosAtom} />
         <div className='aloituspaiva'>
-          <label><Text name="Aikaväli"/></label>
+          <label><Text name="Aikajakso"/></label>
           <div className='date-range'>
             <DateInput value={alkuAtom.get()} valueCallback={(value) => alkuAtom.set(value)} validityCallback={(valid) => !valid && alkuAtom.set(undefined)} />
             {' — '}
