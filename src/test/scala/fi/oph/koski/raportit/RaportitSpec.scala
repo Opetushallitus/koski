@@ -17,7 +17,7 @@ class RaportitSpec extends FreeSpec with LocalJettyHttpSpecification with Opiske
 
   "Oppijavuosiraportti" - {
     "näyttää oikeat tiedot" in {
-      val result = Oppijavuosiraportti.buildOppijavuosiraportti(raportointiDatabase, MockOrganisaatiot.stadinAmmattiopisto, LocalDate.parse("2016-01-01"), LocalDate.parse("2016-12-31"))
+      val result = Opiskelijavuositiedot.buildRaportti(raportointiDatabase, MockOrganisaatiot.stadinAmmattiopisto, LocalDate.parse("2016-01-01"), LocalDate.parse("2016-12-31"))
 
       val aarnenOpiskeluoikeusOid = lastOpiskeluoikeus(MockOppijat.ammattilainen.oid).oid.get
       val aarnenRivi = result.find(_.opiskeluoikeusOid == aarnenOpiskeluoikeusOid)
@@ -34,16 +34,16 @@ class RaportitSpec extends FreeSpec with LocalJettyHttpSpecification with Opiske
 
     "Excel-tiedoston muodostus toimii (ja tuottaa audit log viestin)" in {
       val queryString = s"oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&alku=2016-01-01&loppu=2016-12-31"
-      authGet(s"api/raportit/oppijavuosiraportti?$queryString") {
+      authGet(s"api/raportit/opiskelijavuositiedot?$queryString") {
         verifyResponseStatusOk()
         val ZIP_FILE_PREFIX = Array(0x50, 0x4b, 0x03, 0x04)
         response.bodyBytes.take(4) should equal(ZIP_FILE_PREFIX)
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=oppijavuosiraportti&$queryString")))
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=opiskelijavuositiedot&$queryString")))
       }
     }
 
     "Excel-tiedoston haku on sallittu vain pilottikäyttäjille" in {
-      authGet(s"api/raportit/oppijavuosiraportti?oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&alku=2016-01-01&loppu=2016-12-31", user = stadinAmmattiopistoKatselija) {
+      authGet(s"api/raportit/opiskelijavuositiedot?oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&alku=2016-01-01&loppu=2016-12-31", user = stadinAmmattiopistoKatselija) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden("Ei sallittu tälle käyttäjälle"))
       }
     }
