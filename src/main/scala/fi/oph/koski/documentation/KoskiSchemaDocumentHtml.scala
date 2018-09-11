@@ -89,12 +89,16 @@ object KoskiSchemaDocumentHtml {
           schema.properties.map { p =>
             val (itemSchema, cardinality) = cardinalityAndItemSchema(p.schema, p.metadata)
             val resolvedItemSchema = resolveSchema(itemSchema)
+            val metadatas = p.metadata ++ p.schema.metadata
             <tr>
-              <td class="nimi">{p.key}</td>
+              <td class="nimi">{p.key}
+                {deprecatedHtml(metadatas)}
+              </td>
+
               <td class="lukumäärä">{cardinality}</td>
               <td class="tyyppi">
                 {schemaTypeHtml(schema, resolvedItemSchema, includedEntities, shallowEntities)}
-                {metadataHtml(p.metadata ++ p.schema.metadata)}
+                {metadataHtml(metadatas)}
               </td>
               <td class="kuvaus">
                 {descriptionHtml(p)}
@@ -166,7 +170,7 @@ object KoskiSchemaDocumentHtml {
     case Description(desc) => Some(<span class="description">{formatDescription(desc)}</span>)
     case ReadOnly(desc) => Some(<div class="readonly">{formatDescription(desc)}</div>)
     case _ => None
-  }) ++ onlyWhenHtml(metadata) ++ sensitiveDataHtml(metadata) ++ deprecatedHtml(metadata)
+  }) ++ onlyWhenHtml(metadata) ++ sensitiveDataHtml(metadata) ++ deprecatedHtml(metadata, includeMessage = true)
 
   private def onlyWhenHtml(metadata: List[Metadata]): List[Elem] = metadata.collect { case o: OnlyWhen => o } match {
     case Nil => Nil
@@ -177,8 +181,16 @@ object KoskiSchemaDocumentHtml {
     case s: SensitiveData => <div class="sensitive">Arkaluontoinen tieto.</div>
   }
 
-  private def deprecatedHtml(metadata: List[Metadata]): List[Elem] = metadata.collect {
-    case s: Deprecated => <div class="deprecated">Vanhentunut kenttä.</div>
+  private def deprecatedHtml(metadata: List[Metadata], includeMessage: Boolean = false): List[Elem] = metadata.collect {
+    case d: Deprecated =>
+      <div class="deprecated">{
+        if (includeMessage) {
+          <span>Vanhentunut kenttä: </span>
+          <span class="deprecated__message">{d.msg}</span>
+        } else {
+          "Vanhentunut kenttä"
+        }}
+      </div>
   }
 
   def intersperse[E](x: E, xs:Seq[E]): Seq[E] = (x, xs) match {

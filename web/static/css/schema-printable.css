@@ -73,3 +73,8 @@ td.kuvaus .description {
 .deprecated {
   font-weight: bold;
 }
+
+.deprecated__message {
+  font-weight: normal;
+  display: block;
+}
