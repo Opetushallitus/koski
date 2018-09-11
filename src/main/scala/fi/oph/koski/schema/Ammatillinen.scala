@@ -579,7 +579,9 @@ case class YhteinenTutkinnonOsa(
 case class MuuValtakunnallinenTutkinnonOsa(
   tunniste: Koodistokoodiviite,
   pakollinen: Boolean,
-  override val laajuus: Option[LaajuusOsaamispisteissä]
+  override val laajuus: Option[LaajuusOsaamispisteissä],
+  @MultiLineString(5)
+  kuvaus: Option[LocalizedString] = None
 ) extends ValtakunnallinenTutkinnonOsa with MuuKuinYhteinenTutkinnonOsa
 
 @Description("Paikallisen tutkinnon osan tunnistetiedot")

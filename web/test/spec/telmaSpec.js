@@ -54,6 +54,7 @@ describe('Telma', function() {
           'Selite Koulutuksen osa on tunnustettu Vesikallion urheiluopiston osaamistavoitteiden mukaisesti\n' +
           'Rahoituksen piirissä ei\n' +
           'Auton lisävarustetyöt 15 Hyväksytty\n' +
+          'Kuvaus Tuunaus\n' +
           'Pakollinen ei\n' +
           'Yhteensä 75 osp'
         )
