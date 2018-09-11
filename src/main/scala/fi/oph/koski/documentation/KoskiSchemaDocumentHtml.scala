@@ -166,7 +166,7 @@ object KoskiSchemaDocumentHtml {
     case Description(desc) => Some(<span class="description">{formatDescription(desc)}</span>)
     case ReadOnly(desc) => Some(<div class="readonly">{formatDescription(desc)}</div>)
     case _ => None
-  }) ++ onlyWhenHtml(metadata) ++ sensitiveDataHtml(metadata)
+  }) ++ onlyWhenHtml(metadata) ++ sensitiveDataHtml(metadata) ++ deprecatedHtml(metadata)
 
   private def onlyWhenHtml(metadata: List[Metadata]): List[Elem] = metadata.collect { case o: OnlyWhen => o } match {
     case Nil => Nil
@@ -175,6 +175,10 @@ object KoskiSchemaDocumentHtml {
 
   private def sensitiveDataHtml(metadata: List[Metadata]): List[Elem] = metadata.collect {
     case s: SensitiveData => <div class="sensitive">Arkaluontoinen tieto.</div>
+  }
+
+  private def deprecatedHtml(metadata: List[Metadata]): List[Elem] = metadata.collect {
+    case s: Deprecated => <div class="deprecated">Vanhentunut kenttä.</div>
   }
 
   def intersperse[E](x: E, xs:Seq[E]): Seq[E] = (x, xs) match {

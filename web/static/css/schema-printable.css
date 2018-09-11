@@ -69,6 +69,7 @@ td.kuvaus .description {
     display: block;
 }
 
-.sensitive {
+.sensitive,
+.deprecated {
   font-weight: bold;
 }
