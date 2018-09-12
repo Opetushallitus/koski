@@ -8,7 +8,7 @@ DIR=$(cd `dirname $0`; pwd)
 BASE_DIR=$(git rev-parse --show-toplevel)
 GROUP_ID="fi/vm/sade"
 ARTIFACT_ID="koski"
-TMP_APPLICATION="${TMPDIR}${ARTIFACT_ID}-${VERSION}.war"
+TMP_APPLICATION="${TMPDIR:-/tmp/}${ARTIFACT_ID}-${VERSION}.jar"
 
 VALID_ENVS=(
   "vagrant"
@@ -28,14 +28,14 @@ function usage() {
 
 function download_version {
   if [ "$VERSION" == "local" ]; then
-    DOWNLOAD_URL="file://${HOME}/.m2/repository/${GROUP_ID}/${ARTIFACT_ID}/master-SNAPSHOT/${ARTIFACT_ID}-master-SNAPSHOT.war"
+    DOWNLOAD_URL="file://${HOME}/.m2/repository/${GROUP_ID}/${ARTIFACT_ID}/master-SNAPSHOT/${ARTIFACT_ID}-master-SNAPSHOT.jar"
   else
     if [[ "$VERSION" == *SNAPSHOT ]]; then
       DOWNLOAD_ROOT="https://artifactory.oph.ware.fi/artifactory/oph-sade-snapshot-local/${GROUP_ID}/${ARTIFACT_ID}/${VERSION}/"
-      WAR_WITH_VERSION=`curl -s ${DOWNLOAD_ROOT} | grep "war\"" | tail -n1 | cut -d \" -f 2`
-      DOWNLOAD_URL="${DOWNLOAD_ROOT}${WAR_WITH_VERSION}"
+      JAR_WITH_VERSION=`curl -s ${DOWNLOAD_ROOT} | grep "jar\"" | tail -n1 | cut -d \" -f 2`
+      DOWNLOAD_URL="${DOWNLOAD_ROOT}${JAR_WITH_VERSION}"
     else
-      DOWNLOAD_URL="https://artifactory.oph.ware.fi/artifactory/oph-sade-release-local/${GROUP_ID}/${ARTIFACT_ID}/${VERSION}/${ARTIFACT_ID}-${VERSION}.war"
+      DOWNLOAD_URL="https://artifactory.oph.ware.fi/artifactory/oph-sade-release-local/${GROUP_ID}/${ARTIFACT_ID}/${VERSION}/${ARTIFACT_ID}-${VERSION}.jar"
     fi
   fi
   echo "# Download url: $DOWNLOAD_URL"
@@ -83,4 +83,4 @@ echo "Using inventory $INVENTORY"
 
 download_version
 
-ansible-playbook "$ANSIBLE_ARGS" --extra-vars=koski_package="${TMPDIR}${ARTIFACT_ID}-${VERSION}.war" -i $INVENTORY "$DIR"/deploy.yml
+ansible-playbook "$ANSIBLE_ARGS" --extra-vars=koski_package="${TMPDIR}${ARTIFACT_ID}-${VERSION}.jar" -i $INVENTORY "$DIR"/deploy.yml

@@ -1,13 +1,5 @@
 ---
 
-- name: Koski upload
-  hosts: koski_backends:koski-validation_backends:koski-raportointikanta_backends
-  become: true
-  gather_facts: False
-  tasks:
-  - name: Copy koski application package
-    copy: src={{ koski_package }} dest=/tmp/{{ koski_package | basename }}
-
 - name: Koski deployment
   hosts: koski_backends:koski-validation_backends:koski-raportointikanta_backends
   become: true
@@ -19,9 +11,11 @@
   serial: 1
   tasks:
   - name: Read buildversion
-    shell: cat ~tomcat/koski/deploy/buildversion.txt
+    shell: unzip -q -c {{ koski_deploy_dir }}/koski-*.jar webapp/buildversion.txt
     register: buildversion
     ignore_errors: true
+    args:
+      warn: false
   - name: Previous version
     debug: var=buildversion.stdout_lines
     when: buildversion.failed is not defined or not buildversion.failed
@@ -30,19 +24,23 @@
   - name: Remove old application directory
     file: path={{ koski_deploy_dir }} state=absent
   - name: Create application directory
-    file: path={{ koski_deploy_dir }} state=directory
-  - name: Unpack koski application package
-    unarchive:
-      copy=no
-      src=/tmp/{{ koski_package | basename }}
-      dest={{ koski_deploy_dir }}
+    file: path={{ koski_deploy_dir }} state=directory group={{ koski_user }} owner={{ koski_user }}
+  - name: Upload koski application package
+    copy:
+      src={{ koski_package }}
+      dest={{ koski_deploy_dir }}/{{ koski_package | basename }}
       group={{ koski_user }}
       owner={{ koski_user }}
   - name: Start koski service
     service: name=koski state=started
   - name: Check for application responding
-    shell: curl -f http://127.0.0.1:8080/koski/buildversion.txt >> /dev/null
+    uri:
+      url: http://127.0.0.1:8080/koski/buildversion.txt
+      return_content: true
     register: task_result
-    until: task_result.rc == 0
+    until: task_result['status']|default(0) == 200
     retries: 120
     delay: 1
+  - name: New version
+    debug: msg={{ task_result.content.split('\n') }}
+    when: task_result.status == 200
