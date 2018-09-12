@@ -101,6 +101,10 @@ trait MahdollisestiArvioinniton extends Suoritus {
   override def arviointiPuuttuu = false
 }
 
+trait DuplikaatitSallittu extends Suoritus {
+  override def salliDuplikaatit = true
+}
+
 trait Toimipisteellinen extends Suoritus with OrganisaatioonLiittyvä {
   @Description("Oppilaitoksen toimipiste, jossa opinnot on suoritettu. Jos oppilaitoksella ei ole toimipisteitä, syötetään tähän oppilaitoksen tiedot")
   @Tooltip("Oppilaitoksen toimipiste, jossa opinnot on suoritettu. Jos oppilaitoksella ei ole toimipisteitä, syötetään tähän oppilaitoksen tiedot")

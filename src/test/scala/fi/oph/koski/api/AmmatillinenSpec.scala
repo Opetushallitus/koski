@@ -46,6 +46,7 @@ class AmmatillinenSpec extends FreeSpec with TodistusTestMethods with LocalJetty
         |Koulutuksen sisällöt
         |Johtaminen ja henkilöstön kehittäminen
         |Auton lisävarustetyöt
+        |Auton lisävarustetyöt
         |Tutkintotodistuksen saamiseksi on osoitettava tukinnon perusteissa edellytetty ammattitaito tutkintotilaisuuksissa tutkintotoimikunnan valvonnassa. Tutkintotoimikunta antaa tutkintotodistuksen erikseen.""".stripMargin)
   }
 }
