@@ -28,14 +28,10 @@ export class SuoritusjakoLink extends React.Component {
     }
 
     this.dateChangeBus = new Bacon.Bus()
-    this.inputChangeBus = new Bacon.Bus()
-
-    this.initUpdateBus()
-
-    this.feedbackBus = this.inputChangeBus.merge(this.updateBus)
+    this.feedbackBus = new Bacon.Bus()
   }
 
-  initUpdateBus() {
+  componentDidMount() {
     const debounced = this.dateChangeBus
       .toProperty()
       .changes()
@@ -46,7 +42,10 @@ export class SuoritusjakoLink extends React.Component {
     this.updateBus = debounced
       .flatMapLatest(date => date && doUpdate(this.props.suoritusjako.secret, formatISODate(date)))
 
-    this.updateBus.onValue(() => this.setState({isDateUpdatePending: false}))
+    this.updateBus.onValue(val => {
+      this.setState({isDateUpdatePending: false})
+      this.feedbackBus.push(val)
+    })
   }
 
   static isDateInFuture(date) {
@@ -112,12 +111,13 @@ export class SuoritusjakoLink extends React.Component {
             </div>
             <div className='suoritusjako-link__expiration'>
               <label htmlFor={labelId}><Text name='Linkin voimassaoloaika päättyy'/></label>
+              <div style={{display: 'inline'}} className={isDateUpdatePending ? 'ajax-indicator-right' : ''}>
               <DateInput
                 value={parseISODate(expirationDate)}
                 valueCallback={date => this.dateChangeBus.push(date)}
                 validityCallback={(isValid, stringInput)=> {
                   !isValid && this.dateChangeBus.push(null)
-                  this.inputChangeBus.push(stringInput)
+                  this.feedbackBus.push(stringInput)
                 }}
                 isAllowedDate={d => SuoritusjakoLink.isDateInFuture(d) && SuoritusjakoLink.isDateWithinYear(d)}
                 isPending={isDateUpdatePending}
@@ -128,6 +128,7 @@ export class SuoritusjakoLink extends React.Component {
                 futureValidator={SuoritusjakoLink.isDateInFuture}
                 yearValidator={SuoritusjakoLink.isDateWithinYear}
               />
+             </div>
             </div>
           </div>
           <div className='suoritusjako-link__bottom-container'>
