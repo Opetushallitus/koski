@@ -17,6 +17,15 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
 
   private lazy val raportointiDatabase = application.raportointiDatabase
 
+  get("/mahdolliset-raportit/:oppilaitosOid") {
+    val oppilaitosOid = OrganisaatioOid.validateOrganisaatioOid(getStringParam("oppilaitosOid")) match {
+      case Left(error) => haltWithStatus(error)
+      case Right(oid) => oid
+    }
+    val koulutusmuodot = raportointiDatabase.oppilaitoksenKoulutusmuodot(oppilaitosOid)
+    if (koulutusmuodot.contains("ammatillinenkoulutus")) Seq("opiskelijavuositiedot") else Seq.empty
+  }
+
   get("/opiskelijavuositiedot") {
     
     val loadCompleted = raportointiDatabase.fullLoadCompleted(raportointiDatabase.statuses)

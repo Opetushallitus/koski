@@ -105,6 +105,11 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
     }
   }
 
+  def oppilaitoksenKoulutusmuodot(oppilaitos: Organisaatio.Oid): Set[String] = {
+    val query = ROpiskeluoikeudet.filter(_.oppilaitosOid === oppilaitos).map(_.koulutusmuoto).distinct
+    runDbSync(query.result).toSet
+  }
+
   def opiskeluoikeusAikajaksot(oppilaitos: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate): Seq[(ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow])] = {
     val alkuDate = Date.valueOf(alku)
     val loppuDate = Date.valueOf(loppu)
