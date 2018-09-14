@@ -19,7 +19,6 @@ case class OpiskelijavuositiedotRow(
   hetu: Option[String],
   sukunimi: Option[String],
   etunimet: Option[String],
-  koulutusmuoto: String,
   koulutusmoduulit: String,
   osaamisalat: Option[String],
   viimeisinOpiskeluoikeudenTila: String,
@@ -48,7 +47,7 @@ case class OpiskelijavuositiedotRow(
 object Opiskelijavuositiedot {
 
   private[raportit] def buildRaportti(raportointiDatabase: RaportointiDatabase, oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate): Seq[OpiskelijavuositiedotRow] = {
-    val result = raportointiDatabase.opiskeluoikeusAikajaksot(oppilaitosOid, alku, loppu)
+    val result = raportointiDatabase.opiskeluoikeusAikajaksot(oppilaitosOid, "ammatillinenkoulutus", alku, loppu)
     val rows = result.map(r => buildRow(alku, loppu, r))
     rows
   }
@@ -64,7 +63,6 @@ object Opiskelijavuositiedot {
     "hetu" -> Column("Hetu"),
     "sukunimi" -> Column("Sukunimi"),
     "etunimet" -> Column("Etunimet"),
-    "koulutusmuoto" -> Column("Koulutusmuoto"),
     "koulutusmoduulit" -> Column("Tutkinnot"),
     "osaamisalat" -> Column("Osaamisalat"),
     "viimeisinOpiskeluoikeudenTila" -> Column("Viimeisin tila"),
@@ -142,7 +140,6 @@ object Opiskelijavuositiedot {
       hetu = Some("*"), // henkilö.flatMap(_.hetu),
       sukunimi = Some("*"), // henkilö.map(_.sukunimi),
       etunimet = Some("*"), // henkilö.map(_.etunimet),
-      koulutusmuoto = opiskeluoikeus.koulutusmuoto,
       koulutusmoduulit = päätasonSuoritukset.map(_.koulutusmoduuliKoodiarvo).sorted.mkString(","),
       osaamisalat = if (osaamisalat.isEmpty) None else Some(osaamisalat.mkString(",")),
       viimeisinOpiskeluoikeudenTila = aikajaksot.last.tila,
