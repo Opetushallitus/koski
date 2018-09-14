@@ -10,6 +10,7 @@ import fi.oph.koski.log.KoskiMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_RAPORTTI
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
 import fi.oph.koski.organisaatio.OrganisaatioOid
+import fi.oph.koski.schema.OpiskeluoikeudenTyyppi
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import org.scalatra.{ContentEncodingSupport, Cookie, CookieOptions}
 
@@ -23,7 +24,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
       case Right(oid) => oid
     }
     val koulutusmuodot = raportointiDatabase.oppilaitoksenKoulutusmuodot(oppilaitosOid)
-    if (koulutusmuodot.contains("ammatillinenkoulutus")) Seq("opiskelijavuositiedot") else Seq.empty
+    if (koulutusmuodot.contains(OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo)) Seq("opiskelijavuositiedot") else Seq.empty
   }
 
   get("/opiskelijavuositiedot") {

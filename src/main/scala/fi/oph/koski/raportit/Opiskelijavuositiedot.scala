@@ -5,7 +5,7 @@ import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.raportointikanta._
-import fi.oph.koski.schema.{LähdejärjestelmäId, Organisaatio, Osaamisalajakso}
+import fi.oph.koski.schema.{LähdejärjestelmäId, OpiskeluoikeudenTyyppi, Organisaatio, Osaamisalajakso}
 import fi.oph.koski.util.FinnishDateFormat.{finnishDateFormat, finnishDateTimeFormat}
 
 case class OpiskelijavuositiedotRow(
@@ -47,7 +47,7 @@ case class OpiskelijavuositiedotRow(
 object Opiskelijavuositiedot {
 
   private[raportit] def buildRaportti(raportointiDatabase: RaportointiDatabase, oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate): Seq[OpiskelijavuositiedotRow] = {
-    val result = raportointiDatabase.opiskeluoikeusAikajaksot(oppilaitosOid, "ammatillinenkoulutus", alku, loppu)
+    val result = raportointiDatabase.opiskeluoikeusAikajaksot(oppilaitosOid, OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo, alku, loppu)
     val rows = result.map(r => buildRow(alku, loppu, r))
     rows
   }

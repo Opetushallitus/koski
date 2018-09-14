@@ -24,8 +24,8 @@ case class EsiopetuksenOpiskeluoikeus(
   lisätiedot: Option[EsiopetuksenOpiskeluoikeudenLisätiedot] = None,
   @MaxItems(1)
   suoritukset: List[EsiopetuksenSuoritus],
-  @KoodistoKoodiarvo("esiopetus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("esiopetus", koodistoUri = "opiskeluoikeudentyyppi")
+  @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.esiopetus.koodiarvo)
+  tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.esiopetus
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))

@@ -20,8 +20,8 @@ case class AikuistenPerusopetuksenOpiskeluoikeus(
   tila: AikuistenPerusopetuksenOpiskeluoikeudenTila,
   lisätiedot: Option[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot] = None,
   suoritukset: List[AikuistenPerusopetuksenPäätasonSuoritus],
-  @KoodistoKoodiarvo("aikuistenperusopetus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("aikuistenperusopetus", "opiskeluoikeudentyyppi")
+  @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.aikuistenperusopetus.koodiarvo)
+  tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.aikuistenperusopetus
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))

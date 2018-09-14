@@ -77,6 +77,22 @@ trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiitty
   def mitätöity: Boolean = tila.opiskeluoikeusjaksot.lastOption.exists(_.tila.koodiarvo == "mitatoity")
 }
 
+object OpiskeluoikeudenTyyppi {
+  val aikuistenperusopetus = apply("aikuistenperusopetus")
+  val ammatillinenkoulutus = apply("ammatillinenkoulutus")
+  val esiopetus = apply("esiopetus")
+  val ibtutkinto = apply("ibtutkinto")
+  val korkeakoulutus = apply("korkeakoulutus")
+  val lukiokoulutus = apply("lukiokoulutus")
+  val luva = apply("luva")
+  val perusopetukseenvalmistavaopetus = apply("perusopetukseenvalmistavaopetus")
+  val perusopetuksenlisaopetus = apply("perusopetuksenlisaopetus")
+  val perusopetus = apply("perusopetus")
+  val ylioppilastutkinto = apply("ylioppilastutkinto")
+
+  private def apply(koodiarvo: String): Koodistokoodiviite = Koodistokoodiviite(koodiarvo, "opiskeluoikeudentyyppi")
+}
+
 trait OpiskeluoikeudenLisätiedot
 
 trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
