@@ -10,7 +10,7 @@ import fi.oph.koski.log.KoskiMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_RAPORTTI
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
 import fi.oph.koski.organisaatio.OrganisaatioOid
-import fi.oph.koski.schema.OpiskeluoikeudenTyyppi
+import fi.oph.koski.schema.{OpiskeluoikeudenTyyppi, Organisaatio}
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import org.scalatra.{ContentEncodingSupport, Cookie, CookieOptions}
 
@@ -34,30 +34,10 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
       haltWithStatus(KoskiErrorCategory.unavailable.raportit())
     }
 
-    if (!koskiSession.hasRaportitAccess) {
-      haltWithStatus(KoskiErrorCategory.forbidden.organisaatio())
-    }
-
-    val oppilaitosOid = OrganisaatioOid.validateOrganisaatioOid(getStringParam("oppilaitosOid")) match {
-      case Left(error) => haltWithStatus(error)
-      case Right(oid) if !koskiSession.hasReadAccess(oid) => haltWithStatus(KoskiErrorCategory.forbidden.organisaatio())
-      case Right(oid) => oid
-    }
-    val (alku, loppu) = try {
-      (LocalDate.parse(getStringParam("alku")), LocalDate.parse(getStringParam("loppu")))
-    } catch {
-      case e: DateTimeParseException => haltWithStatus(KoskiErrorCategory.badRequest.format.pvm())
-    }
-    if (loppu.isBefore(alku)) {
-      haltWithStatus(KoskiErrorCategory.badRequest.format.pvm("loppu ennen alkua"))
-    }
+    val oppilaitosOid = getOppilaitosParamAndCheckAccess
+    val (alku, loppu) = getAlkuLoppuParams
     val password = params.get("password")
     val downloadToken = params.get("downloadToken")
-
-    // temporary restriction
-    if (application.config.getStringList("oppijavuosiraportti.enabledForUsers").indexOf(koskiSession.username) < 0) {
-      haltWithStatus(KoskiErrorCategory.forbidden("Ei sallittu tälle käyttäjälle"))
-    }
 
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=opiskelijavuositiedot&oppilaitosOid=$oppilaitosOid&alku=$alku&loppu=$loppu")))
 
@@ -78,6 +58,35 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
         ),
         response.getOutputStream
       )
+    }
+  }
+
+  private def getOppilaitosParamAndCheckAccess: Organisaatio.Oid = {
+    if (!koskiSession.hasRaportitAccess) {
+      haltWithStatus(KoskiErrorCategory.forbidden.organisaatio())
+    }
+    val oppilaitosOid = OrganisaatioOid.validateOrganisaatioOid(getStringParam("oppilaitosOid")) match {
+      case Left(error) => haltWithStatus(error)
+      case Right(oid) if !koskiSession.hasReadAccess(oid) => haltWithStatus(KoskiErrorCategory.forbidden.organisaatio())
+      case Right(oid) => oid
+    }
+    // temporary restriction
+    if (!application.config.getStringList("oppijavuosiraportti.enabledForUsers").contains(koskiSession.username)) {
+      haltWithStatus(KoskiErrorCategory.forbidden("Ei sallittu tälle käyttäjälle"))
+    }
+    oppilaitosOid
+  }
+
+  private def getAlkuLoppuParams: (LocalDate, LocalDate) = {
+    try {
+      val alku = LocalDate.parse(getStringParam("alku"))
+      val loppu = LocalDate.parse(getStringParam("loppu"))
+      if (loppu.isBefore(alku)) {
+        haltWithStatus(KoskiErrorCategory.badRequest.format.pvm("loppu ennen alkua"))
+      }
+      (alku, loppu)
+    } catch {
+      case e: DateTimeParseException => haltWithStatus(KoskiErrorCategory.badRequest.format.pvm())
     }
   }
 }
