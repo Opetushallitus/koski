@@ -10,8 +10,8 @@ case class YlioppilastutkinnonOpiskeluoikeus(
   tila: YlioppilastutkinnonOpiskeluoikeudenTila,
   @MinItems(1) @MaxItems(1)
   suoritukset: List[YlioppilastutkinnonSuoritus],
-  @KoodistoKoodiarvo("ylioppilastutkinto")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ylioppilastutkinto", "opiskeluoikeudentyyppi")
+  @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo)
+  tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.ylioppilastutkinto
 ) extends Opiskeluoikeus {
   override def arvioituPäättymispäivä = None
   override def päättymispäivä = None
