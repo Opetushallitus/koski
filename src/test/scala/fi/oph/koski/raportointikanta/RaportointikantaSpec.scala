@@ -39,6 +39,8 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
         opiskeluoikeusCount should be > 30
       }
     }
+    // Poistettu nimi/hetu-tiedot väliaikaisesti
+    /*
     "Henkilöiden lataus" in {
       authGet("api/raportointikanta/henkilot") {
         val mockOppija = MockOppijat.eero
@@ -52,6 +54,25 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
           mockOppija.sukunimi,
           mockOppija.etunimet,
           Some("FI"),
+          None,
+          false
+        )))
+      }
+    }
+    */
+    "Henkilöiden lataus" in {
+      authGet("api/raportointikanta/henkilot") {
+        val mockOppija = MockOppijat.eero
+        verifyResponseStatusOk()
+        henkiloCount should be > 30
+        val henkilo = raportointiDatabase.runDbSync(raportointiDatabase.RHenkilöt.filter(_.oppijaOid === mockOppija.oid).result)
+        henkilo should equal(Seq(RHenkilöRow(
+          mockOppija.oid,
+          None,
+          None,
+          "*",
+          "*",
+          None,
           None,
           false
         )))
