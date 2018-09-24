@@ -4,7 +4,47 @@
     height: 70px;
     margin: 10px 0 10px 50px;
 }
-.content {
+
+
+.content-area.dokumentaatio {
+  display: flex;
+
+  .sidebar {
+    flex-grow: 1;
+    max-width: @sidebar-width;
+    padding-top: 35px;
+    vertical-align: top;
+  }
+
+  .main-content {
+    flex-grow: 1;
+    flex-basis: 80%;
+    max-width: @max-content-width - @sidebar-width;
+    padding-left: 60px;
+    padding-right: 20px;
+    vertical-align: top;
+    background-color: @color-neutral-gray;
+  }
+
+  .ajax-loading-placeholder {
+    .ajax-indicator-bg;
+  }
+}
+
+.dokumentaatio-navi {
+  .leftnavi;
+  .navi-items;
+  .navi-link-container {
+    .navi-item;
+    display: block;
+    &.selected {
+      .navi-item-selected;
+    }
+  }
+}
+
+
+.dokumentaatio-content {
     font-family: Helvetica, Arial, sans-serif;
     color: rgb(51, 51, 51);
     font-size: 16px;
@@ -28,22 +68,19 @@
         margin-bottom: 30px;
     }
     .preview-image-links {
-        text-align: center;
-        margin: 32px auto;
-        background: rgba(85, 85, 85, 0.1);
         a {
             display: inline-block;
-            padding: 27px 20px;
-            max-width: 24%;
+            padding: 27px 20px 27px 0;
+            max-width: 30%;
             vertical-align: top;
         }
         .img-wrapper {
-            height: 270px;
+            height: 250px;
             img {
                 border: 2px solid;
                 max-height: 280px;
                 margin-bottom: 13px;
-                max-width: 300px;
+                max-width: 100%;
             }
         }
         p {

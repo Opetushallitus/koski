@@ -5,7 +5,7 @@ function DocumentationPage() {
       return openPage('/koski/documentation', api.isVisible)()
     },
     isVisible: function() {
-      return isElementVisible(S('.content h2'))
+      return isElementVisible(S('.dokumentaatio-content h2'))
     }
   }
 

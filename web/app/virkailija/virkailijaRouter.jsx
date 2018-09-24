@@ -6,7 +6,7 @@ import {tiedonsiirtolokiContentP} from '../tiedonsiirrot/Tiedonsiirtoloki'
 import {tiedonsiirtovirheetContentP} from '../tiedonsiirrot/Tiedonsiirtovirheet'
 import {tiedonsiirtojenYhteenvetoContentP} from '../tiedonsiirrot/TiedonsiirtojenYhteenveto'
 import {oppijataulukkoContentP} from './Oppijataulukko'
-import {dokumentaatioContentP} from '../dokumentaatio/Dokumentaatio'
+import {dokumentaatioYleistäP, dokumentaatioTietomalliP, dokumentaatioKoodistotP, dokumentaatioOppilashallintojärjestelmätP, dokumentaatioLuovutuspalveluP, dokumentaatioPalveluväyläOmadataP} from '../dokumentaatio/Dokumentaatio'
 import {onlyIfHasReadAccess} from './accessCheck'
 import {raportitContentP} from '../raportit/Raportit'
 
@@ -29,8 +29,18 @@ export const routeP = locationP.flatMapLatest(({path, queryString, params, hash}
   } else if (path === '/koski/raportit') {
     return raportitContentP()
   } else if (path === '/koski/dokumentaatio') {
-    return dokumentaatioContentP()
-  }
+    return dokumentaatioYleistäP()
+  } else if (path === '/koski/dokumentaatio/tietomalli') {
+    return dokumentaatioTietomalliP()
+  } else if (path === '/koski/dokumentaatio/koodistot') {
+    return dokumentaatioKoodistotP()
+  } else if (path === '/koski/dokumentaatio/rajapinnat/oppilashallintojarjestelmat') {
+    return dokumentaatioOppilashallintojärjestelmätP()
+  } else if (path === '/koski/dokumentaatio/rajapinnat/luovutuspalvelu') {
+    return dokumentaatioLuovutuspalveluP()
+  } else if (path === '/koski/dokumentaatio/rajapinnat/palveluvayla-omadata') {
+  return dokumentaatioPalveluväyläOmadataP()
+}
 }).toProperty()
 
 export const contentP = routeP.map('.content')

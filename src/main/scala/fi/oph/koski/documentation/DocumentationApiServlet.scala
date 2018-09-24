@@ -2,6 +2,7 @@ package fi.oph.koski.documentation
 
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.koodisto.Koodistot
 import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
@@ -35,6 +36,10 @@ class DocumentationApiServlet extends ApiServlet with Unauthenticated with NoCac
 
   get("/koski-oppija-schema.json") {
     KoskiSchema.schemaJson
+  }
+
+  get("/koodistot.json") {
+    renderObject[List[String]](Koodistot.koodistot)
   }
 
   override def toJsonString[T: ru.TypeTag](x: T): String = JsonSerializer.writeWithRoot(x)
