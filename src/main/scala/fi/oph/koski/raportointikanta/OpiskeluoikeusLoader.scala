@@ -140,7 +140,18 @@ object OpiskeluoikeusLoader extends Logging {
 
 
   private[raportointikanta] def buildROpiskeluoikeusAikajaksoRows(opiskeluoikeusOid: String, o: KoskeenTallennettavaOpiskeluoikeus): Seq[ROpiskeluoikeusAikajaksoRow] = {
-    aikajaksot(o).map { case (alku, loppu) => buildROpiskeluoikeusAikajaksoRowForOneDay(opiskeluoikeusOid, o, alku).copy(loppu = Date.valueOf(loppu)) }
+    var edellinenTila: Option[String] = None
+    var edellinenTilaAlkanut: Option[Date] = None
+    for ((alku, loppu) <- aikajaksot(o)) yield {
+      val rivi = buildROpiskeluoikeusAikajaksoRowForOneDay(opiskeluoikeusOid, o, alku).copy(loppu = Date.valueOf(loppu))
+      if (edellinenTila.isDefined && edellinenTila.get == rivi.tila) {
+        rivi.copy(tilaAlkanut = edellinenTilaAlkanut.get)
+      } else {
+        edellinenTila = Some(rivi.tila)
+        edellinenTilaAlkanut = Some(rivi.alku)
+        rivi
+      }
+    }
   }
 
   private def buildROpiskeluoikeusAikajaksoRowForOneDay(opiskeluoikeusOid: String, o: KoskeenTallennettavaOpiskeluoikeus, päivä: LocalDate): ROpiskeluoikeusAikajaksoRow = {
@@ -177,8 +188,9 @@ object OpiskeluoikeusLoader extends Logging {
     ROpiskeluoikeusAikajaksoRow(
       opiskeluoikeusOid = opiskeluoikeusOid,
       alku = Date.valueOf(päivä),
-      loppu = Date.valueOf(päivä),
+      loppu = Date.valueOf(päivä), // korvataan oikealla päivällä ylempänä
       tila = jakso.tila.koodiarvo,
+      tilaAlkanut = Date.valueOf(päivä), // korvataan oikealla päivällä ylempänä
       opiskeluoikeusPäättynyt = jakso.opiskeluoikeusPäättynyt,
       opintojenRahoitus = jakso match {
         case k: KoskiOpiskeluoikeusjakso => k.opintojenRahoitus.map(_.koodiarvo)

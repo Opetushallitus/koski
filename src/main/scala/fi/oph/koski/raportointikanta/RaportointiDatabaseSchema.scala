@@ -73,6 +73,7 @@ object RaportointiDatabaseSchema {
     val alku = column[Date]("alku")
     val loppu = column[Date]("loppu")
     val tila = column[String]("tila", StringIdentifierType)
+    val tilaAlkanut = column[Date]("tila_alkanut")
     val opiskeluoikeusPäättynyt = column[Boolean]("opiskeluoikeus_paattynyt")
     val opintojenRahoitus = column[Option[String]]("opintojen_rahoitus", StringIdentifierType)
     val majoitus = column[Byte]("majoitus")
@@ -87,7 +88,7 @@ object RaportointiDatabaseSchema {
     val opiskeluvalmiuksiaTukevatOpinnot = column[Byte]("opiskeluvalmiuksia_tukevat_opinnot")
     val vankilaopetuksessa = column[Byte]("vankilaopetuksessa")
     val oppisopimusJossainPäätasonSuorituksessa = column[Byte]("oppisopimus_jossain_paatason_suorituksessa")
-    def * = (opiskeluoikeusOid, alku, loppu, tila, opiskeluoikeusPäättynyt,
+    def * = (opiskeluoikeusOid, alku, loppu, tila, tilaAlkanut, opiskeluoikeusPäättynyt,
       opintojenRahoitus, majoitus, sisäoppilaitosmainenMajoitus, vaativanErityisenTuenYhteydessäJärjestettäväMajoitus,
       erityinenTuki, vaativanErityisenTuenErityinenTehtävä, hojks, vaikeastiVammainen, vammainenJaAvustaja,
       osaAikaisuus, opiskeluvalmiuksiaTukevatOpinnot, vankilaopetuksessa, oppisopimusJossainPäätasonSuorituksessa) <> (ROpiskeluoikeusAikajaksoRow.tupled, ROpiskeluoikeusAikajaksoRow.unapply)
@@ -206,6 +207,7 @@ case class ROpiskeluoikeusAikajaksoRow(
   alku: Date,
   loppu: Date,
   tila: String,
+  tilaAlkanut: Date,
   opiskeluoikeusPäättynyt: Boolean = false,
   opintojenRahoitus: Option[String] = None,
   majoitus: Byte = 0,
