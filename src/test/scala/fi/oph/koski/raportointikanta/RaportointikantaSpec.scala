@@ -39,6 +39,8 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
         opiskeluoikeusCount should be > 30
       }
     }
+    // Poistettu nimi/hetu-tiedot väliaikaisesti
+    /*
     "Henkilöiden lataus" in {
       authGet("api/raportointikanta/henkilot") {
         val mockOppija = MockOppijat.eero
@@ -52,6 +54,25 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
           mockOppija.sukunimi,
           mockOppija.etunimet,
           Some("FI"),
+          None,
+          false
+        )))
+      }
+    }
+    */
+    "Henkilöiden lataus" in {
+      authGet("api/raportointikanta/henkilot") {
+        val mockOppija = MockOppijat.eero
+        verifyResponseStatusOk()
+        henkiloCount should be > 30
+        val henkilo = raportointiDatabase.runDbSync(raportointiDatabase.RHenkilöt.filter(_.oppijaOid === mockOppija.oid).result)
+        henkilo should equal(Seq(RHenkilöRow(
+          mockOppija.oid,
+          None,
+          None,
+          "*",
+          "*",
+          None,
           None,
           false
         )))
@@ -102,7 +123,7 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
         )
         val aikajaksoRows = OpiskeluoikeusLoader.buildROpiskeluoikeusAikajaksoRows(oid, opiskeluoikeus)
         aikajaksoRows should equal(Seq(
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf(OpiskeluoikeusLoader.IndefiniteFuture), "lasna")
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf(OpiskeluoikeusLoader.IndefiniteFuture), "lasna", Date.valueOf("2016-01-15"))
         ))
       }
       "Opiskeluoikeusjaksot, päättynyt" in {
@@ -116,10 +137,10 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
         )
         val aikajaksoRows = OpiskeluoikeusLoader.buildROpiskeluoikeusAikajaksoRows(oid, opiskeluoikeus)
         aikajaksoRows should equal(Seq(
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2016-05-31"), "lasna"),
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-06-01"), Date.valueOf("2016-08-31"), "loma"),
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-09-01"), Date.valueOf("2016-12-15"), "lasna", opintojenRahoitus = Some("2")),
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-12-16"), Date.valueOf("2016-12-16"), "valmistunut", opiskeluoikeusPäättynyt = true)
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2016-05-31"), "lasna", Date.valueOf("2016-01-15")),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-06-01"), Date.valueOf("2016-08-31"), "loma", Date.valueOf("2016-06-01")),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-09-01"), Date.valueOf("2016-12-15"), "lasna", Date.valueOf("2016-09-01"), opintojenRahoitus = Some("2")),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-12-16"), Date.valueOf("2016-12-16"), "valmistunut", Date.valueOf("2016-12-16"), opiskeluoikeusPäättynyt = true)
         ))
       }
       "Ammatillisen opiskeluoikeuden lisätiedot, yksinkertainen tapaus" in {
@@ -134,9 +155,9 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
         )
         val aikajaksoRows = OpiskeluoikeusLoader.buildROpiskeluoikeusAikajaksoRows(oid, opiskeluoikeus)
         aikajaksoRows should equal(Seq(
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2016-01-31"), "lasna"),
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-28"), "lasna", erityinenTuki = 1),
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-29"), Date.valueOf(OpiskeluoikeusLoader.IndefiniteFuture), "lasna")
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-15")),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-28"), "lasna", Date.valueOf("2016-01-15"), erityinenTuki = 1),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-29"), Date.valueOf(OpiskeluoikeusLoader.IndefiniteFuture), "lasna", Date.valueOf("2016-01-15"))
         ))
       }
       "Ammatillisen opiskeluoikeuden lisätiedot, monimutkainen 1" in {
@@ -160,14 +181,14 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
         )
         val aikajaksoRows = OpiskeluoikeusLoader.buildROpiskeluoikeusAikajaksoRows(oid, opiskeluoikeus)
         aikajaksoRows should equal(Seq(
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2016-01-31"), "lasna"),
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-04"), "lasna", erityinenTuki = 1),
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-05"), Date.valueOf("2016-02-10"), "lasna", erityinenTuki = 1, vankilaopetuksessa = 1),
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-11"), Date.valueOf("2016-02-29"), "lasna", vankilaopetuksessa = 1),
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-03-01"), Date.valueOf("2016-03-31"), "lasna", vankilaopetuksessa = 1, osaAikaisuus = 80),
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-04-01"), Date.valueOf("2016-04-10"), "lasna", erityinenTuki = 1, vankilaopetuksessa = 1),
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-04-11"), Date.valueOf("2016-04-20"), "lasna", erityinenTuki = 1),
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-04-21"), Date.valueOf(OpiskeluoikeusLoader.IndefiniteFuture), "lasna")
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-15")),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-04"), "lasna", Date.valueOf("2016-01-15"), erityinenTuki = 1),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-05"), Date.valueOf("2016-02-10"), "lasna", Date.valueOf("2016-01-15"), erityinenTuki = 1, vankilaopetuksessa = 1),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-11"), Date.valueOf("2016-02-29"), "lasna", Date.valueOf("2016-01-15"), vankilaopetuksessa = 1),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-03-01"), Date.valueOf("2016-03-31"), "lasna", Date.valueOf("2016-01-15"), vankilaopetuksessa = 1, osaAikaisuus = 80),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-04-01"), Date.valueOf("2016-04-10"), "lasna", Date.valueOf("2016-01-15"), erityinenTuki = 1, vankilaopetuksessa = 1),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-04-11"), Date.valueOf("2016-04-20"), "lasna", Date.valueOf("2016-01-15"), erityinenTuki = 1),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-04-21"), Date.valueOf(OpiskeluoikeusLoader.IndefiniteFuture), "lasna", Date.valueOf("2016-01-15"))
         ))
       }
       "Ammatillisen opiskeluoikeuden lisätiedot, monimutkainen 2" in {
@@ -187,11 +208,11 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
         )
         val aikajaksoRows = OpiskeluoikeusLoader.buildROpiskeluoikeusAikajaksoRows(oid, opiskeluoikeus)
         aikajaksoRows should equal(Seq(
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2016-01-31"), "lasna"),
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-28"), "lasna", opiskeluvalmiuksiaTukevatOpinnot = 1),
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-29"), Date.valueOf("2016-02-29"), "lasna", opiskeluvalmiuksiaTukevatOpinnot = 1, vaikeastiVammainen = 1),
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-03-01"), Date.valueOf("2016-03-31"), "lasna", vaikeastiVammainen = 1),
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-04-01"), Date.valueOf(OpiskeluoikeusLoader.IndefiniteFuture), "lasna")
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-15")),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-28"), "lasna", Date.valueOf("2016-01-15"), opiskeluvalmiuksiaTukevatOpinnot = 1),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-29"), Date.valueOf("2016-02-29"), "lasna", Date.valueOf("2016-01-15"), opiskeluvalmiuksiaTukevatOpinnot = 1, vaikeastiVammainen = 1),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-03-01"), Date.valueOf("2016-03-31"), "lasna", Date.valueOf("2016-01-15"), vaikeastiVammainen = 1),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-04-01"), Date.valueOf(OpiskeluoikeusLoader.IndefiniteFuture), "lasna", Date.valueOf("2016-01-15"))
         ))
       }
       "Ammatillisen opiskeluoikeuden lisätiedot, majoitustiedot" in {
@@ -214,11 +235,11 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
         )
         val aikajaksoRows = OpiskeluoikeusLoader.buildROpiskeluoikeusAikajaksoRows(oid, opiskeluoikeus)
         aikajaksoRows should equal(Seq(
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2016-01-31"), "lasna"),
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-29"), "lasna", majoitus = 1),
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-03-01"), Date.valueOf("2016-03-31"), "lasna", sisäoppilaitosmainenMajoitus = 1),
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-04-01"), Date.valueOf("2016-04-30"), "lasna", vaativanErityisenTuenYhteydessäJärjestettäväMajoitus = 1),
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-05-01"), Date.valueOf(OpiskeluoikeusLoader.IndefiniteFuture), "lasna")
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-15")),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-29"), "lasna", Date.valueOf("2016-01-15"), majoitus = 1),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-03-01"), Date.valueOf("2016-03-31"), "lasna", Date.valueOf("2016-01-15"), sisäoppilaitosmainenMajoitus = 1),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-04-01"), Date.valueOf("2016-04-30"), "lasna", Date.valueOf("2016-01-15"), vaativanErityisenTuenYhteydessäJärjestettäväMajoitus = 1),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-05-01"), Date.valueOf(OpiskeluoikeusLoader.IndefiniteFuture), "lasna", Date.valueOf("2016-01-15"))
         ))
       }
       "Ammatillisen opiskeluoikeuden lisätiedot, hojks" - {
@@ -233,7 +254,7 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
           )
           val aikajaksoRows = OpiskeluoikeusLoader.buildROpiskeluoikeusAikajaksoRows(oid, opiskeluoikeus)
           aikajaksoRows should equal(Seq(
-            ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf(OpiskeluoikeusLoader.IndefiniteFuture), "lasna", hojks = 1)
+            ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf(OpiskeluoikeusLoader.IndefiniteFuture), "lasna", Date.valueOf("2016-01-15"), hojks = 1)
           ))
         }
         "Alku/loppupäivä" in {
@@ -247,9 +268,9 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
           )
           val aikajaksoRows = OpiskeluoikeusLoader.buildROpiskeluoikeusAikajaksoRows(oid, opiskeluoikeus)
           aikajaksoRows should equal(Seq(
-            ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2016-01-31"), "lasna"),
-            ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-29"), "lasna", hojks = 1),
-            ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-03-01"), Date.valueOf(OpiskeluoikeusLoader.IndefiniteFuture), "lasna")
+            ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-15")),
+            ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-29"), "lasna", Date.valueOf("2016-01-15"), hojks = 1),
+            ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-03-01"), Date.valueOf(OpiskeluoikeusLoader.IndefiniteFuture), "lasna", Date.valueOf("2016-01-15"))
           ))
         }
       }
@@ -275,8 +296,8 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
           )
           val aikajaksoRows = OpiskeluoikeusLoader.buildROpiskeluoikeusAikajaksoRows(oid, opiskeluoikeus)
           aikajaksoRows should equal(Seq(
-            ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2016-01-31"), "lasna"),
-            ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf(OpiskeluoikeusLoader.IndefiniteFuture), "lasna", oppisopimusJossainPäätasonSuorituksessa = 1)
+            ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-15")),
+            ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf(OpiskeluoikeusLoader.IndefiniteFuture), "lasna", Date.valueOf("2016-01-15"), oppisopimusJossainPäätasonSuorituksessa = 1)
           ))
         }
         "osaamisenHankkimistavat-kentässä" in {
@@ -295,8 +316,8 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
           )
           val aikajaksoRows = OpiskeluoikeusLoader.buildROpiskeluoikeusAikajaksoRows(oid, opiskeluoikeus)
           aikajaksoRows should equal(Seq(
-            ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2016-01-31"), "lasna", oppisopimusJossainPäätasonSuorituksessa = 1),
-            ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf(OpiskeluoikeusLoader.IndefiniteFuture), "lasna")
+            ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-15"), oppisopimusJossainPäätasonSuorituksessa = 1),
+            ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf(OpiskeluoikeusLoader.IndefiniteFuture), "lasna", Date.valueOf("2016-01-15"))
           ))
         }
 
@@ -314,8 +335,8 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
         )
         val aikajaksoRows = OpiskeluoikeusLoader.buildROpiskeluoikeusAikajaksoRows(oid, opiskeluoikeus)
         aikajaksoRows should equal(Seq(
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2017-01-01"), Date.valueOf("2017-03-31"), "lasna", vaikeastiVammainen = 1),
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2017-04-01"), Date.valueOf(OpiskeluoikeusLoader.IndefiniteFuture), "lasna")
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2017-01-01"), Date.valueOf("2017-03-31"), "lasna", Date.valueOf("2017-01-01"), vaikeastiVammainen = 1),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2017-04-01"), Date.valueOf(OpiskeluoikeusLoader.IndefiniteFuture), "lasna", Date.valueOf("2017-01-01"))
         ))
       }
       "Aikajaksot rajataan opiskeluoikeuden alku/loppupäivän väliin" in {
@@ -336,9 +357,9 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
         )
         val aikajaksoRows = OpiskeluoikeusLoader.buildROpiskeluoikeusAikajaksoRows(oid, opiskeluoikeus)
         aikajaksoRows should equal(Seq(
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2016-02-29"), "lasna", erityinenTuki = 1),
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-03-01"), Date.valueOf("2016-12-15"), "lasna", erityinenTuki = 1, osaAikaisuus = 80),
-          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-12-16"), Date.valueOf("2016-12-16"), "valmistunut", osaAikaisuus = 80, opiskeluoikeusPäättynyt = true)
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2016-02-29"), "lasna", Date.valueOf("2016-01-15"), erityinenTuki = 1),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-03-01"), Date.valueOf("2016-12-15"), "lasna", Date.valueOf("2016-01-15"), erityinenTuki = 1, osaAikaisuus = 80),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-12-16"), Date.valueOf("2016-12-16"), "valmistunut", Date.valueOf("2016-12-16"), osaAikaisuus = 80, opiskeluoikeusPäättynyt = true)
         ))
       }
     }

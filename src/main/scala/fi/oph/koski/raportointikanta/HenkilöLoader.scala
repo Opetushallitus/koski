@@ -26,6 +26,8 @@ object HenkilöLoader extends Logging {
     count
   }
 
+  // Poistettu nimi/hetu-tiedot väliaikaisesti
+  /*
   private def buildRHenkilöRow(oppija: OppijaHenkilö) =
     RHenkilöRow(
       oppijaOid = oppija.oidHenkilo,
@@ -35,6 +37,18 @@ object HenkilöLoader extends Logging {
       etunimet = oppija.etunimet,
       aidinkieli = oppija.aidinkieli,
       kansalaisuus = oppija.kansalaisuus.filter(_.nonEmpty).map(_.sorted.mkString(",")),
+      turvakielto = oppija.turvakielto
+    )
+  */
+  private def buildRHenkilöRow(oppija: OppijaHenkilö) =
+    RHenkilöRow(
+      oppijaOid = oppija.oidHenkilo,
+      hetu = None,
+      syntymäaika = None,
+      sukunimi = "*",
+      etunimet = "*",
+      aidinkieli = None,
+      kansalaisuus = None,
       turvakielto = oppija.turvakielto
     )
 }
