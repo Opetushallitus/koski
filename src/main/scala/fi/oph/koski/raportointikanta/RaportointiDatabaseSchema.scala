@@ -19,9 +19,11 @@ object RaportointiDatabaseSchema {
     sqlu"CREATE INDEX ON r_opiskeluoikeus_aikajakso(alku)",
     sqlu"CREATE UNIQUE INDEX ON r_paatason_suoritus(paatason_suoritus_id)",
     sqlu"CREATE INDEX ON r_paatason_suoritus(opiskeluoikeus_oid)",
+    sqlu"CREATE INDEX ON r_paatason_suoritus(vahvistus_paiva)",
     sqlu"CREATE UNIQUE INDEX ON r_osasuoritus(osasuoritus_id)",
     sqlu"CREATE INDEX ON r_osasuoritus(paatason_suoritus_id)",
-    sqlu"CREATE INDEX ON r_osasuoritus(opiskeluoikeus_oid)"
+    sqlu"CREATE INDEX ON r_osasuoritus(opiskeluoikeus_oid)",
+    sqlu"CREATE INDEX ON r_osasuoritus(vahvistus_paiva)"
   )
 
   val createOtherIndexes = DBIO.seq(
