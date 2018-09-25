@@ -30,7 +30,7 @@ const domP = Bacon.combineWith(topBarP, userP, contentP, allErrorsP, locationP, 
     </div>)
 )
 
-const canAccess = (user, location) => user || noAccessControlPaths.find(p => location.path.endsWith(p))
+const canAccess = (user, location) => user || noAccessControlPaths.find(p => location.path.startsWith(p))
 
 // Render to DOM
 domP.onValue((component) => ReactDOM.render(component, document.getElementById('content')))

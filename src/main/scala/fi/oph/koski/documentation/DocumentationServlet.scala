@@ -16,8 +16,8 @@ import scala.xml.NodeSeq
 class DocumentationServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with AuthenticationSupport with KoodistoFinder {
   val koodistoPalvelu = application.koodistoPalvelu
 
-  get("/") {
-    htmlIndex("koski-main.js", raamit = if (raamitHeaderSet && isAuthenticated) Virkailija else EiRaameja)
+  get("^/(|tietomalli|koodistot|rajapinnat/oppilashallintojarjestelmat|rajapinnat/luovutuspalvelu|rajapinnat/palveluvayla-omadata)$".r){
+    htmlIndex("koski-main.js", raamit = if (raamitHeaderSet && isAuthenticated) Virkailija else EiRaameja, allowIndexing = true)
   }
 
   get("/koski-oppija-schema.html") {

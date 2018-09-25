@@ -8,22 +8,17 @@ object KoskiTiedonSiirtoHtml {
   private val schemaDocumentUrl = "/koski/dokumentaatio/koski-oppija-schema.html"
   private val schemaFileUrl = "/koski/api/documentation/koski-oppija-schema.json"
   private def general =s"""
+## Koski dokumentaatio
 
-## Koski-tiedonsiirtoprotokolla
+Tällä sivustolla kuvataan Koski-tiedonsiirroissa käytettävät tietomallit ja rajapinnat.
 
-Tässä dokumentissa kuvataan Koski-järjestelmän tiedonsiirrossa käytettävä protokolla. Lisätietoja Koski-järjestelmästä löydät [Opetushallituksen wiki-sivustolta](https://confluence.csc.fi/display/OPHPALV/Koski). Järjestelmän lähdekoodit ja kehitysdokumentaatio [Githubissa](https://github.com/Opetushallitus/koski).
+Lisätietoja Koski-järjestelmästä löydät [Opetushallituksen wiki-sivustolta](https://confluence.csc.fi/display/OPHPALV/Koski).
 
-- Rajapinnan avulla järjestelmään voi tallentaa tietoja oppijoiden opinto-oikeuksista, opintosuorituksista ja läsnäolosta oppilaitoksissa
-- Rajapinnan avulla tietoja voi myös hakea ja muokata
-- Rajapinnan käyttö vaatii autentikoinnin ja pääsy tietoihin rajataan käyttöoikeusryhmillä.
-  Näin ollen esimerkiksi oikeus oppilaan tietyssä oppilaitoksessa suorittamien opintojen päivittämiseen voidaan antaa kyseisen oppilaitoksen henkilöstölle
-- Rajapinta mahdollistaa myös automaattiset tiedonsiirrot tietojärjstelmien välillä. Näin esimerkiksi tietyt viranomaiset voivat saada tietoja Koskesta.
-  Samoin oppilaitoksen tietojärjestelmät voivat päivittää tietoja Koskeen.
-- Järjestelmä tarjoaa REST-tyyppisen tiedonsiirtorajapinnan, jossa dataformaattina on JSON
-- Samaa tiedonsiirtoprotokollaa ja dataformaattia pyritään soveltuvilta osin käyttämään sekä käyttöliittymille,
-  jotka näyttävät tietoa loppukäyttäjille, että järjestelmien väliseen kommunikaatioon
+Järjestelmän lähdekoodit ja kehitysdokumentaatio [GitHubissa](https://github.com/Opetushallitus/koski).
+    """
 
-### JSON-dataformaatti
+  private def schema =s"""
+## Tietomalli
 
 Käytettävällä JSON-formaatilla voidaan siirtää tietoja perusopetusta, lukiokoulutusta ja ammatillista koulutusta tarjoavien koulutustoimijoiden tietojärjestelmistä Koskeen ja eteenpäin tietoja tarvitsevien viranomaisten järjestelmiin ja loppukäyttäjiä, kuten oppilaitosten virkailijoita palveleviin käyttöliittymiin.
 
@@ -60,12 +55,28 @@ Esimerkki tällaisesta kentästä on tutkintoon johtavan koulutuksen [koulutusko
 
 Scalaa osaaville ehkä nopein tapa tutkia tietomallia on kuitenkin sen lähdekoodi. Githubista löytyy sekä [scheman](https://github.com/Opetushallitus/koski/blob/master/src/main/scala/fi/oph/koski/schema/Oppija.scala),
 että [esimerkkien](https://github.com/Opetushallitus/koski/blob/master/src/main/scala/fi/oph/koski/documentation/Examples.scala) lähdekoodit.
+"""
 
+  def koodistot =
+"""
+## Koodistot
+
+Tietokentät, joissa validit arvot on lueteltavissa, on kooditettu käyttäen hyväksi Opintopolku-järjestelmään kuuluvaa [Koodistopalvelua](https://github.com/Opetushallitus/koodisto).
+Esimerkki tällaisesta kentästä on tutkintoon johtavan koulutuksen [koulutuskoodi](/koski/dokumentaatio/koodisto/koulutus/latest).
+
+Tällä hetkellä käytössä ovat seuraavat koodistot:
 """
 
   def rest_apis ="""
+## Rajapinnat oppilashallintojärjestelmille
 
-### REST-rajapinnat
+Tällä sivulle kuvataan rajapinnat tiedonsiirroille oppilaitoksen tietojärjestelmistä (oppilashallintojärjestelmistä) Koskeen. Rajapinnan avulla Koskeen
+voi tallentaa tietoja oppijoiden opiskeluoikeuksista, opintosuorituksista ja läsnäolosta oppilaitoksissa. Rajapinnan avulla tietoja voi myös hakea ja muokata.
+
+Tiedonsiirron rajapinta on REST-tyyppinen, ja dataformaattina on JSON.
+
+Rajapinnan käyttö vaatii autentikoinnin ja pääsy tietoihin rajataan käyttöoikeusryhmillä.
+Näin ollen esimerkiksi oikeus oppilaan tietyssä oppilaitoksessa suorittamien opintojen päivittämiseen voidaan antaa vain kyseisen oppilaitoksen järjestelmälle.
 
 Kaikki rajapinnat vaativat HTTP Basic Authentication -tunnistautumisen, eli käytännössä `Authorization`-headerin HTTP-pyyntöön.
 
@@ -74,16 +85,28 @@ Saat tarvittavat tunnukset Koski-kehitystiimiltä pyydettäessä.
 
 Rajapintojen käyttämät virhekoodit on myös kuvattu alla. Virhetapauksissa rajapinnat käyttävät alla kuvattuja HTTP-statuskoodeja ja sisällyttävät tarkemmat virhekoodit ja selitteineen JSON-tyyppiseen paluuviestiin.
 Samaan virhevastaukseen voi liittyä useampi virhekoodi/selite.
-
   """
 
   def annotated_data="""
-### Esimerkkidata annotoituna
+#### Esimerkkidata annotoituna
 
 Toinen hyvä tapa tutustua tiedonsiirtoprotokollaan on tutkia esimerkkiviestejä.
 Alla joukko viestejä, joissa oppijan opinnot ovat eri vaiheissa. Kussakin esimerkissa on varsinaisen JSON-sisällön lisäksi schemaan pohjautuva annotointi ja linkitykset koodistoon ja OKSA-sanastoon.
-    """
+"""
 
+  def luovutuspalvelu=
+"""
+## Rajapinnat viranomaisille (luovutuspalvelu)
+
+Tälle sivulle on myöhemmin tulossa dokumentaatio rajapinnoista, joilla tietyt viranomaiset voivat saada tietoja Koskesta.
+"""
+
+  def palveluvayla_omadata="""
+## Palveluväylä- ja omadata-rajapinnat
+
+Tälle sivulle on myöhemmin tulossa dokumentaatio rajapinnoista, joilla kolmannet osapuolet voivat pyytää
+käyttölupaa kansalaisen tietoihin ja hakea kyseisiä tietoja Suomi.fi-palveluväylän kautta.
+"""
 
   val categoryNames: Seq[String] = Seq(
     "Esiopetus",
@@ -130,5 +153,13 @@ Alla joukko viestejä, joissa oppijan opinnot ovat eri vaiheissa. Kussakin esime
 
   val apiOperations: List[ApiOperation] = KoskiApiOperations.operations
 
-  val htmlTextSections = List(general, rest_apis, annotated_data).map(Markdown.markdownToXhtmlString)
+  val htmlTextSections = Map(
+    "general"-> general,
+    "schema" -> schema,
+    "koodistot" -> koodistot,
+    "rest_apis" -> rest_apis,
+    "annotated_data" -> annotated_data,
+    "luovutuspalvelu" -> luovutuspalvelu,
+    "palveluvayla_omadata" -> palveluvayla_omadata
+  ).mapValues(Markdown.markdownToXhtmlString)
 }

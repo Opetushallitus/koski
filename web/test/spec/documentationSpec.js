@@ -3,7 +3,7 @@ describe('Dokumentaatio', function() {
   describe('Dokumentaatio-sivu', function() {
     before(Authentication().logout, page.openPage)
     it('näytetään', function() {
-      expect(textsOf(S('h2'))).to.deep.equal(['Koski-tiedonsiirtoprotokolla'])
+      expect(textsOf(S('h2'))).to.deep.equal(['Koski dokumentaatio'])
     })
   })
 
