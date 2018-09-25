@@ -10,11 +10,11 @@ object KoskiTiedonSiirtoHtml {
   private def general =s"""
 ## Koski dokumentaatio
 
-Tällä sivustolla kuvataan Koski-järjestelmän tiedonsiirrossa käyttämät tietomallit ja rajapinnat.
+Tällä sivustolla kuvataan Koski-tiedonsiirroissa käytettävät tietomallit ja rajapinnat.
 
 Lisätietoja Koski-järjestelmästä löydät [Opetushallituksen wiki-sivustolta](https://confluence.csc.fi/display/OPHPALV/Koski).
 
-Järjestelmän lähdekoodit ja kehitysdokumentaatio [Githubissa](https://github.com/Opetushallitus/koski).
+Järjestelmän lähdekoodit ja kehitysdokumentaatio [GitHubissa](https://github.com/Opetushallitus/koski).
     """
 
   private def schema =s"""
@@ -71,7 +71,7 @@ Tällä hetkellä käytössä ovat seuraavat koodistot:
 ## Rajapinnat oppilashallintojärjestelmille
 
 Tällä sivulle kuvataan rajapinnat tiedonsiirroille oppilaitoksen tietojärjestelmistä (oppilashallintojärjestelmistä) Koskeen. Rajapinnan avulla Koskeen
-voi tallentaa tietoja oppijoiden opinto-oikeuksista, opintosuorituksista ja läsnäolosta oppilaitoksissa. Rajapinnan avulla tietoja voi myös hakea ja muokata.
+voi tallentaa tietoja oppijoiden opiskeluoikeuksista, opintosuorituksista ja läsnäolosta oppilaitoksissa. Rajapinnan avulla tietoja voi myös hakea ja muokata.
 
 Tiedonsiirron rajapinta on REST-tyyppinen, ja dataformaattina on JSON.
 
@@ -102,10 +102,10 @@ Tälle sivulle on myöhemmin tulossa dokumentaatio rajapinnoista, joilla tietyt 
 """
 
   def palveluvayla_omadata="""
-## Palveluväylä- ja Omadata-rajapinnat
+## Palveluväylä- ja omadata-rajapinnat
 
 Tälle sivulle on myöhemmin tulossa dokumentaatio rajapinnoista, joilla kolmannet osapuolet voivat pyytää
-käyttölupaa kansalaisen tietoihin, ja hakea kyseisiä tietoja Suomi.fi-palveluväylän kautta.
+käyttölupaa kansalaisen tietoihin ja hakea kyseisiä tietoja Suomi.fi-palveluväylän kautta.
 """
 
   val categoryNames: Seq[String] = Seq(

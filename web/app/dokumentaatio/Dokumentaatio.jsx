@@ -29,9 +29,7 @@ const JsonExample = ({category, example}) => {
 }
 
 const naviLink = (path, textKey, location, linkClassName, isSelected = (p, l) => p === l) => {
-  let className = textKey.toLowerCase().replace(/ /g,'') + ' navi-link-container'
-  className = isSelected(path, location) ? className + ' selected' : className
-  console.log('isSelected', path, location, isSelected(path, location))
+  const className = `${textKey.toLowerCase().replace(/ /g,'')} navi-link-container${isSelected(path, location) ? ' selected' : ''}`
   return (<span className={className}><Link href={path} className={linkClassName}><Text name={textKey}/></Link></span>)
 }
 
@@ -44,7 +42,7 @@ const dokumentaatioContentP = (location, contentP) => contentWithLoadingIndicato
         {naviLink('/koski/dokumentaatio/koodistot', 'Koodistot', location, '')}
         {naviLink('/koski/dokumentaatio/rajapinnat/oppilashallintojarjestelmat', 'Rajapinnat oppilas\u00adhallintojärjestelmille', location, '')}
         {naviLink('/koski/dokumentaatio/rajapinnat/luovutuspalvelu', 'Rajapinnat viranomaisille (luovutuspalvelu)', location, '')}
-        {naviLink('/koski/dokumentaatio/rajapinnat/palveluvayla-omadata', 'Palveluväylä- ja Omadata-rajapinnat', location, '')}
+        {naviLink('/koski/dokumentaatio/rajapinnat/palveluvayla-omadata', 'Palveluväylä- ja omadata-rajapinnat', location, '')}
       </nav>
       <div className="main-content dokumentaatio-content">
         {content.content}
