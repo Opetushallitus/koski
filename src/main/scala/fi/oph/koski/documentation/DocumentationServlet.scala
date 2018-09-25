@@ -17,7 +17,7 @@ class DocumentationServlet(implicit val application: KoskiApplication) extends S
   val koodistoPalvelu = application.koodistoPalvelu
 
   get("^/(|tietomalli|koodistot|rajapinnat/oppilashallintojarjestelmat|rajapinnat/luovutuspalvelu|rajapinnat/palveluvayla-omadata)$".r){
-    htmlIndex("koski-main.js", raamit = if (raamitHeaderSet && isAuthenticated) Virkailija else EiRaameja)
+    htmlIndex("koski-main.js", raamit = if (raamitHeaderSet && isAuthenticated) Virkailija else EiRaameja, allowIndexing = true)
   }
 
   get("/koski-oppija-schema.html") {
