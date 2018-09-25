@@ -118,7 +118,7 @@ export const dokumentaatioOppilashallintojärjestelmätP = () => dokumentaatioCo
 export const dokumentaatioLuovutuspalveluP = () => dokumentaatioContentP('/koski/dokumentaatio/rajapinnat/luovutuspalvelu', htmlSectionsP().map(htmlSections =>
   ({
     content: (<div>
-      <div dangerouslySetInnerHTML={{__html: htmlSections.rajapinnat_luovutuspalvelu}}></div>
+      <div className='markdown-content' dangerouslySetInnerHTML={{__html: htmlSections.rajapinnat_luovutuspalvelu}}></div>
     </div>),
     title: 'Dokumentaatio - Rajapinnat'
   })
@@ -127,7 +127,7 @@ export const dokumentaatioLuovutuspalveluP = () => dokumentaatioContentP('/koski
 export const dokumentaatioPalveluväyläOmadataP = () => dokumentaatioContentP('/koski/dokumentaatio/rajapinnat/palveluvayla-omadata', htmlSectionsP().map(htmlSections =>
   ({
     content: (<div>
-      <div dangerouslySetInnerHTML={{__html: htmlSections.rajapinnat_palveluvayla_omadata}}></div>
+      <div className='markdown-content' dangerouslySetInnerHTML={{__html: htmlSections.rajapinnat_palveluvayla_omadata}}></div>
     </div>),
     title: 'Dokumentaatio - Rajapinnat'
   })
