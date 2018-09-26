@@ -22,7 +22,7 @@ case class OpiskelijavuositiedotRow(
   koulutusmoduulit: String,
   osaamisalat: Option[String],
   viimeisinOpiskeluoikeudenTila: String,
-  opintojenRahoitukset: Option[String],
+  opintojenRahoitukset: String,
   opiskeluoikeusPäättynyt: Boolean,
   päättymispäivä: Option[LocalDate],
   läsnäPäivät: Int,
@@ -103,10 +103,14 @@ object Opiskelijavuositiedot {
     |Tarkempia ohjeita taulukon sisällöstä:
     |
     |- Tutkinnot: kaikki opiskeluoikeudella olevat päätason suoritusten tutkinnot pilkulla erotettuna (myös ennen raportin aikajaksoa valmistuneet, ja raportin aikajakson jälkeen alkaneet)
-    |- Osaamisalat: kaikkien ym. tutkintojen osaamisalat pilkulla erotettuna (myös ennen/jälkeen raportin aikajaksoa)
+    |  Valtakunnalliset tutkinnot käyttävät "koulutus" koodistoa, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/koulutus/latest
+    |- Osaamisalat: kaikkien ym. tutkintojen osaamisalat pilkulla erotettuna (myös ennen/jälkeen raportin aikajaksoa).
+    |  Valtakunnalliset osaamisalat käyttävät "osaamisala" koodistoa, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/osaamisala/latest
     |
     |- Viimeisin tila: opiskeluoikeuden tila raportin aikajakson lopussa
+    |  Käyttää "koskiopiskeluoikeudentila" koodistoa, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/koskiopiskeluoikeudentila/latest
     |- Rahoitukset: raportin aikajaksolla esiintyvät rahoitusmuodot pilkulla erotettuna
+    |  Arvo on joko "-" (ei tiedossa), tai "opintojenrahoitus" koodistosta, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/opintojenrahoitus/latest
     |- Päättynyt: kertoo onko opiskeluoikeus päättynyt raportin aikajaksolla
     |- Päättymispäivä: mukana vain jos opiskeluoikeus on päättynyt raportin aikajaksolla
     |
@@ -126,8 +130,8 @@ object Opiskelijavuositiedot {
       .sorted
       .distinct
     // jätä turha päättävän jakson "-" pois rahoitusmuotolistasta
-    val aikajaksotOpintojenRahoitukseen = if (aikajaksot.last.opiskeluoikeusPäättynyt && aikajaksot.last.opintojenRahoitus.isEmpty) aikajaksot.dropRight(1) else aikajaksot
-    val opintojenRahoitukset = Some(distinctAdjacent(aikajaksotOpintojenRahoitukseen.map(_.opintojenRahoitus.getOrElse("-"))).mkString(",")).filter(_ != "-")
+    val aikajaksotOpintojenRahoitukseen = if (aikajaksot.size > 1 && aikajaksot.last.opiskeluoikeusPäättynyt && aikajaksot.last.opintojenRahoitus.isEmpty) aikajaksot.dropRight(1) else aikajaksot
+    val opintojenRahoitukset = distinctAdjacent(aikajaksotOpintojenRahoitukseen.map(_.opintojenRahoitus.getOrElse("-"))).mkString(",")
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](opiskeluoikeus.data \ "lähdejärjestelmänId")
     new OpiskelijavuositiedotRow(
       opiskeluoikeusOid = opiskeluoikeus.opiskeluoikeusOid,

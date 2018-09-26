@@ -48,7 +48,7 @@ class RaportitSpec extends FreeSpec with LocalJettyHttpSpecification with Opiske
       rivi.koulutusmoduulit should equal("361902")
       rivi.osaamisalat should equal(Some("1590"))
       rivi.viimeisinOpiskeluoikeudenTila should equal("valmistunut")
-      rivi.opintojenRahoitukset should equal(Some("4"))
+      rivi.opintojenRahoitukset should equal("4")
       rivi.opiskeluoikeusPäättynyt should equal(true)
       rivi.läsnäPäivät should equal(31 + 29 + 31 + 30 + 30) // Aarne graduated 31.5.2016, so count days from 1.1.2016 to 30.5.2016
     }
