@@ -1,12 +1,14 @@
 package fi.oph.koski.raportit
 
 import java.sql.Timestamp
+import java.time.temporal.ChronoUnit
 import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.{LähdejärjestelmäId, OpiskeluoikeudenTyyppi, Organisaatio, Osaamisalajakso}
 import fi.oph.koski.util.FinnishDateFormat.{finnishDateFormat, finnishDateTimeFormat}
+import scala.math.{min, max}
 
 case class OpiskelijavuositiedotRow(
   opiskeluoikeusOid: String,
@@ -22,11 +24,12 @@ case class OpiskelijavuositiedotRow(
   koulutusmoduulit: String,
   osaamisalat: Option[String],
   viimeisinOpiskeluoikeudenTila: String,
-  opintojenRahoitukset: Option[String],
+  opintojenRahoitukset: String,
   opiskeluoikeusPäättynyt: Boolean,
   päättymispäivä: Option[LocalDate],
-  läsnäPäivät: Int,
-  lomaPäivät: Int,
+  läsnäTaiValmistunutPäivät: Int,
+  opiskelijavuoteenKuuluvatLomaPäivät: Int,
+  muutLomaPäivät: Int,
   majoitusPäivät: Int,
   sisäoppilaitosmainenMajoitusPäivät: Int,
   vaativanErityisenTuenYhteydessäJärjestettäväMajoitusPäivät: Int,
@@ -69,8 +72,9 @@ object Opiskelijavuositiedot {
     "opintojenRahoitukset" -> Column("Rahoitukset"),
     "opiskeluoikeusPäättynyt" -> Column("Päättynyt"),
     "päättymispäivä" -> Column("Päättymispäivä"),
-    "läsnäPäivät" -> Column("Läsnä (pv)", width = Some(2000)),
-    "lomaPäivät" -> Column("Loma (pv)", width = Some(2000)),
+    "läsnäTaiValmistunutPäivät" -> Column("Läsnä tai valmistunut (pv)", width = Some(2000)),
+    "opiskelijavuoteenKuuluvatLomaPäivät" -> Column("Opiskelijavuoteen kuuluvat lomat (pv)", width = Some(2000)),
+    "muutLomaPäivät" -> Column("Muut lomat (pv)", width = Some(2000)),
     "majoitusPäivät" -> Column("Majoitus (pv)", width = Some(2000)),
     "sisäoppilaitosmainenMajoitusPäivät" -> Column("Sisäoppilaitosmainen majoitus (pv)", width = Some(2000)),
     "vaativanErityisenTuenYhteydessäJärjestettäväMajoitusPäivät" -> Column("Vaativan erityisen tuen yhteydessä järjestettävä majoitus (pv)", width = Some(2000)),
@@ -103,13 +107,20 @@ object Opiskelijavuositiedot {
     |Tarkempia ohjeita taulukon sisällöstä:
     |
     |- Tutkinnot: kaikki opiskeluoikeudella olevat päätason suoritusten tutkinnot pilkulla erotettuna (myös ennen raportin aikajaksoa valmistuneet, ja raportin aikajakson jälkeen alkaneet)
-    |- Osaamisalat: kaikkien ym. tutkintojen osaamisalat pilkulla erotettuna (myös ennen/jälkeen raportin aikajaksoa)
+    |  Valtakunnalliset tutkinnot käyttävät "koulutus" koodistoa, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/koulutus/latest
+    |- Osaamisalat: kaikkien ym. tutkintojen osaamisalat pilkulla erotettuna (myös ennen/jälkeen raportin aikajaksoa).
+    |  Valtakunnalliset osaamisalat käyttävät "osaamisala" koodistoa, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/osaamisala/latest
     |
     |- Viimeisin tila: opiskeluoikeuden tila raportin aikajakson lopussa
+    |  Käyttää "koskiopiskeluoikeudentila" koodistoa, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/koskiopiskeluoikeudentila/latest
     |- Rahoitukset: raportin aikajaksolla esiintyvät rahoitusmuodot pilkulla erotettuna
+    |  Arvo on joko "-" (ei tiedossa), tai "opintojenrahoitus" koodistosta, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/opintojenrahoitus/latest
     |- Päättynyt: kertoo onko opiskeluoikeus päättynyt raportin aikajaksolla
     |- Päättymispäivä: mukana vain jos opiskeluoikeus on päättynyt raportin aikajaksolla
     |
+    |- Läsnä tai valmistunut (pv): raportin aikajaksolle osuvat läsnä-päivät + valmistumispäivä (yksi päivä, jos se osuu aikajaksolle). Jos opiskeluoikeus päättyy muusta syystä, päättymispäivää ei lasketa tähän lukuun.
+    |- Opiskelijavuoteen kuuluvat lomat (pv): raportin aikajaksolle osuvat lomapäivät, jotka ovat yhtenäisen loman ensimmäisten 28 pv joukossa (yhtenäinen loma on voinut alkaa ennen raportin aikajaksoa)
+    |- Muut lomat (pv): raportin aikajaksolle osuvat lomapäivät, joita ei lasketa opiskelijavuoteen
     |- Osa-aikaisuusjaksot (prosentit): raportin aikajakson osa-aikaisuusprosentit pilkulla erotettuna
     |- Osa-aikaisuus keskimäärin (%): raportin aikajakson osa-aikaisuusprosenttien päivillä painotettu keskiarvo
     |- Oppisopimus (pv): opiskeluoikeuden jollain päätason suorituksella on oppisopimusjakso, joka mahtuu kokonaan tai osittain raportin aikajaksoon
@@ -126,9 +137,10 @@ object Opiskelijavuositiedot {
       .sorted
       .distinct
     // jätä turha päättävän jakson "-" pois rahoitusmuotolistasta
-    val aikajaksotOpintojenRahoitukseen = if (aikajaksot.last.opiskeluoikeusPäättynyt && aikajaksot.last.opintojenRahoitus.isEmpty) aikajaksot.dropRight(1) else aikajaksot
-    val opintojenRahoitukset = Some(distinctAdjacent(aikajaksotOpintojenRahoitukseen.map(_.opintojenRahoitus.getOrElse("-"))).mkString(",")).filter(_ != "-")
+    val aikajaksotOpintojenRahoitukseen = if (aikajaksot.size > 1 && aikajaksot.last.opiskeluoikeusPäättynyt && aikajaksot.last.opintojenRahoitus.isEmpty) aikajaksot.dropRight(1) else aikajaksot
+    val opintojenRahoitukset = distinctAdjacent(aikajaksotOpintojenRahoitukseen.map(_.opintojenRahoitus.getOrElse("-"))).mkString(",")
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](opiskeluoikeus.data \ "lähdejärjestelmänId")
+    val (opiskelijavuoteenKuuluvatLomaPäivät, muutLomaPäivät) = lomaPäivät(aikajaksot)
     new OpiskelijavuositiedotRow(
       opiskeluoikeusOid = opiskeluoikeus.opiskeluoikeusOid,
       lähdejärjestelmä = lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
@@ -146,8 +158,9 @@ object Opiskelijavuositiedot {
       opintojenRahoitukset = opintojenRahoitukset,
       opiskeluoikeusPäättynyt = aikajaksot.last.opiskeluoikeusPäättynyt,
       päättymispäivä = aikajaksot.lastOption.filter(_.opiskeluoikeusPäättynyt).map(_.alku.toLocalDate), // toimii koska päättävä jakso on aina yhden päivän mittainen, jolloin truncateToDates ei muuta sen alkupäivää
-      läsnäPäivät = aikajaksoPäivät(aikajaksot, a => if (a.tila == "lasna") 1 else 0),
-      lomaPäivät = aikajaksoPäivät(aikajaksot, a => if (a.tila == "loma") 1 else 0),
+      läsnäTaiValmistunutPäivät = aikajaksoPäivät(aikajaksot, a => if (a.tila == "lasna" || a.tila == "valmistunut") 1 else 0),
+      opiskelijavuoteenKuuluvatLomaPäivät = opiskelijavuoteenKuuluvatLomaPäivät,
+      muutLomaPäivät = muutLomaPäivät,
       majoitusPäivät = aikajaksoPäivät(aikajaksot, _.majoitus),
       sisäoppilaitosmainenMajoitusPäivät = aikajaksoPäivät(aikajaksot, _.sisäoppilaitosmainenMajoitus),
       vaativanErityisenTuenYhteydessäJärjestettäväMajoitusPäivät = aikajaksoPäivät(aikajaksot, _.vaativanErityisenTuenYhteydessäJärjestettäväMajoitus),
@@ -177,4 +190,17 @@ object Opiskelijavuositiedot {
 
   private def aikajaksoPäivät(aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow], f: ROpiskeluoikeusAikajaksoRow => Byte): Int =
     aikajaksot.map(j => f(j) * j.lengthInDays).sum
+
+  private[raportit] def lomaPäivät(aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow]): (Int, Int) = {
+    aikajaksot.map(j => {
+      if (j.tila != "loma") {
+        (0, 0)
+      } else {
+        val lomapäiviäKäytettyEnnenTätäAikajaksoa = ChronoUnit.DAYS.between(j.tilaAlkanut.toLocalDate, j.alku.toLocalDate).toInt
+        val päiviäTässäJaksossa = j.lengthInDays
+        val opiskelijavuoteenKuuluvatLomaPäivät = max(min(päiviäTässäJaksossa, 28 - lomapäiviäKäytettyEnnenTätäAikajaksoa), 0)
+        (opiskelijavuoteenKuuluvatLomaPäivät, päiviäTässäJaksossa - opiskelijavuoteenKuuluvatLomaPäivät)
+      }
+    }).reduce((a, b) => (a._1 + b._1, a._2 + b._2))
+  }
 }
