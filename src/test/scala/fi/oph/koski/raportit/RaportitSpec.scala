@@ -1,6 +1,7 @@
 package fi.oph.koski.raportit
 
 import java.time.LocalDate
+import java.sql.Date
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethods}
@@ -8,8 +9,9 @@ import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.koskiuser.MockUsers.{stadinAmmattiopistoKatselija, omniaTallentaja, evira}
+import fi.oph.koski.koskiuser.MockUsers.{evira, omniaTallentaja, stadinAmmattiopistoKatselija}
 import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.raportointikanta.ROpiskeluoikeusAikajaksoRow
 import org.json4s.JArray
 import org.json4s.jackson.JsonMethods
 
@@ -50,7 +52,46 @@ class RaportitSpec extends FreeSpec with LocalJettyHttpSpecification with Opiske
       rivi.viimeisinOpiskeluoikeudenTila should equal("valmistunut")
       rivi.opintojenRahoitukset should equal("4")
       rivi.opiskeluoikeusPäättynyt should equal(true)
-      rivi.läsnäPäivät should equal(31 + 29 + 31 + 30 + 30) // Aarne graduated 31.5.2016, so count days from 1.1.2016 to 30.5.2016
+      rivi.läsnäTaiValmistunutPäivät should equal(31 + 29 + 31 + 30 + 30 + 1) // Aarne graduated 31.5.2016, so count days from 1.1.2016 to 30.5.2016 + 31.5.2016
+    }
+
+    "opiskelijavuoteen kuuluvat ja muut lomat lasketaan oikein" - {
+      val oid = "1.2.246.562.15.123456"
+
+      "lasna-tilaa ei lasketa lomaksi" in {
+        Opiskelijavuositiedot.lomaPäivät(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2016-05-31"), "lasna", Date.valueOf("2016-01-15"))
+        )) should equal((0, 0))
+      }
+      "lyhyt loma (alle 28 pv) lasketaan kokonaan opiskelijavuoteen" in {
+        Opiskelijavuositiedot.lomaPäivät(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-15")),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-05"), "loma", Date.valueOf("2016-02-01")),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-06"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-02-06"))
+        )) should equal((5, 0))
+      }
+      "pitkästä lomasta lasketaan 28 pv opiskelijavuoteen, loput muihin" in {
+        Opiskelijavuositiedot.lomaPäivät(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-01"), Date.valueOf("2016-12-31"), "loma", Date.valueOf("2016-01-01"))
+        )) should equal((28, 366 - 28))
+      }
+      "jos loma on alkanut ennen tätä aikajaksoa" - {
+        "jos päiviä on tarpeeksi jäljellä, koko jakso lasketaan opiskelijavuoteen" in {
+          Opiskelijavuositiedot.lomaPäivät(Seq(
+            ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-14"), "loma", Date.valueOf("2016-01-25"))
+          )) should equal((14, 0))
+        }
+        "jos päiviä on jäljellä jonkin verran, osa jaksosta lasketaan opiskelijavuoteen" in {
+          Opiskelijavuositiedot.lomaPäivät(Seq(
+            ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-03-31"), "loma", Date.valueOf("2016-01-31"))
+          )) should equal((27, 33))
+        }
+        "jos päiviä ei ole jäljellä yhtään, koko jakso lasketaan muihin lomiin" in {
+          Opiskelijavuositiedot.lomaPäivät(Seq(
+            ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-14"), "loma", Date.valueOf("2015-12-01"))
+          )) should equal((0, 14))
+        }
+      }
     }
 
     "raportin lataaminen toimii (ja tuottaa audit log viestin)" in {
