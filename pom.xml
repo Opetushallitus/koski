@@ -24,9 +24,9 @@
   <dependencies>
     <!-- OPH internal deps -->
     <dependency>
-      <groupId>com.github.Opetushallitus.scala-utils</groupId>
+      <groupId>fi.vm.sade</groupId>
       <artifactId>scala-cas_2.12</artifactId>
-      <version>13c64d61a7c135f27b4fc0de9e2147c8a57dc293</version>
+      <version>0.6.0-SNAPSHOT</version>
       <exclusions>
         <exclusion>
           <groupId>org.http4s</groupId>
@@ -625,6 +625,16 @@
     <repository>
       <id>jitpack.io</id>
       <url>https://jitpack.io</url>
+    </repository>
+    <repository>
+      <id>oph-sade-snapshot-local</id>
+      <url>https://artifactory.opintopolku.fi/artifactory/oph-sade-snapshot-local</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
     </repository>
   </repositories>
 </project>
