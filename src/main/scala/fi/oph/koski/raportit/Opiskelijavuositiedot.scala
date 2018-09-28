@@ -192,13 +192,17 @@ object Opiskelijavuositiedot {
     aikajaksot.map(j => f(j) * j.lengthInDays).sum
 
   private[raportit] def lomaPäivät(aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow]): (Int, Int) = {
+    // "opiskelijavuoteen kuuluviksi päiviksi ei lueta koulutuksen järjestäjän päättämää yhtäjaksoisesti vähintään
+    // neljä viikkoa kestävää lomajaksoa siltä osin, kuin loma-aika ylittää neljä viikkoa."
+    // https://www.finlex.fi/fi/laki/alkup/2017/20170682)
+    val NeljäViikkoa = 28
     aikajaksot.map(j => {
       if (j.tila != "loma") {
         (0, 0)
       } else {
         val lomapäiviäKäytettyEnnenTätäAikajaksoa = ChronoUnit.DAYS.between(j.tilaAlkanut.toLocalDate, j.alku.toLocalDate).toInt
         val päiviäTässäJaksossa = j.lengthInDays
-        val opiskelijavuoteenKuuluvatLomaPäivät = max(min(päiviäTässäJaksossa, 28 - lomapäiviäKäytettyEnnenTätäAikajaksoa), 0)
+        val opiskelijavuoteenKuuluvatLomaPäivät = max(min(päiviäTässäJaksossa, NeljäViikkoa - lomapäiviäKäytettyEnnenTätäAikajaksoa), 0)
         (opiskelijavuoteenKuuluvatLomaPäivät, päiviäTässäJaksossa - opiskelijavuoteenKuuluvatLomaPäivät)
       }
     }).reduce((a, b) => (a._1 + b._1, a._2 + b._2))
