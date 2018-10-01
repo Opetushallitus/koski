@@ -36,7 +36,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
 
     val oppilaitosOid = getOppilaitosParamAndCheckAccess
     val (alku, loppu) = getAlkuLoppuParams
-    val password = params.get("password")
+    val password = getStringParam("password")
     val downloadToken = params.get("downloadToken")
 
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=opiskelijavuositiedot&oppilaitosOid=$oppilaitosOid&alku=$alku&loppu=$loppu")))
@@ -51,7 +51,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
       response.setHeader("Content-Disposition", s"""attachment; filename="${Opiskelijavuositiedot.filename(oppilaitosOid, alku, loppu)}"""")
       downloadToken.foreach { t => response.addCookie(Cookie("koskiDownloadToken", t)(CookieOptions(path = "/", maxAge = 600))) }
       ExcelWriter.writeExcel(
-        WorkbookSettings(Opiskelijavuositiedot.title(oppilaitosOid, alku, loppu), password),
+        WorkbookSettings(Opiskelijavuositiedot.title(oppilaitosOid, alku, loppu), Some(password)),
         Seq(
           DataSheet("Opiskeluoikeudet", rows, Opiskelijavuositiedot.columnSettings),
           DocumentationSheet("Ohjeet", Opiskelijavuositiedot.documentation(oppilaitosOid, alku, loppu, loadCompleted.get))
