@@ -76,6 +76,7 @@ object ExcelWriter {
     floatStyle.setDataFormat(wb.getCreationHelper.createDataFormat().getFormat("#.0"))
 
     val booleanStyle = wb.createCellStyle()
+    booleanStyle.setDataFormat(wb.getCreationHelper.createDataFormat().getFormat("\"kyllä\";;\"ei\";"))
     booleanStyle.setAlignment(HorizontalAlignment.LEFT)
 
     val columnSettingsWithIndex = dataSheet.columnSettings.zipWithIndex
@@ -106,7 +107,7 @@ object ExcelWriter {
           case Some(d: LocalDate) => cell.setCellStyle(dateStyle); cell.setCellValue(Date.from(d.atStartOfDay(ZoneId.systemDefault).toInstant))
           case i: Int => cell.setCellValue(i)
           case f: Double => cell.setCellStyle(floatStyle); cell.setCellValue(f)
-          case b: Boolean => cell.setCellStyle(booleanStyle); cell.setCellValue(b)
+          case b: Boolean => cell.setCellStyle(booleanStyle); cell.setCellValue(if (b) 1 else 0)
           case None => /* ok */
           case x: Any => throw new IllegalStateException("Not handled yet? " + x.toString)
         }

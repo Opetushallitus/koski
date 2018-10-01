@@ -75,7 +75,7 @@ object Opiskelijavuositiedot {
     "osaamisalat" -> Column("Osaamisalat"),
     "viimeisinOpiskeluoikeudenTila" -> Column("Viimeisin tila"),
     "opintojenRahoitukset" -> Column("Rahoitukset"),
-    "opiskeluoikeusPäättynyt" -> Column("Päättynyt"),
+    "opiskeluoikeusPäättynyt" -> Column("Päättynyt", width = Some(2000)),
     "päättymispäivä" -> Column("Päättymispäivä"),
     "opiskelijavuosikertymä" -> Column("Opiskelijavuosikertymä (pv)", width = Some(2000)),
     "läsnäTaiValmistunutPäivät" -> Column("Läsnä tai valmistunut (pv)", width = Some(2000)),
