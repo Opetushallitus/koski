@@ -14,7 +14,9 @@ case class OpiskelijavuositiedotRow(
   opiskeluoikeusOid: String,
   lähdejärjestelmä: Option[String],
   lähdejärjestelmänId: Option[String],
-  sisältyyOpiskeluoikeuteenOid: Option[String],
+  sisältyyOpiskeluoikeuteenOid: String,
+  sisältyvätOpiskeluoikeudetOidit: String,
+  sisältyvätOpiskeluoikeudetOppilaitokset: String,
   aikaleima: LocalDate,
   toimipisteOidit: String,
   oppijaOid: String,
@@ -27,6 +29,7 @@ case class OpiskelijavuositiedotRow(
   opintojenRahoitukset: String,
   opiskeluoikeusPäättynyt: Boolean,
   päättymispäivä: Option[LocalDate],
+  opiskelijavuosikertymä: Double,
   läsnäTaiValmistunutPäivät: Int,
   opiskelijavuoteenKuuluvatLomaPäivät: Int,
   muutLomaPäivät: Int,
@@ -39,7 +42,7 @@ case class OpiskelijavuositiedotRow(
   vaikeastiVammainenPäivät: Int,
   vammainenJaAvustajaPäivät: Int,
   osaAikaisuusProsentit: Option[String],
-  osaAikaisuusKeskimäärin: Float,
+  osaAikaisuusKeskimäärin: Double,
   opiskeluvalmiuksiaTukevatOpinnotPäivät: Int,
   vankilaopetuksessaPäivät: Int,
   oppisopimusJossainPäätasonSuorituksessaPäivät: Int,
@@ -59,7 +62,9 @@ object Opiskelijavuositiedot {
     "opiskeluoikeusOid" -> Column("Opiskeluoikeuden oid"),
     "lähdejärjestelmä" -> Column("Lähdejärjestelmä", width = Some(4000)),
     "lähdejärjestelmänId" -> Column("Opiskeluoikeuden tunniste lähdejärjestelmässä", width = Some(4000)),
-    "sisältyyOpiskeluoikeuteenOid" -> Column("Sisältyy opiskeluoikeuteen"),
+    "sisältyyOpiskeluoikeuteenOid" -> Column("Sisältyy opiskeluoikeuteen", width = Some(4000)),
+    "sisältyvätOpiskeluoikeudetOidit" -> Column("Sisältyvät opiskeluoikeudet", width = Some(4000)),
+    "sisältyvätOpiskeluoikeudetOppilaitokset"-> Column("Sisältyvien opiskeluoikeuksien oppilaitokset", width = Some(4000)),
     "aikaleima" -> Column("Päivitetty"),
     "toimipisteOidit" -> Column("Toimipisteet"),
     "oppijaOid" -> Column("Oppijan oid"),
@@ -70,8 +75,9 @@ object Opiskelijavuositiedot {
     "osaamisalat" -> Column("Osaamisalat"),
     "viimeisinOpiskeluoikeudenTila" -> Column("Viimeisin tila"),
     "opintojenRahoitukset" -> Column("Rahoitukset"),
-    "opiskeluoikeusPäättynyt" -> Column("Päättynyt"),
+    "opiskeluoikeusPäättynyt" -> Column("Päättynyt", width = Some(2000)),
     "päättymispäivä" -> Column("Päättymispäivä"),
+    "opiskelijavuosikertymä" -> Column("Opiskelijavuosikertymä (pv)", width = Some(2000)),
     "läsnäTaiValmistunutPäivät" -> Column("Läsnä tai valmistunut (pv)", width = Some(2000)),
     "opiskelijavuoteenKuuluvatLomaPäivät" -> Column("Opiskelijavuoteen kuuluvat lomat (pv)", width = Some(2000)),
     "muutLomaPäivät" -> Column("Muut lomat (pv)", width = Some(2000)),
@@ -118,6 +124,7 @@ object Opiskelijavuositiedot {
     |- Päättynyt: kertoo onko opiskeluoikeus päättynyt raportin aikajaksolla
     |- Päättymispäivä: mukana vain jos opiskeluoikeus on päättynyt raportin aikajaksolla
     |
+    |- Opiskelijavuosikertymä (pv): "läsnä tai valmistunut" + "opiskelijavuoteen kuuluvat lomat", kerrottuna kunkin päivän osa-aikaisuusprosentilla
     |- Läsnä tai valmistunut (pv): raportin aikajaksolle osuvat läsnä-päivät + valmistumispäivä (yksi päivä, jos se osuu aikajaksolle). Jos opiskeluoikeus päättyy muusta syystä, päättymispäivää ei lasketa tähän lukuun.
     |- Opiskelijavuoteen kuuluvat lomat (pv): raportin aikajaksolle osuvat lomapäivät, jotka ovat yhtenäisen loman ensimmäisten 28 pv joukossa (yhtenäinen loma on voinut alkaa ennen raportin aikajaksoa)
     |- Muut lomat (pv): raportin aikajaksolle osuvat lomapäivät, joita ei lasketa opiskelijavuoteen
@@ -126,8 +133,8 @@ object Opiskelijavuositiedot {
     |- Oppisopimus (pv): opiskeluoikeuden jollain päätason suorituksella on oppisopimusjakso, joka mahtuu kokonaan tai osittain raportin aikajaksoon
     """.stripMargin.trim.stripPrefix("\n").stripSuffix("\n")
 
-  def buildRow(alku: LocalDate, loppu: LocalDate, data: (ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow])): OpiskelijavuositiedotRow = {
-    val (opiskeluoikeus, henkilö, aikajaksot, päätasonSuoritukset) = data
+  def buildRow(alku: LocalDate, loppu: LocalDate, data: (ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow])): OpiskelijavuositiedotRow = {
+    val (opiskeluoikeus, henkilö, aikajaksot, päätasonSuoritukset, sisältyvätOpiskeluoikeudet) = data
     val osaamisalat = päätasonSuoritukset
       .flatMap(s => JsonSerializer.extract[Option[List[Osaamisalajakso]]](s.data \ "osaamisala"))
       .flatten
@@ -145,7 +152,9 @@ object Opiskelijavuositiedot {
       opiskeluoikeusOid = opiskeluoikeus.opiskeluoikeusOid,
       lähdejärjestelmä = lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
       lähdejärjestelmänId = lähdejärjestelmänId.flatMap(_.id),
-      sisältyyOpiskeluoikeuteenOid = opiskeluoikeus.sisältyyOpiskeluoikeuteenOid,
+      sisältyyOpiskeluoikeuteenOid = opiskeluoikeus.sisältyyOpiskeluoikeuteenOid.getOrElse(""),
+      sisältyvätOpiskeluoikeudetOidit = sisältyvätOpiskeluoikeudet.map(_.opiskeluoikeusOid).mkString(","),
+      sisältyvätOpiskeluoikeudetOppilaitokset = sisältyvätOpiskeluoikeudet.map(_.oppilaitosNimi).mkString(","),
       aikaleima = opiskeluoikeus.aikaleima.toLocalDateTime.toLocalDate,
       toimipisteOidit = päätasonSuoritukset.map(_.toimipisteOid).sorted.distinct.mkString(","),
       oppijaOid = "*", // opiskeluoikeus.oppijaOid,
@@ -158,6 +167,7 @@ object Opiskelijavuositiedot {
       opintojenRahoitukset = opintojenRahoitukset,
       opiskeluoikeusPäättynyt = aikajaksot.last.opiskeluoikeusPäättynyt,
       päättymispäivä = aikajaksot.lastOption.filter(_.opiskeluoikeusPäättynyt).map(_.alku.toLocalDate), // toimii koska päättävä jakso on aina yhden päivän mittainen, jolloin truncateToDates ei muuta sen alkupäivää
+      opiskelijavuosikertymä = opiskelijavuosikertymä(aikajaksot),
       läsnäTaiValmistunutPäivät = aikajaksoPäivät(aikajaksot, a => if (a.tila == "lasna" || a.tila == "valmistunut") 1 else 0),
       opiskelijavuoteenKuuluvatLomaPäivät = opiskelijavuoteenKuuluvatLomaPäivät,
       muutLomaPäivät = muutLomaPäivät,
@@ -170,7 +180,7 @@ object Opiskelijavuositiedot {
       vaikeastiVammainenPäivät = aikajaksoPäivät(aikajaksot, _.vaikeastiVammainen),
       vammainenJaAvustajaPäivät = aikajaksoPäivät(aikajaksot, _.vammainenJaAvustaja),
       osaAikaisuusProsentit = Some(distinctAdjacent(aikajaksot.map(_.osaAikaisuus)).mkString(",")).filter(_ != "100"),
-      osaAikaisuusKeskimäärin = aikajaksoPäivät(aikajaksot, _.osaAikaisuus).toFloat / aikajaksoPäivät(aikajaksot, _ => 1),
+      osaAikaisuusKeskimäärin = aikajaksoPäivät(aikajaksot, _.osaAikaisuus).toDouble / aikajaksoPäivät(aikajaksot, _ => 1),
       opiskeluvalmiuksiaTukevatOpinnotPäivät = aikajaksoPäivät(aikajaksot, _.opiskeluvalmiuksiaTukevatOpinnot),
       vankilaopetuksessaPäivät = aikajaksoPäivät(aikajaksot, _.vankilaopetuksessa),
       oppisopimusJossainPäätasonSuorituksessaPäivät = aikajaksoPäivät(aikajaksot, _.oppisopimusJossainPäätasonSuorituksessa),
@@ -191,16 +201,30 @@ object Opiskelijavuositiedot {
   private def aikajaksoPäivät(aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow], f: ROpiskeluoikeusAikajaksoRow => Byte): Int =
     aikajaksot.map(j => f(j) * j.lengthInDays).sum
 
+  private[raportit] def lomaPäivät(j: ROpiskeluoikeusAikajaksoRow): (Int, Int) = {
+    // "opiskelijavuoteen kuuluviksi päiviksi ei lueta koulutuksen järjestäjän päättämää yhtäjaksoisesti vähintään
+    // neljä viikkoa kestävää lomajaksoa siltä osin, kuin loma-aika ylittää neljä viikkoa."
+    // https://www.finlex.fi/fi/laki/alkup/2017/20170682)
+    val NeljäViikkoa = 28
+    if (j.tila != "loma") {
+      (0, 0)
+    } else {
+      val lomapäiviäKäytettyEnnenTätäAikajaksoa = ChronoUnit.DAYS.between(j.tilaAlkanut.toLocalDate, j.alku.toLocalDate).toInt
+      val päiviäTässäJaksossa = j.lengthInDays
+      val opiskelijavuoteenKuuluvatLomaPäivät = max(min(päiviäTässäJaksossa, NeljäViikkoa - lomapäiviäKäytettyEnnenTätäAikajaksoa), 0)
+      (opiskelijavuoteenKuuluvatLomaPäivät, päiviäTässäJaksossa - opiskelijavuoteenKuuluvatLomaPäivät)
+    }
+  }
+
   private[raportit] def lomaPäivät(aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow]): (Int, Int) = {
-    aikajaksot.map(j => {
-      if (j.tila != "loma") {
-        (0, 0)
-      } else {
-        val lomapäiviäKäytettyEnnenTätäAikajaksoa = ChronoUnit.DAYS.between(j.tilaAlkanut.toLocalDate, j.alku.toLocalDate).toInt
-        val päiviäTässäJaksossa = j.lengthInDays
-        val opiskelijavuoteenKuuluvatLomaPäivät = max(min(päiviäTässäJaksossa, 28 - lomapäiviäKäytettyEnnenTätäAikajaksoa), 0)
-        (opiskelijavuoteenKuuluvatLomaPäivät, päiviäTässäJaksossa - opiskelijavuoteenKuuluvatLomaPäivät)
-      }
-    }).reduce((a, b) => (a._1 + b._1, a._2 + b._2))
+    aikajaksot.map(lomaPäivät).reduce((a, b) => (a._1 + b._1, a._2 + b._2))
+  }
+
+  private def opiskelijavuosikertymä(aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow]): Double = {
+    aikajaksot.map(j => (j.tila match {
+      case "loma" => lomaPäivät(j)._1
+      case "lasna" | "valmistunut" => j.lengthInDays
+      case _ => 0
+    }) * (j.osaAikaisuus.toDouble / 100.0)).sum
   }
 }

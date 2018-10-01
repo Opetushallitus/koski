@@ -15,6 +15,7 @@ object RaportointiDatabaseSchema {
     sqlu"CREATE INDEX ON r_opiskeluoikeus(oppija_oid)",
     sqlu"CREATE INDEX ON r_opiskeluoikeus(oppilaitos_oid)",
     sqlu"CREATE INDEX ON r_opiskeluoikeus(koulutusmuoto)",
+    sqlu"CREATE INDEX ON r_opiskeluoikeus(sisaltyy_opiskeluoikeuteen_oid)",
     sqlu"CREATE INDEX ON r_opiskeluoikeus_aikajakso(opiskeluoikeus_oid)",
     sqlu"CREATE INDEX ON r_opiskeluoikeus_aikajakso(alku)",
     sqlu"CREATE UNIQUE INDEX ON r_paatason_suoritus(paatason_suoritus_id)",
