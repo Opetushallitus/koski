@@ -14,7 +14,9 @@ case class OpiskelijavuositiedotRow(
   opiskeluoikeusOid: String,
   lähdejärjestelmä: Option[String],
   lähdejärjestelmänId: Option[String],
-  sisältyyOpiskeluoikeuteenOid: Option[String],
+  sisältyyOpiskeluoikeuteenOid: String,
+  sisältyvätOpiskeluoikeudetOidit: String,
+  sisältyvätOpiskeluoikeudetOppilaitokset: String,
   aikaleima: LocalDate,
   toimipisteOidit: String,
   oppijaOid: String,
@@ -59,7 +61,9 @@ object Opiskelijavuositiedot {
     "opiskeluoikeusOid" -> Column("Opiskeluoikeuden oid"),
     "lähdejärjestelmä" -> Column("Lähdejärjestelmä", width = Some(4000)),
     "lähdejärjestelmänId" -> Column("Opiskeluoikeuden tunniste lähdejärjestelmässä", width = Some(4000)),
-    "sisältyyOpiskeluoikeuteenOid" -> Column("Sisältyy opiskeluoikeuteen"),
+    "sisältyyOpiskeluoikeuteenOid" -> Column("Sisältyy opiskeluoikeuteen", width = Some(4000)),
+    "sisältyvätOpiskeluoikeudetOidit" -> Column("Sisältyvät opiskeluoikeudet", width = Some(4000)),
+    "sisältyvätOpiskeluoikeudetOppilaitokset"-> Column("Sisältyvien opiskeluoikeuksien oppilaitokset", width = Some(4000)),
     "aikaleima" -> Column("Päivitetty"),
     "toimipisteOidit" -> Column("Toimipisteet"),
     "oppijaOid" -> Column("Oppijan oid"),
@@ -126,8 +130,8 @@ object Opiskelijavuositiedot {
     |- Oppisopimus (pv): opiskeluoikeuden jollain päätason suorituksella on oppisopimusjakso, joka mahtuu kokonaan tai osittain raportin aikajaksoon
     """.stripMargin.trim.stripPrefix("\n").stripSuffix("\n")
 
-  def buildRow(alku: LocalDate, loppu: LocalDate, data: (ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow])): OpiskelijavuositiedotRow = {
-    val (opiskeluoikeus, henkilö, aikajaksot, päätasonSuoritukset) = data
+  def buildRow(alku: LocalDate, loppu: LocalDate, data: (ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow])): OpiskelijavuositiedotRow = {
+    val (opiskeluoikeus, henkilö, aikajaksot, päätasonSuoritukset, sisältyvätOpiskeluoikeudet) = data
     val osaamisalat = päätasonSuoritukset
       .flatMap(s => JsonSerializer.extract[Option[List[Osaamisalajakso]]](s.data \ "osaamisala"))
       .flatten
@@ -145,7 +149,9 @@ object Opiskelijavuositiedot {
       opiskeluoikeusOid = opiskeluoikeus.opiskeluoikeusOid,
       lähdejärjestelmä = lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
       lähdejärjestelmänId = lähdejärjestelmänId.flatMap(_.id),
-      sisältyyOpiskeluoikeuteenOid = opiskeluoikeus.sisältyyOpiskeluoikeuteenOid,
+      sisältyyOpiskeluoikeuteenOid = opiskeluoikeus.sisältyyOpiskeluoikeuteenOid.getOrElse(""),
+      sisältyvätOpiskeluoikeudetOidit = sisältyvätOpiskeluoikeudet.map(_.opiskeluoikeusOid).mkString(","),
+      sisältyvätOpiskeluoikeudetOppilaitokset = sisältyvätOpiskeluoikeudet.map(_.oppilaitosNimi).mkString(","),
       aikaleima = opiskeluoikeus.aikaleima.toLocalDateTime.toLocalDate,
       toimipisteOidit = päätasonSuoritukset.map(_.toimipisteOid).sorted.distinct.mkString(","),
       oppijaOid = "*", // opiskeluoikeus.oppijaOid,
