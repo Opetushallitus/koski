@@ -37,7 +37,6 @@ object KoskiErrorCategory {
     class Header extends ErrorCategory(badRequest, "header", "Epäkelpo otsikkokenttä") {
       val missingXRoadHeader = subcategory("missing", "Vaadittu X-ROAD-MEMBER http-otsikkokenttä puuttuu")
       val invalidXRoadHeader = subcategory("invalid", "X-ROAD-MEMBER:n tunnistetta ei ole olemassa")
-      val unauthorizedXRoadHeader = subcategory("unauthorized", "X-ROAD-MEMBER:llä ei ole lupaa hakea opiskelijan tietoja")
     }
     val header = new Header
 
@@ -145,6 +144,7 @@ object KoskiErrorCategory {
     val vainVirkailija = subcategory("vainVirkailija", "Sallittu vain virkailija-käyttäjille")
     val vainKansalainen = subcategory("vainKansalainen", "Sallittu vain kansalainen-käyttäjille")
     val liianMontaSuoritusjakoa = subcategory("liianMontaSuoritusjakoa", "Käyttäjällä on jo maksimimäärä suoritusjakoja")
+    val forbiddenXRoadHeader = subcategory("vainSallittuKumppani", "X-ROAD-MEMBER:llä ei ole lupaa hakea opiskelijan tietoja")
   }
 
   object notFound extends ErrorCategory("notFound", 404, "Not found") {

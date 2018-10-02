@@ -34,7 +34,7 @@ class ApiProxyServlet(implicit val application: KoskiApplication) extends ApiSer
       servletContext.getRequestDispatcher("/api/oppija").forward(request, response)
     } else {
       logger.warn(s"Student ${studentId} has not authorized ${memberId} to access their student data")
-      throw InvalidRequestException(KoskiErrorCategory.badRequest.header.unauthorizedXRoadHeader)
+      throw InvalidRequestException(KoskiErrorCategory.forbidden.forbiddenXRoadHeader)
     }
   }
 }
