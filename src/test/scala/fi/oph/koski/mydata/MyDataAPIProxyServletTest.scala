@@ -25,7 +25,7 @@ class MyDataAPIProxyServletTest extends FreeSpec with LocalJettyHttpSpecificatio
       KoskiApplicationForTests.mydataRepository.delete(oid, memberId)
 
       authGet(s"api/omadata/oppija/${oid}", headers = Map("X-ROAD-MEMBER" -> memberCode)) {
-        status should equal(400)
+        status should equal(403)
         body should include("X-ROAD-MEMBER:llä ei ole lupaa hakea opiskelijan tietoja")
       }
     }
