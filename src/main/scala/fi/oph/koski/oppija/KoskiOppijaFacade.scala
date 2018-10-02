@@ -31,6 +31,12 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
       .flatMap(henkilö => toOppija(henkilö, opiskeluoikeusRepository.findByCurrentUser(henkilö)))
   }
 
+  def findOppijaByHetuOrCreateIfInYtrOrVirta(hetu: String)(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
+    henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(hetu, userForAccessChecks = Some(user))
+      .toRight(notFound("(hetu)"))
+      .flatMap(henkilö => toOppija(henkilö, opiskeluoikeusRepository.findByOppija(henkilö)))
+  }
+
   def findVersion(oppijaOid: String, opiskeluoikeusOid: String, versionumero: Int)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = {
     opiskeluoikeusRepository.getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid).flatMap {
       case oids if oids.contains(oppijaOid) =>

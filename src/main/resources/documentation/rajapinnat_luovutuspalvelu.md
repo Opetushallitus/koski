@@ -28,7 +28,7 @@ Esimerkkipyyntö:
     {
       "v": 1,
       "hetu": "180859-914S",
-      "opiskeluoikeudentyypit": ["perusopetus", "korkeakoulu"],
+      "opiskeluoikeudenTyypit": ["perusopetus", "korkeakoulu"],
       "käyttötarkoitus": "fixme"
     }
 
@@ -56,9 +56,6 @@ tilanteet, jossa samalla henkilöllö on useampi oppijanumero (ja mahdollisesti 
         "oid": "1.2.246.562.24.123456789",
         "hetu": "180859-914S",
         "syntymäaika": "1959-08-18",
-        "etunimet": "Eero",
-        "kutsumanimi": "Eero",
-        "sukunimi": "Esimerkki",
         "turvakielto": false
       },
       "opiskeluoikeudet": [
@@ -76,11 +73,17 @@ Tarkempi kuvaus opiskeluoikeudet-elementin sisällöstä löytyy [tietomallin](/
 
 Vastaus, kun henkilöä ei löydy:
 
-    tulossa
+    HTTP/1.1 404 Not Found
+    Content-Type: application/json
+    
+    [
+      {
+        "key": "notFound.oppijaaEiLöydyTaiEiOikeuksia",
+        "message": "Oppijaa (hetu) ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."
+      }
+    ]
 
-Vastaus, kun henkilö löytyy, mutta hänelle ei löydy opiskeluoikeuksia:
-
-    tulossa
+Vastaus, kun henkilö löytyy, mutta hänelle ei löydy opiskeluoikeuksia: sama kuin henkilöä ei löydy.
 
 Vastaus kun Virta-tietoja ei saada haettua:
 
