@@ -30,6 +30,7 @@ object OrganisaatioLoader extends Logging {
       organisaatiotyypit = org.organisaatiotyypit.sorted.mkString(","),
       oppilaitostyyppi = org.oppilaitostyyppi.map(_.split('#').head.split('_').last),
       oppilaitosnumero = org.oppilaitosKoodi,
-      kotipaikka = org.kotipaikkaUri.map(_.stripPrefix("kunta_"))
+      kotipaikka = org.kotipaikkaUri.map(_.stripPrefix("kunta_")),
+      yTunnus = org.ytunnus
     )
 }
