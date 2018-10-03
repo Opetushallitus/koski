@@ -46,7 +46,7 @@ object RaportointiDatabaseSchema {
 
   val grantPermissions = DBIO.seq(
     sqlu"""GRANT SELECT ON
-          r_opiskeluoikeus, r_opiskeluoikeus_aikajakso, r_paatason_suoritus, r_osasuoritus, r_organisaatio, r_koodisto_koodi, r_raportointiakanta_status
+          r_opiskeluoikeus, r_opiskeluoikeus_aikajakso, r_paatason_suoritus, r_osasuoritus, r_organisaatio, r_koodisto_koodi, r_raportointikanta_status
           TO r_koski_katselija, r_koski_henkilo_katselija""",
     sqlu"GRANT SELECT ON r_henkilo TO r_koski_henkilo_katselija"
 
