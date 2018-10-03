@@ -83,7 +83,7 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
         verifyResponseStatusOk()
         organisaatioCount should be > 10
         val organisaatio = raportointiDatabase.runDbSync(raportointiDatabase.ROrganisaatiot.filter(_.organisaatioOid === MockOrganisaatiot.aapajoenKoulu).result)
-        organisaatio should equal(Seq(ROrganisaatioRow(MockOrganisaatiot.aapajoenKoulu, "Aapajoen koulu", "OPPILAITOS", Some("11"), Some("04044"), Some("851"))))
+        organisaatio should equal(Seq(ROrganisaatioRow(MockOrganisaatiot.aapajoenKoulu, "Aapajoen koulu", "OPPILAITOS", Some("11"), Some("04044"), Some("851"), None)))
       }
     }
     "Koodistojen lataus" in {

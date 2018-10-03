@@ -166,7 +166,8 @@ object RaportointiDatabaseSchema {
     val oppilaitostyyppi = column[Option[String]]("oppilaitostyyppi", StringIdentifierType)
     val oppilaitosnumero = column[Option[String]]("oppilaitosnumero", StringIdentifierType)
     val kotipaikka = column[Option[String]]("kotipaikka", StringIdentifierType)
-    def * = (organisaatioOid, nimi, organisaatiotyypit, oppilaitostyyppi, oppilaitosnumero, kotipaikka) <> (ROrganisaatioRow.tupled, ROrganisaatioRow.unapply)
+    val yTunnus = column[Option[String]]("y_tunnus", StringIdentifierType)
+    def * = (organisaatioOid, nimi, organisaatiotyypit, oppilaitostyyppi, oppilaitosnumero, kotipaikka, yTunnus) <> (ROrganisaatioRow.tupled, ROrganisaatioRow.unapply)
   }
 
   class RKoodistoKoodiTable(tag: Tag) extends Table[RKoodistoKoodiRow](tag, "r_koodisto_koodi") {
@@ -291,7 +292,8 @@ case class ROrganisaatioRow(
   organisaatiotyypit: String,
   oppilaitostyyppi: Option[String],
   oppilaitosnumero: Option[String],
-  kotipaikka: Option[String]
+  kotipaikka: Option[String],
+  yTunnus: Option[String]
 )
 
 case class RKoodistoKoodiRow(
