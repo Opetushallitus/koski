@@ -44,6 +44,14 @@ object RaportointiDatabaseSchema {
     sqlu"DROP TABLE IF EXISTS raportointikanta_status"
   )
 
+  val grantPermissions = DBIO.seq(
+    sqlu"""GRANT SELECT ON
+          r_opiskeluoikeus, r_opiskeluoikeus_aikajakso, r_paatason_suoritus, r_osasuoritus, r_organisaatio, r_koodisto_koodi, r_raportointiakanta_status
+          TO r_koski_katselija, r_koski_henkilo_katselija""",
+    sqlu"GRANT SELECT ON r_henkilo TO r_koski_henkilo_katselija"
+
+  )
+
   private val StringIdentifierType = SqlType("character varying collate \"C\"")
 
   class ROpiskeluoikeusTable(tag: Tag) extends Table[ROpiskeluoikeusRow](tag, "r_opiskeluoikeus") {
