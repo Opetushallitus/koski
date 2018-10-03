@@ -73,7 +73,7 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
         }
         Task.now(true)
       case r => r.as[String].map { body =>
-        if (body.contains("error.authentication.credentials.bad")) {
+        if (body.contains("authentication_exceptions") || body.contains("error.authentication.credentials.bad") ) {
           false
         } else {
           throw new CasClientException(s"TGT decoding failed at ${tgtUri}: invalid TGT creation status: ${r.status.code}: ${body.take(200).replace('\n', ' ').replace('\r', ' ')}")
