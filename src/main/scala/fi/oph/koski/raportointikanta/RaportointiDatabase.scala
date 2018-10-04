@@ -43,6 +43,7 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
       RKoodistoKoodit.schema.create,
       RaportointikantaStatus.schema.create,
       RaportointiDatabaseSchema.createOtherIndexes,
+      RaportointiDatabaseSchema.createRolesIfNotExists,
       RaportointiDatabaseSchema.grantPermissions
     ))
   }
