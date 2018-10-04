@@ -42,7 +42,9 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
       ROrganisaatiot.schema.create,
       RKoodistoKoodit.schema.create,
       RaportointikantaStatus.schema.create,
-      RaportointiDatabaseSchema.createOtherIndexes
+      RaportointiDatabaseSchema.createOtherIndexes,
+      RaportointiDatabaseSchema.createRolesIfNotExists,
+      RaportointiDatabaseSchema.grantPermissions
     ))
   }
   def createOpiskeluoikeusIndexes: Unit = {
