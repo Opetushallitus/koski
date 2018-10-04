@@ -53,7 +53,7 @@ object RaportointiDatabaseSchema {
     sqlu"""GRANT SELECT ON
           r_opiskeluoikeus, r_opiskeluoikeus_aikajakso, r_paatason_suoritus, r_osasuoritus, r_organisaatio, r_koodisto_koodi, raportointikanta_status
           TO raportointikanta_katselija, raportointikanta_henkilo_katselija""",
-    sqlu"GRANT SELECT ON r_henkilo TO raportointikanta_katselija"
+    sqlu"GRANT SELECT ON r_henkilo TO raportointikanta_henkilo_katselija"
 
   )
 
