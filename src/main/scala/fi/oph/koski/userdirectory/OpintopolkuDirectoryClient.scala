@@ -3,7 +3,7 @@ package fi.oph.koski.userdirectory
 import com.typesafe.config.Config
 import fi.oph.koski.henkilo.{KäyttäjäHenkilö, OppijanumeroRekisteriClient}
 import fi.oph.koski.http.Http
-import fi.oph.koski.koskiuser._
+import fi.oph.koski.koskiuser.{Rooli, Palvelurooli, Käyttöoikeus, KäyttöoikeusOrg, KäyttöoikeusGlobal, KäyttöoikeusGlobalByKoulutusmuoto}
 import fi.oph.koski.organisaatio.Opetushallitus
 import fi.oph.koski.schema.OidOrganisaatio
 import fi.vm.sade.utils.cas.CasClientException

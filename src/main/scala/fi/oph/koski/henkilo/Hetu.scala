@@ -1,6 +1,5 @@
 package fi.oph.koski.henkilo
 
-import java.time.LocalDate.{now, of => date}
 import java.time.{DateTimeException, LocalDate}
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -19,7 +18,7 @@ object Hetu {
   }
 
   private def birthday(hetu: String, century: Int): LocalDate = {
-    date(century + hetu.slice(4, 6).toInt, hetu.slice(2, 4).toInt, hetu.slice(0, 2).toInt)
+    LocalDate.of(century + hetu.slice(4, 6).toInt, hetu.slice(2, 4).toInt, hetu.slice(0, 2).toInt)
   }
 
   def validFormat(hetu: String): Either[HttpStatus, String] with Product with Serializable = {
@@ -33,7 +32,7 @@ object Hetu {
     def validDate(hetu: String) = {
       try {
         century(hetu).flatMap { century =>
-          if (birthday(hetu, century).isBefore(now)) Some(hetu) else None
+          if (birthday(hetu, century).isBefore(LocalDate.now)) Some(hetu) else None
         } match {
           case Some(_) =>
             if (!acceptSynthetic && hetu.substring(7, 8) == "9") {
