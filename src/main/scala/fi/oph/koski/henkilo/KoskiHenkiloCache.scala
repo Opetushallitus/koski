@@ -7,7 +7,7 @@ import fi.oph.koski.db._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{TäydellisetHenkilötiedot, TäydellisetHenkilötiedotWithMasterInfo}
 
-class KoskiHenkilöCache(val db: DB, val henkilöt: HenkilöRepository) extends Logging with DatabaseExecutionContext with KoskiDatabaseMethods {
+class KoskiHenkilöCache(val db: DB) extends Logging with DatabaseExecutionContext with KoskiDatabaseMethods {
   def addHenkilöAction(data: TäydellisetHenkilötiedotWithMasterInfo) =
     addMasterIfNecessary(data.master)
       .andThen(addHenkilö(data.henkilö.oid, toHenkilöRow(data.henkilö, data.master.map(_.oid))))
