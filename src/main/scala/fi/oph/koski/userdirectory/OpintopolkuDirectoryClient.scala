@@ -80,4 +80,8 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
       }
     })
   }
+
+  override def organisaationSähköpostit(organisaatioOid: String, ryhmä: String): List[String] =
+    Http.runTask(oppijanumeroRekisteriClient.findSähköpostit(organisaatioOid, ryhmä))
+
 }

@@ -12,6 +12,7 @@ case class Password(password: String) extends NotLoggable
 trait DirectoryClient {
   def findUser(username: String): Option[DirectoryUser]
   def authenticate(userid: String, wrappedPassword: Password): Boolean
+  def organisaationSähköpostit(organisaatioOid: String, ryhmä: String): List[String]
 }
 
 object DirectoryClient {

@@ -9,7 +9,6 @@ import fi.oph.koski.elasticsearch.ElasticSearch
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory, _}
 import fi.oph.koski.koskiuser.KoskiSession.systemUser
-import fi.oph.koski.koskiuser.{KäyttöoikeusOrg, MockUsers}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotRepository
 import fi.oph.koski.schema.Henkilö.Oid
@@ -24,7 +23,6 @@ trait OpintopolkuHenkilöFacade {
   def findChangedOppijaOids(since: Long, offset: Int, amount: Int): List[Oid]
   def findMasterOppija(oid: String): Option[OppijaHenkilö]
   def findOrCreate(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, OppijaHenkilö]
-  def organisaationSähköpostit(organisaatioOid: String, ryhmä: String): List[String]
 }
 
 object OpintopolkuHenkilöFacade {
@@ -62,9 +60,6 @@ class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroR
 
   def findOrCreate(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, OppijaHenkilö] =
     runTask(oppijanumeroRekisteriClient.findOrCreate(createUserInfo))
-
-  def organisaationSähköpostit(organisaatioOid: String, ryhmä: String): List[String] =
-    runTask(oppijanumeroRekisteriClient.findSähköpostit(organisaatioOid, ryhmä))
 }
 
 class RemoteOpintopolkuHenkilöFacadeWithMockOids(oppijanumeroRekisteriClient: OppijanumeroRekisteriClient, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository, elasticSearch: ElasticSearch) extends RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient) {
@@ -173,15 +168,6 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
 
   private def searchString(oppija: TäydellisetHenkilötiedot) = {
     oppija.toString.toUpperCase
-  }
-
-  override def organisaationSähköpostit(organisaatioOid: String, ryhmä: String): List[String] = {
-    MockUsers.users.filter { u =>
-      u.käyttöoikeudet.exists {
-        case k: KäyttöoikeusOrg => k.organisaatio.oid == organisaatioOid && u.käyttöoikeusRyhmät.contains(ryhmä)
-        case _ => false
-      }
-    }.map(_.username + "@example.com")
   }
 
   override def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] = synchronized {
