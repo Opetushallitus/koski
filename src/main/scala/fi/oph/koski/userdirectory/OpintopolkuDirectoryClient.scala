@@ -1,8 +1,7 @@
 package fi.oph.koski.userdirectory
 
 import com.typesafe.config.Config
-import fi.oph.koski.henkilo.kayttooikeusservice.{KäyttöoikeusServiceClient, OrganisaatioJaKäyttöoikeudet, PalveluJaOikeus}
-import fi.oph.koski.henkilo.oppijanumerorekisteriservice.{KäyttäjäHenkilö, OppijanumeroRekisteriClient}
+import fi.oph.koski.henkilo.{KäyttäjäHenkilö, OppijanumeroRekisteriClient}
 import fi.oph.koski.http.Http
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.organisaatio.Opetushallitus

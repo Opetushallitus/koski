@@ -2,7 +2,7 @@ package fi.oph.koski.pulssi
 
 import fi.oph.koski.cache._
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.henkilo.kayttooikeusservice.KäyttöoikeusServiceClient
+import fi.oph.koski.userdirectory.KäyttöoikeusServiceClient
 import fi.oph.koski.http.Http
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedotStatistics, OpiskeluoikeusTilasto}

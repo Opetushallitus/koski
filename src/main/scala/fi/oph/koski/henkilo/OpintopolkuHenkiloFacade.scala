@@ -6,7 +6,6 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables.OpiskeluOikeudetWithAccessCheck
 import fi.oph.koski.db.{KoskiDatabaseMethods, PostgresDriverWithJsonSupport}
 import fi.oph.koski.elasticsearch.ElasticSearch
-import fi.oph.koski.henkilo.oppijanumerorekisteriservice.{OppijaHenkilö, UusiHenkilö, _}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory, _}
 import fi.oph.koski.koskiuser.KoskiSession.systemUser
@@ -24,7 +23,7 @@ trait OpintopolkuHenkilöFacade {
   def findOppijatByOids(oids: List[String]): List[OppijaHenkilö]
   def findChangedOppijaOids(since: Long, offset: Int, amount: Int): List[Oid]
   def findMasterOppija(oid: String): Option[OppijaHenkilö]
-  def findOrCreate(createUserInfo: UusiHenkilö): Either[HttpStatus, OppijaHenkilö]
+  def findOrCreate(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, OppijaHenkilö]
   def organisaationSähköpostit(organisaatioOid: String, ryhmä: String): List[String]
 }
 
@@ -37,16 +36,12 @@ object OpintopolkuHenkilöFacade {
 
 object RemoteOpintopolkuHenkilöFacade {
   def apply(config: Config, perustiedotRepository: => OpiskeluoikeudenPerustiedotRepository, elasticSearch: => ElasticSearch): RemoteOpintopolkuHenkilöFacade = {
-    val serviceConfig = makeServiceConfig(config)
-
     if (config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid")) {
       new RemoteOpintopolkuHenkilöFacadeWithMockOids(OppijanumeroRekisteriClient(config), perustiedotRepository, elasticSearch)
     } else {
       new RemoteOpintopolkuHenkilöFacade(OppijanumeroRekisteriClient(config))
     }
   }
-
-  def makeServiceConfig(config: Config) = ServiceConfig.apply(config, "authentication-service", "authentication-service.virkailija", "opintopolku.virkailija")
 }
 
 class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroRekisteriClient) extends OpintopolkuHenkilöFacade with EntityDecoderInstances with Timing {
@@ -65,7 +60,7 @@ class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroR
   def findMasterOppija(oid: String): Option[OppijaHenkilö] =
     runTask(oppijanumeroRekisteriClient.findMasterOppija(oid))
 
-  def findOrCreate(createUserInfo: UusiHenkilö): Either[HttpStatus, OppijaHenkilö] =
+  def findOrCreate(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, OppijaHenkilö] =
     runTask(oppijanumeroRekisteriClient.findOrCreate(createUserInfo))
 
   def organisaationSähköpostit(organisaatioOid: String, ryhmä: String): List[String] =
@@ -111,7 +106,7 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
     oppijat = new MockOppijat(MockOppijat.defaultOppijat)
   }
 
-  private def create(createUserInfo: UusiHenkilö): Either[HttpStatus, String] = synchronized {
+  private def create(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, String] = synchronized {
     if (createUserInfo.sukunimi == "error") {
       throw new TestingException("Testing error handling")
     } else if (oppijat.getOppijat.exists(_.hetu == createUserInfo.hetu)) {
@@ -142,7 +137,7 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
     oids.flatMap(findOppijaByOid)
   }
 
-  def findOrCreate(createUserInfo: UusiHenkilö): Either[HttpStatus, OppijaHenkilö] = {
+  def findOrCreate(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, OppijaHenkilö] = {
     def oidFrom(oppijat: Option[OppijaHenkilö]): Either[HttpStatus, Henkilö.Oid] = {
       oppijat match {
         case Some(oppija) =>
@@ -152,7 +147,7 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
           Left(KoskiErrorCategory.internalError())
       }
     }
-    val UusiHenkilö(Some(hetu), sukunimi, etunimet, kutsumanimi, _, _) = createUserInfo
+    val UusiOppijaHenkilö(Some(hetu), sukunimi, etunimet, kutsumanimi, _) = createUserInfo
     val oid = Hetu.validate(hetu, acceptSynthetic = true).right.flatMap { hetu =>
       create(createUserInfo).left.flatMap {
         case HttpStatus(409, _) => oidFrom(findOppijaByHetu(hetu))
