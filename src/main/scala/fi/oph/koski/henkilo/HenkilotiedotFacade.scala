@@ -27,7 +27,9 @@ private[henkilo] case class HenkilötiedotFacade(henkilöRepository: HenkilöRep
 
   def findByOid(oid: String)(implicit user: KoskiSession): Either[HttpStatus, List[HenkilötiedotJaOid]] = {
     AuditLog.log(AuditLogMessage(OPPIJA_HAKU, user, Map(hakuEhto -> oid)))
-    HenkilöOid.validateHenkilöOid(oid).right.map(henkilöRepository.findHenkilötiedotByOid)
+    HenkilöOid.validateHenkilöOid(oid)
+      .map(henkilöRepository.findByOid)
+      .map(_.map(_.toHenkilötiedotJaOid).toList)
   }
 
   // Sisällyttää vain henkilöt, joilta löytyy vähintään yksi opiskeluoikeus koskesta, ei tarkista virta- eikä ytr-palvelusta
@@ -50,7 +52,7 @@ private[henkilo] case class HenkilötiedotFacade(henkilöRepository: HenkilöRep
 
   // Sisällyttää vain henkilöt, joilta löytyy vähintään yksi opiskeluoikeus koskesta, ytr:stä tai virrasta
   private def searchByOid(oid: String)(implicit user: KoskiSession): HenkilötiedotSearchResponse = {
-    val henkilöt = henkilöRepository.findHenkilötiedotByOid(oid)
+    val henkilöt = henkilöRepository.findByOid(oid).map(_.toHenkilötiedotJaOid).toList
     val oppijat = kaikkiOpiskeluoikeudet.filterOppijat(henkilöt)
     val canAddNew = henkilöt.nonEmpty && oppijat.isEmpty && user.hasAnyWriteAccess
     HenkilötiedotSearchResponse(oppijat, canAddNew = canAddNew, oid = Some(oid))

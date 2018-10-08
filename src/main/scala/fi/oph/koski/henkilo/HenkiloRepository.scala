@@ -46,11 +46,6 @@ case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta:
 
   def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, TäydellisetHenkilötiedot] = opintopolku.findOrCreate(henkilö)
 
-  def findHenkilötiedotByOid(oid: String)(implicit user: KoskiSession): List[HenkilötiedotJaOid] = HenkilöOid.validateHenkilöOid(oid) match {
-    case Right(validHetu) => findByOid(oid).map(_.toHenkilötiedotJaOid).toList
-    case Left(status) => throw new Exception(status.errorString.mkString)
-  }
-
   def findHenkilötiedotByHetu(hetu: String, nimitiedot: Option[Nimitiedot] = None)(implicit user: KoskiSession): List[HenkilötiedotJaOid] = Hetu.validFormat(hetu) match {
     case Right(validHetu) => henkilötiedot(validHetu, nimitiedot)
     case Left(status) => throw new Exception(status.errorString.mkString)
