@@ -12,7 +12,7 @@ import fi.oph.koski.koskiuser.KoskiSession.systemUser
 import fi.oph.koski.log.Logging
 import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotRepository
 import fi.oph.koski.schema.Henkilö.Oid
-import fi.oph.koski.schema._
+import fi.oph.koski.schema.{TäydellisetHenkilötiedot, TäydellisetHenkilötiedotWithMasterInfo}
 import fi.oph.koski.util.Timing
 import org.http4s._
 
@@ -133,7 +133,7 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
   }
 
   def findOrCreate(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, OppijaHenkilö] = {
-    def oidFrom(oppijat: Option[OppijaHenkilö]): Either[HttpStatus, Henkilö.Oid] = {
+    def oidFrom(oppijat: Option[OppijaHenkilö]): Either[HttpStatus, Oid] = {
       oppijat match {
         case Some(oppija) =>
           Right(oppija.oidHenkilo)
@@ -152,7 +152,7 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
     oid.right.map(oid => findOppijaByOid(oid).get)
   }
 
-  def modify(oppija: TäydellisetHenkilötiedotWithMasterInfo): Unit = synchronized {
+  def modifyMock(oppija: TäydellisetHenkilötiedotWithMasterInfo): Unit = synchronized {
     oppijat = new MockOppijat(oppijat.getOppijat.map { o =>
       if (o.oid == oppija.oid)
         o.copy(henkilö = o.henkilö.copy(etunimet = oppija.etunimet, kutsumanimi = oppija.kutsumanimi, sukunimi = oppija.sukunimi), master = oppija.master)
@@ -160,14 +160,8 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
     })
   }
 
-  def modify(oppija: TäydellisetHenkilötiedot): Unit = modify(TäydellisetHenkilötiedotWithMasterInfo(oppija, None))
-
-  def reset(): Unit = synchronized {
+  def resetMock(): Unit = synchronized {
     oppijat = new MockOppijat(MockOppijat.defaultOppijat)
-  }
-
-  private def searchString(oppija: TäydellisetHenkilötiedot) = {
-    oppija.toString.toUpperCase
   }
 
   override def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] = synchronized {
