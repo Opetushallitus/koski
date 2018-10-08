@@ -19,6 +19,7 @@ trait FindByOid {
 trait FindByHetu {
   def findByHetu(query: String)(implicit user: KoskiSession): Option[HenkilötiedotJaOid]
   def findByHetuDontCreate(hetu: String): Either[HttpStatus, Option[UusiHenkilö]]
+  def hasAccess(user: KoskiSession): Boolean
 }
 
 object HenkilöRepository {
@@ -51,16 +52,24 @@ case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta:
   // mutta hetu löytyy Virrasta tai YTR:stä, niin luodaan oppijanumero ONR:ään käyttäen "nimitiedot" parametria jos
   // annettu, muuten Virrasta/YTR:stä löytynyttä nimeä. (Tämänhetkinen tulkinta laista on että oppijanumeroa ei
   // saa luoda jos ei löydy edes Virrasta tai YTR:stä.)
-  def findByHetuOrCreateIfInYtrOrVirtaWithoutAccessCheck(hetu: String, nimitiedot: Option[Nimitiedot] = None): Option[HenkilötiedotJaOid] = {
+  //
+  // Jos userForAccessChecks on annettu, niin Virta/YTR katsotaan vain, jos ko. käyttäjällä on potentiaalisesti
+  // pääsy johonkin Virta/YTR-tietoihin. Tämä on optimointi oppilaitosten virkailijakäliin, joissa käyttäjillä
+  // ei yleensä ole tällaista pääsyä.
+  def findByHetuOrCreateIfInYtrOrVirta(hetu: String, nimitiedot: Option[Nimitiedot] = None, userForAccessChecks: Option[KoskiSession] = None): Option[HenkilötiedotJaOid] = {
     Hetu.validFormat(hetu) match {
       case Right(validHetu) =>
         val tiedot = opintopolku.findByHetu(hetu)(KoskiSession.systemUser)
         if (tiedot.isDefined) {
           tiedot
         } else {
-          // Note: maps errors (Lefts) to None (and assumes the error has already been logged)
+          val tarkistetaankoVirta = userForAccessChecks.isEmpty || userForAccessChecks.exists(virta.hasAccess)
+          val tarkistetaankoYtr = userForAccessChecks.isEmpty || userForAccessChecks.exists(ytr.hasAccess)
+          // huom, virheet (Left) tulkitaan Noneksi (ja oletetaan että virheet on lokitettu jo aikaisemmin)
           val virtaTaiYtrHenkilo: Option[UusiHenkilö] =
-            virta.findByHetuDontCreate(hetu).toOption.flatten.orElse(ytr.findByHetuDontCreate(hetu).toOption.flatten)
+            (if (tarkistetaankoVirta) virta.findByHetuDontCreate(hetu).toOption.flatten else None)
+            .orElse(if (tarkistetaankoYtr) ytr.findByHetuDontCreate(hetu).toOption.flatten else None)
+
           val saadaankoLuodaOppijanumero = virtaTaiYtrHenkilo.nonEmpty
           if (saadaankoLuodaOppijanumero) {
             val uusiHenkilö = nimitiedot.map(n => UusiHenkilö(

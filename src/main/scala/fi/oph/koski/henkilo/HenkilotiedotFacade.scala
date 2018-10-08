@@ -20,11 +20,13 @@ private[henkilo] case class HenkilötiedotFacade(henkilöRepository: HenkilöRep
     }
   }
 
-  def findByHetu(hetu: String)(implicit user: KoskiSession): Either[HttpStatus, List[HenkilötiedotJaOid]] = {
+  // huom: tässä kutsussa ei ole organisaatiorajausta.
+  def findByHetuOrCreateIfInYtrOrVirta(hetu: String)(implicit user: KoskiSession): Either[HttpStatus, List[HenkilötiedotJaOid]] = {
     AuditLog.log(AuditLogMessage(OPPIJA_HAKU, user, Map(hakuEhto -> hetu)))
-    hetuValidator.validate(hetu).right.map(henkilöRepository.findHenkilötiedotByHetu(_))
+    hetuValidator.validate(hetu).right.map(henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(_)).map(_.toList)
   }
 
+  // huom, tässä kutsussa ei ole organisaatiorajausta.
   def findByOid(oid: String)(implicit user: KoskiSession): Either[HttpStatus, List[HenkilötiedotJaOid]] = {
     AuditLog.log(AuditLogMessage(OPPIJA_HAKU, user, Map(hakuEhto -> oid)))
     HenkilöOid.validateHenkilöOid(oid)
@@ -32,25 +34,26 @@ private[henkilo] case class HenkilötiedotFacade(henkilöRepository: HenkilöRep
       .map(_.map(_.toHenkilötiedotJaOid).toList)
   }
 
-  // Sisällyttää vain henkilöt, joilta löytyy vähintään yksi opiskeluoikeus koskesta, ei tarkista virta- eikä ytr-palvelusta
+  // Sisällyttää vain henkilöt, joilta löytyy vähintään yksi (tälle käyttäjälle näkyvä) opiskeluoikeus Koskesta, ei tarkista Virta- eikä YTR-palvelusta
   private def searchHenkilötiedot(queryString: String)(implicit user: KoskiSession): HenkilötiedotSearchResponse = {
     val filtered = koskiOpiskeluoikeudet.filterOppijat(henkilöRepository.findHenkilötiedot(queryString))
     HenkilötiedotSearchResponse(filtered.sortBy(oppija => (oppija.sukunimi, oppija.etunimet)))
   }
 
-  // Sisällyttää vain henkilöt, joilta löytyy vähintään yksi opiskeluoikeus koskesta, ytr:stä tai virrasta
+  // Sisällyttää vain henkilöt, joilta löytyy vähintään yksi (tälle käyttäjälle näkyvä) opiskeluoikeus Koskesta, YTR:stä tai Virrasta
   private def searchByHetu(hetu: String)(implicit user: KoskiSession): HenkilötiedotSearchResponse = {
     hetuValidator.validate(hetu) match {
       case Right(_) =>
-        val henkilöt = kaikkiOpiskeluoikeudet.filterOppijat(henkilöRepository.findHenkilötiedotByHetu(hetu))
-        val canAddNew = henkilöt.isEmpty && user.hasAnyWriteAccess
-        HenkilötiedotSearchResponse(henkilöt, canAddNew, hetu = Some(hetu))
+        val kaikkiHenkilöt = henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(hetu, userForAccessChecks = Some(user))
+        val näytettävätHenkilöt = kaikkiOpiskeluoikeudet.filterOppijat(kaikkiHenkilöt.toList)
+        val canAddNew = näytettävätHenkilöt.isEmpty && user.hasAnyWriteAccess
+        HenkilötiedotSearchResponse(näytettävätHenkilöt, canAddNew, hetu = Some(hetu))
       case Left(status) =>
         HenkilötiedotSearchResponse(Nil, error = status.errorString)
     }
   }
 
-  // Sisällyttää vain henkilöt, joilta löytyy vähintään yksi opiskeluoikeus koskesta, ytr:stä tai virrasta
+  // Sisällyttää vain henkilöt, joilta löytyy vähintään yksi (tälle käyttäjälle näkyvä) opiskeluoikeus Koskesta, YTR:stä tai Virrasta
   private def searchByOid(oid: String)(implicit user: KoskiSession): HenkilötiedotSearchResponse = {
     val henkilöt = henkilöRepository.findByOid(oid).map(_.toHenkilötiedotJaOid).toList
     val oppijat = kaikkiOpiskeluoikeudet.filterOppijat(henkilöt)

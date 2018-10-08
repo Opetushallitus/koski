@@ -16,6 +16,7 @@ case class OpintopolkuHenkilöRepository(henkilöt: OpintopolkuHenkilöFacade, k
 
   // FIXME: never actually called
   def findByHetuDontCreate(hetu: String): Either[HttpStatus, Option[UusiHenkilö]] = ???
+  def hasAccess(user: KoskiSession): Boolean = ???
 
   def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, TäydellisetHenkilötiedot] =  {
     val validKutsumanimet = henkilö.etunimet.trim

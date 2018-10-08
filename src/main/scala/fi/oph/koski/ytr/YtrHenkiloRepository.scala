@@ -38,4 +38,6 @@ case class YtrHenkilöRepository(ytr: YtrClient, henkilöpalvelu: OpintopolkuHen
         Left(KoskiErrorCategory.unavailable.ytr())
     }
   }
+
+  override def hasAccess(user: KoskiSession): Boolean = accessChecker.hasAccess(user)
 }

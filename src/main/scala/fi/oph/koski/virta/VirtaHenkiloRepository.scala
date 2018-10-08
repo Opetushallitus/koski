@@ -50,6 +50,8 @@ case class VirtaHenkilöRepository(v: VirtaClient, henkilöpalvelu: OpintopolkuH
         Left(KoskiErrorCategory.unavailable.virta())
     }
   }
+
+  override def hasAccess(user: KoskiSession): Boolean = accessChecker.hasAccess(user)
 }
 
 

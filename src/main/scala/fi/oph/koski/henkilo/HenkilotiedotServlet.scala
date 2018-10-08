@@ -38,14 +38,14 @@ class HenkilötiedotServlet(implicit val application: KoskiApplication) extends 
 
   // note: Koski UI uses the POST version, but this is part of our public API (and apparently used)
   get("/hetu/:hetu") {
-    renderEither[List[HenkilötiedotJaOid]](henkilötiedotFacade.findByHetu(params("hetu"))(koskiSession))
+    renderEither[List[HenkilötiedotJaOid]](henkilötiedotFacade.findByHetuOrCreateIfInYtrOrVirta(params("hetu"))(koskiSession))
   }
 
   // uses POST to avoid having sensitive data in URLs
   post("/hetu") {
     withJsonBody({ body =>
       val request = JsonSerializer.extract[HenkilötiedotHetuRequest](body)
-      renderEither[List[HenkilötiedotJaOid]](henkilötiedotFacade.findByHetu(request.hetu)(koskiSession))
+      renderEither[List[HenkilötiedotJaOid]](henkilötiedotFacade.findByHetuOrCreateIfInYtrOrVirta(request.hetu)(koskiSession))
     })()
   }
 
