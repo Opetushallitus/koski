@@ -14,6 +14,9 @@ case class OpintopolkuHenkilöRepository(henkilöt: OpintopolkuHenkilöFacade, k
     opp
   }
 
+  // FIXME: never actually called
+  def findByHetuDontCreate(hetu: String): Either[HttpStatus, Option[UusiHenkilö]] = ???
+
   def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, TäydellisetHenkilötiedot] =  {
     val validKutsumanimet = henkilö.etunimet.trim
       .replaceAll("\\s+", " ")
@@ -56,8 +59,6 @@ case class OpintopolkuHenkilöRepository(henkilöt: OpintopolkuHenkilöFacade, k
       case xs: List[Koodistokoodiviite] => Some(xs)
     })
   }
-
-  override def existsWithHetu(hetu: String)(implicit user: KoskiSession): Boolean = findByHetu(hetu).isDefined
 }
 
 object MockOpintopolkuHenkilöRepository extends OpintopolkuHenkilöRepository(new MockOpintopolkuHenkilöFacade(), MockKoodistoViitePalvelu)

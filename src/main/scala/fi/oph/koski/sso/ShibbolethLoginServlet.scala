@@ -40,7 +40,7 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
     hetu match {
       case None => eiSuorituksia
       case Some(h) =>
-        application.henkilöRepository.findHenkilötiedotByHetu(h, nimitiedot)(KoskiSession.systemUser).headOption match {
+        application.henkilöRepository.findByHetuOrCreateIfInYtrOrVirtaWithoutAccessCheck(h, nimitiedot) match {
           case Some(oppija) =>
             setUser(Right(localLogin(AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true), Some(langFromCookie.getOrElse(langFromDomain)))))
             redirect(onSuccess)

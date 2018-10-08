@@ -18,7 +18,7 @@ trait FindByOid {
 
 trait FindByHetu {
   def findByHetu(query: String)(implicit user: KoskiSession): Option[HenkilötiedotJaOid]
-  def existsWithHetu(hetu: String)(implicit user: KoskiSession): Boolean
+  def findByHetuDontCreate(hetu: String): Either[HttpStatus, Option[UusiHenkilö]]
 }
 
 object HenkilöRepository {
@@ -38,6 +38,7 @@ case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta:
     KeyValueCache(new ExpiringCache("HenkilöRepository", ExpiringCache.Params(1.hour, maxSize = 100, storeValuePredicate = {
       case (_, value) => value != None // Don't cache None results
     })), opintopolku.findByOid)
+  
   // findByOid is locally cached
   def findByOid(oid: String): Option[TäydellisetHenkilötiedot] = oidCache(oid)
   // Other methods just call the non-cached implementation
@@ -46,34 +47,48 @@ case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta:
 
   def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, TäydellisetHenkilötiedot] = opintopolku.findOrCreate(henkilö)
 
-  def findHenkilötiedotByHetu(hetu: String, nimitiedot: Option[Nimitiedot] = None)(implicit user: KoskiSession): List[HenkilötiedotJaOid] = Hetu.validFormat(hetu) match {
-    case Right(validHetu) => henkilötiedot(validHetu, nimitiedot)
+  // Etsii oppija-henkilön hetun perusteella oppijanumerorekisteristä. Jos henkilöä ei löydy oppijanumerorekisteristä,
+  // mutta hetu löytyy Virrasta tai YTR:stä, niin luodaan oppijanumero ONR:ään käyttäen "nimitiedot" parametria jos
+  // annettu, muuten Virrasta/YTR:stä löytynyttä nimeä. (Tämänhetkinen tulkinta laista on että oppijanumeroa ei
+  // saa luoda jos ei löydy edes Virrasta tai YTR:stä.)
+  def findByHetuOrCreateIfInYtrOrVirtaWithoutAccessCheck(hetu: String, nimitiedot: Option[Nimitiedot] = None): Option[HenkilötiedotJaOid] = {
+    Hetu.validFormat(hetu) match {
+      case Right(validHetu) =>
+        val tiedot = opintopolku.findByHetu(hetu)(KoskiSession.systemUser)
+        if (tiedot.isDefined) {
+          tiedot
+        } else {
+          // Note: maps errors (Lefts) to None (and assumes the error has already been logged)
+          val virtaTaiYtrHenkilo: Option[UusiHenkilö] =
+            virta.findByHetuDontCreate(hetu).toOption.flatten.orElse(ytr.findByHetuDontCreate(hetu).toOption.flatten)
+          val saadaankoLuodaOppijanumero = virtaTaiYtrHenkilo.nonEmpty
+          if (saadaankoLuodaOppijanumero) {
+            val uusiHenkilö = nimitiedot.map(n => UusiHenkilö(
+              hetu = hetu,
+              etunimet = n.etunimet,
+              kutsumanimi = Some(n.kutsumanimi),
+              sukunimi = n.sukunimi
+            )).getOrElse(virtaTaiYtrHenkilo.get)
+            opintopolku.findOrCreate(uusiHenkilö) match {
+              case Right(henkilö) => Some(henkilö.toHenkilötiedotJaOid)
+              case Left(error) =>
+                logger.error("Oppijan lisäys henkilöpalveluun epäonnistui: " + error)
+                None
+            }
+          } else {
+            None
+          }
+        }
+      case Left(status) => throw new Exception(status.errorString.mkString)
+    }
+  }
+
+  def findHenkilötiedotByHetu(hetu: String)(implicit user: KoskiSession): List[HenkilötiedotJaOid] = Hetu.validFormat(hetu) match {
+    case Right(validHetu) =>
+      List(opintopolku, virta, ytr).iterator.map(_.findByHetu(hetu)).find(_.isDefined).toList.flatten
     case Left(status) => throw new Exception(status.errorString.mkString)
   }
 
   def findHenkilötiedot(query: String)(implicit user: KoskiSession): List[HenkilötiedotJaOid] =
     findByOids(perustiedotRepository.findOids(query)).map(_.toHenkilötiedotJaOid)
-
-  private def henkilötiedot(hetu: String, nimitiedot: Option[Nimitiedot])(implicit user: KoskiSession): List[HenkilötiedotJaOid] =
-    if (nimitiedot.isDefined) {
-      findOrCreate(hetu, nimitiedot.get)
-    } else {
-      List(opintopolku, virta, ytr).iterator.map(_.findByHetu(hetu)).find(_.isDefined).toList.flatten
-    }
-
-  private def findOrCreate(hetu: String, nimitiedot: Nimitiedot)(implicit user: KoskiSession): List[HenkilötiedotJaOid] = {
-    val tiedot = opintopolku.findByHetu(hetu)
-    if (tiedot.isDefined) {
-      tiedot.toList
-    } else if (List(virta, ytr).iterator.exists(_.existsWithHetu(hetu))) {
-      opintopolku.findOrCreate(UusiHenkilö(hetu = hetu, etunimet = nimitiedot.etunimet, kutsumanimi = Some(nimitiedot.kutsumanimi), sukunimi = nimitiedot.sukunimi)) match {
-        case Right(henkilö) => List(henkilö.toHenkilötiedotJaOid)
-        case Left(error) =>
-          logger.error("Oppijan lisäys henkilöpalveluun epäonnistui: " + error)
-          Nil
-      }
-    } else {
-      Nil
-    }
-  }
 }
