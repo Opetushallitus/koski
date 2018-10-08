@@ -19,6 +19,7 @@ import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.perustiedot.KoskiElasticSearchIndex
 import fi.oph.koski.schema._
+import fi.oph.koski.tiedonsiirto
 import fi.oph.koski.util._
 import fi.oph.scalaschema.{SerializationContext, Serializer}
 import io.prometheus.client.Counter
@@ -33,7 +34,6 @@ class TiedonsiirtoService(
   organisaatioRepository: OrganisaatioRepository,
   henkilöRepository: HenkilöRepository,
   koodistoviitePalvelu: KoodistoViitePalvelu,
-  userRepository: KoskiUserRepository,
   hetu: Hetu
 ) extends Logging with Timing with GlobalExecutionContext {
 
@@ -286,18 +286,14 @@ class TiedonsiirtoService(
           })
           .find(_.oid == oppilaitosOid)
           .getOrElse(getOrganisaatio(oppilaitosOid))
-        käyttäjä = tuoreDokumentti
+        käyttäjä: TiedonsiirtoKäyttäjä = tuoreDokumentti
           .find(t => t \ "tallentajaKäyttäjäOid" match {
             case JString(oid) if oid == userOid => true
             case _ => false
           })
           .flatMap(t => extract[Option[String]](t \ "tallentajaKäyttäjätunnus"))
-          .map(username => KoskiUserInfo(userOid, Some(username), None))
-          .orElse(userRepository.findByOid(userOid))
-          .getOrElse {
-            logger.warn(s"Käyttäjää $userOid ei löydy henkilöpalvelusta")
-            KoskiUserInfo(userOid, None, None)
-          }
+          .map(username => TiedonsiirtoKäyttäjä(userOid, Some(username)))
+          .getOrElse(TiedonsiirtoKäyttäjä(userOid, None))
       } yield {
         TiedonsiirtoYhteenveto(tallentajaOrganisaatio, oppilaitos, käyttäjä, viimeisin, siirretyt, epäonnistuneet, onnistuneet, lähdejärjestelmä)
       }
@@ -417,9 +413,9 @@ case class HenkilönTiedonsiirrot(oppija: Option[TiedonsiirtoOppija], rivit: Seq
 case class TiedonsiirtoRivi(id: String, aika: Timestamp, oppija: Option[TiedonsiirtoOppija], oppilaitos: List[OidOrganisaatio], suoritustiedot: List[TiedonsiirtoSuoritusTiedot], virhe: List[ErrorDetail], inputData: Option[JValue], lähdejärjestelmä: Option[String])
 case class TiedonsiirtoOppija(oid: Option[String], hetu: Option[String], syntymäaika: Option[LocalDate], etunimet: Option[String], kutsumanimi: Option[String], sukunimi: Option[String], äidinkieli: Option[Koodistokoodiviite], kansalaisuus: Option[List[Koodistokoodiviite]])
 case class HetuTaiOid(oid: Option[String], hetu: Option[String])
-case class TiedonsiirtoYhteenveto(tallentajaOrganisaatio: OidOrganisaatio, oppilaitos: OidOrganisaatio, käyttäjä: KoskiUserInfo, viimeisin: Timestamp, siirretyt: Int, virheelliset: Int, onnistuneet: Int, lähdejärjestelmä: Option[Koodistokoodiviite])
+case class TiedonsiirtoYhteenveto(tallentajaOrganisaatio: OidOrganisaatio, oppilaitos: OidOrganisaatio, käyttäjä: TiedonsiirtoKäyttäjä, viimeisin: Timestamp, siirretyt: Int, virheelliset: Int, onnistuneet: Int, lähdejärjestelmä: Option[Koodistokoodiviite])
 case class TiedonsiirtoQuery(oppilaitos: Option[String], paginationSettings: Option[PaginationSettings])
-case class TiedonsiirtoKäyttäjä(oid: String, nimi: Option[String])
+case class TiedonsiirtoKäyttäjä(oid: String, käyttäjätunnus: Option[String])
 case class TiedonsiirtoError(data: JValue, virheet: List[ErrorDetail])
 
 case class TiedonsiirtoDocument(tallentajaKäyttäjäOid: String, tallentajaKäyttäjätunnus: Option[String], tallentajaOrganisaatioOid: String, oppija: Option[TiedonsiirtoOppija], oppilaitokset: Option[List[OidOrganisaatio]], suoritustiedot: Option[List[TiedonsiirtoSuoritusTiedot]], data: Option[JValue], success: Boolean, virheet: List[ErrorDetail], lähdejärjestelmä: Option[String], aikaleima: Timestamp) {
