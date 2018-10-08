@@ -1,34 +1,14 @@
 package fi.oph.koski.virta
 
-import fi.oph.koski.henkilo.{FindByHetu, OpintopolkuHenkilöRepository}
+import fi.oph.koski.henkilo.HetuBasedHenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.{HenkilötiedotJaOid, UusiHenkilö}
+import fi.oph.koski.schema.UusiHenkilö
 
 import scala.util.control.NonFatal
 
-case class VirtaHenkilöRepository(v: VirtaClient, henkilöpalvelu: OpintopolkuHenkilöRepository, accessChecker: VirtaAccessChecker) extends FindByHetu with Logging {
-  override def findByHetu(hetu: String)(implicit user: KoskiSession): Option[HenkilötiedotJaOid] = {
-    if (!accessChecker.hasAccess(user)) {
-      None
-    } else {
-      // Tänne tullaan vain, jos oppijaa ei löytynyt henkilöpalvelusta (ks CompositeHenkilöRepository)
-      findByHetuDontCreate(hetu) match {
-        case Right(Some(uusiOppija)) =>
-          // Validi oppija lisätään henkilöpalveluun, jolloin samaa oppijaa ei haeta enää uudestaan Virrasta
-          henkilöpalvelu.findOrCreate(uusiOppija) match {
-            case Right(henkilö) => Some(henkilö.toHenkilötiedotJaOid)
-            case Left(error) =>
-              logger.error("Virta-oppijan lisäys henkilöpalveluun epäonnistui: " + error)
-              None
-          }
-        case Right(None) => None
-        case Left(_) => None
-      }
-    }
-  }
-
+case class VirtaHenkilöRepository(v: VirtaClient, accessChecker: VirtaAccessChecker) extends HetuBasedHenkilöRepository with Logging {
   def findByHetuDontCreate(hetu: String): Either[HttpStatus, Option[UusiHenkilö]] = {
     try {
       // Tänne tullaan vain, jos oppijaa ei löytynyt henkilöpalvelusta (ks CompositeHenkilöRepository)

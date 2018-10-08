@@ -16,8 +16,7 @@ trait FindByOid {
   def findByOid(oid: String): Option[TäydellisetHenkilötiedot]
 }
 
-trait FindByHetu {
-  def findByHetu(query: String)(implicit user: KoskiSession): Option[HenkilötiedotJaOid]
+trait HetuBasedHenkilöRepository {
   def findByHetuDontCreate(hetu: String): Either[HttpStatus, Option[UusiHenkilö]]
   def hasAccess(user: KoskiSession): Boolean
 }
@@ -27,14 +26,14 @@ object HenkilöRepository {
     val opintopolku = new OpintopolkuHenkilöRepository(application.opintopolkuHenkilöFacade, application.koodistoViitePalvelu)
     HenkilöRepository(
       opintopolku,
-      TimedProxy(VirtaHenkilöRepository(application.virtaClient, opintopolku, application.virtaAccessChecker).asInstanceOf[FindByHetu]),
-      TimedProxy(YtrHenkilöRepository(application.ytrClient, opintopolku, application.ytrAccessChecker).asInstanceOf[FindByHetu]),
+      TimedProxy(VirtaHenkilöRepository(application.virtaClient, application.virtaAccessChecker).asInstanceOf[HetuBasedHenkilöRepository]),
+      TimedProxy(YtrHenkilöRepository(application.ytrClient, application.ytrAccessChecker).asInstanceOf[HetuBasedHenkilöRepository]),
       application.perustiedotRepository
     )
   }
 }
 
-case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta: FindByHetu, ytr: FindByHetu, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository)(implicit cacheInvalidator: CacheManager) extends FindByOid with Logging {
+case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta: HetuBasedHenkilöRepository, ytr: HetuBasedHenkilöRepository, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository)(implicit cacheInvalidator: CacheManager) extends FindByOid with Logging {
   private val oidCache: KeyValueCache[String, Option[TäydellisetHenkilötiedot]] =
     KeyValueCache(new ExpiringCache("HenkilöRepository", ExpiringCache.Params(1.hour, maxSize = 100, storeValuePredicate = {
       case (_, value) => value != None // Don't cache None results
@@ -59,7 +58,7 @@ case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta:
   def findByHetuOrCreateIfInYtrOrVirta(hetu: String, nimitiedot: Option[Nimitiedot] = None, userForAccessChecks: Option[KoskiSession] = None): Option[HenkilötiedotJaOid] = {
     Hetu.validFormat(hetu) match {
       case Right(validHetu) =>
-        val tiedot = opintopolku.findByHetu(hetu)(KoskiSession.systemUser)
+        val tiedot = opintopolku.findByHetu(hetu)
         if (tiedot.isDefined) {
           tiedot
         } else {
@@ -90,12 +89,6 @@ case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta:
         }
       case Left(status) => throw new Exception(status.errorString.mkString)
     }
-  }
-
-  def findHenkilötiedotByHetu(hetu: String)(implicit user: KoskiSession): List[HenkilötiedotJaOid] = Hetu.validFormat(hetu) match {
-    case Right(validHetu) =>
-      List(opintopolku, virta, ytr).iterator.map(_.findByHetu(hetu)).find(_.isDefined).toList.flatten
-    case Left(status) => throw new Exception(status.errorString.mkString)
   }
 
   def findHenkilötiedot(query: String)(implicit user: KoskiSession): List[HenkilötiedotJaOid] =
