@@ -1,10 +1,9 @@
 package fi.oph.koski.userdirectory
 
 import com.typesafe.config.Config
-import fi.oph.koski.henkilo.kayttooikeusservice.{KäyttöoikeusServiceClient, OrganisaatioJaKäyttöoikeudet, PalveluJaOikeus}
-import fi.oph.koski.henkilo.oppijanumerorekisteriservice.{KäyttäjäHenkilö, OppijanumeroRekisteriClient}
+import fi.oph.koski.henkilo.{KäyttäjäHenkilö, OppijanumeroRekisteriClient}
 import fi.oph.koski.http.Http
-import fi.oph.koski.koskiuser._
+import fi.oph.koski.koskiuser.{Rooli, Palvelurooli, Käyttöoikeus, KäyttöoikeusOrg, KäyttöoikeusGlobal, KäyttöoikeusGlobalByKoulutusmuoto}
 import fi.oph.koski.organisaatio.Opetushallitus
 import fi.oph.koski.schema.OidOrganisaatio
 import fi.vm.sade.utils.cas.CasClientException
@@ -81,4 +80,8 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
       }
     })
   }
+
+  override def organisaationSähköpostit(organisaatioOid: String, ryhmä: String): List[String] =
+    Http.runTask(oppijanumeroRekisteriClient.findSähköpostit(organisaatioOid, ryhmä))
+
 }

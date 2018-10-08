@@ -66,7 +66,7 @@ class TiedonsiirtoFailureMailer(application: KoskiApplication, timeNow: => Local
     org.toList.flatMap(o => organisaatioSähköpostit(o.oid, koskiPääkäyttäjät))
 
   private def organisaatioSähköpostit(oid: String, ryhmä: String): List[String] = {
-    application.opintopolkuHenkilöFacade.organisaationSähköpostit(oid, ryhmä)
+    application.directoryClient.organisaationSähköpostit(oid, ryhmä)
   }
 
   private def mailEnabled(rootOrg: OrganisaatioWithOid, oppilaitos: Option[OrganisaatioWithOid]) = {

@@ -1,6 +1,5 @@
 package fi.oph.koski.henkilo
 
-import fi.oph.koski.henkilo.oppijanumerorekisteriservice.OppijaHenkilö
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.koskiuser.KoskiSession
@@ -25,7 +24,7 @@ case class OpintopolkuHenkilöRepository(henkilöt: OpintopolkuHenkilöFacade, k
     val kutsumanimi = henkilö.kutsumanimi.flatMap(n => validKutsumanimet.find(_ == n)).getOrElse(validKutsumanimet.head)
 
     henkilöt
-      .findOrCreate(oppijanumerorekisteriservice.UusiHenkilö.oppija(Some(henkilö.hetu), henkilö.sukunimi, henkilö.etunimet, kutsumanimi))
+      .findOrCreate(UusiOppijaHenkilö(Some(henkilö.hetu), henkilö.sukunimi, henkilö.etunimet, kutsumanimi))
       .right.map(toTäydellisetHenkilötiedot)
   }
 

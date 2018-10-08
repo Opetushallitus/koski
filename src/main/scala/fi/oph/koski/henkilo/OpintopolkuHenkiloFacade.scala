@@ -6,28 +6,23 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables.OpiskeluOikeudetWithAccessCheck
 import fi.oph.koski.db.{KoskiDatabaseMethods, PostgresDriverWithJsonSupport}
 import fi.oph.koski.elasticsearch.ElasticSearch
-import fi.oph.koski.henkilo.kayttooikeusservice.KäyttöoikeusServiceClient
-import fi.oph.koski.henkilo.oppijanumerorekisteriservice.{KäyttäjäHenkilö, OppijaHenkilö, UusiHenkilö, _}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory, _}
 import fi.oph.koski.koskiuser.KoskiSession.systemUser
-import fi.oph.koski.koskiuser.{KäyttöoikeusOrg, MockUsers}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotRepository
 import fi.oph.koski.schema.Henkilö.Oid
-import fi.oph.koski.schema._
+import fi.oph.koski.schema.{TäydellisetHenkilötiedot, TäydellisetHenkilötiedotWithMasterInfo}
 import fi.oph.koski.util.Timing
 import org.http4s._
 
 trait OpintopolkuHenkilöFacade {
-  def findKäyttäjäByOid(oid: String): Option[KäyttäjäHenkilö]
   def findOppijaByOid(oid: String): Option[OppijaHenkilö]
   def findOppijaByHetu(hetu: String): Option[OppijaHenkilö]
   def findOppijatByOids(oids: List[String]): List[OppijaHenkilö]
   def findChangedOppijaOids(since: Long, offset: Int, amount: Int): List[Oid]
   def findMasterOppija(oid: String): Option[OppijaHenkilö]
-  def findOrCreate(createUserInfo: UusiHenkilö): Either[HttpStatus, OppijaHenkilö]
-  def organisaationSähköpostit(organisaatioOid: String, ryhmä: String): List[String]
+  def findOrCreate(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, OppijaHenkilö]
 }
 
 object OpintopolkuHenkilöFacade {
@@ -39,19 +34,15 @@ object OpintopolkuHenkilöFacade {
 
 object RemoteOpintopolkuHenkilöFacade {
   def apply(config: Config, perustiedotRepository: => OpiskeluoikeudenPerustiedotRepository, elasticSearch: => ElasticSearch): RemoteOpintopolkuHenkilöFacade = {
-    val serviceConfig = makeServiceConfig(config)
-
     if (config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid")) {
-      new RemoteOpintopolkuHenkilöFacadeWithMockOids(OppijanumeroRekisteriClient(config), KäyttöoikeusServiceClient(config), perustiedotRepository, elasticSearch)
+      new RemoteOpintopolkuHenkilöFacadeWithMockOids(OppijanumeroRekisteriClient(config), perustiedotRepository, elasticSearch)
     } else {
-      new RemoteOpintopolkuHenkilöFacade(OppijanumeroRekisteriClient(config), KäyttöoikeusServiceClient(config))
+      new RemoteOpintopolkuHenkilöFacade(OppijanumeroRekisteriClient(config))
     }
   }
-
-  def makeServiceConfig(config: Config) = ServiceConfig.apply(config, "authentication-service", "authentication-service.virkailija", "opintopolku.virkailija")
 }
 
-class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroRekisteriClient, käyttöoikeusServiceClient: KäyttöoikeusServiceClient) extends OpintopolkuHenkilöFacade with EntityDecoderInstances with Timing {
+class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroRekisteriClient) extends OpintopolkuHenkilöFacade with EntityDecoderInstances with Timing {
   def findOppijaByOid(oid: String): Option[OppijaHenkilö] =
     findOppijatByOids(List(oid)).headOption
 
@@ -67,21 +58,11 @@ class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroR
   def findMasterOppija(oid: String): Option[OppijaHenkilö] =
     runTask(oppijanumeroRekisteriClient.findMasterOppija(oid))
 
-  def findKäyttäjäByOid(oid: String): Option[KäyttäjäHenkilö] = runTask(
-    oppijanumeroRekisteriClient.findKäyttäjäByOid(oid).flatMap { käyttäjäHenkilö: Option[KäyttäjäHenkilö] =>
-      käyttöoikeusServiceClient.getKäyttäjätiedot(oid)
-        .map(käyttäjätiedot => käyttäjäHenkilö.map(_.copy(kayttajatiedot = käyttäjätiedot)))
-    }
-  )
-
-  def findOrCreate(createUserInfo: UusiHenkilö): Either[HttpStatus, OppijaHenkilö] =
+  def findOrCreate(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, OppijaHenkilö] =
     runTask(oppijanumeroRekisteriClient.findOrCreate(createUserInfo))
-
-  def organisaationSähköpostit(organisaatioOid: String, ryhmä: String): List[String] =
-    runTask(oppijanumeroRekisteriClient.findSähköpostit(organisaatioOid, ryhmä))
 }
 
-class RemoteOpintopolkuHenkilöFacadeWithMockOids(oppijanumeroRekisteriClient: OppijanumeroRekisteriClient, käyttöoikeusServiceClient: KäyttöoikeusServiceClient, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository, elasticSearch: ElasticSearch) extends RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient, käyttöoikeusServiceClient) {
+class RemoteOpintopolkuHenkilöFacadeWithMockOids(oppijanumeroRekisteriClient: OppijanumeroRekisteriClient, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository, elasticSearch: ElasticSearch) extends RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient) {
   override def findOppijatByOids(oids: List[String]): List[OppijaHenkilö] = {
     val found = super.findOppijatByOids(oids).map(henkilö => (henkilö.oidHenkilo, henkilö)).toMap
     oids.map { oid =>
@@ -94,10 +75,6 @@ class RemoteOpintopolkuHenkilöFacadeWithMockOids(oppijanumeroRekisteriClient: O
           }.getOrElse(OppijaHenkilö(oid, oid.substring("1.2.246.562.24.".length, oid.length), "Testihenkilö", "Testihenkilö", Some("010101-123N"), None, None, None, 0, false))
       }
     }
-  }
-
-  override def findKäyttäjäByOid(oid: String): Option[KäyttäjäHenkilö] = super.findKäyttäjäByOid(oid).orElse {
-    Some(KäyttäjäHenkilö(oid, oid.substring("1.2.246.562.24.".length, oid.length), "Tuntematon", "Tuntematon", None, None))
   }
 }
 
@@ -124,7 +101,7 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
     oppijat = new MockOppijat(MockOppijat.defaultOppijat)
   }
 
-  private def create(createUserInfo: UusiHenkilö): Either[HttpStatus, String] = synchronized {
+  private def create(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, String] = synchronized {
     if (createUserInfo.sukunimi == "error") {
       throw new TestingException("Testing error handling")
     } else if (oppijat.getOppijat.exists(_.hetu == createUserInfo.hetu)) {
@@ -147,10 +124,6 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
     OppijaHenkilö(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, henkilö.hetu, henkilö.syntymäaika, Some("FI"), None, 0, henkilö.turvakielto.getOrElse(false))
   }
 
-  override def findKäyttäjäByOid(oid: String): Option[KäyttäjäHenkilö] = {
-    findHenkilötiedot(oid).map(henkilö => KäyttäjäHenkilö(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, None, None))
-  }
-
   protected def findHenkilötiedot(id: String): Option[TäydellisetHenkilötiedotWithMasterInfo] = synchronized {
     oppijat.getOppijat.find(_.oid == id)
   }
@@ -159,8 +132,8 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
     oids.flatMap(findOppijaByOid)
   }
 
-  def findOrCreate(createUserInfo: UusiHenkilö): Either[HttpStatus, OppijaHenkilö] = {
-    def oidFrom(oppijat: Option[OppijaHenkilö]): Either[HttpStatus, Henkilö.Oid] = {
+  def findOrCreate(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, OppijaHenkilö] = {
+    def oidFrom(oppijat: Option[OppijaHenkilö]): Either[HttpStatus, Oid] = {
       oppijat match {
         case Some(oppija) =>
           Right(oppija.oidHenkilo)
@@ -169,7 +142,7 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
           Left(KoskiErrorCategory.internalError())
       }
     }
-    val UusiHenkilö(Some(hetu), sukunimi, etunimet, kutsumanimi, _, _) = createUserInfo
+    val UusiOppijaHenkilö(Some(hetu), sukunimi, etunimet, kutsumanimi, _) = createUserInfo
     val oid = Hetu.validate(hetu, acceptSynthetic = true).right.flatMap { hetu =>
       create(createUserInfo).left.flatMap {
         case HttpStatus(409, _) => oidFrom(findOppijaByHetu(hetu))
@@ -179,7 +152,7 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
     oid.right.map(oid => findOppijaByOid(oid).get)
   }
 
-  def modify(oppija: TäydellisetHenkilötiedotWithMasterInfo): Unit = synchronized {
+  def modifyMock(oppija: TäydellisetHenkilötiedotWithMasterInfo): Unit = synchronized {
     oppijat = new MockOppijat(oppijat.getOppijat.map { o =>
       if (o.oid == oppija.oid)
         o.copy(henkilö = o.henkilö.copy(etunimet = oppija.etunimet, kutsumanimi = oppija.kutsumanimi, sukunimi = oppija.sukunimi), master = oppija.master)
@@ -187,23 +160,8 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
     })
   }
 
-  def modify(oppija: TäydellisetHenkilötiedot): Unit = modify(TäydellisetHenkilötiedotWithMasterInfo(oppija, None))
-
-  def reset(): Unit = synchronized {
+  def resetMock(): Unit = synchronized {
     oppijat = new MockOppijat(MockOppijat.defaultOppijat)
-  }
-
-  private def searchString(oppija: TäydellisetHenkilötiedot) = {
-    oppija.toString.toUpperCase
-  }
-
-  override def organisaationSähköpostit(organisaatioOid: String, ryhmä: String): List[String] = {
-    MockUsers.users.filter { u =>
-      u.käyttöoikeudet.exists {
-        case k: KäyttöoikeusOrg => k.organisaatio.oid == organisaatioOid && u.käyttöoikeusRyhmät.contains(ryhmä)
-        case _ => false
-      }
-    }.map(_.username + "@example.com")
   }
 
   override def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] = synchronized {

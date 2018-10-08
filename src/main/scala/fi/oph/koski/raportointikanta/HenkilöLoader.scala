@@ -1,7 +1,7 @@
 package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.henkilo.{Hetu, OpintopolkuHenkilöFacade}
-import fi.oph.koski.henkilo.oppijanumerorekisteriservice.OppijaHenkilö
+import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.log.Logging
 import java.sql.Date
 

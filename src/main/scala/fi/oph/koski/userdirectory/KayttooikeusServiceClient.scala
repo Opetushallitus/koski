@@ -1,15 +1,17 @@
-package fi.oph.koski.henkilo.kayttooikeusservice
+package fi.oph.koski.userdirectory
 
 import com.typesafe.config.Config
-import fi.oph.koski.henkilo.RemoteOpintopolkuHenkilöFacade
 import fi.oph.koski.http.Http.{parseJson, _}
-import fi.oph.koski.http.{Http, VirkailijaHttpClient}
+import fi.oph.koski.http.{Http, ServiceConfig, VirkailijaHttpClient}
 import fi.oph.koski.json.Json4sHttp4s
 import scalaz.concurrent.Task
 import scalaz.concurrent.Task.gatherUnordered
 
 case class KäyttöoikeusServiceClient(config: Config) {
-  private val http = VirkailijaHttpClient(RemoteOpintopolkuHenkilöFacade.makeServiceConfig(config), "/kayttooikeus-service", config.getBoolean("authentication-service.useCas"))
+  private val http = VirkailijaHttpClient(makeServiceConfig(config), "/kayttooikeus-service", config.getBoolean("authentication-service.useCas"))
+
+  private def makeServiceConfig(config: Config) = ServiceConfig.apply(config, "authentication-service", "authentication-service.virkailija", "opintopolku.virkailija")
+
 
   def getKäyttäjätiedot(oid: String): Task[Option[Käyttäjätiedot]] = http.get(uri"/kayttooikeus-service/henkilo/$oid/kayttajatiedot")(Http.parseJsonOptional[Käyttäjätiedot])
 
