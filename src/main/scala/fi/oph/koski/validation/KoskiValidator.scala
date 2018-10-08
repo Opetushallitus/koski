@@ -4,7 +4,7 @@ import java.lang.Character.isDigit
 import java.time.LocalDate
 
 import fi.oph.koski.eperusteet.EPerusteetRepository
-import fi.oph.koski.henkilo.OpintopolkuHenkilöRepository
+import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
@@ -21,7 +21,7 @@ import fi.oph.koski.util.Timing
 import mojave._
 import org.json4s.{JArray, JValue}
 
-class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: KoodistoViitePalvelu, val organisaatioRepository: OrganisaatioRepository, koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository, opintopolku: OpintopolkuHenkilöRepository, ePerusteet: EPerusteetRepository) extends Timing {
+class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: KoodistoViitePalvelu, val organisaatioRepository: OrganisaatioRepository, koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository, henkilöRepository: HenkilöRepository, ePerusteet: EPerusteetRepository) extends Timing {
   def validateAsJson(oppija: Oppija)(implicit user: KoskiSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
     extractAndValidateOppija(JsonSerializer.serialize(oppija))
   }
@@ -189,7 +189,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
           val löydettyHenkilö: Either[HttpStatus, Oid] = henkilö match {
             case None => Left(HttpStatus.ok)
             case Some(h: HenkilöWithOid) => Right(h.oid)
-            case Some(h: UusiHenkilö) => opintopolku.findByHetu(h.hetu) match {
+            case Some(h: UusiHenkilö) => henkilöRepository.opintopolku.findByHetu(h.hetu) match {
               case Some(henkilö) => Right(henkilö.oid)
               case None => Left(KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.henkilöTiedot())
             }
