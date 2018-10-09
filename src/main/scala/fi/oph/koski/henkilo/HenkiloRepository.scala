@@ -55,7 +55,7 @@ case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta:
   // Jos userForAccessChecks on annettu, niin Virta/YTR katsotaan vain, jos ko. käyttäjällä on potentiaalisesti
   // pääsy johonkin Virta/YTR-tietoihin. Tämä on optimointi oppilaitosten virkailijakäliin, joissa käyttäjillä
   // ei yleensä ole tällaista pääsyä.
-  def findByHetuOrCreateIfInYtrOrVirta(hetu: String, nimitiedot: Option[Nimitiedot] = None, userForAccessChecks: Option[KoskiSession] = None): Option[HenkilötiedotJaOid] = {
+  def findByHetuOrCreateIfInYtrOrVirta(hetu: String, nimitiedot: Option[Nimitiedot] = None, userForAccessChecks: Option[KoskiSession] = None): Option[TäydellisetHenkilötiedot] = {
     Hetu.validFormat(hetu) match {
       case Right(validHetu) =>
         val tiedot = opintopolku.findByHetu(hetu)
@@ -78,7 +78,7 @@ case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta:
               sukunimi = n.sukunimi
             )).getOrElse(virtaTaiYtrHenkilo.get)
             opintopolku.findOrCreate(uusiHenkilö) match {
-              case Right(henkilö) => Some(henkilö.toHenkilötiedotJaOid)
+              case Right(henkilö) => Some(henkilö)
               case Left(error) =>
                 logger.error("Oppijan lisäys henkilöpalveluun epäonnistui: " + error)
                 None
@@ -91,6 +91,6 @@ case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta:
     }
   }
 
-  def findHenkilötiedot(query: String)(implicit user: KoskiSession): List[HenkilötiedotJaOid] =
-    findByOids(perustiedotRepository.findOids(query)).map(_.toHenkilötiedotJaOid)
+  def findHenkilötiedot(query: String)(implicit user: KoskiSession): List[TäydellisetHenkilötiedot] =
+    findByOids(perustiedotRepository.findOids(query))
 }

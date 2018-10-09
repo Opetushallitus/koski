@@ -9,11 +9,11 @@ case class OpintopolkuHenkilöRepository(henkilöt: OpintopolkuHenkilöFacade, k
   def withMasterInfo(henkilötiedot: TäydellisetHenkilötiedot) = TäydellisetHenkilötiedotWithMasterInfo(henkilötiedot, findMasterHenkilö(henkilötiedot.oid))
 
   // Tarkistaa vain Oppijanumerorekisterin, ei koskaan luo uutta oppijanumeroa Virta/YTR-datan perusteella
-  def findByHetu(hetu: String): Option[HenkilötiedotJaOid] = {
+  def findByHetu(hetu: String): Option[TäydellisetHenkilötiedot] = {
     Hetu.validFormat(hetu)
       .toOption
       .flatMap(henkilöt.findOppijaByHetu)
-      .map(h => HenkilötiedotJaOid(h.oidHenkilo, Some(hetu), h.etunimet, h.kutsumanimi, h.sukunimi))
+      .map(toTäydellisetHenkilötiedot)
   }
 
   def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, TäydellisetHenkilötiedot] =  {

@@ -23,7 +23,7 @@ private[henkilo] case class HenkilötiedotFacade(henkilöRepository: HenkilöRep
   // huom: tässä kutsussa ei ole organisaatiorajausta.
   def findByHetuOrCreateIfInYtrOrVirta(hetu: String)(implicit user: KoskiSession): Either[HttpStatus, List[HenkilötiedotJaOid]] = {
     AuditLog.log(AuditLogMessage(OPPIJA_HAKU, user, Map(hakuEhto -> hetu)))
-    hetuValidator.validate(hetu).right.map(henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(_)).map(_.toList)
+    hetuValidator.validate(hetu).right.map(henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(_)).map(_.map(_.toHenkilötiedotJaOid).toList)
   }
 
   // huom, tässä kutsussa ei ole organisaatiorajausta.
@@ -36,7 +36,7 @@ private[henkilo] case class HenkilötiedotFacade(henkilöRepository: HenkilöRep
 
   // Sisällyttää vain henkilöt, joilta löytyy vähintään yksi (tälle käyttäjälle näkyvä) opiskeluoikeus Koskesta, ei tarkista Virta- eikä YTR-palvelusta
   private def searchHenkilötiedot(queryString: String)(implicit user: KoskiSession): HenkilötiedotSearchResponse = {
-    val filtered = koskiOpiskeluoikeudet.filterOppijat(henkilöRepository.findHenkilötiedot(queryString))
+    val filtered = koskiOpiskeluoikeudet.filterOppijat(henkilöRepository.findHenkilötiedot(queryString).map(_.toHenkilötiedotJaOid))
     HenkilötiedotSearchResponse(filtered.sortBy(oppija => (oppija.sukunimi, oppija.etunimet)))
   }
 
@@ -44,7 +44,7 @@ private[henkilo] case class HenkilötiedotFacade(henkilöRepository: HenkilöRep
   private def searchByHetu(hetu: String)(implicit user: KoskiSession): HenkilötiedotSearchResponse = {
     hetuValidator.validate(hetu) match {
       case Right(_) =>
-        val kaikkiHenkilöt = henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(hetu, userForAccessChecks = Some(user))
+        val kaikkiHenkilöt = henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(hetu, userForAccessChecks = Some(user)).map(_.toHenkilötiedotJaOid)
         val näytettävätHenkilöt = kaikkiOpiskeluoikeudet.filterOppijat(kaikkiHenkilöt.toList)
         val canAddNew = näytettävätHenkilöt.isEmpty && user.hasAnyWriteAccess
         HenkilötiedotSearchResponse(näytettävätHenkilöt, canAddNew, hetu = Some(hetu))
