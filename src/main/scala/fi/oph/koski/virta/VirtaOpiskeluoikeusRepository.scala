@@ -1,7 +1,7 @@
 package fi.oph.koski.virta
 
 import fi.oph.koski.cache.{CacheManager, GlobalCacheManager}
-import fi.oph.koski.henkilo.{FindByOid, Hetu, MockOpintopolkuHenkilöRepository}
+import fi.oph.koski.henkilo.Hetu
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.koskiuser.{AccessChecker, SkipAccessCheck}
 import fi.oph.koski.log.Logging
@@ -11,13 +11,12 @@ import fi.oph.koski.validation.KoskiValidator
 
 case class VirtaOpiskeluoikeusRepository(
   virta: VirtaClient,
-  henkilöRepository: FindByOid,
   oppilaitosRepository: OppilaitosRepository,
   koodistoViitePalvelu: KoodistoViitePalvelu,
   accessChecker: AccessChecker,
   hetuValidator: Hetu,
   validator: Option[KoskiValidator] = None
-)(implicit cacheInvalidator: CacheManager) extends HetuBasedOpiskeluoikeusRepository[KorkeakoulunOpiskeluoikeus](henkilöRepository, oppilaitosRepository, koodistoViitePalvelu, accessChecker, validator) with Logging {
+)(implicit cacheInvalidator: CacheManager) extends HetuBasedOpiskeluoikeusRepository[KorkeakoulunOpiskeluoikeus](oppilaitosRepository, koodistoViitePalvelu, accessChecker, validator) with Logging {
 
   private val converter = VirtaXMLConverter(oppilaitosRepository, koodistoViitePalvelu)
 
@@ -29,4 +28,4 @@ case class VirtaOpiskeluoikeusRepository(
   }
 }
 
-object MockVirtaOpiskeluoikeusRepository extends VirtaOpiskeluoikeusRepository(MockVirtaClient, MockOpintopolkuHenkilöRepository, MockOppilaitosRepository, MockKoodistoViitePalvelu, SkipAccessCheck, new Hetu(true))(GlobalCacheManager)
+object MockVirtaOpiskeluoikeusRepository extends VirtaOpiskeluoikeusRepository(MockVirtaClient, MockOppilaitosRepository, MockKoodistoViitePalvelu, SkipAccessCheck, new Hetu(true))(GlobalCacheManager)

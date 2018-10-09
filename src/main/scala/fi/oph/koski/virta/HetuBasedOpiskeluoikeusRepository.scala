@@ -1,7 +1,6 @@
 package fi.oph.koski.virta
 
 import fi.oph.koski.cache.{CacheManager, ExpiringCache, KeyValueCache}
-import fi.oph.koski.henkilo.FindByOid
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.{AccessChecker, AccessType, KoskiSession}
@@ -14,7 +13,7 @@ import fi.oph.koski.validation.KoskiValidator
 import scala.concurrent.duration._
 import scala.util.control.NonFatal
 
-abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](henkilöRepository: FindByOid, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, accessChecker: AccessChecker, validator: Option[KoskiValidator] = None)(implicit cacheInvalidator: CacheManager) extends AuxiliaryOpiskeluoikeusRepository with Logging {
+abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, accessChecker: AccessChecker, validator: Option[KoskiValidator] = None)(implicit cacheInvalidator: CacheManager) extends AuxiliaryOpiskeluoikeusRepository with Logging {
   protected def opiskeluoikeudetByHetu(hetu: String): List[OO]
 
   // hetu -> org.oids cache for filtering only
@@ -39,9 +38,8 @@ abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](henkilöR
       }
     }
   }
-  private def getHenkilötiedot(oid: String)(implicit user: KoskiSession): Option[TäydellisetHenkilötiedot] = henkilöRepository.findByOid(oid)
   private def quickAccessCheck[T](list: => List[T])(implicit user: KoskiSession): List[T] = if (accessChecker.hasAccess(user)) { list } else { Nil }
-  private def findByHenkilö(henkilö: Henkilö with Henkilötiedot)(implicit user: KoskiSession): List[OO] = henkilö.hetu.toList.flatMap( h =>
+  private def findByHenkilö(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSession): List[OO] = tunnisteet.hetu.toList.flatMap( h =>
     quickAccessCheck(cache(h)).filter { oo =>
       accessChecker.hasGlobalAccess(user) ||
       oo.oppilaitos.exists(oppilaitos => user.hasReadAccess(oppilaitos.oid))
@@ -64,12 +62,12 @@ abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](henkilöR
   }
 
   override def findByOppija(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSession): List[Opiskeluoikeus] = {
-    quickAccessCheck(getHenkilötiedot(tunnisteet.oid).toList.flatMap(findByHenkilö(_)))
+    quickAccessCheck(findByHenkilö(tunnisteet))
   }
 
   override def findByCurrentUser(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSession): List[Opiskeluoikeus] = {
     val oid = tunnisteet.oid
     assert(oid == user.oid, "Käyttäjän oid: " + user.oid + " poikkeaa etsittävän oppijan oidista: " + oid)
-    getHenkilötiedot(oid).toList.flatMap(_.hetu.toList.flatMap(cache(_)))
+    tunnisteet.hetu.toList.flatMap(cache(_))
   }
 }

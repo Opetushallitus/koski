@@ -9,7 +9,6 @@ import fi.oph.koski.util.{Futures, WithWarnings}
 import fi.oph.koski.db.{GlobalExecutionContext, OpiskeluoikeusRow}
 import fi.oph.koski.log.Logging
 
-import scala.collection.mutable.ListBuffer
 import scala.concurrent.Future
 import scala.util.{Failure, Success, Try}
 
