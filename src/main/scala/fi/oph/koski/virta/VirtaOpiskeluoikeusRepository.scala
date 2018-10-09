@@ -21,7 +21,7 @@ case class VirtaOpiskeluoikeusRepository(
 
   private val converter = VirtaXMLConverter(oppilaitosRepository, koodistoViitePalvelu)
 
-  override def opiskeluoikeudetByHetu(hetu: String): List[KorkeakoulunOpiskeluoikeus] = hetuValidator.validate(hetu) match {
+  override protected def opiskeluoikeudetByHetu(hetu: String): List[KorkeakoulunOpiskeluoikeus] = hetuValidator.validate(hetu) match {
     case Right(h) => virta.opintotiedot(VirtaHakuehtoHetu(h)).toList.flatMap(converter.convertToOpiskeluoikeudet)
     case Left(status) =>
       logger.warn(s"Virta haku prevented $status")

@@ -15,7 +15,7 @@ import scala.concurrent.duration._
 import scala.util.control.NonFatal
 
 abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](henkilöRepository: FindByOid, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, accessChecker: AccessChecker, validator: Option[KoskiValidator] = None)(implicit cacheInvalidator: CacheManager) extends AuxiliaryOpiskeluoikeusRepository with Logging {
-  def opiskeluoikeudetByHetu(hetu: String): List[OO]
+  protected def opiskeluoikeudetByHetu(hetu: String): List[OO]
 
   // hetu -> org.oids cache for filtering only
   private val organizationsCache = KeyValueCache[Henkilö.Hetu, List[Organisaatio.Oid]](ExpiringCache(getClass.getSimpleName + ".organisations", 1.hour, 100000), doFindOrgs)
@@ -63,10 +63,12 @@ abstract class HetuBasedOpiskeluoikeusRepository[OO <: Opiskeluoikeus](henkilöR
     }
   }
 
-  override def findByOppijaOid(oid: String)(implicit user: KoskiSession): List[Opiskeluoikeus] =
-    quickAccessCheck(getHenkilötiedot(oid).toList.flatMap(findByHenkilö(_)))
+  override def findByOppija(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSession): List[Opiskeluoikeus] = {
+    quickAccessCheck(getHenkilötiedot(tunnisteet.oid).toList.flatMap(findByHenkilö(_)))
+  }
 
-  override def findByUserOid(oid: String)(implicit user: KoskiSession): List[Opiskeluoikeus] = {
+  override def findByCurrentUser(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSession): List[Opiskeluoikeus] = {
+    val oid = tunnisteet.oid
     assert(oid == user.oid, "Käyttäjän oid: " + user.oid + " poikkeaa etsittävän oppijan oidista: " + oid)
     getHenkilötiedot(oid).toList.flatMap(_.hetu.toList.flatMap(cache(_)))
   }

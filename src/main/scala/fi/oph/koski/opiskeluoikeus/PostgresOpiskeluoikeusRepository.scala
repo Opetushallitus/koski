@@ -44,7 +44,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
 
   private def withSlavesQuery(oid: String) = (Henkilöt.filter(_.masterOid === oid) ++ Henkilöt.filter(_.oid === oid)).map(_.oid)
 
-  override def findByUserOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus] = {
+  override def findByCurrentUserOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus] = {
     assert(oid == user.oid, "Käyttäjän oid: " + user.oid + " poikkeaa etsittävän oppijan oidista: " + oid)
 
     val query = withSlavesQuery(oid).flatMap(oid => OpiskeluOikeudet.filterNot(_.mitätöity).filter(_.oppijaOid === oid))

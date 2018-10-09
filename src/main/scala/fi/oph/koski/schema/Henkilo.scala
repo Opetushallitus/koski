@@ -39,8 +39,11 @@ case class TäydellisetHenkilötiedot(
   kansalaisuus: Option[List[Koodistokoodiviite]],
   @Description("Henkilöllä on turvakielto")
   turvakielto: Option[Boolean] = None
-) extends HenkilöWithOid with Henkilötiedot {
+) extends HenkilöWithOid with Henkilötiedot with HenkilönTunnisteet {
   def toHenkilötiedotJaOid = HenkilötiedotJaOid(oid, hetu, etunimet, kutsumanimi, sukunimi)
+  // Ei vielä tueta
+  override def linkitetytOidit: List[String] = Nil
+  override def vanhatHetut: List[String] = Nil
 }
 
 case class TäydellisetHenkilötiedotWithMasterInfo(henkilö: TäydellisetHenkilötiedot, master: Option[TäydellisetHenkilötiedot]) extends HenkilöWithOid with Henkilötiedot {
@@ -99,4 +102,11 @@ trait HenkilöWithOid extends Henkilö {
   @OksaUri("tmpOKSAID760", "oppijanumero")
   @RegularExpression("""^1\.2\.246\.562\.24\.\d{11}$""")
   def oid: Henkilö.Oid
+}
+
+trait HenkilönTunnisteet {
+  def oid: String
+  def hetu: Option[String]
+  def linkitetytOidit: List[String]
+  def vanhatHetut: List[String]
 }

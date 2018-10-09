@@ -22,13 +22,13 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
   def findOppija(oid: String)(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
     henkilöRepository.findByOid(oid)
       .toRight(notFound(oid))
-      .flatMap(henkilö => toOppija(henkilö, opiskeluoikeusRepository.findByOppijaOid(henkilö.oid)))
+      .flatMap(henkilö => toOppija(henkilö, opiskeluoikeusRepository.findByOppija(henkilö)))
   }
 
   def findUserOppija(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
     henkilöRepository.findByOid(user.oid)
       .toRight(notFound(user.oid))
-      .flatMap(henkilö => toOppija(henkilö, opiskeluoikeusRepository.findByUserOid(user.oid)))
+      .flatMap(henkilö => toOppija(henkilö, opiskeluoikeusRepository.findByCurrentUser(henkilö)))
   }
 
   def findVersion(oppijaOid: String, opiskeluoikeusOid: String, versionumero: Int)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = {

@@ -29,7 +29,8 @@ class PermissionCheckServlet(implicit val application: KoskiApplication) extends
   private def getOpiskeluoikeudet(oid: Henkilö.Oid): Seq[Opiskeluoikeus] = {
     HenkilöOid.validateHenkilöOid(oid)
       .toSeq
-      .flatMap(application.opiskeluoikeusRepository.findByOppijaOid(_)(KoskiSession.systemUser).getIgnoringWarnings)
+      .flatMap(o => application.oppijaFacade.findOppija(o)(KoskiSession.systemUser).toOption.toSeq)
+      .flatMap(_.getIgnoringWarnings.opiskeluoikeudet)
   }
 
   private def isRelevantForAccessCheck(opiskeluoikeus: Opiskeluoikeus): Boolean = {

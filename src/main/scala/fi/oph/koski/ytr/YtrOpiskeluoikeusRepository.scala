@@ -16,6 +16,6 @@ case class YtrOpiskeluoikeusRepository(ytr: YtrClient, henkilöRepository: Henki
 {
   private val converter = YtrOppijaConverter(oppilaitosRepository, koodistoViitePalvelu, organisaatioRepository, localizations)
 
-  override def opiskeluoikeudetByHetu(hetu: String) = ytr.oppijaByHetu(hetu).flatMap(converter.convert(_)).toList
+  override protected def opiskeluoikeudetByHetu(hetu: String) = ytr.oppijaByHetu(hetu).flatMap(converter.convert(_)).toList
 }
 
