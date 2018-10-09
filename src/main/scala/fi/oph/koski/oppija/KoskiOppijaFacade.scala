@@ -19,17 +19,26 @@ import fi.oph.koski.util.{Timing, WithWarnings}
 class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: KoskiHenkilöCache, opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository, historyRepository: OpiskeluoikeusHistoryRepository, perustiedotIndexer: OpiskeluoikeudenPerustiedotIndexer, config: Config, hetu: Hetu) extends Logging with Timing with GlobalExecutionContext {
   private lazy val mockOids = config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid")
 
-  def findOppija(oid: String)(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] =
-    toOppija(oid, opiskeluoikeusRepository.findByOppijaOid(oid))
+  def findOppija(oid: String)(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
+    henkilöRepository.findByOid(oid)
+      .toRight(notFound(oid))
+      .flatMap(henkilö => toOppija(henkilö, opiskeluoikeusRepository.findByOppijaOid(henkilö.oid)))
+  }
 
-  def findUserOppija(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] =
-    toOppija(user.oid, opiskeluoikeusRepository.findByUserOid(user.oid))
+  def findUserOppija(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
+    henkilöRepository.findByOid(user.oid)
+      .toRight(notFound(user.oid))
+      .flatMap(henkilö => toOppija(henkilö, opiskeluoikeusRepository.findByUserOid(user.oid)))
+  }
 
   def findVersion(oppijaOid: String, opiskeluoikeusOid: String, versionumero: Int)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = {
-    opiskeluoikeusRepository.getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid).right.flatMap {
+    opiskeluoikeusRepository.getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid).flatMap {
       case oids if oids.contains(oppijaOid) =>
-        historyRepository.findVersion(opiskeluoikeusOid, versionumero).right.flatMap { history =>
-          toOppija(oppijaOid, WithWarnings(List(history), Nil)).map(_.get)
+        historyRepository.findVersion(opiskeluoikeusOid, versionumero).flatMap { history =>
+          henkilöRepository.findByOid(oppijaOid)
+            .toRight(notFound(oppijaOid))
+            .flatMap(henkilö => toOppija(henkilö, WithWarnings(List(history), Nil)))
+            .flatMap(_.warningsToLeft)
         }
       case _ =>
         logger(user).warn(s"Yritettiin hakea opiskeluoikeuden $opiskeluoikeusOid versiota $versionumero väärällä oppija-oidilla $oppijaOid")
@@ -185,20 +194,16 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
     }
   }
 
-  // Hakee oppijan oppijanumerorekisteristä ja liittää siihen opiskeluoikeudet. Opiskeluoikeudet haetaan vain, jos oppija löytyy.
-  private def toOppija(oid: Henkilö.Oid, opiskeluoikeudet: => WithWarnings[Seq[Opiskeluoikeus]])(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
-    def notFound = Left(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa " + oid + " ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
-    henkilöRepository.findByOid(oid) match {
-      case Some(oppija) =>
-        opiskeluoikeudet match {
-          case WithWarnings(Nil, Nil) => notFound
-          case oo: WithWarnings[Seq[Opiskeluoikeus]] =>
-            writeViewingEventToAuditLog(user, oid)
-            Right(oo.map(Oppija(oppija, _)))
-        }
-      case None => notFound
+  private def toOppija(henkilö: TäydellisetHenkilötiedot, opiskeluoikeudet: => WithWarnings[Seq[Opiskeluoikeus]])(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
+    opiskeluoikeudet match {
+      case WithWarnings(Nil, Nil) => Left(notFound(henkilö.oid))
+      case oo: WithWarnings[Seq[Opiskeluoikeus]] =>
+        writeViewingEventToAuditLog(user, henkilö.oid)
+        Right(oo.map(Oppija(henkilö, _)))
     }
   }
+
+  private def notFound(oid: String) = KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa " + oid + " ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun.")
 
   private def writeViewingEventToAuditLog(user: KoskiSession, oid: Henkilö.Oid): Unit = {
     if (user != KoskiSession.systemUser) { // To prevent health checks from polluting the audit log
