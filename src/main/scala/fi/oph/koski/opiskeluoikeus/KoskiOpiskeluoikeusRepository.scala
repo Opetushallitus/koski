@@ -8,19 +8,19 @@ import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import org.json4s.JValue
 
-trait KoskiOpiskeluoikeusRepository extends AuxiliaryOpiskeluoikeusRepository {
+trait KoskiOpiskeluoikeusRepository {
   def findByOid(oid: String)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusRow]
   def getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSession): Either[HttpStatus, List[Henkilö.Oid]]
   def createOrUpdate(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowUpdate: Boolean, allowDeleteComplete: Boolean = false)(implicit user: KoskiSession): Either[HttpStatus, CreateOrUpdateResult]
   def filterOppijat(oppijat: List[HenkilötiedotJaOid])(implicit user: KoskiSession): List[HenkilötiedotJaOid]
   def findByOppijaOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus]
-  def findByUserOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus]
+  def findByCurrentUserOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus]
 }
 
 trait AuxiliaryOpiskeluoikeusRepository {
   def filterOppijat(oppijat: List[HenkilötiedotJaOid])(implicit user: KoskiSession): List[HenkilötiedotJaOid]
-  def findByOppijaOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus]
-  def findByUserOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus]
+  def findByOppija(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSession): Seq[Opiskeluoikeus]
+  def findByCurrentUser(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSession): Seq[Opiskeluoikeus]
 }
 
 sealed trait CreateOrUpdateResult {

@@ -2,16 +2,18 @@ package fi.oph.koski.henkilo
 
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
-import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema._
 
-case class OpintopolkuHenkilöRepository(henkilöt: OpintopolkuHenkilöFacade, koodisto: KoodistoViitePalvelu) extends FindByHetu with FindByOid with Logging {
+case class OpintopolkuHenkilöRepository(henkilöt: OpintopolkuHenkilöFacade, koodisto: KoodistoViitePalvelu) extends FindByOid with Logging {
   def withMasterInfo(henkilötiedot: TäydellisetHenkilötiedot) = TäydellisetHenkilötiedotWithMasterInfo(henkilötiedot, findMasterHenkilö(henkilötiedot.oid))
 
-  def findByHetu(hetu: String)(implicit user: KoskiSession): Option[HenkilötiedotJaOid] = {
-    val opp = henkilöt.findOppijaByHetu(hetu).map(h => HenkilötiedotJaOid(h.oidHenkilo, Some(hetu), h.etunimet, h.kutsumanimi, h.sukunimi))
-    opp
+  // Tarkistaa vain Oppijanumerorekisterin, ei koskaan luo uutta oppijanumeroa Virta/YTR-datan perusteella
+  def findByHetu(hetu: String): Option[TäydellisetHenkilötiedot] = {
+    Hetu.validFormat(hetu)
+      .toOption
+      .flatMap(henkilöt.findOppijaByHetu)
+      .map(toTäydellisetHenkilötiedot)
   }
 
   def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, TäydellisetHenkilötiedot] =  {
@@ -56,8 +58,6 @@ case class OpintopolkuHenkilöRepository(henkilöt: OpintopolkuHenkilöFacade, k
       case xs: List[Koodistokoodiviite] => Some(xs)
     })
   }
-
-  override def existsWithHetu(hetu: String)(implicit user: KoskiSession): Boolean = findByHetu(hetu).isDefined
 }
 
 object MockOpintopolkuHenkilöRepository extends OpintopolkuHenkilöRepository(new MockOpintopolkuHenkilöFacade(), MockKoodistoViitePalvelu)

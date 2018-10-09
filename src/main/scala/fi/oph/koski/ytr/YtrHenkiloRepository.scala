@@ -1,37 +1,26 @@
 package fi.oph.koski.ytr
 
-import fi.oph.koski.henkilo.{FindByHetu, OpintopolkuHenkilöRepository}
+import fi.oph.koski.henkilo.HetuBasedHenkilöRepository
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.{AccessChecker, KoskiSession}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.UusiHenkilö
 
-case class YtrHenkilöRepository(ytr: YtrClient, henkilöpalvelu: OpintopolkuHenkilöRepository, accessChecker: AccessChecker) extends FindByHetu with Logging {
-  override def findByHetu(hetu: String)(implicit user: KoskiSession) = if (!accessChecker.hasAccess(user)) {
-    None
-  } else {
+import scala.util.control.NonFatal
+
+case class YtrHenkilöRepository(ytr: YtrClient, accessChecker: AccessChecker) extends HetuBasedHenkilöRepository with Logging {
+  def findByHetuDontCreate(hetu: String): Either[HttpStatus, Option[UusiHenkilö]] = {
     try {
-      ytr.oppijaByHetu(hetu).flatMap { ytrOppija =>
+      Right(ytr.oppijaByHetu(hetu).map { ytrOppija =>
         val kutsumanimi = ytrOppija.firstnames.split(" ").toList.head
-        henkilöpalvelu.findOrCreate(UusiHenkilö(hetu, ytrOppija.firstnames, Some(kutsumanimi), ytrOppija.lastname)) match {
-          case Right(henkilö) =>
-            Some(henkilö)
-          case Left(error) =>
-            logger.error("YTR-oppijan lisäys henkilöpalveluun epäonnistui: " + error)
-            None
-        }
-      }.map(_.toHenkilötiedotJaOid)
+        UusiHenkilö(hetu, ytrOppija.firstnames, Some(kutsumanimi), ytrOppija.lastname)
+      })
     } catch {
-      case e: Exception =>
+      case NonFatal(e) =>
         logger.error(e)("Failed to fetch data from YTR")
-        None
+        Left(KoskiErrorCategory.unavailable.ytr())
     }
   }
 
-  override def existsWithHetu(hetu: String)(implicit user: KoskiSession): Boolean = try {
-    ytr.oppijaByHetu(hetu).isDefined
-  } catch {
-    case e: Exception =>
-      logger.error(e)("Failed to fetch data from YTR")
-      false
-  }
+  override def hasAccess(user: KoskiSession): Boolean = accessChecker.hasAccess(user)
 }

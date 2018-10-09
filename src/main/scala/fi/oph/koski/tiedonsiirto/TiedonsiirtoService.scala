@@ -338,7 +338,8 @@ class TiedonsiirtoService(
       case (Some(oid), None) => henkilöRepository.findByOid(oid).map { h =>
         TiedonsiirtoOppija(Some(h.oid), h.hetu, h.syntymäaika, Some(h.etunimet), Some(h.kutsumanimi), Some(h.sukunimi), h.äidinkieli, h.kansalaisuus)
       }
-      case (None, Some(hetu)) => henkilöRepository.findHenkilötiedotByHetu(hetu).headOption.map { h =>
+      // Tarkistaa vain oppijanumerorekisterin - ei luo uutta oppijanumeroa Virta/YTR-tietojen pohjalta
+      case (None, Some(hetu)) => henkilöRepository.opintopolku.findByHetu(hetu).map { h =>
         TiedonsiirtoOppija(Some(h.oid), h.hetu, syntymäaika = None, Some(h.etunimet), Some(h.kutsumanimi), Some(h.sukunimi), äidinkieli = None, None)
       }
       case _ => None
