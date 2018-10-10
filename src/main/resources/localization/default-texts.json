@@ -1118,7 +1118,7 @@
   "Vahvista poisto, operaatiota ei voi peruuttaa": "Vahvista poisto, operaatiota ei voi peruuttaa",
   "Peruuta poisto": "Peruuta poisto",
   "Raportit": "Raportit",
-  "Tälle oppilaitokselle ei löydy raportteja.": "Tälle oppilaitokselle ei löydy raportteja.",
+  "Tälle oppilaitokselle ei löydy raportteja. Toistaiseksi ainoa käytössä oleva raportti on tarkoitettu vain ammatillisille oppilaitoksille.": "Tälle oppilaitokselle ei löydy raportteja. Toistaiseksi ainoa käytössä oleva raportti on tarkoitettu vain ammatillisille oppilaitoksille.",
   "Opiskelijavuositiedot": "Opiskelijavuositiedot (ammatillinen koulutus)",
   "Opiskelijavuositiedot-description": "Tämä raportti sisältää ammatillisen koulutuksen opiskeluoikeudet valitulla aikajaksolla, ja näihin liittyvät opiskelijavuosilaskennassa käytettävät tiedot. Raportti pohjautuu viime yön tietoihin, eli tietojen päivitys Koskeen ei näy välittömästi raportilla.",
   "Aikajakso": "Aikajakso",
