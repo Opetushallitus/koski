@@ -28,7 +28,7 @@ Esimerkkipyyntö:
     {
       "v": 1,
       "hetu": "180859-914S",
-      "opiskeluoikeudenTyypit": ["perusopetus", "korkeakoulu"],
+      "opiskeluoikeudenTyypit": ["perusopetus", "korkeakoulutus"],
       "käyttötarkoitus": "fixme"
     }
 
@@ -136,13 +136,13 @@ henkilötunnukselle.
 
 Esimerkkipyyntö:
 
-    POST /koski/api/luovutuspalvelu/hetu HTTP/1.1
+    POST /koski/api/luovutuspalvelu/hetut HTTP/1.1
     Content-Type: application/json
 
     {
       "v": 1,
       "hetut": ["180859-914S", ...]
-      "opiskeluoikeudenTyypit": ["perusopetus", "korkeakoulu"],
+      "opiskeluoikeudenTyypit": ["perusopetus"],
       "käyttötarkoitus": "fixme"
     }
 
