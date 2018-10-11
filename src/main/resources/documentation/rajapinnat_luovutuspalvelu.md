@@ -134,3 +134,56 @@ Tällä kutsulla ei voi hakea `korkeakoulutus`- tai `ylioppilastutkinto`-tyyppis
 koska ne vaatisivat erilliset taustajärjestelmäkutsut (Virta / Ylioppilastutkintorekisteri) jokaiselle 
 henkilötunnukselle. 
 
+Esimerkkipyyntö:
+
+    POST /koski/api/luovutuspalvelu/hetu HTTP/1.1
+    Content-Type: application/json
+
+    {
+      "v": 1,
+      "hetut": ["180859-914S", ...]
+      "opiskeluoikeudenTyypit": ["perusopetus", "korkeakoulu"],
+      "käyttötarkoitus": "fixme"
+    }
+
+Pyynnön kenttien kuvaukset:
+
+ * `v` - rajapinnan versionumero, tässä aina 1.
+ * `hetut` - lista haettavista henkilötunnuksista.
+ * `opiskeluoikeudentyypit` - lista opiskeluoikeuden tyyppejä, joista kutsuja on kiinnostunut.
+    Sallitut arvot löytyvät [opiskeluoikeudentyyppi](/koski/dokumentaatio/koodisto/opiskeluoikeudentyyppi/latest) koodistosta.
+    `korkeakoulutus`- tai `ylioppilastutkinto`-tyyppisiä opiskeluoikeuksia ei voi hakea massahaulla.
+ * `käyttötarkoitus` - (alustava, saa kommentoida) yksilöi tiedon käyttötarkoituksen kutsujan organisaation sisällä.
+   Sovitaan tarkemmin OPH:n ja käyttäjän välisessä sopimuksessa. Käyttötarkoitus tallennetaan Koski-palvelun audit-lokiin.
+
+Vastaus, kun pyyntö suoritetaan onnistuneesti:
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+
+    [
+      {
+        "henkilö": {
+          "oid": "1.2.246.562.24.123456789",
+          "hetu": "180859-914S",
+          "syntymäaika": "1959-08-18",
+          "turvakielto": false
+        },
+        "opiskeluoikeudet": [
+          {
+            "oid": "1.2.246.562.15.31643973527",
+            "versionumero": 1,
+            "aikaleima": "2018-09-25T14:03:58.700770",
+            ...
+          },
+          ...
+        ]
+      },
+      ...
+    ]
+
+Jos jollekkin hetulle ei löydy opiskeluoikeuksia, tämä ei ole virhe vaan hetu puuttuu vastauslistasta.
+
+Lisää kuvaukset:
+
+    Tulossa myöhemmin.
