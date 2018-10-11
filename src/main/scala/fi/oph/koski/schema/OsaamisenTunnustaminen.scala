@@ -15,8 +15,8 @@ case class OsaamisenTunnustaminen(
   @Representative
   @MultiLineString(5)
   selite: LocalizedString,
-  @Description("Käytetään, mikäli tunnustettu osaamisen kuuluu rahoitukseen piiriin (esimerkiksi kaksoistutkintolaisilla ammatilliseen tutkintoon tunnustetut lukio-opinnot tai toiselta oppilaitokselta ostetut yksittäiset tutkinnon osat).")
-  @Tooltip("Tunnustettu osaamisen kuuluu rahoitukseen piiriin (esimerkiksi kaksoistutkintolaisilla ammatilliseen tutkintoon tunnustetut lukio-opinnot tai toiselta oppilaitokselta ostetut yksittäiset tutkinnon osat).")
+  @Description("Käytetään, mikäli tunnustettu osaaminen kuuluu rahoitukseen piiriin (esimerkiksi kaksoistutkintolaisilla ammatilliseen tutkintoon tunnustetut lukio-opinnot tai toiselta oppilaitokselta ostetut yksittäiset tutkinnon osat).")
+  @Tooltip("Tunnustettu osaaminen kuuluu rahoitukseen piiriin (esimerkiksi kaksoistutkintolaisilla ammatilliseen tutkintoon tunnustetut lukio-opinnot tai toiselta oppilaitokselta ostetut yksittäiset tutkinnon osat).")
   @DefaultValue(false)
   rahoituksenPiirissä: Boolean = false
 )
