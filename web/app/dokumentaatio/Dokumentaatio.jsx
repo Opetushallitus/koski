@@ -57,7 +57,7 @@ const htmlSectionsP = () => Http.cachedGet('/koski/api/documentation/sections.ht
 export const dokumentaatioYleistäP = () => dokumentaatioContentP('/koski/dokumentaatio', htmlSectionsP().map(htmlSections =>
   ({
     content: (<div>
-      <section dangerouslySetInnerHTML={{__html: htmlSections.general}}></section>
+      <section dangerouslySetInnerHTML={{__html: htmlSections.yleista}}></section>
     </div>),
     title: 'Dokumentaatio'
   })
@@ -74,9 +74,9 @@ const infoP = () => Bacon.combineTemplate({
 export const dokumentaatioTietomalliP = () => dokumentaatioContentP('/koski/dokumentaatio/tietomalli', infoP().map(({categories, examples, htmlSections}) =>
   ({
     content: (<div>
-      <section dangerouslySetInnerHTML={{__html: htmlSections.schema}}></section>
+      <section dangerouslySetInnerHTML={{__html: htmlSections.tietomalli}}></section>
       <section>
-        <div dangerouslySetInnerHTML={{__html: htmlSections.annotated_data}}></div>
+        <div dangerouslySetInnerHTML={{__html: htmlSections.tietomalli_esimerkit}}></div>
         {R.map(c => (
           <div key={c}>
             <h4>{c}</h4>
@@ -108,7 +108,7 @@ export const dokumentaatioKoodistotP = () => dokumentaatioContentP('/koski/dokum
 export const dokumentaatioOppilashallintojärjestelmätP = () => dokumentaatioContentP('/koski/dokumentaatio/rajapinnat/oppilashallintojarjestelmat', infoP().map(({apiOperations, htmlSections}) =>
   ({
     content: (<div>
-      <section dangerouslySetInnerHTML={{__html: htmlSections.rest_apis}}></section>
+      <section dangerouslySetInnerHTML={{__html: htmlSections.rajapinnat_oppilashallintojarjestelmat}}></section>
       <ApiOperations operations={apiOperations}/>
     </div>),
     title: 'Dokumentaatio - Rajapinnat '
@@ -118,7 +118,7 @@ export const dokumentaatioOppilashallintojärjestelmätP = () => dokumentaatioCo
 export const dokumentaatioLuovutuspalveluP = () => dokumentaatioContentP('/koski/dokumentaatio/rajapinnat/luovutuspalvelu', htmlSectionsP().map(htmlSections =>
   ({
     content: (<div>
-      <div dangerouslySetInnerHTML={{__html: htmlSections.luovutuspalvelu}}></div>
+      <div className='markdown-content' dangerouslySetInnerHTML={{__html: htmlSections.rajapinnat_luovutuspalvelu}}></div>
     </div>),
     title: 'Dokumentaatio - Rajapinnat'
   })
@@ -127,7 +127,7 @@ export const dokumentaatioLuovutuspalveluP = () => dokumentaatioContentP('/koski
 export const dokumentaatioPalveluväyläOmadataP = () => dokumentaatioContentP('/koski/dokumentaatio/rajapinnat/palveluvayla-omadata', htmlSectionsP().map(htmlSections =>
   ({
     content: (<div>
-      <div dangerouslySetInnerHTML={{__html: htmlSections.palveluvayla_omadata}}></div>
+      <div className='markdown-content' dangerouslySetInnerHTML={{__html: htmlSections.rajapinnat_palveluvayla_omadata}}></div>
     </div>),
     title: 'Dokumentaatio - Rajapinnat'
   })

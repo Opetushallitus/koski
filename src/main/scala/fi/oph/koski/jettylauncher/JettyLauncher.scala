@@ -159,6 +159,7 @@ object TestConfig {
       |authenticationFailed.resetAfter = 1s
       |mockoidgenerator = true
       |oppijavuosiraportti.enabledForUsers = ["kalle", "omnia-tallentaja", "evira"]
+      |features.luovutuspalvelu = true
     """.stripMargin)
 }
 
