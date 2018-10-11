@@ -14,7 +14,7 @@ import scala.util.{Failure, Success, Try}
 
 class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, virta: AuxiliaryOpiskeluoikeusRepository, ytr: AuxiliaryOpiskeluoikeusRepository) extends GlobalExecutionContext with Logging {
 
-  def filterOppijat(oppijat: List[HenkilötiedotJaOid])(implicit user: KoskiSession): List[HenkilötiedotJaOid] = {
+  def filterOppijat[A <: HenkilönTunnisteet](oppijat: List[A])(implicit user: KoskiSession): List[A] = {
     val found1 = main.filterOppijat(oppijat)
     val left1 = oppijat.diff(found1)
     val found2 = virta.filterOppijat(left1)
