@@ -1,0 +1,243 @@
+[ {
+  "koodiUri" : "oppiaineetdia_sa",
+  "koodiArvo" : "SA",
+  "metadata" : [ {
+    "nimi" : "Saksa",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_su",
+  "koodiArvo" : "SU",
+  "metadata" : [ {
+    "nimi" : "Suomi",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_a",
+  "koodiArvo" : "A",
+  "metadata" : [ {
+    "nimi" : "Englanti",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_b1ra",
+  "koodiArvo" : "B1RA",
+  "metadata" : [ {
+    "nimi" : "Ranska B1",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_b1ru",
+  "koodiArvo" : "B1RU",
+  "metadata" : [ {
+    "nimi" : "Ruotsi B1",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_b3ve",
+  "koodiArvo" : "B3VE",
+  "metadata" : [ {
+    "nimi" : "Venäjä B3",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_b3ra",
+  "koodiArvo" : "B3RA",
+  "metadata" : [ {
+    "nimi" : "Ranska B3",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_ku",
+  "koodiArvo" : "KU",
+  "metadata" : [ {
+    "nimi" : "Kuvataide",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_mu",
+  "koodiArvo" : "MU",
+  "metadata" : [ {
+    "nimi" : "Musiikki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_ma",
+  "koodiArvo" : "MA",
+  "metadata" : [ {
+    "nimi" : "Matematiikka",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_fy",
+  "koodiArvo" : "FY",
+  "metadata" : [ {
+    "nimi" : "Fysiikka",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_bi",
+  "koodiArvo" : "BI",
+  "metadata" : [ {
+    "nimi" : "Biologia",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_ke",
+  "koodiArvo" : "KE",
+  "metadata" : [ {
+    "nimi" : "Kemia",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_ti",
+  "koodiArvo" : "TI",
+  "metadata" : [ {
+    "nimi" : "Tietotekniikka",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_tk",
+  "koodiArvo" : "TK",
+  "metadata" : [ {
+    "nimi" : "Tietojenkäsittely",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_hisa",
+  "koodiArvo" : "HISA",
+  "metadata" : [ {
+    "nimi" : "Historia saksaksi",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_hisu",
+  "koodiArvo" : "HISU",
+  "metadata" : [ {
+    "nimi" : "Historia suomeksi",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_maa",
+  "koodiArvo" : "MAA",
+  "metadata" : [ {
+    "nimi" : "Maantiede (saksa ja englanti)",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_ta",
+  "koodiArvo" : "TA",
+  "metadata" : [ {
+    "nimi" : "Taloustieto ja yhteiskuntaoppi",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_us",
+  "koodiArvo" : "US",
+  "metadata" : [ {
+    "nimi" : "Uskonto",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_fi",
+  "koodiArvo" : "FI",
+  "metadata" : [ {
+    "nimi" : "Filosofia",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_et",
+  "koodiArvo" : "ET",
+  "metadata" : [ {
+    "nimi" : "Elämänkatsomustieto",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+} ]

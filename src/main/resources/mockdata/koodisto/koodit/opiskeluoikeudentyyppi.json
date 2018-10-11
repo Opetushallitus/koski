@@ -174,4 +174,20 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "opiskeluoikeudentyyppi_diatutkinto",
+  "koodiArvo" : "diatutkinto",
+  "metadata" : [ {
+    "nimi" : "DIA-tutkinto",
+    "lyhytNimi" : "DIA-tutkinto",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "DIA-examen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]

@@ -736,4 +736,56 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_diatutkintovaihe",
+  "koodiArvo" : "diatutkintovaihe",
+  "metadata" : [ {
+    "nimi" : "DIA-tutkintovaihe",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_diavalmistavavaihe",
+  "koodiArvo" : "diavalmistavavaihe",
+  "metadata" : [ {
+    "nimi" : "Valmistava DIA-vaihe",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_diaoppiaine",
+  "koodiArvo" : "diaoppiaine",
+  "metadata" : [ {
+    "nimi" : "DIA-oppiaine",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Läroämne i DIA",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+  "koodiArvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+  "metadata" : [ {
+    "nimi" : "DIA-oppiaineen valmistavan vaiheen lukukauden suoritus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_diaoppiaineentutkintovaiheenlukukaudensuoritus",
+  "koodiArvo" : "diaoppiaineentutkintovaiheenlukukaudensuoritus",
+  "metadata" : [ {
+    "nimi" : "DIA-oppiaineen tutkintovaiheen lukukauden suoritus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]

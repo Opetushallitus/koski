@@ -82,6 +82,7 @@ object OpiskeluoikeudenTyyppi {
   val ammatillinenkoulutus = apply("ammatillinenkoulutus")
   val esiopetus = apply("esiopetus")
   val ibtutkinto = apply("ibtutkinto")
+  val diatutkinto = apply("diatutkinto")
   val korkeakoulutus = apply("korkeakoulutus")
   val lukiokoulutus = apply("lukiokoulutus")
   val luva = apply("luva")
