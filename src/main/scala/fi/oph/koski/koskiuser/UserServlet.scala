@@ -17,8 +17,6 @@ class UserServlet(implicit val application: UserAuthenticationContext) extends A
           hasAnyInvalidateAccess = session.hasAnyTiedonsiirronMitätöintiAccess,
           isViranomainen = session.hasGlobalKoulutusmuotoReadAccess,
           hasRaportitAccess = session.hasRaportitAccess
-            // temporary restriction
-            && application.config.getStringList("oppijavuosiraportti.enabledForUsers").contains(session.username)
         )
       }
       }.getOrElse(UserWithAccessRights(user.name, user.oid))

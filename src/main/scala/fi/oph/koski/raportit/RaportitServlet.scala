@@ -70,10 +70,6 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
       case Right(oid) if !koskiSession.hasReadAccess(oid) => haltWithStatus(KoskiErrorCategory.forbidden.organisaatio())
       case Right(oid) => oid
     }
-    // temporary restriction
-    if (!application.config.getStringList("oppijavuosiraportti.enabledForUsers").contains(koskiSession.username)) {
-      haltWithStatus(KoskiErrorCategory.forbidden("Ei sallittu tälle käyttäjälle"))
-    }
     oppilaitosOid
   }
 

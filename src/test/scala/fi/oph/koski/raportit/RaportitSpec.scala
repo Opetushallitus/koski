@@ -9,7 +9,7 @@ import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.koskiuser.MockUsers.{evira, omniaTallentaja, stadinAmmattiopistoKatselija}
+import fi.oph.koski.koskiuser.MockUsers.{evira, omniaTallentaja}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.raportointikanta.ROpiskeluoikeusAikajaksoRow
 import org.json4s.JArray
@@ -109,13 +109,6 @@ class RaportitSpec extends FreeSpec with LocalJettyHttpSpecification with Opiske
       "raportin lataaminen vaatii käyttöoikeudet organisaatioon" in {
         authGet(s"api/raportit/opiskelijavuositiedot?oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&alku=2016-01-01&loppu=2016-12-31&password=dummy", user = omniaTallentaja) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Käyttäjällä ei oikeuksia annettuun organisaatioon (esimerkiksi oppilaitokseen)."))
-        }
-      }
-
-      // temporary restriction
-      "raportin lataaminen on sallittu vain pilottikäyttäjille" in {
-        authGet(s"api/raportit/opiskelijavuositiedot?oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&alku=2016-01-01&loppu=2016-12-31&password=dummy", user = stadinAmmattiopistoKatselija) {
-          verifyResponseStatus(403, KoskiErrorCategory.forbidden("Ei sallittu tälle käyttäjälle"))
         }
       }
 
