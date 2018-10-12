@@ -14,7 +14,7 @@ abstract class AuxiliaryOpiskeluoikeusRepositoryImpl[OO <: Opiskeluoikeus, CK <:
     val globalAccess = accessChecker.hasGlobalAccess(user)
     try {
       if (globalAccess) {
-        oppijat.filter(oppija => cachedOpiskeluoikeudet(oppija).nonEmpty)
+        oppijat.filter(oppija => cachedOrganizations(oppija).nonEmpty)
       } else {
         quickAccessCheck(oppijat.par.filter(oppija => cachedOrganizations(oppija).exists(user.hasReadAccess)).toList)
       }
@@ -34,22 +34,31 @@ abstract class AuxiliaryOpiskeluoikeusRepositoryImpl[OO <: Opiskeluoikeus, CK <:
     cachedOpiskeluoikeudet(tunnisteet)
   }
 
-  private val cache = KeyValueCache[CK, List[OO]](ExpiringCache(getClass.getSimpleName + ".opiskeluoikeudet", 1.hour, 100), uncachedOpiskeluoikeudet)
+  protected def buildCacheKey(tunnisteet: HenkilönTunnisteet): CK
 
   protected def uncachedOpiskeluoikeudet(cacheKey: CK): List[OO]
+
+  private val cache = KeyValueCache[CK, List[OO]](ExpiringCache(getClass.getSimpleName + ".opiskeluoikeudet", 1.hour, 100), uncachedOpiskeluoikeudet)
 
   private def cachedOpiskeluoikeudet(tunnisteet: HenkilönTunnisteet): List[OO] = {
     cache(buildCacheKey(tunnisteet))
   }
 
-  protected def buildCacheKey(tunnisteet: HenkilönTunnisteet): CK
-
   // tunniste -> org.oids cache for filtering only (much larger than opiskeluoikeus cache)
+  // can contain special value "UnknownOrganization" to indicate that opiskeluoikeus exists, but it has oppilaitos=None
+  // (this is used in filterOppijat when globalAccess is True)
   private val organizationsCache = KeyValueCache[CK, List[Organisaatio.Oid]](ExpiringCache(getClass.getSimpleName + ".organisations", 1.hour, 100000), uncachedOrganizations)
+  private val UnknownOrganization = "1.2.246.562.10.99999999999"
 
   private def uncachedOrganizations(cacheKey: CK): List[Organisaatio.Oid] = {
-    cache(cacheKey).flatMap(_.oppilaitos).map(_.oid)
+    val opiskeluoikeudet = cache(cacheKey)
+    val oppilaitokset = opiskeluoikeudet.flatMap(_.oppilaitos).map(_.oid)
+    if (oppilaitokset.isEmpty && opiskeluoikeudet.nonEmpty)
+      List(UnknownOrganization)
+    else
+      oppilaitokset
   }
+
   private def cachedOrganizations(tunnisteet: HenkilönTunnisteet): List[Organisaatio.Oid] = {
     organizationsCache(buildCacheKey(tunnisteet))
   }
