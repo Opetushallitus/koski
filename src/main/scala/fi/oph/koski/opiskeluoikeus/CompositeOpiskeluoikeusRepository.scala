@@ -45,10 +45,10 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
     Success(WithWarnings.fromTry(result, KoskiErrorCategory.unavailable.ytr(), Nil))
   }
 
-  def findByOppija(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSession): WithWarnings[Seq[Opiskeluoikeus]] = {
+  def findByOppija(tunnisteet: HenkilönTunnisteet, useVirta: Boolean, useYtr: Boolean)(implicit user: KoskiSession): WithWarnings[Seq[Opiskeluoikeus]] = {
     val oid = tunnisteet.oid
-    val virtaResultFuture = Future { virta.findByOppija(tunnisteet) }.transform(mapFailureToVirtaUnavailable(_, oid))
-    val ytrResultFuture = Future { ytr.findByOppija(tunnisteet) }.transform(mapFailureToYtrUnavailable(_, oid))
+    val virtaResultFuture = Future { if (useVirta) virta.findByOppija(tunnisteet) else Nil }.transform(mapFailureToVirtaUnavailable(_, oid))
+    val ytrResultFuture = Future { if (useYtr) ytr.findByOppija(tunnisteet) else Nil }.transform(mapFailureToYtrUnavailable(_, oid))
     val mainResult = main.findByOppijaOid(oid)
     val virtaResult = Futures.await(virtaResultFuture)
     val ytrResult = Futures.await(ytrResultFuture)
