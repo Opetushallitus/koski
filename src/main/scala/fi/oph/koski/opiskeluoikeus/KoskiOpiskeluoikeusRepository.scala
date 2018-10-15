@@ -12,13 +12,13 @@ trait KoskiOpiskeluoikeusRepository {
   def findByOid(oid: String)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusRow]
   def getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSession): Either[HttpStatus, List[Henkilö.Oid]]
   def createOrUpdate(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowUpdate: Boolean, allowDeleteComplete: Boolean = false)(implicit user: KoskiSession): Either[HttpStatus, CreateOrUpdateResult]
-  def filterOppijat(oppijat: List[HenkilötiedotJaOid])(implicit user: KoskiSession): List[HenkilötiedotJaOid]
+  def filterOppijat[A <: HenkilönTunnisteet](oppijat: List[A])(implicit user: KoskiSession): List[A]
   def findByOppijaOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus]
   def findByCurrentUserOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus]
 }
 
 trait AuxiliaryOpiskeluoikeusRepository {
-  def filterOppijat(oppijat: List[HenkilötiedotJaOid])(implicit user: KoskiSession): List[HenkilötiedotJaOid]
+  def filterOppijat[A <: HenkilönTunnisteet](oppijat: List[A])(implicit user: KoskiSession): List[A]
   def findByOppija(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSession): Seq[Opiskeluoikeus]
   def findByCurrentUser(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSession): Seq[Opiskeluoikeus]
 }

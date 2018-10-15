@@ -1,20 +1,46 @@
 package fi.oph.koski.ytr
 
 import fi.oph.koski.cache.CacheManager
+import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.koskiuser.AccessChecker
+import fi.oph.koski.koskiuser.{AccessChecker, AccessType, KoskiSession}
 import fi.oph.koski.localization.LocalizationRepository
+import fi.oph.koski.log.NotLoggable
+import fi.oph.koski.opiskeluoikeus.AuxiliaryOpiskeluoikeusRepositoryImpl
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
-import fi.oph.koski.schema._
+import fi.oph.koski.schema.{HenkilönTunnisteet, Oppija, UusiHenkilö, YlioppilastutkinnonOpiskeluoikeus}
 import fi.oph.koski.validation.KoskiValidator
-import fi.oph.koski.virta.HetuBasedOpiskeluoikeusRepository
 
-case class YtrOpiskeluoikeusRepository(ytr: YtrClient, organisaatioRepository: OrganisaatioRepository, oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, accessChecker: AccessChecker, validator: Option[KoskiValidator] = None, localizations: LocalizationRepository)(implicit cacheInvalidator: CacheManager)
-    extends HetuBasedOpiskeluoikeusRepository[YlioppilastutkinnonOpiskeluoikeus](oppilaitosRepository, koodistoViitePalvelu, accessChecker, validator)
-{
+case class YtrOpiskeluoikeusRepository(
+  ytr: YtrClient,
+  organisaatioRepository: OrganisaatioRepository,
+  oppilaitosRepository: OppilaitosRepository,
+  koodistoViitePalvelu: KoodistoViitePalvelu,
+  accessChecker: AccessChecker,
+  validator: Option[KoskiValidator] = None,
+  localizations: LocalizationRepository
+)(implicit cacheInvalidator: CacheManager) extends AuxiliaryOpiskeluoikeusRepositoryImpl[YlioppilastutkinnonOpiskeluoikeus, YtrCacheKey](accessChecker) {
   private val converter = YtrOppijaConverter(oppilaitosRepository, koodistoViitePalvelu, organisaatioRepository, localizations)
 
-  override protected def opiskeluoikeudetByHetu(hetu: String) = ytr.oppijaByHetu(hetu).flatMap(converter.convert(_)).toList
+  override protected def uncachedOpiskeluoikeudet(cacheKey: YtrCacheKey): List[YlioppilastutkinnonOpiskeluoikeus] = {
+    val opiskeluoikeudet = cacheKey.hetut.headOption match {
+      case Some(hetu) => ytr.oppijaByHetu(hetu).flatMap(converter.convert(_)).toList
+      case None => Nil
+    }
+    opiskeluoikeudet.foreach(validate)
+    opiskeluoikeudet
+  }
+
+  override protected def buildCacheKey(tunnisteet: HenkilönTunnisteet): YtrCacheKey =
+    YtrCacheKey((tunnisteet.hetu.toList ++ tunnisteet.vanhatHetut).sorted)
+
+  private def validate(opiskeluoikeus: YlioppilastutkinnonOpiskeluoikeus): Unit = {
+    val oppija = Oppija(UusiHenkilö("010101-123N", "tuntematon", Some("tuntematon"), "tuntematon"), List(opiskeluoikeus))
+    validator.foreach(_.validateAsJson(oppija)(KoskiSession.systemUser, AccessType.read).left.foreach { status: HttpStatus =>
+      logger.warn("Ulkoisesta järjestelmästä saatu opiskeluoikeus sisältää validointivirheitä " + status)
+    })
+  }
 }
 
+private[ytr] case class YtrCacheKey(hetut: List[String]) extends NotLoggable

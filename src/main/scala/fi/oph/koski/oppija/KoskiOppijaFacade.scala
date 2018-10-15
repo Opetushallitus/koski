@@ -22,7 +22,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
   def findOppija(oid: String)(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
     henkilöRepository.findByOid(oid)
       .toRight(notFound(oid))
-      .flatMap(henkilö => toOppija(henkilö, opiskeluoikeusRepository.findByOppija(henkilö)))
+      .flatMap(henkilö => toOppija(henkilö, opiskeluoikeusRepository.findByOppija(henkilö, useVirta = true, useYtr = true)))
   }
 
   def findUserOppija(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
@@ -31,10 +31,15 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
       .flatMap(henkilö => toOppija(henkilö, opiskeluoikeusRepository.findByCurrentUser(henkilö)))
   }
 
-  def findOppijaByHetuOrCreateIfInYtrOrVirta(hetu: String)(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
-    henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(hetu, userForAccessChecks = Some(user))
+  def findOppijaByHetuOrCreateIfInYtrOrVirta(hetu: String, useVirta: Boolean = true, useYtr: Boolean = true)(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
+    val henkilö = if (useVirta || useYtr) {
+      henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(hetu, userForAccessChecks = Some(user))
+    } else {
+      henkilöRepository.opintopolku.findByHetu(hetu)
+    }
+    henkilö
       .toRight(notFound("(hetu)"))
-      .flatMap(henkilö => toOppija(henkilö, opiskeluoikeusRepository.findByOppija(henkilö)))
+      .flatMap(henkilö => toOppija(henkilö, opiskeluoikeusRepository.findByOppija(henkilö, useVirta = useVirta, useYtr = useYtr)))
   }
 
   def findVersion(oppijaOid: String, opiskeluoikeusOid: String, versionumero: Int)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = {

@@ -62,7 +62,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val ytrAccessChecker = new YtrAccessChecker(käyttöoikeusRepository)
   lazy val henkilöRepository = HenkilöRepository(this)
   lazy val historyRepository = OpiskeluoikeusHistoryRepository(masterDatabase.db)
-  lazy val virta = TimedProxy[AuxiliaryOpiskeluoikeusRepository](VirtaOpiskeluoikeusRepository(virtaClient, oppilaitosRepository, koodistoViitePalvelu, virtaAccessChecker, hetu, Some(validator)))
+  lazy val virta = TimedProxy[AuxiliaryOpiskeluoikeusRepository](VirtaOpiskeluoikeusRepository(virtaClient, oppilaitosRepository, koodistoViitePalvelu, virtaAccessChecker, Some(validator)))
   lazy val henkilöCache = new KoskiHenkilöCache(masterDatabase.db)
   lazy val possu = TimedProxy[KoskiOpiskeluoikeusRepository](new PostgresOpiskeluoikeusRepository(masterDatabase.db, historyRepository, henkilöCache, oidGenerator, henkilöRepository.opintopolku, perustiedotSyncRepository))
   lazy val ytr = TimedProxy[AuxiliaryOpiskeluoikeusRepository](YtrOpiskeluoikeusRepository(ytrClient, organisaatioRepository, oppilaitosRepository, koodistoViitePalvelu, ytrAccessChecker, Some(validator), localizationRepository))
