@@ -3,7 +3,8 @@ package fi.oph.koski.luovutuspalvelu
 import java.time.LocalDate
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.henkilo.Hetu
+import fi.oph.koski.db.OpiskeluoikeusRow
+import fi.oph.koski.henkilo.{HenkilöOid, Hetu, OppijaHenkilö}
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.RequiresLuovutuspalvelu
@@ -67,19 +68,20 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
       parseBulkHetuRequestV1(parsedJson) match {
         case Left(status) => haltWithStatus(status)
         case Right(req) => {
-          val oids = application.opintopolkuHenkilöFacade.findOppijatByHetus(req.hetut).map(h => h.oidHenkilo) //findOppijatByHetus needs to be implemented
-          oids.map(Hetu.validFormat).collectFirst { case Left(status) => status } match {
+          val henkilot = application.opintopolkuHenkilöFacade.findOppijatByHetus(req.hetut)
+          val oids = henkilot.map(_.oidHenkilo)
+          val oidToHenkilo = henkilot.map(h => h.oidHenkilo -> h).toMap
+          oids.map(HenkilöOid.validateHenkilöOid).collectFirst { case Left(status) => status } match {
             case None =>
-              val serialize = SensitiveDataFilter(koskiSession).rowSerializer
               val observable = OpiskeluoikeusQueryContext(request)(koskiSession, application).queryWithoutHenkilötiedotRaw(
-                List(OppijaOidHaku(oids), opiskeluoikeusTyyppiQueryFilters(req.opiskeluoikeudenTyypit)).flatten, None, "oids=" + oids.take(2).mkString(",") + ",...(" + oids.size + ")"
+                OppijaOidHaku(oids) :: opiskeluoikeusTyyppiQueryFilters(req.opiskeluoikeudenTyypit), None, ""
               )
-              streamResponse[JValue](observable.map(t => {serialize(OidHenkilö(t._1), t._2)}), koskiSession)
+              streamResponse[JValue](observable.map(t => JsonSerializer.serializeWithUser(koskiSession)(buildHetutResponseV1(oidToHenkilo(t._1), t._2))), koskiSession)
             case Some(status) => haltWithStatus(status)
           }
         }
       }
-    }
+    }()
   }
 
   private def parseHetuRequestV1(parsedJson: JValue): Either[HttpStatus, HetuRequestV1] = {
@@ -101,19 +103,15 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
     JsonSerializer.validateAndExtract[BulkHetuRequestV1](parsedJson)
       .left.map(errors => KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(errors)))
       .filterOrElse(_.v == 1, KoskiErrorCategory.badRequest.queryParam("Tuntematon versio"))
-      .filterOrElse(_.hetut.size > MaxHetus, KoskiErrorCategory.badRequest.queryParam(s"Liian monta hetua, enintään $MaxHetus sallittu"))
+      .filterOrElse(_.hetut.length < MaxHetus, KoskiErrorCategory.badRequest.queryParam(s"Liian monta hetua, enintään $MaxHetus sallittu"))
+      .filterOrElse(req => isValidOpiskeluoikeudenTyypit(req.opiskeluoikeudenTyypit), KoskiErrorCategory.badRequest.queryParam("Tuntematon opiskeluoikeudentyyppi"))
       .flatMap(req => {
-        val tuntematonTyyppi = req.opiskeluoikeudenTyypit.find(t => application.koodistoViitePalvelu.validate("opiskeluoikeudentyyppi", t).isEmpty)
-        if (tuntematonTyyppi.isDefined) {
-          Left(KoskiErrorCategory.badRequest.queryParam("Tuntematon opiskeluoikeudenTyyppi"))
-        } else {
-          Right(req)
+        req.hetut.map(Hetu.validFormat).collectFirst { case Left(status) => status } match {
+          case Some(status) => Left(status)
+          case None => Right(req)
         }
       })
   }
-
-  private def opiskeluoikeusTyyppiQueryFilters(opiskeluoikeusTyypit: List[String]): List[OpiskeluoikeusQueryFilter] =
-    opiskeluoikeusTyypit.map(t => OpiskeluoikeusQueryFilter.OpiskeluoikeudenTyyppi(Koodistokoodiviite(t, "")))
 
   private def buildLuovutuspalveluHenkilöV1(henkilö: Henkilö): LuovutuspalveluHenkilöV1 = {
     henkilö match {
@@ -121,4 +119,15 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
       case _ => throw new RuntimeException("expected TäydellisetHenkilötiedot")
     }
   }
+
+  private def buildHetutResponseV1(h: OppijaHenkilö, oo: List[OpiskeluoikeusRow]): HetuResponseV1 =
+    HetuResponseV1(
+      LuovutuspalveluHenkilöV1(h.oidHenkilo, h.hetu, h.syntymaika, h.turvakielto),
+      oo.map(_.toOpiskeluoikeus))
+
+  private def opiskeluoikeusTyyppiQueryFilters(opiskeluoikeusTyypit: List[String]): List[OpiskeluoikeusQueryFilter] =
+    opiskeluoikeusTyypit.map(t => OpiskeluoikeusQueryFilter.OpiskeluoikeudenTyyppi(Koodistokoodiviite(t, "")))
+
+  private def isValidOpiskeluoikeudenTyypit(tyypit: List[String]): Boolean =
+    !tyypit.find(t => application.koodistoViitePalvelu.validate("opiskeluoikeudentyyppi", t).isEmpty).isDefined
 }
