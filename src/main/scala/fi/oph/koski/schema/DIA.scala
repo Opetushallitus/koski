@@ -126,12 +126,28 @@ case class DIAOppiaineenTutkintovaiheenLukukaudenSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "diaoppiaineentutkintovaiheenlukukaudensuoritus", koodistoUri = "suorituksentyyppi")
 ) extends DIASuoritus with KurssinSuoritus
 
-@Title("DIA-oppiaineen lukukausi")
-@Description("DIA-oppiaineen lukukauden tunnistetiedot")
-case class DIAOppiaineenLukukausi(
+trait DIAOppiaineenLukukausi extends KoodistostaLöytyväKoulutusmoduuli with Laajuudeton {
   @KoodistoUri("dialukukausi")
+  def tunniste: Koodistokoodiviite
+}
+
+@Title("DIA-oppiaineen valmistavan vaiheen lukukausi")
+@Description("DIA-oppiaineen valmistavan vaiheen lukukauden tunnistetiedot")
+case class DIAOppiaineenValmistavanVaiheenLukukausi(
+  @KoodistoKoodiarvo("1")
+  @KoodistoKoodiarvo("2")
+  tunniste: Koodistokoodiviite
+) extends DIAOppiaineenLukukausi
+
+@Title("DIA-oppiaineen tutkintovaiheen lukukausi")
+@Description("DIA-oppiaineen tutkintovaiheen lukukauden tunnistetiedot")
+case class DIAOppiaineenTutkintovaiheenLukukausi(
+  @KoodistoKoodiarvo("3")
+  @KoodistoKoodiarvo("4")
+  @KoodistoKoodiarvo("5")
+  @KoodistoKoodiarvo("6")
   tunniste: Koodistokoodiviite,
-) extends KoodistostaLöytyväKoulutusmoduuli with Laajuudeton
+) extends DIAOppiaineenLukukausi
 
 
 trait DIAArviointi extends KoodistostaLöytyväArviointi {
