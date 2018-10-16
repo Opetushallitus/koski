@@ -1,0 +1,28 @@
+{
+  "organisaatiot" : [
+    {
+      "oid": "1.2.246.562.10.64976109716",
+      "nimi": {
+        "fi": "Kouluyhdistys Pestalozzi Schulverein Skolföreningen r.y."
+      },
+      "organisaatiotyypit": [
+        "KOULUTUSTOIMIJA"
+      ],
+      "children": [
+        {
+          "oid": "1.2.246.562.10.45093614456",
+          "nimi": {
+            "fi": "Helsingin Saksalainen koulu"
+          },
+          "oppilaitosKoodi": "00085",
+          "organisaatiotyypit": [
+            "OPPILAITOS"
+          ],
+          "oppilaitostyyppi": "oppilaitostyyppi_19#1",
+          "children": []
+        }
+      ]
+    }
+  ]
+}
+
