@@ -32,10 +32,10 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "oppiaineetdia_b1ra",
-  "koodiArvo" : "B1RA",
+  "koodiUri" : "oppiaineetdia_b1",
+  "koodiArvo" : "B1",
   "metadata" : [ {
-    "nimi" : "Ranska B1",
+    "nimi" : "B1-kieli",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
@@ -43,32 +43,10 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "oppiaineetdia_b1ru",
-  "koodiArvo" : "B1RU",
+  "koodiUri" : "oppiaineetdia_b3",
+  "koodiArvo" : "B3",
   "metadata" : [ {
-    "nimi" : "Ruotsi B1",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "oppiaineetdia_b3ve",
-  "koodiArvo" : "B3VE",
-  "metadata" : [ {
-    "nimi" : "Venäjä B3",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "oppiaineetdia_b3ra",
-  "koodiArvo" : "B3RA",
-  "metadata" : [ {
-    "nimi" : "Ranska B3",
+    "nimi" : "B3-kieli",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
