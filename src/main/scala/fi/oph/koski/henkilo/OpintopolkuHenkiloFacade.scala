@@ -23,6 +23,7 @@ trait OpintopolkuHenkilöFacade {
   def findChangedOppijaOids(since: Long, offset: Int, amount: Int): List[Oid]
   def findMasterOppija(oid: String): Option[OppijaHenkilö]
   def findOrCreate(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, OppijaHenkilö]
+  def findOppijatByHetus(hetus: List[String]): List[OppijaHenkilö]
 }
 
 object OpintopolkuHenkilöFacade {
@@ -60,6 +61,9 @@ class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroR
 
   def findOrCreate(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, OppijaHenkilö] =
     runTask(oppijanumeroRekisteriClient.findOrCreate(createUserInfo))
+
+  def findOppijatByHetus(hetus: List[String]): List[OppijaHenkilö] =
+    runTask(oppijanumeroRekisteriClient.findOppijatByOids(hetus))
 }
 
 class RemoteOpintopolkuHenkilöFacadeWithMockOids(oppijanumeroRekisteriClient: OppijanumeroRekisteriClient, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository, elasticSearch: ElasticSearch) extends RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient) {
@@ -180,5 +184,9 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
 
   override def findChangedOppijaOids(since: Long, offset: Int, amount: Int): List[Oid] = synchronized {
     MockOppijat.defaultOppijat.diff(oppijat.getOppijat).map(_.henkilö.oid)
+  }
+
+  def findOppijatByHetus(hetus: List[String]): List[OppijaHenkilö] = synchronized {
+    hetus.flatMap(findOppijaByHetu)
   }
 }
