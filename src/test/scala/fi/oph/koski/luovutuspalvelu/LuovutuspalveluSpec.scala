@@ -103,6 +103,15 @@ class LuovutuspalveluSpec extends FreeSpec with LocalJettyHttpSpecification with
        verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam("Tuntematon opiskeluoikeudentyyppi"))
      }
    }
+
+   "Tuottaa oikean audit log viestin" in {
+     AuditLogTester.clearMessages
+     val henkilo = MockOppijat.amis
+     postHetut(List(henkilo.hetuStr), List("ammatillinenkoulutus")) {
+       verifyResponseStatusOk()
+       AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> henkilo.oid.toString)))
+     }
+   }
  }
 
   private def postHetu[A](hetu: String, opiskeluoikeudenTyypit: List[String])(f: => A): A = {
