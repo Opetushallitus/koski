@@ -58,6 +58,7 @@ object MockOppijat {
   val omattiedot = oppijat.oppija(MockUsers.omattiedot.ldapUser.sukunimi, MockUsers.omattiedot.ldapUser.etunimet, "190751-739W", MockUsers.omattiedot.ldapUser.oid)
   val ibFinal = oppijat.oppija("IB-final", "Iina", "040701-432D")
   val ibPredicted = oppijat.oppija("IB-predicted", "Petteri", "071096-317K")
+  val dia = oppijat.oppija("Dia", "Dia", "151013-2195")
   val eskari = oppijat.oppija("Eskari", "Essi", "300996-870E")
   val master = oppijat.oppija("of Puppets", "Master", "101097-6107")
   val slave = oppijat.addOppija(TäydellisetHenkilötiedotWithMasterInfo(TäydellisetHenkilötiedot(oppijat.generateId(), Some("101097-6107"), None, "Slave", "Slave", "of Puppets", None, None), Some(master.henkilö)))

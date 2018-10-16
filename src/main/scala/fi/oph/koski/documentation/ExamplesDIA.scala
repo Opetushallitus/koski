@@ -1,0 +1,101 @@
+package fi.oph.koski.documentation
+
+import java.time.LocalDate
+import java.time.LocalDate.{of => date}
+
+import fi.oph.koski.documentation.ExampleData.{englanti, helsinki}
+import fi.oph.koski.documentation.DIAExampleData.saksalainenKoulu
+import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
+import fi.oph.koski.schema._
+
+object ExamplesDIA {
+  def osasuorituksetValmistavaVaihe: List[DIAOppiaineenValmistavanVaiheenSuoritus] = List(
+    diaValmistavaVaiheAineSuoritus(diaOppiaine("A", osaAlue = "1"), List(
+      (diaValmistavaLukukausi("1"), "3"),
+      (diaValmistavaLukukausi("2"), "5")
+    )),
+    diaValmistavaVaiheAineSuoritus(diaOppiaine("SA", osaAlue = "1"), List(
+      (diaValmistavaLukukausi("1"), "3"),
+      (diaValmistavaLukukausi("2"), "5")
+    ))
+  )
+
+  def osasuorituksetTutkintovaihe: List[DIAOppiaineenTutkintovaiheenSuoritus] = List(
+    diaTutkintoAineSuoritus(diaOppiaine("A", "1"), List(
+      (diaTutkintoLukukausi("3"), "1")
+    ))
+  )
+
+  def diaValmistavanVaiheenSuoritus = DIAValmistavanVaiheenSuoritus(
+    toimipiste = saksalainenKoulu,
+    suorituskieli = englanti,
+    vahvistus = ExampleData.vahvistusPaikkakunnalla(org = saksalainenKoulu, kunta = helsinki),
+    osasuoritukset = Some(osasuorituksetValmistavaVaihe)
+  )
+
+  def diaTutkintovaiheenSuoritus = DIATutkintovaiheenSuoritus(
+    toimipiste = saksalainenKoulu,
+    suorituskieli = englanti,
+    vahvistus = ExampleData.vahvistusPaikkakunnalla(org = saksalainenKoulu, kunta = helsinki),
+    osasuoritukset = Some(osasuorituksetTutkintovaihe)
+  )
+
+  def diaValmistavaVaiheAineSuoritus(oppiaine: DIAOsaAlueOppiaine, lukukaudet: List[(DIAOppiaineenLukukausi, String)] = Nil) = DIAOppiaineenValmistavanVaiheenSuoritus(
+    koulutusmoduuli = oppiaine,
+    osasuoritukset = Some(lukukaudet.map { case (lukukausi, arvosana) =>
+      DIAOppiaineenValmistavanVaiheenLukukaudenSuoritus(
+        koulutusmoduuli = lukukausi,
+        arviointi = diaTutkintovaiheArviointi(arvosana)
+      )
+    })
+  )
+
+  def diaTutkintoAineSuoritus(oppiaine: DIAOsaAlueOppiaine, lukukaudet: List[(DIAOppiaineenLukukausi, String)] = Nil) = DIAOppiaineenTutkintovaiheenSuoritus(
+    koulutusmoduuli = oppiaine,
+    osasuoritukset = Some(lukukaudet.map { case (lukukausi, arvosana) =>
+      DIAOppiaineenTutkintovaiheenLukukaudenSuoritus(
+        koulutusmoduuli = lukukausi,
+        arviointi = diaValmistavaVaiheArviointi(arvosana)
+      )
+    })
+  )
+
+  def diaOppiaine(aine: String, osaAlue: String) = DIAOppiaineMuu(
+    tunniste = Koodistokoodiviite(koodistoUri = "oppiaineetdia", koodiarvo = aine),
+    laajuus = None,
+    osaAlue = Koodistokoodiviite(koodiarvo = osaAlue, koodistoUri = "diaosaalue")
+  )
+
+  def diaValmistavaLukukausi(lukukausi: String) = DIAOppiaineenValmistavanVaiheenLukukausi(
+    tunniste = Koodistokoodiviite(koodiarvo = lukukausi, koodistoUri = "dialukukausi")
+  )
+
+  def diaTutkintoLukukausi(lukukausi: String) = DIAOppiaineenTutkintovaiheenLukukausi(
+    tunniste = Koodistokoodiviite(koodiarvo = lukukausi, koodistoUri = "dialukukausi")
+  )
+
+  def diaValmistavaVaiheArviointi(arvosana: String, päivä: LocalDate = date(2016, 6, 4)): Some[List[DIAOppiaineenTutkintovaiheenLukukaudenArviointi]] = {
+    Some(List(DIAOppiaineenTutkintovaiheenLukukaudenArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkodiatutkinto"), päivä = Some(päivä))))
+  }
+
+  def diaTutkintovaiheArviointi(arvosana: String, päivä: LocalDate = date(2016, 6, 4)): Some[List[DIAOppiaineenValmistavanVaiheenLukukaudenArviointi]] = {
+    Some(List(DIAOppiaineenValmistavanVaiheenLukukaudenArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkodiavalmistava"), päivä = Some(päivä))))
+  }
+
+  val opiskeluoikeus = DIAOpiskeluoikeus(
+    oppilaitos = Some(saksalainenKoulu),
+    päättymispäivä = Some(date(2016, 6, 4)),
+    tila = LukionOpiskeluoikeudenTila(
+      List(
+        LukionOpiskeluoikeusjakso(date(2012, 9, 1), LukioExampleData.opiskeluoikeusAktiivinen),
+        LukionOpiskeluoikeusjakso(date(2016, 6, 4), LukioExampleData.opiskeluoikeusPäättynyt)
+      )
+    ),
+    suoritukset = List(diaValmistavanVaiheenSuoritus, diaTutkintovaiheenSuoritus)
+  )
+
+  val examples = List(
+    Example("dia", "dia", Oppija(asUusiOppija(MockOppijat.dia.henkilö), List(opiskeluoikeus))),
+  )
+}
