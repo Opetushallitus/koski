@@ -73,10 +73,11 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
           val oidToHenkilo = henkilot.map(h => h.oidHenkilo -> h).toMap
           oids.map(HenkilöOid.validateHenkilöOid).collectFirst { case Left(status) => status } match {
             case None =>
+              val _koskiSession = koskiSession // take current session so it can be used in observable
               val observable = OpiskeluoikeusQueryContext(request)(koskiSession, application).queryWithoutHenkilötiedotRaw(
                 OppijaOidHaku(oids) :: opiskeluoikeusTyyppiQueryFilters(req.opiskeluoikeudenTyypit), None, ""
               )
-              streamResponse[JValue](observable.map(t => JsonSerializer.serializeWithUser(koskiSession)(buildHetutResponseV1(oidToHenkilo(t._1), t._2))), koskiSession)
+              streamResponse[JValue](observable.map(t => JsonSerializer.serializeWithUser(_koskiSession)(buildHetutResponseV1(oidToHenkilo(t._1), t._2))), koskiSession)
             case Some(status) => haltWithStatus(status)
           }
         }
