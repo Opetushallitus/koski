@@ -77,6 +77,7 @@ case class OpiskeluoikeusQueryContext(request: HttpServletRequest)(implicit kosk
     groupedByPerson.flatMap {
       case oikeudet@(firstRow :: _) =>
         val oppijaOid = firstRow._1.oppijaOid
+        AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_KATSOMINEN, koskiSession, Map(oppijaHenkiloOid -> oppijaOid)))
         assert(oikeudet.map(_._1.oppijaOid).toSet == Set(oppijaOid), "Usean ja/tai väärien henkilöiden tietoja henkilöllä " + oppijaOid + ": " + oikeudet)
         Observable.just((oppijaOid, oikeudet.toList.map(_._1)))
       case _ =>
