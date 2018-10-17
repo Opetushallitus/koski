@@ -1,13 +1,13 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.schema.HenkilöWithOid
+import fi.oph.koski.schema.Henkilö
 import org.scalatest.{FreeSpec, Matchers}
 
 class LukioSpec extends FreeSpec with Matchers with OpintosuoritusoteTestMethods with TodistusTestMethods with OpiskeluoikeusTestMethods with LocalJettyHttpSpecification {
   "Lukio" - {
     "Opintosuoritusote" in {
-      opintosuoritusote(MockOppijat.lukiolainen) should equal(
+      opintosuoritusote(MockOppijat.lukiolainen.oid) should equal(
         """Opintosuoritukset
           |Kurssia Arvosana Suor.pvm
           |A1 A1-kieli, englanti 9 9
@@ -125,7 +125,7 @@ class LukioSpec extends FreeSpec with Matchers with OpintosuoritusoteTestMethods
     }
 
     "Opintosuoritusote kun oppiaineen suoritus on kesken" in {
-      opintosuoritusote(MockOppijat.lukioKesken) should equal(
+      opintosuoritusote(MockOppijat.lukioKesken.oid) should equal(
         """Opintosuoritukset
           |Kurssia Arvosana Suor.pvm
           |AI Äidinkieli ja kirjallisuus 3
@@ -166,8 +166,8 @@ class LukioSpec extends FreeSpec with Matchers with OpintosuoritusoteTestMethods
     }
   }
 
-  def opintosuoritusote(henkilö: HenkilöWithOid): String = {
+  private def opintosuoritusote(oppijaOid: Henkilö.Oid): String = {
     resetFixtures
-    opintosuoritusoteOpiskeluoikeudelle(henkilö.oid, getOpiskeluoikeus(henkilö.oid, "lukiokoulutus").oid.get)
+    opintosuoritusoteOpiskeluoikeudelle(oppijaOid, getOpiskeluoikeus(oppijaOid, "lukiokoulutus").oid.get)
   }
 }

@@ -1,13 +1,13 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.schema.HenkilöWithOid
+import fi.oph.koski.schema.Henkilö
 import org.scalatest.{FreeSpec, Matchers}
 
 class IBTutkintoSpec extends FreeSpec with Matchers with OpintosuoritusoteTestMethods with TodistusTestMethods with OpiskeluoikeusTestMethods with LocalJettyHttpSpecification {
   "IB-tutkinto" - {
     "Opintosuoritusote" in {
-      opintosuoritusote(MockOppijat.ibPredicted) should equal(
+      opintosuoritusote(MockOppijat.ibPredicted.oid) should equal(
         """Preliminary year courses
           |Kurssia Arvosana Suor.pvm
           |A1 A1-kieli, englanti 3 10
@@ -168,12 +168,12 @@ class IBTutkintoSpec extends FreeSpec with Matchers with OpintosuoritusoteTestMe
     }
   }
 
-  def opintosuoritusote(henkilö: HenkilöWithOid): String = {
+  private def opintosuoritusote(oppijaOid: Henkilö.Oid): String = {
     resetFixtures
-    opintosuoritusoteOpiskeluoikeudelle(henkilö.oid, ibOpiskeluoikeus)
+    opintosuoritusoteOpiskeluoikeudelle(oppijaOid, ibOpiskeluoikeus)
   }
 
-  def ibOpiskeluoikeus = {
+  private def ibOpiskeluoikeus = {
     getOpiskeluoikeus(MockOppijat.ibPredicted.oid, "ibtutkinto").oid.get
   }
 }
