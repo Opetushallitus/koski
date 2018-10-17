@@ -120,11 +120,8 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
       .filter(_.koulutusmuoto === koulutusmuoto)
       .join(ROpiskeluoikeusAikajaksot.filterNot(_.alku > loppuDate).filterNot(_.loppu < alkuDate))
       .on(_.opiskeluoikeusOid === _.opiskeluoikeusOid)
-      .joinLeft(RHenkilöt)
-      .on(_._1.oppijaOid === _.oppijaOid)
-      .map { case ((opiskeluoikeus, aikajakso), henkilo) => (opiskeluoikeus, henkilo, aikajakso) }
       .sortBy(_._1.opiskeluoikeusOid)
-    val result1: Seq[(ROpiskeluoikeusRow, Option[RHenkilöRow], ROpiskeluoikeusAikajaksoRow)] = runDbSync(query1.result)
+    val result1: Seq[(ROpiskeluoikeusRow, ROpiskeluoikeusAikajaksoRow)] = Futures.await(db.run(query1.result), atMost = 5.minutes)
 
     val päätasonSuorituksetQuery = RPäätasonSuoritukset.filter(_.opiskeluoikeusOid inSet result1.map(_._1.opiskeluoikeusOid).distinct)
     val päätasonSuoritukset: Map[String, Seq[RPäätasonSuoritusRow]] = runDbSync(päätasonSuorituksetQuery.result).groupBy(_.opiskeluoikeusOid)
@@ -132,16 +129,19 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
     val sisältyvätOpiskeluoikeudetQuery = ROpiskeluoikeudet.filter(_.sisältyyOpiskeluoikeuteenOid inSet result1.map(_._1.opiskeluoikeusOid).distinct)
     val sisältyvätOpiskeluoikeudet: Map[String, Seq[ROpiskeluoikeusRow]] = runDbSync(sisältyvätOpiskeluoikeudetQuery.result).groupBy(_.sisältyyOpiskeluoikeuteenOid.get)
 
+    val henkilötQuery = RHenkilöt.filter(_.oppijaOid inSet result1.map(_._1.oppijaOid))
+    val henkilöt: Map[String, RHenkilöRow] = runDbSync(henkilötQuery.result).groupBy(_.oppijaOid).mapValues(_.head)
+
     // group rows belonging to same opiskeluoikeus
     result1
-      .foldRight[List[(ROpiskeluoikeusRow, Option[RHenkilöRow], List[ROpiskeluoikeusAikajaksoRow])]](List.empty) {
-        case (t, head :: tail) if t._1.opiskeluoikeusOid == head._1.opiskeluoikeusOid => (head._1, head._2, t._3 :: head._3) :: tail
-        case (t, acc) => (t._1, t._2, List(t._3)) :: acc
+      .foldRight[List[(ROpiskeluoikeusRow, List[ROpiskeluoikeusAikajaksoRow])]](List.empty) {
+        case (t, head :: tail) if t._1.opiskeluoikeusOid == head._1.opiskeluoikeusOid => (head._1, t._2 :: head._2) :: tail
+        case (t, acc) => (t._1, List(t._2)) :: acc
       }
       .map(t => (
         t._1,
-        t._2,
-        t._3.map(_.truncateToDates(alkuDate, loppuDate)).sortBy(_.alku)(sqlDateOrdering),
+        henkilöt.get(t._1.oppijaOid),
+        t._2.map(_.truncateToDates(alkuDate, loppuDate)).sortBy(_.alku)(sqlDateOrdering),
         päätasonSuoritukset.getOrElse(t._1.opiskeluoikeusOid, Seq.empty).sortBy(_.päätasonSuoritusId),
         sisältyvätOpiskeluoikeudet.getOrElse(t._1.opiskeluoikeusOid, Seq.empty).sortBy(_.opiskeluoikeusOid)
       ))
