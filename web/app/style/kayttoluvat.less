@@ -12,14 +12,17 @@
     display: flex;
     margin-bottom: 1.714rem;
 
-    > span.activeTab {
+    .tab {
       display: inline-block;
       padding: 0.5rem 2rem;
 
       @media @media-full {
         padding: 0.5rem 5rem;
       }
+    }
 
+    > span.activeTab {
+      .tab;
       border-color: @color-link-blue @color-input-border @color-white @color-input-border;
       border-style: solid solid none solid;
       border-width: 2px 1px 0px 1px;
@@ -29,12 +32,7 @@
       color: @color-black;
 
       > span.inactiveTab {
-        display: inline-block;
-        padding: 0.5rem 2rem;
-
-        @media @media-full {
-          padding: 0.5rem 5rem;
-        }
+        .tab;
 
         box-sizing: border-box;
         height: 100%;
@@ -61,7 +59,7 @@
 
     > h3.oppija-nimi {
       margin-top: 3rem;
-      margin-bottom: 0;
+      margin-bottom: 2.214rem;
 
       > span.nimi {
         font-weight: 600;
