@@ -1,12 +1,53 @@
 .omattiedot-kayttoluvat {
-  margin: 160px auto 46px auto;
-  max-width: 1320px;
-  padding: 16px;
-  width: 100%;
+  max-width: 1160px;
+  margin: 0 auto 2rem auto;
+  padding: 0 1rem;
 
   @media @media-phone {
     margin: 126px auto 46px auto;
     max-width: 767px;
+  }
+
+  div.navigation {
+    display: flex;
+    margin-bottom: 1.714rem;
+
+    > span.activeTab {
+      display: inline-block;
+      padding: 0.5rem 2rem;
+
+      @media @media-full {
+        padding: 0.5rem 5rem;
+      }
+
+      border-color: @color-link-blue @color-input-border @color-white @color-input-border;
+      border-style: solid solid none solid;
+      border-width: 2px 1px 0px 1px;
+    }
+
+    > a.link {
+      color: @color-black;
+
+      > span.inactiveTab {
+        display: inline-block;
+        padding: 0.5rem 2rem;
+
+        @media @media-full {
+          padding: 0.5rem 5rem;
+        }
+
+        box-sizing: border-box;
+        height: 100%;
+        font-weight: 600;
+        background-color: @color-neutral-gray;
+        border-bottom: 1px solid @color-link-blue;
+      }
+    }
+
+    > span.filler {
+      flex: 1;
+      border-bottom: 1px solid @color-link-blue;
+    }
   }
 
   .kayttoluvat-headline {
@@ -47,7 +88,7 @@
 
         > .button-container {
           display: flex;
-          
+
           > .expander-text {
             flex: 1;
             text-align: left;
