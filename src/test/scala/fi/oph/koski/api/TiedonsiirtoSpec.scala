@@ -21,7 +21,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     "Palvelukäyttäjä" - {
       "onnistuneesta tiedonsiirrosta tallennetaan vain henkilö- ja oppilaitostiedot" in {
         resetFixtures
-        putOpiskeluoikeus(ExamplesTiedonsiirto.opiskeluoikeus, henkilö = MockOppijat.eero.henkilö.copy(kansalaisuus = Some(List(Koodistokoodiviite("246", "maatjavaltiot2")))), headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
+        putOpiskeluoikeus(ExamplesTiedonsiirto.opiskeluoikeus, henkilö = MockOppijat.eero.copy(kansalaisuus = Some(List(Koodistokoodiviite("246", "maatjavaltiot2")))), headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
           verifyResponseStatusOk()
         }
         verifyTiedonsiirtoLoki(helsinginKaupunkiPalvelukäyttäjä, Some(defaultHenkilö), Some(ExamplesTiedonsiirto.opiskeluoikeus), errorStored = false, dataStored = false, expectedLähdejärjestelmä = Some("winnova"))
@@ -150,7 +150,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         verifyResponseStatus(400, sukunimiPuuttuu)
       }
 
-      putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = eerola.henkilö.copy(sukunimi = ""), headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
+      putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = eerola.copy(sukunimi = ""), headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
         verifyResponseStatus(400, sukunimiPuuttuu)
       }
 

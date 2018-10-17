@@ -3,6 +3,7 @@ package fi.oph.koski.perustiedot
 import java.time.LocalDate
 
 import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
+import fi.oph.koski.henkilo.TäydellisetHenkilötiedotWithMasterInfo
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.koskiuser.KoskiSession

@@ -71,13 +71,13 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
 
   // cached for performance boost
   private lazy val validatedOpiskeluoikeudet: List[(TäydellisetHenkilötiedot, KoskeenTallennettavaOpiskeluoikeus)] = defaultOpiskeluOikeudet.map { case (henkilö, oikeus) =>
-    application.validator.validateAsJson(Oppija(henkilö.henkilö, List(oikeus))) match {
-      case Right(oppija) => (henkilö.henkilö, oppija.tallennettavatOpiskeluoikeudet(0))
-      case Left(status) => throw new RuntimeException("Fixture insert failed for " + henkilö.kokonimi +  " with data " + JsonSerializer.write(oikeus) + ": " + status)
+    application.validator.validateAsJson(Oppija(henkilö, List(oikeus))) match {
+      case Right(oppija) => (henkilö, oppija.tallennettavatOpiskeluoikeudet(0))
+      case Left(status) => throw new RuntimeException("Fixture insert failed for " + henkilö.etunimet + " " + henkilö.sukunimi +  " with data " + JsonSerializer.write(oikeus) + ": " + status)
     }
   }
 
-  private def defaultOpiskeluOikeudet: List[(TäydellisetHenkilötiedotWithMasterInfo, KoskeenTallennettavaOpiskeluoikeus)] = {
+  private def defaultOpiskeluOikeudet: List[(TäydellisetHenkilötiedot, KoskeenTallennettavaOpiskeluoikeus)] = {
     List(
       (MockOppijat.eero, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto)),
       (MockOppijat.eerola, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto)),
@@ -116,12 +116,12 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
       (MockOppijat.perusopetuksenTiedonsiirto, PerusopetuksenOpiskeluoikeusTestData.lähdejärjestelmällinenOpiskeluoikeus),
       (MockOppijat.omattiedot, PerusopetusExampleData.päättötodistusOpiskeluoikeus(luokka = "D")),
       (MockOppijat.omattiedot, ExamplesLukio.päättötodistus()),
-      (MockOppijat.omattiedotSlave, AmmatillinenOldExamples.uusi.tallennettavatOpiskeluoikeudet(0)),
+      (MockOppijat.omattiedotSlave.henkilö, AmmatillinenOldExamples.uusi.tallennettavatOpiskeluoikeudet(0)),
       (MockOppijat.ibFinal, ExamplesIB.opiskeluoikeus),
       (MockOppijat.ibPredicted, ExamplesIB.opiskeluoikeusPredictedGrades),
       (MockOppijat.eero, AmmatillinenOpiskeluoikeusTestData.mitätöityOpiskeluoikeus),
       (MockOppijat.master, ExamplesPerusopetus.päättötodistus.tallennettavatOpiskeluoikeudet.head),
-      (MockOppijat.slave, ExamplesLukio.päättötodistus()),
+      (MockOppijat.slave.henkilö, ExamplesLukio.päättötodistus()),
       (MockOppijat.turvakielto, ExamplesLukio.päättötodistus()),
       (MockOppijat.erkkiEiperusteissa, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 334117, diaariNumero = "22/011/2004"))
     )

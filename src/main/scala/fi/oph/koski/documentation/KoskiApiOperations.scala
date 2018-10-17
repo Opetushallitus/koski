@@ -39,7 +39,7 @@ object KoskiApiOperations extends ApiGroup {
       Nil,
       List(QueryParameter("query", "Hakusana, joka voi olla hetu, oppija-oid tai nimen osa.", List("eero"))),
       List(
-        KoskiErrorCategory.ok.maybeEmptyList.copy(exampleResponse = serializeWithRoot(List(MockOppijat.eero.henkilö))),
+        KoskiErrorCategory.ok.maybeEmptyList.copy(exampleResponse = serializeWithRoot(List(MockOppijat.eero))),
         KoskiErrorCategory.badRequest.queryParam.searchTermTooShort,
         KoskiErrorCategory.unauthorized
       )
@@ -53,7 +53,7 @@ object KoskiApiOperations extends ApiGroup {
         PathParameter("hetu", "Henkilötunnus", List("010101-123N"))
       ),
       List(
-        KoskiErrorCategory.ok.maybeEmptyList.copy(exampleResponse = serializeWithRoot(List(MockOppijat.eero.henkilö))),
+        KoskiErrorCategory.ok.maybeEmptyList.copy(exampleResponse = serializeWithRoot(List(MockOppijat.eero))),
         KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu
       )
     ))

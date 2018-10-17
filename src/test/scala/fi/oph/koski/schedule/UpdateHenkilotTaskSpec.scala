@@ -3,9 +3,9 @@ package fi.oph.koski.schedule
 import java.lang.System.currentTimeMillis
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.henkilo.MockOpintopolkuHenkilöFacade
+import fi.oph.koski.henkilo.{MockOpintopolkuHenkilöFacade, TäydellisetHenkilötiedotWithMasterInfo}
 import fi.oph.koski.henkilo.MockOppijat._
-import fi.oph.koski.schema.{TäydellisetHenkilötiedot, TäydellisetHenkilötiedotWithMasterInfo}
+import fi.oph.koski.schema.TäydellisetHenkilötiedot
 import fi.oph.koski.util.Futures
 import org.json4s.jackson.JsonMethods.{parse => parseJson}
 import org.scalatest.{BeforeAndAfterEach, FreeSpec, Matchers}
@@ -26,21 +26,21 @@ class UpdateHenkilotTaskSpec extends FreeSpec with Matchers with BeforeAndAfterE
     }
 
     "Lisää linkityksen perustietoihin" in {
-      modify(eero.copy(master = Some(eerola.henkilö)))
+      modify(TäydellisetHenkilötiedotWithMasterInfo(henkilö = eero, master = Some(eerola)))
       application.perustiedotRepository.findHenkilöPerustiedotByHenkilöOid(eero.oid)
         .map(tiedot => (tiedot.oid, tiedot.sukunimi)) should equal(Some((eerola.oid, eerola.sukunimi)))
     }
 
     "Poistaa linkityksen perustiedoista" in {
-      modify(eero.copy(
+      modify(TäydellisetHenkilötiedotWithMasterInfo(
         master = None,
-        henkilö = eero.henkilö.copy(etunimet = "asdf"))  // <- muutetaan myös etunimeä koska MockAuthenticationServiceClient.findChangedOppijaOids ei muuten huomaa muutosta
+        henkilö = eero.copy(etunimet = "asdf"))  // <- muutetaan myös etunimeä koska MockAuthenticationServiceClient.findChangedOppijaOids ei muuten huomaa muutosta
       )
       application.perustiedotRepository.findHenkilöPerustiedotByHenkilöOid(eero.oid).map(_.oid) should equal(Some(eero.oid))
     }
 
     "Lisää master tiedot jos ei löydy Koskesta" in {
-      modify(eero.copy(master = Some(masterEiKoskessa.henkilö)))
+      modify(TäydellisetHenkilötiedotWithMasterInfo(henkilö = eero, master = Some(masterEiKoskessa)))
       application.perustiedotRepository.findHenkilöPerustiedotByHenkilöOid(eero.oid)
         .map(tiedot => (tiedot.oid, tiedot.sukunimi)) should equal(Some((masterEiKoskessa.oid, masterEiKoskessa.sukunimi)))
     }

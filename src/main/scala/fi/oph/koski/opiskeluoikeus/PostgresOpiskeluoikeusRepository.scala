@@ -6,7 +6,7 @@ import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
-import fi.oph.koski.henkilo.{KoskiHenkilöCache, OpintopolkuHenkilöRepository, PossiblyUnverifiedHenkilöOid}
+import fi.oph.koski.henkilo.{KoskiHenkilöCache, OpintopolkuHenkilöRepository, PossiblyUnverifiedHenkilöOid, TäydellisetHenkilötiedotWithMasterInfo}
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonDiff.jsonDiff

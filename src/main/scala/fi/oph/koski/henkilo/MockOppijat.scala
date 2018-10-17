@@ -60,10 +60,10 @@ object MockOppijat {
   val ibPredicted = oppijat.oppija("IB-predicted", "Petteri", "071096-317K")
   val eskari = oppijat.oppija("Eskari", "Essi", "300996-870E")
   val master = oppijat.oppija("of Puppets", "Master", "101097-6107")
-  val slave = oppijat.addOppija(TäydellisetHenkilötiedotWithMasterInfo(TäydellisetHenkilötiedot(oppijat.generateId(), Some("101097-6107"), None, "Slave", "Slave", "of Puppets", None, None), Some(master.henkilö)))
+  val slave = oppijat.addOppija(TäydellisetHenkilötiedotWithMasterInfo(TäydellisetHenkilötiedot(oppijat.generateId(), Some("101097-6107"), None, "Slave", "Slave", "of Puppets", None, None), Some(master)))
   val masterEiKoskessa = oppijat.addOppija(TäydellisetHenkilötiedot(oppijat.generateId(), Some("270366-697B"), None, "Master", "Master", "Master", None, None))
-  val slaveMasterEiKoskessa = oppijat.addOppija(TäydellisetHenkilötiedotWithMasterInfo(TäydellisetHenkilötiedot(oppijat.generateId(), Some("270366-697B"), None, "Slave", "Slave", "Slave", None, None), Some(masterEiKoskessa.henkilö)))
-  val omattiedotSlave = oppijat.addOppija(TäydellisetHenkilötiedotWithMasterInfo(TäydellisetHenkilötiedot(oppijat.generateId(), Some("190751-739W"), None, MockUsers.omattiedot.ldapUser.etunimet, MockUsers.omattiedot.ldapUser.etunimet, MockUsers.omattiedot.ldapUser.sukunimi, None, None), Some(omattiedot.henkilö)))
+  val slaveMasterEiKoskessa = oppijat.addOppija(TäydellisetHenkilötiedotWithMasterInfo(TäydellisetHenkilötiedot(oppijat.generateId(), Some("270366-697B"), None, "Slave", "Slave", "Slave", None, None), Some(masterEiKoskessa)))
+  val omattiedotSlave = oppijat.addOppija(TäydellisetHenkilötiedotWithMasterInfo(TäydellisetHenkilötiedot(oppijat.generateId(), Some("190751-739W"), None, MockUsers.omattiedot.ldapUser.etunimet, MockUsers.omattiedot.ldapUser.etunimet, MockUsers.omattiedot.ldapUser.sukunimi, None, None), Some(omattiedot)))
   val opiskeluoikeudenOidKonflikti = oppijat.oppija("Oidkonflikti", "Oskari", "260539-745W", "1.2.246.562.24.09090909090")
   val eiKoskessa = oppijat.oppija("EiKoskessa", "Eino", "270181-5263", "1.2.246.562.24.99999555555")
   val eiKoskessaHetuton = oppijat.addOppija(TäydellisetHenkilötiedot("1.2.246.562.24.99999555556", None, None, "Eino", "Eino", "EiKoskessaHetuton", None, None))
@@ -83,10 +83,10 @@ class MockOppijat(private var oppijat: List[TäydellisetHenkilötiedotWithMaster
   private var idCounter = oppijat.length
   val äidinkieli: Some[Koodistokoodiviite] = Some(Koodistokoodiviite("FI", None, "kieli", None))
 
-  def oppija(suku: String, etu: String, hetu: String, oid: String = generateId(), kutsumanimi: Option[String] = None, turvakielto: Boolean = false): TäydellisetHenkilötiedotWithMasterInfo =
+  def oppija(suku: String, etu: String, hetu: String, oid: String = generateId(), kutsumanimi: Option[String] = None, turvakielto: Boolean = false): TäydellisetHenkilötiedot =
     addOppija(TäydellisetHenkilötiedot(oid, Some(hetu), None, etu, kutsumanimi.getOrElse(etu), suku, äidinkieli, None, Some(turvakielto)))
 
-  def addOppija(oppija: TäydellisetHenkilötiedot): TäydellisetHenkilötiedotWithMasterInfo = addOppija(TäydellisetHenkilötiedotWithMasterInfo(oppija, None))
+  def addOppija(oppija: TäydellisetHenkilötiedot): TäydellisetHenkilötiedot = addOppija(TäydellisetHenkilötiedotWithMasterInfo(oppija, None)).henkilö
 
   def addOppija(oppija: TäydellisetHenkilötiedotWithMasterInfo): TäydellisetHenkilötiedotWithMasterInfo = {
     oppijat = oppija :: oppijat

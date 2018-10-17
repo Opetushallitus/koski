@@ -46,14 +46,6 @@ case class TäydellisetHenkilötiedot(
   override def vanhatHetut: List[String] = Nil
 }
 
-case class TäydellisetHenkilötiedotWithMasterInfo(henkilö: TäydellisetHenkilötiedot, master: Option[TäydellisetHenkilötiedot]) extends HenkilöWithOid with Henkilötiedot {
-  def oid = henkilö.oid
-  def hetu = henkilö.hetu
-  def etunimet: String = henkilö.etunimet
-  def kutsumanimi: String = henkilö.kutsumanimi
-  def sukunimi: String = henkilö.sukunimi
-}
-
 @Title("Henkilötiedot ja henkilö-OID")
 @IgnoreInAnyOfDeserialization
 case class HenkilötiedotJaOid(

@@ -12,7 +12,7 @@ import fi.oph.koski.koskiuser.KoskiSession.systemUser
 import fi.oph.koski.log.Logging
 import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotRepository
 import fi.oph.koski.schema.Henkilö.Oid
-import fi.oph.koski.schema.{TäydellisetHenkilötiedot, TäydellisetHenkilötiedotWithMasterInfo}
+import fi.oph.koski.schema.TäydellisetHenkilötiedot
 import fi.oph.koski.util.Timing
 import org.http4s._
 

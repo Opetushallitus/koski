@@ -3,12 +3,11 @@ package fi.oph.koski.schedule
 import java.lang.System.currentTimeMillis
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.henkilo.OppijaHenkilö
+import fi.oph.koski.henkilo.{OppijaHenkilö, TäydellisetHenkilötiedotWithMasterInfo}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.perustiedot.OpiskeluoikeudenHenkilötiedot
 import fi.oph.koski.schema.Henkilö.Oid
-import fi.oph.koski.schema.TäydellisetHenkilötiedotWithMasterInfo
 import fi.oph.koski.util.Timing
 import org.json4s.JValue
 

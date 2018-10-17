@@ -14,7 +14,7 @@ object ExamplesYlioppilastutkinto {
   private lazy val koodistoViitePalvelu = MockKoodistoViitePalvelu
   private lazy val oppilaitokset = OppilaitosRepository(MockOrganisaatioRepository)
   val opiskeluoikeus = MockYrtClient.oppijaByHetu(MockOppijat.ylioppilas.hetu.get).flatMap(YtrOppijaConverter(oppilaitokset, koodistoViitePalvelu, MockOrganisaatioRepository, MockLocalizationRepository()).convert(_)).get
-  val oppija = Oppija(asUusiOppija(MockOppijat.ylioppilas.henkilö), List(opiskeluoikeus))
+  val oppija = Oppija(asUusiOppija(MockOppijat.ylioppilas), List(opiskeluoikeus))
 
   val examples = List(Example("ylioppilastutkinto", "Oppija on suorittanut ylioppilastutkinnon", oppija, 501))
 }

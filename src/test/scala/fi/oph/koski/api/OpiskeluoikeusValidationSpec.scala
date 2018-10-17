@@ -24,7 +24,7 @@ class OpiskeluoikeusValidationSpec extends FreeSpec with Matchers with Opiskeluo
 
     "epävalidi opiskeluoikeus" in {
       val opiskeluoikeus = oppija(MockOppijat.eero.oid).tallennettavatOpiskeluoikeudet.head.withPäättymispäivä(LocalDate.now)
-      KoskiApplicationForTests.opiskeluoikeusRepository.createOrUpdate(VerifiedHenkilöOid(MockOppijat.eero.henkilö), opiskeluoikeus, allowUpdate = true)
+      KoskiApplicationForTests.opiskeluoikeusRepository.createOrUpdate(VerifiedHenkilöOid(MockOppijat.eero), opiskeluoikeus, allowUpdate = true)
       authGet(s"api/opiskeluoikeus/validate/${opiskeluoikeus.oid.get}") {
         verifyResponseStatusOk()
         validationResult.errors.map(_.key) should equal(List("badRequest.validation.date.päättymispäivämäärä"))

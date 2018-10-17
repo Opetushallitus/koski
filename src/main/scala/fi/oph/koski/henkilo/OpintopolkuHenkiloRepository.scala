@@ -5,6 +5,14 @@ import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema._
 
+case class TäydellisetHenkilötiedotWithMasterInfo(henkilö: TäydellisetHenkilötiedot, master: Option[TäydellisetHenkilötiedot]) {
+  def oid = henkilö.oid
+  def hetu = henkilö.hetu
+  def etunimet: String = henkilö.etunimet
+  def kutsumanimi: String = henkilö.kutsumanimi
+  def sukunimi: String = henkilö.sukunimi
+}
+
 case class OpintopolkuHenkilöRepository(henkilöt: OpintopolkuHenkilöFacade, koodisto: KoodistoViitePalvelu) extends FindByOid with Logging {
   def withMasterInfo(henkilötiedot: TäydellisetHenkilötiedot) = TäydellisetHenkilötiedotWithMasterInfo(henkilötiedot, findMasterHenkilö(henkilötiedot.oid))
 

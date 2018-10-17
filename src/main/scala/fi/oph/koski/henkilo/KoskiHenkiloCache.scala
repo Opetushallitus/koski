@@ -5,7 +5,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.{TäydellisetHenkilötiedot, TäydellisetHenkilötiedotWithMasterInfo}
+import fi.oph.koski.schema.TäydellisetHenkilötiedot
 
 class KoskiHenkilöCache(val db: DB) extends Logging with DatabaseExecutionContext with KoskiDatabaseMethods {
   def addHenkilöAction(data: TäydellisetHenkilötiedotWithMasterInfo) =
