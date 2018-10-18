@@ -11,6 +11,10 @@ import fi.oph.koski.koskiuser.RequiresLuovutuspalvelu
 import fi.oph.koski.schema.{Henkilö, OpiskeluoikeudenTyyppi, Opiskeluoikeus, TäydellisetHenkilötiedot}
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.json.{JsonSerializer, SensitiveDataFilter}
+import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
+import fi.oph.koski.log.KoskiMessageField._
+import fi.oph.koski.log.KoskiOperation._
+import fi.oph.koski.log.AuditLogMessage
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryContext, OpiskeluoikeusQueryFilter}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.OppijaOidHaku
 import fi.oph.koski.schema._
@@ -69,17 +73,14 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
         case Left(status) => haltWithStatus(status)
         case Right(req) => {
           val henkilot = application.opintopolkuHenkilöFacade.findOppijatByHetus(req.hetut)
-          val oids = henkilot.map(_.oidHenkilo)
-          val oidToHenkilo = henkilot.map(h => h.oidHenkilo -> h).toMap
-          oids.map(HenkilöOid.validateHenkilöOid).collectFirst { case Left(status) => status } match {
-            case None =>
-              val _koskiSession = koskiSession // take current session so it can be used in observable
-              val observable = OpiskeluoikeusQueryContext(request)(koskiSession, application).queryWithoutHenkilötiedotRaw(
-                OppijaOidHaku(oids) :: opiskeluoikeusTyyppiQueryFilters(req.opiskeluoikeudenTyypit), None, ""
-              )
-              streamResponse[JValue](observable.map(t => JsonSerializer.serializeWithUser(_koskiSession)(buildHetutResponseV1(oidToHenkilo(t._1), t._2))), koskiSession)
-            case Some(status) => haltWithStatus(status)
-          }
+          val oids = henkilot.map(_.toHenkilötiedotJaOid.oid)
+          val oidToHenkilo = henkilot.map(h => h.oid -> h).toMap
+          val _koskiSession = koskiSession // take current session so it can be used in observable
+          val auditLogMessages = oids.map(o => AuditLogMessage(OPISKELUOIKEUS_KATSOMINEN, koskiSession, Map(oppijaHenkiloOid -> o)))
+          val observable = OpiskeluoikeusQueryContext(request)(koskiSession, application).queryWithDistinctLoggingMsg(
+            OppijaOidHaku(oids) :: opiskeluoikeusTyyppiQueryFilters(req.opiskeluoikeudenTyypit), None, auditLogMessages
+          )
+          streamResponse[JValue](observable.map(t => JsonSerializer.serializeWithUser(_koskiSession)(buildHetutResponseV1(oidToHenkilo(t._1), t._2))), koskiSession)
         }
       }
     }()
@@ -123,7 +124,7 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
 
   private def buildHetutResponseV1(h: OppijaHenkilö, oo: List[OpiskeluoikeusRow]): HetuResponseV1 =
     HetuResponseV1(
-      LuovutuspalveluHenkilöV1(h.oidHenkilo, h.hetu, h.syntymaika, h.turvakielto),
+      LuovutuspalveluHenkilöV1(h.oid, h.hetu, h.syntymäaika, h.turvakielto),
       oo.map(_.toOpiskeluoikeus))
 
   private def opiskeluoikeusTyyppiQueryFilters(opiskeluoikeusTyypit: List[String]): List[OpiskeluoikeusQueryFilter] =
