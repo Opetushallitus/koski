@@ -45,6 +45,7 @@ case class LukionOpiskeluoikeudenLisätiedot(
   @DefaultValue(false)
   yksityisopiskelija: Boolean = false,
   erityisenKoulutustehtävänJaksot: Option[List[ErityisenKoulutustehtävänJakso]] = None,
+  @Description("Rahoituksen laskennassa käytettävä tieto.")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
   @Description("Tieto onko oppijalla maksuton majoitus. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData
