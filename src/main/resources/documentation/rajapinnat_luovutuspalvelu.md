@@ -46,7 +46,7 @@ Pyynnön kenttien kuvaukset:
 Vastaus, kun henkilö löytyy:
 
 **HUOM** Allaoleva esimerkkiviesti on vielä kesken "henkilö"-elementin osalta. Siinä pitää paremmin huomioida
-tilanteet, jossa samalla henkilöllö on useampi oppijanumero (ja mahdollisesti useampi kuin yksi hetu).
+tilanteet, jossa samalla henkilöllä on useampi oppijanumero (ja mahdollisesti useampi kuin yksi hetu).
 
     HTTP/1.1 200 OK
     Content-Type: application/json
