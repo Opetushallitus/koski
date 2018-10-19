@@ -1,7 +1,5 @@
 import React from 'baret'
 import {formatFinnishDate, ISO2FinnishDate, parseISODate} from '../../date/date'
-import ChevronUpIcon from '../../icons/ChevronUpIcon'
-import ChevronDownIcon from '../../icons/ChevronDownIcon'
 import Text from '../../i18n/Text'
 
 export class Kayttoluvat extends React.Component {
