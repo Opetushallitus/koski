@@ -185,6 +185,7 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(
   @DefaultValue(false)
   pidennettyPäättymispäivä: Boolean = false,
   @Description("Opiskelija on ulkomainen vaihto-opiskelija Suomessa (true/false). Rahoituksen laskennassa hyödynnettävä tieto.")
+  @DefaultValue(false)
   ulkomainenVaihtoopiskelija: Boolean = false,
   @Description("Opintoihin liittyvien ulkomaanjaksojen tiedot. Rahoituksen laskennassa hyödynnettävä tieto.")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
