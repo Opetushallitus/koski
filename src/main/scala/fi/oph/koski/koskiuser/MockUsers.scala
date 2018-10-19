@@ -41,6 +41,7 @@ object MockUsers {
   val korkeakouluViranomainen = MockUser("Korkeakoulu", "Kaisa", "1.2.246.562.24.99999999444", Set(KäyttöoikeusGlobalByKoulutusmuoto(List(Palvelurooli(GLOBAALI_LUKU_KORKEAKOULU)))))
   val jyväskylänNormaalikoulunPalvelukäyttäjä = MockUser("jyväs-palvelu", "jyväs-palvelu", "1.2.246.562.24.99999999777", Set(oppilaitosPalvelukäyttäjä(MockOrganisaatiot.jyväskylänNormaalikoulu)))
   val jyväskylänYliopistonVastuukäyttäjä = MockUser("jyväs-vastuu", "jyväs-vastuu", "1.2.246.562.24.99999997777", Set(vastuukäyttäjä(MockOrganisaatiot.jyväskylänYliopisto)), "fi", List("Vastuukayttajat"))
+  val luovutuspalveluKäyttäjä = MockUser("Luovutus", "Lasse", "1.2.246.562.24.99999988888", Set(KäyttöoikeusGlobalLuovutuspalvelu, KäyttöoikeusGlobalByKoulutusmuoto(List(Palvelurooli(GLOBAALI_LUKU_PERUSOPETUS),Palvelurooli(GLOBAALI_LUKU_TOINEN_ASTE), Palvelurooli(GLOBAALI_LUKU_KORKEAKOULU)))))
 
   val users = List(
     kalle,
@@ -68,7 +69,8 @@ object MockUsers {
     evira,
     perusopetusViranomainen,
     toinenAsteViranomainen,
-    korkeakouluViranomainen
+    korkeakouluViranomainen,
+    luovutuspalveluKäyttäjä
   )
 }
 
