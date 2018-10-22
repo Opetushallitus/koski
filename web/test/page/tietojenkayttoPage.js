@@ -5,12 +5,9 @@ function TietojenKayttoPage() {
       return openPage('/koski/omadata/kayttooikeudet')()
     },
     isVisible: function() {
-      return isElementVisible(S('.kayttoluvat-info > h1')) && extractAsText(S('.kayttoluvat-info > h1')) === 'Tietojeni käyttöluvat'
+      return isElementVisible(S('.kayttoluvat-info > h1')) && extractAsText(S('.kayttoluvat-info > h1')) === 'Tietojeni käyttö'
     },
-    expandPermissions: function() {
-      return click('.kayttoluvat-expander > .kayttolupa-button')()
-    },
-    isPermissionsExpanded: function() {
+    isPermissionsVisible: function() {
       return isElementVisible(S('.kayttolupa-list > li'))
     },
     firstPermission: function() {
