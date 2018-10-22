@@ -19,7 +19,7 @@ import fi.oph.koski.util.{Timing, WithWarnings}
 class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: KoskiHenkilöCache, opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository, historyRepository: OpiskeluoikeusHistoryRepository, perustiedotIndexer: OpiskeluoikeudenPerustiedotIndexer, config: Config, hetu: Hetu) extends Logging with Timing with GlobalExecutionContext {
   private lazy val mockOids = config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid")
 
-  def findOppija(oid: String)(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
+  def findOppija(oid: String, useVirta: Boolean = true, useYtr: Boolean = true)(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
     henkilöRepository.findByOid(oid)
       .toRight(notFound(oid))
       .flatMap(henkilö => toOppija(henkilö, opiskeluoikeusRepository.findByOppija(henkilö, useVirta = true, useYtr = true)))
@@ -92,13 +92,12 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
     }
   }
 
-  def invalidate(opiskeluoikeusOid: String, invalidationFn: Oppija => Either[HttpStatus, Oppija], updateFn: Oppija => Either[HttpStatus, HenkilönOpiskeluoikeusVersiot])(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] =
+  private def invalidate(opiskeluoikeusOid: String, invalidationFn: Oppija => Either[HttpStatus, Oppija], updateFn: Oppija => Either[HttpStatus, HenkilönOpiskeluoikeusVersiot])(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] =
     opiskeluoikeusRepository.findByOid(opiskeluoikeusOid).flatMap { row =>
       if (!OpiskeluoikeusAccessChecker.isInvalidatable(row.toOpiskeluoikeus, user)) {
         Left(KoskiErrorCategory.forbidden("Mitätöinti ei sallittu"))
       } else {
-        // FIXME: ytr/virta. Ja ehkä väärä abstraktio muutenkin
-        findOppija(row.oppijaOid).map(_.getIgnoringWarnings).flatMap(invalidationFn)
+        findOppija(row.oppijaOid, useVirta = false, useYtr = false).map(_.getIgnoringWarnings).flatMap(invalidationFn)
       }
     }.flatMap(updateFn)
 
