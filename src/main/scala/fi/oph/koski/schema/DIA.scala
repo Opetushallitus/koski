@@ -220,7 +220,7 @@ case class DIAOppiaineMuu(
   @KoodistoKoodiarvo("FI")
   @KoodistoKoodiarvo("ET")
   tunniste: Koodistokoodiviite,
-  laajuus: Option[LaajuusTunneissa],
+  laajuus: Option[LaajuusVuosiviikkotunneissa],
   @Description("Oppiaineen osa-alue (1-3)")
   osaAlue: Koodistokoodiviite,
   pakollinen: Boolean = true
@@ -233,7 +233,7 @@ case class DIAOppiaineKieli(
   @KoodistoKoodiarvo("B1")
   @KoodistoKoodiarvo("B3")
   tunniste: Koodistokoodiviite,
-  laajuus: Option[LaajuusTunneissa],
+  laajuus: Option[LaajuusVuosiviikkotunneissa],
   @KoodistoUri("kielivalikoima")
   @KoodistoKoodiarvo("FR")
   @KoodistoKoodiarvo("SV")
