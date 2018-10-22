@@ -1,7 +1,7 @@
 package fi.oph.koski.opiskeluoikeus
 
 import fi.oph.koski.db.OpiskeluoikeusRow
-import fi.oph.koski.henkilo.{HenkilönTunnisteet, PossiblyUnverifiedHenkilöOid, TäydellisetHenkilötiedotWithMasterInfo}
+import fi.oph.koski.henkilo.{HenkilönTunnisteet, PossiblyUnverifiedHenkilöOid, OppijaHenkilöWithMasterInfo}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema.Henkilö.Oid
@@ -35,14 +35,14 @@ sealed trait CreateOrUpdateResult {
   def diff: JValue
   def data: JValue
 
-  def henkilötiedot: Option[TäydellisetHenkilötiedotWithMasterInfo]
+  def henkilötiedot: Option[OppijaHenkilöWithMasterInfo]
 }
 
-case class Created(id: Opiskeluoikeus.Id, oid: Opiskeluoikeus.Oid, lähdejärjestelmänId: Option[LähdejärjestelmäId], oppija: TäydellisetHenkilötiedotWithMasterInfo, versionumero: Opiskeluoikeus.Versionumero, diff: JValue, data: JValue) extends CreateOrUpdateResult {
+case class Created(id: Opiskeluoikeus.Id, oid: Opiskeluoikeus.Oid, lähdejärjestelmänId: Option[LähdejärjestelmäId], oppija: OppijaHenkilöWithMasterInfo, versionumero: Opiskeluoikeus.Versionumero, diff: JValue, data: JValue) extends CreateOrUpdateResult {
   def changed = true
   def created = true
   override def oppijaOid: Oid = oppija.henkilö.oid
-  override def henkilötiedot: Option[TäydellisetHenkilötiedotWithMasterInfo] = Some(oppija)
+  override def henkilötiedot: Option[OppijaHenkilöWithMasterInfo] = Some(oppija)
 }
 case class Updated(id: Opiskeluoikeus.Id, oid: Opiskeluoikeus.Oid, lähdejärjestelmänId: Option[LähdejärjestelmäId], oppijaOid: Henkilö.Oid, versionumero: Opiskeluoikeus.Versionumero, diff: JValue, data: JValue, old: KoskeenTallennettavaOpiskeluoikeus) extends CreateOrUpdateResult {
   def changed = true

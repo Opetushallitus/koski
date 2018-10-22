@@ -103,8 +103,8 @@ class MockOpintopolkuHenkilöFacadeWithDBSupport(val db: DB) extends MockOpintop
     runDbSync(fullQuery.result, skipCheck = true)
   }
 
-  override protected def findHenkilötiedot(id: String): Option[TäydellisetHenkilötiedotWithMasterInfo] = {
-    super.findHenkilötiedot(id).orElse(findFromDb(id).map(TäydellisetHenkilötiedotWithMasterInfo(_, None)))
+  override protected def findHenkilötiedot(id: String): Option[OppijaHenkilöWithMasterInfo] = {
+    super.findHenkilötiedot(id).orElse(findFromDb(id).map(OppijaHenkilöWithMasterInfo(_, None)))
   }
 }
 
@@ -134,7 +134,7 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
     findHenkilötiedot(henkilöOid).flatMap(_.master)
   }
 
-  protected def findHenkilötiedot(id: String): Option[TäydellisetHenkilötiedotWithMasterInfo] = synchronized {
+  protected def findHenkilötiedot(id: String): Option[OppijaHenkilöWithMasterInfo] = synchronized {
     oppijat.getOppijat.find(_.henkilö.oid == id)
   }
 
@@ -162,7 +162,7 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
     oid.right.map(oid => findOppijaByOid(oid).get)
   }
 
-  def modifyMock(oppija: TäydellisetHenkilötiedotWithMasterInfo): Unit = synchronized {
+  def modifyMock(oppija: OppijaHenkilöWithMasterInfo): Unit = synchronized {
     oppijat = new MockOppijat(oppijat.getOppijat.map { o =>
       if (o.henkilö.oid == oppija.henkilö.oid)
         o.copy(henkilö = o.henkilö.copy(etunimet = oppija.henkilö.etunimet, kutsumanimi = oppija.henkilö.kutsumanimi, sukunimi = oppija.henkilö.sukunimi), master = oppija.master)

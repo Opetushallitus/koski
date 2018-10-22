@@ -1,7 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.documentation.{AmmatillinenExampleData, Examples}
-import fi.oph.koski.henkilo.{MockOppijat, TäydellisetHenkilötiedotWithMasterInfo}
+import fi.oph.koski.henkilo.{MockOppijat, OppijaHenkilöWithMasterInfo}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenHenkilötiedot, OpiskeluoikeudenOsittaisetTiedot, OpiskeluoikeudenPerustiedot}
@@ -37,7 +37,7 @@ class SerializationSpec extends FreeSpec with Matchers with Logging {
     }
 
     "Perustiedot" - {
-      val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(0, AmmatillinenExampleData.opiskeluoikeus(), TäydellisetHenkilötiedotWithMasterInfo(henkilö = MockOppijat.master, master = None))
+      val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(0, AmmatillinenExampleData.opiskeluoikeus(), OppijaHenkilöWithMasterInfo(henkilö = MockOppijat.master, master = None))
       val henkilötiedot = OpiskeluoikeudenHenkilötiedot(perustiedot.id, perustiedot.henkilö.get, perustiedot.henkilöOid)
       "Full" in {
         JsonSerializer.extract[OpiskeluoikeudenOsittaisetTiedot](JsonSerializer.serializeWithRoot(perustiedot)) should equal(perustiedot)

@@ -3,7 +3,7 @@ package fi.oph.koski.perustiedot
 import java.time.LocalDate
 
 import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
-import fi.oph.koski.henkilo.{OppijaHenkilö, TäydellisetHenkilötiedotWithMasterInfo}
+import fi.oph.koski.henkilo.{OppijaHenkilö, OppijaHenkilöWithMasterInfo}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.koskiuser.KoskiSession
@@ -51,7 +51,7 @@ case class OpiskeluoikeudenHenkilötiedot(
 ) extends OpiskeluoikeudenOsittaisetTiedot
 
 object OpiskeluoikeudenHenkilötiedot {
-  def apply(id: Int, henkilö: TäydellisetHenkilötiedotWithMasterInfo): OpiskeluoikeudenHenkilötiedot =
+  def apply(id: Int, henkilö: OppijaHenkilöWithMasterInfo): OpiskeluoikeudenHenkilötiedot =
     OpiskeluoikeudenHenkilötiedot(id, NimitiedotJaOid(henkilö.master.getOrElse(henkilö.henkilö)), Some(henkilö.henkilö.oid))
   def apply(id: Int, henkilöRow: HenkilöRow, masterHenkilöRow: Option[HenkilöRow]): OpiskeluoikeudenHenkilötiedot =
     OpiskeluoikeudenHenkilötiedot(id, NimitiedotJaOid(masterHenkilöRow.getOrElse(henkilöRow)), Some(henkilöRow.oid))
@@ -70,7 +70,7 @@ object OpiskeluoikeudenPerustiedot {
     makePerustiedot(row.id, row.data, row.luokka, OpiskeluoikeudenHenkilötiedot(row.id, henkilöRow, masterHenkilöRow))
   }
 
-  def makePerustiedot(id: Int, oo: Opiskeluoikeus, henkilö: TäydellisetHenkilötiedotWithMasterInfo): OpiskeluoikeudenPerustiedot = {
+  def makePerustiedot(id: Int, oo: Opiskeluoikeus, henkilö: OppijaHenkilöWithMasterInfo): OpiskeluoikeudenPerustiedot = {
     makePerustiedot(id, JsonSerializer.serializeWithUser(KoskiSession.untrustedUser)(oo), oo.luokka.orElse(oo.ryhmä), OpiskeluoikeudenHenkilötiedot(id, henkilö))
   }
 

@@ -3,7 +3,7 @@ package fi.oph.koski.schedule
 import java.lang.System.currentTimeMillis
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.henkilo.{MockOpintopolkuHenkilöFacade, TäydellisetHenkilötiedotWithMasterInfo}
+import fi.oph.koski.henkilo.{MockOpintopolkuHenkilöFacade, OppijaHenkilöWithMasterInfo}
 import fi.oph.koski.henkilo.MockOppijat._
 import fi.oph.koski.util.Futures
 import org.json4s.jackson.JsonMethods.{parse => parseJson}
@@ -14,7 +14,7 @@ class UpdateHenkilotTaskSpec extends FreeSpec with Matchers with BeforeAndAfterE
   "Nimitietojen päivittyminen" - {
     Futures.await(application.perustiedotIndexer.init)
     "Päivittää muuttuneet oppijat oppijanumerorekisteristä" in {
-      modify(TäydellisetHenkilötiedotWithMasterInfo(eero.copy(sukunimi = "Uusisukunimi"), None))
+      modify(OppijaHenkilöWithMasterInfo(eero.copy(sukunimi = "Uusisukunimi"), None))
       val päivitetytPerustiedot = application.perustiedotRepository.findHenkilöPerustiedotByHenkilöOid(eero.oid).get
       päivitetytPerustiedot.sukunimi should equal("Uusisukunimi")
     }
@@ -25,13 +25,13 @@ class UpdateHenkilotTaskSpec extends FreeSpec with Matchers with BeforeAndAfterE
     }
 
     "Lisää linkityksen perustietoihin" in {
-      modify(TäydellisetHenkilötiedotWithMasterInfo(henkilö = eero, master = Some(eerola)))
+      modify(OppijaHenkilöWithMasterInfo(henkilö = eero, master = Some(eerola)))
       application.perustiedotRepository.findHenkilöPerustiedotByHenkilöOid(eero.oid)
         .map(tiedot => (tiedot.oid, tiedot.sukunimi)) should equal(Some((eerola.oid, eerola.sukunimi)))
     }
 
     "Poistaa linkityksen perustiedoista" in {
-      modify(TäydellisetHenkilötiedotWithMasterInfo(
+      modify(OppijaHenkilöWithMasterInfo(
         master = None,
         henkilö = eero.copy(etunimet = "asdf"))  // <- muutetaan myös etunimeä koska MockAuthenticationServiceClient.findChangedOppijaOids ei muuten huomaa muutosta
       )
@@ -39,13 +39,13 @@ class UpdateHenkilotTaskSpec extends FreeSpec with Matchers with BeforeAndAfterE
     }
 
     "Lisää master tiedot jos ei löydy Koskesta" in {
-      modify(TäydellisetHenkilötiedotWithMasterInfo(henkilö = eero, master = Some(masterEiKoskessa)))
+      modify(OppijaHenkilöWithMasterInfo(henkilö = eero, master = Some(masterEiKoskessa)))
       application.perustiedotRepository.findHenkilöPerustiedotByHenkilöOid(eero.oid)
         .map(tiedot => (tiedot.oid, tiedot.sukunimi)) should equal(Some((masterEiKoskessa.oid, masterEiKoskessa.sukunimi)))
     }
   }
 
-  private def modify(tiedot: TäydellisetHenkilötiedotWithMasterInfo): Unit = {
+  private def modify(tiedot: OppijaHenkilöWithMasterInfo): Unit = {
     henkilöFacade.modifyMock(tiedot)
     new UpdateHenkilotTask(application).updateHenkilöt(Some(parseJson(s"""{"lastRun": ${currentTimeMillis}}""")))
     application.elasticSearch.refreshIndex

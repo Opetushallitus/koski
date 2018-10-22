@@ -3,7 +3,7 @@ package fi.oph.koski.schedule
 import java.lang.System.currentTimeMillis
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.henkilo.{OppijaHenkilö, TäydellisetHenkilötiedotWithMasterInfo}
+import fi.oph.koski.henkilo.{OppijaHenkilö, OppijaHenkilöWithMasterInfo}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.perustiedot.OpiskeluoikeudenHenkilötiedot
@@ -99,5 +99,5 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
   private def henkilöUpdateContext(lastRun: Long) = Some(JsonSerializer.serializeWithRoot(HenkilöUpdateContext(lastRun)))
 }
 
-private case class WithModifiedTime(tiedot: TäydellisetHenkilötiedotWithMasterInfo, modified: Long)
+private case class WithModifiedTime(tiedot: OppijaHenkilöWithMasterInfo, modified: Long)
 private case class HenkilöUpdateContext(lastRun: Long)

@@ -7,11 +7,11 @@ import fi.oph.koski.db._
 import fi.oph.koski.log.Logging
 
 class KoskiHenkilöCache(val db: DB) extends Logging with DatabaseExecutionContext with KoskiDatabaseMethods {
-  def addHenkilöAction(data: TäydellisetHenkilötiedotWithMasterInfo) =
+  def addHenkilöAction(data: OppijaHenkilöWithMasterInfo) =
     addMasterIfNecessary(data.master)
       .andThen(addHenkilö(data.henkilö.oid, toHenkilöRow(data.henkilö, data.master.map(_.oid))))
 
-  def updateHenkilö(data: TäydellisetHenkilötiedotWithMasterInfo): Int =
+  def updateHenkilö(data: OppijaHenkilöWithMasterInfo): Int =
     runDbSync(addMasterIfNecessary(data.master)
       .andThen(Henkilöt.filter(_.oid === data.henkilö.oid).update(toHenkilöRow(data.henkilö, data.master.map(_.oid)))))
 

@@ -34,7 +34,7 @@ case class OppijaHenkilö(
   override def vanhatHetut: List[String] = Nil
 }
 
-case class TäydellisetHenkilötiedotWithMasterInfo(henkilö: OppijaHenkilö, master: Option[OppijaHenkilö])
+case class OppijaHenkilöWithMasterInfo(henkilö: OppijaHenkilö, master: Option[OppijaHenkilö])
 
 trait HenkilönTunnisteet {
   def oid: String
@@ -44,7 +44,7 @@ trait HenkilönTunnisteet {
 }
 
 case class OpintopolkuHenkilöRepository(henkilöt: OpintopolkuHenkilöFacade, koodisto: KoodistoViitePalvelu) extends FindByOid with Logging {
-  def withMasterInfo(henkilötiedot: OppijaHenkilö) = TäydellisetHenkilötiedotWithMasterInfo(henkilötiedot, findMasterHenkilö(henkilötiedot.oid))
+  def withMasterInfo(henkilötiedot: OppijaHenkilö) = OppijaHenkilöWithMasterInfo(henkilötiedot, findMasterHenkilö(henkilötiedot.oid))
 
   // Tarkistaa vain Oppijanumerorekisterin, ei koskaan luo uutta oppijanumeroa Virta/YTR-datan perusteella
   def findByHetu(hetu: String): Option[OppijaHenkilö] = {
