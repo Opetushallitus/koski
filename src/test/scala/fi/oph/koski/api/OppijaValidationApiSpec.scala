@@ -43,7 +43,7 @@ class OppijaValidationApiSpec extends FreeSpec with LocalJettyHttpSpecification 
       println(result.henkilöOid + " ok")
     }
 
-    "Forbiddon for non-root users" in {
+    "Forbidden for non-root users" in {
       val oo = lastOpiskeluoikeus(MockOppijat.eero.oid)
       authGet("api/opiskeluoikeus/validate/" + oo.oid.get, user = MockUsers.kalle) {
         verifyResponseStatus(403, Nil)
