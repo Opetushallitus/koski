@@ -12,10 +12,12 @@ import {arvosanaFootnote, ibRyhmät} from '../ib/IB'
 import {UusiIBOppiaineDropdown} from '../ib/UusiIBOppiaineDropdown'
 import {FootnoteDescriptions} from '../components/footnote'
 import {OmatTiedotLukionOppiaine} from '../lukio/OmatTiedotLukionOppiaineet'
+import {diaRyhmät} from '../dia/DIA'
 
 const resolveGroupingFn = päätasonSuoritusClass => {
   switch (päätasonSuoritusClass) {
     case 'ibtutkinnonsuoritus': return ibRyhmät
+    case 'diatutkintovaiheensuoritus': return diaRyhmät
     default: {
       console.error(`Oppiaineiden ryhmittely ei onnistu päätason suoritukselle ${päätasonSuoritusClass}.`)
       return () => ({})
