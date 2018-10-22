@@ -32,6 +32,8 @@ const resolveFootnotes = päätasonSuoritusClass => {
   }
 }
 
+const useOppiaineLaajuus = päätasonSuoritusClass => päätasonSuoritusClass === 'diatutkintovaiheensuoritus'
+
 export const RyhmiteltyOppiaineetEditor = ({suorituksetModel, päätasonSuoritusClass, additionalEditableKoulutusmoduuliProperties}) => {
   const {edit, suoritus: päätasonSuoritusModel} = suorituksetModel.context
   const oppiaineet = modelItems(suorituksetModel)
@@ -41,7 +43,9 @@ export const RyhmiteltyOppiaineetEditor = ({suorituksetModel, päätasonSuoritus
   return aineryhmät ? (
     <div>
       <table className='suoritukset oppiaineet'>
-        <LukionOppiaineetTableHead />
+        <LukionOppiaineetTableHead
+          laajuusyksikkö='vuosiviikkotuntia'
+        />
         <tbody>
         {
           aineryhmät.map(ryhmät => ryhmät.map(r => [
@@ -56,6 +60,7 @@ export const RyhmiteltyOppiaineetEditor = ({suorituksetModel, päätasonSuoritus
                   oppiaine={oppiaine}
                   footnote={footnote}
                   additionalEditableKoulutusmoduuliProperties={additionalEditableKoulutusmoduuliProperties}
+                  useOppiaineLaajuus={useOppiaineLaajuus(päätasonSuoritusClass)}
                 />
               )
             }),

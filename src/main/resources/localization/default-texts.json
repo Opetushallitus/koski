@@ -138,6 +138,7 @@
   "Perusopetuksen päättötodistuksen arvosanan korotus": "Perusopetuksen päättötodistuksen arvosanan korotus",
   "Arvosana (keskiarvo)": "Arvosana (keskiarvo)",
   "Laajuus (kurssia)": "Laajuus (kurssia)",
+  "Laajuus (kurssia)": "Laajuus (kurssia)",
   "Muut suoritukset": "Muut suoritukset",
   "Pakollisuus": "Pakollisuus",
   "Lukioon valmistavat opinnot": "Lukioon valmistavat opinnot",
@@ -1166,6 +1167,7 @@
   "description:Deutsche Internationale Abitur -tutkinnon opiskeluoikeus" : "Deutsche Internationale Abitur -tutkinnon opiskeluoikeus",
   "description:DIA-opiskeluoikeuden lisätiedot" : "DIA-opiskeluoikeuden lisätiedot",
   "description:DIA-lukion lisäoppiaineen tunnistetiedot" : "DIA-lukion lisäoppiaineen tunnistetiedot",
-  "description:Oppiaineeseen kuuluvien lukukausien ja muiden..." : "Oppiaineeseen kuuluvien lukukausien ja muiden osasuoritusten suoritukset"
+  "description:Oppiaineeseen kuuluvien lukukausien ja muiden..." : "Oppiaineeseen kuuluvien lukukausien ja muiden osasuoritusten suoritukset",
+  "Laajuus (vuosiviikkotuntia)": "Laajuus (vuosiviikkotuntia)"
 }
 
