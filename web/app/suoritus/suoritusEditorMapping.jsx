@@ -75,12 +75,21 @@ export const resolveOsasuorituksetEditor = (mdl) => {
     return <LuvaEditor suorituksetModel={modelLookup(mdl, 'osasuoritukset')}/>
   }
   if (oneOf('ibtutkinnonsuoritus')) {
-    const IBTutkinnonOppiaineetComponent = kansalainen ? OmatTiedotRyhmiteltyOppiaineet : RyhmiteltyOppiaineetEditor
+    const TutkinnonOppiaineetComponent = kansalainen ? OmatTiedotRyhmiteltyOppiaineet : RyhmiteltyOppiaineetEditor
     return (
-      <IBTutkinnonOppiaineetComponent
+      <TutkinnonOppiaineetComponent
         suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
         päätasonSuoritusClass='ibtutkinnonsuoritus'
         additionalEditableKoulutusmoduuliProperties={['taso']}
+      />
+    )
+  }
+  if (oneOf('diavalmistavanvaiheensuoritus', 'diatutkintovaiheensuoritus')) {
+    const TutkinnonOppiaineetComponent = kansalainen ? OmatTiedotRyhmiteltyOppiaineet : RyhmiteltyOppiaineetEditor
+    return (
+      <TutkinnonOppiaineetComponent
+        suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
+        päätasonSuoritusClass='diatutkintovaiheensuoritus'
       />
     )
   }

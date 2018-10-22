@@ -13,7 +13,7 @@ export const UusiIBOppiaineDropdown = ({model, aineryhmä}) => {
   const addOppiaine = oppiaine => {
     const nimi = t(modelData(oppiaine, 'tunniste.nimi'))
     const oppiaineWithTitle = modelSetTitle(oppiaine, nimi)
-    const oppiaineWithAineryhmä = modelSetData(oppiaineWithTitle, aineryhmä, 'ryhmä')
+    const oppiaineWithAineryhmä = modelSetData(oppiaineWithTitle, aineryhmä, 'osaAlue')
     const suoritusUudellaOppiaineella = modelSet(
       oppiaine.parent || createOppiaineenSuoritus(model),
       oppiaineWithAineryhmä,
