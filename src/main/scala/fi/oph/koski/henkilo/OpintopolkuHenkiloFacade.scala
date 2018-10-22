@@ -64,7 +64,7 @@ class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroR
 
 class RemoteOpintopolkuHenkilöFacadeWithMockOids(oppijanumeroRekisteriClient: OppijanumeroRekisteriClient, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository, elasticSearch: ElasticSearch) extends RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient) {
   override def findOppijatByOids(oids: List[String]): List[OppijaHenkilö] = {
-    val found = super.findOppijatByOids(oids).map(henkilö => (henkilö.oidHenkilo, henkilö)).toMap
+    val found = super.findOppijatByOids(oids).map(henkilö => (henkilö.oid, henkilö)).toMap
     oids.map { oid =>
       found.get(oid) match {
         case Some(henkilö) => henkilö
@@ -136,7 +136,7 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
     def oidFrom(oppijat: Option[OppijaHenkilö]): Either[HttpStatus, Oid] = {
       oppijat match {
         case Some(oppija) =>
-          Right(oppija.oidHenkilo)
+          Right(oppija.oid)
         case _ =>
           logger.error("Oppijan lisääminen epäonnistui: ei voitu lisätä, muttei myöskään löytynyt.")
           Left(KoskiErrorCategory.internalError())

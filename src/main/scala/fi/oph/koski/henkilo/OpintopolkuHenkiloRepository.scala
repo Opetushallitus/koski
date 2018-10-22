@@ -1,9 +1,29 @@
 package fi.oph.koski.henkilo
 
+import java.time.LocalDate
+
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koodisto.{KoodistoViitePalvelu, MockKoodistoViitePalvelu}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema._
+
+case class OppijaHenkilö(
+  oid: String,
+  sukunimi: String,
+  etunimet: String,
+  kutsumanimi: String,
+  hetu: Option[String],
+  syntymäaika: Option[LocalDate],
+  äidinkieli: Option[String] = None,
+  kansalaisuus: Option[List[String]] = None,
+  modified: Long = 0,
+  turvakielto: Boolean = false
+) extends HenkilönTunnisteet {
+  def toTäydellisetHenkilötiedot = TäydellisetHenkilötiedot(oid, etunimet, kutsumanimi, sukunimi)
+  // Ei vielä tueta
+  override def linkitetytOidit: List[String] = Nil
+  override def vanhatHetut: List[String] = Nil
+}
 
 case class TäydellisetHenkilötiedotWithMasterInfo(henkilö: TäydellisetHenkilötiedot, master: Option[TäydellisetHenkilötiedot]) {
   def oid = henkilö.oid
@@ -49,13 +69,13 @@ case class OpintopolkuHenkilöRepository(henkilöt: OpintopolkuHenkilöFacade, k
 
   // Hakee master-henkilön, jos eri kuin tämä henkilö
   private def findMasterHenkilö(oid: Henkilö.Oid): Option[TäydellisetHenkilötiedot] = henkilöt.findMasterOppija(oid) match {
-    case Some(master) if master.oidHenkilo != oid => Some(master.toTäydellisetHenkilötiedot)
+    case Some(master) if master.oid != oid => Some(master.toTäydellisetHenkilötiedot)
     case _ => None
   }
 
   private def toTäydellisetHenkilötiedot(user: OppijaHenkilö): TäydellisetHenkilötiedot = {
     val syntymäpäivä = user.hetu.flatMap { hetu => Hetu.toBirthday(hetu) }
-    TäydellisetHenkilötiedot(user.oidHenkilo, user.hetu, user.syntymaika.orElse(syntymäpäivä), user.etunimet, user.kutsumanimi, user.sukunimi, convertÄidinkieli(user.aidinkieli), convertKansalaisuus(user.kansalaisuus), Some(user.turvakielto))
+    TäydellisetHenkilötiedot(user.oid, user.hetu, user.syntymäaika.orElse(syntymäpäivä), user.etunimet, user.kutsumanimi, user.sukunimi, convertÄidinkieli(user.äidinkieli), convertKansalaisuus(user.kansalaisuus), Some(user.turvakielto))
   }
 
   private def convertÄidinkieli(äidinkieli: Option[String]) = äidinkieli.flatMap(äidinkieli => koodisto.validate("kieli", äidinkieli.toUpperCase))
