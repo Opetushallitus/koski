@@ -92,6 +92,7 @@ class MockOppijat(private var oppijat: List[OppijaHenkilöWithMasterInfo] = Nil)
       kutsumanimi = kutsumanimi.getOrElse(etu),
       hetu = Some(hetu),
       syntymäaika = None,
+      äidinkieli = Some("fi"),
       turvakielto = turvakielto
     ))
 
