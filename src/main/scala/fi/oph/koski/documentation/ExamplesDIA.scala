@@ -12,18 +12,18 @@ import fi.oph.koski.schema._
 object ExamplesDIA {
   def osasuorituksetValmistavaVaihe: List[DIAOppiaineenValmistavanVaiheenSuoritus] = List(
     diaValmistavaVaiheAineSuoritus(diaOppiaine("A", osaAlue = "1"), List(
-      (diaValmistavaLukukausi("1"), "3"),
-      (diaValmistavaLukukausi("2"), "5")
+      (diaValmistavaLukukausi("10/I"), "3"),
+      (diaValmistavaLukukausi("10/II"), "5")
     )),
     diaValmistavaVaiheAineSuoritus(diaOppiaine("SA", osaAlue = "1"), List(
-      (diaValmistavaLukukausi("1"), "3"),
-      (diaValmistavaLukukausi("2"), "5")
+      (diaValmistavaLukukausi("10/I"), "3"),
+      (diaValmistavaLukukausi("10/II"), "5")
     ))
   )
 
   def osasuorituksetTutkintovaihe: List[DIAOppiaineenTutkintovaiheenSuoritus] = List(
     diaTutkintoAineSuoritus(diaOppiaine("A", "1"), List(
-      (diaTutkintoLukukausi("3"), "1")
+      (diaTutkintoLukukausi("11/I"), "1")
     ))
   )
 
