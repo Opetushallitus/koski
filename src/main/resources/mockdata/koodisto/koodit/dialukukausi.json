@@ -1,6 +1,6 @@
 [ {
   "koodiUri" : "dialukukausi_1",
-  "koodiArvo" : "1",
+  "koodiArvo" : "10/I",
   "metadata" : [ {
     "nimi" : "10/I",
     "lyhytNimi" : "10/I",
@@ -10,7 +10,7 @@
   "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "dialukukausi_2",
-  "koodiArvo" : "2",
+  "koodiArvo" : "10/II",
   "metadata" : [ {
     "nimi" : "10/II",
     "lyhytNimi" : "10/II",
@@ -20,7 +20,7 @@
   "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "dialukukausi_3",
-  "koodiArvo" : "3",
+  "koodiArvo" : "11/I",
   "metadata" : [ {
     "nimi" : "11/I",
     "lyhytNimi" : "11/I",
@@ -30,7 +30,7 @@
   "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "dialukukausi_4",
-  "koodiArvo" : "4",
+  "koodiArvo" : "11/II",
   "metadata" : [ {
     "nimi" : "11/II",
     "lyhytNimi" : "11/II",
@@ -40,7 +40,7 @@
   "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "dialukukausi_5",
-  "koodiArvo" : "5",
+  "koodiArvo" : "12/I",
   "metadata" : [ {
     "nimi" : "12/I",
     "lyhytNimi" : "12/I",
@@ -50,7 +50,7 @@
   "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "dialukukausi_6",
-  "koodiArvo" : "6",
+  "koodiArvo" : "12/II",
   "metadata" : [ {
     "nimi" : "12/II",
     "lyhytNimi" : "12/II",
