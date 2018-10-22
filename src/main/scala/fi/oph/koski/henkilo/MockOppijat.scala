@@ -2,6 +2,7 @@ package fi.oph.koski.henkilo
 
 import java.time.LocalDate
 
+import fi.oph.koski.henkilo
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.{Loggable, Logging}
 import fi.oph.koski.schema._
@@ -12,8 +13,8 @@ object MockOppijat {
   // Tällä oppijalla ei ole fixtuureissa opiskeluoikeuksia, eikä tätä lisätä henkilöpalveluun.
   val tyhjä = UusiHenkilö("230872-7258", "Tero", Some("Tero"), "Tyhjä")
 
-  val hetuton = oppijat.addOppija(TäydellisetHenkilötiedot("1.2.246.562.24.99999999123", None, Some(LocalDate.of(1977, 2, 24)), "Heikki", "Heikki", "Hetuton", None, None))
-  val syntymäajallinen = oppijat.addOppija(TäydellisetHenkilötiedot("1.2.246.562.24.99999999124", Some("220627-833V"), Some(LocalDate.of(1970, 1, 1)), "Sylvi", "Sylvi", "Syntynyt", None, None))
+  val hetuton = oppijat.addOppija(OppijaHenkilö(oid = "1.2.246.562.24.99999999123", sukunimi = "Hetuton", etunimet = "Heikki", kutsumanimi = "Heikki", hetu = None, syntymäaika = Some(LocalDate.of(1977, 2, 24))))
+  val syntymäajallinen = oppijat.addOppija(OppijaHenkilö(oid = "1.2.246.562.24.99999999124", sukunimi = "Syntynyt", etunimet = "Sylvi", kutsumanimi = "Sylvi", hetu = Some("220627-833V"), syntymäaika = Some(LocalDate.of(1970, 1, 1))))
   val eero = oppijat.oppija("Esimerkki", "Eero", "010101-123N")
   val eerola = oppijat.oppija("Eerola", "Jouni", "081165-793C")
   val markkanen = oppijat.oppija("Markkanen-Fagerström", "Eéro Jorma-Petteri", "080154-770R")
@@ -60,13 +61,13 @@ object MockOppijat {
   val ibPredicted = oppijat.oppija("IB-predicted", "Petteri", "071096-317K")
   val eskari = oppijat.oppija("Eskari", "Essi", "300996-870E")
   val master = oppijat.oppija("of Puppets", "Master", "101097-6107")
-  val slave = oppijat.addOppija(TäydellisetHenkilötiedotWithMasterInfo(TäydellisetHenkilötiedot(oppijat.generateId(), Some("101097-6107"), None, "Slave", "Slave", "of Puppets", None, None), Some(master.henkilö)))
-  val masterEiKoskessa = oppijat.addOppija(TäydellisetHenkilötiedot(oppijat.generateId(), Some("270366-697B"), None, "Master", "Master", "Master", None, None))
-  val slaveMasterEiKoskessa = oppijat.addOppija(TäydellisetHenkilötiedotWithMasterInfo(TäydellisetHenkilötiedot(oppijat.generateId(), Some("270366-697B"), None, "Slave", "Slave", "Slave", None, None), Some(masterEiKoskessa.henkilö)))
-  val omattiedotSlave = oppijat.addOppija(TäydellisetHenkilötiedotWithMasterInfo(TäydellisetHenkilötiedot(oppijat.generateId(), Some("190751-739W"), None, MockUsers.omattiedot.ldapUser.etunimet, MockUsers.omattiedot.ldapUser.etunimet, MockUsers.omattiedot.ldapUser.sukunimi, None, None), Some(omattiedot.henkilö)))
+  val slave = oppijat.addOppija(OppijaHenkilöWithMasterInfo(OppijaHenkilö(oid = oppijat.generateId(), sukunimi = "of Puppets", etunimet = "Slave", kutsumanimi = "Slave", hetu = Some("101097-6107"), syntymäaika = None), Some(master)))
+  val masterEiKoskessa = oppijat.addOppija(OppijaHenkilö(oid = oppijat.generateId(), sukunimi = "Master", etunimet = "Master", kutsumanimi = "Master", hetu = Some("270366-697B"), syntymäaika = None))
+  val slaveMasterEiKoskessa = oppijat.addOppija(OppijaHenkilöWithMasterInfo(OppijaHenkilö(oid = oppijat.generateId(), hetu = Some("270366-697B"), syntymäaika = None, sukunimi = "Slave", etunimet = "Slave", kutsumanimi = "Slave"), Some(masterEiKoskessa)))
+  val omattiedotSlave = oppijat.addOppija(OppijaHenkilöWithMasterInfo(OppijaHenkilö(oid = oppijat.generateId(), hetu = Some("190751-739W"), syntymäaika = None, etunimet = MockUsers.omattiedot.ldapUser.etunimet, kutsumanimi = MockUsers.omattiedot.ldapUser.etunimet, sukunimi = MockUsers.omattiedot.ldapUser.sukunimi), Some(omattiedot)))
   val opiskeluoikeudenOidKonflikti = oppijat.oppija("Oidkonflikti", "Oskari", "260539-745W", "1.2.246.562.24.09090909090")
   val eiKoskessa = oppijat.oppija("EiKoskessa", "Eino", "270181-5263", "1.2.246.562.24.99999555555")
-  val eiKoskessaHetuton = oppijat.addOppija(TäydellisetHenkilötiedot("1.2.246.562.24.99999555556", None, None, "Eino", "Eino", "EiKoskessaHetuton", None, None))
+  val eiKoskessaHetuton = oppijat.addOppija(OppijaHenkilö(oid = "1.2.246.562.24.99999555556", sukunimi = "EiKoskessaHetuton", etunimet = "Eino", kutsumanimi = "Eino", hetu = None, syntymäaika = None))
   val turvakielto = oppijat.oppija("Turvakielto", "Tero", "151067-2193", turvakielto = true)
 
   def defaultOppijat = oppijat.getOppijat
@@ -75,20 +76,28 @@ object MockOppijat {
 
   def oids = (defaultOppijat.map(_.henkilö.oid) ++ (1 to defaultOppijat.length + 100).map(generateOid).toList).distinct // oids that should be considered when deleting fixture data
 
-  def asUusiOppija(oppija: HenkilöWithOid with Henkilötiedot) =
+  def asUusiOppija(oppija: OppijaHenkilö) =
     UusiHenkilö(oppija.hetu.get, oppija.etunimet, Some(oppija.kutsumanimi), oppija.sukunimi)
 }
 
-class MockOppijat(private var oppijat: List[TäydellisetHenkilötiedotWithMasterInfo] = Nil) extends Logging {
+class MockOppijat(private var oppijat: List[OppijaHenkilöWithMasterInfo] = Nil) extends Logging {
   private var idCounter = oppijat.length
   val äidinkieli: Some[Koodistokoodiviite] = Some(Koodistokoodiviite("FI", None, "kieli", None))
 
-  def oppija(suku: String, etu: String, hetu: String, oid: String = generateId(), kutsumanimi: Option[String] = None, turvakielto: Boolean = false): TäydellisetHenkilötiedotWithMasterInfo =
-    addOppija(TäydellisetHenkilötiedot(oid, Some(hetu), None, etu, kutsumanimi.getOrElse(etu), suku, äidinkieli, None, Some(turvakielto)))
+  def oppija(suku: String, etu: String, hetu: String, oid: String = generateId(), kutsumanimi: Option[String] = None, turvakielto: Boolean = false): OppijaHenkilö =
+    addOppija(henkilo.OppijaHenkilö(
+      oid = oid,
+      sukunimi = suku,
+      etunimet = etu,
+      kutsumanimi = kutsumanimi.getOrElse(etu),
+      hetu = Some(hetu),
+      syntymäaika = None,
+      turvakielto = turvakielto
+    ))
 
-  def addOppija(oppija: TäydellisetHenkilötiedot): TäydellisetHenkilötiedotWithMasterInfo = addOppija(TäydellisetHenkilötiedotWithMasterInfo(oppija, None))
+  def addOppija(oppija: OppijaHenkilö): OppijaHenkilö = addOppija(OppijaHenkilöWithMasterInfo(oppija, None)).henkilö
 
-  def addOppija(oppija: TäydellisetHenkilötiedotWithMasterInfo): TäydellisetHenkilötiedotWithMasterInfo = {
+  def addOppija(oppija: OppijaHenkilöWithMasterInfo): OppijaHenkilöWithMasterInfo = {
     oppijat = oppija :: oppijat
     oppija
   }

@@ -19,6 +19,7 @@ trait OpiskeluoikeusTestMethods extends HttpSpecification with Matchers {
     }
     oppijaByHetu(hetu, user).tallennettavatOpiskeluoikeudet.last
   }
+
   def lastOpiskeluoikeus(oppijaOid: String, user: UserWithPassword = defaultUser): KoskeenTallennettavaOpiskeluoikeus = {
     oppija(oppijaOid, user).tallennettavatOpiskeluoikeudet.last
   }

@@ -54,7 +54,7 @@ class OppijaServlet(implicit val application: KoskiApplication) extends ApiServl
 
   get("/") {
     val serialize = SensitiveDataFilter(koskiSession).rowSerializer
-    streamResponse(query.map(serialize), koskiSession)
+    streamResponse(query.map(x => (application.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(x._1), x._2)).map(serialize), koskiSession)
   }
 
   get("/:oid") {

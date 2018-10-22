@@ -12,7 +12,7 @@ import fi.oph.koski.schema._
 
 object ExamplesLukioonValmistavaKoulutus {
   val luvaTodistus = Oppija(
-    asUusiOppija(MockOppijat.luva.henkilö),
+    asUusiOppija(MockOppijat.luva),
     List(
       LukioonValmistavanKoulutuksenOpiskeluoikeus(
         päättymispäivä = Some(date(2016, 6, 4)),

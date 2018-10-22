@@ -28,12 +28,12 @@ object HenkilöLoader extends Logging {
 
   private def buildRHenkilöRow(oppija: OppijaHenkilö) =
     RHenkilöRow(
-      oppijaOid = oppija.oidHenkilo,
+      oppijaOid = oppija.oid,
       hetu = oppija.hetu,
-      syntymäaika = oppija.syntymaika.orElse(oppija.hetu.flatMap(Hetu.toBirthday)).map(Date.valueOf),
+      syntymäaika = oppija.syntymäaika.orElse(oppija.hetu.flatMap(Hetu.toBirthday)).map(Date.valueOf),
       sukunimi = oppija.sukunimi,
       etunimet = oppija.etunimet,
-      aidinkieli = oppija.aidinkieli,
+      aidinkieli = oppija.äidinkieli,
       kansalaisuus = oppija.kansalaisuus.filter(_.nonEmpty).map(_.sorted.mkString(",")),
       turvakielto = oppija.turvakielto
     )

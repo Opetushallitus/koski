@@ -3,12 +3,11 @@ package fi.oph.koski.schedule
 import java.lang.System.currentTimeMillis
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.henkilo.OppijaHenkilö
+import fi.oph.koski.henkilo.{OppijaHenkilö, OppijaHenkilöWithMasterInfo}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.perustiedot.OpiskeluoikeudenHenkilötiedot
 import fi.oph.koski.schema.Henkilö.Oid
-import fi.oph.koski.schema.TäydellisetHenkilötiedotWithMasterInfo
 import fi.oph.koski.util.Timing
 import org.json4s.JValue
 
@@ -54,7 +53,7 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
     val oppijat: List[OppijaHenkilö] = findOppijat(koskiOids)
 
     val oppijatWithMaster: List[WithModifiedTime] = oppijat.map { oppija =>
-      WithModifiedTime(application.henkilöRepository.opintopolku.withMasterInfo(oppija.toTäydellisetHenkilötiedot), oppija.modified)
+      WithModifiedTime(application.henkilöRepository.opintopolku.withMasterInfo(oppija), oppija.modified)
     }
 
     val oppijatByOid: Map[Oid, WithModifiedTime] = oppijatWithMaster.groupBy(_.tiedot.henkilö.oid).mapValues(_.head)
@@ -100,5 +99,5 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
   private def henkilöUpdateContext(lastRun: Long) = Some(JsonSerializer.serializeWithRoot(HenkilöUpdateContext(lastRun)))
 }
 
-case class WithModifiedTime(tiedot: TäydellisetHenkilötiedotWithMasterInfo, modified: Long)
-case class HenkilöUpdateContext(lastRun: Long)
+private case class WithModifiedTime(tiedot: OppijaHenkilöWithMasterInfo, modified: Long)
+private case class HenkilöUpdateContext(lastRun: Long)

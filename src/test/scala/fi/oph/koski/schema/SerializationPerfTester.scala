@@ -7,7 +7,7 @@ import fi.oph.koski.perftest.LocalPerfTest.TestCase
 import fi.oph.scalaschema.{SerializationContext, Serializer}
 
 object SerializationPerfTester extends App {
-  val oppija = Oppija(MockOppijat.eero, AmmatillinenPerustutkintoExample.perustutkinto.opiskeluoikeudet)
+  val oppija = Oppija(MockOppijat.eero.toHenkilötiedotJaOid, AmmatillinenPerustutkintoExample.perustutkinto.opiskeluoikeudet)
 
   //LocalPerfTest.runTest(TestCase("serialize oppija", 100, (n) => Json.write(oppija)))
 

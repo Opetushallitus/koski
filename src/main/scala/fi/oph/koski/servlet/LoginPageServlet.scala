@@ -30,7 +30,7 @@ class LoginPageServlet(implicit val application: KoskiApplication) extends Scala
     }
   }
 
-  private def oppijat = MockOppijat.defaultOppijat.sortBy(_.etunimet).flatMap { o =>
-    o.hetu.filter(_.nonEmpty).map(h => s"""{'hetu': '$h', 'nimi': '${o.etunimet} ${o.sukunimi}'}""")
+  private def oppijat = MockOppijat.defaultOppijat.sortBy(_.henkilö.etunimet).flatMap { o =>
+    o.henkilö.hetu.filter(_.nonEmpty).map(h => s"""{'hetu': '$h', 'nimi': '${o.henkilö.etunimet} ${o.henkilö.sukunimi}'}""")
   }.distinct.mkString("[", ",", "]")
 }

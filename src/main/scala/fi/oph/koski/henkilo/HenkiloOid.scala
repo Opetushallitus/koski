@@ -2,7 +2,7 @@ package fi.oph.koski.henkilo
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.log.Loggable
-import fi.oph.koski.schema.{Henkilö, TäydellisetHenkilötiedot}
+import fi.oph.koski.schema.Henkilö
 
 object HenkilöOid {
   def validateHenkilöOid(oid: String): Either[HttpStatus, Henkilö.Oid] = {
@@ -16,12 +16,12 @@ object HenkilöOid {
 
 trait PossiblyUnverifiedHenkilöOid extends Loggable {
   def oppijaOid: Henkilö.Oid
-  def verified: Option[TäydellisetHenkilötiedot]
+  def verified: Option[OppijaHenkilö]
 
   def logString = oppijaOid
 }
 
-case class VerifiedHenkilöOid(henkilö: TäydellisetHenkilötiedot) extends PossiblyUnverifiedHenkilöOid {
+case class VerifiedHenkilöOid(henkilö: OppijaHenkilö) extends PossiblyUnverifiedHenkilöOid {
   def oppijaOid = henkilö.oid
   override def verified = Some(henkilö)
 }
