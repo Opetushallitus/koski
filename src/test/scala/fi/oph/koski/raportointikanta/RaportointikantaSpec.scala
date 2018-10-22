@@ -51,7 +51,7 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
           Some(Date.valueOf("1901-01-01")),
           mockOppija.sukunimi,
           mockOppija.etunimet,
-          Some("FI"),
+          Some("fi"),
           None,
           false
         )))

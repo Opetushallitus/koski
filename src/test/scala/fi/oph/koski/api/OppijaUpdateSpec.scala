@@ -198,10 +198,10 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       }
 
       "Sallii opiskeluoikeuden päivittämisen Master-henkilön oidilla" in {
-        createOpiskeluoikeus(MockOppijat.master.henkilö, defaultOpiskeluoikeus)
+        createOpiskeluoikeus(MockOppijat.master, defaultOpiskeluoikeus)
         val original = createOpiskeluoikeus(MockOppijat.slave.henkilö, defaultOpiskeluoikeus)
 
-        putOpiskeluoikeus(original.copy(arvioituPäättymispäivä = Some(LocalDate.now())), MockOppijat.master.henkilö) {
+        putOpiskeluoikeus(original.copy(arvioituPäättymispäivä = Some(LocalDate.now())), MockOppijat.master) {
           verifyResponseStatusOk()
         }
       }
@@ -254,10 +254,10 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       "Estää opiskeluoikeuden siirtymisen eri henkilölle" in {
         resetFixtures
         val lähdejärjestelmänId2 = LähdejärjestelmäId(Some("123452"), AmmatillinenExampleData.lähdeWinnova)
-        createOpiskeluoikeus(koululainen.henkilö, original, user = helsinginKaupunkiPalvelukäyttäjä)
+        createOpiskeluoikeus(koululainen, original, user = helsinginKaupunkiPalvelukäyttäjä)
         val opiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus)
 
-        createOrUpdate(koululainen.henkilö, opiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId)), {
+        createOrUpdate(koululainen, opiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId)), {
           verifyResponseStatus(403, ErrorMatcher.regex(KoskiErrorCategory.forbidden.oppijaOidinMuutos, "Oppijan oid.*ei löydy opiskeluoikeuden oppijan oideista.*".r))
         }, helsinginKaupunkiPalvelukäyttäjä)
       }

@@ -24,7 +24,7 @@ object PerusopetusExampleData {
 
   def vuosiviikkotuntia(määrä: Double): Some[LaajuusVuosiviikkotunneissa] = Some(LaajuusVuosiviikkotunneissa(määrä.toFloat))
 
-  val exampleHenkilö: UusiHenkilö = asUusiOppija(MockOppijat.koululainen.henkilö)
+  val exampleHenkilö: UusiHenkilö = asUusiOppija(MockOppijat.koululainen)
 
   val perusopetuksenDiaarinumero = "104/011/2014"
   val perusopetus = NuortenPerusopetus(Some(perusopetuksenDiaarinumero))

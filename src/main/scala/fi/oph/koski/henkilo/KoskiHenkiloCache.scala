@@ -5,19 +5,18 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.{TäydellisetHenkilötiedot, TäydellisetHenkilötiedotWithMasterInfo}
 
 class KoskiHenkilöCache(val db: DB) extends Logging with DatabaseExecutionContext with KoskiDatabaseMethods {
-  def addHenkilöAction(data: TäydellisetHenkilötiedotWithMasterInfo) =
+  def addHenkilöAction(data: OppijaHenkilöWithMasterInfo) =
     addMasterIfNecessary(data.master)
       .andThen(addHenkilö(data.henkilö.oid, toHenkilöRow(data.henkilö, data.master.map(_.oid))))
 
-  def updateHenkilö(data: TäydellisetHenkilötiedotWithMasterInfo): Int =
+  def updateHenkilö(data: OppijaHenkilöWithMasterInfo): Int =
     runDbSync(addMasterIfNecessary(data.master)
       .andThen(Henkilöt.filter(_.oid === data.henkilö.oid).update(toHenkilöRow(data.henkilö, data.master.map(_.oid)))))
 
-  def getCachedAction(oppijaOid: String): DBIOAction[Option[TäydellisetHenkilötiedotWithMasterInfo], NoStream, Effect.Read] = (Henkilöt.filter(_.oid === oppijaOid).joinLeft(Henkilöt).on(_.masterOid === _.oid)).result.map(x => x.headOption.map { case (row, masterRow) =>
-    TäydellisetHenkilötiedotWithMasterInfo(row.toHenkilötiedot, masterRow.map(_.toHenkilötiedot))
+  def getCachedAction(oppijaOid: String): DBIOAction[Option[HenkilöRowWithMasterInfo], NoStream, Effect.Read] = (Henkilöt.filter(_.oid === oppijaOid).joinLeft(Henkilöt).on(_.masterOid === _.oid)).result.map(x => x.headOption.map { case (row, masterRow) =>
+    HenkilöRowWithMasterInfo(row, masterRow)
   })
 
   def filterOidsByCache(oids: List[String]) = {
@@ -25,7 +24,7 @@ class KoskiHenkilöCache(val db: DB) extends Logging with DatabaseExecutionConte
     oids.grouped(10000).flatMap(group => runDbSync(Henkilöt.map(_.oid).filter(_ inSetBind(group)).result))
   }
 
-  private def addMasterIfNecessary(master: Option[TäydellisetHenkilötiedot]) =
+  private def addMasterIfNecessary(master: Option[OppijaHenkilö]) =
     master.map { m =>
       addHenkilö(m.oid, toHenkilöRow(m, None))
     }.getOrElse(DBIO.successful(Unit))
@@ -39,7 +38,7 @@ class KoskiHenkilöCache(val db: DB) extends Logging with DatabaseExecutionConte
     }
   }
 
-  private def toHenkilöRow(data: TäydellisetHenkilötiedot, masterOid: Option[String]) = HenkilöRow(data.oid, data.sukunimi, data.etunimet, data.kutsumanimi, masterOid)
+  private def toHenkilöRow(data: OppijaHenkilö, masterOid: Option[String]) = HenkilöRow(data.oid, data.sukunimi, data.etunimet, data.kutsumanimi, masterOid)
 }
 
 object KoskiHenkilöCache {

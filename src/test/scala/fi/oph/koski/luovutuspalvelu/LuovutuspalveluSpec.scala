@@ -11,7 +11,7 @@ class LuovutuspalveluSpec extends FreeSpec with LocalJettyHttpSpecification with
 
   "Luovutuspalvelu hetu-API" - {
     "Palauttaa oikean näköisen vastauksen" in {
-      val hetu = MockOppijat.eero.henkilö.hetu.get
+      val hetu = MockOppijat.eero.hetu.get
       postHetu(hetu, List("ammatillinenkoulutus")) {
         verifyResponseStatusOk()
         val resp = JsonSerializer.parse[HetuResponseV1](body)
@@ -25,23 +25,23 @@ class LuovutuspalveluSpec extends FreeSpec with LocalJettyHttpSpecification with
       }
     }
     "Palauttaa 404 jos henkilölle ei löydy opiskeluoikeuksia (annetuilla rajauksilla)" in {
-      postHetu(MockOppijat.eero.henkilö.hetu.get, List("ibtutkinto")) {
+      postHetu(MockOppijat.eero.hetu.get, List("ibtutkinto")) {
         verifyResponseStatus(404, ErrorMatcher.regex(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia, ".*".r))
       }
     }
     "Palauttaa 404 jos henkilölle ei löydy opiskeluoikeuksia (ollenkaan)" in {
-      postHetu(MockOppijat.eiKoskessa.henkilö.hetu.get, List("ibtutkinto")) {
+      postHetu(MockOppijat.eiKoskessa.hetu.get, List("ibtutkinto")) {
         verifyResponseStatus(404, ErrorMatcher.regex(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia, ".*".r))
       }
     }
     "Palauttaa 503 jos Virta ei vastaa" in {
-      postHetu(MockOppijat.virtaEiVastaa.henkilö.hetu.get, List("korkeakoulutus")) {
+      postHetu(MockOppijat.virtaEiVastaa.hetu.get, List("korkeakoulutus")) {
         verifyResponseStatus(503, KoskiErrorCategory.unavailable.virta())
       }
     }
     "Tuottaa oikean audit log viestin" in {
       AuditLogTester.clearMessages
-      postHetu(MockOppijat.eero.henkilö.hetu.get, List("ammatillinenkoulutus")) {
+      postHetu(MockOppijat.eero.hetu.get, List("ammatillinenkoulutus")) {
         verifyResponseStatusOk()
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN"))
       }
@@ -49,14 +49,14 @@ class LuovutuspalveluSpec extends FreeSpec with LocalJettyHttpSpecification with
     "Palauttaa 400 jos v-kentässä tuntematon arvo" in {
       post(
         "api/luovutuspalvelu/hetu",
-        JsonSerializer.writeWithRoot(HetuRequestV1(666, MockOppijat.eero.henkilö.hetu.get, List("ammatillinenkoulutus"), None)),
+        JsonSerializer.writeWithRoot(HetuRequestV1(666, MockOppijat.eero.hetu.get, List("ammatillinenkoulutus"), None)),
         headers = authHeaders() ++ jsonContent
       ) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam("Tuntematon versio"))
       }
     }
     "Palauttaa 400 jos opiskeluoikeudenTyypit-listassa tuntematon arvo" in {
-      postHetu(MockOppijat.eero.henkilö.hetu.get, List("foobar")) {
+      postHetu(MockOppijat.eero.hetu.get, List("foobar")) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam("Tuntematon opiskeluoikeudenTyyppi"))
       }
     }

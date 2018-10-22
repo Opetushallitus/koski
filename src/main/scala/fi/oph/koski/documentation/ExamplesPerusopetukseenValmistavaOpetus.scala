@@ -39,5 +39,5 @@ object ExamplesPerusopetukseenValmistavaOpetus {
     )
   )
 
-  val examples = List(Example("perusopetukseen valmistava opetus", "Oppija on suorittanut perusopetukseen valmistavan opetuksen", Oppija(asUusiOppija(MockOppijat.koululainen.henkilö), List(perusopetukseenValmistavaOpiskeluoikeus))))
+  val examples = List(Example("perusopetukseen valmistava opetus", "Oppija on suorittanut perusopetukseen valmistavan opetuksen", Oppija(asUusiOppija(MockOppijat.koululainen), List(perusopetukseenValmistavaOpiskeluoikeus))))
 }

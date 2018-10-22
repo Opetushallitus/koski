@@ -8,7 +8,6 @@ import fi.oph.koski.http._
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.schema.Henkilö.Oid
-import fi.oph.koski.schema.TäydellisetHenkilötiedot
 import scalaz.concurrent.Task
 
 case class OppijanumeroRekisteriClient(config: Config) {
@@ -42,7 +41,18 @@ case class OppijanumeroRekisteriClient(config: Config) {
 }
 
 case class KäyttäjäHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, asiointiKieli: Option[Kieli])
-case class OppijaNumerorekisteriOppija(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], syntymaaika: Option[LocalDate], aidinkieli: Option[Kieli], kansalaisuus: Option[List[Kansalaisuus]], modified: Long, turvakielto: Option[Boolean]) {
+case class OppijaNumerorekisteriOppija(
+  oidHenkilo: String,
+  sukunimi: String,
+  etunimet: String,
+  kutsumanimi: String,
+  hetu: Option[String],
+  syntymaaika: Option[LocalDate],
+  aidinkieli: Option[Kieli],
+  kansalaisuus: Option[List[Kansalaisuus]],
+  modified: Long,
+  turvakielto: Option[Boolean]
+) {
   def toOppijaHenkilö = OppijaHenkilö(oidHenkilo, sukunimi, etunimet, kutsumanimi, hetu, syntymaaika, aidinkieli.map(_.kieliKoodi), kansalaisuus.map(_.map(_.kansalaisuusKoodi)), modified, turvakielto.getOrElse(false))
 }
 case class UusiOppijaHenkilö(hetu: Option[String], sukunimi: String, etunimet: String, kutsumanimi: String, henkiloTyyppi: String = "OPPIJA")
@@ -54,6 +64,3 @@ case class Yhteystieto(yhteystietoTyyppi: String, yhteystietoArvo: String)
 
 case class Kansalaisuus(kansalaisuusKoodi: String)
 case class Kieli(kieliKoodi: String)
-case class OppijaHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, kutsumanimi: String, hetu: Option[String], syntymaika: Option[LocalDate], aidinkieli: Option[String], kansalaisuus: Option[List[String]], modified: Long, turvakielto: Boolean) {
-  def toTäydellisetHenkilötiedot = TäydellisetHenkilötiedot(oidHenkilo, etunimet, kutsumanimi, sukunimi)
-}

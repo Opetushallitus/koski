@@ -117,7 +117,7 @@ trait HealthCheck extends Logging {
       .flatMap { henkilö =>
         get("postgres", application.possu.findByOppijaOid(oid)).flatMap { oos =>
           if (oos.isEmpty) Left(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia(s"Healthcheck käyttäjän $oid opiskeluoikeuksia ei löydy tietokannasta"))
-          else Right(Oppija(henkilö, oos))
+          else Right(Oppija(henkilö.toHenkilötiedotJaOid, oos))
         }
       }
   }

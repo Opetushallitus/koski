@@ -19,7 +19,7 @@ import fi.oph.koski.util.{Timing, WithWarnings}
 class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: KoskiHenkilöCache, opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository, historyRepository: OpiskeluoikeusHistoryRepository, perustiedotIndexer: OpiskeluoikeudenPerustiedotIndexer, config: Config, hetu: Hetu) extends Logging with Timing with GlobalExecutionContext {
   private lazy val mockOids = config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid")
 
-  def findOppija(oid: String)(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
+  def findOppija(oid: String, useVirta: Boolean = true, useYtr: Boolean = true)(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
     henkilöRepository.findByOid(oid)
       .toRight(notFound(oid))
       .flatMap(henkilö => toOppija(henkilö, opiskeluoikeusRepository.findByOppija(henkilö, useVirta = true, useYtr = true)))
@@ -59,13 +59,13 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
 
   def createOrUpdate(oppija: Oppija, allowUpdate: Boolean, allowDeleteCompleted: Boolean = false)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
     val oppijaOid: Either[HttpStatus, PossiblyUnverifiedHenkilöOid] = oppija.henkilö match {
-      case h:UusiHenkilö =>
+      case h: UusiHenkilö =>
         hetu.validate(h.hetu).right.flatMap { hetu =>
           henkilöRepository.findOrCreate(h).right.map(VerifiedHenkilöOid(_))
         }
-      case h:TäydellisetHenkilötiedot if mockOids =>
-        Right(VerifiedHenkilöOid(h))
-      case h:HenkilöWithOid =>
+      case h: TäydellisetHenkilötiedot if mockOids =>
+        Right(VerifiedHenkilöOid(RemoteOpintopolkuHenkilöFacadeWithMockOids.oppijaWithMockOid(h)))
+      case h: HenkilöWithOid =>
         Right(UnverifiedHenkilöOid(h.oid, henkilöRepository))
     }
 
@@ -92,12 +92,12 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
     }
   }
 
-  def invalidate(opiskeluoikeusOid: String, invalidationFn: Oppija => Either[HttpStatus, Oppija], updateFn: Oppija => Either[HttpStatus, HenkilönOpiskeluoikeusVersiot])(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] =
+  private def invalidate(opiskeluoikeusOid: String, invalidationFn: Oppija => Either[HttpStatus, Oppija], updateFn: Oppija => Either[HttpStatus, HenkilönOpiskeluoikeusVersiot])(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] =
     opiskeluoikeusRepository.findByOid(opiskeluoikeusOid).flatMap { row =>
       if (!OpiskeluoikeusAccessChecker.isInvalidatable(row.toOpiskeluoikeus, user)) {
         Left(KoskiErrorCategory.forbidden("Mitätöinti ei sallittu"))
       } else {
-        findOppija(row.oppijaOid).map(_.getIgnoringWarnings).flatMap(invalidationFn)
+        findOppija(row.oppijaOid, useVirta = false, useYtr = false).map(_.getIgnoringWarnings).flatMap(invalidationFn)
       }
     }.flatMap(updateFn)
 
@@ -205,12 +205,12 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
     }
   }
 
-  private def toOppija(henkilö: TäydellisetHenkilötiedot, opiskeluoikeudet: => WithWarnings[Seq[Opiskeluoikeus]])(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
+  private def toOppija(henkilö: OppijaHenkilö, opiskeluoikeudet: => WithWarnings[Seq[Opiskeluoikeus]])(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
     opiskeluoikeudet match {
       case WithWarnings(Nil, Nil) => Left(notFound(henkilö.oid))
       case oo: WithWarnings[Seq[Opiskeluoikeus]] =>
         writeViewingEventToAuditLog(user, henkilö.oid)
-        Right(oo.map(Oppija(henkilö, _)))
+        Right(oo.map(Oppija(henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(henkilö), _)))
     }
   }
 

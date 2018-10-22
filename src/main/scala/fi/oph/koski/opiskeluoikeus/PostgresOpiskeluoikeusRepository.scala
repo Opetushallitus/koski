@@ -6,7 +6,7 @@ import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
-import fi.oph.koski.henkilo.{KoskiHenkilöCache, OpintopolkuHenkilöRepository, PossiblyUnverifiedHenkilöOid}
+import fi.oph.koski.henkilo._
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonDiff.jsonDiff
@@ -123,17 +123,19 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
       .result
   }
 
-  private def syncHenkilötiedotAction(id: Int, oppijaOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, henkilötiedot: Option[TäydellisetHenkilötiedotWithMasterInfo]) = {
-    val henkilötiedotAction = henkilötiedot match {
-      case Some(henkilötiedot) => DBIO.successful(Some(henkilötiedot))
-      case None => henkilöCache.getCachedAction(oppijaOid)
-    }
-    henkilötiedotAction.flatMap {
-      case Some(henkilötiedot) =>
-        val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, Some(henkilötiedot))
+  private def syncHenkilötiedotAction(id: Int, oppijaOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, henkilötiedot: Option[OppijaHenkilöWithMasterInfo]) = {
+    henkilötiedot match {
+      case Some(henkilö) =>
+        val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, henkilö)
         perustiedotSyncRepository.syncAction(perustiedot, true)
       case None =>
-        throw new RuntimeException(s"Oppija not found: $oppijaOid")
+        henkilöCache.getCachedAction(oppijaOid).flatMap {
+          case Some(HenkilöRowWithMasterInfo(henkilöRow, masterHenkilöRow)) =>
+            val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, henkilöRow, masterHenkilöRow)
+            perustiedotSyncRepository.syncAction(perustiedot, true)
+          case None =>
+            throw new RuntimeException(s"Oppija not found: $oppijaOid")
+        }
     }
   }
 
@@ -197,14 +199,14 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
     }
   }
 
-  private def createAction(oppija: TäydellisetHenkilötiedotWithMasterInfo, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Write] = {
+  private def createAction(oppija: OppijaHenkilöWithMasterInfo, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Write] = {
     opiskeluoikeus.versionumero match {
       case Some(versio) if (versio != VERSIO_1) =>
         DBIO.successful(Left(KoskiErrorCategory.conflict.versionumero(s"Uudelle opiskeluoikeudelle annettu versionumero $versio")))
       case _ =>
         val tallennettavaOpiskeluoikeus = opiskeluoikeus
-        val oid = oidGenerator.generateOid(oppija.oid)
-        val row: OpiskeluoikeusRow = Tables.OpiskeluoikeusTable.makeInsertableRow(oppija.oid, oid, tallennettavaOpiskeluoikeus)
+        val oid = oidGenerator.generateOid(oppija.henkilö.oid)
+        val row: OpiskeluoikeusRow = Tables.OpiskeluoikeusTable.makeInsertableRow(oppija.henkilö.oid, oid, tallennettavaOpiskeluoikeus)
         for {
           opiskeluoikeusId <- Tables.OpiskeluOikeudet.returning(OpiskeluOikeudet.map(_.id)) += row
           diff = JArray(List(JObject("op" -> JString("add"), "path" -> JString(""), "value" -> row.data)))
