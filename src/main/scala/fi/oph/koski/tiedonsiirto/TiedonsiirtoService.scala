@@ -336,11 +336,11 @@ class TiedonsiirtoService(
 
     val haetutTiedot: Option[TiedonsiirtoOppija] = (oid, annettuTunniste.flatMap(_.hetu)) match {
       case (Some(oid), None) => henkilöRepository.findByOid(oid).map { h =>
-        TiedonsiirtoOppija(Some(h.oid), h.hetu, h.syntymäaika, Some(h.etunimet), Some(h.kutsumanimi), Some(h.sukunimi), None, None /* FIXME h.äidinkieli, h.kansalaisuus */)
+        TiedonsiirtoOppija(Some(h.oid), h.hetu, h.syntymäaika, Some(h.etunimet), Some(h.kutsumanimi), Some(h.sukunimi))
       }
       // Tarkistaa vain oppijanumerorekisterin - ei luo uutta oppijanumeroa Virta/YTR-tietojen pohjalta
       case (None, Some(hetu)) => henkilöRepository.opintopolku.findByHetu(hetu).map { h =>
-        TiedonsiirtoOppija(Some(h.oid), h.hetu, syntymäaika = None, Some(h.etunimet), Some(h.kutsumanimi), Some(h.sukunimi), äidinkieli = None, None)
+        TiedonsiirtoOppija(Some(h.oid), h.hetu, syntymäaika = None, Some(h.etunimet), Some(h.kutsumanimi), Some(h.sukunimi))
       }
       case _ => None
     }
@@ -412,7 +412,7 @@ class TiedonsiirtoService(
 case class Tiedonsiirrot(henkilöt: List[HenkilönTiedonsiirrot], oppilaitos: Option[OidOrganisaatio])
 case class HenkilönTiedonsiirrot(oppija: Option[TiedonsiirtoOppija], rivit: Seq[TiedonsiirtoRivi])
 case class TiedonsiirtoRivi(id: String, aika: Timestamp, oppija: Option[TiedonsiirtoOppija], oppilaitos: List[OidOrganisaatio], suoritustiedot: List[TiedonsiirtoSuoritusTiedot], virhe: List[ErrorDetail], inputData: Option[JValue], lähdejärjestelmä: Option[String])
-case class TiedonsiirtoOppija(oid: Option[String], hetu: Option[String], syntymäaika: Option[LocalDate], etunimet: Option[String], kutsumanimi: Option[String], sukunimi: Option[String], äidinkieli: Option[Koodistokoodiviite], kansalaisuus: Option[List[Koodistokoodiviite]])
+case class TiedonsiirtoOppija(oid: Option[String], hetu: Option[String], syntymäaika: Option[LocalDate], etunimet: Option[String], kutsumanimi: Option[String], sukunimi: Option[String])
 case class HetuTaiOid(oid: Option[String], hetu: Option[String])
 case class TiedonsiirtoYhteenveto(tallentajaOrganisaatio: OidOrganisaatio, oppilaitos: OidOrganisaatio, käyttäjä: TiedonsiirtoKäyttäjä, viimeisin: Timestamp, siirretyt: Int, virheelliset: Int, onnistuneet: Int, lähdejärjestelmä: Option[Koodistokoodiviite])
 case class TiedonsiirtoQuery(oppilaitos: Option[String], paginationSettings: Option[PaginationSettings])
