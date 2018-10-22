@@ -124,16 +124,18 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
   }
 
   private def syncHenkilötiedotAction(id: Int, oppijaOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, henkilötiedot: Option[TäydellisetHenkilötiedotWithMasterInfo]) = {
-    val henkilötiedotAction = henkilötiedot match {
-      case Some(henkilötiedot) => DBIO.successful(Some(henkilötiedot))
-      case None => henkilöCache.getCachedAction(oppijaOid)
-    }
-    henkilötiedotAction.flatMap {
-      case Some(henkilötiedot) =>
-        val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, Some(henkilötiedot))
+    henkilötiedot match {
+      case Some(henkilö) =>
+        val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, henkilö)
         perustiedotSyncRepository.syncAction(perustiedot, true)
       case None =>
-        throw new RuntimeException(s"Oppija not found: $oppijaOid")
+        henkilöCache.getCachedAction(oppijaOid).flatMap {
+          case Some(HenkilöRowWithMasterInfo(henkilöRow, masterHenkilöRow)) =>
+            val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, henkilöRow, masterHenkilöRow)
+            perustiedotSyncRepository.syncAction(perustiedot, true)
+          case None =>
+            throw new RuntimeException(s"Oppija not found: $oppijaOid")
+        }
     }
   }
 

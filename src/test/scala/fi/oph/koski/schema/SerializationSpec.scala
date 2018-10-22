@@ -4,7 +4,7 @@ import fi.oph.koski.documentation.{AmmatillinenExampleData, Examples}
 import fi.oph.koski.henkilo.{MockOppijat, TäydellisetHenkilötiedotWithMasterInfo}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
-import fi.oph.koski.perustiedot.{OpiskeluoikeudenOsittaisetTiedot, OpiskeluoikeudenPerustiedot}
+import fi.oph.koski.perustiedot.{OpiskeluoikeudenHenkilötiedot, OpiskeluoikeudenOsittaisetTiedot, OpiskeluoikeudenPerustiedot}
 import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.scalatest.{FreeSpec, Matchers}
 
@@ -37,12 +37,13 @@ class SerializationSpec extends FreeSpec with Matchers with Logging {
     }
 
     "Perustiedot" - {
-      val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(0, AmmatillinenExampleData.opiskeluoikeus(), Some(TäydellisetHenkilötiedotWithMasterInfo(henkilö = MockOppijat.master, master = None)))
+      val perustiedot = OpiskeluoikeudenPerustiedot.makePerustiedot(0, AmmatillinenExampleData.opiskeluoikeus(), TäydellisetHenkilötiedotWithMasterInfo(henkilö = MockOppijat.master, master = None))
+      val henkilötiedot = OpiskeluoikeudenHenkilötiedot(perustiedot.id, perustiedot.henkilö.get, perustiedot.henkilöOid)
       "Full" in {
         JsonSerializer.extract[OpiskeluoikeudenOsittaisetTiedot](JsonSerializer.serializeWithRoot(perustiedot)) should equal(perustiedot)
       }
       "Henkilötiedot" in {
-        JsonSerializer.extract[OpiskeluoikeudenOsittaisetTiedot](JsonSerializer.serializeWithRoot(perustiedot.henkilötiedot.get)) should equal(perustiedot.henkilötiedot.get)
+        JsonSerializer.extract[OpiskeluoikeudenOsittaisetTiedot](JsonSerializer.serializeWithRoot(henkilötiedot)) should equal(henkilötiedot)
       }
     }
 

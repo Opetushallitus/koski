@@ -16,8 +16,8 @@ class KoskiHenkilöCache(val db: DB) extends Logging with DatabaseExecutionConte
     runDbSync(addMasterIfNecessary(data.master)
       .andThen(Henkilöt.filter(_.oid === data.henkilö.oid).update(toHenkilöRow(data.henkilö, data.master.map(_.oid)))))
 
-  def getCachedAction(oppijaOid: String): DBIOAction[Option[TäydellisetHenkilötiedotWithMasterInfo], NoStream, Effect.Read] = (Henkilöt.filter(_.oid === oppijaOid).joinLeft(Henkilöt).on(_.masterOid === _.oid)).result.map(x => x.headOption.map { case (row, masterRow) =>
-    TäydellisetHenkilötiedotWithMasterInfo(row.toHenkilötiedot, masterRow.map(_.toHenkilötiedot))
+  def getCachedAction(oppijaOid: String): DBIOAction[Option[HenkilöRowWithMasterInfo], NoStream, Effect.Read] = (Henkilöt.filter(_.oid === oppijaOid).joinLeft(Henkilöt).on(_.masterOid === _.oid)).result.map(x => x.headOption.map { case (row, masterRow) =>
+    HenkilöRowWithMasterInfo(row, masterRow)
   })
 
   def filterOidsByCache(oids: List[String]) = {

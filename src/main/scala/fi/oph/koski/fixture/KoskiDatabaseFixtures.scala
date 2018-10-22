@@ -47,7 +47,7 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
     if (!fixtureCacheCreated) {
       cachedPerustiedot = Some(validatedOpiskeluoikeudet.map { case (henkilö, opiskeluoikeus) =>
         val id = application.opiskeluoikeusRepository.createOrUpdate(VerifiedHenkilöOid(henkilö), opiskeluoikeus, false).right.get.id
-        OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, Some(application.henkilöRepository.opintopolku.withMasterInfo(henkilö)))
+        OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, application.henkilöRepository.opintopolku.withMasterInfo(henkilö))
       })
       application.perustiedotIndexer.updateBulk(cachedPerustiedot.get, true)
       val henkilöOidsIn = henkilöOids.map("'" + _ + "'").mkString(",")

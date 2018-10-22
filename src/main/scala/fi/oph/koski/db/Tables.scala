@@ -221,9 +221,9 @@ case class OpiskeluoikeusRow(id: Int, oid: String, versionumero: Int, aikaleima:
   }
 }
 
-case class HenkilöRow(oid: String, sukunimi: String, etunimet: String, kutsumanimi: String, masterOid: Option[String]) {
-  def toHenkilötiedot = TäydellisetHenkilötiedot(oid, etunimet, kutsumanimi, sukunimi)
-}
+case class HenkilöRow(oid: String, sukunimi: String, etunimet: String, kutsumanimi: String, masterOid: Option[String])
+
+case class HenkilöRowWithMasterInfo(henkilöRow: HenkilöRow, masterHenkilöRow: Option[HenkilöRow])
 
 case class OpiskeluoikeusHistoryRow(opiskeluoikeusId: Int, versionumero: Int, aikaleima: Timestamp, kayttajaOid: String, muutos: JValue)
 
