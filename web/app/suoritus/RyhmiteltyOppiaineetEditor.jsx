@@ -33,6 +33,7 @@ const resolveFootnotes = päätasonSuoritusClass => {
 }
 
 const useOppiaineLaajuus = päätasonSuoritusClass => päätasonSuoritusClass === 'diatutkintovaiheensuoritus'
+const showArvosana = päätasonSuoritusClass => päätasonSuoritusClass === 'ibtutkinnonsuoritus'
 
 export const RyhmiteltyOppiaineetEditor = ({suorituksetModel, päätasonSuoritusClass, additionalEditableKoulutusmoduuliProperties}) => {
   const {edit, suoritus: päätasonSuoritusModel} = suorituksetModel.context
@@ -61,6 +62,7 @@ export const RyhmiteltyOppiaineetEditor = ({suorituksetModel, päätasonSuoritus
                   footnote={footnote}
                   additionalEditableKoulutusmoduuliProperties={additionalEditableKoulutusmoduuliProperties}
                   useOppiaineLaajuus={useOppiaineLaajuus(päätasonSuoritusClass)}
+                  showArvosana={showArvosana(päätasonSuoritusClass)}
                 />
               )
             }),

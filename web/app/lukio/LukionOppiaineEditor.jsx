@@ -35,7 +35,8 @@ export class LukionOppiaineEditor extends React.Component {
       footnote,
       additionalEditableKoulutusmoduuliProperties,
       allowOppiaineRemoval = true,
-      useOppiaineLaajuus = false
+      useOppiaineLaajuus = false,
+      showArvosana = true
     } = this.props
 
     const kurssit = modelItems(oppiaine, 'osasuoritukset')
@@ -64,7 +65,12 @@ export class LukionOppiaineEditor extends React.Component {
           }
         </td>
         <td className='arvosana'>
-          <Arviointi oppiaine={oppiaine} suoritetutKurssit={suoritetutKurssit(kurssit)} footnote={footnote}/>
+          <Arviointi
+            oppiaine={oppiaine}
+            suoritetutKurssit={suoritetutKurssit(kurssit)}
+            footnote={footnote}
+            showArvosana={showArvosana}
+          />
         </td>
         {
           edit && allowOppiaineRemoval && (
