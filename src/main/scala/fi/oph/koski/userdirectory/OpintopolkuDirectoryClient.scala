@@ -29,16 +29,16 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
     Http.runTask(käyttöoikeusServiceClient.findKäyttöoikeudetByUsername(userid).map {
       case List(käyttäjä) =>
         Some(käyttäjä.oidHenkilo, käyttäjä.organisaatiot.map {
-          case OrganisaatioJaKäyttöoikeudet(organisatioOid, käyttöoikeudet) =>
+          case OrganisaatioJaKäyttöoikeudet(organisaatioOid, käyttöoikeudet) =>
             val roolit = käyttöoikeudet.map { case PalveluJaOikeus(palvelu, oikeus) => Palvelurooli(palvelu, oikeus)}
-            organisatioOid match {
+            organisaatioOid match {
               case Opetushallitus.organisaatioOid => KäyttöoikeusGlobal(roolit)
               case _ => if (hasGlobalKoulutusmuotoRoles(roolit)) {
                 KäyttöoikeusGlobalByKoulutusmuoto(roolit)
               } else if (roolit.map(_.rooli).contains(Rooli.TIEDONSIIRTO_LUOVUTUSPALVELU)) {
                 KäyttöoikeusGlobalLuovutuspalvelu
               } else {
-                KäyttöoikeusOrg(OidOrganisaatio(organisatioOid), roolit, juuri = true, oppilaitostyyppi = None)
+                KäyttöoikeusOrg(OidOrganisaatio(organisaatioOid), roolit, juuri = true, oppilaitostyyppi = None)
               }
             }
         })
