@@ -336,7 +336,7 @@ class TiedonsiirtoService(
 
     val haetutTiedot: Option[TiedonsiirtoOppija] = (oid, annettuTunniste.flatMap(_.hetu)) match {
       case (Some(oid), None) => henkilöRepository.findByOid(oid).map { h =>
-        TiedonsiirtoOppija(Some(h.oid), h.hetu, h.syntymäaika, Some(h.etunimet), Some(h.kutsumanimi), Some(h.sukunimi), h.äidinkieli, h.kansalaisuus)
+        TiedonsiirtoOppija(Some(h.oid), h.hetu, h.syntymäaika, Some(h.etunimet), Some(h.kutsumanimi), Some(h.sukunimi), None, None /* FIXME h.äidinkieli, h.kansalaisuus */)
       }
       // Tarkistaa vain oppijanumerorekisterin - ei luo uutta oppijanumeroa Virta/YTR-tietojen pohjalta
       case (None, Some(hetu)) => henkilöRepository.opintopolku.findByHetu(hetu).map { h =>

@@ -5,7 +5,6 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.TäydellisetHenkilötiedot
 
 class KoskiHenkilöCache(val db: DB) extends Logging with DatabaseExecutionContext with KoskiDatabaseMethods {
   def addHenkilöAction(data: TäydellisetHenkilötiedotWithMasterInfo) =
@@ -25,7 +24,7 @@ class KoskiHenkilöCache(val db: DB) extends Logging with DatabaseExecutionConte
     oids.grouped(10000).flatMap(group => runDbSync(Henkilöt.map(_.oid).filter(_ inSetBind(group)).result))
   }
 
-  private def addMasterIfNecessary(master: Option[TäydellisetHenkilötiedot]) =
+  private def addMasterIfNecessary(master: Option[OppijaHenkilö]) =
     master.map { m =>
       addHenkilö(m.oid, toHenkilöRow(m, None))
     }.getOrElse(DBIO.successful(Unit))
@@ -39,7 +38,7 @@ class KoskiHenkilöCache(val db: DB) extends Logging with DatabaseExecutionConte
     }
   }
 
-  private def toHenkilöRow(data: TäydellisetHenkilötiedot, masterOid: Option[String]) = HenkilöRow(data.oid, data.sukunimi, data.etunimet, data.kutsumanimi, masterOid)
+  private def toHenkilöRow(data: OppijaHenkilö, masterOid: Option[String]) = HenkilöRow(data.oid, data.sukunimi, data.etunimet, data.kutsumanimi, masterOid)
 }
 
 object KoskiHenkilöCache {

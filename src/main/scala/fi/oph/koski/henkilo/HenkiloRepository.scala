@@ -13,7 +13,7 @@ import fi.oph.koski.ytr.YtrHenkilöRepository
 import scala.concurrent.duration._
 
 trait FindByOid {
-  def findByOid(oid: String): Option[TäydellisetHenkilötiedot]
+  def findByOid(oid: String): Option[OppijaHenkilö]
 }
 
 trait HetuBasedHenkilöRepository {
@@ -34,18 +34,18 @@ object HenkilöRepository {
 }
 
 case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta: HetuBasedHenkilöRepository, ytr: HetuBasedHenkilöRepository, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository)(implicit cacheInvalidator: CacheManager) extends FindByOid with Logging {
-  private val oidCache: KeyValueCache[String, Option[TäydellisetHenkilötiedot]] =
+  private val oidCache: KeyValueCache[String, Option[OppijaHenkilö]] =
     KeyValueCache(new ExpiringCache("HenkilöRepository", ExpiringCache.Params(1.hour, maxSize = 100, storeValuePredicate = {
       case (_, value) => value != None // Don't cache None results
     })), opintopolku.findByOid)
   
   // findByOid is locally cached
-  def findByOid(oid: String): Option[TäydellisetHenkilötiedot] = oidCache(oid)
+  def findByOid(oid: String): Option[OppijaHenkilö] = oidCache(oid)
   // Other methods just call the non-cached implementation
 
-  def findByOids(oids: List[String]): List[TäydellisetHenkilötiedot] = opintopolku.findByOids(oids)
+  def findByOids(oids: List[String]): List[OppijaHenkilö] = opintopolku.findByOids(oids)
 
-  def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, TäydellisetHenkilötiedot] = opintopolku.findOrCreate(henkilö)
+  def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, OppijaHenkilö] = opintopolku.findOrCreate(henkilö)
 
   // Etsii oppija-henkilön hetun perusteella oppijanumerorekisteristä. Jos henkilöä ei löydy oppijanumerorekisteristä,
   // mutta hetu löytyy Virrasta tai YTR:stä, niin luodaan oppijanumero ONR:ään käyttäen "nimitiedot" parametria jos
@@ -55,7 +55,7 @@ case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta:
   // Jos userForAccessChecks on annettu, niin Virta/YTR katsotaan vain, jos ko. käyttäjällä on potentiaalisesti
   // pääsy johonkin Virta/YTR-tietoihin. Tämä on optimointi oppilaitosten virkailijakäliin, joissa käyttäjillä
   // ei yleensä ole tällaista pääsyä.
-  def findByHetuOrCreateIfInYtrOrVirta(hetu: String, nimitiedot: Option[Nimitiedot] = None, userForAccessChecks: Option[KoskiSession] = None): Option[TäydellisetHenkilötiedot] = {
+  def findByHetuOrCreateIfInYtrOrVirta(hetu: String, nimitiedot: Option[Nimitiedot] = None, userForAccessChecks: Option[KoskiSession] = None): Option[OppijaHenkilö] = {
     Hetu.validFormat(hetu) match {
       case Right(validHetu) =>
         val tiedot = opintopolku.findByHetu(hetu)
@@ -91,6 +91,9 @@ case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta:
     }
   }
 
-  def findHenkilötiedot(query: String)(implicit user: KoskiSession): List[TäydellisetHenkilötiedot] =
+  def findHenkilötiedot(query: String)(implicit user: KoskiSession): List[OppijaHenkilö] =
     findByOids(perustiedotRepository.findOids(query))
+
+  def oppijaHenkilöToTäydellisetHenkilötiedot(henkilö: OppijaHenkilö): TäydellisetHenkilötiedot =
+    opintopolku.oppijaHenkilöToTäydellisetHenkilötiedot(henkilö)
 }

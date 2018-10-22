@@ -3,7 +3,7 @@ package fi.oph.koski.perustiedot
 import java.time.LocalDate
 
 import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
-import fi.oph.koski.henkilo.TäydellisetHenkilötiedotWithMasterInfo
+import fi.oph.koski.henkilo.{OppijaHenkilö, TäydellisetHenkilötiedotWithMasterInfo}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.koskiuser.KoskiSession
@@ -42,6 +42,7 @@ case class NimitiedotJaOid(oid: String, etunimet: String, kutsumanimi: String, s
 object NimitiedotJaOid {
   def apply(henkilö: TäydellisetHenkilötiedot): NimitiedotJaOid = NimitiedotJaOid(henkilö.oid, henkilö.etunimet, henkilö.kutsumanimi, henkilö.sukunimi)
   def apply(henkilöRow: HenkilöRow): NimitiedotJaOid = NimitiedotJaOid(henkilöRow.oid, henkilöRow.etunimet, henkilöRow.kutsumanimi, henkilöRow.sukunimi)
+  def apply(henkilö: OppijaHenkilö): NimitiedotJaOid = NimitiedotJaOid(henkilö.oid, henkilö.etunimet, henkilö.kutsumanimi, henkilö.sukunimi)
 }
 case class OpiskeluoikeudenHenkilötiedot(
   id: Int,
@@ -54,7 +55,6 @@ object OpiskeluoikeudenHenkilötiedot {
     OpiskeluoikeudenHenkilötiedot(id, NimitiedotJaOid(henkilö.master.getOrElse(henkilö.henkilö)), Some(henkilö.henkilö.oid))
   def apply(id: Int, henkilöRow: HenkilöRow, masterHenkilöRow: Option[HenkilöRow]): OpiskeluoikeudenHenkilötiedot =
     OpiskeluoikeudenHenkilötiedot(id, NimitiedotJaOid(masterHenkilöRow.getOrElse(henkilöRow)), Some(henkilöRow.oid))
-
 }
 
 case class OpiskeluoikeusJaksonPerustiedot(

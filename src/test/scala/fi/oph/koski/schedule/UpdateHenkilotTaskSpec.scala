@@ -5,7 +5,6 @@ import java.lang.System.currentTimeMillis
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.{MockOpintopolkuHenkilöFacade, TäydellisetHenkilötiedotWithMasterInfo}
 import fi.oph.koski.henkilo.MockOppijat._
-import fi.oph.koski.schema.TäydellisetHenkilötiedot
 import fi.oph.koski.util.Futures
 import org.json4s.jackson.JsonMethods.{parse => parseJson}
 import org.scalatest.{BeforeAndAfterEach, FreeSpec, Matchers}
@@ -15,7 +14,7 @@ class UpdateHenkilotTaskSpec extends FreeSpec with Matchers with BeforeAndAfterE
   "Nimitietojen päivittyminen" - {
     Futures.await(application.perustiedotIndexer.init)
     "Päivittää muuttuneet oppijat oppijanumerorekisteristä" in {
-      modify(TäydellisetHenkilötiedotWithMasterInfo(TäydellisetHenkilötiedot(eero.oid, eero.etunimet, eero.kutsumanimi, "Uusisukunimi"), None))
+      modify(TäydellisetHenkilötiedotWithMasterInfo(eero.copy(sukunimi = "Uusisukunimi"), None))
       val päivitetytPerustiedot = application.perustiedotRepository.findHenkilöPerustiedotByHenkilöOid(eero.oid).get
       päivitetytPerustiedot.sukunimi should equal("Uusisukunimi")
     }

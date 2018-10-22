@@ -53,7 +53,7 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
     val oppijat: List[OppijaHenkilö] = findOppijat(koskiOids)
 
     val oppijatWithMaster: List[WithModifiedTime] = oppijat.map { oppija =>
-      WithModifiedTime(application.henkilöRepository.opintopolku.withMasterInfo(oppija.toTäydellisetHenkilötiedot), oppija.modified)
+      WithModifiedTime(application.henkilöRepository.opintopolku.withMasterInfo(oppija), oppija.modified)
     }
 
     val oppijatByOid: Map[Oid, WithModifiedTime] = oppijatWithMaster.groupBy(_.tiedot.henkilö.oid).mapValues(_.head)
@@ -99,5 +99,5 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
   private def henkilöUpdateContext(lastRun: Long) = Some(JsonSerializer.serializeWithRoot(HenkilöUpdateContext(lastRun)))
 }
 
-case class WithModifiedTime(tiedot: TäydellisetHenkilötiedotWithMasterInfo, modified: Long)
-case class HenkilöUpdateContext(lastRun: Long)
+private case class WithModifiedTime(tiedot: TäydellisetHenkilötiedotWithMasterInfo, modified: Long)
+private case class HenkilöUpdateContext(lastRun: Long)

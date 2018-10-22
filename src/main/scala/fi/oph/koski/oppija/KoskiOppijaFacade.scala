@@ -59,13 +59,13 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
 
   def createOrUpdate(oppija: Oppija, allowUpdate: Boolean, allowDeleteCompleted: Boolean = false)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
     val oppijaOid: Either[HttpStatus, PossiblyUnverifiedHenkilöOid] = oppija.henkilö match {
-      case h:UusiHenkilö =>
+      case h: UusiHenkilö =>
         hetu.validate(h.hetu).right.flatMap { hetu =>
           henkilöRepository.findOrCreate(h).right.map(VerifiedHenkilöOid(_))
         }
-      case h:TäydellisetHenkilötiedot if mockOids =>
-        Right(VerifiedHenkilöOid(h))
-      case h:HenkilöWithOid =>
+      case h: TäydellisetHenkilötiedot if mockOids =>
+        Right(VerifiedHenkilöOid(RemoteOpintopolkuHenkilöFacadeWithMockOids.oppijaWithMockOid(h)))
+      case h: HenkilöWithOid =>
         Right(UnverifiedHenkilöOid(h.oid, henkilöRepository))
     }
 
@@ -97,6 +97,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
       if (!OpiskeluoikeusAccessChecker.isInvalidatable(row.toOpiskeluoikeus, user)) {
         Left(KoskiErrorCategory.forbidden("Mitätöinti ei sallittu"))
       } else {
+        // FIXME: ytr/virta. Ja ehkä väärä abstraktio muutenkin
         findOppija(row.oppijaOid).map(_.getIgnoringWarnings).flatMap(invalidationFn)
       }
     }.flatMap(updateFn)
@@ -205,12 +206,12 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
     }
   }
 
-  private def toOppija(henkilö: TäydellisetHenkilötiedot, opiskeluoikeudet: => WithWarnings[Seq[Opiskeluoikeus]])(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
+  private def toOppija(henkilö: OppijaHenkilö, opiskeluoikeudet: => WithWarnings[Seq[Opiskeluoikeus]])(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
     opiskeluoikeudet match {
       case WithWarnings(Nil, Nil) => Left(notFound(henkilö.oid))
       case oo: WithWarnings[Seq[Opiskeluoikeus]] =>
         writeViewingEventToAuditLog(user, henkilö.oid)
-        Right(oo.map(Oppija(henkilö, _)))
+        Right(oo.map(Oppija(henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(henkilö), _)))
     }
   }
 
