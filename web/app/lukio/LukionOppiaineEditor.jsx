@@ -30,7 +30,14 @@ export class LukionOppiaineEditor extends React.Component {
   }
 
   render() {
-    const {oppiaine, footnote, additionalEditableKoulutusmoduuliProperties, allowOppiaineRemoval = true} = this.props
+    const {
+      oppiaine,
+      footnote,
+      additionalEditableKoulutusmoduuliProperties,
+      allowOppiaineRemoval = true,
+      useOppiaineLaajuus = false
+    } = this.props
+
     const kurssit = modelItems(oppiaine, 'osasuoritukset')
 
     const {edit} = oppiaine.context
@@ -49,7 +56,13 @@ export class LukionOppiaineEditor extends React.Component {
           </div>
           <KurssitEditor model={oppiaine}/>
         </td>
-        <td className='laajuus'>{laajuusNumberToString(laajuudet(hyväksytystiSuoritetutKurssit(kurssit)))}</td>
+        <td className='laajuus'>
+          {
+            useOppiaineLaajuus
+              ? modelData(oppiaine, 'koulutusmoduuli.laajuus.arvo')
+              : laajuusNumberToString(laajuudet(hyväksytystiSuoritetutKurssit(kurssit)))
+          }
+        </td>
         <td className='arvosana'>
           <Arviointi oppiaine={oppiaine} suoritetutKurssit={suoritetutKurssit(kurssit)} footnote={footnote}/>
         </td>
