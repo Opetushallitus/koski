@@ -110,7 +110,7 @@ case class DIAOppiaineenTutkintovaiheenSuoritus(
 
 @Title("DIA-oppiaineen valmistavan vaiheen lukukauden suoritus")
 case class DIAOppiaineenValmistavanVaiheenLukukaudenSuoritus(
-  koulutusmoduuli: DIAOppiaineenLukukausi,
+  koulutusmoduuli: DIAOppiaineenValmistavanVaiheenLukukausi,
   arviointi: Option[List[DIAOppiaineenValmistavanVaiheenLukukaudenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("diaoppiaineenvalmistavanvaiheenlukukaudensuoritus")
@@ -119,7 +119,7 @@ case class DIAOppiaineenValmistavanVaiheenLukukaudenSuoritus(
 
 @Title("DIA-oppiaineen tutkintovaiheen lukukauden suoritus")
 case class DIAOppiaineenTutkintovaiheenLukukaudenSuoritus(
-  koulutusmoduuli: DIAOppiaineenLukukausi,
+  koulutusmoduuli: DIAOppiaineenTutkintovaiheenLukukausi,
   arviointi: Option[List[DIAOppiaineenTutkintovaiheenLukukaudenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("diaoppiaineentutkintovaiheenlukukaudensuoritus")
