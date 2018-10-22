@@ -2,12 +2,12 @@ import React from 'react'
 import {modelLookup} from '../editor/EditorModel'
 
 import {PerusopetuksenOppiaineetEditor} from '../perusopetus/PerusopetuksenOppiaineetEditor'
-import PerusopetuksenOppiaineenOppimääränSuoritusEditor from '../perusopetus/PerusopetuksenOppiaineenOppimaaranSuoritusEditor'
+import PerusopetuksenOppiaineenOppimääränSuoritusEditor
+  from '../perusopetus/PerusopetuksenOppiaineenOppimaaranSuoritusEditor'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {Suoritustaulukko} from './Suoritustaulukko'
 import {LukionOppiaineetEditor} from '../lukio/LukionOppiaineetEditor'
 import {LuvaEditor} from '../lukio/LuvaEditor'
-import {IBTutkinnonOppiaineetEditor, OmatTiedotIBTutkinnonOppiaineet} from '../ib/IB'
 import {PropertyEditor} from '../editor/PropertyEditor'
 import {Editor} from '../editor/Editor'
 import {sortLanguages} from '../util/sorting'
@@ -20,6 +20,7 @@ import {CreativityActionService, ExtendedEssay, TheoryOfKnowledge} from '../ib/I
 import OmatTiedotSuoritustaulukko from './OmatTiedotSuoritustaulukko'
 import OmatTiedotLukionOppiaineet from '../lukio/OmatTiedotLukionOppiaineet'
 import OmatTiedotPerusopetuksenOppiaineet from '../perusopetus/OmatTiedotPerusopetuksenOppiaineet'
+import {OmatTiedotRyhmiteltyOppiaineet, RyhmiteltyOppiaineetEditor} from './RyhmiteltyOppiaineetEditor'
 
 export const resolveOsasuorituksetEditor = (mdl) => {
   const oneOf = (...classes) => classes.some(c => mdl.value.classes.includes(c))
@@ -74,10 +75,11 @@ export const resolveOsasuorituksetEditor = (mdl) => {
     return <LuvaEditor suorituksetModel={modelLookup(mdl, 'osasuoritukset')}/>
   }
   if (oneOf('ibtutkinnonsuoritus')) {
-    const IBTutkinnonOppiaineetComponent = kansalainen ? OmatTiedotIBTutkinnonOppiaineet : IBTutkinnonOppiaineetEditor
+    const IBTutkinnonOppiaineetComponent = kansalainen ? OmatTiedotRyhmiteltyOppiaineet : RyhmiteltyOppiaineetEditor
     return (
       <IBTutkinnonOppiaineetComponent
         suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
+        päätasonSuoritusClass='ibtutkinnonsuoritus'
         additionalEditableKoulutusmoduuliProperties={['taso']}
       />
     )
