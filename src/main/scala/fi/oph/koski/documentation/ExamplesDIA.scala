@@ -41,7 +41,7 @@ object ExamplesDIA {
     osasuoritukset = Some(osasuorituksetTutkintovaihe)
   )
 
-  def diaValmistavaVaiheAineSuoritus(oppiaine: DIAOsaAlueOppiaine, lukukaudet: List[(DIAOppiaineenLukukausi, String)] = Nil) = DIAOppiaineenValmistavanVaiheenSuoritus(
+  def diaValmistavaVaiheAineSuoritus(oppiaine: DIAOsaAlueOppiaine, lukukaudet: List[(DIAOppiaineenValmistavanVaiheenLukukausi, String)] = Nil) = DIAOppiaineenValmistavanVaiheenSuoritus(
     koulutusmoduuli = oppiaine,
     osasuoritukset = Some(lukukaudet.map { case (lukukausi, arvosana) =>
       DIAOppiaineenValmistavanVaiheenLukukaudenSuoritus(
@@ -51,7 +51,7 @@ object ExamplesDIA {
     })
   )
 
-  def diaTutkintoAineSuoritus(oppiaine: DIAOsaAlueOppiaine, lukukaudet: List[(DIAOppiaineenLukukausi, String)] = Nil) = DIAOppiaineenTutkintovaiheenSuoritus(
+  def diaTutkintoAineSuoritus(oppiaine: DIAOsaAlueOppiaine, lukukaudet: List[(DIAOppiaineenTutkintovaiheenLukukausi, String)] = Nil) = DIAOppiaineenTutkintovaiheenSuoritus(
     koulutusmoduuli = oppiaine,
     osasuoritukset = Some(lukukaudet.map { case (lukukausi, arvosana) =>
       DIAOppiaineenTutkintovaiheenLukukaudenSuoritus(
