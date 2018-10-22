@@ -13,7 +13,7 @@ class KoskiHistoryServlet(implicit val application: KoskiApplication)
 
   get("/:oid") {
     val oid: String = getStringParam("oid")
-    renderOption(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia) {
+    renderOption[List[OpiskeluoikeusHistory]](KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia) {
       val history: Option[List[OpiskeluoikeusHistory]] = application.historyRepository.findByOpiskeluoikeusOid(oid)(koskiSession)
       history.foreach { _ => logHistoryView(oid)}
       history

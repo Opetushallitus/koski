@@ -17,7 +17,7 @@ class KoodistoServlet(implicit val application: KoskiApplication) extends ApiSer
     contentType = "application/json"
     val koodit: Option[List[KoodistoKoodi]] = findKoodisto.map(_._2)
 
-    renderOption(KoskiErrorCategory.notFound.koodistoaEiLöydy)(koodit)
+    renderOption[List[KoodistoKoodi]](KoskiErrorCategory.notFound.koodistoaEiLöydy)(koodit)
   }
 
   get("/suoritustyypit") {
