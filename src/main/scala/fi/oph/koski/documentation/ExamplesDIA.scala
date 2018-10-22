@@ -11,25 +11,25 @@ import fi.oph.koski.schema._
 
 object ExamplesDIA {
   def osasuorituksetValmistavaVaihe: List[DIAOppiaineenValmistavanVaiheenSuoritus] = List(
-    diaValmistavaVaiheAineSuoritus(diaKieliaine("A", "EN"), List(
+    diaValmistavaVaiheAineSuoritus(diaKieliaine("A", "EN", laajuus = 3), List(
       (diaValmistavaLukukausi("1"), "3"),
       (diaValmistavaLukukausi("2"), "5")
     )),
-    diaValmistavaVaiheAineSuoritus(diaOppiaine("KU", "1"), List(
+    diaValmistavaVaiheAineSuoritus(diaOppiaine("KU", "1", laajuus = 2), List(
       (diaValmistavaLukukausi("1"), "4"),
       (diaValmistavaLukukausi("2"), "5")
     )),
-    diaValmistavaVaiheAineSuoritus(diaÄidinkieli("DE"), List(
+    diaValmistavaVaiheAineSuoritus(diaÄidinkieli("DE", laajuus = 3), List(
       (diaValmistavaLukukausi("1"), "3"),
       (diaValmistavaLukukausi("2"), "5")
     ))
   )
 
   def osasuorituksetTutkintovaihe: List[DIAOppiaineenTutkintovaiheenSuoritus] = List(
-    diaTutkintoAineSuoritus(diaKieliaine("A", "EN"), List(
+    diaTutkintoAineSuoritus(diaKieliaine("A", "EN", laajuus = 3), List(
       (diaTutkintoLukukausi("3"), "1")
     )),
-    diaTutkintoAineSuoritus(diaOppiaine("HI", "3"), List(
+    diaTutkintoAineSuoritus(diaOppiaine("HI", "3", laajuus = 3), List(
       (diaTutkintoLukukausi("3"), "4")
     ), suorituskieli = Some("FI"))
   )
@@ -70,22 +70,22 @@ object ExamplesDIA {
     })
   )
 
-  def diaOppiaine(aine: String, osaAlue: String) = DIAOppiaineMuu(
+  def diaOppiaine(aine: String, osaAlue: String, laajuus: Int) = DIAOppiaineMuu(
     tunniste = Koodistokoodiviite(koodistoUri = "oppiaineetdia", koodiarvo = aine),
-    laajuus = None,
+    laajuus = Some(LaajuusVuosiviikkotunneissa(laajuus)),
     osaAlue = Koodistokoodiviite(koodiarvo = osaAlue, koodistoUri = "diaosaalue")
   )
 
-  def diaKieliaine(taso: String, kieli: String) = DIAOppiaineKieli(
+  def diaKieliaine(taso: String, kieli: String, laajuus: Int) = DIAOppiaineKieli(
     tunniste = Koodistokoodiviite(koodistoUri = "oppiaineetdia", koodiarvo = taso),
     kieli = Koodistokoodiviite(koodistoUri = "kielivalikoima", koodiarvo = kieli),
-    laajuus = None
+    laajuus = Some(LaajuusVuosiviikkotunneissa(laajuus))
   )
 
-  def diaÄidinkieli(kieli: String) = DIAOppiaineÄidinkieli(
+  def diaÄidinkieli(kieli: String, laajuus: Int) = DIAOppiaineÄidinkieli(
     tunniste = Koodistokoodiviite(koodistoUri = "oppiaineetdia", koodiarvo = "AI"),
     kieli = Koodistokoodiviite(koodistoUri = "oppiainediaaidinkieli", koodiarvo = kieli),
-    laajuus = None
+    laajuus = Some(LaajuusVuosiviikkotunneissa(laajuus))
   )
 
   def diaValmistavaLukukausi(lukukausi: String) = DIAOppiaineenValmistavanVaiheenLukukausi(
