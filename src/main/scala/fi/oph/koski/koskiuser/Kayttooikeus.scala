@@ -15,6 +15,7 @@ object Rooli {
   val GLOBAALI_LUKU_PERUSOPETUS = "GLOBAALI_LUKU_PERUSOPETUS"
   val GLOBAALI_LUKU_TOINEN_ASTE = "GLOBAALI_LUKU_TOINEN_ASTE"
   val GLOBAALI_LUKU_KORKEAKOULU = "GLOBAALI_LUKU_KORKEAKOULU"
+  val TIEDONSIIRTO_LUOVUTUSPALVELU = "TIEDONSIIRTO_LUOVUTUSPALVELU"
 
   def globaalitKoulutusmuotoRoolit = List(GLOBAALI_LUKU_PERUSOPETUS, GLOBAALI_LUKU_TOINEN_ASTE, GLOBAALI_LUKU_KORKEAKOULU)
 }
@@ -72,3 +73,5 @@ case class KäyttöoikeusGlobalByKoulutusmuoto(globalKoulutusmuotoRoolit: List[P
     )
   }).map(_.koodiarvo).distinct
 }
+
+case object KäyttöoikeusGlobalLuovutuspalvelu extends Käyttöoikeus

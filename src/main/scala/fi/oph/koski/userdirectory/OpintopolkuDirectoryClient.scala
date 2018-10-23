@@ -3,7 +3,7 @@ package fi.oph.koski.userdirectory
 import com.typesafe.config.Config
 import fi.oph.koski.henkilo.{KäyttäjäHenkilö, OppijanumeroRekisteriClient}
 import fi.oph.koski.http.Http
-import fi.oph.koski.koskiuser.{Rooli, Palvelurooli, Käyttöoikeus, KäyttöoikeusOrg, KäyttöoikeusGlobal, KäyttöoikeusGlobalByKoulutusmuoto}
+import fi.oph.koski.koskiuser._
 import fi.oph.koski.organisaatio.Opetushallitus
 import fi.oph.koski.schema.OidOrganisaatio
 import fi.vm.sade.utils.cas.CasClientException
@@ -18,7 +18,6 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
   import org.http4s.client._
   import org.http4s.dsl._
   import org.http4s.headers.Location
-
   import scalaz.concurrent.Task
   private val tgtPattern = "(.*TGT-.*)".r
   private val http = Http(virkailijaUrl)
@@ -30,14 +29,16 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
     Http.runTask(käyttöoikeusServiceClient.findKäyttöoikeudetByUsername(userid).map {
       case List(käyttäjä) =>
         Some(käyttäjä.oidHenkilo, käyttäjä.organisaatiot.map {
-          case OrganisaatioJaKäyttöoikeudet(organisatioOid, käyttöoikeudet) =>
+          case OrganisaatioJaKäyttöoikeudet(organisaatioOid, käyttöoikeudet) =>
             val roolit = käyttöoikeudet.map { case PalveluJaOikeus(palvelu, oikeus) => Palvelurooli(palvelu, oikeus)}
-            organisatioOid match {
+            organisaatioOid match {
               case Opetushallitus.organisaatioOid => KäyttöoikeusGlobal(roolit)
               case _ => if (hasGlobalKoulutusmuotoRoles(roolit)) {
                 KäyttöoikeusGlobalByKoulutusmuoto(roolit)
+              } else if (roolit.map(_.rooli).contains(Rooli.TIEDONSIIRTO_LUOVUTUSPALVELU)) {
+                KäyttöoikeusGlobalLuovutuspalvelu
               } else {
-                KäyttöoikeusOrg(OidOrganisaatio(organisatioOid), roolit, true, None)
+                KäyttöoikeusOrg(OidOrganisaatio(organisaatioOid), roolit, juuri = true, oppilaitostyyppi = None)
               }
             }
         })

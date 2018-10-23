@@ -74,17 +74,11 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
 
   def isAuthenticated = getUser.isRight
 
-  def sessionOrStatus: Either[KoskiSessionStatus, KoskiSession] = {
-    userFromCookie.map { user: AuthenticationUser =>
-      KoskiSession(user, request, application.käyttöoikeusRepository)
-    }
-  }
+  def sessionOrStatus: Either[KoskiSessionStatus, KoskiSession] =
+    userFromCookie.map(createSession)
 
-  override def koskiSessionOption: Option[KoskiSession] = {
-    getUser.right.toOption.map { user: AuthenticationUser =>
-      KoskiSession(user, request, application.käyttöoikeusRepository)
-    }
-  }
+  override def koskiSessionOption: Option[KoskiSession] =
+    getUser.toOption.map(createSession)
 
   def tryLogin(username: String, password: String): Either[HttpStatus, AuthenticationUser] = {
     // prevent brute-force login by blocking incorrect logins with progressive delay
@@ -119,9 +113,14 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
 
   def requireVirkailijaOrPalvelukäyttäjä = {
     getUser match {
-      case Right(user) if user.kansalainen => haltWithStatus(KoskiErrorCategory.forbidden.vainVirkailija())
+      case Right(user) if user.kansalainen =>
+        haltWithStatus(KoskiErrorCategory.forbidden.vainVirkailija())
+      case Right(user) if createSession(user).hasLuovutuspalveluAccess =>
+        haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
       case Right(user) =>
-      case Left(error) => haltWithStatus(error)
+        // access granted
+      case Left(error) =>
+        haltWithStatus(error)
     }
   }
 
@@ -140,6 +139,8 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
     KoskiUserLanguage.setLanguageCookie(lang.getOrElse(KoskiUserLanguage.getLanguageFromLDAP(user, application.directoryClient)), response)
     user.copy(serviceTicket = Some(fakeServiceTicket))
   }
+
+  private def createSession(user: AuthenticationUser) = KoskiSession(user, request, application.käyttöoikeusRepository)
 }
 
 object DirectoryClientLogin extends Logging {
