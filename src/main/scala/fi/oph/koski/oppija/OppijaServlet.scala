@@ -1,6 +1,5 @@
 package fi.oph.koski.oppija
 
-import javax.servlet.http.HttpServletRequest
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.GlobalExecutionContext
 import fi.oph.koski.henkilo.HenkilöOid
@@ -14,10 +13,13 @@ import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoError
 import fi.oph.koski.util.{Pagination, Timing, WithWarnings, XML}
-import fi.oph.koski.virta.VirtaHakuehtoHetu
+import fi.oph.koski.virta.{VirtaHakuehtoHetu, VirtaHakuehtoKansallinenOppijanumero}
+import javax.servlet.http.HttpServletRequest
 import org.json4s.JsonAST.{JObject, JString}
 import org.json4s.{JArray, JValue}
 import org.scalatra.ContentEncodingSupport
+
+import scala.xml.Elem
 
 class OppijaServlet(implicit val application: KoskiApplication) extends ApiServlet with Logging with GlobalExecutionContext with OpiskeluoikeusQueries with ContentEncodingSupport with NoCache with Timing with Pagination {
 
@@ -65,30 +67,27 @@ class OppijaServlet(implicit val application: KoskiApplication) extends ApiServl
     if (!koskiSession.hasGlobalReadAccess) {
       haltWithStatus(KoskiErrorCategory.forbidden())
     }
-    findByOid(params("oid"), koskiSession)
-      .flatMap(_.warningsToLeft)
-      .flatMap { oppija: Oppija =>
-        oppija.henkilö match {
-          case h: Henkilötiedot if h.hetu.nonEmpty =>
-            val hetu = h.hetu.get
-            application.virtaClient.opintotiedot(VirtaHakuehtoHetu(hetu)) match {
-              case Some(x) => Right(x)
-              case None => Left(KoskiErrorCategory.notFound("Tyhjä vastaus?"))
-            }
-          case _ =>
-            Left(KoskiErrorCategory.notFound("Hetu puuttuu?"))
-      }
-    } match {
-      case Right(xml) =>
+    val oid = params("oid")
+    findByOid(oid, koskiSession).flatMap(_.warningsToLeft).map(virtaOpinnot(oid, _)) match {
+      case Right(Nil) => haltWithStatus(KoskiErrorCategory.notFound("Tyhjä vastaus?"))
+      case Right(elements) =>
         contentType = "text/plain"
-        response.writer.print(XML.prettyPrint(xml))
-      case Left(status) =>
-        haltWithStatus(status)
+        response.writer.print(XML.prettyPrintNodes(elements))
+      case Left(status) => haltWithStatus(status)
     }
   }
 
   get("/oids") {
     streamResponse[String](application.opiskeluoikeusQueryRepository.oppijaOidsQuery(paginationSettings)(koskiSession), koskiSession)
+  }
+
+  private def virtaOpinnot(oid: String, oppija: Oppija) = {
+    val byOid = application.virtaClient.opintotiedotMassahaku((oid :: application.opintopolkuHenkilöFacade.findSlaveOids(oid)).map(VirtaHakuehtoKansallinenOppijanumero)).toList
+    val byHetu = oppija.henkilö match {
+      case h: Henkilötiedot => h.hetu.toList.map(VirtaHakuehtoHetu).flatMap(application.virtaClient.opintotiedot)
+      case _ => List.empty[Elem]
+    }
+    (byOid ++ byHetu).distinct
   }
 
   private def findByOid(oid: String, user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {

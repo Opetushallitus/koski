@@ -70,6 +70,11 @@ object MockOppijat {
   val eiKoskessaHetuton = oppijat.addOppija(OppijaHenkilö(oid = "1.2.246.562.24.99999555556", sukunimi = "EiKoskessaHetuton", etunimet = "Eino", kutsumanimi = "Eino", hetu = None, syntymäaika = None))
   val turvakielto = oppijat.oppija("Turvakielto", "Tero", "151067-2193", turvakielto = true)
 
+  val virtaOppija = oppijat.addOppija(OppijaHenkilö(oid = "1.2.246.562.24.57060795845", sukunimi = "Virta", etunimet = "Veikko", kutsumanimi = "Veikko", hetu = Some("270191-4208"), syntymäaika = Some(LocalDate.of(1978, 3, 25)), äidinkieli = None, kansalaisuus = None))
+  val virtaOppijaHetuton = oppijat.addOppija(OppijaHenkilöWithMasterInfo(
+      OppijaHenkilö(oid = "1.2.246.562.24.20170814313", sukunimi = "Virta", etunimet = "Veikko", kutsumanimi = "Veikko", hetu = None, syntymäaika = Some(LocalDate.of(1978, 3, 25)), äidinkieli = None, kansalaisuus = None),
+      Some(virtaOppija)))
+
   def defaultOppijat = oppijat.getOppijat
 
   def generateOid(counter: Int) = "1.2.246.562.24." + "%011d".format(counter)

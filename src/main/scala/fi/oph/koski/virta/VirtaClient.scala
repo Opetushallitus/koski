@@ -1,8 +1,8 @@
 package fi.oph.koski.virta
 
 import com.typesafe.config.Config
-import fi.oph.koski.http.{Http, HttpConnectionException}
 import fi.oph.koski.http.Http._
+import fi.oph.koski.http.{Http, HttpConnectionException}
 import fi.oph.koski.log.{Logging, TimedProxy}
 import fi.oph.koski.util.Files
 
@@ -25,25 +25,39 @@ object VirtaClient extends Logging {
 
 trait VirtaClient {
   def opintotiedot(hakuehto: VirtaHakuehto): Option[Elem]
+  def opintotiedotMassahaku(hakuehdot: List[VirtaHakuehto]): Option[Elem]
   def henkilötiedot(hakuehto: VirtaHakuehto, oppilaitosNumero: String): Option[Elem]
 }
 
 object EmptyVirtaClient extends VirtaClient {
   override def opintotiedot(hakuehto: VirtaHakuehto) = None
   override def henkilötiedot(hakuehto: VirtaHakuehto, oppilaitosNumero: String) = None
+  override def opintotiedotMassahaku(hakuehdot: List[VirtaHakuehto]): Option[Elem] = None
 }
 
 object MockVirtaClient extends VirtaClient {
-  override def opintotiedot(hakuehto: VirtaHakuehto) = {
-    hakuehto match {
-      case VirtaHakuehtoHetu("250390-680P") =>
-        throw new HttpConnectionException("MockVirtaClient testing opintotiedot failure", "POST", "http://localhost:666/")
-      case VirtaHakuehtoHetu(hetu) =>
-        loadXml("src/main/resources/mockdata/virta/opintotiedot/" + hetu + ".xml")
-      case _ =>
-        throw new RuntimeException("opintotiedot must be searched by VirtaHakuehtoHetu")
+  override def opintotiedot(hakuehto: VirtaHakuehto) = haeOpintotiedot(hakuehto)
+
+  override def opintotiedotMassahaku(hakuehdot: List[VirtaHakuehto]): Option[Elem] = if (containsMixedEhdot(hakuehdot)) {
+    // Tällä hetkellä Virrasta ei voi hakea sekä hetulla että oppijanumerolla
+    throw new HttpConnectionException("Validation error", "POST", "http://localhost:666/")
+  } else {
+    hakuehdot.flatMap(haeOpintotiedot)
+     .map(_ \\ "Opiskelija") match {
+      case Nil => None
+      case nodes => Some(<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+          <SOAP-ENV:Header/>
+          <SOAP-ENV:Body>
+            <virtaluku:OpiskelijanKaikkiTiedotResponse xmlns:virtaluku="http://tietovaranto.csc.fi/luku">
+              <virta:Virta xmlns:virta="urn:mace:funet.fi:virta/2015/09/01">
+              {nodes}
+              </virta:Virta>
+            </virtaluku:OpiskelijanKaikkiTiedotResponse>
+          </SOAP-ENV:Body>
+        </SOAP-ENV:Envelope>)
     }
   }
+
   override def henkilötiedot(hakuehto: VirtaHakuehto, oppilaitosNumero: String) = {
     hakuehto match {
       case VirtaHakuehtoHetu("250390-680P") =>
@@ -55,33 +69,60 @@ object MockVirtaClient extends VirtaClient {
     }
   }
 
+  private def haeOpintotiedot(virtaHakuehto: VirtaHakuehto) = {
+    val tunnus = virtaHakuehto match {
+      case VirtaHakuehtoHetu("250390-680P") =>
+        throw new HttpConnectionException("MockVirtaClient testing opintotiedot failure", "POST", "http://localhost:666/")
+      case VirtaHakuehtoHetu(hetu) => hetu
+      case VirtaHakuehtoKansallinenOppijanumero(oid) => oid
+    }
+    loadXml("src/main/resources/mockdata/virta/opintotiedot/" + tunnus + ".xml")
+  }
+
+  private def containsMixedEhdot(hakuehdot: List[VirtaHakuehto]): Boolean =
+    hakuehdot.exists(_.isInstanceOf[VirtaHakuehtoHetu]) && hakuehdot.exists(_.isInstanceOf[VirtaHakuehtoKansallinenOppijanumero])
+
   private def loadXml(filename: String) = {
     Files.asString(filename).map(scala.xml.XML.loadString)
   }
 }
 
 case class RemoteVirtaClient(config: VirtaConfig) extends VirtaClient {
-  def opintotiedot(hakuehto: VirtaHakuehto) = {
-    val body = soapEnvelope(
-      <OpiskelijanKaikkiTiedotRequest xmlns="http://tietovaranto.csc.fi/luku">
-        {kutsuja}
-        <Hakuehdot>{ hakuehdot(hakuehto) }</Hakuehdot>
-      </OpiskelijanKaikkiTiedotRequest>)
-    Some(runTask(Http(config.serviceUrl).post(uri"", body)(Http.Encoders.xml)(Http.parseXml)))
+  def opintotiedot(hakuehto: VirtaHakuehto): Option[Elem] = performHaku {
+    <OpiskelijanKaikkiTiedotRequest xmlns="http://tietovaranto.csc.fi/luku">
+      {kutsuja}
+      <Hakuehdot>{hakuehdotXml(hakuehto)}</Hakuehdot>
+    </OpiskelijanKaikkiTiedotRequest>
   }
 
-  def henkilötiedot(hakuehto: VirtaHakuehto, oppilaitosNumero: String) = {
-    val body = soapEnvelope(
-      <OpiskelijanTiedotRequest xmlns="http://tietovaranto.csc.fi/luku">
-        {kutsuja}
-        <Hakuehdot>{ hakuehdot(hakuehto) }<organisaatio>{oppilaitosNumero}</organisaatio></Hakuehdot>
-      </OpiskelijanTiedotRequest>)
-    Some(runTask(Http(config.serviceUrl).post(uri"", body)(Http.Encoders.xml)(Http.parseXml)))
+  def opintotiedotMassahaku(hakuehdot: List[VirtaHakuehto]): Option[Elem] = performHaku {
+    <OpiskelijanKaikkiTiedotListaRequest xmlns="http://tietovaranto.csc.fi/luku">
+      {kutsuja}
+      <Hakuehdot>{hakuehdotXml(hakuehdot)}</Hakuehdot>
+    </OpiskelijanKaikkiTiedotListaRequest>
   }
 
-  private def hakuehdot(hakuehto: VirtaHakuehto) = hakuehto match {
+  def henkilötiedot(hakuehto: VirtaHakuehto, oppilaitosNumero: String): Option[Elem] = performHaku {
+    <OpiskelijanTiedotRequest xmlns="http://tietovaranto.csc.fi/luku">
+      {kutsuja}
+      <Hakuehdot>
+        {hakuehdotXml(hakuehto)}
+        <organisaatio>{oppilaitosNumero}</organisaatio>
+      </Hakuehdot>
+    </OpiskelijanTiedotRequest>
+  }
+
+  private def performHaku(xmlBody: Elem): Option[Elem] =
+    Some(runTask(Http(config.serviceUrl).post(uri"", soapEnvelope(xmlBody))(Http.Encoders.xml)(Http.parseXml)))
+
+  private def hakuehdotXml(hakuehto: VirtaHakuehto) = hakuehto match {
     case VirtaHakuehtoHetu(hetu) => <henkilotunnus>{hetu}</henkilotunnus>
     case VirtaHakuehtoKansallinenOppijanumero(oppijanumero) => <kansallinenOppijanumero>{oppijanumero}</kansallinenOppijanumero>
+  }
+
+  private def hakuehdotXml(hakuehdot: List[VirtaHakuehto]) = hakuehdot.map {
+    case VirtaHakuehtoHetu(hetu) => <henkilotunnusLista>{hetu}</henkilotunnusLista>
+    case VirtaHakuehtoKansallinenOppijanumero(oppijanumero) => <kansallinenOppijanumeroLista>{oppijanumero}</kansallinenOppijanumeroLista>
   }
 
   private def kutsuja = <Kutsuja>
@@ -89,7 +130,6 @@ case class RemoteVirtaClient(config: VirtaConfig) extends VirtaClient {
     <tunnus>{config.tunnus}</tunnus>
     <avain>{config.avain}</avain>
   </Kutsuja>
-
 
   private def soapEnvelope(node: Node) = <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
     <SOAP-ENV:Body>{node}</SOAP-ENV:Body>
