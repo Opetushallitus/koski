@@ -70,9 +70,9 @@ case class OpintopolkuHenkilöRepository(henkilöt: OpintopolkuHenkilöFacade, k
     henkilöt.findOppijaByOid(oid)
   }
 
-  def findByOids(oids: List[String]): List[OppijaHenkilö] = oids match {
+  def findByOidsNoSlaveOids(oids: List[String]): List[OppijaHenkilö] = oids match {
     case Nil => Nil // <- authentication-service fails miserably with empty input list
-    case _ => henkilöt.findOppijatByOids(oids)
+    case _ => henkilöt.findOppijatNoSlaveOids(oids)
   }
 
   // Hakee master-henkilön, jos eri kuin tämä henkilö

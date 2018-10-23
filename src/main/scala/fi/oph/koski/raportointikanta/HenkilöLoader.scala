@@ -16,7 +16,7 @@ object HenkilöLoader extends Logging {
     raportointiDatabase.setStatusLoadStarted("henkilot")
     raportointiDatabase.deleteHenkilöt
     val count = oids.toList.grouped(BatchSize).map(batchOids => {
-      val batchOppijat = opintopolkuHenkilöFacade.findOppijatByOids(batchOids)
+      val batchOppijat = opintopolkuHenkilöFacade.findOppijatNoSlaveOids(batchOids)
       val batchRows = batchOppijat.map(buildRHenkilöRow)
       raportointiDatabase.loadHenkilöt(batchRows)
       batchRows.size
