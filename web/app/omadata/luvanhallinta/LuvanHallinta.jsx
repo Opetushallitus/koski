@@ -7,6 +7,7 @@ import Spinner from '../Spinner'
 import {Error as ErrorDisplay} from '../../util/Error'
 import ModalDialog from '../../editor/ModalDialog'
 import {LuvanHallintaHeadline} from './LuvanHallintaHeadline'
+import NavBar from './NavBar'
 import {Kayttoluvat} from './KayttoLuvat'
 import Text from '../../i18n/Text'
 import {t} from '../../i18n/i18n'
@@ -90,6 +91,7 @@ export class LuvanHallinta extends React.Component {
         {renderError}
         <div className='omattiedot-kayttoluvat'>
           <LuvanHallintaHeadline birthday={birthday}/>
+          <NavBar/>
           <Kayttoluvat kayttoluvat={valtuudet} removeCallback={this.showDeleteConfirm}/>
           {
             showDeleteConfirm &&

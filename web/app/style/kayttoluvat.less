@@ -1,26 +1,69 @@
 .omattiedot-kayttoluvat {
-  margin: 160px auto 46px auto;
-  max-width: 1320px;
-  padding: 16px;
-  width: 100%;
+  max-width: 1160px;
+  margin: 0 auto 2rem auto;
+  padding: 0 1rem;
 
   @media @media-phone {
-    margin: 126px auto 46px auto;
-    max-width: 767px;
+    margin: 0 auto 46px auto;
+  }
+
+  div.navigation {
+    display: flex;
+    margin-bottom: 1.714rem;
+
+    .tab {
+      display: inline-block;
+      padding: 0.5rem 2rem;
+
+      @media @media-full {
+        padding: 0.5rem 5rem;
+      }
+    }
+
+    > span.activeTab {
+      .tab;
+      border-color: @color-link-blue @color-input-border @color-white @color-input-border;
+      border-style: solid solid none solid;
+      border-width: 2px 1px 0px 1px;
+    }
+
+    > a.link {
+      color: @color-black;
+
+      > span.inactiveTab {
+        .tab;
+
+        box-sizing: border-box;
+        height: 100%;
+        font-weight: 600;
+        background-color: @color-neutral-gray;
+        border-bottom: 1px solid @color-link-blue;
+      }
+    }
+
+    > span.filler {
+      flex: 1;
+      border-bottom: 1px solid @color-link-blue;
+    }
   }
 
   .kayttoluvat-headline {
     outline: none;
     > div.kayttoluvat-info {
-      > span.info {
-        font-size: 1.4rem;
-        max-width: 826px;
+      > h1 {
+        font-weight: 600;
+      }
+      > p.info {
+        font-size: 1.429rem;
+        line-height: 1.15;
+        margin-top: 2.429rem;
+        margin-bottom: 2.429rem;
       }
     }
 
     > h3.oppija-nimi {
       margin-top: 3rem;
-      margin-bottom: 0;
+      margin-bottom: 2.214rem;
 
       > span.nimi {
         font-weight: 600;
@@ -29,48 +72,6 @@
   }
 
   > .kayttoluvat-container {
-    > .divider {
-      color: @color-link-blue;
-
-      @media @media-phone {
-        margin-bottom: 0;
-      }
-    }
-
-    > .kayttoluvat-expander {
-      > .kayttolupa-button {
-        width: 100%;
-        border: 0;
-        margin: 0;
-        background: none;
-        cursor: pointer;
-
-        > .button-container {
-          display: flex;
-          
-          > .expander-text {
-            flex: 1;
-            text-align: left;
-
-            > h2 {
-              margin-bottom: 0;
-            }
-          }
-
-          > .expand-icon {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            color: @color-link-blue;
-
-            .svg-icon {
-              width: 2.2rem;
-            }
-          }
-        }
-      }
-    }
-
     > .kayttolupa-list {
       list-style-position: inside;
       padding-left: 0;

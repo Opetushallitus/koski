@@ -1,47 +1,17 @@
 import React from 'baret'
 import {formatFinnishDate, ISO2FinnishDate, parseISODate} from '../../date/date'
-import ChevronUpIcon from '../../icons/ChevronUpIcon'
-import ChevronDownIcon from '../../icons/ChevronDownIcon'
 import Text from '../../i18n/Text'
 
 export class Kayttoluvat extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      expanded: false
-    }
-
-    this.toggleExpand = this.toggleExpand.bind(this)
-  }
-
-  toggleExpand() {
-    this.setState(prevState => ({expanded: !prevState.expanded}))
-  }
-
   render() {
-    const {expanded} = this.state
     const {kayttoluvat, removeCallback} = this.props
     const hasKayttolupia = kayttoluvat.length > 0
 
     return (
       <div className='kayttoluvat-container'>
-        <div className='kayttoluvat-expander'>
-          <button className='kayttolupa-button' onClick={() => this.toggleExpand()} aria-pressed={expanded}>
-            <div className='button-container'>
-              <div className='expander-text'><h2><Text name='Annetut käyttöluvat' /></h2></div>
-              <div className='expand-icon'>
-                {expanded
-                  ? <ChevronUpIcon/>
-                  : <ChevronDownIcon/>}
-              </div>
-            </div>
-          </button>
-        </div>
-        <hr className='divider' />
         <ul className='kayttolupa-list'>
           {
-            expanded && (hasKayttolupia
+            (hasKayttolupia
               ? kayttoluvat.map(lupa =>
                 (<Kayttolupa
                   key={lupa.asiakasId}

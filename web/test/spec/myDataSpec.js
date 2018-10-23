@@ -64,8 +64,7 @@ describe('MyData', function() {
     before(
       tietojenkaytto.go,
       wait.until(tietojenkaytto.isVisible),
-      tietojenkaytto.expandPermissions,
-      wait.until(tietojenkaytto.isPermissionsExpanded)
+      wait.until(tietojenkaytto.isPermissionsVisible)
     )
 
     it('Käyttäjälle näytetään oma nimi', function() {
