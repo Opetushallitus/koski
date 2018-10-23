@@ -7,8 +7,5 @@ trait RequiresVirkailijaOrPalvelukäyttäjä extends AuthenticationSupport {
 
   before() {
     requireVirkailijaOrPalvelukäyttäjä
-    if (koskiSession.hasLuovutuspalveluAccess) {
-      haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
-    }
   }
 }
