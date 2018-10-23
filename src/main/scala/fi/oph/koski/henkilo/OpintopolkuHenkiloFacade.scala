@@ -7,7 +7,7 @@ import fi.oph.koski.db.Tables.OpiskeluOikeudetWithAccessCheck
 import fi.oph.koski.db.{KoskiDatabaseMethods, PostgresDriverWithJsonSupport}
 import fi.oph.koski.elasticsearch.ElasticSearch
 import fi.oph.koski.http.Http._
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory, _}
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSession.systemUser
 import fi.oph.koski.log.Logging
 import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotRepository
@@ -24,6 +24,7 @@ trait OpintopolkuHenkilöFacade {
   def findMasterOppija(oid: String): Option[OppijaHenkilö]
   def findOrCreate(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, OppijaHenkilö]
   def findOppijatByHetus(hetus: List[String]): List[OppijaHenkilö]
+  def findSlaveOids(masterOid: String): List[Oid]
 }
 
 object OpintopolkuHenkilöFacade {
@@ -64,6 +65,8 @@ class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroR
 
   def findOppijatByHetus(hetus: List[String]): List[OppijaHenkilö] =
     runTask(oppijanumeroRekisteriClient.findOppijatByHetus(hetus))
+
+  def findSlaveOids(masterOid: String): List[Oid] = runTask(oppijanumeroRekisteriClient.findSlaveOids(masterOid))
 }
 
 class RemoteOpintopolkuHenkilöFacadeWithMockOids(oppijanumeroRekisteriClient: OppijanumeroRekisteriClient, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository, elasticSearch: ElasticSearch) extends RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient) {
@@ -131,11 +134,11 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
   }
 
   def findOppijaByOid(henkilöOid: String): Option[OppijaHenkilö] = {
-    findHenkilötiedot(henkilöOid).map(_.henkilö)
+    findHenkilötiedot(henkilöOid).map(_.henkilö).map(withLinkedOids)
   }
 
   def findMasterOppija(henkilöOid: String): Option[OppijaHenkilö] = {
-    findHenkilötiedot(henkilöOid).flatMap(_.master)
+    findHenkilötiedot(henkilöOid).flatMap(_.master).map(withLinkedOids)
   }
 
   protected def findHenkilötiedot(id: String): Option[OppijaHenkilöWithMasterInfo] = synchronized {
@@ -143,7 +146,7 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
   }
 
   def findOppijatByOids(oids: List[String]): List[OppijaHenkilö] = {
-    oids.flatMap(findOppijaByOid)
+    oids.flatMap(findOppijaByOid).map(withLinkedOids)
   }
 
   def findOrCreate(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, OppijaHenkilö] = {
@@ -189,4 +192,9 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
   def findOppijatByHetus(hetus: List[String]): List[OppijaHenkilö] = synchronized {
     hetus.flatMap(findOppijaByHetu)
   }
+
+  override def findSlaveOids(masterOid: String): List[Oid] =
+    MockOppijat.defaultOppijat.filter(_.master.exists(_.oid == masterOid)).map(_.henkilö.oid)
+
+  private def withLinkedOids(x: OppijaHenkilö) = x.copy(linkitetytOidit = findSlaveOids(x.oid))
 }

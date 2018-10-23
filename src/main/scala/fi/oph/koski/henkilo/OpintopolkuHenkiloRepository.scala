@@ -22,7 +22,8 @@ case class OppijaHenkilö(
   äidinkieli: Option[String] = None,
   kansalaisuus: Option[List[String]] = None,
   modified: Long = 0,
-  turvakielto: Boolean = false
+  turvakielto: Boolean = false,
+  linkitetytOidit: List[String] = Nil
 ) extends HenkilönTunnisteet {
   @SyntheticProperty
   def preventSerialization: Nothing = ??? // ensure this class never gets serialized to JSON
@@ -30,7 +31,6 @@ case class OppijaHenkilö(
   def toHenkilötiedotJaOid = HenkilötiedotJaOid(oid, hetu, etunimet, kutsumanimi, sukunimi)
 
   // Ei vielä tueta
-  override def linkitetytOidit: List[String] = Nil
   override def vanhatHetut: List[String] = Nil
 }
 
