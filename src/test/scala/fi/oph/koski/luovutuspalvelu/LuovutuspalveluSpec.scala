@@ -4,6 +4,7 @@ import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethods}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.log.AuditLogTester
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
@@ -50,7 +51,7 @@ class LuovutuspalveluSpec extends FreeSpec with LocalJettyHttpSpecification with
       post(
         "api/luovutuspalvelu/hetu",
         JsonSerializer.writeWithRoot(HetuRequestV1(666, MockOppijat.eero.hetu.get, List("ammatillinenkoulutus"), None)),
-        headers = authHeaders() ++ jsonContent
+        headers = authHeaders(MockUsers.luovutuspalveluKäyttäjä) ++ jsonContent
       ) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam("Tuntematon versio"))
       }
@@ -66,7 +67,7 @@ class LuovutuspalveluSpec extends FreeSpec with LocalJettyHttpSpecification with
     post(
       "api/luovutuspalvelu/hetu",
       JsonSerializer.writeWithRoot(HetuRequestV1(1, hetu, opiskeluoikeudenTyypit, None)),
-      headers = authHeaders() ++ jsonContent
+      headers = authHeaders(MockUsers.luovutuspalveluKäyttäjä) ++ jsonContent
     )(f)
   }
 }

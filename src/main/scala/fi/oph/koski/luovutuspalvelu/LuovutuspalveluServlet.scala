@@ -6,7 +6,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.Hetu
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
+import fi.oph.koski.koskiuser.RequiresLuovutuspalvelu
 import fi.oph.koski.schema.{Henkilö, OpiskeluoikeudenTyyppi, Opiskeluoikeus, TäydellisetHenkilötiedot}
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.util.Timing
@@ -20,7 +20,7 @@ case class HetuResponseV1(henkilö: LuovutuspalveluHenkilöV1, opiskeluoikeudet:
 
 case class LuovutuspalveluHenkilöV1(oid: Henkilö.Oid, hetu: Option[Henkilö.Hetu], syntymäaika: Option[LocalDate],  turvakielto: Boolean)
 
-class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with ContentEncodingSupport with NoCache with Timing {
+class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresLuovutuspalvelu with ContentEncodingSupport with NoCache with Timing {
 
   before() {
     // Tämä koodi ei ole vielä tuotantokelpoista.

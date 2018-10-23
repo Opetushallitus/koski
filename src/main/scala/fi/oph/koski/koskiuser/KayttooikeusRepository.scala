@@ -32,6 +32,7 @@ class KäyttöoikeusRepository(organisaatioRepository: OrganisaatioRepository, d
               flattened.map { org =>
                 k.copy(organisaatio = org.toOrganisaatio, juuri = org.oid == k.organisaatio.oid, oppilaitostyyppi = org.oppilaitostyyppi)
               }
+            case KäyttöoikeusGlobalLuovutuspalvelu => List(KäyttöoikeusGlobalLuovutuspalvelu)
           }
         }
       case None =>
