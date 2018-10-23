@@ -105,7 +105,7 @@ class TiedonsiirtoService(
     // println(JsonMethods.pretty(doc))
 
     val rows: Seq[TiedonsiirtoDocument] = runSearch(doc)
-      .map(response => extract[List[JValue]](response \ "hits" \ "hits").map(j => extract[TiedonsiirtoDocument](j \ "_source")))
+      .map(response => extract[List[JValue]](response \ "hits" \ "hits").map(j => extract[TiedonsiirtoDocument](j \ "_source", ignoreExtras = true)))
       .getOrElse(Nil)
 
     val oppilaitosResult: Either[HttpStatus, Option[Oppilaitos]] = oppilaitosOid match {
