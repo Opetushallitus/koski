@@ -19,8 +19,6 @@ import org.json4s.JsonAST.{JObject, JString}
 import org.json4s.{JArray, JValue}
 import org.scalatra.ContentEncodingSupport
 
-import scala.xml.Elem
-
 class OppijaServlet(implicit val application: KoskiApplication) extends ApiServlet with Logging with GlobalExecutionContext with OpiskeluoikeusQueries with ContentEncodingSupport with NoCache with Timing with Pagination {
 
   post("/") { putSingle(false) }
@@ -67,9 +65,7 @@ class OppijaServlet(implicit val application: KoskiApplication) extends ApiServl
     if (!koskiSession.hasGlobalReadAccess) {
       haltWithStatus(KoskiErrorCategory.forbidden())
     }
-    val oid = params("oid")
-    findByOid(oid, koskiSession).flatMap(_.warningsToLeft).map(virtaOpinnot(oid, _)) match {
-      case Right(Nil) => haltWithStatus(KoskiErrorCategory.notFound("Tyhjä vastaus?"))
+    virtaOpinnot(params("oid")) match {
       case Right(elements) =>
         contentType = "text/plain"
         response.writer.print(XML.prettyPrintNodes(elements))
@@ -81,14 +77,12 @@ class OppijaServlet(implicit val application: KoskiApplication) extends ApiServl
     streamResponse[String](application.opiskeluoikeusQueryRepository.oppijaOidsQuery(paginationSettings)(koskiSession), koskiSession)
   }
 
-  private def virtaOpinnot(oid: String, oppija: Oppija) = {
-    val byOid = application.virtaClient.opintotiedotMassahaku((oid :: application.opintopolkuHenkilöFacade.findSlaveOids(oid)).map(VirtaHakuehtoKansallinenOppijanumero)).toList
-    val byHetu = oppija.henkilö match {
-      case h: Henkilötiedot => h.hetu.toList.map(VirtaHakuehtoHetu).flatMap(application.virtaClient.opintotiedot)
-      case _ => List.empty[Elem]
-    }
-    (byOid ++ byHetu).distinct
-  }
+  private def virtaOpinnot(oid: String) =
+    application.opintopolkuHenkilöFacade.findOppijaByOid(oid).toRight(KoskiErrorCategory.notFound.oppijaaEiLöydy()).map { oppijaHenkilö =>
+      val byHetu = (oppijaHenkilö.hetu.toList ++ oppijaHenkilö.vanhatHetut).sorted.map(VirtaHakuehtoHetu)
+      val byOid = (oppijaHenkilö.oid :: oppijaHenkilö.linkitetytOidit).sorted.map(VirtaHakuehtoKansallinenOppijanumero)
+      application.virtaClient.opintotiedotMassahaku(byHetu) ++ application.virtaClient.opintotiedotMassahaku(byOid)
+    }.map(_.toList.distinct)
 
   private def findByOid(oid: String, user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
     HenkilöOid.validateHenkilöOid(oid).right.flatMap { oid =>
@@ -100,7 +94,6 @@ class OppijaServlet(implicit val application: KoskiApplication) extends ApiServl
     application.tiedonsiirtoService.storeTiedonsiirtoResult(koskiSession, None, None, None, Some(TiedonsiirtoError(JObject("unparseableJson" -> JString(request.body)), status.errors)))
     haltWithStatus(status)
   }
-
 
   private def withTracking[T](f: => T) = {
     if (koskiSession.isPalvelukäyttäjä) {
