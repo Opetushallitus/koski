@@ -15,7 +15,7 @@ export default ({ memberName, onAcceptClick, logoutURL }) => (
     </div>
     <div className='acceptance-button-container'>
       <button className='acceptance-button koski-button' onClick={onAcceptClick}><Text name='Hyväksy'/></button>
-      <div className='decline-link'> <a href={logoutURL}><Text id='cancel' name='Peruuta ja palaa'/></a> </div>
+      <div className='decline-link'> <a href={logoutURL}><Text name='Peruuta ja palaa'/></a> </div>
     </div>
   </div>
 )

@@ -38,7 +38,7 @@ function MyDataPage() {
       return click('.logout > a')()
     },
     clickCancel: function() {
-      return click('a > .decline-link')()
+      return click('.decline-link > a')()
     },
     clickChangeLang: function() {
       return click('.lang > .change-lang')()
