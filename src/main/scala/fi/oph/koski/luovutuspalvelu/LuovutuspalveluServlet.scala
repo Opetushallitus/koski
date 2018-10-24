@@ -67,7 +67,6 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
   }
 
   post("/hetut") {
-    implicit val MaxHetus: Int = 1000
     withJsonBody { parsedJson =>
       parseBulkHetuRequestV1(parsedJson) match {
         case Left(status) => haltWithStatus(status)
@@ -101,7 +100,8 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
       })
   }
 
-  private def parseBulkHetuRequestV1(parsedJson: JValue)(implicit MaxHetus: Int): Either[HttpStatus, BulkHetuRequestV1] = {
+  private def parseBulkHetuRequestV1(parsedJson: JValue): Either[HttpStatus, BulkHetuRequestV1] = {
+    val MaxHetus = 1000
     JsonSerializer.validateAndExtract[BulkHetuRequestV1](parsedJson)
       .left.map(errors => KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(errors)))
       .filterOrElse(_.v == 1, KoskiErrorCategory.badRequest.queryParam("Tuntematon versio"))
