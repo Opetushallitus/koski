@@ -25,36 +25,12 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
   private val käyttöoikeusServiceClient = KäyttöoikeusServiceClient(config)
   private val oppijanumeroRekisteriClient = OppijanumeroRekisteriClient(config)
 
-  override def findUser(userid: String): Option[DirectoryUser] = {
+  override def findUser(userid: String): Option[DirectoryUser] =
     Http.runTask(käyttöoikeusServiceClient.findKäyttöoikeudetByUsername(userid).map {
-      case List(käyttäjä) =>
-        Some(käyttäjä.oidHenkilo, käyttäjä.organisaatiot.map {
-          case OrganisaatioJaKäyttöoikeudet(organisaatioOid, käyttöoikeudet) =>
-            val roolit = käyttöoikeudet.map { case PalveluJaOikeus(palvelu, oikeus) => Palvelurooli(palvelu, oikeus)}
-            organisaatioOid match {
-              case Opetushallitus.organisaatioOid => KäyttöoikeusGlobal(roolit)
-              case _ => if (hasGlobalKoulutusmuotoRoles(roolit)) {
-                KäyttöoikeusGlobalByKoulutusmuoto(roolit)
-              } else if (roolit.map(_.rooli).contains(Rooli.TIEDONSIIRTO_LUOVUTUSPALVELU)) {
-                KäyttöoikeusGlobalLuovutuspalvelu
-              } else {
-                KäyttöoikeusOrg(OidOrganisaatio(organisaatioOid), roolit, juuri = true, oppilaitostyyppi = None)
-              }
-            }
-        })
-      case Nil =>
-        None
+      case List(käyttäjä) => Some(resolveKäyttöoikeudet(käyttäjä))
+      case Nil => None
       case _ => throw new RuntimeException(s"More than 1 user found with username $userid")
-    }).flatMap {
-      case (oid: String, käyttöoikeudet: List[Käyttöoikeus]) =>
-        Http.runTask(oppijanumeroRekisteriClient.findKäyttäjäByOid(oid)).map { (käyttäjä: KäyttäjäHenkilö) =>
-          DirectoryUser(käyttäjä.oidHenkilo, käyttöoikeudet, käyttäjä.etunimet, käyttäjä.sukunimi, käyttäjä.asiointiKieli.map(_.kieliKoodi))
-        }
-    }
-  }
-
-  private def hasGlobalKoulutusmuotoRoles(roolit: List[Palvelurooli]) =
-    roolit.map(_.rooli).exists(Rooli.globaalitKoulutusmuotoRoolit.contains)
+    }).flatMap { case (oid: String, käyttöoikeudet: List[Käyttöoikeus]) => findKäyttäjä(oid, käyttöoikeudet) }
 
   override def authenticate(userid: String, wrappedPassword: Password): Boolean = {
     val tgtUri: TGTUrl = resolve(Uri.fromString(virkailijaUrl).toOption.get, uri("/cas/v1/tickets"))
@@ -85,4 +61,47 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
   override def organisaationSähköpostit(organisaatioOid: String, ryhmä: String): List[String] =
     Http.runTask(oppijanumeroRekisteriClient.findSähköpostit(organisaatioOid, ryhmä))
 
+  private def resolveKäyttöoikeudet(käyttäjä: HenkilönKäyttöoikeudet) =
+    (käyttäjä.oidHenkilo, käyttäjä.organisaatiot.flatMap {
+      case OrganisaatioJaKäyttöoikeudet(organisaatioOid, käyttöoikeudet) =>
+        val roolit = käyttöoikeudet.map { case PalveluJaOikeus(palvelu, oikeus) => Palvelurooli(palvelu, oikeus) }
+        if (organisaatioOid == Opetushallitus.organisaatioOid) {
+          List(KäyttöoikeusGlobal(roolit))
+        } else if (hasViranomaisRooli(roolit)) {
+          käyttöoikeusByKoulutusmuoto(roolit) ++ käyttöoikeusLuovutuspalvelu(roolit)
+        } else {
+          List(KäyttöoikeusOrg(OidOrganisaatio(organisaatioOid), roolit, juuri = true, oppilaitostyyppi = None))
+        }
+    })
+
+  private def findKäyttäjä(oid: String, käyttöoikeudet: List[Käyttöoikeus]) = {
+    Http.runTask(oppijanumeroRekisteriClient.findKäyttäjäByOid(oid)).map { (käyttäjä: KäyttäjäHenkilö) =>
+      DirectoryUser(käyttäjä.oidHenkilo, käyttöoikeudet, käyttäjä.etunimet, käyttäjä.sukunimi, käyttäjä.asiointiKieli.map(_.kieliKoodi))
+    }
+  }
+
+  private def käyttöoikeusByKoulutusmuoto(roolit: List[Palvelurooli]): List[Käyttöoikeus] = {
+    val koulutusmuotoRoles = roolit.filter(r => Rooli.globaalitKoulutusmuotoRoolit.contains(r.rooli))
+    if (koulutusmuotoRoles.nonEmpty) {
+      List(KäyttöoikeusGlobalByKoulutusmuoto(koulutusmuotoRoles))
+    } else {
+      Nil
+    }
+  }
+
+  private def käyttöoikeusLuovutuspalvelu(roolit: List[Palvelurooli]): List[Käyttöoikeus] =
+    if (hasLuovutuspalveluRooli(roolit)) {
+      List(KäyttöoikeusGlobalLuovutuspalvelu)
+    } else {
+      Nil
+    }
+
+  private def hasViranomaisRooli(roolit: List[Palvelurooli]) =
+    hasGlobalKoulutusmuotoRoles(roolit) || hasLuovutuspalveluRooli(roolit)
+
+  private def hasGlobalKoulutusmuotoRoles(roolit: List[Palvelurooli]) =
+    roolit.exists(r => Rooli.globaalitKoulutusmuotoRoolit.contains(r.rooli))
+
+  private def hasLuovutuspalveluRooli(roolit: List[Palvelurooli]) =
+    roolit.map(_.rooli).contains(Rooli.TIEDONSIIRTO_LUOVUTUSPALVELU)
 }
