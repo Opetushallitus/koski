@@ -1,7 +1,6 @@
 @import "colors.less";
 @import "mixins.less";
 
-@text-height-med: 20px;
 @element-header-height: 80px;
 @margin-mobile-left: 5%;
 
@@ -159,6 +158,11 @@
       margin-left: @margin-mobile-left;
     }
 
+    h1 {
+      margin-top: 46px;
+      margin-bottom: 39px;
+    }
+
     .user {
       display: flex;
       flex-direction: row;
@@ -252,13 +256,12 @@
     }
 
       .acceptance-title {
-        font-size: 20px;
+        font-size: 16px;
         letter-spacing: 0.3px;
         text-align: left;
 
         @media @media-phone {
           font-size: 14px;
-          font-weight: 300;
         }
       }
 
@@ -270,20 +273,20 @@
       }
 
       .acceptance-member-name {
-        width: 301px;
-        height: 62px;
         font-size: 24px;
         font-weight: 600;
         text-align: left;
         color: @color-link-blue;
         margin-top: 25px;
-        margin-bottom: 10px;
+        margin-bottom: 31px;
+
+        @media @media-phone {
+          font-size: 18px;
+        }
       }
 
       .acceptance-share-info {
-        width: 147px;
-        font-size: 16px;
-        font-weight: 300;
+        font-size: 18px;
         line-height: 1.38;
         text-align: left;
         color: @color-tundora;
@@ -309,32 +312,39 @@
 
       .acceptance-button-container {
         display: flex;
-        margin-top: 35px;
-        align-items: center;
+        flex-direction: column;
 
         @media @media-phone {
-          flex-direction: column;
+          font-size: 16px;
+          align-items: center;
         }
 
         .acceptance-button {
+          margin-top: 35px;
+          margin-bottom: 35px;
+          width: 209px;
+          font-size: 18px;
+          font-weight: 600;
+
           @media @media-phone {
             width: 72.6%;
             margin-bottom: 30px;
           }
         }
 
-        a {
-          margin-left: 4%;
-          width: 358px;
-          height: @text-height-med;
-          font-size: 14px;
-          text-align: center;
-          color: @color-link-blue;
-          text-decoration: underline;
-          cursor: pointer;
+        .decline-link {
+          font-size: 18px;
+
+          @media @media-phone {
+            font-size: 14px;
+          }
+
+          a {
+            color: @color-black;
+            text-decoration: underline;
+          }
         }
       }
-
   }
 
   .footer {
