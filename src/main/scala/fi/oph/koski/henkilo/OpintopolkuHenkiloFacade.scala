@@ -63,7 +63,7 @@ class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroR
     runTask(oppijanumeroRekisteriClient.findOrCreate(createUserInfo))
 
   def findOppijatByHetus(hetus: List[String]): List[OppijaHenkilö] =
-    runTask(oppijanumeroRekisteriClient.findOppijatByOids(hetus))
+    runTask(oppijanumeroRekisteriClient.findOppijatByHetus(hetus))
 }
 
 class RemoteOpintopolkuHenkilöFacadeWithMockOids(oppijanumeroRekisteriClient: OppijanumeroRekisteriClient, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository, elasticSearch: ElasticSearch) extends RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient) {
