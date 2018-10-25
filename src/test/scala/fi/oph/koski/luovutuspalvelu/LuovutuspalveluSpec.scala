@@ -112,6 +112,14 @@ class LuovutuspalveluSpec extends FreeSpec with LocalJettyHttpSpecification with
      }
    }
 
+   "Vaatii vähintään yhden opiskeluoikeudenTyypin" in {
+     val hetut = List(MockOppijat.amis.hetu.get)
+     val ooTyypit = List()
+     postHetut(hetut, ooTyypit) {
+       verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam("Opiskeluoikeuden tyyppejä ei löytynyt"))
+     }
+   }
+
    "Tuottaa oikean audit log viestin" in {
      AuditLogTester.clearMessages
      val henkilo = MockOppijat.amis

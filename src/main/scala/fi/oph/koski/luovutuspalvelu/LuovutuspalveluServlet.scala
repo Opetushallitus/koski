@@ -106,6 +106,7 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
       .left.map(errors => KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(errors)))
       .filterOrElse(_.v == 1, KoskiErrorCategory.badRequest.queryParam("Tuntematon versio"))
       .filterOrElse(_.hetut.length < MaxHetus, KoskiErrorCategory.badRequest.queryParam(s"Liian monta hetua, enintään $MaxHetus sallittu"))
+      .filterOrElse(req => req.opiskeluoikeudenTyypit.length > 0, KoskiErrorCategory.badRequest.queryParam("Opiskeluoikeuden tyyppejä ei löytynyt"))
       .filterOrElse(req => validateOpiskeluoikeudenTyypit(req.opiskeluoikeudenTyypit), KoskiErrorCategory.badRequest.queryParam("Tuntematon opiskeluoikeudentyyppi"))
       .flatMap(req => {
         req.hetut.map(Hetu.validFormat).collectFirst { case Left(status) => status } match {
