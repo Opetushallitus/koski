@@ -1,10 +1,10 @@
 function MyDataPage() {
 
-  var callbackURL = window.location.origin + "/koski/pulssi"
+  var callbackURL = window.location.origin + "/koski/pulssi#linkki"
 
   var api = {
     openPage: function() {
-      return openPage("/koski/omadata/valtuutus/hsl?callback=" + callbackURL, function() { return true  })()
+      return openPage("/koski/omadata/valtuutus/hsl?callback=" + encodeURIComponent(callbackURL), function() { return true  })()
     },
     callbackURL: callbackURL,
     go: function() {
