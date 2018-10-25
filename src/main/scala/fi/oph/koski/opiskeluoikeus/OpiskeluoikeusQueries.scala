@@ -46,6 +46,11 @@ case class OpiskeluoikeusQueryContext(request: HttpServletRequest)(implicit kosk
     streamingQueryGroupedByOid(filters, paginationSettings)
   }
 
+  def queryWithDistinctLoggingMsg(filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings], loggingMessages: List[AuditLogMessage]): Observable[(Oid, List[OpiskeluoikeusRow])] = {
+    loggingMessages.foreach(m => AuditLog.log(m))
+    streamingQueryGroupedByOid(filters, paginationSettings)
+  }
+
   private def query(filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings]): Observable[(OppijaHenkilö, List[OpiskeluoikeusRow])] = {
     val oikeudetPerOppijaOid: Observable[(Oid, List[OpiskeluoikeusRow])] = streamingQueryGroupedByOid(filters, paginationSettings)
     oikeudetPerOppijaOid.tumblingBuffer(10).flatMap {
