@@ -130,6 +130,9 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
   private def opiskeluoikeusTyyppiQueryFilters(opiskeluoikeusTyypit: List[String]): List[OpiskeluoikeusQueryFilter] =
     opiskeluoikeusTyypit.map(t => OpiskeluoikeusQueryFilter.OpiskeluoikeudenTyyppi(Koodistokoodiviite(t, "opiskeluoikeudentyyppi")))
 
-  private def validateOpiskeluoikeudenTyypit(tyypit: List[String]): Boolean =
-    tyypit.forall(t => application.koodistoViitePalvelu.validate("opiskeluoikeudentyyppi", t).isDefined)
+  private def validateOpiskeluoikeudenTyypit(tyypit: List[String]): Boolean = {
+    val notSupportedTyypit = List("korkeakoulutus", "ylioppilastutkinto")
+    def validate(tyyppi: String) = application.koodistoViitePalvelu.validate("opiskeluoikeudentyyppi", tyyppi).isDefined && !notSupportedTyypit.contains(tyyppi)
+    tyypit.forall(validate)
+  }
 }
