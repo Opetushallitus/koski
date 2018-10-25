@@ -40,7 +40,7 @@ case class OppijanumeroRekisteriClient(config: Config) {
     oidServiceHttp.get(uri"/oppijanumerorekisteri-service/henkilo/$oid/master")(Http.parseJsonOptional[OppijaNumerorekisteriOppija]).map(_.map(_.toOppijaHenkilö))
 
   def findOppijatByHetus(hetus: List[String]): Task[List[OppijaHenkilö]] =
-    oidServiceHttp.post(uri"/oppijanumerorekisteri-serivce/henkilo/henkiloPerustietosByHenkiloHetuList", hetus)(json4sEncoderOf[List[String]])(Http.parseJson[List[OppijaNumerorekisteriOppija]]).map(_.map(_.toOppijaHenkilö))
+    oidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloHetuList", hetus)(json4sEncoderOf[List[String]])(Http.parseJson[List[OppijaNumerorekisteriOppija]]).map(_.map(_.toOppijaHenkilö))
 }
 
 case class KäyttäjäHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, asiointiKieli: Option[Kieli])
