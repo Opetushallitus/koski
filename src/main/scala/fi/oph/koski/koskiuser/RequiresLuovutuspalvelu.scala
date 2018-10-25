@@ -6,7 +6,7 @@ trait RequiresLuovutuspalvelu extends AuthenticationSupport {
   implicit def koskiSession: KoskiSession = koskiSessionOption.get
 
   before() {
-    if (!koskiSession.hasLuovutuspalveluAccess) {
+    if (!koskiSessionOption.exists(_.hasLuovutuspalveluAccess)) {
       haltWithStatus(KoskiErrorCategory.forbidden.vainViranomainen())
     }
   }
