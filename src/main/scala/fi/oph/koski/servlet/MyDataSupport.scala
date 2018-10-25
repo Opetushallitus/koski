@@ -13,9 +13,11 @@ trait MyDataSupport extends ScalatraServlet with MyDataConfig {
   override def getConfigForMember(id: String = memberCodeParam): TypeSafeConfig
   def mydataLoginServletURL: String = conf.getString("login.servlet")
 
+  def urlEncode(str: String): String = URLEncoder.encode(str, "UTF-8")
+
   def getLoginURL(target: String = getCurrentURL, encode: Boolean = false): String = {
     if (encode) {
-      URLEncoder.encode(s"${mydataLoginServletURL}?onSuccess=${target}", "UTF-8")
+      urlEncode(s"${mydataLoginServletURL}?onSuccess=${urlEncode(target)}")
     } else {
       s"${mydataLoginServletURL}?onSuccess=${target}"
     }
@@ -29,7 +31,7 @@ trait MyDataSupport extends ScalatraServlet with MyDataConfig {
 
   def getKorhopankkiRedirectURLParameter(target: String): String = {
     if(application.config.getString("shibboleth.security") == "mock") {
-      s"&redirect=${URLEncoder.encode(target, "UTF-8")}"
+      s"&redirect=${urlEncode(target)}"
     } else {
       ""
     }
