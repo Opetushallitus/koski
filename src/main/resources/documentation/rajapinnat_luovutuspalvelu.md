@@ -141,7 +141,7 @@ Esimerkkipyyntö:
 
     {
       "v": 1,
-      "hetut": ["180859-914S", ...]
+      "hetut": ["180859-914S", ...],
       "opiskeluoikeudenTyypit": ["perusopetus"],
       "käyttötarkoitus": "fixme"
     }
