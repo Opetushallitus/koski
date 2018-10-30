@@ -367,5 +367,14 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*unexpectedType.*".r))
       }
     }
+
+    "NULL merkki datassa" in {
+      val opiskeluoikeus: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(lisätiedot = Some(AmmatillinenExampleData.opiskeluoikeudenLisätiedot.copy(ulkomaanjaksot =
+        Some(List(Ulkomaanjakso(alku = date(2012, 9, 1), loppu = None, maa = ExampleData.ruotsi, kuvaus = LocalizedString.finnish("\u0000"))))
+      )))
+      putOppija(Oppija(oppija, List(opiskeluoikeus))) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.format.json("unsupported unicode escape sequence in data"))
+      }
+    }
   }
 }

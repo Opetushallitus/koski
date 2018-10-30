@@ -101,6 +101,8 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
           } else {
             Left(KoskiErrorCategory.conflict.samanaikainenPäivitys())
           }
+        case e: SQLException if e.getMessage.contains("unsupported Unicode escape sequence") =>
+          Left(KoskiErrorCategory.badRequest.format.json("unsupported unicode escape sequence in data"))
       }
 
       if (result.left.exists(_ == KoskiErrorCategory.conflict("duplicate oid"))) {
