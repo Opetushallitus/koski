@@ -135,5 +135,9 @@ describe('MyData', function() {
     it('Ja kumppanin nimi vaihtuu ruotsinkieliseksi', function() {
       expect(mydata.getMemberName()).equal('HRT Helsingforsregionens trafik')
     })
+
+    it('Ja kumppanin tiedon käyttötarkoitus vaihtuu ruotsinkieliseksi', function() {
+      expect(mydata.getMemberPurpose()).equal('Informationen används för att bevilja studierabatt på biljetter.')
+    })
   })
 })

@@ -31,6 +31,9 @@ function MyDataPage() {
     getMemberName: function() {
       return extractAsText(S('.acceptance-member-name'))
     },
+    getMemberPurpose: function() {
+      return extractAsText(S('.acceptance-member-purpose'))
+    },
     clickAccept: function() {
       return click('.acceptance-button-container > .acceptance-button')()
     },

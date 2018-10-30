@@ -9,14 +9,18 @@ class MyDataServlet(implicit val application: KoskiApplication) extends ApiServl
   with AuthenticationSupport with Logging with NoCache with MyDataSupport with LanguageSupport {
 
   get("/kumppani/:memberCode") {
-    def memberConf = getConfigForMember()
+    val lang = s"${langFromCookie.getOrElse(langFromDomain)}"
+    val conf = getConfigForMember()
 
-    val lang = s"name.${langFromCookie.getOrElse(langFromDomain)}"
-    val memberName = if (memberConf.hasPath(lang)) memberConf.getString(lang) else memberConf.getString("name.fi")
+    def valueFor(key: String) = {
+      val localizedKey = s"${key}.${lang}"
+      if (conf.hasPath(localizedKey)) conf.getString(localizedKey) else conf.getString(s"${key}.fi")
+    }
 
     renderObject(Map(
-      "id" -> memberConf.getString("id"),
-      "name" -> memberName
+      "id" -> conf.getString("id"),
+      "name" -> valueFor("name"),
+      "purpose" -> valueFor("purpose")
     ))
   }
 

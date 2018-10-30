@@ -2,7 +2,7 @@ import React from 'baret'
 import Text from '../i18n/Text'
 import '../style/main.less'
 
-export default ({ memberName, onAcceptClick, logoutURL }) => (
+export default ({ memberName, memberPurpose, onAcceptClick, logoutURL }) => (
   <div className='acceptance-box'>
     <div className='acceptance-title'><Text name='Hyväksymällä annat tälle palveluntarjoajalle luvan käyttää opintotietojasi.'/></div>
     <div className='acceptance-member-name'>{memberName}</div>
@@ -12,6 +12,7 @@ export default ({ memberName, onAcceptClick, logoutURL }) => (
         <li><Text name='Tiedot opiskeluoikeuksistasi'/></li>
         <li><Text name='Nimesi ja syntymäaikasi'/></li>
       </ul>
+      <div className='acceptance-member-purpose'>{memberPurpose}</div>
     </div>
     <div className='acceptance-button-container'>
       <button className='acceptance-button koski-button' onClick={onAcceptClick}><Text name='Hyväksy'/></button>
