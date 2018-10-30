@@ -104,6 +104,22 @@ class LuovutuspalveluSpec extends FreeSpec with LocalJettyHttpSpecification with
      }
    }
 
+   "Palauttaa 400 jos tutkintotyyppiä ei voi hakea massahaulla" in {
+     val hetut = List(MockOppijat.amis.hetu.get)
+     val ooTyypit = List("ammatillinenkoulutus", "ylioppilastutkinto")
+     postHetut(hetut, ooTyypit) {
+       verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam("Tuntematon opiskeluoikeudentyyppi"))
+     }
+   }
+
+   "Vaatii vähintään yhden opiskeluoikeudenTyypin" in {
+     val hetut = List(MockOppijat.amis.hetu.get)
+     val ooTyypit = List()
+     postHetut(hetut, ooTyypit) {
+       verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam("Opiskeluoikeuden tyyppejä ei löytynyt"))
+     }
+   }
+
    "Tuottaa oikean audit log viestin" in {
      AuditLogTester.clearMessages
      val henkilo = MockOppijat.amis

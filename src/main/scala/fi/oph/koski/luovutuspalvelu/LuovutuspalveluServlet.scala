@@ -105,7 +105,8 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
     JsonSerializer.validateAndExtract[BulkHetuRequestV1](parsedJson)
       .left.map(errors => KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(errors)))
       .filterOrElse(_.v == 1, KoskiErrorCategory.badRequest.queryParam("Tuntematon versio"))
-      .filterOrElse(_.hetut.length < MaxHetus, KoskiErrorCategory.badRequest.queryParam(s"Liian monta hetua, enintään $MaxHetus sallittu"))
+      .filterOrElse(_.hetut.length <= MaxHetus, KoskiErrorCategory.badRequest.queryParam(s"Liian monta hetua, enintään $MaxHetus sallittu"))
+      .filterOrElse(req => req.opiskeluoikeudenTyypit.length > 0, KoskiErrorCategory.badRequest.queryParam("Opiskeluoikeuden tyyppejä ei löytynyt"))
       .filterOrElse(req => validateOpiskeluoikeudenTyypit(req.opiskeluoikeudenTyypit), KoskiErrorCategory.badRequest.queryParam("Tuntematon opiskeluoikeudentyyppi"))
       .flatMap(req => {
         req.hetut.map(Hetu.validFormat).collectFirst { case Left(status) => status } match {
@@ -130,6 +131,9 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
   private def opiskeluoikeusTyyppiQueryFilters(opiskeluoikeusTyypit: List[String]): List[OpiskeluoikeusQueryFilter] =
     opiskeluoikeusTyypit.map(t => OpiskeluoikeusQueryFilter.OpiskeluoikeudenTyyppi(Koodistokoodiviite(t, "opiskeluoikeudentyyppi")))
 
-  private def validateOpiskeluoikeudenTyypit(tyypit: List[String]): Boolean =
-    tyypit.forall(t => application.koodistoViitePalvelu.validate("opiskeluoikeudentyyppi", t).isDefined)
+  private def validateOpiskeluoikeudenTyypit(tyypit: List[String]): Boolean = {
+    val notSupportedTyypit = List("korkeakoulutus", "ylioppilastutkinto")
+    def validate(tyyppi: String) = application.koodistoViitePalvelu.validate("opiskeluoikeudentyyppi", tyyppi).isDefined && !notSupportedTyypit.contains(tyyppi)
+    tyypit.forall(validate)
+  }
 }
