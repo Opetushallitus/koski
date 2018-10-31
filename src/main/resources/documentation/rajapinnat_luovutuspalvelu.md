@@ -106,9 +106,8 @@ Vastaus kun Ylioppilastutkintorekisterin tietoja ei saada haettua:
       }
     ]
 
-Muut virheet:
-
-    Tulossa
+Myös muita virheitä voi esiintyä. Esim. HTTP status 400 ja "badRequest.queryParam" tarkoittaa että
+pyynnössä oli jotain virheellistä. HTTP status 5xx tarkoittaa tilapäistä virhettä Koskessa.
 
 ---------------
 
@@ -138,7 +137,7 @@ Esimerkkipyyntö:
 
     {
       "v": 1,
-      "hetut": ["180859-914S", ...],
+      "hetut": ["180859-914S", "020654-9025", "010326-953H"],
       "opiskeluoikeudenTyypit": ["perusopetus"]
     }
 
