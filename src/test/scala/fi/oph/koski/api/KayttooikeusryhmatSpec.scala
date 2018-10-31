@@ -290,7 +290,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
 
   "viranomainen jolla luovutuspalveluoikeudet" - {
     "voi kutsua luovutuspalveluapeja" in {
-      val body = HetuRequestV1(1, MockOppijat.ysiluokkalainen.hetu.get, List("perusopetus"), None)
+      val body = HetuRequestV1(1, MockOppijat.ysiluokkalainen.hetu.get, List("perusopetus"))
       post("api/luovutuspalvelu/hetu", JsonSerializer.writeWithRoot(body), headers = authHeaders(MockUsers.luovutuspalveluKäyttäjä) ++ jsonContent) {
         verifyResponseStatusOk()
       }
@@ -326,7 +326,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
 
   "viranomainen jolla ei ole luovutuspalveluoikeuksia" - {
     "ei voi kutsua luovutuspalveluapeja" in {
-      val body = HetuRequestV1(1, MockOppijat.ysiluokkalainen.hetu.get, List("perusopetus"), None)
+      val body = HetuRequestV1(1, MockOppijat.ysiluokkalainen.hetu.get, List("perusopetus"))
       post("api/luovutuspalvelu/hetu", JsonSerializer.writeWithRoot(body), headers = authHeaders(MockUsers.perusopetusViranomainen) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainViranomainen())
       }
