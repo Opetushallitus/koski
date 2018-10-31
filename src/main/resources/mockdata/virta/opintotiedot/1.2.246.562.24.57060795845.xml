@@ -1,0 +1,338 @@
+<?xml version="1.0"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+  <SOAP-ENV:Header/>
+  <SOAP-ENV:Body>
+    <virtaluku:OpiskelijanKaikkiTiedotResponse xmlns:virtaluku="http://tietovaranto.csc.fi/luku">
+      <virta:Virta xmlns:virta="urn:mace:funet.fi:virta/2015/09/01">
+        <virta:Opiskelija avain="26604">
+          <virta:Henkilotunnus>270191-4208</virta:Henkilotunnus>
+          <virta:KansallinenOppijanumero>1.2.246.562.24.57060795845</virta:KansallinenOppijanumero>
+          <virta:Opiskeluoikeudet>
+            <virta:Opiskeluoikeus avain="30759" opiskelijaAvain="26604">
+              <virta:AlkuPvm>2015-08-20</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-07-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2015-08-20</virta:AlkuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>1</virta:Tyyppi>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="TXK Tieto- ja viestint&#xE4;tekniikan tutkinto-ohjelma">
+                <virta:AlkuPvm>2015-08-20</virta:AlkuPvm>
+                <virta:Koulutuskoodi>651301</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>049</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">7</virta:Koulutusala>
+              <virta:Laajuus>
+                <virta:Opintopiste>240</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
+          </virta:Opiskeluoikeudet>
+          <virta:LukukausiIlmoittautumiset>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="26604" opiskeluoikeusAvain="30759">
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2015-08-20</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2015-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2015-12-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="26604" opiskeluoikeusAvain="30759">
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2016-01-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2016-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2016-07-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="26604" opiskeluoikeusAvain="30759">
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2016-08-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2016-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2016-12-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="26604" opiskeluoikeusAvain="30759">
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2017-01-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2017-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2017-07-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="26604" opiskeluoikeusAvain="30759">
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2017-08-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2017-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2017-12-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="26604" opiskeluoikeusAvain="30759">
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2018-01-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2018-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2018-07-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+          </virta:LukukausiIlmoittautumiset>
+          <virta:Opintosuoritukset>
+            <virta:Opintosuoritus avain="3285836" koulutusmoduulitunniste="TXK15S1E TX00BT41-3012" opiskelijaAvain="26604" opiskeluoikeusAvain="30759">
+              <virta:SuoritusPvm>2015-10-25</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>15</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Oliot</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">7</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3285837" koulutusmoduulitunniste="TXK15S1E TX00CI97-3001" opiskelijaAvain="26604" opiskeluoikeusAvain="30759">
+              <virta:SuoritusPvm>2016-04-01</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>15</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Pelit ja mobiilit</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">7</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3285838" koulutusmoduulitunniste="TXK15S1E TX00BT44-3012" opiskelijaAvain="26604" opiskeluoikeusAvain="30759">
+              <virta:SuoritusPvm>2016-05-17</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>15</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Verkot</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">7</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3285839" koulutusmoduulitunniste="TXK15S1E TX00CF87-3003" opiskelijaAvain="26604" opiskeluoikeusAvain="30759">
+              <virta:SuoritusPvm>2015-12-21</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>15</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Laitteet</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">7</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="4288252" koulutusmoduulitunniste="TXK15S1E TX00CD86-3005" opiskelijaAvain="26604" opiskeluoikeusAvain="30759">
+              <virta:SuoritusPvm>2016-12-16</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>2</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Olio-ohjelmointi (C++)</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3285840" koulutusmoduulitunniste="TXK15S1E TX00CD87-3005" opiskelijaAvain="26604" opiskeluoikeusAvain="30759">
+              <virta:SuoritusPvm>2016-10-24</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Pelisuunnittelu</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">7</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3285841" koulutusmoduulitunniste="TXK15S1E TX00CD91-3005" opiskelijaAvain="26604" opiskeluoikeusAvain="30759">
+              <virta:SuoritusPvm>2016-10-15</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Pelimatematiikka</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">7</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="4353141" koulutusmoduulitunniste="TXK15S1E TX00CD89-3005" opiskelijaAvain="26604" opiskeluoikeusAvain="30759">
+              <virta:SuoritusPvm>2016-12-29</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Pelimoottorit</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">7</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="4242413" koulutusmoduulitunniste="TXK15S1E TX00CD90-3004" opiskelijaAvain="26604" opiskeluoikeusAvain="30759">
+              <virta:SuoritusPvm>2016-11-10</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Tietokannat ja pelipalvelimet</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="4299797" koulutusmoduulitunniste="TXK15S1E TX00CD88-3004" opiskelijaAvain="26604" opiskeluoikeusAvain="30759">
+              <virta:SuoritusPvm>2016-12-22</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>1</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Pelifysiikka</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">5</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="4381553" koulutusmoduulitunniste="TXK15S1E TX00CG82-3003" opiskelijaAvain="26604" opiskeluoikeusAvain="30759">
+              <virta:SuoritusPvm>2017-03-16</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>2</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Tietorakenteet ja algoritmit</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">7</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="4384639" koulutusmoduulitunniste="TXK15S1E TX00CG83-3004" opiskelijaAvain="26604" opiskeluoikeusAvain="30759">
+              <virta:SuoritusPvm>2017-03-21</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>1</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Ohjelmistoarkkitehtuurit ja &#x2013;mallit</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">7</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="4386009" koulutusmoduulitunniste="TXK15S1E TX00CG84-3003" opiskelijaAvain="26604" opiskeluoikeusAvain="30759">
+              <virta:SuoritusPvm>2017-03-22</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>2</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>K&#xE4;ytt&#xF6;j&#xE4;rjestelm&#xE4;t ja pelialustat</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">7</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="4425364" koulutusmoduulitunniste="TXK15S1E TX00CR65-3001" opiskelijaAvain="26604" opiskeluoikeusAvain="30759">
+              <virta:SuoritusPvm>2017-05-11</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>15</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Peliprojekti</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">7</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3285842" koulutusmoduulitunniste="TXK15S1E TI00CJ45-3002" opiskelijaAvain="26604" opiskeluoikeusAvain="30759">
+              <virta:SuoritusPvm>2016-08-25</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Introduction to Japanese Language &amp;amp; Culture</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">7</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+          </virta:Opintosuoritukset>
+        </virta:Opiskelija>
+      </virta:Virta>
+    </virtaluku:OpiskelijanKaikkiTiedotResponse>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

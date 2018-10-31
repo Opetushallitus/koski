@@ -22,7 +22,8 @@ case class OppijaHenkilö(
   äidinkieli: Option[String] = None,
   kansalaisuus: Option[List[String]] = None,
   modified: Long = 0,
-  turvakielto: Boolean = false
+  turvakielto: Boolean = false,
+  linkitetytOidit: List[String] = Nil
 ) extends HenkilönTunnisteet {
   @SyntheticProperty
   def preventSerialization: Nothing = ??? // ensure this class never gets serialized to JSON
@@ -30,7 +31,6 @@ case class OppijaHenkilö(
   def toHenkilötiedotJaOid = HenkilötiedotJaOid(oid, hetu, etunimet, kutsumanimi, sukunimi)
 
   // Ei vielä tueta
-  override def linkitetytOidit: List[String] = Nil
   override def vanhatHetut: List[String] = Nil
 }
 
@@ -70,9 +70,9 @@ case class OpintopolkuHenkilöRepository(henkilöt: OpintopolkuHenkilöFacade, k
     henkilöt.findOppijaByOid(oid)
   }
 
-  def findByOids(oids: List[String]): List[OppijaHenkilö] = oids match {
+  def findByOidsNoSlaveOids(oids: List[String]): List[OppijaHenkilö] = oids match {
     case Nil => Nil // <- authentication-service fails miserably with empty input list
-    case _ => henkilöt.findOppijatByOids(oids)
+    case _ => henkilöt.findOppijatNoSlaveOids(oids)
   }
 
   // Hakee master-henkilön, jos eri kuin tämä henkilö

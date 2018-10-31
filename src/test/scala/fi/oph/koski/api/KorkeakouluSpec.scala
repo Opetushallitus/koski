@@ -1,7 +1,7 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.schema._
 import org.scalatest.{FreeSpec, Matchers}
 
@@ -50,6 +50,16 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
         oikeudet(1).asInstanceOf[KorkeakoulunOpiskeluoikeus].suoritukset.map(_.valmis) foreach {
           _ should equal(true)
         }
+      }
+
+      "Hetuton löytyy oidilla" in {
+        val oikeudet = getOpiskeluoikeudet(MockOppijat.virtaOppijaHetuton.henkilö.oid)
+        oikeudet.length should equal(1)
+      }
+
+      "Linkitetyn oppijan slave tiedoilla löytyy" in {
+        val oikeudet = getOpiskeluoikeudet(MockOppijat.virtaOppija.oid)
+        oikeudet.length should equal(2)
       }
 
       "Ilmoittautumisjaksot" - {

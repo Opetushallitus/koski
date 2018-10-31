@@ -57,7 +57,7 @@ case class OpiskeluoikeusQueryContext(request: HttpServletRequest)(implicit kosk
       oppijatJaOidit: Seq[(Oid, List[OpiskeluoikeusRow])] =>
         val oids: List[String] = oppijatJaOidit.map(_._1).toList
 
-        val henkilöt: Map[String, OppijaHenkilö] = application.henkilöRepository.findByOids(oids).map(henkilö => (henkilö.oid, henkilö)).toMap
+        val henkilöt: Map[String, OppijaHenkilö] = application.henkilöRepository.findByOidsNoSlaveOids(oids).map(henkilö => (henkilö.oid, henkilö)).toMap
 
         val oppijat: Iterable[(OppijaHenkilö, List[OpiskeluoikeusRow])] = oppijatJaOidit.flatMap { case (oid, opiskeluOikeudet) =>
           henkilöt.get(oid) match {

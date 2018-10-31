@@ -50,7 +50,7 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
 
 
   private def runUpdate(oids: List[Oid], koskiOids: List[Oid], lastContext: HenkilöUpdateContext) = {
-    val oppijat: List[OppijaHenkilö] = findOppijat(koskiOids)
+    val oppijat: List[OppijaHenkilö] = findOppijatWithoutSlaveOids(koskiOids)
 
     val oppijatWithMaster: List[WithModifiedTime] = oppijat.map { oppija =>
       WithModifiedTime(application.henkilöRepository.opintopolku.withMasterInfo(oppija), oppija.modified)
@@ -59,7 +59,7 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
     val oppijatByOid: Map[Oid, WithModifiedTime] = oppijatWithMaster.groupBy(_.tiedot.henkilö.oid).mapValues(_.head)
 
     val lastModified = oppijat.lastOption.map(_.modified + 1)
-      .orElse(oids.lastOption.flatMap(o => findOppijat(List(o)).headOption).map(_.modified))
+      .orElse(oids.lastOption.flatMap(o => findOppijatWithoutSlaveOids(List(o)).headOption).map(_.modified))
       .getOrElse(lastContext.lastRun)
 
     if (oids.nonEmpty) {
@@ -93,8 +93,8 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
     }
   }
 
-  private def findOppijat(filteredOids: List[String]) =
-    application.opintopolkuHenkilöFacade.findOppijatByOids(filteredOids).sortBy(_.modified)
+  private def findOppijatWithoutSlaveOids(filteredOids: List[String]) =
+    application.opintopolkuHenkilöFacade.findOppijatNoSlaveOids(filteredOids).sortBy(_.modified)
 
   private def henkilöUpdateContext(lastRun: Long) = Some(JsonSerializer.serializeWithRoot(HenkilöUpdateContext(lastRun)))
 }

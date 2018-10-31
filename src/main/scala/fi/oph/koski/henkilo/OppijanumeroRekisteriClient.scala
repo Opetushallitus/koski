@@ -8,13 +8,17 @@ import fi.oph.koski.http._
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.schema.Henkilö.Oid
+import scalaz.Nondeterminism
 import scalaz.concurrent.Task
 
 case class OppijanumeroRekisteriClient(config: Config) {
-  def findOrCreate(createUserInfo: UusiOppijaHenkilö) = oidServiceHttp.post(uri"/oppijanumerorekisteri-service/s2s/findOrCreateHenkiloPerustieto", createUserInfo)(json4sEncoderOf[UusiOppijaHenkilö]) {
-    case (x, data, _) if x <= 201 => Right(JsonSerializer.parse[OppijaNumerorekisteriOppija](data, ignoreExtras = true).toOppijaHenkilö)
+  def findOrCreate(createUserInfo: UusiOppijaHenkilö): Task[Either[HttpStatus, OppijaHenkilö]] = oidServiceHttp.post(uri"/oppijanumerorekisteri-service/s2s/findOrCreateHenkiloPerustieto", createUserInfo)(json4sEncoderOf[UusiOppijaHenkilö]) {
+    case (x, data, _) if x <= 201 => Right(JsonSerializer.parse[OppijaNumerorekisteriOppija](data, ignoreExtras = true))
     case (400, error, _) => Left(KoskiErrorCategory.badRequest.validation.henkilötiedot.virheelliset(error))
     case (status, text, uri) => throw HttpStatusException(status, text, uri)
+  }.flatMap {
+    case Right(o) => toOppijaHenkilö(o).map(Right(_))
+    case Left(status) => Task.now(status).map(Left(_))
   }
 
   private val oidServiceHttp = VirkailijaHttpClient(makeServiceConfig(config), "/oppijanumerorekisteri-service", config.getBoolean("authentication-service.useCas"))
@@ -27,20 +31,38 @@ case class OppijanumeroRekisteriClient(config: Config) {
     oidServiceHttp.post(uri"/oppijanumerorekisteri-service/s2s/henkilo/yhteystiedot", YhteystiedotHaku(List(organisaatioOid), List(käyttöikeusRyhmä)))(json4sEncoderOf[YhteystiedotHaku])(Http.parseJson[List[Yhteystiedot]])
         .map(_.flatMap(_.yhteystiedotRyhma.flatMap(_.yhteystieto.find(_.yhteystietoTyyppi == "YHTEYSTIETO_SAHKOPOSTI").map(_.yhteystietoArvo))))
 
-  def findOppijatByOids(oids: List[Oid]): Task[List[OppijaHenkilö]] =
-    oidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloOidList", oids)(json4sEncoderOf[List[String]])(Http.parseJson[List[OppijaNumerorekisteriOppija]]).map(_.map(_.toOppijaHenkilö))
+  def findOppijatNoSlaveOids(oids: List[Oid]): Task[List[OppijaHenkilö]] =
+    findOnrOppijatByOids(oids).map(_.map(_.toOppijaHenkilö(Nil)))
 
   def findChangedOppijaOids(since: Long, offset: Int, amount: Int): Task[List[Oid]] =
     oidServiceHttp.get(uri"/oppijanumerorekisteri-service/s2s/changedSince/$since?offset=$offset&amount=$amount")(Http.parseJson[List[String]])
 
+  def findOppijaByOid(oid: Oid): Task[Option[OppijaHenkilö]] =
+    findOnrOppijatByOids(List(oid)).flatMap(toOppijaHenkilöt).map(_.headOption)
+
   def findOppijaByHetu(hetu: String): Task[Option[OppijaHenkilö]] =
-    oidServiceHttp.get(uri"/oppijanumerorekisteri-service/henkilo/hetu=$hetu")(Http.parseJsonOptional[OppijaNumerorekisteriOppija]).map(_.map(_.toOppijaHenkilö))
+    oidServiceHttp.get(uri"/oppijanumerorekisteri-service/henkilo/hetu=$hetu")(Http.parseJsonOptional[OppijaNumerorekisteriOppija])
+      .flatMap(toOppijaHenkilöt(_).map(_.headOption))
 
   def findMasterOppija(oid: String): Task[Option[OppijaHenkilö]] =
-    oidServiceHttp.get(uri"/oppijanumerorekisteri-service/henkilo/$oid/master")(Http.parseJsonOptional[OppijaNumerorekisteriOppija]).map(_.map(_.toOppijaHenkilö))
+    oidServiceHttp.get(uri"/oppijanumerorekisteri-service/henkilo/$oid/master")(Http.parseJsonOptional[OppijaNumerorekisteriOppija])
+      .flatMap(toOppijaHenkilöt(_).map(_.headOption))
 
-  def findOppijatByHetus(hetus: List[String]): Task[List[OppijaHenkilö]] =
-    oidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloHetuList", hetus)(json4sEncoderOf[List[String]])(Http.parseJson[List[OppijaNumerorekisteriOppija]]).map(_.map(_.toOppijaHenkilö))
+  def findOppijatByHetusNoSlaveOids(hetus: List[String]): Task[List[OppijaHenkilö]] =
+    oidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloHetuList", hetus)(json4sEncoderOf[List[String]])(Http.parseJson[List[OppijaNumerorekisteriOppija]])
+      .map(_.map(_.toOppijaHenkilö(Nil)))
+
+  def findSlaveOids(masterOid: String): Task[List[String]] =
+    oidServiceHttp.get(uri"/oppijanumerorekisteri-service/henkilo/$masterOid/slaves")(Http.parseJson[List[OppijaNumerorekisteriOppija]]).map(_.map(_.oidHenkilo))
+
+  private def findOnrOppijatByOids(oids: List[Oid]): Task[List[OppijaNumerorekisteriOppija]] =
+    oidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloOidList", oids)(json4sEncoderOf[List[String]])(Http.parseJson[List[OppijaNumerorekisteriOppija]])
+
+  private def toOppijaHenkilöt(onrOppijat: Iterable[OppijaNumerorekisteriOppija]): Task[List[OppijaHenkilö]] =
+    Nondeterminism[Task].gather(onrOppijat.toSeq.map(toOppijaHenkilö))
+
+  private def toOppijaHenkilö(onrOppija: OppijaNumerorekisteriOppija): Task[OppijaHenkilö] =
+    findSlaveOids(onrOppija.oidHenkilo).map(onrOppija.toOppijaHenkilö)
 }
 
 case class KäyttäjäHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, asiointiKieli: Option[Kieli])
@@ -56,7 +78,19 @@ case class OppijaNumerorekisteriOppija(
   modified: Long,
   turvakielto: Option[Boolean]
 ) {
-  def toOppijaHenkilö = OppijaHenkilö(oidHenkilo, sukunimi, etunimet, kutsumanimi, hetu, syntymaaika, aidinkieli.map(_.kieliKoodi), kansalaisuus.map(_.map(_.kansalaisuusKoodi)), modified, turvakielto.getOrElse(false))
+  def toOppijaHenkilö(linkitetytOidit: List[String]) = OppijaHenkilö(
+    oid = oidHenkilo,
+    sukunimi = sukunimi,
+    etunimet = etunimet,
+    kutsumanimi = kutsumanimi,
+    hetu = hetu,
+    syntymäaika = syntymaaika,
+    äidinkieli = aidinkieli.map(_.kieliKoodi),
+    kansalaisuus = kansalaisuus.map(_.map(_.kansalaisuusKoodi)),
+    modified = modified,
+    turvakielto = turvakielto.getOrElse(false),
+    linkitetytOidit = linkitetytOidit
+  )
 }
 case class UusiOppijaHenkilö(hetu: Option[String], sukunimi: String, etunimet: String, kutsumanimi: String, henkiloTyyppi: String = "OPPIJA")
 

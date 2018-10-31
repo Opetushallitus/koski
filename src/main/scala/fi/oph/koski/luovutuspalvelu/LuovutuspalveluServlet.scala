@@ -68,7 +68,7 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
       parseBulkHetuRequestV1(parsedJson) match {
         case Left(status) => haltWithStatus(status)
         case Right(req) => {
-          val henkilot = application.opintopolkuHenkilöFacade.findOppijatByHetus(req.hetut)
+          val henkilot = application.opintopolkuHenkilöFacade.findOppijatByHetusNoSlaveOids(req.hetut)
           val oids = henkilot.map(_.toHenkilötiedotJaOid.oid)
           val oidToHenkilo = henkilot.map(h => h.oid -> h).toMap
           val _koskiSession = koskiSession // take current session so it can be used in observable

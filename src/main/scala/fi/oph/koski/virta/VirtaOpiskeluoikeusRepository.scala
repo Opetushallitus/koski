@@ -21,10 +21,7 @@ case class VirtaOpiskeluoikeusRepository(
   private val converter = VirtaXMLConverter(oppilaitosRepository, koodistoViitePalvelu)
 
   override protected def uncachedOpiskeluoikeudet(cacheKey: VirtaCacheKey): List[KorkeakoulunOpiskeluoikeus] = {
-    val opiskeluoikeudet = cacheKey.hetut.headOption match {
-      case Some(hetu) => virta.opintotiedot(VirtaHakuehtoHetu(hetu)).toList.flatMap(converter.convertToOpiskeluoikeudet)
-      case None => Nil
-    }
+    val opiskeluoikeudet = (virtaHaku(cacheKey.hetut.map(VirtaHakuehtoHetu)) ++ virtaHaku(cacheKey.oidit.map(VirtaHakuehtoKansallinenOppijanumero))).distinct
     opiskeluoikeudet.foreach(validate)
     opiskeluoikeudet
   }
@@ -37,6 +34,12 @@ case class VirtaOpiskeluoikeusRepository(
     validator.foreach(_.validateAsJson(oppija)(KoskiSession.systemUser, AccessType.read).left.foreach { status: HttpStatus =>
       logger.warn("Ulkoisesta järjestelmästä saatu opiskeluoikeus sisältää validointivirheitä " + status)
     })
+  }
+
+  private def virtaHaku(hakuehdot: List[VirtaHakuehto]): List[KorkeakoulunOpiskeluoikeus] = if (hakuehdot.isEmpty) {
+    Nil
+  } else {
+    virta.opintotiedotMassahaku(hakuehdot).toList.flatMap(converter.convertToOpiskeluoikeudet)
   }
 }
 

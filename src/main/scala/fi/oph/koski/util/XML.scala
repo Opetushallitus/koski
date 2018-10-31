@@ -5,6 +5,7 @@ import scala.xml.{Atom, Elem, Node, PrettyPrinter}
 
 object XML {
   def prettyPrint(xml: Node) = new PrettyPrinter(200, 2).format(xml)
+  def prettyPrintNodes(xml: Seq[Node]) = new PrettyPrinter(200, 2).formatNodes(xml)
 
   def texts(nodes: Seq[Node]) = nodes.map(_.text).flatMap(_.split("\n")).map(_.trim).filterNot(_ == "").mkString(" ")
 

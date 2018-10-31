@@ -38,12 +38,12 @@ case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta:
     KeyValueCache(new ExpiringCache("HenkilöRepository", ExpiringCache.Params(1.hour, maxSize = 100, storeValuePredicate = {
       case (_, value) => value != None // Don't cache None results
     })), opintopolku.findByOid)
-  
+
   // findByOid is locally cached
   def findByOid(oid: String): Option[OppijaHenkilö] = oidCache(oid)
   // Other methods just call the non-cached implementation
 
-  def findByOids(oids: List[String]): List[OppijaHenkilö] = opintopolku.findByOids(oids)
+  def findByOidsNoSlaveOids(oids: List[String]): List[OppijaHenkilö] = opintopolku.findByOidsNoSlaveOids(oids)
 
   def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, OppijaHenkilö] = opintopolku.findOrCreate(henkilö)
 
@@ -91,8 +91,8 @@ case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta:
     }
   }
 
-  def findHenkilötiedot(query: String)(implicit user: KoskiSession): List[OppijaHenkilö] =
-    findByOids(perustiedotRepository.findOids(query))
+  def findHenkilötiedotNoSlaveOids(query: String)(implicit user: KoskiSession): List[OppijaHenkilö] =
+    findByOidsNoSlaveOids(perustiedotRepository.findOids(query))
 
   def oppijaHenkilöToTäydellisetHenkilötiedot(henkilö: OppijaHenkilö): TäydellisetHenkilötiedot =
     opintopolku.oppijaHenkilöToTäydellisetHenkilötiedot(henkilö)
