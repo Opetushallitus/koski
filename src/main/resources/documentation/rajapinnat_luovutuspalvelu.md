@@ -28,8 +28,7 @@ Esimerkkipyyntö:
     {
       "v": 1,
       "hetu": "180859-914S",
-      "opiskeluoikeudenTyypit": ["perusopetus", "korkeakoulutus"],
-      "käyttötarkoitus": "fixme"
+      "opiskeluoikeudenTyypit": ["perusopetus", "korkeakoulutus"]
     }
 
 Pyynnön kenttien kuvaukset:
@@ -40,8 +39,6 @@ Pyynnön kenttien kuvaukset:
     Sallitut arvot löytyvät [opiskeluoikeudentyyppi](/koski/dokumentaatio/koodisto/opiskeluoikeudentyyppi/latest) koodistosta.
     Tällä hetkellä arvot `korkeakoulutus` ja `ylioppilastutkinto` aiheuttavat ylimääräisen kutsun taustarekisteriin
     (Virta ja Ylioppilastutkintorekisteri), joten niitä tulee käyttää vain jos tiedot todella tarvitaan.
- * `käyttötarkoitus` - (alustava, saa kommentoida) yksilöi tiedon käyttötarkoituksen kutsujan organisaation sisällä. 
-   Sovitaan tarkemmin OPH:n ja käyttäjän välisessä sopimuksessa. Käyttötarkoitus tallennetaan Koski-palvelun audit-lokiin.  
      
 Vastaus, kun henkilö löytyy:
 
@@ -142,8 +139,7 @@ Esimerkkipyyntö:
     {
       "v": 1,
       "hetut": ["180859-914S", ...],
-      "opiskeluoikeudenTyypit": ["perusopetus"],
-      "käyttötarkoitus": "fixme"
+      "opiskeluoikeudenTyypit": ["perusopetus"]
     }
 
 Pyynnön kenttien kuvaukset:
@@ -153,8 +149,6 @@ Pyynnön kenttien kuvaukset:
  * `opiskeluoikeudentyypit` - lista opiskeluoikeuden tyyppejä, joista kutsuja on kiinnostunut.
     Sallitut arvot löytyvät [opiskeluoikeudentyyppi](/koski/dokumentaatio/koodisto/opiskeluoikeudentyyppi/latest) koodistosta.
     `korkeakoulutus`- tai `ylioppilastutkinto`-tyyppisiä opiskeluoikeuksia ei voi hakea massahaulla.
- * `käyttötarkoitus` - (alustava, saa kommentoida) yksilöi tiedon käyttötarkoituksen kutsujan organisaation sisällä.
-   Sovitaan tarkemmin OPH:n ja käyttäjän välisessä sopimuksessa. Käyttötarkoitus tallennetaan Koski-palvelun audit-lokiin.
 
 Vastaus, kun pyyntö suoritetaan onnistuneesti:
 

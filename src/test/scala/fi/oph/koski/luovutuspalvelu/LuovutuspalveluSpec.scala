@@ -50,7 +50,7 @@ class LuovutuspalveluSpec extends FreeSpec with LocalJettyHttpSpecification with
     "Palauttaa 400 jos v-kentässä tuntematon arvo" in {
       post(
         "api/luovutuspalvelu/hetu",
-        JsonSerializer.writeWithRoot(HetuRequestV1(666, MockOppijat.eero.hetu.get, List("ammatillinenkoulutus"), None)),
+        JsonSerializer.writeWithRoot(HetuRequestV1(666, MockOppijat.eero.hetu.get, List("ammatillinenkoulutus"))),
         headers = authHeaders(MockUsers.luovutuspalveluKäyttäjä) ++ jsonContent
       ) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam("Tuntematon versio"))
@@ -138,7 +138,7 @@ class LuovutuspalveluSpec extends FreeSpec with LocalJettyHttpSpecification with
   private def postHetu[A](hetu: String, opiskeluoikeudenTyypit: List[String])(f: => A): A = {
     post(
       "api/luovutuspalvelu/hetu",
-      JsonSerializer.writeWithRoot(HetuRequestV1(1, hetu, opiskeluoikeudenTyypit, None)),
+      JsonSerializer.writeWithRoot(HetuRequestV1(1, hetu, opiskeluoikeudenTyypit)),
       headers = authHeaders(MockUsers.luovutuspalveluKäyttäjä) ++ jsonContent
     )(f)
   }
@@ -146,7 +146,7 @@ class LuovutuspalveluSpec extends FreeSpec with LocalJettyHttpSpecification with
   private def postHetut[A](hetut: List[String], opiskeluoikeudenTyypit: List[String], v: Int = 1)(f: => A): A = {
     post(
       "api/luovutuspalvelu/hetut",
-      JsonSerializer.writeWithRoot(BulkHetuRequestV1(v, hetut, opiskeluoikeudenTyypit, None)),
+      JsonSerializer.writeWithRoot(BulkHetuRequestV1(v, hetut, opiskeluoikeudenTyypit)),
       headers = authHeaders(MockUsers.luovutuspalveluKäyttäjä) ++ jsonContent
     )(f)
   }

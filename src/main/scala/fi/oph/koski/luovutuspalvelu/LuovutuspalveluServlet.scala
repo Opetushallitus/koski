@@ -21,13 +21,13 @@ import org.json4s.JValue
 import org.json4s.JsonAST.{JBool, JObject}
 import org.scalatra.ContentEncodingSupport
 
-case class HetuRequestV1(v: Int, hetu: String, opiskeluoikeudenTyypit: List[String], käyttötarkoitus: Option[String])
+case class HetuRequestV1(v: Int, hetu: String, opiskeluoikeudenTyypit: List[String])
 
 case class HetuResponseV1(henkilö: LuovutuspalveluHenkilöV1, opiskeluoikeudet: Seq[Opiskeluoikeus])
 
 case class LuovutuspalveluHenkilöV1(oid: Henkilö.Oid, hetu: Option[Henkilö.Hetu], syntymäaika: Option[LocalDate],  turvakielto: Boolean)
 
-case class BulkHetuRequestV1(v: Int, hetut: List[String], opiskeluoikeudenTyypit: List[String], käyttötarkoitus: Option[String])
+case class BulkHetuRequestV1(v: Int, hetut: List[String], opiskeluoikeudenTyypit: List[String])
 
 class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends ApiServlet with ObservableSupport with RequiresLuovutuspalvelu with ContentEncodingSupport with NoCache with Timing {
 
