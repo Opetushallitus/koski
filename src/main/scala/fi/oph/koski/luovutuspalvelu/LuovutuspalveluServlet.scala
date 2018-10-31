@@ -4,14 +4,11 @@ import java.time.LocalDate
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.OpiskeluoikeusRow
-import fi.oph.koski.henkilo.{HenkilöOid, Hetu, OppijaHenkilö}
+import fi.oph.koski.henkilo.{Hetu, OppijaHenkilö}
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.RequiresLuovutuspalvelu
 import fi.oph.koski.schema.{Henkilö, OpiskeluoikeudenTyyppi, Opiskeluoikeus, TäydellisetHenkilötiedot}
-import fi.oph.koski.servlet.{ApiServlet, NoCache}
-import fi.oph.koski.json.{JsonSerializer, SensitiveDataFilter}
-import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.log.KoskiMessageField._
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.AuditLogMessage
@@ -90,14 +87,7 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
       .left.map(errors => KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(errors)))
       .filterOrElse(_.v == 1, KoskiErrorCategory.badRequest.queryParam("Tuntematon versio"))
       .flatMap(req => Hetu.validFormat(req.hetu).map(_ => req))
-      .flatMap(req => {
-        val tuntematonTyyppi = req.opiskeluoikeudenTyypit.find(t => application.koodistoViitePalvelu.validate("opiskeluoikeudentyyppi", t).isEmpty)
-        if (tuntematonTyyppi.isDefined) {
-          Left(KoskiErrorCategory.badRequest.queryParam("Tuntematon opiskeluoikeudenTyyppi"))
-        } else {
-          Right(req)
-        }
-      })
+      .flatMap(req => validateOpiskeluoikeudenTyypit(req.opiskeluoikeudenTyypit, allowVirtaOrYtr = true).map(_ => req))
   }
 
   private def parseBulkHetuRequestV1(parsedJson: JValue): Either[HttpStatus, BulkHetuRequestV1] = {
@@ -105,9 +95,8 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
     JsonSerializer.validateAndExtract[BulkHetuRequestV1](parsedJson)
       .left.map(errors => KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(errors)))
       .filterOrElse(_.v == 1, KoskiErrorCategory.badRequest.queryParam("Tuntematon versio"))
+      .flatMap(req => validateOpiskeluoikeudenTyypit(req.opiskeluoikeudenTyypit, allowVirtaOrYtr = false).map(_ => req))
       .filterOrElse(_.hetut.length <= MaxHetus, KoskiErrorCategory.badRequest.queryParam(s"Liian monta hetua, enintään $MaxHetus sallittu"))
-      .filterOrElse(req => req.opiskeluoikeudenTyypit.length > 0, KoskiErrorCategory.badRequest.queryParam("Opiskeluoikeuden tyyppejä ei löytynyt"))
-      .filterOrElse(req => validateOpiskeluoikeudenTyypit(req.opiskeluoikeudenTyypit), KoskiErrorCategory.badRequest.queryParam("Tuntematon opiskeluoikeudentyyppi"))
       .flatMap(req => {
         req.hetut.map(Hetu.validFormat).collectFirst { case Left(status) => status } match {
           case Some(status) => Left(status)
@@ -131,9 +120,16 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
   private def opiskeluoikeusTyyppiQueryFilters(opiskeluoikeusTyypit: List[String]): List[OpiskeluoikeusQueryFilter] =
     opiskeluoikeusTyypit.map(t => OpiskeluoikeusQueryFilter.OpiskeluoikeudenTyyppi(Koodistokoodiviite(t, "opiskeluoikeudentyyppi")))
 
-  private def validateOpiskeluoikeudenTyypit(tyypit: List[String]): Boolean = {
-    val notSupportedTyypit = List("korkeakoulutus", "ylioppilastutkinto")
-    def validate(tyyppi: String) = application.koodistoViitePalvelu.validate("opiskeluoikeudentyyppi", tyyppi).isDefined && !notSupportedTyypit.contains(tyyppi)
-    tyypit.forall(validate)
+  private def validateOpiskeluoikeudenTyypit(tyypit: List[String], allowVirtaOrYtr: Boolean): Either[HttpStatus, List[String]] = {
+    val virtaYtrTyypit = List("korkeakoulutus", "ylioppilastutkinto")
+    if (tyypit.isEmpty) {
+      Left(KoskiErrorCategory.badRequest.queryParam("Opiskeluoikeuden tyypit puuttuvat"))
+    } else if (!tyypit.forall(application.koodistoViitePalvelu.validate("opiskeluoikeudentyyppi", _).isDefined)) {
+      Left(KoskiErrorCategory.badRequest.queryParam("Tuntematon opiskeluoikeudentyyppi"))
+    } else if (!allowVirtaOrYtr && tyypit.exists(virtaYtrTyypit.contains(_))) {
+      Left(KoskiErrorCategory.badRequest.queryParam("Korkeakoulutus tai ylioppilastutkinto ei sallittu"))
+    } else {
+      Right(tyypit)
+    }
   }
 }
