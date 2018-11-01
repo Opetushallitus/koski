@@ -32,6 +32,7 @@ object OpiskeluoikeusQueryFilter {
   case class OppijaOidHaku(oids: Seq[String]) extends OpiskeluoikeusQueryFilter
   case class MuuttunutEnnen(aikaleima: Instant) extends OpiskeluoikeusQueryFilter
   case class MuuttunutJälkeen(aikaleima: Instant) extends OpiskeluoikeusQueryFilter
+  case class OneOfOpiskeluoikeudenTyypit(opiskeluoikeudenTyypit: List[OpiskeluoikeudenTyyppi]) extends OpiskeluoikeusQueryFilter
 
   def parse(params: List[(String, String)])(implicit koodisto: KoodistoViitePalvelu, organisaatiot: OrganisaatioRepository, session: KoskiSession): Either[HttpStatus, List[OpiskeluoikeusQueryFilter]] = OpiskeluoikeusQueryFilterParser.parse(params)
 }
@@ -87,7 +88,7 @@ private object OpiskeluoikeusQueryFilterParser {
       case (p, v) if (p == "muuttunutEnnen") => dateTimeParam((p, v)).right.map(MuuttunutEnnen(_))
       case (p, v) if (p == "muuttunutJälkeen") => dateTimeParam((p, v)).right.map(MuuttunutJälkeen(_))
       case (p, _) => Left(KoskiErrorCategory.badRequest.queryParam.unknown("Unsupported query parameter: " + p))
-      // IdHaku, OppijaOidHaku missing from here (intentionally)
+      // IdHaku, OppijaOidHaku, OneOfOpiskeluoikeudenTyypit missing from here (intentionally)
     }
 
     queryFilters.partition(_.isLeft) match {
