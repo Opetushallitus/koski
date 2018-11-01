@@ -21,6 +21,7 @@ object OpiskeluoikeusQueryFilter {
   case class OpiskeluoikeusAlkanutAikaisintaan(päivä: LocalDate) extends OpiskeluoikeusQueryFilter
   case class OpiskeluoikeusAlkanutViimeistään(päivä: LocalDate) extends OpiskeluoikeusQueryFilter
   case class OpiskeluoikeudenTyyppi(tyyppi: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
+  case class OneOfOpiskeluoikeudenTyypit(opiskeluoikeudenTyypit: List[OpiskeluoikeudenTyyppi]) extends OpiskeluoikeusQueryFilter
   case class SuorituksenTyyppi(tyyppi: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
   case class OpiskeluoikeudenTila(tila: Koodistokoodiviite) extends OpiskeluoikeusQueryFilter
   case class Tutkintohaku(hakusana: String) extends OpiskeluoikeusQueryFilter
@@ -32,7 +33,6 @@ object OpiskeluoikeusQueryFilter {
   case class OppijaOidHaku(oids: Seq[String]) extends OpiskeluoikeusQueryFilter
   case class MuuttunutEnnen(aikaleima: Instant) extends OpiskeluoikeusQueryFilter
   case class MuuttunutJälkeen(aikaleima: Instant) extends OpiskeluoikeusQueryFilter
-  case class OneOfOpiskeluoikeudenTyypit(opiskeluoikeudenTyypit: List[OpiskeluoikeudenTyyppi]) extends OpiskeluoikeusQueryFilter
 
   def parse(params: List[(String, String)])(implicit koodisto: KoodistoViitePalvelu, organisaatiot: OrganisaatioRepository, session: KoskiSession): Either[HttpStatus, List[OpiskeluoikeusQueryFilter]] = OpiskeluoikeusQueryFilterParser.parse(params)
 }
