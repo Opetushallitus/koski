@@ -78,6 +78,26 @@ class LuovutuspalveluSpec extends FreeSpec with LocalJettyHttpSpecification with
      }
    }
 
+   "Palauttaa valitut opiskeluoikeudenTyypit" in {
+     val henkilot = Set(MockOppijat.amis, MockOppijat.lukiolainen, MockOppijat.ysiluokkalainen)
+     val opiskeluoikeudenTyypit = Set("ammatillinenkoulutus", "lukiokoulutus", "perusopetus")
+     postHetut(henkilot.map(_.hetu.get).toList, opiskeluoikeudenTyypit.toList) {
+       verifyResponseStatusOk()
+       val resp = JsonSerializer.parse[Seq[HetuResponseV1]](body)
+       val actualOpiskeluoikeudenTyypit = resp.flatMap(_.opiskeluoikeudet.map(_.tyyppi.koodiarvo)).toSet
+       actualOpiskeluoikeudenTyypit should equal (opiskeluoikeudenTyypit)
+     }
+   }
+
+   "Palauttaa valitun opiskeluoikeudenTyypin" in {
+     val opiskeluoikeudenTyyppi = Set("ammatillinenkoulutus")
+     postHetut(List(MockOppijat.amis.hetu.get), opiskeluoikeudenTyyppi.toList) {
+       verifyResponseStatusOk()
+       val resp = JsonSerializer.parse[Seq[HetuResponseV1]](body)
+       resp.flatMap(_.opiskeluoikeudet.map(_.tyyppi.koodiarvo)).toSet should equal (opiskeluoikeudenTyyppi)
+     }
+   }
+
    "Palauttaa 400 jos liian monta hetua" in {
      val hetut = List.range(0, 1001).map(_.toString)
      hetut.length should be > 1000
