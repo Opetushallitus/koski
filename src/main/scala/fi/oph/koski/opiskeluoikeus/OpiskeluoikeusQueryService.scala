@@ -53,7 +53,8 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
       case (query, OpiskeluoikeusPäättynytViimeistään(päivä)) => query.filter(_._1.data.#>>(List("päättymispäivä")) <= päivä.toString)
       case (query, OpiskeluoikeusAlkanutAikaisintaan(päivä)) => query.filter(_._1.data.#>>(List("tila", "opiskeluoikeusjaksot", "0", "alku")) >= päivä.toString)
       case (query, OpiskeluoikeusAlkanutViimeistään(päivä)) => query.filter(_._1.data.#>>(List("tila", "opiskeluoikeusjaksot", "0", "alku")) <= päivä.toString)
-      case (query, OpiskeluoikeudenTyyppi(tyyppi)) => query.filter(_._1.data.#>>(List("tyyppi", "koodiarvo")) === tyyppi.koodiarvo)
+      case (query, OpiskeluoikeudenTyyppi(tyyppi)) => query.filter(_._1.koulutusmuoto === tyyppi.koodiarvo)
+      case (query, OneOfOpiskeluoikeudenTyypit(tyypit)) => query.filter(_._1.koulutusmuoto inSet (tyypit.map(_.tyyppi.koodiarvo)))
       case (query, SuorituksenTyyppi(tyyppi)) => query.filter(_._1.data.+>("suoritukset").@>(parseJson(s"""[{"tyyppi":{"koodiarvo":"${tyyppi.koodiarvo}"}}]""")))
       case (query, OpiskeluoikeudenTila(tila)) => query.filter(_._1.data.#>>(List("tila", "opiskeluoikeusjaksot", "-1", "tila", "koodiarvo")) === tila.koodiarvo)
       case (query, OpiskeluoikeusQueryFilter.Toimipiste(toimipisteet)) =>
@@ -72,7 +73,6 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
       case (query, SuoritusJsonHaku(json)) => query.filter(_._1.data.+>("suoritukset").@>(json))
       case (query, MuuttunutEnnen(aikaleima)) => query.filter(_._1.aikaleima < Timestamp.from(aikaleima))
       case (query, MuuttunutJälkeen(aikaleima)) => query.filter(_._1.aikaleima >= Timestamp.from(aikaleima))
-      case (query, OneOfOpiskeluoikeudenTyypit(tyypit)) => query.filter(_._1.data.#>>(List("tyyppi", "koodiarvo")) inSet (tyypit.map(_.tyyppi.koodiarvo)))
       case (query, filter) => throw new InvalidRequestException(KoskiErrorCategory.internalError("Hakua ei ole toteutettu: " + filter))
     }
 
