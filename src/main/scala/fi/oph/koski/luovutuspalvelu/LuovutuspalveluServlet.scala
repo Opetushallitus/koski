@@ -13,7 +13,7 @@ import fi.oph.koski.log.KoskiMessageField._
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.AuditLogMessage
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryContext, OpiskeluoikeusQueryFilter}
-import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.OppijaOidHaku
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{OneOfOpiskeluoikeudenTyypit, OppijaOidHaku}
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}
 import fi.oph.koski.util.Timing
@@ -74,7 +74,7 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
           val _koskiSession = koskiSession // take current session so it can be used in observable
           val auditLogMessages = oids.map(o => AuditLogMessage(OPISKELUOIKEUS_KATSOMINEN, koskiSession, Map(oppijaHenkiloOid -> o)))
           val observable = OpiskeluoikeusQueryContext(request)(koskiSession, application).queryWithDistinctLoggingMsg(
-            OppijaOidHaku(oids) :: opiskeluoikeusTyyppiQueryFilters(req.opiskeluoikeudenTyypit), None, auditLogMessages
+            List(OppijaOidHaku(oids), opiskeluoikeusTyyppiQueryFilters(req.opiskeluoikeudenTyypit)), None, auditLogMessages
           )
           streamResponse[JValue](observable.map(t => JsonSerializer.serializeWithUser(_koskiSession)(buildHetutResponseV1(oidToHenkilo(t._1), t._2))), koskiSession)
         }
@@ -117,8 +117,8 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
       LuovutuspalveluHenkilöV1(h.oid, h.hetu, h.syntymäaika, h.turvakielto),
       oo.map(_.toOpiskeluoikeus))
 
-  private def opiskeluoikeusTyyppiQueryFilters(opiskeluoikeusTyypit: List[String]): List[OpiskeluoikeusQueryFilter] =
-    opiskeluoikeusTyypit.map(t => OpiskeluoikeusQueryFilter.OpiskeluoikeudenTyyppi(Koodistokoodiviite(t, "opiskeluoikeudentyyppi")))
+  private def opiskeluoikeusTyyppiQueryFilters(opiskeluoikeusTyypit: List[String]): OneOfOpiskeluoikeudenTyypit =
+    OneOfOpiskeluoikeudenTyypit(opiskeluoikeusTyypit.map(t => OpiskeluoikeusQueryFilter.OpiskeluoikeudenTyyppi(Koodistokoodiviite(t, "opiskeluoikeudentyyppi"))))
 
   private def validateOpiskeluoikeudenTyypit(tyypit: List[String], allowVirtaOrYtr: Boolean): Either[HttpStatus, List[String]] = {
     val virtaYtrTyypit = List("korkeakoulutus", "ylioppilastutkinto")
