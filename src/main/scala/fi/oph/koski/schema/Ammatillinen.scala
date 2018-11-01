@@ -761,6 +761,7 @@ case class AmmatillisenTutkinnonÄidinkieli(
 case class AmmatillisenTutkinnonViestintäJaVuorovaikutusKielivalinnalla(
   @KoodistoKoodiarvo("VVTK")
   @KoodistoKoodiarvo("VVAI")
+  @KoodistoKoodiarvo("VVVK")
   @KoodistoUri("ammatillisenoppiaineet")
   tunniste: Koodistokoodiviite,
   @Description("Mikä kieli on kyseessä")
