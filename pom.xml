@@ -427,6 +427,9 @@
           <webResources>
             <resource>
               <directory>${basedir}/target/webapp</directory>
+              <excludes>
+                <exclude>test/**</exclude>
+              </excludes>
             </resource>
           </webResources>
         </configuration>
