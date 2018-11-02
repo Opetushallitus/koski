@@ -13,9 +13,9 @@
   <properties>
     <scala.version>2.12.4</scala.version>
     <slick.version>3.2.0</slick.version>
-    <scalatra.version>2.5.0</scalatra.version>
+    <scalatra.version>2.6.3</scalatra.version>
     <json4s.version>3.5.0</json4s.version>
-    <jetty.version>9.4.6.v20170531</jetty.version>
+    <jetty.version>9.4.12.v20180830</jetty.version>
     <prometheus.client.version>0.0.17</prometheus.client.version>
     <scoverage.plugin.version>1.1.1</scoverage.plugin.version>
     <finalName>${project.artifactId}-${project.version}</finalName>
@@ -268,7 +268,7 @@
     <dependency>
       <groupId>org.scalatra</groupId>
       <artifactId>scalatra-scalatest_2.12</artifactId>
-      <version>2.5.0</version>
+      <version>${scalatra.version}</version>
       <scope>test</scope>
     </dependency>
       <dependency>
