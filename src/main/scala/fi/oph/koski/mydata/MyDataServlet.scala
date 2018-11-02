@@ -21,13 +21,13 @@ class MyDataServlet(implicit val application: KoskiApplication) extends ApiServl
   }
 
   get("/valtuutus") {
-    logger.info(s"Requesting authorizations for user: ${koskiSessionOption.getOrElse()}")
+    logger.info(s"Requesting authorizations for user: ${koskiSessionOption.getOrElse("none")}")
     requireKansalainen
     render(application.mydataService.getAllValid(koskiSessionOption.get.oid, lang))
   }
 
   post("/valtuutus/:memberCode") {
-    logger.info(s"Authorizing $memberCodeParam for user: ${koskiSessionOption.getOrElse()}")
+    logger.info(s"Authorizing $memberCodeParam for user: ${koskiSessionOption.getOrElse("none")}")
     requireKansalainen
 
     val id = getConfigForMember().getString("id") // will throw if memberCode is not valid
@@ -35,7 +35,7 @@ class MyDataServlet(implicit val application: KoskiApplication) extends ApiServl
   }
 
   delete("/valtuutus/:memberCode") {
-    logger.info(s"Unauthorizing $memberCodeParam for user: ${koskiSessionOption.getOrElse()}")
+    logger.info(s"Unauthorizing $memberCodeParam for user: ${koskiSessionOption.getOrElse("none")}")
     requireKansalainen
     application.mydataService.delete(koskiSessionOption.get.oid ,memberCodeParam)
   }

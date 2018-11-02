@@ -52,7 +52,7 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
         oppijaWithWarnings <- application.oppijaFacade.findOppijaByHetuOrCreateIfInYtrOrVirta(request.hetu, useVirta = useVirta, useYtr = useYtr)
         oppija <- oppijaWithWarnings.warningsToLeft
         palautettavatOpiskeluoikeudet = oppija.opiskeluoikeudet.filter(oo => request.opiskeluoikeudenTyypit.contains(oo.tyyppi.koodiarvo))
-        _ <- if (palautettavatOpiskeluoikeudet.isEmpty) Left(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia()) else Right()
+        _ <- if (palautettavatOpiskeluoikeudet.isEmpty) Left(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia()) else Right(())
       } yield {
         HetuResponseV1(
           henkilö = buildLuovutuspalveluHenkilöV1(oppija.henkilö),
