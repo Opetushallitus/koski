@@ -29,6 +29,7 @@ case class OpiskelijavuositiedotRow(
   opintojenRahoitukset: String,
   opiskeluoikeusPäättynyt: Boolean,
   päättymispäivä: Option[LocalDate],
+  arvioituPäättymispäivä: Option[LocalDate],
   opiskelijavuosikertymä: Double,
   läsnäTaiValmistunutPäivät: Int,
   opiskelijavuoteenKuuluvatLomaPäivät: Int,
@@ -77,6 +78,7 @@ object Opiskelijavuositiedot {
     "opintojenRahoitukset" -> Column("Rahoitukset"),
     "opiskeluoikeusPäättynyt" -> Column("Päättynyt", width = Some(2000)),
     "päättymispäivä" -> Column("Päättymispäivä"),
+    "arvioituPäättymispäivä" -> Column("Arvioitu päättymispäivä"),
     "opiskelijavuosikertymä" -> Column("Opiskelijavuosikertymä (pv)", width = Some(2000)),
     "läsnäTaiValmistunutPäivät" -> Column("Läsnä tai valmistunut (pv)", width = Some(2000)),
     "opiskelijavuoteenKuuluvatLomaPäivät" -> Column("Opiskelijavuoteen kuuluvat lomat (pv)", width = Some(2000)),
@@ -147,6 +149,7 @@ object Opiskelijavuositiedot {
     val aikajaksotOpintojenRahoitukseen = if (aikajaksot.size > 1 && aikajaksot.last.opiskeluoikeusPäättynyt && aikajaksot.last.opintojenRahoitus.isEmpty) aikajaksot.dropRight(1) else aikajaksot
     val opintojenRahoitukset = distinctAdjacent(aikajaksotOpintojenRahoitukseen.map(_.opintojenRahoitus.getOrElse("-"))).mkString(",")
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](opiskeluoikeus.data \ "lähdejärjestelmänId")
+    val arvioituPäättymispäivä = JsonSerializer.validateAndExtract[Option[LocalDate]](opiskeluoikeus.data \ "arvioituPäättymispäivä").toOption.flatten
     val (opiskelijavuoteenKuuluvatLomaPäivät, muutLomaPäivät) = lomaPäivät(aikajaksot)
     new OpiskelijavuositiedotRow(
       opiskeluoikeusOid = opiskeluoikeus.opiskeluoikeusOid,
@@ -167,6 +170,7 @@ object Opiskelijavuositiedot {
       opintojenRahoitukset = opintojenRahoitukset,
       opiskeluoikeusPäättynyt = aikajaksot.last.opiskeluoikeusPäättynyt,
       päättymispäivä = aikajaksot.lastOption.filter(_.opiskeluoikeusPäättynyt).map(_.alku.toLocalDate), // toimii koska päättävä jakso on aina yhden päivän mittainen, jolloin truncateToDates ei muuta sen alkupäivää
+      arvioituPäättymispäivä = arvioituPäättymispäivä,
       opiskelijavuosikertymä = opiskelijavuosikertymä(aikajaksot),
       läsnäTaiValmistunutPäivät = aikajaksoPäivät(aikajaksot, a => if (a.tila == "lasna" || a.tila == "valmistunut") 1 else 0),
       opiskelijavuoteenKuuluvatLomaPäivät = opiskelijavuoteenKuuluvatLomaPäivät,
