@@ -14,6 +14,7 @@ export default ({ memberName, memberPurpose, onAcceptClick, logoutURL }) => (
       </ul>
       <div className='acceptance-member-purpose'>{memberPurpose}</div>
     </div>
+    <div className='acceptance-duration'><Text name='Lupa on voimassa vuoden. Voit perua luvan Oma Opintopolku-palvelussa.'/></div>
     <div className='acceptance-button-container'>
       <button className='acceptance-button koski-button' onClick={onAcceptClick}><Text name='Hyväksy'/></button>
       <div className='decline-link'> <a href={logoutURL}><Text name='Peruuta ja palaa'/></a> </div>

@@ -1136,6 +1136,7 @@
   "description:Käytetään, mikäli tunnustettu osaaminen kuuluu..." : "Käytetään, mikäli tunnustettu osaaminen kuuluu rahoitukseen piiriin (esimerkiksi kaksoistutkintolaisilla ammatilliseen tutkintoon tunnustetut lukio-opinnot tai toiselta oppilaitokselta ostetut yksittäiset tutkinnon osat).",
   "tooltip:Tunnustettu osaaminen kuuluu rahoitukseen piiriin..." : "Tunnustettu osaaminen kuuluu rahoitukseen piiriin (esimerkiksi kaksoistutkintolaisilla ammatilliseen tutkintoon tunnustetut lukio-opinnot tai toiselta oppilaitokselta ostetut yksittäiset tutkinnon osat).",
   "Pisin voimassaoloaika on vuosi": "Pisin voimassaoloaika on vuosi",
-  "description:Rahoituksen laskennassa käytettävä tieto.": "Rahoituksen laskennassa käytettävä tieto."
+  "description:Rahoituksen laskennassa käytettävä tieto.": "Rahoituksen laskennassa käytettävä tieto.",
+  "Lupa on voimassa vuoden. Voit perua luvan Oma Opintopolku-palvelussa.": "Lupa on voimassa vuoden. Voit perua luvan Oma Opintopolku-palvelussa."
 }
 
