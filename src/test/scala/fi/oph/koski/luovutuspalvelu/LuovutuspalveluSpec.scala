@@ -22,7 +22,12 @@ class LuovutuspalveluSpec extends FreeSpec with LocalJettyHttpSpecification with
     }
     "Palauttaa 404 jos henkilöä ei löydy" in {
       postHetu("150505-085R", List("ammatillinenkoulutus")) {
-        verifyResponseStatus(404, ErrorMatcher.regex(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia, ".*".r))
+        verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa (hetu) ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
+      }
+    }
+    "Ei vuoda oidia paluuviestissa jos henkilö löytyy oppijanumerorekisteristä muttei Koskesta" in {
+      postHetu("270366-697B", List("ammatillinenkoulutus")) {
+        verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa (hetu) ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
       }
     }
     "Palauttaa 404 jos henkilölle ei löydy opiskeluoikeuksia (annetuilla rajauksilla)" in {
