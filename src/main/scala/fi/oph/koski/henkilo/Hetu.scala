@@ -21,7 +21,7 @@ object Hetu {
     LocalDate.of(century + hetu.slice(4, 6).toInt, hetu.slice(2, 4).toInt, hetu.slice(0, 2).toInt)
   }
 
-  def validFormat(hetu: String): Either[HttpStatus, String] with Product with Serializable = {
+  def validFormat(hetu: String): Either[HttpStatus, String] = {
     hetuRegex.findFirstIn(hetu) match {
       case Some(_) => Right(hetu)
       case None => Left(KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu("Virheellinen muoto hetulla: " + hetu))
