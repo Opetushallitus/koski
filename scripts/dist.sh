@@ -10,15 +10,6 @@ function usage() {
   exit 1
 }
 
-function buildversiontxt() {
-  cat >$BASE_DIR/target/dist/web/static/buildversion.txt <<EOL
-artifactId=koski
-version=$version
-vcsRevision=`git rev-parse HEAD`
-buildDate=`date`
-EOL
-}
-
 function create_version() {
   mkdir -p $BASE_DIR/target
   if [ "$cleandist" = "true" ]; then
@@ -26,7 +17,6 @@ function create_version() {
     rm -rf $BASE_DIR/target/dist/web && rm -rf $BASE_DIR/target/dist
   fi
   git archive --format=tar --prefix=dist/ HEAD | (cd $BASE_DIR/target && tar xf -)
-  buildversiontxt
 
   if [ "$version" == "local" ]; then
     (cd $BASE_DIR/target/dist && mvn install -DskipTests=true)

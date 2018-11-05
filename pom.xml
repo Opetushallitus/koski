@@ -407,6 +407,18 @@
         <version>1.4.0</version>
         <executions>
           <execution>
+            <id>Create buildversion.txt</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>bash</executable>
+              <commandlineArgs>scripts/create-buildversion.sh ${basedir}/target/webapp/buildversion.txt ${project.version}</commandlineArgs>
+            </configuration>
+          </execution>
+          <execution>
+            <id>Run a main class from command line</id>
             <goals>
               <goal>java</goal>
             </goals>
