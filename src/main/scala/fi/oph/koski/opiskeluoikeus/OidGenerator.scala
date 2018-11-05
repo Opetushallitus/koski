@@ -1,4 +1,4 @@
-package fi.oph.koski.util
+package fi.oph.koski.opiskeluoikeus
 
 import com.typesafe.config.Config
 import fi.oph.koski.henkilo.MockOppijat
