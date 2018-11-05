@@ -1,11 +1,8 @@
 package fi.oph.koski.mydata
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.log.LoggerWithContext
-import fi.oph.koski.servlet.{InvalidRequestException, MyDataSupport}
+import fi.oph.koski.servlet.InvalidRequestException
 import javax.servlet.http.HttpServletRequest
-import org.log4s.Logger
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.{FreeSpec, Matchers}
 
