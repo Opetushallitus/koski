@@ -5,7 +5,7 @@ import fi.oph.koski.db.GlobalExecutionContext
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueries
-import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, MyDataSupport, NoCache}
+import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, NoCache}
 import org.scalatra.ContentEncodingSupport
 
 

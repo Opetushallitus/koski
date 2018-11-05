@@ -45,7 +45,7 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
           case Some(nontgturl) =>
             throw new CasClientException(s"TGT decoding failed at ${tgtUri}: location header has wrong format $nontgturl")
           case None =>
-            throw new CasClientException("TGT decoding failed at ${tgtUri}: No location header at")
+            throw new CasClientException(s"TGT decoding failed at ${tgtUri}: No location header at")
         }
         Task.now(true)
       case r => r.as[String].map { body =>

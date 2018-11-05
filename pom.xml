@@ -13,9 +13,9 @@
   <properties>
     <scala.version>2.12.4</scala.version>
     <slick.version>3.2.0</slick.version>
-    <scalatra.version>2.5.0</scalatra.version>
-    <json4s.version>3.5.0</json4s.version>
-    <jetty.version>9.4.6.v20170531</jetty.version>
+    <scalatra.version>2.6.3</scalatra.version>
+    <json4s.version>3.6.2</json4s.version>
+    <jetty.version>9.4.12.v20180830</jetty.version>
     <prometheus.client.version>0.0.17</prometheus.client.version>
     <scoverage.plugin.version>1.1.1</scoverage.plugin.version>
     <finalName>${project.artifactId}-${project.version}</finalName>
@@ -56,12 +56,8 @@
     <dependency>
       <groupId>com.github.Opetushallitus</groupId>
       <artifactId>scala-schema</artifactId>
-      <version>2.24.0_2.12</version>
+      <version>2.25.0_2.12</version>
       <exclusions>
-        <exclusion>
-          <groupId>org.http4s</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
         <exclusion>
           <groupId>org.json4s</groupId>
           <artifactId>*</artifactId>
@@ -77,7 +73,7 @@
     <dependency>
       <groupId>org.reflections</groupId>
       <artifactId>reflections</artifactId>
-      <version>0.9.10</version>
+      <version>0.9.11</version>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -268,7 +264,7 @@
     <dependency>
       <groupId>org.scalatra</groupId>
       <artifactId>scalatra-scalatest_2.12</artifactId>
-      <version>2.5.0</version>
+      <version>${scalatra.version}</version>
       <scope>test</scope>
     </dependency>
       <dependency>
@@ -360,6 +356,16 @@
         <groupId>net.alchim31.maven</groupId>
         <artifactId>scala-maven-plugin</artifactId>
         <version>3.3.1</version>
+        <configuration>
+          <args>
+            <arg>-unchecked</arg>
+            <arg>-deprecation</arg>
+            <arg>-feature</arg>
+            <arg>-Ywarn-dead-code</arg>
+            <arg>-Xlint:missing-interpolator</arg>
+            <arg>-Xfatal-warnings</arg>
+          </args>
+        </configuration>
         <executions>
           <execution>
             <id>scala-compile-first</id>
@@ -403,6 +409,18 @@
         <version>1.4.0</version>
         <executions>
           <execution>
+            <id>Create buildversion.txt</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>exec</goal>
+            </goals>
+            <configuration>
+              <executable>bash</executable>
+              <commandlineArgs>scripts/create-buildversion.sh ${basedir}/target/webapp/buildversion.txt ${project.version}</commandlineArgs>
+            </configuration>
+          </execution>
+          <execution>
+            <id>Run a main class from command line</id>
             <goals>
               <goal>java</goal>
             </goals>
@@ -433,6 +451,9 @@
           <webResources>
             <resource>
               <directory>${basedir}/target/webapp</directory>
+              <excludes>
+                <exclude>test/**</exclude>
+              </excludes>
             </resource>
           </webResources>
         </configuration>

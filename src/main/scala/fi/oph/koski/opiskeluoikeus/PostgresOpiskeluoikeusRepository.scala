@@ -17,7 +17,6 @@ import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedot, PerustiedotSyncRep
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.Opiskeluoikeus.VERSIO_1
 import fi.oph.koski.schema._
-import fi.oph.koski.util.OidGenerator
 import org.json4s.{JArray, JObject, JString}
 import slick.dbio
 import slick.dbio.DBIOAction.sequence

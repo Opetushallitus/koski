@@ -2,7 +2,7 @@ package fi.oph.koski.mydata
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.AuthenticationSupport
-import fi.oph.koski.servlet.{HtmlServlet, MyDataSupport, OmaOpintopolkuSupport}
+import fi.oph.koski.servlet.{HtmlServlet, OmaOpintopolkuSupport}
 import org.scalatra.ScalatraServlet
 
 import scala.util.matching.Regex

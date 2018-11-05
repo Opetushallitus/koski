@@ -43,7 +43,7 @@ class KoskiSessionRepository(val db: DB, sessionTimeout: SessionTimeout) extends
         logger.info(s"Invalidated session for ticket $ticket")
       case 0 =>
       case n =>
-        logger.error("Multiple sessions deleted for ticket $ticket")
+        logger.error(s"Multiple sessions deleted for ticket $ticket")
     }
   }
 }

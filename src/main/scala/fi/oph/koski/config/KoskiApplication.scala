@@ -27,7 +27,6 @@ import fi.oph.koski.suoritusjako.{SuoritusjakoRepository, SuoritusjakoService}
 import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoFailureMailer, TiedonsiirtoService}
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.userdirectory.DirectoryClient
-import fi.oph.koski.util.OidGenerator
 import fi.oph.koski.validation.KoskiValidator
 import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOpiskeluoikeusRepository}
 import fi.oph.koski.ytr.{YtrAccessChecker, YtrClient, YtrOpiskeluoikeusRepository}

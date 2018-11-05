@@ -1,12 +1,11 @@
-package fi.oph.koski.servlet
+package fi.oph.koski.mydata
 
 import java.net.URLEncoder
 
 import fi.oph.koski.http.KoskiErrorCategory
-import org.scalatra.ScalatraServlet
+import fi.oph.koski.servlet.InvalidRequestException
 import com.typesafe.config.{Config => TypeSafeConfig}
-import fi.oph.koski.mydata.MyDataConfig
-
+import org.scalatra.ScalatraServlet
 
 trait MyDataSupport extends ScalatraServlet with MyDataConfig {
   override def hasConfigForMember(id: String = memberCodeParam): Boolean
@@ -53,4 +52,3 @@ trait MyDataSupport extends ScalatraServlet with MyDataConfig {
     params("memberCode")
   }
 }
-
