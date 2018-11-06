@@ -94,7 +94,7 @@ class KoskiDatabase(val config: KoskiDatabaseConfig) extends Logging {
       if (System.getProperty("koski.db.clean", "false").equals("true")) {
         flyway.clean
       }
-      if (databaseIsLarge && Environment.isLocalDevelopmentEnvironment) {
+      if (Environment.isLocalDevelopmentEnvironment && databaseIsLarge) {
         logger.warn("Skipping database migration for database larger than 100 rows, when running in local development environment")
       } else {
         flyway.migrate
@@ -106,7 +106,7 @@ class KoskiDatabase(val config: KoskiDatabaseConfig) extends Logging {
 
   def databaseIsLarge: Boolean = {
     try {
-      val count = Futures.await(db.run(sql"select count(*) from opiskeluoikeus".as[Int]))(0)
+      val count = Futures.await(db.run(sql"select count(id) from opiskeluoikeus".as[Int]))(0)
       count > 100
     } catch {
       case e: PSQLException =>
