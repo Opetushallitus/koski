@@ -36,32 +36,6 @@ class ApiProxyServlet(implicit val application: KoskiApplication) extends ApiSer
     }()
   }
 
-  get("/:oid") {
-    val studentId = params("oid")
-    val memberCode = request.header("X-ROAD-MEMBER").getOrElse({
-      logger.warn(s"Missing X-ROAD-MEMBER header when requesting student data for ${studentId}")
-      throw InvalidRequestException(KoskiErrorCategory.badRequest.header.missingXRoadHeader)
-    })
-
-    proxyRequestDispatcher(studentId, memberCode)
-  }
-
-  private def proxyRequestDispatcher(studentId: String, memberCode: String) = {
-    logger.info(s"Requesting MyData content for user ${studentId} by client ${memberCode}")
-
-    val memberId = findMemberForMemberCode(memberCode).getOrElse(
-      throw InvalidRequestException(KoskiErrorCategory.badRequest.header.invalidXRoadHeader))
-      .getString("id")
-
-    if (application.mydataService.hasAuthorizedMember(studentId, memberId)) {
-      logger.info(s"Student ${studentId} has authorized ${memberId} to access their student data")
-      servletContext.getRequestDispatcher("/api/oppija").forward(request, response)
-    } else {
-      logger.warn(s"Student ${studentId} has not authorized ${memberId} to access their student data")
-      throw InvalidRequestException(KoskiErrorCategory.forbidden.forbiddenXRoadHeader)
-    }
-  }
-
   private def getMemberId = {
     val memberCode = request.header("X-ROAD-MEMBER").getOrElse({
       logger.warn(s"Missing X-ROAD-MEMBER header when requesting student data")
