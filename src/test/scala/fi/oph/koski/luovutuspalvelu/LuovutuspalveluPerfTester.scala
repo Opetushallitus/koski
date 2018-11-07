@@ -10,6 +10,8 @@ import fi.oph.koski.json.JsonSerializer
 import org.apache.http.client.methods.{CloseableHttpResponse, HttpPost}
 import org.apache.http.entity.{ContentType, StringEntity}
 
+case class TestResult(seconds: Long, amountOfReceivedOpiskeluoikeudet: Int, opiskeluoikeudenTyypit: List[String])
+
 /**
   * Required env variables:
   *  HETU_FILE_PATH - file containing list of hetus
@@ -18,32 +20,43 @@ import org.apache.http.entity.{ContentType, StringEntity}
   */
 object LuovutuspalveluPerfTester extends KoskidevHttpSpecification {
 
+  def main(args: Array[String]): Unit = {
+    println("Starting test")
+    val all = LuovutuspalveluApiPerfTester.doTest(List("ammatillinenkoulutus", "lukiokoulutus", "perusopetus"), 3)
+    val onlyOne = LuovutuspalveluApiPerfTester.doTest(List("perusopetus"), 3)
+
+    printResult(all)
+    printResult(onlyOne)
+  }
+
+  def printResult(result: TestResult): Unit = {
+    println("----------------")
+    println(s"Tyypit ${result.opiskeluoikeudenTyypit}")
+    println(s"opiskeluoikeuksia oli vastauksissa ${result.amountOfReceivedOpiskeluoikeudet}")
+    println(s"Aikaa kului ${result.seconds / 1000} s")
+    println("----------------")
+  }
+}
+
+protected object LuovutuspalveluApiPerfTester extends KoskidevHttpSpecification {
+
   lazy val client = createClient
 
-  def main(args: Array[String]): Unit = {
-    doTest
-  }
-
-  def doTest: Unit = {
-    val requests = buildRequests
-
+  def doTest(opiskeluoikeusTyypit: List[String], amountOfBatches: Int): TestResult = {
+    val requests = buildRequests(opiskeluoikeusTyypit, amountOfBatches)
     val startTime = Timestamp.from(Instant.now)
-
     val responses = makeRequests(requests)
+    val endTime = Timestamp.from(Instant.now).getTime - startTime.getTime
+    val receivedOpiskeluoikeuksia = responses.map(_.map(_.opiskeluoikeudet.length)).flatten.reduce(_ + _)
 
-    val endTime = Timestamp.from(Instant.now)
-
-    responses.foreach(response => println(s"got ${response.length} opiskeluoikeutta"))
-    println(s"Sended ${requests.length} requests")
-    println(s"Time was: ${(endTime.getTime - startTime.getTime) / 1000} s")
+    TestResult(endTime, receivedOpiskeluoikeuksia, opiskeluoikeusTyypit)
   }
 
-  def buildRequests: List[HttpPost] = {
+  private def buildRequests(opiskeluoikeusTyypit: List[String], amountOfBatches: Int): List[HttpPost] = {
     val hetuFilePath = requiredEnv("HETU_FILE_PATH")
-    val batchSize = sys.env.getOrElse("HETU_BATCH_SIZE", "1000").toInt
-    val opiskeluoikeusTyypit = List("perusopetus", "ammatillinenkoulutus", "lukiokoulutus")
+    val batchSize = sys.env.getOrElse("HETU_BATCH_SIZE", "500").toInt
 
-    Source.fromFile(hetuFilePath).getLines.toList.grouped(1000).toList.take(2)
+    Source.fromFile(hetuFilePath).getLines.toList.grouped(1000).toList.takeRight(amountOfBatches)
       .map(hetut => BulkHetuRequestV1(1, hetut, opiskeluoikeusTyypit))
       .map(request => {
         val post = new HttpPost(baseUrl ++ "/api/luovutuspalvelu/hetut")
@@ -54,7 +67,7 @@ object LuovutuspalveluPerfTester extends KoskidevHttpSpecification {
       })
   }
 
-  def makeRequests(requests: List[HttpPost]): List[List[HetuResponseV1]] = {
+  private def makeRequests(requests: List[HttpPost]): List[List[HetuResponseV1]] = {
     requests.map(request => {
       val response = client.execute(request)
       val parsedResponse = parseResponse(response)
@@ -64,7 +77,7 @@ object LuovutuspalveluPerfTester extends KoskidevHttpSpecification {
     })
   }
 
-  def parseResponse(response: CloseableHttpResponse): String = {
+  private def parseResponse(response: CloseableHttpResponse): String = {
     Source.fromInputStream(response.getEntity.getContent).mkString
   }
 }
