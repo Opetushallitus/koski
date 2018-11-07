@@ -59,7 +59,8 @@ Esimerkkipyyntö:
 Palveluväylän vaatimien kenttien (Header) kuvaukset löytyvät [Palveluväylän sivuilta](https://esuomi.fi/palveluntarjoajille/palveluvayla/tekninen-aineisto/rajapintakuvaukset/x-road-tiedonsiirtoprotokolla/#4_SOAP-otsikkotiedot).
 
 Body-kenttien kuvaukset:
-   * hetu: haettavan kansalaisen henkilötunnus
+
+ * hetu: haettavan kansalaisen henkilötunnus.
 
 Esimerkkivastaus:
 
@@ -95,7 +96,7 @@ Esimerkkivastaus:
 
 
 Vastauksen tietosisältö on kuvattu [wikissä](https://confluence.csc.fi/pages/viewpage.action?pageId=76536741), 
-mutta käytännössä se on osajoukko Kosken [tietomallista](https://dev.koski.opintopolku.fi/koski/json-schema-viewer/#koski-oppija-schema.json).
+mutta käytännössä se on osajoukko Kosken [tietomallista](/koski/dokumentaatio/tietomalli).
 
 
 Mikäli kansalainen ei ole antanut lupaa tietojensa käyttöön, lähetetään tietojen pyytäjälle allaoleva virheviesti:
