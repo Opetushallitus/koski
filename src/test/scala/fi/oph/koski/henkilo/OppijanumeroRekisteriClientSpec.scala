@@ -89,7 +89,7 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
     }
 
     "palauttaa sähköpostiosoitteet oid:n ja käyttöoikeusryhmän perusteella" in {
-      val result = mockClient.findSähköpostit(organisaatioOid, "KOSKI").run
+      val result = mockClient.findTyöSähköpostiosoitteet(organisaatioOid, "KOSKI").run
       result should contain only ("mikko.mallikas@suomi.fi")
     }
 
@@ -179,9 +179,12 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
       WireMock.post(urlPathEqualTo(yhteystiedotUrl))
         .willReturn(ok().withBody(write(List(Map(
           "yhteystiedotRyhma" -> List(
-            Map("yhteystieto" -> List(
+            Map("ryhmaKuvaus" -> "yhteystietotyyppi2", "yhteystieto" -> List(
               Map("yhteystietoTyyppi" -> "YHTEYSTIETO_MUU", "yhteystietoArvo" -> "@mmallikas"),
               Map("yhteystietoTyyppi" -> "YHTEYSTIETO_SAHKOPOSTI", "yhteystietoArvo" -> "mikko.mallikas@suomi.fi")
+            )),
+            Map("ryhmaKuvaus" -> "yhteystietotyyppi8", "yhteystieto" -> List(
+              Map("yhteystietoTyyppi" -> "YHTEYSTIETO_SAHKOPOSTI", "yhteystietoArvo" -> "mikko.mallikas@kotiosoite.fi")
             )))))))))
 
     wireMockServer.stubFor(

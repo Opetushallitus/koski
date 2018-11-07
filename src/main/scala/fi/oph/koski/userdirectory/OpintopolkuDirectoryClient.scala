@@ -59,7 +59,7 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
   }
 
   override def organisaationSähköpostit(organisaatioOid: String, ryhmä: String): List[String] =
-    Http.runTask(oppijanumeroRekisteriClient.findSähköpostit(organisaatioOid, ryhmä))
+    Http.runTask(oppijanumeroRekisteriClient.findTyöSähköpostiosoitteet(organisaatioOid, ryhmä))
 
   private def resolveKäyttöoikeudet(käyttäjä: HenkilönKäyttöoikeudet) =
     (käyttäjä.oidHenkilo, käyttäjä.organisaatiot.flatMap {
