@@ -16,7 +16,7 @@ Salausprotokollan on oltava TLS 1.2 tai uudempi.
 
 ------------
 
-#### /koski/api/luovutuspalvelu/hetu (v1)
+## /koski/api/luovutuspalvelu/hetu (v1)
 
 Tällä kutsulla haetaan yhden henkilön tiedot.
 
@@ -81,8 +81,8 @@ Vastaus, kun henkilöä ei löydy, tai henkilö löytyy mutta hänelle ei löydy
       }
     ]
 
-Muut vastaukset ovat virheitä, ja käsitellään HTTP-tilakoodin perusteella. Eli 
-tilakoodit 400-499 tarkoittavat virheellistä pyyntöä (jolloin uudelleen yrittäminen ei välttämättä auta),
+Muut vastaukset ovat virheitä, ja käsitellään HTTP-tilakoodin perusteella. 
+Tilakoodit 400-499 tarkoittavat virheellistä pyyntöä (jolloin uudelleen yrittäminen ei välttämättä auta),
 ja tilakoodit 500-599 tarkoittavat useimmiten väliaikaista virhettä (jolloin pyyntöä kannattaa yrittää myöhemmin uudelleen).
 Useimmissa tapauksissa vastauksen body:stä löytyy tarkempi virhekoodi tai -viesti, josta on apua kehittäjille virheen 
 syyn selvittämisessä.
@@ -118,7 +118,7 @@ Esimerkit 503 vastauksista:
 
 ---------------
 
-#### /koski/api/luovutuspalvelu/oppijanumero
+## /koski/api/luovutuspalvelu/oppijanumero
 
 Tulossa myöhemmin. Tällä kutsulla haetaan yhden henkilön tiedot oppijanumeron perusteella.
 
@@ -127,7 +127,7 @@ on useampi kuin yksi oppijanumero (tai hetu).
 
 -----------------
 
-#### /koski/api/luovutuspalvelu/hetut
+## /koski/api/luovutuspalvelu/hetut
 
 Tulossa myöhemmin.
 
