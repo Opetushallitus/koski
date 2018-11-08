@@ -132,8 +132,6 @@ on useampi kuin yksi oppijanumero (tai hetu).
 
 ## /koski/api/luovutuspalvelu/hetut
 
-Tulossa myöhemmin.
-
 Tällä kutsulla haetaan usean (max. 1000 kpl) henkilön tiedot henkilötunnusten perusteella.
 
 Tällä kutsulla ei voi hakea `korkeakoulutus`- tai `ylioppilastutkinto`-tyyppisiä opiskeluoikeuksia,
@@ -187,6 +185,3 @@ Vastaus, kun pyyntö suoritetaan onnistuneesti:
 
 Jos jollekkin hetulle ei löydy opiskeluoikeuksia, tämä ei ole virhe vaan hetu puuttuu vastauslistasta.
 
-Lisää kuvaukset:
-
-    Tulossa myöhemmin.
