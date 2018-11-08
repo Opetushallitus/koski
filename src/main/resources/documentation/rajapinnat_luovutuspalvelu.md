@@ -14,6 +14,9 @@ Palvelinvarmenteen on oltava luotettavan CA:n myöntämä (yleisesti selaimien h
 ja sen "extended key usage" -kentässä on sallittava "client authentication" -käyttötarkoitus.
 Salausprotokollan on oltava TLS 1.2 tai uudempi.
 
+Rajapintojen käyttöönoton yhteydessä on saatavissa pyynnöstä myös lista esimerkkihenkilöistä,
+joiden avulla rajapintaintegraatiota on mahdollista testata.
+
 ------------
 
 #### /koski/api/luovutuspalvelu/hetu (v1)
