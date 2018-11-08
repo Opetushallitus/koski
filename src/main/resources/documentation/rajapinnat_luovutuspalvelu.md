@@ -19,7 +19,7 @@ joiden avulla rajapintaintegraatiota on mahdollista testata.
 
 ------------
 
-#### /koski/api/luovutuspalvelu/hetu (v1)
+## /koski/api/luovutuspalvelu/hetu (v1)
 
 Tällä kutsulla haetaan yhden henkilön tiedot.
 
@@ -71,7 +71,8 @@ tilanteet, jossa samalla henkilöllä on useampi oppijanumero (ja mahdollisesti 
 
 Tarkempi kuvaus opiskeluoikeudet-elementin sisällöstä löytyy [tietomallin](/koski/dokumentaatio/tietomalli) dokumentaatiosta.
 
-Vastaus, kun henkilöä ei löydy:
+Vastaus, kun henkilöä ei löydy, tai henkilö löytyy mutta hänelle ei löydy opiskeluoikeuksia
+(olennainen tieto on `notFound.oppijaaEiLöydyTaiEiOikeuksia`, tarkka `message`-kentän sisältö voi muuttua):
 
     HTTP/1.1 404 Not Found
     Content-Type: application/json
@@ -83,9 +84,19 @@ Vastaus, kun henkilöä ei löydy:
       }
     ]
 
-Vastaus, kun henkilö löytyy, mutta hänelle ei löydy opiskeluoikeuksia: sama kuin henkilöä ei löydy.
+Muut vastaukset ovat virheitä, ja käsitellään HTTP-tilakoodin perusteella. 
+Tilakoodit 400-499 tarkoittavat virheellistä pyyntöä (jolloin uudelleen yrittäminen ei välttämättä auta),
+ja tilakoodit 500-599 tarkoittavat useimmiten väliaikaista virhettä (jolloin pyyntöä kannattaa yrittää myöhemmin uudelleen).
+Useimmissa tapauksissa vastauksen body:stä löytyy tarkempi virhekoodi tai -viesti, josta on apua kehittäjille virheen 
+syyn selvittämisessä.
 
-Vastaus kun Virta-tietoja ei saada haettua:
+Erityisesti voidaan mainita seuraavat virheet:
+
+ * 400 (Bad Request) tulee esim. jos jokin pyynnön kentistä on virheellinen (esim. hetu-kentässä on tieto joka ei muodoltaan ole henkilötunnus).
+ * 403 (Forbidden) viittaa ongelmaan käyttöoikeuksissa (esim. palvelinvarmenne tai IP-osoite ei ole sallittu).
+ * 503 (Service Unavailable) tulee esim. jos Virran tai Ylioppilastutkintorekisterin tietoja ei saada haettua:
+
+Esimerkit 503 vastauksista:
 
     HTTP/1.1 503 Service Unavailable
     Content-Type: application/json
@@ -97,8 +108,6 @@ Vastaus kun Virta-tietoja ei saada haettua:
       }
     ]
 
-Vastaus kun Ylioppilastutkintorekisterin tietoja ei saada haettua:
-
     HTTP/1.1 503 Service Unavailable
     Content-Type: application/json
 
@@ -109,12 +118,10 @@ Vastaus kun Ylioppilastutkintorekisterin tietoja ei saada haettua:
       }
     ]
 
-Myös muita virheitä voi esiintyä. Esim. HTTP status 400 ja "badRequest.queryParam" tarkoittaa että
-pyynnössä oli jotain virheellistä. HTTP status 5xx tarkoittaa tilapäistä virhettä Koskessa.
 
 ---------------
 
-#### /koski/api/luovutuspalvelu/oppijanumero
+## /koski/api/luovutuspalvelu/oppijanumero
 
 Tulossa myöhemmin. Tällä kutsulla haetaan yhden henkilön tiedot oppijanumeron perusteella.
 
@@ -123,7 +130,7 @@ on useampi kuin yksi oppijanumero (tai hetu).
 
 -----------------
 
-#### /koski/api/luovutuspalvelu/hetut
+## /koski/api/luovutuspalvelu/hetut
 
 Tulossa myöhemmin.
 
