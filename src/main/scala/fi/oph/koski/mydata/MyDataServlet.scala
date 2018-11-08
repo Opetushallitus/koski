@@ -9,21 +9,19 @@ class MyDataServlet(implicit val application: KoskiApplication) extends ApiServl
   with AuthenticationSupport with Logging with NoCache with MyDataSupport with LanguageSupport {
 
   get("/kumppani/:memberCode") {
-    def memberConf = getConfigForMember()
-
-    val lang = s"name.${langFromCookie.getOrElse(langFromDomain)}"
-    val memberName = if (memberConf.hasPath(lang)) memberConf.getString(lang) else memberConf.getString("name.fi")
+    val conf = getConfigForMember()
 
     renderObject(Map(
-      "id" -> memberConf.getString("id"),
-      "name" -> memberName
+      "id" -> conf.getString("id"),
+      "name" -> conf.getString("name"),
+      "purpose" -> conf.getString("purpose")
     ))
   }
 
   get("/valtuutus") {
     logger.info(s"Requesting authorizations for user: ${koskiSessionOption.getOrElse("none")}")
     requireKansalainen
-    render(application.mydataService.getAllValid(koskiSessionOption.get.oid, lang))
+    render(application.mydataService.getAllValid(koskiSessionOption.get.oid))
   }
 
   post("/valtuutus/:memberCode") {

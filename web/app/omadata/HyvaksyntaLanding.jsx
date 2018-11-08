@@ -39,6 +39,7 @@ class HyvaksyntaLanding extends React.Component {
       })
         .onValue(member => this.setState({
           memberName: member.name,
+          memberPurpose: member.purpose,
           memberCode: member.id,
           loading: false
         }))
@@ -94,6 +95,7 @@ class HyvaksyntaLanding extends React.Component {
           this.state.memberName ?
             <UusiHyvaksynta
               memberName={this.state.memberName}
+              memberPurpose={this.state.memberPurpose}
               logoutURL={this.getLogoutURL()}
               onAuthorization={this.authorizeMember}
               authorizationGiven={this.state.authorizationGiven}
