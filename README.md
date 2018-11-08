@@ -100,7 +100,7 @@ Minimissään tarvitset nämä:
   - osx: `brew install elasticsearch@5.6`
   - then ensure the binary is in your PATH, e.g. `ln -s ../opt/elasticsearch@5.6/bin/elasticsearch /usr/local/bin`
 - Elasticsearch analysis-icu plugin (`elasticsearch-plugin install analysis-icu`)
-- Node.js 8.x ja NPM (osx: `brew install node`)
+- Node.js uusin 8.x ja sen mukana tuleva NPM-versio (osx: `brew install nvm` + `nvm install`)
 - Tekstieditori (kehitystiimi käyttää IntelliJ IDEA)
 
 ## Buildi ja ajaminen
