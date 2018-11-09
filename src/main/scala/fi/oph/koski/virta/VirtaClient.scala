@@ -12,7 +12,7 @@ object VirtaClient extends Logging {
   def apply(config: Config) = config.getString("virta.serviceUrl") match {
     case "mock" =>
       logger.info("Using mock Virta integration")
-      MockVirtaClient
+      MockVirtaClient(config)
     case "" =>
       logger.info("Virta integration disabled")
       EmptyVirtaClient
@@ -35,7 +35,8 @@ object EmptyVirtaClient extends VirtaClient {
   override def opintotiedotMassahaku(hakuehdot: List[VirtaHakuehto]): Option[Elem] = None
 }
 
-object MockVirtaClient extends VirtaClient {
+case class MockVirtaClient(config: Config) extends VirtaClient {
+  private lazy val mockDataDir = config.getString("virta.mockDataDir")
   override def opintotiedot(hakuehto: VirtaHakuehto) = haeOpintotiedot(hakuehto)
 
   override def opintotiedotMassahaku(hakuehdot: List[VirtaHakuehto]): Option[Elem] = if (containsMixedEhdot(hakuehdot)) {
@@ -63,7 +64,7 @@ object MockVirtaClient extends VirtaClient {
       case VirtaHakuehtoHetu("250390-680P") =>
         throw new HttpConnectionException("MockVirtaClient testing henkilötiedot failure", "POST", "http://localhost:666/")
       case VirtaHakuehtoHetu(hetu) =>
-        loadXml("src/main/resources/mockdata/virta/henkilotiedot/" + hetu + ".xml")
+        loadXml(s"$mockDataDir/henkilotiedot/$hetu.xml")
       case _ =>
         throw new RuntimeException("henkilötiedot must be searched by VirtaHakuehtoHetu")
     }
@@ -76,7 +77,7 @@ object MockVirtaClient extends VirtaClient {
       case VirtaHakuehtoHetu(hetu) => hetu
       case VirtaHakuehtoKansallinenOppijanumero(oid) => oid
     }
-    loadXml("src/main/resources/mockdata/virta/opintotiedot/" + tunnus + ".xml")
+    loadXml(s"$mockDataDir/opintotiedot/$tunnus.xml")
   }
 
   private def containsMixedEhdot(hakuehdot: List[VirtaHakuehto]): Boolean =
