@@ -14,6 +14,22 @@ import org.json4s.JValue
 import rx.lang.scala.Observable
 
 class LuovutuspalveluService(application: KoskiApplication) {
+  def findOppijaByOid(req: OidRequestV1)(implicit koskiSession: KoskiSession): Either[HttpStatus, HetuResponseV1] = {
+    val (useVirta, useYtr) = resolveVirtaAndYtrUsage(req)
+
+    for {
+      oppijaWithWarnings <- application.oppijaFacade.findOppija(req.oid, useVirta = useVirta, useYtr = useYtr)
+      oppija <- oppijaWithWarnings.warningsToLeft
+      palautettavatOpiskeluoikeudet = oppija.opiskeluoikeudet.filter(oo => req.opiskeluoikeudenTyypit.contains(oo.tyyppi.koodiarvo))
+      _ <- if (palautettavatOpiskeluoikeudet.isEmpty) Left(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia()) else Right(())
+    } yield {
+      HetuResponseV1(
+        henkilö = buildLuovutuspalveluHenkilöV1(oppija.henkilö),
+        opiskeluoikeudet = palautettavatOpiskeluoikeudet
+      )
+    }
+  }
+
   def findOppijaByHetu(req: HetuRequestV1)(implicit koskiSession: KoskiSession): Either[HttpStatus, HetuResponseV1] = {
     val (useVirta, useYtr) = resolveVirtaAndYtrUsage(req)
     for {

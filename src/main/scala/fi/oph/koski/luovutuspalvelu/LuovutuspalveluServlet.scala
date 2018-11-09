@@ -26,6 +26,12 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
     renderObject(JObject("ok" -> JBool(true)))
   }
 
+  post("/oid") {
+    withJsonBody { parsedJson =>
+      renderEither(parseOidRequestV1(parsedJson).flatMap(application.luovutuspalveluService.findOppijaByOid))
+    }()
+  }
+
   post("/hetu") {
     withJsonBody { parsedJson =>
       renderEither(parseHetuRequestV1(parsedJson).flatMap(application.luovutuspalveluService.findOppijaByHetu))
@@ -41,6 +47,13 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
           haltWithStatus(status)
       }
     }()
+  }
+
+  private def parseOidRequestV1(parsedJson: JValue): Either[HttpStatus, OidRequestV1] = {
+    JsonSerializer.validateAndExtract[OidRequestV1](parsedJson)
+      .left.map(errors => KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(errors)))
+      .filterOrElse(_.v == 1, KoskiErrorCategory.badRequest.queryParam("Tuntematon versio"))
+      .flatMap(validateOpiskeluoikeudenTyypit(_, allowVirtaOrYtr = true))
   }
 
   private def parseHetuRequestV1(parsedJson: JValue): Either[HttpStatus, HetuRequestV1] = {
@@ -86,6 +99,8 @@ trait LuovutuspalveluRequest {
 }
 
 case class HetuRequestV1(v: Int, hetu: String, opiskeluoikeudenTyypit: List[String]) extends LuovutuspalveluRequest
+
+case class OidRequestV1(v: Int, oid: String, opiskeluoikeudenTyypit: List[String]) extends LuovutuspalveluRequest
 
 case class HetuResponseV1(henkilö: LuovutuspalveluHenkilöV1, opiskeluoikeudet: Seq[Opiskeluoikeus])
 
