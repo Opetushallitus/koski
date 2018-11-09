@@ -73,6 +73,64 @@ class LuovutuspalveluSpec extends FreeSpec with LocalJettyHttpSpecification with
     }
   }
 
+  "Oid rajapinta" - {
+    "Oikealla oidilla" in {
+      val oid = MockOppijat.eero.oid
+      postOid(oid, List("ammatillinenkoulutus")) {
+        verifyResponseStatusOk()
+        val resp = JsonSerializer.parse[HetuResponseV1](body)
+        resp.henkilö.oid should equal(oid)
+        resp.opiskeluoikeudet.map(_.tyyppi.koodiarvo).distinct should equal(List("ammatillinenkoulutus"))
+      }
+    }
+    "Palauttaa 404 jos henkilöä ei löydy" in {
+      postOid("1.2.246.562.24.45141690981", List("ammatillinenkoulutus")) {
+        verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia("Oppijaa 1.2.246.562.24.45141690981 ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
+      }
+    }
+    "Palauttaa 404 jos henkilölle ei löydy opiskeluoikeuksia (annetuilla rajauksilla)" in {
+      postOid(MockOppijat.eero.oid, List("ibtutkinto")) {
+        verifyResponseStatus(404, ErrorMatcher.regex(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia, ".*".r))
+      }
+    }
+    "Palauttaa 404 jos henkilölle ei löydy opiskeluoikeuksia (ollenkaan)" in {
+      postOid(MockOppijat.eiKoskessa.oid, List("ibtutkinto")) {
+        verifyResponseStatus(404, ErrorMatcher.regex(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia, ".*".r))
+      }
+    }
+    "Palauttaa 503 jos Virta ei vastaa" in {
+      postOid(MockOppijat.virtaEiVastaa.oid, List("korkeakoulutus")) {
+        verifyResponseStatus(503, KoskiErrorCategory.unavailable.virta())
+      }
+    }
+    "Tuottaa oikean audit log viestin" in {
+      AuditLogTester.clearMessages
+      postOid(MockOppijat.eero.oid, List("ammatillinenkoulutus")) {
+        verifyResponseStatusOk()
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN"))
+      }
+    }
+    "Palauttaa 400 jos v-kentässä tuntematon arvo" in {
+      post(
+        "api/luovutuspalvelu/oid",
+        JsonSerializer.writeWithRoot(OidRequestV1(666, MockOppijat.eero.oid, List("ammatillinenkoulutus"))),
+        headers = authHeaders(MockUsers.luovutuspalveluKäyttäjä) ++ jsonContent
+      ) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam("Tuntematon versio"))
+      }
+    }
+    "Palauttaa 400 jos opiskeluoikeudenTyypit-listassa tuntematon arvo" in {
+      postOid(MockOppijat.eero.oid, List("foobar")) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam("Tuntematon opiskeluoikeudentyyppi"))
+      }
+    }
+    "Vaatii vähintään yhden opiskeluoikeudenTyypin" in {
+      postOid(MockOppijat.eero.oid, List()) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam("Opiskeluoikeuden tyypit puuttuvat"))
+      }
+    }
+  }
+
  "Luovutuspalvelu hetu massahaku API" - {
    "Palauttaa oikean näköisen vastauksen" in {
      val henkilot = Set(MockOppijat.amis, MockOppijat.eerola)
@@ -164,6 +222,14 @@ class LuovutuspalveluSpec extends FreeSpec with LocalJettyHttpSpecification with
     post(
       "api/luovutuspalvelu/hetu",
       JsonSerializer.writeWithRoot(HetuRequestV1(1, hetu, opiskeluoikeudenTyypit)),
+      headers = authHeaders(MockUsers.luovutuspalveluKäyttäjä) ++ jsonContent
+    )(f)
+  }
+
+  private def postOid[A](oid: String, opiskeluoikeudenTyypit: List[String])(f: => A): A = {
+    post(
+      "api/luovutuspalvelu/oid",
+      JsonSerializer.writeWithRoot(OidRequestV1(1, oid, opiskeluoikeudenTyypit)),
       headers = authHeaders(MockUsers.luovutuspalveluKäyttäjä) ++ jsonContent
     )(f)
   }

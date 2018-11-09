@@ -3,7 +3,7 @@ package fi.oph.koski.luovutuspalvelu
 import java.time.LocalDate
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.henkilo.Hetu
+import fi.oph.koski.henkilo.{HenkilöOid, Hetu}
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.RequiresLuovutuspalvelu
@@ -53,6 +53,7 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
     JsonSerializer.validateAndExtract[OidRequestV1](parsedJson)
       .left.map(errors => KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(errors)))
       .filterOrElse(_.v == 1, KoskiErrorCategory.badRequest.queryParam("Tuntematon versio"))
+      .flatMap(req => HenkilöOid.validateHenkilöOid(req.oid).map(_ => req))
       .flatMap(validateOpiskeluoikeudenTyypit(_, allowVirtaOrYtr = true))
   }
 
