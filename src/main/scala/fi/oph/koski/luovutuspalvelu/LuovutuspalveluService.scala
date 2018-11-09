@@ -9,40 +9,23 @@ import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, KoskiMessageField, KoskiOperation}
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryContext, OpiskeluoikeusQueryFilter}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{OneOfOpiskeluoikeudenTyypit, OppijaOidHaku}
-import fi.oph.koski.schema.{Henkilö, Koodistokoodiviite, OpiskeluoikeudenTyyppi, TäydellisetHenkilötiedot}
+import fi.oph.koski.schema._
 import org.json4s.JValue
 import rx.lang.scala.Observable
 
 class LuovutuspalveluService(application: KoskiApplication) {
-  def findOppijaByOid(req: OidRequestV1)(implicit koskiSession: KoskiSession): Either[HttpStatus, HetuResponseV1] = {
+  def findOppijaByOid(req: OidRequestV1)(implicit koskiSession: KoskiSession): Either[HttpStatus, LuovutuspalveluResponseV1] = {
     val (useVirta, useYtr) = resolveVirtaAndYtrUsage(req)
-
-    for {
-      oppijaWithWarnings <- application.oppijaFacade.findOppija(req.oid, useVirta = useVirta, useYtr = useYtr)
-      oppija <- oppijaWithWarnings.warningsToLeft
-      palautettavatOpiskeluoikeudet = oppija.opiskeluoikeudet.filter(oo => req.opiskeluoikeudenTyypit.contains(oo.tyyppi.koodiarvo))
-      _ <- if (palautettavatOpiskeluoikeudet.isEmpty) Left(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia()) else Right(())
-    } yield {
-      HetuResponseV1(
-        henkilö = buildLuovutuspalveluHenkilöV1(oppija.henkilö),
-        opiskeluoikeudet = palautettavatOpiskeluoikeudet
-      )
-    }
+    application.oppijaFacade.findOppija(req.oid, useVirta = useVirta, useYtr = useYtr)
+      .flatMap(_.warningsToLeft)
+      .flatMap(buildResponse(_, req))
   }
 
-  def findOppijaByHetu(req: HetuRequestV1)(implicit koskiSession: KoskiSession): Either[HttpStatus, HetuResponseV1] = {
+  def findOppijaByHetu(req: HetuRequestV1)(implicit koskiSession: KoskiSession): Either[HttpStatus, LuovutuspalveluResponseV1] = {
     val (useVirta, useYtr) = resolveVirtaAndYtrUsage(req)
-    for {
-      oppijaWithWarnings <- application.oppijaFacade.findOppijaByHetuOrCreateIfInYtrOrVirta(req.hetu, useVirta = useVirta, useYtr = useYtr)
-      oppija <- oppijaWithWarnings.warningsToLeft
-      palautettavatOpiskeluoikeudet = oppija.opiskeluoikeudet.filter(oo => req.opiskeluoikeudenTyypit.contains(oo.tyyppi.koodiarvo))
-      _ <- if (palautettavatOpiskeluoikeudet.isEmpty) Left(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia()) else Right(())
-    } yield {
-      HetuResponseV1(
-        henkilö = buildLuovutuspalveluHenkilöV1(oppija.henkilö),
-        opiskeluoikeudet = palautettavatOpiskeluoikeudet
-      )
-    }
+    application.oppijaFacade.findOppijaByHetuOrCreateIfInYtrOrVirta(req.hetu, useVirta = useVirta, useYtr = useYtr)
+      .flatMap(_.warningsToLeft)
+      .flatMap(buildResponse(_, req))
   }
 
   def queryOppijatByHetu(req: BulkHetuRequestV1)(implicit koskiSession: KoskiSession): Observable[JValue] = {
@@ -53,7 +36,7 @@ class LuovutuspalveluService(application: KoskiApplication) {
     auditLogOpiskeluoikeusKatsominen(henkilot)
     val filters = List(OppijaOidHaku(henkilot.map(_.oid)), opiskeluoikeusTyyppiQueryFilters(req.opiskeluoikeudenTyypit))
     streamingQuery(filters).map { t =>
-      JsonSerializer.serializeWithUser(user)(buildHetuResponseV1(oidToHenkilo(t._1), t._2))
+      JsonSerializer.serializeWithUser(user)(buildResponse(oidToHenkilo(t._1), t._2))
     }
   }
 
@@ -64,25 +47,31 @@ class LuovutuspalveluService(application: KoskiApplication) {
     .map(h => AuditLogMessage(KoskiOperation.OPISKELUOIKEUS_KATSOMINEN, koskiSession, Map(KoskiMessageField.oppijaHenkiloOid -> h.oid)))
     .foreach(AuditLog.log)
 
-  private def buildLuovutuspalveluHenkilöV1(henkilö: Henkilö): LuovutuspalveluHenkilöV1 = {
-    henkilö match {
-      case th: TäydellisetHenkilötiedot => LuovutuspalveluHenkilöV1(th.oid, th.hetu, th.syntymäaika, th.turvakielto.getOrElse(false))
-      case _ => throw new RuntimeException("expected TäydellisetHenkilötiedot")
-    }
-  }
-
   private def opiskeluoikeusTyyppiQueryFilters(opiskeluoikeusTyypit: List[String]): OneOfOpiskeluoikeudenTyypit =
     OneOfOpiskeluoikeudenTyypit(opiskeluoikeusTyypit.map(t => OpiskeluoikeusQueryFilter.OpiskeluoikeudenTyyppi(Koodistokoodiviite(t, "opiskeluoikeudentyyppi"))))
 
-  private def buildHetuResponseV1(h: OppijaHenkilö, oo: List[OpiskeluoikeusRow]): HetuResponseV1 =
-    HetuResponseV1(
+  private def buildResponse(oppija: Oppija, req: LuovutuspalveluRequest): Either[HttpStatus, LuovutuspalveluResponseV1] = {
+    val palautettavatOpiskeluoikeudet = oppija.opiskeluoikeudet.filter(oo => req.opiskeluoikeudenTyypit.contains(oo.tyyppi.koodiarvo))
+    if (palautettavatOpiskeluoikeudet.isEmpty) {
+      Left(KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia())
+    } else {
+      Right(LuovutuspalveluResponseV1(henkilö = toLuovutuspalveluHenkilöV1(oppija.henkilö), opiskeluoikeudet = palautettavatOpiskeluoikeudet))
+    }
+  }
+
+  private def buildResponse(h: OppijaHenkilö, oo: List[OpiskeluoikeusRow]): LuovutuspalveluResponseV1 =
+    LuovutuspalveluResponseV1(
       LuovutuspalveluHenkilöV1(h.oid, h.hetu, h.syntymäaika, h.turvakielto),
       oo.map(_.toOpiskeluoikeus))
+
+  private def toLuovutuspalveluHenkilöV1(henkilö: Henkilö): LuovutuspalveluHenkilöV1 = henkilö match {
+    case th: TäydellisetHenkilötiedot => LuovutuspalveluHenkilöV1(th.oid, th.hetu, th.syntymäaika, th.turvakielto.getOrElse(false))
+    case _ => throw new RuntimeException("expected TäydellisetHenkilötiedot")
+  }
 
   private def resolveVirtaAndYtrUsage(req: LuovutuspalveluRequest) = {
     val useVirta = req.opiskeluoikeudenTyypit.contains(OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo)
     val useYtr = req.opiskeluoikeudenTyypit.contains(OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo)
     (useVirta, useYtr)
   }
-
 }

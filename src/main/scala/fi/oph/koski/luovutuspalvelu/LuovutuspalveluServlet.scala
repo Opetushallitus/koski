@@ -9,7 +9,7 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.RequiresLuovutuspalvelu
 import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus}
 import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}
-import fi.oph.koski.util.{Pagination, Timing}
+import fi.oph.koski.util.Timing
 import org.json4s.JValue
 import org.json4s.JsonAST.{JBool, JObject}
 import org.scalatra.ContentEncodingSupport
@@ -103,7 +103,7 @@ case class HetuRequestV1(v: Int, hetu: String, opiskeluoikeudenTyypit: List[Stri
 
 case class OidRequestV1(v: Int, oid: String, opiskeluoikeudenTyypit: List[String]) extends LuovutuspalveluRequest
 
-case class HetuResponseV1(henkilö: LuovutuspalveluHenkilöV1, opiskeluoikeudet: Seq[Opiskeluoikeus])
+case class LuovutuspalveluResponseV1(henkilö: LuovutuspalveluHenkilöV1, opiskeluoikeudet: Seq[Opiskeluoikeus])
 
 case class LuovutuspalveluHenkilöV1(oid: Henkilö.Oid, hetu: Option[Henkilö.Hetu], syntymäaika: Option[LocalDate],  turvakielto: Boolean)
 

@@ -15,7 +15,7 @@ class LuovutuspalveluSpec extends FreeSpec with LocalJettyHttpSpecification with
       val hetu = MockOppijat.eero.hetu.get
       postHetu(hetu, List("ammatillinenkoulutus")) {
         verifyResponseStatusOk()
-        val resp = JsonSerializer.parse[HetuResponseV1](body)
+        val resp = JsonSerializer.parse[LuovutuspalveluResponseV1](body)
         resp.henkilö.hetu should equal(Some(hetu))
         resp.opiskeluoikeudet.map(_.tyyppi.koodiarvo).distinct should equal(List("ammatillinenkoulutus"))
       }
@@ -78,7 +78,7 @@ class LuovutuspalveluSpec extends FreeSpec with LocalJettyHttpSpecification with
       val oid = MockOppijat.eero.oid
       postOid(oid, List("ammatillinenkoulutus")) {
         verifyResponseStatusOk()
-        val resp = JsonSerializer.parse[HetuResponseV1](body)
+        val resp = JsonSerializer.parse[LuovutuspalveluResponseV1](body)
         resp.henkilö.oid should equal(oid)
         resp.opiskeluoikeudet.map(_.tyyppi.koodiarvo).distinct should equal(List("ammatillinenkoulutus"))
       }
@@ -136,7 +136,7 @@ class LuovutuspalveluSpec extends FreeSpec with LocalJettyHttpSpecification with
      val henkilot = Set(MockOppijat.amis, MockOppijat.eerola)
      postHetut(henkilot.map(_.hetu.get).toList, List("ammatillinenkoulutus")) {
        verifyResponseStatusOk()
-       val resp = JsonSerializer.parse[Seq[HetuResponseV1]](body)
+       val resp = JsonSerializer.parse[Seq[LuovutuspalveluResponseV1]](body)
        resp.map(_.henkilö.oid).toSet should equal (henkilot.map(_.oid))
      }
    }
@@ -146,7 +146,7 @@ class LuovutuspalveluSpec extends FreeSpec with LocalJettyHttpSpecification with
      val opiskeluoikeudenTyypit = Set("ammatillinenkoulutus", "lukiokoulutus", "perusopetus")
      postHetut(henkilot.map(_.hetu.get).toList, opiskeluoikeudenTyypit.toList) {
        verifyResponseStatusOk()
-       val resp = JsonSerializer.parse[Seq[HetuResponseV1]](body)
+       val resp = JsonSerializer.parse[Seq[LuovutuspalveluResponseV1]](body)
        val actualOpiskeluoikeudenTyypit = resp.flatMap(_.opiskeluoikeudet.map(_.tyyppi.koodiarvo)).toSet
        actualOpiskeluoikeudenTyypit should equal (opiskeluoikeudenTyypit)
      }
@@ -156,7 +156,7 @@ class LuovutuspalveluSpec extends FreeSpec with LocalJettyHttpSpecification with
      val opiskeluoikeudenTyyppi = Set("ammatillinenkoulutus")
      postHetut(List(MockOppijat.amis.hetu.get), opiskeluoikeudenTyyppi.toList) {
        verifyResponseStatusOk()
-       val resp = JsonSerializer.parse[Seq[HetuResponseV1]](body)
+       val resp = JsonSerializer.parse[Seq[LuovutuspalveluResponseV1]](body)
        resp.flatMap(_.opiskeluoikeudet.map(_.tyyppi.koodiarvo)).toSet should equal (opiskeluoikeudenTyyppi)
      }
    }
