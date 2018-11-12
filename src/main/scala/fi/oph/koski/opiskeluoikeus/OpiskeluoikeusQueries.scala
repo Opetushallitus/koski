@@ -76,14 +76,17 @@ object OpiskeluoikeusQueryContext {
     val rows = application.opiskeluoikeusQueryRepository.opiskeluoikeusQuery(filters, Some(Ascending("oppijaOid")), paginationSettings)
 
     val groupedByPerson: Observable[List[(OpiskeluoikeusRow, HenkilöRow, Option[HenkilöRow])]] = rows
-      .tumblingBuffer(rows.map(_._1.oppijaOid).distinctUntilChanged.drop(1))
+      .tumblingBuffer {
+        rows.map { case (_, henkilö, master) => master.map(_.oid).getOrElse(henkilö.oid) }
+            .distinctUntilChanged.drop(1)
+      }
       .map(_.toList)
 
     groupedByPerson.flatMap {
-      case oikeudet@(firstRow :: _) =>
-        val oppijaOid = firstRow._1.oppijaOid
-        assert(oikeudet.map(_._1.oppijaOid).toSet == Set(oppijaOid), "Usean ja/tai väärien henkilöiden tietoja henkilöllä " + oppijaOid + ": " + oikeudet)
-        Observable.just((oppijaOid, oikeudet.toList.map(_._1)))
+      case oikeudet@((_, henkilö, masterHenkilö) :: _) =>
+        val oppijaOid = masterHenkilö.map(_.oid).getOrElse(henkilö.oid)
+        assert(oikeudet.map({ case (_, h, m) => m.map(_.oid).getOrElse(h.oid) }).toSet == Set(oppijaOid), "Usean ja/tai väärien henkilöiden tietoja henkilöllä " + oppijaOid + ": " + oikeudet)
+        Observable.just((oppijaOid, oikeudet.map(_._1)))
       case _ =>
         Observable.empty
     }
