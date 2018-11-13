@@ -44,6 +44,7 @@ Pyynnön kenttien kuvaukset:
     (Virta ja Ylioppilastutkintorekisteri), joten niitä tulee käyttää vain jos tiedot todella tarvitaan.
      
 Vastaus, kun henkilö löytyy:
+<a name="vastaukset"></a>
 
 **HUOM** Allaoleva esimerkkiviesti on vielä kesken "henkilö"-elementin osalta. Siinä pitää paremmin huomioida
 tilanteet, jossa samalla henkilöllä on useampi oppijanumero (ja mahdollisesti useampi kuin yksi hetu).
@@ -121,12 +122,35 @@ Esimerkit 503 vastauksista:
 
 ---------------
 
-## /koski/api/luovutuspalvelu/oppijanumero
+## /koski/api/luovutuspalvelu/oid (v1)
 
-Tulossa myöhemmin. Tällä kutsulla haetaan yhden henkilön tiedot oppijanumeron perusteella.
+Tällä kutsulla haetaan yhden henkilön tiedot oppijanumeron perusteella.
 
-Dokumentaatiossa pitää kuvata miten käsitellään tilanteet, joissa samalla henkilöllä
+
+Esimerkkipyyntö:
+
+    POST /koski/api/luovutuspalvelu/oid HTTP/1.1
+    Content-Type: application/json
+
+    {
+      "v": 1,
+      "oid": "1.2.246.562.24.54718336656",
+      "opiskeluoikeudenTyypit": ["perusopetus", "korkeakoulutus"]
+    }
+
+Pyynnön kenttien kuvaukset:
+
+ * `v` - rajapinnan versionumero, tässä aina 1.
+ * `oid` - haettava oppijanumero.
+ * `opiskeluoikeudentyypit` - lista opiskeluoikeuden tyyppejä, joista kutsuja on kiinnostunut.
+    Sallitut arvot löytyvät [opiskeluoikeudentyyppi](/koski/dokumentaatio/koodisto/opiskeluoikeudentyyppi/latest) koodistosta.
+    Tällä hetkellä arvot `korkeakoulutus` ja `ylioppilastutkinto` aiheuttavat ylimääräisen kutsun taustarekisteriin
+    (Virta ja Ylioppilastutkintorekisteri), joten niitä tulee käyttää vain jos tiedot todella tarvitaan.
+
+TODO: pitää kuvata miten käsitellään tilanteet, joissa samalla henkilöllä
 on useampi kuin yksi oppijanumero (tai hetu).
+
+Vastaus on sama kuin pyynnössä `/koski/api/luovutuspalvelu/hetu` [ks. yllä](#vastaukset)
 
 -----------------
 
