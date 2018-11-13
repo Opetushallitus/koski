@@ -67,13 +67,13 @@ protected object LuovutuspalveluApiPerfTester extends KoskidevHttpSpecification 
       })
   }
 
-  private def makeRequests(requests: List[HttpPost]): List[List[HetuResponseV1]] = {
+  private def makeRequests(requests: List[HttpPost]): List[List[LuovutuspalveluResponseV1]] = {
     requests.map(request => {
       val response = client.execute(request)
       val parsedResponse = parseResponse(response)
       println(response.getStatusLine.getStatusCode)
       response.close()
-      JsonSerializer.parse[List[HetuResponseV1]](parsedResponse)
+      JsonSerializer.parse[List[LuovutuspalveluResponseV1]](parsedResponse)
     })
   }
 
