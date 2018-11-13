@@ -43,16 +43,11 @@ case class OpiskeluoikeusQueryContext(request: HttpServletRequest)(implicit kosk
 
   def queryWithoutHenkilötiedotRaw(filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings], queryForAuditLog: String): Observable[(Oid, List[OpiskeluoikeusRow])] = {
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_HAKU, koskiSession, Map(hakuEhto -> queryForAuditLog)))
-    streamingQueryGroupedByOid(filters, paginationSettings)
-  }
-
-  def queryWithDistinctLoggingMsg(filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings], loggingMessages: List[AuditLogMessage]): Observable[(Oid, List[OpiskeluoikeusRow])] = {
-    loggingMessages.foreach(m => AuditLog.log(m))
-    streamingQueryGroupedByOid(filters, paginationSettings)
+    OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, filters, paginationSettings)
   }
 
   private def query(filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings]): Observable[(OppijaHenkilö, List[OpiskeluoikeusRow])] = {
-    val oikeudetPerOppijaOid: Observable[(Oid, List[OpiskeluoikeusRow])] = streamingQueryGroupedByOid(filters, paginationSettings)
+    val oikeudetPerOppijaOid: Observable[(Oid, List[OpiskeluoikeusRow])] = OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, filters, paginationSettings)
     oikeudetPerOppijaOid.tumblingBuffer(10).flatMap {
       oppijatJaOidit: Seq[(Oid, List[OpiskeluoikeusRow])] =>
         val oids: List[String] = oppijatJaOidit.map(_._1).toList
@@ -71,8 +66,13 @@ case class OpiskeluoikeusQueryContext(request: HttpServletRequest)(implicit kosk
         Observable.from(oppijat)
     }
   }
+}
 
-  private def streamingQueryGroupedByOid(filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings]): Observable[(Oid, List[(OpiskeluoikeusRow)])] = {
+object OpiskeluoikeusQueryContext {
+  def queryForAuditLog(params: Map[String, String]) =
+    params.toList.sortBy(_._1).map { case (p,v) => p + "=" + v }.mkString("&")
+
+  def streamingQueryGroupedByOid(application: KoskiApplication, filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings])(implicit koskiSession: KoskiSession): Observable[(Oid, List[(OpiskeluoikeusRow)])] = {
     val rows = application.opiskeluoikeusQueryRepository.opiskeluoikeusQuery(filters, Some(Ascending("oppijaOid")), paginationSettings)
 
     val groupedByPerson: Observable[List[(OpiskeluoikeusRow, HenkilöRow, Option[HenkilöRow])]] = rows
@@ -88,9 +88,4 @@ case class OpiskeluoikeusQueryContext(request: HttpServletRequest)(implicit kosk
         Observable.empty
     }
   }
-}
-
-object OpiskeluoikeusQueryContext {
-  def queryForAuditLog(params: Map[String, String]) =
-    params.toList.sortBy(_._1).map { case (p,v) => p + "=" + v }.mkString("&")
 }
