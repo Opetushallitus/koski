@@ -14,19 +14,16 @@ case class TestResult(seconds: Long, amountOfReceivedOpiskeluoikeudet: Int, opis
 
 /**
   * Required env variables:
-  *  HETU_FILE_PATH - file containing list of hetus
   *  KOSKI_USER - username that has luovutuspalvelu access
   *  KOSKI_PASS - password for username
+  *  KOSKI_BASE_URL
   */
 object LuovutuspalveluPerfTester extends KoskidevHttpSpecification {
-
   def main(args: Array[String]): Unit = {
     println("Starting test")
-    val all = LuovutuspalveluApiPerfTester.doTest(List("ammatillinenkoulutus", "lukiokoulutus", "perusopetus"), 3)
-    val onlyOne = LuovutuspalveluApiPerfTester.doTest(List("perusopetus"), 3)
+    val all = LuovutuspalveluApiPerfTester.doTest(List("ammatillinenkoulutus", "lukiokoulutus", "perusopetus"))
 
     printResult(all)
-    printResult(onlyOne)
   }
 
   def printResult(result: TestResult): Unit = {
@@ -39,26 +36,25 @@ object LuovutuspalveluPerfTester extends KoskidevHttpSpecification {
 }
 
 protected object LuovutuspalveluApiPerfTester extends KoskidevHttpSpecification {
-
+  val amountOfBatches = 3
+  def hetuFilePath: String = ???
   lazy val client = createClient
 
-  def doTest(opiskeluoikeusTyypit: List[String], amountOfBatches: Int): TestResult = {
+  def doTest(opiskeluoikeusTyypit: List[String]): TestResult = {
     val requests = buildRequests(opiskeluoikeusTyypit, amountOfBatches)
     val startTime = Timestamp.from(Instant.now)
-    val responses = makeRequests(requests)
+    val responses = performRequests(requests)
     val endTime = Timestamp.from(Instant.now).getTime - startTime.getTime
-    val receivedOpiskeluoikeuksia = responses.map(_.map(_.opiskeluoikeudet.length)).flatten.reduce(_ + _)
+    val receivedOpiskeluoikeuksia = responses.map(_.opiskeluoikeudet.length).sum
 
     TestResult(endTime, receivedOpiskeluoikeuksia, opiskeluoikeusTyypit)
   }
 
   private def buildRequests(opiskeluoikeusTyypit: List[String], amountOfBatches: Int): List[HttpPost] = {
-    val hetuFilePath = requiredEnv("HETU_FILE_PATH")
-    val batchSize = sys.env.getOrElse("HETU_BATCH_SIZE", "500").toInt
-
     Source.fromFile(hetuFilePath).getLines.toList.grouped(1000).toList.takeRight(amountOfBatches)
       .map(hetut => BulkHetuRequestV1(1, hetut, opiskeluoikeusTyypit))
       .map(request => {
+        println(request.hetut.size)
         val post = new HttpPost(baseUrl ++ "/api/luovutuspalvelu/hetut")
         val (cookie, user) = authHeaders(defaultUser).toList.head
         post.setHeader(cookie, user)
@@ -67,13 +63,18 @@ protected object LuovutuspalveluApiPerfTester extends KoskidevHttpSpecification 
       })
   }
 
-  private def makeRequests(requests: List[HttpPost]): List[List[LuovutuspalveluResponseV1]] = {
-    requests.map(request => {
+  private def performRequests(requests: List[HttpPost]): List[LuovutuspalveluResponseV1] = {
+    requests.flatMap(request => {
       val response = client.execute(request)
       val parsedResponse = parseResponse(response)
-      println(response.getStatusLine.getStatusCode)
+      val code = response.getStatusLine.getStatusCode
+      println(code)
       response.close()
-      JsonSerializer.parse[List[LuovutuspalveluResponseV1]](parsedResponse)
+      if (code == 200) {
+        JsonSerializer.parse[List[LuovutuspalveluResponseV1]](parsedResponse)
+      } else {
+        Nil
+      }
     })
   }
 
