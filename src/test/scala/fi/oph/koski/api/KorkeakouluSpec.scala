@@ -52,9 +52,9 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
         }
       }
 
-      "Hetuton löytyy oidilla" in {
+      "Hetuttoman linkitetyt opiskeluoikeudet löytyy oidilla" in {
         val oikeudet = getOpiskeluoikeudet(MockOppijat.virtaOppijaHetuton.henkilö.oid)
-        oikeudet.length should equal(1)
+        oikeudet.length should equal(2)
       }
 
       "Linkitetyn oppijan slave tiedoilla löytyy" in {

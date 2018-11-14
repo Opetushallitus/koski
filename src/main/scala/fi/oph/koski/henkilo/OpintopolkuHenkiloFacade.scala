@@ -133,20 +133,20 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
     }
   }
 
-  def findOppijaByOid(henkilöOid: String): Option[OppijaHenkilö] = {
+  def findOppijaByOid(henkilöOid: String): Option[OppijaHenkilö] =
     findHenkilötiedot(henkilöOid).map(_.henkilö).map(withLinkedOids)
-  }
 
-  def findMasterOppija(henkilöOid: String): Option[OppijaHenkilö] = {
-    findHenkilötiedot(henkilöOid).flatMap(_.master).map(withLinkedOids)
-  }
+  def findMasterOppija(henkilöOid: String): Option[OppijaHenkilö] =
+    findHenkilötiedot(henkilöOid).flatMap(_.master)
+      .orElse(findHenkilötiedot(henkilöOid).map(_.henkilö))
+      .map(withLinkedOids)
 
   protected def findHenkilötiedot(id: String): Option[OppijaHenkilöWithMasterInfo] = synchronized {
     oppijat.getOppijat.find(_.henkilö.oid == id)
   }
 
   def findOppijatNoSlaveOids(oids: List[String]): List[OppijaHenkilö] = {
-    oids.flatMap(findOppijaByOid).map(withLinkedOids)
+    oids.flatMap(findOppijaByOid)
   }
 
   def findOrCreate(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, OppijaHenkilö] = {
@@ -182,7 +182,7 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
   }
 
   override def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] = synchronized {
-    oppijat.getOppijat.find(_.henkilö.hetu.contains(hetu)).map(h => h.master.getOrElse(h.henkilö))
+    oppijat.getOppijat.find(_.henkilö.hetu.contains(hetu)).map(h => h.master.getOrElse(h.henkilö)).map(withLinkedOids)
   }
 
   override def findChangedOppijaOids(since: Long, offset: Int, amount: Int): List[Oid] = synchronized {

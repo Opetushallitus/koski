@@ -66,6 +66,10 @@ case class OpintopolkuHenkilöRepository(henkilöt: OpintopolkuHenkilöFacade, k
       .findOrCreate(UusiOppijaHenkilö(Some(henkilö.hetu), henkilö.sukunimi, henkilö.etunimet, kutsumanimi))
   }
 
+  def findMasterByOid(oid: String): Option[OppijaHenkilö] = {
+    henkilöt.findMasterOppija(oid)
+  }
+
   def findByOid(oid: String): Option[OppijaHenkilö] = {
     henkilöt.findOppijaByOid(oid)
   }

@@ -37,7 +37,7 @@ case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta:
   private val oidCache: KeyValueCache[String, Option[OppijaHenkilö]] =
     KeyValueCache(new ExpiringCache("HenkilöRepository", ExpiringCache.Params(1.hour, maxSize = 100, storeValuePredicate = {
       case (_, value) => value != None // Don't cache None results
-    })), opintopolku.findByOid)
+    })), opintopolku.findMasterByOid)
 
   // findByOid is locally cached
   def findByOid(oid: String): Option[OppijaHenkilö] = oidCache(oid)
