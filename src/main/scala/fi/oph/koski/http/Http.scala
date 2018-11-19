@@ -162,7 +162,7 @@ case class Http(root: String, client: Client = Http.newClient) extends Logging {
   }
 
   private def addCommonHeaders(request: Request) = request.copy(headers = request.headers.put(
-    Header("clientSubSystemCode", OpintopolkuSubSystemCode.koski)
+    Header("Caller-Id", OpintopolkuCallerId.koski)
   ))
 }
 
