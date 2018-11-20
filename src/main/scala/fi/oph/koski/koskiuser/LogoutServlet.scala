@@ -1,5 +1,7 @@
 package fi.oph.koski.koskiuser
 
+import java.net.URLEncoder
+
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.servlet.HtmlServlet
 import fi.oph.koski.sso.SSOSupport
@@ -26,7 +28,11 @@ class LogoutServlet(implicit val application: KoskiApplication) extends HtmlServ
 
   private def getLogoutUrl: String = {
     if (request.parameters.contains("target")) {
-      params("target")
+      if (!application.config.getString("configurable.logout.url." + langFromDomain).isEmpty) {
+        application.config.getString("configurable.logout.url." + langFromDomain) + URLEncoder.encode(params("target"), "UTF-8")
+      } else {
+        params("target")
+      }
     } else if (!application.config.getString("logout.url." + langFromDomain).isEmpty) {
       application.config.getString("logout.url." + langFromDomain)
     } else {
