@@ -175,7 +175,8 @@ case class DIAOppiaineenValmistavanVaiheenLukukaudenArviointi(
 case class DIAOppiaineenTutkintovaiheenLukukaudenArviointi(
   @KoodistoUri("arviointiasteikkodiatutkinto")
   arvosana: Koodistokoodiviite,
-  päivä: Option[LocalDate]
+  päivä: Option[LocalDate],
+  lasketaanKokonaispistemäärään: Boolean = true
 ) extends DIAArviointi {
   override def arviointipäivä: Option[LocalDate] = päivä
   override def hyväksytty: Boolean = arvosana.koodiarvo match {
