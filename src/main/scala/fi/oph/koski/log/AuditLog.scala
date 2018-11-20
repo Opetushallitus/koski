@@ -24,6 +24,10 @@ class AuditLog(logger: Logger) {
     audit.log(msg.user, msg.operation, msg.target, msg.changes)
     counter.labels(msg.operation.toString).inc
   }
+
+  def startHeartbeat(): Unit = {
+    // no need to do anything here, calling AuditLogger constructor is enough
+  }
 }
 
 case class AuditLogMessage(user: User, operation: Operation, target: Target, changes: Changes)
