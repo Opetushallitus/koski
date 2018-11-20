@@ -29,7 +29,8 @@ class LogoutServlet(implicit val application: KoskiApplication) extends HtmlServ
   private def getLogoutUrl: String = {
     if (request.parameters.contains("target")) {
       if (!application.config.getString("configurable.logout.url." + langFromDomain).isEmpty) {
-        application.config.getString("configurable.logout.url." + langFromDomain) + URLEncoder.encode(params("target"), "UTF-8")
+        application.config.getString("configurable.logout.url." + langFromDomain) +
+          URLEncoder.encode(URLEncoder.encode(params("target"), "UTF-8"),"UTF-8")
       } else {
         params("target")
       }
