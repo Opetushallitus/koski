@@ -57,7 +57,7 @@ case class OppijanumeroRekisteriClient(config: Config) {
       .map(_.map(_.toOppijaHenkilö(Nil)))
 
   def findSlaveOids(masterOid: String): Task[List[String]] =
-    oidServiceHttp.get(uri"/oppijanumerorekisteri-service/henkilo/$masterOid/slaves")(Http.parseJson[List[OppijaNumerorekisteriOppija]]).map(_.map(_.oidHenkilo))
+    oidServiceHttp.get(uri"/oppijanumerorekisteri-service/henkilo/$masterOid/slaves")(Http.parseJson[List[OppijaNumerorekisteriSlave]]).map(_.map(_.oidHenkilo))
 
   private def findOnrOppijatByOids(oids: List[Oid]): Task[List[OppijaNumerorekisteriOppija]] =
     oidServiceHttp.post(uri"/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloOidList", oids)(json4sEncoderOf[List[String]])(Http.parseJson[List[OppijaNumerorekisteriOppija]])
@@ -73,6 +73,7 @@ case class OppijanumeroRekisteriClient(config: Config) {
 }
 
 case class KäyttäjäHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, asiointiKieli: Option[Kieli])
+case class OppijaNumerorekisteriSlave(oidHenkilo: String)
 case class OppijaNumerorekisteriOppija(
   oidHenkilo: String,
   sukunimi: String,
