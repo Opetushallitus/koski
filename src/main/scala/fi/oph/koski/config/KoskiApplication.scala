@@ -12,7 +12,7 @@ import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.koodisto.{KoodistoCreator, KoodistoPalvelu, KoodistoViitePalvelu}
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.localization.LocalizationRepository
-import fi.oph.koski.log.{Logging, TimedProxy}
+import fi.oph.koski.log.{AuditLog, Logging, TimedProxy}
 import fi.oph.koski.luovutuspalvelu.LuovutuspalveluService
 import fi.oph.koski.mydata.{MyDataRepository, MyDataService}
 import fi.oph.koski.opiskeluoikeus._
@@ -98,6 +98,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
 
   lazy val init: Future[Unit] = {
     perustiedotIndexer.init // This one will not be awaited for; it's ok that indexing continues while application is running
+    AuditLog.startHeartbeat() // No need to await this one either
     tryCatch("Koodistojen luonti") { if (config.getString("opintopolku.virkailija.url") != "mock") KoodistoCreator(this).createAndUpdateCodesBasedOnMockData }
     val parallels: immutable.Seq[Future[Any]] = List(
       Future { tiedonsiirtoService.init },
