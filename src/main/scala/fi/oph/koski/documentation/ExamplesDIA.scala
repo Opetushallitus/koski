@@ -34,10 +34,11 @@ object ExamplesDIA {
     osasuoritukset = Some(osasuorituksetValmistavaVaihe)
   )
 
-  def diaTutkintovaiheenSuoritus = DIATutkintovaiheenSuoritus(
+  def diaTutkintovaiheenSuoritus(kokonaispistemäärä: Option[Int] = None) = DIATutkintovaiheenSuoritus(
     toimipiste = saksalainenKoulu,
     suorituskieli = englanti,
     vahvistus = ExampleData.vahvistusPaikkakunnalla(org = saksalainenKoulu, kunta = helsinki),
+    kokonaispistemäärä = kokonaispistemäärä,
     osasuoritukset = Some(osasuorituksetTutkintovaihe)
   )
 
@@ -92,7 +93,7 @@ object ExamplesDIA {
         LukionOpiskeluoikeusjakso(date(2016, 6, 4), LukioExampleData.opiskeluoikeusPäättynyt)
       )
     ),
-    suoritukset = List(diaValmistavanVaiheenSuoritus, diaTutkintovaiheenSuoritus)
+    suoritukset = List(diaValmistavanVaiheenSuoritus, diaTutkintovaiheenSuoritus(Some(870)))
   )
 
   val examples = List(

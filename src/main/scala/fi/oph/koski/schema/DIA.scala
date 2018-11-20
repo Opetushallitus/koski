@@ -36,6 +36,9 @@ case class DIATutkintovaiheenSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: DIATutkintovaihe = DIATutkintovaihe(),
   toimipiste: OrganisaatioWithOid,
+  @MinValue(0)
+  @MaxValue(900)
+  kokonaispistemäärä: Option[Int] = None,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
   @Description("Oppiaineiden suoritukset")
