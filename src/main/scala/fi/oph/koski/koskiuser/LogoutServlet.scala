@@ -26,11 +26,12 @@ class LogoutServlet(implicit val application: KoskiApplication) extends HtmlServ
     }
   }
 
-  private def getLogoutUrl: String = {
+  private[koskiuser] def getLogoutUrl: String = {
     if (request.parameters.contains("target")) {
       if (!application.config.getString("configurable.logout.url." + langFromDomain).isEmpty) {
-        application.config.getString("configurable.logout.url." + langFromDomain) +
-          URLEncoder.encode(URLEncoder.encode(params("target"), "UTF-8"),"UTF-8")
+        // We get redirected 3 times: first to shibbo logout url, then to our own redirect url, from where we finally
+        // redirect to the actual "target". This is why we url encode the parameter twice.
+        application.config.getString("configurable.logout.url." + langFromDomain) + encode(encode(params("target")))
       } else {
         params("target")
       }
@@ -40,4 +41,6 @@ class LogoutServlet(implicit val application: KoskiApplication) extends HtmlServ
       "/"
     }
   }
+
+  private def encode(param: String) = URLEncoder.encode(param, "UTF-8")
 }
