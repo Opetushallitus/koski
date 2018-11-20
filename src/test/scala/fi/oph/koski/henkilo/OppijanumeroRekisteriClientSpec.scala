@@ -28,6 +28,7 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
 
   private val hetu = "120456-ABCD"
   private val oid = "1.2.246.562.24.99999999123"
+  private val slaveOid = "1.2.246.562.24.99999999124"
   private val organisaatioOid = "1.2.246.562.10.85149969462"
 
   private val wireMockServer = new WireMockServer(wireMockConfig().port(9876))
@@ -129,9 +130,20 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
       result.value should equal(expectedOppijaHenkilö)
     }
 
+    "palauttaa listan slave oideista" in {
+      mockEndpoints(slaveOidsResponseData = List(Map("oidHenkilo" -> slaveOid, "etunimet" -> "Paavo", "sukunimi" -> "Pesusieni", "modified" -> 1541163791)))
+      val result = mockClient.findSlaveOids(oid).run
+      result should contain only slaveOid
+    }
+
+    "palauttaa listan slave oideista vaikka datasta puuttuu etunimet ja sukunimi" in {
+      mockEndpoints(slaveOidsResponseData = List(Map("oidHenkilo" -> slaveOid, "etunimet" -> None, "sukunimi" -> None, "modified" -> 1541163791)))
+      val result = mockClient.findSlaveOids(oid).run
+      result should contain only slaveOid
+    }
   }
 
-  def mockEndpoints(oppijaHenkilöResponseData: Map[String, Any] = defaultOppijaHenkilöResponse) = {
+  def mockEndpoints(oppijaHenkilöResponseData: Map[String, Any] = defaultOppijaHenkilöResponse, slaveOidsResponseData: List[Map[String, Any]] = List.empty) = {
     val hetuUrl = s"/oppijanumerorekisteri-service/henkilo/hetu=${hetu}"
     val hetusUrl = "/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloHetuList"
     val oidUrl = s"/oppijanumerorekisteri-service/henkilo/${oid}"
@@ -189,6 +201,6 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
 
     wireMockServer.stubFor(
       WireMock.get(urlPathEqualTo(slaveOidsUrl))
-        .willReturn(ok().withBody(write(List.empty[String]))))
+        .willReturn(ok().withBody(write(slaveOidsResponseData))))
   }
 }
