@@ -1,19 +1,8 @@
 [ {
-  "koodiUri" : "oppiaineetdia_sa",
-  "koodiArvo" : "SA",
+  "koodiUri" : "oppiaineetdia_ai",
+  "koodiArvo" : "AI",
   "metadata" : [ {
-    "nimi" : "Saksa",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "oppiaineetdia_su",
-  "koodiArvo" : "SU",
-  "metadata" : [ {
-    "nimi" : "Suomi",
+    "nimi" : "Äidinkieli",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
