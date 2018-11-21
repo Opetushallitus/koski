@@ -169,18 +169,18 @@ trait DIAOppiaineenLukukausi extends KoodistostaLöytyväKoulutusmoduuli with La
 @Title("DIA-oppiaineen valmistavan vaiheen lukukausi")
 @Description("DIA-oppiaineen valmistavan vaiheen lukukauden tunnistetiedot")
 case class DIAOppiaineenValmistavanVaiheenLukukausi(
-  @KoodistoKoodiarvo("10/I")
-  @KoodistoKoodiarvo("10/II")
+  @KoodistoKoodiarvo("1")
+  @KoodistoKoodiarvo("2")
   tunniste: Koodistokoodiviite
 ) extends DIAOppiaineenLukukausi
 
 @Title("DIA-oppiaineen tutkintovaiheen lukukausi")
 @Description("DIA-oppiaineen tutkintovaiheen lukukauden tunnistetiedot")
 case class DIAOppiaineenTutkintovaiheenLukukausi(
-  @KoodistoKoodiarvo("11/I")
-  @KoodistoKoodiarvo("11/II")
-  @KoodistoKoodiarvo("12/I")
-  @KoodistoKoodiarvo("12/II")
+  @KoodistoKoodiarvo("3")
+  @KoodistoKoodiarvo("4")
+  @KoodistoKoodiarvo("5")
+  @KoodistoKoodiarvo("6")
   tunniste: Koodistokoodiviite,
 ) extends DIAOppiaineenLukukausi
 
