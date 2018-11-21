@@ -207,4 +207,48 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_cloe",
+  "koodiArvo" : "CLOE",
+  "metadata" : [ {
+    "nimi" : "CertiLingua label of excellence",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_ccea",
+  "koodiArvo" : "CCEA",
+  "metadata" : [ {
+    "nimi" : "Cambridge Certificate of Advanced English",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_lt",
+  "koodiArvo" : "LT",
+  "metadata" : [ {
+    "nimi" : "Lakitieto",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_masy",
+  "koodiArvo" : "MASY",
+  "metadata" : [ {
+    "nimi" : "Matematiikka, syventävä",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]
