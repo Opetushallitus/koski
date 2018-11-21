@@ -142,21 +142,10 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "oppiaineetdia_hisa",
-  "koodiArvo" : "HISA",
+  "koodiUri" : "oppiaineetdia_hi",
+  "koodiArvo" : "HI",
   "metadata" : [ {
-    "nimi" : "Historia saksaksi",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "oppiaineetdia_hisu",
-  "koodiArvo" : "HISU",
-  "metadata" : [ {
-    "nimi" : "Historia suomeksi",
+    "nimi" : "Historia",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
