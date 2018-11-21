@@ -34,7 +34,7 @@ object ExamplesDIA {
     osasuoritukset = Some(osasuorituksetValmistavaVaihe)
   )
 
-  def diaTutkintovaiheenSuoritus(kokonaispistemäärä: Option[Int] = None) = DIATutkintovaiheenSuoritus(
+  def diaTutkintovaiheenSuoritus(kokonaispistemäärä: Option[Int] = None) = DIATutkinnonSuoritus(
     toimipiste = saksalainenKoulu,
     suorituskieli = englanti,
     vahvistus = ExampleData.vahvistusPaikkakunnalla(org = saksalainenKoulu, kunta = helsinki),
