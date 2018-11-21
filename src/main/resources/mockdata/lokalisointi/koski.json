@@ -8393,9 +8393,9 @@
   "id" : 21355,
   "key" : "Lupa voimassa",
   "locale" : "en",
-  "modified" : 1535634684091,
-  "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "modified" : 1542715894227,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Permission valid"
 }, {
   "accesscount" : 0,
   "accessed" : 1535634684226,
@@ -8419,9 +8419,9 @@
   "id" : 21354,
   "key" : "Lupa voimassa",
   "locale" : "sv",
-  "modified" : 1538994003668,
-  "modifiedBy" : "1.2.246.562.24.73863121467",
-  "value" : "Tillståndet i kraft"
+  "modified" : 1542715894167,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Tillståndet är i kraft"
 }, {
   "accesscount" : 0,
   "accessed" : 1507555671594,
@@ -9797,9 +9797,9 @@
   "id" : 21325,
   "key" : "Olet poistamassa palveluntarjoajalle",
   "locale" : "en",
-  "modified" : 1540390157689,
-  "modifiedBy" : "1.2.246.562.24.73863121467",
-  "value" : "You are about to cancel a permission"
+  "modified" : 1542716079764,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "You are about to cancel a permission to use your study related information granted to"
 }, {
   "accesscount" : 0,
   "accessed" : 1535634684161,
@@ -9823,9 +9823,9 @@
   "id" : 21324,
   "key" : "Olet poistamassa palveluntarjoajalle",
   "locale" : "sv",
-  "modified" : 1538993878346,
-  "modifiedBy" : "1.2.246.562.24.73863121467",
-  "value" : "Du håller på att stryka tillståndet"
+  "modified" : 1542716079704,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Du håller på att radera tillståndet till tjänsterbjudaren"
 }, {
   "accesscount" : 0,
   "accessed" : 1528960774125,
@@ -13047,9 +13047,9 @@
   "id" : 21329,
   "key" : "Palataan palveluntarjoajan sivulle",
   "locale" : "fi",
-  "modified" : 1535634684091,
-  "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : "Palataan palveluntarjoajan sivulle 3 sekunnin kuluttua..."
+  "modified" : 1542715842573,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Palataan palveluntarjoajan sivulle muutaman sekunnin kuluttua..."
 }, {
   "accesscount" : 0,
   "accessed" : 1535634684175,
@@ -13112,9 +13112,9 @@
   "id" : 21319,
   "key" : "Palveluntarjoaja näkee seuraavat opintoihisi liittyvät tiedot",
   "locale" : "en",
-  "modified" : 1535634684091,
-  "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "modified" : 1542717166757,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "The service provider receives the following information about your studies"
 }, {
   "accesscount" : 0,
   "accessed" : 1535634684148,
@@ -13138,9 +13138,9 @@
   "id" : 21318,
   "key" : "Palveluntarjoaja näkee seuraavat opintoihisi liittyvät tiedot",
   "locale" : "sv",
-  "modified" : 1538993374954,
-  "modifiedBy" : "1.2.246.562.24.73863121467",
-  "value" : "Tjänstleverantören får följande uppgifter"
+  "modified" : 1542717166757,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Tjänsterbjudaren får följande uppgifter om dina studier"
 }, {
   "accesscount" : 0,
   "accessed" : 1540386814565,
@@ -13723,9 +13723,9 @@
   "id" : 21441,
   "key" : "Pisin voimassaoloaika on vuosi",
   "locale" : "sv",
-  "modified" : 1537788135098,
-  "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "modified" : 1542715224746,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Längsta giltighetstid är ett år"
 }, {
   "accesscount" : 0,
   "accessed" : 1525863031021,
@@ -14828,9 +14828,9 @@
   "id" : 21301,
   "key" : "Sinun tulee olla kirjautunut sisään",
   "locale" : "en",
-  "modified" : 1535634684090,
-  "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "modified" : 1542715176431,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "You have to be logged in"
 }, {
   "accesscount" : 0,
   "accessed" : 1535634684108,
@@ -14854,9 +14854,9 @@
   "id" : 21300,
   "key" : "Sinun tulee olla kirjautunut sisään",
   "locale" : "sv",
-  "modified" : 1535634684090,
-  "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "modified" : 1542715176415,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Du måste vara inloggad"
 }, {
   "accesscount" : 0,
   "accessed" : 1507555669918,
@@ -16336,9 +16336,9 @@
   "id" : 21363,
   "key" : "Tallennus epäonnistui",
   "locale" : "sv",
-  "modified" : 1535634684091,
-  "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "modified" : 1542715522681,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "Fel när uppgifterna skulle sparas"
 }, {
   "accesscount" : 0,
   "accessed" : 1507555669111,
@@ -17051,9 +17051,9 @@
   "id" : 21542,
   "key" : "Tietoja käytetään opiskelijahintaisten matkalippujen myöntämiseen.",
   "locale" : "en",
-  "modified" : 1542357970396,
+  "modified" : 1542715260231,
   "modifiedBy" : "1.2.246.562.24.49257489943",
-  "value" : "Confirming eligibility for a student discount."
+  "value" : "The information is used for admitting tickets with student discount."
 }, {
   "accesscount" : 0,
   "accessed" : 1542112535869,
@@ -17064,9 +17064,9 @@
   "id" : 21540,
   "key" : "Tietoja käytetään opiskelijahintaisten matkalippujen myöntämiseen.",
   "locale" : "fi",
-  "modified" : 1542357970395,
+  "modified" : 1542715260231,
   "modifiedBy" : "1.2.246.562.24.49257489943",
-  "value" : "Opiskelija-aseman selvittäminen opiskelija-alennuksen myöntämistä varten."
+  "value" : "Tietoja käytetään matkalippujen opiskelija-alennuksen myöntämiseen."
 }, {
   "accesscount" : 0,
   "accessed" : 1542112535870,
@@ -17077,9 +17077,9 @@
   "id" : 21541,
   "key" : "Tietoja käytetään opiskelijahintaisten matkalippujen myöntämiseen.",
   "locale" : "sv",
-  "modified" : 1542357970396,
+  "modified" : 1542715260231,
   "modifiedBy" : "1.2.246.562.24.49257489943",
-  "value" : "Faställande av rätt till studeranderabatt."
+  "value" : "Uppgifterna används för att bevilja biljetter med studierabatt."
 }, {
   "accesscount" : 0,
   "accessed" : 1540293946138,
@@ -21107,9 +21107,9 @@
   "id" : 21367,
   "key" : "annettua lupaa nähdä opintoihisi liittyviä tietoja. Poistaessasi luvan, voit menettää palveluntarjoajan opintoihisi liittyvät edut",
   "locale" : "en",
-  "modified" : 1535634684091,
-  "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : ""
+  "modified" : 1542716179447,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : ". Once the permission is cancelled, you will lose study related benefits provided by the service provider."
 }, {
   "accesscount" : 0,
   "accessed" : 1535634684252,
@@ -21120,9 +21120,9 @@
   "id" : 21365,
   "key" : "annettua lupaa nähdä opintoihisi liittyviä tietoja. Poistaessasi luvan, voit menettää palveluntarjoajan opintoihisi liittyvät edut",
   "locale" : "fi",
-  "modified" : 1535634684091,
-  "modifiedBy" : "1.2.246.562.24.98063222086",
-  "value" : "annettua lupaa nähdä opintoihisi liittyviä tietoja. Poistaessasi luvan, voit menettää palveluntarjoajan opintoihisi liittyvät edut"
+  "modified" : 1542716179325,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "annettua lupaa käyttää opintoihisi liittyviä tietoja. Poistaessasi luvan menetät palveluntarjoajan tarjoamat opintoihisi liittyvät edut."
 }, {
   "accesscount" : 0,
   "accessed" : 1535634684254,
@@ -21133,9 +21133,9 @@
   "id" : 21366,
   "key" : "annettua lupaa nähdä opintoihisi liittyviä tietoja. Poistaessasi luvan, voit menettää palveluntarjoajan opintoihisi liittyvät edut",
   "locale" : "sv",
-  "modified" : 1538993921746,
-  "modifiedBy" : "1.2.246.562.24.73863121467",
-  "value" : "till dina studieuppgifter för tjänstleverantören. Om du stryker tillståndet, går du miste om de förmåner som tjänstleverantören har beviljat för dina studier"
+  "modified" : 1542716179384,
+  "modifiedBy" : "1.2.246.562.24.49257489943",
+  "value" : "att använda dina studieuppgifter. Då du raderar tillståndet går du miste om de studieförmåner som tjänsterbjudaren erbjudit dig."
 }, {
   "accesscount" : 0,
   "accessed" : 1533800642282,
