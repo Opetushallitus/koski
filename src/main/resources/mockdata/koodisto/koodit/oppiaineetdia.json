@@ -32,6 +32,17 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "oppiaineetdia_b2",
+  "koodiArvo" : "B2",
+  "metadata" : [ {
+    "nimi" : "B2-kieli",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "oppiaineetdia_b3",
   "koodiArvo" : "B3",
   "metadata" : [ {
