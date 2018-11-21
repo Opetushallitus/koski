@@ -788,4 +788,13 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_diapaattokokeensuoritus",
+  "koodiArvo" : "diapaattokokeensuoritus",
+  "metadata" : [ {
+    "nimi" : "DIA-oppiaineen päättökokeen suoritus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]
