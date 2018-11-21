@@ -31,10 +31,10 @@ case class DIAOpiskeluoikeus(
 
 trait DIAPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Arvioinniton with Suorituskielellinen
 
-@Title("DIA-tutkintovaiheen suoritus")
-case class DIATutkintovaiheenSuoritus(
+@Title("DIA-tutkinnon suoritus")
+case class DIATutkinnonSuoritus(
   @Title("Koulutus")
-  koulutusmoduuli: DIATutkintovaihe = DIATutkintovaihe(),
+  koulutusmoduuli: DIATutkinto = DIATutkinto(),
   toimipiste: OrganisaatioWithOid,
   @MinValue(0)
   @MaxValue(900)
@@ -74,7 +74,7 @@ case class DIAValmistavaVaihe(
 
 @Title("DIA-tutkintovaihe")
 @Description("DIA-tutkintovaiheen tunnistetiedot")
-case class DIATutkintovaihe(
+case class DIATutkinto(
   @KoodistoKoodiarvo("301103")
   tunniste: Koodistokoodiviite = Koodistokoodiviite("301103", koodistoUri = "koulutus"),
   koulutustyyppi: Option[Koodistokoodiviite] = None
