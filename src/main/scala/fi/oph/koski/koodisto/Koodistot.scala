@@ -28,6 +28,7 @@ object Koodistot {
     KoodistoAsetus("arviointiasteikkoyleissivistava"),
     KoodistoAsetus("dialukukausi", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),
     KoodistoAsetus("diaosaalue", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),
+    KoodistoAsetus("diapaattokoe", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),
     KoodistoAsetus("effortasteikkoib", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),
     KoodistoAsetus("erityinenkoulutustehtava"),
     KoodistoAsetus("erityisopetuksentoteutuspaikka"),

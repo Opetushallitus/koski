@@ -81,7 +81,7 @@ case class DIATutkintovaihe(
 ) extends Koulutus with Laajuudeton with Tutkinto
 
 
-trait DIASuoritus extends Vahvistukseton with MahdollisestiSuorituskielellinen
+trait DIASuoritus extends Vahvistukseton
 
 @Title("DIA-oppiaineen valmistavan vaiheen suoritus")
 case class DIAOppiaineenValmistavanVaiheenSuoritus(
@@ -95,7 +95,7 @@ case class DIAOppiaineenValmistavanVaiheenSuoritus(
   override val osasuoritukset: Option[List[DIAOppiaineenValmistavanVaiheenLukukaudenSuoritus]],
   @KoodistoKoodiarvo("diaoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "diaoppiaine", koodistoUri = "suorituksentyyppi")
-) extends DIASuoritus with Arvioinniton
+) extends DIASuoritus with Arvioinniton with MahdollisestiSuorituskielellinen
 
 @Title("DIA-oppiaineen tutkintovaiheen suoritus")
 case class DIAOppiaineenTutkintovaiheenSuoritus(
@@ -109,25 +109,33 @@ case class DIAOppiaineenTutkintovaiheenSuoritus(
   override val osasuoritukset: Option[List[DIAOppiaineenTutkintovaiheenLukukaudenSuoritus]],
   @KoodistoKoodiarvo("diaoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "diaoppiaine", koodistoUri = "suorituksentyyppi")
-) extends DIASuoritus with Arvioinniton
+) extends DIASuoritus with Arvioinniton with MahdollisestiSuorituskielellinen
 
 @Title("DIA-oppiaineen valmistavan vaiheen lukukauden suoritus")
 case class DIAOppiaineenValmistavanVaiheenLukukaudenSuoritus(
   koulutusmoduuli: DIAOppiaineenValmistavanVaiheenLukukausi,
   arviointi: Option[List[DIAOppiaineenValmistavanVaiheenLukukaudenArviointi]] = None,
-  suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("diaoppiaineenvalmistavanvaiheenlukukaudensuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus", koodistoUri = "suorituksentyyppi")
 ) extends DIASuoritus with KurssinSuoritus
+
+trait DIAOppiaineenTutkintovaiheenOsasuoritus extends DIASuoritus
 
 @Title("DIA-oppiaineen tutkintovaiheen lukukauden suoritus")
 case class DIAOppiaineenTutkintovaiheenLukukaudenSuoritus(
   koulutusmoduuli: DIAOppiaineenTutkintovaiheenLukukausi,
   arviointi: Option[List[DIAOppiaineenTutkintovaiheenLukukaudenArviointi]] = None,
-  suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("diaoppiaineentutkintovaiheenlukukaudensuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "diaoppiaineentutkintovaiheenlukukaudensuoritus", koodistoUri = "suorituksentyyppi")
-) extends DIASuoritus with KurssinSuoritus
+) extends DIAOppiaineenTutkintovaiheenOsasuoritus with KurssinSuoritus
+
+@Title("DIA-oppiaineen päättökokeen suoritus")
+case class DIAOppiaineenPäättökokeenSuoritus(
+  koulutusmoduuli: DIAPäättökoe,
+  arviointi: Option[List[DIAPäättökokeenArviointi]] = None,
+  @KoodistoKoodiarvo("diapaattokokeensuoritus")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "diapaattokokeensuoritus", koodistoUri = "suorituksentyyppi")
+) extends DIAOppiaineenTutkintovaiheenOsasuoritus
 
 trait DIAOppiaineenLukukausi extends KoodistostaLöytyväKoulutusmoduuli with Laajuudeton {
   @KoodistoUri("dialukukausi")
@@ -152,6 +160,13 @@ case class DIAOppiaineenTutkintovaiheenLukukausi(
   tunniste: Koodistokoodiviite,
 ) extends DIAOppiaineenLukukausi
 
+@Title("DIA-tutkinnon päättökoe")
+@Description("DIA-tutkinnon päättökokeen tunnistetiedot")
+case class DIAPäättökoe (
+  @KoodistoUri("diapaattokoe")
+  tunniste: Koodistokoodiviite
+) extends KoodistostaLöytyväKoulutusmoduuli with Laajuudeton
+
 
 trait DIAArviointi extends KoodistostaLöytyväArviointi {
   def arvosana: Koodistokoodiviite
@@ -171,13 +186,10 @@ case class DIAOppiaineenValmistavanVaiheenLukukaudenArviointi(
   }
 }
 
-@Title("DIA-oppiaineen tutkintovaiheen lukukauden arviointi")
-case class DIAOppiaineenTutkintovaiheenLukukaudenArviointi(
+trait DIATutkintovaiheenArviointi extends DIAArviointi {
   @KoodistoUri("arviointiasteikkodiatutkinto")
-  arvosana: Koodistokoodiviite,
-  päivä: Option[LocalDate],
-  lasketaanKokonaispistemäärään: Boolean = true
-) extends DIAArviointi {
+  def arvosana: Koodistokoodiviite
+  def päivä: Option[LocalDate]
   override def arviointipäivä: Option[LocalDate] = päivä
   override def hyväksytty: Boolean = arvosana.koodiarvo match {
     case "0" => false
@@ -185,6 +197,18 @@ case class DIAOppiaineenTutkintovaiheenLukukaudenArviointi(
   }
 }
 
+@Title("DIA-oppiaineen tutkintovaiheen lukukauden arviointi")
+case class DIAOppiaineenTutkintovaiheenLukukaudenArviointi(
+  arvosana: Koodistokoodiviite,
+  päivä: Option[LocalDate],
+  lasketaanKokonaispistemäärään: Boolean = true
+) extends DIATutkintovaiheenArviointi
+
+@Title("DIA-oppiaineen päättökokeen arviointi")
+case class DIAPäättökokeenArviointi(
+  arvosana: Koodistokoodiviite,
+  päivä: Option[LocalDate],
+) extends DIATutkintovaiheenArviointi
 
 @Description("DIA-oppiaineen tunnistetiedot")
 trait DIAOppiaine extends KoodistostaLöytyväKoulutusmoduuli {
