@@ -1,6 +1,6 @@
 [ {
   "koodiUri" : "diapaattokoe_1",
-  "koodiArvo" : "1",
+  "koodiArvo" : "kirjallinenkoe",
   "metadata" : [ {
     "nimi" : "Kirjallinen koe",
     "lyhytNimi" : "Kirjallinen",
@@ -10,10 +10,20 @@
   "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "diapaattokoe_2",
-  "koodiArvo" : "2",
+  "koodiArvo" : "suullinenkoe",
   "metadata" : [ {
     "nimi" : "Suullinen koe",
     "lyhytNimi" : "Suullinen",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "diapaattokoe_3",
+  "koodiArvo" : "nayttotutkinto",
+  "metadata" : [ {
+    "nimi" : "Erityisosaamisen näyttötutkinto",
+    "lyhytNimi" : "Näyttötutkinto",
     "kieli" : "FI"
   } ],
   "versio" : 1,
