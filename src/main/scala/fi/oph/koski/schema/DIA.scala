@@ -106,7 +106,7 @@ case class DIAOppiaineenTutkintovaiheenSuoritus(
   @Description("Oppiaineeseen kuuluvien lukukausien suoritukset")
   @Title("Lukukaudet")
   @MaxItems(4)
-  override val osasuoritukset: Option[List[DIAOppiaineenTutkintovaiheenLukukaudenSuoritus]],
+  override val osasuoritukset: Option[List[DIAOppiaineenTutkintovaiheenOsasuoritus]],
   @KoodistoKoodiarvo("diaoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "diaoppiaine", koodistoUri = "suorituksentyyppi")
 ) extends DIASuoritus with Arvioinniton with MahdollisestiSuorituskielellinen
