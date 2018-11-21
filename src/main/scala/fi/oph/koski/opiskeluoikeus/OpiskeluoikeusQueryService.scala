@@ -69,7 +69,7 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
           KoskiHenkilöCache.filterByQuery(hakusana)(henkilö)
         }
       case (query, IdHaku(ids)) => query.filter(_._1.id inSetBind ids)
-      case (query, OppijaOidHaku(oids)) => query.filter { case (_, henkilö, masterHenkilö) => (henkilö.oid inSetBind oids) || masterHenkilö.map(_.oid inSetBind oids).getOrElse(false) }
+      case (query, OppijaOidHaku(oids)) => query.filter { case (_, hlö, _) => hlö.oid inSetBind oids }
       case (query, SuoritusJsonHaku(json)) => query.filter(_._1.data.+>("suoritukset").@>(json))
       case (query, MuuttunutEnnen(aikaleima)) => query.filter(_._1.aikaleima < Timestamp.from(aikaleima))
       case (query, MuuttunutJälkeen(aikaleima)) => query.filter(_._1.aikaleima >= Timestamp.from(aikaleima))
@@ -84,7 +84,7 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
     val sorted = sorting match {
       case None => query
       case Some(Ascending("id")) => query.sortBy(_._1.id)
-      case Some(Ascending("oppijaOid")) => query.sortBy { case (oo, henkilö, masterHenkilö) => (masterHenkilö.map(_.oid).getOrElse(henkilö.oid), oo.id) }
+      case Some(Ascending("oppijaOid")) => query.sortBy { case (oo, henkilö, masterHenkilö) => (masterHenkilö.map(_.oid).getOrElse(henkilö.oid), oo.id) } // slaves and master need to be adjacent for later grouping to work
       case Some(Ascending("nimi")) => query.sortBy(nimi)
       case Some(Descending("nimi")) => query.sortBy(nimiDesc)
       case Some(Ascending("alkamispäivä")) => query.sortBy(tuple => (alkamispäivä(tuple), nimi(tuple)))

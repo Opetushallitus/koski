@@ -34,7 +34,8 @@ class LuovutuspalveluService(application: KoskiApplication) {
     val user = koskiSession // take current session so it can be used in observable
 
     auditLogOpiskeluoikeusKatsominen(henkilot)
-    val filters = List(OppijaOidHaku(henkilot.map(_.oid)), opiskeluoikeusTyyppiQueryFilters(req.opiskeluoikeudenTyypit))
+    val masterOids = henkilot.map(_.oid)
+    val filters = List(OppijaOidHaku(masterOids ++ application.henkilöCache.resolveLinkedOids(masterOids)), opiskeluoikeusTyyppiQueryFilters(req.opiskeluoikeudenTyypit))
     streamingQuery(filters).map { t =>
       JsonSerializer.serializeWithUser(user)(buildResponse(oidToHenkilo(t._1), t._2))
     }
