@@ -244,10 +244,6 @@ trait DIAOsaAlueOppiaine extends DIAOppiaine {
 case class DIAOppiaineMuu(
   @Description("DIA-lukion oppiaineen tunnistetiedot")
   @KoodistoKoodiarvo("A")
-  @KoodistoKoodiarvo("B1RA")
-  @KoodistoKoodiarvo("B1RU")
-  @KoodistoKoodiarvo("B3VE")
-  @KoodistoKoodiarvo("B3RA")
   @KoodistoKoodiarvo("KU")
   @KoodistoKoodiarvo("MU")
   @KoodistoKoodiarvo("MA")
