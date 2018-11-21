@@ -24,7 +24,10 @@ object ExamplesDIA {
   def osasuorituksetTutkintovaihe: List[DIAOppiaineenTutkintovaiheenSuoritus] = List(
     diaTutkintoAineSuoritus(diaOppiaine("A", "1"), List(
       (diaTutkintoLukukausi("11/I"), "1")
-    ))
+    )),
+    diaTutkintoAineSuoritus(diaOppiaine("HI", "3"), List(
+      (diaTutkintoLukukausi("11/I"), "4")
+    ), suorituskieli = Some("FI"))
   )
 
   def diaValmistavanVaiheenSuoritus = DIAValmistavanVaiheenSuoritus(
@@ -52,8 +55,9 @@ object ExamplesDIA {
     })
   )
 
-  def diaTutkintoAineSuoritus(oppiaine: DIAOsaAlueOppiaine, lukukaudet: List[(DIAOppiaineenTutkintovaiheenLukukausi, String)] = Nil) = DIAOppiaineenTutkintovaiheenSuoritus(
+  def diaTutkintoAineSuoritus(oppiaine: DIAOsaAlueOppiaine, lukukaudet: List[(DIAOppiaineenTutkintovaiheenLukukausi, String)] = Nil, suorituskieli: Option[String] = None) = DIAOppiaineenTutkintovaiheenSuoritus(
     koulutusmoduuli = oppiaine,
+    suorituskieli = suorituskieli.map(k => Koodistokoodiviite(koodiarvo = k, koodistoUri = "kieli")),
     osasuoritukset = Some(lukukaudet.map { case (lukukausi, arvosana) =>
       DIAOppiaineenTutkintovaiheenLukukaudenSuoritus(
         koulutusmoduuli = lukukausi,
