@@ -137,6 +137,14 @@ case class DIAOppiaineenPäättökokeenSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "diapaattokokeensuoritus", koodistoUri = "suorituksentyyppi")
 ) extends DIAOppiaineenTutkintovaiheenOsasuoritus
 
+@Title("DIA-tutkinnon erityisosaamisen näyttötutkinnon suoritus")
+case class DIAErityisosaamisenNäyttötutkinto(
+  koulutusmoduuli: DIANäyttötutkinto,
+  arviointi: Option[List[DIAPäättökokeenArviointi]] = None,
+  @KoodistoKoodiarvo("diapaattokokeensuoritus")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "diapaattokokeensuoritus", koodistoUri = "suorituksentyyppi")
+) extends DIAOppiaineenTutkintovaiheenOsasuoritus
+
 trait DIAOppiaineenLukukausi extends KoodistostaLöytyväKoulutusmoduuli with Laajuudeton {
   @KoodistoUri("dialukukausi")
   def tunniste: Koodistokoodiviite
@@ -164,6 +172,16 @@ case class DIAOppiaineenTutkintovaiheenLukukausi(
 @Description("DIA-tutkinnon päättökokeen tunnistetiedot")
 case class DIAPäättökoe (
   @KoodistoUri("diapaattokoe")
+  @KoodistoKoodiarvo("kirjallinenkoe")
+  @KoodistoKoodiarvo("suullinenkoe")
+  tunniste: Koodistokoodiviite
+) extends KoodistostaLöytyväKoulutusmoduuli with Laajuudeton
+
+@Title("DIA-tutkinnon erityisosaamisen näyttötutkinto")
+@Description("DIA-tutkinnon erityisosaamisen näyttötutkinnon tunnistetiedot")
+case class DIANäyttötutkinto (
+  @KoodistoUri("diapaattokoe")
+  @KoodistoKoodiarvo("nayttotutkinto")
   tunniste: Koodistokoodiviite
 ) extends KoodistostaLöytyväKoulutusmoduuli with Laajuudeton
 
