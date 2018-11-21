@@ -2,7 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.{LocalDate, LocalDateTime}
 
-import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, OksaUri}
+import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, OksaUri, SensitiveData}
 import fi.oph.scalaschema.annotation._
 
 @Description("DIA-tutkinnon opiskeluoikeus")
@@ -22,12 +22,28 @@ case class DIAOpiskeluoikeus(
   suoritukset: List[DIAPäätasonSuoritus],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.diatutkinto.koodiarvo)
   tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.diatutkinto,
-  override val lisätiedot: Option[LukionOpiskeluoikeudenLisätiedot] = None
+  override val lisätiedot: Option[DIAOpiskeluoikeudenLisätiedot] = None
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
 }
 
+@Description("DIA-opiskeluoikeuden lisätiedot")
+case class DIAOpiskeluoikeudenLisätiedot(
+  @Description("Opiskeluajan pidennetty päättymispäivä (true/false).")
+  @SensitiveData
+  @DefaultValue(false)
+  pidennettyPäättymispäivä: Boolean = false,
+  @Description("Opiskelija on ulkomainen vaihto-opiskelija Suomessa (true/false).")
+  @Title("Ulkomainen vaihto-opiskelija.")
+  @DefaultValue(false)
+  ulkomainenVaihtoopiskelija: Boolean = false,
+  @SensitiveData
+  @DefaultValue(false)
+  yksityisopiskelija: Boolean = false,
+  erityisenKoulutustehtävänJaksot: Option[List[ErityisenKoulutustehtävänJakso]] = None,
+  ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None
+) extends OpiskeluoikeudenLisätiedot
 
 trait DIAPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Arvioinniton with Suorituskielellinen
 
