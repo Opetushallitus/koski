@@ -49,6 +49,7 @@ object Koodistot {
     KoodistoAsetus("opintojenrahoitus"),
     KoodistoAsetus("opiskeluoikeudentyyppi"),
     KoodistoAsetus("oppiaineaidinkielijakirjallisuus"),
+    KoodistoAsetus("oppiainediaaidinkieli"),
     KoodistoAsetus("oppiainematematiikka"),
     KoodistoAsetus("oppiaineetdia", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),
     KoodistoAsetus("oppiaineentasoib", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),

@@ -243,8 +243,6 @@ trait DIAOsaAlueOppiaine extends DIAOppiaine {
 @Title("Muu DIA-oppiaine")
 case class DIAOppiaineMuu(
   @Description("DIA-lukion oppiaineen tunnistetiedot")
-  @KoodistoKoodiarvo("SA")
-  @KoodistoKoodiarvo("SU")
   @KoodistoKoodiarvo("A")
   @KoodistoKoodiarvo("B1RA")
   @KoodistoKoodiarvo("B1RU")
@@ -291,5 +289,22 @@ case class DIAOppiaineKieli(
   osaAlue: Koodistokoodiviite,
   pakollinen: Boolean = true
 ) extends DIAOsaAlueOppiaine with Kieliaine {
+  override def description = kieliaineDescription
+}
+
+@Title("DIA-äidinkieli")
+case class DIAOppiaineÄidinkieli(
+  @KoodistoKoodiarvo("AI")
+  tunniste: Koodistokoodiviite,
+  laajuus: Option[LaajuusVuosiviikkotunneissa],
+  @KoodistoUri("oppiainediaaidinkieli")
+  @KoodistoKoodiarvo("FI")
+  @KoodistoKoodiarvo("S2")
+  @KoodistoKoodiarvo("DE")
+  kieli: Koodistokoodiviite,
+  @Description("Oppiaineen osa-alue (1)")
+  @KoodistoKoodiarvo("1")
+  osaAlue: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "1", koodistoUri = "diaosaalue"),
+) extends DIAOsaAlueOppiaine with Äidinkieli {
   override def description = kieliaineDescription
 }

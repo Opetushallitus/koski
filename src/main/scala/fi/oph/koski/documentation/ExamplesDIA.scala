@@ -15,7 +15,7 @@ object ExamplesDIA {
       (diaValmistavaLukukausi("10/I"), "3"),
       (diaValmistavaLukukausi("10/II"), "5")
     )),
-    diaValmistavaVaiheAineSuoritus(diaOppiaine("SA", osaAlue = "1"), List(
+    diaValmistavaVaiheAineSuoritus(diaÄidinkieli("DE"), List(
       (diaValmistavaLukukausi("10/I"), "3"),
       (diaValmistavaLukukausi("10/II"), "5")
     ))
@@ -70,6 +70,12 @@ object ExamplesDIA {
     tunniste = Koodistokoodiviite(koodistoUri = "oppiaineetdia", koodiarvo = aine),
     laajuus = None,
     osaAlue = Koodistokoodiviite(koodiarvo = osaAlue, koodistoUri = "diaosaalue")
+  )
+
+  def diaÄidinkieli(kieli: String) = DIAOppiaineÄidinkieli(
+    tunniste = Koodistokoodiviite(koodistoUri = "oppiaineetdia", koodiarvo = "AI"),
+    kieli = Koodistokoodiviite(koodistoUri = "oppiainediaaidinkieli", koodiarvo = kieli),
+    laajuus = None
   )
 
   def diaValmistavaLukukausi(lukukausi: String) = DIAOppiaineenValmistavanVaiheenLukukausi(
