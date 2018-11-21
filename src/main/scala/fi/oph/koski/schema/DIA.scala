@@ -340,3 +340,16 @@ case class DIAOppiaineÄidinkieli(
 ) extends DIAOsaAlueOppiaine with Äidinkieli {
   override def description = kieliaineDescription
 }
+
+@Title("Muu valinnainen DIA-oppiaine")
+case class DIAOppiaineMuuValinnainen(
+  @Description("DIA-lukion muun valinnaisen oppiaineen tunnistetiedot")
+  @KoodistoKoodiarvo("CLOE")
+  @KoodistoKoodiarvo("CCEA")
+  @KoodistoKoodiarvo("LT")
+  @KoodistoKoodiarvo("MASY")
+  tunniste: Koodistokoodiviite,
+  laajuus: Option[LaajuusVuosiviikkotunneissa],
+  @Description("Oppiaineen osa-alue (1-3)")
+  osaAlue: Koodistokoodiviite
+) extends DIAOsaAlueOppiaine
