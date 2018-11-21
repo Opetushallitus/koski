@@ -103,7 +103,7 @@ trait DIASuoritus extends Vahvistukseton
 case class DIAOppiaineenValmistavanVaiheenSuoritus(
   @Description("DIA-oppiaineen tunnistetiedot")
   @Title("Oppiaine")
-  koulutusmoduuli: DIAOsaAlueOppiaine,
+  koulutusmoduuli: DIAValmistavanVaiheenOppiaine,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineeseen kuuluvien lukukausien suoritukset")
   @Title("Lukukaudet")
@@ -117,7 +117,7 @@ case class DIAOppiaineenValmistavanVaiheenSuoritus(
 case class DIAOppiaineenTutkintovaiheenSuoritus(
   @Description("DIA-oppiaineen tunnistetiedot")
   @Title("Oppiaine")
-  koulutusmoduuli: DIAOsaAlueOppiaine,
+  koulutusmoduuli: DIAOppiaine,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineeseen kuuluvien lukukausien suoritukset")
   @Title("Lukukaudet")
@@ -256,6 +256,8 @@ trait DIAOsaAlueOppiaine extends DIAOppiaine {
   def osaAlue: Koodistokoodiviite
 }
 
+trait DIAValmistavanVaiheenOppiaine extends DIAOppiaine
+
 @Title("Muu DIA-oppiaine")
 case class DIAOppiaineMuu(
   @Description("DIA-lukion oppiaineen tunnistetiedot")
@@ -279,7 +281,7 @@ case class DIAOppiaineMuu(
   @Description("Oppiaineen osa-alue (1-3)")
   osaAlue: Koodistokoodiviite,
   pakollinen: Boolean = true
-) extends DIAOsaAlueOppiaine
+) extends DIAOsaAlueOppiaine with DIAValmistavanVaiheenOppiaine
 
 @Title("DIA-kielioppiaine")
 case class DIAOppiaineKieli(
@@ -301,7 +303,7 @@ case class DIAOppiaineKieli(
   @DefaultValue("1")
   osaAlue: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "1", koodistoUri = "diaosaalue"),
   pakollinen: Boolean = true
-) extends DIAOsaAlueOppiaine with Kieliaine {
+) extends DIAOsaAlueOppiaine with DIAValmistavanVaiheenOppiaine with Kieliaine {
   override def description = kieliaineDescription
 }
 
@@ -318,8 +320,8 @@ case class DIAOppiaineValinnainenKieli(
   kieli: Koodistokoodiviite,
   @Description("Oppiaineen osa-alue (1)")
   @KoodistoKoodiarvo("1")
-  osaAlue: Koodistokoodiviite
-) extends DIAOsaAlueOppiaine with Kieliaine {
+  osaAlue: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "1", koodistoUri = "diaosaalue")
+) extends DIAOsaAlueOppiaine with DIAValmistavanVaiheenOppiaine with Kieliaine {
   override def description = kieliaineDescription
 }
 
@@ -337,7 +339,7 @@ case class DIAOppiaineÄidinkieli(
   @KoodistoKoodiarvo("1")
   @DefaultValue("1")
   osaAlue: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "1", koodistoUri = "diaosaalue"),
-) extends DIAOsaAlueOppiaine with Äidinkieli {
+) extends DIAOsaAlueOppiaine with DIAValmistavanVaiheenOppiaine with Äidinkieli {
   override def description = kieliaineDescription
 }
 
@@ -352,4 +354,4 @@ case class DIAOppiaineMuuValinnainen(
   laajuus: Option[LaajuusVuosiviikkotunneissa],
   @Description("Oppiaineen osa-alue (1-3)")
   osaAlue: Koodistokoodiviite
-) extends DIAOsaAlueOppiaine
+) extends DIAOppiaine
