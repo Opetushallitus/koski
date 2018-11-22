@@ -29,4 +29,15 @@ trait MyDataConfig extends Logging  {
   private def getConfigOption(id: String): Option[TypeSafeConfig] = {
     conf.getConfigList("members").asScala.find(member => member.getString("id") == id)
   }
+
+  /**
+    * Check if given URL is defined in configuration mydata.callbackURLs
+    */
+  def isWhitelistedCallbackURL(callbackURL: String): Boolean = {
+
+    conf.getStringList("callbackURLs").asScala.exists(whitelistExpression =>
+      callbackURL.matches(whitelistExpression)
+    )
+  }
+
 }

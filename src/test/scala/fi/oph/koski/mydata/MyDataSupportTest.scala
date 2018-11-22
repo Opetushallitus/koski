@@ -53,5 +53,17 @@ class MyDataSupportTest extends FreeSpec with Matchers with MockFactory {
         support.getConfigForMember("000000-00")
       }
     }
+
+    "Tunnistaa sallitun callback URL:n" in {
+      support.isWhitelistedCallbackURL("http://localhost") should equal(true)
+      support.isWhitelistedCallbackURL("https://localhost") should equal(true)
+      support.isWhitelistedCallbackURL("https://localhost/index.html?parameter=value") should equal(true)
+    }
+
+    "Tunnistaa ei-sallitun callback URL:n" in {
+      support.isWhitelistedCallbackURL("http://localhost:80/") should equal(false)
+      support.isWhitelistedCallbackURL("https://www.google.com") should equal(false)
+    }
+
   }
 }
