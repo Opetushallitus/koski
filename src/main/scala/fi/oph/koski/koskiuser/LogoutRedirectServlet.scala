@@ -19,7 +19,7 @@ class LogoutRedirectServlet(implicit val koskiApplication: KoskiApplication) ext
     if (mydataconfig.isWhitelistedCallbackURL(params("target"))) {
       redirect(params("target"))
     } else {
-      halt(KoskiErrorCategory.badRequest.statusCode, KoskiErrorCategory.badRequest.queryParam.invalidCallbackParameter)
+      halt(KoskiErrorCategory.badRequest.statusCode, KoskiErrorCategory.badRequest.queryParam.invalidCallbackParameter.message)
     }
   }
 }
