@@ -28,6 +28,16 @@ const resolveGroupingFn = päätasonSuorituksenTyyppi => {
   }
 }
 
+const resolveLaajuusyksikkö = päätasonSuorituksenTyyppi => {
+  switch (päätasonSuorituksenTyyppi) {
+    case 'diavalmistavavaihe':
+    case 'diatutkintovaihe':
+      return 'vuosiviikkotuntia'
+    default:
+      return 'kurssia'
+  }
+}
+
 const resolveFootnotes = päätasonSuorituksenTyyppi => {
   switch (päätasonSuorituksenTyyppi) {
     case 'ibtutkinto': return arvosanaFootnote
@@ -48,7 +58,7 @@ export const RyhmiteltyOppiaineetEditor = ({suorituksetModel, päätasonSuorituk
     <div>
       <table className='suoritukset oppiaineet'>
         <LukionOppiaineetTableHead
-          laajuusyksikkö='vuosiviikkotuntia'
+          laajuusyksikkö={resolveLaajuusyksikkö(päätasonSuorituksenTyyppi)}
         />
         <tbody>
         {
