@@ -17,7 +17,7 @@ class LogoutRedirectServlet(implicit val koskiApplication: KoskiApplication) ext
 
   get("/") {
     if (mydataconfig.isWhitelistedCallbackURL(params("target"))) {
-      redirect(params("target"))
+      response.sendRedirect(params("target")) // Scalatra redirect forces protocol to http/https
     } else {
       halt(KoskiErrorCategory.badRequest.statusCode, KoskiErrorCategory.badRequest.queryParam.invalidCallbackParameter.message)
     }
