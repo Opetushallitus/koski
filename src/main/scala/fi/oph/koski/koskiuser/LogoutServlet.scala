@@ -29,11 +29,12 @@ class LogoutServlet(implicit val application: KoskiApplication) extends HtmlServ
   private[koskiuser] def getLogoutUrl: String = {
     if (request.parameters.contains("target")) {
       if (!application.config.getString("configurable.logout.url." + langFromDomain).isEmpty) {
-        // We get redirected 3 times: first to shibbo logout url, then to our own redirect url, from where we finally
+        // We get redirected 3 times: first to shibboleth logout url, then to our own redirect url, from where we finally
         // redirect to the actual "target". This is why we url encode the parameter twice.
         application.config.getString("configurable.logout.url." + langFromDomain) + encode(encode(params("target")))
       } else {
-        params("target")
+        // redirect via our servlet so as not to allow "open / unvalidated redirects", this is used when there is no shibbo present
+        "/user/redirect?target=" + encode(params("target"))
       }
     } else if (!application.config.getString("logout.url." + langFromDomain).isEmpty) {
       application.config.getString("logout.url." + langFromDomain)

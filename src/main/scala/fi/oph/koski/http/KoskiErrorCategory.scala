@@ -31,7 +31,7 @@ object KoskiErrorCategory {
       val virheellinenOrganisaatioOid = subcategory("virheellinenOrganisaatioOid", "Organisaatio-oidin muoto on virheellinen. Esimerkki oikeasta muodosta: 1.2.246.562.10.00000000001.")
       val missing = subcategory ("missing", "Vaadittu kyselyparametri puuttuu")
       val invalidXRoadMemberId = subcategory("invalid", "Annettua valtuutuksen kumppani-parametria ei ole olemassa")
-      val invalidCallbackParameter = subcategory("invalid", "Callback-parametrin arvoa ei ole sallittu, redirect estetään")
+      val invalidCallbackParameter = subcategory("callback", "Callback-parametrin arvoa ei ole sallittu, redirect estetään")
     }
     val queryParam = new QueryParam
 
