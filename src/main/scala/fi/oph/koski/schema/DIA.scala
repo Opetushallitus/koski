@@ -352,6 +352,4 @@ case class DIAOppiaineMuuValinnainen(
   @KoodistoKoodiarvo("MASY")
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusVuosiviikkotunneissa],
-  @Description("Oppiaineen osa-alue (1-3)")
-  osaAlue: Koodistokoodiviite
 ) extends DIAOppiaine
