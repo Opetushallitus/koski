@@ -14,32 +14,35 @@ import {FootnoteDescriptions} from '../components/footnote'
 import {OmatTiedotLukionOppiaine} from '../lukio/OmatTiedotLukionOppiaineet'
 import {diaRyhmät} from '../dia/DIA'
 
-const resolveGroupingFn = päätasonSuoritusClass => {
-  switch (päätasonSuoritusClass) {
-    case 'ibtutkinnonsuoritus': return ibRyhmät
-    case 'diatutkintovaiheensuoritus': return diaRyhmät
+const resolveGroupingFn = päätasonSuorituksenTyyppi => {
+  switch (päätasonSuorituksenTyyppi) {
+    case 'ibtutkinto':
+      return ibRyhmät
+    case 'diavalmistavavaihe':
+    case 'diatutkintovaihe':
+      return diaRyhmät
     default: {
-      console.error(`Oppiaineiden ryhmittely ei onnistu päätason suoritukselle ${päätasonSuoritusClass}.`)
+      console.error(`Oppiaineiden ryhmittely ei onnistu päätason suoritukselle ${päätasonSuorituksenTyyppi}.`)
       return () => ({})
     }
   }
 }
 
-const resolveFootnotes = päätasonSuoritusClass => {
-  switch (päätasonSuoritusClass) {
-    case 'ibtutkinnonsuoritus': return arvosanaFootnote
+const resolveFootnotes = päätasonSuorituksenTyyppi => {
+  switch (päätasonSuorituksenTyyppi) {
+    case 'ibtutkinto': return arvosanaFootnote
     default: return null
   }
 }
 
-const useOppiaineLaajuus = päätasonSuoritusClass => päätasonSuoritusClass === 'diatutkintovaiheensuoritus'
-const showArvosana = päätasonSuoritusClass => päätasonSuoritusClass === 'ibtutkinnonsuoritus'
+const useOppiaineLaajuus = päätasonSuorituksenTyyppi => päätasonSuorituksenTyyppi === 'diatutkintovaihe'
+const showArvosana = päätasonSuorituksenTyyppi => päätasonSuorituksenTyyppi === 'ibtutkinto'
 
-export const RyhmiteltyOppiaineetEditor = ({suorituksetModel, päätasonSuoritusClass, additionalEditableKoulutusmoduuliProperties}) => {
+export const RyhmiteltyOppiaineetEditor = ({suorituksetModel, päätasonSuorituksenTyyppi, additionalEditableKoulutusmoduuliProperties}) => {
   const {edit, suoritus: päätasonSuoritusModel} = suorituksetModel.context
   const oppiaineet = modelItems(suorituksetModel)
 
-  const {aineryhmät, footnotes} = resolveGroupingFn(päätasonSuoritusClass)(oppiaineet, päätasonSuoritusModel, edit)
+  const {aineryhmät, footnotes} = resolveGroupingFn(päätasonSuorituksenTyyppi)(oppiaineet, päätasonSuoritusModel, edit)
 
   return aineryhmät ? (
     <div>
@@ -54,15 +57,15 @@ export const RyhmiteltyOppiaineetEditor = ({suorituksetModel, päätasonSuoritus
               <th colSpan='4'>{t(r.ryhmä.nimi)}</th>
             </tr>,
             r.aineet && r.aineet.map((oppiaine, oppiaineIndex) => {
-              const footnote = resolveFootnotes(päätasonSuoritusClass)
+              const footnote = resolveFootnotes(päätasonSuorituksenTyyppi)
               return (
                 <LukionOppiaineEditor
                   key={oppiaineIndex}
                   oppiaine={oppiaine}
                   footnote={footnote}
                   additionalEditableKoulutusmoduuliProperties={additionalEditableKoulutusmoduuliProperties}
-                  useOppiaineLaajuus={useOppiaineLaajuus(päätasonSuoritusClass)}
-                  showArvosana={showArvosana(päätasonSuoritusClass)}
+                  useOppiaineLaajuus={useOppiaineLaajuus(päätasonSuorituksenTyyppi)}
+                  showArvosana={showArvosana(päätasonSuorituksenTyyppi)}
                 />
               )
             }),
@@ -83,11 +86,11 @@ export const RyhmiteltyOppiaineetEditor = ({suorituksetModel, päätasonSuoritus
   ) : null
 }
 
-export const OmatTiedotRyhmiteltyOppiaineet = ({suorituksetModel, päätasonSuoritusClass}) => {
+export const OmatTiedotRyhmiteltyOppiaineet = ({suorituksetModel, päätasonSuorituksenTyyppi}) => {
   const {suoritus: päätasonSuoritusModel} = suorituksetModel.context
   const oppiaineet = modelItems(suorituksetModel)
 
-  const {aineryhmät, footnotes} = resolveGroupingFn(päätasonSuoritusClass)(oppiaineet, päätasonSuoritusModel)
+  const {aineryhmät, footnotes} = resolveGroupingFn(päätasonSuorituksenTyyppi)(oppiaineet, päätasonSuoritusModel)
 
   return aineryhmät ? (
     <div className='aineryhmat'>
