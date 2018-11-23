@@ -1,5 +1,5 @@
 import React from 'react'
-import {modelLookup} from '../editor/EditorModel'
+import {modelData, modelLookup} from '../editor/EditorModel'
 
 import {PerusopetuksenOppiaineetEditor} from '../perusopetus/PerusopetuksenOppiaineetEditor'
 import PerusopetuksenOppiaineenOppimääränSuoritusEditor
@@ -79,17 +79,17 @@ export const resolveOsasuorituksetEditor = (mdl) => {
     return (
       <TutkinnonOppiaineetComponent
         suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
-        päätasonSuoritusClass='ibtutkinnonsuoritus'
+        päätasonSuorituksenTyyppi={modelData(mdl, 'tyyppi').koodiarvo}
         additionalEditableKoulutusmoduuliProperties={['taso']}
       />
     )
   }
-  if (oneOf('diavalmistavanvaiheensuoritus', 'diatutkintovaiheensuoritus')) {
+  if (oneOf('diavalmistavanvaiheensuoritus', 'diatutkinnonsuoritus')) {
     const TutkinnonOppiaineetComponent = kansalainen ? OmatTiedotRyhmiteltyOppiaineet : RyhmiteltyOppiaineetEditor
     return (
       <TutkinnonOppiaineetComponent
         suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
-        päätasonSuoritusClass='diatutkintovaiheensuoritus'
+        päätasonSuorituksenTyyppi={modelData(mdl, 'tyyppi').koodiarvo}
       />
     )
   }
