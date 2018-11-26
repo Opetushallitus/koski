@@ -1140,6 +1140,10 @@
   "Lupa on voimassa vuoden. Voit perua luvan Oma Opintopolku-palvelussa.": "Lupa on voimassa vuoden. Voit perua luvan Oma Opintopolku-palvelussa.",
   "HSL Helsingin Seudun Liikenne": "HSL Helsingin Seudun Liikenne",
   "Tietoja käytetään opiskelijahintaisten matkalippujen myöntämiseen.": "Tietoja käytetään opiskelijahintaisten matkalippujen myöntämiseen.",
-  "Frank": "Frank"
+  "Frank": "Frank",
+  "tietosuojaseloste-link": "https://opintopolku.fi/wp/fi/tietosuojaseloste/",
+  "Koskee vain opintotietoja --prefix": "Koskee vain opintotietoja, ei hakemustietoja. Lisätietoa hakemusten henkilötietojen käsittelyn perusteista sekä henkilötietojen luovuttamisesta saat ",
+  "Koskee vain opintotietoja --link-title": "tietosuojaselosteesta",
+  "Koskee vain opintotietoja --suffix": "."
 }
 

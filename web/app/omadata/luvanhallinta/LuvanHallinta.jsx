@@ -7,6 +7,7 @@ import Spinner from '../Spinner'
 import {Error as ErrorDisplay} from '../../util/Error'
 import ModalDialog from '../../editor/ModalDialog'
 import {LuvanHallintaHeadline} from './LuvanHallintaHeadline'
+import {LuvanHallintaDisclaimer} from './LuvanHallintaDisclaimer'
 import NavBar from './NavBar'
 import {Kayttoluvat} from './KayttoLuvat'
 import Text from '../../i18n/Text'
@@ -109,6 +110,7 @@ export class LuvanHallinta extends React.Component {
                   'Poistaessasi luvan, voit menettää palveluntarjoajan opintoihisi liittyvät edut'}/>
                 </div>}
             />}
+          <LuvanHallintaDisclaimer/>
         </div>
       </div>
     )
