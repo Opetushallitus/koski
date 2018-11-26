@@ -319,10 +319,6 @@ object VirtaXMLConverterUtils {
     (n \ "LoppuPvm").headOption.flatMap(l => optionalDate(l.text))
   }
 
-  def opiskelijaAvain(node: Node) = {
-    (node \ "@opiskelijaAvain").text
-  }
-
   def avain(node: Node) = {
     (node \ "@avain").text
   }
