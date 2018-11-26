@@ -43,7 +43,7 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
   }
 
   private def mkQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[SortOrder], pagination: Option[PaginationSettings])(implicit user: KoskiSession) = {
-    val baseQuery = OpiskeluOikeudetWithAccessCheck.asInstanceOf[Query[OpiskeluoikeusTable, OpiskeluoikeusRow, Seq]]
+    val baseQuery = OpiskeluOikeudetWithAccessCheck
       .join(Tables.Henkilöt).on(_.oppijaOid === _.oid)
       .joinLeft(Tables.Henkilöt).on(_._2.masterOid === _.oid)
       .map(stuff => (stuff._1._1, stuff._1._2, stuff._2))
@@ -69,7 +69,7 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
           KoskiHenkilöCache.filterByQuery(hakusana)(henkilö)
         }
       case (query, IdHaku(ids)) => query.filter(_._1.id inSetBind ids)
-      case (query, OppijaOidHaku(oids)) => query.filter(_._1.oppijaOid inSetBind oids)
+      case (query, OppijaOidHaku(oids)) => query.filter { case (_, hlö, _) => hlö.oid inSetBind oids }
       case (query, SuoritusJsonHaku(json)) => query.filter(_._1.data.+>("suoritukset").@>(json))
       case (query, MuuttunutEnnen(aikaleima)) => query.filter(_._1.aikaleima < Timestamp.from(aikaleima))
       case (query, MuuttunutJälkeen(aikaleima)) => query.filter(_._1.aikaleima >= Timestamp.from(aikaleima))
@@ -84,7 +84,7 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
     val sorted = sorting match {
       case None => query
       case Some(Ascending("id")) => query.sortBy(_._1.id)
-      case Some(Ascending("oppijaOid")) => query.sortBy(_._2.oid)
+      case Some(Ascending("oppijaOid")) => query.sortBy { case (oo, henkilö, masterHenkilö) => (masterHenkilö.map(_.oid).getOrElse(henkilö.oid), oo.id) } // slaves and master need to be adjacent for later grouping to work
       case Some(Ascending("nimi")) => query.sortBy(nimi)
       case Some(Descending("nimi")) => query.sortBy(nimiDesc)
       case Some(Ascending("alkamispäivä")) => query.sortBy(tuple => (alkamispäivä(tuple), nimi(tuple)))

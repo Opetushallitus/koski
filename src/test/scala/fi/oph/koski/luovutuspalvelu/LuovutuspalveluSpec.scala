@@ -129,6 +129,14 @@ class LuovutuspalveluSpec extends FreeSpec with LocalJettyHttpSpecification with
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam("Opiskeluoikeuden tyypit puuttuvat"))
       }
     }
+
+    "Hakee myös linkitetyt tiedot" in {
+      postHetu(MockOppijat.master.hetu.get, List("perusopetus", "lukiokoulutus")) {
+        verifyResponseStatusOk()
+        val resp = JsonSerializer.parse[LuovutuspalveluResponseV1](body)
+        resp.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List("perusopetus", "lukiokoulutus"))
+      }
+    }
   }
 
  "Luovutuspalvelu hetu massahaku API" - {
@@ -138,6 +146,14 @@ class LuovutuspalveluSpec extends FreeSpec with LocalJettyHttpSpecification with
        verifyResponseStatusOk()
        val resp = JsonSerializer.parse[Seq[LuovutuspalveluResponseV1]](body)
        resp.map(_.henkilö.oid).toSet should equal (henkilot.map(_.oid))
+     }
+   }
+
+   "Hakee myös linkitetyt tiedot" in {
+     postHetut(List(MockOppijat.master.hetu.get), List("perusopetus", "lukiokoulutus")) {
+       verifyResponseStatusOk()
+       val resp = JsonSerializer.parse[Seq[LuovutuspalveluResponseV1]](body)
+       resp.flatMap(_.opiskeluoikeudet.map(_.tyyppi.koodiarvo)) should equal(List("perusopetus", "lukiokoulutus"))
      }
    }
 
@@ -163,7 +179,6 @@ class LuovutuspalveluSpec extends FreeSpec with LocalJettyHttpSpecification with
 
    "Palauttaa 400 jos liian monta hetua" in {
      val hetut = List.range(0, 1001).map(_.toString)
-     hetut.length should be > 1000
      postHetut(hetut, List("ammatillinenkoulutus")) {
        verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam("Liian monta hetua, enintään 1000 sallittu"))
      }
