@@ -58,7 +58,7 @@ class OppijaServlet(implicit val application: KoskiApplication) extends ApiServl
   }
 
   get("/:oid") {
-    renderEither[Oppija](findByOid(params("oid"), koskiSession).flatMap(_.warningsToLeft))
+    renderEither[Oppija](findByOid(params("oid"), getBooleanParam("withLinkedOids"), koskiSession).flatMap(_.warningsToLeft))
   }
 
   get("/:oid/virta-opintotiedot-xml") {
@@ -84,9 +84,9 @@ class OppijaServlet(implicit val application: KoskiApplication) extends ApiServl
       application.virtaClient.opintotiedotMassahaku(byHetu) ++ application.virtaClient.opintotiedotMassahaku(byOid)
     }.map(_.toList.distinct)
 
-  private def findByOid(oid: String, user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
+  private def findByOid(oid: String, withLinkedOids: Boolean, user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
     HenkilöOid.validateHenkilöOid(oid).right.flatMap { oid =>
-      application.oppijaFacade.findOppija(oid)(user)
+      application.oppijaFacade.findOppija(oid, withLinkedOids = withLinkedOids)(user)
     }
   }
 

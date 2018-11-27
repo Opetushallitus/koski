@@ -30,7 +30,7 @@ private[henkilo] case class HenkilötiedotSearchFacade(henkilöRepository: Henki
   def findByOid(oid: String)(implicit user: KoskiSession): Either[HttpStatus, List[HenkilötiedotJaOid]] = {
     AuditLog.log(AuditLogMessage(OPPIJA_HAKU, user, Map(hakuEhto -> oid)))
     HenkilöOid.validateHenkilöOid(oid)
-      .map(henkilöRepository.findByOid)
+      .map(henkilöRepository.findByOid(_))
       .map(_.map(_.toHenkilötiedotJaOid).toList)
   }
 
