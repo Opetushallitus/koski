@@ -130,11 +130,21 @@ class LuovutuspalveluSpec extends FreeSpec with LocalJettyHttpSpecification with
       }
     }
 
-    "Hakee myös linkitetyt tiedot" in {
-      postHetu(MockOppijat.master.hetu.get, List("perusopetus", "lukiokoulutus")) {
-        verifyResponseStatusOk()
-        val resp = JsonSerializer.parse[LuovutuspalveluResponseV1](body)
-        resp.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List("perusopetus", "lukiokoulutus"))
+    "Hakee linkitetyt tiedot" - {
+      "Masterin oidilla" in {
+        postOid(MockOppijat.master.oid, List("perusopetus", "lukiokoulutus")) {
+          verifyResponseStatusOk()
+          val resp = JsonSerializer.parse[LuovutuspalveluResponseV1](body)
+          resp.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List("perusopetus", "lukiokoulutus"))
+        }
+      }
+
+      "Slaven oidilla" in {
+        postOid(MockOppijat.slave.henkilö.oid, List("perusopetus", "lukiokoulutus")) {
+          verifyResponseStatusOk()
+          val resp = JsonSerializer.parse[LuovutuspalveluResponseV1](body)
+          resp.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List("perusopetus", "lukiokoulutus"))
+        }
       }
     }
   }
