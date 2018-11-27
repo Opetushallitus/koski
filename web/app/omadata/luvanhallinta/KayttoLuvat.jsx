@@ -27,7 +27,7 @@ export class Kayttoluvat extends React.Component {
 }
 
 const Kayttolupa = ({kayttolupa, removeCallback}) => {
-  const {asiakasName, asiakasId, expirationDate, timestamp} = kayttolupa
+  const {asiakasName, asiakasId, expirationDate, timestamp, purpose} = kayttolupa
   const expDateInFinnish = formatFinnishDate(parseISODate(expirationDate))
   const timestampInFinnish = ISO2FinnishDate(timestamp)
 
@@ -60,6 +60,8 @@ const Kayttolupa = ({kayttolupa, removeCallback}) => {
           </div>
 
         </div>
+
+        <Text name={purpose}/>
 
         <div className='peru-lupa'>
           <button className='inline-link-button' onClick={() => removeCallback(asiakasId)}><Text name='Peru lupa'/></button>
