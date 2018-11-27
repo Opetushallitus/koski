@@ -135,6 +135,7 @@ class LuovutuspalveluSpec extends FreeSpec with LocalJettyHttpSpecification with
         postOid(MockOppijat.master.oid, List("perusopetus", "lukiokoulutus")) {
           verifyResponseStatusOk()
           val resp = JsonSerializer.parse[LuovutuspalveluResponseV1](body)
+          resp.henkilö.oid should equal(MockOppijat.master.oid)
           resp.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List("perusopetus", "lukiokoulutus"))
         }
       }
@@ -143,6 +144,7 @@ class LuovutuspalveluSpec extends FreeSpec with LocalJettyHttpSpecification with
         postOid(MockOppijat.slave.henkilö.oid, List("perusopetus", "lukiokoulutus")) {
           verifyResponseStatusOk()
           val resp = JsonSerializer.parse[LuovutuspalveluResponseV1](body)
+          resp.henkilö.oid should equal(MockOppijat.master.oid)
           resp.opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List("perusopetus", "lukiokoulutus"))
         }
       }

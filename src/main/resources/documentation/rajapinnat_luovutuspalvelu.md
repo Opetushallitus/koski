@@ -46,8 +46,8 @@ Pyynnön kenttien kuvaukset:
 Vastaus, kun henkilö löytyy:
 <a name="vastaukset"></a>
 
-**HUOM** Allaoleva esimerkkiviesti on vielä kesken "henkilö"-elementin osalta. Siinä pitää paremmin huomioida
-tilanteet, jossa samalla henkilöllä on useampi oppijanumero (ja mahdollisesti useampi kuin yksi hetu).
+Siinä harvinaisessa tilanteessa, että henkilöllä on useampi kuin yksi oid palautetaan kaikki niihin siiretyt opinnot.
+Henkilön "oid"-kentässä näytetään oppijan varsinainen oppijanumero.
 
     HTTP/1.1 200 OK
     Content-Type: application/json
@@ -142,15 +142,13 @@ Pyynnön kenttien kuvaukset:
 
  * `v` - rajapinnan versionumero, tässä aina 1.
  * `oid` - haettava oppijanumero.
+    Siinä tapauksessa, että henkilöllä on useampi kuin yksi oid voi millä tahansa niistä hakea. Mitä tahansa niistä käytetäänkin haussa palautetaan oppijan kaikki tiedot.
  * `opiskeluoikeudentyypit` - lista opiskeluoikeuden tyyppejä, joista kutsuja on kiinnostunut.
     Sallitut arvot löytyvät [opiskeluoikeudentyyppi](/koski/dokumentaatio/koodisto/opiskeluoikeudentyyppi/latest) koodistosta.
     Tällä hetkellä arvot `korkeakoulutus` ja `ylioppilastutkinto` aiheuttavat ylimääräisen kutsun taustarekisteriin
     (Virta ja Ylioppilastutkintorekisteri), joten niitä tulee käyttää vain jos tiedot todella tarvitaan.
 
-TODO: pitää kuvata miten käsitellään tilanteet, joissa samalla henkilöllä
-on useampi kuin yksi oppijanumero
-
-Vastaus on sama kuin pyynnössä `/koski/api/luovutuspalvelu/hetu` [ks. yllä](#vastaukset)
+Paluuviesti on sama kuin pyynnössä `/koski/api/luovutuspalvelu/hetu` [ks. yllä](#vastaukset)
 
 -----------------
 
