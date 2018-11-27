@@ -205,5 +205,5 @@ Vastaus, kun pyyntö suoritetaan onnistuneesti:
       ...
     ]
 
-Jos jollekkin hetulle ei löydy opiskeluoikeuksia, tämä ei ole virhe vaan hetu puuttuu vastauslistasta.
+Jos jollekin hetulle ei löydy opiskeluoikeuksia, tämä ei ole virhe vaan hetu puuttuu vastauslistasta.
 
