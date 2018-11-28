@@ -52,8 +52,8 @@ describe('Linkitetyt oppijat', function() {
       .then(page.oppijaHaku.addNewOppija)})
 
     describe('Näytetään', function() {
-      it('master-henkilön tiedot', function() {
-        expect(S('.uusi-oppija .etunimet input').val()).to.equal('Master')
+      it('slave-henkilön tiedot', function() {
+        expect(S('.uusi-oppija .etunimet input').val()).to.equal('Slave')
       })
     })
   })
