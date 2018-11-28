@@ -1144,6 +1144,7 @@
   "tietosuojaseloste-link": "https://opintopolku.fi/wp/fi/tietosuojaseloste/",
   "Koskee vain opintotietoja --prefix": "Koskee vain opintotietoja, ei hakemustietoja. Lisätietoa hakemusten henkilötietojen käsittelyn perusteista sekä henkilötietojen luovuttamisesta saat ",
   "Koskee vain opintotietoja --link-title": "tietosuojaselosteesta",
-  "Koskee vain opintotietoja --suffix": "."
+  "Koskee vain opintotietoja --suffix": ".",
+  "Tietojen käyttötarkoitus": "Tietojen käyttötarkoitus"
 }
 
