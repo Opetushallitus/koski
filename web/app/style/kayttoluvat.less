@@ -88,7 +88,6 @@
 
       > .kayttolupa-container {
         border: solid 1px @color-link-blue;
-        height: 120px;
         margin-top: 1.2rem;
         padding: 1rem 1rem 1rem 2rem;
         outline: none;
@@ -138,8 +137,9 @@
 
             .oikeudet {
               flex: 0.4 1 auto;
+              margin-bottom: 0.4rem;
 
-              > .list-label {
+              .list-label {
                 font-weight: 600;
               }
 
@@ -150,6 +150,23 @@
                 > li {
                   margin-top: 0.5rem;
                   list-style-type: initial;
+                }
+              }
+
+              > .kayttotarkoitus {
+                margin-top: 1rem;
+                max-width: 420px;
+
+                @media @media-full {
+                  margin-right: -4rem;
+                }
+
+                > .headline-container {
+                  margin-bottom: 0.4rem;
+
+                  > .headline {
+                    font-weight: 600;
+                  }
                 }
               }
             }

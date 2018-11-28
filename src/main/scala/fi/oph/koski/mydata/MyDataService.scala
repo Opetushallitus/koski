@@ -31,11 +31,11 @@ class MyDataService(myDataRepository: MyDataRepository, implicit val application
   }
 
   def getAll(oppijaOid: String): Seq[MyDataJakoItem] = {
-    myDataRepository.getAll(oppijaOid).map(jako => MyDataJakoItem(jako.asiakas, getAsiakasName(jako.asiakas), jako.voimassaAsti.toLocalDate, jako.aikaleima))
+    myDataRepository.getAll(oppijaOid).map(jako => MyDataJakoItem(jako.asiakas, getAsiakasName(jako.asiakas), jako.voimassaAsti.toLocalDate, jako.aikaleima, getAsiakasPurpose(jako.asiakas)))
   }
 
   def getAllValid(oppijaOid: String): Seq[MyDataJakoItem] = {
-    myDataRepository.getAllValid(oppijaOid).map(jako => MyDataJakoItem(jako.asiakas, getAsiakasName(jako.asiakas), jako.voimassaAsti.toLocalDate, jako.aikaleima))
+    myDataRepository.getAllValid(oppijaOid).map(jako => MyDataJakoItem(jako.asiakas, getAsiakasName(jako.asiakas), jako.voimassaAsti.toLocalDate, jako.aikaleima, getAsiakasPurpose(jako.asiakas)))
   }
 
   def hasAuthorizedMember(oppijaOid: String, memberId: String): Boolean = {
@@ -43,4 +43,5 @@ class MyDataService(myDataRepository: MyDataRepository, implicit val application
   }
 
   private def getAsiakasName(id: String): String = getConfigForMember(id).getString("name")
+  private def getAsiakasPurpose(id: String): String = getConfigForMember(id).getString("purpose")
 }

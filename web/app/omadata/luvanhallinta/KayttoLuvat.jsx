@@ -27,7 +27,7 @@ export class Kayttoluvat extends React.Component {
 }
 
 const Kayttolupa = ({kayttolupa, removeCallback}) => {
-  const {asiakasName, asiakasId, expirationDate, timestamp} = kayttolupa
+  const {asiakasName, asiakasId, expirationDate, timestamp, purpose} = kayttolupa
   const expDateInFinnish = formatFinnishDate(parseISODate(expirationDate))
   const timestampInFinnish = ISO2FinnishDate(timestamp)
 
@@ -51,11 +51,14 @@ const Kayttolupa = ({kayttolupa, removeCallback}) => {
             <span className='list-label'><Text name='Palveluntarjoaja näkee seuraavat opintoihisi liittyvät tiedot'/>{':'}</span>
             <ul>
               <li>
-                <Text name='Oppilaitosten läsnäolotiedot' />
+                <Text name='Tiedot opiskeluoikeuksistasi' />
+              </li>
+              <li>
+                <Text name='Nimesi ja syntymäaikasi' />
               </li>
             </ul>
+            {purpose && <Kayttotarkoitus purpose={purpose}/>}
           </div>
-
         </div>
 
         <div className='peru-lupa'>
@@ -67,6 +70,15 @@ const Kayttolupa = ({kayttolupa, removeCallback}) => {
     </li>
   )
 }
+
+const Kayttotarkoitus = ({purpose}) => (
+  <div className='kayttotarkoitus'>
+    <div className='headline-container'>
+      <span className='headline'><Text name='Tietojen käyttötarkoitus'/>{':'}</span>
+    </div>
+    <Text name={purpose}/>
+  </div>
+)
 
 const NoMyDataPermissions = () => (
   <li className='no-permission'>
