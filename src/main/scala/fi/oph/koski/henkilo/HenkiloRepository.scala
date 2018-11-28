@@ -12,10 +12,6 @@ import fi.oph.koski.ytr.YtrHenkilöRepository
 
 import scala.concurrent.duration._
 
-trait FindByOid {
-  def findByOid(oid: String, withLinkedOids: Boolean = false): Option[OppijaHenkilö]
-}
-
 trait HetuBasedHenkilöRepository {
   def findByHetuDontCreate(hetu: String): Either[HttpStatus, Option[UusiHenkilö]]
   def hasAccess(user: KoskiSession): Boolean
@@ -34,7 +30,7 @@ object HenkilöRepository {
 }
 
 case class HenkilöCacheKey(oid: String, withLinkedOids: Boolean)
-case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta: HetuBasedHenkilöRepository, ytr: HetuBasedHenkilöRepository, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository)(implicit cacheInvalidator: CacheManager) extends FindByOid with Logging {
+case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta: HetuBasedHenkilöRepository, ytr: HetuBasedHenkilöRepository, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository)(implicit cacheInvalidator: CacheManager) extends Logging {
   private val oidCache: KeyValueCache[HenkilöCacheKey, Option[OppijaHenkilö]] =
     KeyValueCache(new ExpiringCache("HenkilöRepository", ExpiringCache.Params(1.hour, maxSize = 100, storeValuePredicate = {
       case (_, value) => value != None // Don't cache None results
