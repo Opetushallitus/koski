@@ -22,26 +22,54 @@ class LogoutServlet(implicit val application: KoskiApplication) extends HtmlServ
     if (virkailija) {
       redirectToLogout
     } else {
-      redirect(getLogoutUrl)
+      params.get("target") match {
+        case Some(target) => luvanluovutusLogout(target)
+        case None => kansalaisLogout
+      }
     }
   }
 
-  private[koskiuser] def getLogoutUrl: String = {
-    if (request.parameters.contains("target")) {
-      if (!application.config.getString("configurable.logout.url." + langFromDomain).isEmpty) {
-        // We get redirected 3 times: first to shibboleth logout url, then to our own redirect url, from where we finally
-        // redirect to the actual "target". This is why we url encode the parameter twice.
-        application.config.getString("configurable.logout.url." + langFromDomain) + encode(encode(params("target")))
-      } else {
-        // redirect via our servlet so as not to allow "open / unvalidated redirects", this is used when there is no shibbo present
-        "/user/redirect?target=" + encode(params("target"))
-      }
-    } else if (!application.config.getString("logout.url." + langFromDomain).isEmpty) {
-      application.config.getString("logout.url." + langFromDomain)
+  private def kansalaisLogout = {
+    val shibbolethLogoutUrl = LogoutServerConfiguration.shibbolethLogoutUrl(application, langFromDomain)
+    if (shibbolethLogoutUrl.isEmpty) {
+      redirectToFrontpage
     } else {
-      "/"
+      redirect(shibbolethLogoutUrl)
     }
+  }
+
+  private def luvanluovutusLogout(target: String) = {
+    val redirectToTargetUrl = "/koski/user/redirect?target=" + encode(target)
+    val shibbolethLogoutUrl = LogoutServerConfiguration.configurableShibbolethLogoutUrl(application, langFromDomain)
+    val url = if (shibbolethLogoutUrl.isEmpty) {
+      redirectToTargetUrl
+    } else {
+      shibbolethLogoutUrl + encode(redirectToTargetUrl)
+    }
+    redirect(url)
   }
 
   private def encode(param: String) = URLEncoder.encode(param, "UTF-8")
+}
+
+object LogoutServerConfiguration {
+  var overrides: Map[String, String] = Map.empty
+
+  def shibbolethLogoutUrl(application: KoskiApplication, lang: String) = {
+    val key = "logout.url." + lang
+    overrides.get(key).getOrElse(application.config.getString(key))
+  }
+
+  def configurableShibbolethLogoutUrl(application: KoskiApplication, lang: String) = {
+    val key = "configurable.logout.url." + lang
+    overrides.get(key).getOrElse(application.config.getString(key))
+  }
+
+  def overrideKey(key: String, value: String): Unit = {
+    overrides = overrides + (key -> value)
+  }
+
+  def clearOverrides = {
+    overrides = Map.empty
+  }
 }

@@ -1,34 +1,53 @@
 package fi.oph.koski.koskiuser
 
-import com.typesafe.config.ConfigFactory
-import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.config.KoskiApplication.defaultConfig
-import javax.servlet.http.HttpServletRequest
+import java.net.URLEncoder
+
+import fi.oph.koski.api.LocalJettyHttpSpecification
 import org.scalamock.scalatest.MockFactory
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.{BeforeAndAfterEach, FreeSpec, Matchers}
 
-import collection.JavaConverters._
+class LogoutServletTest extends FreeSpec with Matchers with MockFactory with LocalJettyHttpSpecification with BeforeAndAfterEach {
 
-class LogoutServletTest extends FreeSpec with Matchers with MockFactory {
+  override def afterEach = LogoutServerConfiguration.clearOverrides
 
-  implicit val application = KoskiApplication(ConfigFactory.parseString(
-    """
-      |configurable.logout.url.fi = "https://opintopolku.fi/shibboleth/Logout?return=%2Fkoski%2Fuser%2Fredirect%3Ftarget%3D"
-    """.stripMargin).withFallback(defaultConfig))
-
-  "LogoutServlet" - {
-    "Palauttaa oikean logout URL:n kun target-parametri on asetettu" in {
-
-      val parameterMap: java.util.Map[String, Array[String]] = Map("target" -> Array("https://www.hsl.fi/etusivu/#linkki")).asJava
-
-      def logoutServlet = new LogoutServlet {
-        override implicit val request: javax.servlet.http.HttpServletRequest = stub[HttpServletRequest]
-        (() => request.getParameterMap) when() returning(parameterMap)
+  "LogoutServlet kun shibboleth urlit on asetettu" - {
+    "Ohjaa oikeaan logout URL:iin kun target-parametri ei ole asetettu" in {
+      enableShibbolethUrls()
+      authGet(s"user/logout") {
+        status shouldBe (302)
+        header("Location") shouldEqual ("https://opintopolku.fi/shibboleth/Logout?return=%2Fkoski")
       }
-
-      val logoutURL = logoutServlet.getLogoutUrl
-
-      logoutURL should equal("https://opintopolku.fi/shibboleth/Logout?return=%2Fkoski%2Fuser%2Fredirect%3Ftarget%3Dhttps%253A%252F%252Fwww.hsl.fi%252Fetusivu%252F%2523linkki")
     }
+
+    "Ohjaa oikeaan logout URL:iin kun target-parametri on asetettu" in {
+      val target = "https://www.hsl.fi/etusivu/#linkki"
+      enableShibbolethUrls()
+      authGet(s"user/logout?target=${URLEncoder.encode(target, "UTF-8")}") {
+        status shouldBe (302)
+        header("Location") shouldEqual ("https://opintopolku.fi/shibboleth/Logout?return=%2Fkoski%2Fuser%2Fredirect%3Ftarget%3Dhttps%253A%252F%252Fwww.hsl.fi%252Fetusivu%252F%2523linkki")
+      }
+    }
+  }
+
+  "LogoutServlet kun shibboleth urlit ei ole asetettu" - {
+    "Ohjaa oikeaan logout URL:iin kun target-parametri ei ole asetettu" in {
+      authGet(s"user/logout") {
+        status shouldBe (302)
+        header("Location") shouldEqual (s"${baseUrl}")
+      }
+    }
+
+    "Ohjaa oikeaan logout URL:iin kun target-parametri on asetettu" in {
+      val target = "https://www.hsl.fi/etusivu/#linkki"
+      authGet(s"user/logout?target=${URLEncoder.encode(target, "UTF-8")}") {
+        status shouldBe (302)
+        header("Location") shouldEqual (s"${baseUrl}/user/redirect?target=https%3A%2F%2Fwww.hsl.fi%2Fetusivu%2F%23linkki")
+      }
+    }
+  }
+
+  def enableShibbolethUrls(): Unit = {
+    LogoutServerConfiguration.overrideKey("logout.url.fi", "https://opintopolku.fi/shibboleth/Logout?return=%2Fkoski")
+    LogoutServerConfiguration.overrideKey("configurable.logout.url.fi", "https://opintopolku.fi/shibboleth/Logout?return=")
   }
 }
