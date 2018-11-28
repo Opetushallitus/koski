@@ -12,10 +12,6 @@ import fi.oph.koski.ytr.YtrHenkilöRepository
 
 import scala.concurrent.duration._
 
-trait FindByOid {
-  def findByOid(oid: String): Option[OppijaHenkilö]
-}
-
 trait HetuBasedHenkilöRepository {
   def findByHetuDontCreate(hetu: String): Either[HttpStatus, Option[UusiHenkilö]]
   def hasAccess(user: KoskiSession): Boolean
@@ -33,14 +29,21 @@ object HenkilöRepository {
   }
 }
 
-case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta: HetuBasedHenkilöRepository, ytr: HetuBasedHenkilöRepository, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository)(implicit cacheInvalidator: CacheManager) extends FindByOid with Logging {
-  private val oidCache: KeyValueCache[String, Option[OppijaHenkilö]] =
+case class HenkilöCacheKey(oid: String, findMasterIfSlaveOid: Boolean)
+case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta: HetuBasedHenkilöRepository, ytr: HetuBasedHenkilöRepository, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository)(implicit cacheInvalidator: CacheManager) extends Logging {
+  private val oidCache: KeyValueCache[HenkilöCacheKey, Option[OppijaHenkilö]] =
     KeyValueCache(new ExpiringCache("HenkilöRepository", ExpiringCache.Params(1.hour, maxSize = 100, storeValuePredicate = {
       case (_, value) => value != None // Don't cache None results
-    })), opintopolku.findByOid)
+    })), findByCacheKey)
+
+  private def findByCacheKey(key: HenkilöCacheKey) = if (key.findMasterIfSlaveOid) {
+    opintopolku.findMasterByOid(key.oid)
+  } else {
+    opintopolku.findByOid(key.oid)
+  }
 
   // findByOid is locally cached
-  def findByOid(oid: String): Option[OppijaHenkilö] = oidCache(oid)
+  def findByOid(oid: String, findMasterIfSlaveOid: Boolean = false): Option[OppijaHenkilö] = oidCache(HenkilöCacheKey(oid, findMasterIfSlaveOid))
   // Other methods just call the non-cached implementation
 
   def findByOidsNoSlaveOids(oids: List[String]): List[OppijaHenkilö] = opintopolku.findByOidsNoSlaveOids(oids)

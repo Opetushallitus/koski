@@ -25,8 +25,8 @@ import slick.dbio.{DBIOAction, NoStream}
 
 class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: OpiskeluoikeusHistoryRepository, henkilöCache: KoskiHenkilöCache, oidGenerator: OidGenerator, henkilöRepository: OpintopolkuHenkilöRepository, perustiedotSyncRepository: PerustiedotSyncRepository) extends KoskiOpiskeluoikeusRepository with DatabaseExecutionContext with KoskiDatabaseMethods with Logging {
   override def filterOppijat[A <: HenkilönTunnisteet](oppijat: List[A])(implicit user: KoskiSession): List[A] = {
-    val queryOppijaOids = sequence(oppijat.map(_.oid).map { oppijaOid =>
-      findByOppijaOidAction(oppijaOid).map(opiskeluoikeusOids => (oppijaOid, opiskeluoikeusOids))
+    val queryOppijaOids = sequence(oppijat.map { o =>
+      findByOppijaOidsAction(o.oid :: o.linkitetytOidit).map(opiskeluoikeusOids => (o.oid, opiskeluoikeusOids))
     })
 
     val oppijatJoillaOpiskeluoikeuksia: Set[Oid] = runDbSync(queryOppijaOids)
@@ -37,16 +37,16 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
   }
 
 
-  override def findByOppijaOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus] = {
-    runDbSync(findByOppijaOidAction(oid).map(rows => rows.sortBy(_.id).map(_.toOpiskeluoikeus)))
+  override def findByOppijaOids(oids: List[String])(implicit user: KoskiSession): Seq[Opiskeluoikeus] = {
+    runDbSync(findByOppijaOidsAction(oids).map(rows => rows.sortBy(_.id).map(_.toOpiskeluoikeus)))
   }
 
-  private def withSlavesQuery(oid: String) = (Henkilöt.filter(_.masterOid === oid) ++ Henkilöt.filter(_.oid === oid)).map(_.oid)
+  override def findByCurrentUserOids(oids: List[String])(implicit user: KoskiSession): Seq[Opiskeluoikeus] = {
+    assert(oids.contains(user.oid), "Käyttäjän oid: " + user.oid + " ei löydy etsittävän oppijan oideista: " + oids)
 
-  override def findByCurrentUserOid(oid: String)(implicit user: KoskiSession): Seq[Opiskeluoikeus] = {
-    assert(oid == user.oid, "Käyttäjän oid: " + user.oid + " poikkeaa etsittävän oppijan oidista: " + oid)
-
-    val query = withSlavesQuery(oid).flatMap(oid => OpiskeluOikeudet.filterNot(_.mitätöity).filter(_.oppijaOid === oid))
+    val query = OpiskeluOikeudet
+      .filterNot(_.mitätöity)
+      .filter(_.oppijaOid inSetBind oids)
 
     runDbSync(query.result.map(rows => rows.sortBy(_.id).map(_.toOpiskeluoikeus)))
   }
@@ -118,10 +118,8 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
     }
   }
 
-  private def findByOppijaOidAction(oid: String)(implicit user: KoskiSession): dbio.DBIOAction[Seq[OpiskeluoikeusRow], NoStream, Read] = {
-    withSlavesQuery(oid)
-      .flatMap(oid => OpiskeluOikeudetWithAccessCheck.filter(_.oppijaOid === oid))
-      .result
+  private def findByOppijaOidsAction(oids: List[String])(implicit user: KoskiSession): dbio.DBIOAction[Seq[OpiskeluoikeusRow], NoStream, Read] = {
+    OpiskeluOikeudetWithAccessCheck.filter(_.oppijaOid inSetBind oids).result
   }
 
   private def syncHenkilötiedotAction(id: Int, oppijaOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, henkilötiedot: Option[OppijaHenkilöWithMasterInfo]) = {
@@ -150,16 +148,21 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
       }
 
       case OppijaOidJaLähdejärjestelmänId(oppijaOid, lähdejärjestelmäId) =>
-        findByOppijaOidAction(oppijaOid).map(_.filter { row =>
+        findOpiskeluoikeudetWithSlaves(oppijaOid).map(_.filter { row =>
           row.toOpiskeluoikeus.lähdejärjestelmänId == Some(lähdejärjestelmäId)
         }).map(_.toList).map(Right(_))
 
       case i:OppijaOidOrganisaatioJaTyyppi =>
-        findByOppijaOidAction(i.oppijaOid).map(_.filter { row =>
+        findOpiskeluoikeudetWithSlaves(i.oppijaOid).map(_.filter { row =>
           OppijaOidOrganisaatioJaTyyppi(i.oppijaOid, row.toOpiskeluoikeus.getOppilaitos.oid, row.toOpiskeluoikeus.tyyppi.koodiarvo, row.toOpiskeluoikeus.lähdejärjestelmänId) == identifier
         }).map(_.toList).map(Right(_))
     }
   }
+
+  private def findOpiskeluoikeudetWithSlaves(oid: String)(implicit user: KoskiSession): dbio.DBIOAction[Seq[OpiskeluoikeusRow], NoStream, Read] =
+    (Henkilöt.filter(_.masterOid === oid) ++ Henkilöt.filter(_.oid === oid)).map(_.oid)
+      .flatMap(oid => OpiskeluOikeudetWithAccessCheck.filter(_.oppijaOid === oid))
+      .result
 
   private def createOrUpdateAction(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowUpdate: Boolean, allowDeleteCompleted: Boolean = false)(implicit user: KoskiSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
     findByIdentifierAction(OpiskeluoikeusIdentifier(oppijaOid.oppijaOid, opiskeluoikeus)).flatMap { rows: Either[HttpStatus, List[OpiskeluoikeusRow]] =>

@@ -30,7 +30,7 @@ private[henkilo] case class HenkilötiedotSearchFacade(henkilöRepository: Henki
   def findByOid(oid: String)(implicit user: KoskiSession): Either[HttpStatus, List[HenkilötiedotJaOid]] = {
     AuditLog.log(AuditLogMessage(OPPIJA_HAKU, user, Map(hakuEhto -> oid)))
     HenkilöOid.validateHenkilöOid(oid)
-      .map(henkilöRepository.findByOid)
+      .map(henkilöRepository.findByOid(_))
       .map(_.map(_.toHenkilötiedotJaOid).toList)
   }
 
@@ -55,7 +55,7 @@ private[henkilo] case class HenkilötiedotSearchFacade(henkilöRepository: Henki
 
   // Sisällyttää vain henkilöt, joilta löytyy vähintään yksi (tälle käyttäjälle näkyvä) opiskeluoikeus Koskesta, YTR:stä tai Virrasta
   private def searchByOid(oid: String)(implicit user: KoskiSession): HenkilötiedotSearchResponse = {
-    val henkilöt = henkilöRepository.findByOid(oid).toList
+    val henkilöt = henkilöRepository.findByOid(oid, findMasterIfSlaveOid = true).toList
     val oppijat = kaikkiOpiskeluoikeudet.filterOppijat(henkilöt).map(_.toHenkilötiedotJaOid)
     val canAddNew = henkilöt.nonEmpty && oppijat.isEmpty && user.hasAnyWriteAccess
     HenkilötiedotSearchResponse(oppijat, canAddNew = canAddNew, oid = Some(oid))

@@ -58,7 +58,15 @@ class OppijaServlet(implicit val application: KoskiApplication) extends ApiServl
   }
 
   get("/:oid") {
-    renderEither[Oppija](findByOid(params("oid"), koskiSession).flatMap(_.warningsToLeft))
+    renderEither[Oppija](HenkilöOid.validateHenkilöOid(params("oid")).right.flatMap { oid =>
+      application.oppijaFacade.findOppija(oid, findMasterIfSlaveOid = false)(koskiSession)
+    }.flatMap(_.warningsToLeft))
+  }
+
+  get("/:oid/opintotiedot-json") {
+    renderEither[Oppija](HenkilöOid.validateHenkilöOid(params("oid")).right.flatMap { oid =>
+      application.oppijaFacade.findOppija(oid, findMasterIfSlaveOid = true)(koskiSession)
+    }.flatMap(_.warningsToLeft))
   }
 
   get("/:oid/virta-opintotiedot-xml") {
@@ -78,17 +86,11 @@ class OppijaServlet(implicit val application: KoskiApplication) extends ApiServl
   }
 
   private def virtaOpinnot(oid: String) =
-    application.opintopolkuHenkilöFacade.findOppijaByOid(oid).toRight(KoskiErrorCategory.notFound.oppijaaEiLöydy()).map { oppijaHenkilö =>
+    application.opintopolkuHenkilöFacade.findMasterOppija(oid).toRight(KoskiErrorCategory.notFound.oppijaaEiLöydy()).map { oppijaHenkilö =>
       val byHetu = (oppijaHenkilö.hetu.toList ++ oppijaHenkilö.vanhatHetut).sorted.map(VirtaHakuehtoHetu)
       val byOid = (oppijaHenkilö.oid :: oppijaHenkilö.linkitetytOidit).sorted.map(VirtaHakuehtoKansallinenOppijanumero)
       application.virtaClient.opintotiedotMassahaku(byHetu) ++ application.virtaClient.opintotiedotMassahaku(byOid)
     }.map(_.toList.distinct)
-
-  private def findByOid(oid: String, user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
-    HenkilöOid.validateHenkilöOid(oid).right.flatMap { oid =>
-      application.oppijaFacade.findOppija(oid)(user)
-    }
-  }
 
   private def handleUnparseableJson(status: HttpStatus) = {
     application.tiedonsiirtoService.storeTiedonsiirtoResult(koskiSession, None, None, None, Some(TiedonsiirtoError(JObject("unparseableJson" -> JString(request.body)), status.errors)))

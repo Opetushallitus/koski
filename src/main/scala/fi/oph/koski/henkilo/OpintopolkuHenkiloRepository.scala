@@ -43,7 +43,7 @@ trait HenkilönTunnisteet {
   def vanhatHetut: List[String]
 }
 
-case class OpintopolkuHenkilöRepository(henkilöt: OpintopolkuHenkilöFacade, koodisto: KoodistoViitePalvelu) extends FindByOid with Logging {
+case class OpintopolkuHenkilöRepository(henkilöt: OpintopolkuHenkilöFacade, koodisto: KoodistoViitePalvelu) extends Logging {
   def withMasterInfo(henkilötiedot: OppijaHenkilö) = OppijaHenkilöWithMasterInfo(henkilötiedot, findMasterHenkilö(henkilötiedot.oid))
 
   // Tarkistaa vain Oppijanumerorekisterin, ei koskaan luo uutta oppijanumeroa Virta/YTR-datan perusteella
@@ -64,6 +64,10 @@ case class OpintopolkuHenkilöRepository(henkilöt: OpintopolkuHenkilöFacade, k
 
     henkilöt
       .findOrCreate(UusiOppijaHenkilö(Some(henkilö.hetu), henkilö.sukunimi, henkilö.etunimet, kutsumanimi))
+  }
+
+  def findMasterByOid(oid: String): Option[OppijaHenkilö] = {
+    henkilöt.findMasterOppija(oid)
   }
 
   def findByOid(oid: String): Option[OppijaHenkilö] = {

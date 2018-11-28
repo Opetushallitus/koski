@@ -35,6 +35,29 @@ describe('Linkitetyt oppijat', function() {
     })
   })
 
+  describe('Kun haetaan slave-henkilön oidilla', function() {
+    before(page.oppijaHaku.searchAndSelect('1.2.246.562.24.00000051473', 'Master'))
+    describe('Tietojen katsominen', function() {
+      it('Näytetään master-henkilön tiedot', function() {
+        expect(opinnot.opiskeluoikeudet.opiskeluoikeustyypit()).to.have.members([
+          'Lukiokoulutus', 'Perusopetus'
+        ])
+      })
+    })
+  })
+
+  describe('Uuden oppijan lisääminen slave-henkilön oidilla', function() {
+    before(function() { return page.oppijaHaku.search('1.2.246.562.24.41000051473', page.oppijaHaku.isNoResultsLabelShown)()
+      .then(wait.until(page.oppijaHaku.canAddNewOppija))
+      .then(page.oppijaHaku.addNewOppija)})
+
+    describe('Näytetään', function() {
+      it('slave-henkilön tiedot', function() {
+        expect(S('.uusi-oppija .etunimet input').val()).to.equal('Slave')
+      })
+    })
+  })
+
   describe('Slave-henkilöön liitetyt opiskeluoikeudet oppijataulukossa', function() {
     before(
       page.openPage,

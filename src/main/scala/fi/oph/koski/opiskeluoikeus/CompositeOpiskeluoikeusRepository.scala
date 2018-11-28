@@ -49,7 +49,7 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
     val oid = tunnisteet.oid
     val virtaResultFuture = Future { if (useVirta) virta.findByOppija(tunnisteet) else Nil }.transform(mapFailureToVirtaUnavailable(_, oid))
     val ytrResultFuture = Future { if (useYtr) ytr.findByOppija(tunnisteet) else Nil }.transform(mapFailureToYtrUnavailable(_, oid))
-    val mainResult = main.findByOppijaOid(oid)
+    val mainResult = main.findByOppijaOids(tunnisteet.oid :: tunnisteet.linkitetytOidit)
     val virtaResult = Futures.await(virtaResultFuture)
     val ytrResult = Futures.await(ytrResultFuture)
     WithWarnings(mainResult ++ virtaResult.getIgnoringWarnings ++ ytrResult.getIgnoringWarnings, virtaResult.warnings ++ ytrResult.warnings)
@@ -59,7 +59,7 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
     val oid = tunnisteet.oid
     val virtaResultFuture = Future { virta.findByCurrentUser(tunnisteet) }.transform(mapFailureToVirtaUnavailable(_, oid))
     val ytrResultFuture = Future { ytr.findByCurrentUser(tunnisteet) }.transform(mapFailureToYtrUnavailable(_, oid))
-    val mainResult = main.findByCurrentUserOid(oid)
+    val mainResult = main.findByCurrentUserOids(tunnisteet.oid :: tunnisteet.linkitetytOidit)
     val virtaResult = Futures.await(virtaResultFuture)
     val ytrResult = Futures.await(ytrResultFuture)
     WithWarnings(mainResult ++ virtaResult.getIgnoringWarnings ++ ytrResult.getIgnoringWarnings, virtaResult.warnings ++ ytrResult.warnings)
