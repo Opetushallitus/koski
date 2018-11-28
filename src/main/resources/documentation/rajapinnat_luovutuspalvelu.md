@@ -46,7 +46,7 @@ Pyynnön kenttien kuvaukset:
 Vastaus, kun henkilö löytyy:
 <a name="vastaukset"></a>
 
-Siinä harvinaisessa tilanteessa, että henkilöllä on useampi kuin yksi oid palautetaan kaikki niihin siiretyt opinnot.
+Siinä harvinaisessa tilanteessa, että henkilöllä on useampi kuin yksi oid palautetaan kaikki niihin siirretyt opinnot.
 Henkilön "oid"-kentässä näytetään oppijan varsinainen oppijanumero.
 
     HTTP/1.1 200 OK
