@@ -16,7 +16,7 @@ import rx.lang.scala.Observable
 class LuovutuspalveluService(application: KoskiApplication) {
   def findOppijaByOid(req: OidRequestV1)(implicit koskiSession: KoskiSession): Either[HttpStatus, LuovutuspalveluResponseV1] = {
     val (useVirta, useYtr) = resolveVirtaAndYtrUsage(req)
-    application.oppijaFacade.findOppija(req.oid, withLinkedOids = true, useVirta = useVirta, useYtr = useYtr)
+    application.oppijaFacade.findOppija(req.oid, findMasterIfSlaveOid = true, useVirta = useVirta, useYtr = useYtr)
       .flatMap(_.warningsToLeft)
       .flatMap(buildResponse(_, req))
   }

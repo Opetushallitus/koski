@@ -16,8 +16,8 @@ class LinkitettyOppijaSpec extends FreeSpec with LocalJettyHttpSpecification wit
         getOpiskeluoikeudet(MockOppijat.slave.henkilö.oid).map(_.tyyppi.koodiarvo) should equal(List("lukiokoulutus"))
       }
 
-      "Kun haetaan withLinkedOids parametrilla näytetään myös masteriin kytketyt opiskeluoikeudet" in {
-        val opiskeluoikeudet = authGet(s"api/oppija/${MockOppijat.slave.henkilö.oid}?withLinkedOids=true")(readOppija).opiskeluoikeudet
+      "Kun haetaan opintotiedot näytetään myös masteriin kytketyt opiskeluoikeudet" in {
+        val opiskeluoikeudet = authGet(s"api/oppija/${MockOppijat.slave.henkilö.oid}/opintotiedot-json")(readOppija).opiskeluoikeudet
         opiskeluoikeudet.map(_.tyyppi.koodiarvo) should equal(List("perusopetus", "lukiokoulutus"))
       }
     }
