@@ -57,11 +57,9 @@ const Kayttolupa = ({kayttolupa, removeCallback}) => {
                 <Text name='Nimesi ja syntymäaikasi' />
               </li>
             </ul>
+            {purpose && <Kayttotarkoitus purpose={purpose}/>}
           </div>
-
         </div>
-
-        <Text name={purpose}/>
 
         <div className='peru-lupa'>
           <button className='inline-link-button' onClick={() => removeCallback(asiakasId)}><Text name='Peru lupa'/></button>
@@ -72,6 +70,15 @@ const Kayttolupa = ({kayttolupa, removeCallback}) => {
     </li>
   )
 }
+
+const Kayttotarkoitus = ({purpose}) => (
+  <div className='kayttotarkoitus'>
+    <div className='headline-container'>
+      <span className='headline'><Text name='Tietojen käyttötarkoitus'/>{':'}</span>
+    </div>
+    <Text name={purpose}/>
+  </div>
+)
 
 const NoMyDataPermissions = () => (
   <li className='no-permission'>
