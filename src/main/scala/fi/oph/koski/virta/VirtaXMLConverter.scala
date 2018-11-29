@@ -229,11 +229,11 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         case osasuoritusNode :: _ => throw new IllegalArgumentException("Enemmän kuin yksi suoritus avaimella " + opintosuoritusAvain)
         case Nil => throw new IllegalArgumentException("Opintosuoritusta " + opintosuoritusAvain + " ei löydy dokumentista")
       }
-    }
+    }.sortBy(suoritusPvm)(DateOrdering.localDateOptionOrdering)
   }
 
   private def suoritusNodes(virtaXml: Node) = {
-    (virtaXml \\ "Opintosuoritukset" \\ "Opintosuoritus").toList
+    (virtaXml \\ "Opintosuoritukset" \\ "Opintosuoritus").toList.sortBy(suoritusPvm)(DateOrdering.localDateOptionOrdering)
   }
 
   def sisältyyOpiskeluoikeuteen(suoritus: Node, opiskeluoikeus: Node, allNodes: List[Node]): Boolean = {
@@ -325,6 +325,10 @@ object VirtaXMLConverterUtils {
 
   def alkuPvm(node: Node) = {
     date((node \ "AlkuPvm").text)
+  }
+
+  def suoritusPvm(node: Node) = {
+    (node \ "SuoritusPvm").headOption.map(_.text).map(date)
   }
 
   def myöntäjä(node: Node) = {
