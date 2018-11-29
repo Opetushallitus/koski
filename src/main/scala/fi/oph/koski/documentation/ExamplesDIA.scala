@@ -11,8 +11,12 @@ import fi.oph.koski.schema._
 
 object ExamplesDIA {
   def osasuorituksetValmistavaVaihe: List[DIAOppiaineenValmistavanVaiheenSuoritus] = List(
-    diaValmistavaVaiheAineSuoritus(diaOppiaine("A", osaAlue = "1"), List(
+    diaValmistavaVaiheAineSuoritus(diaKieliaine("A", "EN"), List(
       (diaValmistavaLukukausi("1"), "3"),
+      (diaValmistavaLukukausi("2"), "5")
+    )),
+    diaValmistavaVaiheAineSuoritus(diaOppiaine("KU", "1"), List(
+      (diaValmistavaLukukausi("1"), "4"),
       (diaValmistavaLukukausi("2"), "5")
     )),
     diaValmistavaVaiheAineSuoritus(diaÄidinkieli("DE"), List(
@@ -22,7 +26,7 @@ object ExamplesDIA {
   )
 
   def osasuorituksetTutkintovaihe: List[DIAOppiaineenTutkintovaiheenSuoritus] = List(
-    diaTutkintoAineSuoritus(diaOppiaine("A", "1"), List(
+    diaTutkintoAineSuoritus(diaKieliaine("A", "EN"), List(
       (diaTutkintoLukukausi("3"), "1")
     )),
     diaTutkintoAineSuoritus(diaOppiaine("HI", "3"), List(
@@ -70,6 +74,12 @@ object ExamplesDIA {
     tunniste = Koodistokoodiviite(koodistoUri = "oppiaineetdia", koodiarvo = aine),
     laajuus = None,
     osaAlue = Koodistokoodiviite(koodiarvo = osaAlue, koodistoUri = "diaosaalue")
+  )
+
+  def diaKieliaine(taso: String, kieli: String) = DIAOppiaineKieli(
+    tunniste = Koodistokoodiviite(koodistoUri = "oppiaineetdia", koodiarvo = taso),
+    kieli = Koodistokoodiviite(koodistoUri = "kielivalikoima", koodiarvo = kieli),
+    laajuus = None
   )
 
   def diaÄidinkieli(kieli: String) = DIAOppiaineÄidinkieli(
