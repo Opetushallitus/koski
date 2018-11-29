@@ -59,7 +59,7 @@ object ExamplesDIA {
     koulutusmoduuli = oppiaine,
     suorituskieli = suorituskieli.map(k => Koodistokoodiviite(koodiarvo = k, koodistoUri = "kieli")),
     osasuoritukset = Some(lukukaudet.map { case (lukukausi, arvosana) =>
-      DIAOppiaineenTutkintovaiheenLukukaudenSuoritus(
+      DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus(
         koulutusmoduuli = lukukausi,
         arviointi = diaValmistavaVaiheArviointi(arvosana)
       )
