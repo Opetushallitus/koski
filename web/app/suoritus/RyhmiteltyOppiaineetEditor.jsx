@@ -45,7 +45,15 @@ const resolveFootnotes = päätasonSuorituksenTyyppi => {
   }
 }
 
-const useOppiaineLaajuus = päätasonSuorituksenTyyppi => päätasonSuorituksenTyyppi === 'diatutkintovaihe'
+const useOppiaineLaajuus = päätasonSuorituksenTyyppi => {
+  switch (päätasonSuorituksenTyyppi) {
+    case 'diavalmistavavaihe':
+    case 'diatutkintovaihe':
+      return true
+    default:
+      return false
+  }
+}
 const showArvosana = päätasonSuorituksenTyyppi => päätasonSuorituksenTyyppi === 'ibtutkinto'
 
 export const RyhmiteltyOppiaineetEditor = ({suorituksetModel, päätasonSuorituksenTyyppi, additionalEditableKoulutusmoduuliProperties}) => {
