@@ -246,7 +246,6 @@ trait DIAValmistavanVaiheenOppiaine extends DIAOppiaine
 @Title("Muu DIA-oppiaine")
 case class DIAOppiaineMuu(
   @Description("DIA-lukion oppiaineen tunnistetiedot")
-  @KoodistoKoodiarvo("A")
   @KoodistoKoodiarvo("KU")
   @KoodistoKoodiarvo("MU")
   @KoodistoKoodiarvo("MA")
@@ -277,6 +276,7 @@ case class DIAOppiaineKieli(
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusVuosiviikkotunneissa],
   @KoodistoUri("kielivalikoima")
+  @KoodistoKoodiarvo("EN")
   @KoodistoKoodiarvo("FR")
   @KoodistoKoodiarvo("SV")
   @KoodistoKoodiarvo("RU")
