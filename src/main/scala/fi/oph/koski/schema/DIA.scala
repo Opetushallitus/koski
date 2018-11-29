@@ -133,7 +133,7 @@ case class DIAOppiaineenValmistavanVaiheenLukukaudenSuoritus(
   arviointi: Option[List[DIAOppiaineenValmistavanVaiheenLukukaudenArviointi]] = None,
   @KoodistoKoodiarvo("diaoppiaineenvalmistavanvaiheenlukukaudensuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus", koodistoUri = "suorituksentyyppi")
-) extends DIASuoritus with KurssinSuoritus
+) extends DIASuoritus
 
 @Title("DIA-oppiaineen tutkintovaiheen osasuorituksen suoritus")
 case class DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus(
