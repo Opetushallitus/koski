@@ -28,32 +28,19 @@ const resolveGroupingFn = päätasonSuorituksenTyyppi => {
   }
 }
 
-const resolveLaajuusyksikkö = päätasonSuorituksenTyyppi => {
-  switch (päätasonSuorituksenTyyppi) {
-    case 'diavalmistavavaihe':
-    case 'diatutkintovaihe':
-      return 'vuosiviikkotuntia'
-    default:
-      return 'kurssia'
-  }
-}
+const resolveLaajuusyksikkö = päätasonSuorituksenTyyppi =>
+  ['diavalmistavavaihe', 'diatutkintovaihe'].includes(päätasonSuorituksenTyyppi)
+    ? 'vuosiviikkotuntia'
+    : 'kurssia'
 
-const resolveFootnotes = päätasonSuorituksenTyyppi => {
-  switch (päätasonSuorituksenTyyppi) {
-    case 'ibtutkinto': return arvosanaFootnote
-    default: return null
-  }
-}
+const resolveFootnotes = päätasonSuorituksenTyyppi =>
+  päätasonSuorituksenTyyppi === 'ibtutkinto'
+    ? arvosanaFootnote
+    : null
 
-const useOppiaineLaajuus = päätasonSuorituksenTyyppi => {
-  switch (päätasonSuorituksenTyyppi) {
-    case 'diavalmistavavaihe':
-    case 'diatutkintovaihe':
-      return true
-    default:
-      return false
-  }
-}
+const useOppiaineLaajuus = päätasonSuorituksenTyyppi =>
+  ['diavalmistavavaihe', 'diatutkintovaihe'].includes(päätasonSuorituksenTyyppi)
+
 const showArvosana = päätasonSuorituksenTyyppi => päätasonSuorituksenTyyppi === 'ibtutkinto'
 
 export const RyhmiteltyOppiaineetEditor = ({suorituksetModel, päätasonSuorituksenTyyppi, additionalEditableKoulutusmoduuliProperties}) => {
