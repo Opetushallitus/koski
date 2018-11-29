@@ -17238,6 +17238,45 @@
   "value" : "Aktörer som använt mina uppgifter"
 }, {
   "accesscount" : 0,
+  "accessed" : 1543412753116,
+  "category" : "koski",
+  "created" : 1543412753116,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21570,
+  "key" : "Tietojen käyttötarkoitus",
+  "locale" : "en",
+  "modified" : 1543428451327,
+  "modifiedBy" : "1.2.246.562.24.97395513626",
+  "value" : "Purpose of data use"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1543412753111,
+  "category" : "koski",
+  "created" : 1543412753111,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21568,
+  "key" : "Tietojen käyttötarkoitus",
+  "locale" : "fi",
+  "modified" : 1543412753108,
+  "modifiedBy" : "1.2.246.562.24.98063222086",
+  "value" : "Tietojen käyttötarkoitus"
+}, {
+  "accesscount" : 0,
+  "accessed" : 1543412753114,
+  "category" : "koski",
+  "created" : 1543412753114,
+  "createdBy" : "1.2.246.562.24.98063222086",
+  "force" : false,
+  "id" : 21569,
+  "key" : "Tietojen käyttötarkoitus",
+  "locale" : "sv",
+  "modified" : 1543428451323,
+  "modifiedBy" : "1.2.246.562.24.97395513626",
+  "value" : "Ändamålet med uppgifterna"
+}, {
+  "accesscount" : 0,
   "accessed" : 1540293946158,
   "category" : "koski",
   "created" : 1540293946158,
