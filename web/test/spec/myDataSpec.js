@@ -90,16 +90,6 @@ describe('MyData', function() {
     })
   })
 
-  describe('Kun klikataan logout-nappia', function() {
-    before.apply(null, login('fi'))
-    before(mydata.clickLogout)
-    before(wait.until(function() { return isElementVisible(S('.statistics-wrapper')) }))
-
-    it('Päädytään oikealle sivulle', function() {
-      expect(document.getElementById('testframe').contentWindow.document.URL).to.equal(mydata.callbackURL)
-    })
-  })
-
   describe('Kun klikataan peruuta-nappia', function() {
     before.apply(null, login('fi'))
     before(mydata.clickCancel)
