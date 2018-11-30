@@ -12,7 +12,7 @@ const resolveRyhmäFieldName = model => {
   return ['diavalmistavavaihe', 'diatutkintovaihe'].includes(tyyppi) ? 'osaAlue' : 'ryhmä'
 }
 
-export const UusiRyhmiteltyOppiaineDropdown = ({model, aineryhmä}) => {
+export const UusiRyhmiteltyOppiaineDropdown = ({model, aineryhmä, optionsFilter}) => {
   if (!model || !model.context.edit) return null
 
   const addOppiaine = oppiaine => {
@@ -37,6 +37,7 @@ export const UusiRyhmiteltyOppiaineDropdown = ({model, aineryhmä}) => {
       resultCallback={addOppiaine}
       placeholder={t('Lisää oppiaine')}
       pakollinen={true}
+      optionsFilter={optionsFilter}
     />
   )
 }

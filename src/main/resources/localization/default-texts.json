@@ -1168,6 +1168,7 @@
   "description:DIA-opiskeluoikeuden lisätiedot" : "DIA-opiskeluoikeuden lisätiedot",
   "description:DIA-lukion lisäoppiaineen tunnistetiedot" : "DIA-lukion lisäoppiaineen tunnistetiedot",
   "description:Oppiaineeseen kuuluvien lukukausien ja muiden..." : "Oppiaineeseen kuuluvien lukukausien ja muiden osasuoritusten suoritukset",
-  "Laajuus (vuosiviikkotuntia)": "Laajuus (vuosiviikkotuntia)"
+  "Laajuus (vuosiviikkotuntia)": "Laajuus (vuosiviikkotuntia)",
+  "Lisäaineet": "Lisäaineet"
 }
 
