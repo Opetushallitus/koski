@@ -31,7 +31,10 @@ object ExamplesDIA {
     )),
     diaTutkintoAineSuoritus(diaOppiaine("HI", "3", laajuus = 3), List(
       (diaTutkintoLukukausi("3"), "4")
-    ), suorituskieli = Some("FI"))
+    ), suorituskieli = Some("FI")),
+    diaTutkintoAineSuoritus(diaMuuValinnainen("CCEA", laajuus = 1), List(
+      (diaTutkintoLukukausi("5"), "3")
+    ))
   )
 
   def diaValmistavanVaiheenSuoritus = DIAValmistavanVaiheenSuoritus(
@@ -59,7 +62,7 @@ object ExamplesDIA {
     })
   )
 
-  def diaTutkintoAineSuoritus(oppiaine: DIAOsaAlueOppiaine, lukukaudet: List[(DIAOppiaineenTutkintovaiheenLukukausi, String)] = Nil, suorituskieli: Option[String] = None) = DIAOppiaineenTutkintovaiheenSuoritus(
+  def diaTutkintoAineSuoritus(oppiaine: DIAOppiaine, lukukaudet: List[(DIAOppiaineenTutkintovaiheenLukukausi, String)] = Nil, suorituskieli: Option[String] = None) = DIAOppiaineenTutkintovaiheenSuoritus(
     koulutusmoduuli = oppiaine,
     suorituskieli = suorituskieli.map(k => Koodistokoodiviite(koodiarvo = k, koodistoUri = "kieli")),
     osasuoritukset = Some(lukukaudet.map { case (lukukausi, arvosana) =>
@@ -85,6 +88,11 @@ object ExamplesDIA {
   def diaÄidinkieli(kieli: String, laajuus: Int) = DIAOppiaineÄidinkieli(
     tunniste = Koodistokoodiviite(koodistoUri = "oppiaineetdia", koodiarvo = "AI"),
     kieli = Koodistokoodiviite(koodistoUri = "oppiainediaaidinkieli", koodiarvo = kieli),
+    laajuus = Some(LaajuusVuosiviikkotunneissa(laajuus))
+  )
+
+  def diaMuuValinnainen(aine: String, laajuus: Int) = DIAOppiaineMuuValinnainen(
+    tunniste = Koodistokoodiviite(koodistoUri = "oppiaineetdia", koodiarvo = aine),
     laajuus = Some(LaajuusVuosiviikkotunneissa(laajuus))
   )
 

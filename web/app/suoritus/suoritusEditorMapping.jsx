@@ -90,6 +90,7 @@ export const resolveOsasuorituksetEditor = (mdl) => {
       <TutkinnonOppiaineetComponent
         suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
         päätasonSuorituksenTyyppi={modelData(mdl, 'tyyppi').koodiarvo}
+        additionalEditableKoulutusmoduuliProperties={['laajuus']}
       />
     )
   }
