@@ -14,108 +14,122 @@ import {FootnoteDescriptions} from '../components/footnote'
 import {OmatTiedotLukionOppiaine} from '../lukio/OmatTiedotLukionOppiaineet'
 import {diaRyhmät} from '../dia/DIA'
 
-const resolveGroupingFn = päätasonSuorituksenTyyppi => {
-  switch (päätasonSuorituksenTyyppi) {
-    case 'ibtutkinto':
-      return ibRyhmät
-    case 'diavalmistavavaihe':
-    case 'diatutkintovaihe':
-      return diaRyhmät
-    default: {
-      console.error(`Oppiaineiden ryhmittely ei onnistu päätason suoritukselle ${päätasonSuorituksenTyyppi}.`)
-      return () => ({})
-    }
-  }
+const diaCustomizations = {
+  groupAineet: diaRyhmät,
+  laajuusyksikkö: 'vuosiviikkotuntia',
+  useOppiaineLaajuus: true,
+  showArvosana: false,
+  oppiaineOptionsFilter: m => m.value.classes.includes('diaosaalueoppiaine'),
+  getFootnote: R.identity
 }
 
-const resolveLaajuusyksikkö = päätasonSuorituksenTyyppi =>
-  ['diavalmistavavaihe', 'diatutkintovaihe'].includes(päätasonSuorituksenTyyppi)
-    ? 'vuosiviikkotuntia'
-    : 'kurssia'
+const typeDependentCustomizations = {
+  ibtutkinto: {
+    groupAineet: ibRyhmät,
+    laajuusyksikkö: 'kurssia',
+    useOppiaineLaajuus: false,
+    showArvosana: true,
+    showRyhmättömät: false,
+    oppiaineOptionsFilter: R.identity,
+    getFootnote: oppiaine => modelData(oppiaine, 'arviointi.-1.predicted') && arvosanaFootnote
+  },
+  diavalmistavavaihe: diaCustomizations,
+  diatutkintovaihe: Object.assign({}, diaCustomizations, {showRyhmättömät: true})
+}
 
-const resolveOppiaineOptionsFilter = päätasonSuorituksenTyyppi =>
-  ['diavalmistavavaihe', 'diatutkintovaihe'].includes(päätasonSuorituksenTyyppi)
-    ? m => m.value.classes.includes('diaosaalueoppiaine')
-    : R.identity
+const resolvePropertiesByType = päätasonSuorituksenTyyppi => {
+  const customizations = typeDependentCustomizations[päätasonSuorituksenTyyppi]
+  if (!customizations) console.error(`Oppiaineiden ryhmittely ei onnistu päätason suoritukselle ${päätasonSuorituksenTyyppi}.`)
+  return customizations
+}
 
-const resolveFootnotes = päätasonSuorituksenTyyppi =>
-  päätasonSuorituksenTyyppi === 'ibtutkinto'
-    ? arvosanaFootnote
-    : null
-
-const useOppiaineLaajuus = päätasonSuorituksenTyyppi =>
-  ['diavalmistavavaihe', 'diatutkintovaihe'].includes(päätasonSuorituksenTyyppi)
-
-const showArvosana = päätasonSuorituksenTyyppi => päätasonSuorituksenTyyppi === 'ibtutkinto'
+const RyhmättömätAineet = ({aineet, edit, useOppiaineLaajuus, showArvosana, päätasonSuoritusModel, oppiaineOptionsFilter}) => (
+  <React.Fragment>
+    {
+      (aineet && (!R.isEmpty(aineet) || edit)) && (
+        <tr className='aineryhmä' key='lisäaineet'>
+          <th colSpan='4'>{t('Lisäaineet')}</th>
+        </tr>
+      )
+    }
+    {
+      aineet && aineet.map(aine => (
+        <LukionOppiaineEditor
+          key={modelData(aine, 'koulutusmoduuli.tunniste.koodiarvo')}
+          oppiaine={aine}
+          additionalEditableKoulutusmoduuliProperties={'osaAlue'}
+          useOppiaineLaajuus={useOppiaineLaajuus}
+          showArvosana={showArvosana}
+        />
+      ))
+    }
+    <tr className='uusi-oppiaine' key='uusi-oppiaine-lisäaineet'>
+      <td colSpan='4'>
+        <UusiRyhmiteltyOppiaineDropdown
+          model={päätasonSuoritusModel}
+          optionsFilter={oppiaineOptionsFilter}
+        />
+      </td>
+    </tr>
+  </React.Fragment>
+)
 
 export const RyhmiteltyOppiaineetEditor = ({suorituksetModel, päätasonSuorituksenTyyppi, additionalEditableKoulutusmoduuliProperties}) => {
   const {edit, suoritus: päätasonSuoritusModel} = suorituksetModel.context
   const oppiaineet = modelItems(suorituksetModel)
 
-  const {aineryhmät, muutAineet, footnotes} = resolveGroupingFn(päätasonSuorituksenTyyppi)(oppiaineet, päätasonSuoritusModel, edit)
+  const {
+    groupAineet,
+    laajuusyksikkö,
+    useOppiaineLaajuus,
+    showArvosana,
+    showRyhmättömät,
+    oppiaineOptionsFilter,
+    getFootnote
+  } = resolvePropertiesByType(päätasonSuorituksenTyyppi)
+
+  const {aineryhmät, muutAineet, footnotes} = groupAineet(oppiaineet, päätasonSuoritusModel, edit)
 
   return aineryhmät ? (
     <div>
       <table className='suoritukset oppiaineet'>
-        <LukionOppiaineetTableHead
-          laajuusyksikkö={resolveLaajuusyksikkö(päätasonSuorituksenTyyppi)}
-        />
+        <LukionOppiaineetTableHead laajuusyksikkö={laajuusyksikkö}/>
         <tbody>
         {
           aineryhmät.map(ryhmät => ryhmät.map(r => [
             <tr className='aineryhmä' key={r.ryhmä.koodiarvo}>
               <th colSpan='4'>{t(r.ryhmä.nimi)}</th>
             </tr>,
-            r.aineet && r.aineet.map((oppiaine, oppiaineIndex) => {
-              const footnote = resolveFootnotes(päätasonSuorituksenTyyppi)
-              return (
-                <LukionOppiaineEditor
-                  key={oppiaineIndex}
-                  oppiaine={oppiaine}
-                  footnote={footnote}
-                  additionalEditableKoulutusmoduuliProperties={additionalEditableKoulutusmoduuliProperties}
-                  useOppiaineLaajuus={useOppiaineLaajuus(päätasonSuorituksenTyyppi)}
-                  showArvosana={showArvosana(päätasonSuorituksenTyyppi)}
-                />
-              )
-            }),
+            r.aineet && r.aineet.map((oppiaine, oppiaineIndex) => (
+              <LukionOppiaineEditor
+                key={oppiaineIndex}
+                oppiaine={oppiaine}
+                footnote={getFootnote(oppiaine)}
+                additionalEditableKoulutusmoduuliProperties={additionalEditableKoulutusmoduuliProperties}
+                useOppiaineLaajuus={useOppiaineLaajuus}
+                showArvosana={showArvosana}
+              />
+            )),
             <tr className='uusi-oppiaine' key={`uusi-oppiaine-${r.ryhmä.koodiarvo}`}>
               <td colSpan='4'>
                 <UusiRyhmiteltyOppiaineDropdown
                   model={päätasonSuoritusModel}
                   aineryhmä={r.ryhmä}
-                  optionsFilter={resolveOppiaineOptionsFilter(päätasonSuorituksenTyyppi)}
+                  optionsFilter={oppiaineOptionsFilter}
                 />
               </td>
             </tr>
           ]))
         }
-        {
-          (muutAineet && (!R.isEmpty(muutAineet) || edit)) && (
-            <tr className='aineryhmä' key='lisäaineet'>
-              <th colSpan='4'>{t('Lisäaineet')}</th>
-            </tr>
-          )
-        }
-        {
-          muutAineet && muutAineet.map(aine => (
-            <LukionOppiaineEditor
-              key={modelData(aine, 'koulutusmoduuli.tunniste.koodiarvo')}
-              oppiaine={aine}
-              additionalEditableKoulutusmoduuliProperties={'osaAlue'}
-              useOppiaineLaajuus={useOppiaineLaajuus(päätasonSuorituksenTyyppi)}
-              showArvosana={showArvosana(päätasonSuorituksenTyyppi)}
-            />
-          ))
-        }
-        <tr className='uusi-oppiaine' key='uusi-oppiaine-lisäaineet'>
-          <td colSpan='4'>
-            <UusiRyhmiteltyOppiaineDropdown
-              model={päätasonSuoritusModel}
-              optionsFilter={R.complement(resolveOppiaineOptionsFilter(päätasonSuorituksenTyyppi))}
-            />
-          </td>
-        </tr>
+        {showRyhmättömät && (
+          <RyhmättömätAineet
+            aineet={muutAineet}
+            edit={edit}
+            useOppiaineLaajuus={useOppiaineLaajuus}
+            showArvosana={showArvosana}
+            päätasonSuoritusModel={päätasonSuoritusModel}
+            oppiaineOptionsFilter={R.complement(oppiaineOptionsFilter)}
+          />)}
         </tbody>
       </table>
       {!R.isEmpty(footnotes) && <FootnoteDescriptions data={footnotes}/>}
@@ -127,7 +141,8 @@ export const OmatTiedotRyhmiteltyOppiaineet = ({suorituksetModel, päätasonSuor
   const {suoritus: päätasonSuoritusModel} = suorituksetModel.context
   const oppiaineet = modelItems(suorituksetModel)
 
-  const {aineryhmät, footnotes} = resolveGroupingFn(päätasonSuorituksenTyyppi)(oppiaineet, päätasonSuoritusModel)
+  const {groupAineet} = resolvePropertiesByType(päätasonSuorituksenTyyppi)
+  const {aineryhmät, footnotes} = groupAineet(päätasonSuorituksenTyyppi)(oppiaineet, päätasonSuoritusModel)
 
   return aineryhmät ? (
     <div className='aineryhmat'>
