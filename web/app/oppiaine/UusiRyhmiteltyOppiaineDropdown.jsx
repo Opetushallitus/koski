@@ -1,19 +1,25 @@
 import React from 'baret'
 import {t} from '../i18n/i18n'
-import {UusiOppiaineDropdown} from '../oppiaine/UusiOppiaineDropdown'
+import {UusiOppiaineDropdown} from './UusiOppiaineDropdown'
 import {
-  ensureArrayKey, modelData, modelItems, modelSet, modelSetData, modelSetTitle,
+  ensureArrayKey, modelData, modelItems, modelLookup, modelSet, modelSetData, modelSetTitle,
   pushModel
 } from '../editor/EditorModel'
 import {createOppiaineenSuoritus} from '../lukio/lukio'
 
-export const UusiIBOppiaineDropdown = ({model, aineryhmä}) => {
+const resolveRyhmäFieldName = model => {
+  const tyyppi = modelData(model, 'tyyppi').koodiarvo
+  return ['diavalmistavavaihe', 'diatutkintovaihe'].includes(tyyppi) ? 'osaAlue' : 'ryhmä'
+}
+
+export const UusiRyhmiteltyOppiaineDropdown = ({model, aineryhmä}) => {
   if (!model || !model.context.edit) return null
 
   const addOppiaine = oppiaine => {
     const nimi = t(modelData(oppiaine, 'tunniste.nimi'))
+    const ryhmäFieldName = resolveRyhmäFieldName(model)
     const oppiaineWithTitle = modelSetTitle(oppiaine, nimi)
-    const oppiaineWithAineryhmä = modelSetData(oppiaineWithTitle, aineryhmä, 'osaAlue')
+    const oppiaineWithAineryhmä = modelLookup(oppiaineWithTitle, ryhmäFieldName) ? modelSetData(oppiaineWithTitle, aineryhmä, ryhmäFieldName) : oppiaineWithTitle
     const suoritusUudellaOppiaineella = modelSet(
       oppiaine.parent || createOppiaineenSuoritus(model),
       oppiaineWithAineryhmä,
