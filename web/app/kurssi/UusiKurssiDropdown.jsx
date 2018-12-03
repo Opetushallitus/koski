@@ -21,10 +21,12 @@ export const UusiKurssiDropdown = (
     selected = Bacon.constant(undefined),
     resultCallback,
     placeholder,
-    enableFilter=true
+    enableFilter=true,
+    customAlternativesCompletionFn=false
   }) => {
   let käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli.tunniste').koodiarvo)
-  let valtakunnallisetKurssit = completeWithFieldAlternatives(oppiaine, valtakunnallisetKurssiProtot)
+  let alternativesFn = customAlternativesCompletionFn || completeWithFieldAlternatives
+  let valtakunnallisetKurssit = alternativesFn(oppiaine, valtakunnallisetKurssiProtot)
   let paikallisetKurssit = Atom([])
   let setPaikallisetKurssit = kurssit => paikallisetKurssit.set(kurssit)
 
