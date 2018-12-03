@@ -18,7 +18,7 @@ const diaCustomizations = {
   groupAineet: diaRyhmät,
   laajuusyksikkö: 'vuosiviikkotuntia',
   useOppiaineLaajuus: true,
-  showArvosana: false,
+  showArviointi: false,
   oppiaineOptionsFilter: m => m.value.classes.includes('diaosaalueoppiaine'),
   getFootnote: R.identity
 }
@@ -28,7 +28,7 @@ const typeDependentCustomizations = {
     groupAineet: ibRyhmät,
     laajuusyksikkö: 'kurssia',
     useOppiaineLaajuus: false,
-    showArvosana: true,
+    showArviointi: true,
     showRyhmättömät: false,
     oppiaineOptionsFilter: R.identity,
     getFootnote: oppiaine => modelData(oppiaine, 'arviointi.-1.predicted') && arvosanaFootnote
@@ -43,7 +43,7 @@ const resolvePropertiesByType = päätasonSuorituksenTyyppi => {
   return customizations
 }
 
-const RyhmättömätAineet = ({aineet, edit, useOppiaineLaajuus, showArvosana, päätasonSuoritusModel, oppiaineOptionsFilter}) => (
+const RyhmättömätAineet = ({aineet, edit, useOppiaineLaajuus, showArviointi, päätasonSuoritusModel, oppiaineOptionsFilter}) => (
   <React.Fragment>
     {
       (aineet && (!R.isEmpty(aineet) || edit)) && (
@@ -59,7 +59,7 @@ const RyhmättömätAineet = ({aineet, edit, useOppiaineLaajuus, showArvosana, p
           oppiaine={aine}
           additionalEditableKoulutusmoduuliProperties={'osaAlue'}
           useOppiaineLaajuus={useOppiaineLaajuus}
-          showArvosana={showArvosana}
+          showArviointi={showArviointi}
         />
       ))
     }
@@ -82,7 +82,7 @@ export const RyhmiteltyOppiaineetEditor = ({suorituksetModel, päätasonSuorituk
     groupAineet,
     laajuusyksikkö,
     useOppiaineLaajuus,
-    showArvosana,
+    showArviointi,
     showRyhmättömät,
     oppiaineOptionsFilter,
     getFootnote
@@ -93,7 +93,10 @@ export const RyhmiteltyOppiaineetEditor = ({suorituksetModel, päätasonSuorituk
   return aineryhmät ? (
     <div>
       <table className='suoritukset oppiaineet'>
-        <LukionOppiaineetTableHead laajuusyksikkö={laajuusyksikkö}/>
+        <LukionOppiaineetTableHead
+          laajuusyksikkö={laajuusyksikkö}
+          showArviointi={showArviointi}
+        />
         <tbody>
         {
           aineryhmät.map(ryhmät => ryhmät.map(r => [
@@ -107,7 +110,7 @@ export const RyhmiteltyOppiaineetEditor = ({suorituksetModel, päätasonSuorituk
                 footnote={getFootnote(oppiaine)}
                 additionalEditableKoulutusmoduuliProperties={additionalEditableKoulutusmoduuliProperties}
                 useOppiaineLaajuus={useOppiaineLaajuus}
-                showArvosana={showArvosana}
+                showArviointi={showArviointi}
               />
             )),
             <tr className='uusi-oppiaine' key={`uusi-oppiaine-${r.ryhmä.koodiarvo}`}>
@@ -126,7 +129,7 @@ export const RyhmiteltyOppiaineetEditor = ({suorituksetModel, päätasonSuorituk
             aineet={muutAineet}
             edit={edit}
             useOppiaineLaajuus={useOppiaineLaajuus}
-            showArvosana={showArvosana}
+            showArviointi={showArviointi}
             päätasonSuoritusModel={päätasonSuoritusModel}
             oppiaineOptionsFilter={R.complement(oppiaineOptionsFilter)}
           />)}
