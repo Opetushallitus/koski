@@ -42,7 +42,14 @@ export const KurssitEditor = ({model}) => {
       model.context.edit && (<span className="uusi-kurssi">
         <a onClick={() => showUusiKurssiAtom.set(true)}><Text name="Lisää kurssi"/></a>
         {
-          ift(showUusiKurssiAtom, <UusiKurssiPopup oppiaineenSuoritus={model} resultCallback={lisääKurssi} toimipiste={modelData(model.context.toimipiste).oid} uusiKurssinSuoritus={kurssinSuoritusProto} />)
+          ift(showUusiKurssiAtom,
+            <UusiKurssiPopup
+              oppiaineenSuoritus={model}
+              resultCallback={lisääKurssi}
+              toimipiste={modelData(model.context.toimipiste).oid}
+              uusiKurssinSuoritus={kurssinSuoritusProto}
+            />
+          )
         }
       </span>)
     }

@@ -11,7 +11,18 @@ import {t} from '../i18n/i18n'
 import Http from '../util/http'
 import {parseLocation} from '../util/location'
 import {findDefaultKoodisto, findKoodistoByDiaarinumero} from './kurssi'
-export const UusiKurssiDropdown = ({oppiaine, suoritukset, paikallinenKurssiProto, valtakunnallisetKurssiProtot, organisaatioOid, selected = Bacon.constant(undefined), resultCallback, placeholder, enableFilter=true}) => {
+export const UusiKurssiDropdown = (
+  {
+    oppiaine,
+    suoritukset,
+    paikallinenKurssiProto,
+    valtakunnallisetKurssiProtot,
+    organisaatioOid,
+    selected = Bacon.constant(undefined),
+    resultCallback,
+    placeholder,
+    enableFilter=true
+  }) => {
   let käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli.tunniste').koodiarvo)
   let valtakunnallisetKurssit = completeWithFieldAlternatives(oppiaine, valtakunnallisetKurssiProtot)
   let paikallisetKurssit = Atom([])

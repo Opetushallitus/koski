@@ -43,7 +43,15 @@ const resolvePropertiesByType = päätasonSuorituksenTyyppi => {
   return customizations
 }
 
-const RyhmättömätAineet = ({aineet, edit, useOppiaineLaajuus, showArviointi, päätasonSuoritusModel, oppiaineOptionsFilter}) => (
+const RyhmättömätAineet = (
+  {
+    aineet,
+    edit,
+    useOppiaineLaajuus,
+    showArviointi,
+    päätasonSuoritusModel,
+    oppiaineOptionsFilter
+  }) => (
   <React.Fragment>
     {
       (aineet && (!R.isEmpty(aineet) || edit)) && (
