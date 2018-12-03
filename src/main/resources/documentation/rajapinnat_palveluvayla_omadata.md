@@ -20,7 +20,7 @@ Mikäli halutaan, että käyttäjän selain palaa luvan antamisen jälkeen tiety
 ### Kansalaisen opintotietojen hakeminen
 
 Kun kansalainen on myöntänyt luvan tietojen hakemiseen, voidaan tietoja hakea Suomi.fi-palveluväylän kautta.
-Tiedot haetaan kumppanin omalta liityntäpalvelimelta SOAP-requestilla, joka on kuvattu [täällä](https://sp.omadata.opintopolku.fi/?wsdl=true).
+Tiedot haetaan kumppanin omalta liityntäpalvelimelta SOAP-requestilla, joka on kuvattu [palveluväylän liityntäkatalogissa](https://liityntakatalogi.suomi.fi/dataset/koski).
 
 Esimerkkipyyntö:
 
