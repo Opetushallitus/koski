@@ -87,6 +87,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
       mount("/user/login", new LocalLoginServlet)
     }
     mount("/user/logout", new LogoutServlet)
+    mount("/user/redirect", new LogoutRedirectServlet)
     if (application.features.shibboleth) {
       mount("/user/shibbolethlogin", ShibbolethLoginServlet(application))
     }
