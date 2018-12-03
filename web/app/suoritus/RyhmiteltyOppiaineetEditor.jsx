@@ -12,13 +12,15 @@ import {arvosanaFootnote, ibRyhmät} from '../ib/IB'
 import {UusiRyhmiteltyOppiaineDropdown} from '../oppiaine/UusiRyhmiteltyOppiaineDropdown'
 import {FootnoteDescriptions} from '../components/footnote'
 import {OmatTiedotLukionOppiaine} from '../lukio/OmatTiedotLukionOppiaineet'
-import {diaRyhmät} from '../dia/DIA'
+import {diaLukukausiAlternativesCompletionFn, diaRyhmät} from '../dia/DIA'
 
 const diaCustomizations = {
   groupAineet: diaRyhmät,
   laajuusyksikkö: 'vuosiviikkotuntia',
   useOppiaineLaajuus: true,
   showArviointi: false,
+  customOsasuoritusTitle: 'osasuoritus',
+  customOsasuoritusAlternativesFn: diaLukukausiAlternativesCompletionFn,
   oppiaineOptionsFilter: m => m.value.classes.includes('diaosaalueoppiaine'),
   getFootnote: R.identity
 }
@@ -50,7 +52,9 @@ const RyhmättömätAineet = (
     useOppiaineLaajuus,
     showArviointi,
     päätasonSuoritusModel,
-    oppiaineOptionsFilter
+    oppiaineOptionsFilter,
+    customOsasuoritusTitle,
+    customOsasuoritusAlternativesCompletionFn
   }) => (
   <React.Fragment>
     {
@@ -68,6 +72,8 @@ const RyhmättömätAineet = (
           additionalEditableKoulutusmoduuliProperties={'osaAlue'}
           useOppiaineLaajuus={useOppiaineLaajuus}
           showArviointi={showArviointi}
+          customOsasuoritusTitle={customOsasuoritusTitle}
+          customOsasuoritusAlternativesCompletionFn={customOsasuoritusAlternativesCompletionFn}
         />
       ))
     }
@@ -92,6 +98,8 @@ export const RyhmiteltyOppiaineetEditor = ({suorituksetModel, päätasonSuorituk
     useOppiaineLaajuus,
     showArviointi,
     showRyhmättömät,
+    customOsasuoritusTitle,
+    customOsasuoritusAlternativesFn,
     oppiaineOptionsFilter,
     getFootnote
   } = resolvePropertiesByType(päätasonSuorituksenTyyppi)
@@ -119,6 +127,8 @@ export const RyhmiteltyOppiaineetEditor = ({suorituksetModel, päätasonSuorituk
                 additionalEditableKoulutusmoduuliProperties={additionalEditableKoulutusmoduuliProperties}
                 useOppiaineLaajuus={useOppiaineLaajuus}
                 showArviointi={showArviointi}
+                customOsasuoritusTitle={customOsasuoritusTitle}
+                customOsasuoritusAlternativesCompletionFn={customOsasuoritusAlternativesFn}
               />
             )),
             <tr className='uusi-oppiaine' key={`uusi-oppiaine-${r.ryhmä.koodiarvo}`}>
@@ -140,6 +150,8 @@ export const RyhmiteltyOppiaineetEditor = ({suorituksetModel, päätasonSuorituk
             showArviointi={showArviointi}
             päätasonSuoritusModel={päätasonSuoritusModel}
             oppiaineOptionsFilter={R.complement(oppiaineOptionsFilter)}
+            customOsasuoritusTitle={customOsasuoritusTitle}
+            customOsasuoritusAlternativesCompletionFn={customOsasuoritusAlternativesFn}
           />)}
         </tbody>
       </table>

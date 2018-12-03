@@ -16,7 +16,7 @@ import Text from '../i18n/Text'
 import {ift} from '../util/util'
 import UusiKurssiPopup from './UusiKurssiPopup'
 
-export const KurssitEditor = ({model}) => {
+export const KurssitEditor = ({model, customTitle, customAlternativesCompletionFn}) => {
   let osasuoritukset = modelLookup(model, 'osasuoritukset')
   if (!osasuoritukset) return null
   let kurssit = modelItems(osasuoritukset)
@@ -40,7 +40,7 @@ export const KurssitEditor = ({model}) => {
     }</ul>
     {
       model.context.edit && (<span className="uusi-kurssi">
-        <a onClick={() => showUusiKurssiAtom.set(true)}><Text name="Lisää kurssi"/></a>
+        <a onClick={() => showUusiKurssiAtom.set(true)}><Text name={`Lisää ${customTitle || 'kurssi'}`}/></a>
         {
           ift(showUusiKurssiAtom,
             <UusiKurssiPopup
@@ -48,6 +48,8 @@ export const KurssitEditor = ({model}) => {
               resultCallback={lisääKurssi}
               toimipiste={modelData(model.context.toimipiste).oid}
               uusiKurssinSuoritus={kurssinSuoritusProto}
+              customTitle={customTitle}
+              customAlternativesCompletionFn={customAlternativesCompletionFn}
             />
           )
         }

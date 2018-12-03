@@ -36,7 +36,9 @@ export class LukionOppiaineEditor extends React.Component {
       additionalEditableKoulutusmoduuliProperties,
       allowOppiaineRemoval = true,
       useOppiaineLaajuus = false,
-      showArviointi = true
+      showArviointi = true,
+      customOsasuoritusTitle,
+      customOsasuoritusAlternativesCompletionFn
     } = this.props
 
     const kurssit = modelItems(oppiaine, 'osasuoritukset')
@@ -55,7 +57,11 @@ export class LukionOppiaineEditor extends React.Component {
             <Nimi oppiaine={oppiaine}/>
             <KoulutusmoduuliPropertiesEditor oppiaine={oppiaine} additionalEditableProperties={additionalEditableKoulutusmoduuliProperties}/>
           </div>
-          <KurssitEditor model={oppiaine}/>
+          <KurssitEditor
+            model={oppiaine}
+            customTitle={customOsasuoritusTitle}
+            customAlternativesCompletionFn={customOsasuoritusAlternativesCompletionFn}
+          />
         </td>
         <td className='laajuus'>
           {
