@@ -13,7 +13,7 @@ import fi.oph.koski.koodisto.{KoodistoCreator, KoodistoPalvelu, KoodistoViitePal
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.log.{AuditLog, Logging, TimedProxy}
-import fi.oph.koski.luovutuspalvelu.LuovutuspalveluService
+import fi.oph.koski.luovutuspalvelu.{LuovutuspalveluService, SuomiFiService}
 import fi.oph.koski.mydata.{MyDataRepository, MyDataService}
 import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.oppija.KoskiOppijaFacade
@@ -88,6 +88,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val scheduledTasks = new KoskiScheduledTasks(this)
   lazy val ipService = new IPService(masterDatabase.db)
   lazy val luovutuspalveluService = new LuovutuspalveluService(this)
+  lazy val suomiFiService = new SuomiFiService(this)
   lazy val prometheusRepository = PrometheusRepository(config)
   lazy val koskiPulssi = KoskiPulssi(this)
   lazy val basicAuthSecurity = new BasicAuthSecurity(masterDatabase.db, config)
