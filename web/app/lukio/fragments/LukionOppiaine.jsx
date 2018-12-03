@@ -63,7 +63,7 @@ const kurssienKeskiarvo = suoritetutKurssit => {
   }
 }
 
-const Arviointi = ({oppiaine, suoritetutKurssit, footnote, showArvosana = true, showKeskiarvo = true}) => {
+const Arviointi = ({oppiaine, suoritetutKurssit, footnote}) => {
   const {edit} = oppiaine.context
 
   const arviointi = modelData(oppiaine, 'arviointi')
@@ -71,36 +71,26 @@ const Arviointi = ({oppiaine, suoritetutKurssit, footnote, showArvosana = true, 
 
   return (
     <div>
-      {
-        showArvosana && (
-          <div className='annettuArvosana'>
-            {
-              edit || arviointi
-                ? <ArvosanaEditor model={oppiaine}/>
-                : '-'
-            }
-            {
-              edit &&
-              <PropertiesEditor
-                model={modelLookup(oppiaine, 'arviointi.-1')}
-                propertyFilter={p => p.key !== 'arvosana' && !p.model.optional}
-                key={'properties'}
-              />
-            }
-            {
-              !edit && arviointi && footnote &&
-              <FootnoteHint title={footnote.title} hint={footnote.hint} />
-            }
-          </div>
-        )
-      }
-      {
-        showKeskiarvo && (
-          <div className='keskiarvo'>
-            {keskiarvo ? showArvosana ? `(${keskiarvo})` : keskiarvo : ''}
-          </div>
-        )
-      }
+      <div className='annettuArvosana'>
+        {
+          edit || arviointi
+            ? <ArvosanaEditor model={oppiaine}/>
+            : '-'
+        }
+        {
+          edit &&
+          <PropertiesEditor
+            model={modelLookup(oppiaine, 'arviointi.-1')}
+            propertyFilter={p => p.key !== 'arvosana' && !p.model.optional}
+            key={'properties'}
+          />
+        }
+        {
+          !edit && arviointi && footnote &&
+          <FootnoteHint title={footnote.title} hint={footnote.hint} />
+        }
+      </div>
+      <div className='keskiarvo'>{keskiarvo ? `(${keskiarvo})` : ''}</div>
     </div>
   )
 }

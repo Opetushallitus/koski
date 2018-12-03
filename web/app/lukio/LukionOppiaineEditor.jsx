@@ -36,7 +36,7 @@ export class LukionOppiaineEditor extends React.Component {
       additionalEditableKoulutusmoduuliProperties,
       allowOppiaineRemoval = true,
       useOppiaineLaajuus = false,
-      showArvosana = true
+      showArviointi = true
     } = this.props
 
     const kurssit = modelItems(oppiaine, 'osasuoritukset')
@@ -64,14 +64,17 @@ export class LukionOppiaineEditor extends React.Component {
               : laajuusNumberToString(laajuudet(hyväksytystiSuoritetutKurssit(kurssit)))
           }
         </td>
-        <td className='arvosana'>
-          <Arviointi
-            oppiaine={oppiaine}
-            suoritetutKurssit={suoritetutKurssit(kurssit)}
-            footnote={footnote}
-            showArvosana={showArvosana}
-          />
-        </td>
+        {
+          showArviointi && (
+            <td className='arvosana'>
+              <Arviointi
+                oppiaine={oppiaine}
+                suoritetutKurssit={suoritetutKurssit(kurssit)}
+                footnote={footnote}
+              />
+            </td>
+          )
+        }
         {
           edit && allowOppiaineRemoval && (
             <td className='remove-row'>
