@@ -1,9 +1,14 @@
 import * as R from 'ramda'
 import Bacon from 'baconjs'
-import {modelData, modelLookup, modelSetValue} from '../editor/EditorModel'
+import {modelData, modelItems, modelLookup, modelSetValue} from '../editor/EditorModel'
 import {koodistoValues} from '../uusioppija/koodisto'
 import {parseLocation} from '../util/location'
 import Http from '../util/http'
+import {hasArviointi} from '../suoritus/Suoritus'
+import {hasLasketaanKokonaispistemäärään} from './DIATutkintovaiheenLukukaudenArviointiEditor'
+import {flatMapArray} from '../util/util'
+
+export const arvosanaFootnote = {title: 'Ei lasketa kokonaispistemäärään', hint: '*'}
 
 export const diaRyhmät = (oppiaineet, päätasonSuoritusModel, edit) => {
   const [aineryhmäAineet, muutAineet] = R.partition(a => modelLookup(a, 'koulutusmoduuli').value.classes.includes('diaosaalueoppiaine'), oppiaineet)
@@ -16,7 +21,9 @@ export const diaRyhmät = (oppiaineet, päätasonSuoritusModel, edit) => {
   const oppiaineetAineryhmittäin = R.groupBy(oppiaine => modelData(oppiaine, 'koulutusmoduuli.osaAlue').koodiarvo, aineryhmäAineet)
   const aineryhmät = osaAlueetKaikki.map(ryhmät => ryhmät.map(ryhmä => ({ryhmä, aineet: oppiaineetAineryhmittäin[ryhmä.koodiarvo]})))
 
-  const footnotes = []
+  const footnotes = R.any(R.both(hasLasketaanKokonaispistemäärään, eiLasketaKokonaispistemäärään), flatMapArray(oppiaineet, aine => modelItems(aine, 'osasuoritukset')))
+    ? [arvosanaFootnote]
+    : []
 
   return {aineryhmät, muutAineet, footnotes}
 }
@@ -35,3 +42,11 @@ export const diaLukukausiAlternativesCompletionFn = (oppiaine, kurssiPrototypes)
 
   return Bacon.combineAsArray(kurssiPrototypes.map(alternativesForField)).last().map(R.unnest)
 }
+
+export const isDIAOppiaineenTutkintovaiheenOsasuoritus = osasuoritus =>
+  osasuoritus.value.classes.includes('diaoppiaineentutkintovaiheenosasuorituksensuoritus')
+
+export const eiLasketaKokonaispistemäärään = osasuoritus =>
+  isDIAOppiaineenTutkintovaiheenOsasuoritus(osasuoritus) &&
+  hasArviointi(osasuoritus) &&
+  modelData(osasuoritus, 'arviointi.-1.lasketaanKokonaispistemäärään') === false

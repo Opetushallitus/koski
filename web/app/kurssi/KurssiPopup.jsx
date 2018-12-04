@@ -3,8 +3,22 @@ import {PropertiesEditor} from '../editor/PropertiesEditor'
 import IBKurssinArviointiEditor from '../ib/IBKurssinArviointiEditor'
 import {isIBKurssi} from './kurssi'
 import {hasArviointi} from '../suoritus/Suoritus'
+import {isDIAOppiaineenTutkintovaiheenOsasuoritus} from '../dia/DIA'
+import DIATutkintovaiheenLukukaudenArviointiEditor, {hasLasketaanKokonaispistemäärään} from '../dia/DIATutkintovaiheenLukukaudenArviointiEditor'
 
 export const isIBKurssinArviointi = kurssi => property => isIBKurssi(kurssi) && property.key === 'arviointi' && hasArviointi(kurssi)
+
+export const isDIAOsasuorituksenArviointi = osasuoritus => property =>
+  isDIAOppiaineenTutkintovaiheenOsasuoritus(osasuoritus) && property.key === 'arviointi' &&
+  hasArviointi(osasuoritus) &&
+  hasLasketaanKokonaispistemäärään(osasuoritus)
+
+const resolvePropertyEditor = (model, property) => {
+  if (isIBKurssi(model) && property.key === 'arviointi') return IBKurssinArviointiEditor
+  if (isDIAOppiaineenTutkintovaiheenOsasuoritus(model) && property.key === 'arviointi') return DIATutkintovaiheenLukukaudenArviointiEditor
+
+  return null
+}
 
 export class KurssiPopup extends React.Component {
   constructor(props) {
@@ -18,12 +32,12 @@ export class KurssiPopup extends React.Component {
       className={'details details-' + this.state.popupAlignment.x + ' details-' + this.state.popupAlignment.x + '-' + this.state.popupAlignment.y}>
       <PropertiesEditor
         model={kurssi}
-        propertyFilter={p => !['arviointi', 'koodistoUri'].includes(p.key) || isIBKurssinArviointi(kurssi)(p)}
+        propertyFilter={p => !['arviointi', 'koodistoUri'].includes(p.key) || isIBKurssinArviointi(kurssi)(p) || isDIAOsasuorituksenArviointi(kurssi)(p)}
         propertyEditable={p => !['tunniste', 'koodiarvo', 'nimi'].includes(p.key)}
-        getValueEditor={(prop, getDefault) => isIBKurssi(kurssi) && prop.key === 'arviointi'
-          ? <IBKurssinArviointiEditor model={kurssi}/>
-          : getDefault()
-        }
+        getValueEditor={(prop, getDefault) => {
+          const PropertyEditor = resolvePropertyEditor(kurssi, prop)
+          return PropertyEditor ? <PropertyEditor model={kurssi}/> : getDefault()
+        }}
         className={kurssi.context.kansalainen ? 'kansalainen' : ''}
       />
     </div>)
