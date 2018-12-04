@@ -13,6 +13,7 @@ import fi.oph.koski.schema.{AmmatillinenTutkintoKoulutus, LocalizedString, Opisk
 class SuomiFiService(koskiApplication: KoskiApplication) extends Logging {
   def suomiFiOpiskeluoikeudet(hetu: String)(implicit user: KoskiSession): Either[HttpStatus, SuomiFiResponse] =
     koskiApplication.oppijaFacade.findOppijaByHetuOrCreateIfInYtrOrVirta(hetu).flatMap(_.warningsToLeft)
+      .map(OmatTiedotEditorModel.piilotaKeskeneräisetPerusopetuksenPäättötodistukset)
       .map(OmatTiedotEditorModel.opiskeluoikeudetOppilaitoksittain)
       .map(convertToSuomiFi)
       .map(SuomiFiResponse)
@@ -46,5 +47,4 @@ case class SuomiFiOpiskeluoikeus(tila: LocalizedString, alku: LocalDate, loppu: 
 case class SuomiFiOppilaitos(nimi: LocalizedString, opiskeluoikeudet: List[SuomiFiOpiskeluoikeus])
 case class SuomiFiResponse(oppilaitokset: List[SuomiFiOppilaitos])
 
-//TODO: PIILOTA KESKENERAISET PERUSOPEUTS
 //TODO: PERUSOPETUKSEN TITLEN KAIVAMINEN

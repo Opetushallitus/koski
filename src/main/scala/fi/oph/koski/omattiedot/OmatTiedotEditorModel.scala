@@ -22,14 +22,14 @@ object OmatTiedotEditorModel extends Timing {
     buildModel(buildView(piilotetuillaTiedoilla(oppijaWithWarnings.getIgnoringWarnings), oppijaWithWarnings.warnings))
   }
 
-  private def buildView(oppija: Oppija, warnings: Seq[HttpStatus]) = {
-    OmatTiedotEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], opiskeluoikeudetOppilaitoksittain(oppija), warnings.flatMap(_.errors).map(_.key).toList)
-  }
-
   def opiskeluoikeudetOppilaitoksittain(oppija: Oppija): List[OppilaitoksenOpiskeluoikeudet] = {
     oppija.opiskeluoikeudet.groupBy(_.getOppilaitosOrKoulutusToimija).map {
       case (oppilaitos, opiskeluoikeudet) => OppijaEditorModel.toOppilaitoksenOpiskeluoikeus(oppilaitos, opiskeluoikeudet)
     }.toList.sorted(oppilaitoksenOpiskeluoikeudetOrdering)
+  }
+
+  private def buildView(oppija: Oppija, warnings: Seq[HttpStatus]) = {
+    OmatTiedotEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], opiskeluoikeudetOppilaitoksittain(oppija), warnings.flatMap(_.errors).map(_.key).toList)
   }
 
   private def buildModel(obj: AnyRef)(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = {
