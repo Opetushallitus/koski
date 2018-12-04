@@ -11,6 +11,11 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
     <mime-type>text/html;charset=UTF-8</mime-type>
   </mime-mapping>
 
+  <mime-mapping>
+    <extension>wsdl</extension>
+    <mime-type>application/wsdl+xml</mime-type>
+  </mime-mapping>
+
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
@@ -26,6 +31,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
     <url-pattern>/images/*</url-pattern>
     <url-pattern>/test/*</url-pattern>
     <url-pattern>/json-schema-viewer/*</url-pattern>
+    <url-pattern>/wsdl/*</url-pattern>
   </servlet-mapping>
 
   <filter>
