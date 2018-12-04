@@ -119,9 +119,7 @@ case class DIAOppiaineenTutkintovaiheenSuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: DIAOppiaine,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  @Description("Oppiaineeseen kuuluvien lukukausien suoritukset")
-  @Title("Lukukaudet")
-  @MaxItems(4)
+  @Description("Oppiaineeseen kuuluvien lukukausien ja muiden osasuoritusten suoritukset")
   override val osasuoritukset: Option[List[DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus]],
   @KoodistoKoodiarvo("diaoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "diaoppiaine", koodistoUri = "suorituksentyyppi")
