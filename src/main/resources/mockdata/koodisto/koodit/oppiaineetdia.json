@@ -251,4 +251,15 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_li",
+  "koodiArvo" : "LI",
+  "metadata" : [ {
+    "nimi" : "Liikunta",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]
