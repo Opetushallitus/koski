@@ -352,6 +352,7 @@ case class DIAOppiaineMuuValinnainen(
   @KoodistoKoodiarvo("CCEA")
   @KoodistoKoodiarvo("LT")
   @KoodistoKoodiarvo("MASY")
+  @KoodistoKoodiarvo("LI")
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusVuosiviikkotunneissa],
 ) extends DIAOppiaine
