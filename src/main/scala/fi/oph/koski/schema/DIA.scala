@@ -138,7 +138,7 @@ case class DIAOppiaineenValmistavanVaiheenLukukaudenSuoritus(
 @Title("DIA-oppiaineen tutkintovaiheen osasuorituksen suoritus")
 case class DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus(
   koulutusmoduuli: DIAOppiaineenTutkintovaiheenOsasuoritus,
-  arviointi: Option[List[DIAOppiaineenTutkintovaiheenLukukaudenArviointi]] = None,
+  arviointi: Option[List[DIATutkintovaiheenArviointi]] = None,
   @KoodistoKoodiarvo("diaoppiaineentutkintovaiheenlukukaudensuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "diaoppiaineentutkintovaiheenlukukaudensuoritus", koodistoUri = "suorituksentyyppi")
 ) extends DIASuoritus
@@ -216,17 +216,34 @@ trait DIATutkintovaiheenArviointi extends DIAArviointi {
   }
 }
 
-@Title("DIA-oppiaineen tutkintovaiheen lukukauden arviointi")
-case class DIAOppiaineenTutkintovaiheenLukukaudenArviointi(
+@Title("DIA-oppiaineen tutkintovaiheen numeerinen arviointi")
+case class DIAOppiaineenTutkintovaiheenNumeerinenArviointi(
+  @KoodistoKoodiarvo("0")
+  @KoodistoKoodiarvo("1")
+  @KoodistoKoodiarvo("2")
+  @KoodistoKoodiarvo("2-")
+  @KoodistoKoodiarvo("3")
+  @KoodistoKoodiarvo("4")
+  @KoodistoKoodiarvo("5")
+  @KoodistoKoodiarvo("6")
+  @KoodistoKoodiarvo("7")
+  @KoodistoKoodiarvo("8")
+  @KoodistoKoodiarvo("9")
+  @KoodistoKoodiarvo("10")
+  @KoodistoKoodiarvo("11")
+  @KoodistoKoodiarvo("12")
+  @KoodistoKoodiarvo("13")
+  @KoodistoKoodiarvo("14")
+  @KoodistoKoodiarvo("15")
   arvosana: Koodistokoodiviite,
   päivä: Option[LocalDate],
   lasketaanKokonaispistemäärään: Boolean = true
 ) extends DIATutkintovaiheenArviointi
 
-@Title("DIA-oppiaineen päättökokeen arviointi")
-case class DIAPäättökokeenArviointi(
+case class DIAOppiaineenTutkintovaiheenSuoritusmerkintäArviointi(
+  @KoodistoKoodiarvo("S")
   arvosana: Koodistokoodiviite,
-  päivä: Option[LocalDate],
+  päivä: Option[LocalDate]
 ) extends DIATutkintovaiheenArviointi
 
 @Description("DIA-oppiaineen tunnistetiedot")

@@ -168,4 +168,14 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkodiatutkinto_s",
+  "koodiArvo" : "S",
+  "metadata" : [ {
+    "nimi" : "Suoritettu",
+    "lyhytNimi" : "S",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]
