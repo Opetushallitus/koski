@@ -11,6 +11,7 @@ import {
   isPreIBKurssi
 } from '../suoritus/Koulutusmoduuli'
 import {FootnoteHint} from '../components/footnote'
+import {eiLasketaKokonaispistemäärään} from '../dia/DIA'
 
 export class KurssiEditor extends React.Component {
   constructor(props) {
@@ -37,7 +38,12 @@ export class KurssiEditor extends React.Component {
     }
     let kurssinTyyppi = koulutusmoduuli.kurssinTyyppi ? koulutusmoduuli.kurssinTyyppi.koodiarvo : ''
     let edit = kurssi.context.edit
-    let className = buildClassNames(['tunniste', kurssinTyyppi, !edit && 'hoverable'])
+    let className = buildClassNames([
+      'tunniste',
+      kurssinTyyppi,
+      !edit && 'hoverable',
+      eiLasketaKokonaispistemäärään(kurssi) && 'ei-lasketa-kokonaispistemäärään'
+    ])
     return (
       <li className="kurssi" ref={e => this.kurssiElement = e}>
         <button onClick={showDetails} onMouseEnter={!edit ? showDetails : undefined} onMouseLeave={!edit ? hideDetails : undefined} className={`text-button-small ${className}`} title={modelTitle(kurssi, 'koulutusmoduuli')}>{koulutusmoduuli.tunniste.koodiarvo}</button>
@@ -52,6 +58,10 @@ export class KurssiEditor extends React.Component {
           ) &&
           isPaikallinen(koulutusmoduuliModel) &&
           <FootnoteHint title={'Paikallinen kurssi'} />
+        }
+        {
+          eiLasketaKokonaispistemäärään(kurssi) &&
+          <FootnoteHint title={'Ei lasketa kokonaispistemäärään'}/>
         }
         <div className="arvosana"><ArvosanaEditor model={kurssi}/></div>
         {
