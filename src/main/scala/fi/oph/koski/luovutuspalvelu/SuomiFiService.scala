@@ -4,22 +4,35 @@ import java.time.LocalDate
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.OppilaitoksenOpiskeluoikeudet
-import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.log.Logging
 import fi.oph.koski.omattiedot.OmatTiedotEditorModel
 import fi.oph.koski.schema.{AmmatillinenTutkintoKoulutus, LocalizedString, Opiskeluoikeus}
 
-class SuomiFiService(koskiApplication: KoskiApplication) {
+class SuomiFiService(koskiApplication: KoskiApplication) extends Logging {
   def suomiFiOpiskeluoikeudet(hetu: String)(implicit user: KoskiSession): Either[HttpStatus, SuomiFiResponse] =
     koskiApplication.oppijaFacade.findOppijaByHetuOrCreateIfInYtrOrVirta(hetu).flatMap(_.warningsToLeft)
       .map(OmatTiedotEditorModel.opiskeluoikeudetOppilaitoksittain)
       .map(convertToSuomiFi)
       .map(SuomiFiResponse)
 
-  private def convertToSuomiFi(oppilaitosOpiskeluoikeudet: List[OppilaitoksenOpiskeluoikeudet]) = oppilaitosOpiskeluoikeudet.map { oos =>
-    SuomiFiOppilaitos(oos.oppilaitos.nimi.get, oos.opiskeluoikeudet.map { oo =>
-      SuomiFiOpiskeluoikeus(oo.tila.opiskeluoikeusjaksot.last.tila.nimi.get, oo.alkamispäivä.get, oo.päättymispäivä, suorituksenNimi(oo).getOrElse(oo.tyyppi.nimi.get))
-    })
+  private def convertToSuomiFi(oppilaitosOpiskeluoikeudet: List[OppilaitoksenOpiskeluoikeudet]) =
+    oppilaitosOpiskeluoikeudet.flatMap(toSuomiFiOpiskeluoikeus)
+
+  private def toSuomiFiOpiskeluoikeus(oos: OppilaitoksenOpiskeluoikeudet) = try {
+    Some(SuomiFiOppilaitos(oos.oppilaitos.nimi.get, oos.opiskeluoikeudet.map { oo =>
+      SuomiFiOpiskeluoikeus(
+        tila = oo.tila.opiskeluoikeusjaksot.last.tila.nimi.get,
+        alku = oo.alkamispäivä.get,
+        loppu = oo.päättymispäivä,
+        nimi = suorituksenNimi(oo).get
+      )
+    }))
+  } catch {
+    case e: NoSuchElementException =>
+      logger.error(e)("Suomi.fi opiskeluoikeuden konvertointi epäonnistui")
+      None
   }
 
   private def suorituksenNimi(oo: Opiskeluoikeus) =

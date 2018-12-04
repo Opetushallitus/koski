@@ -61,7 +61,7 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
       case Right(soap)=>
         contentType = "text/xml"
         response.writer.print(XML.prettyPrintNodes(soap))
-      case _ => KoskiErrorCategory.internalError
+      case Left(status) => status
     }
   }
 
