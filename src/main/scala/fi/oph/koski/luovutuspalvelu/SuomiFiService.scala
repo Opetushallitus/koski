@@ -4,15 +4,16 @@ import java.time.LocalDate
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.OppilaitoksenOpiskeluoikeudet
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.omattiedot.OmatTiedotEditorModel
-import fi.oph.koski.schema.{AmmatillinenTutkintoKoulutus, LocalizedString, Opiskeluoikeus}
+import fi.oph.koski.schema.{AmmatillinenTutkintoKoulutus, Koodistokoodiviite, LocalizedString, Opiskeluoikeus}
 
-class SuomiFiService(koskiApplication: KoskiApplication) extends Logging {
+class SuomiFiService(application: KoskiApplication) extends Logging {
+  // TODO: lang
   def suomiFiOpiskeluoikeudet(hetu: String)(implicit user: KoskiSession): Either[HttpStatus, SuomiFiResponse] =
-    koskiApplication.oppijaFacade.findOppijaByHetuOrCreateIfInYtrOrVirta(hetu).flatMap(_.warningsToLeft)
+    application.oppijaFacade.findOppijaByHetuOrCreateIfInYtrOrVirta(hetu).flatMap(_.warningsToLeft)
       .map(OmatTiedotEditorModel.piilotaKeskeneräisetPerusopetuksenPäättötodistukset)
       .map(OmatTiedotEditorModel.opiskeluoikeudetOppilaitoksittain)
       .map(convertToSuomiFi)
@@ -27,7 +28,7 @@ class SuomiFiService(koskiApplication: KoskiApplication) extends Logging {
         tila = oo.tila.opiskeluoikeusjaksot.last.tila.nimi.get,
         alku = oo.alkamispäivä.get,
         loppu = oo.päättymispäivä,
-        nimi = suorituksenNimi(oo).get
+        nimi = suorituksenNimi(oo)
       )
     }))
   } catch {
@@ -36,15 +37,25 @@ class SuomiFiService(koskiApplication: KoskiApplication) extends Logging {
       None
   }
 
-  private def suorituksenNimi(oo: Opiskeluoikeus) =
-    oo.suoritukset.head.koulutusmoduuli match {
-      case a: AmmatillinenTutkintoKoulutus => a.perusteenNimi
-      case x => x.tunniste.getNimi
+  private def suorituksenNimi(oo: Opiskeluoikeus) = {
+    val suoritus = oo.suoritukset.head
+    val title = suoritus.koulutusmoduuli match {
+      case a: AmmatillinenTutkintoKoulutus => a.perusteenNimi.get
+      case x => x.tunniste.getNimi.get
     }
+    if (suoritus.tyyppi ==  ammatillinenOsittainen) {
+      title.concat(application.localizationRepository.get(", osittainen"))
+    } else if (suoritus.tyyppi == aikuistenPerusopetus) {
+      suoritus.tyyppi.nimi.get
+    } else {
+      title
+    }
+  }
+
+  private val ammatillinenOsittainen = Koodistokoodiviite("ammatillinentutkintoosittainen", "suorituksentyyppi")
+  private val aikuistenPerusopetus = Koodistokoodiviite("aikuistenperusopetuksenoppimaara", "suorituksentyyppi")
 }
 
 case class SuomiFiOpiskeluoikeus(tila: LocalizedString, alku: LocalDate, loppu: Option[LocalDate], nimi: LocalizedString)
 case class SuomiFiOppilaitos(nimi: LocalizedString, opiskeluoikeudet: List[SuomiFiOpiskeluoikeus])
 case class SuomiFiResponse(oppilaitokset: List[SuomiFiOppilaitos])
-
-//TODO: PERUSOPETUKSEN TITLEN KAIVAMINEN
