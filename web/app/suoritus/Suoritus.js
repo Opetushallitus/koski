@@ -74,6 +74,8 @@ export const näyttötutkintoonValmistavanKoulutuksenSuoritus = opiskeluoikeuden
 export const ammatillisenTutkinnonSuoritus = opiskeluoikeudenSuoritusByTyyppi('ammatillinentutkinto')
 export const preIBSuoritus = opiskeluoikeudenSuoritusByTyyppi('preiboppimaara')
 export const ibTutkinnonSuoritus = opiskeluoikeudenSuoritusByTyyppi('ibtutkinto')
+export const valmistavanDIAVaiheenSuoritus = opiskeluoikeudenSuoritusByTyyppi('diavalmistavavaihe')
+export const diaTutkinnonSuoritus = opiskeluoikeudenSuoritusByTyyppi('diatutkintovaihe')
 
 export const koulutustyyppiKoodit = suoritustyyppiKoodi => {
   if (suoritustyyppiKoodi == 'perusopetuksenoppimaara' || suoritustyyppiKoodi == 'perusopetuksenvuosiluokka' || suoritustyyppiKoodi == 'nuortenperusopetuksenoppiaineenoppimaara') {
