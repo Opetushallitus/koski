@@ -53,6 +53,7 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
   }
 
   post("/suomi-fi-rekisteritiedot") {
+    requireSuomiFiUser
     (for {
       xml <- readXml
       hetu <- extractHetu(xml)
@@ -62,6 +63,12 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
         contentType = "text/xml"
         response.writer.print(XML.prettyPrintNodes(soap))
       case Left(status) => status
+    }
+  }
+
+  private def requireSuomiFiUser = {
+    if (koskiSession.oid != suomiFiUserOid) {
+      haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
     }
   }
 
@@ -139,6 +146,8 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
       Right(req)
     }
   }
+
+  private val suomiFiUserOid = application.config.getString("suomi-fi-user-oid")
 }
 
 trait LuovutuspalveluRequest {
