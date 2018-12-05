@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.js"></script>
+
+<script id="handlebars-template" type="text/x-handlebars-template">
+  <div>
+    <h2>Opiskeluoikeuteni</h2>
+    {{#each oppilaitokset}}
+    <div>
+      <h3>{{nimi.fi}}</h3>
+      {{#each opiskeluoikeudet}}
+      <div>
+        <span>Koulutuksen nimi: {{nimi.fi}}</span></br>
+        <span>Opintojen tila: {{tila.fi}}</span></br>
+        <span>Alkamispvm: {{alku}}</span></br>
+        {{#if loppu}}
+          <span>Päättymispvm: {{loppu}}</span></br>
+        {{/if}}
+      </div></br>
+      {{/each}}
+    </div>
+    {{/each}}
+  </div>
+</script>
+
+<form onsubmit="doSoapRequest()">
+  <input type="text" name="hetu" id="hetu">
+</form>
+
+<div id="vastausHtml"></div>
+<div id="vastausXml"></div>
+
+<script type="text/javascript">
+
+  function doSoapRequest() {
+    event.preventDefault()
+    var xmlStr = appendHetuToXml(document.getElementById('hetu').value)
+    var xmlDoc = new DOMParser().parseFromString(xmlStr, "text/xml")
+
+    var httpRequest = new XMLHttpRequest()
+
+    httpRequest.onreadystatechange = function () {
+      if (httpRequest.readyState == 4) {
+        if (httpRequest.status == 200) {
+
+          var responseXml = httpRequest.responseXML
+
+          document.getElementById("vastausXml").innerText = httpRequest.responseText
+
+          var asStr = responseXml.getElementsByTagName("ns1:opiskeluoikeudet").item(0).innerHTML.replace("<![CDATA[", "").replace("]]>", "").trim()
+          var asJson = JSON.parse(asStr)
+          makeHandlebarsTemplate(asJson)
+        }
+      }
+    }
+
+    httpRequest.open('POST', 'http://localhost:7021/koski/api/luovutuspalvelu/suomi-fi-rekisteritiedot', true)
+    httpRequest.setRequestHeader('Content-Type', 'text/xml')
+    httpRequest.send(xmlDoc)
+  }
+
+  function appendHetuToXml(hetu) {
+    var xmlHead= '<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xrd="http://x-road.eu/xsd/xroad.xsd" xmlns:id="http://x-road.eu/xsd/identifiers"><SOAP-ENV:Header><xrd:client id:objectType="SUBSYSTEM"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>GOV</id:memberClass><id:memberCode>0245437-2</id:memberCode><id:subsystemCode>ServiceViewClient</id:subsystemCode></xrd:client><xrd:service id:objectType="SERVICE"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>GOV</id:memberClass><id:memberCode>000000-1</id:memberCode><id:subsystemCode>TestSystem</id:subsystemCode><id:serviceCode>testService</id:serviceCode></xrd:service><xrd:protocolVersion>4.0</xrd:protocolVersion><xrd:id></xrd:id><xrd:userId></xrd:userId></SOAP-ENV:Header><SOAP-ENV:Body><ns1:suomiFiRekisteritiedot xmlns:ns1="http://docs.koski-xroad.fi/producer"><ns1:hetu>'
+    var xmlTail= '</ns1:hetu></ns1:suomiFiRekisteritiedot></SOAP-ENV:Body></SOAP-ENV:Envelope>'
+    return xmlHead + hetu + xmlTail
+  }
+
+  function makeHandlebarsTemplate(jsonData) {
+    var template = Handlebars.compile(document.getElementById("handlebars-template").textContent)
+    var result = template(jsonData)
+    document.getElementById("vastausHtml").innerHTML = result
+  }
+
+  function mockData() {
+    return {
+      "oppilaitokset": [
+        { "nimi": {"fi":"Stadin ammattiopisto"},
+          "opiskeluoikeudet":[
+            {
+              "tila": {"fi":"Läsnä","sv":"Närvarande"},
+              "alku":"2000-01-01",
+              "loppu":"2009-01-01",
+              "nimi":{"fi":"Autoalan perustutkinto","sv":"Grundexamen inom bilbranschen"}
+            },
+            {
+              "tila": {"fi":"Läsnä","sv":"Närvarande"},
+              "alku":"2000-01-01",
+              "nimi":{"fi":"Hitsaajan perustutkinto","sv":"Grundexamen inom svetsare"}
+            }
+            ]
+        },
+        { "nimi": {"fi":"Helsingin Yliopisto"},
+          "opiskeluoikeudet":[
+            {
+              "tila": {"fi":"Läsnä","sv":"Närvarande"},
+              "alku":"2000-01-01",
+              "nimi":{"fi":"Matematiikan kandidaatti","sv":"Matematiks kandidates"}
+            },
+            {
+              "tila": {"fi":"Läsnä","sv":"Närvarande"},
+              "alku":"2000-01-01",
+              "loppu":"2008-01-01",
+              "nimi":{"fi":"Tähtitieteen tohtori","sv":"Doktor i astronomi"}
+            }
+          ]
+        }
+      ]
+    }
+  }
+</script>
+</html>
