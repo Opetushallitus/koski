@@ -12,6 +12,7 @@ import {doActionWhileMounted} from '../util/util'
 import {createOppiaineenSuoritus, suoritetutKurssit, hyväksytystiSuoritetutKurssit, laajuudet} from './lukio'
 import {Arviointi, KoulutusmoduuliPropertiesEditor, Nimi} from './fragments/LukionOppiaine'
 import {laajuusNumberToString} from '../util/format'
+import {PropertiesEditor} from '../editor/PropertiesEditor'
 
 export class LukionOppiaineEditor extends React.Component {
   saveChangedPreferences() {
@@ -37,6 +38,7 @@ export class LukionOppiaineEditor extends React.Component {
       allowOppiaineRemoval = true,
       useOppiaineLaajuus = false,
       showArviointi = true,
+      showKieli = false,
       customOsasuoritusTitle,
       customOsasuoritusAlternativesCompletionFn
     } = this.props
@@ -57,6 +59,9 @@ export class LukionOppiaineEditor extends React.Component {
             <Nimi oppiaine={oppiaine}/>
             <KoulutusmoduuliPropertiesEditor oppiaine={oppiaine} additionalEditableProperties={additionalEditableKoulutusmoduuliProperties}/>
           </div>
+          {
+            showKieli && <PropertiesEditor model={oppiaine} propertyFilter={p => p.key === 'suorituskieli'}/>
+          }
           <KurssitEditor
             model={oppiaine}
             customTitle={customOsasuoritusTitle}
