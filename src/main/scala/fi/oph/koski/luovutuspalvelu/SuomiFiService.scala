@@ -25,8 +25,8 @@ class SuomiFiService(application: KoskiApplication) extends Logging {
   private def toSuomiFiOpiskeluoikeus(oos: OppilaitoksenOpiskeluoikeudet) = try {
     Some(SuomiFiOppilaitos(oos.oppilaitos.nimi.get, oos.opiskeluoikeudet.map { oo =>
       SuomiFiOpiskeluoikeus(
-        tila = oo.tila.opiskeluoikeusjaksot.last.tila.nimi.get,
-        alku = oo.alkamispäivä.get,
+        tila = oo.tila.opiskeluoikeusjaksot.lastOption.map(_.tila.nimi.get),
+        alku = oo.alkamispäivä,
         loppu = oo.päättymispäivä,
         nimi = suorituksenNimi(oo)
       )
@@ -56,6 +56,6 @@ class SuomiFiService(application: KoskiApplication) extends Logging {
   private val aikuistenPerusopetus = Koodistokoodiviite("aikuistenperusopetuksenoppimaara", "suorituksentyyppi")
 }
 
-case class SuomiFiOpiskeluoikeus(tila: LocalizedString, alku: LocalDate, loppu: Option[LocalDate], nimi: LocalizedString)
+case class SuomiFiOpiskeluoikeus(tila: Option[LocalizedString], alku: Option[LocalDate], loppu: Option[LocalDate], nimi: LocalizedString)
 case class SuomiFiOppilaitos(nimi: LocalizedString, opiskeluoikeudet: List[SuomiFiOpiskeluoikeus])
 case class SuomiFiResponse(oppilaitokset: List[SuomiFiOppilaitos])

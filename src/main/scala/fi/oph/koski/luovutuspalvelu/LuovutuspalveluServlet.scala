@@ -56,8 +56,8 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
     (for {
       xml <- readXml
       hetu <- extractHetu(xml)
-      opiskeluoikeudet <- application.suomiFiService.suomiFiOpiskeluoikeudet(hetu)
-    } yield soapBody(xml, opiskeluoikeudet)) match {
+      opiskeluoikeudet = application.suomiFiService.suomiFiOpiskeluoikeudet(hetu).getOrElse(SuomiFiResponse(Nil))
+    } yield soapBody(xml,opiskeluoikeudet)) match {
       case Right(soap)=>
         contentType = "text/xml"
         response.writer.print(XML.prettyPrintNodes(soap))

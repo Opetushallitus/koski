@@ -13,8 +13,12 @@
       {{#each opiskeluoikeudet}}
       <div>
         <span>Koulutuksen nimi: {{nimi.fi}}</span></br>
+        {{#if tila}}
         <span>Opintojen tila: {{tila.fi}}</span></br>
+        {{/if}}
+        {{#if alku}}
         <span>Alkamispvm: {{alku}}</span></br>
+        {{/if}}
         {{#if loppu}}
           <span>Päättymispvm: {{loppu}}</span></br>
         {{/if}}
@@ -49,7 +53,7 @@
 
           document.getElementById("vastausXml").innerText = httpRequest.responseText
 
-          var asStr = responseXml.getElementsByTagName("ns1:opiskeluoikeudet").item(0).innerHTML.replace("<![CDATA[", "").replace("]]>", "").trim()
+          var asStr = responseXml.getElementsByTagName("ns1:suomiFiRekisteritiedotResponse").item(0).innerHTML.replace("<![CDATA[", "").replace("]]>", "").trim()
           var asJson = JSON.parse(asStr)
           makeHandlebarsTemplate(asJson)
         }
