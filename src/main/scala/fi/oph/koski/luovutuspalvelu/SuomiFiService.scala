@@ -11,7 +11,6 @@ import fi.oph.koski.omattiedot.OmatTiedotEditorModel
 import fi.oph.koski.schema.{AmmatillinenTutkintoKoulutus, Koodistokoodiviite, LocalizedString, Opiskeluoikeus}
 
 class SuomiFiService(application: KoskiApplication) extends Logging {
-  // TODO: lang
   def suomiFiOpiskeluoikeudet(hetu: String)(implicit user: KoskiSession): Either[HttpStatus, SuomiFiResponse] =
     application.oppijaFacade.findOppijaByHetuOrCreateIfInYtrOrVirta(hetu).flatMap(_.warningsToLeft)
       .map(OmatTiedotEditorModel.piilotaKeskeneräisetPerusopetuksenPäättötodistukset)
