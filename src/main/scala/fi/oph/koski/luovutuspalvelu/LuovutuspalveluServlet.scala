@@ -72,9 +72,7 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
 
   private def soapBody(soap: Elem, o: SuomiFiResponse) = {
     replaceSoapBody(soap, <ns1:suomiFiRekisteritiedotResponse xmlns:ns1="http://docs.koski-xroad.fi/producer">
-      <ns1:opiskeluoikeudet>
         {PCData(JsonSerializer.writeWithRoot(o))}
-      </ns1:opiskeluoikeudet>
     </ns1:suomiFiRekisteritiedotResponse>)
   }
 
