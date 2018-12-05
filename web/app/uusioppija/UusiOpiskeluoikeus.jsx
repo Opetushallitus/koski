@@ -21,6 +21,7 @@ import UusiAikuistenPerusopetuksenSuoritus from './UusiAikuistenPerusopetuksenSu
 import UusiLukionSuoritus from './UusiLukionSuoritus'
 import {sallitutRahoituskoodiarvot} from '../lukio/lukio'
 import UusiIBSuoritus from './UusiIBSuoritus'
+import UusiDIASuoritus from './UusiDIASuoritus'
 
 export default ({opiskeluoikeusAtom}) => {
   const dateAtom = Atom(new Date())
@@ -74,6 +75,7 @@ export default ({opiskeluoikeusAtom}) => {
         if (tyyppi == 'perusopetuksenlisaopetus') return <UusiPerusopetuksenLisaopetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
         if (tyyppi == 'lukiokoulutus') return <UusiLukionSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
         if (tyyppi == 'ibtutkinto') return <UusiIBSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
+        if (tyyppi == 'diatutkinto') return <UusiDIASuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
       })
     }
     <Aloituspäivä dateAtom={dateAtom} />
