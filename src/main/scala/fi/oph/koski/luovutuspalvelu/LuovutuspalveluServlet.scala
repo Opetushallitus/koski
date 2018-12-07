@@ -16,6 +16,9 @@ import org.scalatra.ContentEncodingSupport
 
 
 class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends ApiServlet with ObservableSupport with RequiresLuovutuspalvelu with ContentEncodingSupport with NoCache with Timing with SoapUtil {
+  private val luovutuspalveluService = new LuovutuspalveluService(application)
+  private val suomiFiService = new SuomiFiService(application)
+
   before() {
     if (!application.features.luovutuspalvelu) {
       haltWithStatus(KoskiErrorCategory.badRequest("Luovutuspalvelu-rajapinta ei käytössä tässä ympäristössä."))
@@ -28,13 +31,13 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
 
   post("/oid") {
     withJsonBody { parsedJson =>
-      renderEither(parseOidRequestV1(parsedJson).flatMap(application.luovutuspalveluService.findOppijaByOid))
+      renderEither(parseOidRequestV1(parsedJson).flatMap(luovutuspalveluService.findOppijaByOid))
     }()
   }
 
   post("/hetu") {
     withJsonBody { parsedJson =>
-      renderEither(parseHetuRequestV1(parsedJson).flatMap(application.luovutuspalveluService.findOppijaByHetu))
+      renderEither(parseHetuRequestV1(parsedJson).flatMap(luovutuspalveluService.findOppijaByHetu))
     }()
   }
 
@@ -42,7 +45,7 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
     withJsonBody { parsedJson =>
       parseBulkHetuRequestV1(parsedJson) match {
         case Right(req) =>
-          streamResponse[JValue](application.luovutuspalveluService.queryOppijatByHetu(req), koskiSession)
+          streamResponse[JValue](luovutuspalveluService.queryOppijatByHetu(req), koskiSession)
         case Left(status) =>
           haltWithStatus(status)
       }
@@ -54,7 +57,7 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
     (for {
       xml <- readXml(request.body)
       hetu <- extractHetu(xml)
-      opiskeluoikeudet = application.suomiFiService.suomiFiOpiskeluoikeudet(hetu).getOrElse(SuomiFiResponse(Nil))
+      opiskeluoikeudet = suomiFiService.suomiFiOpiskeluoikeudet(hetu).getOrElse(SuomiFiResponse(Nil))
     } yield soapBody(xml,opiskeluoikeudet)) match {
       case Right(soap)=>
         contentType = "text/xml"
