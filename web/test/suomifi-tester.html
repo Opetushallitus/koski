@@ -76,42 +76,5 @@
     var result = template(jsonData)
     document.getElementById("vastausHtml").innerHTML = result
   }
-
-  function mockData() {
-    return {
-      "oppilaitokset": [
-        { "nimi": {"fi":"Stadin ammattiopisto"},
-          "opiskeluoikeudet":[
-            {
-              "tila": {"fi":"Läsnä","sv":"Närvarande"},
-              "alku":"2000-01-01",
-              "loppu":"2009-01-01",
-              "nimi":{"fi":"Autoalan perustutkinto","sv":"Grundexamen inom bilbranschen"}
-            },
-            {
-              "tila": {"fi":"Läsnä","sv":"Närvarande"},
-              "alku":"2000-01-01",
-              "nimi":{"fi":"Hitsaajan perustutkinto","sv":"Grundexamen inom svetsare"}
-            }
-            ]
-        },
-        { "nimi": {"fi":"Helsingin Yliopisto"},
-          "opiskeluoikeudet":[
-            {
-              "tila": {"fi":"Läsnä","sv":"Närvarande"},
-              "alku":"2000-01-01",
-              "nimi":{"fi":"Matematiikan kandidaatti","sv":"Matematiks kandidates"}
-            },
-            {
-              "tila": {"fi":"Läsnä","sv":"Närvarande"},
-              "alku":"2000-01-01",
-              "loppu":"2008-01-01",
-              "nimi":{"fi":"Tähtitieteen tohtori","sv":"Doktor i astronomi"}
-            }
-          ]
-        }
-      ]
-    }
-  }
 </script>
 </html>
