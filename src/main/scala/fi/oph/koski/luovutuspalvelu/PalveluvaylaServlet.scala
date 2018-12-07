@@ -18,7 +18,7 @@ class PalveluvaylaServlet(implicit val application: KoskiApplication) extends So
       hetu <- extractHetu(xml)
       opiskeluoikeudet <- suomiFiService.suomiFiOpiskeluoikeudet(hetu)
     } yield suomiFiBody(xml,opiskeluoikeudet)) match {
-      case Right(soap)=> soap
+      case Right(soap) => soap
       case Left(status) => soapError(status)
     }
 
