@@ -1,14 +1,21 @@
-package fi.oph.koski.util
+package fi.oph.koski.luovutuspalvelu
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.servlet.KoskiBaseServlet
+import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 
 import scala.util.control.NonFatal
 import scala.xml.transform.{RewriteRule, RuleTransformer}
 import scala.xml.{Elem, Node, NodeSeq}
 
-object SoapUtil {
-  def readXml(body: String): Either[HttpStatus, Elem] = try {
-    Right(scala.xml.XML.loadString(body))
+trait SoapServlet extends KoskiBaseServlet {
+  def writeXml(elem: NodeSeq): Unit = {
+    contentType = "text/xml"
+    response.writer.print(elem)
+  }
+
+  def xmlBody: Either[HttpStatus, Elem] = try {
+    Right(scala.xml.XML.loadString(request.body))
   } catch {
     case NonFatal(e) =>
       Left(KoskiErrorCategory.badRequest.format.xml(e.getMessage))
@@ -20,7 +27,7 @@ object SoapUtil {
       <SOAP-ENV:Header />
       <SOAP-ENV:Body>
         <SOAP-ENV:Fault>
-          <faultcode>SOAP-ENV:Client</faultcode>
+          <faultcode>SOAP-ENV:Server</faultcode>
           <faultstring>{status.errors.head.key}</faultstring>
           <detail>{status.errorString.getOrElse(status.errors.head.key)}</detail>
         </SOAP-ENV:Fault>
@@ -38,5 +45,12 @@ object SoapUtil {
       }
     }
     new RuleTransformer(requestToResponse).transform(envelope)
+  }
+
+  error {
+    case e: Throwable =>
+      // TODO: Siivoa hetu pois lokista
+      logger.error(e)("Error while processing request " + logSafeDescription(request))
+      halt(500, soapError(KoskiErrorCategory.internalError()))
   }
 }
