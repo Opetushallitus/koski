@@ -13,7 +13,6 @@ import fi.oph.koski.koodisto.{KoodistoCreator, KoodistoPalvelu, KoodistoViitePal
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.log.{AuditLog, Logging, TimedProxy}
-import fi.oph.koski.luovutuspalvelu.{LuovutuspalveluService, SuomiFiService}
 import fi.oph.koski.mydata.{MyDataRepository, MyDataService}
 import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.oppija.KoskiOppijaFacade
