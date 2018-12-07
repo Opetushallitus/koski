@@ -14,6 +14,8 @@ import org.json4s.JValue
 import org.json4s.JsonAST.{JBool, JObject}
 import org.scalatra.ContentEncodingSupport
 
+import scala.xml.{Elem, NodeSeq, PCData}
+
 
 class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends ApiServlet with ObservableSupport with RequiresLuovutuspalvelu with ContentEncodingSupport with NoCache with Timing {
   private val luovutuspalveluService = new LuovutuspalveluService(application)
@@ -56,9 +58,9 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
     requireSuomiFiUser
     val soapResp = (for {
       xml <- SoapUtil.readXml(request.body)
-      hetu <- SoapUtil.extractHetu(xml)
+      hetu <- extractHetu(xml)
       opiskeluoikeudet <- suomiFiService.suomiFiOpiskeluoikeudet(hetu)
-    } yield SoapUtil.soapBody(xml,opiskeluoikeudet)) match {
+    } yield suomiFiBody(xml,opiskeluoikeudet)) match {
       case Right(soap)=> soap
       case Left(status) => SoapUtil.soapError(status)
     }
@@ -111,13 +113,22 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
     }
   }
 
-  private def requireSuomiFiUser = {
-    if (koskiSession.oid != suomiFiUserOid) {
+  private def requireSuomiFiUser =
+    if (koskiSession.oid != application.config.getString("suomi-fi-user-oid")) {
       haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
     }
-  }
 
-  private val suomiFiUserOid = application.config.getString("suomi-fi-user-oid")
+  private def extractHetu(soap: Elem) =
+    (soap \\ "Envelope" \\ "Body" \\ "suomiFiRekisteritiedot" \\ "hetu")
+      .headOption.map(_.text.trim)
+      .toRight(KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu("Hetu puuttuu"))
+
+  private def suomiFiBody(soap: Elem, o: SuomiFiResponse): NodeSeq = {
+    SoapUtil.replaceSoapBody(soap,
+      <ns1:suomiFiRekisteritiedotResponse xmlns:ns1="http://docs.koski-xroad.fi/producer">
+        {PCData(JsonSerializer.writeWithRoot(o))}
+      </ns1:suomiFiRekisteritiedotResponse>)
+  }
 }
 
 trait LuovutuspalveluRequest {
