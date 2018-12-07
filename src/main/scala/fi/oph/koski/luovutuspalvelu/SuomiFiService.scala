@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.OppilaitoksenOpiskeluoikeudet
-import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.omattiedot.OmatTiedotEditorModel
@@ -17,6 +17,7 @@ class SuomiFiService(application: KoskiApplication) extends Logging {
       .map(OmatTiedotEditorModel.piilotaKeskeneräisetPerusopetuksenPäättötodistukset)
       .map(OmatTiedotEditorModel.opiskeluoikeudetOppilaitoksittain)
       .map(convertToSuomiFi)
+      .left.flatMap(emptyIfNotFound)
 
   private def convertToSuomiFi(oppilaitosOpiskeluoikeudet: List[OppilaitoksenOpiskeluoikeudet]) =
     SuomiFiResponse(oppilaitosOpiskeluoikeudet.map(toSuomiFiOpiskeluoikeus))
@@ -45,6 +46,14 @@ class SuomiFiService(application: KoskiApplication) extends Logging {
       title
     }
   }
+
+  private def emptyIfNotFound(error: HttpStatus) =
+    if (error.errors.exists(_.key == KoskiErrorCategory.notFound.key)) {
+      Right(SuomiFiResponse(Nil))
+    } else {
+      Left(error)
+    }
+
 
   private val ammatillinenOsittainen = Koodistokoodiviite("ammatillinentutkintoosittainen", "suorituksentyyppi")
   private val aikuistenPerusopetus = Koodistokoodiviite("aikuistenperusopetuksenoppimaara", "suorituksentyyppi")

@@ -15,7 +15,7 @@ import org.json4s.JsonAST.{JBool, JObject}
 import org.scalatra.ContentEncodingSupport
 
 
-class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends ApiServlet with ObservableSupport with RequiresLuovutuspalvelu with ContentEncodingSupport with NoCache with Timing with SoapUtil {
+class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends ApiServlet with ObservableSupport with RequiresLuovutuspalvelu with ContentEncodingSupport with NoCache with Timing {
   private val luovutuspalveluService = new LuovutuspalveluService(application)
   private val suomiFiService = new SuomiFiService(application)
 
@@ -54,16 +54,17 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
 
   post("/suomi-fi-rekisteritiedot") {
     requireSuomiFiUser
-    (for {
-      xml <- readXml(request.body)
-      hetu <- extractHetu(xml)
-      opiskeluoikeudet = suomiFiService.suomiFiOpiskeluoikeudet(hetu).getOrElse(SuomiFiResponse(Nil))
-    } yield soapBody(xml,opiskeluoikeudet)) match {
-      case Right(soap)=>
-        contentType = "text/xml"
-        response.writer.print(XML.prettyPrintNodes(soap))
-      case Left(status) => status
+    val soapResp = (for {
+      xml <- SoapUtil.readXml(request.body)
+      hetu <- SoapUtil.extractHetu(xml)
+      opiskeluoikeudet <- suomiFiService.suomiFiOpiskeluoikeudet(hetu)
+    } yield SoapUtil.soapBody(xml,opiskeluoikeudet)) match {
+      case Right(soap)=> soap
+      case Left(status) => SoapUtil.soapError(status)
     }
+
+    contentType = "text/xml"
+    response.writer.print(XML.prettyPrintNodes(soapResp))
   }
 
   private def parseOidRequestV1(parsedJson: JValue): Either[HttpStatus, OidRequestV1] = {
