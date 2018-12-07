@@ -12,29 +12,24 @@ import fi.oph.koski.schema.{AmmatillinenTutkintoKoulutus, Koodistokoodiviite, Lo
 
 class SuomiFiService(application: KoskiApplication) extends Logging {
   def suomiFiOpiskeluoikeudet(hetu: String)(implicit user: KoskiSession): Either[HttpStatus, SuomiFiResponse] =
-    application.oppijaFacade.findOppijaByHetuOrCreateIfInYtrOrVirta(hetu).flatMap(_.warningsToLeft)
+    application.oppijaFacade.findOppijaByHetuOrCreateIfInYtrOrVirta(hetu)
+      .flatMap(_.warningsToLeft)
       .map(OmatTiedotEditorModel.piilotaKeskeneräisetPerusopetuksenPäättötodistukset)
       .map(OmatTiedotEditorModel.opiskeluoikeudetOppilaitoksittain)
       .map(convertToSuomiFi)
-      .map(SuomiFiResponse)
 
   private def convertToSuomiFi(oppilaitosOpiskeluoikeudet: List[OppilaitoksenOpiskeluoikeudet]) =
-    oppilaitosOpiskeluoikeudet.flatMap(toSuomiFiOpiskeluoikeus)
+    SuomiFiResponse(oppilaitosOpiskeluoikeudet.map(toSuomiFiOpiskeluoikeus))
 
-  private def toSuomiFiOpiskeluoikeus(oos: OppilaitoksenOpiskeluoikeudet) = try {
-    Some(SuomiFiOppilaitos(oos.oppilaitos.nimi.get, oos.opiskeluoikeudet.map { oo =>
+  private def toSuomiFiOpiskeluoikeus(oos: OppilaitoksenOpiskeluoikeudet) =
+    SuomiFiOppilaitos(oos.oppilaitos.nimi.get, oos.opiskeluoikeudet.map { oo =>
       SuomiFiOpiskeluoikeus(
         tila = oo.tila.opiskeluoikeusjaksot.lastOption.map(_.tila.nimi.get),
         alku = oo.alkamispäivä,
         loppu = oo.päättymispäivä,
         nimi = suorituksenNimi(oo)
       )
-    }))
-  } catch {
-    case e: NoSuchElementException =>
-      logger.error(e)("Suomi.fi opiskeluoikeuden konvertointi epäonnistui")
-      None
-  }
+    })
 
   private def suorituksenNimi(oo: Opiskeluoikeus) = {
     val suoritus = oo.suoritukset.head
