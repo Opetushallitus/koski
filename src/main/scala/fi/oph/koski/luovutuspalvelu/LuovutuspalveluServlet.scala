@@ -9,14 +9,14 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.RequiresLuovutuspalvelu
 import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus}
 import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}
-import fi.oph.koski.util.Timing
 import org.json4s.JValue
 import org.json4s.JsonAST.{JBool, JObject}
-import org.scalatra.ContentEncodingSupport
 
-class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends ApiServlet with ObservableSupport with RequiresLuovutuspalvelu with ContentEncodingSupport with NoCache with Timing {
+
+class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends ApiServlet with ObservableSupport with RequiresLuovutuspalvelu with NoCache {
+  private val luovutuspalveluService = new LuovutuspalveluService(application)
+
   before() {
-    // Tämä koodi ei ole vielä tuotantokelpoista.
     if (!application.features.luovutuspalvelu) {
       haltWithStatus(KoskiErrorCategory.badRequest("Luovutuspalvelu-rajapinta ei käytössä tässä ympäristössä."))
     }
@@ -28,13 +28,13 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
 
   post("/oid") {
     withJsonBody { parsedJson =>
-      renderEither(parseOidRequestV1(parsedJson).flatMap(application.luovutuspalveluService.findOppijaByOid))
+      renderEither(parseOidRequestV1(parsedJson).flatMap(luovutuspalveluService.findOppijaByOid))
     }()
   }
 
   post("/hetu") {
     withJsonBody { parsedJson =>
-      renderEither(parseHetuRequestV1(parsedJson).flatMap(application.luovutuspalveluService.findOppijaByHetu))
+      renderEither(parseHetuRequestV1(parsedJson).flatMap(luovutuspalveluService.findOppijaByHetu))
     }()
   }
 
@@ -42,7 +42,7 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
     withJsonBody { parsedJson =>
       parseBulkHetuRequestV1(parsedJson) match {
         case Right(req) =>
-          streamResponse[JValue](application.luovutuspalveluService.queryOppijatByHetu(req), koskiSession)
+          streamResponse[JValue](luovutuspalveluService.queryOppijatByHetu(req), koskiSession)
         case Left(status) =>
           haltWithStatus(status)
       }

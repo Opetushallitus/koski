@@ -19,6 +19,7 @@ object KoskiErrorCategory {
     class Format extends ErrorCategory(badRequest, "format", "Epäkelpo syötteen formaatti.") {
       val number = subcategory("number", "Numeromuotoisen parametrin parsinta epäonnistui.")
       val json = subcategory("json", "JSON-dokumentin parsinta epäonnistui.")
+      val xml = subcategory("xml", "XML-dokumentin parsinta epäonnistui.")
       val pvm = subcategory("date", "Päivämäärän parsinta epäonnistui.")
     }
     val format = new Format
