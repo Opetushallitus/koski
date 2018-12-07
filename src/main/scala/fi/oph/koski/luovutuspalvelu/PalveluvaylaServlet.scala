@@ -4,11 +4,11 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.RequiresLuovutuspalvelu
-import fi.oph.koski.servlet.{ApiServlet, NoCache}
+import fi.oph.koski.servlet.NoCache
 
 import scala.xml.{Elem, NodeSeq, PCData}
 
-class PalveluvaylaServlet(implicit val application: KoskiApplication) extends SoapServlet with ApiServlet with RequiresLuovutuspalvelu with NoCache {
+class PalveluvaylaServlet(implicit val application: KoskiApplication) extends SoapServlet with RequiresLuovutuspalvelu with NoCache {
   private val suomiFiService = new SuomiFiService(application)
 
   post("/suomi-fi-rekisteritiedot") {
@@ -19,12 +19,13 @@ class PalveluvaylaServlet(implicit val application: KoskiApplication) extends So
       opiskeluoikeudet <- suomiFiService.suomiFiOpiskeluoikeudet(hetu)
     } yield suomiFiBody(xml,opiskeluoikeudet)) match {
       case Right(soap) => soap
-      case Left(status) => soapError(status)
+      case Left(status) => haltWithStatus(status)
     }
 
     writeXml(soapResp)
   }
 
+  // This check is in addition to RequiresLuovutuspalvelu
   private def requireSuomiFiUser =
     if (koskiSession.oid != application.config.getString("suomi-fi-user-oid")) {
       haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())

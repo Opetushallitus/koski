@@ -1,14 +1,13 @@
 package fi.oph.koski.luovutuspalvelu
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.servlet.KoskiBaseServlet
-import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
+import fi.oph.koski.servlet.ApiServlet
 
 import scala.util.control.NonFatal
 import scala.xml.transform.{RewriteRule, RuleTransformer}
 import scala.xml.{Elem, Node, NodeSeq}
 
-trait SoapServlet extends KoskiBaseServlet {
+trait SoapServlet extends ApiServlet {
   def writeXml(elem: NodeSeq): Unit = {
     contentType = "text/xml"
     response.writer.print(elem)
@@ -29,7 +28,7 @@ trait SoapServlet extends KoskiBaseServlet {
         <SOAP-ENV:Fault>
           <faultcode>SOAP-ENV:Server</faultcode>
           <faultstring>{status.errors.head.key}</faultstring>
-          <detail>{status.errorString.getOrElse(status.errors.head.key)}</detail>
+          <detail><message>{status.errorString.getOrElse(status.errors.head.key)}</message></detail>
         </SOAP-ENV:Fault>
       </SOAP-ENV:Body>
     </SOAP-ENV:Envelope>
@@ -47,10 +46,8 @@ trait SoapServlet extends KoskiBaseServlet {
     new RuleTransformer(requestToResponse).transform(envelope)
   }
 
-  error {
-    case e: Throwable =>
-      // TODO: Siivoa hetu pois lokista
-      logger.error(e)("Error while processing request " + logSafeDescription(request))
-      halt(500, soapError(KoskiErrorCategory.internalError()))
+  override def renderStatus(status: HttpStatus): Unit = {
+    response.setStatus(500)
+    writeXml(soapError(status))
   }
 }
