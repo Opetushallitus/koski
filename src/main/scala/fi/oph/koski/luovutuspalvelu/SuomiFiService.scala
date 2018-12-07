@@ -32,6 +32,7 @@ class SuomiFiService(application: KoskiApplication) extends Logging {
       )
     })
 
+  // Duplicates the logic from web/app/suoritus/Suoritus.js#suoritusTitle
   private def suorituksenNimi(oo: Opiskeluoikeus) = {
     val suoritus = oo.suoritukset.head
     val title = suoritus.koulutusmoduuli match {
