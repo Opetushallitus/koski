@@ -85,6 +85,22 @@ function AddOppijaPage() {
           .then(api.selectOppimäärä(params.oppimäärä))
       }
     },
+    enterValidDataDIA: function(params) {
+      params = _.merge({ oppilaitos: 'Helsingin', oppimäärä: 'DIA-tutkinto' }, {}, params)
+      return function() {
+        return api.enterData(params)()
+          .then(api.selectOpiskeluoikeudenTyyppi('DIA-tutkinto'))
+          .then(api.selectOppimäärä(params.oppimäärä))
+      }
+    },
+    enterValidDataDIAValmistavaVaihe: function(params) {
+      params = _.merge({ oppilaitos: 'Helsingin', oppimäärä: 'Valmistava DIA-vaihe' }, {}, params)
+      return function() {
+        return api.enterData(params)()
+          .then(api.selectOpiskeluoikeudenTyyppi('DIA-tutkinto'))
+          .then(api.selectOppimäärä(params.oppimäärä))
+      }
+    },
     enterData: function(params) {
       return function() {
         return api.enterHenkilötiedot(params)()
