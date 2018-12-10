@@ -15,7 +15,7 @@ import {ArvosanaEditor} from '../suoritus/ArvosanaEditor'
 import {FootnoteHint} from '../components/footnote'
 import Text from '../i18n/Text'
 
-export const KurssitListMobile = ({oppiaine, oppiaineenKeskiarvo}) => {
+export const KurssitListMobile = ({oppiaine, oppiaineenKeskiarvo, customTitle}) => {
   const osasuoritukset = modelLookup(oppiaine, 'osasuoritukset')
   if (!osasuoritukset) return null
   const kurssit = modelItems(osasuoritukset)
@@ -25,7 +25,7 @@ export const KurssitListMobile = ({oppiaine, oppiaineenKeskiarvo}) => {
       <table className='kurssilista-mobile'>
         <thead>
         <tr>
-          <th className='nimi'><Text name='Kurssi'/></th>
+          <th className='nimi'><Text name={customTitle || 'Kurssi'}/></th>
           <th className='arvosana'><Text name='Arvosana' /></th>
           <th className='lisatiedot'><Text name='Lisätiedot' /></th>
         </tr>
