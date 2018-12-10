@@ -206,12 +206,12 @@ export const OmatTiedotRyhmiteltyOppiaineet = ({suorituksetModel, päätasonSuor
   const oppiaineet = modelItems(suorituksetModel)
 
   const {groupAineet, customOsasuoritusTitleOmatTiedot} = resolvePropertiesByType(päätasonSuorituksenTyyppi)
-  const {aineryhmät, footnotes} = groupAineet(oppiaineet, päätasonSuoritusModel)
+  const {aineryhmät, muutAineet, footnotes} = groupAineet(oppiaineet, päätasonSuoritusModel)
 
-  return aineryhmät ? (
+  return (aineryhmät || muutAineet) ? (
     <div className='aineryhmat'>
       {
-        aineryhmät.map(ryhmät => ryhmät.map(r => (
+        aineryhmät && aineryhmät.map(ryhmät => ryhmät.map(r => (
           <OmatTiedotOppiaineryhmä
             key={r.ryhmä.koodiarvo}
             title={r.ryhmä.nimi}
@@ -220,6 +220,18 @@ export const OmatTiedotRyhmiteltyOppiaineet = ({suorituksetModel, päätasonSuor
           />
         )))
       }
+
+      {
+        muutAineet && !R.isEmpty(muutAineet) && (
+          <OmatTiedotOppiaineryhmä
+            key='lisäaineet'
+            title='Lisäaineet'
+            aineet={muutAineet}
+            customOsasuoritusTitle={customOsasuoritusTitleOmatTiedot}
+          />
+        )
+      }
+
       {!R.isEmpty(footnotes) && <FootnoteDescriptions data={footnotes}/>}
     </div>
   ) : null
