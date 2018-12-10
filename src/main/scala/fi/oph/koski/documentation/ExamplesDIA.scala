@@ -91,7 +91,7 @@ object ExamplesDIA {
     laajuus = Some(LaajuusVuosiviikkotunneissa(laajuus))
   )
 
-  def diaMuuValinnainen(aine: String, laajuus: Int) = DIAOppiaineMuuValinnainen(
+  def diaMuuValinnainen(aine: String, laajuus: Int) = DIAOppiaineLisäaine(
     tunniste = Koodistokoodiviite(koodistoUri = "oppiaineetdia", koodiarvo = aine),
     laajuus = Some(LaajuusVuosiviikkotunneissa(laajuus))
   )
