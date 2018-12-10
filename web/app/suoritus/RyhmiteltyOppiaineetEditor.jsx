@@ -13,6 +13,8 @@ import {UusiRyhmiteltyOppiaineDropdown} from '../oppiaine/UusiRyhmiteltyOppiaine
 import {FootnoteDescriptions} from '../components/footnote'
 import {OmatTiedotLukionOppiaine} from '../lukio/OmatTiedotLukionOppiaineet'
 import {diaLukukausiAlternativesCompletionFn, diaRyhmät} from '../dia/DIA'
+import {resolveArvosanaModel} from './ArvosanaEditor'
+import Text from '../i18n/Text'
 
 const diaCustomizations = {
   groupAineet: diaRyhmät,
@@ -184,7 +186,7 @@ export const OmatTiedotRyhmiteltyOppiaineet = ({suorituksetModel, päätasonSuor
             {t(r.ryhmä.nimi)}
           </h4>,
           <table key={`suoritustable-${r.ryhmä.koodiarvo}`} className='omattiedot-suoritukset'>
-            <OmatTiedotLukionOppiaineetTableHead />
+            <OmatTiedotLukionOppiaineetTableHead arvosanaHeader={ r.aineet.some(resolveArvosanaModel) ? <Text name='Arvosana'/> : null } />
             <tbody>
             {r.aineet && r.aineet.map((oppiaine, oppiaineIndex) => {
               const footnote = modelData(oppiaine, 'arviointi.-1.predicted') && arvosanaFootnote
@@ -195,6 +197,8 @@ export const OmatTiedotRyhmiteltyOppiaineet = ({suorituksetModel, päätasonSuor
                   oppiaine={oppiaine}
                   isMobile={isMobileAtom}
                   footnote={footnote}
+                  showKeskiarvo={false}
+                  notFoundText={null}
                 />
               )
             })}
