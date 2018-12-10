@@ -17,10 +17,11 @@ import {
   OmatTiedotLukionOppiaineenOppimaaranSuoritus
 } from '../lukio/LukionOppiaineenOppimaaranSuoritus'
 import {CreativityActionService, ExtendedEssay, TheoryOfKnowledge} from '../ib/IBYhteinenSuoritus'
+import RyhmiteltyOppiaineetEditor from './RyhmiteltyOppiaineetEditor'
 import OmatTiedotSuoritustaulukko from './OmatTiedotSuoritustaulukko'
 import OmatTiedotLukionOppiaineet from '../lukio/OmatTiedotLukionOppiaineet'
 import OmatTiedotPerusopetuksenOppiaineet from '../perusopetus/OmatTiedotPerusopetuksenOppiaineet'
-import {OmatTiedotRyhmiteltyOppiaineet, RyhmiteltyOppiaineetEditor} from './RyhmiteltyOppiaineetEditor'
+import OmatTiedotRyhmiteltyOppiaineet from './OmatTiedotRyhmiteltyOppiaineet'
 
 export const resolveOsasuorituksetEditor = (mdl) => {
   const oneOf = (...classes) => classes.some(c => mdl.value.classes.includes(c))
