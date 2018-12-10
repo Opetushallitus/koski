@@ -5,7 +5,7 @@ import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, OksaUri, SensitiveData}
 import fi.oph.scalaschema.annotation._
 
-@Description("DIA-tutkinnon opiskeluoikeus")
+@Description("Deutsche Internationale Abitur -tutkinnon opiskeluoikeus")
 @Title("DIA-tutkinnon opiskeluoikeus")
 case class DIAOpiskeluoikeus(
   oid: Option[String] = None,
