@@ -57,7 +57,7 @@ export class OmatTiedotLukionOppiaine extends React.Component {
 
   render() {
     const {expanded} = this.state
-    const {oppiaine, isMobile, footnote} = this.props
+    const {oppiaine, isMobile, footnote, showKeskiarvo = true, notFoundText = '-'} = this.props
     const kurssit = modelItems(oppiaine, 'osasuoritukset')
     const arviointi = modelData(oppiaine, 'arviointi')
     const oppiaineenKeskiarvo = kurssienKeskiarvo(suoritetutKurssit(kurssit))
@@ -77,12 +77,12 @@ export class OmatTiedotLukionOppiaine extends React.Component {
           </div>
         </td>
         <td className='arvosana'>
-          <ArvosanaEditor model={oppiaine} notFoundText='-'/>
+          <ArvosanaEditor model={oppiaine} notFoundText={notFoundText} />
           {arviointi && footnote && <FootnoteHint title={footnote.title} hint={footnote.hint} />}
         </td>
       </tr>,
       <tr key='content' className='oppiaine-kurssit'>
-        {(!isMobile || expanded) && <Kurssit oppiaine={oppiaine} oppiaineenKeskiarvo={oppiaineenKeskiarvo}/>}
+        {(!isMobile || expanded) && <Kurssit oppiaine={oppiaine} oppiaineenKeskiarvo={showKeskiarvo && oppiaineenKeskiarvo}/>}
       </tr>
     ]
   }
