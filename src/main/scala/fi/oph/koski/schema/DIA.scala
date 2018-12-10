@@ -253,6 +253,7 @@ trait DIAOppiaine extends KoodistostaLöytyväKoulutusmoduuli {
 
 trait DIAOsaAlueOppiaine extends DIAOppiaine {
   @KoodistoUri("diaosaalue")
+  @Title("Osa-alue")
   def osaAlue: Koodistokoodiviite
 }
 
