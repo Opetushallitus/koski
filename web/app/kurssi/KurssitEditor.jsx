@@ -1,7 +1,7 @@
 import React from 'baret'
 import Atom from 'bacon.atom'
 import {KurssiEditor} from './KurssiEditor'
-import {wrapOptional} from '../editor/EditorModel'
+import {modelSetTitle, wrapOptional} from '../editor/EditorModel'
 import {
   contextualizeSubModel,
   ensureArrayKey,
@@ -13,6 +13,7 @@ import {
   pushModel
 } from '../editor/EditorModel'
 import Text from '../i18n/Text'
+import {t} from '../i18n/i18n'
 import {ift} from '../util/util'
 import UusiKurssiPopup from './UusiKurssiPopup'
 
@@ -24,7 +25,9 @@ export const KurssitEditor = ({model, customTitle, customAlternativesCompletionF
   let showUusiKurssiAtom = Atom(false)
   let lisääKurssi = (kurssi) => {
     if (kurssi) {
-      var suoritusUudellaKurssilla = modelSet(kurssinSuoritusProto, kurssi, 'koulutusmoduuli')
+      const nimi = t(modelData(kurssi, 'tunniste.nimi'))
+      const kurssiWithTitle = nimi ? modelSetTitle(kurssi, nimi) : kurssi
+      var suoritusUudellaKurssilla = modelSet(kurssinSuoritusProto, kurssiWithTitle, 'koulutusmoduuli')
       ensureArrayKey(suoritusUudellaKurssilla)
       pushModel(suoritusUudellaKurssilla, model.context.changeBus)
     }
