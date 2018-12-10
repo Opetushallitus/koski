@@ -164,7 +164,8 @@ export const RyhmiteltyOppiaineetEditor = ({suorituksetModel, päätasonSuorituk
             päätasonSuoritusModel={päätasonSuoritusModel}
             oppiaineOptionsFilter={R.complement(oppiaineOptionsFilter)}
             {...commonOppiaineProps}
-          />)}
+          />
+        )}
         </tbody>
       </table>
       {!R.isEmpty(footnotes) && <FootnoteDescriptions data={footnotes}/>}
