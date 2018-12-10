@@ -14,6 +14,7 @@ import IBKurssinArviointiEditor from '../ib/IBKurssinArviointiEditor'
 import {ArvosanaEditor} from '../suoritus/ArvosanaEditor'
 import {FootnoteHint} from '../components/footnote'
 import Text from '../i18n/Text'
+import {eiLasketaKokonaispistemäärään} from '../dia/DIA'
 
 export const KurssitListMobile = ({oppiaine, oppiaineenKeskiarvo, customTitle}) => {
   const osasuoritukset = modelLookup(oppiaine, 'osasuoritukset')
@@ -63,11 +64,18 @@ class MobileKurssi extends React.Component {
     const {expanded} = this.state
     const koulutusmoduuli = modelData(kurssi, 'koulutusmoduuli')
     const koulutusmoduuliModel = modelLookup(kurssi, 'koulutusmoduuli')
-    const title = kurssi.value.classes.includes('diasuoritus') ? modelTitle(kurssi, 'koulutusmoduuli') : koulutusmoduuli.tunniste.koodiarvo
+    const diaSuoritus = kurssi.value.classes.includes('diasuoritus')
+    const title = diaSuoritus ? modelTitle(kurssi, 'koulutusmoduuli') : koulutusmoduuli.tunniste.koodiarvo
+
+    const footnoteHint = hasFootnoteHint(koulutusmoduuliModel)
+      ? <FootnoteHint title={'Paikallinen kurssi'}/>
+      : diaSuoritus && eiLasketaKokonaispistemäärään(kurssi)
+        ? <FootnoteHint title={'Ei lasketa kokonaispistemäärään'}/>
+        : null
 
     return [
       <tr key='kurssi-row' className={`kurssi ${even ? 'even' : ''}`}>
-        <td className='nimi'>{title} {hasFootnoteHint(koulutusmoduuliModel) && <FootnoteHint title={'Paikallinen kurssi'}/>}</td>
+        <td className='nimi'>{title} {footnoteHint}</td>
         <td className='arvosana'><ArvosanaEditor model={kurssi}/></td>
         <td className='lisatiedot'>
           <button className='inline-link-button' onClick={this.toggleExpand} aria-pressed={expanded}>
