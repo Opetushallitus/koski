@@ -51,6 +51,7 @@ const RyhmättömätAineet = (
   {
     aineet,
     edit,
+    additionalEditableKoulutusmoduuliProperties,
     useOppiaineLaajuus,
     showArviointi,
     showKieli,
@@ -72,6 +73,7 @@ const RyhmättömätAineet = (
         <LukionOppiaineEditor
           key={modelData(aine, 'koulutusmoduuli.tunniste.koodiarvo')}
           oppiaine={aine}
+          additionalEditableKoulutusmoduuliProperties={additionalEditableKoulutusmoduuliProperties}
           useOppiaineLaajuus={useOppiaineLaajuus}
           showArviointi={showArviointi}
           showKieli={showKieli}
