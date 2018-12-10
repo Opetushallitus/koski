@@ -33,8 +33,14 @@ export const KurssitEditor = ({model, customTitle, customAlternativesCompletionF
     }
     showUusiKurssiAtom.set(false)
   }
+  const hasAvailableOsasuoritukset = () => { // Test if an osasuoritus can be added
+    if(!osasuoritukset.value || !Array.isArray(osasuoritukset.value)) return true // Empty: can't be more than maxItems
+    if(!osasuoritukset.maxItems || typeof osasuoritukset.maxItems !== 'number' ) return true // maxItems not specified
+    return osasuoritukset.value.length < osasuoritukset.maxItems
+  }
 
   if (!kurssit.length && !model.context.edit) return null
+
   return (
     <span className="kurssit"><ul>{
       kurssit.map((kurssi, kurssiIndex) =>
@@ -42,7 +48,7 @@ export const KurssitEditor = ({model, customTitle, customAlternativesCompletionF
       )
     }</ul>
     {
-      model.context.edit && (<span className="uusi-kurssi">
+      model.context.edit && hasAvailableOsasuoritukset() && (<span className="uusi-kurssi">
         <a onClick={() => showUusiKurssiAtom.set(true)}><Text name={`Lisää ${customTitle || 'kurssi'}`}/></a>
         {
           ift(showUusiKurssiAtom,
