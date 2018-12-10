@@ -780,8 +780,8 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_diaoppiaineentutkintovaiheenlukukaudensuoritus",
-  "koodiArvo" : "diaoppiaineentutkintovaiheenlukukaudensuoritus",
+  "koodiUri" : "suorituksentyyppi_diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+  "koodiArvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
   "metadata" : [ {
     "nimi" : "DIA-oppiaineen tutkintovaiheen lukukauden suoritus",
     "kieli" : "FI"

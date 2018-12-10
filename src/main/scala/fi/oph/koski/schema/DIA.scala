@@ -137,8 +137,8 @@ case class DIAOppiaineenValmistavanVaiheenLukukaudenSuoritus(
 case class DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus(
   koulutusmoduuli: DIAOppiaineenTutkintovaiheenOsasuoritus,
   arviointi: Option[List[DIATutkintovaiheenArviointi]] = None,
-  @KoodistoKoodiarvo("diaoppiaineentutkintovaiheenlukukaudensuoritus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "diaoppiaineentutkintovaiheenlukukaudensuoritus", koodistoUri = "suorituksentyyppi")
+  @KoodistoKoodiarvo("diaoppiaineentutkintovaiheenosasuorituksensuoritus")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "diaoppiaineentutkintovaiheenosasuorituksensuoritus", koodistoUri = "suorituksentyyppi")
 ) extends DIASuoritus
 
 trait DIAOppiaineenOsasuoritus extends KoodistostaLöytyväKoulutusmoduuli with Laajuudeton
