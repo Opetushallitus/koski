@@ -173,7 +173,7 @@ export const OmatTiedotRyhmiteltyOppiaineet = ({suorituksetModel, päätasonSuor
   const oppiaineet = modelItems(suorituksetModel)
 
   const {groupAineet} = resolvePropertiesByType(päätasonSuorituksenTyyppi)
-  const {aineryhmät, footnotes} = groupAineet(päätasonSuorituksenTyyppi)(oppiaineet, päätasonSuoritusModel)
+  const {aineryhmät, footnotes} = groupAineet(oppiaineet, päätasonSuoritusModel)
 
   return aineryhmät ? (
     <div className='aineryhmat'>
