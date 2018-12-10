@@ -20,6 +20,7 @@ const diaCustomizations = {
   useOppiaineLaajuus: true,
   showArviointi: false,
   showKieli: true,
+  showRyhmättömät: true,
   customOsasuoritusTitle: 'osasuoritus',
   customOsasuoritusAlternativesFn: diaLukukausiAlternativesCompletionFn,
   oppiaineOptionsFilter: m => m.value.classes.includes('diaosaalueoppiaine'),
@@ -38,7 +39,7 @@ const typeDependentCustomizations = {
     getFootnote: oppiaine => modelData(oppiaine, 'arviointi.-1.predicted') && arvosanaFootnote
   },
   diavalmistavavaihe: diaCustomizations,
-  diatutkintovaihe: Object.assign({}, diaCustomizations, {showRyhmättömät: true})
+  diatutkintovaihe: diaCustomizations
 }
 
 const resolvePropertiesByType = päätasonSuorituksenTyyppi => {
