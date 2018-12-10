@@ -24,6 +24,7 @@ const diaCustomizations = {
   showKieli: true,
   showRyhmättömät: true,
   customOsasuoritusTitle: 'osasuoritus',
+  customOsasuoritusTitleOmatTiedot: 'Suoritus',
   customOsasuoritusAlternativesFn: diaLukukausiAlternativesCompletionFn,
   oppiaineOptionsFilter: m => m.value.classes.includes('diaosaalueoppiaine'),
   getFootnote: R.identity
@@ -175,7 +176,7 @@ export const OmatTiedotRyhmiteltyOppiaineet = ({suorituksetModel, päätasonSuor
   const {suoritus: päätasonSuoritusModel} = suorituksetModel.context
   const oppiaineet = modelItems(suorituksetModel)
 
-  const {groupAineet} = resolvePropertiesByType(päätasonSuorituksenTyyppi)
+  const {groupAineet, customOsasuoritusTitleOmatTiedot} = resolvePropertiesByType(päätasonSuorituksenTyyppi)
   const {aineryhmät, footnotes} = groupAineet(oppiaineet, päätasonSuoritusModel)
 
   return aineryhmät ? (
@@ -199,6 +200,7 @@ export const OmatTiedotRyhmiteltyOppiaineet = ({suorituksetModel, päätasonSuor
                   footnote={footnote}
                   showKeskiarvo={false}
                   notFoundText={null}
+                  customOsasuoritusTitle={customOsasuoritusTitleOmatTiedot}
                 />
               )
             })}
