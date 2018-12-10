@@ -2,19 +2,12 @@ import React from 'baret'
 import * as R from 'ramda'
 import {modelData, modelItems} from '../editor/EditorModel'
 import {t} from '../i18n/i18n'
-import {isMobileAtom} from '../util/isMobileAtom'
-import {
-  LukionOppiaineetTableHead,
-  OmatTiedotLukionOppiaineetTableHead
-} from '../lukio/fragments/LukionOppiaineetTableHead'
+import {LukionOppiaineetTableHead} from '../lukio/fragments/LukionOppiaineetTableHead'
 import {LukionOppiaineEditor} from '../lukio/LukionOppiaineEditor'
 import {arvosanaFootnote, ibRyhmät} from '../ib/IB'
 import {UusiRyhmiteltyOppiaineDropdown} from '../oppiaine/UusiRyhmiteltyOppiaineDropdown'
 import {FootnoteDescriptions} from '../components/footnote'
-import {OmatTiedotLukionOppiaine} from '../lukio/OmatTiedotLukionOppiaineet'
 import {diaLukukausiAlternativesCompletionFn, diaRyhmät} from '../dia/DIA'
-import {resolveArvosanaModel} from './ArvosanaEditor'
-import Text from '../i18n/Text'
 
 const diaCustomizations = {
   groupAineet: diaRyhmät,
@@ -45,7 +38,7 @@ const typeDependentCustomizations = {
   diatutkintovaihe: diaCustomizations
 }
 
-const resolvePropertiesByType = päätasonSuorituksenTyyppi => {
+export const resolvePropertiesByType = päätasonSuorituksenTyyppi => {
   const customizations = typeDependentCustomizations[päätasonSuorituksenTyyppi]
   if (!customizations) console.error(`Oppiaineiden ryhmittely ei onnistu päätason suoritukselle ${päätasonSuorituksenTyyppi}.`)
   return customizations
@@ -97,7 +90,7 @@ const RyhmättömätAineet = (
   </React.Fragment>
 )
 
-export const RyhmiteltyOppiaineetEditor = ({suorituksetModel, päätasonSuorituksenTyyppi, additionalEditableKoulutusmoduuliProperties}) => {
+export default ({suorituksetModel, päätasonSuorituksenTyyppi, additionalEditableKoulutusmoduuliProperties}) => {
   const {edit, suoritus: päätasonSuoritusModel} = suorituksetModel.context
   const oppiaineet = modelItems(suorituksetModel)
 
@@ -168,70 +161,6 @@ export const RyhmiteltyOppiaineetEditor = ({suorituksetModel, päätasonSuorituk
         )}
         </tbody>
       </table>
-      {!R.isEmpty(footnotes) && <FootnoteDescriptions data={footnotes}/>}
-    </div>
-  ) : null
-}
-
-const OmatTiedotOppiaineryhmä = ({title, aineet, customOsasuoritusTitle}) => (
-  <React.Fragment>
-    <h4 className='aineryhma-title'>
-      {t(title)}
-    </h4>
-    <table className='omattiedot-suoritukset'>
-      <OmatTiedotLukionOppiaineetTableHead arvosanaHeader={ aineet.some(resolveArvosanaModel) ? <Text name='Arvosana'/> : null } />
-      <tbody>
-      {aineet && aineet.map((oppiaine, oppiaineIndex) => {
-        const footnote = modelData(oppiaine, 'arviointi.-1.predicted') && arvosanaFootnote
-        return (
-          <OmatTiedotLukionOppiaine
-            baret-lift
-            key={oppiaineIndex}
-            oppiaine={oppiaine}
-            isMobile={isMobileAtom}
-            footnote={footnote}
-            showKeskiarvo={false}
-            notFoundText={null}
-            customOsasuoritusTitle={customOsasuoritusTitle}
-          />
-        )
-      })}
-      </tbody>
-    </table>
-  </React.Fragment>
-)
-
-export const OmatTiedotRyhmiteltyOppiaineet = ({suorituksetModel, päätasonSuorituksenTyyppi}) => {
-  const {suoritus: päätasonSuoritusModel} = suorituksetModel.context
-  const oppiaineet = modelItems(suorituksetModel)
-
-  const {groupAineet, customOsasuoritusTitleOmatTiedot} = resolvePropertiesByType(päätasonSuorituksenTyyppi)
-  const {aineryhmät, muutAineet, footnotes} = groupAineet(oppiaineet, päätasonSuoritusModel)
-
-  return (aineryhmät || muutAineet) ? (
-    <div className='aineryhmat'>
-      {
-        aineryhmät && aineryhmät.map(ryhmät => ryhmät.map(r => (
-          <OmatTiedotOppiaineryhmä
-            key={r.ryhmä.koodiarvo}
-            title={r.ryhmä.nimi}
-            aineet={r.aineet}
-            customOsasuoritusTitle={customOsasuoritusTitleOmatTiedot}
-          />
-        )))
-      }
-
-      {
-        muutAineet && !R.isEmpty(muutAineet) && (
-          <OmatTiedotOppiaineryhmä
-            key='lisäaineet'
-            title='Lisäaineet'
-            aineet={muutAineet}
-            customOsasuoritusTitle={customOsasuoritusTitleOmatTiedot}
-          />
-        )
-      }
-
       {!R.isEmpty(footnotes) && <FootnoteDescriptions data={footnotes}/>}
     </div>
   ) : null
