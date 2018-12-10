@@ -326,9 +326,9 @@ case class DIAOppiaineÄidinkieli(
   override def description = kieliaineDescription
 }
 
-@Title("Muu valinnainen DIA-oppiaine")
-case class DIAOppiaineMuuValinnainen(
-  @Description("DIA-lukion muun valinnaisen oppiaineen tunnistetiedot")
+@Title("DIA-lisäaine")
+case class DIAOppiaineLisäaine(
+  @Description("DIA-lukion lisäoppiaineen tunnistetiedot")
   @KoodistoKoodiarvo("CLOE")
   @KoodistoKoodiarvo("CCEA")
   @KoodistoKoodiarvo("LT")
