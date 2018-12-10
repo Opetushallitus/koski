@@ -1,5 +1,5 @@
 import React from 'baret'
-import {modelData, modelItems, modelLookup} from '../editor/EditorModel'
+import {modelData, modelItems, modelLookup, modelTitle} from '../editor/EditorModel'
 import {t} from '../i18n/i18n'
 import {isIBKurssi} from './kurssi'
 import {isIBKurssinArviointi} from './KurssiPopup'
@@ -63,10 +63,11 @@ class MobileKurssi extends React.Component {
     const {expanded} = this.state
     const koulutusmoduuli = modelData(kurssi, 'koulutusmoduuli')
     const koulutusmoduuliModel = modelLookup(kurssi, 'koulutusmoduuli')
+    const title = kurssi.value.classes.includes('diasuoritus') ? modelTitle(kurssi, 'koulutusmoduuli') : koulutusmoduuli.tunniste.koodiarvo
 
     return [
       <tr key='kurssi-row' className={`kurssi ${even ? 'even' : ''}`}>
-        <td className='nimi'>{koulutusmoduuli.tunniste.koodiarvo} {hasFootnoteHint(koulutusmoduuliModel) && <FootnoteHint title={'Paikallinen kurssi'}/>}</td>
+        <td className='nimi'>{title} {hasFootnoteHint(koulutusmoduuliModel) && <FootnoteHint title={'Paikallinen kurssi'}/>}</td>
         <td className='arvosana'><ArvosanaEditor model={kurssi}/></td>
         <td className='lisatiedot'>
           <button className='inline-link-button' onClick={this.toggleExpand} aria-pressed={expanded}>
