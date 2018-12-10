@@ -44,9 +44,10 @@ export class KurssiEditor extends React.Component {
       !edit && 'hoverable',
       eiLasketaKokonaispistemäärään(kurssi) && 'ei-lasketa-kokonaispistemäärään'
     ])
+    const title = kurssi.value.classes.includes('diasuoritus') ? modelTitle(kurssi, 'koulutusmoduuli') : koulutusmoduuli.tunniste.koodiarvo
     return (
       <li className="kurssi" ref={e => this.kurssiElement = e}>
-        <button onClick={showDetails} onMouseEnter={!edit ? showDetails : undefined} onMouseLeave={!edit ? hideDetails : undefined} className={`text-button-small ${className}`} title={modelTitle(kurssi, 'koulutusmoduuli')}>{koulutusmoduuli.tunniste.koodiarvo}</button>
+        <button onClick={showDetails} onMouseEnter={!edit ? showDetails : undefined} onMouseLeave={!edit ? hideDetails : undefined} className={`text-button-small ${className}`} title={modelTitle(kurssi, 'koulutusmoduuli')}>{title}</button>
         {
           edit && <a className="remove-value" onClick={() => pushRemoval(kurssi)}/>
         }
