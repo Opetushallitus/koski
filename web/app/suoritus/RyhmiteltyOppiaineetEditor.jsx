@@ -172,6 +172,34 @@ export const RyhmiteltyOppiaineetEditor = ({suorituksetModel, päätasonSuorituk
   ) : null
 }
 
+const OmatTiedotOppiaineryhmä = ({title, aineet, customOsasuoritusTitle}) => (
+  <React.Fragment>
+    <h4 className='aineryhma-title'>
+      {t(title)}
+    </h4>
+    <table className='omattiedot-suoritukset'>
+      <OmatTiedotLukionOppiaineetTableHead arvosanaHeader={ aineet.some(resolveArvosanaModel) ? <Text name='Arvosana'/> : null } />
+      <tbody>
+      {aineet && aineet.map((oppiaine, oppiaineIndex) => {
+        const footnote = modelData(oppiaine, 'arviointi.-1.predicted') && arvosanaFootnote
+        return (
+          <OmatTiedotLukionOppiaine
+            baret-lift
+            key={oppiaineIndex}
+            oppiaine={oppiaine}
+            isMobile={isMobileAtom}
+            footnote={footnote}
+            showKeskiarvo={false}
+            notFoundText={null}
+            customOsasuoritusTitle={customOsasuoritusTitle}
+          />
+        )
+      })}
+      </tbody>
+    </table>
+  </React.Fragment>
+)
+
 export const OmatTiedotRyhmiteltyOppiaineet = ({suorituksetModel, päätasonSuorituksenTyyppi}) => {
   const {suoritus: päätasonSuoritusModel} = suorituksetModel.context
   const oppiaineet = modelItems(suorituksetModel)
@@ -182,31 +210,14 @@ export const OmatTiedotRyhmiteltyOppiaineet = ({suorituksetModel, päätasonSuor
   return aineryhmät ? (
     <div className='aineryhmat'>
       {
-        aineryhmät.map(ryhmät => ryhmät.map(r => [
-          <h4 key={r.ryhmä.koodiarvo} className='aineryhma-title'>
-            {t(r.ryhmä.nimi)}
-          </h4>,
-          <table key={`suoritustable-${r.ryhmä.koodiarvo}`} className='omattiedot-suoritukset'>
-            <OmatTiedotLukionOppiaineetTableHead arvosanaHeader={ r.aineet.some(resolveArvosanaModel) ? <Text name='Arvosana'/> : null } />
-            <tbody>
-            {r.aineet && r.aineet.map((oppiaine, oppiaineIndex) => {
-              const footnote = modelData(oppiaine, 'arviointi.-1.predicted') && arvosanaFootnote
-              return (
-                <OmatTiedotLukionOppiaine
-                  baret-lift
-                  key={oppiaineIndex}
-                  oppiaine={oppiaine}
-                  isMobile={isMobileAtom}
-                  footnote={footnote}
-                  showKeskiarvo={false}
-                  notFoundText={null}
-                  customOsasuoritusTitle={customOsasuoritusTitleOmatTiedot}
-                />
-              )
-            })}
-            </tbody>
-          </table>
-        ]))
+        aineryhmät.map(ryhmät => ryhmät.map(r => (
+          <OmatTiedotOppiaineryhmä
+            key={r.ryhmä.koodiarvo}
+            title={r.ryhmä.nimi}
+            aineet={r.aineet}
+            customOsasuoritusTitle={customOsasuoritusTitleOmatTiedot}
+          />
+        )))
       }
       {!R.isEmpty(footnotes) && <FootnoteDescriptions data={footnotes}/>}
     </div>
