@@ -128,6 +128,34 @@ function OpinnotPage() {
         }
       )
     },
+    lisääDIAValmistavaOppiaine: function() {
+      return seq(
+        click('div.uusi-oppiaine .dropdown:first div.input-container'),
+        click('div.uusi-oppiaine .dropdown:first ul.options li:first')
+      )()
+    },
+    lisääDIAValmistavaOppiaineOsasuoritus: function() {
+      return seq(
+        wait.untilVisible(function() { return S('.uusi-kurssi > a')} ),
+        click('.uusi-kurssi > a'),
+        wait.untilVisible(function() { return S('#modal-main-content > .kurssi')} ),
+        click('.uusi-kurssi .dropdown input'),
+        click('.uusi-kurssi .dropdown > .options > .option:first'),
+        click('.kurssit .uusi-kurssi .modal-content .actions .vahvista span'),
+        wait.until(function() { return !isElementVisible(S('#modal-main-content > .kurssi')) })
+      )()
+    },
+    haeValmistavanOppiaineenOsasuoritustenVaihtoehtojenLukumäärä: function() {
+      return new Promise(function(resolve) {
+        seq(
+          click('.uusi-kurssi > a'),
+          wait.untilVisible(function() { return S('#modal-main-content > .kurssi')} ),
+          click('.uusi-kurssi .dropdown input'),
+          wait.untilVisible(function() { return S('.uusi-kurssi .modal-content')} ),
+          function() { return resolve(S('.uusi-kurssi .dropdown > .options .option').length) },
+        )()
+      })
+    },
     lisääSuoritusDialog: LisääSuoritusDialog(),
     tilaJaVahvistus: TilaJaVahvistus(),
     versiohistoria: Versiohistoria(),
