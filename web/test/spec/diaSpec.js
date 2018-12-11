@@ -174,6 +174,47 @@ describe('DIA', function( ) {
               it('DIA-tutkinnon suorituksen voi lisätä', function() {
                 expect(lisääSuoritus.isLinkVisible(lisäysTeksti)).to.equal(true)
               })
+
+              describe('Oppiaineita lisättäessä', function() {
+                before(
+                  editor.edit,
+                  opinnot.lisääDIAValmistavaOppiaine
+                )
+
+                it('näytetään "lisää osasuoritus"-nappi', function() {
+                  expect(extractAsText(S('.uusi-kurssi'))).to.equal('Lisää osasuoritus')
+                })
+
+                describe('Lisättäessä osasuoritus', function() {
+                  before(opinnot.lisääDIAValmistavaOppiaineOsasuoritus)
+
+                  it('Osasuorituksen arvosanan valinta tulee näkyviin', function() {
+                    expect(isElementVisible(S('.kurssit .kurssi .arvosana .dropdown'))).to.equal(true)
+                  })
+
+                  describe('Lisättäessä kaikki mahdolliset osasuoritukset', function() {
+                    before(
+                      function() {
+                        return new Promise(function(resolve) {
+                          opinnot.haeValmistavanOppiaineenOsasuoritustenVaihtoehtojenLukumäärä().then(function(amount) {
+                            var chain = Promise.resolve()
+                            for( var i = 0; i < amount; i++ ) {
+                              chain = chain.then(function() { return opinnot.lisääDIAValmistavaOppiaineOsasuoritus() })
+                            }
+                            chain.then(function() { resolve() })
+                          })
+                        })
+                      },
+                    )
+
+                    it('Piilotetaan "Lisää osasuoritus"-nappi', function() {
+                      expect(isElementVisible(S('.uusi-kurssi'))).to.equal(false)
+                    })
+
+                    after(click('.suoritukset .remove-row a.remove-value'))
+                  })
+                })
+              })
             })
 
             describe('Lisäyksen jälkeen', function() {
