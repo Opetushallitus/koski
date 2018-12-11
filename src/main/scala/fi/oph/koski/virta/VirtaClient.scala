@@ -72,7 +72,7 @@ case class MockVirtaClient(config: Config) extends VirtaClient {
 
   private def haeOpintotiedot(virtaHakuehto: VirtaHakuehto) = {
     val tunnus = virtaHakuehto match {
-      case VirtaHakuehtoHetu("250390-680P") =>
+      case VirtaHakuehtoHetu("250390-680P") | VirtaHakuehtoHetu("010469-999W") =>
         throw new HttpConnectionException("MockVirtaClient testing opintotiedot failure", "POST", "http://localhost:666/")
       case VirtaHakuehtoHetu(hetu) => hetu
       case VirtaHakuehtoKansallinenOppijanumero(oid) => oid
