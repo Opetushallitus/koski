@@ -78,7 +78,7 @@ export class OmatTiedotLukionOppiaine extends React.Component {
             {expandable
               ? <button className='inline-text-button' onClick={this.toggleExpand} aria-pressed={expanded}><Nimi oppiaine={oppiaine}/></button>
               : <Nimi oppiaine={oppiaine} />}
-            <span className='laajuus'>{`(${laajuusYhteensä} ${laajuusYksikkö})`}</span>
+            {laajuusYhteensä && <span className='laajuus'>{`(${laajuusYhteensä} ${laajuusYksikkö})`}</span>}
           </div>
         </td>
         <td className='arvosana'>
