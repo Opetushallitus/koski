@@ -61,7 +61,7 @@ case class MockVirtaClient(config: Config) extends VirtaClient {
 
   override def henkilötiedot(hakuehto: VirtaHakuehto, oppilaitosNumero: String) = {
     hakuehto match {
-      case VirtaHakuehtoHetu("250390-680P") =>
+      case VirtaHakuehtoHetu("250390-680P") | VirtaHakuehtoHetu("010469-999W") =>
         throw new HttpConnectionException("MockVirtaClient testing henkilötiedot failure", "POST", "http://localhost:666/")
       case VirtaHakuehtoHetu(hetu) =>
         loadXml(s"$mockDataDir/henkilotiedot/$hetu.xml")
