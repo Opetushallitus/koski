@@ -11,7 +11,7 @@ import {resolveArvosanaModel} from './ArvosanaEditor'
 import Text from '../i18n/Text'
 import {resolvePropertiesByType} from './RyhmiteltyOppiaineetEditor'
 
-const OmatTiedotOppiaineryhmä = ({title, aineet, customOsasuoritusTitle}) => (
+const OmatTiedotOppiaineryhmä = ({title, aineet, useOppiaineLaajuus, customOsasuoritusTitle}) => (
   <React.Fragment>
     <h4 className='aineryhma-title'>
       {t(title)}
@@ -30,6 +30,7 @@ const OmatTiedotOppiaineryhmä = ({title, aineet, customOsasuoritusTitle}) => (
             footnote={footnote}
             showKeskiarvo={false}
             notFoundText={null}
+            useOppiaineLaajuus={useOppiaineLaajuus}
             customOsasuoritusTitle={customOsasuoritusTitle}
           />
         )
@@ -43,7 +44,7 @@ export default ({suorituksetModel, päätasonSuorituksenTyyppi}) => {
   const {suoritus: päätasonSuoritusModel} = suorituksetModel.context
   const oppiaineet = modelItems(suorituksetModel)
 
-  const {groupAineet, customOsasuoritusTitleOmatTiedot} = resolvePropertiesByType(päätasonSuorituksenTyyppi)
+  const {groupAineet, useOppiaineLaajuus, customOsasuoritusTitleOmatTiedot} = resolvePropertiesByType(päätasonSuorituksenTyyppi)
   const {aineryhmät, muutAineet, footnotes} = groupAineet(oppiaineet, päätasonSuoritusModel)
 
   return (aineryhmät || muutAineet) ? (
@@ -54,6 +55,7 @@ export default ({suorituksetModel, päätasonSuorituksenTyyppi}) => {
             key={r.ryhmä.koodiarvo}
             title={r.ryhmä.nimi}
             aineet={r.aineet}
+            useOppiaineLaajuus={useOppiaineLaajuus}
             customOsasuoritusTitle={customOsasuoritusTitleOmatTiedot}
           />
         )))
@@ -65,6 +67,7 @@ export default ({suorituksetModel, päätasonSuorituksenTyyppi}) => {
             key='lisäaineet'
             title='Lisäaineet'
             aineet={muutAineet}
+            useOppiaineLaajuus={useOppiaineLaajuus}
             customOsasuoritusTitle={customOsasuoritusTitleOmatTiedot}
           />
         )

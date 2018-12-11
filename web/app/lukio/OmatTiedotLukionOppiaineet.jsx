@@ -1,6 +1,6 @@
 import React from 'baret'
 import * as R from 'ramda'
-import {modelData, modelItems} from '../editor/EditorModel'
+import {modelData, modelItems, modelTitle} from '../editor/EditorModel'
 import {t} from '../i18n/i18n'
 import {arvioidutKurssit, paikallisiaLukionOppiaineitaTaiKursseja} from './LukionOppiaineetEditor'
 import {FootnoteDescriptions, FootnoteHint} from '../components/footnote'
@@ -57,11 +57,16 @@ export class OmatTiedotLukionOppiaine extends React.Component {
 
   render() {
     const {expanded} = this.state
-    const {oppiaine, isMobile, footnote, showKeskiarvo = true, notFoundText = '-', customOsasuoritusTitle} = this.props
+    const {oppiaine, isMobile, footnote, showKeskiarvo = true, notFoundText = '-', customOsasuoritusTitle, useOppiaineLaajuus = false} = this.props
     const kurssit = modelItems(oppiaine, 'osasuoritukset')
     const arviointi = modelData(oppiaine, 'arviointi')
     const oppiaineenKeskiarvo = kurssienKeskiarvo(suoritetutKurssit(kurssit))
-    const laajuusYhteensä = laajuusNumberToString(laajuudet(hyväksytystiSuoritetutKurssit(kurssit)))
+    const laajuusYhteensä = useOppiaineLaajuus
+      ? modelData(oppiaine, 'koulutusmoduuli.laajuus.arvo')
+      : laajuusNumberToString(laajuudet(hyväksytystiSuoritetutKurssit(kurssit)))
+    const laajuusYksikkö = useOppiaineLaajuus
+      ? modelTitle(oppiaine, 'koulutusmoduuli.laajuus.yksikkö')
+      : t('kurssia')
     const expandable = isMobile && kurssit.length > 0
     const Kurssit = isMobile ? KurssitListMobile : KurssitListDesktop
 
@@ -73,7 +78,7 @@ export class OmatTiedotLukionOppiaine extends React.Component {
             {expandable
               ? <button className='inline-text-button' onClick={this.toggleExpand} aria-pressed={expanded}><Nimi oppiaine={oppiaine}/></button>
               : <Nimi oppiaine={oppiaine} />}
-            <span className='laajuus'>{`(${laajuusYhteensä} ${t('kurssia')})`}</span>
+            <span className='laajuus'>{`(${laajuusYhteensä} ${laajuusYksikkö})`}</span>
           </div>
         </td>
         <td className='arvosana'>
