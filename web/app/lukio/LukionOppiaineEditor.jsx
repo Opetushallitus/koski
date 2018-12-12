@@ -34,11 +34,11 @@ export class LukionOppiaineEditor extends React.Component {
     const {
       oppiaine,
       footnote,
+      additionalEditableProperties,
       additionalEditableKoulutusmoduuliProperties,
       allowOppiaineRemoval = true,
       useOppiaineLaajuus = false,
       showArviointi = true,
-      showKieli = false,
       customOsasuoritusTitle,
       customOsasuoritusAlternativesCompletionFn
     } = this.props
@@ -60,7 +60,7 @@ export class LukionOppiaineEditor extends React.Component {
             <KoulutusmoduuliPropertiesEditor oppiaine={oppiaine} additionalEditableProperties={additionalEditableKoulutusmoduuliProperties}/>
           </div>
           {
-            showKieli && <PropertiesEditor model={oppiaine} propertyFilter={p => p.key === 'suorituskieli'}/>
+            additionalEditableProperties && <PropertiesEditor model={oppiaine} propertyFilter={p => additionalEditableProperties.includes(p.key)}/>
           }
           <KurssitEditor
             model={oppiaine}

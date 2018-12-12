@@ -14,8 +14,8 @@ const diaCustomizations = {
   laajuusyksikkö: 'vuosiviikkotuntia',
   useOppiaineLaajuus: true,
   showArviointi: false,
-  showKieli: true,
   showRyhmättömät: true,
+  additionalEditableProperties: ['suorituskieli'],
   customOsasuoritusTitle: 'osasuoritus',
   customOsasuoritusTitleOmatTiedot: 'Suoritus',
   customOsasuoritusAlternativesFn: diaLukukausiAlternativesCompletionFn,
@@ -29,13 +29,12 @@ const typeDependentCustomizations = {
     laajuusyksikkö: 'kurssia',
     useOppiaineLaajuus: false,
     showArviointi: true,
-    showKieli: false,
     showRyhmättömät: false,
     oppiaineOptionsFilter: R.identity,
     getFootnote: oppiaine => modelData(oppiaine, 'arviointi.-1.predicted') && arvosanaFootnote
   },
   diavalmistavavaihe: diaCustomizations,
-  diatutkintovaihe: diaCustomizations
+  diatutkintovaihe: R.mergeDeepWith(R.concat, diaCustomizations, {additionalEditableProperties: ['keskiarvo']})
 }
 
 export const resolvePropertiesByType = päätasonSuorituksenTyyppi => {
@@ -48,10 +47,10 @@ const RyhmättömätAineet = (
   {
     aineet,
     edit,
+    additionalEditableProperties,
     additionalEditableKoulutusmoduuliProperties,
     useOppiaineLaajuus,
     showArviointi,
-    showKieli,
     päätasonSuoritusModel,
     oppiaineOptionsFilter,
     customOsasuoritusTitle,
@@ -70,10 +69,10 @@ const RyhmättömätAineet = (
         <LukionOppiaineEditor
           key={modelData(aine, 'koulutusmoduuli.tunniste.koodiarvo')}
           oppiaine={aine}
+          additionalEditableProperties={additionalEditableProperties}
           additionalEditableKoulutusmoduuliProperties={additionalEditableKoulutusmoduuliProperties}
           useOppiaineLaajuus={useOppiaineLaajuus}
           showArviointi={showArviointi}
-          showKieli={showKieli}
           customOsasuoritusTitle={customOsasuoritusTitle}
           customOsasuoritusAlternativesCompletionFn={customOsasuoritusAlternativesCompletionFn}
         />
@@ -99,8 +98,8 @@ export default ({suorituksetModel, päätasonSuorituksenTyyppi, additionalEditab
     laajuusyksikkö,
     useOppiaineLaajuus,
     showArviointi,
-    showKieli,
     showRyhmättömät,
+    additionalEditableProperties,
     customOsasuoritusTitle,
     customOsasuoritusAlternativesFn,
     oppiaineOptionsFilter,
@@ -110,10 +109,10 @@ export default ({suorituksetModel, päätasonSuorituksenTyyppi, additionalEditab
   const {aineryhmät, muutAineet, footnotes} = groupAineet(oppiaineet, päätasonSuoritusModel, edit)
 
   const commonOppiaineProps = {
+    additionalEditableProperties,
     additionalEditableKoulutusmoduuliProperties,
     useOppiaineLaajuus,
     showArviointi,
-    showKieli,
     customOsasuoritusTitle,
     customOsasuoritusAlternativesCompletionFn: customOsasuoritusAlternativesFn
   }
