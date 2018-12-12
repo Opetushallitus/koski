@@ -252,6 +252,17 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "oppiaineetdia_mali",
+  "koodiArvo" : "MALI",
+  "metadata" : [ {
+    "nimi" : "Matematiikka, lisäkurssi",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "oppiaineetdia_li",
   "koodiArvo" : "LI",
   "metadata" : [ {
