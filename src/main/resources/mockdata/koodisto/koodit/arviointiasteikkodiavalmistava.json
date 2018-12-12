@@ -9,6 +9,16 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "arviointiasteikkodiatutkinto_2-",
+  "koodiArvo" : "2-",
+  "metadata" : [ {
+    "nimi" : "2-",
+    "lyhytNimi" : "2-",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "arviointiasteikkodiavalmistava_2",
   "koodiArvo" : "2",
   "metadata" : [ {
