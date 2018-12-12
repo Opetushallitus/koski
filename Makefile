@@ -85,7 +85,7 @@ owaspresults:
 	open target/dependency-check-report.html
 snyk: # javascript dependency vulnerability check
 	mvn generate-resources # to download correct node/npm version via frontend-maven-plugin
-	cd web && ./node/node node_modules/snyk/cli/index.js test
+	./web/node/node web/node_modules/snyk/cli/index.js test . web
 mvndeps:
 	mvn dependency:tree|less
 scala-console:
