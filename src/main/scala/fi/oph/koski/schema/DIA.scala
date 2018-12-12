@@ -38,9 +38,6 @@ case class DIAOpiskeluoikeudenLisätiedot(
   @Title("Ulkomainen vaihto-opiskelija.")
   @DefaultValue(false)
   ulkomainenVaihtoopiskelija: Boolean = false,
-  @SensitiveData
-  @DefaultValue(false)
-  yksityisopiskelija: Boolean = false,
   erityisenKoulutustehtävänJaksot: Option[List[ErityisenKoulutustehtävänJakso]] = None,
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None
 ) extends OpiskeluoikeudenLisätiedot
