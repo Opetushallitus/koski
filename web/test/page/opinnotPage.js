@@ -247,7 +247,9 @@ function Oppiaine(oppiaineElem) {
       return Kurssi(subElement(oppiaineElem, ".kurssi:contains(" + identifier +")"))
     },
     errorText: function() { return extractAsText(subElement(oppiaineElem, '> .error')) },
-    arvosana: editorApi.propertyBySelector('tr td.arvosana')
+    arvosana: editorApi.propertyBySelector('tr td.arvosana'),
+    laajuus: editorApi.propertyBySelector('tr.laajuus'),
+    suorituskieli: editorApi.propertyBySelector('tr.suorituskieli')
   }, editorApi)
   return oppiaineApi
 
