@@ -39,6 +39,15 @@ class PalveluvaylaSpec extends FreeSpec with LocalJettyHttpSpecification with Op
               List(SuomiFiOpiskeluoikeus(None,None,None,Finnish("Ylioppilastutkinto",Some("Studentexamen"),Some("Matriculation Examination")))))))
       }
     }
+
+    "palauttaa tyhjän lista oppilaitoksia jos oppilasta ei löydy hetun perusteella" in {
+      List("261125-1531", "210130-5616", "080278-8433", "061109-011D", "070696-522Y", "010844-509V").foreach { hetu =>
+        postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, hetu) {
+          response.status shouldBe(200)
+          jsonResponse shouldEqual SuomiFiResponse(List.empty)
+        }
+      }
+    }
   }
 
   def postSuomiFiRekisteritiedot[A](user: MockUser, hetu: String)(fn: => A): A = {
