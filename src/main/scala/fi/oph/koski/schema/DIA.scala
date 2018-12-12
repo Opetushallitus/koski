@@ -116,6 +116,7 @@ case class DIAOppiaineenTutkintovaiheenSuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: DIAOppiaine,
   suorituskieli: Option[Koodistokoodiviite] = None,
+  keskiarvo: Option[Float] = None,
   @Description("Oppiaineeseen kuuluvien lukukausien ja muiden osasuoritusten suoritukset")
   override val osasuoritukset: Option[List[DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus]],
   @KoodistoKoodiarvo("diaoppiaine")
