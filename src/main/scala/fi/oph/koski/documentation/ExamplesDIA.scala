@@ -11,29 +11,166 @@ import fi.oph.koski.schema._
 
 object ExamplesDIA {
   def osasuorituksetValmistavaVaihe: List[DIAOppiaineenValmistavanVaiheenSuoritus] = List(
-    diaValmistavaVaiheAineSuoritus(diaKieliaine("A", "EN", laajuus = 3), List(
+    diaValmistavaVaiheAineSuoritus(diaÄidinkieli("DE", laajuus = 3), List(
       (diaValmistavaLukukausi("1"), "3"),
       (diaValmistavaLukukausi("2"), "5")
+    )),
+    diaValmistavaVaiheAineSuoritus(diaÄidinkieli("FI", laajuus = 3), List(
+      (diaValmistavaLukukausi("1"), "2"),
+      (diaValmistavaLukukausi("2"), "3")
+    )),
+    diaValmistavaVaiheAineSuoritus(diaKieliaine("A", "EN", laajuus = 3), List(
+      (diaValmistavaLukukausi("1"), "3")
+    )),
+    diaValmistavaVaiheAineSuoritus(diaKieliaine("B1", "SV", laajuus = 3), List(
+      (diaValmistavaLukukausi("1"), "2"),
+      (diaValmistavaLukukausi("2"), "2")
+    )),
+    diaValmistavaVaiheAineSuoritus(diaKieliaine("B2", "LA", laajuus = 2), List(
+      (diaValmistavaLukukausi("1"), "4"),
+      (diaValmistavaLukukausi("2"), "4")
+    )),
+    diaValmistavaVaiheAineSuoritus(diaKieliaine("B3", "RU", laajuus = 3), List(
+      (diaValmistavaLukukausi("1"), "4"),
+      (diaValmistavaLukukausi("2"), "3")
     )),
     diaValmistavaVaiheAineSuoritus(diaOppiaine("KU", "1", laajuus = 2), List(
       (diaValmistavaLukukausi("1"), "4"),
       (diaValmistavaLukukausi("2"), "5")
     )),
-    diaValmistavaVaiheAineSuoritus(diaÄidinkieli("DE", laajuus = 3), List(
+    diaValmistavaVaiheAineSuoritus(diaOppiaine("MA", "2", laajuus = 4), List(
       (diaValmistavaLukukausi("1"), "3"),
-      (diaValmistavaLukukausi("2"), "5")
+      (diaValmistavaLukukausi("2"), "1")
+    )),
+    diaValmistavaVaiheAineSuoritus(diaOppiaine("FY", "2", laajuus = 2), List(
+      (diaValmistavaLukukausi("1"), "3"),
+      (diaValmistavaLukukausi("2"), "2")
+    )),
+    diaValmistavaVaiheAineSuoritus(diaOppiaine("KE", "2", laajuus = 2), List(
+      (diaValmistavaLukukausi("1"), "2"),
+      (diaValmistavaLukukausi("2"), "4")
+    )),
+    diaValmistavaVaiheAineSuoritus(diaOppiaine("TI", "2", laajuus = 2), List(
+      (diaValmistavaLukukausi("1"), "1"),
+      (diaValmistavaLukukausi("2"), "2")
+    )),
+    diaValmistavaVaiheAineSuoritus(diaOppiaine("HI", "3", laajuus = 2), List(
+      (diaValmistavaLukukausi("1"), "3"),
+      (diaValmistavaLukukausi("2"), "4")
+    )),
+    diaValmistavaVaiheAineSuoritus(diaOppiaine("TA", "3", laajuus = 2), List(
+      (diaValmistavaLukukausi("1"), "5"),
+      (diaValmistavaLukukausi("2"), "3")
+    )),
+    diaValmistavaVaiheAineSuoritus(diaOppiaine("MAA", "3", laajuus = 2), List(
+      (diaValmistavaLukukausi("1"), "3"),
+      (diaValmistavaLukukausi("2"), "3")
+    )),
+    diaValmistavaVaiheAineSuoritus(diaOppiaine("FI", "3", laajuus = 2), List(
+      (diaValmistavaLukukausi("1"), "1"),
+      (diaValmistavaLukukausi("2"), "1")
     ))
   )
 
   def osasuorituksetTutkintovaihe: List[DIAOppiaineenTutkintovaiheenSuoritus] = List(
-    diaTutkintoAineSuoritus(diaKieliaine("A", "EN", laajuus = 3), List(
-      (diaTutkintoLukukausi("3"), "1")
+    diaTutkintoAineSuoritus(diaÄidinkieli("DE", laajuus = 10), List(
+      (diaTutkintoLukukausi("3"), "3"),
+      (diaTutkintoLukukausi("4"), "5"),
+      (diaTutkintoLukukausi("5"), "4"),
+      (diaTutkintoLukukausi("6"), "3")
     )),
-    diaTutkintoAineSuoritus(diaOppiaine("HI", "3", laajuus = 3), List(
-      (diaTutkintoLukukausi("3"), "4")
+    diaTutkintoAineSuoritus(diaÄidinkieli("FI", laajuus = 8), List(
+      (diaTutkintoLukukausi("3"), "2"),
+      (diaTutkintoLukukausi("4"), "3"),
+      (diaTutkintoLukukausi("5"), "3"),
+      (diaTutkintoLukukausi("6"), "3")
+    )),
+    diaTutkintoAineSuoritus(diaKieliaine("A", "EN", laajuus = 6), List(
+      (diaTutkintoLukukausi("3"), "2"),
+      (diaTutkintoLukukausi("4"), "3"),
+      (diaTutkintoLukukausi("5"), "2")
+    )),
+    diaTutkintoAineSuoritus(diaKieliaine("B1", "SV", laajuus = 6), List(
+      (diaTutkintoLukukausi("3"), "2"),
+      (diaTutkintoLukukausi("4"), "2"),
+      (diaTutkintoLukukausi("5"), "4"),
+      (diaTutkintoLukukausi("6"), "3")
+    )),
+    diaTutkintoAineSuoritus(diaKieliaine("B2", "LA", laajuus = 4), List(
+      (diaTutkintoLukukausi("3"), "3"),
+      (diaTutkintoLukukausi("4"), "3"),
+      (diaTutkintoLukukausi("5"), "2"),
+      (diaTutkintoLukukausi("6"), "2")
+    )),
+    diaTutkintoAineSuoritus(diaKieliaine("B3", "RU", laajuus = 6), List(
+      (diaTutkintoLukukausi("3"), "4"),
+      (diaTutkintoLukukausi("4"), "3"),
+      (diaTutkintoLukukausi("5"), "4"),
+      (diaTutkintoLukukausi("6"), "3")
+    )),
+    diaTutkintoAineSuoritus(diaOppiaine("KU", "1", laajuus = 4), List(
+      (diaTutkintoLukukausi("3"), "4"),
+      (diaTutkintoLukukausi("4"), "3"),
+      (diaTutkintoLukukausi("5"), "2"),
+      (diaTutkintoLukukausi("6"), "2")
+    )),
+    diaTutkintoAineSuoritus(diaOppiaine("MA", "2", laajuus = 8), List(
+      (diaTutkintoLukukausi("3"), "3"),
+      (diaTutkintoLukukausi("4"), "1"),
+      (diaTutkintoLukukausi("5"), "1"),
+      (diaTutkintoLukukausi("6"), "2")
+    )),
+    diaTutkintoAineSuoritus(diaOppiaine("FY", "2", laajuus = 6), List(
+      (diaTutkintoLukukausi("3"), "2"),
+      (diaTutkintoLukukausi("4"), "2"),
+      (diaTutkintoLukukausi("5"), "1"),
+      (diaTutkintoLukukausi("6"), "1")
+    )),
+    diaTutkintoAineSuoritus(diaOppiaine("KE", "2", laajuus = 6), List(
+      (diaTutkintoLukukausi("3"), "3"),
+      (diaTutkintoLukukausi("4"), "2"),
+      (diaTutkintoLukukausi("5"), "1"),
+      (diaTutkintoLukukausi("6"), "2")
+    )),
+    diaTutkintoAineSuoritus(diaOppiaine("TI", "2", laajuus = 4), List(
+      (diaTutkintoLukukausi("3"), "2"),
+      (diaTutkintoLukukausi("4"), "1"),
+      (diaTutkintoLukukausi("5"), "1"),
+      (diaTutkintoLukukausi("6"), "1")
+    )),
+    diaTutkintoAineSuoritus(diaOppiaine("HI", "3", laajuus = 6), List(
+      (diaTutkintoLukukausi("3"), "3"),
+      (diaTutkintoLukukausi("4"), "4"),
+      (diaTutkintoLukukausi("5"), "3"),
+      (diaTutkintoLukukausi("6"), "1")
     ), suorituskieli = Some("FI")),
+    diaTutkintoAineSuoritus(diaOppiaine("TA", "3", laajuus = 6), List(
+      (diaTutkintoLukukausi("3"), "4"),
+      (diaTutkintoLukukausi("4"), "3"),
+      (diaTutkintoLukukausi("5"), "2"),
+      (diaTutkintoLukukausi("6"), "3")
+    )),
+    diaTutkintoAineSuoritus(diaOppiaine("MAA", "3", laajuus = 6), List(
+      (diaTutkintoLukukausi("3"), "3"),
+      (diaTutkintoLukukausi("4"), "5"),
+      (diaTutkintoLukukausi("5"), "3"),
+      (diaTutkintoLukukausi("6"), "2")
+    )),
+    diaTutkintoAineSuoritus(diaOppiaine("FI", "3", laajuus = 4), List(
+      (diaTutkintoLukukausi("3"), "2"),
+      (diaTutkintoLukukausi("4"), "2"),
+      (diaTutkintoLukukausi("5"), "2"),
+      (diaTutkintoLukukausi("6"), "2")
+    )),
     diaTutkintoAineSuoritus(diaMuuValinnainen("CCEA", laajuus = 1), List(
-      (diaTutkintoLukukausi("5"), "3")
+      (diaTutkintoLukukausi("5"), "3"),
+      (diaTutkintoLukukausi("6"), "1")
+    )),
+    diaTutkintoAineSuoritus(diaMuuValinnainen("MASY", laajuus = 2), List(
+      (diaTutkintoLukukausi("3"), "2"),
+      (diaTutkintoLukukausi("4"), "1"),
+      (diaTutkintoLukukausi("5"), "2"),
+      (diaTutkintoLukukausi("6"), "4")
     ))
   )
 
