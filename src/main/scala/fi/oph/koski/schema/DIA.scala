@@ -331,6 +331,7 @@ case class DIAOppiaineLisäaine(
   @KoodistoKoodiarvo("CCEA")
   @KoodistoKoodiarvo("LT")
   @KoodistoKoodiarvo("MASY")
+  @KoodistoKoodiarvo("MALI")
   @KoodistoKoodiarvo("LI")
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusVuosiviikkotunneissa],
