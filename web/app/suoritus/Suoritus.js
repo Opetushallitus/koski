@@ -46,7 +46,6 @@ export const rekursiivisetOsasuoritukset = (suoritus) => flatMapArray(osasuoritu
 export const suorituksenTyyppi = (suoritus) => modelData(suoritus, 'tyyppi').koodiarvo
 export const valinnanMahdollisuus = suoritus => suoritus.value.classes.includes('valinnanmahdollisuus')
 
-// Duplicates the logic from src/main/scala/fi/oph/koski/luovutuspalvelu/SuomiFiService.scala#suorituksenNimi
 export const suoritusTitle = (suoritus) => {
   let title = modelTitle(tutkinnonNimi(modelLookup(suoritus, 'koulutusmoduuli')))
   switch(suorituksenTyyppi(suoritus)) {

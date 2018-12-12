@@ -1,7 +1,15 @@
 import React from 'baret'
 import * as R from 'ramda'
 import Bacon from 'baconjs'
-import {addContext, modelData, modelItems, modelLookup, modelTitle, modelSetValues, pushModel} from '../editor/EditorModel.js'
+import {
+  addContext,
+  modelData,
+  modelItems,
+  modelLookup,
+  modelSetValues,
+  modelTitle,
+  pushModel
+} from '../editor/EditorModel.js'
 import {TogglableEditor} from '../editor/TogglableEditor'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {OpiskeluoikeudenTilaEditor} from './OpiskeluoikeudenTilaEditor'
@@ -11,6 +19,7 @@ import {Editor} from '../editor/Editor'
 import {navigateTo} from '../util/location'
 import {suorituksenTyyppi, suoritusTitle} from '../suoritus/Suoritus'
 import Text from '../i18n/Text'
+import {t} from '../i18n/i18n'
 import {assignTabNames, suoritusTabIndex, SuoritusTabs, urlForTab} from '../suoritus/SuoritusTabs'
 import {Korkeakoulusuoritukset} from '../virta/Korkeakoulusuoritukset'
 import {OpiskeluoikeudenTila} from '../omattiedot/fragments/OpiskeluoikeudenTila'
@@ -161,19 +170,12 @@ export class OpiskeluoikeudenOpintosuoritusoteLink extends React.Component {
   }
 }
 
-const näytettäväPäätasonSuoritus = s => !['perusopetuksenvuosiluokka'].includes(modelData(s).tyyppi.koodiarvo)
+const eiPerusopetuksenVuosiluokka = s => !['perusopetuksenvuosiluokka'].includes(modelData(s).tyyppi.koodiarvo)
 
-// Näytetään "Perusopetus" myös sellaisille suorituksille, joissa ei ole vielä valmistuttu peruskoulusta.
-// Aiemmin ei näytetty mitään, joka näytti tyhmälle opiskeluoikeuslistassa.
-const suorituksenOtsikko = (päätasonSuoritukset, kaikkiSuoritukset) => {
-  if (päätasonSuoritukset.length > 0) {
-    return suoritusTitle(päätasonSuoritukset[0])
-  } else {
-    const perusopetuksenVuosiluokanSuoritus = s => ['9. vuosiluokka', '8. vuosiluokka', '7. vuosiluokka'].includes(s)
-    const suoritustenOtsikot = kaikkiSuoritukset.map(suoritusTitle)
-    return suoritustenOtsikot.some(perusopetuksenVuosiluokanSuoritus) ? 'Perusopetus' : ''
-  }
-}
+// Duplicates the logic from src/main/scala/fi/oph/koski/luovutuspalvelu/SuomiFiService.scala#suorituksenNimi
+const suorituksenOtsikko = suoritukset => suoritukset.length > 0
+  ? suoritusTitle(suoritukset[0])
+  : t('Perusopetus')
 
 export const näytettävätPäätasonSuoritukset = (opiskeluoikeus) => {
   const kaikkiSuoritukset = modelItems(opiskeluoikeus, 'suoritukset')
@@ -186,13 +188,12 @@ export const näytettävätPäätasonSuoritukset = (opiskeluoikeus) => {
     }
   }
 
-  const grouped = R.toPairs(R.groupBy(makeGroupTitle, kaikkiSuoritukset)).map(([groupTitle, suoritukset]) => {
-    const päätasonSuoritukset = suoritukset.filter(näytettäväPäätasonSuoritus)
-    const title = groupTitle && (päätasonSuoritukset.length > 1)
+  return R.toPairs(R.groupBy(makeGroupTitle, kaikkiSuoritukset)).map(([groupTitle, suoritukset]) => {
+    const päätasonSuoritukset = suoritukset.filter(eiPerusopetuksenVuosiluokka)
+    const sisältääMontaOppimäärääTaiOpintojaksoa = groupTitle && päätasonSuoritukset.length > 1
+    const title = sisältääMontaOppimäärääTaiOpintojaksoa
       ? <span>{päätasonSuoritukset.length}{' '}<Text name={groupTitle}/></span>
-      : suorituksenOtsikko(päätasonSuoritukset, kaikkiSuoritukset)
+      : suorituksenOtsikko(päätasonSuoritukset)
     return { title, suoritukset }
   })
-
-  return grouped
 }
