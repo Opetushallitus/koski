@@ -40,6 +40,6 @@ class PermissionCheckServlet(implicit val application: KoskiApplication) extends
   // Note 1: keep in sync with KoskiSession's hasHenkiloUiWriteAccess function
   // Note 2: Tämä logiikka saattaa kaivata päivitystä jos käyttöoikeusryhmien sisältö muuttuu.
   private def hasSufficientRoles(roles: List[String]): Boolean = {
-    roles.contains("ROLE_APP_KOSKI") && (roles.contains("ROLE_APP_HENKILONHALLINTA_CRUD") || roles.contains("ROLE_APP_HENKILONHALLINTA_READ_UPDATE"))
+    roles.contains("ROLE_APP_KOSKI") && (roles.contains("ROLE_APP_OPPIJANUMEROREKISTERI_REKISTERINPITAJA") || roles.contains("ROLE_APP_OPPIJANUMEROREKISTERI_HENKILON_RU"))
   }
 }
