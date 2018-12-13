@@ -55,8 +55,8 @@
     "q": "^1.5.1",
     "snyk": "^1.117.1",
     "style-loader": "^0.21.0",
-    "webpack": "^4.8.1",
-    "webpack-cli": "^2.1.3"
+    "webpack": "^4.27.1",
+    "webpack-cli": "^3.1.2"
   },
   "scripts": {
     "lint": "failOnWarning=true webpack --bail",
