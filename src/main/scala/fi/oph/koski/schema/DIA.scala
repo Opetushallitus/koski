@@ -139,7 +139,7 @@ case class DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "diaoppiaineentutkintovaiheenosasuorituksensuoritus", koodistoUri = "suorituksentyyppi")
 ) extends DIASuoritus
 
-trait DIAOppiaineenOsasuoritus extends KoodistostaLöytyväKoulutusmoduuli with Laajuudeton
+trait DIAOppiaineenOsasuoritus extends KoodistostaLöytyväKoulutusmoduuli
 
 trait DIAOppiaineenLukukausi extends DIAOppiaineenOsasuoritus {
   @KoodistoUri("dialukukausi")
@@ -153,7 +153,8 @@ trait DIAOppiaineenTutkintovaiheenOsasuoritus extends DIAOppiaineenOsasuoritus
 case class DIAOppiaineenValmistavanVaiheenLukukausi(
   @KoodistoKoodiarvo("1")
   @KoodistoKoodiarvo("2")
-  tunniste: Koodistokoodiviite
+  tunniste: Koodistokoodiviite,
+  laajuus: Option[LaajuusVuosiviikkotunneissa]
 ) extends DIAOppiaineenLukukausi
 
 @Title("DIA-oppiaineen tutkintovaiheen lukukausi")
@@ -164,6 +165,7 @@ case class DIAOppiaineenTutkintovaiheenLukukausi(
   @KoodistoKoodiarvo("5")
   @KoodistoKoodiarvo("6")
   tunniste: Koodistokoodiviite,
+  laajuus: Option[LaajuusVuosiviikkotunneissa]
 ) extends DIAOppiaineenLukukausi with DIAOppiaineenTutkintovaiheenOsasuoritus
 
 @Title("DIA-tutkinnon päättökoe")
@@ -173,7 +175,7 @@ case class DIAPäättökoe (
   @KoodistoKoodiarvo("kirjallinenkoe")
   @KoodistoKoodiarvo("suullinenkoe")
   tunniste: Koodistokoodiviite
-) extends DIAOppiaineenTutkintovaiheenOsasuoritus
+) extends DIAOppiaineenTutkintovaiheenOsasuoritus with Laajuudeton
 
 @Title("DIA-tutkinnon erityisosaamisen näyttötutkinto")
 @Description("DIA-tutkinnon erityisosaamisen näyttötutkinnon tunnistetiedot")
@@ -181,7 +183,7 @@ case class DIANäyttötutkinto (
   @KoodistoUri("diapaattokoe")
   @KoodistoKoodiarvo("nayttotutkinto")
   tunniste: Koodistokoodiviite
-) extends DIAOppiaineenTutkintovaiheenOsasuoritus
+) extends DIAOppiaineenTutkintovaiheenOsasuoritus with Laajuudeton
 
 trait DIAArviointi extends KoodistostaLöytyväArviointi {
   def arvosana: Koodistokoodiviite
@@ -247,6 +249,7 @@ trait DIAOppiaine extends KoodistostaLöytyväKoulutusmoduuli {
   @KoodistoUri("oppiaineetdia")
   @OksaUri("tmpOKSAID256", "oppiaine")
   def tunniste: Koodistokoodiviite
+  def laajuus: Option[LaajuusVuosiviikkotunneissa]
 }
 
 trait DIAOsaAlueOppiaine extends DIAOppiaine {
