@@ -194,7 +194,7 @@ object ExamplesDIA {
     osasuoritukset = Some(lukukaudet.map { case (lukukausi, arvosana) =>
       DIAOppiaineenValmistavanVaiheenLukukaudenSuoritus(
         koulutusmoduuli = lukukausi,
-        arviointi = diaTutkintovaiheArviointi(arvosana)
+        arviointi = diaValmistavaVaiheArviointi(arvosana)
       )
     })
   )
@@ -205,7 +205,7 @@ object ExamplesDIA {
     osasuoritukset = Some(lukukaudet.map { case (lukukausi, arvosana) =>
       DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus(
         koulutusmoduuli = lukukausi,
-        arviointi = diaValmistavaVaiheArviointi(arvosana)
+        arviointi = diaTutkintovaiheenArviointi(arvosana)
       )
     })
   )
@@ -247,11 +247,11 @@ object ExamplesDIA {
     tunniste = Koodistokoodiviite(koodiarvo = lukukausi, koodistoUri = "dialukukausi")
   )
 
-  def diaValmistavaVaiheArviointi(arvosana: String, päivä: LocalDate = date(2016, 6, 4)): Some[List[DIAOppiaineenTutkintovaiheenNumeerinenArviointi]] = {
+  def diaTutkintovaiheenArviointi(arvosana: String, päivä: LocalDate = date(2016, 6, 4)): Some[List[DIAOppiaineenTutkintovaiheenNumeerinenArviointi]] = {
     Some(List(DIAOppiaineenTutkintovaiheenNumeerinenArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkodiatutkinto"), päivä = Some(päivä))))
   }
 
-  def diaTutkintovaiheArviointi(arvosana: String, päivä: LocalDate = date(2016, 6, 4)): Some[List[DIAOppiaineenValmistavanVaiheenLukukaudenArviointi]] = {
+  def diaValmistavaVaiheArviointi(arvosana: String, päivä: LocalDate = date(2016, 6, 4)): Some[List[DIAOppiaineenValmistavanVaiheenLukukaudenArviointi]] = {
     Some(List(DIAOppiaineenValmistavanVaiheenLukukaudenArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkodiavalmistava"), päivä = Some(päivä))))
   }
 
