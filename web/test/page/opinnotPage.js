@@ -242,6 +242,9 @@ function Oppiaine(oppiaineElem) {
       oppiaineApi.lisääKurssiDialog.valitseKurssinTyyppi('Soveltava'),
       oppiaineApi.lisääKurssiDialog.lisääKurssi
     )},
+    poista: function() {
+      return oppiaineApi.propertyBySelector('.remove-row').removeValue
+    },
     lisääKurssiDialog: LisääKurssiDialog(),
     kurssi: function(identifier) {
       return Kurssi(subElement(oppiaineElem, ".kurssi:contains(" + identifier +")"))
