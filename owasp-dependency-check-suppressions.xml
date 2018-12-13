@@ -30,4 +30,19 @@
       <gav regex="true">^stax:stax-api:.*$</gav>
       <cve>CVE-2017-16224</cve>
     </suppress>
+    <suppress>
+      <notes>this vulnerability is in slf4j-ext-*.jar (org.slf4j.ext.EventData), which we don't have in classpath</notes>
+      <gav regex="true">^org\.slf4j:slf4j-log4j12:.*$</gav>
+      <cpe>cpe:/a:slf4j:slf4j</cpe>
+    </suppress>
+    <suppress>
+      <notes>this vulnerability is in slf4j-ext-*.jar (org.slf4j.ext.EventData), which we don't have in classpath</notes>
+      <gav regex="true">^org\.slf4j:slf4j-api:.*$</gav>
+      <cve>CVE-2018-8088</cve>
+    </suppress>
+    <suppress>
+      <notes>log4s-*.jar doesn't include any version of the vulnerable class (org.slf4j.ext.EventData)</notes>
+      <gav regex="true">^org\.log4s:log4s_2\.12:.*$</gav>
+     <cpe>cpe:/a:slf4j:slf4j</cpe>
+    </suppress>
 </suppressions>
