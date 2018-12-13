@@ -44,7 +44,6 @@ describe('DIA', function( ) {
           'Äidinkieli, suomi\n10/I\n2 10/II\n3 3\n' +
           'A-kieli, englanti\n10/I\n3 3\n' +
           'B1-kieli, ruotsi\n10/I\n2 10/II\n2 3\n' +
-          'B2-kieli, latina\n10/I\n4 10/II\n4 2\n' +
           'B3-kieli, venäjä\n10/I\n4 10/II\n3 3\n' +
           'Kuvataide\n10/I\n4 10/II\n5 2\n' +
           'Matematiikka ja luonnontieteet\n' +
@@ -56,7 +55,10 @@ describe('DIA', function( ) {
           'Historia\n10/I\n3 10/II\n4 2\n' +
           'Taloustieto ja yhteiskuntaoppi\n10/I\n5 10/II\n3 2\n' +
           'Maantiede (saksa ja englanti)\n10/I\n3 10/II\n3 2\n' +
-          'Filosofia\n10/I\n1 10/II\n1 2')
+          'Filosofia\n10/I\n1 10/II\n1 2\n' +
+          'Lisäaineet\n' +
+          'B2-kieli, latina\n10/I\n4 10/II\n4 2'
+        )
       })
     })
 
@@ -109,7 +111,7 @@ describe('DIA', function( ) {
               before(editor.edit)
 
               it('on oikea', function () {
-                expect(arvosana.getOptions()).to.deep.equal([ 'Ei valintaa', '1', '2', '3', '4', '5', '6' ])
+                expect(arvosana.getOptions()).to.deep.equal([ 'Ei valintaa', '1', '2', '2-', '3', '4', '5', '6' ])
               })
 
               after(editor.cancelChanges)
@@ -247,7 +249,6 @@ describe('DIA', function( ) {
           'Äidinkieli, suomi\n11/I\n2 11/II\n3 12/I\n3 12/II\n3 8\n' +
           'A-kieli, englanti\n11/I\n2 11/II\n3 12/I\n2 6\n' +
           'B1-kieli, ruotsi\n11/I\n2 11/II\n2 12/I\n4 12/II\n3 6\n' +
-          'B2-kieli, latina\n11/I\n3 11/II\n3 12/I\n2 12/II\n2 4\n' +
           'B3-kieli, venäjä\n11/I\n4 11/II\n3 12/I\n4 12/II\n3 6\n' +
           'Kuvataide\n11/I\n4 11/II\n3 12/I\n2 12/II\n2 4\n' +
           'Matematiikka ja luonnontieteet\n' +
@@ -261,6 +262,7 @@ describe('DIA', function( ) {
           'Maantiede (saksa ja englanti)\n11/I\n3 11/II\n5 12/I\n3 12/II\n2 6\n' +
           'Filosofia\n11/I\n2 11/II\n2 12/I\n2 12/II\n2 4\n' +
           'Lisäaineet\n' +
+          'B2-kieli, latina\n11/I\n3 11/II\n3 12/I\n2 12/II\n2 4\n' +
           'Cambridge Certificate of Advanced English\n12/I\n3 12/II\n1 1\n' +
           'Matematiikka, syventävä\n11/I\n2 11/II\n1 12/I\n2 12/II\n4 2')
       })
@@ -315,7 +317,7 @@ describe('DIA', function( ) {
               before(editor.edit)
 
               it('on oikea', function () {
-                expect(arvosana.getOptions()).to.deep.include.members([ 'Ei valintaa', '0', '1', '2-', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', 'Suoritettu' ])
+                expect(arvosana.getOptions()).to.deep.include.members([ 'Ei valintaa', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', 'Suoritettu' ])
               })
 
               after(editor.cancelChanges)
