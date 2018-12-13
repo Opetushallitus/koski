@@ -21,6 +21,9 @@ import fi.oph.koski.util.Timing
 import mojave._
 import org.json4s.{JArray, JValue}
 
+// scalastyle:off line.size.limit
+// scalastyle:off number.of.methods
+
 class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: KoodistoViitePalvelu, val organisaatioRepository: OrganisaatioRepository, koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository, henkilöRepository: HenkilöRepository, ePerusteet: EPerusteetRepository) extends Timing {
   def validateAsJson(oppija: Oppija)(implicit user: KoskiSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
     extractAndValidateOppija(JsonSerializer.serialize(oppija))
