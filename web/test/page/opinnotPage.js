@@ -249,6 +249,9 @@ function Oppiaine(oppiaineElem) {
     kurssi: function(identifier) {
       return Kurssi(subElement(oppiaineElem, ".kurssi:contains(" + identifier +")"))
     },
+    nthOsasuoritus: function(n) {
+      return Kurssi(subElement(oppiaineElem, ".kurssi:eq(" + n + ")"))
+    },
     errorText: function() { return extractAsText(subElement(oppiaineElem, '> .error')) },
     arvosana: editorApi.propertyBySelector('tr td.arvosana'),
     laajuus: editorApi.propertyBySelector('tr.laajuus'),
@@ -319,6 +322,7 @@ function Kurssi(elem) {
       return Editor(detailsElem)
     },
     tunnustettu: Editor(elem).propertyBySelector('.tunnustettu'),
+    laajuus: Editor(elem).propertyBySelector('tr.laajuus'),
     lisääTunnustettu: click(subElement(detailsElem, '.tunnustettu .add-value')),
     poistaTunnustettu: click(subElement(detailsElem, '.tunnustettu .remove-value')),
     poistaKurssi: click(subElement(elem, '.remove-value'))
