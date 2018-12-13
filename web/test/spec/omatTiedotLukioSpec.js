@@ -307,7 +307,7 @@ describe('Omat tiedot - lukio', function() {
         before(opinnot.valitseOmatTiedotOpiskeluoikeus('IB-tutkinto (International Baccalaureate) (2012—2016, valmistunut)'))
 
         it('Näytetään suoritustaulukko aineryhmittäin', function () {
-          expect(extractAsText(S('div.ib-aineryhmat'))).to.equal(
+          expect(extractAsText(S('div.aineryhmat'))).to.equal(
             'Studies in language and literature\n' +
             'Oppiaine Arvosana\n' +
             'Language A: literature, suomi\n' +
@@ -321,8 +321,7 @@ describe('Omat tiedot - lukio', function() {
             '5 FIN_S7\n' +
             '5 FIN_S8\n' +
             'S FIN_S9\n' +
-            '5 Keskiarvo 4,9\n' +
-            '(4,9)\n' +
+            '5\n' +
             'Language A: language and literature, englanti\n' +
             '(6 kurssia) 7 *\n' +
             'ENG_B_H1\n' +
@@ -331,8 +330,7 @@ describe('Omat tiedot - lukio', function() {
             'S ENG_B_H5\n' +
             '6 ENG_B_H6\n' +
             '6 ENG_B_H8\n' +
-            '5 Keskiarvo 6,0\n' +
-            '(6,0)\n' +
+            '5\n' +
             'Individuals and societies\n' +
             'Oppiaine Arvosana\n' +
             'History\n' +
@@ -343,8 +341,7 @@ describe('Omat tiedot - lukio', function() {
             '7 HIS_H6\n' +
             '6 HIS_H7\n' +
             '1 HIS_H9\n' +
-            'S Keskiarvo 5,2\n' +
-            '(5,2)\n' +
+            'S\n' +
             'Psychology\n' +
             '(9 kurssia) 7 *\n' +
             'PSY_S1\n' +
@@ -356,8 +353,7 @@ describe('Omat tiedot - lukio', function() {
             '6 PSY_S7\n' +
             '5 PSY_S8\n' +
             '2 PSY_S9\n' +
-            'S Keskiarvo 5,1\n' +
-            '(5,1)\n' +
+            'S\n' +
             'Experimental sciences\n' +
             'Oppiaine Arvosana\n' +
             'Biology\n' +
@@ -371,8 +367,7 @@ describe('Omat tiedot - lukio', function() {
             '2 BIO_H7\n' +
             '3 BIO_H8\n' +
             '4 BIO_H9\n' +
-            '1 Keskiarvo 3,6\n' +
-            '(3,6)\n' +
+            '1\n' +
             'Mathematics\n' +
             'Oppiaine Arvosana\n' +
             'Mathematical studies\n' +
@@ -383,8 +378,7 @@ describe('Omat tiedot - lukio', function() {
             '6 MATST_S4\n' +
             '6 MATST_S5\n' +
             '4 MATST_S6\n' +
-            'S Keskiarvo 5,6\n' +
-            '(5,6)\n' +
+            'S\n' +
             '* = ennustettu arvosana'
           )
         })
@@ -520,7 +514,7 @@ describe('Omat tiedot - lukio', function() {
         before(opinnot.valitseOmatTiedotOpiskeluoikeus('IB-tutkinto (International Baccalaureate) (2012—2016, valmistunut)'))
 
         it('Näytetään suoritustaulukko aineryhmittäin', function () {
-          expect(extractAsText(S('div.ib-aineryhmat'))).to.equal(
+          expect(extractAsText(S('div.aineryhmat'))).to.equal(
             'Studies in language and literature\n' +
             'Oppiaine Arvosana\n' +
             'Language A: literature, suomi\n' +
@@ -534,8 +528,7 @@ describe('Omat tiedot - lukio', function() {
             '5 FIN_S7\n' +
             '5 FIN_S8\n' +
             'S FIN_S9\n' +
-            '5 Keskiarvo 4,9\n' +
-            '(4,9)\n' +
+            '5\n' +
             'Language A: language and literature, englanti\n' +
             '(6 kurssia) 7\n' +
             'ENG_B_H1\n' +
@@ -544,8 +537,7 @@ describe('Omat tiedot - lukio', function() {
             'S ENG_B_H5\n' +
             '6 ENG_B_H6\n' +
             '6 ENG_B_H8\n' +
-            '5 Keskiarvo 6,0\n' +
-            '(6,0)\n' +
+            '5\n' +
             'Individuals and societies\n' +
             'Oppiaine Arvosana\n' +
             'History\n' +
@@ -556,8 +548,7 @@ describe('Omat tiedot - lukio', function() {
             '7 HIS_H6\n' +
             '6 HIS_H7\n' +
             '1 HIS_H9\n' +
-            'S Keskiarvo 5,2\n' +
-            '(5,2)\n' +
+            'S\n' +
             'Psychology\n' +
             '(9 kurssia) 7\n' +
             'PSY_S1\n' +
@@ -569,8 +560,7 @@ describe('Omat tiedot - lukio', function() {
             '6 PSY_S7\n' +
             '5 PSY_S8\n' +
             '2 PSY_S9\n' +
-            'S Keskiarvo 5,1\n' +
-            '(5,1)\n' +
+            'S\n' +
             'Experimental sciences\n' +
             'Oppiaine Arvosana\n' +
             'Biology\n' +
@@ -584,8 +574,7 @@ describe('Omat tiedot - lukio', function() {
             '2 BIO_H7\n' +
             '3 BIO_H8\n' +
             '4 BIO_H9\n' +
-            '1 Keskiarvo 3,6\n' +
-            '(3,6)\n' +
+            '1\n' +
             'Mathematics\n' +
             'Oppiaine Arvosana\n' +
             'Mathematical studies\n' +
@@ -596,8 +585,7 @@ describe('Omat tiedot - lukio', function() {
             '6 MATST_S4\n' +
             '6 MATST_S5\n' +
             '4 MATST_S6\n' +
-            'S Keskiarvo 5,6\n' +
-            '(5,6)'
+            'S'
           )
         })
       })

@@ -12,6 +12,7 @@ import {doActionWhileMounted} from '../util/util'
 import {createOppiaineenSuoritus, suoritetutKurssit, hyväksytystiSuoritetutKurssit, laajuudet} from './lukio'
 import {Arviointi, KoulutusmoduuliPropertiesEditor, Nimi} from './fragments/LukionOppiaine'
 import {laajuusNumberToString} from '../util/format'
+import {PropertiesEditor} from '../editor/PropertiesEditor'
 
 export class LukionOppiaineEditor extends React.Component {
   saveChangedPreferences() {
@@ -30,7 +31,18 @@ export class LukionOppiaineEditor extends React.Component {
   }
 
   render() {
-    const {oppiaine, footnote, additionalEditableKoulutusmoduuliProperties, allowOppiaineRemoval = true} = this.props
+    const {
+      oppiaine,
+      footnote,
+      additionalEditableProperties,
+      additionalEditableKoulutusmoduuliProperties,
+      allowOppiaineRemoval = true,
+      useOppiaineLaajuus = false,
+      showArviointi = true,
+      customOsasuoritusTitle,
+      customOsasuoritusAlternativesCompletionFn
+    } = this.props
+
     const kurssit = modelItems(oppiaine, 'osasuoritukset')
 
     const {edit} = oppiaine.context
@@ -47,12 +59,33 @@ export class LukionOppiaineEditor extends React.Component {
             <Nimi oppiaine={oppiaine}/>
             <KoulutusmoduuliPropertiesEditor oppiaine={oppiaine} additionalEditableProperties={additionalEditableKoulutusmoduuliProperties}/>
           </div>
-          <KurssitEditor model={oppiaine}/>
+          {
+            additionalEditableProperties && <PropertiesEditor model={oppiaine} propertyFilter={p => additionalEditableProperties.includes(p.key)}/>
+          }
+          <KurssitEditor
+            model={oppiaine}
+            customTitle={customOsasuoritusTitle}
+            customAlternativesCompletionFn={customOsasuoritusAlternativesCompletionFn}
+          />
         </td>
-        <td className='laajuus'>{laajuusNumberToString(laajuudet(hyväksytystiSuoritetutKurssit(kurssit)))}</td>
-        <td className='arvosana'>
-          <Arviointi oppiaine={oppiaine} suoritetutKurssit={suoritetutKurssit(kurssit)} footnote={footnote}/>
+        <td className='laajuus'>
+          {
+            useOppiaineLaajuus
+              ? modelData(oppiaine, 'koulutusmoduuli.laajuus.arvo')
+              : laajuusNumberToString(laajuudet(hyväksytystiSuoritetutKurssit(kurssit)))
+          }
         </td>
+        {
+          showArviointi && (
+            <td className='arvosana'>
+              <Arviointi
+                oppiaine={oppiaine}
+                suoritetutKurssit={suoritetutKurssit(kurssit)}
+                footnote={footnote}
+              />
+            </td>
+          )
+        }
         {
           edit && allowOppiaineRemoval && (
             <td className='remove-row'>
