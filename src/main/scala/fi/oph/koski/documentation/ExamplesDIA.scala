@@ -26,7 +26,7 @@ object ExamplesDIA {
       (diaValmistavaLukukausi("1"), "2"),
       (diaValmistavaLukukausi("2"), "2")
     )),
-    diaValmistavaVaiheAineSuoritus(diaKieliaine("B2", "LA", laajuus = 2), List(
+    diaValmistavaVaiheAineSuoritus(diaLisäaineKieli("B2", "LA", laajuus = 2), List(
       (diaValmistavaLukukausi("1"), "4"),
       (diaValmistavaLukukausi("2"), "4")
     )),
@@ -96,7 +96,7 @@ object ExamplesDIA {
       (diaTutkintoLukukausi("5"), "4"),
       (diaTutkintoLukukausi("6"), "3")
     )),
-    diaTutkintoAineSuoritus(diaKieliaine("B2", "LA", laajuus = 4), List(
+    diaTutkintoAineSuoritus(diaLisäaineKieli("B2", "LA", laajuus = 4), List(
       (diaTutkintoLukukausi("3"), "3"),
       (diaTutkintoLukukausi("4"), "3"),
       (diaTutkintoLukukausi("5"), "2"),
@@ -230,6 +230,12 @@ object ExamplesDIA {
 
   def diaMuuValinnainen(aine: String, laajuus: Int) = DIAOppiaineLisäaine(
     tunniste = Koodistokoodiviite(koodistoUri = "oppiaineetdia", koodiarvo = aine),
+    laajuus = Some(LaajuusVuosiviikkotunneissa(laajuus))
+  )
+
+  def diaLisäaineKieli(taso: String, kieli: String, laajuus: Int) = DIAOppiaineLisäaineKieli(
+    tunniste = Koodistokoodiviite(koodistoUri = "oppiaineetdia", koodiarvo = taso),
+    kieli = Koodistokoodiviite(koodistoUri = "kielivalikoima", koodiarvo = kieli),
     laajuus = Some(LaajuusVuosiviikkotunneissa(laajuus))
   )
 
