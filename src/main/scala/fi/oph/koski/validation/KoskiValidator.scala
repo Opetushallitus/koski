@@ -298,8 +298,8 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   private def validateLaajuus(suoritus: Suoritus): HttpStatus = {
-    suoritus.koulutusmoduuli.laajuus match {
-      case Some(laajuus: Laajuus) =>
+    (suoritus.koulutusmoduuli.laajuus, suoritus) match {
+      case (Some(laajuus: Laajuus), _) =>
         val yksikköValidaatio = HttpStatus.fold(suoritus.osasuoritusLista.map { case osasuoritus =>
           osasuoritus.koulutusmoduuli.laajuus match {
             case Some(osasuorituksenLaajuus: Laajuus) if laajuus.yksikkö != osasuorituksenLaajuus.yksikkö =>
@@ -326,6 +326,10 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
               }
           }
         })
+
+      case (_, s: DIAPäätasonSuoritus) if s.valmis && s.osasuoritusLista.exists(aine => aine.koulutusmoduuli.laajuus.isEmpty) =>
+        KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusPuuttuu("Suoritus " + suorituksenTunniste(suoritus) + " on merkitty valmiiksi, mutta se sisältää oppiaineen, jolta puuttuu laajuus")
+
       case _ => HttpStatus.ok
     }
   }
