@@ -48,6 +48,12 @@ class PalveluvaylaSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         }
       }
     }
+
+    "palauttaa tyhjän listan oppilaitoksia jos virta pavelu ei vastaa" in {
+      postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, MockOppijat.virtaEiVastaa.hetu.get) {
+        verifySOAPError("unavailable.virta", "Korkeakoulutuksen opiskeluoikeuksia ei juuri nyt saada haettua. Yritä myöhemmin uudelleen.")
+      }
+    }
   }
 
   def postSuomiFiRekisteritiedot[A](user: MockUser, hetu: String)(fn: => A): A = {
