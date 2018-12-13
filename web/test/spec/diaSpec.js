@@ -15,6 +15,79 @@ describe('DIA', function( ) {
         'Tila 4.6.2016 Valmistunut\n' +
         '1.9.2012 Läsnä')
     })
+
+    describe('Opiskeluoikeuden lisätiedot', function() {
+      describe('Lisätietojen lisäys', function() {
+        before(
+          editor.edit,
+          opinnot.expandAll,
+          editor.property('pidennettyPäättymispäivä').setValue(true),
+          editor.property('ulkomainenVaihtoopiskelija').setValue(true),
+          editor.property('ulkomaanjaksot').addItem,
+          editor.property('ulkomaanjaksot').propertyBySelector('.alku').setValue('4.1.2013'),
+          editor.property('ulkomaanjaksot').propertyBySelector('.loppu').setValue('16.3.2013'),
+          editor.property('ulkomaanjaksot').property('maa').setValue('Ahvenanmaa'),
+          editor.property('ulkomaanjaksot').property('kuvaus').setValue('Ulkomaanjakso'),
+          editor.property('erityisenKoulutustehtävänJaksot').addItem,
+          editor.property('erityisenKoulutustehtävänJaksot').propertyBySelector('.alku').setValue('1.9.2012'),
+          editor.property('erityisenKoulutustehtävänJaksot').propertyBySelector('.loppu').setValue('4.6.2016'),
+          editor.property('erityisenKoulutustehtävänJaksot').property('tehtävä').setValue('Erityisenä koulutustehtävänä kieli ja kansainvälisyys'),
+          editor.saveChanges,
+          wait.until(page.isSavedLabelShown)
+        )
+        it('tallentaa ja esittää kaikki lisätiedot', function() {
+          expect(extractAsText(S('.lisätiedot'))).to.equal('Lisätiedot\n' +
+            'Pidennetty päättymispäivä kyllä\n' +
+            'Ulkomainen vaihto-opiskelija. kyllä\n' +
+            'Erityisen koulutustehtävän jaksot 1.9.2012 — 4.6.2016 Tehtävä Erityisenä koulutustehtävänä kieli ja kansainvälisyys\n' +
+            'Ulkomaanjaksot 4.1.2013 — 16.3.2013 Maa Ahvenanmaa Kuvaus Ulkomaanjakso')
+        })
+      })
+
+      describe('Lisätietojen muokkaus', function() {
+        before(
+          editor.edit,
+          editor.property('pidennettyPäättymispäivä').setValue(false),
+          editor.property('ulkomainenVaihtoopiskelija').setValue(false),
+          editor.property('ulkomaanjaksot').propertyBySelector('.alku').setValue('5.1.2013'),
+          editor.property('ulkomaanjaksot').propertyBySelector('.loppu').setValue('14.2.2013'),
+          editor.property('ulkomaanjaksot').property('maa').setValue('Ruotsi'),
+          editor.property('ulkomaanjaksot').property('kuvaus').setValue('Jotain muuta'),
+          editor.property('ulkomaanjaksot').addItem,
+          editor.property('ulkomaanjaksot').propertyBySelector('.alku:last').setValue('15.2.2013'),
+          editor.property('ulkomaanjaksot').propertyBySelector('.loppu:last').setValue('29.4.2013'),
+          editor.property('ulkomaanjaksot').property('maa:last').setValue('Norja'),
+          editor.property('ulkomaanjaksot').property('kuvaus:last').setValue('Ja vielä jotain'),
+          editor.property('erityisenKoulutustehtävänJaksot').propertyBySelector('.alku').setValue('1.9.2012'),
+          editor.property('erityisenKoulutustehtävänJaksot').propertyBySelector('.loppu').setValue('4.6.2015'),
+          editor.property('erityisenKoulutustehtävänJaksot').property('tehtävä').setValue('Erityisenä koulutustehtävänä taide'),
+          editor.saveChanges,
+          wait.until(page.isSavedLabelShown)
+        )
+
+        it('tallentaa muutokset ja esittää ajantasaiset lisätiedot', function() {
+          expect(extractAsText(S('.lisätiedot'))).to.equal('Lisätiedot\n' +
+            'Erityisen koulutustehtävän jaksot 1.9.2012 — 4.6.2015 Tehtävä Erityisenä koulutustehtävänä taide\n' +
+            'Ulkomaanjaksot 5.1.2013 — 14.2.2013 Maa Ruotsi Kuvaus Jotain muuta\n' +
+            '15.2.2013 — 29.4.2013 Maa Norja Kuvaus Ja vielä jotain')
+        })
+      })
+
+      describe('Lisätietojen poisto', function() {
+        before(
+          editor.edit,
+          editor.property('ulkomaanjaksot').removeItem(0),
+          editor.property('ulkomaanjaksot').removeItem(0),
+          editor.property('erityisenKoulutustehtävänJaksot').removeItem(0),
+          editor.saveChanges,
+          wait.until(page.isSavedLabelShown)
+        )
+
+        it('poistaa lisätiedot eikä enää esitä niitä', function() {
+          expect(isElementVisible(findSingle('.lisätiedot'))).to.equal(false)
+        })
+      })
+    })
   })
 
   describe('Valmistava DIA-vaihe', function () {
@@ -69,6 +142,34 @@ describe('DIA', function( ) {
         describe('Mitätöintilinkki', function() {
           it('Ei näytetä', function() {
             expect(opinnot.deletePäätasonSuoritusIsShown()).to.equal(false)
+          })
+        })
+      })
+
+      describe('Valmistavan vaiheen tiedot', function() {
+        describe('Suorituskieli', function() {
+          before(
+            editor.edit,
+            opinnot.opiskeluoikeusEditor().property('suorituskieli').setValue('saksa'),
+            editor.saveChanges,
+            wait.until(page.isSavedLabelShown)
+          )
+
+          it('voidaan vaihtaa', function () {
+            expect(extractAsText(S('.suorituskieli:last'))).to.equal('Suorituskieli saksa')
+          })
+        })
+
+        describe('Todistuksella näkyvät lisätiedot', function() {
+          before(
+            editor.edit,
+            opinnot.opiskeluoikeusEditor().property('todistuksellaNäkyvätLisätiedot').setValue('Valmistavan vaiheen lisätieto'),
+            editor.saveChanges,
+            wait.until(page.isSavedLabelShown)
+          )
+
+          it('voidaan lisätä', function () {
+            expect(extractAsText(S('.todistuksellaNäkyvätLisätiedot:first'))).to.equal('Todistuksella näkyvät lisätiedot Valmistavan vaiheen lisätieto')
           })
         })
       })
@@ -279,6 +380,47 @@ describe('DIA', function( ) {
         })
       })
 
+      describe('Tutkintovaiheen tiedot', function() {
+        describe('Kokonaispistemäärä', function() {
+          before(
+            editor.edit,
+            opinnot.opiskeluoikeusEditor().property('kokonaispistemäärä').setValue('850'),
+            editor.saveChanges,
+            wait.until(page.isSavedLabelShown)
+          )
+
+          it('voidaan muuttaa', function () {
+            expect(extractAsText(S('.kokonaispistemäärä'))).to.equal('Kokonaispistemäärä 850')
+          })
+        })
+
+        describe('Suorituskieli', function() {
+          before(
+            editor.edit,
+            opinnot.opiskeluoikeusEditor().property('suorituskieli').setValue('suomi'),
+            editor.saveChanges,
+            wait.until(page.isSavedLabelShown)
+          )
+
+          it('voidaan vaihtaa', function () {
+            expect(extractAsText(S('.suorituskieli:first'))).to.equal('Suorituskieli suomi')
+          })
+        })
+
+        describe('Todistuksella näkyvät lisätiedot', function() {
+          before(
+            editor.edit,
+            opinnot.opiskeluoikeusEditor().property('todistuksellaNäkyvätLisätiedot').setValue('Tässä jotain lisätietoa'),
+            editor.saveChanges,
+            wait.until(page.isSavedLabelShown)
+          )
+
+          it('voidaan lisätä', function () {
+            expect(extractAsText(S('.todistuksellaNäkyvätLisätiedot:first'))).to.equal('Todistuksella näkyvät lisätiedot Tässä jotain lisätietoa')
+          })
+        })
+      })
+
       describe('Suoritusten tiedot', function() {
         describe('Oppiaine', function() {
           var aine = opinnot.oppiaineet.oppiaine('oppiaine.A')
@@ -349,6 +491,40 @@ describe('DIA', function( ) {
               })
             })
 
+            describe('Lasketaan kokonaispistemäärään -valinnan lisääminen', function() {
+              var kurssi = aine.kurssi('12/II')
+
+              before(
+                editor.edit,
+                kurssi.toggleDetails,
+                kurssi.details().property('lasketaanKokonaispistemäärään').setValue(true),
+                kurssi.toggleDetails,
+                editor.saveChanges,
+                wait.until(page.isSavedLabelShown)
+              )
+
+              it('tallentuu ja muutos näkyy kurssin tiedoissa', function () {
+                expect(extractAsText(S('.oppiaineet .A'))).to.contain('12/II\n4')
+              })
+            })
+
+            describe('Lasketaan kokonaispistemäärään -valinnan poistaminen', function() {
+              var kurssi = aine.kurssi('12/II')
+
+              before(
+                editor.edit,
+                kurssi.toggleDetails,
+                kurssi.details().property('lasketaanKokonaispistemäärään').setValue(false),
+                kurssi.toggleDetails,
+                editor.saveChanges,
+                wait.until(page.isSavedLabelShown),
+              )
+
+              it('poistuu ja muutos näkyy kurssin tiedoissa', function () {
+                expect(extractAsText(S('.oppiaineet .A'))).to.contain('12/II *\n4')
+              })
+            })
+
             describe('Kun neljä lukukautta on jo lisätty', function() {
               var dialog = aine.lisääKurssiDialog
 
@@ -369,6 +545,50 @@ describe('DIA', function( ) {
                 dialog.sulje,
                 editor.cancelChanges
               )
+            })
+
+            describe('Päättökokeet', function() {
+              function testaaPäättökokeenLisäysJaPoisto(koodi, nimi, arvosana) {
+                describe(nimi, function() {
+                  var dialog = aine.lisääKurssiDialog
+
+                  describe('Lisääminen', function() {
+                    before(
+                      editor.edit,
+                      aine.avaaLisääKurssiDialog,
+                      dialog.valitseKurssi(koodi + ' ' + nimi),
+                      dialog.lisääKurssi,
+                      aine.kurssi(nimi).arvosana.selectValue(arvosana),
+                      aine.kurssi(nimi).toggleDetails,
+                      aine.kurssi(nimi).details().property('lasketaanKokonaispistemäärään').setValue(true),
+                      aine.kurssi(nimi).toggleDetails,
+                      editor.saveChanges,
+                      wait.until(page.isSavedLabelShown)
+                    )
+
+                    it('lisää päättökokeen ja näyttää sen kurssilistauksessa', function () {
+                      expect(aine.text()).to.contain(nimi + '\n' + arvosana)
+                    })
+                  })
+
+                  describe('Poistaminen', function() {
+                    before(
+                      editor.edit,
+                      aine.kurssi(nimi).poistaKurssi,
+                      editor.saveChanges,
+                      wait.until(page.isSavedLabelShown)
+                    )
+
+                    it('poistaa päättökokeen eikä näytä sitä enää kurssilistauksessa', function () {
+                      expect(aine.text()).to.not.contain(nimi)
+                    })
+                  })
+                })
+              }
+
+              testaaPäättökokeenLisäysJaPoisto('kirjallinenkoe', 'Kirjallinen koe', 10)
+              testaaPäättökokeenLisäysJaPoisto('suullinenkoe', 'Suullinen koe', 9)
+              testaaPäättökokeenLisäysJaPoisto('nayttotutkinto', 'Erityisosaamisen näyttötutkinto', 11)
             })
 
             describe('Poistaminen', function() {
