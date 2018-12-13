@@ -19,7 +19,7 @@ object ExamplesDIA {
       (diaValmistavaLukukausi("2", laajuus(2)), "3")
     ))),
     diaValmistavaVaiheAineSuoritus(diaOppiaineKieliaine("A", "EN", laajuus(3)), Some(List(
-      (diaValmistavaLukukausi("1", laajuus(3)), "3")
+      (diaValmistavaLukukausi(), "3")
     ))),
     diaValmistavaVaiheAineSuoritus(diaOppiaineKieliaine("B1", "SV", laajuus(3)), Some(List(
       (diaValmistavaLukukausi("1", laajuus(1)), "2"),
@@ -85,9 +85,9 @@ object ExamplesDIA {
       (diaTutkintoLukukausi("6", laajuus(2)), "3")
     ))),
     diaTutkintoAineSuoritus(diaOppiaineKieliaine("A", "EN", laajuus(6)), Some(List(
-      (diaTutkintoLukukausi("3", laajuus(2)), "2"),
-      (diaTutkintoLukukausi("4", laajuus(2)), "3"),
-      (diaTutkintoLukukausi("5", laajuus(2)), "2")
+      (diaTutkintoLukukausi("3"), "2"),
+      (diaTutkintoLukukausi("4"), "3"),
+      (diaTutkintoLukukausi("5"), "2")
     ))),
     diaTutkintoAineSuoritus(diaOppiaineKieliaine("B1", "SV", laajuus(6)), Some(List(
       (diaTutkintoLukukausi("3", laajuus(1)), "2"),

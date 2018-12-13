@@ -178,16 +178,46 @@ describe('DIA', function( ) {
         describe('Oppiaine', function() {
           var aine = opinnot.oppiaineet.oppiaine('oppiaine.A')
 
-          describe('Laajuuden muuttaminen', function () {
-            before(
-              editor.edit,
-              aine.laajuus.setValue(4),
-              editor.saveChanges,
-              wait.until(page.isSavedLabelShown)
-            )
+          describe('Laajuus', function () {
+            describe('Muuttaminen', () => {
+              before(
+                editor.edit,
+                aine.laajuus.setValue(4),
+                editor.saveChanges,
+                wait.until(page.isSavedLabelShown)
+              )
 
-            it('onnistuu', function () {
-              expect(findSingle('.oppiaine.A .laajuus')().text()).to.equal('4')
+              it('onnistuu', function () {
+                expect(findSingle('.oppiaine.A .laajuus')().text()).to.equal('4')
+              })
+            })
+
+            describe('Poistaminen', () => {
+              before(
+                editor.edit,
+                aine.laajuus.setValue(''),
+                editor.saveChangesAndExpectError,
+                wait.until(page.isErrorShown)
+              )
+
+              describe('Valmiissa päätason suorituksessa', () => {
+                it('ei onnistu', function () {
+                  expect(page.getErrorMessage()).to.equal('Suoritus suorituksentyyppi/diavalmistavavaihe on merkitty valmiiksi, mutta se sisältää oppiaineen, jolta puuttuu laajuus')
+                })
+              })
+
+              describe('Keskeneräisessä päätason suorituksessa', () => {
+                before(
+                  editor.property('tila').removeItem(0),
+                  opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi,
+                  editor.saveChanges,
+                  wait.until(page.isSavedLabelShown)
+                )
+
+                it('onnistuu', function () {
+                  expect(findSingle('.oppiaine.A .laajuus')().text()).to.equal('')
+                })
+              })
             })
           })
 
@@ -227,6 +257,58 @@ describe('DIA', function( ) {
 
               it('onnistuu', function () {
                 expect(findFirst('.oppiaine.A .kurssi:first .arvosana')().text()).to.equal('6')
+              })
+            })
+
+            describe('Laajuuden muuttaminen', function () {
+              before(
+                editor.edit,
+                osasuoritus.toggleDetails,
+                osasuoritus.details().property('laajuus').setValue(1),
+                osasuoritus.toggleDetails,
+                editor.saveChanges,
+                wait.until(page.isSavedLabelShown)
+              )
+
+              describe('Kun oppiaineella ei ole laajuutta', function () {
+                before(
+                  osasuoritus.showDetails
+                )
+
+                it('lukukauden laajuuden muutos tallentuu ja muutos näkyy osasuorituksen tiedoissa', function () {
+                  expect(osasuoritus.laajuus.getText()).to.equal('Laajuus 1 vuosiviikkotuntia')
+                })
+              })
+
+              describe('Kun oppiaineella on laajuus', () => {
+                before(
+                  editor.edit,
+                  aine.laajuus.setValue(4),
+                  editor.saveChangesAndExpectError,
+                  wait.until(page.isErrorShown)
+                )
+
+                describe('ja osasuoritusten laajuuden summa on eri kuin oppiaineen laajuus', () => {
+                  it('muutos ei tallennu', function () {
+                    expect(page.getErrorMessage()).to.equal('Suorituksen oppiaineetdia/A osasuoritusten laajuuksien summa 1.0 ei vastaa suorituksen laajuutta 4.0')
+                  })
+                })
+
+
+                describe('ja osasuoritusten laajuuden summa on sama kuin oppiaineen laajuus', () => {
+                  before(
+                    osasuoritus.toggleDetails,
+                    osasuoritus.details().property('laajuus').setValue(4),
+                    osasuoritus.toggleDetails,
+                    editor.saveChanges,
+                    wait.until(page.isSavedLabelShown),
+                    osasuoritus.showDetails
+                  )
+
+                  it('muutos tallentuu ja muutos näkyy osasuorituksen tiedoissa', function () {
+                    expect(osasuoritus.laajuus.getText()).to.equal('Laajuus 4 vuosiviikkotuntia')
+                  })
+                })
               })
             })
 
@@ -429,16 +511,45 @@ describe('DIA', function( ) {
         describe('Oppiaine', function() {
           var aine = opinnot.oppiaineet.oppiaine('oppiaine.A')
 
-          describe('Laajuuden muuttaminen', function () {
-            before(
-              editor.edit,
-              aine.laajuus.setValue(4),
-              editor.saveChanges,
-              wait.until(page.isSavedLabelShown)
-            )
+          describe('Laajuus', function () {
+            describe('Muuttaminen', () => {
+              before(
+                editor.edit,
+                aine.laajuus.setValue(4),
+                editor.saveChanges,
+                wait.until(page.isSavedLabelShown)
+              )
 
-            it('onnistuu', function () {
-              expect(findSingle('.oppiaine.A .laajuus')().text()).to.equal('4')
+              it('onnistuu', function () {
+                expect(findSingle('.oppiaine.A .laajuus')().text()).to.equal('4')
+              })
+            })
+
+            describe('Poistaminen', () => {
+              before(
+                editor.edit,
+                aine.laajuus.setValue(''),
+                editor.saveChangesAndExpectError,
+                wait.until(page.isErrorShown)
+              )
+
+              describe('Valmiissa päätason suorituksessa', () => {
+                it('ei onnistu', function () {
+                  expect(page.getErrorMessage()).to.equal('Suoritus koulutus/301103 on merkitty valmiiksi, mutta se sisältää oppiaineen, jolta puuttuu laajuus')
+                })
+              })
+
+              describe('Keskeneräisessä päätason suorituksessa', () => {
+                before(
+                  opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi,
+                  editor.saveChanges,
+                  wait.until(page.isSavedLabelShown)
+                )
+
+                it('onnistuu', function () {
+                  expect(findSingle('.oppiaine.A .laajuus')().text()).to.equal('')
+                })
+              })
             })
           })
 
@@ -458,6 +569,10 @@ describe('DIA', function( ) {
           describe('Oppiaineen osasuoritukset', function() {
             var osasuoritus = aine.propertyBySelector('.kurssi:first')
             var arvosana = osasuoritus.propertyBySelector('.arvosana')
+
+            var lukukausi_11_I = aine.nthOsasuoritus(0)
+            var lukukausi_11_II = aine.nthOsasuoritus(1)
+            var lukukausi_12_I = aine.nthOsasuoritus(2)
 
             describe('Arvosana-asteikko', function () {
               before(editor.edit)
@@ -479,6 +594,79 @@ describe('DIA', function( ) {
 
               it('onnistuu', function () {
                 expect(findFirst('.oppiaine.A .kurssi:first .arvosana')().text()).to.equal('6')
+              })
+            })
+
+            describe('Laajuuden muuttaminen', function () {
+              before(
+                editor.edit,
+                lukukausi_11_I.toggleDetails,
+                lukukausi_11_I.details().property('laajuus').setValue(2),
+                lukukausi_11_I.toggleDetails,
+                editor.saveChanges,
+                wait.until(page.isSavedLabelShown)
+              )
+
+              describe('Kun oppiaineella ei ole laajuutta', function () {
+                before(
+                  lukukausi_11_I.showDetails
+                )
+
+                it('lukukauden laajuuden muutos tallentuu ja muutos näkyy osasuorituksen tiedoissa', function () {
+                  expect(lukukausi_11_I.laajuus.getText()).to.equal('Laajuus 2 vuosiviikkotuntia')
+                })
+              })
+
+              describe('Kun oppiaineella on laajuus', () => {
+                before(
+                  editor.edit,
+                  aine.laajuus.setValue(5),
+                  editor.saveChangesAndExpectError,
+                  wait.until(page.isErrorShown)
+                )
+
+                describe('ja osasuoritusten laajuuden summa on eri kuin oppiaineen laajuus', () => {
+                  it('muutos ei tallennu', function () {
+                    expect(page.getErrorMessage()).to.equal('Suorituksen oppiaineetdia/A osasuoritusten laajuuksien summa 2.0 ei vastaa suorituksen laajuutta 5.0')
+                  })
+                })
+
+
+                describe('ja osasuoritusten laajuuden summa on sama kuin oppiaineen laajuus', () => {
+                  before(
+                    lukukausi_11_II.showDetails,
+                    lukukausi_11_II.details().property('laajuus').setValue(2),
+
+                    lukukausi_12_I.showDetails,
+                    lukukausi_12_I.details().property('laajuus').setValue(1),
+
+                    editor.saveChanges,
+                    wait.until(page.isSavedLabelShown),
+                  )
+
+                  describe('muutos tallentuu', () => {
+                    describe('Lukukaudelle 11/I', () => {
+                      before(lukukausi_11_I.showDetails)
+                      it('näkyy osasuoritusten tiedoissa', function () {
+                        expect(lukukausi_11_I.laajuus.getText()).to.equal('Laajuus 2 vuosiviikkotuntia')
+                      })
+                    })
+
+                    describe('Lukukaudelle 11/II', () => {
+                      before(lukukausi_11_II.showDetails)
+                      it('näkyy osasuoritusten tiedoissa', function () {
+                        expect(lukukausi_11_II.laajuus.getText()).to.equal('Laajuus 2 vuosiviikkotuntia')
+                      })
+                    })
+
+                    describe('Lukukaudelle 12/I', () => {
+                      before(lukukausi_12_I.showDetails)
+                      it('näkyy osasuoritusten tiedoissa', function () {
+                        expect(lukukausi_12_I.laajuus.getText()).to.equal('Laajuus 1 vuosiviikkotuntia')
+                      })
+                    })
+                  })
+                })
               })
             })
 
