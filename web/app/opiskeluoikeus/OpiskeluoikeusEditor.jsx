@@ -1,5 +1,4 @@
 import React from 'baret'
-import * as R from 'ramda'
 import Bacon from 'baconjs'
 import {
   addContext,
@@ -46,7 +45,7 @@ export const OpiskeluoikeusEditor = ({model}) => {
           <span className="otsikkotiedot">
             { hasOppilaitos && <span className="oppilaitos">{modelTitle(mdl, 'oppilaitos')}</span> }
             { hasOppilaitos && <span>{', '}</span> }
-            <span className="koulutus" style={hasOppilaitos ? { textTransform: 'lowercase' } : undefined}>{(näytettävätPäätasonSuoritukset(mdl)[0] || {}).title}</span>
+            <span className="koulutus" style={hasOppilaitos ? { textTransform: 'lowercase' } : undefined}>{näytettäväPäätasonSuoritusTitle(mdl)}</span>
             {hasAlkamispäivä && <OpiskeluoikeudenTila opiskeluoikeus={mdl}/>}
           </span>
           <Versiohistoria opiskeluoikeusOid={modelData(mdl, 'oid')} oppijaOid={context.oppijaOid}/>
@@ -170,30 +169,28 @@ export class OpiskeluoikeudenOpintosuoritusoteLink extends React.Component {
   }
 }
 
-const eiPerusopetuksenVuosiluokka = s => !['perusopetuksenvuosiluokka'].includes(modelData(s).tyyppi.koodiarvo)
+
+const opintojaksoTaiOppimäärä = suoritus =>
+  isPerusopetuksenOppimäärä(suoritus) || isOpintojakso(suoritus)
+
+const isPerusopetuksenOppimäärä = suoritus =>
+  ['perusopetuksenoppiaineenoppimaara', 'nuortenperusopetuksenoppiaineenoppimaara'].includes(suorituksenTyyppi(suoritus))
+
+const isOpintojakso = suoritus => suorituksenTyyppi(suoritus) === 'korkeakoulunopintojakso'
+const isPerusopetuksenVuosiluokka = suoritus => suorituksenTyyppi(suoritus) === 'perusopetuksenvuosiluokka'
+
+const oppimääräTaiOpintojaksoOtsikko = suoritukset => {
+  const otsikkoAvain = suoritukset.every(isPerusopetuksenOppimäärä) ? 'oppiainetta' : 'opintojaksoa'
+  return `${suoritukset.length} ${t(otsikkoAvain)}`
+}
 
 // Duplicates the logic from src/main/scala/fi/oph/koski/luovutuspalvelu/SuomiFiService.scala#suorituksenNimi
-const suorituksenOtsikko = suoritukset => suoritukset.length > 0
-  ? suoritusTitle(suoritukset[0])
-  : t('Perusopetus')
-
-export const näytettävätPäätasonSuoritukset = (opiskeluoikeus) => {
-  const kaikkiSuoritukset = modelItems(opiskeluoikeus, 'suoritukset')
-  const makeGroupTitle = (suoritus) => {
-    switch (suorituksenTyyppi(suoritus)) {
-      case 'perusopetuksenoppiaineenoppimaara':
-      case 'nuortenperusopetuksenoppiaineenoppimaara': return 'oppiainetta'
-      case 'korkeakoulunopintojakso': return 'opintojaksoa'
-      default: return ''
-    }
-  }
-
-  return R.toPairs(R.groupBy(makeGroupTitle, kaikkiSuoritukset)).map(([groupTitle, suoritukset]) => {
-    const päätasonSuoritukset = suoritukset.filter(eiPerusopetuksenVuosiluokka)
-    const sisältääMontaOppimäärääTaiOpintojaksoa = groupTitle && päätasonSuoritukset.length > 1
-    const title = sisältääMontaOppimäärääTaiOpintojaksoa
-      ? <span>{päätasonSuoritukset.length}{' '}<Text name={groupTitle}/></span>
-      : suorituksenOtsikko(päätasonSuoritukset)
-    return { title, suoritukset }
-  })
+export const näytettäväPäätasonSuoritusTitle = opiskeluoikeus => {
+  const suoritukset = modelItems(opiskeluoikeus, 'suoritukset')
+  const sisältääMontaOppimäärääTaiOpintojaksoa = suoritukset.every(opintojaksoTaiOppimäärä) && suoritukset.length > 1
+  return sisältääMontaOppimäärääTaiOpintojaksoa
+    ? oppimääräTaiOpintojaksoOtsikko(suoritukset)
+    : suoritukset.every(isPerusopetuksenVuosiluokka)
+      ? t('Perusopetus')
+      : suoritusTitle(suoritukset[0])
 }

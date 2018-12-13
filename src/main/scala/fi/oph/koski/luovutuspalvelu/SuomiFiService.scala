@@ -34,35 +34,42 @@ class SuomiFiService(application: KoskiApplication) extends Logging {
 
   // Duplicates the logic from web/app/suoritus/OpiskeluoikeusEditor.jsx#suorituksenOtsikko
   private def suorituksenNimi(oo: Opiskeluoikeus) = {
-    val suoritukset = oo.suoritukset.filterNot(_.tyyppi == suoritusTyyppi("perusopetuksenvuosiluokka"))
-    suoritukset
-      .headOption.map(otsikko(suoritukset))
-      .getOrElse(localization("Perusopetus"))
-  }
-
-  private def otsikko(kaikkiSuoritukset: List[PäätasonSuoritus])(suoritus: PäätasonSuoritus) = {
-    val sisältääMontaOppimäärääTaiOpintojaksoa = kaikkiSuoritukset.length > 1 && kaikkiSuoritukset.forall(s => isOppiaineenOppimäärä(s) || isOpintojakso(s))
-    if (sisältääMontaOppimäärääTaiOpintojaksoa) {
-      oppimääräTaiOpintojaksoOtsikko(kaikkiSuoritukset)
+    def pääSuoritus = oo.suoritukset.head
+    if (pelkkiäVuosiluokkia(oo)) {
+      localization("Perusopetus")
+    } else if (sisältääMontaOppimäärääTaiOpintojaksoa(oo)) {
+      oppimääräTaiOpintojaksoOtsikko(oo.suoritukset)
+    } else if (aikuistenPerusopetus(pääSuoritus)) {
+      pääSuoritus.tyyppi.nimi.get
+    } else if (ammatillinenTutkintoOsittainen(pääSuoritus)) {
+      suoritusNimi(pääSuoritus).concat(localization(", osittainen"))
     } else {
-      val title = suoritus.koulutusmoduuli match {
-        case a: AmmatillinenTutkintoKoulutus => a.perusteenNimi.get
-        case x => x.tunniste.getNimi.get
-      }
-      if (suoritus.tyyppi == suoritusTyyppi("ammatillinentutkintoosittainen")) {
-        title.concat(localization(", osittainen"))
-      } else if (suoritus.tyyppi == suoritusTyyppi("aikuistenperusopetuksenoppimaara")) {
-        suoritus.tyyppi.nimi.get
-      } else {
-        title
-      }
+      suoritusNimi(pääSuoritus)
     }
   }
+
+  private def ammatillinenTutkintoOsittainen(suoritus: PäätasonSuoritus) =
+    suoritus.tyyppi == suoritusTyyppi("ammatillinentutkintoosittainen")
+
+  private def aikuistenPerusopetus(suoritus: PäätasonSuoritus) =
+    suoritus.tyyppi == suoritusTyyppi("aikuistenperusopetuksenoppimaara")
+
+  private def pelkkiäVuosiluokkia(oo: Opiskeluoikeus) =
+    oo.suoritukset.forall(_.tyyppi == suoritusTyyppi("perusopetuksenvuosiluokka"))
+
+  private def sisältääMontaOppimäärääTaiOpintojaksoa(oo: Opiskeluoikeus) =
+    oo.suoritukset.length > 1 && oo.suoritukset.forall(s => isOppiaineenOppimäärä(s) || isOpintojakso(s))
 
   private def oppimääräTaiOpintojaksoOtsikko(kaikkiSuoritukset: List[PäätasonSuoritus]) = {
     val otsikkoKey = if (kaikkiSuoritukset.forall(isOppiaineenOppimäärä)) "oppiainetta" else "opintojaksoa"
     LocalizedString.finnish(s"${kaikkiSuoritukset.length} ").concat(localization(otsikkoKey))
   }
+
+  private def suoritusNimi(suoritus: PäätasonSuoritus) =
+    suoritus.koulutusmoduuli match {
+      case a: AmmatillinenTutkintoKoulutus => a.perusteenNimi.get
+      case x => x.tunniste.getNimi.get
+    }
 
   private def isOpintojakso(suoritus: PäätasonSuoritus) =
     suoritus.tyyppi == suoritusTyyppi("korkeakoulunopintojakso")
