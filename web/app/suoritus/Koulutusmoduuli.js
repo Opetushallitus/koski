@@ -9,6 +9,7 @@ export const isUusi = (oppiaine) => {
 export const isIBOppiaine = (m) => m && m.value.classes.includes('iboppiaine')
 export const isLukionKurssi = (m) => m && m.value.classes.includes('lukionkurssi')
 export const isPreIBKurssi = (m) => m && m.value.classes.includes('preibkurssi')
+export const isDiaKurssi = (m) => m && m.value.classes.includes('diaoppiaineenosasuoritus')
 export const isLukioonValmistavanKoulutuksenKurssi = (m) => m && m.value.classes.includes('lukioonvalmistavankoulutuksenkurssi')
 export const isLukionMatematiikka = (m) => m && m.value.classes.includes('lukionmatematiikka')
 export const koulutusModuuliprototypes = (suoritus) => oneOfPrototypes(modelLookup(suoritus, 'koulutusmoduuli'))

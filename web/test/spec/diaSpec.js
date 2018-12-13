@@ -236,7 +236,7 @@ describe('DIA', function( ) {
               before(
                 editor.edit,
                 aine.avaaLisääKurssiDialog,
-                dialog.valitseKurssi('2 10/II'),
+                dialog.valitseKurssi('10/II'),
                 dialog.lisääKurssi,
                 aine.kurssi('10/II').arvosana.selectValue(2),
                 editor.saveChanges,
@@ -488,7 +488,7 @@ describe('DIA', function( ) {
               before(
                 editor.edit,
                 aine.avaaLisääKurssiDialog,
-                dialog.valitseKurssi('6 12/II'),
+                dialog.valitseKurssi('12/II'),
                 dialog.lisääKurssi,
                 aine.kurssi('12/II').arvosana.selectValue(4),
                 editor.saveChanges,
@@ -544,9 +544,9 @@ describe('DIA', function( ) {
 
               it('voi lisätä enää kirjallisen tai suullisen kokeen tai näyttötutkinnon', function() {
                 expect(dialog.kurssit()).to.deep.equal([
-                  'kirjallinenkoe Kirjallinen koe',
-                  'nayttotutkinto Erityisosaamisen näyttötutkinto',
-                  'suullinenkoe Suullinen koe'
+                  'Erityisosaamisen näyttötutkinto',
+                  'Kirjallinen koe',
+                  'Suullinen koe'
                 ])
               })
 
@@ -557,7 +557,7 @@ describe('DIA', function( ) {
             })
 
             describe('Päättökokeet', function() {
-              function testaaPäättökokeenLisäysJaPoisto(koodi, nimi, arvosana) {
+              function testaaPäättökokeenLisäysJaPoisto(nimi, arvosana) {
                 describe(nimi, function() {
                   var dialog = aine.lisääKurssiDialog
 
@@ -565,7 +565,7 @@ describe('DIA', function( ) {
                     before(
                       editor.edit,
                       aine.avaaLisääKurssiDialog,
-                      dialog.valitseKurssi(koodi + ' ' + nimi),
+                      dialog.valitseKurssi(nimi),
                       dialog.lisääKurssi,
                       aine.kurssi(nimi).arvosana.selectValue(arvosana),
                       aine.kurssi(nimi).toggleDetails,
@@ -595,9 +595,9 @@ describe('DIA', function( ) {
                 })
               }
 
-              testaaPäättökokeenLisäysJaPoisto('kirjallinenkoe', 'Kirjallinen koe', 10)
-              testaaPäättökokeenLisäysJaPoisto('suullinenkoe', 'Suullinen koe', 9)
-              testaaPäättökokeenLisäysJaPoisto('nayttotutkinto', 'Erityisosaamisen näyttötutkinto', 11)
+              testaaPäättökokeenLisäysJaPoisto('Kirjallinen koe', 10)
+              testaaPäättökokeenLisäysJaPoisto('Suullinen koe', 9)
+              testaaPäättökokeenLisäysJaPoisto('Erityisosaamisen näyttötutkinto', 11)
             })
 
             describe('Poistaminen', function() {
