@@ -46,10 +46,10 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
   lazy val sensitiveDataAllowed = hasRole(LUOTTAMUKSELLINEN)
 
   // Note: keep in sync with PermissionCheckServlet's hasSufficientRoles function. See PermissionCheckServlet for more comments.
-  private val HenkilonhallintaCrud = Palvelurooli("HENKILONHALLINTA", "CRUD")
-  private val HenkilonhallintaReadUpdate = Palvelurooli("HENKILONHALLINTA", "READ_UPDATE")
-  def hasHenkiloUiWriteAccess = globalKäyttöoikeudet.exists(ko => ko.globalPalveluroolit.contains(HenkilonhallintaCrud) || ko.globalPalveluroolit.contains(HenkilonhallintaReadUpdate)) ||
-    orgKäyttöoikeudet.exists(ko => ko.organisaatiokohtaisetPalveluroolit.contains(HenkilonhallintaCrud) || ko.organisaatiokohtaisetPalveluroolit.contains(HenkilonhallintaReadUpdate))
+  private val OppijanumerorekisteriRekisterinpitäjä = Palvelurooli("OPPIJANUMEROREKISTERI", "REKISTERINPITAJA")
+  private val OppijanumerorekisteriReadUpdate = Palvelurooli("OPPIJANUMEROREKISTERI", "HENKILON_RU")
+  def hasHenkiloUiWriteAccess = globalKäyttöoikeudet.exists(ko => ko.globalPalveluroolit.contains(OppijanumerorekisteriRekisterinpitäjä) || ko.globalPalveluroolit.contains(OppijanumerorekisteriReadUpdate)) ||
+    orgKäyttöoikeudet.exists(ko => ko.organisaatiokohtaisetPalveluroolit.contains(OppijanumerorekisteriRekisterinpitäjä) || ko.organisaatiokohtaisetPalveluroolit.contains(OppijanumerorekisteriReadUpdate))
 
   def hasRole(role: String): Boolean = {
     val palveluRooli = Palvelurooli("KOSKI", role)

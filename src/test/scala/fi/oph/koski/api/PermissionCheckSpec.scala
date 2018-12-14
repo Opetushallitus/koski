@@ -38,7 +38,7 @@ class PermissionCheckSpec extends FreeSpec with LocalJettyHttpSpecification with
 
   import fi.oph.koski.schema.KoskiSchema.deserializationContext
 
-  def permissionCheck(personOidsForSamePerson: List[Henkilö.Oid], organisationOids: List[Organisaatio.Oid], loggedInUserRoles: List[String] = List("ROLE_APP_KOSKI", "ROLE_APP_HENKILONHALLINTA_CRUD")): Boolean = {
+  def permissionCheck(personOidsForSamePerson: List[Henkilö.Oid], organisationOids: List[Organisaatio.Oid], loggedInUserRoles: List[String] = List("ROLE_APP_KOSKI", "ROLE_APP_OPPIJANUMEROREKISTERI_HENKILON_RU")): Boolean = {
     post(
       "api/permission/checkpermission",
       JsonSerializer.writeWithRoot(PermissionCheckRequest(
