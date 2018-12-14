@@ -9,7 +9,6 @@ import slick.driver.PostgresDriver
 import slick.dbio.DBIO
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema._
-import fi.oph.koski.util.Futures
 import java.sql.{Date, Timestamp}
 import java.time.LocalDate
 import fi.oph.koski.util.DateOrdering.{sqlDateOrdering, sqlTimestampOrdering}
@@ -47,9 +46,9 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
       RaportointiDatabaseSchema.grantPermissions
     ))
   }
+
   def createOpiskeluoikeusIndexes: Unit = {
-    // plain "runDbSync" times out after 1 minute, which is too short here
-    Futures.await(db.run(RaportointiDatabaseSchema.createOpiskeluoikeusIndexes), atMost = 30.minutes)
+    runDbSync(RaportointiDatabaseSchema.createOpiskeluoikeusIndexes, timeout = 30.minutes)
   }
 
   def deleteOpiskeluoikeudet: Unit =
@@ -57,8 +56,7 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
   def loadOpiskeluoikeudet(opiskeluoikeudet: Seq[ROpiskeluoikeusRow]): Unit =
     runDbSync(ROpiskeluoikeudet ++= opiskeluoikeudet)
   def oppijaOidsFromOpiskeluoikeudet: Seq[String] = {
-    // plain "runDbSync" times out after 1 minute, which is too short here
-    Futures.await(db.run(ROpiskeluoikeudet.map(_.oppijaOid).distinct.result), atMost = 15.minutes)
+    runDbSync(ROpiskeluoikeudet.map(_.oppijaOid).distinct.result, timeout = 15.minutes)
   }
 
   def deleteOpiskeluoikeusAikajaksot: Unit =
@@ -73,7 +71,7 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
   def deleteOsasuoritukset: Unit =
     runDbSync(ROsasuoritukset.schema.truncate)
   def loadOsasuoritukset(suoritukset: Seq[ROsasuoritusRow]): Unit =
-    runDbSync(ROsasuoritukset ++= suoritukset)
+    runDbSync(ROsasuoritukset ++= suoritukset, timeout = 5.minutes)
 
 
   def deleteHenkilöt: Unit =
@@ -121,7 +119,7 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
       .join(ROpiskeluoikeusAikajaksot.filterNot(_.alku > loppuDate).filterNot(_.loppu < alkuDate))
       .on(_.opiskeluoikeusOid === _.opiskeluoikeusOid)
       .sortBy(_._1.opiskeluoikeusOid)
-    val result1: Seq[(ROpiskeluoikeusRow, ROpiskeluoikeusAikajaksoRow)] = Futures.await(db.run(query1.result), atMost = 5.minutes)
+    val result1: Seq[(ROpiskeluoikeusRow, ROpiskeluoikeusAikajaksoRow)] = runDbSync(query1.result, timeout = 5.minutes)
 
     val päätasonSuorituksetQuery = RPäätasonSuoritukset.filter(_.opiskeluoikeusOid inSet result1.map(_._1.opiskeluoikeusOid).distinct)
     val päätasonSuoritukset: Map[String, Seq[RPäätasonSuoritusRow]] = runDbSync(päätasonSuorituksetQuery.result).groupBy(_.opiskeluoikeusOid)
