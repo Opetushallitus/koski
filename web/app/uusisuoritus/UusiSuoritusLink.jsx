@@ -13,6 +13,10 @@ import {
   UusiIBTutkinnonSuoritus,
   UusiPreIBSuoritus
 } from './UusiIBTutkinnonSuoritus'
+import {
+  UusiDIATutkinnonSuoritus,
+  UusiValmistavanDIAVaiheenSuoritus
+} from './UusiDIATutkinnonSuoritus'
 
 export default ({opiskeluoikeus, callback}) => {
   return (<span className="add-suoritus tab">{
@@ -56,7 +60,9 @@ const popups = [
   UusiAmmatillisenTutkinnonSuoritus,
   UusiNäyttötutkintoonValmistavanKoulutuksenSuoritus,
   UusiIBTutkinnonSuoritus,
-  UusiPreIBSuoritus
+  UusiPreIBSuoritus,
+  UusiDIATutkinnonSuoritus,
+  UusiValmistavanDIAVaiheenSuoritus
 ]
 
 const findPopUps = (opiskeluoikeus) => popups.filter(popup => popup.canAddSuoritus(opiskeluoikeus))
