@@ -49,7 +49,7 @@ class SuomiFiService(application: KoskiApplication) extends Logging {
   }
 
   private def emptyIfNotFound(error: HttpStatus) =
-    if (error.errors.exists(_.key == KoskiErrorCategory.notFound.key)) {
+    if (error.errors.exists(_.key == KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia.key)) {
       Right(SuomiFiResponse(Nil))
     } else {
       Left(error)
