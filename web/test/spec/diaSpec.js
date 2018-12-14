@@ -764,7 +764,7 @@ describe('DIA', function( ) {
                   expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
                     'Koulutus Valmistava DIA-vaihe\n' +
                     'Oppilaitos / toimipiste Helsingin Saksalainen koulu\n' +
-                    'Suorituskieli suomi\n' +
+                    'Suorituskieli saksa\n' +
                     'Suoritus kesken'
                   )
                 })
@@ -865,7 +865,7 @@ describe('DIA', function( ) {
                   expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
                     'Koulutus Deutsche Internationale Abitur; Reifeprüfung\n' +
                     'Oppilaitos / toimipiste Helsingin Saksalainen koulu\n' +
-                    'Suorituskieli suomi\n' +
+                    'Suorituskieli saksa\n' +
                     'Suoritus kesken'
                   )
                 })
