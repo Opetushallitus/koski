@@ -661,6 +661,19 @@ describe('DIA', function( ) {
   })
 
   describe('Opiskeluoikeuden lisääminen', function () {
+    describe('Lisäysdialogi', function() {
+      describe('DIA-tutkinnon valinta', function() {
+        before(
+          prepareForNewOppija('kalle', '020782-5339'),
+          addOppija.enterValidDataDIA({etunimet: 'Doris', kutsumanimi: 'Doris', sukunimi: 'Dia'})
+        )
+
+        it('muuttaa automaattisesti suorituskieleksi saksan', function() {
+          expect(extractAsText(S('.suorituskieli .select'))).to.equal('saksa')
+        })
+      })
+    })
+
     describe('DIA-tutkinto', function () {
       before(
         prepareForNewOppija('kalle', '020782-5339'),
@@ -674,7 +687,7 @@ describe('DIA', function( ) {
             expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
               'Koulutus Deutsche Internationale Abitur; Reifeprüfung\n' +
               'Oppilaitos / toimipiste Helsingin Saksalainen koulu\n' +
-              'Suorituskieli suomi\n' +
+              'Suorituskieli saksa\n' +
               'Suoritus kesken'
             )
           })
@@ -775,7 +788,7 @@ describe('DIA', function( ) {
             expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
               'Koulutus Valmistava DIA-vaihe\n' +
               'Oppilaitos / toimipiste Helsingin Saksalainen koulu\n' +
-              'Suorituskieli suomi\n' +
+              'Suorituskieli saksa\n' +
               'Suoritus kesken'
             )
           })
