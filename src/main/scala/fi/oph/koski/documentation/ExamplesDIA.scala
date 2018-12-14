@@ -201,6 +201,6 @@ object ExamplesDIA {
   )
 
   val examples = List(
-    Example("dia", "dia", Oppija(asUusiOppija(MockOppijat.dia), List(opiskeluoikeus))),
+    Example("dia", "dia", Oppija(asUusiOppija(MockOppijat.dia), List(opiskeluoikeus)))
   )
 }
