@@ -1,5 +1,5 @@
 import React from 'baret'
-import {modelData, modelItems, modelLookup} from '../editor/EditorModel'
+import {modelData, modelItems, modelLookup, modelTitle} from '../editor/EditorModel'
 import {t} from '../i18n/i18n'
 import {isIBKurssi} from './kurssi'
 import {isIBKurssinArviointi} from './KurssiPopup'
@@ -14,8 +14,9 @@ import IBKurssinArviointiEditor from '../ib/IBKurssinArviointiEditor'
 import {ArvosanaEditor} from '../suoritus/ArvosanaEditor'
 import {FootnoteHint} from '../components/footnote'
 import Text from '../i18n/Text'
+import {eiLasketaKokonaispistemäärään} from '../dia/DIA'
 
-export const KurssitListMobile = ({oppiaine, oppiaineenKeskiarvo}) => {
+export const KurssitListMobile = ({oppiaine, oppiaineenKeskiarvo, customTitle}) => {
   const osasuoritukset = modelLookup(oppiaine, 'osasuoritukset')
   if (!osasuoritukset) return null
   const kurssit = modelItems(osasuoritukset)
@@ -25,7 +26,7 @@ export const KurssitListMobile = ({oppiaine, oppiaineenKeskiarvo}) => {
       <table className='kurssilista-mobile'>
         <thead>
         <tr>
-          <th className='nimi'><Text name='Kurssi'/></th>
+          <th className='nimi'><Text name={customTitle || 'Kurssi'}/></th>
           <th className='arvosana'><Text name='Arvosana' /></th>
           <th className='lisatiedot'><Text name='Lisätiedot' /></th>
         </tr>
@@ -63,10 +64,18 @@ class MobileKurssi extends React.Component {
     const {expanded} = this.state
     const koulutusmoduuli = modelData(kurssi, 'koulutusmoduuli')
     const koulutusmoduuliModel = modelLookup(kurssi, 'koulutusmoduuli')
+    const diaSuoritus = kurssi.value.classes.includes('diasuoritus')
+    const title = diaSuoritus ? modelTitle(kurssi, 'koulutusmoduuli') : koulutusmoduuli.tunniste.koodiarvo
+
+    const footnoteHint = hasFootnoteHint(koulutusmoduuliModel)
+      ? <FootnoteHint title={'Paikallinen kurssi'}/>
+      : diaSuoritus && eiLasketaKokonaispistemäärään(kurssi)
+        ? <FootnoteHint title={'Ei lasketa kokonaispistemäärään'}/>
+        : null
 
     return [
       <tr key='kurssi-row' className={`kurssi ${even ? 'even' : ''}`}>
-        <td className='nimi'>{koulutusmoduuli.tunniste.koodiarvo} {hasFootnoteHint(koulutusmoduuliModel) && <FootnoteHint title={'Paikallinen kurssi'}/>}</td>
+        <td className='nimi'>{title} {footnoteHint}</td>
         <td className='arvosana'><ArvosanaEditor model={kurssi}/></td>
         <td className='lisatiedot'>
           <button className='inline-link-button' onClick={this.toggleExpand} aria-pressed={expanded}>

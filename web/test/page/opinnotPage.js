@@ -242,12 +242,20 @@ function Oppiaine(oppiaineElem) {
       oppiaineApi.lisääKurssiDialog.valitseKurssinTyyppi('Soveltava'),
       oppiaineApi.lisääKurssiDialog.lisääKurssi
     )},
+    poista: function() {
+      return oppiaineApi.propertyBySelector('.remove-row').removeValue
+    },
     lisääKurssiDialog: LisääKurssiDialog(),
     kurssi: function(identifier) {
       return Kurssi(subElement(oppiaineElem, ".kurssi:contains(" + identifier +")"))
     },
+    nthOsasuoritus: function(n) {
+      return Kurssi(subElement(oppiaineElem, ".kurssi:eq(" + n + ")"))
+    },
     errorText: function() { return extractAsText(subElement(oppiaineElem, '> .error')) },
-    arvosana: editorApi.propertyBySelector('tr td.arvosana')
+    arvosana: editorApi.propertyBySelector('tr td.arvosana'),
+    laajuus: editorApi.propertyBySelector('tr.laajuus'),
+    suorituskieli: editorApi.propertyBySelector('tr.suorituskieli')
   }, editorApi)
   return oppiaineApi
 
@@ -314,6 +322,7 @@ function Kurssi(elem) {
       return Editor(detailsElem)
     },
     tunnustettu: Editor(elem).propertyBySelector('.tunnustettu'),
+    laajuus: Editor(elem).propertyBySelector('tr.laajuus'),
     lisääTunnustettu: click(subElement(detailsElem, '.tunnustettu .add-value')),
     poistaTunnustettu: click(subElement(detailsElem, '.tunnustettu .remove-value')),
     poistaKurssi: click(subElement(elem, '.remove-value'))

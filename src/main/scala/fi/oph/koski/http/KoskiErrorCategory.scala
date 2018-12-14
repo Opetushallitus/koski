@@ -117,6 +117,7 @@ object KoskiErrorCategory {
       class Laajuudet extends ErrorCategory(Validation.this, "laajuudet", "Suoritusten laajuuksiin liittyvä validointivirhe") {
         val osasuorituksellaEriLaajuusyksikkö = subcategory("osasuorituksellaEriLaajuusyksikkö", "Osasuorituksella on eri laajuusyksikkö kuin ylemmän tason suorituksella")
         val osasuoritustenLaajuuksienSumma = subcategory("osasuoritustenLaajuuksienSumma", "Osasuoritusten laajuuksien summa ei täsmää")
+        val oppiaineenLaajuusPuuttuu = subcategory("oppiaineenLaajuusPuuttuu", "Oppiaineen laajuus puuttuu")
       }
       val laajuudet = new Laajuudet
 

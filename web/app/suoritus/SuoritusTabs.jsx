@@ -17,7 +17,13 @@ export const SuoritusTabs = ({ model, suoritukset }) => {
     assignTabNames(suoritukset2) // to get the correct tab name for the new suoritus
     navigateTo(urlForTab(suoritukset2, 0))
   }
-  let tabTitle = (suoritusModel) => suorituksenTyyppi(suoritusModel) == 'perusopetuksenoppimaara' ? <Text name="Päättötodistus"/> : suoritusTitle(suoritusModel)
+  let tabTitle = (suoritusModel) => {
+    switch (suorituksenTyyppi(suoritusModel)) {
+      case 'perusopetuksenoppimaara': return <Text name="Päättötodistus"/>
+      case 'diatutkintovaihe': return <Text name="Deutsche Internationale Abitur"/>
+      default: return suoritusTitle(suoritusModel)
+    }
+  }
 
   return (<div className="suoritus-tabs"><ul>
       {

@@ -51,7 +51,7 @@ export const ArvosanaEditor = ({model, notFoundText}) => {
   }</span>)
 }
 
-const resolveArvosanaModel = model => {
+export const resolveArvosanaModel = model => {
   const arviointi = modelLookup(model, 'arviointi.-1')
   const arvosana = arviointi ? modelLookup(model, 'arviointi.-1.arvosana') : null
 

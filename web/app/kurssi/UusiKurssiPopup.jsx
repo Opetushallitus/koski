@@ -19,7 +19,7 @@ const propertyFilterForModel = model =>
     : isLukionKurssi(model) ? propertyFilterForLukio
     : undefined
 
-export default ({oppiaineenSuoritus, resultCallback, toimipiste, uusiKurssinSuoritus}) => {
+export default ({oppiaineenSuoritus, resultCallback, toimipiste, uusiKurssinSuoritus, customTitle, customAlternativesCompletionFn}) => {
   let oppiaine = modelLookup(oppiaineenSuoritus, 'koulutusmoduuli')
   let selectedPrototypeAtom = Atom()
   let selectedAtom = Atom()
@@ -32,16 +32,21 @@ export default ({oppiaineenSuoritus, resultCallback, toimipiste, uusiKurssinSuor
   return (
       <ModalDialog className="uusi-kurssi-modal" onDismiss={resultCallback}
                    onSubmit={() => resultCallback(selectedAtom.get())} validP={validP} okTextKey="Lisää">
-        <h2><Text name="Lisää kurssi"/></h2>
-        <span className="kurssi"><UusiKurssiDropdown suoritukset={kurssiSuoritukset}
-                                                     oppiaine={oppiaine}
-                                                     kurssinSuoritus={uusiKurssinSuoritus}
-                                                     valtakunnallisetKurssiProtot={valtakunnallisetKurssiProtot}
-                                                     paikallinenKurssiProto={paikallinenKurssiProto}
-                                                     selected={selectedPrototypeAtom}
-                                                     resultCallback={(x) => selectedPrototypeAtom.set(x)}
-                                                     organisaatioOid={toimipiste}
-                                                     placeholder={t('Lisää kurssi')}/></span>
+        <h2><Text name={`Lisää ${customTitle || 'kurssi'}`}/></h2>
+        <span className="kurssi">
+          <UusiKurssiDropdown
+            suoritukset={kurssiSuoritukset}
+            oppiaine={oppiaine}
+            kurssinSuoritus={uusiKurssinSuoritus}
+            valtakunnallisetKurssiProtot={valtakunnallisetKurssiProtot}
+            paikallinenKurssiProto={paikallinenKurssiProto}
+            selected={selectedPrototypeAtom}
+            resultCallback={(x) => selectedPrototypeAtom.set(x)}
+            organisaatioOid={toimipiste}
+            placeholder={t(`Lisää ${customTitle || 'kurssi'}`)}
+            customAlternativesCompletionFn={customAlternativesCompletionFn}
+          />
+        </span>
         { // TODO: check placeholders from i18n
           selectedPrototypeAtom.flatMap(selectedProto => {
             if (!isPaikallinen(selectedProto) && !isLukionKurssi(selectedProto) && !isIBKurssi(selectedProto)) return null

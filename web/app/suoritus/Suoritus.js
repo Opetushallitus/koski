@@ -63,6 +63,8 @@ export const newSuoritusProto = (opiskeluoikeus, prototypeKey) => {
   return contextualizeSubModel(selectedProto, suoritukset, indexForNewItem)
 }
 
+export const copySuorituskieli = (from, to) => modelSet(to, modelLookup(from, 'suorituskieli'), 'suorituskieli')
+
 export const copyToimipiste = (from, to) => modelSet(to, modelLookup(from, 'toimipiste'), 'toimipiste')
 
 export const opiskeluoikeudenSuoritusByTyyppi = (tyyppi) => (opiskeluoikeus) => modelItems(opiskeluoikeus, 'suoritukset').find(suoritus => suorituksenTyyppi(suoritus) == tyyppi)
@@ -74,6 +76,8 @@ export const näyttötutkintoonValmistavanKoulutuksenSuoritus = opiskeluoikeuden
 export const ammatillisenTutkinnonSuoritus = opiskeluoikeudenSuoritusByTyyppi('ammatillinentutkinto')
 export const preIBSuoritus = opiskeluoikeudenSuoritusByTyyppi('preiboppimaara')
 export const ibTutkinnonSuoritus = opiskeluoikeudenSuoritusByTyyppi('ibtutkinto')
+export const valmistavanDIAVaiheenSuoritus = opiskeluoikeudenSuoritusByTyyppi('diavalmistavavaihe')
+export const diaTutkinnonSuoritus = opiskeluoikeudenSuoritusByTyyppi('diatutkintovaihe')
 
 export const koulutustyyppiKoodit = suoritustyyppiKoodi => {
   if (suoritustyyppiKoodi == 'perusopetuksenoppimaara' || suoritustyyppiKoodi == 'perusopetuksenvuosiluokka' || suoritustyyppiKoodi == 'nuortenperusopetuksenoppiaineenoppimaara') {

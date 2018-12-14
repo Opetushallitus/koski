@@ -1,7 +1,7 @@
 import React from 'baret'
 import Atom from 'bacon.atom'
 import {KurssiEditor} from './KurssiEditor'
-import {wrapOptional} from '../editor/EditorModel'
+import {modelSetTitle, wrapOptional} from '../editor/EditorModel'
 import {
   contextualizeSubModel,
   ensureArrayKey,
@@ -13,10 +13,11 @@ import {
   pushModel
 } from '../editor/EditorModel'
 import Text from '../i18n/Text'
+import {t} from '../i18n/i18n'
 import {ift} from '../util/util'
 import UusiKurssiPopup from './UusiKurssiPopup'
 
-export const KurssitEditor = ({model}) => {
+export const KurssitEditor = ({model, customTitle, customAlternativesCompletionFn}) => {
   let osasuoritukset = modelLookup(model, 'osasuoritukset')
   if (!osasuoritukset) return null
   let kurssit = modelItems(osasuoritukset)
@@ -24,7 +25,9 @@ export const KurssitEditor = ({model}) => {
   let showUusiKurssiAtom = Atom(false)
   let lisääKurssi = (kurssi) => {
     if (kurssi) {
-      var suoritusUudellaKurssilla = modelSet(kurssinSuoritusProto, kurssi, 'koulutusmoduuli')
+      const nimi = t(modelData(kurssi, 'tunniste.nimi'))
+      const kurssiWithTitle = nimi ? modelSetTitle(kurssi, nimi) : kurssi
+      var suoritusUudellaKurssilla = modelSet(kurssinSuoritusProto, kurssiWithTitle, 'koulutusmoduuli')
       ensureArrayKey(suoritusUudellaKurssilla)
       pushModel(suoritusUudellaKurssilla, model.context.changeBus)
     }
@@ -40,9 +43,18 @@ export const KurssitEditor = ({model}) => {
     }</ul>
     {
       model.context.edit && (<span className="uusi-kurssi">
-        <a onClick={() => showUusiKurssiAtom.set(true)}><Text name="Lisää kurssi"/></a>
+        <a onClick={() => showUusiKurssiAtom.set(true)}><Text name={`Lisää ${customTitle || 'kurssi'}`}/></a>
         {
-          ift(showUusiKurssiAtom, <UusiKurssiPopup oppiaineenSuoritus={model} resultCallback={lisääKurssi} toimipiste={modelData(model.context.toimipiste).oid} uusiKurssinSuoritus={kurssinSuoritusProto} />)
+          ift(showUusiKurssiAtom,
+            <UusiKurssiPopup
+              oppiaineenSuoritus={model}
+              resultCallback={lisääKurssi}
+              toimipiste={modelData(model.context.toimipiste).oid}
+              uusiKurssinSuoritus={kurssinSuoritusProto}
+              customTitle={customTitle}
+              customAlternativesCompletionFn={customAlternativesCompletionFn}
+            />
+          )
         }
       </span>)
     }
