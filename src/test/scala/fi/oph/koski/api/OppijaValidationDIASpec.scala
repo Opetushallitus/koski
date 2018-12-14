@@ -12,7 +12,7 @@ class OppijaValidationDIASpec extends FreeSpec with LocalJettyHttpSpecification 
       val laajuudenYksikköKurssia = "4"
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(tutkintoSuoritus.copy(
         osasuoritukset = Some(List(diaTutkintoAineSuoritus(diaOppiaineMuu("MA", osaAlue = "2", laajuus(8)), Some(List(
-          (diaTutkintoLukukausi("3", laajuus(8f, laajuudenYksikköKurssia)), "2"),
+          (diaTutkintoLukukausi("3", laajuus(8f, laajuudenYksikköKurssia)), "2")
         )))))
       )))
 
@@ -24,7 +24,7 @@ class OppijaValidationDIASpec extends FreeSpec with LocalJettyHttpSpecification 
     "Suoritus kesken, lukukausien laajuuksien summa ei täsmää -> HTTP 400" in {
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(tutkintoSuoritus.copy(
         osasuoritukset = Some(List(diaTutkintoAineSuoritus(diaOppiaineMuu("MA", osaAlue = "2", laajuus(2)), Some(List(
-          (diaTutkintoLukukausi("3", laajuus(1.0f)), "2"),
+          (diaTutkintoLukukausi("3", laajuus(1.0f)), "2")
         )))))
       )))
 
@@ -37,7 +37,7 @@ class OppijaValidationDIASpec extends FreeSpec with LocalJettyHttpSpecification 
       val oo = valmisOpiskeluoikeus.copy(suoritukset = List(tutkintoSuoritus.copy(
         vahvistus = vahvistusPaikkakunnalla(org = saksalainenKoulu, kunta = helsinki),
         osasuoritukset = Some(List(diaTutkintoAineSuoritus(diaOppiaineMuu("MA", osaAlue = "2", laajuus(2)), Some(List(
-          (diaTutkintoLukukausi("3", laajuus(1.0f)), "2"),
+          (diaTutkintoLukukausi("3", laajuus(1.0f)), "2")
         )))))
       )))
 
@@ -51,7 +51,7 @@ class OppijaValidationDIASpec extends FreeSpec with LocalJettyHttpSpecification 
         osasuoritukset = Some(List(diaTutkintoAineSuoritus(diaOppiaineMuu("MA", osaAlue = "2", laajuus(1)), Some(List(
           (diaTutkintoLukukausi("3", laajuus(0.33333f)), "2"),
           (diaTutkintoLukukausi("4", laajuus(0.33333f)), "2"),
-          (diaTutkintoLukukausi("5", laajuus(0.33333f)), "2"),
+          (diaTutkintoLukukausi("5", laajuus(0.33333f)), "2")
         )))))
       )))
 
@@ -66,7 +66,7 @@ class OppijaValidationDIASpec extends FreeSpec with LocalJettyHttpSpecification 
         osasuoritukset = Some(List(diaTutkintoAineSuoritus(diaOppiaineMuu("MA", osaAlue = "2", laajuus(1)), Some(List(
           (diaTutkintoLukukausi("3", laajuus(0.33333f)), "2"),
           (diaTutkintoLukukausi("4", laajuus(0.33333f)), "2"),
-          (diaTutkintoLukukausi("5", laajuus(0.33333f)), "2"),
+          (diaTutkintoLukukausi("5", laajuus(0.33333f)), "2")
         )))))
       )))
 
@@ -78,7 +78,7 @@ class OppijaValidationDIASpec extends FreeSpec with LocalJettyHttpSpecification 
     "Suoritus kesken, oppiaineelta puuttuu laajuus -> HTTP 200" in {
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(tutkintoSuoritus.copy(
         osasuoritukset = Some(List(diaTutkintoAineSuoritus(diaOppiaineMuu("MA", osaAlue = "2"), Some(List(
-          (diaTutkintoLukukausi("3", laajuus(1.0f)), "2"),
+          (diaTutkintoLukukausi("3", laajuus(1.0f)), "2")
         )))))
       )))
 
@@ -91,7 +91,7 @@ class OppijaValidationDIASpec extends FreeSpec with LocalJettyHttpSpecification 
       val oo = valmisOpiskeluoikeus.copy(suoritukset = List(tutkintoSuoritus.copy(
         vahvistus = vahvistusPaikkakunnalla(org = saksalainenKoulu, kunta = helsinki),
         osasuoritukset = Some(List(diaTutkintoAineSuoritus(diaOppiaineMuu("MA", osaAlue = "2"), Some(List(
-          (diaTutkintoLukukausi("3", laajuus(1.0f)), "2"),
+          (diaTutkintoLukukausi("3", laajuus(1.0f)), "2")
         )))))
       )))
 
@@ -106,10 +106,10 @@ class OppijaValidationDIASpec extends FreeSpec with LocalJettyHttpSpecification 
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(tutkintoSuoritus.copy(
         osasuoritukset = Some(List(
           diaTutkintoAineSuoritus(diaOppiaineÄidinkieli("FI", laajuus(1)), Some(List(
-            (diaTutkintoLukukausi("3", laajuus(1.0f)), "2"),
+            (diaTutkintoLukukausi("3", laajuus(1.0f)), "2")
           ))),
           diaTutkintoAineSuoritus(diaOppiaineÄidinkieli("FI", laajuus(1)), Some(List(
-            (diaTutkintoLukukausi("3", laajuus(1.0f)), "2"),
+            (diaTutkintoLukukausi("3", laajuus(1.0f)), "2")
           )))
         ))
       )))
@@ -123,10 +123,10 @@ class OppijaValidationDIASpec extends FreeSpec with LocalJettyHttpSpecification 
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(tutkintoSuoritus.copy(
         osasuoritukset = Some(List(
           diaTutkintoAineSuoritus(diaOppiaineÄidinkieli("FI", laajuus(1)), Some(List(
-            (diaTutkintoLukukausi("3", laajuus(1.0f)), "2"),
+            (diaTutkintoLukukausi("3", laajuus(1.0f)), "2")
           ))),
           diaTutkintoAineSuoritus(diaOppiaineÄidinkieli("DE", laajuus(1)), Some(List(
-            (diaTutkintoLukukausi("3", laajuus(1.0f)), "2"),
+            (diaTutkintoLukukausi("3", laajuus(1.0f)), "2")
           )))
         ))
       )))
