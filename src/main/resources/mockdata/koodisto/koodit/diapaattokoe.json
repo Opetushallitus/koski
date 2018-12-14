@@ -1,5 +1,5 @@
 [ {
-  "koodiUri" : "diapaattokoe_1",
+  "koodiUri" : "diapaattokoe_kirjallinenkoe",
   "koodiArvo" : "kirjallinenkoe",
   "metadata" : [ {
     "nimi" : "Kirjallinen koe",
@@ -9,7 +9,7 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "diapaattokoe_2",
+  "koodiUri" : "diapaattokoe_suullinenkoe",
   "koodiArvo" : "suullinenkoe",
   "metadata" : [ {
     "nimi" : "Suullinen koe",
@@ -19,7 +19,7 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "diapaattokoe_3",
+  "koodiUri" : "diapaattokoe_nayttotutkinto",
   "koodiArvo" : "nayttotutkinto",
   "metadata" : [ {
     "nimi" : "Erityisosaamisen näyttötutkinto",

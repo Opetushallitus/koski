@@ -3,15 +3,15 @@
   "versio" : 1,
   "metadata" : [ {
     "kieli" : "FI",
-    "nimi" : "Oppiaine Aidinkieli",
+    "nimi" : "Oppiaine Dia Aidinkieli",
     "kuvaus" : "Oppiaine Äidinkieli"
   }, {
     "kieli" : "SV",
-    "nimi" : "Oppiaine Aidinkieli",
+    "nimi" : "Oppiaine Dia Aidinkieli",
     "kuvaus" : "Oppiaine Äidinkieli"
   }, {
     "kieli" : "EN",
-    "nimi" : "Oppiaine Aidinkieli",
+    "nimi" : "Oppiaine Dia Aidinkieli",
     "kuvaus" : "Oppiaine Äidinkieli"
   } ],
   "codesGroupUri" : "http://koski",

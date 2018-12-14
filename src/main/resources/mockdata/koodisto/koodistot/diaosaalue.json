@@ -3,13 +3,13 @@
   "versio" : 1,
   "metadata" : [ {
     "kieli" : "FI",
-    "nimi" : "dia-osa-alue"
+    "nimi" : "dia osaalue"
   }, {
     "kieli" : "SV",
-    "nimi" : "dia-osa-alue"
+    "nimi" : "dia osaalue"
   }, {
     "kieli" : "EN",
-    "nimi" : "dia-osa-alue"
+    "nimi" : "dia osaalue"
   } ],
   "codesGroupUri" : "http://koski",
   "voimassaAlkuPvm" : "2019-01-01",
