@@ -259,6 +259,24 @@ describe('Omat tiedot', function() {
         })
       })
 
+      describe('Perusopetus', function () {
+        before(
+          authentication.logout,
+          etusivu.openPage,
+          etusivu.login(),
+          wait.until(korhopankki.isReady),
+          korhopankki.login('131298-5248'),
+          wait.until(omattiedot.isVisible)
+        )
+        describe('Monta oppiaineen oppimäärää samassa opiskeluoikeudessa', function () {
+          it('Näytetään oppiaineiden lukumäärä', function() {
+            expect(opinnot.opiskeluoikeudet.omatTiedotOpiskeluoikeuksienOtsikot()).to.deep.equal([
+              '2 oppiainetta (2008—2016, valmistunut)'
+            ])
+          })
+        })
+      })
+
       describe('Suoritusjako', function() {
         before(authentication.logout, etusivu.openPage)
         before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('180497-112F'), wait.until(omattiedot.isVisible))
