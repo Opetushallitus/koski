@@ -32,7 +32,7 @@ class SuomiFiService(application: KoskiApplication) extends Logging {
       )
     })
 
-  // Duplicates the logic from web/app/suoritus/OpiskeluoikeusEditor.jsx#suorituksenOtsikko
+  // Duplicates the logic from web/app/suoritus/OpiskeluoikeusEditor.jsx#näytettäväPäätasonSuoritusTitle
   private def suorituksenNimi(oo: Opiskeluoikeus) = {
     def pääSuoritus = oo.suoritukset.head
     if (pelkkiäVuosiluokkia(oo)) {
@@ -68,7 +68,7 @@ class SuomiFiService(application: KoskiApplication) extends Logging {
   private def suoritusNimi(suoritus: PäätasonSuoritus) =
     suoritus.koulutusmoduuli match {
       case a: AmmatillinenTutkintoKoulutus => a.perusteenNimi.get
-      case x => x.tunniste.getNimi.get
+      case k => k.tunniste.getNimi.get
     }
 
   private def isOpintojakso(suoritus: PäätasonSuoritus) =
