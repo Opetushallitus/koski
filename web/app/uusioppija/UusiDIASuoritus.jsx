@@ -11,6 +11,9 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   const suoritustyypitP = koodistoValues('suorituksentyyppi/diavalmistavavaihe,diatutkintovaihe')
   suoritustyypitP.onValue(tyypit => suoritustyyppiAtom.set(tyypit.find(koodiarvoMatch('diatutkintovaihe'))))
 
+  const suorituskieletP = koodistoValues('kieli/DE')
+  suorituskieletP.onValue(kielet => suorituskieliAtom.set(kielet.find(koodiarvoMatch('DE'))))
+
   Bacon.combineWith(
     oppilaitosAtom, suoritustyyppiAtom, suorituskieliAtom,
     makeSuoritus
