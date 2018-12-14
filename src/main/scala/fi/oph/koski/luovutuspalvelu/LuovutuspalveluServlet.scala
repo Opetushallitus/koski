@@ -16,12 +16,6 @@ import org.json4s.JsonAST.{JBool, JObject}
 class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends ApiServlet with ObservableSupport with RequiresLuovutuspalvelu with NoCache {
   private val luovutuspalveluService = new LuovutuspalveluService(application)
 
-  before() {
-    if (!application.features.luovutuspalvelu) {
-      haltWithStatus(KoskiErrorCategory.badRequest("Luovutuspalvelu-rajapinta ei käytössä tässä ympäristössä."))
-    }
-  }
-
   get("/healthcheck") {
     renderObject(JObject("ok" -> JBool(true)))
   }
