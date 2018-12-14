@@ -158,7 +158,6 @@ object TestConfig {
       |authenticationFailed.initialDelay = 1s
       |authenticationFailed.resetAfter = 1s
       |mockoidgenerator = true
-      |features.luovutuspalvelu = true
     """.stripMargin)
 }
 
