@@ -320,7 +320,7 @@ case class DIAOppiaineÄidinkieli(
   @Description("Oppiaineen osa-alue (1)")
   @KoodistoKoodiarvo("1")
   @DefaultValue("1")
-  osaAlue: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "1", koodistoUri = "diaosaalue"),
+  osaAlue: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "1", koodistoUri = "diaosaalue")
 ) extends DIAOsaAlueOppiaine with Äidinkieli {
   override def description = kieliaineDescription
 }
@@ -335,7 +335,7 @@ case class DIAOppiaineLisäaine(
   @KoodistoKoodiarvo("MALI")
   @KoodistoKoodiarvo("LI")
   tunniste: Koodistokoodiviite,
-  laajuus: Option[LaajuusVuosiviikkotunneissa],
+  laajuus: Option[LaajuusVuosiviikkotunneissa]
 ) extends DIAOppiaine
 
 case class DIAOppiaineLisäaineKieli(
@@ -346,7 +346,7 @@ case class DIAOppiaineLisäaineKieli(
   @KoodistoKoodiarvo("LA")
   @Discriminator
   @Description("Mikä kieli on kyseessä")
-  kieli: Koodistokoodiviite,
+  kieli: Koodistokoodiviite
 ) extends DIAOppiaine with Kieliaine {
   override def description = kieliaineDescription
 }
