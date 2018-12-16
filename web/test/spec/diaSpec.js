@@ -334,17 +334,14 @@ describe('DIA', function( ) {
               var dialog = aine.lisääKurssiDialog
 
               before(
-                editor.edit,
-                aine.avaaLisääKurssiDialog
+                editor.edit
               )
 
-              it('osasuorituksen lisääminen valmistavan vaiheen oppiaineeseen ei ole sallittu', function() {
-                expect(isElementVisible(dialog.propertyBySelector('.kurssi'))).to.equal(false)
-                expect(dialog.canSave()).to.equal(false)
+              it('nappi osasuorituksen lisäämiselle valmistavan vaiheen oppiaineeseen on piilotettu', function() {
+                expect(isElementVisible(aine.propertyBySelector('.uusi-kurssi a'))).to.equal(false)
               })
 
               after(
-                dialog.sulje,
                 editor.cancelChanges
               )
             })
