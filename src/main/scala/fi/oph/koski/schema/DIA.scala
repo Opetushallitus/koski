@@ -197,10 +197,7 @@ case class DIAOppiaineenValmistavanVaiheenLukukaudenArviointi(
   päivä: Option[LocalDate]
 ) extends DIAArviointi {
   override def arviointipäivä: Option[LocalDate] = päivä
-  override def hyväksytty: Boolean = arvosana.koodiarvo match {
-    case "6" => false
-    case _ => true
-  }
+  override def hyväksytty = true
 }
 
 trait DIATutkintovaiheenArviointi extends DIAArviointi {
@@ -208,10 +205,7 @@ trait DIATutkintovaiheenArviointi extends DIAArviointi {
   def arvosana: Koodistokoodiviite
   def päivä: Option[LocalDate]
   override def arviointipäivä: Option[LocalDate] = päivä
-  override def hyväksytty: Boolean = arvosana.koodiarvo match {
-    case "0" => false
-    case _ => true
-  }
+  override def hyväksytty = true
 }
 
 @Title("DIA-oppiaineen tutkintovaiheen numeerinen arviointi")
