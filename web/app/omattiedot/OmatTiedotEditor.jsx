@@ -1,6 +1,6 @@
 import React from 'baret'
 import {addContext, modelData} from '../editor/EditorModel.js'
-import {näytettävätPäätasonSuoritukset} from '../opiskeluoikeus/OpiskeluoikeusEditor'
+import {näytettäväPäätasonSuoritusTitle} from '../opiskeluoikeus/OpiskeluoikeusEditor'
 import {modelItems, modelTitle} from '../editor/EditorModel'
 import {OpiskeluoikeudenTila} from './fragments/OpiskeluoikeudenTila'
 import ChevronUpIcon from '../icons/ChevronUpIcon'
@@ -63,7 +63,7 @@ class Opiskeluoikeus extends React.Component {
           <div className='opiskeluoikeus-button-content'>
             <div className='opiskeluoikeus-title'>
               <h3>
-                {(näytettävätPäätasonSuoritukset(opiskeluoikeus)[0] || {}).title}
+                {näytettäväPäätasonSuoritusTitle(opiskeluoikeus)}
                 {hasAlkamispäivä && <OpiskeluoikeudenTila opiskeluoikeus={opiskeluoikeus}/>}
               </h3>
             </div>

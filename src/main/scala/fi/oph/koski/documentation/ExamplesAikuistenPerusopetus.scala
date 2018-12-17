@@ -20,19 +20,17 @@ object ExamplesAikuistenPerusopetus {
 
   lazy val aineopiskelija = Oppija(
     asUusiOppija(MockOppijat.eero),
-    List(AikuistenPerusopetuksenOpiskeluoikeus(
+    List(oppiaineenOppimääräOpiskeluoikeus)
+  )
+
+  lazy val oppiaineenOppimääräOpiskeluoikeus: AikuistenPerusopetuksenOpiskeluoikeus = {
+    AikuistenPerusopetuksenOpiskeluoikeus(
       päättymispäivä = Some(date(2016, 6, 4)),
       oppilaitos = Some(jyväskylänNormaalikoulu),
       koulutustoimija = None,
       suoritukset = List(
-        AikuistenPerusopetuksenOppiaineenOppimääränSuoritus(
-          koulutusmoduuli = äidinkieli("AI1", diaarinumero = Some("19/011/2015")),
-          toimipiste = jyväskylänNormaalikoulu,
-          arviointi = arviointi(9),
-          suoritustapa = suoritustapaErityinenTutkinto,
-          vahvistus = vahvistusPaikkakunnalla(),
-          suorituskieli = suomenKieli
-        )),
+        oppiaineenOppimääränSuoritus(äidinkieli("AI1", diaarinumero = Some("19/011/2015")))
+      ),
       tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
         List(
           AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
@@ -40,7 +38,13 @@ object ExamplesAikuistenPerusopetus {
         )
       ),
       lisätiedot = Some(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(vaikeastiVammainen = Some(List(Aikajakso(date(2014, 6, 6), None)))))
-    ))
+    )
+  }
+
+  lazy val montaOppiaineenOppimääränSuoritustaOpiskeluoikeus: AikuistenPerusopetuksenOpiskeluoikeus = oppiaineenOppimääräOpiskeluoikeus.copy(
+    suoritukset =
+      oppiaineenOppimääränSuoritus(aikuistenOppiaine("YH").copy(perusteenDiaarinumero = Some("19/011/2015"))).copy(arviointi = arviointi(10)) ::
+        oppiaineenOppimääräOpiskeluoikeus.suoritukset
   )
 
   def aikuistenPerusopetuksenOppimäärä2015 = Oppija(
@@ -85,6 +89,15 @@ object ExamplesAikuistenPerusopetus {
       osasuoritukset = oppiaineet
     )
   }
+
+  def oppiaineenOppimääränSuoritus(aine: AikuistenPerusopetuksenOppiaine) = AikuistenPerusopetuksenOppiaineenOppimääränSuoritus(
+    koulutusmoduuli = aine,
+    toimipiste = jyväskylänNormaalikoulu,
+    suorituskieli = suomenKieli,
+    suoritustapa = suoritustapaErityinenTutkinto,
+    vahvistus = vahvistusPaikkakunnalla(),
+    arviointi = arviointi(9)
+  )
 
   def oppiaineenSuoritus(aine: AikuistenPerusopetuksenOppiaine) = AikuistenPerusopetuksenOppiaineenSuoritus(
     koulutusmoduuli = aine,

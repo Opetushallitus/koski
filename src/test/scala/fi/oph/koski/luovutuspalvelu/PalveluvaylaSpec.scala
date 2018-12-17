@@ -2,7 +2,7 @@ package fi.oph.koski.luovutuspalvelu
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethods}
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.{MockOppijat, OppijaHenkilö}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{MockUser, MockUsers}
 import fi.oph.koski.log.AuditLogTester
@@ -29,7 +29,7 @@ class PalveluvaylaSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         verifySOAPError("forbidden.kiellettyKäyttöoikeus", "Ei sallittu näillä käyttöoikeuksilla")
       }
       postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, MockOppijat.ylioppilas.hetu.get) {
-        response.status shouldBe(200)
+        verifyResponseStatusOk()
       }
     }
 
@@ -46,7 +46,7 @@ class PalveluvaylaSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     "palauttaa tyhjän lista oppilaitoksia jos oppilasta ei löydy hetun perusteella" in {
       List("261125-1531", "210130-5616", "080278-8433", "061109-011D", "070696-522Y", "010844-509V").foreach { hetu =>
         postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, hetu) {
-          response.status shouldBe(200)
+          verifyResponseStatusOk()
           jsonResponse shouldEqual SuomiFiResponse(List.empty)
         }
       }
@@ -57,6 +57,48 @@ class PalveluvaylaSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         verifySOAPError("unavailable.virta", "Korkeakoulutuksen opiskeluoikeuksia ei juuri nyt saada haettua. Yritä myöhemmin uudelleen.")
       }
     }
+
+    "Suorituksen nimi" - {
+      "Kun on pelkkiä perusopetuksen vuosiluokkia käytetään sanaa 'Perusopetus'" in {
+        // kesken olevat perusopetuksen päättötodistukset karsitaan pois -> opiskeluoikeudessa pelkkiä perusopetuksen vuosiluokkia
+        suorituksenNimiRekisteritiedoissa(MockOppijat.ysiluokkalainen) shouldEqual "Perusopetus"
+      }
+
+      "Kun on pelkkiä perusopetuksen oppiaineen oppimääriä opiskeluoikeudessa käytetään '<lkm> oppiainetta'" in {
+        suorituksenNimiRekisteritiedoissa(MockOppijat.montaOppiaineenOppimäärääOpiskeluoikeudessa) shouldEqual "2 oppiainetta"
+      }
+
+      "Kun on pelkkiä korkeakoulun opintojaksoja opiskeluoikeudessa käytetään '<lkm> opintojaksoa'" in {
+        suorituksenNimiRekisteritiedoissa(MockOppijat.korkeakoululainen) shouldEqual "69 opintojaksoa"
+      }
+
+      "Aikuisten perusopetuksessa käytetään suorituksen tyypin nimeä" in {
+        suorituksenNimiRekisteritiedoissa(MockOppijat.aikuisOpiskelija) shouldEqual "Aikuisten perusopetuksen oppimäärä"
+      }
+
+      "Ammatillisen tutkinnon nimenä käytetään perusteen nimeä" in {
+        suorituksenNimiRekisteritiedoissa(MockOppijat.ammattilainen) shouldEqual "Luonto- ja ympäristöalan perustutkinto"
+      }
+
+      "Osittaisen ammatillisen tutkinnon nimen loppuun tulee sana 'osittainen'" in {
+        suorituksenNimiRekisteritiedoissa(MockOppijat.osittainenammattitutkinto) shouldEqual "Luonto- ja ympäristöalan perustutkinto, osittainen"
+      }
+
+      "Perustapauksessa käytetään suorituksen tunnisteen nimeä" in {
+        suorituksenNimiRekisteritiedoissa(MockOppijat.lukiolainen) shouldEqual "Lukion oppimäärä"
+        suorituksenNimiRekisteritiedoissa(MockOppijat.dippainssi) shouldEqual "Dipl.ins., konetekniikka"
+        suorituksenNimiRekisteritiedoissa(MockOppijat.ylioppilas) shouldEqual "Ylioppilastutkinto"
+        suorituksenNimiRekisteritiedoissa(MockOppijat.koululainen) shouldEqual "Perusopetus"
+      }
+    }
+  }
+
+  def suorituksenNimiRekisteritiedoissa(oppija: OppijaHenkilö): String =
+    haeSuomiFiRekisteritiedot(oppija).oppilaitokset.head.opiskeluoikeudet.head.nimi.get("fi")
+
+  def haeSuomiFiRekisteritiedot(oppija: OppijaHenkilö): SuomiFiResponse = postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, oppija.hetu.get) {
+    verifyResponseStatusOk()
+    JsonSerializer.parse[SuomiFiResponse]((soapResponse() \ "Body" \ "suomiFiRekisteritiedotResponse").text)
   }
 
   def postSuomiFiRekisteritiedot[A](user: MockUser, hetu: String)(fn: => A): A = {

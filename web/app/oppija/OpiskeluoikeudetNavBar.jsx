@@ -4,7 +4,6 @@ import {modelData, modelTitle} from '../editor/EditorModel.js'
 import Link from '../components/Link'
 import {currentLocation} from '../util/location.js'
 import {yearFromIsoDateString} from '../date/date'
-import {näytettävätPäätasonSuoritukset} from '../opiskeluoikeus/OpiskeluoikeusEditor'
 import {modelItems} from '../editor/EditorModel'
 import {UusiOpiskeluoikeusPopup} from './UusiOpiskeluoikeusPopup'
 import {postNewOppija} from '../uusioppija/UusiOppija'
@@ -49,9 +48,9 @@ export default ({ oppijaOid, opiskeluoikeusTyypit, selectedIndex }) => {
                   <ul className="opiskeluoikeudet">
                     {
                       modelItems(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').map((opiskeluoikeus, opiskeluoikeusIndex) =>
-                        näytettävätPäätasonSuoritukset(opiskeluoikeus).map((suoritusRyhmä, suoritusIndex) =>
+                        modelItems(opiskeluoikeus, 'suoritukset').map((suoritus, suoritusIndex) =>
                           (<li className="opiskeluoikeus" key={opiskeluoikeusIndex + '-' + suoritusIndex}>
-                            <span className="koulutus">{ modelTitle(suoritusRyhmä.suoritukset[0], 'tyyppi') }</span>
+                            <span className="koulutus">{ modelTitle(suoritus, 'tyyppi') }</span>
                             {' '}
                             { modelData(opiskeluoikeus, 'alkamispäivä')
                               ? <span>
