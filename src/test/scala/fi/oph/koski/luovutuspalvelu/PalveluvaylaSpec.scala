@@ -5,6 +5,7 @@ import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethods}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{MockUser, MockUsers}
+import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema.Finnish
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
@@ -13,7 +14,7 @@ import scala.xml.XML
 class PalveluvaylaSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods with Matchers with BeforeAndAfterAll {
   "Suomi.fi rekisteritiedot" - {
     "käyttää konffattua suomi.fi oidia" in {
-      KoskiApplicationForTests.config.getString("suomi-fi-user-oid") shouldEqual(MockUsers.suomiFiKäyttäjä.oid)
+      KoskiApplicationForTests.config.getString("suomi-fi-user-oid") shouldEqual MockUsers.suomiFiKäyttäjä.oid
     }
 
     "vaatii suomi.fi käyttäjän" in {
@@ -34,6 +35,8 @@ class PalveluvaylaSpec extends FreeSpec with LocalJettyHttpSpecification with Op
 
     "palauttaa oppilaan tiedot hetun perusteella" in {
       postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, MockOppijat.ylioppilas.hetu.get) {
+        verifyResponseStatusOk()
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUOMIFI_KATSOMINEN"))
         jsonResponse shouldEqual SuomiFiResponse(
             List(SuomiFiOppilaitos(Finnish("Helsingin medialukio",None,None),
               List(SuomiFiOpiskeluoikeus(None,None,None,Finnish("Ylioppilastutkinto",Some("Studentexamen"),Some("Matriculation Examination")))))))
