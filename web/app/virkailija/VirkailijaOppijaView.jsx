@@ -207,6 +207,7 @@ export class Oppija extends React.Component {
     stateP.filter(e => e === 'päätasonSuoritusDeleted').onValue(päätasonSuoritusDeleted)
     let showHenkilöUiLink = userP.map('.hasHenkiloUiWriteAccess')
     let showVirtaXmlLink = userP.map('.hasGlobalReadAccess')
+    let showSureLink = userP.map('.hasGlobalReadAccess')
     let varoitukset = modelItems(oppija, 'varoitukset').map(modelData)
     return oppija.loading
       ? <div className="loading"/>
@@ -220,6 +221,7 @@ export class Oppija extends React.Component {
               <a href={`/koski/api/oppija/${modelData(henkilö, 'oid')}/opintotiedot-json`}>{'JSON'}</a>
               {showHenkilöUiLink.map(show => show && <a href={`/henkilo-ui/oppija/${modelData(henkilö, 'oid')}?permissionCheckService=KOSKI`} target='_blank' title={t('OppijanumerorekisteriLinkTooltip')}><Text name="Oppijanumerorekisteri" /></a>)}
               {showVirtaXmlLink.map(show => show && <a href={`/koski/api/oppija/${modelData(henkilö, 'oid')}/virta-opintotiedot-xml`} target='_blank'>{'Virta XML'}</a>)}
+              {showSureLink.map(show => show && <a href={`/suoritusrekisteri/#/opiskelijat?henkilo=${modelData(henkilö, 'oid')}`} target='_blank'>{'Suoritusrekisteri'}</a>)}
             </h2>
             <div className="oppijanumero">{t('Oppijanumero')}{`: ${modelData(henkilö, 'oid')}`}</div>
             {
