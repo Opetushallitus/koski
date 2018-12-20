@@ -1,6 +1,6 @@
 package fi.oph.koski.koskiuser
 
-import fi.oph.koski.koskiuser.Rooli.{GLOBAALI_LUKU_KORKEAKOULU, GLOBAALI_LUKU_PERUSOPETUS, GLOBAALI_LUKU_TOINEN_ASTE}
+import fi.oph.koski.koskiuser.Rooli._
 import fi.oph.koski.schema.{OpiskeluoikeudenTyyppi, OrganisaatioWithOid}
 
 object Rooli {
@@ -74,4 +74,5 @@ case class KäyttöoikeusViranomainen(globalPalveluroolit: List[Palvelurooli]) e
     case _ => Nil
   }.map(_.koodiarvo).distinct
 
-case object KäyttöoikeusGlobalLuovutuspalvelu extends Käyttöoikeus
+  def isLuovutusPalveluAllowed: Boolean = globalPalveluroolit.contains(Palvelurooli("KOSKI", TIEDONSIIRTO_LUOVUTUSPALVELU))
+}

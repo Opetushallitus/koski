@@ -2,7 +2,7 @@ package fi.oph.koski.koskiuser
 
 import fi.oph.koski.cache.{CacheManager, ExpiringCache, KeyValueCache}
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioRepository}
-import fi.oph.koski.userdirectory.DirectoryClient
+import fi.oph.koski.userdirectory.{DirectoryClient, DirectoryUser}
 import fi.oph.koski.util.Timing
 
 import scala.concurrent.duration._
@@ -32,7 +32,6 @@ class KäyttöoikeusRepository(organisaatioRepository: OrganisaatioRepository, d
               flattened.map { org =>
                 k.copy(organisaatio = org.toOrganisaatio, juuri = org.oid == k.organisaatio.oid, oppilaitostyyppi = org.oppilaitostyyppi)
               }
-            case KäyttöoikeusGlobalLuovutuspalvelu => List(KäyttöoikeusGlobalLuovutuspalvelu)
           }
         }
       case None =>

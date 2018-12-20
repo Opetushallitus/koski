@@ -27,7 +27,7 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
   def hasReadAccess(organisaatio: Organisaatio.Oid) = hasAccess(organisaatio, AccessType.read)
   def hasWriteAccess(organisaatio: Organisaatio.Oid) = hasAccess(organisaatio, AccessType.write) && hasRole(LUOTTAMUKSELLINEN)
   def hasTiedonsiirronMitätöintiAccess(organisaatio: Organisaatio.Oid) = hasAccess(organisaatio, AccessType.tiedonsiirronMitätöinti)
-  def hasLuovutuspalveluAccess: Boolean = käyttöoikeudet.contains(KäyttöoikeusGlobalLuovutuspalvelu)
+  def hasLuovutuspalveluAccess: Boolean = globalViranomaisKäyttöoikeudet.exists(_.isLuovutusPalveluAllowed)
 
   def hasAccess(organisaatio: Organisaatio.Oid, accessType: AccessType.Value) = {
     val access = globalAccess.contains(accessType) || organisationOids(accessType).contains(organisaatio)
@@ -53,7 +53,9 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
 
   def hasRole(role: String): Boolean = {
     val palveluRooli = Palvelurooli("KOSKI", role)
-    globalKäyttöoikeudet.exists(_.globalPalveluroolit.contains(palveluRooli)) || orgKäyttöoikeudet.exists(_.organisaatiokohtaisetPalveluroolit.contains(palveluRooli))
+    globalKäyttöoikeudet.exists(_.globalPalveluroolit.contains(palveluRooli)) ||
+    globalViranomaisKäyttöoikeudet.exists(_.globalPalveluroolit.contains(palveluRooli)) ||
+    orgKäyttöoikeudet.exists(_.organisaatiokohtaisetPalveluroolit.contains(palveluRooli))
   }
 
   def juuriOrganisaatio: Option[OrganisaatioWithOid] = {
