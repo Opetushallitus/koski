@@ -22,7 +22,7 @@ class KäyttöoikeusRepository(organisaatioRepository: OrganisaatioRepository, d
         ldapUser.käyttöoikeudet.toSet.flatMap { k: Käyttöoikeus =>
           k match {
             case k: KäyttöoikeusGlobal => List(k)
-            case k: KäyttöoikeusGlobalByKoulutusmuoto => List(k)
+            case k: KäyttöoikeusViranomainen => List(k)
             case k: KäyttöoikeusOrg =>
               val organisaatioHierarkia = organisaatioRepository.getOrganisaatioHierarkia(k.organisaatio.oid)
               val flattened = OrganisaatioHierarkia.flatten(organisaatioHierarkia.toList)

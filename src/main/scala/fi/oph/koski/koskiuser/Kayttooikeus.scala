@@ -46,32 +46,32 @@ case class KäyttöoikeusOrg(organisaatio: OrganisaatioWithOid, organisaatiokoht
   override def toString = organisaatiokohtaisetPalveluroolit.mkString(",")
 }
 
-case class KäyttöoikeusGlobalByKoulutusmuoto(globalKoulutusmuotoRoolit: List[Palvelurooli]) extends Käyttöoikeus {
-  def globalAccessType: List[AccessType.Value] = if (globalKoulutusmuotoRoolit.exists(r => Rooli.globaalitKoulutusmuotoRoolit.contains(r.rooli))) {
+case class KäyttöoikeusViranomainen(globalPalveluroolit: List[Palvelurooli]) extends Käyttöoikeus {
+  def globalAccessType: List[AccessType.Value] = if (globalPalveluroolit.exists(r => r.palveluName == "KOSKI" && Rooli.globaalitKoulutusmuotoRoolit.contains(r.rooli))) {
     List(AccessType.read)
   } else {
     Nil
   }
 
-  def allowedOpiskeluoikeusTyypit: List[String] = globalKoulutusmuotoRoolit.flatMap(_.rooli match {
-    case GLOBAALI_LUKU_PERUSOPETUS => List(
+  def allowedOpiskeluoikeusTyypit: List[String] = globalPalveluroolit.flatMap {
+    case Palvelurooli("KOSKI", GLOBAALI_LUKU_PERUSOPETUS) => List(
       OpiskeluoikeudenTyyppi.esiopetus,
       OpiskeluoikeudenTyyppi.perusopetus,
       OpiskeluoikeudenTyyppi.aikuistenperusopetus,
       OpiskeluoikeudenTyyppi.perusopetuksenlisaopetus,
       OpiskeluoikeudenTyyppi.perusopetukseenvalmistavaopetus
     )
-    case GLOBAALI_LUKU_TOINEN_ASTE => List(
+    case Palvelurooli("KOSKI", GLOBAALI_LUKU_TOINEN_ASTE) => List(
       OpiskeluoikeudenTyyppi.ammatillinenkoulutus,
       OpiskeluoikeudenTyyppi.ibtutkinto,
       OpiskeluoikeudenTyyppi.lukiokoulutus,
       OpiskeluoikeudenTyyppi.luva,
       OpiskeluoikeudenTyyppi.ylioppilastutkinto
     )
-    case GLOBAALI_LUKU_KORKEAKOULU => List(
+    case Palvelurooli("KOSKI", GLOBAALI_LUKU_KORKEAKOULU) => List(
       OpiskeluoikeudenTyyppi.korkeakoulutus
     )
-  }).map(_.koodiarvo).distinct
-}
+    case _ => Nil
+  }.map(_.koodiarvo).distinct
 
 case object KäyttöoikeusGlobalLuovutuspalvelu extends Käyttöoikeus

@@ -18,7 +18,7 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
 
   lazy val orgKäyttöoikeudet: Set[KäyttöoikeusOrg] = käyttöoikeudet.collect { case k : KäyttöoikeusOrg => k}
   lazy val globalKäyttöoikeudet: Set[KäyttöoikeusGlobal] = käyttöoikeudet.collect { case k: KäyttöoikeusGlobal => k}
-  lazy val globalKoulutusmuotoKäyttöoikeudet: Set[KäyttöoikeusGlobalByKoulutusmuoto] = käyttöoikeudet.collect { case k: KäyttöoikeusGlobalByKoulutusmuoto => k}
+  lazy val globalViranomaisKäyttöoikeudet: Set[KäyttöoikeusViranomainen] = käyttöoikeudet.collect { case k: KäyttöoikeusViranomainen => k}
 
   def organisationOids(accessType: AccessType.Value): Set[String] = orgKäyttöoikeudet.collect { case k: KäyttöoikeusOrg if k.organisaatioAccessType.contains(accessType) => k.organisaatio.oid }
   lazy val globalAccess = globalKäyttöoikeudet.flatMap { _.globalAccessType }
@@ -34,9 +34,9 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
     access && (accessType != AccessType.write || hasRole(LUOTTAMUKSELLINEN))
   }
 
-  def hasGlobalKoulutusmuotoReadAccess: Boolean = globalKoulutusmuotoKäyttöoikeudet.flatMap(_.globalAccessType).contains(AccessType.read)
+  def hasGlobalKoulutusmuotoReadAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalAccessType).contains(AccessType.read)
 
-  lazy val allowedOpiskeluoikeusTyypit: Set[String] = globalKoulutusmuotoKäyttöoikeudet.flatMap(_.allowedOpiskeluoikeusTyypit)
+  lazy val allowedOpiskeluoikeusTyypit: Set[String] = globalViranomaisKäyttöoikeudet.flatMap(_.allowedOpiskeluoikeusTyypit)
   def hasGlobalReadAccess = globalAccess.contains(AccessType.read)
   def hasAnyWriteAccess = (globalAccess.contains(AccessType.write) || organisationOids(AccessType.write).nonEmpty) && hasRole(LUOTTAMUKSELLINEN)
   def hasLocalizationWriteAccess = globalKäyttöoikeudet.find(_.globalPalveluroolit.contains(Palvelurooli("LOKALISOINTI", "CRUD"))).isDefined
