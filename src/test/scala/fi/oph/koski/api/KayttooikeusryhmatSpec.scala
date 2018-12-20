@@ -318,7 +318,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
       val requestBody = HetuRequestV1(1, MockOppijat.eero.hetu.get, List(OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo))
       post("api/luovutuspalvelu/hetu", JsonSerializer.writeWithRoot(requestBody), headers = authHeaders(MockUsers.luovutuspalveluKäyttäjäArkaluontoinen) ++ jsonContent) {
         verifyResponseStatusOk()
-        sensitiveFieldValueEquals(eeronVankilaopetus, getLuovutuspalveluOpiskeluoikeudet)
+        vankilaopetusEquals(eeronVankilaopetus, readVankilaopetus(getLuovutuspalveluOpiskeluoikeudet))
       }
     }
   }
@@ -328,7 +328,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
       val requestBody = HetuRequestV1(1, MockOppijat.eero.hetu.get, List(OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo))
       post("api/luovutuspalvelu/hetu", JsonSerializer.writeWithRoot(requestBody), headers = authHeaders(MockUsers.luovutuspalveluKäyttäjä) ++ jsonContent) {
         verifyResponseStatusOk()
-        sensitiveFieldValueEquals(None, getLuovutuspalveluOpiskeluoikeudet)
+        vankilaopetusEquals(None, readVankilaopetus(getLuovutuspalveluOpiskeluoikeudet))
       }
     }
 
@@ -382,13 +382,13 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
 
   private lazy val eeronVankilaopetus = Some(List(Aikajakso(LocalDate.of(2001, 1, 1), None)))
 
-  private def sensitiveDataShown = sensitiveFieldValueEquals(expected = eeronVankilaopetus)
-  private def sensitiveDataHidden = sensitiveFieldValueEquals(expected = None)
+  private def sensitiveDataShown = vankilaopetusEquals(eeronVankilaopetus, readVankilaopetus())
+  private def sensitiveDataHidden = vankilaopetusEquals(None, readVankilaopetus())
 
-  private def sensitiveFieldValueEquals(expected: Option[List[Aikajakso]], opiskeluoikeudet: Seq[Opiskeluoikeus] = readOppija.opiskeluoikeudet) =
-    getVankilaopetusFromLisätiedot(opiskeluoikeudet) should equal(expected)
+  private def vankilaopetusEquals(expectedVankilaopetus: Option[List[Aikajakso]], actualVankilaOpetus: Option[List[Aikajakso]]) =
+    actualVankilaOpetus should equal(expectedVankilaopetus)
 
-  private def getVankilaopetusFromLisätiedot(opiskeluoikeudet: Seq[Opiskeluoikeus]) =
+  private def readVankilaopetus(opiskeluoikeudet: Seq[Opiskeluoikeus] = readOppija.opiskeluoikeudet) =
     opiskeluoikeudet.head.lisätiedot.get match { case l: AmmatillisenOpiskeluoikeudenLisätiedot => l.vankilaopetuksessa }
 
   private def getLuovutuspalveluOpiskeluoikeudet = {
