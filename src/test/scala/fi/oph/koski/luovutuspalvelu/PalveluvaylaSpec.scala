@@ -19,7 +19,7 @@ class PalveluvaylaSpec extends FreeSpec with LocalJettyHttpSpecification with Op
 
     "vaatii suomi.fi käyttäjän" in {
       MockUsers.users
-        .diff(List(MockUsers.luovutuspalveluKäyttäjä, MockUsers.suomiFiKäyttäjä))
+        .diff(List(MockUsers.luovutuspalveluKäyttäjäArkaluontoinen, MockUsers.luovutuspalveluKäyttäjä, MockUsers.suomiFiKäyttäjä))
         .foreach { user =>
           postSuomiFiRekisteritiedot(user, MockOppijat.ylioppilas.hetu.get) {
             verifySOAPError("forbidden.vainViranomainen", "Sallittu vain viranomaisille")
