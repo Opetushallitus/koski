@@ -681,24 +681,15 @@ describe('DIA', function( ) {
               )
 
               it('lisää osasuorituksen', function () {
-                expect(extractAsText(S('.oppiaineet .A'))).to.contain('12/II *\n4')
-              })
-            })
-
-            describe('Lasketaan kokonaispistemäärään -valinnan lisääminen', function() {
-              var kurssi = aine.kurssi('12/II')
-
-              before(
-                editor.edit,
-                kurssi.toggleDetails,
-                kurssi.details().property('lasketaanKokonaispistemäärään').setValue(true),
-                kurssi.toggleDetails,
-                editor.saveChanges,
-                wait.until(page.isSavedLabelShown)
-              )
-
-              it('tallentuu ja muutos näkyy osasuorituksen tiedoissa', function () {
                 expect(extractAsText(S('.oppiaineet .A'))).to.contain('12/II\n4')
+              })
+
+              describe('Lasketaan kokonaispistemäärään -tieto', () => {
+                var kurssi = aine.kurssi('12/II')
+                before(kurssi.showDetails)
+                it('on merkitty todeksi', function () {
+                  expect(kurssi.lasketaanKokonaispistemäärään.getValue()).to.equal('kyllä')
+                })
               })
             })
 
@@ -712,10 +703,31 @@ describe('DIA', function( ) {
                 kurssi.toggleDetails,
                 editor.saveChanges,
                 wait.until(page.isSavedLabelShown),
+                aine.kurssi('12/II').showDetails
               )
 
               it('poistuu ja muutos näkyy osasuorituksen tiedoissa', function () {
+                expect(kurssi.lasketaanKokonaispistemäärään.getValue()).to.equal('ei')
                 expect(extractAsText(S('.oppiaineet .A'))).to.contain('12/II *\n4')
+              })
+            })
+
+            describe('Lasketaan kokonaispistemäärään -valinnan lisääminen', function() {
+              var kurssi = aine.kurssi('12/II')
+
+              before(
+                editor.edit,
+                kurssi.toggleDetails,
+                kurssi.details().property('lasketaanKokonaispistemäärään').setValue(true),
+                kurssi.toggleDetails,
+                editor.saveChanges,
+                wait.until(page.isSavedLabelShown),
+                aine.kurssi('12/II').showDetails
+              )
+
+              it('tallentuu ja muutos näkyy osasuorituksen tiedoissa', function () {
+                expect(kurssi.lasketaanKokonaispistemäärään.getValue()).to.equal('kyllä')
+                expect(extractAsText(S('.oppiaineet .A'))).to.contain('12/II\n4')
               })
             })
 

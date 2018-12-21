@@ -351,6 +351,7 @@ function Kurssi(elem) {
     },
     tunnustettu: Editor(elem).propertyBySelector('.tunnustettu'),
     laajuus: Editor(elem).propertyBySelector('tr.laajuus'),
+    lasketaanKokonaispistemäärään: Editor(elem).propertyBySelector('tr.lasketaanKokonaispistemäärään'),
     lisääTunnustettu: click(subElement(detailsElem, '.tunnustettu .add-value')),
     poistaTunnustettu: click(subElement(detailsElem, '.tunnustettu .remove-value')),
     poistaKurssi: click(subElement(elem, '.remove-value'))
