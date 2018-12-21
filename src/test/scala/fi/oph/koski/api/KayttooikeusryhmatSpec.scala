@@ -2,19 +2,24 @@ package fi.oph.koski.api
 
 import java.time.LocalDate
 
+import fi.oph.koski.KoskiApplicationForTests
+import fi.oph.koski.db.KoskiDatabase.DB
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.db.Tables.OpiskeluOikeudetWithAccessCheck
+import fi.oph.koski.db.{KoskiDatabaseMethods, Tables}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.{evira, korkeakouluViranomainen, perusopetusViranomainen, toinenAsteViranomainen}
-import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
+import fi.oph.koski.koskiuser.{KoskiSession, MockUsers, UserWithPassword}
 import fi.oph.koski.luovutuspalvelu.{HetuRequestV1, LuovutuspalveluResponseV1}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.scalatest.{FreeSpec, Matchers}
 
-class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods with QueryTestMethods {
+class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods with QueryTestMethods with KoskiDatabaseMethods {
   "koski-oph-pääkäyttäjä" - {
     val user = MockUsers.paakayttaja
     "voi muokata kaikkia opiskeluoikeuksia" in {
@@ -29,8 +34,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
 
     "voi hakea ja katsella kaikkia opiskeluoikeuksia" in {
-      //FIXME: keksi fiksumpi tapa testata tämä
-      queryOppijat(user = user).length should be >= 10
+      queryOppijat(user = user).length should equal(koskeenTallennetutOppijatCount)
       authGet("api/oppija/" + MockOppijat.ammattilainen.oid, user) {
         verifyResponseStatusOk()
       }
@@ -396,4 +400,14 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     import fi.oph.koski.schema.KoskiSchema.deserializationContext
     SchemaValidatingExtractor.extract[LuovutuspalveluResponseV1](body).right.get.opiskeluoikeudet
   }
+
+  private def koskeenTallennetutOppijatCount =
+    runDbSync(OpiskeluOikeudetWithAccessCheck(KoskiSession.systemUser)
+      .join(Tables.Henkilöt).on(_.oppijaOid === _.oid)
+      .filter { case (_, henkilö) => henkilö.masterOid.isEmpty }
+      .map(_._1.oppijaOid).result)
+      .distinct
+      .length
+
+  override protected def db: DB = KoskiApplicationForTests.masterDatabase.db
 }
