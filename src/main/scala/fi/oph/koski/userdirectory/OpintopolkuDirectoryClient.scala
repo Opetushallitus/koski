@@ -62,15 +62,15 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
     Http.runTask(oppijanumeroRekisteriClient.findTyöSähköpostiosoitteet(organisaatioOid, ryhmä))
 
   private def resolveKäyttöoikeudet(käyttäjä: HenkilönKäyttöoikeudet) =
-    (käyttäjä.oidHenkilo, käyttäjä.organisaatiot.flatMap {
+    (käyttäjä.oidHenkilo, käyttäjä.organisaatiot.map {
       case OrganisaatioJaKäyttöoikeudet(organisaatioOid, käyttöoikeudet) =>
         val roolit = käyttöoikeudet.map { case PalveluJaOikeus(palvelu, oikeus) => Palvelurooli(palvelu, oikeus) }
         if (organisaatioOid == Opetushallitus.organisaatioOid) {
-          List(KäyttöoikeusGlobal(roolit))
+          KäyttöoikeusGlobal(roolit)
         } else if (hasViranomaisRooli(roolit)) {
-          käyttöoikeusByKoulutusmuoto(roolit) ++ käyttöoikeusLuovutuspalvelu(roolit)
+          KäyttöoikeusViranomainen(roolit)
         } else {
-          List(KäyttöoikeusOrg(OidOrganisaatio(organisaatioOid), roolit, juuri = true, oppilaitostyyppi = None))
+          KäyttöoikeusOrg(OidOrganisaatio(organisaatioOid), roolit, juuri = true, oppilaitostyyppi = None)
         }
     })
 
@@ -80,28 +80,7 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
     }
   }
 
-  private def käyttöoikeusByKoulutusmuoto(roolit: List[Palvelurooli]): List[Käyttöoikeus] = {
-    val koulutusmuotoRoles = roolit.filter(r => Rooli.globaalitKoulutusmuotoRoolit.contains(r.rooli))
-    if (koulutusmuotoRoles.nonEmpty) {
-      List(KäyttöoikeusGlobalByKoulutusmuoto(koulutusmuotoRoles))
-    } else {
-      Nil
-    }
-  }
-
-  private def käyttöoikeusLuovutuspalvelu(roolit: List[Palvelurooli]): List[Käyttöoikeus] =
-    if (hasLuovutuspalveluRooli(roolit)) {
-      List(KäyttöoikeusGlobalLuovutuspalvelu)
-    } else {
-      Nil
-    }
-
   private def hasViranomaisRooli(roolit: List[Palvelurooli]) =
-    hasGlobalKoulutusmuotoRoles(roolit) || hasLuovutuspalveluRooli(roolit)
-
-  private def hasGlobalKoulutusmuotoRoles(roolit: List[Palvelurooli]) =
-    roolit.exists(r => Rooli.globaalitKoulutusmuotoRoolit.contains(r.rooli))
-
-  private def hasLuovutuspalveluRooli(roolit: List[Palvelurooli]) =
+    roolit.exists(r => Rooli.globaalitKoulutusmuotoRoolit.contains(r.rooli)) ||
     roolit.map(_.rooli).contains(Rooli.TIEDONSIIRTO_LUOVUTUSPALVELU)
 }
