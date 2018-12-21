@@ -29,6 +29,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
 
     "voi hakea ja katsella kaikkia opiskeluoikeuksia" in {
+      //FIXME: keksi fiksumpi tapa testata tämä
       queryOppijat(user = user).length should be >= 10
       authGet("api/oppija/" + MockOppijat.ammattilainen.oid, user) {
         verifyResponseStatusOk()
