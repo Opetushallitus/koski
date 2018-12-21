@@ -2,11 +2,9 @@ package fi.oph.koski.api
 
 import java.time.LocalDate
 
-import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.db.Tables
 import fi.oph.koski.db.Tables.OpiskeluOikeudetWithAccessCheck
-import fi.oph.koski.db.{KoskiDatabaseMethods, Tables}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
@@ -19,7 +17,7 @@ import fi.oph.koski.schema._
 import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.scalatest.{FreeSpec, Matchers}
 
-class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods with QueryTestMethods with KoskiDatabaseMethods {
+class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods with QueryTestMethods with DatabaseTestMethods {
   "koski-oph-pääkäyttäjä" - {
     val user = MockUsers.paakayttaja
     "voi muokata kaikkia opiskeluoikeuksia" in {
@@ -58,11 +56,11 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
 
     "voi hakea ja katsella ytr-ylioppilastutkintosuorituksia" in {
-      haeOpiskeluoikeudetHetulla("250493-602S", user).filter(_.tyyppi.koodiarvo == "ylioppilastutkinto").length should equal(1)
+      haeOpiskeluoikeudetHetulla("250493-602S", user).count(_.tyyppi.koodiarvo == "ylioppilastutkinto") should equal(1)
     }
 
     "voi hakea ja katsella virta-ylioppilastutkintosuorituksia" in {
-      haeOpiskeluoikeudetHetulla("250668-293Y", user).filter(_.tyyppi.koodiarvo == "korkeakoulutus").length should be >= 1
+      haeOpiskeluoikeudetHetulla("250668-293Y", user).count(_.tyyppi.koodiarvo == "korkeakoulutus") should be >= 1
     }
   }
 
@@ -404,10 +402,8 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
   private def koskeenTallennetutOppijatCount =
     runDbSync(OpiskeluOikeudetWithAccessCheck(KoskiSession.systemUser)
       .join(Tables.Henkilöt).on(_.oppijaOid === _.oid)
-      .filter { case (_, henkilö) => henkilö.masterOid.isEmpty }
+      .filter(_._2.masterOid.isEmpty)
       .map(_._1.oppijaOid).result)
       .distinct
       .length
-
-  override protected def db: DB = KoskiApplicationForTests.masterDatabase.db
 }

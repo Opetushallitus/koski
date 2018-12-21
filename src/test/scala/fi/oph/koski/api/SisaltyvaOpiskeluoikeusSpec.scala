@@ -1,8 +1,6 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.db.KoskiDatabase.DB
-import fi.oph.koski.db.KoskiDatabaseMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables.OpiskeluOikeudetWithAccessCheck
 import fi.oph.koski.documentation.AmmatillinenExampleData._
@@ -15,9 +13,10 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot.{omnia, stadinAmmattiopisto}
 import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, OidOrganisaatio, Oppilaitos, SisältäväOpiskeluoikeus}
 import fi.oph.koski.util.Wait
 import org.scalatest.{FreeSpec, Matchers}
+
 import scala.language.reflectiveCalls
 
-class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods with LocalJettyHttpSpecification with KoskiDatabaseMethods {
+class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods with LocalJettyHttpSpecification with DatabaseTestMethods {
   "Sisältyvä opiskeluoikeus" - {
     lazy val fixture = new {
       resetFixtures
@@ -95,8 +94,6 @@ class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with Opiskelu
 
   def opiskeluoikeusId(oo: AmmatillinenOpiskeluoikeus): Option[Int] =
     oo.oid.flatMap(oid => runDbSync(OpiskeluOikeudetWithAccessCheck(systemUser).filter(_.oid === oid).map(_.id).result).headOption)
-
-  override protected def db: DB = KoskiApplicationForTests.masterDatabase.db
 
   private def syncPerustiedotToElasticsearch(waitCondition: => Boolean): Unit = {
     KoskiApplicationForTests.perustiedotSyncScheduler.syncAndLogErrors(None)
