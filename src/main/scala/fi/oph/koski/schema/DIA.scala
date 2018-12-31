@@ -229,6 +229,7 @@ case class DIAOppiaineenTutkintovaiheenNumeerinenArviointi(
   @KoodistoKoodiarvo("15")
   arvosana: Koodistokoodiviite,
   päivä: Option[LocalDate],
+  @DefaultValue(true)
   lasketaanKokonaispistemäärään: Boolean = true
 ) extends DIATutkintovaiheenArviointi
 

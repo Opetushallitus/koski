@@ -90,6 +90,8 @@ case class NumberModelBuilder(t: NumberSchema) extends ModelBuilderWithData[Numb
 case class BooleanModelBuilder(t: BooleanSchema) extends ModelBuilderWithData[Boolean] {
   override def buildModelForObject(x: Boolean, metadata: List[Metadata]) = BooleanModel(ValueWithData(x, classesFromMetadata(metadata)), metadata)
   override def getPrototypeData = false
+  override def buildPrototype(metadata: List[Metadata]): EditorModel = buildModelForObject(getDefaultValue(metadata), metadata)
+  def getDefaultValue(metadata: List[Metadata]): Boolean = DefaultValue.getDefaultValue(metadata).getOrElse(false)
 }
 
 case class StringModelBuilder(t: StringSchema) extends ModelBuilderWithData[String] {
