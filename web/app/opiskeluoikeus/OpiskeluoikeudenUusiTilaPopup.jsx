@@ -19,7 +19,7 @@ export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, suorit
 
   let { modelP, errorP } = accumulateModelStateAndValidity(initialModel)
 
-  let isAllowedDate = d => edellisenTilanAlkupäivä ? d >= edellisenTilanAlkupäivä : true
+  let isAllowedDate = d => edellisenTilanAlkupäivä ? d > edellisenTilanAlkupäivä : true
 
   let alkuPäiväModel = modelP.map(m => modelLookupRequired(m, 'alku'))
   let tilaModel = modelP.map(m => modelLookupRequired(m, 'tila'))

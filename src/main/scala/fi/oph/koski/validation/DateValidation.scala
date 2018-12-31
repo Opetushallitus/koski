@@ -16,7 +16,7 @@ object DateValidation {
 
   def validateJaksot(name: String, jaksot: Iterable[Alkupäivällinen], errorCategory: ErrorCategory): HttpStatus = {
     HttpStatus.fold(jaksot.zip(jaksot.drop(1)).map { case (jakso1, jakso2) =>
-      HttpStatus.validate(jakso1.alku.compareTo(jakso2.alku) <= 0)(errorCategory(s"${name}: ${jakso1.alku} oltava sama tai aiempi kuin ${jakso2.alku}"))
+      HttpStatus.validate(jakso1.alku.compareTo(jakso2.alku) < 0)(errorCategory(s"${name}: ${jakso1.alku} oltava aiempi kuin ${jakso2.alku}"))
     })
   }
 
