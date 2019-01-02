@@ -224,11 +224,12 @@ object Opiskelijavuositiedot {
     aikajaksot.map(lomaPäivät).reduce((a, b) => (a._1 + b._1, a._2 + b._2))
   }
 
-  private def opiskelijavuosikertymä(aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow]): Double = {
+  private[raportit] def opiskelijavuosikertymä(aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow]): Double = {
     aikajaksot.map(j => (j.tila match {
-      case "loma" => lomaPäivät(j)._1
-      case "lasna" | "valmistunut" => j.lengthInDays
+      case "loma" => lomaPäivät(j)._1 * (j.osaAikaisuus.toDouble / 100.0)
+      case "lasna" => j.lengthInDays * (j.osaAikaisuus.toDouble / 100.0)
+      case "valmistunut" => j.lengthInDays // valmistumispäivä lasketaan aina 100% läsnäolopäiväksi
       case _ => 0
-    }) * (j.osaAikaisuus.toDouble / 100.0)).sum
+    })).sum
   }
 }
