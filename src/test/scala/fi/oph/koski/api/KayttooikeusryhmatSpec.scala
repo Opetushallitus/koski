@@ -282,7 +282,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
 
     "näkee vain toisen asteen opiskeluoikeudet" in {
-      queryOppijat(user = toinenAsteViranomainen).flatMap(_.opiskeluoikeudet).map(_.tyyppi.koodiarvo).distinct.sorted should be(List("ammatillinenkoulutus", "ibtutkinto", "lukiokoulutus", "luva"))
+      queryOppijat(user = toinenAsteViranomainen).flatMap(_.opiskeluoikeudet).map(_.tyyppi.koodiarvo).toSet should be(Set("ammatillinenkoulutus", "ibtutkinto", "lukiokoulutus", "luva", "diatutkinto"))
       authGet("api/oppija/" + MockOppijat.ylioppilas.oid, toinenAsteViranomainen) {
         verifyResponseStatusOk()
       }

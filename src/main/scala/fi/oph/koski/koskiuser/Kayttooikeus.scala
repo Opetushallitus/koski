@@ -64,6 +64,7 @@ case class KäyttöoikeusViranomainen(globalPalveluroolit: List[Palvelurooli]) e
     case Palvelurooli("KOSKI", GLOBAALI_LUKU_TOINEN_ASTE) => List(
       OpiskeluoikeudenTyyppi.ammatillinenkoulutus,
       OpiskeluoikeudenTyyppi.ibtutkinto,
+      OpiskeluoikeudenTyyppi.diatutkinto,
       OpiskeluoikeudenTyyppi.lukiokoulutus,
       OpiskeluoikeudenTyyppi.luva,
       OpiskeluoikeudenTyyppi.ylioppilastutkinto
