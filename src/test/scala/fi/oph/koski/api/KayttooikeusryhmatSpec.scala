@@ -49,7 +49,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
 
     "voi hakea ja katsella kaikkia opiskeluoikeuksia" in {
-      queryOppijat(user = user).length should be >= 10
+      queryOppijat(user = user).length should equal(koskeenTallennetutOppijatCount)
       authGet("api/oppija/" + MockOppijat.ammattilainen.oid, user) {
         verifyResponseStatusOk()
       }
@@ -223,7 +223,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
 
     "voi hakea ja katsella kaikkia opiskeluoikeuksia" in {
-      queryOppijat(user = MockUsers.kela).length should be >= 10
+      queryOppijat(user = MockUsers.kela).length should equal(koskeenTallennetutOppijatCount)
       authGet("api/oppija/" + MockOppijat.ammattilainen.oid, MockUsers.kela) {
         verifyResponseStatusOk()
       }
@@ -249,7 +249,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
 
     "voi hakea ja katsella kaikkia opiskeluoikeuksia" in {
-      queryOppijat(user = evira).length should be >= 10
+      queryOppijat(user = MockUsers.evira).length should equal(koskeenTallennetutOppijatCount)
       authGet("api/oppija/" + MockOppijat.ammattilainen.oid, evira) {
         verifyResponseStatusOk()
       }
