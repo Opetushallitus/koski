@@ -193,8 +193,8 @@ Paikallisen kannan datat tulevat hakemistoon `elastic-data`.
 Jos haluat tarkastella paikallisen kehityskannan tilaa SQL-työkalulla, se onnistuu esimerkiksi Postgren omalla komentorivityökalulla `psql`:
 
 ``` shell
-psql -h localhost koski koski
-psql -h localhost koskitest koski
+psql -h localhost koski oph
+psql -h localhost koskitest oph
 ```
 
 Peruskomennot:
