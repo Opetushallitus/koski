@@ -2,19 +2,22 @@ package fi.oph.koski.api
 
 import java.time.LocalDate
 
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.db.Tables
+import fi.oph.koski.db.Tables.OpiskeluOikeudetWithAccessCheck
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.{evira, korkeakouluViranomainen, perusopetusViranomainen, toinenAsteViranomainen}
-import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
+import fi.oph.koski.koskiuser.{KoskiSession, MockUsers, UserWithPassword}
 import fi.oph.koski.luovutuspalvelu.{HetuRequestV1, LuovutuspalveluResponseV1}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.scalatest.{FreeSpec, Matchers}
 
-class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods with QueryTestMethods {
+class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods with QueryTestMethods with DatabaseTestMethods {
   "koski-oph-pääkäyttäjä" - {
     val user = MockUsers.paakayttaja
     "voi muokata kaikkia opiskeluoikeuksia" in {
@@ -29,8 +32,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
 
     "voi hakea ja katsella kaikkia opiskeluoikeuksia" in {
-      //FIXME: keksi fiksumpi tapa testata tämä
-      queryOppijat(user = user).length should be >= 10
+      queryOppijat(user = user).length should equal(koskeenTallennetutOppijatCount)
       authGet("api/oppija/" + MockOppijat.ammattilainen.oid, user) {
         verifyResponseStatusOk()
       }
@@ -47,18 +49,18 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
 
     "voi hakea ja katsella kaikkia opiskeluoikeuksia" in {
-      queryOppijat(user = user).length should be >= 10
+      queryOppijat(user = user).length should equal(koskeenTallennetutOppijatCount)
       authGet("api/oppija/" + MockOppijat.ammattilainen.oid, user) {
         verifyResponseStatusOk()
       }
     }
 
     "voi hakea ja katsella ytr-ylioppilastutkintosuorituksia" in {
-      haeOpiskeluoikeudetHetulla("250493-602S", user).filter(_.tyyppi.koodiarvo == "ylioppilastutkinto").length should equal(1)
+      haeOpiskeluoikeudetHetulla("250493-602S", user).count(_.tyyppi.koodiarvo == "ylioppilastutkinto") should equal(1)
     }
 
     "voi hakea ja katsella virta-ylioppilastutkintosuorituksia" in {
-      haeOpiskeluoikeudetHetulla("250668-293Y", user).filter(_.tyyppi.koodiarvo == "korkeakoulutus").length should be >= 1
+      haeOpiskeluoikeudetHetulla("250668-293Y", user).count(_.tyyppi.koodiarvo == "korkeakoulutus") should be >= 1
     }
   }
 
@@ -110,15 +112,15 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
 
     "voi hakea ja katsella ytr-ylioppilastutkintosuorituksia" - {
       "vain omassa organisaatiossaan" in {
-        haeOpiskeluoikeudetHetulla("250493-602S", MockUsers.omniaPalvelukäyttäjä).filter(_.tyyppi.koodiarvo == "ylioppilastutkinto").length should equal(0)
-        haeOpiskeluoikeudetHetulla("250493-602S", MockUsers.kalle).filter(_.tyyppi.koodiarvo == "ylioppilastutkinto").length should equal(1)
+        haeOpiskeluoikeudetHetulla("250493-602S", MockUsers.omniaPalvelukäyttäjä).count(_.tyyppi.koodiarvo == "ylioppilastutkinto") should equal(0)
+        haeOpiskeluoikeudetHetulla("250493-602S", MockUsers.kalle).count(_.tyyppi.koodiarvo == "ylioppilastutkinto") should equal(1)
       }
     }
 
     "voi hakea ja katsella virta-ylioppilastutkintosuorituksia" - {
       "vain omassa organisaatiossaan" in {
-        haeOpiskeluoikeudetHetulla("250668-293Y", MockUsers.omniaPalvelukäyttäjä).filter(_.tyyppi.koodiarvo == "korkeakoulutus").length should equal(0)
-        haeOpiskeluoikeudetHetulla("250668-293Y", MockUsers.kalle).filter(_.tyyppi.koodiarvo == "korkeakoulutus").length should be >= 1
+        haeOpiskeluoikeudetHetulla("250668-293Y", MockUsers.omniaPalvelukäyttäjä).count(_.tyyppi.koodiarvo == "korkeakoulutus") should equal(0)
+        haeOpiskeluoikeudetHetulla("250668-293Y", MockUsers.kalle).count(_.tyyppi.koodiarvo == "korkeakoulutus") should be >= 1
       }
     }
 
@@ -186,10 +188,10 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
         resetFixtures
         putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästä, henkilö = oppija, headers = authHeaders(MockUsers.omniaPalvelukäyttäjä) ++ jsonContent) {
           verifyResponseStatusOk()
-          haeOpiskeluoikeudetHetulla(oppija.hetu, user).filter(_.tyyppi.koodiarvo == "ammatillinenkoulutus").length should equal(1)
+          haeOpiskeluoikeudetHetulla(oppija.hetu, user).count(_.tyyppi.koodiarvo == "ammatillinenkoulutus") should equal(1)
           putOpiskeluoikeus(opiskeluoikeusOmnia, henkilö = oppija, headers = authHeaders(user) ++ jsonContent) {
             verifyResponseStatusOk()
-            haeOpiskeluoikeudetHetulla(oppija.hetu, user).filter(_.tyyppi.koodiarvo == "ammatillinenkoulutus").length should equal(2)
+            haeOpiskeluoikeudetHetulla(oppija.hetu, user).count(_.tyyppi.koodiarvo == "ammatillinenkoulutus") should equal(2)
           }
         }
       }
@@ -221,7 +223,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
 
     "voi hakea ja katsella kaikkia opiskeluoikeuksia" in {
-      queryOppijat(user = MockUsers.kela).length should be >= 10
+      queryOppijat(user = MockUsers.kela).length should equal(koskeenTallennetutOppijatCount)
       authGet("api/oppija/" + MockOppijat.ammattilainen.oid, MockUsers.kela) {
         verifyResponseStatusOk()
       }
@@ -247,7 +249,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
 
     "voi hakea ja katsella kaikkia opiskeluoikeuksia" in {
-      queryOppijat(user = evira).length should be >= 10
+      queryOppijat(user = MockUsers.evira).length should equal(koskeenTallennetutOppijatCount)
       authGet("api/oppija/" + MockOppijat.ammattilainen.oid, evira) {
         verifyResponseStatusOk()
       }
@@ -280,7 +282,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
 
     "näkee vain toisen asteen opiskeluoikeudet" in {
-      queryOppijat(user = toinenAsteViranomainen).flatMap(_.opiskeluoikeudet).map(_.tyyppi.koodiarvo).distinct.sorted should be(List("ammatillinenkoulutus", "ibtutkinto", "lukiokoulutus", "luva"))
+      queryOppijat(user = toinenAsteViranomainen).flatMap(_.opiskeluoikeudet).map(_.tyyppi.koodiarvo).toSet should be(Set("ammatillinenkoulutus", "ibtutkinto", "lukiokoulutus", "luva", "diatutkinto"))
       authGet("api/oppija/" + MockOppijat.ylioppilas.oid, toinenAsteViranomainen) {
         verifyResponseStatusOk()
       }
@@ -396,4 +398,12 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     import fi.oph.koski.schema.KoskiSchema.deserializationContext
     SchemaValidatingExtractor.extract[LuovutuspalveluResponseV1](body).right.get.opiskeluoikeudet
   }
+
+  private def koskeenTallennetutOppijatCount =
+    runDbSync(OpiskeluOikeudetWithAccessCheck(KoskiSession.systemUser)
+      .join(Tables.Henkilöt).on(_.oppijaOid === _.oid)
+      .filter(_._2.masterOid.isEmpty)
+      .map(_._1.oppijaOid).result)
+      .distinct
+      .length
 }
