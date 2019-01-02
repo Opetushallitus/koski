@@ -129,6 +129,13 @@ class RaportitSpec extends FreeSpec with LocalJettyHttpSpecification with Opiske
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-10"), "loma", Date.valueOf("2016-02-01"))
         )) should equal(41)
       }
+
+      "valmistumispäivä lasketaan aina 100% läsnäolopäivänä, vaikka opinnot olisivat olleet osa-aikaisia" in {
+        Opiskelijavuositiedot.opiskelijavuosikertymä(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-01"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-01"), osaAikaisuus = 50),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-01"), "valmistunut", Date.valueOf("2016-02-01"), opiskeluoikeusPäättynyt = true, osaAikaisuus = 50)
+        )) should equal(16.5)
+      }
     }
 
     "raportin lataaminen toimii (ja tuottaa audit log viestin)" in {
