@@ -16,6 +16,14 @@
                             <virta:Tyyppi>1</virta:Tyyppi>
                             <virta:Myontaja>02535</virta:Myontaja>
                             <virta:Jakso koulutusmoduulitunniste="Mediekultur">
+                              <virta:AlkuPvm>2011-08-25</virta:AlkuPvm>
+                              <virta:LoppuPvm>2011-07-31</virta:LoppuPvm>
+                              <virta:Koulutuskoodi>742201</virta:Koulutuskoodi>
+                              <virta:Koulutuskunta>091</virta:Koulutuskunta>
+                              <virta:Koulutuskieli>sv</virta:Koulutuskieli>
+                              <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                            </virta:Jakso>
+                            <virta:Jakso koulutusmoduulitunniste="Mediekultur">
                                 <virta:AlkuPvm>2014-08-25</virta:AlkuPvm>
                                 <virta:LoppuPvm>2019-07-31</virta:LoppuPvm>
                                 <virta:Koulutuskoodi>621601</virta:Koulutuskoodi>

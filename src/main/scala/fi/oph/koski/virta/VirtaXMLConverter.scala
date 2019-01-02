@@ -5,9 +5,9 @@ import java.time.LocalDate.{parse => date}
 
 import fi.oph.koski.config.Environment
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.schema.LocalizedString.{finnish, sanitize}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppilaitos.{MockOppilaitosRepository, OppilaitosRepository}
+import fi.oph.koski.schema.LocalizedString.{finnish, sanitize}
 import fi.oph.koski.schema._
 import fi.oph.koski.util.DateOrdering
 import fi.oph.koski.util.OptionalLists.optionalList
@@ -40,7 +40,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         päättymispäivä = loppuPvm(opiskeluoikeusNode),
         oppilaitos = oppilaitos,
         koulutustoimija = None,
-        suoritukset = lisääKeskeneräinenTutkintosuoritus(suoritukset, opiskeluoikeusNode, opiskeluoikeudenTila),
+        suoritukset = addPäätasonSuoritusIfNecessary(suoritukset, opiskeluoikeusNode, opiskeluoikeudenTila),
         tila = opiskeluoikeudenTila,
         lisätiedot = Some(KorkeakoulunOpiskeluoikeudenLisätiedot(
           ensisijaisuus = Some((opiskeluoikeusNode \ "Ensisijaisuus").toList.map { e => Aikajakso(alkuPvm(e), loppuPvm(e)) }).filter(_.nonEmpty),
@@ -70,48 +70,56 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     opiskeluoikeudet.filter(_.suoritukset.nonEmpty) ++ orphanages
   }
 
-  private def lisääKeskeneräinenTutkintosuoritus(suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node, tila: KorkeakoulunOpiskeluoikeudenTila) = {
-    def vahvistusOpiskeluoikeudenTilausta(organisaatio: Organisaatio): Option[Päivämäärävahvistus] =
-      tila.opiskeluoikeusjaksot.lastOption.filter(_.tila.koodiarvo == "3").map(jakso => Päivämäärävahvistus(jakso.alku, organisaatio))
+  private def addPäätasonSuoritusIfNecessary(suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node, tila: KorkeakoulunOpiskeluoikeudenTila) = {
+    val opiskeluoikeusJaksot = jaksot(opiskeluoikeusNode)
+    val suoritusLöytyyKoulutuskoodilla = opiskeluoikeusJaksot.exists { jakso =>
+      val opiskeluoikeudenTutkinto = tutkinto(jakso.koulutuskoodi)
+      suoritukset.exists(_.koulutusmoduuli == opiskeluoikeudenTutkinto)
+    }
 
-    koulutuskoodi(opiskeluoikeusNode).map { koulutuskoodi =>
-      val t = tutkinto(koulutuskoodi)
-      if (suoritukset.exists(_.koulutusmoduuli == t)) {
-        suoritukset
-      } else {
-        val toimipiste = oppilaitos(opiskeluoikeusNode)
-        val (opintojaksot, muutSuoritukset) = suoritukset.partition {
-          case _: KorkeakoulunOpintojaksonSuoritus => true
-          case _ => false
-        }
-        KorkeakoulututkinnonSuoritus(
-          koulutusmoduuli = t,
-          arviointi = None,
-          vahvistus = vahvistusOpiskeluoikeudenTilausta(toimipiste),
-          suorituskieli = None,
-          osasuoritukset = Some(opintojaksot collect { case s: KorkeakoulunOpintojaksonSuoritus => s }),
-          toimipiste = toimipiste
-        ) :: muutSuoritukset
-      }
-    }.orElse {
-      optionalOppilaitos(opiskeluoikeusNode).map(oppilaitos => {
-        val virtaOpiskeluoikeudenTyyppi = opiskeluoikeudenTyyppi(opiskeluoikeusNode)
-        val nimi = Some((opiskeluoikeusNode \\ "@koulutusmoduulitunniste").text.stripPrefix("#").stripSuffix("/").trim)
-          .filter(_.nonEmpty).map(finnish).getOrElse(virtaOpiskeluoikeudenTyyppi.description)
-        MuuKorkeakoulunSuoritus(
-          koulutusmoduuli = MuuKorkeakoulunOpinto(
-            tunniste = virtaOpiskeluoikeudenTyyppi,
-            nimi = nimi,
-            laajuus = laajuus(opiskeluoikeusNode)
-          ),
-          vahvistus = vahvistusOpiskeluoikeudenTilausta(oppilaitos),
-          suorituskieli = None,
-          osasuoritukset = None,
-          toimipiste = oppilaitos
-        ) +: suoritukset
-      })
-    }.getOrElse(suoritukset)
+    if (suoritusLöytyyKoulutuskoodilla) { // suoritus on valmis ei tarvitse lisätä mitään
+      suoritukset
+    } else if (opiskeluoikeusJaksot.nonEmpty) { // suoritus on kesken, lisätään dummy päätason suoritus
+      val viimeisinTutkinto = tutkinto(opiskeluoikeusJaksot.maxBy(_.alku)(DateOrdering.localDateOrdering).koulutuskoodi)
+      addTutkinnonSuoritus(tila, suoritukset, opiskeluoikeusNode, viimeisinTutkinto)
+    } else { // suorittaa avoimessa yliopistossa tms.
+      addMuuKorkeakoulunSuoritus(tila, suoritukset, opiskeluoikeusNode)
+    }
   }
+
+  private def addTutkinnonSuoritus(tila: KorkeakoulunOpiskeluoikeudenTila, suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node, tutkinto: Korkeakoulututkinto): List[KorkeakouluSuoritus] = {
+    val toimipiste = oppilaitos(opiskeluoikeusNode)
+    val (opintojaksot, muutSuoritukset) = suoritukset.partition(_.isInstanceOf[KorkeakoulunOpintojaksonSuoritus])
+    KorkeakoulututkinnonSuoritus(
+      koulutusmoduuli = tutkinto,
+      arviointi = None,
+      vahvistus = vahvistusOpiskeluoikeudenTilasta(tila, toimipiste),
+      suorituskieli = None,
+      osasuoritukset = Some(opintojaksot collect { case s: KorkeakoulunOpintojaksonSuoritus => s }),
+      toimipiste = toimipiste
+    ) :: muutSuoritukset
+  }
+
+  private def addMuuKorkeakoulunSuoritus(tila: KorkeakoulunOpiskeluoikeudenTila, suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node) =
+    optionalOppilaitos(opiskeluoikeusNode).map { org =>
+      val virtaOpiskeluoikeudenTyyppi = opiskeluoikeudenTyyppi(opiskeluoikeusNode)
+      val nimi = Some((opiskeluoikeusNode \\ "@koulutusmoduulitunniste").text.stripPrefix("#").stripSuffix("/").trim)
+        .filter(_.nonEmpty).map(finnish).getOrElse(virtaOpiskeluoikeudenTyyppi.description)
+      MuuKorkeakoulunSuoritus(
+        koulutusmoduuli = MuuKorkeakoulunOpinto(
+          tunniste = virtaOpiskeluoikeudenTyyppi,
+          nimi = nimi,
+          laajuus = laajuus(opiskeluoikeusNode)
+        ),
+        vahvistus = vahvistusOpiskeluoikeudenTilasta(tila, org),
+        suorituskieli = None,
+        osasuoritukset = None,
+        toimipiste = org
+      )
+    }.toList ++ suoritukset
+
+  private def vahvistusOpiskeluoikeudenTilasta(tila: KorkeakoulunOpiskeluoikeudenTila, organisaatio: Organisaatio): Option[Päivämäärävahvistus] =
+    tila.opiskeluoikeusjaksot.lastOption.filter(_.tila.koodiarvo == "3").map(jakso => Päivämäärävahvistus(jakso.alku, organisaatio))
 
   def convertSuoritus(suoritus: Node, allNodes: List[Node]): Option[KorkeakouluSuoritus] = {
     laji(suoritus) match {
@@ -314,6 +322,11 @@ case class LoppupäivällinenOpiskeluoikeusJakso(
   loppu: Option[LocalDate]
 ) extends Jakso
 
+case class OpiskeluoikeusJakso(
+  alku: LocalDate,
+  koulutuskoodi: String
+)
+
 object VirtaXMLConverterUtils {
   def loppuPvm(n: Node): Option[LocalDate] = {
     (n \ "LoppuPvm").headOption.flatMap(l => optionalDate(l.text))
@@ -343,9 +356,18 @@ object VirtaXMLConverterUtils {
     }
   }
 
-  def koulutuskoodi(node: Node): Option[String] = {
+  def koulutuskoodi(node: Node): Option[String] =
     (node \\ "Koulutuskoodi").headOption.map(_.text)
-  }
+
+  def jaksot(node: Node): Seq[OpiskeluoikeusJakso] =
+    (node \\ "Jakso").flatMap { jakso =>
+      (jakso \ "Koulutuskoodi").headOption.map { koulutus =>
+        OpiskeluoikeusJakso(
+          alku = alkuPvm(jakso),
+          koulutuskoodi = koulutus.text
+        )
+      }
+    }
 
   // huom, tässä kentässä voi olla oppilaitosnumeron lisäksi muitakin arvoja, esim. "UK" = "Ulkomainen korkeakoulu"
   // https://confluence.csc.fi/display/VIRTA/Tietovarannon+koodistot#Tietovarannonkoodistot-Organisaatio
