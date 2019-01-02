@@ -43,6 +43,11 @@
     <suppress>
       <notes>log4s-*.jar doesn't include any version of the vulnerable class (org.slf4j.ext.EventData)</notes>
       <gav regex="true">^org\.log4s:log4s_2\.12:.*$</gav>
-     <cpe>cpe:/a:slf4j:slf4j</cpe>
+      <cpe>cpe:/a:slf4j:slf4j</cpe>
+    </suppress>
+    <suppress>
+      <notes>this vulnerabilility is for a Go library named json-patch, not the Java library</notes>
+      <gav regex="true">^com\.github\.fge:json-patch:.*$</gav>
+      <cve>CVE-2018-14632</cve>
     </suppress>
 </suppressions>
