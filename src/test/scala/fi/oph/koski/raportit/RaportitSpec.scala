@@ -39,6 +39,8 @@ class RaportitSpec extends FreeSpec with LocalJettyHttpSpecification with Opiske
   }
 
   "Opiskelijavuositiedot" - {
+    val oid = "1.2.246.562.15.123456"
+
     "raportti sisältää oikeat tiedot" in {
       val result = Opiskelijavuositiedot.buildRaportti(raportointiDatabase, MockOrganisaatiot.stadinAmmattiopisto, LocalDate.parse("2016-01-01"), LocalDate.parse("2016-12-31"))
 
@@ -57,8 +59,6 @@ class RaportitSpec extends FreeSpec with LocalJettyHttpSpecification with Opiske
     }
 
     "opiskelijavuoteen kuuluvat ja muut lomat lasketaan oikein" - {
-      val oid = "1.2.246.562.15.123456"
-
       "lasna-tilaa ei lasketa lomaksi" in {
         Opiskelijavuositiedot.lomaPäivät(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2016-05-31"), "lasna", Date.valueOf("2016-01-15"))
@@ -92,6 +92,42 @@ class RaportitSpec extends FreeSpec with LocalJettyHttpSpecification with Opiske
             ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-14"), "loma", Date.valueOf("2015-12-01"))
           )) should equal((0, 14))
         }
+      }
+    }
+
+    "opiskelijavuosikertymä lasketaan oikein" - {
+
+      "läsnäolopäivät lasketaan mukaan" in {
+        Opiskelijavuositiedot.opiskelijavuosikertymä(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-01"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-01"))
+        )) should equal(31)
+      }
+
+      "osa-aikaisuus huomioidaan" in {
+        Opiskelijavuositiedot.opiskelijavuosikertymä(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-01"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-01"), osaAikaisuus = 50)
+        )) should equal(15.5)
+      }
+
+      "valmistumispäivä lasketaan mukaan" in {
+        Opiskelijavuositiedot.opiskelijavuosikertymä(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-01"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-01")),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-01"), "valmistunut", Date.valueOf("2016-02-01"), opiskeluoikeusPäättynyt = true)
+        )) should equal(32)
+      }
+
+      "eroamispäivää ei lasketa mukaan" in {
+        Opiskelijavuositiedot.opiskelijavuosikertymä(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-01"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-01")),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-01"), "eronnut", Date.valueOf("2016-02-01"), opiskeluoikeusPäättynyt = true)
+        )) should equal(31)
+      }
+
+      "lomapäivät lasketaan mukaan" in {
+        Opiskelijavuositiedot.opiskelijavuosikertymä(Seq(
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-01"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-01")),
+          ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-10"), "loma", Date.valueOf("2016-02-01"))
+        )) should equal(41)
       }
     }
 

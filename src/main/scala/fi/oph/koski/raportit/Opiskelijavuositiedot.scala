@@ -224,7 +224,7 @@ object Opiskelijavuositiedot {
     aikajaksot.map(lomaPäivät).reduce((a, b) => (a._1 + b._1, a._2 + b._2))
   }
 
-  private def opiskelijavuosikertymä(aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow]): Double = {
+  private[raportit] def opiskelijavuosikertymä(aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow]): Double = {
     aikajaksot.map(j => (j.tila match {
       case "loma" => lomaPäivät(j)._1
       case "lasna" | "valmistunut" => j.lengthInDays
