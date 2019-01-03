@@ -71,31 +71,27 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   }
 
   private def addPäätasonSuoritusIfNecessary(suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node, tila: KorkeakoulunOpiskeluoikeudenTila) = {
+    if (tutkintoonJohtava(opiskeluoikeusNode)) {
+      addTutkintoonJohtavaPäätasonSuoritusIfNecessery(suoritukset, opiskeluoikeusNode, tila)
+    } else {
+      addMuuKorkeakoulunSuoritus(tila, suoritukset, opiskeluoikeusNode)
+    }
+  }
+
+  private def addTutkintoonJohtavaPäätasonSuoritusIfNecessery(suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node, tila: KorkeakoulunOpiskeluoikeudenTila) = {
     val opiskeluoikeusJaksot = koulutuskoodillisetJaksot(opiskeluoikeusNode)
     val suoritusLöytyyKoulutuskoodilla = opiskeluoikeusJaksot.exists { jakso =>
       val opiskeluoikeudenTutkinto = tutkinto(jakso.koulutuskoodi)
       suoritukset.exists(_.koulutusmoduuli == opiskeluoikeudenTutkinto)
     }
 
-    /*
-    if (tutkintoonJohtava - ks. virtaOpiskeluoikeudenTyyppi) // https://confluence.csc.fi/display/VIRTA/Tietovarannon+koodistot#Tietovarannonkoodistot-Opiskeluoikeudentyyppi
-      if (tutkintoSuoritusLöytyyKoulutuskoodilla)
-        palautetaan se!
-      else (opiskeluoikeuden tila on != päättynyt)
-        generoidaan kesken oleva korkeakoulututkinnonsuoritus
-      else
-        addMuu
-        lokitetaan + löytyykö suorituksita laji=1?
-    else
-      addMuu
-     */
-
-    if (suoritusLöytyyKoulutuskoodilla) { // suoritus on valmis ei tarvitse lisätä mitään
+    if (suoritusLöytyyKoulutuskoodilla) { // suoritus valmis, ei tarvitse lisätä
       suoritukset
-    } else if (opiskeluoikeusJaksot.nonEmpty) { // suoritus on kesken, lisätään dummy päätason suoritus
+    } else if (!opiskeluoikeusPaattynyt(tila)) {
       val viimeisinTutkinto = tutkinto(opiskeluoikeusJaksot.maxBy(_.alku)(DateOrdering.localDateOrdering).koulutuskoodi)
       addKeskeneräinenTutkinnonSuoritus(tila, suoritukset, opiskeluoikeusNode, viimeisinTutkinto)
-    } else { // suorittaa avoimessa yliopistossa tms.
+    } else {
+      logger.warn("Tutkintoon johtava päätasonsuoritus ei löytynyt koulutuskoodilla ja se oli kesken. Laji: " + laji(opiskeluoikeusNode) )
       addMuuKorkeakoulunSuoritus(tila, suoritukset, opiskeluoikeusNode)
     }
   }
