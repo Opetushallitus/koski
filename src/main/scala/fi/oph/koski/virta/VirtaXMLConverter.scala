@@ -71,29 +71,42 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   }
 
   private def addPäätasonSuoritusIfNecessary(suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node, tila: KorkeakoulunOpiskeluoikeudenTila) = {
-    val opiskeluoikeusJaksot = jaksot(opiskeluoikeusNode)
+    val opiskeluoikeusJaksot = koulutuskoodillisetJaksot(opiskeluoikeusNode)
     val suoritusLöytyyKoulutuskoodilla = opiskeluoikeusJaksot.exists { jakso =>
       val opiskeluoikeudenTutkinto = tutkinto(jakso.koulutuskoodi)
       suoritukset.exists(_.koulutusmoduuli == opiskeluoikeudenTutkinto)
     }
 
+    /*
+    if (tutkintoonJohtava - ks. virtaOpiskeluoikeudenTyyppi) // https://confluence.csc.fi/display/VIRTA/Tietovarannon+koodistot#Tietovarannonkoodistot-Opiskeluoikeudentyyppi
+      if (tutkintoSuoritusLöytyyKoulutuskoodilla)
+        palautetaan se!
+      else (opiskeluoikeuden tila on != päättynyt)
+        generoidaan kesken oleva korkeakoulututkinnonsuoritus
+      else
+        addMuu
+        lokitetaan + löytyykö suorituksita laji=1?
+    else
+      addMuu
+     */
+
     if (suoritusLöytyyKoulutuskoodilla) { // suoritus on valmis ei tarvitse lisätä mitään
       suoritukset
     } else if (opiskeluoikeusJaksot.nonEmpty) { // suoritus on kesken, lisätään dummy päätason suoritus
       val viimeisinTutkinto = tutkinto(opiskeluoikeusJaksot.maxBy(_.alku)(DateOrdering.localDateOrdering).koulutuskoodi)
-      addTutkinnonSuoritus(tila, suoritukset, opiskeluoikeusNode, viimeisinTutkinto)
+      addKeskeneräinenTutkinnonSuoritus(tila, suoritukset, opiskeluoikeusNode, viimeisinTutkinto)
     } else { // suorittaa avoimessa yliopistossa tms.
       addMuuKorkeakoulunSuoritus(tila, suoritukset, opiskeluoikeusNode)
     }
   }
 
-  private def addTutkinnonSuoritus(tila: KorkeakoulunOpiskeluoikeudenTila, suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node, tutkinto: Korkeakoulututkinto): List[KorkeakouluSuoritus] = {
+  private def addKeskeneräinenTutkinnonSuoritus(tila: KorkeakoulunOpiskeluoikeudenTila, suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node, tutkinto: Korkeakoulututkinto): List[KorkeakouluSuoritus] = {
     val toimipiste = oppilaitos(opiskeluoikeusNode)
     val (opintojaksot, muutSuoritukset) = suoritukset.partition(_.isInstanceOf[KorkeakoulunOpintojaksonSuoritus])
     KorkeakoulututkinnonSuoritus(
       koulutusmoduuli = tutkinto,
       arviointi = None,
-      vahvistus = vahvistusOpiskeluoikeudenTilasta(tila, toimipiste),
+      vahvistus = vahvistusOpiskeluoikeudenTilasta(tila, toimipiste), // FIXME: hardkoodaa keskeneräiseksi
       suorituskieli = None,
       osasuoritukset = Some(opintojaksot collect { case s: KorkeakoulunOpintojaksonSuoritus => s }),
       toimipiste = toimipiste
@@ -135,7 +148,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
             toimipiste = oppilaitos(suoritus),
             osasuoritukset = optionalList(osasuoritukset)
           )
-        }
+        } // TODO: or else warn
       case "2" => // opintojakso
         Some(convertOpintojaksonSuoritus(suoritus, allNodes))
       case laji: String =>
@@ -359,7 +372,7 @@ object VirtaXMLConverterUtils {
   def koulutuskoodi(node: Node): Option[String] =
     (node \\ "Koulutuskoodi").headOption.map(_.text)
 
-  def jaksot(node: Node): Seq[OpiskeluoikeusJakso] =
+  def koulutuskoodillisetJaksot(node: Node): Seq[OpiskeluoikeusJakso] =
     (node \\ "Jakso").flatMap { jakso =>
       (jakso \ "Koulutuskoodi").headOption.map { koulutus =>
         OpiskeluoikeusJakso(
