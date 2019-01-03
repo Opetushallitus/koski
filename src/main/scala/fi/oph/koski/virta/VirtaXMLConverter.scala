@@ -153,6 +153,15 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     }
   }
 
+  private val tutkintoonJohtavienTyyppienKoodiarvot = List("1","2","3","4","6","7")
+  private def tutkintoonJohtava(opiskeluoikeus: Node) = {
+    tutkintoonJohtavienTyyppienKoodiarvot.contains(opiskeluoikeudenTyyppi(opiskeluoikeus).koodiarvo)
+  }
+
+  private def opiskeluoikeusPaattynyt(tila: KorkeakoulunOpiskeluoikeudenTila) = {
+    tila.opiskeluoikeusjaksot.lastOption.exists(_.opiskeluoikeusPäättynyt)
+  }
+
   private def lukukausiIlmoittautuminen(oppilaitos: Option[Oppilaitos], tila: KorkeakoulunOpiskeluoikeudenTila, opiskeluoikeusAvain: String, virtaXml: Node): Option[Lukukausi_Ilmoittautuminen] = {
     val ilmo = Ilmoittautuminen(oppilaitos, tila, opiskeluoikeusAvain, virtaXml)
     val ilmot = (virtaXml \\ "LukukausiIlmoittautuminen").toList
