@@ -102,7 +102,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     KorkeakoulututkinnonSuoritus(
       koulutusmoduuli = tutkinto,
       arviointi = None,
-      vahvistus = vahvistusOpiskeluoikeudenTilasta(tila, toimipiste), // FIXME: hardkoodaa keskeneräiseksi
+      vahvistus = None,
       suorituskieli = None,
       osasuoritukset = Some(opintojaksot collect { case s: KorkeakoulunOpintojaksonSuoritus => s }),
       toimipiste = toimipiste
