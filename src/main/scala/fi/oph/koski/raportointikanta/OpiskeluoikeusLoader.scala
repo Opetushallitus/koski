@@ -304,12 +304,13 @@ object OpiskeluoikeusLoader extends Logging {
   private val fieldsToExcludeFromPäätasonSuoritusJson = Set("osasuoritukset", "tyyppi", "toimipiste", "koulutustyyppi")
   private val fieldsToExcludeFromOsasuoritusJson = Set("osasuoritukset", "tyyppi")
 
-  private def buildSuoritusRows(opiskeluoikeusOid: String, oppilaitos: OrganisaatioWithOid, ps: PäätasonSuoritus, data: JValue, idGenerator: => Long) = {
+  private[raportointikanta] def buildSuoritusRows(opiskeluoikeusOid: String, oppilaitos: OrganisaatioWithOid, ps: PäätasonSuoritus, data: JValue, idGenerator: => Long) = {
     val päätasonSuoritusId: Long = idGenerator
-    val toimipiste = (ps match {
-      case stp: MahdollisestiToimipisteellinen => stp.toimipiste
-      case _ => None
-    }).getOrElse(oppilaitos)
+    val toimipiste = ps match {
+      case tp: Toimipisteellinen => tp.toimipiste
+      case stp: MahdollisestiToimipisteellinen if stp.toimipiste.nonEmpty => stp.toimipiste.get
+      case _ => oppilaitos
+    }
     val päätaso = RPäätasonSuoritusRow(
       päätasonSuoritusId = päätasonSuoritusId,
       opiskeluoikeusOid = opiskeluoikeusOid,
