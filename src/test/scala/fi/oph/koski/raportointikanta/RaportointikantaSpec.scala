@@ -3,16 +3,17 @@ package fi.oph.koski.raportointikanta
 import java.time.LocalDate
 import java.sql.Date
 
-import fi.oph.koski.{KoskiApplicationForTests}
+import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.LocalJettyHttpSpecification
 import org.scalatest.{FreeSpec, Matchers}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.documentation.AmmatillinenExampleData
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.json.JsonFiles
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.SchemaValidatingExtractor
-import org.json4s.JsonAST.JBool
+import org.json4s.JsonAST.{JBool, JObject}
 import org.json4s.jackson.JsonMethods
 
 class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification with Matchers {
@@ -340,6 +341,21 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-03-01"), Date.valueOf("2016-12-15"), "lasna", Date.valueOf("2016-01-15"), erityinenTuki = 1, osaAikaisuus = 80),
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-12-16"), Date.valueOf("2016-12-16"), "valmistunut", Date.valueOf("2016-12-16"), osaAikaisuus = 80, opiskeluoikeusPäättynyt = true)
         ))
+      }
+    }
+
+    "Suoritusrivien rakennus" - {
+      "Päätason suorituksen toimipiste haetaan oikein" in {
+        val suoritus = ammatillinenOpiskeluoikeus.suoritukset.head.asInstanceOf[AmmatillisenTutkinnonSuoritus].copy(
+          toimipiste = AmmatillinenExampleData.stadinToimipiste,
+          osasuoritukset = None
+        )
+        val opiskeluoikeus = ammatillinenOpiskeluoikeus.copy(
+          suoritukset = List(suoritus)
+        )
+        val (ps, _) = OpiskeluoikeusLoader.buildSuoritusRows(oid, opiskeluoikeus.oppilaitos.get, opiskeluoikeus.suoritukset.head, JObject(), 1)
+        ps.toimipisteOid should equal(AmmatillinenExampleData.stadinToimipiste.oid)
+        ps.toimipisteNimi should equal(AmmatillinenExampleData.stadinToimipiste.nimi.get.get("fi"))
       }
     }
   }
