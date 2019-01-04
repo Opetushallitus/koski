@@ -3,13 +3,11 @@ package fi.oph.koski.luovutuspalvelu
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethods}
 import fi.oph.koski.henkilo.{MockOppijat, OppijaHenkilö}
-import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{MockUser, MockUsers}
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.schema.Finnish
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
-import scala.xml.XML
+import scala.xml.{NodeSeq, XML, Utility}
 
 class PalveluvaylaSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods with Matchers with BeforeAndAfterAll {
   "Suomi.fi rekisteritiedot" - {
@@ -33,13 +31,60 @@ class PalveluvaylaSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       }
     }
 
-    "palauttaa oppilaan tiedot hetun perusteella" in {
+    "palauttaa oppilaan tiedot hetun perusteella - vain osa opiskeluoikeuden kentistä mukana" in {
       postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, MockOppijat.ylioppilas.hetu.get) {
         verifyResponseStatusOk()
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUOMIFI_KATSOMINEN"))
-        jsonResponse shouldEqual SuomiFiResponse(
-            List(SuomiFiOppilaitos(Finnish("Helsingin medialukio",None,None),
-              List(SuomiFiOpiskeluoikeus(None,None,None,Finnish("Ylioppilastutkinto",Some("Studentexamen"),Some("Matriculation Examination")))))))
+        val oppilaitokset = (soapResponse() \ "Body" \ "suomiFiRekisteritiedotResponse" \ "oppilaitokset").head
+        oppilaitokset shouldEqual Utility.trim(
+          <oppilaitokset>
+            <oppilaitos>
+              <nimi>
+                <fi>Helsingin medialukio</fi>
+              </nimi>
+              <opiskeluoikeudet>
+                <opiskeluoikeus>
+                  <nimi>
+                    <fi>Ylioppilastutkinto</fi>
+                    <sv>Studentexamen</sv>
+                    <en>Matriculation Examination</en>
+                  </nimi>
+                </opiskeluoikeus>
+              </opiskeluoikeudet>
+            </oppilaitos>
+          </oppilaitokset>
+        )
+      }
+    }
+
+    "palauttaa oppilaan tiedot hetun perusteella - kaikki opiskeluoikeuden kentät mukana" in {
+      postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, MockOppijat.ammattilainen.hetu.get) {
+        verifyResponseStatusOk()
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_SUOMIFI_KATSOMINEN"))
+        val oppilaitokset = (soapResponse() \ "Body" \ "suomiFiRekisteritiedotResponse" \ "oppilaitokset").head
+        oppilaitokset shouldEqual Utility.trim(
+          <oppilaitokset>
+            <oppilaitos>
+              <nimi>
+                <fi>Stadin ammattiopisto</fi>
+              </nimi>
+              <opiskeluoikeudet>
+                <opiskeluoikeus>
+                  <tila>
+                    <fi>Valmistunut</fi>
+                    <sv>Utexaminerad</sv>
+                  </tila>
+                  <alku>2012-09-01</alku>
+                  <loppu>2016-05-31</loppu>
+                  <nimi>
+                    <fi>Luonto- ja ympäristöalan perustutkinto</fi>
+                    <sv>Grundexamen i natur och miljö</sv>
+                  </nimi>
+                </opiskeluoikeus>
+              </opiskeluoikeudet>
+            </oppilaitos>
+          </oppilaitokset>
+        )
       }
     }
 
@@ -47,12 +92,13 @@ class PalveluvaylaSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       List("261125-1531", "210130-5616", "080278-8433", "061109-011D", "070696-522Y", "010844-509V").foreach { hetu =>
         postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, hetu) {
           verifyResponseStatusOk()
-          jsonResponse shouldEqual SuomiFiResponse(List.empty)
+          val oppilaitokset = (soapResponse() \ "Body" \ "suomiFiRekisteritiedotResponse" \ "oppilaitokset").head
+          oppilaitokset.child shouldBe empty
         }
       }
     }
 
-    "palauttaa tyhjän listan oppilaitoksia jos virta pavelu ei vastaa" in {
+    "palauttaa SOAP-virheen jos Virta-palvelu ei vastaa" in {
       postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, MockOppijat.virtaEiVastaa.hetu.get) {
         verifySOAPError("unavailable.virta", "Korkeakoulutuksen opiskeluoikeuksia ei juuri nyt saada haettua. Yritä myöhemmin uudelleen.")
       }
@@ -61,53 +107,51 @@ class PalveluvaylaSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     "Suorituksen nimi" - {
       "Kun on pelkkiä perusopetuksen vuosiluokkia käytetään sanaa 'Perusopetus'" in {
         // kesken olevat perusopetuksen päättötodistukset karsitaan pois -> opiskeluoikeudessa pelkkiä perusopetuksen vuosiluokkia
-        suorituksenNimiRekisteritiedoissa(MockOppijat.ysiluokkalainen) shouldEqual "Perusopetus"
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.ysiluokkalainen) shouldEqual "Perusopetus"
       }
 
       "Kun on pelkkiä perusopetuksen oppiaineen oppimääriä opiskeluoikeudessa käytetään '<lkm> oppiainetta'" in {
-        suorituksenNimiRekisteritiedoissa(MockOppijat.montaOppiaineenOppimäärääOpiskeluoikeudessa) shouldEqual "2 oppiainetta"
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.montaOppiaineenOppimäärääOpiskeluoikeudessa) shouldEqual "2 oppiainetta"
       }
 
       "Kun on pelkkiä korkeakoulun opintojaksoja opiskeluoikeudessa käytetään '<lkm> opintojaksoa'" in {
-        suorituksenNimiRekisteritiedoissa(MockOppijat.korkeakoululainen) shouldEqual "69 opintojaksoa"
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.korkeakoululainen) shouldEqual "69 opintojaksoa"
       }
 
       "Aikuisten perusopetuksessa käytetään suorituksen tyypin nimeä" in {
-        suorituksenNimiRekisteritiedoissa(MockOppijat.aikuisOpiskelija) shouldEqual "Aikuisten perusopetuksen oppimäärä"
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.aikuisOpiskelija) shouldEqual "Aikuisten perusopetuksen oppimäärä"
       }
 
       "Ammatillisen tutkinnon nimenä käytetään perusteen nimeä" in {
-        suorituksenNimiRekisteritiedoissa(MockOppijat.ammattilainen) shouldEqual "Luonto- ja ympäristöalan perustutkinto"
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.ammattilainen) shouldEqual "Luonto- ja ympäristöalan perustutkinto"
       }
 
       "Osittaisen ammatillisen tutkinnon nimen loppuun tulee sana 'osittainen'" in {
-        suorituksenNimiRekisteritiedoissa(MockOppijat.osittainenammattitutkinto) shouldEqual "Luonto- ja ympäristöalan perustutkinto, osittainen"
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.osittainenammattitutkinto) shouldEqual "Luonto- ja ympäristöalan perustutkinto, osittainen"
       }
 
       "Perustapauksessa käytetään suorituksen tunnisteen nimeä" in {
-        suorituksenNimiRekisteritiedoissa(MockOppijat.lukiolainen) shouldEqual "Lukion oppimäärä"
-        suorituksenNimiRekisteritiedoissa(MockOppijat.dippainssi) shouldEqual "Dipl.ins., konetekniikka"
-        suorituksenNimiRekisteritiedoissa(MockOppijat.ylioppilas) shouldEqual "Ylioppilastutkinto"
-        suorituksenNimiRekisteritiedoissa(MockOppijat.koululainen) shouldEqual "Perusopetus"
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.lukiolainen) shouldEqual "Lukion oppimäärä"
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.dippainssi) shouldEqual "Dipl.ins., konetekniikka"
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.ylioppilas) shouldEqual "Ylioppilastutkinto"
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.koululainen) shouldEqual "Perusopetus"
       }
     }
   }
 
-  def suorituksenNimiRekisteritiedoissa(oppija: OppijaHenkilö): String =
-    haeSuomiFiRekisteritiedot(oppija).oppilaitokset.head.opiskeluoikeudet.head.nimi.get("fi")
+  private def ensimmäisenSuorituksenNimiRekisteritiedoissa(oppija: OppijaHenkilö): String =
+    (haeSuomiFiRekisteritiedot(oppija) \ "oppilaitokset" \ "oppilaitos" \ "opiskeluoikeudet" \ "opiskeluoikeus" \ "nimi" \ "fi").head.text
 
-  def haeSuomiFiRekisteritiedot(oppija: OppijaHenkilö): SuomiFiResponse = postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, oppija.hetu.get) {
+  private def haeSuomiFiRekisteritiedot(oppija: OppijaHenkilö): NodeSeq = postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, oppija.hetu.get) {
     verifyResponseStatusOk()
-    JsonSerializer.parse[SuomiFiResponse]((soapResponse() \ "Body" \ "suomiFiRekisteritiedotResponse").text)
+    soapResponse() \ "Body" \ "suomiFiRekisteritiedotResponse"
   }
 
-  def postSuomiFiRekisteritiedot[A](user: MockUser, hetu: String)(fn: => A): A = {
+  private def postSuomiFiRekisteritiedot[A](user: MockUser, hetu: String)(fn: => A): A = {
     post("api/palveluvayla/suomi-fi-rekisteritiedot", body = soapRequest(hetu), headers = authHeaders(user))(fn)
   }
 
-  def jsonResponse = JsonSerializer.parse[SuomiFiResponse]((soapResponse() \ "Body" \ "suomiFiRekisteritiedotResponse").text)
-
-  def verifySOAPError(faultstring: String, message: String): Unit = {
+  private def verifySOAPError(faultstring: String, message: String): Unit = {
     response.status shouldBe 500
     val xml = soapResponse() \\ "Fault"
     (xml \ "faultcode").text shouldBe("SOAP-ENV:Server")
@@ -115,9 +159,9 @@ class PalveluvaylaSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     (xml \ "detail" \ "message").text shouldBe(message)
   }
 
-  def soapResponse() = XML.loadString(response.body)
+  private def soapResponse() = Utility.trim(XML.loadString(response.body))
 
-  def soapRequest(hetu: String) =
+  private def soapRequest(hetu: String) =
     <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xrd="http://x-road.eu/xsd/xroad.xsd" xmlns:id="http://x-road.eu/xsd/identifiers">
       <SOAP-ENV:Header>
         <xrd:client id:objectType="SUBSYSTEM">

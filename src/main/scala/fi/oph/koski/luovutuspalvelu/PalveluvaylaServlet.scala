@@ -2,11 +2,11 @@ package fi.oph.koski.luovutuspalvelu
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.RequiresLuovutuspalvelu
+import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.servlet.NoCache
 
-import scala.xml.{Elem, NodeSeq, PCData}
+import scala.xml.{Elem, NodeSeq}
 
 class PalveluvaylaServlet(implicit val application: KoskiApplication) extends SoapServlet with RequiresLuovutuspalvelu with NoCache {
   private val suomiFiService = new SuomiFiService(application)
@@ -36,10 +36,29 @@ class PalveluvaylaServlet(implicit val application: KoskiApplication) extends So
       .headOption.map(_.text.trim)
       .toRight(KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu("Hetu puuttuu"))
 
-  private def suomiFiBody(soap: Elem, o: SuomiFiResponse): NodeSeq = {
+  private def suomiFiBody(soap: Elem, resp: SuomiFiResponse): NodeSeq = {
     replaceSoapBody(soap,
-      <ns1:suomiFiRekisteritiedotResponse xmlns:ns1="http://docs.koski-xroad.fi/producer">
-        {PCData(JsonSerializer.writeWithRoot(o))}
-      </ns1:suomiFiRekisteritiedotResponse>)
+      <suomiFiRekisteritiedotResponse xmlns="http://docs.koski-xroad.fi/producer">
+        <oppilaitokset>
+          {resp.oppilaitokset.map(ol =>
+          <oppilaitos>
+            <nimi>
+              {localizedStringToXml(ol.nimi)}
+            </nimi>
+            <opiskeluoikeudet>
+              {ol.opiskeluoikeudet.map(oo =>
+              <opiskeluoikeus>
+                {oo.tila.map(t => <tila>{localizedStringToXml(t)}</tila>).getOrElse(NodeSeq.Empty)}
+                {oo.alku.map(a => <alku>{a.toString}</alku>).getOrElse(NodeSeq.Empty)}
+                {oo.loppu.map(l => <loppu>{l.toString}</loppu>).getOrElse(NodeSeq.Empty)}
+                <nimi>{localizedStringToXml(oo.nimi)}</nimi>
+              </opiskeluoikeus>)}
+            </opiskeluoikeudet>
+          </oppilaitos>)}
+        </oppilaitokset>
+      </suomiFiRekisteritiedotResponse>)
   }
+
+  private def localizedStringToXml(s: LocalizedString) =
+    s.values.map { case (k, v) => <x>{v}</x>.copy(label = k) }
 }
