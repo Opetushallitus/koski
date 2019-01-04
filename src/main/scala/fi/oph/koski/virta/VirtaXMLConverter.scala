@@ -85,13 +85,14 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       suoritukset.exists(_.koulutusmoduuli == opiskeluoikeudenTutkinto)
     }
 
-    if (suoritusLöytyyKoulutuskoodilla) { // suoritus valmis, ei tarvitse lisätä
+    if (suoritusLöytyyKoulutuskoodilla) { // suoritus on valmis
       suoritukset
-    } else if (!opiskeluoikeusPaattynyt(tila)) {
+    } else if (opiskeluoikeusJaksot.nonEmpty && !päättynyt(tila)) {
       val viimeisinTutkinto = tutkinto(opiskeluoikeusJaksot.maxBy(_.alku)(DateOrdering.localDateOrdering).koulutuskoodi)
       addKeskeneräinenTutkinnonSuoritus(tila, suoritukset, opiskeluoikeusNode, viimeisinTutkinto)
     } else {
-      logger.warn("Tutkintoon johtava päätasonsuoritus ei löytynyt koulutuskoodilla ja se oli kesken. Laji: " + laji(opiskeluoikeusNode) )
+      val opiskeluoikeusTila = tila.opiskeluoikeusjaksot.lastOption.map(_.tila)
+      logger.warn(s"Tutkintoon johtavaa päätason suoritusta ei löydy tai opiskeluoikeus on päättynyt. Opiskeluoikeuden tila: $opiskeluoikeusTila, jaksot: ${opiskeluoikeusJaksot.map(_.koulutuskoodi)}, laji: '${laji(opiskeluoikeusNode)}'" )
       addMuuKorkeakoulunSuoritus(tila, suoritukset, opiskeluoikeusNode)
     }
   }
@@ -133,7 +134,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   def convertSuoritus(suoritus: Node, allNodes: List[Node]): Option[KorkeakouluSuoritus] = {
     laji(suoritus) match {
       case "1" => // tutkinto
-        koulutuskoodi(suoritus).map { koulutuskoodi =>
+        val tutkinnonSuoritus = koulutuskoodi(suoritus).map { koulutuskoodi =>
           val osasuoritukset = childNodes(suoritus, allNodes).map(convertOpintojaksonSuoritus(_, allNodes))
 
           KorkeakoulututkinnonSuoritus(
@@ -144,7 +145,11 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
             toimipiste = oppilaitos(suoritus),
             osasuoritukset = optionalList(osasuoritukset)
           )
-        } // TODO: or else warn
+        }
+        if (tutkinnonSuoritus.isEmpty) {
+          logger.warn(s"Tutkinnon suoritukselta puuttuu koulutuskoodi $suoritus")
+        }
+        tutkinnonSuoritus
       case "2" => // opintojakso
         Some(convertOpintojaksonSuoritus(suoritus, allNodes))
       case laji: String =>
@@ -155,12 +160,12 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
 
   private val tutkintoonJohtavienTyyppienKoodiarvot = List("1","2","3","4","6","7")
   private def tutkintoonJohtava(opiskeluoikeus: Node) = {
-    tutkintoonJohtavienTyyppienKoodiarvot.contains(opiskeluoikeudenTyyppi(opiskeluoikeus).koodiarvo)
+    val ooTyyppi = opiskeluoikeudenTyyppi(opiskeluoikeus).koodiarvo
+    tutkintoonJohtavienTyyppienKoodiarvot.contains(ooTyyppi)
   }
 
-  private def opiskeluoikeusPaattynyt(tila: KorkeakoulunOpiskeluoikeudenTila) = {
-    tila.opiskeluoikeusjaksot.lastOption.exists(_.opiskeluoikeusPäättynyt)
-  }
+  private def päättynyt(tila: KorkeakoulunOpiskeluoikeudenTila) =
+    tila.opiskeluoikeusjaksot.lastOption.exists(_.tila.koodiarvo == "3")
 
   private def lukukausiIlmoittautuminen(oppilaitos: Option[Oppilaitos], tila: KorkeakoulunOpiskeluoikeudenTila, opiskeluoikeusAvain: String, virtaXml: Node): Option[Lukukausi_Ilmoittautuminen] = {
     val ilmo = Ilmoittautuminen(oppilaitos, tila, opiskeluoikeusAvain, virtaXml)
@@ -340,7 +345,7 @@ case class LoppupäivällinenOpiskeluoikeusJakso(
   loppu: Option[LocalDate]
 ) extends Jakso
 
-case class OpiskeluoikeusJakso(
+case class KoulutuskoodillinenOpiskeluoikeusJakso(
   alku: LocalDate,
   koulutuskoodi: String
 )
@@ -377,10 +382,10 @@ object VirtaXMLConverterUtils {
   def koulutuskoodi(node: Node): Option[String] =
     (node \\ "Koulutuskoodi").headOption.map(_.text)
 
-  def koulutuskoodillisetJaksot(node: Node): Seq[OpiskeluoikeusJakso] =
+  def koulutuskoodillisetJaksot(node: Node): Seq[KoulutuskoodillinenOpiskeluoikeusJakso] =
     (node \\ "Jakso").flatMap { jakso =>
       (jakso \ "Koulutuskoodi").headOption.map { koulutus =>
-        OpiskeluoikeusJakso(
+        KoulutuskoodillinenOpiskeluoikeusJakso(
           alku = alkuPvm(jakso),
           koulutuskoodi = koulutus.text
         )
