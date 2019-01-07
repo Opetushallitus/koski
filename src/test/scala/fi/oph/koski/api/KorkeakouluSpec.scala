@@ -2,6 +2,7 @@ package fi.oph.koski.api
 
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import org.scalatest.{FreeSpec, Matchers}
 
@@ -28,11 +29,22 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
     }
 
     "Suoritusten tilat" - {
-      "Keskeneräinen tutkinto" in {
-        getOpiskeluoikeudet(MockOppijat.korkeakoululainen.oid).flatMap(_.suoritukset).filter(_.koulutusmoduuli.isTutkinto).map(_.valmis) should equal(List(false))
+      "Keskeneräinen tutkinto" - {
+        "Näytetään keskeneräisenä" in {
+          getOpiskeluoikeudet(MockOppijat.korkeakoululainen.oid).flatMap(_.suoritukset).filter(_.koulutusmoduuli.isTutkinto).map(_.valmis) should equal(List(false))
+        }
+        "Valitaan uusimman opiskeluoikeusjakson nimi" in {
+          getOpiskeluoikeudet(MockOppijat.amkKesken.oid).flatMap(_.suoritukset).filter(_.koulutusmoduuli.isTutkinto).map(_.koulutusmoduuli.nimi.get("fi")) should equal(List("Medianomi (AMK)"))
+        }
       }
-      "Valmis tutkinto" in {
-        getOpiskeluoikeudet(MockOppijat.dippainssi.oid).flatMap(_.suoritukset).filter(_.koulutusmoduuli.isTutkinto).map(_.valmis) should equal(List(true))
+      "Valmis tutkinto" - {
+        "Näytetään valmiina" in {
+          getOpiskeluoikeudet(MockOppijat.dippainssi.oid).flatMap(_.suoritukset).filter(_.koulutusmoduuli.isTutkinto).map(_.valmis) should equal(List(true))
+        }
+        "Kun useampi kuin yksi opiskeluoikeusjakso" in {
+          val opiskeluoikeus = getOpiskeluoikeudet(MockOppijat.montaJaksoaKorkeakoululainen.oid).find(_.oppilaitos.exists(_.oid == MockOrganisaatiot.aaltoYliopisto)).get
+          opiskeluoikeus.suoritukset.head.koulutusmoduuli.nimi.get("fi") should equal("Fil. maist., fysiikka")
+        }
       }
     }
 
