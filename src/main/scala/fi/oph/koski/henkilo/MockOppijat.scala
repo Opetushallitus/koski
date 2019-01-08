@@ -72,6 +72,8 @@ object MockOppijat {
   val eiKoskessaHetuton = oppijat.addOppija(OppijaHenkilö(oid = "1.2.246.562.24.99999555556", sukunimi = "EiKoskessaHetuton", etunimet = "Eino", kutsumanimi = "Eino", hetu = None, syntymäaika = None))
   val turvakielto = oppijat.oppija("Turvakielto", "Tero", "151067-2193", turvakielto = true)
   val montaJaksoaKorkeakoululainen = oppijat.oppija("Korkeakoululainen", "Monta-Opintojaksoa", "030199-3419")
+  val virtaDuplikaatteja = oppijat.oppija("Duplikaatti", "Dan", "210265-5910")
+  val virtaDuplikaattejaEiFuusio = oppijat.oppija("Eifuusio", "Erkki", "101058-1466")
 
   val virtaOppija = oppijat.addOppija(OppijaHenkilö(oid = "1.2.246.562.24.57060795845", sukunimi = "Virta", etunimet = "Veikko", kutsumanimi = "Veikko", hetu = Some("270191-4208"), syntymäaika = Some(LocalDate.of(1978, 3, 25)), äidinkieli = None, kansalaisuus = None))
   val virtaOppijaHetuton = oppijat.addOppija(OppijaHenkilöWithMasterInfo(

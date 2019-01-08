@@ -252,13 +252,21 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     (node \ "Sisaltyvyys").toList.map(sisaltyvyysNode => (sisaltyvyysNode \ "@sisaltyvaOpintosuoritusAvain").text)
   }
 
+  private val fuusioitunutMyöntäjä = "5"
   private def childNodes(node: Node, allNodes: List[Node]) = {
-    sisaltyvatAvaimet(node).map { opintosuoritusAvain =>
+    sisaltyvatAvaimet(node).flatMap { opintosuoritusAvain =>
       val osasuoritusNodes = allNodes.filter(avain(_) == opintosuoritusAvain)
-      osasuoritusNodes match {
-        case osasuoritusNode :: Nil => osasuoritusNode
-        case osasuoritusNode :: _ => throw new IllegalArgumentException("Enemmän kuin yksi suoritus avaimella " + opintosuoritusAvain)
-        case Nil => throw new IllegalArgumentException("Opintosuoritusta " + opintosuoritusAvain + " ei löydy dokumentista")
+      if (osasuoritusNodes.isEmpty) {
+        throw new IllegalArgumentException("Opintosuoritusta " + opintosuoritusAvain + " ei löydy dokumentista")
+      } else if (osasuoritusNodes.length == 1) {
+        List(osasuoritusNodes.head)
+      } else {
+        val fuusioKoulunSuoritus = osasuoritusNodes.find(n => (n \ "Organisaatio" \ "Rooli").headOption.exists(_.text == fuusioitunutMyöntäjä))
+        if (fuusioKoulunSuoritus.isDefined) {
+          fuusioKoulunSuoritus.toList
+        } else {
+          throw new IllegalArgumentException("Enemmän kuin yksi suoritus avaimella " + opintosuoritusAvain)
+        }
       }
     }
   }
@@ -269,7 +277,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
 
   def sisältyyOpiskeluoikeuteen(suoritus: Node, opiskeluoikeus: Node, allNodes: List[Node]): Boolean = {
     val opiskeluoikeusAvain: String = (suoritus \ "@opiskeluoikeusAvain").text
-    opiskeluoikeusAvain == avain(opiskeluoikeus) || childNodes(suoritus, allNodes).find(sisältyyOpiskeluoikeuteen(_, opiskeluoikeus, allNodes)).isDefined
+    opiskeluoikeusAvain == avain(opiskeluoikeus) || childNodes(suoritus, allNodes).exists(sisältyyOpiskeluoikeuteen(_, opiskeluoikeus, allNodes))
   }
 
   private def requiredKoodi(uri: String, koodi: String) = {

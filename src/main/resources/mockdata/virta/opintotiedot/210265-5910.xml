@@ -1,0 +1,500 @@
+<?xml version="1.0"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+  <SOAP-ENV:Header/>
+  <SOAP-ENV:Body>
+    <virtaluku:OpiskelijanKaikkiTiedotResponse xmlns:virtaluku="http://tietovaranto.csc.fi/luku">
+      <virta:Virta xmlns:virta="urn:mace:funet.fi:virta/2013/09/01">
+        <virta:Opiskelija avain="opiskelija-dfghj">
+          <virta:Henkilotunnus>210265-5910</virta:Henkilotunnus>
+          <virta:Opiskeluoikeudet>
+            <virta:Opiskeluoikeus avain="oo-12345" opiskelijaAvain="xyz">
+              <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2014-12-31</virta:LoppuPvm>
+                <virta:Koodi>2</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2015-01-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+                <virta:Koodi>2</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>4</virta:Tyyppi>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>5</virta:Rooli>
+                <virta:Koodi>01905</virta:Koodi>
+              </virta:Organisaatio>
+              <virta:Jakso koulutusmoduulitunniste="xyz">
+                <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2014-12-31</virta:LoppuPvm>
+                <virta:Koulutuskoodi>733207</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>837</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+              </virta:Jakso>
+              <virta:Jakso koulutusmoduulitunniste="xyz">
+                <virta:AlkuPvm>2015-01-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+                <virta:Koulutuskoodi>733207</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>837</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+              </virta:Jakso>
+              <virta:Laajuus>
+                <virta:Opintopiste>120</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus avain="dfghij" opiskelijaAvain="xyz">
+              <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2014-12-31</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2015-01-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>2</virta:Tyyppi>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>5</virta:Rooli>
+                <virta:Koodi>01905</virta:Koodi>
+              </virta:Organisaatio>
+              <virta:Jakso koulutusmoduulitunniste="asdf">
+                <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2014-12-31</virta:LoppuPvm>
+                <virta:Koulutuskoodi>633205</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>837</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+              </virta:Jakso>
+              <virta:Jakso koulutusmoduulitunniste="mmmfgh">
+                <virta:AlkuPvm>2015-01-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+                <virta:Koulutuskoodi>633205</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>837</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+              </virta:Jakso>
+              <virta:Ensisijaisuus>
+                <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+              </virta:Ensisijaisuus>
+              <virta:Liittyvyys liittyvaOpiskeluoikeusAvain="oo-12345"/>
+              <virta:Liittyvyys liittyvaOpiskeluoikeusAvain="oo-555555"/>
+              <virta:Liittyvyys liittyvaOpiskeluoikeusAvain="oo-0987"/>
+              <virta:Laajuus>
+                <virta:Opintopiste>180</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus avain="oo-555555" opiskelijaAvain="xyz">
+              <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2014-12-31</virta:LoppuPvm>
+                <virta:Koodi>2</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2015-01-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+                <virta:Koodi>2</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>4</virta:Tyyppi>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>5</virta:Rooli>
+                <virta:Koodi>01905</virta:Koodi>
+              </virta:Organisaatio>
+              <virta:Jakso koulutusmoduulitunniste="km-sdfasdf">
+                <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2014-12-31</virta:LoppuPvm>
+                <virta:Koulutuskoodi>726600</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>837</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+              </virta:Jakso>
+              <virta:Jakso koulutusmoduulitunniste="km-sdfasdf">
+                <virta:AlkuPvm>2015-01-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+                <virta:Koulutuskoodi>726600</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>837</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+              </virta:Jakso>
+              <virta:Laajuus>
+                <virta:Opintopiste>120</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus avain="oo-0987" opiskelijaAvain="xyz">
+              <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2014-12-31</virta:LoppuPvm>
+                <virta:Koodi>2</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2015-01-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+                <virta:Koodi>2</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>4</virta:Tyyppi>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>5</virta:Rooli>
+                <virta:Koodi>01905</virta:Koodi>
+              </virta:Organisaatio>
+              <virta:Jakso koulutusmoduulitunniste="lblbl">
+                <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2014-12-31</virta:LoppuPvm>
+                <virta:Koulutuskoodi>726403</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>837</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+              </virta:Jakso>
+              <virta:Jakso koulutusmoduulitunniste="lblbl">
+                <virta:AlkuPvm>2015-01-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+                <virta:Koulutuskoodi>726403</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>837</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+              </virta:Jakso>
+              <virta:Laajuus>
+                <virta:Opintopiste>120</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
+          </virta:Opiskeluoikeudet>
+          <virta:LukukausiIlmoittautumiset>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="xyz">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2014-07-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2015-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2015-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="xyz">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2014-07-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2014-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="xyz">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2016-06-29</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2017-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2017-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="xyz">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2015-07-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2015-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2015-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="xyz">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2015-07-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2016-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2016-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="xyz">
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2016-06-29</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2016-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2016-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+          </virta:LukukausiIlmoittautumiset>
+          <virta:Opintosuoritukset>
+            <virta:Opintosuoritus avain="xyz1234" koulutusmoduulitunniste="km-48436" opiskelijaAvain="xyz">
+              <virta:SuoritusPvm>2015-11-08</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>0</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01905</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Psykologian perusopinnot</virta:Nimi>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">4</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1234xyz"/>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="1234xyz" koulutusmoduulitunniste="abcdefg" opiskelijaAvain="xyz">
+              <virta:SuoritusPvm>2014-08-29</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>5</virta:Rooli>
+                <virta:Koodi>01905</virta:Koodi>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">TIETOTEKNIIKKATAIDOT</virta:Nimi>
+              <virta:Nimi kieli="en">Introduction to Computing</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">6</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+          </virta:Opintosuoritukset>
+        </virta:Opiskelija>
+        <virta:Opiskelija avain="opiskelija-dfghj">
+          <virta:Henkilotunnus>210265-5910</virta:Henkilotunnus>
+          <virta:Opiskeluoikeudet>
+            <virta:Opiskeluoikeus avain="dfghij" opiskelijaAvain="xyz">
+              <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2014-12-31</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2015-01-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>2</virta:Tyyppi>
+              <virta:Myontaja>01905</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="asdf">
+                <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2014-12-31</virta:LoppuPvm>
+                <virta:Koulutuskoodi>633205</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>837</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+              </virta:Jakso>
+              <virta:Jakso koulutusmoduulitunniste="mmmfgh">
+                <virta:AlkuPvm>2015-01-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+                <virta:Koulutuskoodi>633205</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>837</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+              </virta:Jakso>
+              <virta:Ensisijaisuus>
+                <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+              </virta:Ensisijaisuus>
+              <virta:Liittyvyys liittyvaOpiskeluoikeusAvain="oo-12345"/>
+              <virta:Liittyvyys liittyvaOpiskeluoikeusAvain="oo-555555"/>
+              <virta:Liittyvyys liittyvaOpiskeluoikeusAvain="oo-0987"/>
+              <virta:Laajuus>
+                <virta:Opintopiste>180</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus avain="oo-0987" opiskelijaAvain="xyz">
+              <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2014-12-31</virta:LoppuPvm>
+                <virta:Koodi>2</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2015-01-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+                <virta:Koodi>2</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>4</virta:Tyyppi>
+              <virta:Myontaja>01905</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="lblbl">
+                <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2014-12-31</virta:LoppuPvm>
+                <virta:Koulutuskoodi>726403</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>837</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+              </virta:Jakso>
+              <virta:Jakso koulutusmoduulitunniste="lblbl">
+                <virta:AlkuPvm>2015-01-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+                <virta:Koulutuskoodi>726403</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>837</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+              </virta:Jakso>
+              <virta:Laajuus>
+                <virta:Opintopiste>120</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus avain="oo-555555" opiskelijaAvain="xyz">
+              <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2014-12-31</virta:LoppuPvm>
+                <virta:Koodi>2</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2015-01-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+                <virta:Koodi>2</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>4</virta:Tyyppi>
+              <virta:Myontaja>01905</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="km-sdfasdf">
+                <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2014-12-31</virta:LoppuPvm>
+                <virta:Koulutuskoodi>726600</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>837</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+              </virta:Jakso>
+              <virta:Jakso koulutusmoduulitunniste="km-sdfasdf">
+                <virta:AlkuPvm>2015-01-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+                <virta:Koulutuskoodi>726600</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>837</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+              </virta:Jakso>
+              <virta:Laajuus>
+                <virta:Opintopiste>120</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus avain="oo-12345" opiskelijaAvain="xyz">
+              <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2014-12-31</virta:LoppuPvm>
+                <virta:Koodi>2</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2015-01-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+                <virta:Koodi>2</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>4</virta:Tyyppi>
+              <virta:Myontaja>01905</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="xyz">
+                <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2014-12-31</virta:LoppuPvm>
+                <virta:Koulutuskoodi>733207</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>837</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+              </virta:Jakso>
+              <virta:Jakso koulutusmoduulitunniste="xyz">
+                <virta:AlkuPvm>2015-01-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2021-07-31</virta:LoppuPvm>
+                <virta:Koulutuskoodi>733207</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>837</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+              </virta:Jakso>
+              <virta:Laajuus>
+                <virta:Opintopiste>120</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
+          </virta:Opiskeluoikeudet>
+          <virta:LukukausiIlmoittautumiset>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="xyz">
+              <virta:Myontaja>01905</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2014-07-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2014-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2014-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="xyz">
+              <virta:Myontaja>01905</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2014-07-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2015-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2015-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="xyz">
+              <virta:Myontaja>01905</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2015-07-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2015-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2015-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="xyz">
+              <virta:Myontaja>01905</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2015-07-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2016-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2016-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="xyz">
+              <virta:Myontaja>01905</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2016-06-29</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2016-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2016-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="xyz">
+              <virta:Myontaja>01905</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2016-06-29</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2017-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2017-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+              <virta:YTHSMaksu>true</virta:YTHSMaksu>
+            </virta:LukukausiIlmoittautuminen>
+          </virta:LukukausiIlmoittautumiset>
+          <virta:Opintosuoritukset>
+            <virta:Opintosuoritus avain="xyz1234" koulutusmoduulitunniste="km-48436" opiskelijaAvain="xyz">
+              <virta:SuoritusPvm>2015-11-08</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>0</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01905</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Psykologian perusopinnot</virta:Nimi>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">4</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="1234xyz"/>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="1234xyz" koulutusmoduulitunniste="abcdefg" opiskelijaAvain="xyz">
+              <virta:SuoritusPvm>2014-08-29</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01905</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">TIETOTEKNIIKKATAIDOT</virta:Nimi>
+              <virta:Nimi kieli="en">Introduction to Computing</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">6</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+          </virta:Opintosuoritukset>
+        </virta:Opiskelija>
+      </virta:Virta>
+    </virtaluku:OpiskelijanKaikkiTiedotResponse>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

@@ -1,7 +1,7 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import org.scalatest.{FreeSpec, Matchers}
@@ -45,6 +45,16 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
           val opiskeluoikeus = getOpiskeluoikeudet(MockOppijat.montaJaksoaKorkeakoululainen.oid).find(_.oppilaitos.exists(_.oid == MockOrganisaatiot.aaltoYliopisto)).get
           opiskeluoikeus.suoritukset.head.koulutusmoduuli.nimi.get("fi") should equal("Fil. maist., fysiikka")
         }
+      }
+    }
+
+    "Duplikaattiosasuoritukset" - {
+      "eivät aiheuta virhettä jos ne johtuvat oppilaitosfuusiosta" in {
+        tryOppija(MockOppijat.virtaDuplikaatteja.oid).isRight should be(true)
+      }
+
+      "muuten aiheuttavat virheen" in {
+        tryOppija(MockOppijat.virtaDuplikaattejaEiFuusio.oid).isLeft should be(true)
       }
     }
 
