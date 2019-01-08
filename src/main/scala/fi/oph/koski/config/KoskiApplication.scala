@@ -67,7 +67,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val ytr = TimedProxy[AuxiliaryOpiskeluoikeusRepository](YtrOpiskeluoikeusRepository(ytrClient, organisaatioRepository, oppilaitosRepository, koodistoViitePalvelu, ytrAccessChecker, Some(validator), localizationRepository))
   lazy val opiskeluoikeusRepository = new CompositeOpiskeluoikeusRepository(possu, virta, ytr)
   lazy val opiskeluoikeusQueryRepository = new OpiskeluoikeusQueryService(replicaDatabase.db)
-  lazy val validator: KoskiValidator = new KoskiValidator(tutkintoRepository, koodistoViitePalvelu, organisaatioRepository, possu, henkilöRepository, ePerusteet)
+  lazy val validator: KoskiValidator = new KoskiValidator(tutkintoRepository, koodistoViitePalvelu, organisaatioRepository, possu, henkilöRepository, ePerusteet, config)
   lazy val elasticSearch = ElasticSearch(config)
   lazy val koskiElasticSearchIndex = new KoskiElasticSearchIndex(elasticSearch)
   lazy val perustiedotRepository = new OpiskeluoikeudenPerustiedotRepository(koskiElasticSearchIndex, opiskeluoikeusQueryRepository)
