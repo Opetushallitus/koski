@@ -650,6 +650,9 @@ function TilaJaVahvistus() {
         dialog.myöntäjät.itemEditor(0).propertyBySelector('.titteli').setValue('rehtori'),
         wait.until(dialog.merkitseValmiiksiEnabled),
         dialog.merkitseValmiiksi)
+    },
+    isVisible: function() {
+      return isElementVisible(elem)
     }
   }
   return api
