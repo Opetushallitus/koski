@@ -228,7 +228,13 @@ case class AmmatillisenTutkinnonSuoritus(
   @KoodistoKoodiarvo("ammatillinentutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinentutkinto", "suorituksentyyppi"),
   @Tooltip("Oppijan opetusryhmä")
-  ryhmä: Option[String] = None
+  ryhmä: Option[String] = None,
+  @Title("Painotettu keskiarvo")
+  @Tooltip("Ammatillisen tutkinnon osaamispistein painotettu keskiarvo.")
+  @OnlyWhen("suoritustapa/koodiarvo","ops")
+  @MinValue(1)
+  @MaxValue(5)
+  keskiarvo: Option[Float] = None
 ) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus with Todistus
 
 @ReadFlattened

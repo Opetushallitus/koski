@@ -776,6 +776,36 @@ describe('Ammatillinen koulutus', function() {
       after(page.openPage, page.oppijaHaku.searchAndSelect('280608-6619'))
     })
 
+    describe('Keskiarvo', function() {
+      describe('Aluksi', function() {
+        before(editor.edit)
+        it('keskiarvo-kenttä on näkyvissä', function() {
+          expect(editor.property('keskiarvo').isVisible()).to.equal(true)
+        })
+        after(editor.cancelChanges)
+      })
+      describe('Ei-validin keskiarvon lisäys', function() {
+        before(
+          editor.edit,
+          editor.property('keskiarvo').setValue(7)
+        )
+        it('ei ole sallittu', function() {
+          expect(editor.canSave()).to.equal(false)
+        })
+        after(editor.cancelChanges)
+      })
+      describe('Validin keskiarvon lisäys', function() {
+        before(
+          editor.edit,
+          editor.property('keskiarvo').setValue(3.5),
+          editor.saveChanges
+        )
+        it('toimii', function() {
+          expect(editor.property('keskiarvo').getValue()).to.equal('3,5')
+        })
+      })
+    })
+
     describe('Tutkinnon osat', function() {
       var suoritustapa = editor.property('suoritustapa')
       describe('Kun suoritustapa on opetussuunnitelman mukainen', function() {
@@ -1370,6 +1400,10 @@ describe('Ammatillinen koulutus', function() {
 
         it('Tutkinnon osia ei ryhmitellä', function() {
           expect(opinnot.tutkinnonOsat('1').isGroupHeaderVisible()).to.equal(false)
+        })
+
+        it('Keskiarvo-kenttä ei ole näkyvissä', function() {
+          expect(editor.property('keskiarvo').isVisible()).to.equal(false)
         })
 
         describe('Tutkinnon osan lisääminen', function() {
