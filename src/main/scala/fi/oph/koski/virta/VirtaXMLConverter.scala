@@ -49,7 +49,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         ))
       )
 
-      (muutSuoritukset, opiskeluoikeus :: opiskeluOikeudet)
+      (muutSuoritukset.filterNot(sisältyyOpiskeluoikeuteen(_, opiskeluoikeusNode, suoritusNodeList, ignoreDuplicates = true)), opiskeluoikeus :: opiskeluOikeudet)
     }
 
     val orphanSuoritukset = orphans.flatMap(convertSuoritus(_, suoritusNodeList))
@@ -92,7 +92,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       addKeskeneräinenTutkinnonSuoritus(tila, suoritukset, opiskeluoikeusNode, viimeisinTutkinto)
     } else {
       val opiskeluoikeusTila = tila.opiskeluoikeusjaksot.lastOption.map(_.tila)
-      logger.warn(s"Tutkintoon johtavaa päätason suoritusta ei löydy tai opiskeluoikeus on päättynyt. Opiskeluoikeuden tila: $opiskeluoikeusTila, jaksot: ${opiskeluoikeusJaksot.map(_.koulutuskoodi)}, laji: '${laji(opiskeluoikeusNode)}'" )
+      logger.warn(s"Tutkintoon johtavaa päätason suoritusta ei löydy tai opiskeluoikeus on päättynyt. Opiskeluoikeus ${avain(opiskeluoikeusNode)}, tila: $opiskeluoikeusTila, jaksot: ${opiskeluoikeusJaksot.map(_.koulutuskoodi)}, laji: '${laji(opiskeluoikeusNode)}'" )
       addMuuKorkeakoulunSuoritus(tila, suoritukset, opiskeluoikeusNode)
     }
   }
@@ -275,9 +275,17 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     (virtaXml \\ "Opintosuoritukset" \\ "Opintosuoritus").toList
   }
 
-  def sisältyyOpiskeluoikeuteen(suoritus: Node, opiskeluoikeus: Node, allNodes: List[Node]): Boolean = {
+  def sisältyyOpiskeluoikeuteen(suoritus: Node, opiskeluoikeus: Node, allNodes: List[Node], ignoreDuplicates: Boolean = false): Boolean = {
     val opiskeluoikeusAvain: String = (suoritus \ "@opiskeluoikeusAvain").text
-    opiskeluoikeusAvain == avain(opiskeluoikeus) || childNodes(suoritus, allNodes).exists(sisältyyOpiskeluoikeuteen(_, opiskeluoikeus, allNodes))
+    if (opiskeluoikeusAvain == avain(opiskeluoikeus)) {
+      val suoritusAvain = avain(suoritus)
+      ignoreDuplicates ||
+      allNodes.count(avain(_) == suoritusAvain) == 1 ||
+      // duplikaatteja löytyi -> tulkitse vain fuusioituneen koulun suoritus sisältyväksi
+      suoritus.exists(n => (n \ "Organisaatio" \ "Rooli").headOption.exists(_.text == fuusioitunutMyöntäjä))
+    } else {
+      childNodes(suoritus, allNodes).exists(sisältyyOpiskeluoikeuteen(_, opiskeluoikeus, allNodes, ignoreDuplicates))
+    }
   }
 
   private def requiredKoodi(uri: String, koodi: String) = {
