@@ -113,7 +113,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   private def addMuuKorkeakoulunSuoritus(tila: KorkeakoulunOpiskeluoikeudenTila, suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node) =
     optionalOppilaitos(opiskeluoikeusNode).map { org =>
       val virtaOpiskeluoikeudenTyyppi = opiskeluoikeudenTyyppi(opiskeluoikeusNode)
-      val nimi = Some((opiskeluoikeusNode \\ "@koulutusmoduulitunniste").text.stripPrefix("#").stripSuffix("/").trim)
+      val nimi = (opiskeluoikeusNode \\ "@koulutusmoduulitunniste").headOption.map(_.text.stripPrefix("#").stripSuffix("/").trim)
         .filter(_.nonEmpty).map(finnish).getOrElse(virtaOpiskeluoikeudenTyyppi.description)
       MuuKorkeakoulunSuoritus(
         koulutusmoduuli = MuuKorkeakoulunOpinto(
