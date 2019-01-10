@@ -21,11 +21,12 @@ abstract class AuxiliaryOpiskeluoikeusRepositoryImpl[OO <: Opiskeluoikeus, CK <:
         quickAccessCheck(oppijat.par.filter(oppija => cachedOrganizations(oppija).exists(user.hasReadAccess)).toList)
       }
     } catch {
-      case NonFatal(e) => NonCriticalException(e) match {
-        case Some(n) => logger.warn(n.getMessage)
-        case _ => logger.error(e)(s"Failed to fetch data for filterOppijat, ${if (globalAccess) "returning everything" else "not returning anything"}")
-      }
-      if (globalAccess) oppijat else Nil
+      case NonFatal(e) =>
+        NonCriticalException(e) match {
+          case Some(n) => logger.warn(n.getMessage)
+          case _ => logger.error(e)(s"Failed to fetch data for filterOppijat, ${if (globalAccess) "returning everything" else "not returning anything"}")
+        }
+        if (globalAccess) oppijat else Nil
     }
   }
 
