@@ -5,7 +5,7 @@ import fi.oph.koski.henkilo.HenkilönTunnisteet
 import fi.oph.koski.koskiuser.{AccessChecker, KoskiSession}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{Opiskeluoikeus, Organisaatio}
-import fi.oph.koski.virta.NonCriticalException
+import fi.oph.koski.util.NonCriticalException
 
 import scala.concurrent.duration._
 import scala.util.control.NonFatal
