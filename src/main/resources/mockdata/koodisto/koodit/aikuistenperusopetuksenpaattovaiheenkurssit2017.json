@@ -347,6 +347,166 @@
     "passive" : false
   } ]
 }, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub1",
+  "koodiArvo" : "FIB1",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Lähtökohtia suomen opiskelulle",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Utgångspunkter för studier i finska",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "kielivalikoima_sv",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_b1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub2",
+  "koodiArvo" : "FIB2",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Grundläggande kommunikation i sociala situationer i vardagen",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "kielivalikoima_sv",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_b1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub3",
+  "koodiArvo" : "FIB3",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Kommunikation vid uträttande av ärenden",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "kielivalikoima_sv",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_b1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub4",
+  "koodiArvo" : "FIB4",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Selviytyminen muodollisemmista tilanteista",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Kommunikation i mera formella situationer",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "kielivalikoima_sv",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_b1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub5",
+  "koodiArvo" : "FIB5",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Palvelu- ja viranomaistilanteet",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Kommunikation i servicesituationer och med myndigheter",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "kielivalikoima_sv",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_b1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub6",
+  "koodiArvo" : "FIB6",
+  "metadata" : [ {
+    "nimi" : "Kielitaidon alkeet: Ajankohtaiset ilmiöt",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i språket: Aktuella företeelser",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "kielivalikoima_sv",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_b1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub7",
+  "koodiArvo" : "FIB7",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Miksi Suomessa puhutaan ruotsia?",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Fakta om Finlands tvåspråkighet",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "kielivalikoima_sv",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_b1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub8",
+  "koodiArvo" : "FIB8",
+  "metadata" : [ {
+    "nimi" : "Kehittyvä kielitaito: Avaimet elinikäiseen kieltenopiskeluun",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Växande språkkunskap: Nycklar till livslångt språklärande",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "kielivalikoima_sv",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
+    "codeElementUri" : "koskioppiaineetyleissivistava_b1",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
   "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_fy1",
   "koodiArvo" : "FY1",
   "metadata" : [ {
@@ -1019,6 +1179,166 @@
     "passive" : false
   } ]
 }, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai1",
+  "koodiArvo" : "MO1",
+  "metadata" : [ {
+    "nimi" : "Ruotsin kielen ja kirjallisuuden perusteet",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Grunderna i svenska och litteratur",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai10",
+  "koodiArvo" : "MO10",
+  "metadata" : [ {
+    "nimi" : "Nykykulttuurin ilmiöitä ja kirjallisuutta",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Samtidskulturella fenomen och modern litteratur",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai2",
+  "koodiArvo" : "MO2",
+  "metadata" : [ {
+    "nimi" : "Monimuotoiset tekstit",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Olika slag av texter",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai3",
+  "koodiArvo" : "MO3",
+  "metadata" : [ {
+    "nimi" : "Tekstien tuottaminen ja tulkitseminen",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Att tolka och producera texter",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai4",
+  "koodiArvo" : "MO4",
+  "metadata" : [ {
+    "nimi" : "Kieli ja kulttuuri",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Språk och kultur",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai5",
+  "koodiArvo" : "MO5",
+  "metadata" : [ {
+    "nimi" : "Puhe- ja vuorovaikutustaidot",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Muntliga och kommunikativa färdigheter",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai6",
+  "koodiArvo" : "MO6",
+  "metadata" : [ {
+    "nimi" : "Median maailma",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Mediernas värld",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai7",
+  "koodiArvo" : "MO7",
+  "metadata" : [ {
+    "nimi" : "Kauno- ja tietokirjallisuuden lukeminen",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Att läsa skön- och facklitteratur",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai8",
+  "koodiArvo" : "MO8",
+  "metadata" : [ {
+    "nimi" : "Tekstien tulkinta",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Att tolka texter",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai9",
+  "koodiArvo" : "MO9",
+  "metadata" : [ {
+    "nimi" : "Tekstien tuottaminen",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Att producera texter",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ {
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementVersion" : 1,
+    "passive" : false
+  } ]
+}, {
   "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ot1",
   "koodiArvo" : "OT1",
   "metadata" : [ {
@@ -1371,13 +1691,17 @@
     "passive" : false
   } ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub1",
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub1-1",
   "koodiArvo" : "RUB1",
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Lähtökohtia ruotsin opiskelulle",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Grunderna i språket: Utgångspunkter för studier i svenska",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -1391,13 +1715,17 @@
     "passive" : false
   } ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub2",
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub2-1",
   "koodiArvo" : "RUB2",
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Perusviestintää arkipäivän sosiaalisissa tilanteissa",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Grunderna i språket: Grundläggande kommunikation i sociala situationer i vardagen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -1411,13 +1739,17 @@
     "passive" : false
   } ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub3",
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub3-1",
   "koodiArvo" : "RUB3",
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Vuorovaikutus asiointitilanteissa",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Grunderna i språket: Kommunikation vid uträttande av ärenden",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -1431,13 +1763,17 @@
     "passive" : false
   } ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub4",
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub4-1",
   "koodiArvo" : "RUB4",
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Selviytyminen muodollisemmista tilanteista",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Grunderna i språket: Kommunikation i mera formella situationer",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -1451,13 +1787,17 @@
     "passive" : false
   } ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub5",
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub5-1",
   "koodiArvo" : "RUB5",
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Palvelu- ja viranomaistilanteet",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Grunderna i språket: Kommunikation i servicesituationer och med myndigheter",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -1471,13 +1811,17 @@
     "passive" : false
   } ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub6",
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub6-1",
   "koodiArvo" : "RUB6",
   "metadata" : [ {
     "nimi" : "Kielitaidon alkeet: Ajankohtaiset ilmiöt",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Grunderna i språket: Aktuella företeelser",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -1491,13 +1835,17 @@
     "passive" : false
   } ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub7",
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub7-1",
   "koodiArvo" : "RUB7",
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Miksi Suomessa puhutaan ruotsia?",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Växande språkkunskap: Fakta om Finlands tvåspråkighet",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -1511,13 +1859,17 @@
     "passive" : false
   } ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub8",
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_rub8-1",
   "koodiArvo" : "RUB8",
   "metadata" : [ {
     "nimi" : "Kehittyvä kielitaito: Avaimet elinikäiseen kieltenopiskeluun",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Växande språkkunskap: Nycklar till livslångt språklärande",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -2235,13 +2587,17 @@
     "passive" : false
   } ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai1",
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai1-1",
   "koodiArvo" : "ÄI1",
   "metadata" : [ {
     "nimi" : "Suomen kielen ja kirjallisuuden perusteet",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Grunderna i finska och litteratur",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -2251,13 +2607,17 @@
     "passive" : false
   } ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai10",
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai10-1",
   "koodiArvo" : "ÄI10",
   "metadata" : [ {
     "nimi" : "Nykykulttuurin ilmiöitä ja kirjallisuutta",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Samtidskulturella fenomen och modern litteratur",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -2267,13 +2627,17 @@
     "passive" : false
   } ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai2",
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai2-1",
   "koodiArvo" : "ÄI2",
   "metadata" : [ {
     "nimi" : "Monimuotoiset tekstit",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Olika slag av texter",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -2283,13 +2647,17 @@
     "passive" : false
   } ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai3",
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai3-1",
   "koodiArvo" : "ÄI3",
   "metadata" : [ {
     "nimi" : "Tekstien tuottaminen ja tulkitseminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Att tolka och producera texter",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -2299,13 +2667,17 @@
     "passive" : false
   } ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai4",
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai4-1",
   "koodiArvo" : "ÄI4",
   "metadata" : [ {
     "nimi" : "Kieli ja kulttuuri",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Språk och kultur",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -2315,13 +2687,17 @@
     "passive" : false
   } ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai5",
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai5-1",
   "koodiArvo" : "ÄI5",
   "metadata" : [ {
     "nimi" : "Puhe- ja vuorovaikutustaidot",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Muntliga och kommunikativa färdigheter",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -2331,13 +2707,17 @@
     "passive" : false
   } ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai6",
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai6-1",
   "koodiArvo" : "ÄI6",
   "metadata" : [ {
     "nimi" : "Median maailma",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Mediernas värld",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -2347,13 +2727,17 @@
     "passive" : false
   } ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai7",
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai7-1",
   "koodiArvo" : "ÄI7",
   "metadata" : [ {
     "nimi" : "Kauno- ja tietokirjallisuuden lukeminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Att läsa skön- och facklitteratur",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -2363,13 +2747,17 @@
     "passive" : false
   } ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai8",
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai8-1",
   "koodiArvo" : "ÄI8",
   "metadata" : [ {
     "nimi" : "Tekstien tulkinta",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Att tolka texter",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -2379,13 +2767,17 @@
     "passive" : false
   } ]
 }, {
-  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai9",
+  "koodiUri" : "aikuistenperusopetuksenpaattovaiheenkurssit2017_ai9-1",
   "koodiArvo" : "ÄI9",
   "metadata" : [ {
     "nimi" : "Tekstien tuottaminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Att producera texter",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
