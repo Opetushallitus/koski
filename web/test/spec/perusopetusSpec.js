@@ -493,6 +493,71 @@ describe('Perusopetus', function() {
             })
           })
 
+          describe('Äidinkielen kurssivalikoima', function() {
+            function testaaÄidinkielenKurssivaihtoehdot(oppimäärä, odotetutKurssit) {
+              describe('Kun oppimääräksi on valittuna "' + oppimäärä + '"', function () {
+                before(
+                  editor.edit,
+                  äidinkieli.kurssi('ÄI1').poistaKurssi,
+                  äidinkieli.kurssi('ÄI2').poistaKurssi,
+                  äidinkieli.kurssi('ÄI3').poistaKurssi,
+                  äidinkieli.kurssi('ÄI10').poistaKurssi,
+                  äidinkieli.propertyBySelector('.kieli').selectValue(oppimäärä),
+                  äidinkieli.avaaLisääKurssiDialog
+                )
+
+                it('Näytetään oikea kurssivalikoima', function() {
+                  expect(äidinkieli.lisääKurssiDialog.kurssit()).to.deep.equal(odotetutKurssit)
+                })
+
+                after(
+                  äidinkieli.lisääKurssiDialog.sulje,
+                  editor.cancelChanges
+                )
+              })
+            }
+
+            testaaÄidinkielenKurssivaihtoehdot('Suomen kieli ja kirjallisuus', [
+              'ÄI1 Suomen kielen ja kirjallisuuden perusteet',
+              'ÄI10 Nykykulttuurin ilmiöitä ja kirjallisuutta',
+              'ÄI2 Monimuotoiset tekstit',
+              'ÄI3 Tekstien tuottaminen ja tulkitseminen',
+              'ÄI4 Kieli ja kulttuuri',
+              'ÄI5 Puhe- ja vuorovaikutustaidot',
+              'ÄI6 Median maailma',
+              'ÄI7 Kauno- ja tietokirjallisuuden lukeminen',
+              'ÄI8 Tekstien tulkinta',
+              'ÄI9 Tekstien tuottaminen',
+              'Lisää paikallinen kurssi...'
+            ])
+            testaaÄidinkielenKurssivaihtoehdot('Suomi toisena kielenä ja kirjallisuus', [
+              'S21 Opiskelutaitojen vahvistaminen',
+              'S210 Ajankohtaiset ilmiöt Suomessa ja maailmalla',
+              'S22 Luonnontieteen tekstit tutummiksi',
+              'S23 Yhteiskunnallisten aineiden tekstit tutummiksi',
+              'S24 Median tekstejä ja kuvia',
+              'S25 Tiedonhankintataitojen syventäminen',
+              'S26 Uutistekstit',
+              'S27 Mielipiteen ilmaiseminen ja perusteleminen',
+              'S28 Kaunokirjalliset tekstit tutuiksi',
+              'S29 Kulttuurinen moninaisuus - moninainen kulttuuri',
+              'Lisää paikallinen kurssi...'
+            ])
+            testaaÄidinkielenKurssivaihtoehdot('Ruotsin kieli ja kirjallisuus',  [
+              'MO1 Ruotsin kielen ja kirjallisuuden perusteet',
+              'MO10 Nykykulttuurin ilmiöitä ja kirjallisuutta',
+              'MO2 Monimuotoiset tekstit',
+              'MO3 Tekstien tuottaminen ja tulkitseminen',
+              'MO4 Kieli ja kulttuuri',
+              'MO5 Puhe- ja vuorovaikutustaidot',
+              'MO6 Median maailma',
+              'MO7 Kauno- ja tietokirjallisuuden lukeminen',
+              'MO8 Tekstien tulkinta',
+              'MO9 Tekstien tuottaminen',
+              'Lisää paikallinen kurssi...'
+            ])
+          })
+
           describe('Kieliaineiden kurssit', function() {
             before(
               editor.edit,
