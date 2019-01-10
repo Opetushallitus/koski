@@ -1,3 +1,7 @@
+## 10.1.2019
+
+- Lisätty kenttä keskiarvo ammatilliseen perustutkintoon
+
 ## 10.9.2018
 
 - Lisätty kentät erityisenTuenPäätökset ja tehostetunTuenPäätökset nuorten perusopetuksen ja perusopetuksen lisäopetuksen lisätietoihin
