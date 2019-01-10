@@ -207,7 +207,7 @@ export class Oppija extends React.Component {
     stateP.filter(e => e === 'päätasonSuoritusDeleted').onValue(päätasonSuoritusDeleted)
     let showHenkilöUiLink = userP.map('.hasHenkiloUiWriteAccess')
     let showVirtaXmlLink = userP.map('.hasGlobalReadAccess')
-    let showSureLink = userP.map('.hasGlobalReadAccess')
+    let showSureLink = userP.map('.hasHenkiloUiWriteAccess')
     let varoitukset = modelItems(oppija, 'varoitukset').map(modelData)
     return oppija.loading
       ? <div className="loading"/>
