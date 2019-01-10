@@ -48,9 +48,8 @@ export default ({ oppijaOid, opiskeluoikeusTyypit, selectedIndex }) => {
                   <ul className="opiskeluoikeudet">
                     {
                       modelItems(oppilaitoksenOpiskeluoikeudet, 'opiskeluoikeudet').map((opiskeluoikeus, opiskeluoikeusIndex) =>
-                        modelItems(opiskeluoikeus, 'suoritukset').map((suoritus, suoritusIndex) =>
-                          (<li className="opiskeluoikeus" key={opiskeluoikeusIndex + '-' + suoritusIndex}>
-                            <span className="koulutus">{ modelTitle(suoritus, 'tyyppi') }</span>
+                          (<li className="opiskeluoikeus" key={opiskeluoikeusIndex}>
+                            <span className="koulutus">{ modelTitle(opiskeluoikeus, 'suoritukset.0.tyyppi') }</span>
                             {' '}
                             { modelData(opiskeluoikeus, 'alkamispäivä')
                               ? <span>
@@ -61,7 +60,6 @@ export default ({ oppijaOid, opiskeluoikeusTyypit, selectedIndex }) => {
                             }
                             <span className="tila">{ modelTitle(opiskeluoikeus, 'tila.opiskeluoikeusjaksot.-1.tila') }</span>
                           </li>)
-                        )
                       )
                     }
                   </ul>

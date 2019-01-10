@@ -1747,6 +1747,9 @@ describe('Ammatillinen koulutus', function() {
       describe('Kaikki tiedot näkyvissä', function() {
         before(opinnot.expandAll)
         it('näyttää opiskeluoikeuden tiedot', function() {
+          expect(opinnot.opiskeluoikeudet.valitunVälilehdenAlaotsikot()).to.deep.equal([
+            'Näyttötutkintoon valmistava koulutus 2012—2016, Valmistunut'
+          ])
           expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
             'Opiskeluoikeuden voimassaoloaika : 1.9.2012 — 31.5.2016\n' +
             'Tila 31.5.2016 Valmistunut\n' +

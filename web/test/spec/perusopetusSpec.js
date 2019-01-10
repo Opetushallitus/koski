@@ -18,6 +18,10 @@ describe('Perusopetus', function() {
       expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2016\n' +
         'Tila 4.6.2016 Valmistunut\n' +
         '15.8.2008 Läsnä')
+
+      expect(opinnot.opiskeluoikeudet.valitunVälilehdenAlaotsikot()).to.deep.equal([
+        'Perusopetuksen oppimäärä 2008—2016, Valmistunut'
+      ])
     })
 
     describe('Perusopetuksen oppimäärä', function() {

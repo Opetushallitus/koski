@@ -570,7 +570,9 @@ function Opiskeluoikeudet() {
     omatTiedotOpiskeluoikeuksienOtsikot: function() {
       return textsOf(S('.oppilaitos-list .oppilaitos-container .opiskeluoikeudet-list button.opiskeluoikeus-button h3'))
     },
-
+    valitunVälilehdenAlaotsikot: function() {
+      return textsOf(S('.opiskeluoikeustyypit-nav .selected .opiskeluoikeudet .opiskeluoikeus'))
+    },
     valitseOpiskeluoikeudenTyyppi: function(tyyppi) {
       return function() {
         var tab = findSingle('.opiskeluoikeustyypit-nav .' + tyyppi)()

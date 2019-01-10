@@ -15,6 +15,10 @@ describe('Korkeakoulutus', function() {
       it('näytetään', function() {
         expect(opinnot.getTutkinto('konetekniikka')).to.equal('Dipl.ins., konetekniikka')
         expect(opinnot.getOppilaitos('konetekniikka')).to.equal('Aalto-yliopisto')
+        expect(opinnot.opiskeluoikeudet.valitunVälilehdenAlaotsikot()).to.deep.equal([
+          'korkeakoulututkinto 2013—2016, päättynyt',
+          'korkeakoulunopintojakso'
+        ])
       })
     })
     describe('Kaikki tiedot näkyvissä', function() {
@@ -61,11 +65,22 @@ describe('Korkeakoulutus', function() {
   describe('Keskeneräinen tutkinto', function() {
     before(
       page.openPage,
-      page.oppijaHaku.searchAndSelect('150113-4146'),
-      opinnot.avaaOpintosuoritusote('Lääketieteen')
+      page.oppijaHaku.searchAndSelect('150113-4146')
     )
-    it('näytetään', function() {
-      expect(S('section.opiskeluoikeus h3').text()).to.equal('Ensisijainen opinto-oikeus')
+
+    it('näytetään välilehtipainike oikein', function() {
+      expect(opinnot.opiskeluoikeudet.valitunVälilehdenAlaotsikot()).to.deep.equal([
+        'korkeakoulunopintojakso',
+        'korkeakoulututkinto 2011—2019, aktiivinen',
+        'muukorkeakoulunsuoritus 2004—2004, aktiivinen'
+      ])
+    })
+
+    describe('opintosuoritusote', function() {
+      before(opinnot.avaaOpintosuoritusote('Lääketieteen'))
+      it('näytetään', function() {
+        expect(S('section.opiskeluoikeus h3').text()).to.equal('Ensisijainen opinto-oikeus')
+      })
     })
   })
   describe('AMK, keskeyttänyt', function() {
