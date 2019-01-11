@@ -95,4 +95,16 @@ describe('Korkeakoulutus', function() {
       })
     })
   })
+
+  describe('AMK, valmis', function() {
+    before(
+      page.openPage,
+      page.oppijaHaku.searchAndSelect('250686-102E')
+    )
+    describe('Opiskeluoikeuden otsikko', function() {
+      it('näytetään', function() {
+        expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal(['Yrkeshögskolan Arcada, 34 opintojaksoa (2011—2015, päättynyt)'])
+      })
+    })
+  })
 })

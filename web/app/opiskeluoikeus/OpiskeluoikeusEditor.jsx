@@ -181,14 +181,14 @@ const isPerusopetuksenVuosiluokka = suoritus => suorituksenTyyppi(suoritus) === 
 
 const oppimääräTaiOpintojaksoOtsikko = suoritukset => {
   const otsikkoAvain = suoritukset.every(isPerusopetuksenOppimäärä) ? 'oppiainetta' : 'opintojaksoa'
-  return `${suoritukset.length} ${t(otsikkoAvain)}`
+  return `${suoritukset.filter(opintojaksoTaiOppimäärä).length} ${t(otsikkoAvain)}`
 }
 
 // Duplicates the logic from src/main/scala/fi/oph/koski/luovutuspalvelu/SuomiFiService.scala#suorituksenNimi
 export const näytettäväPäätasonSuoritusTitle = opiskeluoikeus => {
   const suoritukset = modelItems(opiskeluoikeus, 'suoritukset')
-  const sisältääMontaOppimäärääTaiOpintojaksoa = suoritukset.every(opintojaksoTaiOppimäärä) && suoritukset.length > 1
-  return sisältääMontaOppimäärääTaiOpintojaksoa
+  const sisältääOppiaineenOppimääränTaiOpintoJakson = suoritukset.some(opintojaksoTaiOppimäärä) && suoritukset.length > 1
+  return sisältääOppiaineenOppimääränTaiOpintoJakson
     ? oppimääräTaiOpintojaksoOtsikko(suoritukset)
     : suoritukset.every(isPerusopetuksenVuosiluokka)
       ? t('Perusopetus')
