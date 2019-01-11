@@ -797,4 +797,13 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_muuammatillinenkoulutus",
+  "koodiArvo" : "muuammatillinenkoulutus",
+  "metadata" : [ {
+    "nimi" : "Muun ammatillisen koulutuksen suoritus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]

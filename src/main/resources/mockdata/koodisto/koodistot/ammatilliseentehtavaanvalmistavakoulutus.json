@@ -1,0 +1,15 @@
+{
+  "koodistoUri" : "ammatilliseentehtavaanvalmistavakoulutus",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Ammatilliseen tehtavaan valmistava koulutus",
+    "kuvaus" : ""
+  } ],
+  "codesGroupUri" : "http://koski",
+  "voimassaAlkuPvm" : "2019-05-01",
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
+  "withinCodes" : [ ],
+  "tila" : "LUONNOS",
+  "version" : 0
+}

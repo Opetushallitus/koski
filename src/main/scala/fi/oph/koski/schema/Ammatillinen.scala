@@ -1102,6 +1102,49 @@ case class PaikallinenTelmaKoulutuksenOsa(
   pakollinen: Boolean
 ) extends PaikallinenKoulutusmoduuli with Valinnaisuus with TelmaKoulutuksenOsa
 
+
+case class MuunAmmatillisenKoulutuksenSuoritus(
+  koulutusmoduuli: MuuAmmatillinenKoulutus,
+  täydentääTutkintoa: Option[AmmatillinenTutkintoKoulutus],
+  toimipiste: OrganisaatioWithOid,
+  override val alkamispäivä: Option[LocalDate],
+  vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla] = None,
+  suorituskieli: Koodistokoodiviite,
+  @Description("Osaamisen hankkimistavat eri ajanjaksoina.")
+  @Tooltip("Osaamisen hankkimistavat (oppisopimus, koulutussopimus, oppilaitosmuotoinen koulutus) eri ajanjaksoina.")
+  osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]] = None,
+  koulutussopimukset: Option[List[Koulutussopimusjakso]] = None,
+  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
+  @KoodistoKoodiarvo("muuammatillinenkoulutus")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("muuammatillinenkoulutus", "suorituksentyyppi"),
+  ryhmä: Option[String] = None
+) extends AmmatillinenPäätasonSuoritus with Todistus with Toimipisteellinen with Ryhmällinen with Työssäoppimisjaksoton with Arvioinniton
+
+sealed trait Työssäoppimisjaksoton extends AmmatillinenPäätasonSuoritus {
+  override def työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None
+}
+
+sealed trait MuuAmmatillinenKoulutus extends Koulutusmoduuli
+
+case class AmmatilliseenTehtäväänValmistavaKoulutus(
+  @KoodistoUri("ammatilliseentehtavaanvalmistavakoulutus")
+  tunniste: Koodistokoodiviite,
+  pakollinen: Boolean,
+  laajuus: Option[Laajuus],
+  @Description("Kuvaus koulutuksen sisällöstä osaamisena.")
+  @Tooltip("Kuvaus koulutuksen sisällöstä osaamisena.")
+  kuvaus: LocalizedString
+) extends KoodistostaLöytyväKoulutusmoduuli with MuuAmmatillinenKoulutus
+
+case class PaikallinenMuuAmmatillinenKoulutus(
+  tunniste: PaikallinenKoodi,
+  pakollinen: Boolean,
+  laajuus: Option[Laajuus],
+  @Description("Kuvaus koulutuksen sisällöstä osaamisena.")
+  @Tooltip("Kuvaus koulutuksen sisällöstä osaamisena.")
+  kuvaus: LocalizedString
+) extends PaikallinenKoulutusmoduuli with MuuAmmatillinenKoulutus
+
 trait AmmatillinenKoodistostaLöytyväArviointi extends KoodistostaLöytyväArviointi with ArviointiPäivämäärällä {
   @KoodistoUri("arviointiasteikkoammatillinenhyvaksyttyhylatty")
   @KoodistoUri("arviointiasteikkoammatillinent1k3")
