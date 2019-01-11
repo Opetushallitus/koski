@@ -1115,7 +1115,7 @@ case class MuunAmmatillisenKoulutuksenSuoritus(
   osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]] = None,
   koulutussopimukset: Option[List[Koulutussopimusjakso]] = None,
   @Description("Suoritukseen kuuluvien osasuoritusten suoritukset")
-  override val osasuoritukset: Option[List[MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus]],
+  override val osasuoritukset: Option[List[MuuAmmatillinenOsasuoritus]],
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("muuammatillinenkoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("muuammatillinenkoulutus", "suorituksentyyppi"),
@@ -1166,6 +1166,8 @@ case class PaikallinenMuuAmmatillinenKoulutus(
   kuvaus: LocalizedString
 ) extends PaikallinenKoulutusmoduuli with MuuAmmatillinenKoulutus
 
+sealed trait MuuAmmatillinenOsasuoritus extends Suoritus with MahdollisestiSuorituskielellinen
+
 case class MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
   koulutusmoduuli: MuunAmmatillisenKoulutuksenOsasuoritus,
   override val alkamispäivä: Option[LocalDate],
@@ -1186,7 +1188,7 @@ case class MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
   override val osasuoritukset: Option[List[MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus]] = None,
   @KoodistoKoodiarvo("muunammatillisenkoulutuksenosasuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("muunammatillisenkoulutuksenosasuoritus", koodistoUri = "suorituksentyyppi")
-) extends Suoritus with Vahvistukseton
+) extends MuuAmmatillinenOsasuoritus with Vahvistukseton
 
 case class MuunAmmatillisenKoulutuksenOsasuoritus(
   tunniste: PaikallinenKoodi,
@@ -1219,7 +1221,7 @@ case class TutkinnonOsaaPienemmänKokonaisuudenOsasuorituksenSuoritus(
   suorituskieli: Option[Koodistokoodiviite],
   @KoodistoKoodiarvo("tutkinnonosaapienemmänkokonaisuudenosasuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("tutkinnonosaapienemmänkokonaisuudenosasuoritus", koodistoUri = "suorituksentyyppi")
-) extends Suoritus with Vahvistukseton
+) extends MuuAmmatillinenOsasuoritus with Vahvistukseton
 
 case class TutkinnonOsaaPienemmänKokonaisuudenOsasuoritus(
   tunniste: PaikallinenKoodi,
