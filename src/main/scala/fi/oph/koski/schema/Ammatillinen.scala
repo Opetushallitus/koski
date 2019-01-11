@@ -1122,6 +1122,25 @@ case class MuunAmmatillisenKoulutuksenSuoritus(
   ryhmä: Option[String] = None
 ) extends AmmatillinenPäätasonSuoritus with Todistus with Toimipisteellinen with Ryhmällinen with Työssäoppimisjaksoton with Arvioinniton
 
+case class TutkinnonOsaaPienemmänKokonaisuudenSuoritus(
+  koulutusmoduuli: PaikallinenMuuAmmatillinenKoulutus,
+  täydentääTutkintoa: Option[AmmatillinenTutkintoKoulutus],
+  toimipiste: OrganisaatioWithOid,
+  override val alkamispäivä: Option[LocalDate],
+  vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla] = None,
+  suorituskieli: Koodistokoodiviite,
+  @Description("Osaamisen hankkimistavat eri ajanjaksoina.")
+  @Tooltip("Osaamisen hankkimistavat (oppisopimus, koulutussopimus, oppilaitosmuotoinen koulutus) eri ajanjaksoina.")
+  osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]] = None,
+  koulutussopimukset: Option[List[Koulutussopimusjakso]] = None,
+  @Description("Tutkinnon osaa pienempään kokonaisuuteen kuuluvien osasuoritusten suoritukset")
+  override val osasuoritukset: Option[List[TutkinnonOsaaPienemmänKokonaisuudenOsasuorituksenSuoritus]],
+  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
+  @KoodistoKoodiarvo("tutkinnonosaapienempikokonaisuus")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("tutkinnonosaapienempikokonaisuus", "suorituksentyyppi"),
+  ryhmä: Option[String] = None
+) extends AmmatillinenPäätasonSuoritus with Todistus with Toimipisteellinen with Ryhmällinen with Työssäoppimisjaksoton with Arvioinniton
+
 sealed trait Työssäoppimisjaksoton extends AmmatillinenPäätasonSuoritus {
   override def työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None
 }
@@ -1184,6 +1203,30 @@ case class MuunAmmatillisenKoulutuksenOsasuorituksenLisätieto(
   @Description("Lisätiedon kuvaus siinä muodossa, kuin se näytetään todistuksella")
   kuvaus: LocalizedString
 )
+
+case class TutkinnonOsaaPienemmänKokonaisuudenOsasuorituksenSuoritus(
+  koulutusmoduuli: TutkinnonOsaaPienemmänKokonaisuudenOsasuoritus,
+  override val alkamispäivä: Option[LocalDate],
+  arviointi: Option[List[AmmatillinenArviointi]],
+  @Tooltip("Tiedot aiemmin hankitun osaamisen tunnustamisesta.")
+  @ComplexObject
+  tunnustettu: Option[OsaamisenTunnustaminen] = None,
+  @Tooltip("Suoritukseen liittyvät lisätiedot, kuten esimerkiksi mukautettu arviointi tai poikkeus arvioinnissa. Sisältää lisätiedon tyypin sekä vapaamuotoisen kuvauksen.")
+  @ComplexObject
+  lisätiedot: Option[List[MuunAmmatillisenKoulutuksenOsasuorituksenLisätieto]],
+  @KoodistoUri("tutkinnonosat")
+  liittyyTutkinnonOsaan: Koodistokoodiviite,
+  suorituskieli: Option[Koodistokoodiviite],
+  @KoodistoKoodiarvo("tutkinnonosaapienemmänkokonaisuudenosasuoritus")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("tutkinnonosaapienemmänkokonaisuudenosasuoritus", koodistoUri = "suorituksentyyppi")
+) extends Suoritus with Vahvistukseton
+
+case class TutkinnonOsaaPienemmänKokonaisuudenOsasuoritus(
+  tunniste: PaikallinenKoodi,
+  pakollinen: Boolean,
+  laajuus: Option[Laajuus],
+  kuvaus: LocalizedString
+) extends PaikallinenKoulutusmoduuli
 
 trait AmmatillinenKoodistostaLöytyväArviointi extends KoodistostaLöytyväArviointi with ArviointiPäivämäärällä {
   @KoodistoUri("arviointiasteikkoammatillinenhyvaksyttyhylatty")
