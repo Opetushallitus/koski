@@ -105,17 +105,18 @@ class PalveluvaylaSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     }
 
     "Suorituksen nimi" - {
-      "Kun on pelkkiä perusopetuksen vuosiluokkia käytetään sanaa 'Perusopetus'" in {
+      "Kun opiskeluoikeudessa on pelkkiä perusopetuksen vuosiluokkia käytetään sanaa 'Perusopetus'" in {
         // kesken olevat perusopetuksen päättötodistukset karsitaan pois -> opiskeluoikeudessa pelkkiä perusopetuksen vuosiluokkia
         ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.ysiluokkalainen) shouldEqual "Perusopetus"
       }
 
-      "Kun on pelkkiä perusopetuksen oppiaineen oppimääriä opiskeluoikeudessa käytetään '<lkm> oppiainetta'" in {
+      "Kun opiskeluoikeudessa on perusopetuksen oppiaineen oppimääriä käytetään '<lkm> oppiainetta'" in {
         ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.montaOppiaineenOppimäärääOpiskeluoikeudessa) shouldEqual "2 oppiainetta"
       }
 
-      "Kun on pelkkiä korkeakoulun opintojaksoja opiskeluoikeudessa käytetään '<lkm> opintojaksoa'" in {
+      "Kun opiskeluoikeudessa on korkeakoulun opintojaksoja käytetään '<lkm> opintojaksoa'" in {
         ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.korkeakoululainen) shouldEqual "69 opintojaksoa"
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.amkValmistunut) shouldEqual "34 opintojaksoa"
       }
 
       "Aikuisten perusopetuksessa käytetään suorituksen tyypin nimeä" in {
