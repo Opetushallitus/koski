@@ -6,7 +6,7 @@ import fi.oph.koski.koskiuser.RequiresLuovutuspalvelu
 import fi.oph.koski.schema.LocalizedString
 import fi.oph.koski.servlet.NoCache
 
-import scala.xml.{Elem, NodeSeq}
+import scala.xml.{Elem, Node, NodeSeq}
 
 class PalveluvaylaServlet(implicit val application: KoskiApplication) extends SoapServlet with RequiresLuovutuspalvelu with NoCache {
   private val suomiFiService = new SuomiFiService(application)
@@ -36,7 +36,7 @@ class PalveluvaylaServlet(implicit val application: KoskiApplication) extends So
       .headOption.map(_.text.trim)
       .toRight(KoskiErrorCategory.badRequest.validation.henkilötiedot.hetu("Hetu puuttuu"))
 
-  private def suomiFiBody(soap: Elem, resp: SuomiFiResponse): NodeSeq = {
+  private def suomiFiBody(soap: Elem, resp: SuomiFiResponse): Node = {
     replaceSoapBody(soap,
       <suomiFiRekisteritiedotResponse xmlns="http://docs.koski-xroad.fi/producer">
         <oppilaitokset>

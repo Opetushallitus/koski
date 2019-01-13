@@ -2,15 +2,16 @@ package fi.oph.koski.luovutuspalvelu
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.servlet.ApiServlet
+import fi.oph.koski.util.XML
 
 import scala.util.control.NonFatal
 import scala.xml.transform.{RewriteRule, RuleTransformer}
 import scala.xml.{Elem, Node, NodeSeq}
 
 trait SoapServlet extends ApiServlet {
-  def writeXml(elem: NodeSeq): Unit = {
+  def writeXml(elem: Node): Unit = {
     contentType = "text/xml"
-    response.writer.print(elem)
+    response.writer.print(XML.prettyPrint(elem))
   }
 
   def xmlBody: Either[HttpStatus, Elem] = try {
@@ -34,7 +35,7 @@ trait SoapServlet extends ApiServlet {
     </SOAP-ENV:Envelope>
   }
 
-  def replaceSoapBody(envelope: NodeSeq, newBody: Node): NodeSeq = {
+  def replaceSoapBody(envelope: Node, newBody: Node): Node = {
     val SoapEnvelopeNamespace = "http://schemas.xmlsoap.org/soap/envelope/"
     val requestToResponse = new RewriteRule {
       override def transform(n: Node): Seq[Node] = n match {
@@ -43,7 +44,7 @@ trait SoapServlet extends ApiServlet {
         case other => other
       }
     }
-    new RuleTransformer(requestToResponse).transform(envelope)
+    new RuleTransformer(requestToResponse).transform(envelope).head
   }
 
   override def renderStatus(status: HttpStatus): Unit = {
