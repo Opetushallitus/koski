@@ -142,6 +142,19 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           }
         }
 
+        "Tutkinnon osa saman tutkinnon uudesta perusteesta" - {
+          "Kun tutkinto löytyy ja osa kuuluu sen rakenteeseen" - {
+            val autoalanPerustutkintoUusiPeruste = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", "koulutus"), Some("OPH-2762-2017"))
+            val tutkinnonOsaUudestaPerusteesta = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite("400010", "tutkinnonosat"), pakollinen = true, None)
+            val suoritus = tutkinnonOsaSuoritus.copy(
+              tutkinto = Some(autoalanPerustutkintoUusiPeruste),
+              koulutusmoduuli = tutkinnonOsaUudestaPerusteesta
+            )
+            "palautetaan HTTP 200" in (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(
+              verifyResponseStatusOk()))
+          }
+        }
+
         "Tutkinnon osa toisesta tutkinnosta" - {
           val autoalanTyönjohdonErikoisammattitutkinto = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("357305", "koulutus"), Some("40/011/2001"))
 
@@ -191,7 +204,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           "Kun tutkinnon osalle ilmoitetaan tutkintotieto, joka on sama kuin päätason tutkinto" - {
             val suoritus = osanSuoritusToisestaTutkinnosta(autoalanPerustutkinto, johtaminenJaHenkilöstönKehittäminen)
             "palautetaan HTTP 400" in (putTutkinnonOsaSuoritus(suoritus, tutkinnonSuoritustapaNäyttönä)(
-              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.samaTutkintokoodi("Tutkinnon osalle tutkinnonosat/104052 on merkitty tutkinto, jossa on sama tutkintokoodi koulutus/351301 kuin tutkinnon suorituksessa"))))
+              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.samaTutkintokoodi("Tutkinnon osalle tutkinnonosat/104052 on merkitty tutkinto, jossa on sama diaarinumero 39/011/2014 kuin tutkinnon suorituksessa"))))
           }
         }
 
