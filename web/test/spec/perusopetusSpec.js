@@ -18,6 +18,10 @@ describe('Perusopetus', function() {
       expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2016\n' +
         'Tila 4.6.2016 Valmistunut\n' +
         '15.8.2008 Läsnä')
+
+      expect(opinnot.opiskeluoikeudet.valitunVälilehdenAlaotsikot()).to.deep.equal([
+        'Perusopetuksen oppimäärä 2008—2016, Valmistunut'
+      ])
     })
 
     describe('Perusopetuksen oppimäärä', function() {
@@ -2872,6 +2876,7 @@ describe('Perusopetus', function() {
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       it('näyttää opiskeluoikeuden tiedot', function() {
+        expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal(['Jyväskylän normaalikoulu, Äidinkieli ja kirjallisuus (2008—2016, valmistunut)'])
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
           'Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2016\n' +
           'Tila 4.6.2016 Valmistunut\n' +
@@ -2898,6 +2903,13 @@ describe('Perusopetus', function() {
         expect(todistus.headings()).to.equal('Jyväskylän yliopisto Todistus perusopetuksen oppiaineen oppimäärän suorittamisesta Jyväskylän normaalikoulu Oppiaineenkorottaja, Olli 110738-839L')
         expect(todistus.arvosanarivi('.oppiaine.AI')).to.equal('Äidinkieli ja kirjallisuus Kiitettävä 9')
         expect(todistus.arvosanarivi('.muut-opinnot')).to.equal('')
+      })
+    })
+
+    describe('Monta oppiainetta', function() {
+      before(page.openPage, page.oppijaHaku.searchAndSelect('131298-5248'))
+      it('näyttää opiskeluoikeuden otsikon oikein', function() {
+        expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal(['Jyväskylän normaalikoulu, 2 oppiainetta (2008—2016, valmistunut)'])
       })
     })
 

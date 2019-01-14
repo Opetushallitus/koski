@@ -37,7 +37,7 @@ class SuomiFiService(application: KoskiApplication) extends Logging {
     def pääSuoritus = oo.suoritukset.head
     if (pelkkiäVuosiluokkia(oo)) {
       localization("Perusopetus")
-    } else if (sisältääMontaOppimäärääTaiOpintojaksoa(oo)) {
+    } else if (sisältääOppiaineenOppimääränTaiOpintojakson(oo)) {
       oppimääräTaiOpintojaksoOtsikko(oo.suoritukset)
     } else if (aikuistenPerusopetus(pääSuoritus)) {
       pääSuoritus.tyyppi.nimi.get
@@ -57,12 +57,12 @@ class SuomiFiService(application: KoskiApplication) extends Logging {
   private def pelkkiäVuosiluokkia(oo: Opiskeluoikeus) =
     oo.suoritukset.forall(_.tyyppi == suoritusTyyppi("perusopetuksenvuosiluokka"))
 
-  private def sisältääMontaOppimäärääTaiOpintojaksoa(oo: Opiskeluoikeus) =
-    oo.suoritukset.length > 1 && oo.suoritukset.forall(s => isOppiaineenOppimäärä(s) || isOpintojakso(s))
+  private def sisältääOppiaineenOppimääränTaiOpintojakson(oo: Opiskeluoikeus) =
+    oo.suoritukset.length > 1 && oo.suoritukset.exists(s => isOppiaineenOppimäärä(s) || isOpintojakso(s))
 
   private def oppimääräTaiOpintojaksoOtsikko(kaikkiSuoritukset: List[PäätasonSuoritus]) = {
     val otsikkoKey = if (kaikkiSuoritukset.forall(isOppiaineenOppimäärä)) "oppiainetta" else "opintojaksoa"
-    LocalizedString.finnish(s"${kaikkiSuoritukset.length} ").concat(localization(otsikkoKey))
+    LocalizedString.finnish(s"${kaikkiSuoritukset.count(s => isOppiaineenOppimäärä(s) || isOpintojakso(s))} ").concat(localization(otsikkoKey))
   }
 
   private def suoritusNimi(suoritus: PäätasonSuoritus) =
