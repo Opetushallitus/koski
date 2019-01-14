@@ -54,9 +54,9 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
       }
   }
 
-  private def validateTutkintoField(tutkintoSuoritus: AmmatillisenTutkinnonSuoritus, osaSuoritus: AmmatillisenTutkinnonOsanSuoritus) = (tutkintoSuoritus.koulutusmoduuli.tunniste, osaSuoritus.tutkinto.map(_.tunniste)) match {
-    case (tutkintoKoodi, Some(tutkinnonOsanTutkintoKoodi)) if (tutkintoKoodi.koodiarvo == tutkinnonOsanTutkintoKoodi.koodiarvo) =>
-      KoskiErrorCategory.badRequest.validation.rakenne.samaTutkintokoodi(s"Tutkinnon osalle ${osaSuoritus.koulutusmoduuli.tunniste} on merkitty tutkinto, jossa on sama tutkintokoodi ${tutkintoKoodi} kuin tutkinnon suorituksessa")
+  private def validateTutkintoField(tutkintoSuoritus: AmmatillisenTutkinnonSuoritus, osaSuoritus: AmmatillisenTutkinnonOsanSuoritus) = (tutkintoSuoritus.koulutusmoduuli.perusteenDiaarinumero, osaSuoritus.tutkinto.flatMap(_.perusteenDiaarinumero)) match {
+    case (Some(tutkinnonDiaari), Some(osanDiaari)) if tutkinnonDiaari == osanDiaari =>
+      KoskiErrorCategory.badRequest.validation.rakenne.samaTutkintokoodi(s"Tutkinnon osalle ${osaSuoritus.koulutusmoduuli.tunniste} on merkitty tutkinto, jossa on sama diaarinumero $tutkinnonDiaari kuin tutkinnon suorituksessa")
     case _ =>
       HttpStatus.ok
   }
