@@ -3,6 +3,7 @@ package fi.oph.koski.validation
 import java.lang.Character.isDigit
 import java.time.LocalDate
 
+import com.typesafe.config.Config
 import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -24,7 +25,7 @@ import org.json4s.{JArray, JValue}
 // scalastyle:off line.size.limit
 // scalastyle:off number.of.methods
 
-class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: KoodistoViitePalvelu, val organisaatioRepository: OrganisaatioRepository, koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository, henkilöRepository: HenkilöRepository, ePerusteet: EPerusteetRepository) extends Timing {
+class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu: KoodistoViitePalvelu, val organisaatioRepository: OrganisaatioRepository, koskiOpiskeluoikeudet: KoskiOpiskeluoikeusRepository, henkilöRepository: HenkilöRepository, ePerusteet: EPerusteetRepository, config: Config) extends Timing {
   def validateAsJson(oppija: Oppija)(implicit user: KoskiSession, accessType: AccessType.Value): Either[HttpStatus, Oppija] = {
     extractAndValidateOppija(JsonSerializer.serialize(oppija))
   }
@@ -76,6 +77,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
               opiskeluoikeus.tila.opiskeluoikeusjaksot.find(_.tila.koodiarvo == "lasna").map(_.alku))))
           })
           .onSuccess { HttpStatus.fold(
+            päätasonSuoritusTyyppitEnabled(opiskeluoikeus),
             validateSisältyvyys(henkilö, opiskeluoikeus),
             validatePäivämäärät(opiskeluoikeus),
             HttpStatus.fold(opiskeluoikeus.suoritukset.map(validatePäätasonSuorituksenStatus(_, opiskeluoikeus))),
@@ -435,5 +437,14 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       KoskiErrorCategory.badRequest.validation.tila.oppiaineitaEiSallita("9.vuosiluokan suoritukseen ei voi syöttää oppiaineita, kun sillä on vahvistus, eikä oppilas jää luokalle")
     case _ =>
       HttpStatus.ok
+  }
+
+  private def päätasonSuoritusTyyppitEnabled(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
+    val disabled = config.getStringList("features.disabledPäätasonSuoritusTyypit")
+    val päätasonSuoritusTyypit = opiskeluoikeus.suoritukset.map(_.tyyppi.koodiarvo)
+    päätasonSuoritusTyypit.find(disabled.contains(_)) match {
+      case Some(tyyppi) => KoskiErrorCategory.notImplemented(s"Päätason suorituksen tyyppi $tyyppi ei ole käytössä tässä ympäristössä")
+      case _ => HttpStatus.ok
+    }
   }
 }
