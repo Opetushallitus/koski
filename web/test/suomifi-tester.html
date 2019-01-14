@@ -1,80 +1,139 @@
 <!DOCTYPE html>
 <html>
+<head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.0/css/bootstrap.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.12/handlebars.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/x2js/1.2.0/xml2json.js"></script>
 
 <script id="handlebars-template" type="text/x-handlebars-template">
-  <div>
-    <h2>Opiskeluoikeuteni</h2>
-    {{#each oppilaitokset}}
-    <div>
-      <h3>{{nimi.fi}}</h3>
-      {{#each opiskeluoikeudet}}
-      <div>
-        <span>Koulutuksen nimi: {{nimi.fi}}</span></br>
-        {{#if tila}}
-        <span>Opintojen tila: {{tila.fi}}</span></br>
-        {{/if}}
-        {{#if alku}}
-        <span>Alkamispvm: {{alku}}</span></br>
-        {{/if}}
-        {{#if loppu}}
-          <span>Päättymispvm: {{loppu}}</span></br>
-        {{/if}}
-      </div></br>
-      {{/each}}
+<div class="row" >
+  <div class="col-xs-12  col-md-7">
+  <h3>Opiskeluoikeustietoni:</h3>
+{{#.}}
+{{^oppilaitokset.oppilaitos}}
+  Sinulla ei ole opiskeluoikeustietoja rekisterissä.
+{{/oppilaitokset.oppilaitos}}
+{{#objectToArray oppilaitokset.oppilaitos "oppilaitokset.oppilaitos"}}
+{{#oppilaitokset.oppilaitos}}
+<h3>Oppilaitos: {{nimi.fi}}</h3>
+<hr>
+    <ul>
+      {{#objectToArray opiskeluoikeudet.opiskeluoikeus "opiskeluoikeudet.opiskeluoikeus"}}
+      {{#opiskeluoikeudet.opiskeluoikeus}}
+        <li><strong>Koulutuksen nimi: </strong>{{nimi.fi}}</li>
+        <li><strong>Opintojen tila: </strong>{{tila.fi}}</li>
+        <li><strong>Alkamispäivä: </strong>{{alku}}</li>
+        <li><strong>Päättymispäivä: </strong>{{loppu}}{{^loppu}}-{{/loppu}}</li>
+        <br>
+      {{/opiskeluoikeudet.opiskeluoikeus}}
+      {{/objectToArray}}
+    </ul>
+{{/oppilaitokset.oppilaitos}}
+{{/objectToArray}}
+{{/.}}
+</div>
+  <div class="col-xs-12  col-md-5">
+  <h3>Lisätietoja:</h3>
+  <br>
+  <ul>
+   <li><a><u>Tietosuojaseloste</u></a></li>
+   <li><a><u>Kirjautumalla Oma opintopolku -palveluun voit tarkastella opiskeluoikeus- ja opintosuoritustietojasi.</u></a></li>
+   <br>
+   <b>Huomioithan, että palvelussa ei pääsääntöisesti  näytetä seuraavia tietoja:</b>
+   <dd>- Korkeakoulututkintoja ennen vuotta 1995. Tässä voi olla korkeakoulukohtaisia poikkeuksia.</dd>
+   <dd>- Ennen vuotta 1990 suoritettuja ylioppilastutkintoja.</dd>
+   <dd>- Ennen vuoden 2018 tammikuuta suoritettuja peruskoulun, lukion tai ammattikoulun suorituksia ja opiskeluoikeuksia.</dd>
+   <br>
+   <li><p>Mikäli havaitset tiedoissasi virheitä, korjaukset tekee <u>oppilaitos.</u> Voit lähettää korjauspyynnön sähköisesti kirjautumalla <a><u>Oma opintopolku -palveluun</u></a> tai ottamalla yhteyttä suoraan oppilaitokseesi. </p></li>
+  </ul>
     </div>
-    {{/each}}
   </div>
 </script>
+</head>
+<body>
 
-<form onsubmit="doSoapRequest()">
-  <input type="text" name="hetu" id="hetu">
+<div class="container">
+
+<form onsubmit="doSoapRequest()" style="margin-top: 10px;" class="form-inline">
+  <div class="form-group">
+    <label>Hetu</label>
+    <input type="text" name="hetu" id="hetu" class="form-control" style="width: 10em;">
+  </div>
 </form>
 
-<div id="vastausHtml"></div>
-<div id="vastausXml"></div>
+<h2>HTML</h2>
+<div id="vastausHtml" style="border: 1px solid #cccccc; padding: 9.5px; border-radius: 4px;"></div>
+
+<h2>SOAP-vastaus</h2>
+<pre id="vastausXml"></pre>
+
+<h2>SOAP-vastauksesta konvertoitu JSON</h2>
+<pre id="vastausJson"></pre>
+
+</div>
 
 <script type="text/javascript">
-
   function doSoapRequest() {
     event.preventDefault()
-    var xmlStr = appendHetuToXml(document.getElementById('hetu').value)
-    var xmlDoc = new DOMParser().parseFromString(xmlStr, "text/xml")
-
-    var httpRequest = new XMLHttpRequest()
+    const soapRequest = buildSoapRequest(document.getElementById('hetu').value)
+    const httpRequest = new XMLHttpRequest()
 
     httpRequest.onreadystatechange = function () {
       if (httpRequest.readyState == 4) {
         if (httpRequest.status == 200) {
-
-          var responseXml = httpRequest.responseXML
-
           document.getElementById("vastausXml").innerText = httpRequest.responseText
-
-          var asStr = responseXml.getElementsByTagName("ns1:suomiFiRekisteritiedotResponse").item(0).innerHTML.replace("<![CDATA[", "").replace("]]>", "").trim()
-          var asJson = JSON.parse(asStr)
-          makeHandlebarsTemplate(asJson)
+          const responseXml = httpRequest.responseXML
+          const responseJson = new X2JS().xml2json(responseXml.getElementsByTagName("suomiFiRekisteritiedotResponse").item(0))
+          document.getElementById("vastausJson").innerText = JSON.stringify(responseJson, null, 2)
+          renderHandlebarsTemplate(responseJson)
         }
       }
     }
 
     httpRequest.open('POST', 'http://localhost:7021/koski/api/palveluvayla/suomi-fi-rekisteritiedot', true)
     httpRequest.setRequestHeader('Content-Type', 'text/xml')
-    httpRequest.send(xmlDoc)
+    httpRequest.send(soapRequest)
   }
 
-  function appendHetuToXml(hetu) {
-    var xmlHead= '<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xrd="http://x-road.eu/xsd/xroad.xsd" xmlns:id="http://x-road.eu/xsd/identifiers"><SOAP-ENV:Header><xrd:client id:objectType="SUBSYSTEM"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>GOV</id:memberClass><id:memberCode>0245437-2</id:memberCode><id:subsystemCode>ServiceViewClient</id:subsystemCode></xrd:client><xrd:service id:objectType="SERVICE"><id:xRoadInstance>FI</id:xRoadInstance><id:memberClass>GOV</id:memberClass><id:memberCode>000000-1</id:memberCode><id:subsystemCode>TestSystem</id:subsystemCode><id:serviceCode>testService</id:serviceCode></xrd:service><xrd:protocolVersion>4.0</xrd:protocolVersion><xrd:id></xrd:id><xrd:userId></xrd:userId></SOAP-ENV:Header><SOAP-ENV:Body><ns1:suomiFiRekisteritiedot xmlns:ns1="http://docs.koski-xroad.fi/producer"><ns1:hetu>'
-    var xmlTail= '</ns1:hetu></ns1:suomiFiRekisteritiedot></SOAP-ENV:Body></SOAP-ENV:Envelope>'
-    return xmlHead + hetu + xmlTail
+  function buildSoapRequest(hetu) {
+    return `
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xrd="http://x-road.eu/xsd/xroad.xsd" xmlns:id="http://x-road.eu/xsd/identifiers">
+  <SOAP-ENV:Header>
+    <xrd:client id:objectType="SUBSYSTEM">
+      <id:xRoadInstance>FI</id:xRoadInstance>
+      <id:memberClass>GOV</id:memberClass>
+      <id:memberCode>0245437-2</id:memberCode>
+      <id:subsystemCode>ServiceViewClient</id:subsystemCode>
+    </xrd:client>
+    <xrd:service id:objectType="SERVICE">
+      <id:xRoadInstance>FI</id:xRoadInstance>
+      <id:memberClass>GOV</id:memberClass>
+      <id:memberCode>000000-1</id:memberCode>
+      <id:subsystemCode>TestSystem</id:subsystemCode>
+      <id:serviceCode>testService</id:serviceCode>
+    </xrd:service>
+    <xrd:protocolVersion>4.0</xrd:protocolVersion>
+    <xrd:id/>
+    <xrd:userId/>
+  </SOAP-ENV:Header>
+  <SOAP-ENV:Body>
+    <ns1:suomiFiRekisteritiedot xmlns:ns1="http://docs.koski-xroad.fi/producer">
+      <ns1:hetu>${hetu}</ns1:hetu>
+    </ns1:suomiFiRekisteritiedot>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>`.trim()
   }
 
-  function makeHandlebarsTemplate(jsonData) {
-    var template = Handlebars.compile(document.getElementById("handlebars-template").textContent)
-    var result = template(jsonData)
+  function renderHandlebarsTemplate(jsonData) {
+    Handlebars.registerHelper('objectToArray', function(value, name, options) {
+      return options.fn({...this, [name]: Array.isArray(value) ? value : [value]})
+    })
+    const template = Handlebars.compile(document.getElementById("handlebars-template").textContent)
+    const result = template(jsonData)
     document.getElementById("vastausHtml").innerHTML = result
   }
 </script>
+
+</body>
 </html>
