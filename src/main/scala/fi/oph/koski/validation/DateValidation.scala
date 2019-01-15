@@ -18,7 +18,7 @@ object DateValidation {
     HttpStatus.fold(jaksot.zip(jaksot.drop(1)).map { case (jakso1, jakso2) =>
       val compared = jakso1.alku.compareTo(jakso2.alku)
       if (compared == 0) {
-        errorCategory(s"${name}: ${jakso1.tila.koodiarvo} ${jakso1.alku} ei voi olla samalla päivämäärällä kuin ${jakso2.tila.koodiarvo} ${jakso2.alku}")
+        HttpStatus.validate(jakso2.tila.koodiarvo == "mitatoity")(errorCategory(s"${name}: ${jakso1.tila.koodiarvo} ${jakso1.alku} ei voi olla samalla päivämäärällä kuin ${jakso2.tila.koodiarvo} ${jakso2.alku}"))
       } else {
         HttpStatus.validate(compared < 0)(errorCategory(s"${name}: ${jakso1.alku} on oltava aiempi kuin ${jakso2.alku}"))
       }
