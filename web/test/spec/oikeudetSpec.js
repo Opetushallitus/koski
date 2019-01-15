@@ -66,16 +66,22 @@ describe('Käyttöoikeudet', function() {
     })
   })
 
-  describe('Linkki henkilöpalveluun oppijan sivulla', function() {
-    describe('Käyttäjällä on oikeudet henkilöpalveluun', function() {
+  describe('Linkit henkilöpalveluun, Virta-opintotietoihin ja suoritusrekisteriin oppijan sivulla', function() {
+    describe('Käyttäjällä on kirjoitusoikeudet henkilöpalveluun', function() {
       before(Authentication().logout, Authentication().login('pää'), page.openPage, page.oppijaHaku.searchAndSelect('080154-770R'))
-      it('Linkki näytetään', function() {
-        expect(extractAsText(S('.oppija-content h2 a'))).to.equal('JSON Oppijanumerorekisteri Virta XML')
+      it('Linkit näytetään', function() {
+        expect(extractAsText(S('.oppija-content h2 a'))).to.equal('JSON Oppijanumerorekisteri Virta XML Suoritusrekisteri')
       })
     })
-    describe('Käyttäjällä ei ole oikeuksia henkilöpalveluun', function() {
+    describe('Käyttäjällä on globaalit lukuoikeudet', function() {
+      before(Authentication().logout, Authentication().login('viranomais'), page.openPage, page.oppijaHaku.searchAndSelect('080154-770R'))
+      it('Virta-linkki näytetään', function() {
+        expect(extractAsText(S('.oppija-content h2 a'))).to.equal('JSON Virta XML')
+      })
+    })
+    describe('Käyttäjällä ei ole oikeuksia henkilöpalveluun eikä globaaleja lukuoikeuksia', function() {
       before(Authentication().logout, Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('080154-770R'))
-      it('Linkkiä ei näytetä', function() {
+      it('Linkkejä ei näytetä', function() {
         expect(extractAsText(S('.oppija-content h2 a'))).to.equal('JSON')
       })
     })
