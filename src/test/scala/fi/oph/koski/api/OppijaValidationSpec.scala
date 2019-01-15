@@ -336,6 +336,36 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
             }
           }
         }
+
+        "Päättävän tilan tyyppi" - {
+          "kaksi päättävää tilaa kun viimeinen on mitatoity" in {
+            val opiskeluoikeus = lisääTiloja(makeOpiskeluoikeus(), List(
+              (date(2018, 1, 1), Koodistokoodiviite("valmistunut", "koskiopiskeluoikeudentila")),
+              (date(2018, 2, 2), Koodistokoodiviite("mitatoity", "koskiopiskeluoikeudentila"))
+            ))
+            putOpiskeluoikeus(opiskeluoikeus) {
+              verifyResponseStatusOk()
+            }
+          }
+          "mitatoity tilan tulee olla viimeinen" in {
+            val opiskeluoikeus = lisääTiloja(makeOpiskeluoikeus(), List(
+              (date(2018, 1, 1), Koodistokoodiviite("mitatoity", "koskiopiskeluoikeudentila")),
+              (date(2018, 1, 2), Koodistokoodiviite("eronnut", "koskiopiskeluoikeudentila"))
+            ))
+            putOpiskeluoikeus(opiskeluoikeus) {
+              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.montaPäättävääTilaa("Opiskeluoikeudella voi olla vain yksi opiskeluoikeuden päättävä tila"))
+            }
+          }
+          "Päättäviä tiloja voi olla vain yksi" in {
+            val opiskeluoikeus = lisääTiloja(makeOpiskeluoikeus(), List(
+              (date(2017, 1, 1), Koodistokoodiviite("valmistunut", "koskiopiskeluoikeudentila")),
+              (date(2018, 1, 1), Koodistokoodiviite("eronnut", "koskiopiskeluoikeudentila"))
+            ))
+            putOpiskeluoikeus(opiskeluoikeus) {
+              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.montaPäättävääTilaa("Opiskeluoikeudella voi olla vain yksi opiskeluoikeuden päättävä tila"))
+            }
+          }
+        }
       }
     }
 

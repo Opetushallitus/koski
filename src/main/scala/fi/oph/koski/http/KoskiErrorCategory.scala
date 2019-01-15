@@ -111,6 +111,7 @@ object KoskiErrorCategory {
         val oppiaineetPuuttuvat = subcategory("oppiaineetPuuttuvat", "Suorituksella ei ole osasuorituksena yhtään oppiainetta, vaikka sillä on vahvistus")
         val oppiaineitaEiSallita = subcategory("oppiaineitaEiSallita", "9.vuosiluokan suoritukseen ei voi syöttää oppiaineita, kun sillä on vahvistus, eikä oppilas jää luokalle")
         val tilaMuuttunutLopullisenTilanJälkeen = subcategory("tilaMuuttunutLopullisenTilanJälkeen", "Opiskeluoikeuden tilojen valmistunut, eronnut jälkeen ei voi esiintyä muita tiloja")
+        val montaPäättävääTilaa = subcategory("montaPäättäväätilaa", "Opiskeluoikeudella voi olla vain yksi opiskeluoikeuden päättävä tila")
       }
       val tila = new Tila
 
