@@ -282,7 +282,7 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
           "alkamispäivä > päättymispäivä"  in (putOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(1999, 5, 31))) {
             verifyResponseStatus(400, List(
               exact(KoskiErrorCategory.badRequest.validation.date.päättymisPäiväEnnenAlkamispäivää, "alkamispäivä (2000-01-01) oltava sama tai aiempi kuin päättymispäivä(1999-05-31)"),
-              exact(KoskiErrorCategory.badRequest.validation.date.opiskeluoikeusjaksojenPäivämäärät, "tila.opiskeluoikeusjaksot: 2000-01-01 oltava aiempi kuin 1999-05-31"),
+              exact(KoskiErrorCategory.badRequest.validation.date.opiskeluoikeusjaksojenPäivämäärät, "tila.opiskeluoikeusjaksot: 2000-01-01 on oltava aiempi kuin 1999-05-31"),
               exact(KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenAlkamispäivää, "suoritus.alkamispäivä (2000-01-01) oltava sama tai aiempi kuin suoritus.vahvistus.päivä(1999-05-31)")
             ))
           })
@@ -319,7 +319,7 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
         "Kaksi tilaa samalla alkupäivämäärällä -> palautetaan HTTP 400" in {
           val oo =  lisääTila(makeOpiskeluoikeus(), date(2018, 1, 1), Koodistokoodiviite("valiaikaisestikeskeytynyt", "koskiopiskeluoikeudentila"))
           putOpiskeluoikeus(lisääTila(oo, date(2018, 1, 1), Koodistokoodiviite("lasna", "koskiopiskeluoikeudentila"))) {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.opiskeluoikeusjaksojenPäivämäärät("tila.opiskeluoikeusjaksot: 2018-01-01 oltava aiempi kuin 2018-01-01"))
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.opiskeluoikeusjaksojenPäivämäärät("tila.opiskeluoikeusjaksot: valiaikaisestikeskeytynyt 2018-01-01 ei voi olla samalla päivämäärällä kuin lasna 2018-01-01"))
           }
         }
       }

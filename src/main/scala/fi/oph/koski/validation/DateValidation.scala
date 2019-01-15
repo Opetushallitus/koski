@@ -3,7 +3,7 @@ package fi.oph.koski.validation
 import java.time.LocalDate
 
 import fi.oph.koski.http.{ErrorCategory, HttpStatus}
-import fi.oph.koski.schema.Alkupäivällinen
+import fi.oph.koski.schema.{Opiskeluoikeusjakso}
 
 object DateValidation {
   type NamedDates = (String, Iterable[LocalDate])
@@ -14,9 +14,14 @@ object DateValidation {
     })
   }
 
-  def validateJaksot(name: String, jaksot: Iterable[Alkupäivällinen], errorCategory: ErrorCategory): HttpStatus = {
+  def validateJaksotDateOrder(name: String, jaksot: Iterable[Opiskeluoikeusjakso], errorCategory: ErrorCategory): HttpStatus = {
     HttpStatus.fold(jaksot.zip(jaksot.drop(1)).map { case (jakso1, jakso2) =>
-      HttpStatus.validate(jakso1.alku.compareTo(jakso2.alku) < 0)(errorCategory(s"${name}: ${jakso1.alku} oltava aiempi kuin ${jakso2.alku}"))
+      val compared = jakso1.alku.compareTo(jakso2.alku)
+      if (compared == 0) {
+        errorCategory(s"${name}: ${jakso1.tila.koodiarvo} ${jakso1.alku} ei voi olla samalla päivämäärällä kuin ${jakso2.tila.koodiarvo} ${jakso2.alku}")
+      } else {
+        HttpStatus.validate(compared < 0)(errorCategory(s"${name}: ${jakso1.alku} on oltava aiempi kuin ${jakso2.alku}"))
+      }
     })
   }
 
