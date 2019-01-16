@@ -148,4 +148,11 @@ describe('Ylioppilastutkinto', function( ){
       })
     })
   })
+
+  describe('Tutkinto ennen vuotta 1990', function () {
+    before(page.oppijaHaku.searchAndSelect('080845-471D'))
+    it('Tila on piilotettu', function () {
+      expect(OpinnotPage().tilaJaVahvistus.isVisible()).to.equal(false)
+    })
+  })
 })

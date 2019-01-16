@@ -13,8 +13,11 @@ import {
 import Text from '../i18n/Text'
 import {isPerusopetuksenOppimäärä, isYsiluokka, jääLuokalle} from '../perusopetus/Perusopetus'
 import {t} from '../i18n/i18n'
+import * as ytr from '../ytr/ytr'
 
 export const TilaJaVahvistusEditor = ({model}) => {
+  if (ytr.pakollisetKokeetSuoritettuEnnen1990(model)) return null
+
   return (<div className={ suoritusValmis(model) ? 'tila-vahvistus valmis' : 'tila-vahvistus' }>
       <span className="tiedot">
         <span className='tila'>{ tilaText(model) }</span>

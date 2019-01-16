@@ -1,0 +1,58 @@
+{
+  "description": "Suorittanut ylioppilastutkinnon ennen vuotta 1990",
+  "graduationSchoolOphOid": "1.2.246.562.10.62858797335",
+  "ssn": "080845-471D",
+  "lastname": "Eläkeläinen",
+  "firstnames": "Erkki",
+  "graduationDate": null,
+  "graduationPeriod": null,
+  "hasCompletedMandatoryExams": true,
+  "exams": [
+    {
+      "period": "1989K",
+      "examId": "A",
+      "examRoleLegacy": "11",
+      "examRoleShort": "mother-tongue",
+      "grade": "I",
+      "points": 53,
+      "sections": []
+    },
+    {
+      "period": "1988K",
+      "examId": "EA",
+      "examRoleLegacy": "31",
+      "examRoleShort": "mandatory-subject",
+      "grade": "M",
+      "points": 252,
+      "sections": []
+    },
+    {
+      "period": "1989K",
+      "examId": "FC",
+      "examRoleLegacy": "61",
+      "examRoleShort": "optional-subject",
+      "grade": "C",
+      "points": 196,
+      "sections": []
+    },
+    {
+      "period": "1988K",
+      "examId": "N",
+      "examRoleLegacy": "42",
+      "examRoleShort": "mandatory-subject",
+      "grade": "C",
+      "points": 34,
+      "sections": []
+    },
+    {
+      "period": "1989K",
+      "examId": "P2",
+      "examRoleLegacy": "21",
+      "examRoleShort": "mandatory-subject",
+      "grade": "L",
+      "points": 191,
+      "sections": []
+    }
+  ],
+  "language": "fi"
+}
