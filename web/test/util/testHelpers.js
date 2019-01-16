@@ -1,6 +1,27 @@
 var expect = chai.expect
 chai.config.truncateThreshold = 0; // disable truncating
 
+timeout = (function() {
+  var defaultTimeout = testTimeoutDefault
+
+  return {
+    /**
+     * Overrides timeout for wait.until calls.
+     * This is a helper that allows a global override in case the actual wait.until calls are buried within abstractions.
+     */
+    overrideWaitTime: function(timeoutMs) {
+      return function() { testTimeoutDefault = timeoutMs }
+    },
+    /**
+     * Resets timeout for wait.until calls.
+     * This is a helper that allows resetting the global wait timeout.
+     */
+    resetDefaultWaitTime: function() {
+      return function() { testTimeoutDefault = defaultTimeout }
+    }
+  }
+})()
+
 function S(selector) {
   try {
     if (!testFrame() || !testFrame().jQuery) {

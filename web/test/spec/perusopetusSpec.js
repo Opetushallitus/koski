@@ -2167,7 +2167,10 @@ describe('Perusopetus', function() {
     })
 
     describe('Aikuisten perusopetuksen alkuvaihe', function() {
+      this.timeout(15000)
+
       before(
+        timeout.overrideWaitTime(20000),
         prepareForNewOppija('kalle', '230872-7258'),
         addOppija.enterValidDataPerusopetus(),
         addOppija.selectOpiskeluoikeudenTyyppi('Aikuisten perusopetus'),
@@ -2267,6 +2270,8 @@ describe('Perusopetus', function() {
           })
         })
       })
+
+      after(timeout.resetDefaultWaitTime())
     })
 
     describe('Perusopetuksen oppiaineen oppimäärä', function() {
