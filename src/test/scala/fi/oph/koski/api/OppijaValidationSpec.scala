@@ -282,7 +282,7 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
           "alkamispäivä > päättymispäivä"  in (putOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(1999, 5, 31))) {
             verifyResponseStatus(400, List(
               exact(KoskiErrorCategory.badRequest.validation.date.päättymisPäiväEnnenAlkamispäivää, "alkamispäivä (2000-01-01) oltava sama tai aiempi kuin päättymispäivä(1999-05-31)"),
-              exact(KoskiErrorCategory.badRequest.validation.date.opiskeluoikeusjaksojenPäivämäärät, "tila.opiskeluoikeusjaksot: 2000-01-01 oltava aiempi kuin 1999-05-31"),
+              exact(KoskiErrorCategory.badRequest.validation.date.opiskeluoikeusjaksojenPäivämäärät, "tila.opiskeluoikeusjaksot: 2000-01-01 on oltava aiempi kuin 1999-05-31"),
               exact(KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenAlkamispäivää, "suoritus.alkamispäivä (2000-01-01) oltava sama tai aiempi kuin suoritus.vahvistus.päivä(1999-05-31)")
             ))
           })
@@ -316,10 +316,54 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaMuuttunutLopullisenTilanJälkeen("Opiskeluoikeuden tila muuttunut lopullisen tilan (valmistunut) jälkeen"))
         })
 
-        "Kaksi tilaa samalla alkupäivämäärällä -> palautetaan HTTP 400" in {
-          val oo =  lisääTila(makeOpiskeluoikeus(), date(2018, 1, 1), Koodistokoodiviite("valiaikaisestikeskeytynyt", "koskiopiskeluoikeudentila"))
-          putOpiskeluoikeus(lisääTila(oo, date(2018, 1, 1), Koodistokoodiviite("lasna", "koskiopiskeluoikeudentila"))) {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.opiskeluoikeusjaksojenPäivämäärät("tila.opiskeluoikeusjaksot: 2018-01-01 oltava aiempi kuin 2018-01-01"))
+        "Kaksi tilaa samalla alkupäivämäärällä" -  {
+          "palautetaan 400 jos viimeinen tila ei ole 'mitatoity'" in {
+            val opiskeluoikeus = lisääTiloja(makeOpiskeluoikeus(), List(
+              (date(2018, 1, 1), Koodistokoodiviite("valiaikaisestikeskeytynyt", "koskiopiskeluoikeudentila")),
+              (date (2018, 1, 1), Koodistokoodiviite("lasna", "koskiopiskeluoikeudentila"))
+            ))
+            putOpiskeluoikeus(opiskeluoikeus) {
+              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.opiskeluoikeusjaksojenPäivämäärät("tila.opiskeluoikeusjaksot: valiaikaisestikeskeytynyt 2018-01-01 ei voi olla samalla päivämäärällä kuin lasna 2018-01-01"))
+            }
+          }
+          "mitatoity tila sallitaan viimeisenä" in {
+            val opiskeluoikeus = lisääTiloja(makeOpiskeluoikeus(), List(
+              (date(2018, 1, 1), Koodistokoodiviite("valmistunut", "koskiopiskeluoikeudentila")),
+              (date(2018, 1, 1), Koodistokoodiviite("mitatoity", "koskiopiskeluoikeudentila"))
+            ))
+            putOpiskeluoikeus(opiskeluoikeus) {
+              verifyResponseStatusOk()
+            }
+          }
+        }
+
+        "Päättävän tilan tyyppi" - {
+          "kaksi päättävää tilaa kun viimeinen on mitatoity" in {
+            val opiskeluoikeus = lisääTiloja(makeOpiskeluoikeus(), List(
+              (date(2018, 1, 1), Koodistokoodiviite("valmistunut", "koskiopiskeluoikeudentila")),
+              (date(2018, 2, 2), Koodistokoodiviite("mitatoity", "koskiopiskeluoikeudentila"))
+            ))
+            putOpiskeluoikeus(opiskeluoikeus) {
+              verifyResponseStatusOk()
+            }
+          }
+          "mitatoity tilan tulee olla viimeinen" in {
+            val opiskeluoikeus = lisääTiloja(makeOpiskeluoikeus(), List(
+              (date(2018, 1, 1), Koodistokoodiviite("mitatoity", "koskiopiskeluoikeudentila")),
+              (date(2018, 1, 2), Koodistokoodiviite("eronnut", "koskiopiskeluoikeudentila"))
+            ))
+            putOpiskeluoikeus(opiskeluoikeus) {
+              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.montaPäättävääTilaa("Opiskeluoikeudella voi olla vain yksi opiskeluoikeuden päättävä tila"))
+            }
+          }
+          "Päättäviä tiloja voi olla vain yksi" in {
+            val opiskeluoikeus = lisääTiloja(makeOpiskeluoikeus(), List(
+              (date(2017, 1, 1), Koodistokoodiviite("valmistunut", "koskiopiskeluoikeudentila")),
+              (date(2018, 1, 1), Koodistokoodiviite("eronnut", "koskiopiskeluoikeudentila"))
+            ))
+            putOpiskeluoikeus(opiskeluoikeus) {
+              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.montaPäättävääTilaa("Opiskeluoikeudella voi olla vain yksi opiskeluoikeuden päättävä tila"))
+            }
           }
         }
       }
