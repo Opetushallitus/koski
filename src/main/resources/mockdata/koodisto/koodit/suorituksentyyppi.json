@@ -797,4 +797,40 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_muuammatillinenkoulutus",
+  "koodiArvo" : "muuammatillinenkoulutus",
+  "metadata" : [ {
+    "nimi" : "Muun ammatillisen koulutuksen suoritus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_tutkinnonosaapienempikokonaisuus",
+  "koodiArvo" : "tutkinnonosaapienempikokonaisuus",
+  "metadata" : [ {
+    "nimi" : "Tutkinnon osaa pienempi kokonaisuus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_muunammatillisenkoulutuksenosasuoritus",
+  "koodiArvo" : "muunammatillisenkoulutuksenosasuoritus",
+  "metadata" : [ {
+    "nimi" : "Muun ammatillisen koulutuksen osasuoritus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_tutkinnonosaapienemmänkokonaisuudenosasuoritus",
+  "koodiArvo" : "tutkinnonosaapienemmänkokonaisuudenosasuoritus",
+  "metadata" : [ {
+    "nimi" : "Muun ammatillisen koulutuksen osasuoritus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]

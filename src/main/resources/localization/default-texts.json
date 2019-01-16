@@ -1175,6 +1175,17 @@
   "Perusopetus": "Perusopetus",
   "Deutsche Internationale Abitur": "Deutsche Internationale Abitur",
   "Painotettu keskiarvo": "Painotettu keskiarvo",
-  "tooltip:Ammatillisen tutkinnon osaamispistein painotettu keskiarvo.": "Ammatillisen tutkinnon osaamispistein painotettu keskiarvo."
+  "tooltip:Ammatillisen tutkinnon osaamispistein painotettu keskiarvo.": "Ammatillisen tutkinnon osaamispistein painotettu keskiarvo.",
+  "tooltip:Kuvaus koulutuksen sisällöstä osaamisena." : "Kuvaus koulutuksen sisällöstä osaamisena.",
+  "description:Kuvaus koulutuksen sisällöstä osaamisena." : "Kuvaus koulutuksen sisällöstä osaamisena.",
+  "description:Osasuoritukseen sisältyvien osasuoritusten suoritukset" : "Osasuoritukseen sisältyvien osasuoritusten suoritukset",
+  "tooltip:Osasuoritukseen kuuluvan ammattiosaamisen näytön tiedot." : "Osasuoritukseen kuuluvan ammattiosaamisen näytön tiedot.",
+  "Täydentää tutkintoa" : "Täydentää tutkintoa",
+  "Liittyy tutkinnon osaan" : "Liittyy tutkinnon osaan",
+  "description:Suoritukseen kuuluvien osasuoritusten suoritukset" : "Suoritukseen kuuluvien osasuoritusten suoritukset",
+  "description:Osasuoritukseen liittyvän näytön tiedot" : "Osasuoritukseen liittyvän näytön tiedot",
+  "Sisältyvät osasuoritukset" : "Sisältyvät osasuoritukset",
+  "description:Tutkinnon osaa pienempään kokonaisuuteen kuuluvien..." : "Tutkinnon osaa pienempään kokonaisuuteen kuuluvien osasuoritusten suoritukset",
+  "description:Osaamisen hankkimistavat eri ajanjaksoina." : "Osaamisen hankkimistavat eri ajanjaksoina."
 }
 

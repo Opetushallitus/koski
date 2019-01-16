@@ -10,6 +10,7 @@ object Koodistot {
     KoodistoAsetus("aikuistenperusopetuksenalkuvaiheenoppiaineet"),
     KoodistoAsetus("aikuistenperusopetuksenpaattovaiheenkurssit2017"),
     KoodistoAsetus("aineryhmaib", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),
+    KoodistoAsetus("ammatilliseentehtavaanvalmistavakoulutus"),
     KoodistoAsetus("ammatillisennaytonarvioinnistapaattaneet"),
     KoodistoAsetus("ammatillisennaytonarviointikeskusteluunosallistuneet"),
     KoodistoAsetus("ammatillisennaytonarviointikohde"),
