@@ -6,11 +6,11 @@ import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
 import fi.oph.koski.oppilaitos.MockOppilaitosRepository
 import fi.oph.koski.schema._
 import fi.oph.koski.localization.LocalizedStringImplicits._
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.{FreeSpec, Matchers, OptionValues}
 
 import scala.xml.Elem
 
-class VirtaXMLConverterSpec extends FreeSpec with Matchers {
+class VirtaXMLConverterSpec extends FreeSpec with Matchers with OptionValues {
 
   val converter = VirtaXMLConverter(MockOppilaitosRepository, MockKoodistoViitePalvelu)
   private def convertSuoritus(suoritus: Elem) = converter.convertSuoritus(suoritus, List(suoritus))
@@ -34,10 +34,48 @@ class VirtaXMLConverterSpec extends FreeSpec with Matchers {
     <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
   </virta:Opintosuoritus>
 
+  val virtaOpiskeluoikeudet: Elem = <virta:Opiskeluoikeudet>
+    <virta:Opiskeluoikeus opiskelijaAvain="avopH1" avain="avopH1O1">
+      <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
+      <virta:Tila>
+        <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
+        <virta:Koodi>1</virta:Koodi>
+      </virta:Tila>
+      <virta:Tyyppi>1</virta:Tyyppi>
+      <virta:Myontaja>10065</virta:Myontaja>
+      <virta:Jakso koulutusmoduulitunniste="opiskeluoikeuden_kk_tunniste">
+        <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
+        <virta:Koulutuskoodi>621702</virta:Koulutuskoodi>
+        <virta:Koulutuskunta>091</virta:Koulutuskunta>
+        <virta:Koulutuskieli>en</virta:Koulutuskieli>
+        <virta:Rahoituslahde>1</virta:Rahoituslahde>
+        <virta:Luokittelu>3</virta:Luokittelu>
+      </virta:Jakso>
+      <virta:Laajuus>
+        <virta:Opintopiste>240</virta:Opintopiste>
+      </virta:Laajuus>
+    </virta:Opiskeluoikeus>
+  </virta:Opiskeluoikeudet>
+
   def withArvosana(arvosana: Elem, suoritus: Elem = baseSuoritus): Elem = suoritus.copy(child = for (subNode <- suoritus.child) yield subNode match {
     case <Arvosana>{ contents @ _* }</Arvosana> => arvosana
     case other@_ => other
   })
+
+  "Virta-opiskeluoikeuksien konvertointi" - {
+    val opiskeluoikeudet = converter.convertToOpiskeluoikeudet(virtaOpiskeluoikeudet)
+    "toimii" in {
+      opiskeluoikeudet shouldBe a[List[_]]
+      opiskeluoikeudet should have length 1
+      opiskeluoikeudet.head shouldBe a[KorkeakoulunOpiskeluoikeus]
+    }
+    "Opiskeluoikeuden tyyppi" - {
+      "sisältää koodin ja nimen" in {
+        opiskeluoikeudet.head.tyyppi.koodiarvo should be ("korkeakoulutus")
+        opiskeluoikeudet.head.tyyppi.nimi.value should be (LocalizedString.sanitizeRequired(Map(("fi" -> "Korkeakoulutus"), ("sv" -> "Högskoleutbildning")), "Korkeakoulutus"))
+      }
+    }
+  }
 
   "Suoritusten konvertointi" - {
     "Arviointi" - {

@@ -16,6 +16,7 @@ trait OpiskeluoikeusTestMethodsKorkeakoulu extends PutOpiskeluoikeusTestMethods[
       List(
         KorkeakoulunOpiskeluoikeusjakso(date(2012, 9, 1), KorkeakouluTestdata.opiskeluoikeusAktiivinen)
       )
-    )
+    ),
+    tyyppi = koodisto.validateRequired(OpiskeluoikeudenTyyppi.korkeakoulutus)
   )
 }

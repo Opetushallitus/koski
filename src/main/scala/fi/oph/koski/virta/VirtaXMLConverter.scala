@@ -22,6 +22,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     val suoritusNodeList: List[Node] = suoritusNodes(virtaXml)
     val suoritusRoots: List[Node] = suoritusNodeList.filter(isRoot(suoritusNodeList)(_))
     val opiskeluoikeusNodes: List[Node] = (virtaXml \\ "Opiskeluoikeus").toList
+    val ooTyyppi: Koodistokoodiviite = koodistoViitePalvelu.validateRequired(OpiskeluoikeudenTyyppi.korkeakoulutus)
 
     val (orphans, opiskeluoikeudet) = opiskeluoikeusNodes.foldLeft((suoritusRoots, Nil: List[KorkeakoulunOpiskeluoikeus])) { case ((suoritusRootsLeft, opiskeluOikeudet), opiskeluoikeusNode) =>
       val (opiskeluOikeudenSuoritukset: List[Node], muutSuoritukset: List[Node]) = suoritusRootsLeft.partition(sisältyyOpiskeluoikeuteen(_, opiskeluoikeusNode, suoritusNodeList))
@@ -42,6 +43,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         koulutustoimija = None,
         suoritukset = addPäätasonSuoritusIfNecessary(suoritukset, opiskeluoikeusNode, opiskeluoikeudenTila),
         tila = opiskeluoikeudenTila,
+        tyyppi = ooTyyppi,
         lisätiedot = Some(KorkeakoulunOpiskeluoikeudenLisätiedot(
           ensisijaisuus = Some((opiskeluoikeusNode \ "Ensisijaisuus").toList.map { e => Aikajakso(alkuPvm(e), loppuPvm(e)) }).filter(_.nonEmpty),
           virtaOpiskeluoikeudenTyyppi = Some(opiskeluoikeudenTyyppi(opiskeluoikeusNode)),
@@ -62,6 +64,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         koulutustoimija = None,
         suoritukset = suoritukset,
         tila = KorkeakoulunOpiskeluoikeudenTila(Nil),
+        tyyppi = ooTyyppi,
         synteettinen = true
       )
     }
