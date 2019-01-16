@@ -7,7 +7,7 @@ import fi.oph.scalaschema.annotation.{Description, Title}
 
 case class KorkeakoulunOpiskeluoikeus(
   oid: Option[String] = None,
-  lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
+  lähdejärjestelmänId: Option[LähdejärjestelmäId],
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija] = None,
   arvioituPäättymispäivä: Option[LocalDate] = None,
@@ -19,9 +19,27 @@ case class KorkeakoulunOpiskeluoikeus(
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo)
   tyyppi: Koodistokoodiviite,
   synteettinen: Boolean = false
-) extends Opiskeluoikeus {
+) extends Opiskeluoikeus with Equals {
+  override def canEqual(that: Any): Boolean = that.isInstanceOf[KorkeakoulunOpiskeluoikeus]
+  override def equals(that: Any): Boolean = that match {
+    case that: KorkeakoulunOpiskeluoikeus if that.canEqual(this) =>
+      (this.lähdejärjestelmänId.flatMap(_.id), that.lähdejärjestelmänId.flatMap(_.id)) match {
+        case (Some(_), None) | (None, Some(_)) => false
+        case (Some(thisOpiskeluoikeusAvain), Some(thatOpiskeluoikeusAvain)) => thisOpiskeluoikeusAvain == thatOpiskeluoikeusAvain
+        case _ => this.suoritustenTunnisteet == that.suoritustenTunnisteet
+      }
+    case _ => false
+  }
+
+  override def hashCode: Int = this.lähdejärjestelmänId
+    .flatMap(_.id.map(_.hashCode))
+    .getOrElse(suoritustenTunnisteet.hashCode)
+
   override def versionumero = None
   override def sisältyyOpiskeluoikeuteen = None
+
+  private def suoritustenTunnisteet =
+    suoritukset.map(_.koulutusmoduuli.tunniste).sortBy(_.koodiarvo)
 }
 
 @Description("Korkeakoulun opiskeluoikeuden lisätiedot")

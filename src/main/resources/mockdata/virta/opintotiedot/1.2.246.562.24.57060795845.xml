@@ -75,23 +75,6 @@
             </virta:LukukausiIlmoittautuminen>
           </virta:LukukausiIlmoittautumiset>
           <virta:Opintosuoritukset>
-            <virta:Opintosuoritus avain="3285836" koulutusmoduulitunniste="TXK15S1E TX00BT41-3012" opiskelijaAvain="26604" opiskeluoikeusAvain="30759">
-              <virta:SuoritusPvm>2015-10-25</virta:SuoritusPvm>
-              <virta:Laajuus>
-                <virta:Opintopiste>15</virta:Opintopiste>
-              </virta:Laajuus>
-              <virta:Arvosana>
-                <virta:Viisiportainen>4</virta:Viisiportainen>
-              </virta:Arvosana>
-              <virta:Myontaja>02629</virta:Myontaja>
-              <virta:Laji>2</virta:Laji>
-              <virta:Nimi>Oliot</virta:Nimi>
-              <virta:Kieli>fi</virta:Kieli>
-              <virta:Koulutusala>
-                <virta:Koodi versio="ohjausala">7</virta:Koodi>
-              </virta:Koulutusala>
-              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
-            </virta:Opintosuoritus>
             <virta:Opintosuoritus avain="3285837" koulutusmoduulitunniste="TXK15S1E TX00CI97-3001" opiskelijaAvain="26604" opiskeluoikeusAvain="30759">
               <virta:SuoritusPvm>2016-04-01</virta:SuoritusPvm>
               <virta:Laajuus>
@@ -103,6 +86,23 @@
               <virta:Myontaja>02629</virta:Myontaja>
               <virta:Laji>2</virta:Laji>
               <virta:Nimi>Pelit ja mobiilit</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">7</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="3285836" koulutusmoduulitunniste="TXK15S1E TX00BT41-3012" opiskelijaAvain="26604" opiskeluoikeusAvain="30759">
+              <virta:SuoritusPvm>2015-10-25</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>15</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02629</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi>Oliot</virta:Nimi>
               <virta:Kieli>fi</virta:Kieli>
               <virta:Koulutusala>
                 <virta:Koodi versio="ohjausala">7</virta:Koodi>
