@@ -32,7 +32,7 @@ case class KorkeakoulunOpiskeluoikeus(
   }
 
   override def hashCode: Int = this.lähdejärjestelmänId
-    .map(_.id.hashCode)
+    .flatMap(_.id.map(_.hashCode))
     .getOrElse(suoritustenTunnisteet.hashCode)
 
   override def versionumero = None
