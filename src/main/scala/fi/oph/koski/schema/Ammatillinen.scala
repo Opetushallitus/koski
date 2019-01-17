@@ -1136,6 +1136,7 @@ case class TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(
   @MinItems(1)
   override val osasuoritukset: Option[List[TutkinnonOsaaPienemmänKokonaisuudenSuoritus]],
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
+  pilotti: Boolean,
   @KoodistoKoodiarvo("tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus", "suorituksentyyppi"),
   ryhmä: Option[String] = None
