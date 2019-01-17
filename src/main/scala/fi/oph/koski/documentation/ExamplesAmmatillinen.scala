@@ -325,6 +325,57 @@ object AmmatillinenReforminMukainenPerustutkintoExample {
   )
 }
 
+object TutkinnonOsaaPienempiKokonaisuusExample {
+  lazy val tutkinnonOsaaPienempiKokonaisuus: PaikallinenMuuAmmatillinenKoulutus = PaikallinenMuuAmmatillinenKoulutus(
+    PaikallinenKoodi("KSK", "Kiinteistösihteerin koulutus"),
+    None,
+    finnish("Koulutus antaa opiskelijalle valmiudet hoitaa isännöinti- ja kiinteistöpalvelualan yritysten sihteeri- ja asiakaspalvelutehtäviä.")
+  )
+  lazy val opiskeluoikeus = AmmatillinenOpiskeluoikeus(
+    arvioituPäättymispäivä = Some(date(2020, 5, 31)),
+    tila = AmmatillinenOpiskeluoikeudenTila(List(
+      AmmatillinenOpiskeluoikeusjakso(date(2018, 1, 1), opiskeluoikeusLäsnä, None)
+    )),
+    lisätiedot = None,
+    oppilaitos = Some(stadinAmmattiopisto),
+    suoritukset = List(
+      TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(
+        koulutusmoduuli = tutkinnonOsaaPienempiKokonaisuus,
+        alkamispäivä = None,
+        osaamisenHankkimistavat = None,
+        koulutussopimukset = None,
+        suorituskieli = suomenKieli,
+        toimipiste = stadinToimipiste,
+        pilotti = false,
+        osasuoritukset = Some(List(
+          TutkinnonOsaaPienemmänKokonaisuudenSuoritus(
+            TutkinnonOsaaPienempiKokonaisuus(
+              PaikallinenKoodi("AKTV", "Asunto- ja kiinteistöosakeyhtiön talous ja verotus"),
+              None,
+              finnish("Kurssilla opitaan hallitsemaan asunto- ja kiinteistöosakeyhtiön taloutta ja verotusta.")
+            ),
+            alkamispäivä = None,
+            arviointi = None,
+            tunnustettu = None,
+            näyttö = None,
+            liittyyTutkinnonOsaan = Koodistokoodiviite(
+              "101481",
+              koodistoUri = "tutkinnonosat"
+            ),
+            lisätiedot = None,
+            suorituskieli = None
+          )
+        ))
+      )
+    )
+  )
+
+  lazy val example = Oppija(
+    exampleHenkilö,
+    List(opiskeluoikeus)
+  )
+}
+
 object AmmatillinenOldExamples {
   lazy val uusi: Oppija = oppija()
 
