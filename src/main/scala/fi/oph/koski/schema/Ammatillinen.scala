@@ -1122,7 +1122,7 @@ case class MuunAmmatillisenKoulutuksenSuoritus(
   ryhmä: Option[String] = None
 ) extends AmmatillinenPäätasonSuoritus with Todistus with Toimipisteellinen with Ryhmällinen with Työssäoppimisjaksoton with Arvioinniton
 
-case class TutkinnonOsaaPienemmänKokonaisuudenSuoritus(
+case class TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(
   koulutusmoduuli: PaikallinenMuuAmmatillinenKoulutus,
   toimipiste: OrganisaatioWithOid,
   override val alkamispäivä: Option[LocalDate],
@@ -1134,10 +1134,10 @@ case class TutkinnonOsaaPienemmänKokonaisuudenSuoritus(
   koulutussopimukset: Option[List[Koulutussopimusjakso]] = None,
   @Description("Tutkinnon osaa pienempään kokonaisuuteen kuuluvien osasuoritusten suoritukset")
   @MinItems(1)
-  override val osasuoritukset: Option[List[TutkinnonOsaaPienemmänKokonaisuudenOsasuorituksenSuoritus]],
+  override val osasuoritukset: Option[List[TutkinnonOsaaPienemmänKokonaisuudenSuoritus]],
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
-  @KoodistoKoodiarvo("tutkinnonosaapienempikokonaisuus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("tutkinnonosaapienempikokonaisuus", "suorituksentyyppi"),
+  @KoodistoKoodiarvo("tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus", "suorituksentyyppi"),
   ryhmä: Option[String] = None
 ) extends AmmatillinenPäätasonSuoritus with Todistus with Toimipisteellinen with Ryhmällinen with Työssäoppimisjaksoton with Arvioinniton
 
@@ -1206,8 +1206,8 @@ case class MuunAmmatillisenKoulutuksenOsasuorituksenLisätieto(
   kuvaus: LocalizedString
 )
 
-case class TutkinnonOsaaPienemmänKokonaisuudenOsasuorituksenSuoritus(
-  koulutusmoduuli: TutkinnonOsaaPienemmänKokonaisuudenOsasuoritus,
+case class TutkinnonOsaaPienemmänKokonaisuudenSuoritus(
+  koulutusmoduuli: TutkinnonOsaaPienempiKokonaisuus,
   override val alkamispäivä: Option[LocalDate],
   arviointi: Option[List[AmmatillinenArviointi]],
   @Tooltip("Tiedot aiemmin hankitun osaamisen tunnustamisesta.")
@@ -1223,11 +1223,11 @@ case class TutkinnonOsaaPienemmänKokonaisuudenOsasuorituksenSuoritus(
   @KoodistoUri("tutkinnonosat")
   liittyyTutkinnonOsaan: Koodistokoodiviite,
   suorituskieli: Option[Koodistokoodiviite],
-  @KoodistoKoodiarvo("tutkinnonosaapienemmänkokonaisuudenosasuoritus")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("tutkinnonosaapienemmänkokonaisuudenosasuoritus", koodistoUri = "suorituksentyyppi")
+  @KoodistoKoodiarvo("tutkinnonosaapienempikokonaisuus")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("tutkinnonosaapienempikokonaisuus", koodistoUri = "suorituksentyyppi")
 ) extends MuuAmmatillinenOsasuoritus with Vahvistukseton
 
-case class TutkinnonOsaaPienemmänKokonaisuudenOsasuoritus(
+case class TutkinnonOsaaPienempiKokonaisuus(
   tunniste: PaikallinenKoodi,
   pakollinen: Boolean,
   laajuus: Option[LaajuusOsaamispisteissä],

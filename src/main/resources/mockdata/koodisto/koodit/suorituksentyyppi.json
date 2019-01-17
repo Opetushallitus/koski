@@ -807,15 +807,6 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_tutkinnonosaapienempikokonaisuus",
-  "koodiArvo" : "tutkinnonosaapienempikokonaisuus",
-  "metadata" : [ {
-    "nimi" : "Tutkinnon osaa pienempi kokonaisuus",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
   "koodiUri" : "suorituksentyyppi_muunammatillisenkoulutuksenosasuoritus",
   "koodiArvo" : "muunammatillisenkoulutuksenosasuoritus",
   "metadata" : [ {
@@ -825,10 +816,19 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_tutkinnonosaapienemmänkokonaisuudenosasuoritus",
-  "koodiArvo" : "tutkinnonosaapienemmänkokonaisuudenosasuoritus",
+  "koodiUri" : "suorituksentyyppi_tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus",
+  "koodiArvo" : "tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus",
   "metadata" : [ {
-    "nimi" : "Muun ammatillisen koulutuksen osasuoritus",
+    "nimi" : "Tutkinnon osaa pienemmistä kokonaisuuksista koostuva suoritus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_tutkinnonosaapienempikokonaisuus",
+  "koodiArvo" : "tutkinnonosaapienempikokonaisuus",
+  "metadata" : [ {
+    "nimi" : "Tutkinnon osaa pienemmän kokonaisuuden suoritus",
     "kieli" : "FI"
   } ],
   "versio" : 1,
