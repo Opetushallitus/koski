@@ -1151,7 +1151,6 @@ sealed trait MuuAmmatillinenKoulutus extends Koulutusmoduuli
 case class AmmatilliseenTehtäväänValmistavaKoulutus(
   @KoodistoUri("ammatilliseentehtavaanvalmistavakoulutus")
   tunniste: Koodistokoodiviite,
-  pakollinen: Boolean,
   laajuus: Option[Laajuus],
   @Description("Kuvaus koulutuksen sisällöstä osaamisena.")
   @Tooltip("Kuvaus koulutuksen sisällöstä osaamisena.")
@@ -1160,7 +1159,6 @@ case class AmmatilliseenTehtäväänValmistavaKoulutus(
 
 case class PaikallinenMuuAmmatillinenKoulutus(
   tunniste: PaikallinenKoodi,
-  pakollinen: Boolean,
   laajuus: Option[Laajuus],
   @Description("Kuvaus koulutuksen sisällöstä osaamisena.")
   @Tooltip("Kuvaus koulutuksen sisällöstä osaamisena.")
@@ -1193,7 +1191,6 @@ case class MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
 
 case class MuunAmmatillisenKoulutuksenOsasuoritus(
   tunniste: PaikallinenKoodi,
-  pakollinen: Boolean,
   laajuus: Option[Laajuus],
   kuvaus: LocalizedString
 ) extends PaikallinenKoulutusmoduuli
@@ -1230,7 +1227,6 @@ case class TutkinnonOsaaPienemmänKokonaisuudenSuoritus(
 
 case class TutkinnonOsaaPienempiKokonaisuus(
   tunniste: PaikallinenKoodi,
-  pakollinen: Boolean,
   laajuus: Option[LaajuusOsaamispisteissä],
   kuvaus: LocalizedString
 ) extends PaikallinenKoulutusmoduuli
