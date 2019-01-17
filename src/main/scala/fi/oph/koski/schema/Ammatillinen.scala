@@ -1124,7 +1124,6 @@ case class MuunAmmatillisenKoulutuksenSuoritus(
 
 case class TutkinnonOsaaPienemmänKokonaisuudenSuoritus(
   koulutusmoduuli: PaikallinenMuuAmmatillinenKoulutus,
-  täydentääTutkintoa: Option[AmmatillinenTutkintoKoulutus],
   toimipiste: OrganisaatioWithOid,
   override val alkamispäivä: Option[LocalDate],
   vahvistus: Option[HenkilövahvistusValinnaisellaPaikkakunnalla] = None,
@@ -1134,6 +1133,7 @@ case class TutkinnonOsaaPienemmänKokonaisuudenSuoritus(
   osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]] = None,
   koulutussopimukset: Option[List[Koulutussopimusjakso]] = None,
   @Description("Tutkinnon osaa pienempään kokonaisuuteen kuuluvien osasuoritusten suoritukset")
+  @MinItems(1)
   override val osasuoritukset: Option[List[TutkinnonOsaaPienemmänKokonaisuudenOsasuorituksenSuoritus]],
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("tutkinnonosaapienempikokonaisuus")
@@ -1213,6 +1213,10 @@ case class TutkinnonOsaaPienemmänKokonaisuudenOsasuorituksenSuoritus(
   @Tooltip("Tiedot aiemmin hankitun osaamisen tunnustamisesta.")
   @ComplexObject
   tunnustettu: Option[OsaamisenTunnustaminen] = None,
+  @Description("Osasuoritukseen liittyvän näytön tiedot")
+  @Tooltip("Osasuoritukseen kuuluvan ammattiosaamisen näytön tiedot.")
+  @ComplexObject
+  näyttö: Option[Näyttö] = None,
   @Tooltip("Suoritukseen liittyvät lisätiedot, kuten esimerkiksi mukautettu arviointi tai poikkeus arvioinnissa. Sisältää lisätiedon tyypin sekä vapaamuotoisen kuvauksen.")
   @ComplexObject
   lisätiedot: Option[List[MuunAmmatillisenKoulutuksenOsasuorituksenLisätieto]],
@@ -1226,7 +1230,7 @@ case class TutkinnonOsaaPienemmänKokonaisuudenOsasuorituksenSuoritus(
 case class TutkinnonOsaaPienemmänKokonaisuudenOsasuoritus(
   tunniste: PaikallinenKoodi,
   pakollinen: Boolean,
-  laajuus: Option[Laajuus],
+  laajuus: Option[LaajuusOsaamispisteissä],
   kuvaus: LocalizedString
 ) extends PaikallinenKoulutusmoduuli
 
