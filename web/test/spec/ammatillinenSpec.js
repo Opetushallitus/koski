@@ -801,7 +801,10 @@ describe('Ammatillinen koulutus', function() {
           editor.saveChanges
         )
         it('toimii', function() {
-          expect(editor.property('keskiarvo').getValue()).to.equal('3,5')
+          expect(page.isSavedLabelShown()).to.equal(true)
+        })
+        it('keskiarvo näytetään kahden desimaalin tarkkuudella', function() {
+          expect(editor.property('keskiarvo').getValue()).to.equal('3,50')
         })
       })
     })

@@ -9,7 +9,7 @@ export class NumberEditor extends React.Component {
     let onChange = (event) => pushModelValue(wrappedModel, event.target.value ? { data: parseNumber(event.target.value) } : undefined)
 
     let data = modelData(wrappedModel)
-    let value = laajuusNumberToString(data)
+    let value = laajuusNumberToString(data, model.scale)
     let error = !modelValid(model)
 
     return wrapWithUnitOfMeasure(wrappedModel.unitOfMeasure, wrappedModel.context.edit

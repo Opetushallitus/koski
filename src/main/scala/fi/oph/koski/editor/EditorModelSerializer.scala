@@ -3,7 +3,7 @@ package fi.oph.koski.editor
 import fi.oph.koski.json.{JsonSerializer, LegacyJsonSerialization}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskiSchema
-import fi.oph.koski.schema.annotation.{Example, MultiLineString, UnitOfMeasure}
+import fi.oph.koski.schema.annotation.{Example, MultiLineString, Scale, UnitOfMeasure}
 import fi.oph.scalaschema.annotation._
 import fi.oph.scalaschema.{Metadata, SerializationContext, Serializer}
 import org.json4s.JsonAST.{JObject, JString, JValue}
@@ -100,6 +100,7 @@ object EditorModelSerializer extends Serializer[EditorModel] with Logging {
       case MinValueExclusive(x) => JField("minValueExclusive", JDouble(x))
       case MaxValueExclusive(x) => JField("maxValueExclusive", JDouble(x))
       case MultiLineString(x) => JField("maxLines", JInt(x))
+      case Scale(x) => JField("scale", JInt(x))
       case UnitOfMeasure(x) => JField("unitOfMeasure", JString(x))
       case RegularExpression(x) => JField("regularExpression", JString(x))
       case Example(x) => JField("example", JString(x))

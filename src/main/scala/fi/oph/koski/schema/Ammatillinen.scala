@@ -234,6 +234,7 @@ case class AmmatillisenTutkinnonSuoritus(
   @OnlyWhen("suoritustapa/koodiarvo","ops")
   @MinValue(1)
   @MaxValue(5)
+  @Scale(2)
   keskiarvo: Option[Float] = None
 ) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus with Todistus
 
