@@ -382,7 +382,14 @@ object MuunAmmatillisenKoulutuksenExample {
     None,
     finnish("Koulutus antaa opiskelijalle valmiudet hoitaa isännöinti- ja kiinteistöpalvelualan yritysten sihteeri- ja asiakaspalvelutehtäviä.")
   )
-  lazy val opiskeluoikeus = AmmatillinenOpiskeluoikeus(
+
+  lazy val ammatilliseenTehtäväänValmistavaKoulutus: AmmatilliseenTehtäväänValmistavaKoulutus = AmmatilliseenTehtäväänValmistavaKoulutus(
+    Koodistokoodiviite("ansiojaliikennelentajankoulutus", "ammatilliseentehtavaanvalmistavakoulutus"),
+    None,
+    finnish("TBD")
+  )
+
+  lazy val muuAmmatillisenKoulutusJaTutkinnonOsaaPienempiKokonaisuusOpiskeluoikeus = AmmatillinenOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2020, 5, 31)),
     tila = AmmatillinenOpiskeluoikeudenTila(List(
       AmmatillinenOpiskeluoikeusjakso(date(2018, 1, 1), opiskeluoikeusLäsnä, None)
@@ -449,9 +456,59 @@ object MuunAmmatillisenKoulutuksenExample {
     )
   )
 
+  lazy val ammatilliseenTehtäväänValmistavaKoulutusOpiskeluoikeus = AmmatillinenOpiskeluoikeus(
+    arvioituPäättymispäivä = Some(date(2020, 5, 31)),
+    tila = AmmatillinenOpiskeluoikeudenTila(List(
+      AmmatillinenOpiskeluoikeusjakso(date(2018, 1, 1), opiskeluoikeusLäsnä, None)
+    )),
+    lisätiedot = None,
+    oppilaitos = Some(stadinAmmattiopisto),
+    suoritukset = List(
+      MuunAmmatillisenKoulutuksenSuoritus(
+        koulutusmoduuli = ammatilliseenTehtäväänValmistavaKoulutus,
+        None,
+        osaamisenHankkimistavat = None,
+        koulutussopimukset = None,
+        suorituskieli = suomenKieli,
+        alkamispäivä = None,
+        toimipiste = stadinToimipiste,
+        osasuoritukset = Some(List(
+          MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
+            MuunAmmatillisenKoulutuksenOsasuoritus(
+              PaikallinenKoodi("TBD", "TBD"),
+              None,
+              finnish("TBD")
+            ),
+            alkamispäivä = None,
+            arviointi = None,
+            tunnustettu = None,
+            lisätiedot = None,
+            suorituskieli = None,
+            näyttö = None,
+            osasuoritukset = Some(List(
+              MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
+                MuunAmmatillisenKoulutuksenOsasuoritus(
+                  PaikallinenKoodi("TBD", "TBD"),
+                  None,
+                  finnish("TBD")
+                ),
+                alkamispäivä = None,
+                arviointi = None,
+                tunnustettu = None,
+                lisätiedot = None,
+                suorituskieli = None,
+                näyttö = None
+              )
+            ))
+          )
+        ))
+      )
+    )
+  )
+
   lazy val example = Oppija(
     exampleHenkilö,
-    List(opiskeluoikeus)
+    List(muuAmmatillisenKoulutusJaTutkinnonOsaaPienempiKokonaisuusOpiskeluoikeus)
   )
 }
 
