@@ -97,13 +97,22 @@ describe('Korkeakoulutus', function() {
   })
 
   describe('AMK, valmis', function() {
-    before(
-      page.openPage,
-      page.oppijaHaku.searchAndSelect('250686-102E')
-    )
-    describe('Opiskeluoikeuden otsikko', function() {
+    describe('Opiskeluoikeuden otsikko kun opintojaksot siirretty päätason suorituksen alle', function() {
+      before(
+        page.openPage,
+        page.oppijaHaku.searchAndSelect('250686-102E')
+      )
       it('näytetään', function() {
-        expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal(['Yrkeshögskolan Arcada, 34 opintojaksoa (2011—2015, päättynyt)'])
+        expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal(['Yrkeshögskolan Arcada, Fysioterapeutti (AMK) (2011—2015, päättynyt)'])
+      })
+    })
+    describe('Opiskeluoikeuden otsikko kun opintojaksot sekaisin päätason suorituksen kanssa', function() {
+      before(
+        page.openPage,
+        page.oppijaHaku.searchAndSelect('090992-3237')
+      )
+      it('näytetään', function() {
+        expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal(['Yrkeshögskolan Arcada, 33 opintojaksoa (2011—2015, päättynyt)'])
       })
     })
   })

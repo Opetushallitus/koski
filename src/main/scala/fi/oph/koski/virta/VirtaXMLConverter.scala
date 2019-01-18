@@ -75,21 +75,21 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
 
   private def rearrangeSuorituksetIfNecessary(suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node, tila: KorkeakoulunOpiskeluoikeudenTila) = {
     if (tutkintoonJohtava(opiskeluoikeusNode)) {
-      addTutkintoonJohtavaPäätasonSuoritusIfNecessery(suoritukset, opiskeluoikeusNode, tila)
+      fixPäätasonSuoritusIfNecessary(suoritukset, opiskeluoikeusNode, tila)
     } else {
       addMuuKorkeakoulunSuoritus(tila, suoritukset, opiskeluoikeusNode)
     }
   }
 
-  private def addTutkintoonJohtavaPäätasonSuoritusIfNecessery(suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node, tila: KorkeakoulunOpiskeluoikeudenTila) = {
+  private def fixPäätasonSuoritusIfNecessary(suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node, tila: KorkeakoulunOpiskeluoikeudenTila) = {
     val opiskeluoikeusJaksot = koulutuskoodillisetJaksot(opiskeluoikeusNode)
     val suoritusLöytyyKoulutuskoodilla = opiskeluoikeusJaksot.exists { jakso =>
       val opiskeluoikeudenTutkinto = tutkinto(jakso.koulutuskoodi)
       suoritukset.exists(_.koulutusmoduuli == opiskeluoikeudenTutkinto)
     }
 
-    if (suoritusLöytyyKoulutuskoodilla) { // suoritus on valmis
-      suoritukset
+    if (suoritusLöytyyKoulutuskoodilla) { // suoritus löytyy virta datasta vain jos se on valmis
+      moveOpintojaksotUnderPäätasonSuoritusIfNecessary(suoritukset)
     } else if (opiskeluoikeusJaksot.nonEmpty && !päättynyt(tila)) {
       val viimeisinTutkinto = tutkinto(opiskeluoikeusJaksot.maxBy(_.alku)(DateOrdering.localDateOrdering).koulutuskoodi)
       addKeskeneräinenTutkinnonSuoritus(tila, suoritukset, opiskeluoikeusNode, viimeisinTutkinto)
@@ -97,6 +97,16 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       val opiskeluoikeusTila = tila.opiskeluoikeusjaksot.lastOption.map(_.tila)
       logger.warn(s"Tutkintoon johtavaa päätason suoritusta ei löydy tai opiskeluoikeus on päättynyt. Opiskeluoikeuden tila: $opiskeluoikeusTila, jaksot: ${opiskeluoikeusJaksot.map(_.koulutuskoodi)}, laji: '${laji(opiskeluoikeusNode)}'" )
       addMuuKorkeakoulunSuoritus(tila, suoritukset, opiskeluoikeusNode)
+    }
+  }
+
+  private def moveOpintojaksotUnderPäätasonSuoritusIfNecessary(suoritukset: List[KorkeakouluSuoritus]) = {
+    val tutkinnot = suoritukset.collect { case t: KorkeakoulututkinnonSuoritus => t }
+    val opintojaksot = suoritukset.collect { case oj: KorkeakoulunOpintojaksonSuoritus => oj }
+    if (tutkinnot.size == 1 && tutkinnot.head.osasuoritukset.isEmpty && opintojaksot.nonEmpty) {
+      List(tutkinnot.head.copy(osasuoritukset = Some(opintojaksot)))
+    } else {
+      suoritukset
     }
   }
 
