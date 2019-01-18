@@ -4,7 +4,7 @@ import * as R from 'ramda'
 import Text from '../i18n/Text'
 import {modelData} from '../editor/EditorModel'
 import Http from '../util/http'
-import {laajuusNumberToString} from '../util/format'
+import {numberToString} from '../util/format'
 
 export const fetchLaajuudet = (suoritus, groupIds) => {
   let diaarinumero = modelData(suoritus, 'koulutusmoduuli.perusteenDiaarinumero')
@@ -53,7 +53,7 @@ export const YhteensäSuoritettu = ({osasuoritukset, laajuusP, laajuusYksikkö=n
     <div>
       <Text name="Yhteensä"/>
       {' '}
-      <span className="laajuudet-yhteensä">{laajuusNumberToString(laajuudetYhteensä)}</span>
+      <span className="laajuudet-yhteensä">{numberToString(laajuudetYhteensä)}</span>
       <span className="separator">{laajuusP.map(v => rangeExists(v) ? ' / ' : null)}</span>
       <span className="laajuus-range">{laajuusP.map(v => laajuusRange(v))}</span>
       {' '}

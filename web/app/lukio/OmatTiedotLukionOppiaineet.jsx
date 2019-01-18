@@ -5,7 +5,7 @@ import {t} from '../i18n/i18n'
 import {arvioidutKurssit, paikallisiaLukionOppiaineitaTaiKursseja} from './LukionOppiaineetEditor'
 import {FootnoteDescriptions, FootnoteHint} from '../components/footnote'
 import {kurssienKeskiarvo, Nimi} from './fragments/LukionOppiaine'
-import {laajuusNumberToString} from '../util/format'
+import {numberToString} from '../util/format'
 import {hyväksytystiSuoritetutKurssit, laajuudet, suoritetutKurssit} from './lukio'
 import {KurssitEditor} from '../kurssi/KurssitEditor'
 import {isMobileAtom} from '../util/isMobileAtom'
@@ -34,7 +34,7 @@ export default ({suorituksetModel, suoritusFilter}) => {
           ))}
         </tbody>
       </table>
-      <div className='kurssit-yhteensä'>{t('Suoritettujen kurssien laajuus yhteensä') + ': ' + laajuusNumberToString(laajuudet(arvioidutKurssit(oppiaineet)))}</div>
+      <div className='kurssit-yhteensä'>{t('Suoritettujen kurssien laajuus yhteensä') + ': ' + numberToString(laajuudet(arvioidutKurssit(oppiaineet)))}</div>
       {paikallisiaLukionOppiaineitaTaiKursseja(oppiaineet) && <FootnoteDescriptions data={[{title: 'Paikallinen kurssi tai oppiaine', hint: '*'}]}/>}
     </section>
   )
@@ -63,7 +63,7 @@ export class OmatTiedotLukionOppiaine extends React.Component {
     const oppiaineenKeskiarvo = kurssienKeskiarvo(suoritetutKurssit(kurssit))
     const laajuusYhteensä = useOppiaineLaajuus
       ? modelData(oppiaine, 'koulutusmoduuli.laajuus.arvo')
-      : laajuusNumberToString(laajuudet(hyväksytystiSuoritetutKurssit(kurssit)))
+      : numberToString(laajuudet(hyväksytystiSuoritetutKurssit(kurssit)))
     const laajuusYksikkö = useOppiaineLaajuus
       ? modelTitle(oppiaine, 'koulutusmoduuli.laajuus.yksikkö')
       : t('kurssia')

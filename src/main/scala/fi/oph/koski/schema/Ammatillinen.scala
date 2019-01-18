@@ -231,9 +231,10 @@ case class AmmatillisenTutkinnonSuoritus(
   ryhmä: Option[String] = None,
   @Title("Painotettu keskiarvo")
   @Tooltip("Ammatillisen tutkinnon osaamispistein painotettu keskiarvo.")
-  @OnlyWhen("suoritustapa/koodiarvo","ops")
+  @OnlyWhen("suoritustapa/koodiarvo","reformi")
   @MinValue(1)
   @MaxValue(5)
+  @Scale(2)
   keskiarvo: Option[Float] = None
 ) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus with Todistus
 

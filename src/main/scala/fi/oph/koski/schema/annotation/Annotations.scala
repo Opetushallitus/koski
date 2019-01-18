@@ -38,3 +38,6 @@ case class Example(text: String) extends RepresentationalMetadata
 case class SensitiveData() extends RepresentationalMetadata
 
 case class Tooltip(text: String) extends RepresentationalMetadata
+
+/* Numeric field should be rendered using this scale */
+case class Scale(numberOfDigits: Int) extends RepresentationalMetadata
