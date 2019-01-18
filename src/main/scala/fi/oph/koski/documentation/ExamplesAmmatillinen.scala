@@ -378,18 +378,24 @@ object TutkinnonOsaaPienempiKokonaisuusExample {
 
 object MuunAmmatillisenKoulutuksenExample {
   lazy val muuAmmatillinenKoulutus: PaikallinenMuuAmmatillinenKoulutus = PaikallinenMuuAmmatillinenKoulutus(
-    PaikallinenKoodi("KSK", "Kiinteistösihteerin koulutus"),
+    PaikallinenKoodi("KISI", "Kiinteistösihteerin koulutus ja tutkinto (KISI)"),
     None,
     finnish("Koulutus antaa opiskelijalle valmiudet hoitaa isännöinti- ja kiinteistöpalvelualan yritysten sihteeri- ja asiakaspalvelutehtäviä.")
+  )
+
+  lazy val muuAmmatillinenKoulutusKokonaisuuksilla: PaikallinenMuuAmmatillinenKoulutus = PaikallinenMuuAmmatillinenKoulutus(
+    PaikallinenKoodi("RTA", "Rakennusterveysasiantuntija-koulutus (RTA)"),
+    None,
+    finnish("Koulutus antaa valmiudet rakennusterveysasiantuntijana toimimiseen")
   )
 
   lazy val ammatilliseenTehtäväänValmistavaKoulutus: AmmatilliseenTehtäväänValmistavaKoulutus = AmmatilliseenTehtäväänValmistavaKoulutus(
     Koodistokoodiviite("ansiojaliikennelentajankoulutus", "ammatilliseentehtavaanvalmistavakoulutus"),
     None,
-    finnish("TBD")
+    finnish("Liikennelentäjät lentävät monentyyppisiä lentokoneita kuljettaen matkustajia, rahtia ja postia.")
   )
 
-  lazy val muuAmmatillisenKoulutusJaTutkinnonOsaaPienempiKokonaisuusOpiskeluoikeus = AmmatillinenOpiskeluoikeus(
+  lazy val muuAmmatillinenKoulutusOpiskeluoikeus = AmmatillinenOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2020, 5, 31)),
     tila = AmmatillinenOpiskeluoikeudenTila(List(
       AmmatillinenOpiskeluoikeusjakso(date(2018, 1, 1), opiskeluoikeusLäsnä, None)
@@ -406,50 +412,115 @@ object MuunAmmatillisenKoulutuksenExample {
         alkamispäivä = None,
         toimipiste = stadinToimipiste,
         osasuoritukset = Some(List(
-          TutkinnonOsaaPienemmänKokonaisuudenSuoritus(
-            TutkinnonOsaaPienempiKokonaisuus(
-              PaikallinenKoodi("AKTV", "Asunto- ja kiinteistöosakeyhtiön talous ja verotus"),
-              None,
-              finnish("Kurssilla opitaan hallitsemaan asunto- ja kiinteistöosakeyhtiön taloutta ja verotusta.")
-            ),
-            alkamispäivä = None,
-            arviointi = None,
-            tunnustettu = None,
-            näyttö = None,
-            liittyyTutkinnonOsaan = Koodistokoodiviite(
-              "101481",
-              koodistoUri = "tutkinnonosat"
-            ),
-            lisätiedot = None,
-            suorituskieli = None
+          muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
+            PaikallinenKoodi("AOYL", "Asunto-osakeyhtiölain ja huoneenvuokralainsäädännön perusteet"),
+            "Asunto-osakeyhtiölain ja huoneenvuokralainsäädännön perusteet, huoneistokohtaiset korjaus- ja muutostyöt"
           ),
-          MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
-            MuunAmmatillisenKoulutuksenOsasuoritus(
-              PaikallinenKoodi("TBD", "TBD"),
-              None,
-              finnish("TBD")
-            ),
-            alkamispäivä = None,
-            arviointi = None,
-            tunnustettu = None,
-            lisätiedot = None,
-            suorituskieli = None,
-            näyttö = None,
+          muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
+            PaikallinenKoodi("AKOYTV", "Asunto- ja kiinteistöosakeyhtiön talous ja verotus"),
+            "Laskentatoimen ja verotuksen perusteet, lainaosuus- ja rahoituslaskelmat, kiinteistövero, arvonlisävero sekä veroilmoituslomakkeet"
+          ),
+          muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
+            PaikallinenKoodi("TAP", "Tiedottaminen ja asiakaspalvelu"),
+            "Tiedottaminen ja asiakaspalvelu, isännöitsijän ja sihteerin työparityöskentely sekä asiakaspalvelun henkilöturvallisuus"
+          ),
+          muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
+            PaikallinenKoodi("KISI", "KISI-tentti"),
+            "Valmiudet hoitaa kiinteistöalan yrityksen sihteeri-, toimisto- ja asiakaspalvelutehtäviä, vahvistaa osallistujan ammatillisia perusvalmiuksia"
+          )
+        ))
+      )
+    )
+  )
+
+  lazy val muuAmmatillinenKoulutusKokonaisuuksillaOpiskeluoikeus = AmmatillinenOpiskeluoikeus(
+    arvioituPäättymispäivä = Some(date(2018, 5, 31)),
+    tila = AmmatillinenOpiskeluoikeudenTila(List(
+      AmmatillinenOpiskeluoikeusjakso(date(2016, 1, 1), opiskeluoikeusLäsnä, None),
+      AmmatillinenOpiskeluoikeusjakso(date(2018, 5, 31), opiskeluoikeusValmistunut, None)
+    )),
+    lisätiedot = None,
+    oppilaitos = Some(stadinAmmattiopisto),
+    suoritukset = List(
+      MuunAmmatillisenKoulutuksenSuoritus(
+        koulutusmoduuli = muuAmmatillinenKoulutusKokonaisuuksilla,
+        None,
+        osaamisenHankkimistavat = None,
+        koulutussopimukset = None,
+        suorituskieli = suomenKieli,
+        alkamispäivä = None,
+        toimipiste = stadinToimipiste,
+        vahvistus = Some(HenkilövahvistusValinnaisellaPaikkakunnalla(date(2018, 5, 31), Some(helsinki), stadinAmmattiopisto, List(
+          Organisaatiohenkilö("Reijo Reksi", "rehtori", stadinAmmattiopisto)))
+        ),
+        osasuoritukset = Some(List(
+          muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
+            tunniste = PaikallinenKoodi("RTT", "Rakenne- ja tuotantotekniikka"),
+            kuvaus = "Rakennusfysiikka, fysikaaliset olosuhteet, kuntotutkimusmenetelmät, rakenne- ja tuotantotekniikka ja juridiikka",
             osasuoritukset = Some(List(
-              MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
-                MuunAmmatillisenKoulutuksenOsasuoritus(
-                  PaikallinenKoodi("TBD", "TBD"),
-                  None,
-                  finnish("TBD")
-                ),
-                alkamispäivä = None,
-                arviointi = None,
-                tunnustettu = None,
-                lisätiedot = None,
-                suorituskieli = None,
-                näyttö = None
+              muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
+                tunniste = PaikallinenKoodi("RF", "Rakennusfysiikka"),
+                kuvaus = "Rakennusfysiikka ja fysikaaliset olosuhteet",
+                laajuus = Some(LaajuusOpintopisteissä(5))
+              ),
+              muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
+                tunniste = PaikallinenKoodi("KT", "Kuntotutkimusmenetelmät"),
+                kuvaus = "Kuntotutkimuksen menetelmät",
+                laajuus = Some(LaajuusOpintopisteissä(4))
+              ),
+              muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
+                tunniste = PaikallinenKoodi("RT", "Rakenne- ja tuotantotekniikka"),
+                kuvaus = "Rakennetekniikka",
+                laajuus = Some(LaajuusOpintopisteissä(2))
+              ),
+              muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
+                tunniste = PaikallinenKoodi("JR", "Juridiikka"),
+                kuvaus = "Rakennuksiin liittyvä juridiikka",
+                laajuus = Some(LaajuusOpintopisteissä(2))
               )
             ))
+          ),
+          muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
+            tunniste = PaikallinenKoodi("IIT", "Ilmanvaihto ja ilmastointitekniikka"),
+            kuvaus = "Ilmanvaihdon ja ilmastoinnin tekniikka",
+            osasuoritukset = Some(List(
+              muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
+                tunniste = PaikallinenKoodi("IITT", "Teoria"),
+                kuvaus = "Ilmanvaihdon ja ilmastointitekniikan teoria",
+                laajuus = Some(LaajuusOpintopisteissä(1.5f))
+              ),
+              muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
+                tunniste = PaikallinenKoodi("TM", "Tutkimusmenetelmät"),
+                kuvaus = "Ilmanvaihdon ja ilmastointitekniikan tutkimusmenetelmät",
+                laajuus = Some(LaajuusOpintopisteissä(1.5f))
+              )
+            ))
+          ),
+          muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
+            tunniste = PaikallinenKoodi("SETTT", "Sisäympäristön epäpuhtaudet"),
+            kuvaus = "Sisäympäristön epäpuhtaudet, terveysvaikutukset, tutkiminen, torjunta",
+            Some(List(
+              muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
+                tunniste = PaikallinenKoodi("KS", "Sisäympäristön epäpuhtaudet"),
+                kuvaus = "Kemiallinen sisäympäristö",
+                laajuus = Some(LaajuusOpintopisteissä(3))
+              ),
+              muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
+                tunniste = PaikallinenKoodi("STM", "Sisäympäristön tutkimusmenetelmät"),
+                kuvaus = "Kemiallinen sisäympäristö",
+                laajuus = Some(LaajuusOpintopisteissä(1))
+              ),
+              muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
+                tunniste = PaikallinenKoodi("TV", "Terveysvaikutukset"),
+                kuvaus = "Vaikutukset terveydelle",
+                laajuus = Some(LaajuusOpintopisteissä(2))
+              )
+            ))
+          ),
+          muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
+            tunniste = PaikallinenKoodi("OT", "Opinnäyte"),
+            kuvaus = "Opinnäytetyö",
+            laajuus = Some(LaajuusOpintopisteissä(15))
           )
         ))
       )
@@ -473,31 +544,15 @@ object MuunAmmatillisenKoulutuksenExample {
         alkamispäivä = None,
         toimipiste = stadinToimipiste,
         osasuoritukset = Some(List(
-          MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
-            MuunAmmatillisenKoulutuksenOsasuoritus(
-              PaikallinenKoodi("TBD", "TBD"),
-              None,
-              finnish("TBD")
-            ),
-            alkamispäivä = None,
-            arviointi = None,
-            tunnustettu = None,
-            lisätiedot = None,
-            suorituskieli = None,
-            näyttö = None,
+          muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
+            tunniste = PaikallinenKoodi("LT", "Lentämisen teoria"),
+            kuvaus = "Tutustutaan lentämisen perusteisiin",
+            laajuus = None,
             osasuoritukset = Some(List(
-              MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
-                MuunAmmatillisenKoulutuksenOsasuoritus(
-                  PaikallinenKoodi("TBD", "TBD"),
-                  None,
-                  finnish("TBD")
-                ),
-                alkamispäivä = None,
-                arviointi = None,
-                tunnustettu = None,
-                lisätiedot = None,
-                suorituskieli = None,
-                näyttö = None
+              muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
+                PaikallinenKoodi("LS", "Lentosuunnitelma"),
+                kuvaus = "Tutustutaan lentosuunnitelman tekemiseen",
+                laajuus = Some(LaajuusOsaamispisteissä(1))
               )
             ))
           )
@@ -508,7 +563,7 @@ object MuunAmmatillisenKoulutuksenExample {
 
   lazy val example = Oppija(
     exampleHenkilö,
-    List(muuAmmatillisenKoulutusJaTutkinnonOsaaPienempiKokonaisuusOpiskeluoikeus)
+    List(muuAmmatillinenKoulutusOpiskeluoikeus)
   )
 }
 

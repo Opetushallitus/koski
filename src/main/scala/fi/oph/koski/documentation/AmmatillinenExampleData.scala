@@ -398,4 +398,26 @@ object AmmatillinenExampleData {
     )),
     todistuksellaNäkyvätLisätiedot = Some("Suorittaa toista osaamisalaa")
   )
+
+  def muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(tunniste: PaikallinenKoodi, kuvaus: String, osasuoritukset: Option[List[MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus]] = None, laajuus: Option[Laajuus] = None) =
+    MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
+      MuunAmmatillisenKoulutuksenOsasuoritus(
+        tunniste,
+        laajuus,
+        LocalizedString.finnish(kuvaus)
+      ),
+      alkamispäivä = None,
+      arviointi = Some(List(
+        AmmatillinenArviointi(
+          arvosana = Koodistokoodiviite("Hyväksytty", "arviointiasteikkoammatillinenhyvaksyttyhylatty"),
+          date(2018, 5, 31),
+          arvioitsijat = Some(List(Arvioitsija("Aarne Arvioija")))
+        )
+      )),
+      tunnustettu = None,
+      lisätiedot = None,
+      suorituskieli = None,
+      näyttö = None,
+      osasuoritukset = osasuoritukset
+    )
 }
