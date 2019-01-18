@@ -7,7 +7,7 @@ import {LukionOppiaineetTableHead} from './fragments/LukionOppiaineetTableHead'
 import {t} from '../i18n/i18n'
 import {flatMapArray} from '../util/util'
 import {hyväksytystiSuoritetutKurssit, laajuudet} from './lukio'
-import {laajuusNumberToString} from '../util/format.js'
+import {numberToString} from '../util/format.js'
 import {isPaikallinen} from '../suoritus/Koulutusmoduuli'
 import {FootnoteDescriptions} from '../components/footnote'
 
@@ -39,7 +39,7 @@ export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaine
         {oppiaineetWithErrorRows}
         </tbody>
       </table>
-      <div className="kurssit-yhteensä">{t('Suoritettujen kurssien laajuus yhteensä') + ': ' + laajuusNumberToString(laajuudet(arvioidutKurssit(oppiaineet)))}</div>
+      <div className="kurssit-yhteensä">{t('Suoritettujen kurssien laajuus yhteensä') + ': ' + numberToString(laajuudet(arvioidutKurssit(oppiaineet)))}</div>
       {paikallisiaLukionOppiaineitaTaiKursseja(oppiaineet) && <FootnoteDescriptions data={[{title: 'Paikallinen kurssi tai oppiaine', hint: '*'}]}/>}
       <UusiLukionOppiaineDropdown
         model={päätasonSuoritusModel}
