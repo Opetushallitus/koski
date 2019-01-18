@@ -58,6 +58,8 @@ object Tables {
     }
 
     def readAsJValue(data: JValue, oid: String, versionumero: Int, aikaleima: Timestamp): JValue = {
+      // note: for historical reasons, Opiskeluoikeus.aikaleima is Option[LocalDateTime], instead of Option[DateTime].
+      // this Timestamp->LocalDateTime conversion assumes JVM time zone is Europe/Helsinki
       data.merge(Serializer.serialize(OidVersionTimestamp(oid, versionumero, aikaleima.toLocalDateTime), serializationContext))
     }
 

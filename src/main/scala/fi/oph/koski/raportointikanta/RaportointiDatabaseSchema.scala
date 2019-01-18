@@ -62,7 +62,7 @@ object RaportointiDatabaseSchema {
   class ROpiskeluoikeusTable(tag: Tag) extends Table[ROpiskeluoikeusRow](tag, "r_opiskeluoikeus") {
     val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
     val versionumero = column[Int]("versionumero")
-    val aikaleima = column[Timestamp]("aikaleima")
+    val aikaleima = column[Timestamp]("aikaleima", SqlType("timestamptz"))
     val sisältyyOpiskeluoikeuteenOid = column[Option[String]]("sisaltyy_opiskeluoikeuteen_oid", StringIdentifierType)
     val oppijaOid = column[String]("oppija_oid", StringIdentifierType)
     val oppilaitosOid = column[String]("oppilaitos_oid", StringIdentifierType)
