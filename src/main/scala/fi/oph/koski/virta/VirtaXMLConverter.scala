@@ -41,7 +41,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         päättymispäivä = loppuPvm(opiskeluoikeusNode),
         oppilaitos = oppilaitos,
         koulutustoimija = None,
-        suoritukset = addPäätasonSuoritusIfNecessary(suoritukset, opiskeluoikeusNode, opiskeluoikeudenTila),
+        suoritukset = rearrangeSuorituksetIfNecessary(suoritukset, opiskeluoikeusNode, opiskeluoikeudenTila),
         tila = opiskeluoikeudenTila,
         tyyppi = ooTyyppi,
         lisätiedot = Some(KorkeakoulunOpiskeluoikeudenLisätiedot(
@@ -73,7 +73,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     opiskeluoikeudet.filter(_.suoritukset.nonEmpty) ++ orphanages
   }
 
-  private def addPäätasonSuoritusIfNecessary(suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node, tila: KorkeakoulunOpiskeluoikeudenTila) = {
+  private def rearrangeSuorituksetIfNecessary(suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node, tila: KorkeakoulunOpiskeluoikeudenTila) = {
     if (tutkintoonJohtava(opiskeluoikeusNode)) {
       addTutkintoonJohtavaPäätasonSuoritusIfNecessery(suoritukset, opiskeluoikeusNode, tila)
     } else {
