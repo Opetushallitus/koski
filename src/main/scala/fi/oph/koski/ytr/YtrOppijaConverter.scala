@@ -18,7 +18,7 @@ case class YtrOppijaConverter(oppilaitosRepository: OppilaitosRepository, koodis
       Organisaatiovahvistus(graduationDate, helsinki, ytl.toOidOrganisaatio)
     }
 
-    val oppilaitos = ytrOppija.graduationSchoolOphOid.flatMap(oid => oppilaitosRepository.findByOid(oid) match  {
+    val oppilaitos = ytrOppija.certificateSchoolOphOid.flatMap(oid => oppilaitosRepository.findByOid(oid) match  {
       case None =>
         logger.error(s"Oppilaitosta $oid ei löydy")
         None

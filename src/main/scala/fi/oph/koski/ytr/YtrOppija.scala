@@ -9,8 +9,8 @@ case class YtrOppija(
   graduationDate: Option[LocalDate], // Toteutunut valmistumispäivä
   graduationPeriod: Option[String], // Toteutunut tutkintokerta
   exams: List[YtrExam],
-  graduationSchoolOphOid: Option[String],
-  graduationSchoolYtlNumber: Option[Int],
+  certificateSchoolOphOid: Option[String],
+  certificateSchoolYtlNumber: Option[Int],
   hasCompletedMandatoryExams: Boolean,
   language: Option[String]
 )
