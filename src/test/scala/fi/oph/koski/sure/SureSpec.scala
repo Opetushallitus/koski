@@ -1,20 +1,24 @@
 package fi.oph.koski.sure
 
-import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethodsAmmatillinen}
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.db.Tables.OpiskeluOikeudet
+import fi.oph.koski.api.{DatabaseTestMethods, LocalJettyHttpSpecification, OpiskeluoikeusTestMethodsAmmatillinen}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.MockUsers.{stadinAmmattiopistoKatselija, stadinVastuukäyttäjä}
-import fi.oph.koski.koskiuser.UserWithPassword
+import fi.oph.koski.koskiuser.{MockUser, MockUsers, UserWithPassword}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.SchemaValidatingExtractor
+import org.json4s.{DefaultFormats, JString}
 import org.json4s.JsonAST.{JArray, JBool}
 import org.json4s.jackson.JsonMethods
 import org.scalatest.{FreeSpec, Matchers}
 
-class SureSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with Matchers {
+class SureSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with DatabaseTestMethods with Matchers {
 
   import fi.oph.koski.schema.KoskiSchema.deserializationContext
+  implicit val formats = DefaultFormats
 
   "Sure-rajapinnat" - {
     "/api/sure/oids" - {
@@ -73,9 +77,175 @@ class SureSpec extends FreeSpec with LocalJettyHttpSpecification with Opiskeluoi
         }
       }
     }
+
+    "/api/sure/muuttuneet-oppijat" - {
+
+      "Kysely aikaleimalla palauttaa kursorin (mutta ei rivejä)" in {
+        muuttuneetAikaleimalla("2019-01-01T00:00:00+02:00") {
+          verifyResponseStatusOk()
+          val parsedJson = JsonMethods.parse(body)
+          (parsedJson \ "result") should equal(JArray(Nil))
+          (parsedJson \ "mayHaveMore") should equal(JBool(true))
+          (parsedJson \ "nextCursor") shouldBe a[JString]
+        }
+      }
+
+      "Kysely kursorilla palauttaa oikeat oidit" in {
+        val cursor = muuttuneetAikaleimalla("2015-01-01T00:00:00+02:00")(extractCursor)
+        val res = muuttuneetKursorilla(cursor)
+        val expectedOids = runDbSync(OpiskeluOikeudet.sortBy(_.aikaleima).map(_.oppijaOid).take(5).result)
+        res.result should contain theSameElementsAs(expectedOids)
+        res.mayHaveMore should equal(true)
+      }
+
+      "Kursorilla iterointi palauttaa kaikki oidit" in {
+        val cursor = muuttuneetAikaleimalla("2015-01-01T00:00:00+02:00")(extractCursor)
+        val res = muuttuneetKursorillaIteroi(cursor)
+        val pageCount = res.size
+        // huom, kummassakaan näissä ei ole ".distinct"
+        val oids = res.flatMap(_.result).sorted
+        val expectedOids = runDbSync(OpiskeluOikeudet.map(_.oppijaOid).result).sorted
+        pageCount should be > 5
+        oids should contain theSameElementsAs(expectedOids)
+      }
+
+      "Kursorilla haku palauttaa muuttuneet" in {
+        val cursor = muuttuneetAikaleimalla("2015-01-01T00:00:00+02:00")(extractCursor)
+        val res1 = muuttuneetKursorilla(cursor, pageSize = 1000)
+
+        val muuttuneetOidit = res1.result.distinct.take(3)
+        runDbSync(OpiskeluOikeudet.filter(_.oppijaOid inSetBind muuttuneetOidit).map(_.luokka).update(Some("X")))
+        val res2 = muuttuneetKursorilla(res1.nextCursor, pageSize = 1000)
+        //res2.result.distinct should contain allElementsOf(muuttuneetOidit)
+        res2.result.distinct should contain theSameElementsAs(muuttuneetOidit)
+      }
+
+      "Kursorilla haku ei palauta muutoksia jos muuttuneita ei ole" in {
+        val cursor = muuttuneetAikaleimalla("2015-01-01T00:00:00+02:00")(extractCursor)
+        val res1 = muuttuneetKursorilla(cursor, pageSize = 1000)
+        val res2 = muuttuneetKursorilla(res1.nextCursor, pageSize = 1000)
+        res2.result shouldBe empty
+        res2.nextCursor should equal(res1.nextCursor)
+      }
+
+      "Hiljattain muuttuneet palautetaan useaan kertaan" in {
+        val cursor = muuttuneetAikaleimalla("2015-01-01T00:00:00+02:00")(extractCursor)
+        val kaikkiOidit = muuttuneetKursorilla(cursor, pageSize = 1000).result.distinct
+
+        // Varmistetaan että kannassa on tasan 3 hiljattain muuttunutta riviä
+        Thread.sleep(2000)
+        val muuttuneetOidit1 = kaikkiOidit.take(3)
+        val muuttuneetOidit2 = kaikkiOidit.drop(3).take(1)
+        runDbSync(OpiskeluOikeudet.filter(_.oppijaOid inSetBind muuttuneetOidit1).map(_.luokka).update(Some("X")))
+
+        // Ensimmäinen haku palauttaa kaikki oidit
+        val res1 = muuttuneetKursorilla(cursor, pageSize = 1000, recentPageOverlapTestsOnly = 2)
+        res1.result.distinct should contain theSameElementsAs(kaikkiOidit)
+
+        // Toinen haku palauttaa nuo kahden sekunnin sisällä muuttuneet kolme riviä
+        val res2 = muuttuneetKursorilla(res1.nextCursor, pageSize = 1000, recentPageOverlapTestsOnly = 2)
+        res2.result.distinct should contain theSameElementsAs(muuttuneetOidit1)
+
+        // ...ja jos siellä on vielä uusia muuttuneita, niin myös ne:
+        runDbSync(OpiskeluOikeudet.filter(_.oppijaOid inSetBind muuttuneetOidit2).map(_.luokka).update(Some("X")))
+        // huom, tässä tarkoituksella "res1.nextCursor" eikä res2
+        val res3 = muuttuneetKursorilla(res1.nextCursor, pageSize = 1000, recentPageOverlapTestsOnly = 2)
+        res3.result.distinct should contain theSameElementsAs(muuttuneetOidit1 ++ muuttuneetOidit2)
+      }
+
+      "Kursorilla iterointi palauttaa kaikki oidit myös jos niillä on sama aikaleima" in {
+        val cursor = muuttuneetAikaleimalla("2015-01-01T00:00:00+02:00")(extractCursor)
+        runDbSync(OpiskeluOikeudet.map(_.luokka).update(Some("X")))
+        val res = muuttuneetKursorillaIteroi(cursor)
+        val pageCount = res.size
+        // huom, kummassakaan näissä ei ole ".distinct"
+        val oids = res.flatMap(_.result).sorted
+        val expectedOids = runDbSync(OpiskeluOikeudet.map(_.oppijaOid).result).sorted
+        pageCount should be > 5
+        oids should contain theSameElementsAs(expectedOids)
+      }
+
+      "Myös mitätöidyt lasketaan muuttuneiksi" in {
+        val cursor = muuttuneetAikaleimalla("2015-01-01T00:00:00+02:00")(extractCursor)
+        val res1 = muuttuneetKursorilla(cursor, pageSize = 1000)
+
+        val oppijaOid = MockOppijat.ibFinal.oid
+        val opiskeluoikeusOid = runDbSync(OpiskeluOikeudet.filter(_.oppijaOid === oppijaOid).map(_.oid).result).head
+        delete(s"api/opiskeluoikeus/$opiskeluoikeusOid", headers = authHeaders(MockUsers.paakayttaja)) {
+          verifyResponseStatusOk()
+        }
+
+        val res2 = muuttuneetKursorilla(res1.nextCursor)
+        res2.result should equal(Seq(oppijaOid))
+      }
+
+      "Palauttaa virheen jos annetaan sekä aikaleima että kursori" in {
+        val cursor = muuttuneetAikaleimalla("2019-01-01T00:00:00+02:00")(extractCursor)
+        muuttuneetAikaleimalla("2019-01-01T00:00:00+02:00", cursor = cursor) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam("Pitää antaa joko timestamp tai cursor"))
+        }
+      }
+      "Palauttaa virheen jos sekä aikaleima että kursori puuttuu" in {
+        muuttuneetAikaleimalla("") {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam("Pitää antaa joko timestamp tai cursor"))
+        }
+      }
+      "Palauttaa virheen jos annetaan virheellinen aikaleima" in {
+        muuttuneetAikaleimalla(timestamp = "2019-01-01T00:00:00") {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.format.pvm())
+        }
+      }
+      "Palauttaa virheen jos annetaan virheellinen kursori" in {
+        muuttuneetAikaleimalla(timestamp = "", cursor = "v9,2019-01-01T00:00:00Z") {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam("Virheellinen cursor"))
+        }
+      }
+      "Palauttaa virheen jos annetaan virheellinen pageSize" in {
+        get("api/sure/muuttuneet-oppijat", Map("timestamp" -> "2015-01-01T00:00:00+02:00", "pageSize" -> "0"), authHeaders(MockUsers.paakayttaja)) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam("pageSize pitää olla välillä 2-5000"))
+        }
+      }
+      "Palauttaa virheen jos ei ole globaaleja lukuoikeuksia" in {
+        get("api/sure/muuttuneet-oppijat", Map("timestamp" -> "2015-01-01T00:00:00+02:00"), authHeaders(MockUsers.kalle)) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden("Käyttäjällä ei ole oikeuksia annetun organisaation tietoihin."))
+        }
+      }
+    }
   }
 
   private def postOids[A](oids: Iterable[String], user: UserWithPassword = defaultUser)(f: => A) =
     post("api/sure/oids", "[" + oids.map("\"" + _ + "\"").mkString(",") + "]", authHeaders(user) ++ jsonContent)(f)
+
+  private def muuttuneetAikaleimalla[A](timestamp: String, cursor: String = "")(f: => A) = {
+    val params = List("timestamp" -> timestamp, "cursor" -> cursor).filter(_._2 != "").toMap
+    get("api/sure/muuttuneet-oppijat", params, authHeaders(MockUsers.paakayttaja))(f)
+  }
+
+  private def muuttuneetKursorilla(cursor: String, pageSize: Int = 5, recentPageOverlapTestsOnly: Int = 0): MuuttuneetOppijatResponse = {
+    get("api/sure/muuttuneet-oppijat", Map("cursor" -> cursor, "pageSize" -> pageSize.toString, "recentPageOverlapTestsOnly" -> recentPageOverlapTestsOnly.toString), authHeaders(MockUsers.paakayttaja)) {
+      verifyResponseStatusOk()
+      SchemaValidatingExtractor.extract[MuuttuneetOppijatResponse](body).right.get
+    }
+  }
+
+  private def muuttuneetKursorillaIteroi(firstCursor: String): Seq[MuuttuneetOppijatResponse] = {
+    var responses = collection.mutable.ArrayBuffer[MuuttuneetOppijatResponse]()
+    var cursor = firstCursor
+    while (true) {
+      val res = muuttuneetKursorilla(cursor)
+      responses += res
+      if (res.mayHaveMore) {
+        cursor = res.nextCursor
+      } else {
+        return responses
+      }
+    }
+    responses
+  }
+
+  private def extractCursor = {
+    verifyResponseStatusOk()
+    (JsonMethods.parse(body) \ "nextCursor").extract[String]
+  }
 }
 
