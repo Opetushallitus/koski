@@ -25,7 +25,11 @@ object ExamplesAmmatillinen {
     Example("ammatillinen - tunnustettu", "Tutkinnon osa tunnustettu aiemmin suoritetusta paikallisen tutkinnon osasta", AmmatillinenPerustutkintoExample.tunnustettuPaikallinenTutkinnonOsa),
     Example("ammatillinen - sisältyy toisen oppilaitoksen opiskeluoikeuteen", "Toisen oppilaitoksen opiskeluoikeuteen sisältyvä opiskeluoikeus", AmmatillinenPerustutkintoExample.sisältyvä, statusCode = 400),
     Example("ammatillinen - lisätiedot", "Opiskeluoikeus, johon liitetty kaikki mahdolliset opiskeluoikeuden lisätiedot", LisätiedotExample.example),
-    Example("ammatillinen - reformin mukainen erikoisammattitutkinto", "Erikoisammattitutkinto, joka on suoritettu reformin jälkeisten perusteiden mukaisesti", ReforminMukainenErikoisammattitutkintoExample.example)
+    Example("ammatillinen - reformin mukainen erikoisammattitutkinto", "Erikoisammattitutkinto, joka on suoritettu reformin jälkeisten perusteiden mukaisesti", ReforminMukainenErikoisammattitutkintoExample.example),
+    Example("ammatillinen - tutkinnon osaa pienempi kokonaisuus", "Oppija suorittaa kiinteistösihteerin tutkinnon osaa pienempää muuta ammatillista koulutusta", TutkinnonOsaaPienempiKokonaisuusExample.example),
+    Example("ammatillinen - ammatilliseen tehtävään valmistava muu ammatillinen koulutus", "Oppija suorittaa ansio ja liikennelentäjän tehtävään valmistavaa muuta ammatillista koulutusta", MuunAmmatillisenKoulutuksenExample.ammatilliseenTehtäväänValmistavaKoulutusExample),
+    Example("ammatillinen - muu ammatillinen koulutus", "Oppija suorittaa kiinteistösihteerin muuta ammatillista koulutusta", MuunAmmatillisenKoulutuksenExample.muuAmmatillinenKoulutusExample),
+    Example("ammatillinen - muu ammatillinen koulutus valmis", "Oppija on suorittanut rakennusterveysasiantuntijan muun ammatillisen koulutuksen", MuunAmmatillisenKoulutuksenExample.muuAmmatillinenKoulutusKokonaisuuksillaExample)
   )
 }
 
@@ -544,9 +548,19 @@ object MuunAmmatillisenKoulutuksenExample {
     )
   )
 
-  lazy val example = Oppija(
+  lazy val muuAmmatillinenKoulutusExample = Oppija(
     exampleHenkilö,
     List(muuAmmatillinenKoulutusOpiskeluoikeus)
+  )
+
+  lazy val muuAmmatillinenKoulutusKokonaisuuksillaExample = Oppija(
+    exampleHenkilö,
+    List(muuAmmatillinenKoulutusKokonaisuuksillaOpiskeluoikeus)
+  )
+
+  lazy val ammatilliseenTehtäväänValmistavaKoulutusExample = Oppija(
+    exampleHenkilö,
+    List(ammatilliseenTehtäväänValmistavaKoulutusOpiskeluoikeus)
   )
 }
 
