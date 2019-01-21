@@ -326,11 +326,6 @@ object AmmatillinenReforminMukainenPerustutkintoExample {
 }
 
 object TutkinnonOsaaPienempiKokonaisuusExample {
-  lazy val tutkinnonOsaaPienempiKokonaisuus: PaikallinenMuuAmmatillinenKoulutus = PaikallinenMuuAmmatillinenKoulutus(
-    PaikallinenKoodi("KSK", "Kiinteistösihteerin koulutus"),
-    None,
-    finnish("Koulutus antaa opiskelijalle valmiudet hoitaa isännöinti- ja kiinteistöpalvelualan yritysten sihteeri- ja asiakaspalvelutehtäviä.")
-  )
   lazy val opiskeluoikeus = AmmatillinenOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2020, 5, 31)),
     tila = AmmatillinenOpiskeluoikeudenTila(List(
@@ -340,7 +335,7 @@ object TutkinnonOsaaPienempiKokonaisuusExample {
     oppilaitos = Some(stadinAmmattiopisto),
     suoritukset = List(
       TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(
-        koulutusmoduuli = tutkinnonOsaaPienempiKokonaisuus,
+        koulutusmoduuli = muuAmmatillinenKoulutus,
         alkamispäivä = None,
         osaamisenHankkimistavat = None,
         koulutussopimukset = None,
@@ -377,22 +372,10 @@ object TutkinnonOsaaPienempiKokonaisuusExample {
 }
 
 object MuunAmmatillisenKoulutuksenExample {
-  lazy val muuAmmatillinenKoulutus: PaikallinenMuuAmmatillinenKoulutus = PaikallinenMuuAmmatillinenKoulutus(
-    PaikallinenKoodi("KISI", "Kiinteistösihteerin koulutus ja tutkinto (KISI)"),
-    None,
-    finnish("Koulutus antaa opiskelijalle valmiudet hoitaa isännöinti- ja kiinteistöpalvelualan yritysten sihteeri- ja asiakaspalvelutehtäviä.")
-  )
-
   lazy val muuAmmatillinenKoulutusKokonaisuuksilla: PaikallinenMuuAmmatillinenKoulutus = PaikallinenMuuAmmatillinenKoulutus(
     PaikallinenKoodi("RTA", "Rakennusterveysasiantuntija-koulutus (RTA)"),
     None,
     finnish("Koulutus antaa valmiudet rakennusterveysasiantuntijana toimimiseen")
-  )
-
-  lazy val ammatilliseenTehtäväänValmistavaKoulutus: AmmatilliseenTehtäväänValmistavaKoulutus = AmmatilliseenTehtäväänValmistavaKoulutus(
-    Koodistokoodiviite("ansiojaliikennelentajankoulutus", "ammatilliseentehtavaanvalmistavakoulutus"),
-    None,
-    finnish("Liikennelentäjät lentävät monentyyppisiä lentokoneita kuljettaen matkustajia, rahtia ja postia.")
   )
 
   lazy val muuAmmatillinenKoulutusOpiskeluoikeus = AmmatillinenOpiskeluoikeus(

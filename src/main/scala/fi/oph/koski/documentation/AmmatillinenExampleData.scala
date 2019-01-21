@@ -19,6 +19,17 @@ object AmmatillinenExampleData {
   val puutarhuri: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("361255", "koulutus"), Some("75/011/2014"))
   val autoalanTyönjohto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("357305", "koulutus"), Some("40/011/2001"))
 
+  val muuAmmatillinenKoulutus: PaikallinenMuuAmmatillinenKoulutus = PaikallinenMuuAmmatillinenKoulutus(
+    PaikallinenKoodi("KISI", "Kiinteistösihteerin koulutus ja tutkinto (KISI)"),
+    None,
+    LocalizedString.finnish("Koulutus antaa opiskelijalle valmiudet hoitaa isännöinti- ja kiinteistöpalvelualan yritysten sihteeri- ja asiakaspalvelutehtäviä.")
+  )
+  val ammatilliseenTehtäväänValmistavaKoulutus: AmmatilliseenTehtäväänValmistavaKoulutus = AmmatilliseenTehtäväänValmistavaKoulutus(
+    Koodistokoodiviite("ansiojaliikennelentajankoulutus", "ammatilliseentehtavaanvalmistavakoulutus"),
+    None,
+    LocalizedString.finnish("Liikennelentäjät lentävät monentyyppisiä lentokoneita kuljettaen matkustajia, rahtia ja postia.")
+  )
+
   def autoalanPerustutkinnonSuoritus(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = ammatillinenTutkintoSuoritus(autoalanPerustutkinto, toimipiste)
   def autoalanPerustutkinnonSuoritusValma(toimipiste: OrganisaatioWithOid = stadinToimipiste): ValmaKoulutuksenSuoritus = valmaSuoritus(valmaKoulutus, toimipiste)
   def autoalanErikoisammattitutkinnonSuoritus(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = ammatillinenTutkintoSuoritus(autoalanTyönjohto, toimipiste)
