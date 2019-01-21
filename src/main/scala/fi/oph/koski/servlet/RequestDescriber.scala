@@ -25,6 +25,12 @@ object RequestDescriber {
         } catch {
           case e: Exception => body
         }
+      case (body, Some(contentType)) if (contentType.contains("text/xml")) =>
+        try {
+          maskSensitiveInformationXml(body)
+        } catch {
+          case e: Exception => body
+        }
       case (body, _) => body
     }
   }
@@ -35,6 +41,10 @@ object RequestDescriber {
       case field: (String, JsonAST.JValue) => field
     }
     maskedJson
+  }
+
+  private def maskSensitiveInformationXml(xml: String): String = {
+    xml.replaceAll("(hetu>)[-0-9A-Z]+(</)", "$1*$2")
   }
 
 }
