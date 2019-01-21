@@ -65,9 +65,9 @@ class SuomiFiService(application: KoskiApplication) extends Logging {
     LocalizedString.finnish(s"${kaikkiSuoritukset.count(s => isOppiaineenOppimäärä(s) || isOpintojakso(s))} ").concat(localization(otsikkoKey))
   }
 
-  private def suoritusNimi(suoritus: PäätasonSuoritus) =
+  private def suoritusNimi(suoritus: PäätasonSuoritus): LocalizedString =
     suoritus.koulutusmoduuli match {
-      case a: AmmatillinenTutkintoKoulutus => a.perusteenNimi.get
+      case a: AmmatillinenTutkintoKoulutus => a.perusteenNimi.getOrElse(a.tunniste.getNimi.get)
       case k => k.tunniste.getNimi.get
     }
 
