@@ -149,7 +149,7 @@ class PalveluvaylaSpec extends FreeSpec with LocalJettyHttpSpecification with Op
   }
 
   private def postSuomiFiRekisteritiedot[A](user: MockUser, hetu: String)(fn: => A): A = {
-    post("api/palveluvayla/suomi-fi-rekisteritiedot", body = soapRequest(hetu), headers = authHeaders(user))(fn)
+    post("api/palveluvayla/suomi-fi-rekisteritiedot", body = soapRequest(hetu), headers = authHeaders(user) ++ Map(("Content-type" -> "text/xml")))(fn)
   }
 
   private def verifySOAPError(faultstring: String, message: String): Unit = {
