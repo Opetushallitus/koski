@@ -535,6 +535,27 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         )
       }
     }
+
+    "Muu ammatillinen" - {
+      "Tutkinnon osaa pienempi kokonaisuus" - {
+        "Paikallinen tutkinnon osaa pienempi kokonaisuus" - {
+          val suoritus = kiinteistösihteerinTutkinnonOsaaPienempiMuuAmmatillinenKokonaisuus()
+          "palautetaan HTTP 200" in putTutkinnonOsaaPienempienKokonaisuuksienSuoritus(suoritus)(verifyResponseStatusOk())
+        }
+      }
+
+      "Muu ammatillinen koulutus" - {
+        "Paikallinen muu ammatillinen koulutus" - {
+          val suoritus = kiinteistösihteerinMuuAmmatillinenKoulutus()
+          "palautetaan HTTP 200" in putMuuAmmatillinenKoulutusSuoritus(suoritus)(verifyResponseStatusOk())
+        }
+
+        "Ammatilliseen tehtävään valmistava koulutus" - {
+          val suoritus = ansioJaLiikenneLentäjänMuuAmmatillinenKoulutus()
+          "palautetaan HTTP 200" in putMuuAmmatillinenKoulutusSuoritus(suoritus)(verifyResponseStatusOk())
+        }
+      }
+    }
   }
 
   def vahvistus(date: LocalDate) = {
@@ -597,6 +618,18 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     autoalanPerustutkinnonSuoritus().copy(suoritustapa = tutkinnonSuoritustapa, osasuoritukset = Some(osasuoritukset))
 
   def putTutkintoSuoritus[A](suoritus: AmmatillisenTutkinnonSuoritus, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
+    putAmmatillinenPäätasonSuoritus(suoritus, henkilö, headers)(f)
+  }
+
+  def putTutkinnonOsaaPienempienKokonaisuuksienSuoritus[A](suoritus: TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
+    putAmmatillinenPäätasonSuoritus(suoritus, henkilö, headers)(f)
+  }
+
+  def putMuuAmmatillinenKoulutusSuoritus[A](suoritus: MuunAmmatillisenKoulutuksenSuoritus, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
+    putAmmatillinenPäätasonSuoritus(suoritus, henkilö, headers)(f)
+  }
+
+  def putAmmatillinenPäätasonSuoritus[A](suoritus: AmmatillinenPäätasonSuoritus, henkilö: Henkilö = defaultHenkilö, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
     val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))
 
     putOppija(makeOppija(henkilö, List(JsonSerializer.serializeWithRoot(opiskeluoikeus))), headers)(f)
