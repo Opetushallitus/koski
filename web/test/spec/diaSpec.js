@@ -423,6 +423,7 @@ describe('DIA', function( ) {
           'Kokonaispistemäärä 870\n' +
           'Lukukausisuoritusten kokonaispistemäärä 590\n' +
           'Tutkintoaineiden kokonaispistemäärä 280\n' +
+          'Kokonaispistemäärästä johdettu keskiarvo 1,2\n' +
           'Suorituskieli englanti\n' +
           'Suoritus valmis Vahvistus : 4.6.2016 Helsinki Reijo Reksi , rehtori')
       })
@@ -502,6 +503,19 @@ describe('DIA', function( ) {
 
           it('voidaan muuttaa', function () {
             expect(extractAsText(S('.tutkintoaineidenKokonaispistemäärä'))).to.equal('Tutkintoaineiden kokonaispistemäärä 215')
+          })
+        })
+
+        describe('Kokonaispistemäärästä johdettu keskiarvo', function() {
+          before(
+            editor.edit,
+            opinnot.opiskeluoikeusEditor().property('kokonaispistemäärästäJohdettuKeskiarvo').setValue('2,4'),
+            editor.saveChanges,
+            wait.until(page.isSavedLabelShown)
+          )
+
+          it('voidaan muuttaa', function () {
+            expect(extractAsText(S('.kokonaispistemäärästäJohdettuKeskiarvo'))).to.equal('Kokonaispistemäärästä johdettu keskiarvo 2,4')
           })
         })
 

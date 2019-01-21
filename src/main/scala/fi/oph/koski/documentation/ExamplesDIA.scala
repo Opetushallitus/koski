@@ -182,13 +182,15 @@ object ExamplesDIA {
 
   def diaTutkintovaiheenSuoritus(kokonaispistemäärä: Option[Int] = None,
                                  lukukausisuoritustenKokonaispistemäärä: Option[Int] = None,
-                                 tutkintoaineidenKokonaispistemäärä: Option[Int] = None) = DIATutkinnonSuoritus(
+                                 tutkintoaineidenKokonaispistemäärä: Option[Int] = None,
+                                 kokonaispistemäärästäJohdettuKeskiarvo: Option[Float] = None) = DIATutkinnonSuoritus(
     toimipiste = saksalainenKoulu,
     suorituskieli = englanti,
     vahvistus = ExampleData.vahvistusPaikkakunnalla(org = saksalainenKoulu, kunta = helsinki),
     kokonaispistemäärä = kokonaispistemäärä,
     lukukausisuoritustenKokonaispistemäärä = lukukausisuoritustenKokonaispistemäärä,
     tutkintoaineidenKokonaispistemäärä = tutkintoaineidenKokonaispistemäärä,
+    kokonaispistemäärästäJohdettuKeskiarvo = kokonaispistemäärästäJohdettuKeskiarvo,
     osasuoritukset = Some(osasuorituksetTutkintovaihe)
   )
 
@@ -201,7 +203,7 @@ object ExamplesDIA {
         LukionOpiskeluoikeusjakso(date(2016, 6, 4), LukioExampleData.opiskeluoikeusPäättynyt)
       )
     ),
-    suoritukset = List(diaValmistavanVaiheenSuoritus, diaTutkintovaiheenSuoritus(Some(870), Some(590), Some(280)))
+    suoritukset = List(diaValmistavanVaiheenSuoritus, diaTutkintovaiheenSuoritus(Some(870), Some(590), Some(280), Some(1.2F)))
   )
 
   val examples = List(

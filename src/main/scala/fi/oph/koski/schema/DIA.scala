@@ -58,6 +58,9 @@ case class DIATutkinnonSuoritus(
   @MinValue(0)
   @MaxValue(300)
   tutkintoaineidenKokonaispistemäärä: Option[Int] = None,
+  @MinValue(1.0)
+  @MaxValue(4.0)
+  kokonaispistemäärästäJohdettuKeskiarvo: Option[Float] = None,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
   @Description("Oppiaineiden suoritukset")
