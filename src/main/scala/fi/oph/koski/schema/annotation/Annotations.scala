@@ -1,5 +1,6 @@
 package fi.oph.koski.schema.annotation
 
+import fi.oph.koski.koskiuser.Rooli.Role
 import fi.oph.scalaschema.Metadata
 import org.json4s.JsonAST
 import org.json4s.JsonAST.JObject
@@ -35,7 +36,7 @@ case class UnitOfMeasure(unit: String) extends RepresentationalMetadata
 /* An example of the data */
 case class Example(text: String) extends RepresentationalMetadata
 
-case class SensitiveData() extends RepresentationalMetadata
+case class SensitiveData(roles: Set[Role]) extends RepresentationalMetadata
 
 case class Tooltip(text: String) extends RepresentationalMetadata
 

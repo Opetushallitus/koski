@@ -10,7 +10,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db.{KoskiDatabaseMethods, OpiskeluoikeusHistoryRow, OpiskeluoikeusRow, Tables}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.{KoskiSession, Rooli}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.KoskeenTallennettavaOpiskeluoikeus
 import fi.oph.koski.schema.annotation.SensitiveData
@@ -63,4 +63,4 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends KoskiDatabaseMethods 
 }
 
 // TODO: use LocalDateTime instead of Timestamp for consistency with KoskeenTallennettavaOpiskeluoikeus
-case class OpiskeluoikeusHistory(opiskeluoikeusOid: String, versionumero: Int, aikaleima: Timestamp, kayttajaOid: String, @SensitiveData muutos: JValue)
+case class OpiskeluoikeusHistory(opiskeluoikeusOid: String, versionumero: Int, aikaleima: Timestamp, kayttajaOid: String, @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN)) muutos: JValue)

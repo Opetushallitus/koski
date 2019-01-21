@@ -2,6 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.{LocalDate, LocalDateTime}
 
+import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation.{DefaultValue, Description, MinItems, Title}
 
@@ -31,7 +32,7 @@ case class LukionOpiskeluoikeus(
 @Description("Lukion opiskeluoikeuden lisätiedot")
 case class LukionOpiskeluoikeudenLisätiedot(
   @Description("Opiskeluajan pidennetty päättymispäivä (true/false). Lukion oppimäärä tulee suorittaa enintään neljässä vuodessa, jollei opiskelijalle perustellusta syystä myönnetä suoritusaikaan pidennystä (lukiolaki 21.8.1998/629 24 §)")
-  @SensitiveData
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
   @DefaultValue(false)
   pidennettyPäättymispäivä: Boolean = false,
   @Description("Opiskelija on ulkomainen vaihto-opiskelija Suomessa (true/false). Rahoituksen laskennassa käytettävä tieto.")
@@ -42,17 +43,17 @@ case class LukionOpiskeluoikeudenLisätiedot(
   @Title("Syy alle 18-vuotiaana aloitettuun opiskeluun aikuisten lukiokoulutuksessa")
   alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy: Option[LocalizedString] = None,
   @Description("Yksityisopiskelija aikuisten lukiokoulutuksessa (true/false). Rahoituksen laskennassa käytettävä tieto.")
-  @SensitiveData
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
   @DefaultValue(false)
   yksityisopiskelija: Boolean = false,
   erityisenKoulutustehtävänJaksot: Option[List[ErityisenKoulutustehtävänJakso]] = None,
   @Description("Rahoituksen laskennassa käytettävä tieto.")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
   @Description("Tieto onko oppijalla maksuton majoitus. Rahoituksen laskennassa käytettävä tieto.")
-  @SensitiveData
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
   @DefaultValue(false)
   oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false,
-  @SensitiveData
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
   @Description("Onko opiskelija sisöoppilaitosmaisessa majoituksessa. Rahoituksen laskennassa käytettävä tieto.")
   sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]] = None
 ) extends OpiskeluoikeudenLisätiedot

@@ -2,7 +2,8 @@ package fi.oph.koski.schema
 
 import java.time.{LocalDate, LocalDateTime}
 
-import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, OksaUri, Scale, SensitiveData, Tooltip}
+import fi.oph.koski.koskiuser.Rooli
+import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation._
 
 @Description("Deutsche Internationale Abitur -tutkinnon opiskeluoikeus")
@@ -31,7 +32,7 @@ case class DIAOpiskeluoikeus(
 @Description("DIA-opiskeluoikeuden lisätiedot")
 case class DIAOpiskeluoikeudenLisätiedot(
   @Description("Opiskeluajan pidennetty päättymispäivä (true/false).")
-  @SensitiveData
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
   @DefaultValue(false)
   pidennettyPäättymispäivä: Boolean = false,
   @Description("Opiskelija on ulkomainen vaihto-opiskelija Suomessa (true/false).")

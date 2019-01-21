@@ -2,6 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.{LocalDate, LocalDateTime}
 
+import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation.{Description, MaxItems, Title}
 
@@ -34,18 +35,18 @@ case class EsiopetuksenOpiskeluoikeus(
 case class EsiopetuksenOpiskeluoikeudenLisätiedot(
   @Description("Pidennetty oppivelvollisuus alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että oppilaalla ei ole pidennettyä oppivelvollisuutta.")
   @Description("Tieto mahdollisesta pidennetystä oppivelvollisuudesta alkamis- ja päättymispäivineen.")
-  @SensitiveData
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
   @OksaUri("tmpOKSAID517", "pidennetty oppivelvollisuus")
   pidennettyOppivelvollisuus: Option[Aikajakso] = None,
   @Description("Erityisen tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Mahdollisen erityisen tuen päätöksen alkamis- ja päättymispäivät. Rahoituksen laskennassa käytettävä tieto.")
-  @SensitiveData
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
   @OksaUri("tmpOKSAID281", "henkilökohtainen opetuksen järjestämistä koskeva suunnitelma")
   @Deprecated("Käytä korvaavaa kenttää Erityisen tuen päätökset")
   erityisenTuenPäätös: Option[ErityisenTuenPäätös] = None,
   @Description("Erityisen tuen päätökset alkamis- ja päättymispäivineen. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Mahdollisen erityisen tuen päätösten alkamis- ja päättymispäivät. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
-  @SensitiveData
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
   @OksaUri("tmpOKSAID281", "henkilökohtainen opetuksen järjestämistä koskeva suunnitelma")
   erityisenTuenPäätökset: Option[List[ErityisenTuenPäätös]] = None
 ) extends OpiskeluoikeudenLisätiedot

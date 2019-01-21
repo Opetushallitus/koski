@@ -4,6 +4,7 @@ import fi.oph.koski.koskiuser.Rooli._
 import fi.oph.koski.schema.{OpiskeluoikeudenTyyppi, OrganisaatioWithOid}
 
 object Rooli {
+  type Role = String
   val READ = "READ"
   val READ_UPDATE = "READ_UPDATE"
   val TIEDONSIIRRON_MITATOINTI = "TIEDONSIIRRON_MITATOINTI"

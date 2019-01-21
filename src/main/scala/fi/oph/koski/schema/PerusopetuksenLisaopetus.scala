@@ -2,6 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.{LocalDate, LocalDateTime}
 
+import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema.annotation.{Hidden, KoodistoKoodiarvo, SensitiveData, Tooltip}
 import fi.oph.scalaschema.annotation._
 
@@ -64,7 +65,7 @@ case class PerusopetuksenLisäopetuksenOppiaineenSuoritus(
   @Description("Jos oppilas opiskelee yhdessä tai useammassa oppiaineessa yksilöllistetyn oppimäärän mukaan, myös päättöarviointi voi näissä aineissa olla sanallinen")
   @Tooltip("Onko oppilas opiskellut oppiaineessa yksilöllisen oppimäärän. Jos oppilas opiskelee yhdessä yksilöllistetyn oppimäärän mukaan, myös päättöarviointi voi näissä aineissa olla sanallinen.")
   @DefaultValue(false)
-  @SensitiveData
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
   yksilöllistettyOppimäärä: Boolean = false,
   @Description("Jos opiskelijan lisäopetuksessa saama uusi arvosana perusopetuksen yhteisissä tai valinnaisissa oppiaineissa on korkeampi kuin perusopetuksen päättöarvosana, se merkitään tähän")
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,

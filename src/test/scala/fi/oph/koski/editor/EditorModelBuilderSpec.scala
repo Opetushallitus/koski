@@ -2,7 +2,7 @@ package fi.oph.koski.editor
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.koskiuser.{KäyttöoikeusRepository, MockUsers}
+import fi.oph.koski.koskiuser.{KäyttöoikeusRepository, MockUsers, Rooli}
 import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.schema.annotation.SensitiveData
 import org.scalatest.{FreeSpec, Matchers}
@@ -33,7 +33,7 @@ class EditorModelBuilderSpec extends FreeSpec with Matchers {
 }
 
 case class TestClass(
-  @SensitiveData
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
   sensitive: String,
   public: String
 )

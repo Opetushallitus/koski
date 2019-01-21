@@ -7,7 +7,7 @@ import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http._
 import fi.oph.koski.json.JsonDiff.jsonDiff
 import fi.oph.koski.json.JsonSerializer.serialize
-import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresVirkailijaOrPalvelukäyttäjä}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresVirkailijaOrPalvelukäyttäjä, Rooli}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.annotation.SensitiveData
 import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus}
@@ -123,4 +123,4 @@ case class ValidationResult(henkilöOid: Henkilö.Oid, opiskeluoikeusOid: String
   def +(other: ValidationResult) = ValidationResult(henkilöOid, opiskeluoikeusOid, errors ++ other.errors)
 }
 
-case class HistoryInconsistency(message: String, @SensitiveData diff: JValue)
+case class HistoryInconsistency(message: String, @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN)) diff: JValue)

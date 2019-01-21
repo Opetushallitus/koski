@@ -2,6 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.{LocalDate, LocalDateTime}
 
+import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation.{DefaultValue, Description, MaxItems, Title}
 
@@ -182,7 +183,7 @@ case class PaikallinenLukioonValmistavanKoulutuksenKurssi(
 
 case class LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(
   @Description("Opiskeluajan pidennetty päättymispäivä (true/false). Lukiokoulutukseen valmistavan koulutuksen oppimäärä tulee suorittaa yhdessä vuodessa, jollei sairauden tai muun erityisen syyn vuoksi myönnetä suoritusaikaan pidennystä. (lukiolaki 21.8.1998/629 24 §)")
-  @SensitiveData
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
   @DefaultValue(false)
   pidennettyPäättymispäivä: Boolean = false,
   @Description("Opiskelija on ulkomainen vaihto-opiskelija Suomessa (true/false). Rahoituksen laskennassa hyödynnettävä tieto.")
@@ -192,9 +193,9 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
   @Description("Tieto onko oppijalla maksuton asuntolapaikka. Rahoituksen laskennassa hyödynnettävä tieto.")
   @DefaultValue(false)
-  @SensitiveData
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
   oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false,
   @Description("Tieto onko oppija sisäoppilaitosmaisessa majoituksessa. Rahoituksen laskennassa hyödynnettävä tieto.")
-  @SensitiveData
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
   sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]] = None
 ) extends OpiskeluoikeudenLisätiedot

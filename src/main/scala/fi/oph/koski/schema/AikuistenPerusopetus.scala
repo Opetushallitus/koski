@@ -2,6 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.{LocalDate, LocalDateTime}
 
+import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation._
 
@@ -35,13 +36,13 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
   tukimuodot: Option[List[Koodistokoodiviite]] = None,
   @Description("Tehostetun tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty.")
   @Description("Mahdollisen tehostetun tuen päätös päätöksen alkamis- ja päättymispäivät.")
-  @SensitiveData
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
   @Deprecated("Käytä korvaavaa kenttää Tehostetun tuen päätökset")
   tehostetunTuenPäätös: Option[Aikajakso] = None,
   @Description("Tehostetun tuen päätös. Lista alku-loppu päivämääräpareja.")
   @Tooltip("Mahdollisen tehostetun tuen päätösten alkamis- ja päättymispäivät. Voi olla useita erillisiä jaksoja.")
-  @SensitiveData
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
   tehostetunTuenPäätökset: Option[List[Aikajakso]] = None,
   @Description("Opiskelu ulkomailla alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole ulkomailla.")
@@ -51,15 +52,15 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
   @Tooltip("Onko opiskelija vuosiluokkiin sitomattomassa opetuksessa.")
   @DefaultValue(false)
   @Title("Vuosiluokkiin sitomaton opetus")
-  @SensitiveData
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
   vuosiluokkiinSitoutumatonOpetus: Boolean = false,
   @Description("Onko oppija muu kuin vaikeimmin kehitysvammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto siitä, onko oppija muu kuin vaikeimmin kehitysvammainen (alku- ja loppupäivämäärät). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
-  @SensitiveData
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
   vammainen: Option[List[Aikajakso]] = None,
   @Description("Onko oppija vaikeasti kehitysvammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto siitä, onko oppija vaikeasti kehitysvammainen (alku- ja loppupäivämäärät). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
-  @SensitiveData
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
   vaikeastiVammainen: Option[List[Aikajakso]] = None,
   @Description("Opiskelijalla on majoitusetu. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto siitä, jos opiskelijalla on majoitusetu (alku- ja loppupäivämäärät). Rahoituksen laskennassa käytettävä tieto.")
