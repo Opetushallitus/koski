@@ -34,6 +34,22 @@ object AmmatillinenExampleData {
   def autoalanPerustutkinnonSuoritusValma(toimipiste: OrganisaatioWithOid = stadinToimipiste): ValmaKoulutuksenSuoritus = valmaSuoritus(valmaKoulutus, toimipiste)
   def autoalanErikoisammattitutkinnonSuoritus(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = ammatillinenTutkintoSuoritus(autoalanTyönjohto, toimipiste)
 
+  def kiinteistösihteerinTutkinnonOsaaPienempiMuuAmmatillinenKokonaisuus(toimipiste: OrganisaatioWithOid = stadinToimipiste): TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus =
+    tutkinnonOsaaPienempienKokonaisuuksienSuoritus(
+      muuAmmatillinenKoulutus,
+      toimipiste
+    )
+  def kiinteistösihteerinMuuAmmatillinenKoulutus(toimipiste: OrganisaatioWithOid = stadinToimipiste): MuunAmmatillisenKoulutuksenSuoritus =
+    muunAmmatillisenKoulutuksenSuoritus(
+      muuAmmatillinenKoulutus,
+      toimipiste
+    )
+  def ansioJaLiikenneLentäjänMuuAmmatillinenKoulutus(toimipiste: OrganisaatioWithOid = stadinToimipiste): MuunAmmatillisenKoulutuksenSuoritus =
+    muunAmmatillisenKoulutuksenSuoritus(
+      ammatilliseenTehtäväänValmistavaKoulutus,
+      toimipiste
+    )
+
   def ammatillinenTutkintoSuoritus(koulutusmoduuli: AmmatillinenTutkintoKoulutus, toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = AmmatillisenTutkinnonSuoritus(
     koulutusmoduuli = koulutusmoduuli,
     alkamispäivä = Some(date(2016, 9, 1)),
@@ -48,6 +64,27 @@ object AmmatillinenExampleData {
     suorituskieli = suomenKieli,
     osasuoritukset = None
   )
+
+  def tutkinnonOsaaPienempienKokonaisuuksienSuoritus(koulutusmoduuli: PaikallinenMuuAmmatillinenKoulutus, toimipiste: OrganisaatioWithOid = stadinToimipiste): TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus =
+    TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(
+      koulutusmoduuli = koulutusmoduuli,
+      alkamispäivä = Some(date(2018, 1, 1)),
+      toimipiste = toimipiste,
+      suorituskieli = suomenKieli,
+      pilotti = false,
+      osasuoritukset = None
+    )
+
+  def muunAmmatillisenKoulutuksenSuoritus(koulutusmoduuli: MuuAmmatillinenKoulutus, toimipiste: OrganisaatioWithOid = stadinToimipiste): MuunAmmatillisenKoulutuksenSuoritus =
+    MuunAmmatillisenKoulutuksenSuoritus(
+      koulutusmoduuli = koulutusmoduuli,
+      alkamispäivä = Some(date(2018, 1, 1)),
+      toimipiste = toimipiste,
+      suorituskieli = suomenKieli,
+      täydentääTutkintoa = None,
+      vahvistus = None,
+      osasuoritukset = None
+    )
 
   lazy val h2: Koodistokoodiviite = Koodistokoodiviite("2", Some("H2"), "arviointiasteikkoammatillinent1k3", None)
   lazy val k3: Koodistokoodiviite = Koodistokoodiviite("3", Some("K3"), "arviointiasteikkoammatillinent1k3", None)
