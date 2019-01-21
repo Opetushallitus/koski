@@ -134,7 +134,7 @@ class PalveluvaylaSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       "Perustapauksessa käytetään suorituksen tunnisteen nimeä" in {
         ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.lukiolainen) shouldEqual "Lukion oppimäärä"
         ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.dippainssi) shouldEqual "Dipl.ins., konetekniikka"
-        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.amkValmistunut) shouldEqual "Fysioterapeutti (AMK)]"
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.amkValmistunut) shouldEqual "Fysioterapeutti (AMK)"
         ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.ylioppilas) shouldEqual "Ylioppilastutkinto"
         ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.koululainen) shouldEqual "Perusopetus"
       }
