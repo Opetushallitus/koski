@@ -1187,6 +1187,9 @@
   "Sisältyvät osasuoritukset" : "Sisältyvät osasuoritukset",
   "description:Tutkinnon osaa pienempään kokonaisuuteen kuuluvien..." : "Tutkinnon osaa pienempään kokonaisuuteen kuuluvien osasuoritusten suoritukset",
   "description:Osaamisen hankkimistavat eri ajanjaksoina." : "Osaamisen hankkimistavat eri ajanjaksoina.",
-  "Pilotti": "Pilotti"
+  "Pilotti": "Pilotti",
+  "Lukukausisuoritusten kokonaispistemäärä": "Lukukausisuoritusten kokonaispistemäärä",
+  "Tutkintoaineiden kokonaispistemäärä": "Tutkintoaineiden kokonaispistemäärä",
+  "Kokonaispistemäärästä johdettu keskiarvo": "Kokonaispistemäärästä johdettu keskiarvo"
 }
 
