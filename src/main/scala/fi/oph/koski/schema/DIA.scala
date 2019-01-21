@@ -126,6 +126,10 @@ case class DIAOppiaineenTutkintovaiheenSuoritus(
   koulutusmoduuli: DIAOppiaine,
   suorituskieli: Option[Koodistokoodiviite] = None,
   keskiarvo: Option[Float] = None,
+  @Title("Koetuloksen nelinkertainen pistemäärä")
+  @MinValue(0)
+  @MaxValue(60)
+  koetuloksenNelinkertainenPistemäärä: Option[Int] = None,
   @Description("Oppiaineeseen kuuluvien lukukausien ja muiden osasuoritusten suoritukset")
   override val osasuoritukset: Option[List[DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus]],
   @KoodistoKoodiarvo("diaoppiaine")

@@ -76,8 +76,9 @@ object ExamplesDIA {
       (diaTutkintoLukukausi("3", laajuus(2)), "3"),
       (diaTutkintoLukukausi("4", laajuus(2)), "5"),
       (diaTutkintoLukukausi("5", laajuus(2)), "4"),
-      (diaTutkintoLukukausi("6", laajuus(4)), "3")
-    ))),
+      (diaTutkintoLukukausi("6", laajuus(4)), "3"),
+      (diaPäättökoe("kirjallinenkoe"), "5"),
+    )), koetuloksenNelinkertainenPistemäärä = Some(20)),
     diaTutkintoAineSuoritus(diaOppiaineÄidinkieli("FI", laajuus(8)), Some(List(
       (diaTutkintoLukukausi("3", laajuus(2)), "2"),
       (diaTutkintoLukukausi("4", laajuus(2)), "3"),
