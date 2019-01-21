@@ -421,6 +421,8 @@ describe('DIA', function( ) {
           'Koulutus Deutsche Internationale Abitur; Reifeprüfung\n' +
           'Oppilaitos / toimipiste Helsingin Saksalainen koulu\n' +
           'Kokonaispistemäärä 870\n' +
+          'Lukukausisuoritusten kokonaispistemäärä 590\n' +
+          'Tutkintoaineiden kokonaispistemäärä 280\n' +
           'Suorituskieli englanti\n' +
           'Suoritus valmis Vahvistus : 4.6.2016 Helsinki Reijo Reksi , rehtori')
       })
@@ -474,6 +476,32 @@ describe('DIA', function( ) {
 
           it('voidaan muuttaa', function () {
             expect(extractAsText(S('.kokonaispistemäärä'))).to.equal('Kokonaispistemäärä 850')
+          })
+        })
+
+        describe('Lukukausisuoritusten kokonaispistemäärä', function() {
+          before(
+            editor.edit,
+            opinnot.opiskeluoikeusEditor().property('lukukausisuoritustenKokonaispistemäärä').setValue('500'),
+            editor.saveChanges,
+            wait.until(page.isSavedLabelShown)
+          )
+
+          it('voidaan muuttaa', function () {
+            expect(extractAsText(S('.lukukausisuoritustenKokonaispistemäärä'))).to.equal('Lukukausisuoritusten kokonaispistemäärä 500')
+          })
+        })
+
+        describe('Tutkintoaineiden kokonaispistemäärä', function() {
+          before(
+            editor.edit,
+            opinnot.opiskeluoikeusEditor().property('tutkintoaineidenKokonaispistemäärä').setValue('215'),
+            editor.saveChanges,
+            wait.until(page.isSavedLabelShown)
+          )
+
+          it('voidaan muuttaa', function () {
+            expect(extractAsText(S('.tutkintoaineidenKokonaispistemäärä'))).to.equal('Tutkintoaineiden kokonaispistemäärä 215')
           })
         })
 
