@@ -7,7 +7,7 @@ import {LukionOppiaineEditor} from '../lukio/LukionOppiaineEditor'
 import {arvosanaFootnote, ibRyhmät} from '../ib/IB'
 import {UusiRyhmiteltyOppiaineDropdown} from '../oppiaine/UusiRyhmiteltyOppiaineDropdown'
 import {FootnoteDescriptions} from '../components/footnote'
-import {diaLukukausiAlternativesCompletionFn, diaRyhmät} from '../dia/DIA'
+import {diaKurssitSortFn, diaLukukausiAlternativesCompletionFn, diaRyhmät} from '../dia/DIA'
 
 const diaCustomizations = {
   groupAineet: diaRyhmät,
@@ -20,7 +20,8 @@ const diaCustomizations = {
   customOsasuoritusTitleOmatTiedot: 'Suoritus',
   customOsasuoritusAlternativesFn: diaLukukausiAlternativesCompletionFn,
   oppiaineOptionsFilter: m => m.value.classes.includes('diaosaalueoppiaine'),
-  getFootnote: R.identity
+  getFootnote: R.identity,
+  customKurssitSortFn: diaKurssitSortFn
 }
 
 const typeDependentCustomizations = {
@@ -103,7 +104,8 @@ export default ({suorituksetModel, päätasonSuorituksenTyyppi, additionalEditab
     customOsasuoritusTitle,
     customOsasuoritusAlternativesFn,
     oppiaineOptionsFilter,
-    getFootnote
+    getFootnote,
+    customKurssitSortFn
   } = resolvePropertiesByType(päätasonSuorituksenTyyppi)
 
   const {aineryhmät, muutAineet, footnotes} = groupAineet(oppiaineet, päätasonSuoritusModel, edit)
@@ -114,7 +116,8 @@ export default ({suorituksetModel, päätasonSuorituksenTyyppi, additionalEditab
     useOppiaineLaajuus,
     showArviointi,
     customOsasuoritusTitle,
-    customOsasuoritusAlternativesCompletionFn: customOsasuoritusAlternativesFn
+    customOsasuoritusAlternativesCompletionFn: customOsasuoritusAlternativesFn,
+    customKurssitSortFn
   }
 
   return aineryhmät ? (

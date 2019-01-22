@@ -809,6 +809,46 @@ describe('DIA', function( ) {
                 expect(extractAsText(S('.oppiaineet .A'))).to.not.contain('12/II')
               })
             })
+
+            describe('Lisääminen ei-kronologisessa järjestyksessä', function() {
+              var dialog = aine.lisääKurssiDialog
+
+              function lisääKurssiTunnisteella(kurssinTunniste) {
+                return seq(
+                  aine.avaaLisääKurssiDialog,
+                  dialog.valitseKurssi(kurssinTunniste),
+                  dialog.lisääKurssi,
+                  aine.kurssi(kurssinTunniste).arvosana.selectValue(9)
+                )
+              }
+
+              function asetaKurssinLaajuus(kurssinTunniste, laajuus) {
+                return seq(
+                  aine.kurssi(kurssinTunniste).toggleDetails,
+                  aine.kurssi(kurssinTunniste).details().property('laajuus').setValue(laajuus),
+                  aine.kurssi(kurssinTunniste).toggleDetails
+                )
+              }
+
+              before(
+                editor.edit,
+                aine.kurssi('11/II').poistaKurssi,
+                lisääKurssiTunnisteella('Kirjallinen koe'),
+                lisääKurssiTunnisteella('12/II'),
+                asetaKurssinLaajuus('12/II', 1),
+                lisääKurssiTunnisteella('11/II'),
+                asetaKurssinLaajuus('11/II', 1),
+                editor.saveChanges
+              )
+
+              it('toimii', function() {
+                expect(page.isSavedLabelShown()).to.equal(true)
+              })
+
+              it('kurssit esitetään kronologisessa järjestyksessä', function () {
+                expect(extractAsText(S('.oppiaineet .A'))).to.equal('A-kieli, englanti\nSuorituskieli suomi\n11/I\n6 11/II\n9 12/I\n2 12/II\n9 Kirjallinen koe\n9 5')
+              })
+            })
           })
 
           describe('Lisääminen', function () {

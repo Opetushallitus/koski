@@ -17,10 +17,13 @@ import {t} from '../i18n/i18n'
 import {ift} from '../util/util'
 import UusiKurssiPopup from './UusiKurssiPopup'
 
-export const KurssitEditor = ({model, customTitle, customAlternativesCompletionFn}) => {
+export const KurssitEditor = ({model, customTitle, customAlternativesCompletionFn, customKurssitSortFn}) => {
   let osasuoritukset = modelLookup(model, 'osasuoritukset')
   if (!osasuoritukset) return null
   let kurssit = modelItems(osasuoritukset)
+  if (typeof customKurssitSortFn === 'function') {
+    kurssit = kurssit.sort(customKurssitSortFn)
+  }
   let kurssinSuoritusProto = createKurssinSuoritus(osasuoritukset)
   let showUusiKurssiAtom = Atom(false)
   let lisääKurssi = (kurssi) => {

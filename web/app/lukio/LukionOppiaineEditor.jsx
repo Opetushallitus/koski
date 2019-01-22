@@ -40,7 +40,8 @@ export class LukionOppiaineEditor extends React.Component {
       useOppiaineLaajuus = false,
       showArviointi = true,
       customOsasuoritusTitle,
-      customOsasuoritusAlternativesCompletionFn
+      customOsasuoritusAlternativesCompletionFn,
+      customKurssitSortFn
     } = this.props
 
     const kurssit = modelItems(oppiaine, 'osasuoritukset')
@@ -66,6 +67,7 @@ export class LukionOppiaineEditor extends React.Component {
             model={oppiaine}
             customTitle={customOsasuoritusTitle}
             customAlternativesCompletionFn={customOsasuoritusAlternativesCompletionFn}
+            customKurssitSortFn={customKurssitSortFn}
           />
         </td>
         <td className='laajuus'>
