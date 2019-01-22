@@ -22,9 +22,13 @@ object DIAExampleData {
     })
   )
 
-  def diaTutkintoAineSuoritus(oppiaine: DIAOppiaine, lukukaudet: Option[List[(DIAOppiaineenTutkintovaiheenLukukausi, String)]] = None, suorituskieli: Option[String] = None) = DIAOppiaineenTutkintovaiheenSuoritus(
+  def diaTutkintoAineSuoritus(oppiaine: DIAOppiaine,
+                              lukukaudet: Option[List[(DIAOppiaineenTutkintovaiheenOsasuoritus, String)]] = None,
+                              suorituskieli: Option[String] = None,
+                              koetuloksenNelinkertainenPistemäärä: Option[Int] = None) = DIAOppiaineenTutkintovaiheenSuoritus(
     koulutusmoduuli = oppiaine,
     suorituskieli = suorituskieli.map(k => Koodistokoodiviite(koodiarvo = k, koodistoUri = "kieli")),
+    koetuloksenNelinkertainenPistemäärä = koetuloksenNelinkertainenPistemäärä,
     osasuoritukset = lukukaudet.map(_.map { case (lukukausi, arvosana) =>
       DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus(
         koulutusmoduuli = lukukausi,
@@ -79,4 +83,6 @@ object DIAExampleData {
     tunniste = Koodistokoodiviite(koodiarvo = lukukausi, koodistoUri = "dialukukausi"),
     laajuus = laajuus
   )
+
+  def diaPäättökoe(koe: String = "kirjallinenkoe") = DIAPäättökoe(tunniste = Koodistokoodiviite(koodiarvo = koe, koodistoUri = "diapaattokoe"))
 }

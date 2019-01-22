@@ -421,6 +421,9 @@ describe('DIA', function( ) {
           'Koulutus Deutsche Internationale Abitur; Reifeprüfung\n' +
           'Oppilaitos / toimipiste Helsingin Saksalainen koulu\n' +
           'Kokonaispistemäärä 870\n' +
+          'Lukukausisuoritusten kokonaispistemäärä 590\n' +
+          'Tutkintoaineiden kokonaispistemäärä 280\n' +
+          'Kokonaispistemäärästä johdettu keskiarvo 1,2\n' +
           'Suorituskieli englanti\n' +
           'Suoritus valmis Vahvistus : 4.6.2016 Helsinki Reijo Reksi , rehtori')
       })
@@ -429,7 +432,7 @@ describe('DIA', function( ) {
         expect(extractAsText(S('.osasuoritukset'))).to.equal(
           'Oppiaine Laajuus (vuosiviikkotuntia)\n' +
           'Kielet, kirjallisuus, taide\n' +
-          'Äidinkieli, saksa\n11/I\n3 11/II\n5 12/I\n4 12/II\n3 10\n' +
+          'Äidinkieli, saksa\nKoetuloksen nelinkertainen pistemäärä 20\n11/I\n3 11/II\n5 12/I\n4 12/II\n3 Kirjallinen koe\n5 10\n' +
           'Äidinkieli, suomi\n11/I\n2 11/II\n3 12/I\n3 12/II\n3 8\n' +
           'A-kieli, englanti\n11/I\n2 11/II\n3 12/I\n2 6\n' +
           'B1-kieli, ruotsi\n11/I\n2 11/II\n2 12/I\n4 12/II\n3 6\n' +
@@ -474,6 +477,45 @@ describe('DIA', function( ) {
 
           it('voidaan muuttaa', function () {
             expect(extractAsText(S('.kokonaispistemäärä'))).to.equal('Kokonaispistemäärä 850')
+          })
+        })
+
+        describe('Lukukausisuoritusten kokonaispistemäärä', function() {
+          before(
+            editor.edit,
+            opinnot.opiskeluoikeusEditor().property('lukukausisuoritustenKokonaispistemäärä').setValue('500'),
+            editor.saveChanges,
+            wait.until(page.isSavedLabelShown)
+          )
+
+          it('voidaan muuttaa', function () {
+            expect(extractAsText(S('.lukukausisuoritustenKokonaispistemäärä'))).to.equal('Lukukausisuoritusten kokonaispistemäärä 500')
+          })
+        })
+
+        describe('Tutkintoaineiden kokonaispistemäärä', function() {
+          before(
+            editor.edit,
+            opinnot.opiskeluoikeusEditor().property('tutkintoaineidenKokonaispistemäärä').setValue('215'),
+            editor.saveChanges,
+            wait.until(page.isSavedLabelShown)
+          )
+
+          it('voidaan muuttaa', function () {
+            expect(extractAsText(S('.tutkintoaineidenKokonaispistemäärä'))).to.equal('Tutkintoaineiden kokonaispistemäärä 215')
+          })
+        })
+
+        describe('Kokonaispistemäärästä johdettu keskiarvo', function() {
+          before(
+            editor.edit,
+            opinnot.opiskeluoikeusEditor().property('kokonaispistemäärästäJohdettuKeskiarvo').setValue('2,0'),
+            editor.saveChanges,
+            wait.until(page.isSavedLabelShown)
+          )
+
+          it('voidaan muuttaa', function () {
+            expect(extractAsText(S('.kokonaispistemäärästäJohdettuKeskiarvo'))).to.equal('Kokonaispistemäärästä johdettu keskiarvo 2,0')
           })
         })
 
@@ -560,6 +602,47 @@ describe('DIA', function( ) {
 
             it('onnistuu', function () {
               expect(findSingle('.oppiaine.A .suorituskieli .value')().text()).to.equal('suomi')
+            })
+          })
+
+          describe('Koetuloksen nelinkertainen pistemäärä', function () {
+            describe('Muuttaminen', () => {
+              before(
+                editor.edit,
+                aine.koetuloksenNelinkertainenPistemäärä.setValue(30),
+                editor.saveChanges,
+                wait.until(page.isSavedLabelShown)
+              )
+
+              it('toimii', function () {
+                expect(findSingle('.oppiaine.A .koetuloksenNelinkertainenPistemäärä .value')().text()).to.equal('30')
+              })
+            })
+
+            describe('Virheellisen arvon syöttäminen', function() {
+              before(
+                editor.edit,
+                aine.koetuloksenNelinkertainenPistemäärä.setValue(100),
+              )
+
+              it('ei ole sallittu', function() {
+                expect(editor.canSave()).to.equal(false)
+              })
+
+              after(editor.cancelChanges)
+            })
+
+            describe('Poistaminen', () => {
+              before(
+                editor.edit,
+                aine.koetuloksenNelinkertainenPistemäärä.setValue(''),
+                editor.saveChanges,
+                wait.until(page.isSavedLabelShown)
+              )
+
+              it('toimii', function () {
+                expect(extractAsText(S('.oppiaine.A'))).to.not.contain('Koetuloksen nelinkertainen pistemäärä')
+              })
             })
           })
 

@@ -283,7 +283,8 @@ function Oppiaine(oppiaineElem) {
     errorText: function() { return extractAsText(subElement(oppiaineElem, '> .error')) },
     arvosana: editorApi.propertyBySelector('tr td.arvosana'),
     laajuus: editorApi.propertyBySelector('tr.laajuus'),
-    suorituskieli: editorApi.propertyBySelector('tr.suorituskieli')
+    suorituskieli: editorApi.propertyBySelector('tr.suorituskieli'),
+    koetuloksenNelinkertainenPistemäärä: editorApi.propertyBySelector('tr.koetuloksenNelinkertainenPistemäärä')
   }, editorApi)
   return oppiaineApi
 

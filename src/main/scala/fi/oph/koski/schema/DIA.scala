@@ -2,7 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.{LocalDate, LocalDateTime}
 
-import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, OksaUri, SensitiveData}
+import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, OksaUri, Scale, SensitiveData}
 import fi.oph.scalaschema.annotation._
 
 @Description("Deutsche Internationale Abitur -tutkinnon opiskeluoikeus")
@@ -52,6 +52,16 @@ case class DIATutkinnonSuoritus(
   @MinValue(0)
   @MaxValue(900)
   kokonaispistemäärä: Option[Int] = None,
+  @MinValue(0)
+  @MaxValue(600)
+  lukukausisuoritustenKokonaispistemäärä: Option[Int] = None,
+  @MinValue(0)
+  @MaxValue(300)
+  tutkintoaineidenKokonaispistemäärä: Option[Int] = None,
+  @MinValue(1.0)
+  @MaxValue(4.0)
+  @Scale(1)
+  kokonaispistemäärästäJohdettuKeskiarvo: Option[Float] = None,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
   @Description("Oppiaineiden suoritukset")
@@ -117,6 +127,10 @@ case class DIAOppiaineenTutkintovaiheenSuoritus(
   koulutusmoduuli: DIAOppiaine,
   suorituskieli: Option[Koodistokoodiviite] = None,
   keskiarvo: Option[Float] = None,
+  @Title("Koetuloksen nelinkertainen pistemäärä")
+  @MinValue(0)
+  @MaxValue(60)
+  koetuloksenNelinkertainenPistemäärä: Option[Int] = None,
   @Description("Oppiaineeseen kuuluvien lukukausien ja muiden osasuoritusten suoritukset")
   override val osasuoritukset: Option[List[DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus]],
   @KoodistoKoodiarvo("diaoppiaine")
