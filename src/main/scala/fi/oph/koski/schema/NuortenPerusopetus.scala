@@ -78,34 +78,34 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @KoodistoUri("perusopetuksentukimuoto")
   @Description("Oppilaan saamat laissa säädetyt tukimuodot.")
   @Tooltip("Oppilaan saamat laissa säädetyt tukimuodot. Voi olla useita.")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   tukimuodot: Option[List[Koodistokoodiviite]] = None,
   @Description("Erityisen tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Mahdollisen erityisen tuen päätöksen alkamis- ja päättymispäivät. Rahoituksen laskennassa käytettävä tieto.")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
   @OksaUri("tmpOKSAID281", "henkilökohtainen opetuksen järjestämistä koskeva suunnitelma")
   @Deprecated("Käytä korvaavaa kenttää Erityisen tuen päätökset")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   erityisenTuenPäätös: Option[ErityisenTuenPäätös] = None,
   @Description("Erityisen tuen päätökset alkamis- ja päättymispäivineen. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Mahdollisen erityisen tuen päätösten alkamis- ja päättymispäivät. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
   @OksaUri("tmpOKSAID281", "henkilökohtainen opetuksen järjestämistä koskeva suunnitelma")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   erityisenTuenPäätökset: Option[List[ErityisenTuenPäätös]] = None,
   @Description("Tehostetun tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty.")
   @Tooltip("Mahdollisen tehostetun tuen päätös päätöksen alkamis- ja päättymispäivät.")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
   @Deprecated("Käytä korvaavaa kenttää Tehostetun tuen päätökset")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   tehostetunTuenPäätös: Option[Aikajakso] = None,
   @Description("Tehostetun tuen päätös. Lista alku-loppu päivämääräpareja.")
   @Tooltip("Mahdollisen tehostetun tuen päätösten alkamis- ja päättymispäivät. Voi olla useita erillisiä jaksoja.")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   tehostetunTuenPäätökset: Option[List[Aikajakso]] = None,
   @Description("Opiskelu joustavassa perusopetuksessa (JOPO) alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole joustavassa perusopetuksessa. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Mahdollisen joustavan perusopetuksen (JOPO) alkamis- ja päättymispäivät. Rahoituksen laskennassa käytettävä tieto.")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
   @OksaUri("tmpOKSAID453", "joustava perusopetus")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   joustavaPerusopetus: Option[Aikajakso] = None,
   @Description("Tieto opiskelusta kotiopetuksessa huoltajan päätöksestä alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole kotiopetuksessa. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto mahdollisesta opiskelusta kotiopetuksessa huoltajan päätöksestä alkamis- ja päättymispäivineen. Rahoituksen laskennassa käytettävä tieto.")
@@ -145,7 +145,7 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]] = None,
   @Description("Oppija on koulukotikorotuksen piirissä, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto siitä, jos oppija on koulukotikorotuksen piirissä (aloituspäivä ja loppupäivä). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   koulukoti: Option[List[Aikajakso]] = None
 ) extends OpiskeluoikeudenLisätiedot
 

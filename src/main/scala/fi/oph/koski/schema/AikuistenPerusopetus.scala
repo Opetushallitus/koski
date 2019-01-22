@@ -33,17 +33,18 @@ case class AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(
   @KoodistoUri("perusopetuksentukimuoto")
   @Description("Opiskelijan saamat laissa säädetyt tukimuodot.")
   @Tooltip("Opiskelijan saamat laissa säädetyt tukimuodot (avustajapalvelut, erityiset apuvälineet, osa-aikainen erityisopetus, tukiopetus ja/tai tulkitsemispalvelut).")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   tukimuodot: Option[List[Koodistokoodiviite]] = None,
   @Description("Tehostetun tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty.")
   @Description("Mahdollisen tehostetun tuen päätös päätöksen alkamis- ja päättymispäivät.")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
   @Deprecated("Käytä korvaavaa kenttää Tehostetun tuen päätökset")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   tehostetunTuenPäätös: Option[Aikajakso] = None,
   @Description("Tehostetun tuen päätös. Lista alku-loppu päivämääräpareja.")
   @Tooltip("Mahdollisen tehostetun tuen päätösten alkamis- ja päättymispäivät. Voi olla useita erillisiä jaksoja.")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   tehostetunTuenPäätökset: Option[List[Aikajakso]] = None,
   @Description("Opiskelu ulkomailla alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole ulkomailla.")
   @Tooltip("Tieto opiskelusta ulkomailla alkamis- ja päättymispäivineen. Rahoituksen laskennassa käytettävä tieto.")

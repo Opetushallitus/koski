@@ -62,16 +62,16 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   @Tooltip("Vaativan erityisen tuen yhteydessä järjestettävä majoitus (aloitus- ja loppupäivä). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN, Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[Aikajakso]] = None,
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
   @Description("Tieto siitä että oppija on erityisopetuksessa, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto siitä että oppija on erityisopetuksessa. Merkitään erityisopetuksen alku- ja loppupäivä. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   erityinenTuki: Option[List[Aikajakso]] = None,
   @Description("Tieto siitä että oppija on vaativan erityisen tuen erityisen tehtävän erityisen tuen piirissä (aloituspäivä ja loppupäivä). Lista alku-loppu päivämääräpareja. Oppilaitoksen opetusluvassa tulee olla myönnetty vaativan erityisen tuen tehtävä. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto siitä että oppija on vaativan erityisen tuen erityisen tehtävän erityisen tuen piirissä (aloituspäivä ja loppupäivä). Voi olla useita erillisiä jaksoja. Oppilaitoksen opetusluvassa tulee olla myönnetty vaativan erityisen tuen tehtävä. Rahoituksen laskennassa käytettävä tieto.")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   vaativanErityisenTuenErityinenTehtävä: Option[List[Aikajakso]] = None,
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None,
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   hojks: Option[Hojks],
   @Description("Onko oppija vaikeasti vammainen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Tieto siitä, onko oppija vaikeasti vammainen (alku- ja loppupäivä). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
@@ -87,7 +87,7 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   osaAikaisuusjaksot: Option[List[OsaAikaisuusJakso]] = None,
   @Description("Opiskeluvalmiuksia tukevat opinnot (Laki ammatillisesta koulutuksesta 531/2017 63 §) välitetään jaksoina (alku- ja loppupäivämäärä) kun kyseessä on päätoiminen opiskelu. Jaksojen alku- ja loppupäivämäärätietojen lisäksi välitetään opintojen vapaamuotoinen kuvaus.")
   @Tooltip("Opiskeluvalmiuksia tukevat opinnot (Laki ammatillisesta koulutuksesta 531/2017 63 §) tallennetaan jaksoina (alku- ja loppupäivämäärä) kun kyseessä on päätoiminen opiskelu. Jaksojen alku- ja loppupäivämäärätietojen lisäksi tallennetaan opintojen vapaamuotoinen kuvaus. Voi olla useita erillisiä jaksoja.")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   opiskeluvalmiuksiaTukevatOpinnot: Option[List[OpiskeluvalmiuksiaTukevienOpintojenJakso]] = None,
   @Description("Kyseessä on henkilöstökoulutus (kyllä/ei). Kentän välittämättä jättäminen tulkitaan että kyseessä ei ole henkilöstökoulutus. Rahoituksen laskennassa käytettävä tieto")
   @Tooltip("Valitse valintaruutu, jos kyseessä on henkilöstökoulutus.")
