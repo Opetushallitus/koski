@@ -1,6 +1,6 @@
 import * as R from 'ramda'
 import Bacon from 'baconjs'
-import {modelData, modelItems, modelLookup, modelSetValue} from '../editor/EditorModel'
+import {modelData, modelItems, modelLookup, modelSetValue, modelTitle} from '../editor/EditorModel'
 import {koodistoValues} from '../uusioppija/koodisto'
 import {parseLocation} from '../util/location'
 import Http from '../util/http'
@@ -50,3 +50,5 @@ export const eiLasketaKokonaispistemäärään = osasuoritus =>
   isDIAOppiaineenTutkintovaiheenOsasuoritus(osasuoritus) &&
   hasArviointi(osasuoritus) &&
   modelData(osasuoritus, 'arviointi.-1.lasketaanKokonaispistemäärään') === false
+
+export const diaKurssitSortFn = (k1, k2) => modelTitle(k1, 'koulutusmoduuli').localeCompare(modelTitle(k2, 'koulutusmoduuli'))
