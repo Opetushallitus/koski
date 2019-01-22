@@ -509,13 +509,13 @@ describe('DIA', function( ) {
         describe('Kokonaispistemäärästä johdettu keskiarvo', function() {
           before(
             editor.edit,
-            opinnot.opiskeluoikeusEditor().property('kokonaispistemäärästäJohdettuKeskiarvo').setValue('2,4'),
+            opinnot.opiskeluoikeusEditor().property('kokonaispistemäärästäJohdettuKeskiarvo').setValue('2,0'),
             editor.saveChanges,
             wait.until(page.isSavedLabelShown)
           )
 
           it('voidaan muuttaa', function () {
-            expect(extractAsText(S('.kokonaispistemäärästäJohdettuKeskiarvo'))).to.equal('Kokonaispistemäärästä johdettu keskiarvo 2,4')
+            expect(extractAsText(S('.kokonaispistemäärästäJohdettuKeskiarvo'))).to.equal('Kokonaispistemäärästä johdettu keskiarvo 2,0')
           })
         })
 

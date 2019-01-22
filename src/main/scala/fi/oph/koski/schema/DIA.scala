@@ -2,7 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.{LocalDate, LocalDateTime}
 
-import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, OksaUri, SensitiveData}
+import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, OksaUri, Scale, SensitiveData}
 import fi.oph.scalaschema.annotation._
 
 @Description("Deutsche Internationale Abitur -tutkinnon opiskeluoikeus")
@@ -60,6 +60,7 @@ case class DIATutkinnonSuoritus(
   tutkintoaineidenKokonaispistemäärä: Option[Int] = None,
   @MinValue(1.0)
   @MaxValue(4.0)
+  @Scale(1)
   kokonaispistemäärästäJohdettuKeskiarvo: Option[Float] = None,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
