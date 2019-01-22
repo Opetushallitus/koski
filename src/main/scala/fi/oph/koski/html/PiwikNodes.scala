@@ -41,10 +41,14 @@ trait PiwikNodes {
       setTimeout(function removePiwik() { delete window._paq }, 20000)
       """
     } else {
-      """
+      // piwikSiteId is overriden with one of opintopolku-sides siteIds if koski runs in one of the following domains
+      // opintopolku.fi, studieinfo.fi, studyinfo.fi, virkailija.opintopolku.fi, virkailija.testiopintopolku.fi, or domain starting with 'testi'
+      s"""
+      var siteIds = {'opintopolku.fi': '4', 'studieinfo.fi': '13', 'studyinfo.fi': '14', 'virkailija.opintopolku.fi': '3', 'virkailija.testiopintopolku.fi': '5'}
+      var siteId = siteIds[document.domain] || (document.domain.indexOf('testi') === 0 ? '1' : '$piwikSiteId')
       var u = 'https://analytiikka.opintopolku.fi/piwik/'
       _paq.push(['setTrackerUrl', u+'piwik.php'])
-      _paq.push(['setSiteId', '""" + piwikSiteId + """'])
+      _paq.push(['setSiteId', siteId])
       var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0]
       g.type = 'text/javascript'; g.async=true; g.defer=true; g.src = u+'piwik.js'; s.parentNode.insertBefore(g, s)
       """
