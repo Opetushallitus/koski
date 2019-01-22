@@ -48,12 +48,15 @@ trait Koulutussopimuksellinen extends Työssäoppimisjaksollinen {
 case class AmmatillisenOpiskeluoikeudenLisätiedot(
   @Description("Onko opiskelijalla oikeus maksuttomaan asuntolapaikkaan (true / false)")
   @Tooltip("Valitse valintaruutu, jos opiskelijalla on oikeus maksuttomaan asuntolapaikkaan.")
+  @DefaultValue(false)
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN, Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   oikeusMaksuttomaanAsuntolapaikkaan: Boolean = false,
   @Description("Koulutuksen tarjoajan majoitus, huoneeseen muuttopäivä ja lähtöpäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Koulutuksen järjestäjän tarjoama(t) majoitusjakso(t). Huoneeseen muuttopäivä ja lähtöpäivä. Rahoituksen laskennassa käytettävä tieto.")
   majoitus: Option[List[Aikajakso]] = None,
   @Description("Sisäoppilaitosmuotoinen majoitus, aloituspäivä ja loppupäivä. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto")
   @Tooltip("Sisäoppilaitosmuotoisen majoituksen aloituspäivä ja loppupäivä. Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN, Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]] = None,
   @Description("Vaativan erityisen tuen yhteydessä järjestettävä majoitus. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Vaativan erityisen tuen yhteydessä järjestettävä majoitus (aloitus- ja loppupäivä). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
