@@ -100,6 +100,28 @@ describe('MyData', function() {
     })
   })
 
+  describe('Kun käyttäjällä ei ole opintoja Koskessa', function() {
+    before.apply(null, login('fi', '270181-5263', 'Eikoskessa', 'Eino'))
+    before(
+      tietojenkaytto.go,
+      wait.until(tietojenkaytto.isVisible),
+      wait.until(tietojenkaytto.isPermissionsVisible)
+    )
+
+    it('Näytetään käyttäjälle nimi', function() {
+      expect(tietojenkaytto.getUserName()).equal('Eino EiKoskessa')
+    })
+    it('Ei näytetä käyttäjälle syntymäaikaa', function() {
+      expect(isElementVisible(S('.oppija-nimi > .pvm'))).to.equal(false)
+    })
+    it('Näytetään käyttölupien kohdalla oikea teksti', function() {
+      expect(extractAsText(S('.kayttolupa-list > .no-permission'))).equal('Et ole tällä hetkellä antanut millekään palveluntarjoajalle lupaa nähdä opintotietojasi Oma Opintopolusta. Luvan myöntäminen tapahtuu kyseisen palvelutarjoajan sivun kautta.')
+    })
+    it('Ei näytetä virheilmoitusta', function() {
+      expect(tietojenkaytto.isErrorShown()).to.equal(false)
+    })
+  })
+
   describe('Ruotsinkielisenä voidaan kirjautua sisään', function() {
     before.apply(null, login('sv', '100869-192W', 'Dippainssi', 'Dilbert'))
     before(wait.until(mydata.isVisible))
