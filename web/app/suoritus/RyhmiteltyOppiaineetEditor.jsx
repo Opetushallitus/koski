@@ -55,7 +55,8 @@ const RyhmättömätAineet = (
     päätasonSuoritusModel,
     oppiaineOptionsFilter,
     customOsasuoritusTitle,
-    customOsasuoritusAlternativesCompletionFn
+    customOsasuoritusAlternativesCompletionFn,
+    customKurssitSortFn
   }) => (
   <React.Fragment>
     {
@@ -76,6 +77,7 @@ const RyhmättömätAineet = (
           showArviointi={showArviointi}
           customOsasuoritusTitle={customOsasuoritusTitle}
           customOsasuoritusAlternativesCompletionFn={customOsasuoritusAlternativesCompletionFn}
+          customKurssitSortFn={customKurssitSortFn}
         />
       ))
     }

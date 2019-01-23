@@ -547,6 +547,17 @@ describe('DIA', function( ) {
       })
 
       describe('Suoritusten tiedot', function() {
+
+        function lisääOppiaineelleKurssiTunnisteella(aine, kurssinTunniste) {
+          var dialog = aine.lisääKurssiDialog
+          return seq(
+            aine.avaaLisääKurssiDialog,
+            dialog.valitseKurssi(kurssinTunniste),
+            dialog.lisääKurssi,
+            aine.kurssi(kurssinTunniste).arvosana.selectValue(9)
+          )
+        }
+
         describe('Oppiaine', function() {
           var aine = opinnot.oppiaineet.oppiaine('oppiaine.A')
 
@@ -896,15 +907,6 @@ describe('DIA', function( ) {
             describe('Lisääminen ei-kronologisessa järjestyksessä', function() {
               var dialog = aine.lisääKurssiDialog
 
-              function lisääKurssiTunnisteella(kurssinTunniste) {
-                return seq(
-                  aine.avaaLisääKurssiDialog,
-                  dialog.valitseKurssi(kurssinTunniste),
-                  dialog.lisääKurssi,
-                  aine.kurssi(kurssinTunniste).arvosana.selectValue(9)
-                )
-              }
-
               function asetaKurssinLaajuus(kurssinTunniste, laajuus) {
                 return seq(
                   aine.kurssi(kurssinTunniste).toggleDetails,
@@ -916,10 +918,10 @@ describe('DIA', function( ) {
               before(
                 editor.edit,
                 aine.kurssi('11/II').poistaKurssi,
-                lisääKurssiTunnisteella('Kirjallinen koe'),
-                lisääKurssiTunnisteella('12/II'),
+                lisääOppiaineelleKurssiTunnisteella(aine, 'Kirjallinen koe'),
+                lisääOppiaineelleKurssiTunnisteella(aine, '12/II'),
                 asetaKurssinLaajuus('12/II', 1),
-                lisääKurssiTunnisteella('11/II'),
+                lisääOppiaineelleKurssiTunnisteella(aine, '11/II'),
                 asetaKurssinLaajuus('11/II', 1),
                 editor.saveChanges
               )
@@ -975,6 +977,45 @@ describe('DIA', function( ) {
               expect(extractAsText(S('.oppiaineet'))).to.not.contain('Lakitieto')
             })
           })
+        })
+
+        describe('Ryhmätön oppiaine', function() {
+          var uusiRyhmätönOppiaineDropdown = OpinnotPage().opiskeluoikeusEditor().propertyBySelector('.uusi-oppiaine:last')
+
+          before(
+            editor.edit,
+            uusiRyhmätönOppiaineDropdown.selectValue('Liikunta'),
+            editor.saveChanges,
+            wait.until(page.isSavedLabelShown)
+          )
+
+          var liikunta = opinnot.oppiaineet.oppiaine('oppiaine.LI')
+
+          describe('Oppiaineen osasuoritukset', function() {
+            describe('Lisääminen ei-kronologisessa järjestyksessä', function() {
+              before(
+                editor.edit,
+                lisääOppiaineelleKurssiTunnisteella(liikunta, '12/I'),
+                lisääOppiaineelleKurssiTunnisteella(liikunta, '11/I'),
+                editor.saveChanges
+              )
+
+              it('toimii', function() {
+                expect(page.isSavedLabelShown()).to.equal(true)
+              })
+
+              it('osasuoritukset esitetään kronologisessa järjestyksessä', function () {
+                expect(extractAsText(S('.oppiaineet .LI'))).to.equal('Liikunta\n11/I\n9 12/I\n9')
+              })
+            })
+          })
+
+          after(
+            editor.edit,
+            liikunta.poista(),
+            editor.saveChanges,
+            wait.until(page.isSavedLabelShown)
+          )
         })
       })
     })
