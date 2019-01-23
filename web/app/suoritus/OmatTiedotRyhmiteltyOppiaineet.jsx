@@ -11,7 +11,7 @@ import {resolveArvosanaModel} from './ArvosanaEditor'
 import Text from '../i18n/Text'
 import {resolvePropertiesByType} from './RyhmiteltyOppiaineetEditor'
 
-const OmatTiedotOppiaineryhmä = ({title, aineet, useOppiaineLaajuus, customOsasuoritusTitle}) => (
+const OmatTiedotOppiaineryhmä = ({title, aineet, useOppiaineLaajuus, customOsasuoritusTitle, customKurssitSortFn}) => (
   <React.Fragment>
     <h4 className='aineryhma-title'>
       {t(title)}
@@ -32,6 +32,7 @@ const OmatTiedotOppiaineryhmä = ({title, aineet, useOppiaineLaajuus, customOsas
             notFoundText={null}
             useOppiaineLaajuus={useOppiaineLaajuus}
             customOsasuoritusTitle={customOsasuoritusTitle}
+            customKurssitSortFn={customKurssitSortFn}
           />
         )
       })}
@@ -44,7 +45,7 @@ export default ({suorituksetModel, päätasonSuorituksenTyyppi}) => {
   const {suoritus: päätasonSuoritusModel} = suorituksetModel.context
   const oppiaineet = modelItems(suorituksetModel)
 
-  const {groupAineet, useOppiaineLaajuus, customOsasuoritusTitleOmatTiedot} = resolvePropertiesByType(päätasonSuorituksenTyyppi)
+  const {groupAineet, useOppiaineLaajuus, customOsasuoritusTitleOmatTiedot, customKurssitSortFn} = resolvePropertiesByType(päätasonSuorituksenTyyppi)
   const {aineryhmät, muutAineet, footnotes} = groupAineet(oppiaineet, päätasonSuoritusModel)
 
   return (aineryhmät || muutAineet) ? (
@@ -57,6 +58,7 @@ export default ({suorituksetModel, päätasonSuorituksenTyyppi}) => {
             aineet={r.aineet}
             useOppiaineLaajuus={useOppiaineLaajuus}
             customOsasuoritusTitle={customOsasuoritusTitleOmatTiedot}
+            customKurssitSortFn={customKurssitSortFn}
           />
         )))
       }
@@ -69,6 +71,7 @@ export default ({suorituksetModel, päätasonSuorituksenTyyppi}) => {
             aineet={muutAineet}
             useOppiaineLaajuus={useOppiaineLaajuus}
             customOsasuoritusTitle={customOsasuoritusTitleOmatTiedot}
+            customKurssitSortFn={customKurssitSortFn}
           />
         )
       }

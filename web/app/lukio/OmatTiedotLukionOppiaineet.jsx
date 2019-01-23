@@ -57,7 +57,7 @@ export class OmatTiedotLukionOppiaine extends React.Component {
 
   render() {
     const {expanded} = this.state
-    const {oppiaine, isMobile, footnote, showKeskiarvo = true, notFoundText = '-', customOsasuoritusTitle, useOppiaineLaajuus = false} = this.props
+    const {oppiaine, isMobile, footnote, showKeskiarvo = true, notFoundText = '-', customOsasuoritusTitle, useOppiaineLaajuus = false, customKurssitSortFn} = this.props
     const kurssit = modelItems(oppiaine, 'osasuoritukset')
     const arviointi = modelData(oppiaine, 'arviointi')
     const oppiaineenKeskiarvo = kurssienKeskiarvo(suoritetutKurssit(kurssit))
@@ -87,16 +87,16 @@ export class OmatTiedotLukionOppiaine extends React.Component {
         </td>
       </tr>,
       <tr key='content' className='oppiaine-kurssit'>
-        {(!isMobile || expanded) && <Kurssit oppiaine={oppiaine} oppiaineenKeskiarvo={showKeskiarvo && oppiaineenKeskiarvo} customTitle={customOsasuoritusTitle}/>}
+        {(!isMobile || expanded) && <Kurssit oppiaine={oppiaine} oppiaineenKeskiarvo={showKeskiarvo && oppiaineenKeskiarvo} customTitle={customOsasuoritusTitle} customKurssitSortFn={customKurssitSortFn} />}
       </tr>
     ]
   }
 }
 
-const KurssitListDesktop = ({oppiaine, oppiaineenKeskiarvo}) => (
+const KurssitListDesktop = ({oppiaine, oppiaineenKeskiarvo, customKurssitSortFn}) => (
   [
     <td className='kurssilista' key='kurssit'>
-      <KurssitEditor model={oppiaine}/>
+      <KurssitEditor model={oppiaine} customKurssitSortFn={customKurssitSortFn} />
     </td>,
     <td className='arvosana' key='arvosana'>
       {oppiaineenKeskiarvo &&

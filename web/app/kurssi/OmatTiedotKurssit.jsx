@@ -16,10 +16,13 @@ import {FootnoteHint} from '../components/footnote'
 import Text from '../i18n/Text'
 import {eiLasketaKokonaispistemäärään} from '../dia/DIA'
 
-export const KurssitListMobile = ({oppiaine, oppiaineenKeskiarvo, customTitle}) => {
+export const KurssitListMobile = ({oppiaine, oppiaineenKeskiarvo, customTitle, customKurssitSortFn}) => {
   const osasuoritukset = modelLookup(oppiaine, 'osasuoritukset')
   if (!osasuoritukset) return null
-  const kurssit = modelItems(osasuoritukset)
+  let kurssit = modelItems(osasuoritukset)
+  if (typeof customKurssitSortFn === 'function') {
+    kurssit = kurssit.sort(customKurssitSortFn)
+  }
 
   return (
     <td colSpan='2'>
