@@ -40,22 +40,50 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
         opiskeluoikeusCount should be > 30
       }
     }
-    "Henkilöiden lataus" in {
-      authGet("api/raportointikanta/henkilot") {
-        val mockOppija = MockOppijat.eero
-        verifyResponseStatusOk()
-        henkiloCount should be > 30
-        val henkilo = raportointiDatabase.runDbSync(raportointiDatabase.RHenkilöt.filter(_.hetu === mockOppija.hetu.get).result)
-        henkilo should equal(Seq(RHenkilöRow(
-          mockOppija.oid,
-          mockOppija.hetu,
-          Some(Date.valueOf("1901-01-01")),
-          mockOppija.sukunimi,
-          mockOppija.etunimet,
-          Some("fi"),
-          None,
-          false
-        )))
+    "Henkilöiden lataus" - {
+      "Lataa henkilot" in {
+        authGet("api/raportointikanta/henkilot") {
+          val mockOppija = MockOppijat.eero
+          verifyResponseStatusOk()
+          henkiloCount should be > 30
+          val henkilo = raportointiDatabase.runDbSync(raportointiDatabase.RHenkilöt.filter(_.hetu === mockOppija.hetu.get).result)
+          henkilo should equal(Seq(RHenkilöRow(
+            mockOppija.oid,
+            mockOppija.oid,
+            mockOppija.hetu,
+            Some(Date.valueOf("1901-01-01")),
+            mockOppija.sukunimi,
+            mockOppija.etunimet,
+            Some("fi"),
+            None,
+            false
+          )))
+        }
+      }
+      "Huomioi linkitetyt oidit" in {
+        authGet("api/raportointikanta/henkilot"){
+          verifyResponseStatusOk()
+          val masterOppija = MockOppijat.master
+          val slaveOppija = MockOppijat.slave.henkilö
+          val hakuOidit = Set(masterOppija.oid, slaveOppija.oid)
+          val henkilot = raportointiDatabase.runDbSync(raportointiDatabase.RHenkilöt.filter(_.oppijaOid inSet(hakuOidit)).result)
+          henkilot should equal (Seq(
+            RHenkilöRow(slaveOppija.oid, masterOppija.oid, masterOppija.hetu, Some(Date.valueOf("1997-10-10")), masterOppija.sukunimi, masterOppija.etunimet, Some("fi"), None, false),
+            RHenkilöRow(masterOppija.oid, masterOppija.oid, masterOppija.hetu, Some(Date.valueOf("1997-10-10")), masterOppija.sukunimi, masterOppija.etunimet, Some("fi"), None, false)
+          ))
+        }
+      }
+      "Master oidia ei löydy koskesta" in {
+        authGet("api/raportointikanta/henkilot"){
+          verifyResponseStatusOk()
+          val slaveOppija = MockOppijat.slaveMasterEiKoskessa.henkilö
+          val masterOppija = MockOppijat.masterEiKoskessa
+          val henkilot = raportointiDatabase.runDbSync(raportointiDatabase.RHenkilöt.filter(_.hetu === slaveOppija.hetu.get).result)
+          henkilot should equal (Seq(
+            RHenkilöRow(slaveOppija.oid, masterOppija.oid, masterOppija.hetu, Some(Date.valueOf("1966-03-27")), masterOppija.sukunimi, masterOppija.etunimet, None, None, false),
+            RHenkilöRow(masterOppija.oid, masterOppija.oid, masterOppija.hetu, Some(Date.valueOf("1966-03-27")), masterOppija.sukunimi, masterOppija.etunimet, None, None, false)
+          ))
+        }
       }
     }
     "Organisaatioiden lataus" in {
