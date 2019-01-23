@@ -128,7 +128,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
       resetFixtures
       authGet("api/oppija/" + MockOppijat.markkanen.oid, user) {
         verifyResponseStatusOk()
-        sensitiveDataShown
+        suppeaSensitiveDataNäkyy()
       }
     }
   }
@@ -138,7 +138,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     "ei näe luottamuksellista dataa" in {
       authGet("api/oppija/" + MockOppijat.eero.oid, user) {
         verifyResponseStatusOk()
-        sensitiveDataHidden
+        suppeaSensitiveDataPiilotettu()
       }
     }
   }
@@ -163,7 +163,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
       searchForNames("eero", user) should equal(List("Eéro Jorma-Petteri Markkanen-Fagerström"))
       authGet("api/oppija/" + MockOppijat.markkanen.oid, user) {
         verifyResponseStatusOk()
-        sensitiveDataShown
+        suppeaSensitiveDataNäkyy()
       }
     }
   }
@@ -204,37 +204,51 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
   }
 
-  "viranomainen jolla oikeudet kaikkiin koulutusmuotoihin ja arkaluontoisiin tietoihin" - {
-    "näkee luottamuksellisen datan" in {
-      authGet("api/oppija/" + MockOppijat.eero.oid, MockUsers.kela) {
+  "viranomainen jolla oikeudet kaikkiin koulutusmuotoihin ja suppeisiin arkaluontoisiin tietoihin" - {
+    "näkee suppean luottamuksellisen datan, muttei laajoja oikeuksia vaativia tietoja" in {
+      authGet("api/oppija/" + MockOppijat.eero.oid, MockUsers.kelaSuppeatOikeudet) {
         verifyResponseStatusOk()
-        sensitiveDataShown
+        suppeaSensitiveDataNäkyy()
+        laajaSensitiveDataPiilotettu()
       }
     }
 
     "ei voi muokata opiskeluoikeuksia" in {
-      putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästä, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(MockUsers.kela) ++ jsonContent) {
+      putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästä, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(MockUsers.kelaSuppeatOikeudet) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon 1.2.246.562.10.51720121923"))
       }
     }
 
     "voi hakea kaikkia opiskeluoikeuksia" in {
-      searchForNames("eero", MockUsers.kela) should equal(List("Jouni Eerola", "Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström"))
+      searchForNames("eero", MockUsers.kelaSuppeatOikeudet) should equal(List("Jouni Eerola", "Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström"))
     }
 
     "voi hakea ja katsella kaikkia opiskeluoikeuksia" in {
-      queryOppijat(user = MockUsers.kela).length should equal(koskeenTallennetutOppijatCount)
-      authGet("api/oppija/" + MockOppijat.ammattilainen.oid, MockUsers.kela) {
+      queryOppijat(user = MockUsers.kelaSuppeatOikeudet).length should equal(koskeenTallennetutOppijatCount)
+      authGet("api/oppija/" + MockOppijat.ammattilainen.oid, MockUsers.kelaSuppeatOikeudet) {
         verifyResponseStatusOk()
       }
     }
   }
 
-  "viranomainen jolla oikeudet kaikkiin koulutusmuotoihin" - {
+  "viranomainen jolla oikeudet kaikkiin koulutusmuotoihin ja laajoihin arkaluontoisiin tietoihin" - {
+    "näkee laajan luottamuksellisen datan, muttei laajoja oikeuksia vaativia tietoja" in {
+      authGet("api/oppija/" + MockOppijat.eero.oid, MockUsers.kelaLaajatOikeudet) {
+        verifyResponseStatusOk()
+        suppeaSensitiveDataNäkyy()
+        laajaSensitiveDataNäkyy()
+        erittäinSensitivePiilotettu()
+      }
+    }
+  }
+
+  "viranomainen jolla oikeudet kaikkiin koulutusmuotoihin muttei arkaluontoisiin tietoihin" - {
     "ei näe luottamuksellista dataa" in {
       authGet("api/oppija/" + MockOppijat.eero.oid, evira) {
         verifyResponseStatusOk()
-        sensitiveDataHidden
+        suppeaSensitiveDataPiilotettu()
+        laajaSensitiveDataPiilotettu()
+        erittäinSensitivePiilotettu()
       }
     }
 
@@ -321,7 +335,9 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
       val requestBody = HetuRequestV1(1, MockOppijat.eero.hetu.get, List(OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo))
       post("api/luovutuspalvelu/hetu", JsonSerializer.writeWithRoot(requestBody), headers = authHeaders(MockUsers.luovutuspalveluKäyttäjäArkaluontoinen) ++ jsonContent) {
         verifyResponseStatusOk()
-        vankilaopetusEquals(eeronVankilaopetus, readVankilaopetus(getLuovutuspalveluOpiskeluoikeudet))
+        suppeaSensitiveDataNäkyy(getLuovutuspalveluOpiskeluoikeudet)
+        laajaSensitiveDataNäkyy(getLuovutuspalveluOpiskeluoikeudet)
+        erittäinSensitiveNäkyy(getLuovutuspalveluOpiskeluoikeudet)
       }
     }
   }
@@ -331,7 +347,9 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
       val requestBody = HetuRequestV1(1, MockOppijat.eero.hetu.get, List(OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo))
       post("api/luovutuspalvelu/hetu", JsonSerializer.writeWithRoot(requestBody), headers = authHeaders(MockUsers.luovutuspalveluKäyttäjä) ++ jsonContent) {
         verifyResponseStatusOk()
-        vankilaopetusEquals(None, readVankilaopetus(getLuovutuspalveluOpiskeluoikeudet))
+        suppeaSensitiveDataPiilotettu(getLuovutuspalveluOpiskeluoikeudet)
+        laajaSensitiveDataPiilotettu(getLuovutuspalveluOpiskeluoikeudet)
+        erittäinSensitivePiilotettu(getLuovutuspalveluOpiskeluoikeudet)
       }
     }
 
@@ -383,16 +401,16 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     getOpiskeluoikeudet(oid, käyttäjä)
   }
 
-  private lazy val eeronVankilaopetus = Some(List(Aikajakso(LocalDate.of(2001, 1, 1), None)))
+  private lazy val expectedAikajakso = Some(List(Aikajakso(LocalDate.of(2001, 1, 1), None)))
 
-  private def sensitiveDataShown = vankilaopetusEquals(eeronVankilaopetus, readVankilaopetus())
-  private def sensitiveDataHidden = vankilaopetusEquals(None, readVankilaopetus())
+  private def suppeaSensitiveDataNäkyy(oos: Seq[Opiskeluoikeus] = readOppija.opiskeluoikeudet) = readLisätiedot(oos).vankilaopetuksessa should equal(expectedAikajakso)
+  private def suppeaSensitiveDataPiilotettu(oos: Seq[Opiskeluoikeus] = readOppija.opiskeluoikeudet) = readLisätiedot(oos).vankilaopetuksessa should equal(None)
+  private def laajaSensitiveDataNäkyy(oos: Seq[Opiskeluoikeus] = readOppija.opiskeluoikeudet) = readLisätiedot(oos).erityinenTuki should equal(expectedAikajakso)
+  private def laajaSensitiveDataPiilotettu(oos: Seq[Opiskeluoikeus] = readOppija.opiskeluoikeudet) = readLisätiedot(oos).erityinenTuki should equal(None)
+  private def erittäinSensitivePiilotettu(oos: Seq[Opiskeluoikeus] = readOppija.opiskeluoikeudet) = readLisätiedot(oos).vaikeastiVammainen should equal(None)
+  private def erittäinSensitiveNäkyy(oos: Seq[Opiskeluoikeus] = readOppija.opiskeluoikeudet) = readLisätiedot(oos).vaikeastiVammainen should equal(expectedAikajakso)
 
-  private def vankilaopetusEquals(expectedVankilaopetus: Option[List[Aikajakso]], actualVankilaOpetus: Option[List[Aikajakso]]) =
-    actualVankilaOpetus should equal(expectedVankilaopetus)
-
-  private def readVankilaopetus(opiskeluoikeudet: Seq[Opiskeluoikeus] = readOppija.opiskeluoikeudet) =
-    opiskeluoikeudet.head.lisätiedot.get match { case l: AmmatillisenOpiskeluoikeudenLisätiedot => l.vankilaopetuksessa }
+  private def readLisätiedot(opiskeluoikeudet: Seq[Opiskeluoikeus]) = opiskeluoikeudet.head.lisätiedot.get.asInstanceOf[AmmatillisenOpiskeluoikeudenLisätiedot]
 
   private def getLuovutuspalveluOpiskeluoikeudet = {
     import fi.oph.koski.schema.KoskiSchema.deserializationContext
