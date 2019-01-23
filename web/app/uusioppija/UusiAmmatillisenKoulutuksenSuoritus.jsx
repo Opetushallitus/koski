@@ -25,7 +25,7 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   const koulutusModuuliKuvausAtom = Atom()
 
   const makeKoulutusModuuli = (nimi, koodiarvo, kuvaus) => {
-    if (!nimi || !koodiarvo || !kuvaus) return false
+    if (!nimi || !koodiarvo || !kuvaus) return undefined
 
     return {
       tunniste: {
