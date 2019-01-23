@@ -1990,7 +1990,9 @@ describe('Ammatillinen koulutus', function() {
       it('näkyy', function() {
         expect(extractAsText(S('.lisätiedot'))).to.equal(
          'Lisätiedot\n' +
-          'Vankilaopetuksessa 1.1.2001 —'
+         'Erityinen tuki 1.1.2001 —\n' +
+         'Vaikeimmin kehitysvammainen 1.1.2001 —\n' +
+         'Vankilaopetuksessa 1.1.2001 —'
         )
       })
     })
