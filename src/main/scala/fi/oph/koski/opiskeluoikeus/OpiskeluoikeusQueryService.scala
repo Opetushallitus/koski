@@ -20,11 +20,26 @@ import rx.functions.{Func0, Func2}
 import rx.lang.scala.Observable
 import rx.Observable.{create => createObservable}
 import rx.observables.SyncOnSubscribe.createStateful
-import slick.lifted.Query
 
 class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext with KoskiDatabaseMethods {
   def oppijaOidsQuery(pagination: Option[PaginationSettings])(implicit user: KoskiSession): Observable[String] = {
     streamingQuery(applyPagination(OpiskeluOikeudetWithAccessCheck.map(_.oppijaOid), pagination))
+  }
+
+  def muuttuneetOpiskeluoikeudetWithoutAccessCheck(after: Timestamp, afterId: Int, limit: Int): Seq[MuuttunutOpiskeluoikeusRow] = {
+    // huom, tässä halutaan myös mitätöidyt, sen takia OpiskeluOikeudet eikä OpiskeluOikeudetWithAccessCheck
+    runDbSync(
+      OpiskeluOikeudet
+        .filter(r => (r.aikaleima === after && r.id > afterId) || (r.aikaleima > after))
+        .sortBy(r => (r.aikaleima, r.id))
+        .map(r => (r.id, r.aikaleima, r.oppijaOid))
+        .take(limit)
+        .result
+    ).map(MuuttunutOpiskeluoikeusRow.tupled)
+  }
+
+  def serverCurrentTimestamp: Timestamp = {
+    runDbSync(sql"select current_timestamp".as[Timestamp])(0)
   }
 
   def opiskeluoikeusQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[SortOrder], pagination: Option[PaginationSettings])(implicit user: KoskiSession): Observable[(OpiskeluoikeusRow, HenkilöRow, Option[HenkilöRow])] = {
@@ -118,3 +133,5 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
     )).asScala.flatMap(Observable.from(_))
   }
 }
+
+case class MuuttunutOpiskeluoikeusRow(id: Int, aikaleima: Timestamp, oppijaOid: String)
