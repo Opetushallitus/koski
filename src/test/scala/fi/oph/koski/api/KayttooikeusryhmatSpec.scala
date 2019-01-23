@@ -237,7 +237,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
         verifyResponseStatusOk()
         suppeaSensitiveDataNäkyy()
         laajaSensitiveDataNäkyy()
-        erittäinSensitivePiilotettu()
+        erittäinSensitiveDataPiilotettu()
       }
     }
   }
@@ -248,7 +248,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
         verifyResponseStatusOk()
         suppeaSensitiveDataPiilotettu()
         laajaSensitiveDataPiilotettu()
-        erittäinSensitivePiilotettu()
+        erittäinSensitiveDataPiilotettu()
       }
     }
 
@@ -337,7 +337,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
         verifyResponseStatusOk()
         suppeaSensitiveDataNäkyy(getLuovutuspalveluOpiskeluoikeudet)
         laajaSensitiveDataNäkyy(getLuovutuspalveluOpiskeluoikeudet)
-        erittäinSensitiveNäkyy(getLuovutuspalveluOpiskeluoikeudet)
+        erittäinSensitiveDataNäkyy(getLuovutuspalveluOpiskeluoikeudet)
       }
     }
   }
@@ -349,7 +349,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
         verifyResponseStatusOk()
         suppeaSensitiveDataPiilotettu(getLuovutuspalveluOpiskeluoikeudet)
         laajaSensitiveDataPiilotettu(getLuovutuspalveluOpiskeluoikeudet)
-        erittäinSensitivePiilotettu(getLuovutuspalveluOpiskeluoikeudet)
+        erittäinSensitiveDataPiilotettu(getLuovutuspalveluOpiskeluoikeudet)
       }
     }
 
@@ -407,8 +407,8 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
   private def suppeaSensitiveDataPiilotettu(oos: Seq[Opiskeluoikeus] = readOppija.opiskeluoikeudet) = readLisätiedot(oos).vankilaopetuksessa should equal(None)
   private def laajaSensitiveDataNäkyy(oos: Seq[Opiskeluoikeus] = readOppija.opiskeluoikeudet) = readLisätiedot(oos).erityinenTuki should equal(expectedAikajakso)
   private def laajaSensitiveDataPiilotettu(oos: Seq[Opiskeluoikeus] = readOppija.opiskeluoikeudet) = readLisätiedot(oos).erityinenTuki should equal(None)
-  private def erittäinSensitivePiilotettu(oos: Seq[Opiskeluoikeus] = readOppija.opiskeluoikeudet) = readLisätiedot(oos).vaikeastiVammainen should equal(None)
-  private def erittäinSensitiveNäkyy(oos: Seq[Opiskeluoikeus] = readOppija.opiskeluoikeudet) = readLisätiedot(oos).vaikeastiVammainen should equal(expectedAikajakso)
+  private def erittäinSensitiveDataPiilotettu(oos: Seq[Opiskeluoikeus] = readOppija.opiskeluoikeudet) = readLisätiedot(oos).vaikeastiVammainen should equal(None)
+  private def erittäinSensitiveDataNäkyy(oos: Seq[Opiskeluoikeus] = readOppija.opiskeluoikeudet) = readLisätiedot(oos).vaikeastiVammainen should equal(expectedAikajakso)
 
   private def readLisätiedot(opiskeluoikeudet: Seq[Opiskeluoikeus]) = opiskeluoikeudet.head.lisätiedot.get.asInstanceOf[AmmatillisenOpiskeluoikeudenLisätiedot]
 
