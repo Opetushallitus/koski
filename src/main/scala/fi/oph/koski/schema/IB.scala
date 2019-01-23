@@ -270,6 +270,8 @@ case class IBOppiaineMuu(
   @KoodistoKoodiarvo("PSY")
   @KoodistoKoodiarvo("REL")
   @KoodistoKoodiarvo("SOC")
+  @KoodistoKoodiarvo("ESS")
+  @KoodistoKoodiarvo("VA")
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusTunneissa],
   @Description("Oppiaineen taso (Higher Level (HL) tai Standard Level (SL)")
