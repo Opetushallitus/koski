@@ -23,6 +23,12 @@ function TietojenKayttoPage() {
       verifyCancel: function() {
         return click('div.modal-content > div.actions > button.vahvista')()
       }
+    },
+    getUserName: function() {
+      return extractAsText(S('.oppija-nimi > .nimi'))
+    },
+    isErrorShown: function() {
+      return isElementVisible(S("#error.error"))
     }
   }
   return api

@@ -4,7 +4,7 @@ describe('MyData', function() {
   var mydata = MyDataPage()
   var tietojenkaytto = TietojenKayttoPage()
 
-  function login(lang) {
+  function login(lang, hetu, sukunimi, etunimi) {
     return [
       authentication.logout,
       mydata.delAuthCookie,
@@ -13,12 +13,12 @@ describe('MyData', function() {
       },
       mydata.openPage,
       wait.until(korhopankki.isReady),
-      korhopankki.login('100869-192W', 'Dippainssi', 'Dilbert'),
+      korhopankki.login(hetu, sukunimi, etunimi),
       wait.until(mydata.isVisible)
     ]
   }
 
-  before.apply(null, login('fi'))
+  before.apply(null, login('fi', '100869-192W', 'Dippainssi', 'Dilbert'))
 
   describe('Kun käyttäjä on kirjautunut sisään', function() {
     it('Näytetään käyttäjälle nimi', function() {
@@ -60,7 +60,7 @@ describe('MyData', function() {
   })
 
   describe('Kun ollaan hyväksytty tietojen jakaminen', function() {
-    before.apply(null, login('fi'))
+    before.apply(null, login('fi', '100869-192W', 'Dippainssi', 'Dilbert'))
     before(
       tietojenkaytto.go,
       wait.until(tietojenkaytto.isVisible),
@@ -91,7 +91,7 @@ describe('MyData', function() {
   })
 
   describe('Kun klikataan peruuta-nappia', function() {
-    before.apply(null, login('fi'))
+    before.apply(null, login('fi', '100869-192W', 'Dippainssi', 'Dilbert'))
     before(mydata.clickCancel)
     before(wait.until(function() { return isElementVisible(S('.statistics-wrapper')) }))
 
@@ -100,9 +100,30 @@ describe('MyData', function() {
     })
   })
 
+  describe('Kun käyttäjällä ei ole opintoja Koskessa', function() {
+    before.apply(null, login('fi', '270181-5263', 'Eikoskessa', 'Eino'))
+    before(
+      tietojenkaytto.go,
+      wait.until(tietojenkaytto.isVisible),
+      wait.until(tietojenkaytto.isPermissionsVisible)
+    )
+
+    it('Näytetään käyttäjälle nimi', function() {
+      expect(tietojenkaytto.getUserName()).equal('Eino EiKoskessa')
+    })
+    it('Ei näytetä käyttäjälle syntymäaikaa', function() {
+      expect(isElementVisible(S('.oppija-nimi > .pvm'))).to.equal(false)
+    })
+    it('Näytetään käyttölupien kohdalla oikea teksti', function() {
+      expect(extractAsText(S('.kayttolupa-list > .no-permission'))).equal('Et ole tällä hetkellä antanut millekään palveluntarjoajalle lupaa nähdä opintotietojasi Oma Opintopolusta. Luvan myöntäminen tapahtuu kyseisen palvelutarjoajan sivun kautta.')
+    })
+    it('Ei näytetä virheilmoitusta', function() {
+      expect(tietojenkaytto.isErrorShown()).to.equal(false)
+    })
+  })
 
   describe('Ruotsinkielisenä voidaan kirjautua sisään', function() {
-    before.apply(null, login('sv'))
+    before.apply(null, login('sv', '100869-192W', 'Dippainssi', 'Dilbert'))
     before(wait.until(mydata.isVisible))
 
     /*
@@ -112,7 +133,7 @@ describe('MyData', function() {
   })
 
   describe('Käyttäjä voi vaihtaa kielen', function() {
-    before.apply(null, login('fi'))
+    before.apply(null, login('fi', '100869-192W', 'Dippainssi', 'Dilbert'))
     before(
       mydata.clickChangeLang,
       wait.until(mydata.isInSwedish)
