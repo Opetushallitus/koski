@@ -23,6 +23,10 @@ import {
 import {parseLocation} from '../util/location'
 import {elementWithLoadingIndicator} from '../components/AjaxLoadingIndicator'
 import {koodistoValues} from '../uusioppija/koodisto'
+import {
+  isMuunAmmatillisenKoulutuksenSuoritus,
+  isTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus
+} from '../suoritus/SuoritustaulukkoCommon'
 
 export default ({ suoritus, groupId, suoritusPrototype, suorituksetModel, setExpanded, groupTitles }) => {
   let koulutusModuuliprotos = koulutusModuuliprototypes(suoritusPrototype)
@@ -97,18 +101,18 @@ const LisääPaikallinenTutkinnonOsa = ({lisättävätTutkinnonOsat, addTutkinno
   let nameAtom = Atom('')
   let selectedAtom = nameAtom
     .view(name => modelSetTitle(modelSetValues(paikallinenKoulutusmoduuli, { 'kuvaus.fi': { data: name}, 'tunniste.nimi.fi': { data: name}, 'tunniste.koodiarvo': { data: name } }), name))
-  let osanOsa = lisättävätTutkinnonOsat.osanOsa
 
+  const texts = lisääTutkinnonOsaTexts(lisättävätTutkinnonOsat, paikallinenKoulutusmoduuli)
   return (<span className="paikallinen-tutkinnon-osa">
     {
       lisättävätTutkinnonOsat.paikallinenOsa && <a className="add-link" onClick={() => lisääPaikallinenAtom.set(true)}>
-        {osanOsa ? <Text name="Lisää paikallinen tutkinnon osan osa-alue"/> : <Text name="Lisää paikallinen tutkinnon osa"/>}
+        <Text name={texts.lisääOsaLink}/>
       </a>
     }
-    { ift(lisääPaikallinenAtom, (<ModalDialog className="lisaa-paikallinen-tutkinnon-osa-modal" onDismiss={lisääPaikallinenTutkinnonOsa} onSubmit={() => lisääPaikallinenTutkinnonOsa(selectedAtom.get())} okTextKey={osanOsa ? 'Lisää tutkinnon osan osa-alue' : 'Lisää tutkinnon osa'} validP={selectedAtom}>
-        <h2><Text name={osanOsa ? 'Paikallisen tutkinnon osan osa-alueen lisäys' : 'Paikallisen tutkinnon osan lisäys' } /></h2>
+    { ift(lisääPaikallinenAtom, (<ModalDialog className="lisaa-paikallinen-tutkinnon-osa-modal" onDismiss={lisääPaikallinenTutkinnonOsa} onSubmit={() => lisääPaikallinenTutkinnonOsa(selectedAtom.get())} okTextKey={texts.modalOk} validP={selectedAtom}>
+        <h2><Text name={texts.modalHeader} /></h2>
         <label>
-          <Text name={osanOsa ? 'Tutkinnon osan osa-alueen nimi' : 'Tutkinnon osan nimi'} />
+          <Text name={texts.modalFieldLabel} />
           <input type="text" autoFocus="true" onChange={event => nameAtom.set(event.target.value)}/>
         </label>
       </ModalDialog>)
@@ -116,6 +120,31 @@ const LisääPaikallinenTutkinnonOsa = ({lisättävätTutkinnonOsat, addTutkinno
   </span>)
 }
 
+const lisääTutkinnonOsaTexts = (lisättävätTutkinnonOsat, paikallinenKoulutusmoduuli) => {
+  const {suoritus} = paikallinenKoulutusmoduuli.context
+  if (lisättävätTutkinnonOsat.osanOsa) {
+    return {
+      lisääOsaLink: 'Lisää paikallinen tutkinnon osan osa-alue',
+      modalHeader: 'Paikallisen tutkinnon osan osa-alueen lisäys',
+      modalFieldLabel: 'Tutkinnon osan osa-alueen nimi',
+      modalOk: 'Lisää tutkinnon osan osa-alue'
+    }
+  } else if (isMuunAmmatillisenKoulutuksenSuoritus(suoritus) || isTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(suoritus)) {
+    return {
+      lisääOsaLink: 'Lisää osasuoritus',
+      modalHeader: 'Osasuorituksen lisäys',
+      modalFieldLabel: 'Osasuorituksen nimi',
+      modalOk: 'Lisää osasuoritus'
+    }
+  } else {
+    return {
+      lisääOsaLink: 'Lisää paikallinen tutkinnon osa',
+      modalHeader: 'Paikallisen tutkinnon osan lisäys',
+      modalFieldLabel: 'Tutkinnon osan nimi',
+      modalOk: 'Lisää tutkinnon osa'
+    }
+  }
+}
 
 const LisääOsaToisestaTutkinnosta = ({lisättävätTutkinnonOsat, suoritus, koulutusmoduuliProto, addTutkinnonOsa, diaarinumero}) => {
   let oppilaitos = modelData(suoritus, 'toimipiste')
