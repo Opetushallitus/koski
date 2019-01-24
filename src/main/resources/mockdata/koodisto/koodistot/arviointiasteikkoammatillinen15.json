@@ -3,16 +3,13 @@
   "versio" : 1,
   "metadata" : [ {
     "kieli" : "FI",
-    "nimi" : "Arviointiasteikko 1-5",
-    "kuvaus" : ""
+    "nimi" : "Arviointiasteikko ammatillinen 1-5"
   }, {
     "kieli" : "SV",
-    "nimi" : "Arviointiasteikko ammatillinen 1-5",
-    "kuvaus" : ""
+    "nimi" : "Arviointiasteikko ammatillinen 1-5"
   }, {
     "kieli" : "EN",
-    "nimi" : "Arviointiasteikko ammatillinen 1-5",
-    "kuvaus" : ""
+    "nimi" : "Arviointiasteikko ammatillinen 1-5"
   } ],
   "codesGroupUri" : "http://koski",
   "voimassaAlkuPvm" : "2017-10-06",

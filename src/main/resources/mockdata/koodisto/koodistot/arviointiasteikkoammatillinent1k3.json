@@ -3,7 +3,7 @@
   "versio" : 1,
   "metadata" : [ {
     "kieli" : "FI",
-    "nimi" : "Arviointiasteikko 1-3",
+    "nimi" : "Arviointiasteikko ammatillinen T1-K3",
     "kuvaus" : ""
   }, {
     "kieli" : "SV",
@@ -19,5 +19,5 @@
   "organisaatioOid" : "1.2.246.562.10.00000000001",
   "withinCodes" : [ ],
   "tila" : "LUONNOS",
-  "version" : 2
+  "version" : 1
 }
