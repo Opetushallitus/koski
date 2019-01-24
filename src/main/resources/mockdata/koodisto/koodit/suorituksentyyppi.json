@@ -816,7 +816,7 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus",
+  "koodiUri" : "suorituksentyyppi_tutkinnonosaapienemmistakokonaisuuksistakoostuvasuoritus",
   "koodiArvo" : "tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus",
   "metadata" : [ {
     "nimi" : "Tutkinnon osaa pienemmistä kokonaisuuksista koostuva suoritus",
