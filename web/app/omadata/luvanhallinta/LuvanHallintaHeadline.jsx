@@ -10,6 +10,9 @@ export const LuvanHallintaHeadline = ({birthday}) => (
         <Text name='Tällä sivulla voit tarkastella ja hallinnoida antamiasi käyttölupia tietoihisi. Lisäksi näet...' />{'*'}
       </p>
     </div>
-    <h3 className='oppija-nimi'><span className='nimi'>{userP.map(user => user && user.name)}</span><span className='pvm'>{` s. ${birthday}`}</span></h3>
+    <h3 className='oppija-nimi'>
+      <span className='nimi'>{userP.map(user => user && user.name)}</span>
+      {birthday && <span className='pvm'>{` s. ${birthday}`}</span>}
+    </h3>
   </div>
 )
