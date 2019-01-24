@@ -24,7 +24,6 @@ class KoodistoMuokkausPalvelu(serviceConfig: ServiceConfig) extends Logging {
   def createKoodisto(koodisto: Koodisto): Unit = {
     try {
       runTask(secureHttp.post(uri"/koodisto-service/rest/codes", koodisto)(json4sEncoderOf[Koodisto])(Http.unitDecoder))
-      updateKoodisto(koodisto)
     } catch {
       case HttpStatusException(500, "error.codesgroup.not.found", _, _) =>
         createKoodistoRyhmä(KoodistoRyhmä(koodisto.codesGroupUri.replaceAll("http://", "")))
