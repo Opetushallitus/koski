@@ -1,7 +1,6 @@
 package fi.oph.koski.json
 
 import fi.oph.koski.db.OpiskeluoikeusRow
-import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.koskiuser.Rooli.Role
 import fi.oph.koski.schema.annotation.SensitiveData
 import fi.oph.koski.schema.{Henkilö, KoskiSchema, Oppija}
@@ -25,13 +24,13 @@ case class SensitiveDataFilter(user: SensitiveDataAllowed) {
   }
 
   def sensitiveHidden(metadata: List[Metadata]): Boolean = metadata.exists {
-    case SensitiveData(requiredRoles) => !user.sensitiveDataAllowed(requiredRoles)
+    case SensitiveData(allowedRoles) => !user.sensitiveDataAllowed(allowedRoles)
     case _ => false
   }
 }
 
 trait SensitiveDataAllowed {
-  def sensitiveDataAllowed(requiredRoles: Set[Role]): Boolean
+  def sensitiveDataAllowed(allowedRoles: Set[Role]): Boolean
 }
 
 object SensitiveDataAllowed {
