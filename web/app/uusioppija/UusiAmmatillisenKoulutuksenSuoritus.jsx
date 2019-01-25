@@ -9,7 +9,7 @@ import SuoritustapaDropdown from './SuoritustapaDropdown'
 import Text from '../i18n/Text'
 import {setPeruste} from '../suoritus/PerusteDropdown'
 import Peruste from './Peruste'
-import PaikallinenKoulutusModuuli from './PaikallinenKoulutusModuuli'
+import PaikallinenKoulutusmoduuli from './PaikallinenKoulutusmoduuli'
 
 export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   const suoritustyypitP = koodistoValues('suorituksentyyppi/ammatillinentutkinto,nayttotutkintoonvalmistavakoulutus,ammatillinentutkintoosittainen,valma,telma,tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus')
@@ -18,13 +18,13 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   const suoritustapaAtom = Atom()
   const perusteAtom = Atom()
 
-  const koulutusModuuliAtom = Atom()
+  const koulutusmoduuliAtom = Atom()
 
-  const koulutusModuuliNimiAtom = Atom()
-  const koulutusModuuliKoodiAtom = Atom()
-  const koulutusModuuliKuvausAtom = Atom()
+  const koulutusmoduuliNimiAtom = Atom()
+  const koulutusmoduuliKoodiAtom = Atom()
+  const koulutusmoduuliKuvausAtom = Atom()
 
-  const makeKoulutusModuuli = (nimi, koodiarvo, kuvaus) => {
+  const makeKoulutusmoduuli = (nimi, koodiarvo, kuvaus) => {
     if (!nimi || !koodiarvo || !kuvaus) return undefined
 
     return {
@@ -36,8 +36,8 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
     }
   }
 
-  Bacon.combineWith(koulutusModuuliNimiAtom, koulutusModuuliKoodiAtom, koulutusModuuliKuvausAtom, makeKoulutusModuuli)
-    .onValue(moduuli => koulutusModuuliAtom.set(moduuli))
+  Bacon.combineWith(koulutusmoduuliNimiAtom, koulutusmoduuliKoodiAtom, koulutusmoduuliKuvausAtom, makeKoulutusmoduuli)
+    .onValue(moduuli => koulutusmoduuliAtom.set(moduuli))
 
 
   suoritustyypitP.onValue(tyypit => suoritustyyppiAtom.set(
@@ -128,7 +128,7 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
     }
   }
 
-  Bacon.combineWith(oppilaitosAtom, suoritustyyppiAtom, tutkintoAtom, suorituskieliAtom, suoritustapaAtom, perusteAtom, koulutusModuuliAtom, makeSuoritus)
+  Bacon.combineWith(oppilaitosAtom, suoritustyyppiAtom, tutkintoAtom, suorituskieliAtom, suoritustapaAtom, perusteAtom, koulutusmoduuliAtom, makeSuoritus)
     .onValue(suoritus => suoritusAtom.set(suoritus))
   return (<div>
     <Suoritustyyppi suoritustyyppiAtom={suoritustyyppiAtom} suoritustyypitP={suoritustyypitP} title="Suoritustyyppi"/>
@@ -137,7 +137,7 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
     }
     {
       ift(suoritustyyppiAtom.map(koodiarvoMatch('tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus')),
-        <PaikallinenKoulutusModuuli nimi={koulutusModuuliNimiAtom} koodi={koulutusModuuliKoodiAtom} kuvaus={koulutusModuuliKuvausAtom} />
+        <PaikallinenKoulutusmoduuli nimi={koulutusmoduuliNimiAtom} koodiarvo={koulutusmoduuliKoodiAtom} kuvaus={koulutusmoduuliKuvausAtom} />
       )
     }
     <div className="tutkinto-autocomplete">
