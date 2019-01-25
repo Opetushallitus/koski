@@ -1,0 +1,411 @@
+<?xml version="1.0"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+  <SOAP-ENV:Header/>
+  <SOAP-ENV:Body>
+    <virtaluku:OpiskelijanKaikkiTiedotResponse xmlns:virtaluku="http://tietovaranto.csc.fi/luku">
+      <virta:Virta xmlns:virta="urn:mace:funet.fi:virta/2015/09/01">
+        <virta:Opiskelija avain="01905&#xA4;opiskelija-avain-123">
+          <virta:Henkilotunnus>060609-638L</virta:Henkilotunnus>
+          <virta:Opiskeluoikeudet>
+            <virta:Opiskeluoikeus avain="01905&#xA4;oo-avain-123" opiskelijaAvain="01905&#xA4;opiskelija-avain-123">
+              <virta:AlkuPvm>2016-11-30</virta:AlkuPvm>
+              <virta:LoppuPvm>2019-06-09</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2016-11-30</virta:AlkuPvm>
+                <virta:LoppuPvm>2019-06-09</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2019-06-10</virta:AlkuPvm>
+                <virta:Koodi>3</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>4</virta:Tyyppi>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>5</virta:Rooli>
+                <virta:Koodi>01905</virta:Koodi>
+              </virta:Organisaatio>
+              <virta:Jakso koulutusmoduulitunniste="Proviisori">
+                <virta:AlkuPvm>2016-11-30</virta:AlkuPvm>
+                <virta:LoppuPvm>2019-06-09</virta:LoppuPvm>
+                <virta:Koulutuskoodi>772401</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>837</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+                <virta:Patevyys>il</virta:Patevyys>
+              </virta:Jakso>
+              <virta:Ensisijaisuus>
+                <virta:AlkuPvm>2016-12-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2019-06-09</virta:LoppuPvm>
+              </virta:Ensisijaisuus>
+              <virta:Laajuus>
+                <virta:Opintopiste>0</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
+          </virta:Opiskeluoikeudet>
+          <virta:LukukausiIlmoittautumiset>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="01905&#xA4;opiskelija-avain-123" opiskeluoikeusAvain="01905&#xA4;oo-avain-123">
+              <virta:Myontaja>01905</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2017-08-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2017-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2017-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="01905&#xA4;opiskelija-avain-123">
+              <virta:Myontaja>01905</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2018-07-30</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2019-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2019-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+            </virta:LukukausiIlmoittautuminen>
+          </virta:LukukausiIlmoittautumiset>
+          <virta:Opintosuoritukset>
+            <virta:Opintosuoritus avain="01905&#xA4;92074&#xA4;T60245" koulutusmoduulitunniste="01905&#xA4;30023" opiskelijaAvain="01905&#xA4;opiskelija-avain-123" opiskeluoikeusAvain="01905&#xA4;148410A772451">
+              <virta:SuoritusPvm>2016-11-30</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>182</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:EiKaytossa>Arvosana ei kaytossa</virta:EiKaytossa>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>5</virta:Rooli>
+                <virta:Koodi>01905</virta:Koodi>
+              </virta:Organisaatio>
+              <virta:Laji>1</virta:Laji>
+              <virta:Nimi kieli="fi">Farmasian kandidaatin tutkinto</virta:Nimi>
+              <virta:Koulutuskoodi>772451</virta:Koulutuskoodi>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">84</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="01905&#xA4;92074&#xA4;30023"/>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="01905&#xA4;92074&#xA4;29972" koulutusmoduulitunniste="01905&#xA4;29972" opiskelijaAvain="01905&#xA4;opiskelija-avain-123">
+              <virta:SuoritusPvm>2015-10-01</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>5</virta:Rooli>
+                <virta:Koodi>01905</virta:Koodi>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">ORIENTOIVAT OPINNOT</virta:Nimi>
+              <virta:Nimi kieli="en">Orientation Studies</virta:Nimi>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">84</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="01905&#xA4;92074&#xA4;30024" koulutusmoduulitunniste="01905&#xA4;30024" opiskelijaAvain="01905&#xA4;opiskelija-avain-123">
+              <virta:SuoritusPvm>2019-06-09</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>0</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>5</virta:Rooli>
+                <virta:Koodi>01905</virta:Koodi>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">PROVIISORIN TUTKINTO</virta:Nimi>
+              <virta:Nimi kieli="en">Master of Health Sciences</virta:Nimi>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">84</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="01905&#xA4;92074&#xA4;36528"/>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="01905&#xA4;92074&#xA4;36528" koulutusmoduulitunniste="01905&#xA4;36528" opiskelijaAvain="01905&#xA4;opiskelija-avain-123">
+              <virta:SuoritusPvm>2017-03-22</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>15</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>5</virta:Rooli>
+                <virta:Koodi>01905</virta:Koodi>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">OPETUSHARJOITTELU</virta:Nimi>
+              <virta:Nimi kieli="en">Teaching Practice</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">84</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="01905&#xA4;osuoritus-456" koulutusmoduulitunniste="01905&#xA4;20996" opiskelijaAvain="01905&#xA4;opiskelija-avain-123">
+              <virta:SuoritusPvm>2016-08-26</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>5</virta:Rooli>
+                <virta:Koodi>01905</virta:Koodi>
+              </virta:Organisaatio>
+              <virta:Organisaatio>
+                <virta:Rooli>2</virta:Rooli>
+                <virta:Koodi>09925</virta:Koodi>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">ENGLANNIN KIELEN KOMMUNIKATIIVINEN TAITO</virta:Nimi>
+              <virta:Nimi kieli="en">English Communicative Skills</virta:Nimi>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">76</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>1</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="01905&#xA4;92074&#xA4;30023" koulutusmoduulitunniste="01905&#xA4;30023" opiskelijaAvain="01905&#xA4;opiskelija-avain-123">
+              <virta:SuoritusPvm>2016-11-30</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>0</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>5</virta:Rooli>
+                <virta:Koodi>01905</virta:Koodi>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">FARMASIAN KANDIDAATIN TUTKINTO</virta:Nimi>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">84</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="01905&#xA4;92074&#xA4;29972"/>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="01905&#xA4;osuoritus-123" koulutusmoduulitunniste="01905&#xA4;30024" opiskelijaAvain="01905&#xA4;opiskelija-avain-123" opiskeluoikeusAvain="01905&#xA4;oo-avain-123">
+              <virta:SuoritusPvm>2019-06-09</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>122</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:EiKaytossa>Arvosana ei kaytossa</virta:EiKaytossa>
+              </virta:Arvosana>
+              <virta:Myontaja>10122</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>5</virta:Rooli>
+                <virta:Koodi>01905</virta:Koodi>
+              </virta:Organisaatio>
+              <virta:Laji>1</virta:Laji>
+              <virta:Nimi kieli="fi">Proviisorin tutkinto</virta:Nimi>
+              <virta:Koulutuskoodi>772401</virta:Koulutuskoodi>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">84</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="01905&#xA4;92074&#xA4;30024"/>
+              <virta:Patevyys>il</virta:Patevyys>
+            </virta:Opintosuoritus>
+          </virta:Opintosuoritukset>
+        </virta:Opiskelija>
+        <virta:Opiskelija avain="01905&#xA4;opiskelija-avain-123">
+          <virta:Henkilotunnus>060609-638L</virta:Henkilotunnus>
+          <virta:Opiskeluoikeudet>
+            <virta:Opiskeluoikeus avain="01905&#xA4;oo-avain-123" opiskelijaAvain="01905&#xA4;opiskelija-avain-123">
+              <virta:AlkuPvm>2016-11-30</virta:AlkuPvm>
+              <virta:LoppuPvm>2019-06-09</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2016-11-30</virta:AlkuPvm>
+                <virta:LoppuPvm>2019-06-09</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2019-06-10</virta:AlkuPvm>
+                <virta:Koodi>3</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>4</virta:Tyyppi>
+              <virta:Myontaja>01905</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="Proviisori">
+                <virta:AlkuPvm>2015-08-02</virta:AlkuPvm>
+                <virta:LoppuPvm>2015-12-31</virta:LoppuPvm>
+                <virta:Koulutuskoodi>772401</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>837</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+                <virta:Patevyys>il</virta:Patevyys>
+              </virta:Jakso>
+              <virta:Jakso koulutusmoduulitunniste="Proviisori">
+                <virta:AlkuPvm>2016-01-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2016-11-29</virta:LoppuPvm>
+                <virta:Koulutuskoodi>772401</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>837</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+                <virta:Patevyys>il</virta:Patevyys>
+              </virta:Jakso>
+              <virta:Jakso koulutusmoduulitunniste="Proviisori">
+                <virta:AlkuPvm>2016-11-30</virta:AlkuPvm>
+                <virta:LoppuPvm>2019-06-09</virta:LoppuPvm>
+                <virta:Koulutuskoodi>772401</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>837</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+                <virta:Patevyys>il</virta:Patevyys>
+              </virta:Jakso>
+              <virta:Ensisijaisuus>
+                <virta:AlkuPvm>2016-12-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2019-06-09</virta:LoppuPvm>
+              </virta:Ensisijaisuus>
+              <virta:Laajuus>
+                <virta:Opintopiste>0</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
+          </virta:Opiskeluoikeudet>
+          <virta:LukukausiIlmoittautumiset>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="01905&#xA4;opiskelija-avain-123" opiskeluoikeusAvain="01905&#xA4;oo-avain-123">
+              <virta:Myontaja>01905</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2017-08-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2017-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2017-12-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskelijaAvain="01905&#xA4;opiskelija-avain-123">
+              <virta:Myontaja>01905</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2018-07-30</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2019-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2019-07-31</virta:LoppuPvm>
+              <virta:YlioppilaskuntaJasen>true</virta:YlioppilaskuntaJasen>
+            </virta:LukukausiIlmoittautuminen>
+          </virta:LukukausiIlmoittautumiset>
+          <virta:Opintosuoritukset>
+            <virta:Opintosuoritus avain="01905&#xA4;92074&#xA4;29972" koulutusmoduulitunniste="01905&#xA4;29972" opiskelijaAvain="01905&#xA4;opiskelija-avain-123">
+              <virta:SuoritusPvm>2015-10-01</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01905</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">ORIENTOIVAT OPINNOT</virta:Nimi>
+              <virta:Nimi kieli="en">Orientation Studies</virta:Nimi>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">84</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="01905&#xA4;92074&#xA4;30023" koulutusmoduulitunniste="01905&#xA4;30023" opiskelijaAvain="01905&#xA4;opiskelija-avain-123">
+              <virta:SuoritusPvm>2016-11-30</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>0</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01905</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">FARMASIAN KANDIDAATIN TUTKINTO</virta:Nimi>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">84</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="01905&#xA4;92074&#xA4;29972"/>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="01905&#xA4;92074&#xA4;30024" koulutusmoduulitunniste="01905&#xA4;30024" opiskelijaAvain="01905&#xA4;opiskelija-avain-123">
+              <virta:SuoritusPvm>2019-06-09</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>0</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01905</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">PROVIISORIN TUTKINTO</virta:Nimi>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">84</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="01905&#xA4;92074&#xA4;36528"/>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="01905&#xA4;92074&#xA4;36528" koulutusmoduulitunniste="01905&#xA4;36528" opiskelijaAvain="01905&#xA4;opiskelija-avain-123">
+              <virta:SuoritusPvm>2017-03-22</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>15</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+              </virta:Arvosana>
+              <virta:Myontaja>01905</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">OPETUSHARJOITTELU</virta:Nimi>
+              <virta:Nimi kieli="en">Teaching Practice</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">84</virta:Koodi>
+              </virta:Koulutusala>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="01905&#xA4;92074&#xA4;T60245" koulutusmoduulitunniste="01905&#xA4;30023" opiskelijaAvain="01905&#xA4;opiskelija-avain-123" opiskeluoikeusAvain="01905&#xA4;148410A772451">
+              <virta:SuoritusPvm>2016-11-30</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>182</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:EiKaytossa>Arvosana ei kaytossa</virta:EiKaytossa>
+              </virta:Arvosana>
+              <virta:Myontaja>01905</virta:Myontaja>
+              <virta:Laji>1</virta:Laji>
+              <virta:Nimi kieli="fi">Farmasian kandidaatin tutkinto</virta:Nimi>
+              <virta:Koulutuskoodi>772451</virta:Koulutuskoodi>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">84</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="01905&#xA4;92074&#xA4;30023"/>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="01905&#xA4;osuoritus-123" koulutusmoduulitunniste="01905&#xA4;30024" opiskelijaAvain="01905&#xA4;opiskelija-avain-123" opiskeluoikeusAvain="01905&#xA4;oo-avain-123">
+              <virta:SuoritusPvm>2019-06-09</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>122</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:EiKaytossa>Arvosana ei kaytossa</virta:EiKaytossa>
+              </virta:Arvosana>
+              <virta:Myontaja>01905</virta:Myontaja>
+              <virta:Laji>1</virta:Laji>
+              <virta:Nimi kieli="fi">Proviisorin tutkinto</virta:Nimi>
+              <virta:Koulutuskoodi>772401</virta:Koulutuskoodi>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">84</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Sisaltyvyys sisaltyvaOpintosuoritusAvain="01905&#xA4;92074&#xA4;30024"/>
+              <virta:Patevyys>il</virta:Patevyys>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus avain="01905&#xA4;osuoritus-456" koulutusmoduulitunniste="01905&#xA4;20996" opiskelijaAvain="01905&#xA4;opiskelija-avain-123">
+              <virta:SuoritusPvm>2016-08-26</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>01905</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>2</virta:Rooli>
+                <virta:Koodi>09925</virta:Koodi>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">ENGLANNIN KIELEN KOMMUNIKATIIVINEN TAITO</virta:Nimi>
+              <virta:Nimi kieli="en">English Communicative Skills</virta:Nimi>
+              <virta:Koulutusala>
+                <virta:Koodi versio="opm95opa">76</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Luokittelu>1</virta:Luokittelu>
+            </virta:Opintosuoritus>
+          </virta:Opintosuoritukset>
+        </virta:Opiskelija>
+      </virta:Virta>
+    </virtaluku:OpiskelijanKaikkiTiedotResponse>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
