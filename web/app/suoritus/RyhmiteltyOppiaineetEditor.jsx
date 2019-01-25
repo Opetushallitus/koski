@@ -35,7 +35,11 @@ const typeDependentCustomizations = {
     getFootnote: oppiaine => modelData(oppiaine, 'arviointi.-1.predicted') && arvosanaFootnote
   },
   diavalmistavavaihe: diaCustomizations,
-  diatutkintovaihe: R.mergeDeepWith(R.concat, diaCustomizations, {additionalEditableProperties: ['keskiarvo', 'koetuloksenNelinkertainenPistemäärä']})
+  diatutkintovaihe: R.mergeDeepWith(R.concat, diaCustomizations, {additionalEditableProperties: [
+      'keskiarvo',
+      'koetuloksenNelinkertainenPistemäärä',
+      'vastaavuustodistuksenTiedot'
+    ]})
 }
 
 export const resolvePropertiesByType = päätasonSuorituksenTyyppi => {
