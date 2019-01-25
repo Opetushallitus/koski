@@ -39,7 +39,7 @@ class KoodistotTest extends FreeSpec with Matchers {
   }
 
   // Vastaavasti uutta koodia ei voi luoda suoraan halutulle koodiUrille, vaan
-  // koodistopalvelu muodostaa koodistoUri:n koodistoUri:sta ja koodiArvosta (ja
+  // koodistopalvelu muodostaa koodiUri:n koodistoUri:sta ja koodiArvosta (ja
   // tarvittaessa lisää loppuun "-1", "-2", jne. jos tulee duplikaatteja).
   // Jotta saadaan ennustettavat koodiUri:t (ja KoodistoCreator.scala toimii oikein)
   // niin pitää noudattaa samaa kaavaa.
