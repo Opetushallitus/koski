@@ -155,6 +155,9 @@ object OpiskeluoikeusLoader extends Logging {
   }
 
   private def buildROpiskeluoikeusAikajaksoRowForOneDay(opiskeluoikeusOid: String, o: KoskeenTallennettavaOpiskeluoikeus, päivä: LocalDate): ROpiskeluoikeusAikajaksoRow = {
+    // Vanhassa datassa samalla alku-päivämäärällä voi löytyä useampi opiskeluoikeusjakso (nykyään tämä
+    // ei enää mene läpi opiskeluoikeusjaksojenPäivämäärät-validaatiosta). Tässä otetaan näistä jaksoista
+    // viimeinen, mikä lienee oikein.
     val jakso = o.tila.opiskeluoikeusjaksot
       .filterNot(_.alku.isAfter(päivä))
       .lastOption.getOrElse(throw new RuntimeException(s"Opiskeluoikeusjaksoa ei löydy $opiskeluoikeusOid $päivä"))
