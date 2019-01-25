@@ -1,8 +1,12 @@
 import React from 'baret'
 import Text from '../i18n/Text'
 
-const textInput = (atom) => <input type='text' value={atom.or('')} onChange={ e => atom.set(e.target.value)} />
-const textArea = (atom) => <textarea value={atom.or('')} onChange={ e => atom.set(e.target.value)} />
+const textInput = (valueAtom, placeholderAtom) => (
+  <input type='text' value={valueAtom.or('')} onChange={ e => valueAtom.set(e.target.value)}
+         placeholder={ placeholderAtom === null || placeholderAtom === undefined ? '' : placeholderAtom.or('')  } />
+)
+
+const textArea = (valueAtom) => <textarea value={valueAtom.or('')} onChange={ e => valueAtom.set(e.target.value)} />
 
 export default ({nimi, koodiarvo, kuvaus}) => (
   <div className='koulutusmoduuli'>
@@ -14,7 +18,7 @@ export default ({nimi, koodiarvo, kuvaus}) => (
 
     <label className='koodiarvo'>
       <Text name='Koodiarvo' />
-      {textInput(koodiarvo)}
+      {textInput(koodiarvo, nimi)}
     </label>
 
     <label className='kuvaus'>

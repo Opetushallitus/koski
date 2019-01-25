@@ -24,19 +24,7 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   const koulutusmoduuliKoodiAtom = Atom()
   const koulutusmoduuliKuvausAtom = Atom()
 
-  const makeKoulutusmoduuli = (nimi, koodiarvo, kuvaus) => {
-    if (!nimi || !koodiarvo || !kuvaus) return undefined
-
-    return {
-      tunniste: {
-        nimi: { fi: nimi },
-        koodiarvo
-      },
-      kuvaus: { fi: kuvaus }
-    }
-  }
-
-  Bacon.combineWith(koulutusmoduuliNimiAtom, koulutusmoduuliKoodiAtom, koulutusmoduuliKuvausAtom, makeKoulutusmoduuli)
+  Bacon.combineWith(koulutusmoduuliNimiAtom, koulutusmoduuliKoodiAtom, koulutusmoduuliKuvausAtom, makeMuuAmmatillinenKoulutusmoduuli)
     .onValue(moduuli => koulutusmoduuliAtom.set(moduuli))
 
 
@@ -150,4 +138,16 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
       ift(suoritustyyppiAtom.map(koodiarvoMatch('ammatillinentutkinto', 'ammatillinentutkintoosittainen')), <SuoritustapaDropdown diaarinumero={tutkintoAtom.map('.diaarinumero')} suoritustapaAtom={suoritustapaAtom} title="Suoritustapa"/>)
     }
   </div>)
+}
+
+const makeMuuAmmatillinenKoulutusmoduuli = (nimi, koodiarvo, kuvaus) => {
+  if (!nimi || !kuvaus) return undefined
+
+  return {
+    tunniste: {
+      nimi: { fi: nimi },
+      koodiarvo: koodiarvo || nimi
+    },
+    kuvaus: { fi: kuvaus }
+  }
 }
