@@ -2,7 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.{LocalDate, LocalDateTime}
 
-import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, OksaUri, Scale, SensitiveData}
+import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, OksaUri, Scale, SensitiveData, Tooltip}
 import fi.oph.scalaschema.annotation._
 
 @Description("Deutsche Internationale Abitur -tutkinnon opiskeluoikeus")
@@ -126,7 +126,7 @@ case class DIAOppiaineenTutkintovaiheenSuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: DIAOppiaine,
   suorituskieli: Option[Koodistokoodiviite] = None,
-  keskiarvo: Option[Float] = None,
+  vastaavuustodistuksenTiedot: Option[DIAVastaavuustodistuksenTiedot] = None,
   @Title("Koetuloksen nelinkertainen pistemäärä")
   @MinValue(0)
   @MaxValue(60)
@@ -198,6 +198,13 @@ case class DIANäyttötutkinto (
   @KoodistoKoodiarvo("nayttotutkinto")
   tunniste: Koodistokoodiviite
 ) extends DIAOppiaineenTutkintovaiheenOsasuoritus with Laajuudeton
+
+case class DIAVastaavuustodistuksenTiedot(
+  keskiarvo: Float,
+  @Description("Valmistavan DIA-vaiheen ja DIA-tutkintovaiheen yhteenlaskettu laajuus")
+  @Tooltip("Valmistavan DIA-vaiheen ja DIA-tutkintovaiheen yhteenlaskettu laajuus")
+  lukioOpintojenLaajuus: LaajuusOpintopisteissäTaiKursseissa
+)
 
 trait DIAArviointi extends KoodistostaLöytyväArviointi {
   def arvosana: Koodistokoodiviite
