@@ -33,7 +33,7 @@ class EditorModelBuilderSpec extends FreeSpec with Matchers {
 }
 
 case class TestClass(
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN))
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   sensitive: String,
   public: String
 )

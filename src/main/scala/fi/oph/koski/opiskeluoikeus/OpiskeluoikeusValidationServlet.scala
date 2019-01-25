@@ -123,4 +123,4 @@ case class ValidationResult(henkilöOid: Henkilö.Oid, opiskeluoikeusOid: String
   def +(other: ValidationResult) = ValidationResult(henkilöOid, opiskeluoikeusOid, errors ++ other.errors)
 }
 
-case class HistoryInconsistency(message: String, @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN)) diff: JValue)
+case class HistoryInconsistency(message: String, @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)) diff: JValue)
