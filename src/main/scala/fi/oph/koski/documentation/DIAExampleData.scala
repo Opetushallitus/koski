@@ -25,17 +25,20 @@ object DIAExampleData {
   def diaTutkintoAineSuoritus(oppiaine: DIAOppiaine,
                               lukukaudet: Option[List[(DIAOppiaineenTutkintovaiheenOsasuoritus, String)]] = None,
                               suorituskieli: Option[String] = None,
-                              koetuloksenNelinkertainenPistemäärä: Option[Int] = None) = DIAOppiaineenTutkintovaiheenSuoritus(
-    koulutusmoduuli = oppiaine,
-    suorituskieli = suorituskieli.map(k => Koodistokoodiviite(koodiarvo = k, koodistoUri = "kieli")),
-    koetuloksenNelinkertainenPistemäärä = koetuloksenNelinkertainenPistemäärä,
-    osasuoritukset = lukukaudet.map(_.map { case (lukukausi, arvosana) =>
-      DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus(
-        koulutusmoduuli = lukukausi,
-        arviointi = diaTutkintovaiheenArviointi(arvosana)
-      )
-    })
-  )
+                              koetuloksenNelinkertainenPistemäärä: Option[Int] = None,
+                              vastaavuustodistuksenTiedot: Option[DIAVastaavuustodistuksenTiedot] = None) =
+    DIAOppiaineenTutkintovaiheenSuoritus(
+      koulutusmoduuli = oppiaine,
+      suorituskieli = suorituskieli.map(k => Koodistokoodiviite(koodiarvo = k, koodistoUri = "kieli")),
+      koetuloksenNelinkertainenPistemäärä = koetuloksenNelinkertainenPistemäärä,
+      vastaavuustodistuksenTiedot = vastaavuustodistuksenTiedot,
+      osasuoritukset = lukukaudet.map(_.map { case (lukukausi, arvosana) =>
+        DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus(
+          koulutusmoduuli = lukukausi,
+          arviointi = diaTutkintovaiheenArviointi(arvosana)
+        )
+      })
+    )
 
   def diaOppiaineMuu(aine: String, osaAlue: String, laajuus: Option[LaajuusVuosiviikkotunneissa] = None) = DIAOppiaineMuu(
     tunniste = Koodistokoodiviite(koodistoUri = "oppiaineetdia", koodiarvo = aine),

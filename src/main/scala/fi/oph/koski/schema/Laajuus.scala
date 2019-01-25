@@ -19,7 +19,7 @@ case class LaajuusOpintopisteissä(
   arvo: Float,
   @KoodistoKoodiarvo("2")
   yksikkö: Koodistokoodiviite = Koodistokoodiviite("2", Some(finnish("opintopistettä")), "opintojenlaajuusyksikko")
-) extends Laajuus
+) extends LaajuusOpintopisteissäTaiKursseissa
 
 case class LaajuusVuosiviikkotunneissa(
   arvo: Float,
@@ -31,7 +31,9 @@ case class LaajuusKursseissa(
   arvo: Float,
   @KoodistoKoodiarvo("4")
   yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodistoUri = "opintojenlaajuusyksikko", koodiarvo = "4", nimi = Some(finnish("kurssia")))
-) extends LaajuusVuosiviikkotunneissaTaiKursseissa
+) extends LaajuusVuosiviikkotunneissaTaiKursseissa with LaajuusOpintopisteissäTaiKursseissa
+
+trait LaajuusOpintopisteissäTaiKursseissa extends Laajuus
 
 // TODO: tarvitaan aikuisten perusopetuksessa jotta voidaan siirtymäaikana käyttää useita laajuusyksiköitä, poistetaan siirtymäajan jälkeen
 trait LaajuusVuosiviikkotunneissaTaiKursseissa extends Laajuus
