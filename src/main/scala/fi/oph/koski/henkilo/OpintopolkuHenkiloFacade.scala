@@ -22,6 +22,7 @@ trait OpintopolkuHenkilöFacade {
   def findOppijatNoSlaveOids(oids: List[String]): List[OppijaHenkilö]
   def findChangedOppijaOids(since: Long, offset: Int, amount: Int): List[Oid]
   def findMasterOppija(oid: String): Option[OppijaHenkilö]
+  def findMasterOppijat(oids: List[String]): Map[String, OppijaHenkilö]
   def findOrCreate(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, OppijaHenkilö]
   def findOppijatByHetusNoSlaveOids(hetus: List[String]): List[OppijaHenkilö]
   def findSlaveOids(masterOid: String): List[Oid]
@@ -60,6 +61,9 @@ class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroR
   def findMasterOppija(oid: String): Option[OppijaHenkilö] =
     runTask(oppijanumeroRekisteriClient.findMasterOppija(oid))
 
+  def findMasterOppijat(oids: List[String]): Map[String, OppijaHenkilö] =
+    runTask(oppijanumeroRekisteriClient.findMasterOppijat(oids))
+
   def findOrCreate(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, OppijaHenkilö] =
     runTask(oppijanumeroRekisteriClient.findOrCreate(createUserInfo))
 
@@ -72,15 +76,22 @@ class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroR
 class RemoteOpintopolkuHenkilöFacadeWithMockOids(oppijanumeroRekisteriClient: OppijanumeroRekisteriClient, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository, elasticSearch: ElasticSearch) extends RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient) {
   override def findOppijatNoSlaveOids(oids: List[String]): List[OppijaHenkilö] = {
     val found = super.findOppijatNoSlaveOids(oids).map(henkilö => (henkilö.oid, henkilö)).toMap
-    oids.map { oid =>
-      found.get(oid) match {
-        case Some(henkilö) => henkilö
-        case None =>
-          elasticSearch.refreshIndex
-          perustiedotRepository.findHenkilöPerustiedotByHenkilöOid(oid).map { henkilö =>
-            OppijaHenkilö(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, Some("010101-123N"), None, None, None, 0, false)
-          }.getOrElse(OppijaHenkilö(oid, oid.substring("1.2.246.562.24.".length, oid.length), "Testihenkilö", "Testihenkilö", Some("010101-123N"), None, None, None, 0, false))
-      }
+    oids.map(createMockIfNotExists(_, found))
+  }
+
+  override def findMasterOppijat(oids: List[String]): Map[String, OppijaHenkilö] = {
+    val found = super.findMasterOppijat(oids)
+    oids.map { oid => oid -> createMockIfNotExists(oid, found) }.toMap
+  }
+
+  private def createMockIfNotExists(oid: String, found: Map[String, OppijaHenkilö]) = {
+    found.get(oid) match {
+      case Some(henkilö) => henkilö
+      case None =>
+        elasticSearch.refreshIndex
+        perustiedotRepository.findHenkilöPerustiedotByHenkilöOid(oid).map { henkilö =>
+          OppijaHenkilö(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, Some("010101-123N"), None, None, None, 0, false)
+        }.getOrElse(OppijaHenkilö(oid, oid.substring("1.2.246.562.24.".length, oid.length), "Testihenkilö", "Testihenkilö", Some("010101-123N"), None, None, None, 0, false))
     }
   }
 }
@@ -140,6 +151,11 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
     findHenkilötiedot(henkilöOid).flatMap(_.master)
       .orElse(findHenkilötiedot(henkilöOid).map(_.henkilö))
       .map(withLinkedOids)
+
+  def findMasterOppijat(oids: List[String]): Map[String, OppijaHenkilö] = oids
+    .map(oid => oid -> findMasterOppija(oid))
+    .filter(_._2.isDefined)
+    .map { case (oid, oppija) => oid -> oppija.get }.toMap
 
   protected def findHenkilötiedot(id: String): Option[OppijaHenkilöWithMasterInfo] = synchronized {
     oppijat.getOppijat.find(_.henkilö.oid == id)

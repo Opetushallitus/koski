@@ -162,6 +162,7 @@ object RaportointiDatabaseSchema {
 
   class RHenkilöTable(tag: Tag) extends Table[RHenkilöRow](tag, "r_henkilo") {
     val oppijaOid = column[String]("oppija_oid", O.PrimaryKey, StringIdentifierType)
+    val masterOid = column[String]("master_oid", StringIdentifierType)
     val hetu = column[Option[String]]("hetu", StringIdentifierType)
     val syntymäaika = column[Option[Date]]("syntymaaika")
     val sukunimi = column[String]("sukunimi")
@@ -169,7 +170,7 @@ object RaportointiDatabaseSchema {
     val äidinkieli = column[Option[String]]("aidinkieli", StringIdentifierType)
     val kansalaisuus = column[Option[String]]("kansalaisuus", StringIdentifierType)
     val turvakielto = column[Boolean]("turvakielto")
-    def * = (oppijaOid, hetu, syntymäaika, sukunimi, etunimet, äidinkieli, kansalaisuus, turvakielto) <> (RHenkilöRow.tupled, RHenkilöRow.unapply)
+    def * = (oppijaOid, masterOid, hetu, syntymäaika, sukunimi, etunimet, äidinkieli, kansalaisuus, turvakielto) <> (RHenkilöRow.tupled, RHenkilöRow.unapply)
   }
 
   class ROrganisaatioTable(tag: Tag) extends Table[ROrganisaatioRow](tag, "r_organisaatio") {
@@ -290,6 +291,7 @@ case class ROsasuoritusRow(
 
 case class RHenkilöRow(
   oppijaOid: String,
+  masterOid: String,
   hetu: Option[String],
   syntymäaika: Option[Date],
   sukunimi: String,

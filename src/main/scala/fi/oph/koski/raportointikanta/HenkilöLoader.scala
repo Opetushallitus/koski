@@ -15,20 +15,35 @@ object HenkilöLoader extends Logging {
     logger.info(s"Löytyi ${oids.size} henkilö-OIDia")
     raportointiDatabase.setStatusLoadStarted("henkilot")
     raportointiDatabase.deleteHenkilöt
+    var masterOids = scala.collection.mutable.Set[String]()
     val count = oids.toList.grouped(BatchSize).map(batchOids => {
-      val batchOppijat = opintopolkuHenkilöFacade.findOppijatNoSlaveOids(batchOids)
-      val batchRows = batchOppijat.map(buildRHenkilöRow)
+      val batchOppijat = opintopolkuHenkilöFacade.findMasterOppijat(batchOids)
+      val batchRows = batchOppijat.map { case (oid, oppija) => buildRHenkilöRow(oid, oppija) }.toList
+      raportointiDatabase.loadHenkilöt(batchRows)
+      batchRows.foreach(masterOids += _.masterOid)
+      batchRows.size
+    }).sum
+
+    val masterOidsEiKoskessa = masterOids.filterNot(oids.contains(_))
+
+    val masterFetchCount =  masterOidsEiKoskessa.toList.grouped(BatchSize).map(batchOids => {
+      val batchOppijat = opintopolkuHenkilöFacade.findMasterOppijat(batchOids)
+      val batchRows = batchOppijat.map { case (oid, oppija) => buildRHenkilöRow(oid, oppija) }.toList
       raportointiDatabase.loadHenkilöt(batchRows)
       batchRows.size
     }).sum
+
     raportointiDatabase.setStatusLoadCompleted("henkilot")
-    logger.info(s"Ladattiin $count henkilöä")
-    count
+    logger.info(s"Ladattiin ${count + masterFetchCount} henkilöä")
+    logger.info(s"Haettiin masterMaster tiedot $masterFetchCount henkilölle")
+    logger.info(s"Puuttuvia masterMaster pareja ${masterOidsEiKoskessa.size - masterFetchCount}")
+    count + masterFetchCount
   }
 
-  private def buildRHenkilöRow(oppija: OppijaHenkilö) =
+  private def buildRHenkilöRow(oid: String, oppija: OppijaHenkilö) =
     RHenkilöRow(
-      oppijaOid = oppija.oid,
+      oppijaOid = oid,
+      masterOid = oppija.oid,
       hetu = oppija.hetu,
       syntymäaika = oppija.syntymäaika.orElse(oppija.hetu.flatMap(Hetu.toBirthday)).map(Date.valueOf),
       sukunimi = oppija.sukunimi,
