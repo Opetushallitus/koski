@@ -78,7 +78,13 @@ object ExamplesDIA {
       (diaTutkintoLukukausi("5", laajuus(2)), "4"),
       (diaTutkintoLukukausi("6", laajuus(4)), "3"),
       (diaPäättökoe("kirjallinenkoe"), "5")
-    )), koetuloksenNelinkertainenPistemäärä = Some(20)),
+    )),
+      koetuloksenNelinkertainenPistemäärä = Some(20),
+      vastaavuustodistuksenTiedot = Some(DIAVastaavuustodistuksenTiedot(
+        4.0f,
+        LaajuusOpintopisteissä(2.5f)
+      ))
+    ),
     diaTutkintoAineSuoritus(diaOppiaineÄidinkieli("FI", laajuus(8)), Some(List(
       (diaTutkintoLukukausi("3", laajuus(2)), "2"),
       (diaTutkintoLukukausi("4", laajuus(2)), "3"),

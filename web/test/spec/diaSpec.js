@@ -432,7 +432,7 @@ describe('DIA', function( ) {
         expect(extractAsText(S('.osasuoritukset'))).to.equal(
           'Oppiaine Laajuus (vuosiviikkotuntia)\n' +
           'Kielet, kirjallisuus, taide\n' +
-          'Äidinkieli, saksa\nKoetuloksen nelinkertainen pistemäärä 20\n11/I\n3 11/II\n5 12/I\n4 12/II\n3 Kirjallinen koe\n5 10\n' +
+          'Äidinkieli, saksa\nVastaavuustodistuksen tiedot Keskiarvo 4\nLukio-opintojen laajuus 2,5 op\nKoetuloksen nelinkertainen pistemäärä 20\n11/I\n3 11/II\n5 12/I\n4 12/II\n3 Kirjallinen koe\n5 10\n' +
           'Äidinkieli, suomi\n11/I\n2 11/II\n3 12/I\n3 12/II\n3 8\n' +
           'A-kieli, englanti\n11/I\n2 11/II\n3 12/I\n2 6\n' +
           'B1-kieli, ruotsi\n11/I\n2 11/II\n2 12/I\n4 12/II\n3 6\n' +
