@@ -24,7 +24,7 @@ object HenkilöLoader extends Logging {
       batchRows.size
     }).sum
 
-    val masterOidsEiKoskessa = masterOids.filterNot(oids.contains(_))
+    val masterOidsEiKoskessa = masterOids.diff(oids.toSet)
 
     val masterFetchCount =  masterOidsEiKoskessa.toList.grouped(BatchSize).map(batchOids => {
       val batchOppijat = opintopolkuHenkilöFacade.findMasterOppijat(batchOids)
