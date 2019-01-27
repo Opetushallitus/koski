@@ -40,7 +40,10 @@ case class VirtaOpiskeluoikeusRepository(
   private def virtaHaku(hakuehdot: List[VirtaHakuehto]): List[KorkeakoulunOpiskeluoikeus] = if (hakuehdot.isEmpty) {
     Nil
   } else {
-    virta.opintotiedotMassahaku(hakuehdot).toList.flatMap(converter.convertToOpiskeluoikeudet)
+    virta.opintotiedotMassahaku(hakuehdot)
+      .toList
+      .map(VirtaOppilaitosFuusioFilter.discardDuplicates)
+      .flatMap(converter.convertToOpiskeluoikeudet)
   }
 }
 
