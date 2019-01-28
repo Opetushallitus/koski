@@ -11,6 +11,11 @@
     "lyhytNimi" : "",
     "kuvaus" : "Den studerande studerar vid utbildningen.",
     "kieli" : "SV"
+  }, {
+    "nimi" : "active",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -27,6 +32,11 @@
     "lyhytNimi" : "",
     "kuvaus" : "En studierätt som beviljats men inte ännu aktiverats.",
     "kieli" : "SV"
+  }, {
+    "nimi" : "option",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -43,6 +53,11 @@
     "lyhytNimi" : "",
     "kuvaus" : "Studierätten har avslutats till följd av att utbildningen har slutförts.",
     "kieli" : "SV"
+  }, {
+    "nimi" : "concluded",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -59,6 +74,11 @@
     "lyhytNimi" : "",
     "kuvaus" : "Högskolan har passiverat studierätten, tillfälligt eller permanent.",
     "kieli" : "SV"
+  }, {
+    "nimi" : "passivated",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -75,6 +95,11 @@
     "lyhytNimi" : "",
     "kuvaus" : "Personen har aktivt avstått från sin studierätt, tillfälligt eller permanent.",
     "kieli" : "SV"
+  }, {
+    "nimi" : "discontinued",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
