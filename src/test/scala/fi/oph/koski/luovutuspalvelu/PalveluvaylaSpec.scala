@@ -73,6 +73,7 @@ class PalveluvaylaSpec extends FreeSpec with LocalJettyHttpSpecification with Op
                   <tila>
                     <fi>Valmistunut</fi>
                     <sv>Utexaminerad</sv>
+                    <en>Graduated</en>
                   </tila>
                   <alku>2012-09-01</alku>
                   <loppu>2016-05-31</loppu>
