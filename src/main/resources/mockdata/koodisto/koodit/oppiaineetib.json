@@ -41,6 +41,27 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "oppiaineetib_ab",
+  "koodiArvo" : "AB",
+  "metadata" : [ {
+    "nimi" : "ab initio",
+    "lyhytNimi" : "ab initio",
+    "kuvaus" : "ab initio",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "ab initio",
+    "lyhytNimi" : "ab initio",
+    "kuvaus" : "ab initio",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "ab initio",
+    "lyhytNimi" : "ab initio",
+    "kuvaus" : "ab initio",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "oppiaineetib_b",
   "koodiArvo" : "B",
   "metadata" : [ {

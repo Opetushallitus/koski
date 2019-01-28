@@ -11,6 +11,11 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Discontinued",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -19,12 +24,19 @@
   "koodiArvo" : "katsotaaneronneeksi",
   "metadata" : [ {
     "nimi" : "Katsotaan eronneeksi",
+    "lyhytNimi" : "",
     "kuvaus" : "Opiskeluoikeus päättynyt, suoritus ei valmistunut. Oppija ei ole suorittanut opintojaan ajallaan, tai ollut poissa ilman pätevää syytä.",
     "kieli" : "FI"
   }, {
     "nimi" : "Anses utskriven",
+    "lyhytNimi" : "",
     "kuvaus" : "Studierätten har upphört. Prestationen är inte slutförd. Den studerande har inte avlagt studierna inom utsatt tid eller har varit frånvarande utan giltig orsak.",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Considered as discontinued",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -41,6 +53,11 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Present",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -57,6 +74,11 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Vacation",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -69,10 +91,15 @@
     "kuvaus" : "Opiskeluoikeus mitätöity",
     "kieli" : "FI"
   }, {
-    "nimi" : "Annulleras",
+    "nimi" : "Annullerad",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Invalidated",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -89,6 +116,11 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Revocated",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -105,6 +137,11 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Temporarily suspended",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -121,6 +158,11 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Graduated",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

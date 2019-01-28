@@ -1434,8 +1434,8 @@
     "lyhytNimi" : "ei kotikuntaa Suomessa",
     "kieli" : "FI"
   }, {
-    "nimi" : "ei kotikuntaa Suomessa",
-    "lyhytNimi" : "ei kotikuntaa Suomessa",
+    "nimi" : "Ingen hemkommun",
+    "lyhytNimi" : "Ingen hemkommun",
     "kieli" : "SV"
   }, {
     "nimi" : "ei kotikuntaa Suomessa",
@@ -1451,8 +1451,8 @@
     "lyhytNimi" : "kotikunta tuntematon",
     "kieli" : "FI"
   }, {
-    "nimi" : "kotikunta tuntematon",
-    "lyhytNimi" : "kotikunta tuntematon",
+    "nimi" : "Okänd hemkommun",
+    "lyhytNimi" : "okänd hemkommun",
     "kieli" : "SV"
   }, {
     "nimi" : "kotikunta tuntematon",
@@ -3430,11 +3430,11 @@
   "koodiArvo" : "445",
   "metadata" : [ {
     "nimi" : "Parainen",
-    "lyhytNimi" : "",
+    "lyhytNimi" : "Parainen",
     "kieli" : "FI"
   }, {
     "nimi" : "Pargas",
-    "lyhytNimi" : "",
+    "lyhytNimi" : "Pargas",
     "kieli" : "SV"
   } ],
   "versio" : 2
@@ -7246,9 +7246,11 @@
   "koodiArvo" : "999",
   "metadata" : [ {
     "nimi" : "Ei tiedossa (kunta)",
+    "lyhytNimi" : "Ei tiedossa (kunta)",
     "kieli" : "FI"
   }, {
     "nimi" : "Okänd kommun",
+    "lyhytNimi" : "Okänd kommun",
     "kieli" : "SV"
   } ],
   "versio" : 2
