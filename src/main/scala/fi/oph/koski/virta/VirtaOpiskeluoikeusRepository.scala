@@ -22,7 +22,7 @@ case class VirtaOpiskeluoikeusRepository(
   private val converter = VirtaXMLConverter(oppilaitosRepository, koodistoViitePalvelu)
 
   override protected def uncachedOpiskeluoikeudet(cacheKey: VirtaCacheKey): List[KorkeakoulunOpiskeluoikeus] = {
-    val opiskeluoikeudet = (virtaHaku(cacheKey.hetut.map(VirtaHakuehtoHetu)) ++ virtaHaku(cacheKey.oidit.map(VirtaHakuehtoKansallinenOppijanumero))).distinct
+    val opiskeluoikeudet = virtaHaku(cacheKey)
     opiskeluoikeudet.foreach(validate)
     opiskeluoikeudet
   }
@@ -37,13 +37,24 @@ case class VirtaOpiskeluoikeusRepository(
     })
   }
 
-  private def virtaHaku(hakuehdot: List[VirtaHakuehto]): List[KorkeakoulunOpiskeluoikeus] = if (hakuehdot.isEmpty) {
-    Nil
-  } else {
-    virta.opintotiedotMassahaku(hakuehdot)
-      .toList
-      .map(VirtaOppilaitosFuusioFilter.discardDuplicates)
-      .flatMap(converter.convertToOpiskeluoikeudet)
+  private val tampereenYliopistoVanha = "01905"
+  private val tampereenTeknillinenYliopisto = "01915"
+  private val tampereenYliopisto = "10122"
+  private val fuusioFilter = new VirtaOppilaitosFuusioFilter(List(tampereenYliopistoVanha, tampereenTeknillinenYliopisto), List(tampereenYliopisto))
+
+  private def virtaHaku(cacheKey: VirtaCacheKey): List[KorkeakoulunOpiskeluoikeus] = {
+    def massaHaku(hakuehdot: List[VirtaHakuehto]) = if (hakuehdot.isEmpty) {
+      Nil
+    } else {
+      virta.opintotiedotMassahaku(hakuehdot)
+        .toList
+        // Poista kaikki duplikaattisuoritukset virta-datasta jos niiden organisaatiorooli on tyyppiä "fuusioitunut
+        // myöntäjä" ja myöntäjä on joko Tapmereen yliopisto tai Tampereen teknillinen yliopisto
+        .map(fuusioFilter.poistaDuplikaattisuoritukset(cacheKey.oidit))
+        .flatMap(converter.convertToOpiskeluoikeudet)
+    }
+
+    (massaHaku(cacheKey.hetut.map(VirtaHakuehtoHetu)) ++ massaHaku(cacheKey.oidit.map(VirtaHakuehtoKansallinenOppijanumero))).distinct
   }
 }
 
