@@ -9,21 +9,21 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "diapaattokoe_suullinenkoe",
-  "koodiArvo" : "suullinenkoe",
-  "metadata" : [ {
-    "nimi" : "Suullinen koe",
-    "lyhytNimi" : "Suullinen",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
   "koodiUri" : "diapaattokoe_nayttotutkinto",
   "koodiArvo" : "nayttotutkinto",
   "metadata" : [ {
     "nimi" : "Erityisosaamisen näyttötutkinto",
     "lyhytNimi" : "Näyttötutkinto",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "diapaattokoe_suullinenkoe",
+  "koodiArvo" : "suullinenkoe",
+  "metadata" : [ {
+    "nimi" : "Suullinen koe",
+    "lyhytNimi" : "Suullinen",
     "kieli" : "FI"
   } ],
   "versio" : 1,

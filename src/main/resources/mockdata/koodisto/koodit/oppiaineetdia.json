@@ -1,8 +1,8 @@
 [ {
-  "koodiUri" : "oppiaineetdia_ai",
-  "koodiArvo" : "AI",
+  "koodiUri" : "oppiaineetdia_a",
+  "koodiArvo" : "A",
   "metadata" : [ {
-    "nimi" : "Äidinkieli",
+    "nimi" : "A-kieli",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
@@ -10,10 +10,10 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "oppiaineetdia_a",
-  "koodiArvo" : "A",
+  "koodiUri" : "oppiaineetdia_ai",
+  "koodiArvo" : "AI",
   "metadata" : [ {
-    "nimi" : "A-kieli",
+    "nimi" : "Äidinkieli",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
@@ -54,10 +54,10 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "oppiaineetdia_ku",
-  "koodiArvo" : "KU",
+  "koodiUri" : "oppiaineetdia_bi",
+  "koodiArvo" : "BI",
   "metadata" : [ {
-    "nimi" : "Kuvataide",
+    "nimi" : "Biologia",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
@@ -65,10 +65,10 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "oppiaineetdia_mu",
-  "koodiArvo" : "MU",
+  "koodiUri" : "oppiaineetdia_ccea",
+  "koodiArvo" : "CCEA",
   "metadata" : [ {
-    "nimi" : "Musiikki",
+    "nimi" : "Cambridge Certificate of Advanced English",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
@@ -76,10 +76,32 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "oppiaineetdia_ma",
-  "koodiArvo" : "MA",
+  "koodiUri" : "oppiaineetdia_cloe",
+  "koodiArvo" : "CLOE",
   "metadata" : [ {
-    "nimi" : "Matematiikka",
+    "nimi" : "CertiLingua label of excellence",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_et",
+  "koodiArvo" : "ET",
+  "metadata" : [ {
+    "nimi" : "Elämänkatsomustieto",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_fi",
+  "koodiArvo" : "FI",
+  "metadata" : [ {
+    "nimi" : "Filosofia",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
@@ -98,10 +120,10 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "oppiaineetdia_bi",
-  "koodiArvo" : "BI",
+  "koodiUri" : "oppiaineetdia_hi",
+  "koodiArvo" : "HI",
   "metadata" : [ {
-    "nimi" : "Biologia",
+    "nimi" : "Historia",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
@@ -113,6 +135,105 @@
   "koodiArvo" : "KE",
   "metadata" : [ {
     "nimi" : "Kemia",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_ku",
+  "koodiArvo" : "KU",
+  "metadata" : [ {
+    "nimi" : "Kuvataide",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_li",
+  "koodiArvo" : "LI",
+  "metadata" : [ {
+    "nimi" : "Liikunta",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_lt",
+  "koodiArvo" : "LT",
+  "metadata" : [ {
+    "nimi" : "Lakitieto",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_ma",
+  "koodiArvo" : "MA",
+  "metadata" : [ {
+    "nimi" : "Matematiikka",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_maa",
+  "koodiArvo" : "MAA",
+  "metadata" : [ {
+    "nimi" : "Maantiede (saksa ja englanti)",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_mali",
+  "koodiArvo" : "MALI",
+  "metadata" : [ {
+    "nimi" : "Matematiikka, lisäkurssi",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_masy",
+  "koodiArvo" : "MASY",
+  "metadata" : [ {
+    "nimi" : "Matematiikka, syventävä",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_mu",
+  "koodiArvo" : "MU",
+  "metadata" : [ {
+    "nimi" : "Musiikki",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_ta",
+  "koodiArvo" : "TA",
+  "metadata" : [ {
+    "nimi" : "Taloustieto ja yhteiskuntaoppi",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
@@ -142,131 +263,10 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "oppiaineetdia_hi",
-  "koodiArvo" : "HI",
-  "metadata" : [ {
-    "nimi" : "Historia",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "oppiaineetdia_maa",
-  "koodiArvo" : "MAA",
-  "metadata" : [ {
-    "nimi" : "Maantiede (saksa ja englanti)",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "oppiaineetdia_ta",
-  "koodiArvo" : "TA",
-  "metadata" : [ {
-    "nimi" : "Taloustieto ja yhteiskuntaoppi",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
   "koodiUri" : "oppiaineetdia_us",
   "koodiArvo" : "US",
   "metadata" : [ {
     "nimi" : "Uskonto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "oppiaineetdia_fi",
-  "koodiArvo" : "FI",
-  "metadata" : [ {
-    "nimi" : "Filosofia",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "oppiaineetdia_et",
-  "koodiArvo" : "ET",
-  "metadata" : [ {
-    "nimi" : "Elämänkatsomustieto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "oppiaineetdia_cloe",
-  "koodiArvo" : "CLOE",
-  "metadata" : [ {
-    "nimi" : "CertiLingua label of excellence",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "oppiaineetdia_ccea",
-  "koodiArvo" : "CCEA",
-  "metadata" : [ {
-    "nimi" : "Cambridge Certificate of Advanced English",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "oppiaineetdia_lt",
-  "koodiArvo" : "LT",
-  "metadata" : [ {
-    "nimi" : "Lakitieto",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "oppiaineetdia_masy",
-  "koodiArvo" : "MASY",
-  "metadata" : [ {
-    "nimi" : "Matematiikka, syventävä",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "oppiaineetdia_mali",
-  "koodiArvo" : "MALI",
-  "metadata" : [ {
-    "nimi" : "Matematiikka, lisäkurssi",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "oppiaineetdia_li",
-  "koodiArvo" : "LI",
-  "metadata" : [ {
-    "nimi" : "Liikunta",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"

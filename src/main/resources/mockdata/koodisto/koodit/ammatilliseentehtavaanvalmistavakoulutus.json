@@ -8,19 +8,19 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "ammatilliseentehtavaanvalmistavakoulutus_lennonjohtajankoulutus",
-  "koodiArvo" : "lennonjohtajankoulutus",
+  "koodiUri" : "ammatilliseentehtavaanvalmistavakoulutus_kaupunkiraideliikenteenkuljettajankoulutus",
+  "koodiArvo" : "kaupunkiraideliikenteenkuljettajankoulutus",
   "metadata" : [ {
-    "nimi" : "Lennonjohtajan koulutus",
+    "nimi" : "Kaupunkiraideliikenteenkuljettajan koulutus",
     "kieli" : "FI"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "ammatilliseentehtavaanvalmistavakoulutus_kaupunkiraideliikenteenkuljettajankoulutus",
-  "koodiArvo" : "kaupunkiraideliikenteenkuljettajankoulutus",
+  "koodiUri" : "ammatilliseentehtavaanvalmistavakoulutus_lennonjohtajankoulutus",
+  "koodiArvo" : "lennonjohtajankoulutus",
   "metadata" : [ {
-    "nimi" : "Kaupunkiraideliikenteenkuljettajan koulutus",
+    "nimi" : "Lennonjohtajan koulutus",
     "kieli" : "FI"
   } ],
   "versio" : 1,

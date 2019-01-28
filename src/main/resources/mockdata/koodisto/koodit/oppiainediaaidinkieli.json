@@ -1,4 +1,22 @@
 [ {
+  "koodiUri" : "oppiainediaaidinkieli_de",
+  "koodiArvo" : "DE",
+  "metadata" : [ {
+    "nimi" : "saksa",
+    "lyhytNimi" : "saksa",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "tyska",
+    "lyhytNimi" : "tyska",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "German",
+    "lyhytNimi" : "German",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "oppiainediaaidinkieli_fi",
   "koodiArvo" : "FI",
   "metadata" : [ {
@@ -25,24 +43,6 @@
   }, {
     "nimi" : "finska som andraspråk och litteratur",
     "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "oppiainediaaidinkieli_de",
-  "koodiArvo" : "DE",
-  "metadata" : [ {
-    "nimi" : "saksa",
-    "lyhytNimi" : "saksa",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "tyska",
-    "lyhytNimi" : "tyska",
-    "kieli" : "SV"
-  }, {
-    "nimi" : "German",
-    "lyhytNimi" : "German",
-    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

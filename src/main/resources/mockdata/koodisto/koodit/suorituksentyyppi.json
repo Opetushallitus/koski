@@ -81,6 +81,37 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "suorituksentyyppi_ammatillinenkorkeakouluopintoja",
+  "koodiArvo" : "ammatillinenkorkeakouluopintoja",
+  "metadata" : [ {
+    "nimi" : "Korkeakouluopintoja",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_ammatillinenlukionopintoja",
+  "koodiArvo" : "ammatillinenlukionopintoja",
+  "metadata" : [ {
+    "nimi" : "Lukionopintoja",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_ammatillinenmuitaopintovalmiuksiatukeviaopintoja",
+  "koodiArvo" : "ammatillinenmuitaopintovalmiuksiatukeviaopintoja",
+  "metadata" : [ {
+    "nimi" : "Muita opintovalmiuksia tukevia opintoja",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "suorituksentyyppi_ammatillinentutkinto",
   "koodiArvo" : "ammatillinentutkinto",
   "metadata" : [ {
@@ -141,41 +172,71 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "suorituksentyyppi_ammatillinenlukionopintoja",
-  "koodiArvo" : "ammatillinenlukionopintoja",
-  "metadata" : [ {
-    "nimi" : "Lukionopintoja",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_ammatillinenkorkeakouluopintoja",
-  "koodiArvo" : "ammatillinenkorkeakouluopintoja",
-  "metadata" : [ {
-    "nimi" : "Korkeakouluopintoja",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_ammatillinenmuitaopintovalmiuksiatukeviaopintoja",
-  "koodiArvo" : "ammatillinenmuitaopintovalmiuksiatukeviaopintoja",
-  "metadata" : [ {
-    "nimi" : "Muita opintovalmiuksia tukevia opintoja",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
   "koodiUri" : "suorituksentyyppi_ammatillisentutkinnonosanosaalue",
   "koodiArvo" : "ammatillisentutkinnonosanosaalue",
   "metadata" : [ {
     "nimi" : "Ammatillisen tutkinnon osan osa-alue",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_diaoppiaine",
+  "koodiArvo" : "diaoppiaine",
+  "metadata" : [ {
+    "nimi" : "DIA-oppiaine",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Läroämne i DIA",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+  "koodiArvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+  "metadata" : [ {
+    "nimi" : "DIA-oppiaineen tutkintovaiheen lukukauden suoritus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+  "koodiArvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+  "metadata" : [ {
+    "nimi" : "DIA-oppiaineen valmistavan vaiheen lukukauden suoritus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_diapaattokokeensuoritus",
+  "koodiArvo" : "diapaattokokeensuoritus",
+  "metadata" : [ {
+    "nimi" : "DIA-oppiaineen päättökokeen suoritus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_diatutkintovaihe",
+  "koodiArvo" : "diatutkintovaihe",
+  "metadata" : [ {
+    "nimi" : "DIA-tutkintovaihe",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_diavalmistavavaihe",
+  "koodiArvo" : "diavalmistavavaihe",
+  "metadata" : [ {
+    "nimi" : "Valmistava DIA-vaihe",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -421,6 +482,15 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "suorituksentyyppi_muuammatillinenkoulutus",
+  "koodiArvo" : "muuammatillinenkoulutus",
+  "metadata" : [ {
+    "nimi" : "Muun ammatillisen koulutuksen suoritus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "suorituksentyyppi_muukorkeakoulunsuoritus",
   "koodiArvo" : "muukorkeakoulunsuoritus",
   "metadata" : [ {
@@ -433,6 +503,15 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_muunammatillisenkoulutuksenosasuoritus",
+  "koodiArvo" : "muunammatillisenkoulutuksenosasuoritus",
+  "metadata" : [ {
+    "nimi" : "Muun ammatillisen koulutuksen osasuoritus",
+    "kieli" : "FI"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -685,6 +764,24 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "suorituksentyyppi_tutkinnonosaapienemmistakokonaisuuksistakoostuvasuoritus",
+  "koodiArvo" : "tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus",
+  "metadata" : [ {
+    "nimi" : "Tutkinnon osaa pienemmistä kokonaisuuksista koostuva suoritus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_tutkinnonosaapienempikokonaisuus",
+  "koodiArvo" : "tutkinnonosaapienempikokonaisuus",
+  "metadata" : [ {
+    "nimi" : "Tutkinnon osaa pienemmän kokonaisuuden suoritus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "suorituksentyyppi_valma",
   "koodiArvo" : "valma",
   "metadata" : [ {
@@ -733,103 +830,6 @@
   }, {
     "nimi" : "Studentexamen",
     "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_diatutkintovaihe",
-  "koodiArvo" : "diatutkintovaihe",
-  "metadata" : [ {
-    "nimi" : "DIA-tutkintovaihe",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_diavalmistavavaihe",
-  "koodiArvo" : "diavalmistavavaihe",
-  "metadata" : [ {
-    "nimi" : "Valmistava DIA-vaihe",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_diaoppiaine",
-  "koodiArvo" : "diaoppiaine",
-  "metadata" : [ {
-    "nimi" : "DIA-oppiaine",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Läroämne i DIA",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
-  "koodiArvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
-  "metadata" : [ {
-    "nimi" : "DIA-oppiaineen valmistavan vaiheen lukukauden suoritus",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_diaoppiaineentutkintovaiheenosasuorituksensuoritus",
-  "koodiArvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
-  "metadata" : [ {
-    "nimi" : "DIA-oppiaineen tutkintovaiheen lukukauden suoritus",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_diapaattokokeensuoritus",
-  "koodiArvo" : "diapaattokokeensuoritus",
-  "metadata" : [ {
-    "nimi" : "DIA-oppiaineen päättökokeen suoritus",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_muuammatillinenkoulutus",
-  "koodiArvo" : "muuammatillinenkoulutus",
-  "metadata" : [ {
-    "nimi" : "Muun ammatillisen koulutuksen suoritus",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_muunammatillisenkoulutuksenosasuoritus",
-  "koodiArvo" : "muunammatillisenkoulutuksenosasuoritus",
-  "metadata" : [ {
-    "nimi" : "Muun ammatillisen koulutuksen osasuoritus",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_tutkinnonosaapienemmistakokonaisuuksistakoostuvasuoritus",
-  "koodiArvo" : "tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus",
-  "metadata" : [ {
-    "nimi" : "Tutkinnon osaa pienemmistä kokonaisuuksista koostuva suoritus",
-    "kieli" : "FI"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_tutkinnonosaapienempikokonaisuus",
-  "koodiArvo" : "tutkinnonosaapienempikokonaisuus",
-  "metadata" : [ {
-    "nimi" : "Tutkinnon osaa pienemmän kokonaisuuden suoritus",
-    "kieli" : "FI"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
