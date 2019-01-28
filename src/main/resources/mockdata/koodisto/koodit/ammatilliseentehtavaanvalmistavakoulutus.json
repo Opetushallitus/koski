@@ -1,4 +1,40 @@
 [ {
+  "koodiUri" : "ammatilliseentehtavaanvalmistavakoulutus_1",
+  "koodiArvo" : "1",
+  "metadata" : [ {
+    "nimi" : "Ansio- ja liikennelentäjä",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Förvärvs- och trafikflygare",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "ammatilliseentehtavaanvalmistavakoulutus_2",
+  "koodiArvo" : "2",
+  "metadata" : [ {
+    "nimi" : "Lennonjohtaja",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Flygledare",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "ammatilliseentehtavaanvalmistavakoulutus_3",
+  "koodiArvo" : "3",
+  "metadata" : [ {
+    "nimi" : "Kaupunkiraideliikenteen kuljettaja",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Förare i spårbunden stadstrafik",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "ammatilliseentehtavaanvalmistavakoulutus_ansiojaliikennelentajankoulutus",
   "koodiArvo" : "ansiojaliikennelentajankoulutus",
   "metadata" : [ {

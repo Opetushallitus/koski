@@ -1321,6 +1321,20 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "kieli_iw",
+  "koodiArvo" : "IW",
+  "metadata" : [ {
+    "nimi" : "Heprea (vanha)",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Heprea (vanha)",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Heprea (vanha)",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "kieli_ja",
   "koodiArvo" : "JA",
   "metadata" : [ {

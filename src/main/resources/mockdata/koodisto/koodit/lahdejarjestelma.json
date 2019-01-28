@@ -1,4 +1,13 @@
 [ {
+  "koodiUri" : "lahdejarjestelma_abilita",
+  "koodiArvo" : "abilita",
+  "metadata" : [ {
+    "nimi" : "Abilita Päivähoito",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "lahdejarjestelma_edukit",
   "koodiArvo" : "edukit",
   "metadata" : [ {
