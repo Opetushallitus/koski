@@ -39,14 +39,20 @@ export const groupSuoritukset = (parentSuoritus, suoritukset, context, suoritusP
         // Show the empty groups too
         groupIds = R.uniq(R.keys(ammatillisentutkinnonosanryhmaKoodisto).concat(groupIds))
       }
-    } if (isMuunAmmatillisenKoulutuksenSuoritus(suoritusProto.context.suoritus) || isTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(suoritusProto.context.suoritus)) {
-      grouped = { [placeholderForNonGrouped] : suoritukset }
-      groupTitles = { [placeholderForNonGrouped] : t('Osasuoritus') }
-      groupIds = [placeholderForNonGrouped]
     } else {
-      grouped = { [placeholderForNonGrouped] : suoritukset }
-      groupTitles = { [placeholderForNonGrouped] : t(modelProperty(suoritukset[0] || suoritusProto, 'koulutusmoduuli').title) }
-      groupIds = [placeholderForNonGrouped]
+      // Osasuorituksia voi olla monta tasoa (osasuorituksen osasuorituksia), jolloin on suoraviivaisempaa
+      // tarkistaa ylimmän tason suorituksesta, onko kyseessä muun ammatillisen koulutksen tai tutkinnon
+      // osaa pienemmistä kokonaisuuksista koostuva suoritus.
+      const topLevelSuoritus = suoritusProto.context.suoritus
+      if (isMuunAmmatillisenKoulutuksenSuoritus(topLevelSuoritus) || isTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(topLevelSuoritus)) {
+        grouped = { [placeholderForNonGrouped] : suoritukset }
+        groupTitles = { [placeholderForNonGrouped] : t('Osasuoritus') }
+        groupIds = [placeholderForNonGrouped]
+      } else {
+        grouped = { [placeholderForNonGrouped] : suoritukset }
+        groupTitles = { [placeholderForNonGrouped] : t(modelProperty(suoritukset[0] || suoritusProto, 'koulutusmoduuli').title) }
+        groupIds = [placeholderForNonGrouped]
+      }
     }
 
     return {
