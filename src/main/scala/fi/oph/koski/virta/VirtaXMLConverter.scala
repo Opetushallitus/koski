@@ -270,7 +270,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       val osasuoritusNodes = allNodes.filter(avain(_) == opintosuoritusAvain)
       osasuoritusNodes match {
         case osasuoritusNode :: Nil => osasuoritusNode
-        case osasuoritusNode :: _ => throw VirtaConversionException("Enemmän kuin yksi suoritus avaimella " + opintosuoritusAvain)
+        case osasuoritusNode :: _ => throw new IllegalArgumentException("Enemmän kuin yksi suoritus avaimella " + opintosuoritusAvain)
         case Nil => throw new IllegalArgumentException("Opintosuoritusta " + opintosuoritusAvain + " ei löydy dokumentista")
       }
     }

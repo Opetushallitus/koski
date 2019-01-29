@@ -1,13 +1,13 @@
 package fi.oph.koski.opiskeluoikeus
 
-import fi.oph.koski.db.{GlobalExecutionContext, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.{HenkilönTunnisteet, PossiblyUnverifiedHenkilöOid}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus}
-import fi.oph.koski.util.{Futures, NonCriticalException, WithWarnings}
+import fi.oph.koski.util.{Futures, WithWarnings}
+import fi.oph.koski.db.{GlobalExecutionContext, OpiskeluoikeusRow}
+import fi.oph.koski.log.Logging
 
 import scala.concurrent.Future
 import scala.util.{Failure, Success, Try}
@@ -31,10 +31,7 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
 
   def mapFailureToVirtaUnavailable(result: Try[Seq[Opiskeluoikeus]], oid: String): Try[WithWarnings[Seq[Opiskeluoikeus]]] = {
     result match {
-      case Failure(exception) => NonCriticalException(exception) match {
-        case Some(n) => logger.warn(s"Virta conversion failed ${n.getMessage}")
-        case _ => logger.error(exception)(s"Failed to fetch Virta data for $oid")
-      }
+      case Failure(exception) => logger.error(exception)(s"Failed to fetch Virta data for $oid")
       case Success(_) =>
     }
     Success(WithWarnings.fromTry(result, KoskiErrorCategory.unavailable.virta(), Nil))
