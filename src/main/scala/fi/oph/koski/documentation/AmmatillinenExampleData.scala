@@ -15,8 +15,8 @@ object AmmatillinenExampleData {
 
   val autoalanPerustutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", "koulutus"), Some("39/011/2014"))
   val valmaKoulutus: ValmaKoulutus = ValmaKoulutus(Koodistokoodiviite("999901", "koulutus"), Some("OPH-2658-2017"))
-  val parturikampaaja: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("381301", "koulutus"), Some("43/011/2014"))
-  val puutarhuri: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("361255", "koulutus"), Some("75/011/2014"))
+  val parturikampaaja: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("381303", "koulutus"), Some("43/011/2014"))
+  val puutarhuri: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("361201", "koulutus"), Some("75/011/2014"))
   val autoalanTyönjohto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("357305", "koulutus"), Some("40/011/2001"))
 
   val muuAmmatillinenKoulutus: PaikallinenMuuAmmatillinenKoulutus = PaikallinenMuuAmmatillinenKoulutus(
