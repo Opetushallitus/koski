@@ -49,7 +49,7 @@ case class VirtaOpiskeluoikeusRepository(
       virta.opintotiedotMassahaku(hakuehdot)
         .toList
         // Poista kaikki duplikaattisuoritukset virta-datasta jos niiden organisaatiorooli on tyyppiä "fuusioitunut
-        // myöntäjä" ja myöntäjä on joko Tapmereen yliopisto tai Tampereen teknillinen yliopisto
+        // myöntäjä" ja myöntäjä on joko Tampereen yliopisto tai Tampereen teknillinen yliopisto
         .map(fuusioFilter.poistaDuplikaattisuoritukset(cacheKey.oidit))
         .flatMap(converter.convertToOpiskeluoikeudet)
     }
