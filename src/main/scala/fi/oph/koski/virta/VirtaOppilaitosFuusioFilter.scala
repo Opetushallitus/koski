@@ -1,35 +1,46 @@
 package fi.oph.koski.virta
 
-import fi.oph.koski.log.Logging
+import fi.oph.koski.util.Timing
 
 import scala.xml.transform.{RewriteRule, RuleTransformer}
 import scala.xml.{Node, NodeSeq}
 
-class VirtaOppilaitosFuusioFilter(sallitutMyöntäjät: List[String], sallitutFuusioMyöntäjät: List[String]) extends Logging {
+class VirtaOppilaitosFuusioFilter(sallitutMyöntäjät: List[String], sallitutFuusioMyöntäjät: List[String]) extends Timing {
   val fuusioitunutMyöntäjäKoodi = "5"
 
-  def poistaDuplikaattisuoritukset(oppijaOidsForLogging: List[String])(virtaXml: Node): Node = {
-    var poistojaTehty = Set.empty[String]
-    val transformedXml = new RuleTransformer(new RewriteRule {
-      override def transform(node: Node): Seq[Node] = if (karsittavaDuplikaatti(virtaXml, node)) {
-        poistojaTehty = poistojaTehty + (node \ "@avain").text
-        NodeSeq.Empty
-      } else {
-        node
-      }
-    }).transform(virtaXml).head
+  def poistaDuplikaattisuoritukset(oppijaOidsForLogging: List[String])(virtaXml: Node): Node = timed("poistaDuplikaattisuoritukset") {
+    val (transformedXml, removedNodesCount) = transform(oppijaOidsForLogging, virtaXml)
 
-    if (poistojaTehty.nonEmpty) {
-      logger.warn(s"Duplikaattisuorituksia poistettu ${poistojaTehty.size} kpl oppijalta $oppijaOidsForLogging")
+    if (removedNodesCount > 1) {
+      logger.warn(s"Duplikaattisuorituksia poistettu $removedNodesCount kpl oppijalta $oppijaOidsForLogging")
     }
 
     transformedXml
   }
 
-  private def karsittavaDuplikaatti(virtaXml: Node, node: Node) = {
-    fuusioSuoritus(node) &&
-    fuusioMyöntäjäSallittu(node) &&
-    onDuplikaatti(virtaXml, node)
+  private def transform(oppijaOidsForLogging: List[String], virtaXml: Node) = {
+    // Caching is needed because RuleTransformers traverses each node multiple times and the "isDuplikaatti"-check
+    // goes through the entire xml-document
+    var duplikaattiCache = Map[Node, Boolean]()
+    def isDuplikaattiFuusioSuoritus(node: Node): Boolean = {
+      if (duplikaattiCache.contains(node)) {
+        duplikaattiCache(node)
+      } else {
+        val duplikaattiFuusioSuoritus = fuusioSuoritus(node) && myöntäjäSallittu(node) && isDuplikaatti(virtaXml, node)
+        duplikaattiCache = duplikaattiCache + (node -> duplikaattiFuusioSuoritus)
+        duplikaattiFuusioSuoritus
+      }
+    }
+
+    var poistojaTehty = Set.empty[String]
+    (new RuleTransformer(new RewriteRule {
+      override def transform(node: Node): Seq[Node] = if (isDuplikaattiFuusioSuoritus(node)) {
+        poistojaTehty = poistojaTehty + (node \ "@avain").text
+        NodeSeq.Empty
+      } else {
+        node
+      }
+    }).transform(virtaXml).head, poistojaTehty.size)
   }
 
   private def fuusioSuoritus(n: Node) = {
@@ -40,10 +51,10 @@ class VirtaOppilaitosFuusioFilter(sallitutMyöntäjät: List[String], sallitutFu
     }
   }
 
-  private def fuusioMyöntäjäSallittu(opintosuoritus: Node) =
-    (opintosuoritus \ "Myontaja").map(_.text).forall(sallitutFuusioMyöntäjät.contains)
+  private def myöntäjäSallittu(n: Node) =
+    (n \ "Myontaja").map(_.text).forall(sallitutFuusioMyöntäjät.contains)
 
-  def onDuplikaatti(virtaXml: Node, opintosuoritus: Node): Boolean = {
+  private def isDuplikaatti(virtaXml: Node, opintosuoritus: Node) = {
     val avain = (opintosuoritus \ "@avain").text
     (virtaXml \\ "Opintosuoritus").count(n => (n \ "@avain").text == avain) > 1
   }
