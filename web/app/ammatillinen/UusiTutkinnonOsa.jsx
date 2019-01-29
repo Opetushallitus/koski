@@ -121,7 +121,6 @@ const LisääPaikallinenTutkinnonOsa = ({lisättävätTutkinnonOsat, addTutkinno
 }
 
 const lisääTutkinnonOsaTexts = (lisättävätTutkinnonOsat, paikallinenKoulutusmoduuli) => {
-  const {suoritus} = paikallinenKoulutusmoduuli.context
   if (lisättävätTutkinnonOsat.osanOsa) {
     return {
       lisääOsaLink: 'Lisää paikallinen tutkinnon osan osa-alue',
@@ -129,19 +128,22 @@ const lisääTutkinnonOsaTexts = (lisättävätTutkinnonOsat, paikallinenKoulutu
       modalFieldLabel: 'Tutkinnon osan osa-alueen nimi',
       modalOk: 'Lisää tutkinnon osan osa-alue'
     }
-  } else if (isMuunAmmatillisenKoulutuksenSuoritus(suoritus) || isTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(suoritus)) {
-    return {
-      lisääOsaLink: 'Lisää osasuoritus',
-      modalHeader: 'Osasuorituksen lisäys',
-      modalFieldLabel: 'Osasuorituksen nimi',
-      modalOk: 'Lisää osasuoritus'
-    }
   } else {
-    return {
-      lisääOsaLink: 'Lisää paikallinen tutkinnon osa',
-      modalHeader: 'Paikallisen tutkinnon osan lisäys',
-      modalFieldLabel: 'Tutkinnon osan nimi',
-      modalOk: 'Lisää tutkinnon osa'
+    const topLevelSuoritus = R.path(["context", "suoritus"], paikallinenKoulutusmoduuli)
+    if (topLevelSuoritus && (isMuunAmmatillisenKoulutuksenSuoritus(topLevelSuoritus) || isTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(topLevelSuoritus))) {
+      return {
+        lisääOsaLink: 'Lisää osasuoritus',
+        modalHeader: 'Osasuorituksen lisäys',
+        modalFieldLabel: 'Osasuorituksen nimi',
+        modalOk: 'Lisää osasuoritus'
+      }
+    } else {
+      return {
+        lisääOsaLink: 'Lisää paikallinen tutkinnon osa',
+        modalHeader: 'Paikallisen tutkinnon osan lisäys',
+        modalFieldLabel: 'Tutkinnon osan nimi',
+        modalOk: 'Lisää tutkinnon osa'
+      }
     }
   }
 }

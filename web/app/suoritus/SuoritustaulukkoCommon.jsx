@@ -43,8 +43,8 @@ export const groupSuoritukset = (parentSuoritus, suoritukset, context, suoritusP
       // Osasuorituksia voi olla monta tasoa (osasuorituksen osasuorituksia), jolloin on suoraviivaisempaa
       // tarkistaa ylimmän tason suorituksesta, onko kyseessä muun ammatillisen koulutksen tai tutkinnon
       // osaa pienemmistä kokonaisuuksista koostuva suoritus.
-      const topLevelSuoritus = suoritusProto.context.suoritus
-      if (isMuunAmmatillisenKoulutuksenSuoritus(topLevelSuoritus) || isTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(topLevelSuoritus)) {
+      const topLevelSuoritus = R.path(["context", "suoritus"], suoritusProto)
+      if (topLevelSuoritus && (isMuunAmmatillisenKoulutuksenSuoritus(topLevelSuoritus) || isTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(topLevelSuoritus))) {
         grouped = { [placeholderForNonGrouped] : suoritukset }
         groupTitles = { [placeholderForNonGrouped] : t('Osasuoritus') }
         groupIds = [placeholderForNonGrouped]
