@@ -27,6 +27,8 @@ case class OpiskelijavuositiedotRow(
   osaamisalat: Option[String],
   viimeisinOpiskeluoikeudenTila: String,
   opintojenRahoitukset: String,
+  läsnäRahoitusSyötetty: Boolean,
+  lomaTaiValmistunutRahoitusSyötetty: Boolean,
   opiskeluoikeusPäättynyt: Boolean,
   päättymispäivä: Option[LocalDate],
   arvioituPäättymispäivä: Option[LocalDate],
@@ -76,6 +78,8 @@ object Opiskelijavuositiedot {
     "osaamisalat" -> Column("Osaamisalat"),
     "viimeisinOpiskeluoikeudenTila" -> Column("Viimeisin tila"),
     "opintojenRahoitukset" -> Column("Rahoitukset"),
+    "läsnäRahoitusSyötetty"-> Column("Läsnä rahoitus syötetty", width = Some(2000)),
+    "lomaTaiValmistunutRahoitusSyötetty" -> Column("Loma/valmistunut rahoitus syötetty", width = Some(2000)),
     "opiskeluoikeusPäättynyt" -> Column("Päättynyt", width = Some(2000)),
     "päättymispäivä" -> Column("Päättymispäivä"),
     "arvioituPäättymispäivä" -> Column("Arvioitu päättymispäivä"),
@@ -121,8 +125,10 @@ object Opiskelijavuositiedot {
     |
     |- Viimeisin tila: opiskeluoikeuden tila raportin aikajakson lopussa
     |  Käyttää "koskiopiskeluoikeudentila" koodistoa, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/koskiopiskeluoikeudentila/latest
-    |- Rahoitukset: raportin aikajaksolla esiintyvät rahoitusmuodot pilkulla erotettuna
-    |  Arvo on joko "-" (ei tiedossa), tai "opintojenrahoitus" koodistosta, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/opintojenrahoitus/latest
+    |- Rahoitukset: raportin aikajaksolla esiintyvät rahoitusmuodot pilkulla erotettuna (aakkosjärjestyksessä, ei aikajärjestyksessä).
+    |  Arvot ovat "opintojenrahoitus" koodistosta, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/opintojenrahoitus/latest
+    |- Läsnä rahoitus syötetty: kertoo löytyykö kaikilta läsnä-jaksoilta rahoitusmuoto.
+    |- Loma/valmistunut rahoitus syötetty: kertoo löytyykö kaikilta loma- ja valmistunut -jaksoilta rahoitusmuoto.
     |- Päättynyt: kertoo onko opiskeluoikeus päättynyt raportin aikajaksolla
     |- Päättymispäivä: mukana vain jos opiskeluoikeus on päättynyt raportin aikajaksolla
     |
@@ -145,9 +151,6 @@ object Opiskelijavuositiedot {
       .map(_.osaamisala.koodiarvo)
       .sorted
       .distinct
-    // jätä turha päättävän jakson "-" pois rahoitusmuotolistasta
-    val aikajaksotOpintojenRahoitukseen = if (aikajaksot.size > 1 && aikajaksot.last.opiskeluoikeusPäättynyt && aikajaksot.last.opintojenRahoitus.isEmpty) aikajaksot.dropRight(1) else aikajaksot
-    val opintojenRahoitukset = distinctAdjacent(aikajaksotOpintojenRahoitukseen.map(_.opintojenRahoitus.getOrElse("-"))).mkString(",")
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](opiskeluoikeus.data \ "lähdejärjestelmänId")
     val arvioituPäättymispäivä = JsonSerializer.validateAndExtract[Option[LocalDate]](opiskeluoikeus.data \ "arvioituPäättymispäivä").toOption.flatten
     val (opiskelijavuoteenKuuluvatLomaPäivät, muutLomaPäivät) = lomaPäivät(aikajaksot)
@@ -167,7 +170,9 @@ object Opiskelijavuositiedot {
       koulutusmoduulit = päätasonSuoritukset.map(_.koulutusmoduuliKoodiarvo).sorted.mkString(","),
       osaamisalat = if (osaamisalat.isEmpty) None else Some(osaamisalat.mkString(",")),
       viimeisinOpiskeluoikeudenTila = aikajaksot.last.tila,
-      opintojenRahoitukset = opintojenRahoitukset,
+      opintojenRahoitukset = aikajaksot.flatMap(_.opintojenRahoitus).sorted.distinct.mkString(","),
+      läsnäRahoitusSyötetty = aikajaksot.filter(_.tila == "lasna").forall(_.opintojenRahoitus.nonEmpty),
+      lomaTaiValmistunutRahoitusSyötetty = aikajaksot.filter(a => a.tila == "loma" || a.tila == "valmistunut").forall(_.opintojenRahoitus.nonEmpty),
       opiskeluoikeusPäättynyt = aikajaksot.last.opiskeluoikeusPäättynyt,
       päättymispäivä = aikajaksot.lastOption.filter(_.opiskeluoikeusPäättynyt).map(_.alku.toLocalDate), // toimii koska päättävä jakso on aina yhden päivän mittainen, jolloin truncateToDates ei muuta sen alkupäivää
       arvioituPäättymispäivä = arvioituPäättymispäivä,
