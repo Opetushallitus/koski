@@ -7,7 +7,8 @@ object MockKäyttöoikeusryhmät {
   def oppilaitosKatselija(organisaatioOid: String) = KäyttöoikeusOrg(OidOrganisaatio(organisaatioOid), List(Palvelurooli(READ), Palvelurooli(LUOTTAMUKSELLINEN)), true, None)
   def oppilaitosTodistuksenMyöntäjä(organisaatioOid: String) = KäyttöoikeusOrg(OidOrganisaatio(organisaatioOid), List(Palvelurooli(READ)), true, None)
   def oppilaitosTallentaja(organisaatioOid: String) = KäyttöoikeusOrg(OidOrganisaatio(organisaatioOid), List(Palvelurooli(READ), Palvelurooli(READ_UPDATE), Palvelurooli(LUOTTAMUKSELLINEN)), true, None)
-  def oppilaitosPalvelukäyttäjä(organisaatioOid: String) = KäyttöoikeusOrg(OidOrganisaatio(organisaatioOid), List(Palvelurooli(READ), Palvelurooli(READ_UPDATE), Palvelurooli(TIEDONSIIRTO), Palvelurooli(LUOTTAMUKSELLINEN)), true, None)
+  def oppilaitosPalvelukäyttäjä(organisaatioOid: String) = KäyttöoikeusOrg(OidOrganisaatio(organisaatioOid), List(Palvelurooli(READ), Palvelurooli(READ_UPDATE), Palvelurooli(TIEDONSIIRTO), Palvelurooli(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)), true, None)
+  def oppilaitosPalvelukäyttäjäVanha(organisaatioOid: String) = KäyttöoikeusOrg(OidOrganisaatio(organisaatioOid), List(Palvelurooli(READ), Palvelurooli(READ_UPDATE), Palvelurooli(TIEDONSIIRTO), Palvelurooli(LUOTTAMUKSELLINEN)), true, None)
   def oppilaitosPääkäyttäjä(organisaatioOid: String) = KäyttöoikeusOrg(OidOrganisaatio(organisaatioOid), List(Palvelurooli(READ), Palvelurooli(TIEDONSIIRRON_MITATOINTI), Palvelurooli(LUOTTAMUKSELLINEN)), true, None)
   def vastuukäyttäjä(organisaatioOid: String) = KäyttöoikeusOrg(OidOrganisaatio(organisaatioOid), List(Palvelurooli(READ)), true, None)
 
