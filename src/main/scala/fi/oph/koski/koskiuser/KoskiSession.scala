@@ -25,24 +25,24 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
   def isRoot = globalAccess.contains(AccessType.write)
   def isPalvelukäyttäjä = orgKäyttöoikeudet.flatMap(_.organisaatiokohtaisetPalveluroolit).contains(Palvelurooli(TIEDONSIIRTO))
   def hasReadAccess(organisaatio: Organisaatio.Oid) = hasAccess(organisaatio, AccessType.read)
-  def hasWriteAccess(organisaatio: Organisaatio.Oid) = hasAccess(organisaatio, AccessType.write) && hasRole(LUOTTAMUKSELLINEN)
+  def hasWriteAccess(organisaatio: Organisaatio.Oid) = hasAccess(organisaatio, AccessType.write) && (hasRole(LUOTTAMUKSELLINEN) || hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   def hasTiedonsiirronMitätöintiAccess(organisaatio: Organisaatio.Oid) = hasAccess(organisaatio, AccessType.tiedonsiirronMitätöinti)
   def hasLuovutuspalveluAccess: Boolean = globalViranomaisKäyttöoikeudet.exists(_.isLuovutusPalveluAllowed)
 
   def hasAccess(organisaatio: Organisaatio.Oid, accessType: AccessType.Value) = {
     val access = globalAccess.contains(accessType) || organisationOids(accessType).contains(organisaatio)
-    access && (accessType != AccessType.write || hasRole(LUOTTAMUKSELLINEN))
+    access && (accessType != AccessType.write || hasRole(LUOTTAMUKSELLINEN) || hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   }
 
   def hasGlobalKoulutusmuotoReadAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalAccessType).contains(AccessType.read)
 
   lazy val allowedOpiskeluoikeusTyypit: Set[String] = globalViranomaisKäyttöoikeudet.flatMap(_.allowedOpiskeluoikeusTyypit)
   def hasGlobalReadAccess = globalAccess.contains(AccessType.read)
-  def hasAnyWriteAccess = (globalAccess.contains(AccessType.write) || organisationOids(AccessType.write).nonEmpty) && hasRole(LUOTTAMUKSELLINEN)
+  def hasAnyWriteAccess = (globalAccess.contains(AccessType.write) || organisationOids(AccessType.write).nonEmpty) && (hasRole(LUOTTAMUKSELLINEN) || hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   def hasLocalizationWriteAccess = globalKäyttöoikeudet.find(_.globalPalveluroolit.contains(Palvelurooli("LOKALISOINTI", "CRUD"))).isDefined
   def hasAnyReadAccess = hasGlobalReadAccess || orgKäyttöoikeudet.nonEmpty || hasGlobalKoulutusmuotoReadAccess
   def hasAnyTiedonsiirronMitätöintiAccess = globalAccess.contains(AccessType.tiedonsiirronMitätöinti) || organisationOids(AccessType.tiedonsiirronMitätöinti).nonEmpty
-  def hasRaportitAccess = hasAnyReadAccess && hasRole(Rooli.LUOTTAMUKSELLINEN) && !hasGlobalKoulutusmuotoReadAccess
+  def hasRaportitAccess = hasAnyReadAccess && (hasRole(Rooli.LUOTTAMUKSELLINEN) || hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)) && !hasGlobalKoulutusmuotoReadAccess
   def sensitiveDataAllowed(requiredRoles: Set[Role]) = requiredRoles.exists(hasRole)
 
   // Note: keep in sync with PermissionCheckServlet's hasSufficientRoles function. See PermissionCheckServlet for more comments.
@@ -81,7 +81,7 @@ object KoskiSession {
   private val UNTRUSTED_SYSTEM_USER = "Koski untrusted system user"
   val SUORITUSJAKO_KATSOMINEN_USER = "Koski suoritusjako katsominen"
   // Internal user with root access
-  val systemUser = new KoskiSession(AuthenticationUser(KOSKI_SYSTEM_USER, KOSKI_SYSTEM_USER, KOSKI_SYSTEM_USER, None), "fi", InetAddress.getLoopbackAddress, "", Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHPAAKAYTTAJA), Palvelurooli(LUOTTAMUKSELLINEN)))))
+  val systemUser = new KoskiSession(AuthenticationUser(KOSKI_SYSTEM_USER, KOSKI_SYSTEM_USER, KOSKI_SYSTEM_USER, None), "fi", InetAddress.getLoopbackAddress, "", Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHPAAKAYTTAJA), Palvelurooli(LUOTTAMUKSELLINEN), Palvelurooli(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)))))
 
   val untrustedUser = new KoskiSession(AuthenticationUser(UNTRUSTED_SYSTEM_USER, UNTRUSTED_SYSTEM_USER, UNTRUSTED_SYSTEM_USER, None), "fi", InetAddress.getLoopbackAddress, "", Set())
 
