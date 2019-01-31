@@ -2,6 +2,7 @@ package fi.oph.koski.api
 
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import org.scalatest.{FreeSpec, Matchers}
@@ -46,6 +47,12 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
           opiskeluoikeus.suoritukset.head.koulutusmoduuli.nimi.get("fi") should equal("Fil. maist., fysiikka")
         }
       }
+    }
+
+    "Oppilaitosfuusiosta johtuvat duplikaattiosasuoritukset karsitaan pois" in {
+      val oikeudet = getOpiskeluoikeudet(MockOppijat.tampere.oid, MockUsers.paakayttaja)
+      oikeudet.length should equal(2)
+      oikeudet.flatMap(_.oppilaitos.get.oppilaitosnumero).map(_.koodiarvo).toSet should equal(Set("01905"))
     }
 
     "Haettaessa" - {
