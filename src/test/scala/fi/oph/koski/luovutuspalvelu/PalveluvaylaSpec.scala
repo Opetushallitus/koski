@@ -115,9 +115,12 @@ class PalveluvaylaSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.montaOppiaineenOppimäärääOpiskeluoikeudessa) shouldEqual "2 oppiainetta"
       }
 
+      "Kun opiskeluoikeudessa on opintojaksojen seassa korkeakoulututkinto käytetään tutkinnon nimeä" in {
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.opintojaksotSekaisin) shouldEqual "Fysioterapeutti (AMK)"
+      }
+
       "Kun opiskeluoikeudessa on pelkkiä korkeakoulun opintojaksoja käytetään '<lkm> opintojaksoa'" in {
         ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.korkeakoululainen) shouldEqual "69 opintojaksoa"
-        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.opintojaksotSekaisin) shouldEqual "33 opintojaksoa"
       }
 
       "Aikuisten perusopetuksessa käytetään suorituksen tyypin nimeä" in {

@@ -44,7 +44,7 @@ class SuomiFiService(application: KoskiApplication) extends Logging {
     } else if (ammatillinenTutkintoOsittainen(pääSuoritus)) {
       suoritusNimi(pääSuoritus).concat(localization(", osittainen"))
     } else {
-      suoritusNimi(pääSuoritus)
+      suoritusNimi(oo.suoritukset.find(isKorkeakoulututkinto).getOrElse(pääSuoritus))
     }
   }
 
@@ -58,7 +58,7 @@ class SuomiFiService(application: KoskiApplication) extends Logging {
     oo.suoritukset.forall(_.tyyppi == suoritusTyyppi("perusopetuksenvuosiluokka"))
 
   private def sisältääOppiaineenOppimääränTaiOpintojakson(oo: Opiskeluoikeus) =
-    oo.suoritukset.length > 1 && oo.suoritukset.exists(s => isOppiaineenOppimäärä(s) || isOpintojakso(s))
+    oo.suoritukset.length > 1 && (oo.suoritukset.exists(isOppiaineenOppimäärä) || (oo.suoritukset.exists(isOpintojakso) && !oo.suoritukset.exists(isKorkeakoulututkinto)))
 
   private def oppimääräTaiOpintojaksoOtsikko(kaikkiSuoritukset: List[PäätasonSuoritus]) = {
     val otsikkoKey = if (kaikkiSuoritukset.forall(isOppiaineenOppimäärä)) "oppiainetta" else "opintojaksoa"
@@ -70,6 +70,9 @@ class SuomiFiService(application: KoskiApplication) extends Logging {
       case a: AmmatillinenTutkintoKoulutus => a.perusteenNimi.getOrElse(a.tunniste.getNimi.get)
       case k => k.tunniste.getNimi.get
     }
+
+  private def isKorkeakoulututkinto(suoritus: PäätasonSuoritus) =
+    suoritus.tyyppi == suoritusTyyppi("korkeakoulututkinto")
 
   private def isOpintojakso(suoritus: PäätasonSuoritus) =
     suoritus.tyyppi == suoritusTyyppi("korkeakoulunopintojakso")
