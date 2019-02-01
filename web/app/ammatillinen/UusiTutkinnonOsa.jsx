@@ -129,7 +129,7 @@ const lisääTutkinnonOsaTexts = (lisättävätTutkinnonOsat, paikallinenKoulutu
       modalOk: 'Lisää tutkinnon osan osa-alue'
     }
   } else {
-    const topLevelSuoritus = R.path(["context", "suoritus"], paikallinenKoulutusmoduuli)
+    const topLevelSuoritus = R.path(['context', 'suoritus'], paikallinenKoulutusmoduuli)
     if (topLevelSuoritus && (isMuunAmmatillisenKoulutuksenSuoritus(topLevelSuoritus) || isTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(topLevelSuoritus))) {
       return {
         lisääOsaLink: 'Lisää osasuoritus',
