@@ -1,8 +1,15 @@
 import React from 'react'
 import {Editor} from '../editor/Editor'
-import {modelData, modelEmpty, modelSetValue, modelValid, modelLookup} from '../editor/EditorModel'
-import {EnumEditor} from '../editor/EnumEditor'
-import {wrapOptional} from '../editor/EditorModel'
+import {
+  modelData,
+  modelEmpty,
+  modelLookup,
+  modelSetValue,
+  modelValid,
+  oneOfPrototypes,
+  wrapOptional
+} from '../editor/EditorModel'
+import {EnumEditor, fetchAlternativesBasedOnPrototypes} from '../editor/EnumEditor'
 import {parseBool} from '../util/util'
 import {t} from '../i18n/i18n'
 import {hyphenate} from '../util/hyphenate'
@@ -12,9 +19,11 @@ export class LaajuusEditor extends React.Component {
     let { model, compact, showReadonlyScope = true } = this.props
     let wrappedModel = wrapOptional(model)
     return (
-      <span className="property laajuus">
-        <span className={modelValid(wrappedModel) ? 'value' : 'value error'}>
-          <Editor model={wrappedModel} path="arvo"/>
+      <span>
+        <span className="property laajuus">
+          <span className={modelValid(wrappedModel) ? 'value' : 'value error'}>
+            <Editor model={wrappedModel} path="arvo"/>
+          </span>
         </span>
         <LaajuudenYksikköEditor { ... {model, compact, showReadonlyScope}}/>
       </span>
@@ -48,8 +57,12 @@ const LaajuudenYksikköEditor = ({model, compact, showReadonlyScope}) => {
   return model.context.edit
     ? !yksikköModel || !alternatives || (alternatives.length == 1 && parseBool(compact))
       ? null
-      : <span className="yksikko"><Editor model={yksikköModel} edit={alternatives.length != 1}/></span>
+      : <span className="property yksikko">
+        <Editor model={yksikköModel} edit={alternatives.length !== 1 || !!model.oneOfPrototypes} fetchAlternatives={m => model.oneOfPrototypes ? yksikköAlternativesBasedOnPrototypes(model) : EnumEditor.fetchAlternatives(m)} />
+      </span>
     : showReadonlyScope
       ? <span className={'yksikko ' + yksikkö.toLowerCase()}>{'\u00a0'}{hyphenate(yksikkö)}</span>
       : null
 }
+
+const yksikköAlternativesBasedOnPrototypes = model => fetchAlternativesBasedOnPrototypes(oneOfPrototypes(model), 'yksikkö').startWith([]).map(alts => alts.map(m => modelLookup(m, 'yksikkö').value))

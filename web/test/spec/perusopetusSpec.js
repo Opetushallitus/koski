@@ -3175,7 +3175,7 @@ describe('Perusopetus', function() {
             uusiPaikallinen.propertyBySelector('.nimi').setValue('Tanssi'),
             uusiPaikallinen.propertyBySelector('.arvosana').selectValue('S'),
             uusiPaikallinen.propertyBySelector('.property.laajuus .value').setValue('1'),
-            uusiPaikallinen.propertyBySelector('.property.laajuus .yksikko').setValue('vuosiviikkotuntia'),
+            uusiPaikallinen.propertyBySelector('.property.yksikko').setValue('vuosiviikkotuntia'),
             editor.saveChanges, wait.until(page.isSavedLabelShown))
 
           it('Toimii', function () {
