@@ -49,6 +49,14 @@ function OpinnotPage() {
       var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
       return opiskeluoikeus.find('.suoritus .property.koulutusmoduuli .koulutusmoduuli .tunniste').text()
     },
+    getKoulutusModuuli: function(indexOrName) {
+      var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
+      return {
+        nimi: opiskeluoikeus.find('.suoritus .property.koulutusmoduuli .koulutusmoduuli .tunniste .nimi .value').text(),
+        koodi: opiskeluoikeus.find('.suoritus .property.koulutusmoduuli .koulutusmoduuli .tunniste .koodiarvo .value').text(),
+        kuvaus: opiskeluoikeus.find('.suoritus .property.koulutusmoduuli .koulutusmoduuli .properties .kuvaus .value').text()
+      }
+    },
     getOppilaitos: function(indexOrName) {
       var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
       return opiskeluoikeus.find('h3 .otsikkotiedot .oppilaitos', opiskeluoikeus).text()

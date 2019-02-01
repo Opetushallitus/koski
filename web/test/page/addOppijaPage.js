@@ -101,6 +101,13 @@ function AddOppijaPage() {
           .then(api.selectOppimäärä(params.oppimäärä))
       }
     },
+    enterPaikallinenKoulutusmoduuliData: function(params) {
+      return function() {
+        return pageApi.setInputValue('.koulutusmoduuli .nimi input', params.nimi)()
+          .then(pageApi.setInputValue('.koulutusmoduuli .koodiarvo input', params.koodi))
+          .then(pageApi.setInputValue('.koulutusmoduuli .kuvaus textarea', params.kuvaus))
+      }
+    },
     enterData: function(params) {
       return function() {
         return api.enterHenkilötiedot(params)()
