@@ -12,6 +12,8 @@ import {shouldShowProperty} from '../editor/PropertiesEditor'
 
 
 export const isAmmatillinentutkinto = suoritus => suoritus.value.classes.includes('ammatillisentutkinnonsuoritus')
+export const isMuunAmmatillisenKoulutuksenSuoritus = suoritus => suoritus.value.classes.includes('muunammatillisenkoulutuksensuoritus')
+export const isTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus = suoritus => suoritus.value.classes.includes('tutkinnonosaapienemmistakokonaisuuksistakoostuvasuoritus')
 export const isNäyttötutkintoonValmistava = suoritus => suoritus.value.classes.includes('nayttotutkintoonvalmistavankoulutuksensuoritus')
 export const isYlioppilastutkinto = suoritus => suoritus.value.classes.includes('ylioppilastutkinnonsuoritus')
 
@@ -38,9 +40,19 @@ export const groupSuoritukset = (parentSuoritus, suoritukset, context, suoritusP
         groupIds = R.uniq(R.keys(ammatillisentutkinnonosanryhmaKoodisto).concat(groupIds))
       }
     } else {
-      grouped = { [placeholderForNonGrouped] : suoritukset }
-      groupTitles = { [placeholderForNonGrouped] : t(modelProperty(suoritukset[0] || suoritusProto, 'koulutusmoduuli').title) }
-      groupIds = [placeholderForNonGrouped]
+      // Osasuorituksia voi olla monta tasoa (osasuorituksen osasuorituksia), jolloin on suoraviivaisempaa
+      // tarkistaa ylimmän tason suorituksesta, onko kyseessä muun ammatillisen koulutksen tai tutkinnon
+      // osaa pienemmistä kokonaisuuksista koostuva suoritus.
+      const topLevelSuoritus = R.path(["context", "suoritus"], suoritusProto)
+      if (topLevelSuoritus && (isMuunAmmatillisenKoulutuksenSuoritus(topLevelSuoritus) || isTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(topLevelSuoritus))) {
+        grouped = { [placeholderForNonGrouped] : suoritukset }
+        groupTitles = { [placeholderForNonGrouped] : t('Osasuoritus') }
+        groupIds = [placeholderForNonGrouped]
+      } else {
+        grouped = { [placeholderForNonGrouped] : suoritukset }
+        groupTitles = { [placeholderForNonGrouped] : t(modelProperty(suoritukset[0] || suoritusProto, 'koulutusmoduuli').title) }
+        groupIds = [placeholderForNonGrouped]
+      }
     }
 
     return {
