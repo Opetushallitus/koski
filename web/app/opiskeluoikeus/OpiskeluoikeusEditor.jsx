@@ -176,6 +176,7 @@ const opintojaksoTaiOppimäärä = suoritus =>
 const isPerusopetuksenOppimäärä = suoritus =>
   ['perusopetuksenoppiaineenoppimaara', 'nuortenperusopetuksenoppiaineenoppimaara'].includes(suorituksenTyyppi(suoritus))
 
+const isKorkeakoulututkinto = suoritus => suorituksenTyyppi(suoritus) === 'korkeakoulututkinto'
 const isOpintojakso = suoritus => suorituksenTyyppi(suoritus) === 'korkeakoulunopintojakso'
 const isPerusopetuksenVuosiluokka = suoritus => suorituksenTyyppi(suoritus) === 'perusopetuksenvuosiluokka'
 
@@ -187,10 +188,15 @@ const oppimääräTaiOpintojaksoOtsikko = suoritukset => {
 // Duplicates the logic from src/main/scala/fi/oph/koski/luovutuspalvelu/SuomiFiService.scala#suorituksenNimi
 export const näytettäväPäätasonSuoritusTitle = opiskeluoikeus => {
   const suoritukset = modelItems(opiskeluoikeus, 'suoritukset')
-  const sisältääOppiaineenOppimääränTaiOpintoJakson = suoritukset.some(opintojaksoTaiOppimäärä) && suoritukset.length > 1
+  const sisältääKorkeakoulututkinnon = suoritukset.some(isKorkeakoulututkinto)
+  const sisältääOpintojaksonMutteiTutkintoa = suoritukset.some(isOpintojakso) && !sisältääKorkeakoulututkinnon
+  const sisältääOppiaineenOppimääränTaiOpintoJakson = suoritukset.length > 1 && suoritukset.some(isPerusopetuksenOppimäärä) || sisältääOpintojaksonMutteiTutkintoa
+
   return sisältääOppiaineenOppimääränTaiOpintoJakson
     ? oppimääräTaiOpintojaksoOtsikko(suoritukset)
     : suoritukset.every(isPerusopetuksenVuosiluokka)
       ? t('Perusopetus')
-      : suoritusTitle(suoritukset[0])
+      : sisältääKorkeakoulututkinnon
+        ? suoritusTitle(suoritukset.find(isKorkeakoulututkinto))
+        : suoritusTitle(suoritukset[0])
 }

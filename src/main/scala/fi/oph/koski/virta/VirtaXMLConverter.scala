@@ -95,7 +95,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       addKeskeneräinenTutkinnonSuoritus(tila, suoritukset, opiskeluoikeusNode, viimeisinTutkinto)
     } else {
       val opiskeluoikeusTila = tila.opiskeluoikeusjaksot.lastOption.map(_.tila)
-      logger.warn(s"Tutkintoon johtavaa päätason suoritusta ei löydy tai opiskeluoikeus on päättynyt. Opiskeluoikeuden tila: $opiskeluoikeusTila, jaksot: ${opiskeluoikeusJaksot.map(_.koulutuskoodi)}, laji: '${laji(opiskeluoikeusNode)}'" )
+      logger.warn(s"Tutkintoon johtavaa päätason suoritusta ei löydy tai opiskeluoikeus on päättynyt. Opiskeluoikeus(avain: ${avain(opiskeluoikeusNode)}, tila: $opiskeluoikeusTila, jaksot: ${opiskeluoikeusJaksot.map(_.koulutuskoodi)}, laji: '${laji(opiskeluoikeusNode)}')" )
       addMuuKorkeakoulunSuoritus(tila, suoritukset, opiskeluoikeusNode)
     }
   }
