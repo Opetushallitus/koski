@@ -89,6 +89,7 @@ case class MockVirtaClient(config: Config) extends VirtaClient {
 }
 
 case class RemoteVirtaClient(config: VirtaConfig) extends VirtaClient {
+  private val http = Http(config.serviceUrl)
   def opintotiedot(hakuehto: VirtaHakuehto): Option[Elem] = performHaku {
     <OpiskelijanKaikkiTiedotRequest xmlns="http://tietovaranto.csc.fi/luku">
       {kutsuja}
@@ -113,8 +114,9 @@ case class RemoteVirtaClient(config: VirtaConfig) extends VirtaClient {
     </OpiskelijanTiedotRequest>
   }
 
-  private def performHaku(xmlBody: Elem): Option[Elem] =
-    Some(runTask(Http(config.serviceUrl).post(uri"", soapEnvelope(xmlBody))(Http.Encoders.xml)(Http.parseXml)))
+  private def performHaku(xmlBody: Elem): Option[Elem] = {
+    Some(runTask(http.post(uri"", soapEnvelope(xmlBody))(Http.Encoders.xml)(Http.parseXml)))
+  }
 
   private def hakuehdotXml(hakuehto: VirtaHakuehto) = hakuehto match {
     case VirtaHakuehtoHetu(hetu) => <henkilotunnus>{hetu}</henkilotunnus>
