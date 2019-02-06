@@ -94,7 +94,9 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   private def fillMissingFields(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
-    fillMissingOrganisations(oo).map(fillPerusteenNimi)
+    fillMissingOrganisations(oo)
+      .flatMap(addKoulutustyyppi)
+      .map(fillPerusteenNimi)
   }
 
   private def fillPerusteenNimi(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = oo match {
@@ -115,7 +117,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     ePerusteet.findPerusteenYksilöintitiedot(diaariNumero).map(_.nimi).flatMap(LocalizedString.sanitize)
 
   private def fillMissingOrganisations(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
-    addOppilaitos(oo).flatMap(addKoulutustoimija).map(addKoulutustyyppi).map(setOrganizationNames)
+    addOppilaitos(oo).flatMap(addKoulutustoimija).map(setOrganizationNames)
   }
 
   private def setOrganizationNames(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
@@ -166,14 +168,14 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     }
   }
 
-  private def addKoulutustyyppi(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
+  private def addKoulutustyyppi(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
     val t = traversal[KoskeenTallennettavaOpiskeluoikeus]
       .field[List[PäätasonSuoritus]]("suoritukset")
       .items
       .field[Koulutusmoduuli]("koulutusmoduuli")
       .ifInstanceOf[Koulutus]
 
-    t.modify(oo) { koulutus =>
+    val ooWithKoulutustyyppi = t.modify(oo) { koulutus =>
       val koulutustyyppi = koulutus match {
         case np: NuortenPerusopetus => np.perusteenDiaarinumero.flatMap(tutkintoRepository.findPerusteRakenne(_).map(_.koulutustyyppi))
         case _ =>
@@ -182,6 +184,14 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
           koulutusTyypit.filterNot(koodi => List(ammatillinenPerustutkintoErityisopetuksena.koodiarvo, valmaErityisopetuksena.koodiarvo).contains(koodi.koodiarvo)).headOption
       }
       lens[Koulutus].field[Option[Koodistokoodiviite]]("koulutustyyppi").set(koulutus)(koulutustyyppi)
+    }
+
+    // Ammatillisille tutkinnoille varmistetaan että koulutustyyppi löytyi (halutaan erottaa
+    // ammatilliset perustutkinnot, erityisammattitutkinnot, yms - muissa tapauksissa jo suorituksen tyyppi
+    // on riittävä tarkkuus)
+    t.toIterable(ooWithKoulutustyyppi).collectFirst { case k: AmmatillinenTutkintoKoulutus if k.koulutustyyppi.isEmpty => k } match {
+      case Some(koulutus) => Left(KoskiErrorCategory.badRequest.validation.koodisto.koulutustyyppiPuuttuu(s"Koulutuksen ${koulutus.tunniste.koodiarvo} koulutustyyppiä ei löydy koulutustyyppi-koodistosta."))
+      case None => Right(ooWithKoulutustyyppi)
     }
   }
 
