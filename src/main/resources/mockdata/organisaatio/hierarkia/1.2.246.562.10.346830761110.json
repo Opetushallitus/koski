@@ -1583,6 +1583,18 @@
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_12#1",
       "children" : [ ]
+    }, {
+      "oid": "1.2.246.562.10.52328612800",
+      "nimi": {
+        "fi": "Helsingin kaupunki toimipaikka 12241"
+      },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
+      "children": [],
+      "organisaatiotyypit": [
+        "VARHAISKASVATUKSEN_TOIMIPAIKKA"
+      ]
     } ]
   } ]
 }
