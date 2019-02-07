@@ -46,9 +46,9 @@ const LaajuudenYksikköEditor = ({model, compact, showReadonlyScope}) => {
   let alternatives = EnumEditor.knownAlternatives(yksikköModel)
 
   return model.context.edit
-    ? !yksikköModel || !alternatives || (alternatives.length == 1 && parseBool(compact))
-      ? null
-      : <span className="yksikko"><Editor model={yksikköModel} edit={alternatives.length != 1}/></span>
+    ? yksikköModel && alternatives && (alternatives.length !== 1 || !parseBool(compact))
+      ? <span className="yksikko"><Editor model={yksikköModel} edit={alternatives.length != 1}/></span>
+      : null
     : showReadonlyScope
       ? <span className={'yksikko ' + yksikkö.toLowerCase()}>{'\u00a0'}{hyphenate(yksikkö)}</span>
       : null
