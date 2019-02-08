@@ -18,19 +18,19 @@ trait Laajuus {
 case class LaajuusOpintopisteissä(
   arvo: Float,
   @KoodistoKoodiarvo("2")
-  yksikkö: Koodistokoodiviite = Koodistokoodiviite("2", Some(finnish("opintopistettä")), "opintojenlaajuusyksikko")
+  yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "2", koodistoUri = "opintojenlaajuusyksikko")
 ) extends LaajuusOpintopisteissäTaiKursseissa
 
 case class LaajuusVuosiviikkotunneissa(
   arvo: Float,
   @KoodistoKoodiarvo("3")
-  yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "3", nimi = Some(finnish("Vuosiviikkotuntia")), koodistoUri = "opintojenlaajuusyksikko")
+  yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "3", koodistoUri = "opintojenlaajuusyksikko")
 ) extends LaajuusVuosiviikkotunneissaTaiKursseissa
 
 case class LaajuusKursseissa(
   arvo: Float,
   @KoodistoKoodiarvo("4")
-  yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodistoUri = "opintojenlaajuusyksikko", koodiarvo = "4", nimi = Some(finnish("kurssia")))
+  yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "4", koodistoUri = "opintojenlaajuusyksikko")
 ) extends LaajuusVuosiviikkotunneissaTaiKursseissa with LaajuusOpintopisteissäTaiKursseissa
 
 trait LaajuusOpintopisteissäTaiKursseissa extends Laajuus
@@ -41,11 +41,11 @@ trait LaajuusVuosiviikkotunneissaTaiKursseissa extends Laajuus
 case class LaajuusTunneissa(
   arvo: Float,
   @KoodistoKoodiarvo("5")
-  yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodistoUri = "opintojenlaajuusyksikko", koodiarvo = "5", nimi = Some(english("hours")))
+  yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "5", koodistoUri = "opintojenlaajuusyksikko")
 ) extends Laajuus
 
 case class LaajuusOsaamispisteissä(
   arvo: Float,
   @KoodistoKoodiarvo("6")
-  yksikkö: Koodistokoodiviite = Koodistokoodiviite("6", Some(finnish("Osaamispistettä")), "opintojenlaajuusyksikko")
+  yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "6", koodistoUri = "opintojenlaajuusyksikko")
 ) extends Laajuus

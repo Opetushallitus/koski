@@ -298,7 +298,7 @@ describe('DIA', function( ) {
                 describe('ja osasuoritusten laajuuden summa on sama kuin oppiaineen laajuus', () => {
                   before(
                     osasuoritus.toggleDetails,
-                    osasuoritus.details().property('laajuus').setValue(4),
+                    osasuoritus.details().propertyBySelector('span.laajuus').setValue(4),
                     osasuoritus.toggleDetails,
                     editor.saveChanges,
                     wait.until(page.isSavedLabelShown),
@@ -599,6 +599,34 @@ describe('DIA', function( ) {
                 it('onnistuu', function () {
                   expect(findSingle('.oppiaine.A .laajuus')().text()).to.equal('')
                 })
+              })
+            })
+          })
+
+          describe('Vastaavuustodistuksen tiedot', function () {
+            var aine = opinnot.oppiaineet.oppiaine('oppiaine.AI:first')
+            before(
+              editor.edit,
+              aine.property('lukioOpintojenLaajuus').property('yksikko').setValue('opintopistettä'),
+              editor.saveChanges,
+              wait.until(page.isSavedLabelShown)
+            )
+
+            it('laajuuden yksikön vaihtaminen opintopisteiksi onnistuu', function () {
+              expect(aine.property('lukioOpintojenLaajuus').getText()).to.deep.equal('Lukio-opintojen laajuus 2,5 op')
+            })
+
+            describe('laajuden yksikön vaihtaminen kursseiksi', function () {
+              var aine = opinnot.oppiaineet.oppiaine('oppiaine.AI:first')
+              before(
+                editor.edit,
+                aine.property('lukioOpintojenLaajuus').property('yksikko').setValue('kurssia'),
+                editor.saveChanges,
+                wait.until(page.isSavedLabelShown)
+              )
+
+              it('onnistuu', function () {
+                expect(aine.property('lukioOpintojenLaajuus').getText()).to.deep.equal('Lukio-opintojen laajuus 2,5 kurssia')
               })
             })
           })

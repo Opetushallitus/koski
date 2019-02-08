@@ -290,7 +290,7 @@ function Oppiaine(oppiaineElem) {
     },
     errorText: function() { return extractAsText(subElement(oppiaineElem, '> .error')) },
     arvosana: editorApi.propertyBySelector('tr td.arvosana'),
-    laajuus: editorApi.propertyBySelector('tr.laajuus'),
+    laajuus: editorApi.propertyBySelector('span.laajuus'),
     suorituskieli: editorApi.propertyBySelector('tr.suorituskieli'),
     koetuloksenNelinkertainenPistemäärä: editorApi.propertyBySelector('tr.koetuloksenNelinkertainenPistemäärä')
   }, editorApi)
