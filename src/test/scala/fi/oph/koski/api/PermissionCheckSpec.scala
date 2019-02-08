@@ -41,8 +41,9 @@ class PermissionCheckSpec extends FreeSpec with LocalJettyHttpSpecification with
   def permissionCheck(personOidsForSamePerson: List[Henkilö.Oid], organisationOids: List[Organisaatio.Oid], loggedInUserRoles: List[String] = List("ROLE_APP_KOSKI", "ROLE_APP_OPPIJANUMEROREKISTERI_HENKILON_RU")): Boolean = {
     post(
       "api/permission/checkpermission",
-      JsonSerializer.writeWithRoot(PermissionCheckRequest(
+      JsonSerializer.writeWithRoot(TestPermissionCheckRequest(
         personOidsForSamePerson = personOidsForSamePerson,
+        loggedInUserOid = personOidsForSamePerson,
         organisationOids = organisationOids,
         loggedInUserRoles = loggedInUserRoles)),
       headers = jsonContent
@@ -52,3 +53,5 @@ class PermissionCheckSpec extends FreeSpec with LocalJettyHttpSpecification with
     }
   }
 }
+
+case class TestPermissionCheckRequest(personOidsForSamePerson: List[Henkilö.Oid], loggedInUserOid: List[Henkilö.Oid], organisationOids: List[Organisaatio.Oid], loggedInUserRoles: List[String])

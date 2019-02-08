@@ -14,7 +14,7 @@ case class PermissionCheckResponse(accessAllowed: Boolean, errorMessage: Option[
 class PermissionCheckServlet(implicit val application: KoskiApplication) extends ApiServlet with NoCache with Unauthenticated {
   post("/checkpermission") {
     withJsonBody({ body =>
-      val request = JsonSerializer.extract[PermissionCheckRequest](body)
+      val request = JsonSerializer.extract[PermissionCheckRequest](body, ignoreExtras = true)
       renderObject(checkPermission(request))
     })()
   }
