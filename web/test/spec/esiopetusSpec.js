@@ -59,6 +59,36 @@ describe('Esiopetus', function() {
     })
   })
 
+  describe('Opiskeluoikeuden lisääminen päiväkotiin', function() {
+    before(prepareForNewOppija('kalle', '230872-7258'))
+
+    describe('Kun syötetään validit tiedot', function() {
+      before(addOppija.enterValidDataPäiväkodinEsiopetus())
+
+      describe('Käyttöliittymän tila', function() {
+        it('Lisää-nappi on enabloitu', function() {
+          expect(addOppija.isEnabled()).to.equal(true)
+        })
+
+        it('Ei näytetä opintojen rahoitus -kenttää', function() {
+          expect(addOppija.rahoitusIsVisible()).to.equal(false)
+        })
+      })
+
+      describe('Kun painetaan Lisää-nappia', function() {
+        before(
+          addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Päiväkodin esiopetus')
+        )
+
+        it('lisätty oppija näytetään', function() {
+          expect(opinnot.getTutkinto()).to.equal('Päiväkodin esiopetus')
+          expect(opinnot.getOppilaitos()).to.equal('Helsingin kaupunki toimipaikka 12241')
+          expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('102/011/2014')
+        })
+      })
+    })
+  })
+
   describe('Tietojen muuttaminen', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('300996-870E'))
 
