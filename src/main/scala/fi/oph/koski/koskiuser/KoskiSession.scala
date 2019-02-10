@@ -58,16 +58,7 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
     orgKäyttöoikeudet.exists(_.organisaatiokohtaisetPalveluroolit.contains(palveluRooli))
   }
 
-  def juuriOrganisaatio: Option[OrganisaatioWithOid] = {
-    val juuret = organisaatiot
-    if (juuret.size > 1) {
-      None
-    } else {
-      juuret.headOption
-    }
-  }
-
-  def organisaatiot: List[OrganisaatioWithOid] = orgKäyttöoikeudet.collect { case r: KäyttöoikeusOrg if r.juuri => r.organisaatio }.toList
+  def juuriOrganisaatiot: List[OrganisaatioWithOid] = orgKäyttöoikeudet.collect { case r: KäyttöoikeusOrg if r.juuri => r.organisaatio }.toList
 
   Future(käyttöoikeudet)(ExecutionContext.global) // haetaan käyttöoikeudet toisessa säikeessä rinnakkain
 }
