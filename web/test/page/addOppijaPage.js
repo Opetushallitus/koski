@@ -42,6 +42,12 @@ function AddOppijaPage() {
           .then(api.selectOpiskeluoikeudenTyyppi('Esiopetus'))
       }
     },
+    enterValidDataPäiväkodinEsiopetus: function(params) {
+      params = _.merge({  oppilaitos: 'Helsingin kaupunki toimipaikka 12241' }, {}, params)
+      return function() {
+        return api.enterData(params)()
+      }
+    },
     enterHenkilötiedot: function(params) {
       params = _.merge({ etunimet: 'Tero', kutsumanimi: 'Tero', sukunimi: 'Tyhjä'}, {}, params)
       return function() {

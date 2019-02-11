@@ -22,10 +22,12 @@ import UusiLukionSuoritus from './UusiLukionSuoritus'
 import {sallitutRahoituskoodiarvot} from '../lukio/lukio'
 import UusiIBSuoritus from './UusiIBSuoritus'
 import UusiDIASuoritus from './UusiDIASuoritus'
+import {VARHAISKASVATUKSEN_TOIMIPAIKKA} from './esiopetuksenSuoritus'
 
 export default ({opiskeluoikeusAtom}) => {
   const dateAtom = Atom(new Date())
   const oppilaitosAtom = Atom()
+  const organisaatiotyypitAtom = Atom()
   const suorituskieliAtom = Atom()
   const tyyppiAtom = Atom()
   const tilaAtom = Atom()
@@ -60,7 +62,7 @@ export default ({opiskeluoikeusAtom}) => {
   opiskeluoikeusP.changes().onValue((oo) => opiskeluoikeusAtom.set(oo))
 
   return (<div>
-    <Oppilaitos oppilaitosAtom={oppilaitosAtom} />
+    <Oppilaitos oppilaitosAtom={oppilaitosAtom} organisaatiotyypitAtom={organisaatiotyypitAtom} />
     {
       ift(oppilaitosAtom, <OpiskeluoikeudenTyyppi opiskeluoikeudenTyyppiAtom={tyyppiAtom} opiskeluoikeustyypitP={opiskeluoikeustyypitP} />)
     }
@@ -69,7 +71,7 @@ export default ({opiskeluoikeusAtom}) => {
       tyyppiAtom.map('.koodiarvo').map(tyyppi => {
         if (tyyppi == 'perusopetus') return <UusiNuortenPerusopetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
         if (tyyppi == 'aikuistenperusopetus') return <UusiAikuistenPerusopetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
-        if (tyyppi == 'esiopetus') esiopetuksenSuoritus(suoritusAtom, oppilaitosAtom, suorituskieliAtom) // No need to show the diaarinumero selector as there is only one choice
+        if (tyyppi == 'esiopetus') esiopetuksenSuoritus(suoritusAtom, oppilaitosAtom, organisaatiotyypitAtom, suorituskieliAtom) // No need to show the diaarinumero selector as there is only one choice
         if (tyyppi == 'ammatillinenkoulutus') return <UusiAmmatillisenKoulutuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
         if (tyyppi == 'perusopetukseenvalmistavaopetus') return <UusiPerusopetukseenValmistavanOpetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
         if (tyyppi == 'perusopetuksenlisaopetus') return <UusiPerusopetuksenLisaopetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
@@ -86,15 +88,18 @@ export default ({opiskeluoikeusAtom}) => {
   </div>)
 }
 
-const Oppilaitos = ({oppilaitosAtom}) => {
-  const selectableOrgTypes = ['OPPILAITOS', 'OPPISOPIMUSTOIMIPISTE']
+const Oppilaitos = ({oppilaitosAtom, organisaatiotyypitAtom}) => {
+  const selectableOrgTypes = ['OPPILAITOS', 'OPPISOPIMUSTOIMIPISTE', VARHAISKASVATUKSEN_TOIMIPAIKKA]
   return (<label className='oppilaitos'><Text name="Oppilaitos"/>
     {
       oppilaitosAtom.map(oppilaitos => (
         <OrganisaatioPicker
           preselectSingleOption={true}
           selectedOrg={{ oid: oppilaitos && oppilaitos.oid, nimi: oppilaitos && oppilaitos.nimi && t(oppilaitos.nimi) }}
-          onSelectionChanged={org => oppilaitosAtom.set({oid: org && org.oid, nimi: org && org.nimi})}
+          onSelectionChanged={org => {
+            oppilaitosAtom.set({oid: org && org.oid, nimi: org && org.nimi})
+            organisaatiotyypitAtom.set(org && org.organisaatiotyypit)
+          }}
           shouldShowOrg={org => !org.organisaatiotyypit.some(tyyppi => tyyppi === 'TOIMIPISTE')}
           canSelectOrg={(org) => org.organisaatiotyypit.some(ot => selectableOrgTypes.includes(ot))}
           clearText="tyhjennä"

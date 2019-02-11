@@ -1,5 +1,6 @@
 package fi.oph.koski.organisaatio
 
+import fi.oph.koski.organisaatio.OrganisaatioHierarkia._
 import fi.oph.koski.schema._
 
 case class OrganisaatioHierarkia(oid: String, oppilaitosnumero: Option[Koodistokoodiviite], nimi: LocalizedString, yTunnus: Option[String], kotipaikka: Option[Koodistokoodiviite], organisaatiotyypit: List[String], oppilaitostyyppi: Option[String], aktiivinen: Boolean, children: List[OrganisaatioHierarkia]) {
@@ -15,11 +16,11 @@ case class OrganisaatioHierarkia(oid: String, oppilaitosnumero: Option[Koodistok
   }
 
   def toOrganisaatio: OrganisaatioWithOid =
-    if (organisaatiotyypit.contains("OPPILAITOS") || organisaatiotyypit.contains("OPPISOPIMUSTOIMIPISTE")) {
+    if (organisaatiotyypit.intersect(oppilaitosTyypit).nonEmpty) {
       Oppilaitos(oid, oppilaitosnumero, Some(nimi), kotipaikka)
-    } else if (organisaatiotyypit.contains("KOULUTUSTOIMIJA")) {
+    } else if (organisaatiotyypit.contains(KOULUTUSTOIMIJA)) {
       Koulutustoimija(oid, Some(nimi), yTunnus, kotipaikka)
-    } else if (organisaatiotyypit.contains("TOIMIPISTE")) {
+    } else if (organisaatiotyypit.contains(TOIMIPISTE)) {
       Toimipiste(oid, Some(nimi), kotipaikka)
     } else {
       OidOrganisaatio(oid, Some(nimi), kotipaikka)
@@ -42,4 +43,11 @@ object OrganisaatioHierarkia {
   def flatten(orgs: List[OrganisaatioHierarkia]): List[OrganisaatioHierarkia] = {
     orgs ++ orgs.flatMap { org => org :: flatten(org.children) }
   }
+
+  val OPPILAITOS = "OPPILAITOS"
+  val OPPISOPIMUSTOIMIPISTE = "OPPISOPIMUSTOIMIPISTE"
+  val VARHAISKASVATUKSEN_TOIMIPAIKKA = "VARHAISKASVATUKSEN_TOIMIPAIKKA"
+  val KOULUTUSTOIMIJA = "KOULUTUSTOIMIJA"
+  val TOIMIPISTE = "TOIMIPISTE"
+  val oppilaitosTyypit = List(OPPILAITOS, OPPISOPIMUSTOIMIPISTE, VARHAISKASVATUKSEN_TOIMIPAIKKA)
 }

@@ -73,7 +73,8 @@ case class EsiopetuksenSuoritus(
 case class Esiopetus(
   perusteenDiaarinumero: Option[String],
   @KoodistoKoodiarvo("001101")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite("001101", koodistoUri = "koulutus"),
+  @KoodistoKoodiarvo("001102")
+  tunniste: Koodistokoodiviite,
   @Description("Kuvaus esiopetuksesta. Esiopetuksen päätteeksi voidaan antaa osallistumistodistus, jossa kuvataan järjestettyä esiopetusta")
   @Tooltip("Kuvaus esiopetuksesta. Esiopetuksen päätteeksi voidaan antaa osallistumistodistus, jossa kuvataan järjestettyä esiopetusta")
   @MultiLineString(4)
