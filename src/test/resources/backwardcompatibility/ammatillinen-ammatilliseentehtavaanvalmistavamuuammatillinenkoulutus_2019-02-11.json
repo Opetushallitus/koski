@@ -33,7 +33,7 @@
     "suoritukset" : [ {
       "koulutusmoduuli" : {
         "tunniste" : {
-          "koodiarvo" : "ansiojaliikennelentajankoulutus",
+          "koodiarvo" : "1",
           "koodistoUri" : "ammatilliseentehtavaanvalmistavakoulutus"
         },
         "kuvaus" : {

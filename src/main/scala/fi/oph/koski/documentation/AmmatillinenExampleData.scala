@@ -25,7 +25,7 @@ object AmmatillinenExampleData {
     LocalizedString.finnish("Koulutus antaa opiskelijalle valmiudet hoitaa isännöinti- ja kiinteistöpalvelualan yritysten sihteeri- ja asiakaspalvelutehtäviä.")
   )
   val ammatilliseenTehtäväänValmistavaKoulutus: AmmatilliseenTehtäväänValmistavaKoulutus = AmmatilliseenTehtäväänValmistavaKoulutus(
-    Koodistokoodiviite("ansiojaliikennelentajankoulutus", "ammatilliseentehtavaanvalmistavakoulutus"),
+    Koodistokoodiviite("1", "ammatilliseentehtavaanvalmistavakoulutus"),
     None,
     LocalizedString.finnish("Liikennelentäjät lentävät monentyyppisiä lentokoneita kuljettaen matkustajia, rahtia ja postia.")
   )
