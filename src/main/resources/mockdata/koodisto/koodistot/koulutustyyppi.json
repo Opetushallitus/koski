@@ -52,6 +52,14 @@
   }, {
     "codesUri" : "koulutus",
     "codesVersion" : 9,
+    "passive" : true
+  }, {
+    "codesUri" : "koulutus",
+    "codesVersion" : 10,
+    "passive" : true
+  }, {
+    "codesUri" : "koulutus",
+    "codesVersion" : 11,
     "passive" : false
   }, {
     "codesUri" : "koulutustyyppifasetti",
