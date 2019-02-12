@@ -20,7 +20,7 @@ export class LaajuusEditor extends React.Component {
     let wrappedModel = wrapOptional(model)
     return (
       <span>
-        <span className="property laajuus">
+        <span className="property laajuus arvo">
           <span className={modelValid(wrappedModel) ? 'value' : 'value error'}>
             <Editor model={wrappedModel} path="arvo"/>
           </span>
@@ -57,7 +57,7 @@ const LaajuudenYksikköEditor = ({model, compact, showReadonlyScope}) => {
   return model.context.edit
     ? !yksikköModel || !alternatives || (alternatives.length == 1 && parseBool(compact))
       ? null
-      : <span className="property yksikko">
+      : <span className="property yksikko inline">
         <Editor model={yksikköModel} edit={alternatives.length !== 1 || !!model.oneOfPrototypes} fetchAlternatives={m => model.oneOfPrototypes ? yksikköAlternativesBasedOnPrototypes(model) : EnumEditor.fetchAlternatives(m)} />
       </span>
     : showReadonlyScope
