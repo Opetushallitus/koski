@@ -7,7 +7,7 @@ import java.time.{Instant, LocalDate}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
-import fi.oph.koski.json.{JsonFiles}
+import fi.oph.koski.json.JsonSerializer.{writeWithRoot => asJsonString}
 
 import scala.io.Source
 
@@ -23,8 +23,31 @@ object ElaketurvakeskusCLI {
 
     val tutkintotiedot = tasks.flatMap(_.doIt).reduce[EtkResponse](mergeResponses)
 
-    JsonFiles.writeFile[EtkResponse](fileName.filename, tutkintotiedot)
-    println(s"Haettiin yhteensa ${tutkintotiedot.tutkintojenLkm} tutkintoa")
+    printEtkResponse(tutkintotiedot)
+  }
+
+  private def printEtkResponse(response: EtkResponse): Unit = {
+    val result =
+      s"""
+         |{
+         |  "vuosi": ${response.vuosi}
+         |  "tutkintojenLkm": ${response.tutkintojenLkm}
+         |  "aikaleima": ${response.aikaleima}
+         |  "tutkinnot": [
+         |${makeTutkinnotString(response.tutkinnot)}
+         |   ]
+         |}
+      """.stripMargin
+
+    print(result)
+  }
+
+  private def makeTutkinnotString(tutkinnot: List[EtkTutkintotieto]): String = {
+    tutkinnot match {
+      case Nil => ""
+      case t :: Nil => s"\t\t${asJsonString(t)}"
+      case t :: ts => s"\t\t${asJsonString(t)},\n" + makeTutkinnotString(ts)
+    }
   }
 
   private def mergeResponses(res1: EtkResponse, res2: EtkResponse) = {
