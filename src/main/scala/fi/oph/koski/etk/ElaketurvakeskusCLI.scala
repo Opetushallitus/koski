@@ -28,9 +28,9 @@ object ElaketurvakeskusCLI {
     val result =
       s"""
          |{
-         |  "vuosi": ${response.vuosi}
-         |  "tutkintojenLkm": ${response.tutkintojenLkm}
-         |  "aikaleima": ${response.aikaleima}
+         |  "vuosi": ${response.vuosi},
+         |  "tutkintojenLkm": ${response.tutkintojenLkm},
+         |  "aikaleima": "${response.aikaleima}",
          |  "tutkinnot": [
          |${makeTutkinnotString(response.tutkinnot)}
          |   ]
