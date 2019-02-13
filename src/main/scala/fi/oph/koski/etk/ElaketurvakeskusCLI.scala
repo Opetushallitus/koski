@@ -12,7 +12,11 @@ import fi.oph.koski.json.JsonSerializer.{writeWithRoot => asJsonString}
 import scala.io.Source
 
 
-object ElaketurvakeskusCLI {
+protected trait Output {
+  def printResult(s: String) = print(s)
+}
+
+class ElaketurvakeskusCLI extends Output {
 
   def main(args: Array[String]): Unit = {
     val parsedArgs = argsToTasks(args)
@@ -37,7 +41,7 @@ object ElaketurvakeskusCLI {
          |}
       """.stripMargin
 
-    print(result)
+    printResult(result)
   }
 
   private def makeTutkinnotString(tutkinnot: List[EtkTutkintotieto]): String = {
