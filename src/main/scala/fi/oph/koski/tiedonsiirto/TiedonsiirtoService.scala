@@ -94,7 +94,9 @@ class TiedonsiirtoService(
     }
 
   private def haeTiedonsiirrot(filters: List[Map[String, Any]], oppilaitosOid: Option[String], paginationSettings: Option[PaginationSettings])(implicit koskiSession: KoskiSession): Either[HttpStatus, PaginatedResponse[Tiedonsiirrot]] = {
-    AuditLog.log(AuditLogMessage(TIEDONSIIRTO_KATSOMINEN, koskiSession, Map(juuriOrganisaatio -> koskiSession.juuriOrganisaatio.map(_.oid).getOrElse("ei juuriorganisaatiota"))))
+    koskiSession.juuriOrganisaatiot.map(_.oid).foreach { oid =>
+      AuditLog.log(AuditLogMessage(TIEDONSIIRTO_KATSOMINEN, koskiSession, Map(juuriOrganisaatio -> oid)))
+    }
 
     val doc = toJValue(ElasticSearch.applyPagination(paginationSettings, Map(
       "query" -> ElasticSearch.allFilter(filters),
@@ -155,12 +157,12 @@ class TiedonsiirtoService(
       .orElse(oppilaitoksetFromData)
       .map(_.distinct)
 
-    val koulutustoimija: Option[OidOrganisaatio] = validatedOppija.flatMap(_.opiskeluoikeudet.headOption.flatMap(_.koulutustoimija.map(_.toOidOrganisaatio)))
+    val koulutustoimija: List[OidOrganisaatio] = validatedOppija.flatMap(_.opiskeluoikeudet.headOption.flatMap(_.koulutustoimija.map(_.toOidOrganisaatio))).toList
     val suoritustiedot: Option[List[TiedonsiirtoSuoritusTiedot]] = validatedOppija.map(toSuoritustiedot)
 
-    val juuriOrganisaatio = if (koskiSession.isRoot) koulutustoimija else koskiSession.juuriOrganisaatio
+    val juuriOrganisaatiot = if (koskiSession.isRoot) koulutustoimija else koskiSession.juuriOrganisaatiot
 
-    juuriOrganisaatio.foreach((org: OrganisaatioWithOid) => {
+    juuriOrganisaatiot.foreach((org: OrganisaatioWithOid) => {
       val (data: Option[JValue], virheet: Option[List[ErrorDetail]]) = error.map(e => (Some(e.data), Some(e.virheet))).getOrElse((None, None))
 
       storeToElasticSearch(henkilö, org, oppilaitokset, suoritustiedot, data, virheet, lahdejarjestelma, koskiSession.oid, Some(koskiSession.username), new Timestamp(System.currentTimeMillis))

@@ -233,8 +233,6 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       KoskiErrorCategory.forbidden.lähdejärjestelmäIdEiSallittu("Lähdejärjestelmä määritelty, mutta käyttäjä ei ole palvelukäyttäjä")
     } else if (user.isPalvelukäyttäjä && opiskeluoikeus.lähdejärjestelmänId.isEmpty) {
       KoskiErrorCategory.forbidden.lähdejärjestelmäIdPuuttuu("Käyttäjä on palvelukäyttäjä mutta lähdejärjestelmää ei ole määritelty")
-    } else if (opiskeluoikeus.lähdejärjestelmänId.isDefined && user.isPalvelukäyttäjä && user.juuriOrganisaatio.isEmpty) {
-      KoskiErrorCategory.forbidden.juuriorganisaatioPuuttuu("Automaattisen tiedonsiirron palvelukäyttäjällä ei yksiselitteistä juuriorganisaatiota")
     } else {
       HttpStatus.ok
     }

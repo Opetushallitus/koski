@@ -204,9 +204,9 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
   }
 
   "palvelukäyttäjä, jolla useampi juuriorganisaatio" - {
-    "ei voi tallentaa tietoja" in {
+    "voi tallentaa tietoja" in {
       putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästäOmnia, headers = authHeaders(MockUsers.kahdenOrganisaatioPalvelukäyttäjä) ++ jsonContent) {
-        verifyResponseStatus(403, KoskiErrorCategory.forbidden.juuriorganisaatioPuuttuu("Automaattisen tiedonsiirron palvelukäyttäjällä ei yksiselitteistä juuriorganisaatiota"))
+        verifyResponseStatusOk()
       }
     }
   }
