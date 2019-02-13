@@ -30,16 +30,14 @@ class ElaketurvakeskusCLI extends Output {
 
   private def printEtkResponse(response: EtkResponse): Unit = {
     val result =
-      s"""
-         |{
-         |  "vuosi": ${response.vuosi},
-         |  "tutkintojenLkm": ${response.tutkintojenLkm},
-         |  "aikaleima": "${response.aikaleima}",
-         |  "tutkinnot": [
-         |${makeTutkinnotString(response.tutkinnot)}
-         |   ]
-         |}
-      """.stripMargin
+      s"""|{
+          | "vuosi": ${response.vuosi},
+          | "tutkintojenLkm": ${response.tutkintojenLkm},
+          | "aikaleima": "${response.aikaleima}",
+          | "tutkinnot": [
+          |${makeTutkinnotString(response.tutkinnot)}
+          | ]
+          |}""".stripMargin
 
     printResult(result)
   }
