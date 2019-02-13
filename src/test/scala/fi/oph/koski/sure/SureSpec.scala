@@ -56,6 +56,7 @@ class SureSpec extends FreeSpec with LocalJettyHttpSpecification with Opiskeluoi
       }
       "Luottamuksellinen data" - {
         "Näytetään käyttäjälle jolla on LUOTTAMUKSELLINEN-rooli" in {
+          resetFixtures
           postOids(Seq(MockOppijat.eero.oid), user = stadinAmmattiopistoKatselija) {
             verifyResponseStatusOk()
             body should include("vankilaopetuksessa")
