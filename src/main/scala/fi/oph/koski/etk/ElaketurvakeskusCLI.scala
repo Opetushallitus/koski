@@ -156,6 +156,14 @@ private case class RaportointikantaClient(http: Http) {
   def ammatillisetperustutkinnot(alku: LocalDate, loppu: LocalDate) = {
     val request = EtkTutkintotietoRequest(alku, loppu, alku.getYear)
     runTask(http.post(uri"/elaketurvakeskus/ammatillisetperustutkinnot", request)(json4sEncoderOf[EtkTutkintotietoRequest])(Http.parseJsonOptional[EtkResponse]))
+      .map(response => {
+        EtkResponse(
+          vuosi = response.vuosi,
+          aikaleima = response.aikaleima,
+          tutkintojenLkm = response.tutkintojenLkm,
+          tutkinnot = response.tutkinnot.map(Format.tutkintotieto(_))
+        )
+      })
   }
 }
 
@@ -177,5 +185,17 @@ private object Format {
     case "2" => "alempikorkeakoulututkinto"
     case "3" => "ylempiammattikorkeakoulututkinto"
     case "4" => "ylempikorkeakoulututkinto"
+  }
+
+  def tutkintotieto(tt: EtkTutkintotieto) = {
+    EtkTutkintotieto(
+      henkilö = tt.henkilö,
+      tutkinto = EtkTutkinto(
+        tutkinnonTaso = Format.tutkintotaso(tt.tutkinto.tutkinnonTaso),
+        alkamispäivä = tt.tutkinto.alkamispäivä,
+        päättymispäivä = tt.tutkinto.päättymispäivä
+      ),
+      viite = tt.viite
+    )
   }
 }
