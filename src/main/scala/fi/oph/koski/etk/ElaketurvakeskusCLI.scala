@@ -70,6 +70,7 @@ class ElaketurvakeskusCLI extends Output {
       case "-csv" => VirtaCsv(arg)
       case "-user" => Authentication(arg)
       case "-api" => RaportointikantaRequest(arg)
+      case "-port" => KoskiPort(arg)
       case _ => throw new Exception(s"Unkown command ${cmd}")
     }
     }.toList
@@ -80,18 +81,23 @@ class ElaketurvakeskusCLI extends Output {
   private def appendAuthToRequests(args: List[Args]) = {
     args.map { arg =>
       arg match {
-        case r: RaportointikantaRequest => RaportointikantaRequest(r.endpoint, r.alku, r.loppu, findAuthentication(args))
+        case r: RaportointikantaRequest => RaportointikantaRequest(r.endpoint, r.alku, r.loppu, findAuthentication(args), findPortOrDefault(args))
         case _ => arg
       }
     }
   }
 
-  private def findAuthentication(tasks: List[Args]) = {
-    val auth = tasks.find(_.isInstanceOf[Authentication])
-    if (auth.isDefined) {
-      auth.get.asInstanceOf[Authentication]
-    } else {
-      throw new Exception("kayttaja:salasana paria ei loytynyt. -user tunnus:salanasa")
+  private def findAuthentication(tasks: List[Args]): Authentication= {
+    tasks.find(_.isInstanceOf[Authentication]) match {
+      case Some(s) => s.asInstanceOf[Authentication]
+      case _ => throw new Exception("maarita -user tunnus:salasana")
+    }
+  }
+
+  private def findPortOrDefault(tasks: List[Args]): KoskiPort = {
+    tasks.find(_.isInstanceOf[KoskiPort]) match {
+      case Some(s) => s.asInstanceOf[KoskiPort]
+      case None => KoskiPort("8080")
     }
   }
 }
@@ -152,6 +158,8 @@ private case class VirtaCsv(filepath: String) extends Args with Task {
   }
 }
 
+private case class KoskiPort(str: String) extends Args
+
 private case class Authentication(username: String, password: String) extends Args
 
 private object Authentication {
@@ -161,10 +169,10 @@ private object Authentication {
   }
 }
 
-private case class RaportointikantaRequest(endpoint: String, alku: LocalDate, loppu: LocalDate, auth: Authentication = Authentication("","")) extends Args with Task {
+private case class RaportointikantaRequest(endpoint: String, alku: LocalDate, loppu: LocalDate, auth: Authentication = Authentication("",""), koskiport: KoskiPort = KoskiPort("8080")) extends Args with Task {
   override def doIt(): Option[EtkResponse] = {
     endpoint match  {
-      case "ammatillisetperustutkinnot" => RaportointikantaClient(auth.username, auth.password).ammatillisetperustutkinnot(alku, loppu)
+      case "ammatillisetperustutkinnot" => RaportointikantaClient(auth.username, auth.password, koskiport.str).ammatillisetperustutkinnot(alku, loppu)
       case _ => throw new Exception("API endpointtia ei ole maaritelty")
     }
   }
@@ -194,8 +202,8 @@ private case class RaportointikantaClient(http: Http) {
 }
 
 private object RaportointikantaClient {
-  def apply(username: String, password: String): RaportointikantaClient = {
-    val config = ServiceConfig("http://127.0.0.1:8080/koski/api", username, password)
+  def apply(username: String, password: String, koskiPort: String): RaportointikantaClient = {
+    val config = ServiceConfig(s"http://127.0.0.1:${koskiPort}/koski/api", username, password)
     RaportointikantaClient(VirkailijaHttpClient(config, "127.0.0.1", useCas = false))
   }
 }
