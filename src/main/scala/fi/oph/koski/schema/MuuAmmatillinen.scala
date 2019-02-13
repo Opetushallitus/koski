@@ -2,7 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
-import fi.oph.koski.schema.annotation.{ComplexObject, KoodistoKoodiarvo, KoodistoUri, Tooltip}
+import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation.{Description, MinItems, Title}
 
 case class MuunAmmatillisenKoulutuksenSuoritus(
@@ -55,6 +55,7 @@ case class AmmatilliseenTehtäväänValmistavaKoulutus(
   laajuus: Option[LaajuusKaikkiYksiköt],
   @Description("Kuvaus koulutuksen sisällöstä osaamisena.")
   @Tooltip("Kuvaus koulutuksen sisällöstä osaamisena.")
+  @MultiLineString(5)
   kuvaus: LocalizedString
 ) extends KoodistostaLöytyväKoulutusmoduuli with MuuAmmatillinenKoulutus
 
