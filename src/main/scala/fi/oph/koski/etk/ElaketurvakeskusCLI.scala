@@ -19,8 +19,6 @@ object ElaketurvakeskusCLI {
 
     val tasks = parsedArgs.filter(_.isInstanceOf[Task]).map(_.asInstanceOf[Task])
 
-    val fileName = parsedArgs.find(_.isInstanceOf[OutputFile]).getOrElse(throw new Exception("Maarita haluttu tiedoston nimi -output")).asInstanceOf[OutputFile]
-
     val tutkintotiedot = tasks.flatMap(_.doIt).reduce[EtkResponse](mergeResponses)
 
     printEtkResponse(tutkintotiedot)
@@ -68,7 +66,6 @@ object ElaketurvakeskusCLI {
       case "-csv" => VirtaCsv(arg)
       case "-user" => Authentication(arg)
       case "-api" => RaportointikantaRequest(arg)
-      case "-output" => OutputFile(arg)
       case _ => throw new Exception(s"Unkown command ${cmd}")
     }
     }.toList
@@ -150,8 +147,6 @@ private case class VirtaCsv(filepath: String) extends Args with Task {
     Csv.parse(filepath)
   }
 }
-
-private case class OutputFile(filename: String) extends Args
 
 private case class Authentication(username: String, password: String) extends Args
 
