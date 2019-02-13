@@ -7,8 +7,8 @@ import org.http4s.client.Client
 object VirkailijaHttpClient {
   def apply(serviceConfig: ServiceConfig, serviceUrl: String, useCas: Boolean = true, sessionCookieName: String = "JSESSIONID") = {
     val blazeHttpClient = Http.newClient(serviceUrl)
-    val casClient = new CasClient(serviceConfig.virkailijaUrl, blazeHttpClient)
     val casAuthenticatingClient: Client = if (useCas) {
+      val casClient = new CasClient(serviceConfig.virkailijaUrl, blazeHttpClient)
       CasAuthenticatingClient(casClient, CasParams(serviceUrl, serviceConfig.username, serviceConfig.password), blazeHttpClient, Some(OpintopolkuCallerId.koski), sessionCookieName)
     } else {
       ClientWithBasicAuthentication(blazeHttpClient, serviceConfig.username, serviceConfig.password)
