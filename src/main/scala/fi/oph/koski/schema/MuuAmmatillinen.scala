@@ -38,7 +38,6 @@ case class TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(
   @MinItems(1)
   override val osasuoritukset: Option[List[TutkinnonOsaaPienemmänKokonaisuudenSuoritus]],
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
-  pilotti: Boolean,
   @KoodistoKoodiarvo("tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus", "suorituksentyyppi"),
   ryhmä: Option[String] = None
@@ -73,12 +72,6 @@ case class MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
   koulutusmoduuli: MuunAmmatillisenKoulutuksenOsasuoritus,
   override val alkamispäivä: Option[LocalDate],
   arviointi: Option[List[AmmatillinenArviointi]],
-  @Tooltip("Tiedot aiemmin hankitun osaamisen tunnustamisesta.")
-  @ComplexObject
-  tunnustettu: Option[OsaamisenTunnustaminen] = None,
-  @Tooltip("Suoritukseen liittyvät lisätiedot, kuten esimerkiksi mukautettu arviointi tai poikkeus arvioinnissa. Sisältää lisätiedon tyypin sekä vapaamuotoisen kuvauksen.")
-  @ComplexObject
-  lisätiedot: Option[List[MuunAmmatillisenKoulutuksenOsasuorituksenLisätieto]],
   suorituskieli: Option[Koodistokoodiviite],
   @Description("Osasuoritukseen liittyvän näytön tiedot")
   @Tooltip("Osasuoritukseen kuuluvan ammattiosaamisen näytön tiedot.")
@@ -110,9 +103,6 @@ case class TutkinnonOsaaPienemmänKokonaisuudenSuoritus(
   koulutusmoduuli: TutkinnonOsaaPienempiKokonaisuus,
   override val alkamispäivä: Option[LocalDate],
   arviointi: Option[List[AmmatillinenArviointi]],
-  @Tooltip("Tiedot aiemmin hankitun osaamisen tunnustamisesta.")
-  @ComplexObject
-  tunnustettu: Option[OsaamisenTunnustaminen] = None,
   @Description("Osasuoritukseen liittyvän näytön tiedot")
   @Tooltip("Osasuoritukseen kuuluvan ammattiosaamisen näytön tiedot.")
   @ComplexObject

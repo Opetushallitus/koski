@@ -33,7 +33,6 @@ object TutkinnonOsaaPienempiKokonaisuusExample {
         koulutussopimukset = None,
         suorituskieli = suomenKieli,
         toimipiste = stadinToimipiste,
-        pilotti = false,
         osasuoritukset = Some(List(
           TutkinnonOsaaPienemmänKokonaisuudenSuoritus(
             TutkinnonOsaaPienempiKokonaisuus(
@@ -43,7 +42,6 @@ object TutkinnonOsaaPienempiKokonaisuusExample {
             ),
             alkamispäivä = None,
             arviointi = None,
-            tunnustettu = None,
             näyttö = None,
             liittyyTutkinnonOsaan = Koodistokoodiviite(
               "101481",
