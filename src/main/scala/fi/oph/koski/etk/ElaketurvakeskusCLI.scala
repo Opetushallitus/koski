@@ -103,7 +103,7 @@ private object Csv {
     val fieldMap = headLine.zipWithIndex.toMap
 
     val vuosi = csv.drop(1).head.split(";")(0).toInt
-    val tutkintotiedot = csv.drop(1).map(toEtkTutkintotieto(_, fieldMap))
+    val tutkintotiedot = csv.drop(1).map(toEtkTutkintotieto(_, fieldMap, headLine.size))
 
     Some(EtkResponse(
       vuosi = vuosi,
@@ -113,10 +113,14 @@ private object Csv {
     ))
   }
 
-  private def toEtkTutkintotieto(row: String, fieldMap: Map[String, Int]) = {
+  private def toEtkTutkintotieto(row: String, fieldMap: Map[String, Int], expectedFieldCount: Int) = {
     val fields = row.split(";")
 
-    def get(field: String): String = fields(fieldMap.get(field).get)
+    if (fields.size != expectedFieldCount) {
+      throw new Exception(s"Riviltä puuttuu kenttiä: ${row}")
+    }
+
+    def get(field: String): String = fields(fieldMap.get(field).getOrElse(throw new Exception(s"csv tiedostosta puuttuu kenttä ${field}")))
 
     EtkTutkintotieto(
       henkilö = EtkHenkilö(
