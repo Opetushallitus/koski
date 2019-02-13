@@ -73,14 +73,9 @@ case class PerusopetukseenValmistavaOpetus(
 @Description("Perusopetukseen valmistavan opetuksen oppiaineen tunnistetiedot")
 case class PerusopetukseenValmistavanOpetuksenOppiaine(
   tunniste: PaikallinenKoodi,
-  laajuus: Option[PerusopetukseenValmistavanKoulutuksenLaajuus],
+  laajuus: Option[LaajuusKaikkiYksiköt],
   @Tooltip("Oppiaineen opetuksen sisältö.")
   opetuksenSisältö: Option[LocalizedString]
 ) extends PaikallinenKoulutusmoduuli with StorablePreference {
   def kuvaus: LocalizedString = opetuksenSisältö.getOrElse(LocalizedString.empty)
 }
-
-case class PerusopetukseenValmistavanKoulutuksenLaajuus(
-  arvo: Float,
-  yksikkö: Koodistokoodiviite
-) extends Laajuus

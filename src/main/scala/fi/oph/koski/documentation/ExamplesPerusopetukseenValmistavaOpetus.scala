@@ -28,7 +28,7 @@ object ExamplesPerusopetukseenValmistavaOpetus {
           PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus(
             koulutusmoduuli = PerusopetukseenValmistavanOpetuksenOppiaine(
               tunniste = PaikallinenKoodi("ai", finnish("Äidinkieli")),
-              laajuus = Some(PerusopetukseenValmistavanKoulutuksenLaajuus(10, Koodistokoodiviite(koodiarvo = "3", nimi = Some(finnish("Vuosiviikkotuntia")), koodistoUri = "opintojenlaajuusyksikko"))),
+              laajuus = Some(LaajuusKaikkiYksiköt(10, Koodistokoodiviite(koodiarvo = "3", nimi = Some(finnish("Vuosiviikkotuntia")), koodistoUri = "opintojenlaajuusyksikko"))),
               opetuksenSisältö = Some(finnish("Suullinen ilmaisu ja kuullun ymmärtäminen"))
             ),
             arviointi = Some(List(SanallinenPerusopetuksenOppiaineenArviointi(kuvaus = Some(finnish("Keskustelee sujuvasti suomeksi")))))

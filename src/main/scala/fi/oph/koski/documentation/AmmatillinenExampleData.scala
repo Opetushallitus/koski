@@ -447,7 +447,7 @@ object AmmatillinenExampleData {
     todistuksellaNäkyvätLisätiedot = Some("Suorittaa toista osaamisalaa")
   )
 
-  def muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(tunniste: PaikallinenKoodi, kuvaus: String, osasuoritukset: Option[List[MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus]] = None, laajuus: Option[Laajuus] = None) =
+  def muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(tunniste: PaikallinenKoodi, kuvaus: String, osasuoritukset: Option[List[MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus]] = None, laajuus: Option[LaajuusKaikkiYksiköt] = None) =
     MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
       MuunAmmatillisenKoulutuksenOsasuoritus(
         tunniste,

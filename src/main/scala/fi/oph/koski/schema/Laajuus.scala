@@ -15,6 +15,11 @@ trait Laajuus {
   def yksikkö: Koodistokoodiviite
 }
 
+case class LaajuusKaikkiYksiköt(
+  arvo: Float,
+  yksikkö: Koodistokoodiviite
+) extends Laajuus
+
 case class LaajuusOpintopisteissä(
   arvo: Float,
   @KoodistoKoodiarvo("2")
