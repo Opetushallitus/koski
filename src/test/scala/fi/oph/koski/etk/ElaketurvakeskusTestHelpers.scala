@@ -27,11 +27,15 @@ protected trait ElaketurvakeskusCLITestMethods {
     file.delete
   }
 
+  var outputResult = ""
+
+  def readOutput(output: scala.Any): Unit = outputResult = output.toString
+
+  def ElaketurvakeskusCliForTest[A] = {
+    val cli = ElaketurvakeskusCli
+    cli.output = readOutput _
+    cli
+  }
+
   private def write(file: File, content: String) = new PrintWriter(file){ write(content); flush }
-}
-
-protected trait MockOutput extends Output {
-  var consoleOutput = ""
-
-  override def printResult(s: String): Unit = consoleOutput = s
 }

@@ -13,17 +13,8 @@ import scala.annotation.tailrec
 import scala.io.Source
 
 
-object EtkCli {
-  def main(args: Array[String]): Unit = {
-    new ElaketurvakeskusCLI().main(args)
-  }
-}
-
-protected trait Output {
-  def printResult(s: String) = print(s)
-}
-
-class ElaketurvakeskusCLI extends Output {
+object ElaketurvakeskusCli {
+  var output = print _
 
   def main(args: Array[String]): Unit = {
     val parsedArgs = argsToTasks(args)
@@ -46,7 +37,7 @@ class ElaketurvakeskusCLI extends Output {
           | ]
           |}""".stripMargin
 
-    printResult(result)
+    output(result)
   }
 
   private def makeTutkinnotString(tutkinnot: List[EtkTutkintotieto]): String = {
