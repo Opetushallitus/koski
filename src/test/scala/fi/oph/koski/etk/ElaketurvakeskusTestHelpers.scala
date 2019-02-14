@@ -6,7 +6,7 @@ import java.io.PrintWriter
 import fi.oph.koski.api.SharedJetty
 
 protected trait ElaketurvakeskusCLITestMethods {
-  private val mockCsvFile =
+  protected val mockCsv =
     """|vuosi;korkeakoulu;hetu;syntymaaika;sukupuoli;oppijanumero;sukunimi;etunimet;tutkintokoodi;suorituspaivamaara;tutkinnon_taso;aloituspaivamaara;OpiskeluoikeudenAlkamispaivamaara
        |2016;01901;021094-650K;1989-02-01;1;;Nenäkä;Dtes Apu;612101;2016-06-19;2;2011-08-01;2011-08-01
        |2016;01901;281192-654S;1983-04-01;1;1.2.246.562.24.96616592932;Test;Testi Hy;612101;2016-05-31;2;2015-08-01;2015-08-01
@@ -19,18 +19,10 @@ protected trait ElaketurvakeskusCLITestMethods {
 
   val koskiPort = SharedJetty.port.toString
   val csvFilePath = "csv-tiedosto-testia-varten.csv"
-  val failingCsvFilePath = "csv-tiedosto-testia-varten-failing.csv"
 
-  def withCsvFixture(f: => Unit) = {
+  def withCsvFixture(csv: String = mockCsv)(f: => Unit) = {
     val file = new File(csvFilePath)
-    write(file, mockCsvFile)
-    (f)
-    file.delete
-  }
-
-  def withFailingCsvFixture(f: => Unit) = {
-    val file = new File(failingCsvFilePath)
-    write(file, mockCsvFile.replace(";;", ";"))
+    write(file, csv)
     (f)
     file.delete
   }
