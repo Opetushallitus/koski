@@ -23,10 +23,13 @@ import scalaz.{-\/, \/-}
 
 object Http extends Logging {
   private val maxHttpConnections = Pools.jettyThreads + Pools.httpThreads
-  def newClient = blaze.PooledHttp1Client(maxTotalConnections = maxHttpConnections, config = BlazeClientConfig.defaultConfig.copy(
-    requestTimeout = 10.minutes,
-    customExecutor = Some(Pools.httpPool)
-  ))
+  def newClient(name: String): Client = {
+    logger.info(s"Creating new pooled http client with $maxHttpConnections max total connections for $name")
+    blaze.PooledHttp1Client(maxTotalConnections = maxHttpConnections, config = BlazeClientConfig.defaultConfig.copy(
+      requestTimeout = 10.minutes,
+      customExecutor = Some(Pools.httpPool)
+    ))
+  }
 
   // This guys allows you to make URIs from your Strings as in uri"http://google.com/s=${searchTerm}"
   // Takes care of URI encoding the components. You can prevent encoding a part by wrapping into an Uri using this selfsame method.
@@ -114,9 +117,11 @@ object Http extends Logging {
       .withContentType(`Content-Type`(MediaType.`text/xml`))
     def formData: EntityEncoder[String] = EntityEncoder.stringEncoder.withContentType(`Content-Type`(MediaType.`application/x-www-form-urlencoded`))
   }
+
+  def apply(root: String, name: String): Http = Http(root, newClient(name))
 }
 
-case class Http(root: String, client: Client = Http.newClient) extends Logging {
+case class Http(root: String, client: Client) extends Logging {
   import fi.oph.koski.http.Http.UriInterpolator
   private val rootUri = Http.uriFromString(root)
 

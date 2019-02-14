@@ -12,7 +12,7 @@ case class ElasticSearch(config: Config) extends Logging {
   private val port = config.getInt("elasticsearch.port")
   private val url = s"http://$host:$port"
 
-  val http = Http(url)
+  val http = Http(url, "elasticsearch")
 
   val init_ = synchronized {
     if (host == "localhost") {

@@ -56,7 +56,7 @@ object OrganisaatioRepository {
       case "mock" =>
         MockOrganisaatioRepository
       case url =>
-        new RemoteOrganisaatioRepository(Http(url), koodisto)
+        new RemoteOrganisaatioRepository(Http(url, "organisaatiopalvelu"), koodisto)
     }
   }
 }

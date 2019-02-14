@@ -17,7 +17,7 @@ class EPerusteetLocalizationTest extends FreeSpec with Matchers {
   private lazy val root = sys.env.getOrElse("VIRKAILIJA_ROOT", throw new RuntimeException("Environment variable VIRKAILIJA_ROOT missing"))
   private lazy val koodistoPalvelu = new RemoteKoodistoPalvelu(root)
 
-  private lazy val eperusteetHttp = Http(root + "/eperusteet-service")
+  private lazy val eperusteetHttp = Http(root + "/eperusteet-service", "eperusteet-localization-test")
 
   private def haePerusteidenInfot(startingFromPage: Int = 0): List[EPerusteInfo] = {
     val thisPage = eperusteetHttp.get(uri"/api/perusteet/info?sivukoko=100&sivu=$startingFromPage")(Http.parseJson[EPerusteInfot]).run.data

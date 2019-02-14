@@ -116,7 +116,7 @@ object MockLocalizationRepository {
 }
 
 class ReadOnlyRemoteLocalizationRepository(virkalijaRoot: String)(implicit cacheInvalidator: CacheManager) extends CachedLocalizationService {
-  private val http = Http(virkalijaRoot)
+  private val http = Http(virkalijaRoot, "lokalisaatiopalvelu")
   override def fetchLocalizations(): JValue = runTask(http.get(uri"/lokalisointi/cxf/rest/v1/localisation?category=koski")(Http.parseJson[JValue]))
   override def createOrUpdate(localizations: List[UpdateLocalization]): Unit = ???
   def init {}

@@ -6,7 +6,7 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.Logging
 
 class RemoteKoodistoPalvelu(virkailijaUrl: String) extends KoodistoPalvelu with Logging {
-  private val http = Http(virkailijaUrl)
+  private val http = Http(virkailijaUrl, "koodisto")
 
   def getKoodistoKoodit(koodisto: KoodistoViite): List[KoodistoKoodi] = {
     getKoodistoKooditOptional(koodisto).getOrElse(throw new RuntimeException(s"Koodistoa ei löydy: $koodisto"))

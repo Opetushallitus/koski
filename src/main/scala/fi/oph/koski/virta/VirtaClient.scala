@@ -89,7 +89,7 @@ case class MockVirtaClient(config: Config) extends VirtaClient {
 }
 
 case class RemoteVirtaClient(config: VirtaConfig) extends VirtaClient {
-  private val http = Http(config.serviceUrl)
+  private val http = Http(config.serviceUrl, "virta")
   def opintotiedot(hakuehto: VirtaHakuehto): Option[Elem] = performHaku {
     <OpiskelijanKaikkiTiedotRequest xmlns="http://tietovaranto.csc.fi/luku">
       {kutsuja}

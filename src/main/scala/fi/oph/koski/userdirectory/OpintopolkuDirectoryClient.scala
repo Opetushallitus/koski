@@ -20,8 +20,7 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
   import org.http4s.headers.Location
   import scalaz.concurrent.Task
   private val tgtPattern = "(.*TGT-.*)".r
-  private val http = Http(virkailijaUrl)
-  private val client = Http.newClient
+  private val http = Http(virkailijaUrl, "kayttoikeuspalvelu")
   private val käyttöoikeusServiceClient = KäyttöoikeusServiceClient(config)
   private val oppijanumeroRekisteriClient = OppijanumeroRekisteriClient(config)
 
@@ -34,7 +33,7 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
 
   override def authenticate(userid: String, wrappedPassword: Password): Boolean = {
     val tgtUri: TGTUrl = resolve(Uri.fromString(virkailijaUrl).toOption.get, uri("/cas/v1/tickets"))
-    Http.runTask(client.fetch(POST(tgtUri, UrlForm("username" -> userid, "password" -> wrappedPassword.password))) {
+    Http.runTask(http.client.fetch(POST(tgtUri, UrlForm("username" -> userid, "password" -> wrappedPassword.password))) {
       case Created(resp) =>
         val found: TGTUrl = resp.headers.get(Location).map(_.value) match {
           case Some(tgtPattern(tgtUrl)) =>

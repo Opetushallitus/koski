@@ -37,6 +37,6 @@ object MockYrtClient extends YtrClient {
 }
 
 case class RemoteYtrClient(rootUrl: String, user: String, password: String) extends YtrClient {
-  private val http = Http(rootUrl, ClientWithBasicAuthentication(Http.newClient, user, password))
+  private val http = Http(rootUrl, ClientWithBasicAuthentication(Http.newClient("ytr"), user, password))
   def oppijaJsonByHetu(hetu: String): Option[JValue] = http.get(uri"/api/oph-transfer/student/${hetu}")(Http.parseJsonOptional[JValue]).run
 }

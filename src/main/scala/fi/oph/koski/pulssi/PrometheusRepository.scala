@@ -14,7 +14,7 @@ object PrometheusRepository {
     if (config.getString("prometheus.url") == "mock") {
       MockPrometheusRepository
     } else {
-      new RemotePrometheusRepository(Http(config.getString("prometheus.url")))
+      new RemotePrometheusRepository(Http(config.getString("prometheus.url"), "prometheus"))
     }
   }
 }
