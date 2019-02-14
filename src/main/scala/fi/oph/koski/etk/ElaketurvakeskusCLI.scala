@@ -12,6 +12,12 @@ import fi.oph.koski.json.JsonSerializer.{writeWithRoot => asJsonString}
 import scala.io.Source
 
 
+object EtkCli {
+  def main(args: Array[String]): Unit = {
+    new ElaketurvakeskusCLI().main(args)
+  }
+}
+
 protected trait Output {
   def printResult(s: String) = print(s)
 }
