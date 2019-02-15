@@ -1,17 +1,18 @@
 package fi.oph.koski.sso
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.{AuthenticationSupport, DirectoryClientLogin, KoskiUserLanguage, ServiceTicketValidator}
+import fi.oph.koski.http.{Http, KoskiErrorCategory}
+import fi.oph.koski.koskiuser.{AuthenticationSupport, DirectoryClientLogin, KoskiUserLanguage}
 import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.servlet.{HtmlServlet, NoCache}
-import fi.vm.sade.utils.cas.CasLogout
+import fi.vm.sade.utils.cas.CasClient.Username
+import fi.vm.sade.utils.cas.{CasClient, CasLogout}
 
 /**
   *  This is where the user lands after a CAS login / logout
   */
 class CasServlet(implicit val application: KoskiApplication) extends HtmlServlet with AuthenticationSupport with NoCache {
-  private def validator = new ServiceTicketValidator(application.config)
+  private val casClient = new CasClient(application.config.getString("opintopolku.virkailija.url"), Http.newClient("cas.serviceticketvalidation"))
   private val koskiSessions = application.koskiSessionRepository
 
   // Return url for cas login
@@ -19,7 +20,7 @@ class CasServlet(implicit val application: KoskiApplication) extends HtmlServlet
     params.get("ticket") match {
       case Some(ticket) =>
         try {
-          val username = validator.validateServiceTicket(casServiceUrl, ticket)
+          val username = validateServiceTicket(casServiceUrl, ticket)
           DirectoryClientLogin.findUser(application.directoryClient, request, username) match {
             case Some(user) =>
               setUser(Right(user.copy(serviceTicket = Some(ticket))))
@@ -57,5 +58,8 @@ class CasServlet(implicit val application: KoskiApplication) extends HtmlServlet
         logger.warn("Got CAS logout POST without logoutRequest parameter")
     }
   }
+
+  def validateServiceTicket(service: String, ticket: String): Username =
+    casClient.validateServiceTicket(service)(ticket).run
 }
 
