@@ -12,7 +12,7 @@ import Peruste from './Peruste'
 import PaikallinenKoulutusmoduuli from './PaikallinenKoulutusmoduuli'
 
 export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
-  const suoritustyypitP = koodistoValues('suorituksentyyppi/ammatillinentutkinto,nayttotutkintoonvalmistavakoulutus,ammatillinentutkintoosittainen,valma,telma,tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus')
+  const suoritustyypitP = koodistoValues('suorituksentyyppi/ammatillinentutkinto,nayttotutkintoonvalmistavakoulutus,ammatillinentutkintoosittainen,valma,telma,tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus,muuammatillinenkoulutus')
   const tutkintoAtom = Atom()
   const suoritustyyppiAtom = Atom()
   const suoritustapaAtom = Atom()
@@ -54,13 +54,12 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
         suorituskieli : suorituskieli
       }
     }
-    if (koodiarvoMatch('tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus')(suoritustyyppi) && oppilaitos && koulutusmoduuli) {
+    if (koodiarvoMatch('tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus', 'muuammatillinenkoulutus')(suoritustyyppi) && oppilaitos && koulutusmoduuli) {
       return {
         koulutusmoduuli,
         toimipiste : oppilaitos,
-        tyyppi: { koodistoUri: 'suorituksentyyppi', koodiarvo: 'tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus'},
-        suorituskieli : suorituskieli,
-        pilotti: false
+        tyyppi: { koodistoUri: 'suorituksentyyppi', koodiarvo: suoritustyyppi.koodiarvo},
+        suorituskieli : suorituskieli
       }
     }
     if (koodiarvoMatch('ammatillinentutkintoosittainen')(suoritustyyppi) && tutkinto && oppilaitos && suoritustapa) {
@@ -124,13 +123,13 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
       ift(suoritustyyppiAtom.map(koodiarvoMatch('valma')), <Peruste {...{suoritusTyyppiP: suoritustyyppiAtom, perusteAtom}} />)
     }
     {
-      ift(suoritustyyppiAtom.map(koodiarvoMatch('tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus')),
+      ift(suoritustyyppiAtom.map(koodiarvoMatch('tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus', 'muuammatillinenkoulutus')),
         <PaikallinenKoulutusmoduuli nimi={koulutusmoduuliNimiAtom} koodiarvo={koulutusmoduuliKoodiAtom} kuvaus={koulutusmoduuliKuvausAtom} />
       )
     }
     <div className="tutkinto-autocomplete">
       {
-        ift(oppilaitosAtom.and(suoritustyyppiAtom.map(koodiarvoMatch('valma', 'telma', 'tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus')).not()), <TutkintoAutocomplete tutkintoAtom={tutkintoAtom} oppilaitosP={oppilaitosAtom} title={<Text name="Tutkinto"/>}/>)
+        ift(oppilaitosAtom.and(suoritustyyppiAtom.map(koodiarvoMatch('valma', 'telma', 'tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus', 'muuammatillinenkoulutus')).not()), <TutkintoAutocomplete tutkintoAtom={tutkintoAtom} oppilaitosP={oppilaitosAtom} title={<Text name="Tutkinto"/>}/>)
       }
     </div>
 

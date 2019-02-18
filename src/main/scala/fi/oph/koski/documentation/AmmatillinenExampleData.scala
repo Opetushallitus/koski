@@ -71,7 +71,6 @@ object AmmatillinenExampleData {
       alkamispäivä = Some(date(2018, 1, 1)),
       toimipiste = toimipiste,
       suorituskieli = suomenKieli,
-      pilotti = false,
       osasuoritukset = None
     )
 
@@ -462,8 +461,6 @@ object AmmatillinenExampleData {
           arvioitsijat = Some(List(Arvioitsija("Aarne Arvioija")))
         )
       )),
-      tunnustettu = None,
-      lisätiedot = None,
       suorituskieli = None,
       näyttö = None,
       osasuoritukset = osasuoritukset

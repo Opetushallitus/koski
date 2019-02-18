@@ -76,7 +76,6 @@
           "koodistoUri" : "suorituksentyyppi"
         }
       } ],
-      "pilotti" : false,
       "tyyppi" : {
         "koodiarvo" : "tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus",
         "koodistoUri" : "suorituksentyyppi"
