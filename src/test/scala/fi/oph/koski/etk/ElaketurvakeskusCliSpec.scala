@@ -90,14 +90,18 @@ class ElaketurvakeskusCliSpec extends FreeSpec with RaportointikantaTestMethods 
         val cli = ElaketurvakeskusCli
         val args = Array("-csv", csvFilePath)
         withCsvFixture(mockCsv.replace(";;", ";")) {
-          an[Exception] should be thrownBy (cli.main(args))
+          intercept[Exception] { cli.main(args) }.getMessage should include(
+            "Riviltä puuttuu kenttiä: "
+          )
         }
       }
       "Csv:n ja api vastauksen vuodet eroavat" in {
         withCsvFixture(mockCsv.replaceAll("2016;", "2000;")) {
           val cli = ElaketurvakeskusCli
           val args = Array("-csv", csvFilePath, "-user", "pää:pää", "-api", "ammatillisetperustutkinnot:2016-01-01:2018-12-12", "-port", koskiPort)
-          an[Exception] should be thrownBy (cli.main(args))
+          intercept[Exception] { cli.main(args) }.getMessage should be(
+            "Vuosien 2000 ja 2016 tutkintotietoja yritettiin yhdistaa"
+          )
         }
       }
     }
@@ -106,6 +110,9 @@ class ElaketurvakeskusCliSpec extends FreeSpec with RaportointikantaTestMethods 
         val cli = ElaketurvakeskusCli
         val args = Array("-api", "ammatillisetperustutkinnot:2016-01-01:2018-12-12")
         an[Exception] should be thrownBy (cli.main(args))
+        intercept[Exception] { cli.main(args) }.getMessage should be(
+          "maarita -user tunnus:salasana"
+        )
       }
     }
   }
