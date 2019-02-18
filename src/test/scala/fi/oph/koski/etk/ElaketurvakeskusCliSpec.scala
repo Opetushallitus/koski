@@ -100,7 +100,7 @@ class ElaketurvakeskusCliSpec extends FreeSpec with RaportointikantaTestMethods 
           val cli = ElaketurvakeskusCli
           val args = Array("-csv", csvFilePath, "-user", "pää:pää", "-api", "ammatillisetperustutkinnot:2016-01-01:2018-12-12", "-port", koskiPort)
           intercept[Exception] { cli.main(args) }.getMessage should be(
-            "Vuosien 2000 ja 2016 tutkintotietoja yritettiin yhdistaa"
+            "Vuosien 2000 ja 2016 tutkintotietoja yritettiin yhdistää"
           )
         }
       }
@@ -111,7 +111,7 @@ class ElaketurvakeskusCliSpec extends FreeSpec with RaportointikantaTestMethods 
         val args = Array("-api", "ammatillisetperustutkinnot:2016-01-01:2018-12-12")
         an[Exception] should be thrownBy (cli.main(args))
         intercept[Exception] { cli.main(args) }.getMessage should be(
-          "maarita -user tunnus:salasana"
+          "määritä -user tunnus:salasana"
         )
       }
     }

@@ -52,7 +52,7 @@ object ElaketurvakeskusCli {
 
   private def mergeResponses(res1: EtkResponse, res2: EtkResponse) = {
     if (res1.vuosi != res2.vuosi) {
-      throw new Exception(s"Vuosien ${res1.vuosi} ja ${res2.vuosi} tutkintotietoja yritettiin yhdistaa")
+      throw new Exception(s"Vuosien ${res1.vuosi} ja ${res2.vuosi} tutkintotietoja yritettiin yhdistää")
     }
 
     EtkResponse(
@@ -86,7 +86,7 @@ object ElaketurvakeskusCli {
   private def findAuthentication(tasks: List[Args]): Authentication= {
     tasks.find(_.isInstanceOf[Authentication]) match {
       case Some(s) => s.asInstanceOf[Authentication]
-      case _ => throw new Exception("maarita -user tunnus:salasana")
+      case _ => throw new Exception("määritä -user tunnus:salasana")
     }
   }
 
@@ -169,7 +169,7 @@ private case class RaportointikantaRequest(endpoint: String, alku: LocalDate, lo
   override def toEtkResponse(): Option[EtkResponse] = {
     endpoint match  {
       case "ammatillisetperustutkinnot" => RaportointikantaClient(auth.username, auth.password, koskiport.str).ammatillisetperustutkinnot(alku, loppu)
-      case _ => throw new Exception("API endpointtia ei ole maaritelty")
+      case _ => throw new Exception("API endpointtia ei ole määritelty")
     }
   }
 }
