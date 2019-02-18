@@ -17,13 +17,11 @@ object ElaketurvakeskusCli {
   var output = print _
 
   def main(args: Array[String]): Unit = {
-    val parsedArgs = argsToTasks(args)
+    val etkResponse = argsToTasks(args)
+      .flatMap(_.toEtkResponse)
+      .reduce[EtkResponse](mergeResponses)
 
-    val tasks = parsedArgs.filter(_.isInstanceOf[Task]).map(_.asInstanceOf[Task])
-
-    val tutkintotiedot = tasks.flatMap(_.doIt).reduce[EtkResponse](mergeResponses)
-
-    printEtkResponse(tutkintotiedot)
+    printEtkResponse(etkResponse)
   }
 
   private def printEtkResponse(response: EtkResponse): Unit = {
@@ -54,7 +52,7 @@ object ElaketurvakeskusCli {
 
   private def mergeResponses(res1: EtkResponse, res2: EtkResponse) = {
     if (res1.vuosi != res2.vuosi) {
-      throw new Exception(s"Vuosien ${res1.vuosi} ja ${res2.vuosi} tutkintojatietoja yritettiin yhdistaa")
+      throw new Exception(s"Vuosien ${res1.vuosi} ja ${res2.vuosi} tutkintotietoja yritettiin yhdistaa")
     }
 
     EtkResponse(
@@ -75,15 +73,13 @@ object ElaketurvakeskusCli {
     }
     }.toList
 
-    appendAuthToRequests(parsedArgs)
+    appendAuthToRequests(parsedArgs).filter(_.isInstanceOf[Task]).map(_.asInstanceOf[Task])
   }
 
   private def appendAuthToRequests(args: List[Args]) = {
-    args.map { arg =>
-      arg match {
-        case r: RaportointikantaRequest => RaportointikantaRequest(r.endpoint, r.alku, r.loppu, findAuthentication(args), findPortOrDefault(args))
-        case _ => arg
-      }
+    args.map {
+      case r: RaportointikantaRequest => RaportointikantaRequest(r.endpoint, r.alku, r.loppu, findAuthentication(args), findPortOrDefault(args))
+      case a: Args => a
     }
   }
 
@@ -132,14 +128,14 @@ private object Csv {
     EtkTutkintotieto(
       henkilö = EtkHenkilö(
         hetu = Some(get("hetu")),
-        syntymäaika = Format.date(get("syntymaaika")),
+        syntymäaika = LocalDate.parse(get("syntymaaika")),
         sukunimi = get("sukunimi"),
         etunimet = get("etunimet")
       ),
       tutkinto = EtkTutkinto(
         tutkinnonTaso = Format.tutkintotaso(get("tutkinnon_taso")),
-        alkamispäivä = Format.date(get("OpiskeluoikeudenAlkamispaivamaara")),
-        päättymispäivä = Format.dateOption(get("suorituspaivamaara"))
+        alkamispäivä = LocalDate.parse(get("OpiskeluoikeudenAlkamispaivamaara")),
+        päättymispäivä = Some(LocalDate.parse(get("suorituspaivamaara")))
       ),
       viite = None
     )
@@ -149,11 +145,11 @@ private object Csv {
 private trait Args
 
 private trait Task {
-  def doIt(): Option[EtkResponse]
+  def toEtkResponse(): Option[EtkResponse]
 }
 
 private case class VirtaCsv(filepath: String) extends Args with Task {
-  override def doIt(): Option[EtkResponse] = {
+  override def toEtkResponse(): Option[EtkResponse] = {
     Csv.parse(filepath)
   }
 }
@@ -170,7 +166,7 @@ private object Authentication {
 }
 
 private case class RaportointikantaRequest(endpoint: String, alku: LocalDate, loppu: LocalDate, auth: Authentication = Authentication("",""), koskiport: KoskiPort = KoskiPort("8080")) extends Args with Task {
-  override def doIt(): Option[EtkResponse] = {
+  override def toEtkResponse(): Option[EtkResponse] = {
     endpoint match  {
       case "ammatillisetperustutkinnot" => RaportointikantaClient(auth.username, auth.password, koskiport.str).ammatillisetperustutkinnot(alku, loppu)
       case _ => throw new Exception("API endpointtia ei ole maaritelty")
@@ -209,10 +205,6 @@ private object RaportointikantaClient {
 }
 
 private object Format {
-  def date(str: String): LocalDate = Date.valueOf(str).toLocalDate
-
-  def dateOption(str: String): Option[LocalDate] = Some(date(str))
-
   def tutkintotaso(str: String): String = str match {
     case "ammatillinenkoulutus" => "ammatillinenperuskoulutus"
     case "1" => "ammattikorkeakoulutututkinto"
