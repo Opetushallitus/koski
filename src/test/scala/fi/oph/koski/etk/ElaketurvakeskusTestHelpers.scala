@@ -5,7 +5,7 @@ import java.io.PrintWriter
 
 import fi.oph.koski.api.SharedJetty
 
-protected trait ElaketurvakeskusCLITestMethods {
+protected trait ElaketurvakeskusCliTestMethods {
   protected val mockCsv =
     """|vuosi;korkeakoulu;hetu;syntymaaika;sukupuoli;oppijanumero;sukunimi;etunimet;tutkintokoodi;suorituspaivamaara;tutkinnon_taso;aloituspaivamaara;OpiskeluoikeudenAlkamispaivamaara
        |2016;01901;021094-650K;1989-02-01;1;;Nenäkä;Dtes Apu;612101;2016-06-19;2;2011-08-01;2011-08-01

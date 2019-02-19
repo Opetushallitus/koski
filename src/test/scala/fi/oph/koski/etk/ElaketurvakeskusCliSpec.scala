@@ -4,7 +4,7 @@ import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import org.scalatest.FreeSpec
 
-class ElaketurvakeskusCliSpec extends FreeSpec with RaportointikantaTestMethods with ElaketurvakeskusCLITestMethods {
+class ElaketurvakeskusCliSpec extends FreeSpec with RaportointikantaTestMethods with ElaketurvakeskusCliTestMethods {
 
   "ElaketurvakeskusCli" - {
     "Aineiston muodostaminen" - {
