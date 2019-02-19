@@ -59,7 +59,7 @@ class ElaketurvakeskusSpec extends FreeSpec with LocalJettyHttpSpecification wit
 
   private def postAikajakso[A](alku: LocalDate, loppu: LocalDate, vuosi: Int)(f: => A): A = {
     post(
-      "api/eläketurvakeskus/ammatillisetperustutkinnot",
+      "api/elaketurvakeskus/ammatillisetperustutkinnot",
       JsonSerializer.writeWithRoot(EtkTutkintotietoRequest(alku, loppu, vuosi)),
       headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent
     )(f)
