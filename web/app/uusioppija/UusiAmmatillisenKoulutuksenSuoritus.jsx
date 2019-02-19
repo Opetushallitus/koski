@@ -10,6 +10,7 @@ import Text from '../i18n/Text'
 import {setPeruste} from '../suoritus/PerusteDropdown'
 import Peruste from './Peruste'
 import PaikallinenKoulutusmoduuli from './PaikallinenKoulutusmoduuli'
+import MuunAmmatillisenKoulutus from './MuunAmmatillisenKoulutus'
 
 export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   const suoritustyypitP = koodistoValues('suorituksentyyppi/ammatillinentutkinto,nayttotutkintoonvalmistavakoulutus,ammatillinentutkintoosittainen,valma,telma,tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus,muuammatillinenkoulutus')
@@ -23,10 +24,10 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   const koulutusmoduuliNimiAtom = Atom()
   const koulutusmoduuliKoodiAtom = Atom()
   const koulutusmoduuliKuvausAtom = Atom()
+  const ammatilliseentehtavaanvalmistavakoulutusAtom = Atom()
 
-  Bacon.combineWith(koulutusmoduuliNimiAtom, koulutusmoduuliKoodiAtom, koulutusmoduuliKuvausAtom, makeMuuAmmatillinenKoulutusmoduuli)
+  Bacon.combineWith(koulutusmoduuliNimiAtom, koulutusmoduuliKoodiAtom, koulutusmoduuliKuvausAtom, ammatilliseentehtavaanvalmistavakoulutusAtom, makeMuuAmmatillinenKoulutusmoduuli)
     .onValue(moduuli => koulutusmoduuliAtom.set(moduuli))
-
 
   suoritustyypitP.onValue(tyypit => suoritustyyppiAtom.set(
     tyypit.find(koodiarvoMatch('ammatillinentutkinto', 'ammatillinentutkintoosittainen', 'valma', 'telma')))
@@ -117,15 +118,19 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
 
   Bacon.combineWith(oppilaitosAtom, suoritustyyppiAtom, tutkintoAtom, suorituskieliAtom, suoritustapaAtom, perusteAtom, koulutusmoduuliAtom, makeSuoritus)
     .onValue(suoritus => suoritusAtom.set(suoritus))
+
   return (<div>
     <Suoritustyyppi suoritustyyppiAtom={suoritustyyppiAtom} suoritustyypitP={suoritustyypitP} title="Suoritustyyppi"/>
     {
       ift(suoritustyyppiAtom.map(koodiarvoMatch('valma')), <Peruste {...{suoritusTyyppiP: suoritustyyppiAtom, perusteAtom}} />)
     }
     {
-      ift(suoritustyyppiAtom.map(koodiarvoMatch('tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus', 'muuammatillinenkoulutus')),
+      ift(suoritustyyppiAtom.map(koodiarvoMatch('tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus')),
         <PaikallinenKoulutusmoduuli nimi={koulutusmoduuliNimiAtom} koodiarvo={koulutusmoduuliKoodiAtom} kuvaus={koulutusmoduuliKuvausAtom} />
       )
+    }
+    {
+      ift(suoritustyyppiAtom.map(koodiarvoMatch('muuammatillinenkoulutus')), <MuunAmmatillisenKoulutus {...{koulutusmoduuliNimiAtom, koulutusmoduuliKoodiAtom, koulutusmoduuliKuvausAtom, ammatilliseentehtavaanvalmistavakoulutusAtom}} /> )
     }
     <div className="tutkinto-autocomplete">
       {
@@ -139,14 +144,18 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
   </div>)
 }
 
-const makeMuuAmmatillinenKoulutusmoduuli = (nimi, koodiarvo, kuvaus) => {
-  if (!nimi || !kuvaus) return undefined
-
-  return {
-    tunniste: {
-      nimi: { fi: nimi },
-      koodiarvo: koodiarvo || nimi
-    },
-    kuvaus: { fi: kuvaus }
+const makeMuuAmmatillinenKoulutusmoduuli = (nimi, koodiarvo, kuvaus, ammatilliseentehtavaanvalmistavakoulutus) => {
+  if (ammatilliseentehtavaanvalmistavakoulutus) {
+    return {
+      tunniste: ammatilliseentehtavaanvalmistavakoulutus
+    }
+  } else if (nimi && kuvaus) {
+    return {
+      tunniste: {
+        nimi: { fi: nimi },
+        koodiarvo: koodiarvo || nimi
+      },
+      kuvaus: { fi: kuvaus }
+    }
   }
 }

@@ -27,7 +27,7 @@ object AmmatillinenExampleData {
   val ammatilliseenTehtäväänValmistavaKoulutus: AmmatilliseenTehtäväänValmistavaKoulutus = AmmatilliseenTehtäväänValmistavaKoulutus(
     Koodistokoodiviite("1", "ammatilliseentehtavaanvalmistavakoulutus"),
     None,
-    LocalizedString.finnish("Liikennelentäjät lentävät monentyyppisiä lentokoneita kuljettaen matkustajia, rahtia ja postia.")
+    Some(LocalizedString.finnish("Liikennelentäjät lentävät monentyyppisiä lentokoneita kuljettaen matkustajia, rahtia ja postia."))
   )
 
   def autoalanPerustutkinnonSuoritus(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = ammatillinenTutkintoSuoritus(autoalanPerustutkinto, toimipiste)
