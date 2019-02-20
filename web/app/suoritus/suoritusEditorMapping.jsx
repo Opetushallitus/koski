@@ -22,6 +22,7 @@ import OmatTiedotSuoritustaulukko from './OmatTiedotSuoritustaulukko'
 import OmatTiedotLukionOppiaineet from '../lukio/OmatTiedotLukionOppiaineet'
 import OmatTiedotPerusopetuksenOppiaineet from '../perusopetus/OmatTiedotPerusopetuksenOppiaineet'
 import OmatTiedotRyhmiteltyOppiaineet from './OmatTiedotRyhmiteltyOppiaineet'
+import TäydentääTutkintoaEditor from '../ammatillinen/TaydentaaTutkintoaEditor'
 
 export const resolveOsasuorituksetEditor = (mdl) => {
   const oneOf = (...classes) => classes.some(c => mdl.value.classes.includes(c))
@@ -107,6 +108,7 @@ export const resolvePropertyEditor = (property, model) => {
     case 'theoryOfKnowledge': return <TheoryOfKnowledge model={property.model}/>
     case 'creativityActionService': return <CreativityActionService model={property.model}/>
     case 'extendedEssay': return <ExtendedEssay model={property.model}/>
+    case 'täydentääTutkintoa': return <TäydentääTutkintoaEditor model={property.model} />
 
     default: return null
   }
