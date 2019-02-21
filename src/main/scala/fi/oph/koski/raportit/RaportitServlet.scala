@@ -24,11 +24,11 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
       case Right(oid) => oid
     }
     val koulutusmuodot = raportointiDatabase.oppilaitoksenKoulutusmuodot(oppilaitosOid)
-    if (koulutusmuodot.contains(OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo)) Seq("opiskelijavuositiedot") else Seq.empty
+    if (koulutusmuodot.contains(OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo)) Seq("opiskelijavuositiedot", "suoritustietojentarkistus") else Seq.empty
   }
 
   get("/opiskelijavuositiedot") {
-    
+
     val loadCompleted = raportointiDatabase.fullLoadCompleted(raportointiDatabase.statuses)
     if (loadCompleted.isEmpty) {
       haltWithStatus(KoskiErrorCategory.unavailable.raportit())
@@ -55,6 +55,40 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
         Seq(
           DataSheet("Opiskeluoikeudet", rows, Opiskelijavuositiedot.columnSettings),
           DocumentationSheet("Ohjeet", Opiskelijavuositiedot.documentation(oppilaitosOid, alku, loppu, loadCompleted.get))
+        ),
+        response.getOutputStream
+      )
+    }
+  }
+
+  get("/suoritustietojentarkistus") {
+
+    val loadCompleted = raportointiDatabase.fullLoadCompleted(raportointiDatabase.statuses)
+    if (loadCompleted.isEmpty) {
+      haltWithStatus(KoskiErrorCategory.unavailable.raportit())
+    }
+
+    val oppilaitosOid = getOppilaitosParamAndCheckAccess
+    val (alku, loppu) = getAlkuLoppuParams
+    val password = getStringParam("password")
+    val downloadToken = params.get("downloadToken")
+
+    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=opiskelijavuositiedot&oppilaitosOid=$oppilaitosOid&alku=$alku&loppu=$loppu")))
+
+    val rows = SuoritustietojenTarkistus.buildRaportti(raportointiDatabase, oppilaitosOid, alku, loppu)
+
+    if (Environment.isLocalDevelopmentEnvironment && params.contains("text")) {
+      contentType = "text/plain"
+      response.writer.print(rows.map(_.toString).mkString("\n\n"))
+    } else {
+      contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      response.setHeader("Content-Disposition", s"""attachment; filename="${SuoritustietojenTarkistus.filename(oppilaitosOid, alku, loppu)}"""")
+      downloadToken.foreach { t => response.addCookie(Cookie("koskiDownloadToken", t)(CookieOptions(path = "/", maxAge = 600))) }
+      ExcelWriter.writeExcel(
+        WorkbookSettings(SuoritustietojenTarkistus.title(oppilaitosOid, alku, loppu), Some(password)),
+        Seq(
+          DataSheet("Opiskeluoikeudet", rows, SuoritustietojenTarkistus.columnSettings),
+          DocumentationSheet("Ohjeet", SuoritustietojenTarkistus.documentation(oppilaitosOid, alku, loppu, loadCompleted.get))
         ),
         response.getOutputStream
       )

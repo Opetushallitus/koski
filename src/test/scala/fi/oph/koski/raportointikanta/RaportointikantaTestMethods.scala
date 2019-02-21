@@ -8,6 +8,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 trait RaportointikantaTestMethods extends HttpTester with LocalJettyHttpSpecification {
 
   val raportointikantaQueryHelper = RaportointikantaQueryHelper
+  val raportointiDatabase = KoskiApplicationForTests.raportointiDatabase
 
   def loadRaportointikantaFixtures[A] = {
     authGet("api/raportointikanta/clear") { verifyResponseStatusOk() }
