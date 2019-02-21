@@ -165,6 +165,9 @@ function OpinnotPage() {
       })
     },
     lisääSuoritusDialog: LisääSuoritusDialog(),
+    tutkinto: function(selector) {
+      return TutkintoSelector(findSingle(selector))
+    },
     tilaJaVahvistus: TilaJaVahvistus(),
     versiohistoria: Versiohistoria(),
     oppiaineet: Oppiaineet(),
@@ -732,19 +735,33 @@ function LisääSuoritusDialog() {
       return Page(elem).setInputValue('.suoritustapa .dropdown', suoritustapa)
     },
     selectTutkinto: function(name) {
-      return function() {
-        function selectedTutkinto() { return elem().find('.koulutusmoduuli .selected') }
-        return wait.until(Page(elem).getInput('.koulutusmoduuli input').isVisible)()
-          .then(Page(elem).setInputValue('.koulutusmoduuli input', name))
-          .then(wait.until(function() { return isElementVisible(selectedTutkinto()) }))
-          .then(click(selectedTutkinto))
-      }
+      return TutkintoSelector(function() { return elem().find('.koulutusmoduuli') }).select(name)
     },
     tutkinto: function() {
       return Page(elem).getInputValue('.koulutusmoduuli input, .tutkinto input')
     },
     toimipiste: OrganisaatioHaku(elem)
   }, {}, Editor(elem))
+  return api
+}
+
+function TutkintoSelector(elem) {
+  function selectedTutkinto() {
+    return elem().find('.selected')
+  }
+
+  var api = {
+    select: function (name) {
+      return function () {
+        return wait.until(Page(elem).getInput('input').isVisible)()
+          .then(Page(elem).setInputValue('input', name))
+          .then(wait.until(function () {
+            return isElementVisible(selectedTutkinto())
+          }))
+          .then(click(selectedTutkinto))
+      }
+    }
+  }
   return api
 }
 
@@ -819,6 +836,7 @@ function Editor(elem) {
       return findSingle('#edit-bar .state-indicator')().text()
     },
     saveChanges: seq(click(enabledSaveButton), KoskiPage().verifyNoError),
+    saveChangesAndWaitForSuccess: seq(click(enabledSaveButton), KoskiPage().verifyNoError, wait.until(KoskiPage().isSavedLabelShown)),
     saveChangesAndExpectError: seq(click(enabledSaveButton), wait.until(KoskiPage().isErrorShown)),
     cancelChanges: seq(click(findSingle('#edit-bar .cancel')), KoskiPage().verifyNoError),
     isEditable: function() {
