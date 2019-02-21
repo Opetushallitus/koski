@@ -2,6 +2,8 @@ describe('Muu ammatillinen koulutus', function() {
   before(Authentication().login())
   var addOppija = AddOppijaPage()
   var opinnot = OpinnotPage()
+  var editor = opinnot.opiskeluoikeusEditor()
+  var lisääSuoritus = opinnot.lisääSuoritusDialog
 
   describe('Opiskeluoikeuden lisääminen', function() {
     describe('Muun ammatillisen koulutuksen suoritus', function() {
@@ -22,7 +24,6 @@ describe('Muu ammatillinen koulutus', function() {
         })
       })
 
-
       describe('Ammatilliseen tehtävään valmistava koulutus', function() {
         before(
           prepareForNewOppija('kalle', '230872-7258'),
@@ -36,6 +37,15 @@ describe('Muu ammatillinen koulutus', function() {
           expect(opinnot.getTutkinto()).to.equal('Lennonjohtaja')
           expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
         })
+      })
+
+      describe('Muiden ammatillisen päätason suoritusten lisäyspainikkeet', function() {
+        before(editor.edit)
+        it('ei ole näkyvissä', function () {
+          expect(lisääSuoritus.isLinkVisible('lisää ammatillisen tutkinnon suoritus')).to.equal(false)
+          expect(lisääSuoritus.isLinkVisible('lisää näyttötutkintoon valmistavan koulutuksen suoritus')).to.equal(false)
+        })
+        after(editor.cancelChanges)
       })
     })
 
@@ -54,6 +64,15 @@ describe('Muu ammatillinen koulutus', function() {
         expect(opinnot.getKoulutusModuuli().koodi).to.equal('vrs-t-2019-k')
         expect(opinnot.getKoulutusModuuli().kuvaus).to.equal('Opiskelija osaa tehdä tilauksen vakiotoimittajilta sekä menettelytavat palavien ja vaarallisten aineiden varastoinnissa')
         expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+      })
+
+      describe('Muiden ammatillisen päätason suoritusten lisäyspainikkeet', function() {
+        before(editor.edit)
+        it('ei ole näkyvissä', function () {
+          expect(lisääSuoritus.isLinkVisible('lisää ammatillisen tutkinnon suoritus')).to.equal(false)
+          expect(lisääSuoritus.isLinkVisible('lisää näyttötutkintoon valmistavan koulutuksen suoritus')).to.equal(false)
+        })
+        after(editor.cancelChanges)
       })
     })
   })

@@ -49,7 +49,7 @@ let tutkintoLens = L.lens(
 const hasValmistavaTutkinto = (opiskeluoikeus) => modelItems(opiskeluoikeus, 'suoritukset').find(suoritus => suorituksenTyyppi(suoritus) == 'nayttotutkintoonvalmistavakoulutus')
 const hasAmmatillinenTutkinto = (opiskeluoikeus) => modelItems(opiskeluoikeus, 'suoritukset').find(suoritus => suorituksenTyyppi(suoritus) == 'ammatillinentutkinto')
 const hasContradictingSuoritus = opiskeluoikeus => {
-  const disallowedSuoritustyypit = ['telma', 'valma', 'ammatillinentutkintoosittainen']
+  const disallowedSuoritustyypit = ['telma', 'valma', 'ammatillinentutkintoosittainen', 'muuammatillinenkoulutus', 'tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus']
   return modelItems(opiskeluoikeus, 'suoritukset')
     .map(suoritus => modelData(suoritus, 'tyyppi.koodiarvo'))
     .some(suoritustyyppi => disallowedSuoritustyypit.includes(suoritustyyppi))
