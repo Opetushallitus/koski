@@ -375,19 +375,25 @@ Kurssi.findAll = function() {
 }
 
 
-function TutkinnonOsat(groupId) {
+function TutkinnonOsat(groupId, base) {
   function withSuffix(s) { return groupId ? s + '.' + groupId : s }
-  var uusiTutkinnonOsaElement = findSingle(withSuffix('.uusi-tutkinnon-osa'))
+  var uusiTutkinnonOsaElement = findSingle(withSuffix('.uusi-tutkinnon-osa'), base)
+  function osienElementit() {
+    return subElement(base, withSuffix('.tutkinnon-osa'))
+  }
 
   return {
+    osienTekstit: function() {
+      return extractAsText(osienElementit)
+    },
     tyhjä: function() {
-      return S(withSuffix('.tutkinnon-osa')).length === 0
+      return osienElementit().length === 0
     },
     isGroupHeaderVisible: function() {
       return S(withSuffix('.group-header')).is(':visible')
     },
     tutkinnonOsa: function(tutkinnonOsaIndex) {
-      var tutkinnonOsaElement = findSingle(withSuffix('.tutkinnon-osa') + ':eq(' + tutkinnonOsaIndex + ')')
+      var tutkinnonOsaElement = findSingle(withSuffix('.tutkinnon-osa') + ':eq(' + tutkinnonOsaIndex + ')', base)
 
       var api = _.merge({
         tila: function() {
@@ -413,7 +419,7 @@ function TutkinnonOsat(groupId) {
           return api.property('lisätiedot')
         },
         osanOsat: function() {
-          return TutkinnonOsat('999999')
+          return TutkinnonOsat('999999', tutkinnonOsaElement)
         },
         sanallinenArviointi: function() {
           return api.propertyBySelector('.property.kuvaus:eq(1)')

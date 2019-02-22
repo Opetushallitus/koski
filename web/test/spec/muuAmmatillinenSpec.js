@@ -105,6 +105,46 @@ describe('Muu ammatillinen koulutus', function() {
           expect(editor.property('täydentääTutkintoa').getText()).to.equal('Täydentää tutkintoa Autoalan perustutkinto 39/011/2014')
         })
       })
+
+      describe('Osasuorituksen osasuoritukseen lisääminen', function() {
+        var osasuoritus = opinnot.tutkinnonOsat().tutkinnonOsa(0)
+        var osanOsa1 = osasuoritus.osanOsat().tutkinnonOsa(0)
+        var osanOsa2 = osasuoritus.osanOsat().tutkinnonOsa(1)
+        before(
+          editor.edit,
+          opinnot.avaaKaikki,
+          osasuoritus.propertyBySelector('.laajuus .arvo').setValue(2),
+          osasuoritus.propertyBySelector('.laajuudenyksikko').setValue('opintopistettä'),
+          osasuoritus.osanOsat().lisääPaikallinenTutkinnonOsa('Asunto-osakeyhtiolain perusteet'),
+          osanOsa1.propertyBySelector('.laajuus .arvo').setValue(2),
+          osanOsa1.propertyBySelector('.laajuudenyksikko').setValue('opintopistettä'),
+          osanOsa1.propertyBySelector('.arvosana').setValue('3', 1),
+          osanOsa1.toggleExpand,
+          osasuoritus.osanOsat().lisääPaikallinenTutkinnonOsa('Huoneenvuokralainsäädännön perusteet'),
+          osanOsa2.propertyBySelector('.laajuus .arvo').setValue(1),
+          osanOsa2.propertyBySelector('.laajuudenyksikko').setValue('opintopistettä'),
+          osanOsa2.propertyBySelector('.arvosana').setValue('3', 1),
+          editor.saveChangesAndExpectError
+        )
+
+        it('epäonnistuu kun laajuudet ei täsmää', function() {})
+
+        describe('Kun laajuudet täsmää', function() {
+          before(
+            osanOsa1.toggleExpand,
+            osanOsa2.toggleExpand,
+            osanOsa1.propertyBySelector('.laajuus .arvo').setValue(1),
+            editor.saveChangesAndWaitForSuccess,
+            opinnot.avaaKaikki
+          )
+          it('lisääminen onnistuu', function() {
+            expect(osasuoritus.osanOsat().osienTekstit()).to.equal(
+              'Asunto-osakeyhtiolain perusteet 1 3\n\n' +
+              'Huoneenvuokralainsäädännön perusteet 1 3'
+            )
+          })
+        })
+      })
     })
   })
 
