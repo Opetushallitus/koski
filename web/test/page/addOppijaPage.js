@@ -66,6 +66,19 @@ function AddOppijaPage() {
           .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
       }
     },
+    enterValidDataMuuAmmatillinen: function(params) {
+      params = _.merge({  oppilaitos: 'Stadin', oppimäärä: 'Muun ammatillisen koulutuksen suoritus'}, {}, params)
+      return function() {
+        return api.enterData(params)()
+          .then(api.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'))
+          .then(api.selectOppimäärä(params.oppimäärä))
+          .then(function() {
+            if (params.koulutusmoduuli) {
+              return api.selectKoulutusmoduuli(params.koulutusmoduuli)()
+            }
+          })
+      }
+    },
     enterValidDataLukio: function(params) {
       params = _.merge({ oppilaitos: 'Ressun', oppimäärä: 'Lukion oppimäärä', peruste: '60/011/2015' }, {}, params)
       return function() {
@@ -108,11 +121,20 @@ function AddOppijaPage() {
       }
     },
     enterPaikallinenKoulutusmoduuliData: function(params) {
+      params = _.merge({
+        nimi: 'Varaston täyttäminen',
+        koodi: 'vrs-t-2019-k',
+        kuvaus: 'Opiskelija osaa tehdä tilauksen vakiotoimittajilta sekä menettelytavat palavien ja vaarallisten aineiden varastoinnissa'
+      }, {}, params)
+
       return function() {
         return pageApi.setInputValue('.koulutusmoduuli .nimi input', params.nimi)()
           .then(pageApi.setInputValue('.koulutusmoduuli .koodiarvo input', params.koodi))
           .then(pageApi.setInputValue('.koulutusmoduuli .kuvaus textarea', params.kuvaus))
       }
+    },
+    enterAmmatilliseenTehtäväänvalmistava: function(ammatilliseentehtäväänvalmistavakoulutus) {
+      return selectFromDropdown('.ammatilliseentehtäväänvalmistavakoulutus .dropdown', ammatilliseentehtäväänvalmistavakoulutus)
     },
     enterData: function(params) {
       return function() {
@@ -240,6 +262,9 @@ function AddOppijaPage() {
     },
     selectKieli: function(kieli) {
       return selectFromDropdown('.kieli .dropdown', kieli)
+    },
+    selectKoulutusmoduuli: function(koulutusmoduuli) {
+      return selectFromDropdown('.koulutusmoduuli .dropdown', koulutusmoduuli)
     },
     goBack: click(findSingle('h1 a'))
   }

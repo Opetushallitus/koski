@@ -18,7 +18,7 @@ import {
   ArvosanaColumn,
   getLaajuusYksikkö,
   groupSuoritukset,
-  isAmmatillinentutkinto,
+  isAmmatillinentutkinto, isMuunAmmatillisenKoulutuksenOsasuorituksenSuoritus,
   isNäyttötutkintoonValmistava,
   isYlioppilastutkinto,
   KoepisteetColumn,
@@ -127,7 +127,7 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
     let properties = suoritusProperties(model)
     let displayProperties = properties.filter(p => p.key !== 'osasuoritukset')
     let osasuoritukset = modelLookup(model, 'osasuoritukset')
-    let showOsasuoritukset = (osasuoritukset && osasuoritukset.value) || isYhteinenTutkinnonOsa(model)
+    let showOsasuoritukset = (osasuoritukset && osasuoritukset.value) || isYhteinenTutkinnonOsa(model) || isMuunAmmatillisenKoulutuksenOsasuorituksenSuoritus(model)
     return (<tbody className={buildClassNames(['tutkinnon-osa', (expanded && 'expanded'), (groupId)])}>
     <tr>
       {columns.map(column => column.renderData({model, showScope, showTila, onExpand, hasProperties: properties.length > 0 || showOsasuoritukset, expanded}))}

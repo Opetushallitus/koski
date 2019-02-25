@@ -56,7 +56,7 @@ case class AmmatilliseenTehtäväänValmistavaKoulutus(
   @Description("Kuvaus koulutuksen sisällöstä osaamisena.")
   @Tooltip("Kuvaus koulutuksen sisällöstä osaamisena.")
   @MultiLineString(5)
-  kuvaus: LocalizedString
+  kuvaus: Option[LocalizedString]
 ) extends KoodistostaLöytyväKoulutusmoduuli with MuuAmmatillinenKoulutus
 
 case class PaikallinenMuuAmmatillinenKoulutus(
