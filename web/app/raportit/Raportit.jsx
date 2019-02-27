@@ -28,6 +28,7 @@ export const raportitContentP = () => {
             {raportit && raportit.length === 0 && <Text name='Tälle oppilaitokselle ei löydy raportteja. Toistaiseksi ainoa käytössä oleva raportti on tarkoitettu vain ammatillisille oppilaitoksille.'/>}
             {raportit && raportit.length > 0 && <hr/>}
             {raportit && raportit.includes('opiskelijavuositiedot') && <Opiskelijavuositiedot oppilaitosAtom={oppilaitosAtom} />}
+            {raportit && raportit.includes('suoritustietojentarkistus') && <SuoritustietojenTarkistus oppilaitosAtom={oppilaitosAtom} />}
           </div>
         ))}
       </div>
@@ -56,6 +57,30 @@ const Oppilaitos = ({oppilaitosAtom}) => {
 }
 
 const Opiskelijavuositiedot = ({oppilaitosAtom}) => {
+  const titleText = <Text name='Opiskelijavuositiedot'/>
+  const descriptionText = <Text name='Opiskelijavuositiedot-description'/>
+
+  return <AikajaksoRaportti
+    oppilaitosAtom={oppilaitosAtom}
+    apiEndpoint={"/opiskelijavuositiedot"}
+    title={titleText}
+    description={descriptionText}
+  />
+}
+
+const SuoritustietojenTarkistus = ({oppilaitosAtom}) => {
+  const titleText = <Text name='Suoritustietojen tarkistus'/>
+  const descriptionText = <Text name='SuoritustietojenTarkistus-description'/>
+
+  return <AikajaksoRaportti
+    oppilaitosAtom={oppilaitosAtom}
+    apiEndpoint={"/suoritustietojentarkistus"}
+    title={titleText}
+    description={descriptionText}
+  />
+}
+
+const AikajaksoRaportti = ({oppilaitosAtom, apiEndpoint, title, description}) => {
   const alkuAtom = Atom()
   const loppuAtom = Atom()
   const submitBus = Bacon.Bus()
@@ -64,7 +89,7 @@ const Opiskelijavuositiedot = ({oppilaitosAtom}) => {
 
   const downloadExcelP = Bacon.combineWith(
     oppilaitosAtom, alkuAtom, loppuAtom,
-    (o, a, l) => o && a && l && (l.valueOf() >= a.valueOf()) && {oppilaitosOid: o.oid, alku: formatISODate(a), loppu: formatISODate(l), password, baseUrl: '/koski/api/raportit/opiskelijavuositiedot'}
+    (o, a, l) => o && a && l && (l.valueOf() >= a.valueOf()) && {oppilaitosOid: o.oid, alku: formatISODate(a), loppu: formatISODate(l), password, baseUrl: `/koski/api/raportit${apiEndpoint}`}
   )
   const downloadExcelE = submitBus.map(downloadExcelP)
     .flatMapLatest(downloadExcel)
@@ -76,8 +101,8 @@ const Opiskelijavuositiedot = ({oppilaitosAtom}) => {
   const buttonTextP = inProgressP.map((inProgress) => <Text name={!inProgress ? 'Lataa Excel-tiedosto' : 'Ladataan...'}/>)
 
   return (<section>
-    <h2><Text name='Opiskelijavuositiedot'/></h2>
-    <p><Text name='Opiskelijavuositiedot-description'/></p>
+    <h2>{title}</h2>
+    <p>{description}</p>
     <div className='aloituspaiva'>
       <label><Text name='Aikajakso'/></label>
       <div className='date-range'>
