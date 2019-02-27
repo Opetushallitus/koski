@@ -48,7 +48,7 @@ case class SuoritustiedotTarkistusRow
 
 // scalastyle:off method.length
 
-object SuoritustietojenTarkistus {
+object SuoritustietojenTarkistus extends AikajaksoRaportti {
 
   def buildRaportti(raportointiDatabase: RaportointiDatabase, oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate) = {
     val result: Seq[(ROpiskeluoikeusRow, Option[RHenkilöRow], List[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])] = raportointiDatabase.suoritustiedotAikajaksot(oppilaitosOid, OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo, alku, loppu)
