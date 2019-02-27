@@ -28,6 +28,14 @@ class RaportitSpec extends FreeSpec with LocalJettyHttpSpecification with Opiske
         parsedJson.asInstanceOf[JArray].values should contain("opiskelijavuositiedot")
       }
     }
+    "sallii suoritustietojen tarkistuksen ammatilliselle oppilaitokselle" in {
+      authGet(s"api/raportit/mahdolliset-raportit/${MockOrganisaatiot.stadinAmmattiopisto}") {
+        verifyResponseStatusOk()
+        val parsedJson = JsonMethods.parse(body)
+        parsedJson shouldBe a[JArray]
+        parsedJson.asInstanceOf[JArray].values should contain("suoritustietojentarkistust ")
+      }
+    }
     "ei salli mitään nykyisistä raporteista lukiolle" in {
       authGet(s"api/raportit/mahdolliset-raportit/${MockOrganisaatiot.ressunLukio}") {
         verifyResponseStatusOk()
