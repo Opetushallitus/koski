@@ -119,10 +119,10 @@ object SuoritustietojenTarkistus {
       .sorted
       .distinct
 
-    val ammatillisetTutkinnonOsat = osasuoritukset.filter(_.suorituksenTyyppi == "ammatillisentutkinnonosa")
-    val valmiitAmmatillisetTutkinnonOsat = getValmiitAmmatillisetTutkinnonOsat(päätasonSuoritukset, ammatillisetTutkinnonOsat)
-    val yhteisetTutkinnonOsat = getYhteisetTutkinnonOsat(ammatillisetTutkinnonOsat)
-    val yhteistenTutkinnonOsienOsaAlueet = osasuoritukset.filter(_.suorituksenTyyppi == "ammatillisentutkinnonosanosaalue")
+    val ammatillisetTutkinnonOsat = osasuoritukset.filter(isAmmatillinenTutkinnonOsa)
+    val valmiitAmmatillisetTutkinnonOsat = ammatillisetTutkinnonOsat.filter(os => os.vahvistusPäivä.isDefined | sisältyyVahvistettuunPäätasonSuoritukseen(os, päätasonSuoritukset))
+    val yhteisetTutkinnonOsat = osasuoritukset.filter(isYhteinenTutkinnonOsa)
+    val yhteistenTutkinnonOsienOsaAlueet = osasuoritukset.filter(isYhteinenTutkinnonOsanOsaalue)
 
     SuoritustiedotTarkistusRow(
       opiskeluoikeusOid = opiskeluoikeus.opiskeluoikeusOid,
@@ -140,16 +140,16 @@ object SuoritustietojenTarkistus {
       koulutusmoduulit = päätasonSuoritukset.map(_.koulutusmoduuliKoodiarvo).sorted.mkString(","),
       osaamisalat = if (osaamisalat.isEmpty) None else Some(osaamisalat.mkString(",")),
       koulutusmuoto = opiskeluoikeus.koulutusmuoto,
-      opiskeluoikeudenTila = Some(suorituksenTilaStr(päätasonSuoritukset)),
-      suoritettujenOpintojenYhteislaajuus = yhteislaajuus(osasuoritukset),
+      opiskeluoikeudenTila = Some(päätasonSuoritustenTilat(päätasonSuoritukset)),
+      suoritettujenOpintojenYhteislaajuus = (dropYhteisetTutkinnonOsat andThen yhteislaajuus)(osasuoritukset),
       valmiitAmmatillisetTutkinnonOsatLkm = valmiitAmmatillisetTutkinnonOsat.size,
       pakollisetAmmatillisetTutkinnonOsatLkm = pakolliset(ammatillisetTutkinnonOsat).size,
       valinnaisetAmmatillisetTutkinnonOsatLkm = valinnaiset(ammatillisetTutkinnonOsat).size,
       näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm = näytöt(valmiitAmmatillisetTutkinnonOsat).size,
       tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm = tunnustetut(valmiitAmmatillisetTutkinnonOsat).size,
-      rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm = (tunnustetut andThen rahoituksenPiirissä) (ammatillisetTutkinnonOsat).size,
+      rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm = (tunnustetut andThen rahoituksenPiirissä)(ammatillisetTutkinnonOsat).size,
       suoritetutAmmatillisetTutkinnonOsatYhteislaajuus = yhteislaajuus(ammatillisetTutkinnonOsat),
-      pakollisetAmmatillisetTutkinnonOsatYhteislaajuus = (pakolliset andThen yhteislaajuus) (ammatillisetTutkinnonOsat),
+      pakollisetAmmatillisetTutkinnonOsatYhteislaajuus = (pakolliset andThen yhteislaajuus)(ammatillisetTutkinnonOsat),
       valinnaisetAmmatillisetTutkinnonOsatYhteislaajuus = (valinnaiset andThen yhteislaajuus) (ammatillisetTutkinnonOsat),
       valmiitYhteistenTutkinnonOsatLkm = vahvistuspäivälliset(yhteisetTutkinnonOsat).size,
       pakollisetYhteistenTutkinnonOsienOsaalueidenLkm = pakolliset(yhteistenTutkinnonOsienOsaAlueet).size,
@@ -162,24 +162,13 @@ object SuoritustietojenTarkistus {
     )
   }
 
-  private def suorituksenTilaStr(päätasonsuoritukset: Seq[RPäätasonSuoritusRow]) = {
+  private def päätasonSuoritustenTilat(päätasonsuoritukset: Seq[RPäätasonSuoritusRow]) = {
     päätasonsuoritukset.flatMap(ps => JsonSerializer.extract[Option[Koodistokoodiviite]](ps.data \ "tila")).map(_.nimi.getOrElse("fi", None)).mkString(",")
   }
 
-  private def getYhteisetTutkinnonOsat(osasuoritukset: Seq[ROsasuoritusRow]) = {
-    osasuoritukset.filter { os =>
-      JsonSerializer.extract[Option[Koodistokoodiviite]](os.data \ "tutkinnonOsanRyhmä") match {
-        case Some(viite) if (viite.koodiarvo == "2") => true
-        case _ => false
-      }
-    }
-  }
+  private val sisältyyVahvistettuunPäätasonSuoritukseen: (ROsasuoritusRow, Seq[RPäätasonSuoritusRow]) => Boolean = (os, pss) => pss.exists(ps => ps.päätasonSuoritusId == os.päätasonSuoritusId & ps.vahvistusPäivä.isDefined)
 
-  private def getValmiitAmmatillisetTutkinnonOsat(päätasonsuoritukset: Seq[RPäätasonSuoritusRow], osasuoritukset: Seq[ROsasuoritusRow]) = {
-    def sisältyyValmiiseenpäätasonSuoritukseen(os: ROsasuoritusRow) = päätasonsuoritukset.exists(ps => ps.päätasonSuoritusId == os.päätasonSuoritusId & ps.vahvistusPäivä.isDefined)
-
-    osasuoritukset.filter(os => os.vahvistusPäivä.isDefined | sisältyyValmiiseenpäätasonSuoritukseen(os))
-  }
+  private val isAmmatillinenTutkinnonOsa: ROsasuoritusRow => Boolean = osasuoritus => osasuoritus.suorituksenTyyppi == "ammatillisentutkinnonosa"
 
   private val yhteislaajuus: Seq[ROsasuoritusRow] => Double = osasuoritukset => osasuoritukset.flatMap(_.koulutusmoduuliLaajuusArvo).sum
 
@@ -187,19 +176,27 @@ object SuoritustietojenTarkistus {
 
   private val tunnustetut: Seq[ROsasuoritusRow] => Seq[ROsasuoritusRow] = osasuoritukset => osasuoritukset.filter(isTunnustettu)
 
+  private val isTunnustettu: ROsasuoritusRow => Boolean = osasuoritus =>  JsonSerializer.extract[Option[OsaamisenTunnustaminen]](osasuoritus.data \ "tunnustettu").isDefined
+
   private val valinnaiset: Seq[ROsasuoritusRow] => Seq[ROsasuoritusRow] = osasuoritukset => osasuoritukset.filterNot(isPakollinen)
 
   private val pakolliset: Seq[ROsasuoritusRow] => Seq[ROsasuoritusRow] = osasuoritukset => osasuoritukset.filter(isPakollinen)
 
+  private val isPakollinen: ROsasuoritusRow => Boolean = osasuoritus => osasuoritus.koulutusmoduuliPakollinen.getOrElse(false)
+
   private val näytöt: Seq[ROsasuoritusRow] => Seq[ROsasuoritusRow] = osasuoritukset => osasuoritukset.filter(isNäyttö)
+
+  private val isNäyttö: ROsasuoritusRow => Boolean = osasuoritus => JsonSerializer.extract[Option[Näyttö]](osasuoritus.data \ "näyttö").isDefined
 
   private val rahoituksenPiirissä: Seq[ROsasuoritusRow] => Seq[ROsasuoritusRow] = osasuoritukset => osasuoritukset.filter(isRahoituksenPiirissä)
 
-  private def isTunnustettu(os: ROsasuoritusRow) = JsonSerializer.extract[Option[OsaamisenTunnustaminen]](os.data \ "tunnustettu").isDefined
+  private val isRahoituksenPiirissä: ROsasuoritusRow => Boolean = osasuoritus => JsonSerializer.extract[Option[OsaamisenTunnustaminen]](osasuoritus.data \ "tunnustettu").map(_.rahoituksenPiirissä).getOrElse(false)
 
-  private def isPakollinen(os: ROsasuoritusRow) = os.koulutusmoduuliPakollinen.getOrElse(false)
+  private val dropYhteisetTutkinnonOsat: Seq[ROsasuoritusRow] => Seq[ROsasuoritusRow] = osasuoritukset => osasuoritukset.filterNot(isYhteinenTutkinnonOsa)
 
-  private def isNäyttö(os: ROsasuoritusRow) = JsonSerializer.extract[Option[Näyttö]](os.data \ "näyttö").isDefined
+  private val yhteisetTutkinnonOsaKoodit = Seq("101053", "101054", "101055", "101056", "400012", "400013", "400014")
 
-  private def isRahoituksenPiirissä(os: ROsasuoritusRow) = JsonSerializer.extract[Option[OsaamisenTunnustaminen]](os.data \ "tunnustettu").map(_.rahoituksenPiirissä).getOrElse(false)
+  private val isYhteinenTutkinnonOsa: ROsasuoritusRow => Boolean = osasuoritus => yhteisetTutkinnonOsaKoodit.exists(_ == osasuoritus.koulutusmoduuliKoodiarvo)
+
+  private val isYhteinenTutkinnonOsanOsaalue: ROsasuoritusRow => Boolean = osasuoritus => osasuoritus.suorituksenTyyppi == "ammatillisentutkinnonosanosaalue"
 }
