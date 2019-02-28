@@ -169,21 +169,24 @@ const LisääOsaToisestaTutkinnosta = ({lisättävätTutkinnonOsat, suoritus, ko
     }
     { ift(lisääOsaToisestaTutkinnostaAtom, <ModalDialog className="lisaa-tutkinnon-osa-toisesta-tutkinnosta-modal" onDismiss={lisääOsaToisestaTutkinnosta} onSubmit={() => lisääOsaToisestaTutkinnosta(tutkintoAtom.get(), tutkinnonOsaAtom.get())} okTextKey="Lisää tutkinnon osa" validP={tutkinnonOsaAtom} submitOnEnterKey="false">
       <h2><Text name="Tutkinnon osan lisäys toisesta tutkinnosta"/></h2>
-      <div className="valinnat">
-        <TutkintoAutocomplete autoFocus="true" tutkintoAtom={tutkintoAtom} oppilaitosP={Bacon.constant(oppilaitos)} title={<Text name="Tutkinto"/>} />
-        {
-          tutkintoAtom.flatMapLatest( tutkinto => {
-            let osatP = tutkinto
-              ? fetchLisättävätTutkinnonOsat(tutkinto.diaarinumero).map('.osat')
-              : Bacon.constant([])
-            return <LisääTutkinnonOsaDropdown selectedAtom={tutkinnonOsaAtom} title={<Text name="Tutkinnon osa"/>} osat={osatP} placeholder={ osatP.map('.length').map(len => len == 0 ? 'Valitse ensin tutkinto' : 'Valitse tutkinnon osa').map(t) }/>
-          })
-        }
-      </div>
+      <TutkinnonOsaToisestaTutkinnostaPicker {...{tutkintoAtom, tutkinnonOsaAtom, oppilaitos}} />
     </ModalDialog>)
     }
   </span>)
 }
+
+const TutkinnonOsaToisestaTutkinnostaPicker = ({tutkintoAtom, tutkinnonOsaAtom, oppilaitos}) =>
+  <div className="valinnat">
+    <TutkintoAutocomplete autoFocus="true" tutkintoAtom={tutkintoAtom} oppilaitosP={Bacon.constant(oppilaitos)} title={<Text name="Tutkinto"/>} />
+    {
+      tutkintoAtom.flatMapLatest( tutkinto => {
+        let osatP = tutkinto
+          ? fetchLisättävätTutkinnonOsat(tutkinto.diaarinumero).map('.osat')
+          : Bacon.constant([])
+        return <LisääTutkinnonOsaDropdown selectedAtom={tutkinnonOsaAtom} title={<Text name="Tutkinnon osa"/>} osat={osatP} placeholder={ osatP.map('.length').map(len => len == 0 ? 'Valitse ensin tutkinto' : 'Valitse tutkinnon osa').map(t) }/>
+      })
+    }
+  </div>
 
 const fetchLisättävätTutkinnonOsat = (diaarinumero, suoritustapa, groupId) => {
   return Http.cachedGet(parseLocation(`/koski/api/tutkinnonperusteet/tutkinnonosat/${encodeURIComponent(diaarinumero)}`).addQueryParams({
