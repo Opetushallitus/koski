@@ -61,7 +61,7 @@ export default ({ suoritus, groupId, suoritusPrototype, suorituksetModel, setExp
     }
   </span>)
 
-  function addTutkinnonOsa(koulutusmoduuli, tutkinto) {
+  function addTutkinnonOsa(koulutusmoduuli, tutkinto, liittyyTutkinnonOsaan) {
     if (groupId == placeholderForNonGrouped) groupId = undefined
 
     let uusiSuoritus = modelSet(createTutkinnonOsanSuoritusPrototype(suorituksetModel, groupId), koulutusmoduuli, 'koulutusmoduuli')
@@ -73,6 +73,10 @@ export default ({ suoritus, groupId, suoritusPrototype, suorituksetModel, setExp
         tunniste: { koodiarvo: tutkinto.tutkintoKoodi, nimi: tutkinto.nimi, koodistoUri: 'koulutus' },
         perusteenDiaarinumero: tutkinto.diaarinumero
       }, 'tutkinto')
+    }
+
+    if (liittyyTutkinnonOsaan && modelLookup(uusiSuoritus, 'liittyyTutkinnonOsaan')) {
+      uusiSuoritus = modelSetData(uusiSuoritus, liittyyTutkinnonOsaan.data, 'liittyyTutkinnonOsaan')
     }
     pushModel(ensureArrayKey(uusiSuoritus))
     setExpanded(uusiSuoritus)(true)
@@ -95,11 +99,13 @@ const LisääPaikallinenTutkinnonOsa = ({lisättävätTutkinnonOsat, addTutkinno
   let lisääPaikallinenTutkinnonOsa = (osa) => {
     lisääPaikallinenAtom.set(false)
     if (osa) {
-      addTutkinnonOsa(osa)
+      addTutkinnonOsa(osa, undefined, liittyyTutkinnonOsaanAtom.get())
     }
   }
-  let nameAtom = Atom('')
-  let selectedAtom = nameAtom
+  const nameAtom = Atom('')
+  const tutkintoAtom = Atom()
+  const liittyyTutkinnonOsaanAtom = Atom()
+  const selectedAtom = nameAtom
     .view(name => modelSetTitle(modelSetValues(paikallinenKoulutusmoduuli, { 'kuvaus.fi': { data: name}, 'tunniste.nimi.fi': { data: name}, 'tunniste.koodiarvo': { data: name } }), name))
 
   const texts = lisääTutkinnonOsaTexts(lisättävätTutkinnonOsat, paikallinenKoulutusmoduuli)
@@ -111,6 +117,9 @@ const LisääPaikallinenTutkinnonOsa = ({lisättävätTutkinnonOsat, addTutkinno
     }
     { ift(lisääPaikallinenAtom, (<ModalDialog className="lisaa-paikallinen-tutkinnon-osa-modal" onDismiss={lisääPaikallinenTutkinnonOsa} onSubmit={() => lisääPaikallinenTutkinnonOsa(selectedAtom.get())} okTextKey={texts.modalOk} validP={selectedAtom}>
         <h2><Text name={texts.modalHeader} /></h2>
+        {
+          isTutkinnonosaaPienempiKokonaisuus(paikallinenKoulutusmoduuli) && <TutkinnonOsaToisestaTutkinnostaPicker tutkintoAtom={tutkintoAtom} tutkinnonOsaAtom={liittyyTutkinnonOsaanAtom} oppilaitos={modelData(paikallinenKoulutusmoduuli.context.suoritus, 'toimipiste')} />
+        }
         <label>
           <Text name={texts.modalFieldLabel} />
           <input type="text" autoFocus="true" onChange={event => nameAtom.set(event.target.value)}/>
@@ -176,7 +185,7 @@ const LisääOsaToisestaTutkinnosta = ({lisättävätTutkinnonOsat, suoritus, ko
 }
 
 const TutkinnonOsaToisestaTutkinnostaPicker = ({tutkintoAtom, tutkinnonOsaAtom, oppilaitos}) =>
-  <div className="valinnat">
+  (<div className="valinnat">
     <TutkintoAutocomplete autoFocus="true" tutkintoAtom={tutkintoAtom} oppilaitosP={Bacon.constant(oppilaitos)} title={<Text name="Tutkinto"/>} />
     {
       tutkintoAtom.flatMapLatest( tutkinto => {
@@ -186,7 +195,7 @@ const TutkinnonOsaToisestaTutkinnostaPicker = ({tutkintoAtom, tutkinnonOsaAtom, 
         return <LisääTutkinnonOsaDropdown selectedAtom={tutkinnonOsaAtom} title={<Text name="Tutkinnon osa"/>} osat={osatP} placeholder={ osatP.map('.length').map(len => len == 0 ? 'Valitse ensin tutkinto' : 'Valitse tutkinnon osa').map(t) }/>
       })
     }
-  </div>
+  </div>)
 
 const fetchLisättävätTutkinnonOsat = (diaarinumero, suoritustapa, groupId) => {
   return Http.cachedGet(parseLocation(`/koski/api/tutkinnonperusteet/tutkinnonosat/${encodeURIComponent(diaarinumero)}`).addQueryParams({
@@ -207,3 +216,4 @@ const LisääTutkinnonOsaDropdown = ({selectedAtom, osat, placeholder, title}) =
   />)
 }
 
+const isTutkinnonosaaPienempiKokonaisuus = k => k && k.value && k.value.classes[0] === 'tutkinnonosaapienempikokonaisuus'
