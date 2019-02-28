@@ -28,9 +28,10 @@ const TutkintoPicker = ({model}) => {
 
   return (<div>
     <TutkintoAutocomplete
-    autoFocus='true'
-    tutkintoAtom={tutkintoAtom}
-    oppilaitosP={Bacon.constant(modelData(model.context.suoritus, 'toimipiste'))} />
+      autoFocus='true'
+      tutkintoAtom={tutkintoAtom}
+      oppilaitosP={Bacon.constant(modelData(model.context.suoritus, 'toimipiste'))}
+    />
     <a className="remove-value" onClick={() => resetOptionalModel(model)}/>
    </div>)
 }
