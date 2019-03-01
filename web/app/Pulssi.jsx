@@ -1,4 +1,5 @@
 import './polyfills/polyfills.js'
+import Bacon from 'baconjs'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Http from './util/http'
@@ -127,11 +128,14 @@ class Pulssi extends React.Component {
   }
 
   componentDidMount() {
-    Http.cachedGet('/koski/api/pulssi').onValue(pulssi => this.setState({pulssi}))
+    minuteInterval()
+      .flatMapLatest(() => Http.get('/koski/api/pulssi'))
+      .onValue(pulssi => this.setState({pulssi}))
     document.title = 'Koski - Pulssi'
-
   }
 }
+
+const minuteInterval = () => Bacon.once().concat(Bacon.interval(60 * 1000))
 
 const toPercent = x => Math.min(100, Math.round(x * 100 * 10) / 10)
 
