@@ -108,7 +108,8 @@ const LisääPaikallinenTutkinnonOsa = ({lisättävätTutkinnonOsat, addTutkinno
   const selectedAtom = nameAtom
     .view(name => modelSetTitle(modelSetValues(paikallinenKoulutusmoduuli, { 'kuvaus.fi': { data: name}, 'tunniste.nimi.fi': { data: name}, 'tunniste.koodiarvo': { data: name } }), name))
 
-  const validP = isTutkinnonosaaPienempiKokonaisuus(paikallinenKoulutusmoduuli) ? nameAtom.and(liittyyTutkinnonOsaanAtom.map('.data')) : nameAtom
+  const tutkinnonosaaPienempiKokonaisuus = isTutkinnonosaaPienempiKokonaisuus(paikallinenKoulutusmoduuli)
+  const validP = tutkinnonosaaPienempiKokonaisuus ? nameAtom.and(liittyyTutkinnonOsaanAtom.map('.data')) : nameAtom
 
   const texts = lisääTutkinnonOsaTexts(lisättävätTutkinnonOsat, paikallinenKoulutusmoduuli)
   return (<span className="paikallinen-tutkinnon-osa">
@@ -120,11 +121,18 @@ const LisääPaikallinenTutkinnonOsa = ({lisättävätTutkinnonOsat, addTutkinno
     { ift(lisääPaikallinenAtom, (<ModalDialog className="lisaa-paikallinen-tutkinnon-osa-modal" onDismiss={lisääPaikallinenTutkinnonOsa} onSubmit={() => lisääPaikallinenTutkinnonOsa(selectedAtom.get())} okTextKey={texts.modalOk} validP={validP}>
         <h2><Text name={texts.modalHeader} /></h2>
         {
-          isTutkinnonosaaPienempiKokonaisuus(paikallinenKoulutusmoduuli) && <TutkinnonOsaToisestaTutkinnostaPicker tutkintoAtom={tutkintoAtom} tutkinnonOsaAtom={liittyyTutkinnonOsaanAtom} oppilaitos={modelData(paikallinenKoulutusmoduuli.context.suoritus, 'toimipiste')} />
+          tutkinnonosaaPienempiKokonaisuus &&
+          <TutkinnonOsaToisestaTutkinnostaPicker
+            tutkintoAtom={tutkintoAtom}
+            tutkinnonOsaAtom={liittyyTutkinnonOsaanAtom}
+            oppilaitos={modelData(paikallinenKoulutusmoduuli.context.suoritus, 'toimipiste')}
+            tutkintoTitle='Liittyy tutkintoon'
+            tutkinnonOsaTitle='Liittyy tutkinnon osaan'
+          />
         }
         <label>
           <Text name={texts.modalFieldLabel} />
-          <input className='paikallinen-koulutusmoduuli-nimi' type="text" autoFocus="true" onChange={event => nameAtom.set(event.target.value)}/>
+          <input className='paikallinen-koulutusmoduuli-nimi' type="text" autoFocus={!tutkinnonosaaPienempiKokonaisuus} onChange={event => nameAtom.set(event.target.value)}/>
         </label>
       </ModalDialog>)
     ) }
@@ -139,22 +147,26 @@ const lisääTutkinnonOsaTexts = (lisättävätTutkinnonOsat, paikallinenKoulutu
       modalFieldLabel: 'Tutkinnon osan osa-alueen nimi',
       modalOk: 'Lisää tutkinnon osan osa-alue'
     }
+  } else if (isMuunAmmatillisenKoulutuksenSuoritus(paikallinenKoulutusmoduuli.context.suoritus)) {
+    return {
+      lisääOsaLink: 'Lisää osasuoritus',
+      modalHeader: 'Osasuorituksen lisäys',
+      modalFieldLabel: 'Osasuorituksen nimi',
+      modalOk: 'Lisää osasuoritus'
+    }
+  } else if (isTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(paikallinenKoulutusmoduuli.context.suoritus)) {
+    return {
+      lisääOsaLink: 'Lisää tutkinnon osaa pienemmän kokonaisuuden suoritus',
+      modalHeader: 'Tutkinnon osaa pienemmän kokonaisuuden lisäys',
+      modalFieldLabel: 'Tutkinnon osaa pienemmän kokonaisuuden nimi',
+      modalOk: 'Lisää tutkinnon osaa pienempi kokonaisuus'
+    }
   } else {
-    const topLevelSuoritus = R.path(['context', 'suoritus'], paikallinenKoulutusmoduuli)
-    if (topLevelSuoritus && (isMuunAmmatillisenKoulutuksenSuoritus(topLevelSuoritus) || isTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(topLevelSuoritus))) {
-      return {
-        lisääOsaLink: 'Lisää osasuoritus',
-        modalHeader: 'Osasuorituksen lisäys',
-        modalFieldLabel: 'Osasuorituksen nimi',
-        modalOk: 'Lisää osasuoritus'
-      }
-    } else {
-      return {
-        lisääOsaLink: 'Lisää paikallinen tutkinnon osa',
-        modalHeader: 'Paikallisen tutkinnon osan lisäys',
-        modalFieldLabel: 'Tutkinnon osan nimi',
-        modalOk: 'Lisää tutkinnon osa'
-      }
+    return {
+      lisääOsaLink: 'Lisää paikallinen tutkinnon osa',
+      modalHeader: 'Paikallisen tutkinnon osan lisäys',
+      modalFieldLabel: 'Tutkinnon osan nimi',
+      modalOk: 'Lisää tutkinnon osa'
     }
   }
 }
@@ -186,15 +198,15 @@ const LisääOsaToisestaTutkinnosta = ({lisättävätTutkinnonOsat, suoritus, ko
   </span>)
 }
 
-const TutkinnonOsaToisestaTutkinnostaPicker = ({tutkintoAtom, tutkinnonOsaAtom, oppilaitos}) =>
+const TutkinnonOsaToisestaTutkinnostaPicker = ({tutkintoAtom, tutkinnonOsaAtom, oppilaitos, tutkintoTitle = 'Tutkinto', tutkinnonOsaTitle='Tutkinnon osa'}) =>
   (<div className="valinnat">
-    <TutkintoAutocomplete autoFocus="true" tutkintoAtom={tutkintoAtom} oppilaitosP={Bacon.constant(oppilaitos)} title={<Text name="Tutkinto"/>} />
+    <TutkintoAutocomplete autoFocus="true" tutkintoAtom={tutkintoAtom} oppilaitosP={Bacon.constant(oppilaitos)} title={<Text name={tutkintoTitle}/>} />
     {
       tutkintoAtom.flatMapLatest( tutkinto => {
         let osatP = tutkinto
           ? fetchLisättävätTutkinnonOsat(tutkinto.diaarinumero).map('.osat')
           : Bacon.constant([])
-        return <LisääTutkinnonOsaDropdown selectedAtom={tutkinnonOsaAtom} title={<Text name="Tutkinnon osa"/>} osat={osatP} placeholder={ osatP.map('.length').map(len => len == 0 ? 'Valitse ensin tutkinto' : 'Valitse tutkinnon osa').map(t) }/>
+        return <LisääTutkinnonOsaDropdown selectedAtom={tutkinnonOsaAtom} title={<Text name={tutkinnonOsaTitle}/>} osat={osatP} placeholder={ osatP.map('.length').map(len => len == 0 ? 'Valitse ensin tutkinto' : 'Valitse tutkinnon osa').map(t) }/>
       })
     }
   </div>)
