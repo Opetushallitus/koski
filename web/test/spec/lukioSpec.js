@@ -652,7 +652,7 @@ describe('Lukiokoulutus', function( ){
             it('näytetään oikein', function () {
               expect(extractAsText(S('.oppiaineet'))).to.equal('' +
                 'Oppiaine Laajuus (kurssia) Arvosana (keskiarvo)\n' +
-                ' Biologia 0 -'
+                'Biologia 0 -'
               )
             })
           })

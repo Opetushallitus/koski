@@ -147,14 +147,14 @@ const lisääTutkinnonOsaTexts = (lisättävätTutkinnonOsat, paikallinenKoulutu
       modalFieldLabel: 'Tutkinnon osan osa-alueen nimi',
       modalOk: 'Lisää tutkinnon osan osa-alue'
     }
-  } else if (isMuunAmmatillisenKoulutuksenSuoritus(paikallinenKoulutusmoduuli.context.suoritus)) {
+  } else if (paikallinenKoulutusmoduuli && isMuunAmmatillisenKoulutuksenSuoritus(paikallinenKoulutusmoduuli.context.suoritus)) {
     return {
       lisääOsaLink: 'Lisää osasuoritus',
       modalHeader: 'Osasuorituksen lisäys',
       modalFieldLabel: 'Osasuorituksen nimi',
       modalOk: 'Lisää osasuoritus'
     }
-  } else if (isTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(paikallinenKoulutusmoduuli.context.suoritus)) {
+  } else if (paikallinenKoulutusmoduuli && isTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(paikallinenKoulutusmoduuli.context.suoritus)) {
     return {
       lisääOsaLink: 'Lisää tutkinnon osaa pienemmän kokonaisuuden suoritus',
       modalHeader: 'Tutkinnon osaa pienemmän kokonaisuuden lisäys',
