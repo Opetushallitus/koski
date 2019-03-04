@@ -502,6 +502,18 @@ function TutkinnonOsat(groupId, base) {
           .then(click(subElement(modalElement, 'button.vahvista:not(:disabled)')))
       }
     },
+    lisääTutkinnonOsaaPienempiKokonaisuus: function(tutkinto, liittyyTutkinnonOsaan, nimi) {
+      return function() {
+        var modalElement = subElement(uusiTutkinnonOsaElement, '.lisaa-paikallinen-tutkinnon-osa-modal')
+        return click(subElement(uusiTutkinnonOsaElement, ('.paikallinen-tutkinnon-osa a')))()
+          .then(Page(modalElement).setInputValue('.tutkinto .autocomplete', tutkinto))
+          .then(wait.until(Page(modalElement).button(findSingle('.vahvista')).isDisabled))
+          .then(Page(modalElement).setInputValue('.tutkinnon-osat .dropdown', liittyyTutkinnonOsaan))
+          .then(wait.until(Page(modalElement).button(findSingle('.vahvista')).isDisabled))
+          .then(Page(modalElement).setInputValue('input.paikallinen-koulutusmoduuli-nimi', nimi))
+          .then(click(subElement(modalElement, 'button.vahvista:not(:disabled)')))
+      }
+    },
     lisääTutkinnonOsaToisestaTutkinnosta: function(tutkinto, nimi) {
       return function() {
         var modalElement = subElement(uusiTutkinnonOsaElement, '.osa-toisesta-tutkinnosta .modal')

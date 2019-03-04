@@ -174,6 +174,20 @@ describe('Muu ammatillinen koulutus', function() {
         })
         after(editor.cancelChanges)
       })
+
+      describe('Tutkinnon osaa pienemmän kokonaisuuden suorituksen lisääminen', function() {
+        before(
+          editor.edit,
+          opinnot.tutkinnonOsat().lisääTutkinnonOsaaPienempiKokonaisuus('Autoalan perustutkinto', 'Auton korjaaminen', 'Auton tuunaus'),
+          editor.saveChangesAndWaitForSuccess
+        )
+
+        it('onnistuu', function() {
+          expect(opinnot.tutkinnonOsat().osienTekstit()).to.equal(
+            'Auton tuunaus'
+          )
+        })
+      })
     })
   })
 })

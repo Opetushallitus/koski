@@ -108,6 +108,8 @@ const LisääPaikallinenTutkinnonOsa = ({lisättävätTutkinnonOsat, addTutkinno
   const selectedAtom = nameAtom
     .view(name => modelSetTitle(modelSetValues(paikallinenKoulutusmoduuli, { 'kuvaus.fi': { data: name}, 'tunniste.nimi.fi': { data: name}, 'tunniste.koodiarvo': { data: name } }), name))
 
+  const validP = isTutkinnonosaaPienempiKokonaisuus(paikallinenKoulutusmoduuli) ? nameAtom.and(liittyyTutkinnonOsaanAtom.map('.data')) : nameAtom
+
   const texts = lisääTutkinnonOsaTexts(lisättävätTutkinnonOsat, paikallinenKoulutusmoduuli)
   return (<span className="paikallinen-tutkinnon-osa">
     {
@@ -115,14 +117,14 @@ const LisääPaikallinenTutkinnonOsa = ({lisättävätTutkinnonOsat, addTutkinno
         <Text name={texts.lisääOsaLink}/>
       </a>
     }
-    { ift(lisääPaikallinenAtom, (<ModalDialog className="lisaa-paikallinen-tutkinnon-osa-modal" onDismiss={lisääPaikallinenTutkinnonOsa} onSubmit={() => lisääPaikallinenTutkinnonOsa(selectedAtom.get())} okTextKey={texts.modalOk} validP={selectedAtom}>
+    { ift(lisääPaikallinenAtom, (<ModalDialog className="lisaa-paikallinen-tutkinnon-osa-modal" onDismiss={lisääPaikallinenTutkinnonOsa} onSubmit={() => lisääPaikallinenTutkinnonOsa(selectedAtom.get())} okTextKey={texts.modalOk} validP={validP}>
         <h2><Text name={texts.modalHeader} /></h2>
         {
           isTutkinnonosaaPienempiKokonaisuus(paikallinenKoulutusmoduuli) && <TutkinnonOsaToisestaTutkinnostaPicker tutkintoAtom={tutkintoAtom} tutkinnonOsaAtom={liittyyTutkinnonOsaanAtom} oppilaitos={modelData(paikallinenKoulutusmoduuli.context.suoritus, 'toimipiste')} />
         }
         <label>
           <Text name={texts.modalFieldLabel} />
-          <input type="text" autoFocus="true" onChange={event => nameAtom.set(event.target.value)}/>
+          <input className='paikallinen-koulutusmoduuli-nimi' type="text" autoFocus="true" onChange={event => nameAtom.set(event.target.value)}/>
         </label>
       </ModalDialog>)
     ) }
