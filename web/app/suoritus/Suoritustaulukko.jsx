@@ -26,6 +26,7 @@ import {
   suoritusProperties,
   TutkintokertaColumn
 } from './SuoritustaulukkoCommon'
+import LiittyyTutkinnonOsaanEditor from '../ammatillinen/LiittyyTutkinnonOsaanEditor'
 
 const MAX_NESTED_LEVEL = 2
 
@@ -146,7 +147,12 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
     {
       expanded && displayProperties.length > 0 && (<tr className="details" key="details">
         <td colSpan="4">
-          <PropertiesEditor model={model} properties={displayProperties}/>
+          <PropertiesEditor
+            model={model}
+            properties={displayProperties}
+            getValueEditor={(p, getDefault) => p.key === 'liittyyTutkinnonOsaan' ? <LiittyyTutkinnonOsaanEditor model={p.model} /> : getDefault()}
+          />
+
         </td>
       </tr>)
     }

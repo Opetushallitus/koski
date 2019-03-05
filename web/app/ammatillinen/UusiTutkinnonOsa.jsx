@@ -3,30 +3,37 @@ import Bacon from 'baconjs'
 import Atom from 'bacon.atom'
 import {modelData} from '../editor/EditorModel.js'
 import {
-  ensureArrayKey, modelLookup, modelSet, modelSetData, modelSetTitle, modelSetValue, modelSetValues,
+  ensureArrayKey,
+  modelLookup,
+  modelSet,
+  modelSetData,
+  modelSetTitle,
+  modelSetValue,
+  modelSetValues,
   pushModel
 } from '../editor/EditorModel'
 import * as R from 'ramda'
 import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
-import {enumValueToKoodiviiteLens, toKoodistoEnumValue} from '../koodisto/koodistot'
-import KoodistoDropdown from '../koodisto/KoodistoDropdown'
+import {toKoodistoEnumValue} from '../koodisto/koodistot'
 import {isPaikallinen, koulutusModuuliprototypes} from '../suoritus/Koulutusmoduuli'
-import Http from '../util/http'
 import {ift} from '../util/util'
 import ModalDialog from '../editor/ModalDialog'
-import TutkintoAutocomplete from '../virkailija/TutkintoAutocomplete'
 import {
-  createTutkinnonOsanSuoritusPrototype, isYhteinenTutkinnonOsa, placeholderForNonGrouped,
+  createTutkinnonOsanSuoritusPrototype,
+  fetchLisättävätTutkinnonOsat,
+  isYhteinenTutkinnonOsa,
+  placeholderForNonGrouped,
   tutkinnonOsanOsaAlueenKoulutusmoduuli
 } from './TutkinnonOsa'
-import {parseLocation} from '../util/location'
 import {elementWithLoadingIndicator} from '../components/AjaxLoadingIndicator'
 import {koodistoValues} from '../uusioppija/koodisto'
 import {
   isMuunAmmatillisenKoulutuksenSuoritus,
   isTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus
 } from '../suoritus/SuoritustaulukkoCommon'
+import TutkinnonOsaToisestaTutkinnostaPicker from './TutkinnonOsaToisestaTutkinnostaPicker'
+import LisaaTutkinnonOsaDropdown from './LisaaTutkinnonOsaDropdown'
 
 export default ({ suoritus, groupId, suoritusPrototype, suorituksetModel, setExpanded, groupTitles }) => {
   let koulutusModuuliprotos = koulutusModuuliprototypes(suoritusPrototype)
@@ -90,7 +97,7 @@ const LisääRakenteeseenKuuluvaTutkinnonOsa = ({lisättävätTutkinnonOsat, add
   })
   let osat = lisättävätTutkinnonOsat.osat
   return osat.length > 0 && (<span className="osa-samasta-tutkinnosta">
-      <LisääTutkinnonOsaDropdown selectedAtom={selectedAtom} osat={osat} placeholder={lisättävätTutkinnonOsat.osanOsa ? t('Lisää tutkinnon osan osa-alue') : t('Lisää tutkinnon osa')}/>
+      <LisaaTutkinnonOsaDropdown selectedAtom={selectedAtom} osat={osat} placeholder={lisättävätTutkinnonOsat.osanOsa ? t('Lisää tutkinnon osan osa-alue') : t('Lisää tutkinnon osa')}/>
   </span>)
 }
 
@@ -196,38 +203,6 @@ const LisääOsaToisestaTutkinnosta = ({lisättävätTutkinnonOsat, suoritus, ko
     </ModalDialog>)
     }
   </span>)
-}
-
-const TutkinnonOsaToisestaTutkinnostaPicker = ({tutkintoAtom, tutkinnonOsaAtom, oppilaitos, tutkintoTitle = 'Tutkinto', tutkinnonOsaTitle='Tutkinnon osa'}) =>
-  (<div className="valinnat">
-    <TutkintoAutocomplete autoFocus="true" tutkintoAtom={tutkintoAtom} oppilaitosP={Bacon.constant(oppilaitos)} title={<Text name={tutkintoTitle}/>} />
-    {
-      tutkintoAtom.flatMapLatest( tutkinto => {
-        let osatP = tutkinto
-          ? fetchLisättävätTutkinnonOsat(tutkinto.diaarinumero).map('.osat')
-          : Bacon.constant([])
-        return <LisääTutkinnonOsaDropdown selectedAtom={tutkinnonOsaAtom} title={<Text name={tutkinnonOsaTitle}/>} osat={osatP} placeholder={ osatP.map('.length').map(len => len == 0 ? 'Valitse ensin tutkinto' : 'Valitse tutkinnon osa').map(t) }/>
-      })
-    }
-  </div>)
-
-const fetchLisättävätTutkinnonOsat = (diaarinumero, suoritustapa, groupId) => {
-  return Http.cachedGet(parseLocation(`/koski/api/tutkinnonperusteet/tutkinnonosat/${encodeURIComponent(diaarinumero)}`).addQueryParams({
-    suoritustapa: suoritustapa,
-    tutkinnonOsanRyhmä: groupId != placeholderForNonGrouped ? groupId : undefined
-  }))
-}
-
-const LisääTutkinnonOsaDropdown = ({selectedAtom, osat, placeholder, title}) => {
-  return (<KoodistoDropdown
-    className="tutkinnon-osat"
-    title={title}
-    options={osat}
-    selected={ selectedAtom.view(enumValueToKoodiviiteLens) }
-    enableFilter="true"
-    selectionText={ placeholder }
-    showKoodiarvo="true"
-  />)
 }
 
 const isTutkinnonosaaPienempiKokonaisuus = k => k && k.value && k.value.classes[0] === 'tutkinnonosaapienempikokonaisuus'

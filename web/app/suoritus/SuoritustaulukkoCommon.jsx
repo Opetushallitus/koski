@@ -80,7 +80,7 @@ export const suoritusProperties = suoritus => {
 
     const defaultsForEdit = pakollinen
       .concat(arviointipäivä)
-      .concat(includeProperties('näyttö', 'tunnustettu', 'lisätiedot'))
+      .concat(includeProperties('näyttö', 'tunnustettu', 'lisätiedot', 'liittyyTutkinnonOsaan'))
 
     const defaultsForView = pakollinen
       .concat(excludeProperties('koulutusmoduuli', 'arviointi', 'tutkinnonOsanRyhmä', 'tutkintokerta'))
