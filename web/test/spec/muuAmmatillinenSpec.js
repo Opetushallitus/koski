@@ -106,7 +106,7 @@ describe('Muu ammatillinen koulutus', function() {
         })
       })
 
-      describe('Osasuorituksen osasuoritukseen lisääminen', function() {
+      describe('Osasuorituksen osasuorituksen lisääminen', function() {
         var osasuoritus = opinnot.tutkinnonOsat().tutkinnonOsa(0)
         var osanOsa1 = osasuoritus.osanOsat().tutkinnonOsa(0)
         var osanOsa2 = osasuoritus.osanOsat().tutkinnonOsa(1)
@@ -143,6 +143,18 @@ describe('Muu ammatillinen koulutus', function() {
               'Huoneenvuokralainsäädännön perusteet 1 3'
             )
           })
+
+          describe('Osasuorituksen osasuoritukseen lisääminen', function() {
+            before(
+              editor.edit,
+              opinnot.avaaKaikki,
+              osanOsa1.toggleExpand
+            )
+
+            it('on estetty', function() {
+              expect(extractAsText(osanOsa1.elem())).to.not.contain('Lisää osasuoritus')
+            })
+          })
         })
       })
     })
@@ -174,6 +186,29 @@ describe('Muu ammatillinen koulutus', function() {
         })
         after(editor.cancelChanges)
       })
+    })
+
+    describe('Tietojen muuttaminen', function() {
+      before(resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('040754-054W'))
+
+      describe('Tutkinnon osaa pienemmän kokonaisuuden suorituksen muuttaminen', function() {
+        before(
+          editor.edit,
+          opinnot.avaaKaikki,
+          opinnot.tutkinnonOsat().tutkinnonOsa(0).liittyyTutkinnonOsaan().valitseTutkinto('Autoalan perustutkinto'),
+          opinnot.tutkinnonOsat().tutkinnonOsa(0).liittyyTutkinnonOsaan().valitseTutkinnonOsa('Varaosatyö ja varaston hallinta'),
+          editor.saveChangesAndWaitForSuccess,
+          opinnot.avaaKaikki
+        )
+
+        it('onnistuu', function() {
+          expect(opinnot.tutkinnonOsat().osienTekstit()).to.equal(
+            'Asunto- ja kiinteistöosakeyhtiön talous ja verotus\n' +
+            'Kuvaus Kurssilla opitaan hallitsemaan asunto- ja kiinteistöosakeyhtiön taloutta ja verotusta.\n' +
+            'Liittyy tutkinnon osaan Varaosatyö ja varaston hallinta'
+          )
+        })
+      })
 
       describe('Tutkinnon osaa pienemmän kokonaisuuden suorituksen lisääminen', function() {
         before(
@@ -184,10 +219,11 @@ describe('Muu ammatillinen koulutus', function() {
 
         it('onnistuu', function() {
           expect(opinnot.tutkinnonOsat().osienTekstit()).to.equal(
-            'Auton tuunaus'
+            'Asunto- ja kiinteistöosakeyhtiön talous ja verotus\n\nAuton tuunaus'
           )
         })
       })
+
     })
   })
 })

@@ -418,6 +418,9 @@ function TutkinnonOsat(groupId, base) {
         lisätiedot: function() {
           return api.property('lisätiedot')
         },
+        liittyyTutkinnonOsaan: function() {
+          return LiittyyTutkinnonOsaan(api.property('liittyyTutkinnonOsaan'))
+        },
         osanOsat: function() {
           return TutkinnonOsat('999999', tutkinnonOsaElement)
         },
@@ -542,6 +545,21 @@ function TutkinnonOsat(groupId, base) {
       return S('.osasuoritukset').text()
     }
   }
+}
+
+function LiittyyTutkinnonOsaan(property) {
+  var tutkintoProperty = property.subProperty('.tutkinto')
+  var tutkinnonOsaProperty = property.subProperty('.tutkinnon-osat')
+
+  var api = {
+    valitseTutkinto: function(tutkinto) {
+      return tutkintoProperty.setValue(tutkinto)
+    },
+    valitseTutkinnonOsa: function(tutkinnonOsa) {
+      return tutkinnonOsaProperty.setValue(tutkinnonOsa)
+    }
+  }
+  return api
 }
 
 function IBSuoritukset() {
@@ -911,7 +929,7 @@ function Property(elem) {
     },
     setValue: function(value, index) {
       return function() {
-        return Page(elem).setInputValue('.dropdown, .editor-input', value, index)()
+        return Page(elem).setInputValue('.dropdown, .editor-input, .autocomplete', value, index)()
       }
     },
     getLanguage: function() {
@@ -948,6 +966,9 @@ function Property(elem) {
     },
     getOptions: function() {
       return Page(elem).getInputOptions('.dropdown')
+    },
+    subProperty: function(selector) {
+      return Property(findSingle(selector, elem))
     }
   }, Editor(elem))
 }
