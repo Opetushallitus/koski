@@ -30,8 +30,9 @@ class LiittyyTutkinnonOsaanPicker extends React.Component {
 
   componentDidMount() {
     const {model} = this.props
-    const {liittyyTutkinnonOsaanAtom} = this.state
+    const {liittyyTutkintoonAtom, liittyyTutkinnonOsaanAtom} = this.state
     const liittyyTutkinnonOsaanData = modelData(model)
+    liittyyTutkintoonAtom.filter(x => !!x).onValue(() => liittyyTutkinnonOsaanAtom.set(undefined))
     liittyyTutkinnonOsaanData && liittyyTutkinnonOsaanAtom.set({data: liittyyTutkinnonOsaanData, title: modelTitle(model)})
     liittyyTutkinnonOsaanAtom.filter(x => !!x && !R.equals(liittyyTutkinnonOsaanData, x.data)).onValue(liittyyTutkinnonOsaan => {
       pushModel(modelSetData(model, liittyyTutkinnonOsaan.data))

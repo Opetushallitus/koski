@@ -57,7 +57,9 @@ describe('Ammatillinen koulutus', function() {
             'Nuorten aikuisten osaamisohjelma',
             'Aikuisten osaamisperustan vahvistaminen',
             'Maahanmuuttajien ammatillinen koulutus (valtionavustus)',
-            'Työvoimakoulutus (OKM rahoitus)'
+            'Työvoimakoulutus (OKM rahoitus)',
+            'Ammatillisen osaamisen pilotit 2019',
+            'Ammatillisen osaamisen pilotit 2019 (työvoimakoulutus)'
           ])
         })
 
