@@ -2,22 +2,21 @@ package fi.oph.koski.raportit
 
 import java.time.LocalDate
 
-import fi.oph.koski.api.OpiskeluoikeusTestMethods
+import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
+import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, SisältäväOpiskeluoikeus}
 import org.scalatest.{FreeSpec, Matchers}
 
-class SuoritustietojenTarkistusSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with OpiskeluoikeusTestMethods {
+class SuoritustietojenTarkistusSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with OpiskeluoikeusTestMethodsAmmatillinen {
 
   "Suoritustietojen tarkistusraportti" - {
-    "Luo raportin" - {
+    "Laskenta" - {
       loadRaportointikantaFixtures
-      val result = SuoritustietojenTarkistus.buildRaportti(raportointiDatabase, MockOrganisaatiot.stadinAmmattiopisto, LocalDate.parse("2016-01-01"), LocalDate.parse("2016-12-31"))
-      val aarnenOpiskeluoikeusOid = lastOpiskeluoikeus(MockOppijat.ammattilainen.oid).oid.get
-      val aarnenRivi = result.find(_.opiskeluoikeusOid == aarnenOpiskeluoikeusOid)
-      aarnenRivi shouldBe defined
-      val rivi = aarnenRivi.get
+      val rivit = loadAmmattilaisAarnenRivi()
+      val foo = rivit
+      val rivi = rivit.head
 
       "Suorituksia yhteesä" in {
         rivi.suoritettujenOpintojenYhteislaajuus should equal(157.0)
@@ -76,6 +75,9 @@ class SuoritustietojenTarkistusSpec extends FreeSpec with Matchers with Raportoi
         "Suoritettuja yhteisten tutkinnon osien yhteislaajuus" in {
           rivi.suoritettujenYhteistenTutkinnonOsienYhteislaajuus should equal(35.0)
         }
+        "Suoritettujen yhteisten tutkinnon osien osa-alueiden yhteislaajuus" in {
+          rivi.suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal(22)
+        }
         "Pakollisten yhteisten tutkinnon osioen osa-alueiden yhteislaajuus" in {
           rivi.pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal(19)
         }
@@ -84,5 +86,47 @@ class SuoritustietojenTarkistusSpec extends FreeSpec with Matchers with Raportoi
         }
       }
     }
+    "Sisällytetyt opiskeluoikeudet"  - {
+      "Opiskeluoikeuteen sisältyvät opiskeluioikeudet toistesta oppilaitoksesta" in {
+        lisääAarnelleSisällytettyOpiskeluoikeus {
+          val aarnenRivit = loadAmmattilaisAarnenRivi(MockOrganisaatiot.omnia)
+          aarnenRivit.length should equal(2)
+          val stadinLinkitettyOpiskeluoikeus = aarnenRivit.find(_.linkitetynOpiskeluoikeudenOppilaitos == stadinAmmattiOpistonNimi)
+          stadinLinkitettyOpiskeluoikeus shouldBe defined
+          stadinLinkitettyOpiskeluoikeus.get.suoritettujenOpintojenYhteislaajuus should equal(157.0)
+        }
+      }
+      "Sisältävä opiskeluoikeus ei tule sisällytetyn opiskeluoikeuden oppilaitoksen raportille" in {
+        lisääAarnelleSisällytettyOpiskeluoikeus {
+          val aarnenRivit = loadAmmattilaisAarnenRivi(MockOrganisaatiot.stadinAmmattiopisto)
+          aarnenRivit.length should equal(1)
+          aarnenRivit.head.linkitetynOpiskeluoikeudenOppilaitos shouldBe empty
+        }
+      }
+    }
   }
+
+  private def loadAmmattilaisAarnenRivi(oppilaitosOid: String = MockOrganisaatiot.stadinAmmattiopisto) = {
+    val result = SuoritustietojenTarkistus.buildRaportti(raportointiDatabase, oppilaitosOid, LocalDate.parse("2016-01-01"), LocalDate.parse("2016-12-31"))
+    result.filter(_.hetu == MockOppijat.ammattilainen.hetu)
+  }
+
+  private def lisääAarnelleSisällytettyOpiskeluoikeus(f: => Unit) = {
+    resetFixtures
+    val omnia = MockOrganisaatioRepository.findByOppilaitosnumero("10054").get
+    val omnianOpiskeluoikeus = makeOpiskeluoikeus(LocalDate.of(2016, 1, 1), omnia, omnia.oid)
+    val oppija = MockOppijat.ammattilainen
+
+    putOpiskeluoikeus(omnianOpiskeluoikeus, oppija){}
+
+    val stadinOpiskeluoikeus = getOpiskeluoikeudet(oppija.oid).find(_.oppilaitos.map(_.oid).contains(MockOrganisaatiot.stadinAmmattiopisto)).map{case oo: AmmatillinenOpiskeluoikeus => oo}.get
+    val omnianOpiskeluoikeusOid = lastOpiskeluoikeus(MockOppijat.ammattilainen.oid).oid.get
+
+    putOpiskeluoikeus(sisällytäOpiskeluoikeus(stadinOpiskeluoikeus, SisältäväOpiskeluoikeus(omnia, omnianOpiskeluoikeusOid)), oppija){}
+    loadRaportointikantaFixtures
+    (f)
+    resetFixtures
+  }
+
+  private val stadinAmmattiOpistonNimi = MockOrganisaatioRepository.getOrganisaatio(MockOrganisaatiot.stadinAmmattiopisto).get.nimi.get.values("fi")
 }

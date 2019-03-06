@@ -1,6 +1,6 @@
 package fi.oph.koski.raportit
 
-import java.sql.Timestamp
+import java.sql.{Date, Timestamp}
 import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.json.JsonSerializer
@@ -46,6 +46,7 @@ case class SuoritustiedotTarkistusRow
   tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaLkm: Int,
   rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm: Int,
   suoritettujenYhteistenTutkinnonOsienYhteislaajuus: Double,
+  suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus: Double,
   pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus: Double,
   valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus: Double
 )
@@ -82,7 +83,7 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
     "suoritettujenOpintojenYhteislaajuus" -> Column("Suoritettujen opintojen yhteislaajuus"),
     "valmiitAmmatillisetTutkinnonOsatLkm" -> Column("Valmiiden ammatillisten tutkinnon osien lukumäärä"),
     "pakollisetAmmatillisetTutkinnonOsatLkm" -> Column("Pakollisten ammatillisten tutkinnon osien lukumäärä"),
-    "valinnaisetAmmatillisetTutkinnonOsatLkm" -> Column("Valinnaisten ammatillisten tutkinon osien lukumäärä"),
+    "valinnaisetAmmatillisetTutkinnonOsatLkm" -> Column("Valinnaisten ammatillisten tutkinnon osien lukumäärä"),
     "näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm" -> Column("Valmiissa ammatillisissa tutkinnon osissa olevien näyttöjen lukumäärä"),
     "tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm" -> Column("Tunnustettujen tutkinnon osien osuus valmiista ammatillisista tutkinnon osista"),
     "rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm" -> Column("Rahoituksen piirissä olevien tutkinnon osien osuus tunnustetuista ammatillisista tutkinnon osista"),
@@ -92,11 +93,12 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
     "valmiitYhteistenTutkinnonOsatLkm" -> Column("Valmiiden yhteisten tutkinnon osien lukumäärä"),
     "pakollisetYhteistenTutkinnonOsienOsaalueidenLkm" -> Column("Pakollisten yhteisten tutkinnon osien osa-alueiden lukumäärä"),
     "valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm" -> Column("Valinnaisten yhteisten tutkinnon osien osa-aluiden lukumäärä"),
-    "tunnustettujaTukinnonOsanOsaalueitaValmiissaTutkinnonOsanOsalueissaLkm" -> Column("Tunnustettujen tutkinnon osien osa-alueiden osuus valmiista yhteisten tutkinnon osan osa-alueista"),
-    "rahoituksenPiirissäTutkinnonOsanOsaalueitaValmiissaTutkinnonOsanOsaalueissaLkm" -> Column("Rahoituksen piirissä olevien tutkinnon osien osa-aluiden osuus valmiista yhteisten tutkinnon osan osa-alueista"),
+    "tunnustettujaTukinnonOsanOsaalueitaValmiissaTutkinnonOsanOsalueissaLkm" -> Column("Tunnustettujen tutkinnon osien osa-alueiden osuus valmiista yhteisten tutkinnon osien osa-alueista"),
+    "rahoituksenPiirissäTutkinnonOsanOsaalueitaValmiissaTutkinnonOsanOsaalueissaLkm" -> Column("Rahoituksen piirissä olevien tutkinnon osien osa-aluiden osuus valmiista yhteisten tutkinnon osien osa-alueista"),
     "tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaLkm" -> Column("Tunnustettujen tutkinnon osien osuus valmiista yhteisistä tutkinnon osista"),
     "rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm" -> Column("Rahoituksen piirissä olevien tutkinnon osien osuus tunnustetuista yhteisistä tutkinnon osista"),
     "suoritettujenYhteistenTutkinnonOsienYhteislaajuus" -> Column("Suoritettujen yhteisten tutkinnon osien yhteislaajuus"),
+    "suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus" -> Column("Suoritettujen yhteisten tutkinnon osien osa-alueiden yhteislaajuus"),
     "pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus" -> Column("Pakollisten yhteisten tutkinnon osien osa-alueiden yhteislaajuus"),
     "valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus" -> Column("Valinnaisten yhteisten tutkinnon osien osa-aluiden yhteislaajuus")
   )
@@ -128,7 +130,7 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
       .distinct
 
     val ammatillisetTutkinnonOsatJaOsasuoritukset = ammatillisetTutkinnonOsatJaOsasuorituksetFrom(osasuoritukset)
-    val valmiitAmmatillisetTutkinnonOsatJaOsasuoritukset = ammatillisetTutkinnonOsatJaOsasuoritukset.filter(os => isVahvistusPäivällinen(os) |isArvioinniton(os) | sisältyyVahvistettuunPäätasonSuoritukseen(os, päätasonSuoritukset))
+    val valmiitAmmatillisetTutkinnonOsatJaOsasuoritukset = ammatillisetTutkinnonOsatJaOsasuoritukset.filter(os => isVahvistusPäivällinen(os) | isArvioinniton(os) | sisältyyVahvistettuunPäätasonSuoritukseen(os, päätasonSuoritukset))
     val yhteisetTutkinnonOsat = osasuoritukset.filter(isYhteinenTutkinnonOsa)
     val yhteistenTutkinnonOsienOsaAlueet = osasuoritukset.filter(isYhteinenTutkinnonOsanOsaalue(_, osasuoritukset))
 
@@ -166,17 +168,24 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
       valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm = valinnaiset(yhteistenTutkinnonOsienOsaAlueet).size,
       tunnustettujaTukinnonOsanOsaalueitaValmiissaTutkinnonOsanOsalueissaLkm = tunnustetut(yhteistenTutkinnonOsienOsaAlueet).size,
       rahoituksenPiirissäTutkinnonOsanOsaalueitaValmiissaTutkinnonOsanOsaalueissaLkm = rahoituksenPiirissä(yhteistenTutkinnonOsienOsaAlueet).size,
-      tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaLkm =  tunnustetut(yhteisetTutkinnonOsat).size,
-      rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm = (tunnustetut andThen rahoituksenPiirissä)(yhteisetTutkinnonOsat).size,
+      tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaLkm = tunnustetut(yhteisetTutkinnonOsat).size,
+      rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm = (tunnustetut andThen rahoituksenPiirissä) (yhteisetTutkinnonOsat).size,
       suoritettujenYhteistenTutkinnonOsienYhteislaajuus = yhteislaajuus(yhteisetTutkinnonOsat),
+      suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus = yhteislaajuus(yhteistenTutkinnonOsienOsaAlueet),
       pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus = (pakolliset andThen yhteislaajuus) (yhteistenTutkinnonOsienOsaAlueet),
       valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus = (valinnaiset andThen yhteislaajuus) (yhteistenTutkinnonOsienOsaAlueet)
     )
   }
 
   private def päätasonSuoritustenTilat(päätasonsuoritukset: Seq[RPäätasonSuoritusRow]) = {
-    päätasonsuoritukset.map(ps => if (ps.vahvistusPäivä.isDefined) "Valmis" else "Kesken").mkString(",")
+    päätasonsuoritukset.map(ps => vahvistusPäivätToTila(ps.vahvistusPäivä)).mkString(",")
   }
+
+  private[raportit] def vahvistusPäivätToTila(vahvistusPäivä: Option[Date]) = vahvistusPäivä match {
+      case Some(päivä) if (isTulevaisuudessa(päivä)) =>  s"Kesken, Valmistuu ${päivä.toLocalDate}"
+      case Some(_) =>  "Valmis"
+      case _ => "Kesken"
+    }
 
   private def ammatillisetTutkinnonOsatJaOsasuorituksetFrom(osasuoritukset: Seq[ROsasuoritusRow]) = {
     osasuoritukset.filter(os =>
@@ -192,11 +201,12 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
 
   private def isAnyOf(osasuoritus: ROsasuoritusRow, fs: (ROsasuoritusRow => Boolean)*) = fs.exists(f => f(osasuoritus))
 
+  private val tutkinnonosatvalinnanmahdollisuusKoodiarvot = Seq("1,", "2")
+
   private val isAmmatillisenTutkinnonOsa: ROsasuoritusRow => Boolean = osasuoritus => {
-    osasuoritus.suorituksenTyyppi == "ammatillisentutkinnonosa" & (JsonSerializer.extract[Option[Koodistokoodiviite]](osasuoritus.data \ "tutkinnonOsanRyhmä") match {
-      case Some(viite) => viite.koodiarvo == "1"
-      case _ => false
-    })
+    !(tutkinnonosatvalinnanmahdollisuusKoodiarvot.contains(osasuoritus.koulutusmoduuliKoodiarvo)) &
+      (osasuoritus.suorituksenTyyppi == "ammatillisentutkinnonosa") &
+      (tutkinnonOsanRyhmä(osasuoritus, "1"))
   }
 
   private val isArvioinniton: ROsasuoritusRow => Boolean = osasuoritus => isAnyOf(osasuoritus,
@@ -206,6 +216,11 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
     isAmmatillinenTutkinnonOsaaPienempiKokonaisuus,
     isAmmatillisenTutkinnonOsanOsaalue
   )
+
+  private val tutkinnonOsanRyhmä: (ROsasuoritusRow, String) => Boolean = (osasuoritus, koodiarvo) => JsonSerializer.extract[Option[Koodistokoodiviite]](osasuoritus.data \ "tutkinnonOsanRyhmä") match {
+    case Some(viite) => viite.koodiarvo == koodiarvo
+    case _ => false
+  }
 
   private val sisältyyVahvistettuunPäätasonSuoritukseen: (ROsasuoritusRow, Seq[RPäätasonSuoritusRow]) => Boolean = (os, pss) => pss.exists(ps => ps.päätasonSuoritusId == os.päätasonSuoritusId & ps.vahvistusPäivä.isDefined)
 
@@ -239,11 +254,7 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
 
   private val isRahoituksenPiirissä: ROsasuoritusRow => Boolean = osasuoritus => JsonSerializer.extract[Option[OsaamisenTunnustaminen]](osasuoritus.data \ "tunnustettu").map(_.rahoituksenPiirissä).getOrElse(false)
 
-  private val dropYhteisetTutkinnonOsat: Seq[ROsasuoritusRow] => Seq[ROsasuoritusRow] = osasuoritukset => osasuoritukset.filterNot(isYhteinenTutkinnonOsa)
-
-  private val yhteisetTutkinnonOsaKoodit = Seq("101053", "101054", "101055", "101056", "400012", "400013", "400014")
-
-  private val isYhteinenTutkinnonOsa: ROsasuoritusRow => Boolean = osasuoritus => yhteisetTutkinnonOsaKoodit.exists(_ == osasuoritus.koulutusmoduuliKoodiarvo)
+  private val isYhteinenTutkinnonOsa: ROsasuoritusRow => Boolean = osasuoritus => tutkinnonOsanRyhmä(osasuoritus, "2")
 
   private val isAmmatillisenTutkinnonOsanOsaalue: ROsasuoritusRow => Boolean = osasuoritus => osasuoritus.suorituksenTyyppi == "ammatillisentutkinnonosanosaalue"
 
@@ -258,4 +269,6 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
     val osat = osasuoritukset.filter(os => os.suorituksenTyyppi == "ammatillisentutkinnonosa" & !isYhteinenTutkinnonOsa(os))
     isAmmatillisenTutkinnonOsanOsaalue(osasuoritus) & osasuorituksenaOsissa(osasuoritus, osat)
   }
+
+  private def isTulevaisuudessa(date: Date) = date.toLocalDate.isAfter(LocalDate.now())
 }

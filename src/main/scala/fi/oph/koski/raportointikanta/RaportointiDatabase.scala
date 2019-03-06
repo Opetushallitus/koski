@@ -147,31 +147,45 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
   def suoritustiedotAikajaksot(oppilaitos: Organisaatio.Oid, koulutusmuoto: String, alku: LocalDate, loppu: LocalDate): Seq[(ROpiskeluoikeusRow, Option[RHenkilöRow], List[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])] = {
     val alkuDate = Date.valueOf(alku)
     val loppuDate = Date.valueOf(loppu)
-    val query1 = ROpiskeluoikeudet
+
+    val opiskeluoikeudetJaAikajaksotQuery = ROpiskeluoikeudet
       .filter(_.oppilaitosOid === oppilaitos)
       .filter(_.koulutusmuoto === koulutusmuoto)
       .join(ROpiskeluoikeusAikajaksot.filterNot(_.alku > loppuDate).filterNot(_.loppu < alkuDate))
       .on(_.opiskeluoikeusOid === _.opiskeluoikeusOid)
       .sortBy(_._1.opiskeluoikeusOid)
-    val result1: Seq[(ROpiskeluoikeusRow, ROpiskeluoikeusAikajaksoRow)] = runDbSync(query1.result, timeout = 5.minutes)
+    val opiskeluoikeudetJaAikajaksot: Seq[(ROpiskeluoikeusRow, ROpiskeluoikeusAikajaksoRow)] = runDbSync(opiskeluoikeudetJaAikajaksotQuery.result, timeout = 5.minutes)
 
-    val sisältyvätOpiskeluoikeudetQuery = ROpiskeluoikeudet.filter(_.sisältyyOpiskeluoikeuteenOid inSet result1.map(_._1.opiskeluoikeusOid).distinct)
+    val sisältyvätOpiskeluoikeudetQuery = ROpiskeluoikeudet.filter(_.sisältyyOpiskeluoikeuteenOid inSet opiskeluoikeudetJaAikajaksot.map(_._1.opiskeluoikeusOid).distinct)
     val sisältyvätOpiskeluoikeudet: Map[String, Seq[ROpiskeluoikeusRow]] = runDbSync(sisältyvätOpiskeluoikeudetQuery.result).groupBy(_.sisältyyOpiskeluoikeuteenOid.get)
-    val päätasonSuorituksetQuery = RPäätasonSuoritukset.filter(_.opiskeluoikeusOid inSet result1.map(_._1.opiskeluoikeusOid).union(sisältyvätOpiskeluoikeudet.keys.toSeq).distinct)
+
+    val sisältyvätOpiskeluoikeusOidit: Seq[String] = sisältyvätOpiskeluoikeudet.flatMap(_._2.map(_.opiskeluoikeusOid)).toSeq
+
+    val sisältyvätOpiskeluoikeudetJaAikajaksotQuery = ROpiskeluoikeudet
+      .filter(_.opiskeluoikeusOid inSet sisältyvätOpiskeluoikeusOidit.distinct)
+      .join(ROpiskeluoikeusAikajaksot)
+      .on(_.opiskeluoikeusOid === _.opiskeluoikeusOid)
+      .sortBy(_._1.opiskeluoikeusOid)
+    val sisältyvätOpiskeluoikeudetJaAikajaksot: Seq[(ROpiskeluoikeusRow, ROpiskeluoikeusAikajaksoRow)] = runDbSync(sisältyvätOpiskeluoikeudetJaAikajaksotQuery.result, timeout = 5.minutes)
+
+    val kaikkiOpiskeluoikeudetJaAikajaksot = opiskeluoikeudetJaAikajaksot.union(sisältyvätOpiskeluoikeudetJaAikajaksot).distinct.sortBy(t => t._1.opiskeluoikeusOid)
+    val kaikkiOpiskeluoikeusOidit: Seq[String] = opiskeluoikeudetJaAikajaksot.map(_._1.opiskeluoikeusOid).union(sisältyvätOpiskeluoikeusOidit).distinct
+
+    val päätasonSuorituksetQuery = RPäätasonSuoritukset.filter(_.opiskeluoikeusOid inSet kaikkiOpiskeluoikeusOidit)
     val päätasonSuoritukset: Map[String, Seq[RPäätasonSuoritusRow]] = runDbSync(päätasonSuorituksetQuery.result).groupBy(_.opiskeluoikeusOid)
 
-    val osasuorituksetQuery = ROsasuoritukset.filter(_.opiskeluoikeusOid inSet (päätasonSuoritukset.keySet))
+    val osasuorituksetQuery = ROsasuoritukset.filter(_.opiskeluoikeusOid inSet päätasonSuoritukset.keySet)
     val osasuoritukset: Map[String, Seq[ROsasuoritusRow]] = runDbSync(osasuorituksetQuery.result).groupBy(_.opiskeluoikeusOid)
 
-    val henkilötQuery = RHenkilöt.filter(_.oppijaOid inSet result1.map(_._1.oppijaOid))
+    val henkilötQuery = RHenkilöt.filter(_.oppijaOid inSet kaikkiOpiskeluoikeudetJaAikajaksot.map(_._1.oppijaOid))
     val henkilöt: Map[String, RHenkilöRow] = runDbSync(henkilötQuery.result).groupBy(_.oppijaOid).mapValues(_.head)
 
     // group rows belonging to same opiskeluoikeus
-    result1
+    kaikkiOpiskeluoikeudetJaAikajaksot
       .foldRight[List[(ROpiskeluoikeusRow, List[ROpiskeluoikeusAikajaksoRow])]](List.empty) {
-      case (t, head :: tail) if t._1.opiskeluoikeusOid == head._1.opiskeluoikeusOid => (head._1, t._2 :: head._2) :: tail
-      case (t, acc) => (t._1, List(t._2)) :: acc
-    }
+        case (t, head :: tail) if t._1.opiskeluoikeusOid == head._1.opiskeluoikeusOid => (head._1, t._2 :: head._2) :: tail
+        case (t, acc) => (t._1, List(t._2)) :: acc
+      }
       .map(t => (
         t._1,
         henkilöt.get(t._1.oppijaOid),
