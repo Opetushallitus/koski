@@ -33,7 +33,7 @@ class RaportitSpec extends FreeSpec with LocalJettyHttpSpecification with Opiske
         verifyResponseStatusOk()
         val parsedJson = JsonMethods.parse(body)
         parsedJson shouldBe a[JArray]
-        parsedJson.asInstanceOf[JArray].values should contain("suoritustietojentarkistust ")
+        parsedJson.asInstanceOf[JArray].values should contain("suoritustietojentarkistus")
       }
     }
     "ei salli mitään nykyisistä raporteista lukiolle" in {
