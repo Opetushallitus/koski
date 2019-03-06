@@ -31,6 +31,32 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "opintojenrahoitus_11",
+  "koodiArvo" : "11",
+  "metadata" : [ {
+    "nimi" : "Ammatillisen osaamisen pilotit 2019",
+    "kuvaus" : "Ammatillisen osaamisen pilotit ovat ammatillisia koulutuksia, joille on myönnetty OKM:n vuoden 2018 toisen lisätalousarvion perusteella kohdennettua lisärahoitusta.",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Piloter inom yrkeskompetens 2019",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "opintojenrahoitus_12",
+  "koodiArvo" : "12",
+  "metadata" : [ {
+    "nimi" : "Ammatillisen osaamisen pilotit 2019 (työvoimakoulutus)",
+    "kuvaus" : "Ammatillisen osaamisen pilotit (työvoimakoulutus) ovat ammatillista koulutusta, jolle on myönnetty OKM:n vuoden 2018 lisäsuoritepäätöksellä työvoimakoulutukseen kohdennettua rahoitusta.",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Piloter inom yrkeskompetens 2019 (arbetskraftsutbildning)",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "opintojenrahoitus_2",
   "koodiArvo" : "2",
   "metadata" : [ {
