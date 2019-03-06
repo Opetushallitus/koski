@@ -10,6 +10,10 @@ export default ({className, onDismiss, onSubmit, children, submitOnEnterKey, okT
   submitOnEnterKey = parseBool(submitOnEnterKey, true)
   let submittedAtom = Atom(false)
   let keyE = Bacon.fromEvent(document, 'keyup')
+    .combine(validP, (e, valid) => ({e, valid}))
+    .filter(({e, valid}) => valid || e.keyCode !== 13) // skip enter key events while not valid
+    .map('.e')
+
   function handleKeys(e) {
     if (e.keyCode == 27) onDismiss()
     if (e.keyCode == 13 && submitOnEnterKey) onSubmit()

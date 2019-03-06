@@ -19,6 +19,11 @@ object AmmatillinenExampleData {
   val puutarhuri: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("361201", "koulutus"), Some("75/011/2014"))
   val autoalanTyönjohto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("357305", "koulutus"), Some("40/011/2001"))
 
+  val tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus: TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus = TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus(
+    PaikallinenKoodi("KISI", "Kiinteistösihteerin koulutus ja tutkinto (KISI)"),
+    None,
+    LocalizedString.finnish("Koulutus antaa opiskelijalle valmiudet hoitaa isännöinti- ja kiinteistöpalvelualan yritysten sihteeri- ja asiakaspalvelutehtäviä.")
+  )
   val muuAmmatillinenKoulutus: PaikallinenMuuAmmatillinenKoulutus = PaikallinenMuuAmmatillinenKoulutus(
     PaikallinenKoodi("KISI", "Kiinteistösihteerin koulutus ja tutkinto (KISI)"),
     None,
@@ -36,7 +41,7 @@ object AmmatillinenExampleData {
 
   def kiinteistösihteerinTutkinnonOsaaPienempiMuuAmmatillinenKokonaisuus(toimipiste: OrganisaatioWithOid = stadinToimipiste): TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus =
     tutkinnonOsaaPienempienKokonaisuuksienSuoritus(
-      muuAmmatillinenKoulutus,
+      tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus,
       toimipiste
     )
   def kiinteistösihteerinMuuAmmatillinenKoulutus(toimipiste: OrganisaatioWithOid = stadinToimipiste): MuunAmmatillisenKoulutuksenSuoritus =
@@ -65,7 +70,7 @@ object AmmatillinenExampleData {
     osasuoritukset = None
   )
 
-  def tutkinnonOsaaPienempienKokonaisuuksienSuoritus(koulutusmoduuli: PaikallinenMuuAmmatillinenKoulutus, toimipiste: OrganisaatioWithOid = stadinToimipiste): TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus =
+  def tutkinnonOsaaPienempienKokonaisuuksienSuoritus(koulutusmoduuli: TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus, toimipiste: OrganisaatioWithOid = stadinToimipiste): TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus =
     TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(
       koulutusmoduuli = koulutusmoduuli,
       alkamispäivä = Some(date(2018, 1, 1)),

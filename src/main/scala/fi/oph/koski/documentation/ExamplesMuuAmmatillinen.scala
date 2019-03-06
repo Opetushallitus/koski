@@ -27,7 +27,7 @@ object TutkinnonOsaaPienempiKokonaisuusExample {
     oppilaitos = Some(stadinAmmattiopisto),
     suoritukset = List(
       TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(
-        koulutusmoduuli = muuAmmatillinenKoulutus,
+        koulutusmoduuli = tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus,
         alkamispäivä = None,
         osaamisenHankkimistavat = None,
         koulutussopimukset = None,

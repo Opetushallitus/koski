@@ -165,6 +165,9 @@ function Page(mainElement) {
       element: function() {
         return el()
       },
+      isDisabled: function () {
+        return !el().is(':enabled')
+      },
       isEnabled: function () {
         return el().is(':enabled')
       },

@@ -26,11 +26,13 @@ import {
   suoritusProperties,
   TutkintokertaColumn
 } from './SuoritustaulukkoCommon'
+import LiittyyTutkinnonOsaanEditor from '../ammatillinen/LiittyyTutkinnonOsaanEditor'
 
+const MAX_NESTED_LEVEL = 2
 
 export class Suoritustaulukko extends React.Component {
   render() {
-    let {suorituksetModel, parentSuoritus, nested} = this.props
+    let {suorituksetModel, parentSuoritus, nestedLevel = 0} = this.props
     let context = suorituksetModel.context
     parentSuoritus = parentSuoritus || context.suoritus
     let suoritukset = modelItems(suorituksetModel) || []
@@ -87,11 +89,11 @@ export class Suoritustaulukko extends React.Component {
       return [
         <tbody key={'group-' + i} className={`group-header ${groupId}`}>
           <tr>
-            { nested && items.length === 0 ? null : columns.map(column => column.renderHeader({suoritusProto, laajuusYksikkö, groupTitles, groupId})) }
+            { nestedLevel > 0 && items.length === 0 ? null : columns.map(column => column.renderHeader({suoritusProto, laajuusYksikkö, groupTitles, groupId})) }
           </tr>
         </tbody>,
         items.map((suoritus, j) => suoritusEditor(suoritus, i * 100 + j, groupId)),
-        context.edit && <tbody key={'group-' + i + '-new'} className={'uusi-tutkinnon-osa ' + groupId}>
+        context.edit && nestedLevel < MAX_NESTED_LEVEL && <tbody key={'group-' + i + '-new'} className={'uusi-tutkinnon-osa ' + groupId}>
           <tr>
             <td colSpan="4">
               <UusiTutkinnonOsa suoritus={parentSuoritus}
@@ -104,7 +106,7 @@ export class Suoritustaulukko extends React.Component {
             </td>
           </tr>
         </tbody>,
-        !nested && !isNäyttötutkintoonValmistava(parentSuoritus) && !isYlioppilastutkinto(parentSuoritus) && <tbody key={'group- '+ i + '-footer'} className="yhteensä">
+        nestedLevel === 0 && !isNäyttötutkintoonValmistava(parentSuoritus) && !isYlioppilastutkinto(parentSuoritus) && <tbody key={'group- '+ i + '-footer'} className="yhteensä">
           <tr><td>
             <YhteensäSuoritettu osasuoritukset={items} laajuusP={fetchLaajuudet(parentSuoritus, groups.groupIds).map(l => l[groupId])} laajuusYksikkö={laajuusYksikkö}/>
           </td></tr>
@@ -116,14 +118,14 @@ export class Suoritustaulukko extends React.Component {
       return (<TutkinnonOsanSuoritusEditor baret-lift
                                            model={suoritus} showScope={!samaLaajuusYksikkö} showTila={showTila}
                                            expanded={isExpandedP(suoritus)} onExpand={setExpanded(suoritus)} key={key}
-                                           groupId={groupId} columns={columns}/>)
+                                           groupId={groupId} columns={columns} nestedLevel={nestedLevel + 1} />)
     }
   }
 }
 
 export class TutkinnonOsanSuoritusEditor extends React.Component {
   render() {
-    let {model, showScope, showTila, onExpand, expanded, groupId, columns} = this.props
+    let {model, showScope, showTila, onExpand, expanded, groupId, columns, nestedLevel} = this.props
     let properties = suoritusProperties(model)
     let displayProperties = properties.filter(p => p.key !== 'osasuoritukset')
     let osasuoritukset = modelLookup(model, 'osasuoritukset')
@@ -145,14 +147,19 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
     {
       expanded && displayProperties.length > 0 && (<tr className="details" key="details">
         <td colSpan="4">
-          <PropertiesEditor model={model} properties={displayProperties}/>
+          <PropertiesEditor
+            model={model}
+            properties={displayProperties}
+            getValueEditor={(p, getDefault) => p.key === 'liittyyTutkinnonOsaan' ? <LiittyyTutkinnonOsaanEditor model={p.model} /> : getDefault()}
+          />
+
         </td>
       </tr>)
     }
     {
       expanded && showOsasuoritukset && (<tr className="osasuoritukset" key="osasuoritukset">
         <td colSpan="4">
-          <Suoritustaulukko parentSuoritus={model} nested={true} suorituksetModel={ osasuoritukset }/>
+          <Suoritustaulukko parentSuoritus={model} nestedLevel={nestedLevel} suorituksetModel={ osasuoritukset }/>
         </td>
       </tr>)
     }

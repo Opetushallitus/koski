@@ -12,7 +12,7 @@ import {shouldShowProperty} from '../editor/PropertiesEditor'
 
 
 export const isAmmatillinentutkinto = suoritus => suoritus.value.classes.includes('ammatillisentutkinnonsuoritus')
-export const isMuunAmmatillisenKoulutuksenSuoritus = suoritus => suoritus.value.classes.includes('muunammatillisenkoulutuksensuoritus')
+export const isMuunAmmatillisenKoulutuksenSuoritus = suoritus => suoritus && suoritus.value.classes.includes('muunammatillisenkoulutuksensuoritus')
 export const isMuunAmmatillisenKoulutuksenOsasuorituksenSuoritus = suoritus => suoritus.value.classes.includes('muunammatillisenkoulutuksenosasuorituksensuoritus')
 export const isTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus = suoritus => suoritus.value.classes.includes('tutkinnonosaapienemmistakokonaisuuksistakoostuvasuoritus')
 export const isNäyttötutkintoonValmistava = suoritus => suoritus.value.classes.includes('nayttotutkintoonvalmistavankoulutuksensuoritus')
@@ -80,7 +80,7 @@ export const suoritusProperties = suoritus => {
 
     const defaultsForEdit = pakollinen
       .concat(arviointipäivä)
-      .concat(includeProperties('näyttö', 'tunnustettu', 'lisätiedot'))
+      .concat(includeProperties('näyttö', 'tunnustettu', 'lisätiedot', 'liittyyTutkinnonOsaan'))
 
     const defaultsForView = pakollinen
       .concat(excludeProperties('koulutusmoduuli', 'arviointi', 'tutkinnonOsanRyhmä', 'tutkintokerta'))

@@ -418,6 +418,9 @@ function TutkinnonOsat(groupId, base) {
         lisätiedot: function() {
           return api.property('lisätiedot')
         },
+        liittyyTutkinnonOsaan: function() {
+          return LiittyyTutkinnonOsaan(api.property('liittyyTutkinnonOsaan'))
+        },
         osanOsat: function() {
           return TutkinnonOsat('999999', tutkinnonOsaElement)
         },
@@ -502,6 +505,18 @@ function TutkinnonOsat(groupId, base) {
           .then(click(subElement(modalElement, 'button.vahvista:not(:disabled)')))
       }
     },
+    lisääTutkinnonOsaaPienempiKokonaisuus: function(tutkinto, liittyyTutkinnonOsaan, nimi) {
+      return function() {
+        var modalElement = subElement(uusiTutkinnonOsaElement, '.lisaa-paikallinen-tutkinnon-osa-modal')
+        return click(subElement(uusiTutkinnonOsaElement, ('.paikallinen-tutkinnon-osa a')))()
+          .then(Page(modalElement).setInputValue('.tutkinto .autocomplete', tutkinto))
+          .then(wait.until(Page(modalElement).button(findSingle('.vahvista')).isDisabled))
+          .then(Page(modalElement).setInputValue('.tutkinnon-osat .dropdown', liittyyTutkinnonOsaan))
+          .then(wait.until(Page(modalElement).button(findSingle('.vahvista')).isDisabled))
+          .then(Page(modalElement).setInputValue('input.paikallinen-koulutusmoduuli-nimi', nimi))
+          .then(click(subElement(modalElement, 'button.vahvista:not(:disabled)')))
+      }
+    },
     lisääTutkinnonOsaToisestaTutkinnosta: function(tutkinto, nimi) {
       return function() {
         var modalElement = subElement(uusiTutkinnonOsaElement, '.osa-toisesta-tutkinnosta .modal')
@@ -530,6 +545,21 @@ function TutkinnonOsat(groupId, base) {
       return S('.osasuoritukset').text()
     }
   }
+}
+
+function LiittyyTutkinnonOsaan(property) {
+  var tutkintoProperty = property.subProperty('.tutkinto')
+  var tutkinnonOsaProperty = property.subProperty('.tutkinnon-osat')
+
+  var api = {
+    valitseTutkinto: function(tutkinto) {
+      return tutkintoProperty.setValue(tutkinto)
+    },
+    valitseTutkinnonOsa: function(tutkinnonOsa) {
+      return tutkinnonOsaProperty.setValue(tutkinnonOsa)
+    }
+  }
+  return api
 }
 
 function IBSuoritukset() {
@@ -899,7 +929,7 @@ function Property(elem) {
     },
     setValue: function(value, index) {
       return function() {
-        return Page(elem).setInputValue('.dropdown, .editor-input', value, index)()
+        return Page(elem).setInputValue('.dropdown, .editor-input, .autocomplete', value, index)()
       }
     },
     getLanguage: function() {
@@ -936,6 +966,9 @@ function Property(elem) {
     },
     getOptions: function() {
       return Page(elem).getInputOptions('.dropdown')
+    },
+    subProperty: function(selector) {
+      return Property(findSingle(selector, elem))
     }
   }, Editor(elem))
 }

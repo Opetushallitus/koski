@@ -1,7 +1,8 @@
-import {wrapOptional} from '../editor/EditorModel'
-import {contextualizeSubModel, modelItems, oneOfPrototypes} from '../editor/EditorModel'
+import {contextualizeSubModel, modelItems, oneOfPrototypes, wrapOptional} from '../editor/EditorModel'
 import * as R from 'ramda'
+import Http from '../util/http'
 import {isKieliaine, isÄidinkieli} from '../suoritus/Koulutusmoduuli'
+import {parseLocation} from '../util/location'
 
 export const placeholderForNonGrouped = '999999'
 
@@ -15,6 +16,13 @@ export const createTutkinnonOsanSuoritusPrototype = (osasuoritukset, groupId) =>
   let alternatives = oneOfPrototypes(R.dissoc('onlyWhen', suoritusProto))
   suoritusProto = alternatives.sort((a, b) => sortValue(a) - sortValue(b))[0]
   return contextualizeSubModel(suoritusProto, osasuoritukset, newItemIndex)
+}
+
+export const fetchLisättävätTutkinnonOsat = (diaarinumero, suoritustapa, groupId) => {
+  return Http.cachedGet(parseLocation(`/koski/api/tutkinnonperusteet/tutkinnonosat/${encodeURIComponent(diaarinumero)}`).addQueryParams({
+    suoritustapa: suoritustapa,
+    tutkinnonOsanRyhmä: groupId != placeholderForNonGrouped ? groupId : undefined
+  }))
 }
 
 export const osanOsa = m => m && m.value.classes.includes('ammatillisentutkinnonosanosaalue')
