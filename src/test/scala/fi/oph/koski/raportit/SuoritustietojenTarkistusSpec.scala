@@ -2,6 +2,7 @@ package fi.oph.koski.raportit
 
 import java.time.LocalDate
 
+import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
@@ -10,6 +11,8 @@ import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, SisältäväOpiskeluoike
 import org.scalatest.{FreeSpec, Matchers}
 
 class SuoritustietojenTarkistusSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with OpiskeluoikeusTestMethodsAmmatillinen {
+
+  resetFixtures
 
   "Suoritustietojen tarkistusraportti" - {
     "Laskenta" - {
@@ -107,7 +110,7 @@ class SuoritustietojenTarkistusSpec extends FreeSpec with Matchers with Raportoi
   }
 
   private def loadAmmattilaisAarnenRivi(oppilaitosOid: String = MockOrganisaatiot.stadinAmmattiopisto) = {
-    val result = SuoritustietojenTarkistus.buildRaportti(raportointiDatabase, oppilaitosOid, LocalDate.parse("2016-01-01"), LocalDate.parse("2016-12-31"))
+    val result = SuoritustietojenTarkistus.buildRaportti(KoskiApplicationForTests.raportointiDatabase, oppilaitosOid, LocalDate.parse("2016-01-01"), LocalDate.parse("2016-12-31"))
     result.filter(_.hetu == MockOppijat.ammattilainen.hetu)
   }
 

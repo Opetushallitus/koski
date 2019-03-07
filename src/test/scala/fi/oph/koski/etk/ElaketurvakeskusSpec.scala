@@ -20,7 +20,7 @@ class ElaketurvakeskusSpec extends FreeSpec with LocalJettyHttpSpecification wit
       loadRaportointikantaFixtures
 
       val mockOppija = MockOppijat.ammattilainen
-      val mockOppijanOpiskeluoikeusOid = raportointikantaQueryHelper.opiskeluoikeusByOppijaOidAndKoulutusmuoto(mockOppija.oid, "ammatillinenkoulutus").head.opiskeluoikeusOid
+      val mockOppijanOpiskeluoikeusOid = lastOpiskeluoikeus(mockOppija.oid).oid.get
 
       postAikajakso(date(2016, 1, 1), date(2016, 12, 12), 2016) {
         verifyResponseStatusOk()
@@ -43,7 +43,7 @@ class ElaketurvakeskusSpec extends FreeSpec with LocalJettyHttpSpecification wit
       createOrUpdate(slaveMock, AmmatillinenExampleData.perustutkintoOpiskeluoikeusValmis())
       loadRaportointikantaFixtures
 
-      val slaveOppijanOpiskeluoikeusOid = raportointikantaQueryHelper.opiskeluoikeusByOppijaOidAndKoulutusmuoto(slaveMock.oid, "ammatillinenkoulutus").head.opiskeluoikeusOid
+      val slaveOppijanOpiskeluoikeusOid = getOpiskeluoikeudet(slaveMock.oid).find(_.tyyppi.koodiarvo == "ammatillinenkoulutus").get.oid.get
 
       postAikajakso(date(2016, 1, 1), date(2016, 12, 31), 2016) {
         verifyResponseStatusOk()
