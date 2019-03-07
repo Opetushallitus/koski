@@ -15,12 +15,18 @@ class SuoritustietojenTarkistusSpec extends FreeSpec with Matchers with Raportoi
   resetFixtures
 
   "Suoritustietojen tarkistusraportti" - {
-    "Laskenta" - {
-      loadRaportointikantaFixtures
-      val rivit = loadAmmattilaisAarnenRivi()
-      val foo = rivit
-      val rivi = rivit.head
+    loadRaportointikantaFixtures
+    val rivit = loadAmmattilaisAarnenRivit()
+    val rivi = rivit.head
 
+    "Sisältää oikeat tiedot" in {
+      rivi.koulutusmoduulit should equal("361902")
+      rivi.osaamisalat should equal(Some("1590"))
+      rivi.opiskeluoikeudenTila should equal(Some("Valmis"))
+      rivi.opintojenRahoitukset should equal("4")
+    }
+
+    "Laskenta" - {
       "Suorituksia yhteesä" in {
         rivi.suoritettujenOpintojenYhteislaajuus should equal(157.0)
       }
@@ -92,7 +98,7 @@ class SuoritustietojenTarkistusSpec extends FreeSpec with Matchers with Raportoi
     "Sisällytetyt opiskeluoikeudet"  - {
       "Opiskeluoikeuteen sisältyvät opiskeluioikeudet toistesta oppilaitoksesta" in {
         lisääAarnelleSisällytettyOpiskeluoikeus {
-          val aarnenRivit = loadAmmattilaisAarnenRivi(MockOrganisaatiot.omnia)
+          val aarnenRivit = loadAmmattilaisAarnenRivit(MockOrganisaatiot.omnia)
           aarnenRivit.length should equal(2)
           val stadinLinkitettyOpiskeluoikeus = aarnenRivit.find(_.linkitetynOpiskeluoikeudenOppilaitos == stadinAmmattiOpistonNimi)
           stadinLinkitettyOpiskeluoikeus shouldBe defined
@@ -101,7 +107,7 @@ class SuoritustietojenTarkistusSpec extends FreeSpec with Matchers with Raportoi
       }
       "Sisältävä opiskeluoikeus ei tule sisällytetyn opiskeluoikeuden oppilaitoksen raportille" in {
         lisääAarnelleSisällytettyOpiskeluoikeus {
-          val aarnenRivit = loadAmmattilaisAarnenRivi(MockOrganisaatiot.stadinAmmattiopisto)
+          val aarnenRivit = loadAmmattilaisAarnenRivit(MockOrganisaatiot.stadinAmmattiopisto)
           aarnenRivit.length should equal(1)
           aarnenRivit.head.linkitetynOpiskeluoikeudenOppilaitos shouldBe empty
         }
@@ -109,7 +115,7 @@ class SuoritustietojenTarkistusSpec extends FreeSpec with Matchers with Raportoi
     }
   }
 
-  private def loadAmmattilaisAarnenRivi(oppilaitosOid: String = MockOrganisaatiot.stadinAmmattiopisto) = {
+  private def loadAmmattilaisAarnenRivit(oppilaitosOid: String = MockOrganisaatiot.stadinAmmattiopisto) = {
     val result = SuoritustietojenTarkistus.buildRaportti(KoskiApplicationForTests.raportointiDatabase, oppilaitosOid, LocalDate.parse("2016-01-01"), LocalDate.parse("2016-12-31"))
     result.filter(_.hetu == MockOppijat.ammattilainen.hetu)
   }
