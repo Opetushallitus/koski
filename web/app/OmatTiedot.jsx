@@ -16,6 +16,7 @@ import {addContext, modelData} from './editor/EditorModel'
 import {locationP} from './util/location'
 import {Header} from './omattiedot/header/Header'
 import {EiSuorituksiaInfo} from './omattiedot/EiSuorituksiaInfo'
+import {patchSaavutettavuusLeima} from './saavutettavuusLeima'
 
 const omatTiedotP = () => Bacon.combineWith(
   Http.cachedGet('/koski/api/omattiedot/editor', { errorMapper: (e) => e.httpStatus === 404 ? null : new Bacon.Error(e)}).toProperty(),
@@ -72,3 +73,5 @@ const Oppija = ({oppija}) => {
       </div>
     )
 }
+
+patchSaavutettavuusLeima()
