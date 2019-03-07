@@ -15,14 +15,14 @@ case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
   koulutustoimija: Option[Koulutustoimija] = None,
   @Hidden
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None,
-  @Description("oppijan oppimäärän päättymispäivä")
-  päättymispäivä: Option[LocalDate],
   tila: NuortenPerusopetuksenOpiskeluoikeudenTila,
   @MaxItems(1)
   suoritukset: List[PerusopetukseenValmistavanOpetuksenSuoritus],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.perusopetukseenvalmistavaopetus.koodiarvo)
   tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.perusopetukseenvalmistavaopetus
 ) extends KoskeenTallennettavaOpiskeluoikeus {
+  @Description("Oppijan oppimäärän päättymispäivä")
+  override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
   override def arvioituPäättymispäivä = None

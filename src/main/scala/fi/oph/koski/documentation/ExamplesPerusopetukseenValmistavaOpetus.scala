@@ -12,7 +12,6 @@ import fi.oph.koski.schema._
 
 object ExamplesPerusopetukseenValmistavaOpetus {
   val perusopetukseenValmistavaOpiskeluoikeus = PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
-    päättymispäivä = Some(date(2008, 6, 1)),
     tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
       NuortenPerusopetuksenOpiskeluoikeusjakso(date(2007, 8, 15), opiskeluoikeusLäsnä),
       NuortenPerusopetuksenOpiskeluoikeusjakso(date(2008, 6, 1), opiskeluoikeusValmistunut)

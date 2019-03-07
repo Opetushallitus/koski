@@ -52,8 +52,9 @@ trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiitty
   def alkamispäivä: Option[LocalDate] = this.tila.opiskeluoikeusjaksot.headOption.map(_.alku)
   @Description("Muoto YYYY-MM-DD")
   def arvioituPäättymispäivä: Option[LocalDate]
-  @Description("Muoto YYYY-MM-DD")
-  def päättymispäivä: Option[LocalDate]
+  @Description("Muoto YYYY-MM-DD. Tiedon syötössä tietoa ei tarvita; tieto poimitaan tila-kentän viimeisestä opiskeluoikeusjaksosta.")
+  @SyntheticProperty
+  def päättymispäivä: Option[LocalDate] = this.tila.opiskeluoikeusjaksot.lastOption.filter(_.opiskeluoikeusPäättynyt).map(_.alku)
   @Description("Oppilaitos, jossa opinnot on suoritettu")
   def oppilaitos: Option[Oppilaitos]
   @Hidden
@@ -114,8 +115,6 @@ trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
   def withOppilaitos(oppilaitos: Oppilaitos): KoskeenTallennettavaOpiskeluoikeus
   final def withTila(tila: OpiskeluoikeudenTila): KoskeenTallennettavaOpiskeluoikeus =
     shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[OpiskeluoikeudenTila]("tila").set(this)(tila)
-  final def withPäättymispäivä(date: LocalDate): KoskeenTallennettavaOpiskeluoikeus =
-    shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[Option[LocalDate]]("päättymispäivä").set(this)(Some(LocalDate.now))
 }
 
 @Description("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden tiedot. Nämä tiedot kertovat, että kyseessä on ns. ulkopuolisen sopimuskumppanin suoritustieto, joka liittyy päävastuullisen koulutuksen järjestäjän luomaan opiskeluoikeuteen. Ks. tarkemmin https://confluence.csc.fi/pages/viewpage.action?pageId=70627182")
@@ -141,6 +140,10 @@ trait Opiskeluoikeusjakso extends Alkupäivällinen {
   def opiskeluoikeusPäättynyt: Boolean
 }
 
+object KoskiOpiskeluoikeusjakso {
+  def päätöstilat = List("valmistunut", "eronnut", "peruutettu", "katsotaaneronneeksi")
+}
+
 trait KoskiOpiskeluoikeusjakso extends Opiskeluoikeusjakso {
   @KoodistoUri("koskiopiskeluoikeudentila")
   @KoodistoKoodiarvo("eronnut")
@@ -151,7 +154,7 @@ trait KoskiOpiskeluoikeusjakso extends Opiskeluoikeusjakso {
   @KoodistoKoodiarvo("valiaikaisestikeskeytynyt")
   @KoodistoKoodiarvo("valmistunut")
   def tila: Koodistokoodiviite
-  def opiskeluoikeusPäättynyt = List("valmistunut", "eronnut", "peruutettu", "katsotaaneronneeksi", "mitatoity").contains(tila.koodiarvo)
+  def opiskeluoikeusPäättynyt = KoskiOpiskeluoikeusjakso.päätöstilat.contains(tila.koodiarvo) || tila.koodiarvo == "mitatoity"
   def opintojenRahoitus: Option[Koodistokoodiviite] = None
 }
 

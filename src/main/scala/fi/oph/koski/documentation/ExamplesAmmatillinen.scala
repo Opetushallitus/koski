@@ -99,7 +99,6 @@ object AmmattitutkintoExample {
   lazy val tutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("357305", Some("Autoalan työnjohdon erikoisammattitutkinto"), "koulutus", None), Some("40/011/2001"))
   lazy val opiskeluoikeus = AmmatillinenOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2015, 5, 31)),
-    päättymispäivä = Some(date(2016, 5, 31)),
     tila = AmmatillinenOpiskeluoikeudenTila(List(
       AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, None),
       AmmatillinenOpiskeluoikeusjakso(date(2016, 5, 31), opiskeluoikeusValmistunut, None)
@@ -165,7 +164,6 @@ object AmmatillinenPerustutkintoExample {
 
   val osittainenPerustutkintoOpiskeluoikeus = AmmatillinenOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2015, 5, 31)),
-    päättymispäivä = Some(date(2016, 6, 4)),
     oppilaitos = Some(stadinAmmattiopisto),
     suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus),
     tila = AmmatillinenOpiskeluoikeudenTila(
@@ -398,7 +396,6 @@ object AmmatillinenOldExamples {
     List(
       AmmatillinenOpiskeluoikeus(
         arvioituPäättymispäivä = Some(date(2015, 5, 31)),
-        päättymispäivä = Some(date(2016, 1, 9)),
         oppilaitos = Some(stadinAmmattiopisto),
         suoritukset = List(AmmatillisenTutkinnonSuoritus(
           koulutusmoduuli = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
@@ -456,7 +453,6 @@ object AmmatillinenOldExamples {
     List(
       AmmatillinenOpiskeluoikeus(
         arvioituPäättymispäivä = Some(date(2015, 5, 31)),
-        päättymispäivä = Some(date(2016, 1, 9)),
         oppilaitos = Some(stadinAmmattiopisto),
         suoritukset = List(AmmatillisenTutkinnonSuoritus(
           koulutusmoduuli = AmmatillinenTutkintoKoulutus(

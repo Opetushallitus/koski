@@ -72,7 +72,6 @@ object ExamplesPerusopetuksenLisaopetus {
   val lisäopetuksenPäättötodistus = Oppija(
     exampleHenkilö,
     List(PerusopetuksenLisäopetuksenOpiskeluoikeus(
-      päättymispäivä = Some(date(2016, 6, 4)),
       oppilaitos = Some(jyväskylänNormaalikoulu),
       koulutustoimija = None,
       lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
@@ -93,7 +92,6 @@ object ExamplesPerusopetuksenLisaopetus {
   val lisäopetuksenPäättötodistusToimintaAlueittain = Oppija(
     exampleHenkilö,
     List(PerusopetuksenLisäopetuksenOpiskeluoikeus(
-      päättymispäivä = Some(date(2016, 6, 4)),
       oppilaitos = Some(jyväskylänNormaalikoulu),
       koulutustoimija = None,
       lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(

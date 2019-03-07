@@ -25,7 +25,6 @@ object ExamplesAikuistenPerusopetus {
 
   lazy val oppiaineenOppimääräOpiskeluoikeus: AikuistenPerusopetuksenOpiskeluoikeus = {
     AikuistenPerusopetuksenOpiskeluoikeus(
-      päättymispäivä = Some(date(2016, 6, 4)),
       oppilaitos = Some(jyväskylänNormaalikoulu),
       koulutustoimija = None,
       suoritukset = List(
@@ -50,7 +49,6 @@ object ExamplesAikuistenPerusopetus {
   def aikuistenPerusopetuksenOppimäärä2015 = Oppija(
     exampleHenkilö,
     List(AikuistenPerusopetuksenOpiskeluoikeus(
-      päättymispäivä = Some(date(2016, 6, 4)),
       oppilaitos = Some(jyväskylänNormaalikoulu),
       koulutustoimija = None,
       suoritukset = List(aikuistenPerusopetukseOppimääränSuoritus(aikuistenPerusopetus2015, oppiaineidenSuoritukset2015)),
@@ -64,7 +62,6 @@ object ExamplesAikuistenPerusopetus {
   )
 
   def aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen = AikuistenPerusopetuksenOpiskeluoikeus(
-    päättymispäivä = Some(date(2016, 6, 4)),
     oppilaitos = Some(jyväskylänNormaalikoulu),
     koulutustoimija = None,
     suoritukset = List(
@@ -197,7 +194,6 @@ object ExamplesAikuistenPerusopetus {
     Oppija(
       exampleHenkilö,
       List(AikuistenPerusopetuksenOpiskeluoikeus(
-        päättymispäivä = Some(date(2016, 6, 4)),
         oppilaitos = Some(jyväskylänNormaalikoulu),
         koulutustoimija = None,
         suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus),

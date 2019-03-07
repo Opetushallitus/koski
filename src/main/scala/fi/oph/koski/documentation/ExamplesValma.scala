@@ -14,7 +14,6 @@ object ExamplesValma {
     MockOppijat.asUusiOppija(MockOppijat.valma),
     List(
       AmmatillinenOpiskeluoikeus(
-        päättymispäivä = Some(date(2016, 6, 4)),
         tila = AmmatillinenOpiskeluoikeudenTila(List(
           AmmatillinenOpiskeluoikeusjakso(date(2009, 9, 14), opiskeluoikeusLäsnä, None),
           AmmatillinenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut, None)
