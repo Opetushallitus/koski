@@ -111,7 +111,7 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
 
   def documentation(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, loadCompleted: Timestamp): String =
     s"""
-       |Opiskelijavuositiedot (ammatillinen koulutus)
+       |Suroritustietojen tarkistus (ammatillinen koulutus)
        |Oppilaitos: $oppilaitosOid
        |Aikajakso: ${finnishDateFormat.format(alku)} - ${finnishDateFormat.format(loppu)}
        |Raportti luotu: ${finnishDateTimeFormat.format(LocalDateTime.now)} (${finnishDateTimeFormat.format(loadCompleted.toLocalDateTime)} tietojen pohjalta)
