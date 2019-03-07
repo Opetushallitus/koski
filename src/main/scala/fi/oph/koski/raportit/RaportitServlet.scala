@@ -24,7 +24,12 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
       case Right(oid) => oid
     }
     val koulutusmuodot = raportointiDatabase.oppilaitoksenKoulutusmuodot(oppilaitosOid)
-    if (koulutusmuodot.contains(OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo)) Seq("opiskelijavuositiedot", "suoritustietojentarkistus") else Seq.empty
+
+    if (koulutusmuodot.contains(OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo)) {
+      Seq("opiskelijavuositiedot") ++ addSuoritustietojenTarkistusIfAccess()
+    }  else{
+      Seq.empty
+    }
   }
 
   get("/opiskelijavuositiedot") {
@@ -90,6 +95,14 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
       (alku, loppu)
     } catch {
       case e: DateTimeParseException => haltWithStatus(KoskiErrorCategory.badRequest.format.pvm())
+    }
+  }
+
+  private def addSuoritustietojenTarkistusIfAccess() = {
+    val raporttiSallittuOideille = application.config.getStringList("raportit.suoritustietojentarkistus")
+    getUser match {
+      case Right(user) if (raporttiSallittuOideille.contains(user.oid)) => Seq("suoritustietojentarkistus")
+      case _ => Seq.empty
     }
   }
 }
