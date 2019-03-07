@@ -2,6 +2,7 @@ import './polyfills/polyfills.js'
 import React from 'react'
 import Text from './i18n/Text'
 import {t} from './i18n/i18n'
+import {patchSaavutettavuusLeima} from './saavutettavuusLeima'
 import ReactDOM from 'react-dom'
 import './style/main.less'
 
@@ -26,3 +27,4 @@ ReactDOM.render((
   </div>
 ), document.getElementById('content'))
 
+patchSaavutettavuusLeima()
