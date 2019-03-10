@@ -61,7 +61,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
     val oppijaOid: Either[HttpStatus, PossiblyUnverifiedHenkilöOid] = oppija.henkilö match {
       case h: UusiHenkilö =>
         hetu.validate(h.hetu).right.flatMap { hetu =>
-          henkilöRepository.findOrCreate(h).right.map(VerifiedHenkilöOid(_))
+          henkilöRepository.findOrCreate(h).right.map(VerifiedHenkilöOid)
         }
       case h: TäydellisetHenkilötiedot if mockOids =>
         Right(VerifiedHenkilöOid(RemoteOpintopolkuHenkilöFacadeWithMockOids.oppijaWithMockOid(h)))

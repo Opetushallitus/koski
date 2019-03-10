@@ -14,7 +14,7 @@ private[henkilo] case class HenkilötiedotSearchFacade(henkilöRepository: Henki
     if (Hetu.validFormat(query).isRight) {
       searchByHetuOrPossiblyCreateIfInYtrOrVirta(query)
     } else if (Henkilö.isValidHenkilöOid(query)) {
-      searchByOid(query)
+      searchMasterByOid(query)
     } else {
       searchHenkilötiedot(query)
     }
@@ -54,7 +54,7 @@ private[henkilo] case class HenkilötiedotSearchFacade(henkilöRepository: Henki
   }
 
   // Sisällyttää vain henkilöt, joilta löytyy vähintään yksi (tälle käyttäjälle näkyvä) opiskeluoikeus Koskesta, YTR:stä tai Virrasta
-  private def searchByOid(oid: String)(implicit user: KoskiSession): HenkilötiedotSearchResponse = {
+  private def searchMasterByOid(oid: String)(implicit user: KoskiSession): HenkilötiedotSearchResponse = {
     val henkilöt = henkilöRepository.findByOid(oid, findMasterIfSlaveOid = true).toList
     val oppijat = kaikkiOpiskeluoikeudet.filterOppijat(henkilöt).map(_.toHenkilötiedotJaOid)
     val canAddNew = henkilöt.nonEmpty && oppijat.isEmpty && user.hasAnyWriteAccess

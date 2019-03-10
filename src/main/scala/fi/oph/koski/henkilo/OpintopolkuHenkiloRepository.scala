@@ -23,15 +23,13 @@ case class OppijaHenkilö(
   kansalaisuus: Option[List[String]] = None,
   modified: Long = 0,
   turvakielto: Boolean = false,
-  linkitetytOidit: List[String] = Nil
+  linkitetytOidit: List[String] = Nil,
+  vanhatHetut: List[String] = Nil
 ) extends HenkilönTunnisteet {
   @SyntheticProperty
   def preventSerialization: Nothing = ??? // ensure this class never gets serialized to JSON
 
   def toHenkilötiedotJaOid = HenkilötiedotJaOid(oid, hetu, etunimet, kutsumanimi, sukunimi)
-
-  // Ei vielä tueta
-  override def vanhatHetut: List[String] = Nil
 }
 
 case class OppijaHenkilöWithMasterInfo(henkilö: OppijaHenkilö, master: Option[OppijaHenkilö])
