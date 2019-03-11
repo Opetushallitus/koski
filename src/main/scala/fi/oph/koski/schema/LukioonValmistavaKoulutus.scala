@@ -17,8 +17,6 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeus(
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None,
   @Description("Opiskelijan opiskeluoikeuden arvioitu päättymispäivä")
   arvioituPäättymispäivä: Option[LocalDate] = None,
-  @Description("Opiskelijan opiskeluoikeuden päättymispäivä")
-  päättymispäivä: Option[LocalDate],
   tila: LukionOpiskeluoikeudenTila,
   @MaxItems(1)
   suoritukset: List[LukioonValmistavanKoulutuksenSuoritus],

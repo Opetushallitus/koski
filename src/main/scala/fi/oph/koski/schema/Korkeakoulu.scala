@@ -11,7 +11,7 @@ case class KorkeakoulunOpiskeluoikeus(
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija] = None,
   arvioituPäättymispäivä: Option[LocalDate] = None,
-  päättymispäivä: Option[LocalDate] = None,
+  override val päättymispäivä: Option[LocalDate] = None,
   @Description("Jos tämä on opiskelijan ensisijainen opiskeluoikeus tässä oppilaitoksessa, ilmoitetaan tässä ensisijaisuuden tiedot")
   tila: KorkeakoulunOpiskeluoikeudenTila,
   lisätiedot: Option[KorkeakoulunOpiskeluoikeudenLisätiedot] = None,

@@ -13,7 +13,6 @@ object ExamplesEsiopetus {
   val päiväkodinEsiopetuksenTunniste = "001102"
 
   val opiskeluoikeus = EsiopetuksenOpiskeluoikeus(
-    päättymispäivä = Some(date(2007, 6, 3)),
     oppilaitos = Some(jyväskylänNormaalikoulu),
     koulutustoimija = None,
     suoritukset = List(suoritus(perusteenDiaarinumero = "102/011/2014", tunniste = peruskoulunEsiopetuksenTunniste, toimipiste = jyväskylänNormaalikoulu)),

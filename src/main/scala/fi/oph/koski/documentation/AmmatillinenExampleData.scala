@@ -299,7 +299,6 @@ object AmmatillinenExampleData {
 
   def perustutkintoOpiskeluoikeusValmis(oppilaitos: Oppilaitos = stadinAmmattiopisto, toimipiste: OrganisaatioWithOid = stadinToimipiste) = AmmatillinenOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2015, 5, 31)),
-    päättymispäivä = Some(date(2016, 5, 31)),
     oppilaitos = Some(oppilaitos),
     suoritukset = List(ympäristöalanPerustutkintoValmis(toimipiste)),
     lisätiedot = None,

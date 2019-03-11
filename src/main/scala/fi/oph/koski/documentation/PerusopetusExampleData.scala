@@ -74,7 +74,6 @@ object PerusopetusExampleData {
 
   def opiskeluoikeus(oppilaitos: Oppilaitos = jyväskylänNormaalikoulu, suoritukset: List[PerusopetuksenPäätasonSuoritus], alkamispäivä: LocalDate = date(2008, 8, 15), päättymispäivä: Option[LocalDate] = Some(date(2016, 6, 4))): PerusopetuksenOpiskeluoikeus = {
     PerusopetuksenOpiskeluoikeus(
-      päättymispäivä = päättymispäivä,
       oppilaitos = Some(oppilaitos),
       koulutustoimija = None,
       suoritukset = suoritukset,

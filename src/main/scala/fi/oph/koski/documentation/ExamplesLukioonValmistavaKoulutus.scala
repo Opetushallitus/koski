@@ -15,7 +15,6 @@ object ExamplesLukioonValmistavaKoulutus {
     asUusiOppija(MockOppijat.luva),
     List(
       LukioonValmistavanKoulutuksenOpiskeluoikeus(
-        päättymispäivä = Some(date(2016, 6, 4)),
         oppilaitos = Some(jyväskylänNormaalikoulu),
         koulutustoimija = None,
         tila = LukionOpiskeluoikeudenTila(List(

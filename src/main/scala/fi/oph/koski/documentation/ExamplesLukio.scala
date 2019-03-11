@@ -15,7 +15,6 @@ object ExamplesLukio {
   def oppija(opiskeluoikeus: LukionOpiskeluoikeus) = Oppija(exampleHenkilö, List(opiskeluoikeus))
 
   def päättötodistus(oppilaitos: Oppilaitos = jyväskylänNormaalikoulu, toimipiste: OrganisaatioWithOid = jyväskylänNormaalikoulu) = LukionOpiskeluoikeus(
-      päättymispäivä = Some(date(2016, 6, 8)),
       tila = LukionOpiskeluoikeudenTila(
         List(
           LukionOpiskeluoikeusjakso(alku = date(2012, 9, 1), tila = opiskeluoikeusAktiivinen),
@@ -208,7 +207,6 @@ object ExamplesLukio {
     LukionOpiskeluoikeus(
       versionumero = None,
       lähdejärjestelmänId = None,
-      päättymispäivä = Some(date(2016, 1, 10)),
       oppilaitos = Some(jyväskylänNormaalikoulu),
       suoritukset = List(
         LukionOppiaineenOppimääränSuoritus(
@@ -237,7 +235,6 @@ object ExamplesLukio {
     LukionOpiskeluoikeus(
       versionumero = None,
       lähdejärjestelmänId = None,
-      päättymispäivä = None,
       tila = LukionOpiskeluoikeudenTila(
         List(
           LukionOpiskeluoikeusjakso(alku = date(2012, 9, 1), tila = opiskeluoikeusAktiivinen)
@@ -349,7 +346,6 @@ object LukioExampleData {
   def lukionOpiskeluoikeus(oppilaitos: Oppilaitos = jyväskylänNormaalikoulu) = LukionOpiskeluoikeus(
     versionumero = None,
     lähdejärjestelmänId = None,
-    päättymispäivä = None,
     oppilaitos = Some(oppilaitos),
     suoritukset = List(
       LukionOppimääränSuoritus(

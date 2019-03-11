@@ -19,7 +19,6 @@ object ExamplesPerusopetus {
   lazy val aineopiskelija = Oppija(
     asUusiOppija(MockOppijat.eero),
     List(PerusopetuksenOpiskeluoikeus(
-      päättymispäivä = Some(date(2016, 6, 4)),
       oppilaitos = Some(jyväskylänNormaalikoulu),
       suoritukset = List(
         NuortenPerusopetuksenOppiaineenOppimääränSuoritus(
@@ -41,7 +40,6 @@ object ExamplesPerusopetus {
   )
 
   lazy val ysiluokkalaisenOpiskeluoikeus = PerusopetuksenOpiskeluoikeus(
-    päättymispäivä = None,
     oppilaitos = Some(jyväskylänNormaalikoulu),
     koulutustoimija = None,
     suoritukset = List(
@@ -91,7 +89,6 @@ object ExamplesPerusopetus {
   lazy val toimintaAlueittainOpiskelija = Oppija(
     exampleHenkilö,
     List(PerusopetuksenOpiskeluoikeus(
-      päättymispäivä = Some(date(2016, 6, 4)),
       oppilaitos = Some(jyväskylänNormaalikoulu),
       koulutustoimija = None,
       suoritukset = List(

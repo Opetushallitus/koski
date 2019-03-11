@@ -301,15 +301,6 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
           }
         }
 
-        "Päivämäärät vs opiskeluoikeusjaksot" - {
-          "päättymispäivä on annettu, vaikka viimeinen opiskeluoikeus on tilassa Läsnä" in { putOpiskeluoikeus(defaultOpiskeluoikeus.copy(päättymispäivä = Some(date(2010, 12, 31)))) {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.päättymispäivämäärä("Opiskeluoikeuden päättymispäivä (2010-12-31) ei vastaa opiskeluoikeuden päättävän opiskeluoikeusjakson alkupäivää (null)"))
-          }}
-          "päättymispäivä ei vastaa opiskelut päättävän jakson päivää" in { putOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(2010, 12, 30)).copy(päättymispäivä = Some(date(2010, 12, 31)))) {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.päättymispäivämäärä("Opiskeluoikeuden päättymispäivä (2010-12-31) ei vastaa opiskeluoikeuden päättävän opiskeluoikeusjakson alkupäivää (2010-12-30)"))
-          }}
-        }
-
         "Opiskeluoikeuden tila muuttunut vielä valmistumisen jälkeen -> HTTP 400" in (putOpiskeluoikeus(
           lisääTila(päättymispäivällä(defaultOpiskeluoikeus, date(2016, 5, 31)), date(2016, 6, 30), ExampleData.opiskeluoikeusLäsnä)
         ) {

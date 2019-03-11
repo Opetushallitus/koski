@@ -124,9 +124,10 @@ describe('Oppijataulukko', function() {
           'Erikoinen, Erja',
           'Eskari, Essi',
           'Koululainen, Kaisa',
-          'Lukioaineopiskelija, Aino'
+          'Lukioaineopiskelija, Aino',
+          'Monikoululainen, Miia'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('5')
+        expect(page.opiskeluoikeudeTotal()).to.equal('6')
       })
     })
   })

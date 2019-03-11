@@ -17,7 +17,6 @@ case class DIAOpiskeluoikeus(
   koulutustoimija: Option[Koulutustoimija] = None,
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None,
   arvioituPäättymispäivä: Option[LocalDate] = None,
-  päättymispäivä: Option[LocalDate] = None,
   tila: LukionOpiskeluoikeudenTila,
   @MaxItems(2)
   suoritukset: List[DIAPäätasonSuoritus],

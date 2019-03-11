@@ -11,6 +11,7 @@ import fi.oph.koski.henkilo.KoskiHenkilöCache
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{SuoritusJsonHaku, _}
+import fi.oph.koski.schema.KoskiOpiskeluoikeusjakso
 import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.koski.util.QueryPagination.applyPagination
 import fi.oph.koski.util.SortOrder.{Ascending, Descending}
@@ -64,8 +65,12 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
       .map(stuff => (stuff._1._1, stuff._1._2, stuff._2))
 
     val query = filters.foldLeft(baseQuery) {
-      case (query, OpiskeluoikeusPäättynytAikaisintaan(päivä)) => query.filter(_._1.data.#>>(List("päättymispäivä")) >= päivä.toString)
-      case (query, OpiskeluoikeusPäättynytViimeistään(päivä)) => query.filter(_._1.data.#>>(List("päättymispäivä")) <= päivä.toString)
+      case (query, OpiskeluoikeusPäättynytAikaisintaan(päivä)) => query.filter { row =>
+        (row._1.data.#>>(List("tila", "opiskeluoikeusjaksot", "-1", "alku")) >= päivä.toString) && (row._1.data.#>>(List("tila", "opiskeluoikeusjaksot", "-1", "tila", "koodiarvo")) inSetBind KoskiOpiskeluoikeusjakso.päätöstilat)
+      }
+      case (query, OpiskeluoikeusPäättynytViimeistään(päivä)) => query.filter { row =>
+        (row._1.data.#>>(List("tila", "opiskeluoikeusjaksot", "-1", "alku")) <= päivä.toString) && (row._1.data.#>>(List("tila", "opiskeluoikeusjaksot", "-1", "tila", "koodiarvo")) inSetBind KoskiOpiskeluoikeusjakso.päätöstilat)
+      }
       case (query, OpiskeluoikeusAlkanutAikaisintaan(päivä)) => query.filter(_._1.data.#>>(List("tila", "opiskeluoikeusjaksot", "0", "alku")) >= päivä.toString)
       case (query, OpiskeluoikeusAlkanutViimeistään(päivä)) => query.filter(_._1.data.#>>(List("tila", "opiskeluoikeusjaksot", "0", "alku")) <= päivä.toString)
       case (query, OpiskeluoikeudenTyyppi(tyyppi)) => query.filter(_._1.koulutusmuoto === tyyppi.koodiarvo)

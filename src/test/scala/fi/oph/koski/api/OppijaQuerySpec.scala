@@ -126,7 +126,7 @@ class OppijaQuerySpec extends FreeSpec with LocalJettyHttpSpecification with Opi
     "Kun haku ei osu" - {
       "palautetaan tyhjä lista" in {
         insert(päättymispäivällä(defaultOpiskeluoikeus, date(2016,1,9)), eero)
-        val oppijat = queryOppijat("?opiskeluoikeusPäättynytViimeistään=2014-12-31&opiskeluoikeusPäättynytAikaisintaan=2014-01-01")
+        val oppijat = queryOppijat("?opiskeluoikeusPäättynytViimeistään=2014-04-30&opiskeluoikeusPäättynytAikaisintaan=2014-01-01")
         oppijat.length should equal(0)
         resetFixtures
       }
@@ -149,6 +149,7 @@ class OppijaQuerySpec extends FreeSpec with LocalJettyHttpSpecification with Opi
 
     "Luottamuksellinen data" - {
       "Näytetään käyttäjälle jolla on LUOTTAMUKSELLINEN-rooli" in {
+        resetFixtures
         vankilaopetuksessa(queryOppijat("?nimihaku=eero%20esimerkki", user = stadinAmmattiopistoKatselija)) should equal(Some(List(Aikajakso(date(2001,1,1), None))))
       }
 
