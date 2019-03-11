@@ -127,6 +127,33 @@ describe('Ammatillinen koulutus', function() {
       })
     })
 
+    describe('Henkilöpalvelusta löytyvälle oppijalle, jolla on vanha hetu', function() {
+      before(prepareForNewOppija('kalle', '270181-517T'))
+      describe('Tietojen näyttäminen', function() {
+        it('Näytetään täydennetyt nimitietokentät', function() {
+          expect(addOppija.henkilötiedot()).to.deep.equal([ 'Eino', 'Eino', 'EiKoskessa' ])
+        })
+        it('Hetu näkyy', function() {
+          expect(addOppija.hetu()).equal('270181-517T')
+        })
+      })
+
+      describe('Kun lisätään oppija', function() {
+        before(addOppija.enterValidDataAmmatillinen())
+        before(addOppija.submitAndExpectSuccess('EiKoskessa, Eino (270181-5263)', 'Autoalan perustutkinto'))
+
+        it('lisätyn oppijan uusi hetu näytetään', function() {
+          expect(KoskiPage().getSelectedOppija()).to.equal('EiKoskessa, Eino (270181-5263)')
+        })
+
+        it('Lisätty opiskeluoikeus näytetään', function() {
+          expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
+          expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+          expect(opinnot.getSuorituskieli()).to.equal('suomi')
+        })
+      })
+    })
+
     describe('Henkilöpalvelusta löytyvälle oppijalle, jolla on vain OID', function() {
       before(prepareForNewOppija('kalle', '1.2.246.562.24.99999555556'))
       describe('Tietojen näyttäminen', function() {

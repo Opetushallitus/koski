@@ -81,7 +81,7 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
   }
 
   override def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] = synchronized {
-    oppijat.getOppijat.find(_.henkilö.hetu.contains(hetu)).map(h => h.master.getOrElse(h.henkilö)).map(withLinkedOids)
+    oppijat.getOppijat.find(o => o.henkilö.hetu.contains(hetu) || o.henkilö.vanhatHetut.contains(hetu)).map(h => h.master.getOrElse(h.henkilö)).map(withLinkedOids)
   }
 
   override def findChangedOppijaOids(since: Long, offset: Int, amount: Int): List[Oid] = synchronized {

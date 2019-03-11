@@ -39,7 +39,7 @@ object MockOppijat {
   val liiketalous = oppijat.oppija("Liiketalous", "Lilli", "160525-780Y")
   val dippainssi = oppijat.oppija("Dippainssi", "Dilbert", "100869-192W")
   val korkeakoululainen = oppijat.oppija("Korkeakoululainen", "Kikka", "150113-4146")
-  val amkValmistunut = oppijat.oppija("Amis", "Valmis", "250686-102E")
+  val amkValmistunut = oppijat.oppija("Amis", "Valmis", "250686-102E", vanhaHetu = Some("250686-6493"))
   val opintojaksotSekaisin = oppijat.oppija("Hassusti", "Opintojaksot", "090992-3237")
   val amkKesken = oppijat.oppija("Amiskesken", "Jalmari", "090197-411W")
   val amkKeskeytynyt = oppijat.oppija("Pudokas", "Valtteri", "170691-3962")
@@ -47,7 +47,7 @@ object MockOppijat {
   val virtaEiVastaa = oppijat.oppija("Virtanen", "Eivastaa", "250390-680P")
   val oppiaineenKorottaja = oppijat.oppija("Oppiaineenkorottaja", "Olli", "110738-839L")
   val montaOppiaineenOppimäärääOpiskeluoikeudessa = oppijat.oppija("Mervi", "Monioppiaineinen", "131298-5248")
-  val aikuisOpiskelija = oppijat.oppija("Aikuisopiskelija", "Aini", "280598-2415")
+  val aikuisOpiskelija = oppijat.oppija("Aikuisopiskelija", "Aini", "280598-2415", vanhaHetu = Some("280598-326W"))
   val kymppiluokkalainen = oppijat.oppija("Kymppiluokkalainen", "Kaisa", "131025-6573")
   val luva = oppijat.oppija("Lukioonvalmistautuja", "Luke", "211007-442N")
   val valma = oppijat.oppija("Amikseenvalmistautuja", "Anneli", "130404-054C")
@@ -73,7 +73,7 @@ object MockOppijat {
   val slaveMasterEiKoskessa = oppijat.addOppija(OppijaHenkilöWithMasterInfo(OppijaHenkilö(oid = "1.2.246.562.24.41000051473", hetu = Some("270366-697B"), syntymäaika = None, sukunimi = "Slave", etunimet = "Slave", kutsumanimi = "Slave"), Some(masterEiKoskessa)))
   val omattiedotSlave = oppijat.addOppija(OppijaHenkilöWithMasterInfo(OppijaHenkilö(oid = oppijat.generateId(), hetu = Some("190751-739W"), syntymäaika = None, etunimet = MockUsers.omattiedot.ldapUser.etunimet, kutsumanimi = MockUsers.omattiedot.ldapUser.etunimet, sukunimi = MockUsers.omattiedot.ldapUser.sukunimi), Some(omattiedot)))
   val opiskeluoikeudenOidKonflikti = oppijat.oppija("Oidkonflikti", "Oskari", "260539-745W", "1.2.246.562.24.09090909090")
-  val eiKoskessa = oppijat.oppija("EiKoskessa", "Eino", "270181-5263", "1.2.246.562.24.99999555555")
+  val eiKoskessa = oppijat.oppija("EiKoskessa", "Eino", "270181-5263", "1.2.246.562.24.99999555555", vanhaHetu = Some("270181-517T"))
   val eiKoskessaHetuton = oppijat.addOppija(OppijaHenkilö(oid = "1.2.246.562.24.99999555556", sukunimi = "EiKoskessaHetuton", etunimet = "Eino", kutsumanimi = "Eino", hetu = None, syntymäaika = None))
   val turvakielto = oppijat.oppija("Turvakielto", "Tero", "151067-2193", turvakielto = true)
   val montaJaksoaKorkeakoululainen = oppijat.oppija("Korkeakoululainen", "Monta-Opintojaksoa", "030199-3419")
@@ -98,7 +98,7 @@ class MockOppijat(private var oppijat: List[OppijaHenkilöWithMasterInfo] = Nil)
   private var idCounter = oppijat.length
   val äidinkieli: Some[Koodistokoodiviite] = Some(Koodistokoodiviite("FI", None, "kieli", None))
 
-  def oppija(suku: String, etu: String, hetu: String, oid: String = generateId(), kutsumanimi: Option[String] = None, turvakielto: Boolean = false): OppijaHenkilö =
+  def oppija(suku: String, etu: String, hetu: String, oid: String = generateId(), kutsumanimi: Option[String] = None, turvakielto: Boolean = false, vanhaHetu: Option[String] = None): OppijaHenkilö =
     addOppija(henkilo.OppijaHenkilö(
       oid = oid,
       sukunimi = suku,
@@ -107,7 +107,8 @@ class MockOppijat(private var oppijat: List[OppijaHenkilöWithMasterInfo] = Nil)
       hetu = Some(hetu),
       syntymäaika = None,
       äidinkieli = Some("fi"),
-      turvakielto = turvakielto
+      turvakielto = turvakielto,
+      vanhatHetut = vanhaHetu.toList
     ))
 
   def addOppija(oppija: OppijaHenkilö): OppijaHenkilö = addOppija(OppijaHenkilöWithMasterInfo(oppija, None)).henkilö

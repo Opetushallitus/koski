@@ -106,6 +106,15 @@ describe('Korkeakoulutus', function() {
         expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal(['Yrkeshögskolan Arcada, Fysioterapeutti (AMK) (2011—2015, päättynyt)'])
       })
     })
+    describe('Haku toimii myös muuttuneella hetulla', function() {
+      before(
+        page.openPage,
+        page.oppijaHaku.searchAndSelect('250686-6493', '250686-102E')
+      )
+      it('näytetään', function() {
+        expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal(['Yrkeshögskolan Arcada, Fysioterapeutti (AMK) (2011—2015, päättynyt)'])
+      })
+    })
     describe('Opiskeluoikeuden otsikko kun opintojaksot sekaisin päätason suorituksen kanssa', function() {
       before(
         page.openPage,
