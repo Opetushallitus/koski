@@ -381,6 +381,16 @@ describe('Perusopetus', function() {
         '15.8.2008 Läsnä (valtionosuusrahoitteinen koulutus)')
     })
 
+    describe('Muuttunut hetu', function() {
+      before(page.openPage, page.oppijaHaku.searchAndSelect('280598-326W', '280598-2415'))
+
+      it('hakee opiskeluoikeuden tiedot', function() {
+        expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2016\n' +
+          'Tila 4.6.2016 Valmistunut\n' +
+          '15.8.2008 Läsnä (valtionosuusrahoitteinen koulutus)')
+      })
+    })
+
     describe('Päättövaiheen opinnot', function() {
       before(opinnot.expandAll)
       it('näyttää suorituksen tiedot', function() {

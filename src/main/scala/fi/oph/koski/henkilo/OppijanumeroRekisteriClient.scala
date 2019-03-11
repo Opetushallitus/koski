@@ -78,6 +78,7 @@ case class OppijanumeroRekisteriClient(config: Config) {
 
 case class KäyttäjäHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, asiointiKieli: Option[Kieli])
 case class OppijaNumerorekisteriSlave(oidHenkilo: String)
+
 case class OppijaNumerorekisteriOppija(
   oidHenkilo: String,
   sukunimi: String,
@@ -87,6 +88,7 @@ case class OppijaNumerorekisteriOppija(
   syntymaaika: Option[LocalDate],
   aidinkieli: Option[Kieli],
   kansalaisuus: Option[List[Kansalaisuus]],
+  kaikkiHetut: Option[List[String]],
   modified: Long,
   turvakielto: Option[Boolean]
 ) {
@@ -101,7 +103,8 @@ case class OppijaNumerorekisteriOppija(
     kansalaisuus = kansalaisuus.map(_.map(_.kansalaisuusKoodi)),
     modified = modified,
     turvakielto = turvakielto.getOrElse(false),
-    linkitetytOidit = linkitetytOidit
+    linkitetytOidit = linkitetytOidit,
+    vanhatHetut = kaikkiHetut.getOrElse(Nil).filterNot(hetu.contains)
   )
 }
 case class UusiOppijaHenkilö(hetu: Option[String], sukunimi: String, etunimet: String, kutsumanimi: String, henkiloTyyppi: String = "OPPIJA")

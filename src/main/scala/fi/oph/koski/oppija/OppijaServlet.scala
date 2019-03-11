@@ -57,6 +57,7 @@ class OppijaServlet(implicit val application: KoskiApplication) extends ApiServl
     streamResponse(query.map(x => (application.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(x._1), x._2)).map(serialize), koskiSession)
   }
 
+  // TODO: tarkista lokeista voiko tämän poistaa
   get("/:oid") {
     renderEither[Oppija](HenkilöOid.validateHenkilöOid(params("oid")).right.flatMap { oid =>
       application.oppijaFacade.findOppija(oid, findMasterIfSlaveOid = false)(koskiSession)

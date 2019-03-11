@@ -26,6 +26,6 @@ case class VerifiedHenkilöOid(henkilö: OppijaHenkilö) extends PossiblyUnverif
   override def verified = Some(henkilö)
 }
 
-case class UnverifiedHenkilöOid(val oppijaOid: Henkilö.Oid, henkilöRepository: HenkilöRepository) extends PossiblyUnverifiedHenkilöOid {
-  override lazy val verified = henkilöRepository.findByOid(oppijaOid)
+case class UnverifiedHenkilöOid(oppijaOid: Henkilö.Oid, henkilöRepository: HenkilöRepository) extends PossiblyUnverifiedHenkilöOid {
+  override lazy val verified: Option[OppijaHenkilö] = henkilöRepository.findByOid(oppijaOid)
 }
