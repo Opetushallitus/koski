@@ -3,15 +3,13 @@ package fi.oph.koski.henkilo
 import java.time.LocalDate
 
 import com.github.tomakehurst.wiremock.WireMockServer
-import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.client.WireMock
+import com.github.tomakehurst.wiremock.client.WireMock._
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration._
 import com.typesafe.config.ConfigFactory
-import fi.oph.koski.http.HttpStatus
-import fi.oph.koski.http.KoskiErrorCategory.badRequest
 import org.json4s.DefaultFormats
 import org.json4s.jackson.Serialization.write
-import org.scalatest.{BeforeAndAfterAll, EitherValues, FreeSpec, Matchers, OptionValues}
+import org.scalatest._
 
 class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with EitherValues with OptionValues with BeforeAndAfterAll {
   implicit val jsonDefaultFormats = DefaultFormats.preservingEmptyValues
@@ -61,7 +59,10 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
     "kuolinpaiva" -> null,
     "syntymaaika" -> "1956-04-12",
     "hetu" -> hetu,
-    "kaikkiHetut" -> List(vanhaHetu),
+    "kaikkiHetut" -> List(
+      hetu,
+      vanhaHetu
+    ),
     "oidHenkilo" -> oid,
     "oppijanumero" -> oid,
     "sukupuoli" -> "1",

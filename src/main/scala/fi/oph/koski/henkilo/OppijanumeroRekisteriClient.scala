@@ -104,7 +104,7 @@ case class OppijaNumerorekisteriOppija(
     modified = modified,
     turvakielto = turvakielto.getOrElse(false),
     linkitetytOidit = linkitetytOidit,
-    vanhatHetut = kaikkiHetut.getOrElse(Nil).filterNot(_ == hetu)
+    vanhatHetut = kaikkiHetut.getOrElse(Nil).filterNot(hetu.contains)
   )
 }
 case class UusiOppijaHenkilö(hetu: Option[String], sukunimi: String, etunimet: String, kutsumanimi: String, henkiloTyyppi: String = "OPPIJA")
