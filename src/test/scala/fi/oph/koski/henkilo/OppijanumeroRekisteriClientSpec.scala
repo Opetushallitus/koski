@@ -86,28 +86,6 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
     "henkiloTyyppi" -> "OPPIJA"
   )
 
-  private val masterHenkilöResponse = Map(
-    slaveOid -> Map(
-      "oidHenkilo" -> oid,
-      "hetu" -> hetu,
-      "etunimet" -> "Mikko Alfons",
-      "kutsumanimi" -> "Mikko",
-      "sukunimi" -> "Mallikas",
-      "syntymaaika" -> "1956-04-12",
-      "modified" -> 1543411774579l
-    ),
-    oid -> Map(
-      "oidHenkilo" -> oid,
-      "hetu" -> hetu,
-      "kaikkiHetut" -> List(vanhaHetu),
-      "etunimet" -> "Mikko Alfons",
-      "kutsumanimi" -> "Mikko",
-      "sukunimi" -> "Mallikas",
-      "syntymaaika" -> "1956-04-12",
-      "modified" -> 1543411774579l
-    )
-  )
-
   private val expectedKäyttäjäHenkilö = KäyttäjäHenkilö(
     oid,
     "Mallikas",
@@ -222,7 +200,6 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
     val yhteystiedotUrl = "/oppijanumerorekisteri-service/s2s/henkilo/yhteystiedot"
     val slaveOidsUrl = s"/oppijanumerorekisteri-service/henkilo/${oid}/slaves"
     val uusiHenkiloUrl = "/oppijanumerorekisteri-service/s2s/findOrCreateHenkiloPerustieto"
-    val masterHenkilötUrl = "/oppijanumerorekisteri-service/henkilo/masterHenkilosByOidList"
 
     wireMockServer.stubFor(
       WireMock.post(urlPathEqualTo(uusiHenkiloUrl))
@@ -256,10 +233,6 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
     wireMockServer.stubFor(
       WireMock.post(urlPathEqualTo(perustiedotUrl))
         .willReturn(ok().withBody(write(List(perustietoResponseData)))))
-
-    wireMockServer.stubFor(
-      WireMock.post(urlPathEqualTo(masterHenkilötUrl))
-        .willReturn(ok().withBody(write(masterHenkilöResponse))))
 
     wireMockServer.stubFor(
       WireMock.post(urlPathEqualTo(yhteystiedotUrl))
