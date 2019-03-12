@@ -224,6 +224,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
   private def updateAction[A <: PäätasonSuoritus](oldRow: OpiskeluoikeusRow, uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowDeleteCompleted: Boolean = false)(implicit user: KoskiSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Write] = {
     val (id, oid, versionumero) = (oldRow.id, oldRow.oid, oldRow.versionumero)
     val nextVersionumero = versionumero + 1
+    val overrideVanhatValmiitSuoritukset = allowDeleteCompleted || OpiskeluoikeudenTyyppi.ammatillinenkoulutus == uusiOpiskeluoikeus.tyyppi
 
     uusiOpiskeluoikeus.versionumero match {
       case Some(requestedVersionumero) if (requestedVersionumero != versionumero) =>
@@ -231,7 +232,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
       case _ =>
         val vanhaOpiskeluoikeus = oldRow.toOpiskeluoikeus
 
-        val täydennettyOpiskeluoikeus = if (allowDeleteCompleted) uusiOpiskeluoikeus else OpiskeluoikeusChangeMigrator.kopioiValmiitSuorituksetUuteen(vanhaOpiskeluoikeus, uusiOpiskeluoikeus)
+        val täydennettyOpiskeluoikeus = if (overrideVanhatValmiitSuoritukset) uusiOpiskeluoikeus else OpiskeluoikeusChangeMigrator.kopioiValmiitSuorituksetUuteen(vanhaOpiskeluoikeus, uusiOpiskeluoikeus)
 
         validateOpiskeluoikeusChange(vanhaOpiskeluoikeus, täydennettyOpiskeluoikeus) match {
           case HttpStatus.ok =>

@@ -1464,15 +1464,37 @@ describe('Ammatillinen koulutus', function() {
     })
 
     describe('Päätason suorituksen poistaminen', function() {
-      before(editor.edit)
+      before(Authentication().logout, Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect("250989-419V"), editor.edit)
 
       describe('Mitätöintilinkki', function() {
-        it('Ei näytetä', function() {
-          expect(opinnot.deletePäätasonSuoritusIsShown()).to.equal(false)
+        it('Näytetään', function() {
+          expect(opinnot.deletePäätasonSuoritusIsShown()).to.equal(true)
+        })
+
+        describe('Painettaessa', function() {
+          before(opinnot.deletePäätasonSuoritus)
+          it('Pyydetään vahvistus', function() {
+            expect(opinnot.confirmDeletePäätasonSuoritusIsShown()).to.equal(true)
+          })
+
+          describe('Painettaessa uudestaan', function() {
+            before(opinnot.confirmDeletePäätasonSuoritus, wait.until(page.isPäätasonSuoritusDeletedMessageShown))
+            it('Päätason suoritus poistetaan', function() {
+              expect(page.isPäätasonSuoritusDeletedMessageShown()).to.equal(true)
+            })
+
+            describe('Poistettua päätason suoritusta', function() {
+              before(wait.until(page.isReady), opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('ammatillinenkoulutus'))
+
+              it('Ei näytetä', function () {
+                expect(opinnot.suoritusTabs()).to.deep.equal(['Autoalan työnjohdon erikoisammattitutkinto'])
+              })
+            })
+          })
         })
       })
     })
-  })
+ })
 
   describe('Ammatillinen perustutkinto', function() {
     before(Authentication().login(), resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('280618-402H'))

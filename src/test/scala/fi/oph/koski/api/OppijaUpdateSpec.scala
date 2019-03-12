@@ -8,7 +8,7 @@ import fi.oph.koski.documentation.ExampleData.{jyväskylä, longTimeAgo, opiskel
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetukseOppimääränSuoritus, aikuistenPerusopetus2017, oppiaineidenSuoritukset2017}
 import fi.oph.koski.documentation.PerusopetusExampleData.perusopetuksenOppimääränSuoritus
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
-import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData}
+import fi.oph.koski.documentation._
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.koululainen
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
@@ -307,7 +307,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     }
 
     "Jos valmis päätason suoritus on poistunut" - {
-      "Aiemmin tallennettu suoritus säilytetään" in {
+      "Ammatillisessa aiemmin tallennettua suoritusta ei säilytetä" in {
         resetFixtures
         val vanhaValmisSuoritus = valmis(ammatillinenTutkintoSuoritus(autoalanPerustutkinto))
         val vanhaKeskeneräinenSuoritus = ammatillinenTutkintoSuoritus(puutarhuri)
@@ -317,6 +317,19 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         verifyChange(original = oo, change = poistaSuoritukset) {
           verifyResponseStatusOk()
           val result: AmmatillinenOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija).asInstanceOf[AmmatillinenOpiskeluoikeus]
+          result.suoritukset.map(_.koulutusmoduuli.tunniste.koodiarvo) should equal(List(uusiSuoritus.koulutusmoduuli.tunniste.koodiarvo))
+        }
+      }
+      "Muuten aiemmin tallennettu suoritus säilytetään" in {
+        resetFixtures
+        val vanhaValmisSuoritus = PerusopetusExampleData.seitsemännenLuokanSuoritus
+        val vanhaKeskenSuoritus = PerusopetusExampleData.kahdeksannenLuokanSuoritus.copy(vahvistus = None)
+        val uusiSuoritus = PerusopetusExampleData.yhdeksännenLuokanSuoritus.copy(vahvistus = None)
+        val oo = PerusopetusExampleData.opiskeluoikeus(suoritukset = List(vanhaValmisSuoritus, vanhaKeskenSuoritus)).copy(tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä))), päättymispäivä = None)
+        def poistaSuoritukset(oo: PerusopetuksenOpiskeluoikeus) = oo.copy(suoritukset = List(uusiSuoritus))
+        verifyChange(original = oo, change = poistaSuoritukset) {
+          verifyResponseStatusOk()
+          val result: PerusopetuksenOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija).asInstanceOf[PerusopetuksenOpiskeluoikeus]
           result.suoritukset.map(_.koulutusmoduuli.tunniste.koodiarvo) should equal(List(vanhaValmisSuoritus.koulutusmoduuli.tunniste.koodiarvo, uusiSuoritus.koulutusmoduuli.tunniste.koodiarvo))
         }
       }

@@ -191,7 +191,7 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
       Left(KoskiErrorCategory.forbidden.ainoanPäätasonSuorituksenPoisto())
     } else {
       oo match {
-        case _: PerusopetuksenOpiskeluoikeus | _: AikuistenPerusopetuksenOpiskeluoikeus =>
+        case _: PerusopetuksenOpiskeluoikeus | _: AikuistenPerusopetuksenOpiskeluoikeus | _: AmmatillinenOpiskeluoikeus =>
           val poistetullaSuorituksella = oo.suoritukset.filterNot(_ == päätasonSuoritus)
           if (poistetullaSuorituksella.length == oo.suoritukset.length) {
             Left(KoskiErrorCategory.notFound())
