@@ -8,48 +8,6 @@ import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema._
 import fi.oph.koski.util.FinnishDateFormat.{finnishDateFormat, finnishDateTimeFormat}
 
-case class SuoritustiedotTarkistusRow
-(
-  opiskeluoikeusOid: String,
-  lähdejärjestelmä: Option[String],
-  lähdejärjestelmänId: Option[String],
-  sisältyyOpiskeluoikeuteenOid: String,
-  sisältyvätOpiskeluoikeudetOidit: String,
-  sisältyvätOpiskeluoikeudetOppilaitokset: String,
-  linkitetynOpiskeluoikeudenOppilaitos: String,
-  aikaleima: LocalDate,
-  toimipisteOidit: String,
-  oppijaOid: String,
-  hetu: Option[String],
-  sukunimi: Option[String],
-  etunimet: Option[String],
-  koulutusmoduulit: String,
-  osaamisalat: Option[String],
-  koulutusmuoto: String,
-  opiskeluoikeudenTila: Option[String],
-  opintojenRahoitukset: String,
-  suoritettujenOpintojenYhteislaajuus: Double,
-  valmiitAmmatillisetTutkinnonOsatLkm: Int,
-  pakollisetAmmatillisetTutkinnonOsatLkm: Int,
-  valinnaisetAmmatillisetTutkinnonOsatLkm: Int,
-  näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm: Int,
-  tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm: Int,
-  rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm: Int,
-  suoritetutAmmatillisetTutkinnonOsatYhteislaajuus: Double,
-  pakollisetAmmatillisetTutkinnonOsatYhteislaajuus: Double,
-  valinnaisetAmmatillisetTutkinnonOsatYhteislaajuus: Double,
-  valmiitYhteistenTutkinnonOsatLkm: Int,
-  pakollisetYhteistenTutkinnonOsienOsaalueidenLkm: Int,
-  valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm: Int,
-  tunnustettujaTukinnonOsanOsaalueitaValmiissaTutkinnonOsanOsalueissaLkm: Int,
-  rahoituksenPiirissäTutkinnonOsanOsaalueitaValmiissaTutkinnonOsanOsaalueissaLkm: Int,
-  tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaLkm: Int,
-  rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm: Int,
-  suoritettujenYhteistenTutkinnonOsienYhteislaajuus: Double,
-  suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus: Double,
-  pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus: Double,
-  valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus: Double
-)
 
 // scalastyle:off method.length
 
@@ -159,21 +117,21 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
       valinnaisetAmmatillisetTutkinnonOsatLkm = valinnaiset(ammatillisetTutkinnonOsatJaOsasuoritukset).size,
       näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm = näytöt(valmiitAmmatillisetTutkinnonOsatJaOsasuoritukset).size,
       tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm = tunnustetut(valmiitAmmatillisetTutkinnonOsatJaOsasuoritukset).size,
-      rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm = (tunnustetut andThen rahoituksenPiirissä) (ammatillisetTutkinnonOsatJaOsasuoritukset).size,
+      rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm = rahoituksenPiirissä(tunnustetut(ammatillisetTutkinnonOsatJaOsasuoritukset)).size,
       suoritetutAmmatillisetTutkinnonOsatYhteislaajuus = yhteislaajuus(ammatillisetTutkinnonOsatJaOsasuoritukset),
-      pakollisetAmmatillisetTutkinnonOsatYhteislaajuus = (pakolliset andThen yhteislaajuus) (ammatillisetTutkinnonOsatJaOsasuoritukset),
-      valinnaisetAmmatillisetTutkinnonOsatYhteislaajuus = (valinnaiset andThen yhteislaajuus) (ammatillisetTutkinnonOsatJaOsasuoritukset),
+      pakollisetAmmatillisetTutkinnonOsatYhteislaajuus = yhteislaajuus(pakolliset(ammatillisetTutkinnonOsatJaOsasuoritukset)),
+      valinnaisetAmmatillisetTutkinnonOsatYhteislaajuus = yhteislaajuus(valinnaiset(ammatillisetTutkinnonOsatJaOsasuoritukset)),
       valmiitYhteistenTutkinnonOsatLkm = yhteisetTutkinnonOsat.size,
       pakollisetYhteistenTutkinnonOsienOsaalueidenLkm = pakolliset(yhteistenTutkinnonOsienOsaAlueet).size,
       valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm = valinnaiset(yhteistenTutkinnonOsienOsaAlueet).size,
       tunnustettujaTukinnonOsanOsaalueitaValmiissaTutkinnonOsanOsalueissaLkm = tunnustetut(yhteistenTutkinnonOsienOsaAlueet).size,
       rahoituksenPiirissäTutkinnonOsanOsaalueitaValmiissaTutkinnonOsanOsaalueissaLkm = rahoituksenPiirissä(yhteistenTutkinnonOsienOsaAlueet).size,
       tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaLkm = tunnustetut(yhteisetTutkinnonOsat).size,
-      rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm = (tunnustetut andThen rahoituksenPiirissä) (yhteisetTutkinnonOsat).size,
+      rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm = rahoituksenPiirissä(tunnustetut(yhteisetTutkinnonOsat)).size,
       suoritettujenYhteistenTutkinnonOsienYhteislaajuus = yhteislaajuus(yhteisetTutkinnonOsat),
       suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus = yhteislaajuus(yhteistenTutkinnonOsienOsaAlueet),
-      pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus = (pakolliset andThen yhteislaajuus) (yhteistenTutkinnonOsienOsaAlueet),
-      valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus = (valinnaiset andThen yhteislaajuus) (yhteistenTutkinnonOsienOsaAlueet)
+      pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus = yhteislaajuus(pakolliset(yhteistenTutkinnonOsienOsaAlueet)),
+      valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus = yhteislaajuus(valinnaiset(yhteistenTutkinnonOsienOsaAlueet))
     )
   }
 
@@ -181,8 +139,8 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
     päätasonsuoritukset.map(ps => vahvistusPäivätToTila(ps.vahvistusPäivä)).mkString(",")
   }
 
-  private[raportit] def vahvistusPäivätToTila(vahvistusPäivä: Option[Date]) = vahvistusPäivä match {
-      case Some(päivä) if (isTulevaisuudessa(päivä)) =>  s"Kesken, Valmistuu ${päivä.toLocalDate}"
+  private def vahvistusPäivätToTila(vahvistusPäivä: Option[Date]) = vahvistusPäivä match {
+      case Some(päivä) if isTulevaisuudessa(päivä) =>  s"Kesken, Valmistuu ${päivä.toLocalDate}"
       case Some(_) =>  "Valmis"
       case _ => "Kesken"
     }
@@ -204,18 +162,10 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
   private val tutkinnonosatvalinnanmahdollisuusKoodiarvot = Seq("1,", "2")
 
   private val isAmmatillisenTutkinnonOsa: ROsasuoritusRow => Boolean = osasuoritus => {
-    !(tutkinnonosatvalinnanmahdollisuusKoodiarvot.contains(osasuoritus.koulutusmoduuliKoodiarvo)) &
-      (osasuoritus.suorituksenTyyppi == "ammatillisentutkinnonosa") &
-      (tutkinnonOsanRyhmä(osasuoritus, "1"))
+    !tutkinnonosatvalinnanmahdollisuusKoodiarvot.contains(osasuoritus.koulutusmoduuliKoodiarvo) &&
+      osasuoritus.suorituksenTyyppi == "ammatillisentutkinnonosa" &&
+      tutkinnonOsanRyhmä(osasuoritus, "1")
   }
-
-  private val isArvioinniton: ROsasuoritusRow => Boolean = osasuoritus => isAnyOf(osasuoritus,
-    isAmmatillisenLukioOpintoja,
-    isAmmatillisenKorkeakouluOpintoja,
-    isAmmatillinenMuitaOpintoValmiuksiaTukeviaOpintoja,
-    isAmmatillinenTutkinnonOsaaPienempiKokonaisuus,
-    isAmmatillisenTutkinnonOsanOsaalue
-  )
 
   private val tutkinnonOsanRyhmä: (ROsasuoritusRow, String) => Boolean = (osasuoritus, koodiarvo) => JsonSerializer.extract[Option[Koodistokoodiviite]](osasuoritus.data \ "tutkinnonOsanRyhmä") match {
     case Some(viite) => viite.koodiarvo == koodiarvo
@@ -252,7 +202,7 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
 
   private val rahoituksenPiirissä: Seq[ROsasuoritusRow] => Seq[ROsasuoritusRow] = osasuoritukset => osasuoritukset.filter(isRahoituksenPiirissä)
 
-  private val isRahoituksenPiirissä: ROsasuoritusRow => Boolean = osasuoritus => JsonSerializer.extract[Option[OsaamisenTunnustaminen]](osasuoritus.data \ "tunnustettu").map(_.rahoituksenPiirissä).getOrElse(false)
+  private val isRahoituksenPiirissä: ROsasuoritusRow => Boolean = osasuoritus => JsonSerializer.extract[Option[OsaamisenTunnustaminen]](osasuoritus.data \ "tunnustettu").exists(_.rahoituksenPiirissä)
 
   private val isYhteinenTutkinnonOsa: ROsasuoritusRow => Boolean = osasuoritus => tutkinnonOsanRyhmä(osasuoritus, "2")
 
@@ -270,5 +220,56 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
     isAmmatillisenTutkinnonOsanOsaalue(osasuoritus) & osasuorituksenaOsissa(osasuoritus, osat)
   }
 
+  private val isArvioinniton: ROsasuoritusRow => Boolean = osasuoritus => isAnyOf(osasuoritus,
+    isAmmatillisenLukioOpintoja,
+    isAmmatillisenKorkeakouluOpintoja,
+    isAmmatillinenMuitaOpintoValmiuksiaTukeviaOpintoja,
+    isAmmatillinenTutkinnonOsaaPienempiKokonaisuus,
+    isAmmatillisenTutkinnonOsanOsaalue
+  )
+
   private def isTulevaisuudessa(date: Date) = date.toLocalDate.isAfter(LocalDate.now())
 }
+
+case class SuoritustiedotTarkistusRow
+(
+  opiskeluoikeusOid: String,
+  lähdejärjestelmä: Option[String],
+  lähdejärjestelmänId: Option[String],
+  sisältyyOpiskeluoikeuteenOid: String,
+  sisältyvätOpiskeluoikeudetOidit: String,
+  sisältyvätOpiskeluoikeudetOppilaitokset: String,
+  linkitetynOpiskeluoikeudenOppilaitos: String,
+  aikaleima: LocalDate,
+  toimipisteOidit: String,
+  oppijaOid: String,
+  hetu: Option[String],
+  sukunimi: Option[String],
+  etunimet: Option[String],
+  koulutusmoduulit: String,
+  osaamisalat: Option[String],
+  koulutusmuoto: String,
+  opiskeluoikeudenTila: Option[String],
+  opintojenRahoitukset: String,
+  suoritettujenOpintojenYhteislaajuus: Double,
+  valmiitAmmatillisetTutkinnonOsatLkm: Int,
+  pakollisetAmmatillisetTutkinnonOsatLkm: Int,
+  valinnaisetAmmatillisetTutkinnonOsatLkm: Int,
+  näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm: Int,
+  tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm: Int,
+  rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm: Int,
+  suoritetutAmmatillisetTutkinnonOsatYhteislaajuus: Double,
+  pakollisetAmmatillisetTutkinnonOsatYhteislaajuus: Double,
+  valinnaisetAmmatillisetTutkinnonOsatYhteislaajuus: Double,
+  valmiitYhteistenTutkinnonOsatLkm: Int,
+  pakollisetYhteistenTutkinnonOsienOsaalueidenLkm: Int,
+  valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm: Int,
+  tunnustettujaTukinnonOsanOsaalueitaValmiissaTutkinnonOsanOsalueissaLkm: Int,
+  rahoituksenPiirissäTutkinnonOsanOsaalueitaValmiissaTutkinnonOsanOsaalueissaLkm: Int,
+  tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaLkm: Int,
+  rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm: Int,
+  suoritettujenYhteistenTutkinnonOsienYhteislaajuus: Double,
+  suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus: Double,
+  pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus: Double,
+  valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus: Double
+)

@@ -97,7 +97,7 @@ class SuoritustietojenTarkistusSpec extends FreeSpec with Matchers with Raportoi
     }
     "Sisällytetyt opiskeluoikeudet"  - {
       "Opiskeluoikeuteen sisältyvät opiskeluioikeudet toistesta oppilaitoksesta" in {
-        lisääAarnelleSisällytettyOpiskeluoikeus {
+        withNewSisällytettyOpiskeluoikeus {
           val aarnenRivit = loadAmmattilaisAarnenRivit(MockOrganisaatiot.omnia)
           aarnenRivit.length should equal(2)
           val stadinLinkitettyOpiskeluoikeus = aarnenRivit.find(_.linkitetynOpiskeluoikeudenOppilaitos == stadinAmmattiOpistonNimi)
@@ -106,7 +106,7 @@ class SuoritustietojenTarkistusSpec extends FreeSpec with Matchers with Raportoi
         }
       }
       "Sisältävä opiskeluoikeus ei tule sisällytetyn opiskeluoikeuden oppilaitoksen raportille" in {
-        lisääAarnelleSisällytettyOpiskeluoikeus {
+        withNewSisällytettyOpiskeluoikeus {
           val aarnenRivit = loadAmmattilaisAarnenRivit(MockOrganisaatiot.stadinAmmattiopisto)
           aarnenRivit.length should equal(1)
           aarnenRivit.head.linkitetynOpiskeluoikeudenOppilaitos shouldBe empty
@@ -120,7 +120,7 @@ class SuoritustietojenTarkistusSpec extends FreeSpec with Matchers with Raportoi
     result.filter(_.hetu == MockOppijat.ammattilainen.hetu)
   }
 
-  private def lisääAarnelleSisällytettyOpiskeluoikeus(f: => Unit) = {
+  private def withNewSisällytettyOpiskeluoikeus(f: => Unit) = {
     resetFixtures
     val omnia = MockOrganisaatioRepository.findByOppilaitosnumero("10054").get
     val omnianOpiskeluoikeus = makeOpiskeluoikeus(LocalDate.of(2016, 1, 1), omnia, omnia.oid)
