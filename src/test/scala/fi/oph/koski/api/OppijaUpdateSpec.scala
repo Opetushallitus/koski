@@ -322,12 +322,10 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       }
       "Muuten aiemmin tallennettu suoritus säilytetään" in {
         resetFixtures
-        object PerusopetusTestMethods extends OpiskeluoikeusTestMethodsPerusopetus with LocalJettyHttpSpecification
-
         val vanhaValmisSuoritus = PerusopetusExampleData.seitsemännenLuokanSuoritus
         val vanhaKeskenSuoritus = PerusopetusExampleData.kahdeksannenLuokanSuoritus.copy(vahvistus = None)
         val uusiSuoritus = PerusopetusExampleData.yhdeksännenLuokanSuoritus.copy(vahvistus = None)
-        val oo = PerusopetusTestMethods.defaultOpiskeluoikeus.copy(suoritukset = List(vanhaValmisSuoritus, vanhaKeskenSuoritus))
+        val oo = PerusopetusExampleData.opiskeluoikeus(suoritukset = List(vanhaValmisSuoritus, vanhaKeskenSuoritus)).copy(tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä))), päättymispäivä = None)
         def poistaSuoritukset(oo: PerusopetuksenOpiskeluoikeus) = oo.copy(suoritukset = List(uusiSuoritus))
         verifyChange(original = oo, change = poistaSuoritukset) {
           verifyResponseStatusOk()
