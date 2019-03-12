@@ -89,7 +89,7 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
       .distinct
 
     val ammatillisetTutkinnonOsatJaOsasuoritukset = ammatillisetTutkinnonOsatJaOsasuorituksetFrom(osasuoritukset)
-    val valmiitAmmatillisetTutkinnonOsatJaOsasuoritukset = ammatillisetTutkinnonOsatJaOsasuoritukset.filter(os => isVahvistusPäivällinen(os) | isArvioinniton(os) | sisältyyVahvistettuunPäätasonSuoritukseen(os, päätasonSuoritukset))
+    val valmiitAmmatillisetTutkinnonOsatJaOsasuoritukset = ammatillisetTutkinnonOsatJaOsasuoritukset.filter(os => isVahvistusPäivällinen(os) || isArvioinniton(os) || sisältyyVahvistettuunPäätasonSuoritukseen(os, päätasonSuoritukset))
     val yhteisetTutkinnonOsat = osasuoritukset.filter(isYhteinenTutkinnonOsa)
     val yhteistenTutkinnonOsienOsaAlueet = osasuoritukset.filter(isYhteinenTutkinnonOsanOsaalue(_, osasuoritukset))
 
@@ -147,27 +147,7 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
       case _ => "Kesken"
     }
 
-  private def ammatillisetTutkinnonOsatJaOsasuorituksetFrom(osasuoritukset: Seq[ROsasuoritusRow]) = {
-    osasuoritukset.filter(os =>
-      isAnyOf(os,
-        isAmmatillisenLukioOpintoja,
-        isAmmatillisenKorkeakouluOpintoja,
-        isAmmatillinenMuitaOpintoValmiuksiaTukeviaOpintoja,
-        isAmmatillinenTutkinnonOsaaPienempiKokonaisuus,
-        isAmmatillisenTutkinnonOsa,
-        isAmmatillisenYhteisenTutkinnonOsienOsaalue(_, osasuoritukset)
-      ))
-  }
-
   private def isAnyOf(osasuoritus: ROsasuoritusRow, fs: (ROsasuoritusRow => Boolean)*) = fs.exists(f => f(osasuoritus))
-
-  private val tutkinnonosatvalinnanmahdollisuusKoodiarvot = Seq("1,", "2")
-
-  private val isAmmatillisenTutkinnonOsa: ROsasuoritusRow => Boolean = osasuoritus => {
-    !tutkinnonosatvalinnanmahdollisuusKoodiarvot.contains(osasuoritus.koulutusmoduuliKoodiarvo) &&
-      osasuoritus.suorituksenTyyppi == "ammatillisentutkinnonosa" &&
-      tutkinnonOsanRyhmä(osasuoritus, "1")
-  }
 
   private val tutkinnonOsanRyhmä: (ROsasuoritusRow, String) => Boolean = (osasuoritus, koodiarvo) => JsonSerializer.extract[Option[Koodistokoodiviite]](osasuoritus.data \ "tutkinnonOsanRyhmä") match {
     case Some(viite) => viite.koodiarvo == koodiarvo
@@ -229,6 +209,26 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
     isAmmatillinenTutkinnonOsaaPienempiKokonaisuus,
     isAmmatillisenTutkinnonOsanOsaalue
   )
+
+  private val tutkinnonosatvalinnanmahdollisuusKoodiarvot = Seq("1,", "2")
+
+  private val isAmmatillisenTutkinnonOsa: ROsasuoritusRow => Boolean = osasuoritus => {
+    !tutkinnonosatvalinnanmahdollisuusKoodiarvot.contains(osasuoritus.koulutusmoduuliKoodiarvo) &&
+      osasuoritus.suorituksenTyyppi == "ammatillisentutkinnonosa" &&
+      tutkinnonOsanRyhmä(osasuoritus, "1")
+  }
+
+  private def ammatillisetTutkinnonOsatJaOsasuorituksetFrom(osasuoritukset: Seq[ROsasuoritusRow]) = {
+    osasuoritukset.filter(os =>
+      isAnyOf(os,
+        isAmmatillisenLukioOpintoja,
+        isAmmatillisenKorkeakouluOpintoja,
+        isAmmatillinenMuitaOpintoValmiuksiaTukeviaOpintoja,
+        isAmmatillinenTutkinnonOsaaPienempiKokonaisuus,
+        isAmmatillisenTutkinnonOsa,
+        isAmmatillisenYhteisenTutkinnonOsienOsaalue(_, osasuoritukset)
+      ))
+  }
 
   private def isTulevaisuudessa(date: Date) = date.toLocalDate.isAfter(LocalDate.now())
 }
