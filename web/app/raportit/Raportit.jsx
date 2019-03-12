@@ -60,24 +60,24 @@ const Opiskelijavuositiedot = ({oppilaitosAtom}) => {
   const titleText = <Text name='Opiskelijavuositiedot'/>
   const descriptionText = <Text name='Opiskelijavuositiedot-description'/>
 
-  return <AikajaksoRaportti
+  return (<AikajaksoRaportti
     oppilaitosAtom={oppilaitosAtom}
-    apiEndpoint={"/opiskelijavuositiedot"}
+    apiEndpoint={'/opiskelijavuositiedot'}
     title={titleText}
     description={descriptionText}
-  />
+  />)
 }
 
 const SuoritustietojenTarkistus = ({oppilaitosAtom}) => {
   const titleText = <Text name='Suoritustietojen tarkistus'/>
   const descriptionText = <Text name='SuoritustietojenTarkistus-description'/>
 
-  return <AikajaksoRaportti
+  return (<AikajaksoRaportti
     oppilaitosAtom={oppilaitosAtom}
-    apiEndpoint={"/suoritustietojentarkistus"}
+    apiEndpoint={'/suoritustietojentarkistus'}
     title={titleText}
     description={descriptionText}
-  />
+  />)
 }
 
 const AikajaksoRaportti = ({oppilaitosAtom, apiEndpoint, title, description}) => {
