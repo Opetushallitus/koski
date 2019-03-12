@@ -24,11 +24,23 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
       case Right(oid) => oid
     }
     val koulutusmuodot = raportointiDatabase.oppilaitoksenKoulutusmuodot(oppilaitosOid)
-    if (koulutusmuodot.contains(OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo)) Seq("opiskelijavuositiedot") else Seq.empty
+
+    if (koulutusmuodot.contains(OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo)) {
+      Seq("opiskelijavuositiedot") ++ addSuoritustietojenTarkistusIfAccess()
+    }  else{
+      Seq.empty
+    }
   }
 
   get("/opiskelijavuositiedot") {
-    
+    AikajaksoRaporttiResponse(Opiskelijavuositiedot)
+  }
+
+  get("/suoritustietojentarkistus") {
+    AikajaksoRaporttiResponse(SuoritustietojenTarkistus)
+  }
+
+  private def AikajaksoRaporttiResponse(raportti: AikajaksoRaportti) = {
     val loadCompleted = raportointiDatabase.fullLoadCompleted(raportointiDatabase.statuses)
     if (loadCompleted.isEmpty) {
       haltWithStatus(KoskiErrorCategory.unavailable.raportit())
@@ -41,20 +53,20 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
 
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=opiskelijavuositiedot&oppilaitosOid=$oppilaitosOid&alku=$alku&loppu=$loppu")))
 
-    val rows = Opiskelijavuositiedot.buildRaportti(raportointiDatabase, oppilaitosOid, alku, loppu)
+    val rows = raportti.buildRaportti(raportointiDatabase, oppilaitosOid, alku, loppu)
 
     if (Environment.isLocalDevelopmentEnvironment && params.contains("text")) {
       contentType = "text/plain"
       response.writer.print(rows.map(_.toString).mkString("\n\n"))
     } else {
       contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-      response.setHeader("Content-Disposition", s"""attachment; filename="${Opiskelijavuositiedot.filename(oppilaitosOid, alku, loppu)}"""")
+      response.setHeader("Content-Disposition", s"""attachment; filename="${raportti.filename(oppilaitosOid, alku, loppu)}"""")
       downloadToken.foreach { t => response.addCookie(Cookie("koskiDownloadToken", t)(CookieOptions(path = "/", maxAge = 600))) }
       ExcelWriter.writeExcel(
-        WorkbookSettings(Opiskelijavuositiedot.title(oppilaitosOid, alku, loppu), Some(password)),
+        WorkbookSettings(raportti.title(oppilaitosOid, alku, loppu), Some(password)),
         Seq(
-          DataSheet("Opiskeluoikeudet", rows, Opiskelijavuositiedot.columnSettings),
-          DocumentationSheet("Ohjeet", Opiskelijavuositiedot.documentation(oppilaitosOid, alku, loppu, loadCompleted.get))
+          DataSheet("Opiskeluoikeudet", rows, raportti.columnSettings),
+          DocumentationSheet("Ohjeet", raportti.documentation(oppilaitosOid, alku, loppu, loadCompleted.get))
         ),
         response.getOutputStream
       )
@@ -83,6 +95,14 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
       (alku, loppu)
     } catch {
       case e: DateTimeParseException => haltWithStatus(KoskiErrorCategory.badRequest.format.pvm())
+    }
+  }
+
+  private def addSuoritustietojenTarkistusIfAccess() = {
+    val raporttiSallittuOideille = application.config.getStringList("raportit.suoritustietojentarkistus")
+    getUser match {
+      case Right(user) if (raporttiSallittuOideille.contains(user.oid)) => Seq("suoritustietojentarkistus")
+      case _ => Seq.empty
     }
   }
 }

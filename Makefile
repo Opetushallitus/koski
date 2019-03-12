@@ -90,6 +90,9 @@ mvndeps:
 	mvn dependency:tree|less
 scala-console:
 	./scripts/mvn-scala-console.sh
+reset-raportointikanta:
+	./scripts/local-reset-raportointikanta.sh
+
 
 ### Dist and deploy
 

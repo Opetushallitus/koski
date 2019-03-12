@@ -1,10 +1,11 @@
 package fi.oph.koski.etk
 
+import fi.oph.koski.api.OpiskeluoikeusTestMethods
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import org.scalatest.FreeSpec
 
-class ElaketurvakeskusCliSpec extends FreeSpec with RaportointikantaTestMethods with ElaketurvakeskusCliTestMethods {
+class ElaketurvakeskusCliSpec extends FreeSpec with RaportointikantaTestMethods with ElaketurvakeskusCliTestMethods with OpiskeluoikeusTestMethods {
 
   "ElaketurvakeskusCli" - {
     "Aineiston muodostaminen" - {
@@ -39,7 +40,7 @@ class ElaketurvakeskusCliSpec extends FreeSpec with RaportointikantaTestMethods 
         withCsvFixture() {
           val cli = ElaketurvakeskusCliForTest
           val args = Array("-user", "pää:pää", "-api", "ammatillisetperustutkinnot:2016-01-01:2016-12-12", "-port", koskiPort)
-          val ammattilaisenOpiskeluoikeusOid = raportointikantaQueryHelper.opiskeluoikeusByOppijaOidAndKoulutusmuoto(MockOppijat.ammattilainen.oid, "ammatillinenkoulutus").head.opiskeluoikeusOid
+          val ammattilaisenOpiskeluoikeusOid = getOpiskeluoikeudet(MockOppijat.ammattilainen.oid).find(_.tyyppi.koodiarvo == "ammatillinenkoulutus").get.oid.get
 
           cli.main(args)
           outputResult should include(
@@ -60,7 +61,7 @@ class ElaketurvakeskusCliSpec extends FreeSpec with RaportointikantaTestMethods 
         withCsvFixture() {
           val cli = ElaketurvakeskusCliForTest
           val args = Array("-csv", csvFilePath, "-user", "pää:pää", "-api", "ammatillisetperustutkinnot:2016-01-01:2016-12-12", "-port", koskiPort)
-          val ammattilaisenOpiskeluoikeusOid = raportointikantaQueryHelper.opiskeluoikeusByOppijaOidAndKoulutusmuoto(MockOppijat.ammattilainen.oid, "ammatillinenkoulutus").head.opiskeluoikeusOid
+          val ammattilaisenOpiskeluoikeusOid = getOpiskeluoikeudet(MockOppijat.ammattilainen.oid).find(_.tyyppi.koodiarvo == "ammatillinenkoulutus").get.oid.get
 
           cli.main(args)
           outputResult should include(

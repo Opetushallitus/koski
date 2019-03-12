@@ -15,9 +15,9 @@ trait OpiskeluoikeusTestMethodsAmmatillinen extends PutOpiskeluoikeusTestMethods
 
   override def defaultOpiskeluoikeus = makeOpiskeluoikeus(alkamispäivä = longTimeAgo)
 
-  def makeOpiskeluoikeus(alkamispäivä: LocalDate = longTimeAgo, toimpiste: OrganisaatioWithOid = stadinToimipiste) = AmmatillinenOpiskeluoikeus(
+  def makeOpiskeluoikeus(alkamispäivä: LocalDate = longTimeAgo, toimpiste: OrganisaatioWithOid = stadinToimipiste, oppilaitos: Organisaatio.Oid = MockOrganisaatiot.stadinAmmattiopisto) = AmmatillinenOpiskeluoikeus(
     tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, None))),
-    oppilaitos = Some(Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto)),
+    oppilaitos = Some(Oppilaitos(oppilaitos)),
     suoritukset = List(autoalanPerustutkinnonSuoritus(toimpiste))
   )
 
@@ -36,6 +36,10 @@ trait OpiskeluoikeusTestMethodsAmmatillinen extends PutOpiskeluoikeusTestMethods
   def lisääTiloja(opiskeluoikeus: AmmatillinenOpiskeluoikeus, jaksot: List[(LocalDate, Koodistokoodiviite)]) = {
     jaksot.foldLeft(opiskeluoikeus) { case (oo, (päivä, tila)) => lisääTila(oo, päivä, tila)}
   }
+
+  def sisällytäOpiskeluoikeus(oo: AmmatillinenOpiskeluoikeus, sisältyy: SisältäväOpiskeluoikeus) = oo.copy(
+    sisältyyOpiskeluoikeuteen = Option(sisältyy)
+  )
 
   val sukunimiPuuttuu = KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(JArray(List(JObject(
     "path" -> JString("henkilö.sukunimi"),
