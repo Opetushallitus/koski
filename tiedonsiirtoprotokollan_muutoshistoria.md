@@ -1,3 +1,7 @@
+## 11.3.2019
+
+- Opiskeluoikeuden päättymispäivä päätellään opiskeluoikeuden tilan opiskeluoikeusjaksoista
+
 ## 10.1.2019
 
 - Lisätty kenttä keskiarvo ammatilliseen perustutkintoon
