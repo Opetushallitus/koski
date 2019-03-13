@@ -172,13 +172,13 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
     val kaikkiOpiskeluoikeusOidit: Seq[String] = opiskeluoikeudetJaAikajaksot.map(_._1.opiskeluoikeusOid).union(sisältyvätOpiskeluoikeusOidit).distinct
 
     val päätasonSuorituksetQuery = RPäätasonSuoritukset.filter(_.opiskeluoikeusOid inSet kaikkiOpiskeluoikeusOidit)
-    val päätasonSuoritukset: Map[String, Seq[RPäätasonSuoritusRow]] = runDbSync(päätasonSuorituksetQuery.result).groupBy(_.opiskeluoikeusOid)
+    val päätasonSuoritukset: Map[String, Seq[RPäätasonSuoritusRow]] = runDbSync(päätasonSuorituksetQuery.result, timeout = 5.minutes).groupBy(_.opiskeluoikeusOid)
 
     val osasuorituksetQuery = ROsasuoritukset.filter(_.opiskeluoikeusOid inSet päätasonSuoritukset.keySet)
-    val osasuoritukset: Map[String, Seq[ROsasuoritusRow]] = runDbSync(osasuorituksetQuery.result).groupBy(_.opiskeluoikeusOid)
+    val osasuoritukset: Map[String, Seq[ROsasuoritusRow]] = runDbSync(osasuorituksetQuery.result, timeout = 5.minutes).groupBy(_.opiskeluoikeusOid)
 
     val henkilötQuery = RHenkilöt.filter(_.oppijaOid inSet kaikkiOpiskeluoikeudetJaAikajaksot.map(_._1.oppijaOid))
-    val henkilöt: Map[String, RHenkilöRow] = runDbSync(henkilötQuery.result).groupBy(_.oppijaOid).mapValues(_.head)
+    val henkilöt: Map[String, RHenkilöRow] = runDbSync(henkilötQuery.result, timeout = 5.minutes).groupBy(_.oppijaOid).mapValues(_.head)
 
     // group rows belonging to same opiskeluoikeus
     kaikkiOpiskeluoikeudetJaAikajaksot
