@@ -19,7 +19,7 @@ class SuoritustietojenTarkistusSpec extends FreeSpec with Matchers with Raportoi
     "Sisältää oikeat tiedot" in {
       rivi.koulutusmoduulit should equal("361902")
       rivi.osaamisalat should equal(Some("1590"))
-      rivi.opiskeluoikeudenTila should equal(Some("Valmis"))
+      rivi.päätasonSuoritustenTilat should equal(Some("Valmis"))
       rivi.opintojenRahoitukset should equal("4")
       rivi.ostettu should equal(false)
     }
