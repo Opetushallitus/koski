@@ -114,7 +114,7 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
       koulutusmuoto = opiskeluoikeus.koulutusmuoto,
       opiskeluoikeudenTila = Some(päätasonSuoritustenTilat(päätasonSuoritukset)),
       opintojenRahoitukset = aikajaksot.flatMap(_.opintojenRahoitus).sorted.distinct.mkString(","),
-      painotettuKeskiarvo = päätasonSuoritukset.map(ps => JsonSerializer.extract[Option[Float]](ps.data \ "keskiarvo")).mkString(","),
+      painotettuKeskiarvo = päätasonSuoritukset.flatMap(ps => JsonSerializer.extract[Option[Float]](ps.data \ "keskiarvo")).mkString(","),
       suoritettujenOpintojenYhteislaajuus = yhteislaajuus(ammatillisetTutkinnonOsatJaOsasuoritukset.union(yhteistenTutkinnonOsienOsaAlueet)),
       valmiitAmmatillisetTutkinnonOsatLkm = valmiitAmmatillisetTutkinnonOsatJaOsasuoritukset.size,
       pakollisetAmmatillisetTutkinnonOsatLkm = pakolliset(ammatillisetTutkinnonOsatJaOsasuoritukset).size,
