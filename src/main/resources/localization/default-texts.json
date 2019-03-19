@@ -1210,6 +1210,8 @@
   "Saavutettavuus huomioitu": "Saavutettavuus huomioitu",
   "tooltip:Valitse valintaruutu jos opiskeluoikeuteen liittyvä..." : "Valitse valintaruutu jos opiskeluoikeuteen liittyvä koulutus/tutkinto ostettu toiselta koulutustoimijalta. Jos valittu, tällaiseen opiskeluoikeuteen tulisi olla linkitetty ainakin yksi toisen koulutustoimijan opiskeluoikeus.",
   "Ostettu" : "Ostettu",
-  "description:Onko opiskeluoikeuteen liittyvä koulutus/tutkinto ostettu..." : "Onko opiskeluoikeuteen liittyvä koulutus/tutkinto ostettu toiselta koulutustoimijalta (true/false). Jos kentän arvo on true, tällaiseen opiskeluoikeuteen tulisi olla linkitetty ainakin yksi toisen koulutustoimijan opiskeluoikeus."
+  "description:Onko opiskeluoikeuteen liittyvä koulutus/tutkinto ostettu..." : "Onko opiskeluoikeuteen liittyvä koulutus/tutkinto ostettu toiselta koulutustoimijalta (true/false). Jos kentän arvo on true, tällaiseen opiskeluoikeuteen tulisi olla linkitetty ainakin yksi toisen koulutustoimijan opiskeluoikeus.",
+  "SuoritustietojenTarkistus-description": "Raportti sisältää ammatillisen koulutuksen opiskeluoikeudet valitulla aikajaksolla sekä näihin liittyvien osasuoritusten tiedot erilaisina summalukuina tietojen oikeellisuuden tarkistamista varten. Raportti pohjautuu viime yön tietoihin, eli tietojen päivitys Koskeen ei näy välittömästi raportilla. Raportin lataaminen voi viedä viisikin minuuttia.",
+  "Suoritustiedot (ammatillinen koulutus)": "Suoritustiedot (ammatillinen koulutus)"
 }
 

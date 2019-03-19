@@ -69,7 +69,7 @@ const Opiskelijavuositiedot = ({oppilaitosAtom}) => {
 }
 
 const SuoritustietojenTarkistus = ({oppilaitosAtom}) => {
-  const titleText = <Text name='Suoritustietojen tarkistus'/>
+  const titleText = <Text name='Suoritustiedot (ammatillinen koulutus)'/>
   const descriptionText = <Text name='SuoritustietojenTarkistus-description'/>
 
   return (<AikajaksoRaportti
