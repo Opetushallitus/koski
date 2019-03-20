@@ -724,6 +724,44 @@ describe('Lukiokoulutus', function( ){
           })
         })
       })
+
+      describe('Päätason suorituksen poistaminen', function () {
+        before(
+          Authentication().logout,
+          Authentication().login(),
+          page.openPage,
+          page.oppijaHaku.searchAndSelect("200300-624E"),
+          editor.edit
+        )
+
+        describe('Mitätöintilinkki', function() {
+          it('Näytetään', function() {
+            expect(opinnot.deletePäätasonSuoritusIsShown()).to.equal(true)
+          })
+
+          describe('Painettaessa', function() {
+            before(opinnot.deletePäätasonSuoritus)
+            it('Pyydetään vahvistus', function() {
+              expect(opinnot.confirmDeletePäätasonSuoritusIsShown()).to.equal(true)
+            })
+
+            describe('Painettaessa uudestaan', function() {
+              before(opinnot.confirmDeletePäätasonSuoritus, wait.until(page.isPäätasonSuoritusDeletedMessageShown))
+              it('Päätason suoritus poistetaan', function() {
+                expect(page.isPäätasonSuoritusDeletedMessageShown()).to.equal(true)
+              })
+
+              describe('Poistettua päätason suoritusta', function() {
+                before(wait.until(page.isReady), opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('lukiokoulutus'))
+
+                it('Ei näytetä', function () {
+                  expect(opinnot.suoritusTabs()).to.deep.equal(['Kemia', 'Filosofia'])
+                })
+              })
+            })
+          })
+        })
+      })
     })
 
     describe('Opintojen rahoitus', function() {

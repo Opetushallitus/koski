@@ -231,6 +231,52 @@ object ExamplesLukio {
       )
     )
 
+  val aineOpiskelijaAktiivinen =
+    LukionOpiskeluoikeus(
+      versionumero = None,
+      lähdejärjestelmänId = None,
+      oppilaitos = Some(jyväskylänNormaalikoulu),
+      suoritukset = List(
+        LukionOppiaineenOppimääränSuoritus(
+          koulutusmoduuli = lukionOppiaine("HI", diaarinumero = Some("60/011/2015")),
+          suorituskieli = suomenKieli,
+          vahvistus = vahvistusPaikkakunnalla(päivä = date(2016, 1, 10)),
+          toimipiste = jyväskylänNormaalikoulu,
+          arviointi = arviointi("9"),
+          osasuoritukset = Some(List(
+            kurssisuoritus(valtakunnallinenVanhanOpsinKurssi("HI1")).copy(arviointi = numeerinenArviointi(7, päivä = date(2016, 1, 10))),
+            kurssisuoritus(valtakunnallinenKurssi("HI2")).copy(arviointi = numeerinenArviointi(8, päivä = date(2016, 1, 10))),
+            kurssisuoritus(valtakunnallinenKurssi("HI3")).copy(arviointi = numeerinenArviointi(7, päivä = date(2016, 1, 10))),
+            kurssisuoritus(valtakunnallinenKurssi("HI4")).copy(arviointi = numeerinenArviointi(6, päivä = date(2016, 1, 10)))
+          ))
+        ),
+        LukionOppiaineenOppimääränSuoritus(
+          koulutusmoduuli = lukionOppiaine("KE", diaarinumero = Some("60/011/2015")),
+          suorituskieli = suomenKieli,
+          vahvistus = vahvistusPaikkakunnalla(päivä = date(2015, 1, 10)),
+          toimipiste = jyväskylänNormaalikoulu,
+          arviointi = arviointi("8"),
+          osasuoritukset = Some(List(
+            kurssisuoritus(valtakunnallinenVanhanOpsinKurssi("KE1")).copy(arviointi = numeerinenArviointi(7, päivä = date(2016, 1, 10)))
+          ))
+        ),
+        LukionOppiaineenOppimääränSuoritus(
+          koulutusmoduuli = lukionOppiaine("FI", diaarinumero = Some("60/011/2015")),
+          suorituskieli = suomenKieli,
+          toimipiste = jyväskylänNormaalikoulu,
+          arviointi = arviointi("9"),
+          osasuoritukset = Some(List(
+            kurssisuoritus(valtakunnallinenVanhanOpsinKurssi("FI1")).copy(arviointi = numeerinenArviointi(7, päivä = date(2016, 1, 10)))
+          ))
+        )
+      ),
+      tila = LukionOpiskeluoikeudenTila(
+        List(
+          LukionOpiskeluoikeusjakso(alku = date(2015, 9, 1), tila = opiskeluoikeusAktiivinen)
+        )
+      )
+    )
+
   val lukioKesken =
     LukionOpiskeluoikeus(
       versionumero = None,
@@ -265,10 +311,15 @@ object ExamplesLukio {
     sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(ressunLukio, "1.2.246.562.15.97433262579"))
   )
 
+  val aineOpiskelijaKesken = aineopiskelija.copy(tila = LukionOpiskeluoikeudenTila(
+        List(LukionOpiskeluoikeusjakso(alku = date(2015, 9, 1), tila = opiskeluoikeusAktiivinen)))
+  )
+
   val examples = List(
     Example("lukio - uusi", "Uusi oppija lisätään suorittamaan lukiota", oppija(lukionOpiskeluoikeus())),
     Example("lukio - päättötodistus", "Oppija on saanut päättötodistuksen", oppija(päättötodistus())),
     Example("lukio - lukion oppiaineen oppimäärä - päättötodistus", "Opiskelija on suorittanut lukion historian oppimäärän", oppija(aineopiskelija)),
+    Example("lukio - lukion oppiaineen oppimäärä - kesken", "Valmiita ja keskeneräisiä oppiaineita", oppija(aineOpiskelijaAktiivinen)),
     Example("lukio - sisältyy toisen oppilaitoksen opiskeluoikeuteen", "Toisen oppilaitoksen opiskeluoikeuteen sisältyvä opiskeluoikeus", oppija(sisältyvä), statusCode = 400)
   )
 }
@@ -285,6 +336,31 @@ object LukioExampleData {
   val ylioppilastutkinto: Ylioppilastutkinto = Ylioppilastutkinto(perusteenDiaarinumero = Some("60/011/2015"))
 
   val lukionOppimäärä: LukionOppimäärä = LukionOppimäärä(perusteenDiaarinumero = Some("60/011/2015"))
+
+  val lukionOppiaineenOppimääränSuoritusYhteiskuntaoppi: LukionOppiaineenOppimääränSuoritus = LukionOppiaineenOppimääränSuoritus(
+    koulutusmoduuli = lukionOppiaine("YH", diaarinumero = Some("60/011/2015")),
+    suorituskieli = suomenKieli,
+    vahvistus = vahvistusPaikkakunnalla(päivä = date(2016, 1, 10)),
+    toimipiste = jyväskylänNormaalikoulu,
+    arviointi = arviointi("9"),
+    osasuoritukset = Some(List(
+      kurssisuoritus(valtakunnallinenKurssi("YH1")).copy(arviointi = numeerinenArviointi(8, päivä = date(2016, 1, 10))),
+      kurssisuoritus(valtakunnallinenKurssi("YH2")).copy(arviointi = numeerinenArviointi(7, päivä = date(2016, 1, 10)))
+    ))
+  )
+
+  val lukionOppiaineenOppimääränSuoritusFilosofia: LukionOppiaineenOppimääränSuoritus = LukionOppiaineenOppimääränSuoritus(
+    koulutusmoduuli = lukionOppiaine("FI", diaarinumero = Some("60/011/2015")),
+    suorituskieli = suomenKieli,
+    vahvistus = vahvistusPaikkakunnalla(päivä = date(2016, 1, 10)),
+    toimipiste = jyväskylänNormaalikoulu,
+    arviointi = arviointi("10"),
+    osasuoritukset = Some(List(
+      kurssisuoritus(valtakunnallinenKurssi("FI1")).copy(arviointi = numeerinenArviointi(8, päivä = date(2016, 1, 10))),
+      kurssisuoritus(valtakunnallinenKurssi("FI2", syventävä)).copy(arviointi = numeerinenArviointi(7, päivä = date(2016, 1, 10))),
+      kurssisuoritus(valtakunnallinenKurssi("FI3", syventävä)).copy(arviointi = numeerinenArviointi(6, päivä = date(2016, 1, 10)))
+    ))
+  )
 
   val opiskeluoikeusAktiivinen = Koodistokoodiviite("lasna", Some("Läsnä"), "koskiopiskeluoikeudentila", Some(1))
   val opiskeluoikeusPäättynyt = Koodistokoodiviite("valmistunut", Some("Valmistunut"), "koskiopiskeluoikeudentila", Some(1))
@@ -306,9 +382,9 @@ object LukioExampleData {
     suoritettuLukiodiplomina = suoritettuLukiodiplomina
   )
 
-  val pakollinen = Koodistokoodiviite("pakollinen", "lukionkurssintyyppi")
-  val syventävä = Koodistokoodiviite("syventava", "lukionkurssintyyppi")
-  val soveltava = Koodistokoodiviite("soveltava", "lukionkurssintyyppi")
+  lazy val pakollinen = Koodistokoodiviite("pakollinen", "lukionkurssintyyppi")
+  lazy val syventävä = Koodistokoodiviite("syventava", "lukionkurssintyyppi")
+  lazy val soveltava = Koodistokoodiviite("soveltava", "lukionkurssintyyppi")
 
   def valtakunnallinenKurssi(kurssi: String, kurssinTyyppi: Koodistokoodiviite = pakollinen) =
     ValtakunnallinenLukionKurssi(Koodistokoodiviite(koodistoUri = "lukionkurssit", koodiarvo = kurssi), laajuus(1.0f), kurssinTyyppi = kurssinTyyppi)

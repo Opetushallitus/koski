@@ -320,6 +320,46 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
           result.suoritukset.map(_.koulutusmoduuli.tunniste.koodiarvo) should equal(List(uusiSuoritus.koulutusmoduuli.tunniste.koodiarvo))
         }
       }
+      "lukionoppiaineenoppimaara:n suorituksia ei säilytetä" in {
+        resetFixtures
+        val vanhaValmisSuoritus = LukioExampleData.lukionOppiaineenOppimääränSuoritusYhteiskuntaoppi
+        val vanhaKeskeneräinenSuoritus = LukioExampleData.lukionOppiaineenOppimääränSuoritusFilosofia.copy(vahvistus = None)
+        val uusiSuoritus = ExamplesLukio.aineopiskelija.suoritukset.head
+        val oo = ExamplesLukio.aineOpiskelijaKesken.copy(suoritukset = List(vanhaValmisSuoritus, vanhaKeskeneräinenSuoritus))
+        def poistaSuoritukset(oo: LukionOpiskeluoikeus) = oo.copy(suoritukset = List(uusiSuoritus))
+        verifyChange(original = oo, change = poistaSuoritukset) {
+          verifyResponseStatusOk()
+          val result = lastOpiskeluoikeusByHetu(oppija)
+          result.suoritukset.map(_.koulutusmoduuli.tunniste.koodiarvo) should equal(List(uusiSuoritus.koulutusmoduuli.tunniste.koodiarvo))
+        }
+      }
+      "perusopetuksenoppiaineenoppimaara:n suorituksia ei säilytetä" in {
+        resetFixtures
+        val diaarinumero = Some("OPH-1280-2017")
+        val vanhaValmisSuoritus = ExamplesAikuistenPerusopetus.oppiaineenOppimääränSuoritus(ExamplesAikuistenPerusopetus.aikuistenOppiaine("YH").copy(perusteenDiaarinumero = diaarinumero))
+        val vanhaKeskeneräinenSuoritus = ExamplesAikuistenPerusopetus.oppiaineenOppimääränSuoritus(ExamplesAikuistenPerusopetus.aikuistenOppiaine("FI").copy(perusteenDiaarinumero = diaarinumero)).copy(vahvistus = None)
+        val uusiSuoritus = ExamplesAikuistenPerusopetus.oppiaineenOppimääränSuoritus(ExamplesAikuistenPerusopetus.aikuistenOppiaine("KE").copy(perusteenDiaarinumero = diaarinumero))
+        val oo = ExamplesAikuistenPerusopetus.oppiaineenOppimääräOpiskeluoikeus.copy(suoritukset = List(vanhaValmisSuoritus, vanhaKeskeneräinenSuoritus), tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(List(AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2008, 1, 1), ExampleData.opiskeluoikeusLäsnä))))
+        def poistaSuoritukset(oo: AikuistenPerusopetuksenOpiskeluoikeus) = oo.copy(suoritukset = List(uusiSuoritus))
+        verifyChange(original = oo, change = poistaSuoritukset) {
+          verifyResponseStatusOk()
+          val result = lastOpiskeluoikeusByHetu(oppija)
+          result.suoritukset.map(_.koulutusmoduuli.tunniste.koodiarvo) should equal(List(uusiSuoritus.koulutusmoduuli.tunniste.koodiarvo))
+        }
+      }
+      "nuortenperusopetuksenoppiaineenoppimaara:n suorituksia ei säilytetä" in {
+        resetFixtures
+        val vanhaValmisSuoritus = PerusopetusExampleData.nuortenPerusOpetuksenOppiaineenOppimääränSuoritus("KU")
+        val vanhaKeskeneräinenSuoritus = PerusopetusExampleData.nuortenPerusOpetuksenOppiaineenOppimääränSuoritus("LI")
+        val uusiSuoritus = PerusopetusExampleData.nuortenPerusOpetuksenOppiaineenOppimääränSuoritus("FI")
+        val oo = PerusopetusExampleData.opiskeluoikeus(suoritukset = List(vanhaValmisSuoritus, vanhaKeskeneräinenSuoritus), päättymispäivä = None)
+        def poistaSuoritukset(oo: PerusopetuksenOpiskeluoikeus) = oo.copy(suoritukset = List(uusiSuoritus))
+        verifyChange(original = oo, change = poistaSuoritukset) {
+          verifyResponseStatusOk()
+          val result = lastOpiskeluoikeusByHetu(oppija)
+          result.suoritukset.map(_.koulutusmoduuli.tunniste.koodiarvo) should equal(List(uusiSuoritus.koulutusmoduuli.tunniste.koodiarvo))
+        }
+      }
       "Muuten aiemmin tallennettu suoritus säilytetään" in {
         resetFixtures
         val vanhaValmisSuoritus = PerusopetusExampleData.seitsemännenLuokanSuoritus

@@ -107,6 +107,17 @@ object PerusopetusExampleData {
     suoritukset = List(seitsemännenLuokanSuoritus.copy(toimipiste = toimipiste, luokka = "7A"))
   )
 
+  def nuortenPerusOpetuksenOppiaineenOppimääränSuoritus(aine: String) = {
+    NuortenPerusopetuksenOppiaineenOppimääränSuoritus(
+      koulutusmoduuli = oppiaine(aine).copy(perusteenDiaarinumero = Some(perusopetuksenDiaarinumero)),
+      toimipiste = jyväskylänNormaalikoulu,
+      vahvistus = vahvistusPaikkakunnalla(date(2016, 6, 4)),
+      suoritustapa = suoritustapaKoulutus,
+      suorituskieli = suomenKieli,
+      arviointi = arviointi("S")
+    )
+  }
+
   val kahdeksannenLuokanSuoritus = PerusopetuksenVuosiluokanSuoritus(
     koulutusmoduuli = PerusopetuksenLuokkaAste(8, perusopetuksenDiaarinumero), luokka = "8C", alkamispäivä = Some(date(2014, 8, 15)),
     toimipiste = jyväskylänNormaalikoulu,

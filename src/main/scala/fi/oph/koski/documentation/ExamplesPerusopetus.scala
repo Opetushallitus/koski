@@ -145,4 +145,13 @@ object ExamplesPerusopetus {
     Example("perusopetuksen oppimäärä - toiminta-alueittain opiskelija", "Oppija on suorittanut peruskoulun opiskellen toiminta-alueittain", toimintaAlueittainOpiskelija),
     Example("nuorten perusopetuksen oppiaineen oppimäärä - päättötodistus", "Oppija on suorittanut peruskoulun äidinkielen oppimäärän", aineopiskelija)
   )
+
+  lazy val nuortenPerusopetuksenOppiaineenOppimääränSuoritus = NuortenPerusopetuksenOppiaineenOppimääränSuoritus(
+    koulutusmoduuli = PerusopetusExampleData.äidinkieli("AI1", diaarinumero = Some(perusopetuksenDiaarinumero)),
+    toimipiste = jyväskylänNormaalikoulu,
+    arviointi = arviointi(9),
+    suoritustapa = suoritustapaErityinenTutkinto,
+    vahvistus = vahvistusPaikkakunnalla(),
+    suorituskieli = suomenKieli
+  )
 }
