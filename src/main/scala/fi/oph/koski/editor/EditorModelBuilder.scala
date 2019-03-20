@@ -357,7 +357,10 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
       Here, we have already resolved invalidatability for Opiskeluoikeus, so we can 'inherit' the invalidatability for these Päätason suoritukset.
       For other Päätason suoritukset, we explicitly mark invalidatability as false (which may be in contrast to their Opiskeluoikeus).
        */
-      case _: PerusopetuksenPäätasonSuoritus | _: AikuistenPerusopetuksenPäätasonSuoritus | _: AmmatillinenPäätasonSuoritus => context.invalidatable
+      case _: PerusopetuksenPäätasonSuoritus |
+           _: AikuistenPerusopetuksenPäätasonSuoritus |
+           _: AmmatillinenPäätasonSuoritus |
+           _: LukionOppiaineenOppimääränSuoritus => context.invalidatable
       case _: PäätasonSuoritus => false
       case _ => context.invalidatable
     }
