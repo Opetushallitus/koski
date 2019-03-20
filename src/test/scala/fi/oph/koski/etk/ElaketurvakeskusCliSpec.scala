@@ -50,7 +50,7 @@ class ElaketurvakeskusCliSpec extends FreeSpec with RaportointikantaTestMethods 
                | "aikaleima":""".stripMargin)
           outputResult should include(
             s"""| "tutkinnot": [
-                |		{"henkilö":{"hetu":"280618-402H","syntymäaika":"1918-06-28","sukunimi":"Ammattilainen","etunimet":"Aarne"},"tutkinto":{"tutkinnonTaso":"ammatillinenperuskoulutus","alkamispäivä":"2012-09-01","päättymispäivä":"2016-05-31"},"viite":{"opiskeluoikeusOid":"${ammattilaisenOpiskeluoikeusOid}","opiskeluoikeusVersionumero":1,"oppijaOid":"1.2.246.562.24.00000000015"}}
+                |		{"henkilö":{"hetu":"280618-402H","syntymäaika":"1918-06-28","sukunimi":"Ammattilainen","etunimet":"Aarne"},"tutkinto":{"tutkinnonTaso":"ammatillinenperuskoulutus","alkamispäivä":"2012-09-01","päättymispäivä":"2016-05-31"},"viite":{"opiskeluoikeusOid":"${ammattilaisenOpiskeluoikeusOid}","opiskeluoikeusVersionumero":1,"oppijaOid":"${MockOppijat.ammattilainen.oid}"}}
                 | ]
                 |}""".stripMargin)
         }
@@ -79,7 +79,7 @@ class ElaketurvakeskusCliSpec extends FreeSpec with RaportointikantaTestMethods 
                 |		{"henkilö":{"hetu":"311293-717T","syntymäaika":"1991-01-02","sukunimi":"Sutjaka","etunimet":"Mietis Betat"},"tutkinto":{"tutkinnonTaso":"alempikorkeakoulututkinto","alkamispäivä":"2013-08-01","päättymispäivä":"2016-03-17"}},
                 |		{"henkilö":{"hetu":"260977-606E","syntymäaika":"1993-01-02","sukunimi":"Sutjakast","etunimet":"Ftes Testitap"},"tutkinto":{"tutkinnonTaso":"alempikorkeakoulututkinto","alkamispäivä":"2014-08-01","päättymispäivä":"2016-05-31"}},
                 |		{"henkilö":{"hetu":"","syntymäaika":"1988-02-02","sukunimi":"Kai","etunimet":"Betat Testitap"},"tutkinto":{"tutkinnonTaso":"alempikorkeakoulututkinto","alkamispäivä":"2015-08-01","päättymispäivä":"2017-06-06"}},
-                |		{"henkilö":{"hetu":"280618-402H","syntymäaika":"1918-06-28","sukunimi":"Ammattilainen","etunimet":"Aarne"},"tutkinto":{"tutkinnonTaso":"ammatillinenperuskoulutus","alkamispäivä":"2012-09-01","päättymispäivä":"2016-05-31"},"viite":{"opiskeluoikeusOid":"${ammattilaisenOpiskeluoikeusOid}","opiskeluoikeusVersionumero":1,"oppijaOid":"1.2.246.562.24.00000000015"}}
+                |		{"henkilö":{"hetu":"280618-402H","syntymäaika":"1918-06-28","sukunimi":"Ammattilainen","etunimet":"Aarne"},"tutkinto":{"tutkinnonTaso":"ammatillinenperuskoulutus","alkamispäivä":"2012-09-01","päättymispäivä":"2016-05-31"},"viite":{"opiskeluoikeusOid":"${ammattilaisenOpiskeluoikeusOid}","opiskeluoikeusVersionumero":1,"oppijaOid":"${MockOppijat.ammattilainen.oid}"}}
                 | ]
                 |}""".stripMargin
           )
