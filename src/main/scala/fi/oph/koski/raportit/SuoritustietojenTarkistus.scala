@@ -36,7 +36,7 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
     "etunimet" -> Column("Etunimet"),
     "koulutusmoduulit" -> Column("Tutkinnot"),
     "osaamisalat" -> Column("Osaamisalat"),
-    "koulutusmuoto" -> Column("Tutkintonimike"),
+    "tutkintonimikkeet" -> Column("Tutkintonimike"),
     "päätasonSuoritustenTilat" -> Column("Suorituksen tila"),
     "viimeisinOpiskeluoikeudenTila" -> Column("Viimeisin opiskeluoikeuden tila"),
     "opintojenRahoitukset" -> Column("Rahoitukset"),
@@ -128,7 +128,7 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
       etunimet = henkilö.map(_.etunimet),
       koulutusmoduulit = päätasonSuoritukset.map(_.koulutusmoduuliKoodiarvo).sorted.mkString(","),
       osaamisalat = if (osaamisalat.isEmpty) None else Some(osaamisalat.mkString(",")),
-      koulutusmuoto = opiskeluoikeus.koulutusmuoto,
+      tutkintonimikkeet = päätasonSuoritukset.flatMap(tutkintonimike(_)).map(_.get("fi")).mkString(","),
       päätasonSuoritustenTilat = Some(päätasonSuoritustenTilat(päätasonSuoritukset)),
       viimeisinOpiskeluoikeudenTila = aikajaksot.last.tila,
       opintojenRahoitukset = aikajaksot.flatMap(_.opintojenRahoitus).sorted.distinct.mkString(","),
@@ -155,6 +155,10 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
       pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus = yhteislaajuus(pakolliset(yhteistenTutkinnonOsienOsaAlueet)),
       valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus = yhteislaajuus(valinnaiset(yhteistenTutkinnonOsienOsaAlueet))
     )
+  }
+
+  private def tutkintonimike(osasuoritus: RPäätasonSuoritusRow) = {
+    JsonSerializer.extract[Option[LocalizedString]](osasuoritus.data \ "koulutusmoduuli" \ "tunniste" \ "nimi")
   }
 
   private def päätasonSuoritustenTilat(päätasonsuoritukset: Seq[RPäätasonSuoritusRow]) = {
@@ -271,7 +275,7 @@ case class SuoritustiedotTarkistusRow
   etunimet: Option[String],
   koulutusmoduulit: String,
   osaamisalat: Option[String],
-  koulutusmuoto: String,
+  tutkintonimikkeet: String,
   päätasonSuoritustenTilat: Option[String],
   viimeisinOpiskeluoikeudenTila: String,
   opintojenRahoitukset: String,
