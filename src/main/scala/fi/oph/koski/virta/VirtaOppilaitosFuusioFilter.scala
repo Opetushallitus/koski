@@ -26,9 +26,9 @@ class VirtaOppilaitosFuusioFilter(sallitutMyöntäjät: List[String], sallitutFu
       if (duplikaattiCache.contains(node)) {
         duplikaattiCache(node)
       } else {
-        val duplikaattiFuusioSuoritus = isFuusioSuoritus(node) && isMyöntäjäSallittu(node) && isDuplikaatti(virtaXml, node)
-        duplikaattiCache = duplikaattiCache + (node -> duplikaattiFuusioSuoritus)
-        duplikaattiFuusioSuoritus
+        val isYhdistyneenKoulunDuplikaatti = isFromYhdistynytKoulu(node) && isMyöntäjäSallittu(node) && isDuplikaatti(virtaXml, node)
+        duplikaattiCache = duplikaattiCache + (node -> isYhdistyneenKoulunDuplikaatti)
+        isYhdistyneenKoulunDuplikaatti
       }
     }
 
@@ -43,8 +43,8 @@ class VirtaOppilaitosFuusioFilter(sallitutMyöntäjät: List[String], sallitutFu
     }).transform(virtaXml).head, poistojaTehty.size)
   }
 
-  private def isFuusioSuoritus(n: Node) = {
-    n.label == "Opintosuoritus" &&
+  private def isFromYhdistynytKoulu(n: Node) = {
+    (n.label == "Opiskeluoikeus" || n.label == "Opintosuoritus") &&
     (n \\ "Organisaatio").exists { o =>
       (o \ "Rooli").exists(_.text == fuusioitunutMyöntäjäKoodi) &&
       (o \ "Koodi").map(_.text).exists(sallitutMyöntäjät.contains)
@@ -56,6 +56,6 @@ class VirtaOppilaitosFuusioFilter(sallitutMyöntäjät: List[String], sallitutFu
 
   private def isDuplikaatti(virtaXml: Node, opintosuoritus: Node) = {
     val avain = (opintosuoritus \ "@avain").text
-    (virtaXml \\ "Opintosuoritus").count(n => (n \ "@avain").text == avain) > 1
+    (virtaXml \\ opintosuoritus.label).count(n => (n \ "@avain").text == avain) > 1
   }
 }

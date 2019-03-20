@@ -95,19 +95,7 @@ class VirtaOppilaitosFuusioFilterSpec extends FreeSpec with Matchers {
       <virtaluku:OpiskelijanKaikkiTiedotResponse xmlns:virtaluku="http://tietovaranto.csc.fi/luku">
         <virta:Virta xmlns:virta="urn:mace:funet.fi:virta/2015/09/01">
           <virta:Opiskelija avain="opiskelija-avain-123">
-            <virta:Opiskeluoikeudet>
-              <virta:Opiskeluoikeus avain="oo-avain-123" opiskelijaAvain="opiskelija-avain-123">
-                <virta:Myontaja>{hyväksilukija}</virta:Myontaja>
-                <virta:Organisaatio>
-                  <virta:Rooli>3</virta:Rooli>
-                  <virta:Koodi>41</virta:Koodi>
-                </virta:Organisaatio>
-                <virta:Organisaatio>
-                  <virta:Rooli>5</virta:Rooli>
-                  <virta:Koodi>{myöntäjä}</virta:Koodi>
-                </virta:Organisaatio>
-              </virta:Opiskeluoikeus>
-            </virta:Opiskeluoikeudet>
+            <virta:Opiskeluoikeudet/>
             <virta:Opintosuoritukset>
               <virta:Opintosuoritus avain="s-456" opiskelijaAvain="opiskelija-avain-123">
                 <virta:Myontaja>{hyväksilukija}</virta:Myontaja>

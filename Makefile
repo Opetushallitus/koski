@@ -22,6 +22,9 @@ logdir:
 clean:
 	mvn clean
 	rm -fr web/target
+clean-db:
+	rm -fr elasticsearch/data
+	rm -fr postgresql/data
 purge:
 	mvn clean
 	rm -fr web/target

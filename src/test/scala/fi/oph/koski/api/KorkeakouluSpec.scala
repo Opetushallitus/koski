@@ -49,10 +49,10 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
       }
     }
 
-    "Oppilaitosfuusiosta johtuvat duplikaattiosasuoritukset karsitaan pois" in {
+    "Oppilaitosfuusiosta johtuvat duplikaattiosasuoritukset ei aiheuta virhettä" in {
       val oikeudet = getOpiskeluoikeudet(MockOppijat.tampere.oid, MockUsers.paakayttaja)
       oikeudet.length should equal(2)
-      oikeudet.flatMap(_.oppilaitos.get.oppilaitosnumero).map(_.koodiarvo).toSet should equal(Set("01905"))
+      oikeudet.flatMap(_.suoritukset).length should equal(3)
     }
 
     "Haettaessa" - {
