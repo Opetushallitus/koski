@@ -477,7 +477,8 @@ object AmmatillinenOldExamples {
             AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None))),
             AmmatillinenOpiskeluoikeusjakso(date(2016, 1, 9), opiskeluoikeusValmistunut, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
           )
-        )
+        ),
+        ostettu = true
       )
     )
   )

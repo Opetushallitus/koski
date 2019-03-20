@@ -75,7 +75,7 @@ const OpiskeluoikeudenTiedot = ({opiskeluoikeus, editLink, alkuChangeBus}) => (
     }
     <PropertiesEditor
       model={opiskeluoikeus}
-      propertyFilter={ p => !excludedProperties.includes(p.key) }
+      propertyFilter={ p => !excludedProperties.includes(p.key) && (opiskeluoikeus.context.edit || modelData(p.model) !== false)}
       getValueEditor={ (prop, getDefault) => {
         switch (prop.key) {
           case 'tila': return <OpiskeluoikeudenTilaEditor model={opiskeluoikeus} alkuChangeBus={alkuChangeBus}/>

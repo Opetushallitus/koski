@@ -18,6 +18,10 @@ case class AmmatillinenOpiskeluoikeus(
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None,
   @Description("Opiskelijan opiskeluoikeuden arvioitu päättymispäivä joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa")
   arvioituPäättymispäivä: Option[LocalDate] = None,
+  @DefaultValue(false)
+  @Description("Onko opiskeluoikeuteen liittyvä koulutus/tutkinto ostettu toiselta koulutustoimijalta (true/false). Jos kentän arvo on true, tällaiseen opiskeluoikeuteen tulisi olla linkitetty ainakin yksi toisen koulutustoimijan opiskeluoikeus.")
+  @Tooltip("Valitse valintaruutu jos opiskeluoikeuteen liittyvä koulutus/tutkinto ostettu toiselta koulutustoimijalta. Jos valittu, tällaiseen opiskeluoikeuteen tulisi olla linkitetty ainakin yksi toisen koulutustoimijan opiskeluoikeus.")
+  ostettu: Boolean = false,
   tila: AmmatillinenOpiskeluoikeudenTila,
   suoritukset: List[AmmatillinenPäätasonSuoritus],
   lisätiedot: Option[AmmatillisenOpiskeluoikeudenLisätiedot] = None,
