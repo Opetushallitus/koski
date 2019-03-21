@@ -1,21 +1,20 @@
 package fi.oph.koski.raportit
 
-import java.time.LocalDate
 import java.sql.Date
+import java.time.LocalDate
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethods}
-import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
+import fi.oph.koski.api.OpiskeluoikeusTestMethods
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.koskiuser.MockUsers.{evira, omniaTallentaja}
-import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.raportointikanta.ROpiskeluoikeusAikajaksoRow
+import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.raportointikanta.{ROpiskeluoikeusAikajaksoRow, RaportointikantaTestMethods}
 import org.json4s.JArray
 import org.json4s.jackson.JsonMethods
+import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
-class RaportitSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods with Matchers with BeforeAndAfterAll {
+class RaportitSpec extends FreeSpec with RaportointikantaTestMethods with OpiskeluoikeusTestMethods with Matchers with BeforeAndAfterAll {
 
   private val raportointiDatabase = KoskiApplicationForTests.raportointiDatabase
 
@@ -156,14 +155,7 @@ class RaportitSpec extends FreeSpec with LocalJettyHttpSpecification with Opiske
     }
 
     "raportin lataaminen toimii (ja tuottaa audit log viestin)" in {
-      val queryString1 = s"oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&alku=2016-01-01&loppu=2016-12-31"
-      val queryString2 = "password=dummy&downloadToken=test123"
-      authGet(s"api/raportit/opiskelijavuositiedot?$queryString1&$queryString2") {
-        verifyResponseStatusOk()
-        val ENCRYPTED_XLSX_PREFIX = Array(0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1).map(_.toByte)
-        response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=opiskelijavuositiedot&$queryString1")))
-      }
+      verifyRaportinLataaminen(apiUrl = "api/raportit/opiskelijavuositiedot", expectedRaporttiNimi = "opiskelijavuositiedot")
     }
 
     "käyttöoikeudet" - {
@@ -190,11 +182,5 @@ class RaportitSpec extends FreeSpec with LocalJettyHttpSpecification with Opiske
     }
   }
 
-  override def beforeAll(): Unit = {
-    authGet("api/raportointikanta/clear") { verifyResponseStatusOk() }
-    authGet("api/raportointikanta/opiskeluoikeudet") { verifyResponseStatusOk() }
-    authGet("api/raportointikanta/henkilot") { verifyResponseStatusOk() }
-    authGet("api/raportointikanta/organisaatiot") { verifyResponseStatusOk() }
-    authGet("api/raportointikanta/koodistot") { verifyResponseStatusOk() }
-  }
+  override def beforeAll(): Unit = loadRaportointikantaFixtures
 }
