@@ -20,4 +20,6 @@ trait AikajaksoRaportti extends Raportti {
   def filename(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate): String
 
   def buildRaportti(raportointiDatabase: RaportointiDatabase, oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate): Seq[Product]
+
+  def name: String = this.getClass.getSimpleName.toLowerCase.filterNot(_ == '$')
 }
