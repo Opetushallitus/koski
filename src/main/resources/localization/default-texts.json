@@ -1207,6 +1207,9 @@
   "Liittyy tutkintoon": "Liittyy tutkintoon",
   "Tutkinnon osaa pienemmän kokonaisuuden nimi": "Tutkinnon osaa pienemmän kokonaisuuden nimi",
   "Lisää tutkinnon osaa pienempi kokonaisuus": "Lisää tutkinnon osaa pienempi kokonaisuus",
-  "Saavutettavuus huomioitu": "Saavutettavuus huomioitu"
+  "Saavutettavuus huomioitu": "Saavutettavuus huomioitu",
+  "tooltip:Valitse valintaruutu jos opiskeluoikeuteen liittyvä..." : "Valitse valintaruutu jos opiskeluoikeuteen liittyvä koulutus/tutkinto ostettu toiselta koulutustoimijalta. Jos valittu, tällaiseen opiskeluoikeuteen tulisi olla linkitetty ainakin yksi toisen koulutustoimijan opiskeluoikeus.",
+  "Ostettu" : "Ostettu",
+  "description:Onko opiskeluoikeuteen liittyvä koulutus/tutkinto ostettu..." : "Onko opiskeluoikeuteen liittyvä koulutus/tutkinto ostettu toiselta koulutustoimijalta (true/false). Jos kentän arvo on true, tällaiseen opiskeluoikeuteen tulisi olla linkitetty ainakin yksi toisen koulutustoimijan opiskeluoikeus."
 }
 
