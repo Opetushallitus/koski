@@ -24,6 +24,7 @@ class SuoritustietojenTarkistusSpec extends FreeSpec with Matchers with Raportoi
       rivi.osaamisalat should equal(Some("1590"))
       rivi.opiskeluoikeudenTila should equal(Some("Valmis"))
       rivi.opintojenRahoitukset should equal("4")
+      rivi.ostettu should equal(false)
     }
 
     "Laskenta" - {
