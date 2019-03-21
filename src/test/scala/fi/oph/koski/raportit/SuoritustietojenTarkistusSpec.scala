@@ -138,7 +138,6 @@ class SuoritustietojenTarkistusSpec extends FreeSpec with Matchers with Raportoi
     putOpiskeluoikeus(sisällytäOpiskeluoikeus(stadinOpiskeluoikeus, SisältäväOpiskeluoikeus(omnia, omnianOpiskeluoikeusOid)), oppija){}
     loadRaportointikantaFixtures
     (f)
-    resetFixtures
   }
 
   private val stadinAmmattiOpistonNimi = MockOrganisaatioRepository.getOrganisaatio(MockOrganisaatiot.stadinAmmattiopisto).get.nimi.get.values("fi")
