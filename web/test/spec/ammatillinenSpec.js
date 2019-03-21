@@ -729,6 +729,26 @@ describe('Ammatillinen koulutus', function() {
       })
     })
 
+    describe('Opiskeluoikeuden ostettu tieto', function() {
+      describe('Aluksi', function() {
+        it('ei näytetä', function() {
+          expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).not.to.contain('Ostettu')
+        })
+
+        describe('Muuttaminen', function() {
+          before(
+            editor.edit,
+            editor.property('ostettu').setValue(true),
+            editor.saveChangesAndWaitForSuccess
+          )
+
+          it('toimii', function() {
+            expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.contain('Ostettu kyllä')
+          })
+        })
+      })
+    })
+
     describe('Opiskeluoikeuden lisätiedot', function() {
       before(
         editor.edit,
