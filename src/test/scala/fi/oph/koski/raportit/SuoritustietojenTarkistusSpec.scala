@@ -111,6 +111,10 @@ class SuoritustietojenTarkistusSpec extends FreeSpec with Matchers with Raportoi
         }
       }
     }
+
+    "raportin lataaminen toimii (ja tuottaa audit log viestin)" in {
+      verifyRaportinLataaminen(apiUrl = "api/raportit/suoritustietojentarkistus", expectedRaporttiNimi = "suoritustietojentarkistus")
+    }
   }
 
   override def beforeAll(): Unit = loadRaportointikantaFixtures
