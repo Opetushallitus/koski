@@ -15,6 +15,7 @@ case class OpiskelijavuositiedotRow(
   lähdejärjestelmä: Option[String],
   lähdejärjestelmänId: Option[String],
   sisältyyOpiskeluoikeuteenOid: String,
+  ostettu: Boolean,
   sisältyvätOpiskeluoikeudetOidit: String,
   sisältyvätOpiskeluoikeudetOppilaitokset: String,
   aikaleima: LocalDate,
@@ -66,6 +67,7 @@ object Opiskelijavuositiedot extends AikajaksoRaportti {
     "lähdejärjestelmä" -> Column("Lähdejärjestelmä", width = Some(4000)),
     "lähdejärjestelmänId" -> Column("Opiskeluoikeuden tunniste lähdejärjestelmässä", width = Some(4000)),
     "sisältyyOpiskeluoikeuteenOid" -> Column("Sisältyy opiskeluoikeuteen", width = Some(4000)),
+    "ostettu"-> Column("Ostettu", width = Some(2000)),
     "sisältyvätOpiskeluoikeudetOidit" -> Column("Sisältyvät opiskeluoikeudet", width = Some(4000)),
     "sisältyvätOpiskeluoikeudetOppilaitokset"-> Column("Sisältyvien opiskeluoikeuksien oppilaitokset", width = Some(4000)),
     "aikaleima" -> Column("Päivitetty"),
@@ -154,11 +156,12 @@ object Opiskelijavuositiedot extends AikajaksoRaportti {
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](opiskeluoikeus.data \ "lähdejärjestelmänId")
     val arvioituPäättymispäivä = JsonSerializer.validateAndExtract[Option[LocalDate]](opiskeluoikeus.data \ "arvioituPäättymispäivä").toOption.flatten
     val (opiskelijavuoteenKuuluvatLomaPäivät, muutLomaPäivät) = lomaPäivät(aikajaksot)
-    new OpiskelijavuositiedotRow(
+    OpiskelijavuositiedotRow(
       opiskeluoikeusOid = opiskeluoikeus.opiskeluoikeusOid,
       lähdejärjestelmä = lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
       lähdejärjestelmänId = lähdejärjestelmänId.flatMap(_.id),
       sisältyyOpiskeluoikeuteenOid = opiskeluoikeus.sisältyyOpiskeluoikeuteenOid.getOrElse(""),
+      ostettu = JsonSerializer.validateAndExtract[Boolean](opiskeluoikeus.data \ "ostettu").getOrElse(false),
       sisältyvätOpiskeluoikeudetOidit = sisältyvätOpiskeluoikeudet.map(_.opiskeluoikeusOid).mkString(","),
       sisältyvätOpiskeluoikeudetOppilaitokset = sisältyvätOpiskeluoikeudet.map(_.oppilaitosNimi).mkString(","),
       aikaleima = opiskeluoikeus.aikaleima.toLocalDateTime.toLocalDate,

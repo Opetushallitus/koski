@@ -64,6 +64,15 @@ class RaportitSpec extends FreeSpec with LocalJettyHttpSpecification with Opiske
       rivi.opiskeluoikeusPäättynyt should equal(true)
       rivi.läsnäTaiValmistunutPäivät should equal(31 + 29 + 31 + 30 + 30 + 1) // Aarne graduated 31.5.2016, so count days from 1.1.2016 to 30.5.2016 + 31.5.2016
       rivi.arvioituPäättymispäivä should equal(Some(LocalDate.parse("2015-05-31")))
+      rivi.ostettu should equal(false)
+    }
+
+    "ostettu" in {
+      val markkasenOpiskeluoikeusOid = lastOpiskeluoikeus(MockOppijat.markkanen.oid).oid.get
+      val rivi = Opiskelijavuositiedot.buildRaportti(raportointiDatabase, MockOrganisaatiot.omnia, LocalDate.parse("2000-01-01"), LocalDate.parse("2000-01-02"))
+        .find(_.opiskeluoikeusOid == markkasenOpiskeluoikeusOid)
+        .get
+      rivi.ostettu should equal(true)
     }
 
     "opiskelijavuoteen kuuluvat ja muut lomat lasketaan oikein" - {
