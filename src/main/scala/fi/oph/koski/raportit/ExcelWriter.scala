@@ -106,7 +106,7 @@ object ExcelWriter {
           case d: LocalDate => cell.setCellStyle(dateStyle); cell.setCellValue(Date.from(d.atStartOfDay(ZoneId.systemDefault).toInstant))
           case Some(d: LocalDate) => cell.setCellStyle(dateStyle); cell.setCellValue(Date.from(d.atStartOfDay(ZoneId.systemDefault).toInstant))
           case i: Int => cell.setCellValue(i)
-          case f: Double => cell.setCellStyle(floatStyle); cell.setCellValue(f)
+          case f: Double => if (f != 0) cell.setCellStyle(floatStyle); cell.setCellValue(f)
           case b: Boolean => cell.setCellStyle(booleanStyle); cell.setCellValue(if (b) 1 else 0)
           case None => /* ok */
           case x: Any => throw new IllegalStateException("Not handled yet? " + x.toString)
