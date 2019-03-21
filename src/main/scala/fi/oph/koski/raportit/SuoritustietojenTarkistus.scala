@@ -64,10 +64,10 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
   )
 
   def filename(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate): String =
-    s"opiskelijavuositiedot_${oppilaitosOid}_${alku.toString.replaceAll("-", "")}-${loppu.toString.replaceAll("-", "")}.xlsx"
+    s"suoritustiedot_${oppilaitosOid}_${alku.toString.replaceAll("-", "")}-${loppu.toString.replaceAll("-", "")}.xlsx"
 
   def title(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate): String =
-    s"Opiskelijavuositiedot $oppilaitosOid ${finnishDateFormat.format(alku)} - ${finnishDateFormat.format(loppu)}"
+    s"Suoritustiedot $oppilaitosOid ${finnishDateFormat.format(alku)} - ${finnishDateFormat.format(loppu)}"
 
   def documentation(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, loadCompleted: Timestamp): String =
     s"""

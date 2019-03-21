@@ -155,7 +155,7 @@ class RaportitSpec extends FreeSpec with RaportointikantaTestMethods with Opiske
     }
 
     "raportin lataaminen toimii (ja tuottaa audit log viestin)" in {
-      verifyRaportinLataaminen(apiUrl = "api/raportit/opiskelijavuositiedot", expectedRaporttiNimi = "opiskelijavuositiedot")
+      verifyRaportinLataaminen(apiUrl = "api/raportit/opiskelijavuositiedot", expectedRaporttiNimi = "opiskelijavuositiedot", expectedFileNamePrefix = "opiskelijavuositiedot")
     }
 
     "käyttöoikeudet" - {

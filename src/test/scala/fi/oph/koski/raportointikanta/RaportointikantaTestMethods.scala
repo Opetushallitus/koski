@@ -14,11 +14,12 @@ trait RaportointikantaTestMethods extends HttpTester with LocalJettyHttpSpecific
     authGet("api/raportointikanta/koodistot") { verifyResponseStatusOk() }
   }
 
-  def verifyRaportinLataaminen(apiUrl: String, expectedRaporttiNimi: String): Unit = {
+  def verifyRaportinLataaminen(apiUrl: String, expectedRaporttiNimi: String, expectedFileNamePrefix: String): Unit = {
     val queryString1 = s"oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&alku=2016-01-01&loppu=2016-12-31"
     val queryString2 = "password=dummy&downloadToken=test123"
     authGet(s"$apiUrl?$queryString1&$queryString2") {
       verifyResponseStatusOk()
+      response.headers("Content-Disposition").head should equal(s"""attachment; filename="${expectedFileNamePrefix}_${MockOrganisaatiot.stadinAmmattiopisto}_20160101-20161231.xlsx"""")
       val ENCRYPTED_XLSX_PREFIX = Array(0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1).map(_.toByte)
       response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
       AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=$expectedRaporttiNimi&$queryString1")))
