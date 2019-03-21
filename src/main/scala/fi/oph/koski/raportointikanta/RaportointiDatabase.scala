@@ -144,7 +144,7 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
       ))
   }
 
-  def suoritustiedotAikajaksot(oppilaitos: Organisaatio.Oid, koulutusmuoto: String, alku: LocalDate, loppu: LocalDate): Seq[(ROpiskeluoikeusRow, Option[RHenkilöRow], List[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])] = {
+  def suoritustiedotAikajaksot(oppilaitos: Organisaatio.Oid, koulutusmuoto: String, suoritustyyppi: String, alku: LocalDate, loppu: LocalDate): Seq[(ROpiskeluoikeusRow, Option[RHenkilöRow], List[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])] = {
     val alkuDate = Date.valueOf(alku)
     val loppuDate = Date.valueOf(loppu)
 
@@ -171,17 +171,19 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
     val kaikkiOpiskeluoikeudetJaAikajaksot = opiskeluoikeudetJaAikajaksot.union(sisältyvätOpiskeluoikeudetJaAikajaksot).distinct.sortBy(t => t._1.opiskeluoikeusOid)
     val kaikkiOpiskeluoikeusOidit: Seq[String] = opiskeluoikeudetJaAikajaksot.map(_._1.opiskeluoikeusOid).union(sisältyvätOpiskeluoikeusOidit).distinct
 
-    val päätasonSuorituksetQuery = RPäätasonSuoritukset.filter(_.opiskeluoikeusOid inSet kaikkiOpiskeluoikeusOidit)
+    val päätasonSuorituksetQuery = RPäätasonSuoritukset.filter(_.opiskeluoikeusOid inSet kaikkiOpiskeluoikeusOidit).filter(_.suorituksenTyyppi === suoritustyyppi)
     val päätasonSuoritukset: Map[String, Seq[RPäätasonSuoritusRow]] = runDbSync(päätasonSuorituksetQuery.result, timeout = 5.minutes).groupBy(_.opiskeluoikeusOid)
+
+    val opiskeluoikeudetJoillaAmmatillisenTutkinnonSuorituksia = kaikkiOpiskeluoikeudetJaAikajaksot.filter(t => päätasonSuoritukset.contains(t._1.opiskeluoikeusOid))
 
     val osasuorituksetQuery = ROsasuoritukset.filter(_.opiskeluoikeusOid inSet päätasonSuoritukset.keySet)
     val osasuoritukset: Map[String, Seq[ROsasuoritusRow]] = runDbSync(osasuorituksetQuery.result, timeout = 5.minutes).groupBy(_.opiskeluoikeusOid)
 
-    val henkilötQuery = RHenkilöt.filter(_.oppijaOid inSet kaikkiOpiskeluoikeudetJaAikajaksot.map(_._1.oppijaOid))
+    val henkilötQuery = RHenkilöt.filter(_.oppijaOid inSet opiskeluoikeudetJoillaAmmatillisenTutkinnonSuorituksia.map(_._1.oppijaOid))
     val henkilöt: Map[String, RHenkilöRow] = runDbSync(henkilötQuery.result, timeout = 5.minutes).groupBy(_.oppijaOid).mapValues(_.head)
 
     // group rows belonging to same opiskeluoikeus
-    kaikkiOpiskeluoikeudetJaAikajaksot
+    opiskeluoikeudetJoillaAmmatillisenTutkinnonSuorituksia
       .foldRight[List[(ROpiskeluoikeusRow, List[ROpiskeluoikeusAikajaksoRow])]](List.empty) {
         case (t, head :: tail) if t._1.opiskeluoikeusOid == head._1.opiskeluoikeusOid => (head._1, t._2 :: head._2) :: tail
         case (t, acc) => (t._1, List(t._2)) :: acc
