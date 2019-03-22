@@ -51,7 +51,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
     val password = getStringParam("password")
     val downloadToken = params.get("downloadToken")
 
-    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=opiskelijavuositiedot&oppilaitosOid=$oppilaitosOid&alku=$alku&loppu=$loppu")))
+    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=${raportti.name}&oppilaitosOid=$oppilaitosOid&alku=$alku&loppu=$loppu")))
 
     val rows = raportti.buildRaportti(raportointiDatabase, oppilaitosOid, alku, loppu)
 

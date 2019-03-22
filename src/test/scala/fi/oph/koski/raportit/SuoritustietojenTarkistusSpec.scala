@@ -8,12 +8,9 @@ import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, SisältäväOpiskeluoikeus}
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
-class SuoritustietojenTarkistusSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with OpiskeluoikeusTestMethodsAmmatillinen {
-
-  resetFixtures
-
+class SuoritustietojenTarkistusSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with OpiskeluoikeusTestMethodsAmmatillinen with BeforeAndAfterAll {
   "Suoritustietojen tarkistusraportti" - {
     loadRaportointikantaFixtures
     val rivit = loadAmmattilaisAarnenRivit()
@@ -24,6 +21,7 @@ class SuoritustietojenTarkistusSpec extends FreeSpec with Matchers with Raportoi
       rivi.osaamisalat should equal(Some("1590"))
       rivi.opiskeluoikeudenTila should equal(Some("Valmis"))
       rivi.opintojenRahoitukset should equal("4")
+      rivi.ostettu should equal(false)
     }
 
     "Laskenta" - {
@@ -113,7 +111,13 @@ class SuoritustietojenTarkistusSpec extends FreeSpec with Matchers with Raportoi
         }
       }
     }
+
+    "raportin lataaminen toimii (ja tuottaa audit log viestin)" in {
+      verifyRaportinLataaminen(apiUrl = "api/raportit/suoritustietojentarkistus", expectedRaporttiNimi = "suoritustietojentarkistus", expectedFileNamePrefix = "suoritustiedot")
+    }
   }
+
+  override def beforeAll(): Unit = loadRaportointikantaFixtures
 
   private def loadAmmattilaisAarnenRivit(oppilaitosOid: String = MockOrganisaatiot.stadinAmmattiopisto) = {
     val result = SuoritustietojenTarkistus.buildRaportti(KoskiApplicationForTests.raportointiDatabase, oppilaitosOid, LocalDate.parse("2016-01-01"), LocalDate.parse("2016-12-31"))
@@ -134,7 +138,6 @@ class SuoritustietojenTarkistusSpec extends FreeSpec with Matchers with Raportoi
     putOpiskeluoikeus(sisällytäOpiskeluoikeus(stadinOpiskeluoikeus, SisältäväOpiskeluoikeus(omnia, omnianOpiskeluoikeusOid)), oppija){}
     loadRaportointikantaFixtures
     (f)
-    resetFixtures
   }
 
   private val stadinAmmattiOpistonNimi = MockOrganisaatioRepository.getOrganisaatio(MockOrganisaatiot.stadinAmmattiopisto).get.nimi.get.values("fi")

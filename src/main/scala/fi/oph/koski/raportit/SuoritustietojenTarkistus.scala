@@ -24,6 +24,7 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
     "lähdejärjestelmä" -> Column("Lähdejärjestelmä", width = Some(4000)),
     "lähdejärjestelmänId" -> Column("Opiskeluoikeuden tunniste lähdejärjestelmässä", width = Some(4000)),
     "sisältyyOpiskeluoikeuteenOid" -> Column("Sisältyy opiskeluoikeuteen", width = Some(4000)),
+    "ostettu"-> Column("Ostettu", width = Some(2000)),
     "sisältyvätOpiskeluoikeudetOidit" -> Column("Sisältyvät opiskeluoikeudet", width = Some(4000)),
     "sisältyvätOpiskeluoikeudetOppilaitokset" -> Column("Sisältyvien opiskeluoikeuksien oppilaitokset", width = Some(4000)),
     "linkitetynOpiskeluoikeudenOppilaitos" -> Column("Toisen koulutuksen järjestäjän opiskeluoikeus"),
@@ -63,10 +64,10 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
   )
 
   def filename(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate): String =
-    s"opiskelijavuositiedot_${oppilaitosOid}_${alku.toString.replaceAll("-", "")}-${loppu.toString.replaceAll("-", "")}.xlsx"
+    s"suoritustiedot_${oppilaitosOid}_${alku.toString.replaceAll("-", "")}-${loppu.toString.replaceAll("-", "")}.xlsx"
 
   def title(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate): String =
-    s"Opiskelijavuositiedot $oppilaitosOid ${finnishDateFormat.format(alku)} - ${finnishDateFormat.format(loppu)}"
+    s"Suoritustiedot $oppilaitosOid ${finnishDateFormat.format(alku)} - ${finnishDateFormat.format(loppu)}"
 
   def documentation(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, loadCompleted: Timestamp): String =
     s"""
@@ -98,6 +99,7 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
       lähdejärjestelmä = lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
       lähdejärjestelmänId = lähdejärjestelmänId.flatMap(_.id),
       sisältyyOpiskeluoikeuteenOid = opiskeluoikeus.sisältyyOpiskeluoikeuteenOid.getOrElse(""),
+      ostettu = JsonSerializer.validateAndExtract[Boolean](opiskeluoikeus.data \ "ostettu").getOrElse(false),
       sisältyvätOpiskeluoikeudetOidit = sisältyvätOpiskeluoikeudet.map(_.opiskeluoikeusOid).mkString(","),
       sisältyvätOpiskeluoikeudetOppilaitokset = sisältyvätOpiskeluoikeudet.map(_.oppilaitosNimi).mkString(","),
       linkitetynOpiskeluoikeudenOppilaitos = if (opiskeluoikeus.oppilaitosOid != oppilaitosOid) opiskeluoikeus.oppilaitosNimi else "",
@@ -239,6 +241,7 @@ case class SuoritustiedotTarkistusRow
   lähdejärjestelmä: Option[String],
   lähdejärjestelmänId: Option[String],
   sisältyyOpiskeluoikeuteenOid: String,
+  ostettu: Boolean,
   sisältyvätOpiskeluoikeudetOidit: String,
   sisältyvätOpiskeluoikeudetOppilaitokset: String,
   linkitetynOpiskeluoikeudenOppilaitos: String,
