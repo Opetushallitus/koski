@@ -8,23 +8,7 @@ import {suorituksenTyyppi} from '../../suoritus/Suoritus'
 import {OpiskeluoikeudenTila} from '../fragments/OpiskeluoikeudenTila'
 import Text from '../../i18n/Text'
 import Checkbox from '../../components/Checkbox'
-
-const isKorkeakouluSuoritus = suoritus => [
-  'korkeakoulututkinto',
-  'korkeakoulunopintojakso',
-  'muukorkeakoulunsuoritus'
-].includes(suorituksenTyyppi(suoritus))
-
-const isIrrallinenKorkeakoulunSuoritus = suoritus => [
-  'korkeakoulunopintojakso',
-  'muukorkeakoulunsuoritus'
-].includes(suorituksenTyyppi(suoritus))
-
-const groupSuoritukset = suoritukset => !R.isEmpty(suoritukset)
-  ? isIrrallinenKorkeakoulunSuoritus(suoritukset[0]) ? [suoritukset[0]] : suoritukset
-  : []
-const withIdentifiers = opiskeluoikeus => suoritukset => suoritukset.map(suoritus => ({suoritus, id: SuoritusIdentifier(opiskeluoikeus, suoritus)}))
-const withoutDuplicates = suorituksetWithIdentifiers => R.uniqBy(sWithId => sWithId.id, suorituksetWithIdentifiers)
+import {isOpintojakso} from '../../opiskeluoikeus/OpiskeluoikeusEditor'
 
 export const SelectableSuoritusList = ({opiskeluoikeudet, selectedSuoritusIds}) => {
   const toggleSelection = id => event =>
@@ -47,28 +31,10 @@ export const SelectableSuoritusList = ({opiskeluoikeudet, selectedSuoritusIds}) 
                 {
                   Bacon.combineWith(oppilaitoksenOpiskeluoikeudet, selectedSuoritusIds, (opiskeluoikeudetModels, selectedIds) =>
                     opiskeluoikeudetModels.map(oo => {
-                      const identifiersWithTitles = suorituksetWithIdentifiers => suorituksetWithIdentifiers.map(
-                        ({suoritus, id}) => ({
-                          id,
-                          Title: () => suorituksenTyyppi(suoritus) === 'korkeakoulunopintojakso'
-                            ? <span>{päätasonSuoritukset.length} <Text name='opintojaksoa'/></span>
-                            : (
-                              <span>
-                          {suoritusjakoSuoritusTitle(suoritus)}
-                                {
-                                  isKorkeakouluSuoritus(suoritus) && !!modelData(oo, 'alkamispäivä') &&
-                                  <OpiskeluoikeudenTila opiskeluoikeus={oo}/>
-                                }
-                        </span>
-                            )
-                        }))
-
-                      const päätasonSuoritukset = modelItems(oo, 'suoritukset')
-                      const näytettävätSuoritukset = groupSuoritukset(päätasonSuoritukset)
-                      const options = R.compose(identifiersWithTitles, withoutDuplicates, withIdentifiers(oo))(näytettävätSuoritukset)
-
-                      return options.map(({id, Title}) => (
-                          <li key={id}>
+                      const suoritukset = modelItems(oo, 'suoritukset')
+                      const options = R.compose(withoutDuplicates, withIdentifiers(oo))(suoritukset)
+                      return options.map(({id, Title}) =>
+                          (<li key={id}>
                             <Checkbox
                               id={id}
                               checked={R.contains(id, selectedIds)}
@@ -90,3 +56,32 @@ export const SelectableSuoritusList = ({opiskeluoikeudet, selectedSuoritusIds}) 
     </ul>
   )
 }
+
+const isKorkeakouluSuoritus = suoritus => [
+  'korkeakoulututkinto',
+  'korkeakoulunopintojakso',
+  'muukorkeakoulunsuoritus'
+].includes(suorituksenTyyppi(suoritus))
+
+const withIdentifiers = opiskeluoikeus => suoritukset => {
+  const [opintojaksot, muut] = R.partition(isOpintojakso, suoritukset)
+  const suoritusIdentifiers = muut.map(suoritus => {
+    return {
+      id: SuoritusIdentifier(opiskeluoikeus, suoritus),
+      Title: () => (<span>
+        {suoritusjakoSuoritusTitle(suoritus)}
+        {isKorkeakouluSuoritus(suoritus) && !!modelData(opiskeluoikeus, 'alkamispäivä') && <OpiskeluoikeudenTila opiskeluoikeus={opiskeluoikeus}/>}
+      </span>)
+    }
+  })
+
+  const opintojaksoIdentifiers = opintojaksot.length === 0 ? [] : [{
+    id: SuoritusIdentifier(opiskeluoikeus, opintojaksot[0]),
+    Title: () => <span>{opintojaksot.length} <Text name='opintojaksoa'/></span>
+  }]
+
+  return suoritusIdentifiers.concat(opintojaksoIdentifiers)
+}
+
+const withoutDuplicates = suorituksetWithIdentifiers => R.uniqBy(sWithId => sWithId.id, suorituksetWithIdentifiers)
+

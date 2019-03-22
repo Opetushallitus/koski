@@ -581,7 +581,9 @@ describe('Omat tiedot', function() {
                 expect(form.suoritusvaihtoehdotText()).to.equal(
                   'Aalto-yliopisto\n' +
                   'Kotimainen opiskelijaliikkuvuus ( 2017 — 2017 , päättynyt )\n' +
+                  '1 opintojaksoa\n' +
                   'Erikoistumisopinnot ( 2011 — 2013 , päättynyt )\n' +
+                  '12 opintojaksoa\n' +
                   'Jyväskylän yliopisto\n' +
                   'Täydennyskoulutus ( 2015 — 2016 , päättynyt )'
                 )
