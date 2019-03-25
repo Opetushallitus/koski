@@ -1,3 +1,7 @@
+## 25.3.2019
+
+- Lisätty ostettu-kenttä ammatillisen opiskeluoikeuteen
+
 ## 11.3.2019
 
 - Opiskeluoikeuden päättymispäivä päätellään opiskeluoikeuden tilan opiskeluoikeusjaksoista
