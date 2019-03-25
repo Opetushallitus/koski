@@ -177,7 +177,7 @@ const isPerusopetuksenOppimäärä = suoritus =>
   ['perusopetuksenoppiaineenoppimaara', 'nuortenperusopetuksenoppiaineenoppimaara'].includes(suorituksenTyyppi(suoritus))
 
 const isKorkeakoulututkinto = suoritus => suorituksenTyyppi(suoritus) === 'korkeakoulututkinto'
-const isOpintojakso = suoritus => suorituksenTyyppi(suoritus) === 'korkeakoulunopintojakso'
+export const isOpintojakso = suoritus => suorituksenTyyppi(suoritus) === 'korkeakoulunopintojakso'
 const isPerusopetuksenVuosiluokka = suoritus => suorituksenTyyppi(suoritus) === 'perusopetuksenvuosiluokka'
 
 const oppimääräTaiOpintojaksoOtsikko = suoritukset => {
@@ -189,8 +189,7 @@ const oppimääräTaiOpintojaksoOtsikko = suoritukset => {
 export const näytettäväPäätasonSuoritusTitle = opiskeluoikeus => {
   const suoritukset = modelItems(opiskeluoikeus, 'suoritukset')
   const sisältääKorkeakoulututkinnon = suoritukset.some(isKorkeakoulututkinto)
-  const sisältääOpintojaksonMutteiTutkintoa = suoritukset.some(isOpintojakso) && !sisältääKorkeakoulututkinnon
-  const sisältääOppiaineenOppimääränTaiOpintoJakson = suoritukset.length > 1 && suoritukset.some(isPerusopetuksenOppimäärä) || sisältääOpintojaksonMutteiTutkintoa
+  const sisältääOppiaineenOppimääränTaiOpintoJakson = suoritukset.length > 1 && (suoritukset.some(isPerusopetuksenOppimäärä) || suoritukset.every(isOpintojakso))
 
   return sisältääOppiaineenOppimääränTaiOpintoJakson
     ? oppimääräTaiOpintojaksoOtsikko(suoritukset)

@@ -132,11 +132,22 @@ function SuoritusjakoForm() {
     createSuoritusjako: function() {
       return click(createSuoritusjakoButton)
     },
+    createAndStoreSuoritusjako: function(name) {
+      var lastJako = Suoritusjako('.suoritusjako-form__link-list > li:last-child > .suoritusjako-link')
+      return seq(
+        click(createSuoritusjakoButton),
+        wait.until(lastJako.isVisible),
+        function() {
+          var secret = lastJako.url().split('/')
+          window.secrets[name] = secret[secret.length - 1]
+        }
+      )
+    },
     openAdditionalSuoritusjakoForm: function() {
       return click(openAdditionalSuoritusjakoFormButton)
     },
-    suoritusjako: function(index) {
-      return Suoritusjako(index)
+    suoritusjako: function(selectorOrIndex) {
+      return Suoritusjako(selectorOrIndex)
     },
     isVisible: function() {
       return isElementVisible(elem)
@@ -146,8 +157,11 @@ function SuoritusjakoForm() {
   return api
 }
 
-function Suoritusjako(index) {
-  var elem = findSingle('.suoritusjako-form__link-list > li:nth-child(' + index + ') > .suoritusjako-link')
+function Suoritusjako(selectorOrIndex) {
+  var elem = typeof selectorOrIndex === 'number'
+    ? findSingle('.suoritusjako-form__link-list > li:nth-child(' + selectorOrIndex + ') > .suoritusjako-link')
+    : findSingle(selectorOrIndex)
+
   var pageApi = Page(elem)
 
   var api = {

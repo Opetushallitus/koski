@@ -58,7 +58,7 @@ class SuomiFiService(application: KoskiApplication) extends Logging {
     oo.suoritukset.forall(_.tyyppi == suoritusTyyppi("perusopetuksenvuosiluokka"))
 
   private def sisältääOppiaineenOppimääränTaiOpintojakson(oo: Opiskeluoikeus) =
-    oo.suoritukset.length > 1 && (oo.suoritukset.exists(isOppiaineenOppimäärä) || (oo.suoritukset.exists(isOpintojakso) && !oo.suoritukset.exists(isKorkeakoulututkinto)))
+    oo.suoritukset.length > 1 && (oo.suoritukset.exists(isOppiaineenOppimäärä) || oo.suoritukset.forall(isOpintojakso))
 
   private def oppimääräTaiOpintojaksoOtsikko(kaikkiSuoritukset: List[PäätasonSuoritus]) = {
     val otsikkoKey = if (kaikkiSuoritukset.forall(isOppiaineenOppimäärä)) "oppiainetta" else "opintojaksoa"

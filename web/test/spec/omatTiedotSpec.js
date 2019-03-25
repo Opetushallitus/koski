@@ -574,17 +574,52 @@ describe('Omat tiedot', function() {
               })
             })
 
-            describe('Liittyviä opintojaksoja', function () {
-              before(form.openAdditionalSuoritusjakoForm())
+            describe('Opintojaksot', function () {
+              before(
+                form.openAdditionalSuoritusjakoForm(),
+                form.selectSuoritus('1927', '1.2.246.562.10.56753942459', 'korkeakoulunopintojakso', ''),
+                form.createAndStoreSuoritusjako('opintojaksot')
+              )
 
-              it('ei voida valita jaettaviksi yksittäin', function() {
-                expect(form.suoritusvaihtoehdotText()).to.equal(
-                  'Aalto-yliopisto\n' +
-                  'Kotimainen opiskelijaliikkuvuus ( 2017 — 2017 , päättynyt )\n' +
-                  'Erikoistumisopinnot ( 2011 — 2013 , päättynyt )\n' +
-                  'Jyväskylän yliopisto\n' +
-                  'Täydennyskoulutus ( 2015 — 2016 , päättynyt )'
-                )
+              it('jakaminen onnistuu', function() {
+                expect(form.suoritusjako(4).isVisible()).to.equal(true)
+              })
+
+              describe('Katselu', function () {
+                var suoritusjako = SuoritusjakoPage()
+                before(suoritusjako.openPage('opintojaksot'), wait.until(suoritusjako.isVisible))
+
+                it('onnistuu', function () {
+                  expect(suoritusjako.isVisible()).to.equal(true)
+                  expect(suoritusjako.opiskeluoikeusTitleText()).to.deep.equal(['12 opintojaksoa (2011—2013, päättynyt)'])
+                })
+
+                describe('Kun avataan oppilaitos', function () {
+                  before(suoritusjako.avaaOpiskeluoikeus('12 opintojaksoa (2011—2013, päättynyt)'))
+
+                  it('näytetään oikeat opiskeluoikeudet', function () {
+                    expect(extractAsText(S('.opiskeluoikeus-content'))).to.equal(
+                    'Opiskeluoikeuden voimassaoloaika : 24.8.2011 — 20.6.2013\n' +
+                    'Tila 21.6.2013 päättynyt\n' +
+                    '24.8.2011 aktiivinen\n' +
+                    'Lisätiedot\n' +
+                    'Opintojakso Laajuus Arvosana\n' +
+                    '+\nIP-verkkojen hallinta 4 op 1\n' +
+                    '+\nTietoverkkojen tietoturva 5 op 5\n' +
+                    '+\nVirtuaalilähiverkot (CCNA3) 3 op 5\n' +
+                    '+\nWeb-ohjelmointi 5 op 3\n' +
+                    '+\nMikrotietokoneen hallinta 3 op hyväksytty\n' +
+                    '+\nPhotoshopin perusteet 3 op hyväksytty\n' +
+                    '+\nTietoturvallisuuden perusteet 3 op 2\n' +
+                    '+\nLähiverkot (CCNA1) 3 op 4\n' +
+                    '+\nReititinverkot (CCNA2) 3 op 4\n' +
+                    '+\nTekninen tietoturva 3 op 4\n' +
+                    '+\nLaajaverkot 3 op 5\n' +
+                    '+\nLinuxin asennus ja ylläpito 5 op hyväksytty\n' +
+                    'Yhteensä 43 op'
+                  )
+                  })
+                })
               })
             })
           })
