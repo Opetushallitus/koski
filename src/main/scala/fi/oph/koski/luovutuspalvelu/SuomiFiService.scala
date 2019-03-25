@@ -72,7 +72,7 @@ class SuomiFiService(application: KoskiApplication) extends Logging {
     }
 
   private def isKorkeakoulututkinto(suoritus: PäätasonSuoritus) =
-    suoritus.tyyppi == suoritusTyyppi("korkeakoulututkinto")
+    suoritus.tyyppi == suoritusTyyppi("korkeakoulututkinto") || suoritus.tyyppi == suoritusTyyppi("muukorkeakoulunsuoritus")
 
   private def isOpintojakso(suoritus: PäätasonSuoritus) =
     suoritus.tyyppi == suoritusTyyppi("korkeakoulunopintojakso")

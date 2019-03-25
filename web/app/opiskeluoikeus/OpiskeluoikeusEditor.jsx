@@ -176,7 +176,7 @@ const opintojaksoTaiOppimäärä = suoritus =>
 const isPerusopetuksenOppimäärä = suoritus =>
   ['perusopetuksenoppiaineenoppimaara', 'nuortenperusopetuksenoppiaineenoppimaara'].includes(suorituksenTyyppi(suoritus))
 
-const isKorkeakoulututkinto = suoritus => suorituksenTyyppi(suoritus) === 'korkeakoulututkinto'
+const isKorkeakoulututkinto = suoritus => ['muukorkeakoulunsuoritus', 'korkeakoulututkinto'].includes(suorituksenTyyppi(suoritus))
 export const isOpintojakso = suoritus => suorituksenTyyppi(suoritus) === 'korkeakoulunopintojakso'
 const isPerusopetuksenVuosiluokka = suoritus => suorituksenTyyppi(suoritus) === 'perusopetuksenvuosiluokka'
 
