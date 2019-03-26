@@ -69,7 +69,7 @@ const Opiskelijavuositiedot = ({oppilaitosAtom}) => {
 }
 
 const SuoritustietojenTarkistus = ({oppilaitosAtom}) => {
-  const titleText = <Text name='Suoritustietojen tarkistus'/>
+  const titleText = <Text name='Suoritustiedot (ammatillinen koulutus)'/>
   const descriptionText = <Text name='SuoritustietojenTarkistus-description'/>
 
   return (<AikajaksoRaportti
@@ -148,7 +148,7 @@ const downloadExcel = (params) => {
 
   // detect when download has started by polling a cookie set by the backend.
   // based on https://stackoverflow.com/questions/1106377/detect-when-browser-receives-file-download
-  let attempts = 120
+  let attempts = 360
   downloadTimer = window.setInterval(() => {
     if (document.cookie.indexOf('koskiDownloadToken=' + downloadToken) >= 0) {
       window.clearInterval(downloadTimer)
