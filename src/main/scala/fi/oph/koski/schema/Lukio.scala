@@ -96,7 +96,7 @@ case class LukionOppimääränSuoritus(
 @Description("Lukion oppiaineen oppimäärän suoritustiedot")
 case class LukionOppiaineenOppimääränSuoritus(
   @Title("Oppiaine")
-  koulutusmoduuli: LukionOppiaine,
+  koulutusmoduuli: LukionOppiaineTaiEiTiedossaOppiaine,
   toimipiste: OrganisaatioWithOid,
   @Description("Lukion oppiaineen oppimäärän arviointi")
   arviointi: Option[List[LukionOppiaineenArviointi]] = None,
@@ -226,8 +226,10 @@ case class PaikallinenLukionKurssi(
   kurssinTyyppi: Koodistokoodiviite
 ) extends LukionKurssi with PaikallinenKoulutusmoduuli with StorablePreference
 
+trait LukionOppiaineTaiEiTiedossaOppiaine extends Koulutusmoduuli
+
 @Description("Lukion/IB-lukion oppiaineen tunnistetiedot")
-trait LukionOppiaine extends Koulutusmoduuli with Valinnaisuus with PreIBOppiaine with Diaarinumerollinen {
+trait LukionOppiaine extends Koulutusmoduuli with Valinnaisuus with PreIBOppiaine with Diaarinumerollinen with LukionOppiaineTaiEiTiedossaOppiaine {
   def laajuus: Option[LaajuusKursseissa]
   @Title("Oppiaine")
   def tunniste: KoodiViite

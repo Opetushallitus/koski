@@ -311,7 +311,7 @@ case class NuortenPerusopetuksenOppiaineenOppimääränSuoritus(
   @Tooltip("Päättötodistukseen liittyvät oppiaineen suoritukset.")
   @Title("Oppiaine")
   @FlattenInUI
-  koulutusmoduuli: NuortenPerusopetuksenTaiEiTiedossaOppiaine,
+  koulutusmoduuli: NuortenPerusopetuksenOppiainenTaiEiTiedossaOppiaine,
   toimipiste: OrganisaatioWithOid,
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   override val vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
@@ -491,9 +491,9 @@ trait PerusopetuksenPaikallinenOppiaine extends PerusopetuksenOppiaine with Paik
   def kuvaus: LocalizedString
 }
 
-trait NuortenPerusopetuksenTaiEiTiedossaOppiaine extends Koulutusmoduuli
+trait NuortenPerusopetuksenOppiainenTaiEiTiedossaOppiaine extends Koulutusmoduuli
 
-trait NuortenPerusopetuksenOppiaine extends PerusopetuksenOppiaine with NuortenPerusopetuksenTaiEiTiedossaOppiaine {
+trait NuortenPerusopetuksenOppiaine extends PerusopetuksenOppiaine with NuortenPerusopetuksenOppiainenTaiEiTiedossaOppiaine {
   @Tooltip("Oppiaineen laajuus vuosiviikkotunteina.")
   def laajuus: Option[LaajuusVuosiviikkotunneissa]
 }
@@ -507,7 +507,7 @@ case class EiTiedossaOppiaine(
   @KoodistoKoodiarvo("XX")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "XX", koodistoUri = "koskioppiaineetyleissivistava"),
   perusteenDiaarinumero: Option[String] = None
-) extends KoodistostaLöytyväKoulutusmoduuli with NuortenPerusopetuksenTaiEiTiedossaOppiaine {
+) extends KoodistostaLöytyväKoulutusmoduuli with NuortenPerusopetuksenOppiainenTaiEiTiedossaOppiaine with LukionOppiaineTaiEiTiedossaOppiaine {
   override def laajuus: Option[Laajuus] = None
 }
 
