@@ -46,6 +46,12 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
     excelResponse(raportitService.suoritustietojenTarkistus(parsedRequest))
   }
 
+  get("/perusopetuksenvuosiluokka") {
+    val parsedRequest = parseVuosiluokkaRequest
+    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=perusopetuksenvuosiluokka&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}&=${parsedRequest.vuosi}")))
+    excelResponse(raportitService.perusopetuksenVuosiluokka(parsedRequest))
+  }
+
   private def excelResponse(raportti: OppilaitosRaporttiResponse) = {
     contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     response.setHeader("Content-Disposition", s"""attachment; filename="${raportti.filename}"""")
@@ -64,6 +70,16 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
     val downloadToken = params.get("downloadToken")
 
     AikajaksoRaporttiRequest(oppilaitosOid, downloadToken, password, alku, loppu)
+  }
+
+  private def parseVuosiluokkaRequest: VuosiluokkaRaporttiRequest = {
+    val oppilaitosOid = getOppilaitosParamAndCheckAccess
+    val (alku, loppu) = getAlkuLoppuParams
+    val password = getStringParam("password")
+    val downloadToken = params.get("downloadToken")
+    val vuosi = getStringParam("vuosiluokka")
+
+   VuosiluokkaRaporttiRequest(oppilaitosOid, downloadToken, password, alku, loppu, vuosi)
   }
 
   private def getOppilaitosParamAndCheckAccess: Organisaatio.Oid = {
