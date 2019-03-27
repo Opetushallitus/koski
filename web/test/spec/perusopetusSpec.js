@@ -222,7 +222,11 @@ describe('Perusopetus', function() {
             'Tehostetun tuen päätökset 15.8.2008 — 4.6.2016\n' +
             'Joustava perusopetus 15.8.2008 — 4.6.2016\n' +
             'Kotiopetus 15.8.2008 — 4.6.2016\n' +
+            'Kotiopetusjaksot 15.8.2008 — 4.6.2016\n' +
+            '14.7.2017 — 18.10.2017\n' +
             'Ulkomailla 15.8.2008 — 4.6.2016\n' +
+            'Ulkomaanjaksot 15.8.2008 — 4.6.2016\n' +
+            '16.9.2018 — 2.10.2019\n' +
             'Vuosiluokkiin sitomaton opetus kyllä\n' +
             'Muu kuin vaikeimmin kehitysvammainen 14.8.2010 —\n' +
             'Vaikeimmin kehitysvammainen 14.8.2010 —\n' +
