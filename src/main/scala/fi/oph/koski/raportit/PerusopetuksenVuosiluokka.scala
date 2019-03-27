@@ -48,15 +48,16 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaportti {
     "kuvataide" -> Column("Kuvataide"),
     "kotitalous" -> Column("Kotitalous"),
     "terveystieto" -> Column("Terveystieto"),
-    "kasityo" -> Column("Kasityo"),
+    "kasityo" -> Column("Käsityo"),
     "liikunta" -> Column("Liikunta"),
+    "ymparistooppi" -> Column("Ympäristöoppi"),
     "paikallistenOppiaineidenKoodit" -> Column("Paikallisten oppiaineden koodit"),
     "pakollisetPaikalliset" -> Column("Pakolliset paikalliset oppiaineet"),
     "valinnaisetPaikalliset" -> Column("Valinnaiset paikaliset oppiaineet"),
     "valinnaisetValtakunnalliset" -> Column("Valinnaiset valtakunnalliset oppiaineet"),
-    "valinnaisetLaajuus_SuurempiKuin_2Vuosiviikkotuntia" -> Column("Valinnaiset oppiaineet joiden laajuus suurempi kuin 2 vuosiviikkotuntia"),
-    "valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia" -> Column("Valinnaiset oppiaineet joiden laajuus on suurempi kuin 2 vuosiviikko tuntia"),
-    "numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia" -> Column("Valinnaiset oppiaineet joilla on numero arviointi ja niiden laajuus on pienempi kuin 2 vuosiviikkotuntia")
+    "valinnaisetLaajuus_SuurempiKuin_2Vuosiviikkotuntia" -> Column("Valinnaiset oppiaineet joiden laajuus on suurempi kuin 2 vuosiviikkotuntia"),
+    "valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia" -> Column("Valinnaiset oppiaineet joiden laajuus on pienempi kuin 2 vuosiviikko tuntia"),
+    "numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia" -> Column("Valinnaiset oppiaineet joilla on numeroarviointi ja niiden laajuus on pienempi kuin 2 vuosiviikkotuntia")
   )
 
   private def buildRow(data: (ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROsasuoritusRow])) = {
@@ -95,6 +96,7 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaportti {
       terveystieto = getOppiaineenArvosana("TE")(pakollisetValtakunnalliset),
       kasityo = getOppiaineenArvosana("KS")(pakollisetValtakunnalliset),
       liikunta = getOppiaineenArvosana("LI")(pakollisetValtakunnalliset),
+      ymparistooppi = getOppiaineenArvosana("YL")(pakollisetValtakunnalliset),
       paikallistenOppiaineidenKoodit = paikalliset.map(_.koulutusmoduuliKoodiarvo).mkString(","),
       pakollisetPaikalliset = paikalliset.filter(isPakollinen).map(nimiJaKoodi).mkString(","),
       valinnaisetPaikalliset = paikalliset.filterNot(isPakollinen).map(nimiJaKoodi).mkString(","),
@@ -189,6 +191,7 @@ private[raportit] case class PerusopetusRow
   terveystieto: String,
   kasityo: String,
   liikunta: String,
+  ymparistooppi: String,
   paikallistenOppiaineidenKoodit: String,
   pakollisetPaikalliset: String,
   valinnaisetPaikalliset: String,

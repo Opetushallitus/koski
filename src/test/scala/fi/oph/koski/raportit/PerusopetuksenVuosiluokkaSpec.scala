@@ -51,6 +51,7 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
           terveystieto = "8",
           kasityo = "9",
           liikunta = "9",
+          ymparistooppi = "Arvosana puuttuu",
           paikallistenOppiaineidenKoodit = "TH",
           pakollisetPaikalliset = "",
           valinnaisetPaikalliset = "Tietokoneen hyötykäyttö (TH)",
