@@ -24,12 +24,6 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
       ynjevinRivi shouldBe defined
 
       val rivi = ynjevinRivi.get
-      rivi.valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia should equal("ruotsi (B1),Kotitalous (KO),Liikunta (LI)")
-      rivi.valinnaisetLaajuus_SuurempiKuin_2Vuosiviikkotuntia should equal("saksa (B2)")
-      println("Paikalliset oppiaineiden koodit" + rivi.paikallistenOppiaineidenKoodit)
-      println("pakolliset paikalliset" + rivi.pakollisetPaikalliset)
-      println("valinnaiset paikalliset" + rivi.valinnaisetPaikalliset)
-      println("valinnaiset valtakunnalliset" + rivi.valinnaisetValtakunnalliset)
       rivi should equal(
         PerusopetusRow(
           opiskeluoikeusOid = ynjevinOpiskeluoikeusOid,
@@ -57,10 +51,10 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
           terveystieto = "8",
           kasityo = "9",
           liikunta = "9",
-          paikallistenOppiaineidenKoodit = "",
+          paikallistenOppiaineidenKoodit = "TH",
           pakollisetPaikalliset = "",
-          valinnaisetPaikalliset = "",
-          valinnaisetValtakunnalliset = "",
+          valinnaisetPaikalliset = "Tietokoneen hyötykäyttö (TH)",
+          valinnaisetValtakunnalliset = "ruotsi (B1),Kotitalous (KO),Liikunta (LI),saksa (B2)",
           valinnaisetLaajuus_SuurempiKuin_2Vuosiviikkotuntia = "saksa (B2)",
           valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = "ruotsi (B1),Kotitalous (KO),Liikunta (LI)",
           numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = ""

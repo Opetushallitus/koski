@@ -64,8 +64,10 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaportti {
     println(henkilö.map(_.oppijaOid))
 
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](opiskeluoikeus.data \ "lähdejärjestelmänId")
-    val (valtakunnalliset, paikalliset) = osasuoritukset.partition(isValtakunnallinenOppiaine(_))
-    val valinnaiset = osasuoritukset.filterNot(isPakollinen)
+    val (valtakunnalliset, paikalliset) = osasuoritukset.partition(isValtakunnallinenOppiaine)
+    val (pakollisetValtakunnalliset, valinnaisetValtakunnalliset) = valtakunnalliset.partition(isPakollinen)
+    val (pakollisetPaikalliset, valinnaisetPaikalliset) = paikalliset.partition(isPakollinen)
+    val kaikkiValinnaiset = valinnaisetPaikalliset.union(valinnaisetValtakunnalliset)
 
     PerusopetusRow(
       opiskeluoikeusOid = opiskeluoikeus.opiskeluoikeusOid,
@@ -76,30 +78,30 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaportti {
       sukunimi = henkilö.map(_.sukunimi),
       etunimet = henkilö.map(_.etunimet),
       viimeisinTila = aikajaksot.last.tila,
-      aidinkieli = getOppiaineenArvosana("AI")(valtakunnalliset),
-      kieliA = getOppiaineenArvosana("A1")(valtakunnalliset),
-      kieliB = getOppiaineenArvosana("B1")(valtakunnalliset),
-      uskonto = getOppiaineenArvosana("KT")(valtakunnalliset),
-      historia = getOppiaineenArvosana("HI")(valtakunnalliset),
-      yhteiskuntaoppi = getOppiaineenArvosana("YH")(valtakunnalliset),
-      matematiikka = getOppiaineenArvosana("MA")(valtakunnalliset),
-      kemia = getOppiaineenArvosana("KE")(valtakunnalliset),
-      fysiikka = getOppiaineenArvosana("FY")(valtakunnalliset),
-      biologia = getOppiaineenArvosana("BI")(valtakunnalliset),
-      maantieto = getOppiaineenArvosana("GE")(valtakunnalliset),
-      musiikki = getOppiaineenArvosana("MU")(valtakunnalliset),
-      kuvataide = getOppiaineenArvosana("KU")(valtakunnalliset),
-      kotitalous = getOppiaineenArvosana("KO")(valtakunnalliset),
-      terveystieto = getOppiaineenArvosana("TE")(valtakunnalliset),
-      kasityo = getOppiaineenArvosana("KS")(valtakunnalliset),
-      liikunta = getOppiaineenArvosana("LI")(valtakunnalliset),
+      aidinkieli = getOppiaineenArvosana("AI")(pakollisetValtakunnalliset),
+      kieliA = getOppiaineenArvosana("A1")(pakollisetValtakunnalliset),
+      kieliB = getOppiaineenArvosana("B1")(pakollisetValtakunnalliset),
+      uskonto = getOppiaineenArvosana("KT")(pakollisetValtakunnalliset),
+      historia = getOppiaineenArvosana("HI")(pakollisetValtakunnalliset),
+      yhteiskuntaoppi = getOppiaineenArvosana("YH")(pakollisetValtakunnalliset),
+      matematiikka = getOppiaineenArvosana("MA")(pakollisetValtakunnalliset),
+      kemia = getOppiaineenArvosana("KE")(pakollisetValtakunnalliset),
+      fysiikka = getOppiaineenArvosana("FY")(pakollisetValtakunnalliset),
+      biologia = getOppiaineenArvosana("BI")(pakollisetValtakunnalliset),
+      maantieto = getOppiaineenArvosana("GE")(pakollisetValtakunnalliset),
+      musiikki = getOppiaineenArvosana("MU")(pakollisetValtakunnalliset),
+      kuvataide = getOppiaineenArvosana("KU")(pakollisetValtakunnalliset),
+      kotitalous = getOppiaineenArvosana("KO")(pakollisetValtakunnalliset),
+      terveystieto = getOppiaineenArvosana("TE")(pakollisetValtakunnalliset),
+      kasityo = getOppiaineenArvosana("KS")(pakollisetValtakunnalliset),
+      liikunta = getOppiaineenArvosana("LI")(pakollisetValtakunnalliset),
       paikallistenOppiaineidenKoodit = paikalliset.map(_.koulutusmoduuliKoodiarvo).mkString(","),
       pakollisetPaikalliset = paikalliset.filter(isPakollinen).map(nimiJaKoodi).mkString(","),
       valinnaisetPaikalliset = paikalliset.filterNot(isPakollinen).map(nimiJaKoodi).mkString(","),
-      valinnaisetValtakunnalliset = osasuoritukset.filter(isValtakunnallinenOppiaine(_, pakollinen = false)).map(nimiJaKoodi).mkString(","),
-      valinnaisetLaajuus_SuurempiKuin_2Vuosiviikkotuntia = valinnaiset.filter(vuosiviikkotunteja(_, _ > _, 2)).map(nimiJaKoodi).mkString(","),
-      valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = valinnaiset.filter(vuosiviikkotunteja(_, _ < _, 2)).map(nimiJaKoodi).mkString(","),
-      numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = valinnaiset.filter(os => vuosiviikkotunteja(os, _ < _, 2) && isNumeroarviollinen(os)).map(nimiJaKoodi).mkString(",")
+      valinnaisetValtakunnalliset = valinnaisetValtakunnalliset.map(nimiJaKoodi).mkString(","),
+      valinnaisetLaajuus_SuurempiKuin_2Vuosiviikkotuntia = kaikkiValinnaiset.filter(vuosiviikkotunteja(_, _ > _, 2)).map(nimiJaKoodi).mkString(","),
+      valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = kaikkiValinnaiset.filter(vuosiviikkotunteja(_, _ < _, 2)).map(nimiJaKoodi).mkString(","),
+      numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = kaikkiValinnaiset.filter(os => vuosiviikkotunteja(os, _ < _, 2) && isNumeroarviollinen(os)).map(nimiJaKoodi).mkString(",")
     )
   }
 
@@ -107,10 +109,9 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaportti {
     "A1", "A2", "AI", "B1", "B2", "B3", "BI", "ET", "FI", "FY", "GE", "HI", "KE", "KO", "KS", "KT", "KU", "LI", "MA", "MU", "OP", "OPA", "PS", "TE", "YH", "YL"
   )
 
-  private def isValtakunnallinenOppiaine(osasuoritus: ROsasuoritusRow, pakollinen: Boolean = true) = {
+  private def isValtakunnallinenOppiaine(osasuoritus: ROsasuoritusRow) = {
     yleissivistäväkoodisto.contains(osasuoritus.koulutusmoduuliKoodiarvo) &&
-      osasuoritus.koulutusmoduuliKoodisto.contains("koskioppiaineetyleissivistava") &&
-      (if (pakollinen) isPakollinen(osasuoritus) else !isPakollinen(osasuoritus))
+      osasuoritus.koulutusmoduuliKoodisto.contains("koskioppiaineetyleissivistava")
   }
 
   private def isPakollinen(osasuoritus: ROsasuoritusRow) = {
