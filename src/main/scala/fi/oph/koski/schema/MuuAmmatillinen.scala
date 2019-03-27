@@ -130,7 +130,7 @@ case class TutkinnonOsaaPienemmänKokonaisuudenSuoritus(
 
 case class TutkinnonOsaaPienempiKokonaisuus(
   tunniste: PaikallinenKoodi,
-  laajuus: Option[LaajuusOsaamispisteissä],
+  laajuus: Option[LaajuusKaikkiYksiköt],
   kuvaus: LocalizedString
 ) extends PaikallinenKoulutusmoduuli
 
