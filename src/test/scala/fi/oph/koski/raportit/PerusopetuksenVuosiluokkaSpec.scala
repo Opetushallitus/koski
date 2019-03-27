@@ -33,6 +33,7 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
           hetu = ynjevi.hetu,
           sukunimi = Some(ynjevi.sukunimi),
           etunimet = Some(ynjevi.etunimet),
+          luokka = "8C",
           viimeisinTila = "lasna",
           aidinkieli = "9",
           kieliA = "8",

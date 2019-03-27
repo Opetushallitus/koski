@@ -33,6 +33,7 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaportti {
     "sukunimi" -> Column("Sukunimi"),
     "etunimet" -> Column("Etunimet"),
     "viimeisinTila" -> Column("Viimeisin tila"),
+    "luokka" -> Column("Luokan tunniste"),
     "aidinkieli" -> Column("Äidinkieli"),
     "kieliA" -> Column("A-kieli"),
     "kieliB" -> Column("B-kieli"),
@@ -61,7 +62,7 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaportti {
   )
 
   private def buildRow(data: (ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROsasuoritusRow])) = {
-    val (opiskeluoikeus, henkilö, aikajaksot, _, osasuoritukset) = data
+    val (opiskeluoikeus, henkilö, aikajaksot, päätasonsuoritukset, osasuoritukset) = data
     println(henkilö.map(_.oppijaOid))
 
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](opiskeluoikeus.data \ "lähdejärjestelmänId")
@@ -79,6 +80,7 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaportti {
       sukunimi = henkilö.map(_.sukunimi),
       etunimet = henkilö.map(_.etunimet),
       viimeisinTila = aikajaksot.last.tila,
+      luokka = päätasonsuoritukset.flatMap(ps => JsonSerializer.extract[Option[String]](ps.data \ "luokka")).mkString(","),
       aidinkieli = getOppiaineenArvosana("AI")(pakollisetValtakunnalliset),
       kieliA = getOppiaineenArvosana("A1")(pakollisetValtakunnalliset),
       kieliB = getOppiaineenArvosana("B1")(pakollisetValtakunnalliset),
@@ -174,6 +176,7 @@ private[raportit] case class PerusopetusRow
   sukunimi: Option[String],
   etunimet: Option[String],
   viimeisinTila: String,
+  luokka: String,
   aidinkieli: String,
   kieliA: String,
   kieliB: String,
