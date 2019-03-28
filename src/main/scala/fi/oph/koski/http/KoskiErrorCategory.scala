@@ -106,6 +106,7 @@ object KoskiErrorCategory {
       val rakenne = new Rakenne
 
       class Tila extends ErrorCategory(Validation.this, "tila", "Suorituksen tilaan liittyvä validointivirhe") {
+        val tyhjänOppiaineenVahvistus = subcategory("tyhjänOppiaineenVahvistus", "Tyhjän oppiaineen suoritus merkitty valmiiksi")
         val vahvistusIlmanArviointia = subcategory("vahvistusIlmanArviointia", "Suoritukselta puuttuu arviointi, vaikka sillä on vahvistus")
         val keskeneräinenOsasuoritus = subcategory("keskeneräinenOsasuoritus", "Valmiiksi merkityllä suorituksella on keskeneräinen osasuoritus")
         val vahvistusPuuttuu = subcategory("vahvistusPuuttuu", "Suoritukselta puuttuu vahvistus, vaikka opiskeluoikeus on tilassa Valmistunut")

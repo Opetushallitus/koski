@@ -304,11 +304,6 @@ case class NuortenPerusopetuksenOppiaineenSuoritus(
 
 @Description("Perusopetuksen yksittäisen oppiaineen oppimäärän suoritus erillisenä kokonaisuutena")
 trait PerusopetuksenOppiaineenOppimääränSuoritus {
-  @Description("Päättötodistukseen liittyvät oppiaineen suoritukset.")
-  @Tooltip("Päättötodistukseen liittyvät oppiaineen suoritukset.")
-  @Title("Oppiaine")
-  @FlattenInUI
-  def koulutusmoduuli: PerusopetuksenOppiaine
   @Title("Arvosana")
   @Tooltip("Oppiaineen kokonaisarvosana")
   @FlattenInUI
@@ -320,7 +315,11 @@ trait PerusopetuksenOppiaineenOppimääränSuoritus {
 }
 
 case class NuortenPerusopetuksenOppiaineenOppimääränSuoritus(
-  koulutusmoduuli: NuortenPerusopetuksenOppiaine,
+  @Description("Päättötodistukseen liittyvät oppiaineen suoritukset.")
+  @Tooltip("Päättötodistukseen liittyvät oppiaineen suoritukset.")
+  @Title("Oppiaine")
+  @FlattenInUI
+  koulutusmoduuli: NuortenPerusopetuksenOppiainenTaiEiTiedossaOppiaine,
   toimipiste: OrganisaatioWithOid,
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   override val vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
@@ -500,13 +499,24 @@ trait PerusopetuksenPaikallinenOppiaine extends PerusopetuksenOppiaine with Paik
   def kuvaus: LocalizedString
 }
 
-trait NuortenPerusopetuksenOppiaine extends PerusopetuksenOppiaine {
+trait NuortenPerusopetuksenOppiainenTaiEiTiedossaOppiaine extends Koulutusmoduuli
+
+trait NuortenPerusopetuksenOppiaine extends PerusopetuksenOppiaine with NuortenPerusopetuksenOppiainenTaiEiTiedossaOppiaine {
   @Tooltip("Oppiaineen laajuus vuosiviikkotunteina.")
   def laajuus: Option[LaajuusVuosiviikkotunneissa]
 }
 
 trait NuortenPerusopetuksenKoodistostaLöytyväOppiaine extends NuortenPerusopetuksenOppiaine with YleissivistavaOppiaine {
   def kuvaus: Option[LocalizedString]
+}
+
+case class EiTiedossaOppiaine(
+  @KoodistoUri("koskioppiaineetyleissivistava")
+  @KoodistoKoodiarvo("XX")
+  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "XX", koodistoUri = "koskioppiaineetyleissivistava"),
+  perusteenDiaarinumero: Option[String] = None
+) extends KoodistostaLöytyväKoulutusmoduuli with NuortenPerusopetuksenOppiainenTaiEiTiedossaOppiaine with LukionOppiaineTaiEiTiedossaOppiaine {
+  override def laajuus: Option[Laajuus] = None
 }
 
 case class NuortenPerusopetuksenPaikallinenOppiaine(

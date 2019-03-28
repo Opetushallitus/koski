@@ -215,6 +215,10 @@ case class ValtakunnallinenAikuistenPerusopetuksenPäättövaiheenKurssi2017(
 ) extends AikuistenPerusopetuksenKurssi with KoodistostaLöytyväKoulutusmoduuli
 
 case class AikuistenPerusopetuksenOppiaineenOppimääränSuoritus(
+  @Description("Päättötodistukseen liittyvät oppiaineen suoritukset.")
+  @Tooltip("Päättötodistukseen liittyvät oppiaineen suoritukset.")
+  @Title("Oppiaine")
+  @FlattenInUI
   koulutusmoduuli: AikuistenPerusopetuksenOppiaine,
   toimipiste: OrganisaatioWithOid,
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,

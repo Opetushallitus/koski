@@ -339,6 +339,22 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "koskioppiaineetyleissivistava_xx",
+  "koodiArvo" : "XX",
+  "metadata" : [ {
+    "nimi" : "Ei tiedossa",
+    "kuvaus" : "Oppiaine ei tiedossa. Käytetään KOSKI-palvelussa perusopetuksen ja lukiokoulutuksen aineopinnoissa silloin, kun opiskelija ei vielä opiskeluoikeuden alkuvaiheessa ole tehnyt yhtään ainevalintaa.",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Okänd",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Unknown",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "koskioppiaineetyleissivistava_yh",
   "koodiArvo" : "YH",
   "metadata" : [ {
