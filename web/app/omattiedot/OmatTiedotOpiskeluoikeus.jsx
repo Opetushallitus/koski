@@ -48,6 +48,7 @@ export class OmatTiedotOpiskeluoikeus extends React.Component {
 const OpiskeluoikeudenTiedot = ({opiskeluoikeus}) => {
   const additionalInformation = modelLookup(opiskeluoikeus, 'lisätiedot')
   const additionalInfoPropertyFilter = prop => !!modelData(prop.model)
+  const omatTiedotExcludedProperties = excludedProperties.concat(['ostettu'])
 
   return (
     <div className="opiskeluoikeuden-tiedot">
@@ -55,7 +56,7 @@ const OpiskeluoikeudenTiedot = ({opiskeluoikeus}) => {
       {modelData(opiskeluoikeus, 'alkamispäivä') && <OpiskeluoikeudenVoimassaoloaika opiskeluoikeus={opiskeluoikeus}/>}
       <PropertiesEditor
         model={opiskeluoikeus}
-        propertyFilter={ p => !excludedProperties.includes(p.key) }
+        propertyFilter={ p => !omatTiedotExcludedProperties.includes(p.key) }
         getValueEditor={ (prop, getDefault) => {
           switch (prop.key) {
             case 'tila': return <OpiskeluoikeudenTilaEditor model={opiskeluoikeus}/>

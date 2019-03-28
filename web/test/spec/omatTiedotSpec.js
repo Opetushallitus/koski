@@ -797,6 +797,22 @@ describe('Omat tiedot', function() {
         })
       })
 
+      describe('Ostettu tietoa', function() {
+        before(
+          authentication.logout,
+          etusivu.openPage,
+          etusivu.login(),
+          wait.until(korhopankki.isReady),
+          korhopankki.login('080154-770R'),
+          wait.until(omattiedot.isVisible),
+          SuoritusjakoPage().avaaOpiskeluoikeus('Autoalan perustutkinto (2000—, läsnä)')
+        )
+
+        it('ei näytetä', function() {
+          expect(extractAsText(S('.opiskeluoikeus-content'))).not.to.contain('Ostettu')
+        })
+      })
+
       describe('Kun Virta-tietoja ei saada haettua', function() {
         before(authentication.logout, etusivu.openPage)
 
