@@ -1212,6 +1212,15 @@
   "Ostettu" : "Ostettu",
   "description:Onko opiskeluoikeuteen liittyvä koulutus/tutkinto ostettu..." : "Onko opiskeluoikeuteen liittyvä koulutus/tutkinto ostettu toiselta koulutustoimijalta (true/false). Jos kentän arvo on true, tällaiseen opiskeluoikeuteen tulisi olla linkitetty ainakin yksi toisen koulutustoimijan opiskeluoikeus.",
   "SuoritustietojenTarkistus-description": "Raportti sisältää ammatillisen koulutuksen opiskeluoikeudet valitulla aikajaksolla sekä näihin liittyvien osasuoritusten tiedot erilaisina summalukuina tietojen oikeellisuuden tarkistamista varten. Raportti pohjautuu viime yön tietoihin, eli tietojen päivitys Koskeen ei näy välittömästi raportilla. Raportin lataaminen voi viedä viisikin minuuttia.",
-  "Suoritustiedot (ammatillinen koulutus)": "Suoritustiedot (ammatillinen koulutus)"
+  "Suoritustiedot (ammatillinen koulutus)": "Suoritustiedot (ammatillinen koulutus)",
+  "tooltip:Huoltajan ilmoittamat ulkomaan opintojaksot alkamis-..." : "Huoltajan ilmoittamat ulkomaan opintojaksot alkamis- ja päättymispäivineen. Rahoituksen laskennassa käytettävä tieto.",
+  "description:Kotiopetusjaksot huoltajan päätöksestä alkamis- ja..." : "Kotiopetusjaksot huoltajan päätöksestä alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole kotiopetuksessa. Rahoituksen laskennassa käytettävä tieto.",
+  "tooltip:Kotiopetusjaksot huoltajan päätöksestä alkamis- ja..." : "Kotiopetusjaksot huoltajan päätöksestä alkamis- ja päättymispäivineen. Rahoituksen laskennassa käytettävä tieto.",
+  "Kotiopetusjaksot" : "Kotiopetusjaksot",
+  "description:Huoltajan ilmoittamat ulkomaan opintojaksot alkamis-..." : "Huoltajan ilmoittamat ulkomaan opintojaksot alkamis- ja päättymispäivineen. Rahoituksen laskennassa käytettävä tieto.",
+  "description:Ulkomaan opintojaksot alkamis- ja päättymispäivineen...." : "Ulkomaan opintojaksot alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole ulkomailla.",
+  "tooltip:Ulkomaan opiontojaksot alkamis- ja päättymispäivineen...." : "Ulkomaan opiontojaksot alkamis- ja päättymispäivineen. Rahoituksen laskennassa käytettävä tieto.",
+  "deprecated:Käytä korvaavaa kenttää Ulkomaanjaksot" : "Käytä korvaavaa kenttää Ulkomaanjaksot",
+  "deprecated:Käytä korvaavaa kenttää Kotiopetusjaksot" : "Käytä korvaavaa kenttää Kotiopetusjaksot"
 }
 

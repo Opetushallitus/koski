@@ -1,3 +1,8 @@
+## 29.3.2019
+
+- Lisätty ulkomaanjaksot ja kotiopetusjaksot-kentät nuorten perusopetuksen lisätietoihin
+- Lisätty ulkomaanjaksot-kenttä aikuiten perusopetuksen lisätietoihin
+
 ## 25.3.2019
 
 - Lisätty ostettu-kenttä ammatillisen opiskeluoikeuteen
