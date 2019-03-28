@@ -448,7 +448,6 @@ trait MuuPerusopetuksenOppiaine extends PerusopetuksenOppiaine {
   @KoodistoKoodiarvo("MU")
   @KoodistoKoodiarvo("BI")
   @KoodistoKoodiarvo("PS")
-  @KoodistoKoodiarvo("KT")
   @KoodistoKoodiarvo("ET")
   @KoodistoKoodiarvo("KO")
   @KoodistoKoodiarvo("FI")
@@ -517,6 +516,17 @@ case class EiTiedossaOppiaine(
   override def laajuus: Option[Laajuus] = None
 }
 
+trait Uskonto {
+  @KoodistoKoodiarvo("KT")
+  def tunniste: Koodistokoodiviite
+  @Description("Mikä uskonto on kyseessä")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @KoodistoUri("uskonnonoppimaara")
+  def uskonnonOppimäärä: Option[Koodistokoodiviite]
+}
+
+trait PerusopetuksenUskonto extends PerusopetuksenOppiaine with Uskonto
+
 case class NuortenPerusopetuksenPaikallinenOppiaine(
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusVuosiviikkotunneissa] = None,
@@ -525,6 +535,15 @@ case class NuortenPerusopetuksenPaikallinenOppiaine(
   @DefaultValue(false)
   pakollinen: Boolean = false
 ) extends NuortenPerusopetuksenOppiaine with PerusopetuksenPaikallinenOppiaine
+
+case class NuortenPerusopetuksenUskonto(
+  tunniste: Koodistokoodiviite,
+  pakollinen: Boolean = true,
+  perusteenDiaarinumero: Option[String] = None,
+  override val laajuus: Option[LaajuusVuosiviikkotunneissa] = None,
+  kuvaus: Option[LocalizedString] = None,
+  uskonnonOppimäärä: Option[Koodistokoodiviite] = None
+) extends PerusopetuksenUskonto with NuortenPerusopetuksenKoodistostaLöytyväOppiaine
 
 case class MuuNuortenPerusopetuksenOppiaine(
   tunniste: Koodistokoodiviite,

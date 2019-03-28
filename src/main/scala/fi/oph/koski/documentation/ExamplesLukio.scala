@@ -144,7 +144,7 @@ object ExamplesLukio {
               kurssisuoritus(syventäväKurssi("KE8", "Kemia 8", "Kemia 8"))
                 .copy(arviointi = sanallinenArviointi("S"))
             ))),
-            suoritus(lukionOppiaine("KT")).copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
+            suoritus(lukionUskonto(uskonto = Some("IS"))).copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("UE1")).copy(arviointi = numeerinenArviointi(8)),
               kurssisuoritus(valtakunnallinenKurssi("UE2")).copy(arviointi = numeerinenArviointi(7)),
               kurssisuoritus(valtakunnallinenKurssi("UE3")).copy(arviointi = numeerinenArviointi(8))
@@ -404,6 +404,14 @@ object LukioExampleData {
 
   def lukionOppiaine(aine: String, laajuus: Option[LaajuusKursseissa] = None, diaarinumero: Option[String] = None) =
     LukionMuuValtakunnallinenOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), perusteenDiaarinumero = diaarinumero, laajuus = laajuus)
+
+  def lukionUskonto(uskonto: Option[String] = None, laajuus: Option[LaajuusKursseissa] = None, diaarinumero: Option[String] = None) = LukionUskonto(
+    tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = "KT"),
+    uskonnonOppimäärä = uskonto.map(u => Koodistokoodiviite(koodistoUri = "uskonnonoppimaara", koodiarvo = u)),
+    perusteenDiaarinumero = diaarinumero,
+    laajuus = laajuus
+  )
+
   def lukionÄidinkieli(kieli: String) = LukionÄidinkieliJaKirjallisuus(kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus"))
   def lukionKieli(oppiaine: String, kieli: String) = VierasTaiToinenKotimainenKieli(
     tunniste = Koodistokoodiviite(koodiarvo = oppiaine, koodistoUri = "koskioppiaineetyleissivistava"),

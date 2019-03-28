@@ -1222,6 +1222,8 @@
   "tooltip:Ulkomaan opiontojaksot alkamis- ja päättymispäivineen...." : "Ulkomaan opiontojaksot alkamis- ja päättymispäivineen. Rahoituksen laskennassa käytettävä tieto.",
   "deprecated:Käytä korvaavaa kenttää Ulkomaanjaksot" : "Käytä korvaavaa kenttää Ulkomaanjaksot",
   "deprecated:Käytä korvaavaa kenttää Kotiopetusjaksot" : "Käytä korvaavaa kenttää Kotiopetusjaksot",
-  "\"Ei tiedossa\"-oppiainetta ei voi merkitä valmiiksi": "\"Ei tiedossa\"-oppiainetta ei voi merkitä valmiiksi"
+  "\"Ei tiedossa\"-oppiainetta ei voi merkitä valmiiksi": "\"Ei tiedossa\"-oppiainetta ei voi merkitä valmiiksi",
+  "description:Mikä uskonto on kyseessä" : "Mikä uskonto on kyseessä",
+  "Uskonnon oppimäärä" : "Uskonnon oppimäärä"
 }
 

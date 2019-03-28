@@ -252,7 +252,6 @@ case class LukionMuuValtakunnallinenOppiaine(
   @KoodistoKoodiarvo("MU")
   @KoodistoKoodiarvo("BI")
   @KoodistoKoodiarvo("PS")
-  @KoodistoKoodiarvo("KT")
   @KoodistoKoodiarvo("ET")
   @KoodistoKoodiarvo("KO")
   @KoodistoKoodiarvo("FI")
@@ -270,6 +269,14 @@ case class LukionMuuValtakunnallinenOppiaine(
   override val laajuus: Option[LaajuusKursseissa] = None,
   perusteenDiaarinumero: Option[String] = None
 ) extends LukionValtakunnallinenOppiaine
+
+case class LukionUskonto(
+  tunniste: Koodistokoodiviite,
+  pakollinen: Boolean = true,
+  perusteenDiaarinumero: Option[String] = None,
+  override val laajuus: Option[LaajuusKursseissa] = None,
+  uskonnonOppimäärä: Option[Koodistokoodiviite] = None
+) extends LukionValtakunnallinenOppiaine with Uskonto
 
 @Title("Äidinkieli ja kirjallisuus")
 @Description("Oppiaineena äidinkieli ja kirjallisuus")

@@ -121,7 +121,7 @@ object ExamplesAikuistenPerusopetus {
       oppiaineenSuoritus(aikuistenPerusopetuksenKieli("B1", "SV")).copy(arviointi = arviointi(8)),
       oppiaineenSuoritus(aikuistenPerusopetuksenKieli("B1", "SV").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = hyväksytty),
       oppiaineenSuoritus(aikuistenPerusopetuksenKieli("A1", "EN")).copy(arviointi = arviointi(8)),
-      oppiaineenSuoritus(aikuistenOppiaine("KT")).copy(arviointi = arviointi(10)),
+      oppiaineenSuoritus(aikuistenUskonto(Some("EV"))).copy(arviointi = arviointi(10)),
       oppiaineenSuoritus(aikuistenOppiaine("HI")).copy(arviointi = arviointi(8)),
       oppiaineenSuoritus(aikuistenOppiaine("YH")).copy(arviointi = arviointi(10)),
       oppiaineenSuoritus(aikuistenOppiaine("MA")).copy(arviointi = arviointi(9)),
@@ -155,7 +155,7 @@ object ExamplesAikuistenPerusopetus {
       oppiaineenSuoritus(aikuistenPerusopetuksenKieli("B1", "SV")).copy(arviointi = arviointi(8)),
       oppiaineenSuoritus(aikuistenPerusopetuksenKieli("B1", "SV").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = hyväksytty),
       oppiaineenSuoritus(aikuistenPerusopetuksenKieli("A1", "EN").copy(laajuus = Some(LaajuusKursseissa(1)))).copy(arviointi = arviointi(8)),
-      oppiaineenSuoritus(aikuistenOppiaine("KT")).copy(arviointi = arviointi(10)),
+      oppiaineenSuoritus(aikuistenUskonto(Some("OR"))).copy(arviointi = arviointi(10)),
       oppiaineenSuoritus(aikuistenOppiaine("HI")).copy(arviointi = arviointi(8)),
       oppiaineenSuoritus(aikuistenOppiaine("YH")).copy(arviointi = arviointi(10)),
       oppiaineenSuoritus(aikuistenOppiaine("MA")).copy(arviointi = arviointi(9)),
@@ -297,6 +297,12 @@ object ExamplesAikuistenPerusopetus {
     kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima"))
 
   def aikuistenOppiaine(aine: String, laajuus: Option[LaajuusVuosiviikkotunneissa] = None) = MuuAikuistenPerusopetuksenOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), laajuus = laajuus)
+
+  def aikuistenUskonto(uskonto: Option[String] = None, laajuus: Option[LaajuusVuosiviikkotunneissa] = None) =
+    AikuistenPerusopetuksenUskonto(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava",
+      koodiarvo = "KT"),
+      laajuus = laajuus,
+      uskonnonOppimäärä = uskonto.map(u => Koodistokoodiviite(koodistoUri = "uskonnonoppimaara", koodiarvo = u)))
 
  def valinnainenAikuistenOppiaine(aine: String, nimi: String, kuvaus: String, laajuus: Option[LaajuusVuosiviikkotunneissa] = None) =
     AikuistenPerusopetuksenPaikallinenOppiaine(tunniste = PaikallinenKoodi(koodiarvo = aine, nimi = nimi), laajuus = laajuus, kuvaus = kuvaus)
