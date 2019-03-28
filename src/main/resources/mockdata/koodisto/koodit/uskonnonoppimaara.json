@@ -1,0 +1,49 @@
+[ {
+  "koodiUri" : "uskonnonoppimaara_ev",
+  "koodiArvo" : "EV",
+  "metadata" : [ {
+    "nimi" : "Evankelis-luterilainen uskonto",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Evangelisk-luthersk tro",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "uskonnonoppimaara_is",
+  "koodiArvo" : "IS",
+  "metadata" : [ {
+    "nimi" : "Islam",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Islam",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "uskonnonoppimaara_mu",
+  "koodiArvo" : "MU",
+  "metadata" : [ {
+    "nimi" : "Muut uskonnot",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Andra religioner",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "uskonnonoppimaara_or",
+  "koodiArvo" : "OR",
+  "metadata" : [ {
+    "nimi" : "Ortodoksinen uskonto",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Ortodox tro",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+} ]
