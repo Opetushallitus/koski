@@ -633,12 +633,19 @@ describe('Lukiokoulutus', function( ){
         before(
           prepareForNewOppija('kalle', '230872-7258'),
           addOppija.enterValidDataLukio(),
-          addOppija.selectOppimäärä('Lukion oppiaineen oppimäärä'),
-          addOppija.selectOppiaine('Biologia'),
-          addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Biologia')
+          addOppija.selectOppimäärä('Lukion oppiaineen oppimäärä')
         )
 
+        it('Ei-tiedossa oppiaine on valittavissa', function() {
+          expect(addOppija.oppiaineet()).to.contain('Ei tiedossa')
+        })
+
         describe('Lisäyksen jälkeen', function () {
+          before(
+            addOppija.selectOppiaine('Biologia'),
+            addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Biologia')
+          )
+
           describe('Opiskeluoikeuden tiedot', function() {
             it('näytetään oikein', function () {
               expect(S('.koulutusmoduuli .tunniste').text()).to.equal('Biologia')
@@ -664,12 +671,18 @@ describe('Lukiokoulutus', function( ){
           prepareForNewOppija('kalle', '230872-7258'),
           addOppija.enterValidDataLukio(),
           addOppija.selectOppimäärä('Lukion oppiaineen oppimäärä'),
-          addOppija.selectPeruste('70/011/2015'),
-          addOppija.selectOppiaine('Biologia'),
-          addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Biologia')
+          addOppija.selectPeruste('70/011/2015')
         )
 
+        it('Ei-tiedossa oppiaine on valittavissa', function() {
+          expect(addOppija.oppiaineet()[0]).to.equal('Ei tiedossa')
+        })
+
         describe('Lisäyksen jälkeen', function () {
+          before(
+            addOppija.selectOppiaine('Biologia'),
+            addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Biologia')
+          )
           describe('Opiskeluoikeuden tiedot', function() {
             it('näytetään oikein', function () {
               expect(S('.koulutusmoduuli .tunniste').text()).to.equal('Biologia')

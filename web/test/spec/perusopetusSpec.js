@@ -2055,6 +2055,16 @@ describe('Perusopetus', function() {
         })
       })
 
+      describe('Ei-tiedossa oppiaine', function() {
+        before(
+          addOppija.selectOppimäärä('Nuorten perusopetuksen oppiaineen oppimäärä')
+        )
+
+        it('on valittavissa', function() {
+          expect(addOppija.oppiaineet()).to.contain('Ei tiedossa')
+        })
+      })
+
       describe('Kun valitaan oppiaineen oppimäärä ja oppiaine', function() {
         before(
           addOppija.selectOppimäärä('Nuorten perusopetuksen oppiaineen oppimäärä'),
@@ -2296,6 +2306,16 @@ describe('Perusopetus', function() {
       describe('Käyttöliittymän tila', function() {
         it('Näytetään oppimäärävaihtoehdot', function() {
           expect(addOppija.oppimäärät()).to.deep.equal(['Aikuisten perusopetuksen oppimäärä', 'Aikuisten perusopetuksen oppimäärän alkuvaihe', 'Perusopetuksen oppiaineen oppimäärä'])
+        })
+      })
+
+      describe('Ei-tiedossa oppiaine', function() {
+        before(
+          addOppija.selectOppimäärä('Perusopetuksen oppiaineen oppimäärä')
+        )
+
+        it('on valittavissa', function() {
+          expect(addOppija.oppiaineet()).to.contain('Ei tiedossa')
         })
       })
 

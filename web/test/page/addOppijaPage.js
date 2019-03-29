@@ -237,6 +237,9 @@ function AddOppijaPage() {
     oppimäärät: function() {
       return pageApi.getInputOptions('.oppimaara .dropdown')
     },
+    oppiaineet : function() {
+      return pageApi.getInputOptions('.oppiaine .dropdown')
+    },
     selectOppimäärä: function(oppimäärä) {
       return selectFromDropdown('.oppimaara .dropdown', oppimäärä)
     },
