@@ -61,12 +61,17 @@ const MerkitseValmiiksiButton = ({model}) => {
       addingAtom.set(false)
     }
   }
-  let keskeneräisiä = onKeskeneräisiäOsasuorituksia(model) || arviointiPuuttuu(model)
-  let buttonText = arvioituTaiVahvistettu(model) ? t('Muokkaa vahvistusta') : t('Merkitse valmiiksi')
+  const disabled = onKeskeneräisiäOsasuorituksia(model) || arviointiPuuttuu(model) || eiTiedossaOppiaine(model)
+  const buttonText = arvioituTaiVahvistettu(model) ? t('Muokkaa vahvistusta') : t('Merkitse valmiiksi')
+  const title = disabled
+    ? t('Ei voi merkitä valmiiksi, koska suorituksessa on keskeneräisiä tai arvioimattomia osasuorituksia.')
+    : eiTiedossaOppiaine(model) ? t('"Ei tiedossa"-oppiainetta ei voi merkitä valmiiksi') : ''
   return (<span>
-    <button className="koski-button merkitse-valmiiksi" title={keskeneräisiä ? t('Ei voi merkitä valmiiksi, koska suorituksessa on keskeneräisiä tai arvioimattomia osasuorituksia.') : ''} disabled={keskeneräisiä} onClick={() => addingAtom.modify(x => !x)}>{buttonText}</button>
+    <button className="koski-button merkitse-valmiiksi" title={title} disabled={disabled} onClick={() => addingAtom.modify(x => !x)}>{buttonText}</button>
     {
       addingAtom.map(adding => adding && <MerkitseSuoritusValmiiksiPopup suoritus={model} resultCallback={merkitseValmiiksiCallback}/>)
     }
   </span>)
 }
+
+const eiTiedossaOppiaine = suoritus => modelData(suoritus, 'koulutusmoduuli.tunniste.koodiarvo') === 'XX'

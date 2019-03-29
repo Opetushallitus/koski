@@ -1221,6 +1221,7 @@
   "description:Ulkomaan opintojaksot alkamis- ja päättymispäivineen...." : "Ulkomaan opintojaksot alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole ulkomailla.",
   "tooltip:Ulkomaan opiontojaksot alkamis- ja päättymispäivineen...." : "Ulkomaan opiontojaksot alkamis- ja päättymispäivineen. Rahoituksen laskennassa käytettävä tieto.",
   "deprecated:Käytä korvaavaa kenttää Ulkomaanjaksot" : "Käytä korvaavaa kenttää Ulkomaanjaksot",
-  "deprecated:Käytä korvaavaa kenttää Kotiopetusjaksot" : "Käytä korvaavaa kenttää Kotiopetusjaksot"
+  "deprecated:Käytä korvaavaa kenttää Kotiopetusjaksot" : "Käytä korvaavaa kenttää Kotiopetusjaksot",
+  "\"Ei tiedossa\"-oppiainetta ei voi merkitä valmiiksi": "\"Ei tiedossa\"-oppiainetta ei voi merkitä valmiiksi"
 }
 
