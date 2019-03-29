@@ -122,7 +122,8 @@ case class AikuistenPerusopetuksenOppiaineenSuoritus(
   suoritustapa: Option[Koodistokoodiviite] = None
 ) extends PerusopetuksenOppiaineenSuoritus with Vahvistukseton with MahdollisestiSuorituskielellinen with SuoritustapanaMahdollisestiErityinenTutkinto
 
-trait AikuistenPerusopetuksenOppiaine extends PerusopetuksenOppiaine {
+trait AikuistenPerusopetuksenOppiainenTaiEiTiedossaOppiaine extends Koulutusmoduuli
+trait AikuistenPerusopetuksenOppiaine extends PerusopetuksenOppiaine with AikuistenPerusopetuksenOppiainenTaiEiTiedossaOppiaine {
   @Tooltip("Oppiaineen laajuus kursseina.")
   def laajuus: Option[LaajuusVuosiviikkotunneissaTaiKursseissa]
 }
@@ -219,7 +220,7 @@ case class AikuistenPerusopetuksenOppiaineenOppimääränSuoritus(
   @Tooltip("Päättötodistukseen liittyvät oppiaineen suoritukset.")
   @Title("Oppiaine")
   @FlattenInUI
-  koulutusmoduuli: AikuistenPerusopetuksenOppiaine,
+  koulutusmoduuli: AikuistenPerusopetuksenOppiainenTaiEiTiedossaOppiaine,
   toimipiste: OrganisaatioWithOid,
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   override val vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
