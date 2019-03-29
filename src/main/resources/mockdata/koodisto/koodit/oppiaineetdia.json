@@ -87,6 +87,15 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "oppiaineetdia_eli",
+  "koodiArvo" : "ELI",
+  "metadata" : [ {
+    "nimi" : "Englanti, lisäkurssi",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "oppiaineetdia_et",
   "koodiArvo" : "ET",
   "metadata" : [ {
@@ -230,6 +239,15 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "oppiaineetdia_rali",
+  "koodiArvo" : "RALI",
+  "metadata" : [ {
+    "nimi" : "Ranska, lisäkurssi",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "oppiaineetdia_ta",
   "koodiArvo" : "TA",
   "metadata" : [ {
@@ -269,6 +287,15 @@
     "nimi" : "Uskonto",
     "lyhytNimi" : "",
     "kuvaus" : "",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetdia_veli",
+  "koodiArvo" : "VELI",
+  "metadata" : [ {
+    "nimi" : "Venäjä, lisäkurssi",
     "kieli" : "FI"
   } ],
   "versio" : 1,
