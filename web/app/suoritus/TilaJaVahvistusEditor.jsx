@@ -61,11 +61,15 @@ const MerkitseValmiiksiButton = ({model}) => {
       addingAtom.set(false)
     }
   }
-  const disabled = onKeskeneräisiäOsasuorituksia(model) || arviointiPuuttuu(model) || eiTiedossaOppiaine(model)
+
+  const keskeneräisiSuorituksia = onKeskeneräisiäOsasuorituksia(model) || arviointiPuuttuu(model)
+  const disabled = keskeneräisiSuorituksia || eiTiedossaOppiaine(model)
   const buttonText = arvioituTaiVahvistettu(model) ? t('Muokkaa vahvistusta') : t('Merkitse valmiiksi')
-  const title = disabled
-    ? t('Ei voi merkitä valmiiksi, koska suorituksessa on keskeneräisiä tai arvioimattomia osasuorituksia.')
-    : eiTiedossaOppiaine(model) ? t('"Ei tiedossa"-oppiainetta ei voi merkitä valmiiksi') : ''
+  const title = eiTiedossaOppiaine(model)
+    ? t('"Ei tiedossa"-oppiainetta ei voi merkitä valmiiksi')
+    : keskeneräisiSuorituksia
+      ? t('Ei voi merkitä valmiiksi, koska suorituksessa on keskeneräisiä tai arvioimattomia osasuorituksia.') : ''
+
   return (<span>
     <button className="koski-button merkitse-valmiiksi" title={title} disabled={disabled} onClick={() => addingAtom.modify(x => !x)}>{buttonText}</button>
     {
