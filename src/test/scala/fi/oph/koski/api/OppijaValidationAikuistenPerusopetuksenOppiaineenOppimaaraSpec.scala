@@ -3,6 +3,7 @@ package fi.oph.koski.api
 import fi.oph.koski.documentation.ExampleData.{suomenKieli, _}
 import fi.oph.koski.documentation.PerusopetusExampleData
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
+import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
 
 // Lukiosuoritusten validointi perustuu tässä testattua diaarinumeroa lukuunottamatta domain-luokista generoituun JSON-schemaan.
@@ -28,4 +29,21 @@ class OppijaValidationAikuistenPerusopetuksenOppiaineenOppimaaraSpec extends Tut
   )
 
   def eperusteistaLöytymätönValidiDiaarinumero: String = "1/011/2004"
+
+  "Ei tiedossa oppiainetta" - {
+    "ei voi vahvistaa" in {
+      val eitiedossa = defaultOpiskeluoikeus.copy(suoritukset = List(AikuistenPerusopetuksenOppiaineenOppimääränSuoritus(
+        koulutusmoduuli = EiTiedossaOppiaine(),
+        toimipiste = jyväskylänNormaalikoulu,
+        arviointi = PerusopetusExampleData.arviointi(9),
+        suoritustapa = PerusopetusExampleData.suoritustapaErityinenTutkinto,
+        vahvistus = vahvistus,
+        suorituskieli = suomenKieli
+      )))
+
+      putOpiskeluoikeus(eitiedossa) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tyhjänOppiaineenVahvistus(""""Ei tiedossa"-oppiainetta ei voi merkitä valmiiksi"""))
+      }
+    }
+  }
 }
