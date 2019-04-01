@@ -3,11 +3,11 @@ package fi.oph.koski.mydata
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.LocalJettyHttpSpecification
 import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.http.HttpTester
+import fi.oph.koski.http.{BasicAuthentication, HttpTester}
 import fi.oph.koski.koskiuser.MockUsers
-import org.scalatest.{FreeSpec, Matchers}
 import org.json4s._
 import org.json4s.jackson.Serialization.write
+import org.scalatest.{FreeSpec, Matchers}
 
 class MyDataAPIProxyServletTest extends FreeSpec with LocalJettyHttpSpecification with Matchers with HttpTester {
 
@@ -44,15 +44,28 @@ class MyDataAPIProxyServletTest extends FreeSpec with LocalJettyHttpSpecificatio
         body should (include (MockOppijat.markkanen.etunimet) and include (MockOppijat.markkanen.sukunimi))
       }
     }
+
+    "Palauttaa 401 mikäli luovutuspalvelukäyttäjän tunnukset ovat väärät" in {
+      KoskiApplicationForTests.mydataRepository.create(opiskelija.oid, memberId)
+
+      val wrongPasswordHeader = Map(BasicAuthentication.basicAuthHeader(MockUsers.luovutuspalveluKäyttäjä.username, "wrong password"))
+      requestOpintoOikeudetWithoutAuthHeaders(opiskelija.hetu.get, wrongPasswordHeader ++ memberHeaders(memberCode)) {
+        status should equal(401)
+      }
+    }
   }
 
   def memberHeaders(memberCode: String) = Map("X-ROAD-MEMBER" -> memberCode)
 
   def requestOpintoOikeudet[A](hetu: String, headers: Map[String, String])(f: => A) = {
+    requestOpintoOikeudetWithoutAuthHeaders(hetu, headers ++ authHeaders(MockUsers.luovutuspalveluKäyttäjä))(f)
+  }
+
+  def requestOpintoOikeudetWithoutAuthHeaders[A](hetu: String, headers: Map[String, String])(f: => A) = {
     post(
       "api/omadata/oppija/",
       write(Map("hetu" -> hetu)),
-      headers = authHeaders(MockUsers.luovutuspalveluKäyttäjä) ++ jsonContent ++ headers
+      headers = jsonContent ++ headers
     )(f)
   }
 }
