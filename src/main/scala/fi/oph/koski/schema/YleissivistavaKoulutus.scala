@@ -1,9 +1,8 @@
 package fi.oph.koski.schema
 
-import java.time.LocalDate
-
-import fi.oph.koski.schema.annotation.{FlattenInUI, KoodistoKoodiarvo, KoodistoUri, OksaUri}
-import fi.oph.scalaschema.annotation.{Description, Title}
+import fi.oph.koski.koskiuser.Rooli
+import fi.oph.koski.schema.annotation._
+import fi.oph.scalaschema.annotation.{DefaultValue, Description, Title}
 
 trait OppiaineenSuoritus extends Suoritus {
   @Title("Oppiaine")
@@ -17,7 +16,10 @@ trait KurssinSuoritus extends Suoritus with Vahvistukseton{
 }
 
 trait Yksilöllistettävä {
-  @Description("Tieto siitä, onko oppiaineen oppimäärä yksilöllistetty (true/false)")
+  @DefaultValue(false)
+  @Description("Tieto siitä, onko oppiaineen oppimäärä yksilöllistetty (true/false). Jos oppilas opiskelee yhdessä yksilöllistetyn oppimäärän mukaan, myös päättöarviointi voi näissä aineissa olla sanallinen.")
+  @Tooltip("Onko oppilas opiskellut oppiaineessa yksilöllisen oppimäärän. Jos oppilas opiskelee yhdessä yksilöllistetyn oppimäärän mukaan, myös päättöarviointi voi näissä aineissa olla sanallinen.")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   def yksilöllistettyOppimäärä: Boolean
 }
 
