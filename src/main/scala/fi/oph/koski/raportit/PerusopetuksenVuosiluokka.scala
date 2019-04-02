@@ -58,13 +58,30 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
     "valinnaisetValtakunnalliset" -> Column("Valinnaiset valtakunnalliset oppiaineet"),
     "valinnaisetLaajuus_SuurempiKuin_2Vuosiviikkotuntia" -> Column("Valinnaiset oppiaineet joiden laajuus on suurempi kuin 2 vuosiviikkotuntia"),
     "valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia" -> Column("Valinnaiset oppiaineet joiden laajuus on pienempi kuin 2 vuosiviikko tuntia"),
-    "numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia" -> Column("Valinnaiset oppiaineet joilla on numeroarviointi ja niiden laajuus on pienempi kuin 2 vuosiviikkotuntia")
+    "numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia" -> Column("Valinnaiset oppiaineet joilla on numeroarviointi ja niiden laajuus on pienempi kuin 2 vuosiviikkotuntia"),
+    "majoitusetu" -> Column("Majoitusetu"),
+    "kuljetusetu" -> Column("Kuljetusetu"),
+    "kotiopetus" -> Column("Kotiopetus"),
+    "ulkomailla" -> Column("Ulkomailla"),
+    "perusopetuksenAloittamistaLykatty" -> Column("Perusopetuksen aloittamista lykätty"),
+    "aloittanutEnnenOppivelvollisuutta" -> Column("Aloittanut ennen oppivelvollisuutta"),
+    "pidennettyOppivelvollisuus" -> Column("Pidennetty oppivelvollisuus"),
+    "tukimuodot" -> Column("Tukimuodot"),
+    "erityisenTuenPaatos" -> Column("Erityisen tuen päätos"),
+    "tehostetunTuenPaatos" -> Column("Tehostetutn tuen päätös"),
+    "joustavaPerusopetus" -> Column("Joustava perusopetus"),
+    "vuosiluokkiinSitoutumatonOpetus" -> Column("Vuosiluokkiin sitoutumaton opetus"),
+    "vammainen" -> Column("Vammainen"),
+    "vaikeastiVammainen" -> Column("Vaikeasti vammainen"),
+    "oikeusMaksuttomaanAsuntolapaikkaan" -> Column("Oikeus maksuttomaan asuntolapaikkaan"),
+    "sisaoppilaitosmainenMaijoitus" -> Column("Sisäoppilaitosmainen majoitus"),
+    "koulutukoti" -> Column("Koulukoti")
   )
 
-  private def buildRow(data: (ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROsasuoritusRow])) = {
+  private def buildRow(data: (ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROsasuoritusRow]), hakupaiva: LocalDate) = {
     val (opiskeluoikeus, henkilö, aikajaksot, päätasonsuoritukset, osasuoritukset) = data
-    println(henkilö.map(_.oppijaOid))
 
+    val opiskeluoikeudenLisätiedot = JsonSerializer.extract[Option[PerusopetuksenOpiskeluoikeudenLisätiedot]](opiskeluoikeus.data \ "lisätiedot")
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](opiskeluoikeus.data \ "lähdejärjestelmänId")
     val (valtakunnalliset, paikalliset) = osasuoritukset.partition(isValtakunnallinenOppiaine)
     val (pakollisetValtakunnalliset, valinnaisetValtakunnalliset) = valtakunnalliset.partition(isPakollinen)
@@ -100,12 +117,29 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
       liikunta = getOppiaineenArvosana("LI")(pakollisetValtakunnalliset),
       ymparistooppi = getOppiaineenArvosana("YL")(pakollisetValtakunnalliset),
       paikallistenOppiaineidenKoodit = paikalliset.map(_.koulutusmoduuliKoodiarvo).mkString(","),
-      pakollisetPaikalliset = paikalliset.filter(isPakollinen).map(nimiJaKoodi).mkString(","),
-      valinnaisetPaikalliset = paikalliset.filterNot(isPakollinen).map(nimiJaKoodi).mkString(","),
+      pakollisetPaikalliset = pakollisetPaikalliset.map(nimiJaKoodi).mkString(","),
+      valinnaisetPaikalliset = valinnaisetPaikalliset.map(nimiJaKoodi).mkString(","),
       valinnaisetValtakunnalliset = valinnaisetValtakunnalliset.map(nimiJaKoodi).mkString(","),
       valinnaisetLaajuus_SuurempiKuin_2Vuosiviikkotuntia = kaikkiValinnaiset.filter(vuosiviikkotunteja(_, _ > _, 2)).map(nimiJaKoodi).mkString(","),
       valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = kaikkiValinnaiset.filter(vuosiviikkotunteja(_, _ < _, 2)).map(nimiJaKoodi).mkString(","),
-      numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = kaikkiValinnaiset.filter(os => vuosiviikkotunteja(os, _ < _, 2) && isNumeroarviollinen(os)).map(nimiJaKoodi).mkString(",")
+      numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = kaikkiValinnaiset.filter(os => vuosiviikkotunteja(os, _ < _, 2) && isNumeroarviollinen(os)).map(nimiJaKoodi).mkString(","),
+      majoitusetu = opiskeluoikeudenLisätiedot.flatMap(_.majoitusetu.map(lisatietoVoimassaHaetullaPaivalla(_, hakupaiva))).getOrElse(false),
+      kuljetusetu = opiskeluoikeudenLisätiedot.flatMap(_.kuljetusetu.map(lisatietoVoimassaHaetullaPaivalla(_, hakupaiva))).getOrElse(false),
+      kotiopetus = opiskeluoikeudenLisätiedot.flatMap(_.kotiopetus.map(lisatietoVoimassaHaetullaPaivalla(_, hakupaiva))).getOrElse(false),
+      ulkomailla = opiskeluoikeudenLisätiedot.flatMap(_.ulkomailla.map(lisatietoVoimassaHaetullaPaivalla(_, hakupaiva))).getOrElse(false),
+      perusopetuksenAloittamistaLykatty = opiskeluoikeudenLisätiedot.map(_.perusopetuksenAloittamistaLykätty).getOrElse(false),
+      aloittanutEnnenOppivelvollisuutta = opiskeluoikeudenLisätiedot.map(_.aloittanutEnnenOppivelvollisuutta).getOrElse(false),
+      pidennettyOppivelvollisuus = opiskeluoikeudenLisätiedot.flatMap(_.pidennettyOppivelvollisuus.map(lisatietoVoimassaHaetullaPaivalla(_, hakupaiva))).getOrElse(false),
+      tukimuodot = false,
+      erityisenTuenPaatos = false,
+      tehostetunTuenPaatos = opiskeluoikeudenLisätiedot.flatMap(_.tehostetunTuenPäätös.map(lisatietoVoimassaHaetullaPaivalla(_, hakupaiva))).getOrElse(false),
+      joustavaPerusopetus = opiskeluoikeudenLisätiedot.flatMap(_.joustavaPerusopetus.map(lisatietoVoimassaHaetullaPaivalla(_, hakupaiva))).getOrElse(false),
+      vuosiluokkiinSitoutumatonOpetus = opiskeluoikeudenLisätiedot.map(_.vuosiluokkiinSitoutumatonOpetus).getOrElse(false),
+      vammainen = false,
+      vaikeastiVammainen = false,
+      oikeusMaksuttomaanAsuntolapaikkaan = opiskeluoikeudenLisätiedot.flatMap(_.oikeusMaksuttomaanAsuntolapaikkaan.map(lisatietoVoimassaHaetullaPaivalla(_, hakupaiva))).getOrElse(false),
+      sisaoppilaitosmainenMaijoitus = false,
+      koulutukoti = false
     )
   }
 
@@ -164,10 +198,16 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
       case _ => false
     }
   }
+
+  private def lisatietoVoimassaHaetullaPaivalla(aikajakso: Aikajakso, paiva: LocalDate) = {
+    (aikajakso.alku, aikajakso.loppu) match {
+      case (alku, Some(loppu)) => !alku.isAfter(paiva) && !loppu.isBefore(paiva)
+      case (alku, _) => !alku.isAfter(paiva)
+    }
+  }
 }
 
-private[raportit] case class PerusopetusRow
-(
+private[raportit] case class PerusopetusRow(
   opiskeluoikeusOid: String,
   lähdejärjestelmä: Option[String],
   lähdejärjestelmänId: Option[String],
@@ -201,5 +241,22 @@ private[raportit] case class PerusopetusRow
   valinnaisetValtakunnalliset: String,
   valinnaisetLaajuus_SuurempiKuin_2Vuosiviikkotuntia: String,
   valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia: String,
-  numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia: String
+  numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia: String,
+  majoitusetu: Boolean,
+  kuljetusetu: Boolean,
+  kotiopetus: Boolean,
+  ulkomailla: Boolean,
+  perusopetuksenAloittamistaLykatty: Boolean,
+  aloittanutEnnenOppivelvollisuutta: Boolean,
+  pidennettyOppivelvollisuus: Boolean,
+  tukimuodot: Boolean,
+  erityisenTuenPaatos: Boolean,
+  tehostetunTuenPaatos: Boolean,
+  joustavaPerusopetus: Boolean,
+  vuosiluokkiinSitoutumatonOpetus: Boolean,
+  vammainen: Boolean,
+  vaikeastiVammainen: Boolean,
+  oikeusMaksuttomaanAsuntolapaikkaan: Boolean,
+  sisaoppilaitosmainenMaijoitus: Boolean,
+  koulutukoti: Boolean
 )

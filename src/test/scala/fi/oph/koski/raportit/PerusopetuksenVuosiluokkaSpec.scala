@@ -4,64 +4,117 @@ import java.time.LocalDate
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsPerusopetus
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.{MockOppijat, OppijaHenkilö}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
+import fi.oph.koski.schema._
 import org.scalatest.{FreeSpec, Matchers}
 
 class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with OpiskeluoikeusTestMethodsPerusopetus {
 
+  val repository = PerusopetuksenRaportitRepository(KoskiApplicationForTests.raportointiDatabase.db)
   resetFixtures
 
   "Perusopetuksenvuosiluokka raportti" - {
     loadRaportointikantaFixtures
 
     "Tuottaa oikeat tiedot" in {
-      val result = PerusopetuksenVuosiluokka.buildRaportti(KoskiApplicationForTests.raportointiDatabase, MockOrganisaatiot.jyväskylänNormaalikoulu, LocalDate.of(2014, 1, 1), LocalDate.of(2015, 12, 12), vuosiluokka = "8")
-      val ynjevi = MockOppijat.ysiluokkalainen
-      val ynjevinOpiskeluoikeusOid = lastOpiskeluoikeus(ynjevi.oid).oid.get
-      val ynjevinRivi = result.find(_.opiskeluoikeusOid == ynjevinOpiskeluoikeusOid)
-      ynjevinRivi shouldBe defined
+      withLisätiedotFixture(MockOppijat.ysiluokkalainen, perusopetuksenOpiskeluoikeudenLisätiedot) {
+        val result = PerusopetuksenVuosiluokka.buildRaportti(repository, MockOrganisaatiot.jyväskylänNormaalikoulu, LocalDate.of(2014, 1, 1), vuosiluokka = "8")
+        val ynjevinOpiskeluoikeusOid = lastOpiskeluoikeus(MockOppijat.ysiluokkalainen.oid).oid.get
+        val rivi = result.find(_.opiskeluoikeusOid == ynjevinOpiskeluoikeusOid)
 
-      val rivi = ynjevinRivi.get
-      rivi should equal(
-        PerusopetusRow(
-          opiskeluoikeusOid = ynjevinOpiskeluoikeusOid,
-          lähdejärjestelmä = None,
-          lähdejärjestelmänId = None,
-          oppijaOid = ynjevi.oid,
-          hetu = ynjevi.hetu,
-          sukunimi = Some(ynjevi.sukunimi),
-          etunimet = Some(ynjevi.etunimet),
-          luokka = "8C",
-          viimeisinTila = "lasna",
-          aidinkieli = "9",
-          kieliA = "8",
-          kieliB = "8",
-          uskonto = "10",
-          historia = "8",
-          yhteiskuntaoppi = "10",
-          matematiikka = "9",
-          kemia = "7",
-          fysiikka = "9",
-          biologia = "9",
-          maantieto = "9",
-          musiikki = "7",
-          kuvataide = "8",
-          kotitalous = "8",
-          terveystieto = "8",
-          kasityo = "9",
-          liikunta = "9",
-          ymparistooppi = "Arvosana puuttuu",
-          paikallistenOppiaineidenKoodit = "TH",
-          pakollisetPaikalliset = "",
-          valinnaisetPaikalliset = "Tietokoneen hyötykäyttö (TH)",
-          valinnaisetValtakunnalliset = "ruotsi (B1),Kotitalous (KO),Liikunta (LI),saksa (B2)",
-          valinnaisetLaajuus_SuurempiKuin_2Vuosiviikkotuntia = "saksa (B2)",
-          valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = "ruotsi (B1),Kotitalous (KO),Liikunta (LI)",
-          numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = ""
+        rivi should equal(
+          Some(
+            PerusopetusRow(
+              opiskeluoikeusOid = ynjevinOpiskeluoikeusOid,
+              lähdejärjestelmä = None,
+              lähdejärjestelmänId = None,
+              oppijaOid = MockOppijat.ysiluokkalainen.oid,
+              hetu = MockOppijat.ysiluokkalainen.hetu,
+              sukunimi = Some(MockOppijat.ysiluokkalainen.sukunimi),
+              etunimet = Some(MockOppijat.ysiluokkalainen.etunimet),
+              luokka = "8C",
+              viimeisinTila = "lasna",
+              aidinkieli = "9",
+              kieliA = "8",
+              kieliB = "8",
+              uskonto = "10",
+              historia = "8",
+              yhteiskuntaoppi = "10",
+              matematiikka = "9",
+              kemia = "7",
+              fysiikka = "9",
+              biologia = "9",
+              maantieto = "9",
+              musiikki = "7",
+              kuvataide = "8",
+              kotitalous = "8",
+              terveystieto = "8",
+              kasityo = "9",
+              liikunta = "9",
+              ymparistooppi = "Arvosana puuttuu",
+              paikallistenOppiaineidenKoodit = "TH",
+              pakollisetPaikalliset = "",
+              valinnaisetPaikalliset = "Tietokoneen hyötykäyttö (TH)",
+              valinnaisetValtakunnalliset = "ruotsi (B1),Kotitalous (KO),Liikunta (LI),saksa (B2)",
+              valinnaisetLaajuus_SuurempiKuin_2Vuosiviikkotuntia = "saksa (B2)",
+              valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = "ruotsi (B1),Kotitalous (KO),Liikunta (LI)",
+              numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = "",
+              majoitusetu = true,
+              kuljetusetu = false,
+              kotiopetus = false,
+              ulkomailla = false,
+              perusopetuksenAloittamistaLykatty = true,
+              aloittanutEnnenOppivelvollisuutta = false,
+              pidennettyOppivelvollisuus = true,
+              tukimuodot = false,
+              erityisenTuenPaatos = false,
+              tehostetunTuenPaatos = true,
+              joustavaPerusopetus = true,
+              vuosiluokkiinSitoutumatonOpetus = true,
+              vammainen = false,
+              vaikeastiVammainen = false,
+              oikeusMaksuttomaanAsuntolapaikkaan = true,
+              sisaoppilaitosmainenMaijoitus = false,
+              koulutukoti = false
+            )
+          )
         )
-      )
+      }
     }
   }
+
+  private def withLisätiedotFixture[T <: PerusopetuksenOpiskeluoikeus](oppija: OppijaHenkilö, lisätiedot: PerusopetuksenOpiskeluoikeudenLisätiedot)(f: => Any) = {
+    val oo = lastOpiskeluoikeus(oppija.oid).asInstanceOf[T].copy(lisätiedot = Some(lisätiedot))
+    putOppija(Oppija(oppija, List(oo))) {
+      loadRaportointikantaFixtures
+      f
+    }
+  }
+
+  private val mennytAikajakso = Aikajakso(LocalDate.of(2000, 1, 1), Some(LocalDate.of(2001, 1, 1)))
+  private val voimassaolevaAikajakso = Aikajakso(LocalDate.of(2008, 1, 1), None)
+  private val aikajakso = voimassaolevaAikajakso.copy(loppu = Some(LocalDate.of(2018, 1, 1)))
+  private val aikajaksot = Some(List(aikajakso))
+  private val tukimuodot = Some(List(Koodistokoodiviite("1", "perusopetuksentukimuoto")))
+
+  private val perusopetuksenOpiskeluoikeudenLisätiedot = PerusopetuksenOpiskeluoikeudenLisätiedot(
+    perusopetuksenAloittamistaLykätty = true,
+    pidennettyOppivelvollisuus = Some(voimassaolevaAikajakso),
+    tukimuodot = tukimuodot,
+    erityisenTuenPäätös = None,
+    erityisenTuenPäätökset = None,
+    tehostetunTuenPäätös = Some(voimassaolevaAikajakso),
+    tehostetunTuenPäätökset = aikajaksot,
+    joustavaPerusopetus = Some(voimassaolevaAikajakso),
+    vuosiluokkiinSitoutumatonOpetus = true,
+    vammainen = aikajaksot,
+    vaikeastiVammainen = aikajaksot,
+    majoitusetu = Some(voimassaolevaAikajakso),
+    kuljetusetu = Some(mennytAikajakso),
+    oikeusMaksuttomaanAsuntolapaikkaan = Some(aikajakso),
+    sisäoppilaitosmainenMajoitus = aikajaksot,
+    koulukoti = aikajaksot
+  )
 }
