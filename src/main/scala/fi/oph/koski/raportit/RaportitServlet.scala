@@ -48,7 +48,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
 
   get("/perusopetuksenvuosiluokka") {
     val parsedRequest = parseVuosiluokkaRequest
-    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=perusopetuksenvuosiluokka&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}&=${parsedRequest.vuosi}")))
+    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=perusopetuksenvuosiluokka&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.paiva}&loppu=${parsedRequest.vuosiluokka}")))
     excelResponse(raportitService.perusopetuksenVuosiluokka(parsedRequest))
   }
 
@@ -72,14 +72,14 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
     AikajaksoRaporttiRequest(oppilaitosOid, downloadToken, password, alku, loppu)
   }
 
-  private def parseVuosiluokkaRequest: VuosiluokkaRaporttiRequest = {
-    val oppilaitosOid = getOppilaitosParamAndCheckAccess
-    val (alku, loppu) = getAlkuLoppuParams
-    val password = getStringParam("password")
-    val downloadToken = params.get("downloadToken")
-    val vuosi = getStringParam("vuosiluokka")
-
-   VuosiluokkaRaporttiRequest(oppilaitosOid, downloadToken, password, alku, loppu, vuosi)
+  private def parseVuosiluokkaRequest: PerusopetuksenVuosiluokkaRequest = {
+   PerusopetuksenVuosiluokkaRequest(
+     oppilaitosOid = getOppilaitosParamAndCheckAccess,
+     downloadToken = params.get("downloadToken"),
+     password = getStringParam("password"),
+     paiva = getLocalDateParam("paiva"),
+     vuosiluokka = getStringParam("vuosiluokka")
+   )
   }
 
   private def getOppilaitosParamAndCheckAccess: Organisaatio.Oid = {
@@ -95,13 +95,17 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
   }
 
   private def getAlkuLoppuParams: (LocalDate, LocalDate) = {
+    val alku = getLocalDateParam("alku")
+    val loppu = getLocalDateParam("loppu")
+    if (loppu.isBefore(alku)) {
+      haltWithStatus(KoskiErrorCategory.badRequest.format.pvm("loppu ennen alkua"))
+    }
+    (alku, loppu)
+  }
+
+  private def getLocalDateParam(param: String): LocalDate = {
     try {
-      val alku = LocalDate.parse(getStringParam("alku"))
-      val loppu = LocalDate.parse(getStringParam("loppu"))
-      if (loppu.isBefore(alku)) {
-        haltWithStatus(KoskiErrorCategory.badRequest.format.pvm("loppu ennen alkua"))
-      }
-      (alku, loppu)
+      LocalDate.parse(getStringParam(param))
     } catch {
       case e: DateTimeParseException => haltWithStatus(KoskiErrorCategory.badRequest.format.pvm())
     }

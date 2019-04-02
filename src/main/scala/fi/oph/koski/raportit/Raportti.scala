@@ -24,14 +24,14 @@ private[raportit] trait AikajaksoRaportti extends Raportti {
   def name: String = this.getClass.getSimpleName.toLowerCase.filterNot(_ == '$')
 }
 
-private[raportit] trait VuosiluokkaRaportti extends Raportti {
-  def title(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, vuosiluokka: String): String
+private[raportit] trait VuosiluokkaRaporttiPaivalta extends Raportti {
+  def title(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String
 
-  def documentation(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, loadCompleted: Timestamp): String
+  def documentation(oppilaitosOid: String, alku: LocalDate, vuosiluokka: String, loadCompleted: Timestamp): String
 
-  def filename(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, vuosiluokka: String): String
+  def filename(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String
 
-  def buildRaportti(raportointiDatabase: RaportointiDatabase, oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate, vuosiluokka: String): Seq[Product]
+  def buildRaportti(raportointiDatabase: PerusopetuksenRaportitRepository, oppilaitosOid: Organisaatio.Oid, paiva: LocalDate, vuosiluokka: String): Seq[Product]
 }
 
 private[raportit] trait OppilaitosRaporttiRequest {
@@ -42,8 +42,7 @@ private[raportit] trait OppilaitosRaporttiRequest {
   def password: String
 }
 
-private[raportit] case class AikajaksoRaporttiRequest
-(
+private[raportit] case class AikajaksoRaporttiRequest(
   oppilaitosOid: Organisaatio.Oid,
   downloadToken: Option[String],
   password: String,
@@ -51,14 +50,12 @@ private[raportit] case class AikajaksoRaporttiRequest
   loppu: LocalDate,
 ) extends OppilaitosRaporttiRequest
 
-private[raportit] case class VuosiluokkaRaporttiRequest
-(
+private[raportit] case class PerusopetuksenVuosiluokkaRequest(
   oppilaitosOid: Organisaatio.Oid,
   downloadToken: Option[String],
   password: String,
-  alku: LocalDate,
-  loppu: LocalDate,
-  vuosi: String
+  paiva: LocalDate,
+  vuosiluokka: String
 ) extends OppilaitosRaporttiRequest
 
 private[raportit] case class OppilaitosRaporttiResponse

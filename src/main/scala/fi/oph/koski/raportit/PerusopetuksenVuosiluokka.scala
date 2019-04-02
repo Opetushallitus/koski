@@ -5,23 +5,23 @@ import java.time.LocalDate
 
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.raportointikanta._
-import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString, LähdejärjestelmäId, PerusopetuksenOppiaine}
+import fi.oph.koski.schema.{Aikajakso, LocalizedString, LähdejärjestelmäId, PerusopetuksenOpiskeluoikeudenLisätiedot}
 import fi.oph.koski.schema.Organisaatio.Oid
 import org.json4s.JValue
 
-object PerusopetuksenVuosiluokka extends VuosiluokkaRaportti {
+object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
 
-  def buildRaportti(raportointiDatabase: RaportointiDatabase, oppilaitosOid: Oid, alku: LocalDate, loppu: LocalDate, vuosiluokka: String): Seq[PerusopetusRow] = {
-    val rows: Seq[(ROpiskeluoikeusRow, Option[RHenkilöRow], List[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROsasuoritusRow])] = raportointiDatabase.perusopetuksenvuosiluokka(oppilaitosOid, alku, loppu, vuosiluokka)
-    rows.map(buildRow(_))
+  def buildRaportti(repository: PerusopetuksenRaportitRepository, oppilaitosOid: Oid, paiva: LocalDate, vuosiluokka: String): Seq[PerusopetusRow] = {
+    val rows: Seq[(ROpiskeluoikeusRow, Option[RHenkilöRow], List[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROsasuoritusRow])] = repository.perusopetuksenvuosiluokka(oppilaitosOid, paiva, vuosiluokka)
+    rows.map(buildRow(_, paiva))
   }
 
-  def title(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, vuosiluokka: String): String = "TITLE TODO"
+  def title(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String = "TITLE TODO"
 
-  def documentation(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, loadCompleted: Timestamp): String = "Dokumentaatio TODO"
+  def documentation(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String, loadCompleted: Timestamp): String = "Dokumentaatio TODO"
 
-  def filename(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, vuosiluokka: String): String = {
-    s"Perusopeutuksen_vuosiluokka:${vuosiluokka}_${alku}_${loppu}.xlsx"
+  def filename(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String = {
+    s"Perusopeutuksen_vuosiluokka:${vuosiluokka}_${paiva}.xlsx"
   }
 
   val columnSettings: Seq[(String, Column)] = Seq(
