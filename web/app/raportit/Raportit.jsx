@@ -82,10 +82,10 @@ const SuoritustietojenTarkistus = ({oppilaitosAtom}) => {
 }
 
 const PerusopetuksenVuosiluokka = ({oppilaitosAtom}) => {
-  const titleText = <Text name='PerusopetuksenVuosiluokka'/>
+  const titleText = <Text name='Perusopetuksen Vuosiluokka'/>
   const descriptionText = <Text name='PerusopetuksenVuosiluokka-description'/>
 
-  return (<AikajaksoRaportti
+  return (<VuosiluokkaRaporttiPaivalta
     oppilaitosAtom={oppilaitosAtom}
     apiEndpoint={'/perusopetuksenvuosiluokka'}
     title={titleText}
@@ -128,6 +128,55 @@ const AikajaksoRaportti = ({oppilaitosAtom, apiEndpoint, title, description}) =>
     <button className='koski-button' disabled={submitEnabledP.not()} onClick={e => { e.preventDefault(); submitBus.push(); return false }}>{buttonTextP}</button>
   </section>)
 }
+
+const VuosiluokkaRaporttiPaivalta = ({oppilaitosAtom, apiEndpoint, title, description}) => {
+  const paivaAtom = Atom()
+  const vuosiluokkaAtom = Atom('')
+  const submitBus = Bacon.Bus()
+
+  const password = generateRandomPassword()
+
+  const validateVuosiluokka = vuosiluokka => vuosiluokka.match(/(^|[1-9])$/)
+
+  const downloadExcelP = Bacon.combineWith(
+    oppilaitosAtom, paivaAtom, vuosiluokkaAtom,
+    (o, p, v) => o && p && validateVuosiluokka(v) && ({oppilaitosOid: o.oid, paiva: formatISODate(p), vuosiluokka:(v), password, baseUrl: `/koski/api/raportit${apiEndpoint}`})
+  )
+  const downloadExcelE = submitBus.map(downloadExcelP)
+    .flatMapLatest(downloadExcel)
+
+  downloadExcelE.onError(e => { showError(e) })
+
+  const inProgressP = submitBus.awaiting(downloadExcelE.mapError())
+  const submitEnabledP = downloadExcelP.map(x => !!x).and(inProgressP.not())
+  const buttonTextP = inProgressP.map((inProgress) => <Text name={!inProgress ? 'Lataa Excel-tiedosto' : 'Ladataan...'}/>)
+
+  return (<section>
+    <h2>{title}</h2>
+    <p>{description}</p>
+    <div className='aloituspaiva'>
+      <div className='date-range'>
+        <label><Text name='Päivä'/></label>
+        <DateInput value={paivaAtom.get()} valueCallback={(value) => paivaAtom.set(value)} validityCallback={(valid) => !valid && paivaAtom.set(undefined)} />
+        <VuosiluokkaInput value={vuosiluokkaAtom} valueCallback={(value) => vuosiluokkaAtom.set(value)} validator={validateVuosiluokka}/>
+      </div>
+    </div>
+    <div className='password'><Text name='Excel-tiedosto on suojattu salasanalla'/> {password}</div>
+    <button className='koski-button' disabled={submitEnabledP.not()} onClick={e => { e.preventDefault(); submitBus.push(); return false }}>{buttonTextP}</button>
+  </section>)
+}
+
+const VuosiluokkaInput = ({value, valueCallback, validator}) => (
+  <div>
+  {value.map(v => (
+    <div className={validator(v) ? '' : 'error'}>
+      <label><Text name='Vuosiluokka'/></label>
+      <input type={'text'} value={v} onChange={(input) => valueCallback(input.target.value)} />
+    </div>
+  ))
+  }
+  </div>
+)
 
 const downloadExcel = (params) => {
   let iframe = document.getElementById('raportti-iframe')
