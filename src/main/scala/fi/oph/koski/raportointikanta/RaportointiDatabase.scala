@@ -231,7 +231,7 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
         (
           opiskeluoikeus,
           henkilot.get(opiskeluoikeus.oppijaOid),
-          aikajakso,
+          aikajakso.map(_.truncateToDates(alkuDate, loppuDate)).sortBy(_.alku)(sqlDateOrdering),
           paatasonSuoritukset.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Seq.empty).sortBy(_.opiskeluoikeusOid),
           osasuoritukset.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Seq.empty).sortBy(_.opiskeluoikeusOid)
         )

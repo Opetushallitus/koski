@@ -7,6 +7,7 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString, LähdejärjestelmäId, PerusopetuksenOppiaine}
 import fi.oph.koski.schema.Organisaatio.Oid
+import org.json4s.JValue
 
 object PerusopetuksenVuosiluokka extends VuosiluokkaRaportti {
 
@@ -20,10 +21,43 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaportti {
   def documentation(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, loadCompleted: Timestamp): String = "Dokumentaatio TODO"
 
   def filename(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, vuosiluokka: String): String = {
-    s"Perusopeutuksen_vuosiluokka:${vuosiluokka}_${alku}_${loppu}"
+    s"Perusopeutuksen_vuosiluokka:${vuosiluokka}_${alku}_${loppu}.xlsx"
   }
 
-  val columnSettings: Seq[(String, Column)] = Seq.empty
+  val columnSettings: Seq[(String, Column)] = Seq(
+    "opiskeluoikeusOid" -> Column("Opiskeluoikeuden oid"),
+    "lähdejärjestelmä" -> Column("Lähdejärjestelmä"),
+    "lähdejärjestelmänId" -> Column("Opiskeluoikeuden tunniste lähdejärjestelmässä"),
+    "oppijaOid" -> Column("Oppijan oid"),
+    "hetu" -> Column("hetu"),
+    "sukunimi" -> Column("Sukunimi"),
+    "etunimet" -> Column("Etunimet"),
+    "viimeisinTila" -> Column("Viimeisin tila"),
+    "aidinkieli" -> Column("Äidinkieli"),
+    "kieliA" -> Column("A-kieli"),
+    "kieliB" -> Column("B-kieli"),
+    "uskonto" -> Column("Uskonto"),
+    "historia" -> Column("Historia"),
+    "yhteiskuntaoppi" -> Column("Yhteiskuntaoppi"),
+    "matematiikka" -> Column("Matematiikka"),
+    "kemia" -> Column("Kemia"),
+    "fysiikka" -> Column("Fysiikka"),
+    "biologia" -> Column("Biologia"),
+    "maantieto" -> Column("Maantieto"),
+    "musiikki" -> Column("Musiikki"),
+    "kuvataide" -> Column("Kuvataide"),
+    "kotitalous" -> Column("Kotitalous"),
+    "terveystieto" -> Column("Terveystieto"),
+    "kasityo" -> Column("Kasityo"),
+    "liikunta" -> Column("Liikunta"),
+    "paikallistenOppiaineidenKoodit" -> Column("Paikallisten oppiaineden koodit"),
+    "pakollisetPaikalliset" -> Column("Pakolliset paikalliset oppiaineet"),
+    "valinnaisetPaikalliset" -> Column("Valinnaiset paikaliset oppiaineet"),
+    "valinnaisetValtakunnalliset" -> Column("Valinnaiset valtakunnalliset oppiaineet"),
+    "valinnaisetLaajuus_SuurempiKuin_2Vuosiviikkotuntia" -> Column("Valinnaiset oppiaineet joiden laajuus suurempi kuin 2 vuosiviikkotuntia"),
+    "valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia" -> Column("Valinnaiset oppiaineet joiden laajuus on suurempi kuin 2 vuosiviikko tuntia"),
+    "numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia" -> Column("Valinnaiset oppiaineet joilla on numero arviointi ja niiden laajuus on pienempi kuin 2 vuosiviikkotuntia")
+  )
 
   private def buildRow(data: (ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROsasuoritusRow])) = {
     val (opiskeluoikeus, henkilö, aikajaksot, _, osasuoritukset) = data
@@ -63,9 +97,9 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaportti {
       pakollisetPaikalliset = paikalliset.filter(isPakollinen).map(nimiJaKoodi).mkString(","),
       valinnaisetPaikalliset = paikalliset.filterNot(isPakollinen).map(nimiJaKoodi).mkString(","),
       valinnaisetValtakunnalliset = osasuoritukset.filter(isValtakunnallinenOppiaine(_, pakollinen = false)).map(nimiJaKoodi).mkString(","),
-      valinnaisetLaajuus_SuurempiKuin_2Vuosiviikkotuntia = valinnaiset.filter(vuosiviikkotuntejaEnemmänKuin(_, 2)).map(nimiJaKoodi).mkString(","),
-      valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = valinnaiset.filter(vuosiviikkotutuntejaVähemmänKuin(_, 2)).map(nimiJaKoodi).mkString(","),
-      numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = valinnaiset.filter(vuosiviikkotutuntejaVähemmänKuin(_, 2)).filter(isNumeroarviollinen).map(nimiJaKoodi).mkString(",")
+      valinnaisetLaajuus_SuurempiKuin_2Vuosiviikkotuntia = valinnaiset.filter(vuosiviikkotunteja(_, _ > _, 2)).map(nimiJaKoodi).mkString(","),
+      valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = valinnaiset.filter(vuosiviikkotunteja(_, _ < _, 2)).map(nimiJaKoodi).mkString(","),
+      numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = valinnaiset.filter(os => vuosiviikkotunteja(os, _ < _, 2) && isNumeroarviollinen(os)).map(nimiJaKoodi).mkString(",")
     )
   }
 
@@ -93,41 +127,36 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaportti {
   }
 
   private def nimiJaKoodi(osasuoritus: ROsasuoritusRow) = {
-    val koulutusmoduuliNimi = JsonSerializer.extract[Option[LocalizedString]](osasuoritus.data \ "koulutusmoduuli" \ "tunniste" \"nimi")
-    val nimi = koulutusmoduuliNimi match {
-      case Some(moduuli) => moduuli.get("fi")
+    val jsonb = osasuoritus.data
+    val kieliAine = getFinnishNimi(jsonb \ "koulutusmoduuli" \ "kieli" \ "nimi")
+    val tunnisteNimi = getFinnishNimi(jsonb \ "koulutusmoduuli" \ "tunniste" \ "nimi")
+
+    val kurssinNimi = (kieliAine, tunnisteNimi) match {
+      case (Some(kieli), _) => kieli
+      case (_, Some(nimi)) => nimi
       case _ => ""
     }
-
-    kielenNimi(osasuoritus) match {
-      case Some(kieli) => s"${nimi} (${osasuoritus.koulutusmoduuliKoodiarvo}) ${kieli}"
-      case _ => s"${nimi} (${osasuoritus.koulutusmoduuliKoodiarvo})"
-    }
+    s"${kurssinNimi} (${osasuoritus.koulutusmoduuliKoodiarvo})"
   }
 
-  private def kielenNimi(osasuoritus: ROsasuoritusRow) = {
-    JsonSerializer.extract[Option[LocalizedString]](osasuoritus.data \ "koulutusmoduuli" \ "kieli" \ "nimi") match {
-      case Some(kieli) => Option(kieli.get("fi"))
+  private def getFinnishNimi(j: JValue) = {
+    JsonSerializer.extract[Option[LocalizedString]](j) match {
+      case Some(nimi) => Option(nimi.get("fi"))
       case _ => None
     }
   }
 
   private val vuosiviikkotunnitKoodistoarvo = "3"
 
-  private def vuosiviikkotuntejaEnemmänKuin(osasuoritus: ROsasuoritusRow, value: Float) = {
-    osasuoritus.koulutusmoduuliLaajuusYksikkö == vuosiviikkotunnitKoodistoarvo &&
-      osasuoritus.koulutusmoduuliLaajuusArvo.exists(_ > value)
-  }
-
-  private def vuosiviikkotutuntejaVähemmänKuin(osasuoritus: ROsasuoritusRow, value: Float) = {
-    osasuoritus.koulutusmoduuliLaajuusYksikkö == vuosiviikkotunnitKoodistoarvo &&
-      osasuoritus.koulutusmoduuliLaajuusArvo.exists(_ < value)
+  private def vuosiviikkotunteja(osasuoritus: ROsasuoritusRow, op: (Float, Float) => Boolean, threshold: Float) = {
+    osasuoritus.koulutusmoduuliLaajuusYksikkö.contains(vuosiviikkotunnitKoodistoarvo) &&
+      op(osasuoritus.koulutusmoduuliLaajuusArvo.getOrElse(-1), threshold)
   }
 
   private def isNumeroarviollinen(osasuoritus: ROsasuoritusRow) = {
     osasuoritus.arviointiArvosanaKoodiarvo match {
       case Some(arvosana) => arvosana forall Character.isDigit
-      case _=> false
+      case _ => false
     }
   }
 }
