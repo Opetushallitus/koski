@@ -3,6 +3,7 @@ package fi.oph.koski.json
 import java.time.LocalDate
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.documentation.PerusopetusExampleData.{oppiaine, suoritus}
 import fi.oph.koski.documentation.{ExamplesPerusopetuksenLisaopetus, PerusopetusExampleData}
 import fi.oph.koski.koskiuser.{KäyttöoikeusRepository, MockUsers}
 import fi.oph.koski.localization.LocalizedStringImplicits._
@@ -27,6 +28,7 @@ class SensitiveDataFilterSpec extends FreeSpec with Matchers {
     roundtrip[SanallinenPerusopetuksenOppiaineenArviointi](sanallinenPerusopetuksenOppiaineenArviointi).kuvaus should equal(None)
     roundtrip[PerusopetuksenKäyttäytymisenArviointi](perusopetuksenKäyttäytymisenArviointi).kuvaus should equal(None)
     roundtrip[PerusopetuksenLisäopetuksenOppiaineenSuoritus](perusopetuksenLisäopetuksenOppiaineenSuoritus).yksilöllistettyOppimäärä should equal(false)
+    roundtrip[NuortenPerusopetuksenOppiaineenSuoritus](nuortenPerusopetuksenOppiaineenSuoritus).yksilöllistettyOppimäärä should equal(false)
   }
 
   "Käyttäjä jolla on kaikki luottamuksellisten tietojen oikeudet näkee kaikki arkaluontoiset tiedot" in {
@@ -42,6 +44,7 @@ class SensitiveDataFilterSpec extends FreeSpec with Matchers {
     roundtrip[SanallinenPerusopetuksenOppiaineenArviointi](sanallinenPerusopetuksenOppiaineenArviointi) should equal(sanallinenPerusopetuksenOppiaineenArviointi)
     roundtrip[PerusopetuksenKäyttäytymisenArviointi](perusopetuksenKäyttäytymisenArviointi) should equal(perusopetuksenKäyttäytymisenArviointi)
     roundtrip[PerusopetuksenLisäopetuksenOppiaineenSuoritus](perusopetuksenLisäopetuksenOppiaineenSuoritus) should equal(perusopetuksenLisäopetuksenOppiaineenSuoritus)
+    roundtrip[NuortenPerusopetuksenOppiaineenSuoritus](nuortenPerusopetuksenOppiaineenSuoritus) should equal(nuortenPerusopetuksenOppiaineenSuoritus)
   }
 
   "Käyttäjä jolla on uusi kaikkiin luottamuksellisiin tietoihin oikeuttava käyttöoikeus näkee kaikki arkaluontoiset tiedot" in {
@@ -57,6 +60,7 @@ class SensitiveDataFilterSpec extends FreeSpec with Matchers {
     roundtrip[SanallinenPerusopetuksenOppiaineenArviointi](sanallinenPerusopetuksenOppiaineenArviointi) should equal(sanallinenPerusopetuksenOppiaineenArviointi)
     roundtrip[PerusopetuksenKäyttäytymisenArviointi](perusopetuksenKäyttäytymisenArviointi) should equal(perusopetuksenKäyttäytymisenArviointi)
     roundtrip[PerusopetuksenLisäopetuksenOppiaineenSuoritus](perusopetuksenLisäopetuksenOppiaineenSuoritus) should equal(perusopetuksenLisäopetuksenOppiaineenSuoritus)
+    roundtrip[NuortenPerusopetuksenOppiaineenSuoritus](nuortenPerusopetuksenOppiaineenSuoritus) should equal(nuortenPerusopetuksenOppiaineenSuoritus)
   }
 
   "Käyttäjä jolla on suppeat luottamuksellisten tietojen oikeudet näkee suppeiden oikeuksien mukaiset arkaluontoiset tiedot" in {
@@ -72,6 +76,7 @@ class SensitiveDataFilterSpec extends FreeSpec with Matchers {
     roundtrip[SanallinenPerusopetuksenOppiaineenArviointi](sanallinenPerusopetuksenOppiaineenArviointi).kuvaus should equal(None)
     roundtrip[PerusopetuksenKäyttäytymisenArviointi](perusopetuksenKäyttäytymisenArviointi).kuvaus should equal(None)
     roundtrip[PerusopetuksenLisäopetuksenOppiaineenSuoritus](perusopetuksenLisäopetuksenOppiaineenSuoritus).yksilöllistettyOppimäärä should equal(false)
+    roundtrip[NuortenPerusopetuksenOppiaineenSuoritus](nuortenPerusopetuksenOppiaineenSuoritus).yksilöllistettyOppimäärä should equal(false)
   }
 
   "Käyttäjä jolla on laajat luottamuksellisten tietojen oikeudet näkee laajojen oikeuksien mukaiset arkaluontoiset tiedot" in {
@@ -87,6 +92,7 @@ class SensitiveDataFilterSpec extends FreeSpec with Matchers {
     roundtrip[SanallinenPerusopetuksenOppiaineenArviointi](sanallinenPerusopetuksenOppiaineenArviointi).kuvaus should equal(None)
     roundtrip[PerusopetuksenKäyttäytymisenArviointi](perusopetuksenKäyttäytymisenArviointi).kuvaus should equal(None)
     roundtrip[PerusopetuksenLisäopetuksenOppiaineenSuoritus](perusopetuksenLisäopetuksenOppiaineenSuoritus).yksilöllistettyOppimäärä should equal(false)
+    roundtrip[NuortenPerusopetuksenOppiaineenSuoritus](nuortenPerusopetuksenOppiaineenSuoritus).yksilöllistettyOppimäärä should equal(false)
   }
 
   private val pvm = LocalDate.of(2001, 1, 1)
@@ -172,6 +178,8 @@ class SensitiveDataFilterSpec extends FreeSpec with Matchers {
   )
 
   private val perusopetuksenLisäopetuksenOppiaineenSuoritus = ExamplesPerusopetuksenLisaopetus.suoritus(PerusopetusExampleData.oppiaine("HI")).copy(yksilöllistettyOppimäärä = true)
+
+  private val nuortenPerusopetuksenOppiaineenSuoritus = suoritus(oppiaine("MA")).copy(yksilöllistettyOppimäärä = true)
 
   private def roundtrip[T: TypeTag](input: T)(implicit user: SensitiveDataAllowed): T =
     JsonSerializer.extract[T](JsonSerializer.serialize(input))

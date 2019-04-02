@@ -289,8 +289,6 @@ sealed trait OppiaineenTaiToiminta_AlueenSuoritus extends Suoritus with Mahdolli
 @Description("Perusopetuksen oppiaineen suoritus osana perusopetuksen oppimäärän tai vuosiluokan suoritusta")
 case class NuortenPerusopetuksenOppiaineenSuoritus(
   koulutusmoduuli: NuortenPerusopetuksenOppiaine,
-  @Description("Jos oppilas opiskelee yhdessä yksilöllistetyn oppimäärän mukaan, myös päättöarviointi voi näissä aineissa olla sanallinen.")
-  @Tooltip("Onko oppilas opiskellut oppiaineessa yksilöllisen oppimäärän. Jos oppilas opiskelee yhdessä yksilöllistetyn oppimäärän mukaan, myös päättöarviointi voi näissä aineissa olla sanallinen.")
   yksilöllistettyOppimäärä: Boolean = false,
   @Description("Tieto siitä, onko oppiaineen opetus painotettu (true/false). Painotetun opetuksen (oppiaine tai oppiainekokonaisuus, kaksikielinen opetus) tavoitteet ja arviointiperusteet ovat valtakunnallisen opetussuunnitelman perusteiden mukaiset.")
   @Tooltip("Onko oppilas ollut oppiaineessa painotetussa opetuksessa. Painotetun opetuksen (oppiaine tai oppiainekokonaisuus, kaksikielinen opetus) tavoitteet ja arviointiperusteet ovat valtakunnallisen opetussuunnitelman perusteiden mukaiset.")
