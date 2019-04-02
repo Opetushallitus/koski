@@ -13,7 +13,7 @@ import fi.oph.koski.schema.Organisaatio
 
 case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods with RaportointikantaTableQueries {
 
-  def perusopetuksenvuosiluokka(oppilaitos: Organisaatio.Oid, paiva: LocalDate, vuosiluokka: String): Seq[(ROpiskeluoikeusRow, Option[RHenkilöRow], List[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROsasuoritusRow])] = {
+  def perusopetuksenvuosiluokka(oppilaitos: Organisaatio.Oid, paiva: LocalDate, vuosiluokka: String): Seq[(ROpiskeluoikeusRow, Option[RHenkilöRow], List[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROsasuoritusRow], Seq[String])] = {
     val paivaDate = Date.valueOf(paiva)
 
     val opiskeluoikeudetJaAikajaksotQuery = ROpiskeluoikeudet
@@ -29,6 +29,16 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
       .filter(_.suorituksenTyyppi === "perusopetuksenvuosiluokka")
       .filter(_.koulutusmoduuliKoodiarvo === vuosiluokka)
     val paatasonSuoritukset: Map[String, Seq[RPäätasonSuoritusRow]] = runDbSync(paatasonSuorituksetQuery.result, timeout = 5.minutes).groupBy(_.opiskeluoikeusOid)
+
+    val voimassaolevatVuosiluokkaSuorituksetQuery = RPäätasonSuoritukset
+      .filter(_.opiskeluoikeusOid inSet result1.map(_._1.opiskeluoikeusOid).distinct)
+      .filter(_.suorituksenTyyppi === "perusopetuksenvuosiluokka")
+      .filter(_.vahvistusPäivä.isEmpty)
+      .map(row => (row.opiskeluoikeusOid, row.koulutusmoduuliKoodiarvo))
+    val voimassaolevatVuosiluokkaSuorituset: Map[String, Seq[String]] = runDbSync(
+      voimassaolevatVuosiluokkaSuorituksetQuery.result,
+      timeout = 5.minutes
+    ).groupBy(_._1).mapValues(_.map(_._2).toSeq)
 
     val osasuorituksetQuery = ROsasuoritukset.filter(_.päätasonSuoritusId inSet paatasonSuoritukset.flatMap(_._2.map(_.päätasonSuoritusId)))
     val osasuoritukset: Map[String, Seq[ROsasuoritusRow]] = runDbSync(osasuorituksetQuery.result).groupBy(_.opiskeluoikeusOid)
@@ -48,7 +58,8 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
           henkilot.get(opiskeluoikeus.oppijaOid),
           aikajakso.sortBy(_.alku)(sqlDateOrdering),
           paatasonSuoritukset.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Seq.empty).sortBy(_.opiskeluoikeusOid),
-          osasuoritukset.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Seq.empty).sortBy(_.opiskeluoikeusOid)
+          osasuoritukset.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Seq.empty).sortBy(_.opiskeluoikeusOid),
+          voimassaolevatVuosiluokkaSuorituset.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Seq.empty)
         )
       }
       }

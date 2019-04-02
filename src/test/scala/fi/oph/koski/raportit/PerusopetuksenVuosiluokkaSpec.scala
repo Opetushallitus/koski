@@ -35,6 +35,7 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
               etunimet = Some(MockOppijat.ysiluokkalainen.etunimet),
               luokka = "8C",
               viimeisinTila = "lasna",
+              voimassaolevatVuosiluokat = "9",
               aidinkieli = "9",
               pakollisenAidinkielenOppimaara = "Suomen kieli ja kirjallisuus",
               kieliA = "8",
