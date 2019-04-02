@@ -16,7 +16,6 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
   resetFixtures
 
   "Perusopetuksenvuosiluokka raportti" - {
-    loadRaportointikantaFixtures
 
     "Tuottaa oikeat tiedot" in {
       withLisätiedotFixture(MockOppijat.ysiluokkalainen, perusopetuksenOpiskeluoikeudenLisätiedot) {
@@ -37,8 +36,11 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
               luokka = "8C",
               viimeisinTila = "lasna",
               aidinkieli = "9",
+              pakollisenAidinkielenOppimaara = "Suomen kieli ja kirjallisuus",
               kieliA = "8",
+              kieliAOppimaara = "englanti",
               kieliB = "8",
+              kieliBOppimaara = "ruotsi",
               uskonto = "10",
               historia = "8",
               yhteiskuntaoppi = "10",
@@ -54,12 +56,13 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
               kasityo = "9",
               liikunta = "9",
               ymparistooppi = "Arvosana puuttuu",
+              kayttaymisenArvio = "S",
               paikallistenOppiaineidenKoodit = "TH",
               pakollisetPaikalliset = "",
               valinnaisetPaikalliset = "Tietokoneen hyötykäyttö (TH)",
               valinnaisetValtakunnalliset = "ruotsi (B1),Kotitalous (KO),Liikunta (LI),saksa (B2)",
-              valinnaisetLaajuus_SuurempiKuin_2Vuosiviikkotuntia = "saksa (B2)",
-              valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = "ruotsi (B1),Kotitalous (KO),Liikunta (LI)",
+              valinnaisetLaajuus_SuurempiKuin_2Vuosiviikkotuntia = "saksa (B2) 4.0",
+              valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = "ruotsi (B1) 1.0,Kotitalous (KO) 1.0,Liikunta (LI) 0.5",
               numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = "",
               majoitusetu = true,
               kuljetusetu = false,
@@ -68,16 +71,16 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
               perusopetuksenAloittamistaLykatty = true,
               aloittanutEnnenOppivelvollisuutta = false,
               pidennettyOppivelvollisuus = true,
-              tukimuodot = false,
               erityisenTuenPaatos = false,
               tehostetunTuenPaatos = true,
               joustavaPerusopetus = true,
               vuosiluokkiinSitoutumatonOpetus = true,
-              vammainen = false,
-              vaikeastiVammainen = false,
+              vammainen = true,
+              vaikeastiVammainen = true,
               oikeusMaksuttomaanAsuntolapaikkaan = true,
-              sisaoppilaitosmainenMaijoitus = false,
-              koulutukoti = false
+              sisaoppilaitosmainenMaijoitus = true,
+              koulukoti = true,
+              tukimuodot = "Osa-aikainen erityisopetus"
             )
           )
         )
