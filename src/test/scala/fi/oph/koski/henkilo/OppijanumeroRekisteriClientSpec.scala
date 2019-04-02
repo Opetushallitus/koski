@@ -98,6 +98,7 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
     etunimet = "Mikko Alfons",
     kutsumanimi = "Mikko",
     hetu = Some(hetu),
+    sukupuoli = Some("1"),
     syntymäaika = Some(LocalDate.parse("1956-04-12")),
     äidinkieli = None,
     kansalaisuus = None,

@@ -19,6 +19,7 @@ case class OppijaHenkilö(
   kutsumanimi: String,
   hetu: Option[String],
   syntymäaika: Option[LocalDate],
+  sukupuoli: Option[String] = None,
   äidinkieli: Option[String] = None,
   kansalaisuus: Option[List[String]] = None,
   modified: Long = 0,
