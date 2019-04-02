@@ -26,8 +26,8 @@ class RaportitService(application: KoskiApplication) {
     aikajaksoRaportti(request, SuoritustietojenTarkistus)
   }
 
-  def perusopetuksenVuosiluokka(request: VuosiluokkaRaporttiRequest): OppilaitosRaporttiResponse = {
-    vuosiluokkaRaportti(request, PerusopetuksenVuosiluokka)
+  def perusopetuksenVuosiluokka(request: PerusopetuksenVuosiluokkaRequest): OppilaitosRaporttiResponse = {
+    perusopetuksenVuosiluokka(request, PerusopetuksenVuosiluokka)
   }
 
   private def aikajaksoRaportti(request: AikajaksoRaporttiRequest, raporttiBuilder: AikajaksoRaportti) = {
@@ -44,16 +44,16 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
-  private def vuosiluokkaRaportti(request: VuosiluokkaRaporttiRequest, raporttiBuilder: VuosiluokkaRaportti) = {
-    val rows = raporttiBuilder.buildRaportti(raportointiDatabase, request.oppilaitosOid, request.alku, request.loppu, request.vuosi)
-    val documentation = DocumentationSheet("Ohjeet", raporttiBuilder.documentation(request.oppilaitosOid, request.alku, request.loppu, raportointiDatabase.fullLoadCompleted(raportointiDatabase.statuses).get))
+  private def perusopetuksenVuosiluokka(request: PerusopetuksenVuosiluokkaRequest, raporttiBuilder: VuosiluokkaRaporttiPaivalta) = {
+    val rows = raporttiBuilder.buildRaportti(perusopetusRepository, request.oppilaitosOid, request.paiva, request.vuosiluokka)
+    val documentation = DocumentationSheet("Ohjeet", raporttiBuilder.documentation(request.oppilaitosOid, request.paiva, request.vuosiluokka, raportointiDatabase.fullLoadCompleted(raportointiDatabase.statuses).get))
     val data = DataSheet("Opiskeluoikeudet", rows, raporttiBuilder.columnSettings)
 
     OppilaitosRaporttiResponse(
       rows = rows,
       sheets = Seq(data, documentation),
-      workbookSettings = WorkbookSettings(raporttiBuilder.title(request.oppilaitosOid, request.alku, request.loppu, request.vuosi), Some(request.password)),
-      filename = raporttiBuilder.filename(request.oppilaitosOid, request.alku, request.loppu, request.vuosi),
+      workbookSettings = WorkbookSettings(raporttiBuilder.title(request.oppilaitosOid, request.paiva, request.vuosiluokka), Some(request.password)),
+      filename = raporttiBuilder.filename(request.oppilaitosOid, request.paiva, request.vuosiluokka),
       downloadToken = request.downloadToken
     )
   }
