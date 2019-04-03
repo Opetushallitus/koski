@@ -179,9 +179,20 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
   private def getOppiaineenOppimäärä(koodistoKoodi: String)(osasuoritukset: Seq[ROsasuoritusRow]) = {
     osasuoritukset.filter(_.koulutusmoduuliKoodiarvo == koodistoKoodi) match {
       case Nil => "Oppiaine puuttuu"
-      case Seq(suoritus) => getFinnishNimi(suoritus.data \ "koulutusmoduuli" \ "kieli" \ "nimi").getOrElse(getFinnishNimi(suoritus.data \ "koulutusmoduuli" \ "tunniste" \ "nimi").getOrElse("Oppiaine puuttuu"))
-      case montaSamallaKoodilla@ _ => montaSamallaKoodilla.map(s => getFinnishNimi(s.data \ "koulutusmoduuli" \ "kieli" \ "nimi").getOrElse("Oppiaine puuttuu")).mkString(",")
+      case Seq(suoritus) => getOppiaineenNimi(suoritus)
+      case montaSamallaKoodilla@ _ => montaSamallaKoodilla.map(getOppiaineenNimi).mkString(",")
     }
+  }
+
+  private def getOppiaineenNimi(osasuoritus: ROsasuoritusRow) = {
+    val muuAine = getFinnishNimi(osasuoritus.data \ "koulutusmoduuli" \ "tunniste" \ "nimi")
+    val kieliAine = getFinnishNimi(osasuoritus.data \ "koulutusmoduuli" \ "kieli" \ "nimi")
+    val result = (kieliAine, muuAine) match {
+      case (Some(_), _)  => kieliAine
+      case (_, Some(_)) => muuAine
+      case _ => None
+    }
+    result.getOrElse("Oppiaine puuttuu")
   }
 
   private def nimiJaKoodiJaLaajuus(osasuoritus: ROsasuoritusRow) = {
@@ -245,7 +256,6 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
        case _ => false
      }
    }
-
    lisätiedot.exists(_.erityisenTuenPäätös.exists(voimassa(_, hakupaiva))) ||
    lisätiedot.exists(_.erityisenTuenPäätökset.exists(_.exists(voimassa(_, hakupaiva))))
  }
