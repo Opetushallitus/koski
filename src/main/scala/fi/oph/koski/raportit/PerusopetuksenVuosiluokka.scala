@@ -16,75 +16,6 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
     rows.map(buildRow(_, paiva))
   }
 
-  def title(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String = "TITLE TODO"
-
-  def documentation(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String, loadCompleted: Timestamp): String = "Dokumentaatio TODO"
-
-  def filename(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String = {
-    s"Perusopetuksen_vuosiluokka_${oppilaitosOid}_${vuosiluokka}_${paiva}.xlsx"
-  }
-
-  val columnSettings: Seq[(String, Column)] = Seq(
-    "opiskeluoikeusOid" -> Column("Opiskeluoikeuden oid"),
-    "lähdejärjestelmä" -> Column("Lähdejärjestelmä"),
-    "lähdejärjestelmänId" -> Column("Opiskeluoikeuden tunniste lähdejärjestelmässä"),
-    "oppijaOid" -> Column("Oppijan oid"),
-    "hetu" -> Column("hetu"),
-    "sukunimi" -> Column("Sukunimi"),
-    "etunimet" -> Column("Etunimet"),
-    "sukupuoli" -> Column("Sukupuoli"),
-    "viimeisinTila" -> Column("Viimeisin opiskeluoikeuden tila"),
-    "suorituksenTila" -> Column("Suorituksen tila"),
-    "luokka" -> Column("Luokan tunniste"),
-    "voimassaolevatVuosiluokat" -> Column("Vuosiluokkien suoritukset joilta puuttuu vahvistus"),
-    "aidinkieli" -> Column("Äidinkieli"),
-    "pakollisenAidinkielenOppimaara" -> Column("Pakollisen aidinkielen oppimäärä"),
-    "kieliA" -> Column("A-kieli"),
-    "kieliAOppimaara" -> Column("A-kielen oppimaara"),
-    "kieliB" -> Column("B-kieli"),
-    "kieliBOppimaara" -> Column("B-kielen oppimaara"),
-    "uskonto" -> Column("Uskonto/Elämänkatsomustieto"),
-    "historia" -> Column("Historia"),
-    "yhteiskuntaoppi" -> Column("Yhteiskuntaoppi"),
-    "matematiikka" -> Column("Matematiikka"),
-    "kemia" -> Column("Kemia"),
-    "fysiikka" -> Column("Fysiikka"),
-    "biologia" -> Column("Biologia"),
-    "maantieto" -> Column("Maantieto"),
-    "musiikki" -> Column("Musiikki"),
-    "kuvataide" -> Column("Kuvataide"),
-    "kotitalous" -> Column("Kotitalous"),
-    "terveystieto" -> Column("Terveystieto"),
-    "kasityo" -> Column("Käsityo"),
-    "liikunta" -> Column("Liikunta"),
-    "ymparistooppi" -> Column("Ympäristöoppi"),
-    "kayttaymisenArvio" -> Column("Käyttäytymisen arviointi"),
-    "paikallistenOppiaineidenKoodit" -> Column("Paikallisten oppiaineden koodit"),
-    "pakollisetPaikalliset" -> Column("Pakolliset paikalliset oppiaineet"),
-    "valinnaisetPaikalliset" -> Column("Valinnaiset paikaliset oppiaineet"),
-    "valinnaisetValtakunnalliset" -> Column("Valinnaiset valtakunnalliset oppiaineet"),
-    "valinnaisetLaajuus_SuurempiKuin_2Vuosiviikkotuntia" -> Column("Valinnaiset oppiaineet joiden laajuus on suurempi kuin 2 vuosiviikkotuntia"),
-    "valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia" -> Column("Valinnaiset oppiaineet joiden laajuus on pienempi kuin 2 vuosiviikko tuntia"),
-    "numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia" -> Column("Valinnaiset oppiaineet joilla on numeroarviointi ja niiden laajuus on pienempi kuin 2 vuosiviikkotuntia"),
-    "majoitusetu" -> Column("Majoitusetu"),
-    "kuljetusetu" -> Column("Kuljetusetu"),
-    "kotiopetus" -> Column("Kotiopetus"),
-    "ulkomailla" -> Column("Ulkomailla"),
-    "perusopetuksenAloittamistaLykatty" -> Column("Perusopetuksen aloittamista lykätty"),
-    "aloittanutEnnenOppivelvollisuutta" -> Column("Aloittanut ennen oppivelvollisuutta"),
-    "pidennettyOppivelvollisuus" -> Column("Pidennetty oppivelvollisuus"),
-    "erityisenTuenPaatos" -> Column("Erityisen tuen päätos"),
-    "tehostetunTuenPaatos" -> Column("Tehostetun tuen päätös"),
-    "joustavaPerusopetus" -> Column("Joustava perusopetus"),
-    "vuosiluokkiinSitoutumatonOpetus" -> Column("Vuosiluokkiin sitoutumaton opetus"),
-    "vammainen" -> Column("Vammainen"),
-    "vaikeastiVammainen" -> Column("Vaikeasti vammainen"),
-    "oikeusMaksuttomaanAsuntolapaikkaan" -> Column("Oikeus maksuttomaan asuntolapaikkaan"),
-    "sisaoppilaitosmainenMaijoitus" -> Column("Sisäoppilaitosmainen majoitus"),
-    "koulukoti" -> Column("Koulukoti"),
-    "tukimuodot" -> Column("Tukimuodot")
-  )
-
   private def buildRow(data: (ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROsasuoritusRow], Seq[String]), hakupaiva: LocalDate) = {
     val (opiskeluoikeus, henkilö, aikajaksot, päätasonsuoritukset, osasuoritukset, voimassaolevatVuosiluokat) = data
 
@@ -270,6 +201,75 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
       }
     } else ""
   }
+
+  def title(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String = "TITLE TODO"
+
+  def documentation(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String, loadCompleted: Timestamp): String = "Dokumentaatio TODO"
+
+  def filename(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String = {
+    s"Perusopetuksen_vuosiluokka_${oppilaitosOid}_${vuosiluokka}_${paiva}.xlsx"
+  }
+
+  val columnSettings: Seq[(String, Column)] = Seq(
+    "opiskeluoikeusOid" -> Column("Opiskeluoikeuden oid"),
+    "lähdejärjestelmä" -> Column("Lähdejärjestelmä"),
+    "lähdejärjestelmänId" -> Column("Opiskeluoikeuden tunniste lähdejärjestelmässä"),
+    "oppijaOid" -> Column("Oppijan oid"),
+    "hetu" -> Column("hetu"),
+    "sukunimi" -> Column("Sukunimi"),
+    "etunimet" -> Column("Etunimet"),
+    "sukupuoli" -> Column("Sukupuoli"),
+    "viimeisinTila" -> Column("Viimeisin opiskeluoikeuden tila"),
+    "suorituksenTila" -> Column("Suorituksen tila"),
+    "luokka" -> Column("Luokan tunniste"),
+    "voimassaolevatVuosiluokat" -> Column("Vuosiluokkien suoritukset joilta puuttuu vahvistus"),
+    "aidinkieli" -> Column("Äidinkieli"),
+    "pakollisenAidinkielenOppimaara" -> Column("Pakollisen aidinkielen oppimäärä"),
+    "kieliA" -> Column("A-kieli"),
+    "kieliAOppimaara" -> Column("A-kielen oppimaara"),
+    "kieliB" -> Column("B-kieli"),
+    "kieliBOppimaara" -> Column("B-kielen oppimaara"),
+    "uskonto" -> Column("Uskonto/Elämänkatsomustieto"),
+    "historia" -> Column("Historia"),
+    "yhteiskuntaoppi" -> Column("Yhteiskuntaoppi"),
+    "matematiikka" -> Column("Matematiikka"),
+    "kemia" -> Column("Kemia"),
+    "fysiikka" -> Column("Fysiikka"),
+    "biologia" -> Column("Biologia"),
+    "maantieto" -> Column("Maantieto"),
+    "musiikki" -> Column("Musiikki"),
+    "kuvataide" -> Column("Kuvataide"),
+    "kotitalous" -> Column("Kotitalous"),
+    "terveystieto" -> Column("Terveystieto"),
+    "kasityo" -> Column("Käsityo"),
+    "liikunta" -> Column("Liikunta"),
+    "ymparistooppi" -> Column("Ympäristöoppi"),
+    "kayttaymisenArvio" -> Column("Käyttäytymisen arviointi"),
+    "paikallistenOppiaineidenKoodit" -> Column("Paikallisten oppiaineden koodit"),
+    "pakollisetPaikalliset" -> Column("Pakolliset paikalliset oppiaineet"),
+    "valinnaisetPaikalliset" -> Column("Valinnaiset paikaliset oppiaineet"),
+    "valinnaisetValtakunnalliset" -> Column("Valinnaiset valtakunnalliset oppiaineet"),
+    "valinnaisetLaajuus_SuurempiKuin_2Vuosiviikkotuntia" -> Column("Valinnaiset oppiaineet joiden laajuus on suurempi kuin 2 vuosiviikkotuntia"),
+    "valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia" -> Column("Valinnaiset oppiaineet joiden laajuus on pienempi kuin 2 vuosiviikko tuntia"),
+    "numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia" -> Column("Valinnaiset oppiaineet joilla on numeroarviointi ja niiden laajuus on pienempi kuin 2 vuosiviikkotuntia"),
+    "majoitusetu" -> Column("Majoitusetu"),
+    "kuljetusetu" -> Column("Kuljetusetu"),
+    "kotiopetus" -> Column("Kotiopetus"),
+    "ulkomailla" -> Column("Ulkomailla"),
+    "perusopetuksenAloittamistaLykatty" -> Column("Perusopetuksen aloittamista lykätty"),
+    "aloittanutEnnenOppivelvollisuutta" -> Column("Aloittanut ennen oppivelvollisuutta"),
+    "pidennettyOppivelvollisuus" -> Column("Pidennetty oppivelvollisuus"),
+    "erityisenTuenPaatos" -> Column("Erityisen tuen päätos"),
+    "tehostetunTuenPaatos" -> Column("Tehostetun tuen päätös"),
+    "joustavaPerusopetus" -> Column("Joustava perusopetus"),
+    "vuosiluokkiinSitoutumatonOpetus" -> Column("Vuosiluokkiin sitoutumaton opetus"),
+    "vammainen" -> Column("Vammainen"),
+    "vaikeastiVammainen" -> Column("Vaikeasti vammainen"),
+    "oikeusMaksuttomaanAsuntolapaikkaan" -> Column("Oikeus maksuttomaan asuntolapaikkaan"),
+    "sisaoppilaitosmainenMaijoitus" -> Column("Sisäoppilaitosmainen majoitus"),
+    "koulukoti" -> Column("Koulukoti"),
+    "tukimuodot" -> Column("Tukimuodot")
+  )
 }
 
 private[raportit] case class PerusopetusRow(
