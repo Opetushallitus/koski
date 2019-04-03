@@ -21,7 +21,7 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
   def documentation(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String, loadCompleted: Timestamp): String = "Dokumentaatio TODO"
 
   def filename(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String = {
-    s"Perusopeutuksen_vuosiluokka:${vuosiluokka}_${paiva}.xlsx"
+    s"Perusopetuksen_vuosiluokka_${oppilaitosOid}_${vuosiluokka}_${paiva}.xlsx"
   }
 
   val columnSettings: Seq[(String, Column)] = Seq(
@@ -33,15 +33,16 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
     "sukunimi" -> Column("Sukunimi"),
     "etunimet" -> Column("Etunimet"),
     "sukupuoli" -> Column("Sukupuoli"),
-    "viimeisinTila" -> Column("Viimeisin tila"),
+    "viimeisinTila" -> Column("Viimeisin opiskeluoikeuden tila"),
+    "suorituksenTila" -> Column("Suorituksen tila"),
     "luokka" -> Column("Luokan tunniste"),
     "voimassaolevatVuosiluokat" -> Column("Vuosiluokkien suoritukset joilta puuttuu vahvistus"),
-    "pakkolisenAidinkielenOppimaara" -> Column("Pakollisen aidinkielen oppimäärä"),
     "aidinkieli" -> Column("Äidinkieli"),
+    "pakollisenAidinkielenOppimaara" -> Column("Pakollisen aidinkielen oppimäärä"),
     "kieliA" -> Column("A-kieli"),
     "kieliAOppimaara" -> Column("A-kielen oppimaara"),
     "kieliB" -> Column("B-kieli"),
-    "kieliBOppimara" -> Column("B-kielen oppimaara"),
+    "kieliBOppimaara" -> Column("B-kielen oppimaara"),
     "uskonto" -> Column("Uskonto/Elämänkatsomustieto"),
     "historia" -> Column("Historia"),
     "yhteiskuntaoppi" -> Column("Yhteiskuntaoppi"),
@@ -104,6 +105,7 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
       etunimet = henkilö.map(_.etunimet),
       sukupuoli = henkilö.flatMap(_.sukupuoli),
       viimeisinTila = aikajaksot.last.tila,
+      suorituksenTila = if (päätasonsuoritukset.exists(_.vahvistusPäivä.isDefined)) "valmis" else "kesken",
       luokka = päätasonsuoritukset.flatMap(ps => JsonSerializer.extract[Option[String]](ps.data \ "luokka")).mkString(","),
       voimassaolevatVuosiluokat = voimassaolevatVuosiluokat.mkString(","),
       aidinkieli = getOppiaineenArvosana("AI")(pakollisetValtakunnalliset),
@@ -280,6 +282,7 @@ private[raportit] case class PerusopetusRow(
   etunimet: Option[String],
   sukupuoli: Option[String],
   viimeisinTila: String,
+  suorituksenTila: String,
   luokka: String,
   voimassaolevatVuosiluokat: String,
   aidinkieli: String,

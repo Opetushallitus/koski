@@ -48,7 +48,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
 
   get("/perusopetuksenvuosiluokka") {
     val parsedRequest = parseVuosiluokkaRequest
-    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=perusopetuksenvuosiluokka&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.paiva}&loppu=${parsedRequest.vuosiluokka}")))
+    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=perusopetuksenvuosiluokka&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}&vuosiluokka=${parsedRequest.vuosiluokka}")))
     excelResponse(raportitService.perusopetuksenVuosiluokka(parsedRequest))
   }
 

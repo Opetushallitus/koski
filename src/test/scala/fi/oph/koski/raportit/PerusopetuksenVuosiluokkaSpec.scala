@@ -36,6 +36,7 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
               sukupuoli = None,
               luokka = "8C",
               viimeisinTila = "lasna",
+              suorituksenTila = "valmis",
               voimassaolevatVuosiluokat = "9",
               aidinkieli = "9",
               pakollisenAidinkielenOppimaara = "Suomen kieli ja kirjallisuus",
@@ -88,6 +89,19 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
         )
       }
     }
+    "Raportin lataaminen toimiii" in {
+      verifyPerusopetukseVuosiluokkaRaportinLataaminen(
+        queryString = defaultQuery,
+        apiUrl = "api/raportit/perusopetuksenvuosiluokka",
+        expectedRaporttiNimi = "perusopetuksenvuosiluokka",
+        expectedFileNamePrefix = "Perusopetuksen_vuosiluokka")
+    }
+  }
+
+  private val defaultQuery = makeQueryString(MockOrganisaatiot.jyväskylänNormaalikoulu, LocalDate.of(2016, 1, 1), "9")
+
+  private def makeQueryString(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String) = {
+    s"oppilaitosOid=$oppilaitosOid&paiva=${paiva.toString}&vuosiluokka=$vuosiluokka"
   }
 
   private def withLisätiedotFixture[T <: PerusopetuksenOpiskeluoikeus](oppija: OppijaHenkilö, lisätiedot: PerusopetuksenOpiskeluoikeudenLisätiedot)(f: => Any) = {
