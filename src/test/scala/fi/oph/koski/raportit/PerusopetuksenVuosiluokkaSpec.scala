@@ -33,6 +33,7 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
               hetu = MockOppijat.ysiluokkalainen.hetu,
               sukunimi = Some(MockOppijat.ysiluokkalainen.sukunimi),
               etunimet = Some(MockOppijat.ysiluokkalainen.etunimet),
+              sukupuoli = None,
               luokka = "8C",
               viimeisinTila = "lasna",
               voimassaolevatVuosiluokat = "9",
