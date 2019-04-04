@@ -1,0 +1,16 @@
+version: "3"
+services:
+
+  postgres:
+    image: "postgres:9.6"
+    environment:
+    - "POSTGRES_DB=koski"
+    - "POSTGRES_USER=oph"
+    - "POSTGRES_PASSWORD=oph"
+    ports:
+    - "5432:5432"
+
+  elasticsearch:
+    build: "./elasticsearch"
+    ports:
+    - "9200:9200"
