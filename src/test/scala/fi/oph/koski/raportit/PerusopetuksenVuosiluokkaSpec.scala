@@ -37,6 +37,7 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
               luokka = "8C",
               viimeisinTila = "lasna",
               suorituksenTila = "valmis",
+              suorituksenVahvistuspaiva = "2015-05-30",
               voimassaolevatVuosiluokat = "9",
               aidinkieli = "9",
               pakollisenAidinkielenOppimaara = "Suomen kieli ja kirjallisuus",
