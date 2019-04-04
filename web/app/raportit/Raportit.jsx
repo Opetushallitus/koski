@@ -10,6 +10,8 @@ import {formatISODate} from '../date/date'
 import {appendQueryParams} from '../util/location'
 import {generateRandomPassword} from '../util/password'
 import Http from '../util/http'
+import Dropdown from '../components/Dropdown'
+import * as R from 'ramda'
 
 export const raportitContentP = () => {
   const oppilaitosAtom = Atom()
@@ -116,7 +118,7 @@ const AikajaksoRaportti = ({oppilaitosAtom, apiEndpoint, title, description}) =>
   return (<section>
     <h2>{title}</h2>
     <p>{description}</p>
-    <div className='aloituspaiva'>
+    <div classname='parametri'>
       <label><Text name='Aikajakso'/></label>
       <div className='date-range'>
         <DateInput value={alkuAtom.get()} valueCallback={(value) => alkuAtom.set(value)} validityCallback={(valid) => !valid && alkuAtom.set(undefined)} />
@@ -136,11 +138,9 @@ const VuosiluokkaRaporttiPaivalta = ({oppilaitosAtom, apiEndpoint, title, descri
 
   const password = generateRandomPassword()
 
-  const validateVuosiluokka = vuosiluokka => vuosiluokka.match(/(^|[1-9])$/)
-
   const downloadExcelP = Bacon.combineWith(
     oppilaitosAtom, paivaAtom, vuosiluokkaAtom,
-    (o, p, v) => o && p && validateVuosiluokka(v) && ({oppilaitosOid: o.oid, paiva: formatISODate(p), vuosiluokka:(v), password, baseUrl: `/koski/api/raportit${apiEndpoint}`})
+    (o, p, v) => o && p && v && ({oppilaitosOid: o.oid, paiva: formatISODate(p), vuosiluokka:(v), password, baseUrl: `/koski/api/raportit${apiEndpoint}`})
   )
   const downloadExcelE = submitBus.map(downloadExcelP)
     .flatMapLatest(downloadExcel)
@@ -154,27 +154,31 @@ const VuosiluokkaRaporttiPaivalta = ({oppilaitosAtom, apiEndpoint, title, descri
   return (<section>
     <h2>{title}</h2>
     <p>{description}</p>
-    <div className='aloituspaiva'>
-      <div className='date-range'>
+    <div>
+      <div className='parametri'>
         <label><Text name='Päivä'/></label>
         <DateInput value={paivaAtom.get()} valueCallback={(value) => paivaAtom.set(value)} validityCallback={(valid) => !valid && paivaAtom.set(undefined)} />
-        <VuosiluokkaInput value={vuosiluokkaAtom} valueCallback={(value) => vuosiluokkaAtom.set(value)} validator={validateVuosiluokka}/>
       </div>
+    </div>
+    <div className='dropdown-selection parametri'>
+      <label><Text name='Vuosiluokka'/></label>
+      <VuosiluokkaDropdown value={vuosiluokkaAtom} vuosiluokat={R.range(1, 10)}/>
     </div>
     <div className='password'><Text name='Excel-tiedosto on suojattu salasanalla'/> {password}</div>
     <button className='koski-button' disabled={submitEnabledP.not()} onClick={e => { e.preventDefault(); submitBus.push(); return false }}>{buttonTextP}</button>
   </section>)
 }
 
-const VuosiluokkaInput = ({value, valueCallback, validator}) => (
+const VuosiluokkaDropdown = ({value, vuosiluokat}) => (
   <div>
-  {value.map(v => (
-    <div className={validator(v) ? '' : 'error'}>
-      <label><Text name='Vuosiluokka'/></label>
-      <input type={'text'} value={v} onChange={(input) => valueCallback(input.target.value)} />
-    </div>
-  ))
-  }
+    {value.map(v => (
+      <Dropdown
+        options={vuosiluokat}
+        keyValue={(key) => key}
+        displayValue={(input) => input}
+        selected={v}
+        onSelectionChanged={(input) => value.set(input)}
+      />))}
   </div>
 )
 
