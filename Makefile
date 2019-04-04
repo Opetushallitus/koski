@@ -69,6 +69,8 @@ screenshot:
 
 run:
 	mvn exec:java $(JAVA_OPTS) -Dexec.mainClass=fi.oph.koski.jettylauncher.JettyLauncher
+docker-dbs:
+	docker-compose up --force-recreate --renew-anon-volumes
 postgres:
 	postgres --config_file=postgresql/postgresql.conf -D postgresql/data
 postgres-clean:
