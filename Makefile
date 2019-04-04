@@ -3,6 +3,9 @@ cleandist = true
 mvn_argline =
 mvn_opts =
 
+DOCKER_COMPOSE = docker-compose
+DOCKER_COMPOSE_OPTS = --force-recreate --renew-anon-volumes
+
 .PHONY: help
 help:
 	@echo ""
@@ -104,7 +107,7 @@ run:
 	mvn exec:java $(JAVA_OPTS) -Dexec.mainClass=fi.oph.koski.jettylauncher.JettyLauncher
 
 docker-dbs:
-	docker-compose up --force-recreate --renew-anon-volumes
+	${DOCKER_COMPOSE} up ${DOCKER_COMPOSE_OPTS}
 
 postgres:
 	postgres --config_file=postgresql/postgresql.conf -D postgresql/data
