@@ -44,7 +44,7 @@ object ExamplesIB {
       preIBAineSuoritus(lukionOppiaine("GE"), List((valtakunnallinenKurssi("GE2"), "10"))).copy(arviointi = arviointi("10")),
       preIBAineSuoritus(lukionOppiaine("FY"), List((valtakunnallinenKurssi("FY1"), "7"))).copy(arviointi = arviointi("7")),
       preIBAineSuoritus(lukionOppiaine("KE"), List((valtakunnallinenKurssi("KE1"), "8"))).copy(arviointi = arviointi("8")),
-      preIBAineSuoritus(lukionOppiaine("KT"), List((valtakunnallinenKurssi("UK4"), "10"))).copy(arviointi = arviointi("10")),
+      preIBAineSuoritus(lukionUskonto(), List((valtakunnallinenKurssi("UK4"), "10"))).copy(arviointi = arviointi("10")),
       preIBAineSuoritus(lukionOppiaine("FI"), List((valtakunnallinenKurssi("FI1"), "S"))).copy(arviointi = arviointi("7")),
       preIBAineSuoritus(lukionOppiaine("PS"), List((valtakunnallinenKurssi("PS1"), "8"))).copy(arviointi = arviointi("8")),
       preIBAineSuoritus(lukionOppiaine("HI"), List(

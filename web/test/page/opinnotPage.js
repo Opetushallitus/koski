@@ -295,7 +295,11 @@ function Oppiaine(oppiaineElem) {
     arvosana: editorApi.propertyBySelector('tr td.arvosana'),
     laajuus: editorApi.propertyBySelector('span.laajuus'),
     suorituskieli: editorApi.propertyBySelector('tr.suorituskieli'),
-    koetuloksenNelinkertainenPistemäärä: editorApi.propertyBySelector('tr.koetuloksenNelinkertainenPistemäärä')
+    koetuloksenNelinkertainenPistemäärä: editorApi.propertyBySelector('tr.koetuloksenNelinkertainenPistemäärä'),
+    expandable: function() {
+      return typeof findFirstNotThrowing('.toggle-expand', oppiaineElem) !== 'undefined'
+    },
+    expand: click(findSingle('.toggle-expand', oppiaineElem))
   }, editorApi)
   return oppiaineApi
 

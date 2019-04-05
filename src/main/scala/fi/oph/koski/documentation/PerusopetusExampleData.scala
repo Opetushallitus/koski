@@ -35,6 +35,13 @@ object PerusopetusExampleData {
   def valinnainenOppiaine(aine: String, nimi: String, kuvaus: String, laajuus: Option[LaajuusVuosiviikkotunneissa] = None) =
     NuortenPerusopetuksenPaikallinenOppiaine(tunniste = PaikallinenKoodi(koodiarvo = aine, nimi = nimi), laajuus = laajuus, kuvaus = kuvaus)
   def oppiaine(aine: String, laajuus: Option[LaajuusVuosiviikkotunneissa] = None) = MuuNuortenPerusopetuksenOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), laajuus = laajuus)
+
+  def uskonto(uskonto: Option[String] = None, laajuus: Option[LaajuusVuosiviikkotunneissa] = None) =
+    NuortenPerusopetuksenUskonto(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava",
+      koodiarvo = "KT"),
+      laajuus = laajuus,
+      uskonnonOppimäärä = uskonto.map(u => Koodistokoodiviite(koodistoUri = "uskonnonoppimaara", koodiarvo = u)))
+
   def äidinkieli(kieli: String, diaarinumero: Option[String] = None) = NuortenPerusopetuksenÄidinkieliJaKirjallisuus(
     perusteenDiaarinumero = diaarinumero,
     kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus")
@@ -49,7 +56,7 @@ object PerusopetusExampleData {
       suoritus(kieli("B1", "SV")).copy(arviointi = arviointi(8)),
       suoritus(kieli("B1", "SV").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = hyväksytty),
       suoritus(kieli("A1", "EN")).copy(arviointi = arviointi(8)),
-      suoritus(oppiaine("KT")).copy(arviointi = arviointi(10)),
+      suoritus(uskonto(Some("OR"))).copy(arviointi = arviointi(10)),
       suoritus(oppiaine("HI")).copy(arviointi = arviointi(8)),
       suoritus(oppiaine("YH")).copy(arviointi = arviointi(10)),
       suoritus(oppiaine("MA")).copy(arviointi = arviointi(9)),

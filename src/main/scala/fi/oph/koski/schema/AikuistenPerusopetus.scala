@@ -150,6 +150,15 @@ case class MuuAikuistenPerusopetuksenOppiaine(
   kuvaus: Option[LocalizedString] = None
 ) extends MuuPerusopetuksenOppiaine with AikuistenPerusopetuksenKoodistostaLöytyväOppiaine
 
+case class AikuistenPerusopetuksenUskonto(
+  tunniste: Koodistokoodiviite,
+  pakollinen: Boolean = true,
+  perusteenDiaarinumero: Option[String] = None,
+  override val laajuus: Option[LaajuusVuosiviikkotunneissaTaiKursseissa] = None,
+  kuvaus: Option[LocalizedString] = None,
+  uskonnonOppimäärä: Option[Koodistokoodiviite] = None
+) extends PerusopetuksenUskonto with AikuistenPerusopetuksenKoodistostaLöytyväOppiaine
+
 case class AikuistenPerusopetuksenÄidinkieliJaKirjallisuus(
   tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "AI", koodistoUri = "koskioppiaineetyleissivistava"),
   kieli: Koodistokoodiviite,
