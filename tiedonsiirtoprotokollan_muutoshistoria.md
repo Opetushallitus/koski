@@ -1,3 +1,7 @@
+## 5.4.2019
+
+- Lisätty uskonnonOppimäärä nuorten ja aikuisten perusopetuksen sekä lukion uskonnon oppiaineeseen
+
 ## 29.3.2019
 
 - Lisätty ulkomaanjaksot ja kotiopetusjaksot-kentät nuorten perusopetuksen lisätietoihin
