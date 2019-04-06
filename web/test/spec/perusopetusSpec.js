@@ -1655,12 +1655,11 @@ describe('Perusopetus', function() {
               before(
                 wait.prepareForNavigation,
                 opinnot.confirmDeletePäätasonSuoritus,
-                wait.forNavigation
+                wait.forNavigation,
+                wait.until(page.isPäätasonSuoritusDeletedMessageShown)
               )
 
-              it('Päätason suoritus poistetaan', function() {
-                expect(page.isPäätasonSuoritusDeletedMessageShown()).to.equal(true)
-              })
+              it('Päätason suoritus poistetaan', function() {})
 
               describe('Poistettua päätason suoritusta', function() {
                 before(
