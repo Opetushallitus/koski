@@ -12,12 +12,12 @@ import org.json4s.JValue
 object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
 
   def buildRaportti(repository: PerusopetuksenRaportitRepository, oppilaitosOid: Oid, paiva: LocalDate, vuosiluokka: String): Seq[PerusopetusRow] = {
-    val rows: Seq[(ROpiskeluoikeusRow, Option[RHenkilöRow], List[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROsasuoritusRow], Seq[String])] = repository.perusopetuksenvuosiluokka(oppilaitosOid, paiva, vuosiluokka)
+    val rows = repository.perusopetuksenvuosiluokka(oppilaitosOid, paiva, vuosiluokka)
     rows.map(buildRow(_, paiva))
   }
 
-  private def buildRow(data: (ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROsasuoritusRow], Seq[String]), hakupaiva: LocalDate) = {
-    val (opiskeluoikeus, henkilö, aikajaksot, päätasonsuoritukset, osasuoritukset, voimassaolevatVuosiluokat) = data
+  private def buildRow(data: (ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], RPäätasonSuoritusRow, Seq[ROsasuoritusRow], Seq[String]), hakupaiva: LocalDate) = {
+    val (opiskeluoikeus, henkilö, aikajaksot, päätasonsuoritus, osasuoritukset, voimassaolevatVuosiluokat) = data
 
     val opiskeluoikeudenLisätiedot = JsonSerializer.extract[Option[PerusopetuksenOpiskeluoikeudenLisätiedot]](opiskeluoikeus.data \ "lisätiedot")
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](opiskeluoikeus.data \ "lähdejärjestelmänId")
@@ -36,9 +36,9 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
       etunimet = henkilö.map(_.etunimet),
       sukupuoli = henkilö.flatMap(_.sukupuoli),
       viimeisinTila = aikajaksot.last.tila,
-      suorituksenTila = if (päätasonsuoritukset.exists(_.vahvistusPäivä.isDefined)) "valmis" else "kesken",
-      suorituksenVahvistuspaiva = päätasonsuoritukset.flatMap(_.vahvistusPäivä).map(_.toString).mkString(","),
-      luokka = päätasonsuoritukset.flatMap(ps => JsonSerializer.extract[Option[String]](ps.data \ "luokka")).mkString(","),
+      suorituksenTila = if (päätasonsuoritus.vahvistusPäivä.isDefined) "valmis" else "kesken",
+      suorituksenVahvistuspaiva = päätasonsuoritus.vahvistusPäivä.getOrElse("").toString,
+      luokka = JsonSerializer.extract[Option[String]](päätasonsuoritus.data \ "luokka").getOrElse(""),
       voimassaolevatVuosiluokat = voimassaolevatVuosiluokat.mkString(","),
       aidinkieli = getOppiaineenArvosana("AI")(pakollisetValtakunnalliset),
       pakollisenAidinkielenOppimaara = getOppiaineenOppimäärä("AI")(pakollisetValtakunnalliset),
@@ -61,7 +61,7 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
       kasityo = getOppiaineenArvosana("KS")(pakollisetValtakunnalliset),
       liikunta = getOppiaineenArvosana("LI")(pakollisetValtakunnalliset),
       ymparistooppi = getOppiaineenArvosana("YL")(pakollisetValtakunnalliset),
-      kayttaymisenArvio = päätasonsuoritukset.flatMap(ps => JsonSerializer.extract[Option[PerusopetuksenKäyttäytymisenArviointi]](ps.data \ "käyttäytymisenArvio")).map(_.arvosana.koodiarvo).mkString(","),
+      kayttaymisenArvio = JsonSerializer.extract[Option[PerusopetuksenKäyttäytymisenArviointi]](päätasonsuoritus.data \ "käyttäytymisenArvio").map(_.arvosana.koodiarvo).getOrElse(""),
       paikallistenOppiaineidenKoodit = paikalliset.map(_.koulutusmoduuliKoodiarvo).mkString(","),
       pakollisetPaikalliset = pakollisetPaikalliset.map(nimiJaKoodi).mkString(","),
       valinnaisetPaikalliset = valinnaisetPaikalliset.map(nimiJaKoodi).mkString(","),
