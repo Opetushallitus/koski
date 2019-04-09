@@ -6,79 +6,91 @@ import java.time.LocalDate
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
 import fi.oph.koski.db.KoskiDatabaseMethods
+
 import scala.concurrent.duration._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.util.DateOrdering.sqlDateOrdering
 import fi.oph.koski.schema.Organisaatio
+import slick.jdbc.GetResult
+
 
 case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods with RaportointikantaTableQueries {
 
-  def perusopetuksenvuosiluokka(oppilaitos: Organisaatio.Oid, paiva: LocalDate, vuosiluokka: String): List[(ROpiskeluoikeusRow, Option[RHenkilöRow], List[ROpiskeluoikeusAikajaksoRow], RPäätasonSuoritusRow, Seq[ROsasuoritusRow], Seq[String])] = {
-    val paivaDate = Date.valueOf(paiva)
+  def perusopetuksenvuosiluokka(oppilaitos: Organisaatio.Oid, paiva: LocalDate, vuosiluokka: String): List[(ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], RPäätasonSuoritusRow, Seq[ROsasuoritusRow], Seq[String])] = {
+    val opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet = opiskeluoikeusAikajaksotPaatasonSuorituksetResult(oppilaitos, paiva, vuosiluokka)
 
-    val opiskeluoikeudetJaAikajaksotQuery = ROpiskeluoikeudet
-      .filter(_.oppilaitosOid === oppilaitos)
-      .filter(_.koulutusmuoto === "perusopetus")
-      .join(ROpiskeluoikeusAikajaksot.filterNot(_.alku > paivaDate).filterNot(_.loppu < paivaDate))
-      .on(_.opiskeluoikeusOid === _.opiskeluoikeusOid)
-      .sortBy(_._1.opiskeluoikeusOid)
-    val opiskeluoikeudetJaAikajaksot: Seq[(ROpiskeluoikeusRow, ROpiskeluoikeusAikajaksoRow)] = runDbSync(opiskeluoikeudetJaAikajaksotQuery.result, timeout = 5.minutes)
+    val opiskeluoikeusOids = opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet.map(_._1)
+    val paatasonSuoritusIds = opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet.flatMap(_._2)
+    val aikajaksoIds = opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet.flatMap(_._3)
 
-    val paatasonSuorituksetQuery = RPäätasonSuoritukset
-      .filter(_.opiskeluoikeusOid inSet opiskeluoikeudetJaAikajaksot.map(_._1.opiskeluoikeusOid).distinct)
-      .filter(_.suorituksenTyyppi === "perusopetuksenvuosiluokka")
-      .filter(_.koulutusmoduuliKoodiarvo === vuosiluokka)
-    val paatasonSuoritukset: Map[String, Seq[RPäätasonSuoritusRow]] = runDbSync(paatasonSuorituksetQuery.result, timeout = 5.minutes).groupBy(_.opiskeluoikeusOid)
+    val opiskeluoikeudet = runDbSync(ROpiskeluoikeudet.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).result, timeout = 5.minutes)
+    val aikajaksot = runDbSync(ROpiskeluoikeusAikajaksot.filter(_.id inSet aikajaksoIds).result, timeout = 5.minutes).groupBy(_.opiskeluoikeusOid)
+    val paatasonSuoritukset = runDbSync(RPäätasonSuoritukset.filter(_.päätasonSuoritusId inSet paatasonSuoritusIds).result, timeout = 5.minutes).groupBy(_.opiskeluoikeusOid)
+    val osasuoritukset = runDbSync(ROsasuoritukset.filter(_.päätasonSuoritusId inSet paatasonSuoritusIds).result).groupBy(_.päätasonSuoritusId)
+    val henkilot = runDbSync(RHenkilöt.filter(_.oppijaOid inSet opiskeluoikeudet.map(_.oppijaOid).distinct).result).groupBy(_.oppijaOid).mapValues(_.head)
+    val voimassaOlevatVuosiluokat = runDbSync(voimassaOlevatVuosiluokatQuery(opiskeluoikeusOids).result, timeout = 5.minutes).groupBy(_._1).mapValues(_.map(_._2).toSeq)
 
-    val voimassaolevatVuosiluokkaSuorituksetQuery = RPäätasonSuoritukset
-      .filter(_.opiskeluoikeusOid inSet opiskeluoikeudetJaAikajaksot.map(_._1.opiskeluoikeusOid).distinct)
+    opiskeluoikeudet.foldLeft[List[(ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], RPäätasonSuoritusRow, Seq[ROsasuoritusRow], Seq[String])]](List.empty) {
+      combineOpiskeluoikeusWith(_, _, aikajaksot, paatasonSuoritukset, osasuoritukset, henkilot, voimassaOlevatVuosiluokat)
+    }
+  }
+
+  private def combineOpiskeluoikeusWith
+  (
+    acc: List[(ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], RPäätasonSuoritusRow, Seq[ROsasuoritusRow], Seq[String])],
+    opiskeluoikeus: ROpiskeluoikeusRow,
+    aikajaksot: Map[String, Seq[ROpiskeluoikeusAikajaksoRow]],
+    paatasonsuorituskset: Map[String, Seq[RPäätasonSuoritusRow]],
+    osasuoritukset: Map[Long, Seq[ROsasuoritusRow]],
+    henkilot: Map[String, RHenkilöRow],
+    voimassaOlevatVuosiluokat: Map[String, Seq[String]]
+  ) = {
+    (acc, opiskeluoikeus) match {
+      case (tail, oo) => {
+        val pts = paatasonsuorituskset.getOrElse(oo.opiskeluoikeusOid, List.empty)
+        pts.map(paatasonsuoritus => {
+          (
+            oo,
+            henkilot.get(oo.oppijaOid),
+            aikajaksot.getOrElse(oo.opiskeluoikeusOid, List.empty),
+            paatasonsuoritus,
+            osasuoritukset.getOrElse(paatasonsuoritus.päätasonSuoritusId, List.empty),
+            voimassaOlevatVuosiluokat.getOrElse(oo.opiskeluoikeusOid, List.empty)
+          )
+        }).toList ::: tail
+      }
+    }
+  }
+
+  private def opiskeluoikeusAikajaksotPaatasonSuorituksetResult(oppilaitos: Organisaatio.Oid, paiva: LocalDate, vuosiluokka: String) = {
+    implicit val getResult = GetResult[(String, Seq[Long], Seq[Long])](pr => (pr.nextString(), pr.nextArray(), pr.nextArray()))
+    runDbSync(opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(oppilaitos, Date.valueOf(paiva), vuosiluokka).as[(String, Seq[Long], Seq[Long])])
+  }
+
+  private def opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(oppilaitos: String, paiva: Date, vuosiluokka: String) = {
+    sql"""
+     select
+      oo.opiskeluoikeus_oid,
+      array_agg(pts.paatason_suoritus_id),
+      array_agg(aikaj.id)
+    from r_opiskeluoikeus oo
+    join r_paatason_suoritus pts
+      on pts.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
+    join r_opiskeluoikeus_aikajakso aikaj
+      on aikaj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
+    where
+      oo.oppilaitos_oid = $oppilaitos and
+      oo.koulutusmuoto = 'perusopetus' and
+      pts.suorituksen_tyyppi = 'perusopetuksenvuosiluokka' and
+      pts.koulutusmoduuli_koodiarvo = $vuosiluokka and
+      aikaj.alku <= $paiva and (aikaj.loppu >= $paiva or aikaj.loppu is null)
+    group by oo.opiskeluoikeus_oid"""
+  }
+
+  private def voimassaOlevatVuosiluokatQuery(opiskeluoikeusOids: Seq[String]) = {
+    RPäätasonSuoritukset
+      .filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids)
       .filter(_.suorituksenTyyppi === "perusopetuksenvuosiluokka")
       .filter(_.vahvistusPäivä.isEmpty)
       .map(row => (row.opiskeluoikeusOid, row.koulutusmoduuliKoodiarvo))
-    val voimassaolevatVuosiluokkaSuorituset: Map[String, Seq[String]] = runDbSync(
-      voimassaolevatVuosiluokkaSuorituksetQuery.result,
-      timeout = 5.minutes
-    ).groupBy(_._1).mapValues(_.map(_._2).toSeq)
-
-    val osasuorituksetQuery = ROsasuoritukset.filter(_.päätasonSuoritusId inSet paatasonSuoritukset.flatMap(_._2.map(_.päätasonSuoritusId)))
-    val osasuoritukset: Map[String, Seq[ROsasuoritusRow]] = runDbSync(osasuorituksetQuery.result).groupBy(_.opiskeluoikeusOid)
-
-    val henkilotQuery = RHenkilöt.filter(_.oppijaOid inSet opiskeluoikeudetJaAikajaksot.map(_._1.oppijaOid))
-    val henkilot: Map[String, RHenkilöRow] = runDbSync(henkilotQuery.result).groupBy(_.oppijaOid).mapValues(_.head)
-
-    opiskeluoikeudetJaAikajaksot
-      .filter(t => paatasonSuoritukset.contains(t._1.opiskeluoikeusOid))
-      .foldRight[List[(ROpiskeluoikeusRow, List[ROpiskeluoikeusAikajaksoRow])]](List.empty) {
-      case (t, head :: tail) if t._1.opiskeluoikeusOid == head._1.opiskeluoikeusOid => (head._1, t._2 :: head._2) :: tail
-      case (t, acc) => (t._1, List(t._2)) :: acc
-    }
-      .foldRight[List[(ROpiskeluoikeusRow, Option[RHenkilöRow], List[ROpiskeluoikeusAikajaksoRow], RPäätasonSuoritusRow, Seq[ROsasuoritusRow], Seq[String])]](List.empty) {
-      case ((opiskeluoikeus, aikajaksot), acc) => {
-        paatasonSuoritukset.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Seq.empty) match {
-          case Seq(paatasonsuoritus) => {
-            (
-              opiskeluoikeus,
-              henkilot.get(opiskeluoikeus.oppijaOid),
-              aikajaksot.sortBy(_.alku)(sqlDateOrdering),
-              paatasonsuoritus,
-              osasuoritukset.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Seq.empty),
-              voimassaolevatVuosiluokkaSuorituset.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Seq.empty)
-            ) :: acc
-          }
-          case montaSamanVuosiluokanPaatasonsuoritusta@_ => {
-            montaSamanVuosiluokanPaatasonsuoritusta.map { paatasonsuoritus =>
-              (
-                opiskeluoikeus,
-                henkilot.get(opiskeluoikeus.oppijaOid),
-                aikajaksot.sortBy(_.alku)(sqlDateOrdering),
-                paatasonsuoritus,
-                osasuoritukset.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Seq.empty).filter(_.päätasonSuoritusId == paatasonsuoritus.päätasonSuoritusId),
-                voimassaolevatVuosiluokkaSuorituset.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Seq.empty)
-              )
-            }.toList ::: acc
-          }
-        }
-      }
-    }
   }
 }

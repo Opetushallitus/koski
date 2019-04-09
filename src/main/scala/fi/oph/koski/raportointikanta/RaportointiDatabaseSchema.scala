@@ -21,6 +21,7 @@ object RaportointiDatabaseSchema {
     sqlu"CREATE UNIQUE INDEX ON r_paatason_suoritus(paatason_suoritus_id)",
     sqlu"CREATE INDEX ON r_paatason_suoritus(opiskeluoikeus_oid)",
     sqlu"CREATE INDEX ON r_paatason_suoritus(vahvistus_paiva)",
+    sqlu"CREATE INDEX ON r_paatason_suoritus(suorituksen_tyyppi)",
     sqlu"CREATE UNIQUE INDEX ON r_osasuoritus(osasuoritus_id)",
     sqlu"CREATE INDEX ON r_osasuoritus(paatason_suoritus_id)",
     sqlu"CREATE INDEX ON r_osasuoritus(opiskeluoikeus_oid)",
