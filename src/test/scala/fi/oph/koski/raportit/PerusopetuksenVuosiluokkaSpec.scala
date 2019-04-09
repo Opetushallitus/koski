@@ -1,6 +1,7 @@
 package fi.oph.koski.raportit
 
 import java.time.LocalDate
+import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsPerusopetus
@@ -76,7 +77,6 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
               perusopetuksenAloittamistaLykatty = true,
               aloittanutEnnenOppivelvollisuutta = false,
               pidennettyOppivelvollisuus = true,
-              erityisenTuenPaatos = false,
               tehostetunTuenPaatos = true,
               joustavaPerusopetus = true,
               vuosiluokkiinSitoutumatonOpetus = true,
@@ -85,6 +85,7 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
               oikeusMaksuttomaanAsuntolapaikkaan = true,
               sisaoppilaitosmainenMaijoitus = true,
               koulukoti = true,
+              erityisenTuenPaatos = "Opetus on kokonaan erityisryhmissä tai -luokassa,Opetuksesta 20-49 % on yleisopetuksen ryhmissä",
               tukimuodot = "Osa-aikainen erityisopetus"
             )
           )
@@ -114,18 +115,28 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
     }
   }
 
-  private val mennytAikajakso = Aikajakso(LocalDate.of(2000, 1, 1), Some(LocalDate.of(2001, 1, 1)))
-  private val voimassaolevaAikajakso = Aikajakso(LocalDate.of(2008, 1, 1), None)
-  private val aikajakso = voimassaolevaAikajakso.copy(loppu = Some(LocalDate.of(2018, 1, 1)))
+  private val mennytAikajakso = Aikajakso(date(2000, 1, 1), Some(date(2001, 1, 1)))
+  private val voimassaolevaAikajakso = Aikajakso(date(2008, 1, 1), None)
+  private val aikajakso = voimassaolevaAikajakso.copy(loppu = Some(date(2018, 1, 1)))
   private val aikajaksot = Some(List(aikajakso))
   private val tukimuodot = Some(List(Koodistokoodiviite("1", "perusopetuksentukimuoto")))
+  private val erityisenTuenPäätös = ErityisenTuenPäätös(
+    alku = Some(date(2014, 1, 1)),
+    loppu = Some(date(2018, 1, 1)),
+    opiskeleeToimintaAlueittain = true,
+    erityisryhmässä = Some(true),
+    toteutuspaikka = Some(Koodistokoodiviite("1", "erityisopetuksentoteutuspaikka"))
+  )
 
   private val perusopetuksenOpiskeluoikeudenLisätiedot = PerusopetuksenOpiskeluoikeudenLisätiedot(
     perusopetuksenAloittamistaLykätty = true,
     pidennettyOppivelvollisuus = Some(voimassaolevaAikajakso),
     tukimuodot = tukimuodot,
-    erityisenTuenPäätös = None,
-    erityisenTuenPäätökset = None,
+    erityisenTuenPäätös = Some(erityisenTuenPäätös),
+    erityisenTuenPäätökset = Some(List(
+      erityisenTuenPäätös.copy(alku = Some(date(2016, 1, 1)), toteutuspaikka = Some(Koodistokoodiviite("2" ,"erityisopetuksentoteutuspaikka"))),
+      erityisenTuenPäätös.copy(toteutuspaikka = Some(Koodistokoodiviite("3", "erityisopetuksentoteutuspaikka")))
+    )),
     tehostetunTuenPäätös = Some(voimassaolevaAikajakso),
     tehostetunTuenPäätökset = aikajaksot,
     joustavaPerusopetus = Some(voimassaolevaAikajakso),

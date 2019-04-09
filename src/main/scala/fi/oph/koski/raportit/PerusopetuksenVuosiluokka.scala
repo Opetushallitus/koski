@@ -77,7 +77,6 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
       perusopetuksenAloittamistaLykatty = opiskeluoikeudenLisätiedot.exists(_.perusopetuksenAloittamistaLykätty),
       aloittanutEnnenOppivelvollisuutta = opiskeluoikeudenLisätiedot.exists(_.aloittanutEnnenOppivelvollisuutta),
       pidennettyOppivelvollisuus = opiskeluoikeudenLisätiedot.exists(_.pidennettyOppivelvollisuus.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva))),
-      erityisenTuenPaatos = erityisenTuenPäätösVoimassaHaetullaPäivällä(opiskeluoikeudenLisätiedot, hakupaiva),
       tehostetunTuenPaatos = opiskeluoikeudenLisätiedot.exists(oo => oneOfAikajaksoistaVoimassaHakuPaivalla(oo.tehostetunTuenPäätös, oo.tehostetunTuenPäätökset, hakupaiva)),
       joustavaPerusopetus = opiskeluoikeudenLisätiedot.exists(_.joustavaPerusopetus.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva))),
       vuosiluokkiinSitoutumatonOpetus = opiskeluoikeudenLisätiedot.exists(_.vuosiluokkiinSitoutumatonOpetus),
@@ -86,6 +85,7 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
       oikeusMaksuttomaanAsuntolapaikkaan = opiskeluoikeudenLisätiedot.flatMap(_.oikeusMaksuttomaanAsuntolapaikkaan.map(aikajaksoVoimassaHakuPaivalla(_, hakupaiva))).getOrElse(false),
       sisaoppilaitosmainenMaijoitus = opiskeluoikeudenLisätiedot.exists(_.koulukoti.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)))),
       koulukoti = opiskeluoikeudenLisätiedot.exists(_.koulukoti.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)))),
+      erityisenTuenPaatos = erityisenTuenPäätökset(opiskeluoikeudenLisätiedot, hakupaiva),
       tukimuodot = tukimuodot(opiskeluoikeudenLisätiedot)
     )
   }
@@ -183,17 +183,46 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
     }
   }
 
- private def erityisenTuenPäätösVoimassaHaetullaPäivällä(lisätiedot: Option[PerusopetuksenOpiskeluoikeudenLisätiedot], hakupaiva: LocalDate) = {
-   def voimassa(päätös: ErityisenTuenPäätös, paiva: LocalDate) = {
-     (päätös.alku, päätös.loppu) match {
-       case (Some(alku), Some(loppu)) => !alku.isAfter(paiva) && !loppu.isBefore(paiva)
-       case (Some(alku), _) => !alku.isAfter(paiva)
-       case _ => false
-     }
+  val eritysopetuksentoteutuspaikkaKoodisto = Map(
+    "1" -> "Opetus on kokonaan erityisryhmissä tai -luokassa",
+    "2" -> "Opetuksesta 1-19 % on yleisopetuksen ryhmissä",
+    "3"	-> "Opetuksesta 20-49 % on yleisopetuksen ryhmissä",
+    "4"	-> "Opetuksesta 50-79 % on yleisopetuksen ryhmissä",
+    "5"	-> "Opetuksesta 80-100 % on yleisopetuksen ryhmissä"
+  )
+
+ private def erityisenTuenPäätökset(lisa: Option[PerusopetuksenOpiskeluoikeudenLisätiedot], hakupaiva: LocalDate) = {
+   lisa match {
+     case Some(lisätiedot) =>
+       (
+         voimassaOlevaErityisenTuenPäätösKoodiarvo(lisätiedot.erityisenTuenPäätös, hakupaiva) ::
+         voimassaOlevatErityisenTuenPäätöksetKoodiarvot(lisätiedot.erityisenTuenPäätökset, hakupaiva)
+       ).flatten.mkString(",")
+     case _ => ""
    }
-   lisätiedot.exists(_.erityisenTuenPäätös.exists(voimassa(_, hakupaiva))) ||
-   lisätiedot.exists(_.erityisenTuenPäätökset.exists(_.exists(voimassa(_, hakupaiva))))
  }
+
+  private def voimassaOlevatErityisenTuenPäätöksetKoodiarvot(päätökset: Option[List[ErityisenTuenPäätös]], hakupaiva: LocalDate) = {
+    päätökset match {
+      case Some(ps) => ps.filter(erityisentuenPäätösvoimassaPaivalla(_, hakupaiva)).flatMap(_.toteutuspaikka.map(viite => eritysopetuksentoteutuspaikkaKoodisto.get(viite.koodiarvo)))
+      case _ => List.empty
+    }
+  }
+
+  private def voimassaOlevaErityisenTuenPäätösKoodiarvo(päätös: Option[ErityisenTuenPäätös], hakupaiva: LocalDate) = {
+    päätös match {
+      case Some(p) if (erityisentuenPäätösvoimassaPaivalla(p, hakupaiva)) => p.toteutuspaikka.flatMap(viite => eritysopetuksentoteutuspaikkaKoodisto.get(viite.koodiarvo))
+      case _ => None
+    }
+  }
+
+  private def erityisentuenPäätösvoimassaPaivalla(päätös: ErityisenTuenPäätös, paiva: LocalDate) = {
+    (päätös.alku, päätös.loppu) match {
+      case (Some(alku), Some(loppu)) => !alku.isAfter(paiva) && !loppu.isBefore(paiva)
+      case (Some(alku), _) => !alku.isAfter(paiva)
+      case _ => false
+    }
+  }
 
   private def tukimuodot(lisätiedot: Option[PerusopetuksenOpiskeluoikeudenLisätiedot]) = {
     if (lisätiedot.isDefined) {
@@ -263,7 +292,6 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
     "perusopetuksenAloittamistaLykatty" -> Column("Perusopetuksen aloittamista lykätty"),
     "aloittanutEnnenOppivelvollisuutta" -> Column("Aloittanut ennen oppivelvollisuutta"),
     "pidennettyOppivelvollisuus" -> Column("Pidennetty oppivelvollisuus"),
-    "erityisenTuenPaatos" -> Column("Erityisen tuen päätos"),
     "tehostetunTuenPaatos" -> Column("Tehostetun tuen päätös"),
     "joustavaPerusopetus" -> Column("Joustava perusopetus"),
     "vuosiluokkiinSitoutumatonOpetus" -> Column("Vuosiluokkiin sitoutumaton opetus"),
@@ -272,6 +300,7 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
     "oikeusMaksuttomaanAsuntolapaikkaan" -> Column("Oikeus maksuttomaan asuntolapaikkaan"),
     "sisaoppilaitosmainenMaijoitus" -> Column("Sisäoppilaitosmainen majoitus"),
     "koulukoti" -> Column("Koulukoti"),
+    "erityisenTuenPaatos" -> Column("Erityisen tuen päätos"),
     "tukimuodot" -> Column("Tukimuodot")
   )
 }
@@ -327,7 +356,6 @@ private[raportit] case class PerusopetusRow(
   perusopetuksenAloittamistaLykatty: Boolean,
   aloittanutEnnenOppivelvollisuutta: Boolean,
   pidennettyOppivelvollisuus: Boolean,
-  erityisenTuenPaatos: Boolean,
   tehostetunTuenPaatos: Boolean,
   joustavaPerusopetus: Boolean,
   vuosiluokkiinSitoutumatonOpetus: Boolean,
@@ -336,5 +364,6 @@ private[raportit] case class PerusopetusRow(
   oikeusMaksuttomaanAsuntolapaikkaan: Boolean,
   sisaoppilaitosmainenMaijoitus: Boolean,
   koulukoti: Boolean,
+  erityisenTuenPaatos: String,
   tukimuodot: String
 )
