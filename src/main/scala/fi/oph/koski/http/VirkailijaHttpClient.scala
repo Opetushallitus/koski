@@ -9,7 +9,7 @@ object VirkailijaHttpClient {
     val blazeHttpClient = Http.newClient(serviceUrl)
     val casAuthenticatingClient: Client = if (useCas) {
       val casClient = new CasClient(serviceConfig.virkailijaUrl, blazeHttpClient)
-      CasAuthenticatingClient(casClient, CasParams(serviceUrl, serviceConfig.username, serviceConfig.password), blazeHttpClient, Some(OpintopolkuCallerId.koski), sessionCookieName)
+      CasAuthenticatingClient(casClient, CasParams(serviceUrl, serviceConfig.username, serviceConfig.password), blazeHttpClient, OpintopolkuCallerId.koski, sessionCookieName)
     } else {
       ClientWithBasicAuthentication(blazeHttpClient, serviceConfig.username, serviceConfig.password)
     }
