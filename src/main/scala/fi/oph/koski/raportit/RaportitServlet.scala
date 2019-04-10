@@ -31,7 +31,13 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
       case Left(error) => haltWithStatus(error)
       case Right(oid) => oid
     }
-    raportitService.resolveRaportitOppilaitokselle(oppilaitosOid)
+    val koulutusmuodot = raportointiDatabase.oppilaitoksenKoulutusmuodot(oppilaitosOid)
+
+    val mahdollisetRaportit: Set[String] = getUser match {
+      case Right(user) => RaportitAccessResolver.availableRaportit(koulutusmuodot, application, user)
+      case _ => Set.empty
+    }
+    mahdollisetRaportit
   }
 
   get("/opiskelijavuositiedot") {

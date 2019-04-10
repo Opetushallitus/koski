@@ -1,22 +1,11 @@
 package fi.oph.koski.raportit
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.schema.{OpiskeluoikeudenTyyppi, Organisaatio}
 
 class RaportitService(application: KoskiApplication) {
 
   private lazy val raportointiDatabase = application.raportointiDatabase
   private lazy val perusopetusRepository = PerusopetuksenRaportitRepository(raportointiDatabase.db)
-
-  def resolveRaportitOppilaitokselle(oppilaitosOid: Organisaatio.Oid): Set[String] = {
-    val koulutusmuodot = raportointiDatabase.oppilaitoksenKoulutusmuodot(oppilaitosOid)
-
-    koulutusmuodot.flatMap {
-      case OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo => Seq("opiskelijavuositiedot", "suoritustietojentarkistus")
-      case OpiskeluoikeudenTyyppi.perusopetus.koodiarvo => Seq("perusopetuksenvuosiluokka")
-      case _ => Seq.empty
-    }
-  }
 
   def opiskelijaVuositiedot(request: AikajaksoRaporttiRequest): OppilaitosRaporttiResponse = {
     aikajaksoRaportti(request, Opiskelijavuositiedot)
