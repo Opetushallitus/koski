@@ -86,6 +86,7 @@ object RaportointiDatabaseSchema {
   }
 
   class ROpiskeluoikeusAikajaksoTable(tag: Tag) extends Table[ROpiskeluoikeusAikajaksoRow](tag, "r_opiskeluoikeus_aikajakso") {
+    val id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
     val alku = column[Date]("alku")
     val loppu = column[Date]("loppu")
@@ -108,7 +109,7 @@ object RaportointiDatabaseSchema {
     def * = (opiskeluoikeusOid, alku, loppu, tila, tilaAlkanut, opiskeluoikeusPäättynyt,
       opintojenRahoitus, majoitus, sisäoppilaitosmainenMajoitus, vaativanErityisenTuenYhteydessäJärjestettäväMajoitus,
       erityinenTuki, vaativanErityisenTuenErityinenTehtävä, hojks, vaikeastiVammainen, vammainenJaAvustaja,
-      osaAikaisuus, opiskeluvalmiuksiaTukevatOpinnot, vankilaopetuksessa, oppisopimusJossainPäätasonSuorituksessa) <> (ROpiskeluoikeusAikajaksoRow.tupled, ROpiskeluoikeusAikajaksoRow.unapply)
+      osaAikaisuus, opiskeluvalmiuksiaTukevatOpinnot, vankilaopetuksessa, oppisopimusJossainPäätasonSuorituksessa, id) <> (ROpiskeluoikeusAikajaksoRow.tupled, ROpiskeluoikeusAikajaksoRow.unapply)
   }
 
   class RPäätasonSuoritusTable(tag: Tag) extends Table[RPäätasonSuoritusRow](tag, "r_paatason_suoritus") {
@@ -241,7 +242,8 @@ case class ROpiskeluoikeusAikajaksoRow(
   osaAikaisuus: Byte = 100,
   opiskeluvalmiuksiaTukevatOpinnot: Byte = 0,
   vankilaopetuksessa: Byte = 0,
-  oppisopimusJossainPäätasonSuorituksessa: Byte = 0
+  oppisopimusJossainPäätasonSuorituksessa: Byte = 0,
+  id: Long = 0
 ) {
   def truncateToDates(start: Date, end: Date): ROpiskeluoikeusAikajaksoRow = this.copy(
     alku = if (alku.after(start)) alku else start,
