@@ -162,7 +162,7 @@ const VuosiluokkaRaporttiPaivalta = ({oppilaitosAtom, apiEndpoint, title, descri
     </div>
     <div className='dropdown-selection parametri'>
       <label><Text name='Vuosiluokka'/></label>
-      <VuosiluokkaDropdown value={vuosiluokkaAtom} vuosiluokat={R.range(1, 10)}/>
+      <VuosiluokkaDropdown value={vuosiluokkaAtom} vuosiluokat={R.range(1, 11)}/>
     </div>
     <div className='password'><Text name='Excel-tiedosto on suojattu salasanalla'/> {password}</div>
     <button className='koski-button' disabled={submitEnabledP.not()} onClick={e => { e.preventDefault(); submitBus.push(); return false }}>{buttonTextP}</button>
@@ -175,7 +175,7 @@ const VuosiluokkaDropdown = ({value, vuosiluokat}) => (
       <Dropdown
         options={vuosiluokat}
         keyValue={(key) => key}
-        displayValue={(input) => input}
+        displayValue={(dVal) => dVal === 10 ? 'Peruskoulun päättävät' : dVal}
         selected={v}
         onSelectionChanged={(input) => value.set(input)}
       />))}

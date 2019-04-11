@@ -12,7 +12,11 @@ import org.json4s.JValue
 object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
 
   def buildRaportti(repository: PerusopetuksenRaportitRepository, oppilaitosOid: Oid, paiva: LocalDate, vuosiluokka: String): Seq[PerusopetusRow] = {
-    val rows = repository.perusopetuksenvuosiluokka(oppilaitosOid, paiva, vuosiluokka)
+    val rows = if (vuosiluokka == "10") {
+      repository.peruskoulunPaattavatJaLuokalleJääneet(oppilaitosOid, paiva, vuosiluokka)
+    } else {
+      repository.perusopetuksenvuosiluokka(oppilaitosOid, paiva, vuosiluokka)
+    }
     rows.map(buildRow(_, paiva))
   }
 
@@ -38,6 +42,7 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
       viimeisinTila = aikajaksot.last.tila,
       suorituksenTila = if (päätasonsuoritus.vahvistusPäivä.isDefined) "valmis" else "kesken",
       suorituksenVahvistuspaiva = päätasonsuoritus.vahvistusPäivä.getOrElse("").toString,
+      jaaLuokalle = JsonSerializer.extract[Option[Boolean]](päätasonsuoritus.data \ "jääLuokalle").getOrElse(false),
       luokka = JsonSerializer.extract[Option[String]](päätasonsuoritus.data \ "luokka").getOrElse(""),
       voimassaolevatVuosiluokat = voimassaolevatVuosiluokat.mkString(","),
       aidinkieli = getOppiaineenArvosana("AI")(pakollisetValtakunnalliset),
@@ -253,6 +258,7 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
     "viimeisinTila" -> Column("Viimeisin opiskeluoikeuden tila"),
     "suorituksenTila" -> Column("Suorituksen tila"),
     "suorituksenVahvistuspaiva" -> Column("Vuosiluokan suorituksen vahvistuspaiva"),
+    "jaaLuokalle" -> Column("Jää luokalle"),
     "luokka" -> Column("Luokan tunniste"),
     "voimassaolevatVuosiluokat" -> Column("Vuosiluokkien suoritukset joilta puuttuu vahvistus"),
     "aidinkieli" -> Column("Äidinkieli"),
@@ -317,6 +323,7 @@ private[raportit] case class PerusopetusRow(
   viimeisinTila: String,
   suorituksenTila: String,
   suorituksenVahvistuspaiva: String,
+  jaaLuokalle: Boolean,
   luokka: String,
   voimassaolevatVuosiluokat: String,
   aidinkieli: String,
