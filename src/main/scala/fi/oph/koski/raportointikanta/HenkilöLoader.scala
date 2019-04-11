@@ -51,6 +51,6 @@ object HenkilöLoader extends Logging {
       etunimet = oppija.etunimet,
       aidinkieli = oppija.äidinkieli,
       kansalaisuus = oppija.kansalaisuus.filter(_.nonEmpty).map(_.sorted.mkString(",")),
-      turvakielto = oppija.turvakielto,
+      turvakielto = oppija.turvakielto
     )
 }
