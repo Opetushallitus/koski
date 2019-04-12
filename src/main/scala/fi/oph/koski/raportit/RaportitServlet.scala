@@ -32,10 +32,11 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
       case Right(oid) => oid
     }
     val koulutusmuodot = raportointiDatabase.oppilaitoksenKoulutusmuodot(oppilaitosOid)
-    getUser match {
+    val mahdollisetRaportit: Set[String] = getUser match {
       case Right(user) => RaportitAccessResolver.availableRaportit(koulutusmuodot, application, user)
       case _ => Set.empty
     }
+    mahdollisetRaportit
   }
 
   get("/opiskelijavuositiedot") {
