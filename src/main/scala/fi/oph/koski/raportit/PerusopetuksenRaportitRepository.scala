@@ -15,6 +15,11 @@ import slick.jdbc.GetResult
 
 case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods with RaportointikantaTableQueries {
 
+  private type OpiskeluoikeusOid = String
+  private type OppijaOid = String
+  private type PäätasonSuoritusId = Long
+  private type AikajaksoId = Long
+
   def perusopetuksenvuosiluokka(oppilaitos: Organisaatio.Oid, paiva: LocalDate, vuosiluokka: String): List[(ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], RPäätasonSuoritusRow, Seq[ROsasuoritusRow], Seq[String])] = {
     val opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet = opiskeluoikeusAikajaksotPaatasonSuorituksetResult(oppilaitos, paiva, vuosiluokka)
 
@@ -60,15 +65,15 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
   (
     acc: List[(ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], RPäätasonSuoritusRow, Seq[ROsasuoritusRow], Seq[String])],
     opiskeluoikeus: ROpiskeluoikeusRow,
-    aikajaksot: Map[String, Seq[ROpiskeluoikeusAikajaksoRow]],
-    paatasonsuorituskset: Map[String, Seq[RPäätasonSuoritusRow]],
-    osasuoritukset: Map[Long, Seq[ROsasuoritusRow]],
-    henkilot: Map[String, RHenkilöRow],
-    voimassaOlevatVuosiluokat: Map[String, Seq[String]]
+    aikajaksot: Map[OpiskeluoikeusOid, Seq[ROpiskeluoikeusAikajaksoRow]],
+    paatasonSuoritukset: Map[OpiskeluoikeusOid, Seq[RPäätasonSuoritusRow]],
+    osasuoritukset: Map[PäätasonSuoritusId, Seq[ROsasuoritusRow]],
+    henkilot: Map[OppijaOid, RHenkilöRow],
+    voimassaOlevatVuosiluokat: Map[OpiskeluoikeusOid, Seq[String]]
   ) = {
     (acc, opiskeluoikeus) match {
       case (tail, oo) => {
-        val pts = paatasonsuorituskset.getOrElse(oo.opiskeluoikeusOid, List.empty)
+        val pts = paatasonSuoritukset.getOrElse(oo.opiskeluoikeusOid, List.empty)
         pts.map(paatasonsuoritus => {
           (
             oo,
@@ -84,8 +89,8 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
   }
 
   private def opiskeluoikeusAikajaksotPaatasonSuorituksetResult(oppilaitos: Organisaatio.Oid, paiva: LocalDate, vuosiluokka: String) = {
-    implicit val getResult = GetResult[(String, Seq[Long], Seq[Long])](pr => (pr.nextString(), pr.nextArray(), pr.nextArray()))
-    runDbSync(opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(oppilaitos, Date.valueOf(paiva), vuosiluokka).as[(String, Seq[Long], Seq[Long])])
+    implicit val getResult = GetResult[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])](pr => (pr.nextString(), pr.nextArray(), pr.nextArray()))
+    runDbSync(opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(oppilaitos, Date.valueOf(paiva), vuosiluokka).as[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])])
   }
 
   private def opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(oppilaitos: String, paiva: Date, vuosiluokka: String) = {
@@ -117,8 +122,8 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
   }
 
   private def luokalleJäävätOpiskeluoikeusAikajaksotPäätasonSuorituksetResult(oppilaitos: String, paiva: LocalDate, vuosiluokka: String) = {
-    implicit val getResult = GetResult[(String, Seq[Long], Seq[Long])](pr => (pr.nextString(), pr.nextArray(), pr.nextArray()))
-    runDbSync(luokalleJäävätOpiskeluoikeusAikajaksotPaatasonSuorituksetQuery(oppilaitos, Date.valueOf(paiva), vuosiluokka).as[(String, Seq[Long], Seq[Long])])
+    implicit val getResult = GetResult[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])](pr => (pr.nextString(), pr.nextArray(), pr.nextArray()))
+    runDbSync(luokalleJäävätOpiskeluoikeusAikajaksotPaatasonSuorituksetQuery(oppilaitos, Date.valueOf(paiva), vuosiluokka).as[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])])
   }
 
   private def luokalleJäävätOpiskeluoikeusAikajaksotPaatasonSuorituksetQuery(oppilaitos: String, paiva: Date, vuosiluokka: String) = {
@@ -143,8 +148,8 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
   }
 
   private def peruskoulunPäättävätOpiskeluoikeusAikajaksotPäätasonSuorituksetResult(oppilaitos: String, paiva: LocalDate, vuosiluokka: String, luokalleJaavat: Seq[String]) = {
-    implicit val getResult = GetResult[(String, Seq[Long], Seq[Long])](pr => (pr.nextString(), pr.nextArray(), pr.nextArray()))
-    runDbSync(peruskoulunPäättävätOpiskeluoikeusAikajaksotPäätasonSuorituksetQuery(oppilaitos, Date.valueOf(paiva), vuosiluokka, luokalleJaavat).as[(String, Seq[Long], Seq[Long])])
+    implicit val getResult = GetResult[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])](pr => (pr.nextString(), pr.nextArray(), pr.nextArray()))
+    runDbSync(peruskoulunPäättävätOpiskeluoikeusAikajaksotPäätasonSuorituksetQuery(oppilaitos, Date.valueOf(paiva), vuosiluokka, luokalleJaavat).as[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])])
   }
 
   private def peruskoulunPäättävätOpiskeluoikeusAikajaksotPäätasonSuorituksetQuery(oppilaitos: String, paiva: Date, vuosiluokka: String, luokalleJaavatOidit: Seq[String]) = {
