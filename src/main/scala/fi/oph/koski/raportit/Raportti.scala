@@ -6,12 +6,12 @@ import java.time.LocalDate
 import fi.oph.koski.raportointikanta.RaportointiDatabase
 import fi.oph.koski.schema.Organisaatio
 
-private[raportit] trait Raportti {
+trait Raportti {
 
   val columnSettings: Seq[(String, Column)]
 }
 
-private[raportit] trait AikajaksoRaportti extends Raportti {
+trait AikajaksoRaportti extends Raportti {
 
   def title(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate): String
 
@@ -24,7 +24,8 @@ private[raportit] trait AikajaksoRaportti extends Raportti {
   def name: String = this.getClass.getSimpleName.toLowerCase.filterNot(_ == '$')
 }
 
-private[raportit] trait VuosiluokkaRaporttiPaivalta extends Raportti {
+trait VuosiluokkaRaporttiPaivalta extends Raportti {
+
   def title(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String
 
   def documentation(oppilaitosOid: String, alku: LocalDate, vuosiluokka: String, loadCompleted: Timestamp): String
@@ -34,7 +35,7 @@ private[raportit] trait VuosiluokkaRaporttiPaivalta extends Raportti {
   def buildRaportti(raportointiDatabase: PerusopetuksenRaportitRepository, oppilaitosOid: Organisaatio.Oid, paiva: LocalDate, vuosiluokka: String): Seq[Product]
 }
 
-private[raportit] trait OppilaitosRaporttiRequest {
+trait OppilaitosRaporttiRequest {
   def oppilaitosOid: Organisaatio.Oid
 
   def downloadToken: Option[String]
@@ -42,15 +43,17 @@ private[raportit] trait OppilaitosRaporttiRequest {
   def password: String
 }
 
-private[raportit] case class AikajaksoRaporttiRequest(
+case class AikajaksoRaporttiRequest
+(
   oppilaitosOid: Organisaatio.Oid,
   downloadToken: Option[String],
   password: String,
   alku: LocalDate,
-  loppu: LocalDate,
+  loppu: LocalDate
 ) extends OppilaitosRaporttiRequest
 
-private[raportit] case class PerusopetuksenVuosiluokkaRequest(
+case class PerusopetuksenVuosiluokkaRequest
+(
   oppilaitosOid: Organisaatio.Oid,
   downloadToken: Option[String],
   password: String,
@@ -58,7 +61,7 @@ private[raportit] case class PerusopetuksenVuosiluokkaRequest(
   vuosiluokka: String
 ) extends OppilaitosRaporttiRequest
 
-private[raportit] case class OppilaitosRaporttiResponse
+case class OppilaitosRaporttiResponse
 (
   rows: Seq[Product],
   sheets: Seq[Sheet],

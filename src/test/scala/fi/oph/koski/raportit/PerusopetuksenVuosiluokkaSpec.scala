@@ -15,7 +15,6 @@ import org.scalatest.{FreeSpec, Matchers}
 class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with OpiskeluoikeusTestMethodsPerusopetus {
 
   val repository = PerusopetuksenRaportitRepository(KoskiApplicationForTests.raportointiDatabase.db)
-  resetFixtures
 
   "Perusopetuksenvuosiluokka raportti" - {
 
@@ -196,7 +195,7 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
     valinnaisetLaajuus_SuurempiKuin_2Vuosiviikkotuntia = "",
     valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = "",
     numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = "",
-    valinnaisetEiLaajuutta = "",
+    valinnaisetEiLaajuutta = ""
   )
 
   val kaisanYhdeksännenLuokanLuokalleJääntiRow = kahdeksannenLuokanLuokalleJääntiRow.copy(
@@ -221,7 +220,7 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
     suorituksenTila = "valmis",
     suorituksenVahvistuspaiva = "2016-06-04",
     voimassaolevatVuosiluokat = "",
-    kayttaymisenArvio = "",
+    kayttaymisenArvio = ""
   )
 
   private def withAdditionalVuosiluokkaSuoritus(oppija: OppijaHenkilö, vuosiluokanSuoritus: PerusopetuksenVuosiluokanSuoritus)(f: => Any) = {
