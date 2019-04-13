@@ -11,7 +11,7 @@ trait PostgresDriverWithJsonSupport extends PostgresProfile with PgJson4sSupport
   type DOCType = JValue
   override val jsonMethods = org.json4s.jackson.JsonMethods
 
-  trait API extends super.API with JsonImplicits with SearchAssistants with SearchImplicits with ArrayImplicits with PgStringImplicits {
+  trait API extends super.API with JsonImplicits with SearchAssistants with SearchImplicits with ArrayImplicits with PgStringImplicits with SimpleArrayPlainImplicits {
     implicit val strListTypeMapper = new SimpleArrayJdbcType[String]("text").to(_.toList)
     implicit val json4sJsonArrayTypeMapper =
       new AdvancedArrayJdbcType[JValue](pgjson,

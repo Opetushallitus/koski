@@ -61,6 +61,7 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
             mockOppija.oid,
             mockOppija.oid,
             mockOppija.hetu,
+            None,
             Some(Date.valueOf("1901-01-01")),
             mockOppija.sukunimi,
             mockOppija.etunimet,
@@ -78,8 +79,8 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
           val hakuOidit = Set(masterOppija.oid, slaveOppija.oid)
           val henkilot = raportointiDatabase.runDbSync(raportointiDatabase.RHenkilöt.filter(_.oppijaOid inSet(hakuOidit)).result)
           henkilot should equal (Seq(
-            RHenkilöRow(slaveOppija.oid, masterOppija.oid, masterOppija.hetu, Some(Date.valueOf("1997-10-10")), masterOppija.sukunimi, masterOppija.etunimet, Some("fi"), None, false),
-            RHenkilöRow(masterOppija.oid, masterOppija.oid, masterOppija.hetu, Some(Date.valueOf("1997-10-10")), masterOppija.sukunimi, masterOppija.etunimet, Some("fi"), None, false)
+            RHenkilöRow(slaveOppija.oid, masterOppija.oid, masterOppija.hetu, None, Some(Date.valueOf("1997-10-10")), masterOppija.sukunimi, masterOppija.etunimet, Some("fi"), None, false),
+            RHenkilöRow(masterOppija.oid, masterOppija.oid, masterOppija.hetu, None, Some(Date.valueOf("1997-10-10")), masterOppija.sukunimi, masterOppija.etunimet, Some("fi"), None, false)
           ))
         }
       }
@@ -90,8 +91,8 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
             val masterOppija = MockOppijat.masterEiKoskessa
             val henkilot = raportointiDatabase.runDbSync(raportointiDatabase.RHenkilöt.filter(_.hetu === slaveOppija.hetu.get).result)
             henkilot should equal (Seq(
-              RHenkilöRow(slaveOppija.oid, masterOppija.oid, masterOppija.hetu, Some(Date.valueOf("1966-03-27")), masterOppija.sukunimi, masterOppija.etunimet, None, None, false),
-              RHenkilöRow(masterOppija.oid, masterOppija.oid, masterOppija.hetu, Some(Date.valueOf("1966-03-27")), masterOppija.sukunimi, masterOppija.etunimet, None, None, false)
+              RHenkilöRow(masterOppija.oid, masterOppija.oid, masterOppija.hetu, None, Some(Date.valueOf("1966-03-27")), masterOppija.sukunimi, masterOppija.etunimet, None, None, false),
+              RHenkilöRow(slaveOppija.oid, masterOppija.oid, masterOppija.hetu, None, Some(Date.valueOf("1966-03-27")), masterOppija.sukunimi, masterOppija.etunimet, None, None, false)
             ))
           }
       }

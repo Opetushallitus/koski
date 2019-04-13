@@ -21,6 +21,7 @@ object RaportointiDatabaseSchema {
     sqlu"CREATE UNIQUE INDEX ON r_paatason_suoritus(paatason_suoritus_id)",
     sqlu"CREATE INDEX ON r_paatason_suoritus(opiskeluoikeus_oid)",
     sqlu"CREATE INDEX ON r_paatason_suoritus(vahvistus_paiva)",
+    sqlu"CREATE INDEX ON r_paatason_suoritus(suorituksen_tyyppi)",
     sqlu"CREATE UNIQUE INDEX ON r_osasuoritus(osasuoritus_id)",
     sqlu"CREATE INDEX ON r_osasuoritus(paatason_suoritus_id)",
     sqlu"CREATE INDEX ON r_osasuoritus(opiskeluoikeus_oid)",
@@ -85,6 +86,7 @@ object RaportointiDatabaseSchema {
   }
 
   class ROpiskeluoikeusAikajaksoTable(tag: Tag) extends Table[ROpiskeluoikeusAikajaksoRow](tag, "r_opiskeluoikeus_aikajakso") {
+    val id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
     val alku = column[Date]("alku")
     val loppu = column[Date]("loppu")
@@ -107,7 +109,7 @@ object RaportointiDatabaseSchema {
     def * = (opiskeluoikeusOid, alku, loppu, tila, tilaAlkanut, opiskeluoikeusPäättynyt,
       opintojenRahoitus, majoitus, sisäoppilaitosmainenMajoitus, vaativanErityisenTuenYhteydessäJärjestettäväMajoitus,
       erityinenTuki, vaativanErityisenTuenErityinenTehtävä, hojks, vaikeastiVammainen, vammainenJaAvustaja,
-      osaAikaisuus, opiskeluvalmiuksiaTukevatOpinnot, vankilaopetuksessa, oppisopimusJossainPäätasonSuorituksessa) <> (ROpiskeluoikeusAikajaksoRow.tupled, ROpiskeluoikeusAikajaksoRow.unapply)
+      osaAikaisuus, opiskeluvalmiuksiaTukevatOpinnot, vankilaopetuksessa, oppisopimusJossainPäätasonSuorituksessa, id) <> (ROpiskeluoikeusAikajaksoRow.tupled, ROpiskeluoikeusAikajaksoRow.unapply)
   }
 
   class RPäätasonSuoritusTable(tag: Tag) extends Table[RPäätasonSuoritusRow](tag, "r_paatason_suoritus") {
@@ -164,13 +166,14 @@ object RaportointiDatabaseSchema {
     val oppijaOid = column[String]("oppija_oid", O.PrimaryKey, StringIdentifierType)
     val masterOid = column[String]("master_oid", StringIdentifierType)
     val hetu = column[Option[String]]("hetu", StringIdentifierType)
+    val sukupuoli = column[Option[String]]("sukupuoli")
     val syntymäaika = column[Option[Date]]("syntymaaika")
     val sukunimi = column[String]("sukunimi")
     val etunimet = column[String]("etunimet")
     val äidinkieli = column[Option[String]]("aidinkieli", StringIdentifierType)
     val kansalaisuus = column[Option[String]]("kansalaisuus", StringIdentifierType)
     val turvakielto = column[Boolean]("turvakielto")
-    def * = (oppijaOid, masterOid, hetu, syntymäaika, sukunimi, etunimet, äidinkieli, kansalaisuus, turvakielto) <> (RHenkilöRow.tupled, RHenkilöRow.unapply)
+    def * = (oppijaOid, masterOid, hetu, sukupuoli, syntymäaika, sukunimi, etunimet, äidinkieli, kansalaisuus, turvakielto) <> (RHenkilöRow.tupled, RHenkilöRow.unapply)
   }
 
   class ROrganisaatioTable(tag: Tag) extends Table[ROrganisaatioRow](tag, "r_organisaatio") {
@@ -239,7 +242,8 @@ case class ROpiskeluoikeusAikajaksoRow(
   osaAikaisuus: Byte = 100,
   opiskeluvalmiuksiaTukevatOpinnot: Byte = 0,
   vankilaopetuksessa: Byte = 0,
-  oppisopimusJossainPäätasonSuorituksessa: Byte = 0
+  oppisopimusJossainPäätasonSuorituksessa: Byte = 0,
+  id: Long = 0
 ) {
   def truncateToDates(start: Date, end: Date): ROpiskeluoikeusAikajaksoRow = this.copy(
     alku = if (alku.after(start)) alku else start,
@@ -293,6 +297,7 @@ case class RHenkilöRow(
   oppijaOid: String,
   masterOid: String,
   hetu: Option[String],
+  sukupuoli: Option[String],
   syntymäaika: Option[Date],
   sukunimi: String,
   etunimet: String,

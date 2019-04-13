@@ -90,7 +90,8 @@ case class OppijaNumerorekisteriOppija(
   kansalaisuus: Option[List[Kansalaisuus]],
   kaikkiHetut: Option[List[String]],
   modified: Long,
-  turvakielto: Option[Boolean]
+  turvakielto: Option[Boolean],
+  sukupuoli: Option[String]
 ) {
   def toOppijaHenkilö(linkitetytOidit: List[String]) = OppijaHenkilö(
     oid = oidHenkilo,
@@ -103,6 +104,7 @@ case class OppijaNumerorekisteriOppija(
     kansalaisuus = kansalaisuus.map(_.map(_.kansalaisuusKoodi)),
     modified = modified,
     turvakielto = turvakielto.getOrElse(false),
+    sukupuoli = sukupuoli,
     linkitetytOidit = linkitetytOidit,
     vanhatHetut = kaikkiHetut.getOrElse(Nil).filterNot(hetu.contains)
   )

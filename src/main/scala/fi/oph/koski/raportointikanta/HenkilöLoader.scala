@@ -45,6 +45,7 @@ object HenkilöLoader extends Logging {
       oppijaOid = oid,
       masterOid = oppija.oid,
       hetu = oppija.hetu,
+      sukupuoli = oppija.sukupuoli,
       syntymäaika = oppija.syntymäaika.orElse(oppija.hetu.flatMap(Hetu.toBirthday)).map(Date.valueOf),
       sukunimi = oppija.sukunimi,
       etunimet = oppija.etunimet,
