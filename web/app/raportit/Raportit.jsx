@@ -118,7 +118,7 @@ const AikajaksoRaportti = ({oppilaitosAtom, apiEndpoint, title, description}) =>
   return (<section>
     <h2>{title}</h2>
     <p>{description}</p>
-    <div classname='parametri'>
+    <div className='parametri'>
       <label><Text name='Aikajakso'/></label>
       <div className='date-range'>
         <DateInput value={alkuAtom.get()} valueCallback={(value) => alkuAtom.set(value)} validityCallback={(valid) => !valid && alkuAtom.set(undefined)} />
