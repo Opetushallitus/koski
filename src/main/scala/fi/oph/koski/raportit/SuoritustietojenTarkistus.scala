@@ -11,12 +11,11 @@ import fi.oph.koski.util.FinnishDateFormat.{finnishDateFormat, finnishDateTimeFo
 
 // scalastyle:off method.length
 
-object SuoritustietojenTarkistus extends AikajaksoRaportti {
+object SuoritustietojenTarkistus extends AikajaksoRaportti with AmmatillinenRaporttiUtils {
 
-  def buildRaportti(raportointiDatabase: RaportointiDatabase, oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate) = {
-    val result: Seq[(ROpiskeluoikeusRow, Option[RHenkilöRow], List[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])] = raportointiDatabase.suoritustiedotAikajaksot(oppilaitosOid, OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo, "ammatillinentutkinto", alku, loppu)
-    val rows = result.map(buildRow(oppilaitosOid, alku, loppu, _))
-    rows
+  def buildRaportti(database: RaportointiDatabase, oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate): Seq[SuoritustiedotTarkistusRow] = {
+    val data = AmmatillisenRaportitRepository(database.db).suoritustiedot(oppilaitosOid, OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo, "ammatillinentutkinto", alku, loppu)
+    data.map(buildRow(oppilaitosOid, alku, loppu, _))
   }
 
   val columnSettings: Seq[(String, Column)] = Seq(
@@ -94,17 +93,10 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
        |- Valinnaisten ammatillisten tutkinnon osien yhteislaajuus: KOSKI-palveluun siirrettyjen valinnaisten ammatillisten tutkinnon osien (mukaan lukien otsikoiden ”Korkeakouluopinnot” sekä ”Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja löytyvät osasuoritukset) yhteislaajuus. Lasketaan koulutuksen järjestäjän tutkinnon osille siirtämistä laajuuksista.
      """.stripMargin.trim.stripPrefix("\n").stripSuffix("\n")
 
-  private def buildRow(oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate, data: (ROpiskeluoikeusRow, Option[RHenkilöRow], List[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])) = {
+  private def buildRow(oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate, data: (ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])) = {
     val (opiskeluoikeus, henkilö, aikajaksot, päätasonSuoritukset, sisältyvätOpiskeluoikeudet, osasuoritukset) = data
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](opiskeluoikeus.data \ "lähdejärjestelmänId")
-    val osaamisalat = päätasonSuoritukset
-      .flatMap(s => JsonSerializer.extract[Option[List[Osaamisalajakso]]](s.data \ "osaamisala"))
-      .flatten
-      .filterNot(j => j.alku.exists(_.isAfter(loppu)))
-      .filterNot(j => j.loppu.exists(_.isBefore(alku)))
-      .map(_.osaamisala.koodiarvo)
-      .sorted
-      .distinct
+    val osaamisalat = extractOsaamisalatAikavalilta(päätasonSuoritukset, alku, loppu)
 
     val ammatillisetTutkinnonOsatJaOsasuoritukset = ammatillisetTutkinnonOsatJaOsasuorituksetFrom(osasuoritukset)
     val valmiitAmmatillisetTutkinnonOsatJaOsasuoritukset = ammatillisetTutkinnonOsatJaOsasuoritukset.filter(os => isVahvistusPäivällinen(os) || isArvioinniton(os) || sisältyyVahvistettuunPäätasonSuoritukseen(os, päätasonSuoritukset))
@@ -157,75 +149,6 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
     )
   }
 
-  private def tutkintonimike(osasuoritus: RPäätasonSuoritusRow) = {
-    JsonSerializer.extract[Option[LocalizedString]](osasuoritus.data \ "koulutusmoduuli" \ "tunniste" \ "nimi")
-  }
-
-  private def päätasonSuoritustenTilat(päätasonsuoritukset: Seq[RPäätasonSuoritusRow]) = {
-    päätasonsuoritukset.map(ps => vahvistusPäivätToTila(ps.vahvistusPäivä)).mkString(",")
-  }
-
-  private def vahvistusPäivätToTila(vahvistusPäivä: Option[Date]) = vahvistusPäivä match {
-      case Some(päivä) if isTulevaisuudessa(päivä) =>  s"Kesken, Valmistuu ${päivä.toLocalDate}"
-      case Some(_) =>  "Valmis"
-      case _ => "Kesken"
-    }
-
-  private def isAnyOf(osasuoritus: ROsasuoritusRow, fs: (ROsasuoritusRow => Boolean)*) = fs.exists(f => f(osasuoritus))
-
-  private val tutkinnonOsanRyhmä: (ROsasuoritusRow, String) => Boolean = (osasuoritus, koodiarvo) => JsonSerializer.extract[Option[Koodistokoodiviite]](osasuoritus.data \ "tutkinnonOsanRyhmä") match {
-    case Some(viite) => viite.koodiarvo == koodiarvo
-    case _ => false
-  }
-
-  private val sisältyyVahvistettuunPäätasonSuoritukseen: (ROsasuoritusRow, Seq[RPäätasonSuoritusRow]) => Boolean = (os, pss) => pss.exists(ps => ps.päätasonSuoritusId == os.päätasonSuoritusId & ps.vahvistusPäivä.isDefined)
-
-  private val isAmmatillisenLukioOpintoja: ROsasuoritusRow => Boolean = osasuoritus => osasuoritus.suorituksenTyyppi == "ammatillinenlukionopintoja"
-
-  private val isAmmatillinenMuitaOpintoValmiuksiaTukeviaOpintoja: ROsasuoritusRow => Boolean = osasuoritus => osasuoritus.suorituksenTyyppi == "ammatillinenmuitaopintovalmiuksiatukeviaopintoja"
-
-  private val isAmmatillisenKorkeakouluOpintoja: ROsasuoritusRow => Boolean = osasuoritus => osasuoritus.suorituksenTyyppi == "ammatillinenkorkeakouluopintoja"
-
-  private val isAmmatillinenTutkinnonOsaaPienempiKokonaisuus: ROsasuoritusRow => Boolean = osasuoritus => osasuoritus.suorituksenTyyppi == "ammatillisentutkinnonosaapienempikokonaisuus"
-
-  private val yhteislaajuus: Seq[ROsasuoritusRow] => Double = osasuoritukset => osasuoritukset.flatMap(_.koulutusmoduuliLaajuusArvo).sum
-
-  private val isVahvistusPäivällinen: ROsasuoritusRow => Boolean = osasuoritus => osasuoritus.vahvistusPäivä.isDefined
-
-  private val tunnustetut: Seq[ROsasuoritusRow] => Seq[ROsasuoritusRow] = osasuoritukset => osasuoritukset.filter(isTunnustettu)
-
-  private val isTunnustettu: ROsasuoritusRow => Boolean = osasuoritus => JsonSerializer.extract[Option[OsaamisenTunnustaminen]](osasuoritus.data \ "tunnustettu").isDefined
-
-  private val valinnaiset: Seq[ROsasuoritusRow] => Seq[ROsasuoritusRow] = osasuoritukset => osasuoritukset.filterNot(isPakollinen)
-
-  private val pakolliset: Seq[ROsasuoritusRow] => Seq[ROsasuoritusRow] = osasuoritukset => osasuoritukset.filter(isPakollinen)
-
-  private val isPakollinen: ROsasuoritusRow => Boolean = osasuoritus => osasuoritus.koulutusmoduuliPakollinen.getOrElse(false)
-
-  private val näytöt: Seq[ROsasuoritusRow] => Seq[ROsasuoritusRow] = osasuoritukset => osasuoritukset.filter(isNäyttö)
-
-  private val isNäyttö: ROsasuoritusRow => Boolean = osasuoritus => JsonSerializer.extract[Option[Näyttö]](osasuoritus.data \ "näyttö").isDefined
-
-  private val rahoituksenPiirissä: Seq[ROsasuoritusRow] => Seq[ROsasuoritusRow] = osasuoritukset => osasuoritukset.filter(isRahoituksenPiirissä)
-
-  private val isRahoituksenPiirissä: ROsasuoritusRow => Boolean = osasuoritus => JsonSerializer.extract[Option[OsaamisenTunnustaminen]](osasuoritus.data \ "tunnustettu").exists(_.rahoituksenPiirissä)
-
-  private val isYhteinenTutkinnonOsa: ROsasuoritusRow => Boolean = osasuoritus => tutkinnonOsanRyhmä(osasuoritus, "2")
-
-  private val isAmmatillisenTutkinnonOsanOsaalue: ROsasuoritusRow => Boolean = osasuoritus => osasuoritus.suorituksenTyyppi == "ammatillisentutkinnonosanosaalue"
-
-  private val osasuorituksenaOsissa: (ROsasuoritusRow, Seq[ROsasuoritusRow]) => Boolean = (osasuoritus, osat) => osat.exists(osa => osasuoritus.ylempiOsasuoritusId.contains(osa.osasuoritusId))
-
-  private val isYhteinenTutkinnonOsanOsaalue: (ROsasuoritusRow, Seq[ROsasuoritusRow]) => Boolean = (osasuoritus, osasuoritukset) => {
-    val osat = osasuoritukset.filter(isYhteinenTutkinnonOsa)
-    isAmmatillisenTutkinnonOsanOsaalue(osasuoritus) & osasuorituksenaOsissa(osasuoritus, osat)
-  }
-
-  private val isAmmatillisenYhteisenTutkinnonOsienOsaalue: (ROsasuoritusRow, Seq[ROsasuoritusRow]) => Boolean = (osasuoritus, osasuoritukset) => {
-    val osat = osasuoritukset.filter(os => os.suorituksenTyyppi == "ammatillisentutkinnonosa" & !isYhteinenTutkinnonOsa(os))
-    isAmmatillisenTutkinnonOsanOsaalue(osasuoritus) & osasuorituksenaOsissa(osasuoritus, osat)
-  }
-
   private val isArvioinniton: ROsasuoritusRow => Boolean = osasuoritus => isAnyOf(osasuoritus,
     isAmmatillisenLukioOpintoja,
     isAmmatillisenKorkeakouluOpintoja,
@@ -233,14 +156,6 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
     isAmmatillinenTutkinnonOsaaPienempiKokonaisuus,
     isAmmatillisenTutkinnonOsanOsaalue
   )
-
-  private val tutkinnonosatvalinnanmahdollisuusKoodiarvot = Seq("1,", "2")
-
-  private val isAmmatillisenTutkinnonOsa: ROsasuoritusRow => Boolean = osasuoritus => {
-    !tutkinnonosatvalinnanmahdollisuusKoodiarvot.contains(osasuoritus.koulutusmoduuliKoodiarvo) &&
-      osasuoritus.suorituksenTyyppi == "ammatillisentutkinnonosa" &&
-      tutkinnonOsanRyhmä(osasuoritus, "1")
-  }
 
   private def ammatillisetTutkinnonOsatJaOsasuorituksetFrom(osasuoritukset: Seq[ROsasuoritusRow]) = {
     osasuoritukset.filter(os =>
@@ -253,8 +168,6 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
         isAmmatillisenYhteisenTutkinnonOsienOsaalue(_, osasuoritukset)
       ))
   }
-
-  private def isTulevaisuudessa(date: Date) = date.toLocalDate.isAfter(LocalDate.now())
 }
 
 case class SuoritustiedotTarkistusRow

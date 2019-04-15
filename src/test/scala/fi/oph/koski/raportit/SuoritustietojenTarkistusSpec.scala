@@ -11,6 +11,9 @@ import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, SisältäväOpiskeluoike
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 class SuoritustietojenTarkistusSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with OpiskeluoikeusTestMethodsAmmatillinen with BeforeAndAfterAll {
+
+  val database = KoskiApplicationForTests.raportointiDatabase
+
   "Suoritustietojen tarkistusraportti" - {
     loadRaportointikantaFixtures
     val rivit = loadAmmattilaisAarnenRivit()
@@ -122,7 +125,7 @@ class SuoritustietojenTarkistusSpec extends FreeSpec with Matchers with Raportoi
   override def beforeAll(): Unit = loadRaportointikantaFixtures
 
   private def loadAmmattilaisAarnenRivit(oppilaitosOid: String = MockOrganisaatiot.stadinAmmattiopisto) = {
-    val result = SuoritustietojenTarkistus.buildRaportti(KoskiApplicationForTests.raportointiDatabase, oppilaitosOid, LocalDate.parse("2016-01-01"), LocalDate.parse("2016-12-31"))
+    val result = SuoritustietojenTarkistus.buildRaportti(database, oppilaitosOid, LocalDate.parse("2016-01-01"), LocalDate.parse("2016-12-31"))
     result.filter(_.hetu == MockOppijat.ammattilainen.hetu)
   }
 
