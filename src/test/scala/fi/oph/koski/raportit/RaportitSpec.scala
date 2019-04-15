@@ -35,6 +35,14 @@ class RaportitSpec extends FreeSpec with RaportointikantaTestMethods with Opiske
         parsedJson.asInstanceOf[JArray].values should contain("suoritustietojentarkistus")
       }
     }
+    "sallii suoritustietojen tarkistuksen osittaisista ammatillisista tutkinnoista ammatilliselle oppilaitokselle" in {
+      authGet(s"api/raportit/mahdolliset-raportit/${MockOrganisaatiot.stadinAmmattiopisto}") {
+        verifyResponseStatusOk()
+        val parsedJson = JsonMethods.parse(body)
+        parsedJson shouldBe a[JArray]
+        parsedJson.asInstanceOf[JArray].values should contain("ammatillinenosittainensuoritustietojentarkistus")
+      }
+    }
     "sallii perusopetuksenvuosiluokka raportin perusopetusta järjestävälle oppilaitokselle" in {
       authGet(s"api/raportit/mahdolliset-raportit/${MockOrganisaatiot.jyväskylänNormaalikoulu}") {
         verifyResponseStatusOk()

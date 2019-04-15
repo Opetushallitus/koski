@@ -15,6 +15,10 @@ class RaportitService(application: KoskiApplication) {
     aikajaksoRaportti(request, SuoritustietojenTarkistus)
   }
 
+  def ammatillinenOsittainenSuoritustietojenTarkistus(request: AikajaksoRaporttiRequest): OppilaitosRaporttiResponse = {
+    aikajaksoRaportti(request, AmmatillinenOsittainenRaportti)
+  }
+
   def perusopetuksenVuosiluokka(request: PerusopetuksenVuosiluokkaRequest): OppilaitosRaporttiResponse = {
     perusopetuksenVuosiluokka(request, PerusopetuksenVuosiluokka)
   }
