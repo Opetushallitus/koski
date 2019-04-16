@@ -136,6 +136,15 @@ object PerusopetusExampleData {
     vahvistus = vahvistusPaikkakunnalla(date(2015, 5, 30))
   )
 
+  val kahdeksannenLuokanLuokalleJääntiSuoritus = PerusopetuksenVuosiluokanSuoritus(
+    koulutusmoduuli = PerusopetuksenLuokkaAste(8, perusopetuksenDiaarinumero), luokka = "8", alkamispäivä = Some(date(2013, 8, 15)),
+    jääLuokalle = true,
+    toimipiste = jyväskylänNormaalikoulu,
+    suorituskieli = suomenKieli,
+    osasuoritukset = kaikkiAineet.map(_.map(_.copy(arviointi = arviointi(4), yksilöllistettyOppimäärä = false)).filter(_.koulutusmoduuli.pakollinen)),
+    vahvistus = vahvistusPaikkakunnalla(date(2015, 5, 30))
+  )
+
   val seitsemännenLuokanSuoritus = PerusopetuksenVuosiluokanSuoritus(
     koulutusmoduuli = PerusopetuksenLuokkaAste(7, perusopetuksenDiaarinumero), luokka = "7C", alkamispäivä = Some(date(2013, 8, 15)),
     toimipiste = jyväskylänNormaalikoulu,
@@ -165,6 +174,15 @@ object PerusopetusExampleData {
     koulutusmoduuli = PerusopetuksenLuokkaAste(9, perusopetuksenDiaarinumero), luokka = "9C", alkamispäivä = Some(date(2015, 8, 15)),
     toimipiste = jyväskylänNormaalikoulu,
     suorituskieli = suomenKieli,
+    vahvistus = vahvistusPaikkakunnalla(date(2016, 5, 30))
+  )
+
+  val yhdeksännenLuokanLuokallejääntiSuoritus = PerusopetuksenVuosiluokanSuoritus(
+    koulutusmoduuli = PerusopetuksenLuokkaAste(9, perusopetuksenDiaarinumero), luokka = "9A", alkamispäivä = Some(date(2014, 8, 15)),
+    jääLuokalle = true,
+    toimipiste = jyväskylänNormaalikoulu,
+    suorituskieli = suomenKieli,
+    osasuoritukset = kaikkiAineet.map(_.map(_.copy(arviointi = arviointi(4), yksilöllistettyOppimäärä = false)).filter(_.koulutusmoduuli.pakollinen)),
     vahvistus = vahvistusPaikkakunnalla(date(2016, 5, 30))
   )
 
