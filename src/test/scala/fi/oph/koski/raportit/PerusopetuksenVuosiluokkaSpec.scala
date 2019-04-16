@@ -51,6 +51,17 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
       }
     }
 
+    "Raportille ei päädy vuosiluokkien suorituksia joiden vahvistuspäivä on menneisyydessä" in {
+      val hakuDate = date(2015, 5, 30)
+      val rows = PerusopetuksenVuosiluokka.buildRaportti(repository, MockOrganisaatiot.jyväskylänNormaalikoulu, hakuDate, "7")
+      rows.map(_.suorituksenVahvistuspaiva).foreach(paivaStr => {
+        if (!paivaStr.isEmpty) {
+          val paiva = LocalDate.parse(paivaStr)
+          paiva.isBefore(hakuDate) shouldBe (false)
+        }
+      })
+    }
+
     "Peruskoulun päättävät" - {
 
       "Hakee tiedot peruskoulun oppimäärän suorituksesta" in {
