@@ -89,6 +89,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
   }
 
   private def opiskeluoikeusAikajaksotPaatasonSuorituksetResult(oppilaitos: Organisaatio.Oid, paiva: LocalDate, vuosiluokka: String) = {
+    import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
     implicit val getResult = GetResult[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])](pr => (pr.nextString(), pr.nextArray(), pr.nextArray()))
     runDbSync(opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(oppilaitos, Date.valueOf(paiva), vuosiluokka).as[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])])
   }
@@ -109,6 +110,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
       oo.koulutusmuoto = 'perusopetus' and
       pts.suorituksen_tyyppi = 'perusopetuksenvuosiluokka' and
       pts.koulutusmoduuli_koodiarvo = $vuosiluokka and
+      (pts.vahvistus_paiva >= $paiva or pts.vahvistus_paiva is null) and
       aikaj.alku <= $paiva and (aikaj.loppu >= $paiva or aikaj.loppu is null)
     group by oo.opiskeluoikeus_oid"""
   }
@@ -122,6 +124,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
   }
 
   private def luokalleJäävätOpiskeluoikeusAikajaksotPäätasonSuorituksetResult(oppilaitos: String, paiva: LocalDate, vuosiluokka: String) = {
+    import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
     implicit val getResult = GetResult[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])](pr => (pr.nextString(), pr.nextArray(), pr.nextArray()))
     runDbSync(luokalleJäävätOpiskeluoikeusAikajaksotPaatasonSuorituksetQuery(oppilaitos, Date.valueOf(paiva), vuosiluokka).as[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])])
   }
@@ -132,43 +135,73 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
       oo.opiskeluoikeus_oid,
       array_agg(pts.paatason_suoritus_id),
       array_agg(aikaj.id)
-    from r_opiskeluoikeus oo
-    join r_paatason_suoritus pts
-      on pts.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
-    join r_opiskeluoikeus_aikajakso aikaj
-      on aikaj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
+    from
+      r_opiskeluoikeus oo
+    join
+      r_paatason_suoritus pts
+    on
+      pts.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
+    join
+      r_opiskeluoikeus_aikajakso aikaj
+    on
+      aikaj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
     where
       oo.oppilaitos_oid = $oppilaitos and
       oo.koulutusmuoto = 'perusopetus' and
       pts.suorituksen_tyyppi = 'perusopetuksenvuosiluokka' and
-      pts.koulutusmoduuli_koodiarvo = $vuosiluokka and
-      ((pts.data->>'jääLuokalle')::boolean) and
+      pts.koulutusmoduuli_koodiarvo = '9' and
+      (pts.data->>'jääLuokalle')::boolean and
+      (pts.vahvistus_paiva is null or pts.vahvistus_paiva >= $paiva) and
       aikaj.alku <= $paiva and (aikaj.loppu >= $paiva or aikaj.loppu is null)
-    group by oo.opiskeluoikeus_oid"""
+    group by
+      oo.opiskeluoikeus_oid"""
   }
 
   private def peruskoulunPäättävätOpiskeluoikeusAikajaksotPäätasonSuorituksetResult(oppilaitos: String, paiva: LocalDate, vuosiluokka: String, luokalleJaavat: Seq[String]) = {
+    import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
     implicit val getResult = GetResult[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])](pr => (pr.nextString(), pr.nextArray(), pr.nextArray()))
     runDbSync(peruskoulunPäättävätOpiskeluoikeusAikajaksotPäätasonSuorituksetQuery(oppilaitos, Date.valueOf(paiva), vuosiluokka, luokalleJaavat).as[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])])
   }
 
   private def peruskoulunPäättävätOpiskeluoikeusAikajaksotPäätasonSuorituksetQuery(oppilaitos: String, paiva: Date, vuosiluokka: String, luokalleJaavatOidit: Seq[String]) = {
+    import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
     sql"""
-     select
-      oo.opiskeluoikeus_oid,
-      array_agg(pts.paatason_suoritus_id),
-      array_agg(aikaj.id)
-    from r_opiskeluoikeus oo
-    join r_paatason_suoritus pts
-      on pts.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
-    join r_opiskeluoikeus_aikajakso aikaj
-      on aikaj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
-    where
-      oo.oppilaitos_oid = $oppilaitos and
-      oo.koulutusmuoto = 'perusopetus' and
-      not (oo.opiskeluoikeus_oid = any ($luokalleJaavatOidit)) and
-      pts.suorituksen_tyyppi = 'perusopetuksenoppimaara' and
-      aikaj.alku <= $paiva and (aikaj.loppu >= $paiva or aikaj.loppu is null)
-    group by oo.opiskeluoikeus_oid"""
+      with koulun_paattavat_ysiluokkalaiset as (
+        select
+          oo.opiskeluoikeus_oid
+        from
+          r_opiskeluoikeus oo
+        inner join
+          r_paatason_suoritus pts
+        on
+          pts.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
+        where
+          oo.oppilaitos_oid = $oppilaitos and
+          oo.koulutusmuoto = 'perusopetus' and
+          not (oo.opiskeluoikeus_oid = any ($luokalleJaavatOidit)) and
+          pts.suorituksen_tyyppi = 'perusopetuksenvuosiluokka' and
+          pts.koulutusmoduuli_koodiarvo = '9' and
+          (pts.vahvistus_paiva is null or pts.vahvistus_paiva >= $paiva)
+      )
+      select
+        oo.opiskeluoikeus_oid,
+        array_agg(pts.paatason_suoritus_id),
+        array_agg(aikaj.id)
+      from
+        koulun_paattavat_ysiluokkalaiset oo
+      join
+        r_opiskeluoikeus_aikajakso aikaj
+      on
+        aikaj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
+      join
+        r_paatason_suoritus pts
+      on
+        pts.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
+      where
+        pts.suorituksen_tyyppi = 'perusopetuksenoppimaara' and
+        (pts.vahvistus_paiva is null or pts.vahvistus_paiva >= $paiva) and
+        aikaj.alku <= $paiva and (aikaj.loppu >= $paiva or aikaj.loppu is null)
+      group by
+        oo.opiskeluoikeus_oid"""
   }
 }
