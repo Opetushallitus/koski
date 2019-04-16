@@ -70,7 +70,7 @@ case class AmmatillisenRaportitRepository(db: DB) extends KoskiDatabaseMethods w
   }
 
   private def opiskeluoikeusAikajaksotPäätasonSuorituksetQuery(oppilaitosOid: String, koulutusmuoto: String, suorituksenTyyppi: String, alku: Date, loppu: Date) = {
-    import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+    import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
     implicit val getResult = GetResult[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])](r => (r.nextString(), r.nextArray(), r.nextArray()))
     runDbSync(opiskeluoikeusAikajaksotPäätasonSuorituksetSQL(oppilaitosOid, koulutusmuoto, suorituksenTyyppi, alku, loppu).as[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])])
   }
@@ -96,12 +96,13 @@ case class AmmatillisenRaportitRepository(db: DB) extends KoskiDatabaseMethods w
   }
 
   private def sisältyvätOpiskeluoikeusAikajaksotPäätasonSuorituksetQuery(masterOids: Seq[OpiskeluoikeusOid]) = {
-    import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+    import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
     implicit val getResult = GetResult[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])](r => (r.nextString(), r.nextArray(), r.nextArray()))
     runDbSync(sisältyvätOpiskeluoikeusAikajaksotPäätasonSuorituksetSQL(masterOids).as[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])])
   }
 
   private def sisältyvätOpiskeluoikeusAikajaksotPäätasonSuorituksetSQL(masterOids: Seq[OpiskeluoikeusOid]) = {
+    import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
     sql"""
       select
         oo.opiskeluoikeus_oid,
