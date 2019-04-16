@@ -4,6 +4,7 @@ import com.typesafe.config.Config
 import fi.oph.koski.henkilo.{KäyttäjäHenkilö, OppijanumeroRekisteriClient}
 import fi.oph.koski.http.Http
 import fi.oph.koski.koskiuser._
+import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.Opetushallitus
 import fi.oph.koski.schema.OidOrganisaatio
 import fi.vm.sade.utils.cas.CasClientException
@@ -11,7 +12,7 @@ import fi.vm.sade.utils.cas.CasClientException
 /**
   * Replacement for the LDAP-based directory client
   */
-class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends DirectoryClient {
+class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends DirectoryClient with Logging {
   import fi.vm.sade.utils.cas.CasClient._
   import org.http4s.Status.Created
   import org.http4s._
@@ -47,8 +48,11 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
             throw new CasClientException(s"TGT decoding failed at ${tgtUri}: No location header at")
         }
         Task.now(true)
+      case Locked(resp) =>
+        logger.warn(s"Access denied, username $userid is locked")
+        Task.now(false)
       case r => r.as[String].map { body =>
-        if (body.contains("authentication_exceptions") || body.contains("error.authentication.credentials.bad") ) {
+        if (body.contains("authentication_exceptions") || body.contains("error.authentication.credentials.bad")) {
           false
         } else {
           throw new CasClientException(s"TGT decoding failed at ${tgtUri}: invalid TGT creation status: ${r.status.code}: ${body.take(200).replace('\n', ' ').replace('\r', ' ')}")
