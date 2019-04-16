@@ -518,7 +518,7 @@ object AmmatillinenExampleData {
             lisätiedot = Some(List(lisätietoOsaamistavoitteet))
           )
         ))
-      ),
+      )
     )),
     todistuksellaNäkyvätLisätiedot = Some("Suorittaa toista osaamisalaa")
   )
