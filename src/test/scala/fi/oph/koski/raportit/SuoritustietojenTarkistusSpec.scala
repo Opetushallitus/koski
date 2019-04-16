@@ -11,6 +11,7 @@ import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, SisältäväOpiskeluoike
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 class SuoritustietojenTarkistusSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with OpiskeluoikeusTestMethodsAmmatillinen with BeforeAndAfterAll {
+
   "Suoritustietojen tarkistusraportti" - {
     loadRaportointikantaFixtures
     val rivit = loadAmmattilaisAarnenRivit()

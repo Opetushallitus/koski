@@ -7,7 +7,7 @@ import scala.collection.JavaConverters._
 object RaportitAccessResolver {
 
   private val raportit = Map(
-    "ammatillinenkoulutus" -> Seq("opiskelijavuositiedot", "suoritustietojentarkistus"),
+    "ammatillinenkoulutus" -> Seq("opiskelijavuositiedot", "suoritustietojentarkistus", "ammatillinenosittainensuoritustietojentarkistus"),
     "perusopetus" -> Seq("perusopetuksenvuosiluokka")
   )
 

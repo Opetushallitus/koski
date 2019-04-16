@@ -1,11 +1,10 @@
 package fi.oph.koski.raportointikanta
 
-import java.time.LocalDate
 import java.sql.Date
+import java.time.LocalDate
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethodsAmmatillinen}
-import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.AmmatillinenExampleData
 import fi.oph.koski.henkilo.MockOppijat
@@ -15,20 +14,14 @@ import fi.oph.koski.schema._
 import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.json4s.JsonAST.{JBool, JObject}
 import org.json4s.jackson.JsonMethods
+import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with BeforeAndAfterAll {
 
   private val raportointiDatabase = KoskiApplicationForTests.raportointiDatabase
 
-  override def beforeAll(): Unit = {
-    super.beforeAll()
-    createOrUpdate(MockOppijat.slaveMasterEiKoskessa.henkilö, defaultOpiskeluoikeus)
-  }
-
-  override def afterAll(): Unit = {
-    super.afterAll()
-    resetFixtures
-  }
+  override def beforeAll(): Unit = createOrUpdate(MockOppijat.slaveMasterEiKoskessa.henkilö, defaultOpiskeluoikeus)
+  override def afterAll(): Unit = resetFixtures
 
   "Raportointikannan rakennus-APIt" - {
     "Skeeman luonti (ja kannan tyhjennys)" in {
@@ -77,8 +70,8 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
           val masterOppija = MockOppijat.master
           val slaveOppija = MockOppijat.slave.henkilö
           val hakuOidit = Set(masterOppija.oid, slaveOppija.oid)
-          val henkilot = raportointiDatabase.runDbSync(raportointiDatabase.RHenkilöt.filter(_.oppijaOid inSet(hakuOidit)).result)
-          henkilot should equal (Seq(
+          val henkilot = raportointiDatabase.runDbSync(raportointiDatabase.RHenkilöt.filter(_.oppijaOid inSet(hakuOidit)).result).toSet
+          henkilot should equal (Set(
             RHenkilöRow(slaveOppija.oid, masterOppija.oid, masterOppija.hetu, None, Some(Date.valueOf("1997-10-10")), masterOppija.sukunimi, masterOppija.etunimet, Some("fi"), None, false),
             RHenkilöRow(masterOppija.oid, masterOppija.oid, masterOppija.hetu, None, Some(Date.valueOf("1997-10-10")), masterOppija.sukunimi, masterOppija.etunimet, Some("fi"), None, false)
           ))
@@ -89,10 +82,10 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
             verifyResponseStatusOk()
             val slaveOppija = MockOppijat.slaveMasterEiKoskessa.henkilö
             val masterOppija = MockOppijat.masterEiKoskessa
-            val henkilot = raportointiDatabase.runDbSync(raportointiDatabase.RHenkilöt.filter(_.hetu === slaveOppija.hetu.get).result)
-            henkilot should equal (Seq(
-              RHenkilöRow(masterOppija.oid, masterOppija.oid, masterOppija.hetu, None, Some(Date.valueOf("1966-03-27")), masterOppija.sukunimi, masterOppija.etunimet, None, None, false),
-              RHenkilöRow(slaveOppija.oid, masterOppija.oid, masterOppija.hetu, None, Some(Date.valueOf("1966-03-27")), masterOppija.sukunimi, masterOppija.etunimet, None, None, false)
+            val henkilot = raportointiDatabase.runDbSync(raportointiDatabase.RHenkilöt.filter(_.hetu === slaveOppija.hetu.get).result).toSet
+            henkilot should equal (Set(
+              RHenkilöRow(slaveOppija.oid, masterOppija.oid, masterOppija.hetu, None, Some(Date.valueOf("1966-03-27")), masterOppija.sukunimi, masterOppija.etunimet, None, None, false),
+              RHenkilöRow(masterOppija.oid, masterOppija.oid, masterOppija.hetu, None, Some(Date.valueOf("1966-03-27")), masterOppija.sukunimi, masterOppija.etunimet, None, None, false)
             ))
           }
       }

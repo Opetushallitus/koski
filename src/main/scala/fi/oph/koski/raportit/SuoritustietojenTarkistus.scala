@@ -11,100 +11,17 @@ import fi.oph.koski.util.FinnishDateFormat.{finnishDateFormat, finnishDateTimeFo
 
 // scalastyle:off method.length
 
-object SuoritustietojenTarkistus extends AikajaksoRaportti {
+object SuoritustietojenTarkistus extends AikajaksoRaportti with AmmatillinenRaporttiUtils {
 
-  def buildRaportti(raportointiDatabase: RaportointiDatabase, oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate) = {
-    val result: Seq[(ROpiskeluoikeusRow, Option[RHenkilöRow], List[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])] = raportointiDatabase.suoritustiedotAikajaksot(oppilaitosOid, OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo, "ammatillinentutkinto", alku, loppu)
-    val rows = result.map(buildRow(oppilaitosOid, alku, loppu, _))
-    rows
+  def buildRaportti(database: RaportointiDatabase, oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate): Seq[SuoritustiedotTarkistusRow] = {
+    val data = AmmatillisenRaportitRepository(database.db).suoritustiedot(oppilaitosOid, OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo, "ammatillinentutkinto", alku, loppu)
+    data.map(buildRow(oppilaitosOid, alku, loppu, _))
   }
 
-  val columnSettings: Seq[(String, Column)] = Seq(
-    "opiskeluoikeusOid" -> Column("Opiskeluoikeuden oid"),
-    "lähdejärjestelmä" -> Column("Lähdejärjestelmä", width = Some(4000)),
-    "lähdejärjestelmänId" -> Column("Opiskeluoikeuden tunniste lähdejärjestelmässä", width = Some(4000)),
-    "sisältyyOpiskeluoikeuteenOid" -> Column("Sisältyy opiskeluoikeuteen", width = Some(4000)),
-    "ostettu"-> Column("Ostettu", width = Some(2000)),
-    "sisältyvätOpiskeluoikeudetOidit" -> Column("Sisältyvät opiskeluoikeudet", width = Some(4000)),
-    "sisältyvätOpiskeluoikeudetOppilaitokset" -> Column("Sisältyvien opiskeluoikeuksien oppilaitokset", width = Some(4000)),
-    "linkitetynOpiskeluoikeudenOppilaitos" -> Column("Toisen koulutuksen järjestäjän opiskeluoikeus"),
-    "aikaleima" -> Column("Päivitetty"),
-    "toimipisteOidit" -> Column("Toimipisteet"),
-    "oppijaOid" -> Column("Oppijan oid"),
-    "hetu" -> Column("Hetu"),
-    "sukunimi" -> Column("Sukunimi"),
-    "etunimet" -> Column("Etunimet"),
-    "koulutusmoduulit" -> Column("Tutkinnot"),
-    "osaamisalat" -> Column("Osaamisalat"),
-    "tutkintonimikkeet" -> Column("Tutkintonimike"),
-    "päätasonSuoritustenTilat" -> Column("Suorituksen tila"),
-    "viimeisinOpiskeluoikeudenTila" -> Column("Viimeisin opiskeluoikeuden tila"),
-    "opintojenRahoitukset" -> Column("Rahoitukset"),
-    "painotettuKeskiarvo" -> Column("Painotettu keskiarvo"),
-    "suoritettujenOpintojenYhteislaajuus" -> Column("Suoritettujen opintojen yhteislaajuus"),
-    "valmiitAmmatillisetTutkinnonOsatLkm" -> Column("Valmiiden ammatillisten tutkinnon osien lukumäärä"),
-    "pakollisetAmmatillisetTutkinnonOsatLkm" -> Column("Pakollisten ammatillisten tutkinnon osien lukumäärä"),
-    "valinnaisetAmmatillisetTutkinnonOsatLkm" -> Column("Valinnaisten ammatillisten tutkinnon osien lukumäärä"),
-    "näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm" -> Column("Valmiissa ammatillisissa tutkinnon osissa olevien näyttöjen lukumäärä"),
-    "tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm" -> Column("Tunnustettujen tutkinnon osien osuus valmiista ammatillisista tutkinnon osista"),
-    "rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm" -> Column("Rahoituksen piirissä olevien tutkinnon osien osuus tunnustetuista ammatillisista tutkinnon osista"),
-    "suoritetutAmmatillisetTutkinnonOsatYhteislaajuus" -> Column("Suoritettujen ammatillisten tutkinnon osien yhteislaajuus"),
-    "pakollisetAmmatillisetTutkinnonOsatYhteislaajuus" -> Column("Pakollisten ammatillisten tutkinnon osien yhteislaajuus"),
-    "valinnaisetAmmatillisetTutkinnonOsatYhteislaajuus" -> Column("Valinnaisten ammatillisten tutkinnon osien yhteislaajuus"),
-    "valmiitYhteistenTutkinnonOsatLkm" -> Column("Valmiiden yhteisten tutkinnon osien lukumäärä"),
-    "pakollisetYhteistenTutkinnonOsienOsaalueidenLkm" -> Column("Pakollisten yhteisten tutkinnon osien osa-alueiden lukumäärä"),
-    "valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm" -> Column("Valinnaisten yhteisten tutkinnon osien osa-aluiden lukumäärä"),
-    "tunnustettujaTukinnonOsanOsaalueitaValmiissaTutkinnonOsanOsalueissaLkm" -> Column("Tunnustettujen tutkinnon osien osa-alueiden osuus valmiista yhteisten tutkinnon osien osa-alueista"),
-    "rahoituksenPiirissäTutkinnonOsanOsaalueitaValmiissaTutkinnonOsanOsaalueissaLkm" -> Column("Rahoituksen piirissä olevien tutkinnon osien osa-aluiden osuus valmiista yhteisten tutkinnon osien osa-alueista"),
-    "tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaLkm" -> Column("Tunnustettujen tutkinnon osien osuus valmiista yhteisistä tutkinnon osista"),
-    "rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm" -> Column("Rahoituksen piirissä olevien tutkinnon osien osuus tunnustetuista yhteisistä tutkinnon osista"),
-    "suoritettujenYhteistenTutkinnonOsienYhteislaajuus" -> Column("Suoritettujen yhteisten tutkinnon osien yhteislaajuus"),
-    "suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus" -> Column("Suoritettujen yhteisten tutkinnon osien osa-alueiden yhteislaajuus"),
-    "pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus" -> Column("Pakollisten yhteisten tutkinnon osien osa-alueiden yhteislaajuus"),
-    "valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus" -> Column("Valinnaisten yhteisten tutkinnon osien osa-aluiden yhteislaajuus")
-  )
-
-  def filename(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate): String =
-    s"suoritustiedot_${oppilaitosOid}_${alku.toString.replaceAll("-", "")}-${loppu.toString.replaceAll("-", "")}.xlsx"
-
-  def title(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate): String =
-    s"Suoritustiedot $oppilaitosOid ${finnishDateFormat.format(alku)} - ${finnishDateFormat.format(loppu)}"
-
-  def documentation(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, loadCompleted: Timestamp): String =
-    s"""
-       |Suoritustiedot (ammatillinen koulutus)
-       |Oppilaitos: $oppilaitosOid
-       |Aikajakso: ${finnishDateFormat.format(alku)} - ${finnishDateFormat.format(loppu)}
-       |Raportti luotu: ${finnishDateTimeFormat.format(LocalDateTime.now)} (${finnishDateTimeFormat.format(loadCompleted.toLocalDateTime)} tietojen pohjalta)
-       |
-       |Tarkempi kuvaus joistakin sarakkeista:
-       |
-       |- Tutkinnot: kaikki opiskeluoikeudella olevat päätason suoritusten tutkinnot pilkulla erotettuna (myös ennen raportin aikajaksoa valmistuneet, ja raportin aikajakson jälkeen alkaneet). Valtakunnalliset tutkinnot käyttävät "koulutus"-koodistoa, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/koulutus/latest.
-       |- Osaamisalat: kaikkien ym. tutkintojen osaamisalat pilkulla erotettuna (myös ennen/jälkeen raportin aikajaksoa). Valtakunnalliset osaamisalat käyttävät "osaamisala"-koodistoa, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/osaamisala/latest.
-       |- Suorituksen tila: kaikkien opiskeluoikeuteen kuuluvien päätason suoritusten tilat.
-       |- Viimeisin opiskeluoikeuden tila: opiskeluoikeuden tila raportin aikajakson lopussa. Käyttää "koskiopiskeluoikeudentila" koodistoa, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/koskiopiskeluoikeudentila/latest.
-       |- Rahoitukset: raportin aikajaksolla esiintyvät rahoitusmuodot pilkulla erotettuna (aakkosjärjestyksessä, ei aikajärjestyksessä). Arvot ovat "opintojenrahoitus" koodistosta, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/opintojenrahoitus/latest.
-       |- Painotettu keskiarvo: kaikkien opiskeluoikeuteen kuuluvien päätason suoritusten painotetut keskiarvot.
-       |- Suoritettujen opintojen yhteislaajuus: KOSKI-palveluun siirrettyjen ammatillisten tutkinnon osien (mukaan lukien otsikoiden ”Korkeakouluopinnot” sekä ”Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja löytyvät osasuoritukset) ja yhteisten tutkinnon osien osa-alueiden yhteislaajuus. Lasketaan koulutuksen järjestäjän tutkinnon osille tai niiden osa-alueille siirtämistä laajuuksista.
-       |- Valmiiden ammatillisten tutkinnon osien lukumäärä: KOSKI-palveluun siirrettyjen ammatillisten tutkinnon osien yhteenlaskettu lukumäärä mukaan lukien otsikoiden ”Korkeakouluopinnot” sekä ”Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja” löytyvät osasuoritukset.
-       |- Valinnaisten ammatillisten tutkinnon osien lukumäärä: KOSKI-palveluun siirrettyjen valinnaisten ammatillisten tutkinnon osien yhteenlaskettu lukumäärä mukaan lukien otsikoiden ”Korkeakouluopinnot” sekä ”Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja” löytyvät osasuoritukset.
-       |- Tunnustettujen tutkinnon osien osuus valmiista ammatillisista tutkinnon osista: KOSKI-palveluun siirrettyjen tunnustettujen ammatillisten tutkinnon osien yhteenlaskettu lukumäärä mukaan lukien otsikoiden ”Korkeakouluopinnot” sekä ”Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja” löytyvät osasuoritukset.
-       |- Rahoituksen piirissä olevien tutkinnon osien osuus tunnustetuista ammatillisista tutkinnon osista: KOSKI-palveluun siirrettyjen tunnustettujen, rahoituksen piirissä olevien ammatillisten tutkinnon osien yhteenlaskettu lukumäärä mukaan lukien otsikoiden ”Korkeakouluopinnot” sekä ”Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja” löytyvät osasuoritukset.
-       |- Suoritettujen ammatillisten tutkinnon osien yhteislaajuus: KOSKI-palveluun siirrettyjen ammatillisten tutkinnon osien (mukaan lukien otsikoiden ”Korkeakouluopinnot” sekä ”Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja löytyvät osasuoritukset) yhteislaajuus. Lasketaan koulutuksen järjestäjän tutkinnon osille siirtämistä laajuuksista.
-       |- Valinnaisten ammatillisten tutkinnon osien yhteislaajuus: KOSKI-palveluun siirrettyjen valinnaisten ammatillisten tutkinnon osien (mukaan lukien otsikoiden ”Korkeakouluopinnot” sekä ”Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja löytyvät osasuoritukset) yhteislaajuus. Lasketaan koulutuksen järjestäjän tutkinnon osille siirtämistä laajuuksista.
-     """.stripMargin.trim.stripPrefix("\n").stripSuffix("\n")
-
-  private def buildRow(oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate, data: (ROpiskeluoikeusRow, Option[RHenkilöRow], List[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])) = {
+  private def buildRow(oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate, data: (ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])) = {
     val (opiskeluoikeus, henkilö, aikajaksot, päätasonSuoritukset, sisältyvätOpiskeluoikeudet, osasuoritukset) = data
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](opiskeluoikeus.data \ "lähdejärjestelmänId")
-    val osaamisalat = päätasonSuoritukset
-      .flatMap(s => JsonSerializer.extract[Option[List[Osaamisalajakso]]](s.data \ "osaamisala"))
-      .flatten
-      .filterNot(j => j.alku.exists(_.isAfter(loppu)))
-      .filterNot(j => j.loppu.exists(_.isBefore(alku)))
-      .map(_.osaamisala.koodiarvo)
-      .sorted
-      .distinct
+    val osaamisalat = extractOsaamisalatAikavalilta(päätasonSuoritukset, alku, loppu)
 
     val ammatillisetTutkinnonOsatJaOsasuoritukset = ammatillisetTutkinnonOsatJaOsasuorituksetFrom(osasuoritukset)
     val valmiitAmmatillisetTutkinnonOsatJaOsasuoritukset = ammatillisetTutkinnonOsatJaOsasuoritukset.filter(os => isVahvistusPäivällinen(os) || isArvioinniton(os) || sisältyyVahvistettuunPäätasonSuoritukseen(os, päätasonSuoritukset))
@@ -157,75 +74,6 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
     )
   }
 
-  private def tutkintonimike(osasuoritus: RPäätasonSuoritusRow) = {
-    JsonSerializer.extract[Option[LocalizedString]](osasuoritus.data \ "koulutusmoduuli" \ "tunniste" \ "nimi")
-  }
-
-  private def päätasonSuoritustenTilat(päätasonsuoritukset: Seq[RPäätasonSuoritusRow]) = {
-    päätasonsuoritukset.map(ps => vahvistusPäivätToTila(ps.vahvistusPäivä)).mkString(",")
-  }
-
-  private def vahvistusPäivätToTila(vahvistusPäivä: Option[Date]) = vahvistusPäivä match {
-      case Some(päivä) if isTulevaisuudessa(päivä) =>  s"Kesken, Valmistuu ${päivä.toLocalDate}"
-      case Some(_) =>  "Valmis"
-      case _ => "Kesken"
-    }
-
-  private def isAnyOf(osasuoritus: ROsasuoritusRow, fs: (ROsasuoritusRow => Boolean)*) = fs.exists(f => f(osasuoritus))
-
-  private val tutkinnonOsanRyhmä: (ROsasuoritusRow, String) => Boolean = (osasuoritus, koodiarvo) => JsonSerializer.extract[Option[Koodistokoodiviite]](osasuoritus.data \ "tutkinnonOsanRyhmä") match {
-    case Some(viite) => viite.koodiarvo == koodiarvo
-    case _ => false
-  }
-
-  private val sisältyyVahvistettuunPäätasonSuoritukseen: (ROsasuoritusRow, Seq[RPäätasonSuoritusRow]) => Boolean = (os, pss) => pss.exists(ps => ps.päätasonSuoritusId == os.päätasonSuoritusId & ps.vahvistusPäivä.isDefined)
-
-  private val isAmmatillisenLukioOpintoja: ROsasuoritusRow => Boolean = osasuoritus => osasuoritus.suorituksenTyyppi == "ammatillinenlukionopintoja"
-
-  private val isAmmatillinenMuitaOpintoValmiuksiaTukeviaOpintoja: ROsasuoritusRow => Boolean = osasuoritus => osasuoritus.suorituksenTyyppi == "ammatillinenmuitaopintovalmiuksiatukeviaopintoja"
-
-  private val isAmmatillisenKorkeakouluOpintoja: ROsasuoritusRow => Boolean = osasuoritus => osasuoritus.suorituksenTyyppi == "ammatillinenkorkeakouluopintoja"
-
-  private val isAmmatillinenTutkinnonOsaaPienempiKokonaisuus: ROsasuoritusRow => Boolean = osasuoritus => osasuoritus.suorituksenTyyppi == "ammatillisentutkinnonosaapienempikokonaisuus"
-
-  private val yhteislaajuus: Seq[ROsasuoritusRow] => Double = osasuoritukset => osasuoritukset.flatMap(_.koulutusmoduuliLaajuusArvo).sum
-
-  private val isVahvistusPäivällinen: ROsasuoritusRow => Boolean = osasuoritus => osasuoritus.vahvistusPäivä.isDefined
-
-  private val tunnustetut: Seq[ROsasuoritusRow] => Seq[ROsasuoritusRow] = osasuoritukset => osasuoritukset.filter(isTunnustettu)
-
-  private val isTunnustettu: ROsasuoritusRow => Boolean = osasuoritus => JsonSerializer.extract[Option[OsaamisenTunnustaminen]](osasuoritus.data \ "tunnustettu").isDefined
-
-  private val valinnaiset: Seq[ROsasuoritusRow] => Seq[ROsasuoritusRow] = osasuoritukset => osasuoritukset.filterNot(isPakollinen)
-
-  private val pakolliset: Seq[ROsasuoritusRow] => Seq[ROsasuoritusRow] = osasuoritukset => osasuoritukset.filter(isPakollinen)
-
-  private val isPakollinen: ROsasuoritusRow => Boolean = osasuoritus => osasuoritus.koulutusmoduuliPakollinen.getOrElse(false)
-
-  private val näytöt: Seq[ROsasuoritusRow] => Seq[ROsasuoritusRow] = osasuoritukset => osasuoritukset.filter(isNäyttö)
-
-  private val isNäyttö: ROsasuoritusRow => Boolean = osasuoritus => JsonSerializer.extract[Option[Näyttö]](osasuoritus.data \ "näyttö").isDefined
-
-  private val rahoituksenPiirissä: Seq[ROsasuoritusRow] => Seq[ROsasuoritusRow] = osasuoritukset => osasuoritukset.filter(isRahoituksenPiirissä)
-
-  private val isRahoituksenPiirissä: ROsasuoritusRow => Boolean = osasuoritus => JsonSerializer.extract[Option[OsaamisenTunnustaminen]](osasuoritus.data \ "tunnustettu").exists(_.rahoituksenPiirissä)
-
-  private val isYhteinenTutkinnonOsa: ROsasuoritusRow => Boolean = osasuoritus => tutkinnonOsanRyhmä(osasuoritus, "2")
-
-  private val isAmmatillisenTutkinnonOsanOsaalue: ROsasuoritusRow => Boolean = osasuoritus => osasuoritus.suorituksenTyyppi == "ammatillisentutkinnonosanosaalue"
-
-  private val osasuorituksenaOsissa: (ROsasuoritusRow, Seq[ROsasuoritusRow]) => Boolean = (osasuoritus, osat) => osat.exists(osa => osasuoritus.ylempiOsasuoritusId.contains(osa.osasuoritusId))
-
-  private val isYhteinenTutkinnonOsanOsaalue: (ROsasuoritusRow, Seq[ROsasuoritusRow]) => Boolean = (osasuoritus, osasuoritukset) => {
-    val osat = osasuoritukset.filter(isYhteinenTutkinnonOsa)
-    isAmmatillisenTutkinnonOsanOsaalue(osasuoritus) & osasuorituksenaOsissa(osasuoritus, osat)
-  }
-
-  private val isAmmatillisenYhteisenTutkinnonOsienOsaalue: (ROsasuoritusRow, Seq[ROsasuoritusRow]) => Boolean = (osasuoritus, osasuoritukset) => {
-    val osat = osasuoritukset.filter(os => os.suorituksenTyyppi == "ammatillisentutkinnonosa" & !isYhteinenTutkinnonOsa(os))
-    isAmmatillisenTutkinnonOsanOsaalue(osasuoritus) & osasuorituksenaOsissa(osasuoritus, osat)
-  }
-
   private val isArvioinniton: ROsasuoritusRow => Boolean = osasuoritus => isAnyOf(osasuoritus,
     isAmmatillisenLukioOpintoja,
     isAmmatillisenKorkeakouluOpintoja,
@@ -233,14 +81,6 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
     isAmmatillinenTutkinnonOsaaPienempiKokonaisuus,
     isAmmatillisenTutkinnonOsanOsaalue
   )
-
-  private val tutkinnonosatvalinnanmahdollisuusKoodiarvot = Seq("1,", "2")
-
-  private val isAmmatillisenTutkinnonOsa: ROsasuoritusRow => Boolean = osasuoritus => {
-    !tutkinnonosatvalinnanmahdollisuusKoodiarvot.contains(osasuoritus.koulutusmoduuliKoodiarvo) &&
-      osasuoritus.suorituksenTyyppi == "ammatillisentutkinnonosa" &&
-      tutkinnonOsanRyhmä(osasuoritus, "1")
-  }
 
   private def ammatillisetTutkinnonOsatJaOsasuorituksetFrom(osasuoritukset: Seq[ROsasuoritusRow]) = {
     osasuoritukset.filter(os =>
@@ -254,7 +94,92 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti {
       ))
   }
 
-  private def isTulevaisuudessa(date: Date) = date.toLocalDate.isAfter(LocalDate.now())
+  def filename(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate): String =
+    s"suoritustiedot_${oppilaitosOid}_${alku.toString.replaceAll("-", "")}-${loppu.toString.replaceAll("-", "")}.xlsx"
+
+  def title(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate): String =
+    s"Suoritustiedot $oppilaitosOid ${finnishDateFormat.format(alku)} - ${finnishDateFormat.format(loppu)}"
+
+  def documentation(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, loadCompleted: Timestamp): String =
+    s"""
+       |Suoritustiedot (ammatillinen koulutus)
+       |Oppilaitos: $oppilaitosOid
+       |Aikajakso: ${finnishDateFormat.format(alku)} - ${finnishDateFormat.format(loppu)}
+       |Raportti luotu: ${finnishDateTimeFormat.format(LocalDateTime.now)} (${finnishDateTimeFormat.format(loadCompleted.toLocalDateTime)} tietojen pohjalta)
+       |
+       |Tarkempi kuvaus joistakin sarakkeista:
+       |
+       |- Tutkinnot: kaikki opiskeluoikeudella olevat päätason suoritusten tutkinnot pilkulla erotettuna (myös ennen raportin aikajaksoa valmistuneet, ja raportin aikajakson jälkeen alkaneet). Valtakunnalliset tutkinnot käyttävät "koulutus"-koodistoa, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/koulutus/latest.
+       |
+       |- Osaamisalat: kaikkien ym. tutkintojen osaamisalat pilkulla erotettuna (myös ennen/jälkeen raportin aikajaksoa). Valtakunnalliset osaamisalat käyttävät "osaamisala"-koodistoa, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/osaamisala/latest.
+       |
+       |- Suorituksen tila: kaikkien opiskeluoikeuteen kuuluvien päätason suoritusten tilat.
+       |
+       |- Viimeisin opiskeluoikeuden tila: opiskeluoikeuden tila raportin aikajakson lopussa. Käyttää "koskiopiskeluoikeudentila" koodistoa, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/koskiopiskeluoikeudentila/latest.
+       |
+       |- Rahoitukset: raportin aikajaksolla esiintyvät rahoitusmuodot pilkulla erotettuna (aakkosjärjestyksessä, ei aikajärjestyksessä). Arvot ovat "opintojenrahoitus" koodistosta, https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/opintojenrahoitus/latest.
+       |
+       |- Painotettu keskiarvo: kaikkien opiskeluoikeuteen kuuluvien päätason suoritusten painotetut keskiarvot.
+       |
+       |- Suoritettujen opintojen yhteislaajuus: KOSKI-palveluun siirrettyjen ammatillisten tutkinnon osien (mukaan lukien otsikoiden ”Korkeakouluopinnot” sekä ”Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja löytyvät osasuoritukset) ja yhteisten tutkinnon osien osa-alueiden yhteislaajuus. Lasketaan koulutuksen järjestäjän tutkinnon osille tai niiden osa-alueille siirtämistä laajuuksista.
+       |
+       |- Valmiiden ammatillisten tutkinnon osien lukumäärä: KOSKI-palveluun siirrettyjen ammatillisten tutkinnon osien yhteenlaskettu lukumäärä mukaan lukien otsikoiden ”Korkeakouluopinnot” sekä ”Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja” löytyvät osasuoritukset.
+       |
+       |- Valinnaisten ammatillisten tutkinnon osien lukumäärä: KOSKI-palveluun siirrettyjen valinnaisten ammatillisten tutkinnon osien yhteenlaskettu lukumäärä mukaan lukien otsikoiden ”Korkeakouluopinnot” sekä ”Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja” löytyvät osasuoritukset.
+       |
+       |- Tunnustettujen tutkinnon osien osuus valmiista ammatillisista tutkinnon osista: KOSKI-palveluun siirrettyjen tunnustettujen ammatillisten tutkinnon osien yhteenlaskettu lukumäärä mukaan lukien otsikoiden ”Korkeakouluopinnot” sekä ”Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja” löytyvät osasuoritukset.
+       |
+       |- Rahoituksen piirissä olevien tutkinnon osien osuus tunnustetuista ammatillisista tutkinnon osista: KOSKI-palveluun siirrettyjen tunnustettujen, rahoituksen piirissä olevien ammatillisten tutkinnon osien yhteenlaskettu lukumäärä mukaan lukien otsikoiden ”Korkeakouluopinnot” sekä ”Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja” löytyvät osasuoritukset.
+       |
+       |- Suoritettujen ammatillisten tutkinnon osien yhteislaajuus: KOSKI-palveluun siirrettyjen ammatillisten tutkinnon osien (mukaan lukien otsikoiden ”Korkeakouluopinnot” sekä ”Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja löytyvät osasuoritukset) yhteislaajuus. Lasketaan koulutuksen järjestäjän tutkinnon osille siirtämistä laajuuksista.
+       |
+       |- Valinnaisten ammatillisten tutkinnon osien yhteislaajuus: KOSKI-palveluun siirrettyjen valinnaisten ammatillisten tutkinnon osien (mukaan lukien otsikoiden ”Korkeakouluopinnot” sekä ”Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja löytyvät osasuoritukset) yhteislaajuus. Lasketaan koulutuksen järjestäjän tutkinnon osille siirtämistä laajuuksista.
+     """.stripMargin.trim.stripPrefix("\n").stripSuffix("\n")
+
+  val columnSettings: Seq[(String, Column)] = Seq(
+    "opiskeluoikeusOid" -> Column("Opiskeluoikeuden oid"),
+    "lähdejärjestelmä" -> Column("Lähdejärjestelmä", width = Some(4000)),
+    "lähdejärjestelmänId" -> Column("Opiskeluoikeuden tunniste lähdejärjestelmässä", width = Some(4000)),
+    "sisältyyOpiskeluoikeuteenOid" -> Column("Sisältyy opiskeluoikeuteen", width = Some(4000)),
+    "ostettu"-> Column("Ostettu", width = Some(2000)),
+    "sisältyvätOpiskeluoikeudetOidit" -> Column("Sisältyvät opiskeluoikeudet", width = Some(4000)),
+    "sisältyvätOpiskeluoikeudetOppilaitokset" -> Column("Sisältyvien opiskeluoikeuksien oppilaitokset", width = Some(4000)),
+    "linkitetynOpiskeluoikeudenOppilaitos" -> Column("Toisen koulutuksen järjestäjän opiskeluoikeus"),
+    "aikaleima" -> Column("Päivitetty"),
+    "toimipisteOidit" -> Column("Toimipisteet"),
+    "oppijaOid" -> Column("Oppijan oid"),
+    "hetu" -> Column("Hetu"),
+    "sukunimi" -> Column("Sukunimi"),
+    "etunimet" -> Column("Etunimet"),
+    "koulutusmoduulit" -> Column("Tutkinnot"),
+    "osaamisalat" -> Column("Osaamisalat"),
+    "tutkintonimikkeet" -> Column("Tutkintonimike"),
+    "päätasonSuoritustenTilat" -> Column("Suorituksen tila"),
+    "viimeisinOpiskeluoikeudenTila" -> Column("Viimeisin opiskeluoikeuden tila"),
+    "opintojenRahoitukset" -> Column("Rahoitukset"),
+    "painotettuKeskiarvo" -> Column("Painotettu keskiarvo"),
+    "suoritettujenOpintojenYhteislaajuus" -> Column("Suoritettujen opintojen yhteislaajuus"),
+    "valmiitAmmatillisetTutkinnonOsatLkm" -> Column("Valmiiden ammatillisten tutkinnon osien lukumäärä"),
+    "pakollisetAmmatillisetTutkinnonOsatLkm" -> Column("Pakollisten ammatillisten tutkinnon osien lukumäärä"),
+    "valinnaisetAmmatillisetTutkinnonOsatLkm" -> Column("Valinnaisten ammatillisten tutkinnon osien lukumäärä"),
+    "näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm" -> Column("Valmiissa ammatillisissa tutkinnon osissa olevien näyttöjen lukumäärä"),
+    "tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm" -> Column("Tunnustettujen tutkinnon osien osuus valmiista ammatillisista tutkinnon osista"),
+    "rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm" -> Column("Rahoituksen piirissä olevien tutkinnon osien osuus tunnustetuista ammatillisista tutkinnon osista"),
+    "suoritetutAmmatillisetTutkinnonOsatYhteislaajuus" -> Column("Suoritettujen ammatillisten tutkinnon osien yhteislaajuus"),
+    "pakollisetAmmatillisetTutkinnonOsatYhteislaajuus" -> Column("Pakollisten ammatillisten tutkinnon osien yhteislaajuus"),
+    "valinnaisetAmmatillisetTutkinnonOsatYhteislaajuus" -> Column("Valinnaisten ammatillisten tutkinnon osien yhteislaajuus"),
+    "valmiitYhteistenTutkinnonOsatLkm" -> Column("Valmiiden yhteisten tutkinnon osien lukumäärä"),
+    "pakollisetYhteistenTutkinnonOsienOsaalueidenLkm" -> Column("Pakollisten yhteisten tutkinnon osien osa-alueiden lukumäärä"),
+    "valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm" -> Column("Valinnaisten yhteisten tutkinnon osien osa-aluiden lukumäärä"),
+    "tunnustettujaTukinnonOsanOsaalueitaValmiissaTutkinnonOsanOsalueissaLkm" -> Column("Tunnustettujen tutkinnon osien osa-alueiden osuus valmiista yhteisten tutkinnon osien osa-alueista"),
+    "rahoituksenPiirissäTutkinnonOsanOsaalueitaValmiissaTutkinnonOsanOsaalueissaLkm" -> Column("Rahoituksen piirissä olevien tutkinnon osien osa-aluiden osuus valmiista yhteisten tutkinnon osien osa-alueista"),
+    "tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaLkm" -> Column("Tunnustettujen tutkinnon osien osuus valmiista yhteisistä tutkinnon osista"),
+    "rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm" -> Column("Rahoituksen piirissä olevien tutkinnon osien osuus tunnustetuista yhteisistä tutkinnon osista"),
+    "suoritettujenYhteistenTutkinnonOsienYhteislaajuus" -> Column("Suoritettujen yhteisten tutkinnon osien yhteislaajuus"),
+    "suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus" -> Column("Suoritettujen yhteisten tutkinnon osien osa-alueiden yhteislaajuus"),
+    "pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus" -> Column("Pakollisten yhteisten tutkinnon osien osa-alueiden yhteislaajuus"),
+    "valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus" -> Column("Valinnaisten yhteisten tutkinnon osien osa-aluiden yhteislaajuus")
+  )
 }
 
 case class SuoritustiedotTarkistusRow

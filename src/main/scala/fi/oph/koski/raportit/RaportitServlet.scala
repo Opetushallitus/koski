@@ -51,6 +51,12 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
     excelResponse(raportitService.suoritustietojenTarkistus(parsedRequest))
   }
 
+  get("/ammatillinenosittainensuoritustietojentarkistus") {
+    val parsedRequest = parseAikajaksoRaporttiRequest
+    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=ammatillinenosittainensuoritustietojentarkistus&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
+    excelResponse(raportitService.ammatillinenOsittainenSuoritustietojenTarkistus(parsedRequest))
+  }
+
   get("/perusopetuksenvuosiluokka") {
     val parsedRequest = parseVuosiluokkaRequest
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=perusopetuksenvuosiluokka&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}&vuosiluokka=${parsedRequest.vuosiluokka}")))
