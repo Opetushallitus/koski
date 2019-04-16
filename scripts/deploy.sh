@@ -30,11 +30,11 @@ function download_version {
   if [ "$VERSION" == "local" ]; then
     DOWNLOAD_URL="file://${HOME}/.m2/repository/${GROUP_ID}/${ARTIFACT_ID}/master-SNAPSHOT/${ARTIFACT_ID}-master-SNAPSHOT.war"
   elif [[ "$VERSION" == *SNAPSHOT ]]; then
-    DOWNLOAD_ROOT="https://artifactory.oph.ware.fi/artifactory/oph-sade-snapshot-local/${GROUP_ID}/${ARTIFACT_ID}/${VERSION}/"
+    DOWNLOAD_ROOT="https://artifactory.opintopolku.fi/artifactory/oph-sade-snapshot-local/${GROUP_ID}/${ARTIFACT_ID}/${VERSION}/"
     WAR_WITH_VERSION=`curl -s ${DOWNLOAD_ROOT} | grep "war\"" | tail -n1 | cut -d \" -f 2`
     DOWNLOAD_URL="${DOWNLOAD_ROOT}${WAR_WITH_VERSION}"
   else
-    DOWNLOAD_URL="https://artifactory.oph.ware.fi/artifactory/oph-sade-release-local/${GROUP_ID}/${ARTIFACT_ID}/${VERSION}/${ARTIFACT_ID}-${VERSION}.war"
+    DOWNLOAD_URL="https://artifactory.opintopolku.fi/artifactory/oph-sade-release-local/${GROUP_ID}/${ARTIFACT_ID}/${VERSION}/${ARTIFACT_ID}-${VERSION}.war"
   fi
 
   echo "# Download url: $DOWNLOAD_URL"
