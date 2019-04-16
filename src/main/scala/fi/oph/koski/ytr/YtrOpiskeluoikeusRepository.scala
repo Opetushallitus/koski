@@ -25,16 +25,13 @@ case class YtrOpiskeluoikeusRepository(
   private val converter = YtrOppijaConverter(oppilaitosRepository, koodistoViitePalvelu, organisaatioRepository, localizations)
 
   override protected def uncachedOpiskeluoikeudet(cacheKey: YtrCacheKey): List[YlioppilastutkinnonOpiskeluoikeus] = {
-    val opiskeluoikeudet = cacheKey.hetut.headOption match {
-      case Some(hetu) => ytr.oppijaByHetu(hetu).flatMap(converter.convert(_)).toList
-      case None => Nil
-    }
+    val opiskeluoikeudet = cacheKey.hetut.flatMap(ytr.oppijaByHetu).headOption.flatMap(converter.convert).toList
     opiskeluoikeudet.foreach(validate)
     opiskeluoikeudet
   }
 
   override protected def buildCacheKey(tunnisteet: HenkilönTunnisteet): YtrCacheKey =
-    YtrCacheKey((tunnisteet.hetu.toList ++ tunnisteet.vanhatHetut).sorted)
+    YtrCacheKey(tunnisteet.hetu.toList ++ tunnisteet.vanhatHetut)
 
   private def validate(opiskeluoikeus: YlioppilastutkinnonOpiskeluoikeus): Unit = {
     val oppija = Oppija(UusiHenkilö("010101-123N", "tuntematon", Some("tuntematon"), "tuntematon"), List(opiskeluoikeus))
