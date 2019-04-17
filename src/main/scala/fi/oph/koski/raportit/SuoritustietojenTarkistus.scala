@@ -102,7 +102,7 @@ object SuoritustietojenTarkistus extends AikajaksoRaportti with AmmatillinenRapo
 
   def documentation(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, loadCompleted: Timestamp): String =
     s"""
-       |Suoritustiedot (ammatillinen koulutus)
+       |Suoritustiedot (ammatillinen tutkinto)
        |Oppilaitos: $oppilaitosOid
        |Aikajakso: ${finnishDateFormat.format(alku)} - ${finnishDateFormat.format(loppu)}
        |Raportti luotu: ${finnishDateTimeFormat.format(LocalDateTime.now)} (${finnishDateTimeFormat.format(loadCompleted.toLocalDateTime)} tietojen pohjalta)
