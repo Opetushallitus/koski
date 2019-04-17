@@ -73,7 +73,7 @@ const Opiskelijavuositiedot = ({oppilaitosAtom}) => {
 }
 
 const SuoritustietojenTarkistus = ({oppilaitosAtom}) => {
-  const titleText = <Text name='Suoritustiedot (ammatillinen koulutus)'/>
+  const titleText = <Text name='Suoritustiedot (ammatillinen koulutus, koko tutkinto)'/>
   const descriptionText = <Text name='SuoritustietojenTarkistus-description'/>
 
   return (<AikajaksoRaportti
@@ -85,8 +85,8 @@ const SuoritustietojenTarkistus = ({oppilaitosAtom}) => {
 }
 
 const AmmatillinenOsittainenSuoritustietojenTarkistus = ({oppilaitosAtom}) => {
-  const titleText = <Text name='Suoritustiedot (ammatillinen osittainen koulutus)'/>
-  const descriptionText = <Text name='ammatillinenOsittainenSuoritustietojenTarkistus-description'/>
+  const titleText = <Text name='Suoritustiedot (ammatillinen koulutus, tutkinnon osa/osia)'/>
+  const descriptionText = <Text name='AmmatillinenOsittainenSuoritustietojenTarkistus-description'/>
 
   return (<AikajaksoRaportti
     oppilaitosAtom={oppilaitosAtom}

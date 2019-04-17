@@ -1224,6 +1224,7 @@
   "deprecated:Käytä korvaavaa kenttää Kotiopetusjaksot" : "Käytä korvaavaa kenttää Kotiopetusjaksot",
   "\"Ei tiedossa\"-oppiainetta ei voi merkitä valmiiksi": "\"Ei tiedossa\"-oppiainetta ei voi merkitä valmiiksi",
   "description:Mikä uskonto on kyseessä" : "Mikä uskonto on kyseessä",
-  "Uskonnon oppimäärä" : "Uskonnon oppimäärä"
+  "Uskonnon oppimäärä" : "Uskonnon oppimäärä",
+  "AmmatillinenOsittainenSuoritustietojenTarkistus-description": "Raportti sisältää ammatillisen koulutuksen opiskeluoikeudet valitulla aikajaksolla sekä näihin liittyvien osasuoritusten tiedot erilaisina summalukuina tietojen oikeellisuuden tarkistamista varten. Raportti pohjautuu viime yön tietoihin, eli tietojen päivitys Koskeen ei näy välittömästi raportilla. Raportin lataaminen voi viedä viisikin minuuttia."
 }
 
