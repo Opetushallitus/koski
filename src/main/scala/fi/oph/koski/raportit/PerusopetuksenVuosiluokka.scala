@@ -32,6 +32,7 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
 
     PerusopetusRow(
       opiskeluoikeusOid = opiskeluoikeus.opiskeluoikeusOid,
+      oppilaitoksenNimi = opiskeluoikeus.oppilaitosNimi,
       lähdejärjestelmä = lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
       lähdejärjestelmänId = lähdejärjestelmänId.flatMap(_.id),
       oppijaOid = opiskeluoikeus.oppijaOid,
@@ -250,6 +251,7 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
 
   val columnSettings: Seq[(String, Column)] = Seq(
     "opiskeluoikeusOid" -> Column("Opiskeluoikeuden oid"),
+    "oppilaitoksenNimi" -> Column("Oppilaitoksen nimi"),
     "lähdejärjestelmä" -> Column("Lähdejärjestelmä"),
     "lähdejärjestelmänId" -> Column("Opiskeluoikeuden tunniste lähdejärjestelmässä"),
     "oppijaOid" -> Column("Oppijan oid"),
@@ -317,6 +319,7 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
 
 private[raportit] case class PerusopetusRow(
   opiskeluoikeusOid: String,
+  oppilaitoksenNimi: String,
   lähdejärjestelmä: Option[String],
   lähdejärjestelmänId: Option[String],
   oppijaOid: String,
