@@ -101,7 +101,7 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
           val opiskeluoikeusOid = getOpiskeluoikeudet(MockOppijat.vuosiluokkalainen.oid).find(_.tyyppi.koodiarvo == "perusopetus").get.oid.get
           val rows = result.filter(_.opiskeluoikeusOid == opiskeluoikeusOid)
           rows.length should equal(1)
-          rows.head should equal(kaisanPäättötodistusRow.copy(opiskeluoikeusOid = opiskeluoikeusOid, oppijaOid = MockOppijat.vuosiluokkalainen.oid, hetu = MockOppijat.vuosiluokkalainen.hetu, sukunimi = Some(MockOppijat.vuosiluokkalainen.sukunimi), etunimet = Some(MockOppijat.vuosiluokkalainen.etunimet), suorituksenTila = "kesken", suorituksenVahvistuspaiva = ""))
+          rows.head should equal(kaisanPäättötodistusRow.copy(opiskeluoikeusOid = opiskeluoikeusOid, oppijaOid = MockOppijat.vuosiluokkalainen.oid, hetu = MockOppijat.vuosiluokkalainen.hetu, sukunimi = Some(MockOppijat.vuosiluokkalainen.sukunimi), etunimet = Some(MockOppijat.vuosiluokkalainen.etunimet), viimeisinTila = "lasna", suorituksenTila = "kesken", suorituksenVahvistuspaiva = ""))
         }
       }
 
@@ -125,6 +125,7 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
     sukupuoli = None,
     luokka = "8C",
     viimeisinTila = "lasna",
+    tilaHakupaivalla = "lasna",
     suorituksenTila = "valmis",
     suorituksenAlkamispaiva = "2014-08-15",
     suorituksenVahvistuspaiva = "2015-05-30",
@@ -257,7 +258,8 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
     etunimet = Some(MockOppijat.koululainen.etunimet),
     sukupuoli = None,
     luokka = "",
-    viimeisinTila = "lasna",
+    viimeisinTila = "valmistunut",
+    tilaHakupaivalla = "lasna",
     suorituksenTila = "valmis",
     suorituksenAlkamispaiva = "",
     suorituksenVahvistuspaiva = "2016-06-04",

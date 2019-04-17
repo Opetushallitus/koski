@@ -6,6 +6,7 @@ import java.time.LocalDate
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
 import fi.oph.koski.db.KoskiDatabaseMethods
+import fi.oph.koski.util.DateOrdering.sqlDateOrdering
 
 import scala.concurrent.duration._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
@@ -78,7 +79,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
           (
             oo,
             henkilot.get(oo.oppijaOid),
-            aikajaksot.getOrElse(oo.opiskeluoikeusOid, List.empty),
+            aikajaksot.getOrElse(oo.opiskeluoikeusOid, List.empty).sortBy(_.alku)(sqlDateOrdering),
             paatasonsuoritus,
             osasuoritukset.getOrElse(paatasonsuoritus.päätasonSuoritusId, List.empty),
             voimassaOlevatVuosiluokat.getOrElse(oo.opiskeluoikeusOid, List.empty)
