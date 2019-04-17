@@ -1123,7 +1123,7 @@
   "Raportit": "Raportit",
   "Tälle oppilaitokselle ei löydy raportteja. Toistaiseksi ainoa käytössä oleva raportti on tarkoitettu vain ammatillisille oppilaitoksille.": "Tälle oppilaitokselle ei löydy raportteja. Toistaiseksi ainoa käytössä oleva raportti on tarkoitettu vain ammatillisille oppilaitoksille.",
   "Opiskelijavuositiedot": "Opiskelijavuositiedot (ammatillinen koulutus)",
-  "Opiskelijavuositiedot-description": "Tämä raportti sisältää ammatillisen koulutuksen opiskeluoikeudet valitulla aikajaksolla, ja näihin liittyvät opiskelijavuosilaskennassa käytettävät tiedot. Raportti pohjautuu viime yön tietoihin, eli tietojen päivitys Koskeen ei näy välittömästi raportilla.",
+  "Opiskelijavuositiedot-description": "Tämä raportti sisältää ammatillisen koulutuksen opiskeluoikeudet valitulla aikajaksolla, ja näihin liittyvät opiskelijavuosilaskennassa käytettävät tiedot. Raportti pohjautuu edellisen päivän tietoihin, eli tietojen päivitys Koskeen ei näy välittömästi raportilla.",
   "Aikajakso": "Aikajakso",
   "Excel-tiedosto on suojattu salasanalla": "Excel-tiedosto on suojattu salasanalla",
   "Lataa Excel-tiedosto": "Lataa Excel-tiedosto",
@@ -1211,7 +1211,7 @@
   "tooltip:Valitse valintaruutu jos opiskeluoikeuteen liittyvä..." : "Valitse valintaruutu jos opiskeluoikeuteen liittyvä koulutus/tutkinto ostettu toiselta koulutustoimijalta. Jos valittu, tällaiseen opiskeluoikeuteen tulisi olla linkitetty ainakin yksi toisen koulutustoimijan opiskeluoikeus.",
   "Ostettu" : "Ostettu",
   "description:Onko opiskeluoikeuteen liittyvä koulutus/tutkinto ostettu..." : "Onko opiskeluoikeuteen liittyvä koulutus/tutkinto ostettu toiselta koulutustoimijalta (true/false). Jos kentän arvo on true, tällaiseen opiskeluoikeuteen tulisi olla linkitetty ainakin yksi toisen koulutustoimijan opiskeluoikeus.",
-  "SuoritustietojenTarkistus-description": "Raportti sisältää ammatillisen koulutuksen opiskeluoikeudet valitulla aikajaksolla sekä näihin liittyvien osasuoritusten tiedot erilaisina summalukuina tietojen oikeellisuuden tarkistamista varten. Raportti pohjautuu viime yön tietoihin, eli tietojen päivitys Koskeen ei näy välittömästi raportilla. Raportin lataaminen voi viedä viisikin minuuttia.",
+  "SuoritustietojenTarkistus-description": "Raportti sisältää ammatillisen koulutuksen opiskeluoikeudet valitulla aikajaksolla sekä näihin liittyvien osasuoritusten tiedot erilaisina summalukuina tietojen oikeellisuuden tarkistamista varten. Raportti pohjautuu edellisen päivän tietoihin, eli tietojen päivitys Koskeen ei näy välittömästi raportilla. Raportin lataaminen voi viedä viisikin minuuttia.",
   "Suoritustiedot (ammatillinen koulutus)": "Suoritustiedot (ammatillinen koulutus)",
   "tooltip:Huoltajan ilmoittamat ulkomaan opintojaksot alkamis-..." : "Huoltajan ilmoittamat ulkomaan opintojaksot alkamis- ja päättymispäivineen. Rahoituksen laskennassa käytettävä tieto.",
   "description:Kotiopetusjaksot huoltajan päätöksestä alkamis- ja..." : "Kotiopetusjaksot huoltajan päätöksestä alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole kotiopetuksessa. Rahoituksen laskennassa käytettävä tieto.",
@@ -1225,6 +1225,6 @@
   "\"Ei tiedossa\"-oppiainetta ei voi merkitä valmiiksi": "\"Ei tiedossa\"-oppiainetta ei voi merkitä valmiiksi",
   "description:Mikä uskonto on kyseessä" : "Mikä uskonto on kyseessä",
   "Uskonnon oppimäärä" : "Uskonnon oppimäärä",
-  "AmmatillinenOsittainenSuoritustietojenTarkistus-description": "Raportti sisältää ammatillisen koulutuksen opiskeluoikeudet valitulla aikajaksolla sekä näihin liittyvien osasuoritusten tiedot erilaisina summalukuina tietojen oikeellisuuden tarkistamista varten. Raportti pohjautuu viime yön tietoihin, eli tietojen päivitys Koskeen ei näy välittömästi raportilla. Raportin lataaminen voi viedä viisikin minuuttia."
+  "AmmatillinenOsittainenSuoritustietojenTarkistus-description": "Raportti sisältää ammatillisen koulutuksen opiskeluoikeudet valitulla aikajaksolla sekä näihin liittyvien osasuoritusten tiedot erilaisina summalukuina tietojen oikeellisuuden tarkistamista varten. Raportti pohjautuu edellisen päivän tietoihin, eli tietojen päivitys Koskeen ei näy välittömästi raportilla. Raportin lataaminen voi viedä viisikin minuuttia."
 }
 
