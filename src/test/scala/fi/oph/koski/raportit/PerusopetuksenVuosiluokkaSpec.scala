@@ -126,6 +126,7 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
     luokka = "8C",
     viimeisinTila = "lasna",
     suorituksenTila = "valmis",
+    suorituksenAlkamispaiva = "2014-08-15",
     suorituksenVahvistuspaiva = "2015-05-30",
     voimassaolevatVuosiluokat = "9",
     jaaLuokalle = false,
@@ -201,6 +202,7 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
   val kahdeksannenLuokanLuokalleJääntiRow = defaultYnjeviExpectedKasiLuokkaRow.copy(
     jaaLuokalle = true,
     viimeisinTila = "lasna",
+    suorituksenAlkamispaiva = "2013-08-15",
     suorituksenTila = "valmis",
     voimassaolevatVuosiluokat = "9",
     aidinkieli = "4",
@@ -244,6 +246,7 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
     viimeisinTila = "lasna",
     suorituksenTila = "valmis",
     voimassaolevatVuosiluokat = "",
+    suorituksenAlkamispaiva = "2014-08-15",
     suorituksenVahvistuspaiva = "2016-05-30"
   )
 
@@ -256,6 +259,7 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
     luokka = "",
     viimeisinTila = "lasna",
     suorituksenTila = "valmis",
+    suorituksenAlkamispaiva = "",
     suorituksenVahvistuspaiva = "2016-06-04",
     voimassaolevatVuosiluokat = "",
     kayttaymisenArvio = ""
