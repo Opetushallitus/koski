@@ -17,7 +17,7 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
     } else {
       repository.perusopetuksenvuosiluokka(oppilaitosOid, paiva, vuosiluokka)
     }
-    rows.map(buildRow(_, paiva))
+    rows.par.map(buildRow(_, paiva)).seq
   }
 
   private def buildRow(data: (ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], RPäätasonSuoritusRow, Seq[ROsasuoritusRow], Seq[String]), hakupaiva: LocalDate) = {
