@@ -163,6 +163,7 @@ const VuosiluokkaRaporttiPaivalta = ({oppilaitosAtom, apiEndpoint, title, descri
   const inProgressP = submitBus.awaiting(downloadExcelE.mapError())
   const submitEnabledP = downloadExcelP.map(x => !!x).and(inProgressP.not())
   const buttonTextP = inProgressP.map((inProgress) => <Text name={!inProgress ? 'Lataa Excel-tiedosto' : 'Ladataan...'}/>)
+  const vuosiluokat = [1, 2, 3, 4, 5, 6, 7, 8, 10]
 
   return (<section>
     <h2>{title}</h2>
@@ -175,7 +176,7 @@ const VuosiluokkaRaporttiPaivalta = ({oppilaitosAtom, apiEndpoint, title, descri
     </div>
     <div className='dropdown-selection parametri'>
       <label><Text name='Vuosiluokka'/></label>
-      <VuosiluokkaDropdown value={vuosiluokkaAtom} vuosiluokat={R.range(1, 11)}/>
+      <VuosiluokkaDropdown value={vuosiluokkaAtom} vuosiluokat={vuosiluokat}/>
     </div>
     <div className='password'><Text name='Excel-tiedosto on suojattu salasanalla'/> {password}</div>
     <button className='koski-button' disabled={submitEnabledP.not()} onClick={e => { e.preventDefault(); submitBus.push(); return false }}>{buttonTextP}</button>
