@@ -54,7 +54,7 @@ class AmmatillinenOsittainenRaporttiSpec extends FreeSpec with Matchers with Rap
     päätasonSuoritustenTilat = Some("Valmis"),
     viimeisinOpiskeluoikeudenTila = "valmistunut",
     opintojenRahoitukset = "",
-    suoritettujenOpintojenYhteislaajuus = 84.0,
+    suoritettujenOpintojenYhteislaajuus = 97.0,
     valmiitAmmatillisetTutkinnonOsatLkm = 3,
     näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm = 1,
     tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm = 2,

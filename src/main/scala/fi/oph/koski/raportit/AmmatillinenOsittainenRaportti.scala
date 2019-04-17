@@ -47,7 +47,7 @@ object AmmatillinenOsittainenRaportti extends AikajaksoRaportti with Ammatilline
       päätasonSuoritustenTilat = Some(päätasonSuoritustenTilat(päätasonSuoritukset)),
       viimeisinOpiskeluoikeudenTila = aikajaksot.last.tila,
       opintojenRahoitukset = aikajaksot.flatMap(_.opintojenRahoitus).sorted.distinct.mkString(","),
-      suoritettujenOpintojenYhteislaajuus = yhteislaajuus(muutSuoritukset.union(yhteistenTutkinnonOsienSuoritukset)),
+      suoritettujenOpintojenYhteislaajuus = yhteislaajuus(muutSuoritukset.union(yhteistenTutkinnonOsienOsaSuoritukset)),
       valmiitAmmatillisetTutkinnonOsatLkm = muutSuoritukset.size,
       näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm = näytöt(muutSuoritukset).size,
       tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm = tunnustetut(muutSuoritukset).size,
