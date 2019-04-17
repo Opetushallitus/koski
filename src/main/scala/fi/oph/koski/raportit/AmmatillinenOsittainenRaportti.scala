@@ -23,7 +23,7 @@ object AmmatillinenOsittainenRaportti extends AikajaksoRaportti with Ammatilline
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](opiskeluoikeus.data \ "lähdejärjestelmänId")
     val osaamisalat = extractOsaamisalatAikavalilta(päätasonSuoritukset, alku, loppu)
     val yhteistenTutkinnonOsienSuoritukset = osasuoritukset.filter(tutkinnonOsanRyhmä(_, "2"))
-    val yhteistenTutkinnonOsienOsaSuoritusket = osasuoritukset.filter(isAmmatillisenTutkinnonOsanOsaalue)
+    val yhteistenTutkinnonOsienOsaSuoritukset = osasuoritukset.filter(isAmmatillisenTutkinnonOsanOsaalue)
     val muutSuoritukset = osasuoritukset.filter(tutkinnonOsanRyhmä(_, "1", "3", "4"))
 
     AmmatillinenOsittainRaporttiRow(
@@ -54,16 +54,16 @@ object AmmatillinenOsittainenRaportti extends AikajaksoRaportti with Ammatilline
       rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm = rahoituksenPiirissä(tunnustetut(muutSuoritukset)).size,
       suoritetutAmmatillisetTutkinnonOsatYhteislaajuus = yhteislaajuus(muutSuoritukset),
       valmiitYhteistenTutkinnonOsatLkm = yhteistenTutkinnonOsienSuoritukset.size,
-      pakollisetYhteistenTutkinnonOsienOsaalueidenLkm = pakolliset(yhteistenTutkinnonOsienOsaSuoritusket).size,
-      valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm = valinnaiset(yhteistenTutkinnonOsienOsaSuoritusket).size,
-      tunnustettujaTukinnonOsanOsaalueitaValmiissaTutkinnonOsanOsalueissaLkm = tunnustetut(yhteistenTutkinnonOsienOsaSuoritusket).size,
-      rahoituksenPiirissäTutkinnonOsanOsaalueitaValmiissaTutkinnonOsanOsaalueissaLkm = rahoituksenPiirissä(tunnustetut(yhteistenTutkinnonOsienOsaSuoritusket)).size,
+      pakollisetYhteistenTutkinnonOsienOsaalueidenLkm = pakolliset(yhteistenTutkinnonOsienOsaSuoritukset).size,
+      valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm = valinnaiset(yhteistenTutkinnonOsienOsaSuoritukset).size,
+      tunnustettujaTukinnonOsanOsaalueitaValmiissaTutkinnonOsanOsalueissaLkm = tunnustetut(yhteistenTutkinnonOsienOsaSuoritukset).size,
+      rahoituksenPiirissäTutkinnonOsanOsaalueitaValmiissaTutkinnonOsanOsaalueissaLkm = rahoituksenPiirissä(tunnustetut(yhteistenTutkinnonOsienOsaSuoritukset)).size,
       tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaLkm = tunnustetut(yhteistenTutkinnonOsienSuoritukset).size,
       rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm = rahoituksenPiirissä(tunnustetut(yhteistenTutkinnonOsienSuoritukset)).size,
       suoritettujenYhteistenTutkinnonOsienYhteislaajuus = yhteislaajuus(yhteistenTutkinnonOsienSuoritukset),
-      suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus = yhteislaajuus(yhteistenTutkinnonOsienOsaSuoritusket),
-      pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus = yhteislaajuus(pakolliset(yhteistenTutkinnonOsienOsaSuoritusket)),
-      valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus = yhteislaajuus(valinnaiset(yhteistenTutkinnonOsienOsaSuoritusket))
+      suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus = yhteislaajuus(yhteistenTutkinnonOsienOsaSuoritukset),
+      pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus = yhteislaajuus(pakolliset(yhteistenTutkinnonOsienOsaSuoritukset)),
+      valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus = yhteislaajuus(valinnaiset(yhteistenTutkinnonOsienOsaSuoritukset))
     )
   }
 
