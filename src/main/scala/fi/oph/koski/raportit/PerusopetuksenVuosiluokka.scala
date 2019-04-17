@@ -25,7 +25,8 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
 
     val opiskeluoikeudenLisätiedot = JsonSerializer.extract[Option[PerusopetuksenOpiskeluoikeudenLisätiedot]](opiskeluoikeus.data \ "lisätiedot")
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](opiskeluoikeus.data \ "lähdejärjestelmänId")
-    val (valtakunnalliset, paikalliset) = osasuoritukset.partition(isValtakunnallinenOppiaine)
+    val (toimintaalueOsasuoritukset, muutOsasuoritukset) = osasuoritukset.partition(_.koulutusmoduuliKoodisto == "perusopetuksentoimintaalue")
+    val (valtakunnalliset, paikalliset) = muutOsasuoritukset.partition(isValtakunnallinenOppiaine)
     val (pakollisetValtakunnalliset, valinnaisetValtakunnalliset) = valtakunnalliset.partition(isPakollinen)
     val (pakollisetPaikalliset, valinnaisetPaikalliset) = paikalliset.partition(isPakollinen)
     val kaikkiValinnaiset = valinnaisetPaikalliset.union(valinnaisetValtakunnalliset)
