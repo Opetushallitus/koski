@@ -177,7 +177,9 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
     oikeusMaksuttomaanAsuntolapaikkaan = false,
     sisaoppilaitosmainenMaijoitus = false,
     koulukoti = false,
-    erityisenTuenPaatos = "",
+    erityisenTuenPaatosVoimassa = false,
+    erityisenTuenPaatosToimialueittain = false,
+    erityisenTuenPaatosToteutuspaikat = "",
     tukimuodot = ""
   )
 
@@ -197,7 +199,9 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
     oikeusMaksuttomaanAsuntolapaikkaan = true,
     sisaoppilaitosmainenMaijoitus = true,
     koulukoti = true,
-    erityisenTuenPaatos = "Opetus on kokonaan erityisryhmissä tai -luokassa,Opetuksesta 20-49 % on yleisopetuksen ryhmissä",
+    erityisenTuenPaatosVoimassa = true,
+    erityisenTuenPaatosToimialueittain = true,
+    erityisenTuenPaatosToteutuspaikat = "Opetus on kokonaan erityisryhmissä tai -luokassa,Opetuksesta 20-49 % on yleisopetuksen ryhmissä",
     tukimuodot = "Osa-aikainen erityisopetus"
   )
 

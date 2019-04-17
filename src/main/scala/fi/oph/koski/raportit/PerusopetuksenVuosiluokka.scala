@@ -30,6 +30,7 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
     val (pakollisetValtakunnalliset, valinnaisetValtakunnalliset) = valtakunnalliset.partition(isPakollinen)
     val (pakollisetPaikalliset, valinnaisetPaikalliset) = paikalliset.partition(isPakollinen)
     val kaikkiValinnaiset = valinnaisetPaikalliset.union(valinnaisetValtakunnalliset)
+    val voimassaOlevatErityisenTuenPäätökset = opiskeluoikeudenLisätiedot.map(lt => combineErityisenTuenPäätökset(lt.erityisenTuenPäätös, lt.erityisenTuenPäätökset).filter(erityisentuenPäätösvoimassaPaivalla(_, hakupaiva))).getOrElse(List.empty)
 
     PerusopetusRow(
       opiskeluoikeusOid = opiskeluoikeus.opiskeluoikeusOid,
@@ -94,7 +95,9 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
       oikeusMaksuttomaanAsuntolapaikkaan = opiskeluoikeudenLisätiedot.flatMap(_.oikeusMaksuttomaanAsuntolapaikkaan.map(aikajaksoVoimassaHakuPaivalla(_, hakupaiva))).getOrElse(false),
       sisaoppilaitosmainenMaijoitus = opiskeluoikeudenLisätiedot.exists(_.koulukoti.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)))),
       koulukoti = opiskeluoikeudenLisätiedot.exists(_.koulukoti.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)))),
-      erityisenTuenPaatos = erityisenTuenPäätökset(opiskeluoikeudenLisätiedot, hakupaiva),
+      erityisenTuenPaatosVoimassa = voimassaOlevatErityisenTuenPäätökset.size > 0,
+      erityisenTuenPaatosToimialueittain = voimassaOlevatErityisenTuenPäätökset.exists(_.opiskeleeToimintaAlueittain),
+      erityisenTuenPaatosToteutuspaikat = voimassaOlevatErityisenTuenPäätökset.flatMap(_.toteutuspaikka.map(_.koodiarvo)).sorted.map(eritysopetuksentoteutuspaikkaKoodisto.getOrElse(_, "")).mkString(","),
       tukimuodot = tukimuodot(opiskeluoikeudenLisätiedot)
     )
   }
@@ -200,30 +203,14 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
     "5"	-> "Opetuksesta 80-100 % on yleisopetuksen ryhmissä"
   )
 
- private def erityisenTuenPäätökset(lisa: Option[PerusopetuksenOpiskeluoikeudenLisätiedot], hakupaiva: LocalDate) = {
-   lisa match {
-     case Some(lisätiedot) =>
-       (
-         voimassaOlevaErityisenTuenPäätösKoodiarvo(lisätiedot.erityisenTuenPäätös, hakupaiva) ::
-         voimassaOlevatErityisenTuenPäätöksetKoodiarvot(lisätiedot.erityisenTuenPäätökset, hakupaiva)
-       ).flatten.mkString(",")
-     case _ => ""
+ private def combineErityisenTuenPäätökset(erityisenTuenPäätös: Option[ErityisenTuenPäätös], erityisenTuenPäätökset: Option[List[ErityisenTuenPäätös]]) = {
+   (erityisenTuenPäätös, erityisenTuenPäätökset) match {
+     case (Some(paatos), Some(paatokset)) => paatos :: paatokset
+     case (Some(paatos), _) => List(paatos)
+     case (_, Some(paatokset)) => paatokset
+     case _ => List.empty
    }
  }
-
-  private def voimassaOlevatErityisenTuenPäätöksetKoodiarvot(päätökset: Option[List[ErityisenTuenPäätös]], hakupaiva: LocalDate) = {
-    päätökset match {
-      case Some(ps) => ps.filter(erityisentuenPäätösvoimassaPaivalla(_, hakupaiva)).flatMap(_.toteutuspaikka.map(viite => eritysopetuksentoteutuspaikkaKoodisto.get(viite.koodiarvo)))
-      case _ => List.empty
-    }
-  }
-
-  private def voimassaOlevaErityisenTuenPäätösKoodiarvo(päätös: Option[ErityisenTuenPäätös], hakupaiva: LocalDate) = {
-    päätös match {
-      case Some(p) if (erityisentuenPäätösvoimassaPaivalla(p, hakupaiva)) => p.toteutuspaikka.flatMap(viite => eritysopetuksentoteutuspaikkaKoodisto.get(viite.koodiarvo))
-      case _ => None
-    }
-  }
 
   private def erityisentuenPäätösvoimassaPaivalla(päätös: ErityisenTuenPäätös, paiva: LocalDate) = {
     (päätös.alku, päätös.loppu) match {
@@ -313,7 +300,9 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
     "oikeusMaksuttomaanAsuntolapaikkaan" -> Column("Oikeus maksuttomaan asuntolapaikkaan"),
     "sisaoppilaitosmainenMaijoitus" -> Column("Sisäoppilaitosmainen majoitus"),
     "koulukoti" -> Column("Koulukoti"),
-    "erityisenTuenPaatos" -> Column("Erityisen tuen päätos"),
+    "erityisenTuenPaatosVoimassa" -> Column("Erityisen tuen päätös"),
+    "erityisenTuenPaatosToimialueittain" -> Column("Opiskelee toimialueittain"),
+    "erityisenTuenPaatosToteutuspaikat" -> Column("Erityisen tuen päätöksen toteutuspaikka"),
     "tukimuodot" -> Column("Tukimuodot")
   )
 }
@@ -381,6 +370,8 @@ private[raportit] case class PerusopetusRow(
   oikeusMaksuttomaanAsuntolapaikkaan: Boolean,
   sisaoppilaitosmainenMaijoitus: Boolean,
   koulukoti: Boolean,
-  erityisenTuenPaatos: String,
+  erityisenTuenPaatosVoimassa: Boolean,
+  erityisenTuenPaatosToimialueittain: Boolean,
+  erityisenTuenPaatosToteutuspaikat: String,
   tukimuodot: String
 )
