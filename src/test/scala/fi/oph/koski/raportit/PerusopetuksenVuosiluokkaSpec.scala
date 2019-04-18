@@ -6,6 +6,7 @@ import java.time.LocalDate.{of => date}
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsPerusopetus
 import fi.oph.koski.documentation.ExampleData._
+import fi.oph.koski.documentation.ExamplesPerusopetus._
 import fi.oph.koski.documentation.PerusopetusExampleData._
 import fi.oph.koski.henkilo.{MockOppijat, OppijaHenkilö}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -61,6 +62,22 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
           paiva.isBefore(hakuDate) shouldBe (false)
         }
       })
+    }
+
+    "Toiminta alueiden suoritukset joilla on arvosana näytetään omassa kolumnissaan" in {
+      val suoritusToimintaAlueenOsasuorituksilla = yhdeksännenLuokanSuoritus.copy(osasuoritukset = toimintaAlueOsasuoritukset, vahvistus = None)
+      withAdditionalSuoritukset(MockOppijat.toimintaAlueittainOpiskelija, List(suoritusToimintaAlueenOsasuorituksilla)) {
+        val result = PerusopetuksenVuosiluokka.buildRaportti(repository, MockOrganisaatiot.jyväskylänNormaalikoulu, date(2015, 1, 1), "9")
+        val rows = result.filter(_.oppijaOid == MockOppijat.toimintaAlueittainOpiskelija.oid)
+        rows.length should equal(1)
+        val row = rows.head
+
+        row.valinnaisetPaikalliset should equal("")
+        row.valinnaisetValtakunnalliset should equal("")
+        row.vahvistetutToimintaAlueidenSuoritukset should equal(
+          "motoriset taidot (1),kieli ja kommunikaatio (2)"
+        )
+      }
     }
 
     "Peruskoulun päättävät" - {
@@ -162,6 +179,7 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
     valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = "ruotsi (B1) 1.0,Kotitalous (KO) 1.0,Liikunta (LI) 0.5",
     numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = "",
     valinnaisetEiLaajuutta = "Tietokoneen hyötykäyttö (TH)",
+    vahvistetutToimintaAlueidenSuoritukset = "",
     majoitusetu = false,
     kuljetusetu = false,
     kotiopetus = false,
@@ -289,6 +307,13 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
       f
     }
   }
+
+  private val toimintaAlueOsasuoritukset = Some(List(
+    toimintaAlueenSuoritus("1").copy(arviointi = arviointi("S")),
+    toimintaAlueenSuoritus("2").copy(arviointi = arviointi("S")),
+    toimintaAlueenSuoritus("3"),
+    toimintaAlueenSuoritus("4")
+  ))
 
   private val defaultQuery = makeQueryString(MockOrganisaatiot.jyväskylänNormaalikoulu, LocalDate.of(2016, 1, 1), "9")
 

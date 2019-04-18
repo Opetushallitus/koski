@@ -25,7 +25,7 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
 
     val opiskeluoikeudenLisätiedot = JsonSerializer.extract[Option[PerusopetuksenOpiskeluoikeudenLisätiedot]](opiskeluoikeus.data \ "lisätiedot")
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](opiskeluoikeus.data \ "lähdejärjestelmänId")
-    val (toimintaalueOsasuoritukset, muutOsasuoritukset) = osasuoritukset.partition(_.koulutusmoduuliKoodisto == "perusopetuksentoimintaalue")
+    val (toimintaalueOsasuoritukset, muutOsasuoritukset) = osasuoritukset.partition(_.suorituksenTyyppi == "perusopetuksentoimintaalue")
     val (valtakunnalliset, paikalliset) = muutOsasuoritukset.partition(isValtakunnallinenOppiaine)
     val (pakollisetValtakunnalliset, valinnaisetValtakunnalliset) = valtakunnalliset.partition(isPakollinen)
     val (pakollisetPaikalliset, valinnaisetPaikalliset) = paikalliset.partition(isPakollinen)
@@ -80,6 +80,7 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
       valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = kaikkiValinnaiset.filter(vuosiviikkotunteja(_, _ < _, 2)).map(nimiJaKoodiJaLaajuus).mkString(","),
       numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = kaikkiValinnaiset.filter(os => vuosiviikkotunteja(os, _ < _, 2) && isNumeroarviollinen(os)).map(nimiJaKoodiJaLaajuus).mkString(","),
       valinnaisetEiLaajuutta = kaikkiValinnaiset.filter(_.koulutusmoduuliLaajuusArvo.isEmpty).map(nimiJaKoodi).mkString(","),
+      vahvistetutToimintaAlueidenSuoritukset = toimintaalueOsasuoritukset.filter(_.arviointiHyväksytty.getOrElse(false)).sortBy(_.koulutusmoduuliKoodiarvo).map(nimiJaKoodi).mkString(","),
       majoitusetu = opiskeluoikeudenLisätiedot.exists(_.majoitusetu.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva))),
       kuljetusetu = opiskeluoikeudenLisätiedot.exists(_.kuljetusetu.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva))),
       kotiopetus = opiskeluoikeudenLisätiedot.exists(oo => oneOfAikajaksoistaVoimassaHakuPaivalla(oo.kotiopetus, oo.kotiopetusjaksot, hakupaiva)),
@@ -195,6 +196,14 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
     }
   }
 
+  val perusopetuksenToiminaAlueKoodisto = Map(
+    "1" -> "motoriset taidot",
+    "2" -> "kieli ja kommunikaatio",
+    "3"	-> "sosiaaliset taidot",
+    "4"	-> "päivittäisten toimintojen taidot",
+    "5"	->"kognitiiviset taidot"
+  )
+
   val eritysopetuksentoteutuspaikkaKoodisto = Map(
     "1" -> "Opetus on kokonaan erityisryhmissä tai -luokassa",
     "2" -> "Opetuksesta 1-19 % on yleisopetuksen ryhmissä",
@@ -285,6 +294,7 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
     "valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia" -> Column("Valinnaiset oppiaineet joiden laajuus on pienempi kuin 2 vuosiviikko tuntia"),
     "numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia" -> Column("Valinnaiset oppiaineet joilla on numeroarviointi ja niiden laajuus on pienempi kuin 2 vuosiviikkotuntia"),
     "valinnaisetEiLaajuutta" -> Column("Valinnaiset oppiaineet joilla ei ole laajuutta"),
+    "vahvistetutToimintaAlueidenSuoritukset" -> Column("Vahvistetut toiminta-alueiden suoritukset"),
     "majoitusetu" -> Column("Majoitusetu"),
     "kuljetusetu" -> Column("Kuljetusetu"),
     "kotiopetus" -> Column("Kotiopetus"),
@@ -355,6 +365,7 @@ private[raportit] case class PerusopetusRow(
   valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia: String,
   numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia: String,
   valinnaisetEiLaajuutta: String,
+  vahvistetutToimintaAlueidenSuoritukset: String,
   majoitusetu: Boolean,
   kuljetusetu: Boolean,
   kotiopetus: Boolean,
