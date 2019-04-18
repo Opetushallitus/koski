@@ -99,12 +99,14 @@ const AmmatillinenOsittainenSuoritustietojenTarkistus = ({oppilaitosAtom}) => {
 const PerusopetuksenVuosiluokka = ({oppilaitosAtom}) => {
   const titleText = <Text name='Perusopetuksen Vuosiluokka'/>
   const descriptionText = <Text name='PerusopetuksenVuosiluokka-description'/>
+  const exampleText = <Text name='PerusopetuksenVuosiluokka-example'/>
 
   return (<VuosiluokkaRaporttiPaivalta
     oppilaitosAtom={oppilaitosAtom}
     apiEndpoint={'/perusopetuksenvuosiluokka'}
     title={titleText}
     description={descriptionText}
+    example={exampleText}
   />)
 }
 
@@ -144,7 +146,7 @@ const AikajaksoRaportti = ({oppilaitosAtom, apiEndpoint, title, description}) =>
   </section>)
 }
 
-const VuosiluokkaRaporttiPaivalta = ({oppilaitosAtom, apiEndpoint, title, description}) => {
+const VuosiluokkaRaporttiPaivalta = ({oppilaitosAtom, apiEndpoint, title, description, example}) => {
   const paivaAtom = Atom()
   const vuosiluokkaAtom = Atom('')
   const submitBus = Bacon.Bus()
@@ -168,6 +170,7 @@ const VuosiluokkaRaporttiPaivalta = ({oppilaitosAtom, apiEndpoint, title, descri
   return (<section>
     <h2>{title}</h2>
     <p>{description}</p>
+    <p>{example}</p>
     <div>
       <div className='parametri'>
         <label><Text name='Päivä'/></label>
