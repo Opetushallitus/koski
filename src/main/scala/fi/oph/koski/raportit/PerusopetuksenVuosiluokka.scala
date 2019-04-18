@@ -50,27 +50,27 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
       jaaLuokalle = JsonSerializer.extract[Option[Boolean]](päätasonsuoritus.data \ "jääLuokalle").getOrElse(false),
       luokka = JsonSerializer.extract[Option[String]](päätasonsuoritus.data \ "luokka").getOrElse(""),
       voimassaolevatVuosiluokat = voimassaolevatVuosiluokat.mkString(","),
-      aidinkieli = getOppiaineenArvosana("AI")(pakollisetValtakunnalliset),
+      aidinkieli = oppiaineenArvosanaTiedot("AI")(pakollisetValtakunnalliset),
       pakollisenAidinkielenOppimaara = getOppiaineenOppimäärä("AI")(pakollisetValtakunnalliset),
-      kieliA = getOppiaineenArvosana("A1")(pakollisetValtakunnalliset),
+      kieliA = oppiaineenArvosanaTiedot("A1")(pakollisetValtakunnalliset),
       kieliAOppimaara = getOppiaineenOppimäärä("A1")(pakollisetValtakunnalliset),
-      kieliB = getOppiaineenArvosana("B1")(pakollisetValtakunnalliset),
+      kieliB = oppiaineenArvosanaTiedot("B1")(pakollisetValtakunnalliset),
       kieliBOppimaara = getOppiaineenOppimäärä("B1")(pakollisetValtakunnalliset),
-      uskonto = getOppiaineenArvosana("KT")(pakollisetValtakunnalliset),
-      historia = getOppiaineenArvosana("HI")(pakollisetValtakunnalliset),
-      yhteiskuntaoppi = getOppiaineenArvosana("YH")(pakollisetValtakunnalliset),
-      matematiikka = getOppiaineenArvosana("MA")(pakollisetValtakunnalliset),
-      kemia = getOppiaineenArvosana("KE")(pakollisetValtakunnalliset),
-      fysiikka = getOppiaineenArvosana("FY")(pakollisetValtakunnalliset),
-      biologia = getOppiaineenArvosana("BI")(pakollisetValtakunnalliset),
-      maantieto = getOppiaineenArvosana("GE")(pakollisetValtakunnalliset),
-      musiikki = getOppiaineenArvosana("MU")(pakollisetValtakunnalliset),
-      kuvataide = getOppiaineenArvosana("KU")(pakollisetValtakunnalliset),
-      kotitalous = getOppiaineenArvosana("KO")(pakollisetValtakunnalliset),
-      terveystieto = getOppiaineenArvosana("TE")(pakollisetValtakunnalliset),
-      kasityo = getOppiaineenArvosana("KS")(pakollisetValtakunnalliset),
-      liikunta = getOppiaineenArvosana("LI")(pakollisetValtakunnalliset),
-      ymparistooppi = getOppiaineenArvosana("YL")(pakollisetValtakunnalliset),
+      uskonto = oppiaineenArvosanaTiedot("KT")(pakollisetValtakunnalliset),
+      historia = oppiaineenArvosanaTiedot("HI")(pakollisetValtakunnalliset),
+      yhteiskuntaoppi = oppiaineenArvosanaTiedot("YH")(pakollisetValtakunnalliset),
+      matematiikka = oppiaineenArvosanaTiedot("MA")(pakollisetValtakunnalliset),
+      kemia = oppiaineenArvosanaTiedot("KE")(pakollisetValtakunnalliset),
+      fysiikka = oppiaineenArvosanaTiedot("FY")(pakollisetValtakunnalliset),
+      biologia = oppiaineenArvosanaTiedot("BI")(pakollisetValtakunnalliset),
+      maantieto = oppiaineenArvosanaTiedot("GE")(pakollisetValtakunnalliset),
+      musiikki = oppiaineenArvosanaTiedot("MU")(pakollisetValtakunnalliset),
+      kuvataide = oppiaineenArvosanaTiedot("KU")(pakollisetValtakunnalliset),
+      kotitalous = oppiaineenArvosanaTiedot("KO")(pakollisetValtakunnalliset),
+      terveystieto = oppiaineenArvosanaTiedot("TE")(pakollisetValtakunnalliset),
+      kasityo = oppiaineenArvosanaTiedot("KS")(pakollisetValtakunnalliset),
+      liikunta = oppiaineenArvosanaTiedot("LI")(pakollisetValtakunnalliset),
+      ymparistooppi = oppiaineenArvosanaTiedot("YL")(pakollisetValtakunnalliset),
       kayttaymisenArvio = JsonSerializer.extract[Option[PerusopetuksenKäyttäytymisenArviointi]](päätasonsuoritus.data \ "käyttäytymisenArvio").map(_.arvosana.koodiarvo).getOrElse(""),
       paikallistenOppiaineidenKoodit = paikalliset.map(_.koulutusmoduuliKoodiarvo).mkString(","),
       pakollisetPaikalliset = pakollisetPaikalliset.map(nimiJaKoodi).mkString(","),
@@ -116,12 +116,24 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
     JsonSerializer.extract[Option[Boolean]](osasuoritus.data \ "koulutusmoduuli" \ "pakollinen").getOrElse(false)
   }
 
-  private def getOppiaineenArvosana(koodistoKoodi: String)(oppiaineidenSuoritukset: Seq[ROsasuoritusRow]) = {
+  private def oppiaineenArvosanaTiedot(koodistoKoodi: String)(oppiaineidenSuoritukset: Seq[ROsasuoritusRow]) = {
     oppiaineidenSuoritukset.filter(_.koulutusmoduuliKoodiarvo == koodistoKoodi) match {
-      case Nil => "Arvosana puuttuu"
-      case Seq(suoritus) => suoritus.arviointiArvosanaKoodiarvo.getOrElse("Arvosana puuttuu")
-      case montaSamallaKoodilla@ _ => montaSamallaKoodilla.map(_.arviointiArvosanaKoodiarvo.getOrElse("Arvosana puuttuu")).mkString(",")
+      case Nil => "Oppiaine puuttuu"
+      case Seq(suoritus) => oppiaineenArvosanaJaYksilöllistettyTieto(suoritus)
+      case montaSamallaKoodilla@ _ => montaSamallaKoodilla.map(oppiaineenArvosanaJaYksilöllistettyTieto).mkString(",")
     }
+  }
+
+  private def oppiaineenArvosanaJaYksilöllistettyTieto(osasuoritus: ROsasuoritusRow) = {
+    osasuoritus.arviointiArvosanaKoodiarvo match {
+      case Some(arvosana) => arvosana + täppäIfYksilöllistetty(osasuoritus)
+      case _ => "Arvosana puuttuu"
+    }
+  }
+
+  private def täppäIfYksilöllistetty(osasuoritus: ROsasuoritusRow) = {
+    val isYksilöllistetty = JsonSerializer.extract[Option[Boolean]](osasuoritus.data \ "yksilöllistettyOppimäärä").getOrElse(false)
+    if (isYksilöllistetty) "*" else ""
   }
 
   private def getOppiaineenOppimäärä(koodistoKoodi: String)(osasuoritukset: Seq[ROsasuoritusRow]) = {
