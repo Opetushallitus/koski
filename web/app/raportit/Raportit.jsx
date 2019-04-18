@@ -11,7 +11,6 @@ import {appendQueryParams} from '../util/location'
 import {generateRandomPassword} from '../util/password'
 import Http from '../util/http'
 import Dropdown from '../components/Dropdown'
-import * as R from 'ramda'
 
 export const raportitContentP = () => {
   const oppilaitosAtom = Atom()
@@ -97,7 +96,7 @@ const AmmatillinenOsittainenSuoritustietojenTarkistus = ({oppilaitosAtom}) => {
 }
 
 const PerusopetuksenVuosiluokka = ({oppilaitosAtom}) => {
-  const titleText = <Text name='Perusopetuksen Vuosiluokka'/>
+  const titleText = <Text name='Nuorten perusopetuksen opiskeluoikeus- ja suoritustietojen tarkistusraportti'/>
   const descriptionText = <Text name='PerusopetuksenVuosiluokka-description'/>
   const exampleText = <Text name='PerusopetuksenVuosiluokka-example'/>
 
