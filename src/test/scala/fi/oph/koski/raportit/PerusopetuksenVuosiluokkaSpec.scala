@@ -80,6 +80,19 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
       }
     }
 
+    "Elämänkatsomustiedon opiskelijoille ei yritetä hakea uskonnon oppimäärää" in {
+      val suoritusElämänkatsomustiedolla = yhdeksännenLuokanSuoritus.copy(osasuoritukset = Some(List(suoritus(uskonto(oppiaineenKoodiarvo = "ET")).copy(arviointi = arviointi(5)))), vahvistus = None)
+      withAdditionalSuoritukset(MockOppijat.vuosiluokkalainen, List(suoritusElämänkatsomustiedolla)) {
+        val result = PerusopetuksenVuosiluokka.buildRaportti(repository, MockOrganisaatiot.jyväskylänNormaalikoulu, date(2016, 1, 1), "9")
+        val rows = result.filter(_.oppijaOid == MockOppijat.vuosiluokkalainen.oid)
+        rows.length should equal(1)
+        val row = rows.head
+
+        row.uskonto should equal("5")
+        row.uskonnonOppimaara should equal("")
+      }
+    }
+
     "Peruskoulun päättävät" - {
 
       "Hakee tiedot peruskoulun oppimäärän suorituksesta" in {
@@ -156,6 +169,7 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
     kieliB = "8",
     kieliBOppimaara = "ruotsi",
     uskonto = "10",
+    uskonnonOppimaara = "Ortodoksinen uskonto",
     historia = "8",
     yhteiskuntaoppi = "10",
     matematiikka = "9",
@@ -294,6 +308,7 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
     val oo = getOpiskeluoikeudet(oppija.oid).collect { case oo: PerusopetuksenOpiskeluoikeus => oo }.head
     val lisatyllaVuosiluokanSuorituksella = oo.copy(suoritukset = (vuosiluokanSuoritus ::: oo.suoritukset), tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(date(2001, 1, 1), opiskeluoikeusLäsnä))))
     putOppija(Oppija(oppija, List(lisatyllaVuosiluokanSuorituksella))) {
+      verifyResponseStatusOk()
       loadRaportointikantaFixtures
       f
     }
@@ -302,6 +317,7 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
   private def withLisätiedotFixture[T <: PerusopetuksenOpiskeluoikeus](oppija: OppijaHenkilö, lisätiedot: PerusopetuksenOpiskeluoikeudenLisätiedot)(f: => Any) = {
     val oo = lastOpiskeluoikeus(oppija.oid).asInstanceOf[T].copy(lisätiedot = Some(lisätiedot))
     putOppija(Oppija(oppija, List(oo))) {
+      verifyResponseStatusOk()
       loadRaportointikantaFixtures
       f
     }

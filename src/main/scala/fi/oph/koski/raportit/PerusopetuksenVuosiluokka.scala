@@ -56,7 +56,8 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
       kieliAOppimaara = getOppiaineenOppimäärä("A1")(pakollisetValtakunnalliset),
       kieliB = oppiaineenArvosanaTiedot("B1")(pakollisetValtakunnalliset),
       kieliBOppimaara = getOppiaineenOppimäärä("B1")(pakollisetValtakunnalliset),
-      uskonto = oppiaineenArvosanaTiedot("KT")(pakollisetValtakunnalliset),
+      uskonto = oppiaineenArvosanaTiedot("KT", "ET")(pakollisetValtakunnalliset),
+      uskonnonOppimaara = uskonnonOppimääräIfNotElämänkatsomustieto(pakollisetValtakunnalliset),
       historia = oppiaineenArvosanaTiedot("HI")(pakollisetValtakunnalliset),
       yhteiskuntaoppi = oppiaineenArvosanaTiedot("YH")(pakollisetValtakunnalliset),
       matematiikka = oppiaineenArvosanaTiedot("MA")(pakollisetValtakunnalliset),
@@ -116,8 +117,8 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
     JsonSerializer.extract[Option[Boolean]](osasuoritus.data \ "koulutusmoduuli" \ "pakollinen").getOrElse(false)
   }
 
-  private def oppiaineenArvosanaTiedot(koodistoKoodi: String)(oppiaineidenSuoritukset: Seq[ROsasuoritusRow]) = {
-    oppiaineidenSuoritukset.filter(_.koulutusmoduuliKoodiarvo == koodistoKoodi) match {
+  private def oppiaineenArvosanaTiedot(koodistoKoodit: String*)(oppiaineidenSuoritukset: Seq[ROsasuoritusRow]) = {
+    oppiaineidenSuoritukset.filter(s => koodistoKoodit.contains(s.koulutusmoduuliKoodiarvo)) match {
       case Nil => "Oppiaine puuttuu"
       case Seq(suoritus) => oppiaineenArvosanaJaYksilöllistettyTieto(suoritus)
       case montaSamallaKoodilla@ _ => montaSamallaKoodilla.map(oppiaineenArvosanaJaYksilöllistettyTieto).mkString(",")
@@ -134,6 +135,23 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
   private def täppäIfYksilöllistetty(osasuoritus: ROsasuoritusRow) = {
     val isYksilöllistetty = JsonSerializer.extract[Option[Boolean]](osasuoritus.data \ "yksilöllistettyOppimäärä").getOrElse(false)
     if (isYksilöllistetty) "*" else ""
+  }
+
+  private def uskonnonOppimääräIfNotElämänkatsomustieto(osasuoritukset: Seq[ROsasuoritusRow]) = {
+    val hasElämänkatsomustieto = osasuoritukset.exists(_.koulutusmoduuliKoodiarvo == "ET")
+    if (hasElämänkatsomustieto) "" else uskonnonOppimäärä(osasuoritukset)
+  }
+
+  private def uskonnonOppimäärä(osasuoritukset: Seq[ROsasuoritusRow]) = {
+    osasuoritukset.find(_.koulutusmoduuliKoodiarvo == "KT") match {
+      case Some(uskonto) => {
+        JsonSerializer.extract[Option[Koodistokoodiviite]](uskonto.data \ "koulutusmoduuli" \ "uskonnonOppimäärä") match {
+          case Some(uskonnonKoodistoviite) => uskonnonKoodistoviite.nimi.map(_.get("fi")).getOrElse("Oppimäärä puuttuu")
+          case _ => "Oppimäärä puuttuu"
+        }
+      }
+      case _ => "Oppimäärä puuttuu"
+    }
   }
 
   private def getOppiaineenOppimäärä(koodistoKoodi: String)(osasuoritukset: Seq[ROsasuoritusRow]) = {
@@ -283,6 +301,7 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
     "kieliB" -> Column("B-kieli"),
     "kieliBOppimaara" -> Column("B-kielen oppimaara"),
     "uskonto" -> Column("Uskonto/Elämänkatsomustieto"),
+    "uskonnonOppimaara" -> Column("Uskonnon oppimaara"),
     "historia" -> Column("Historia"),
     "yhteiskuntaoppi" -> Column("Yhteiskuntaoppi"),
     "matematiikka" -> Column("Matematiikka"),
@@ -354,6 +373,7 @@ private[raportit] case class PerusopetusRow(
   kieliB: String,
   kieliBOppimaara: String,
   uskonto: String,
+  uskonnonOppimaara: String,
   historia: String,
   yhteiskuntaoppi: String,
   matematiikka: String,
