@@ -120,16 +120,14 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
   private def oppiaineenArvosanaTiedot(koodistoKoodit: String*)(oppiaineidenSuoritukset: Seq[ROsasuoritusRow]) = {
     oppiaineidenSuoritukset.filter(s => koodistoKoodit.contains(s.koulutusmoduuliKoodiarvo)) match {
       case Nil => "Oppiaine puuttuu"
-      case Seq(suoritus) => oppiaineenArvosanaJaYksilöllistettyTieto(suoritus)
-      case montaSamallaKoodilla@ _ => montaSamallaKoodilla.map(oppiaineenArvosanaJaYksilöllistettyTieto).mkString(",")
+      case suoritukset@_ => suoritukset.map(oppiaineenArvosanaJaYksilöllistettyTieto).mkString(",")
     }
   }
 
   private def oppiaineenArvosanaJaYksilöllistettyTieto(osasuoritus: ROsasuoritusRow) = {
-    osasuoritus.arviointiArvosanaKoodiarvo match {
-      case Some(arvosana) => arvosana + täppäIfYksilöllistetty(osasuoritus)
-      case _ => "Arvosana puuttuu"
-    }
+    osasuoritus.arviointiArvosanaKoodiarvo
+      .map(arvosana => arvosana + täppäIfYksilöllistetty(osasuoritus))
+      .getOrElse("Arvosana puuttuu")
   }
 
   private def täppäIfYksilöllistetty(osasuoritus: ROsasuoritusRow) = {
@@ -143,22 +141,20 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
   }
 
   private def uskonnonOppimäärä(osasuoritukset: Seq[ROsasuoritusRow]) = {
-    osasuoritukset.find(_.koulutusmoduuliKoodiarvo == "KT") match {
-      case Some(uskonto) => {
-        JsonSerializer.extract[Option[Koodistokoodiviite]](uskonto.data \ "koulutusmoduuli" \ "uskonnonOppimäärä") match {
-          case Some(uskonnonKoodistoviite) => uskonnonKoodistoviite.nimi.map(_.get("fi")).getOrElse("Oppimäärä puuttuu")
-          case _ => "Oppimäärä puuttuu"
-        }
+    osasuoritukset
+      .find(_.koulutusmoduuliKoodiarvo == "KT")
+      .map { uskonto =>
+        JsonSerializer.extract[Option[Koodistokoodiviite]](uskonto.data \ "koulutusmoduuli" \ "uskonnonOppimäärä")
+          .flatMap(_.nimi.map(_.get("fi")))
+          .getOrElse("Oppimäärä puuttuu")
       }
-      case _ => "Oppimäärä puuttuu"
-    }
+      .getOrElse("Oppiaine puuttuu")
   }
 
   private def getOppiaineenOppimäärä(koodistoKoodi: String)(osasuoritukset: Seq[ROsasuoritusRow]) = {
     osasuoritukset.filter(_.koulutusmoduuliKoodiarvo == koodistoKoodi) match {
       case Nil => "Oppiaine puuttuu"
-      case Seq(suoritus) => getOppiaineenNimi(suoritus)
-      case montaSamallaKoodilla@ _ => montaSamallaKoodilla.map(getOppiaineenNimi).mkString(",")
+      case found@_ => found.map(getOppiaineenNimi).mkString(",")
     }
   }
 
@@ -174,30 +170,15 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
   }
 
   private def nimiJaKoodiJaLaajuus(osasuoritus: ROsasuoritusRow) = {
-    nimiJaKoodi(osasuoritus) + (osasuoritus.koulutusmoduuliLaajuusArvo match {
-      case Some(laajuus) => s" ${laajuus}"
-      case _ => s" Ei laajuutta"
-    })
+    nimiJaKoodi(osasuoritus) + " " +  osasuoritus.koulutusmoduuliLaajuusArvo.getOrElse("Ei laajuutta")
   }
 
   private def nimiJaKoodi(osasuoritus: ROsasuoritusRow) = {
-    val jsonb = osasuoritus.data
-    val kieliAine = getFinnishNimi(jsonb \ "koulutusmoduuli" \ "kieli" \ "nimi")
-    val tunnisteNimi = getFinnishNimi(jsonb \ "koulutusmoduuli" \ "tunniste" \ "nimi")
-
-    val kurssinNimi = (kieliAine, tunnisteNimi) match {
-      case (Some(kieli), _) => kieli
-      case (_, Some(nimi)) => nimi
-      case _ => ""
-    }
-    s"${kurssinNimi} (${osasuoritus.koulutusmoduuliKoodiarvo})"
+    s"${getOppiaineenNimi(osasuoritus)} (${osasuoritus.koulutusmoduuliKoodiarvo})"
   }
 
   private def getFinnishNimi(j: JValue) = {
-    JsonSerializer.extract[Option[LocalizedString]](j) match {
-      case Some(nimi) => Option(nimi.get("fi"))
-      case _ => None
-    }
+    JsonSerializer.extract[Option[LocalizedString]](j).map(_.get("fi"))
   }
 
   private val vuosiviikkotunnitKoodistoarvo = "3"
@@ -208,10 +189,7 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
   }
 
   private def isNumeroarviollinen(osasuoritus: ROsasuoritusRow) = {
-    osasuoritus.arviointiArvosanaKoodiarvo match {
-      case Some(arvosana) => arvosana forall Character.isDigit
-      case _ => false
-    }
+    osasuoritus.arviointiArvosanaKoodiarvo.exists(_.matches("\\d+"))
   }
 
   private def oneOfAikajaksoistaVoimassaHakuPaivalla(aikajakso: Option[Aikajakso], aikajaksot: Option[List[Aikajakso]], hakupaiva: LocalDate) = {
@@ -243,12 +221,7 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
   )
 
  private def combineErityisenTuenPäätökset(erityisenTuenPäätös: Option[ErityisenTuenPäätös], erityisenTuenPäätökset: Option[List[ErityisenTuenPäätös]]) = {
-   (erityisenTuenPäätös, erityisenTuenPäätökset) match {
-     case (Some(paatos), Some(paatokset)) => paatos :: paatokset
-     case (Some(paatos), _) => List(paatos)
-     case (_, Some(paatokset)) => paatokset
-     case _ => List.empty
-   }
+   erityisenTuenPäätös.toList ++ erityisenTuenPäätökset.toList.flatten
  }
 
   private def erityisentuenPäätösvoimassaPaivalla(päätös: ErityisenTuenPäätös, paiva: LocalDate) = {
@@ -260,12 +233,11 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
   }
 
   private def tukimuodot(lisätiedot: Option[PerusopetuksenOpiskeluoikeudenLisätiedot]) = {
-    if (lisätiedot.isDefined) {
-      lisätiedot.get.tukimuodot match {
-        case Some(tukimuodot) => tukimuodot.flatMap(_.nimi.map(_.get("fi"))).mkString(",")
-        case _ => ""
-      }
-    } else ""
+    lisätiedot
+      .flatMap(_.tukimuodot)
+      .map(_.flatMap(_.nimi.map(_.get("fi"))))
+      .map(_.mkString(","))
+      .getOrElse("")
   }
 
   def title(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String = "TITLE TODO"
