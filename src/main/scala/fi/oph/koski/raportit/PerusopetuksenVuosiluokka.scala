@@ -276,7 +276,7 @@ object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
     "viimeisinTila" -> Column("Viimeisin opiskeluoikeuden tila"),
     "tilaHakupaivalla" -> Column("Opiskeluoikeuden tila tulostuspäivänä"),
     "suorituksenTila" -> Column("Suorituksen tila"),
-    "suorituksenAlkamispaiva" -> Column("Suoritukselle merkattu alkamaispäivä"),
+    "suorituksenAlkamispaiva" -> Column("Suoritukselle merkattu alkamispäivä"),
     "suorituksenVahvistuspaiva" -> Column("Suorituksen vahvistuspäivä"),
     "jaaLuokalle" -> Column("Jää luokalle"),
     "luokka" -> Column("Luokan tunniste"),
