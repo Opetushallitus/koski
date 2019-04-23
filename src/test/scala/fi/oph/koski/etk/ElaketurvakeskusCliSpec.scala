@@ -1,8 +1,12 @@
 package fi.oph.koski.etk
 
+import java.text.SimpleDateFormat
+
 import fi.oph.koski.api.OpiskeluoikeusTestMethods
 import fi.oph.koski.henkilo.MockOppijat
+import org.json4s.jackson.JsonMethods.parse
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
+import org.json4s.DefaultFormats
 import org.scalatest.FreeSpec
 
 class ElaketurvakeskusCliSpec extends FreeSpec with RaportointikantaTestMethods with ElaketurvakeskusCliTestMethods with OpiskeluoikeusTestMethods {
@@ -19,7 +23,7 @@ class ElaketurvakeskusCliSpec extends FreeSpec with RaportointikantaTestMethods 
           outputResult should include(
             """{
               | "vuosi": 2016,
-              | "tutkintojenLkm": 8,
+              | "tutkintojenLkm": 9,
               | "aikaleima":""".stripMargin)
           outputResult should include(
             s"""| "tutkinnot": [
@@ -30,7 +34,8 @@ class ElaketurvakeskusCliSpec extends FreeSpec with RaportointikantaTestMethods 
                 |		{"henkilö":{"hetu":"221195-677D","syntymäaika":"1981-01-02","sukunimi":"Leikkita","etunimet":"Jest Kaikke"},"tutkinto":{"tutkinnonTaso":"alempikorkeakoulututkinto","alkamispäivä":"2013-08-01","päättymispäivä":"2016-03-27"}},
                 |		{"henkilö":{"hetu":"311293-717T","syntymäaika":"1991-01-02","sukunimi":"Sutjaka","etunimet":"Mietis Betat"},"tutkinto":{"tutkinnonTaso":"alempikorkeakoulututkinto","alkamispäivä":"2013-08-01","päättymispäivä":"2016-03-17"}},
                 |		{"henkilö":{"hetu":"260977-606E","syntymäaika":"1993-01-02","sukunimi":"Sutjakast","etunimet":"Ftes Testitap"},"tutkinto":{"tutkinnonTaso":"alempikorkeakoulututkinto","alkamispäivä":"2014-08-01","päättymispäivä":"2016-05-31"}},
-                |		{"henkilö":{"hetu":"","syntymäaika":"1988-02-02","sukunimi":"Kai","etunimet":"Betat Testitap"},"tutkinto":{"tutkinnonTaso":"alempikorkeakoulututkinto","alkamispäivä":"2015-08-01","päättymispäivä":"2017-06-06"}}
+                |		{"henkilö":{"syntymäaika":"1988-02-02","sukunimi":"Kai","etunimet":"Betat Testitap"},"tutkinto":{"tutkinnonTaso":"alempikorkeakoulututkinto","alkamispäivä":"2015-08-01","päättymispäivä":"2017-06-06"}},
+                |		{"henkilö":{"sukunimi":"Alho","etunimet":"Aapeli"},"tutkinto":{"tutkinnonTaso":"alempikorkeakoulututkinto","päättymispäivä":"2018-08-31"}}
                 | ]""".stripMargin)
         }
       }
@@ -67,7 +72,7 @@ class ElaketurvakeskusCliSpec extends FreeSpec with RaportointikantaTestMethods 
           outputResult should include(
             s"""{
                | "vuosi": 2016,
-               | "tutkintojenLkm": 9,
+               | "tutkintojenLkm": 10,
                | "aikaleima":""".stripMargin)
           outputResult should include(
             s"""| "tutkinnot": [
@@ -78,11 +83,26 @@ class ElaketurvakeskusCliSpec extends FreeSpec with RaportointikantaTestMethods 
                 |		{"henkilö":{"hetu":"221195-677D","syntymäaika":"1981-01-02","sukunimi":"Leikkita","etunimet":"Jest Kaikke"},"tutkinto":{"tutkinnonTaso":"alempikorkeakoulututkinto","alkamispäivä":"2013-08-01","päättymispäivä":"2016-03-27"}},
                 |		{"henkilö":{"hetu":"311293-717T","syntymäaika":"1991-01-02","sukunimi":"Sutjaka","etunimet":"Mietis Betat"},"tutkinto":{"tutkinnonTaso":"alempikorkeakoulututkinto","alkamispäivä":"2013-08-01","päättymispäivä":"2016-03-17"}},
                 |		{"henkilö":{"hetu":"260977-606E","syntymäaika":"1993-01-02","sukunimi":"Sutjakast","etunimet":"Ftes Testitap"},"tutkinto":{"tutkinnonTaso":"alempikorkeakoulututkinto","alkamispäivä":"2014-08-01","päättymispäivä":"2016-05-31"}},
-                |		{"henkilö":{"hetu":"","syntymäaika":"1988-02-02","sukunimi":"Kai","etunimet":"Betat Testitap"},"tutkinto":{"tutkinnonTaso":"alempikorkeakoulututkinto","alkamispäivä":"2015-08-01","päättymispäivä":"2017-06-06"}},
+                |		{"henkilö":{"syntymäaika":"1988-02-02","sukunimi":"Kai","etunimet":"Betat Testitap"},"tutkinto":{"tutkinnonTaso":"alempikorkeakoulututkinto","alkamispäivä":"2015-08-01","päättymispäivä":"2017-06-06"}},
+                |		{"henkilö":{"sukunimi":"Alho","etunimet":"Aapeli"},"tutkinto":{"tutkinnonTaso":"alempikorkeakoulututkinto","päättymispäivä":"2018-08-31"}},
                 |		{"henkilö":{"hetu":"280618-402H","syntymäaika":"1918-06-28","sukunimi":"Ammattilainen","etunimet":"Aarne"},"tutkinto":{"tutkinnonTaso":"ammatillinenperuskoulutus","alkamispäivä":"2012-09-01","päättymispäivä":"2016-05-31"},"viite":{"opiskeluoikeusOid":"${ammattilaisenOpiskeluoikeusOid}","opiskeluoikeusVersionumero":1,"oppijaOid":"${MockOppijat.ammattilainen.oid}"}}
                 | ]
                 |}""".stripMargin
           )
+        }
+      }
+      "Tuottaa validin JSON:in joka voidaan parsia" in {
+        implicit val formats = new DefaultFormats {
+          override def dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        }
+        withCsvFixture() {
+          val cli = ElaketurvakeskusCliForTest
+          val args = Array("-csv", csvFilePath, "-user", "pää:pää", "-api", "ammatillisetperustutkinnot:2016-01-01:2016-12-12", "-port", koskiPort)
+          cli.main(args)
+          val result = parse(outputResult).extract[EtkResponse]
+
+          result.tutkintojenLkm should equal(10)
+          result.tutkinnot.length should equal(result.tutkintojenLkm)
         }
       }
     }

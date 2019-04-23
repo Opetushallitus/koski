@@ -46,10 +46,10 @@ class ElaketurvakeskusQueryService(val db: DB) extends KoskiDatabaseMethods {
 case class EtkTutkintotietoRow
 (
   koulutusmuoto: String,
-  alkamispaiva: Date,
+  alkamispaiva: Option[Date],
   paattymispaiva: Option[Date],
   hetu: Option[String],
-  syntynmaaika: Date,
+  syntymäaika: Option[Date],
   sukunimi: String,
   etunimet: String,
   versionumero: Int,

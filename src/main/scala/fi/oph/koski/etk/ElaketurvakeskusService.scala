@@ -25,13 +25,13 @@ class ElaketurvakeskusService(application: KoskiApplication) {
     EtkTutkintotieto(
       henkilö = EtkHenkilö(
         hetu = row.hetu,
-        syntymäaika = row.syntynmaaika.toLocalDate,
+        syntymäaika = row.syntymäaika.map(_.toLocalDate),
         sukunimi = row.sukunimi,
         etunimet = row.etunimet
       ),
       tutkinto = EtkTutkinto(
         tutkinnonTaso = row.koulutusmuoto,
-        alkamispäivä = row.alkamispaiva.toLocalDate,
+        alkamispäivä = row.alkamispaiva.map(_.toLocalDate),
         päättymispäivä = row.paattymispaiva.map(_.toLocalDate)
       ),
       viite = Some(EtkViite(
@@ -43,9 +43,9 @@ class ElaketurvakeskusService(application: KoskiApplication) {
   }
 }
 
-case class EtkHenkilö(hetu: Option[String], syntymäaika: LocalDate, sukunimi: String, etunimet: String)
+case class EtkHenkilö(hetu: Option[String], syntymäaika: Option[LocalDate], sukunimi: String, etunimet: String)
 
-case class EtkTutkinto(tutkinnonTaso: String, alkamispäivä: LocalDate, päättymispäivä: Option[LocalDate])
+case class EtkTutkinto(tutkinnonTaso: String, alkamispäivä: Option[LocalDate], päättymispäivä: Option[LocalDate])
 
 case class EtkViite(opiskeluoikeusOid: String, opiskeluoikeusVersionumero: Int, oppijaOid: String)
 
