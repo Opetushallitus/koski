@@ -6,6 +6,7 @@ import java.time.LocalDate.{of => date}
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsPerusopetus
 import fi.oph.koski.documentation.ExampleData._
+import fi.oph.koski.documentation.ExamplesPerusopetus._
 import fi.oph.koski.documentation.PerusopetusExampleData._
 import fi.oph.koski.henkilo.{MockOppijat, OppijaHenkilö}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -40,7 +41,6 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
     }
 
     "Monta saman vuosiluokan suoritusta eritellään omiksi riveiksi" in {
-      resetFixtures
       withAdditionalSuoritukset(MockOppijat.ysiluokkalainen, List(kahdeksannenLuokanLuokalleJääntiSuoritus.copy(luokka = "8C"))) {
         val result = PerusopetuksenVuosiluokka.buildRaportti(repository, MockOrganisaatiot.jyväskylänNormaalikoulu, LocalDate.of(2014, 1, 1), vuosiluokka = "8")
         val ynjevinOpiskeluoikeusOid = lastOpiskeluoikeus(MockOppijat.ysiluokkalainen.oid).oid.get
@@ -61,6 +61,35 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
           paiva.isBefore(hakuDate) shouldBe (false)
         }
       })
+    }
+
+    "Toiminta alueiden suoritukset joilla on arvosana näytetään omassa kolumnissaan" in {
+      val suoritusToimintaAlueenOsasuorituksilla = yhdeksännenLuokanSuoritus.copy(osasuoritukset = toimintaAlueOsasuoritukset, vahvistus = None)
+      withAdditionalSuoritukset(MockOppijat.toimintaAlueittainOpiskelija, List(suoritusToimintaAlueenOsasuorituksilla)) {
+        val result = PerusopetuksenVuosiluokka.buildRaportti(repository, MockOrganisaatiot.jyväskylänNormaalikoulu, date(2015, 1, 1), "9")
+        val rows = result.filter(_.oppijaOid == MockOppijat.toimintaAlueittainOpiskelija.oid)
+        rows.length should equal(1)
+        val row = rows.head
+
+        row.valinnaisetPaikalliset should equal("")
+        row.valinnaisetValtakunnalliset should equal("")
+        row.vahvistetutToimintaAlueidenSuoritukset should equal(
+          "motoriset taidot (1),kieli ja kommunikaatio (2)"
+        )
+      }
+    }
+
+    "Elämänkatsomustiedon opiskelijoille ei yritetä hakea uskonnon oppimäärää" in {
+      val suoritusElämänkatsomustiedolla = yhdeksännenLuokanSuoritus.copy(osasuoritukset = Some(List(suoritus(uskonto(oppiaineenKoodiarvo = "ET")).copy(arviointi = arviointi(5)))), vahvistus = None)
+      withAdditionalSuoritukset(MockOppijat.vuosiluokkalainen, List(suoritusElämänkatsomustiedolla)) {
+        val result = PerusopetuksenVuosiluokka.buildRaportti(repository, MockOrganisaatiot.jyväskylänNormaalikoulu, date(2016, 1, 1), "9")
+        val rows = result.filter(_.oppijaOid == MockOppijat.vuosiluokkalainen.oid)
+        rows.length should equal(1)
+        val row = rows.head
+
+        row.uskonto should equal("5")
+        row.uskonnonOppimaara should equal("")
+      }
     }
 
     "Peruskoulun päättävät" - {
@@ -101,7 +130,7 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
           val opiskeluoikeusOid = getOpiskeluoikeudet(MockOppijat.vuosiluokkalainen.oid).find(_.tyyppi.koodiarvo == "perusopetus").get.oid.get
           val rows = result.filter(_.opiskeluoikeusOid == opiskeluoikeusOid)
           rows.length should equal(1)
-          rows.head should equal(kaisanPäättötodistusRow.copy(opiskeluoikeusOid = opiskeluoikeusOid, oppijaOid = MockOppijat.vuosiluokkalainen.oid, hetu = MockOppijat.vuosiluokkalainen.hetu, sukunimi = Some(MockOppijat.vuosiluokkalainen.sukunimi), etunimet = Some(MockOppijat.vuosiluokkalainen.etunimet), suorituksenTila = "kesken", suorituksenVahvistuspaiva = ""))
+          rows.head should equal(kaisanPäättötodistusRow.copy(opiskeluoikeusOid = opiskeluoikeusOid, oppijaOid = MockOppijat.vuosiluokkalainen.oid, hetu = MockOppijat.vuosiluokkalainen.hetu, sukunimi = Some(MockOppijat.vuosiluokkalainen.sukunimi), etunimet = Some(MockOppijat.vuosiluokkalainen.etunimet), viimeisinTila = "lasna", suorituksenTila = "kesken", suorituksenVahvistuspaiva = ""))
         }
       }
 
@@ -116,6 +145,7 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
 
   val defaultYnjeviExpectedKasiLuokkaRow = PerusopetusRow(
     opiskeluoikeusOid = "",
+    oppilaitoksenNimi = "Jyväskylän normaalikoulu",
     lähdejärjestelmä = None,
     lähdejärjestelmänId = None,
     oppijaOid = MockOppijat.ysiluokkalainen.oid,
@@ -125,7 +155,9 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
     sukupuoli = None,
     luokka = "8C",
     viimeisinTila = "lasna",
+    tilaHakupaivalla = "lasna",
     suorituksenTila = "valmis",
+    suorituksenAlkamispaiva = "2014-08-15",
     suorituksenVahvistuspaiva = "2015-05-30",
     voimassaolevatVuosiluokat = "9",
     jaaLuokalle = false,
@@ -136,12 +168,13 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
     kieliB = "8",
     kieliBOppimaara = "ruotsi",
     uskonto = "10",
+    uskonnonOppimaara = "Ortodoksinen uskonto",
     historia = "8",
     yhteiskuntaoppi = "10",
     matematiikka = "9",
     kemia = "7",
     fysiikka = "9",
-    biologia = "9",
+    biologia = "9*",
     maantieto = "9",
     musiikki = "7",
     kuvataide = "8",
@@ -149,7 +182,7 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
     terveystieto = "8",
     kasityo = "9",
     liikunta = "9",
-    ymparistooppi = "Arvosana puuttuu",
+    ymparistooppi = "Oppiaine puuttuu",
     kayttaymisenArvio = "S",
     paikallistenOppiaineidenKoodit = "TH",
     pakollisetPaikalliset = "",
@@ -159,6 +192,7 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
     valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = "ruotsi (B1) 1.0,Kotitalous (KO) 1.0,Liikunta (LI) 0.5",
     numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia = "",
     valinnaisetEiLaajuutta = "Tietokoneen hyötykäyttö (TH)",
+    vahvistetutToimintaAlueidenSuoritukset = "",
     majoitusetu = false,
     kuljetusetu = false,
     kotiopetus = false,
@@ -174,7 +208,9 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
     oikeusMaksuttomaanAsuntolapaikkaan = false,
     sisaoppilaitosmainenMaijoitus = false,
     koulukoti = false,
-    erityisenTuenPaatos = "",
+    erityisenTuenPaatosVoimassa = false,
+    erityisenTuenPaatosToimialueittain = false,
+    erityisenTuenPaatosToteutuspaikat = "",
     tukimuodot = ""
   )
 
@@ -194,13 +230,16 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
     oikeusMaksuttomaanAsuntolapaikkaan = true,
     sisaoppilaitosmainenMaijoitus = true,
     koulukoti = true,
-    erityisenTuenPaatos = "Opetus on kokonaan erityisryhmissä tai -luokassa,Opetuksesta 20-49 % on yleisopetuksen ryhmissä",
+    erityisenTuenPaatosVoimassa = true,
+    erityisenTuenPaatosToimialueittain = true,
+    erityisenTuenPaatosToteutuspaikat = "Opetus on kokonaan erityisryhmissä tai -luokassa,Opetuksesta 20-49 % on yleisopetuksen ryhmissä",
     tukimuodot = "Osa-aikainen erityisopetus"
   )
 
   val kahdeksannenLuokanLuokalleJääntiRow = defaultYnjeviExpectedKasiLuokkaRow.copy(
     jaaLuokalle = true,
     viimeisinTila = "lasna",
+    suorituksenAlkamispaiva = "2013-08-15",
     suorituksenTila = "valmis",
     voimassaolevatVuosiluokat = "9",
     aidinkieli = "4",
@@ -223,7 +262,6 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
     terveystieto = "4",
     kasityo = "4",
     liikunta = "4",
-    ymparistooppi = "Arvosana puuttuu",
     kayttaymisenArvio = "",
     paikallistenOppiaineidenKoodit = "",
     pakollisetPaikalliset = "",
@@ -244,6 +282,7 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
     viimeisinTila = "lasna",
     suorituksenTila = "valmis",
     voimassaolevatVuosiluokat = "",
+    suorituksenAlkamispaiva = "2014-08-15",
     suorituksenVahvistuspaiva = "2016-05-30"
   )
 
@@ -254,8 +293,10 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
     etunimet = Some(MockOppijat.koululainen.etunimet),
     sukupuoli = None,
     luokka = "",
-    viimeisinTila = "lasna",
+    viimeisinTila = "valmistunut",
+    tilaHakupaivalla = "lasna",
     suorituksenTila = "valmis",
+    suorituksenAlkamispaiva = "",
     suorituksenVahvistuspaiva = "2016-06-04",
     voimassaolevatVuosiluokat = "",
     kayttaymisenArvio = ""
@@ -266,6 +307,7 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
     val oo = getOpiskeluoikeudet(oppija.oid).collect { case oo: PerusopetuksenOpiskeluoikeus => oo }.head
     val lisatyllaVuosiluokanSuorituksella = oo.copy(suoritukset = (vuosiluokanSuoritus ::: oo.suoritukset), tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(date(2001, 1, 1), opiskeluoikeusLäsnä))))
     putOppija(Oppija(oppija, List(lisatyllaVuosiluokanSuorituksella))) {
+      verifyResponseStatusOk()
       loadRaportointikantaFixtures
       f
     }
@@ -274,10 +316,18 @@ class PerusopetuksenVuosiluokkaSpec extends FreeSpec with Matchers with Raportoi
   private def withLisätiedotFixture[T <: PerusopetuksenOpiskeluoikeus](oppija: OppijaHenkilö, lisätiedot: PerusopetuksenOpiskeluoikeudenLisätiedot)(f: => Any) = {
     val oo = lastOpiskeluoikeus(oppija.oid).asInstanceOf[T].copy(lisätiedot = Some(lisätiedot))
     putOppija(Oppija(oppija, List(oo))) {
+      verifyResponseStatusOk()
       loadRaportointikantaFixtures
       f
     }
   }
+
+  private val toimintaAlueOsasuoritukset = Some(List(
+    toimintaAlueenSuoritus("1").copy(arviointi = arviointi("S")),
+    toimintaAlueenSuoritus("2").copy(arviointi = arviointi("S")),
+    toimintaAlueenSuoritus("3"),
+    toimintaAlueenSuoritus("4")
+  ))
 
   private val defaultQuery = makeQueryString(MockOrganisaatiot.jyväskylänNormaalikoulu, LocalDate.of(2016, 1, 1), "9")
 

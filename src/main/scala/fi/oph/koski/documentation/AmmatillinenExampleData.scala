@@ -483,6 +483,7 @@ object AmmatillinenExampleData {
       osittaisenTutkinnonTutkinnonOsanSuoritus(h2, ammatillisetTutkinnonOsat, "100001", "Audiovisuaalisen tuotannon toteuttaminen", 20).copy(
         tunnustettu = Some(tunnustettu)
       ),
+      osittaisenTutkinnonTutkinnonOsanSuoritus(h2, ammatillisetTutkinnonOsat, "100003", "Paikallinen kurssi", 3).copy(vahvistus =  None),
       osittaisenTutkinnonTutkinnonOsanSuoritus(k3, ammatillisetTutkinnonOsat, "100002", "Televisiotuotanto", 25).copy(
         tunnustettu = Some(tunnustettu.copy(rahoituksenPiirissä = true)),
         osasuoritukset = Some(List(

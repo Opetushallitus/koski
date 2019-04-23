@@ -11,7 +11,6 @@ import {appendQueryParams} from '../util/location'
 import {generateRandomPassword} from '../util/password'
 import Http from '../util/http'
 import Dropdown from '../components/Dropdown'
-import * as R from 'ramda'
 
 export const raportitContentP = () => {
   const oppilaitosAtom = Atom()
@@ -73,7 +72,7 @@ const Opiskelijavuositiedot = ({oppilaitosAtom}) => {
 }
 
 const SuoritustietojenTarkistus = ({oppilaitosAtom}) => {
-  const titleText = <Text name='Suoritustiedot (ammatillinen koulutus)'/>
+  const titleText = <Text name='Suoritustiedot (ammatillinen koulutus, koko tutkinto)'/>
   const descriptionText = <Text name='SuoritustietojenTarkistus-description'/>
 
   return (<AikajaksoRaportti
@@ -85,8 +84,8 @@ const SuoritustietojenTarkistus = ({oppilaitosAtom}) => {
 }
 
 const AmmatillinenOsittainenSuoritustietojenTarkistus = ({oppilaitosAtom}) => {
-  const titleText = <Text name='Suoritustiedot (ammatillinen osittainen koulutus)'/>
-  const descriptionText = <Text name='ammatillinenOsittainenSuoritustietojenTarkistus-description'/>
+  const titleText = <Text name='Suoritustiedot (ammatillinen koulutus, tutkinnon osa/osia)'/>
+  const descriptionText = <Text name='AmmatillinenOsittainenSuoritustietojenTarkistus-description'/>
 
   return (<AikajaksoRaportti
     oppilaitosAtom={oppilaitosAtom}
@@ -97,14 +96,16 @@ const AmmatillinenOsittainenSuoritustietojenTarkistus = ({oppilaitosAtom}) => {
 }
 
 const PerusopetuksenVuosiluokka = ({oppilaitosAtom}) => {
-  const titleText = <Text name='Perusopetuksen Vuosiluokka'/>
+  const titleText = <Text name='Nuorten perusopetuksen opiskeluoikeus- ja suoritustietojen tarkistusraportti'/>
   const descriptionText = <Text name='PerusopetuksenVuosiluokka-description'/>
+  const exampleText = <Text name='PerusopetuksenVuosiluokka-example'/>
 
   return (<VuosiluokkaRaporttiPaivalta
     oppilaitosAtom={oppilaitosAtom}
     apiEndpoint={'/perusopetuksenvuosiluokka'}
     title={titleText}
     description={descriptionText}
+    example={exampleText}
   />)
 }
 
@@ -144,7 +145,7 @@ const AikajaksoRaportti = ({oppilaitosAtom, apiEndpoint, title, description}) =>
   </section>)
 }
 
-const VuosiluokkaRaporttiPaivalta = ({oppilaitosAtom, apiEndpoint, title, description}) => {
+const VuosiluokkaRaporttiPaivalta = ({oppilaitosAtom, apiEndpoint, title, description, example}) => {
   const paivaAtom = Atom()
   const vuosiluokkaAtom = Atom('')
   const submitBus = Bacon.Bus()
@@ -163,10 +164,12 @@ const VuosiluokkaRaporttiPaivalta = ({oppilaitosAtom, apiEndpoint, title, descri
   const inProgressP = submitBus.awaiting(downloadExcelE.mapError())
   const submitEnabledP = downloadExcelP.map(x => !!x).and(inProgressP.not())
   const buttonTextP = inProgressP.map((inProgress) => <Text name={!inProgress ? 'Lataa Excel-tiedosto' : 'Ladataan...'}/>)
+  const vuosiluokat = [1, 2, 3, 4, 5, 6, 7, 8, 10]
 
   return (<section>
     <h2>{title}</h2>
     <p>{description}</p>
+    <p>{example}</p>
     <div>
       <div className='parametri'>
         <label><Text name='Päivä'/></label>
@@ -175,7 +178,7 @@ const VuosiluokkaRaporttiPaivalta = ({oppilaitosAtom, apiEndpoint, title, descri
     </div>
     <div className='dropdown-selection parametri'>
       <label><Text name='Vuosiluokka'/></label>
-      <VuosiluokkaDropdown value={vuosiluokkaAtom} vuosiluokat={R.range(1, 11)}/>
+      <VuosiluokkaDropdown value={vuosiluokkaAtom} vuosiluokat={vuosiluokat}/>
     </div>
     <div className='password'><Text name='Excel-tiedosto on suojattu salasanalla'/> {password}</div>
     <button className='koski-button' disabled={submitEnabledP.not()} onClick={e => { e.preventDefault(); submitBus.push(); return false }}>{buttonTextP}</button>
