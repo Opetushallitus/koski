@@ -103,10 +103,10 @@ private object Csv {
   def parse(filepath: String): Option[EtkResponse] = {
     val csv = Source.fromFile(filepath).getLines().toList
     val headLine = csv.head.split(";")
-    val fieldMap = headLine.zipWithIndex.toMap
+    val csvLegend = headLine.zipWithIndex.toMap
 
     val vuosi = csv.drop(1).head.split(";")(0).toInt
-    val tutkintotiedot = csv.drop(1).map(toEtkTutkintotieto(_, fieldMap, headLine.size))
+    val tutkintotiedot = csv.drop(1).map(toEtkTutkintotieto(_, csvLegend, headLine.size))
 
     Some(EtkResponse(
       vuosi = vuosi,
@@ -116,26 +116,31 @@ private object Csv {
     ))
   }
 
-  private def toEtkTutkintotieto(row: String, fieldMap: Map[String, Int], expectedFieldCount: Int) = {
-    val fields = row.split(";")
+  private def toEtkTutkintotieto(row: String, csvLegend: Map[String, Int], expectedFieldCount: Int) = {
+    val fields = row.split(";", -1)
 
     if (fields.size != expectedFieldCount) {
       throw new Exception(s"Riviltä puuttuu kenttiä: ${row}")
     }
 
-    def get(field: String): String = fields(fieldMap.get(field).getOrElse(throw new Exception(s"csv tiedostosta puuttuu kenttä ${field}")))
+    def field(fieldName: String) = fields(csvLegend(fieldName))
+
+    def fieldOpt(fieldName: String) = field(fieldName) match {
+      case "" => None
+      case str@_ => Some(str)
+    }
 
     EtkTutkintotieto(
       henkilö = EtkHenkilö(
-        hetu = Some(get("hetu")),
-        syntymäaika = Some(LocalDate.parse(get("syntymaaika"))),
-        sukunimi = get("sukunimi"),
-        etunimet = get("etunimet")
+        hetu = fieldOpt("hetu"),
+        syntymäaika = fieldOpt("syntymaaika").map(LocalDate.parse),
+        sukunimi = field("sukunimi"),
+        etunimet = field("etunimet")
       ),
       tutkinto = EtkTutkinto(
-        tutkinnonTaso = Format.tutkintotaso(get("tutkinnon_taso")),
-        alkamispäivä = LocalDate.parse(get("OpiskeluoikeudenAlkamispaivamaara")),
-        päättymispäivä = Some(LocalDate.parse(get("suorituspaivamaara")))
+        tutkinnonTaso = Format.tutkintotaso(field("tutkinnon_taso")),
+        alkamispäivä = fieldOpt("OpiskeluoikeudenAlkamispaivamaara").map(LocalDate.parse),
+        päättymispäivä = fieldOpt("suorituspaivamaara").map(LocalDate.parse)
       ),
       viite = None
     )

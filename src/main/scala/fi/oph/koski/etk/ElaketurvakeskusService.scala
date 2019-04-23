@@ -31,7 +31,7 @@ class ElaketurvakeskusService(application: KoskiApplication) {
       ),
       tutkinto = EtkTutkinto(
         tutkinnonTaso = row.koulutusmuoto,
-        alkamispäivä = row.alkamispaiva.toLocalDate,
+        alkamispäivä = row.alkamispaiva.map(_.toLocalDate),
         päättymispäivä = row.paattymispaiva.map(_.toLocalDate)
       ),
       viite = Some(EtkViite(
@@ -45,7 +45,7 @@ class ElaketurvakeskusService(application: KoskiApplication) {
 
 case class EtkHenkilö(hetu: Option[String], syntymäaika: Option[LocalDate], sukunimi: String, etunimet: String)
 
-case class EtkTutkinto(tutkinnonTaso: String, alkamispäivä: LocalDate, päättymispäivä: Option[LocalDate])
+case class EtkTutkinto(tutkinnonTaso: String, alkamispäivä: Option[LocalDate], päättymispäivä: Option[LocalDate])
 
 case class EtkViite(opiskeluoikeusOid: String, opiskeluoikeusVersionumero: Int, oppijaOid: String)
 
