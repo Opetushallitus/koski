@@ -128,7 +128,7 @@ private object Csv {
     EtkTutkintotieto(
       henkilö = EtkHenkilö(
         hetu = Some(get("hetu")),
-        syntymäaika = LocalDate.parse(get("syntymaaika")),
+        syntymäaika = Some(LocalDate.parse(get("syntymaaika"))),
         sukunimi = get("sukunimi"),
         etunimet = get("etunimet")
       ),

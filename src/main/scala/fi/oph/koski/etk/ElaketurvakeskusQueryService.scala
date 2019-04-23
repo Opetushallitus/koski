@@ -49,7 +49,7 @@ case class EtkTutkintotietoRow
   alkamispaiva: Date,
   paattymispaiva: Option[Date],
   hetu: Option[String],
-  syntynmaaika: Date,
+  syntymäaika: Option[Date],
   sukunimi: String,
   etunimet: String,
   versionumero: Int,

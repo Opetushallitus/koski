@@ -30,7 +30,7 @@ class ElaketurvakeskusSpec extends FreeSpec with LocalJettyHttpSpecification wit
         response.aikaleima shouldBe a[Timestamp]
         response.tutkinnot should equal(List(
           EtkTutkintotieto(
-            EtkHenkilö(mockOppija.hetu, date(1918, 6, 28), mockOppija.sukunimi, mockOppija.etunimet),
+            EtkHenkilö(mockOppija.hetu, Some(date(1918, 6, 28)), mockOppija.sukunimi, mockOppija.etunimet),
             EtkTutkinto("ammatillinenkoulutus", date(2012, 9, 1), Some(date(2016, 5, 31))),
             Some(EtkViite(mockOppijanOpiskeluoikeusOid, 1, mockOppija.oid)))
         ))
@@ -49,7 +49,7 @@ class ElaketurvakeskusSpec extends FreeSpec with LocalJettyHttpSpecification wit
         verifyResponseStatusOk()
         JsonSerializer.parse[EtkResponse](body).tutkinnot should contain(
           EtkTutkintotieto(
-            EtkHenkilö(masterMock.hetu, date(1997, 10, 10), masterMock.sukunimi, masterMock.etunimet),
+            EtkHenkilö(masterMock.hetu, Some(date(1997, 10, 10)), masterMock.sukunimi, masterMock.etunimet),
             EtkTutkinto("ammatillinenkoulutus", date(2012, 9, 1), Some(date(2016, 5, 31))),
             Some(EtkViite(slaveOppijanOpiskeluoikeusOid, 1, slaveMock.oid)))
         )
