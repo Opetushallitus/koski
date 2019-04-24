@@ -1,9 +1,10 @@
 package fi.oph.koski.log
 
 import java.io.IOException
-import org.eclipse.jetty.server.Slf4jRequestLog
 
-class MaskedSlf4jRequestLog extends Slf4jRequestLog {
+import org.eclipse.jetty.server.Slf4jRequestLogWriter
+
+class MaskedSlf4jRequestLogWriter extends Slf4jRequestLogWriter {
   @throws[IOException]
   override def write(requestEntry: String): Unit = {
     super.write(maskSensitiveInformation(requestEntry))

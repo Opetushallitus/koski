@@ -7,19 +7,19 @@ import com.typesafe.config.ConfigFactory
 import fi.oph.koski.cache.JMXCacheManager
 import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.executors.Pools
-import fi.oph.koski.log.{LogConfiguration, Logging, MaskedSlf4jRequestLog}
+import fi.oph.koski.log.{LogConfiguration, Logging, MaskedSlf4jRequestLogWriter}
 import io.prometheus.client.exporter.MetricsServlet
 import org.eclipse.jetty.client.HttpClient
 import org.eclipse.jetty.jmx.MBeanContainer
 import org.eclipse.jetty.proxy.ProxyServlet
-import org.eclipse.jetty.server.handler.{HandlerCollection, StatisticsHandler}
 import org.eclipse.jetty.server._
 import org.eclipse.jetty.server.handler.gzip.GzipHandler
+import org.eclipse.jetty.server.handler.{HandlerCollection, StatisticsHandler}
 import org.eclipse.jetty.servlet.{ServletContextHandler, ServletHolder}
-import org.eclipse.jetty.util.thread.QueuedThreadPool
-import org.eclipse.jetty.webapp.WebAppContext
 import org.eclipse.jetty.util.resource.Resource
 import org.eclipse.jetty.util.ssl.SslContextFactory
+import org.eclipse.jetty.util.thread.QueuedThreadPool
+import org.eclipse.jetty.webapp.WebAppContext
 
 object JettyLauncher extends App with Logging {
   lazy val globalPort = System.getProperty("koski.port","7021").toInt
@@ -81,8 +81,7 @@ class JettyLauncher(val port: Int, val application: KoskiApplication) extends Lo
 
   protected def configureLogging = {
     LogConfiguration.configureLoggingWithFileWatch
-    val requestLog = new MaskedSlf4jRequestLog()
-    requestLog.setLogLatency(true)
+    val requestLog = new CustomRequestLog(new MaskedSlf4jRequestLogWriter, CustomRequestLog.NCSA_FORMAT)
     server.setRequestLog(requestLog)
   }
 
@@ -172,6 +171,6 @@ trait QueuedThreadPoolMXBean {
 
 class HttpsSupportingTransparentProxyServlet extends ProxyServlet.Transparent {
   override protected def newHttpClient() = {
-    new HttpClient(new SslContextFactory())
+    new HttpClient(new SslContextFactory.Client)
   }
 }
