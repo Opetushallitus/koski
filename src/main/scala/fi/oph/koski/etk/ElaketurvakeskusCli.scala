@@ -9,7 +9,6 @@ import fi.oph.koski.http._
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.json.JsonSerializer.{writeWithRoot => asJsonString}
 
-import scala.annotation.tailrec
 import scala.io.Source
 
 
@@ -39,15 +38,12 @@ object ElaketurvakeskusCli {
   }
 
   private def makeTutkinnotString(tutkinnot: List[EtkTutkintotieto]): String = {
-    @tailrec
-    def rec(tutkinnot: List[EtkTutkintotieto], accumulator: String = ""): String = {
-      tutkinnot match {
-        case Nil => accumulator
-        case t :: Nil => accumulator + s"\t\t${asJsonString(t)}"
-        case t :: ts => rec(ts, accumulator + s"\t\t${asJsonString(t)},\n")
-      }
-    }
-    rec(tutkinnot)
+    val tutkintoStrs = tutkinnot.map(asJsonString(_))
+    val stringBuilder = new StringBuilder
+
+    stringBuilder.append(s"\t\t${tutkintoStrs.head}")
+    tutkintoStrs.tail.foreach(str =>  stringBuilder.append(s",\n\t\t${str}"))
+    stringBuilder.toString
   }
 
   private def mergeResponses(res1: EtkResponse, res2: EtkResponse) = {
@@ -138,7 +134,7 @@ private object Csv {
         etunimet = field("etunimet")
       ),
       tutkinto = EtkTutkinto(
-        tutkinnonTaso = Format.tutkintotaso(field("tutkinnon_taso")),
+        tutkinnonTaso = fieldOpt("tutkinnon_taso").flatMap(Format.tutkintotaso(_, row)),
         alkamispäivä = fieldOpt("OpiskeluoikeudenAlkamispaivamaara").map(LocalDate.parse),
         päättymispäivä = fieldOpt("suorituspaivamaara").map(LocalDate.parse)
       ),
@@ -210,19 +206,21 @@ private object RaportointikantaClient {
 }
 
 private object Format {
-  def tutkintotaso(str: String): String = str match {
-    case "ammatillinenkoulutus" => "ammatillinenperuskoulutus"
-    case "1" => "ammattikorkeakoulutututkinto"
-    case "2" => "alempikorkeakoulututkinto"
-    case "3" => "ylempiammattikorkeakoulututkinto"
-    case "4" => "ylempikorkeakoulututkinto"
+  def tutkintotaso(str: String, row: String = ""): Option[String] = str match {
+    case "ammatillinenkoulutus" => Some("ammatillinenperuskoulutus")
+    case "1" => Some("ammattikorkeakoulutututkinto")
+    case "2" => Some("alempikorkeakoulututkinto")
+    case "3" => Some("ylempiammattikorkeakoulututkinto")
+    case "4" => Some("ylempikorkeakoulututkinto")
+    case "" => None
+    case _ => throw new Exception(s"tutkintotason koodia vastaavaa koodia ei löytynyt. Koodi:${str}. Rivi: ${row}")
   }
 
   def tutkintotieto(tt: EtkTutkintotieto) = {
     EtkTutkintotieto(
       henkilö = tt.henkilö,
       tutkinto = EtkTutkinto(
-        tutkinnonTaso = Format.tutkintotaso(tt.tutkinto.tutkinnonTaso),
+        tutkinnonTaso = tt.tutkinto.tutkinnonTaso.flatMap(tutkintotaso(_)),
         alkamispäivä = tt.tutkinto.alkamispäivä,
         päättymispäivä = tt.tutkinto.päättymispäivä
       ),
