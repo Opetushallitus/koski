@@ -9,7 +9,6 @@ import fi.oph.koski.http._
 import fi.oph.koski.json.Json4sHttp4s.json4sEncoderOf
 import fi.oph.koski.json.JsonSerializer.{writeWithRoot => asJsonString}
 
-import scala.annotation.tailrec
 import scala.io.Source
 
 
@@ -39,15 +38,12 @@ object ElaketurvakeskusCli {
   }
 
   private def makeTutkinnotString(tutkinnot: List[EtkTutkintotieto]): String = {
-    @tailrec
-    def rec(tutkinnot: List[EtkTutkintotieto], accumulator: String = ""): String = {
-      tutkinnot match {
-        case Nil => accumulator
-        case t :: Nil => accumulator + s"\t\t${asJsonString(t)}"
-        case t :: ts => rec(ts, accumulator + s"\t\t${asJsonString(t)},\n")
-      }
-    }
-    rec(tutkinnot)
+    val tutkintoStrs = tutkinnot.map(asJsonString(_))
+    val stringBuilder = new StringBuilder
+
+    stringBuilder.append(s"\t\t${tutkintoStrs.head}")
+    tutkintoStrs.tail.foreach(str =>  stringBuilder.append(s",\n\t\t${str}"))
+    stringBuilder.toString
   }
 
   private def mergeResponses(res1: EtkResponse, res2: EtkResponse) = {
