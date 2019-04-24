@@ -16,7 +16,7 @@ protected trait ElaketurvakeskusCliTestMethods {
        |2016;01901;311293-717T;1991-01-02;3;;Sutjaka;Mietis Betat;612101;2016-03-17;2;2014-08-01;2013-08-01
        |2016;01901;260977-606E;1993-01-02;4;;Sutjakast;Ftes Testitap;612101;2016-05-31;2;2014-08-01;2014-08-01
        |2016;01901;;1988-02-02;4;1.2.246.562.24.86863218011;Kai;Betat Testitap;612101;2017-06-06;2;2015-08-01;2015-08-01
-       |2016;02358;;;1;;Alho;Aapeli;682601;2018-08-31;2;;""".stripMargin
+       |2016;02358;;;1;;Alho;Aapeli;682601;2018-08-31;;;""".stripMargin
 
   val koskiPort = SharedJetty.port.toString
   val csvFilePath = "csv-tiedosto-testia-varten.csv"

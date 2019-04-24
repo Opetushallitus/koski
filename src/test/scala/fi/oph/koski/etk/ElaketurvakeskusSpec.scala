@@ -31,7 +31,7 @@ class ElaketurvakeskusSpec extends FreeSpec with LocalJettyHttpSpecification wit
         response.tutkinnot should equal(List(
           EtkTutkintotieto(
             EtkHenkilö(mockOppija.hetu, Some(date(1918, 6, 28)), mockOppija.sukunimi, mockOppija.etunimet),
-            EtkTutkinto("ammatillinenkoulutus", Some(date(2012, 9, 1)), Some(date(2016, 5, 31))),
+            EtkTutkinto(Some("ammatillinenkoulutus"), Some(date(2012, 9, 1)), Some(date(2016, 5, 31))),
             Some(EtkViite(mockOppijanOpiskeluoikeusOid, 1, mockOppija.oid)))
         ))
       }
@@ -50,7 +50,7 @@ class ElaketurvakeskusSpec extends FreeSpec with LocalJettyHttpSpecification wit
         JsonSerializer.parse[EtkResponse](body).tutkinnot should contain(
           EtkTutkintotieto(
             EtkHenkilö(masterMock.hetu, Some(date(1997, 10, 10)), masterMock.sukunimi, masterMock.etunimet),
-            EtkTutkinto("ammatillinenkoulutus", Some(date(2012, 9, 1)), Some(date(2016, 5, 31))),
+            EtkTutkinto(Some("ammatillinenkoulutus"), Some(date(2012, 9, 1)), Some(date(2016, 5, 31))),
             Some(EtkViite(slaveOppijanOpiskeluoikeusOid, 1, slaveMock.oid)))
         )
       }
