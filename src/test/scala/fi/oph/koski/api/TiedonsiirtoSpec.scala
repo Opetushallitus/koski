@@ -8,6 +8,7 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.{helsinginKaupunkiPalvelukäyttäjä, omniaPääkäyttäjä, stadinPääkäyttäjä}
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
+import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
 import fi.oph.koski.schema._
 import fi.oph.koski.tiedonsiirto._
 import fi.oph.koski.util.Wait
@@ -144,6 +145,32 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
 
       getVirheellisetTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä).flatMap(_.rivit) should have size 1
     }
+
+    "oppilaitos"  - {
+      "luetaan datasta jos se löytyy" in {
+        resetFixtures
+        val aalto = MockOrganisaatioRepository.getOrganisaatio(MockOrganisaatiot.aaltoYliopisto).flatMap(_.toOppilaitos)
+        putOpiskeluoikeus(stadinOpiskeluoikeus.copy(oppilaitos = aalto), henkilö = defaultHenkilö.copy(sukunimi = ""), headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
+          verifyResponseStatus(400, sukunimiPuuttuu)
+        }
+
+        val tiedonsiirrot = getVirheellisetTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä)
+        tiedonsiirrot.flatMap(_.rivit) should have size 1
+        tiedonsiirrot.head.rivit.head.oppilaitos.head.oid should equal(MockOrganisaatiot.aaltoYliopisto)
+      }
+
+      "pystytään päättelemään toimipisteestä" in {
+        resetFixtures
+        putOpiskeluoikeus(stadinOpiskeluoikeus.copy(oppilaitos = None), henkilö = defaultHenkilö.copy(sukunimi = ""), headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
+          verifyResponseStatus(400, sukunimiPuuttuu)
+        }
+
+        val tiedonsiirrot = getVirheellisetTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä)
+        tiedonsiirrot.flatMap(_.rivit) should have size 1
+        tiedonsiirrot.head.rivit.head.oppilaitos.head.oid should equal(MockOrganisaatiot.stadinAmmattiopisto)
+      }
+    }
+
 
     "onnistunut siirto poistaa virheelliset listalta" in {
       resetFixtures

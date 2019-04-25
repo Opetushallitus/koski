@@ -19,7 +19,7 @@ import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.perustiedot.KoskiElasticSearchIndex
 import fi.oph.koski.schema._
-import fi.oph.koski.tiedonsiirto
+import fi.oph.koski.util.OptionalLists.optionalList
 import fi.oph.koski.util._
 import fi.oph.scalaschema.{SerializationContext, Serializer}
 import io.prometheus.client.Counter
@@ -146,15 +146,11 @@ class TiedonsiirtoService(
     val henkilö = data.flatMap(extractHenkilö(_, oppijaOid))
     val lahdejarjestelma: Option[String] = data.flatMap(extractLahdejarjestelma)
 
-    // "oppilaitos" is not required on input (it's filled in automatically in some cases), so prefer validatedOppija if it's available.
-    lazy val oppilaitoksetFromData: Option[List[OidOrganisaatio]] = data
-      .map(_ \ "opiskeluoikeudet" \ "oppilaitos" \ "oid")
-      .map(jsonStringList)
-      .map(_.flatMap(organisaatioRepository.getOrganisaatio).map(_.toOidOrganisaatio))
     val oppilaitokset = validatedOppija
       .map(_.opiskeluoikeudet.toList.filter(_.oppilaitos.isDefined).map(_.oppilaitos.get.toOidOrganisaatio))
       .filter(_.nonEmpty)
-      .orElse(oppilaitoksetFromData)
+      .orElse(data.flatMap(extractOppilaitos))
+      .orElse(data.flatMap(extractOppilaitosFromToimipiste))
       .map(_.distinct)
 
     val koulutustoimija: List[OidOrganisaatio] = validatedOppija.flatMap(_.opiskeluoikeudet.headOption.flatMap(_.koulutustoimija.map(_.toOidOrganisaatio))).toList
@@ -311,6 +307,18 @@ class TiedonsiirtoService(
     case JNull => Nil
     case _ => throw new RuntimeException("Unreachable match arm" )
   }
+
+  private def extractOppilaitos(data: JValue): Option[List[OidOrganisaatio]] =
+    optionalList(jsonStringList(data \ "opiskeluoikeudet" \ "oppilaitos" \ "oid")
+      .flatMap(organisaatioRepository.getOrganisaatio)
+      .map(_.toOidOrganisaatio))
+
+  private def extractOppilaitosFromToimipiste(data: JValue): Option[List[OidOrganisaatio]] = optionalList(for {
+    JArray(suoritukset) <- data \ "opiskeluoikeudet" \ "suoritukset"
+    JString(toimipisteOid) <- suoritukset.map(_ \ "toimipiste" \ "oid")
+    toimipiste <- organisaatioRepository.getOrganisaatio(toimipisteOid)
+    oppilaitos <- organisaatioRepository.findOppilaitosForToimipiste(toimipiste)
+  } yield oppilaitos.toOidOrganisaatio)
 
   private def extractLahdejarjestelma(data: JValue): Option[String] = {
     data \ "opiskeluoikeudet" match {
