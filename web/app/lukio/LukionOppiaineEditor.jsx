@@ -37,6 +37,7 @@ export class LukionOppiaineEditor extends React.Component {
       additionalEditableProperties,
       additionalEditableKoulutusmoduuliProperties,
       allowOppiaineRemoval = true,
+      showLaajuus = true,
       useOppiaineLaajuus = false,
       showArviointi = true,
       customOsasuoritusTitle,
@@ -70,13 +71,14 @@ export class LukionOppiaineEditor extends React.Component {
             customKurssitSortFn={customKurssitSortFn}
           />
         </td>
-        <td className='laajuus'>
-          {
+        {
+          showLaajuus &&
+          (<td className='laajuus'>{
             useOppiaineLaajuus
               ? modelData(oppiaine, 'koulutusmoduuli.laajuus.arvo')
               : numberToString(laajuudet(hyväksytystiSuoritetutKurssit(kurssit)))
-          }
-        </td>
+          }</td>)
+        }
         {
           showArviointi && (
             <td className='arvosana'>

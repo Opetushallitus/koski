@@ -171,7 +171,7 @@ object KoodistoEnumModelBuilder {
 }
 
 case class KoodistoEnumModelBuilder(t: ClassSchema)(implicit context: ModelBuilderContext) extends EnumModelBuilder[Koodistokoodiviite] {
-  val enumValues = t.properties.find(_.key == "koodistoUri").get.schema.asInstanceOf[StringSchema].enumValues.getOrElse(throw new RuntimeException("@KoodistoUri -annotaatio puuttuu"))
+  val enumValues = t.properties.find(_.key == "koodistoUri").get.schema.asInstanceOf[StringSchema].enumValues.getOrElse(throw new RuntimeException(s"@KoodistoUri -annotaatio puuttuu ${t.properties.mkString(", ")}"))
   val koodistoUri = enumValues.map(_.asInstanceOf[String]).mkString(",")
   val koodiarvot: List[String] = t.properties.find(_.key == "koodiarvo").get.schema.asInstanceOf[StringSchema].enumValues.getOrElse(Nil).asInstanceOf[List[String]]
   val koodiarvotString = if (koodiarvot.isEmpty) { "" } else { "/" + koodiarvot.mkString(",") }
@@ -360,6 +360,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
       case _: PerusopetuksenPäätasonSuoritus |
            _: AikuistenPerusopetuksenPäätasonSuoritus |
            _: AmmatillinenPäätasonSuoritus |
+           _: InternationalSchoolVuosiluokanSuoritus |
            _: LukionOppiaineenOppimääränSuoritus => context.invalidatable
       case _: PäätasonSuoritus => false
       case _ => context.invalidatable

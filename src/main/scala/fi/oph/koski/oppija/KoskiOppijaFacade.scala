@@ -186,26 +186,25 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
     }).map(oo.withTila)
   }
 
-  private def withoutPäätasonSuoritus(päätasonSuoritus: PäätasonSuoritus)(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, Opiskeluoikeus] = {
+  private def withoutPäätasonSuoritus(päätasonSuoritus: PäätasonSuoritus)(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, Opiskeluoikeus] =
     if (oo.suoritukset.length == 1) {
       Left(KoskiErrorCategory.forbidden.ainoanPäätasonSuorituksenPoisto())
     } else {
-      (päätasonSuoritus, oo) match {
-        case (_, _: PerusopetuksenOpiskeluoikeus) |
-             (_, _: AikuistenPerusopetuksenOpiskeluoikeus) |
-             (_, _: AmmatillinenOpiskeluoikeus) |
-             (_: LukionOppiaineenOppimääränSuoritus, _)
-        =>
-          val poistetullaSuorituksella = oo.suoritukset.filterNot(_ == päätasonSuoritus)
-          if (poistetullaSuorituksella.length == oo.suoritukset.length) {
-            Left(KoskiErrorCategory.notFound())
-          } else if (poistetullaSuorituksella.length != oo.suoritukset.length - 1) {
-            Left(KoskiErrorCategory.internalError())
-          } else {
-            Right(oo.withSuoritukset(poistetullaSuorituksella))
-          }
-        case _ => Left(KoskiErrorCategory.badRequest())
+      (oo, päätasonSuoritus) match {
+        case (_: PerusopetuksenOpiskeluoikeus | _: AikuistenPerusopetuksenOpiskeluoikeus | _: AmmatillinenOpiskeluoikeus | _: InternationalSchoolOpiskeluoikeus, _) => delete(päätasonSuoritus, oo)
+        case (_, _: LukionOppiaineenOppimääränSuoritus) => delete(päätasonSuoritus, oo)
+        case _ => Left(KoskiErrorCategory.forbidden(s"Suoritusten tyyppiä ${päätasonSuoritus.tyyppi.koodiarvo} poisto ei ole sallittu"))
       }
+    }
+
+  private def delete(päätasonSuoritus: PäätasonSuoritus, oo: KoskeenTallennettavaOpiskeluoikeus) = {
+    val poistetullaSuorituksella = oo.suoritukset.filterNot(_ == päätasonSuoritus)
+    if (poistetullaSuorituksella.length == oo.suoritukset.length) {
+      Left(KoskiErrorCategory.notFound())
+    } else if (poistetullaSuorituksella.length != oo.suoritukset.length - 1) {
+      Left(KoskiErrorCategory.internalError())
+    } else {
+      Right(oo.withSuoritukset(poistetullaSuorituksella))
     }
   }
 

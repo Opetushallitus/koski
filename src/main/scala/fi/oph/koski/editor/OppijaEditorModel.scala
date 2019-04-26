@@ -64,6 +64,7 @@ object OppijaEditorModel extends Timing {
       case oo: AmmatillinenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(ammatillisenSuoritustenJärjestysKriteeri))
       case oo: IBOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(ibSuoritustenJärjestysKriteeri))
       case oo: DIAOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(diaSuoritustenJärjestysKritteri))
+      case oo: InternationalSchoolOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(internationalSchoolJärjestysKriteeri))
       case oo: Any => oo
     })
   }
@@ -108,6 +109,12 @@ object OppijaEditorModel extends Timing {
       case _: DIAValmistavanVaiheenSuoritus => 0
       case _ => 1
     }
+  }
+
+  def internationalSchoolJärjestysKriteeri(s: InternationalSchoolVuosiluokanSuoritus): Int = if (s.koulutusmoduuli.tunniste.koodiarvo == "explorer") {
+    0
+  } else {
+    0 - s.koulutusmoduuli.tunniste.koodiarvo.toInt
   }
 }
 

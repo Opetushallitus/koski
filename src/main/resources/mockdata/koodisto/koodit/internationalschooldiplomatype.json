@@ -1,0 +1,34 @@
+[
+  {
+    "koodiUri": "internationalschooldiplomatype_ish",
+    "koodiArvo": "ish",
+    "metadata": [
+      {
+        "nimi": "ISH Diploma",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "ISH Diploma",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "internationalschooldiplomatype_ib",
+    "koodiArvo": "ib",
+    "metadata": [
+      {
+        "nimi": "IB Diploma",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "IB Diploma",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

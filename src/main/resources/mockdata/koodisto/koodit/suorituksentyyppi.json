@@ -796,7 +796,68 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
-}, {
+},
+  {
+    "koodiUri" : "suorituksentyyppi_internationalschoolpypvuosiluokka",
+    "koodiArvo" : "internationalschoolpypvuosiluokka",
+    "metadata" : [ {
+      "nimi" : "International school PYP vuosiluokka",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1,
+    "withinCodeElements" : [ ]
+  },
+  {
+    "koodiUri" : "suorituksentyyppi_internationalschoolmypvuosiluokka",
+    "koodiArvo" : "internationalschoolmypvuosiluokka",
+    "metadata" : [ {
+      "nimi" : "International school MYP vuosiluokka",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1,
+    "withinCodeElements" : [ ]
+  },
+  {
+    "koodiUri" : "suorituksentyyppi_internationalschooldiplomavuosiluokka",
+    "koodiArvo" : "internationalschooldiplomavuosiluokka",
+    "metadata" : [ {
+      "nimi" : "International school diploma vuosiluokka",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1,
+    "withinCodeElements" : [ ]
+  },
+  {
+    "koodiUri" : "suorituksentyyppi_internationalschooloppiaine",
+    "koodiArvo" : "internationalschooloppiaine",
+    "metadata" : [ {
+      "nimi" : "International school oppiaine",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1,
+    "withinCodeElements" : [ ]
+  },
+  {
+    "koodiUri" : "suorituksentyyppi_internationalschooldiplomaoppiaine",
+    "koodiArvo" : "internationalschooldiplomaoppiaine",
+    "metadata" : [ {
+      "nimi" : "International school diploma oppiaine",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1,
+    "withinCodeElements" : [ ]
+  },
+  {
+    "koodiUri" : "suorituksentyyppi_internationalschoolcorerequirements",
+    "koodiArvo" : "internationalschoolcorerequirements",
+    "metadata" : [ {
+      "nimi" : "International school core requirements oppiaine",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1,
+    "withinCodeElements" : [ ]
+  },
+  {
   "koodiUri" : "suorituksentyyppi_preibkurssi",
   "koodiArvo" : "preibkurssi",
   "metadata" : [ {

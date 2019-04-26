@@ -57,6 +57,7 @@ class SerializationSpec extends FreeSpec with Matchers with Logging {
               case _: AikuistenPerusopetuksenOppiaineenSuoritus | _: KorkeakouluopintoSuoritus | _: JatkoOpintovalmiuksiaTukevienOpintojenSuoritus | _: MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus | _: YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus => true
               case s: YhteisenAmmatillisenTutkinnonOsanSuoritus =>  s.osasuoritukset.toList.flatten.exists(_.näyttö.isDefined)
               case s: YhteisenTutkinnonOsanOsaAlueenSuoritus => s.näyttö.isDefined
+              case s: DIASuoritus => s.koulutusmoduuli.isInstanceOf[DIAOppiaine]
               case _ => false
             }
 

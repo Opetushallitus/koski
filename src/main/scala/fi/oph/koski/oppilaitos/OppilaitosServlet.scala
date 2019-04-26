@@ -17,6 +17,7 @@ class OppilaitosServlet(implicit val application: KoskiApplication) extends ApiS
   val ammatillisenTyypit = List(OpiskeluoikeudenTyyppi.ammatillinenkoulutus)
   val lukionTyypit = List(OpiskeluoikeudenTyyppi.lukiokoulutus, OpiskeluoikeudenTyyppi.ibtutkinto)
   val saksalaisenKoulunTyypit = List(OpiskeluoikeudenTyyppi.diatutkinto)
+  val internationalSchoolTyypit = List(OpiskeluoikeudenTyyppi.internationalschool)
 
   get("/opiskeluoikeustyypit/:oid") {
     val organisaatiot = application.organisaatioRepository.getOrganisaatioHierarkia(params("oid")).toList
@@ -30,7 +31,7 @@ class OppilaitosServlet(implicit val application: KoskiApplication) extends ApiS
       case tyyppi if List(peruskoulut, peruskouluasteenErityiskoulut).contains(tyyppi) => perusopetuksenTyypit ++ esiopetuksenTyypit
       case tyyppi if List(ammatillisetOppilaitokset, ammatillisetErityisoppilaitokset, ammatillisetErikoisoppilaitokset, ammatillisetAikuiskoulutusKeskukset).contains(tyyppi) => perusopetuksenTyypit ++ ammatillisenTyypit
       case tyyppi if List(lukio).contains(tyyppi) => perusopetuksenTyypit ++ lukionTyypit
-      case tyyppi if List(perusJaLukioasteenKoulut).contains(tyyppi) => perusopetuksenTyypit ++ esiopetuksenTyypit ++ lukionTyypit ++ saksalaisenKoulunTyypit
+      case tyyppi if List(perusJaLukioasteenKoulut).contains(tyyppi) => perusopetuksenTyypit ++ esiopetuksenTyypit ++ lukionTyypit ++ saksalaisenKoulunTyypit ++ internationalSchoolTyypit
       case _ => perusopetuksenTyypit ++ ammatillisenTyypit
     }
 

@@ -8,6 +8,7 @@ import {isKieliaine, isLukionMatematiikka, isPaikallinen} from '../../suoritus/K
 import {Editor} from '../../editor/Editor'
 import {ArvosanaEditor} from '../../suoritus/ArvosanaEditor'
 import {PropertiesEditor} from '../../editor/PropertiesEditor'
+import {sortLanguages} from '../../util/sorting'
 
 const Nimi = ({oppiaine}) => {
   const {edit} = oppiaine.context
@@ -41,7 +42,7 @@ const KoulutusmoduuliPropertiesEditor = ({oppiaine, additionalEditableProperties
 
   return (
     <span className='properties'>
-      {isKieliaine(koulutusmoduuli) && <Editor model={koulutusmoduuli} path='kieli' inline={true}/>}
+      {isKieliaine(koulutusmoduuli) && <Editor model={koulutusmoduuli} path='kieli' inline={true} sortBy={sortLanguages} />}
       {isLukionMatematiikka(koulutusmoduuli) && <Editor model={koulutusmoduuli} path='oppimäärä' inline={true}/>}
       {isPaikallinen(koulutusmoduuli) && <PropertiesEditor model={koulutusmoduuli} propertyFilter={p => p.key === 'kuvaus'} />}
       {additionalEditableProperties &&
@@ -64,7 +65,13 @@ const kurssienKeskiarvo = suoritetutKurssit => {
 }
 
 const Arviointi = ({oppiaine, suoritetutKurssit, footnote}) => {
-  const {edit} = oppiaine.context
+  const {edit, suoritus} = oppiaine.context
+  const ishDiploma = edit && modelData(suoritus, 'koulutusmoduuli.diplomaType.koodiarvo') === 'ish'
+
+  const filterProps = p => {
+    const predictedInISH = ishDiploma && p.key === 'predicted'
+    return !(p.key === 'arvosana' || p.model.optional || predictedInISH)
+  }
 
   const arviointi = modelData(oppiaine, 'arviointi')
   const keskiarvo = kurssienKeskiarvo(suoritetutKurssit)
@@ -74,14 +81,14 @@ const Arviointi = ({oppiaine, suoritetutKurssit, footnote}) => {
       <div className='annettuArvosana'>
         {
           edit || arviointi
-            ? <ArvosanaEditor model={oppiaine}/>
+            ? <span className='value'><ArvosanaEditor model={oppiaine}/></span>
             : '-'
         }
         {
           edit &&
           <PropertiesEditor
             model={modelLookup(oppiaine, 'arviointi.-1')}
-            propertyFilter={p => p.key !== 'arvosana' && !p.model.optional}
+            propertyFilter={filterProps}
             key={'properties'}
           />
         }
