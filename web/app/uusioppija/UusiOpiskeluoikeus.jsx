@@ -24,6 +24,7 @@ import UusiIBSuoritus from './UusiIBSuoritus'
 import UusiDIASuoritus from './UusiDIASuoritus'
 import {VARHAISKASVATUKSEN_TOIMIPAIKKA} from './esiopetuksenSuoritus'
 import UusiInternationalSchoolSuoritus from './UusiInternationalSchoolSuoritus'
+import {filterTilatByOpiskeluoikeudenTyyppi} from '../opiskeluoikeus/opiskeluoikeus'
 
 export default ({opiskeluoikeusAtom}) => {
   const dateAtom = Atom(new Date())
@@ -86,18 +87,9 @@ export default ({opiskeluoikeusAtom}) => {
   </div>)
 }
 
-const internationalSchoolTilat = [ 'eronnut', 'lasna', 'valmistunut', 'valiaikaisestikeskeytynyt' ]
 const opiskeluoikeudentTilat = tyyppiAtom => {
-  const filterTilat = ([tilat, tyyppi]) => {
-    switch (tyyppi) {
-      case 'ammatillinenkoulutus': return tilat.filter(tila => tila.koodiarvo !== 'eronnut')
-      case 'internationalschool': return tilat.filter(tila => internationalSchoolTilat.includes(tila.koodiarvo))
-      default: return tilat.filter(tila => tila.koodiarvo !== 'loma')
-    }
-  }
-
   const tilatP = koodistoValues('koskiopiskeluoikeudentila/lasna,valmistunut,eronnut,katsotaaneronneeksi,valiaikaisestikeskeytynyt,peruutettu,loma')
-  return Bacon.combineAsArray(tilatP, tyyppiAtom.map('.koodiarvo')).map(filterTilat)
+  return tyyppiAtom.flatMap(tyyppi => tilatP.map(filterTilatByOpiskeluoikeudenTyyppi(tyyppi))).toProperty()
 }
 
 const Oppilaitos = ({oppilaitosAtom, organisaatiotyypitAtom}) => {
