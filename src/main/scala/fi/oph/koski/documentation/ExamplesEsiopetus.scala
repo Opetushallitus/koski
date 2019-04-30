@@ -12,7 +12,7 @@ object ExamplesEsiopetus {
   val peruskoulunEsiopetuksenTunniste = "001101"
   val päiväkodinEsiopetuksenTunniste = "001102"
 
-  val opiskeluoikeus = EsiopetuksenOpiskeluoikeus(
+  lazy val opiskeluoikeus = EsiopetuksenOpiskeluoikeus(
     oppilaitos = Some(jyväskylänNormaalikoulu),
     koulutustoimija = None,
     suoritukset = List(suoritus(perusteenDiaarinumero = "102/011/2014", tunniste = peruskoulunEsiopetuksenTunniste, toimipiste = jyväskylänNormaalikoulu)),
@@ -23,6 +23,11 @@ object ExamplesEsiopetus {
       )
     ),
     lisätiedot = Some(EsiopetuksenOpiskeluoikeudenLisätiedot(pidennettyOppivelvollisuus = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4))))))
+  )
+
+  lazy val opiskeluoikeusHelsingissä: EsiopetuksenOpiskeluoikeus = opiskeluoikeus.copy(
+    oppilaitos = None,
+    suoritukset = List(suoritus(perusteenDiaarinumero = "102/011/2014", tunniste = peruskoulunEsiopetuksenTunniste, toimipiste = kulosaarenAlaAste)),
   )
 
   val esioppilas = Oppija(
@@ -38,7 +43,7 @@ object ExamplesEsiopetus {
       perusteenDiaarinumero = Some(perusteenDiaarinumero),
       tunniste = Koodistokoodiviite(tunniste, koodistoUri = "koulutus")
     ),
-    toimipiste = jyväskylänNormaalikoulu,
+    toimipiste = toimipiste,
     suorituskieli = suomenKieli,
     muutSuorituskielet = Some(List(ruotsinKieli)),
     vahvistus = vahvistusPaikkakunnalla(date(2007, 6, 3))

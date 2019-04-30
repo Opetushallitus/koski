@@ -14,6 +14,7 @@ import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter._
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryFilter, OpiskeluoikeusQueryService}
+import fi.oph.koski.schema
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.koski.util.SortOrder.{Ascending, Descending}
@@ -184,18 +185,22 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
       .getOrElse(Nil)
   }
 
-  private def oppilaitosFilter(session: KoskiSession): List[Map[String, Any]] =
-    if (session.hasGlobalReadAccess) {
+  private def oppilaitosFilter(session: KoskiSession): List[Map[String, Any]] = {
+    val filters = if (session.hasGlobalReadAccess || session.hasGlobalKoulutusmuotoReadAccess) {
       Nil
-    }
-    else if (session.hasGlobalKoulutusmuotoReadAccess) {
-      List(Map("terms" -> Map("tyyppi.koodiarvo" -> session.allowedOpiskeluoikeusTyypit)))
     } else {
       List(anyFilter(List(
         Map("terms" -> Map("sisältyyOpiskeluoikeuteen.oppilaitos.oid" -> session.organisationOids(AccessType.read))),
         Map("terms" -> Map("oppilaitos.oid" -> session.organisationOids(AccessType.read)))
       )))
     }
+
+    if (session.hasKoulutusmuotoRestrictions) {
+      List(Map("terms" -> Map("tyyppi.koodiarvo" -> session.allowedOpiskeluoikeusTyypit))) ++ filters
+    } else {
+      filters
+    }
+  }
 
   private def mitätöityFilter: List[Map[String, Any]] = List(
     Map("bool" -> Map("must_not" -> nestedFilter("tilat", Map(

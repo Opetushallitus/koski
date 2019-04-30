@@ -1,10 +1,6 @@
 describe('Oppijataulukko', function() {
   var page = KoskiPage()
   var opinnot = OpinnotPage()
-  var eero = 'Esimerkki, Eero 010101-123N'
-  var markkanen = 'Markkanen-Fagerström, Eéro Jorma-Petteri 080154-770R'
-  var eerola = 'Eerola, Jouni 081165-793C'
-  var teija = 'Tekijä, Teija 251019-039B'
   var editor = opinnot.opiskeluoikeusEditor()
 
   before(Authentication().login(), resetFixtures, page.openPage, wait.until(page.oppijataulukko.isReady))
@@ -31,8 +27,8 @@ describe('Oppijataulukko', function() {
     describe('nimellä', function() {
       before(page.oppijataulukko.filterBy('nimi', 'Koululainen kAisa'))
       it('toimii', function() {
-        expect(page.oppijataulukko.data().map(function(row) { return row[0]})).to.deep.equal([ 'Koululainen, Kaisa', 'Koululainen, Kaisa' ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('2')
+        expect(page.oppijataulukko.data().map(function(row) { return row[0]})).to.deep.equal([ 'Koululainen, Kaisa', 'Koululainen, Kaisa', 'Koululainen, Kaisa' ])
+        expect(page.opiskeluoikeudeTotal()).to.equal('3')
       })
     })
 
@@ -124,10 +120,11 @@ describe('Oppijataulukko', function() {
           'Erikoinen, Erja',
           'Eskari, Essi',
           'Koululainen, Kaisa',
+          'Koululainen, Kaisa',
           'Lukioaineopiskelija, Aino',
           'Monikoululainen, Miia'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('6')
+        expect(page.opiskeluoikeudeTotal()).to.equal('7')
       })
     })
   })
@@ -157,12 +154,12 @@ describe('Oppijataulukko', function() {
       before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('tutkinto'), page.oppijataulukko.filterBy('nimi', 'koululainen'))
       it('Nouseva järjestys', function() {
         return page.oppijataulukko.sortBy('alkamispäivä')().then(function() {
-          expect(page.oppijataulukko.data().map(function(row) { return row[6]})).to.deep.equal(['15.8.2007', '15.8.2008'])
+          expect(page.oppijataulukko.data().map(function(row) { return row[6]})).to.deep.equal(['13.8.2006', '15.8.2007', '15.8.2008'])
         })
       })
       it('Laskeva järjestys', function() {
         return page.oppijataulukko.sortBy('alkamispäivä')().then(function() {
-          expect(page.oppijataulukko.data().map(function(row) { return row[6]})).to.deep.equal(['15.8.2008', '15.8.2007'])
+          expect(page.oppijataulukko.data().map(function(row) { return row[6]})).to.deep.equal(['15.8.2008', '15.8.2007', '13.8.2006'])
         })
       })
     })
@@ -171,12 +168,12 @@ describe('Oppijataulukko', function() {
       before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('tutkinto'), page.oppijataulukko.filterBy('nimi', 'koululainen'))
       it('Nouseva järjestys', function() {
         return page.oppijataulukko.sortBy('päättymispäivä')().then(function() {
-          expect(page.oppijataulukko.data().map(function(row) { return row[7]})).to.deep.equal(['1.6.2008', '4.6.2016'])
+          expect(page.oppijataulukko.data().map(function(row) { return row[7]})).to.deep.equal(['3.6.2007', '1.6.2008', '4.6.2016'])
         })
       })
       it('Laskeva järjestys', function() {
         return page.oppijataulukko.sortBy('päättymispäivä')().then(function() {
-          expect(page.oppijataulukko.data().map(function(row) { return row[7]})).to.deep.equal(['4.6.2016', '1.6.2008'])
+          expect(page.oppijataulukko.data().map(function(row) { return row[7]})).to.deep.equal(['4.6.2016', '1.6.2008', '3.6.2007'])
         })
       })
     })
@@ -222,7 +219,7 @@ describe('Oppijataulukko', function() {
         opinnot.backToList
       )
       it('Säilytetään valitut hakukriteerit', function() {
-        expect(page.oppijataulukko.names()).to.deep.equal(['Koululainen, Kaisa', 'Koululainen, Kaisa'])
+        expect(page.oppijataulukko.names()).to.deep.equal(['Koululainen, Kaisa', 'Koululainen, Kaisa', 'Koululainen, Kaisa'])
       })
     })
   })
@@ -237,6 +234,15 @@ describe('Oppijataulukko', function() {
 
     it('ei näytetä', function() {
       expect(page.oppijataulukko.isVisible()).to.equal(false)
+    })
+  })
+
+  describe('Esiopetus', function() {
+    before(Authentication().login('esiopetus'), page.openPage, wait.until(page.isReady))
+
+    it('ei näytetä kuin oman koulun esiopetusoppijat', function() {
+      expect(page.oppijataulukko.data().map(function(row) { return row[0]})).to.deep.equal([ 'Eskari, Essi' ])
+      expect(page.opiskeluoikeudeTotal()).to.equal('1')
     })
   })
 })

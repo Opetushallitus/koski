@@ -29,6 +29,7 @@ object MockUsers {
   val helsinginKaupunkiPalvelukäyttäjä = MockUser("stadin-palvelu", "stadin-palvelu", "1.2.246.562.24.99999999994", Set(oppilaitosPalvelukäyttäjä(MockOrganisaatiot.helsinginKaupunki)))
   val stadinAmmattiopistoTallentaja = MockUser("tallentaja", "tallentaja", "1.2.246.562.24.99999999995", Set(oppilaitosTallentaja(MockOrganisaatiot.stadinAmmattiopisto)))
   val stadinAmmattiopistoKatselija = MockUser("katselija", "katselija", "1.2.246.562.24.99999999985", Set(oppilaitosKatselija(MockOrganisaatiot.stadinAmmattiopisto)))
+  val jyväskylänKatselijaEsiopetus = MockUser("esiopetus", "esiopetus", "1.2.246.562.24.99999999666", Set(oppilaitosEsiopetusKatselija(MockOrganisaatiot.jyväskylänNormaalikoulu)))
   val jyväskylänKatselijaEiLuottamuksellinen = MockUser("jyvas-eiluottoa", "jyvas-eiluottoa", "1.2.246.562.24.99999999888", Set(ilmanLuottamuksellisiaTietoja(MockOrganisaatiot.jyväskylänNormaalikoulu)))
   val stadinAmmattiopistoPääkäyttäjä = MockUser("stadinammattiopisto-admin", "stadinammattiopisto-admin", "1.2.246.562.24.99999999986", Set(oppilaitosPääkäyttäjä(MockOrganisaatiot.stadinAmmattiopisto)), "fi", List("koski-oppilaitos-pääkäyttäjä_1494486198456"))
   val stadinVastuukäyttäjä = MockUser("stadin-vastuu", "stadin-vastuu", "1.2.246.562.24.99999999996", Set(vastuukäyttäjä(MockOrganisaatiot.helsinginKaupunki)))
@@ -64,6 +65,7 @@ object MockUsers {
     stadinAmmattiopistoPääkäyttäjä,
     stadinAmmattiopistoTallentaja,
     stadinAmmattiopistoKatselija,
+    jyväskylänKatselijaEsiopetus,
     jyväskylänKatselijaEiLuottamuksellinen,
     kahdenOrganisaatioPalvelukäyttäjä,
     omattiedot,

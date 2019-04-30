@@ -6,6 +6,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables
 import fi.oph.koski.db.Tables.OpiskeluOikeudetWithAccessCheck
 import fi.oph.koski.documentation.AmmatillinenExampleData._
+import fi.oph.koski.documentation.ExamplesEsiopetus
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
@@ -224,6 +225,29 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
       authGet("api/oppija/" + MockOppijat.markkanen.oid, user) {
         verifyResponseStatusOk()
         kaikkiSensitiveDataNäkyy()
+      }
+    }
+  }
+
+  "koski-oppilaitos-esiopetus-katselija" - {
+    val user = MockUsers.jyväskylänKatselijaEsiopetus
+    "ei voi muokata opiskeluoikeuksia omassa organisaatiossa" in {
+      putOpiskeluoikeus(ExamplesEsiopetus.opiskeluoikeus, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio(s"Ei oikeuksia organisatioon ${MockOrganisaatiot.jyväskylänNormaalikoulu}"))
+      }
+    }
+
+    "voi hakea ja katsella esiopetuksen opiskeluoikeuksia omassa organisaatiossa" in {
+      searchForNames(MockOppijat.eskari.etunimet, user) should equal(List(MockOppijat.eskari.etunimet + " " + MockOppijat.eskari.sukunimi))
+      authGet("api/oppija/" + MockOppijat.eskari.oid, user) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "ei voi hakea ja katsella muita kuin esiopetuksen opiskeluoikeuksia omassa organisaatiossa" in {
+      searchForNames("kaisa", user) should be(Nil)
+      authGet("api/oppija/" + MockOppijat.koululainen.oid, user) {
+        verifyResponseStatus(404, KoskiErrorCategory.notFound.oppijaaEiLöydyTaiEiOikeuksia(s"Oppijaa ${MockOppijat.koululainen.oid} ei löydy tai käyttäjällä ei ole oikeuksia tietojen katseluun."))
       }
     }
   }

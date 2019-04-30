@@ -5,7 +5,7 @@ import java.net.InetAddress
 import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koskiuser.Rooli._
 import fi.oph.koski.log.{LogUserContext, Loggable, Logging}
-import fi.oph.koski.schema.{Organisaatio, OrganisaatioWithOid}
+import fi.oph.koski.schema.{OpiskeluoikeudenTyyppi, Organisaatio, OrganisaatioWithOid}
 import org.scalatra.servlet.RichRequest
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -19,6 +19,8 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
   lazy val orgKäyttöoikeudet: Set[KäyttöoikeusOrg] = käyttöoikeudet.collect { case k : KäyttöoikeusOrg => k}
   lazy val globalKäyttöoikeudet: Set[KäyttöoikeusGlobal] = käyttöoikeudet.collect { case k: KäyttöoikeusGlobal => k}
   lazy val globalViranomaisKäyttöoikeudet: Set[KäyttöoikeusViranomainen] = käyttöoikeudet.collect { case k: KäyttöoikeusViranomainen => k}
+  lazy val allowedOpiskeluoikeusTyypit: Set[String] = käyttöoikeudet.flatMap(_.allowedOpiskeluoikeusTyypit)
+  lazy val hasKoulutusmuotoRestrictions: Boolean = allowedOpiskeluoikeusTyypit != OpiskeluoikeudenTyyppi.kaikkiTyypit.map(_.koodiarvo)
 
   def organisationOids(accessType: AccessType.Value): Set[String] = orgKäyttöoikeudet.collect { case k: KäyttöoikeusOrg if k.organisaatioAccessType.contains(accessType) => k.organisaatio.oid }
   lazy val globalAccess = globalKäyttöoikeudet.flatMap { _.globalAccessType }
@@ -36,7 +38,6 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
 
   def hasGlobalKoulutusmuotoReadAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalAccessType).contains(AccessType.read)
 
-  lazy val allowedOpiskeluoikeusTyypit: Set[String] = globalViranomaisKäyttöoikeudet.flatMap(_.allowedOpiskeluoikeusTyypit)
   def hasGlobalReadAccess = globalAccess.contains(AccessType.read)
   def hasAnyWriteAccess = (globalAccess.contains(AccessType.write) || organisationOids(AccessType.write).nonEmpty) && (hasRole(LUOTTAMUKSELLINEN) || hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   def hasLocalizationWriteAccess = globalKäyttöoikeudet.find(_.globalPalveluroolit.contains(Palvelurooli("LOKALISOINTI", "CRUD"))).isDefined
