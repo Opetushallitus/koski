@@ -63,7 +63,8 @@ case class KäyttöoikeusViranomainen(globalPalveluroolit: List[Palvelurooli]) e
       OpiskeluoikeudenTyyppi.perusopetus,
       OpiskeluoikeudenTyyppi.aikuistenperusopetus,
       OpiskeluoikeudenTyyppi.perusopetuksenlisaopetus,
-      OpiskeluoikeudenTyyppi.perusopetukseenvalmistavaopetus
+      OpiskeluoikeudenTyyppi.perusopetukseenvalmistavaopetus,
+      OpiskeluoikeudenTyyppi.internationalschool
     )
     case Palvelurooli("KOSKI", GLOBAALI_LUKU_TOINEN_ASTE) => List(
       OpiskeluoikeudenTyyppi.ammatillinenkoulutus,
@@ -71,7 +72,8 @@ case class KäyttöoikeusViranomainen(globalPalveluroolit: List[Palvelurooli]) e
       OpiskeluoikeudenTyyppi.diatutkinto,
       OpiskeluoikeudenTyyppi.lukiokoulutus,
       OpiskeluoikeudenTyyppi.luva,
-      OpiskeluoikeudenTyyppi.ylioppilastutkinto
+      OpiskeluoikeudenTyyppi.ylioppilastutkinto,
+      OpiskeluoikeudenTyyppi.internationalschool
     )
     case Palvelurooli("KOSKI", GLOBAALI_LUKU_KORKEAKOULU) => List(
       OpiskeluoikeudenTyyppi.korkeakoulutus

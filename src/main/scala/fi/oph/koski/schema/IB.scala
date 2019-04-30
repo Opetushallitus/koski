@@ -221,15 +221,10 @@ trait IBArviointi extends KoodistostaLöytyväArviointi {
   }
 }
 
-@Title("IB Core Requirements-arviointi")
-case class IBCoreRequirementsArviointi(
+trait CoreRequirementsArvionti extends IBArviointi {
   @KoodistoUri("arviointiasteikkocorerequirementsib")
-  arvosana: Koodistokoodiviite,
-  @Description("Onko arvoitu arvosana vai ei, jos ei niin tarkoittaa IBOn vahvistamaa arvosanaa")
-  predicted: Boolean = true,
-  @Description("Arviointipäivämäärä")
-  päivä: Option[LocalDate]
-) extends IBArviointi {
+  def arvosana: Koodistokoodiviite
+  def päivä: Option[LocalDate]
   override def arviointipäivä: Option[LocalDate] = päivä
   override def hyväksytty: Boolean = arvosana.koodiarvo match {
     case "f" => false
@@ -237,23 +232,43 @@ case class IBCoreRequirementsArviointi(
   }
 }
 
+@Title("IB Core Requirements-arviointi")
+case class IBCoreRequirementsArviointi(
+  arvosana: Koodistokoodiviite,
+  @Description("Onko arvoitu arvosana vai ei, jos ei niin tarkoittaa IBOn vahvistamaa arvosanaa")
+  predicted: Boolean = true,
+  @Description("Arviointipäivämäärä")
+  päivä: Option[LocalDate]
+) extends CoreRequirementsArvionti
+
 @Description("IB-lukion oppiaineen tunnistetiedot")
-trait IBOppiaine extends KoodistostaLöytyväKoulutusmoduuli with Valinnaisuus {
+trait IBOppiaine extends KoodistostaLöytyväKoulutusmoduuli {
   @KoodistoUri("oppiaineetib")
   @OksaUri("tmpOKSAID256", "oppiaine")
   def tunniste: Koodistokoodiviite
 }
 
-trait IBAineRyhmäOppiaine extends IBOppiaine with PreIBOppiaine {
-  @KoodistoUri("aineryhmaib")
-  def ryhmä: Koodistokoodiviite
+trait IBTaso {
   @KoodistoUri("oppiaineentasoib")
   def taso: Option[Koodistokoodiviite]
 }
 
-@Title("Muu IB-oppiaine")
-case class IBOppiaineMuu(
-  @Description("IB-lukion oppiaineen tunnistetiedot")
+trait IBAineRyhmäOppiaine extends IBOppiaine with PreIBOppiaine with IBTaso with Valinnaisuus {
+  @KoodistoUri("aineryhmaib")
+  def ryhmä: Koodistokoodiviite
+}
+
+trait KieliOppiaineIB extends IBOppiaine with Kieliaine {
+  @KoodistoKoodiarvo("A")
+  @KoodistoKoodiarvo("A2")
+  @KoodistoKoodiarvo("B")
+  def tunniste: Koodistokoodiviite
+  @KoodistoUri("kielivalikoima")
+  def kieli: Koodistokoodiviite
+  override def description: LocalizedString = kieliaineDescription
+}
+
+trait MuuOppiaineIB extends IBOppiaine {
   @KoodistoKoodiarvo("BIO")
   @KoodistoKoodiarvo("BU")
   @KoodistoKoodiarvo("CHE")
@@ -271,6 +286,12 @@ case class IBOppiaineMuu(
   @KoodistoKoodiarvo("SOC")
   @KoodistoKoodiarvo("ESS")
   @KoodistoKoodiarvo("VA")
+  def tunniste: Koodistokoodiviite
+}
+
+@Title("Muu IB-oppiaine")
+case class IBOppiaineMuu(
+  @Description("IB-lukion oppiaineen tunnistetiedot")
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusTunneissa],
   @Description("Oppiaineen taso (Higher Level (HL) tai Standard Level (SL)")
@@ -278,31 +299,25 @@ case class IBOppiaineMuu(
   @Description("Oppiaineen aineryhmä (1-6)")
   ryhmä: Koodistokoodiviite,
   pakollinen: Boolean = true
-) extends IBAineRyhmäOppiaine
+) extends IBAineRyhmäOppiaine with MuuOppiaineIB
 
 @Title("IB-kielioppiaine")
 case class IBOppiaineLanguage(
   @Description("IB-lukion kielioppiaineen tunnistetiedot")
-  @KoodistoKoodiarvo("A")
-  @KoodistoKoodiarvo("A2")
-  @KoodistoKoodiarvo("B")
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusTunneissa],
   @Description("Oppiaineen taso (Higher Level (HL) tai Standard Level (SL)")
   taso: Option[Koodistokoodiviite],
-  @KoodistoUri("kielivalikoima")
   @Discriminator
   @Description("Mikä kieli on kyseessä")
   kieli: Koodistokoodiviite,
   @Description("Oppiaineen aineryhmä (1-6)")
   ryhmä: Koodistokoodiviite,
   pakollinen: Boolean = true
-) extends IBAineRyhmäOppiaine with Kieliaine {
-  override def description = kieliaineDescription
-}
+) extends IBAineRyhmäOppiaine with KieliOppiaineIB
 
-trait IBCoreElementOppiaine extends IBOppiaine {
-}
+
+trait IBCoreElementOppiaine extends IBOppiaine with Valinnaisuus
 
 @Title("IB-oppiaine CAS")
 case class IBOppiaineCAS(

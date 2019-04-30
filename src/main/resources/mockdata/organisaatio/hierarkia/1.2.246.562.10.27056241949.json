@@ -1,0 +1,41 @@
+{
+  "organisaatiot": [
+    {
+      "oid": "1.2.246.562.10.27056241949",
+      "nimi": {
+        "fi": "Helsingin Kansainvälisen Koulun Vanhempain yhdistys ry"
+      },
+      "organisaatiotyypit": [
+        "KOULUTUSTOIMIJA"
+      ],
+      "kotipaikkaUri": "kunta_091",
+      "children": [
+        {
+          "oid": "1.2.246.562.10.67636414343",
+          "oppilaitosKoodi": "03510",
+          "oppilaitostyyppi": "oppilaitostyyppi_19#1",
+          "nimi": {
+            "en": "International School of Helsinki"
+          },
+          "kotipaikkaUri": "kunta_091",
+          "children": [
+            {
+              "oid": "1.2.246.562.10.63709849283",
+              "nimi": {
+                "en": "International School of Helsinki"
+              },
+              "kotipaikkaUri": "kunta_091",
+              "children": [],
+              "organisaatiotyypit": [
+                "TOIMIPISTE"
+              ]
+            }
+          ],
+          "organisaatiotyypit": [
+            "OPPILAITOS"
+          ]
+        }
+      ]
+    }
+  ]
+}

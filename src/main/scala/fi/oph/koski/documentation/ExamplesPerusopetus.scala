@@ -86,6 +86,7 @@ object ExamplesPerusopetus {
     erityisryhmässä = Some(true)
   )
 
+  lazy val osaAikainenEritysopetus = Koodistokoodiviite("1", Some("Osa-aikainen erityisopetus"), "perusopetuksentukimuoto")
   lazy val toimintaAlueittainOpiskelija = Oppija(
     exampleHenkilö,
     List(PerusopetuksenOpiskeluoikeus(
@@ -118,7 +119,7 @@ object ExamplesPerusopetus {
         perusopetuksenAloittamistaLykätty = true,
         aloittanutEnnenOppivelvollisuutta = false,
         pidennettyOppivelvollisuus = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
-        tukimuodot = Some(List(Koodistokoodiviite("1", Some("Osa-aikainen erityisopetus"), "perusopetuksentukimuoto"))),
+        tukimuodot = Some(List(osaAikainenEritysopetus)),
         tehostetunTuenPäätökset = Some(List(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4))))),
         joustavaPerusopetus = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
         kotiopetusjaksot = Some(List(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4))), Aikajakso(date(2017, 7, 14), Some(date(2017, 10, 18))))),

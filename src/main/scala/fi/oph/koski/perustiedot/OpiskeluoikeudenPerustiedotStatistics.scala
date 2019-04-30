@@ -59,7 +59,8 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: KoskiElasticSearchIndex)
           |    },
           |    "tyyppi": {
           |      "terms": {
-          |        "field": "tyyppi.nimi.fi.keyword"
+          |        "field": "tyyppi.nimi.fi.keyword",
+          |        "size": 100
           |      },
           |      "aggs": {
           |        "tila": {

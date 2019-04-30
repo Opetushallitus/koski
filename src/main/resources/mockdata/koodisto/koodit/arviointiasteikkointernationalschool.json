@@ -1,0 +1,34 @@
+[
+  {
+    "koodiUri": "arviointiasteikkointernationalschool_learningtoward",
+    "koodiArvo": "learningtoward",
+    "metadata": [
+      {
+        "nimi": "Learning Toward",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Learning Toward",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "arviointiasteikkointernationalschool_achievedoutcomes",
+    "koodiArvo": "achievedoutcomes",
+    "metadata": [
+      {
+        "nimi": "Achieved Outcomes",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Achieved Outcomes",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  }
+]

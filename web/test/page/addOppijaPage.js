@@ -28,6 +28,14 @@ function AddOppijaPage() {
     rahoitusIsVisible: function() {
       return isElementVisible(S('.opintojenrahoitus'))
     },
+    enterValidDataInternationalSchool: function(params) {
+      params = _.merge({  oppilaitos: 'International School of Helsinki' }, {}, params)
+      return function() {
+        return api.enterData(params)()
+          .then(api.selectOpiskeluoikeudenTyyppi('International school'))
+          .then(wait.forAjax)
+      }
+    },
     enterValidDataPerusopetus: function(params) {
       params = _.merge({  oppilaitos: 'Jyväskylän normaalikoulu' }, {}, params)
       return function() {

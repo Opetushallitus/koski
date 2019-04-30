@@ -23,6 +23,7 @@ import OmatTiedotLukionOppiaineet from '../lukio/OmatTiedotLukionOppiaineet'
 import OmatTiedotPerusopetuksenOppiaineet from '../perusopetus/OmatTiedotPerusopetuksenOppiaineet'
 import OmatTiedotRyhmiteltyOppiaineet from './OmatTiedotRyhmiteltyOppiaineet'
 import TäydentääTutkintoaEditor from '../ammatillinen/TaydentaaTutkintoaEditor'
+import InternationalSchoolOppiaineetEditor from '../internationalschool/InternationalSchoolOppiaineetEditor'
 
 export const resolveOsasuorituksetEditor = (mdl) => {
   const oneOf = (...classes) => classes.some(c => mdl.value.classes.includes(c))
@@ -85,6 +86,9 @@ export const resolveOsasuorituksetEditor = (mdl) => {
         additionalEditableKoulutusmoduuliProperties={['taso']}
       />
     )
+  }
+  if (oneOf('diplomavuosiluokansuoritus', 'mypvuosiluokansuoritus', 'pypvuosiluokansuoritus')) {
+    return <InternationalSchoolOppiaineetEditor suorituksetModel={modelLookup(mdl, 'osasuoritukset')} />
   }
   if (oneOf('diavalmistavanvaiheensuoritus', 'diatutkinnonsuoritus')) {
     const TutkinnonOppiaineetComponent = kansalainen ? OmatTiedotRyhmiteltyOppiaineet : RyhmiteltyOppiaineetEditor

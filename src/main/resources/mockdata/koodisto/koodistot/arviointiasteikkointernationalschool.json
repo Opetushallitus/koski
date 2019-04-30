@@ -1,0 +1,16 @@
+{
+  "koodistoUri" : "arviointiasteikkointernationalschool",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "arviointiasteikkointernationalschool",
+    "kuvaus" : "International school arviointiasteikko"
+  }
+  ],
+  "codesGroupUri" : "http://koski",
+  "voimassaAlkuPvm" : "2019-04-26",
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
+  "withinCodes" : [ ],
+  "tila" : "LUONNOS",
+  "version" : 0
+}

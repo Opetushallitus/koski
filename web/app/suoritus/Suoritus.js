@@ -43,7 +43,7 @@ export const onKeskeneräisiäOsasuorituksia  = (suoritus) => {
 export const keskeneräisetOsasuoritukset = (suoritus) => osasuoritukset(suoritus).filter(R.either(suoritusKesken, onKeskeneräisiäOsasuorituksia))
 export const osasuoritukset = (suoritus) => modelItems(suoritus, 'osasuoritukset')
 export const rekursiivisetOsasuoritukset = (suoritus) => flatMapArray(osasuoritukset(suoritus), s => [s].concat(rekursiivisetOsasuoritukset(s)))
-export const suorituksenTyyppi = (suoritus) => modelData(suoritus, 'tyyppi').koodiarvo
+export const suorituksenTyyppi = suoritus => suoritus && modelData(suoritus, 'tyyppi').koodiarvo
 export const valinnanMahdollisuus = suoritus => suoritus.value.classes.includes('valinnanmahdollisuus')
 
 export const suoritusTitle = (suoritus) => {

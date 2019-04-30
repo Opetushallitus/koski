@@ -1,13 +1,13 @@
 import React from 'react'
 import Text from '../../i18n/Text'
 
-export const LukionOppiaineetTableHead = ({laajuusyksikkö = 'kurssia', showArviointi = true}) => (
+export const LukionOppiaineetTableHead = ({laajuusyksikkö = 'kurssia', showArviointi = true, arvosanaHeader = <Text name='Arvosana (keskiarvo)'/>}) => (
   <thead>
   <tr>
     <th className='suorituksentila'></th>
     <th className='oppiaine'><Text name='Oppiaine'/></th>
-    <th className='laajuus'><Text name={`Laajuus (${laajuusyksikkö})`}/></th>
-    {showArviointi && <th className='arvosana'><Text name='Arvosana (keskiarvo)'/></th>}
+    {laajuusyksikkö && <th className='laajuus'><Text name={`Laajuus (${laajuusyksikkö})`}/></th>}
+    {showArviointi && <th className='arvosana'>{arvosanaHeader}</th>}
   </tr>
   <tr>
     <th colSpan='4'><hr/></th>

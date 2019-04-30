@@ -34,6 +34,8 @@ object MockOrganisaatiot {
   val evira = "1.2.246.562.10.25004584139"
   val saksalainenKoulu = "1.2.246.562.10.45093614456"
   val kouluyhdistysPestalozziSchulvereinSkolföreningen = "1.2.246.562.10.64976109716"
+  val helsinginKansainvälisenKoulunVanhempainyhdistys = "1.2.246.562.10.27056241949"
+  val internationalSchool = "1.2.246.562.10.67636414343"
 
   val oppilaitokset: List[String] = List(
     stadinAmmattiopisto,
@@ -51,7 +53,8 @@ object MockOrganisaatiot {
     ressunLukio,
     aapajoenKoulu,
     ytl,
-    saksalainenKoulu
+    saksalainenKoulu,
+    internationalSchool
   )
 
   // Näille "juuriorganisaatioille" on haettu omat json-filet mockausta varten. Jos tarvitaan uusi juuri, lisätään se tähän
@@ -61,7 +64,8 @@ object MockOrganisaatiot {
     helsinginYliopisto, jyväskylänYliopisto, tampereenYliopisto, yrkehögskolanArcada, lahdenAmmattikorkeakoulu, itäsuomenYliopisto, aaltoYliopisto,
     omnia, winnova,
     ylioppilastutkintolautakunta, aapajoenKoulu,
-    kouluyhdistysPestalozziSchulvereinSkolföreningen
+    kouluyhdistysPestalozziSchulvereinSkolföreningen,
+    helsinginKansainvälisenKoulunVanhempainyhdistys
   )
 }
 

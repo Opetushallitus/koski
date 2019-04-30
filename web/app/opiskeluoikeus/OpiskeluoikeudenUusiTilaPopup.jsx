@@ -12,6 +12,7 @@ import {Editor} from '../editor/Editor'
 import ModalDialog from '../editor/ModalDialog'
 import Text from '../i18n/Text'
 import {ift} from '../util/util'
+import {filterTilatByOpiskeluoikeudenTyyppi} from './opiskeluoikeus'
 
 export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, suorituksiaKesken, tilaListModel, resultCallback}) => {
   let submitBus = Bacon.Bus()
@@ -49,13 +50,9 @@ export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, suorit
   </ModalDialog>)
 }
 
-const fetchTilat = model => EnumEditor.fetchAlternatives(model).map(alts => alts
-  .filter(a => {
-    const opiskeluoikeudenTyyppi = modelData(model.context.opiskeluoikeus, 'tyyppi.koodiarvo')
-    const excludedValues = opiskeluoikeudenTyyppi === 'ammatillinenkoulutus'
-      ? ['mitatoity', 'eronnut']
-      : ['mitatoity']
+const getKoodiarvo = t => t && t.data && t.data.koodiarvo
+const fetchTilat = model => EnumEditor.fetchAlternatives(model).map(alts => {
+  const tyyppi = modelData(model.context.opiskeluoikeus, 'tyyppi')
+  return filterTilatByOpiskeluoikeudenTyyppi(tyyppi, getKoodiarvo)(alts)
+})
 
-    return !excludedValues.includes(a.data.koodiarvo)
-  })
-)

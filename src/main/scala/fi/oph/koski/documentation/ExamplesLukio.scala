@@ -14,7 +14,10 @@ import fi.oph.koski.schema._
 object ExamplesLukio {
   def oppija(opiskeluoikeus: LukionOpiskeluoikeus) = Oppija(exampleHenkilö, List(opiskeluoikeus))
 
-  def päättötodistus(oppilaitos: Oppilaitos = jyväskylänNormaalikoulu, toimipiste: OrganisaatioWithOid = jyväskylänNormaalikoulu) = LukionOpiskeluoikeus(
+  lazy val erityisenKoulutustehtävänJakso = ErityisenKoulutustehtävänJakso(date(2012, 9, 1), Some(date(2012, 9, 1)), Koodistokoodiviite("taide", Some("Erityisenä koulutustehtävänä taide"), "erityinenkoulutustehtava"))
+  lazy val ulkomaanjakso = Ulkomaanjakso(date(2012, 9, 1), Some(date(2013, 9, 1)), ruotsi, "Harjoittelua ulkomailla")
+  def päättötodistus(oppilaitos: Oppilaitos = jyväskylänNormaalikoulu, toimipiste: OrganisaatioWithOid = jyväskylänNormaalikoulu) = {
+    LukionOpiskeluoikeus(
       tila = LukionOpiskeluoikeudenTila(
         List(
           LukionOpiskeluoikeusjakso(alku = date(2012, 9, 1), tila = opiskeluoikeusAktiivinen),
@@ -27,8 +30,8 @@ object ExamplesLukio {
         ulkomainenVaihtoopiskelija = false,
         alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy = Some("Pikkuvanha yksilö"),
         yksityisopiskelija = false,
-        erityisenKoulutustehtävänJaksot = Some(List(ErityisenKoulutustehtävänJakso(date(2012, 9, 1), Some(date(2012, 9, 1)), Koodistokoodiviite("taide", Some("Erityisenä koulutustehtävänä taide"), "erityinenkoulutustehtava")))),
-        ulkomaanjaksot = Some(List(Ulkomaanjakso(date(2012, 9, 1), Some(date(2013, 9, 1)), ruotsi, "Harjoittelua ulkomailla"))),
+        erityisenKoulutustehtävänJaksot = Some(List(erityisenKoulutustehtävänJakso)),
+        ulkomaanjaksot = Some(List(ulkomaanjakso)),
         oikeusMaksuttomaanAsuntolapaikkaan = true,
         sisäoppilaitosmainenMajoitus = Some(List(Aikajakso(date(2012, 9, 1), Some(date(2013, 9, 1)))))
       )),
@@ -194,7 +197,7 @@ object ExamplesLukio {
             MuidenLukioOpintojenSuoritus(
               koulutusmoduuli = MuuLukioOpinto(Koodistokoodiviite("OA", "lukionmuutopinnot")),
               osasuoritukset = Some(List(
-                kurssisuoritus(soveltavaKurssi("OA1", "Oman äidinkielen keskustelukurssi", "Keskustellaan omalla äidinkielellä keskitetyissä opetusryhmissä")).copy(arviointi = sanallinenArviointi("S", kuvaus=Some("Sujuvaa keskustelua"), päivä = date(2016, 6, 8)))
+                kurssisuoritus(soveltavaKurssi("OA1", "Oman äidinkielen keskustelukurssi", "Keskustellaan omalla äidinkielellä keskitetyissä opetusryhmissä")).copy(arviointi = sanallinenArviointi("S", kuvaus = Some("Sujuvaa keskustelua"), päivä = date(2016, 6, 8)))
               )),
               arviointi = arviointi("S")
             )
@@ -202,6 +205,7 @@ object ExamplesLukio {
         )
       )
     )
+  }
 
   val aineopiskelija =
     LukionOpiskeluoikeus(

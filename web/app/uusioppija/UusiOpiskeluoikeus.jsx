@@ -23,6 +23,8 @@ import {sallitutRahoituskoodiarvot} from '../lukio/lukio'
 import UusiIBSuoritus from './UusiIBSuoritus'
 import UusiDIASuoritus from './UusiDIASuoritus'
 import {VARHAISKASVATUKSEN_TOIMIPAIKKA} from './esiopetuksenSuoritus'
+import UusiInternationalSchoolSuoritus from './UusiInternationalSchoolSuoritus'
+import {filterTilatByOpiskeluoikeudenTyyppi} from '../opiskeluoikeus/opiskeluoikeus'
 
 export default ({opiskeluoikeusAtom}) => {
   const dateAtom = Atom(new Date())
@@ -46,16 +48,10 @@ export default ({opiskeluoikeusAtom}) => {
 
   const suorituskieletP = Http.cachedGet('/koski/api/editor/koodit/kieli').map(sortLanguages).map(values => values.map(v => v.data))
   suorituskieletP.onValue(kielet => suorituskieliAtom.set(kielet[0]))
-
-  const tilatP = koodistoValues('koskiopiskeluoikeudentila/lasna,valmistunut,eronnut,katsotaaneronneeksi,valiaikaisestikeskeytynyt,peruutettu,loma')
-  const opiskeluoikeudenTilatP = Bacon.combineAsArray(tilatP, tyyppiAtom.map('.koodiarvo')).map(([tilat,tyyppi]) =>
-    tyyppi === 'ammatillinenkoulutus'
-      ? tilat.filter(tila => tila.koodiarvo !== 'eronnut')
-      : tilat.filter(tila => tila.koodiarvo !== 'loma')
-  )
   const rahoituksetP = koodistoValues('opintojenrahoitus').map(R.sortBy(R.compose(parseInt, R.prop('koodiarvo'))))
-  const hasRahoituksetAvailable = tyyppiAtom.map(koodiarvoMatch('ammatillinenkoulutus', 'lukiokoulutus'))
+  const hasRahoituksetAvailable = tyyppiAtom.map(koodiarvoMatch('ammatillinenkoulutus', 'lukiokoulutus', 'internationalschool'))
 
+  const opiskeluoikeudenTilatP = opiskeluoikeudentTilat(tyyppiAtom)
   opiskeluoikeudenTilatP.onValue(tilat => tilaAtom.set(tilat.find(koodiarvoMatch('lasna'))))
 
   const opiskeluoikeusP = Bacon.combineWith(dateAtom, oppilaitosAtom, tyyppiAtom, suoritusAtom, tilaAtom, rahoitusAtom, makeOpiskeluoikeus)
@@ -66,18 +62,21 @@ export default ({opiskeluoikeusAtom}) => {
     {
       ift(oppilaitosAtom, <OpiskeluoikeudenTyyppi opiskeluoikeudenTyyppiAtom={tyyppiAtom} opiskeluoikeustyypitP={opiskeluoikeustyypitP} />)
     }
-    <Suorituskieli suorituskieliAtom={suorituskieliAtom} suorituskieletP={suorituskieletP} />
+    {
+      ift(tyyppiAtom.map(tyyppi => tyyppi && tyyppi.koodiarvo !== 'internationalschool'), <Suorituskieli suorituskieliAtom={suorituskieliAtom} suorituskieletP={suorituskieletP} />)
+    }
     {
       tyyppiAtom.map('.koodiarvo').map(tyyppi => {
-        if (tyyppi == 'perusopetus') return <UusiNuortenPerusopetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
-        if (tyyppi == 'aikuistenperusopetus') return <UusiAikuistenPerusopetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
-        if (tyyppi == 'esiopetus') esiopetuksenSuoritus(suoritusAtom, oppilaitosAtom, organisaatiotyypitAtom, suorituskieliAtom) // No need to show the diaarinumero selector as there is only one choice
-        if (tyyppi == 'ammatillinenkoulutus') return <UusiAmmatillisenKoulutuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
-        if (tyyppi == 'perusopetukseenvalmistavaopetus') return <UusiPerusopetukseenValmistavanOpetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
-        if (tyyppi == 'perusopetuksenlisaopetus') return <UusiPerusopetuksenLisaopetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
-        if (tyyppi == 'lukiokoulutus') return <UusiLukionSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
-        if (tyyppi == 'ibtutkinto') return <UusiIBSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
-        if (tyyppi == 'diatutkinto') return <UusiDIASuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
+        if (tyyppi === 'perusopetus') return <UusiNuortenPerusopetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
+        if (tyyppi === 'aikuistenperusopetus') return <UusiAikuistenPerusopetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
+        if (tyyppi === 'esiopetus') esiopetuksenSuoritus(suoritusAtom, oppilaitosAtom, organisaatiotyypitAtom, suorituskieliAtom) // No need to show the diaarinumero selector as there is only one choice
+        if (tyyppi === 'ammatillinenkoulutus') return <UusiAmmatillisenKoulutuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
+        if (tyyppi === 'perusopetukseenvalmistavaopetus') return <UusiPerusopetukseenValmistavanOpetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
+        if (tyyppi === 'perusopetuksenlisaopetus') return <UusiPerusopetuksenLisaopetuksenSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
+        if (tyyppi === 'lukiokoulutus') return <UusiLukionSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
+        if (tyyppi === 'ibtutkinto') return <UusiIBSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
+        if (tyyppi === 'diatutkinto') return <UusiDIASuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
+        if (tyyppi === 'internationalschool') return <UusiInternationalSchoolSuoritus suoritusAtom={suoritusAtom} oppilaitosAtom={oppilaitosAtom} suorituskieliAtom={suorituskieliAtom} />
       })
     }
     <Aloituspäivä dateAtom={dateAtom} />
@@ -86,6 +85,11 @@ export default ({opiskeluoikeusAtom}) => {
       ift(hasRahoituksetAvailable, <OpintojenRahoitus tyyppiAtom={tyyppiAtom} rahoitusAtom={rahoitusAtom} opintojenRahoituksetP={rahoituksetP} />)
     }
   </div>)
+}
+
+const opiskeluoikeudentTilat = tyyppiAtom => {
+  const tilatP = koodistoValues('koskiopiskeluoikeudentila/lasna,valmistunut,eronnut,katsotaaneronneeksi,valiaikaisestikeskeytynyt,peruutettu,loma')
+  return tyyppiAtom.flatMap(tyyppi => tilatP.map(filterTilatByOpiskeluoikeudenTyyppi(tyyppi))).toProperty()
 }
 
 const Oppilaitos = ({oppilaitosAtom, organisaatiotyypitAtom}) => {
@@ -134,7 +138,7 @@ const OpiskeluoikeudenTila = ({tilaAtom, opiskeluoikeudenTilatP}) => {
 
 const OpintojenRahoitus = ({tyyppiAtom, rahoitusAtom, opintojenRahoituksetP}) => {
   const options = Bacon.combineWith(tyyppiAtom, opintojenRahoituksetP, (tyyppi, rahoitukset) =>
-    koodiarvoMatch('lukiokoulutus')(tyyppi)
+    koodiarvoMatch('lukiokoulutus', 'internationalschool')(tyyppi)
       ? rahoitukset.filter(v => sallitutRahoituskoodiarvot.includes(v.koodiarvo))
       : rahoitukset
   )

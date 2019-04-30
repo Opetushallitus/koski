@@ -68,7 +68,11 @@ trait Kieliaine extends Koulutusmoduuli {
   @Tooltip("Opiskeltava kieli.")
   def kieli: Koodistokoodiviite
   override def identiteetti: AnyRef = (super.identiteetti, kieli)
-  protected def kieliaineDescription = concat(nimi, unlocalized(", "), kieli.nimi.getOrElse(unlocalized(kieli.koodiarvo)))
+  protected def kieliaineDescription: LocalizedString = Kieliaine.description(nimi, kieli)
+}
+
+object Kieliaine {
+  def description(nimi: LocalizedString, kieli: Koodistokoodiviite) = concat(nimi, unlocalized(", "), kieli.nimi.getOrElse(unlocalized(kieli.koodiarvo)))
 }
 
 trait Äidinkieli extends Kieliaine

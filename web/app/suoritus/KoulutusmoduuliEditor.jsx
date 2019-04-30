@@ -5,29 +5,29 @@ import {t} from '../i18n/i18n.js'
 import {suorituksenTyyppi} from './Suoritus'
 import {buildClassNames} from '../components/classnames'
 import {tutkinnonNimi} from './Koulutusmoduuli'
+import {InternationalSchoolLevel} from '../internationalschool/InternationalSchoolLevel'
 
-export class KoulutusmoduuliEditor extends React.Component {
-  render() {
-    let { model } = this.props
-    let overrideEdit = model.context.editAll ? true : false
-    let suoritusTyyppi = model.context.suoritus && suorituksenTyyppi(model.context.suoritus)
-    let propertyFilter  = p => {
-      let excludedProperties = ['tunniste', 'perusteenDiaarinumero', 'perusteenNimi', 'pakollinen']
-      let esiopetusKuvaus = suoritusTyyppi === 'esiopetuksensuoritus' && p.key === 'kuvaus'
-      return !excludedProperties.includes(p.key) && !esiopetusKuvaus
-    }
-    return (<span className="koulutusmoduuli">
+export const KoulutusmoduuliEditor = ({model}) => {
+  const propertyFilter = p => {
+    const excludedProperties = ['tunniste', 'perusteenDiaarinumero', 'perusteenNimi', 'pakollinen', 'diplomaType']
+    const esiopetusKuvaus = suorituksenTyyppi(model.context.suoritus) === 'esiopetuksensuoritus' && p.key === 'kuvaus'
+    return !excludedProperties.includes(p.key) && !esiopetusKuvaus
+  }
+  return (<span className="koulutusmoduuli">
       <span className="tunniste">
-        {
-          ['aikuistenperusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaaranalkuvaihe'].includes(suoritusTyyppi)
-            ? <Editor model={model.context.suoritus} path="tyyppi" edit={false}/>
-            : <Editor model={tutkinnonNimi(model)} edit={overrideEdit}/>
-        }
+        <TunnisteEditor model={model} />
       </span>
       <span className="diaarinumero"><span className={buildClassNames(['value', !model.context.edit && 'label'])}>
-        <Editor model={model} path="perusteenDiaarinumero" placeholder={t('Perusteen diaarinumero')} />
+        <Editor model={model} path="perusteenDiaarinumero" placeholder={t('Perusteen diaarinumero')}/>
       </span></span>
-      <PropertiesEditor model={model} propertyFilter={propertyFilter} />
+      <PropertiesEditor model={model} propertyFilter={propertyFilter}/>
     </span>)
-  }
+}
+
+const TunnisteEditor = ({model}) => {
+  const overrideEdit = model.context.editAll ? true : false
+  const tyyppi = suorituksenTyyppi(model.context.suoritus)
+  return ['aikuistenperusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaaranalkuvaihe'].includes(tyyppi)
+    ? <Editor model={model.context.suoritus} path="tyyppi" edit={false}/>
+    : <React.Fragment><Editor model={tutkinnonNimi(model)} edit={overrideEdit}/><InternationalSchoolLevel model={model} /></React.Fragment>
 }
