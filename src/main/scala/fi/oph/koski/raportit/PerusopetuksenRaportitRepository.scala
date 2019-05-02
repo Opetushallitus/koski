@@ -21,8 +21,8 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
   private type PäätasonSuoritusId = Long
   private type AikajaksoId = Long
 
-  def perusopetuksenvuosiluokka(oppilaitos: Organisaatio.Oid, paiva: LocalDate, vuosiluokka: String): List[(ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], RPäätasonSuoritusRow, Seq[ROsasuoritusRow], Seq[String])] = {
-    val opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet = opiskeluoikeusAikajaksotPaatasonSuorituksetResult(oppilaitos, paiva, vuosiluokka)
+  def perusopetuksenvuosiluokka(organisaatioOidit: Set[Organisaatio.Oid], paiva: LocalDate, vuosiluokka: String): List[(ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], RPäätasonSuoritusRow, Seq[ROsasuoritusRow], Seq[String])] = {
+    val opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet = opiskeluoikeusAikajaksotPaatasonSuorituksetResult(organisaatioOidit, paiva, vuosiluokka)
 
     val opiskeluoikeusOids = opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet.map(_._1)
     val paatasonSuoritusIds = opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet.flatMap(_._2)
@@ -40,11 +40,11 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
     }
   }
 
-  def peruskoulunPaattavatJaLuokalleJääneet(oppilaitos: Organisaatio.Oid, paiva: LocalDate, vuosiluokka: String) = {
-    val luokalleJäävienTunnisteet = luokalleJäävätOpiskeluoikeusAikajaksotPäätasonSuorituksetResult(oppilaitos, paiva, "9")
+  def peruskoulunPaattavatJaLuokalleJääneet(organisaatioOidit: Set[Organisaatio.Oid], paiva: LocalDate, vuosiluokka: String) = {
+    val luokalleJäävienTunnisteet = luokalleJäävätOpiskeluoikeusAikajaksotPäätasonSuorituksetResult(organisaatioOidit, paiva, "9")
     val luokalleJaavienOidit = luokalleJäävienTunnisteet.map(_._1)
 
-    val peruskoulunPäättävienTunnisteet = peruskoulunPäättävätOpiskeluoikeusAikajaksotPäätasonSuorituksetResult(oppilaitos, paiva, vuosiluokka, luokalleJaavienOidit.distinct)
+    val peruskoulunPäättävienTunnisteet = peruskoulunPäättävätOpiskeluoikeusAikajaksotPäätasonSuorituksetResult(organisaatioOidit, paiva, vuosiluokka, luokalleJaavienOidit.distinct)
 
     val opiskeluoikeusOids: Seq[String] = luokalleJaavienOidit.union(peruskoulunPäättävienTunnisteet.map(_._1))
     val paatasonSuoritusIds = luokalleJäävienTunnisteet.flatMap(_._2).union(peruskoulunPäättävienTunnisteet.flatMap(_._2))
@@ -89,48 +89,14 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
     }
   }
 
-  private def opiskeluoikeusAikajaksotPaatasonSuorituksetResult(oppilaitos: Organisaatio.Oid, paiva: LocalDate, vuosiluokka: String) = {
+  private def opiskeluoikeusAikajaksotPaatasonSuorituksetResult(oppilaitos: Set[Organisaatio.Oid], paiva: LocalDate, vuosiluokka: String) = {
     import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
     implicit val getResult = GetResult[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])](pr => (pr.nextString(), pr.nextArray(), pr.nextArray()))
-    runDbSync(opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(oppilaitos, Date.valueOf(paiva), vuosiluokka).as[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])])
+    runDbSync(opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(oppilaitos.toSeq, Date.valueOf(paiva), vuosiluokka).as[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])])
   }
 
-  private def opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(oppilaitos: String, paiva: Date, vuosiluokka: String) = {
-    sql"""
-     select
-      oo.opiskeluoikeus_oid,
-      array_agg(pts.paatason_suoritus_id),
-      array_agg(aikaj.id)
-    from r_opiskeluoikeus oo
-    join r_paatason_suoritus pts
-      on pts.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
-    join r_opiskeluoikeus_aikajakso aikaj
-      on aikaj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
-    where
-      oo.oppilaitos_oid = $oppilaitos and
-      oo.koulutusmuoto = 'perusopetus' and
-      pts.suorituksen_tyyppi = 'perusopetuksenvuosiluokka' and
-      pts.koulutusmoduuli_koodiarvo = $vuosiluokka and
-      (pts.vahvistus_paiva >= $paiva or pts.vahvistus_paiva is null) and
-      aikaj.alku <= $paiva and (aikaj.loppu >= $paiva or aikaj.loppu is null)
-    group by oo.opiskeluoikeus_oid"""
-  }
-
-  private def voimassaOlevatVuosiluokatQuery(opiskeluoikeusOids: Seq[String]) = {
-    RPäätasonSuoritukset
-      .filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids)
-      .filter(_.suorituksenTyyppi === "perusopetuksenvuosiluokka")
-      .filter(_.vahvistusPäivä.isEmpty)
-      .map(row => (row.opiskeluoikeusOid, row.koulutusmoduuliKoodiarvo))
-  }
-
-  private def luokalleJäävätOpiskeluoikeusAikajaksotPäätasonSuorituksetResult(oppilaitos: String, paiva: LocalDate, vuosiluokka: String) = {
+  private def opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(oppilaitos: Seq[String], paiva: Date, vuosiluokka: String) = {
     import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
-    implicit val getResult = GetResult[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])](pr => (pr.nextString(), pr.nextArray(), pr.nextArray()))
-    runDbSync(luokalleJäävätOpiskeluoikeusAikajaksotPaatasonSuorituksetQuery(oppilaitos, Date.valueOf(paiva), vuosiluokka).as[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])])
-  }
-
-  private def luokalleJäävätOpiskeluoikeusAikajaksotPaatasonSuorituksetQuery(oppilaitos: String, paiva: Date, vuosiluokka: String) = {
     sql"""
      select
       oo.opiskeluoikeus_oid,
@@ -147,7 +113,48 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
     on
       aikaj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
     where
-      oo.oppilaitos_oid = $oppilaitos and
+      oo.oppilaitos_oid = any ($oppilaitos) and
+      oo.koulutusmuoto = 'perusopetus' and
+      pts.suorituksen_tyyppi = 'perusopetuksenvuosiluokka' and
+      pts.koulutusmoduuli_koodiarvo = $vuosiluokka and
+      (pts.vahvistus_paiva >= $paiva or pts.vahvistus_paiva is null) and
+      aikaj.alku <= $paiva and (aikaj.loppu >= $paiva or aikaj.loppu is null)
+    group by oo.opiskeluoikeus_oid"""
+  }
+
+  private def voimassaOlevatVuosiluokatQuery(opiskeluoikeusOids: Seq[String]) = {
+    RPäätasonSuoritukset
+      .filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids)
+      .filter(_.suorituksenTyyppi === "perusopetuksenvuosiluokka")
+      .filter(_.vahvistusPäivä.isEmpty)
+      .map(row => (row.opiskeluoikeusOid, row.koulutusmoduuliKoodiarvo))
+  }
+
+  private def luokalleJäävätOpiskeluoikeusAikajaksotPäätasonSuorituksetResult(oppilaitos: Set[String], paiva: LocalDate, vuosiluokka: String) = {
+    import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+    implicit val getResult = GetResult[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])](pr => (pr.nextString(), pr.nextArray(), pr.nextArray()))
+    runDbSync(luokalleJäävätOpiskeluoikeusAikajaksotPaatasonSuorituksetQuery(oppilaitos.toSeq, Date.valueOf(paiva), vuosiluokka).as[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])])
+  }
+
+  private def luokalleJäävätOpiskeluoikeusAikajaksotPaatasonSuorituksetQuery(oppilaitos: Seq[String], paiva: Date, vuosiluokka: String) = {
+    import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+    sql"""
+     select
+      oo.opiskeluoikeus_oid,
+      array_agg(pts.paatason_suoritus_id),
+      array_agg(aikaj.id)
+    from
+      r_opiskeluoikeus oo
+    join
+      r_paatason_suoritus pts
+    on
+      pts.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
+    join
+      r_opiskeluoikeus_aikajakso aikaj
+    on
+      aikaj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
+    where
+      oo.oppilaitos_oid = any($oppilaitos) and
       oo.koulutusmuoto = 'perusopetus' and
       pts.suorituksen_tyyppi = 'perusopetuksenvuosiluokka' and
       pts.koulutusmoduuli_koodiarvo = '9' and
@@ -158,13 +165,13 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
       oo.opiskeluoikeus_oid"""
   }
 
-  private def peruskoulunPäättävätOpiskeluoikeusAikajaksotPäätasonSuorituksetResult(oppilaitos: String, paiva: LocalDate, vuosiluokka: String, luokalleJaavat: Seq[String]) = {
+  private def peruskoulunPäättävätOpiskeluoikeusAikajaksotPäätasonSuorituksetResult(oppilaitos: Set[String], paiva: LocalDate, vuosiluokka: String, luokalleJaavat: Seq[String]) = {
     import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
     implicit val getResult = GetResult[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])](pr => (pr.nextString(), pr.nextArray(), pr.nextArray()))
-    runDbSync(peruskoulunPäättävätOpiskeluoikeusAikajaksotPäätasonSuorituksetQuery(oppilaitos, Date.valueOf(paiva), vuosiluokka, luokalleJaavat).as[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])])
+    runDbSync(peruskoulunPäättävätOpiskeluoikeusAikajaksotPäätasonSuorituksetQuery(oppilaitos.toSeq, Date.valueOf(paiva), vuosiluokka, luokalleJaavat).as[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])])
   }
 
-  private def peruskoulunPäättävätOpiskeluoikeusAikajaksotPäätasonSuorituksetQuery(oppilaitos: String, paiva: Date, vuosiluokka: String, luokalleJaavatOidit: Seq[String]) = {
+  private def peruskoulunPäättävätOpiskeluoikeusAikajaksotPäätasonSuorituksetQuery(oppilaitos: Seq[String], paiva: Date, vuosiluokka: String, luokalleJaavatOidit: Seq[String]) = {
     import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
     sql"""
       with koulun_paattavat_ysiluokkalaiset as (
@@ -177,7 +184,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
         on
           pts.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
         where
-          oo.oppilaitos_oid = $oppilaitos and
+          oo.oppilaitos_oid = any ($oppilaitos) and
           oo.koulutusmuoto = 'perusopetus' and
           not (oo.opiskeluoikeus_oid = any ($luokalleJaavatOidit)) and
           pts.suorituksen_tyyppi = 'perusopetuksenvuosiluokka' and

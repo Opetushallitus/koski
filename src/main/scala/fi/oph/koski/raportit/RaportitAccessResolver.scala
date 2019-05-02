@@ -7,7 +7,7 @@ import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.raportointikanta.RaportointiDatabase
 import fi.oph.koski.schema.Organisaatio.Oid
-import fi.oph.koski.schema.{Koulutustoimija, Oppilaitos, Organisaatio}
+import fi.oph.koski.schema._
 
 import scala.collection.JavaConverters._
 
@@ -20,31 +20,40 @@ object RaportitAccessResolver {
 case class RaportitAccessResolver(organisaatioRepository: OrganisaatioRepository, raportointiDatabase: RaportointiDatabase, config: Config) {
 
   def checkAccess(oid: Organisaatio.Oid)(implicit session: KoskiSession): Either[HttpStatus, Organisaatio.Oid] = {
-    if (!session.hasRaportitAccess) {
-      Left(KoskiErrorCategory.forbidden.organisaatio())
-    } else if (!session.hasReadAccess(oid)) {
+    if (!(session.hasRaportitAccess && session.hasReadAccess(oid))) {
       Left(KoskiErrorCategory.forbidden.organisaatio())
     } else {
       Right(oid)
     }
   }
 
-  def availableRaportit(organisaatioOid: Organisaatio.Oid)(implicit session: KoskiSession): Set[String] = {
-    val organisaatiOidit: Option[Set[Oid]] = organisaatioRepository.getOrganisaatio(organisaatioOid).map {
-      case koulutustoimija: Koulutustoimija  => organisaatioRepository.getChildOids(koulutustoimija.oid).getOrElse(Set.empty)
-      case oppilaitos: Oppilaitos => Set(oppilaitos.oid)
-      case _ => Set.empty[Oid]
-    }
-
-    organisaatiOidit
-      .map(raportointiDatabase.oppilaitostenKoulutusmuodot)
-      .map(_.flatMap(raportitKoulutusmuodolle))
-      .map(_.filter(checkAccessIfAccessIsLimited(_)))
-      .getOrElse(Set.empty)
+  def kyselyOiditOrganisaatiolle(organisaatioOid: Organisaatio.Oid): Set[Organisaatio.Oid] = {
+    organisaatioRepository.getOrganisaatio(organisaatioOid)
+      .flatMap(childOidsIfKoulutustoimija)
+      .getOrElse(Set.empty[Oid])
   }
 
-  private def raportitKoulutusmuodolle(koulutusmuoto: String) = koulutusmuoto match {
-    case "ammatillinenkoulutus" => Seq("opiskelijavuositiedot", "suoritustietojentarkistus", "ammatillinenosittainensuoritustietojentarkistus")
+  def availableRaportit(organisaatioOid: Organisaatio.Oid)(implicit session: KoskiSession): Set[Organisaatio.Oid] = {
+    val organisaatio = organisaatioRepository.getOrganisaatio(organisaatioOid)
+    val isKoulutustoimija = organisaatio.map(_.isInstanceOf[Koulutustoimija]).getOrElse(false)
+
+    organisaatio
+      .flatMap(childOidsIfKoulutustoimija)
+      .map(raportointiDatabase.oppilaitostenKoulutusmuodot)
+      .map(_.flatMap(raportitKoulutusmuodolle(_, isKoulutustoimija)))
+      .map(_.filter(checkAccessIfAccessIsLimited(_)))
+      .getOrElse(Set.empty[Oid])
+  }
+
+  private def childOidsIfKoulutustoimija(organisaatio: OrganisaatioWithOid) = organisaatio match {
+    case koulutustoimija: Koulutustoimija => organisaatioRepository.getChildOids(koulutustoimija.oid)
+    case oppilaitos: Oppilaitos  => Some(Set(oppilaitos.oid))
+    case toimipiste: Toimipiste => Some(Set(toimipiste.oid))
+    case _ => None
+  }
+
+  private def raportitKoulutusmuodolle(koulutusmuoto: String, isKoulutustoimija: Boolean) = koulutusmuoto match {
+    case "ammatillinenkoulutus" if !isKoulutustoimija => Seq("opiskelijavuositiedot", "suoritustietojentarkistus", "ammatillinenosittainensuoritustietojentarkistus")
     case "perusopetus" => Seq("perusopetuksenvuosiluokka")
     case _ => Seq.empty
   }

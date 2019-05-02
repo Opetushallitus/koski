@@ -37,7 +37,7 @@ export const raportitContentP = () => {
 }
 
 const Oppilaitos = ({oppilaitosAtom}) => {
-  const selectableOrgTypes = ['OPPILAITOS', 'OPPISOPIMUSTOIMIPISTE']
+  const selectableOrgTypes = ['OPPILAITOS', 'OPPISOPIMUSTOIMIPISTE', 'KOULUTUSTOIMIJA']
   return (<label className='oppilaitos'><Text name='Oppilaitos'/>
     {
       oppilaitosAtom.map(oppilaitos => (
