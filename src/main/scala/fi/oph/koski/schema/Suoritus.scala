@@ -55,7 +55,7 @@ object Suoritus {
   def toimipisteetTraversal: Traversal[Suoritus, OrganisaatioWithOid] = new Traversal[Suoritus, OrganisaatioWithOid] {
     def modify(suoritus: Suoritus)(f: OrganisaatioWithOid => OrganisaatioWithOid) = {
       val toimipisteTraversal = traversal[Suoritus].ifInstanceOf[Toimipisteellinen].field[OrganisaatioWithOid]("toimipiste")++
-        traversal[Suoritus].ifInstanceOf[MahdollisestiToimipisteellinen].field[Option[OrganisaatioWithOid]]("toimipiste").items
+        traversal[Suoritus].ifInstanceOf[MahdollisestiToimipisteellinen].filter(!_.isInstanceOf[Toimipisteetön]).field[Option[OrganisaatioWithOid]]("toimipiste").items
       val withModifiedToimipiste = toimipisteTraversal.modify(suoritus)(f)
       if (suoritus.osasuoritusLista.nonEmpty) {
         val osasuorituksetTraversal = traversal[Suoritus].field[Option[List[Suoritus]]]("osasuoritukset").items.items
@@ -74,6 +74,10 @@ trait MahdollisestiToimipisteellinen extends Suoritus {
   @OksaUri("tmpOKSAID148", "koulutusorganisaation toimipiste")
   @Title("Oppilaitos / toimipiste")
   def toimipiste: Option[OrganisaatioWithOid]
+}
+
+trait Toimipisteetön extends MahdollisestiToimipisteellinen {
+  override def toimipiste: Option[OrganisaatioWithOid] = None
 }
 
 trait Suorituskielellinen {
