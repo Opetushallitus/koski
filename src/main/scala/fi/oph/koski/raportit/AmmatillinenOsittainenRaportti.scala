@@ -23,9 +23,9 @@ object AmmatillinenOsittainenRaportti extends AikajaksoRaportti with Ammatilline
     val (opiskeluoikeus, henkilö, aikajaksot, päätasonSuoritukset, sisältyvätOpiskeluoikeudet, osasuoritukset) = data
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](opiskeluoikeus.data \ "lähdejärjestelmänId")
     val osaamisalat = extractOsaamisalatAikavalilta(päätasonSuoritukset, alku, loppu)
-    val yhteistenTutkinnonOsienSuoritukset = osasuoritukset.filter(tutkinnonOsanRyhmä(_, "2"))
+    val yhteistenTutkinnonOsienSuoritukset = osasuoritukset.filter(isYhteinenTutkinnonOsa)
     val yhteistenTutkinnonOsienOsaSuoritukset = osasuoritukset.filter(isAmmatillisenTutkinnonOsanOsaalue)
-    val muutSuoritukset = osasuoritukset.filter(tutkinnonOsanRyhmä(_, "1", "3", "4"))
+    val muutSuoritukset = osasuoritukset.filter(isAmmatillisenTutkinnonOsa)
 
     AmmatillinenOsittainRaporttiRow(
       opiskeluoikeusOid = opiskeluoikeus.opiskeluoikeusOid,

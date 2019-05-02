@@ -67,7 +67,9 @@ trait AmmatillinenRaporttiUtils {
 
   val isRahoituksenPiirissä: ROsasuoritusRow => Boolean = osasuoritus => JsonSerializer.extract[Option[OsaamisenTunnustaminen]](osasuoritus.data \ "tunnustettu").exists(_.rahoituksenPiirissä)
 
-  val isYhteinenTutkinnonOsa: ROsasuoritusRow => Boolean = osasuoritus => tutkinnonOsanRyhmä(osasuoritus, "2")
+  val yhteistenTutkinnonOsienKoodistokoodiarvot = Set("101053", "101054", "101055", "101056", "400012", "400013", "400014")
+
+  val isYhteinenTutkinnonOsa: ROsasuoritusRow => Boolean = osasuoritus => yhteistenTutkinnonOsienKoodistokoodiarvot.contains(osasuoritus.koulutusmoduuliKoodiarvo)
 
   val osasuorituksenaOsissa: (ROsasuoritusRow, Seq[ROsasuoritusRow]) => Boolean = (osasuoritus, osat) => osat.exists(osa => osasuoritus.ylempiOsasuoritusId.contains(osa.osasuoritusId))
 
@@ -95,7 +97,8 @@ trait AmmatillinenRaporttiUtils {
 
   val isAmmatillisenTutkinnonOsa: ROsasuoritusRow => Boolean = osasuoritus => {
     !tutkinnonosatvalinnanmahdollisuusKoodiarvot.contains(osasuoritus.koulutusmoduuliKoodiarvo) &&
+      osasuoritus.koulutusmoduuliKoodisto.exists(_ == "tutkinnonosat") &&
       osasuoritus.suorituksenTyyppi == "ammatillisentutkinnonosa" &&
-      tutkinnonOsanRyhmä(osasuoritus, "1")
+      !isYhteinenTutkinnonOsa(osasuoritus)
   }
 }
