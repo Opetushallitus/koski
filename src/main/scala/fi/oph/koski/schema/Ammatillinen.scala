@@ -461,7 +461,7 @@ case class KorkeakouluopintoSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
 ) extends ValinnanMahdollisuus
 
-trait ValinnanMahdollisuus extends AmmatillisenTutkinnonOsanSuoritus with Arvioinniton with Vahvistukseton {
+trait ValinnanMahdollisuus extends AmmatillisenTutkinnonOsanSuoritus with Arvioinniton with Vahvistukseton with Toimipisteetön {
   override def tutkinto: Option[AmmatillinenTutkintoKoulutus] = None
   override def näyttö: Option[Näyttö] = None
   override def toimipiste: Option[OrganisaatioWithOid] = None
