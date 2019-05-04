@@ -14,7 +14,7 @@ import scala.concurrent.duration._
 class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(implicit cacheInvalidator: CacheManager) extends JsonOrganisaatioRepository(koodisto) {
   private val hierarkiaCache = KeyValueCache[String, Option[OrganisaatioHierarkia]](
     RefreshingCache("OrganisaatioRepository.hierarkia", 1.hour, 15000),
-    oid => fetch(oid).organisaatiot.map(convertOrganisaatio).headOption
+    oid => fetch(oid).organisaatiot.map(convertOrganisaatio).find(_.oid == oid)
   )
 
   private val nimetCache = KeyValueCache[String, List[OrganisaationNimihakuTulos]](

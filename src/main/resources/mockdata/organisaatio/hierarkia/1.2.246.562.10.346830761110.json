@@ -1,5 +1,13 @@
 {
   "organisaatiot" : [ {
+      "oid": "1.2.246.562.10.1234567890",
+      "lakkautusPvm": 1556886772909,
+      "nimi": {
+        "fi": "Testaa järjestys voi muuttua"
+      },
+      "organisaatiotyypit": ["TOIMIPISTE"],
+      "children": []
+    }, {
     "oid" : "1.2.246.562.10.346830761110",
     "nimi" : {
       "fi" : "HELSINGIN KAUPUNKI",
