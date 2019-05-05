@@ -16,11 +16,13 @@ trait OrganisaatioRepository {
   /**
    * Organisation hierarchy containing children of requested org. Parents are not included.
    */
-  def getOrganisaatioHierarkia(oid: String): Option[OrganisaatioHierarkia] = getOrganisaatioHierarkiaIncludingParents(oid).flatMap(_.find(oid))
+  def getOrganisaatioHierarkia(oid: String): Option[OrganisaatioHierarkia] =
+    getOrganisaatioHierarkiaIncludingParents(oid).map(_.find(oid)).find(_.isDefined).flatten
+
   /**
    * Organisation hierarchy containing parents and children of requested org.
    */
-  def getOrganisaatioHierarkiaIncludingParents(oid: String): Option[OrganisaatioHierarkia]
+  def getOrganisaatioHierarkiaIncludingParents(oid: String): List[OrganisaatioHierarkia]
   def getOrganisaatio(oid: String): Option[OrganisaatioWithOid] = getOrganisaatioHierarkia(oid).map(_.toOrganisaatio)
   def getChildOids(oid: String): Option[Set[String]] = getOrganisaatioHierarkia(oid).map { hierarkia =>
     def flatten(orgs: List[OrganisaatioHierarkia]): List[OrganisaatioHierarkia] = {
@@ -34,13 +36,13 @@ trait OrganisaatioRepository {
   def findOppilaitosForToimipiste(toimipiste: OrganisaatioWithOid): Option[Oppilaitos] = findParentWith(toimipiste, _.toOppilaitos)
 
   private def findParentWith[T <: OrganisaatioWithOid](org: OrganisaatioWithOid, findr: OrganisaatioHierarkia => Option[T]) = {
-    def containsOid(root: OrganisaatioHierarkia) = (root.oid == org.oid || root.children.exists(_.oid == org.oid))
+    def containsOid(root: OrganisaatioHierarkia) = root.oid == org.oid || root.children.exists(_.oid == org.oid)
     def findKoulutustoimijaFromHierarchy(root: OrganisaatioHierarkia): Option[T] = if (findr(root).isDefined && containsOid(root)) {
       findr(root)
     } else {
       root.children.flatMap(findKoulutustoimijaFromHierarchy).headOption
     }
-    getOrganisaatioHierarkiaIncludingParents(org.oid).flatMap(findKoulutustoimijaFromHierarchy)
+    getOrganisaatioHierarkiaIncludingParents(org.oid).map(findKoulutustoimijaFromHierarchy).find(_.isDefined).flatten
   }
 
   def findHierarkia(query: String): List[OrganisaatioHierarkia]

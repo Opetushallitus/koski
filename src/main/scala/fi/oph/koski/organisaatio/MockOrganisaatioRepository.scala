@@ -80,8 +80,8 @@ object MockOrganisaatioRepository extends JsonOrganisaatioRepository(MockKoodist
     rootOrgs.flatMap(flatten).flatMap(_.toOppilaitos)
   }
 
-  override def getOrganisaatioHierarkiaIncludingParents(oid: String): Option[OrganisaatioHierarkia] = {
-    rootOrgs.find(_.find(oid).isDefined)
+  override def getOrganisaatioHierarkiaIncludingParents(oid: String): List[OrganisaatioHierarkia] = {
+    rootOrgs.find(_.find(oid).isDefined).toList
   }
 
   def findByOppilaitosnumero(numero: String): Option[Oppilaitos] = {

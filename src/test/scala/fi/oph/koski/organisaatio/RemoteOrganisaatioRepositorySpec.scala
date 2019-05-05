@@ -21,8 +21,12 @@ class RemoteOrganisaatioRepositorySpec extends FreeSpec with Matchers with Eithe
   private val orgRepository = new RemoteOrganisaatioRepository(Http("http://localhost:9877", "organisaatiopalvelu"), KoskiApplicationForTests.koodistoViitePalvelu)
 
   "RemoteOrganisaatioRepository" - {
-    "hakee organisaatiohierarkian" in {
+    "hakee koulutustoimijan organisaatiohierarkian" in {
       orgRepository.getOrganisaatioHierarkia(helsinginKaupunki) should be(MockOrganisaatioRepository.getOrganisaatioHierarkia(helsinginKaupunki))
+    }
+
+    "hakee oppilaitoksen organisaatiohierarkian" in {
+      orgRepository.getOrganisaatioHierarkia(MockOrganisaatiot.stadinAmmattiopisto) should be(MockOrganisaatioRepository.getOrganisaatioHierarkia(MockOrganisaatiot.stadinAmmattiopisto))
     }
   }
 
@@ -36,9 +40,6 @@ class RemoteOrganisaatioRepositorySpec extends FreeSpec with Matchers with Eithe
   private def mockEndpoints = {
     wireMockServer.stubFor(
       get(urlPathEqualTo("/organisaatio-service/rest/organisaatio/v2/hierarkia/hae"))
-        .withQueryParam("aktiiviset", equalTo("true"))
-        .withQueryParam("lakkautetut", equalTo("true"))
-        .withQueryParam("oid", equalTo(helsinginKaupunki))
         .willReturn(ok(write(readResource(hierarchyResourcename(helsinginKaupunki))))))
   }
 }

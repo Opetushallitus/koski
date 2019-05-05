@@ -12,9 +12,9 @@ import fi.oph.koski.util.DateOrdering
 import scala.concurrent.duration._
 
 class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(implicit cacheInvalidator: CacheManager) extends JsonOrganisaatioRepository(koodisto) {
-  private val hierarkiaCache = KeyValueCache[String, Option[OrganisaatioHierarkia]](
-    RefreshingCache("OrganisaatioRepository.hierarkia", 1.hour, 15000),
-    oid => fetch(oid).organisaatiot.map(convertOrganisaatio).find(_.oid == oid)
+  private val hierarkiaCache = KeyValueCache[String, List[OrganisaatioHierarkia]](
+    RefreshingCache("OrganisaatioRepository.hierarkia", 1.second, 15000),
+    fetch(_).organisaatiot.map(convertOrganisaatio)
   )
 
   private val nimetCache = KeyValueCache[String, List[OrganisaationNimihakuTulos]](
@@ -32,7 +32,7 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(i
     }
   )
 
-  def getOrganisaatioHierarkiaIncludingParents(oid: String): Option[OrganisaatioHierarkia] = hierarkiaCache(oid)
+  def getOrganisaatioHierarkiaIncludingParents(oid: String): List[OrganisaatioHierarkia] = hierarkiaCache(oid)
 
   def findByOppilaitosnumero(numero: String): Option[Oppilaitos] = oppilaitosnumeroCache(numero)
 
