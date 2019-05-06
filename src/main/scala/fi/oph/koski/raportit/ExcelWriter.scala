@@ -137,6 +137,10 @@ object ExcelWriter {
 
 case class Column(title: String, width: Option[Int] = None)
 
+object CompactColumn {
+  def apply(title: String): Column = Column(title, width = Some(2000))
+}
+
 sealed trait Sheet {
   def title: String
 }
