@@ -18,22 +18,22 @@ class RaportitServletSpec extends FreeSpec with RaportointikantaTestMethods with
     "Oppilaitoksen mahdolliset raportit" - {
       "sallii opiskelijavuositiedot ammatilliselle oppilaitokselle" in {
         verifyMahdollisetRaportit(stadinAmmattiopisto) { raportit =>
-          raportit should contain("opiskelijavuositiedot")
+          raportit should contain(AmmatillinenOpiskelijavuositiedot.toString)
         }
       }
       "sallii suoritustietojen tarkistuksen ammatilliselle oppilaitokselle" in {
         verifyMahdollisetRaportit(stadinAmmattiopisto) { raportit =>
-          raportit should contain("suoritustietojentarkistus")
+          raportit should contain(AmmatillinenTutkintoSuoritustietojenTarkistus.toString)
         }
       }
       "sallii suoritustietojen tarkistuksen osittaisista ammatillisista tutkinnoista ammatilliselle oppilaitokselle" in {
         verifyMahdollisetRaportit(stadinAmmattiopisto) { raportit =>
-          raportit should contain("ammatillinenosittainensuoritustietojentarkistus")
+          raportit should contain(AmmatillinenOsittainenSuoritustietojenTarkistus.toString)
         }
       }
       "sallii perusopetuksenvuosiluokka raportin perusopetusta järjestävälle oppilaitokselle" in {
         verifyMahdollisetRaportit(jyväskylänNormaalikoulu) { raportit =>
-          raportit should contain("perusopetuksenvuosiluokka")
+          raportit should contain(PerusopetuksenVuosiluokka.toString)
         }
       }
       "ei salli mitään nykyisistä raporteista lukiolle" in {
@@ -46,7 +46,7 @@ class RaportitServletSpec extends FreeSpec with RaportointikantaTestMethods with
     "Käyttäjä oikeuksien tarkistus" - {
       "sallii koulutustoimijan oikeuksilla hakiessa koulutustoimijan alla olevien oppilaitosten raportit perusopetukselle" in {
         verifyMahdollisetRaportit(helsinginKaupunki, user = helsinginKaupunkiPalvelukäyttäjä) { raportit => {
-           raportit should equal(Seq("perusopetuksenvuosiluokka"))
+           raportit should equal(Seq(PerusopetuksenVuosiluokka.toString))
           }
         }
       }

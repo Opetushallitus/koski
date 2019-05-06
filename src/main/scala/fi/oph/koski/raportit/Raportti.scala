@@ -69,3 +69,12 @@ case class OppilaitosRaporttiResponse
   filename: String,
   downloadToken: Option[String]
 )
+
+sealed abstract trait RaportinTyyppi {
+  override def toString: String = this.getClass.getSimpleName.toLowerCase.filterNot(_ == '$')
+}
+
+case object AmmatillinenOpiskelijavuositiedot extends RaportinTyyppi
+case object AmmatillinenOsittainenSuoritustietojenTarkistus extends RaportinTyyppi
+case object AmmatillinenTutkintoSuoritustietojenTarkistus extends RaportinTyyppi
+case object PerusopetuksenVuosiluokka extends RaportinTyyppi

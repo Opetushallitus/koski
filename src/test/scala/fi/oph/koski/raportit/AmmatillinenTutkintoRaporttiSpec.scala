@@ -116,7 +116,7 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
     }
 
     "raportin lataaminen toimii (ja tuottaa audit log viestin)" in {
-      verifyRaportinLataaminen(apiUrl = "api/raportit/suoritustietojentarkistus", expectedRaporttiNimi = "suoritustietojentarkistus", expectedFileNamePrefix = "suoritustiedot")
+      verifyRaportinLataaminen(apiUrl = "api/raportit/ammatillinentutkintosuoritustietojentarkistus", expectedRaporttiNimi = AmmatillinenTutkintoSuoritustietojenTarkistus.toString, expectedFileNamePrefix = "suoritustiedot")
     }
   }
 

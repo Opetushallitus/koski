@@ -28,24 +28,19 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
   }
 
   get("/mahdolliset-raportit/:oppilaitosOid") {
-   (for {
-      validOid <- OrganisaatioOid.validateOrganisaatioOid(getStringParam("oppilaitosOid"))
-      hasAccess <- accessResolver.checkAccess(validOid)
-    } yield (hasAccess)) match {
-     case Right(oid) => accessResolver.availableRaportit(oid)
-     case Left(httpStatus) => haltWithStatus(httpStatus)
-   }
+    val oid = getOppilaitosParamAndCheckAccess
+    accessResolver.mahdollisetRaporttienTyypitOrganisaatiolle(oid).map(_.toString)
   }
 
-  get("/opiskelijavuositiedot") {
+  get("/ammatillinenopiskelijavuositiedot") {
     val parsedRequest = parseAikajaksoRaporttiRequest
-    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=opiskelijavuositiedot&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
+    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=ammatillinenopiskelijavuositiedot&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
     excelResponse(raportitService.opiskelijaVuositiedot(parsedRequest))
   }
 
-  get("/suoritustietojentarkistus") {
+  get("/ammatillinentutkintosuoritustietojentarkistus") {
     val parsedRequest = parseAikajaksoRaporttiRequest
-    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=suoritustietojentarkistus&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
+    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=ammatillinentutkintosuoritustietojentarkistus&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
     excelResponse(raportitService.suoritustietojenTarkistus(parsedRequest))
   }
 

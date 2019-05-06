@@ -2,7 +2,6 @@ package fi.oph.koski.raportit
 
 import com.typesafe.config.Config
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.raportointikanta.RaportointiDatabase
@@ -19,51 +18,37 @@ object RaportitAccessResolver {
 
 case class RaportitAccessResolver(organisaatioRepository: OrganisaatioRepository, raportointiDatabase: RaportointiDatabase, config: Config) {
 
-  def checkAccess(oid: Organisaatio.Oid)(implicit session: KoskiSession): Either[HttpStatus, Organisaatio.Oid] = {
-    if (!(session.hasRaportitAccess && session.hasReadAccess(oid))) {
-      Left(KoskiErrorCategory.forbidden.organisaatio())
-    } else {
-      Right(oid)
-    }
-  }
-
   def kyselyOiditOrganisaatiolle(organisaatioOid: Organisaatio.Oid): Set[Organisaatio.Oid] = {
     organisaatioRepository.getOrganisaatio(organisaatioOid)
-      .flatMap(childOidsIfKoulutustoimija)
+      .flatMap(organisaatioWithOid => organisaatioRepository.getChildOids(organisaatioWithOid.oid))
       .getOrElse(Set.empty[Oid])
   }
 
-  def availableRaportit(organisaatioOid: Organisaatio.Oid)(implicit session: KoskiSession): Set[Organisaatio.Oid] = {
+  def mahdollisetRaporttienTyypitOrganisaatiolle(organisaatioOid: Organisaatio.Oid)(implicit session: KoskiSession): Set[RaportinTyyppi] = {
     val organisaatio = organisaatioRepository.getOrganisaatio(organisaatioOid)
     val isKoulutustoimija = organisaatio.map(_.isInstanceOf[Koulutustoimija]).getOrElse(false)
 
     organisaatio
-      .flatMap(childOidsIfKoulutustoimija)
+      .flatMap(organisaatioWithOid => organisaatioRepository.getChildOids(organisaatioWithOid.oid))
       .map(raportointiDatabase.oppilaitostenKoulutusmuodot)
-      .map(_.flatMap(raportitKoulutusmuodolle(_, isKoulutustoimija)))
-      .map(_.filter(checkAccessIfAccessIsLimited(_)))
-      .getOrElse(Set.empty[Oid])
+      .map(_.flatMap(raportinTyypitKoulutusmuodolle(_, isKoulutustoimija)))
+      .map(_.filter(checkRaporttiAccessIfAccessIsLimited(_)))
+      .getOrElse(Set.empty[RaportinTyyppi])
   }
 
-  private def childOidsIfKoulutustoimija(organisaatio: OrganisaatioWithOid) = organisaatio match {
-    case koulutustoimija: Koulutustoimija => organisaatioRepository.getChildOids(koulutustoimija.oid)
-    case oppilaitos: Oppilaitos  => Some(Set(oppilaitos.oid))
-    case toimipiste: Toimipiste => Some(Set(toimipiste.oid))
-    case _ => None
+  private def raportinTyypitKoulutusmuodolle(koulutusmuoto: String, isKoulutustoimija: Boolean) = koulutusmuoto match {
+    case "ammatillinenkoulutus" if !isKoulutustoimija => Seq(AmmatillinenOpiskelijavuositiedot, AmmatillinenTutkintoSuoritustietojenTarkistus, AmmatillinenOsittainenSuoritustietojenTarkistus)
+    case "perusopetus" => Seq(PerusopetuksenVuosiluokka)
+    case _ => Seq.empty[RaportinTyyppi]
   }
 
-  private def raportitKoulutusmuodolle(koulutusmuoto: String, isKoulutustoimija: Boolean) = koulutusmuoto match {
-    case "ammatillinenkoulutus" if !isKoulutustoimija => Seq("opiskelijavuositiedot", "suoritustietojentarkistus", "ammatillinenosittainensuoritustietojentarkistus")
-    case "perusopetus" => Seq("perusopetuksenvuosiluokka")
-    case _ => Seq.empty
-  }
-
-  private def checkAccessIfAccessIsLimited(raportinNimi: String)(implicit session: KoskiSession) = {
+  private def checkRaporttiAccessIfAccessIsLimited(raportti: RaportinTyyppi)(implicit session: KoskiSession) = {
     val rajatutRaportit = config.getConfigList("raportit.rajatut")
-    val conf = rajatutRaportit.asScala.find(_.getString("name") == raportinNimi)
+    val conf = rajatutRaportit.asScala.find(_.getString("name") == raportti.toString)
     conf match {
       case Some(c) => c.getStringList("whitelist").contains(session.oid)
       case _ => true
     }
   }
 }
+
