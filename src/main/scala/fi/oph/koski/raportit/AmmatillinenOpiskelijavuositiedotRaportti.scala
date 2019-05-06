@@ -54,7 +54,7 @@ case class OpiskelijavuositiedotRow(
   lisätiedotKoulutusvienti: Boolean
 )
 
-object Opiskelijavuositiedot extends AikajaksoRaportti {
+object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
 
   def buildRaportti(raportointiDatabase: RaportointiDatabase, oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate): Seq[OpiskelijavuositiedotRow] = {
     val result = raportointiDatabase.opiskeluoikeusAikajaksot(oppilaitosOid, OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo, alku, loppu)

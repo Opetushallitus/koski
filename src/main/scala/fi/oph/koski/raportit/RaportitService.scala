@@ -9,11 +9,11 @@ class RaportitService(application: KoskiApplication) {
   private lazy val accessResolver = RaportitAccessResolver(application)
 
   def opiskelijaVuositiedot(request: AikajaksoRaporttiRequest): OppilaitosRaporttiResponse = {
-    aikajaksoRaportti(request, Opiskelijavuositiedot)
+    aikajaksoRaportti(request, AmmatillinenOpiskalijavuositiedotRaportti)
   }
 
   def suoritustietojenTarkistus(request: AikajaksoRaporttiRequest): OppilaitosRaporttiResponse = {
-    aikajaksoRaportti(request, SuoritustietojenTarkistus)
+    aikajaksoRaportti(request, AmmatillinenTutkintoRaportti)
   }
 
   def ammatillinenOsittainenSuoritustietojenTarkistus(request: AikajaksoRaporttiRequest): OppilaitosRaporttiResponse = {
@@ -21,7 +21,7 @@ class RaportitService(application: KoskiApplication) {
   }
 
   def perusopetuksenVuosiluokka(request: PerusopetuksenVuosiluokkaRequest): OppilaitosRaporttiResponse = {
-    perusopetuksenVuosiluokka(request, PerusopetuksenVuosiluokka)
+    perusopetuksenVuosiluokka(request, PerusopetuksenVuosiluokkaRaportti)
   }
 
   private def aikajaksoRaportti(request: AikajaksoRaporttiRequest, raporttiBuilder: AikajaksoRaportti) = {

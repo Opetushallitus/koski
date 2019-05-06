@@ -12,7 +12,7 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.{ROpiskeluoikeusAikajaksoRow, RaportointikantaTestMethods}
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
-class OpiskelijavuositiedotSpec extends FreeSpec with RaportointikantaTestMethods with OpiskeluoikeusTestMethods with Matchers with BeforeAndAfterAll {
+class AmmatillinenOpiskelijavuositiedotRaporttiSpec extends FreeSpec with RaportointikantaTestMethods with OpiskeluoikeusTestMethods with Matchers with BeforeAndAfterAll {
 
   private val raportointiDatabase = KoskiApplicationForTests.raportointiDatabase
 
@@ -20,7 +20,7 @@ class OpiskelijavuositiedotSpec extends FreeSpec with RaportointikantaTestMethod
     val oid = "1.2.246.562.15.123456"
 
     "raportti sisältää oikeat tiedot" in {
-      val result = Opiskelijavuositiedot.buildRaportti(raportointiDatabase, MockOrganisaatiot.stadinAmmattiopisto, LocalDate.parse("2016-01-01"), LocalDate.parse("2016-12-31"))
+      val result = AmmatillinenOpiskalijavuositiedotRaportti.buildRaportti(raportointiDatabase, MockOrganisaatiot.stadinAmmattiopisto, LocalDate.parse("2016-01-01"), LocalDate.parse("2016-12-31"))
 
       val aarnenOpiskeluoikeusOid = lastOpiskeluoikeus(MockOppijat.ammattilainen.oid).oid.get
       val aarnenRivi = result.find(_.opiskeluoikeusOid == aarnenOpiskeluoikeusOid)
@@ -39,7 +39,7 @@ class OpiskelijavuositiedotSpec extends FreeSpec with RaportointikantaTestMethod
 
     "ostettu" in {
       val markkasenOpiskeluoikeusOid = lastOpiskeluoikeus(MockOppijat.markkanen.oid).oid.get
-      val rivi = Opiskelijavuositiedot.buildRaportti(raportointiDatabase, MockOrganisaatiot.omnia, LocalDate.parse("2000-01-01"), LocalDate.parse("2000-01-02"))
+      val rivi = AmmatillinenOpiskalijavuositiedotRaportti.buildRaportti(raportointiDatabase, MockOrganisaatiot.omnia, LocalDate.parse("2000-01-01"), LocalDate.parse("2000-01-02"))
         .find(_.opiskeluoikeusOid == markkasenOpiskeluoikeusOid)
         .get
       rivi.ostettu should equal(true)
@@ -47,35 +47,35 @@ class OpiskelijavuositiedotSpec extends FreeSpec with RaportointikantaTestMethod
 
     "opiskelijavuoteen kuuluvat ja muut lomat lasketaan oikein" - {
       "lasna-tilaa ei lasketa lomaksi" in {
-        Opiskelijavuositiedot.lomaPäivät(Seq(
+        AmmatillinenOpiskalijavuositiedotRaportti.lomaPäivät(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2016-05-31"), "lasna", Date.valueOf("2016-01-15"))
         )) should equal((0, 0))
       }
       "lyhyt loma (alle 28 pv) lasketaan kokonaan opiskelijavuoteen" in {
-        Opiskelijavuositiedot.lomaPäivät(Seq(
+        AmmatillinenOpiskalijavuositiedotRaportti.lomaPäivät(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-15")),
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-05"), "loma", Date.valueOf("2016-02-01")),
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-06"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-02-06"))
         )) should equal((5, 0))
       }
       "pitkästä lomasta lasketaan 28 pv opiskelijavuoteen, loput muihin" in {
-        Opiskelijavuositiedot.lomaPäivät(Seq(
+        AmmatillinenOpiskalijavuositiedotRaportti.lomaPäivät(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-01"), Date.valueOf("2016-12-31"), "loma", Date.valueOf("2016-01-01"))
         )) should equal((28, 366 - 28))
       }
       "jos loma on alkanut ennen tätä aikajaksoa" - {
         "jos päiviä on tarpeeksi jäljellä, koko jakso lasketaan opiskelijavuoteen" in {
-          Opiskelijavuositiedot.lomaPäivät(Seq(
+          AmmatillinenOpiskalijavuositiedotRaportti.lomaPäivät(Seq(
             ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-14"), "loma", Date.valueOf("2016-01-25"))
           )) should equal((14, 0))
         }
         "jos päiviä on jäljellä jonkin verran, osa jaksosta lasketaan opiskelijavuoteen" in {
-          Opiskelijavuositiedot.lomaPäivät(Seq(
+          AmmatillinenOpiskalijavuositiedotRaportti.lomaPäivät(Seq(
             ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-03-31"), "loma", Date.valueOf("2016-01-31"))
           )) should equal((27, 33))
         }
         "jos päiviä ei ole jäljellä yhtään, koko jakso lasketaan muihin lomiin" in {
-          Opiskelijavuositiedot.lomaPäivät(Seq(
+          AmmatillinenOpiskalijavuositiedotRaportti.lomaPäivät(Seq(
             ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-14"), "loma", Date.valueOf("2015-12-01"))
           )) should equal((0, 14))
         }
@@ -85,40 +85,40 @@ class OpiskelijavuositiedotSpec extends FreeSpec with RaportointikantaTestMethod
     "opiskelijavuosikertymä lasketaan oikein" - {
 
       "läsnäolopäivät lasketaan mukaan" in {
-        Opiskelijavuositiedot.opiskelijavuosikertymä(Seq(
+        AmmatillinenOpiskalijavuositiedotRaportti.opiskelijavuosikertymä(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-01"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-01"))
         )) should equal(31)
       }
 
       "osa-aikaisuus huomioidaan" in {
-        Opiskelijavuositiedot.opiskelijavuosikertymä(Seq(
+        AmmatillinenOpiskalijavuositiedotRaportti.opiskelijavuosikertymä(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-01"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-01"), osaAikaisuus = 50)
         )) should equal(15.5)
       }
 
       "valmistumispäivä lasketaan mukaan" in {
-        Opiskelijavuositiedot.opiskelijavuosikertymä(Seq(
+        AmmatillinenOpiskalijavuositiedotRaportti.opiskelijavuosikertymä(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-01"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-01")),
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-01"), "valmistunut", Date.valueOf("2016-02-01"), opiskeluoikeusPäättynyt = true)
         )) should equal(32)
       }
 
       "eroamispäivää ei lasketa mukaan" in {
-        Opiskelijavuositiedot.opiskelijavuosikertymä(Seq(
+        AmmatillinenOpiskalijavuositiedotRaportti.opiskelijavuosikertymä(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-01"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-01")),
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-01"), "eronnut", Date.valueOf("2016-02-01"), opiskeluoikeusPäättynyt = true)
         )) should equal(31)
       }
 
       "lomapäivät lasketaan mukaan" in {
-        Opiskelijavuositiedot.opiskelijavuosikertymä(Seq(
+        AmmatillinenOpiskalijavuositiedotRaportti.opiskelijavuosikertymä(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-01"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-01")),
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-10"), "loma", Date.valueOf("2016-02-01"))
         )) should equal(41)
       }
 
       "valmistumispäivä lasketaan aina 100% läsnäolopäivänä, vaikka opinnot olisivat olleet osa-aikaisia" in {
-        Opiskelijavuositiedot.opiskelijavuosikertymä(Seq(
+        AmmatillinenOpiskalijavuositiedotRaportti.opiskelijavuosikertymä(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-01"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-01"), osaAikaisuus = 50),
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-01"), "valmistunut", Date.valueOf("2016-02-01"), opiskeluoikeusPäättynyt = true, osaAikaisuus = 50)
         )) should equal(16.5)

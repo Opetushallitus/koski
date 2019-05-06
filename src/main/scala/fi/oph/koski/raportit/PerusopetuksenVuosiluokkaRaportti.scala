@@ -9,7 +9,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.schema.Organisaatio.Oid
 import org.json4s.JValue
 
-object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
+object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
 
   def buildRaportti(repository: PerusopetuksenRaportitRepository, oppilaitosOids: Set[Oid], paiva: LocalDate, vuosiluokka: String): Seq[PerusopetusRow] = {
     val rows = if (vuosiluokka == "10") {
