@@ -11,7 +11,7 @@ import fi.oph.koski.util.FinnishDateFormat.{finnishDateFormat, finnishDateTimeFo
 
 // scalastyle:off method.length
 
-object SuoritustietojenTarkistus extends AikajaksoRaportti with AmmatillinenRaporttiUtils {
+object AmmatillinenTutkintoRaportti extends AikajaksoRaportti with AmmatillinenRaporttiUtils {
 
   def buildRaportti(database: RaportointiDatabase, oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate): Seq[SuoritustiedotTarkistusRow] = {
     val data = AmmatillisenRaportitRepository(database.db).suoritustiedot(oppilaitosOid, OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo, "ammatillinentutkinto", alku, loppu)

@@ -6,13 +6,14 @@ class RaportitService(application: KoskiApplication) {
 
   private lazy val raportointiDatabase = application.raportointiDatabase
   private lazy val perusopetusRepository = PerusopetuksenRaportitRepository(raportointiDatabase.db)
+  private lazy val accessResolver = RaportitAccessResolver(application)
 
   def opiskelijaVuositiedot(request: AikajaksoRaporttiRequest): OppilaitosRaporttiResponse = {
-    aikajaksoRaportti(request, Opiskelijavuositiedot)
+    aikajaksoRaportti(request, AmmatillinenOpiskalijavuositiedotRaportti)
   }
 
   def suoritustietojenTarkistus(request: AikajaksoRaporttiRequest): OppilaitosRaporttiResponse = {
-    aikajaksoRaportti(request, SuoritustietojenTarkistus)
+    aikajaksoRaportti(request, AmmatillinenTutkintoRaportti)
   }
 
   def ammatillinenOsittainenSuoritustietojenTarkistus(request: AikajaksoRaporttiRequest): OppilaitosRaporttiResponse = {
@@ -20,7 +21,7 @@ class RaportitService(application: KoskiApplication) {
   }
 
   def perusopetuksenVuosiluokka(request: PerusopetuksenVuosiluokkaRequest): OppilaitosRaporttiResponse = {
-    perusopetuksenVuosiluokka(request, PerusopetuksenVuosiluokka)
+    perusopetuksenVuosiluokka(request, PerusopetuksenVuosiluokkaRaportti)
   }
 
   private def aikajaksoRaportti(request: AikajaksoRaporttiRequest, raporttiBuilder: AikajaksoRaportti) = {
@@ -38,7 +39,7 @@ class RaportitService(application: KoskiApplication) {
   }
 
   private def perusopetuksenVuosiluokka(request: PerusopetuksenVuosiluokkaRequest, raporttiBuilder: VuosiluokkaRaporttiPaivalta) = {
-    val rows = raporttiBuilder.buildRaportti(perusopetusRepository, request.oppilaitosOid, request.paiva, request.vuosiluokka)
+    val rows = raporttiBuilder.buildRaportti(perusopetusRepository,  accessResolver.kyselyOiditOrganisaatiolle(request.oppilaitosOid), request.paiva, request.vuosiluokka)
     val documentation = DocumentationSheet("Ohjeet", raporttiBuilder.documentation(request.oppilaitosOid, request.paiva, request.vuosiluokka, raportointiDatabase.fullLoadCompleted(raportointiDatabase.statuses).get))
     val data = DataSheet("Opiskeluoikeudet", rows, raporttiBuilder.columnSettings)
 

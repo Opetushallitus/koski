@@ -18,6 +18,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
 
   private lazy val raportointiDatabase = application.raportointiDatabase
   private lazy val raportitService = new RaportitService(application)
+  private lazy val accessResolver = RaportitAccessResolver(application)
 
   before() {
     val loadCompleted = raportointiDatabase.fullLoadCompleted(raportointiDatabase.statuses)
@@ -27,27 +28,19 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
   }
 
   get("/mahdolliset-raportit/:oppilaitosOid") {
-    val oppilaitosOid = OrganisaatioOid.validateOrganisaatioOid(getStringParam("oppilaitosOid")) match {
-      case Left(error) => haltWithStatus(error)
-      case Right(oid) => oid
-    }
-    val koulutusmuodot = raportointiDatabase.oppilaitoksenKoulutusmuodot(oppilaitosOid)
-    val mahdollisetRaportit: Set[String] = getUser match {
-      case Right(user) => RaportitAccessResolver.availableRaportit(koulutusmuodot, application, user)
-      case _ => Set.empty
-    }
-    mahdollisetRaportit
+    val oid = getOppilaitosParamAndCheckAccess
+    accessResolver.mahdollisetRaporttienTyypitOrganisaatiolle(oid).map(_.toString)
   }
 
-  get("/opiskelijavuositiedot") {
+  get("/ammatillinenopiskelijavuositiedot") {
     val parsedRequest = parseAikajaksoRaporttiRequest
-    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=opiskelijavuositiedot&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
+    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=ammatillinenopiskelijavuositiedot&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
     excelResponse(raportitService.opiskelijaVuositiedot(parsedRequest))
   }
 
-  get("/suoritustietojentarkistus") {
+  get("/ammatillinentutkintosuoritustietojentarkistus") {
     val parsedRequest = parseAikajaksoRaporttiRequest
-    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=suoritustietojentarkistus&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
+    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=ammatillinentutkintosuoritustietojentarkistus&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
     excelResponse(raportitService.suoritustietojenTarkistus(parsedRequest))
   }
 

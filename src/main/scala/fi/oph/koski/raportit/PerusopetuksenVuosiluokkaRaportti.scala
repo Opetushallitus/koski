@@ -9,13 +9,13 @@ import fi.oph.koski.schema._
 import fi.oph.koski.schema.Organisaatio.Oid
 import org.json4s.JValue
 
-object PerusopetuksenVuosiluokka extends VuosiluokkaRaporttiPaivalta {
+object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
 
-  def buildRaportti(repository: PerusopetuksenRaportitRepository, oppilaitosOid: Oid, paiva: LocalDate, vuosiluokka: String): Seq[PerusopetusRow] = {
+  def buildRaportti(repository: PerusopetuksenRaportitRepository, oppilaitosOids: Set[Oid], paiva: LocalDate, vuosiluokka: String): Seq[PerusopetusRow] = {
     val rows = if (vuosiluokka == "10") {
-      repository.peruskoulunPaattavatJaLuokalleJääneet(oppilaitosOid, paiva, vuosiluokka)
+      repository.peruskoulunPaattavatJaLuokalleJääneet(oppilaitosOids, paiva, vuosiluokka)
     } else {
-      repository.perusopetuksenvuosiluokka(oppilaitosOid, paiva, vuosiluokka)
+      repository.perusopetuksenvuosiluokka(oppilaitosOids, paiva, vuosiluokka)
     }
     rows.map(buildRow(_, paiva))
   }

@@ -32,7 +32,7 @@ trait VuosiluokkaRaporttiPaivalta extends Raportti {
 
   def filename(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String
 
-  def buildRaportti(raportointiDatabase: PerusopetuksenRaportitRepository, oppilaitosOid: Organisaatio.Oid, paiva: LocalDate, vuosiluokka: String): Seq[Product]
+  def buildRaportti(raportointiDatabase: PerusopetuksenRaportitRepository, oppilaitosOid: Set[Organisaatio.Oid], paiva: LocalDate, vuosiluokka: String): Seq[Product]
 }
 
 trait OppilaitosRaporttiRequest {
@@ -69,3 +69,12 @@ case class OppilaitosRaporttiResponse
   filename: String,
   downloadToken: Option[String]
 )
+
+sealed abstract trait RaportinTyyppi {
+  override def toString: String = this.getClass.getSimpleName.toLowerCase.filterNot(_ == '$')
+}
+
+case object AmmatillinenOpiskelijavuositiedot extends RaportinTyyppi
+case object AmmatillinenOsittainenSuoritustietojenTarkistus extends RaportinTyyppi
+case object AmmatillinenTutkintoSuoritustietojenTarkistus extends RaportinTyyppi
+case object PerusopetuksenVuosiluokka extends RaportinTyyppi

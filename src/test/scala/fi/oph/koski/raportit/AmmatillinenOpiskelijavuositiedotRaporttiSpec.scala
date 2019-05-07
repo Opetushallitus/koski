@@ -7,65 +7,20 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.OpiskeluoikeusTestMethods
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.MockUsers.{evira, omniaTallentaja}
+import fi.oph.koski.koskiuser.MockUsers._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.{ROpiskeluoikeusAikajaksoRow, RaportointikantaTestMethods}
-import org.json4s.JArray
-import org.json4s.jackson.JsonMethods
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
-class RaportitSpec extends FreeSpec with RaportointikantaTestMethods with OpiskeluoikeusTestMethods with Matchers with BeforeAndAfterAll {
+class AmmatillinenOpiskelijavuositiedotRaporttiSpec extends FreeSpec with RaportointikantaTestMethods with OpiskeluoikeusTestMethods with Matchers with BeforeAndAfterAll {
 
   private val raportointiDatabase = KoskiApplicationForTests.raportointiDatabase
-
-  "Mahdolliset raportit -API" - {
-    "sallii opiskelijavuositiedot ammatilliselle oppilaitokselle" in {
-      authGet(s"api/raportit/mahdolliset-raportit/${MockOrganisaatiot.stadinAmmattiopisto}") {
-        verifyResponseStatusOk()
-        val parsedJson = JsonMethods.parse(body)
-        parsedJson shouldBe a[JArray]
-        parsedJson.asInstanceOf[JArray].values should contain("opiskelijavuositiedot")
-      }
-    }
-    "sallii suoritustietojen tarkistuksen ammatilliselle oppilaitokselle" in {
-      authGet(s"api/raportit/mahdolliset-raportit/${MockOrganisaatiot.stadinAmmattiopisto}") {
-        verifyResponseStatusOk()
-        val parsedJson = JsonMethods.parse(body)
-        parsedJson shouldBe a[JArray]
-        parsedJson.asInstanceOf[JArray].values should contain("suoritustietojentarkistus")
-      }
-    }
-    "sallii suoritustietojen tarkistuksen osittaisista ammatillisista tutkinnoista ammatilliselle oppilaitokselle" in {
-      authGet(s"api/raportit/mahdolliset-raportit/${MockOrganisaatiot.stadinAmmattiopisto}") {
-        verifyResponseStatusOk()
-        val parsedJson = JsonMethods.parse(body)
-        parsedJson shouldBe a[JArray]
-        parsedJson.asInstanceOf[JArray].values should contain("ammatillinenosittainensuoritustietojentarkistus")
-      }
-    }
-    "sallii perusopetuksenvuosiluokka raportin perusopetusta järjestävälle oppilaitokselle" in {
-      authGet(s"api/raportit/mahdolliset-raportit/${MockOrganisaatiot.jyväskylänNormaalikoulu}") {
-        verifyResponseStatusOk()
-        val parsedJson = JsonMethods.parse(body)
-        parsedJson shouldBe a[JArray]
-        parsedJson.asInstanceOf[JArray].values should contain("perusopetuksenvuosiluokka")
-      }
-    }
-    "ei salli mitään nykyisistä raporteista lukiolle" in {
-      authGet(s"api/raportit/mahdolliset-raportit/${MockOrganisaatiot.ressunLukio}") {
-        verifyResponseStatusOk()
-        val parsedJson = JsonMethods.parse(body)
-        parsedJson shouldBe a[JArray]
-        parsedJson should equal(JArray(List.empty))
-      }
-    }
-  }
 
   "Opiskelijavuositiedot" - {
     val oid = "1.2.246.562.15.123456"
 
     "raportti sisältää oikeat tiedot" in {
-      val result = Opiskelijavuositiedot.buildRaportti(raportointiDatabase, MockOrganisaatiot.stadinAmmattiopisto, LocalDate.parse("2016-01-01"), LocalDate.parse("2016-12-31"))
+      val result = AmmatillinenOpiskalijavuositiedotRaportti.buildRaportti(raportointiDatabase, MockOrganisaatiot.stadinAmmattiopisto, LocalDate.parse("2016-01-01"), LocalDate.parse("2016-12-31"))
 
       val aarnenOpiskeluoikeusOid = lastOpiskeluoikeus(MockOppijat.ammattilainen.oid).oid.get
       val aarnenRivi = result.find(_.opiskeluoikeusOid == aarnenOpiskeluoikeusOid)
@@ -84,7 +39,7 @@ class RaportitSpec extends FreeSpec with RaportointikantaTestMethods with Opiske
 
     "ostettu" in {
       val markkasenOpiskeluoikeusOid = lastOpiskeluoikeus(MockOppijat.markkanen.oid).oid.get
-      val rivi = Opiskelijavuositiedot.buildRaportti(raportointiDatabase, MockOrganisaatiot.omnia, LocalDate.parse("2000-01-01"), LocalDate.parse("2000-01-02"))
+      val rivi = AmmatillinenOpiskalijavuositiedotRaportti.buildRaportti(raportointiDatabase, MockOrganisaatiot.omnia, LocalDate.parse("2000-01-01"), LocalDate.parse("2000-01-02"))
         .find(_.opiskeluoikeusOid == markkasenOpiskeluoikeusOid)
         .get
       rivi.ostettu should equal(true)
@@ -92,35 +47,35 @@ class RaportitSpec extends FreeSpec with RaportointikantaTestMethods with Opiske
 
     "opiskelijavuoteen kuuluvat ja muut lomat lasketaan oikein" - {
       "lasna-tilaa ei lasketa lomaksi" in {
-        Opiskelijavuositiedot.lomaPäivät(Seq(
+        AmmatillinenOpiskalijavuositiedotRaportti.lomaPäivät(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2016-05-31"), "lasna", Date.valueOf("2016-01-15"))
         )) should equal((0, 0))
       }
       "lyhyt loma (alle 28 pv) lasketaan kokonaan opiskelijavuoteen" in {
-        Opiskelijavuositiedot.lomaPäivät(Seq(
+        AmmatillinenOpiskalijavuositiedotRaportti.lomaPäivät(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-15"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-15")),
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-05"), "loma", Date.valueOf("2016-02-01")),
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-06"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-02-06"))
         )) should equal((5, 0))
       }
       "pitkästä lomasta lasketaan 28 pv opiskelijavuoteen, loput muihin" in {
-        Opiskelijavuositiedot.lomaPäivät(Seq(
+        AmmatillinenOpiskalijavuositiedotRaportti.lomaPäivät(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-01"), Date.valueOf("2016-12-31"), "loma", Date.valueOf("2016-01-01"))
         )) should equal((28, 366 - 28))
       }
       "jos loma on alkanut ennen tätä aikajaksoa" - {
         "jos päiviä on tarpeeksi jäljellä, koko jakso lasketaan opiskelijavuoteen" in {
-          Opiskelijavuositiedot.lomaPäivät(Seq(
+          AmmatillinenOpiskalijavuositiedotRaportti.lomaPäivät(Seq(
             ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-14"), "loma", Date.valueOf("2016-01-25"))
           )) should equal((14, 0))
         }
         "jos päiviä on jäljellä jonkin verran, osa jaksosta lasketaan opiskelijavuoteen" in {
-          Opiskelijavuositiedot.lomaPäivät(Seq(
+          AmmatillinenOpiskalijavuositiedotRaportti.lomaPäivät(Seq(
             ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-03-31"), "loma", Date.valueOf("2016-01-31"))
           )) should equal((27, 33))
         }
         "jos päiviä ei ole jäljellä yhtään, koko jakso lasketaan muihin lomiin" in {
-          Opiskelijavuositiedot.lomaPäivät(Seq(
+          AmmatillinenOpiskalijavuositiedotRaportti.lomaPäivät(Seq(
             ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-14"), "loma", Date.valueOf("2015-12-01"))
           )) should equal((0, 14))
         }
@@ -130,40 +85,40 @@ class RaportitSpec extends FreeSpec with RaportointikantaTestMethods with Opiske
     "opiskelijavuosikertymä lasketaan oikein" - {
 
       "läsnäolopäivät lasketaan mukaan" in {
-        Opiskelijavuositiedot.opiskelijavuosikertymä(Seq(
+        AmmatillinenOpiskalijavuositiedotRaportti.opiskelijavuosikertymä(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-01"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-01"))
         )) should equal(31)
       }
 
       "osa-aikaisuus huomioidaan" in {
-        Opiskelijavuositiedot.opiskelijavuosikertymä(Seq(
+        AmmatillinenOpiskalijavuositiedotRaportti.opiskelijavuosikertymä(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-01"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-01"), osaAikaisuus = 50)
         )) should equal(15.5)
       }
 
       "valmistumispäivä lasketaan mukaan" in {
-        Opiskelijavuositiedot.opiskelijavuosikertymä(Seq(
+        AmmatillinenOpiskalijavuositiedotRaportti.opiskelijavuosikertymä(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-01"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-01")),
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-01"), "valmistunut", Date.valueOf("2016-02-01"), opiskeluoikeusPäättynyt = true)
         )) should equal(32)
       }
 
       "eroamispäivää ei lasketa mukaan" in {
-        Opiskelijavuositiedot.opiskelijavuosikertymä(Seq(
+        AmmatillinenOpiskalijavuositiedotRaportti.opiskelijavuosikertymä(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-01"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-01")),
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-01"), "eronnut", Date.valueOf("2016-02-01"), opiskeluoikeusPäättynyt = true)
         )) should equal(31)
       }
 
       "lomapäivät lasketaan mukaan" in {
-        Opiskelijavuositiedot.opiskelijavuosikertymä(Seq(
+        AmmatillinenOpiskalijavuositiedotRaportti.opiskelijavuosikertymä(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-01"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-01")),
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-10"), "loma", Date.valueOf("2016-02-01"))
         )) should equal(41)
       }
 
       "valmistumispäivä lasketaan aina 100% läsnäolopäivänä, vaikka opinnot olisivat olleet osa-aikaisia" in {
-        Opiskelijavuositiedot.opiskelijavuosikertymä(Seq(
+        AmmatillinenOpiskalijavuositiedotRaportti.opiskelijavuosikertymä(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-01"), Date.valueOf("2016-01-31"), "lasna", Date.valueOf("2016-01-01"), osaAikaisuus = 50),
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-01"), "valmistunut", Date.valueOf("2016-02-01"), opiskeluoikeusPäättynyt = true, osaAikaisuus = 50)
         )) should equal(16.5)
@@ -171,25 +126,25 @@ class RaportitSpec extends FreeSpec with RaportointikantaTestMethods with Opiske
     }
 
     "raportin lataaminen toimii (ja tuottaa audit log viestin)" in {
-      verifyRaportinLataaminen(apiUrl = "api/raportit/opiskelijavuositiedot", expectedRaporttiNimi = "opiskelijavuositiedot", expectedFileNamePrefix = "opiskelijavuositiedot")
+      verifyRaportinLataaminen(apiUrl = "api/raportit/ammatillinenopiskelijavuositiedot", expectedRaporttiNimi = AmmatillinenOpiskelijavuositiedot.toString, expectedFileNamePrefix = "opiskelijavuositiedot")
     }
 
     "käyttöoikeudet" - {
       "raportin lataaminen vaatii käyttöoikeudet organisaatioon" in {
-        authGet(s"api/raportit/opiskelijavuositiedot?oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&alku=2016-01-01&loppu=2016-12-31&password=dummy", user = omniaTallentaja) {
+        authGet(s"api/raportit/ammatillinenopiskelijavuositiedot?oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&alku=2016-01-01&loppu=2016-12-31&password=dummy", user = omniaTallentaja) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Käyttäjällä ei oikeuksia annettuun organisaatioon (esimerkiksi oppilaitokseen)."))
         }
       }
 
       "raportin lataaminen ei ole sallittu viranomais-käyttäjille (globaali-luku)" in {
-        authGet(s"api/raportit/opiskelijavuositiedot?oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&alku=2016-01-01&loppu=2016-12-31&password=dummy", user = evira) {
+        authGet(s"api/raportit/ammatillinenopiskelijavuositiedot?oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&alku=2016-01-01&loppu=2016-12-31&password=dummy", user = evira) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Käyttäjällä ei oikeuksia annettuun organisaatioon (esimerkiksi oppilaitokseen)."))
         }
       }
     }
 
     "raportin lataaminen asettaa koskiDownloadToken-cookien" in {
-      authGet(s"api/raportit/opiskelijavuositiedot?oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&alku=2016-01-01&loppu=2016-12-31&password=dummy&downloadToken=test123") {
+      authGet(s"api/raportit/ammatillinenopiskelijavuositiedot?oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&alku=2016-01-01&loppu=2016-12-31&password=dummy&downloadToken=test123") {
         verifyResponseStatusOk()
         val cookie = response.headers("Set-Cookie").find(x => x.startsWith("koskiDownloadToken"))
         cookie shouldBe defined
