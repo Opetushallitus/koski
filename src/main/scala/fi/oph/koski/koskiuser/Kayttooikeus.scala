@@ -7,7 +7,6 @@ object Rooli {
   type Role = String
   val READ = "READ"
   val READ_UPDATE = "READ_UPDATE"
-  val VAIN_ESIOPETUS = "VAIN_ESIOPETUS"
   val TIEDONSIIRRON_MITATOINTI = "TIEDONSIIRRON_MITATOINTI"
   val OPHKATSELIJA = "OPHKATSELIJA"
   val OPHPAAKAYTTAJA = "OPHPAAKAYTTAJA"
@@ -16,6 +15,7 @@ object Rooli {
   val LUOTTAMUKSELLINEN_KAIKKI_TIEDOT = "LUOTTAMUKSELLINEN_KAIKKI_TIEDOT"
   val LUOTTAMUKSELLINEN_KELA_SUPPEA = "LUOTTAMUKSELLINEN_KELA_SUPPEA"
   val LUOTTAMUKSELLINEN_KELA_LAAJA = "LUOTTAMUKSELLINEN_KELA_LAAJA"
+  val LUKU_ESIOPETUS = "LUKU_ESIOPETUS"
   val GLOBAALI_LUKU_PERUSOPETUS = "GLOBAALI_LUKU_PERUSOPETUS"
   val GLOBAALI_LUKU_TOINEN_ASTE = "GLOBAALI_LUKU_TOINEN_ASTE"
   val GLOBAALI_LUKU_KORKEAKOULU = "GLOBAALI_LUKU_KORKEAKOULU"
@@ -46,7 +46,7 @@ case class KäyttöoikeusOrg(organisaatio: OrganisaatioWithOid, organisaatiokoht
     case _ => Nil
   }
 
-  override lazy val allowedOpiskeluoikeusTyypit: Set[String] = if (organisaatiokohtaisetPalveluroolit.exists(_.rooli == VAIN_ESIOPETUS)) {
+  override lazy val allowedOpiskeluoikeusTyypit: Set[String] = if (organisaatiokohtaisetPalveluroolit.exists(_.rooli == LUKU_ESIOPETUS)) {
     Set(OpiskeluoikeudenTyyppi.esiopetus.koodiarvo)
   } else {
     super.allowedOpiskeluoikeusTyypit

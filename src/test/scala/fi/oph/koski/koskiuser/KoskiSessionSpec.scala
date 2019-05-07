@@ -374,7 +374,7 @@ object Responses {
         "organisaatioOid" -> MockOrganisaatiot.jyväskylänNormaalikoulu,
         "kayttooikeudet" -> List(
           Map("palvelu" -> "KOSKI", "oikeus" -> "READ"),
-          Map("palvelu" -> "KOSKI", "oikeus" -> "VAIN_ESIOPETUS"),
+          Map("palvelu" -> "KOSKI", "oikeus" -> "LUKU_ESIOPETUS"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "LUOTTAMUKSELLINEN_KAIKKI_TIEDOT"))
       ))
     ))
