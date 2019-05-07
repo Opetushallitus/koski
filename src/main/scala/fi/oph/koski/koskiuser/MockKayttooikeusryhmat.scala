@@ -4,18 +4,16 @@ import fi.oph.koski.koskiuser.Rooli._
 import fi.oph.koski.schema.OidOrganisaatio
 
 object MockKäyttöoikeusryhmät {
-  def oppilaitosEsiopetusKatselija(organisaatioOid: String) = KäyttöoikeusOrg(OidOrganisaatio(organisaatioOid), List(Palvelurooli(READ), Palvelurooli(VAIN_ESIOPETUS), Palvelurooli(LUOTTAMUKSELLINEN)), true, None)
-  def oppilaitosKatselija(organisaatioOid: String) = KäyttöoikeusOrg(OidOrganisaatio(organisaatioOid), List(Palvelurooli(READ), Palvelurooli(LUOTTAMUKSELLINEN)), true, None)
+  def oppilaitosEsiopetusKatselija(organisaatioOid: String) = KäyttöoikeusOrg(OidOrganisaatio(organisaatioOid), List(Palvelurooli(READ), Palvelurooli(VAIN_ESIOPETUS), Palvelurooli(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)), true, None)
+  def oppilaitosKatselija(organisaatioOid: String) = KäyttöoikeusOrg(OidOrganisaatio(organisaatioOid), List(Palvelurooli(READ), Palvelurooli(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)), true, None)
   def oppilaitosTodistuksenMyöntäjä(organisaatioOid: String) = KäyttöoikeusOrg(OidOrganisaatio(organisaatioOid), List(Palvelurooli(READ)), true, None)
-  def oppilaitosTallentaja(organisaatioOid: String) = KäyttöoikeusOrg(OidOrganisaatio(organisaatioOid), List(Palvelurooli(READ), Palvelurooli(READ_UPDATE), Palvelurooli(LUOTTAMUKSELLINEN)), true, None)
+  def oppilaitosTallentaja(organisaatioOid: String) = KäyttöoikeusOrg(OidOrganisaatio(organisaatioOid), List(Palvelurooli(READ), Palvelurooli(READ_UPDATE), Palvelurooli(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)), true, None)
   def oppilaitosPalvelukäyttäjä(organisaatioOid: String) = KäyttöoikeusOrg(OidOrganisaatio(organisaatioOid), List(Palvelurooli(READ), Palvelurooli(READ_UPDATE), Palvelurooli(TIEDONSIIRTO), Palvelurooli(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)), true, None)
-  def oppilaitosPalvelukäyttäjäVanha(organisaatioOid: String) = KäyttöoikeusOrg(OidOrganisaatio(organisaatioOid), List(Palvelurooli(READ), Palvelurooli(READ_UPDATE), Palvelurooli(TIEDONSIIRTO), Palvelurooli(LUOTTAMUKSELLINEN)), true, None)
-  def oppilaitosPääkäyttäjä(organisaatioOid: String) = KäyttöoikeusOrg(OidOrganisaatio(organisaatioOid), List(Palvelurooli(READ), Palvelurooli(TIEDONSIIRRON_MITATOINTI), Palvelurooli(LUOTTAMUKSELLINEN)), true, None)
+  def oppilaitosPääkäyttäjä(organisaatioOid: String) = KäyttöoikeusOrg(OidOrganisaatio(organisaatioOid), List(Palvelurooli(READ), Palvelurooli(TIEDONSIIRRON_MITATOINTI), Palvelurooli(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)), true, None)
   def vastuukäyttäjä(organisaatioOid: String) = KäyttöoikeusOrg(OidOrganisaatio(organisaatioOid), List(Palvelurooli(READ)), true, None)
 
-  val ophPääkäyttäjä = KäyttöoikeusGlobal(List(Palvelurooli(OPHPAAKAYTTAJA), Palvelurooli(YLLAPITAJA), Palvelurooli(LUOTTAMUKSELLINEN)))
-  val ophKatselija = KäyttöoikeusGlobal(List(Palvelurooli(OPHKATSELIJA), Palvelurooli(LUOTTAMUKSELLINEN)))
+  val ophPääkäyttäjä = KäyttöoikeusGlobal(List(Palvelurooli(OPHPAAKAYTTAJA), Palvelurooli(YLLAPITAJA), Palvelurooli(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)))
+  val ophKatselija = KäyttöoikeusGlobal(List(Palvelurooli(OPHKATSELIJA), Palvelurooli(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)))
   val viranomaisKatselija = KäyttöoikeusGlobal(List(Palvelurooli(OPHKATSELIJA)))
   val localizationAdmin = KäyttöoikeusGlobal(List(Palvelurooli("LOKALISOINTI", "CRUD")))
-
 }

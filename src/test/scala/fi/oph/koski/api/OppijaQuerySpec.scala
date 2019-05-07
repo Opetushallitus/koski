@@ -148,12 +148,12 @@ class OppijaQuerySpec extends FreeSpec with LocalJettyHttpSpecification with Opi
     }
 
     "Luottamuksellinen data" - {
-      "Näytetään käyttäjälle jolla on LUOTTAMUKSELLINEN-rooli" in {
+      "Näytetään käyttäjälle jolla on LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-rooli" in {
         resetFixtures
         vankilaopetuksessa(queryOppijat("?nimihaku=eero%20esimerkki", user = stadinAmmattiopistoKatselija)) should equal(Some(List(Aikajakso(date(2001,1,1), None))))
       }
 
-      "Piilotetaan käyttäjältä jolta puuttuu LUOTTAMUKSELLINEN-rooli" in {
+      "Piilotetaan käyttäjältä jolta puuttuu LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-rooli" in {
         vankilaopetuksessa(queryOppijat("?nimihaku=eero%20esimerkki", user = stadinVastuukäyttäjä)) should equal(None)
       }
 
@@ -166,7 +166,7 @@ class OppijaQuerySpec extends FreeSpec with LocalJettyHttpSpecification with Opi
     }
 
     "Lasketut kentät" - {
-      "Palautetaan käyttäjälle jolla on LUOTTAMUKSELLINEN-rooli " in {
+      "Palautetaan käyttäjälle jolla on LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-rooli " in {
         authGet("api/oppija?nimihaku=anneli%20amikseenvalmistautuja", user = stadinAmmattiopistoKatselija) {
           verifyResponseStatusOk()
           val parsedJson = JsonMethods.parse(body)
@@ -174,7 +174,7 @@ class OppijaQuerySpec extends FreeSpec with LocalJettyHttpSpecification with Opi
           (ensimmäisenOsasuorituksetArviointi \ "hyväksytty") should equal(JArray(List(JBool(true))))
         }
       }
-      "Palautetaan käyttäjälle jolta puuttuu LUOTTAMUKSELLINEN-rooli " in {
+      "Palautetaan käyttäjälle jolta puuttuu LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-rooli " in {
         authGet("api/oppija?nimihaku=anneli%20amikseenvalmistautuja", user = stadinVastuukäyttäjä) {
           verifyResponseStatusOk()
           val parsedJson = JsonMethods.parse(body)

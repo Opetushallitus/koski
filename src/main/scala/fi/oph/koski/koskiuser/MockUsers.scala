@@ -11,7 +11,7 @@ import fi.oph.koski.userdirectory.DirectoryUser
 
 object MockUsers {
   private def ilmanLuottamuksellisiaTietoja(orgOid: String) = {
-    oppilaitosTallentaja(orgOid).copy(organisaatiokohtaisetPalveluroolit = oppilaitosTallentaja(orgOid).organisaatiokohtaisetPalveluroolit.filterNot(_.rooli == "LUOTTAMUKSELLINEN"))
+    oppilaitosTallentaja(orgOid).copy(organisaatiokohtaisetPalveluroolit = oppilaitosTallentaja(orgOid).organisaatiokohtaisetPalveluroolit.filterNot(_.rooli == Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   }
 
   val kalle = MockUser("käyttäjä", "kalle", "1.2.246.562.24.99999999987", (lehtikuusentienToimipiste :: oppilaitokset).map(oppilaitosTallentaja).toSet)
@@ -19,7 +19,6 @@ object MockUsers {
   val pärre = MockUser("käyttäjä", "pärre", "1.2.246.562.24.99999999901", (lehtikuusentienToimipiste :: oppilaitokset).map(oppilaitosTallentaja).toSet, "sv")
   val localkoski = MockUser("käyttäjä", "localkoski", "1.2.246.562.24.99999999988", oppilaitokset.map(oppilaitosTallentaja).toSet)
   val omniaPalvelukäyttäjä = MockUser("käyttäjä", "omnia-palvelukäyttäjä", "1.2.246.562.24.99999999989", Set(oppilaitosPalvelukäyttäjä(omnia)))
-  val omniaPalvelukäyttäjäVanhaLuottamuksellinenOikeus = MockUser("käyttäjä", "omnia-palvelukäyttäjä-vanha", "1.2.246.562.24.99999999979", Set(oppilaitosPalvelukäyttäjäVanha(omnia)))
   val omniaKatselija = MockUser("käyttäjä", "omnia-katselija", "1.2.246.562.24.99999999990", Set(oppilaitosKatselija(omnia)))
   val omniaTallentaja = MockUser("käyttäjä", "omnia-tallentaja", "1.2.246.562.24.99999999991", Set(oppilaitosTallentaja(omnia)))
   val omniaPääkäyttäjä = MockUser("omnia-pää", "omnia-pää", "1.2.246.562.24.99999977777", Set(oppilaitosPääkäyttäjä(MockOrganisaatiot.omnia)))
@@ -54,7 +53,6 @@ object MockUsers {
     kalle,
     pärre,
     omniaPalvelukäyttäjä,
-    omniaPalvelukäyttäjäVanhaLuottamuksellinenOikeus,
     omniaKatselija,
     omniaTallentaja,
     omniaPääkäyttäjä,

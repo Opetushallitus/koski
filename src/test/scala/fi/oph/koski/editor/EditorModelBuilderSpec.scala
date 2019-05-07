@@ -15,14 +15,14 @@ class EditorModelBuilderSpec extends FreeSpec with Matchers {
 
 
   "Sensitive data" - {
-    "with LUOTTAMUKSELLINEN role" - {
+    "with LUOTTAMUKSELLINEN_KAIKKI_TIEDOT role" - {
       "data is shown" in {
         implicit val user = MockUsers.kalle.toKoskiUser(käyttöoikeusRepository)
         val editorModel = EditorModelBuilder.buildModel(EditorSchema.deserializationContext, TestClass("sensitive", "public"), true).asInstanceOf[ObjectModel]
         editorModel.properties.find(p => p.key == "sensitive") shouldBe defined
       }
     }
-    "without LUOTTAMUKSELLINEN role" - {
+    "without LUOTTAMUKSELLINEN_KAIKKI_TIEDOT role" - {
       "data is hidden" in {
         implicit val user = MockUsers.tallentajaEiLuottamuksellinen.toKoskiUser(käyttöoikeusRepository)
         val editorModel = EditorModelBuilder.buildModel(EditorSchema.deserializationContext, TestClass("sensitive", "public"), true).asInstanceOf[ObjectModel]
@@ -33,7 +33,7 @@ class EditorModelBuilderSpec extends FreeSpec with Matchers {
 }
 
 case class TestClass(
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN, Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   sensitive: String,
   public: String
 )

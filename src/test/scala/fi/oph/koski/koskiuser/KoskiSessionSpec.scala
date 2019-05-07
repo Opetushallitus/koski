@@ -66,9 +66,6 @@ class KoskiSessionSpec extends FreeSpec with Matchers with EitherValues with Opt
       "palvelukäyttäjä" in {
         createAndVerifySession("omnia-palvelukäyttäjä", MockUsers.omniaPalvelukäyttäjä.ldapUser)
       }
-      "palvelukäyttäjä-vanha" in {
-        createAndVerifySession("omnia-palvelukäyttäjä-vanha", MockUsers.omniaPalvelukäyttäjäVanhaLuottamuksellinenOikeus.ldapUser)
-      }
       "vastuukäyttäjä" in {
         createAndVerifySession("stadin-vastuu", MockUsers.stadinVastuukäyttäjä.ldapUser)
       }
@@ -201,14 +198,14 @@ object Responses {
       "oidHenkilo" -> MockUsers.kalle.oid,
       "organisaatiot" -> kallenOppilaitokset.map(oid => Map(
         "organisaatioOid" -> oid,
-        "kayttooikeudet" -> List(Map("palvelu" -> "KOSKI", "oikeus" -> "READ"), Map("palvelu" -> "KOSKI", "oikeus" -> "READ_UPDATE"), Map("palvelu" -> "KOSKI", "oikeus" -> "LUOTTAMUKSELLINEN"))
+        "kayttooikeudet" -> List(Map("palvelu" -> "KOSKI", "oikeus" -> "READ"), Map("palvelu" -> "KOSKI", "oikeus" -> "READ_UPDATE"), Map("palvelu" -> "KOSKI", "oikeus" -> "LUOTTAMUKSELLINEN_KAIKKI_TIEDOT"))
       )))),
     "pää" -> List(Map(
       "oidHenkilo" -> MockUsers.paakayttaja.oid,
       "organisaatiot" -> List(
         Map(
           "organisaatioOid" -> "1.2.246.562.10.00000000001",
-          "kayttooikeudet" -> List(Map("palvelu" -> "KOSKI", "oikeus" -> "OPHPAAKAYTTAJA"), Map("palvelu" -> "KOSKI", "oikeus" -> "YLLAPITAJA"), Map("palvelu" -> "KOSKI", "oikeus" -> "LUOTTAMUKSELLINEN"))
+          "kayttooikeudet" -> List(Map("palvelu" -> "KOSKI", "oikeus" -> "OPHPAAKAYTTAJA"), Map("palvelu" -> "KOSKI", "oikeus" -> "YLLAPITAJA"), Map("palvelu" -> "KOSKI", "oikeus" -> "LUOTTAMUKSELLINEN_KAIKKI_TIEDOT"))
         ),
         Map(
           "organisaatioOid" -> "1.2.246.562.10.00000000001",
@@ -239,18 +236,6 @@ object Responses {
           "kayttooikeudet" -> List(Map("palvelu" -> "KOSKI", "oikeus" -> "READ"), Map("palvelu" -> "KOSKI", "oikeus" -> "READ_UPDATE"))
         )
       )
-    )),
-    "omnia-palvelukäyttäjä-vanha" -> List(Map(
-      "oidHenkilo" -> MockUsers.omniaPalvelukäyttäjäVanhaLuottamuksellinenOikeus.oid,
-      "organisaatiot" -> List(Map(
-        "organisaatioOid" -> "1.2.246.562.10.51720121923",
-        "kayttooikeudet" -> List(
-          Map("palvelu" -> "KOSKI", "oikeus" -> "READ"),
-          Map("palvelu" -> "KOSKI", "oikeus" -> "READ_UPDATE"),
-          Map("palvelu" -> "KOSKI", "oikeus" -> "TIEDONSIIRTO"),
-          Map("palvelu" -> "KOSKI", "oikeus" -> "LUOTTAMUKSELLINEN")
-        )
-      ))
     )),
     "omnia-palvelukäyttäjä" -> List(Map(
       "oidHenkilo" -> MockUsers.omniaPalvelukäyttäjä.oid,
@@ -295,7 +280,7 @@ object Responses {
       "oidHenkilo" -> MockUsers.omniaKatselija.oid,
       "organisaatiot" -> List(Map(
         "organisaatioOid" -> MockOrganisaatiot.omnia,
-        "kayttooikeudet" -> List(Map("palvelu" -> "KOSKI", "oikeus" -> "READ"), Map("palvelu" -> "KOSKI", "oikeus" -> "LUOTTAMUKSELLINEN"))
+        "kayttooikeudet" -> List(Map("palvelu" -> "KOSKI", "oikeus" -> "READ"), Map("palvelu" -> "KOSKI", "oikeus" -> "LUOTTAMUKSELLINEN_KAIKKI_TIEDOT"))
       ))
     )),
     "omnia-tallentaja" -> List(Map(
@@ -305,7 +290,7 @@ object Responses {
         "kayttooikeudet" -> List(
           Map("palvelu" -> "KOSKI", "oikeus" -> "READ"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "READ_UPDATE"),
-          Map("palvelu" -> "KOSKI", "oikeus" -> "LUOTTAMUKSELLINEN"))
+          Map("palvelu" -> "KOSKI", "oikeus" -> "LUOTTAMUKSELLINEN_KAIKKI_TIEDOT"))
       ))
     )),
     "Suppea" -> List(Map(
@@ -390,7 +375,7 @@ object Responses {
         "kayttooikeudet" -> List(
           Map("palvelu" -> "KOSKI", "oikeus" -> "READ"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "VAIN_ESIOPETUS"),
-          Map("palvelu" -> "KOSKI", "oikeus" -> "LUOTTAMUKSELLINEN"))
+          Map("palvelu" -> "KOSKI", "oikeus" -> "LUOTTAMUKSELLINEN_KAIKKI_TIEDOT"))
       ))
     ))
   ).map { case (username, data) => (username, write(data)) }
