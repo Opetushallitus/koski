@@ -55,14 +55,14 @@ class SureSpec extends FreeSpec with LocalJettyHttpSpecification with Opiskeluoi
         }
       }
       "Luottamuksellinen data" - {
-        "Näytetään käyttäjälle jolla on LUOTTAMUKSELLINEN-rooli" in {
+        "Näytetään käyttäjälle jolla on LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-rooli" in {
           resetFixtures
           postOids(Seq(MockOppijat.eero.oid), user = stadinAmmattiopistoKatselija) {
             verifyResponseStatusOk()
             body should include("vankilaopetuksessa")
           }
         }
-        "Piilotetaan käyttäjältä jolta puuttuu LUOTTAMUKSELLINEN-rooli" in {
+        "Piilotetaan käyttäjältä jolta puuttuu LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-rooli" in {
           postOids(Seq(MockOppijat.eero.oid), user = stadinVastuukäyttäjä) {
             verifyResponseStatusOk()
             body should not include("vankilaopetuksessa")

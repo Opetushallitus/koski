@@ -79,6 +79,8 @@ trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiitty
 }
 
 object OpiskeluoikeudenTyyppi {
+  private var tyypit: Set[Koodistokoodiviite] = Set()
+
   val aikuistenperusopetus = apply("aikuistenperusopetus")
   val ammatillinenkoulutus = apply("ammatillinenkoulutus")
   val esiopetus = apply("esiopetus")
@@ -93,7 +95,13 @@ object OpiskeluoikeudenTyyppi {
   val perusopetus = apply("perusopetus")
   val ylioppilastutkinto = apply("ylioppilastutkinto")
 
-  private def apply(koodiarvo: String): Koodistokoodiviite = Koodistokoodiviite(koodiarvo, "opiskeluoikeudentyyppi")
+  private def apply(koodiarvo: String): Koodistokoodiviite = {
+    val tyyppi = Koodistokoodiviite(koodiarvo, "opiskeluoikeudentyyppi")
+    tyypit = tyypit + tyyppi
+    tyyppi
+  }
+
+  def kaikkiTyypit: Set[Koodistokoodiviite] = tyypit
 }
 
 trait OpiskeluoikeudenLisätiedot

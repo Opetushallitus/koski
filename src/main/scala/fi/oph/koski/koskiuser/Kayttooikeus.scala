@@ -7,12 +7,12 @@ object Rooli {
   type Role = String
   val READ = "READ"
   val READ_UPDATE = "READ_UPDATE"
+  val VAIN_ESIOPETUS = "VAIN_ESIOPETUS"
   val TIEDONSIIRRON_MITATOINTI = "TIEDONSIIRRON_MITATOINTI"
   val OPHKATSELIJA = "OPHKATSELIJA"
   val OPHPAAKAYTTAJA = "OPHPAAKAYTTAJA"
   val YLLAPITAJA = "YLLAPITAJA"
   val TIEDONSIIRTO = "TIEDONSIIRTO"
-  val LUOTTAMUKSELLINEN = "LUOTTAMUKSELLINEN"
   val LUOTTAMUKSELLINEN_KAIKKI_TIEDOT = "LUOTTAMUKSELLINEN_KAIKKI_TIEDOT"
   val LUOTTAMUKSELLINEN_KELA_SUPPEA = "LUOTTAMUKSELLINEN_KELA_SUPPEA"
   val LUOTTAMUKSELLINEN_KELA_LAAJA = "LUOTTAMUKSELLINEN_KELA_LAAJA"
@@ -24,8 +24,9 @@ object Rooli {
   def globaalitKoulutusmuotoRoolit = List(GLOBAALI_LUKU_PERUSOPETUS, GLOBAALI_LUKU_TOINEN_ASTE, GLOBAALI_LUKU_KORKEAKOULU)
 }
 
+// this trait is intentionally left mostly blank to make it harder to accidentally mix global and organization-specific rights
 trait Käyttöoikeus {
-  // this trait is intentionally left blank to make it harder to accidentally mix global and organization-specific rights
+  def allowedOpiskeluoikeusTyypit: Set[String] = OpiskeluoikeudenTyyppi.kaikkiTyypit.map(_.koodiarvo)
 }
 
 case class KäyttöoikeusGlobal(globalPalveluroolit: List[Palvelurooli]) extends Käyttöoikeus {
@@ -45,9 +46,14 @@ case class KäyttöoikeusOrg(organisaatio: OrganisaatioWithOid, organisaatiokoht
     case _ => Nil
   }
 
+  override lazy val allowedOpiskeluoikeusTyypit: Set[String] = if (organisaatiokohtaisetPalveluroolit.exists(_.rooli == VAIN_ESIOPETUS)) {
+    Set(OpiskeluoikeudenTyyppi.esiopetus.koodiarvo)
+  } else {
+    super.allowedOpiskeluoikeusTyypit
+  }
+
   def globalAccessType: List[AccessType.Value] = Nil
   def globalPalveluroolit = Nil
-  override def toString = organisaatiokohtaisetPalveluroolit.mkString(",")
 }
 
 case class KäyttöoikeusViranomainen(globalPalveluroolit: List[Palvelurooli]) extends Käyttöoikeus {
@@ -57,7 +63,7 @@ case class KäyttöoikeusViranomainen(globalPalveluroolit: List[Palvelurooli]) e
     Nil
   }
 
-  def allowedOpiskeluoikeusTyypit: List[String] = globalPalveluroolit.flatMap {
+  override lazy val allowedOpiskeluoikeusTyypit: Set[String] = globalPalveluroolit.flatMap {
     case Palvelurooli("KOSKI", GLOBAALI_LUKU_PERUSOPETUS) => List(
       OpiskeluoikeudenTyyppi.esiopetus,
       OpiskeluoikeudenTyyppi.perusopetus,
@@ -79,7 +85,7 @@ case class KäyttöoikeusViranomainen(globalPalveluroolit: List[Palvelurooli]) e
       OpiskeluoikeudenTyyppi.korkeakoulutus
     )
     case _ => Nil
-  }.map(_.koodiarvo).distinct
+  }.map(_.koodiarvo).toSet
 
   def isLuovutusPalveluAllowed: Boolean = globalPalveluroolit.contains(Palvelurooli("KOSKI", TIEDONSIIRTO_LUOVUTUSPALVELU))
 }

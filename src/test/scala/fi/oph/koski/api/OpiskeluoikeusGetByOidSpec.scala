@@ -42,7 +42,7 @@ class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with LocalJettyH
     }
 
     "Luottamuksellinen data" - {
-      "Näytetään käyttäjälle jolla on LUOTTAMUKSELLINEN-rooli" in {
+      "Näytetään käyttäjälle jolla on LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-rooli" in {
         resetFixtures
         val oid = lastOpiskeluoikeusByHetu(MockOppijat.eero.toHenkilötiedotJaOid).oid.get
         authGet("api/opiskeluoikeus/" + oid, stadinAmmattiopistoKatselija) {
@@ -51,7 +51,7 @@ class OpiskeluoikeusGetByOidSpec extends FreeSpec with Matchers with LocalJettyH
         }
       }
 
-      "Piilotetaan käyttäjältä jolta puuttuu LUOTTAMUKSELLINEN-rooli" in {
+      "Piilotetaan käyttäjältä jolta puuttuu LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-rooli" in {
         val oid = lastOpiskeluoikeusByHetu(MockOppijat.eero.toHenkilötiedotJaOid).oid.get
         authGet("api/opiskeluoikeus/" + oid, stadinVastuukäyttäjä) {
           verifyResponseStatusOk()

@@ -189,20 +189,23 @@ object Tables {
 
   val OpiskeluoikeusHistoria = TableQuery[OpiskeluoikeusHistoryTable]
 
-  def OpiskeluOikeudetWithAccessCheck(implicit user: KoskiSession): Query[OpiskeluoikeusTable, OpiskeluoikeusRow, Seq] =
-    (if (user.hasGlobalReadAccess) {
+  def OpiskeluOikeudetWithAccessCheck(implicit user: KoskiSession): Query[OpiskeluoikeusTable, OpiskeluoikeusRow, Seq] = {
+    val query = (if (user.hasGlobalReadAccess || user.hasGlobalKoulutusmuotoReadAccess) {
       OpiskeluOikeudet
-    } else if (user.hasGlobalKoulutusmuotoReadAccess) {
-      OpiskeluOikeudet.filter(_.koulutusmuoto inSet user.allowedOpiskeluoikeusTyypit)
     } else {
       val oids = user.organisationOids(AccessType.read).toList
       for {
         oo <- OpiskeluOikeudet
         if (oo.oppilaitosOid inSet oids) || (oo.sisältäväOpiskeluoikeusOppilaitosOid inSet oids)
-      } yield {
-        oo
-      }
+      } yield oo
     }).filterNot(_.mitätöity)
+
+    if (user.hasKoulutusmuotoRestrictions) {
+      query.filter(_.koulutusmuoto inSet user.allowedOpiskeluoikeusTyypit)
+    } else {
+      query
+    }
+  }
 }
 
 case class SSOSessionRow(serviceTicket: String, username: String, userOid: String, name: String, started: Timestamp, updated: Timestamp)

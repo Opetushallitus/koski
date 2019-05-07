@@ -16,5 +16,5 @@ class YtrAccessChecker(käyttöoikeudet: KäyttöoikeusRepository) extends Acces
   }
 
   def hasGlobalAccess(user: KoskiSession): Boolean =
-    user.hasGlobalReadAccess || user.allowedOpiskeluoikeusTyypit.contains(OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo)
+    user.hasGlobalReadAccess || (user.hasGlobalKoulutusmuotoReadAccess && user.allowedOpiskeluoikeusTyypit.contains(OpiskeluoikeudenTyyppi.ylioppilastutkinto.koodiarvo))
 }
