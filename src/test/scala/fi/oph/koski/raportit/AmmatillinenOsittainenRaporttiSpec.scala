@@ -70,7 +70,9 @@ class AmmatillinenOsittainenRaporttiSpec extends FreeSpec with Matchers with Rap
     suoritettujenYhteistenTutkinnonOsienYhteislaajuus = 9.0,
     suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus = 22.0,
     pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus = 19.0,
-    valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus = 3.0
+    valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus = 3.0,
+    valmiitVapaaValintaisetTutkinnonOsatLkm = 1,
+    valmiitTutkintoaYksilöllisestiLaajentavatTutkinnonOsatLkm = 1
   )
 
   def makeRaporttiFilterRowsByHetu(hetu: Option[String], oppilaitosOid: String = MockOrganisaatiot.stadinAmmattiopisto, alku: LocalDate = date(2016, 1, 1), loppu: LocalDate = date(2016, 12, 12)) = {

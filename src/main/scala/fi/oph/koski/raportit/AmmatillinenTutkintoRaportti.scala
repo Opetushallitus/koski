@@ -27,6 +27,8 @@ object AmmatillinenTutkintoRaportti extends AikajaksoRaportti with AmmatillinenR
     val valmiitAmmatillisetTutkinnonOsatJaOsasuoritukset = ammatillisetTutkinnonOsatJaOsasuoritukset.filter(os => isVahvistusPäivällinen(os) || isArvioinniton(os) || sisältyyVahvistettuunPäätasonSuoritukseen(os, päätasonSuoritukset))
     val yhteisetTutkinnonOsat = osasuoritukset.filter(isYhteinenTutkinnonOsa)
     val yhteistenTutkinnonOsienOsaAlueet = osasuoritukset.filter(isYhteinenTutkinnonOsanOsaalue(_, osasuoritukset))
+    val vapaastiValittavatTutkinnonOsat = osasuoritukset.filter(tutkinnonOsanRyhmä(_, "3"))
+    val tutkintoaYksilöllisestiLaajentavatTutkinnonOsat = osasuoritukset.filter(tutkinnonOsanRyhmä(_, "4"))
 
     SuoritustiedotTarkistusRow(
       opiskeluoikeusOid = opiskeluoikeus.opiskeluoikeusOid,
@@ -50,7 +52,7 @@ object AmmatillinenTutkintoRaportti extends AikajaksoRaportti with AmmatillinenR
       viimeisinOpiskeluoikeudenTila = aikajaksot.last.tila,
       opintojenRahoitukset = aikajaksot.flatMap(_.opintojenRahoitus).sorted.distinct.mkString(","),
       painotettuKeskiarvo = päätasonSuoritukset.flatMap(ps => JsonSerializer.extract[Option[Float]](ps.data \ "keskiarvo")).mkString(","),
-      suoritettujenOpintojenYhteislaajuus = yhteislaajuus(ammatillisetTutkinnonOsatJaOsasuoritukset.union(yhteistenTutkinnonOsienOsaAlueet)),
+      suoritettujenOpintojenYhteislaajuus = yhteislaajuus(ammatillisetTutkinnonOsatJaOsasuoritukset ++ yhteisetTutkinnonOsat ++ vapaastiValittavatTutkinnonOsat ++ tutkintoaYksilöllisestiLaajentavatTutkinnonOsat),
       valmiitAmmatillisetTutkinnonOsatLkm = valmiitAmmatillisetTutkinnonOsatJaOsasuoritukset.size,
       pakollisetAmmatillisetTutkinnonOsatLkm = pakolliset(ammatillisetTutkinnonOsatJaOsasuoritukset).size,
       valinnaisetAmmatillisetTutkinnonOsatLkm = valinnaiset(ammatillisetTutkinnonOsatJaOsasuoritukset).size,
@@ -70,7 +72,9 @@ object AmmatillinenTutkintoRaportti extends AikajaksoRaportti with AmmatillinenR
       suoritettujenYhteistenTutkinnonOsienYhteislaajuus = yhteislaajuus(yhteisetTutkinnonOsat),
       suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus = yhteislaajuus(yhteistenTutkinnonOsienOsaAlueet),
       pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus = yhteislaajuus(pakolliset(yhteistenTutkinnonOsienOsaAlueet)),
-      valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus = yhteislaajuus(valinnaiset(yhteistenTutkinnonOsienOsaAlueet))
+      valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus = yhteislaajuus(valinnaiset(yhteistenTutkinnonOsienOsaAlueet)),
+      valmiitVapaaValintaisetTutkinnonOsatLkm = vapaastiValittavatTutkinnonOsat.filter(isVahvistusPäivällinen).size,
+      valmiitTutkintoaYksilöllisestiLaajentavatTutkinnonOsatLkm = tutkintoaYksilöllisestiLaajentavatTutkinnonOsat.filter(isVahvistusPäivällinen).size
     )
   }
 
@@ -178,7 +182,9 @@ object AmmatillinenTutkintoRaportti extends AikajaksoRaportti with AmmatillinenR
     "suoritettujenYhteistenTutkinnonOsienYhteislaajuus" -> CompactColumn("Suoritettujen yhteisten tutkinnon osien yhteislaajuus"),
     "suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus" -> CompactColumn("Suoritettujen yhteisten tutkinnon osien osa-alueiden yhteislaajuus"),
     "pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus" -> CompactColumn("Pakollisten yhteisten tutkinnon osien osa-alueiden yhteislaajuus"),
-    "valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus" -> CompactColumn("Valinnaisten yhteisten tutkinnon osien osa-aluiden yhteislaajuus")
+    "valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus" -> CompactColumn("Valinnaisten yhteisten tutkinnon osien osa-aluiden yhteislaajuus"),
+    "valmiitVapaaValintaisetTutkinnonOsatLkm" -> CompactColumn("Valmiiden vapaavalintaisten tutkinnon osien lukumäärä"),
+    "valmiitTutkintoaYksilöllisestiLaajentavatTutkinnonOsatLkm" -> CompactColumn("Valmiiden tutkintoa yksilöllisesti laajentavien tutkinnon osien lukumäärä")
   )
 }
 
@@ -225,5 +231,7 @@ case class SuoritustiedotTarkistusRow
   suoritettujenYhteistenTutkinnonOsienYhteislaajuus: Double,
   suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus: Double,
   pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus: Double,
-  valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus: Double
+  valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus: Double,
+  valmiitVapaaValintaisetTutkinnonOsatLkm: Int,
+  valmiitTutkintoaYksilöllisestiLaajentavatTutkinnonOsatLkm: Int
 )

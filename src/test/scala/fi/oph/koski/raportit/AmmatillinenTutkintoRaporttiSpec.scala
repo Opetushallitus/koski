@@ -29,17 +29,17 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
 
     "Laskenta" - {
       "Suorituksia yhteesä" in {
-        rivi.suoritettujenOpintojenYhteislaajuus should equal(157.0)
+        rivi.suoritettujenOpintojenYhteislaajuus should equal(180.0)
       }
       "Ammatilliset tutkinnon osat" - {
         "Valmiiden ammatillisten tutkinnon osien lukumäärä" in {
-          rivi.valmiitAmmatillisetTutkinnonOsatLkm should equal(7)
+          rivi.valmiitAmmatillisetTutkinnonOsatLkm should equal(6)
         }
         "Pakolliset ammatilliset tutkinnon osat" in {
           rivi.pakollisetAmmatillisetTutkinnonOsatLkm should equal(6)
         }
         "Valinnaiset ammatilliset tutkinnon osat" in {
-          rivi.valinnaisetAmmatillisetTutkinnonOsatLkm should equal(1)
+          rivi.valinnaisetAmmatillisetTutkinnonOsatLkm should equal(0)
         }
         "Näyttöjä ammatillisissa valmiissa tutkinnon osissa" in {
           rivi.näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm should equal(3)
@@ -95,6 +95,12 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
           rivi.valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus should equal(3)
         }
       }
+      "Valmiit vapaavalintaiset tutkinnon osat lukumäärä" in {
+        rivi.valmiitVapaaValintaisetTutkinnonOsatLkm should equal(1)
+      }
+      "Valmiit tutkintoa yksilöllisesti laajentavat tutkinnon osat lukumäärä" in {
+        rivi.valmiitTutkintoaYksilöllisestiLaajentavatTutkinnonOsatLkm should equal(1)
+      }
     }
     "Sisällytetyt opiskeluoikeudet"  - {
       "Opiskeluoikeuteen sisältyvät opiskeluioikeudet toistesta oppilaitoksesta" in {
@@ -103,7 +109,7 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
           aarnenRivit.length should equal(2)
           val stadinLinkitettyOpiskeluoikeus = aarnenRivit.find(_.linkitetynOpiskeluoikeudenOppilaitos == stadinAmmattiOpistonNimi)
           stadinLinkitettyOpiskeluoikeus shouldBe defined
-          stadinLinkitettyOpiskeluoikeus.get.suoritettujenOpintojenYhteislaajuus should equal(157.0)
+          stadinLinkitettyOpiskeluoikeus.get.suoritettujenOpintojenYhteislaajuus should equal(180.0)
         }
       }
       "Sisältävä opiskeluoikeus ei tule sisällytetyn opiskeluoikeuden oppilaitoksen raportille" in {
