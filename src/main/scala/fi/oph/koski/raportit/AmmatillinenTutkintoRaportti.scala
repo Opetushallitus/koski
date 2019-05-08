@@ -82,7 +82,6 @@ object AmmatillinenTutkintoRaportti extends AikajaksoRaportti with AmmatillinenR
     isAmmatillisenLukioOpintoja,
     isAmmatillisenKorkeakouluOpintoja,
     isAmmatillinenMuitaOpintoValmiuksiaTukeviaOpintoja,
-    isAmmatillinenTutkinnonOsaaPienempiKokonaisuus,
     isAmmatillisenTutkinnonOsanOsaalue
   )
 
@@ -92,7 +91,6 @@ object AmmatillinenTutkintoRaportti extends AikajaksoRaportti with AmmatillinenR
         isAmmatillisenLukioOpintoja,
         isAmmatillisenKorkeakouluOpintoja,
         isAmmatillinenMuitaOpintoValmiuksiaTukeviaOpintoja,
-        isAmmatillinenTutkinnonOsaaPienempiKokonaisuus,
         isAmmatillisenTutkinnonOsa,
         isAmmatillisenYhteisenTutkinnonOsienOsaalue(_, osasuoritukset)
       ))
