@@ -96,9 +96,9 @@ trait AmmatillinenRaporttiUtils {
   val tutkinnonosatvalinnanmahdollisuusKoodiarvot = Seq("1,", "2")
 
   val isAmmatillisenTutkinnonOsa: ROsasuoritusRow => Boolean = osasuoritus => {
-    !tutkinnonosatvalinnanmahdollisuusKoodiarvot.contains(osasuoritus.koulutusmoduuliKoodiarvo) &&
-      osasuoritus.koulutusmoduuliKoodisto.exists(_ == "tutkinnonosat") &&
-      osasuoritus.suorituksenTyyppi == "ammatillisentutkinnonosa" &&
-      !isYhteinenTutkinnonOsa(osasuoritus)
+    osasuoritus.suorituksenTyyppi == "ammatillisentutkinnonosa" &&
+      !tutkinnonosatvalinnanmahdollisuusKoodiarvot.contains(osasuoritus.koulutusmoduuliKoodiarvo) &&
+      !isYhteinenTutkinnonOsa(osasuoritus) &&
+      !tutkinnonOsanRyhmä(osasuoritus, "3", "4")
   }
 }
