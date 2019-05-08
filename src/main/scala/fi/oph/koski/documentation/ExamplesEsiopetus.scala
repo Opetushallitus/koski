@@ -27,7 +27,7 @@ object ExamplesEsiopetus {
 
   lazy val opiskeluoikeusHelsingissä: EsiopetuksenOpiskeluoikeus = opiskeluoikeus.copy(
     oppilaitos = None,
-    suoritukset = List(suoritus(perusteenDiaarinumero = "102/011/2014", tunniste = peruskoulunEsiopetuksenTunniste, toimipiste = kulosaarenAlaAste)),
+    suoritukset = List(suoritus(perusteenDiaarinumero = "102/011/2014", tunniste = peruskoulunEsiopetuksenTunniste, toimipiste = kulosaarenAlaAste))
   )
 
   val esioppilas = Oppija(
