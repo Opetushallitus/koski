@@ -2,7 +2,7 @@ import React from 'baret'
 import Text from '../i18n/Text'
 
 export default ({inProgressP, disabled, onSubmit}) => (
-  <div>
+  <div className='raportti-download-button'>
     {inProgressP.map((inProgress) =>
       inProgress
         ? <div className='ajax-indicator-bg'><Text name={'Ladataan raporttia. Lataaminen voi viedä useita minuutteja'}/></div>
