@@ -26,6 +26,8 @@ object AmmatillinenOsittainenRaportti extends AikajaksoRaportti with Ammatilline
     val yhteistenTutkinnonOsienSuoritukset = osasuoritukset.filter(isYhteinenTutkinnonOsa)
     val yhteistenTutkinnonOsienOsaSuoritukset = osasuoritukset.filter(isAmmatillisenTutkinnonOsanOsaalue)
     val muutSuoritukset = osasuoritukset.filter(isAmmatillisenTutkinnonOsa)
+    val vapaastiValittavatTutkinnonOsat = osasuoritukset.filter(tutkinnonOsanRyhmä(_, "3"))
+    val tutkintoaYksilöllisestiLaajentavatTutkinnonOsa = osasuoritukset.filter(tutkinnonOsanRyhmä(_, "4"))
 
     AmmatillinenOsittainRaporttiRow(
       opiskeluoikeusOid = opiskeluoikeus.opiskeluoikeusOid,
@@ -65,8 +67,8 @@ object AmmatillinenOsittainenRaportti extends AikajaksoRaportti with Ammatilline
       suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus = yhteislaajuus(yhteistenTutkinnonOsienOsaSuoritukset),
       pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus = yhteislaajuus(pakolliset(yhteistenTutkinnonOsienOsaSuoritukset)),
       valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus = yhteislaajuus(valinnaiset(yhteistenTutkinnonOsienOsaSuoritukset)),
-      valmiitVapaaValintaisetTutkinnonOsatLkm = 1,
-      valmiitTutkintoaYksilöllisestiLaajentavatTutkinnonOsatLkm = 1
+      valmiitVapaaValintaisetTutkinnonOsatLkm = vapaastiValittavatTutkinnonOsat.filter(isVahvistusPäivällinen).size,
+      valmiitTutkintoaYksilöllisestiLaajentavatTutkinnonOsatLkm = tutkintoaYksilöllisestiLaajentavatTutkinnonOsa.filter(isVahvistusPäivällinen).size
     )
   }
 
