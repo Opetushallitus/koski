@@ -1054,7 +1054,7 @@
             <virta:Opintosuoritus opiskelijaAvain="12345X" koulutusmoduulitunniste="FFYS4358" avain="12345X¤2651">
               <virta:SuoritusPvm>2000-05-18</virta:SuoritusPvm>
               <virta:Laajuus>
-                <virta:Opintopiste>6.0</virta:Opintopiste>
+                <virta:Opintopiste>6.3</virta:Opintopiste>
               </virta:Laajuus>
               <virta:Arvosana>
                 <virta:Viisiportainen>4</virta:Viisiportainen>
@@ -1384,9 +1384,6 @@
             </virta:Opintosuoritus>
             <virta:Opintosuoritus opiskelijaAvain="12345X" koulutusmoduulitunniste="FFYS4277" avain="12345X¤1835">
               <virta:SuoritusPvm>2001-06-04</virta:SuoritusPvm>
-              <virta:Laajuus>
-                <virta:Opintopiste>112.0</virta:Opintopiste>
-              </virta:Laajuus>
               <virta:Arvosana>
                 <virta:Viisiportainen>3</virta:Viisiportainen>
               </virta:Arvosana>
@@ -1609,7 +1606,7 @@
             <virta:Opintosuoritus opiskelijaAvain="12345X" koulutusmoduulitunniste="FFYS4343" avain="12345X¤3014343">
               <virta:SuoritusPvm>1999-12-13</virta:SuoritusPvm>
               <virta:Laajuus>
-                <virta:Opintopiste>4.0</virta:Opintopiste>
+                <virta:Opintopiste>3.7</virta:Opintopiste>
               </virta:Laajuus>
               <virta:Arvosana>
                 <virta:Viisiportainen>5</virta:Viisiportainen>

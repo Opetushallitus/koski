@@ -209,7 +209,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       koulutusmoduuli = KorkeakoulunOpintojakso(
         tunniste = PaikallinenKoodi((suoritus \\ "@koulutusmoduulitunniste").text, nimi(suoritus)),
         nimi = nimi(suoritus),
-        laajuus = laajuus(suoritus)
+        laajuus = laajuus(suoritus).orElse(laajuudetYhteensä(osasuoritukset))
       ),
       arviointi = arviointi(suoritus),
       vahvistus = vahvistus(suoritus),
@@ -219,10 +219,21 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     )
   }
 
+  private def laajuudetYhteensä(osasuoritukset: List[KorkeakoulunOpintojaksonSuoritus]) = {
+    val laajuudet = osasuoritukset.flatMap(_.koulutusmoduuli.laajuus).map(_.arvo.toDouble).map(BigDecimal(_))
+    if (laajuudet.isEmpty) {
+      None
+    } else {
+      val laajuudetYhteensä = laajuudet.sum.setScale(1, scala.math.BigDecimal.RoundingMode.HALF_UP).toFloat
+      Some(LaajuusOpintopisteissä(laajuudetYhteensä, opintojenlaajuusyksikkoOpintopistettä))
+    }
+  }
+
   private def laajuus(suoritusOrOpiskeluoikeus: Node): Option[LaajuusOpintopisteissä] = for {
-    yksikko <- koodistoViitePalvelu.validate("opintojenlaajuusyksikko", "2")
     laajuus <- (suoritusOrOpiskeluoikeus \ "Laajuus" \ "Opintopiste").headOption.map(_.text.toFloat).filter(_ > 0)
-  } yield LaajuusOpintopisteissä(laajuus, yksikko)
+  } yield LaajuusOpintopisteissä(laajuus, opintojenlaajuusyksikkoOpintopistettä)
+
+  private val opintojenlaajuusyksikkoOpintopistettä = koodistoViitePalvelu.validateRequired("opintojenlaajuusyksikko", "2")
 
   private def arviointi(suoritus: Node): Option[List[KorkeakoulunArviointi]] = {
     if ((suoritus \ "Arvosana" \ "Muu").length > 0) {

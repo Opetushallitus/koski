@@ -106,6 +106,13 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
           opiskeluoikeus.lisätiedot.get.lukukausiIlmoittautuminen should equal(None)
         }
       }
+
+      "Laajuudet" - {
+        "Osasuoritusten laajuudet lasketaan yhteen jos laajuutta ei tule datassa" in {
+          val oo = getOpiskeluoikeudet(MockOppijat.montaJaksoaKorkeakoululainen.oid).find(_.suoritukset.forall(_.tyyppi.koodiarvo == "korkeakoulunopintojakso")).get
+          oo.suoritukset.collect { case s: KorkeakoulunOpintojaksonSuoritus => s.koulutusmoduuli.laajuus }.flatten.map(_.arvo).sum should be(414.0f)
+        }
+      }
     }
 
     "Opintosuoritusote" - {
