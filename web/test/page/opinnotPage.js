@@ -232,18 +232,21 @@ function Oppiaineet() {
   var api = {
     isVisible: function() { return S('.oppiaineet h5').is(':visible') },
 
-    merkitseOppiaineetValmiiksi: function () {
-      var editor = OpinnotPage().opiskeluoikeusEditor()
-      var count = 20
-      var promises = []
-      for (var i = 0; i < count; i++) {
-        var oppiaine = api.oppiaine(i)
-        var arvosana = oppiaine.propertyBySelector('.arvosana')
-        if (arvosana.isVisible()) {
-          promises.push(arvosana.selectValue('5')())
+    merkitseOppiaineetValmiiksi: function(selectedArvosana) {
+      selectedArvosana = selectedArvosana || '5'
+      return function() {
+        var editor = OpinnotPage().opiskeluoikeusEditor()
+        var count = 20
+        var promises = []
+        for (var i = 0; i < count; i++) {
+          var oppiaine = api.oppiaine(i)
+          var arvosana = oppiaine.propertyBySelector('.arvosana')
+          if (arvosana.isVisible()) {
+            promises.push(arvosana.selectValue(selectedArvosana)())
+          }
         }
+        return Q.all(promises)
       }
-      return Q.all(promises)
     },
 
     uusiOppiaine: function(selector) {
@@ -774,8 +777,9 @@ function LisääSuoritusDialog() {
     selectSuoritustapa: function(suoritustapa) {
       return Page(elem).setInputValue('.suoritustapa .dropdown', suoritustapa)
     },
-    selectTutkinto: function(name) {
-      return TutkintoSelector(function() { return elem().find('.koulutusmoduuli') }).select(name)
+    selectTutkinto: function(name, selector) {
+      selector = selector || '.koulutusmoduuli'
+      return TutkintoSelector(function() { return elem().find(selector) }).select(name)
     },
     tutkinto: function() {
       return Page(elem).getInputValue('.koulutusmoduuli input, .tutkinto input')

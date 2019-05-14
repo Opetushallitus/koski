@@ -828,10 +828,20 @@
     "withinCodeElements" : [ ]
   },
   {
-    "koodiUri" : "suorituksentyyppi_internationalschooloppiaine",
-    "koodiArvo" : "internationalschooloppiaine",
+    "koodiUri" : "suorituksentyyppi_internationalschoolmypoppiaine",
+    "koodiArvo" : "internationalschoolmypoppiaine",
     "metadata" : [ {
-      "nimi" : "International school oppiaine",
+      "nimi" : "International school MYP oppiaine",
+      "kieli" : "FI"
+    } ],
+    "versio" : 1,
+    "withinCodeElements" : [ ]
+  },
+  {
+    "koodiUri" : "suorituksentyyppi_internationalschoolpypoppiaine",
+    "koodiArvo" : "internationalschoolpypoppiaine",
+    "metadata" : [ {
+      "nimi" : "International school PYP oppiaine",
       "kieli" : "FI"
     } ],
     "versio" : 1,

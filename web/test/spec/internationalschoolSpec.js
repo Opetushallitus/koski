@@ -67,9 +67,10 @@ describe('International school', function() {
       })
 
       describe('Oppiaineen kielen valinta, MYP-suoritus', function () {
+        before(opinnot.valitseSuoritus(undefined, 'Grade 9'), editor.edit)
         describe('kielivalinnan muuttaminen', function () {
           var kieli = opinnot.oppiaineet.oppiaine('LL').propertyBySelector('.oppiaine')
-          before(opinnot.valitseSuoritus(undefined, 'Grade 9'), editor.edit, kieli.selectValue('suomi'), editor.saveChanges)
+          before(kieli.selectValue('suomi'), editor.saveChanges)
           it('muutettu kielivalinta näytetään', function () {
             expect(kieli.getText()).to.equal('Language and Literature, suomi')
           })
@@ -260,7 +261,7 @@ describe('International school', function() {
           expect(opinnot.suoritusTabs()).to.deep.equal(['Grade explorer'])
         })
       })
-      describe('Lisättäessä ensimmäinen', function () {
+      describe('Grade 1 (PYP)', function () {
         before(lisääSuoritus.open('lisää vuosiluokan suoritus'))
         describe('Aluksi', function () {
           it('Valitsee automaattisesti pienimmän puuttuvan luokka-asteen', function () {
@@ -301,7 +302,7 @@ describe('International school', function() {
               })
             })
             describe('Kun kaikki oppiaineet on merkitty valmiiksi', function () {
-              before(editor.edit, opinnot.oppiaineet.merkitseOppiaineetValmiiksi)
+              before(editor.edit, opinnot.oppiaineet.merkitseOppiaineetValmiiksi('Achieved Outcomes'))
               describe('Aluksi', function () {
                 it('Merkitse valmiiksi -nappi näytetään', function () {
                   expect(tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(true)
@@ -348,6 +349,36 @@ describe('International school', function() {
               })
             })
           })
+        })
+      })
+
+      describe('Grade 9 (MYP)', function () {
+        before(
+          lisääSuoritus.open('lisää vuosiluokan suoritus'),
+          lisääSuoritus.selectTutkinto('Grade 9', '.international-school-grade'),
+          lisääSuoritus.lisääSuoritus
+        )
+
+        it('Oppiainevalinnat', function () {
+          expect(Page(S('.oppiaineet')).getInputOptions('.uusi-oppiaine .dropdown')).to.deep.equal([
+            'Language Acquisition',
+            'Language and Literature',
+            'Advisory',
+            'Design',
+            'Drama',
+            'English as an additional language',
+            'Extended Mathematics',
+            'Independent language studies',
+            'Individuals and Societies',
+            'Mathematics',
+            'Media',
+            'Music',
+            'Personal project',
+            'Physical and Health Education',
+            'Sciences',
+            'Standard Mathematics',
+            'Visual Art'
+          ])
         })
       })
     })

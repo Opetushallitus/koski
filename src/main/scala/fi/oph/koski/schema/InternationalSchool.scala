@@ -48,7 +48,7 @@ case class PYPVuosiluokanSuoritus(
   suorituskieli: Koodistokoodiviite,
   @KoodistoKoodiarvo("internationalschoolpypvuosiluokka")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("internationalschoolpypvuosiluokka", koodistoUri = "suorituksentyyppi"),
-  override val osasuoritukset: Option[List[InternationalSchoolOppiaineenSuoritus]] = None
+  override val osasuoritukset: Option[List[PYPOppiaineenSuoritus]] = None
 ) extends InternationalSchoolVuosiluokanSuoritus
 
 case class MYPVuosiluokanSuoritus(
@@ -61,7 +61,7 @@ case class MYPVuosiluokanSuoritus(
   suorituskieli: Koodistokoodiviite,
   @KoodistoKoodiarvo("internationalschoolmypvuosiluokka")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("internationalschoolmypvuosiluokka", koodistoUri = "suorituksentyyppi"),
-  override val osasuoritukset: Option[List[InternationalSchoolOppiaineenSuoritus]] = None
+  override val osasuoritukset: Option[List[MYPOppiaineenSuoritus]] = None
 ) extends InternationalSchoolVuosiluokanSuoritus
 
 case class DiplomaVuosiluokanSuoritus(
@@ -122,13 +122,22 @@ case class ISHDiplomaLuokkaAste(
   tunniste: Koodistokoodiviite
 ) extends DiplomaLuokkaAste
 
-case class InternationalSchoolOppiaineenSuoritus(
-  koulutusmoduuli: InternationalSchoolOppiaine,
-  arviointi: Option[List[PYPTaiMYPArvionti]] = None,
+case class MYPOppiaineenSuoritus(
+  koulutusmoduuli: MYPOppiaine,
+  arviointi: Option[List[NumeerinenInternationalSchoolOppiaineenArviointi]] = None,
   @DefaultValue("EN")
   suorituskieli: Option[Koodistokoodiviite] = None,
-  @KoodistoKoodiarvo("internationalschooloppiaine")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "internationalschooloppiaine", koodistoUri = "suorituksentyyppi")
+  @KoodistoKoodiarvo("internationalschoolmypoppiaine")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "internationalschoolmypoppiaine", koodistoUri = "suorituksentyyppi")
+) extends OppiaineenSuoritus with MahdollisestiSuorituskielellinen with Vahvistukseton
+
+case class PYPOppiaineenSuoritus(
+  koulutusmoduuli: PYPOppiaine,
+  arviointi: Option[List[SanallinenInternationalSchoolOppiaineenArviointi]] = None,
+  @DefaultValue("EN")
+  suorituskieli: Option[Koodistokoodiviite] = None,
+  @KoodistoKoodiarvo("internationalschoolpypoppiaine")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "internationalschoolpypoppiaine", koodistoUri = "suorituksentyyppi")
 ) extends OppiaineenSuoritus with MahdollisestiSuorituskielellinen with Vahvistukseton
 
 trait DiplomaIBOppiaineenSuoritus extends OppiaineenSuoritus with MahdollisestiSuorituskielellinen with Vahvistukseton
@@ -157,11 +166,14 @@ trait InternationalSchoolOppiaine extends KoodistostaLöytyväKoulutusmoduuli {
   override def laajuus: Option[Laajuus] = None
 }
 
-trait InternationalSchoolKieliOppiaine extends InternationalSchoolOppiaine with Kieliaine {
+trait InternationalSchoolKieliOppiaine extends Kieliaine with MYPOppiaine with PYPOppiaine {
   @KoodistoUri("kielivalikoima")
   override def kieli: Koodistokoodiviite
   override def description: LocalizedString = kieliaineDescription
 }
+
+trait MYPOppiaine extends InternationalSchoolOppiaine
+trait PYPOppiaine extends InternationalSchoolOppiaine
 
 trait InternationalSchoolArviointi extends KoodistostaLöytyväArviointi {
   def arvosana: Koodistokoodiviite
@@ -172,15 +184,13 @@ trait InternationalSchoolArviointi extends KoodistostaLöytyväArviointi {
   private val hylätyt = List("1", "2")
 }
 
-trait PYPTaiMYPArvionti extends Arviointi
-
 case class SanallinenInternationalSchoolOppiaineenArviointi(
   @KoodistoKoodiarvo("learningtoward")
   @KoodistoKoodiarvo("achievedoutcomes")
   @KoodistoUri("arviointiasteikkointernationalschool")
   arvosana: Koodistokoodiviite,
   päivä: Option[LocalDate] = None
-) extends InternationalSchoolArviointi with PYPTaiMYPArvionti
+) extends InternationalSchoolArviointi
 
 trait InternationalSchoolNumeerinenOppiaineenArviointi extends InternationalSchoolArviointi {
   @KoodistoKoodiarvo("1")
@@ -203,7 +213,7 @@ trait Predicted {
 case class NumeerinenInternationalSchoolOppiaineenArviointi(
   arvosana: Koodistokoodiviite,
   päivä: Option[LocalDate] = None
-) extends InternationalSchoolNumeerinenOppiaineenArviointi with PYPTaiMYPArvionti
+) extends InternationalSchoolNumeerinenOppiaineenArviointi
 
 case class InternationalSchoolIBOppiaineenArviointi(
   predicted: Boolean = false,
@@ -236,7 +246,26 @@ case class LanguageAndLiterature(
   kieli: Koodistokoodiviite
 ) extends InternationalSchoolKieliOppiaine
 
-case class InternationalSchoolOppiaineMuu(
+case class MYPOppiaineMuu(
+  @KoodistoKoodiarvo("AD")
+  @KoodistoKoodiarvo("DE")
+  @KoodistoKoodiarvo("DR")
+  @KoodistoKoodiarvo("EAL")
+  @KoodistoKoodiarvo("EMA")
+  @KoodistoKoodiarvo("ILS")
+  @KoodistoKoodiarvo("IS")
+  @KoodistoKoodiarvo("MA")
+  @KoodistoKoodiarvo("ME")
+  @KoodistoKoodiarvo("MU")
+  @KoodistoKoodiarvo("PHE")
+  @KoodistoKoodiarvo("PP")
+  @KoodistoKoodiarvo("SCI")
+  @KoodistoKoodiarvo("SMA")
+  @KoodistoKoodiarvo("VA")
+  tunniste: Koodistokoodiviite
+) extends MYPOppiaine
+
+case class PYPOppiaineMuu(
   @KoodistoKoodiarvo("DD")
   @KoodistoKoodiarvo("DE")
   @KoodistoKoodiarvo("DR")
@@ -258,7 +287,7 @@ case class InternationalSchoolOppiaineMuu(
   @KoodistoKoodiarvo("SS")
   @KoodistoKoodiarvo("VA")
   tunniste: Koodistokoodiviite
-) extends InternationalSchoolOppiaine
+) extends PYPOppiaine
 
 trait InternationalSchoolIBOppiaine extends KoodistostaLöytyväKoulutusmoduuli with Laajuudeton
 

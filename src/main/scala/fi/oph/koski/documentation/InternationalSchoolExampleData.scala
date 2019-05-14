@@ -31,7 +31,12 @@ object InternationalSchoolExampleData {
     suorituskieli = ExampleData.englanti
   )
 
-  def oppiaineenSuoritus(oppiaine: InternationalSchoolOppiaine, arviointi: Option[PYPTaiMYPArvionti] = None): InternationalSchoolOppiaineenSuoritus = InternationalSchoolOppiaineenSuoritus(
+  def mypOppiaineenSuoritus(oppiaine: MYPOppiaine, arviointi: Option[NumeerinenInternationalSchoolOppiaineenArviointi] = None): MYPOppiaineenSuoritus = MYPOppiaineenSuoritus(
+    koulutusmoduuli = oppiaine,
+    arviointi = arviointi.map(a => List(a))
+  )
+
+  def pypOppiaineenSuoritus(oppiaine: PYPOppiaine, arviointi: Option[SanallinenInternationalSchoolOppiaineenArviointi] = None): PYPOppiaineenSuoritus = PYPOppiaineenSuoritus(
     koulutusmoduuli = oppiaine,
     arviointi = arviointi.map(a => List(a))
   )
@@ -46,16 +51,20 @@ object InternationalSchoolExampleData {
     arviointi = arviointi.map(a => List(a))
   )
 
-  def oppiaine(tunniste: String): InternationalSchoolOppiaine = InternationalSchoolOppiaineMuu(
+  def mypOppiaine(tunniste: String): MYPOppiaine = MYPOppiaineMuu(
     tunniste = Koodistokoodiviite(tunniste, "oppiaineetinternationalschool")
   )
 
-  def languageAndLiterature(kieli: String): InternationalSchoolOppiaine = LanguageAndLiterature(
+  def pypOppiaine(tunniste: String): PYPOppiaine = PYPOppiaineMuu(
+    tunniste = Koodistokoodiviite(tunniste, "oppiaineetinternationalschool")
+  )
+
+  def languageAndLiterature(kieli: String): InternationalSchoolKieliOppiaine = LanguageAndLiterature(
     tunniste = Koodistokoodiviite("LL", "oppiaineetinternationalschool"),
     kieli = Koodistokoodiviite(kieli, "kielivalikoima")
   )
 
-  def languageAqcuisition(kieli: String): InternationalSchoolOppiaine = LanguageAcquisition(
+  def languageAqcuisition(kieli: String): InternationalSchoolKieliOppiaine = LanguageAcquisition(
     tunniste = Koodistokoodiviite("LAC", "oppiaineetinternationalschool"),
     kieli = Koodistokoodiviite(kieli, "kielivalikoima")
   )

@@ -366,5 +366,53 @@
     ],
     "versio": 1,
     "withinCodeElements": []
+  },
+  {
+    "koodiUri": "oppiaineetinternationalschool_sma",
+    "koodiArvo": "SMA",
+    "metadata": [
+      {
+        "nimi": "Standard Mathematics",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Standard Mathematics",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "oppiaineetinternationalschool_ad",
+    "koodiArvo": "AD",
+    "metadata": [
+      {
+        "nimi": "Advisory",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Advisory",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "oppiaineetinternationalschool_pp",
+    "koodiArvo": "PP",
+    "metadata": [
+      {
+        "nimi": "Personal project",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Personal project",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
   }
 ]
