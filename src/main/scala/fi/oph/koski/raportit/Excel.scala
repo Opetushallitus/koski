@@ -21,7 +21,7 @@ case class DataSheet(title: String, rows: Seq[Product], columnSettings: Seq[(Str
   def verifyColumnSettingsVsCaseClass(): Unit = {
     // validate that columnSettings matches case class structure
     if (rows.nonEmpty) {
-      val namesFromCaseClass = rows.head.getClass.getDeclaredFields.map(_.getName).toList
+      val namesFromCaseClass = rows.head.getClass.getDeclaredFields.map(_.getName).toList.filterNot(_.startsWith("$"))
       val namesFromSettings = columnSettings.map(_._1)
       if (namesFromCaseClass != namesFromSettings) {
         throw new IllegalArgumentException(s"columnSettings does not match case class: $namesFromCaseClass $namesFromSettings")
