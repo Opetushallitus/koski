@@ -139,7 +139,7 @@ object LukioRaportti {
   )
 
   private def opintojenSummaTiedot(osasuoritukset: Seq[ROsasuoritusRow]) = Seq(
-    osasuoritukset.filter(_.suorituksenTyyppi == "lukionkurssi").flatMap(_.koulutusmoduuliLaajuusArvo).sum
+    osasuoritukset.filter(_.suorituksenTyyppi == "lukionkurssi").flatMap(_.koulutusmoduuliLaajuusArvo.map(_.toDouble)).sum
   )
 
   private def järjestettävienOppiaineidenTiedot(mahdollisetOppiaineet: Seq[(OppiaineenNimi, Koulutusmooduuli_koodiarvo, Paikallinen)], paatasonsuoritus: RPäätasonSuoritusRow, osasuoritukset: Seq[ROsasuoritusRow]) = {
