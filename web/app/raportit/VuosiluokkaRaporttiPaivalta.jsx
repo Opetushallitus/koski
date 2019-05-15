@@ -28,7 +28,7 @@ export const VuosiluokkaRaporttiPaivalta = ({organisaatioAtom, apiEndpoint, titl
 
   const inProgressP = submitBus.awaiting(downloadExcelE.mapError())
   const submitEnabledP = downloadExcelP.map(x => !!x).and(inProgressP.not())
-  const vuosiluokat = [1, 2, 3, 4, 5, 6, 7, 8, 10]
+  const vuosiluokat = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
   return (<section>
     <h2>{title}</h2>
@@ -53,7 +53,7 @@ const VuosiluokkaDropdown = ({value, vuosiluokat}) => (
       <Dropdown
         options={vuosiluokat}
         keyValue={(key) => key}
-        displayValue={(dVal) => dVal === 10 ? 'Peruskoulun päättävät' : dVal}
+        displayValue={(dVal) => dVal}
         selected={v}
         onSelectionChanged={(input) => value.set(input)}
       />))}
