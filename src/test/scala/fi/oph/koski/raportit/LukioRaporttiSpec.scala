@@ -174,20 +174,20 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
   lazy val expectedAineopiskelijaHistoriaRow = defaultExpectedAineopiskelijaRow + (
     "Suorituksen vahvistuspäivä" -> Some(date(2016, 1, 10)),
     "Yhteislaajuus" -> 4.0,
-    "Historia (HI) valtakunnallinen" -> "Arvosana 9, 4 kurssia",
+    "Historia (HI) valtakunnallinen" -> "Arvosana 9, 4 kurssia"
   )
 
   lazy val expectedAineopiskelijaKemiaRow = defaultExpectedAineopiskelijaRow + (
     "Suorituksen vahvistuspäivä" -> Some(date(2015, 1, 10)),
     "Yhteislaajuus" -> 1.0,
-    "Kemia (KE) valtakunnallinen" -> "Arvosana 8, 1 kurssi",
+    "Kemia (KE) valtakunnallinen" -> "Arvosana 8, 1 kurssi"
   )
 
   lazy val expectedAineopiskelijaFilosofiaRow = defaultExpectedAineopiskelijaRow + (
     "Suorituksen tila" -> "kesken",
     "Suorituksen vahvistuspäivä" -> None,
     "Yhteislaajuus" -> 1.0,
-    "Filosofia (FI) valtakunnallinen" -> "Arvosana 9, 1 kurssi",
+    "Filosofia (FI) valtakunnallinen" -> "Arvosana 9, 1 kurssi"
   )
 
   private def buildLukioraportti(organisaatioOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate) = {

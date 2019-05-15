@@ -82,7 +82,7 @@ case class LukioRaportitRepository(db: DB) extends KoskiDatabaseMethods with Rap
         henkilot.get(opiskeluoikeus.oppijaOid),
         aikajaksot.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Nil).sortBy(_.alku)(sqlDateOrdering),
         paatasonsuoritus,
-        osasuoritukset.getOrElse(paatasonsuoritus.päätasonSuoritusId, Nil),
+        osasuoritukset.getOrElse(paatasonsuoritus.päätasonSuoritusId, Nil)
       )
     ).toList ::: acc
   }

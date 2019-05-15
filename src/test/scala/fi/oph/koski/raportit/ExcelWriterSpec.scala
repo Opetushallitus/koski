@@ -278,7 +278,7 @@ class ExcelWriterSpec extends FreeSpec with Matchers {
     double: Double,
     optionDouble: Option[Double],
     boolean: Boolean,
-    optionBoolean: Option[Boolean],
+    optionBoolean: Option[Boolean]
   )
 
   lazy val expectedExcelTitle = "expected_excel_title"
@@ -293,6 +293,6 @@ class ExcelWriterSpec extends FreeSpec with Matchers {
     "double" -> Column("Double"),
     "optionDouble" -> Column("OptionDouble"),
     "boolean" -> Column("Boolean"),
-    "optionBoolean" -> Column("OptionBoolean"),
+    "optionBoolean" -> Column("OptionBoolean")
   )
 }
