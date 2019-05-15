@@ -103,7 +103,7 @@ object LukioRaportti {
     CompactColumn("Ulkomaanajaksot"),
     CompactColumn("Erityisen koulutustehtävän tehtävät"),
     CompactColumn("Erityisen koulutustehtävän jaksot"),
-    CompactColumn("Sisäoppilaitosmainen majoitus"),
+    CompactColumn("Sisäoppilaitosmainen majoitus")
   )
 
   private def opiskeluoikeudenLisätietojenTiedot(lisatiedot: Option[LukionOpiskeluoikeudenLisätiedot], alku: LocalDate, loppu: LocalDate) = Seq(
