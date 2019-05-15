@@ -9,7 +9,7 @@ import fi.oph.koski.schema._
 
 object ExamplesInternationalSchool {
 
-  val gradeExplorer: PYPVuosiluokanSuoritus = pypSuoritus("explorer", Some(date(2006, 6, 30))).copy(
+  val gradeExplorer: PYPVuosiluokanSuoritus = pypSuoritus("explorer", date(2005, 8, 15), Some(date(2006, 6, 30))).copy(
     osasuoritukset = Some(List(
       pypOppiaineenSuoritus(pypOppiaine("LA"), arviointi("achievedoutcomes")),
       pypOppiaineenSuoritus(pypOppiaine("MA"), arviointi("achievedoutcomes")),
@@ -21,20 +21,7 @@ object ExamplesInternationalSchool {
     ))
   )
 
-  val grade1: PYPVuosiluokanSuoritus = pypSuoritus("1", Some(date(2007, 6, 30))).copy(
-    osasuoritukset = Some(List(
-      pypOppiaineenSuoritus(pypOppiaine("LA"), arviointi("achievedoutcomes")),
-      pypOppiaineenSuoritus(pypOppiaine("MA"), arviointi("achievedoutcomes")),
-      pypOppiaineenSuoritus(pypOppiaine("FMT"), arviointi("achievedoutcomes")),
-      pypOppiaineenSuoritus(pypOppiaine("PE"), arviointi("achievedoutcomes")),
-      pypOppiaineenSuoritus(pypOppiaine("VA"), arviointi("achievedoutcomes")),
-      pypOppiaineenSuoritus(pypOppiaine("MU"), arviointi("achievedoutcomes")),
-      pypOppiaineenSuoritus(pypOppiaine("ICT"), arviointi("achievedoutcomes")),
-      pypOppiaineenSuoritus(pypOppiaine("LIB"), arviointi("achievedoutcomes"))
-    ))
-  )
-
-  val grade2: PYPVuosiluokanSuoritus = pypSuoritus("2", Some(date(2008, 6, 30))).copy(
+  val grade1: PYPVuosiluokanSuoritus = pypSuoritus("1", date(2006, 8, 15), Some(date(2007, 6, 30))).copy(
     osasuoritukset = Some(List(
       pypOppiaineenSuoritus(pypOppiaine("LA"), arviointi("achievedoutcomes")),
       pypOppiaineenSuoritus(pypOppiaine("MA"), arviointi("achievedoutcomes")),
@@ -47,7 +34,20 @@ object ExamplesInternationalSchool {
     ))
   )
 
-  val grade3: PYPVuosiluokanSuoritus = pypSuoritus("3", Some(date(2009, 6, 30))).copy(
+  val grade2: PYPVuosiluokanSuoritus = pypSuoritus("2", date(2007, 8, 15), Some(date(2008, 6, 30))).copy(
+    osasuoritukset = Some(List(
+      pypOppiaineenSuoritus(pypOppiaine("LA"), arviointi("achievedoutcomes")),
+      pypOppiaineenSuoritus(pypOppiaine("MA"), arviointi("achievedoutcomes")),
+      pypOppiaineenSuoritus(pypOppiaine("FMT"), arviointi("achievedoutcomes")),
+      pypOppiaineenSuoritus(pypOppiaine("PE"), arviointi("achievedoutcomes")),
+      pypOppiaineenSuoritus(pypOppiaine("VA"), arviointi("achievedoutcomes")),
+      pypOppiaineenSuoritus(pypOppiaine("MU"), arviointi("achievedoutcomes")),
+      pypOppiaineenSuoritus(pypOppiaine("ICT"), arviointi("achievedoutcomes")),
+      pypOppiaineenSuoritus(pypOppiaine("LIB"), arviointi("achievedoutcomes"))
+    ))
+  )
+
+  val grade3: PYPVuosiluokanSuoritus = pypSuoritus("3", date(2008, 8, 15), Some(date(2009, 6, 30))).copy(
     osasuoritukset = Some(List(
       pypOppiaineenSuoritus(pypOppiaine("LA"), arviointi("achievedoutcomes")),
       pypOppiaineenSuoritus(pypOppiaine("MA"), arviointi("learningtoward")),
@@ -60,7 +60,7 @@ object ExamplesInternationalSchool {
     ))
   )
 
-  val grade4: PYPVuosiluokanSuoritus = pypSuoritus("4", Some(date(2010, 6, 30))).copy(
+  val grade4: PYPVuosiluokanSuoritus = pypSuoritus("4", date(2009, 8, 15), Some(date(2010, 6, 30))).copy(
     osasuoritukset = Some(List(
       pypOppiaineenSuoritus(pypOppiaine("LA"), arviointi("achievedoutcomes")),
       pypOppiaineenSuoritus(pypOppiaine("MA"), arviointi("achievedoutcomes")),
@@ -73,7 +73,7 @@ object ExamplesInternationalSchool {
     ))
   )
 
-  val grade5: PYPVuosiluokanSuoritus = pypSuoritus("5", Some(date(2011, 6, 30))).copy(
+  val grade5: PYPVuosiluokanSuoritus = pypSuoritus("5", date(2010, 8, 15), Some(date(2011, 6, 30))).copy(
     osasuoritukset = Some(List(
       pypOppiaineenSuoritus(pypOppiaine("LA"), arviointi("learningtoward")),
       pypOppiaineenSuoritus(pypOppiaine("MA"), arviointi("achievedoutcomes")),
@@ -85,7 +85,7 @@ object ExamplesInternationalSchool {
     ))
   )
 
-  val grade6: MYPVuosiluokanSuoritus = mypSuoritus(6, Some(date(2012, 6, 30))).copy(
+  val grade6: MYPVuosiluokanSuoritus = mypSuoritus(6, date(2011, 8, 15), Some(date(2012, 6, 30))).copy(
     osasuoritukset = Some(List(
       mypOppiaineenSuoritus(languageAndLiterature("EN"), arviointi(5)),
       mypOppiaineenSuoritus(languageAqcuisition("FI"), arviointi(6)),
@@ -98,7 +98,7 @@ object ExamplesInternationalSchool {
     ))
   )
 
-  val grade7: MYPVuosiluokanSuoritus = mypSuoritus(7, Some(date(2013, 6, 30))).copy(
+  val grade7: MYPVuosiluokanSuoritus = mypSuoritus(7, date(2012, 8, 15), Some(date(2013, 6, 30))).copy(
     osasuoritukset = Some(List(
       mypOppiaineenSuoritus(languageAndLiterature("EN"), arviointi(6)),
       mypOppiaineenSuoritus(languageAqcuisition("ES"), arviointi(5)),
@@ -112,7 +112,7 @@ object ExamplesInternationalSchool {
     ))
   )
 
-  val grade8: MYPVuosiluokanSuoritus = mypSuoritus(8, Some(date(2014, 6, 30))).copy(
+  val grade8: MYPVuosiluokanSuoritus = mypSuoritus(8, date(2013, 8, 15), Some(date(2014, 6, 30))).copy(
     osasuoritukset = Some(List(
       mypOppiaineenSuoritus(languageAndLiterature("FI"), arviointi(7)),
       mypOppiaineenSuoritus(languageAndLiterature("EN"), arviointi(6)),
@@ -126,7 +126,7 @@ object ExamplesInternationalSchool {
     ))
   )
 
-  val grade9: MYPVuosiluokanSuoritus = mypSuoritus(9, Some(date(2015, 6, 30))).copy(
+  val grade9: MYPVuosiluokanSuoritus = mypSuoritus(9, date(2014, 8, 15), Some(date(2015, 6, 30))).copy(
     osasuoritukset = Some(List(
       mypOppiaineenSuoritus(languageAndLiterature("EN"), arviointi(6)),
       mypOppiaineenSuoritus(languageAqcuisition("FR"), arviointi(7)),
@@ -137,7 +137,7 @@ object ExamplesInternationalSchool {
     ))
   )
 
-  val grade10: MYPVuosiluokanSuoritus = mypSuoritus(10, Some(date(2016, 6, 30))).copy(
+  val grade10: MYPVuosiluokanSuoritus = mypSuoritus(10, date(2015, 8, 15), Some(date(2016, 6, 30))).copy(
     osasuoritukset = Some(List(
       mypOppiaineenSuoritus(languageAndLiterature("EN"), arviointi(7)),
       mypOppiaineenSuoritus(languageAqcuisition("FR"), arviointi(7)),
@@ -149,7 +149,7 @@ object ExamplesInternationalSchool {
     ))
   )
 
-  val grade11: DiplomaVuosiluokanSuoritus = diplomaSuoritus(11, Some(date(2017, 6, 30))).copy(
+  val grade11: DiplomaVuosiluokanSuoritus = diplomaSuoritus(11, date(2016, 8, 15), Some(date(2017, 6, 30))).copy(
     osasuoritukset = Some(List(
       diplomaOppiaineenSuoritus(diplomaKieliOppiaine("A", "FI", Some("SL")), diplomaArviointi(5)),
       diplomaOppiaineenSuoritus(diplomaKieliOppiaine("A2", "EN"), diplomaArviointi(5)),
@@ -161,7 +161,7 @@ object ExamplesInternationalSchool {
     ))
   )
 
-  val grade12: DiplomaVuosiluokanSuoritus = diplomaSuoritus(12, Some(date(2018, 6, 30))).copy(
+  val grade12: DiplomaVuosiluokanSuoritus = diplomaSuoritus(12, date(2017, 8, 15), Some(date(2018, 6, 30))).copy(
     osasuoritukset = Some(List(
       diplomaOppiaineenSuoritus(diplomaKieliOppiaine("A", "FI", Some("SL")), diplomaArviointi(6)),
       diplomaOppiaineenSuoritus(diplomaKieliOppiaine("B", "FI"), diplomaArviointi(6)),

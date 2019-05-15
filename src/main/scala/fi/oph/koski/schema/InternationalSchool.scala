@@ -42,6 +42,8 @@ case class PYPVuosiluokanSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: PYPLuokkaAste,
   luokka: Option[String] = None,
+  @Tooltip("Vuosiluokan alkamispäivä")
+  override val alkamispäivä: Option[LocalDate] = None,
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla],
   @Hidden
@@ -55,6 +57,8 @@ case class MYPVuosiluokanSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: MYPLuokkaAste,
   luokka: Option[String] = None,
+  @Tooltip("Vuosiluokan alkamispäivä")
+  override val alkamispäivä: Option[LocalDate] = None,
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla],
   @Hidden
@@ -68,6 +72,8 @@ case class DiplomaVuosiluokanSuoritus(
   @Title("Koulutus")
   koulutusmoduuli: DiplomaLuokkaAste,
   luokka: Option[String] = None,
+  @Tooltip("Vuosiluokan alkamispäivä")
+  override val alkamispäivä: Option[LocalDate] = None,
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla],
   @Hidden
