@@ -9,7 +9,7 @@ import {generateRandomPassword} from '../util/password'
 import {downloadExcel} from './downloadExcel'
 import RaporttiDownloadButton from './RaporttiDownloadButton'
 
-export const AikajaksoRaportti = ({oppilaitosAtom, apiEndpoint, title, description}) => {
+export const AikajaksoRaportti = ({organisaatioAtom, apiEndpoint, title, description}) => {
   const alkuAtom = Atom()
   const loppuAtom = Atom()
   const submitBus = Bacon.Bus()
@@ -17,7 +17,7 @@ export const AikajaksoRaportti = ({oppilaitosAtom, apiEndpoint, title, descripti
   const password = generateRandomPassword()
 
   const downloadExcelP = Bacon.combineWith(
-    oppilaitosAtom, alkuAtom, loppuAtom, (o, a, l) => o && a && l && (l.valueOf() >= a.valueOf()) && {oppilaitosOid: o.oid, alku: formatISODate(a), loppu: formatISODate(l), password, baseUrl: `/koski/api/raportit${apiEndpoint}`})
+    organisaatioAtom, alkuAtom, loppuAtom, (o, a, l) => o && a && l && (l.valueOf() >= a.valueOf()) && {oppilaitosOid: o.oid, alku: formatISODate(a), loppu: formatISODate(l), password, baseUrl: `/koski/api/raportit${apiEndpoint}`})
 
   const downloadExcelE = submitBus.map(downloadExcelP).flatMapLatest(downloadExcel)
 
