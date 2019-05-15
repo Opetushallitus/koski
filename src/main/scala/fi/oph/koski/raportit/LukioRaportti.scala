@@ -101,6 +101,7 @@ object LukioRaportti {
     CompactColumn("Ulkomainen vaihto-opiskelija"),
     CompactColumn("Yksityisopiskelija"),
     CompactColumn("Ulkomaanajaksot"),
+    CompactColumn("Erityisen koulutustehtävän tehtävät"),
     CompactColumn("Erityisen koulutustehtävän jaksot"),
     CompactColumn("Sisäoppilaitosmainen majoitus"),
   )
@@ -110,6 +111,7 @@ object LukioRaportti {
     lisatiedot.exists(_.ulkomainenVaihtoopiskelija),
     lisatiedot.exists(_.yksityisopiskelija),
     lisatiedot.flatMap(_.ulkomaanjaksot.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
+    lisatiedot.flatMap(_.erityisenKoulutustehtävänJaksot.map(_.flatMap(_.tehtävä.nimi.map(_.get("fi"))).mkString(","))),
     lisatiedot.flatMap(_.erityisenKoulutustehtävänJaksot.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
     lisatiedot.flatMap(_.sisäoppilaitosmainenMajoitus.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum))
   )
