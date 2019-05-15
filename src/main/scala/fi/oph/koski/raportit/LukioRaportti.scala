@@ -100,7 +100,6 @@ object LukioRaportti {
     CompactColumn("Pidennetty Päättymispäivä"),
     CompactColumn("Ulkomainen vaihto-opiskelija"),
     CompactColumn("Yksityisopiskelija"),
-    CompactColumn("Oikeus maksuttomaan asuntolapaikkaan"),
     CompactColumn("Ulkomaanajaksot"),
     CompactColumn("Erityisen koulutustehtävän jaksot"),
     CompactColumn("Sisäoppilaitosmainen majoitus"),
@@ -110,7 +109,6 @@ object LukioRaportti {
     lisatiedot.exists(_.pidennettyPäättymispäivä),
     lisatiedot.exists(_.ulkomainenVaihtoopiskelija),
     lisatiedot.exists(_.yksityisopiskelija),
-    lisatiedot.exists(_.oikeusMaksuttomaanAsuntolapaikkaan),
     lisatiedot.flatMap(_.ulkomaanjaksot.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
     lisatiedot.flatMap(_.erityisenKoulutustehtävänJaksot.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
     lisatiedot.flatMap(_.sisäoppilaitosmainenMajoitus.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum))
