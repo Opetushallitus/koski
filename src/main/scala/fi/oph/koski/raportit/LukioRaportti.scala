@@ -28,6 +28,7 @@ object LukioRaportti {
     opiskeluoikeusColumns ++
       henkiloTietoColumns ++
       tilatietoColums ++
+      opintojenSummaTiedotColumns ++
       oppilaitoksenOppiaineetColumns(mahdollisetOppiaineet) ++
       opiskeluoikeudenLisätiedotColums
   }
@@ -44,6 +45,7 @@ object LukioRaportti {
     opiskeluoikeudentiedot(opiskeluoikeus) ++
       henkilotiedot(henkilo) ++
       tilatiedot(opiskeluoikeus, aikajaksot, paatasonsuoritus, alku, loppu) ++
+      opintojenSummaTiedot(osasuoritukset) ++
       järjestettävienOppiaineidenTiedot(mahdollisetOppiaineet, paatasonsuoritus, osasuoritukset) ++
       opiskeluoikeudenLisätietojenTiedot(opiskeluoikeudenLisätiedot, alku, loppu)
   }
@@ -131,6 +133,14 @@ object LukioRaportti {
       CompactColumn(s"${nimi} (${koodiarvo}) ${if (paikallinen) "paikallinen" else "valtakunnallinen"}")
     }
   }
+
+  private val opintojenSummaTiedotColumns = Seq(
+    CompactColumn("Yhteislaajuus")
+  )
+
+  private def opintojenSummaTiedot(osasuoritukset: Seq[ROsasuoritusRow]) = Seq(
+    osasuoritukset.filter(_.suorituksenTyyppi == "lukionkurssi").flatMap(_.koulutusmoduuliLaajuusArvo).sum
+  )
 
   private def järjestettävienOppiaineidenTiedot(mahdollisetOppiaineet: Seq[(OppiaineenNimi, Koulutusmooduuli_koodiarvo, Paikallinen)], paatasonsuoritus: RPäätasonSuoritusRow, osasuoritukset: Seq[ROsasuoritusRow]) = {
     if (paatasonsuoritus.suorituksenTyyppi == "lukionoppiaineenoppimaara") {

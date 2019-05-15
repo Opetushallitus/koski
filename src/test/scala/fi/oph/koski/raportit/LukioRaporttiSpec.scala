@@ -99,6 +99,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Hetu" -> lukiolainen.hetu,
     "Sukunimi" -> Some(lukiolainen.sukunimi),
     "Etunimet" -> Some(lukiolainen.etunimet),
+    "Yhteislaajuus" -> 89.5,
     "Suomen kieli ja kirjallisuus (AI) valtakunnallinen" -> "Arvosana 9, 8 kurssia",
     "englanti (A1) valtakunnallinen" -> "Arvosana 9, 9 kurssia",
     "ruotsi (B1) valtakunnallinen" -> "Arvosana 7, 5 kurssia",
@@ -172,17 +173,20 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
 
   lazy val expectedAineopiskelijaHistoriaRow = defaultExpectedAineopiskelijaRow + (
     "Suorituksen vahvistuspäivä" -> Some(date(2016, 1, 10)),
+    "Yhteislaajuus" -> 4.0,
     "Historia (HI) valtakunnallinen" -> "Arvosana 9, 4 kurssia",
   )
 
   lazy val expectedAineopiskelijaKemiaRow = defaultExpectedAineopiskelijaRow + (
     "Suorituksen vahvistuspäivä" -> Some(date(2015, 1, 10)),
+    "Yhteislaajuus" -> 1.0,
     "Kemia (KE) valtakunnallinen" -> "Arvosana 8, 1 kurssi",
   )
 
   lazy val expectedAineopiskelijaFilosofiaRow = defaultExpectedAineopiskelijaRow + (
     "Suorituksen tila" -> "kesken",
     "Suorituksen vahvistuspäivä" -> None,
+    "Yhteislaajuus" -> 1.0,
     "Filosofia (FI) valtakunnallinen" -> "Arvosana 9, 1 kurssi",
   )
 
