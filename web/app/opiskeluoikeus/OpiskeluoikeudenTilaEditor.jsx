@@ -31,6 +31,9 @@ export class OpiskeluoikeudenTilaEditor extends React.Component {
     let jaksotModel = opiskeluoikeusjaksot(wrappedModel)
     let items = modelItems(jaksotModel).slice(0).reverse()
     let suorituksiaKesken = wrappedModel.context.edit && R.any(s => !arvioituTaiVahvistettu(s))(modelItems(wrappedModel, 'suoritukset'))
+    let suoritettuAineopinto = wrappedModel.context.edit && hasAtLeastOneCompletedAineopinto(modelLookup(model, 'suoritukset'))
+    let eiSaaAsettaaValmiiksi = suorituksiaKesken && !suoritettuAineopinto
+
     let showAddDialog = () => this.showOpiskeluoikeudenTilaDialog.modify(x => !x)
 
     let lisääJakso = (uusiJakso) => {
@@ -82,7 +85,7 @@ export class OpiskeluoikeudenTilaEditor extends React.Component {
         {
           this.showOpiskeluoikeudenTilaDialog.map(showDialog => {
             return showDialog &&
-              <OpiskeluoikeudenUusiTilaPopup tilaListModel={jaksotModel} suorituksiaKesken={suorituksiaKesken}
+              <OpiskeluoikeudenUusiTilaPopup tilaListModel={jaksotModel} suorituksiaKesken={eiSaaAsettaaValmiiksi}
                                              edellisenTilanAlkupäivä={edellisenTilanAlkupäivä}
                                              resultCallback={(uusiJakso) => lisääJakso(uusiJakso)}/>
           })
@@ -122,6 +125,23 @@ const getActiveIndex = (jaksot) => {
 }
 
 const viimeinenJakso = (opiskeluoikeus) => R.last(modelItems(opiskeluoikeusjaksot(opiskeluoikeus)))
+
+const isAineopinto = (opinto) => {
+  if (!opinto.oneOfPrototypes) return false
+
+  return opinto.oneOfPrototypes.some(proto =>
+    proto.key === 'lukionoppiaineenoppimaaransuoritus' ||
+    proto.key === 'aikuistenperusopetuksenoppiaineenoppimaaransuoritus' ||
+    proto.key === 'nuortenperusopetuksenoppiaineenoppimaaransuoritus' )
+}
+
+const hasAtLeastOneCompletedAineopinto = (suoritukset) => {
+  if (!suoritukset || !suoritukset.value) return false
+
+  const aineopinnot = suoritukset.value.filter(isAineopinto)
+  return aineopinnot.some(opinto => arvioituTaiVahvistettu(opinto))
+}
+
 
 const opiskeluoikeusjaksot = (opiskeluoikeus) => {
   return modelLookup(opiskeluoikeus, 'tila.opiskeluoikeusjaksot')
