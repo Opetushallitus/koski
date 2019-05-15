@@ -28,6 +28,7 @@ export const raportitContentP = () => {
             {raportit && raportit.includes('ammatillinentutkintosuoritustietojentarkistus') && <SuoritustietojenTarkistus oppilaitosAtom={oppilaitosAtom} />}
             {raportit && raportit.includes('ammatillinenosittainensuoritustietojentarkistus') && <AmmatillinenOsittainenSuoritustietojenTarkistus oppilaitosAtom={oppilaitosAtom} />}
             {raportit && raportit.includes('perusopetuksenvuosiluokka') && <PerusopetuksenVuosiluokka oppilaitosAtom={oppilaitosAtom} />}
+            {raportit && raportit.includes('lukionsuoritustietojentarkistus') && <Lukioraportti oppilaitosAtom={oppilaitosAtom} />}
           </div>
         ))}
       </div>
@@ -102,5 +103,17 @@ const PerusopetuksenVuosiluokka = ({oppilaitosAtom}) => {
     title={titleText}
     description={descriptionText}
     example={exampleText}
+  />)
+}
+
+const Lukioraportti = ({oppilaitosAtom}) => {
+  const titleText = <Text name='Lukioraportti-title'/>
+  const descriptionText = <Text name='Lukioraportti-description'/>
+
+  return (<AikajaksoRaportti
+    oppilaitosAtom={oppilaitosAtom}
+    apiEndpoint={'/lukionsuoritustietojentarkistus'}
+    title={titleText}
+    description={descriptionText}
   />)
 }

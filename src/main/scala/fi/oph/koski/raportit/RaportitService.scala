@@ -7,6 +7,7 @@ class RaportitService(application: KoskiApplication) {
   private lazy val raportointiDatabase = application.raportointiDatabase
   private lazy val perusopetusRepository = PerusopetuksenRaportitRepository(raportointiDatabase.db)
   private lazy val accessResolver = RaportitAccessResolver(application)
+  private lazy val lukioRepository = LukioRaportitRepository(raportointiDatabase.db)
 
   def opiskelijaVuositiedot(request: AikajaksoRaporttiRequest): OppilaitosRaporttiResponse = {
     aikajaksoRaportti(request, AmmatillinenOpiskalijavuositiedotRaportti)
@@ -24,13 +25,21 @@ class RaportitService(application: KoskiApplication) {
     perusopetuksenVuosiluokka(request, PerusopetuksenVuosiluokkaRaportti)
   }
 
+  def lukioraportti(request: AikajaksoRaporttiRequest) = {
+    OppilaitosRaporttiResponse(
+      sheets = Seq(LukioRaportti.buildRaportti(lukioRepository, request.oppilaitosOid, request.alku, request.loppu)),
+      workbookSettings = WorkbookSettings(s"Suoritustietojen_tarkistus_${request.oppilaitosOid}", Some(request.password)),
+      filename = s"lukio_suoritustietojentarkistus_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
+      downloadToken = request.downloadToken
+    )
+  }
+
   private def aikajaksoRaportti(request: AikajaksoRaporttiRequest, raporttiBuilder: AikajaksoRaportti) = {
     val rows = raporttiBuilder.buildRaportti(raportointiDatabase, request.oppilaitosOid, request.alku, request.loppu)
     val documentation = DocumentationSheet("Ohjeet", raporttiBuilder.documentation(request.oppilaitosOid, request.alku, request.loppu, raportointiDatabase.fullLoadCompleted(raportointiDatabase.statuses).get))
     val data = DataSheet("Opiskeluoikeudet", rows, raporttiBuilder.columnSettings)
 
     OppilaitosRaporttiResponse(
-      rows = rows,
       sheets = Seq(data, documentation),
       workbookSettings = WorkbookSettings(raporttiBuilder.title(request.oppilaitosOid, request.alku, request.loppu), Some(request.password)),
       filename = raporttiBuilder.filename(request.oppilaitosOid, request.alku, request.loppu),
@@ -44,7 +53,6 @@ class RaportitService(application: KoskiApplication) {
     val data = DataSheet("Opiskeluoikeudet", rows, raporttiBuilder.columnSettings)
 
     OppilaitosRaporttiResponse(
-      rows = rows,
       sheets = Seq(data, documentation),
       workbookSettings = WorkbookSettings(raporttiBuilder.title(request.oppilaitosOid, request.paiva, request.vuosiluokka), Some(request.password)),
       filename = raporttiBuilder.filename(request.oppilaitosOid, request.paiva, request.vuosiluokka),
@@ -52,3 +60,5 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 }
+
+case class DynamicResponse(sheets: Seq[Sheet], workbookSettings: WorkbookSettings, filename: String, downloadToken: Option[String])

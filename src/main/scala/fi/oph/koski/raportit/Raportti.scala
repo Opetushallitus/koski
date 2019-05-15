@@ -63,7 +63,6 @@ case class PerusopetuksenVuosiluokkaRequest
 
 case class OppilaitosRaporttiResponse
 (
-  rows: Seq[Product],
   sheets: Seq[Sheet],
   workbookSettings: WorkbookSettings,
   filename: String,
@@ -78,3 +77,4 @@ case object AmmatillinenOpiskelijavuositiedot extends RaportinTyyppi
 case object AmmatillinenOsittainenSuoritustietojenTarkistus extends RaportinTyyppi
 case object AmmatillinenTutkintoSuoritustietojenTarkistus extends RaportinTyyppi
 case object PerusopetuksenVuosiluokka extends RaportinTyyppi
+case object LukionSuoritustietojenTarkistus extends RaportinTyyppi

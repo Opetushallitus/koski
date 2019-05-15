@@ -148,14 +148,14 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
 
       "Vuosiluokan suoritus" in {
         val request = PerusopetuksenVuosiluokkaRequest(MockOrganisaatiot.helsinginKaupunki, None, "", date(2015, 1, 1), "8")
-        val rows = raportitService.perusopetuksenVuosiluokka(request).rows.map(_.asInstanceOf[PerusopetusRow])
-        rows.map(_.oppilaitoksenNimi).toSet should equal(Set("Stadin ammattiopisto"))
+        val rows = raportitService.perusopetuksenVuosiluokka(request).sheets.collect { case dSheet: DataSheet => dSheet }
+        rows.flatMap(_.rows.map(_.asInstanceOf[PerusopetusRow])).map(_.oppilaitoksenNimi).toSet should equal(Set("Stadin ammattiopisto"))
       }
 
       "Peruskoulun päättävät" in {
         val request = PerusopetuksenVuosiluokkaRequest(MockOrganisaatiot.helsinginKaupunki, None, "", date(2015, 1, 1), "10")
-        val rows = raportitService.perusopetuksenVuosiluokka(request).rows.map(_.asInstanceOf[PerusopetusRow])
-        rows.map(_.oppilaitoksenNimi).toSet should equal(Set("Stadin ammattiopisto"))
+        val rows = raportitService.perusopetuksenVuosiluokka(request).sheets.collect { case dSheet: DataSheet => dSheet }
+        rows.flatMap(_.rows.map(_.asInstanceOf[PerusopetusRow])).map(_.oppilaitoksenNimi).toSet should equal(Set("Stadin ammattiopisto"))
       }
     }
   }

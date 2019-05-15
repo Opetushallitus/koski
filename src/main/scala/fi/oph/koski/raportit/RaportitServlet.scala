@@ -56,6 +56,12 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
     excelResponse(raportitService.perusopetuksenVuosiluokka(parsedRequest))
   }
 
+  get("/lukionsuoritustietojentarkistus") {
+    val parsedRequest = parseAikajaksoRaporttiRequest
+    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=lukionsuoritustietojentarkistus&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
+    excelResponse(raportitService.lukioraportti(parsedRequest))
+  }
+
   private def excelResponse(raportti: OppilaitosRaporttiResponse) = {
     contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     response.setHeader("Content-Disposition", s"""attachment; filename="${raportti.filename}"""")
