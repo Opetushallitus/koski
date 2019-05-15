@@ -1230,6 +1230,8 @@
   "PerusopetuksenVuosiluokka-example": "Esimerkki: Halutaan tulostaa raportti, jolla voi tarkistaa, että kevään 2019 8. vuosiluokkien suoritustiedot ovat oikein siirretty. Kevään 2019 vuosiluokkasuoritusten vahvistuspäivä on 1.6.2019. Valitaan ”Päivä”-kenttään päivämääräksi 1.6.2019 ja ”Vuosiluokka”-kenttään valitaan vuosiluokaksi ”8”. Raportin tulostuttua suodatetaan pois ”Alkamispäivä”-saraketta hyödyntäen kaikki sellaiset rivit, joissa on alkamispäivä myöhemmin kuin 1.6.2019. Näin saadaan lista 8. vuosiluokan suorituksista, jotka ovat olleet aktiivisina 1.6.2019 tai joilla ei ole ollenkaan siirretty alkamispäivää tai vahvistusta. Vastaavaa periaatetta voi käyttää, jos haluaa raportin esimerkiksi tilastointipäivänä 20.9.2019. Tällöin vain käytetään tulostuspäivämääränä ja alkamispäivän suodatuspäivämääränä päivämäärää 20.9.2019.",
   "Aloittamista lykätty" : "Aloittamista lykätty",
   "Diploma type" : "Diploma type",
-  "tooltip:Jos valittu niin IBO ei..." : "Jos valittu niin IBO ei ole vahvistanut arvosanaa"
+  "tooltip:Jos valittu niin IBO ei..." : "Jos valittu niin IBO ei ole vahvistanut arvosanaa",
+  "Lukioraportti-title": "Lukion suoritustietojen tarkistusraportti",
+  "Lukioraportti-description": "Raportti sisältää oppiainetiedot lukion oppimäärän ja oppiaineen oppimäärän opiskelijoilta"
 }
 

@@ -107,15 +107,13 @@ const PerusopetuksenVuosiluokka = ({oppilaitosAtom}) => {
 }
 
 const Lukioraportti = ({oppilaitosAtom}) => {
-  const titleText = <Text name='lukio'/>
-  const descriptionText = <Text name='lukio'/>
-  const exampleText = <Text name='lukio'/>
+  const titleText = <Text name='Lukioraportti-title'/>
+  const descriptionText = <Text name='Lukioraportti-description'/>
 
   return (<AikajaksoRaportti
     oppilaitosAtom={oppilaitosAtom}
     apiEndpoint={'/lukionsuoritustietojentarkistus'}
     title={titleText}
     description={descriptionText}
-    example={exampleText}
   />)
 }
