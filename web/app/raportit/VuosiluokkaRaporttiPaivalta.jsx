@@ -10,7 +10,7 @@ import {downloadExcel} from './downloadExcel'
 import Dropdown from '../components/Dropdown'
 import RaporttiDownloadButton from './RaporttiDownloadButton'
 
-export const VuosiluokkaRaporttiPaivalta = ({oppilaitosAtom, apiEndpoint, title, description, example}) => {
+export const VuosiluokkaRaporttiPaivalta = ({organisaatioAtom, apiEndpoint, title, description, example}) => {
   const paivaAtom = Atom()
   const vuosiluokkaAtom = Atom('')
   const submitBus = Bacon.Bus()
@@ -18,7 +18,7 @@ export const VuosiluokkaRaporttiPaivalta = ({oppilaitosAtom, apiEndpoint, title,
   const password = generateRandomPassword()
 
   const downloadExcelP = Bacon.combineWith(
-    oppilaitosAtom, paivaAtom, vuosiluokkaAtom,
+    organisaatioAtom, paivaAtom, vuosiluokkaAtom,
     (o, p, v) => o && p && v && ({oppilaitosOid: o.oid, paiva: formatISODate(p), vuosiluokka:(v), password, baseUrl: `/koski/api/raportit${apiEndpoint}`})
   )
   const downloadExcelE = submitBus.map(downloadExcelP)
@@ -28,7 +28,7 @@ export const VuosiluokkaRaporttiPaivalta = ({oppilaitosAtom, apiEndpoint, title,
 
   const inProgressP = submitBus.awaiting(downloadExcelE.mapError())
   const submitEnabledP = downloadExcelP.map(x => !!x).and(inProgressP.not())
-  const vuosiluokat = [1, 2, 3, 4, 5, 6, 7, 8, 10]
+  const vuosiluokat = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
   return (<section>
     <h2>{title}</h2>
@@ -53,7 +53,7 @@ const VuosiluokkaDropdown = ({value, vuosiluokat}) => (
       <Dropdown
         options={vuosiluokat}
         keyValue={(key) => key}
-        displayValue={(dVal) => dVal === 10 ? 'Peruskoulun päättävät' : dVal}
+        displayValue={(dVal) => dVal}
         selected={v}
         onSelectionChanged={(input) => value.set(input)}
       />))}

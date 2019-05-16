@@ -100,18 +100,18 @@ object LukioRaportti {
     CompactColumn("Pidennetty Päättymispäivä"),
     CompactColumn("Ulkomainen vaihto-opiskelija"),
     CompactColumn("Yksityisopiskelija"),
-    CompactColumn("Oikeus maksuttomaan asuntolapaikkaan"),
     CompactColumn("Ulkomaanajaksot"),
+    CompactColumn("Erityisen koulutustehtävän tehtävät"),
     CompactColumn("Erityisen koulutustehtävän jaksot"),
-    CompactColumn("Sisäoppilaitosmainen majoitus"),
+    CompactColumn("Sisäoppilaitosmainen majoitus")
   )
 
   private def opiskeluoikeudenLisätietojenTiedot(lisatiedot: Option[LukionOpiskeluoikeudenLisätiedot], alku: LocalDate, loppu: LocalDate) = Seq(
     lisatiedot.exists(_.pidennettyPäättymispäivä),
     lisatiedot.exists(_.ulkomainenVaihtoopiskelija),
     lisatiedot.exists(_.yksityisopiskelija),
-    lisatiedot.exists(_.oikeusMaksuttomaanAsuntolapaikkaan),
     lisatiedot.flatMap(_.ulkomaanjaksot.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
+    lisatiedot.flatMap(_.erityisenKoulutustehtävänJaksot.map(_.flatMap(_.tehtävä.nimi.map(_.get("fi"))).mkString(","))),
     lisatiedot.flatMap(_.erityisenKoulutustehtävänJaksot.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
     lisatiedot.flatMap(_.sisäoppilaitosmainenMajoitus.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum))
   )

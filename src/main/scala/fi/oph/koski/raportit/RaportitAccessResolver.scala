@@ -39,7 +39,7 @@ case class RaportitAccessResolver(organisaatioRepository: OrganisaatioRepository
   private def raportinTyypitKoulutusmuodolle(koulutusmuoto: String, isKoulutustoimija: Boolean) = koulutusmuoto match {
     case "ammatillinenkoulutus" if !isKoulutustoimija => Seq(AmmatillinenOpiskelijavuositiedot, AmmatillinenTutkintoSuoritustietojenTarkistus, AmmatillinenOsittainenSuoritustietojenTarkistus)
     case "perusopetus" => Seq(PerusopetuksenVuosiluokka)
-    case "lukiokoulutus" => Seq(LukionSuoritustietojenTarkistus)
+    case "lukiokoulutus" if !isKoulutustoimija => Seq(LukionSuoritustietojenTarkistus)
     case _ => Seq.empty[RaportinTyyppi]
   }
 

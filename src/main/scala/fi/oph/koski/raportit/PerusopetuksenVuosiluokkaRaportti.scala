@@ -12,7 +12,7 @@ import org.json4s.JValue
 object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
 
   def buildRaportti(repository: PerusopetuksenRaportitRepository, oppilaitosOids: Set[Oid], paiva: LocalDate, vuosiluokka: String): Seq[PerusopetusRow] = {
-    val rows = if (vuosiluokka == "10") {
+    val rows = if (vuosiluokka == "9") {
       repository.peruskoulunPaattavatJaLuokalleJääneet(oppilaitosOids, paiva, vuosiluokka)
     } else {
       repository.perusopetuksenvuosiluokka(oppilaitosOids, paiva, vuosiluokka)
