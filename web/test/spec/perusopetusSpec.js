@@ -816,7 +816,7 @@ describe('Perusopetus', function() {
               var tilaJaVahvistus = opinnot.tilaJaVahvistus
               before(
                 opiskeluoikeus.peruuta,
-                opinnot.oppiaineet.merkitseOppiaineetValmiiksi,
+                opinnot.oppiaineet.merkitseOppiaineetValmiiksi(),
                 tilaJaVahvistus.merkitseValmiiksi,
                 tilaJaVahvistus.lisääVahvistus('11.4.2117'),
                 opinnot.avaaLisaysDialogi
@@ -2551,7 +2551,7 @@ describe('Perusopetus', function() {
                 })
               })
               describe('Kun kaikki oppiaineet on merkitty valmiiksi', function() {
-                before(opinnot.oppiaineet.merkitseOppiaineetValmiiksi, editor.edit)
+                before(opinnot.oppiaineet.merkitseOppiaineetValmiiksi(), editor.edit)
                 describe('Aluksi', function() {
                   it('Merkitse valmiiksi -nappi näytetään', function() {
                     expect(tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(true)
@@ -2627,7 +2627,7 @@ describe('Perusopetus', function() {
                           var dialogEditor = dialog.editor
                           var myöntäjät = dialogEditor.property('myöntäjäHenkilöt')
                           before(
-                            opinnot.oppiaineet.merkitseOppiaineetValmiiksi,
+                            opinnot.oppiaineet.merkitseOppiaineetValmiiksi(),
                             tilaJaVahvistus.merkitseValmiiksi,
                             dialogEditor.propertyBySelector('.jaa-tai-siirretaan').setValue(false),
                             dialogEditor.property('päivä').setValue('11.4.2017'),
@@ -2697,7 +2697,7 @@ describe('Perusopetus', function() {
                                       before(
                                         opinnot.valitseSuoritus(undefined, '2. vuosiluokka'),
                                         editor.edit,
-                                        opinnot.oppiaineet.merkitseOppiaineetValmiiksi,
+                                        opinnot.oppiaineet.merkitseOppiaineetValmiiksi(),
                                         tilaJaVahvistus.merkitseValmiiksi,
                                         myöntäjät.removeFromDropdown('Reijo Reksi'),
                                         dialog.peruuta,
@@ -2846,7 +2846,7 @@ describe('Perusopetus', function() {
         })
 
         describe('Kun merkitään valmiiksi', function() {
-          before(opinnot.oppiaineet.merkitseOppiaineetValmiiksi, tilaJaVahvistus.merkitseValmiiksi)
+          before(opinnot.oppiaineet.merkitseOppiaineetValmiiksi(), tilaJaVahvistus.merkitseValmiiksi)
 
           it('Siirretään seuraavalle luokalle -riviä ei näytetä', function() {
             expect(tilaJaVahvistus.merkitseValmiiksiDialog.editor.propertyBySelector('.jaa-tai-siirretaan').isVisible()).to.equal(false)

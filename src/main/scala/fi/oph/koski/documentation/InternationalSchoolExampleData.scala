@@ -10,28 +10,36 @@ object InternationalSchoolExampleData {
   lazy val internationalSchoolOfHelsinki: Oppilaitos = Oppilaitos(MockOrganisaatiot.internationalSchool, Some(Koodistokoodiviite("03510", None, "oppilaitosnumero", None)), Some("International School of Helsinki"))
   lazy val internationalSchoolOfHelsinkiToimipiste: Toimipiste = Toimipiste("1.2.246.562.10.63709849283")
 
-  def pypSuoritus(grade: String, vahvistusPäivä: Option[LocalDate]): PYPVuosiluokanSuoritus = PYPVuosiluokanSuoritus(
+  def pypSuoritus(grade: String, aloitusPäivä: LocalDate, vahvistusPäivä: Option[LocalDate]): PYPVuosiluokanSuoritus = PYPVuosiluokanSuoritus(
     koulutusmoduuli = PYPLuokkaAste(tunniste = Koodistokoodiviite(grade, "internationalschoolluokkaaste")),
+    alkamispäivä = Some(aloitusPäivä),
     toimipiste = internationalSchoolOfHelsinki,
     vahvistus = vahvistusPäivä.flatMap(vahvistus),
     suorituskieli = ExampleData.englanti
   )
 
-  def mypSuoritus(grade: Int, vahvistusPäivä: Option[LocalDate]): MYPVuosiluokanSuoritus = MYPVuosiluokanSuoritus(
+  def mypSuoritus(grade: Int, aloitusPäivä: LocalDate, vahvistusPäivä: Option[LocalDate]): MYPVuosiluokanSuoritus = MYPVuosiluokanSuoritus(
     koulutusmoduuli = MYPLuokkaAste(tunniste = Koodistokoodiviite(grade.toString, "internationalschoolluokkaaste")),
+    alkamispäivä = Some(aloitusPäivä),
     toimipiste = internationalSchoolOfHelsinki,
     vahvistus = vahvistusPäivä.flatMap(vahvistus),
     suorituskieli = ExampleData.englanti
   )
 
-  def diplomaSuoritus(grade: Int, vahvistusPäivä: Option[LocalDate]): DiplomaVuosiluokanSuoritus = DiplomaVuosiluokanSuoritus(
+  def diplomaSuoritus(grade: Int, aloitusPäivä: LocalDate, vahvistusPäivä: Option[LocalDate]): DiplomaVuosiluokanSuoritus = DiplomaVuosiluokanSuoritus(
     koulutusmoduuli = IBDiplomaLuokkaAste(tunniste = Koodistokoodiviite(grade.toString, "internationalschoolluokkaaste")),
+    alkamispäivä = Some(aloitusPäivä),
     toimipiste = internationalSchoolOfHelsinki,
     vahvistus = vahvistusPäivä.flatMap(vahvistus),
     suorituskieli = ExampleData.englanti
   )
 
-  def oppiaineenSuoritus(oppiaine: InternationalSchoolOppiaine, arviointi: Option[PYPTaiMYPArvionti] = None): InternationalSchoolOppiaineenSuoritus = InternationalSchoolOppiaineenSuoritus(
+  def mypOppiaineenSuoritus(oppiaine: MYPOppiaine, arviointi: Option[NumeerinenInternationalSchoolOppiaineenArviointi] = None): MYPOppiaineenSuoritus = MYPOppiaineenSuoritus(
+    koulutusmoduuli = oppiaine,
+    arviointi = arviointi.map(a => List(a))
+  )
+
+  def pypOppiaineenSuoritus(oppiaine: PYPOppiaine, arviointi: Option[SanallinenInternationalSchoolOppiaineenArviointi] = None): PYPOppiaineenSuoritus = PYPOppiaineenSuoritus(
     koulutusmoduuli = oppiaine,
     arviointi = arviointi.map(a => List(a))
   )
@@ -46,16 +54,20 @@ object InternationalSchoolExampleData {
     arviointi = arviointi.map(a => List(a))
   )
 
-  def oppiaine(tunniste: String): InternationalSchoolOppiaine = InternationalSchoolOppiaineMuu(
+  def mypOppiaine(tunniste: String): MYPOppiaine = MYPOppiaineMuu(
     tunniste = Koodistokoodiviite(tunniste, "oppiaineetinternationalschool")
   )
 
-  def languageAndLiterature(kieli: String): InternationalSchoolOppiaine = LanguageAndLiterature(
+  def pypOppiaine(tunniste: String): PYPOppiaine = PYPOppiaineMuu(
+    tunniste = Koodistokoodiviite(tunniste, "oppiaineetinternationalschool")
+  )
+
+  def languageAndLiterature(kieli: String): InternationalSchoolKieliOppiaine = LanguageAndLiterature(
     tunniste = Koodistokoodiviite("LL", "oppiaineetinternationalschool"),
     kieli = Koodistokoodiviite(kieli, "kielivalikoima")
   )
 
-  def languageAqcuisition(kieli: String): InternationalSchoolOppiaine = LanguageAcquisition(
+  def languageAqcuisition(kieli: String): InternationalSchoolKieliOppiaine = LanguageAcquisition(
     tunniste = Koodistokoodiviite("LAC", "oppiaineetinternationalschool"),
     kieli = Koodistokoodiviite(kieli, "kielivalikoima")
   )

@@ -36,6 +36,7 @@
           "koodistoUri" : "internationalschoolluokkaaste"
         }
       },
+      "alkamispäivä" : "2005-08-15",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.67636414343",
         "oppilaitosnumero" : {
@@ -108,7 +109,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -126,7 +127,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -144,7 +145,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -162,7 +163,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -180,7 +181,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -198,7 +199,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -216,7 +217,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       } ]
@@ -227,6 +228,7 @@
           "koodistoUri" : "internationalschoolluokkaaste"
         }
       },
+      "alkamispäivä" : "2006-08-15",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.67636414343",
         "oppilaitosnumero" : {
@@ -299,7 +301,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -317,7 +319,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -335,7 +337,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -353,7 +355,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -371,7 +373,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -389,7 +391,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -407,7 +409,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -425,7 +427,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       } ]
@@ -436,6 +438,7 @@
           "koodistoUri" : "internationalschoolluokkaaste"
         }
       },
+      "alkamispäivä" : "2007-08-15",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.67636414343",
         "oppilaitosnumero" : {
@@ -508,7 +511,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -526,7 +529,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -544,7 +547,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -562,7 +565,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -580,7 +583,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -598,7 +601,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -616,7 +619,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -634,7 +637,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       } ]
@@ -645,6 +648,7 @@
           "koodistoUri" : "internationalschoolluokkaaste"
         }
       },
+      "alkamispäivä" : "2008-08-15",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.67636414343",
         "oppilaitosnumero" : {
@@ -717,7 +721,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -735,7 +739,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -753,7 +757,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -771,7 +775,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -789,7 +793,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -807,7 +811,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -825,7 +829,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -843,7 +847,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       } ]
@@ -854,6 +858,7 @@
           "koodistoUri" : "internationalschoolluokkaaste"
         }
       },
+      "alkamispäivä" : "2009-08-15",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.67636414343",
         "oppilaitosnumero" : {
@@ -926,7 +931,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -944,7 +949,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -962,7 +967,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -980,7 +985,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -998,7 +1003,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1016,7 +1021,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1034,7 +1039,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1052,7 +1057,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       } ]
@@ -1063,6 +1068,7 @@
           "koodistoUri" : "internationalschoolluokkaaste"
         }
       },
+      "alkamispäivä" : "2010-08-15",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.67636414343",
         "oppilaitosnumero" : {
@@ -1135,7 +1141,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1153,7 +1159,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1171,7 +1177,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1189,7 +1195,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1207,7 +1213,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1225,7 +1231,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1243,7 +1249,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolpypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       } ]
@@ -1254,6 +1260,7 @@
           "koodistoUri" : "internationalschoolluokkaaste"
         }
       },
+      "alkamispäivä" : "2011-08-15",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.67636414343",
         "oppilaitosnumero" : {
@@ -1330,7 +1337,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1352,7 +1359,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1374,7 +1381,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1392,7 +1399,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1410,7 +1417,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1428,7 +1435,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1446,7 +1453,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1464,7 +1471,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       } ]
@@ -1475,6 +1482,7 @@
           "koodistoUri" : "internationalschoolluokkaaste"
         }
       },
+      "alkamispäivä" : "2012-08-15",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.67636414343",
         "oppilaitosnumero" : {
@@ -1551,7 +1559,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1573,7 +1581,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1595,7 +1603,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1613,7 +1621,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1631,7 +1639,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1649,7 +1657,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1667,7 +1675,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1685,13 +1693,13 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "DD",
+            "koodiarvo" : "DE",
             "koodistoUri" : "oppiaineetinternationalschool"
           }
         },
@@ -1703,7 +1711,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       } ]
@@ -1714,6 +1722,7 @@
           "koodistoUri" : "internationalschoolluokkaaste"
         }
       },
+      "alkamispäivä" : "2013-08-15",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.67636414343",
         "oppilaitosnumero" : {
@@ -1790,7 +1799,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1812,7 +1821,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1834,7 +1843,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1852,7 +1861,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1870,7 +1879,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1888,7 +1897,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1906,7 +1915,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1924,7 +1933,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -1942,7 +1951,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       } ]
@@ -1953,6 +1962,7 @@
           "koodistoUri" : "internationalschoolluokkaaste"
         }
       },
+      "alkamispäivä" : "2014-08-15",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.67636414343",
         "oppilaitosnumero" : {
@@ -2029,7 +2039,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -2051,7 +2061,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -2069,7 +2079,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -2087,7 +2097,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -2105,7 +2115,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -2123,7 +2133,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       } ]
@@ -2134,6 +2144,7 @@
           "koodistoUri" : "internationalschoolluokkaaste"
         }
       },
+      "alkamispäivä" : "2015-08-15",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.67636414343",
         "oppilaitosnumero" : {
@@ -2210,7 +2221,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -2232,7 +2243,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -2250,7 +2261,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -2268,7 +2279,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -2286,7 +2297,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -2304,7 +2315,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       }, {
@@ -2322,7 +2333,7 @@
           "hyväksytty" : true
         } ],
         "tyyppi" : {
-          "koodiarvo" : "internationalschooloppiaine",
+          "koodiarvo" : "internationalschoolmypoppiaine",
           "koodistoUri" : "suorituksentyyppi"
         }
       } ]
@@ -2337,6 +2348,7 @@
           "koodistoUri" : "internationalschoolluokkaaste"
         }
       },
+      "alkamispäivä" : "2016-08-15",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.67636414343",
         "oppilaitosnumero" : {
@@ -2559,6 +2571,7 @@
           "koodistoUri" : "internationalschoolluokkaaste"
         }
       },
+      "alkamispäivä" : "2017-08-15",
       "toimipiste" : {
         "oid" : "1.2.246.562.10.67636414343",
         "oppilaitosnumero" : {

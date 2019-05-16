@@ -38,7 +38,7 @@ class OppijaValidationInternationalSchoolSpec extends FreeSpec with LocalJettyHt
   }
 
   override def tag = implicitly[reflect.runtime.universe.TypeTag[InternationalSchoolOpiskeluoikeus]]
-  def tutkintoSuoritus: DiplomaVuosiluokanSuoritus = InternationalSchoolExampleData.diplomaSuoritus(12, None)
+  def tutkintoSuoritus: DiplomaVuosiluokanSuoritus = InternationalSchoolExampleData.diplomaSuoritus(12, date(2019, 8, 15), None)
 
   override def defaultOpiskeluoikeus = InternationalSchoolOpiskeluoikeus(
     tila = LukionOpiskeluoikeudenTila(
