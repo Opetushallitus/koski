@@ -1,10 +1,10 @@
 package fi.oph.koski.raportit
 
 
-case class Column(title: String, width: Option[Int] = None)
+case class Column(title: String, width: Option[Int] = None, comment: Option[String] = None)
 
 object CompactColumn {
-  def apply(title: String): Column = Column(title, width = Some(2000))
+  def apply(title: String, comment: Option[String] = None): Column = Column(title, width = Some(2000), comment = comment)
 }
 
 sealed trait Sheet {
