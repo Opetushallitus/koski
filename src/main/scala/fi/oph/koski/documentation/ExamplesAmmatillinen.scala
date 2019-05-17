@@ -97,6 +97,28 @@ object ReforminMukainenErikoisammattitutkintoExample {
 
 object AmmattitutkintoExample {
   lazy val tutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("357305", Some("Autoalan työnjohdon erikoisammattitutkinto"), "koulutus", None), Some("40/011/2001"))
+  lazy val näyttötutkintoonValmistavanKoulutuksenSuoritus = NäyttötutkintoonValmistavanKoulutuksenSuoritus(
+    tutkinto = tutkinto,
+    alkamispäivä = Some(date(2012, 9, 1)),
+    päättymispäivä = None,
+    toimipiste = stadinToimipiste,
+    vahvistus = vahvistus(date(2015, 5, 31), stadinAmmattiopisto, Some(helsinki)),
+    suorituskieli = suomenKieli,
+    osasuoritukset = Some(List(
+      NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
+        koulutusmoduuli = PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa(
+          PaikallinenKoodi("104052", finnish("Johtaminen ja henkilöstön kehittäminen")),
+          "Johtamisen ja henkilöstön kehittämisen valmistava koulutus"
+        )
+      ),
+      NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
+        koulutusmoduuli = autonLisävarustetyöt(false, "valojärjestelmät")
+      ),
+      NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
+        koulutusmoduuli = autonLisävarustetyöt(false, "lämmitysjärjestelmät")
+      )
+    ))
+  )
   lazy val opiskeluoikeus = AmmatillinenOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2015, 5, 31)),
     tila = AmmatillinenOpiskeluoikeudenTila(List(
@@ -105,28 +127,7 @@ object AmmattitutkintoExample {
     )),
     oppilaitos = Some(stadinAmmattiopisto),
     suoritukset = List(
-      NäyttötutkintoonValmistavanKoulutuksenSuoritus(
-        tutkinto = tutkinto,
-        alkamispäivä = Some(date(2012, 9, 1)),
-        päättymispäivä = None,
-        toimipiste = stadinToimipiste,
-        vahvistus = vahvistus(date(2015, 5, 31), stadinAmmattiopisto, Some(helsinki)),
-        suorituskieli = suomenKieli,
-        osasuoritukset = Some(List(
-          NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
-            koulutusmoduuli = PaikallinenNäyttötutkintoonValmistavanKoulutuksenOsa(
-              PaikallinenKoodi("104052", finnish("Johtaminen ja henkilöstön kehittäminen")),
-              "Johtamisen ja henkilöstön kehittämisen valmistava koulutus"
-            )
-          ),
-          NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
-            koulutusmoduuli = autonLisävarustetyöt(false, "valojärjestelmät")
-          ),
-          NäyttötutkintoonValmistavanKoulutuksenOsanSuoritus(
-            koulutusmoduuli = autonLisävarustetyöt(false, "lämmitysjärjestelmät")
-          )
-        ))
-      ),
+      näyttötutkintoonValmistavanKoulutuksenSuoritus,
       AmmatillisenTutkinnonSuoritus(
         koulutusmoduuli = tutkinto,
         suoritustapa = suoritustapaNäyttö,

@@ -19,7 +19,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
               HttpStatus.fold(osaSuoritus.koulutusmoduuli match {
                 case osa: ValtakunnallinenTutkinnonOsa =>
                   validateTutkinnonOsa(osaSuoritus, osa, rakenne, tutkintoSuoritus.suoritustapa, alkamispäiväLäsnä)
-                case osa: PaikallinenTutkinnonOsa  =>
+                case osa: PaikallinenTutkinnonOsa =>
                   HttpStatus.ok // vain OpsTutkinnonosatoteutukset validoidaan, muut sellaisenaan läpi, koska niiden rakennetta ei tunneta
                 case osa: KorkeakouluopinnotTutkinnonOsa =>
                   HttpStatus.ok
@@ -28,6 +28,8 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
               }, validateTutkintoField(tutkintoSuoritus, osaSuoritus))
           }))
       }
+    case n: NäyttötutkintoonValmistavanKoulutuksenSuoritus =>
+      HttpStatus.justStatus(getRakenne(n.tutkinto, Some(ammatillisetKoulutustyypit)))
     case suoritus: AikuistenPerusopetuksenOppimääränSuoritus =>
       HttpStatus.justStatus(getRakenne(suoritus.koulutusmoduuli, Some(List(aikuistenPerusopetus)), Some(suoritus)))
     case suoritus: AmmatillisenTutkinnonOsittainenSuoritus =>
@@ -51,8 +53,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
           HttpStatus.justStatus(getRakenne(d, Some(lukionKoulutustyypit)))
         case d: Diaarinumerollinen =>
           HttpStatus.justStatus(getRakenne(d, None))
-        case _ =>
-          HttpStatus.ok
+        case _ => HttpStatus.ok
       }
   }
 
