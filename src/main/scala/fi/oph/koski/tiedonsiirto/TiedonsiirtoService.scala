@@ -5,6 +5,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.db.GlobalExecutionContext
 import fi.oph.koski.elasticsearch.ElasticSearch
+import fi.oph.koski.elasticsearch.ElasticSearch.{allFilter, anyFilter}
 import fi.oph.koski.henkilo.{HenkilöOid, HenkilöRepository, Hetu}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
@@ -87,10 +88,16 @@ class TiedonsiirtoService(
     if (session.hasGlobalReadAccess) {
       None
     } else {
-      Some(ElasticSearch.anyFilter(List(
+      val orgFilter = anyFilter(List(
         Map("terms" -> Map("tallentajaOrganisaatioOid" -> session.organisationOids(accessType))),
         Map("terms" -> Map("oppilaitokset.oid" -> session.organisationOids(accessType)))
-      )))
+      ))
+      val filter = if (session.hasKoulutusmuotoRestrictions) {
+        allFilter(List(orgFilter, Map("terms" -> Map("koulutusmuoto" -> session.allowedOpiskeluoikeusTyypit))))
+      } else {
+        orgFilter
+      }
+      Some(filter)
     }
 
   private def haeTiedonsiirrot(filters: List[Map[String, Any]], oppilaitosOid: Option[String], paginationSettings: Option[PaginationSettings])(implicit koskiSession: KoskiSession): Either[HttpStatus, PaginatedResponse[Tiedonsiirrot]] = {
@@ -155,13 +162,16 @@ class TiedonsiirtoService(
 
     val koulutustoimija: List[OidOrganisaatio] = validatedOppija.flatMap(_.opiskeluoikeudet.headOption.flatMap(_.koulutustoimija.map(_.toOidOrganisaatio))).toList
     val suoritustiedot: Option[List[TiedonsiirtoSuoritusTiedot]] = validatedOppija.map(toSuoritustiedot)
+    val koulutusmuoto = validatedOppija
+      .flatMap(_.opiskeluoikeudet.headOption.map(_.tyyppi.koodiarvo))
+      .orElse(data.flatMap(extractKoulutusmuoto))
 
     val juuriOrganisaatiot = if (koskiSession.isRoot) koulutustoimija else koskiSession.juuriOrganisaatiot
 
     juuriOrganisaatiot.foreach((org: OrganisaatioWithOid) => {
       val (data: Option[JValue], virheet: Option[List[ErrorDetail]]) = error.map(e => (Some(e.data), Some(e.virheet))).getOrElse((None, None))
 
-      storeToElasticSearch(henkilö, org, oppilaitokset, suoritustiedot, data, virheet, lahdejarjestelma, koskiSession.oid, Some(koskiSession.username), new Timestamp(System.currentTimeMillis))
+      storeToElasticSearch(henkilö, org, oppilaitokset, koulutusmuoto, suoritustiedot, data, virheet, lahdejarjestelma, koskiSession.oid, Some(koskiSession.username), new Timestamp(System.currentTimeMillis))
 
       if (error.isDefined) {
         tiedonSiirtoVirheet.inc
@@ -174,10 +184,10 @@ class TiedonsiirtoService(
   }
 
   def storeToElasticSearch(henkilö: Option[TiedonsiirtoOppija], org: OrganisaatioWithOid,
-                           oppilaitokset: Option[List[OidOrganisaatio]], suoritustiedot: Option[List[TiedonsiirtoSuoritusTiedot]],
+                           oppilaitokset: Option[List[OidOrganisaatio]], koulutusmuoto: Option[String], suoritustiedot: Option[List[TiedonsiirtoSuoritusTiedot]],
                            data: Option[JValue], virheet: Option[List[ErrorDetail]], lahdejarjestelma: Option[String],
                            userOid: String, username: Option[String], aikaleima: Timestamp) = {
-    val tiedonsiirtoDoc = TiedonsiirtoDocument(userOid, username, org.oid, henkilö, oppilaitokset, suoritustiedot, data, virheet.toList.flatten.isEmpty, virheet.getOrElse(Nil), lahdejarjestelma, aikaleima)
+    val tiedonsiirtoDoc = TiedonsiirtoDocument(userOid, username, org.oid, henkilö, oppilaitokset, koulutusmuoto, suoritustiedot, data, virheet.toList.flatten.isEmpty, virheet.getOrElse(Nil), lahdejarjestelma, aikaleima)
     tiedonsiirtoBuffer.append(tiedonsiirtoDoc)
   }
 
@@ -334,6 +344,9 @@ class TiedonsiirtoService(
     }
   }
 
+  private def extractKoulutusmuoto(data: JValue): Option[String] =
+    jsonStringList(data \ "opiskeluoikeudet" \ "tyyppi" \ "koodiarvo").headOption
+
   private def extractHenkilö(data: JValue, oidHenkilö: Option[OidHenkilö])(implicit user: KoskiSession): Option[TiedonsiirtoOppija] = {
     val annetutHenkilötiedot: JValue = data \ "henkilö"
     val annettuTunniste: Option[HetuTaiOid] = validateAndExtract[HetuTaiOid](annetutHenkilötiedot, ignoreExtras = true).map { tunniste =>
@@ -429,7 +442,7 @@ case class TiedonsiirtoQuery(oppilaitos: Option[String], paginationSettings: Opt
 case class TiedonsiirtoKäyttäjä(oid: String, käyttäjätunnus: Option[String])
 case class TiedonsiirtoError(data: JValue, virheet: List[ErrorDetail])
 
-case class TiedonsiirtoDocument(tallentajaKäyttäjäOid: String, tallentajaKäyttäjätunnus: Option[String], tallentajaOrganisaatioOid: String, oppija: Option[TiedonsiirtoOppija], oppilaitokset: Option[List[OidOrganisaatio]], suoritustiedot: Option[List[TiedonsiirtoSuoritusTiedot]], data: Option[JValue], success: Boolean, virheet: List[ErrorDetail], lähdejärjestelmä: Option[String], aikaleima: Timestamp) {
+case class TiedonsiirtoDocument(tallentajaKäyttäjäOid: String, tallentajaKäyttäjätunnus: Option[String], tallentajaOrganisaatioOid: String, oppija: Option[TiedonsiirtoOppija], oppilaitokset: Option[List[OidOrganisaatio]], koulutusmuoto: Option[String], suoritustiedot: Option[List[TiedonsiirtoSuoritusTiedot]], data: Option[JValue], success: Boolean, virheet: List[ErrorDetail], lähdejärjestelmä: Option[String], aikaleima: Timestamp) {
   def id: String = tallentajaOrganisaatioOid + "_" + oppijaId
   private def oppijaId: String = oppija.flatMap(h => h.hetu.orElse(h.oid)).getOrElse("")
 }
