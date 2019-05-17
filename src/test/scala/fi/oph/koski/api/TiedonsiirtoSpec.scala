@@ -1,12 +1,13 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjestelmäId
+import fi.oph.koski.documentation.ExamplesEsiopetus
 import fi.oph.koski.email.{Email, EmailContent, EmailRecipient, MockEmailSender}
 import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.henkilo.MockOppijat.eerola
+import fi.oph.koski.henkilo.MockOppijat.{asUusiOppija, eerola, markkanen}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.MockUsers.{helsinginKaupunkiPalvelukäyttäjä, omniaPääkäyttäjä, stadinPääkäyttäjä}
+import fi.oph.koski.koskiuser.MockUsers.{helsinginKaupunkiEsiopetus, helsinginKaupunkiPalvelukäyttäjä, omniaPääkäyttäjä, stadinPääkäyttäjä}
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
 import fi.oph.koski.schema._
@@ -97,6 +98,35 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       val yhteenveto = JsonSerializer.parse[List[TiedonsiirtoYhteenveto]](body)
       yhteenveto.length should be(0)
     }
+  }
+
+  "Esiopetus" in {
+    val stadinOpiskeluoikeus = defaultOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId))
+    val esiopetusOpiskeluoikeus = ExamplesEsiopetus.opiskeluoikeusHelsingissä.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId))
+    val markkanen = asUusiOppija(MockOppijat.markkanen)
+
+    resetFixtures
+    putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
+      verifyResponseStatusOk()
+    }
+    putOpiskeluoikeus(esiopetusOpiskeluoikeus, henkilö = markkanen, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
+      verifyResponseStatusOk()
+    }
+
+    getTiedonsiirrot(helsinginKaupunkiEsiopetus).length should equal(1)
+    verifyTiedonsiirtoLoki(helsinginKaupunkiEsiopetus, Some(markkanen), Some(esiopetusOpiskeluoikeus), errorStored = false, dataStored = false, expectedLähdejärjestelmä = Some("winnova"))
+
+    putOpiskeluoikeus(stadinOpiskeluoikeus, henkilö = defaultHenkilö.copy(sukunimi = ""), headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
+      verifyResponseStatus(400, sukunimiPuuttuu)
+    }
+    putOpiskeluoikeus(esiopetusOpiskeluoikeus, henkilö = markkanen.copy(sukunimi = ""), headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
+      verifyResponseStatus(400, sukunimiPuuttuu)
+    }
+
+    getTiedonsiirrot(helsinginKaupunkiEsiopetus).length should equal(1)
+    verifyTiedonsiirtoLoki(helsinginKaupunkiEsiopetus, Some(markkanen), Some(esiopetusOpiskeluoikeus), errorStored = true, dataStored = true, expectedLähdejärjestelmä = Some("winnova"))
+    getVirheellisetTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä).flatMap(_.rivit) should have size 2
+    getVirheellisetTiedonsiirrot(helsinginKaupunkiEsiopetus).flatMap(_.rivit) should have size 1
   }
 
   "Tiedonsiirtolokin katsominen" - {
@@ -248,7 +278,8 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
 
   private def verifyTiedonsiirtoLoki(user: UserWithPassword, expectedHenkilö: Option[UusiHenkilö], expectedOpiskeluoikeus: Option[Opiskeluoikeus], errorStored: Boolean, dataStored: Boolean, expectedLähdejärjestelmä: Option[String]) {
     Wait.until(getTiedonsiirrot(user).nonEmpty)
-    val tiedonsiirto = getTiedonsiirrot(user).head
+    val tiedonsiirrot = getTiedonsiirrot(user)
+    val tiedonsiirto = tiedonsiirrot.find(_.oppija.exists(_.hetu.exists(h => expectedHenkilö.exists(_.hetu == h)))).getOrElse(tiedonsiirrot.head)
     tiedonsiirto.oppija.flatMap(_.hetu) should equal(expectedHenkilö.map(_.hetu))
     tiedonsiirto.rivit.flatMap(_.oppilaitos).map(_.oid) should equal(expectedOpiskeluoikeus.map(_.getOppilaitos.oid).toList)
     tiedonsiirto.rivit.flatMap(_.virhe).nonEmpty should be(errorStored)
