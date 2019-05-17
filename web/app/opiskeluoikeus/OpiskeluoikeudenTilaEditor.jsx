@@ -32,7 +32,8 @@ export class OpiskeluoikeudenTilaEditor extends React.Component {
     let items = modelItems(jaksotModel).slice(0).reverse()
     let suorituksiaKesken = wrappedModel.context.edit && R.any(s => !arvioituTaiVahvistettu(s))(modelItems(wrappedModel, 'suoritukset'))
     let suoritettuAineopinto = wrappedModel.context.edit && hasAtLeastOneCompletedAineopinto(modelLookup(model, 'suoritukset'))
-    let eiSaaAsettaaValmiiksi = suorituksiaKesken && !suoritettuAineopinto
+    let eiTiedossaOppiaineita = hasSomeEiTiedossaAineopinto(modelLookup(model, 'suoritukset'))
+    let eiSaaAsettaaValmiiksi = eiTiedossaOppiaineita || (suorituksiaKesken && !suoritettuAineopinto)
 
     let showAddDialog = () => this.showOpiskeluoikeudenTilaDialog.modify(x => !x)
 
@@ -139,9 +140,22 @@ const hasAtLeastOneCompletedAineopinto = (suoritukset) => {
   if (!suoritukset || !suoritukset.value) return false
 
   const aineopinnot = suoritukset.value.filter(isAineopinto)
-  return aineopinnot.some(opinto => arvioituTaiVahvistettu(opinto))
+  return aineopinnot.some(opinto => arvioituTaiVahvistettu(opinto)) // FIXME: Test for "Vahvistus"
 }
 
+const hasSomeEiTiedossaAineopinto = (suoritukset) => {
+  if (!suoritukset) return false
+
+  return suoritukset.value.some(suoritus =>
+    suoritus.value.properties &&
+    suoritus.value.properties.some(property =>
+      property.model.value && property.model.value.properties &&
+      property.model.value.properties.some(p =>
+        p.model.value && p.model.value.data && p.model.value.data.koodiarvo === 'XX'
+      )
+    )
+  )
+}
 
 const opiskeluoikeusjaksot = (opiskeluoikeus) => {
   return modelLookup(opiskeluoikeus, 'tila.opiskeluoikeusjaksot')
