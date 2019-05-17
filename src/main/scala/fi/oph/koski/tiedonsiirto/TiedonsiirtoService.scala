@@ -160,7 +160,11 @@ class TiedonsiirtoService(
       .orElse(data.flatMap(extractOppilaitosFromToimipiste))
       .map(_.distinct)
 
-    val koulutustoimija: List[OidOrganisaatio] = validatedOppija.flatMap(_.opiskeluoikeudet.headOption.flatMap(_.koulutustoimija.map(_.toOidOrganisaatio))).toList
+    val koulutustoimija: List[OidOrganisaatio] = validatedOppija.flatMap(_.opiskeluoikeudet.headOption.flatMap(_.koulutustoimija.map(_.toOidOrganisaatio))).toList match {
+      case Nil => oppilaitokset.toList.flatten.flatMap(organisaatioRepository.findKoulutustoimijaForOppilaitos).map(_.toOidOrganisaatio)
+      case kt => kt
+    }
+
     val suoritustiedot: Option[List[TiedonsiirtoSuoritusTiedot]] = validatedOppija.map(toSuoritustiedot)
     val koulutusmuoto = validatedOppija
       .flatMap(_.opiskeluoikeudet.headOption.map(_.tyyppi.koodiarvo))

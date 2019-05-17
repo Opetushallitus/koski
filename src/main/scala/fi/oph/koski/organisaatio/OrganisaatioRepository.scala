@@ -32,7 +32,7 @@ trait OrganisaatioRepository {
   }
   def getOrganisaationNimiHetkellä(oid: String, localDate: LocalDate): Option[LocalizedString]
   def findByOppilaitosnumero(numero: String): Option[Oppilaitos]
-  def findKoulutustoimijaForOppilaitos(oppilaitos: Oppilaitos): Option[Koulutustoimija] = findParentWith(oppilaitos, _.toKoulutustoimija)
+  def findKoulutustoimijaForOppilaitos(oppilaitos: OrganisaatioWithOid): Option[Koulutustoimija] = findParentWith(oppilaitos, _.toKoulutustoimija)
   def findOppilaitosForToimipiste(toimipiste: OrganisaatioWithOid): Option[Oppilaitos] = findParentWith(toimipiste, _.toOppilaitos)
 
   private def findParentWith[T <: OrganisaatioWithOid](org: OrganisaatioWithOid, findr: OrganisaatioHierarkia => Option[T]) = {
