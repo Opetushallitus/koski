@@ -3062,6 +3062,58 @@ describe('Perusopetus', function() {
     })
   })
 
+
+  describe('Perusopetuksen useamman oppiaineen aineopiskelija', function() {
+    before(
+      page.openPage,
+      page.oppijaHaku.searchAndSelect('271080-364V')
+    )
+
+    describe('Opiskeluoikeuden tilaa', function () {
+      before(
+        editor.edit,
+        opinnot.valitseSuoritus(undefined, 'Äidinkieli ja kirjallisuus'),
+        opinnot.opiskeluoikeusEditor().edit,
+        opinnot.avaaLisaysDialogi
+      )
+      it('ei voida merkitä valmiiksi', function () {
+        expect(OpiskeluoikeusDialog().radioEnabled('valmistunut')).to.equal(false)
+        after(editor.cancelChanges)
+      })
+    })
+
+    describe('Kun yksikin suoritus merkitään valmiiksi', function () {
+      before(
+        editor.edit,
+        opinnot.tilaJaVahvistus.merkitseValmiiksi,
+        opinnot.tilaJaVahvistus.lisääVahvistus('01.01.2000'),
+        opinnot.opiskeluoikeusEditor().edit,
+        opinnot.avaaLisaysDialogi
+      )
+
+      it('myös opiskeluoikeuden tila voidaan merkitä valmiiksi', function () {
+        expect(OpiskeluoikeusDialog().radioEnabled('valmistunut')).to.equal(true)
+        after(editor.cancelChanges)
+      })
+    })
+
+    describe('Jos opiskelijalla on "ei tiedossa"-oppiaineita', function () {
+      before(
+        page.openPage,
+        page.oppijaHaku.searchAndSelect('240175-3276'),
+        editor.edit,
+        opinnot.opiskeluoikeusEditor().edit,
+        opinnot.avaaLisaysDialogi
+      )
+
+      it('Opiskeluoikeuden tilaa ei voi merkitä valmiiksi', function () {
+        expect(OpiskeluoikeusDialog().radioEnabled('valmistunut')).to.equal(false)
+        after(editor.cancelChanges)
+      })
+    })
+  })
+
+
   describe('Perusopetuksen lisäopetus', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('131025-6573'))
     describe('Kaikki tiedot näkyvissä', function() {

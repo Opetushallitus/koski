@@ -78,4 +78,4 @@ const MerkitseValmiiksiButton = ({model}) => {
   </span>)
 }
 
-const eiTiedossaOppiaine = suoritus => modelData(suoritus, 'koulutusmoduuli.tunniste.koodiarvo') === 'XX'
+export const eiTiedossaOppiaine = suoritus => modelData(suoritus, 'koulutusmoduuli.tunniste.koodiarvo') === 'XX'

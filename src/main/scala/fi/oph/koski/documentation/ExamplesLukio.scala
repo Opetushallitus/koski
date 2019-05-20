@@ -281,83 +281,23 @@ object ExamplesLukio {
       )
     )
 
-  val aineOpiskelijaAktiivinenEiVahvistettujaSuorituksia =
-    LukionOpiskeluoikeus(
-      versionumero = None,
-      lähdejärjestelmänId = None,
-      oppilaitos = Some(jyväskylänNormaalikoulu),
-      suoritukset = List(
-        LukionOppiaineenOppimääränSuoritus(
-          koulutusmoduuli = lukionOppiaine("HI", diaarinumero = Some("60/011/2015")),
-          suorituskieli = suomenKieli,
-          toimipiste = jyväskylänNormaalikoulu,
-          arviointi = arviointi("9"),
-          osasuoritukset = Some(List(
-            kurssisuoritus(valtakunnallinenVanhanOpsinKurssi("HI1")).copy(arviointi = numeerinenArviointi(7, päivä = date(2016, 1, 10))),
-            kurssisuoritus(valtakunnallinenKurssi("HI2")).copy(arviointi = numeerinenArviointi(8, päivä = date(2016, 1, 10))),
-            kurssisuoritus(valtakunnallinenKurssi("HI3")).copy(arviointi = numeerinenArviointi(7, päivä = date(2016, 1, 10))),
-            kurssisuoritus(valtakunnallinenKurssi("HI4")).copy(arviointi = numeerinenArviointi(6, päivä = date(2016, 1, 10)))
-          ))
-        ),
-        LukionOppiaineenOppimääränSuoritus(
-          koulutusmoduuli = lukionOppiaine("KE", diaarinumero = Some("60/011/2015")),
-          suorituskieli = suomenKieli,
-          toimipiste = jyväskylänNormaalikoulu,
-          arviointi = arviointi("8"),
-          osasuoritukset = Some(List(
-            kurssisuoritus(valtakunnallinenVanhanOpsinKurssi("KE1")).copy(arviointi = numeerinenArviointi(7, päivä = date(2016, 1, 10)))
-          ))
-        ),
-        LukionOppiaineenOppimääränSuoritus(
-          koulutusmoduuli = lukionOppiaine("FI", diaarinumero = Some("60/011/2015")),
-          suorituskieli = suomenKieli,
-          toimipiste = jyväskylänNormaalikoulu,
-          arviointi = arviointi("9"),
-          osasuoritukset = Some(List(
-            kurssisuoritus(valtakunnallinenVanhanOpsinKurssi("FI1")).copy(arviointi = numeerinenArviointi(7, päivä = date(2016, 1, 10)))
-          ))
-        )
-      ),
-      tila = LukionOpiskeluoikeudenTila(
-        List(
-          LukionOpiskeluoikeusjakso(alku = date(2015, 9, 1), tila = opiskeluoikeusAktiivinen)
-        )
-      )
-    )
+  val aineOpiskelijaAktiivinenEiVahvistettujaSuorituksia = aineOpiskelijaAktiivinen.copy(
+    suoritukset = aineOpiskelijaAktiivinen.suoritukset.map(suoritus => suoritus.asInstanceOf[LukionOppiaineenOppimääränSuoritus].copy(vahvistus = None)),
+    tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alku = date(2015, 9, 1), tila = opiskeluoikeusAktiivinen)))
+  )
 
-  val aineOpiskelijaAktiivinenVahvistettujaSuorituksiaJaOppiaineEiTiedossaSuoritus =
-    LukionOpiskeluoikeus(
-      versionumero = None,
-      lähdejärjestelmänId = None,
-      oppilaitos = Some(jyväskylänNormaalikoulu),
-      suoritukset = List(
-        LukionOppiaineenOppimääränSuoritus(
-          koulutusmoduuli = lukionOppiaine("HI", diaarinumero = Some("60/011/2015")),
-          vahvistus = vahvistusPaikkakunnalla(päivä = date(2016, 1, 10)),
-          suorituskieli = suomenKieli,
-          toimipiste = jyväskylänNormaalikoulu,
-          arviointi = arviointi("9"),
-          osasuoritukset = Some(List(
-            kurssisuoritus(valtakunnallinenVanhanOpsinKurssi("HI1")).copy(arviointi = numeerinenArviointi(7, päivä = date(2016, 1, 10)))
-          ))
-        ),
-        LukionOppiaineenOppimääränSuoritus(
-          koulutusmoduuli = EiTiedossaOppiaine(),
-          suorituskieli = suomenKieli,
-          toimipiste = jyväskylänNormaalikoulu,
-          arviointi = arviointi("9"),
-          osasuoritukset = Some(List(
-            kurssisuoritus(valtakunnallinenVanhanOpsinKurssi("FI1")).copy(arviointi = numeerinenArviointi(7, päivä = date(2016, 1, 10)))
-          ))
-        )
-      ),
-      tila = LukionOpiskeluoikeudenTila(
-        List(
-          LukionOpiskeluoikeusjakso(alku = date(2015, 9, 1), tila = opiskeluoikeusAktiivinen)
-        )
-      )
-    )
-
+  val aineOpiskelijaAktiivinenVahvistettujaSuorituksiaJaOppiaineEiTiedossaSuoritus = aineOpiskelijaAktiivinen.copy(
+    suoritukset = aineOpiskelijaAktiivinen.suoritukset ::: List(
+      LukionOppiaineenOppimääränSuoritus(
+        koulutusmoduuli = EiTiedossaOppiaine(),
+        suorituskieli = suomenKieli,
+        toimipiste = jyväskylänNormaalikoulu,
+        arviointi = arviointi("9"),
+        osasuoritukset = Some(List(
+          kurssisuoritus(valtakunnallinenVanhanOpsinKurssi("FI1")).copy(arviointi = numeerinenArviointi(7, päivä = date(2016, 1, 10)))
+        ))
+      ))
+  )
 
   val lukioKesken =
     LukionOpiskeluoikeus(
