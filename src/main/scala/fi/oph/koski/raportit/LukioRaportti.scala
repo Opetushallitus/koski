@@ -19,7 +19,7 @@ object LukioRaportti {
     val oppilaitoksenOppiaineet = repository.oppilaitoksessaOpetettavatOppiaineet(oppilaitosOid)
 
     val columnSettings = makeColumnSettings(oppilaitoksenOppiaineet)
-    val rows = opiskeluoikeusData.par.map(makeDataRow(_, oppilaitoksenOppiaineet, alku, loppu)).seq
+    val rows = opiskeluoikeusData.map(makeDataRow(_, oppilaitoksenOppiaineet, alku, loppu))
 
     DynamicDataSheet("Suoritustiedot", rows, columnSettings)
   }
