@@ -14,7 +14,8 @@ import {
   pushRemoval
 } from '../editor/EditorModel'
 import {OpiskeluoikeudenUusiTilaPopup} from './OpiskeluoikeudenUusiTilaPopup'
-import {arvioituTaiVahvistettu} from '../suoritus/Suoritus'
+import {arvioituTaiVahvistettu, suoritusVahvistettu} from '../suoritus/Suoritus'
+import {eiTiedossaOppiaine} from '../suoritus/TilaJaVahvistusEditor'
 import {parseISODate} from '../date/date.js'
 import {Editor} from '../editor/Editor'
 import Text from '../i18n/Text'
@@ -31,7 +32,7 @@ export class OpiskeluoikeudenTilaEditor extends React.Component {
     let jaksotModel = opiskeluoikeusjaksot(wrappedModel)
     let items = modelItems(jaksotModel).slice(0).reverse()
     let suorituksiaKesken = wrappedModel.context.edit && R.any(s => !arvioituTaiVahvistettu(s))(modelItems(wrappedModel, 'suoritukset'))
-    let suoritettuAineopinto = wrappedModel.context.edit && hasAtLeastOneCompletedAineopinto(modelLookup(model, 'suoritukset'))
+    let suoritettuAineopinto = wrappedModel.context.edit && hasSomeVahvistettuAineopinto(modelLookup(model, 'suoritukset'))
     let eiTiedossaOppiaineita = hasSomeEiTiedossaAineopinto(modelLookup(model, 'suoritukset'))
     let eiSaaAsettaaValmiiksi = eiTiedossaOppiaineita || (suorituksiaKesken && !suoritettuAineopinto)
 
@@ -127,34 +128,29 @@ const getActiveIndex = (jaksot) => {
 
 const viimeinenJakso = (opiskeluoikeus) => R.last(modelItems(opiskeluoikeusjaksot(opiskeluoikeus)))
 
-const isAineopinto = (opinto) => {
-  if (!opinto.oneOfPrototypes) return false
+const isAineopinto = (suoritus) => {
+  if (!suoritus) return false
 
-  return opinto.oneOfPrototypes.some(proto =>
-    proto.key === 'lukionoppiaineenoppimaaransuoritus' ||
-    proto.key === 'aikuistenperusopetuksenoppiaineenoppimaaransuoritus' ||
-    proto.key === 'nuortenperusopetuksenoppiaineenoppimaaransuoritus' )
+  const tyyppi = modelData(suoritus, 'tyyppi.koodiarvo')
+
+  return (
+    tyyppi === 'lukionoppiaineenoppimaara' ||
+    tyyppi === 'nuortenperusopetuksenoppiaineenoppimaara' ||
+    tyyppi === 'perusopetuksenoppiaineenoppimaara'
+  )
 }
 
-const hasAtLeastOneCompletedAineopinto = (suoritukset) => {
+const hasSomeVahvistettuAineopinto = (suoritukset) => {
   if (!suoritukset || !suoritukset.value) return false
 
   const aineopinnot = suoritukset.value.filter(isAineopinto)
-  return aineopinnot.some(opinto => arvioituTaiVahvistettu(opinto)) // FIXME: Test for "Vahvistus"
+  return aineopinnot.some(opinto => suoritusVahvistettu(opinto))
 }
 
 const hasSomeEiTiedossaAineopinto = (suoritukset) => {
-  if (!suoritukset) return false
+  if (!suoritukset || !suoritukset.value) return false
 
-  return suoritukset.value.some(suoritus =>
-    suoritus.value.properties &&
-    suoritus.value.properties.some(property =>
-      property.model.value && property.model.value.properties &&
-      property.model.value.properties.some(p =>
-        p.model.value && p.model.value.data && p.model.value.data.koodiarvo === 'XX'
-      )
-    )
-  )
+  return suoritukset.value.some(suoritus => eiTiedossaOppiaine(suoritus))
 }
 
 const opiskeluoikeusjaksot = (opiskeluoikeus) => {

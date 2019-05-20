@@ -11,6 +11,10 @@ import {tutkinnonNimi} from './Koulutusmoduuli'
 
 const isInPast = dateStr => parseISODate(dateStr) < new Date()
 
+export const suoritusVahvistettu = suoritus => (
+  suoritus.value.classes.includes('paatasonsuoritus') && !!modelData(suoritus, 'vahvistus')
+)
+
 export const arvioituTaiVahvistettu = suoritus => {
   if (suoritus.value.classes.includes('paatasonsuoritus')) {
     return !!modelData(suoritus, 'vahvistus')
