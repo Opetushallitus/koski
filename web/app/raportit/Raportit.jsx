@@ -61,7 +61,7 @@ const Opiskelijavuositiedot = ({organisaatioAtom}) => {
   const descriptionText = <Text name='Opiskelijavuositiedot-description'/>
 
   return (<AikajaksoRaportti
-    oppilaitosAtom={organisaatioAtom}
+    organisaatioAtom={organisaatioAtom}
     apiEndpoint={'/ammatillinenopiskelijavuositiedot'}
     title={titleText}
     description={descriptionText}
