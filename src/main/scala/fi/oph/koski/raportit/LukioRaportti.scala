@@ -146,7 +146,8 @@ object LukioRaportti {
     if (paatasonsuoritus.suorituksenTyyppi == "lukionoppiaineenoppimaara") {
       mahdollisetOppiaineet.map(oppiaine => if (matchingOppiaine(Left(paatasonsuoritus), oppiaine)) paatasonsuoritusArvosanaLaajuus(paatasonsuoritus, osasuoritukset) else "")
     } else {
-      mahdollisetOppiaineet.map(oppiaine => osasuoritukset.filter(os => matchingOppiaine(Right(os), oppiaine)).map(osasuoritusArvosanaLaajuus(_, osasuoritukset)).mkString(","))
+      val byKoulutusmoduuliKoodiarvo = osasuoritukset.groupBy(_.koulutusmoduuliKoodiarvo)
+      mahdollisetOppiaineet.map(oppiaine => byKoulutusmoduuliKoodiarvo.getOrElse(oppiaine._2, Nil).filter(os => matchingOppiaine(Right(os), oppiaine)).map(osasuoritusArvosanaLaajuus(_, osasuoritukset)).mkString(","))
     }
   }
 
