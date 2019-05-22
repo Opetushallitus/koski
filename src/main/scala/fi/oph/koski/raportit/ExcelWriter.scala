@@ -18,7 +18,6 @@ import scala.collection.JavaConverters._
 object ExcelWriter {
 
   private lazy val HEADING_ROW = 0
-  private lazy val ONE_COMMENT_CHARACTER_WIDTH = 270 //ad hoc approximation
 
   def writeExcel(workbookSettings: WorkbookSettings, sheets: Seq[Sheet], out: OutputStream): Unit = {
 
@@ -197,35 +196,13 @@ object ExcelWriter {
 
   private def createAnchor(creationHelper: CreationHelper, sh: SXSSFSheet, cell: Cell, commentText: String) = {
     //Size of an Comment is reserved by allocating cells and rows
-    val leftColumnIndex = cell.getColumnIndex
-    val (rightColumnIndex, rowIndex) = calculateCommentSize(sh, leftColumnIndex, commentText)
-
+    val columnIndex = cell.getColumnIndex
     val anchor = creationHelper.createClientAnchor
     anchor.setRow1(HEADING_ROW)
-    anchor.setRow2(rowIndex)
-    anchor.setCol1(leftColumnIndex)
-    anchor.setCol2(rightColumnIndex)
+    anchor.setRow2(HEADING_ROW + 5)
+    anchor.setCol1(columnIndex)
+    anchor.setCol2(columnIndex + 10)
     anchor
-  }
-
-  private def calculateCommentSize(sh: SXSSFSheet, startIndex: Int, commentText: String) = {
-    val commentMaxWidth = 20000
-
-    val textWidth = commentText.length * ONE_COMMENT_CHARACTER_WIDTH
-
-    val requiredWidth = Math.min(commentMaxWidth, textWidth)
-
-    val requiredHeight = textWidth.toDouble / commentMaxWidth
-    val rowIndex = if (requiredHeight < 2) 2 else requiredHeight.floor.toInt
-
-    var currentWidth = 0
-    var columnIndex = startIndex
-    while (columnIndex < startIndex + 10 && currentWidth < requiredWidth) {
-      currentWidth += sh.getColumnWidth(columnIndex)
-      columnIndex += 1
-    }
-
-    (columnIndex, rowIndex)
   }
 
   private def writeDocumentationSheet(wb: SXSSFWorkbook, sh: SXSSFSheet, documentationSheet: DocumentationSheet): Unit = {
