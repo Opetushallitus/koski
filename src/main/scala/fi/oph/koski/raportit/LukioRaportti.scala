@@ -154,10 +154,10 @@ object LukioRaportti {
   private def matchingOppiaine(suoritusRow: Either[RPäätasonSuoritusRow, ROsasuoritusRow], oppiaine: (OppiaineenNimi, Koulutusmooduuli_koodiarvo, Paikallinen)) = {
     val (oppiaineNimi, oppiaineKoodiarvo, oppiainePaikallinen) = oppiaine
     val (suoritusNimi, suoritusKoodiarvo, suoritusPaikallinen) = suoritusRow match {
-      case Left(paatasonsuoritus) => (extractKurssinNimi(paatasonsuoritus.data), paatasonsuoritus.koulutusmoduuliKoodiarvo, paatasonsuoritus.koulutusmoduuliKoodisto == "koskioppiaineyleissivistava")
+      case Left(paatasonsuoritus) => (extractKurssinNimi(paatasonsuoritus.data), paatasonsuoritus.koulutusmoduuliKoodiarvo, paatasonsuoritus.koulutusmoduuliKoodisto.exists(_ !="koskioppiaineetyleissivistava"))
       case Right(osasuoritus) => (extractKurssinNimi(osasuoritus.data), osasuoritus.koulutusmoduuliKoodiarvo, osasuoritus.koulutusmoduuliPaikallinen)
     }
-    oppiaineKoodiarvo == suoritusKoodiarvo && oppiainePaikallinen == suoritusPaikallinen && suoritusNimi.exists(_ == oppiaineNimi)
+    oppiaineKoodiarvo == suoritusKoodiarvo && oppiainePaikallinen == suoritusPaikallinen && suoritusNimi.contains(oppiaineNimi)
   }
 
   private def extractKurssinNimi(json: JValue) = {
@@ -179,7 +179,7 @@ object LukioRaportti {
   private def getFinnishName(j: JValue) = JsonSerializer.extract[Option[LocalizedString]](j).map(_.get("fi"))
 
   private def osasuoritusArvosanaLaajuus(osasuoritus: ROsasuoritusRow, osasuoritukset: Seq[ROsasuoritusRow]) = {
-    val laajuus = osasuoritukset.filter(_.ylempiOsasuoritusId.exists(_ == osasuoritus.osasuoritusId)).size
+    val laajuus = osasuoritukset.count(_.ylempiOsasuoritusId.contains(osasuoritus.osasuoritusId))
     arvosanaLaajuus(osasuoritus.arviointiArvosanaKoodiarvo, laajuus)
   }
 
@@ -188,7 +188,7 @@ object LukioRaportti {
   }
 
   private def arvosanaLaajuus(arvosana: Option[String], laajuus: Int) = {
-    s"${arvosana.map("Arvosana " + _).getOrElse("Ei arvosanaa")}, ${laajuus} ${if (laajuus == 1) "kurssi" else "kurssia"}"
+    s"${arvosana.map("Arvosana " + _).getOrElse("Ei arvosanaa")}, $laajuus ${if (laajuus == 1) "kurssi" else "kurssia"}"
   }
 
   private[raportit] def removeContinuousSameTila(aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow]): Seq[ROpiskeluoikeusAikajaksoRow] = {
