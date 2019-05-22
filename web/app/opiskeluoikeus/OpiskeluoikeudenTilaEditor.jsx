@@ -3,18 +3,18 @@ import * as R from 'ramda'
 import * as L from 'partial.lenses'
 import Atom from 'bacon.atom'
 import {
+  lensedModel,
   modelData,
   modelItems,
   modelLookup,
-  recursivelyEmpty,
-  lensedModel,
   modelSetValue,
   modelTitle,
   pushModel,
-  pushRemoval
+  pushRemoval,
+  recursivelyEmpty
 } from '../editor/EditorModel'
 import {OpiskeluoikeudenUusiTilaPopup} from './OpiskeluoikeudenUusiTilaPopup'
-import {arvioituTaiVahvistettu, suoritusVahvistettu} from '../suoritus/Suoritus'
+import {arvioituTaiVahvistettu} from '../suoritus/Suoritus'
 import {eiTiedossaOppiaine} from '../suoritus/TilaJaVahvistusEditor'
 import {parseISODate} from '../date/date.js'
 import {Editor} from '../editor/Editor'
@@ -31,10 +31,10 @@ export class OpiskeluoikeudenTilaEditor extends React.Component {
     let wrappedModel = fixOpiskeluoikeudenPäättymispäivä(model)
     let jaksotModel = opiskeluoikeusjaksot(wrappedModel)
     let items = modelItems(jaksotModel).slice(0).reverse()
-    let suorituksiaKesken = wrappedModel.context.edit && R.any(s => !arvioituTaiVahvistettu(s))(modelItems(wrappedModel, 'suoritukset'))
-    let suoritettuAineopinto = wrappedModel.context.edit && hasSomeVahvistettuAineopinto(modelLookup(model, 'suoritukset'))
-    let eiTiedossaOppiaineita = hasSomeEiTiedossaAineopinto(modelLookup(model, 'suoritukset'))
-    let eiSaaAsettaaValmiiksi = eiTiedossaOppiaineita || (suorituksiaKesken && !suoritettuAineopinto)
+    const suoritukset = modelItems(model, 'suoritukset')
+    const suorituksiaKesken = suoritukset.some(s => !arvioituTaiVahvistettu(s))
+    const suoritettuAineopinto = suoritukset.some(s => arvioituTaiVahvistettu(s) && isAineopinto(s))
+    const disabloiValmistunut = suoritukset.some(eiTiedossaOppiaine) || (suorituksiaKesken && !suoritettuAineopinto)
 
     let showAddDialog = () => this.showOpiskeluoikeudenTilaDialog.modify(x => !x)
 
@@ -87,7 +87,7 @@ export class OpiskeluoikeudenTilaEditor extends React.Component {
         {
           this.showOpiskeluoikeudenTilaDialog.map(showDialog => {
             return showDialog &&
-              <OpiskeluoikeudenUusiTilaPopup tilaListModel={jaksotModel} suorituksiaKesken={eiSaaAsettaaValmiiksi}
+              <OpiskeluoikeudenUusiTilaPopup tilaListModel={jaksotModel} disabloiValmistunut={disabloiValmistunut}
                                              edellisenTilanAlkupäivä={edellisenTilanAlkupäivä}
                                              resultCallback={(uusiJakso) => lisääJakso(uusiJakso)}/>
           })
@@ -128,30 +128,8 @@ const getActiveIndex = (jaksot) => {
 
 const viimeinenJakso = (opiskeluoikeus) => R.last(modelItems(opiskeluoikeusjaksot(opiskeluoikeus)))
 
-const isAineopinto = (suoritus) => {
-  if (!suoritus) return false
-
-  const tyyppi = modelData(suoritus, 'tyyppi.koodiarvo')
-
-  return (
-    tyyppi === 'lukionoppiaineenoppimaara' ||
-    tyyppi === 'nuortenperusopetuksenoppiaineenoppimaara' ||
-    tyyppi === 'perusopetuksenoppiaineenoppimaara'
-  )
-}
-
-const hasSomeVahvistettuAineopinto = (suoritukset) => {
-  if (!suoritukset || !suoritukset.value) return false
-
-  const aineopinnot = suoritukset.value.filter(isAineopinto)
-  return aineopinnot.some(opinto => suoritusVahvistettu(opinto))
-}
-
-const hasSomeEiTiedossaAineopinto = (suoritukset) => {
-  if (!suoritukset || !suoritukset.value) return false
-
-  return suoritukset.value.some(suoritus => eiTiedossaOppiaine(suoritus))
-}
+const aineOpinnot = ['lukionoppiaineenoppimaara', 'nuortenperusopetuksenoppiaineenoppimaara', 'perusopetuksenoppiaineenoppimaara']
+const isAineopinto = suoritus => aineOpinnot.includes(modelData(suoritus, 'tyyppi.koodiarvo'))
 
 const opiskeluoikeusjaksot = (opiskeluoikeus) => {
   return modelLookup(opiskeluoikeus, 'tila.opiskeluoikeusjaksot')
