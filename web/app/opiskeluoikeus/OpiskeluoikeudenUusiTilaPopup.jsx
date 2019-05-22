@@ -14,7 +14,7 @@ import Text from '../i18n/Text'
 import {ift} from '../util/util'
 import {filterTilatByOpiskeluoikeudenTyyppi} from './opiskeluoikeus'
 
-export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, suorituksiaKesken, tilaListModel, resultCallback}) => {
+export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, disabloiValmistunut: disabloiValmistunut, tilaListModel, resultCallback}) => {
   let submitBus = Bacon.Bus()
   let initialModel = contextualizeSubModel(tilaListModel.arrayPrototype, tilaListModel, modelItems(tilaListModel).length)
 
@@ -39,7 +39,7 @@ export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, suorit
     </div>
     <div className="property tila">
       <label><Text name="Tila"/>{':'}</label>
-      <Editor baret-lift asRadiogroup={true} model={tilaModel} disabledValue={suorituksiaKesken && 'koskiopiskeluoikeudentila_valmistunut'} fetchAlternatives={fetchTilat} />
+      <Editor baret-lift asRadiogroup={true} model={tilaModel} disabledValue={disabloiValmistunut && 'koskiopiskeluoikeudentila_valmistunut'} fetchAlternatives={fetchTilat} />
     </div>
     {
       ift(rahoitusModel, (<div className="property rahoitus" key="rahoitus">
