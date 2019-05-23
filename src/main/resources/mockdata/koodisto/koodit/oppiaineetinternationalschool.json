@@ -414,5 +414,69 @@
     ],
     "versio": 1,
     "withinCodeElements": []
+  },
+  {
+    "koodiUri": "oppiaineetinternationalschool_itgs",
+    "koodiArvo": "ITGS",
+    "metadata": [
+      {
+        "nimi": "Information Technology in a Global Society",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Information Technology in a Global Society",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "oppiaineetinternationalschool_mai",
+    "koodiArvo": "MAI",
+    "metadata": [
+      {
+        "nimi": "Mathematics: Applications and Interpretation",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Mathematics: Applications and Interpretation",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "oppiaineetinternationalschool_maa",
+    "koodiArvo": "MAA",
+    "metadata": [
+      {
+        "nimi": "Mathematics: Analysis and Approaches",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Mathematics: Analysis and Approaches",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "oppiaineetinternationalschool_f",
+    "koodiArvo": "F",
+    "metadata": [
+      {
+        "nimi": "Film",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Film",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
   }
 ]
