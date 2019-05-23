@@ -76,3 +76,7 @@ object Kieliaine {
 }
 
 trait Äidinkieli extends Kieliaine
+
+trait Oppimäärä extends Koulutusmoduuli {
+  def oppimäärä: Koodistokoodiviite
+}

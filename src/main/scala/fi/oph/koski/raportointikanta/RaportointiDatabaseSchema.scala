@@ -150,6 +150,9 @@ object RaportointiDatabaseSchema {
     val koulutusmoduuliLaajuusYksikkö = column[Option[String]]("koulutusmoduuli_laajuus_yksikko", StringIdentifierType)
     val koulutusmoduuliPaikallinen = column[Boolean]("koulutusmoduuli_paikallinen")
     val koulutusmoduuliPakollinen = column[Option[Boolean]]("koulutusmoduuli_pakollinen")
+    val koulutusmoduuliNimi = column[Option[String]]("koulutusmoduuli_nimi")
+    val koulutusmoduuliOppimääräNimi = column[Option[String]]("koulutusmoduuli_oppimäärä_nimi")
+    val koulutusmoduuliKieliaineNimi = column[Option[String]]("koulutusmoduuli_kieliaine_nimi")
     val vahvistusPäivä = column[Option[Date]]("vahvistus_paiva")
     val arviointiArvosanaKoodiarvo = column[Option[String]]("arviointi_arvosana_koodiarvo", StringIdentifierType)
     val arviointiArvosanaKoodisto = column[Option[String]]("arviointi_arvosana_koodisto", StringIdentifierType)
@@ -159,7 +162,8 @@ object RaportointiDatabaseSchema {
     val data = column[JValue]("data")
     def * = (osasuoritusId, ylempiOsasuoritusId, päätasonSuoritusId, opiskeluoikeusOid, suorituksenTyyppi,
       koulutusmoduuliKoodisto, koulutusmoduuliKoodiarvo, koulutusmoduuliLaajuusArvo, koulutusmoduuliLaajuusYksikkö,
-      koulutusmoduuliPaikallinen, koulutusmoduuliPakollinen, vahvistusPäivä,
+      koulutusmoduuliPaikallinen, koulutusmoduuliPakollinen, koulutusmoduuliNimi,
+      koulutusmoduuliOppimääräNimi, koulutusmoduuliKieliaineNimi, vahvistusPäivä,
       arviointiArvosanaKoodiarvo, arviointiArvosanaKoodisto, arviointiHyväksytty, arviointiPäivä,
       näytönArviointiPäivä, data) <> (ROsasuoritusRow.tupled, ROsasuoritusRow.unapply)
   }
@@ -286,6 +290,9 @@ case class ROsasuoritusRow(
   koulutusmoduuliLaajuusYksikkö: Option[String],
   koulutusmoduuliPaikallinen: Boolean,
   koulutusmoduuliPakollinen: Option[Boolean],
+  koulutusmoduuliNimi: Option[String],
+  koulutusmoduuliOppimääräNimi: Option[String],
+  koulutusmoduuliKieliaineNimi: Option[String],
   vahvistusPäivä: Option[Date],
   arviointiArvosanaKoodiarvo: Option[String],
   arviointiArvosanaKoodisto: Option[String],

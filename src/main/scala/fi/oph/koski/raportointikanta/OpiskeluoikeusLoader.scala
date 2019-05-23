@@ -361,6 +361,16 @@ object OpiskeluoikeusLoader extends Logging {
         case v: Valinnaisuus => Some(v.pakollinen)
         case _ => None
       },
+      koulutusmoduuliNimi = os.koulutusmoduuli.tunniste.getNimi.map(_.get("fi")),
+      koulutusmoduuliOppimääräNimi = os.koulutusmoduuli match {
+        case k: Oppimäärä => k.oppimäärä.nimi.map(_.get("fi"))
+        case k: Uskonto => k.uskonnonOppimäärä.flatMap(_.nimi.map(_.get("fi")))
+        case _ => None
+      },
+      koulutusmoduuliKieliaineNimi = os.koulutusmoduuli match {
+        case k: Kieliaine => k.kieli.nimi.map(_.get("fi"))
+        case _ => None
+      },
       vahvistusPäivä = os.vahvistus.map(v => Date.valueOf(v.päivä)),
       arviointiArvosanaKoodiarvo = os.viimeisinArviointi.map(_.arvosana.koodiarvo),
       arviointiArvosanaKoodisto = os.viimeisinArviointi.flatMap(a => convertKoodisto(a.arvosana)),
