@@ -11,6 +11,8 @@ import java.time.LocalDate.{of => date}
 
 import org.apache.poi.EncryptedDocumentException
 
+import scala.collection.JavaConverters._
+
 
 class ExcelWriterSpec extends FreeSpec with Matchers {
 
@@ -62,6 +64,14 @@ class ExcelWriterSpec extends FreeSpec with Matchers {
 
             headingRow.getCell(9).getCellTypeEnum should equal(CellType.STRING)
             headingRow.getCell(9).getStringCellValue should equal("OptionBoolean")
+          }
+          "Luo otsikko riville kommentit" in {
+            val headingRow = wb.getSheet("data_sheet_title").iterator.next
+            headingRow.getCell(0).getCellComment.getString.getString should equal("kommentti")
+          }
+          "Ei luo kommenttia jos sitä ei ole määritelty" in {
+            val headingRow = wb.getSheet("data_sheet_title").iterator.next
+            headingRow.iterator.asScala.drop(1).foreach(_.getCellComment should equal(null))
           }
           "Data solujen formatointi" - {
             val dataSheetIterator = wb.getSheet("data_sheet_title").iterator
@@ -284,7 +294,7 @@ class ExcelWriterSpec extends FreeSpec with Matchers {
   lazy val expectedExcelTitle = "expected_excel_title"
   lazy val excelPassword = "kalasana"
   lazy val mockDataColumnSettings: Seq[(String, Column)] = Seq(
-    "str" -> Column("Str"),
+    "str" -> Column("Str", comment = Some("kommentti")),
     "optionStr" -> Column("OptionStr"),
     "localdate" -> Column("LocalDate"),
     "optionLocaldate" -> Column("OptionLocalDate"),

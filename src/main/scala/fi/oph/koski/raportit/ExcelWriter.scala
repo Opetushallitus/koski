@@ -10,10 +10,14 @@ import org.apache.poi.poifs.crypt.temp.{EncryptedTempData, SXSSFWorkbookWithCust
 import org.apache.poi.poifs.filesystem.POIFSFileSystem
 import org.apache.poi.ss.usermodel._
 import org.apache.poi.ss.util.CellRangeAddress
-import org.apache.poi.xssf.streaming.{SXSSFCell, SXSSFSheet, SXSSFWorkbook}
+import org.apache.poi.xssf.streaming.{SXSSFCell, SXSSFDrawing, SXSSFSheet, SXSSFWorkbook}
 import org.apache.poi.xssf.usermodel.XSSFSheet
 
+import scala.collection.JavaConverters._
+
 object ExcelWriter {
+
+  private lazy val HEADING_ROW = 0
 
   def writeExcel(workbookSettings: WorkbookSettings, sheets: Seq[Sheet], out: OutputStream): Unit = {
 
@@ -84,6 +88,17 @@ object ExcelWriter {
         sh.autoSizeColumn(col)
       }
     }
+
+    val creationHelper = wb.getCreationHelper
+    val drawing = sh.createDrawingPatriarch
+    val cellsAndColumnsWithIndex = sh.getRow(HEADING_ROW).cellIterator.asScala.toSeq.zip(dataSheet.columnSettingsWithIndex)
+    for ((cell, (column, _)) <- cellsAndColumnsWithIndex) {
+      if (column.comment.isDefined) {
+        val anchor = createAnchor(creationHelper, sh, cell, column.comment.get)
+        val comment = createComment(drawing, anchor, creationHelper, column.comment.get)
+        cell.setCellComment(comment)
+      }
+    }
   }
 
   private def addIgnoredErrors(sh: SXSSFSheet) = {
@@ -95,7 +110,7 @@ object ExcelWriter {
   }
 
   private def createHeadingRow(sh: SXSSFSheet) = {
-    val headingRow = sh.createRow(0)
+    val headingRow = sh.createRow(HEADING_ROW)
     headingRow.setHeightInPoints(25)
     headingRow
   }
@@ -171,6 +186,23 @@ object ExcelWriter {
       // use the default style
     }
     cell.setCellValue(f)
+  }
+
+  private def createComment(drawing: SXSSFDrawing, anchor: ClientAnchor, creationHelper: CreationHelper, commentText: String) = {
+    val comment = drawing.createCellComment(anchor)
+    comment.setString(creationHelper.createRichTextString(commentText))
+    comment
+  }
+
+  private def createAnchor(creationHelper: CreationHelper, sh: SXSSFSheet, cell: Cell, commentText: String) = {
+    //Size of an Comment is reserved by allocating cells and rows
+    val columnIndex = cell.getColumnIndex
+    val anchor = creationHelper.createClientAnchor
+    anchor.setRow1(HEADING_ROW)
+    anchor.setRow2(HEADING_ROW + 5)
+    anchor.setCol1(columnIndex)
+    anchor.setCol2(columnIndex + 10)
+    anchor
   }
 
   private def writeDocumentationSheet(wb: SXSSFWorkbook, sh: SXSSFSheet, documentationSheet: DocumentationSheet): Unit = {
