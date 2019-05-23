@@ -326,6 +326,7 @@ object OpiskeluoikeusLoader extends Logging {
       },
       koulutusmoduuliLaajuusArvo = ps.koulutusmoduuli.laajuus.map(_.arvo),
       koulutusmoduuliLaajuusYksikkö = ps.koulutusmoduuli.laajuus.map(_.yksikkö.koodiarvo),
+      koulutusmoduuliNimi = ps.koulutusmoduuli.tunniste.getNimi.map(_.get("fi")),
       vahvistusPäivä = ps.vahvistus.map(v => Date.valueOf(v.päivä)),
       arviointiArvosanaKoodiarvo = ps.viimeisinArviointi.map(_.arvosana.koodiarvo),
       arviointiArvosanaKoodisto = ps.viimeisinArviointi.flatMap(a => convertKoodisto(a.arvosana)),

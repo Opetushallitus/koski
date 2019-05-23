@@ -123,6 +123,7 @@ object RaportointiDatabaseSchema {
     val koulutusmoduuliKoulutustyyppi = column[Option[String]]("koulutusmoduuli_koulutustyyppi", StringIdentifierType)
     val koulutusmoduuliLaajuusArvo = column[Option[Float]]("koulutusmoduuli_laajuus_arvo", SqlType("numeric"))
     val koulutusmoduuliLaajuusYksikkö = column[Option[String]]("koulutusmoduuli_laajuus_yksikko", StringIdentifierType)
+    val koulutusmoduuliNimi = column[Option[String]]("koulutusmoduuli_nimi", StringIdentifierType)
     val vahvistusPäivä = column[Option[Date]]("vahvistus_paiva")
     val arviointiArvosanaKoodiarvo = column[Option[String]]("arviointi_arvosana_koodiarvo", StringIdentifierType)
     val arviointiArvosanaKoodisto = column[Option[String]]("arviointi_arvosana_koodisto", StringIdentifierType)
@@ -133,7 +134,7 @@ object RaportointiDatabaseSchema {
     val data = column[JValue]("data")
     def * = (päätasonSuoritusId, opiskeluoikeusOid, suorituksenTyyppi,
       koulutusmoduuliKoodisto, koulutusmoduuliKoodiarvo, koulutusmoduuliKoulutustyyppi,
-      koulutusmoduuliLaajuusArvo, koulutusmoduuliLaajuusYksikkö, vahvistusPäivä,
+      koulutusmoduuliLaajuusArvo, koulutusmoduuliLaajuusYksikkö, koulutusmoduuliNimi,vahvistusPäivä,
       arviointiArvosanaKoodiarvo, arviointiArvosanaKoodisto, arviointiHyväksytty, arviointiPäivä,
       toimipisteOid, toimipisteNimi, data) <> (RPäätasonSuoritusRow.tupled, RPäätasonSuoritusRow.unapply)
   }
@@ -268,6 +269,7 @@ case class RPäätasonSuoritusRow(
   koulutusmoduuliKoulutustyyppi: Option[String],
   koulutusmoduuliLaajuusArvo: Option[Float],
   koulutusmoduuliLaajuusYksikkö: Option[String],
+  koulutusmoduuliNimi: Option[String],
   vahvistusPäivä: Option[Date],
   arviointiArvosanaKoodiarvo: Option[String],
   arviointiArvosanaKoodisto: Option[String],
