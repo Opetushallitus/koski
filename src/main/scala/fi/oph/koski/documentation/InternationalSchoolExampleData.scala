@@ -72,8 +72,13 @@ object InternationalSchoolExampleData {
     kieli = Koodistokoodiviite(kieli, "kielivalikoima")
   )
 
-  def diplomaOppiaine(tunniste: String, taso: Option[String] = None) = MuuDiplomaOppiaine(
+  def diplomaIBOppiaine(tunniste: String, taso: Option[String] = None) = MuuDiplomaOppiaine(
     tunniste = Koodistokoodiviite(tunniste, "oppiaineetib"),
+    taso = taso.map(Koodistokoodiviite(_, "oppiaineentasoib"))
+  )
+
+  def diplomaInternationalSchoolOppiaine(tunniste: String, taso: Option[String] = None) = InternationalSchoolMuuDiplomaOppiaine(
+    tunniste = Koodistokoodiviite(tunniste, "oppiaineetinternationalschool"),
     taso = taso.map(Koodistokoodiviite(_, "oppiaineentasoib"))
   )
 

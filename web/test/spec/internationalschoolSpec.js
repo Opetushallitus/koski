@@ -39,7 +39,7 @@ describe('International school', function() {
           'Psychology 6\n' +
           'Chemistry 4\n' +
           'Biology 5\n' +
-          'Mathematics 4\n' +
+          'Mathematics: Applications and Interpretation 4\n' +
           'Theory of knowledge C'
         )
       })
@@ -379,6 +379,39 @@ describe('International school', function() {
             'Sciences',
             'Standard Mathematics',
             'Visual Art'
+          ])
+        })
+      })
+
+      describe('Grade 12 (Diploma)', function () {
+        before(
+          lisääSuoritus.open('lisää vuosiluokan suoritus'),
+          lisääSuoritus.selectTutkinto('Grade 12', '.international-school-grade'),
+          lisääSuoritus.lisääSuoritus
+        )
+
+        it('Oppiainevalinnat', function () {
+          expect(Page(S('.oppiaineet')).getInputOptions('.uusi-oppiaine .dropdown')).to.deep.equal([
+            'Creativity, activity, service',
+            'Extended essay',
+            'Theory of knowledge',
+            'Information Technology in a Global Society',
+            'Mathematics: Analysis and Approaches',
+            'Mathematics: Applications and Interpretation',
+            'B-language',
+            'Language A: language and literature',
+            'Language A: literature',
+            'Biology',
+            'Chemistry',
+            'Economics',
+            'Environmental systems and societies',
+            'History',
+            'Mathematical studies',
+            'Mathematics',
+            'Physics',
+            'Psychology',
+            'Visual arts',
+            'ab initio'
           ])
         })
       })

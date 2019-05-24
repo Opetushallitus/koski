@@ -213,6 +213,13 @@
   "koodiArvo" : "ESS",
   "metadata" : [ {
     "nimi" : "Environmental systems and societies",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Environmental systems and societies",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,

@@ -297,10 +297,29 @@ case class PYPOppiaineMuu(
 
 trait InternationalSchoolIBOppiaine extends KoodistostaLöytyväKoulutusmoduuli with Laajuudeton
 
-case class MuuDiplomaOppiaine(
+case class InternationalSchoolMuuDiplomaOppiaine(
+  @KoodistoKoodiarvo("ITGS")
+  @KoodistoKoodiarvo("MAI")
+  @KoodistoKoodiarvo("MAA")
   tunniste: Koodistokoodiviite,
   taso: Option[Koodistokoodiviite]
-) extends InternationalSchoolIBOppiaine with MuuOppiaineIB with IBTaso
+) extends InternationalSchoolOppiaine with InternationalSchoolIBOppiaine with IBTaso
+
+case class MuuDiplomaOppiaine(
+  @KoodistoKoodiarvo("AB")
+  @KoodistoKoodiarvo("BIO")
+  @KoodistoKoodiarvo("CHE")
+  @KoodistoKoodiarvo("ECO")
+  @KoodistoKoodiarvo("ESS")
+  @KoodistoKoodiarvo("HIS")
+  @KoodistoKoodiarvo("MAT")
+  @KoodistoKoodiarvo("MATST")
+  @KoodistoKoodiarvo("PHY")
+  @KoodistoKoodiarvo("PSY")
+  @KoodistoKoodiarvo("VA")
+  tunniste: Koodistokoodiviite,
+  taso: Option[Koodistokoodiviite]
+) extends InternationalSchoolIBOppiaine with IBOppiaine with IBTaso
 
 case class KieliDiplomaOppiaine(
   tunniste: Koodistokoodiviite,

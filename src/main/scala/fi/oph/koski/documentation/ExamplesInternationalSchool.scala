@@ -153,10 +153,10 @@ object ExamplesInternationalSchool {
     osasuoritukset = Some(List(
       diplomaOppiaineenSuoritus(diplomaKieliOppiaine("A", "FI", Some("SL")), diplomaArviointi(5)),
       diplomaOppiaineenSuoritus(diplomaKieliOppiaine("A2", "EN"), diplomaArviointi(5)),
-      diplomaOppiaineenSuoritus(diplomaOppiaine("HIS", Some("HL")), diplomaArviointi(4)),
-      diplomaOppiaineenSuoritus(diplomaOppiaine("PSY"), diplomaArviointi(3)),
-      diplomaOppiaineenSuoritus(diplomaOppiaine("ESS", Some("SL")), diplomaArviointi(3)),
-      diplomaOppiaineenSuoritus(diplomaOppiaine("MATST"), diplomaArviointi(4)),
+      diplomaOppiaineenSuoritus(diplomaIBOppiaine("HIS", Some("HL")), diplomaArviointi(4)),
+      diplomaOppiaineenSuoritus(diplomaIBOppiaine("PSY"), diplomaArviointi(3)),
+      diplomaOppiaineenSuoritus(diplomaIBOppiaine("ESS", Some("SL")), diplomaArviointi(3)),
+      diplomaOppiaineenSuoritus(diplomaIBOppiaine("MATST"), diplomaArviointi(4)),
       diplomaTOKSuoritus(tokArvionti("D"))
     ))
   )
@@ -165,10 +165,10 @@ object ExamplesInternationalSchool {
     osasuoritukset = Some(List(
       diplomaOppiaineenSuoritus(diplomaKieliOppiaine("A", "FI", Some("SL")), diplomaArviointi(6)),
       diplomaOppiaineenSuoritus(diplomaKieliOppiaine("B", "FI"), diplomaArviointi(6)),
-      diplomaOppiaineenSuoritus(diplomaOppiaine("PSY", Some("HL")), diplomaArviointi(6)),
-      diplomaOppiaineenSuoritus(diplomaOppiaine("CHE", Some("HL")), diplomaArviointi(4)),
-      diplomaOppiaineenSuoritus(diplomaOppiaine("BIO", Some("HL")), diplomaArviointi(5)),
-      diplomaOppiaineenSuoritus(diplomaOppiaine("MAT", Some("SL")), diplomaArviointi(4)),
+      diplomaOppiaineenSuoritus(diplomaIBOppiaine("PSY", Some("HL")), diplomaArviointi(6)),
+      diplomaOppiaineenSuoritus(diplomaIBOppiaine("CHE", Some("HL")), diplomaArviointi(4)),
+      diplomaOppiaineenSuoritus(diplomaIBOppiaine("BIO", Some("HL")), diplomaArviointi(5)),
+      diplomaOppiaineenSuoritus(diplomaInternationalSchoolOppiaine("MAI", Some("SL")), diplomaArviointi(4)),
       diplomaTOKSuoritus(tokArvionti("C"))
     ))
   )
