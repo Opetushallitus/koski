@@ -136,7 +136,7 @@ object AmmatillinenExampleData {
   lazy val järjestämismuotoOppisopimus = OppisopimuksellinenJärjestämismuoto(Koodistokoodiviite("20", Some("Oppisopimusmuotoinen"), "jarjestamismuoto", Some(1)), Oppisopimus(Yritys("Autokorjaamo Oy", "1234567-8")))
   lazy val järjestämismuotoOppilaitos = JärjestämismuotoIlmanLisätietoja(Koodistokoodiviite("10", Some("Oppilaitosmuotoinen"), "jarjestamismuoto", Some(1)))
   lazy val osaamisenHankkimistapaOppilaitos = OsaamisenHankkimistapaIlmanLisätietoja(Koodistokoodiviite("oppilaitosmuotoinenkoulutus", Some("Oppilaitosmuotoinen"), "osaamisenhankkimistapa", Some(1)))
-  lazy val osaamisenHankkimistapaOppisopimus = OppisopimuksellinenOsaamisenHankkimistapa(Koodistokoodiviite("oppisopimus", Some("Oppisopimus"), "osaamisenhankkimistapa", Some(1)), Oppisopimus(Yritys("Autokorjaamo Oy", "1234567-8")))
+  lazy val osaamisenHankkimistapaOppisopimus = OppisopimuksellinenOsaamisenHankkimistapa(Koodistokoodiviite("oppisopimus", Some("Oppisopimus"), "osaamisenhankkimistapa", Some(1)), Oppisopimus(Yritys("Autokorjaamo Oy", "1234567-8"), oppisopimuksenPurkaminen = Some(OppisopimuksenPurkaminen(date(2013, 3, 20), purettuKoeajalla = true))))
   lazy val stadinAmmattiopisto: Oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto, Some(Koodistokoodiviite("10105", None, "oppilaitosnumero", None)), Some("Stadin ammattiopisto"))
   lazy val stadinToimipiste: OidOrganisaatio = OidOrganisaatio(MockOrganisaatiot.lehtikuusentienToimipiste, Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))
   lazy val stadinOppisopimuskeskus: OidOrganisaatio = OidOrganisaatio(MockOrganisaatiot.stadinOppisopimuskeskus, Some("Stadin oppisopimuskeskus"))
