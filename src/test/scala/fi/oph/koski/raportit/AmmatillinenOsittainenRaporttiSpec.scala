@@ -52,6 +52,7 @@ class AmmatillinenOsittainenRaporttiSpec extends FreeSpec with Matchers with Rap
     osaamisalat = Some("1525"),
     tutkintonimikkeet = "Autoalan perustutkinto",
     päätasonSuoritustenTilat = Some("Valmis"),
+    opiskeluoikeudenAlkamispäivä = Some(date(2012, 9, 1)),
     viimeisinOpiskeluoikeudenTila = "valmistunut",
     opintojenRahoitukset = "",
     suoritettujenOpintojenYhteislaajuus = 100.0,

@@ -18,6 +18,7 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
     val rivi = rivit.head
 
     "Sisältää oikeat tiedot" in {
+      rivi.opiskeluoikeudenAlkamispäivä should equal(Some(LocalDate.of(2012, 9, 1)))
       rivi.koulutusmoduulit should equal("361902")
       rivi.osaamisalat should equal(Some("1590"))
       rivi.tutkintonimikkeet should equal("Luonto- ja ympäristöalan perustutkinto")
