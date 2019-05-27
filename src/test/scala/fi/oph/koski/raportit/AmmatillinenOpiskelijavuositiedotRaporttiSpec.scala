@@ -27,8 +27,10 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec extends FreeSpec with Raport
       aarnenRivi shouldBe defined
       val rivi = aarnenRivi.get
 
+      rivi.suorituksenTyyppi should equal("ammatillinentutkinto")
       rivi.koulutusmoduulit should equal("361902")
       rivi.osaamisalat should equal(Some("1590"))
+      rivi.opiskeluoikeudenAlkamispäivä should equal(Some(LocalDate.of(2012, 9, 1)))
       rivi.viimeisinOpiskeluoikeudenTila should equal("valmistunut")
       rivi.opintojenRahoitukset should equal("4")
       rivi.opiskeluoikeusPäättynyt should equal(true)
