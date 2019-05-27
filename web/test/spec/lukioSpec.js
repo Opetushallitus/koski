@@ -534,9 +534,12 @@ describe('Lukiokoulutus', function( ){
     describe('Opiskeluoikeuden tilaa', function () {
       before(
         page.openPage,
-        page.oppijaHaku.searchAndSelect('110122-5090'),
+        page.oppijaHaku.searchAndSelect('200300-624E'),
         editor.edit,
         opinnot.valitseSuoritus(undefined, 'Kemia'),
+        opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi,
+        opinnot.valitseSuoritus(undefined, 'Historia'),
+        opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi,
         opinnot.avaaLisaysDialogi
       )
 

@@ -30,8 +30,7 @@ object MockOppijat {
   val lukioKesken = oppijat.oppija("Lukiokesken", "Leila", "190363-279X")
   val lukionAineopiskelija = oppijat.oppija("Lukioaineopiskelija", "Aino", "210163-2367")
   val lukionAineopiskelijaAktiivinen = oppijat.oppija("Lukioaineopiskelija", "Aktiivinen", "200300-624E")
-  val lukionAineopiskelijaAktiivinenEiVahvistettuja = oppijat.oppija("Lukioaineopiskelija", "Aktiivinen-Ei-Vahvistettuja", "110122-5090")
-  val lukionAineopiskelijaAktiivinenVahvistettujaJaEiTiedossa = oppijat.oppija("Lukioaineopiskelija", "Aktiivinen-Ei-Vahvistettuja-Ei-Tiedossa", "151132-746V")
+  val lukionEiTiedossaAineopiskelija = oppijat.oppija("Erkki", "Eitiedossa", "151132-746V")
   val ammattilainen = oppijat.oppija("Ammattilainen", "Aarne", "280618-402H")
   val tutkinnonOsaaPienempiKokonaisuus = oppijat.oppija("Pieni-Kokonaisuus", "Pentti", "040754-054W")
   val muuAmmatillinen = oppijat.oppija("Muu-Ammatillinen", "Marjo", "130320-899Y")
@@ -49,8 +48,6 @@ object MockOppijat {
   val monimutkainenKorkeakoululainen = oppijat.oppija("Korkeakoululainen", "Kompleksi", "060458-331R")
   val virtaEiVastaa = oppijat.oppija("Virtanen", "Eivastaa", "250390-680P")
   val oppiaineenKorottaja = oppijat.oppija("Oppiaineenkorottaja", "Olli", "110738-839L")
-  val oppiaineenKorottajaAktiivinen = oppijat.oppija("Oppiaineenkorottaja", "Olli-Aktiivinen", "271080-364V")
-  val oppiaineenKorottajaAktiivinenEiTiedossaOppiainetta = oppijat.oppija("Oppiaineenkorottaja", "Olli-Aktiivinen Oppiaineeton", "240175-3276") // TÄMÄ
   val montaOppiaineenOppimäärääOpiskeluoikeudessa = oppijat.oppija("Mervi", "Monioppiaineinen", "131298-5248")
   val aikuisOpiskelija = oppijat.oppija("Aikuisopiskelija", "Aini", "280598-2415", vanhaHetu = Some("280598-326W"))
   val kymppiluokkalainen = oppijat.oppija("Kymppiluokkalainen", "Kaisa", "131025-6573")

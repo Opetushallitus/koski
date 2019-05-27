@@ -3067,9 +3067,13 @@ describe('Perusopetus', function() {
     describe('Opiskeluoikeuden tilaa', function () {
       before(
         page.openPage,
-        page.oppijaHaku.searchAndSelect('271080-364V'),
+        page.oppijaHaku.searchAndSelect('131298-5248'),
         editor.edit,
+        editor.property('tila').removeItem(0),
         opinnot.valitseSuoritus(undefined, 'Äidinkieli ja kirjallisuus'),
+        opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi,
+        opinnot.valitseSuoritus(undefined, 'Yhteiskuntaoppi'),
+        opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi,
         opinnot.avaaLisaysDialogi
       )
 
@@ -3093,11 +3097,16 @@ describe('Perusopetus', function() {
     })
 
     describe('Jos opiskelijalla on "ei tiedossa"-oppiaineita', function () {
+      var lisääSuoritus = opinnot.lisääSuoritusDialog
       before(
         page.openPage,
-        page.oppijaHaku.searchAndSelect('240175-3276'),
+        page.oppijaHaku.searchAndSelect('131298-5248'),
         editor.edit,
-        opinnot.opiskeluoikeusEditor().edit,
+        editor.property('tila').removeItem(0),
+        lisääSuoritus.open('lisää oppiaineen suoritus'), wait.forAjax,
+        lisääSuoritus.property('tunniste').setValue('Ei tiedossa'),
+        lisääSuoritus.toimipiste.select('Jyväskylän normaalikoulu, alakoulu'),
+        lisääSuoritus.lisääSuoritus,
         opinnot.avaaLisaysDialogi
       )
 

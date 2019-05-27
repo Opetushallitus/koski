@@ -40,51 +40,6 @@ object ExamplesAikuistenPerusopetus {
     )
   }
 
-  lazy val oppiaineenOppimäärienOpiskeluoikeusLäsnä: AikuistenPerusopetuksenOpiskeluoikeus = {
-    AikuistenPerusopetuksenOpiskeluoikeus(
-      oppilaitos = Some(jyväskylänNormaalikoulu),
-      koulutustoimija = None,
-      suoritukset = List(
-        AikuistenPerusopetuksenOppiaineenOppimääränSuoritus(
-          äidinkieli("AI1", diaarinumero = Some("19/011/2015")),
-          toimipiste = jyväskylänNormaalikoulu,
-          suorituskieli = suomenKieli,
-          suoritustapa = suoritustapaErityinenTutkinto,
-          arviointi = arviointi(10)
-        ),
-        AikuistenPerusopetuksenOppiaineenOppimääränSuoritus(
-          koulutusmoduuli = AikuistenPerusopetuksenUskonto(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava",
-            koodiarvo = "KT"),
-            perusteenDiaarinumero = Some("19/011/2015")
-          ),
-          toimipiste = jyväskylänNormaalikoulu,
-          suorituskieli = suomenKieli,
-          suoritustapa = suoritustapaErityinenTutkinto,
-          arviointi = arviointi(9)
-        )
-      ),
-      tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
-        List(
-          AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä)
-        )
-      )
-    )
-  }
-
-  lazy val oppiaineenOppimäärienOpiskeluoikeusLäsnäJaEiTiedossaSuorituksia: AikuistenPerusopetuksenOpiskeluoikeus =
-    oppiaineenOppimäärienOpiskeluoikeusLäsnä.copy(suoritukset =
-      List(
-        oppiaineenOppimääränSuoritus(äidinkieli("AI1", diaarinumero = Some("19/011/2015"))),
-        AikuistenPerusopetuksenOppiaineenOppimääränSuoritus(
-          koulutusmoduuli = EiTiedossaOppiaine(),
-          toimipiste = jyväskylänNormaalikoulu,
-          suorituskieli = suomenKieli,
-          suoritustapa = suoritustapaErityinenTutkinto,
-          arviointi = arviointi(9)
-        )
-      )
-    )
-
   lazy val montaOppiaineenOppimääränSuoritustaOpiskeluoikeus: AikuistenPerusopetuksenOpiskeluoikeus = oppiaineenOppimääräOpiskeluoikeus.copy(
     suoritukset =
       oppiaineenOppimääränSuoritus(aikuistenOppiaine("YH").copy(perusteenDiaarinumero = Some("19/011/2015"))).copy(arviointi = arviointi(10)) ::

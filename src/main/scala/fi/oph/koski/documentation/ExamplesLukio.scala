@@ -281,12 +281,8 @@ object ExamplesLukio {
       )
     )
 
-  val aineOpiskelijaAktiivinenEiVahvistettujaSuorituksia = aineOpiskelijaAktiivinen.copy(
-    suoritukset = aineOpiskelijaAktiivinen.suoritukset.map(suoritus => suoritus.asInstanceOf[LukionOppiaineenOppimääränSuoritus].copy(vahvistus = None)),
-    tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alku = date(2015, 9, 1), tila = opiskeluoikeusAktiivinen)))
-  )
 
-  val aineOpiskelijaAktiivinenVahvistettujaSuorituksiaJaOppiaineEiTiedossaSuoritus = aineOpiskelijaAktiivinen.copy(
+  val aineOpiskelijaEiTiedossaOppiaineella = aineOpiskelijaAktiivinen.copy(
     suoritukset = aineOpiskelijaAktiivinen.suoritukset ::: List(
       LukionOppiaineenOppimääränSuoritus(
         koulutusmoduuli = EiTiedossaOppiaine(),
