@@ -272,10 +272,10 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Hetu" -> lukiolainen.hetu,
     "Sukunimi" -> Some(lukiolainen.sukunimi),
     "Etunimet" -> Some(lukiolainen.etunimet),
-    "Ihminen ympäristön ja yhteiskuntien muutoksessa" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
-    "Kansainväliset suhteet" -> kurssintiedot(arvosana = "8", tyyppi = "pakollinen"),
-    "Itsenäisen Suomen historia" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
-    "Eurooppalaisen maailmankuvan kehitys" -> kurssintiedot(arvosana = "6", tyyppi = "pakollinen")
+    "Ihminen ympäristön ja yhteiskuntien muutoksessa HI1" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
+    "Kansainväliset suhteet HI2" -> kurssintiedot(arvosana = "8", tyyppi = "pakollinen"),
+    "Itsenäisen Suomen historia HI3" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
+    "Eurooppalaisen maailmankuvan kehitys HI4" -> kurssintiedot(arvosana = "6", tyyppi = "pakollinen")
   )
 
   lazy val expectedAineopiskelijaHistoriaKurssitRow = Map(
@@ -283,9 +283,9 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Hetu" -> lukionAineopiskelijaAktiivinen.hetu,
     "Sukunimi" -> Some(lukionAineopiskelijaAktiivinen.sukunimi),
     "Etunimet" -> Some(lukionAineopiskelijaAktiivinen.etunimet),
-    "Ihminen ympäristön ja yhteiskuntien muutoksessa" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
-    "Kansainväliset suhteet" -> kurssintiedot(arvosana = "8", tyyppi = "pakollinen"),
-    "Itsenäisen Suomen historia" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
-    "Eurooppalaisen maailmankuvan kehitys" -> kurssintiedot(arvosana = "6", tyyppi = "pakollinen")
+    "Ihminen ympäristön ja yhteiskuntien muutoksessa HI1" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
+    "Kansainväliset suhteet HI2" -> kurssintiedot(arvosana = "8", tyyppi = "pakollinen"),
+    "Itsenäisen Suomen historia HI3" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
+    "Eurooppalaisen maailmankuvan kehitys HI4" -> kurssintiedot(arvosana = "6", tyyppi = "pakollinen")
   )
 }

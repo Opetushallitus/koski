@@ -249,7 +249,7 @@ object LukioRaportti {
   }
 
   private def kurssitColumnSettings(kurssit: Seq[Kurssi]) = {
-    kurssit.map(_.nimi).map(removeForbiddenCharactersInExcel).map(Column(_))
+    kurssit.map(k => s"${k.nimi} ${k.koulutusmoduuliKoodiarvo}").map(removeForbiddenCharactersInExcel).map(CompactColumn(_))
   }
 
   private def kurssiSheets(data: Seq[LukioRaporttiRows], suoritusData: Seq[OppiaineJaKurssit])(implicit executionContext: ExecutionContextExecutor) = {
