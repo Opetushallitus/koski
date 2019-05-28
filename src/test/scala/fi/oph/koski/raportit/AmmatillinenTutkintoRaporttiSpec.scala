@@ -18,11 +18,14 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
     val rivi = rivit.head
 
     "Sisältää oikeat tiedot" in {
+      rivi.opiskeluoikeudenAlkamispäivä should equal(Some(LocalDate.of(2012, 9, 1)))
       rivi.koulutusmoduulit should equal("361902")
       rivi.osaamisalat should equal(Some("1590"))
       rivi.tutkintonimikkeet should equal("Luonto- ja ympäristöalan perustutkinto")
+      rivi.päätasonSuorituksenSuoritusTapa should equal("Ammatillinen perustutkinto")
       rivi.päätasonSuoritustenTilat should equal(Some("Valmis"))
-      rivi.viimeisinOpiskeluoikeudenTila should equal("valmistunut")
+      rivi.viimeisinOpiskeluoikeudenTila should equal(Some("valmistunut"))
+      rivi.viimeisinOpiskeluoikeudenTilaAikajaksonLopussa should equal("lasna")
       rivi.opintojenRahoitukset should equal("4")
       rivi.ostettu should equal(false)
     }
@@ -129,7 +132,7 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
   override def beforeAll(): Unit = loadRaportointikantaFixtures
 
   private def loadAmmattilaisAarnenRivit(oppilaitosOid: String = MockOrganisaatiot.stadinAmmattiopisto) = {
-    val result = AmmatillinenTutkintoRaportti.buildRaportti(KoskiApplicationForTests.raportointiDatabase, oppilaitosOid, LocalDate.parse("2016-01-01"), LocalDate.parse("2016-12-31"))
+    val result = AmmatillinenTutkintoRaportti.buildRaportti(KoskiApplicationForTests.raportointiDatabase, oppilaitosOid, LocalDate.parse("2016-01-01"), LocalDate.parse("2016-05-30"))
     result.filter(_.hetu == MockOppijat.ammattilainen.hetu)
   }
 
