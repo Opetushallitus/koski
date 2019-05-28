@@ -33,7 +33,7 @@ export const downloadExcel = (params) => {
 
   // detect when download has started by polling a cookie set by the backend.
   // based on https://stackoverflow.com/questions/1106377/detect-when-browser-receives-file-download
-  let attempts = 360
+  let attempts = 600
   downloadTimer = window.setInterval(() => {
     if (document.cookie.indexOf('koskiDownloadToken=' + downloadToken) >= 0) {
       window.clearInterval(downloadTimer)

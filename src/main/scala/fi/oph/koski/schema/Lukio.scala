@@ -320,7 +320,7 @@ case class LukionMatematiikka(
   pakollinen: Boolean = true,
   override val laajuus: Option[LaajuusKursseissa] = None,
   perusteenDiaarinumero: Option[String] = None
-) extends LukionValtakunnallinenOppiaine with KoodistostaLöytyväKoulutusmoduuli {
+) extends LukionValtakunnallinenOppiaine with KoodistostaLöytyväKoulutusmoduuli with Oppimäärä {
   override def description = oppimäärä.description
   override def identiteetti: AnyRef = (super.identiteetti, oppimäärä)
 }

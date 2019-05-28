@@ -6,47 +6,77 @@ import java.time.temporal.ChronoUnit
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema._
-import org.json4s.JValue
+import fi.oph.koski.util.Futures
+
+import scala.concurrent.duration._
+import scala.concurrent.{ExecutionContext, ExecutionContextExecutor, Future}
 
 object LukioRaportti {
 
-  private type OppiaineenNimi = String
-  private type Koulutusmooduuli_koodiarvo = String
-  private type Paikallinen = Boolean
+  private lazy val lukionoppiaineenoppimaara = "lukionoppiaineenoppimaara"
+  private lazy val lukionoppiaine = "lukionoppiaine"
+  private lazy val lukionmuuopinto = "lukionmuuopinto"
 
-  def buildRaportti(repository: LukioRaportitRepository, oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate): DynamicDataSheet = {
-    val opiskeluoikeusData = repository.suoritustiedot(oppilaitosOid, alku, loppu)
-    val oppilaitoksenOppiaineet = repository.oppilaitoksessaOpetettavatOppiaineet(oppilaitosOid)
+  def buildRaportti(repository: LukioRaportitRepository, oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate): Seq[DynamicDataSheet] = {
+    implicit val executionContext = ExecutionContext.fromExecutor(new java.util.concurrent.ForkJoinPool(10))
 
-    val columnSettings = makeColumnSettings(oppilaitoksenOppiaineet)
-    val rows = opiskeluoikeusData.map(makeDataRow(_, oppilaitoksenOppiaineet, alku, loppu))
+    val rows = repository.suoritustiedot(oppilaitosOid, alku, loppu)
+    val oppiaineetJaKurssit = lukiossaOpetettavatOppiaineetJaNiidenKurssit(rows)
 
-    DynamicDataSheet("Suoritustiedot", rows, columnSettings)
+    val future = for {
+      oppiaineJaLisätiedot <- oppiaineJaLisätiedotSheet(rows, oppiaineetJaKurssit, alku, loppu)
+      kurssit <- kurssiSheets(rows, oppiaineetJaKurssit)
+    } yield (oppiaineJaLisätiedot +: kurssit)
+
+    Futures.await(future, atMost = 6.minutes)
   }
 
-  private def makeColumnSettings(mahdollisetOppiaineet: Seq[(OppiaineenNimi, Koulutusmooduuli_koodiarvo, Paikallinen)]) = {
+  private def lukiossaOpetettavatOppiaineetJaNiidenKurssit(rows: Seq[LukioRaporttiRows]) = {
+    rows.flatMap(oppianeetJaNiidenKurssit).groupBy(_.oppiaine).map { case (oppiaine, x) =>
+      OppiaineJaKurssit(oppiaine, x.flatMap(_.kurssit).distinct)
+    }.toSeq
+  }
+
+  private def oppianeetJaNiidenKurssit(row: LukioRaporttiRows) = {
+    val kurssit = row.osasuoritukset.filter(_.ylempiOsasuoritusId.isDefined).groupBy(_.ylempiOsasuoritusId.get)
+    val oppiaineet = row.osasuoritukset.filter(isLukionOppiaine)
+    val combineOppiaineWithKurssit = (oppiaine: ROsasuoritusRow) => OppiaineJaKurssit(toOppiaine(oppiaine), kurssit.getOrElse(oppiaine.osasuoritusId, Nil).map(toKurssi))
+
+    oppiaineet.map(combineOppiaineWithKurssit)
+  }
+
+  private def isLukionOppiaine(osasuoritus: ROsasuoritusRow) = osasuoritus.suorituksenTyyppi == lukionoppiaine || osasuoritus.suorituksenTyyppi == lukionmuuopinto
+
+  private def toOppiaine(row: ROsasuoritusRow) = Oppiaine(oppiaineenNimi(row).getOrElse("ei nimeä"), row.koulutusmoduuliKoodiarvo, row.koulutusmoduuliPaikallinen)
+  private def toKurssi(row: ROsasuoritusRow) = Kurssi(row.koulutusmoduuliNimi.getOrElse("ei nimeä"), row.koulutusmoduuliKoodiarvo)
+
+  private def oppiaineJaLisätiedotSheet(opiskeluoikeusData: Seq[LukioRaporttiRows], oppiaineetJaKurssit: Seq[OppiaineJaKurssit], alku: LocalDate, loppu: LocalDate)(implicit executionContext: ExecutionContextExecutor) = {
+    Future {
+      DynamicDataSheet(
+        title = "Oppiaineet ja lisätiedot",
+        rows = opiskeluoikeusData.map(oppiaineJaLisätiedotRow(_, oppiaineetJaKurssit, alku, loppu)),
+        columnSettings = oppiaineJaLisätiedotColumns(oppiaineetJaKurssit)
+      )
+    }(executionContext)
+  }
+
+  private def oppiaineJaLisätiedotColumns(oppiaineetJaKurssit: Seq[OppiaineJaKurssit]) = {
     opiskeluoikeusColumns ++
       henkiloTietoColumns ++
       tilatietoColums ++
       opintojenSummaTiedotColumns ++
-      oppilaitoksenOppiaineetColumns(mahdollisetOppiaineet) ++
+      oppilaitoksenOppiaineetColumns(oppiaineetJaKurssit) ++
       opiskeluoikeudenLisätiedotColums
   }
 
-  private def makeDataRow
-  (
-    data: (ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], RPäätasonSuoritusRow, Seq[ROsasuoritusRow]),
-    mahdollisetOppiaineet: Seq[(OppiaineenNimi, Koulutusmooduuli_koodiarvo, Paikallinen)],
-    alku: LocalDate, loppu: LocalDate
-  ) = {
-    val (opiskeluoikeus, henkilo, aikajaksot, paatasonsuoritus, osasuoritukset) = data
-    val opiskeluoikeudenLisätiedot = JsonSerializer.extract[Option[LukionOpiskeluoikeudenLisätiedot]](opiskeluoikeus.data \ "lisätiedot")
+  private def oppiaineJaLisätiedotRow(data: LukioRaporttiRows, oppiaineetJaKurssit: Seq[OppiaineJaKurssit], alku: LocalDate, loppu: LocalDate) = {
+    val opiskeluoikeudenLisätiedot = JsonSerializer.extract[Option[LukionOpiskeluoikeudenLisätiedot]](data.opiskeluoikeus.data \ "lisätiedot")
 
-    opiskeluoikeudentiedot(opiskeluoikeus) ++
-      henkilotiedot(henkilo) ++
-      tilatiedot(opiskeluoikeus, aikajaksot, paatasonsuoritus, alku, loppu) ++
-      opintojenSummaTiedot(osasuoritukset) ++
-      järjestettävienOppiaineidenTiedot(mahdollisetOppiaineet, paatasonsuoritus, osasuoritukset) ++
+    opiskeluoikeudentiedot(data.opiskeluoikeus) ++
+      henkilotiedot(data.henkilo) ++
+      tilatiedot(data.opiskeluoikeus, data.aikajaksot, data.päätasonSuoritus, alku, loppu) ++
+      opintojenSummaTiedot(data.osasuoritukset) ++
+      järjestettävienOppiaineidenTiedot(oppiaineetJaKurssit, data.päätasonSuoritus, data.osasuoritukset) ++
       opiskeluoikeudenLisätietojenTiedot(opiskeluoikeudenLisätiedot, alku, loppu)
   }
 
@@ -55,7 +85,7 @@ object LukioRaportti {
     CompactColumn("Oppilaitoksen nimi"),
     CompactColumn("Lähdejärjestelmä"),
     CompactColumn("Opiskeluoikeuden tunniste lähdejärjestelmässä"),
-    Column("Oppijan oid")
+    CompactColumn("Koulutustoimija")
   )
 
   private def opiskeluoikeudentiedot(oo: ROpiskeluoikeusRow) = {
@@ -66,7 +96,7 @@ object LukioRaportti {
       oo.oppilaitosNimi,
       lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
       lähdejärjestelmänId.flatMap(_.id),
-      oo.oppijaOid
+      oo.koulutustoimijaNimi
     )
   }
 
@@ -117,20 +147,23 @@ object LukioRaportti {
   )
 
   private val henkiloTietoColumns = Seq(
+    Column("Oppijan oid"),
     Column("Hetu"),
     Column("Sukunimi"),
     Column("Etunimet")
   )
 
   private def henkilotiedot(henkilo: Option[RHenkilöRow]) = Seq(
+    henkilo.map(_.oppijaOid),
     henkilo.flatMap(_.hetu),
     henkilo.map(_.sukunimi),
     henkilo.map(_.etunimet)
   )
 
-  private def oppilaitoksenOppiaineetColumns(mahdollisetOppiainee: Seq[(OppiaineenNimi, Koulutusmooduuli_koodiarvo, Paikallinen)]) = {
-    mahdollisetOppiainee.map { case (nimi, koodiarvo, paikallinen) =>
-      CompactColumn(s"${nimi} (${koodiarvo}) ${if (paikallinen) "paikallinen" else "valtakunnallinen"}")
+  private def oppilaitoksenOppiaineetColumns(oppiaineetJaKurssit: Seq[OppiaineJaKurssit]) = {
+    oppiaineetJaKurssit.map { ojks =>
+      val oppiaine = ojks.oppiaine
+      CompactColumn(s"${oppiaine.nimi} (${oppiaine.koulutusmoduuliKoodiarvo}) ${if (oppiaine.koulutusmoduuliPaikallinen) "paikallinen" else "valtakunnallinen"}")
     }
   }
 
@@ -142,41 +175,32 @@ object LukioRaportti {
     osasuoritukset.filter(_.suorituksenTyyppi == "lukionkurssi").flatMap(_.koulutusmoduuliLaajuusArvo.map(_.toDouble)).sum
   )
 
-  private def järjestettävienOppiaineidenTiedot(mahdollisetOppiaineet: Seq[(OppiaineenNimi, Koulutusmooduuli_koodiarvo, Paikallinen)], paatasonsuoritus: RPäätasonSuoritusRow, osasuoritukset: Seq[ROsasuoritusRow]) = {
-    if (paatasonsuoritus.suorituksenTyyppi == "lukionoppiaineenoppimaara") {
-      mahdollisetOppiaineet.map(oppiaine => if (matchingOppiaine(Left(paatasonsuoritus), oppiaine)) paatasonsuoritusArvosanaLaajuus(paatasonsuoritus, osasuoritukset) else "")
+  private def järjestettävienOppiaineidenTiedot(oppiaineetJaKurssit: Seq[OppiaineJaKurssit], paatasonsuoritus: RPäätasonSuoritusRow, osasuoritukset: Seq[ROsasuoritusRow]) = {
+    if (paatasonsuoritus.suorituksenTyyppi == lukionoppiaineenoppimaara) {
+      oppiaineetJaKurssit.map(ojks => if (matchingOppiaine(Left(paatasonsuoritus), ojks.oppiaine)) paatasonsuoritusArvosanaLaajuus(paatasonsuoritus, osasuoritukset) else "")
     } else {
       val byKoulutusmoduuliKoodiarvo = osasuoritukset.groupBy(_.koulutusmoduuliKoodiarvo)
-      mahdollisetOppiaineet.map(oppiaine => byKoulutusmoduuliKoodiarvo.getOrElse(oppiaine._2, Nil).filter(os => matchingOppiaine(Right(os), oppiaine)).map(osasuoritusArvosanaLaajuus(_, osasuoritukset)).mkString(","))
+      oppiaineetJaKurssit.map(ojks => byKoulutusmoduuliKoodiarvo.getOrElse(ojks.oppiaine.koulutusmoduuliKoodiarvo, Nil).filter(os => matchingOppiaine(Right(os), ojks.oppiaine)).map(osasuoritusArvosanaLaajuus(_, osasuoritukset)).mkString(","))
     }
   }
 
-  private def matchingOppiaine(suoritusRow: Either[RPäätasonSuoritusRow, ROsasuoritusRow], oppiaine: (OppiaineenNimi, Koulutusmooduuli_koodiarvo, Paikallinen)) = {
-    val (oppiaineNimi, oppiaineKoodiarvo, oppiainePaikallinen) = oppiaine
+  private def matchingOppiaine(suoritusRow: Either[RPäätasonSuoritusRow, ROsasuoritusRow], oppiaine: Oppiaine) = {
     val (suoritusNimi, suoritusKoodiarvo, suoritusPaikallinen) = suoritusRow match {
-      case Left(paatasonsuoritus) => (extractKurssinNimi(paatasonsuoritus.data), paatasonsuoritus.koulutusmoduuliKoodiarvo, paatasonsuoritus.koulutusmoduuliKoodisto.exists(_ !="koskioppiaineetyleissivistava"))
-      case Right(osasuoritus) => (extractKurssinNimi(osasuoritus.data), osasuoritus.koulutusmoduuliKoodiarvo, osasuoritus.koulutusmoduuliPaikallinen)
+      case Left(paatasonsuoritus) => (paatasonsuoritus.koulutusmoduuliNimi, paatasonsuoritus.koulutusmoduuliKoodiarvo, paatasonsuoritus.koulutusmoduuliKoodisto.exists(_ != "koskioppiaineetyleissivistava"))
+      case Right(osasuoritus) => (oppiaineenNimi(osasuoritus), osasuoritus.koulutusmoduuliKoodiarvo, osasuoritus.koulutusmoduuliPaikallinen)
     }
-    oppiaineKoodiarvo == suoritusKoodiarvo && oppiainePaikallinen == suoritusPaikallinen && suoritusNimi.contains(oppiaineNimi)
+    oppiaine.koulutusmoduuliKoodiarvo == suoritusKoodiarvo && oppiaine.koulutusmoduuliPaikallinen == suoritusPaikallinen && suoritusNimi.contains(oppiaine.nimi)
   }
 
-  private def extractKurssinNimi(json: JValue) = {
-    val kieliOppiaine = getFinnishName(json \ "koulutusmoduuli" \ "kieli" \ "nimi")
-    val oppimäärällinenOppiaine = getFinnishName(json \ "koulutusmoduuli" \ "oppimäärä" \ "nimi")
-    val muuOppiaine = getFinnishName(json \ "koulutusmoduuli" \ "tunniste" \ "nimi")
-
-    if (kieliOppiaine.isDefined) {
-      kieliOppiaine
-    } else if (oppimäärällinenOppiaine.isDefined) {
-      oppimäärällinenOppiaine
-    } else if (muuOppiaine.isDefined) {
-      muuOppiaine
+  private def oppiaineenNimi(osasuoritus: ROsasuoritusRow) = {
+    if (osasuoritus.koulutusmoduuliKieliaineNimi.isDefined) {
+      osasuoritus.koulutusmoduuliKieliaineNimi
+    } else if (osasuoritus.koulutusmoduuliOppimääräNimi.isDefined) {
+      osasuoritus.koulutusmoduuliOppimääräNimi
     } else {
-      None
+      osasuoritus.koulutusmoduuliNimi
     }
   }
-
-  private def getFinnishName(j: JValue) = JsonSerializer.extract[Option[LocalizedString]](j).map(_.get("fi"))
 
   private def osasuoritusArvosanaLaajuus(osasuoritus: ROsasuoritusRow, osasuoritukset: Seq[ROsasuoritusRow]) = {
     val laajuus = osasuoritukset.count(_.ylempiOsasuoritusId.contains(osasuoritus.osasuoritusId))
@@ -210,4 +234,62 @@ object LukioRaportti {
       0
     }
   }
+
+  private def kurssitColumnSettings(kurssit: Seq[Kurssi]) = {
+    kurssit.map(k => s"${k.nimi} ${k.koulutusmoduuliKoodiarvo}").map(removeForbiddenCharactersInExcel).map(CompactColumn(_))
+  }
+
+  private def kurssiSheets(data: Seq[LukioRaporttiRows], suoritusData: Seq[OppiaineJaKurssit])(implicit executionContext: ExecutionContextExecutor) = {
+    Future {
+      suoritusData.par.map(kurssiSheet(_, data)).seq.sortBy(_.title)
+    }(executionContext)
+  }
+
+
+  private def kurssiSheet(oppiaineJaKurssit: OppiaineJaKurssit, data: Seq[LukioRaporttiRows]) = {
+    val oppiaine = oppiaineJaKurssit.oppiaine
+    val kurssit = oppiaineJaKurssit.kurssit
+    val filtered = data.filter(removeDuplicateOppiaineenOppimääränOpiskelijat(_, oppiaine))
+
+    DynamicDataSheet(
+      title = removeForbiddenCharactersInExcel(s"${oppiaine.koulutusmoduuliKoodiarvo} ${if (oppiaine.koulutusmoduuliPaikallinen) "p" else "v"} ${oppiaine.nimi}"),
+      rows = filtered.map(kurssiSheetRow(_, kurssit)),
+      columnSettings = henkiloTietoColumns ++ kurssitColumnSettings(kurssit)
+    )
+  }
+
+  private def removeDuplicateOppiaineenOppimääränOpiskelijat(data: LukioRaporttiRows, oppiaine: Oppiaine) = {
+    val pts = data.päätasonSuoritus
+    pts.suorituksenTyyppi != lukionoppiaineenoppimaara || matchingOppiaine(Left(pts), oppiaine)
+  }
+
+  private def kurssiSheetRow(data: LukioRaporttiRows, mahdollisetOppiaineet: Seq[Kurssi]) = {
+    henkilotiedot(data.henkilo) ++
+      kurssienTiedot(mahdollisetOppiaineet, data)
+  }
+
+  private def kurssienTiedot(kurssit: Seq[Kurssi], data: LukioRaporttiRows) = {
+    val osasuoritukset = data.osasuoritukset.groupBy(_.koulutusmoduuliKoodiarvo)
+    kurssit.map { kurssi =>
+      osasuoritukset.getOrElse(kurssi.koulutusmoduuliKoodiarvo, Nil).map(kurssitiedot).mkString(",")
+    }
+  }
+
+  private def kurssitiedot(osasuoritus: ROsasuoritusRow) = {
+    val arvosana = osasuoritus.arviointiArvosanaKoodiarvo.map("Arvosana " + _) getOrElse ("Ei arvosanaa")
+    val laajuus = osasuoritus.koulutusmoduuliLaajuusArvo.map("Laajuus " + _).getOrElse("Ei laajuutta")
+    val kurssityyppi = JsonSerializer.extract[Option[Koodistokoodiviite]](osasuoritus.data \ "koulutusmoduuli" \ "kurssinTyyppi").map(_.koodiarvo).getOrElse("Ei tyyppiä")
+    val isTunnustettu = JsonSerializer.extract[Option[OsaamisenTunnustaminen]](osasuoritus.data \ "tunnustettu").isDefined
+    val tunnustettu = if (isTunnustettu) ",tunnustettu" else ""
+
+    s"${arvosana},${laajuus},${kurssityyppi}${tunnustettu}"
+  }
+
+  private def removeForbiddenCharactersInExcel(str: String) = {
+    str.filter(c => c.isLetterOrDigit || c.isWhitespace)
+  }
 }
+
+private case class Oppiaine(nimi: String, koulutusmoduuliKoodiarvo: String, koulutusmoduuliPaikallinen: Boolean)
+private case class Kurssi(nimi: String, koulutusmoduuliKoodiarvo: String)
+private case class OppiaineJaKurssit(oppiaine: Oppiaine, kurssit: Seq[Kurssi])
