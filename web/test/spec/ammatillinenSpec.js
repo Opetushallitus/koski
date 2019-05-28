@@ -1534,7 +1534,7 @@ describe('Ammatillinen koulutus', function() {
         it('näyttää opiskeluoikeuden tiedot', function() {
           expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
             'Opiskeluoikeuden voimassaoloaika : 1.9.2012 — 31.5.2016\n' +
-            'Tila 31.5.2016 Valmistunut\n' +
+            'Tila 31.5.2016 Valmistunut (työnantajan kokonaan rahoittama)\n' +
             '1.9.2012 Läsnä (työnantajan kokonaan rahoittama)')
         })
 

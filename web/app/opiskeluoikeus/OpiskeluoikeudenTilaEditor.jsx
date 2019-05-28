@@ -64,7 +64,6 @@ export class OpiskeluoikeudenTilaEditor extends React.Component {
                   <label className="tila">
                     {modelTitle(item, 'tila')}
                     {
-                      rahoitusMuuttunut(items, i) &&
                       <span className="rahoitus">{formatRahoitus(rahoitus(items, i))}</span>
                     }
                   </label>
@@ -93,10 +92,6 @@ export class OpiskeluoikeudenTilaEditor extends React.Component {
 }
 
 OpiskeluoikeudenTilaEditor.isEmpty = m => recursivelyEmpty(m, 'opiskeluoikeusjaksot')
-
-const rahoitusMuuttunut = (items, index) => {
-  return rahoitus(items, index) != rahoitus(items, index + 1)
-}
 
 let formatRahoitus = rahoitus => rahoitus && ` (${rahoitus.toLowerCase()})`
 let rahoitus = (items, index) => items[index] && modelTitle(items[index], 'opintojenRahoitus')
