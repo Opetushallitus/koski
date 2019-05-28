@@ -30,8 +30,10 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec extends FreeSpec with Raport
       rivi.suorituksenTyyppi should equal("ammatillinentutkinto")
       rivi.koulutusmoduulit should equal("361902")
       rivi.osaamisalat should equal(Some("1590"))
+      rivi.päätasonSuorituksenSuoritustapa should equal("Ammatillinen perustutkinto")
       rivi.opiskeluoikeudenAlkamispäivä should equal(Some(LocalDate.of(2012, 9, 1)))
-      rivi.viimeisinOpiskeluoikeudenTila should equal("valmistunut")
+      rivi.viimeisinOpiskeluoikeudenTila should equal(Some("valmistunut"))
+      rivi.viimeisinOpiskeluoikeudenTilaAikajaksonLopussa should equal("valmistunut")
       rivi.opintojenRahoitukset should equal("4")
       rivi.opiskeluoikeusPäättynyt should equal(true)
       rivi.läsnäTaiValmistunutPäivät should equal(31 + 29 + 31 + 30 + 30 + 1) // Aarne graduated 31.5.2016, so count days from 1.1.2016 to 30.5.2016 + 31.5.2016
