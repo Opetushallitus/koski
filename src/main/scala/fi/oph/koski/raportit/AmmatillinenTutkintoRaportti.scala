@@ -48,7 +48,7 @@ object AmmatillinenTutkintoRaportti extends AikajaksoRaportti with AmmatillinenR
       koulutusmoduulit = päätasonSuoritukset.map(_.koulutusmoduuliKoodiarvo).sorted.mkString(","),
       osaamisalat = if (osaamisalat.isEmpty) None else Some(osaamisalat.mkString(",")),
       tutkintonimikkeet = päätasonSuoritukset.flatMap(tutkintonimike(_)).map(_.get("fi")).mkString(","),
-      päätasonSuorituksenSuoritusTapa = päätasonSuoritukset.flatMap(pts => JsonSerializer.extract[Option[Koodistokoodiviite]](pts.data \ "suoritustapa").flatMap(_.nimi.map(_.get("fi")))).mkString(","),
+      päätasonSuorituksenSuoritusTapa = suoritusTavat(päätasonSuoritukset),
       päätasonSuoritustenTilat = Some(päätasonSuoritustenTilat(päätasonSuoritukset)),
       opiskeluoikeudenAlkamispäivä = opiskeluoikeus.alkamispäivä.map(_.toLocalDate),
       viimeisinOpiskeluoikeudenTila = opiskeluoikeus.viimeisinTila,

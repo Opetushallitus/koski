@@ -4,10 +4,9 @@ import java.sql.Timestamp
 import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.schema.OpiskeluoikeudenTyyppi
+import fi.oph.koski.schema.{Koodistokoodiviite, LähdejärjestelmäId, OpiskeluoikeudenTyyppi, Organisaatio}
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.Organisaatio.Oid
-import fi.oph.koski.schema.{LähdejärjestelmäId, Organisaatio}
 import fi.oph.koski.util.FinnishDateFormat.{finnishDateFormat, finnishDateTimeFormat}
 
 // scalastyle:off method.length
@@ -47,9 +46,11 @@ object AmmatillinenOsittainenRaportti extends AikajaksoRaportti with Ammatilline
       koulutusmoduulit = päätasonSuoritukset.map(_.koulutusmoduuliKoodiarvo).sorted.mkString(","),
       osaamisalat = if (osaamisalat.isEmpty) None else Some(osaamisalat.mkString(",")),
       tutkintonimikkeet = päätasonSuoritukset.flatMap(tutkintonimike(_)).map(_.get("fi")).mkString(","),
+      päätasonSuorituksenSuoritustapa = suoritusTavat(päätasonSuoritukset),
       päätasonSuoritustenTilat = Some(päätasonSuoritustenTilat(päätasonSuoritukset)),
       opiskeluoikeudenAlkamispäivä = opiskeluoikeus.alkamispäivä.map(_.toLocalDate),
-      viimeisinOpiskeluoikeudenTila = aikajaksot.last.tila,
+      viimeisinOpiskeluoikeudenTila = opiskeluoikeus.viimeisinTila,
+      viimeisinOpiskeluoikeudenTilaAikajaksonLopussa = aikajaksot.last.tila,
       opintojenRahoitukset = aikajaksot.flatMap(_.opintojenRahoitus).sorted.distinct.mkString(","),
       suoritettujenOpintojenYhteislaajuus = yhteislaajuus(muutSuoritukset.union(yhteistenTutkinnonOsienOsaSuoritukset)),
       valmiitAmmatillisetTutkinnonOsatLkm = muutSuoritukset.filter(isVahvistusPäivällinen).size,
@@ -133,9 +134,11 @@ object AmmatillinenOsittainenRaportti extends AikajaksoRaportti with Ammatilline
     "koulutusmoduulit" -> CompactColumn("Tutkinnot"),
     "osaamisalat" -> CompactColumn("Osaamisalat"),
     "tutkintonimikkeet" -> CompactColumn("Tutkintonimike"),
+    "päätasonSuorituksenSuoritustapa" -> CompactColumn("Päätason suorituksen suoritustapa"),
     "päätasonSuoritustenTilat" -> CompactColumn("Suorituksen tila"),
     "opiskeluoikeudenAlkamispäivä" -> Column("Opiskeluoikeuden alkamispäivä"),
     "viimeisinOpiskeluoikeudenTila" -> CompactColumn("Viimeisin opiskeluoikeuden tila"),
+    "viimeisinOpiskeluoikeudenTilaAikajaksonLopussa" -> CompactColumn("Viimeisin opiskeluoikeuden tila aikajakson lopussa"),
     "opintojenRahoitukset" -> CompactColumn("Rahoitukset"),
     "suoritettujenOpintojenYhteislaajuus" -> CompactColumn("Suorittetujen opintojen yhteislaajuus"),
     "valmiitAmmatillisetTutkinnonOsatLkm" -> CompactColumn("Valmiiden ammatillisten tutkinnon osien lukumäärä"),
@@ -177,9 +180,11 @@ case class AmmatillinenOsittainRaporttiRow(
   koulutusmoduulit: String,
   osaamisalat: Option[String],
   tutkintonimikkeet: String,
+  päätasonSuorituksenSuoritustapa: String,
   päätasonSuoritustenTilat: Option[String],
   opiskeluoikeudenAlkamispäivä: Option[LocalDate],
-  viimeisinOpiskeluoikeudenTila: String,
+  viimeisinOpiskeluoikeudenTila: Option[String],
+  viimeisinOpiskeluoikeudenTilaAikajaksonLopussa: String,
   opintojenRahoitukset: String,
   suoritettujenOpintojenYhteislaajuus: Double,
   valmiitAmmatillisetTutkinnonOsatLkm: Int,

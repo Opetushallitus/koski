@@ -24,6 +24,10 @@ trait AmmatillinenRaporttiUtils {
     JsonSerializer.extract[Option[LocalizedString]](osasuoritus.data \ "koulutusmoduuli" \ "tunniste" \ "nimi")
   }
 
+  def suoritusTavat(päätasonsuoritukset: Seq[RPäätasonSuoritusRow]) = {
+    päätasonsuoritukset.flatMap(pts => JsonSerializer.extract[Option[Koodistokoodiviite]](pts.data \ "suoritustapa").flatMap(_.nimi.map(_.get("fi")))).mkString(","),
+  }
+
   def päätasonSuoritustenTilat(päätasonsuoritukset: Seq[RPäätasonSuoritusRow]) = {
     päätasonsuoritukset.map(ps => vahvistusPäivätToTila(ps.vahvistusPäivä)).mkString(",")
   }
