@@ -45,11 +45,9 @@ describe('Oppijataulukko', function() {
       it('toimii', function() {
         expect(page.oppijataulukko.names()).to.deep.equal([
           'Mervi, Monioppiaineinen',
-          'Oppiaineenkorottaja, Olli',
-          'Oppiaineenkorottaja, Olli-Aktiivinen',
-          'Oppiaineenkorottaja, Olli-Aktiivinen Oppiaineeton'
+          'Oppiaineenkorottaja, Olli'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('4')
+        expect(page.opiskeluoikeudeTotal()).to.equal('2')
       })
     })
 
