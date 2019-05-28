@@ -80,7 +80,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
             päätasonSuoritusTyyppitEnabled(opiskeluoikeus),
             validateSisältyvyys(henkilö, opiskeluoikeus),
             validatePäivämäärät(opiskeluoikeus),
-            HttpStatus.fold(opiskeluoikeus.suoritukset.map(validatePäätasonSuorituksenStatus(_, opiskeluoikeus))),
+            validatePäätasonSuorituksienStatukset(opiskeluoikeus),
             HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritus(_, opiskeluoikeus, Nil)))
           )} match {
             case HttpStatus.ok => Right(opiskeluoikeus)
@@ -393,12 +393,21 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     numeerisetArvosanat(suoritus.arviointi.toList.flatten) ++ näytönArvosanat ++ suoritus.osasuoritusLista.flatMap(extractNumeerisetArvosanat)
   }
 
+  private def validatePäätasonSuorituksienStatukset(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
+    HttpStatus.fold(opiskeluoikeus.suoritukset.map(validatePäätasonSuorituksenStatus(_, opiskeluoikeus)))
+      .onFailure(HttpStatus.some(opiskeluoikeus.suoritukset.map(validateValmisAikuistenPerusopetuksenOppimääränSuoritus)))
+  }
+
   private def validatePäätasonSuorituksenStatus(suoritus: PäätasonSuoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus =
     if (suoritus.kesken && opiskeluoikeus.tila.opiskeluoikeusjaksot.last.tila.koodiarvo == "valmistunut") {
       KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta " + suorituksenTunniste(suoritus) + " puuttuu vahvistus, vaikka opiskeluoikeus on tilassa Valmistunut")
     } else {
       HttpStatus.ok
     }
+
+  private def validateValmisAikuistenPerusopetuksenOppimääränSuoritus(suoritus: PäätasonSuoritus) = {
+    HttpStatus.validate(suoritus.valmis && suoritus.isInstanceOf[AikuistenPerusopetuksenOppimääränSuoritus])(KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta " + suorituksenTunniste(suoritus) + " puuttuu vahvistus, vaikka opiskeluoikeus on tilassa Valmistunut"))
+  }
 
   private def suorituksenTunniste(suoritus: Suoritus): KoodiViite = {
     suoritus.koulutusmoduuli.tunniste

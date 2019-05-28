@@ -689,6 +689,68 @@ describe('Perusopetus', function() {
     })
   })
 
+  describe('Aikuisten perusopetuksen opiskeluoikeuden tilan asettaminen Valmistunut tilaan', function() {
+    before(
+      page.openPage,
+      page.oppijaHaku.searchAndSelect('280598-2415'),
+      editor.edit
+    )
+
+    describe('Kun vain oppimäärällä on vahvistus', function () {
+      before(
+        editor.property('tila').removeItem(0),
+        opinnot.valitseSuoritus(undefined, 'Aikuisten perusopetuksen oppimäärän alkuvaihe'),
+        opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi,
+        opinnot.avaaLisaysDialogi
+      )
+
+      it('Valmistunut tila voidaan asettaa', function () {
+        expect(OpiskeluoikeusDialog().radioEnabled('valmistunut')).to.equal(true)
+      })
+
+      after(opinnot.suljeLisaysDialogi, editor.cancelChanges)
+    })
+
+    describe('Alkuvaiheen olleessa ainut suoritus', function () {
+      before(
+        editor.edit,
+        opinnot.deletePäätasonSuoritus,
+        wait.prepareForNavigation,
+        opinnot.confirmDeletePäätasonSuoritus,
+        wait.forNavigation,
+        wait.until(page.isPäätasonSuoritusDeletedMessageShown),
+        wait.until(page.isReady),
+        opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('aikuistenperusopetus')
+      )
+
+      describe('Ja sillä on vahvistus', function () {
+        before(
+          editor.property('tila').removeItem(0),
+          opinnot.avaaLisaysDialogi
+        )
+
+        it('Valmistunu tila voidaan asettaa', function () {
+          expect(OpiskeluoikeusDialog().radioEnabled('valmistunut')).to.equal(true)
+        })
+
+        after(opinnot.suljeLisaysDialogi)
+      })
+
+      describe('Ja sillä ei ole vahvistusta', function () {
+        before(
+          opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi,
+          opinnot.avaaLisaysDialogi
+        )
+
+        it('Valmistunut tila on estetty', function () {
+          expect(OpiskeluoikeusDialog().radioEnabled('valmistunut')).to.equal(false)
+        })
+      })
+    })
+
+    after(opinnot.suljeLisaysDialogi, editor.cancelChanges)
+  })
+
   describe('Hetuton oppija', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('1.2.246.562.24.99999999123', 'Hetuton'))
 

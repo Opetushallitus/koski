@@ -125,6 +125,11 @@ function OpinnotPage() {
         return click(S('.opiskeluoikeuden-tiedot .add-item a'))()
       }
     },
+    suljeLisaysDialogi: function() {
+      if (S('.lisaa-opiskeluoikeusjakso-modal .modal-content').is(':visible')) {
+        return click(S('.opiskeluoikeuden-tiedot .modal-content .close-modal'))()
+      }
+    },
     opiskeluoikeudet: Opiskeluoikeudet(),
     opiskeluoikeusEditor: function(index, omatTiedot) {
       omatTiedot = omatTiedot || false
