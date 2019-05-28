@@ -20,6 +20,7 @@ object ExamplesAmmatillinen {
     Example("ammatillinen - ops", "Perustutkinto ops:n mukaan, läsnäolotiedoilla, hojks", AmmatillinenOldExamples.ops),
     Example("ammatillinen - perustutkinto", "Ympäristönhoitajaksi valmistunut opiskelija", AmmatillinenPerustutkintoExample.perustutkinto),
     Example("ammatillinen - reformin mukainen perustutkinto", "Autoalan perustutkinto", AmmatillinenReforminMukainenPerustutkintoExample.example),
+    Example("ammatillinen - reformin mukainen erikoisammattitutkinto", "Automekaanikon erikoisammattitutkinto", ReforminMukainenErikoisammattitutkintoExample.example),
     Example("ammatillinen - erikoisammattitutkinto", "Erikoisammattitutkinnon ja näyttötutkintoon valmistavan koulutuksen suorittanut opiskelija", AmmattitutkintoExample.erikoisammattitutkinto),
     Example("ammatillinen - tutkinnonosa", "Yhden tutkinnon osan suorittanut oppija", AmmatillinenPerustutkintoExample.osittainenPerustutkinto),
     Example("ammatillinen - tunnustettu", "Tutkinnon osa tunnustettu aiemmin suoritetusta paikallisen tutkinnon osasta", AmmatillinenPerustutkintoExample.tunnustettuPaikallinenTutkinnonOsa),

@@ -1232,6 +1232,9 @@
   "Diploma type" : "Diploma type",
   "tooltip:Jos valittu niin IBO ei..." : "Jos valittu niin IBO ei ole vahvistanut arvosanaa",
   "Lukioraportti-title": "Lukion suoritustietojen tarkistusraportti",
-  "Lukioraportti-description": "Raportti sisältää oppiainetiedot lukion oppimäärän ja oppiaineen oppimäärän opiskelijoilta"
+  "Lukioraportti-description": "Raportti sisältää oppiainetiedot lukion oppimäärän ja oppiaineen oppimäärän opiskelijoilta",
+  "Oppisopimuksen purkaminen" : "Oppisopimuksen purkaminen",
+  "description:Onko oppisopimus purettu. Puuttuva arvo..." : "Onko oppisopimus purettu. Puuttuva arvo tulkitaan siten, että oppisopimusta ei olla purettu",
+  "Purettu koeajalla" : "Purettu koeajalla"
 }
 
