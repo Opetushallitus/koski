@@ -32,36 +32,23 @@ object LukioRaportti {
   }
 
   private def lukiossaOpetettavatOppiaineetJaNiidenKurssit(rows: Seq[LukioRaporttiRows]) = {
-    val oppiaineetJaNiidenKurssit = rows.flatMap(oppianeetJaNiidenKurssit)
-    val kurssitOppiaineittain = oppiaineetJaNiidenKurssit.groupBy(_.oppiaine)
-
-    kurssitOppiaineittain.foldLeft[Seq[OppiaineJaKurssit]](Nil)(distinctKurssit)
+    rows.flatMap(oppianeetJaNiidenKurssit).groupBy(_.oppiaine).map { case (oppiaine, x) =>
+      OppiaineJaKurssit(oppiaine, x.flatMap(_.kurssit).distinct)
+    }.toSeq
   }
 
   private def oppianeetJaNiidenKurssit(row: LukioRaporttiRows) = {
     val kurssit = row.osasuoritukset.filter(_.ylempiOsasuoritusId.isDefined).groupBy(_.ylempiOsasuoritusId.get)
     val oppiaineet = row.osasuoritukset.filter(isLukionOppiaine)
-    val combineOppiaineWithKurssit = kurssitCombiner(kurssit)
+    val combineOppiaineWithKurssit = (oppiaine: ROsasuoritusRow) => OppiaineJaKurssit(toOppiaine(oppiaine), kurssit.getOrElse(oppiaine.osasuoritusId, Nil).map(toKurssi))
 
     oppiaineet.map(combineOppiaineWithKurssit)
   }
 
   private def isLukionOppiaine(osasuoritus: ROsasuoritusRow) = osasuoritus.suorituksenTyyppi == lukionoppiaine || osasuoritus.suorituksenTyyppi == lukionmuuopinto
 
-  private type YlempiOsasuoritusId = Long
-
-  private def kurssitCombiner(kurssit: Map[YlempiOsasuoritusId, Seq[ROsasuoritusRow]]) = (oppiaineOsasuoritus: ROsasuoritusRow) => OppiaineJaKurssit(
-    oppiaine = toOppiaine(oppiaineOsasuoritus),
-    kurssit = kurssit.getOrElse(oppiaineOsasuoritus.osasuoritusId, Nil).map(toKurssi)
-  )
-
   private def toOppiaine(row: ROsasuoritusRow) = Oppiaine(oppiaineenNimi(row).getOrElse("ei nimeä"), row.koulutusmoduuliKoodiarvo, row.koulutusmoduuliPaikallinen)
   private def toKurssi(row: ROsasuoritusRow) = Kurssi(row.koulutusmoduuliNimi.getOrElse("ei nimeä"), row.koulutusmoduuliKoodiarvo)
-
-  private def distinctKurssit(acc: Seq[OppiaineJaKurssit], current: (Oppiaine, Seq[OppiaineJaKurssit])) = {
-    val (oppiaine , oppiaineJaKurssit) = current
-    OppiaineJaKurssit(oppiaine, kurssit = oppiaineJaKurssit.flatMap(_.kurssit).distinct) +: acc
-  }
 
   private def oppiaineJaLisätiedotSheet(opiskeluoikeusData: Seq[LukioRaporttiRows], oppiaineetJaKurssit: Seq[OppiaineJaKurssit], alku: LocalDate, loppu: LocalDate)(implicit executionContext: ExecutionContextExecutor) = {
     Future {
