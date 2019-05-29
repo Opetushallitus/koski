@@ -357,6 +357,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     } else {
       suoritus match {
         case s if s.kesken => HttpStatus.ok
+        case _: Välisuoritus => HttpStatus.ok // Välisuoritus on statukseltaan aina "valmis" -> ei validoida niiden sisältämien osasuoritusten statusta
         case a: AmmatillisenTutkinnonOsittainenSuoritus => validateValmiinAmmatillisenTutkinnonOsittainenSuoritus(a)
         case s => validateValmiinSuorituksenStatus(s)
       }

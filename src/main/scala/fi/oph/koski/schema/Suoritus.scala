@@ -102,6 +102,8 @@ trait Arvioinniton extends Suoritus {
   override def arviointiPuuttuu = false
 }
 
+trait Välisuoritus extends Arvioinniton
+
 trait MahdollisestiArvioinniton extends Suoritus {
   override def arviointiPuuttuu = false
 }
