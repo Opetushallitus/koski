@@ -21,7 +21,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
   private type PäätasonSuoritusId = Long
   private type AikajaksoId = Long
 
-  def perusopetuksenvuosiluokka(organisaatioOidit: Set[Organisaatio.Oid], paiva: LocalDate, vuosiluokka: String): List[(ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], RPäätasonSuoritusRow, Seq[ROsasuoritusRow], Seq[String])] = {
+  def perusopetuksenvuosiluokka(organisaatioOidit: Set[Organisaatio.Oid], paiva: LocalDate, vuosiluokka: String): List[PerusopetuksenRaporttiRows] = {
     val opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet = opiskeluoikeusAikajaksotPaatasonSuorituksetResult(organisaatioOidit, paiva, vuosiluokka)
 
     val opiskeluoikeusOids = opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet.map(_._1)
@@ -34,13 +34,14 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
     val osasuoritukset = runDbSync(ROsasuoritukset.filter(_.päätasonSuoritusId inSet paatasonSuoritusIds).result).groupBy(_.päätasonSuoritusId)
     val henkilot = runDbSync(RHenkilöt.filter(_.oppijaOid inSet opiskeluoikeudet.map(_.oppijaOid).distinct).result).groupBy(_.oppijaOid).mapValues(_.head)
     val voimassaOlevatVuosiluokat = runDbSync(voimassaOlevatVuosiluokatQuery(opiskeluoikeusOids).result, timeout = 5.minutes).groupBy(_._1).mapValues(_.map(_._2).toSeq)
+    val luokat = runDbSync(luokkatiedotVuosiluokalleQuery(opiskeluoikeusOids, vuosiluokka).result, timeout = 5.minutes).groupBy(_._1).mapValues(_.map(_._2).headOption)
 
-    opiskeluoikeudet.foldLeft[List[(ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], RPäätasonSuoritusRow, Seq[ROsasuoritusRow], Seq[String])]](List.empty) {
-      combineOpiskeluoikeusWith(_, _, aikajaksot, paatasonSuoritukset, osasuoritukset, henkilot, voimassaOlevatVuosiluokat)
+    opiskeluoikeudet.foldLeft[List[PerusopetuksenRaporttiRows]](List.empty) {
+      combineOpiskeluoikeusWith(_, _, aikajaksot, paatasonSuoritukset, osasuoritukset, henkilot, voimassaOlevatVuosiluokat, luokat)
     }
   }
 
-  def peruskoulunPaattavatJaLuokalleJääneet(organisaatioOidit: Set[Organisaatio.Oid], paiva: LocalDate, vuosiluokka: String) = {
+  def peruskoulunPaattavatJaLuokalleJääneet(organisaatioOidit: Set[Organisaatio.Oid], paiva: LocalDate, vuosiluokka: String): List[PerusopetuksenRaporttiRows] = {
     val luokalleJäävienTunnisteet = luokalleJäävätOpiskeluoikeusAikajaksotPäätasonSuorituksetResult(organisaatioOidit, paiva, "9")
     val luokalleJaavienOidit = luokalleJäävienTunnisteet.map(_._1)
 
@@ -56,37 +57,35 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
     val osasuoritukset = runDbSync(ROsasuoritukset.filter(_.päätasonSuoritusId inSet paatasonSuoritusIds).result).groupBy(_.päätasonSuoritusId)
     val henkilot = runDbSync(RHenkilöt.filter(_.oppijaOid inSet opiskeluoikeudet.map(_.oppijaOid).distinct).result).groupBy(_.oppijaOid).mapValues(_.head)
     val voimassaOlevatVuosiluokat = runDbSync(voimassaOlevatVuosiluokatQuery(opiskeluoikeusOids).result, timeout = 5.minutes).groupBy(_._1).mapValues(_.map(_._2).toSeq)
+    val luokat = runDbSync(luokkatiedotVuosiluokalleQuery(opiskeluoikeusOids, vuosiluokka).result, timeout = 5.minutes).groupBy(_._1).mapValues(_.map(_._2).headOption)
 
-    opiskeluoikeudet.foldLeft[List[(ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], RPäätasonSuoritusRow, Seq[ROsasuoritusRow], Seq[String])]](List.empty) {
-      combineOpiskeluoikeusWith(_, _, aikajaksot, paatasonSuoritukset, osasuoritukset, henkilot, voimassaOlevatVuosiluokat)
+    opiskeluoikeudet.foldLeft[List[PerusopetuksenRaporttiRows]](List.empty) {
+      combineOpiskeluoikeusWith(_, _, aikajaksot, paatasonSuoritukset, osasuoritukset, henkilot, voimassaOlevatVuosiluokat, luokat)
     }
   }
 
-  private def combineOpiskeluoikeusWith
-  (
-    acc: List[(ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], RPäätasonSuoritusRow, Seq[ROsasuoritusRow], Seq[String])],
+  private def combineOpiskeluoikeusWith(
+    acc: List[PerusopetuksenRaporttiRows],
     opiskeluoikeus: ROpiskeluoikeusRow,
     aikajaksot: Map[OpiskeluoikeusOid, Seq[ROpiskeluoikeusAikajaksoRow]],
     paatasonSuoritukset: Map[OpiskeluoikeusOid, Seq[RPäätasonSuoritusRow]],
     osasuoritukset: Map[PäätasonSuoritusId, Seq[ROsasuoritusRow]],
     henkilot: Map[OppijaOid, RHenkilöRow],
-    voimassaOlevatVuosiluokat: Map[OpiskeluoikeusOid, Seq[String]]
+    voimassaOlevatVuosiluokat: Map[OpiskeluoikeusOid, Seq[String]],
+    luokat: Map[OpiskeluoikeusOid, String]
   ) = {
-    (acc, opiskeluoikeus) match {
-      case (tail, oo) => {
-        val pts = paatasonSuoritukset.getOrElse(oo.opiskeluoikeusOid, List.empty)
-        pts.map(paatasonsuoritus => {
-          (
-            oo,
-            henkilot.get(oo.oppijaOid),
-            aikajaksot.getOrElse(oo.opiskeluoikeusOid, List.empty).sortBy(_.alku)(sqlDateOrdering),
-            paatasonsuoritus,
-            osasuoritukset.getOrElse(paatasonsuoritus.päätasonSuoritusId, List.empty),
-            voimassaOlevatVuosiluokat.getOrElse(oo.opiskeluoikeusOid, List.empty)
-          )
-        }).toList ::: tail
-      }
-    }
+    val pts = paatasonSuoritukset.getOrElse(opiskeluoikeus.opiskeluoikeusOid, List.empty)
+    pts.map(paatasonsuoritus => {
+      PerusopetuksenRaporttiRows(
+        opiskeluoikeus = opiskeluoikeus,
+        henkilo = henkilot.get(opiskeluoikeus.oppijaOid),
+        aikajaksot = aikajaksot.getOrElse(opiskeluoikeus.opiskeluoikeusOid, List.empty).sortBy(_.alku)(sqlDateOrdering),
+        päätasonSuoritus = paatasonsuoritus,
+        osasuoritukset = osasuoritukset.getOrElse(paatasonsuoritus.päätasonSuoritusId, List.empty),
+        voimassaolevatVuosiluokat = voimassaOlevatVuosiluokat.getOrElse(opiskeluoikeus.opiskeluoikeusOid, List.empty),
+        luokka = luokat.get(opiskeluoikeus.opiskeluoikeusOid)
+      )
+    }).toList ::: acc
   }
 
   private def opiskeluoikeusAikajaksotPaatasonSuorituksetResult(oppilaitos: Set[Organisaatio.Oid], paiva: LocalDate, vuosiluokka: String) = {
@@ -128,6 +127,14 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
       .filter(_.suorituksenTyyppi === "perusopetuksenvuosiluokka")
       .filter(_.vahvistusPäivä.isEmpty)
       .map(row => (row.opiskeluoikeusOid, row.koulutusmoduuliKoodiarvo))
+  }
+
+  private def luokkatiedotVuosiluokalleQuery(opiskeluoikeusOid: Seq[String], vuosiluokka: String) = {
+    RPäätasonSuoritukset
+      .filter(_.opiskeluoikeusOid inSet opiskeluoikeusOid)
+      .filter(_.suorituksenTyyppi === "perusopetuksenvuosiluokka")
+      .filter(_.koulutusmoduuliKoodiarvo === vuosiluokka)
+      .map(row => (row.opiskeluoikeusOid, row.data+>>("luokka")))
   }
 
   private def luokalleJäävätOpiskeluoikeusAikajaksotPäätasonSuorituksetResult(oppilaitos: Set[String], paiva: LocalDate, vuosiluokka: String) = {
@@ -213,3 +220,13 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
         oo.opiskeluoikeus_oid"""
   }
 }
+
+case class PerusopetuksenRaporttiRows(
+  opiskeluoikeus: ROpiskeluoikeusRow,
+  henkilo: Option[RHenkilöRow],
+  aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow],
+  päätasonSuoritus: RPäätasonSuoritusRow,
+  osasuoritukset: Seq[ROsasuoritusRow],
+  voimassaolevatVuosiluokat: Seq[String],
+  luokka: Option[String]
+)

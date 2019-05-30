@@ -20,8 +20,13 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
     rows.map(buildRow(_, paiva))
   }
 
-  private def buildRow(data: (ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], RPäätasonSuoritusRow, Seq[ROsasuoritusRow], Seq[String]), hakupaiva: LocalDate) = {
-    val (opiskeluoikeus, henkilö, aikajaksot, päätasonsuoritus, osasuoritukset, voimassaolevatVuosiluokat) = data
+  private def buildRow(row: PerusopetuksenRaporttiRows, hakupaiva: LocalDate) = {
+    val opiskeluoikeus = row.opiskeluoikeus
+    val henkilö = row.henkilo
+    val aikajaksot = row.aikajaksot
+    val päätasonsuoritus = row.päätasonSuoritus
+    val osasuoritukset = row.osasuoritukset
+    val voimassaolevatVuosiluokat = row.voimassaolevatVuosiluokat
 
     val opiskeluoikeudenLisätiedot = JsonSerializer.extract[Option[PerusopetuksenOpiskeluoikeudenLisätiedot]](opiskeluoikeus.data \ "lisätiedot")
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](opiskeluoikeus.data \ "lähdejärjestelmänId")
@@ -49,7 +54,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
       suorituksenAlkamispaiva = JsonSerializer.extract[Option[LocalDate]](päätasonsuoritus.data \ "alkamispäivä").getOrElse("").toString,
       suorituksenVahvistuspaiva = päätasonsuoritus.vahvistusPäivä.getOrElse("").toString,
       jaaLuokalle = JsonSerializer.extract[Option[Boolean]](päätasonsuoritus.data \ "jääLuokalle").getOrElse(false),
-      luokka = JsonSerializer.extract[Option[String]](päätasonsuoritus.data \ "luokka").getOrElse(""),
+      luokka = row.luokka,
       voimassaolevatVuosiluokat = voimassaolevatVuosiluokat.mkString(","),
       aidinkieli = oppiaineenArvosanaTiedot("AI")(pakollisetValtakunnalliset),
       pakollisenAidinkielenOppimaara = getOppiaineenOppimäärä("AI")(pakollisetValtakunnalliset),
@@ -360,7 +365,7 @@ private[raportit] case class PerusopetusRow(
   suorituksenAlkamispaiva: String,
   suorituksenVahvistuspaiva: String,
   jaaLuokalle: Boolean,
-  luokka: String,
+  luokka: Option[String],
   voimassaolevatVuosiluokat: String,
   aidinkieli: String,
   pakollisenAidinkielenOppimaara: String,
