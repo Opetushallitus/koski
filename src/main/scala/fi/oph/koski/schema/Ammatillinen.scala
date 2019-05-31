@@ -542,6 +542,11 @@ case class Koulutussopimusjakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
   työssäoppimispaikka: Option[LocalizedString],
+  @Description("Työssäoppimispaikan Y-tunnus")
+  @RegularExpression("^\\d{7}-\\d$")
+  @Example("1234567-8")
+  @Title("Y-tunnus")
+  yTunnus: Option[String],
   paikkakunta: Koodistokoodiviite,
   maa: Koodistokoodiviite,
   työtehtävät: Option[LocalizedString]
