@@ -3085,11 +3085,14 @@ describe('Perusopetus', function() {
         before(
           opinnot.tilaJaVahvistus.merkitseValmiiksi,
           opinnot.tilaJaVahvistus.lisääVahvistus('01.01.2000'),
-          opinnot.avaaLisaysDialogi
+          opinnot.avaaLisaysDialogi,
+          OpiskeluoikeusDialog().tila().aseta('valmistunut'),
+          OpiskeluoikeusDialog().tallenna,
+          editor.saveChanges,
         )
 
         it('myös opiskeluoikeuden tila voidaan merkitä valmiiksi', function () {
-          expect(OpiskeluoikeusDialog().radioEnabled('valmistunut')).to.equal(true)
+          expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.contain('Valmistunut')
         })
       })
 

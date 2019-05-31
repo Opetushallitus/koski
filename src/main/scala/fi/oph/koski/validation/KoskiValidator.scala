@@ -67,6 +67,12 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     }
   }
 
+  private val aineopinnot = List(
+    "lukionoppiaineenoppimaara",
+    "nuortenperusopetuksenoppiaineenoppimaara",
+    "perusopetuksenoppiaineenoppimaara",
+  )
+
   private def validateOpiskeluoikeus(opiskeluoikeus: Opiskeluoikeus, henkilö: Option[Henkilö])(implicit user: KoskiSession, accessType: AccessType.Value): Either[HttpStatus, Opiskeluoikeus] = opiskeluoikeus match {
     case opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus =>
       fillMissingFields(opiskeluoikeus).right.flatMap { opiskeluoikeus =>
@@ -76,13 +82,19 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
             HttpStatus.fold(opiskeluoikeus.suoritukset.map(TutkintoRakenneValidator(tutkintoRepository, koodistoPalvelu).validateTutkintoRakenne(_,
               opiskeluoikeus.tila.opiskeluoikeusjaksot.find(_.tila.koodiarvo == "lasna").map(_.alku))))
           })
-          .onSuccess { HttpStatus.fold(
-            päätasonSuoritusTyyppitEnabled(opiskeluoikeus),
-            validateSisältyvyys(henkilö, opiskeluoikeus),
-            validatePäivämäärät(opiskeluoikeus),
-            HttpStatus.fold(opiskeluoikeus.suoritukset.map(validatePäätasonSuorituksenStatus(_, opiskeluoikeus))),
-            HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritus(_, opiskeluoikeus, Nil)))
-          )} match {
+          .onSuccess {
+            val containsSuoritettuAineopinto = opiskeluoikeus.suoritukset.exists(s =>
+              s.vahvistus.isDefined && aineopinnot.contains(s.tyyppi.koodiarvo))
+            HttpStatus.fold(
+              päätasonSuoritusTyyppitEnabled(opiskeluoikeus),
+              validateSisältyvyys(henkilö, opiskeluoikeus),
+              validatePäivämäärät(opiskeluoikeus),
+              if (containsSuoritettuAineopinto) { HttpStatus.ok } else {
+                HttpStatus.fold(opiskeluoikeus.suoritukset.map(validatePäätasonSuorituksenStatus(_, opiskeluoikeus)))
+              },
+              HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritus(_, opiskeluoikeus, Nil)))
+            )
+          } match {
             case HttpStatus.ok => Right(opiskeluoikeus)
             case status =>
               Left(status)
