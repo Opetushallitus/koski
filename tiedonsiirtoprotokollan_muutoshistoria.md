@@ -1,3 +1,6 @@
+## 31.5.2019
+- Aikuisten perusopetuksen opiskeluoikeuden voi asettaa valmistunut tilaan, vaikka oppimäärän alkuvaiheella ei olisi vahvistusta.
+
 ## 28.4.2019
 
 - Lisätty oppisopimuksenPurkaminen-kenttä ammatillisen oppisopimus-tietoon

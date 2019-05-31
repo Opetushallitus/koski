@@ -110,6 +110,7 @@ object KoskiErrorCategory {
         val vahvistusIlmanArviointia = subcategory("vahvistusIlmanArviointia", "Suoritukselta puuttuu arviointi, vaikka sillä on vahvistus")
         val keskeneräinenOsasuoritus = subcategory("keskeneräinenOsasuoritus", "Valmiiksi merkityllä suorituksella on keskeneräinen osasuoritus")
         val vahvistusPuuttuu = subcategory("vahvistusPuuttuu", "Suoritukselta puuttuu vahvistus, vaikka opiskeluoikeus on tilassa Valmistunut")
+        val suoritusPuuttuu = subcategory("suoritusPuuttuu", "Opiskeluoikeutta ei voi merkitä valmiiksi kun siitä puuttuu tarvittava suoritus")
         val oppiaineetPuuttuvat = subcategory("oppiaineetPuuttuvat", "Suorituksella ei ole osasuorituksena yhtään oppiainetta, vaikka sillä on vahvistus")
         val oppiaineitaEiSallita = subcategory("oppiaineitaEiSallita", "9.vuosiluokan suoritukseen ei voi syöttää oppiaineita, kun sillä on vahvistus, eikä oppilas jää luokalle")
         val tilaMuuttunutLopullisenTilanJälkeen = subcategory("tilaMuuttunutLopullisenTilanJälkeen", "Opiskeluoikeuden tilojen valmistunut, eronnut jälkeen ei voi esiintyä muita tiloja")
