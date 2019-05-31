@@ -15,9 +15,6 @@ case class HttpStatus(statusCode: Int, errors: List[ErrorDetail]) {
   /** Pick given status if this one is ok. Otherwise stick with this one */
   def onSuccess(status: => HttpStatus) = if (isOk) { status } else { this }
 
-  /** Pick given status if this one is error. Otherwise stick with this one */
-  def onFailure(status: => HttpStatus) = if (isError) { status } else { this }
-
   def errorString: Option[String] = errors.headOption.flatMap(_.message match {
     case JString(s) => Some(s)
     case otherJValue => None
@@ -51,9 +48,6 @@ object HttpStatus {
 
   /** Append all given statii into one, concatenating error list, picking highest status code */
   def fold(statii: HttpStatus*): HttpStatus = fold(statii.toList)
-
-  /** If contains any successfull status, yield 200/ok, else fold errors */
-  def some(statii: Iterable[HttpStatus]) = if (statii.exists(_.isOk)) ok else fold(statii)
 
   def foldEithers[T](xs: Iterable[Either[HttpStatus, T]]): Either[HttpStatus, List[T]] = xs.collect { case Left(e) => e} match {
     case Nil =>

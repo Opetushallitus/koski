@@ -109,6 +109,17 @@ class OppijaValidationAikuistenPerusopetusSpec extends TutkinnonPerusteetTest[Ai
   }
 
   "Opiskeluoikeuden Valmistunut tila" - {
+    "Voidaan asettaa kun kaikki on vahvistettu" in {
+      val opiskeluoikeus = opiskeluoikeusWithValmistunutTila.copy(
+        suoritukset = List(
+          aikuistenPerusopetuksenOppimääränSuoritus(),
+          aikuistenPerusopetuksenAlkuvaiheenSuoritus
+        )
+      )
+      putOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatusOk()
+      }
+    }
     "Voidaan asettaa vaikka alkuvaiheen suorituksella ei olisi vahvistusta" in {
       val opiskeluoikeus = opiskeluoikeusWithValmistunutTila.copy(
         suoritukset = List(
@@ -116,12 +127,6 @@ class OppijaValidationAikuistenPerusopetusSpec extends TutkinnonPerusteetTest[Ai
           aikuistenPerusopetuksenAlkuvaiheenSuoritus.copy(vahvistus = None)
         )
       )
-      putOpiskeluoikeus(opiskeluoikeus) {
-        verifyResponseStatusOk()
-      }
-    }
-    "Voidaan asettaa kun vahvistettu alkuvaihe ainoana suorituksena" in {
-      val opiskeluoikeus = opiskeluoikeusWithValmistunutTila.copy(suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus))
       putOpiskeluoikeus(opiskeluoikeus) {
         verifyResponseStatusOk()
       }
@@ -134,12 +139,29 @@ class OppijaValidationAikuistenPerusopetusSpec extends TutkinnonPerusteetTest[Ai
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta koulutus/201101 puuttuu vahvistus, vaikka opiskeluoikeus on tilassa Valmistunut"))
       }
     }
+    "Ei voida asettaa kun perusopetuksen oppimäärä on vahvistamatta" in {
+      val opiskeluoikeus = opiskeluoikeusWithValmistunutTila.copy(
+        suoritukset = List(
+          aikuistenPerusopetuksenAlkuvaiheenSuoritus,
+          aikuistenPerusopetuksenOppimääränSuoritus().copy(vahvistus = None)
+        )
+      )
+      putOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta koulutus/201101 puuttuu vahvistus, vaikka opiskeluoikeus on tilassa Valmistunut"))
+      }
+    }
+    "Ei voida asettaa kun vahvistettu alkuvaihe on ainoa suoritus" in {
+      val opiskeluoikeus = opiskeluoikeusWithValmistunutTila.copy(suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus))
+      putOpiskeluoikeus(opiskeluoikeus) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.suoritusPuuttuu("Opiskeluoikeutta aikuistenperusopetus ei voi merkitä valmiiksi kun siitä puuttuu suoritus aikuistenperusopetuksenoppimaara tai perusopetuksenoppiaineenoppimaara"))
+      }
+    }
     "Ei voida asettaa kun vahvistamaton alkuvaihe on ainut suoritus" in {
       val opiskeluoikeus = opiskeluoikeusWithValmistunutTila.copy(
         suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus.copy(vahvistus = None))
       )
       putOpiskeluoikeus(opiskeluoikeus) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta suorituksentyyppi/aikuistenperusopetuksenoppimaaranalkuvaihe puuttuu vahvistus, vaikka opiskeluoikeus on tilassa Valmistunut"))
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.suoritusPuuttuu("Opiskeluoikeutta aikuistenperusopetus ei voi merkitä valmiiksi kun siitä puuttuu suoritus aikuistenperusopetuksenoppimaara tai perusopetuksenoppiaineenoppimaara"))
       }
     }
   }

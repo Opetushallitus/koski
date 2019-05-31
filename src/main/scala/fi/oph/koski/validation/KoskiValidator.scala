@@ -80,7 +80,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
             päätasonSuoritusTyyppitEnabled(opiskeluoikeus),
             validateSisältyvyys(henkilö, opiskeluoikeus),
             validatePäivämäärät(opiskeluoikeus),
-            validatePäätasonSuorituksienStatukset(opiskeluoikeus),
+            validatePäätasonSuoritustenStatus(opiskeluoikeus),
             HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritus(_, opiskeluoikeus, Nil)))
           )} match {
             case HttpStatus.ok => Right(opiskeluoikeus)
@@ -393,20 +393,28 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     numeerisetArvosanat(suoritus.arviointi.toList.flatten) ++ näytönArvosanat ++ suoritus.osasuoritusLista.flatMap(extractNumeerisetArvosanat)
   }
 
-  private def validatePäätasonSuorituksienStatukset(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
-    HttpStatus.fold(opiskeluoikeus.suoritukset.map(validatePäätasonSuorituksenStatus(_, opiskeluoikeus)))
-      .onFailure(HttpStatus.some(opiskeluoikeus.suoritukset.map(validateValmisAikuistenPerusopetuksenOppimääränSuoritus)))
+  private def validatePäätasonSuoritustenStatus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = if (opiskeluoikeus.tila.opiskeluoikeusjaksot.last.tila.koodiarvo == "valmistunut") {
+    opiskeluoikeus match {
+      case a: AikuistenPerusopetuksenOpiskeluoikeus => validateAikuistenPerusopetuksenSuoritustenStatus(opiskeluoikeus, a)
+      case o => HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritusVahvistettu))
+    }
+  } else {
+    HttpStatus.ok
   }
 
-  private def validatePäätasonSuorituksenStatus(suoritus: PäätasonSuoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus =
-    if (suoritus.kesken && opiskeluoikeus.tila.opiskeluoikeusjaksot.last.tila.koodiarvo == "valmistunut") {
-      KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta " + suorituksenTunniste(suoritus) + " puuttuu vahvistus, vaikka opiskeluoikeus on tilassa Valmistunut")
+  private def validateAikuistenPerusopetuksenSuoritustenStatus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, a: AikuistenPerusopetuksenOpiskeluoikeus) = {
+    val muutKuinAlkuvaihe = opiskeluoikeus.suoritukset.filterNot(_.tyyppi.koodiarvo == "aikuistenperusopetuksenoppimaaranalkuvaihe")
+    if (muutKuinAlkuvaihe.isEmpty) {
+      KoskiErrorCategory.badRequest.validation.tila.suoritusPuuttuu("Opiskeluoikeutta aikuistenperusopetus ei voi merkitä valmiiksi kun siitä puuttuu suoritus aikuistenperusopetuksenoppimaara tai perusopetuksenoppiaineenoppimaara")
     } else {
-      HttpStatus.ok
+      HttpStatus.fold(muutKuinAlkuvaihe.map(validateSuoritusVahvistettu))
     }
+  }
 
-  private def validateValmisAikuistenPerusopetuksenOppimääränSuoritus(suoritus: PäätasonSuoritus) = {
-    HttpStatus.validate(suoritus.valmis && suoritus.isInstanceOf[AikuistenPerusopetuksenOppimääränSuoritus])(KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta " + suorituksenTunniste(suoritus) + " puuttuu vahvistus, vaikka opiskeluoikeus on tilassa Valmistunut"))
+  private def validateSuoritusVahvistettu(suoritus: PäätasonSuoritus): HttpStatus = if (suoritus.kesken) {
+    KoskiErrorCategory.badRequest.validation.tila.vahvistusPuuttuu("Suoritukselta " + suorituksenTunniste(suoritus) + " puuttuu vahvistus, vaikka opiskeluoikeus on tilassa Valmistunut")
+  } else {
+    HttpStatus.ok
   }
 
   private def suorituksenTunniste(suoritus: Suoritus): KoodiViite = {
