@@ -3,18 +3,18 @@ import * as R from 'ramda'
 import * as L from 'partial.lenses'
 import Atom from 'bacon.atom'
 import {
+  lensedModel,
   modelData,
   modelItems,
   modelLookup,
-  recursivelyEmpty,
-  lensedModel,
   modelSetValue,
   modelTitle,
   pushModel,
-  pushRemoval
+  pushRemoval,
+  recursivelyEmpty
 } from '../editor/EditorModel'
 import {OpiskeluoikeudenUusiTilaPopup} from './OpiskeluoikeudenUusiTilaPopup'
-import {arvioituTaiVahvistettu, suoritusEiVaadiVahvistusta} from '../suoritus/Suoritus'
+import {arvioituTaiVahvistettu} from '../suoritus/Suoritus'
 import {parseISODate} from '../date/date.js'
 import {Editor} from '../editor/Editor'
 import Text from '../i18n/Text'
