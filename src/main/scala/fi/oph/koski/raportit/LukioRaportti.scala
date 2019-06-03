@@ -72,7 +72,7 @@ object LukioRaportti {
   private def oppiaineJaLisätiedotRow(data: LukioRaporttiRows, oppiaineetJaKurssit: Seq[LukioRaporttiOppiaineJaKurssit], alku: LocalDate, loppu: LocalDate) = {
     val opiskeluoikeudenLisätiedot = JsonSerializer.extract[Option[LukionOpiskeluoikeudenLisätiedot]](data.opiskeluoikeus.data \ "lisätiedot")
 
-    opiskeluoikeudentiedot(data.opiskeluoikeus) ++
+    opiskeluoikeudentiedot(data.opiskeluoikeus, data.päätasonSuoritus) ++
       henkilotiedot(data.henkilo) ++
       tilatiedot(data.opiskeluoikeus, data.aikajaksot, data.päätasonSuoritus, alku, loppu) ++
       opintojenSummaTiedot(data.osasuoritukset) ++
@@ -85,10 +85,11 @@ object LukioRaportti {
     CompactColumn("Oppilaitoksen nimi"),
     CompactColumn("Lähdejärjestelmä"),
     CompactColumn("Opiskeluoikeuden tunniste lähdejärjestelmässä"),
-    CompactColumn("Koulutustoimija")
+    CompactColumn("Koulutustoimija"),
+    CompactColumn("Toimipiste")
   )
 
-  private def opiskeluoikeudentiedot(oo: ROpiskeluoikeusRow) = {
+  private def opiskeluoikeudentiedot(oo: ROpiskeluoikeusRow, pts: RPäätasonSuoritusRow) = {
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](oo.data \ "lähdejärjestelmänId")
 
     Seq(
@@ -96,7 +97,8 @@ object LukioRaportti {
       oo.oppilaitosNimi,
       lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
       lähdejärjestelmänId.flatMap(_.id),
-      oo.koulutustoimijaNimi
+      oo.koulutustoimijaNimi,
+      pts.toimipisteNimi
     )
   }
 
