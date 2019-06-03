@@ -478,5 +478,37 @@
     ],
     "versio": 1,
     "withinCodeElements": []
+  },
+  {
+    "koodiUri": "oppiaineetinternationalschool_hawb",
+    "koodiArvo": "HAWB",
+    "metadata": [
+      {
+        "nimi": "Health and Well-Being",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Health and Well-Being",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
+  },
+  {
+    "koodiUri": "oppiaineetinternationalschool_hscm",
+    "koodiArvo": "HSCM",
+    "metadata": [
+      {
+        "nimi": "HS Consumer Math 11/12",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "HS Consumer Math 11/12",
+        "kieli": "EN"
+      }
+    ],
+    "versio": 1,
+    "withinCodeElements": []
   }
 ]
