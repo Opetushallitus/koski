@@ -27,7 +27,7 @@ class RaportitService(application: KoskiApplication) {
 
   def lukioraportti(request: AikajaksoRaporttiRequest) = {
     OppilaitosRaporttiResponse(
-      sheets = Seq(LukioRaportti.buildRaportti(lukioRepository, request.oppilaitosOid, request.alku, request.loppu)),
+      sheets = LukioRaportti.buildRaportti(lukioRepository, request.oppilaitosOid, request.alku, request.loppu),
       workbookSettings = WorkbookSettings(s"Suoritustietojen_tarkistus_${request.oppilaitosOid}", Some(request.password)),
       filename = s"lukio_suoritustietojentarkistus_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
       downloadToken = request.downloadToken

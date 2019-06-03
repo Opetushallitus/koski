@@ -24,9 +24,13 @@ case class OpiskelijavuositiedotRow(
   hetu: Option[String],
   sukunimi: Option[String],
   etunimet: Option[String],
+  suorituksenTyyppi: String,
   koulutusmoduulit: String,
   osaamisalat: Option[String],
-  viimeisinOpiskeluoikeudenTila: String,
+  päätasonSuorituksenSuoritustapa: String,
+  opiskeluoikeudenAlkamispäivä: Option[LocalDate],
+  viimeisinOpiskeluoikeudenTila: Option[String],
+  viimeisinOpiskeluoikeudenTilaAikajaksonLopussa: String,
   opintojenRahoitukset: String,
   läsnäRahoitusSyötetty: Boolean,
   lomaTaiValmistunutRahoitusSyötetty: Boolean,
@@ -54,7 +58,7 @@ case class OpiskelijavuositiedotRow(
   lisätiedotKoulutusvienti: Boolean
 )
 
-object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
+object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti with AmmatillinenRaporttiUtils {
 
   def buildRaportti(raportointiDatabase: RaportointiDatabase, oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate): Seq[OpiskelijavuositiedotRow] = {
     val result = raportointiDatabase.opiskeluoikeusAikajaksot(oppilaitosOid, OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo, alku, loppu)
@@ -76,9 +80,13 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
     "hetu" -> Column("Hetu"),
     "sukunimi" -> Column("Sukunimi"),
     "etunimet" -> Column("Etunimet"),
+    "suorituksenTyyppi" -> Column("Suorituksen tyyppi"),
     "koulutusmoduulit" -> Column("Tutkinnot"),
     "osaamisalat" -> Column("Osaamisalat"),
-    "viimeisinOpiskeluoikeudenTila" -> Column("Viimeisin tila"),
+    "päätasonSuorituksenSuoritustapa" -> Column("Päätason suorituksen suoritustapa"),
+    "opiskeluoikeudenAlkamispäivä" -> Column("Opiskeluoikeuden alkamispäivä"),
+    "viimeisinOpiskeluoikeudenTila" -> Column("Viimeisin opiskeluoikeuden tila"),
+    "viimeisinOpiskeluoikeudenTilaAikajaksonLopussa" -> Column("Viimeisin opiskeluoikeuden tila aikajakson lopussa"),
     "opintojenRahoitukset" -> Column("Rahoitukset"),
     "läsnäRahoitusSyötetty"-> Column("Läsnä rahoitus syötetty", width = Some(2000)),
     "lomaTaiValmistunutRahoitusSyötetty" -> Column("Loma/valmistunut rahoitus syötetty", width = Some(2000)),
@@ -170,9 +178,13 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
       hetu = henkilö.flatMap(_.hetu),
       sukunimi = henkilö.map(_.sukunimi),
       etunimet = henkilö.map(_.etunimet),
+      suorituksenTyyppi = päätasonSuoritukset.map(_.suorituksenTyyppi).mkString(","),
       koulutusmoduulit = päätasonSuoritukset.map(_.koulutusmoduuliKoodiarvo).sorted.mkString(","),
       osaamisalat = if (osaamisalat.isEmpty) None else Some(osaamisalat.mkString(",")),
-      viimeisinOpiskeluoikeudenTila = aikajaksot.last.tila,
+      päätasonSuorituksenSuoritustapa = suoritusTavat(päätasonSuoritukset),
+      opiskeluoikeudenAlkamispäivä = opiskeluoikeus.alkamispäivä.map(_.toLocalDate),
+      viimeisinOpiskeluoikeudenTila = opiskeluoikeus.viimeisinTila,
+      viimeisinOpiskeluoikeudenTilaAikajaksonLopussa = aikajaksot.last.tila,
       opintojenRahoitukset = aikajaksot.flatMap(_.opintojenRahoitus).sorted.distinct.mkString(","),
       läsnäRahoitusSyötetty = aikajaksot.filter(_.tila == "lasna").forall(_.opintojenRahoitus.nonEmpty),
       lomaTaiValmistunutRahoitusSyötetty = aikajaksot.filter(a => a.tila == "loma" || a.tila == "valmistunut").forall(_.opintojenRahoitus.nonEmpty),

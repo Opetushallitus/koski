@@ -171,6 +171,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
     etunimet = Some(MockOppijat.ysiluokkalainen.etunimet),
     sukupuoli = None,
     luokka = "8C",
+    opiskeluoikeudenAlkamispäivä = Some(date(2008, 8, 15)),
     viimeisinTila = "lasna",
     tilaHakupaivalla = "lasna",
     suorituksenTila = "valmis",
@@ -325,7 +326,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
   private def withAdditionalSuoritukset(oppija: OppijaHenkilö, vuosiluokanSuoritus: List[PerusopetuksenPäätasonSuoritus])(f: => Any) = {
     resetFixtures
     val oo = getOpiskeluoikeudet(oppija.oid).collect { case oo: PerusopetuksenOpiskeluoikeus => oo }.head
-    val lisatyllaVuosiluokanSuorituksella = oo.copy(suoritukset = (vuosiluokanSuoritus ::: oo.suoritukset), tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(date(2001, 1, 1), opiskeluoikeusLäsnä))))
+    val lisatyllaVuosiluokanSuorituksella = oo.copy(suoritukset = (vuosiluokanSuoritus ::: oo.suoritukset), tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä))))
     putOppija(Oppija(oppija, List(lisatyllaVuosiluokanSuorituksella))) {
       verifyResponseStatusOk()
       loadRaportointikantaFixtures

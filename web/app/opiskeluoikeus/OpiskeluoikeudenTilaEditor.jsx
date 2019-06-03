@@ -33,8 +33,8 @@ export class OpiskeluoikeudenTilaEditor extends React.Component {
     let items = modelItems(jaksotModel).slice(0).reverse()
     const suoritukset = modelItems(model, 'suoritukset')
     const suorituksiaKesken = suoritukset.some(s => !arvioituTaiVahvistettu(s))
-    const suoritettuAineopinto = suoritukset.some(s => arvioituTaiVahvistettu(s) && isAineopinto(s))
-    const disabloiValmistunut = suoritukset.some(eiTiedossaOppiaine) || (suorituksiaKesken && !suoritettuAineopinto)
+    const suoritettuAineopintoTaiAikuistenPerusopetuksenOppimäärä = suoritukset.some(s => arvioituTaiVahvistettu(s) && (isAineopinto(s) || isAikuistenPerusopetuksenOppimäärä(s)))
+    const disabloiValmistunut = suoritukset.some(eiTiedossaOppiaine) || (suorituksiaKesken && !suoritettuAineopintoTaiAikuistenPerusopetuksenOppimäärä)
 
     let showAddDialog = () => this.showOpiskeluoikeudenTilaDialog.modify(x => !x)
 
@@ -69,7 +69,6 @@ export class OpiskeluoikeudenTilaEditor extends React.Component {
                   <label className="tila">
                     {modelTitle(item, 'tila')}
                     {
-                      rahoitusMuuttunut(items, i) &&
                       <span className="rahoitus">{formatRahoitus(rahoitus(items, i))}</span>
                     }
                   </label>
@@ -99,10 +98,6 @@ export class OpiskeluoikeudenTilaEditor extends React.Component {
 
 OpiskeluoikeudenTilaEditor.isEmpty = m => recursivelyEmpty(m, 'opiskeluoikeusjaksot')
 
-const rahoitusMuuttunut = (items, index) => {
-  return rahoitus(items, index) != rahoitus(items, index + 1)
-}
-
 let formatRahoitus = rahoitus => rahoitus && ` (${rahoitus.toLowerCase()})`
 let rahoitus = (items, index) => items[index] && modelTitle(items[index], 'opintojenRahoitus')
 
@@ -130,6 +125,7 @@ const viimeinenJakso = (opiskeluoikeus) => R.last(modelItems(opiskeluoikeusjakso
 
 const aineOpinnot = ['lukionoppiaineenoppimaara', 'nuortenperusopetuksenoppiaineenoppimaara', 'perusopetuksenoppiaineenoppimaara']
 const isAineopinto = suoritus => aineOpinnot.includes(modelData(suoritus, 'tyyppi.koodiarvo'))
+const isAikuistenPerusopetuksenOppimäärä = suoritus => modelData(suoritus, 'tyyppi.koodiarvo') === 'aikuistenperusopetuksenoppimaara'
 
 const opiskeluoikeusjaksot = (opiskeluoikeus) => {
   return modelLookup(opiskeluoikeus, 'tila.opiskeluoikeusjaksot')

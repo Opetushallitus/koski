@@ -14,7 +14,7 @@ import Text from '../i18n/Text'
 import {ift} from '../util/util'
 import {filterTilatByOpiskeluoikeudenTyyppi} from './opiskeluoikeus'
 
-export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, disabloiValmistunut: disabloiValmistunut, tilaListModel, resultCallback}) => {
+export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, disabloiValmistunut, tilaListModel, resultCallback}) => {
   let submitBus = Bacon.Bus()
   let initialModel = contextualizeSubModel(tilaListModel.arrayPrototype, tilaListModel, modelItems(tilaListModel).length)
 

@@ -25,12 +25,42 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
   "Lukion suoritustietoraportti" - {
 
     "Raportti näyttää oikealta" - {
-      lazy val rowsWithColumns = buildLukioraportti(jyväskylänNormaalikoulu, date(2012, 1, 1), date(2016, 1, 1))
-      "Oppimäärän suoritus" in {
-        verifyOppijanRow(lukiolainen, expectedYlioppilasRow, rowsWithColumns)
+      lazy val titleAndRowsWithColumns = buildLukioraportti(jyväskylänNormaalikoulu, date(2012, 1, 1), date(2016, 1, 1))
+      "Oppiaineita tai kursseja ei päädy duplikaattina raportille" in {
+        val sheets = LukioRaportti.buildRaportti(repository, jyväskylänNormaalikoulu, date(2012, 1, 1), date(2016, 1, 1))
+        verifyNoDuplicates(sheets.map(_.title))
+        sheets.map(_.columnSettings.map(_.title)).foreach(verifyNoDuplicates)
       }
-      "Oppiaineiden suoritus" in {
-        verifyOppijanRows(lukionAineopiskelijaAktiivinen, Seq(expectedAineopiskelijaHistoriaRow, expectedAineopiskelijaKemiaRow, expectedAineopiskelijaFilosofiaRow), rowsWithColumns)
+      "Oppiaine tason välilehti" - {
+        lazy val (title, oppiaineetRowsWithColumns) = titleAndRowsWithColumns.head
+        "On ensimmäinen" in {
+          title should equal("Oppiaineet ja lisätiedot")
+        }
+        "Oppimäärän suoritus" in {
+          verifyOppijanRow(lukiolainen, expectedLukiolainenRow, oppiaineetRowsWithColumns)
+        }
+        "Oppiaineiden suoritus" in {
+          verifyOppijanRows(lukionAineopiskelijaAktiivinen, Seq(expectedAineopiskelijaHistoriaRow, expectedAineopiskelijaKemiaRow, expectedAineopiskelijaFilosofiaRow), oppiaineetRowsWithColumns)
+        }
+      }
+      "Kurssit tason välilehdet" - {
+        lazy val kurssit = titleAndRowsWithColumns.tail
+        "Välilehtien nimet, sisältää oppiaineet aakkosjärjestyksessä titlen mukaan" in {
+          val kurssiVälilehtienTitlet = kurssit.map { case (title, _) => title }
+
+          kurssiVälilehtienTitlet should equal(Seq(
+            "A1 v englanti", "AI v Suomen kieli ja kirjallisuus", "B1 v ruotsi", "B3 v latina",
+            "BI v Biologia", "FI v Filosofia", "FY v Fysiikka", "GE v Maantieto", "HI v Historia",
+            "ITT p Tanssi ja liike", "KE v Kemia", "KT v Islam", "KU v Kuvataide", "LI v Liikunta",
+            "MA v Matematiikka pitkä oppimäärä", "MU v Musiikki", "OA v Oman äidinkielen opinnot",
+            "PS v Psykologia", "TE v Terveystieto", "TO v Teemaopinnot", "YH v Yhteiskuntaoppi"
+          ))
+        }
+        "Historia" in {
+          val (_, historia) = findRowsWithColumnsByTitle("HI v Historia", kurssit)
+          verifyOppijanRow(lukiolainen, expectedLukiolainenHistorianKurssitRow, historia, addOpiskeluoikeudenOid = false)
+          verifyOppijanRow(lukionAineopiskelijaAktiivinen, expectedAineopiskelijaHistoriaKurssitRow, historia, addOpiskeluoikeudenOid = false)
+        }
       }
     }
 
@@ -72,14 +102,58 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     }
   }
 
+  private def buildLukioraportti(organisaatioOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate) = {
+    val sheets = LukioRaportti.buildRaportti(repository, organisaatioOid, alku, loppu)
+    sheets.map(s => (s.title, zipRowsWithColumTitles(s)))
+  }
+
+  private def zipRowsWithColumTitles(sheet: DynamicDataSheet) = {
+    sheet.rows.map(_.zip(sheet.columnSettings)).map(_.map { case (data, column) => column.title -> data }.toMap)
+  }
+
+  private def verifyOppijanRow(oppija: OppijaHenkilö, expected: Map[String, Any], all: Seq[Map[String, Any]], addOpiskeluoikeudenOid: Boolean = true) = {
+    val expectedResult = if (addOpiskeluoikeudenOid) {
+      val opiskeluoikeudenOid = lastOpiskeluoikeus(oppija.oid).oid
+      opiskeluoikeudenOid shouldBe defined
+      expected + ("Opiskeluoikeuden oid" -> opiskeluoikeudenOid.get)
+    } else {
+      expected
+    }
+
+    findFirstByOid(oppija.oid, all) should be(expectedResult)
+  }
+
+  private def verifyOppijanRows(oppija: OppijaHenkilö, expected: Seq[Map[String, Any]], all: Seq[Map[String, Any]]) = {
+    val opiskeluoikeudenOid = lastOpiskeluoikeus(oppija.oid).oid
+    opiskeluoikeudenOid shouldBe defined
+    findByOid(oppija.oid, all).toSet should equal(expected.map(_ + ("Opiskeluoikeuden oid" -> opiskeluoikeudenOid.get)).toSet)
+  }
+
+  private def findRowsWithColumnsByTitle(title: String, all: Seq[(String, Seq[Map[String, Any]])]) = {
+    val found = all.filter(_._1 == title)
+    found.length should equal(1)
+    found.head
+  }
+
+  private def findFirstByOid(oid: String, maps: Seq[Map[String, Any]]) = {
+    val found = findByOid(oid, maps)
+    found.length shouldBe (1)
+    found.head
+  }
+
+  private def findByOid(oid: String, maps: Seq[Map[String, Any]]) = maps.filter(_.get("Oppijan oid").exists(_ == Some(oid)))
+
+  private def verifyNoDuplicates(strs: Seq[String]) = strs.toSet.size should equal(strs.size)
+
   lazy val oid = "123"
 
-  lazy val expectedYlioppilasRow = Map(
+  lazy val expectedLukiolainenRow = Map(
     "Opiskeluoikeuden oid" -> "",
     "Oppilaitoksen nimi" -> "Jyväskylän normaalikoulu",
     "Lähdejärjestelmä" -> None,
     "Opiskeluoikeuden tunniste lähdejärjestelmässä" -> None,
-    "Oppijan oid" -> s"${lukiolainen.oid}",
+    "Koulutustoimija" -> "Jyväskylän yliopisto",
+    "Oppijan oid" -> Some(lukiolainen.oid),
     "Opiskeluoikeuden viimeisin tila" -> Some("valmistunut"),
     "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna",
     "Suorituksen tyyppi" -> "lukionoppimaara",
@@ -109,7 +183,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Maantieto (GE) valtakunnallinen" -> "Arvosana 8, 2 kurssia",
     "Fysiikka (FY) valtakunnallinen" -> "Arvosana 8, 13 kurssia",
     "Kemia (KE) valtakunnallinen" -> "Arvosana 8, 8 kurssia",
-    "Uskonto/Elämänkatsomustieto (KT) valtakunnallinen" -> "Arvosana 8, 3 kurssia",
+    "Islam (KT) valtakunnallinen" -> "Arvosana 8, 3 kurssia",
     "Filosofia (FI) valtakunnallinen" -> "Arvosana 8, 1 kurssi",
     "Psykologia (PS) valtakunnallinen" -> "Arvosana 9, 1 kurssi",
     "Historia (HI) valtakunnallinen" -> "Arvosana 7, 4 kurssia",
@@ -127,8 +201,9 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Opiskeluoikeuden oid" -> "",
     "Oppilaitoksen nimi" -> "Jyväskylän normaalikoulu",
     "Lähdejärjestelmä" -> None,
+    "Koulutustoimija" -> "Jyväskylän yliopisto",
     "Opiskeluoikeuden tunniste lähdejärjestelmässä" -> None,
-    "Oppijan oid" -> lukionAineopiskelijaAktiivinen.oid,
+    "Oppijan oid" -> Some(lukionAineopiskelijaAktiivinen.oid),
     "Opiskeluoikeuden viimeisin tila" -> Some("lasna"),
     "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna",
     "Suorituksen tyyppi" -> "lukionoppiaineenoppimaara",
@@ -157,7 +232,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Maantieto (GE) valtakunnallinen" -> "",
     "Fysiikka (FY) valtakunnallinen" -> "",
     "Kemia (KE) valtakunnallinen" -> "",
-    "Uskonto/Elämänkatsomustieto (KT) valtakunnallinen" -> "",
+    "Islam (KT) valtakunnallinen" -> "",
     "Filosofia (FI) valtakunnallinen" -> "",
     "Psykologia (PS) valtakunnallinen" -> "",
     "Historia (HI) valtakunnallinen" -> "",
@@ -190,31 +265,27 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Filosofia (FI) valtakunnallinen" -> "Arvosana 9, 1 kurssi"
   )
 
-  private def buildLukioraportti(organisaatioOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate) = {
-    val sheet = LukioRaportti.buildRaportti(repository, organisaatioOid, alku, loppu)
-    zipRowsWithColumTitles(sheet)
-  }
+  private def kurssintiedot(arvosana: String, laajuus: String = "1.0", tyyppi: String) = s"Arvosana $arvosana,Laajuus $laajuus,$tyyppi"
 
-  private def zipRowsWithColumTitles(sheet: DynamicDataSheet) = {
-    sheet.rows.map(_.zip(sheet.columnSettings)).map(_.map { case (data, column) => column.title -> data }.toMap)
-  }
+  lazy val expectedLukiolainenHistorianKurssitRow = Map(
+    "Oppijan oid" -> Some(lukiolainen.oid),
+    "Hetu" -> lukiolainen.hetu,
+    "Sukunimi" -> Some(lukiolainen.sukunimi),
+    "Etunimet" -> Some(lukiolainen.etunimet),
+    "Ihminen ympäristön ja yhteiskuntien muutoksessa HI1" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
+    "Kansainväliset suhteet HI2" -> kurssintiedot(arvosana = "8", tyyppi = "pakollinen"),
+    "Itsenäisen Suomen historia HI3" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
+    "Eurooppalaisen maailmankuvan kehitys HI4" -> kurssintiedot(arvosana = "6", tyyppi = "pakollinen")
+  )
 
-  private def verifyOppijanRow(oppija: OppijaHenkilö, expected: Map[String, Any], all: Seq[Map[String, Any]]) = {
-    val opiskeluoikeudenOid = lastOpiskeluoikeus(oppija.oid).oid
-    opiskeluoikeudenOid shouldBe defined
-    findFirstByOid(oppija.oid, all) should be(expected + ("Opiskeluoikeuden oid" -> opiskeluoikeudenOid.get))
-  }
-
-  private def verifyOppijanRows(oppija: OppijaHenkilö, expected: Seq[Map[String, Any]], all: Seq[Map[String, Any]]) = {
-    val opiskeluoikeudenOid = lastOpiskeluoikeus(oppija.oid).oid
-    findByOid(oppija.oid, all).toSet should equal(expected.map(_ + ("Opiskeluoikeuden oid" -> opiskeluoikeudenOid.get)).toSet)
-  }
-
-  private def findFirstByOid(oid: String, maps: Seq[Map[String, Any]]) = {
-    val found = findByOid(oid, maps)
-    found.length shouldBe (1)
-    found.head
-  }
-
-  private def findByOid(oid: String, maps: Seq[Map[String, Any]]) = maps.filter(_.get("Oppijan oid").exists(_ == oid))
+  lazy val expectedAineopiskelijaHistoriaKurssitRow = Map(
+    "Oppijan oid" -> Some(lukionAineopiskelijaAktiivinen.oid),
+    "Hetu" -> lukionAineopiskelijaAktiivinen.hetu,
+    "Sukunimi" -> Some(lukionAineopiskelijaAktiivinen.sukunimi),
+    "Etunimet" -> Some(lukionAineopiskelijaAktiivinen.etunimet),
+    "Ihminen ympäristön ja yhteiskuntien muutoksessa HI1" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
+    "Kansainväliset suhteet HI2" -> kurssintiedot(arvosana = "8", tyyppi = "pakollinen"),
+    "Itsenäisen Suomen historia HI3" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
+    "Eurooppalaisen maailmankuvan kehitys HI4" -> kurssintiedot(arvosana = "6", tyyppi = "pakollinen")
+  )
 }

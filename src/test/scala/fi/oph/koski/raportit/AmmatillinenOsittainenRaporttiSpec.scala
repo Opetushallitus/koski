@@ -51,8 +51,11 @@ class AmmatillinenOsittainenRaporttiSpec extends FreeSpec with Matchers with Rap
     koulutusmoduulit = "351301",
     osaamisalat = Some("1525"),
     tutkintonimikkeet = "Autoalan perustutkinto",
+    päätasonSuorituksenSuoritustapa = "Ammatillinen perustutkinto",
     päätasonSuoritustenTilat = Some("Valmis"),
-    viimeisinOpiskeluoikeudenTila = "valmistunut",
+    opiskeluoikeudenAlkamispäivä = Some(date(2012, 9, 1)),
+    viimeisinOpiskeluoikeudenTila = Some("valmistunut"),
+    viimeisinOpiskeluoikeudenTilaAikajaksonLopussa = "lasna",
     opintojenRahoitukset = "",
     suoritettujenOpintojenYhteislaajuus = 100.0,
     valmiitAmmatillisetTutkinnonOsatLkm = 3,
@@ -75,7 +78,7 @@ class AmmatillinenOsittainenRaporttiSpec extends FreeSpec with Matchers with Rap
     valmiitTutkintoaYksilöllisestiLaajentavatTutkinnonOsatLkm = 0
   )
 
-  def makeRaporttiFilterRowsByHetu(hetu: Option[String], oppilaitosOid: String = MockOrganisaatiot.stadinAmmattiopisto, alku: LocalDate = date(2016, 1, 1), loppu: LocalDate = date(2016, 12, 12)) = {
+  def makeRaporttiFilterRowsByHetu(hetu: Option[String], oppilaitosOid: String = MockOrganisaatiot.stadinAmmattiopisto, alku: LocalDate = date(2016, 1, 1), loppu: LocalDate = date(2016, 5, 5)) = {
     val rows = AmmatillinenOsittainenRaportti.buildRaportti(database, oppilaitosOid, alku, loppu)
     rows.filter(_.hetu == hetu)
   }

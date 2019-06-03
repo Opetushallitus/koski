@@ -427,9 +427,6 @@ export const validateModel = (mainModel) => {
       }
     }
     modelProperties(model).forEach(p => {
-      if (p.deprecated && !modelEmpty(p.model)) {
-        pushError(p.model, results)({key: 'deprecated', message: p.deprecated})
-      }
       validateInner(p.model, results)
     })
     modelItems(model).forEach(item => validateInner(item, results))

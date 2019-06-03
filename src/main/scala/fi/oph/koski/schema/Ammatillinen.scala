@@ -883,7 +883,14 @@ case class NäytönArvioitsija(
 @Description("Oppisopimuksen tiedot")
 case class Oppisopimus(
   @FlattenInUI
-  työnantaja: Yritys
+  työnantaja: Yritys,
+  @Description("Onko oppisopimus purettu. Puuttuva arvo tulkitaan siten, että oppisopimusta ei olla purettu")
+  oppisopimuksenPurkaminen: Option[OppisopimuksenPurkaminen] = None
+)
+
+case class OppisopimuksenPurkaminen(
+  päivä: LocalDate,
+  purettuKoeajalla: Boolean
 )
 
 trait Järjestämismuoto {

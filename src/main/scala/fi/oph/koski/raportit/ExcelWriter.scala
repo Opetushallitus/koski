@@ -91,7 +91,7 @@ object ExcelWriter {
 
     val creationHelper = wb.getCreationHelper
     val drawing = sh.createDrawingPatriarch
-    val cellsAndColumnsWithIndex = sh.getRow(HEADING_ROW).cellIterator.asScala.toSeq.zip(dataSheet.columnSettingsWithIndex)
+    val cellsAndColumnsWithIndex = headingRow.cellIterator.asScala.toSeq.zip(dataSheet.columnSettingsWithIndex)
     for ((cell, (column, _)) <- cellsAndColumnsWithIndex) {
       if (column.comment.isDefined) {
         val anchor = createAnchor(creationHelper, sh, cell, column.comment.get)
