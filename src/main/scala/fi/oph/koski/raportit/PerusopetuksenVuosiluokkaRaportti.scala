@@ -21,16 +21,9 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
   }
 
   private def buildRow(row: PerusopetuksenRaporttiRows, hakupaiva: LocalDate) = {
-    val opiskeluoikeus = row.opiskeluoikeus
-    val henkilö = row.henkilo
-    val aikajaksot = row.aikajaksot
-    val päätasonsuoritus = row.päätasonSuoritus
-    val osasuoritukset = row.osasuoritukset
-    val voimassaolevatVuosiluokat = row.voimassaolevatVuosiluokat
-
-    val opiskeluoikeudenLisätiedot = JsonSerializer.extract[Option[PerusopetuksenOpiskeluoikeudenLisätiedot]](opiskeluoikeus.data \ "lisätiedot")
-    val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](opiskeluoikeus.data \ "lähdejärjestelmänId")
-    val (toimintaalueOsasuoritukset, muutOsasuoritukset) = osasuoritukset.partition(_.suorituksenTyyppi == "perusopetuksentoimintaalue")
+    val opiskeluoikeudenLisätiedot = JsonSerializer.extract[Option[PerusopetuksenOpiskeluoikeudenLisätiedot]](row.opiskeluoikeus.data \ "lisätiedot")
+    val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](row.opiskeluoikeus.data \ "lähdejärjestelmänId")
+    val (toimintaalueOsasuoritukset, muutOsasuoritukset) = row.osasuoritukset.partition(_.suorituksenTyyppi == "perusopetuksentoimintaalue")
     val (valtakunnalliset, paikalliset) = muutOsasuoritukset.partition(isValtakunnallinenOppiaine)
     val (pakollisetValtakunnalliset, valinnaisetValtakunnalliset) = valtakunnalliset.partition(isPakollinen)
     val (pakollisetPaikalliset, valinnaisetPaikalliset) = paikalliset.partition(isPakollinen)
@@ -38,24 +31,24 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
     val voimassaOlevatErityisenTuenPäätökset = opiskeluoikeudenLisätiedot.map(lt => combineErityisenTuenPäätökset(lt.erityisenTuenPäätös, lt.erityisenTuenPäätökset).filter(erityisentuenPäätösvoimassaPaivalla(_, hakupaiva))).getOrElse(List.empty)
 
     PerusopetusRow(
-      opiskeluoikeusOid = opiskeluoikeus.opiskeluoikeusOid,
-      oppilaitoksenNimi = opiskeluoikeus.oppilaitosNimi,
+      opiskeluoikeusOid = row.opiskeluoikeus.opiskeluoikeusOid,
+      oppilaitoksenNimi = row.opiskeluoikeus.oppilaitosNimi,
       lähdejärjestelmä = lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
       lähdejärjestelmänId = lähdejärjestelmänId.flatMap(_.id),
-      oppijaOid = opiskeluoikeus.oppijaOid,
-      hetu = henkilö.flatMap(_.hetu),
-      sukunimi = henkilö.map(_.sukunimi),
-      etunimet = henkilö.map(_.etunimet),
-      sukupuoli = henkilö.flatMap(_.sukupuoli),
-      opiskeluoikeudenAlkamispäivä = opiskeluoikeus.alkamispäivä.map(_.toLocalDate),
-      viimeisinTila = opiskeluoikeus.viimeisinTila.getOrElse(""),
-      tilaHakupaivalla = aikajaksot.last.tila,
-      suorituksenTila = if (päätasonsuoritus.vahvistusPäivä.isDefined) "valmis" else "kesken",
-      suorituksenAlkamispaiva = JsonSerializer.extract[Option[LocalDate]](päätasonsuoritus.data \ "alkamispäivä").getOrElse("").toString,
-      suorituksenVahvistuspaiva = päätasonsuoritus.vahvistusPäivä.getOrElse("").toString,
-      jaaLuokalle = JsonSerializer.extract[Option[Boolean]](päätasonsuoritus.data \ "jääLuokalle").getOrElse(false),
+      oppijaOid = row.opiskeluoikeus.oppijaOid,
+      hetu = row.henkilo.flatMap(_.hetu),
+      sukunimi = row.henkilo.map(_.sukunimi),
+      etunimet = row.henkilo.map(_.etunimet),
+      sukupuoli = row.henkilo.flatMap(_.sukupuoli),
+      opiskeluoikeudenAlkamispäivä = row.opiskeluoikeus.alkamispäivä.map(_.toLocalDate),
+      viimeisinTila = row.opiskeluoikeus.viimeisinTila.getOrElse(""),
+      tilaHakupaivalla = row.aikajaksot.last.tila,
+      suorituksenTila = if (row.päätasonSuoritus.vahvistusPäivä.isDefined) "valmis" else "kesken",
+      suorituksenAlkamispaiva = JsonSerializer.extract[Option[LocalDate]](row.päätasonSuoritus.data \ "alkamispäivä").getOrElse("").toString,
+      suorituksenVahvistuspaiva = row.päätasonSuoritus.vahvistusPäivä.getOrElse("").toString,
+      jaaLuokalle = JsonSerializer.extract[Option[Boolean]](row.päätasonSuoritus.data \ "jääLuokalle").getOrElse(false),
       luokka = row.luokka,
-      voimassaolevatVuosiluokat = voimassaolevatVuosiluokat.mkString(","),
+      voimassaolevatVuosiluokat = row.voimassaolevatVuosiluokat.mkString(","),
       aidinkieli = oppiaineenArvosanaTiedot("AI")(pakollisetValtakunnalliset),
       pakollisenAidinkielenOppimaara = getOppiaineenOppimäärä("AI")(pakollisetValtakunnalliset),
       kieliA1 = oppiaineenArvosanaTiedot("A1")(pakollisetValtakunnalliset),
@@ -81,7 +74,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
       liikunta = oppiaineenArvosanaTiedot("LI")(pakollisetValtakunnalliset),
       ymparistooppi = oppiaineenArvosanaTiedot("YL")(pakollisetValtakunnalliset),
       opintoohjaus = oppiaineenArvosanaTiedot("OP")(pakollisetValtakunnalliset),
-      kayttaymisenArvio = JsonSerializer.extract[Option[PerusopetuksenKäyttäytymisenArviointi]](päätasonsuoritus.data \ "käyttäytymisenArvio").map(_.arvosana.koodiarvo).getOrElse(""),
+      kayttaymisenArvio = JsonSerializer.extract[Option[PerusopetuksenKäyttäytymisenArviointi]](row.päätasonSuoritus.data \ "käyttäytymisenArvio").map(_.arvosana.koodiarvo).getOrElse(""),
       paikallistenOppiaineidenKoodit = paikalliset.map(_.koulutusmoduuliKoodiarvo).mkString(","),
       pakollisetPaikalliset = pakollisetPaikalliset.map(nimiJaKoodi).mkString(","),
       valinnaisetPaikalliset = valinnaisetPaikalliset.map(nimiJaKoodi).mkString(","),
