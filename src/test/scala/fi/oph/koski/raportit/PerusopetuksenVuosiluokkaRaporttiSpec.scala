@@ -130,7 +130,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
           val opiskeluoikeusOid = getOpiskeluoikeudet(MockOppijat.vuosiluokkalainen.oid).find(_.tyyppi.koodiarvo == "perusopetus").get.oid.get
           val rows = result.filter(_.opiskeluoikeusOid == opiskeluoikeusOid)
           rows.length should equal(1)
-          rows.head should equal(kaisanPäättötodistusRow.copy(opiskeluoikeusOid = opiskeluoikeusOid, oppijaOid = MockOppijat.vuosiluokkalainen.oid, hetu = MockOppijat.vuosiluokkalainen.hetu, sukunimi = Some(MockOppijat.vuosiluokkalainen.sukunimi), etunimet = Some(MockOppijat.vuosiluokkalainen.etunimet), viimeisinTila = "lasna", suorituksenTila = "kesken", suorituksenVahvistuspaiva = ""))
+          rows.head should equal(kaisanPäättötodistusRow.copy(opiskeluoikeusOid = opiskeluoikeusOid, oppijaOid = MockOppijat.vuosiluokkalainen.oid, hetu = MockOppijat.vuosiluokkalainen.hetu, sukunimi = Some(MockOppijat.vuosiluokkalainen.sukunimi), etunimet = Some(MockOppijat.vuosiluokkalainen.etunimet), viimeisinTila = "lasna", suorituksenTila = "kesken", suorituksenVahvistuspaiva = "", luokka = Some("9A,9C")))
         }
       }
 
@@ -170,7 +170,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
     sukunimi = Some(MockOppijat.ysiluokkalainen.sukunimi),
     etunimet = Some(MockOppijat.ysiluokkalainen.etunimet),
     sukupuoli = None,
-    luokka = "8C",
+    luokka = Some("8C"),
     opiskeluoikeudenAlkamispäivä = Some(date(2008, 8, 15)),
     viimeisinTila = "lasna",
     tilaHakupaivalla = "lasna",
@@ -299,7 +299,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
     hetu = MockOppijat.vuosiluokkalainen.hetu,
     sukunimi = Some(MockOppijat.vuosiluokkalainen.sukunimi),
     etunimet = Some(MockOppijat.vuosiluokkalainen.etunimet),
-    luokka = "9A",
+    luokka = Some("9A"),
     viimeisinTila = "lasna",
     suorituksenTila = "valmis",
     voimassaolevatVuosiluokat = "",
@@ -313,7 +313,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
     sukunimi = Some(MockOppijat.koululainen.sukunimi),
     etunimet = Some(MockOppijat.koululainen.etunimet),
     sukupuoli = None,
-    luokka = "",
+    luokka = Some("9C"),
     viimeisinTila = "valmistunut",
     tilaHakupaivalla = "lasna",
     suorituksenTila = "valmis",

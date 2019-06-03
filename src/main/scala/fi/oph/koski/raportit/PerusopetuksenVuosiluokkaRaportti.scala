@@ -20,12 +20,10 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
     rows.map(buildRow(_, paiva))
   }
 
-  private def buildRow(data: (ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], RPäätasonSuoritusRow, Seq[ROsasuoritusRow], Seq[String]), hakupaiva: LocalDate) = {
-    val (opiskeluoikeus, henkilö, aikajaksot, päätasonsuoritus, osasuoritukset, voimassaolevatVuosiluokat) = data
-
-    val opiskeluoikeudenLisätiedot = JsonSerializer.extract[Option[PerusopetuksenOpiskeluoikeudenLisätiedot]](opiskeluoikeus.data \ "lisätiedot")
-    val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](opiskeluoikeus.data \ "lähdejärjestelmänId")
-    val (toimintaalueOsasuoritukset, muutOsasuoritukset) = osasuoritukset.partition(_.suorituksenTyyppi == "perusopetuksentoimintaalue")
+  private def buildRow(row: PerusopetuksenRaporttiRows, hakupaiva: LocalDate) = {
+    val opiskeluoikeudenLisätiedot = JsonSerializer.extract[Option[PerusopetuksenOpiskeluoikeudenLisätiedot]](row.opiskeluoikeus.data \ "lisätiedot")
+    val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](row.opiskeluoikeus.data \ "lähdejärjestelmänId")
+    val (toimintaalueOsasuoritukset, muutOsasuoritukset) = row.osasuoritukset.partition(_.suorituksenTyyppi == "perusopetuksentoimintaalue")
     val (valtakunnalliset, paikalliset) = muutOsasuoritukset.partition(isValtakunnallinenOppiaine)
     val (pakollisetValtakunnalliset, valinnaisetValtakunnalliset) = valtakunnalliset.partition(isPakollinen)
     val (pakollisetPaikalliset, valinnaisetPaikalliset) = paikalliset.partition(isPakollinen)
@@ -33,24 +31,24 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
     val voimassaOlevatErityisenTuenPäätökset = opiskeluoikeudenLisätiedot.map(lt => combineErityisenTuenPäätökset(lt.erityisenTuenPäätös, lt.erityisenTuenPäätökset).filter(erityisentuenPäätösvoimassaPaivalla(_, hakupaiva))).getOrElse(List.empty)
 
     PerusopetusRow(
-      opiskeluoikeusOid = opiskeluoikeus.opiskeluoikeusOid,
-      oppilaitoksenNimi = opiskeluoikeus.oppilaitosNimi,
+      opiskeluoikeusOid = row.opiskeluoikeus.opiskeluoikeusOid,
+      oppilaitoksenNimi = row.opiskeluoikeus.oppilaitosNimi,
       lähdejärjestelmä = lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
       lähdejärjestelmänId = lähdejärjestelmänId.flatMap(_.id),
-      oppijaOid = opiskeluoikeus.oppijaOid,
-      hetu = henkilö.flatMap(_.hetu),
-      sukunimi = henkilö.map(_.sukunimi),
-      etunimet = henkilö.map(_.etunimet),
-      sukupuoli = henkilö.flatMap(_.sukupuoli),
-      opiskeluoikeudenAlkamispäivä = opiskeluoikeus.alkamispäivä.map(_.toLocalDate),
-      viimeisinTila = opiskeluoikeus.viimeisinTila.getOrElse(""),
-      tilaHakupaivalla = aikajaksot.last.tila,
-      suorituksenTila = if (päätasonsuoritus.vahvistusPäivä.isDefined) "valmis" else "kesken",
-      suorituksenAlkamispaiva = JsonSerializer.extract[Option[LocalDate]](päätasonsuoritus.data \ "alkamispäivä").getOrElse("").toString,
-      suorituksenVahvistuspaiva = päätasonsuoritus.vahvistusPäivä.getOrElse("").toString,
-      jaaLuokalle = JsonSerializer.extract[Option[Boolean]](päätasonsuoritus.data \ "jääLuokalle").getOrElse(false),
-      luokka = JsonSerializer.extract[Option[String]](päätasonsuoritus.data \ "luokka").getOrElse(""),
-      voimassaolevatVuosiluokat = voimassaolevatVuosiluokat.mkString(","),
+      oppijaOid = row.opiskeluoikeus.oppijaOid,
+      hetu = row.henkilo.flatMap(_.hetu),
+      sukunimi = row.henkilo.map(_.sukunimi),
+      etunimet = row.henkilo.map(_.etunimet),
+      sukupuoli = row.henkilo.flatMap(_.sukupuoli),
+      opiskeluoikeudenAlkamispäivä = row.opiskeluoikeus.alkamispäivä.map(_.toLocalDate),
+      viimeisinTila = row.opiskeluoikeus.viimeisinTila.getOrElse(""),
+      tilaHakupaivalla = row.aikajaksot.last.tila,
+      suorituksenTila = if (row.päätasonSuoritus.vahvistusPäivä.isDefined) "valmis" else "kesken",
+      suorituksenAlkamispaiva = JsonSerializer.extract[Option[LocalDate]](row.päätasonSuoritus.data \ "alkamispäivä").getOrElse("").toString,
+      suorituksenVahvistuspaiva = row.päätasonSuoritus.vahvistusPäivä.getOrElse("").toString,
+      jaaLuokalle = JsonSerializer.extract[Option[Boolean]](row.päätasonSuoritus.data \ "jääLuokalle").getOrElse(false),
+      luokka = row.luokka,
+      voimassaolevatVuosiluokat = row.voimassaolevatVuosiluokat.mkString(","),
       aidinkieli = oppiaineenArvosanaTiedot("AI")(pakollisetValtakunnalliset),
       pakollisenAidinkielenOppimaara = getOppiaineenOppimäärä("AI")(pakollisetValtakunnalliset),
       kieliA1 = oppiaineenArvosanaTiedot("A1")(pakollisetValtakunnalliset),
@@ -76,7 +74,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
       liikunta = oppiaineenArvosanaTiedot("LI")(pakollisetValtakunnalliset),
       ymparistooppi = oppiaineenArvosanaTiedot("YL")(pakollisetValtakunnalliset),
       opintoohjaus = oppiaineenArvosanaTiedot("OP")(pakollisetValtakunnalliset),
-      kayttaymisenArvio = JsonSerializer.extract[Option[PerusopetuksenKäyttäytymisenArviointi]](päätasonsuoritus.data \ "käyttäytymisenArvio").map(_.arvosana.koodiarvo).getOrElse(""),
+      kayttaymisenArvio = JsonSerializer.extract[Option[PerusopetuksenKäyttäytymisenArviointi]](row.päätasonSuoritus.data \ "käyttäytymisenArvio").map(_.arvosana.koodiarvo).getOrElse(""),
       paikallistenOppiaineidenKoodit = paikalliset.map(_.koulutusmoduuliKoodiarvo).mkString(","),
       pakollisetPaikalliset = pakollisetPaikalliset.map(nimiJaKoodi).mkString(","),
       valinnaisetPaikalliset = valinnaisetPaikalliset.map(nimiJaKoodi).mkString(","),
@@ -255,17 +253,19 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
       |- Opiskeluoikeuden tila tulostuspäivänä: Opiskeluoikeuden tila, joka opiskeluoikeudella oli sinä päivämääränä, joka on syötetty tulostusparametreissa ”Päivä”-kenttään.
       |- Suorituksen vahvistuspäivä: Sen päätason suorituksen (vuosiluokka tai perusopetuksen oppimäärä), jolta raportti on tulostettu, vahvistuspäivä.
       |- Vuosiluokkien suoritukset, joilta puuttuu vahvistus: Lista niistä vuosiluokista, joilta puuttuu vahvistus. Jos tässä sarakkeessa on useampia vuosiluokkia, se on osoitus siitä, että tiedoissa on virheitä.
-      |- Pakollisten oppiaineiden arvosana- ja oppimääräsarakkeet (sarakkeet Q-AI, TARKISTA NÄMÄ LOPULLISESTA RAPORTISTA): Valtakunnalliset oppiainesuoritukset (https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/koskioppiaineetyleissivistava/latest), jotka siirretty pakollisena.
+      |- Pakollisten oppiaineiden arvosana- ja oppimääräsarakkeet (sarakkeet S-AQ): Valtakunnalliset oppiainesuoritukset (https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/koskioppiaineetyleissivistava/latest), jotka siirretty pakollisena.
       |- Paikallisten oppiaineiden koodit: Vuosiluokkasuorituksella olevien paikallisten oppiaineiden koodit. Jos tästä löytyy jokin valtakunnallinen oppiaine (https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/koskioppiaineetyleissivistava/latest), tiedonsiirroissa on siirretty virheellisesti valtakunnallinen oppiaine paikallisena.
       |- Pakolliset paikalliset oppiaineet: Pakollisissa oppiaineissa olevat paikalliset oppiaineet. Pääsääntöisesti, jos tässä sarakkeessa on mitään arvoja, oppiaineiden siirrossa on tapahtunut virhe (eli joko pakollinen valtakunnallinen oppiaine on siirretty pakollisena paikallisena oppiaineena tai valinnainen paikallinen oppiaine on siirretty pakollisena paikallisena oppiaineena). Vain tietyillä erityiskouluilla (esim. steinerkoulut) on pakollisia paikallisia oppiaineita.
       |- Valinnaiset oppiaineet joilla on numeroarviointi ja joiden laajuus on pienempi kuin 2 vuosiviikkotuntia: Jos tässä sarakkeessa on muita kuin tyhjiä kenttiä, kyseisten oppiaineiden siirrossa on jokin virhe (eli joko oppiaineen laajuus on oikeasti 2 vuosiviikkotuntia tai enemmän tai sitten alle 2 vuosiviikkotunnin laajuiselle valinnaiselle oppiaineelle on virheellisesti siirretty numeroarvosana). Alle 2 vuosiviikkotunnin laajuisella oppiainesuorituksella ei pitäisi olla numeroarvosanaa.
       |- Vahvistetut toiminta-alueiden suoritukset: Sarake listaa S-merkinnällä vahvistetut toiminta-alueen suoritukset niiltä oppilailta, jotka opiskelevat toiminta-alueittain. Jos sarakkeesta löytyy kenttiä, joissa on vähemmän kuin viisi toiminta-alueittain opiskeltavan perusopetuksen toiminta-aluetta (https://virkailija.opintopolku.fi/koski/dokumentaatio/koodisto/perusopetuksentoimintaalue/latest), suoritettujen toiminta-alueiden siirroissa on todennäköisesti virhe.
-      |- Opiskeluoikeuden lisätiedoissa ilmoitettavat etu- ja tukimuodot (sarakkeet AS-BI, TARKISTA NÄMÄ LOPULLISESTA RAPORTISTA): Sarakkeessa oleva arvo kertoo, onko siirretyn KOSKI-datan mukaan kyseinen etu- tai tukimuoto ollut voimassa raportin tulostusparametrien ”Päivä”-kenttään syötettynä päivämääränä. Esimerkki: Jos raportti on tulostettu päivälle 1.6.2019 ja oppilaalla on opiskeluoikeuden lisätiedoissa majoitusjakso välillä 1.1.-31.12.2019, ”Majoitusetu”-sarakkeeseen tulostuu oppilaan rivillä ”Kyllä”.
+      |- Opiskeluoikeuden lisätiedoissa ilmoitettavat etu- ja tukimuodot (sarakkeet BB-BR: Sarakkeessa oleva arvo kertoo, onko siirretyn KOSKI-datan mukaan kyseinen etu- tai tukimuoto ollut voimassa raportin tulostusparametrien ”Päivä”-kenttään syötettynä päivämääränä. Esimerkki: Jos raportti on tulostettu päivälle 1.6.2019 ja oppilaalla on opiskeluoikeuden lisätiedoissa majoitusjakso välillä 1.1.-31.12.2019, ”Majoitusetu”-sarakkeeseen tulostuu oppilaan rivillä ”Kyllä”.
     """.stripMargin
 
   def filename(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String = {
     s"Perusopetuksen_vuosiluokka_${oppilaitosOid}_${vuosiluokka}_${paiva}.xlsx"
   }
+
+  private def compactLisätiedotColumn(title: String) = CompactColumn(title, comment = Some("Sarakkeessa oleva arvo kertoo, onko siirretyn KOSKI-datan mukaan kyseinen etu- tai tukimuoto ollut voimassa raportin tulostusparametrien ”Päivä”-kenttään syötettynä päivämääränä."))
 
   val columnSettings: Seq[(String, Column)] = Seq(
     "opiskeluoikeusOid" -> Column("Opiskeluoikeuden oid"),
@@ -276,16 +276,16 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
     "hetu" -> Column("hetu"),
     "sukunimi" -> Column("Sukunimi"),
     "etunimet" -> Column("Etunimet"),
-    "sukupuoli" -> Column("Sukupuoli"),
+    "sukupuoli" -> Column("Sukupuoli", comment = Some("1 = mies, 2 = nainen")),
     "opiskeluoikeudenAlkamispäivä" -> Column("Opiskeluoikeuden alkamispäivä"),
-    "viimeisinTila" -> CompactColumn("Viimeisin opiskeluoikeuden tila"),
-    "tilaHakupaivalla" -> CompactColumn("Opiskeluoikeuden tila tulostuspäivänä"),
+    "viimeisinTila" -> CompactColumn("Viimeisin opiskeluoikeuden tila", comment = Some("Se opiskeluoikeuden tila, joka opiskeluoikeudella on nyt.")),
+    "tilaHakupaivalla" -> CompactColumn("Opiskeluoikeuden tila tulostuspäivänä", comment = Some("Se opiskeluoikeuden tila, joka opiskeluoikeudella oli raportin tulostusparametrin \"Päivä\"- kenttään syötettynä päivämääränä")),
     "suorituksenTila" -> CompactColumn("Suorituksen tila"),
     "suorituksenAlkamispaiva" -> CompactColumn("Suoritukselle merkattu alkamispäivä"),
     "suorituksenVahvistuspaiva" -> CompactColumn("Suorituksen vahvistuspäivä"),
     "jaaLuokalle" -> CompactColumn("Jää luokalle"),
     "luokka" -> CompactColumn("Luokan tunniste"),
-    "voimassaolevatVuosiluokat" -> CompactColumn("Vuosiluokkien suoritukset joilta puuttuu vahvistus"),
+    "voimassaolevatVuosiluokat" -> CompactColumn("Vuosiluokkien suoritukset joilta puuttuu vahvistus", comment = Some("Jos tässä sarakkeessa on useampia vuosiluokkia, se on osoitus siitä, että tiedoissa on virheitä.")),
     "aidinkieli" -> CompactColumn("Äidinkieli"),
     "pakollisenAidinkielenOppimaara" -> CompactColumn("Äidinkielen oppimäärä"),
     "kieliA1" -> CompactColumn("A1-kieli"),
@@ -313,33 +313,33 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
     "opintoohjaus" -> CompactColumn("Opinto-ohjaus"),
     "kayttaymisenArvio" -> CompactColumn("Käyttäytymisen arviointi"),
     "paikallistenOppiaineidenKoodit" -> CompactColumn("Paikallisten oppiaineiden koodit"),
-    "pakollisetPaikalliset" -> CompactColumn("Pakolliset paikalliset oppiaineet"),
+    "pakollisetPaikalliset" -> CompactColumn("Pakolliset paikalliset oppiaineet", comment = Some("Pääsääntöisesti, jos tässä sarakkeessa on mitään arvoja, oppiaineiden siirrossa on tapahtunut virhe (eli joko pakollinen valtakunnallinen oppiaine on siirretty pakollisena paikallisena oppiaineena tai valinnainen paikallinen oppiaine on siirretty pakollisena paikallisena oppiaineena). Vain tietyillä erityiskouluilla (esim. steinerkoulut) on pakollisia paikallisia oppiaineita.")),
     "valinnaisetPaikalliset" -> CompactColumn("Valinnaiset paikalliset oppiaineet"),
     "valinnaisetValtakunnalliset" -> CompactColumn("Valinnaiset valtakunnalliset oppiaineet"),
     "valinnaisetLaajuus_SuurempiKuin_2Vuosiviikkotuntia" -> CompactColumn("Valinnaiset oppiaineet, joiden laajuus on suurempi tai yhtäsuuri kuin 2 vuosiviikkotuntia"),
     "valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia" -> CompactColumn("Valinnaiset oppiaineet, joiden laajuus on pienempi kuin 2 vuosiviikko tuntia"),
-    "numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia" -> CompactColumn("Valinnaiset oppiaineet, joilla on numeroarviointi ja joiden laajuus on pienempi kuin 2 vuosiviikkotuntia"),
+    "numeroarviolliset_valinnaisetLaajuus_PienempiKuin_2Vuosiviikkotuntia" -> CompactColumn("Valinnaiset oppiaineet, joilla on numeroarviointi ja joiden laajuus on pienempi kuin 2 vuosiviikkotuntia", comment = Some("Jos tässä sarakkeessa on muita kuin tyhjiä kenttiä, kyseisten oppiaineiden siirrossa on jokin virhe (eli joko oppiaineen laajuus on oikeasti 2 vuosiviikkotuntia tai enemmän tai sitten alle 2 vuosiviikkotunnin laajuiselle valinnaiselle oppiaineelle on virheellisesti siirretty numeroarvosana). Alle 2 vuosiviikkotunnin laajuisella oppiainesuorituksella ei pitäisi olla numeroarvosanaa.")),
     "valinnaisetEiLaajuutta" -> CompactColumn("Valinnaiset oppiaineet, joilla ei ole laajuutta"),
-    "vahvistetutToimintaAlueidenSuoritukset" -> CompactColumn("Vahvistetut toiminta-alueiden suoritukset"),
-    "majoitusetu" -> CompactColumn("Majoitusetu"),
-    "kuljetusetu" -> CompactColumn("Kuljetusetu"),
-    "kotiopetus" -> CompactColumn("Kotiopetus"),
-    "ulkomailla" -> CompactColumn("Ulkomailla"),
-    "perusopetuksenAloittamistaLykatty" -> CompactColumn("Perusopetuksen aloittamista lykätty"),
-    "aloittanutEnnenOppivelvollisuutta" -> CompactColumn("Aloittanut ennen oppivelvollisuutta"),
-    "pidennettyOppivelvollisuus" -> CompactColumn("Pidennetty oppivelvollisuus"),
-    "tehostetunTuenPaatos" -> CompactColumn("Tehostetun tuen päätös"),
-    "joustavaPerusopetus" -> CompactColumn("Joustava perusopetus"),
-    "vuosiluokkiinSitoutumatonOpetus" -> CompactColumn("Vuosiluokkiin sitomaton opetus"),
-    "vammainen" -> CompactColumn("Vammainen"),
-    "vaikeastiVammainen" -> CompactColumn("Vaikeasti vammainen"),
-    "oikeusMaksuttomaanAsuntolapaikkaan" -> CompactColumn("Oikeus maksuttomaan asuntolapaikkaan"),
-    "sisaoppilaitosmainenMaijoitus" -> CompactColumn("Sisäoppilaitosmainen majoitus"),
-    "koulukoti" -> CompactColumn("Koulukoti"),
-    "erityisenTuenPaatosVoimassa" -> CompactColumn("Erityisen tuen päätös"),
-    "erityisenTuenPaatosToimialueittain" -> CompactColumn("Opiskelee toimialueittain"),
-    "erityisenTuenPaatosToteutuspaikat" -> CompactColumn("Erityisen tuen päätöksen toteutuspaikka"),
-    "tukimuodot" -> CompactColumn("Tukimuodot")
+    "vahvistetutToimintaAlueidenSuoritukset" -> CompactColumn("Vahvistetut toiminta-alueiden suoritukset", comment = Some("Sarake listaa S-merkinnällä vahvistetut toiminta-alueen suoritukset niiltä oppilailta, jotka opiskelevat toiminta-alueittain. Jos sarakkeesta löytyy kenttiä, joissa on vähemmän kuin viisi toiminta-alueittain opiskeltavan perusopetuksen toiminta-aluetta (https://virkailija.opintopolku.fi/koski/dokumentaatio/koodisto/perusopetuksentoimintaalue/latest), suoritettujen toiminta-alueiden siirroissa on todennäköisesti virhe.")),
+    "majoitusetu" -> compactLisätiedotColumn("Majoitusetu"),
+    "kuljetusetu" -> compactLisätiedotColumn("Kuljetusetu"),
+    "kotiopetus" -> compactLisätiedotColumn("Kotiopetus"),
+    "ulkomailla" -> compactLisätiedotColumn("Ulkomailla"),
+    "perusopetuksenAloittamistaLykatty" -> compactLisätiedotColumn("Perusopetuksen aloittamista lykätty"),
+    "aloittanutEnnenOppivelvollisuutta" -> compactLisätiedotColumn("Aloittanut ennen oppivelvollisuutta"),
+    "pidennettyOppivelvollisuus" -> compactLisätiedotColumn("Pidennetty oppivelvollisuus"),
+    "tehostetunTuenPaatos" -> compactLisätiedotColumn("Tehostetun tuen päätös"),
+    "joustavaPerusopetus" -> compactLisätiedotColumn("Joustava perusopetus"),
+    "vuosiluokkiinSitoutumatonOpetus" -> compactLisätiedotColumn("Vuosiluokkiin sitomaton opetus"),
+    "vammainen" -> compactLisätiedotColumn("Vammainen"),
+    "vaikeastiVammainen" -> compactLisätiedotColumn("Vaikeasti vammainen"),
+    "oikeusMaksuttomaanAsuntolapaikkaan" -> compactLisätiedotColumn("Oikeus maksuttomaan asuntolapaikkaan"),
+    "sisaoppilaitosmainenMaijoitus" -> compactLisätiedotColumn("Sisäoppilaitosmainen majoitus"),
+    "koulukoti" -> compactLisätiedotColumn("Koulukoti"),
+    "erityisenTuenPaatosVoimassa" -> compactLisätiedotColumn("Erityisen tuen päätös"),
+    "erityisenTuenPaatosToimialueittain" -> compactLisätiedotColumn("Opiskelee toimialueittain"),
+    "erityisenTuenPaatosToteutuspaikat" -> compactLisätiedotColumn("Erityisen tuen päätöksen toteutuspaikka"),
+    "tukimuodot" -> compactLisätiedotColumn("Tukimuodot")
   )
 }
 
@@ -360,7 +360,7 @@ private[raportit] case class PerusopetusRow(
   suorituksenAlkamispaiva: String,
   suorituksenVahvistuspaiva: String,
   jaaLuokalle: Boolean,
-  luokka: String,
+  luokka: Option[String],
   voimassaolevatVuosiluokat: String,
   aidinkieli: String,
   pakollisenAidinkielenOppimaara: String,

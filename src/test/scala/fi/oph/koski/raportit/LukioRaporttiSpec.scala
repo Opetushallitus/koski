@@ -153,6 +153,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Lähdejärjestelmä" -> None,
     "Opiskeluoikeuden tunniste lähdejärjestelmässä" -> None,
     "Koulutustoimija" -> "Jyväskylän yliopisto",
+    "Toimipiste" -> "Jyväskylän normaalikoulu",
     "Oppijan oid" -> Some(lukiolainen.oid),
     "Opiskeluoikeuden viimeisin tila" -> Some("valmistunut"),
     "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna",
@@ -202,6 +203,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Oppilaitoksen nimi" -> "Jyväskylän normaalikoulu",
     "Lähdejärjestelmä" -> None,
     "Koulutustoimija" -> "Jyväskylän yliopisto",
+    "Toimipiste" -> "Jyväskylän normaalikoulu",
     "Opiskeluoikeuden tunniste lähdejärjestelmässä" -> None,
     "Oppijan oid" -> Some(lukionAineopiskelijaAktiivinen.oid),
     "Opiskeluoikeuden viimeisin tila" -> Some("lasna"),
@@ -272,10 +274,10 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Hetu" -> lukiolainen.hetu,
     "Sukunimi" -> Some(lukiolainen.sukunimi),
     "Etunimet" -> Some(lukiolainen.etunimet),
-    "Ihminen ympäristön ja yhteiskuntien muutoksessa HI1" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
-    "Kansainväliset suhteet HI2" -> kurssintiedot(arvosana = "8", tyyppi = "pakollinen"),
-    "Itsenäisen Suomen historia HI3" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
-    "Eurooppalaisen maailmankuvan kehitys HI4" -> kurssintiedot(arvosana = "6", tyyppi = "pakollinen")
+    "Ihminen ympäristön ja yhteiskuntien muutoksessa HI1 valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
+    "Kansainväliset suhteet HI2 valtakunnallinen" -> kurssintiedot(arvosana = "8", tyyppi = "pakollinen"),
+    "Itsenäisen Suomen historia HI3 valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
+    "Eurooppalaisen maailmankuvan kehitys HI4 valtakunnallinen" -> kurssintiedot(arvosana = "6", tyyppi = "pakollinen")
   )
 
   lazy val expectedAineopiskelijaHistoriaKurssitRow = Map(
@@ -283,9 +285,9 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Hetu" -> lukionAineopiskelijaAktiivinen.hetu,
     "Sukunimi" -> Some(lukionAineopiskelijaAktiivinen.sukunimi),
     "Etunimet" -> Some(lukionAineopiskelijaAktiivinen.etunimet),
-    "Ihminen ympäristön ja yhteiskuntien muutoksessa HI1" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
-    "Kansainväliset suhteet HI2" -> kurssintiedot(arvosana = "8", tyyppi = "pakollinen"),
-    "Itsenäisen Suomen historia HI3" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
-    "Eurooppalaisen maailmankuvan kehitys HI4" -> kurssintiedot(arvosana = "6", tyyppi = "pakollinen")
+    "Ihminen ympäristön ja yhteiskuntien muutoksessa HI1 valtakunnallinen" -> "",
+    "Kansainväliset suhteet HI2 valtakunnallinen" -> kurssintiedot(arvosana = "8", tyyppi = "pakollinen"),
+    "Itsenäisen Suomen historia HI3 valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
+    "Eurooppalaisen maailmankuvan kehitys HI4 valtakunnallinen" -> kurssintiedot(arvosana = "6", tyyppi = "pakollinen")
   )
 }

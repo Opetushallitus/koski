@@ -21,7 +21,7 @@ trait AmmatillinenRaporttiUtils {
   }
 
   def tutkintonimike(osasuoritus: RPäätasonSuoritusRow) = {
-    JsonSerializer.extract[Option[LocalizedString]](osasuoritus.data \ "koulutusmoduuli" \ "tunniste" \ "nimi")
+    JsonSerializer.extract[Option[List[Koodistokoodiviite]]](osasuoritus.data \ "tutkintonimike").map(_.flatMap(_.nimi)).map(_.map(_.get("fi"))).map(_.mkString(","))
   }
 
   def suoritusTavat(päätasonsuoritukset: Seq[RPäätasonSuoritusRow]) = {
