@@ -21,7 +21,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
   private type PäätasonSuoritusId = Long
   private type AikajaksoId = Long
 
-  def perusopetuksenvuosiluokka(organisaatioOidit: Set[Organisaatio.Oid], paiva: LocalDate, vuosiluokka: String): List[PerusopetuksenRaporttiRows] = {
+  def perusopetuksenvuosiluokka(organisaatioOidit: Set[Organisaatio.Oid], paiva: LocalDate, vuosiluokka: String): Seq[PerusopetuksenRaporttiRows] = {
     val opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet = opiskeluoikeusAikajaksotPaatasonSuorituksetResult(organisaatioOidit, paiva, vuosiluokka)
     val opiskeluoikeusOids = opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet.map(_._1)
     val paatasonSuoritusIds = opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet.flatMap(_._2)
@@ -30,7 +30,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
     suoritustiedot(opiskeluoikeusOids, paatasonSuoritusIds, aikajaksoIds, vuosiluokka)
   }
 
-  def peruskoulunPaattavatJaLuokalleJääneet(organisaatioOidit: Set[Organisaatio.Oid], paiva: LocalDate, vuosiluokka: String): List[PerusopetuksenRaporttiRows] = {
+  def peruskoulunPaattavatJaLuokalleJääneet(organisaatioOidit: Set[Organisaatio.Oid], paiva: LocalDate, vuosiluokka: String): Seq[PerusopetuksenRaporttiRows] = {
     val luokalleJäävienTunnisteet = luokalleJäävätOpiskeluoikeusAikajaksotPäätasonSuorituksetResult(organisaatioOidit, paiva, vuosiluokka)
     val luokalleJaavienOidit = luokalleJäävienTunnisteet.map(_._1)
     val peruskoulunPäättävienTunnisteet = peruskoulunPäättävätOpiskeluoikeusAikajaksotPäätasonSuorituksetResult(organisaatioOidit, paiva, vuosiluokka, luokalleJaavienOidit.distinct)
@@ -50,33 +50,19 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
     val voimassaOlevatVuosiluokat = runDbSync(voimassaOlevatVuosiluokatQuery(opiskeluoikeusOids).result, timeout = 5.minutes).groupBy(_._1).mapValues(_.map(_._2).toSeq)
     val luokat = runDbSync(luokkatiedotVuosiluokalleQuery(opiskeluoikeusOids, vuosiluokka).result, timeout = 5.minutes).groupBy(_._1).mapValues(_.map(_._2).distinct.sorted.mkString(","))
 
-    opiskeluoikeudet.foldLeft[List[PerusopetuksenRaporttiRows]](List.empty) {
-      combineOpiskeluoikeusWith(_, _, aikajaksot, paatasonSuoritukset, osasuoritukset, henkilot, voimassaOlevatVuosiluokat, luokat)
+    opiskeluoikeudet.flatMap { oo =>
+      paatasonSuoritukset.getOrElse(oo.opiskeluoikeusOid, Nil).map { päätasonSuoritus =>
+        PerusopetuksenRaporttiRows(
+          opiskeluoikeus = oo,
+          henkilo = henkilot.get(oo.oppijaOid),
+          aikajaksot = aikajaksot.getOrElse(oo.opiskeluoikeusOid, Nil).sortBy(_.alku)(sqlDateOrdering),
+          päätasonSuoritus = päätasonSuoritus,
+          osasuoritukset.getOrElse(päätasonSuoritus.päätasonSuoritusId, Nil),
+          voimassaOlevatVuosiluokat.getOrElse(oo.opiskeluoikeusOid, Nil),
+          luokat.get(oo.opiskeluoikeusOid)
+        )
+      }
     }
-  }
-
-  private def combineOpiskeluoikeusWith(
-    acc: List[PerusopetuksenRaporttiRows],
-    opiskeluoikeus: ROpiskeluoikeusRow,
-    aikajaksot: Map[OpiskeluoikeusOid, Seq[ROpiskeluoikeusAikajaksoRow]],
-    paatasonSuoritukset: Map[OpiskeluoikeusOid, Seq[RPäätasonSuoritusRow]],
-    osasuoritukset: Map[PäätasonSuoritusId, Seq[ROsasuoritusRow]],
-    henkilot: Map[OppijaOid, RHenkilöRow],
-    voimassaOlevatVuosiluokat: Map[OpiskeluoikeusOid, Seq[String]],
-    luokat: Map[OpiskeluoikeusOid, String]
-  ) = {
-    val pts = paatasonSuoritukset.getOrElse(opiskeluoikeus.opiskeluoikeusOid, List.empty)
-    pts.map(paatasonsuoritus => {
-      PerusopetuksenRaporttiRows(
-        opiskeluoikeus = opiskeluoikeus,
-        henkilo = henkilot.get(opiskeluoikeus.oppijaOid),
-        aikajaksot = aikajaksot.getOrElse(opiskeluoikeus.opiskeluoikeusOid, List.empty).sortBy(_.alku)(sqlDateOrdering),
-        päätasonSuoritus = paatasonsuoritus,
-        osasuoritukset = osasuoritukset.getOrElse(paatasonsuoritus.päätasonSuoritusId, List.empty),
-        voimassaolevatVuosiluokat = voimassaOlevatVuosiluokat.getOrElse(opiskeluoikeus.opiskeluoikeusOid, List.empty),
-        luokka = luokat.get(opiskeluoikeus.opiskeluoikeusOid)
-      )
-    }).toList ::: acc
   }
 
   private def opiskeluoikeusAikajaksotPaatasonSuorituksetResult(oppilaitos: Set[Organisaatio.Oid], paiva: LocalDate, vuosiluokka: String) = {
