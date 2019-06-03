@@ -59,6 +59,7 @@ object ReforminMukainenErikoisammattitutkintoExample {
             alku = date(2018, 8, 1),
             loppu = None,
             työssäoppimispaikka = Some("Volkswagen Center"),
+            yTunnus = Some("1572860-0"),
             paikkakunta = jyväskylä,
             maa = suomi,
             työtehtävät = Some(finnish("Autojen vuosihuollot"))
