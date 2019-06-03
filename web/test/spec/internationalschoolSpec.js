@@ -235,6 +235,16 @@ describe('International school', function() {
     })
   })
 
+  describe('Opiskeluoikeuden lisääminen diplomaluokalle', function () {
+    before(
+      prepareForNewOppija('kalle', '230872-7258'),
+      addOppija.enterValidDataInternationalSchool({grade: 'Grade 12'}),
+      addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Grade 12')
+    )
+
+    it('toimii', function() {})
+  })
+
   describe('Vuosiluokan suorituksen lisääminen', function() {
     var lisääSuoritus = opinnot.lisääSuoritusDialog
 

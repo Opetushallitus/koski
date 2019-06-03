@@ -29,10 +29,11 @@ function AddOppijaPage() {
       return isElementVisible(S('.opintojenrahoitus'))
     },
     enterValidDataInternationalSchool: function(params) {
-      params = _.merge({  oppilaitos: 'International School of Helsinki' }, {}, params)
+      params = _.merge({  oppilaitos: 'International School of Helsinki', grade: 'Grade explorer' }, {}, params)
       return function() {
         return api.enterData(params)()
           .then(api.selectOpiskeluoikeudenTyyppi('International school'))
+          .then(api.selectFromDropdown('.international-school-grade .dropdown', params.grade))
           .then(wait.forAjax)
       }
     },
@@ -277,7 +278,8 @@ function AddOppijaPage() {
     selectKoulutusmoduuli: function(koulutusmoduuli) {
       return selectFromDropdown('.koulutusmoduuli .dropdown', koulutusmoduuli)
     },
-    goBack: click(findSingle('h1 a'))
+    goBack: click(findSingle('h1 a')),
+    selectFromDropdown: selectFromDropdown
   }
   function selectFromDropdown(selector, value, exact) {
     return function () {

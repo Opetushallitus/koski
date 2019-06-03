@@ -1,17 +1,22 @@
+
 export const makeSuoritus = (oppilaitos, grade, suorituskieli) => {
   if (!oppilaitos || !grade || !suorituskieli) return null
 
   return {
     suorituskieli : suorituskieli,
-    koulutusmoduuli: {
-      tunniste: grade
-    },
+    koulutusmoduuli: mkKoulutusmoduuli(grade),
     toimipiste: oppilaitos,
     tyyppi: {
       koodiarvo: suoritusTyyppi(grade),
       koodistoUri: 'suorituksentyyppi'
     }
   }
+}
+
+const mkKoulutusmoduuli = grade => {
+  return (grade.koodiarvo === 'explorer' || grade.koodiarvo < 11)
+    ? { tunniste: grade }
+    : { tunniste: grade, diplomaType: { koodistoUri: 'internationalschooldiplomatype', koodiarvo: 'ib' }}
 }
 
 export const suoritusTyyppi = grade => {
