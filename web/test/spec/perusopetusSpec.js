@@ -307,6 +307,7 @@ describe('Perusopetus', function() {
         })
       })
 
+      /*
       describe('Deprekoidut kentät', function() {
         before(
           resetFixtures,
@@ -338,6 +339,7 @@ describe('Perusopetus', function() {
           })
         })
       })
+      */
 
       describe('Tulostettava todistus', function() {
         before(opinnot.valitseSuoritus(undefined, 'Päättötodistus'), opinnot.avaaTodistus())
