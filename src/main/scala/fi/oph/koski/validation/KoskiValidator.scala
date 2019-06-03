@@ -393,17 +393,20 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     numeerisetArvosanat(suoritus.arviointi.toList.flatten) ++ näytönArvosanat ++ suoritus.osasuoritusLista.flatMap(extractNumeerisetArvosanat)
   }
 
-  private def validatePäätasonSuoritustenStatus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = if (opiskeluoikeus.tila.opiskeluoikeusjaksot.last.tila.koodiarvo == "valmistunut") {
-    opiskeluoikeus match {
-      case a: AikuistenPerusopetuksenOpiskeluoikeus => validateAikuistenPerusopetuksenSuoritustenStatus(opiskeluoikeus, a)
-      case o if o.suoritukset.exists(s => s.isInstanceOf[OppiaineenOppimääränSuoritus] && s.valmis) => HttpStatus.ok
-      case _ => HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritusVahvistettu))
+  private def validatePäätasonSuoritustenStatus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
+    def valmiitaOppimääriäLöytyy =
+      opiskeluoikeus.suoritukset.exists(s => s.valmis && s.isInstanceOf[OppiaineenOppimääränSuoritus] && s.koulutusmoduuli.tunniste.koodiarvo != "XX")
+
+    if (opiskeluoikeus.tila.opiskeluoikeusjaksot.last.tila.koodiarvo != "valmistunut" || valmiitaOppimääriäLöytyy) {
+      HttpStatus.ok
+    } else if (opiskeluoikeus.tyyppi.koodiarvo == "aikuistenperusopetus") {
+      validateAikuistenPerusopetuksenSuoritustenStatus(opiskeluoikeus)
+    } else {
+      HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritusVahvistettu))
     }
-  } else {
-    HttpStatus.ok
   }
 
-  private def validateAikuistenPerusopetuksenSuoritustenStatus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, a: AikuistenPerusopetuksenOpiskeluoikeus) = {
+  private def validateAikuistenPerusopetuksenSuoritustenStatus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
     val muutKuinAlkuvaihe = opiskeluoikeus.suoritukset.filterNot(_.tyyppi.koodiarvo == "aikuistenperusopetuksenoppimaaranalkuvaihe")
     if (muutKuinAlkuvaihe.isEmpty) {
       KoskiErrorCategory.badRequest.validation.tila.suoritusPuuttuu("Opiskeluoikeutta aikuistenperusopetus ei voi merkitä valmiiksi kun siitä puuttuu suoritus aikuistenperusopetuksenoppimaara tai perusopetuksenoppiaineenoppimaara")
