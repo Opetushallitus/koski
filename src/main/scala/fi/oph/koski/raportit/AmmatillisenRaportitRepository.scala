@@ -14,6 +14,8 @@ import scala.concurrent.duration._
 
 case class AmmatillisenRaportitRepository(db: DB) extends KoskiDatabaseMethods with RaportointikantaTableQueries {
 
+  private val defaultTimeout = 5.minutes
+
   private type OpiskeluoikeusOid = String
   private type SisältyvOpiskeluoikeuteenOid = String
   private type AikajaksoId = Long
@@ -26,17 +28,17 @@ case class AmmatillisenRaportitRepository(db: DB) extends KoskiDatabaseMethods w
 
     val sisältyvätOpiskeluoikeusAikajaksotPäätasonSuoritukset = sisältyvätOpiskeluoikeusAikajaksotPäätasonSuorituksetQuery(masterOpiskeluoikeusOids)
     val sisältyvätOpiskeluoikeusOids = sisältyvätOpiskeluoikeusAikajaksotPäätasonSuoritukset.map(_._1)
-    val sisältyvätOpiskeluoikeudet = runDbSync(ROpiskeluoikeudet.filter(_.opiskeluoikeusOid inSet sisältyvätOpiskeluoikeusOids).result)
+    val sisältyvätOpiskeluoikeudet = runDbSync(ROpiskeluoikeudet.filter(_.opiskeluoikeusOid inSet sisältyvätOpiskeluoikeusOids).result, timeout = defaultTimeout)
     val sisältyvätOpiskeluoikeudetGrouped = sisältyvätOpiskeluoikeudet.groupBy(_.sisältyyOpiskeluoikeuteenOid.get)
 
     val päätasonSuoritusIds = opiskeluoikeusAikajaksotPäätasonSuoritukset.flatMap(_._2).union(sisältyvätOpiskeluoikeusAikajaksotPäätasonSuoritukset.flatMap(_._2))
     val aikajaksoIds = opiskeluoikeusAikajaksotPäätasonSuoritukset.flatMap(_._3).union(sisältyvätOpiskeluoikeusAikajaksotPäätasonSuoritukset.flatMap(_._3))
 
-    val opiskeluoikeudet = runDbSync(ROpiskeluoikeudet.filter(_.opiskeluoikeusOid inSet masterOpiskeluoikeusOids).result).union(sisältyvätOpiskeluoikeudet)
-    val aikajaksot = runDbSync(ROpiskeluoikeusAikajaksot.filter(_.id inSet aikajaksoIds).result).groupBy(_.opiskeluoikeusOid)
-    val päätasonSuoritukset = runDbSync(RPäätasonSuoritukset.filter(_.päätasonSuoritusId inSet päätasonSuoritusIds).result).groupBy(_.opiskeluoikeusOid)
-    val osasuoritukset = runDbSync(ROsasuoritukset.filter(_.päätasonSuoritusId inSet päätasonSuoritusIds).result).groupBy(_.päätasonSuoritusId)
-    val henkilöt = runDbSync(RHenkilöt.filter(_.oppijaOid inSet opiskeluoikeudet.map(_.oppijaOid)).result).groupBy(_.oppijaOid).mapValues(_.head)
+    val opiskeluoikeudet = runDbSync(ROpiskeluoikeudet.filter(_.opiskeluoikeusOid inSet masterOpiskeluoikeusOids).result, timeout = defaultTimeout).union(sisältyvätOpiskeluoikeudet)
+    val aikajaksot = runDbSync(ROpiskeluoikeusAikajaksot.filter(_.id inSet aikajaksoIds).result, timeout = defaultTimeout).groupBy(_.opiskeluoikeusOid)
+    val päätasonSuoritukset = runDbSync(RPäätasonSuoritukset.filter(_.päätasonSuoritusId inSet päätasonSuoritusIds).result, timeout = defaultTimeout).groupBy(_.opiskeluoikeusOid)
+    val osasuoritukset = runDbSync(ROsasuoritukset.filter(_.päätasonSuoritusId inSet päätasonSuoritusIds).result, timeout = defaultTimeout).groupBy(_.päätasonSuoritusId)
+    val henkilöt = runDbSync(RHenkilöt.filter(_.oppijaOid inSet opiskeluoikeudet.map(_.oppijaOid)).result, timeout = defaultTimeout).groupBy(_.oppijaOid).mapValues(_.head)
 
     opiskeluoikeudet.foldLeft[List[(ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])]](List.empty) {
       combineOpiskeluoikeusWith(_, _, aikajaksot, päätasonSuoritukset, osasuoritukset, henkilöt, sisältyvätOpiskeluoikeudetGrouped)
@@ -73,7 +75,7 @@ case class AmmatillisenRaportitRepository(db: DB) extends KoskiDatabaseMethods w
   private def opiskeluoikeusAikajaksotPäätasonSuorituksetQuery(oppilaitosOid: String, koulutusmuoto: String, suorituksenTyyppi: String, alku: Date, loppu: Date) = {
     import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
     implicit val getResult = GetResult[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])](r => (r.nextString(), r.nextArray(), r.nextArray()))
-    runDbSync(opiskeluoikeusAikajaksotPäätasonSuorituksetSQL(oppilaitosOid, koulutusmuoto, suorituksenTyyppi, alku, loppu).as[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])], timeout = 5.minutes)
+    runDbSync(opiskeluoikeusAikajaksotPäätasonSuorituksetSQL(oppilaitosOid, koulutusmuoto, suorituksenTyyppi, alku, loppu).as[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])], timeout = defaultTimeout)
   }
 
   private def opiskeluoikeusAikajaksotPäätasonSuorituksetSQL(oppilaitosOid: String, koulutusmuoto: String, suorituksenTyyppi: String, alku: Date, loppu: Date) = {
@@ -99,7 +101,7 @@ case class AmmatillisenRaportitRepository(db: DB) extends KoskiDatabaseMethods w
   private def sisältyvätOpiskeluoikeusAikajaksotPäätasonSuorituksetQuery(masterOids: Seq[OpiskeluoikeusOid]) = {
     import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
     implicit val getResult = GetResult[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])](r => (r.nextString(), r.nextArray(), r.nextArray()))
-    runDbSync(sisältyvätOpiskeluoikeusAikajaksotPäätasonSuorituksetSQL(masterOids).as[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])], timeout = 5.minutes)
+    runDbSync(sisältyvätOpiskeluoikeusAikajaksotPäätasonSuorituksetSQL(masterOids).as[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])], timeout = defaultTimeout)
   }
 
   private def sisältyvätOpiskeluoikeusAikajaksotPäätasonSuorituksetSQL(masterOids: Seq[OpiskeluoikeusOid]) = {
