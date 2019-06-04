@@ -3126,6 +3126,66 @@ describe('Perusopetus', function() {
     })
   })
 
+
+  describe('Perusopetuksen useamman oppiaineen aineopiskelija', function() {
+    describe('Opiskeluoikeuden tilaa', function () {
+      before(
+        page.openPage,
+        page.oppijaHaku.searchAndSelect('131298-5248'),
+        editor.edit,
+        editor.property('tila').removeItem(0),
+        opinnot.valitseSuoritus(undefined, 'Äidinkieli ja kirjallisuus'),
+        opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi,
+        opinnot.valitseSuoritus(undefined, 'Yhteiskuntaoppi'),
+        opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi,
+        opinnot.avaaLisaysDialogi
+      )
+
+      it('ei voida merkitä valmiiksi', function () {
+        expect(OpiskeluoikeusDialog().radioEnabled('valmistunut')).to.equal(false)
+      })
+
+      describe('Kun yksikin suoritus merkitään valmiiksi', function () {
+        before(
+          opinnot.tilaJaVahvistus.merkitseValmiiksi,
+          opinnot.tilaJaVahvistus.lisääVahvistus('01.01.2000'),
+          opinnot.avaaLisaysDialogi,
+          OpiskeluoikeusDialog().tila().aseta('valmistunut'),
+          OpiskeluoikeusDialog().tallenna,
+          editor.saveChanges,
+        )
+
+        it('myös opiskeluoikeuden tila voidaan merkitä valmiiksi', function () {
+          expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.contain('Valmistunut')
+        })
+      })
+
+      after(editor.cancelChanges)
+    })
+
+    describe('Jos opiskelijalla on "ei tiedossa"-oppiaineita', function () {
+      var lisääSuoritus = opinnot.lisääSuoritusDialog
+      before(
+        page.openPage,
+        page.oppijaHaku.searchAndSelect('131298-5248'),
+        editor.edit,
+        editor.property('tila').removeItem(0),
+        lisääSuoritus.open('lisää oppiaineen suoritus'), wait.forAjax,
+        lisääSuoritus.property('tunniste').setValue('Ei tiedossa'),
+        lisääSuoritus.toimipiste.select('Jyväskylän normaalikoulu, alakoulu'),
+        lisääSuoritus.lisääSuoritus,
+        opinnot.avaaLisaysDialogi
+      )
+
+      it('Opiskeluoikeuden tilaa ei voi merkitä valmiiksi', function () {
+        expect(OpiskeluoikeusDialog().radioEnabled('valmistunut')).to.equal(false)
+      })
+
+      after(editor.cancelChanges)
+    })
+  })
+
+
   describe('Perusopetuksen lisäopetus', function() {
     before(page.openPage, page.oppijaHaku.searchAndSelect('131025-6573'))
     describe('Kaikki tiedot näkyvissä', function() {

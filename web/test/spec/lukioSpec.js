@@ -530,6 +530,56 @@ describe('Lukiokoulutus', function( ){
     })
   })
 
+  describe('Lukion useamman oppiaineen aineopiskelija', function() {
+    describe('Opiskeluoikeuden tilaa', function () {
+      before(
+        page.openPage,
+        page.oppijaHaku.searchAndSelect('200300-624E'),
+        editor.edit,
+        opinnot.valitseSuoritus(undefined, 'Kemia'),
+        opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi,
+        opinnot.valitseSuoritus(undefined, 'Historia'),
+        opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi,
+        opinnot.avaaLisaysDialogi
+      )
+
+      it('ei voida merkitä valmiiksi', function () {
+        expect(OpiskeluoikeusDialog().radioEnabled('valmistunut')).to.equal(false)
+      })
+
+      describe('Kun yksikin suoritus merkitään valmiiksi', function () {
+        before(
+          opinnot.tilaJaVahvistus.merkitseValmiiksi,
+          opinnot.tilaJaVahvistus.lisääVahvistus('01.01.2000'),
+          opinnot.avaaLisaysDialogi,
+          OpiskeluoikeusDialog().tila().aseta('valmistunut'),
+          OpiskeluoikeusDialog().tallenna,
+          editor.saveChanges,
+        )
+
+        it('myös opiskeluoikeuden tila voidaan merkitä valmiiksi', function () {
+          expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.contain('Valmistunut')
+        })
+      })
+      after(editor.cancelChanges)
+    })
+
+    describe('Jos opiskelijalla on "ei tiedossa"-oppiaineita', function () {
+      before(
+        page.openPage,
+        page.oppijaHaku.searchAndSelect('151132-746V'),
+        editor.edit,
+        opinnot.opiskeluoikeusEditor().edit,
+        opinnot.avaaLisaysDialogi
+      )
+
+      it('Opiskeluoikeuden tilaa ei voi merkitä valmiiksi', function () {
+        expect(OpiskeluoikeusDialog().radioEnabled('valmistunut')).to.equal(false)
+      })
+      after(editor.cancelChanges)
+    })
+  })
+
   describe('Opiskeluoikeuden lisääminen', function() {
     describe('Lukion oppimäärä', function() {
       describe('Nuorten 2015 oppimäärä', function() {

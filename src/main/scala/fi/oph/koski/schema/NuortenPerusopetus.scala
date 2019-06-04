@@ -300,8 +300,10 @@ case class NuortenPerusopetuksenOppiaineenSuoritus(
   suoritustapa: Option[Koodistokoodiviite] = None
 ) extends PerusopetuksenOppiaineenSuoritus with OppiaineenTaiToiminta_AlueenSuoritus with Vahvistukseton with Yksilöllistettävä with MahdollisestiSuorituskielellinen with SuoritustapanaMahdollisestiErityinenTutkinto with PerusopetukseenValmistavanOpetuksenOsasuoritus
 
+trait OppiaineenOppimääränSuoritus
+
 @Description("Perusopetuksen yksittäisen oppiaineen oppimäärän suoritus erillisenä kokonaisuutena")
-trait PerusopetuksenOppiaineenOppimääränSuoritus {
+trait PerusopetuksenOppiaineenOppimääränSuoritus extends OppiaineenOppimääränSuoritus {
   @Title("Arvosana")
   @Tooltip("Oppiaineen kokonaisarvosana")
   @FlattenInUI

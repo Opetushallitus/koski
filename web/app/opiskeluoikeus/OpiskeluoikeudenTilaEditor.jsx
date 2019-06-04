@@ -15,6 +15,7 @@ import {
 } from '../editor/EditorModel'
 import {OpiskeluoikeudenUusiTilaPopup} from './OpiskeluoikeudenUusiTilaPopup'
 import {arvioituTaiVahvistettu} from '../suoritus/Suoritus'
+import {eiTiedossaOppiaine} from '../suoritus/TilaJaVahvistusEditor'
 import {parseISODate} from '../date/date.js'
 import {Editor} from '../editor/Editor'
 import Text from '../i18n/Text'
@@ -30,10 +31,10 @@ export class OpiskeluoikeudenTilaEditor extends React.Component {
     let wrappedModel = fixOpiskeluoikeudenPäättymispäivä(model)
     let jaksotModel = opiskeluoikeusjaksot(wrappedModel)
     let items = modelItems(jaksotModel).slice(0).reverse()
-    const suoritukset = modelItems(wrappedModel, 'suoritukset')
+    const suoritukset = modelItems(model, 'suoritukset')
     const suorituksiaKesken = suoritukset.some(s => !arvioituTaiVahvistettu(s))
-    const aikuistenPerusopetuksenOppimääräSuoritettu = suoritukset.some(s => arvioituTaiVahvistettu(s) && isAikuistenPerusopetuksenOppimäärä(s))
-    const disabloiValmistunut = suorituksiaKesken && !aikuistenPerusopetuksenOppimääräSuoritettu
+    const suoritettuAineopintoTaiAikuistenPerusopetuksenOppimäärä = suoritukset.some(s => arvioituTaiVahvistettu(s) && (isAineopinto(s) || isAikuistenPerusopetuksenOppimäärä(s)))
+    const disabloiValmistunut = suoritukset.some(eiTiedossaOppiaine) || (suorituksiaKesken && !suoritettuAineopintoTaiAikuistenPerusopetuksenOppimäärä)
 
     let showAddDialog = () => this.showOpiskeluoikeudenTilaDialog.modify(x => !x)
 
@@ -122,6 +123,8 @@ const getActiveIndex = (jaksot) => {
 
 const viimeinenJakso = (opiskeluoikeus) => R.last(modelItems(opiskeluoikeusjaksot(opiskeluoikeus)))
 
+const aineOpinnot = ['lukionoppiaineenoppimaara', 'nuortenperusopetuksenoppiaineenoppimaara', 'perusopetuksenoppiaineenoppimaara']
+const isAineopinto = suoritus => aineOpinnot.includes(modelData(suoritus, 'tyyppi.koodiarvo'))
 const isAikuistenPerusopetuksenOppimäärä = suoritus => modelData(suoritus, 'tyyppi.koodiarvo') === 'aikuistenperusopetuksenoppimaara'
 
 const opiskeluoikeusjaksot = (opiskeluoikeus) => {

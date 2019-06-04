@@ -281,6 +281,20 @@ object ExamplesLukio {
       )
     )
 
+
+  val aineOpiskelijaEiTiedossaOppiaineella = aineOpiskelijaAktiivinen.copy(
+    suoritukset = aineOpiskelijaAktiivinen.suoritukset ::: List(
+      LukionOppiaineenOppimääränSuoritus(
+        koulutusmoduuli = EiTiedossaOppiaine(),
+        suorituskieli = suomenKieli,
+        toimipiste = jyväskylänNormaalikoulu,
+        arviointi = arviointi("9"),
+        osasuoritukset = Some(List(
+          kurssisuoritus(valtakunnallinenVanhanOpsinKurssi("FI1")).copy(arviointi = numeerinenArviointi(7, päivä = date(2016, 1, 10)))
+        ))
+      ))
+  )
+
   val lukioKesken =
     LukionOpiskeluoikeus(
       versionumero = None,

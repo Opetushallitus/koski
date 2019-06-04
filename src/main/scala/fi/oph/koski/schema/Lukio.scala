@@ -110,7 +110,7 @@ case class LukionOppiaineenOppimääränSuoritus(
   @KoodistoKoodiarvo("lukionoppiaineenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppiaineenoppimaara", koodistoUri = "suorituksentyyppi"),
   ryhmä: Option[String] = None
-) extends LukionPäätasonSuoritus with Todistus with Ryhmällinen
+) extends LukionPäätasonSuoritus with Todistus with Ryhmällinen with OppiaineenOppimääränSuoritus
 
 @Description("Lukiokoulutuksen tunnistetiedot")
 case class LukionOppimäärä(
