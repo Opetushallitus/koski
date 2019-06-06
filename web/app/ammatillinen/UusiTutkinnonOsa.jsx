@@ -20,10 +20,10 @@ import {isPaikallinen, koulutusModuuliprototypes} from '../suoritus/Koulutusmodu
 import {ift} from '../util/util'
 import ModalDialog from '../editor/ModalDialog'
 import {
-  createTutkinnonOsanSuoritusPrototype,
   fetchLisättävätTutkinnonOsat,
   isYhteinenTutkinnonOsa,
   placeholderForNonGrouped,
+  selectTutkinnonOsanSuoritusPrototype,
   tutkinnonOsanOsaAlueenKoulutusmoduuli
 } from './TutkinnonOsa'
 import {elementWithLoadingIndicator} from '../components/AjaxLoadingIndicator'
@@ -35,7 +35,8 @@ import {
 import TutkinnonOsaToisestaTutkinnostaPicker from './TutkinnonOsaToisestaTutkinnostaPicker'
 import LisaaTutkinnonOsaDropdown from './LisaaTutkinnonOsaDropdown'
 
-export default ({ suoritus, groupId, suoritusPrototype, suorituksetModel, setExpanded, groupTitles }) => {
+export default ({ suoritus, groupId, suoritusPrototypes, suorituksetModel, setExpanded, groupTitles }) => {
+  const suoritusPrototype = selectTutkinnonOsanSuoritusPrototype(suoritusPrototypes, groupId)
   let koulutusModuuliprotos = koulutusModuuliprototypes(suoritusPrototype)
   let paikallinenKoulutusmoduuli = koulutusModuuliprotos.find(isPaikallinen)
   let valtakunnallisetKoulutusmoduulit = koulutusModuuliprotos.filter(R.complement(isPaikallinen))
@@ -71,7 +72,7 @@ export default ({ suoritus, groupId, suoritusPrototype, suorituksetModel, setExp
   function addTutkinnonOsa(koulutusmoduuli, tutkinto, liittyyTutkinnonOsaan) {
     if (groupId == placeholderForNonGrouped) groupId = undefined
 
-    let uusiSuoritus = modelSet(createTutkinnonOsanSuoritusPrototype(suorituksetModel, groupId), koulutusmoduuli, 'koulutusmoduuli')
+    let uusiSuoritus = modelSet(selectTutkinnonOsanSuoritusPrototype(suoritusPrototypes, groupId), koulutusmoduuli, 'koulutusmoduuli')
     if (groupId) {
       uusiSuoritus = modelSetValue(uusiSuoritus, toKoodistoEnumValue('ammatillisentutkinnonosanryhma', groupId, groupTitles[groupId]), 'tutkinnonOsanRyhmä')
     }

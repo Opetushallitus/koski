@@ -6,16 +6,22 @@ import {parseLocation} from '../util/location'
 
 export const placeholderForNonGrouped = '999999'
 
-export const createTutkinnonOsanSuoritusPrototype = (osasuoritukset, groupId) => {
-  osasuoritukset = wrapOptional(osasuoritukset)
-  let newItemIndex = modelItems(osasuoritukset).length
-  let suoritusProto = contextualizeSubModel(osasuoritukset.arrayPrototype, osasuoritukset, newItemIndex)
-  let preferredClass = groupId == '2' ? 'yhteisenammatillisentutkinnonosansuoritus' : 'muunammatillisentutkinnonosansuoritus'
-  let sortValue = (oneOfProto) => oneOfProto.value.classes.includes(preferredClass) ? 0 : 1
+export const createTutkinnonOsanSuoritusPrototype = (osasuoritukset, groupId) =>
+  selectTutkinnonOsanSuoritusPrototype(tutkinnonOsaPrototypes(osasuoritukset), groupId)
+
+export const selectTutkinnonOsanSuoritusPrototype = (prototypes, groupId) => {
+  const preferredClass = groupId === '2' ? 'yhteisenammatillisentutkinnonosansuoritus' : 'muunammatillisentutkinnonosansuoritus'
+  const sortValue = (oneOfProto) => oneOfProto.value.classes.includes(preferredClass) ? 0 : 1
+  return prototypes.sort((a, b) => sortValue(a) - sortValue(b))[0]
+}
+
+export const tutkinnonOsaPrototypes = osasuorituksetModel => {
+  const osasuoritukset = wrapOptional(osasuorituksetModel)
+  const newItemIndex = modelItems(osasuoritukset).length
+  const suoritusProto = contextualizeSubModel(osasuoritukset.arrayPrototype, osasuoritukset, newItemIndex)
   // TODO: onlyWhen is wrongly copied from implementing case class to traits prototype. This should really be fixed in the backend.
-  let alternatives = oneOfPrototypes(R.dissoc('onlyWhen', suoritusProto))
-  suoritusProto = alternatives.sort((a, b) => sortValue(a) - sortValue(b))[0]
-  return contextualizeSubModel(suoritusProto, osasuoritukset, newItemIndex)
+  const alts = oneOfPrototypes(R.dissoc('onlyWhen', suoritusProto))
+  return alts.map(alt => contextualizeSubModel(alt, osasuoritukset, newItemIndex))
 }
 
 export const fetchLisättävätTutkinnonOsat = (diaarinumero, suoritustapa, groupId) => {

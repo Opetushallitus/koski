@@ -10,7 +10,12 @@ import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
 import {fetchLaajuudet, YhteensäSuoritettu} from './YhteensaSuoritettu'
 import UusiTutkinnonOsa from '../ammatillinen/UusiTutkinnonOsa'
-import {createTutkinnonOsanSuoritusPrototype, isYhteinenTutkinnonOsa, osanOsa} from '../ammatillinen/TutkinnonOsa'
+import {
+  isYhteinenTutkinnonOsa,
+  osanOsa,
+  selectTutkinnonOsanSuoritusPrototype,
+  tutkinnonOsaPrototypes
+} from '../ammatillinen/TutkinnonOsa'
 import {sortLanguages} from '../util/sorting'
 import {isKieliaine} from './Koulutusmoduuli'
 import {flatMapArray} from '../util/util'
@@ -18,7 +23,8 @@ import {
   ArvosanaColumn,
   getLaajuusYksikkö,
   groupSuoritukset,
-  isAmmatillinentutkinto, isMuunAmmatillisenKoulutuksenOsasuorituksenSuoritus,
+  isAmmatillinentutkinto,
+  isMuunAmmatillisenKoulutuksenOsasuorituksenSuoritus,
   isNäyttötutkintoonValmistava,
   isYlioppilastutkinto,
   KoepisteetColumn,
@@ -37,7 +43,8 @@ export class Suoritustaulukko extends React.Component {
     parentSuoritus = parentSuoritus || context.suoritus
     let suoritukset = modelItems(suorituksetModel) || []
 
-    let suoritusProto = context.edit ? createTutkinnonOsanSuoritusPrototype(suorituksetModel) : suoritukset[0]
+    const suoritusProtos = tutkinnonOsaPrototypes(suorituksetModel)
+    let suoritusProto = context.edit ? selectTutkinnonOsanSuoritusPrototype(suoritusProtos) : suoritukset[0]
     let suoritustapa = modelData(parentSuoritus, 'suoritustapa')
     if (suoritukset.length === 0 && !context.edit) return null
 
@@ -97,7 +104,7 @@ export class Suoritustaulukko extends React.Component {
           <tr>
             <td colSpan="4">
               <UusiTutkinnonOsa suoritus={parentSuoritus}
-                                suoritusPrototype={createTutkinnonOsanSuoritusPrototype(suorituksetModel, groupId)}
+                                suoritusPrototypes={suoritusProtos}
                                 suorituksetModel={suorituksetModel}
                                 groupId={groupId}
                                 setExpanded={setExpanded}
