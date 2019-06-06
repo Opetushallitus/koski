@@ -105,7 +105,7 @@
         "työssäoppimispaikka" : {
           "fi" : "Volkswagen Center"
         },
-        "yTunnus" : "1572860-0",
+        "työssäoppimispaikanYTunnus" : "1572860-0",
         "paikkakunta" : {
           "koodiarvo" : "179",
           "nimi" : {
