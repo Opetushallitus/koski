@@ -48,7 +48,7 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
   }
 
   def createOpiskeluoikeusIndexes: Unit = {
-    runDbSync(RaportointiDatabaseSchema.createOpiskeluoikeusIndexes, timeout = 30.minutes)
+    runDbSync(RaportointiDatabaseSchema.createOpiskeluoikeusIndexes, timeout = 60.minutes)
   }
 
   def deleteOpiskeluoikeudet: Unit =
