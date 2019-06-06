@@ -1236,6 +1236,7 @@
   "Oppisopimuksen purkaminen" : "Oppisopimuksen purkaminen",
   "description:Onko oppisopimus purettu. Puuttuva arvo..." : "Onko oppisopimus purettu. Puuttuva arvo tulkitaan siten, että oppisopimusta ei olla purettu",
   "Purettu koeajalla" : "Purettu koeajalla",
-  "description:Työssäoppimispaikan Y-tunnus" : "Työssäoppimispaikan Y-tunnus"
+  "description:Työssäoppimispaikan Y-tunnus" : "Työssäoppimispaikan Y-tunnus",
+  "Työssäoppimispaikan Y-tunnus" : "Työssäoppimispaikan Y-tunnus"
 }
 

@@ -545,8 +545,8 @@ case class Koulutussopimusjakso(
   @Description("Työssäoppimispaikan Y-tunnus")
   @RegularExpression("^\\d{7}-\\d$")
   @Example("1234567-8")
-  @Title("Y-tunnus")
-  yTunnus: Option[String],
+  @Title("Työssäoppimispaikan Y-tunnus")
+  työssäoppimispaikanYTunnus: Option[String],
   paikkakunta: Koodistokoodiviite,
   maa: Koodistokoodiviite,
   työtehtävät: Option[LocalizedString]

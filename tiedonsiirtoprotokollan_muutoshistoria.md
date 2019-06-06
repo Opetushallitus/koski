@@ -1,6 +1,8 @@
+## 6.6.2019
+- Lisätty kenttä työssäoppimispaikanYTunnus ammatillisen koulutuksen koulutusopimukseen
+
 ## 31.5.2019
 - Aikuisten perusopetuksen opiskeluoikeuden voi asettaa valmistunut tilaan, vaikka oppimäärän alkuvaiheella ei olisi vahvistusta.
-- Lisätty kenttä yTunnus ammatillisen koulutuksen koulutussopimukselliseen suoritukseen
 
 ## 28.4.2019
 
