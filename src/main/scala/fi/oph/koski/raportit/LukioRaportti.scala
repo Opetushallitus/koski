@@ -223,7 +223,7 @@ object LukioRaportti {
   }
 
   private def kurssitColumnSettings(kurssit: Seq[LukioRaporttiKurssi]) = {
-    kurssit.map(_.toColumnTitle).map(removeForbiddenCharactersInExcel).map(CompactColumn(_))
+    kurssit.map(_.toColumnTitle).map(CompactColumn(_))
   }
 
   private def kurssiSheets(data: Seq[LukioRaporttiRows], suoritusData: Seq[LukioRaporttiOppiaineJaKurssit])(implicit executionContext: ExecutionContextExecutor) = {
@@ -238,7 +238,7 @@ object LukioRaportti {
     val filtered = data.filter(notOppimääränOpiskelijaFromAnotherOppiaine(oppiaine))
 
     DynamicDataSheet(
-      title = removeForbiddenCharactersInExcel(oppiaine.toSheetTitle),
+      title = oppiaine.toSheetTitle,
       rows = filtered.map(kurssiSheetRow(_, kurssit)),
       columnSettings = henkiloTietoColumns ++ kurssitColumnSettings(kurssit)
     )
@@ -268,10 +268,6 @@ object LukioRaportti {
     val tunnustettu = if (isTunnustettu) ",tunnustettu" else ""
 
     s"${arvosana},${laajuus},${kurssityyppi}${tunnustettu}"
-  }
-
-  private def removeForbiddenCharactersInExcel(str: String) = {
-    str.filter(c => c.isLetterOrDigit || c.isWhitespace)
   }
 }
 

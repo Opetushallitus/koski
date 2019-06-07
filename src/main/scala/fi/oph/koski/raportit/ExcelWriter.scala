@@ -10,6 +10,7 @@ import org.apache.poi.poifs.crypt.temp.{EncryptedTempData, SXSSFWorkbookWithCust
 import org.apache.poi.poifs.filesystem.POIFSFileSystem
 import org.apache.poi.ss.usermodel._
 import org.apache.poi.ss.util.CellRangeAddress
+import org.apache.poi.ss.util.WorkbookUtil.createSafeSheetName
 import org.apache.poi.xssf.streaming.{SXSSFCell, SXSSFDrawing, SXSSFSheet, SXSSFWorkbook}
 import org.apache.poi.xssf.usermodel.XSSFSheet
 
@@ -27,7 +28,7 @@ object ExcelWriter {
       coreProps.setTitle(workbookSettings.title)
       coreProps.setCreator("Koski")
       sheets.foreach { sheet =>
-        val sh = wb.createSheet(sheet.title)
+        val sh = wb.createSheet(createSafeSheetName(sheet.title, ' '))
         sheet match {
           case ds: SheetWithColumnSettings => writeDataSheet(wb, sh, ds)
           case ds: DocumentationSheet => writeDocumentationSheet(wb, sh, ds)

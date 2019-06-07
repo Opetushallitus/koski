@@ -22,6 +22,15 @@ class ExcelWriterSpec extends FreeSpec with Matchers {
       an[EncryptedDocumentException] should be thrownBy (withExcel(dataSheetAndDocumentationSheetTestCase(password = "wrong_password")) { _ => 1 should equal(1) })
     }
 
+    "Erikoismerkit muutetaan välilyönneiksi välilehtien nimessä ja eivät aiheuta muualla virhettä" in {
+      noException shouldBe thrownBy(
+        withExcel(erikoismerkkienKäsittelyTestCase()) { wb =>
+          wb.getNumberOfSheets should equal(1)
+          wb.getSheetAt(0).getSheetName should equal("       datasheet_title")
+        }
+      )
+    }
+
     "Excelin luonti, DataSheet ja DocumentationSheet" - {
       withExcel(dataSheetAndDocumentationSheetTestCase()) { wb =>
         "Luo data ja dokumentaatio välilehdet" in {
@@ -261,6 +270,16 @@ class ExcelWriterSpec extends FreeSpec with Matchers {
     val documentationSheet = DocumentationSheet("documentation_sheet_title", "dokumentaatio")
 
     (workbookSettings, Seq(dataSheet, documentationSheet))
+  }
+
+  private lazy val erikoismerkit = "[]?*\\/:"
+
+  private def erikoismerkkienKäsittelyTestCase() = {
+    val workbookSettings = WorkbookSettings(expectedExcelTitle, Some(excelPassword))
+    val dynamicRows= Seq(Seq("foo"))
+    val dynamicColumnSettings = Seq(Column(s"${erikoismerkit}bar", comment = Some(erikoismerkit)))
+    val dataSheet = DynamicDataSheet(s"${erikoismerkit}datasheet_title", dynamicRows, dynamicColumnSettings)
+    (workbookSettings, Seq(dataSheet))
   }
 
   private def withExcel(params: (WorkbookSettings, Seq[Sheet]))(tests: (Workbook => Unit)): Unit = {

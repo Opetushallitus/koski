@@ -52,7 +52,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
             "A1 v englanti", "AI v Suomen kieli ja kirjallisuus", "B1 v ruotsi", "B3 v latina",
             "BI v Biologia", "FI v Filosofia", "FY v Fysiikka", "GE v Maantieto", "HI v Historia",
             "ITT p Tanssi ja liike", "KE v Kemia", "KT v Islam", "KU v Kuvataide", "LI v Liikunta",
-            "MA v Matematiikka pitkä oppimäärä", "MU v Musiikki", "OA v Oman äidinkielen opinnot",
+            "MA v Matematiikka, pitkä oppimäärä", "MU v Musiikki", "OA v Oman äidinkielen opinnot",
             "PS v Psykologia", "TE v Terveystieto", "TO v Teemaopinnot", "YH v Yhteiskuntaoppi"
           ))
         }
