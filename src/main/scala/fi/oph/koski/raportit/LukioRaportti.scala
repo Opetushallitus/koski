@@ -138,7 +138,8 @@ object LukioRaportti {
     CompactColumn("Ulkomaanjaksot"),
     CompactColumn("Erityisen koulutustehtävän tehtävät"),
     CompactColumn("Erityisen koulutustehtävän jaksot"),
-    CompactColumn("Sisäoppilaitosmainen majoitus")
+    CompactColumn("Sisäoppilaitosmainen majoitus"),
+    CompactColumn("Syy alle 18-vuotiaana aloitettuun opiskeluun aikuisten lukiokoulutuksessa")
   )
 
   private def opiskeluoikeudenLisätietojenTiedot(lisatiedot: Option[LukionOpiskeluoikeudenLisätiedot], alku: LocalDate, loppu: LocalDate) = Seq(
@@ -148,7 +149,8 @@ object LukioRaportti {
     lisatiedot.flatMap(_.ulkomaanjaksot.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
     lisatiedot.flatMap(_.erityisenKoulutustehtävänJaksot.map(_.flatMap(_.tehtävä.nimi.map(_.get("fi"))).mkString(","))),
     lisatiedot.flatMap(_.erityisenKoulutustehtävänJaksot.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
-    lisatiedot.flatMap(_.sisäoppilaitosmainenMajoitus.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum))
+    lisatiedot.flatMap(_.sisäoppilaitosmainenMajoitus.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
+    lisatiedot.flatMap(_.alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy.map(_.get("fi")))
   )
 
   private val henkiloTietoColumns = Seq(
