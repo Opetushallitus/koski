@@ -10,6 +10,7 @@ import org.apache.poi.poifs.crypt.temp.{EncryptedTempData, SXSSFWorkbookWithCust
 import org.apache.poi.poifs.filesystem.POIFSFileSystem
 import org.apache.poi.ss.usermodel._
 import org.apache.poi.ss.util.CellRangeAddress
+import org.apache.poi.ss.util.WorkbookUtil.createSafeSheetName
 import org.apache.poi.xssf.streaming.{SXSSFCell, SXSSFDrawing, SXSSFSheet, SXSSFWorkbook}
 import org.apache.poi.xssf.usermodel.XSSFSheet
 
@@ -27,7 +28,7 @@ object ExcelWriter {
       coreProps.setTitle(workbookSettings.title)
       coreProps.setCreator("Koski")
       sheets.foreach { sheet =>
-        val sh = wb.createSheet(sheet.title)
+        val sh = createSheet(sheet, wb)
         sheet match {
           case ds: SheetWithColumnSettings => writeDataSheet(wb, sh, ds)
           case ds: DocumentationSheet => writeDocumentationSheet(wb, sh, ds)
@@ -55,6 +56,37 @@ object ExcelWriter {
       // deletes temporary files from disk
       wb.dispose()
     }
+  }
+
+  private def createSheet(sheet: Sheet, wb: SXSSFWorkbook) = {
+    val safeUniqueSheetName = createSafeUniqueSheetName(sheet.title, wb)
+    wb.createSheet(safeUniqueSheetName)
+  }
+
+  private def createSafeUniqueSheetName(sheetName: String, wb: SXSSFWorkbook, indexToAdd: Int = 2): String = {
+    if (indexToAdd > 9) { throw new InterruptedException("Uniikin välilehden nimen muodostamista yritettiin liian monta kertaa onnistumatta.") }
+
+    val safeSheetName = createSafeSheetName(sheetName)
+
+    if (sheetNameAlreadyExists(safeSheetName, wb)) {
+      val safeSheetNameWithIndex = appendIndexToSheetName(safeSheetName, indexToAdd)
+      createSafeUniqueSheetName(safeSheetNameWithIndex, wb, indexToAdd + 1)
+    } else {
+      safeSheetName
+    }
+  }
+
+  private def appendIndexToSheetName(sheetName: String, index: Int) = {
+    val MAX_SHEET_NAME_LENGTH = 31
+    if (sheetName.length < MAX_SHEET_NAME_LENGTH) {
+      sheetName + index
+    } else {
+      sheetName.take(30) + index
+    }
+  }
+
+  private def sheetNameAlreadyExists(sheetName: String, wb: SXSSFWorkbook) = {
+    wb.sheetIterator.asScala.exists(_.getSheetName == sheetName)
   }
 
   private def writeDataSheet(wb: SXSSFWorkbook, sh: SXSSFSheet, dataSheet: SheetWithColumnSettings): Unit = {
