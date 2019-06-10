@@ -31,6 +31,25 @@ class ExcelWriterSpec extends FreeSpec with Matchers {
       )
     }
 
+    "Saman nimiset välilehdet" - {
+      "Saman nimisiin välilehtiin lisätään indeksi loppuun virheen välttämiseksi" in {
+        withExcel(yhteentörmäysTestCase) { wb =>
+          wb.getNumberOfSheets should equal(5)
+          wb.sheetIterator.asScala.map(_.getSheetName).toSeq should equal(Seq(
+            "       datasheet_title",
+            "       datasheet_title2",
+            "todella_pitka_valilehden_nimi_j",
+            "todella_pitka_valilehden_nimi_2",
+            "uniikki"
+          ))
+        }
+      }
+      "Jos uniikkia välilehteä ei löydy" in {
+        an[InterruptedException] should be thrownBy(withExcel(uniikinVälilehdenLuontiEpäonnistuuTestCase) {_ => Unit})
+      }
+    }
+
+
     "Excelin luonti, DataSheet ja DocumentationSheet" - {
       withExcel(dataSheetAndDocumentationSheetTestCase()) { wb =>
         "Luo data ja dokumentaatio välilehdet" in {
@@ -280,6 +299,29 @@ class ExcelWriterSpec extends FreeSpec with Matchers {
     val dynamicColumnSettings = Seq(Column(s"${erikoismerkit}bar", comment = Some(erikoismerkit)))
     val dataSheet = DynamicDataSheet(s"${erikoismerkit}datasheet_title", dynamicRows, dynamicColumnSettings)
     (workbookSettings, Seq(dataSheet))
+  }
+
+  private def yhteentörmäysTestCase = {
+    val workbookSettings = WorkbookSettings(expectedExcelTitle, Some(excelPassword))
+    val dataRow= Seq(Seq("foo"))
+    val columnSettings= Seq(Column(s"${erikoismerkit}bar", comment = Some(erikoismerkit)))
+    val dataSheet_A = DynamicDataSheet(s"${erikoismerkit}datasheet_title", dataRow, columnSettings)
+    val dataSheet_B = DynamicDataSheet("       datasheet_title", dataRow, columnSettings)
+    val dataSheet_C = DynamicDataSheet("todella_pitka_valilehden_nimi_joka_nimi_ei_mahdu_kokonaisena", dataRow, columnSettings)
+    val dataSheet_D = DynamicDataSheet("todella_pitka_valilehden_nimi_joka_nimi_ei_mahdu_kokonaisena", dataRow, columnSettings)
+    val dataSheet_E = DynamicDataSheet("uniikki", dataRow, columnSettings)
+    (workbookSettings, Seq(dataSheet_A, dataSheet_B, dataSheet_C, dataSheet_D, dataSheet_E))
+  }
+
+  private def uniikinVälilehdenLuontiEpäonnistuuTestCase = {
+    val workbookSettings = WorkbookSettings(expectedExcelTitle, Some(excelPassword))
+    val dataRow = Seq(Seq("foo"))
+    val columnSettings = Seq(Column(s"${erikoismerkit}bar", comment = Some(erikoismerkit)))
+    val sheet = DynamicDataSheet("todella_pitka_valilehden_nimi_j", dataRow, columnSettings)
+    val sheetsWithIndex = (0 to 10).map(i => DynamicDataSheet(s"todella_pitka_valilehden_nimi_$i", dataRow, columnSettings))
+    val duplicate = DynamicDataSheet("todella_pitka_valilehden_nimi_j", dataRow, columnSettings)
+    val sheets = (sheet +: sheetsWithIndex) :+ duplicate
+    (workbookSettings, sheets)
   }
 
   private def withExcel(params: (WorkbookSettings, Seq[Sheet]))(tests: (Workbook => Unit)): Unit = {
