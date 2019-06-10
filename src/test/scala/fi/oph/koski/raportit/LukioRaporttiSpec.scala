@@ -25,11 +25,77 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
   "Lukion suoritustietoraportti" - {
 
     "Raportti näyttää oikealta" - {
-      lazy val titleAndRowsWithColumns = buildLukioraportti(jyväskylänNormaalikoulu, date(2012, 1, 1), date(2016, 1, 1))
+      lazy val sheets = buildLukioraportti(jyväskylänNormaalikoulu, date(2012, 1, 1), date(2016, 1, 1))
+      lazy val titleAndRowsWithColumns = sheets.map(s => (s.title, zipRowsWithColumTitles(s)))
       "Oppiaineita tai kursseja ei päädy duplikaattina raportille" in {
-        val sheets = LukioRaportti.buildRaportti(repository, jyväskylänNormaalikoulu, date(2012, 1, 1), date(2016, 1, 1))
         verifyNoDuplicates(sheets.map(_.title))
         sheets.map(_.columnSettings.map(_.title)).foreach(verifyNoDuplicates)
+      }
+      "Sarakkeidein järjestys oppiaine tason välilehdellä" in {
+        sheets.head.columnSettings.map(_.title) should equal(Seq(
+          "Opiskeluoikeuden oid",
+          "Lähdejärjestelmä",
+          "Koulutustoimija",
+          "Oppilaitoksen nimi",
+          "Toimipiste",
+          "Opiskeluoikeuden tunniste lähdejärjestelmässä",
+          "Oppijan oid",
+          "Hetu",
+          "Sukunimi",
+          "Etunimet",
+          "Opiskeluoikeuden viimeisin tila",
+          "Opiskeluoikeuden tilat aikajakson aikana",
+          "Suorituksen tyyppi",
+          "Suorituksen tila",
+          "Suorituksen alkamispäivä",
+          "Suorituksen vahvistuspäivä",
+          "Läsnäolopäiviä aikajakson aikana",
+          "Rahoitukset",
+          "Ryhmä",
+          "Pidennetty Päättymispäivä",
+          "Ulkomainen vaihto-opiskelija",
+          "Yksityisopiskelija",
+          "Ulkomaanjaksot",
+          "Erityisen koulutustehtävän tehtävät",
+          "Erityisen koulutustehtävän jaksot",
+          "Sisäoppilaitosmainen majoitus",
+          "Yhteislaajuus",
+          "BI Biologia valtakunnallinen",
+          "FI Filosofia valtakunnallinen",
+          "FY Fysiikka valtakunnallinen",
+          "HI Historia valtakunnallinen",
+          "KT Islam valtakunnallinen",
+          "KE Kemia valtakunnallinen",
+          "KU Kuvataide valtakunnallinen",
+          "LI Liikunta valtakunnallinen",
+          "GE Maantieto valtakunnallinen",
+          "MA Matematiikka, pitkä oppimäärä valtakunnallinen",
+          "MU Musiikki valtakunnallinen",
+          "OA Oman äidinkielen opinnot valtakunnallinen",
+          "PS Psykologia valtakunnallinen",
+          "AI Suomen kieli ja kirjallisuus valtakunnallinen",
+          "ITT Tanssi ja liike paikallinen",
+          "TO Teemaopinnot valtakunnallinen",
+          "TE Terveystieto valtakunnallinen",
+          "YH Yhteiskuntaoppi valtakunnallinen",
+          "A1 englanti valtakunnallinen",
+          "B3 latina valtakunnallinen",
+          "B1 ruotsi valtakunnallinen"
+        ))
+      }
+      "Sarakkeiden järjestys oppiaineen kursseja käsittelevällä välilehdellä" in {
+        val historia = sheets.find(_.title == "HI v Historia")
+        historia shouldBe defined
+        historia.get.columnSettings.map(_.title) should equal(Seq(
+          "Oppijan oid",
+          "Hetu",
+          "Sukunimi",
+          "Etunimet",
+          "HI1 Ihminen ympäristön ja yhteiskuntien muutoksessa valtakunnallinen",
+          "HI2 Kansainväliset suhteet valtakunnallinen",
+          "HI3 Itsenäisen Suomen historia valtakunnallinen",
+          "HI4 Eurooppalaisen maailmankuvan kehitys valtakunnallinen"
+        ))
       }
       "Oppiaine tason välilehti" - {
         lazy val (title, oppiaineetRowsWithColumns) = titleAndRowsWithColumns.head
@@ -49,11 +115,27 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
           val kurssiVälilehtienTitlet = kurssit.map { case (title, _) => title }
 
           kurssiVälilehtienTitlet should equal(Seq(
-            "A1 v englanti", "AI v Suomen kieli ja kirjallisuus", "B1 v ruotsi", "B3 v latina",
-            "BI v Biologia", "FI v Filosofia", "FY v Fysiikka", "GE v Maantieto", "HI v Historia",
-            "ITT p Tanssi ja liike", "KE v Kemia", "KT v Islam", "KU v Kuvataide", "LI v Liikunta",
-            "MA v Matematiikka, pitkä oppimäärä", "MU v Musiikki", "OA v Oman äidinkielen opinnot",
-            "PS v Psykologia", "TE v Terveystieto", "TO v Teemaopinnot", "YH v Yhteiskuntaoppi"
+            "BI v Biologia",
+            "FI v Filosofia",
+            "FY v Fysiikka",
+            "HI v Historia",
+            "KT v Islam",
+            "KE v Kemia",
+            "KU v Kuvataide",
+            "LI v Liikunta",
+            "GE v Maantieto",
+            "MA v Matematiikka, pitkä oppimäärä",
+            "MU v Musiikki",
+            "OA v Oman äidinkielen opinnot",
+            "PS v Psykologia",
+            "AI v Suomen kieli ja kirjallisuus",
+            "ITT p Tanssi ja liike",
+            "TO v Teemaopinnot",
+            "TE v Terveystieto",
+            "YH v Yhteiskuntaoppi",
+            "A1 v englanti",
+            "B3 v latina",
+            "B1 v ruotsi"
           ))
         }
         "Historia" in {
@@ -103,8 +185,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
   }
 
   private def buildLukioraportti(organisaatioOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate) = {
-    val sheets = LukioRaportti.buildRaportti(repository, organisaatioOid, alku, loppu)
-    sheets.map(s => (s.title, zipRowsWithColumTitles(s)))
+    LukioRaportti.buildRaportti(repository, organisaatioOid, alku, loppu)
   }
 
   private def zipRowsWithColumTitles(sheet: DynamicDataSheet) = {
@@ -147,6 +228,8 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
 
   lazy val oid = "123"
 
+  private def kurssintiedot(arvosana: String, laajuus: String = "1.0", tyyppi: String) = s"$tyyppi,Arvosana $arvosana,Laajuus $laajuus"
+
   lazy val expectedLukiolainenRow = Map(
     "Opiskeluoikeuden oid" -> "",
     "Oppilaitoksen nimi" -> "Jyväskylän normaalikoulu",
@@ -167,7 +250,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Pidennetty Päättymispäivä" -> false,
     "Ulkomainen vaihto-opiskelija" -> false,
     "Yksityisopiskelija" -> false,
-    "Ulkomaanajaksot" -> Some(366),
+    "Ulkomaanjaksot" -> Some(366),
     "Erityisen koulutustehtävän tehtävät" -> Some("Erityisenä koulutustehtävänä taide"),
     "Erityisen koulutustehtävän jaksot" -> Some(1),
     "Sisäoppilaitosmainen majoitus" -> Some(366),
@@ -175,27 +258,27 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Sukunimi" -> Some(lukiolainen.sukunimi),
     "Etunimet" -> Some(lukiolainen.etunimet),
     "Yhteislaajuus" -> 89.5,
-    "Suomen kieli ja kirjallisuus (AI) valtakunnallinen" -> "Arvosana 9, 8 kurssia",
-    "englanti (A1) valtakunnallinen" -> "Arvosana 9, 9 kurssia",
-    "ruotsi (B1) valtakunnallinen" -> "Arvosana 7, 5 kurssia",
-    "latina (B3) valtakunnallinen" -> "Arvosana 9, 2 kurssia",
-    "Matematiikka, pitkä oppimäärä (MA) valtakunnallinen" -> "Arvosana 9, 15 kurssia",
-    "Biologia (BI) valtakunnallinen" -> "Arvosana 9, 8 kurssia",
-    "Maantieto (GE) valtakunnallinen" -> "Arvosana 8, 2 kurssia",
-    "Fysiikka (FY) valtakunnallinen" -> "Arvosana 8, 13 kurssia",
-    "Kemia (KE) valtakunnallinen" -> "Arvosana 8, 8 kurssia",
-    "Islam (KT) valtakunnallinen" -> "Arvosana 8, 3 kurssia",
-    "Filosofia (FI) valtakunnallinen" -> "Arvosana 8, 1 kurssi",
-    "Psykologia (PS) valtakunnallinen" -> "Arvosana 9, 1 kurssi",
-    "Historia (HI) valtakunnallinen" -> "Arvosana 7, 4 kurssia",
-    "Yhteiskuntaoppi (YH) valtakunnallinen" -> "Arvosana 8, 2 kurssia",
-    "Liikunta (LI) valtakunnallinen" -> "Arvosana 9, 3 kurssia",
-    "Musiikki (MU) valtakunnallinen" -> "Arvosana 8, 1 kurssi",
-    "Kuvataide (KU) valtakunnallinen" -> "Arvosana 9, 2 kurssia",
-    "Terveystieto (TE) valtakunnallinen" -> "Arvosana 9, 1 kurssi",
-    "Tanssi ja liike (ITT) paikallinen" -> "Arvosana 10, 1 kurssi",
-    "Teemaopinnot (TO) valtakunnallinen" -> "Arvosana S, 1 kurssi",
-    "Oman äidinkielen opinnot (OA) valtakunnallinen" -> "Arvosana S, 1 kurssi"
+    "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 8 kurssia",
+    "A1 englanti valtakunnallinen" -> "Arvosana 9, 9 kurssia",
+    "B1 ruotsi valtakunnallinen" -> "Arvosana 7, 5 kurssia",
+    "B3 latina valtakunnallinen" -> "Arvosana 9, 2 kurssia",
+    "MA Matematiikka, pitkä oppimäärä valtakunnallinen" -> "Arvosana 9, 15 kurssia",
+    "BI Biologia valtakunnallinen" -> "Arvosana 9, 8 kurssia",
+    "GE Maantieto valtakunnallinen" -> "Arvosana 8, 2 kurssia",
+    "FY Fysiikka valtakunnallinen" -> "Arvosana 8, 13 kurssia",
+    "KE Kemia valtakunnallinen" -> "Arvosana 8, 8 kurssia",
+    "KT Islam valtakunnallinen" -> "Arvosana 8, 3 kurssia",
+    "FI Filosofia valtakunnallinen" -> "Arvosana 8, 1 kurssi",
+    "PS Psykologia valtakunnallinen" -> "Arvosana 9, 1 kurssi",
+    "HI Historia valtakunnallinen" -> "Arvosana 7, 4 kurssia",
+    "YH Yhteiskuntaoppi valtakunnallinen" -> "Arvosana 8, 2 kurssia",
+    "LI Liikunta valtakunnallinen" -> "Arvosana 9, 3 kurssia",
+    "MU Musiikki valtakunnallinen" -> "Arvosana 8, 1 kurssi",
+    "KU Kuvataide valtakunnallinen" -> "Arvosana 9, 2 kurssia",
+    "TE Terveystieto valtakunnallinen" -> "Arvosana 9, 1 kurssi",
+    "ITT Tanssi ja liike paikallinen" -> "Arvosana 10, 1 kurssi",
+    "TO Teemaopinnot valtakunnallinen" -> "Arvosana S, 1 kurssi",
+    "OA Oman äidinkielen opinnot valtakunnallinen" -> "Arvosana S, 1 kurssi"
   )
 
   lazy val defaultExpectedAineopiskelijaRow = Map(
@@ -218,66 +301,65 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Pidennetty Päättymispäivä" -> false,
     "Ulkomainen vaihto-opiskelija" -> false,
     "Yksityisopiskelija" -> false,
-    "Ulkomaanajaksot" -> None,
+    "Ulkomaanjaksot" -> None,
     "Erityisen koulutustehtävän tehtävät" -> None,
     "Erityisen koulutustehtävän jaksot" -> None,
     "Sisäoppilaitosmainen majoitus" -> None,
     "Hetu" -> lukionAineopiskelijaAktiivinen.hetu,
     "Sukunimi" -> Some(lukionAineopiskelijaAktiivinen.sukunimi),
     "Etunimet" -> Some(lukionAineopiskelijaAktiivinen.etunimet),
-    "Suomen kieli ja kirjallisuus (AI) valtakunnallinen" -> "",
-    "englanti (A1) valtakunnallinen" -> "",
-    "ruotsi (B1) valtakunnallinen" -> "",
-    "latina (B3) valtakunnallinen" -> "",
-    "Matematiikka, pitkä oppimäärä (MA) valtakunnallinen" -> "",
-    "Biologia (BI) valtakunnallinen" -> "",
-    "Maantieto (GE) valtakunnallinen" -> "",
-    "Fysiikka (FY) valtakunnallinen" -> "",
-    "Kemia (KE) valtakunnallinen" -> "",
-    "Islam (KT) valtakunnallinen" -> "",
-    "Filosofia (FI) valtakunnallinen" -> "",
-    "Psykologia (PS) valtakunnallinen" -> "",
-    "Historia (HI) valtakunnallinen" -> "",
-    "Yhteiskuntaoppi (YH) valtakunnallinen" -> "",
-    "Liikunta (LI) valtakunnallinen" -> "",
-    "Musiikki (MU) valtakunnallinen" -> "",
-    "Kuvataide (KU) valtakunnallinen" -> "",
-    "Terveystieto (TE) valtakunnallinen" -> "",
-    "Tanssi ja liike (ITT) paikallinen" -> "",
-    "Teemaopinnot (TO) valtakunnallinen" -> "",
-    "Oman äidinkielen opinnot (OA) valtakunnallinen" -> ""
+    "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "",
+    "A1 englanti valtakunnallinen" -> "",
+    "B1 ruotsi valtakunnallinen" -> "",
+    "B3 latina valtakunnallinen" -> "",
+    "MA Matematiikka, pitkä oppimäärä valtakunnallinen" -> "",
+    "BI Biologia valtakunnallinen" -> "",
+    "GE Maantieto valtakunnallinen" -> "",
+    "FY Fysiikka valtakunnallinen" -> "",
+    "KE Kemia valtakunnallinen" -> "",
+    "KT Islam valtakunnallinen" -> "",
+    "FI Filosofia valtakunnallinen" -> "",
+    "PS Psykologia valtakunnallinen" -> "",
+    "HI Historia valtakunnallinen" -> "",
+    "YH Yhteiskuntaoppi valtakunnallinen" -> "",
+    "LI Liikunta valtakunnallinen" -> "",
+    "MU Musiikki valtakunnallinen" -> "",
+    "KU Kuvataide valtakunnallinen" -> "",
+    "TE Terveystieto valtakunnallinen" -> "",
+    "ITT Tanssi ja liike paikallinen" -> "",
+    "TO Teemaopinnot valtakunnallinen" -> "",
+    "OA Oman äidinkielen opinnot valtakunnallinen" -> ""
   )
 
   lazy val expectedAineopiskelijaHistoriaRow = defaultExpectedAineopiskelijaRow + (
     "Suorituksen vahvistuspäivä" -> Some(date(2016, 1, 10)),
     "Yhteislaajuus" -> 4.0,
-    "Historia (HI) valtakunnallinen" -> "Arvosana 9, 4 kurssia"
+    "HI Historia valtakunnallinen" -> "Arvosana 9, 4 kurssia"
   )
 
   lazy val expectedAineopiskelijaKemiaRow = defaultExpectedAineopiskelijaRow + (
     "Suorituksen vahvistuspäivä" -> Some(date(2015, 1, 10)),
     "Yhteislaajuus" -> 1.0,
-    "Kemia (KE) valtakunnallinen" -> "Arvosana 8, 1 kurssi"
+    "KE Kemia valtakunnallinen" -> "Arvosana 8, 1 kurssi"
   )
 
   lazy val expectedAineopiskelijaFilosofiaRow = defaultExpectedAineopiskelijaRow + (
     "Suorituksen tila" -> "kesken",
     "Suorituksen vahvistuspäivä" -> None,
     "Yhteislaajuus" -> 1.0,
-    "Filosofia (FI) valtakunnallinen" -> "Arvosana 9, 1 kurssi"
+    "FI Filosofia valtakunnallinen" -> "Arvosana 9, 1 kurssi"
   )
 
-  private def kurssintiedot(arvosana: String, laajuus: String = "1.0", tyyppi: String) = s"Arvosana $arvosana,Laajuus $laajuus,$tyyppi"
 
   lazy val expectedLukiolainenHistorianKurssitRow = Map(
     "Oppijan oid" -> Some(lukiolainen.oid),
     "Hetu" -> lukiolainen.hetu,
     "Sukunimi" -> Some(lukiolainen.sukunimi),
     "Etunimet" -> Some(lukiolainen.etunimet),
-    "Ihminen ympäristön ja yhteiskuntien muutoksessa HI1 valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
-    "Kansainväliset suhteet HI2 valtakunnallinen" -> kurssintiedot(arvosana = "8", tyyppi = "pakollinen"),
-    "Itsenäisen Suomen historia HI3 valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
-    "Eurooppalaisen maailmankuvan kehitys HI4 valtakunnallinen" -> kurssintiedot(arvosana = "6", tyyppi = "pakollinen")
+    "HI1 Ihminen ympäristön ja yhteiskuntien muutoksessa valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
+    "HI2 Kansainväliset suhteet valtakunnallinen" -> kurssintiedot(arvosana = "8", tyyppi = "pakollinen"),
+    "HI3 Itsenäisen Suomen historia valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
+    "HI4 Eurooppalaisen maailmankuvan kehitys valtakunnallinen" -> kurssintiedot(arvosana = "6", tyyppi = "pakollinen")
   )
 
   lazy val expectedAineopiskelijaHistoriaKurssitRow = Map(
@@ -285,9 +367,9 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Hetu" -> lukionAineopiskelijaAktiivinen.hetu,
     "Sukunimi" -> Some(lukionAineopiskelijaAktiivinen.sukunimi),
     "Etunimet" -> Some(lukionAineopiskelijaAktiivinen.etunimet),
-    "Ihminen ympäristön ja yhteiskuntien muutoksessa HI1 valtakunnallinen" -> "",
-    "Kansainväliset suhteet HI2 valtakunnallinen" -> kurssintiedot(arvosana = "8", tyyppi = "pakollinen"),
-    "Itsenäisen Suomen historia HI3 valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
-    "Eurooppalaisen maailmankuvan kehitys HI4 valtakunnallinen" -> kurssintiedot(arvosana = "6", tyyppi = "pakollinen")
+    "HI1 Ihminen ympäristön ja yhteiskuntien muutoksessa valtakunnallinen" -> "",
+    "HI2 Kansainväliset suhteet valtakunnallinen" -> kurssintiedot(arvosana = "8", tyyppi = "pakollinen"),
+    "HI3 Itsenäisen Suomen historia valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
+    "HI4 Eurooppalaisen maailmankuvan kehitys valtakunnallinen" -> kurssintiedot(arvosana = "6", tyyppi = "pakollinen")
   )
 }
