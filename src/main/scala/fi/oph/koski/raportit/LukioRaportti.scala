@@ -249,7 +249,7 @@ object LukioRaportti {
     DynamicDataSheet(
       title = oppiaine.toSheetTitle,
       rows = filtered.map(kurssiSheetRow(_, kurssit)),
-      columnSettings = henkiloTietoColumns ++ kurssitColumnSettings(kurssit),
+      columnSettings = henkiloTietoColumns ++ Seq(CompactColumn("Toimipiste")) ++ kurssitColumnSettings(kurssit),
       orderKey = oppiaine.nimi.capitalize
     )
   }
@@ -264,7 +264,8 @@ object LukioRaportti {
 
   private def kurssiSheetRow(data: LukioRaporttiRows, kurssit: Seq[LukioRaporttiKurssi]) = {
     henkilotiedot(data.henkilo) ++
-      kurssienTiedot(kurssit, data)
+      Seq(data.päätasonSuoritus.toimipisteNimi) ++
+        kurssienTiedot(kurssit, data)
   }
 
   private def kurssienTiedot(kurssit: Seq[LukioRaporttiKurssi], data: LukioRaporttiRows) = {

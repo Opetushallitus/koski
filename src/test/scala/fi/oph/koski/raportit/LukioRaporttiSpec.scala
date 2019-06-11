@@ -94,6 +94,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
           "Hetu",
           "Sukunimi",
           "Etunimet",
+          "Toimipiste",
           "HI1 Ihminen ympäristön ja yhteiskuntien muutoksessa valtakunnallinen",
           "HI1 Ihminen, ympäristö ja kulttuuri valtakunnallinen",
           "HI2 Kansainväliset suhteet valtakunnallinen",
@@ -314,6 +315,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Hetu" -> lukiolainen.hetu,
     "Sukunimi" -> Some(lukiolainen.sukunimi),
     "Etunimet" -> Some(lukiolainen.etunimet),
+    "Toimipiste" -> "Jyväskylän normaalikoulu",
     "HI1 Ihminen ympäristön ja yhteiskuntien muutoksessa valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
     "HI1 Ihminen, ympäristö ja kulttuuri valtakunnallinen" -> "",
     "HI2 Kansainväliset suhteet valtakunnallinen" -> kurssintiedot(arvosana = "8", tyyppi = "pakollinen"),
@@ -405,7 +407,8 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
       "Oppijan oid" -> Some(lukionAineopiskelijaAktiivinen.oid),
       "Hetu" -> lukionAineopiskelijaAktiivinen.hetu,
       "Sukunimi" -> Some(lukionAineopiskelijaAktiivinen.sukunimi),
-      "Etunimet" -> Some(lukionAineopiskelijaAktiivinen.etunimet)
+      "Etunimet" -> Some(lukionAineopiskelijaAktiivinen.etunimet),
+      "Toimipiste" -> "Jyväskylän normaalikoulu"
     )
 
     lazy val historiaKurssitRow = eiSuorituksiaKurssitRow + (
@@ -458,11 +461,12 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     )
 
     lazy val eiTiedossaKurssitRow = Map(
-    "Oppijan oid" -> Some(lukionEiTiedossaAineopiskelija.oid),
-    "Hetu" -> lukionEiTiedossaAineopiskelija.hetu,
-    "Sukunimi" -> Some(lukionEiTiedossaAineopiskelija.sukunimi),
-    "Etunimet" -> Some(lukionEiTiedossaAineopiskelija.etunimet),
-    "FI1 Johdatus filosofiseen ajatteluun valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen")
+      "Oppijan oid" -> Some(lukionEiTiedossaAineopiskelija.oid),
+      "Hetu" -> lukionEiTiedossaAineopiskelija.hetu,
+      "Sukunimi" -> Some(lukionEiTiedossaAineopiskelija.sukunimi),
+      "Etunimet" -> Some(lukionEiTiedossaAineopiskelija.etunimet),
+      "Toimipiste" -> "Jyväskylän normaalikoulu",
+      "FI1 Johdatus filosofiseen ajatteluun valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen")
     )
   }
 }
