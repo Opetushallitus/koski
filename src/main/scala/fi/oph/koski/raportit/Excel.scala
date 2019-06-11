@@ -36,7 +36,7 @@ case class DataSheet(title: String, rows: Seq[Product], columnSettings: Seq[(Str
   override def rowIterator(rowIndex: Int): Iterator[Any] = rows(rowIndex).productIterator
 }
 
-case class DynamicDataSheet(title: String, rows: Seq[Seq[Any]], columnSettings: Seq[Column]) extends SheetWithColumnSettings {
+case class DynamicDataSheet(title: String, rows: Seq[Seq[Any]], columnSettings: Seq[Column], orderKey: String = "") extends SheetWithColumnSettings {
   override def columnSettingsWithIndex: Seq[(Column, Int)] = columnSettings.zipWithIndex
   override def rowIterator(rowIndex: Int): Iterator[Any] = rows(rowIndex).iterator
 }
