@@ -37,7 +37,15 @@ object LukioRaportti {
     }.toSeq
   }
 
-  private def oppianeetJaNiidenKurssit(row: LukioRaporttiRows) = {
+  private def oppianeetJaNiidenKurssit(row: LukioRaporttiRows): Seq[LukioRaporttiOppiaineJaKurssit] = {
+    if (row.päätasonSuoritus.suorituksenTyyppi == lukionoppiaineenoppimaara) {
+      Seq(LukioRaporttiOppiaineJaKurssit(toOppiaine(row.päätasonSuoritus), row.osasuoritukset.map(toKurssi)))
+    } else {
+      oppiaineetJaNiidenKurssitOppimäärästä(row)
+    }
+  }
+
+  private def oppiaineetJaNiidenKurssitOppimäärästä(row: LukioRaporttiRows): Seq[LukioRaporttiOppiaineJaKurssit] = {
     val kurssit = row.osasuoritukset.filter(_.ylempiOsasuoritusId.isDefined).groupBy(_.ylempiOsasuoritusId.get)
     val oppiaineet = row.osasuoritukset.filter(isLukionOppiaine)
     val combineOppiaineWithKurssit = (oppiaine: ROsasuoritusRow) => LukioRaporttiOppiaineJaKurssit(toOppiaine(oppiaine), kurssit.getOrElse(oppiaine.osasuoritusId, Nil).map(toKurssi))
@@ -47,7 +55,10 @@ object LukioRaportti {
 
   private def isLukionOppiaine(osasuoritus: ROsasuoritusRow) = osasuoritus.suorituksenTyyppi == lukionoppiaine || osasuoritus.suorituksenTyyppi == lukionmuuopinto
 
-  private def toOppiaine(row: ROsasuoritusRow) = LukioRaporttiOppiaine(row.suorituksestaKäytettäväNimi.getOrElse("ei nimeä"), row.koulutusmoduuliKoodiarvo, row.koulutusmoduuliPaikallinen)
+  private def toOppiaine(row: RSuoritusRow) = row match {
+    case s: RPäätasonSuoritusRow => LukioRaporttiOppiaine(s.koulutusmoduuliNimi.getOrElse("ei nimeä"), s.koulutusmoduuliKoodiarvo, !s.koulutusmoduuliKoodisto.contains("koskioppiaineetyleissivistava"))
+    case s: ROsasuoritusRow => LukioRaporttiOppiaine(s.suorituksestaKäytettäväNimi.getOrElse("ei nimeä"), s.koulutusmoduuliKoodiarvo, s.koulutusmoduuliPaikallinen)
+  }
   private def toKurssi(row: ROsasuoritusRow) = LukioRaporttiKurssi(row.koulutusmoduuliNimi.getOrElse("ei nimeä"), row.koulutusmoduuliKoodiarvo, row.koulutusmoduuliPaikallinen)
 
   private def oppiaineJaLisätiedotSheet(opiskeluoikeusData: Seq[LukioRaporttiRows], oppiaineetJaKurssit: Seq[LukioRaporttiOppiaineJaKurssit], alku: LocalDate, loppu: LocalDate)(implicit executionContext: ExecutionContextExecutor) = {

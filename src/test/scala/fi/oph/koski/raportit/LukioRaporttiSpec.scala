@@ -63,6 +63,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
           "Syy alle 18-vuotiaana aloitettuun opiskeluun aikuisten lukiokoulutuksessa",
           "Yhteislaajuus",
           "BI Biologia valtakunnallinen",
+          "XX Ei tiedossa valtakunnallinen",
           "A1 Englanti valtakunnallinen",
           "FI Filosofia valtakunnallinen",
           "FY Fysiikka valtakunnallinen",
@@ -94,6 +95,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
           "Sukunimi",
           "Etunimet",
           "HI1 Ihminen ympäristön ja yhteiskuntien muutoksessa valtakunnallinen",
+          "HI1 Ihminen, ympäristö ja kulttuuri valtakunnallinen",
           "HI2 Kansainväliset suhteet valtakunnallinen",
           "HI3 Itsenäisen Suomen historia valtakunnallinen",
           "HI4 Eurooppalaisen maailmankuvan kehitys valtakunnallinen"
@@ -108,7 +110,23 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
           verifyOppijanRow(lukiolainen, expectedLukiolainenRow, oppiaineetRowsWithColumns)
         }
         "Oppiaineiden suoritus" in {
-          verifyOppijanRows(lukionAineopiskelijaAktiivinen, Seq(expectedAineopiskelijaHistoriaRow, expectedAineopiskelijaKemiaRow, expectedAineopiskelijaFilosofiaRow), oppiaineetRowsWithColumns)
+          verifyOppijanRows(lukionAineopiskelijaAktiivinen,
+            Seq(
+              AktiivinenAineopiskelija.historiaOppiaineenRow,
+              AktiivinenAineopiskelija.kemiaOppiaineenRow,
+              AktiivinenAineopiskelija.filosofiaOppiaineenRow
+            ),
+            oppiaineetRowsWithColumns
+          )
+          verifyOppijanRows(lukionEiTiedossaAineopiskelija,
+            Seq(
+              EiTiedossaOppiaineenOpiskelija.historiaOppiaineenRow,
+              EiTiedossaOppiaineenOpiskelija.kemiaOppiaineenRow,
+              EiTiedossaOppiaineenOpiskelija.filosofiaOppiaineenRow,
+              EiTiedossaOppiaineenOpiskelija.eiTiedossaOppiaineenRow
+            ),
+            oppiaineetRowsWithColumns
+          )
         }
       }
       "Kurssit tason välilehdet" - {
@@ -118,6 +136,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
 
           kurssiVälilehtienTitlet should equal(Seq(
             "BI v Biologia",
+            "XX v Ei tiedossa",
             "A1 v Englanti",
             "FI v Filosofia",
             "FY v Fysiikka",
@@ -143,7 +162,11 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
         "Historia" in {
           val (_, historia) = findRowsWithColumnsByTitle("HI v Historia", kurssit)
           verifyOppijanRow(lukiolainen, expectedLukiolainenHistorianKurssitRow, historia, addOpiskeluoikeudenOid = false)
-          verifyOppijanRow(lukionAineopiskelijaAktiivinen, expectedAineopiskelijaHistoriaKurssitRow, historia, addOpiskeluoikeudenOid = false)
+          verifyOppijanRow(lukionAineopiskelijaAktiivinen, AktiivinenAineopiskelija.historiaKurssitRow, historia, addOpiskeluoikeudenOid = false)
+        }
+        "Ei tiedossa oppiaine" in {
+          val (_, eiTiedossa) = findRowsWithColumnsByTitle("XX v Ei tiedossa", kurssit)
+          verifyOppijanRow(lukionEiTiedossaAineopiskelija, EiTiedossaOppiaineenOpiskelija.eiTiedossaKurssitRow, eiTiedossa, addOpiskeluoikeudenOid = false)
         }
       }
     }
@@ -263,6 +286,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Etunimet" -> Some(lukiolainen.etunimet),
     "Yhteislaajuus" -> 89.5,
     "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 8 kurssia",
+    "XX Ei tiedossa valtakunnallinen" -> "",
     "A1 Englanti valtakunnallinen" -> "Arvosana 9, 9 kurssia",
     "B1 Ruotsi valtakunnallinen" -> "Arvosana 7, 5 kurssia",
     "B3 Latina valtakunnallinen" -> "Arvosana 9, 2 kurssia",
@@ -285,7 +309,19 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "OA Oman äidinkielen opinnot valtakunnallinen" -> "Arvosana S, 1 kurssi"
   )
 
-  lazy val defaultExpectedAineopiskelijaRow = Map(
+  lazy val expectedLukiolainenHistorianKurssitRow = Map(
+    "Oppijan oid" -> Some(lukiolainen.oid),
+    "Hetu" -> lukiolainen.hetu,
+    "Sukunimi" -> Some(lukiolainen.sukunimi),
+    "Etunimet" -> Some(lukiolainen.etunimet),
+    "HI1 Ihminen ympäristön ja yhteiskuntien muutoksessa valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
+    "HI1 Ihminen, ympäristö ja kulttuuri valtakunnallinen" -> "",
+    "HI2 Kansainväliset suhteet valtakunnallinen" -> kurssintiedot(arvosana = "8", tyyppi = "pakollinen"),
+    "HI3 Itsenäisen Suomen historia valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
+    "HI4 Eurooppalaisen maailmankuvan kehitys valtakunnallinen" -> kurssintiedot(arvosana = "6", tyyppi = "pakollinen")
+  )
+
+  lazy val defaultAineopiskelijaRow = Map(
     "Opiskeluoikeuden oid" -> "",
     "Oppilaitoksen nimi" -> "Jyväskylän normaalikoulu",
     "Lähdejärjestelmä" -> None,
@@ -315,6 +351,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Sukunimi" -> Some(lukionAineopiskelijaAktiivinen.sukunimi),
     "Etunimet" -> Some(lukionAineopiskelijaAktiivinen.etunimet),
     "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "",
+    "XX Ei tiedossa valtakunnallinen" -> "",
     "A1 Englanti valtakunnallinen" -> "",
     "B1 Ruotsi valtakunnallinen" -> "",
     "B3 Latina valtakunnallinen" -> "",
@@ -337,45 +374,95 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "OA Oman äidinkielen opinnot valtakunnallinen" -> ""
   )
 
-  lazy val expectedAineopiskelijaHistoriaRow = defaultExpectedAineopiskelijaRow + (
-    "Suorituksen vahvistuspäivä" -> Some(date(2016, 1, 10)),
-    "Yhteislaajuus" -> 4.0,
-    "HI Historia valtakunnallinen" -> "Arvosana 9, 4 kurssia"
-  )
+  private object AktiivinenAineopiskelija {
+    private lazy val default = defaultAineopiskelijaRow + (
+      "Oppijan oid" -> Some(lukionAineopiskelijaAktiivinen.oid),
+      "Hetu" -> lukionAineopiskelijaAktiivinen.hetu,
+      "Sukunimi" -> Some(lukionAineopiskelijaAktiivinen.sukunimi),
+      "Etunimet" -> Some(lukionAineopiskelijaAktiivinen.etunimet)
+    )
 
-  lazy val expectedAineopiskelijaKemiaRow = defaultExpectedAineopiskelijaRow + (
-    "Suorituksen vahvistuspäivä" -> Some(date(2015, 1, 10)),
-    "Yhteislaajuus" -> 1.0,
-    "KE Kemia valtakunnallinen" -> "Arvosana 8, 1 kurssi"
-  )
+    lazy val historiaOppiaineenRow = default + (
+      "Suorituksen vahvistuspäivä" -> Some(date(2016, 1, 10)),
+      "Yhteislaajuus" -> 4.0,
+      "HI Historia valtakunnallinen" -> "Arvosana 9, 4 kurssia"
+    )
 
-  lazy val expectedAineopiskelijaFilosofiaRow = defaultExpectedAineopiskelijaRow + (
-    "Suorituksen tila" -> "kesken",
-    "Suorituksen vahvistuspäivä" -> None,
-    "Yhteislaajuus" -> 1.0,
-    "FI Filosofia valtakunnallinen" -> "Arvosana 9, 1 kurssi"
-  )
+    lazy val kemiaOppiaineenRow = default + (
+      "Suorituksen vahvistuspäivä" -> Some(date(2015, 1, 10)),
+      "Yhteislaajuus" -> 1.0,
+      "KE Kemia valtakunnallinen" -> "Arvosana 8, 1 kurssi"
+    )
 
+    lazy val filosofiaOppiaineenRow = default + (
+      "Suorituksen tila" -> "kesken",
+      "Suorituksen vahvistuspäivä" -> None,
+      "Yhteislaajuus" -> 1.0,
+      "FI Filosofia valtakunnallinen" -> "Arvosana 9, 1 kurssi"
+    )
 
-  lazy val expectedLukiolainenHistorianKurssitRow = Map(
-    "Oppijan oid" -> Some(lukiolainen.oid),
-    "Hetu" -> lukiolainen.hetu,
-    "Sukunimi" -> Some(lukiolainen.sukunimi),
-    "Etunimet" -> Some(lukiolainen.etunimet),
-    "HI1 Ihminen ympäristön ja yhteiskuntien muutoksessa valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
-    "HI2 Kansainväliset suhteet valtakunnallinen" -> kurssintiedot(arvosana = "8", tyyppi = "pakollinen"),
-    "HI3 Itsenäisen Suomen historia valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
-    "HI4 Eurooppalaisen maailmankuvan kehitys valtakunnallinen" -> kurssintiedot(arvosana = "6", tyyppi = "pakollinen")
-  )
+    lazy val eiSuorituksiaKurssitRow = Map(
+      "Oppijan oid" -> Some(lukionAineopiskelijaAktiivinen.oid),
+      "Hetu" -> lukionAineopiskelijaAktiivinen.hetu,
+      "Sukunimi" -> Some(lukionAineopiskelijaAktiivinen.sukunimi),
+      "Etunimet" -> Some(lukionAineopiskelijaAktiivinen.etunimet)
+    )
 
-  lazy val expectedAineopiskelijaHistoriaKurssitRow = Map(
-    "Oppijan oid" -> Some(lukionAineopiskelijaAktiivinen.oid),
-    "Hetu" -> lukionAineopiskelijaAktiivinen.hetu,
-    "Sukunimi" -> Some(lukionAineopiskelijaAktiivinen.sukunimi),
-    "Etunimet" -> Some(lukionAineopiskelijaAktiivinen.etunimet),
-    "HI1 Ihminen ympäristön ja yhteiskuntien muutoksessa valtakunnallinen" -> "",
-    "HI2 Kansainväliset suhteet valtakunnallinen" -> kurssintiedot(arvosana = "8", tyyppi = "pakollinen"),
-    "HI3 Itsenäisen Suomen historia valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
-    "HI4 Eurooppalaisen maailmankuvan kehitys valtakunnallinen" -> kurssintiedot(arvosana = "6", tyyppi = "pakollinen")
-  )
+    lazy val historiaKurssitRow = eiSuorituksiaKurssitRow + (
+      "HI1 Ihminen ympäristön ja yhteiskuntien muutoksessa valtakunnallinen" -> "",
+      "HI1 Ihminen, ympäristö ja kulttuuri valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
+      "HI2 Kansainväliset suhteet valtakunnallinen" -> kurssintiedot(arvosana = "8", tyyppi = "pakollinen"),
+      "HI3 Itsenäisen Suomen historia valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
+      "HI4 Eurooppalaisen maailmankuvan kehitys valtakunnallinen" -> kurssintiedot(arvosana = "6", tyyppi = "pakollinen")
+    )
+  }
+
+  private object EiTiedossaOppiaineenOpiskelija {
+    private lazy val default = defaultAineopiskelijaRow + (
+      "Oppijan oid" -> Some(lukionEiTiedossaAineopiskelija.oid),
+      "Hetu" -> lukionEiTiedossaAineopiskelija.hetu,
+      "Sukunimi" -> Some(lukionEiTiedossaAineopiskelija.sukunimi),
+      "Etunimet" -> Some(lukionEiTiedossaAineopiskelija.etunimet)
+    )
+
+    lazy val eiTiedossaOppiaineenRow = default + (
+      "XX Ei tiedossa valtakunnallinen" -> "Arvosana 9, 1 kurssi",
+      "Suorituksen tila" -> "kesken",
+      "Yhteislaajuus" -> 1.0
+      )
+
+    lazy val historiaOppiaineenRow = default + (
+      "Suorituksen vahvistuspäivä" -> Some(date(2016, 1, 10)),
+      "Yhteislaajuus" -> 4.0,
+      "HI Historia valtakunnallinen" -> "Arvosana 9, 4 kurssia"
+    )
+
+    lazy val kemiaOppiaineenRow = default + (
+      "Suorituksen vahvistuspäivä" -> Some(date(2015, 1, 10)),
+      "Yhteislaajuus" -> 1.0,
+      "KE Kemia valtakunnallinen" -> "Arvosana 8, 1 kurssi"
+    )
+
+    lazy val filosofiaOppiaineenRow = default + (
+      "Suorituksen tila" -> "kesken",
+      "Suorituksen vahvistuspäivä" -> None,
+      "Yhteislaajuus" -> 1.0,
+      "FI Filosofia valtakunnallinen" -> "Arvosana 9, 1 kurssi"
+    )
+
+    lazy val EiTiedossaOppiaineenRow = default + (
+      "Suorituksen tila" -> "kesken",
+      "Suorituksen vahvistuspäivä" -> None,
+      "Yhteislaajuus" -> 1.0,
+      "FI Filosofia valtakunnallinen" -> "Arvosana 9, 1 kurssi"
+    )
+
+    lazy val eiTiedossaKurssitRow = Map(
+    "Oppijan oid" -> Some(lukionEiTiedossaAineopiskelija.oid),
+    "Hetu" -> lukionEiTiedossaAineopiskelija.hetu,
+    "Sukunimi" -> Some(lukionEiTiedossaAineopiskelija.sukunimi),
+    "Etunimet" -> Some(lukionEiTiedossaAineopiskelija.etunimet),
+    "FI1 Johdatus filosofiseen ajatteluun valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen")
+    )
+  }
 }
