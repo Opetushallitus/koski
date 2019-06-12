@@ -96,6 +96,8 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
           "Sukunimi",
           "Etunimet",
           "Toimipiste",
+          "Suorituksen koulutustyyppi",
+          "Suorituksen tyyppi",
           "HI1 Ihminen ympäristön ja yhteiskuntien muutoksessa valtakunnallinen",
           "HI1 Ihminen, ympäristö ja kulttuuri valtakunnallinen",
           "HI2 Kansainväliset suhteet valtakunnallinen",
@@ -329,6 +331,8 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Sukunimi" -> Some(lukiolainen.sukunimi),
     "Etunimet" -> Some(lukiolainen.etunimet),
     "Toimipiste" -> "Jyväskylän normaalikoulu",
+    "Suorituksen koulutustyyppi" -> Some("Lukio suoritetaan nuorten opetussuunnitelman mukaan"),
+    "Suorituksen tyyppi" -> "lukionoppimaara",
     "HI1 Ihminen ympäristön ja yhteiskuntien muutoksessa valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
     "HI1 Ihminen, ympäristö ja kulttuuri valtakunnallinen" -> "",
     "HI2 Kansainväliset suhteet valtakunnallinen" -> kurssintiedot(arvosana = "8", tyyppi = "pakollinen"),
@@ -433,7 +437,9 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
       "Hetu" -> lukionAineopiskelijaAktiivinen.hetu,
       "Sukunimi" -> Some(lukionAineopiskelijaAktiivinen.sukunimi),
       "Etunimet" -> Some(lukionAineopiskelijaAktiivinen.etunimet),
-      "Toimipiste" -> "Jyväskylän normaalikoulu"
+      "Toimipiste" -> "Jyväskylän normaalikoulu",
+      "Suorituksen koulutustyyppi" -> None,
+      "Suorituksen tyyppi" -> "lukionoppiaineenoppimaara"
     )
 
     lazy val historiaKurssitRow = eiSuorituksiaKurssitRow + (
@@ -491,6 +497,8 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
       "Sukunimi" -> Some(lukionEiTiedossaAineopiskelija.sukunimi),
       "Etunimet" -> Some(lukionEiTiedossaAineopiskelija.etunimet),
       "Toimipiste" -> "Jyväskylän normaalikoulu",
+      "Suorituksen koulutustyyppi" -> None,
+      "Suorituksen tyyppi" -> "lukionoppiaineenoppimaara",
       "FI1 Johdatus filosofiseen ajatteluun valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen")
     )
   }
