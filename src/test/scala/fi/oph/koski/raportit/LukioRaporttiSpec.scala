@@ -47,7 +47,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
           "Opiskeluoikeuden alkamispäivä",
           "Opiskeluoikeuden viimeisin tila",
           "Opiskeluoikeuden tilat aikajakson aikana",
-          "Suorituksen koulutustyyppi",
+          "Opetussuunnitelma",
           "Suorituksen tyyppi",
           "Suorituksen tila",
           "Suorituksen vahvistuspäivä",
@@ -96,7 +96,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
           "Sukunimi",
           "Etunimet",
           "Toimipiste",
-          "Suorituksen koulutustyyppi",
+          "Opetussuunnitelma",
           "Suorituksen tyyppi",
           "HI1 Ihminen ympäristön ja yhteiskuntien muutoksessa valtakunnallinen",
           "HI1 Ihminen, ympäristö ja kulttuuri valtakunnallinen",
@@ -282,7 +282,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Opiskeluoikeuden alkamispäivä" -> Some(date(2012, 9, 1)),
     "Opiskeluoikeuden viimeisin tila" -> Some("valmistunut"),
     "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna",
-    "Suorituksen koulutustyyppi" -> Some("Lukio suoritetaan nuorten opetussuunnitelman mukaan"),
+    "Opetussuunnitelma" -> Some("Lukio suoritetaan nuorten opetussuunnitelman mukaan"),
     "Suorituksen tyyppi" -> "lukionoppimaara",
     "Suorituksen tila" -> "valmis",
     "Suorituksen vahvistuspäivä" -> Some(date(2016, 6, 8)),
@@ -331,7 +331,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Sukunimi" -> Some(lukiolainen.sukunimi),
     "Etunimet" -> Some(lukiolainen.etunimet),
     "Toimipiste" -> "Jyväskylän normaalikoulu",
-    "Suorituksen koulutustyyppi" -> Some("Lukio suoritetaan nuorten opetussuunnitelman mukaan"),
+    "Opetussuunnitelma" -> Some("Lukio suoritetaan nuorten opetussuunnitelman mukaan"),
     "Suorituksen tyyppi" -> "lukionoppimaara",
     "HI1 Ihminen ympäristön ja yhteiskuntien muutoksessa valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
     "HI1 Ihminen, ympäristö ja kulttuuri valtakunnallinen" -> "",
@@ -351,7 +351,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Opiskeluoikeuden alkamispäivä" -> Some(date(2015, 9, 1)),
     "Opiskeluoikeuden viimeisin tila" -> Some("lasna"),
     "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna",
-    "Suorituksen koulutustyyppi" -> None,
+    "Opetussuunnitelma" -> None,
     "Suorituksen tyyppi" -> "lukionoppiaineenoppimaara",
     "Suorituksen tila" -> "valmis",
     "Suorituksen vahvistuspäivä" -> None,
@@ -438,7 +438,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
       "Sukunimi" -> Some(lukionAineopiskelijaAktiivinen.sukunimi),
       "Etunimet" -> Some(lukionAineopiskelijaAktiivinen.etunimet),
       "Toimipiste" -> "Jyväskylän normaalikoulu",
-      "Suorituksen koulutustyyppi" -> None,
+      "Opetussuunnitelma" -> None,
       "Suorituksen tyyppi" -> "lukionoppiaineenoppimaara"
     )
 
@@ -497,7 +497,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
       "Sukunimi" -> Some(lukionEiTiedossaAineopiskelija.sukunimi),
       "Etunimet" -> Some(lukionEiTiedossaAineopiskelija.etunimet),
       "Toimipiste" -> "Jyväskylän normaalikoulu",
-      "Suorituksen koulutustyyppi" -> None,
+      "Opetussuunnitelma" -> None,
       "Suorituksen tyyppi" -> "lukionoppiaineenoppimaara",
       "FI1 Johdatus filosofiseen ajatteluun valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen")
     )

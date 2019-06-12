@@ -118,7 +118,7 @@ object LukioRaportti {
     CompactColumn("Opiskeluoikeuden alkamispäivä"),
     CompactColumn("Opiskeluoikeuden viimeisin tila"),
     CompactColumn("Opiskeluoikeuden tilat aikajakson aikana"),
-    CompactColumn("Suorituksen koulutustyyppi"),
+    CompactColumn("Opetussuunnitelma"),
     CompactColumn("Suorituksen tyyppi"),
     CompactColumn("Suorituksen tila"),
     CompactColumn("Suorituksen vahvistuspäivä"),
@@ -258,7 +258,7 @@ object LukioRaportti {
     henkiloTietoColumns ++
       Seq(
         CompactColumn("Toimipiste"),
-        CompactColumn("Suorituksen koulutustyyppi"),
+        CompactColumn("Opetussuunnitelma"),
         CompactColumn("Suorituksen tyyppi")
       ) ++ kurssit.map(_.toColumnTitle).map(CompactColumn(_))
   }
