@@ -5,18 +5,19 @@ import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.api.OpiskeluoikeusTestMethods
+import fi.oph.koski.api.OpiskeluoikeusTestMethodsLukio
+import fi.oph.koski.documentation.LukioExampleData
 import fi.oph.koski.henkilo.MockOppijat._
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.organisaatio.MockOrganisaatiot._
 import fi.oph.koski.raportointikanta.{ROpiskeluoikeusAikajaksoRow, RaportointikantaTestMethods}
-import fi.oph.koski.schema.{Aikajakso, Organisaatio}
+import fi.oph.koski.schema._
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
-class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll with OpiskeluoikeusTestMethods {
+class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll with OpiskeluoikeusTestMethodsLukio {
 
   override def beforeAll(): Unit = {
-    resetFixtures
+    lisääPäätasonSuorituksia(lukionAineopiskelijaAktiivinen, List(LukioExampleData.lukionOppiaineenOppimääränSuoritusA1Englanti, LukioExampleData.lukionOppiaineenOppimääränSuoritusPitkäMatematiikka))
     loadRaportointikantaFixtures
   }
 
@@ -113,6 +114,8 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
         "Oppiaineiden suoritus" in {
           verifyOppijanRows(lukionAineopiskelijaAktiivinen,
             Seq(
+              AktiivinenAineopiskelija.englanninOppiaineenRow,
+              AktiivinenAineopiskelija.matematiikanOppiaineRow,
               AktiivinenAineopiskelija.historiaOppiaineenRow,
               AktiivinenAineopiskelija.kemiaOppiaineenRow,
               AktiivinenAineopiskelija.filosofiaOppiaineenRow
@@ -233,7 +236,9 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
   private def verifyOppijanRows(oppija: OppijaHenkilö, expected: Seq[Map[String, Any]], all: Seq[Map[String, Any]]) = {
     val opiskeluoikeudenOid = lastOpiskeluoikeus(oppija.oid).oid
     opiskeluoikeudenOid shouldBe defined
-    findByOid(oppija.oid, all).toSet should equal(expected.map(_ + ("Opiskeluoikeuden oid" -> opiskeluoikeudenOid.get)).toSet)
+    val found = findByOid(oppija.oid, all)
+    found.length should equal(expected.length)
+    found.toSet should equal(expected.map(_ + ("Opiskeluoikeuden oid" -> opiskeluoikeudenOid.get)).toSet)
   }
 
   private def findRowsWithColumnsByTitle(title: String, all: Seq[(String, Seq[Map[String, Any]])]) = {
@@ -253,6 +258,14 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
   private def verifyNoDuplicates(strs: Seq[String]) = strs.toSet.size should equal(strs.size)
 
   lazy val oid = "123"
+
+  private def lisääPäätasonSuorituksia(oppija: OppijaHenkilö, päätasonSuoritukset: List[LukionPäätasonSuoritus]) = {
+    val oo = getOpiskeluoikeus(oppija.oid, OpiskeluoikeudenTyyppi.lukiokoulutus.koodiarvo).asInstanceOf[LukionOpiskeluoikeus]
+    putOppija(Oppija(oppija, List(oo.copy(suoritukset = päätasonSuoritukset ::: oo.suoritukset)))) {
+      verifyResponseStatusOk()
+      loadRaportointikantaFixtures
+    }
+  }
 
   private def kurssintiedot(arvosana: String, laajuus: String = "1.0", tyyppi: String) = s"$tyyppi,Arvosana $arvosana,Laajuus $laajuus"
 
@@ -382,6 +395,18 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
       "Hetu" -> lukionAineopiskelijaAktiivinen.hetu,
       "Sukunimi" -> Some(lukionAineopiskelijaAktiivinen.sukunimi),
       "Etunimet" -> Some(lukionAineopiskelijaAktiivinen.etunimet)
+    )
+
+    lazy val englanninOppiaineenRow = default + (
+      "Suorituksen vahvistuspäivä" -> Some(date(2016, 1, 10)),
+      "Yhteislaajuus" -> 3.0,
+      "A1 Englanti valtakunnallinen" -> "Arvosana 7, 3 kurssia"
+    )
+
+    lazy val matematiikanOppiaineRow = default + (
+      "Suorituksen vahvistuspäivä" -> Some(date(2016, 1, 10)),
+      "Yhteislaajuus" -> 5.0,
+      "MA Matematiikka, pitkä oppimäärä valtakunnallinen" -> "Arvosana 8, 5 kurssia"
     )
 
     lazy val historiaOppiaineenRow = default + (

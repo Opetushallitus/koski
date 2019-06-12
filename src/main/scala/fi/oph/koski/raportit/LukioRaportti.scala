@@ -39,7 +39,7 @@ object LukioRaportti {
 
   private def oppianeetJaNiidenKurssit(row: LukioRaporttiRows): Seq[LukioRaporttiOppiaineJaKurssit] = {
     if (row.päätasonSuoritus.suorituksenTyyppi == lukionoppiaineenoppimaara) {
-      Seq(LukioRaporttiOppiaineJaKurssit(toOppiaine(row.päätasonSuoritus), row.osasuoritukset.map(toKurssi)))
+     Seq(LukioRaporttiOppiaineJaKurssit(toOppiaine(row.päätasonSuoritus), row.osasuoritukset.map(toKurssi)))
     } else {
       oppiaineetJaNiidenKurssitOppimäärästä(row)
     }
@@ -56,7 +56,7 @@ object LukioRaportti {
   private def isLukionOppiaine(osasuoritus: ROsasuoritusRow) = osasuoritus.suorituksenTyyppi == lukionoppiaine || osasuoritus.suorituksenTyyppi == lukionmuuopinto
 
   private def toOppiaine(row: RSuoritusRow) = row match {
-    case s: RPäätasonSuoritusRow => LukioRaporttiOppiaine(s.koulutusmoduuliNimi.getOrElse("ei nimeä"), s.koulutusmoduuliKoodiarvo, !s.koulutusmoduuliKoodisto.contains("koskioppiaineetyleissivistava"))
+    case s: RPäätasonSuoritusRow => LukioRaporttiOppiaine(s.suorituksestaKäytettäväNimi.getOrElse("ei nimeä"), s.koulutusmoduuliKoodiarvo, !s.koulutusmoduuliKoodisto.contains("koskioppiaineetyleissivistava"))
     case s: ROsasuoritusRow => LukioRaporttiOppiaine(s.suorituksestaKäytettäväNimi.getOrElse("ei nimeä"), s.koulutusmoduuliKoodiarvo, s.koulutusmoduuliPaikallinen)
   }
   private def toKurssi(row: ROsasuoritusRow) = LukioRaporttiKurssi(row.koulutusmoduuliNimi.getOrElse("ei nimeä"), row.koulutusmoduuliKoodiarvo, row.koulutusmoduuliPaikallinen)
