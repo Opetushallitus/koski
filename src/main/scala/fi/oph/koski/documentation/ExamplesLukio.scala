@@ -380,6 +380,34 @@ object LukioExampleData {
     ))
   )
 
+  val lukionOppiaineenOppimääränSuoritusA1Englanti: LukionOppiaineenOppimääränSuoritus = LukionOppiaineenOppimääränSuoritus(
+    koulutusmoduuli = lukionKieli("A1","EN").copy(perusteenDiaarinumero = Some("60/011/2015")),
+    suorituskieli = suomenKieli,
+    vahvistus = vahvistusPaikkakunnalla(päivä = date(2016, 1, 10)),
+    toimipiste = jyväskylänNormaalikoulu,
+    arviointi = arviointi("7"),
+    osasuoritukset = Some(List(
+      kurssisuoritus(valtakunnallinenKurssi("ENA1")).copy(arviointi = numeerinenArviointi(10)),
+      kurssisuoritus(valtakunnallinenKurssi("ENA2")).copy(arviointi = numeerinenArviointi(10)),
+      kurssisuoritus(valtakunnallinenKurssi("ENA3")).copy(arviointi = numeerinenArviointi(9))
+    ))
+  )
+
+  val lukionOppiaineenOppimääränSuoritusPitkäMatematiikka: LukionOppiaineenOppimääränSuoritus = LukionOppiaineenOppimääränSuoritus(
+    koulutusmoduuli = matematiikka("MAA").copy(perusteenDiaarinumero = Some("60/011/2015")),
+    suorituskieli = suomenKieli,
+    vahvistus = vahvistusPaikkakunnalla(päivä = date(2016, 1, 10)),
+    toimipiste = jyväskylänNormaalikoulu,
+    arviointi = arviointi("8"),
+    osasuoritukset = Some(List(
+      kurssisuoritus(valtakunnallinenKurssi("MAA2")).copy(arviointi = numeerinenArviointi(6)),
+      kurssisuoritus(valtakunnallinenKurssi("MAA3")).copy(arviointi = numeerinenArviointi(7)),
+      kurssisuoritus(valtakunnallinenKurssi("MAA4")).copy(arviointi = numeerinenArviointi(8)),
+      kurssisuoritus(valtakunnallinenKurssi("MAA5")).copy(arviointi = numeerinenArviointi(9)),
+      kurssisuoritus(valtakunnallinenKurssi("MAA6")).copy(arviointi = numeerinenArviointi(10))
+    ))
+  )
+
   val opiskeluoikeusAktiivinen = Koodistokoodiviite("lasna", Some("Läsnä"), "koskiopiskeluoikeudentila", Some(1))
   val opiskeluoikeusPäättynyt = Koodistokoodiviite("valmistunut", Some("Valmistunut"), "koskiopiskeluoikeudentila", Some(1))
 

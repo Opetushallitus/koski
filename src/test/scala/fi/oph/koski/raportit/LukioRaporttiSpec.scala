@@ -5,18 +5,19 @@ import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.api.OpiskeluoikeusTestMethods
+import fi.oph.koski.api.OpiskeluoikeusTestMethodsLukio
+import fi.oph.koski.documentation.LukioExampleData
 import fi.oph.koski.henkilo.MockOppijat._
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.organisaatio.MockOrganisaatiot._
 import fi.oph.koski.raportointikanta.{ROpiskeluoikeusAikajaksoRow, RaportointikantaTestMethods}
-import fi.oph.koski.schema.{Aikajakso, Organisaatio}
+import fi.oph.koski.schema._
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
-class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll with OpiskeluoikeusTestMethods {
+class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll with OpiskeluoikeusTestMethodsLukio {
 
   override def beforeAll(): Unit = {
-    resetFixtures
+    lisääPäätasonSuorituksia(lukionAineopiskelijaAktiivinen, List(LukioExampleData.lukionOppiaineenOppimääränSuoritusA1Englanti, LukioExampleData.lukionOppiaineenOppimääränSuoritusPitkäMatematiikka))
     loadRaportointikantaFixtures
   }
 
@@ -46,7 +47,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
           "Opiskeluoikeuden alkamispäivä",
           "Opiskeluoikeuden viimeisin tila",
           "Opiskeluoikeuden tilat aikajakson aikana",
-          "Suorituksen koulutustyyppi",
+          "Opetussuunnitelma",
           "Suorituksen tyyppi",
           "Suorituksen tila",
           "Suorituksen vahvistuspäivä",
@@ -95,6 +96,8 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
           "Sukunimi",
           "Etunimet",
           "Toimipiste",
+          "Opetussuunnitelma",
+          "Suorituksen tyyppi",
           "HI1 Ihminen ympäristön ja yhteiskuntien muutoksessa valtakunnallinen",
           "HI1 Ihminen, ympäristö ja kulttuuri valtakunnallinen",
           "HI2 Kansainväliset suhteet valtakunnallinen",
@@ -113,6 +116,8 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
         "Oppiaineiden suoritus" in {
           verifyOppijanRows(lukionAineopiskelijaAktiivinen,
             Seq(
+              AktiivinenAineopiskelija.englanninOppiaineenRow,
+              AktiivinenAineopiskelija.matematiikanOppiaineRow,
               AktiivinenAineopiskelija.historiaOppiaineenRow,
               AktiivinenAineopiskelija.kemiaOppiaineenRow,
               AktiivinenAineopiskelija.filosofiaOppiaineenRow
@@ -164,6 +169,10 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
           val (_, historia) = findRowsWithColumnsByTitle("HI v Historia", kurssit)
           verifyOppijanRow(lukiolainen, expectedLukiolainenHistorianKurssitRow, historia, addOpiskeluoikeudenOid = false)
           verifyOppijanRow(lukionAineopiskelijaAktiivinen, AktiivinenAineopiskelija.historiaKurssitRow, historia, addOpiskeluoikeudenOid = false)
+        }
+        "Matematikka" in {
+          val (_, matematiikka) = findRowsWithColumnsByTitle("MA v Matematiikka, pitkä oppimäärä", kurssit)
+          verifyOppijanRow(lukionAineopiskelijaAktiivinen, AktiivinenAineopiskelija.matematiikanKurssitRow, matematiikka, addOpiskeluoikeudenOid = false)
         }
         "Ei tiedossa oppiaine" in {
           val (_, eiTiedossa) = findRowsWithColumnsByTitle("XX v Ei tiedossa", kurssit)
@@ -233,7 +242,9 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
   private def verifyOppijanRows(oppija: OppijaHenkilö, expected: Seq[Map[String, Any]], all: Seq[Map[String, Any]]) = {
     val opiskeluoikeudenOid = lastOpiskeluoikeus(oppija.oid).oid
     opiskeluoikeudenOid shouldBe defined
-    findByOid(oppija.oid, all).toSet should equal(expected.map(_ + ("Opiskeluoikeuden oid" -> opiskeluoikeudenOid.get)).toSet)
+    val found = findByOid(oppija.oid, all)
+    found.length should equal(expected.length)
+    found.toSet should equal(expected.map(_ + ("Opiskeluoikeuden oid" -> opiskeluoikeudenOid.get)).toSet)
   }
 
   private def findRowsWithColumnsByTitle(title: String, all: Seq[(String, Seq[Map[String, Any]])]) = {
@@ -254,6 +265,14 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
 
   lazy val oid = "123"
 
+  private def lisääPäätasonSuorituksia(oppija: OppijaHenkilö, päätasonSuoritukset: List[LukionPäätasonSuoritus]) = {
+    val oo = getOpiskeluoikeus(oppija.oid, OpiskeluoikeudenTyyppi.lukiokoulutus.koodiarvo).asInstanceOf[LukionOpiskeluoikeus]
+    putOppija(Oppija(oppija, List(oo.copy(suoritukset = päätasonSuoritukset ::: oo.suoritukset)))) {
+      verifyResponseStatusOk()
+      loadRaportointikantaFixtures
+    }
+  }
+
   private def kurssintiedot(arvosana: String, laajuus: String = "1.0", tyyppi: String) = s"$tyyppi,Arvosana $arvosana,Laajuus $laajuus"
 
   lazy val expectedLukiolainenRow = Map(
@@ -267,7 +286,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Opiskeluoikeuden alkamispäivä" -> Some(date(2012, 9, 1)),
     "Opiskeluoikeuden viimeisin tila" -> Some("valmistunut"),
     "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna",
-    "Suorituksen koulutustyyppi" -> Some("Lukio suoritetaan nuorten opetussuunnitelman mukaan"),
+    "Opetussuunnitelma" -> Some("Lukio suoritetaan nuorten opetussuunnitelman mukaan"),
     "Suorituksen tyyppi" -> "lukionoppimaara",
     "Suorituksen tila" -> "valmis",
     "Suorituksen vahvistuspäivä" -> Some(date(2016, 6, 8)),
@@ -316,6 +335,8 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Sukunimi" -> Some(lukiolainen.sukunimi),
     "Etunimet" -> Some(lukiolainen.etunimet),
     "Toimipiste" -> "Jyväskylän normaalikoulu",
+    "Opetussuunnitelma" -> Some("Lukio suoritetaan nuorten opetussuunnitelman mukaan"),
+    "Suorituksen tyyppi" -> "lukionoppimaara",
     "HI1 Ihminen ympäristön ja yhteiskuntien muutoksessa valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
     "HI1 Ihminen, ympäristö ja kulttuuri valtakunnallinen" -> "",
     "HI2 Kansainväliset suhteet valtakunnallinen" -> kurssintiedot(arvosana = "8", tyyppi = "pakollinen"),
@@ -334,7 +355,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Opiskeluoikeuden alkamispäivä" -> Some(date(2015, 9, 1)),
     "Opiskeluoikeuden viimeisin tila" -> Some("lasna"),
     "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna",
-    "Suorituksen koulutustyyppi" -> None,
+    "Opetussuunnitelma" -> None,
     "Suorituksen tyyppi" -> "lukionoppiaineenoppimaara",
     "Suorituksen tila" -> "valmis",
     "Suorituksen vahvistuspäivä" -> None,
@@ -384,6 +405,18 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
       "Etunimet" -> Some(lukionAineopiskelijaAktiivinen.etunimet)
     )
 
+    lazy val englanninOppiaineenRow = default + (
+      "Suorituksen vahvistuspäivä" -> Some(date(2016, 1, 10)),
+      "Yhteislaajuus" -> 3.0,
+      "A1 Englanti valtakunnallinen" -> "Arvosana 7, 3 kurssia"
+    )
+
+    lazy val matematiikanOppiaineRow = default + (
+      "Suorituksen vahvistuspäivä" -> Some(date(2016, 1, 10)),
+      "Yhteislaajuus" -> 5.0,
+      "MA Matematiikka, pitkä oppimäärä valtakunnallinen" -> "Arvosana 8, 5 kurssia"
+    )
+
     lazy val historiaOppiaineenRow = default + (
       "Suorituksen vahvistuspäivä" -> Some(date(2016, 1, 10)),
       "Yhteislaajuus" -> 4.0,
@@ -408,7 +441,9 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
       "Hetu" -> lukionAineopiskelijaAktiivinen.hetu,
       "Sukunimi" -> Some(lukionAineopiskelijaAktiivinen.sukunimi),
       "Etunimet" -> Some(lukionAineopiskelijaAktiivinen.etunimet),
-      "Toimipiste" -> "Jyväskylän normaalikoulu"
+      "Toimipiste" -> "Jyväskylän normaalikoulu",
+      "Opetussuunnitelma" -> None,
+      "Suorituksen tyyppi" -> "lukionoppiaineenoppimaara"
     )
 
     lazy val historiaKurssitRow = eiSuorituksiaKurssitRow + (
@@ -417,6 +452,24 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
       "HI2 Kansainväliset suhteet valtakunnallinen" -> kurssintiedot(arvosana = "8", tyyppi = "pakollinen"),
       "HI3 Itsenäisen Suomen historia valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
       "HI4 Eurooppalaisen maailmankuvan kehitys valtakunnallinen" -> kurssintiedot(arvosana = "6", tyyppi = "pakollinen")
+    )
+
+    lazy val matematiikanKurssitRow = eiSuorituksiaKurssitRow + (
+      "MAA1 Funktiot ja yhtälöt, pa, vuositaso 1 paikallinen" -> "",
+      "MAA2 Polynomifunktiot ja -yhtälöt valtakunnallinen"  -> kurssintiedot(arvosana = "6", tyyppi = "pakollinen"),
+      "MAA3 Geometria valtakunnallinen" -> "pakollinen,Arvosana 7,Laajuus 1.0",
+      "MAA4 Vektorit valtakunnallinen" -> "pakollinen,Arvosana 8,Laajuus 1.0",
+      "MAA5 Analyyttinen geometria valtakunnallinen" -> "pakollinen,Arvosana 9,Laajuus 1.0",
+      "MAA6 Derivaatta valtakunnallinen" -> "pakollinen,Arvosana 10,Laajuus 1.0",
+      "MAA7 Trigonometriset funktiot valtakunnallinen" -> "",
+      "MAA8 Juuri- ja logaritmifunktiot valtakunnallinen" -> "",
+      "MAA9 Integraalilaskenta valtakunnallinen" -> "",
+      "MAA10 Todennäköisyys ja tilastot valtakunnallinen" -> "",
+      "MAA11 Lukuteoria ja todistaminen valtakunnallinen" -> "",
+      "MAA12 Algoritmit matematiikassa valtakunnallinen" -> "",
+      "MAA13 Differentiaali- ja integraalilaskennan jatkokurssi valtakunnallinen" -> "",
+      "MAA14 Kertauskurssi, ksy, vuositaso 3 paikallinen" -> "",
+      "MAA16 Analyyttisten menetelmien lisäkurssi, ksy, vuositaso 2 paikallinen" -> ""
     )
   }
 
@@ -466,6 +519,8 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
       "Sukunimi" -> Some(lukionEiTiedossaAineopiskelija.sukunimi),
       "Etunimet" -> Some(lukionEiTiedossaAineopiskelija.etunimet),
       "Toimipiste" -> "Jyväskylän normaalikoulu",
+      "Opetussuunnitelma" -> None,
+      "Suorituksen tyyppi" -> "lukionoppiaineenoppimaara",
       "FI1 Johdatus filosofiseen ajatteluun valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen")
     )
   }

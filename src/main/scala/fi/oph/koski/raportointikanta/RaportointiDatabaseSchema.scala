@@ -4,8 +4,11 @@ import java.sql.{Date, Timestamp}
 import java.time.temporal.ChronoUnit
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.raportit.LukioRaporttiOppiaineTaiKurssi
+import fi.oph.koski.schema.LocalizedString
 import org.json4s.JValue
+import org.json4s.jackson.Json
 import slick.dbio.DBIO
 import slick.sql.SqlProfile.ColumnOption.SqlType
 
@@ -287,9 +290,16 @@ case class RPäätasonSuoritusRow(
   override def matchesWith(x: LukioRaporttiOppiaineTaiKurssi): Boolean = {
     val isPaikallinen = !koulutusmoduuliKoodisto.contains("koskioppiaineetyleissivistava")
 
-    koulutusmoduuliNimi.contains(x.nimi) &&
+    suorituksestaKäytettäväNimi.contains(x.nimi) &&
       koulutusmoduuliKoodiarvo == x.koulutusmoduuliKoodiarvo &&
       isPaikallinen == x.koulutusmoduuliPaikallinen
+  }
+
+  def suorituksestaKäytettäväNimi: Option[String] = {
+    JsonSerializer.extract[Option[LocalizedString]](data \ "koulutusmoduuli" \ "kieli" \ "nimi").map(_.get("fi"))
+      .orElse(JsonSerializer.extract[Option[LocalizedString]](data \ "koulutusmoduuli" \ "oppimäärä" \ "nimi").map(_.get("fi")))
+      .orElse(JsonSerializer.extract[Option[LocalizedString]](data \ "koulutusmoduuli" \ "uskonnonOppimäärä" \ "nimi").map(_.get("fi")))
+      .orElse(koulutusmoduuliNimi)
   }
 }
 
@@ -323,13 +333,9 @@ case class ROsasuoritusRow(
   }
 
   def suorituksestaKäytettäväNimi: Option[String] = {
-    if (koulutusmoduuliKieliaineNimi.isDefined) {
-      koulutusmoduuliKieliaineNimi
-    } else if (koulutusmoduuliOppimääräNimi.isDefined) {
-      koulutusmoduuliOppimääräNimi
-    } else {
-      koulutusmoduuliNimi
-    }
+    koulutusmoduuliKieliaineNimi
+      .orElse(koulutusmoduuliOppimääräNimi)
+      .orElse(koulutusmoduuliNimi)
   }
 }
 
