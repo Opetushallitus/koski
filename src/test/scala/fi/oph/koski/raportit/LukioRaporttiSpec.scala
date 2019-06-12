@@ -170,6 +170,10 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
           verifyOppijanRow(lukiolainen, expectedLukiolainenHistorianKurssitRow, historia, addOpiskeluoikeudenOid = false)
           verifyOppijanRow(lukionAineopiskelijaAktiivinen, AktiivinenAineopiskelija.historiaKurssitRow, historia, addOpiskeluoikeudenOid = false)
         }
+        "Matematikka" in {
+          val (_, matematiikka) = findRowsWithColumnsByTitle("MA v Matematiikka, pitkä oppimäärä", kurssit)
+          verifyOppijanRow(lukionAineopiskelijaAktiivinen, AktiivinenAineopiskelija.matematiikanKurssitRow, matematiikka, addOpiskeluoikeudenOid = false)
+        }
         "Ei tiedossa oppiaine" in {
           val (_, eiTiedossa) = findRowsWithColumnsByTitle("XX v Ei tiedossa", kurssit)
           verifyOppijanRow(lukionEiTiedossaAineopiskelija, EiTiedossaOppiaineenOpiskelija.eiTiedossaKurssitRow, eiTiedossa, addOpiskeluoikeudenOid = false)
@@ -448,6 +452,24 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
       "HI2 Kansainväliset suhteet valtakunnallinen" -> kurssintiedot(arvosana = "8", tyyppi = "pakollinen"),
       "HI3 Itsenäisen Suomen historia valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
       "HI4 Eurooppalaisen maailmankuvan kehitys valtakunnallinen" -> kurssintiedot(arvosana = "6", tyyppi = "pakollinen")
+    )
+
+    lazy val matematiikanKurssitRow = eiSuorituksiaKurssitRow + (
+      "MAA1 Funktiot ja yhtälöt, pa, vuositaso 1 paikallinen" -> "",
+      "MAA2 Polynomifunktiot ja -yhtälöt valtakunnallinen"  -> kurssintiedot(arvosana = "6", tyyppi = "pakollinen"),
+      "MAA3 Geometria valtakunnallinen" -> "pakollinen,Arvosana 7,Laajuus 1.0",
+      "MAA4 Vektorit valtakunnallinen" -> "pakollinen,Arvosana 8,Laajuus 1.0",
+      "MAA5 Analyyttinen geometria valtakunnallinen" -> "pakollinen,Arvosana 9,Laajuus 1.0",
+      "MAA6 Derivaatta valtakunnallinen" -> "pakollinen,Arvosana 10,Laajuus 1.0",
+      "MAA7 Trigonometriset funktiot valtakunnallinen" -> "",
+      "MAA8 Juuri- ja logaritmifunktiot valtakunnallinen" -> "",
+      "MAA9 Integraalilaskenta valtakunnallinen" -> "",
+      "MAA10 Todennäköisyys ja tilastot valtakunnallinen" -> "",
+      "MAA11 Lukuteoria ja todistaminen valtakunnallinen" -> "",
+      "MAA12 Algoritmit matematiikassa valtakunnallinen" -> "",
+      "MAA13 Differentiaali- ja integraalilaskennan jatkokurssi valtakunnallinen" -> "",
+      "MAA14 Kertauskurssi, ksy, vuositaso 3 paikallinen" -> "",
+      "MAA16 Analyyttisten menetelmien lisäkurssi, ksy, vuositaso 2 paikallinen" -> ""
     )
   }
 
