@@ -102,6 +102,7 @@ object KoskiErrorCategory {
         val koulutustyyppiEiSalliTutkinnonOsienRyhmittelyä = subcategory("koulutustyyppiEiSalliTutkinnonOsienRyhmittelyä", "Tutkinnonosan ryhmä voidaan määritellä vain ammatillisen perustutkinnon tutkinnonosille")
         val samaTutkintokoodi = subcategory("samaTutkintokoodi", "Jos tutkinnon osa kuuluu päätason suorituksen tutkintoon, ei tutkinnon osan suorituksessa tarvitse/saa olla erillistä tutkintotietoa")
         val duplikaattiOsasuoritus = subcategory("duplikaattiOsasuoritus", "Duplikaatti osasuoritus päätason suorituksella")
+        val ammatillisenTutkinnonOsaPuuttuu = subcategory("ammatillisenTutkinnonOsaPuuttuu", "Valmiilta osittaiselta ammatillisen tutkinnon suoritukselta vaaditaan muu ammatillinen tutkinnon osa")
       }
       val rakenne = new Rakenne
 

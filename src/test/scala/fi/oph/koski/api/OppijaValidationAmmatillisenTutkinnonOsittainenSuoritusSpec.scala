@@ -201,15 +201,55 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
             }
           }
 
-          "Kun tutkinto on vahvistettu ja sillä on osa, jolta puuttuu arviointi" - {
-            val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(autoalanPerustutkinnonSuoritus().copy(
-              suoritustapa = tutkinnonSuoritustapaNäyttönä,
-              vahvistus = vahvistus(LocalDate.parse("2016-10-08")),
-              osasuoritukset = Some(List(tutkinnonOsanSuoritus.copy(arviointi = None)))
-            )))
+          "Kun tutkinto on vahvistettu" - {
+            def osasuorituksilla(osasuoritukset: List[OsittaisenAmmatillisenTutkinnonOsanSuoritus], opiskeluoikeus: AmmatillinenOpiskeluoikeus) = {
+              opiskeluoikeus.copy(suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus.copy(
+                osasuoritukset = ammatillisenTutkinnonOsittainenSuoritus.osasuoritukset.map(_ ::: osasuoritukset)
+              )))
+            }
+            val opiskeluoikeusVahvistetullaSuorituksella = defaultOpiskeluoikeus.copy(suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus))
 
-            "palautetaan HTTP 400" in (putOpiskeluoikeus(opiskeluoikeus) (
-              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella koulutus/351301 on keskeneräinen osasuoritus tutkinnonosat/100023"))))
+            "Ammatillisen tutkinnon osan suoritus puuttuu" - {
+              val opiskeluoikeus = opiskeluoikeusVahvistetullaSuorituksella.copy(suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus.copy(
+                  osasuoritukset = ammatillisenTutkinnonOsittainenSuoritus.osasuoritukset.map(_.filterNot(_.isInstanceOf[MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus]))
+                )))
+              "Palautetaan HTTP 400" in (putOpiskeluoikeus(opiskeluoikeus) (
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.ammatillisenTutkinnonOsaPuuttuu("Suoritus koulutus/361902 on merkitty valmiiksi, mutta sillä ei ole muu ammatillisen tutkinnon osan suoritusta"))))
+            }
+
+            "Vahvistamaton yhteisen ammatillisen tutkinnon osa" - {
+              val vahvistamatonYhteisenTutkinnonOsanSuoritus = yhteisenTutkinnonOsanSuoritus.copy(vahvistus = None, arviointi = None)
+
+              "Vahvistetulla osan osa-alueen suorituksella" - {
+                "Palautetaan HTTP 200" in (putOpiskeluoikeus(osasuorituksilla(List(vahvistamatonYhteisenTutkinnonOsanSuoritus), opiskeluoikeusVahvistetullaSuorituksella))) (
+                  verifyResponseStatusOk())
+              }
+
+              "Ei vahvistettua osan osa-aluetta" - {
+                val osasuorituksiaEiVahvistettu = vahvistamatonYhteisenTutkinnonOsanSuoritus.copy(
+                  osasuoritukset = vahvistamatonYhteisenTutkinnonOsanSuoritus.osasuoritukset.map(_.map(_.copy(arviointi = None)))
+                )
+                "Palautetaan HTTP 400" in (putOpiskeluoikeus(osasuorituksilla(List(osasuorituksiaEiVahvistettu), opiskeluoikeusVahvistetullaSuorituksella))) (
+                  verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella koulutus/361902 on keskeneräinen osasuoritus tutkinnonosat/101054")))
+              }
+
+              "Ilman osan osa-alueita" - {
+                val eiOsaAlueita = vahvistamatonYhteisenTutkinnonOsanSuoritus.copy(osasuoritukset = None)
+                "Palautetaan HTTP 400" in (putOpiskeluoikeus(osasuorituksilla(List(eiOsaAlueita), opiskeluoikeusVahvistetullaSuorituksella))) (
+                  verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella koulutus/361902 on keskeneräinen osasuoritus tutkinnonosat/101054")))
+              }
+            }
+
+            "Tutkinnon osa, jolta puuttuu arviointi" - {
+              val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(autoalanPerustutkinnonSuoritus().copy(
+                suoritustapa = tutkinnonSuoritustapaNäyttönä,
+                vahvistus = vahvistus(LocalDate.parse("2016-10-08")),
+                osasuoritukset = Some(List(tutkinnonOsanSuoritus.copy(arviointi = None)))
+              )))
+
+              "palautetaan HTTP 400" in (putOpiskeluoikeus(opiskeluoikeus) (
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella koulutus/351301 on keskeneräinen osasuoritus tutkinnonosat/100023"))))
+            }
           }
         }
       }
@@ -293,6 +333,11 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
     arviointi = arviointiHyvä(),
     tutkinnonOsanRyhmä = vapaavalintaisetTutkinnonOsat
   )
+
+  private lazy val yhteisenTutkinnonOsanSuoritus = yhteisenOsittaisenTutkinnonTutkinnonOsansuoritus(k3, yhteisetTutkinnonOsat, "101054", "Matemaattis-luonnontieteellinen osaaminen", 8).copy(osasuoritukset = Some(List(
+    YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(PaikallinenKoodi("MA", "Matematiikka"), "Matematiikan opinnot", pakollinen = true, Some(LaajuusOsaamispisteissä(3))), arviointi = Some(List(arviointiKiitettävä))),
+    YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("FK", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(3))), arviointi = Some(List(arviointiKiitettävä)))
+  )))
 
   private def putTutkinnonOsaSuoritus[A](tutkinnonOsaSuoritus: OsittaisenAmmatillisenTutkinnonOsanSuoritus)(f: => A) = {
     val s = osittainenSuoritusKesken.copy(osasuoritukset = Some(List(tutkinnonOsaSuoritus)))
