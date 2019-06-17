@@ -22,6 +22,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
   }
 
   lazy val repository = LukioRaportitRepository(KoskiApplicationForTests.raportointiDatabase.db)
+  lazy val ePerusteet = KoskiApplicationForTests.ePerusteet
 
   "Lukion suoritustietoraportti" - {
 
@@ -220,7 +221,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
   }
 
   private def buildLukioraportti(organisaatioOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate) = {
-    LukioRaportti.buildRaportti(repository, organisaatioOid, alku, loppu)
+    LukioRaportti.buildRaportti(repository, ePerusteet ,organisaatioOid, alku, loppu)
   }
 
   private def zipRowsWithColumTitles(sheet: DynamicDataSheet) = {
@@ -355,7 +356,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Opiskeluoikeuden alkamispäivä" -> Some(date(2015, 9, 1)),
     "Opiskeluoikeuden viimeisin tila" -> Some("lasna"),
     "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna",
-    "Opetussuunnitelma" -> None,
+    "Opetussuunnitelma" -> Some("Lukion opetussuunnitelman perusteet 2015"),
     "Suorituksen tyyppi" -> "lukionoppiaineenoppimaara",
     "Suorituksen tila" -> "valmis",
     "Suorituksen vahvistuspäivä" -> None,
@@ -442,7 +443,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
       "Sukunimi" -> Some(lukionAineopiskelijaAktiivinen.sukunimi),
       "Etunimet" -> Some(lukionAineopiskelijaAktiivinen.etunimet),
       "Toimipiste" -> "Jyväskylän normaalikoulu",
-      "Opetussuunnitelma" -> None,
+      "Opetussuunnitelma" -> Some("Lukion opetussuunnitelman perusteet 2015"),
       "Suorituksen tyyppi" -> "lukionoppiaineenoppimaara"
     )
 
@@ -484,8 +485,9 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     lazy val eiTiedossaOppiaineenRow = default + (
       "XX Ei tiedossa valtakunnallinen" -> "Arvosana 9, 1 kurssi",
       "Suorituksen tila" -> "kesken",
-      "Yhteislaajuus" -> 1.0
-      )
+      "Yhteislaajuus" -> 1.0,
+      "Opetussuunnitelma" -> None
+    )
 
     lazy val historiaOppiaineenRow = default + (
       "Suorituksen vahvistuspäivä" -> Some(date(2016, 1, 10)),

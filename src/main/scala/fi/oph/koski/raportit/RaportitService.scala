@@ -8,6 +8,7 @@ class RaportitService(application: KoskiApplication) {
   private lazy val perusopetusRepository = PerusopetuksenRaportitRepository(raportointiDatabase.db)
   private lazy val accessResolver = RaportitAccessResolver(application)
   private lazy val lukioRepository = LukioRaportitRepository(raportointiDatabase.db)
+  private lazy val ePerusteetRepository = application.ePerusteet
 
   def opiskelijaVuositiedot(request: AikajaksoRaporttiRequest): OppilaitosRaporttiResponse = {
     aikajaksoRaportti(request, AmmatillinenOpiskalijavuositiedotRaportti)
@@ -27,7 +28,7 @@ class RaportitService(application: KoskiApplication) {
 
   def lukioraportti(request: AikajaksoRaporttiRequest) = {
     OppilaitosRaporttiResponse(
-      sheets = LukioRaportti.buildRaportti(lukioRepository, request.oppilaitosOid, request.alku, request.loppu),
+      sheets = LukioRaportti.buildRaportti(lukioRepository, ePerusteetRepository,request.oppilaitosOid, request.alku, request.loppu),
       workbookSettings = WorkbookSettings(s"Suoritustietojen_tarkistus_${request.oppilaitosOid}", Some(request.password)),
       filename = s"lukio_suoritustietojentarkistus_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
       downloadToken = request.downloadToken
