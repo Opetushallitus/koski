@@ -65,15 +65,17 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
     Http.runTask(oppijanumeroRekisteriClient.findTyöSähköpostiosoitteet(organisaatioOid, ryhmä))
 
   private def resolveKäyttöoikeudet(käyttäjä: HenkilönKäyttöoikeudet) =
-    (käyttäjä.oidHenkilo, käyttäjä.organisaatiot.map {
+    (käyttäjä.oidHenkilo, käyttäjä.organisaatiot.flatMap {
       case OrganisaatioJaKäyttöoikeudet(organisaatioOid, käyttöoikeudet) =>
-        val roolit = käyttöoikeudet.map { case PalveluJaOikeus(palvelu, oikeus) => Palvelurooli(palvelu, oikeus) }
-        if (organisaatioOid == Opetushallitus.organisaatioOid) {
-          KäyttöoikeusGlobal(roolit)
+        val roolit = käyttöoikeudet.collect { case PalveluJaOikeus(palvelu, oikeus) => Palvelurooli(palvelu, oikeus) }
+        if (!roolit.map(_.palveluName).contains("KOSKI")) {
+          Nil
+        } else if (organisaatioOid == Opetushallitus.organisaatioOid) {
+          List(KäyttöoikeusGlobal(roolit))
         } else if (hasViranomaisRooli(roolit)) {
-          KäyttöoikeusViranomainen(roolit)
+          List(KäyttöoikeusViranomainen(roolit))
         } else {
-          KäyttöoikeusOrg(OidOrganisaatio(organisaatioOid), roolit, juuri = true, oppilaitostyyppi = None)
+          List(KäyttöoikeusOrg(OidOrganisaatio(organisaatioOid), roolit, juuri = true, oppilaitostyyppi = None))
         }
     })
 

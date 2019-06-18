@@ -10,8 +10,9 @@ import com.typesafe.config.ConfigFactory
 import fi.oph.koski.cache.GlobalCacheManager
 import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{helsinginKaupunki, lehtikuusentienToimipiste, oppilaitokset}
-import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot, OrganisaatioHierarkia}
+import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot, Opetushallitus, OrganisaatioHierarkia}
 import fi.oph.koski.schema.OpiskeluoikeudenTyyppi
+import fi.oph.koski.schema.OpiskeluoikeudenTyyppi._
 import fi.oph.koski.userdirectory.{DirectoryUser, OpintopolkuDirectoryClient}
 import org.json4s.DefaultFormats
 import org.json4s.jackson.Serialization.write
@@ -81,6 +82,11 @@ class KoskiSessionSpec extends FreeSpec with Matchers with EitherValues with Opt
       "oppilaitos tallentaja" in {
         createAndVerifySession("omnia-tallentaja", MockUsers.omniaTallentaja.ldapUser)
       }
+      "oppilaitos ei Koski-oikeuksia" in {
+        val session = createAndVerifySession("Otto", MockUsers.eiOikkia.ldapUser)
+        session.allowedOpiskeluoikeusTyypit should be(empty)
+        session.hasAnyReadAccess should be(false)
+      }
       "kela suppeat oikeudet" in {
         val session = createAndVerifySession("Suppea", MockUsers.kelaSuppeatOikeudet.ldapUser)
         session.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA)) should be(false)
@@ -96,13 +102,18 @@ class KoskiSessionSpec extends FreeSpec with Matchers with EitherValues with Opt
         session.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA, Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA)) should be(false)
       }
       "viranomainen perusopetus" in {
-        createAndVerifySession("Pertti", MockUsers.perusopetusViranomainen.ldapUser)
+        val session = createAndVerifySession("Pertti", MockUsers.perusopetusViranomainen.ldapUser)
+        val expectedOpiskeluoikeustyypit = Set(esiopetus, perusopetus, aikuistenperusopetus, perusopetuksenlisaopetus, perusopetukseenvalmistavaopetus, internationalschool).map(_.koodiarvo)
+        session.allowedOpiskeluoikeusTyypit should equal(expectedOpiskeluoikeustyypit)
       }
       "viranomainen toinen aste" in {
-        createAndVerifySession("Teuvo", MockUsers.toinenAsteViranomainen.ldapUser)
+        val session = createAndVerifySession("Teuvo", MockUsers.toinenAsteViranomainen.ldapUser)
+        val expectedOpiskeluoikeustyypit = Set(ammatillinenkoulutus, ibtutkinto, diatutkinto, lukiokoulutus, luva, ylioppilastutkinto, internationalschool).map(_.koodiarvo)
+        session.allowedOpiskeluoikeusTyypit should equal(expectedOpiskeluoikeustyypit)
       }
       "viranomainen korkeakoulu" in {
-        createAndVerifySession("Kaisa", MockUsers.korkeakouluViranomainen.ldapUser)
+        val session = createAndVerifySession("Kaisa", MockUsers.korkeakouluViranomainen.ldapUser)
+        session.allowedOpiskeluoikeusTyypit should equal(Set(OpiskeluoikeudenTyyppi.korkeakoulutus.koodiarvo))
       }
       "luovutuspalvelu arkaluontoisten tietojen oikeus" in {
         val session = createAndVerifySession("Antti", MockUsers.luovutuspalveluKäyttäjäArkaluontoinen.ldapUser)
@@ -131,7 +142,7 @@ class KoskiSessionSpec extends FreeSpec with Matchers with EitherValues with Opt
 
     val expectedKäyttöoikeudet = expected.käyttöoikeudet.toSet
     session.orgKäyttöoikeudet should be(expectedOrganisaatioKäyttöoikeudet(expected))
-    session.globalKäyttöoikeudet should be(expectedKäyttöoikeudet.collect { case k : KäyttöoikeusGlobal => k})
+    session.globalKäyttöoikeudet should be(expectedKäyttöoikeudet.collect { case k : KäyttöoikeusGlobal if k.globalAccessType.contains(AccessType.read) => k })
     session.globalViranomaisKäyttöoikeudet should be(expectedKäyttöoikeudet.collect { case k : KäyttöoikeusViranomainen => k})
 
     val expectedAllowedOpiskeluoikeudenTyypit = expectedKäyttöoikeudet.flatMap(_.allowedOpiskeluoikeusTyypit)
@@ -145,7 +156,7 @@ class KoskiSessionSpec extends FreeSpec with Matchers with EitherValues with Opt
       OrganisaatioHierarkia.flatten(MockOrganisaatioRepository.getOrganisaatioHierarkia(k.organisaatio.oid).toList)
     }
 
-    u.käyttöoikeudet.collect { case k: KäyttöoikeusOrg => k }.flatMap { k =>
+    u.käyttöoikeudet.collect { case k: KäyttöoikeusOrg if k.organisaatioAccessType.contains(AccessType.read) => k }.flatMap { k =>
       mockOrganisaatioHierarkia(k).map { org =>
         k.copy(organisaatio = org.toOrganisaatio, juuri = org.oid == k.organisaatio.oid, oppilaitostyyppi = org.oppilaitostyyppi)
       }
@@ -256,6 +267,13 @@ object Responses {
         "kayttooikeudet" -> List(Map("palvelu" -> "KOSKI", "oikeus" -> "READ"))
       ))
     )),
+    "Otto" -> List(Map(
+      "oidHenkilo" -> MockUsers.eiOikkia.oid,
+      "organisaatiot" -> List(Map(
+        "organisaatioOid" -> MockOrganisaatiot.lehtikuusentienToimipiste,
+        "kayttooikeudet" -> List(Map("palvelu" -> "OPPIJANUMEROREKISTERI", "oikeus" -> "READ"))
+      ))
+    )),
     "palvelu2" -> List(Map(
       "oidHenkilo" -> MockUsers.kahdenOrganisaatioPalvelukäyttäjä.oid,
       "organisaatiot" -> List(
@@ -337,6 +355,10 @@ object Responses {
       "organisaatiot" -> List(Map(
         "organisaatioOid" -> MockOrganisaatiot.evira,
         "kayttooikeudet" -> List(Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_TOINEN_ASTE"))
+      ),
+      Map(
+        "organisaatioOid" -> Opetushallitus.organisaatioOid,
+        "kayttooikeudet" -> List(Map("palvelu" -> "OPPIJANUMEROREKISTERI", "oikeus" -> "REKISTERINPITAJA"))
       ))
     )),
     "Kaisa" -> List(Map(
@@ -344,6 +366,10 @@ object Responses {
       "organisaatiot" -> List(Map(
         "organisaatioOid" -> MockOrganisaatiot.evira,
         "kayttooikeudet" -> List(Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_KORKEAKOULU"))
+      ),
+      Map(
+        "organisaatioOid" -> Opetushallitus.organisaatioOid,
+        "kayttooikeudet" -> List()
       ))
     )),
     "Antti" -> List(Map(
