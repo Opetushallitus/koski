@@ -144,7 +144,7 @@ case class Http(root: String, client: Client) extends Logging {
   }
 
   private def processRequest[ResultType](request: Request, uriTemplate: String)(decoder: (Int, String, Request) => ResultType): Task[ResultType] = {
-    val requestWithFullPath: Request = request.copy(uri = addRoot(request.uri))
+    val requestWithFullPath: Request = request.withUri(addRoot(request.uri))
     val logger = HttpResponseLog(requestWithFullPath, root + uriTemplate)
     client.fetch(addCommonHeaders(requestWithFullPath)) { response =>
       logger.log(response)
@@ -169,7 +169,7 @@ case class Http(root: String, client: Client) extends Logging {
     }
   }
 
-  private def addCommonHeaders(request: Request) = request.copy(headers = request.headers.put(
+  private def addCommonHeaders(request: Request) = request.withHeaders(request.headers.put(
     Header("Caller-Id", OpintopolkuCallerId.koski)
   ))
 }
