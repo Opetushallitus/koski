@@ -7,7 +7,6 @@ import {
   arviointiPuuttuu,
   hasValmisOsasuoritus,
   osasuoritukset,
-  suorituksenTyyppi,
   suoritusKesken,
   suoritusValmis
 } from './Suoritus'
@@ -17,10 +16,8 @@ import {flatMapArray} from '../util/util'
 import DeletePaatasonSuoritusButton from './DeletePaatasonSuoritusButton'
 import {currentLocation} from '../util/location'
 import {
-  isOsittaisenAmmatillisenTutkinnonMuunTutkinnonOsanSuoritus,
   isOsittaisenAmmatillisenTutkinnonYhteisenTutkinnonOsanSuoritus
 } from '../ammatillinen/TutkinnonOsa'
-import * as R from 'ramda'
 import {ammattillinenOsittainenTutkintoJaMuuAmmatillisenTutkinnonOsaPuuttuu} from '../ammatillinen/AmmatillinenOsittainenTutkinto'
 
 export class SuoritusEditor extends React.Component {

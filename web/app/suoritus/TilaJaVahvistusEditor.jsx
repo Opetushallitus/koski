@@ -8,8 +8,7 @@ import {JääLuokalleTaiSiirretäänEditor} from './JaaLuokalleTaiSiirretaanEdit
 import {
   arviointiPuuttuu,
   arvioituTaiVahvistettu,
-  onKeskeneräisiäOsasuorituksia, osasuoritukset,
-  suorituksenTyyppi,
+  onKeskeneräisiäOsasuorituksia,
   suoritusKesken,
   suoritusValmis,
   tilaText
