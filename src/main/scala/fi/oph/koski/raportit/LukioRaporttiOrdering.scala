@@ -1,5 +1,7 @@
 package fi.oph.koski.raportit
 
+import fi.oph.koski.suoritusote.KoulutusModuuliOrdering.järjestäSuffiksinMukaan
+
 object LukioRaporttiOppiaineetOrdering extends Ordering[LukioRaporttiOppiaineJaKurssit] {
   override def compare(x: LukioRaporttiOppiaineJaKurssit, y: LukioRaporttiOppiaineJaKurssit): Int = {
     orderByPaikallisuus(x.oppiaine, y.oppiaine)
@@ -66,4 +68,14 @@ object LukioRaporttiOppiaineetOrdering extends Ordering[LukioRaporttiOppiaineJaK
     "OA",
     "XX"
   )
+}
+
+object LukioRaporttiKurssitOrdering {
+  lazy val lukioRaporttiKurssitOrdering: Ordering[LukioRaporttiKurssi] = Ordering.by(orderByPaikallisuusJaSuffix)
+
+  private def orderByPaikallisuusJaSuffix(kurssi: LukioRaporttiKurssi) = {
+    val (koodiarvoCharacters, koodiarvoDigits) = järjestäSuffiksinMukaan(kurssi.koulutusmoduuliKoodiarvo)
+
+    (kurssi.koulutusmoduuliPaikallinen, koodiarvoCharacters, koodiarvoDigits)
+  }
 }

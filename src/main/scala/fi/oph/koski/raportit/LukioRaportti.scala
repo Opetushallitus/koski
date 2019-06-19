@@ -8,6 +8,7 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Futures
+import fi.oph.koski.raportit.LukioRaporttiKurssitOrdering.lukioRaporttiKurssitOrdering
 
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, ExecutionContextExecutor, Future}
@@ -34,7 +35,7 @@ case class LukioRaportti(repository: LukioRaportitRepository, ePerusteet: EPerus
 
   private def lukiossaOpetettavatOppiaineetJaNiidenKurssit(rows: Seq[LukioRaporttiRows]) = {
     rows.flatMap(oppianeetJaNiidenKurssit).groupBy(_.oppiaine).map { case (oppiaine, x) =>
-      LukioRaporttiOppiaineJaKurssit(oppiaine, x.flatMap(_.kurssit).distinct)
+      LukioRaporttiOppiaineJaKurssit(oppiaine, x.flatMap(_.kurssit).distinct.sorted(lukioRaporttiKurssitOrdering))
     }.toSeq.sorted(LukioRaporttiOppiaineetOrdering)
   }
 
@@ -80,7 +81,7 @@ case class LukioRaportti(repository: LukioRaportitRepository, ePerusteet: EPerus
 
   private def oppiaineKohtainenSheet(oppiaineJaKurssit: LukioRaporttiOppiaineJaKurssit, data: Seq[LukioRaporttiRows]) = {
     val oppiaine = oppiaineJaKurssit.oppiaine
-    val kurssit = oppiaineJaKurssit.kurssit.sortBy(_.koulutusmoduuliKoodiarvo)
+    val kurssit = oppiaineJaKurssit.kurssit
     val filtered = data.filter(notOppimääränOpiskelijaFromAnotherOppiaine(oppiaine))
 
     DynamicDataSheet(
