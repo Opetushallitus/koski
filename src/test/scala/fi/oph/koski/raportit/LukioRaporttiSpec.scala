@@ -23,6 +23,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
 
   lazy val repository = LukioRaportitRepository(KoskiApplicationForTests.raportointiDatabase.db)
   lazy val ePerusteet = KoskiApplicationForTests.ePerusteet
+  lazy val lukioRaportti = LukioRaportti(repository, ePerusteet)
 
   "Lukion suoritustietoraportti" - {
 
@@ -183,9 +184,8 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     }
 
     "Opiskeluoikeus aikajaksojen siivous" - {
-      import fi.oph.koski.raportit.LukioRaportti.removeContinuousSameTila
       "Jatkuva sama tila näytetään yhtenä tilana" in {
-        removeContinuousSameTila(Seq(
+        lukioRaportti.removeContinuousSameTila(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-01"), Date.valueOf("2016-02-02"), "lasna", Date.valueOf("2016-01-01")),
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-02"), "loma", Date.valueOf("2016-02-01")),
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-01"), Date.valueOf("2016-02-02"), "lasna", Date.valueOf("2016-01-01")),
@@ -198,30 +198,29 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     }
 
     "Päivien lukumäärän laskenta jaksosta" - {
-      import fi.oph.koski.raportit.LukioRaportti.lengthInDaysInDateRange
       "Alkaa ja päättyy ennen hakuväliä" in {
-        lengthInDaysInDateRange(Aikajakso(date(2012, 1, 1), Some(date(2014, 1, 1))), date(2014, 1, 2), date(2018, 1, 1)) shouldEqual (0)
+        lukioRaportti.lengthInDaysInDateRange(Aikajakso(date(2012, 1, 1), Some(date(2014, 1, 1))), date(2014, 1, 2), date(2018, 1, 1)) shouldEqual (0)
       }
       "Alkaa hakuvälin jälkeen" in {
-        lengthInDaysInDateRange(Aikajakso(date(2018, 1, 2), Some(date(2020, 1, 1))), date(2010, 1, 2), date(2018, 1, 1)) shouldEqual (0)
+        lukioRaportti.lengthInDaysInDateRange(Aikajakso(date(2018, 1, 2), Some(date(2020, 1, 1))), date(2010, 1, 2), date(2018, 1, 1)) shouldEqual (0)
       }
       "Alkanut ennen hakuväliä ja jatkuu hakuvälin yli" in {
-        lengthInDaysInDateRange(Aikajakso(date(2012, 1, 1), Some(date(2016, 1, 1))), date(2013, 1, 1), date(2015, 1, 1)) shouldEqual (731)
+        lukioRaportti.lengthInDaysInDateRange(Aikajakso(date(2012, 1, 1), Some(date(2016, 1, 1))), date(2013, 1, 1), date(2015, 1, 1)) shouldEqual (731)
       }
       "Alkanut ennen hakuväliä ja jaksolle ei ole merkattu päättymistä" in {
-        lengthInDaysInDateRange(Aikajakso(date(2012, 1, 2), None), date(2013, 1, 1), date(2014, 1, 1)) shouldEqual (366)
+        lukioRaportti.lengthInDaysInDateRange(Aikajakso(date(2012, 1, 2), None), date(2013, 1, 1), date(2014, 1, 1)) shouldEqual (366)
       }
       "Alkanut ennen hakuväliä ja päättyy hakuvälillä" in {
-        lengthInDaysInDateRange(Aikajakso(date(2012, 1, 1), Some(date(2014, 1, 1))), date(2013, 1, 1), date(2018, 1, 1)) shouldEqual (366)
+        lukioRaportti.lengthInDaysInDateRange(Aikajakso(date(2012, 1, 1), Some(date(2014, 1, 1))), date(2013, 1, 1), date(2018, 1, 1)) shouldEqual (366)
       }
       "Alkanut hakuvälillä ja päättyy hakuvälillä" in {
-        lengthInDaysInDateRange(Aikajakso(date(2011, 1, 1), Some(date(2012, 1, 1))), date(2010, 6, 6), date(2013, 1, 1)) shouldEqual (366)
+        lukioRaportti.lengthInDaysInDateRange(Aikajakso(date(2011, 1, 1), Some(date(2012, 1, 1))), date(2010, 6, 6), date(2013, 1, 1)) shouldEqual (366)
       }
     }
   }
 
   private def buildLukioraportti(organisaatioOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate) = {
-    LukioRaportti.buildRaportti(repository, ePerusteet ,organisaatioOid, alku, loppu)
+    lukioRaportti.buildRaportti(repository, organisaatioOid, alku, loppu)
   }
 
   private def zipRowsWithColumTitles(sheet: DynamicDataSheet) = {
@@ -260,7 +259,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     found.head
   }
 
-  private def findByOid(oid: String, maps: Seq[Map[String, Any]]) = maps.filter(_.get("Oppijan oid").exists(_ == Some(oid)))
+  private def findByOid(oid: String, maps: Seq[Map[String, Any]]) = maps.filter(_.get("Oppijan oid").exists(_ == oid))
 
   private def verifyNoDuplicates(strs: Seq[String]) = strs.toSet.size should equal(strs.size)
 
@@ -283,7 +282,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Opiskeluoikeuden tunniste lähdejärjestelmässä" -> None,
     "Koulutustoimija" -> "Jyväskylän yliopisto",
     "Toimipiste" -> "Jyväskylän normaalikoulu",
-    "Oppijan oid" -> Some(lukiolainen.oid),
+    "Oppijan oid" -> lukiolainen.oid,
     "Opiskeluoikeuden alkamispäivä" -> Some(date(2012, 9, 1)),
     "Opiskeluoikeuden viimeisin tila" -> Some("valmistunut"),
     "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna",
@@ -331,7 +330,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
   )
 
   lazy val expectedLukiolainenHistorianKurssitRow = Map(
-    "Oppijan oid" -> Some(lukiolainen.oid),
+    "Oppijan oid" -> lukiolainen.oid,
     "Hetu" -> lukiolainen.hetu,
     "Sukunimi" -> Some(lukiolainen.sukunimi),
     "Etunimet" -> Some(lukiolainen.etunimet),
@@ -352,7 +351,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Koulutustoimija" -> "Jyväskylän yliopisto",
     "Toimipiste" -> "Jyväskylän normaalikoulu",
     "Opiskeluoikeuden tunniste lähdejärjestelmässä" -> None,
-    "Oppijan oid" -> Some(lukionAineopiskelijaAktiivinen.oid),
+    "Oppijan oid" -> lukionAineopiskelijaAktiivinen.oid,
     "Opiskeluoikeuden alkamispäivä" -> Some(date(2015, 9, 1)),
     "Opiskeluoikeuden viimeisin tila" -> Some("lasna"),
     "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna",
@@ -400,7 +399,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
 
   private object AktiivinenAineopiskelija {
     private lazy val default = defaultAineopiskelijaRow + (
-      "Oppijan oid" -> Some(lukionAineopiskelijaAktiivinen.oid),
+      "Oppijan oid" -> lukionAineopiskelijaAktiivinen.oid,
       "Hetu" -> lukionAineopiskelijaAktiivinen.hetu,
       "Sukunimi" -> Some(lukionAineopiskelijaAktiivinen.sukunimi),
       "Etunimet" -> Some(lukionAineopiskelijaAktiivinen.etunimet)
@@ -438,7 +437,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     )
 
     lazy val eiSuorituksiaKurssitRow = Map(
-      "Oppijan oid" -> Some(lukionAineopiskelijaAktiivinen.oid),
+      "Oppijan oid" -> lukionAineopiskelijaAktiivinen.oid,
       "Hetu" -> lukionAineopiskelijaAktiivinen.hetu,
       "Sukunimi" -> Some(lukionAineopiskelijaAktiivinen.sukunimi),
       "Etunimet" -> Some(lukionAineopiskelijaAktiivinen.etunimet),
@@ -476,7 +475,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
 
   private object EiTiedossaOppiaineenOpiskelija {
     private lazy val default = defaultAineopiskelijaRow + (
-      "Oppijan oid" -> Some(lukionEiTiedossaAineopiskelija.oid),
+      "Oppijan oid" -> lukionEiTiedossaAineopiskelija.oid,
       "Hetu" -> lukionEiTiedossaAineopiskelija.hetu,
       "Sukunimi" -> Some(lukionEiTiedossaAineopiskelija.sukunimi),
       "Etunimet" -> Some(lukionEiTiedossaAineopiskelija.etunimet)
@@ -516,7 +515,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     )
 
     lazy val eiTiedossaKurssitRow = Map(
-      "Oppijan oid" -> Some(lukionEiTiedossaAineopiskelija.oid),
+      "Oppijan oid" -> lukionEiTiedossaAineopiskelija.oid,
       "Hetu" -> lukionEiTiedossaAineopiskelija.hetu,
       "Sukunimi" -> Some(lukionEiTiedossaAineopiskelija.sukunimi),
       "Etunimet" -> Some(lukionEiTiedossaAineopiskelija.etunimet),
