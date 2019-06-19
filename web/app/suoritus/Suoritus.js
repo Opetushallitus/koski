@@ -8,6 +8,7 @@ import {t} from '../i18n/i18n'
 import {parseISODate} from '../date/date'
 import {flatMapArray} from '../util/util'
 import {tutkinnonNimi} from './Koulutusmoduuli'
+import {isOsittaisenAmmatillisenTutkinnonYhteisenTutkinnonOsanSuoritus} from '../ammatillinen/TutkinnonOsa'
 
 const isInPast = dateStr => parseISODate(dateStr) < new Date()
 
@@ -40,7 +41,14 @@ export const arviointiPuuttuu = (m) => !m.value.classes.includes('arvioinniton')
 export const onKeskeneräisiäOsasuorituksia  = (suoritus) => {
   return keskeneräisetOsasuoritukset(suoritus).length > 0
 }
-export const keskeneräisetOsasuoritukset = (suoritus) => osasuoritukset(suoritus).filter(R.either(suoritusKesken, onKeskeneräisiäOsasuorituksia))
+export const keskeneräisetOsasuoritukset = (suoritus) => osasuoritukset(suoritus).filter(s => {
+  if (isOsittaisenAmmatillisenTutkinnonYhteisenTutkinnonOsanSuoritus(s) && suoritusKesken(s)) {
+    return !hasValmisOsasuoritus(s)
+  } else {
+    return R.either(suoritusKesken, onKeskeneräisiäOsasuorituksia)(s)
+  }
+})
+export const hasValmisOsasuoritus = s => R.any(R.identity)(flatMapArray(osasuoritukset(s), suoritusValmis))
 export const osasuoritukset = (suoritus) => modelItems(suoritus, 'osasuoritukset')
 export const rekursiivisetOsasuoritukset = (suoritus) => flatMapArray(osasuoritukset(suoritus), s => [s].concat(rekursiivisetOsasuoritukset(s)))
 export const suorituksenTyyppi = suoritus => suoritus && modelData(suoritus, 'tyyppi').koodiarvo

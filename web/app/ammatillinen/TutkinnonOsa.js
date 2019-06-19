@@ -29,6 +29,10 @@ export const osanOsa = m => m && m.value.classes.includes('ammatillisentutkinnon
 
 export const isYhteinenTutkinnonOsa = suoritus => suoritus.value.classes.includes('yhteisenammatillisentutkinnonosansuoritus')
 
+export const isOsittaisenAmmatillisenTutkinnonYhteisenTutkinnonOsanSuoritus = s => s.value.classes.includes('yhteisenosittaisenammatillisentutkinnontutkinnonosansuoritus')
+
+export const isOsittaisenAmmatillisenTutkinnonMuunTutkinnonOsanSuoritus = s => s.value.classes.includes('muunosittaisenammatillisentutkinnontutkinnonosansuoritus')
+
 const muutKieliaineet = ['TK1', 'VK', 'VVAI', 'VVTK', 'VVVK']
 const äidinkieli = 'AI'
 const kieliAineet = [äidinkieli, ...muutKieliaineet]

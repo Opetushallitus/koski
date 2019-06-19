@@ -46,6 +46,7 @@ trait Suoritus {
   def valmis = !vahvistusPuuttuu && !arviointiPuuttuu
   def arviointiPuuttuu = arviointi.isEmpty
   def vahvistusPuuttuu = tarvitseeVahvistuksen && !vahvistus.isDefined
+  def vahvistettu = vahvistus.isDefined
   def kesken = !valmis
   def ryhmittelytekijä: Option[String] = None
   def salliDuplikaatit = false

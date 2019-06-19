@@ -3,12 +3,25 @@ import React from 'baret'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {Editor} from '../editor/Editor'
 import {TilaJaVahvistusEditor} from './TilaJaVahvistusEditor'
-import {arviointiPuuttuu, osasuoritukset, suoritusKesken, suoritusValmis} from './Suoritus'
+import {
+  arviointiPuuttuu,
+  hasValmisOsasuoritus,
+  osasuoritukset,
+  suorituksenTyyppi,
+  suoritusKesken,
+  suoritusValmis
+} from './Suoritus'
 import Text from '../i18n/Text'
 import {resolveOsasuorituksetEditor, resolvePropertyEditor} from './suoritusEditorMapping'
 import {flatMapArray} from '../util/util'
 import DeletePaatasonSuoritusButton from './DeletePaatasonSuoritusButton'
 import {currentLocation} from '../util/location'
+import {
+  isOsittaisenAmmatillisenTutkinnonMuunTutkinnonOsanSuoritus,
+  isOsittaisenAmmatillisenTutkinnonYhteisenTutkinnonOsanSuoritus
+} from '../ammatillinen/TutkinnonOsa'
+import * as R from 'ramda'
+import {ammattillinenOsittainenTutkintoJaMuuAmmatillisenTutkinnonOsaPuuttuu} from '../ammatillinen/AmmatillinenOsittainenTutkinto'
 
 export class SuoritusEditor extends React.Component {
   showDeleteButtonIfAllowed() {
@@ -57,27 +70,43 @@ export class SuoritusEditor extends React.Component {
   }
 }
 
-SuoritusEditor.validateModel = (m) => {
-  if (suoritusValmis(m) && arviointiPuuttuu(m)) {
+SuoritusEditor.validateModel = model => {
+  if (suoritusValmis(model) && arviointiPuuttuu(model)) {
     return [{key: 'missing', message: <Text name='Suoritus valmis, mutta arvosana puuttuu'/>}]
   }
 
-  const validateSuoritus = (s) =>
-    flatMapArray(osasuoritukset(s),
-      osasuoritus => {
-        if (suoritusValmis(s) && suoritusKesken(osasuoritus)) {
-          let subPath = removeCommonPath(osasuoritus.path, m.path)
-          return [{
-            path: subPath.concat('arviointi'),
-            key: 'osasuorituksenTila',
-            message: <Text name='Arvosana vaaditaan, koska päätason suoritus on merkitty valmiiksi.'/>
-          }]
-        } else {
-          return validateSuoritus(osasuoritus)
-        }
-      })
+  const validateSuoritus = suoritus => flatMapArray(osasuoritukset(suoritus), osasuoritus => {
+    if (suoritusValmis(suoritus) && suoritusKesken(osasuoritus)) {
+      return isOsittaisenAmmatillisenTutkinnonYhteisenTutkinnonOsanSuoritus(osasuoritus)
+        ? validateKeskeneräinenOsittaisenAmmatillisenTutkinnonYhteisenTutkinnonOsanSuoritus(osasuoritus)
+        : validationError(osasuoritus, 'Arvosana vaaditaan, koska päätason suoritus on merkitty valmiiksi.')
+    } else {
+      return validateSuoritus(osasuoritus)
+    }
+  })
 
-  return validateSuoritus(m)
+  const validateKeskeneräinenOsittaisenAmmatillisenTutkinnonYhteisenTutkinnonOsanSuoritus = suoritus => (
+    hasValmisOsasuoritus(suoritus)
+      ? validateSuoritus(suoritus)
+      : validationError(suoritus, 'Keskeneräiseltä yhteisen tutkinnon osalta vaaditaan valmiiksi merkitty osasuoritus, jotta päätason suoritus voidaan merkitä valmiiksi')
+  )
+
+  const validateValmisOsittaisenAmmatillisenTutkinnonSuoritus = suoritus => (
+    ammattillinenOsittainenTutkintoJaMuuAmmatillisenTutkinnonOsaPuuttuu(suoritus) && suoritusValmis(suoritus)
+      ? [{key: 'missing', message: <Text name='Et voi merkitä valmiiksi, koska suoritukselta puuttuu ammatillinen tutkinnon osa.'/>}]
+      : []
+  )
+
+  const validationError = (suoritus, virheviesti) => {
+    const subPath = removeCommonPath(suoritus.path, model.path)
+    return [{
+      path: subPath.concat('arviointi'),
+      key: 'osasuorituksenTila',
+      message: <Text name={virheviesti}/>
+    }]
+  }
+
+  return validateSuoritus(model).concat(validateValmisOsittaisenAmmatillisenTutkinnonSuoritus(model))
 }
 
 class TodistusLink extends React.Component {

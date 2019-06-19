@@ -2074,4 +2074,150 @@ describe('Ammatillinen koulutus', function() {
       })
     })
   })
+
+  describe('Osittaisen ammatillisen tutkinnon validaatio', function () {
+    var yhteinenTutkinnonOsa = opinnot.tutkinnonOsat().tutkinnonOsa(5)
+    var osanOsa0 = yhteinenTutkinnonOsa.osanOsat().tutkinnonOsa(0)
+    var osanOsa1 = yhteinenTutkinnonOsa.osanOsat().tutkinnonOsa(1)
+    var osanOsa2 = yhteinenTutkinnonOsa.osanOsat().tutkinnonOsa(2)
+
+    describe('Valmiiksi merkitseminen', function () {
+      before(
+        Authentication().login(),
+        page.openPage,
+        page.oppijaHaku.searchAndSelect('140493-2798'),
+        editor.edit,
+        editor.property('tila').removeItem(0),
+        opinnot.valitseSuoritus(undefined, 'Luonto- ja ympäristöalan perustutkinto, osittainen'),
+        opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi,
+      )
+
+      describe('Keskeneräisellä yhteisen tutkinnon osalla', function () {
+        describe('On valmis osan osa-alue', function () {
+          before(
+            yhteinenTutkinnonOsa.propertyBySelector('.arvosana').setValue('Ei valintaa')
+          )
+
+          it('Voidaan asettaa valmiiksi', function () {
+            expect(opinnot.tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(true)
+          })
+        })
+
+      describe('Ei ole valmista osan osa-aluetta', function () {
+        before(
+          editor.edit,
+          yhteinenTutkinnonOsa.toggleExpand,
+          osanOsa0.propertyBySelector('.arvosana').setValue('Ei valintaa'),
+          osanOsa1.propertyBySelector('.arvosana').setValue('Ei valintaa'),
+          osanOsa2.propertyBySelector('.arvosana').setValue('Ei valintaa')
+        )
+
+          it('Ei voida asettaa valmiiksi', function () {
+            expect(opinnot.tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(false)
+          })
+        })
+
+        describe('Ei yhtään osan osa-aluetta', function () {
+          before(
+            editor.edit,
+            osanOsa2.poistaTutkinnonOsa,
+            osanOsa1.poistaTutkinnonOsa,
+            osanOsa0.poistaTutkinnonOsa
+          )
+
+          it('Ei voida asettaa valmiiksi', function () {
+            expect(opinnot.tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(false)
+          })
+        })
+
+        after(editor.cancelChanges)
+      })
+
+      describe('Ammatillisen tutkinnon osan suoritus puuttuu', function () {
+        before(
+          editor.edit,
+          editor.property('tila').removeItem(0),
+          opinnot.valitseSuoritus(undefined, 'Luonto- ja ympäristöalan perustutkinto, osittainen'),
+          opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi,
+          opinnot.tutkinnonOsat().tutkinnonOsa(3).poistaTutkinnonOsa,
+          opinnot.tutkinnonOsat().tutkinnonOsa(2).poistaTutkinnonOsa,
+          opinnot.tutkinnonOsat().tutkinnonOsa(1).poistaTutkinnonOsa,
+          opinnot.tutkinnonOsat().tutkinnonOsa(0).poistaTutkinnonOsa
+       )
+
+        it('Ei voida asettaa valmiiksi', function () {
+          expect(opinnot.tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(false)
+        })
+
+        after(editor.cancelChanges)
+      })
+    })
+
+    describe('Tallentaminen', function () {
+      before(
+        Authentication().login(),
+        page.openPage,
+        page.oppijaHaku.searchAndSelect('140493-2798')
+      )
+
+      describe('Kun päätason suoritus on valmis', function () {
+        describe('Ja ammatillisen tutkinnon osaa ei ole suoritettu', function () {
+          before(
+            opinnot.tutkinnonOsat().tutkinnonOsa(3).poistaTutkinnonOsa,
+            opinnot.tutkinnonOsat().tutkinnonOsa(2).poistaTutkinnonOsa,
+            opinnot.tutkinnonOsat().tutkinnonOsa(1).poistaTutkinnonOsa,
+            opinnot.tutkinnonOsat().tutkinnonOsa(0).poistaTutkinnonOsa
+          )
+
+          it('Tallentaminen on estetty', function () {
+            expect(opinnot.onTallennettavissa()).to.equal(false)
+          })
+
+          after(editor.cancelChanges)
+        })
+
+        describe('Ja yhteinen tutkinnon osa on kesken', function () {
+          before(
+            editor.edit,
+            yhteinenTutkinnonOsa.propertyBySelector('.arvosana').setValue('Ei valintaa')
+          )
+
+          describe('Jos osan osa-alue on valmis', function () {
+            it('Tallenntaminen on sallittu', function () {
+              expect(opinnot.onTallennettavissa()).to.equal(true)
+            })
+          })
+
+          describe('Jos ei ole valmista osan osa-aluetta', function () {
+            before(
+              editor.edit,
+              yhteinenTutkinnonOsa.toggleExpand,
+              osanOsa0.propertyBySelector('.arvosana').setValue('Ei valintaa'),
+              osanOsa1.propertyBySelector('.arvosana').setValue('Ei valintaa'),
+              osanOsa2.propertyBySelector('.arvosana').setValue('Ei valintaa')
+            )
+
+            it('Tallentaminen on estetty', function () {
+              expect(opinnot.onTallennettavissa()).to.equal(false)
+            })
+          })
+
+          describe('Jos ei ole osan osa-alueita', function () {
+            before(
+              editor.edit,
+              osanOsa2.poistaTutkinnonOsa,
+              osanOsa1.poistaTutkinnonOsa,
+              osanOsa0.poistaTutkinnonOsa
+            )
+
+            it('Tallentaminen on estettyy', function () {
+              expect(opinnot.onTallennettavissa()).to.equal(false)
+            })
+          })
+
+          after(editor.cancelChanges)
+        })
+      })
+    })
+  })
 })

@@ -6,7 +6,11 @@ import {PropertyEditor} from '../editor/PropertyEditor'
 import {MerkitseSuoritusValmiiksiPopup} from './MerkitseSuoritusValmiiksiPopup'
 import {JääLuokalleTaiSiirretäänEditor} from './JaaLuokalleTaiSiirretaanEditor'
 import {
-  arviointiPuuttuu, arvioituTaiVahvistettu, onKeskeneräisiäOsasuorituksia, suoritusKesken,
+  arviointiPuuttuu,
+  arvioituTaiVahvistettu,
+  onKeskeneräisiäOsasuorituksia, osasuoritukset,
+  suorituksenTyyppi,
+  suoritusKesken,
   suoritusValmis,
   tilaText
 } from './Suoritus'
@@ -14,6 +18,7 @@ import Text from '../i18n/Text'
 import {isPerusopetuksenOppimäärä, isYsiluokka, jääLuokalle} from '../perusopetus/Perusopetus'
 import {t} from '../i18n/i18n'
 import * as ytr from '../ytr/ytr'
+import {ammattillinenOsittainenTutkintoJaMuuAmmatillisenTutkinnonOsaPuuttuu} from '../ammatillinen/AmmatillinenOsittainenTutkinto'
 
 export const TilaJaVahvistusEditor = ({model}) => {
   if (ytr.pakollisetKokeetSuoritettuEnnen1990(model)) return null
@@ -62,13 +67,18 @@ const MerkitseValmiiksiButton = ({model}) => {
     }
   }
 
-  const keskeneräisiSuorituksia = onKeskeneräisiäOsasuorituksia(model) || arviointiPuuttuu(model)
-  const disabled = keskeneräisiSuorituksia || eiTiedossaOppiaine(model)
+  const keskeneräisiäSuorituksia = onKeskeneräisiäOsasuorituksia(model) || arviointiPuuttuu(model)
+  const disabled = keskeneräisiäSuorituksia
+    || eiTiedossaOppiaine(model)
+    || ammattillinenOsittainenTutkintoJaMuuAmmatillisenTutkinnonOsaPuuttuu(model)
   const buttonText = arvioituTaiVahvistettu(model) ? t('Muokkaa vahvistusta') : t('Merkitse valmiiksi')
   const title = eiTiedossaOppiaine(model)
     ? t('"Ei tiedossa"-oppiainetta ei voi merkitä valmiiksi')
-    : keskeneräisiSuorituksia
-      ? t('Ei voi merkitä valmiiksi, koska suorituksessa on keskeneräisiä tai arvioimattomia osasuorituksia.') : ''
+    : keskeneräisiäSuorituksia
+      ? t('Ei voi merkitä valmiiksi, koska suorituksessa on keskeneräisiä tai arvioimattomia osasuorituksia.')
+      : ammattillinenOsittainenTutkintoJaMuuAmmatillisenTutkinnonOsaPuuttuu(model)
+        ? t('Et voi merkitä valmiiksi, koska suoritukselta puuttuu muu ammatillisen tutkinnon osan suoritus.')
+        : ''
 
   return (<span>
     <button className="koski-button merkitse-valmiiksi" title={title} disabled={disabled} onClick={() => addingAtom.modify(x => !x)}>{buttonText}</button>
