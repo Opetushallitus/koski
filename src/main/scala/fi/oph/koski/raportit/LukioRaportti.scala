@@ -35,7 +35,7 @@ case class LukioRaportti(repository: LukioRaportitRepository, ePerusteet: EPerus
   private def lukiossaOpetettavatOppiaineetJaNiidenKurssit(rows: Seq[LukioRaporttiRows]) = {
     rows.flatMap(oppianeetJaNiidenKurssit).groupBy(_.oppiaine).map { case (oppiaine, x) =>
       LukioRaporttiOppiaineJaKurssit(oppiaine, x.flatMap(_.kurssit).distinct)
-    }.toSeq
+    }.toSeq.sorted(LukioRaporttiOppiaineetOrdering)
   }
 
   private def oppianeetJaNiidenKurssit(row: LukioRaporttiRows): Seq[LukioRaporttiOppiaineJaKurssit] = {
