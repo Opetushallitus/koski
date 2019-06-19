@@ -15,7 +15,7 @@ object ClientWithBasicAuthentication {
   def apply(wrappedClient: Client, username: String, password: String): Client = {
     val (name, value) = BasicAuthentication.basicAuthHeader(username, password)
 
-    def open(req: Request) = wrappedClient.open(req.copy(headers = req.headers ++ List(Header(name, value))))
+    def open(req: Request) = wrappedClient.open(req.withHeaders(req.headers ++ List(Header(name, value))))
 
     Client(
       open = Service.lift(open _),

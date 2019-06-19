@@ -26,7 +26,7 @@ object Rooli {
 
 // this trait is intentionally left mostly blank to make it harder to accidentally mix global and organization-specific rights
 trait Käyttöoikeus {
-  def allowedOpiskeluoikeusTyypit: Set[String] = OpiskeluoikeudenTyyppi.kaikkiTyypit.map(_.koodiarvo)
+  def allowedOpiskeluoikeusTyypit: Set[String] = Set.empty
 }
 
 case class KäyttöoikeusGlobal(globalPalveluroolit: List[Palvelurooli]) extends Käyttöoikeus {
@@ -35,7 +35,12 @@ case class KäyttöoikeusGlobal(globalPalveluroolit: List[Palvelurooli]) extends
     case Palvelurooli("KOSKI", "OPHPAAKAYTTAJA") => List(AccessType.read, AccessType.write, AccessType.tiedonsiirronMitätöinti)
     case _ => Nil
   }
-  override def toString = globalPalveluroolit.mkString(",")
+
+  override lazy val allowedOpiskeluoikeusTyypit: Set[String] = if (globalAccessType.contains(AccessType.read)) {
+    OpiskeluoikeudenTyyppi.kaikkiTyypit.map(_.koodiarvo)
+  } else {
+    Set.empty
+  }
 }
 
 case class KäyttöoikeusOrg(organisaatio: OrganisaatioWithOid, organisaatiokohtaisetPalveluroolit: List[Palvelurooli], juuri: Boolean, oppilaitostyyppi: Option[String]) extends Käyttöoikeus {
@@ -46,10 +51,12 @@ case class KäyttöoikeusOrg(organisaatio: OrganisaatioWithOid, organisaatiokoht
     case _ => Nil
   }
 
-  override lazy val allowedOpiskeluoikeusTyypit: Set[String] = if (organisaatiokohtaisetPalveluroolit.exists(_.rooli == LUKU_ESIOPETUS)) {
+  override lazy val allowedOpiskeluoikeusTyypit: Set[String] = if (!organisaatioAccessType.contains(AccessType.read)) {
+    Set.empty
+  } else if (organisaatiokohtaisetPalveluroolit.exists(_.rooli == LUKU_ESIOPETUS)) {
     Set(OpiskeluoikeudenTyyppi.esiopetus.koodiarvo)
   } else {
-    super.allowedOpiskeluoikeusTyypit
+    OpiskeluoikeudenTyyppi.kaikkiTyypit.map(_.koodiarvo)
   }
 
   def globalAccessType: List[AccessType.Value] = Nil
