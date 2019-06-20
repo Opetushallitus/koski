@@ -23,9 +23,9 @@ import scalaz.{-\/, \/-}
 
 object Http extends Logging {
   private val maxHttpConnections = Pools.jettyThreads + Pools.httpThreads
-  def newClient(name: String): Client = {
+  def newClient(name: String, defaultConfig: BlazeClientConfig = BlazeClientConfig.defaultConfig): Client = {
     logger.info(s"Creating new pooled http client with $maxHttpConnections max total connections for $name")
-    blaze.PooledHttp1Client(maxTotalConnections = maxHttpConnections, config = BlazeClientConfig.defaultConfig.copy(
+    blaze.PooledHttp1Client(maxTotalConnections = maxHttpConnections, config = defaultConfig.copy(
       requestTimeout = 10.minutes,
       customExecutor = Some(Pools.httpPool)
     ))
