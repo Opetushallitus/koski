@@ -212,14 +212,14 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
 
           löydettyHenkilö match {
             case Right(löydettyHenkilöOid) if löydettyHenkilöOid != sisältäväOpiskeluoikeus.oppijaOid =>
-              KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.henkilöTiedot()
-            case Left(status) =>
-              status
-            case _ =>
-              HttpStatus.ok
+              henkilöRepository.findByOid(löydettyHenkilöOid, findMasterIfSlaveOid = true) match {
+                case Some(hlö) if (hlö.oid :: hlö.linkitetytOidit).contains(sisältäväOpiskeluoikeus.oppijaOid) => HttpStatus.ok
+                case _ => KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.henkilöTiedot()
+              }
+            case Left(status) => status
+            case _ => HttpStatus.ok
           }
-        case _ =>
-          KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.eiLöydy(s"Sisältävää opiskeluoikeutta ei löydy oid-arvolla $oid")
+        case _ => KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.eiLöydy(s"Sisältävää opiskeluoikeutta ei löydy oid-arvolla $oid")
       }
     case _ => HttpStatus.ok
   }
