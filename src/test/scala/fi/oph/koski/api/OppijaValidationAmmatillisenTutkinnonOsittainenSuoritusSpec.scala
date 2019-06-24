@@ -214,22 +214,22 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
                   osasuoritukset = ammatillisenTutkinnonOsittainenSuoritus.osasuoritukset.map(_.filterNot(_.isInstanceOf[MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus]))
                 )))
               "Palautetaan HTTP 400" in (putOpiskeluoikeus(opiskeluoikeus) (
-                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.ammatillisenTutkinnonOsaPuuttuu("Suoritus koulutus/361902 on merkitty valmiiksi, mutta sillä ei ole muu ammatillisen tutkinnon osan suoritusta"))))
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.ammatillisenTutkinnonOsaPuuttuu("Suoritus koulutus/361902 on merkitty valmiiksi, mutta sillä ei ole ammatillisen tutkinnon osan suoritusta. Valmis osittainen ammatillinen tutkinto ei voi koostua pelkästään yhteisistä tutkinnon osista."))))
             }
 
             "Vahvistamaton yhteisen ammatillisen tutkinnon osa" - {
               val vahvistamatonYhteisenTutkinnonOsanSuoritus = yhteisenTutkinnonOsanSuoritus.copy(vahvistus = None, arviointi = None)
 
-              "Vahvistetulla osan osa-alueen suorituksella" - {
+              "Vahvistetuilla osan osa-alueille" - {
                 "Palautetaan HTTP 200" in (putOpiskeluoikeus(osasuorituksilla(List(vahvistamatonYhteisenTutkinnonOsanSuoritus), opiskeluoikeusVahvistetullaSuorituksella))) (
                   verifyResponseStatusOk())
               }
 
-              "Ei vahvistettua osan osa-aluetta" - {
-                val osasuorituksiaEiVahvistettu = vahvistamatonYhteisenTutkinnonOsanSuoritus.copy(
-                  osasuoritukset = vahvistamatonYhteisenTutkinnonOsanSuoritus.osasuoritukset.map(_.map(_.copy(arviointi = None)))
+              "Yksi keskeneräinen osan osa-alue" - {
+                val yhtäOsasuorituksiaEiVahvistettu = vahvistamatonYhteisenTutkinnonOsanSuoritus.copy(
+                  osasuoritukset = Some(vahvistamatonYhteisenTutkinnonOsanSuoritus.osasuoritukset.toList.flatten :+ YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = PaikallinenAmmatillisenTutkinnonOsanOsaAlue(PaikallinenKoodi("MA", "Matematiikka"), "Matematiikan opinnot", pakollinen = true, Some(LaajuusOsaamispisteissä(3))), arviointi = None))
                 )
-                "Palautetaan HTTP 400" in (putOpiskeluoikeus(osasuorituksilla(List(osasuorituksiaEiVahvistettu), opiskeluoikeusVahvistetullaSuorituksella))) (
+                "Palautetaan HTTP 400" in (putOpiskeluoikeus(osasuorituksilla(List(yhtäOsasuorituksiaEiVahvistettu), opiskeluoikeusVahvistetullaSuorituksella))) (
                   verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella koulutus/361902 on keskeneräinen osasuoritus tutkinnonosat/101054")))
               }
 

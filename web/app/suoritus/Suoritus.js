@@ -43,12 +43,12 @@ export const onKeskeneräisiäOsasuorituksia  = (suoritus) => {
 }
 export const keskeneräisetOsasuoritukset = (suoritus) => osasuoritukset(suoritus).filter(s => {
   if (isOsittaisenAmmatillisenTutkinnonYhteisenTutkinnonOsanSuoritus(s) && suoritusKesken(s)) {
-    return !hasValmisOsasuoritus(s)
+    return !osasuorituksetVahvistettu(s)
   } else {
     return R.either(suoritusKesken, onKeskeneräisiäOsasuorituksia)(s)
   }
 })
-export const hasValmisOsasuoritus = s => R.any(R.identity)(flatMapArray(osasuoritukset(s), suoritusValmis))
+export const osasuorituksetVahvistettu = s => R.and(R.all(suoritusValmis)(osasuoritukset(s)), osasuoritukset(s).length > 0)
 export const osasuoritukset = (suoritus) => modelItems(suoritus, 'osasuoritukset')
 export const rekursiivisetOsasuoritukset = (suoritus) => flatMapArray(osasuoritukset(suoritus), s => [s].concat(rekursiivisetOsasuoritukset(s)))
 export const suorituksenTyyppi = suoritus => suoritus && modelData(suoritus, 'tyyppi').koodiarvo
