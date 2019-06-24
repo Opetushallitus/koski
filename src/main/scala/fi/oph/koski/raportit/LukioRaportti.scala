@@ -233,37 +233,37 @@ case class LukioRaportti(repository: LukioRaportitRepository, ePerusteet: EPerus
       Column("Sukunimi"),
       Column("Etunimet"),
       CompactColumn("Opiskeluoikeuden alkamispäivä"),
-      CompactColumn("Opiskeluoikeuden viimeisin tila"),
-      CompactColumn("Opiskeluoikeuden tilat aikajakson aikana"),
-      CompactColumn("Opetussuunnitelma"),
-      CompactColumn("Suorituksen tyyppi"),
-      CompactColumn("Suorituksen tila"),
-      CompactColumn("Suorituksen vahvistuspäivä"),
-      CompactColumn("Läsnäolopäiviä aikajakson aikana"),
-      CompactColumn("Rahoitukset"),
+      CompactColumn("Opiskeluoikeuden viimeisin tila", comment = Some("Se opiskeluoikeuden tila, joka opiskeluoikeudella on nyt.")),
+      CompactColumn("Opiskeluoikeuden tilat aikajakson aikana", comment = Some("Kaikki opiskeluoikeuden tilat, joita opiskeluoikeudella on ollut aikajaksona aikana. Tilat näyteään pilkuilla erotettuna aikajärjestyksessä.")),
+      CompactColumn("Opetussuunnitelma", comment = Some("Suoritetaanko lukio oppimäärää tai oppiaineen oppimäärää nuorten vai aikuisten opetussuunnitelman mukaan.")),
+      CompactColumn("Suorituksen tyyppi", comment = Some("Onko kyseessä koko lukion oppimäärän suoritus (\"lukionoppimaara\") vai aineopintosuoritus (\"lukionoppiaineenoppimaara\").")),
+      CompactColumn("Suorituksen tila", comment = Some("Onko kyseinen päätason suoritus (lukion oppimäärä tai oppiaineen oppimäärä) \"kesken\" vai \"valmis\".")),
+      CompactColumn("Suorituksen vahvistuspäivä", comment = Some("Päätason suorituksen (lukion oppimäärä tai oppiaineen oppimäärä) vahvistuspäivä. Vain \"valmis\"-tilaisilla suorituksilla on tässä kentässä jokin päivämäärä.")),
+      CompactColumn("Läsnäolopäiviä aikajakson aikana", comment = Some("Kuinka monta kalenteripäivää opiskelija on ollut raportin tulostusparametreissa määriteltynä aikajaksona \"Läsnä\"-tilassa KOSKI-palvelussa.")),
+      CompactColumn("Rahoitukset", comment = Some("Rahoituskoodit aikajärjestyksessä, joita opiskeluoikeuden läsnäolojaksoille on siirretty. Rahoituskoodien nimiarvot koodistossa https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/opintojenrahoitus/latest")),
       CompactColumn("Ryhmä"),
-      CompactColumn("Pidennetty Päättymispäivä"),
-      CompactColumn("Ulkomainen vaihto-opiskelija"),
-      CompactColumn("Yksityisopiskelija"),
-      CompactColumn("Ulkomaanjaksot"),
-      CompactColumn("Erityisen koulutustehtävän tehtävät"),
-      CompactColumn("Erityisen koulutustehtävän jaksot"),
-      CompactColumn("Sisäoppilaitosmainen majoitus"),
+      CompactColumn("Pidennetty päättymispäivä", comment = Some("Onko opiskelijalle merkitty opiskeluoikeuden lisätietoihin, että hänellä on pidennetty päättymispäivä (kyllä/ei).")),
+      CompactColumn("Ulkomainen vaihto-opiskelija", comment = Some("Onko kyseesä ulkomainen vaihto-opiskelija (kyllä/ei).")),
+      CompactColumn("Yksityisopiskelija", comment = Some("Onko kysessä yksityisopiskelija (kyllä/ei).")),
+      CompactColumn("Ulkomaanjaksot", comment = Some("Kuinka monta ulkomaanjaksopäivää opiskelijalla on KOSKI-datan mukaan ollut raportin tulostusparametreissa määritellyllä aikajaksolla.")),
+      CompactColumn("Erityisen koulutustehtävän tehtävät", comment = Some("Erityiset koulutustehtävät, jotka opiskelijalla on KOSKI-datan mukaan ollut raportin tulostusparametreissa määritellyllä aikajaksolla.")),
+      CompactColumn("Erityisen koulutustehtävän jaksot", comment = Some("Kuinka monta erityisen koulutustehtävän jaksopäivää opiskelijalla on KOSKI-datan mukaan ollut raportin tulostusparametreissa määritellyllä aikajaksolla.")),
+      CompactColumn("Sisäoppilaitosmainen majoitus", comment = Some("Kuinka monta päivää opiskelija on ollut KOSKI-datan mukaan sisäoppilaitosmaisessa majoituksessa raportin tulostusparametreissa määritellyllä aikajaksolla.")),
       CompactColumn("Syy alle 18-vuotiaana aloitettuun opiskeluun aikuisten lukiokoulutuksessa"),
-      CompactColumn("Yhteislaajuus")
-    ) ++ oppiaineet.map(x => CompactColumn(x.oppiaine.toColumnTitle))
+      CompactColumn("Yhteislaajuus", comment = Some("Suoritettujen opintojen yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista."))
+    ) ++ oppiaineet.map(x => CompactColumn(title = x.oppiaine.toColumnTitle, comment = Some("Otsikon nimessä näytetään ensin oppiaineen koodi, sitten oppiaineen nimi ja viimeiseksi tieto, onko kyseessä valtakunnallinen vai paikallinen oppiaine (esim. BI Biologia valtakunnallinen). Sarakkeen arvossa näytetään pilkulla erotettuna oppiaineelle siirretty arvosana ja oppiaineessa suoritettujen kurssien määrä.")))
   }
 
   private def oppiaineKohtaisetColumnSettings(kurssit: Seq[LukioRaporttiKurssi]) = {
     Seq(
-     Column("Oppijan oid"),
-     Column("Hetu"),
-     Column("Sukunimi"),
-     Column("Etunimet"),
-     CompactColumn("Toimipiste"),
-     CompactColumn("Opetussuunnitelma"),
-     CompactColumn("Suorituksen tyyppi")
-   ) ++ kurssit.map(k => CompactColumn(k.toColumnTitle))
+      Column("Oppijan oid"),
+      Column("Hetu"),
+      Column("Sukunimi"),
+      Column("Etunimet"),
+      CompactColumn("Toimipiste"),
+      CompactColumn("Opetussuunnitelma", comment = Some("Suoritetaanko lukio oppimäärää tai oppiaineen oppimäärää nuorten vai aikuisten opetussuunnitelman mukaan.")),
+      CompactColumn("Suorituksen tyyppi", comment = Some("Onko kyseessä koko lukion oppimäärän suoritus (\"lukionoppimaara\") vai aineopintosuoritus (\"lukionoppiaineenoppimaara\")."))
+    ) ++ kurssit.map(k => CompactColumn(title = k.toColumnTitle, comment = Some("Otsikon nimessä näytetään ensin kurssin koodi, sitten kurssin nimi ja viimeiseksi tieto siitä, onko kurssi valtakunnallinen vai paikallinen. Kurssisarake sisältää aina seuraavat tiedot, jos opiskelijalla on kyseisen kurssi suoritettuna: kurssityyppi (pakollinen, syventävä, soveltava), arvosana, kurssin laajuus ja \"tunnustettu\" jos kyseinen kurssi on tunnustettu.")))
   }
 }
 
