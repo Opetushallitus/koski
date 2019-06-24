@@ -3,6 +3,13 @@ package fi.oph.koski.raportit
 
 case class Column(title: String, width: Option[Int] = None, comment: Option[String] = None)
 
+object Column {
+  def apply(title: String, width: Option[Int] = None, comment: Option[String] = None): Column = {
+    val titlePrepended = comment.fold(title)(title + ": " + _)
+    new Column(title, width, Some(titlePrepended))
+  }
+}
+
 object CompactColumn {
   def apply(title: String, comment: Option[String] = None): Column = Column(title, width = Some(2000), comment = comment)
 }

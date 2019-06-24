@@ -93,13 +93,13 @@ class ExcelWriterSpec extends FreeSpec with Matchers {
             headingRow.getCell(9).getCellTypeEnum should equal(CellType.STRING)
             headingRow.getCell(9).getStringCellValue should equal("OptionBoolean")
           }
-          "Luo otsikko riville kommentit" in {
+          "Jos kommentti on määritelty, lisää kolumnin nimen kommentin alkuun" in {
             val headingRow = wb.getSheet("data_sheet_title").iterator.next
-            headingRow.getCell(0).getCellComment.getString.getString should equal("kommentti")
+            headingRow.getCell(0).getCellComment.getString.getString should equal("Str: kommentti")
           }
-          "Ei luo kommenttia jos sitä ei ole määritelty" in {
+          "Jos kommenttia ei ole määritelty, luo kommentin jossa solun nimi" in {
             val headingRow = wb.getSheet("data_sheet_title").iterator.next
-            headingRow.iterator.asScala.drop(1).foreach(_.getCellComment should equal(null))
+            headingRow.getCell(1).getCellComment.getString.getString should equal("OptionStr")
           }
           "Data solujen formatointi" - {
             val dataSheetIterator = wb.getSheet("data_sheet_title").iterator
