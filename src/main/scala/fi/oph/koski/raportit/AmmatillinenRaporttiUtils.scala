@@ -7,7 +7,7 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.raportointikanta.{ROsasuoritusRow, RPäätasonSuoritusRow}
 import fi.oph.koski.schema._
 
-trait AmmatillinenRaporttiUtils {
+object AmmatillinenRaporttiUtils {
 
   def extractOsaamisalatAikavalilta(päätasonSuoritukset: Seq[RPäätasonSuoritusRow], alku: LocalDate, loppu: LocalDate) = {
     päätasonSuoritukset
@@ -97,7 +97,7 @@ trait AmmatillinenRaporttiUtils {
     isAmmatillisenTutkinnonOsanOsaalue(osasuoritus) & osasuorituksenaOsissa(osasuoritus, osat)
   }
 
-  val tutkinnonosatvalinnanmahdollisuusKoodiarvot = Seq("1,", "2")
+  val tutkinnonosatvalinnanmahdollisuusKoodiarvot = Seq("1", "2")
 
   val isAmmatillisenTutkinnonOsa: ROsasuoritusRow => Boolean = osasuoritus => {
     osasuoritus.suorituksenTyyppi == "ammatillisentutkinnonosa" &&

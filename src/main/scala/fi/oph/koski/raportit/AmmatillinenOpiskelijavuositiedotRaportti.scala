@@ -58,7 +58,7 @@ case class OpiskelijavuositiedotRow(
   lisätiedotKoulutusvienti: Boolean
 )
 
-object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti with AmmatillinenRaporttiUtils {
+object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
 
   def buildRaportti(raportointiDatabase: RaportointiDatabase, oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate): Seq[OpiskelijavuositiedotRow] = {
     val result = raportointiDatabase.opiskeluoikeusAikajaksot(oppilaitosOid, OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo, alku, loppu)
@@ -181,7 +181,7 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti with 
       suorituksenTyyppi = päätasonSuoritukset.map(_.suorituksenTyyppi).mkString(","),
       koulutusmoduulit = päätasonSuoritukset.map(_.koulutusmoduuliKoodiarvo).sorted.mkString(","),
       osaamisalat = if (osaamisalat.isEmpty) None else Some(osaamisalat.mkString(",")),
-      päätasonSuorituksenSuoritustapa = suoritusTavat(päätasonSuoritukset),
+      päätasonSuorituksenSuoritustapa = AmmatillinenRaporttiUtils.suoritusTavat(päätasonSuoritukset),
       opiskeluoikeudenAlkamispäivä = opiskeluoikeus.alkamispäivä.map(_.toLocalDate),
       viimeisinOpiskeluoikeudenTila = opiskeluoikeus.viimeisinTila,
       viimeisinOpiskeluoikeudenTilaAikajaksonLopussa = aikajaksot.last.tila,
