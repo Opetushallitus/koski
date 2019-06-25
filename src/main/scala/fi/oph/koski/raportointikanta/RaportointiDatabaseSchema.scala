@@ -265,6 +265,7 @@ case class ROpiskeluoikeusAikajaksoRow(
 }
 
 sealed trait RSuoritusRow {
+  def arviointiArvosanaKoodiarvo: Option[String]
   def matchesWith(x: LukioRaporttiOppiaineTaiKurssi): Boolean
 }
 

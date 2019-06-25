@@ -23,6 +23,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
 
   lazy val repository = LukioRaportitRepository(KoskiApplicationForTests.raportointiDatabase.db)
   lazy val ePerusteet = KoskiApplicationForTests.ePerusteet
+  lazy val lukioRaportti = LukioRaportti(repository, ePerusteet)
 
   "Lukion suoritustietoraportti" - {
 
@@ -55,7 +56,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
           "Läsnäolopäiviä aikajakson aikana",
           "Rahoitukset",
           "Ryhmä",
-          "Pidennetty Päättymispäivä",
+          "Pidennetty päättymispäivä",
           "Ulkomainen vaihto-opiskelija",
           "Yksityisopiskelija",
           "Ulkomaanjaksot",
@@ -64,28 +65,28 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
           "Sisäoppilaitosmainen majoitus",
           "Syy alle 18-vuotiaana aloitettuun opiskeluun aikuisten lukiokoulutuksessa",
           "Yhteislaajuus",
-          "BI Biologia valtakunnallinen",
-          "XX Ei tiedossa valtakunnallinen",
-          "A1 Englanti valtakunnallinen",
-          "FI Filosofia valtakunnallinen",
-          "FY Fysiikka valtakunnallinen",
-          "HI Historia valtakunnallinen",
-          "KT Islam valtakunnallinen",
-          "KE Kemia valtakunnallinen",
-          "KU Kuvataide valtakunnallinen",
-          "B3 Latina valtakunnallinen",
-          "LI Liikunta valtakunnallinen",
-          "GE Maantieto valtakunnallinen",
-          "MA Matematiikka, pitkä oppimäärä valtakunnallinen",
-          "MU Musiikki valtakunnallinen",
-          "OA Oman äidinkielen opinnot valtakunnallinen",
-          "PS Psykologia valtakunnallinen",
-          "B1 Ruotsi valtakunnallinen",
           "AI Suomen kieli ja kirjallisuus valtakunnallinen",
-          "ITT Tanssi ja liike paikallinen",
-          "TO Teemaopinnot valtakunnallinen",
+          "A1 Englanti valtakunnallinen",
+          "B1 Ruotsi valtakunnallinen",
+          "B3 Latina valtakunnallinen",
+          "MA Matematiikka, pitkä oppimäärä valtakunnallinen",
+          "BI Biologia valtakunnallinen",
+          "GE Maantieto valtakunnallinen",
+          "FY Fysiikka valtakunnallinen",
+          "KE Kemia valtakunnallinen",
+          "FI Filosofia valtakunnallinen",
+          "PS Psykologia valtakunnallinen",
+          "HI Historia valtakunnallinen",
+          "YH Yhteiskuntaoppi valtakunnallinen",
+          "KT Islam valtakunnallinen",
           "TE Terveystieto valtakunnallinen",
-          "YH Yhteiskuntaoppi valtakunnallinen"
+          "LI Liikunta valtakunnallinen",
+          "MU Musiikki valtakunnallinen",
+          "KU Kuvataide valtakunnallinen",
+          "TO Teemaopinnot valtakunnallinen",
+          "OA Oman äidinkielen opinnot valtakunnallinen",
+          "XX Ei tiedossa valtakunnallinen",
+          "ITT Tanssi ja liike paikallinen"
         ))
       }
       "Sarakkeiden järjestys oppiaineen kursseja käsittelevällä välilehdellä" in {
@@ -142,28 +143,28 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
           val kurssiVälilehtienTitlet = kurssit.map { case (title, _) => title }
 
           kurssiVälilehtienTitlet should equal(Seq(
-            "BI v Biologia",
-            "XX v Ei tiedossa",
-            "A1 v Englanti",
-            "FI v Filosofia",
-            "FY v Fysiikka",
-            "HI v Historia",
-            "KT v Islam",
-            "KE v Kemia",
-            "KU v Kuvataide",
-            "B3 v Latina",
-            "LI v Liikunta",
-            "GE v Maantieto",
-            "MA v Matematiikka, pitkä oppimäärä",
-            "MU v Musiikki",
-            "OA v Oman äidinkielen opinnot",
-            "PS v Psykologia",
-            "B1 v Ruotsi",
             "AI v Suomen kieli ja kirjallisuus",
-            "ITT p Tanssi ja liike",
-            "TO v Teemaopinnot",
+            "A1 v Englanti",
+            "B1 v Ruotsi",
+            "B3 v Latina",
+            "MA v Matematiikka, pitkä oppimäärä",
+            "BI v Biologia",
+            "GE v Maantieto",
+            "FY v Fysiikka",
+            "KE v Kemia",
+            "FI v Filosofia",
+            "PS v Psykologia",
+            "HI v Historia",
+            "YH v Yhteiskuntaoppi",
+            "KT v Islam",
             "TE v Terveystieto",
-            "YH v Yhteiskuntaoppi"
+            "LI v Liikunta",
+            "MU v Musiikki",
+            "KU v Kuvataide",
+            "TO v Teemaopinnot",
+            "OA v Oman äidinkielen opinnot",
+            "XX v Ei tiedossa",
+            "ITT p Tanssi ja liike"
           ))
         }
         "Historia" in {
@@ -183,9 +184,8 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     }
 
     "Opiskeluoikeus aikajaksojen siivous" - {
-      import fi.oph.koski.raportit.LukioRaportti.removeContinuousSameTila
       "Jatkuva sama tila näytetään yhtenä tilana" in {
-        removeContinuousSameTila(Seq(
+        lukioRaportti.removeContinuousSameTila(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-01"), Date.valueOf("2016-02-02"), "lasna", Date.valueOf("2016-01-01")),
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-02"), "loma", Date.valueOf("2016-02-01")),
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-01"), Date.valueOf("2016-02-02"), "lasna", Date.valueOf("2016-01-01")),
@@ -198,30 +198,29 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     }
 
     "Päivien lukumäärän laskenta jaksosta" - {
-      import fi.oph.koski.raportit.LukioRaportti.lengthInDaysInDateRange
       "Alkaa ja päättyy ennen hakuväliä" in {
-        lengthInDaysInDateRange(Aikajakso(date(2012, 1, 1), Some(date(2014, 1, 1))), date(2014, 1, 2), date(2018, 1, 1)) shouldEqual (0)
+        lukioRaportti.lengthInDaysInDateRange(Aikajakso(date(2012, 1, 1), Some(date(2014, 1, 1))), date(2014, 1, 2), date(2018, 1, 1)) shouldEqual (0)
       }
       "Alkaa hakuvälin jälkeen" in {
-        lengthInDaysInDateRange(Aikajakso(date(2018, 1, 2), Some(date(2020, 1, 1))), date(2010, 1, 2), date(2018, 1, 1)) shouldEqual (0)
+        lukioRaportti.lengthInDaysInDateRange(Aikajakso(date(2018, 1, 2), Some(date(2020, 1, 1))), date(2010, 1, 2), date(2018, 1, 1)) shouldEqual (0)
       }
       "Alkanut ennen hakuväliä ja jatkuu hakuvälin yli" in {
-        lengthInDaysInDateRange(Aikajakso(date(2012, 1, 1), Some(date(2016, 1, 1))), date(2013, 1, 1), date(2015, 1, 1)) shouldEqual (731)
+        lukioRaportti.lengthInDaysInDateRange(Aikajakso(date(2012, 1, 1), Some(date(2016, 1, 1))), date(2013, 1, 1), date(2015, 1, 1)) shouldEqual (731)
       }
       "Alkanut ennen hakuväliä ja jaksolle ei ole merkattu päättymistä" in {
-        lengthInDaysInDateRange(Aikajakso(date(2012, 1, 2), None), date(2013, 1, 1), date(2014, 1, 1)) shouldEqual (366)
+        lukioRaportti.lengthInDaysInDateRange(Aikajakso(date(2012, 1, 2), None), date(2013, 1, 1), date(2014, 1, 1)) shouldEqual (366)
       }
       "Alkanut ennen hakuväliä ja päättyy hakuvälillä" in {
-        lengthInDaysInDateRange(Aikajakso(date(2012, 1, 1), Some(date(2014, 1, 1))), date(2013, 1, 1), date(2018, 1, 1)) shouldEqual (366)
+        lukioRaportti.lengthInDaysInDateRange(Aikajakso(date(2012, 1, 1), Some(date(2014, 1, 1))), date(2013, 1, 1), date(2018, 1, 1)) shouldEqual (366)
       }
       "Alkanut hakuvälillä ja päättyy hakuvälillä" in {
-        lengthInDaysInDateRange(Aikajakso(date(2011, 1, 1), Some(date(2012, 1, 1))), date(2010, 6, 6), date(2013, 1, 1)) shouldEqual (366)
+        lukioRaportti.lengthInDaysInDateRange(Aikajakso(date(2011, 1, 1), Some(date(2012, 1, 1))), date(2010, 6, 6), date(2013, 1, 1)) shouldEqual (366)
       }
     }
   }
 
   private def buildLukioraportti(organisaatioOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate) = {
-    LukioRaportti.buildRaportti(repository, ePerusteet ,organisaatioOid, alku, loppu)
+    lukioRaportti.buildRaportti(repository, organisaatioOid, alku, loppu)
   }
 
   private def zipRowsWithColumTitles(sheet: DynamicDataSheet) = {
@@ -260,7 +259,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     found.head
   }
 
-  private def findByOid(oid: String, maps: Seq[Map[String, Any]]) = maps.filter(_.get("Oppijan oid").exists(_ == Some(oid)))
+  private def findByOid(oid: String, maps: Seq[Map[String, Any]]) = maps.filter(_.get("Oppijan oid").exists(_ == oid))
 
   private def verifyNoDuplicates(strs: Seq[String]) = strs.toSet.size should equal(strs.size)
 
@@ -283,7 +282,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Opiskeluoikeuden tunniste lähdejärjestelmässä" -> None,
     "Koulutustoimija" -> "Jyväskylän yliopisto",
     "Toimipiste" -> "Jyväskylän normaalikoulu",
-    "Oppijan oid" -> Some(lukiolainen.oid),
+    "Oppijan oid" -> lukiolainen.oid,
     "Opiskeluoikeuden alkamispäivä" -> Some(date(2012, 9, 1)),
     "Opiskeluoikeuden viimeisin tila" -> Some("valmistunut"),
     "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna",
@@ -294,7 +293,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Läsnäolopäiviä aikajakson aikana" -> 1218,
     "Rahoitukset" -> "",
     "Ryhmä" -> Some("12A"),
-    "Pidennetty Päättymispäivä" -> false,
+    "Pidennetty päättymispäivä" -> false,
     "Ulkomainen vaihto-opiskelija" -> false,
     "Yksityisopiskelija" -> false,
     "Ulkomaanjaksot" -> Some(366),
@@ -331,7 +330,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
   )
 
   lazy val expectedLukiolainenHistorianKurssitRow = Map(
-    "Oppijan oid" -> Some(lukiolainen.oid),
+    "Oppijan oid" -> lukiolainen.oid,
     "Hetu" -> lukiolainen.hetu,
     "Sukunimi" -> Some(lukiolainen.sukunimi),
     "Etunimet" -> Some(lukiolainen.etunimet),
@@ -352,7 +351,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Koulutustoimija" -> "Jyväskylän yliopisto",
     "Toimipiste" -> "Jyväskylän normaalikoulu",
     "Opiskeluoikeuden tunniste lähdejärjestelmässä" -> None,
-    "Oppijan oid" -> Some(lukionAineopiskelijaAktiivinen.oid),
+    "Oppijan oid" -> lukionAineopiskelijaAktiivinen.oid,
     "Opiskeluoikeuden alkamispäivä" -> Some(date(2015, 9, 1)),
     "Opiskeluoikeuden viimeisin tila" -> Some("lasna"),
     "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna",
@@ -363,7 +362,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Läsnäolopäiviä aikajakson aikana" -> 123,
     "Rahoitukset" -> "",
     "Ryhmä" -> None,
-    "Pidennetty Päättymispäivä" -> false,
+    "Pidennetty päättymispäivä" -> false,
     "Ulkomainen vaihto-opiskelija" -> false,
     "Yksityisopiskelija" -> false,
     "Ulkomaanjaksot" -> None,
@@ -400,7 +399,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
 
   private object AktiivinenAineopiskelija {
     private lazy val default = defaultAineopiskelijaRow + (
-      "Oppijan oid" -> Some(lukionAineopiskelijaAktiivinen.oid),
+      "Oppijan oid" -> lukionAineopiskelijaAktiivinen.oid,
       "Hetu" -> lukionAineopiskelijaAktiivinen.hetu,
       "Sukunimi" -> Some(lukionAineopiskelijaAktiivinen.sukunimi),
       "Etunimet" -> Some(lukionAineopiskelijaAktiivinen.etunimet)
@@ -438,7 +437,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     )
 
     lazy val eiSuorituksiaKurssitRow = Map(
-      "Oppijan oid" -> Some(lukionAineopiskelijaAktiivinen.oid),
+      "Oppijan oid" -> lukionAineopiskelijaAktiivinen.oid,
       "Hetu" -> lukionAineopiskelijaAktiivinen.hetu,
       "Sukunimi" -> Some(lukionAineopiskelijaAktiivinen.sukunimi),
       "Etunimet" -> Some(lukionAineopiskelijaAktiivinen.etunimet),
@@ -476,7 +475,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
 
   private object EiTiedossaOppiaineenOpiskelija {
     private lazy val default = defaultAineopiskelijaRow + (
-      "Oppijan oid" -> Some(lukionEiTiedossaAineopiskelija.oid),
+      "Oppijan oid" -> lukionEiTiedossaAineopiskelija.oid,
       "Hetu" -> lukionEiTiedossaAineopiskelija.hetu,
       "Sukunimi" -> Some(lukionEiTiedossaAineopiskelija.sukunimi),
       "Etunimet" -> Some(lukionEiTiedossaAineopiskelija.etunimet)
@@ -516,7 +515,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     )
 
     lazy val eiTiedossaKurssitRow = Map(
-      "Oppijan oid" -> Some(lukionEiTiedossaAineopiskelija.oid),
+      "Oppijan oid" -> lukionEiTiedossaAineopiskelija.oid,
       "Hetu" -> lukionEiTiedossaAineopiskelija.hetu,
       "Sukunimi" -> Some(lukionEiTiedossaAineopiskelija.sukunimi),
       "Etunimet" -> Some(lukionEiTiedossaAineopiskelija.etunimet),
