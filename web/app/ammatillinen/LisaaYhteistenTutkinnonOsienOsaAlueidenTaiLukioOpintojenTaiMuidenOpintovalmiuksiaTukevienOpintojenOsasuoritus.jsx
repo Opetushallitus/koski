@@ -47,12 +47,12 @@ const LisääYhteinenTutkinnonOsa = ({suoritusPrototypes, setExpanded}) => {
 }
 
 const LisääLukioOpinto = ({suoritusPrototypes, setExpanded}) =>
-  <LisääPaikallinen suoritusPrototype={suoritusPrototypes.find(isLukioOpintojenSuoritus)} setExpanded={setExpanded} headerText='Lisää lukio-opinto' />
+  <LisääPaikallinen suoritusPrototype={suoritusPrototypes.find(isLukioOpintojenSuoritus)} setExpanded={setExpanded} headerText='Lisää lukio-opinto' className='lukio-opinto' />
 
 const LisääMuuOpintovalmiuksiaTukevaOpinto = ({suoritusPrototypes, setExpanded}) =>
-  <LisääPaikallinen suoritusPrototype={suoritusPrototypes.find(isMuidenOpintovalmiuksiaTukevienOpintojenSuoritus)} setExpanded={setExpanded} headerText='Lisää muu opintovalmiuksia tukeva opinto' />
+  <LisääPaikallinen suoritusPrototype={suoritusPrototypes.find(isMuidenOpintovalmiuksiaTukevienOpintojenSuoritus)} setExpanded={setExpanded} headerText='Lisää muu opintovalmiuksia tukeva opinto' className='muu-opintovalmiuksia-tukeva-opinto'/>
 
-const LisääPaikallinen = ({suoritusPrototype, setExpanded, headerText}) => {
+const LisääPaikallinen = ({suoritusPrototype, setExpanded, headerText, className}) => {
   const koulutusmoduuliPrototype = koulutusModuuliprototypes(suoritusPrototype).find(isPaikallinen)
   const addAtom = Atom(false)
   const add = koulutusmoduuli => {
@@ -76,9 +76,9 @@ const LisääPaikallinen = ({suoritusPrototype, setExpanded, headerText}) => {
     }
   })
 
-  return (<span className="paikallinen-tutkinnon-osa">
+  return (<span className={className}>
     <a className="add-link" onClick={() => addAtom.set(true)}><Text name={headerText} /></a>
-    { ift(addAtom, (<ModalDialog className="lisaa-paikallinen-tutkinnon-osa-modal" onDismiss={add} onSubmit={() => add(selectedAtom.get())} okTextKey='Lisää' validP={nameAtom}>
+    { ift(addAtom, (<ModalDialog className={`lisaa-${className}-modal`} onDismiss={add} onSubmit={() => add(selectedAtom.get())} okTextKey='Lisää' validP={nameAtom}>
         <h2><Text name={headerText} /></h2>
         <label>
           <Text name='Nimi' />

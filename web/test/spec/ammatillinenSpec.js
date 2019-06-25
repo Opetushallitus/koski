@@ -433,92 +433,311 @@ describe('Ammatillinen koulutus', function() {
     })
 
     describe('Ammatillinen perustutkinto, suoritustapa reformi', function () {
-      before(
-        prepareForNewOppija('kalle', '230872-7258'),
-        addOppija.enterHenkilötiedot({etunimet: 'Tero', kutsumanimi: 'Tero', sukunimi: 'Tyhjä'}),
-        addOppija.selectOppilaitos('Stadin'),
-        addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
-        function() {
-          return wait.until(Page().getInput('.tutkinto input').isVisible)()
-            .then(Page().setInputValue('.tutkinto input', 'Autoalan perustutkinto'))
-            .then(click('.results li:last()'))
-        },
-        addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)'),
-        editor.edit
-      )
-
-      it('Lisätty opiskeluoikeus näytetään', function() {
-        expect(textsOf(toArray(S('.tutkinnon-osan-ryhma')))).to.deep.equal([
-          'Ammatilliset tutkinnon osat',
-          'Yhteiset tutkinnon osat'])
-      })
-
-      describe('Tutkinnon osan lisääminen', function() {
+      describe('Tiedot', function () {
         before(
-          editor.edit,
-          opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('Huolto- ja korjaustyöt'),
-          opinnot.tutkinnonOsat('1').tutkinnonOsa(0).propertyBySelector('.arvosana').setValue('3', 1),
-          editor.saveChanges,
-          wait.forAjax
+          insertExample('ammatillinen - reformin mukainen perustutkinto.json'),
+          page.openPage,
+          page.oppijaHaku.searchAndSelect('280618-402H'),
+          opinnot.avaaKaikki
         )
 
-        it('näyttää oikeat tiedot', function() {
-          expect(opinnot.tutkinnonOsat().tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
-        })
-      })
-
-      describe('Yhteisen tutkinnon osan lisääminen', function() {
-        before(editor.edit)
-
-        describe('Ennen lisäystä', function () {
-          it('Näyttää e-perusteiden mukaisen vaihtoehtolistan', function () {
-            expect(opinnot.tutkinnonOsat('2').tutkinnonosavaihtoehdot()).to.deep.equal([
-              '400013 Matemaattis-luonnontieteellinen osaaminen',
-              '400012 Viestintä- ja vuorovaikutusosaaminen',
-              '400014 Yhteiskunta- ja työelämäosaaminen'
-            ])
-          })
-        })
-
-        describe('Lisäyksen jälkeen', function () {
-          before(
-            opinnot.tutkinnonOsat('2').lisääTutkinnonOsa('Matemaattis-luonnontieteellinen osaaminen')
+        it('näytetään', function() {
+          expect(extractAsText(S('.ammatillisentutkinnonsuoritus > .osasuoritukset'))).to.equalIgnoreNewlines(
+            'Sulje kaikki\n' +
+            'Ammatilliset tutkinnon osat Laajuus (osp) Arvosana\n' +
+            'Huolto- ja korjaustyöt 5\n' +
+            'Pakollinen kyllä\n' +
+            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
+            'Näyttö\n' +
+            'Kuvaus Vuosihuoltojen suorittaminen\n' +
+            'Suorituspaikka Volkswagen Center\n' +
+            'Suoritusaika 2.2.2018 — 2.2.2018\n' +
+            'Työssäoppimisen yhteydessä ei\n' +
+            'Arvosana 5\n' +
+            'Arviointipäivä 20.10.2014\n' +
+            'Arvioijat Jaana Arstila ( näyttötutkintomestari ) Pekka Saurmann ( näyttötutkintomestari ) Juhani Mykkänen\n' +
+            'Arviointikohteet Arviointikohde Arvosana\n' +
+            'Työprosessin hallinta 5\n' +
+            'Työmenetelmien, -välineiden ja materiaalin hallinta 5\n' +
+            'Työn perustana olevan tiedon hallinta Hyväksytty\n' +
+            'Elinikäisen oppimisen avaintaidot 5\n' +
+            'Arvioinnista päättäneet Muu koulutuksen järjestäjän edustaja\n' +
+            'Arviointikeskusteluun osallistuneet Opettaja Itsenäinen ammatinharjoittaja\n' +
+            'Maalauksen esikäsittelytyöt 5\n' +
+            'Pakollinen ei\n' +
+            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
+            'Näyttö\n' +
+            'Kuvaus Pieniä pohja- ja hiomamaalauksia\n' +
+            'Suorituspaikka Volkswagen Center\n' +
+            'Suoritusaika 2.2.2018 — 2.2.2018\n' +
+            'Työssäoppimisen yhteydessä ei\n' +
+            'Arvosana 5\n' +
+            'Arviointipäivä 20.10.2014\n' +
+            'Arvioijat Jaana Arstila ( näyttötutkintomestari ) Pekka Saurmann ( näyttötutkintomestari ) Juhani Mykkänen\n' +
+            'Arviointikohteet Arviointikohde Arvosana\n' +
+            'Työprosessin hallinta 5\n' +
+            'Työmenetelmien, -välineiden ja materiaalin hallinta 5\n' +
+            'Työn perustana olevan tiedon hallinta Hyväksytty\n' +
+            'Elinikäisen oppimisen avaintaidot 5\n' +
+            'Arvioinnista päättäneet Muu koulutuksen järjestäjän edustaja\n' +
+            'Arviointikeskusteluun osallistuneet Opettaja Itsenäinen ammatinharjoittaja\n' +
+            'Korkeakouluopinnot\n' +
+            'Avaa kaikki\n' +
+            'Osasuoritus Arvosana\n' +
+            'Saksa 5\n' +
+            'Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja\n' +
+            'Avaa kaikki\n' +
+            'Osasuoritus Laajuus (osp) Arvosana\n' +
+            'Maantieto 5\n' +
+            'Englanti 3 osp 5\n' +
+            'Tieto- ja viestintätekniikka sekä sen hyödyntäminen 3 osp 5\n' +
+            'Hoitotarpeen määrittäminen 5\n' +
+            'Yhteensä 0 / 145 osp\n' +
+            'Yhteiset tutkinnon osat Laajuus (osp) Arvosana\n' +
+            'Viestintä- ja vuorovaikutusosaaminen 8 osp\n' +
+            'Pakollinen kyllä\n' +
+            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Avaa kaikki\n' +
+            'Osa-alue Laajuus (osp) Arvosana\n' +
+            'Äidinkieli, Suomen kieli ja kirjallisuus 5 5\n' +
+            'Äidinkieli, Suomen kieli ja kirjallisuus 3 5\n' +
+            'Yhteensä 0 / 35 osp'
           )
-          it('lisätty osa näytetään', function () {
-            expect(opinnot.tutkinnonOsat('2').tutkinnonOsa(0).nimi()).to.equal('Matemaattis-luonnontieteellinen osaaminen')
-          })
         })
       })
 
-      describe('Keskiarvo', function() {
-        describe('Aluksi', function() {
+      describe('Tietojen muokkaaminen', function () {
+        before(
+          prepareForNewOppija('kalle', '230872-7258'),
+          addOppija.enterHenkilötiedot({etunimet: 'Tero', kutsumanimi: 'Tero', sukunimi: 'Tyhjä'}),
+          addOppija.selectOppilaitos('Stadin'),
+          addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
+          function() {
+            return wait.until(Page().getInput('.tutkinto input').isVisible)()
+              .then(Page().setInputValue('.tutkinto input', 'Autoalan perustutkinto'))
+              .then(click('.results li:last()'))
+          },
+          addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)'),
+          editor.edit
+        )
+
+        it('Lisätty opiskeluoikeus näytetään', function() {
+          expect(textsOf(toArray(S('.tutkinnon-osan-ryhma')))).to.deep.equal([
+            'Ammatilliset tutkinnon osat',
+            'Yhteiset tutkinnon osat'])
+        })
+
+        describe('Tutkinnon osan lisääminen', function() {
+          before(
+            editor.edit,
+            opinnot.tutkinnonOsat('1').lisääTutkinnonOsa('Huolto- ja korjaustyöt'),
+            opinnot.tutkinnonOsat('1').tutkinnonOsa(0).propertyBySelector('.arvosana').setValue('3', 1),
+            editor.saveChanges,
+            wait.forAjax
+          )
+
+          it('näyttää oikeat tiedot', function() {
+            expect(opinnot.tutkinnonOsat().tutkinnonOsa(0).nimi()).to.equal('Huolto- ja korjaustyöt')
+          })
+
+          describe('Korkeakouluopinnot', function() {
+            before(editor.edit)
+
+            describe('Lisääminen', function() {
+              before(opinnot.tutkinnonOsat(1).lisääKorkeakouluopintoja)
+
+              it('Toimii ja arviointia ei vaadita', function() {
+                expect(opinnot.tutkinnonOsat(1).tutkinnonOsa(1).nimi()).to.equal('Korkeakouluopinnot')
+                expect(opinnot.tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(true)
+              })
+
+              describe('korkeakoulukokonaisuudet', function() {
+                var korkeakouluopinnot = opinnot.tutkinnonOsat(1).tutkinnonOsa(1).osanOsat()
+
+                before(
+                  korkeakouluopinnot.lisääPaikallinenTutkinnonOsa('Johdatus akateemisiin opintoihin'),
+                  editor.saveChangesAndWaitForSuccess,
+                  opinnot.avaaKaikki
+                )
+
+                it('Toimii ja arviointi vaaditaan', function() {
+                  expect(korkeakouluopinnot.tutkinnonOsa(0).nimi()).to.equal('Johdatus akateemisiin opintoihin')
+                  expect(opinnot.tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(false)
+                })
+
+                after(editor.edit, opinnot.tutkinnonOsat(1).tutkinnonOsa(1).poistaTutkinnonOsa, editor.saveChangesAndWaitForSuccess)
+              })
+            })
+          })
+
+          describe('Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja', function() {
+            before(editor.edit)
+
+            describe('Lisääminen', function() {
+              var jatkoOpintovalmiuksiaTukevatOpinnot = opinnot.tutkinnonOsat(1).tutkinnonOsa(1).osanOsat()
+              before(opinnot.tutkinnonOsat(1).lisääYhteistenTutkinnonOsienOsaAlueitaLukioOpintojaTaiMuitaJatkoOpintovalmiuksiaTukeviaOpintoja)
+
+              it('Toimii ja arviointia ei vaadita', function() {
+                expect(opinnot.tutkinnonOsat(1).tutkinnonOsa(1).nimi()).to.equal('Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja')
+                expect(opinnot.tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(true)
+              })
+
+              it('Hakee tutkinnon osan osa-alueet e-perusteista', function() {
+                expect(jatkoOpintovalmiuksiaTukevatOpinnot.tutkinnonosavaihtoehdot()).to.deep.equal([
+                  'ETK Etiikka',
+                  'FK Fysiikka ja kemia',
+                  'MLFK Fysikaaliset ja kemialliset ilmiöt ja niiden soveltaminen',
+                  'YTKK Kestävän kehityksen edistäminen',
+                  'KU Kulttuurien tuntemus',
+                  'MA Matematiikka',
+                  'MLMA Matematiikka ja matematiikan soveltaminen',
+                  'YTOU Opiskelu- ja urasuunnitteluvalmiudet',
+                  'PS Psykologia',
+                  'TAK Taide ja kulttuuri',
+                  'VVTL Taide ja luova ilmaisu',
+                  'TVT Tieto- ja viestintätekniikka sekä sen hyödyntäminen',
+                  'VVTD Toiminta digitaalisessa ympäristössä',
+                  'TK1 Toinen kotimainen kieli, ruotsi',
+                  'TK2 Toinen kotimainen kieli, suomi',
+                  'YTTT Työelämässä toimiminen',
+                  'TET Työelämätaidot',
+                  'YTTH Työkyvyn ja hyvinvoinnin ylläpitäminen',
+                  'TYT Työkyvyn ylläpitäminen, liikunta ja terveystieto',
+                  'VK Vieraat kielet',
+                  'VVTK Viestintä ja vuorovaikutus toisella kotimaisella kielellä',
+                  'VVVK Viestintä ja vuorovaikutus vieraalla kielellä',
+                  'VVAI Viestintä ja vuorovaikutus äidinkielellä',
+                  'VVAI16 Viestintä ja vuorovaikutus äidinkielellä, opiskelijan äidinkieli',
+                  'VVAI4 Viestintä ja vuorovaikutus äidinkielellä, romani',
+                  'VVAI8 Viestintä ja vuorovaikutus äidinkielellä, ruotsi toisena kielenä',
+                  'VVAI3 Viestintä ja vuorovaikutus äidinkielellä, saame',
+                  'VVAI15 Viestintä ja vuorovaikutus äidinkielellä, suomalainen viittomakieli',
+                  'VVAI7 Viestintä ja vuorovaikutus äidinkielellä, suomi toisena kielenä',
+                  'VVAI11 Viestintä ja vuorovaikutus äidinkielellä, suomi viittomakielisille',
+                  'YTYK Yhteiskunnassa ja kansalaisena toimiminen',
+                  'YKT Yhteiskuntataidot',
+                  'YM Ympäristöosaaminen',
+                  'YTYY Yrittäjyys ja yrittäjämäinen toiminta',
+                  'YYT Yrittäjyys ja yritystoiminta',
+                  'AI Äidinkieli'
+                ])
+              })
+
+              describe('Tutkinnon osan osa-alueen lisääminen', function() {
+                before(
+                  jatkoOpintovalmiuksiaTukevatOpinnot.lisääTutkinnonOsa('Työelämätaidot'),
+                  editor.saveChangesAndWaitForSuccess,
+                  opinnot.avaaKaikki
+                )
+
+                it('Toimii', function() {
+                  expect(jatkoOpintovalmiuksiaTukevatOpinnot.tutkinnonOsa(0).nimi()).to.equal('Työelämätaidot')
+                  expect(opinnot.tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(false)
+                })
+
+                describe('Lukio-opinnon lisääminen', function() {
+                  before(
+                    editor.edit,
+                    opinnot.avaaKaikki,
+                    jatkoOpintovalmiuksiaTukevatOpinnot.lisääLukioOpinto('MAA4 Vektorit'),
+                    editor.saveChangesAndWaitForSuccess,
+                    opinnot.avaaKaikki
+                  )
+
+                  it('Toimii', function() {
+                    expect(jatkoOpintovalmiuksiaTukevatOpinnot.tutkinnonOsa(1).nimi()).to.equal('MAA4 Vektorit')
+                  })
+
+                  describe('Muun opintovalmiuksia tukeva opinnon lisääminen', function() {
+                    before(
+                      editor.edit,
+                      opinnot.avaaKaikki,
+                      jatkoOpintovalmiuksiaTukevatOpinnot.lisääMuuOpintovalmiuksiaTukevaOpinto('Tutortoiminta'),
+                      editor.saveChangesAndWaitForSuccess,
+                      opinnot.avaaKaikki
+                    )
+
+                    it('Toimii', function() {
+                      expect(jatkoOpintovalmiuksiaTukevatOpinnot.tutkinnonOsa(2).nimi()).to.equal('Tutortoiminta')
+                    })
+
+                    describe('Kun arvioinnit lisätty', function() {
+                      before(
+                        editor.edit,
+                        opinnot.avaaKaikki,
+                        jatkoOpintovalmiuksiaTukevatOpinnot.tutkinnonOsa(0).propertyBySelector('.arvosana').setValue('3', 1),
+                        jatkoOpintovalmiuksiaTukevatOpinnot.tutkinnonOsa(1).propertyBySelector('.arvosana').setValue('3', 1),
+                        jatkoOpintovalmiuksiaTukevatOpinnot.tutkinnonOsa(2).propertyBySelector('.arvosana').setValue('3', 1)
+                      )
+
+                      it('Merkitseminen valmiiksi on mahdollita', function() {
+                        expect(opinnot.tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(true)
+                      })
+
+                      after(editor.cancelChanges)
+                    })
+                  })
+                })
+              })
+            })
+          })
+        })
+
+        describe('Yhteisen tutkinnon osan lisääminen', function() {
           before(editor.edit)
-          it('keskiarvo-kenttä on näkyvissä', function() {
-            expect(editor.property('keskiarvo').isVisible()).to.equal(true)
+
+          describe('Ennen lisäystä', function () {
+            it('Näyttää e-perusteiden mukaisen vaihtoehtolistan', function () {
+              expect(opinnot.tutkinnonOsat('2').tutkinnonosavaihtoehdot()).to.deep.equal([
+                '400013 Matemaattis-luonnontieteellinen osaaminen',
+                '400012 Viestintä- ja vuorovaikutusosaaminen',
+                '400014 Yhteiskunta- ja työelämäosaaminen'
+              ])
+            })
           })
-          after(editor.cancelChanges)
+
+          describe('Lisäyksen jälkeen', function () {
+            before(
+              opinnot.tutkinnonOsat('2').lisääTutkinnonOsa('Matemaattis-luonnontieteellinen osaaminen')
+            )
+            it('lisätty osa näytetään', function () {
+              expect(opinnot.tutkinnonOsat('2').tutkinnonOsa(0).nimi()).to.equal('Matemaattis-luonnontieteellinen osaaminen')
+            })
+          })
         })
-        describe('Ei-validin keskiarvon lisäys', function() {
-          before(
-            editor.edit,
-            editor.property('keskiarvo').setValue(7)
-          )
-          it('ei ole sallittu', function() {
-            expect(editor.canSave()).to.equal(false)
+
+        describe('Keskiarvo', function() {
+          describe('Aluksi', function() {
+            before(editor.edit)
+            it('keskiarvo-kenttä on näkyvissä', function() {
+              expect(editor.property('keskiarvo').isVisible()).to.equal(true)
+            })
+            after(editor.cancelChanges)
           })
-          after(editor.cancelChanges)
-        })
-        describe('Validin keskiarvon lisäys', function() {
-          before(
-            editor.edit,
-            editor.property('keskiarvo').setValue(3.5),
-            editor.saveChanges
-          )
-          it('toimii', function() {
-            expect(page.isSavedLabelShown()).to.equal(true)
+          describe('Ei-validin keskiarvon lisäys', function() {
+            before(
+              editor.edit,
+              editor.property('keskiarvo').setValue(7)
+            )
+            it('ei ole sallittu', function() {
+              expect(editor.canSave()).to.equal(false)
+            })
+            after(editor.cancelChanges)
           })
-          it('keskiarvo näytetään kahden desimaalin tarkkuudella', function() {
-            expect(editor.property('keskiarvo').getValue()).to.equal('3,50')
+          describe('Validin keskiarvon lisäys', function() {
+            before(
+              editor.edit,
+              editor.property('keskiarvo').setValue(3.5),
+              editor.saveChanges
+            )
+            it('toimii', function() {
+              expect(page.isSavedLabelShown()).to.equal(true)
+            })
+            it('keskiarvo näytetään kahden desimaalin tarkkuudella', function() {
+              expect(editor.property('keskiarvo').getValue()).to.equal('3,50')
+            })
           })
         })
       })
