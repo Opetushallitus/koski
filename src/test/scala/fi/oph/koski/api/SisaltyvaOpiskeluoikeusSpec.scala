@@ -90,6 +90,19 @@ class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with Opiskelu
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.henkilöTiedot())
       }
     }
+
+    "Kun sisältävän opiskeluoikeuden henkilötieto on linkitetty -> HTTP 200" in {
+      val original = createOpiskeluoikeus(MockOppijat.master, defaultOpiskeluoikeus, user = stadinAmmattiopistoTallentaja)
+      val sisältyvä: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
+        oppilaitos = Some(Oppilaitos(omnia)),
+        sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(original.oppilaitos.get, original.oid.get)),
+        suoritukset = List(autoalanPerustutkinnonSuoritus(OidOrganisaatio(omnia)))
+      )
+
+      putOpiskeluoikeus(sisältyvä, henkilö = MockOppijat.slave.henkilö) {
+        verifyResponseStatusOk()
+      }
+    }
   }
 
   def opiskeluoikeusId(oo: AmmatillinenOpiskeluoikeus): Option[Int] =
