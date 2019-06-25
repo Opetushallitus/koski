@@ -2093,7 +2093,7 @@ describe('Ammatillinen koulutus', function() {
       )
 
       describe('Keskeneräisellä yhteisen tutkinnon osalla', function () {
-        describe('On valmis osan osa-alue', function () {
+        describe('Kaikki osa-alueet valmiita', function () {
           before(
             yhteinenTutkinnonOsa.propertyBySelector('.arvosana').setValue('Ei valintaa')
           )
@@ -2103,13 +2103,11 @@ describe('Ammatillinen koulutus', function() {
           })
         })
 
-      describe('Ei ole valmista osan osa-aluetta', function () {
+      describe('On yksi keskeräinen osa-alue', function () {
         before(
           editor.edit,
           yhteinenTutkinnonOsa.toggleExpand,
-          osanOsa0.propertyBySelector('.arvosana').setValue('Ei valintaa'),
-          osanOsa1.propertyBySelector('.arvosana').setValue('Ei valintaa'),
-          osanOsa2.propertyBySelector('.arvosana').setValue('Ei valintaa')
+          osanOsa0.propertyBySelector('.arvosana').setValue('Ei valintaa')
         )
 
           it('Ei voida asettaa valmiiksi', function () {
@@ -2182,19 +2180,17 @@ describe('Ammatillinen koulutus', function() {
             yhteinenTutkinnonOsa.propertyBySelector('.arvosana').setValue('Ei valintaa')
           )
 
-          describe('Jos osan osa-alue on valmis', function () {
+          describe('Jos kaikki osan osa-alueet on valmiita', function () {
             it('Tallenntaminen on sallittu', function () {
               expect(opinnot.onTallennettavissa()).to.equal(true)
             })
           })
 
-          describe('Jos ei ole valmista osan osa-aluetta', function () {
+          describe('Jos yksi osan osa-alue on kesken', function () {
             before(
               editor.edit,
               yhteinenTutkinnonOsa.toggleExpand,
-              osanOsa0.propertyBySelector('.arvosana').setValue('Ei valintaa'),
-              osanOsa1.propertyBySelector('.arvosana').setValue('Ei valintaa'),
-              osanOsa2.propertyBySelector('.arvosana').setValue('Ei valintaa')
+              osanOsa0.propertyBySelector('.arvosana').setValue('Ei valintaa')
             )
 
             it('Tallentaminen on estetty', function () {

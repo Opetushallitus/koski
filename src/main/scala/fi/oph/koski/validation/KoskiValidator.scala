@@ -366,12 +366,12 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   private def validateValmiinAmmatillisenTutkinnonOsittainenSuoritus(suoritus: AmmatillisenTutkinnonOsittainenSuoritus) = {
     HttpStatus.fold(suoritus.osasuoritusLista.map {
       case y: YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus if y.kesken =>
-        HttpStatus.validate(y.osasuoritusLista.exists(_.valmis))(
+        HttpStatus.validate(y.osasuoritusLista.forall(_.valmis) && y.osasuoritukset.nonEmpty)(
           KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella " + suorituksenTunniste(suoritus) + " on keskeneräinen osasuoritus " + suorituksenTunniste(y))
         )
       case x => validateValmiinSuorituksenStatus(x)
     }).onSuccess(HttpStatus.validate(suoritus.osasuoritusLista.exists(_.isInstanceOf[MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus]))(
-      KoskiErrorCategory.badRequest.validation.rakenne.ammatillisenTutkinnonOsaPuuttuu("Suoritus " + suorituksenTunniste(suoritus) + " on merkitty valmiiksi, mutta sillä ei ole muu ammatillisen tutkinnon osan suoritusta"))
+      KoskiErrorCategory.badRequest.validation.rakenne.ammatillisenTutkinnonOsaPuuttuu("Suoritus " + suorituksenTunniste(suoritus) + " on merkitty valmiiksi, mutta sillä ei ole ammatillisen tutkinnon osan suoritusta. Valmis osittainen ammatillinen tutkinto ei voi koostua pelkästään yhteisistä tutkinnon osista."))
     )
   }
 

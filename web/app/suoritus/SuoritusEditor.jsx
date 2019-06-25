@@ -5,8 +5,8 @@ import {Editor} from '../editor/Editor'
 import {TilaJaVahvistusEditor} from './TilaJaVahvistusEditor'
 import {
   arviointiPuuttuu,
-  hasValmisOsasuoritus,
   osasuoritukset,
+  osasuorituksetVahvistettu,
   suoritusKesken,
   suoritusValmis
 } from './Suoritus'
@@ -83,14 +83,14 @@ SuoritusEditor.validateModel = model => {
   })
 
   const validateKeskeneräinenOsittaisenAmmatillisenTutkinnonYhteisenTutkinnonOsanSuoritus = suoritus => (
-    hasValmisOsasuoritus(suoritus)
+    osasuorituksetVahvistettu(suoritus)
       ? validateSuoritus(suoritus)
-      : validationError(suoritus, 'Keskeneräiseltä yhteisen tutkinnon osalta vaaditaan valmiiksi merkitty osasuoritus, jotta päätason suoritus voidaan merkitä valmiiksi')
+      : validationError(suoritus, 'Keskeneräisen yhteisen tutkinnon osan pitää koostua valmiista osa-alueista, jotta suoritus voidaan merkitä valmiiksi')
   )
 
   const validateValmisOsittaisenAmmatillisenTutkinnonSuoritus = suoritus => (
     ammattillinenOsittainenTutkintoJaMuuAmmatillisenTutkinnonOsaPuuttuu(suoritus) && suoritusValmis(suoritus)
-      ? [{key: 'missing', message: <Text name='Et voi merkitä valmiiksi, koska suoritukselta puuttuu ammatillinen tutkinnon osa.'/>}]
+      ? [{key: 'missing', message: <Text name='Ei voi merkitä valmiiksi, koska suoritukselta puuttuu ammatillinen tutkinnon osa...'/>}]
       : []
   )
 
