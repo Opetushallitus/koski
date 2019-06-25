@@ -16,7 +16,8 @@ import {flatMapArray} from '../util/util'
 import DeletePaatasonSuoritusButton from './DeletePaatasonSuoritusButton'
 import {currentLocation} from '../util/location'
 import {
-  isOsittaisenAmmatillisenTutkinnonYhteisenTutkinnonOsanSuoritus
+  isOsittaisenAmmatillisenTutkinnonYhteisenTutkinnonOsanSuoritus,
+  isVälisuoritus
 } from '../ammatillinen/TutkinnonOsa'
 import {ammattillinenOsittainenTutkintoJaMuuAmmatillisenTutkinnonOsaPuuttuu} from '../ammatillinen/AmmatillinenOsittainenTutkinto'
 
@@ -73,7 +74,7 @@ SuoritusEditor.validateModel = model => {
   }
 
   const validateSuoritus = suoritus => flatMapArray(osasuoritukset(suoritus), osasuoritus => {
-    if (suoritusValmis(suoritus) && suoritusKesken(osasuoritus)) {
+    if (suoritusValmis(suoritus) && suoritusKesken(osasuoritus) && !isVälisuoritus(suoritus)) {
       return isOsittaisenAmmatillisenTutkinnonYhteisenTutkinnonOsanSuoritus(osasuoritus)
         ? validateKeskeneräinenOsittaisenAmmatillisenTutkinnonYhteisenTutkinnonOsanSuoritus(osasuoritus)
         : validationError(osasuoritus, 'Arvosana vaaditaan, koska päätason suoritus on merkitty valmiiksi.')

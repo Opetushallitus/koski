@@ -5,12 +5,13 @@ import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {modelErrorMessages, modelItems, modelTitle, pushRemoval} from '../editor/EditorModel'
 import {buildClassNames} from '../components/classnames'
 import {accumulateExpandedState} from '../editor/ExpandableItems'
-import {suoritusValmis, tilaText, valinnanMahdollisuus} from './Suoritus'
+import {suoritusValmis, tilaText} from './Suoritus'
 import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
 import {fetchLaajuudet, YhteensäSuoritettu} from './YhteensaSuoritettu'
 import UusiTutkinnonOsa from '../ammatillinen/UusiTutkinnonOsa'
 import {
+  isValinnanMahdollisuus, isVälisuoritus,
   isYhteinenTutkinnonOsa,
   osanOsa,
   selectTutkinnonOsanSuoritusPrototype,
@@ -50,7 +51,7 @@ export class Suoritustaulukko extends React.Component {
 
     const {isExpandedP, allExpandedP, toggleExpandAll, setExpanded} = accumulateExpandedState({
       suoritukset,
-      filter: s => suoritusProperties(s).length > 0,
+      filter: s => suoritusProperties(s).length > 0 || isVälisuoritus(s),
       component: this
     })
 
@@ -136,7 +137,7 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
     let properties = suoritusProperties(model)
     let displayProperties = properties.filter(p => p.key !== 'osasuoritukset')
     let osasuoritukset = modelLookup(model, 'osasuoritukset')
-    let showOsasuoritukset = (osasuoritukset && osasuoritukset.value) || isYhteinenTutkinnonOsa(model) || isMuunAmmatillisenKoulutuksenOsasuorituksenSuoritus(model)
+    let showOsasuoritukset = (osasuoritukset && osasuoritukset.value) || isYhteinenTutkinnonOsa(model) || isMuunAmmatillisenKoulutuksenOsasuorituksenSuoritus(model) || isValinnanMahdollisuus(model)
     return (<tbody className={buildClassNames(['tutkinnon-osa', (expanded && 'expanded'), (groupId)])}>
     <tr>
       {columns.map(column => column.renderData({model, showScope, showTila, onExpand, hasProperties: properties.length > 0 || showOsasuoritukset, expanded}))}
@@ -198,6 +199,6 @@ const SuoritusColumn = {
   }
 }
 
-export const suorituksenTilaSymbol = (suoritus) => valinnanMahdollisuus(suoritus)
+export const suorituksenTilaSymbol = (suoritus) => isValinnanMahdollisuus(suoritus)
   ? ''
   : suoritusValmis(suoritus) ? '' : ''

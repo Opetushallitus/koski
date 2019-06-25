@@ -1239,6 +1239,8 @@
   "description:Työssäoppimispaikan Y-tunnus" : "Työssäoppimispaikan Y-tunnus",
   "Työssäoppimispaikan Y-tunnus" : "Työssäoppimispaikan Y-tunnus",
   "Ei voi merkitä valmiiksi, koska suoritukselta puuttuu ammatillisen tutkinnon osan suoritus...": "Ei voi merkitä valmiiksi, koska suoritukselta puuttuu ammatillisen tutkinnon osan suoritus. Osittainen ammatillinen tutkinto ei voi koostua pelkästään yhteisistä tutkinnon osista.",
-  "Keskeneräisen yhteisen tutkinnon osan pitää koostua valmiista osa-alueista, jotta suoritus voidaan merkitä valmiiksi": "Keskeneräisen yhteisen tutkinnon osan pitää koostua valmiista osa-alueista, jotta suoritus voidaan merkitä valmiiksi"
+  "Keskeneräisen yhteisen tutkinnon osan pitää koostua valmiista osa-alueista, jotta suoritus voidaan merkitä valmiiksi": "Keskeneräisen yhteisen tutkinnon osan pitää koostua valmiista osa-alueista, jotta suoritus voidaan merkitä valmiiksi",
+  "Lisää korkeakouluopintosuoritus": "Lisää korkeakouluopintosuoritus",
+  "Lisää yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja": "Lisää yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja"
 }
 

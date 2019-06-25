@@ -21,6 +21,8 @@ import {ift} from '../util/util'
 import ModalDialog from '../editor/ModalDialog'
 import {
   fetchLisättävätTutkinnonOsat,
+  isJatkoOpintovalmiuksiaTukevienOpintojenSuoritus,
+  isKorkeakouluOpintojenTutkinnonOsaaPienempiKokonaisuus,
   isYhteinenTutkinnonOsa,
   placeholderForNonGrouped,
   selectTutkinnonOsanSuoritusPrototype,
@@ -34,12 +36,14 @@ import {
 } from '../suoritus/SuoritustaulukkoCommon'
 import TutkinnonOsaToisestaTutkinnostaPicker from './TutkinnonOsaToisestaTutkinnostaPicker'
 import LisaaTutkinnonOsaDropdown from './LisaaTutkinnonOsaDropdown'
+import {LisääKorkeakouluopintoSuoritus} from './LisaaKorkeakouluopintoSuoritus'
+import {LisääJatkoOpintovalmiuksiaTukevienOpintojenSuoritus} from './LisaaJatkoOpintovalmiuksiaTukevienOpintojenSuoritus'
+import {LisääYhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus} from './LisaaYhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus'
 
-export default ({ suoritus, groupId, suoritusPrototypes, suorituksetModel, setExpanded, groupTitles }) => {
+export default ({ suoritus, groupId, suoritusPrototypes, setExpanded, groupTitles }) => {
   const suoritusPrototype = selectTutkinnonOsanSuoritusPrototype(suoritusPrototypes, groupId)
-  let koulutusModuuliprotos = koulutusModuuliprototypes(suoritusPrototype)
-  let paikallinenKoulutusmoduuli = koulutusModuuliprotos.find(isPaikallinen)
-  let valtakunnallisetKoulutusmoduulit = koulutusModuuliprotos.filter(R.complement(isPaikallinen))
+  let valtakunnallisetKoulutusmoduulit = valtakunnallisetKoulutusmoduuliPrototypes(suoritusPrototype)
+  let paikallinenKoulutusmoduuli = koulutusModuuliprototypes(suoritusPrototype).find(isPaikallinen)
 
   let koulutusmoduuliProto = selectedItem => selectedItem && isYhteinenTutkinnonOsa(suoritus)
     ? tutkinnonOsanOsaAlueenKoulutusmoduuli(valtakunnallisetKoulutusmoduulit, selectedItem.data)
@@ -52,53 +56,69 @@ export default ({ suoritus, groupId, suoritusPrototypes, suorituksetModel, setEx
     ? fetchLisättävätTutkinnonOsat(diaarinumero, suoritustapa, groupId)
     : isYhteinenTutkinnonOsa(suoritus)
       ? koodistoValues('ammatillisenoppiaineet').map(oppiaineet => { return {osat: oppiaineet, paikallinenOsa: true, osanOsa: true} })
-      : Bacon.constant({osat:[], paikallinenOsa: true})
+      : Bacon.constant({osat:[], paikallinenOsa: canAddPaikallinen(suoritus)})
+
+  const addTutkinnonOsa = (koulutusmoduuli, tutkinto, liittyyTutkinnonOsaan) => {
+    const group = groupId === placeholderForNonGrouped ? undefined : groupId
+    const tutkinnonOsa = createTutkinnonOsa(suoritusPrototype, koulutusmoduuli, tutkinto, group, groupTitles, liittyyTutkinnonOsaan)
+    pushSuoritus(setExpanded)(tutkinnonOsa)
+  }
 
   return (<span>
     {
       elementWithLoadingIndicator(
         osatP.map(lisättävätTutkinnonOsat => {
             return (<div>
-              <LisääRakenteeseenKuuluvaTutkinnonOsa {...{ addTutkinnonOsa, lisättävätTutkinnonOsat, koulutusmoduuliProto, groupId}} />
+              <LisääRakenteeseenKuuluvaTutkinnonOsa {...{ addTutkinnonOsa, lisättävätTutkinnonOsat, koulutusmoduuliProto}} />
               <LisääOsaToisestaTutkinnosta {...{addTutkinnonOsa, lisättävätTutkinnonOsat, suoritus, koulutusmoduuliProto, groupId, diaarinumero}}/>
-              <LisääPaikallinenTutkinnonOsa {...{lisättävätTutkinnonOsat, addTutkinnonOsa, paikallinenKoulutusmoduuli, groupId}}/>
+              <LisääPaikallinenTutkinnonOsa {...{lisättävätTutkinnonOsat, addTutkinnonOsa, paikallinenKoulutusmoduuli}}/>
+              <LisääKorkeakouluopintoSuoritus {...{parentSuoritus: suoritus, suoritusPrototypes, addSuoritus: pushSuoritus(setExpanded), groupTitles, groupId}}/>
+              <LisääJatkoOpintovalmiuksiaTukevienOpintojenSuoritus {...{parentSuoritus: suoritus, suoritusPrototypes, addSuoritus: pushSuoritus(setExpanded), groupTitles, groupId}}/>
+              <LisääYhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus {...{parentSuoritus: suoritus, suoritusPrototypes, setExpanded}}/>
             </div>)
           }
         )
       )
     }
   </span>)
-
-  function addTutkinnonOsa(koulutusmoduuli, tutkinto, liittyyTutkinnonOsaan) {
-    if (groupId == placeholderForNonGrouped) groupId = undefined
-
-    let uusiSuoritus = modelSet(selectTutkinnonOsanSuoritusPrototype(suoritusPrototypes, groupId), koulutusmoduuli, 'koulutusmoduuli')
-    if (groupId) {
-      uusiSuoritus = modelSetValue(uusiSuoritus, toKoodistoEnumValue('ammatillisentutkinnonosanryhma', groupId, groupTitles[groupId]), 'tutkinnonOsanRyhmä')
-    }
-    if (tutkinto && modelLookup(uusiSuoritus, 'tutkinto')) {
-      uusiSuoritus = modelSetData(uusiSuoritus, {
-        tunniste: { koodiarvo: tutkinto.tutkintoKoodi, nimi: tutkinto.nimi, koodistoUri: 'koulutus' },
-        perusteenDiaarinumero: tutkinto.diaarinumero
-      }, 'tutkinto')
-    }
-
-    if (liittyyTutkinnonOsaan && modelLookup(uusiSuoritus, 'liittyyTutkinnonOsaan')) {
-      uusiSuoritus = modelSetData(uusiSuoritus, liittyyTutkinnonOsaan.data, 'liittyyTutkinnonOsaan')
-    }
-    pushModel(ensureArrayKey(uusiSuoritus))
-    setExpanded(uusiSuoritus)(true)
-  }
 }
 
-const LisääRakenteeseenKuuluvaTutkinnonOsa = ({lisättävätTutkinnonOsat, addTutkinnonOsa, koulutusmoduuliProto}) => {
+export const createTutkinnonOsa = (suoritusPrototype, koulutusmoduuli, tutkinto, groupId, groupTitles, liittyyTutkinnonOsaan) => {
+  let tutkinnonOsa = modelSet(suoritusPrototype, koulutusmoduuli, 'koulutusmoduuli')
+  if (groupId) {
+    tutkinnonOsa = modelSetValue(tutkinnonOsa, toKoodistoEnumValue('ammatillisentutkinnonosanryhma', groupId, groupTitles[groupId]), 'tutkinnonOsanRyhmä')
+  }
+  if (tutkinto && modelLookup(tutkinnonOsa, 'tutkinto')) {
+    tutkinnonOsa = modelSetData(tutkinnonOsa, {
+      tunniste: {koodiarvo: tutkinto.tutkintoKoodi, nimi: tutkinto.nimi, koodistoUri: 'koulutus'},
+      perusteenDiaarinumero: tutkinto.diaarinumero
+    }, 'tutkinto')
+  }
+
+  if (liittyyTutkinnonOsaan && modelLookup(tutkinnonOsa, 'liittyyTutkinnonOsaan')) {
+    tutkinnonOsa = modelSetData(tutkinnonOsa, liittyyTutkinnonOsaan.data, 'liittyyTutkinnonOsaan')
+  }
+  return tutkinnonOsa
+}
+
+export const pushSuoritus = setExpanded => uusiSuoritus => {
+  pushModel(ensureArrayKey(uusiSuoritus))
+  setExpanded(uusiSuoritus)(true)
+}
+
+const canAddPaikallinen = suoritus => !isJatkoOpintovalmiuksiaTukevienOpintojenSuoritus(suoritus)
+
+export const valtakunnallisetKoulutusmoduuliPrototypes = suoritusPrototype =>
+  koulutusModuuliprototypes(suoritusPrototype).filter(R.complement(isPaikallinen))
+
+export const LisääRakenteeseenKuuluvaTutkinnonOsa = ({lisättävätTutkinnonOsat, addTutkinnonOsa, koulutusmoduuliProto}) => {
   let selectedAtom = Atom(undefined)
   selectedAtom.filter(R.identity).onValue((newItem) => {
-    addTutkinnonOsa(modelSetTitle(modelSetValues(koulutusmoduuliProto(newItem), { tunniste: newItem }), newItem.title))
+    const tutkinnonOsa = modelSetValues(koulutusmoduuliProto(newItem), {tunniste: newItem})
+    addTutkinnonOsa(modelSetTitle(tutkinnonOsa, newItem.title))
   })
-  let osat = lisättävätTutkinnonOsat.osat
-  return osat.length > 0 && (<span className="osa-samasta-tutkinnosta">
-      <LisaaTutkinnonOsaDropdown selectedAtom={selectedAtom} osat={osat} placeholder={lisättävätTutkinnonOsat.osanOsa ? t('Lisää tutkinnon osan osa-alue') : t('Lisää tutkinnon osa')}/>
+  return lisättävätTutkinnonOsat.osat.length > 0 && (<span className="osa-samasta-tutkinnosta">
+      <LisaaTutkinnonOsaDropdown selectedAtom={selectedAtom} osat={lisättävätTutkinnonOsat.osat} placeholder={lisättävätTutkinnonOsat.osanOsa ? t('Lisää tutkinnon osan osa-alue') : t('Lisää tutkinnon osa')}/>
   </span>)
 }
 
@@ -154,6 +174,13 @@ const lisääTutkinnonOsaTexts = (lisättävätTutkinnonOsat, paikallinenKoulutu
       modalHeader: 'Paikallisen tutkinnon osan osa-alueen lisäys',
       modalFieldLabel: 'Tutkinnon osan osa-alueen nimi',
       modalOk: 'Lisää tutkinnon osan osa-alue'
+    }
+  } else if (isKorkeakouluOpintojenTutkinnonOsaaPienempiKokonaisuus(paikallinenKoulutusmoduuli)) {
+    return {
+      lisääOsaLink: 'Lisää korkeakouluopintokokonaisuus',
+      modalHeader: 'Lisää korkeakouluopintokokonaisuus',
+      modalFieldLabel: 'Nimi',
+      modalOk: 'Lisää'
     }
   } else if (paikallinenKoulutusmoduuli && isMuunAmmatillisenKoulutuksenSuoritus(paikallinenKoulutusmoduuli.context.suoritus)) {
     return {

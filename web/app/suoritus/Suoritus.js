@@ -52,7 +52,6 @@ export const osasuorituksetVahvistettu = s => R.and(R.all(suoritusValmis)(osasuo
 export const osasuoritukset = (suoritus) => modelItems(suoritus, 'osasuoritukset')
 export const rekursiivisetOsasuoritukset = (suoritus) => flatMapArray(osasuoritukset(suoritus), s => [s].concat(rekursiivisetOsasuoritukset(s)))
 export const suorituksenTyyppi = suoritus => suoritus && modelData(suoritus, 'tyyppi').koodiarvo
-export const valinnanMahdollisuus = suoritus => suoritus.value.classes.includes('valinnanmahdollisuus')
 
 export const suoritusTitle = (suoritus) => {
   let title = modelTitle(tutkinnonNimi(modelLookup(suoritus, 'koulutusmoduuli')))
