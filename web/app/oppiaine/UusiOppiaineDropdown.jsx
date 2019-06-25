@@ -16,7 +16,20 @@ const key = oppiaine => {
   return `${koodisto}-${tunniste.koodiarvo}`
 }
 
-export const UusiOppiaineDropdown = ({suoritukset = [], organisaatioOid, oppiaineenSuoritukset, pakollinen, selected = Bacon.constant(undefined), resultCallback, placeholder, enableFilter=true, allowPaikallinen = true, optionsFilter = R.identity}) => {
+export const UusiOppiaineDropdown = (
+  {
+    suoritukset = [],
+    organisaatioOid,
+    oppiaineenSuoritukset,
+    pakollinen,
+    selected = Bacon.constant(undefined),
+    resultCallback,
+    placeholder,
+    enableFilter = true,
+    allowPaikallinen = true,
+    allowSelectingDuplicates = false,
+    optionsFilter = R.identity
+  }) => {
   if (!oppiaineenSuoritukset || R.any(s => !s.context.edit, oppiaineenSuoritukset)) return null
 
   const käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli')).filter(k => !k.kieli).map(k => k.tunniste.koodiarvo)
@@ -38,7 +51,7 @@ export const UusiOppiaineDropdown = ({suoritukset = [], organisaatioOid, oppiain
 
   const oppiaineet = Bacon.combineWith(paikallisetOppiaineet, valtakunnallisetOppiaineet, (x,y) => x.concat(y))
     .map(aineet => aineet
-      .filter(oppiaine => pakollinen ? !käytössäolevatKoodiarvot.includes(modelData(oppiaine, 'tunniste').koodiarvo) : true)
+      .filter(oppiaine => (pakollinen && !allowSelectingDuplicates) ? !käytössäolevatKoodiarvot.includes(modelData(oppiaine, 'tunniste').koodiarvo) : true)
       .filter(optionsFilter)
     )
 

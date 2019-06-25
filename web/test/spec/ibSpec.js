@@ -930,6 +930,26 @@ describe('IB', function( ) {
                 expect(extractAsText(S('.oppiaineet'))).to.not.contain('Chemistry')
               })
             })
+
+            describe('Jo olemassa olevan oppiaineen lisääminen', function () {
+
+              it('alkutila', function () {
+                expect(S('.oppiaineet .oppiaine-rivi').length).to.equal(6)
+              })
+
+              describe('löytyy dropdownista', function () {
+                before(
+                  editor.edit,
+                  uusiOppiaine.selectValue('Biology')
+                )
+
+                it('toimii', function () {
+                  expect(S('.oppiaineet .oppiaine-rivi').length).to.equal(7)
+                })
+              })
+
+              after(editor.cancelChanges)
+            })
           })
 
           describe('Oppiaineen kurssi', function() {

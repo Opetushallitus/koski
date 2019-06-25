@@ -6,11 +6,9 @@ import {
   pushModel
 } from '../editor/EditorModel'
 import {createOppiaineenSuoritus} from '../lukio/lukio'
+import {suorituksenTyyppi} from '../suoritus/Suoritus'
 
-const resolveRyhmäFieldName = model => {
-  const tyyppi = modelData(model, 'tyyppi').koodiarvo
-  return ['diavalmistavavaihe', 'diatutkintovaihe'].includes(tyyppi) ? 'osaAlue' : 'ryhmä'
-}
+const resolveRyhmäFieldName = model => ['diavalmistavavaihe', 'diatutkintovaihe'].includes(suorituksenTyyppi(model)) ? 'osaAlue' : 'ryhmä'
 
 export const UusiRyhmiteltyOppiaineDropdown = ({model, aineryhmä, optionsFilter}) => {
   if (!model || !model.context.edit) return null
@@ -38,6 +36,7 @@ export const UusiRyhmiteltyOppiaineDropdown = ({model, aineryhmä, optionsFilter
       placeholder={t('Lisää oppiaine')}
       pakollinen={true}
       optionsFilter={optionsFilter}
+      allowSelectingDuplicates={suorituksenTyyppi(model) === 'ibtutkinto'}
     />
   )
 }

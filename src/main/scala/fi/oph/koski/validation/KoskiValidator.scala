@@ -390,6 +390,15 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       } else {
         HttpStatus.ok
       }
+
+    case ib: IBTutkinnonSuoritus =>
+      def viimeisinArviointiNumeerinen(suoritus: Suoritus) = suoritus.viimeisinArviointi.exists(_.arvosana.koodiarvo forall isDigit)
+
+      HttpStatus.fold(ib.osasuoritusLista
+        .groupBy(_.koulutusmoduuli.identiteetti)
+        .collect { case (identiteetti, oppiaineet) if oppiaineet.count(viimeisinArviointiNumeerinen) > 1 => identiteetti}
+        .map(identiteetti => KoskiErrorCategory.badRequest.validation.rakenne.kaksiSamaaOppiainettaNumeroarvioinnilla(s"Kahdella saman oppiaineen suorituksella $identiteetti ei molemmilla voi olla numeerista arviointia"))
+      )
     case _ => HttpStatus.ok
   }
 
