@@ -4,13 +4,11 @@ import fi.oph.koski.suoritusote.KoulutusModuuliOrdering.järjestäSuffiksinMukaa
 
 object LukioRaporttiOppiaineetOrdering extends Ordering[LukioRaporttiOppiaineJaKurssit] {
   override def compare(x: LukioRaporttiOppiaineJaKurssit, y: LukioRaporttiOppiaineJaKurssit): Int = {
-    orderByPaikallisuus(x.oppiaine, y.oppiaine)
-  }
-
-  private def orderByPaikallisuus(x: LukioRaporttiOppiaine, y: LukioRaporttiOppiaine) = (x.koulutusmoduuliPaikallinen, y.koulutusmoduuliPaikallinen) match {
-    case (true, true) => orderByNimi(x, y)
-    case (false, false) => orderByKoulutusmoduulikoodiarvo(x, y)
-    case (a, b) => a compare b
+    (x.oppiaine.koulutusmoduuliPaikallinen, y.oppiaine.koulutusmoduuliPaikallinen) match {
+      case (true, true) => orderByNimi(x.oppiaine, y.oppiaine)
+      case (false, false) => orderByKoulutusmoduulikoodiarvo(x.oppiaine, y.oppiaine)
+      case (a, b) => a compare b
+    }
   }
 
   private def orderByKoulutusmoduulikoodiarvo(x: LukioRaporttiOppiaine, y: LukioRaporttiOppiaine) = {
@@ -21,7 +19,7 @@ object LukioRaporttiOppiaineetOrdering extends Ordering[LukioRaporttiOppiaineJaK
   }
 
   private def orderByNimi(x: LukioRaporttiOppiaine, y: LukioRaporttiOppiaine) = {
-    if (x.koulutusmoduuliKoodiarvo == "MA") {
+    if (x.koulutusmoduuliKoodiarvo == "MA" && y.koulutusmoduuliKoodiarvo == "MA") {
       orderMatikkaByOppimäärä(x, y)
     } else {
       x.nimi.capitalize compare y.nimi.capitalize
@@ -29,11 +27,15 @@ object LukioRaporttiOppiaineetOrdering extends Ordering[LukioRaporttiOppiaineJaK
   }
 
   private def orderMatikkaByOppimäärä(x: LukioRaporttiOppiaine, y: LukioRaporttiOppiaine) = {
-    if (x.nimi.contains("pitkä") || x.nimi.contains("pitka")) -1 else 1
+    (x.nimi.toLowerCase.contains("pitkä"), y.nimi.toLowerCase.contains("pitkä")) match {
+      case (true, false) => -1
+      case (false, true) => 1
+      case _ => 0
+    }
   }
 
   private def koodiarvonJärjestysnumero(x: LukioRaporttiOppiaine) = {
-    koodiarvotOrder.get(x.koulutusmoduuliKoodiarvo).getOrElse(99999)
+    koodiarvotOrder.getOrElse(x.koulutusmoduuliKoodiarvo, 99999)
   }
 
   private lazy val koodiarvotOrder = koodiarvot.zipWithIndex.toMap
