@@ -24,7 +24,7 @@ import {
   isJatkoOpintovalmiuksiaTukevienOpintojenSuoritus,
   isKorkeakouluOpintojenTutkinnonOsaaPienempiKokonaisuus,
   isYhteinenTutkinnonOsa,
-  placeholderForNonGrouped,
+  NON_GROUPED,
   selectTutkinnonOsanSuoritusPrototype,
   tutkinnonOsanOsaAlueenKoulutusmoduuli
 } from './TutkinnonOsa'
@@ -59,7 +59,7 @@ export default ({ suoritus, groupId, suoritusPrototypes, setExpanded, groupTitle
       : Bacon.constant({osat:[], paikallinenOsa: canAddPaikallinen(suoritus)})
 
   const addTutkinnonOsa = (koulutusmoduuli, tutkinto, liittyyTutkinnonOsaan) => {
-    const group = groupId === placeholderForNonGrouped ? undefined : groupId
+    const group = groupId === NON_GROUPED ? undefined : groupId
     const tutkinnonOsa = createTutkinnonOsa(suoritusPrototype, koulutusmoduuli, tutkinto, group, groupTitles, liittyyTutkinnonOsaan)
     pushSuoritus(setExpanded)(tutkinnonOsa)
   }
@@ -111,14 +111,14 @@ const canAddPaikallinen = suoritus => !isJatkoOpintovalmiuksiaTukevienOpintojenS
 export const valtakunnallisetKoulutusmoduuliPrototypes = suoritusPrototype =>
   koulutusModuuliprototypes(suoritusPrototype).filter(R.complement(isPaikallinen))
 
-export const LisääRakenteeseenKuuluvaTutkinnonOsa = ({lisättävätTutkinnonOsat, addTutkinnonOsa, koulutusmoduuliProto}) => {
+export const LisääRakenteeseenKuuluvaTutkinnonOsa = ({lisättävätTutkinnonOsat, addTutkinnonOsa, koulutusmoduuliProto, placeholder = lisättävätTutkinnonOsat.osanOsa ? t('Lisää tutkinnon osan osa-alue') : t('Lisää tutkinnon osa')}) => {
   let selectedAtom = Atom(undefined)
   selectedAtom.filter(R.identity).onValue((newItem) => {
     const tutkinnonOsa = modelSetValues(koulutusmoduuliProto(newItem), {tunniste: newItem})
     addTutkinnonOsa(modelSetTitle(tutkinnonOsa, newItem.title))
   })
   return lisättävätTutkinnonOsat.osat.length > 0 && (<span className="osa-samasta-tutkinnosta">
-      <LisaaTutkinnonOsaDropdown selectedAtom={selectedAtom} osat={lisättävätTutkinnonOsat.osat} placeholder={lisättävätTutkinnonOsat.osanOsa ? t('Lisää tutkinnon osan osa-alue') : t('Lisää tutkinnon osa')}/>
+      <LisaaTutkinnonOsaDropdown selectedAtom={selectedAtom} osat={lisättävätTutkinnonOsat.osat} placeholder={placeholder}/>
   </span>)
 }
 

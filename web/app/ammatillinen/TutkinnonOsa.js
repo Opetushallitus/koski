@@ -4,13 +4,14 @@ import Http from '../util/http'
 import {isKieliaine, isÄidinkieli} from '../suoritus/Koulutusmoduuli'
 import {parseLocation} from '../util/location'
 
-export const placeholderForNonGrouped = '999999'
+export const NON_GROUPED = '999999'
+export const YHTEISET_TUTKINNON_OSAT = '2'
 
 export const createTutkinnonOsanSuoritusPrototype = (osasuoritukset, groupId) =>
   selectTutkinnonOsanSuoritusPrototype(tutkinnonOsaPrototypes(osasuoritukset), groupId)
 
 export const selectTutkinnonOsanSuoritusPrototype = (prototypes, groupId) => {
-  const preferredClass = groupId === '2' ? 'yhteisenammatillisentutkinnonosansuoritus' : 'muunammatillisentutkinnonosansuoritus'
+  const preferredClass = groupId === YHTEISET_TUTKINNON_OSAT ? 'yhteisenammatillisentutkinnonosansuoritus' : 'muunammatillisentutkinnonosansuoritus'
   const sortValue = (oneOfProto) => oneOfProto.value.classes.includes(preferredClass) ? 0 : 1
   return prototypes.sort((a, b) => sortValue(a) - sortValue(b))[0]
 }
@@ -27,7 +28,7 @@ export const tutkinnonOsaPrototypes = osasuorituksetModel => {
 export const fetchLisättävätTutkinnonOsat = (diaarinumero, suoritustapa, groupId) => {
   return Http.cachedGet(parseLocation(`/koski/api/tutkinnonperusteet/tutkinnonosat/${encodeURIComponent(diaarinumero)}`).addQueryParams({
     suoritustapa: suoritustapa,
-    tutkinnonOsanRyhmä: groupId != placeholderForNonGrouped ? groupId : undefined
+    tutkinnonOsanRyhmä: groupId !== NON_GROUPED ? groupId : undefined
   }))
 }
 

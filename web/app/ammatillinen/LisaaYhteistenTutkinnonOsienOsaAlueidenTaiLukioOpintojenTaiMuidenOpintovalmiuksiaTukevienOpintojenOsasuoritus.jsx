@@ -22,6 +22,7 @@ import Text from '../i18n/Text'
 import ModalDialog from '../editor/ModalDialog'
 import Peruste from '../uusioppija/Peruste'
 import * as R from 'ramda'
+import {t} from '../i18n/i18n'
 
 export const LisääYhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus = ({parentSuoritus, suoritusPrototypes, setExpanded}) => {
   if (!isJatkoOpintovalmiuksiaTukevienOpintojenSuoritus(parentSuoritus)) {
@@ -42,7 +43,7 @@ const LisääYhteinenTutkinnonOsa = ({suoritusPrototypes, setExpanded}) => {
   const addTutkinnonOsa = koulutusmoduuli => addSuoritus(setExpanded, yhteisenTutkinnonOsanOsanPrototype, koulutusmoduuli)
 
   return fromBacon(yhteisetTutkinnonOsatP.map(lisättävätTutkinnonOsat =>
-    <LisääRakenteeseenKuuluvaTutkinnonOsa {...{ addTutkinnonOsa, lisättävätTutkinnonOsat, koulutusmoduuliProto: selectKoulutusModuuliProto(yhteisenTutkinnonOsanOsanPrototype) }} />
+    <LisääRakenteeseenKuuluvaTutkinnonOsa {...{ addTutkinnonOsa, lisättävätTutkinnonOsat, koulutusmoduuliProto: selectKoulutusModuuliProto(yhteisenTutkinnonOsanOsanPrototype), placeholder: t('Lisää yhteisen tutkinnon osan osa-alue') }} />
   ))
 }
 

@@ -11,7 +11,8 @@ import Text from '../i18n/Text'
 import {fetchLaajuudet, YhteensäSuoritettu} from './YhteensaSuoritettu'
 import UusiTutkinnonOsa from '../ammatillinen/UusiTutkinnonOsa'
 import {
-  isValinnanMahdollisuus, isVälisuoritus,
+  isValinnanMahdollisuus,
+  isVälisuoritus,
   isYhteinenTutkinnonOsa,
   osanOsa,
   selectTutkinnonOsanSuoritusPrototype,
@@ -97,7 +98,7 @@ export class Suoritustaulukko extends React.Component {
       return [
         <tbody key={'group-' + i} className={`group-header ${groupId}`}>
           <tr>
-            { nestedLevel > 0 && items.length === 0 ? null : columns.map(column => column.renderHeader({suoritusProto, laajuusYksikkö, groupTitles, groupId})) }
+            { nestedLevel > 0 && items.length === 0 ? null : columns.map(column => column.renderHeader({parentSuoritus, suoritusProto, laajuusYksikkö, groupTitles, groupId})) }
           </tr>
         </tbody>,
         items.map((suoritus, j) => suoritusEditor(suoritus, i * 100 + j, groupId)),
@@ -177,7 +178,7 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
 
 const SuoritusColumn = {
   shouldShow : () => true,
-  renderHeader: ({groupTitles, groupId}) => <td key="suoritus" className="tutkinnon-osan-ryhma">{groupTitles[groupId]}</td>,
+  renderHeader: ({parentSuoritus, groupTitles, groupId}) => (<td key="suoritus" className="tutkinnon-osan-ryhma">{isValinnanMahdollisuus(parentSuoritus) ? t('Osasuoritus') : groupTitles[groupId]}</td>),
   renderData: ({model, showTila, onExpand, hasProperties, expanded}) => {
     let koulutusmoduuli = modelLookup(model, 'koulutusmoduuli')
     let titleAsExpandLink = hasProperties && (!osanOsa(koulutusmoduuli) || !model.context.edit)
