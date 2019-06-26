@@ -184,7 +184,8 @@ object RaportointiDatabaseSchema {
     val äidinkieli = column[Option[String]]("aidinkieli", StringIdentifierType)
     val kansalaisuus = column[Option[String]]("kansalaisuus", StringIdentifierType)
     val turvakielto = column[Boolean]("turvakielto")
-    def * = (oppijaOid, masterOid, hetu, sukupuoli, syntymäaika, sukunimi, etunimet, äidinkieli, kansalaisuus, turvakielto) <> (RHenkilöRow.tupled, RHenkilöRow.unapply)
+    val kotikunta = column[String]("kotikunta")
+    def * = (oppijaOid, masterOid, hetu, sukupuoli, syntymäaika, sukunimi, etunimet, äidinkieli, kansalaisuus, turvakielto, kotikunta) <> (RHenkilöRow.tupled, RHenkilöRow.unapply)
   }
 
   class ROrganisaatioTable(tag: Tag) extends Table[ROrganisaatioRow](tag, "r_organisaatio") {
@@ -350,7 +351,8 @@ case class RHenkilöRow(
   etunimet: String,
   aidinkieli: Option[String],
   kansalaisuus: Option[String],
-  turvakielto: Boolean
+  turvakielto: Boolean,
+  kotikunta: String
 )
 
 case class ROrganisaatioRow(
