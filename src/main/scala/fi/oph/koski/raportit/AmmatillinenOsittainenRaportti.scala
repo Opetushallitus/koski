@@ -8,10 +8,11 @@ import fi.oph.koski.schema.{Koodistokoodiviite, LähdejärjestelmäId, Opiskeluo
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.util.FinnishDateFormat.{finnishDateFormat, finnishDateTimeFormat}
+import fi.oph.koski.raportit.AmmatillinenRaporttiUtils._
 
 // scalastyle:off method.length
 
-object AmmatillinenOsittainenRaportti extends AikajaksoRaportti with AmmatillinenRaporttiUtils {
+object AmmatillinenOsittainenRaportti extends AikajaksoRaportti {
 
   def buildRaportti(database: RaportointiDatabase, oppilaitosOid: Oid, alku: LocalDate, loppu: LocalDate): Seq[AmmatillinenOsittainRaporttiRow] = {
     val data = AmmatillisenRaportitRepository(database.db).suoritustiedot(oppilaitosOid, OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo, "ammatillinentutkintoosittainen", alku, loppu)

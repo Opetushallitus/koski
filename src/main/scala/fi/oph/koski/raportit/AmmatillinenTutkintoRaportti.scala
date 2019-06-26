@@ -7,11 +7,12 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema._
 import fi.oph.koski.util.FinnishDateFormat.{finnishDateFormat, finnishDateTimeFormat}
+import fi.oph.koski.raportit.AmmatillinenRaporttiUtils._
 
 
 // scalastyle:off method.length
 
-object AmmatillinenTutkintoRaportti extends AikajaksoRaportti with AmmatillinenRaporttiUtils {
+object AmmatillinenTutkintoRaportti extends AikajaksoRaportti {
 
   def buildRaportti(database: RaportointiDatabase, oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate): Seq[SuoritustiedotTarkistusRow] = {
     val data = AmmatillisenRaportitRepository(database.db).suoritustiedot(oppilaitosOid, OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo, "ammatillinentutkinto", alku, loppu)
