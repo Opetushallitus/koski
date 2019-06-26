@@ -52,6 +52,6 @@ object HenkilöLoader extends Logging {
       aidinkieli = oppija.äidinkieli,
       kansalaisuus = oppija.kansalaisuus.filter(_.nonEmpty).map(_.sorted.mkString(",")),
       turvakielto = oppija.turvakielto,
-      kotikunta = oppija.kotikunta.getOrElse("199") // kotikunta "199" on "kotikunta tuntematon"
+      kotikunta = oppija.kotikunta
     )
 }
