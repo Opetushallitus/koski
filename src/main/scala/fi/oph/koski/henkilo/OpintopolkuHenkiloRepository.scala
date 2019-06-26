@@ -26,7 +26,7 @@ case class OppijaHenkilö(
   turvakielto: Boolean = false,
   linkitetytOidit: List[String] = Nil,
   vanhatHetut: List[String] = Nil,
-  kotikunta: String = "199"
+  kotikunta: Option[String] = None
 ) extends HenkilönTunnisteet {
   @SyntheticProperty
   def preventSerialization: Nothing = ??? // ensure this class never gets serialized to JSON
