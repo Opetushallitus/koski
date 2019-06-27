@@ -278,6 +278,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
           .onSuccess(validateDateOrder(alkamispäivä, ("suoritus.vahvistus.päivä", vahvistuspäivät), KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenAlkamispäivää)))
         :: validateToimipiste(suoritus)
         :: validateStatus(suoritus)
+        :: validateAlkamispäivä(suoritus)
         :: validateArviointi(suoritus)
         :: validateLaajuus(suoritus)
         :: validateOppiaineet(suoritus)
@@ -285,6 +286,11 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         :: HttpStatus.validate(!suoritus.isInstanceOf[PäätasonSuoritus])(validateDuplicates(suoritus.osasuoritukset.toList.flatten))
         :: suoritus.osasuoritusLista.map(validateSuoritus(_, opiskeluoikeus, suoritus :: parent))
     )
+  }
+
+  private def validateAlkamispäivä(suoritus: Suoritus) = suoritus match {
+    case s: PerusopetuksenVuosiluokanSuoritus => HttpStatus.validate(s.alkamispäivä.isDefined)(KoskiErrorCategory.badRequest.validation.date.alkamispäiväPuuttuu(s"Perusopetuksen vuosiluokalla tulee olla alkamispäivä"))
+    case _ => HttpStatus.ok
   }
 
   private def validateVahvistusAndPäättymispäiväDateOrder(suoritus: Suoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, vahvistuspäivät: Option[LocalDate]): HttpStatus = {
