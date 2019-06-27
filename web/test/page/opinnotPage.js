@@ -393,6 +393,14 @@ function TutkinnonOsat(groupId, base) {
   function osienElementit() {
     return subElement(base, withSuffix('.tutkinnon-osa'))
   }
+  function lisääPaikallinenTutkinnonOsa(nimi, modalSelector, addLinkSelector) {
+    return function() {
+      var modalElement = subElement(uusiTutkinnonOsaElement, modalSelector)
+      return click(subElement(uusiTutkinnonOsaElement, addLinkSelector))()
+        .then(Page(modalElement).setInputValue('input', nimi))
+        .then(click(subElement(modalElement, 'button.vahvista:not(:disabled)')))
+    }
+  }
 
   return {
     osienTekstit: function() {
@@ -509,13 +517,20 @@ function TutkinnonOsat(groupId, base) {
           .then(wait.forAjax)
       }
     },
+    lisääKorkeakouluopintoja: function() {
+      return click(subElement(uusiTutkinnonOsaElement, ('.korkeakouluopinto a')))()
+    },
+    lisääYhteistenTutkinnonOsienOsaAlueitaLukioOpintojaTaiMuitaJatkoOpintovalmiuksiaTukeviaOpintoja: function() {
+      return click(subElement(uusiTutkinnonOsaElement, ('.jatkoopintovalmiuksiatukevienopintojensuoritus a')))()
+    },
+    lisääLukioOpinto: function(nimi) {
+      return lisääPaikallinenTutkinnonOsa(nimi, '.lisaa-lukio-opinto-modal', '.lukio-opinto a')
+    },
+    lisääMuuOpintovalmiuksiaTukevaOpinto : function(nimi) {
+      return lisääPaikallinenTutkinnonOsa(nimi, '.lisaa-muu-opintovalmiuksia-tukeva-opinto-modal', '.muu-opintovalmiuksia-tukeva-opinto a')
+    },
     lisääPaikallinenTutkinnonOsa: function(nimi) {
-      return function() {
-        var modalElement = subElement(uusiTutkinnonOsaElement, '.lisaa-paikallinen-tutkinnon-osa-modal')
-        return click(subElement(uusiTutkinnonOsaElement, ('.paikallinen-tutkinnon-osa a')))()
-          .then(Page(modalElement).setInputValue('input', nimi))
-          .then(click(subElement(modalElement, 'button.vahvista:not(:disabled)')))
-      }
+      return lisääPaikallinenTutkinnonOsa(nimi, '.lisaa-paikallinen-tutkinnon-osa-modal', '.paikallinen-tutkinnon-osa a')
     },
     lisääTutkinnonOsaaPienempiKokonaisuus: function(tutkinto, liittyyTutkinnonOsaan, nimi) {
       return function() {

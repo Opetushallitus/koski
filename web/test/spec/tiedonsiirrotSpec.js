@@ -154,14 +154,6 @@ describe('Tiedonsiirrot', function() {
     })
   })
 
-  function insertExample(name) {
-    return function() {
-      return getJson('/koski/api/documentation/examples/' + name).then(function(data) {
-        return putJson('/koski/api/oppija', data).catch(function(){})
-      })
-    }
-  }
-
   function insertOppija(dataString) {
     return function() {
       return sendAjax('/koski/api/oppija', 'application/json', dataString, 'PUT').catch(function(){})

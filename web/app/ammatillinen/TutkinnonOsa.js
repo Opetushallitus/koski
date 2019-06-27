@@ -4,24 +4,31 @@ import Http from '../util/http'
 import {isKieliaine, isÄidinkieli} from '../suoritus/Koulutusmoduuli'
 import {parseLocation} from '../util/location'
 
-export const placeholderForNonGrouped = '999999'
+export const NON_GROUPED = '999999'
+export const YHTEISET_TUTKINNON_OSAT = '2'
 
-export const createTutkinnonOsanSuoritusPrototype = (osasuoritukset, groupId) => {
-  osasuoritukset = wrapOptional(osasuoritukset)
-  let newItemIndex = modelItems(osasuoritukset).length
-  let suoritusProto = contextualizeSubModel(osasuoritukset.arrayPrototype, osasuoritukset, newItemIndex)
-  let preferredClass = groupId == '2' ? 'yhteisenammatillisentutkinnonosansuoritus' : 'muunammatillisentutkinnonosansuoritus'
-  let sortValue = (oneOfProto) => oneOfProto.value.classes.includes(preferredClass) ? 0 : 1
+export const createTutkinnonOsanSuoritusPrototype = (osasuoritukset, groupId) =>
+  selectTutkinnonOsanSuoritusPrototype(tutkinnonOsaPrototypes(osasuoritukset), groupId)
+
+export const selectTutkinnonOsanSuoritusPrototype = (prototypes, groupId) => {
+  const preferredClass = groupId === YHTEISET_TUTKINNON_OSAT ? 'yhteisenammatillisentutkinnonosansuoritus' : 'muunammatillisentutkinnonosansuoritus'
+  const sortValue = (oneOfProto) => oneOfProto.value.classes.includes(preferredClass) ? 0 : 1
+  return prototypes.sort((a, b) => sortValue(a) - sortValue(b))[0]
+}
+
+export const tutkinnonOsaPrototypes = osasuorituksetModel => {
+  const osasuoritukset = wrapOptional(osasuorituksetModel)
+  const newItemIndex = modelItems(osasuoritukset).length
+  const suoritusProto = contextualizeSubModel(osasuoritukset.arrayPrototype, osasuoritukset, newItemIndex)
   // TODO: onlyWhen is wrongly copied from implementing case class to traits prototype. This should really be fixed in the backend.
-  let alternatives = oneOfPrototypes(R.dissoc('onlyWhen', suoritusProto))
-  suoritusProto = alternatives.sort((a, b) => sortValue(a) - sortValue(b))[0]
-  return contextualizeSubModel(suoritusProto, osasuoritukset, newItemIndex)
+  const alts = oneOfPrototypes(R.dissoc('onlyWhen', suoritusProto))
+  return alts.map(alt => contextualizeSubModel(alt, osasuoritukset, newItemIndex))
 }
 
 export const fetchLisättävätTutkinnonOsat = (diaarinumero, suoritustapa, groupId) => {
   return Http.cachedGet(parseLocation(`/koski/api/tutkinnonperusteet/tutkinnonosat/${encodeURIComponent(diaarinumero)}`).addQueryParams({
     suoritustapa: suoritustapa,
-    tutkinnonOsanRyhmä: groupId != placeholderForNonGrouped ? groupId : undefined
+    tutkinnonOsanRyhmä: groupId !== NON_GROUPED ? groupId : undefined
   }))
 }
 
@@ -29,9 +36,21 @@ export const osanOsa = m => m && m.value.classes.includes('ammatillisentutkinnon
 
 export const isYhteinenTutkinnonOsa = suoritus => suoritus.value.classes.includes('yhteisenammatillisentutkinnonosansuoritus')
 
+export const isYhteinenTutkinnonOsanOsa = suoritus => suoritus.value.classes.includes('yhteisentutkinnonosanosaalueensuoritus')
+
+export const isLukioOpintojenSuoritus = suoritus => suoritus.value.classes.includes('lukioopintojensuoritus')
+
+export const isMuidenOpintovalmiuksiaTukevienOpintojenSuoritus = suoritus => suoritus.value.classes.includes('muidenopintovalmiuksiatukevienopintojensuoritus')
+
 export const isOsittaisenAmmatillisenTutkinnonYhteisenTutkinnonOsanSuoritus = s => s.value.classes.includes('yhteisenosittaisenammatillisentutkinnontutkinnonosansuoritus')
 
 export const isOsittaisenAmmatillisenTutkinnonMuunTutkinnonOsanSuoritus = s => s.value.classes.includes('muunosittaisenammatillisentutkinnontutkinnonosansuoritus')
+
+export const isValinnanMahdollisuus = suoritus => suoritus.value.classes.includes('valinnanmahdollisuus')
+export const isKorkeakouluOpintosuoritus = suoritus => suoritus.value.classes.includes('korkeakouluopintosuoritus')
+export const isJatkoOpintovalmiuksiaTukevienOpintojenSuoritus = suoritus => suoritus.value.classes.includes('jatkoopintovalmiuksiatukevienopintojensuoritus')
+export const isVälisuoritus = suoritus => suoritus.value.classes.includes('valisuoritus')
+export const isKorkeakouluOpintojenTutkinnonOsaaPienempiKokonaisuus = km => km && km.value.classes.includes('korkeakouluopintojentutkinnonosaapienempikokonaisuus')
 
 const muutKieliaineet = ['TK1', 'VK', 'VVAI', 'VVTK', 'VVVK']
 const äidinkieli = 'AI'

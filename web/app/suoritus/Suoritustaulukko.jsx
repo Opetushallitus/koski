@@ -5,12 +5,19 @@ import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {modelErrorMessages, modelItems, modelTitle, pushRemoval} from '../editor/EditorModel'
 import {buildClassNames} from '../components/classnames'
 import {accumulateExpandedState} from '../editor/ExpandableItems'
-import {suoritusValmis, tilaText, valinnanMahdollisuus} from './Suoritus'
+import {suoritusValmis, tilaText} from './Suoritus'
 import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
 import {fetchLaajuudet, YhteensäSuoritettu} from './YhteensaSuoritettu'
 import UusiTutkinnonOsa from '../ammatillinen/UusiTutkinnonOsa'
-import {createTutkinnonOsanSuoritusPrototype, isYhteinenTutkinnonOsa, osanOsa} from '../ammatillinen/TutkinnonOsa'
+import {
+  isValinnanMahdollisuus,
+  isVälisuoritus,
+  isYhteinenTutkinnonOsa,
+  osanOsa,
+  selectTutkinnonOsanSuoritusPrototype,
+  tutkinnonOsaPrototypes
+} from '../ammatillinen/TutkinnonOsa'
 import {sortLanguages} from '../util/sorting'
 import {isKieliaine} from './Koulutusmoduuli'
 import {flatMapArray} from '../util/util'
@@ -18,7 +25,8 @@ import {
   ArvosanaColumn,
   getLaajuusYksikkö,
   groupSuoritukset,
-  isAmmatillinentutkinto, isMuunAmmatillisenKoulutuksenOsasuorituksenSuoritus,
+  isAmmatillinentutkinto,
+  isMuunAmmatillisenKoulutuksenOsasuorituksenSuoritus,
   isNäyttötutkintoonValmistava,
   isYlioppilastutkinto,
   KoepisteetColumn,
@@ -37,13 +45,14 @@ export class Suoritustaulukko extends React.Component {
     parentSuoritus = parentSuoritus || context.suoritus
     let suoritukset = modelItems(suorituksetModel) || []
 
-    let suoritusProto = context.edit ? createTutkinnonOsanSuoritusPrototype(suorituksetModel) : suoritukset[0]
+    const suoritusProtos = tutkinnonOsaPrototypes(suorituksetModel)
+    let suoritusProto = context.edit ? selectTutkinnonOsanSuoritusPrototype(suoritusProtos) : suoritukset[0]
     let suoritustapa = modelData(parentSuoritus, 'suoritustapa')
     if (suoritukset.length === 0 && !context.edit) return null
 
     const {isExpandedP, allExpandedP, toggleExpandAll, setExpanded} = accumulateExpandedState({
       suoritukset,
-      filter: s => suoritusProperties(s).length > 0,
+      filter: s => suoritusProperties(s).length > 0 || isVälisuoritus(s),
       component: this
     })
 
@@ -89,7 +98,7 @@ export class Suoritustaulukko extends React.Component {
       return [
         <tbody key={'group-' + i} className={`group-header ${groupId}`}>
           <tr>
-            { nestedLevel > 0 && items.length === 0 ? null : columns.map(column => column.renderHeader({suoritusProto, laajuusYksikkö, groupTitles, groupId})) }
+            { nestedLevel > 0 && items.length === 0 ? null : columns.map(column => column.renderHeader({parentSuoritus, suoritusProto, laajuusYksikkö, groupTitles, groupId})) }
           </tr>
         </tbody>,
         items.map((suoritus, j) => suoritusEditor(suoritus, i * 100 + j, groupId)),
@@ -97,7 +106,7 @@ export class Suoritustaulukko extends React.Component {
           <tr>
             <td colSpan="4">
               <UusiTutkinnonOsa suoritus={parentSuoritus}
-                                suoritusPrototype={createTutkinnonOsanSuoritusPrototype(suorituksetModel, groupId)}
+                                suoritusPrototypes={suoritusProtos}
                                 suorituksetModel={suorituksetModel}
                                 groupId={groupId}
                                 setExpanded={setExpanded}
@@ -129,7 +138,7 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
     let properties = suoritusProperties(model)
     let displayProperties = properties.filter(p => p.key !== 'osasuoritukset')
     let osasuoritukset = modelLookup(model, 'osasuoritukset')
-    let showOsasuoritukset = (osasuoritukset && osasuoritukset.value) || isYhteinenTutkinnonOsa(model) || isMuunAmmatillisenKoulutuksenOsasuorituksenSuoritus(model)
+    let showOsasuoritukset = (osasuoritukset && osasuoritukset.value) || isYhteinenTutkinnonOsa(model) || isMuunAmmatillisenKoulutuksenOsasuorituksenSuoritus(model) || isValinnanMahdollisuus(model)
     return (<tbody className={buildClassNames(['tutkinnon-osa', (expanded && 'expanded'), (groupId)])}>
     <tr>
       {columns.map(column => column.renderData({model, showScope, showTila, onExpand, hasProperties: properties.length > 0 || showOsasuoritukset, expanded}))}
@@ -169,7 +178,7 @@ export class TutkinnonOsanSuoritusEditor extends React.Component {
 
 const SuoritusColumn = {
   shouldShow : () => true,
-  renderHeader: ({groupTitles, groupId}) => <td key="suoritus" className="tutkinnon-osan-ryhma">{groupTitles[groupId]}</td>,
+  renderHeader: ({parentSuoritus, groupTitles, groupId}) => (<td key="suoritus" className="tutkinnon-osan-ryhma">{isValinnanMahdollisuus(parentSuoritus) ? t('Osasuoritus') : groupTitles[groupId]}</td>),
   renderData: ({model, showTila, onExpand, hasProperties, expanded}) => {
     let koulutusmoduuli = modelLookup(model, 'koulutusmoduuli')
     let titleAsExpandLink = hasProperties && (!osanOsa(koulutusmoduuli) || !model.context.edit)
@@ -191,6 +200,6 @@ const SuoritusColumn = {
   }
 }
 
-export const suorituksenTilaSymbol = (suoritus) => valinnanMahdollisuus(suoritus)
+export const suorituksenTilaSymbol = (suoritus) => isValinnanMahdollisuus(suoritus)
   ? ''
   : suoritusValmis(suoritus) ? '' : ''

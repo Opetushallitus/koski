@@ -220,6 +220,36 @@ object AmmatillinenPerustutkintoExample {
 
 object AmmatillinenReforminMukainenPerustutkintoExample {
   lazy val tutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("OPH-2762-2017"))
+  lazy val korkeakouluopintoSuoritus = KorkeakouluopintoSuoritus(koulutusmoduuli = KorkeakouluopinnotTutkinnonOsa(), osasuoritukset = Some(List(saksa)))
+
+  lazy val jatkoOpintovalmiuksiaTukevienOpintojenSuoritus = JatkoOpintovalmiuksiaTukevienOpintojenSuoritus(koulutusmoduuli = JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsa(), osasuoritukset = Some(List(
+    LukioOpintojenSuoritus(
+      koulutusmoduuli = PaikallinenLukionOpinto(
+        tunniste = PaikallinenKoodi("MAA", "Maantieto"),
+        kuvaus = "Lukion maantiedon oppimäärä",
+        perusteenDiaarinumero = "33/011/2003"
+      ),
+      arviointi = arviointiViisi,
+      tyyppi = Koodistokoodiviite(koodiarvo = "ammatillinenlukionopintoja", koodistoUri = "suorituksentyyppi")
+    ),
+    LukioOpintojenSuoritus(
+      koulutusmoduuli = PaikallinenLukionOpinto(
+        tunniste = PaikallinenKoodi("EN", "Englanti"),
+        kuvaus = "Englannin kurssi",
+        laajuus = Some(LaajuusOsaamispisteissä(3)),
+        perusteenDiaarinumero = "33/011/2003"
+      ),
+      arviointi = arviointiViisi,
+      tyyppi = Koodistokoodiviite(koodiarvo = "ammatillinenlukionopintoja", koodistoUri = "suorituksentyyppi")
+    ),
+    YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("TVT", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(3))), arviointi = arviointiViisi),
+
+    MuidenOpintovalmiuksiaTukevienOpintojenSuoritus(
+      PaikallinenOpintovalmiuksiaTukevaOpinto(PaikallinenKoodi("htm", "Hoitotarpeen määrittäminen"), "Hoitotarpeen määrittäminen"),
+      arviointi = arviointiViisi
+    )
+  )))
+
   lazy val opiskeluoikeus = AmmatillinenOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2020, 5, 31)),
     tila = AmmatillinenOpiskeluoikeudenTila(List(
@@ -279,34 +309,8 @@ object AmmatillinenReforminMukainenPerustutkintoExample {
               YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(Koodistokoodiviite("AI", "ammatillisenoppiaineet"), pakollinen = false, kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"), laajuus = Some(LaajuusOsaamispisteissä(3))), arviointi = arviointiViisi)
             ))
           ).copy(arviointi = None).copy(vahvistus = None),
-          KorkeakouluopintoSuoritus(koulutusmoduuli = KorkeakouluopinnotTutkinnonOsa(), osasuoritukset = Some(List(saksa))),
-          JatkoOpintovalmiuksiaTukevienOpintojenSuoritus(koulutusmoduuli = JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsa(), osasuoritukset = Some(List(
-            LukioOpintojenSuoritus(
-              koulutusmoduuli = PaikallinenLukionOpinto(
-                tunniste = PaikallinenKoodi("MAA",  "Maantieto"),
-                kuvaus = "Lukion maantiedon oppimäärä",
-                perusteenDiaarinumero = "33/011/2003"
-              ),
-              arviointi = arviointiViisi,
-              tyyppi = Koodistokoodiviite(koodiarvo = "ammatillinenlukionopintoja", koodistoUri = "suorituksentyyppi")
-            ),
-            LukioOpintojenSuoritus(
-              koulutusmoduuli = PaikallinenLukionOpinto(
-                tunniste = PaikallinenKoodi("EN",  "Englanti"),
-                kuvaus = "Englannin kurssi",
-                laajuus = Some(LaajuusOsaamispisteissä(3)),
-                perusteenDiaarinumero = "33/011/2003"
-              ),
-              arviointi = arviointiViisi,
-              tyyppi = Koodistokoodiviite(koodiarvo = "ammatillinenlukionopintoja", koodistoUri = "suorituksentyyppi")
-            ),
-            YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("TVT", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(3))), arviointi = arviointiViisi),
-
-            MuidenOpintovalmiuksiaTukevienOpintojenSuoritus(
-              PaikallinenOpintovalmiuksiaTukevaOpinto(PaikallinenKoodi("htm", "Hoitotarpeen määrittäminen"), "Hoitotarpeen määrittäminen"),
-              arviointi = arviointiViisi
-            )
-          )))
+          korkeakouluopintoSuoritus,
+          jatkoOpintovalmiuksiaTukevienOpintojenSuoritus
         ))
       )
     )

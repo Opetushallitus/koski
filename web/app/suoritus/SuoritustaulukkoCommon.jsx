@@ -3,7 +3,7 @@ import {tutkinnonOsanRyhmät} from '../koodisto/koodistot'
 import {t} from '../i18n/i18n'
 import {modelData, modelLookup, modelProperties, modelProperty, optionalPrototypeModel} from '../editor/EditorModel'
 import * as R from 'ramda'
-import {createTutkinnonOsanSuoritusPrototype, placeholderForNonGrouped} from '../ammatillinen/TutkinnonOsa'
+import {createTutkinnonOsanSuoritusPrototype, NON_GROUPED} from '../ammatillinen/TutkinnonOsa'
 import {hasArvosana, suorituksenTyyppi} from './Suoritus'
 import Text from '../i18n/Text'
 import {ArvosanaEditor} from './ArvosanaEditor'
@@ -33,8 +33,8 @@ export const groupSuoritukset = (parentSuoritus, suoritukset, context, suoritusP
   return tutkinnonOsanRyhmät(diaarinumero, suoritustapa).map(ammatillisentutkinnonosanryhmaKoodisto => {
     let grouped, groupIds, groupTitles
     if (isAmmatillinentutkinto(parentSuoritus) && R.keys(ammatillisentutkinnonosanryhmaKoodisto).length > 1) {
-      grouped = R.groupBy(s => modelData(s, 'tutkinnonOsanRyhmä.koodiarvo') || placeholderForNonGrouped)(suoritukset)
-      groupTitles = R.merge(ammatillisentutkinnonosanryhmaKoodisto, { [placeholderForNonGrouped] : t('Muut suoritukset')})
+      grouped = R.groupBy(s => modelData(s, 'tutkinnonOsanRyhmä.koodiarvo') || NON_GROUPED)(suoritukset)
+      groupTitles = R.merge(ammatillisentutkinnonosanryhmaKoodisto, { [NON_GROUPED] : t('Muut suoritukset')})
       groupIds = R.keys(grouped).sort()
       if (context.edit) {
         // Show the empty groups too
@@ -46,13 +46,13 @@ export const groupSuoritukset = (parentSuoritus, suoritukset, context, suoritusP
       // osaa pienemmistä kokonaisuuksista koostuva suoritus.
       const topLevelSuoritus = R.path(['context', 'suoritus'], suoritusProto)
       if (topLevelSuoritus && (isMuunAmmatillisenKoulutuksenSuoritus(topLevelSuoritus) || isTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(topLevelSuoritus))) {
-        grouped = { [placeholderForNonGrouped] : suoritukset }
-        groupTitles = { [placeholderForNonGrouped] : t('Osasuoritus') }
-        groupIds = [placeholderForNonGrouped]
+        grouped = { [NON_GROUPED] : suoritukset }
+        groupTitles = { [NON_GROUPED] : t('Osasuoritus') }
+        groupIds = [NON_GROUPED]
       } else {
-        grouped = { [placeholderForNonGrouped] : suoritukset }
-        groupTitles = { [placeholderForNonGrouped] : t(modelProperty(suoritukset[0] || suoritusProto, 'koulutusmoduuli').title) }
-        groupIds = [placeholderForNonGrouped]
+        grouped = { [NON_GROUPED] : suoritukset }
+        groupTitles = { [NON_GROUPED] : t(modelProperty(suoritukset[0] || suoritusProto, 'koulutusmoduuli').title) }
+        groupIds = [NON_GROUPED]
       }
     }
 

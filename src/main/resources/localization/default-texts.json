@@ -138,7 +138,6 @@
   "Perusopetuksen päättötodistuksen arvosanan korotus": "Perusopetuksen päättötodistuksen arvosanan korotus",
   "Arvosana (keskiarvo)": "Arvosana (keskiarvo)",
   "Laajuus (kurssia)": "Laajuus (kurssia)",
-  "Laajuus (kurssia)": "Laajuus (kurssia)",
   "Muut suoritukset": "Muut suoritukset",
   "Pakollisuus": "Pakollisuus",
   "Lukioon valmistavat opinnot": "Lukioon valmistavat opinnot",
@@ -1197,7 +1196,6 @@
   "Vastaavuustodistuksen tiedot" : "Vastaavuustodistuksen tiedot",
   "description:Valmistavan DIA-vaiheen ja DIA-tutkintovaiheen yhteenlaskettu..." : "Valmistavan DIA-vaiheen ja DIA-tutkintovaiheen yhteenlaskettu laajuus",
   "Osasuoritus": "Osasuoritus",
-  "Lisää osasuoritus": "Lisää osasuoritus",
   "Osasuorituksen lisäys": "Osasuorituksen lisäys",
   "Osasuorituksen nimi": "Osasuorituksen nimi",
   "Paikallinen koulutus": "Paikallinen koulutus",
@@ -1239,6 +1237,12 @@
   "description:Työssäoppimispaikan Y-tunnus" : "Työssäoppimispaikan Y-tunnus",
   "Työssäoppimispaikan Y-tunnus" : "Työssäoppimispaikan Y-tunnus",
   "Ei voi merkitä valmiiksi, koska suoritukselta puuttuu ammatillisen tutkinnon osan suoritus...": "Ei voi merkitä valmiiksi, koska suoritukselta puuttuu ammatillisen tutkinnon osan suoritus. Osittainen ammatillinen tutkinto ei voi koostua pelkästään yhteisistä tutkinnon osista.",
-  "Keskeneräisen yhteisen tutkinnon osan pitää koostua valmiista osa-alueista, jotta suoritus voidaan merkitä valmiiksi": "Keskeneräisen yhteisen tutkinnon osan pitää koostua valmiista osa-alueista, jotta suoritus voidaan merkitä valmiiksi"
+  "Keskeneräisen yhteisen tutkinnon osan pitää koostua valmiista osa-alueista, jotta suoritus voidaan merkitä valmiiksi": "Keskeneräisen yhteisen tutkinnon osan pitää koostua valmiista osa-alueista, jotta suoritus voidaan merkitä valmiiksi",
+  "Lisää korkeakouluopintoja": "Lisää korkeakouluopintoja",
+  "Lisää yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja": "Lisää yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja",
+  "Lisää lukio-opinto": "Lisää lukio-opinto",
+  "Lisää korkeakouluopintokokonaisuus": "Lisää korkeakouluopintokokonaisuus",
+  "Lisää muu opintovalmiuksia tukeva opinto": "Lisää muu opintovalmiuksia tukeva opinto",
+  "Lisää yhteisen tutkinnon osan osa-alue": "Lisää yhteisen tutkinnon osan osa-alue"
 }
 

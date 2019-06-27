@@ -171,6 +171,14 @@ function goForward() {
   testFrame().history.forward()
 }
 
+function insertExample(name) {
+  return function() {
+    return getJson('/koski/api/documentation/examples/' + name).then(function(data) {
+      return putJson('/koski/api/oppija', data).catch(function(){})
+    })
+  }
+}
+
 var isIE = (navigator.appName == 'Microsoft Internet Explorer' ||  !!(navigator.userAgent.match(/Trident/) || navigator.userAgent.match(/rv:11/)) || (typeof $.browser !== "undefined" && $.browser.msie == 1))
 
 function triggerEvent(selector, eventName) {
