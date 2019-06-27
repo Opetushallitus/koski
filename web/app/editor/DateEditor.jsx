@@ -1,4 +1,5 @@
 import React from 'react'
+import * as R from 'ramda'
 import {modelData, pushModelValue} from './EditorModel.js'
 import {formatISODate, parseISODate, formatFinnishDate} from '../date/date.js'
 import DateInput from '../date/DateInput'
@@ -14,7 +15,7 @@ export const DateEditor = ({model, isAllowedDate}) => {
   let dateInISOFormat = modelData(wrappedModel)
   var dateValue = dateInISOFormat && parseISODate(dateInISOFormat) || dateInISOFormat
   return model.context.edit
-    ? <DateInput {...{value: dateValue, optional: wrappedModel.optional, isAllowedDate, validityCallback, valueCallback}} />
+    ? <DateInput {...{value: dateValue, optional: isOptional(model), isAllowedDate, validityCallback, valueCallback}} />
     : <span className="inline date">{dateValue && formatFinnishDate(dateValue)}</span>
 }
 
@@ -24,8 +25,15 @@ DateEditor.handlesOptional = () => true
 DateEditor.validateModel = (model) => {
   let data = modelData(model)
   let empty = !data
-  if (empty && model.optional) return
+  if (empty && isOptional(model)) return
   if (!data) return [{key: 'missing'}]
   var dateValue = data && parseISODate(data)
   if (!dateValue) return [{key: 'invalid.date'}]
 }
+
+const isOptional = model => model.optional && !isPerusopetuksenVuosiluokanSuorituksenAlkamispäivä(model)
+
+const isPerusopetuksenVuosiluokanSuorituksenAlkamispäivä = model => R.and(
+  R.contains('perusopetuksenvuosiluokansuoritus', model.parent.value.classes),
+  R.last(model.path) === 'alkamispäivä'
+)

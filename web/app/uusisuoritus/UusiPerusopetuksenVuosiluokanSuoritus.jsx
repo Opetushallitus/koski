@@ -42,17 +42,23 @@ const UusiPerusopetuksenVuosiluokanSuoritusPopup = ({opiskeluoikeus, resultCallb
         let { modelP, errorP } = accumulateModelStateAndValidity(initialSuoritusModel)
 
         let hasToimipisteP = modelP.map(m => !!modelData(m, 'toimipiste.oid'))
-        let validP = errorP.not().and(hasToimipisteP)
+        let hasAlkamispäiväP = modelP.map(m => !!modelData(m, 'alkamispäivä'))
+        let validP = errorP.not().and(hasToimipisteP).and(hasAlkamispäiväP)
 
         let finalSuoritus = submitBus.filter(validP).map(modelP).flatMapFirst((suoritus) => {
           let oppiaineidenSuoritukset = (luokkaAste(suoritus) == '9') ? Bacon.constant([]) : luokkaAsteenOsasuoritukset(luokkaAste(suoritus), isToimintaAlueittain(opiskeluoikeus))
           return oppiaineidenSuoritukset.map(oppiaineet => modelSetValue(suoritus, oppiaineet.value, 'osasuoritukset'))
         })
 
+        const paths = ['koulutusmoduuli.perusteenDiaarinumero', 'koulutusmoduuli.tunniste', 'luokka', 'toimipiste', 'alkamispäivä' ]
+
         return (<div>
           <ModalDialog className="lisaa-suoritus-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()} okTextKey="Lisää" validP={validP}>
             <h2><Text name="Suorituksen lisäys"/></h2>
-            <PropertiesEditor baret-lift context={initialSuoritusModel.context} properties={modelP.map(model => modelProperties(model, ['koulutusmoduuli.perusteenDiaarinumero', 'koulutusmoduuli.tunniste', 'luokka', 'toimipiste']))} />
+            <PropertiesEditor baret-lift
+                              context={initialSuoritusModel.context}
+                              properties={modelP.map(model => modelProperties(model, paths))}
+            />
           </ModalDialog>
           { doActionWhileMounted(finalSuoritus, resultCallback) }
         </div>)

@@ -276,6 +276,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       validateDateOrder(alkamispäivä, ("suoritus.arviointi.päivä", arviointipäivät), KoskiErrorCategory.badRequest.validation.date.arviointiEnnenAlkamispäivää)
         .onSuccess(validateDateOrder(("suoritus.arviointi.päivä", arviointipäivät), ("suoritus.vahvistus.päivä", vahvistuspäivät), KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenArviointia)
           .onSuccess(validateDateOrder(alkamispäivä, ("suoritus.vahvistus.päivä", vahvistuspäivät), KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenAlkamispäivää)))
+        :: validateAlkamispäivä(suoritus)
         :: validateToimipiste(suoritus)
         :: validateStatus(suoritus)
         :: validateArviointi(suoritus)
@@ -307,6 +308,11 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus(s"Osasuoritus ${tutkinnonOsa} esiintyy useammin kuin kerran" + ryhmänKuvaus)
       }
     )
+  }
+
+  private def validateAlkamispäivä(suoritus: Suoritus): HttpStatus = suoritus match {
+    case s: PerusopetuksenVuosiluokanSuoritus => HttpStatus.validate(s.alkamispäivä.isDefined)(KoskiErrorCategory.badRequest.validation.tila.alkamispäiväPuuttuu("Suoritukselle " + suorituksenTunniste(s) + " ei ole merkitty alkamispäivää"))
+    case _ => HttpStatus.ok
   }
 
   private def validateToimipiste(suoritus: Suoritus)(implicit user: KoskiSession, accessType: AccessType.Value): HttpStatus = suoritus match {
