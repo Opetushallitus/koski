@@ -15,7 +15,7 @@ import fi.oph.koski.luovutuspalvelu.{LuovutuspalveluServlet, PalveluvaylaServlet
 import fi.oph.koski.mydata.{ApiProxyServlet, MyDataReactServlet, MyDataServlet}
 import fi.oph.koski.omattiedot.OmatTiedotServlet
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusServlet, OpiskeluoikeusValidationServlet}
-import fi.oph.koski.oppija.OppijaServlet
+import fi.oph.koski.oppija.{OppijaServlet, OppijaServletV2}
 import fi.oph.koski.oppilaitos.OppilaitosServlet
 import fi.oph.koski.organisaatio.OrganisaatioServlet
 import fi.oph.koski.permission.PermissionCheckServlet
@@ -69,6 +69,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     mount("/api/opiskeluoikeus/validate", new OpiskeluoikeusValidationServlet)
     mount("/api/opiskeluoikeus/historia", new KoskiHistoryServlet)
     mount("/api/oppija", new OppijaServlet)
+    mount("/api/v2/oppija", new OppijaServletV2)
     mount("/api/oppilaitos", new OppilaitosServlet)
     mount("/api/organisaatio", new OrganisaatioServlet)
     mount("/api/permission", new PermissionCheckServlet)

@@ -165,34 +165,34 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
       .result
 
   private def createOrUpdateAction(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowUpdate: Boolean, allowDeleteCompleted: Boolean = false)(implicit user: KoskiSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = {
-    findByIdentifierAction(OpiskeluoikeusIdentifier(oppijaOid.oppijaOid, opiskeluoikeus)).flatMap { rows: Either[HttpStatus, List[OpiskeluoikeusRow]] =>
-      (allowUpdate, rows) match {
-        case (_, Right(Nil)) => createAction(oppijaOid, opiskeluoikeus)
-        case (true, Right(List(vanhaOpiskeluoikeus))) =>
-          if (oppijaOid.oppijaOid == vanhaOpiskeluoikeus.oppijaOid) {
-            updateAction(vanhaOpiskeluoikeus, opiskeluoikeus, allowDeleteCompleted)
-          } else { // Check if oppija oid belongs to master of slave oppija oids
-            oppijaOidsByOppijaOid(vanhaOpiskeluoikeus.oppijaOid).flatMap { oids =>
-              if (oids.contains(oppijaOid.oppijaOid)) {
-                updateAction(vanhaOpiskeluoikeus, opiskeluoikeus)
-              } else {
-                DBIO.successful(Left(KoskiErrorCategory.forbidden.oppijaOidinMuutos("Oppijan oid: " + oppijaOid.oppijaOid + " ei löydy opiskeluoikeuden oppijan oideista: " + oids.mkString(", "))))
-              }
-            }
-          }
-        case (true, Right(rows)) =>
-          DBIO.successful(Left(KoskiErrorCategory.internalError(s"Löytyi enemmän kuin yksi rivi päivitettäväksi (${rows.map(_.oid)})")))
-        case (false, Right(rows)) =>
-          rows.find(!_.toOpiskeluoikeus.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt) match {
-            case None => createAction(oppijaOid, opiskeluoikeus) // Tehdään uusi opiskeluoikeus, koska vanha on päättynyt
-            case Some(_) => DBIO.successful(Left(KoskiErrorCategory.conflict.exists())) // Ei tehdä uutta, koska vanha vastaava opiskeluoikeus on voimassa
-          }
-        case (_, Left(err)) => DBIO.successful(Left(err))
-      }
-    }
+    findByIdentifierAction(OpiskeluoikeusIdentifier(oppijaOid.oppijaOid, opiskeluoikeus)).flatMap { rows: Either[HttpStatus, List[OpiskeluoikeusRow]] => createOrUpdateActionBasedOnDbResult(oppijaOid, opiskeluoikeus, allowUpdate, allowDeleteCompleted, rows) }
   }
 
-  private def createAction(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write] = {
+  protected def createOrUpdateActionBasedOnDbResult(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowUpdate: Boolean, allowDeleteCompleted: Boolean, rows: Either[HttpStatus, List[OpiskeluoikeusRow]])(implicit user: KoskiSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write with Transactional] = (allowUpdate, rows) match {
+    case (_, Right(Nil)) => createAction(oppijaOid, opiskeluoikeus)
+    case (true, Right(List(vanhaOpiskeluoikeus))) =>
+      if (oppijaOid.oppijaOid == vanhaOpiskeluoikeus.oppijaOid) {
+        updateAction(vanhaOpiskeluoikeus, opiskeluoikeus, allowDeleteCompleted)
+      } else { // Check if oppija oid belongs to master of slave oppija oids
+        oppijaOidsByOppijaOid(vanhaOpiskeluoikeus.oppijaOid).flatMap { oids =>
+          if (oids.contains(oppijaOid.oppijaOid)) {
+            updateAction(vanhaOpiskeluoikeus, opiskeluoikeus)
+          } else {
+            DBIO.successful(Left(KoskiErrorCategory.forbidden.oppijaOidinMuutos("Oppijan oid: " + oppijaOid.oppijaOid + " ei löydy opiskeluoikeuden oppijan oideista: " + oids.mkString(", "))))
+          }
+        }
+      }
+    case (true, Right(rows)) =>
+      DBIO.successful(Left(KoskiErrorCategory.internalError(s"Löytyi enemmän kuin yksi rivi päivitettäväksi (${rows.map(_.oid)})")))
+    case (false, Right(rows)) =>
+      rows.find(!_.toOpiskeluoikeus.tila.opiskeluoikeusjaksot.last.opiskeluoikeusPäättynyt) match {
+        case None => createAction(oppijaOid, opiskeluoikeus) // Tehdään uusi opiskeluoikeus, koska vanha on päättynyt
+        case Some(_) => DBIO.successful(Left(KoskiErrorCategory.conflict.exists())) // Ei tehdä uutta, koska vanha vastaava opiskeluoikeus on voimassa
+      }
+    case (_, Left(err)) => DBIO.successful(Left(err))
+  }
+
+  protected def createAction(oppijaOid: PossiblyUnverifiedHenkilöOid, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Read with Write] = {
     oppijaOid.verified match {
       case Some(henkilö) =>
         val withMasterInfo = henkilöRepository.withMasterInfo(henkilö)
