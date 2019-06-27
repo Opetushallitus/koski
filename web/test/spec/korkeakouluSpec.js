@@ -136,4 +136,16 @@ describe('Korkeakoulutus', function() {
       expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal( [ 'Tampereen yliopisto, Farmasian kandidaatti', 'Tampereen yliopisto, Proviisori (2016—2019, päättynyt)' ])
     })
   })
+
+  describe('Kaksi päätason suoritusta', function () {
+    before(
+      Authentication().login('pää'),
+      page.openPage,
+      page.oppijaHaku.searchAndSelect('270680-459P')
+    )
+
+    it('Otsikkona näytetään se jolla viimeisin vahvistus', function () {
+      expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal( [ 'Aalto-yliopisto, Fil. maist., englannin kieli (2000—, päättynyt)' ])
+    })
+  })
 })

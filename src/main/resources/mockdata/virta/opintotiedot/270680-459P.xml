@@ -1,0 +1,74 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+    <SOAP-ENV:Header/>
+    <SOAP-ENV:Body>
+        <virtaluku:OpiskelijanKaikkiTiedotResponse xmlns:virtaluku="http://tietovaranto.csc.fi/luku">
+            <virta:Virta xmlns:virta="urn:mace:funet.fi:virta/2015/09/01">
+                <virta:Opiskelija avain="TY¤59374">
+                    <virta:Henkilotunnus>270680-459P</virta:Henkilotunnus>
+                    <virta:Opiskeluoikeudet>
+                        <virta:Opiskeluoikeus opiskelijaAvain="TY¤59374" avain="TY¤59374¤83368¤Y">
+                            <virta:Tila>
+                                <virta:AlkuPvm>2008-06-20</virta:AlkuPvm>
+                                <virta:Koodi>3</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tila>
+                                <virta:AlkuPvm>2000-08-15</virta:AlkuPvm>
+                                <virta:LoppuPvm>2008-06-19</virta:LoppuPvm>
+                                <virta:Koodi>1</virta:Koodi>
+                            </virta:Tila>
+                            <virta:Tyyppi>4</virta:Tyyppi>
+                            <virta:Myontaja>10089</virta:Myontaja>
+                            <virta:Jakso koulutusmoduulitunniste="">
+                                <virta:AlkuPvm>2000-08-15</virta:AlkuPvm>
+                                <virta:LoppuPvm>2004-09-01</virta:LoppuPvm>
+                                <virta:Koulutuskoodi>726103</virta:Koulutuskoodi>
+                                <virta:Koulutuskunta>853</virta:Koulutuskunta>
+                                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+                            </virta:Jakso>
+                            <virta:Jakso koulutusmoduulitunniste="">
+                                <virta:AlkuPvm>2004-09-02</virta:AlkuPvm>
+                                <virta:LoppuPvm>2008-06-19</virta:LoppuPvm>
+                                <virta:Koulutuskoodi>726103</virta:Koulutuskoodi>
+                                <virta:Koulutuskunta>853</virta:Koulutuskunta>
+                                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+                            </virta:Jakso>
+                            <virta:Koulutusala versio="ohjausala">3</virta:Koulutusala>
+                        </virta:Opiskeluoikeus>
+                    </virta:Opiskeluoikeudet>
+                    <virta:Opintosuoritukset>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="TY¤59374¤83368¤Y" opiskelijaAvain="TY¤59374" koulutusmoduulitunniste="TUTK1131" avain="TY¤59374¤1972">
+                            <virta:SuoritusPvm>2007-12-31</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10089</virta:Myontaja>
+                            <virta:Laji>1</virta:Laji>
+                            <virta:Nimi kieli="fi">HUMANISTISTEN TIETEIDEN KANDIDAATTI </virta:Nimi>
+                            <virta:Nimi kieli="en">Bachelor of Arts </virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutuskoodi>623103</virta:Koulutuskoodi>
+                        </virta:Opintosuoritus>
+                        <virta:Opintosuoritus opiskeluoikeusAvain="TY¤59374¤83368¤Y" opiskelijaAvain="TY¤59374" koulutusmoduulitunniste="TUTK1231" avain="TY¤59374¤1968">
+                            <virta:SuoritusPvm>2008-06-19</virta:SuoritusPvm>
+                            <virta:Laajuus>
+                                <virta:Opintopiste>0.0</virta:Opintopiste>
+                            </virta:Laajuus>
+                            <virta:Arvosana>
+                                <virta:Hyvaksytty>HYV</virta:Hyvaksytty>
+                            </virta:Arvosana>
+                            <virta:Myontaja>10089</virta:Myontaja>
+                            <virta:Laji>1</virta:Laji>
+                            <virta:Nimi kieli="fi">FILOSOFIAN MAISTERI, HUMANISTINEN TDK </virta:Nimi>
+                            <virta:Nimi kieli="en">Master of Arts </virta:Nimi>
+                            <virta:Kieli>fi</virta:Kieli>
+                            <virta:Koulutuskoodi>726103</virta:Koulutuskoodi>
+                        </virta:Opintosuoritus>
+                    </virta:Opintosuoritukset>
+                </virta:Opiskelija>
+            </virta:Virta>
+        </virtaluku:OpiskelijanKaikkiTiedotResponse>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

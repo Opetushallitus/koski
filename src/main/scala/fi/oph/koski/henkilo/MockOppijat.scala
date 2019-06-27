@@ -49,6 +49,7 @@ object MockOppijat {
   val virtaEiVastaa = oppijat.oppija("Virtanen", "Eivastaa", "250390-680P")
   val oppiaineenKorottaja = oppijat.oppija("Oppiaineenkorottaja", "Olli", "110738-839L")
   val montaOppiaineenOppimäärääOpiskeluoikeudessa = oppijat.oppija("Mervi", "Monioppiaineinen", "131298-5248")
+  val virtaKaksiPäätösonSuoritusta = oppijat.oppija("Kaksi-Päinen", "Ville", "270680-459P")
   val aikuisOpiskelija = oppijat.oppija("Aikuisopiskelija", "Aini", "280598-2415", vanhaHetu = Some("280598-326W"))
   val kymppiluokkalainen = oppijat.oppija("Kymppiluokkalainen", "Kaisa", "131025-6573")
   val luva = oppijat.oppija("Lukioonvalmistautuja", "Luke", "211007-442N")
