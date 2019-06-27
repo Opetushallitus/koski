@@ -81,8 +81,6 @@ object KoskiErrorCategory {
 
         val alkamispäivä = subcategory("alkamispäivä", "Opiskeluoikeuden alkamispäivä ei vastaa ensimmäisen opiskeluoikeusjakson alkupäivää")
         val päättymispäivämäärä = subcategory("päättymispäivämäärä", "Opiskeluoikeuden päättymispäivä ei vastaa opiskeluoikeuden päättävän opiskeluoikeusjakson alkupäivää")
-
-        val alkamispäiväPuuttuu = subcategory("alkamispäiväPuuttuu", "Alkamispäivä puuttuu")
       }
       val date = new Date
 
