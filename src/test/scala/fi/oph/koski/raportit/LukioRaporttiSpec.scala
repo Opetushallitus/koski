@@ -22,8 +22,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
   }
 
   lazy val repository = LukioRaportitRepository(KoskiApplicationForTests.raportointiDatabase.db)
-  lazy val ePerusteet = KoskiApplicationForTests.ePerusteet
-  lazy val lukioRaportti = LukioRaportti(repository, ePerusteet)
+  lazy val lukioRaportti = LukioRaportti(repository)
 
   "Lukion suoritustietoraportti" - {
 
@@ -220,7 +219,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
   }
 
   private def buildLukioraportti(organisaatioOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate) = {
-    lukioRaportti.buildRaportti(repository, organisaatioOid, alku, loppu)
+    lukioRaportti.buildRaportti(organisaatioOid, alku, loppu)
   }
 
   private def zipRowsWithColumTitles(sheet: DynamicDataSheet) = {
@@ -355,7 +354,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Opiskeluoikeuden alkamispäivä" -> Some(date(2015, 9, 1)),
     "Opiskeluoikeuden viimeisin tila" -> Some("lasna"),
     "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna",
-    "Opetussuunnitelma" -> Some("Lukion opetussuunnitelman perusteet 2015"),
+    "Opetussuunnitelma" -> Some("Lukio suoritetaan nuorten opetussuunnitelman mukaan"),
     "Suorituksen tyyppi" -> "lukionoppiaineenoppimaara",
     "Suorituksen tila" -> "valmis",
     "Suorituksen vahvistuspäivä" -> None,
@@ -442,7 +441,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
       "Sukunimi" -> Some(lukionAineopiskelijaAktiivinen.sukunimi),
       "Etunimet" -> Some(lukionAineopiskelijaAktiivinen.etunimet),
       "Toimipiste" -> "Jyväskylän normaalikoulu",
-      "Opetussuunnitelma" -> Some("Lukion opetussuunnitelman perusteet 2015"),
+      "Opetussuunnitelma" -> Some("Lukio suoritetaan nuorten opetussuunnitelman mukaan"),
       "Suorituksen tyyppi" -> "lukionoppiaineenoppimaara"
     )
 
