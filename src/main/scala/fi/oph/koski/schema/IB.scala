@@ -97,7 +97,9 @@ case class IBOppiaineenSuoritus(
   override val osasuoritukset: Option[List[IBKurssinSuoritus]],
   @KoodistoKoodiarvo("iboppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "iboppiaine", koodistoUri = "suorituksentyyppi")
-) extends IBSuoritus
+) extends IBSuoritus {
+  override def ryhmittelytekijä: Option[String] = koulutusmoduuli.taso.map(_.koodiarvo)
+}
 
 @Description("Theory of Knowledge-suorituksen tiedot")
 @Title("IB Theory of Knowledge -suoritus")
