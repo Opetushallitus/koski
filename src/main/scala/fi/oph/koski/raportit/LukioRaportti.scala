@@ -3,7 +3,6 @@ package fi.oph.koski.raportit
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
-import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema._
@@ -13,20 +12,20 @@ import fi.oph.koski.raportit.LukioRaporttiKurssitOrdering.lukioRaporttiKurssitOr
 import scala.concurrent.duration._
 import scala.concurrent.{ExecutionContext, ExecutionContextExecutor, Future}
 
-case class LukioRaportti(repository: LukioRaportitRepository, ePerusteet: EPerusteetRepository) {
+case class LukioRaportti(repository: LukioRaportitRepository) {
 
   private lazy val lukionoppiaineenoppimaara = "lukionoppiaineenoppimaara"
   private lazy val lukionoppiaine = "lukionoppiaine"
   private lazy val lukionmuuopinto = "lukionmuuopinto"
 
-  def buildRaportti(repository: LukioRaportitRepository, oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate): Seq[DynamicDataSheet] = {
+  def buildRaportti(oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate): Seq[DynamicDataSheet] = {
     implicit val executionContext = ExecutionContext.fromExecutor(new java.util.concurrent.ForkJoinPool(10))
 
     val rows = repository.suoritustiedot(oppilaitosOid, alku, loppu)
     val oppiaineetJaKurssit = lukiossaOpetettavatOppiaineetJaNiidenKurssit(rows)
 
     val future = for {
-      oppiaineJaLisätiedot <- oppiaineJaLisätiedotSheet(rows, oppiaineetJaKurssit, alku, loppu, ePerusteet)
+      oppiaineJaLisätiedot <- oppiaineJaLisätiedotSheet(rows, oppiaineetJaKurssit, alku, loppu)
       kurssit <- oppiaineKohtaisetSheetit(rows, oppiaineetJaKurssit)
     } yield (oppiaineJaLisätiedot +: kurssit)
 
@@ -63,7 +62,7 @@ case class LukioRaportti(repository: LukioRaportitRepository, ePerusteet: EPerus
   }
   private def toKurssi(row: ROsasuoritusRow) = LukioRaporttiKurssi(row.koulutusmoduuliNimi.getOrElse("ei nimeä"), row.koulutusmoduuliKoodiarvo, row.koulutusmoduuliPaikallinen)
 
-  private def oppiaineJaLisätiedotSheet(opiskeluoikeusData: Seq[LukioRaporttiRows], oppiaineetJaKurssit: Seq[LukioRaporttiOppiaineJaKurssit], alku: LocalDate, loppu: LocalDate, ePerusteet: EPerusteetRepository)(implicit executionContext: ExecutionContextExecutor) = {
+  private def oppiaineJaLisätiedotSheet(opiskeluoikeusData: Seq[LukioRaporttiRows], oppiaineetJaKurssit: Seq[LukioRaporttiOppiaineJaKurssit], alku: LocalDate, loppu: LocalDate)(implicit executionContext: ExecutionContextExecutor) = {
     Future {
       DynamicDataSheet(
         title = "Oppiaineet ja lisätiedot",
@@ -194,7 +193,11 @@ case class LukioRaportti(repository: LukioRaportitRepository, ePerusteet: EPerus
 
   private def opetussuunnitelma(suoritus: RPäätasonSuoritusRow) = {
     if (suoritus.suorituksenTyyppi == lukionoppiaineenoppimaara) {
-      JsonSerializer.extract[Option[String]](suoritus.data \ "koulutusmoduuli" \ "perusteenDiaarinumero").map(ePerusteet.findPerusteetByDiaarinumero(_).map(_.nimi("fi")).mkString(","))
+      JsonSerializer.extract[Option[String]](suoritus.data \ "koulutusmoduuli" \ "perusteenDiaarinumero").map {
+        case "60/011/2015" | "33/011/2003" => "Lukio suoritetaan nuorten opetussuunnitelman mukaan"
+        case "70/011/2015" | "4/011/2004" => "Lukio suoritetaan aikuisten opetussuunnitelman mukaan"
+        case diaarinumero => diaarinumero
+      }
     } else {
       JsonSerializer.extract[Option[Koodistokoodiviite]](suoritus.data \ "oppimäärä").flatMap(_.nimi.map(_.get("fi")))
     }
