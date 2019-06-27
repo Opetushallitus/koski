@@ -126,17 +126,6 @@ describe('Korkeakoulutus', function() {
     })
   })
 
-  describe('Tampereen duplikaattisuoritukset', function() {
-    before(
-      Authentication().login('pää'),
-      page.openPage,
-      page.oppijaHaku.searchAndSelect('060609-638L')
-    )
-    it('näytetään oikein', function() {
-      expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal( [ 'Tampereen yliopisto, Farmasian kandidaatti', 'Tampereen yliopisto, Proviisori (2016—2019, päättynyt)' ])
-    })
-  })
-
   describe('Kaksi päätason suoritusta', function () {
     before(
       Authentication().login('pää'),

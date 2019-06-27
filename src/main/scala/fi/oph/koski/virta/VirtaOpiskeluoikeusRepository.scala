@@ -37,20 +37,12 @@ case class VirtaOpiskeluoikeusRepository(
     })
   }
 
-  private val tampereenYliopistoVanha = "01905"
-  private val tampereenTeknillinenYliopisto = "01915"
-  private val tampereenYliopisto = "10122"
-  private val fuusioFilter = new VirtaOppilaitosFuusioFilter(List(tampereenYliopistoVanha, tampereenTeknillinenYliopisto), List(tampereenYliopisto))
-
   private def virtaHaku(cacheKey: VirtaCacheKey): List[KorkeakoulunOpiskeluoikeus] = {
     def massaHaku(hakuehdot: List[VirtaHakuehto]) = if (hakuehdot.isEmpty) {
       Nil
     } else {
       virta.opintotiedotMassahaku(hakuehdot)
         .toList
-        // Poista kaikki duplikaattisuoritukset virta-datasta jos niiden organisaatiorooli on tyyppiä "fuusioitunut
-        // myöntäjä" ja myöntäjä on joko Tampereen yliopisto tai Tampereen teknillinen yliopisto
-        .map(fuusioFilter.poistaDuplikaattisuoritukset(cacheKey.oidit))
         .flatMap(converter.convertToOpiskeluoikeudet)
     }
 
