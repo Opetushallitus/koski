@@ -352,7 +352,7 @@ case class RHenkilöRow(
   aidinkieli: Option[String],
   kansalaisuus: Option[String],
   turvakielto: Boolean,
-  kotikunta: Option[String]
+  kotikunta: Option[String] = None
 )
 
 case class ROrganisaatioRow(
