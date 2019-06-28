@@ -189,6 +189,24 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
       val result = mockClient.findSlaveOids(oid).run
       result should contain only slaveOid
     }
+
+    "palauttaa annetun kotikunnan jos kotikunta on asetettu" in {
+      mockEndpoints(defaultHenkilöResponse + ("kotikunta" -> "091"))
+      val result = mockClient.findMasterOppija(oid).run
+      result.value.kotikunta should equal(Some("091"))
+    }
+
+    "palauttaa kotikuntana None jos kotikunta on null" in {
+      mockEndpoints(defaultHenkilöResponse + ("kotikunta" -> None))
+      val result = mockClient.findMasterOppija(oid).run
+      result.value.kotikunta should equal(None)
+    }
+
+    "palauttaa kotikuntana None jos kotikunta ei ole määritelty" in {
+      mockEndpoints(defaultHenkilöResponse - ("kotikunta"))
+      val result = mockClient.findMasterOppija(oid).run
+      result.value.kotikunta should equal(None)
+    }
   }
 
   def mockEndpoints(perustietoResponseData: Map[String, Any] = defaultPerustietoResponse, slaveOidsResponseData: List[Map[String, Any]] = List.empty) = {
