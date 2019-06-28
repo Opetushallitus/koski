@@ -604,18 +604,18 @@ describe('Omat tiedot', function() {
                     '24.8.2011 aktiivinen\n' +
                     'Lisätiedot\n' +
                     'Opintojakso Laajuus Arvosana\n' +
+                    '+\nLaajaverkot 3 op 5\n' +
                     '+\nIP-verkkojen hallinta 4 op 1\n' +
                     '+\nTietoverkkojen tietoturva 5 op 5\n' +
-                    '+\nVirtuaalilähiverkot (CCNA3) 3 op 5\n' +
-                    '+\nWeb-ohjelmointi 5 op 3\n' +
-                    '+\nMikrotietokoneen hallinta 3 op hyväksytty\n' +
-                    '+\nPhotoshopin perusteet 3 op hyväksytty\n' +
-                    '+\nTietoturvallisuuden perusteet 3 op 2\n' +
-                    '+\nLähiverkot (CCNA1) 3 op 4\n' +
-                    '+\nReititinverkot (CCNA2) 3 op 4\n' +
                     '+\nTekninen tietoturva 3 op 4\n' +
-                    '+\nLaajaverkot 3 op 5\n' +
+                    '+\nWeb-ohjelmointi 5 op 3\n' +
                     '+\nLinuxin asennus ja ylläpito 5 op hyväksytty\n' +
+                    '+\nTietoturvallisuuden perusteet 3 op 2\n' +
+                    '+\nPhotoshopin perusteet 3 op hyväksytty\n' +
+                    '+\nVirtuaalilähiverkot (CCNA3) 3 op 5\n' +
+                    '+\nReititinverkot (CCNA2) 3 op 4\n' +
+                    '+\nLähiverkot (CCNA1) 3 op 4\n' +
+                    '+\nMikrotietokoneen hallinta 3 op hyväksytty\n' +
                     'Yhteensä 43 op'
                   )
                   })
