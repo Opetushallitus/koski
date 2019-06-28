@@ -49,12 +49,6 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
       }
     }
 
-    "Oppilaitosfuusiosta johtuvat duplikaattiosasuoritukset ei aiheuta virhettä" in {
-      val oikeudet = getOpiskeluoikeudet(MockOppijat.tampere.oid, MockUsers.paakayttaja)
-      oikeudet.length should equal(2)
-      oikeudet.flatMap(_.suoritukset).length should equal(3)
-    }
-
     "Haettaessa" - {
       "Konvertoidaan Virta-järjestelmän opiskeluoikeus" in {
         val oikeudet = getOpiskeluoikeudet(MockOppijat.dippainssi.oid)
