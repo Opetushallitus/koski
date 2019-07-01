@@ -16,13 +16,11 @@ import org.scalatra.{ContentEncodingSupport, Cookie, CookieOptions}
 
 class RaportitServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with Logging with NoCache with ContentEncodingSupport {
 
-  private lazy val raportointiDatabase = application.raportointiDatabase
   private lazy val raportitService = new RaportitService(application)
   private lazy val accessResolver = RaportitAccessResolver(application)
 
   before() {
-    val loadCompleted = raportointiDatabase.fullLoadCompleted(raportointiDatabase.statuses)
-    if (loadCompleted.isEmpty) {
+    if (!application.raportointikantaService.isAvailable) {
       haltWithStatus(KoskiErrorCategory.unavailable.raportit())
     }
   }

@@ -10,7 +10,7 @@ object OpiskelijavuositiedotPerfTester extends App {
   lazy val application = KoskiApplication.apply
 
   def doIt: Unit = {
-    val statuses = application.raportointiDatabase.statuses
+    val statuses = application.raportointiDatabase.status
     println(s"statuses=$statuses")
 
     val oppilaitos = "1.2.246.562.10.2013110715495487451932"

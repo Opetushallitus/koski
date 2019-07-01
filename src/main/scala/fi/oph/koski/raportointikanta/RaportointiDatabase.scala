@@ -1,66 +1,71 @@
 package fi.oph.koski.raportointikanta
 
-import com.typesafe.config.Config
+import java.sql.Timestamp.{valueOf => toTimestamp}
+import java.sql.{Date, Timestamp}
+import java.time.LocalDateTime.now
+import java.time._
+
 import fi.oph.koski.db.KoskiDatabase._
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{KoskiDatabaseConfig, KoskiDatabaseMethods}
 import fi.oph.koski.log.Logging
-import scala.concurrent.duration._
-import slick.driver.PostgresDriver
-import slick.dbio.DBIO
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.raportointikanta.RaportointiDatabaseSchema._
-import java.sql.{Date, Timestamp}
-import java.time.LocalDate
-import fi.oph.koski.util.DateOrdering.{sqlDateOrdering, sqlTimestampOrdering}
 import fi.oph.koski.schema.Organisaatio
+import fi.oph.koski.util.DateOrdering.{sqlDateOrdering, sqlTimestampOrdering}
+import fi.oph.scalaschema.annotation.SyntheticProperty
+import org.postgresql.util.PSQLException
+import slick.dbio.DBIO
+import slick.driver.PostgresDriver
+
+import scala.concurrent.duration._
 
 object RaportointiDatabase {
   type DB = PostgresDriver.backend.DatabaseDef
 }
 
-class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabaseMethods {
-  val db: DB = KoskiDatabaseConfig(config, raportointi = true).toSlickDatabase
+case class RaportointiDatabase(config: KoskiDatabaseConfig, schema: Schema) extends Logging with KoskiDatabaseMethods {
+  logger.info(s"Instantiating RaportointiDatabase for ${schema.name}")
 
-  private[raportointikanta] val ROpiskeluoikeudet = TableQuery[ROpiskeluoikeusTable]
-  private[raportointikanta] val ROpiskeluoikeusAikajaksot = TableQuery[ROpiskeluoikeusAikajaksoTable]
-  private[raportointikanta] val RPäätasonSuoritukset = TableQuery[RPäätasonSuoritusTable]
-  private[raportointikanta] val ROsasuoritukset = TableQuery[ROsasuoritusTable]
-  private[raportointikanta] val RHenkilöt = TableQuery[RHenkilöTable]
-  private[raportointikanta] val ROrganisaatiot = TableQuery[ROrganisaatioTable]
-  private[raportointikanta] val RKoodistoKoodit = TableQuery[RKoodistoKoodiTable]
-  private[raportointikanta] val RaportointikantaStatus = TableQuery[RaportointikantaStatusTable]
+  val db: DB = config.toSlickDatabase
 
-  def dropAndCreateSchema: Unit = {
-    runDbSync(DBIO.seq(
-      RaportointiDatabaseSchema.dropAllIfExists,
-      ROpiskeluoikeudet.schema.create,
-      ROpiskeluoikeusAikajaksot.schema.create,
-      RPäätasonSuoritukset.schema.create,
-      ROsasuoritukset.schema.create,
-      RHenkilöt.schema.create,
-      ROrganisaatiot.schema.create,
-      RKoodistoKoodit.schema.create,
-      RaportointikantaStatus.schema.create,
-      RaportointiDatabaseSchema.createOtherIndexes,
+  val tables = List(ROpiskeluoikeudet, ROpiskeluoikeusAikajaksot, RPäätasonSuoritukset, ROsasuoritukset, RHenkilöt, ROrganisaatiot, RKoodistoKoodit, RaportointikantaStatus)
+
+  def moveTo(newSchema: Schema): Unit = {
+    logger.info(s"Moving ${schema.name} -> ${newSchema.name}")
+    runDbSync(RaportointiDatabaseSchema.moveSchema(schema, newSchema))
+  }
+
+  def dropAndCreateObjects: Unit = {
+    logger.info(s"Creating database ${schema.name}")
+    runDbSync(DBIO.sequence(
+      Seq(RaportointiDatabaseSchema.createSchemaIfNotExists(schema),
+      RaportointiDatabaseSchema.dropAllIfExists(schema)) ++
+      tables.map(_.schema.create) ++
+      Seq(RaportointiDatabaseSchema.createOtherIndexes(schema),
       RaportointiDatabaseSchema.createRolesIfNotExists,
-      RaportointiDatabaseSchema.grantPermissions
+      RaportointiDatabaseSchema.grantPermissions(schema))
     ))
+    logger.info(s"${schema.name} created")
   }
 
   def createOpiskeluoikeusIndexes: Unit = {
-    runDbSync(RaportointiDatabaseSchema.createOpiskeluoikeusIndexes, timeout = 60.minutes)
+    runDbSync(RaportointiDatabaseSchema.createOpiskeluoikeusIndexes(schema), timeout = 60.minutes)
   }
 
-  def deleteOpiskeluoikeudet: Unit =
+  def deleteOpiskeluoikeudet =
     runDbSync(ROpiskeluoikeudet.schema.truncate)
-  def loadOpiskeluoikeudet(opiskeluoikeudet: Seq[ROpiskeluoikeusRow]): Unit =
+
+  def loadOpiskeluoikeudet(opiskeluoikeudet: Seq[ROpiskeluoikeusRow]): Unit = {
     runDbSync(ROpiskeluoikeudet ++= opiskeluoikeudet)
+  }
+
   def oppijaOidsFromOpiskeluoikeudet: Seq[String] = {
     runDbSync(ROpiskeluoikeudet.map(_.oppijaOid).distinct.result, timeout = 15.minutes)
   }
 
   def deleteOpiskeluoikeusAikajaksot: Unit =
     runDbSync(ROpiskeluoikeusAikajaksot.schema.truncate)
+
   def loadOpiskeluoikeusAikajaksot(jaksot: Seq[ROpiskeluoikeusAikajaksoRow]): Unit =
     runDbSync(ROpiskeluoikeusAikajaksot ++= jaksot)
 
@@ -89,20 +94,30 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
   def loadKoodistoKoodit(koodit: Seq[RKoodistoKoodiRow]): Unit =
     runDbSync(RKoodistoKoodit ++= koodit)
 
+  def setLastUpdate(name: String, time: LocalDateTime = now): Unit =
+    runDbSync(sqlu"update #${schema.name}.raportointikanta_status set last_update=${toTimestamp(time)} where name = $name")
+
   def setStatusLoadStarted(name: String): Unit =
-    runDbSync(sqlu"insert into raportointikanta_status (name, load_started, load_completed) values ($name, now(), null) on conflict (name) do update set load_started = now(), load_completed = null")
+    runDbSync(sqlu"insert into #${schema.name}.raportointikanta_status (name, load_started, load_completed) values ($name, now(), null) on conflict (name) do update set load_started = now(), load_completed = null")
+
+  def updateStatusCount(name: String, count: Int): Unit =
+    runDbSync(sqlu"update #${schema.name}.raportointikanta_status set count=count + $count, load_completed=now() where name = $name")
+
   def setStatusLoadCompleted(name: String): Unit =
-    runDbSync(sqlu"update raportointikanta_status set load_completed=now() where name = $name")
-  def statuses: Seq[RaportointikantaStatusRow] =
+    runDbSync(sqlu"update #${schema.name}.raportointikanta_status set load_completed=now() where name = $name")
+
+  def setStatusLoadCompletedAndCount(name: String, count: Int): Unit =
+    runDbSync(sqlu"update #${schema.name}.raportointikanta_status set count=$count, load_completed=now() where name = $name")
+
+  def status: RaportointikantaStatusResponse =
+    RaportointikantaStatusResponse(schema.name, queryStatus)
+
+  private def queryStatus = try {
     runDbSync(RaportointikantaStatus.result)
-  def fullLoadCompleted(statuses: Seq[RaportointikantaStatusRow]): Option[Timestamp] = {
-    val AllNames = Seq("opiskeluoikeudet", "henkilot", "organisaatiot", "koodistot")
-    val allDates = statuses.collect { case s if AllNames.contains(s.name) && s.loadCompleted.nonEmpty => s.loadCompleted.get }
-    if (allDates.length == AllNames.length) {
-      Some(allDates.max(sqlTimestampOrdering))
-    } else {
-      None
-    }
+  } catch {
+    case e: PSQLException =>
+      logger.debug(s"status unavailable for ${schema.name}, ${e.getMessage.replace("\n", "")}")
+      Nil
   }
 
   def oppilaitoksenKoulutusmuodot(oppilaitos: Organisaatio.Oid): Set[String] = {
@@ -147,5 +162,88 @@ class RaportointiDatabase(val config: Config) extends Logging with KoskiDatabase
         päätasonSuoritukset.getOrElse(t._1.opiskeluoikeusOid, Seq.empty).sortBy(_.päätasonSuoritusId),
         sisältyvätOpiskeluoikeudet.getOrElse(t._1.opiskeluoikeusOid, Seq.empty).sortBy(_.opiskeluoikeusOid)
       ))
+  }
+
+  lazy val ROpiskeluoikeudet = schema match {
+    case Public => TableQuery[ROpiskeluoikeusTable]
+    case Temp => TableQuery[ROpiskeluoikeusTableTemp]
+    case _ => ???
+  }
+
+  lazy val ROpiskeluoikeusAikajaksot = schema match {
+    case Public => TableQuery[ROpiskeluoikeusAikajaksoTable]
+    case Temp => TableQuery[ROpiskeluoikeusAikajaksoTableTemp]
+    case _ => ???
+  }
+
+  lazy val RPäätasonSuoritukset = schema match {
+    case Public => TableQuery[RPäätasonSuoritusTable]
+    case Temp => TableQuery[RPäätasonSuoritusTableTemp]
+    case _ => ???
+  }
+
+  lazy val ROsasuoritukset = schema match {
+    case Public => TableQuery[ROsasuoritusTable]
+    case Temp => TableQuery[ROsasuoritusTableTemp]
+    case _ => ???
+  }
+
+  lazy val RHenkilöt = schema match {
+    case Public => TableQuery[RHenkilöTable]
+    case Temp => TableQuery[RHenkilöTableTemp]
+    case _ => ???
+  }
+
+  lazy val ROrganisaatiot = schema match {
+    case Public => TableQuery[ROrganisaatioTable]
+    case Temp => TableQuery[ROrganisaatioTableTemp]
+    case _ => ???
+  }
+
+  lazy val RKoodistoKoodit = schema match {
+    case Public => TableQuery[RKoodistoKoodiTable]
+    case Temp => TableQuery[RKoodistoKoodiTableTemp]
+    case _ => ???
+  }
+
+  lazy val RaportointikantaStatus = schema match {
+    case Public => TableQuery[RaportointikantaStatusTable]
+    case Temp => TableQuery[RaportointikantaStatusTableTemp]
+    case _ => ???
+  }
+}
+
+case class RaportointikantaStatusResponse(schema: String, statuses: Seq[RaportointikantaStatusRow]) {
+  private val allNames = Seq("opiskeluoikeudet", "henkilot", "organisaatiot", "koodistot")
+
+  @SyntheticProperty
+  def isComplete: Boolean = completionTime.isDefined && !isEmpty && allNames.forall(statuses.map(_.name).contains)
+  @SyntheticProperty
+  def isLoading: Boolean = !isComplete && startedTime.isDefined
+  @SyntheticProperty
+  def isEmpty: Boolean = statuses.isEmpty
+
+  @SyntheticProperty
+  def startedTime: Option[Timestamp] =
+    statuses.collect { case r if r.loadStarted.isDefined => r.loadStarted.get } match {
+      case Nil => None
+      case xs => Some(xs.min(sqlTimestampOrdering))
+    }
+
+  @SyntheticProperty
+  def completionTime: Option[Timestamp] = {
+    val allDates = statuses.collect { case s if allNames.contains(s.name) && s.loadCompleted.isDefined => s.loadCompleted.get }
+    if (allDates.length == allNames.length) {
+      Some(allDates.max(sqlTimestampOrdering))
+    } else {
+      None
+    }
+  }
+
+  @SyntheticProperty
+  def lastUpdate: Option[Timestamp] = if (isEmpty) {
+    None
+  } else {
+    Some(statuses.map(_.lastUpdate).max(sqlTimestampOrdering))
   }
 }

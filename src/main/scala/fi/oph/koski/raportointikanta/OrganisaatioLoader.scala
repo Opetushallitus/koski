@@ -6,20 +6,22 @@ import fi.oph.koski.schema.LocalizedString
 
 object OrganisaatioLoader extends Logging {
   private val BatchSize = 1000
+  private val name = "organisaatiot"
 
-  def loadOrganisaatiot(organisaatioRepository: OrganisaatioRepository, raportointiDatabase: RaportointiDatabase): Int = {
+  def loadOrganisaatiot(organisaatioRepository: OrganisaatioRepository, db: RaportointiDatabase): Int = {
     logger.info("Ladataan organisaatioita...")
     val organisaatiot = organisaatioRepository.findAllRaw
     logger.info(s"Löytyi ${organisaatiot.size} organisaatioita")
-    raportointiDatabase.setStatusLoadStarted("organisaatiot")
-    raportointiDatabase.deleteOrganisaatiot
+    db.setStatusLoadStarted(name)
+    db.deleteOrganisaatiot
     val count = organisaatiot.grouped(BatchSize).map(batch => {
       val batchRows = batch.map(buildROrganisaatioRow)
-      raportointiDatabase.loadOrganisaatiot(batchRows)
+      db.loadOrganisaatiot(batchRows)
+      db.setLastUpdate(name)
       batchRows.size
     }).sum
-    raportointiDatabase.setStatusLoadCompleted("organisaatiot")
-    logger.info(s"Ladattiin $count organisaatiota")
+    db.setStatusLoadCompletedAndCount(name, count)
+    logger.info(s"Ladattiin $count ${name}a")
     count
   }
 

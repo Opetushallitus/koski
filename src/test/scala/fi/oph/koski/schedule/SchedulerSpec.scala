@@ -57,7 +57,7 @@ class SchedulerSpec extends FreeSpec with Matchers {
     }
 
     def fixScheduler = sharedResource.set(1)
-    def schedulerShouldRecover = Wait.until(sharedResource.get == 2, timeoutMs = 500)
+    def schedulerShouldRecover = Wait.until(sharedResource.get == 2, timeoutMs = 1000, retryIntervalMs = 10)
   }
 
   private def testScheduler(task: Option[JValue] => Option[JValue]) = {

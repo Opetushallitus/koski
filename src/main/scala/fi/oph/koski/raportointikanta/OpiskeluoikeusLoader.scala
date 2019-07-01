@@ -20,24 +20,27 @@ import scala.util.Try
 
 object OpiskeluoikeusLoader extends Logging {
   private val DefaultBatchSize = 500
+  private val statusName = "opiskeluoikeudet"
 
-  def loadOpiskeluoikeudet(opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService, systemUser: KoskiSession, raportointiDatabase: RaportointiDatabase, batchSize: Int = DefaultBatchSize): Observable[LoadResult] = {
-    raportointiDatabase.setStatusLoadStarted("opiskeluoikeudet")
-    deleteEverything(raportointiDatabase)
+  def loadOpiskeluoikeudet(opiskeluoikeusQueryRepository: OpiskeluoikeusQueryService, systemUser: KoskiSession, db: RaportointiDatabase, batchSize: Int = DefaultBatchSize): Observable[LoadResult] = {
+    db.setStatusLoadStarted(statusName)
+    deleteEverything(db)
     val result = opiskeluoikeusQueryRepository.mapKaikkiOpiskeluoikeudetSivuittain(batchSize, systemUser) { opiskeluoikeusRows =>
       if (opiskeluoikeusRows.nonEmpty) {
         val (errors, outputRows) = opiskeluoikeusRows.par.map(buildRow).seq.partition(_.isLeft)
-        raportointiDatabase.loadOpiskeluoikeudet(outputRows.map(_.right.get._1))
+        db.loadOpiskeluoikeudet(outputRows.map(_.right.get._1))
         val aikajaksoRows = outputRows.flatMap(_.right.get._2)
         val päätasonSuoritusRows = outputRows.flatMap(_.right.get._3)
         val osasuoritusRows = outputRows.flatMap(_.right.get._4)
-        raportointiDatabase.loadOpiskeluoikeusAikajaksot(aikajaksoRows)
-        raportointiDatabase.loadPäätasonSuoritukset(päätasonSuoritusRows)
-        raportointiDatabase.loadOsasuoritukset(osasuoritusRows)
+        db.loadOpiskeluoikeusAikajaksot(aikajaksoRows)
+        db.loadPäätasonSuoritukset(päätasonSuoritusRows)
+        db.loadOsasuoritukset(osasuoritusRows)
+        db.setLastUpdate(statusName)
+        db.updateStatusCount(statusName, outputRows.size)
         errors.map(_.left.get) :+ LoadProgressResult(outputRows.size, päätasonSuoritusRows.size + osasuoritusRows.size)
       } else {
-        createIndexes(raportointiDatabase)
-        raportointiDatabase.setStatusLoadCompleted("opiskeluoikeudet")
+        createIndexes(db)
+        db.setStatusLoadCompleted(statusName)
         Seq(LoadCompleted())
       }
     }
@@ -45,6 +48,7 @@ object OpiskeluoikeusLoader extends Logging {
   }
 
   private def deleteEverything(raportointiDatabase: RaportointiDatabase): Unit = {
+    logger.info("Deleting opiskeluoikeus data")
     raportointiDatabase.deleteOpiskeluoikeudet
     raportointiDatabase.deleteOpiskeluoikeusAikajaksot
     raportointiDatabase.deletePäätasonSuoritukset

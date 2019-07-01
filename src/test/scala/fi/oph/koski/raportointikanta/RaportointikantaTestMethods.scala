@@ -2,12 +2,17 @@ package fi.oph.koski.raportointikanta
 
 import java.time.LocalDate
 
+import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.LocalJettyHttpSpecification
+import fi.oph.koski.db.KoskiDatabase
 import fi.oph.koski.http.HttpTester
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 
 trait RaportointikantaTestMethods extends HttpTester with LocalJettyHttpSpecification {
+  def startRaportointiDatabase =
+    new KoskiDatabase(KoskiApplicationForTests.raportointiConfig)
+
   def loadRaportointikantaFixtures[A] = {
     authGet("api/raportointikanta/clear") { verifyResponseStatusOk() }
     authGet("api/raportointikanta/opiskeluoikeudet") { verifyResponseStatusOk() }

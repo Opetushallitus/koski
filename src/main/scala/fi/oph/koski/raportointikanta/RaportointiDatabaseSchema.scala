@@ -8,47 +8,53 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.raportit.LukioRaporttiOppiaineTaiKurssi
 import fi.oph.koski.schema.LocalizedString
 import org.json4s.JValue
-import org.json4s.jackson.Json
 import slick.dbio.DBIO
 import slick.sql.SqlProfile.ColumnOption.SqlType
 
 object RaportointiDatabaseSchema {
-
-  val createOpiskeluoikeusIndexes = DBIO.seq(
-    sqlu"CREATE UNIQUE INDEX ON r_opiskeluoikeus(opiskeluoikeus_oid)",
-    sqlu"CREATE INDEX ON r_opiskeluoikeus(oppija_oid)",
-    sqlu"CREATE INDEX ON r_opiskeluoikeus(oppilaitos_oid)",
-    sqlu"CREATE INDEX ON r_opiskeluoikeus(koulutusmuoto)",
-    sqlu"CREATE INDEX ON r_opiskeluoikeus(sisaltyy_opiskeluoikeuteen_oid)",
-    sqlu"CREATE INDEX ON r_opiskeluoikeus_aikajakso(opiskeluoikeus_oid)",
-    sqlu"CREATE INDEX ON r_opiskeluoikeus_aikajakso(alku)",
-    sqlu"CREATE UNIQUE INDEX ON r_paatason_suoritus(paatason_suoritus_id)",
-    sqlu"CREATE INDEX ON r_paatason_suoritus(opiskeluoikeus_oid)",
-    sqlu"CREATE INDEX ON r_paatason_suoritus(vahvistus_paiva)",
-    sqlu"CREATE INDEX ON r_paatason_suoritus(suorituksen_tyyppi)",
-    sqlu"CREATE UNIQUE INDEX ON r_osasuoritus(osasuoritus_id)",
-    sqlu"CREATE INDEX ON r_osasuoritus(paatason_suoritus_id)",
-    sqlu"CREATE INDEX ON r_osasuoritus(opiskeluoikeus_oid)",
-    sqlu"CREATE INDEX ON r_osasuoritus(vahvistus_paiva)",
-    sqlu"CREATE INDEX ON r_osasuoritus(suorituksen_tyyppi)",
-    sqlu"CREATE INDEX ON r_osasuoritus(ylempi_osasuoritus_id)"
+  def moveSchema(oldSchema: Schema, newSchema: Schema) = DBIO.seq(
+    sqlu"DROP SCHEMA IF EXISTS #${newSchema.name} CASCADE",
+    sqlu"ALTER SCHEMA #${oldSchema.name} RENAME TO #${newSchema.name}"
   )
 
-  val createOtherIndexes = DBIO.seq(
-    sqlu"CREATE INDEX ON r_henkilo(hetu)",
-    sqlu"CREATE INDEX ON r_organisaatio(oppilaitosnumero)",
-    sqlu"CREATE UNIQUE INDEX ON r_koodisto_koodi(koodisto_uri, koodiarvo)"
+  def createSchemaIfNotExists(s: Schema) =
+    sqlu"CREATE SCHEMA IF NOT EXISTS #${s.name}"
+
+  def createOpiskeluoikeusIndexes(s: Schema) = DBIO.seq(
+    sqlu"CREATE UNIQUE INDEX ON #${s.name}.r_opiskeluoikeus(opiskeluoikeus_oid)",
+    sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus(oppija_oid)",
+    sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus(oppilaitos_oid)",
+    sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus(koulutusmuoto)",
+    sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus(sisaltyy_opiskeluoikeuteen_oid)",
+    sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus_aikajakso(opiskeluoikeus_oid)",
+    sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus_aikajakso(alku)",
+    sqlu"CREATE UNIQUE INDEX ON #${s.name}.r_paatason_suoritus(paatason_suoritus_id)",
+    sqlu"CREATE INDEX ON #${s.name}.r_paatason_suoritus(opiskeluoikeus_oid)",
+    sqlu"CREATE INDEX ON #${s.name}.r_paatason_suoritus(vahvistus_paiva)",
+    sqlu"CREATE INDEX ON #${s.name}.r_paatason_suoritus(suorituksen_tyyppi)",
+    sqlu"CREATE UNIQUE INDEX ON #${s.name}.r_osasuoritus(osasuoritus_id)",
+    sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(paatason_suoritus_id)",
+    sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(opiskeluoikeus_oid)",
+    sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(vahvistus_paiva)",
+    sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(suorituksen_tyyppi)",
+    sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(ylempi_osasuoritus_id)"
   )
 
-  val dropAllIfExists = DBIO.seq(
-    sqlu"DROP TABLE IF EXISTS r_opiskeluoikeus CASCADE",
-    sqlu"DROP TABLE IF EXISTS r_opiskeluoikeus_aikajakso CASCADE",
-    sqlu"DROP TABLE IF EXISTS r_paatason_suoritus CASCADE",
-    sqlu"DROP TABLE IF EXISTS r_osasuoritus CASCADE",
-    sqlu"DROP TABLE IF EXISTS r_henkilo CASCADE",
-    sqlu"DROP TABLE IF EXISTS r_organisaatio CASCADE",
-    sqlu"DROP TABLE IF EXISTS r_koodisto_koodi CASCADE",
-    sqlu"DROP TABLE IF EXISTS raportointikanta_status CASCADE"
+  def createOtherIndexes(s: Schema) = DBIO.seq(
+    sqlu"CREATE INDEX ON #${s.name}.r_henkilo(hetu)",
+    sqlu"CREATE INDEX ON #${s.name}.r_organisaatio(oppilaitosnumero)",
+    sqlu"CREATE UNIQUE INDEX ON #${s.name}.r_koodisto_koodi(koodisto_uri, koodiarvo)"
+  )
+
+  def dropAllIfExists(s: Schema) = DBIO.seq(
+    sqlu"DROP TABLE IF EXISTS #${s.name}.r_opiskeluoikeus CASCADE",
+    sqlu"DROP TABLE IF EXISTS #${s.name}.r_opiskeluoikeus_aikajakso CASCADE",
+    sqlu"DROP TABLE IF EXISTS #${s.name}.r_paatason_suoritus CASCADE",
+    sqlu"DROP TABLE IF EXISTS #${s.name}.r_osasuoritus CASCADE",
+    sqlu"DROP TABLE IF EXISTS #${s.name}.r_henkilo CASCADE",
+    sqlu"DROP TABLE IF EXISTS #${s.name}.r_organisaatio CASCADE",
+    sqlu"DROP TABLE IF EXISTS #${s.name}.r_koodisto_koodi CASCADE",
+    sqlu"DROP TABLE IF EXISTS #${s.name}.raportointikanta_status CASCADE"
   )
 
   val createRolesIfNotExists = DBIO.seq(
@@ -56,17 +62,23 @@ object RaportointiDatabaseSchema {
     sqlu"do 'begin create role raportointikanta_henkilo_katselija; exception when others then null; end'"
   )
 
-  val grantPermissions = DBIO.seq(
+  def grantPermissions(s: Schema) = DBIO.seq(actions =
     sqlu"""GRANT SELECT ON
-          r_opiskeluoikeus, r_opiskeluoikeus_aikajakso, r_paatason_suoritus, r_osasuoritus, r_organisaatio, r_koodisto_koodi, raportointikanta_status
-          TO raportointikanta_katselija, raportointikanta_henkilo_katselija""",
-    sqlu"GRANT SELECT ON r_henkilo TO raportointikanta_henkilo_katselija"
+      #${s.name}.r_opiskeluoikeus,
+      #${s.name}.r_opiskeluoikeus_aikajakso,
+      #${s.name}.r_paatason_suoritus,
+      #${s.name}.r_osasuoritus,
+      #${s.name}.r_organisaatio,
+      #${s.name}.r_koodisto_koodi,
+      #${s.name}.raportointikanta_status
+      TO raportointikanta_katselija, raportointikanta_henkilo_katselija""",
+    sqlu"GRANT SELECT ON #${s.name}.r_henkilo TO raportointikanta_henkilo_katselija"
 
   )
 
   private val StringIdentifierType = SqlType("character varying collate \"C\"")
 
-  class ROpiskeluoikeusTable(tag: Tag) extends Table[ROpiskeluoikeusRow](tag, "r_opiskeluoikeus") {
+  class ROpiskeluoikeusTable(tag: Tag, schema: Schema = Public) extends Table[ROpiskeluoikeusRow](tag, schema.nameOpt, "r_opiskeluoikeus") {
     val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
     val versionumero = column[Int]("versionumero")
     val aikaleima = column[Timestamp]("aikaleima", SqlType("timestamptz"))
@@ -90,8 +102,9 @@ object RaportointiDatabaseSchema {
       koulutusmuoto, alkamispäivä, päättymispäivä, viimeisinTila,
       lisätiedotHenkilöstökoulutus, lisätiedotKoulutusvienti, data) <> (ROpiskeluoikeusRow.tupled, ROpiskeluoikeusRow.unapply)
   }
+  class ROpiskeluoikeusTableTemp(tag: Tag) extends ROpiskeluoikeusTable(tag, Temp)
 
-  class ROpiskeluoikeusAikajaksoTable(tag: Tag) extends Table[ROpiskeluoikeusAikajaksoRow](tag, "r_opiskeluoikeus_aikajakso") {
+  class ROpiskeluoikeusAikajaksoTable(tag: Tag, schema: Schema = Public) extends Table[ROpiskeluoikeusAikajaksoRow](tag, schema.nameOpt, "r_opiskeluoikeus_aikajakso") {
     val id = column[Long]("id", O.PrimaryKey, O.AutoInc)
     val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
     val alku = column[Date]("alku")
@@ -117,8 +130,9 @@ object RaportointiDatabaseSchema {
       erityinenTuki, vaativanErityisenTuenErityinenTehtävä, hojks, vaikeastiVammainen, vammainenJaAvustaja,
       osaAikaisuus, opiskeluvalmiuksiaTukevatOpinnot, vankilaopetuksessa, oppisopimusJossainPäätasonSuorituksessa, id) <> (ROpiskeluoikeusAikajaksoRow.tupled, ROpiskeluoikeusAikajaksoRow.unapply)
   }
+  class ROpiskeluoikeusAikajaksoTableTemp(tag: Tag) extends ROpiskeluoikeusAikajaksoTable(tag, Temp)
 
-  class RPäätasonSuoritusTable(tag: Tag) extends Table[RPäätasonSuoritusRow](tag, "r_paatason_suoritus") {
+  class RPäätasonSuoritusTable(tag: Tag, schema: Schema = Public) extends Table[RPäätasonSuoritusRow](tag, schema.nameOpt, "r_paatason_suoritus") {
     val päätasonSuoritusId = column[Long]("paatason_suoritus_id")
     val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
     val suorituksenTyyppi = column[String]("suorituksen_tyyppi", StringIdentifierType)
@@ -142,8 +156,9 @@ object RaportointiDatabaseSchema {
       arviointiArvosanaKoodiarvo, arviointiArvosanaKoodisto, arviointiHyväksytty, arviointiPäivä,
       toimipisteOid, toimipisteNimi, data) <> (RPäätasonSuoritusRow.tupled, RPäätasonSuoritusRow.unapply)
   }
+  class RPäätasonSuoritusTableTemp(tag: Tag) extends RPäätasonSuoritusTable(tag, Temp)
 
-  class ROsasuoritusTable(tag: Tag) extends Table[ROsasuoritusRow](tag, "r_osasuoritus") {
+  class ROsasuoritusTable(tag: Tag, schema: Schema = Public) extends Table[ROsasuoritusRow](tag, schema.nameOpt, "r_osasuoritus") {
     val osasuoritusId = column[Long]("osasuoritus_id")
     val ylempiOsasuoritusId = column[Option[Long]]("ylempi_osasuoritus_id")
     val päätasonSuoritusId = column[Long]("paatason_suoritus_id")
@@ -172,8 +187,9 @@ object RaportointiDatabaseSchema {
       arviointiArvosanaKoodiarvo, arviointiArvosanaKoodisto, arviointiHyväksytty, arviointiPäivä,
       näytönArviointiPäivä, data) <> (ROsasuoritusRow.tupled, ROsasuoritusRow.unapply)
   }
+  class ROsasuoritusTableTemp(tag: Tag) extends ROsasuoritusTable(tag, Temp)
 
-  class RHenkilöTable(tag: Tag) extends Table[RHenkilöRow](tag, "r_henkilo") {
+  class RHenkilöTable(tag: Tag, schema: Schema = Public) extends Table[RHenkilöRow](tag, schema.nameOpt, "r_henkilo") {
     val oppijaOid = column[String]("oppija_oid", O.PrimaryKey, StringIdentifierType)
     val masterOid = column[String]("master_oid", StringIdentifierType)
     val hetu = column[Option[String]]("hetu", StringIdentifierType)
@@ -187,8 +203,9 @@ object RaportointiDatabaseSchema {
     val kotikunta = column[Option[String]]("kotikunta")
     def * = (oppijaOid, masterOid, hetu, sukupuoli, syntymäaika, sukunimi, etunimet, äidinkieli, kansalaisuus, turvakielto, kotikunta) <> (RHenkilöRow.tupled, RHenkilöRow.unapply)
   }
+  class RHenkilöTableTemp(tag: Tag) extends RHenkilöTable(tag, Temp)
 
-  class ROrganisaatioTable(tag: Tag) extends Table[ROrganisaatioRow](tag, "r_organisaatio") {
+  class ROrganisaatioTable(tag: Tag, schema: Schema = Public) extends Table[ROrganisaatioRow](tag, schema.nameOpt, "r_organisaatio") {
     val organisaatioOid = column[String]("organisaatio_oid", O.PrimaryKey, StringIdentifierType)
     val nimi = column[String]("nimi")
     val organisaatiotyypit = column[String]("organisaatiotyypit", StringIdentifierType)
@@ -198,20 +215,25 @@ object RaportointiDatabaseSchema {
     val yTunnus = column[Option[String]]("y_tunnus", StringIdentifierType)
     def * = (organisaatioOid, nimi, organisaatiotyypit, oppilaitostyyppi, oppilaitosnumero, kotipaikka, yTunnus) <> (ROrganisaatioRow.tupled, ROrganisaatioRow.unapply)
   }
+  class ROrganisaatioTableTemp(tag: Tag) extends ROrganisaatioTable(tag, Temp)
 
-  class RKoodistoKoodiTable(tag: Tag) extends Table[RKoodistoKoodiRow](tag, "r_koodisto_koodi") {
+  class RKoodistoKoodiTable(tag: Tag, schema: Schema = Public) extends Table[RKoodistoKoodiRow](tag, schema.nameOpt, "r_koodisto_koodi") {
     val koodistoUri = column[String]("koodisto_uri", StringIdentifierType)
     val koodiarvo = column[String]("koodiarvo", StringIdentifierType)
     val nimi = column[String]("nimi")
     def * = (koodistoUri, koodiarvo, nimi) <> (RKoodistoKoodiRow.tupled, RKoodistoKoodiRow.unapply)
   }
+  class RKoodistoKoodiTableTemp(tag: Tag) extends RKoodistoKoodiTable(tag, Temp)
 
-  class RaportointikantaStatusTable(tag: Tag) extends Table[RaportointikantaStatusRow](tag, "raportointikanta_status") {
+  class RaportointikantaStatusTable(tag: Tag, schema: Schema = Public) extends Table[RaportointikantaStatusRow](tag, schema.nameOpt, "raportointikanta_status") {
     val name = column[String]("name", O.PrimaryKey)
-    val loadStarted = column[Option[Timestamp]]("load_started")
-    val loadCompleted = column[Option[Timestamp]]("load_completed")
-    def * = (name, loadStarted, loadCompleted) <> (RaportointikantaStatusRow.tupled, RaportointikantaStatusRow.unapply)
+    val count = column[Int]("count", O.Default(0))
+    val lastUpdate = column[Timestamp]("last_update", O.SqlType("timestamp default now()"))
+    val loadStarted = column[Option[Timestamp]]("load_started", O.Default(None))
+    val loadCompleted = column[Option[Timestamp]]("load_completed", O.Default(None))
+    def * = (name, count, lastUpdate, loadStarted, loadCompleted) <> (RaportointikantaStatusRow.tupled, RaportointikantaStatusRow.unapply)
   }
+  class RaportointikantaStatusTableTemp(tag: Tag) extends RaportointikantaStatusTable(tag, Temp)
 }
 
 case class ROpiskeluoikeusRow(
@@ -373,6 +395,25 @@ case class RKoodistoKoodiRow(
 
 case class RaportointikantaStatusRow(
   name: String,
+  count: Int,
+  lastUpdate: Timestamp,
   loadStarted: Option[Timestamp],
   loadCompleted: Option[Timestamp]
 )
+
+sealed trait Schema {
+  def nameOpt: Option[String] = Some(name)
+  def name: String
+}
+
+case object Old extends Schema {
+  def name: String = "oldpublic"
+}
+
+case object Public extends Schema {
+  def name: String = "public"
+}
+
+case object Temp extends Schema {
+  def name: String = "etl"
+}

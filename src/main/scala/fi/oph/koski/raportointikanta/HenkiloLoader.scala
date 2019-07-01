@@ -7,19 +7,21 @@ import java.sql.Date
 
 object HenkilöLoader extends Logging {
   private val BatchSize = 1000
+  private val name = "henkilot"
 
-  def loadHenkilöt(raportointiDatabase: RaportointiDatabase, opintopolkuHenkilöFacade: OpintopolkuHenkilöFacade): Int = {
+  def loadHenkilöt(opintopolkuHenkilöFacade: OpintopolkuHenkilöFacade, db: RaportointiDatabase): Int = {
     logger.info("Ladataan henkilö-OIDeja opiskeluoikeuksista...")
     // note: this list has 1-2M oids in production.
-    val oids = raportointiDatabase.oppijaOidsFromOpiskeluoikeudet
+    val oids = db.oppijaOidsFromOpiskeluoikeudet
     logger.info(s"Löytyi ${oids.size} henkilö-OIDia")
-    raportointiDatabase.setStatusLoadStarted("henkilot")
-    raportointiDatabase.deleteHenkilöt
+    db.setStatusLoadStarted(name)
+    db.deleteHenkilöt
     var masterOids = scala.collection.mutable.Set[String]()
     val count = oids.toList.grouped(BatchSize).map(batchOids => {
       val batchOppijat = opintopolkuHenkilöFacade.findMasterOppijat(batchOids)
       val batchRows = batchOppijat.map { case (oid, oppija) => buildRHenkilöRow(oid, oppija) }.toList
-      raportointiDatabase.loadHenkilöt(batchRows)
+      db.loadHenkilöt(batchRows)
+      db.setLastUpdate(name)
       batchRows.foreach(masterOids += _.masterOid)
       batchRows.size
     }).sum
@@ -29,15 +31,16 @@ object HenkilöLoader extends Logging {
     val masterFetchCount =  masterOidsEiKoskessa.toList.grouped(BatchSize).map(batchOids => {
       val batchOppijat = opintopolkuHenkilöFacade.findMasterOppijat(batchOids)
       val batchRows = batchOppijat.map { case (oid, oppija) => buildRHenkilöRow(oid, oppija) }.toList
-      raportointiDatabase.loadHenkilöt(batchRows)
+      db.loadHenkilöt(batchRows)
       batchRows.size
     }).sum
+    val total = count + masterFetchCount
 
-    raportointiDatabase.setStatusLoadCompleted("henkilot")
-    logger.info(s"Ladattiin ${count + masterFetchCount} henkilöä")
+    db.setStatusLoadCompletedAndCount(name, total)
+    logger.info(s"Ladattiin $total henkilöä")
     logger.info(s"Haettiin masterMaster tiedot $masterFetchCount henkilölle")
     logger.info(s"Puuttuvia masterMaster pareja ${masterOidsEiKoskessa.size - masterFetchCount}")
-    count + masterFetchCount
+    total
   }
 
   private def buildRHenkilöRow(oid: String, oppija: OppijaHenkilö) =

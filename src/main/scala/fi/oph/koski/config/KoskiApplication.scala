@@ -20,7 +20,7 @@ import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.perustiedot.{KoskiElasticSearchIndex, OpiskeluoikeudenPerustiedotIndexer, OpiskeluoikeudenPerustiedotRepository, PerustiedotSyncRepository}
 import fi.oph.koski.pulssi.{KoskiPulssi, PrometheusRepository}
-import fi.oph.koski.raportointikanta.RaportointiDatabase
+import fi.oph.koski.raportointikanta.{Public, RaportointiDatabase, RaportointikantaService}
 import fi.oph.koski.schedule.{KoskiScheduledTasks, PerustiedotSyncScheduler}
 import fi.oph.koski.sso.KoskiSessionRepository
 import fi.oph.koski.suoritusjako.{SuoritusjakoRepository, SuoritusjakoService}
@@ -54,7 +54,9 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val käyttöoikeusRepository = new KäyttöoikeusRepository(organisaatioRepository, directoryClient)
   lazy val masterDatabase = KoskiDatabase.master(config)
   lazy val replicaDatabase = KoskiDatabase.replica(config, masterDatabase)
-  lazy val raportointiDatabase = new RaportointiDatabase(config)
+  lazy val raportointiConfig = KoskiDatabaseConfig(config, raportointi = true)
+  lazy val raportointiDatabase = new RaportointiDatabase(raportointiConfig, Public)
+  lazy val raportointikantaService = new RaportointikantaService(this)
   lazy val virtaClient = VirtaClient(config)
   lazy val ytrClient = YtrClient(config)
   lazy val virtaAccessChecker = new VirtaAccessChecker(käyttöoikeusRepository)
