@@ -56,13 +56,13 @@ object AuditLogMessage {
 
 object KoskiMessageField extends Enumeration {
   type KoskiMessageField = Value
-  val clientIp, oppijaHenkiloOid, kayttajaHenkiloOid, kayttajaHenkiloNimi, opiskeluoikeusOid, opiskeluoikeusId, opiskeluoikeusVersio, hakuEhto, juuriOrganisaatio = Value
+  val clientIp, oppijaHenkiloOid, kayttajaHenkiloOid, kayttajaHenkiloNimi, opiskeluoikeusOid, opiskeluoikeusId, opiskeluoikeusVersio, hakuEhto, juuriOrganisaatio, omaDataKumppani = Value
 }
 
 object KoskiOperation extends Enumeration {
   type KoskiOperation = Value
   val LOGIN, OPISKELUOIKEUS_LISAYS, OPISKELUOIKEUS_MUUTOS, OPISKELUOIKEUS_KATSOMINEN, OPISKELUOIKEUS_HAKU, OPISKELUOIKEUS_RAPORTTI, MUUTOSHISTORIA_KATSOMINEN, OPPIJA_HAKU, TIEDONSIIRTO_KATSOMINEN,
-      KANSALAINEN_LOGIN, KANSALAINEN_OPISKELUOIKEUS_KATSOMINEN, KANSALAINEN_SUORITUSJAKO_LISAYS, KANSALAINEN_SUORITUSJAKO_KATSOMINEN, KANSALAINEN_MYDATA_LISAYS, KANSALAINEN_SUOMIFI_KATSOMINEN = Value
+      KANSALAINEN_LOGIN, KANSALAINEN_OPISKELUOIKEUS_KATSOMINEN, KANSALAINEN_SUORITUSJAKO_LISAYS, KANSALAINEN_SUORITUSJAKO_KATSOMINEN, KANSALAINEN_MYDATA_LISAYS, KANSALAINEN_MYDATA_POISTO, KANSALAINEN_SUOMIFI_KATSOMINEN = Value
 }
 
 class AuditLogOperation(op: KoskiOperation) extends Operation {
