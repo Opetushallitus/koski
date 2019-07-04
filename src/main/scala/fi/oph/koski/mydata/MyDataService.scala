@@ -34,14 +34,6 @@ class MyDataService(myDataRepository: MyDataRepository, implicit val application
     permissionDeleted
   }
 
-  def update(oppijaOid: String, asiakas: String, expirationDate: LocalDate): HttpStatus = {
-    if (expirationDate.isBefore(LocalDate.now) || expirationDate.isAfter(LocalDate.now.plusYears(1))) {
-      KoskiErrorCategory.badRequest()
-    } else {
-      myDataRepository.update(oppijaOid, asiakas, expirationDate)
-    }
-  }
-
   def getAll(oppijaOid: String): Seq[MyDataJakoItem] = {
     myDataRepository.getAll(oppijaOid).map(jako => MyDataJakoItem(jako.asiakas, getAsiakasName(jako.asiakas), jako.voimassaAsti.toLocalDate, jako.aikaleima, getAsiakasPurpose(jako.asiakas)))
   }
