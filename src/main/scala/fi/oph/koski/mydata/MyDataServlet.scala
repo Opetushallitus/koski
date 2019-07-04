@@ -35,6 +35,6 @@ class MyDataServlet(implicit val application: KoskiApplication) extends ApiServl
   delete("/valtuutus/:memberCode") {
     logger.info(s"Unauthorizing $memberCodeParam for user: ${koskiSessionOption.getOrElse("none")}")
     requireKansalainen
-    application.mydataService.delete(koskiSessionOption.get.oid ,memberCodeParam)
+    application.mydataService.delete(koskiSessionOption.get.oid, memberCodeParam)(koskiSessionOption.get)
   }
 }
