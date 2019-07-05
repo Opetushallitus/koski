@@ -7,7 +7,7 @@ import fi.oph.koski.log.KoskiMessageField.{omaDataKumppani, oppijaHenkiloOid}
 import fi.oph.koski.log.KoskiOperation.{KANSALAINEN_MYDATA_LISAYS, KANSALAINEN_MYDATA_POISTO}
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
 
-class MyDataService(myDataRepository: MyDataRepository, implicit val application: KoskiApplication) extends Logging with MyDataConfig {
+class MyDataService(myDataRepository: MyDataRepository, val application: KoskiApplication) extends Logging with MyDataConfig {
   def put(asiakas: String, koskiSession: KoskiSession): Boolean = {
     def permissionAdded = myDataRepository.create(koskiSession.oid, asiakas)
 
