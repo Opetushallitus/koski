@@ -29,12 +29,12 @@ class MyDataServlet(implicit val application: KoskiApplication) extends ApiServl
     requireKansalainen
 
     val id = getConfigForMember().getString("id") // will throw if memberCode is not valid
-    renderObject(Map("success" -> application.mydataService.put(koskiSessionOption.get.oid, id)(koskiSessionOption.get)))
+    renderObject(Map("success" -> application.mydataService.put(id, koskiSessionOption.get)))
   }
 
   delete("/valtuutus/:memberCode") {
     logger.info(s"Unauthorizing $memberCodeParam for user: ${koskiSessionOption.getOrElse("none")}")
     requireKansalainen
-    application.mydataService.delete(koskiSessionOption.get.oid, memberCodeParam)(koskiSessionOption.get)
+    application.mydataService.delete(memberCodeParam, koskiSessionOption.get)
   }
 }
