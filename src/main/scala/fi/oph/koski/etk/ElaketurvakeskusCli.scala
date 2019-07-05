@@ -208,7 +208,7 @@ private object RaportointikantaClient {
 private object Format {
   def tutkintotaso(str: String, row: String = ""): Option[String] = str match {
     case "ammatillinenkoulutus" => Some("ammatillinenperustutkinto")
-    case "1" => Some("ammattikorkeakoulutututkinto")
+    case "1" => Some("ammattikorkeakoulututkinto")
     case "2" => Some("alempikorkeakoulututkinto")
     case "3" => Some("ylempiammattikorkeakoulututkinto")
     case "4" => Some("ylempikorkeakoulututkinto")
