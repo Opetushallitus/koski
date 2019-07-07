@@ -41,14 +41,14 @@ object RaportointiDatabaseSchema {
   )
 
   val dropAllIfExists = DBIO.seq(
-    sqlu"DROP TABLE IF EXISTS r_opiskeluoikeus",
-    sqlu"DROP TABLE IF EXISTS r_opiskeluoikeus_aikajakso",
-    sqlu"DROP TABLE IF EXISTS r_paatason_suoritus",
-    sqlu"DROP TABLE IF EXISTS r_osasuoritus",
-    sqlu"DROP TABLE IF EXISTS r_henkilo",
-    sqlu"DROP TABLE IF EXISTS r_organisaatio",
-    sqlu"DROP TABLE IF EXISTS r_koodisto_koodi",
-    sqlu"DROP TABLE IF EXISTS raportointikanta_status"
+    sqlu"DROP TABLE IF EXISTS r_opiskeluoikeus CASCADE",
+    sqlu"DROP TABLE IF EXISTS r_opiskeluoikeus_aikajakso CASCADE",
+    sqlu"DROP TABLE IF EXISTS r_paatason_suoritus CASCADE",
+    sqlu"DROP TABLE IF EXISTS r_osasuoritus CASCADE",
+    sqlu"DROP TABLE IF EXISTS r_henkilo CASCADE",
+    sqlu"DROP TABLE IF EXISTS r_organisaatio CASCADE",
+    sqlu"DROP TABLE IF EXISTS r_koodisto_koodi CASCADE",
+    sqlu"DROP TABLE IF EXISTS raportointikanta_status CASCADE"
   )
 
   val createRolesIfNotExists = DBIO.seq(
