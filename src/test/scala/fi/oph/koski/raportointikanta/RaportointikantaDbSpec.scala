@@ -6,9 +6,6 @@ import org.postgresql.util.PSQLException
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 class RaportointikantaDbSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll {
-  private lazy val public = new RaportointiDatabase(KoskiApplicationForTests.raportointiConfig, Public)
-  private lazy val temp = new RaportointiDatabase(KoskiApplicationForTests.raportointiConfig, Temp)
-
   override protected def beforeAll(): Unit = startRaportointiDatabase
 
   "Drop and create public schema" in {
@@ -53,4 +50,8 @@ class RaportointikantaDbSpec extends FreeSpec with Matchers with Raportointikant
     db.dropAndCreateObjects
     db.runDbSync(RaportointiDatabaseSchema.dropAllIfExists(db.schema))
   }
+
+  private lazy val public = new RaportointiDatabase(KoskiApplicationForTests.raportointiConfig)
+  private lazy val temp = new RaportointiDatabase(KoskiApplicationForTests.raportointiConfig.copy(raportointiSchema = Some(Temp)))
+
 }

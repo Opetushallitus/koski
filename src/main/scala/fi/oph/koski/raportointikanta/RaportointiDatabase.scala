@@ -23,11 +23,11 @@ object RaportointiDatabase {
   type DB = PostgresDriver.backend.DatabaseDef
 }
 
-case class RaportointiDatabase(config: KoskiDatabaseConfig, schema: Schema) extends Logging with KoskiDatabaseMethods {
+case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with KoskiDatabaseMethods {
+  val schema = config.raportointiSchema.get
   logger.info(s"Instantiating RaportointiDatabase for ${schema.name}")
 
   val db: DB = config.toSlickDatabase
-
   val tables = List(ROpiskeluoikeudet, ROpiskeluoikeusAikajaksot, RPäätasonSuoritukset, ROsasuoritukset, RHenkilöt, ROrganisaatiot, RKoodistoKoodit, RaportointikantaStatus)
 
   def moveTo(newSchema: Schema): Unit = {

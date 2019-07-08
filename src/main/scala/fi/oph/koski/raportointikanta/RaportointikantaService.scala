@@ -74,6 +74,6 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
     loadDatabase.moveTo(raportointiDatabase.schema)
   }
 
-  private lazy val loadDatabase = new RaportointiDatabase(application.raportointiConfig, Temp)
+  private lazy val loadDatabase = new RaportointiDatabase(application.raportointiConfig.copy(raportointiSchema = Some(Temp)))
   private lazy val raportointiDatabase = application.raportointiDatabase
 }

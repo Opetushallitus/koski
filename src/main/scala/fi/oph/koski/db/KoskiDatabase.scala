@@ -6,6 +6,7 @@ import fi.oph.koski.config.Environment
 import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.executors.Pools
 import fi.oph.koski.log.Logging
+import fi.oph.koski.raportointikanta.Schema
 import fi.oph.koski.util.Futures
 import org.flywaydb.core.Flyway
 import org.postgresql.util.PSQLException
@@ -24,12 +25,15 @@ object KoskiDatabase {
     new KoskiDatabase(KoskiDatabaseConfig(config, readOnly = true))
 }
 
-case class KoskiDatabaseConfig(c: Config, readOnly: Boolean = false, raportointi: Boolean = false) {
+case class KoskiDatabaseConfig(c: Config, readOnly: Boolean = false, raportointiSchema: Option[Schema] = None) {
   private val baseConfig = c.getConfig("db").withoutPath("replica").withoutPath("raportointi")
-  private val configFromFile = (raportointi, readOnly) match {
-    case (true, _) => c.getConfig("db.raportointi").withFallback(baseConfig)
-    case (false, false) => baseConfig
-    case (false, true) => c.getConfig("db.replica").withFallback(baseConfig)
+  private val configFromFile = (raportointiSchema, readOnly) match {
+    case (Some(schema), _) =>
+      c.getConfig("db.raportointi")
+        .withValue("poolName", fromAnyRef(s"koskiRaportointiPool-${schema.name}"))
+        .withFallback(baseConfig)
+    case (_, false) => baseConfig
+    case (_, true) => c.getConfig("db.replica").withFallback(baseConfig)
   }
   private val otherConfig = ConfigFactory.empty
     .withValue("url", fromAnyRef("jdbc:postgresql://" + configFromFile.getString("host") + ":" + configFromFile.getInt("port") + "/" + configFromFile.getString("name")))

@@ -48,7 +48,7 @@ class RaportointikantaServiceSpec extends FreeSpec with Matchers with BeforeAndA
   }
 
   private lazy val service = KoskiApplicationForTests.raportointikantaService
-  private lazy val loadDatabase = new RaportointiDatabase(KoskiApplicationForTests.raportointiConfig, Temp)
+  private lazy val loadDatabase = new RaportointiDatabase(KoskiApplicationForTests.raportointiConfig.copy(raportointiSchema = Some(Temp)))
 
   private def resetDatabase = loadDatabase.dropAndCreateObjects
 }
