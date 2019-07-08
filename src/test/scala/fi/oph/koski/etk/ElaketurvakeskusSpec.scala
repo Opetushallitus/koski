@@ -32,7 +32,7 @@ class ElaketurvakeskusSpec extends FreeSpec with LocalJettyHttpSpecification wit
           EtkTutkintotieto(
             EtkHenkilö(mockOppija.hetu, Some(date(1918, 6, 28)), mockOppija.sukunimi, mockOppija.etunimet),
             EtkTutkinto(Some("ammatillinenkoulutus"), Some(date(2012, 9, 1)), Some(date(2016, 5, 31))),
-            Some(EtkViite(mockOppijanOpiskeluoikeusOid, 1, mockOppija.oid)))
+            Some(EtkViite(Some(mockOppijanOpiskeluoikeusOid), Some(1), Some(mockOppija.oid))))
         ))
       }
     }
@@ -51,7 +51,7 @@ class ElaketurvakeskusSpec extends FreeSpec with LocalJettyHttpSpecification wit
           EtkTutkintotieto(
             EtkHenkilö(masterMock.hetu, Some(date(1997, 10, 10)), masterMock.sukunimi, masterMock.etunimet),
             EtkTutkinto(Some("ammatillinenkoulutus"), Some(date(2012, 9, 1)), Some(date(2016, 5, 31))),
-            Some(EtkViite(slaveOppijanOpiskeluoikeusOid, 1, slaveMock.oid)))
+            Some(EtkViite(Some(slaveOppijanOpiskeluoikeusOid), Some(1), Some(slaveMock.oid))))
         )
       }
     }
