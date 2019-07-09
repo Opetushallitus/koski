@@ -8,14 +8,14 @@
           <virta:Opiskeluoikeudet>
             <virta:Opiskeluoikeus opiskelijaAvain="12345X" avain="12345X¤70625¤Y">
               <virta:AlkuPvm>1997-08-01</virta:AlkuPvm>
-              <virta:LoppuPvm>2003-01-30</virta:LoppuPvm>
+              <virta:LoppuPvm>2010-10-10</virta:LoppuPvm>
               <virta:Tila>
                 <virta:AlkuPvm>1997-08-01</virta:AlkuPvm>
-                <virta:LoppuPvm>2003-01-30</virta:LoppuPvm>
+                <virta:LoppuPvm>2010-10-09</virta:LoppuPvm>
                 <virta:Koodi>1</virta:Koodi>
               </virta:Tila>
               <virta:Tila>
-                <virta:AlkuPvm>2003-01-31</virta:AlkuPvm>
+                <virta:AlkuPvm>2010-10-10</virta:AlkuPvm>
                 <virta:Koodi>3</virta:Koodi>
               </virta:Tila>
               <virta:Tyyppi>4</virta:Tyyppi>
@@ -36,7 +36,7 @@
               </virta:Jakso>
               <virta:Jakso koulutusmoduulitunniste="">
                 <virta:AlkuPvm>1998-10-15</virta:AlkuPvm>
-                <virta:LoppuPvm>2003-01-30</virta:LoppuPvm>
+                <virta:LoppuPvm>2010-10-10</virta:LoppuPvm>
                 <virta:Koulutuskoodi>742301</virta:Koulutuskoodi>
                 <virta:Koulutuskunta>853</virta:Koulutuskunta>
                 <virta:Koulutuskieli>fi</virta:Koulutuskieli>
@@ -1755,7 +1755,7 @@
               </virta:Koulutusala>
             </virta:Opintosuoritus>
             <virta:Opintosuoritus opiskeluoikeusAvain="12345X¤70625¤Y" opiskelijaAvain="12345X" koulutusmoduulitunniste="" avain="12345X¤T¤742301¤FFYS">
-              <virta:SuoritusPvm>2003-01-30</virta:SuoritusPvm>
+              <virta:SuoritusPvm>2010-10-10</virta:SuoritusPvm>
               <virta:Laajuus>
                 <virta:Opintopiste>0.0</virta:Opintopiste>
               </virta:Laajuus>

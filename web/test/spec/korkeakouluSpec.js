@@ -137,4 +137,18 @@ describe('Korkeakoulutus', function() {
       expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal( [ 'Aalto-yliopisto, Fil. maist., englannin kieli (2000—, päättynyt)' ])
     })
   })
+
+  describe('Oppilaitoksen nimi', function () {
+    before( page.openPage, page.oppijaHaku.searchAndSelect('060458-331R'))
+    it('Näytetään oppilaitoksen nimi',  function() {
+      expect(OpinnotPage().getOppilaitos(0)).to.equal('Aalto-yliopisto')
+    })
+
+    describe('Kun nimi on muuttunut', function () {
+      before(page.oppijaHaku.searchAndSelect('030199-3419'))
+      it('Näytetään oppilaitoksen nimi valmistumishetkellä', function () {
+        expect(OpinnotPage().getOppilaitos(1)).to.equal('Aalto-yliopisto -vanha')
+      })
+    })
+  })
 })

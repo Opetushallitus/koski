@@ -9,6 +9,7 @@ import fi.oph.koski.koskiuser.{AccessChecker, AccessType, KoskiSession, SkipAcce
 import fi.oph.koski.log.NotLoggable
 import fi.oph.koski.opiskeluoikeus.AuxiliaryOpiskeluoikeusRepositoryImpl
 import fi.oph.koski.oppilaitos.{MockOppilaitosRepository, OppilaitosRepository}
+import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, OrganisaatioRepository}
 import fi.oph.koski.schema.{KorkeakoulunOpiskeluoikeus, Oppija, UusiHenkilö}
 import fi.oph.koski.validation.KoskiValidator
 
@@ -16,10 +17,11 @@ case class VirtaOpiskeluoikeusRepository(
   virta: VirtaClient,
   oppilaitosRepository: OppilaitosRepository,
   koodistoViitePalvelu: KoodistoViitePalvelu,
+  organisaatioRepository: OrganisaatioRepository,
   accessChecker: AccessChecker,
   validator: Option[KoskiValidator] = None
 )(implicit cacheInvalidator: CacheManager) extends AuxiliaryOpiskeluoikeusRepositoryImpl[KorkeakoulunOpiskeluoikeus, VirtaCacheKey](accessChecker) {
-  private val converter = VirtaXMLConverter(oppilaitosRepository, koodistoViitePalvelu)
+  private val converter = VirtaXMLConverter(oppilaitosRepository, koodistoViitePalvelu, organisaatioRepository)
 
   override protected def uncachedOpiskeluoikeudet(cacheKey: VirtaCacheKey): List[KorkeakoulunOpiskeluoikeus] = {
     val opiskeluoikeudet = virtaHaku(cacheKey)
@@ -52,4 +54,4 @@ case class VirtaOpiskeluoikeusRepository(
 
 private[virta] case class VirtaCacheKey(hetut: List[String], oidit: List[String]) extends NotLoggable
 
-object MockVirtaOpiskeluoikeusRepository extends VirtaOpiskeluoikeusRepository(MockVirtaClient(KoskiApplication.defaultConfig), MockOppilaitosRepository, MockKoodistoViitePalvelu, SkipAccessCheck)(GlobalCacheManager)
+object MockVirtaOpiskeluoikeusRepository extends VirtaOpiskeluoikeusRepository(MockVirtaClient(KoskiApplication.defaultConfig), MockOppilaitosRepository, MockKoodistoViitePalvelu, MockOrganisaatioRepository, SkipAccessCheck)(GlobalCacheManager)

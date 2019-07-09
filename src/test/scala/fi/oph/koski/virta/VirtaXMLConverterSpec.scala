@@ -6,13 +6,14 @@ import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
 import fi.oph.koski.oppilaitos.MockOppilaitosRepository
 import fi.oph.koski.schema._
 import fi.oph.koski.localization.LocalizedStringImplicits._
+import fi.oph.koski.organisaatio.MockOrganisaatioRepository
 import org.scalatest.{FreeSpec, Matchers, OptionValues}
 
 import scala.xml.Elem
 
 class VirtaXMLConverterSpec extends FreeSpec with Matchers with OptionValues {
 
-  val converter = VirtaXMLConverter(MockOppilaitosRepository, MockKoodistoViitePalvelu)
+  val converter = VirtaXMLConverter(MockOppilaitosRepository, MockKoodistoViitePalvelu, MockOrganisaatioRepository)
   private def convertSuoritus(suoritus: Elem) = converter.convertSuoritus(suoritus, List(suoritus))
 
   def baseSuoritus: Elem = <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Kul-49.3400" avain="1114935190">
