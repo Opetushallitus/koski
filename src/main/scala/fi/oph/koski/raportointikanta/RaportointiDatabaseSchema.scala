@@ -20,6 +20,9 @@ object RaportointiDatabaseSchema {
   def createSchemaIfNotExists(s: Schema) =
     sqlu"CREATE SCHEMA IF NOT EXISTS #${s.name}"
 
+  def dropSchema(s: Schema) =
+    sqlu"DROP SCHEMA #${s.name} CASCADE"
+
   def createOpiskeluoikeusIndexes(s: Schema) = DBIO.seq(
     sqlu"CREATE UNIQUE INDEX ON #${s.name}.r_opiskeluoikeus(opiskeluoikeus_oid)",
     sqlu"CREATE INDEX ON #${s.name}.r_opiskeluoikeus(oppija_oid)",
@@ -404,10 +407,6 @@ case class RaportointikantaStatusRow(
 sealed trait Schema {
   def nameOpt: Option[String] = Some(name)
   def name: String
-}
-
-case object Old extends Schema {
-  def name: String = "oldpublic"
 }
 
 case object Public extends Schema {

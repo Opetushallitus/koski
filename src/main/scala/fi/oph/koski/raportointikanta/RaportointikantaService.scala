@@ -70,7 +70,7 @@ class RaportointikantaService(application: KoskiApplication) extends Logging {
   protected lazy val defaultScheduler: Scheduler = NewThreadScheduler()
 
   private def swapRaportointikanta() {
-    raportointiDatabase.moveTo(Old)
+    raportointiDatabase.dropSchema
     loadDatabase.moveTo(raportointiDatabase.schema)
   }
 

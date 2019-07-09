@@ -35,6 +35,11 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
     runDbSync(RaportointiDatabaseSchema.moveSchema(schema, newSchema))
   }
 
+  def dropSchema: Unit = {
+    logger.info(s"Dropping schema ${schema.name}")
+    runDbSync(RaportointiDatabaseSchema.dropSchema(schema))
+  }
+
   def dropAndCreateObjects: Unit = {
     logger.info(s"Creating database ${schema.name}")
     runDbSync(DBIO.sequence(
@@ -167,49 +172,41 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
   lazy val ROpiskeluoikeudet = schema match {
     case Public => TableQuery[ROpiskeluoikeusTable]
     case Temp => TableQuery[ROpiskeluoikeusTableTemp]
-    case _ => ???
   }
 
   lazy val ROpiskeluoikeusAikajaksot = schema match {
     case Public => TableQuery[ROpiskeluoikeusAikajaksoTable]
     case Temp => TableQuery[ROpiskeluoikeusAikajaksoTableTemp]
-    case _ => ???
   }
 
   lazy val RPäätasonSuoritukset = schema match {
     case Public => TableQuery[RPäätasonSuoritusTable]
     case Temp => TableQuery[RPäätasonSuoritusTableTemp]
-    case _ => ???
   }
 
   lazy val ROsasuoritukset = schema match {
     case Public => TableQuery[ROsasuoritusTable]
     case Temp => TableQuery[ROsasuoritusTableTemp]
-    case _ => ???
   }
 
   lazy val RHenkilöt = schema match {
     case Public => TableQuery[RHenkilöTable]
     case Temp => TableQuery[RHenkilöTableTemp]
-    case _ => ???
   }
 
   lazy val ROrganisaatiot = schema match {
     case Public => TableQuery[ROrganisaatioTable]
     case Temp => TableQuery[ROrganisaatioTableTemp]
-    case _ => ???
   }
 
   lazy val RKoodistoKoodit = schema match {
     case Public => TableQuery[RKoodistoKoodiTable]
     case Temp => TableQuery[RKoodistoKoodiTableTemp]
-    case _ => ???
   }
 
   lazy val RaportointikantaStatus = schema match {
     case Public => TableQuery[RaportointikantaStatusTable]
     case Temp => TableQuery[RaportointikantaStatusTableTemp]
-    case _ => ???
   }
 }
 
