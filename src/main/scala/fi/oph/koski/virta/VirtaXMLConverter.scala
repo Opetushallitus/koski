@@ -7,6 +7,7 @@ import fi.oph.koski.config.Environment
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.log.Logging
 import fi.oph.koski.oppilaitos.{MockOppilaitosRepository, OppilaitosRepository}
+import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema.LocalizedString.{finnish, sanitize}
 import fi.oph.koski.schema._
 import fi.oph.koski.util.DateOrdering
@@ -14,7 +15,7 @@ import fi.oph.koski.util.OptionalLists.optionalList
 import fi.oph.koski.virta.VirtaXMLConverterUtils._
 
 import scala.xml.Node
-case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu) extends Logging {
+case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, organisaatioRepository: OrganisaatioRepository) extends Logging {
 
   def convertToOpiskeluoikeudet(virtaXml: Node): List[KorkeakoulunOpiskeluoikeus] = {
     import fi.oph.koski.util.DateOrdering._
@@ -33,8 +34,9 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         .toList)
 
       val suoritukset: List[KorkeakouluSuoritus] = opiskeluOikeudenSuoritukset.flatMap(convertSuoritus(_, suoritusNodeList))
+      val vahvistus = suoritukset.flatMap(_.vahvistus).sortBy(_.päivä)(localDateOrdering).lastOption
 
-      val oppilaitos: Option[Oppilaitos] = optionalOppilaitos(opiskeluoikeusNode)
+      val oppilaitos: Option[Oppilaitos] = optionalOppilaitos(opiskeluoikeusNode, vahvistus.map(_.päivä))
       val opiskeluoikeus = KorkeakoulunOpiskeluoikeus(
         lähdejärjestelmänId = Some(LähdejärjestelmäId(Some(opiskeluoikeusNode \ "@avain" text), requiredKoodi("lahdejarjestelma", "virta"))),
         arvioituPäättymispäivä = None,
@@ -95,7 +97,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       addKeskeneräinenTutkinnonSuoritus(tila, suoritukset, opiskeluoikeusNode, viimeisinTutkinto)
     } else {
       val opiskeluoikeusTila = tila.opiskeluoikeusjaksot.lastOption.map(_.tila)
-      logger.warn(s"Tutkintoon johtavaa päätason suoritusta ei löydy tai opiskeluoikeus on päättynyt. Opiskeluoikeus(avain: ${avain(opiskeluoikeusNode)}, tila: $opiskeluoikeusTila, jaksot: ${opiskeluoikeusJaksot.map(_.koulutuskoodi)}, laji: '${laji(opiskeluoikeusNode)}')" )
+      logger.warn(s"Tutkintoon johtavaa päätason suoritusta ei löydy tai opiskeluoikeus on päättynyt. Opiskeluoikeus(avain: ${avain(opiskeluoikeusNode)}, tila: $opiskeluoikeusTila, jaksot: ${opiskeluoikeusJaksot.map(_.koulutuskoodi)}, laji: '${laji(opiskeluoikeusNode)}')")
       addMuuKorkeakoulunSuoritus(tila, suoritukset, opiskeluoikeusNode)
     }
   }
@@ -123,8 +125,9 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     ) :: muutSuoritukset
   }
 
-  private def addMuuKorkeakoulunSuoritus(tila: KorkeakoulunOpiskeluoikeudenTila, suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node) =
-    optionalOppilaitos(opiskeluoikeusNode).map { org =>
+  private def addMuuKorkeakoulunSuoritus(tila: KorkeakoulunOpiskeluoikeudenTila, suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node) = {
+    val vahvistusPäivä = tila.opiskeluoikeusjaksot.lastOption.filter(_.tila.koodiarvo == "3").map(_.alku)
+    optionalOppilaitos(opiskeluoikeusNode, vahvistusPäivä).map { org =>
       val virtaOpiskeluoikeudenTyyppi = opiskeluoikeudenTyyppi(opiskeluoikeusNode)
       val nimi = Some((opiskeluoikeusNode \\ "@koulutusmoduulitunniste").text.stripPrefix("#").stripSuffix("/").trim)
         .filter(_.nonEmpty).map(finnish).getOrElse(virtaOpiskeluoikeudenTyyppi.description)
@@ -134,15 +137,16 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
           nimi = nimi,
           laajuus = laajuus(opiskeluoikeusNode)
         ),
-        vahvistus = vahvistusOpiskeluoikeudenTilasta(tila, org),
+        vahvistus = päivämääräVahvistus(vahvistusPäivä, org),
         suorituskieli = None,
         osasuoritukset = None,
         toimipiste = org
       )
     }.toList ++ suoritukset
+  }
 
-  private def vahvistusOpiskeluoikeudenTilasta(tila: KorkeakoulunOpiskeluoikeudenTila, organisaatio: Organisaatio): Option[Päivämäärävahvistus] =
-    tila.opiskeluoikeusjaksot.lastOption.filter(_.tila.koodiarvo == "3").map(jakso => Päivämäärävahvistus(jakso.alku, organisaatio))
+  private def päivämääräVahvistus(vahvistusPäivä: Option[LocalDate], organisaatio: Organisaatio): Option[Päivämäärävahvistus] =
+    vahvistusPäivä.map(pvm => Päivämäärävahvistus(pvm, organisaatio))
 
   def convertSuoritus(suoritus: Node, allNodes: List[Node]): Option[KorkeakouluSuoritus] = {
     laji(suoritus) match {
@@ -319,15 +323,22 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       .getOrElse(throw new RuntimeException(s"Oppilaitosta ei löydy: $numero"))
   }
 
-  private def optionalOppilaitos(node: Node): Option[Oppilaitos] = {
+  private def optionalOppilaitos(node: Node, vahvistusPäivä: Option[LocalDate]): Option[Oppilaitos] = {
     val numero = oppilaitosnumero(node)
-    numero.flatMap(oppilaitosRepository.findByOppilaitosnumero)
+    val oppilaitos = numero.flatMap(oppilaitosRepository.findByOppilaitosnumero)
       .orElse(possiblyMockOppilaitos)
-      .orElse({
-        logger.warn(s"Oppilaitosta ei löydy: $numero")
-        None
-      })
+      .map(oppilaitoksenNimiValmistumishetkellä(vahvistusPäivä))
+
+    if (oppilaitos.isEmpty) {
+      logger.warn(s"Oppilaitosta ei löydy: $numero")
+    }
+    oppilaitos
   }
+
+  private def oppilaitoksenNimiValmistumishetkellä(vahvistusPäivä: Option[LocalDate])(oppilaitos: Oppilaitos) =
+    vahvistusPäivä.flatMap(organisaatioRepository.getOrganisaationNimiHetkellä(oppilaitos.oid, _))
+      .map(nimi => oppilaitos.copy(nimi = Some(nimi)))
+      .getOrElse(oppilaitos)
 
   // Jos ajetaan paikallista Koskea Virta-testiympäristön kanssa, useimpia oppilaitoksia ei löydy
   // MockOppilaitosRepositorystä. Käytetään Aalto-yliopistoa, jotta pystytään näyttämään edes jotain.
