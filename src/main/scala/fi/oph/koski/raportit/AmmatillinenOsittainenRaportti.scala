@@ -1,14 +1,13 @@
 package fi.oph.koski.raportit
 
-import java.sql.Timestamp
 import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.schema.{Koodistokoodiviite, LähdejärjestelmäId, OpiskeluoikeudenTyyppi, Organisaatio}
+import fi.oph.koski.raportit.AmmatillinenRaporttiUtils._
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.Organisaatio.Oid
+import fi.oph.koski.schema.{LähdejärjestelmäId, OpiskeluoikeudenTyyppi, Organisaatio}
 import fi.oph.koski.util.FinnishDateFormat.{finnishDateFormat, finnishDateTimeFormat}
-import fi.oph.koski.raportit.AmmatillinenRaporttiUtils._
 
 // scalastyle:off method.length
 
@@ -80,12 +79,12 @@ object AmmatillinenOsittainenRaportti extends AikajaksoRaportti {
     s"Ammatillinen_tutkinnon_osa_ja_osia_${oppilaitosOid}_${alku}_${loppu}"
   }
 
-  def documentation(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, loadCompleted: Timestamp): String =
+  def documentation(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, loadCompleted: LocalDateTime): String =
     s"""
        |Suoritustiedot (Ammatillisen tutkinnon osa/osia)
        |Oppilaitos: $oppilaitosOid
        |Aikajakso: ${finnishDateFormat.format(alku)} - ${finnishDateFormat.format(loppu)}
-       |Raportti luotu: ${finnishDateTimeFormat.format(LocalDateTime.now)} (${finnishDateTimeFormat.format(loadCompleted.toLocalDateTime)} tietojen pohjalta)
+       |Raportti luotu: ${finnishDateTimeFormat.format(LocalDateTime.now)} (${finnishDateTimeFormat.format(loadCompleted)} tietojen pohjalta)
        |
        |Tarkempi kuvaus joistakin sarakkeista:
        |

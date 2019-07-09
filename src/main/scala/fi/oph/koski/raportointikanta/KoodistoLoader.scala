@@ -6,20 +6,22 @@ import fi.oph.koski.raportointikanta.LoaderUtils.convertLocalizedString
 
 object KoodistoLoader extends Logging {
   private val LadattavatKoodistot = List("opiskeluoikeudentyyppi", "oppilaitostyyppi", "koulutustyyppi", "kunta", "suorituksentyyppi")
+  private val name = "koodistot"
 
-  def loadKoodistot(koodistoPalvelu: KoodistoPalvelu, raportointiDatabase: RaportointiDatabase): Int = {
+  def loadKoodistot(koodistoPalvelu: KoodistoPalvelu, db: RaportointiDatabase): Int = {
     logger.info("Ladataan koodistoja...")
-    raportointiDatabase.setStatusLoadStarted("koodistot")
+    db.setStatusLoadStarted(name)
     var count = 0
     LadattavatKoodistot.foreach(koodistoUri => {
       val versio = koodistoPalvelu.getLatestVersionRequired(koodistoUri)
       val koodit = koodistoPalvelu.getKoodistoKoodit(versio)
       val rows = koodit.map(buildRKoodistoKoodiRow)
-      raportointiDatabase.deleteKoodistoKoodit(koodistoUri)
-      raportointiDatabase.loadKoodistoKoodit(rows)
+      db.deleteKoodistoKoodit(koodistoUri)
+      db.loadKoodistoKoodit(rows)
+      db.setLastUpdate(name)
       count += rows.length
     })
-    raportointiDatabase.setStatusLoadCompleted("koodistot")
+    db.setStatusLoadCompletedAndCount(name, count)
     logger.info(s"Ladattiin $count koodiarvoa")
     count
   }

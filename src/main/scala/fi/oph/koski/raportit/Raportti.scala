@@ -1,7 +1,6 @@
 package fi.oph.koski.raportit
 
-import java.sql.Timestamp
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.raportointikanta.RaportointiDatabase
 import fi.oph.koski.schema.Organisaatio
@@ -15,7 +14,7 @@ trait AikajaksoRaportti extends Raportti {
 
   def title(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate): String
 
-  def documentation(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, loadCompleted: Timestamp): String
+  def documentation(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, loadCompleted: LocalDateTime): String
 
   def filename(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate): String
 
@@ -28,7 +27,7 @@ trait VuosiluokkaRaporttiPaivalta extends Raportti {
 
   def title(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String
 
-  def documentation(oppilaitosOid: String, alku: LocalDate, vuosiluokka: String, loadCompleted: Timestamp): String
+  def documentation(oppilaitosOid: String, alku: LocalDate, vuosiluokka: String, loadCompleted: LocalDateTime): String
 
   def filename(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String
 

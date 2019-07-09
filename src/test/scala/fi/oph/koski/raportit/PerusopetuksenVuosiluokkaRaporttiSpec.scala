@@ -20,7 +20,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
 
   "Perusopetuksenvuosiluokka raportti" - {
 
-    "Raportin lataaminen toimiii" in {
+    "Raportin lataaminen toimii" in {
       verifyPerusopetukseVuosiluokkaRaportinLataaminen(
         queryString = defaultQuery,
         apiUrl = "api/raportit/perusopetuksenvuosiluokka",

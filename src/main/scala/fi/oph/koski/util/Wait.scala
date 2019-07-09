@@ -10,6 +10,7 @@ object Wait {
       if (System.currentTimeMillis > timeoutAt) {
         throw new RuntimeException("Wait timed out at " + timeoutMs + " milliseconds")
       }
+      Thread.sleep(retryIntervalMs)
     }
   }
 }

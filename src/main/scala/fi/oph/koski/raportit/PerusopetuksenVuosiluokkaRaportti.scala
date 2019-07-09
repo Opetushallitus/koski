@@ -1,12 +1,11 @@
 package fi.oph.koski.raportit
 
-import java.sql.Timestamp
-import java.time.LocalDate
+import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.raportointikanta._
-import fi.oph.koski.schema._
 import fi.oph.koski.schema.Organisaatio.Oid
+import fi.oph.koski.schema._
 import org.json4s.JValue
 
 object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
@@ -244,7 +243,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
 
   def title(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String): String = "TITLE TODO"
 
-  def documentation(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String, loadCompleted: Timestamp): String =
+  def documentation(oppilaitosOid: String, paiva: LocalDate, vuosiluokka: String, loadCompleted: LocalDateTime): String =
     s"""
       |Tarkempi kuvaus joistakin sarakkeista:
       |

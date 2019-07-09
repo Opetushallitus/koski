@@ -1,6 +1,6 @@
 package fi.oph.koski.raportointikanta
 
-import java.sql.Date
+import java.sql.{Date, Timestamp}
 import java.time.LocalDate
 
 import fi.oph.koski.KoskiApplicationForTests
@@ -8,109 +8,100 @@ import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethodsA
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.documentation.AmmatillinenExampleData
 import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.json.JsonFiles
+import fi.oph.koski.henkilo.MockOppijat.{master, masterEiKoskessa}
+import fi.oph.koski.json.{JsonFiles, JsonSerializer}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
+import fi.oph.koski.util.Wait
 import fi.oph.scalaschema.SchemaValidatingExtractor
+import org.json4s.DefaultFormats
 import org.json4s.JsonAST.{JBool, JObject}
 import org.json4s.jackson.JsonMethods
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with BeforeAndAfterAll {
+  implicit val formats = DefaultFormats
 
-  private val raportointiDatabase = KoskiApplicationForTests.raportointiDatabase
+  private lazy val raportointiDatabase = KoskiApplicationForTests.raportointiDatabase
 
-  override def beforeAll(): Unit = createOrUpdate(MockOppijat.slaveMasterEiKoskessa.henkilö, defaultOpiskeluoikeus)
+  override def beforeAll(): Unit = {
+    LocalJettyHttpSpecification.setup(this)
+    createOrUpdate(MockOppijat.slaveMasterEiKoskessa.henkilö, defaultOpiskeluoikeus)
+    authGet("api/raportointikanta/load?force=true")(verifyResponseStatusOk())
+    Wait.until(loadComplete)
+  }
+
   override def afterAll(): Unit = resetFixtures
 
-  "Raportointikannan rakennus-APIt" - {
-    "Skeeman luonti (ja kannan tyhjennys)" in {
-      authGet("api/raportointikanta/clear") {
-        verifyResponseStatusOk()
-        opiskeluoikeusCount should equal(0)
-        henkiloCount should equal(0)
-        organisaatioCount should equal(0)
-        koodistoKoodiCount should equal(0)
-      }
-      authGet("api/raportointikanta/status") {
-        verifyResponseStatusOk()
-        JsonMethods.parse(body) \ "complete" should equal(JBool(false))
-      }
+  "Raportointikanta" - {
+    "Opiskeluoikeudet on ladattu" in {
+      opiskeluoikeusCount should be > 30
     }
-    "Opiskeluoikeuksien lataus" in {
-      authGet("api/raportointikanta/opiskeluoikeudet") {
-        verifyResponseStatusOk()
-        opiskeluoikeusCount should be > 30
-      }
+    "Henkilöt on ladattu" in {
+      val mockOppija = MockOppijat.eero
+      henkiloCount should be > 30
+      val henkilo = raportointiDatabase.runDbSync(raportointiDatabase.RHenkilöt.filter(_.hetu === mockOppija.hetu.get).result)
+      henkilo should equal(Seq(RHenkilöRow(
+        mockOppija.oid,
+        mockOppija.oid,
+        mockOppija.hetu,
+        None,
+        Some(Date.valueOf("1901-01-01")),
+        mockOppija.sukunimi,
+        mockOppija.etunimet,
+        Some("fi"),
+        None,
+        false
+      )))
     }
-    "Henkilöiden lataus" - {
-      "Lataa henkilot" in {
-        authGet("api/raportointikanta/henkilot") {
-          val mockOppija = MockOppijat.eero
-          verifyResponseStatusOk()
-          henkiloCount should be > 30
-          val henkilo = raportointiDatabase.runDbSync(raportointiDatabase.RHenkilöt.filter(_.hetu === mockOppija.hetu.get).result)
-          henkilo should equal(Seq(RHenkilöRow(
-            mockOppija.oid,
-            mockOppija.oid,
-            mockOppija.hetu,
-            None,
-            Some(Date.valueOf("1901-01-01")),
-            mockOppija.sukunimi,
-            mockOppija.etunimet,
-            Some("fi"),
-            None,
-            false
-          )))
-        }
-      }
-      "Huomioi linkitetyt oidit" in {
-        authGet("api/raportointikanta/henkilot"){
-          verifyResponseStatusOk()
-          val masterOppija = MockOppijat.master
-          val slaveOppija = MockOppijat.slave.henkilö
-          val hakuOidit = Set(masterOppija.oid, slaveOppija.oid)
-          val henkilot = raportointiDatabase.runDbSync(raportointiDatabase.RHenkilöt.filter(_.oppijaOid inSet(hakuOidit)).result).toSet
-          henkilot should equal (Set(
-            RHenkilöRow(slaveOppija.oid, masterOppija.oid, masterOppija.hetu, None, Some(Date.valueOf("1997-10-10")), masterOppija.sukunimi, masterOppija.etunimet, Some("fi"), None, false),
-            RHenkilöRow(masterOppija.oid, masterOppija.oid, masterOppija.hetu, None, Some(Date.valueOf("1997-10-10")), masterOppija.sukunimi, masterOppija.etunimet, Some("fi"), None, false)
-          ))
-        }
-      }
-      "Master oidia ei löydy koskesta" in {
-          authGet("api/raportointikanta/henkilot"){
-            verifyResponseStatusOk()
-            val slaveOppija = MockOppijat.slaveMasterEiKoskessa.henkilö
-            val masterOppija = MockOppijat.masterEiKoskessa
-            val henkilot = raportointiDatabase.runDbSync(raportointiDatabase.RHenkilöt.filter(_.hetu === slaveOppija.hetu.get).result).toSet
-            henkilot should equal (Set(
-              RHenkilöRow(slaveOppija.oid, masterOppija.oid, masterOppija.hetu, None, Some(Date.valueOf("1966-03-27")), masterOppija.sukunimi, masterOppija.etunimet, None, None, false),
-              RHenkilöRow(masterOppija.oid, masterOppija.oid, masterOppija.hetu, None, Some(Date.valueOf("1966-03-27")), masterOppija.sukunimi, masterOppija.etunimet, None, None, false)
-            ))
-          }
-      }
+    "Huomioi linkitetyt oidit" in {
+      val slaveOppija = MockOppijat.slave.henkilö
+      val hakuOidit = Set(master.oid, slaveOppija.oid)
+      val henkilot = raportointiDatabase.runDbSync(raportointiDatabase.RHenkilöt.filter(_.oppijaOid inSet(hakuOidit)).result).toSet
+      henkilot should equal (Set(
+        RHenkilöRow(slaveOppija.oid, master.oid, master.hetu, None, Some(Date.valueOf("1997-10-10")), master.sukunimi, master.etunimet, Some("fi"), None, false),
+        RHenkilöRow(master.oid, master.oid, master.hetu, None, Some(Date.valueOf("1997-10-10")), master.sukunimi, master.etunimet, Some("fi"), None, false)
+      ))
     }
-    "Organisaatioiden lataus" in {
-      authGet("api/raportointikanta/organisaatiot") {
-        verifyResponseStatusOk()
-        organisaatioCount should be > 10
-        val organisaatio = raportointiDatabase.runDbSync(raportointiDatabase.ROrganisaatiot.filter(_.organisaatioOid === MockOrganisaatiot.aapajoenKoulu).result)
-        organisaatio should equal(Seq(ROrganisaatioRow(MockOrganisaatiot.aapajoenKoulu, "Aapajoen koulu", "OPPILAITOS", Some("11"), Some("04044"), Some("851"), None)))
-      }
+    "Master oidia ei löydy koskesta" in {
+      val slaveOppija = MockOppijat.slaveMasterEiKoskessa.henkilö
+      val henkilot = raportointiDatabase.runDbSync(raportointiDatabase.RHenkilöt.filter(_.hetu === slaveOppija.hetu.get).result).toSet
+      henkilot should equal(Set(
+        RHenkilöRow(slaveOppija.oid, masterEiKoskessa.oid, masterEiKoskessa.hetu, None, Some(Date.valueOf("1966-03-27")), masterEiKoskessa.sukunimi, masterEiKoskessa.etunimet, None, None, false),
+        RHenkilöRow(masterEiKoskessa.oid, masterEiKoskessa.oid, masterEiKoskessa.hetu, None, Some(Date.valueOf("1966-03-27")), masterEiKoskessa.sukunimi, masterEiKoskessa.etunimet, None, None, false)
+      ))
     }
-    "Koodistojen lataus" in {
-      authGet("api/raportointikanta/koodistot") {
-        verifyResponseStatusOk()
-        koodistoKoodiCount should be > 500
-        val koodi = raportointiDatabase.runDbSync(raportointiDatabase.RKoodistoKoodit.filter(_.koodistoUri === "opiskeluoikeudentyyppi").filter(_.koodiarvo === "korkeakoulutus").result)
-        koodi should equal(Seq(RKoodistoKoodiRow("opiskeluoikeudentyyppi", "korkeakoulutus", "Korkeakoulutus")))
-      }
+    "Organisaatiot on ladattu" in {
+      organisaatioCount should be > 10
+      val organisaatio = raportointiDatabase.runDbSync(raportointiDatabase.ROrganisaatiot.filter(_.organisaatioOid === MockOrganisaatiot.aapajoenKoulu).result)
+      organisaatio should equal(Seq(ROrganisaatioRow(MockOrganisaatiot.aapajoenKoulu, "Aapajoen koulu", "OPPILAITOS", Some("11"), Some("04044"), Some("851"), None)))
+    }
+    "Koodistot on ladattu" in {
+      koodistoKoodiCount should be > 500
+      val koodi = raportointiDatabase.runDbSync(raportointiDatabase.RKoodistoKoodit.filter(_.koodistoUri === "opiskeluoikeudentyyppi").filter(_.koodiarvo === "korkeakoulutus").result)
+      koodi should equal(Seq(RKoodistoKoodiRow("opiskeluoikeudentyyppi", "korkeakoulutus", "Korkeakoulutus")))
     }
     "Status-rajapinta" in {
       authGet("api/raportointikanta/status") {
         verifyResponseStatusOk()
-        JsonMethods.parse(body) \ "complete" should equal(JBool(true))
+        JsonMethods.parse(body) \ "public" \ "isComplete" should equal(JBool(true))
       }
+    }
+
+    "Peräkkäinen load-kutsu ei tee mitään" in {
+      authGet("api/raportointikanta/load")(verifyResponseStatusOk())
+      Wait.until(isLoading)
+      val loadStarted = getLoadStartedTime
+      authGet("api/raportointikanta/load")(verifyResponseStatusOk())
+      loadStarted should equal(getLoadStartedTime)
+    }
+
+    "Force load" in {
+      authGet("api/raportointikanta/load")(verifyResponseStatusOk())
+      Wait.until(isLoading)
+      val loadStarted = getLoadStartedTime
+      authGet("api/raportointikanta/load?force=true")(verifyResponseStatusOk())
+      loadStarted before getLoadStartedTime should be(true)
     }
   }
 
@@ -396,5 +387,19 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
   private def henkiloCount: Int = raportointiDatabase.runDbSync(raportointiDatabase.RHenkilöt.length.result)
   private def organisaatioCount: Int = raportointiDatabase.runDbSync(raportointiDatabase.ROrganisaatiot.length.result)
   private def koodistoKoodiCount: Int = raportointiDatabase.runDbSync(raportointiDatabase.RKoodistoKoodit.length.result)
+
+  private def isLoading = authGet("api/raportointikanta/status") {
+    (JsonMethods.parse(body) \ "etl" \ "isLoading").extract[Boolean]
+  }
+
+  private def getLoadStartedTime: Timestamp = authGet("api/raportointikanta/status") {
+    JsonSerializer.extract[Timestamp](JsonMethods.parse(body) \ "etl" \ "startedTime")
+  }
+
+  private def loadComplete = authGet("api/raportointikanta/status") {
+    val isComplete = (JsonMethods.parse(body) \ "public" \ "isComplete").extract[Boolean]
+    val isLoading = (JsonMethods.parse(body) \ "etl" \ "isLoading").extract[Boolean]
+    isComplete && !isLoading
+  }
 }
 
