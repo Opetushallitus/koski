@@ -32,7 +32,11 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
 
   def moveTo(newSchema: Schema): Unit = {
     logger.info(s"Moving ${schema.name} -> ${newSchema.name}")
-    runDbSync(RaportointiDatabaseSchema.moveSchema(schema, newSchema))
+    runDbSync(DBIO.seq(
+      RaportointiDatabaseSchema.moveSchema(schema, newSchema),
+      RaportointiDatabaseSchema.createRolesIfNotExists,
+      RaportointiDatabaseSchema.grantPermissions(newSchema)
+    ))
   }
 
   def dropSchema: Unit = {

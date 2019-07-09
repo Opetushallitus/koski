@@ -66,6 +66,7 @@ object RaportointiDatabaseSchema {
   )
 
   def grantPermissions(s: Schema) = DBIO.seq(actions =
+    sqlu"GRANT USAGE ON SCHEMA #${s.name} TO raportointikanta_katselija, raportointikanta_henkilo_katselija",
     sqlu"""GRANT SELECT ON
       #${s.name}.r_opiskeluoikeus,
       #${s.name}.r_opiskeluoikeus_aikajakso,
