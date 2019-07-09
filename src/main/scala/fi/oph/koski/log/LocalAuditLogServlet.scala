@@ -11,6 +11,7 @@ import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import org.json4s.JsonAST.JValue
 
+import scala.annotation.tailrec
 import scala.util._
 
 class LocalAuditLogServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with Logging with NoCache {
@@ -25,7 +26,7 @@ class LocalAuditLogServlet(implicit val application: KoskiApplication) extends A
     withJsonBody { json =>
       extractAndValidate(json) match {
         case Left(status) => haltWithStatus(status)
-        case Right(req) => makeAuditLogs(req)
+        case Right(oiditJaOperaatio) => auditlogOids(oiditJaOperaatio)
       }
     }()
   }
@@ -38,19 +39,24 @@ class LocalAuditLogServlet(implicit val application: KoskiApplication) extends A
 
   private def validateRequest(logRequest: LocalAuditLogRequest) = {
     for {
-      oids <- eitherOfList(logRequest.oids.map(HenkilöOid.validateHenkilöOid).toList, Nil)
+      oids <- toEitherList(logRequest.oids.map(HenkilöOid.validateHenkilöOid).toList)
       operation <- validateOperation(logRequest.operation)
     } yield (OiditJaOperaatio(oids, operation))
   }
 
-  private def eitherOfList(list: List[Either[HttpStatus, Oid]], oids: List[Oid]): Either[HttpStatus, List[Oid]] = {
-    list match {
-      case Nil => Right(oids)
-      case x :: xs => x match {
-        case Left(status) => Left(status)
-        case Right(oid) => eitherOfList(xs, oids :+ oid)
+  private def toEitherList(eithers: List[Either[HttpStatus, Oid]]): Either[HttpStatus, List[Oid]] = {
+    @tailrec
+    def helper(list: List[Either[HttpStatus, Oid]], oids: List[Oid]): Either[HttpStatus, List[Oid]] = {
+      list match {
+        case Nil => Right(oids)
+        case x :: xs => x match {
+          case Left(status) => Left(status)
+          case Right(oid) => helper(xs, oids :+ oid)
+        }
       }
     }
+
+    helper(eithers, Nil)
   }
 
   private def validateOperation(operation: String): Either[HttpStatus, KoskiOperation] = Try(KoskiOperation.withName(operation)) match {
@@ -58,7 +64,7 @@ class LocalAuditLogServlet(implicit val application: KoskiApplication) extends A
     case _ => Left(KoskiErrorCategory.badRequest.queryParam(s"Operaatiota $operation ei löydy"))
   }
 
-  private def makeAuditLogs(o: OiditJaOperaatio) = {
+  private def auditlogOids(o: OiditJaOperaatio) = {
     o.oids.foreach(oid => AuditLog.log(AuditLogMessage(o.operation, koskiSession, Map(oppijaHenkiloOid -> oid))))
     HttpStatus.ok
   }

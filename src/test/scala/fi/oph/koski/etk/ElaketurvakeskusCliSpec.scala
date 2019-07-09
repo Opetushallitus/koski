@@ -4,21 +4,25 @@ import java.text.SimpleDateFormat
 
 import fi.oph.koski.api.OpiskeluoikeusTestMethods
 import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.log.AuditLogTester
 import org.json4s.jackson.JsonMethods.parse
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import org.json4s.DefaultFormats
-import org.scalatest.FreeSpec
+import org.scalatest.{BeforeAndAfterAll, FreeSpec}
 
-class ElaketurvakeskusCliSpec extends FreeSpec with RaportointikantaTestMethods with ElaketurvakeskusCliTestMethods with OpiskeluoikeusTestMethods {
+class ElaketurvakeskusCliSpec extends FreeSpec with RaportointikantaTestMethods with ElaketurvakeskusCliTestMethods with OpiskeluoikeusTestMethods with BeforeAndAfterAll {
+
+  override def beforeAll(): Unit = {
+    resetFixtures
+    loadRaportointikantaFixtures
+  }
 
   "ElaketurvakeskusCli" - {
     "Aineiston muodostaminen" - {
       "Csv tiedostosta" in {
-        resetFixtures
-        loadRaportointikantaFixtures
         withCsvFixture() {
           val cli = ElaketurvakeskusCliForTest
-          val args = Array("-csv", csvFilePath)
+          val args = Array("-csv", csvFilePath, "-user", "pää:pää", "-port", koskiPort)
           cli.main(args)
           outputResult should include(
             """{
@@ -41,8 +45,6 @@ class ElaketurvakeskusCliSpec extends FreeSpec with RaportointikantaTestMethods 
         }
       }
       "Api vastauksesta" in {
-        resetFixtures
-        loadRaportointikantaFixtures
         withCsvFixture() {
           val cli = ElaketurvakeskusCliForTest
           val args = Array("-user", "pää:pää", "-api", "ammatillisetperustutkinnot:2016-01-01:2016-12-12", "-port", koskiPort)
@@ -108,35 +110,53 @@ class ElaketurvakeskusCliSpec extends FreeSpec with RaportointikantaTestMethods 
         }
       }
     }
-    "Validointi" - {
-      "Puutteellinen csv tiedosto" in {
-        val cli = ElaketurvakeskusCli
-        val args = Array("-csv", csvFilePath)
-        withCsvFixture(mockCsv.replace(";;", ";")) {
-          intercept[Exception] { cli.main(args) }.getMessage should include(
-            "Riviltä puuttuu kenttiä: "
-          )
-        }
-      }
-      "Csv:n ja api vastauksen vuodet eroavat" in {
-        withCsvFixture(mockCsv.replaceAll("2016;", "2000;")) {
-          val cli = ElaketurvakeskusCli
-          val args = Array("-csv", csvFilePath, "-user", "pää:pää", "-api", "ammatillisetperustutkinnot:2016-01-01:2018-12-12", "-port", koskiPort)
-          intercept[Exception] { cli.main(args) }.getMessage should be(
-            "Vuosien 2000 ja 2016 tutkintotietoja yritettiin yhdistää"
-          )
-        }
-      }
-    }
-    "Vivut" - {
-      "Vaatii -user jos -api määritelty" in {
-        val cli = ElaketurvakeskusCli
-        val args = Array("-api", "ammatillisetperustutkinnot:2016-01-01:2018-12-12")
-        an[Exception] should be thrownBy (cli.main(args))
-        intercept[Exception] { cli.main(args) }.getMessage should be(
-          "määritä -user tunnus:salasana voidaksesi tehdä api kutsun"
+    "Jos csv tiedostosta puuttuu vaadittuja kolumnin nimiä" in {
+      val cli = ElaketurvakeskusCli
+      val args = Array("-csv", csvFilePath, "-user", "pää:pää")
+      withCsvFixture(mockCsv.replace("hetu", "foobar")) {
+        intercept[Error] {
+          cli.main(args)
+        }.getMessage should include(
+          "Csv tiedostosta puuttuu haluttuja otsikoita. List(hetu)"
         )
       }
+    }
+    "Csv:n ja api vastauksen vuodet eroavat" in {
+      withCsvFixture(mockCsv.replaceAll("2016;", "2000;")) {
+        val cli = ElaketurvakeskusCli
+        val args = Array("-csv", csvFilePath, "-user", "pää:pää", "-api", "ammatillisetperustutkinnot:2016-01-01:2018-12-12", "-port", koskiPort)
+        intercept[Error] {
+          cli.main(args)
+        }.getMessage should be(
+          "Vuosien 2000 ja 2016 tutkintotietoja yritettiin yhdistää"
+        )
+      }
+    }
+  }
+  "Jos argumenteilta puuttuu parametreja" in {
+    val cli = ElaketurvakeskusCli
+    val args = Array("-csv", csvFilePath, "-user")
+    an[Error] should be thrownBy (cli.main(args))
+    intercept[Error] { cli.main(args) }.getMessage should be(
+      "Unknown parameters for argument List(-user)"
+    )
+  }
+  "Vaatii aina -user vivun" in {
+    val cli = ElaketurvakeskusCli
+    val args = Array("-csv", csvFilePath)
+    an[Error] should be thrownBy (cli.main(args))
+    intercept[Error] {cli.main(args)}.getMessage should be(
+      "määritä -user tunnus:salasana"
+    )
+  }
+  "Luo AuditLogit" in {
+    AuditLogTester.clearMessages
+    withCsvFixture() {
+      val cli = ElaketurvakeskusCliForTest
+      val args = Array("-csv", csvFilePath, "-user", "pää:pää", "-api", "ammatillisetperustutkinnot:2016-01-01:2016-12-12", "-port", koskiPort)
+
+      cli.main(args)
+      AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_HAKU", "target" -> Map("oppijaHenkiloOid" -> MockOppijat.ammattilainen.oid)))
     }
   }
 }

@@ -9,9 +9,18 @@ object ElaketurvakeskusCsvParser {
 
   private val separator = ";"
 
+  private val hetu = "hetu"
+  private val syntymaaika = "syntymaaika"
+  private val sukunimi = "sukunimi"
+  private val etunimet = "etunimet"
+  private val tutkinnon_taso = "tutkinnon_taso"
+  private val OpiskeluoikeudenAlkamispaivamaara = "OpiskeluoikeudenAlkamispaivamaara"
+  private val suorituspaivamaara = "suorituspaivamaara"
+  private val oppijanumero = "oppijanumero"
+
   def parse(filepath: String): Option[EtkResponse] = {
     val csv = Source.fromFile(filepath).getLines().toList
-    val headLine = csv.head.split(separator)
+    val headLine = validateHeading(csv.head.split(separator))
     val csvLegend = headLine.zipWithIndex.toMap
 
     val vuosi = csv.drop(1).head.split(separator)(0).toInt
@@ -23,6 +32,13 @@ object ElaketurvakeskusCsvParser {
       tutkinnot = tutkintotiedot,
       aikaleima = Timestamp.from(Instant.now)
     ))
+  }
+
+  private def validateHeading(headings: Array[String]) = {
+    List(hetu, syntymaaika, etunimet, tutkinnon_taso, OpiskeluoikeudenAlkamispaivamaara, suorituspaivamaara, oppijanumero).filterNot(headings.contains) match {
+      case Nil => headings //ok
+      case notFound => throw new Error(s"Csv tiedostosta puuttuu haluttuja otsikoita. $notFound")
+    }
   }
 
   private def toEtkTutkintotieto(row: String, csvLegend: Map[String, Int], expectedFieldCount: Int) = {
@@ -41,17 +57,17 @@ object ElaketurvakeskusCsvParser {
 
     EtkTutkintotieto(
       henkilö = EtkHenkilö(
-        hetu = fieldOpt("hetu"),
-        syntymäaika = fieldOpt("syntymaaika").map(LocalDate.parse),
-        sukunimi = field("sukunimi"),
-        etunimet = field("etunimet")
+        hetu = fieldOpt(hetu),
+        syntymäaika = fieldOpt(syntymaaika).map(LocalDate.parse),
+        sukunimi = field(sukunimi),
+        etunimet = field(etunimet)
       ),
       tutkinto = EtkTutkinto(
-        tutkinnonTaso = fieldOpt("tutkinnon_taso"),
-        alkamispäivä = fieldOpt("OpiskeluoikeudenAlkamispaivamaara").map(LocalDate.parse),
-        päättymispäivä = fieldOpt("suorituspaivamaara").map(LocalDate.parse)
+        tutkinnonTaso = fieldOpt(tutkinnon_taso),
+        alkamispäivä = fieldOpt(OpiskeluoikeudenAlkamispaivamaara).map(LocalDate.parse),
+        päättymispäivä = fieldOpt(suorituspaivamaara).map(LocalDate.parse)
       ),
-      viite = fieldOpt("oppijanumero") match {
+      viite = fieldOpt(oppijanumero) match {
         case Some(oppijanumero) => Some(
           EtkViite(
             opiskeluoikeusOid = None,
