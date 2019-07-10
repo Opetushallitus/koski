@@ -113,7 +113,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   }
 
   private def addKeskeneräinenTutkinnonSuoritus(tila: KorkeakoulunOpiskeluoikeudenTila, suoritukset: List[KorkeakouluSuoritus], opiskeluoikeusNode: Node, tutkinto: Korkeakoulututkinto): List[KorkeakouluSuoritus] = {
-    val toimipiste = oppilaitos(opiskeluoikeusNode)
+    val toimipiste = oppilaitos(opiskeluoikeusNode, None)
     val (opintojaksot, muutSuoritukset) = suoritukset.partition(_.isInstanceOf[KorkeakoulunOpintojaksonSuoritus])
     KorkeakoulututkinnonSuoritus(
       koulutusmoduuli = tutkinto,
@@ -154,12 +154,13 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         val tutkinnonSuoritus = koulutuskoodi(suoritus).map { koulutuskoodi =>
           val osasuoritukset = childNodes(suoritus, allNodes).map(convertOpintojaksonSuoritus(_, allNodes))
 
+          val päivämääräVahvistus = vahvistus(suoritus)
           KorkeakoulututkinnonSuoritus(
             koulutusmoduuli = tutkinto(koulutuskoodi),
             arviointi = arviointi(suoritus),
-            vahvistus = vahvistus(suoritus),
+            vahvistus = päivämääräVahvistus,
             suorituskieli = None,
-            toimipiste = oppilaitos(suoritus),
+            toimipiste = oppilaitos(suoritus, päivämääräVahvistus.map(_.päivä)),
             osasuoritukset = optionalList(osasuoritukset)
           )
         }
@@ -209,6 +210,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   private def convertOpintojaksonSuoritus(suoritus: Node, allNodes: List[Node]): KorkeakoulunOpintojaksonSuoritus = {
     val osasuoritukset = childNodes(suoritus, allNodes).map(convertOpintojaksonSuoritus(_, allNodes))
 
+    val päivämääräVahvistus = vahvistus(suoritus)
     KorkeakoulunOpintojaksonSuoritus(
       koulutusmoduuli = KorkeakoulunOpintojakso(
         tunniste = PaikallinenKoodi((suoritus \\ "@koulutusmoduulitunniste").text, nimi(suoritus)),
@@ -216,9 +218,9 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         laajuus = laajuus(suoritus).orElse(laajuudetYhteensä(osasuoritukset))
       ),
       arviointi = arviointi(suoritus),
-      vahvistus = vahvistus(suoritus),
+      vahvistus = päivämääräVahvistus,
       suorituskieli = (suoritus \\ "Kieli").headOption.flatMap(kieli => koodistoViitePalvelu.validate(Koodistokoodiviite(kieli.text.toUpperCase, "kieli"))),
-      toimipiste = oppilaitos(suoritus),
+      toimipiste = oppilaitos(suoritus, päivämääräVahvistus.map(_.päivä)),
       osasuoritukset = optionalList(osasuoritukset)
     )
   }
@@ -268,7 +270,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
 
   private def vahvistus(suoritus: Node): Option[Päivämäärävahvistus] = {
     arviointi(suoritus).flatMap(_.lastOption.flatMap(arviointi =>
-      Some(Päivämäärävahvistus(arviointi.päivä, oppilaitos(suoritus)))
+      Some(Päivämäärävahvistus(arviointi.päivä, oppilaitos(suoritus, Some(arviointi.päivä))))
     ))
   }
 
@@ -316,12 +318,8 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     sanitize((suoritus \\ "Nimi" map (nimi => ((nimi \ "@kieli").text, nimi.text))).toMap).getOrElse(finnish("Suoritus: " + avain(suoritus)))
   }
 
-  private def oppilaitos(node: Node): Oppilaitos = {
-    val numero = oppilaitosnumero(node)
-    numero.flatMap(oppilaitosRepository.findByOppilaitosnumero)
-      .orElse(possiblyMockOppilaitos)
-      .getOrElse(throw new RuntimeException(s"Oppilaitosta ei löydy: $numero"))
-  }
+  private def oppilaitos(node: Node, vahvistusPäivä: Option[LocalDate]): Oppilaitos =
+    optionalOppilaitos(node, vahvistusPäivä).getOrElse(throw new RuntimeException(s"Oppilaitosta ei löydy: ${oppilaitosnumero(node)}"))
 
   private def optionalOppilaitos(node: Node, vahvistusPäivä: Option[LocalDate]): Option[Oppilaitos] = {
     val numero = oppilaitosnumero(node)
