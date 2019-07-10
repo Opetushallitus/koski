@@ -2189,8 +2189,8 @@ describe('Perusopetus', function() {
             expect(editor.propertyBySelector('.perusteenDiaarinumero').getValue()).to.equal('104/011/2014')
           })
 
-          it('Näytetään oppiaineen nimi opiskeluoikeuden otsikossa', function() {
-            expect(S('.opiskeluoikeus h3 .koulutus').text()).to.equal('A1-kieli')
+          it('Näytetään suorituksen tyyppi opiskeluoikeuden otsikossa', function() {
+            expect(S('.opiskeluoikeus h3 .koulutus').text()).to.equal('Perusopetuksen oppiaineen oppimäärä')
           })
 
           describe('Toisen oppiaineen lisääminen', function() {
@@ -2205,8 +2205,8 @@ describe('Perusopetus', function() {
               expect(opinnot.suoritusTabs()).to.deep.equal(['A1-kieli', 'Matematiikka'])
             })
 
-            it('Näytetään oppiaineiden määrä opiskeluoikeuden otsikossa', function() {
-              expect(S('.opiskeluoikeus h3 .koulutus').text()).to.equal('2 oppiainetta')
+            it('Näytetään suorituksen tyypppi opiskeluoikeuden otsikossa', function() {
+              expect(S('.opiskeluoikeus h3 .koulutus').text()).to.equal('Perusopetuksen oppiaineen oppimäärä')
             })
           })
         })
@@ -2443,8 +2443,8 @@ describe('Perusopetus', function() {
             expect(editor.propertyBySelector('.perusteenDiaarinumero').getValue()).to.equal('OPH-1280-2017')
           })
 
-          it('Näytetään oppiaineen nimi opiskeluoikeuden otsikossa', function() {
-            expect(S('.opiskeluoikeus h3 .koulutus').text()).to.equal('A1-kieli')
+          it('Näytetään suorituksen tyyppi opiskeluoikeuden otsikossa', function() {
+            expect(S('.opiskeluoikeus h3 .koulutus').text()).to.equal('Perusopetuksen oppiaineen oppimäärä')
           })
 
           describe('Toisen oppiaineen lisääminen', function() {
@@ -2459,8 +2459,8 @@ describe('Perusopetus', function() {
               expect(opinnot.suoritusTabs()).to.deep.equal(['A1-kieli', 'Matematiikka'])
             })
 
-            it('Näytetään oppiaineiden määrä opiskeluoikeuden otsikossa', function() {
-              expect(S('.opiskeluoikeus h3 .koulutus').text()).to.equal('2 oppiainetta')
+            it('Näytetään suorituksen tyyppi opiskeluoikeuden otsikossa', function() {
+              expect(S('.opiskeluoikeus h3 .koulutus').text()).to.equal('Perusopetuksen oppiaineen oppimäärä')
             })
           })
         })
@@ -3030,7 +3030,7 @@ describe('Perusopetus', function() {
     describe('Kaikki tiedot näkyvissä', function() {
       before(opinnot.expandAll)
       it('näyttää opiskeluoikeuden tiedot', function() {
-        expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal(['Jyväskylän normaalikoulu, Äidinkieli ja kirjallisuus (2008—2016, valmistunut)'])
+        expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal(['Jyväskylän normaalikoulu, Perusopetuksen oppiaineen oppimäärä (2008—2016, valmistunut)'])
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
           'Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2016\n' +
           'Tila 4.6.2016 Valmistunut\n' +
@@ -3063,7 +3063,7 @@ describe('Perusopetus', function() {
     describe('Monta oppiainetta', function() {
       before(page.openPage, page.oppijaHaku.searchAndSelect('131298-5248'))
       it('näyttää opiskeluoikeuden otsikon oikein', function() {
-        expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal(['Jyväskylän normaalikoulu, 2 oppiainetta (2008—2016, valmistunut)'])
+        expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal(['Jyväskylän normaalikoulu, Perusopetuksen oppiaineen oppimäärä (2008—2016, valmistunut)'])
       })
     })
 

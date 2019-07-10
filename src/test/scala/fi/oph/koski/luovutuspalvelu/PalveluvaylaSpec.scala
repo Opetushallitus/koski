@@ -111,8 +111,12 @@ class PalveluvaylaSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.ysiluokkalainen) shouldEqual "Perusopetus"
       }
 
-      "Kun opiskeluoikeudessa on perusopetuksen oppiaineen oppimääriä käytetään '<lkm> oppiainetta'" in {
-        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.montaOppiaineenOppimäärääOpiskeluoikeudessa) shouldEqual "2 oppiainetta"
+      "Kun opiskeluoikeudessa on perusopetuksen oppiaineen oppimääriä käytetään nimenä suorituksen tyyppiä" in {
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.montaOppiaineenOppimäärääOpiskeluoikeudessa) shouldEqual "Perusopetuksen oppiaineen oppimäärä"
+      }
+
+      "Kun opiskeluoikeudessa on lukion oppiaineen oppimääriä käytetään nimenä suorituksen tyyppiä" in {
+        ensimmäisenSuorituksenNimiRekisteritiedoissa(MockOppijat.lukionAineopiskelija) shouldEqual "Lukion oppiaineen oppimäärä"
       }
 
       "Kun opiskeluoikeudessa on opintojaksojen seassa korkeakoulututkinto käytetään tutkinnon nimeä" in {

@@ -169,33 +169,35 @@ export class OpiskeluoikeudenOpintosuoritusoteLink extends React.Component {
   }
 }
 
-
-const opintojaksoTaiOppimäärä = suoritus =>
-  isPerusopetuksenOppimäärä(suoritus) || isOpintojakso(suoritus)
-
-const isPerusopetuksenOppimäärä = suoritus =>
+const isPerusopetuksenOppiaineenOppimäärä = suoritus =>
   ['perusopetuksenoppiaineenoppimaara', 'nuortenperusopetuksenoppiaineenoppimaara'].includes(suorituksenTyyppi(suoritus))
+
+const isLukionOppiaineenOppimäärä = suoritus => suorituksenTyyppi(suoritus) === 'lukionoppiaineenoppimaara'
 
 const isKorkeakoulututkinto = suoritus => ['muukorkeakoulunsuoritus', 'korkeakoulututkinto'].includes(suorituksenTyyppi(suoritus))
 export const isOpintojakso = suoritus => suorituksenTyyppi(suoritus) === 'korkeakoulunopintojakso'
 const isPerusopetuksenVuosiluokka = suoritus => suorituksenTyyppi(suoritus) === 'perusopetuksenvuosiluokka'
 
-const oppimääräTaiOpintojaksoOtsikko = suoritukset => {
-  const otsikkoAvain = suoritukset.every(isPerusopetuksenOppimäärä) ? 'oppiainetta' : 'opintojaksoa'
-  return `${suoritukset.filter(opintojaksoTaiOppimäärä).length} ${t(otsikkoAvain)}`
-}
-
 // Duplicates the logic from src/main/scala/fi/oph/koski/luovutuspalvelu/SuomiFiService.scala#suorituksenNimi
 export const näytettäväPäätasonSuoritusTitle = opiskeluoikeus => {
   const suoritukset = modelItems(opiskeluoikeus, 'suoritukset')
   const sisältääKorkeakoulututkinnon = suoritukset.some(isKorkeakoulututkinto)
-  const sisältääOppiaineenOppimääränTaiOpintoJakson = suoritukset.length > 1 && (suoritukset.some(isPerusopetuksenOppimäärä) || suoritukset.every(isOpintojakso))
+  const kaikkiOpintojaksoja = suoritukset.length > 1 && suoritukset.every(isOpintojakso)
+  const kaikkiPerusopetuksenVuosiluokkia = suoritukset.every(isPerusopetuksenVuosiluokka)
+  const sisältääPerusopetuksenOppiaineenOppimäärän = suoritukset.some(isPerusopetuksenOppiaineenOppimäärä)
+  const sisältääLukionOppiaineenOppimäärän = suoritukset.some(isLukionOppiaineenOppimäärä)
 
-  return sisältääOppiaineenOppimääränTaiOpintoJakson
-    ? oppimääräTaiOpintojaksoOtsikko(suoritukset)
-    : suoritukset.every(isPerusopetuksenVuosiluokka)
-      ? t('Perusopetus')
-      : sisältääKorkeakoulututkinnon
-        ? suoritusTitle(suoritukset.find(isKorkeakoulututkinto))
-        : suoritusTitle(suoritukset[0])
+  if (kaikkiOpintojaksoja) {
+    return `${suoritukset.length} ${t('opintojaksoa')}`
+  } else if (sisältääPerusopetuksenOppiaineenOppimäärän) {
+    return t('Perusopetuksen oppiaineen oppimäärä')
+  } else if (sisältääLukionOppiaineenOppimäärän) {
+    return t('Lukion oppiaineen oppimäärä')
+  } else if (kaikkiPerusopetuksenVuosiluokkia) {
+    return t('Perusopetus')
+  } else if (sisältääKorkeakoulututkinnon) {
+    return suoritusTitle(suoritukset.find(isKorkeakoulututkinto))
+  } else {
+    return suoritusTitle(suoritukset[0])
+  }
 }

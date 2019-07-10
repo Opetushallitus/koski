@@ -427,6 +427,10 @@ describe('Lukiokoulutus', function( ){
           '1.9.2015 Läsnä')
       })
 
+      it('näyttää suorituksen tyypin opiskeluoikeuden otsikossa', function () {
+        expect(S('.opiskeluoikeus h3 .koulutus').text()).to.equal('Lukion oppiaineen oppimäärä')
+      })
+
       it('näyttää suorituksen tiedot', function() {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
           'Oppiaine Historia 60/011/2015\n' +
