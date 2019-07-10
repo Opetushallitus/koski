@@ -27,4 +27,12 @@ class OppijaValidationPerusopetuksenVuosiluokkaSpec extends TutkinnonPerusteetTe
       }
     }
   }
+
+  "Alkamispäivä, skeemassa alkamispäivä on määritelty optionaaliseksi" - {
+    "Suorituksella ei ole alkamispäivää -> HTTP 400" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(vuosiluokkasuoritus.copy(alkamispäivä = None)))) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.alkamispäiväPuuttuu("Suoritukselle perusopetuksenluokkaaste/9 ei ole merkitty alkamispäivää"))
+      }
+    }
+  }
 }
