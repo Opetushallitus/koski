@@ -156,7 +156,7 @@ class ElaketurvakeskusCliSpec extends FreeSpec with RaportointikantaTestMethods 
       val args = Array("-csv", csvFilePath, "-user", "pää:pää", "-api", "ammatillisetperustutkinnot:2016-01-01:2016-12-12", "-port", koskiPort)
 
       cli.main(args)
-      AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_HAKU", "target" -> Map("oppijaHenkiloOid" -> MockOppijat.ammattilainen.oid)))
+      AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> MockOppijat.ammattilainen.oid)))
     }
   }
 }
