@@ -19,8 +19,10 @@ case class ElaketurvakeskusCliClient(private val http: Http) {
   }
 
   def makeAuditLogsForOids(oids: Seq[String]): Unit = {
-    val request = LocalAuditLogRequest(oids, KoskiOperation.OPISKELUOIKEUS_KATSOMINEN.toString)
-    runTask(http.post(uri"/auditlog", request)(json4sEncoderOf[LocalAuditLogRequest])(expectSuccess))
+    oids.grouped(1000).foreach(oidBatch => {
+      val request = LocalAuditLogRequest(oidBatch, KoskiOperation.OPISKELUOIKEUS_KATSOMINEN.toString)
+      runTask(http.post(uri"/auditlog", request)(json4sEncoderOf[LocalAuditLogRequest])(expectSuccess))
+    })
   }
 }
 
