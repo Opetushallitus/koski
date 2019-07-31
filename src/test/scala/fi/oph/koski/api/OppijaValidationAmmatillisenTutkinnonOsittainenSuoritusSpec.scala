@@ -7,17 +7,19 @@ import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData.{helsinki, longTimeAgo, opiskeluoikeusLäsnä}
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.koskiuser.MockUsers.{stadinAmmattiopistoTallentaja, omniaTallentaja}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.organisaatio.MockOrganisaatiot.omnia
 import fi.oph.koski.schema._
 
 class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends TutkinnonPerusteetTest[AmmatillinenOpiskeluoikeus] with LocalJettyHttpSpecification with PutOpiskeluoikeusTestMethods[AmmatillinenOpiskeluoikeus] {
   def tag = implicitly[reflect.runtime.universe.TypeTag[AmmatillinenOpiskeluoikeus]]
   override def defaultOpiskeluoikeus = makeOpiskeluoikeus(alkamispäivä = longTimeAgo)
 
-  def makeOpiskeluoikeus(alkamispäivä: LocalDate = longTimeAgo) = AmmatillinenOpiskeluoikeus(
+  def makeOpiskeluoikeus(alkamispäivä: LocalDate = longTimeAgo, oppilaitos: Oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto)) = AmmatillinenOpiskeluoikeus(
     tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, None))),
-    oppilaitos = Some(Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto)),
+    oppilaitos = Some(oppilaitos),
     suoritukset = List(osittainenSuoritusKesken)
   )
 
@@ -207,7 +209,8 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
                 osasuoritukset = ammatillisenTutkinnonOsittainenSuoritus.osasuoritukset.map(_ ::: osasuoritukset)
               )))
             }
-            val opiskeluoikeusVahvistetullaSuorituksella = defaultOpiskeluoikeus.copy(suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus))
+            val opiskeluoikeusVahvistetullaSuorituksella = defaultOpiskeluoikeus.copy(
+              suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus))
 
             "Ammatillisen tutkinnon osan suoritus puuttuu" - {
               val opiskeluoikeus = opiskeluoikeusVahvistetullaSuorituksella.copy(suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus.copy(
@@ -215,6 +218,42 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
                 )))
               "Palautetaan HTTP 400" in (putOpiskeluoikeus(opiskeluoikeus) (
                 verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.ammatillisenTutkinnonOsaPuuttuu("Suoritus koulutus/361902 on merkitty valmiiksi, mutta sillä ei ole ammatillisen tutkinnon osan suoritusta. Valmis osittainen ammatillinen tutkinto ei voi koostua pelkästään yhteisistä tutkinnon osista."))))
+            }
+
+            "Ammatillisen tutkinnon osan suoritus puuttuu, mutta tutkinto on ostettu ja siihen linkataan muualta" - {
+              val stadinOpiskeluoikeus: AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(defaultHenkilö, defaultOpiskeluoikeus, user = stadinAmmattiopistoTallentaja)
+
+              val omnianOpiskeluoikeus = makeOpiskeluoikeus(oppilaitos = Oppilaitos(MockOrganisaatiot.omnia)).copy(
+                suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus.copy(toimipiste = OidOrganisaatio(MockOrganisaatiot.omnia))),
+                sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(stadinOpiskeluoikeus.oppilaitos.get, stadinOpiskeluoikeus.oid.get))
+              )
+
+              val linkittävä: AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(defaultHenkilö, omnianOpiskeluoikeus, user = omniaTallentaja)
+
+              val linkitetty = stadinOpiskeluoikeus.copy(
+                versionumero = None,
+                ostettu = true,
+                suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus.copy(
+                  osasuoritukset = ammatillisenTutkinnonOsittainenSuoritus.osasuoritukset.map(_.filterNot(_.isInstanceOf[MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus])),
+                ))
+              )
+
+              "Palautetaan HTTP 200" in putOpiskeluoikeus(linkitetty)(verifyResponseStatusOk())
+            }
+
+            "Ammatillisen tutkinnon osan suoritus puuttuu, tutkinto on ostettu, mutta tutkintoon ei linkata muualta" - {
+              val stadinOpiskeluoikeus: AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(defaultHenkilö, defaultOpiskeluoikeus, user = stadinAmmattiopistoTallentaja)
+
+              val eiLinkitetty = stadinOpiskeluoikeus.copy(
+                versionumero = None,
+                ostettu = true,
+                suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus.copy(
+                  osasuoritukset = ammatillisenTutkinnonOsittainenSuoritus.osasuoritukset.map(_.filterNot(_.isInstanceOf[MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus])),
+                ))
+              )
+
+              "Palautetaan HTTP 400" in putOpiskeluoikeus(eiLinkitetty) (
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.ammatillisenTutkinnonOsaPuuttuuEikäSisällytetty("Suoritus koulutus/361902 on merkitty sekä valmiiksi että ostetuksi, mutta sillä ei ole ammatillisen tutkinnon osan suoritusta eikä sitä ole merkitty sisältyväksi muuhun opiskeluoikeuteen. Valmis osittainen ammatillinen tutkinto ei voi koostua pelkästään yhteisistä tutkinnon osista.")))
             }
 
             "Vahvistamaton yhteisen ammatillisen tutkinnon osa" - {

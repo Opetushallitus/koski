@@ -1,10 +1,16 @@
 import * as R from 'ramda'
 import {osasuoritukset, suorituksenTyyppi} from '../suoritus/Suoritus'
 import {isOsittaisenAmmatillisenTutkinnonMuunTutkinnonOsanSuoritus} from './TutkinnonOsa'
+import {modelData} from '../editor/EditorModel'
 
 export const ammattillinenOsittainenTutkintoJaMuuAmmatillisenTutkinnonOsaPuuttuu = suoritus => (
   suorituksenTyyppi(suoritus) === 'ammatillinentutkintoosittainen'
   && R.none(isOsittaisenAmmatillisenTutkinnonMuunTutkinnonOsanSuoritus)(osasuoritukset(suoritus))
+  && !isOstettu(suoritus)
 )
 
+export const isOstettu = suoritus => {
+  if (!suoritus.parent && !suoritus.parent.parent) return false
 
+  return modelData(suoritus.parent.parent, 'ostettu')
+}

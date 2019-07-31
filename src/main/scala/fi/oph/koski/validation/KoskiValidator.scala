@@ -194,7 +194,6 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       case None => Right(ooWithKoulutustyyppi)
     }
   }
-
   private def validateSisältyvyys(henkilö: Option[Henkilö], opiskeluoikeus: Opiskeluoikeus)(implicit user: KoskiSession, accessType: AccessType.Value): HttpStatus = opiskeluoikeus.sisältyyOpiskeluoikeuteen match {
     case Some(SisältäväOpiskeluoikeus(Oppilaitos(oppilaitosOid, _, _, _), oid)) if accessType == AccessType.write =>
       koskiOpiskeluoikeudet.findByOid(oid)(KoskiSession.systemUser) match {
@@ -278,7 +277,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
           .onSuccess(validateDateOrder(alkamispäivä, ("suoritus.vahvistus.päivä", vahvistuspäivät), KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenAlkamispäivää)))
         :: validateAlkamispäivä(suoritus)
         :: validateToimipiste(suoritus)
-        :: validateStatus(suoritus)
+        :: validateStatus(suoritus, opiskeluoikeus)
         :: validateArviointi(suoritus)
         :: validateLaajuus(suoritus)
         :: validateOppiaineet(suoritus)
@@ -357,30 +356,69 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     }
   }
 
-  private def validateStatus(suoritus: Suoritus) = {
+  private def validateStatus(suoritus: Suoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
     if (suoritus.vahvistettu && suoritus.arviointiPuuttuu) {
       KoskiErrorCategory.badRequest.validation.tila.vahvistusIlmanArviointia("Suorituksella " + suorituksenTunniste(suoritus) + " on vahvistus, vaikka arviointi puuttuu")
     } else {
       suoritus match {
         case s if s.kesken => HttpStatus.ok
         case _: Välisuoritus => HttpStatus.ok // Välisuoritus on statukseltaan aina "valmis" -> ei validoida niiden sisältämien osasuoritusten statusta
-        case a: AmmatillisenTutkinnonOsittainenSuoritus => validateValmiinAmmatillisenTutkinnonOsittainenSuoritus(a)
+        case a: AmmatillisenTutkinnonOsittainenSuoritus => validateValmiinAmmatillisenTutkinnonOsittainenSuoritus(a, opiskeluoikeus)
         case s => validateValmiinSuorituksenStatus(s)
       }
     }
   }
 
-  private def validateValmiinAmmatillisenTutkinnonOsittainenSuoritus(suoritus: AmmatillisenTutkinnonOsittainenSuoritus) = {
+  private def validateValmiinAmmatillisenTutkinnonOsittainenSuoritus(suoritus: AmmatillisenTutkinnonOsittainenSuoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
     HttpStatus.fold(suoritus.osasuoritusLista.map {
       case y: YhteisenOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus if y.kesken =>
         HttpStatus.validate(y.osasuoritusLista.forall(_.valmis) && y.osasuoritukset.nonEmpty)(
           KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella " + suorituksenTunniste(suoritus) + " on keskeneräinen osasuoritus " + suorituksenTunniste(y))
         )
       case x => validateValmiinSuorituksenStatus(x)
-    }).onSuccess(HttpStatus.validate(suoritus.osasuoritusLista.exists(_.isInstanceOf[MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus]))(
-      KoskiErrorCategory.badRequest.validation.rakenne.ammatillisenTutkinnonOsaPuuttuu("Suoritus " + suorituksenTunniste(suoritus) + " on merkitty valmiiksi, mutta sillä ei ole ammatillisen tutkinnon osan suoritusta. Valmis osittainen ammatillinen tutkinto ei voi koostua pelkästään yhteisistä tutkinnon osista."))
-    )
+    }).onSuccess(validateOstettuLinkitettyTaiSisältääSuorituksia(suoritus, opiskeluoikeus))
   }
+
+  private def validateOstettuLinkitettyTaiSisältääSuorituksia(suoritus: AmmatillisenTutkinnonOsittainenSuoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
+
+    if (sisältääOsasuorituksen(suoritus)) return HttpStatus.ok
+
+    opiskeluoikeus match {
+      case a: AmmatillinenOpiskeluoikeus => {
+        if (opiskeluoikeus.oid.isDefined && opiskeluoikeus.oppilaitos.isDefined) {
+          val oppijaOids = koskiOpiskeluoikeudet.getOppijaOidsForOpiskeluoikeus(opiskeluoikeus.oid.get)(KoskiSession.systemUser)
+
+          oppijaOids match {
+            case Right(lista) => {
+              val opiskeluoikeudet = koskiOpiskeluoikeudet.findByOppijaOids(lista)(KoskiSession.systemUser)
+              val sisällytetty = opiskeluoikeudet.exists(_.sisältyyOpiskeluoikeuteen.exists(s =>
+                s.oid == opiskeluoikeus.oid.get &&
+                  s.oppilaitos.oid == opiskeluoikeus.oppilaitos.get.oid
+              ))
+
+              if (sisällytetty) {
+                HttpStatus.ok
+              } else if (a.ostettu) {
+                KoskiErrorCategory.badRequest.validation.rakenne.ammatillisenTutkinnonOsaPuuttuuEikäSisällytetty("Suoritus " + suorituksenTunniste(suoritus) + " on merkitty sekä valmiiksi että ostetuksi, mutta sillä ei ole ammatillisen tutkinnon osan suoritusta eikä sitä ole merkitty sisältyväksi muuhun opiskeluoikeuteen. Valmis osittainen ammatillinen tutkinto ei voi koostua pelkästään yhteisistä tutkinnon osista.")
+              } else {
+                KoskiErrorCategory.badRequest.validation.rakenne.ammatillisenTutkinnonOsaPuuttuu("Suoritus " + suorituksenTunniste(suoritus) + " on merkitty valmiiksi, mutta sillä ei ole ammatillisen tutkinnon osan suoritusta. Valmis osittainen ammatillinen tutkinto ei voi koostua pelkästään yhteisistä tutkinnon osista.")
+              }
+            }
+            case Left(status) => {
+              logger.info(s"Oppilaitoksen ${opiskeluoikeus.oppilaitos.get} opiskeluoikeuden ${opiskeluoikeus.oid.get} suorittajalle ei löytynyt oidia: ${status.statusCode} ${status.errorString.getOrElse("")}")
+              KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.henkilöTiedot("Opiskeluoikeuden suorittajalle ei löytynyt oidia")
+            }
+          }
+        } else {
+          logger.info(s"Suorituksen ${suorituksenTunniste(suoritus)} opiskeluoikeudella ei ole oidia ${opiskeluoikeus.oid.getOrElse("null")} tai oppilaitosta ${opiskeluoikeus.oppilaitos.getOrElse("null")}")
+          KoskiErrorCategory.badRequest.validation.rakenne.ammatillisenTutkinnonOsaPuuttuu("Suoritus " + suorituksenTunniste(suoritus) + " on merkitty valmiiksi, mutta sillä ei ole ammatillisen tutkinnon osan suoritusta. Valmis osittainen ammatillinen tutkinto ei voi koostua pelkästään yhteisistä tutkinnon osista.")
+        }
+      }
+      case _ => KoskiErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi("Ammatillisen tutkinnon suorituksen tulee olla osa ammatillisen tutkinnon opiskeluoikeutta")
+    }
+  }
+
+  private def sisältääOsasuorituksen(suoritus: AmmatillisenTutkinnonOsittainenSuoritus) = suoritus.osasuoritusLista.exists(_.isInstanceOf[MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus])
 
   private def validateValmiinSuorituksenStatus(suoritus: Suoritus) = {
     suoritus.rekursiivisetOsasuoritukset.find(_.kesken).fold(HttpStatus.ok) { keskeneräinenOsasuoritus =>
