@@ -880,7 +880,7 @@ function OpiskeluoikeusDialog() {
 }
 
 function Editor(elem) {
-  var editButton = findSingle('.toggle-edit')
+  var editButton = findSingle('.toggle-edit', elem)
   var enabledSaveButton = findSingle('#edit-bar button:not(:disabled)')
   var api = {
     isVisible: function() {

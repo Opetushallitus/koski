@@ -80,7 +80,7 @@ describe('Muu ammatillinen koulutus', function() {
       })
 
       describe('Muiden ammatillisen päätason suoritusten lisäyspainikkeet', function() {
-        before(editor.edit)
+        before(opinnot.opiskeluoikeusEditor(0).edit)
         it('ei ole näkyvissä', function() {
           expect(lisääSuoritus.isLinkVisible('lisää ammatillisen tutkinnon suoritus')).to.equal(false)
           expect(lisääSuoritus.isLinkVisible('lisää näyttötutkintoon valmistavan koulutuksen suoritus')).to.equal(false)
