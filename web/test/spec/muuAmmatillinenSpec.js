@@ -65,10 +65,22 @@ describe('Muu ammatillinen koulutus', function() {
           expect(opinnot.getTutkinto()).to.equal('Lennonjohtaja')
           expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
         })
+
+        it('Sallii kahden voimassaolevan opiskeluoikeuden lisäämisen samassa oppilaitoksessa', function(done) {
+          opinnot.opiskeluoikeudet.lisääOpiskeluoikeus()
+            .then(addOppija.selectOppilaitos('Stadin ammattiopisto'))
+            .then(addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'))
+            .then(addOppija.selectOppimäärä('Muun ammatillisen koulutuksen suoritus'))
+            .then(addOppija.selectKoulutusmoduuli('Ammatilliseen tehtävään valmistava koulutus'))
+            .then(addOppija.enterAmmatilliseenTehtäväänvalmistava('Ansio- ja liikennelentäjä'))
+            .then(addOppija.submitModal)
+            .then(_ => expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienMäärä()).to.equal(2))
+            .then(_ => done())
+        })
       })
 
       describe('Muiden ammatillisen päätason suoritusten lisäyspainikkeet', function() {
-        before(editor.edit)
+        before(opinnot.opiskeluoikeusEditor(0).edit)
         it('ei ole näkyvissä', function() {
           expect(lisääSuoritus.isLinkVisible('lisää ammatillisen tutkinnon suoritus')).to.equal(false)
           expect(lisääSuoritus.isLinkVisible('lisää näyttötutkintoon valmistavan koulutuksen suoritus')).to.equal(false)
