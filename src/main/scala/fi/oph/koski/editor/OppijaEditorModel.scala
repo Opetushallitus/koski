@@ -11,13 +11,12 @@ import fi.oph.scalaschema.{ClassSchema, ExtractionContext}
 import fi.oph.koski.util.DateOrdering.{localDateOptionOrdering, localDateOrdering}
 
 object OppijaEditorModel extends Timing {
+  val opiskeluoikeusOrdering: Ordering[Opiskeluoikeus] = Ordering.by(suoritusJaAlkamispäiväKriteeri)(Ordering.Tuple2(Ordering.Int, localDateOptionOrdering.reverse))
 
-  val opiskeluoikeusOrdering: Ordering[Opiskeluoikeus] = Ordering.by {
-    o: Opiskeluoikeus => o match {
-      case k: KorkeakoulunOpiskeluoikeus => (korkeakoulunOpiskeluoikeuksienJärjestysKriteeri(k), k.alkamispäivä)
-      case _ => (0, o.alkamispäivä)
-    }
-  } (Ordering.Tuple2(Ordering.Int, localDateOptionOrdering.reverse))
+  private def suoritusJaAlkamispäiväKriteeri(o: Opiskeluoikeus): (Int, Option[LocalDate]) = o match {
+    case k: KorkeakoulunOpiskeluoikeus => (korkeakoulunOpiskeluoikeuksienJärjestysKriteeri(k), k.alkamispäivä)
+    case _ => (0, o.alkamispäivä)
+  }
 
   def korkeakoulunOpiskeluoikeuksienJärjestysKriteeri(oo: KorkeakoulunOpiskeluoikeus): Int = {
     val suoritus = oo.suoritukset.headOption
@@ -58,7 +57,7 @@ object OppijaEditorModel extends Timing {
   }
 
   def toOppilaitoksenOpiskeluoikeus(oppilaitos: OrganisaatioWithOid, opiskeluoikeudet: Seq[Opiskeluoikeus]) = {
-    OppilaitoksenOpiskeluoikeudet(oppilaitos, opiskeluoikeudet.toList.sorted(opiskeluoikeusOrdering).map {
+    OppilaitoksenOpiskeluoikeudet(oppilaitos, sort(opiskeluoikeudet).map {
       case oo: AikuistenPerusopetuksenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(aikuistenPerusopetuksenSuoritustenJärjestysKriteeri))
       case oo: PerusopetuksenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(perusopetuksenSuoritustenJärjestysKriteeri))
       case oo: AmmatillinenOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(ammatillisenSuoritustenJärjestysKriteeri))
@@ -68,6 +67,15 @@ object OppijaEditorModel extends Timing {
       case oo: KorkeakoulunOpiskeluoikeus => oo.copy(suoritukset = oo.suoritukset.sortBy(_.vahvistus.map(_.päivä))(localDateOptionOrdering).reverse)
       case oo: Any => oo
     })
+  }
+
+  // Trying to catch a randomly happening bug by adding more logging
+  private def sort(opiskeluoikeudet: Seq[Opiskeluoikeus]) = try {
+    opiskeluoikeudet.toList.sorted(opiskeluoikeusOrdering)
+  } catch {
+    case e: IllegalArgumentException =>
+      logger.error(s"Problem sorting opiskeluoikeudet: ${opiskeluoikeudet.map(o => (o.suoritukset.headOption.map(_.getClass.getSimpleName), suoritusJaAlkamispäiväKriteeri(o)))}")
+      throw e
   }
 
   def aikuistenPerusopetuksenSuoritustenJärjestysKriteeri(s: AikuistenPerusopetuksenPäätasonSuoritus) = {
