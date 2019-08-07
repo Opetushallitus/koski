@@ -245,25 +245,6 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
               }
             }
 
-            "Ammatillisen tutkinnon osan suoritus puuttuu, tutkinto on ostettu, mutta tutkintoon ei linkata muualta" - {
-
-              "Palautetaan HTTP 400" in {
-
-                val stadinOpiskeluoikeus: AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(MockOppijat.eero, defaultOpiskeluoikeus, user = stadinAmmattiopistoTallentaja)
-
-                val eiLinkitetty = stadinOpiskeluoikeus.copy(
-                  versionumero = None,
-                  ostettu = true,
-                  suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus.copy(
-                    osasuoritukset = ammatillisenTutkinnonOsittainenSuoritus.osasuoritukset.map(_.filterNot(_.isInstanceOf[MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus])),
-                  ))
-                )
-
-                putOpiskeluoikeus(eiLinkitetty) (
-                  verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.ammatillisenTutkinnonOsaPuuttuuEikäSisällytetty("Suoritus koulutus/361902 on merkitty sekä valmiiksi että ostetuksi, mutta sillä ei ole ammatillisen tutkinnon osan suoritusta eikä sitä ole merkitty sisältyväksi muuhun opiskeluoikeuteen. Valmis osittainen ammatillinen tutkinto ei voi koostua pelkästään yhteisistä tutkinnon osista.")))
-              }
-            }
-
             "Vahvistamaton yhteisen ammatillisen tutkinnon osa" - {
               val vahvistamatonYhteisenTutkinnonOsanSuoritus = yhteisenTutkinnonOsanSuoritus.copy(vahvistus = None, arviointi = None)
 
