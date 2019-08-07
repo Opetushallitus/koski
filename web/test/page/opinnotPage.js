@@ -697,8 +697,11 @@ function Versiohistoria() {
   return api
 }
 
-function TilaJaVahvistus() {
-  var elem = findSingle('.tila-vahvistus')
+function TilaJaVahvistusIndeksillä(index = 0) {
+  return TilaJaVahvistus(findSingle('.tila-vahvistus:eq(' +index +')'))
+}
+
+function TilaJaVahvistus(elem = findSingle('.tila-vahvistus')) {
   function merkitseValmiiksiButton() { return elem().find('button.merkitse-valmiiksi') }
   function merkitseKeskeneräiseksiButton() { return elem().find('button.merkitse-kesken') }
 

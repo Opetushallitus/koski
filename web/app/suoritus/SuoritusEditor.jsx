@@ -19,7 +19,7 @@ import {
   isOsittaisenAmmatillisenTutkinnonYhteisenTutkinnonOsanSuoritus,
   isVälisuoritus
 } from '../ammatillinen/TutkinnonOsa'
-import {ammattillinenOsittainenTutkintoJaMuuAmmatillisenTutkinnonOsaPuuttuu} from '../ammatillinen/AmmatillinenOsittainenTutkinto'
+import {ammattillinenOsittainenTutkintoJaMuuAmmatillisenTutkinnonOsaPuuttuu, isOstettu} from '../ammatillinen/AmmatillinenOsittainenTutkinto'
 
 export class SuoritusEditor extends React.Component {
   showDeleteButtonIfAllowed() {
@@ -90,7 +90,8 @@ SuoritusEditor.validateModel = model => {
   )
 
   const validateValmisOsittaisenAmmatillisenTutkinnonSuoritus = suoritus => (
-    ammattillinenOsittainenTutkintoJaMuuAmmatillisenTutkinnonOsaPuuttuu(suoritus) && suoritusValmis(suoritus)
+    ammattillinenOsittainenTutkintoJaMuuAmmatillisenTutkinnonOsaPuuttuu(suoritus) && suoritusValmis(suoritus) &&
+    !isOstettu(suoritus)
       ? [{key: 'missing', message: <Text name='Ei voi merkitä valmiiksi, koska suoritukselta puuttuu ammatillinen tutkinnon osa...'/>}]
       : []
   )

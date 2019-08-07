@@ -2368,6 +2368,63 @@ describe('Ammatillinen koulutus', function() {
 
         after(editor.cancelChanges)
       })
+
+      describe('Ammatillisen tutkinnon osan suoritus puuttuu, mutta opiskeluoikeuteen on sisällytetty toinen opiskeluoikeus', function () {
+
+        var firstEditor = opinnot.opiskeluoikeusEditor(0)
+        var secondEditor = opinnot.opiskeluoikeusEditor(1)
+        var secondOpinnot = OpinnotPage(1)
+
+        var clickLisääOpiskeluoikeus = function () { return S('li.add-opiskeluoikeus > a > span').click() }
+        var clickValitseOppilaitosDropdown = function () { return S('label.oppilaitos .organisaatio .organisaatio-selection').click() }
+        var clickMuokkaaOpiskeluoikeus = function () { return S('div.opiskeluoikeuden-tiedot button.toggle-edit')[0].click() }
+        var täydennäSisältyvänOpiskeluoikeudenOid = function () { return firstEditor.property('oid').setValue(S('ul.opiskeluoikeuksientiedot span.id:eq( 1 ) > span.value').text())() }
+        var tallenna = function () { return S('#edit-bar button.koski-button').click() }
+        var odotaTallennusta = function () { return wait.forAjax() }
+
+        var clickMuokkaaSisällytettyOpiskeluoikeus = function () { return S('.opiskeluoikeuden-tiedot:eq(1) .koski-button').click() }
+
+        before(
+          clickLisääOpiskeluoikeus,
+          clickValitseOppilaitosDropdown,
+          addOppija.selectOppilaitos('Omnian ammattiopisto'),
+          addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen'),
+          addOppija.selectTutkinto('Autoalan perustutkinto'),
+          addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
+          addOppija.submitModal,
+
+          clickMuokkaaOpiskeluoikeus,
+          firstEditor.property('sisältyyOpiskeluoikeuteen').addValue,
+          firstEditor.property('oppilaitos').organisaatioValitsin().select('Stadin ammattiopisto'),
+
+          täydennäSisältyvänOpiskeluoikeudenOid,
+          tallenna,
+          odotaTallennusta,
+
+          clickMuokkaaSisällytettyOpiskeluoikeus,
+          secondEditor.property('tila').removeItem(0),
+          secondOpinnot.valitseSuoritus(1, 'Luonto- ja ympäristöalan perustutkinto, osittainen'),
+          TilaJaVahvistusIndeksillä(1).merkitseKeskeneräiseksi,
+          secondEditor.property('ostettu').setValue(true),
+          secondOpinnot.tutkinnonOsat().tutkinnonOsa(5).poistaTutkinnonOsa,
+          secondOpinnot.tutkinnonOsat().tutkinnonOsa(4).poistaTutkinnonOsa,
+          secondOpinnot.tutkinnonOsat().tutkinnonOsa(3).poistaTutkinnonOsa,
+          secondOpinnot.tutkinnonOsat().tutkinnonOsa(2).poistaTutkinnonOsa,
+          secondOpinnot.tutkinnonOsat().tutkinnonOsa(1).poistaTutkinnonOsa,
+          secondOpinnot.tutkinnonOsat().tutkinnonOsa(0).poistaTutkinnonOsa,
+
+          TilaJaVahvistusIndeksillä(1).merkitseValmiiksi,
+          TilaJaVahvistusIndeksillä(1).lisääVahvistus('1.1.2000'),
+        )
+
+        it('Voidaan vahvistaa muualta ostettu opiskeluoikeus', function () {
+          expect(isElementVisible(S('button.merkitse-kesken'))).to.equal(true)
+        })
+
+        after (
+          resetFixtures
+        )
+      })
     })
 
     describe('Tallentaminen', function () {
