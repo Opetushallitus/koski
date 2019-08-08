@@ -22,7 +22,12 @@ object ExamplesEsiopetus {
         NuortenPerusopetuksenOpiskeluoikeusjakso(date(2007, 6, 3), opiskeluoikeusValmistunut)
       )
     ),
-    lisätiedot = Some(EsiopetuksenOpiskeluoikeudenLisätiedot(pidennettyOppivelvollisuus = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4))))))
+    lisätiedot = Some(EsiopetuksenOpiskeluoikeudenLisätiedot(
+      pidennettyOppivelvollisuus = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
+      vammainen = Some(List(Aikajakso(date(2010, 8, 14), None))),
+      vaikeastiVammainen = Some(List(Aikajakso(date(2014, 6, 6), None))),
+      sisäoppilaitosmainenMajoitus = Some(List(Aikajakso(date(2012, 9, 1), Some(date(2013, 9, 1)))))
+    ))
   )
 
   lazy val opiskeluoikeusHelsingissä: EsiopetuksenOpiskeluoikeus = opiskeluoikeus.copy(
