@@ -49,7 +49,7 @@ export default ({opiskeluoikeusAtom}) => {
   const suorituskieletP = Http.cachedGet('/koski/api/editor/koodit/kieli').map(sortLanguages).map(values => values.map(v => v.data))
   suorituskieletP.onValue(kielet => suorituskieliAtom.set(kielet[0]))
   const rahoituksetP = koodistoValues('opintojenrahoitus').map(R.sortBy(R.compose(parseInt, R.prop('koodiarvo'))))
-  const hasRahoituksetAvailable = tyyppiAtom.map(koodiarvoMatch('ammatillinenkoulutus', 'lukiokoulutus', 'internationalschool'))
+  const hasRahoituksetAvailable = tyyppiAtom.map(koodiarvoMatch('aikuistenperusopetus', 'ammatillinenkoulutus', 'lukiokoulutus', 'internationalschool'))
 
   const opiskeluoikeudenTilatP = opiskeluoikeudentTilat(tyyppiAtom)
   opiskeluoikeudenTilatP.onValue(tilat => tilaAtom.set(tilat.find(koodiarvoMatch('lasna'))))
@@ -138,7 +138,7 @@ const OpiskeluoikeudenTila = ({tilaAtom, opiskeluoikeudenTilatP}) => {
 
 const OpintojenRahoitus = ({tyyppiAtom, rahoitusAtom, opintojenRahoituksetP}) => {
   const options = Bacon.combineWith(tyyppiAtom, opintojenRahoituksetP, (tyyppi, rahoitukset) =>
-    koodiarvoMatch('lukiokoulutus', 'internationalschool')(tyyppi)
+    koodiarvoMatch('aikuistenperusopetus', 'lukiokoulutus', 'internationalschool')(tyyppi)
       ? rahoitukset.filter(v => sallitutRahoituskoodiarvot.includes(v.koodiarvo))
       : rahoitukset
   )
