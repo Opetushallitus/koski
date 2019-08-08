@@ -1,3 +1,6 @@
+## 9.8.2019
+- Lisätty kentät vammainen, vaikeastiVammainen ja sisäoppilaitosmainenMajoitus esiopetuksen lisätietoihin
+
 ## 6.6.2019
 - Lisätty kenttä työssäoppimispaikanYTunnus ammatillisen koulutuksen koulutusopimukseen
 
