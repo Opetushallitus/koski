@@ -2213,6 +2213,18 @@ describe('Perusopetus', function() {
       })
     })
 
+    describe('Aikuisten perusopetus, uusi oppija', function() {
+      before(
+        prepareForNewOppija('kalle', '230872-7258'),
+        addOppija.enterValidDataPerusopetus(),
+        addOppija.selectOpiskeluoikeudenTyyppi('Aikuisten perusopetus')
+      )
+
+      it('Näytetään opintojen rahoitus-kenttä', function() {
+        expect(addOppija.rahoitusIsVisible()).to.equal(true)
+      })
+    })
+
     describe('Aikuisten perusopetus', function() {
       before(
         prepareForNewOppija('kalle', '230872-7258'),
