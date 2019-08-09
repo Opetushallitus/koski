@@ -25,6 +25,12 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
       .flatMap(henkilö => toOppija(henkilö, opiskeluoikeusRepository.findByOppija(henkilö, useVirta, useYtr)))
   }
 
+  def findOppijaHenkilö(oid: String, findMasterIfSlaveOid: Boolean = false, useVirta: Boolean = true, useYtr: Boolean = true)(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[(OppijaHenkilö, Seq[Opiskeluoikeus])]] = {
+    henkilöRepository.findByOid(oid, findMasterIfSlaveOid)
+      .toRight(notFound(oid))
+      .flatMap(henkilö => withOpiskeluoikeudet(henkilö, opiskeluoikeusRepository.findByOppija(henkilö, useVirta, useYtr)))
+  }
+
   def findUserOppija(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
     henkilöRepository.findByOid(user.oid)
       .toRight(notFound(user.oid))
@@ -42,13 +48,13 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
       .flatMap(henkilö => toOppija(henkilö, opiskeluoikeusRepository.findByOppija(henkilö, useVirta = useVirta, useYtr = useYtr), _ => "(hetu)"))
   }
 
-  def findVersion(oppijaOid: String, opiskeluoikeusOid: String, versionumero: Int)(implicit user: KoskiSession): Either[HttpStatus, Oppija] = {
+  def findVersion(oppijaOid: String, opiskeluoikeusOid: String, versionumero: Int)(implicit user: KoskiSession): Either[HttpStatus, (OppijaHenkilö, Seq[Opiskeluoikeus])] = {
     opiskeluoikeusRepository.getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid).flatMap {
       case oids if oids.contains(oppijaOid) =>
         historyRepository.findVersion(opiskeluoikeusOid, versionumero).flatMap { history =>
           henkilöRepository.findByOid(oppijaOid)
             .toRight(notFound(oppijaOid))
-            .flatMap(henkilö => toOppija(henkilö, WithWarnings(List(history), Nil)))
+            .flatMap(henkilö => withOpiskeluoikeudet(henkilö, WithWarnings(List(history), Nil)))
             .flatMap(_.warningsToLeft)
         }
       case _ =>
@@ -209,11 +215,15 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
   }
 
   private def toOppija(henkilö: OppijaHenkilö, opiskeluoikeudet: => WithWarnings[Seq[Opiskeluoikeus]], tunniste: OppijaHenkilö => String = _.oid)(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
+    withOpiskeluoikeudet(henkilö, opiskeluoikeudet).map(_.map { case (oh, oos) => Oppija(henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(oh), oos) })
+  }
+
+  private def withOpiskeluoikeudet(henkilö: OppijaHenkilö, opiskeluoikeudet: => WithWarnings[Seq[Opiskeluoikeus]], tunniste: OppijaHenkilö => String = _.oid)(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[(OppijaHenkilö, Seq[Opiskeluoikeus])]] = {
     opiskeluoikeudet match {
       case WithWarnings(Nil, Nil) => Left(notFound(tunniste(henkilö)))
       case oo: WithWarnings[Seq[Opiskeluoikeus]] =>
         writeViewingEventToAuditLog(user, henkilö.oid)
-        Right(oo.map(Oppija(henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(henkilö), _)))
+        Right(oo.map((henkilö, _)))
     }
   }
 

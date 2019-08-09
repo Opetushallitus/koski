@@ -13,7 +13,7 @@ object MockOppijat {
   // Tällä oppijalla ei ole fixtuureissa opiskeluoikeuksia, eikä tätä lisätä henkilöpalveluun.
   val tyhjä = UusiHenkilö("230872-7258", "Tero", Some("Tero"), "Tyhjä")
 
-  val hetuton = oppijat.addOppija(OppijaHenkilö(oid = "1.2.246.562.24.99999999123", sukunimi = "Hetuton", etunimet = "Heikki", kutsumanimi = "Heikki", hetu = None, syntymäaika = Some(LocalDate.of(1977, 2, 24))))
+  val hetuton = oppijat.addOppija(OppijaHenkilö(oid = "1.2.246.562.24.99999999123", sukunimi = "Hetuton", etunimet = "Heikki", kutsumanimi = "Heikki", hetu = None, syntymäaika = Some(LocalDate.of(1977, 2, 24)), yksilöity = false))
   val syntymäajallinen = oppijat.addOppija(OppijaHenkilö(oid = "1.2.246.562.24.99999999124", sukunimi = "Syntynyt", etunimet = "Sylvi", kutsumanimi = "Sylvi", hetu = Some("220627-833V"), syntymäaika = Some(LocalDate.of(1970, 1, 1))))
   val eero = oppijat.oppija("Esimerkki", "Eero", "010101-123N")
   val eerola = oppijat.oppija("Eerola", "Jouni", "081165-793C")

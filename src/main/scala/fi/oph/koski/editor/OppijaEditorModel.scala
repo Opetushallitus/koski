@@ -3,6 +3,7 @@ package fi.oph.koski.editor
 import java.time.LocalDate
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.{Hidden, KoodistoUri}
@@ -40,16 +41,17 @@ object OppijaEditorModel extends Timing {
     Ordering.by { ot: OpiskeluoikeudetTyypeittäin => ot.latestAlkamispäiväForOrdering }(localDateOptionOrdering).reverse
 
   // Note: even with editable=true, editability will be checked based on organizational access on the lower level
-  def toEditorModel(oppijaWithWarnings: WithWarnings[Oppija], editable: Boolean)(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = timed("createModel") {
-    val oppija = oppijaWithWarnings.getIgnoringWarnings
-    val tyypit = oppija.opiskeluoikeudet.groupBy(oo => application.koodistoViitePalvelu.validateRequired(oo.tyyppi)).map {
+  def toEditorModel(oppijaWithWarnings: WithWarnings[(OppijaHenkilö, Seq[Opiskeluoikeus])], editable: Boolean)(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = timed("createModel") {
+    val (oppijaHenkilö, opiskeluoikeudet) = oppijaWithWarnings.getIgnoringWarnings
+    val tyypit = opiskeluoikeudet.groupBy(oo => application.koodistoViitePalvelu.validateRequired(oo.tyyppi)).map {
       case (tyyppi, opiskeluoikeudet) =>
         val oppilaitokset = opiskeluoikeudet.groupBy(oo => oo.getOppilaitosOrKoulutusToimija).map {
           case (oppilaitos, opiskeluoikeudet) => toOppilaitoksenOpiskeluoikeus(oppilaitos, opiskeluoikeudet)
         }.toList.sorted(oppilaitoksenOpiskeluoikeudetOrdering)
         OpiskeluoikeudetTyypeittäin(tyyppi, oppilaitokset)
     }.toList.sorted(opiskeluoikeudetTyypeittäinOrdering)
-    buildModel(OppijaEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], tyypit, oppijaWithWarnings.warnings.flatMap(_.errors).map(_.key).toList), editable)
+    val oppija = Oppija(application.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(oppijaHenkilö), opiskeluoikeudet)
+    buildModel(OppijaEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], tyypit, oppijaWithWarnings.warnings.flatMap(_.errors).map(_.key).toList, oppijaHenkilö.yksilöity), editable)
   }
 
   def buildModel(obj: AnyRef, editable: Boolean)(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = {
@@ -137,7 +139,9 @@ case class OppijaEditorView(
   henkilö: TäydellisetHenkilötiedot,
   opiskeluoikeudet: List[OpiskeluoikeudetTyypeittäin],
   @Hidden
-  varoitukset: List[String]
+  varoitukset: List[String],
+  @Hidden
+  yksilöity: Boolean
 )
 
 case class OpiskeluoikeudetTyypeittäin(@KoodistoUri("opiskeluoikeudentyyppi") tyyppi: Koodistokoodiviite, opiskeluoikeudet: List[OppilaitoksenOpiskeluoikeudet]) {
