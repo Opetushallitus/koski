@@ -140,7 +140,7 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
     user.copy(serviceTicket = Some(fakeServiceTicket))
   }
 
-  private def createSession(user: AuthenticationUser) = KoskiSession(user, request, application.käyttöoikeusRepository)
+  def createSession(user: AuthenticationUser) = KoskiSession(user, request, application.käyttöoikeusRepository)
 }
 
 object DirectoryClientLogin extends Logging {

@@ -1,12 +1,11 @@
 package fi.oph.koski.opiskeluoikeus
 
-import javax.servlet.http.HttpServletRequest
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{GlobalExecutionContext, HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.SensitiveDataFilter
-import fi.oph.koski.koskiuser.{HasKoskiSession, KoskiSession, RequiresVirkailijaOrPalvelukäyttäjä}
+import fi.oph.koski.koskiuser.{HasKoskiSession, KoskiSession}
 import fi.oph.koski.log.KoskiMessageField._
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
@@ -15,6 +14,7 @@ import fi.oph.koski.schema.TäydellisetHenkilötiedot
 import fi.oph.koski.servlet.{ApiServlet, ObservableSupport}
 import fi.oph.koski.util.SortOrder.Ascending
 import fi.oph.koski.util.{Pagination, PaginationSettings}
+import javax.servlet.http.HttpServletRequest
 import org.scalatra._
 import rx.lang.scala.Observable
 
