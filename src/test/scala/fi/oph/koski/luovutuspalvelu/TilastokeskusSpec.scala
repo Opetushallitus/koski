@@ -5,12 +5,13 @@ import java.time.format.DateTimeFormatter.ISO_INSTANT
 import java.time.{LocalDate, ZonedDateTime}
 
 import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethodsAmmatillinen}
+import fi.oph.koski.documentation.{ExamplesLukio, LukioExampleData}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{KäyttöoikeusViranomainen, MockUsers, Palvelurooli}
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus, Oppija, TäydellisetHenkilötiedot}
+import fi.oph.koski.schema._
 import org.scalatest.{FreeSpec, Matchers}
 
 class TilastokeskusSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with Matchers {
@@ -66,11 +67,14 @@ class TilastokeskusSpec extends FreeSpec with LocalJettyHttpSpecification with O
         alkamispäivät should equal(List(date(2100, 1, 2)))
       }
 
-      "opiskeluoikeuden tyyppi" in {
+
+      "opiskeluoikeuden tyypit" in {
         resetFixtures
         insert(makeOpiskeluoikeus(date(2100, 1, 2)), MockOppijat.eero)
-        performQuery("?v=1&opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTyyppi=ammatillinenkoulutus").length should equal(1)
-        performQuery("?v=1&opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTyyppi=perusopetus").length should equal(0)
+        performQuery("?v=1&opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTyyppi=ammatillinenkoulutus").flatMap(_.opiskeluoikeudet).length should equal(1)
+        performQuery("?v=1&opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTyyppi=perusopetus").flatMap(_.opiskeluoikeudet).length should equal(0)
+        insert(makeLukioOpiskeluoikeus(date(2100, 1, 2)), MockOppijat.eero)
+        performQuery("?v=1&opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTyyppi=ammatillinenkoulutus&opiskeluoikeudenTyyppi=lukiokoulutus").flatMap(_.opiskeluoikeudet).length should equal(2)
       }
 
       "aikaleima" in {
@@ -102,4 +106,8 @@ class TilastokeskusSpec extends FreeSpec with LocalJettyHttpSpecification with O
   private def insert(opiskeluoikeus: Opiskeluoikeus, henkilö: Henkilö) = putOpiskeluoikeus(opiskeluoikeus, henkilö) {
     verifyResponseStatusOk()
   }
+
+  private def makeLukioOpiskeluoikeus(alkamispäivä: LocalDate) = ExamplesLukio.päättötodistus().copy(
+    tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(alku = alkamispäivä, tila = LukioExampleData.opiskeluoikeusAktiivinen)))
+  )
 }
