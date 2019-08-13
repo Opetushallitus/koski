@@ -68,6 +68,7 @@ private object OpiskeluoikeusQueryFilterParser extends Logging {
       case (p, v +: _) if p == "opiskeluoikeusPäättynytViimeistään" => dateParam((p, v)).right.map(OpiskeluoikeusPäättynytViimeistään)
       case (p, v +: _) if p == "opiskeluoikeusAlkanutAikaisintaan" => dateParam((p, v)).right.map(OpiskeluoikeusAlkanutAikaisintaan)
       case (p, v +: _) if p == "opiskeluoikeusAlkanutViimeistään" => dateParam((p, v)).right.map(OpiskeluoikeusAlkanutViimeistään)
+      case ("opiskeluoikeudenTyyppi", Seq(tyyppi)) => Right(OpiskeluoikeudenTyyppi(koodisto.validateRequired("opiskeluoikeudentyyppi", tyyppi)))
       case ("opiskeluoikeudenTyyppi", tyypit) => Right(OneOfOpiskeluoikeudenTyypit(tyypit.toList.map(tyyppi => OpiskeluoikeudenTyyppi(koodisto.validateRequired("opiskeluoikeudentyyppi", tyyppi)))))
       case ("opiskeluoikeudenTila", v +: _) => Right(OpiskeluoikeudenTila(koodisto.validateRequired("koskiopiskeluoikeudentila", v)))
       case ("suorituksenTyyppi", v +: _) => Right(SuorituksenTyyppi(koodisto.validateRequired("suorituksentyyppi", v)))
