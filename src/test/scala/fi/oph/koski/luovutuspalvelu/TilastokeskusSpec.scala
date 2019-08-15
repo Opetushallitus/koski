@@ -24,6 +24,24 @@ class TilastokeskusSpec extends FreeSpec with LocalJettyHttpSpecification with O
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainTilastokeskus())
         }
       }
+      authGet("api/luovutuspalvelu/haku?v=1", MockUsers.tilastokeskusKäyttäjä) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "TILASTOKESKUS-käyttöoikeus ei toimi muualla" in {
+      post("api/luovutuspalvelu/hetut", JsonSerializer.writeWithRoot(BulkHetuRequestV1(1, List(MockOppijat.eero.hetu.get), List("ammatillinenkoulutus"))), headers = authHeaders(MockUsers.tilastokeskusKäyttäjä) ++ jsonContent) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainViranomainen())
+      }
+      authGet ("api/oppija", MockUsers.tilastokeskusKäyttäjä) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
+      }
+      authGet (s"api/oppija/${MockOppijat.eerola}", MockUsers.tilastokeskusKäyttäjä) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
+      }
+      putOpiskeluoikeus(makeOpiskeluoikeus(date(2016, 1, 9)), headers = authHeaders(MockUsers.tilastokeskusKäyttäjä) ++ jsonContent) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
+      }
     }
 
     "Vaatii versionumeron" in {
