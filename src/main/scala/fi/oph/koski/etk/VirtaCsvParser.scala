@@ -3,9 +3,12 @@ package fi.oph.koski.etk
 import java.sql.Timestamp
 import java.time.{Instant, LocalDate}
 
-import scala.io.Source
+import fi.oph.koski.log.Logging
+import fi.oph.koski.schema.Henkilö
 
-object ElaketurvakeskusCsvParser {
+import scala.io.BufferedSource
+
+object VirtaCsvParser extends Logging {
 
   private val separator = ";"
 
@@ -18,20 +21,20 @@ object ElaketurvakeskusCsvParser {
   private val suorituspaivamaara = "suorituspaivamaara"
   private val oppijanumero = "oppijanumero"
 
-  def parse(filepath: String): Option[EtkResponse] = {
-    val csv = Source.fromFile(filepath).getLines().toList
+  def parse(source: BufferedSource): EtkResponse = {
+    val csv = source.getLines.toList
     val headLine = validateHeading(csv.head.split(separator))
     val csvLegend = headLine.zipWithIndex.toMap
 
     val vuosi = csv.drop(1).head.split(separator)(0).toInt
     val tutkintotiedot = csv.drop(1).map(toEtkTutkintotieto(_, csvLegend, headLine.size))
 
-    Some(EtkResponse(
+     EtkResponse(
       vuosi = vuosi,
       tutkintojenLkm = tutkintotiedot.size,
       tutkinnot = tutkintotiedot,
       aikaleima = Timestamp.from(Instant.now)
-    ))
+    )
   }
 
   private def validateHeading(headings: Array[String]) = {
@@ -45,7 +48,7 @@ object ElaketurvakeskusCsvParser {
     val fields = row.split(separator, -1)
 
     if (fields.size != expectedFieldCount) {
-      throw new Exception(s"Riviltä puuttuu kenttiä: ${row}")
+      throw new Error(s"Riviltä puuttuu kenttiä: ${row}")
     }
 
     def field(fieldName: String) = fields(csvLegend(fieldName))
@@ -55,7 +58,7 @@ object ElaketurvakeskusCsvParser {
       case str@_ => Some(str)
     }
 
-    EtkTutkintotieto(
+    val tutkintotieto = EtkTutkintotieto(
       henkilö = EtkHenkilö(
         hetu = fieldOpt(hetu),
         syntymäaika = fieldOpt(syntymaaika).map(LocalDate.parse),
@@ -78,5 +81,12 @@ object ElaketurvakeskusCsvParser {
         case _ => None
       }
     )
+    if (!hasIdentificationInfo(tutkintotieto)) {
+      logger.warn(s"VirtaCsvParser. No identification info for auditlogging found for row $row")
+    }
+    tutkintotieto
   }
+
+  private def hasIdentificationInfo(tutkintotieto: EtkTutkintotieto) =
+    tutkintotieto.oid.exists(Henkilö.isValidHenkilöOid) || tutkintotieto.henkilö.hetu.isDefined
 }

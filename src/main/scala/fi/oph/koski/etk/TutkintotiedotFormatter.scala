@@ -1,6 +1,6 @@
 package fi.oph.koski.etk
 
-object ElaketurvakeskusTutkintotiedotFormatter {
+object TutkintotiedotFormatter {
 
   def format(tutkintotiedot: EtkResponse): EtkResponse = {
     val formatted = tutkintotiedot.tutkinnot.map(tutkintotieto => tutkintotieto.copy(tutkinto = formatTutkinnonTaso(tutkintotieto.tutkinto)))

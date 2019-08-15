@@ -8,17 +8,19 @@ import fi.oph.koski.db.KoskiDatabase
 import fi.oph.koski.http.HttpTester
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.util.Wait
+import org.json4s.DefaultFormats
+import org.json4s.jackson.JsonMethods
 
 trait RaportointikantaTestMethods extends HttpTester with LocalJettyHttpSpecification {
+  implicit val formats = DefaultFormats
+
   def startRaportointiDatabase =
     new KoskiDatabase(KoskiApplicationForTests.raportointiConfig)
 
-  def loadRaportointikantaFixtures[A] = {
-    authGet("api/raportointikanta/clear") { verifyResponseStatusOk() }
-    authGet("api/raportointikanta/opiskeluoikeudet") { verifyResponseStatusOk() }
-    authGet("api/raportointikanta/henkilot") { verifyResponseStatusOk() }
-    authGet("api/raportointikanta/organisaatiot") { verifyResponseStatusOk() }
-    authGet("api/raportointikanta/koodistot") { verifyResponseStatusOk() }
+  def loadRaportointikantaFixtures = {
+    authGet("api/raportointikanta/load?force=true") { verifyResponseStatusOk() }
+    Wait.until(loadComplete)
   }
 
   def verifyRaportinLataaminen(apiUrl: String, expectedRaporttiNimi: String, expectedFileNamePrefix: String): Unit = {
@@ -42,5 +44,11 @@ trait RaportointikantaTestMethods extends HttpTester with LocalJettyHttpSpecific
       response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
       AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=$expectedRaporttiNimi&$queryString")))
     }
+  }
+
+  private def loadComplete = authGet("api/raportointikanta/status") {
+    val isComplete = (JsonMethods.parse(body) \ "public" \ "isComplete").extract[Boolean]
+    val isLoading = (JsonMethods.parse(body) \ "etl" \ "isLoading").extract[Boolean]
+    isComplete && !isLoading
   }
 }

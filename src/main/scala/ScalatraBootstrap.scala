@@ -10,7 +10,7 @@ import fi.oph.koski.henkilo.HenkilötiedotServlet
 import fi.oph.koski.history.KoskiHistoryServlet
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.localization.LocalizationServlet
-import fi.oph.koski.log.{LocalAuditLogServlet, Logging}
+import fi.oph.koski.log.Logging
 import fi.oph.koski.luovutuspalvelu.{LuovutuspalveluServlet, PalveluvaylaServlet, TilastokeskusServlet}
 import fi.oph.koski.mydata.{ApiProxyServlet, MyDataReactServlet, MyDataServlet}
 import fi.oph.koski.omattiedot.OmatTiedotServlet
@@ -54,7 +54,6 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     mount("/eisuorituksia", new EiSuorituksiaServlet)
     mount("/opinnot", new SuoritusjakoHtmlServlet)
     mount("/virhesivu", new VirhesivuServlet)
-    mount("/api/auditlog", new LocalAuditLogServlet)
     mount("/api/documentation", new DocumentationApiServlet)
     mount("/api/editor", new EditorServlet)
     mount("/api/editor/koodit", new EditorKooditServlet)

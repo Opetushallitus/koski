@@ -1,7 +1,7 @@
 package fi.oph.koski.etk
 
-import java.sql.Date
-import java.time.LocalDate
+import java.sql.{Date, Timestamp}
+import java.time.{Instant, LocalDate}
 
 import fi.oph.koski.db.KoskiDatabaseMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
@@ -10,7 +10,19 @@ import slick.jdbc.GetResult
 
 class ElaketurvakeskusQueryService(val db: DB) extends KoskiDatabaseMethods {
 
-  def ammatillisetPerustutkinnotAikajaksolta(alku: LocalDate, loppu: LocalDate): Seq[EtkTutkintotietoRow] = {
+  def ammatillisetPerustutkinnot(request: TutkintotietoRequest): EtkResponse = {
+    val queryResult = ammatillisetPerustutkinnotAikajaksolta(request.alku, request.loppu)
+    val tutkintotiedot = queryResult.map(_.toTutkintotieto).toList
+
+    EtkResponse(
+      vuosi = request.vuosi,
+      aikaleima = Timestamp.from(Instant.now),
+      tutkintojenLkm = tutkintotiedot.size,
+      tutkinnot = tutkintotiedot
+    )
+  }
+
+  private def ammatillisetPerustutkinnotAikajaksolta(alku: LocalDate, loppu: LocalDate): Seq[EtkTutkintotietoRow] = {
     val alkuDate = Date.valueOf(alku)
     val loppuDate = Date.valueOf(loppu)
     implicit val getResult = GetResult[EtkTutkintotietoRow](r => EtkTutkintotietoRow(r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<))
@@ -43,8 +55,7 @@ class ElaketurvakeskusQueryService(val db: DB) extends KoskiDatabaseMethods {
   }
 }
 
-case class EtkTutkintotietoRow
-(
+case class EtkTutkintotietoRow(
   koulutusmuoto: String,
   alkamispaiva: Option[Date],
   paattymispaiva: Option[Date],
@@ -55,4 +66,23 @@ case class EtkTutkintotietoRow
   versionumero: Int,
   opiskeluoikeus_oid: String,
   oppija_oid: String
-)
+) {
+  def toTutkintotieto: EtkTutkintotieto = EtkTutkintotieto(
+      henkilö = EtkHenkilö(
+        hetu = hetu,
+        syntymäaika = syntymäaika.map(_.toLocalDate),
+        sukunimi = sukunimi,
+        etunimet = etunimet
+      ),
+      tutkinto = EtkTutkinto(
+        tutkinnonTaso = Some(koulutusmuoto),
+        alkamispäivä = alkamispaiva.map(_.toLocalDate),
+        päättymispäivä = paattymispaiva.map(_.toLocalDate)
+      ),
+      viite = Some(EtkViite(
+        opiskeluoikeusOid = Some(opiskeluoikeus_oid),
+        opiskeluoikeusVersionumero = Some(versionumero),
+        oppijaOid = Some(oppija_oid)
+      ))
+    )
+}

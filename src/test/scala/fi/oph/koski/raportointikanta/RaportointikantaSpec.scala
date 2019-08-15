@@ -14,21 +14,17 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Wait
 import fi.oph.scalaschema.SchemaValidatingExtractor
-import org.json4s.DefaultFormats
 import org.json4s.JsonAST.{JBool, JObject}
 import org.json4s.jackson.JsonMethods
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
-class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with BeforeAndAfterAll {
-  implicit val formats = DefaultFormats
-
+class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with BeforeAndAfterAll with RaportointikantaTestMethods {
   private lazy val raportointiDatabase = KoskiApplicationForTests.raportointiDatabase
 
   override def beforeAll(): Unit = {
     LocalJettyHttpSpecification.setup(this)
     createOrUpdate(MockOppijat.slaveMasterEiKoskessa.henkilö, defaultOpiskeluoikeus)
-    authGet("api/raportointikanta/load?force=true")(verifyResponseStatusOk())
-    Wait.until(loadComplete)
+    loadRaportointikantaFixtures
   }
 
   override def afterAll(): Unit = resetFixtures
@@ -394,12 +390,6 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
 
   private def getLoadStartedTime: Timestamp = authGet("api/raportointikanta/status") {
     JsonSerializer.extract[Timestamp](JsonMethods.parse(body) \ "etl" \ "startedTime")
-  }
-
-  private def loadComplete = authGet("api/raportointikanta/status") {
-    val isComplete = (JsonMethods.parse(body) \ "public" \ "isComplete").extract[Boolean]
-    val isLoading = (JsonMethods.parse(body) \ "etl" \ "isLoading").extract[Boolean]
-    isComplete && !isLoading
   }
 }
 

@@ -9,8 +9,12 @@ import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.log.Logging
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import org.json4s.JsonAST.JValue
+import org.json4s.jackson.JsonMethods
+import org.scalatra.servlet.FileUploadSupport
 
-class ElaketurvakeskusServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with Logging with NoCache {
+import scala.io.{BufferedSource, Source}
+
+class ElaketurvakeskusServlet(implicit val application: KoskiApplication) extends ApiServlet with FileUploadSupport with RequiresVirkailijaOrPalvelukäyttäjä with Logging with NoCache {
 
   val elaketurvakeskusService = new ElaketurvakeskusService(application)
 
@@ -20,20 +24,39 @@ class ElaketurvakeskusServlet(implicit val application: KoskiApplication) extend
     }
   }
 
-  post("/ammatillisetperustutkinnot") {
-    withJsonBody { parsedJson =>
-      parseEtkTutkintotietoRequest(parsedJson) match {
-        case Left(status) => haltWithStatus(status)
-        case Right(req) => renderObject(elaketurvakeskusService.ammatillisetPerustutkinnot(req.vuosi, req.alku, req.loppu))
+  post("/") {
+    renderEither(request.contentType match {
+      case Some(contentType) if isMultipart(contentType) => {
+        val json = parseJson
+        val file = parseFile
+
+        elaketurvakeskusService.tutkintotiedot(json, file) match {
+          case Some(response) => Right(response)
+          case None => Left(KoskiErrorCategory.notFound.suoritustaEiLöydy(""))
+        }
       }
-    }()
+      case wrongType => Left(KoskiErrorCategory.badRequest(s"$wrongType"))
+    })
   }
 
-  private def parseEtkTutkintotietoRequest(parsedJson: JValue) = {
-    JsonSerializer.validateAndExtract[EtkTutkintotietoRequest](parsedJson)
+  private def isMultipart(string: String) =
+    string.split(";")(0) == "multipart/form-data"
+
+  private def parseFile: Option[BufferedSource] = fileMultiParams.get("csv")
+    .map(_.head)
+    .map(file => Source.fromInputStream(file.getInputStream))
+
+  private def parseJson: Option[TutkintotietoRequest] = params.get("json")
+    .map(JsonMethods.parse(_))
+    .map(parseTutkintotieto)
+    .map {
+      case Right(tutkintotieto) => tutkintotieto
+      case Left(status) => haltWithStatus(status)
+    }
+
+  private def parseTutkintotieto(parsedJson: JValue) =
+    JsonSerializer.validateAndExtract[TutkintotietoRequest](parsedJson)
       .left.map(errors => KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(errors)))
-  }
 }
 
-case class EtkTutkintotietoRequest(alku: LocalDate, loppu: LocalDate, vuosi: Int)
-
+case class TutkintotietoRequest(alku: LocalDate, loppu: LocalDate, vuosi: Int)
