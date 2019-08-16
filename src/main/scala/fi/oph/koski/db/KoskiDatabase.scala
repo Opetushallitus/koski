@@ -70,7 +70,7 @@ class KoskiDatabase(val config: KoskiDatabaseConfig) extends Logging {
   }
 
   private def startLocalDatabaseServerIfNotRunning: Option[PostgresRunner] = {
-    if (config.isLocal) {
+    if (config.isLocal && !config.readOnly) {
       Some(new PostgresRunner("postgresql/data", "postgresql/postgresql.conf", config.port).start)
     } else {
       None
