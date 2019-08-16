@@ -92,7 +92,9 @@ case class OppijaNumerorekisteriOppija(
   modified: Long,
   turvakielto: Option[Boolean],
   sukupuoli: Option[String],
-  kotikunta: Option[String]
+  kotikunta: Option[String],
+  yksiloity: Option[Boolean],
+  yksiloityVTJ: Option[Boolean]
 ) {
   def toOppijaHenkilö(linkitetytOidit: List[String]) = OppijaHenkilö(
     oid = oidHenkilo,
@@ -108,7 +110,9 @@ case class OppijaNumerorekisteriOppija(
     sukupuoli = sukupuoli,
     linkitetytOidit = linkitetytOidit,
     vanhatHetut = kaikkiHetut.getOrElse(Nil).filterNot(hetu.contains),
-    kotikunta = kotikunta
+    kotikunta = kotikunta,
+    yksiloity = yksiloity,
+    yksiloityVTJ = yksiloityVTJ,
   )
 }
 case class UusiOppijaHenkilö(hetu: Option[String], sukunimi: String, etunimet: String, kutsumanimi: String, henkiloTyyppi: String = "OPPIJA")

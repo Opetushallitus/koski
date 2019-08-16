@@ -12,7 +12,7 @@ object HenkilöLoader extends Logging {
   def loadHenkilöt(opintopolkuHenkilöFacade: OpintopolkuHenkilöFacade, db: RaportointiDatabase): Int = {
     logger.info("Ladataan henkilö-OIDeja opiskeluoikeuksista...")
     // note: this list has 1-2M oids in production.
-    val oids = db.oppijaOidsFromOpiskeluoikeudet
+    val oids = db.oppijaOidsFromOpiskeluoikeudet // Koskesta löytyvät oidit
     logger.info(s"Löytyi ${oids.size} henkilö-OIDia")
     db.setStatusLoadStarted(name)
     db.deleteHenkilöt
@@ -55,6 +55,8 @@ object HenkilöLoader extends Logging {
       aidinkieli = oppija.äidinkieli,
       kansalaisuus = oppija.kansalaisuus.filter(_.nonEmpty).map(_.sorted.mkString(",")),
       turvakielto = oppija.turvakielto,
-      kotikunta = oppija.kotikunta
+      kotikunta = oppija.kotikunta,
+      yksiloity = oppija.yksiloity,
+      yksiloityVTJ = oppija.yksiloityVTJ,
     )
 }
