@@ -5,6 +5,12 @@ import Text from '../i18n/Text'
 import {modelData} from '../editor/EditorModel'
 import Http from '../util/http'
 import {numberToString} from '../util/format'
+import {flatMapArray} from '../util/util'
+import {osasuoritukset} from './Suoritus'
+import {
+  isJatkoOpintovalmiuksiaTukevienOpintojenSuoritus,
+  isKorkeakouluOpintosuoritus
+} from '../ammatillinen/TutkinnonOsa'
 
 export const fetchLaajuudet = (suoritus, groupIds) => {
   let diaarinumero = modelData(suoritus, 'koulutusmoduuli.perusteenDiaarinumero')
@@ -45,8 +51,9 @@ const laajuusRange = (l) => {
   }
 }
 
-export const YhteensäSuoritettu = ({osasuoritukset, laajuusP, laajuusYksikkö=null}) => {
-  const arvioidutSuoritukset = osasuoritukset.filter(s => !!modelData(s, 'arviointi'))
+export const YhteensäSuoritettu = ({suoritukset, laajuusP, laajuusYksikkö=null}) => {
+  const käytetäänLaajuudessa = flatMapArray(suoritukset, (s) => lasketaanOsasuorituksista(s) ? osasuoritukset(s) : s)
+  const arvioidutSuoritukset = käytetäänLaajuudessa.filter(s => !!modelData(s, 'arviointi'))
   const laajuudetYhteensä = R.sum(R.map(item => modelData(item, 'koulutusmoduuli.laajuus.arvo') || 0, arvioidutSuoritukset))
 
   return (
@@ -61,3 +68,8 @@ export const YhteensäSuoritettu = ({osasuoritukset, laajuusP, laajuusYksikkö=n
     </div>
   )
 }
+
+const lasketaanOsasuorituksista = (suoritus) => (
+  isKorkeakouluOpintosuoritus(suoritus)
+  || isJatkoOpintovalmiuksiaTukevienOpintojenSuoritus(suoritus)
+)

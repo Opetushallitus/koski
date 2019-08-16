@@ -117,7 +117,7 @@ export class Suoritustaulukko extends React.Component {
         </tbody>,
         nestedLevel === 0 && !isNäyttötutkintoonValmistava(parentSuoritus) && !isYlioppilastutkinto(parentSuoritus) && <tbody key={'group- '+ i + '-footer'} className="yhteensä">
           <tr><td>
-            <YhteensäSuoritettu osasuoritukset={items} laajuusP={fetchLaajuudet(parentSuoritus, groups.groupIds).map(l => l[groupId])} laajuusYksikkö={laajuusYksikkö}/>
+            <YhteensäSuoritettu suoritukset={items} laajuusP={fetchLaajuudet(parentSuoritus, groups.groupIds).map(l => l[groupId])} laajuusYksikkö={laajuusYksikkö}/>
           </td></tr>
         </tbody>
       ]

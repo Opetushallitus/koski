@@ -71,7 +71,7 @@ const SuoritusGroup = ({groups, groupId, columns, nested, parentSuoritus, laajuu
       </table>
       {!nested && !isNäyttötutkintoonValmistava(parentSuoritus) && !ylioppilastutkinto &&
         <YhteensäSuoritettu
-          osasuoritukset={groupItems}
+          suoritukset={groupItems}
           laajuusP={fetchLaajuudet(parentSuoritus, groups.groupIds).map(l => l[groupId])}
           laajuusYksikkö={laajuusYksikkö}/>}
     </div>
