@@ -19,7 +19,7 @@ import org.json4s.JsonAST.{JObject, JString}
 import org.json4s.{JArray, JValue}
 import org.scalatra.ContentEncodingSupport
 
-class OppijaServlet(implicit val application: KoskiApplication) extends ApiServlet with Logging with GlobalExecutionContext with OpiskeluoikeusQueries with ContentEncodingSupport with NoCache with Timing with Pagination {
+class OppijaServlet(implicit val application: KoskiApplication) extends ApiServlet with Logging with GlobalExecutionContext with OpiskeluoikeusQueries with RequiresVirkailijaOrPalvelukäyttäjä with ContentEncodingSupport with NoCache with Timing with Pagination {
 
   post("/") { putSingle(false) }
 
@@ -53,8 +53,7 @@ class OppijaServlet(implicit val application: KoskiApplication) extends ApiServl
   }
 
   get("/") {
-    val serialize = SensitiveDataFilter(koskiSession).rowSerializer
-    streamResponse(query.map(x => (application.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(x._1), x._2)).map(serialize), koskiSession)
+    queryAndStreamOpiskeluoikeudet
   }
 
   // TODO: tarkista lokeista voiko tämän poistaa

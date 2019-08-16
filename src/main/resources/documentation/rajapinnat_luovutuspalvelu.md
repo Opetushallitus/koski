@@ -207,3 +207,86 @@ Vastaus, kun pyyntö suoritetaan onnistuneesti:
 
 Jos jollekin hetulle ei löydy opiskeluoikeuksia, tämä ei ole virhe vaan hetu puuttuu vastauslistasta.
 
+## /koski/api/luovutuspalvelu/haku
+
+Tällä kutsulla haetaan usean (max. 1000 kpl) henkilön tiedot hakuehtojen perusteella. Käyttö rajattu vain tietyille viranomaisille.
+
+Tällä kutsulla ei voi hakea `korkeakoulutus`- tai `ylioppilastutkinto`-tyyppisiä opiskeluoikeuksia,
+
+Esimerkkipyyntö (hakee ensimmäiset 100kpl ammatillisen ja lukion opiskeluoikeuksia jotka ovat alkaneet 31.12.2018 tai sen jälkeen):
+
+    GET /koski/api/luovutuspalvelu/haku?v=1&pageSize=100&pageNumber=0&opiskeluoikeusAlkanutViimeistään=2018-12-31&opiskeluoikeudenTyyppi=ammatillinenkoulutus&opiskeluoikeudenTyyppi=lukiokoulutus' HTTP/1.1
+
+Hakuparametrien kuvaukset:
+
+ * `v` - rajapinnan versionumero, tässä aina 1.
+ * `opiskeluoikeudenTyyppi` - opiskeluoikeuden tyyppi, josta kutsuja on kiinnostunut, voidaan antaa useita. Rajaa tulokset niihin opiskeluoikeuksiin jotka kuuluvat annettuihin tyyppeihin.
+    Sallitut arvot löytyvät [opiskeluoikeudentyyppi](/koski/dokumentaatio/koodisto/opiskeluoikeudentyyppi/latest) koodistosta.
+    `korkeakoulutus`- tai `ylioppilastutkinto`-tyyppisiä opiskeluoikeuksia ei voi hakea.
+ * `opiskeluoikeusPäättynytAikaisintaan` - Päivämäärä jonka jälkeen opiskeluoikeus on päättynyt. Muotoa: `yyyy-mm-dd`. Rajaa tulokset niihin opiskeluoikeuksiin jotka ovat päättyneet annetuna päivänä tai sen jälkeen.
+ * `opiskeluoikeusPäättynytViimeistään` - Päivämäärä jota ennen opiskeluoikeus on päättynyt. Muotoa: `yyyy-mm-dd`. Rajaa tulokset niihin opiskeluoikeuksiin jotka ovat päättyneet annetuna päivänä tai sitä ennen.
+ * `opiskeluoikeusAlkanutAikaisintaan` - Päivämäärä jonka jälkeen opiskeluoikeus on alkanut. Muotoa: `yyyy-mm-dd`. Rajaa tulokset niihin opiskeluoikeuksiin jotka ovat alkaneet annetuna päivänä tai sen jälkeen.
+ * `opiskeluoikeusAlkanutViimeistään` - Päivämäärä jota ennen opiskeluoikeus on alkanut. Muotoa: `yyyy-mm-dd`. Rajaa tulokset niihin opiskeluoikeuksiin jotka ovat alkaneet annetuna päivänä tai sitä ennen.
+ * `muuttunutEnnen` - Aikaleima jota ennen opiskeluoikeus on muuttunut. Aikaleima annetaan UTC-ajassa, ISO 8601-muodossa, esim. `2018-12-03T10:15:30Z`. Rajaa tulokset niihin opiskeluoikeuksiin jotka ovat muuttuneet ennen annettua aikaleimaa.
+ * `muuttunutJälkeen` - Aikaleima jonka jälkeen opiskeluoikeus on muuttunut. Aikaleima annetaan UTC-ajassa, ISO 8601-muodossa, esim. `2018-12-03T10:15:30Z`. Rajaa tulokset niihin opiskeluoikeuksiin jotka ovat muuttuneet annettun aikaleiman jälkeen.
+ * `pageSize` - Sivukoko. Määrittää kuinka monta opiskeluoikeutta vastauksessa palautetaan. Oletusarvo on 1000 opiskeluoikeutta.
+ * `pageNumber` - Sivunumero. Määrittää ohitettavien sivujen määrän. Oletusarvo on 0 (näytetään ensimmäinen sivu).
+
+Vastaus, kun pyyntö suoritetaan onnistuneesti:
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+
+    [
+      {
+        "henkilö": {
+          "oid": "1.2.246.562.24.123456789",
+          "hetu": "180859-914S",
+          "syntymäaika": "1959-08-18",
+          "etunimet": "Eeva Katariina",
+          "kutsumanimi": "Eeva",
+          "sukunimi": "Lehtinen",
+          "äidinkieli" : {
+            "koodiarvo" : "FI",
+            "nimi" : {
+              "fi" : "suomi",
+              "sv" : "finska",
+              "en" : "Finnish"
+            },
+            "lyhytNimi" : {
+              "fi" : "suomi",
+              "sv" : "finska",
+              "en" : "Finnish"
+            },
+            "koodistoUri" : "kieli",
+            "koodistoVersio" : 1
+          },
+          "kansalaisuus" : [ {
+            "koodiarvo" : "246",
+            "nimi" : {
+              "fi" : "Suomi",
+              "sv" : "Finland",
+              "en" : "Finland"
+            },
+            "lyhytNimi" : {
+              "fi" : "FI",
+              "sv" : "FI",
+              "en" : "FI"
+            },
+            "koodistoUri" : "maatjavaltiot2",
+            "koodistoVersio" : 2
+          } ],
+          "turvakielto": false
+        },
+        "opiskeluoikeudet": [
+          {
+            "oid": "1.2.246.562.15.31643973527",
+            "versionumero": 1,
+            "aikaleima": "2018-09-25T14:03:58.700770",
+            ...
+          },
+          ...
+        ]
+      },
+      ...
+    ]

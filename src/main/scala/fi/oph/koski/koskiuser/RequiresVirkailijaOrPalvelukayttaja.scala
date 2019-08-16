@@ -1,8 +1,6 @@
 package fi.oph.koski.koskiuser
 
-import fi.oph.koski.http.KoskiErrorCategory
-
-trait RequiresVirkailijaOrPalvelukäyttäjä extends AuthenticationSupport {
+trait RequiresVirkailijaOrPalvelukäyttäjä extends AuthenticationSupport with HasKoskiSession {
   implicit def koskiSession: KoskiSession = koskiSessionOption.get
 
   before() {

@@ -2,7 +2,7 @@ package fi.oph.koski.oppija
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSession, RequiresVirkailijaOrPalvelukäyttäjä}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueries
 import fi.oph.koski.schema.Oppija
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest
 import org.json4s.JValue
 import org.json4s.JsonAST.{JObject, JString}
 
-class OppijaServletV2(implicit val application: KoskiApplication) extends ApiServlet with OpiskeluoikeusQueries with NoCache {
+class OppijaServletV2(implicit val application: KoskiApplication) extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with NoCache {
   post("/") { putSingle(false) }
 
   put("/") { putSingle(true) }
