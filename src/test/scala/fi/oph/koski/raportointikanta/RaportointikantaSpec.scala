@@ -47,6 +47,8 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
         mockOppija.etunimet,
         Some("fi"),
         None,
+        false,
+        None,
         false
       )))
     }
@@ -55,16 +57,16 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
       val hakuOidit = Set(master.oid, slaveOppija.oid)
       val henkilot = raportointiDatabase.runDbSync(raportointiDatabase.RHenkilöt.filter(_.oppijaOid inSet(hakuOidit)).result).toSet
       henkilot should equal (Set(
-        RHenkilöRow(slaveOppija.oid, master.oid, master.hetu, None, Some(Date.valueOf("1997-10-10")), master.sukunimi, master.etunimet, Some("fi"), None, false),
-        RHenkilöRow(master.oid, master.oid, master.hetu, None, Some(Date.valueOf("1997-10-10")), master.sukunimi, master.etunimet, Some("fi"), None, false)
+        RHenkilöRow(slaveOppija.oid, master.oid, master.hetu, None, Some(Date.valueOf("1997-10-10")), master.sukunimi, master.etunimet, Some("fi"), None, false, None, false),
+        RHenkilöRow(master.oid, master.oid, master.hetu, None, Some(Date.valueOf("1997-10-10")), master.sukunimi, master.etunimet, Some("fi"), None, false, None, false)
       ))
     }
     "Master oidia ei löydy koskesta" in {
       val slaveOppija = MockOppijat.slaveMasterEiKoskessa.henkilö
       val henkilot = raportointiDatabase.runDbSync(raportointiDatabase.RHenkilöt.filter(_.hetu === slaveOppija.hetu.get).result).toSet
       henkilot should equal(Set(
-        RHenkilöRow(slaveOppija.oid, masterEiKoskessa.oid, masterEiKoskessa.hetu, None, Some(Date.valueOf("1966-03-27")), masterEiKoskessa.sukunimi, masterEiKoskessa.etunimet, None, None, false),
-        RHenkilöRow(masterEiKoskessa.oid, masterEiKoskessa.oid, masterEiKoskessa.hetu, None, Some(Date.valueOf("1966-03-27")), masterEiKoskessa.sukunimi, masterEiKoskessa.etunimet, None, None, false)
+        RHenkilöRow(slaveOppija.oid, masterEiKoskessa.oid, masterEiKoskessa.hetu, None, Some(Date.valueOf("1966-03-27")), masterEiKoskessa.sukunimi, masterEiKoskessa.etunimet, None, None, false, None, false),
+        RHenkilöRow(masterEiKoskessa.oid, masterEiKoskessa.oid, masterEiKoskessa.hetu, None, Some(Date.valueOf("1966-03-27")), masterEiKoskessa.sukunimi, masterEiKoskessa.etunimet, None, None, false, None, false)
       ))
     }
     "Organisaatiot on ladattu" in {
