@@ -107,7 +107,7 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
     linkitetytOidit = Nil
   )
 
-  private val expectedOppijaHenkilöHetuMuuttunut = expectedOppijaHenkilö.copy(vanhatHetut = List(vanhaHetu))
+  private val expectedOppijaHenkilöHetuMuuttunut = expectedOppijaHenkilö.copy(vanhatHetut = List(vanhaHetu), yksiloity = Some(false), yksiloityVTJ = Some(true))
 
   override def beforeAll {
     wireMockServer.start()
@@ -206,6 +206,27 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
       mockEndpoints(defaultHenkilöResponse - ("kotikunta"))
       val result = mockClient.findMasterOppija(oid).run
       result.value.kotikunta should equal(None)
+    }
+
+    "palauttaa yksilöintitiedon mikäli asetettu" in {
+      mockEndpoints(defaultHenkilöResponse + ("yksiloity" -> true, "yksiloityVTJ" -> true))
+      val result = mockClient.findMasterOppija(oid).run
+      result.value.yksiloity should equal(Some(true))
+      result.value.yksiloityVTJ should equal(Some(true))
+    }
+
+    "palauttaa yksilöintitiedon None jos yksilöintitieto on null" in {
+      mockEndpoints(defaultHenkilöResponse + ("yksiloity" -> None, "yksiloityVTJ" -> None))
+      val result = mockClient.findMasterOppija(oid).run
+      result.value.yksiloity should equal(None)
+      result.value.yksiloityVTJ should equal(None)
+    }
+
+    "palauttaa yksilöintitiedon None jos yksilöintitietoa ei ole määritelty" in {
+      mockEndpoints(defaultHenkilöResponse - ("yksiloity", "yksiloityVTJ"))
+      val result = mockClient.findMasterOppija(oid).run
+      result.value.yksiloity should equal(None)
+      result.value.yksiloityVTJ should equal(None)
     }
   }
 
