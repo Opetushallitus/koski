@@ -317,7 +317,7 @@ object AmmatillinenReforminMukainenPerustutkintoExample {
   )
 
   lazy val saksa = KorkeakouluopintojenSuoritus(
-    koulutusmoduuli = KorkeakouluopintojenTutkinnonOsaaPienempiKokonaisuus(PaikallinenKoodi("de", finnish("Saksa")), "Saksa"),
+    koulutusmoduuli = KorkeakouluopintojenTutkinnonOsaaPienempiKokonaisuus(PaikallinenKoodi("de", finnish("Saksa")), "Saksa", Some(LaajuusOsaamispisteissä(5))),
     arviointi = arviointiViisi
   )
 

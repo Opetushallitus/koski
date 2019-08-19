@@ -485,8 +485,8 @@ describe('Ammatillinen koulutus', function() {
             'Arviointikeskusteluun osallistuneet Opettaja Itsenäinen ammatinharjoittaja\n' +
             'Korkeakouluopinnot\n' +
             'Avaa kaikki\n' +
-            'Osasuoritus Arvosana\n' +
-            'Saksa 5\n' +
+            'Osasuoritus Laajuus (osp) Arvosana\n' +
+            'Saksa 5 5\n' +
             'Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja\n' +
             'Avaa kaikki\n' +
             'Osasuoritus Laajuus (osp) Arvosana\n' +
@@ -494,7 +494,7 @@ describe('Ammatillinen koulutus', function() {
             'Englanti 3 osp 5\n' +
             'Tieto- ja viestintätekniikka sekä sen hyödyntäminen 3 osp 5\n' +
             'Hoitotarpeen määrittäminen 5\n' +
-            'Yhteensä 0 / 145 osp\n' +
+            'Yhteensä 11 / 145 osp\n' +
             'Yhteiset tutkinnon osat Laajuus (osp) Arvosana\n' +
             'Viestintä- ja vuorovaikutusosaaminen 8 osp\n' +
             'Pakollinen kyllä\n' +
