@@ -8,6 +8,8 @@ trait HttpTester extends HttpComponentsClient {
 
   val jsonContent = Map(("Content-type" -> "application/json"))
 
+  val multipartContent = Map("Content-type" -> "multipart/form-data")
+
   def defaultUser: UserWithPassword
 
   def authHeaders(user: UserWithPassword = defaultUser): Headers = {
