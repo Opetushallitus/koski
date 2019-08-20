@@ -27,15 +27,15 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
     }
   }
 
-  def findOppijaByOid(henkilöOid: String): Option[OppijaHenkilö] =
+  def findOppijaByOid(henkilöOid: String): Option[LaajatOppijaHenkilöTiedot] =
     findHenkilötiedot(henkilöOid).map(_.henkilö).map(withLinkedOids)
 
-  def findMasterOppija(henkilöOid: String): Option[OppijaHenkilö] =
+  def findMasterOppija(henkilöOid: String): Option[LaajatOppijaHenkilöTiedot] =
     findHenkilötiedot(henkilöOid).flatMap(_.master)
       .orElse(findHenkilötiedot(henkilöOid).map(_.henkilö))
       .map(withLinkedOids)
 
-  def findMasterOppijat(oids: List[String]): Map[String, OppijaHenkilö] = oids
+  def findMasterOppijat(oids: List[String]): Map[String, LaajatOppijaHenkilöTiedot] = oids
     .map(oid => oid -> findMasterOppija(oid))
     .filter(_._2.isDefined)
     .map { case (oid, oppija) => oid -> oppija.get }.toMap
@@ -44,12 +44,12 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
     oppijat.getOppijat.find(_.henkilö.oid == id)
   }
 
-  def findOppijatNoSlaveOids(oids: List[String]): List[OppijaHenkilö] = {
-    oids.flatMap(findOppijaByOid)
+  def findOppijatNoSlaveOids(oids: List[String]): List[SuppeatOppijaHenkilöTiedot] = {
+    oids.flatMap(findOppijaByOid).map(_.toSuppea)
   }
 
-  def findOrCreate(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, OppijaHenkilö] = {
-    def oidFrom(oppijat: Option[OppijaHenkilö]): Either[HttpStatus, Oid] = {
+  def findOrCreate(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, SuppeatOppijaHenkilöTiedot] = {
+    def oidFrom(oppijat: Option[LaajatOppijaHenkilöTiedot]): Either[HttpStatus, Oid] = {
       oppijat match {
         case Some(oppija) =>
           Right(oppija.oid)
@@ -65,13 +65,13 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
         case HttpStatus(_, _) => throw new RuntimeException("Unreachable match arm: HTTP status code must be 409")
       }
     }
-    oid.right.map(oid => findOppijaByOid(oid).get)
+    oid.right.map(oid => findOppijaByOid(oid).get.toSuppea)
   }
 
   def modifyMock(oppija: OppijaHenkilöWithMasterInfo): Unit = synchronized {
     oppijat = new MockOppijat(oppijat.getOppijat.map { o =>
       if (o.henkilö.oid == oppija.henkilö.oid)
-        o.copy(henkilö = o.henkilö.copy(etunimet = oppija.henkilö.etunimet, kutsumanimi = oppija.henkilö.kutsumanimi, sukunimi = oppija.henkilö.sukunimi), master = oppija.master)
+        o.copy(henkilö = toLaajat(o.henkilö, findSlaveOids(o.henkilö.oid)).copy(etunimet = oppija.henkilö.etunimet, kutsumanimi = oppija.henkilö.kutsumanimi, sukunimi = oppija.henkilö.sukunimi), master = oppija.master)
       else o
     })
   }
@@ -80,28 +80,53 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
     oppijat = new MockOppijat(MockOppijat.defaultOppijat)
   }
 
-  override def findOppijaByHetu(hetu: String): Option[OppijaHenkilö] = synchronized {
-    oppijat.getOppijat.find(o => o.henkilö.hetu.contains(hetu) || o.henkilö.vanhatHetut.contains(hetu)).map(h => h.master.getOrElse(h.henkilö)).map(withLinkedOids)
+  override def findOppijaByHetu(hetu: String): Option[LaajatOppijaHenkilöTiedot] = synchronized {
+    oppijat.getOppijat.find(o => o.henkilö.hetu.contains(hetu) || vanhatHetut(o.henkilö).contains(hetu)).map(h => h.master.getOrElse(h.henkilö)).map(withLinkedOids)
   }
 
   override def findChangedOppijaOids(since: Long, offset: Int, amount: Int): List[Oid] = synchronized {
     MockOppijat.defaultOppijat.diff(oppijat.getOppijat).map(_.henkilö.oid)
   }
 
-  def findOppijatByHetusNoSlaveOids(hetus: List[String]): List[OppijaHenkilö] = synchronized {
-    hetus.flatMap(findOppijaByHetu)
+  def findOppijatByHetusNoSlaveOids(hetus: List[String]): List[SuppeatOppijaHenkilöTiedot] = synchronized {
+    hetus.flatMap(findOppijaByHetu).map(_.toSuppea)
   }
 
   override def findSlaveOids(masterOid: String): List[Oid] =
     MockOppijat.defaultOppijat.filter(_.master.exists(_.oid == masterOid)).map(_.henkilö.oid)
 
-  private def withLinkedOids(x: OppijaHenkilö) = x.copy(linkitetytOidit = findSlaveOids(x.oid))
+  private def withLinkedOids(x: OppijaHenkilö) = x match {
+    case y: SuppeatOppijaHenkilöTiedot => toLaajat(y, linkitetytOidit = findSlaveOids(x.oid))
+    case z: LaajatOppijaHenkilöTiedot => z.copy(linkitetytOidit = findSlaveOids(x.oid))
+  }
+
+  private def vanhatHetut(oh: OppijaHenkilö) = oh match {
+    case _: SuppeatOppijaHenkilöTiedot => Nil
+    case x: LaajatOppijaHenkilöTiedot => x.vanhatHetut
+  }
+
+  private def toLaajat(oh: OppijaHenkilö, linkitetytOidit: List[String]) = LaajatOppijaHenkilöTiedot(
+    oid = oh.oid,
+    sukunimi = oh.sukunimi,
+    etunimet = oh.etunimet,
+    kutsumanimi = oh.kutsumanimi,
+    hetu = oh.hetu,
+    syntymäaika = oh.syntymäaika,
+    äidinkieli = oh.äidinkieli,
+    kansalaisuus = oh.kansalaisuus,
+    modified = oh.modified,
+    turvakielto = oh.turvakielto,
+    sukupuoli = oh.sukupuoli,
+    linkitetytOidit = linkitetytOidit,
+    vanhatHetut = Nil,
+    kotikunta = None
+  )
 }
 
 class MockOpintopolkuHenkilöFacadeWithDBSupport(val db: DB) extends MockOpintopolkuHenkilöFacade with KoskiDatabaseMethods {
-  def findFromDb(oid: String): Option[OppijaHenkilö] = {
+  def findFromDb(oid: String): Option[LaajatOppijaHenkilöTiedot] = {
     runQuery(OpiskeluOikeudetWithAccessCheck(systemUser).filter(_.oppijaOid === oid)).headOption.map { oppijaRow =>
-      OppijaHenkilö(oid, oid, oid, oid, Some(oid), None, None, None)
+      LaajatOppijaHenkilöTiedot(oid, oid, oid, oid, Some(oid), None, None, None)
     }
   }
 

@@ -23,7 +23,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     "Palvelukäyttäjä" - {
       "onnistuneesta tiedonsiirrosta tallennetaan vain henkilö- ja oppilaitostiedot" in {
         resetFixtures
-        val henkilö = SharedJetty.application.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(MockOppijat.eero).copy(kansalaisuus = Some(List(Koodistokoodiviite("246", "maatjavaltiot2"))))
+        val henkilö = SharedJetty.application.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(MockOppijat.eero.toSuppea).copy(kansalaisuus = Some(List(Koodistokoodiviite("246", "maatjavaltiot2"))))
         putOpiskeluoikeus(ExamplesTiedonsiirto.opiskeluoikeus, henkilö = henkilö, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
           verifyResponseStatusOk()
         }

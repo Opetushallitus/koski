@@ -12,7 +12,7 @@ import fi.oph.scalaschema.annotation.SyntheticProperty
 // Rajapinnoissa käytetään scheman osana olevia rakenteita (Henkilö, TäydellisetHenkilötiedot).
 // Tässä rakenteessa voi siis olla tietoja joita ei haluta välittää ulospäin, ja sitä voi muuttaa.
 
-case class OppijaHenkilö(
+case class LaajatOppijaHenkilöTiedot(
   oid: String,
   sukunimi: String,
   etunimet: String,
@@ -28,9 +28,56 @@ case class OppijaHenkilö(
   vanhatHetut: List[String] = Nil,
   kotikunta: Option[String] = None,
   yksilöity: Boolean = true
-) extends HenkilönTunnisteet {
+) extends OppijaHenkilö with HenkilönTunnisteet {
   @SyntheticProperty
   def preventSerialization: Nothing = ??? // ensure this class never gets serialized to JSON
+  def toSuppea = SuppeatOppijaHenkilöTiedot(
+    oid = oid,
+    sukunimi = sukunimi,
+    etunimet = etunimet,
+    kutsumanimi = kutsumanimi,
+    hetu = hetu,
+    syntymäaika = syntymäaika,
+    äidinkieli = äidinkieli,
+    kansalaisuus = kansalaisuus,
+    modified = modified,
+    turvakielto = turvakielto,
+    sukupuoli = sukupuoli,
+    linkitetytOidit = linkitetytOidit
+  )
+}
+
+case class SuppeatOppijaHenkilöTiedot(
+  oid: String,
+  sukunimi: String,
+  etunimet: String,
+  kutsumanimi: String,
+  hetu: Option[String],
+  syntymäaika: Option[LocalDate],
+  sukupuoli: Option[String] = None,
+  äidinkieli: Option[String] = None,
+  kansalaisuus: Option[List[String]] = None,
+  modified: Long = 0,
+  turvakielto: Boolean = false,
+  linkitetytOidit: List[String]
+) extends OppijaHenkilö with HenkilönTunnisteet {
+  @SyntheticProperty
+  def preventSerialization: Nothing = ??? // ensure this class never gets serialized to JSON
+  def vanhatHetut: List[String] = Nil
+}
+
+trait OppijaHenkilö {
+  def oid: String
+  def sukunimi: String
+  def etunimet: String
+  def kutsumanimi: String
+  def hetu: Option[String]
+  def syntymäaika: Option[LocalDate]
+  def sukupuoli: Option[String]
+  def äidinkieli: Option[String]
+  def kansalaisuus: Option[List[String]]
+  def modified: Long
+  def turvakielto: Boolean
 
   def toHenkilötiedotJaOid = HenkilötiedotJaOid(oid, hetu, etunimet, kutsumanimi, sukunimi)
 }
@@ -48,13 +95,13 @@ case class OpintopolkuHenkilöRepository(henkilöt: OpintopolkuHenkilöFacade, k
   def withMasterInfo(henkilötiedot: OppijaHenkilö) = OppijaHenkilöWithMasterInfo(henkilötiedot, findMasterHenkilö(henkilötiedot.oid))
 
   // Tarkistaa vain Oppijanumerorekisterin, ei koskaan luo uutta oppijanumeroa Virta/YTR-datan perusteella
-  def findByHetu(hetu: String): Option[OppijaHenkilö] = {
+  def findByHetu(hetu: String): Option[LaajatOppijaHenkilöTiedot] = {
     Hetu.validFormat(hetu)
       .toOption
       .flatMap(henkilöt.findOppijaByHetu)
   }
 
-  def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, OppijaHenkilö] =  {
+  def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, SuppeatOppijaHenkilöTiedot] =  {
     val validKutsumanimet = henkilö.etunimet.trim
       .replaceAll("\\s+", " ")
       .replaceAll("\\s*-\\s*", "-")
@@ -67,21 +114,21 @@ case class OpintopolkuHenkilöRepository(henkilöt: OpintopolkuHenkilöFacade, k
       .findOrCreate(UusiOppijaHenkilö(Some(henkilö.hetu), henkilö.sukunimi, henkilö.etunimet, kutsumanimi))
   }
 
-  def findMasterByOid(oid: String): Option[OppijaHenkilö] = {
+  def findMasterByOid(oid: String): Option[LaajatOppijaHenkilöTiedot] = {
     henkilöt.findMasterOppija(oid)
   }
 
-  def findByOid(oid: String): Option[OppijaHenkilö] = {
+  def findByOid(oid: String): Option[LaajatOppijaHenkilöTiedot] = {
     henkilöt.findOppijaByOid(oid)
   }
 
-  def findByOidsNoSlaveOids(oids: List[String]): List[OppijaHenkilö] = oids match {
+  def findByOidsNoSlaveOids(oids: List[String]): List[SuppeatOppijaHenkilöTiedot] = oids match {
     case Nil => Nil // <- authentication-service fails miserably with empty input list
     case _ => henkilöt.findOppijatNoSlaveOids(oids)
   }
 
   // Hakee master-henkilön, jos eri kuin tämä henkilö
-  private def findMasterHenkilö(oid: Henkilö.Oid): Option[OppijaHenkilö] = henkilöt.findMasterOppija(oid) match {
+  private def findMasterHenkilö(oid: Henkilö.Oid): Option[LaajatOppijaHenkilöTiedot] = henkilöt.findMasterOppija(oid) match {
     case Some(master) if master.oid != oid => Some(master)
     case _ => None
   }

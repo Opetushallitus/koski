@@ -31,7 +31,7 @@ object HenkilöRepository {
 
 case class HenkilöCacheKey(oid: String, findMasterIfSlaveOid: Boolean)
 case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta: HetuBasedHenkilöRepository, ytr: HetuBasedHenkilöRepository, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository)(implicit cacheInvalidator: CacheManager) extends Logging {
-  private val oidCache: KeyValueCache[HenkilöCacheKey, Option[OppijaHenkilö]] =
+  private val oidCache: KeyValueCache[HenkilöCacheKey, Option[LaajatOppijaHenkilöTiedot]] =
     KeyValueCache(new ExpiringCache("HenkilöRepository", ExpiringCache.Params(1.hour, maxSize = 100, storeValuePredicate = {
       case (_, value) => value != None // Don't cache None results
     })), findByCacheKey)
@@ -43,12 +43,12 @@ case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta:
   }
 
   // findByOid is locally cached
-  def findByOid(oid: String, findMasterIfSlaveOid: Boolean = false): Option[OppijaHenkilö] = oidCache(HenkilöCacheKey(oid, findMasterIfSlaveOid))
+  def findByOid(oid: String, findMasterIfSlaveOid: Boolean = false): Option[LaajatOppijaHenkilöTiedot] = oidCache(HenkilöCacheKey(oid, findMasterIfSlaveOid))
   // Other methods just call the non-cached implementation
 
-  def findByOidsNoSlaveOids(oids: List[String]): List[OppijaHenkilö] = opintopolku.findByOidsNoSlaveOids(oids)
+  def findByOidsNoSlaveOids(oids: List[String]): List[SuppeatOppijaHenkilöTiedot] = opintopolku.findByOidsNoSlaveOids(oids)
 
-  def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, OppijaHenkilö] = opintopolku.findOrCreate(henkilö)
+  def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, SuppeatOppijaHenkilöTiedot] = opintopolku.findOrCreate(henkilö)
 
   // Etsii oppija-henkilön hetun perusteella oppijanumerorekisteristä. Jos henkilöä ei löydy oppijanumerorekisteristä,
   // mutta hetu löytyy Virrasta tai YTR:stä, niin luodaan oppijanumero ONR:ään käyttäen "nimitiedot" parametria jos
@@ -58,12 +58,12 @@ case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta:
   // Jos userForAccessChecks on annettu, niin Virta/YTR katsotaan vain, jos ko. käyttäjällä on potentiaalisesti
   // pääsy johonkin Virta/YTR-tietoihin. Tämä on optimointi oppilaitosten virkailijakäliin, joissa käyttäjillä
   // ei yleensä ole tällaista pääsyä.
-  def findByHetuOrCreateIfInYtrOrVirta(hetu: String, nimitiedot: Option[Nimitiedot] = None, userForAccessChecks: Option[KoskiSession] = None): Option[OppijaHenkilö] = {
+  def findByHetuOrCreateIfInYtrOrVirta(hetu: String, nimitiedot: Option[Nimitiedot] = None, userForAccessChecks: Option[KoskiSession] = None): Option[SuppeatOppijaHenkilöTiedot] = {
     Hetu.validFormat(hetu) match {
       case Right(validHetu) =>
         val tiedot = opintopolku.findByHetu(hetu)
         if (tiedot.isDefined) {
-          tiedot
+          tiedot.map(_.toSuppea)
         } else {
           val tarkistetaankoVirta = userForAccessChecks.isEmpty || userForAccessChecks.exists(virta.hasAccess)
           val tarkistetaankoYtr = userForAccessChecks.isEmpty || userForAccessChecks.exists(ytr.hasAccess)
@@ -94,7 +94,7 @@ case class HenkilöRepository(opintopolku: OpintopolkuHenkilöRepository, virta:
     }
   }
 
-  def findHenkilötiedotNoSlaveOids(query: String)(implicit user: KoskiSession): List[OppijaHenkilö] =
+  def findHenkilötiedotNoSlaveOids(query: String)(implicit user: KoskiSession): List[SuppeatOppijaHenkilöTiedot] =
     findByOidsNoSlaveOids(perustiedotRepository.findOids(query))
 
   def oppijaHenkilöToTäydellisetHenkilötiedot(henkilö: OppijaHenkilö): TäydellisetHenkilötiedot =

@@ -2,7 +2,7 @@ package fi.oph.koski.luovutuspalvelu
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethods}
-import fi.oph.koski.henkilo.{MockOppijat, OppijaHenkilö}
+import fi.oph.koski.henkilo.{MockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.koskiuser.{MockUser, MockUsers}
 import fi.oph.koski.log.AuditLogTester
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
@@ -149,10 +149,10 @@ class PalveluvaylaSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     }
   }
 
-  private def ensimmäisenSuorituksenNimiRekisteritiedoissa(oppija: OppijaHenkilö): String =
+  private def ensimmäisenSuorituksenNimiRekisteritiedoissa(oppija: LaajatOppijaHenkilöTiedot): String =
     (haeSuomiFiRekisteritiedot(oppija) \ "oppilaitokset" \ "oppilaitos" \ "opiskeluoikeudet" \ "opiskeluoikeus" \ "nimi" \ "fi").head.text
 
-  private def haeSuomiFiRekisteritiedot(oppija: OppijaHenkilö): NodeSeq = postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, oppija.hetu.get) {
+  private def haeSuomiFiRekisteritiedot(oppija: LaajatOppijaHenkilöTiedot): NodeSeq = postSuomiFiRekisteritiedot(MockUsers.suomiFiKäyttäjä, oppija.hetu.get) {
     verifyResponseStatusOk()
     soapResponse() \ "Body" \ "suomiFiRekisteritiedotResponse"
   }

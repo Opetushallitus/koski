@@ -2,7 +2,7 @@ package fi.oph.koski.opiskeluoikeus
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.{GlobalExecutionContext, HenkilöRow, OpiskeluoikeusRow}
-import fi.oph.koski.henkilo.OppijaHenkilö
+import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, SuppeatOppijaHenkilöTiedot}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.SensitiveDataFilter
 import fi.oph.koski.koskiuser.{HasKoskiSession, KoskiSession}
@@ -37,7 +37,7 @@ trait OpiskeluoikeusQueries extends ApiServlet with Logging with GlobalExecution
   *  Scalatra threadlocals are used.
   */
 case class OpiskeluoikeusQueryContext(request: HttpServletRequest)(implicit koskiSession: KoskiSession, application: KoskiApplication) extends Logging {
-  def query(params: MultiParams, paginationSettings: Option[PaginationSettings]): Either[HttpStatus, Observable[(OppijaHenkilö, List[OpiskeluoikeusRow])]] = {
+  def query(params: MultiParams, paginationSettings: Option[PaginationSettings]): Either[HttpStatus, Observable[(SuppeatOppijaHenkilöTiedot, List[OpiskeluoikeusRow])]] = {
     logger(koskiSession).info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
 
     OpiskeluoikeusQueryFilter.parse(params)(application.koodistoViitePalvelu, application.organisaatioRepository, koskiSession) match {
@@ -54,15 +54,15 @@ case class OpiskeluoikeusQueryContext(request: HttpServletRequest)(implicit kosk
     OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, filters, paginationSettings)
   }
 
-  private def query(filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings]): Observable[(OppijaHenkilö, List[OpiskeluoikeusRow])] = {
+  private def query(filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings]): Observable[(SuppeatOppijaHenkilöTiedot, List[OpiskeluoikeusRow])] = {
     val oikeudetPerOppijaOid: Observable[(Oid, List[OpiskeluoikeusRow])] = OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, filters, paginationSettings)
     oikeudetPerOppijaOid.tumblingBuffer(10).flatMap {
       oppijatJaOidit: Seq[(Oid, List[OpiskeluoikeusRow])] =>
         val oids: List[String] = oppijatJaOidit.map(_._1).toList
 
-        val henkilöt: Map[String, OppijaHenkilö] = application.henkilöRepository.findByOidsNoSlaveOids(oids).map(henkilö => (henkilö.oid, henkilö)).toMap
+        val henkilöt: Map[String, SuppeatOppijaHenkilöTiedot] = application.henkilöRepository.findByOidsNoSlaveOids(oids).map(henkilö => (henkilö.oid, henkilö)).toMap
 
-        val oppijat: Iterable[(OppijaHenkilö, List[OpiskeluoikeusRow])] = oppijatJaOidit.flatMap { case (oid, opiskeluOikeudet) =>
+        val oppijat: Iterable[(SuppeatOppijaHenkilöTiedot, List[OpiskeluoikeusRow])] = oppijatJaOidit.flatMap { case (oid, opiskeluOikeudet) =>
           henkilöt.get(oid) match {
             case Some(henkilö) =>
               Some((henkilö, opiskeluOikeudet))

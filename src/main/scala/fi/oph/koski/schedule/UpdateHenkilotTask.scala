@@ -3,7 +3,7 @@ package fi.oph.koski.schedule
 import java.lang.System.currentTimeMillis
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.henkilo.{OppijaHenkilö, OppijaHenkilöWithMasterInfo}
+import fi.oph.koski.henkilo.{OppijaHenkilöWithMasterInfo, SuppeatOppijaHenkilöTiedot}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.perustiedot.OpiskeluoikeudenHenkilötiedot
@@ -50,7 +50,7 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
 
 
   private def runUpdate(oids: List[Oid], koskiOids: List[Oid], lastContext: HenkilöUpdateContext) = {
-    val oppijat: List[OppijaHenkilö] = findOppijatWithoutSlaveOids(koskiOids)
+    val oppijat: List[SuppeatOppijaHenkilöTiedot] = findOppijatWithoutSlaveOids(koskiOids)
 
     val oppijatWithMaster: List[WithModifiedTime] = oppijat.map { oppija =>
       WithModifiedTime(application.henkilöRepository.opintopolku.withMasterInfo(oppija), oppija.modified)
@@ -76,7 +76,7 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
       val muuttuneidenHenkilötiedot: List[OpiskeluoikeudenHenkilötiedot] = application.perustiedotRepository
         .findHenkiloPerustiedotByOids(updatedInKoskiHenkilöCache)
         .map(p => {
-          val päivitetytTiedot = oppijatByOid(p.henkilöOid.getOrElse(p.henkilö.get.oid))
+          val päivitetytTiedot: WithModifiedTime = oppijatByOid(p.henkilöOid.getOrElse(p.henkilö.get.oid))
           OpiskeluoikeudenHenkilötiedot(p.id, päivitetytTiedot.tiedot)
         })
 

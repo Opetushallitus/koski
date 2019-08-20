@@ -8,7 +8,7 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsLukio
 import fi.oph.koski.documentation.LukioExampleData
 import fi.oph.koski.henkilo.MockOppijat._
-import fi.oph.koski.henkilo.OppijaHenkilö
+import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.organisaatio.MockOrganisaatiot._
 import fi.oph.koski.raportointikanta.{ROpiskeluoikeusAikajaksoRow, RaportointikantaTestMethods}
 import fi.oph.koski.schema._
@@ -226,7 +226,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     sheet.rows.map(_.zip(sheet.columnSettings)).map(_.map { case (data, column) => column.title -> data }.toMap)
   }
 
-  private def verifyOppijanRow(oppija: OppijaHenkilö, expected: Map[String, Any], all: Seq[Map[String, Any]], addOpiskeluoikeudenOid: Boolean = true) = {
+  private def verifyOppijanRow(oppija: LaajatOppijaHenkilöTiedot, expected: Map[String, Any], all: Seq[Map[String, Any]], addOpiskeluoikeudenOid: Boolean = true) = {
     val expectedResult = if (addOpiskeluoikeudenOid) {
       val opiskeluoikeudenOid = lastOpiskeluoikeus(oppija.oid).oid
       opiskeluoikeudenOid shouldBe defined
@@ -238,7 +238,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     findFirstByOid(oppija.oid, all) should be(expectedResult)
   }
 
-  private def verifyOppijanRows(oppija: OppijaHenkilö, expected: Seq[Map[String, Any]], all: Seq[Map[String, Any]]) = {
+  private def verifyOppijanRows(oppija: LaajatOppijaHenkilöTiedot, expected: Seq[Map[String, Any]], all: Seq[Map[String, Any]]) = {
     val opiskeluoikeudenOid = lastOpiskeluoikeus(oppija.oid).oid
     opiskeluoikeudenOid shouldBe defined
     val found = findByOid(oppija.oid, all)
@@ -264,7 +264,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
 
   lazy val oid = "123"
 
-  private def lisääPäätasonSuorituksia(oppija: OppijaHenkilö, päätasonSuoritukset: List[LukionPäätasonSuoritus]) = {
+  private def lisääPäätasonSuorituksia(oppija: LaajatOppijaHenkilöTiedot, päätasonSuoritukset: List[LukionPäätasonSuoritus]) = {
     val oo = getOpiskeluoikeus(oppija.oid, OpiskeluoikeudenTyyppi.lukiokoulutus.koodiarvo).asInstanceOf[LukionOpiskeluoikeus]
     putOppija(Oppija(oppija, List(oo.copy(suoritukset = päätasonSuoritukset ::: oo.suoritukset)))) {
       verifyResponseStatusOk()
