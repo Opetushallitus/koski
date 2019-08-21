@@ -44,11 +44,11 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
     oppijat.getOppijat.find(_.henkilö.oid == id)
   }
 
-  def findOppijatNoSlaveOids(oids: List[String]): List[SuppeatOppijaHenkilöTiedot] = {
-    oids.flatMap(findOppijaByOid).map(_.toSuppea)
+  def findOppijatNoSlaveOids(oids: List[String]): List[OppijaHenkilö] = {
+    oids.flatMap(findOppijaByOid)
   }
 
-  def findOrCreate(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, SuppeatOppijaHenkilöTiedot] = {
+  def findOrCreate(createUserInfo: UusiOppijaHenkilö): Either[HttpStatus, OppijaHenkilö] = {
     def oidFrom(oppijat: Option[LaajatOppijaHenkilöTiedot]): Either[HttpStatus, Oid] = {
       oppijat match {
         case Some(oppija) =>
@@ -65,7 +65,7 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
         case HttpStatus(_, _) => throw new RuntimeException("Unreachable match arm: HTTP status code must be 409")
       }
     }
-    oid.right.map(oid => findOppijaByOid(oid).get.toSuppea)
+    oid.right.map(oid => findOppijaByOid(oid).get)
   }
 
   def modifyMock(oppija: OppijaHenkilöWithMasterInfo): Unit = synchronized {
@@ -88,8 +88,8 @@ class MockOpintopolkuHenkilöFacade() extends OpintopolkuHenkilöFacade with Log
     MockOppijat.defaultOppijat.diff(oppijat.getOppijat).map(_.henkilö.oid)
   }
 
-  def findOppijatByHetusNoSlaveOids(hetus: List[String]): List[SuppeatOppijaHenkilöTiedot] = synchronized {
-    hetus.flatMap(findOppijaByHetu).map(_.toSuppea)
+  def findOppijatByHetusNoSlaveOids(hetus: List[String]): List[OppijaHenkilö] = synchronized {
+    hetus.flatMap(findOppijaByHetu)
   }
 
   override def findSlaveOids(masterOid: String): List[Oid] =

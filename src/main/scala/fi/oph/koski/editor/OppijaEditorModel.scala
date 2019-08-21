@@ -50,7 +50,7 @@ object OppijaEditorModel extends Timing {
         }.toList.sorted(oppilaitoksenOpiskeluoikeudetOrdering)
         OpiskeluoikeudetTyypeittäin(tyyppi, oppilaitokset)
     }.toList.sorted(opiskeluoikeudetTyypeittäinOrdering)
-    val oppija = Oppija(application.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(oppijaHenkilö.toSuppea), opiskeluoikeudet)
+    val oppija = Oppija(application.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(oppijaHenkilö), opiskeluoikeudet)
     buildModel(OppijaEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], tyypit, oppijaWithWarnings.warnings.flatMap(_.errors).map(_.key).toList, oppijaHenkilö.yksilöity), editable)
   }
 

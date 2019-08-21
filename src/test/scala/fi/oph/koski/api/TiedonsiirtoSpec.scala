@@ -4,7 +4,7 @@ import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjeste
 import fi.oph.koski.documentation.ExamplesEsiopetus
 import fi.oph.koski.email.{Email, EmailContent, EmailRecipient, MockEmailSender}
 import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.henkilo.MockOppijat.{asUusiOppija, eerola, markkanen}
+import fi.oph.koski.henkilo.MockOppijat.{asUusiOppija, eerola}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.{helsinginKaupunkiEsiopetus, helsinginKaupunkiPalvelukäyttäjä, omniaPääkäyttäjä, stadinPääkäyttäjä}
@@ -23,7 +23,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     "Palvelukäyttäjä" - {
       "onnistuneesta tiedonsiirrosta tallennetaan vain henkilö- ja oppilaitostiedot" in {
         resetFixtures
-        val henkilö = SharedJetty.application.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(MockOppijat.eero.toSuppea).copy(kansalaisuus = Some(List(Koodistokoodiviite("246", "maatjavaltiot2"))))
+        val henkilö = SharedJetty.application.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(MockOppijat.eero).copy(kansalaisuus = Some(List(Koodistokoodiviite("246", "maatjavaltiot2"))))
         putOpiskeluoikeus(ExamplesTiedonsiirto.opiskeluoikeus, henkilö = henkilö, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
           verifyResponseStatusOk()
         }

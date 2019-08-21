@@ -31,20 +31,6 @@ case class LaajatOppijaHenkilöTiedot(
 ) extends OppijaHenkilö with HenkilönTunnisteet {
   @SyntheticProperty
   def preventSerialization: Nothing = ??? // ensure this class never gets serialized to JSON
-  def toSuppea = SuppeatOppijaHenkilöTiedot(
-    oid = oid,
-    sukunimi = sukunimi,
-    etunimet = etunimet,
-    kutsumanimi = kutsumanimi,
-    hetu = hetu,
-    syntymäaika = syntymäaika,
-    äidinkieli = äidinkieli,
-    kansalaisuus = kansalaisuus,
-    modified = modified,
-    turvakielto = turvakielto,
-    sukupuoli = sukupuoli,
-    linkitetytOidit = linkitetytOidit
-  )
 }
 
 case class SuppeatOppijaHenkilöTiedot(
@@ -60,13 +46,13 @@ case class SuppeatOppijaHenkilöTiedot(
   modified: Long = 0,
   turvakielto: Boolean = false,
   linkitetytOidit: List[String]
-) extends OppijaHenkilö with HenkilönTunnisteet {
+) extends OppijaHenkilö {
   @SyntheticProperty
   def preventSerialization: Nothing = ??? // ensure this class never gets serialized to JSON
   def vanhatHetut: List[String] = Nil
 }
 
-trait OppijaHenkilö {
+trait OppijaHenkilö extends HenkilönTunnisteet {
   def oid: String
   def sukunimi: String
   def etunimet: String
@@ -101,7 +87,7 @@ case class OpintopolkuHenkilöRepository(henkilöt: OpintopolkuHenkilöFacade, k
       .flatMap(henkilöt.findOppijaByHetu)
   }
 
-  def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, SuppeatOppijaHenkilöTiedot] =  {
+  def findOrCreate(henkilö: UusiHenkilö): Either[HttpStatus, OppijaHenkilö] =  {
     val validKutsumanimet = henkilö.etunimet.trim
       .replaceAll("\\s+", " ")
       .replaceAll("\\s*-\\s*", "-")
@@ -122,7 +108,7 @@ case class OpintopolkuHenkilöRepository(henkilöt: OpintopolkuHenkilöFacade, k
     henkilöt.findOppijaByOid(oid)
   }
 
-  def findByOidsNoSlaveOids(oids: List[String]): List[SuppeatOppijaHenkilöTiedot] = oids match {
+  def findByOidsNoSlaveOids(oids: List[String]): List[OppijaHenkilö] = oids match {
     case Nil => Nil // <- authentication-service fails miserably with empty input list
     case _ => henkilöt.findOppijatNoSlaveOids(oids)
   }
