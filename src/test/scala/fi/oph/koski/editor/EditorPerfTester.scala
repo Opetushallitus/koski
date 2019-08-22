@@ -18,7 +18,7 @@ object EditorPerfTester extends App with Timing {
   LocalPerfTest.runTest(LocalPerfTest.TestCase("serialize model", 10, (n) => EditorModelSerializer.serializeModel(prebuiltModel)))
 
   private def buildModel = {
-    OppijaEditorModel.toEditorModel(WithWarnings(Oppija(asUusiOppija(MockOppijat.eero), AmmatillinenPerustutkintoExample.perustutkinto.opiskeluoikeudet), Nil), true)
+    OppijaEditorModel.toEditorModel(WithWarnings((MockOppijat.eero, AmmatillinenPerustutkintoExample.perustutkinto.opiskeluoikeudet), Nil), editable = true)
   }
 
 }

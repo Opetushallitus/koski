@@ -11,7 +11,7 @@ import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusMitätöity, suomen
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.aikuistenOppiaine
 import fi.oph.koski.documentation.ExamplesPerusopetus.ysinOpiskeluoikeusKesken
 import fi.oph.koski.documentation._
-import fi.oph.koski.henkilo.{MockOppijat, OppijaHenkilö, VerifiedHenkilöOid}
+import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, MockOppijat, OppijaHenkilö, VerifiedHenkilöOid}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.organisaatio.MockOrganisaatiot

@@ -2,7 +2,7 @@ package fi.oph.koski.tiedonsiirto
 
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.{AmmatillinenExampleData, AmmatillinenPerustutkintoExample, Example}
-import fi.oph.koski.henkilo.{MockOppijat, OppijaHenkilö}
+import fi.oph.koski.henkilo.{MockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, Oppija, Oppilaitos, TäydellisetHenkilötiedot}
@@ -10,7 +10,7 @@ import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, Oppija, Oppilaitos, Täy
 object ExamplesTiedonsiirto {
   val opiskeluoikeus: AmmatillinenOpiskeluoikeus = AmmatillinenExampleData.opiskeluoikeus().copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId))
   val failingOpiskeluoikeus: AmmatillinenOpiskeluoikeus = opiskeluoikeus.copy(oppilaitos = Some(Oppilaitos(MockOrganisaatiot.aaltoYliopisto)))
-  val epävalidiHenkilö: OppijaHenkilö = MockOppijat.tiedonsiirto.copy(hetu = Some("epävalidiHetu"))
+  val epävalidiHenkilö: LaajatOppijaHenkilöTiedot = MockOppijat.tiedonsiirto.copy(hetu = Some("epävalidiHetu"))
   val failingTutkinnonosaOpiskeluoikeus: AmmatillinenOpiskeluoikeus = AmmatillinenPerustutkintoExample.osittainenPerustutkintoOpiskeluoikeus.copy(
     lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId)
   )
@@ -23,6 +23,6 @@ object ExamplesTiedonsiirto {
     Example("tiedonsiirto - epäonnistunut 3", "Epäonnistunut tiedonsiirto", Oppija(asUusiOppija(epävalidiHenkilö), List(failingTutkinnonosaOpiskeluoikeus)), 403)
   )
 
-  private def asTäydellisetHenkilötiedotExample(henkilö: OppijaHenkilö): TäydellisetHenkilötiedot =
+  private def asTäydellisetHenkilötiedotExample(henkilö: LaajatOppijaHenkilöTiedot): TäydellisetHenkilötiedot =
     TäydellisetHenkilötiedot(oid = henkilö.oid, etunimet = henkilö.etunimet, kutsumanimi = henkilö.kutsumanimi, sukunimi = henkilö.sukunimi)
 }
