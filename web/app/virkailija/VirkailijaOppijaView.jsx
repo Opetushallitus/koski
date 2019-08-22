@@ -219,7 +219,7 @@ export class Oppija extends React.Component {
               className='hetu'>{(hetu && '(' + hetu + ')') || (syntymäaika && '(' + ISO2FinnishDate(syntymäaika) + ')')}</span>
               {modelData(henkilö, 'turvakielto') && <span title={t('Henkilöllä on turvakielto')} className="turvakielto"/>}
               <a href={`/koski/api/oppija/${modelData(henkilö, 'oid')}/opintotiedot-json`}>{'JSON'}</a>
-              {showHenkilöUiLink.map(show => show && <HenkilöUiLink henkilö={modelData(henkilö, 'oid')} yksilöity={modelData(oppija, 'yksilöity')} />)}
+              {showHenkilöUiLink.map(show => show && <HenkilöUiLink henkilö={henkilö} yksilöity={modelData(oppija, 'yksilöity')} />)}
               {showVirtaXmlLink.map(show => show && <a href={`/koski/api/oppija/${modelData(henkilö, 'oid')}/virta-opintotiedot-xml`} target='_blank'>{'Virta XML'}</a>)}
               {showSureLink.map(show => show && <a href={`/suoritusrekisteri/#/opiskelijat?henkilo=${modelData(henkilö, 'oid')}`} target='_blank'>{'Suoritusrekisteri'}</a>)}
             </h2>

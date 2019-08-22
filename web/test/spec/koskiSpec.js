@@ -90,6 +90,7 @@ describe('Koski', function() {
 
     it('Oppijanumerorekisteri näytetään punaisena henkilölle jota ei ole yksilöity', function() {
       expect(isElementVisible(S('.yksilöimätön'))).to.equal(true)
+      expect(S('.yksilöimätön').attr('href')).to.equal('/henkilo-ui/oppija/1.2.246.562.24.99999999123?permissionCheckService=KOSKI')
     })
   })
 
