@@ -76,7 +76,7 @@ class UpdateHenkilotTask(application: KoskiApplication) extends Timing {
       val muuttuneidenHenkilötiedot: List[OpiskeluoikeudenHenkilötiedot] = application.perustiedotRepository
         .findHenkiloPerustiedotByOids(updatedInKoskiHenkilöCache)
         .map(p => {
-          val päivitetytTiedot = oppijatByOid(p.henkilöOid.getOrElse(p.henkilö.get.oid))
+          val päivitetytTiedot: WithModifiedTime = oppijatByOid(p.henkilöOid.getOrElse(p.henkilö.get.oid))
           OpiskeluoikeudenHenkilötiedot(p.id, päivitetytTiedot.tiedot)
         })
 

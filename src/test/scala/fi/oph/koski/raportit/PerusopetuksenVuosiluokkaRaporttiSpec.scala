@@ -8,7 +8,7 @@ import fi.oph.koski.api.OpiskeluoikeusTestMethodsPerusopetus
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesPerusopetus._
 import fi.oph.koski.documentation.PerusopetusExampleData._
-import fi.oph.koski.henkilo.{MockOppijat, OppijaHenkilö}
+import fi.oph.koski.henkilo.{MockOppijat, LaajatOppijaHenkilöTiedot}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import fi.oph.koski.schema._
@@ -323,7 +323,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
     kayttaymisenArvio = ""
   )
 
-  private def withAdditionalSuoritukset(oppija: OppijaHenkilö, vuosiluokanSuoritus: List[PerusopetuksenPäätasonSuoritus])(f: => Any) = {
+  private def withAdditionalSuoritukset(oppija: LaajatOppijaHenkilöTiedot, vuosiluokanSuoritus: List[PerusopetuksenPäätasonSuoritus])(f: => Any) = {
     resetFixtures
     val oo = getOpiskeluoikeudet(oppija.oid).collect { case oo: PerusopetuksenOpiskeluoikeus => oo }.head
     val lisatyllaVuosiluokanSuorituksella = oo.copy(suoritukset = (vuosiluokanSuoritus ::: oo.suoritukset), tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(NuortenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä))))
@@ -334,7 +334,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
     }
   }
 
-  private def withLisätiedotFixture[T <: PerusopetuksenOpiskeluoikeus](oppija: OppijaHenkilö, lisätiedot: PerusopetuksenOpiskeluoikeudenLisätiedot)(f: => Any) = {
+  private def withLisätiedotFixture[T <: PerusopetuksenOpiskeluoikeus](oppija: LaajatOppijaHenkilöTiedot, lisätiedot: PerusopetuksenOpiskeluoikeudenLisätiedot)(f: => Any) = {
     val oo = lastOpiskeluoikeus(oppija.oid).asInstanceOf[T].copy(lisätiedot = Some(lisätiedot))
     putOppija(Oppija(oppija, List(oo))) {
       verifyResponseStatusOk()

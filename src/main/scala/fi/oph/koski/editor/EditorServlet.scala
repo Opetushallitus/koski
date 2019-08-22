@@ -72,7 +72,7 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
   private def findByHenkilöOid(oid: String): Either[HttpStatus, EditorModel] = {
     for {
       oid <- HenkilöOid.validateHenkilöOid(oid).right
-      oppija <- application.oppijaFacade.findOppija(oid, findMasterIfSlaveOid = true)
+      oppija <- application.oppijaFacade.findOppijaHenkilö(oid, findMasterIfSlaveOid = true)
     } yield {
       toEditorModel(oppija, editable = true)
     }

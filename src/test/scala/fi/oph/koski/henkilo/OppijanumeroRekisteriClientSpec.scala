@@ -92,7 +92,24 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
     "Mikko Alfons",
     None)
 
-  private val expectedOppijaHenkilö = OppijaHenkilö(
+  private val expectedLaajatOppijaHenkilötiedot = LaajatOppijaHenkilöTiedot(
+    oid = oid,
+    sukunimi = "Mallikas",
+    etunimet = "Mikko Alfons",
+    kutsumanimi = "Mikko",
+    hetu = Some(hetu),
+    sukupuoli = Some("1"),
+    syntymäaika = Some(LocalDate.parse("1956-04-12")),
+    äidinkieli = None,
+    kansalaisuus = None,
+    modified = 1543411774579l,
+    turvakielto = false,
+    linkitetytOidit = Nil,
+    yksilöity = true,
+    vanhatHetut = List(vanhaHetu)
+  )
+
+  private val expectedSuppeatOppijaHenkilötiedot = SuppeatOppijaHenkilöTiedot(
     oid = oid,
     sukunimi = "Mallikas",
     etunimet = "Mikko Alfons",
@@ -106,8 +123,6 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
     turvakielto = false,
     linkitetytOidit = Nil
   )
-
-  private val expectedOppijaHenkilöHetuMuuttunut = expectedOppijaHenkilö.copy(vanhatHetut = List(vanhaHetu))
 
   override def beforeAll {
     wireMockServer.start()
@@ -124,7 +139,7 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
 
     "perustaa uuden oppijahenkilön" in {
       val result = mockClient.findOrCreate(UusiOppijaHenkilö(Some(hetu), "Mallikas", "Mikko Alfons", "Mikko")).run
-      result.right.value should equal(expectedOppijaHenkilö)
+      result.right.value should equal(expectedSuppeatOppijaHenkilötiedot)
     }
 
     "tunnistaa 400-vastauksen uutta oppijahenkilöä perustaessa" in {
@@ -144,17 +159,17 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
 
     "palauttaa oppijahenkilön tiedot oid:n perusteella" in {
       val result = mockClient.findOppijaByOid(oid).run
-      result.value should equal(expectedOppijaHenkilö)
+      result.value should equal(expectedLaajatOppijaHenkilötiedot)
     }
 
     "palauttaa oppijahenkilön master-tiedot oid:n perusteella" in {
       val result = mockClient.findMasterOppija(oid).run
-      result.value should equal(expectedOppijaHenkilö)
+      result.value should equal(expectedLaajatOppijaHenkilötiedot)
     }
 
     "palauttaa oppijahenkilön tiedot oid-listan perusteella" in {
       val result = mockClient.findOppijatNoSlaveOids(List(oid)).run
-      result should contain only (expectedOppijaHenkilö)
+      result should contain only expectedSuppeatOppijaHenkilötiedot
     }
 
     "palauttaa muuttuneiden oppijahenkilön oid:t" in {
@@ -164,18 +179,18 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
 
     "palauttaa oppijahenkilön tiedot hetun perusteella" in {
       val result = mockClient.findOppijaByHetu(hetu).run
-      result.value should equal(expectedOppijaHenkilöHetuMuuttunut)
+      result.value should equal(expectedLaajatOppijaHenkilötiedot)
     }
 
     "palauttaa oppijahenkilön tiedot hetu-listan perusteella" in {
       val result = mockClient.findOppijatByHetusNoSlaveOids(List(hetu)).run
-      result should contain only (expectedOppijaHenkilö)
+      result should contain only expectedSuppeatOppijaHenkilötiedot
     }
 
     "kutsumanimen puuttuessa käyttää ensimmäistä etunimeä kutsumanimenä" in {
-      mockEndpoints(defaultPerustietoResponse + ("kutsumanimi" -> None))
+      mockEndpoints(defaultHenkilöResponse + ("kutsumanimi" -> None))
       val result = mockClient.findOppijaByHetu(hetu).run
-      result.value should equal(expectedOppijaHenkilöHetuMuuttunut)
+      result.value should equal(expectedLaajatOppijaHenkilötiedot)
     }
 
     "palauttaa listan slave oideista" in {
@@ -203,15 +218,33 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
     }
 
     "palauttaa kotikuntana None jos kotikunta ei ole määritelty" in {
-      mockEndpoints(defaultHenkilöResponse - ("kotikunta"))
+      mockEndpoints(defaultHenkilöResponse - "kotikunta")
       val result = mockClient.findMasterOppija(oid).run
       result.value.kotikunta should equal(None)
     }
+
+    "palauttaa yksilöintitiedon mikäli asetettu" in {
+      mockEndpoints(defaultHenkilöResponse + ("yksiloity" -> true, "yksiloityVTJ" -> true))
+      val result = mockClient.findMasterOppija(oid).run
+      result.value.yksilöity should equal(true)
+    }
+
+    "palauttaa yksilöity false jos yksilöintitieto on null" in {
+      mockEndpoints(defaultHenkilöResponse + ("yksiloity" -> None, "yksiloityVTJ" -> None))
+      val result = mockClient.findMasterOppija(oid).run
+      result.value.yksilöity should equal(false)
+    }
+
+    "palauttaa yksilöity false jos yksilöintitietoa ei ole määritelty" in {
+      mockEndpoints(defaultHenkilöResponse - ("yksiloity", "yksiloityVTJ"))
+      val result = mockClient.findMasterOppija(oid).run
+      result.value.yksilöity should equal(false)
+    }
   }
 
-  def mockEndpoints(perustietoResponseData: Map[String, Any] = defaultPerustietoResponse, slaveOidsResponseData: List[Map[String, Any]] = List.empty) = {
+  def mockEndpoints(henkilöResponse: Map[String, Any] = defaultHenkilöResponse, slaveOidsResponseData: List[Map[String, Any]] = List.empty) = {
     val hetuUrl = s"/oppijanumerorekisteri-service/henkilo/hetu=${hetu}"
-    val hetusUrl = "/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloHetuList"
+    val hetuPerustietoUrl = "/oppijanumerorekisteri-service/henkilo/henkiloPerustietosByHenkiloHetuList"
     val oidUrl = s"/oppijanumerorekisteri-service/henkilo/${oid}"
     val masterOidUrl = s"/oppijanumerorekisteri-service/henkilo/${oid}/master"
     val changedSinceUrl = "/oppijanumerorekisteri-service/s2s/changedSince/([1-9]*)"
@@ -227,23 +260,23 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
     wireMockServer.stubFor(
       WireMock.post(urlPathEqualTo(uusiHenkiloUrl))
         .withRequestBody(matchingJsonPath("$[?(@.sukunimi == 'Mallikas')]"))
-        .willReturn(ok().withBody(write(perustietoResponseData))))
+        .willReturn(ok().withBody(write(defaultPerustietoResponse))))
 
     wireMockServer.stubFor(
       WireMock.get(urlPathEqualTo(hetuUrl))
-        .willReturn(ok().withBody(write(defaultHenkilöResponse))))
+        .willReturn(ok().withBody(write(henkilöResponse))))
 
     wireMockServer.stubFor(
-      WireMock.post(urlPathEqualTo(hetusUrl))
-        .willReturn(ok().withBody(write(List(perustietoResponseData)))))
+      WireMock.post(urlPathEqualTo(hetuPerustietoUrl))
+        .willReturn(ok().withBody(write(List(defaultPerustietoResponse)))))
 
     wireMockServer.stubFor(
       WireMock.get(urlPathEqualTo(oidUrl))
-        .willReturn(ok().withBody(write(Map("oidHenkilo" -> oid, "sukunimi" -> "Mallikas", "etunimet" -> "Mikko Alfons")))))
+        .willReturn(ok().withBody(write(henkilöResponse))))
 
     wireMockServer.stubFor(
       WireMock.get(urlPathEqualTo(masterOidUrl))
-        .willReturn(ok().withBody(write(perustietoResponseData))))
+        .willReturn(ok().withBody(write(henkilöResponse))))
 
     wireMockServer.stubFor(
       WireMock.get(urlPathMatching(changedSinceUrl))
@@ -251,7 +284,7 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
 
     wireMockServer.stubFor(
       WireMock.post(urlPathEqualTo(perustiedotUrl))
-        .willReturn(ok().withBody(write(List(perustietoResponseData)))))
+        .willReturn(ok().withBody(write(List(defaultPerustietoResponse)))))
 
     wireMockServer.stubFor(
       WireMock.post(urlPathEqualTo(yhteystiedotUrl))

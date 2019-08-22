@@ -1,7 +1,7 @@
 package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.henkilo.{Hetu, OpintopolkuHenkilöFacade}
-import fi.oph.koski.henkilo.OppijaHenkilö
+import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.log.Logging
 import java.sql.Date
 
@@ -43,7 +43,7 @@ object HenkilöLoader extends Logging {
     total
   }
 
-  private def buildRHenkilöRow(oid: String, oppija: OppijaHenkilö) =
+  private def buildRHenkilöRow(oid: String, oppija: LaajatOppijaHenkilöTiedot) =
     RHenkilöRow(
       oppijaOid = oid,
       masterOid = oppija.oid,
@@ -55,6 +55,7 @@ object HenkilöLoader extends Logging {
       aidinkieli = oppija.äidinkieli,
       kansalaisuus = oppija.kansalaisuus.filter(_.nonEmpty).map(_.sorted.mkString(",")),
       turvakielto = oppija.turvakielto,
-      kotikunta = oppija.kotikunta
+      kotikunta = oppija.kotikunta,
+      yksiloity =  oppija.yksilöity
     )
 }
