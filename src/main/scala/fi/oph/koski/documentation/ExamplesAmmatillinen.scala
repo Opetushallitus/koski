@@ -375,6 +375,17 @@ object AmmatillinenOldExamples {
     ))
   ))
 
+  lazy val muunAmmatillisenTutkinnonOsanSuoritus = MuunAmmatillisenTutkinnonOsanSuoritus(
+    koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite("104052", "tutkinnonosat"), true, None),
+    tutkinto = Some(AmmatillinenTutkintoKoulutus(Koodistokoodiviite("357305", "koulutus"), Some("40/011/2001"))),
+    suorituskieli = None,
+    alkamispäivä = None,
+    toimipiste = Some(stadinToimipiste),
+    arviointi = Some(List(arviointiKiitettävä)),
+    vahvistus = vahvistusValinnaisellaTittelillä(date(2014, 11, 8), stadinAmmattiopisto),
+    tutkinnonOsanRyhmä = yksilöllisestiLaajentavatTutkinnonOsat
+  )
+
   lazy val tutkinnonOsaToisestaTutkinnosta = oppija(opiskeluoikeus = opiskeluoikeus(
     tutkinto = AmmatillisenTutkinnonSuoritus(
       koulutusmoduuli = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("39/011/2014")),
@@ -383,19 +394,7 @@ object AmmatillinenOldExamples {
       toimipiste = stadinToimipiste,
       suorituskieli = suomenKieli
     ),
-
-    osat = Some(List(
-      MuunAmmatillisenTutkinnonOsanSuoritus(
-        koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite("104052", "tutkinnonosat"), true, None),
-        tutkinto = Some(AmmatillinenTutkintoKoulutus(Koodistokoodiviite("357305", "koulutus"), Some("40/011/2001"))),
-        suorituskieli = None,
-        alkamispäivä = None,
-        toimipiste = Some(stadinToimipiste),
-        arviointi = Some(List(arviointiKiitettävä)),
-        vahvistus = vahvistusValinnaisellaTittelillä(date(2014, 11, 8), stadinAmmattiopisto),
-        tutkinnonOsanRyhmä = yksilöllisestiLaajentavatTutkinnonOsat
-      )
-    ))
+    osat = Some(List(muunAmmatillisenTutkinnonOsanSuoritus))
   ))
 
   lazy val ops = Oppija(

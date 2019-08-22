@@ -364,7 +364,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         case s if s.kesken => HttpStatus.ok
         case _: Välisuoritus => HttpStatus.ok // Välisuoritus on statukseltaan aina "valmis" -> ei validoida niiden sisältämien osasuoritusten statusta
         case p: KoskeenTallennettavaPäätasonSuoritus =>
-          validatePäätasonSuorituksenStatus(opiskeluoikeus, p).onSuccess(validateOsasuoritukset(opiskeluoikeus, p))
+          validatePäätasonSuorituksenStatus(opiskeluoikeus, p).onSuccess(validateLinkitettyTaiSisältääOsasuorituksia(opiskeluoikeus, p))
         case s => validateValmiinSuorituksenStatus(s)
       }
     }
@@ -385,14 +385,21 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     })
   }
 
-  private def validateOsasuoritukset(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, suoritus: KoskeenTallennettavaPäätasonSuoritus) = {
-    if (validateSisältääOsasuorituksen(suoritus)) {
+  private def validateLinkitettyTaiSisältääOsasuorituksia(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, suoritus: KoskeenTallennettavaPäätasonSuoritus) = {
+    if (validateOsasuoritukset(suoritus)) {
       HttpStatus.ok
     } else if (opiskeluoikeus.oid.isDefined && opiskeluoikeus.oppilaitos.isDefined)  {
       validateLinkitysTehty(opiskeluoikeus.oid.get, opiskeluoikeus.oppilaitos.get.oid, suoritus)
     } else {
       valmiiksiMerkitylläEiOsasuorituksia(suoritus)
     }
+  }
+
+  private def validateOsasuoritukset(suoritus: PäätasonSuoritus) = suoritus match {
+    case _:EsiopetuksenSuoritus | _:MuunAmmatillisenKoulutuksenSuoritus | _:OppiaineenSuoritus | _:OppiaineenOppimääränSuoritus => true
+    case s: PerusopetuksenVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "9" => true
+    case s: PerusopetuksenOppimääränSuoritus => true // validoidaan jo, ks. validateOppiaineet
+    case s => s.osasuoritusLista.filterNot(_.isInstanceOf[YhteisenTutkinnonOsanSuoritus]).nonEmpty
   }
 
   private def validateLinkitysTehty(opiskeluoikeusOid: String, oppilaitosOid: Organisaatio.Oid, suoritus: PäätasonSuoritus): HttpStatus =
@@ -415,12 +422,6 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     koskiOpiskeluoikeudet.findByOppijaOids(oppijaOids)(KoskiSession.systemUser).exists(_.sisältyyOpiskeluoikeuteen.exists(s =>
       s.oid == opiskeluoikeusOid && s.oppilaitos.oid == oppilaitosOid
     ))
-
-  private def validateSisältääOsasuorituksen(suoritus: PäätasonSuoritus) = suoritus match {
-    case _:EsiopetuksenSuoritus | _:MuunAmmatillisenKoulutuksenSuoritus | _:OppiaineenSuoritus => true
-    case s: PerusopetuksenVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "9" => true
-    case s => s.osasuoritusLista.filterNot(_.isInstanceOf[YhteisenTutkinnonOsanSuoritus]).nonEmpty
-  }
 
   private def validateValmiinSuorituksenStatus(suoritus: Suoritus) = {
     suoritus.rekursiivisetOsasuoritukset.find(_.kesken).fold(HttpStatus.ok) { keskeneräinenOsasuoritus =>

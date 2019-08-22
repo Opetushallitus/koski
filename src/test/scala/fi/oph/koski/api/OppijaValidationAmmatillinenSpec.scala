@@ -4,6 +4,8 @@ import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.AmmatillinenExampleData._
+import fi.oph.koski.documentation.{AmmatillinenOldExamples, ExamplesValma}
+import fi.oph.koski.documentation.AmmatillinenOldExamples.muunAmmatillisenTutkinnonOsanSuoritus
 import fi.oph.koski.documentation.AmmatillinenReforminMukainenPerustutkintoExample.{jatkoOpintovalmiuksiaTukevienOpintojenSuoritus, korkeakouluopintoSuoritus}
 import fi.oph.koski.documentation.ExampleData.helsinki
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
@@ -341,7 +343,8 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
     "Tutkinnon tila ja arviointi" - {
       def copySuoritus(v: Option[HenkilövahvistusValinnaisellaPaikkakunnalla], ap: Option[LocalDate] = None) = {
         val alkamispäivä = ap.orElse(tutkinnonOsaSuoritus.alkamispäivä)
-        autoalanPerustutkinnonSuoritus().copy(vahvistus = v, alkamispäivä = alkamispäivä)
+        val suoritus = autoalanPerustutkinnonSuoritus().copy(vahvistus = v, alkamispäivä = alkamispäivä)
+        v.map(_ => suoritus.copy(osasuoritukset = Some(List(muunAmmatillisenTutkinnonOsanSuoritus)))).getOrElse(suoritus)
       }
 
       def put(s: AmmatillisenTutkinnonSuoritus)(f: => Unit) = {
@@ -411,7 +414,11 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       }
 
       "suoritus.vahvistus.päivä > päättymispäivä" - {
-        "palautetaan HTTP 400" in putOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(2016, 5, 31)).copy(suoritukset = List(autoalanPerustutkinnonSuoritus().copy(vahvistus = vahvistus(date(2017, 5, 31))))))(
+        "palautetaan HTTP 400" in putOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(2016, 5, 31)).copy(
+          suoritukset = List(autoalanPerustutkinnonSuoritus().copy(
+            vahvistus = vahvistus(date(2017, 5, 31)),
+            osasuoritukset = Some(List(muunAmmatillisenTutkinnonOsanSuoritus))
+          ))))(
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.päättymispäiväEnnenVahvistusta("suoritus.vahvistus.päivä (2017-05-31) oltava sama tai aiempi kuin päättymispäivä(2016-05-31)"))
         )
       }
@@ -439,7 +446,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       }
 
       "suoritus.vahvistus.päivä > päättymispäivä" - {
-        val suoritus = autoalanPerustutkinnonSuoritus().copy(vahvistus = vahvistus(date(2017, 5, 31)), suoritustapa = suoritustapaNäyttö)
+        val suoritus = autoalanPerustutkinnonSuoritus().copy(vahvistus = vahvistus(date(2017, 5, 31)), suoritustapa = suoritustapaNäyttö, osasuoritukset = Some(List(muunAmmatillisenTutkinnonOsanSuoritus)))
         "palautetaan HTTP 200" in putOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(2016, 5, 31)).copy(suoritukset = List(suoritus)))(
           verifyResponseStatusOk()
         )
@@ -500,7 +507,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
 
     "Valma" - {
       "suoritus.vahvistus.päivä > päättymispäivä" - {
-        val suoritus = autoalanPerustutkinnonSuoritusValma().copy(vahvistus = vahvistus(date(2017, 5, 31)))
+        val suoritus = autoalanPerustutkinnonSuoritusValma().copy(vahvistus = vahvistus(date(2017, 5, 31)), osasuoritukset = Some(List(ExamplesValma.valmaKoulutukseenOrientoitumine)))
         "palautetaan HTTP 200" in putOpiskeluoikeus(päättymispäivällä(defaultOpiskeluoikeus, date(2016, 5, 31)).copy(suoritukset = List(suoritus)))(
           verifyResponseStatusOk()
         )
