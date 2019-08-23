@@ -102,7 +102,6 @@ object KoskiErrorCategory {
         val koulutustyyppiEiSalliTutkinnonOsienRyhmittelyä = subcategory("koulutustyyppiEiSalliTutkinnonOsienRyhmittelyä", "Tutkinnonosan ryhmä voidaan määritellä vain ammatillisen perustutkinnon tutkinnonosille")
         val samaTutkintokoodi = subcategory("samaTutkintokoodi", "Jos tutkinnon osa kuuluu päätason suorituksen tutkintoon, ei tutkinnon osan suorituksessa tarvitse/saa olla erillistä tutkintotietoa")
         val duplikaattiOsasuoritus = subcategory("duplikaattiOsasuoritus", "Duplikaatti osasuoritus päätason suorituksella")
-        val valmiiksiMerkityltäPuuttuuOsasuorituksia = subcategory("valmiiksiMerkitylläEiOsasuorituksia", "Valmiiksi merkityllä päätason suorituksella ei voi olla tyhjä osasuorituslista tai opiskeluoikeuden pitää olla linkitetty")
         val kaksiSamaaOppiainettaNumeroarvioinnilla = subcategory("kaksiSamaaOppiainettaNumeroarvioinnilla", "Kahdella saman oppiaineen suorituksella ei molemmilla voi olla numeerista arviointia")
       }
       val rakenne = new Rakenne
@@ -118,6 +117,7 @@ object KoskiErrorCategory {
         val tilaMuuttunutLopullisenTilanJälkeen = subcategory("tilaMuuttunutLopullisenTilanJälkeen", "Opiskeluoikeuden tilojen valmistunut, eronnut jälkeen ei voi esiintyä muita tiloja")
         val montaPäättävääTilaa = subcategory("montaPäättäväätilaa", "Opiskeluoikeudella voi olla vain yksi opiskeluoikeuden päättävä tila")
         val alkamispäiväPuuttuu = subcategory("alkamispäiväPuuttuu", "Suoritukselle ei ole merkitty alkamispäivää")
+        val valmiiksiMerkityltäPuuttuuOsasuorituksia = subcategory("valmiiksiMerkitylläEiOsasuorituksia", "Valmiiksi merkityllä päätason suorituksella ei voi olla tyhjä osasuorituslista tai opiskeluoikeuden pitää olla linkitetty")
       }
       val tila = new Tila
 

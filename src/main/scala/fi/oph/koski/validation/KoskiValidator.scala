@@ -386,7 +386,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   private def validateLinkitettyTaiSisältääOsasuorituksia(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, suoritus: KoskeenTallennettavaPäätasonSuoritus) = {
-    if (validateOsasuoritukset(suoritus)) {
+    if (sisältääOsasuorituksia(suoritus)) {
       HttpStatus.ok
     } else if (opiskeluoikeus.oid.isDefined && opiskeluoikeus.oppilaitos.isDefined)  {
       validateLinkitysTehty(opiskeluoikeus.oid.get, opiskeluoikeus.oppilaitos.get.oid, suoritus)
@@ -395,10 +395,9 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     }
   }
 
-  private def validateOsasuoritukset(suoritus: PäätasonSuoritus) = suoritus match {
+  private def sisältääOsasuorituksia(suoritus: PäätasonSuoritus) = suoritus match {
     case _:EsiopetuksenSuoritus | _:MuunAmmatillisenKoulutuksenSuoritus | _:OppiaineenSuoritus | _:OppiaineenOppimääränSuoritus => true
     case s: PerusopetuksenVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "9" => true
-    case s: PerusopetuksenOppimääränSuoritus => true // validoidaan jo, ks. validateOppiaineet
     case s => s.osasuoritusLista.filterNot(_.isInstanceOf[YhteisenTutkinnonOsanSuoritus]).nonEmpty
   }
 
@@ -413,9 +412,11 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
 
   private def valmiiksiMerkitylläEiOsasuorituksia(suoritus: PäätasonSuoritus) = suoritus match {
     case s: AmmatillisenTutkinnonOsittainenTaiKokoSuoritus =>
-      KoskiErrorCategory.badRequest.validation.rakenne.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suoritus ${suorituksenTunniste(suoritus)} on merkitty valmiiksi, mutta sillä ei ole ammatillisen tutkinnon osan suoritusta tai opiskeluoikeudelta puuttuu linkitys")
-    case x =>
-      KoskiErrorCategory.badRequest.validation.rakenne.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suoritus ${suorituksenTunniste(suoritus)} on merkitty valmiiksi, mutta sillä on tyhjä osasuorituslista tai opiskeluoikeudelta puuttuu linkitys")
+      KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suoritus ${suorituksenTunniste(suoritus)} on merkitty valmiiksi, mutta sillä ei ole ammatillisen tutkinnon osan suoritusta tai opiskeluoikeudelta puuttuu linkitys")
+    case s: PerusopetuksenOppimääränSuoritus =>
+      KoskiErrorCategory.badRequest.validation.tila.oppiaineetPuuttuvat("Suorituksella ei ole osasuorituksena yhtään oppiainetta, vaikka sillä on vahvistus")
+    case s =>
+      KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia(s"Suoritus ${suorituksenTunniste(s)} on merkitty valmiiksi, mutta sillä on tyhjä osasuorituslista tai opiskeluoikeudelta puuttuu linkitys")
   }
 
   private def linkitysTehty(opiskeluoikeusOid: String, oppilaitosOid: Oid, oppijaOids: List[Oid]) =
@@ -544,8 +545,6 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       if (suoritus.koulutusmoduuli.tunniste.koodiarvo == "XX" && suoritus.valmis) {
         KoskiErrorCategory.badRequest.validation.tila.tyhjänOppiaineenVahvistus(""""Ei tiedossa"-oppiainetta ei voi merkitä valmiiksi""")
       } else HttpStatus.ok
-    case s: PerusopetuksenOppimääränSuoritus if s.osasuoritusLista.isEmpty && s.valmis =>
-      KoskiErrorCategory.badRequest.validation.tila.oppiaineetPuuttuvat("Suorituksella ei ole osasuorituksena yhtään oppiainetta, vaikka sillä on vahvistus")
     case s: PerusopetuksenVuosiluokanSuoritus if s.koulutusmoduuli.luokkaAste == "9" && s.valmis && !s.jääLuokalle && s.osasuoritusLista.nonEmpty =>
       KoskiErrorCategory.badRequest.validation.tila.oppiaineitaEiSallita("9.vuosiluokan suoritukseen ei voi syöttää oppiaineita, kun sillä on vahvistus, eikä oppilas jää luokalle")
     case _ =>
