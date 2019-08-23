@@ -15,17 +15,5 @@ class OppijaValidationMuuAmmatillinenSpec extends MuuAmmatillinenSpecification[M
     "palautetaan HTTP 200" in putTutkintoSuoritus(suoritus)(verifyResponseStatusOk())
   }
 
-  "Tutkinnonosaa pienemmät kokonaisuudet" - {
-    "Kun sisältää pelkkiä Tutkinnonosaa pienempiä kokonaisuuksia palautetaan 400" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus) {
-        verifyResponseStatusOk()
-      }
-    }
-
-    "Kun sisältää muutakin palautetaan 200" in {
-
-    }
-  }
-
   override def defaultPäätasonSuoritus: MuunAmmatillisenKoulutuksenSuoritus = kiinteistösihteerinMuuAmmatillinenKoulutus()
 }
