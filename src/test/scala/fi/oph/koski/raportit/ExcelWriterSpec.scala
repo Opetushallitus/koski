@@ -32,7 +32,7 @@ class ExcelWriterSpec extends FreeSpec with Matchers {
     }
 
     "Saman nimiset välilehdet" - {
-      "Saman nimisiin välilehtiin lisätään indeksi loppuun virheen välttämiseksi" in {
+      "liian pitkä sheetname, lisätään indeksi loppuun virheen välttämiseksi" in {
         withExcel(yhteentörmäysTestCase) { wb =>
           wb.getNumberOfSheets should equal(5)
           wb.sheetIterator.asScala.map(_.getSheetName).toSeq should equal(Seq(
@@ -44,6 +44,14 @@ class ExcelWriterSpec extends FreeSpec with Matchers {
           ))
         }
       }
+
+      "case insensitiivisyys, lisätään indeksi loppuun virheen välttämiseksi" in {
+        withExcel(yhteentörmäysTestCase2) { wb =>
+          wb.getNumberOfSheets should equal(2)
+          wb.sheetIterator.asScala.map(_.getSheetName).toSeq should equal(Seq("EW p English Worldwide", "EW P ENGLISH WORLDWIDE2"))
+        }
+      }
+
       "Jos uniikkia välilehteä ei löydy" in {
         an[InterruptedException] should be thrownBy(withExcel(uniikinVälilehdenLuontiEpäonnistuuTestCase) {_ => Unit})
       }
@@ -311,6 +319,13 @@ class ExcelWriterSpec extends FreeSpec with Matchers {
     val dataSheet_D = DynamicDataSheet("todella_pitka_valilehden_nimi_joka_nimi_ei_mahdu_kokonaisena", dataRow, columnSettings)
     val dataSheet_E = DynamicDataSheet("uniikki", dataRow, columnSettings)
     (workbookSettings, Seq(dataSheet_A, dataSheet_B, dataSheet_C, dataSheet_D, dataSheet_E))
+  }
+
+  private def yhteentörmäysTestCase2 = {
+    val workbookSettings = WorkbookSettings(expectedExcelTitle, Some(excelPassword))
+    val dataRow= Seq(Seq("foo"))
+    val columnSettings= Seq(Column(s"${erikoismerkit}bar", comment = Some(erikoismerkit)))
+    (workbookSettings, Seq(DynamicDataSheet("EW p English Worldwide", dataRow, columnSettings), DynamicDataSheet("EW P ENGLISH WORLDWIDE", dataRow, columnSettings)))
   }
 
   private def uniikinVälilehdenLuontiEpäonnistuuTestCase = {

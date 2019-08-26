@@ -86,7 +86,7 @@ object ExcelWriter {
   }
 
   private def sheetNameAlreadyExists(sheetName: String, wb: SXSSFWorkbook) = {
-    wb.sheetIterator.asScala.exists(_.getSheetName == sheetName)
+    wb.sheetIterator.asScala.exists(_.getSheetName.toLowerCase == sheetName.toLowerCase)
   }
 
   private def writeDataSheet(wb: SXSSFWorkbook, sh: SXSSFSheet, dataSheet: SheetWithColumnSettings): Unit = {
