@@ -3,6 +3,7 @@ package fi.oph.koski.api
 import java.time.LocalDate
 
 import fi.oph.koski.documentation.AmmatillinenExampleData._
+import fi.oph.koski.documentation.AmmatillinenOldExamples.muunAmmatillisenTutkinnonOsanSuoritus
 import fi.oph.koski.documentation.ExampleData
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.http.{JsonErrorMessage, KoskiErrorCategory}
@@ -24,7 +25,7 @@ trait OpiskeluoikeusTestMethodsAmmatillinen extends PutOpiskeluoikeusTestMethods
   def päättymispäivällä(oo: AmmatillinenOpiskeluoikeus, päättymispäivä: LocalDate) = lisääTila(oo, päättymispäivä, ExampleData.opiskeluoikeusValmistunut).copy(
     suoritukset = oo.suoritukset.map {
       case s: AmmatillisenTutkinnonSuoritus =>
-        s.copy(alkamispäivä = oo.alkamispäivä, vahvistus = vahvistus(päättymispäivä, stadinAmmattiopisto, Some(helsinki)))
+        s.copy(alkamispäivä = oo.alkamispäivä, vahvistus = vahvistus(päättymispäivä, stadinAmmattiopisto, Some(helsinki)), osasuoritukset = Some(List(muunAmmatillisenTutkinnonOsanSuoritus.copy(vahvistus = None))))
       case _ => ???
     }
   )

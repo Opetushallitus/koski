@@ -4,6 +4,7 @@ import java.time.LocalDate.{of => date}
 import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.documentation.AmmatillinenExampleData._
+import fi.oph.koski.documentation.AmmatillinenOldExamples.muunAmmatillisenTutkinnonOsanSuoritus
 import fi.oph.koski.documentation.ExampleData.{jyväskylä, longTimeAgo, opiskeluoikeusLäsnä}
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetukseOppimääränSuoritus, aikuistenPerusopetus2017, oppiaineidenSuoritukset2017}
 import fi.oph.koski.documentation.PerusopetusExampleData.perusopetuksenOppimääränSuoritus
@@ -309,7 +310,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     "Jos valmis päätason suoritus on poistunut" - {
       "Ammatillisessa aiemmin tallennettua suoritusta ei säilytetä" in {
         resetFixtures
-        val vanhaValmisSuoritus = valmis(ammatillinenTutkintoSuoritus(autoalanPerustutkinto))
+        val vanhaValmisSuoritus = valmis(ammatillinenTutkintoSuoritus(autoalanPerustutkinto)).copy(osasuoritukset = Some(List(muunAmmatillisenTutkinnonOsanSuoritus)))
         val vanhaKeskeneräinenSuoritus = ammatillinenTutkintoSuoritus(puutarhuri)
         val uusiSuoritus = ammatillinenTutkintoSuoritus(parturikampaaja)
         val oo = defaultOpiskeluoikeus.copy(suoritukset = List(vanhaValmisSuoritus, vanhaKeskeneräinenSuoritus))

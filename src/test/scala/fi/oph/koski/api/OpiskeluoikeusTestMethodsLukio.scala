@@ -22,7 +22,7 @@ object OpiskeluoikeusTestMethodsLukio {
     oppimäärä = nuortenOpetussuunnitelma,
     suorituskieli = suomenKieli,
     toimipiste = jyväskylänNormaalikoulu,
-    vahvistus = vahvistus,
+    vahvistus = None,
     osasuoritukset = None
   )
 
