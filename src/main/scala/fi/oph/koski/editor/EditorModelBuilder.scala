@@ -5,7 +5,7 @@ import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.editor.ClassFinder.{forName, forSchema}
 import fi.oph.koski.editor.EditorModelBuilder._
 import fi.oph.koski.editor.MetadataToModel.classesFromMetadata
-import fi.oph.koski.json.{JsonSerializer, SensitiveDataFilter}
+import fi.oph.koski.json.{SensitiveDataFilter, JsonSerializer}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.localization._
@@ -242,7 +242,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
     val sensitiveDataFilter = SensitiveDataFilter(context.user)
 
     val properties: List[EditorProperty] = schema.properties
-      .filter(p => !sensitiveDataFilter.sensitiveHidden(p.metadata))
+      .filter(p => !sensitiveDataFilter.shouldFilter(p))
       .map(property => createModelProperty(obj, objectContext, property))
 
     val objectTitle = obj match {
@@ -278,7 +278,7 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
     if (property.metadata.contains(ComplexObject())) props += ("complexObject" -> JBool(true))
     if (property.metadata.contains(Tabular())) props += ("tabular" -> JBool(true))
     if (!readOnly) props += ("editable" -> JBool(true))
-    if (SensitiveDataFilter(context.user).sensitiveHidden(property.metadata)) props += ("sensitiveHidden" -> JBool(true))
+    if (SensitiveDataFilter(context.user).shouldFilter(property)) props += ("sensitiveHidden" -> JBool(true))
     if (!onlyWhen.isEmpty) props +=("onlyWhen" -> JArray(onlyWhen))
     SchemaLocalization.deprecated(property)
       .map { case (key, _) => context.localizationRepository.get(key).get(context.user.lang) }
@@ -407,5 +407,5 @@ class SchemaSet(private val schemaMap: Map[Int, SchemaWithClassName]) {
 object ClassFinder {
   private val classes = collection.mutable.Map.empty[String, Class[_]]
   def forName(fullName: String) = synchronized { classes.getOrElseUpdate(fullName, Class.forName(fullName)) }
-  def forSchema(schema: SchemaWithClassName) = forName(schema.fullClassName)
+  def forSchema(schema: SchemaWithClassName): Class[_] = forName(schema.fullClassName)
 }

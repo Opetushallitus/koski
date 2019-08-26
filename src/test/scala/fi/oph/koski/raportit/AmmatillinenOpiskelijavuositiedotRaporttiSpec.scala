@@ -141,7 +141,7 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec extends FreeSpec with Raport
       }
 
       "raportin lataaminen ei ole sallittu viranomais-käyttäjille (globaali-luku)" in {
-        authGet(s"api/raportit/ammatillinenopiskelijavuositiedot?oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&alku=2016-01-01&loppu=2016-12-31&password=dummy", user = evira) {
+        authGet(s"api/raportit/ammatillinenopiskelijavuositiedot?oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&alku=2016-01-01&loppu=2016-12-31&password=dummy", user = ruokavirasto) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Käyttäjällä ei oikeuksia annettuun organisaatioon (esimerkiksi oppilaitokseen)."))
         }
       }

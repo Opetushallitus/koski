@@ -13,18 +13,18 @@ import scala.reflect.runtime.universe.TypeTag
   */
 object JsonSerializer {
   def writeWithRoot[T: TypeTag](x: T, pretty: Boolean = false): String = {
-    implicit val u = SensitiveDataAllowed.SystemUser
+    implicit val u = FilteringCriteria.SystemUser
     write(x, pretty)
   }
 
-  def serializeWithRoot[T: TypeTag](obj: T): JValue = serializeWithUser(SensitiveDataAllowed.SystemUser)(obj)
+  def serializeWithRoot[T: TypeTag](obj: T): JValue = serializeWithUser(FilteringCriteria.SystemUser)(obj)
 
-  def serializeWithUser[T: TypeTag](user: SensitiveDataAllowed)(obj: T): JValue = {
+  def serializeWithUser[T: TypeTag](user: FilteringCriteria)(obj: T): JValue = {
     implicit val u = user
     serialize(obj)
   }
 
-  def write[T: TypeTag](x: T, pretty: Boolean = false)(implicit user: SensitiveDataAllowed): String = {
+  def write[T: TypeTag](x: T, pretty: Boolean = false)(implicit user: FilteringCriteria): String = {
     if (pretty) {
       JsonMethods.pretty(serialize(x))
     } else {
@@ -32,11 +32,11 @@ object JsonSerializer {
     }
   }
 
-  def serialize[T: TypeTag](obj: T)(implicit user: SensitiveDataAllowed): JValue = {
+  def serialize[T: TypeTag](obj: T)(implicit user: FilteringCriteria): JValue = {
     Serializer.serialize(obj, SensitiveDataFilter(user).serializationContext)
   }
 
-  def serialize(obj: Any, schema: Schema)(implicit user: SensitiveDataAllowed): JValue = {
+  def serialize(obj: Any, schema: Schema)(implicit user: FilteringCriteria): JValue = {
     Serializer.serialize(obj, schema, SensitiveDataFilter(user).serializationContext)
   }
 

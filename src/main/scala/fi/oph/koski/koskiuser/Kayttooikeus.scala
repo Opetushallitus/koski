@@ -64,7 +64,7 @@ case class KäyttöoikeusOrg(organisaatio: OrganisaatioWithOid, organisaatiokoht
   def globalPalveluroolit = Nil
 }
 
-case class KäyttöoikeusViranomainen(globalPalveluroolit: List[Palvelurooli]) extends Käyttöoikeus {
+case class KäyttöoikeusViranomainen(organisaatio: OrganisaatioWithOid, globalPalveluroolit: List[Palvelurooli]) extends Käyttöoikeus {
   def globalAccessType: List[AccessType.Value] = if (globalPalveluroolit.exists(r => r.palveluName == "KOSKI" && Rooli.globaalitKoulutusmuotoRoolit.contains(r.rooli))) {
     List(AccessType.read)
   } else {

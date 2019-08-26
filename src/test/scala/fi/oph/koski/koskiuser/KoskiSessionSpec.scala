@@ -98,7 +98,7 @@ class KoskiSessionSpec extends FreeSpec with Matchers with EitherValues with Opt
         session.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA)) should be(true)
       }
       "viranomainen kaikki koulutusmuodot ei arkaluontoisten tietojen oikeuksia" in {
-        val session = createAndVerifySession("Eeva", MockUsers.evira.ldapUser)
+        val session = createAndVerifySession("Eeva", MockUsers.ruokavirasto.ldapUser)
         session.sensitiveDataAllowed(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA, Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA)) should be(false)
       }
       "viranomainen perusopetus" in {
@@ -334,9 +334,9 @@ object Responses {
       ))
     )),
     "Eeva" -> List(Map(
-      "oidHenkilo" -> MockUsers.evira.oid,
+      "oidHenkilo" -> MockUsers.ruokavirasto.oid,
       "organisaatiot" -> List(Map(
-        "organisaatioOid" -> MockOrganisaatiot.evira,
+        "organisaatioOid" -> MockOrganisaatiot.ruokavirasto,
         "kayttooikeudet" -> List(
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_PERUSOPETUS"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_TOINEN_ASTE"),
@@ -346,14 +346,14 @@ object Responses {
     "Pertti" -> List(Map(
       "oidHenkilo" -> MockUsers.perusopetusViranomainen.oid,
       "organisaatiot" -> List(Map(
-        "organisaatioOid" -> MockOrganisaatiot.evira,
+        "organisaatioOid" -> MockOrganisaatiot.ruokavirasto,
         "kayttooikeudet" -> List(Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_PERUSOPETUS"))
       ))
     )),
     "Teuvo" -> List(Map(
       "oidHenkilo" -> MockUsers.toinenAsteViranomainen.oid,
       "organisaatiot" -> List(Map(
-        "organisaatioOid" -> MockOrganisaatiot.evira,
+        "organisaatioOid" -> MockOrganisaatiot.ruokavirasto,
         "kayttooikeudet" -> List(Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_TOINEN_ASTE"))
       ),
       Map(
@@ -364,7 +364,7 @@ object Responses {
     "Kaisa" -> List(Map(
       "oidHenkilo" -> MockUsers.korkeakouluViranomainen.oid,
       "organisaatiot" -> List(Map(
-        "organisaatioOid" -> MockOrganisaatiot.evira,
+        "organisaatioOid" -> MockOrganisaatiot.ruokavirasto,
         "kayttooikeudet" -> List(Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_KORKEAKOULU"))
       ),
       Map(
@@ -375,7 +375,7 @@ object Responses {
     "Antti" -> List(Map(
       "oidHenkilo" -> MockUsers.luovutuspalveluKäyttäjäArkaluontoinen.oid,
       "organisaatiot" -> List(Map(
-        "organisaatioOid" -> MockOrganisaatiot.evira,
+        "organisaatioOid" -> MockOrganisaatiot.ruokavirasto,
         "kayttooikeudet" -> List(
           Map("palvelu" -> "KOSKI", "oikeus" -> "TIEDONSIIRTO_LUOVUTUSPALVELU"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "LUOTTAMUKSELLINEN_KAIKKI_TIEDOT"),
@@ -387,7 +387,7 @@ object Responses {
     "Lasse" -> List(Map(
       "oidHenkilo" -> MockUsers.luovutuspalveluKäyttäjä.oid,
       "organisaatiot" -> List(Map(
-        "organisaatioOid" -> MockOrganisaatiot.evira,
+        "organisaatioOid" -> MockOrganisaatiot.ruokavirasto,
         "kayttooikeudet" -> List(
           Map("palvelu" -> "KOSKI", "oikeus" -> "TIEDONSIIRTO_LUOVUTUSPALVELU"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_PERUSOPETUS"),

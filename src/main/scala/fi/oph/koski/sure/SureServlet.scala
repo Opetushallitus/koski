@@ -1,25 +1,23 @@
 package fi.oph.koski.sure
 
 import java.sql.Timestamp
-import java.time.{Instant, OffsetDateTime}
 import java.time.format.DateTimeParseException
+import java.time.{Instant, OffsetDateTime}
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.GlobalExecutionContext
 import fi.oph.koski.henkilo.HenkilöOid
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.json.{JsonSerializer, SensitiveDataFilter}
+import fi.oph.koski.json.{SensitiveDataFilter, JsonSerializer}
 import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.log._
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.OppijaOidHaku
-import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueries, OpiskeluoikeusQueryContext}
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, NoCache, ObservableSupport}
 import fi.oph.koski.util.Timing
 import org.json4s.JValue
 import org.scalatra.ContentEncodingSupport
-
-import scala.util.Try
 
 class SureServlet(implicit val application: KoskiApplication) extends ApiServlet with Logging with GlobalExecutionContext with ObservableSupport with RequiresVirkailijaOrPalvelukäyttäjä with ContentEncodingSupport with NoCache with Timing {
 

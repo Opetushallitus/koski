@@ -5,7 +5,7 @@ import java.time.LocalDate
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
 import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.json.{JsonSerializer, SensitiveDataAllowed}
+import fi.oph.koski.json.{JsonSerializer, FilteringCriteria}
 import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
 import fi.oph.koski.raportointikanta.{ROsasuoritusRow, RaportointikantaTestMethods}
 import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, Koodistokoodiviite, SisältäväOpiskeluoikeus}
@@ -196,7 +196,7 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
   }
 
   private def mockJValueData(tutkinnonOsanRyhmäKoodiarvo: Option[String]) = {
-    implicit val user = SensitiveDataAllowed.SystemUser
+    implicit val user = FilteringCriteria.SystemUser
     JsonSerializer.serialize(Map(
       "tutkinnonOsanRyhmä" -> tutkinnonOsanRyhmäKoodiarvo.map(Koodistokoodiviite(_, "ammatillisentutkinnonosanryhma"))
     ))

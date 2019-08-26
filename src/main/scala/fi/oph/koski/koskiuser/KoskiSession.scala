@@ -2,7 +2,7 @@ package fi.oph.koski.koskiuser
 
 import java.net.InetAddress
 
-import fi.oph.koski.json.SensitiveDataAllowed
+import fi.oph.koski.json.FilteringCriteria
 import fi.oph.koski.koskiuser.Rooli._
 import fi.oph.koski.log.{LogUserContext, Loggable, Logging}
 import fi.oph.koski.schema.{OpiskeluoikeudenTyyppi, Organisaatio, OrganisaatioWithOid}
@@ -10,7 +10,7 @@ import org.scalatra.servlet.RichRequest
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp: InetAddress, val userAgent: String, käyttöoikeudet: => Set[Käyttöoikeus]) extends LogUserContext with UserWithUsername with UserWithOid with SensitiveDataAllowed  with Loggable with Logging {
+class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp: InetAddress, val userAgent: String, käyttöoikeudet: => Set[Käyttöoikeus]) extends LogUserContext with UserWithUsername with UserWithOid with FilteringCriteria  with Loggable with Logging {
   def oid = user.oid
   def username = user.username
   def userOption = Some(user)
@@ -46,6 +46,7 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
   def hasAnyTiedonsiirronMitätöintiAccess = globalAccess.contains(AccessType.tiedonsiirronMitätöinti) || organisationOids(AccessType.tiedonsiirronMitätöinti).nonEmpty
   def hasRaportitAccess = hasAnyReadAccess && hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT) && !hasGlobalKoulutusmuotoReadAccess
   def sensitiveDataAllowed(requiredRoles: Set[Role]) = requiredRoles.exists(hasRole)
+  def viranomaisOrganisaatiot: Set[OrganisaatioWithOid] = globalViranomaisKäyttöoikeudet.map(_.organisaatio)
 
   // Note: keep in sync with PermissionCheckServlet's hasSufficientRoles function. See PermissionCheckServlet for more comments.
   private val OppijanumerorekisteriRekisterinpitäjä = Palvelurooli("OPPIJANUMEROREKISTERI", "REKISTERINPITAJA")

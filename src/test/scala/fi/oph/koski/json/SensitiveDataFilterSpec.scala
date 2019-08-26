@@ -17,7 +17,7 @@ class SensitiveDataFilterSpec extends FreeSpec with Matchers {
   private val käyttöoikeusRepository: KäyttöoikeusRepository = application.käyttöoikeusRepository
 
   "Käyttäjä jolla ei ole luottamuksellisia oikeuksia ei näe mitään arkaluontoisia tietoja" in {
-    implicit val eiLuottumuksellisiaOikeuksia = MockUsers.evira.toKoskiUser(käyttöoikeusRepository)
+    implicit val eiLuottumuksellisiaOikeuksia = MockUsers.ruokavirasto.toKoskiUser(käyttöoikeusRepository)
     roundtrip[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot](aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) should equal(AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot(None,None,None,None,None,false,None,None,None,None,None))
     roundtrip[AmmatillisenOpiskeluoikeudenLisätiedot](ammatillisenOpiskeluoikeudenLisätiedot) should equal(AmmatillisenOpiskeluoikeudenLisätiedot(false,None,None,None,None,None,None,None,None,None,None,None,false,None,false))
     roundtrip[DIAOpiskeluoikeudenLisätiedot](diaOpiskeluoikeudenLisätiedot).pidennettyPäättymispäivä should equal(false)
@@ -199,6 +199,6 @@ class SensitiveDataFilterSpec extends FreeSpec with Matchers {
   private val aikuistenUskonto = ExamplesAikuistenPerusopetus.aikuistenUskonto(Some("OR"))
   private val lukionUskonto = LukioExampleData.lukionUskonto(Some("IS"))
 
-  private def roundtrip[T: TypeTag](input: T)(implicit user: SensitiveDataAllowed): T =
+  private def roundtrip[T: TypeTag](input: T)(implicit user: FilteringCriteria): T =
     JsonSerializer.extract[T](JsonSerializer.serialize(input))
 }

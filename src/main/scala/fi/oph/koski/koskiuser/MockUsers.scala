@@ -39,18 +39,18 @@ object MockUsers {
   val kahdenOrganisaatioPalvelukäyttäjä = MockUser("palvelu2", "palvelu2", "1.2.246.562.24.99999999998", Set(oppilaitosPalvelukäyttäjä(helsinginKaupunki), oppilaitosPalvelukäyttäjä(MockOrganisaatiot.omnia)))
   val omattiedot = MockUser("Oppija", "Oili", "1.2.246.562.24.99999999999", Set(oppilaitosTallentaja(omnia)))
   val eiOikkia = MockUser("EiOikkia", "Otto", "1.2.246.562.24.99999999902", Set(KäyttöoikeusOrg(OidOrganisaatio(lehtikuusentienToimipiste), List(Palvelurooli("OPPIJANUMEROREKISTERI", READ)), juuri = true, oppilaitostyyppi = None)))
-  val evira = MockUser("Evira", "Eeva", "1.2.246.562.24.99999999111", Set(KäyttöoikeusViranomainen(List(Palvelurooli(GLOBAALI_LUKU_PERUSOPETUS),Palvelurooli(GLOBAALI_LUKU_TOINEN_ASTE), Palvelurooli(GLOBAALI_LUKU_KORKEAKOULU)))))
-  val kelaSuppeatOikeudet = MockUser("Kela", "Suppea", "1.2.246.562.24.88888888111", Set(KäyttöoikeusViranomainen(List(Palvelurooli(GLOBAALI_LUKU_PERUSOPETUS),Palvelurooli(GLOBAALI_LUKU_TOINEN_ASTE), Palvelurooli(GLOBAALI_LUKU_KORKEAKOULU), Palvelurooli(LUOTTAMUKSELLINEN_KELA_SUPPEA)))))
-  val kelaLaajatOikeudet = MockUser("Kela", "Laaja", "1.2.246.562.24.88888888222", Set(KäyttöoikeusViranomainen(List(Palvelurooli(GLOBAALI_LUKU_PERUSOPETUS),Palvelurooli(GLOBAALI_LUKU_TOINEN_ASTE), Palvelurooli(GLOBAALI_LUKU_KORKEAKOULU), Palvelurooli(LUOTTAMUKSELLINEN_KELA_LAAJA)))))
-  val perusopetusViranomainen = MockUser("Perusopetus", "Pertti", "1.2.246.562.24.99999999222", Set(KäyttöoikeusViranomainen(List(Palvelurooli(GLOBAALI_LUKU_PERUSOPETUS)))))
-  val toinenAsteViranomainen = MockUser("Toinenaste", "Teuvo", "1.2.246.562.24.99999999333", Set(KäyttöoikeusGlobal(List(Palvelurooli("OPPIJANUMEROREKISTERI", "REKISTERINPITAJA"))), KäyttöoikeusViranomainen(List(Palvelurooli(GLOBAALI_LUKU_TOINEN_ASTE)))))
-  val korkeakouluViranomainen = MockUser("Korkeakoulu", "Kaisa", "1.2.246.562.24.99999999444", Set(KäyttöoikeusViranomainen(List(Palvelurooli(GLOBAALI_LUKU_KORKEAKOULU)))))
+  val ruokavirasto = MockUser("Evira", "Eeva", "1.2.246.562.24.99999999111", Set(KäyttöoikeusViranomainen(OidOrganisaatio(MockOrganisaatiot.ruokavirasto), List(Palvelurooli(GLOBAALI_LUKU_PERUSOPETUS),Palvelurooli(GLOBAALI_LUKU_TOINEN_ASTE), Palvelurooli(GLOBAALI_LUKU_KORKEAKOULU)))))
+  val kelaSuppeatOikeudet = MockUser("Kela", "Suppea", "1.2.246.562.24.88888888111", Set(KäyttöoikeusViranomainen(OidOrganisaatio(kela), List(Palvelurooli(GLOBAALI_LUKU_PERUSOPETUS),Palvelurooli(GLOBAALI_LUKU_TOINEN_ASTE), Palvelurooli(GLOBAALI_LUKU_KORKEAKOULU), Palvelurooli(LUOTTAMUKSELLINEN_KELA_SUPPEA)))))
+  val kelaLaajatOikeudet = MockUser("Kela", "Laaja", "1.2.246.562.24.88888888222", Set(KäyttöoikeusViranomainen(OidOrganisaatio(kela), List(Palvelurooli(GLOBAALI_LUKU_PERUSOPETUS),Palvelurooli(GLOBAALI_LUKU_TOINEN_ASTE), Palvelurooli(GLOBAALI_LUKU_KORKEAKOULU), Palvelurooli(LUOTTAMUKSELLINEN_KELA_LAAJA)))))
+  val perusopetusViranomainen = MockUser("Perusopetus", "Pertti", "1.2.246.562.24.99999999222", Set(KäyttöoikeusViranomainen(OidOrganisaatio(MockOrganisaatiot.ruokavirasto), List(Palvelurooli(GLOBAALI_LUKU_PERUSOPETUS)))))
+  val toinenAsteViranomainen = MockUser("Toinenaste", "Teuvo", "1.2.246.562.24.99999999333", Set(KäyttöoikeusGlobal(List(Palvelurooli("OPPIJANUMEROREKISTERI", "REKISTERINPITAJA"))), KäyttöoikeusViranomainen(OidOrganisaatio(MockOrganisaatiot.ruokavirasto), List(Palvelurooli(GLOBAALI_LUKU_TOINEN_ASTE)))))
+  val korkeakouluViranomainen = MockUser("Korkeakoulu", "Kaisa", "1.2.246.562.24.99999999444", Set(KäyttöoikeusViranomainen(OidOrganisaatio(MockOrganisaatiot.ruokavirasto), List(Palvelurooli(GLOBAALI_LUKU_KORKEAKOULU)))))
   val jyväskylänNormaalikoulunPalvelukäyttäjä = MockUser("jyväs-palvelu", "jyväs-palvelu", "1.2.246.562.24.99999999777", Set(oppilaitosPalvelukäyttäjä(MockOrganisaatiot.jyväskylänNormaalikoulu)))
   val jyväskylänYliopistonVastuukäyttäjä = MockUser("jyväs-vastuu", "jyväs-vastuu", "1.2.246.562.24.99999997777", Set(vastuukäyttäjä(MockOrganisaatiot.jyväskylänYliopisto)), "fi", List("Vastuukayttajat"))
-  val luovutuspalveluKäyttäjä = MockUser("Luovutus", "Lasse", "1.2.246.562.24.99999988888", Set(KäyttöoikeusViranomainen(List(Palvelurooli(TIEDONSIIRTO_LUOVUTUSPALVELU), Palvelurooli(GLOBAALI_LUKU_PERUSOPETUS),Palvelurooli(GLOBAALI_LUKU_TOINEN_ASTE), Palvelurooli(GLOBAALI_LUKU_KORKEAKOULU)))))
-  val luovutuspalveluKäyttäjäArkaluontoinen = MockUser("Arkaluontoinen", "Antti", "1.2.246.562.24.88888877777", Set(KäyttöoikeusViranomainen(List(Palvelurooli(TIEDONSIIRTO_LUOVUTUSPALVELU), Palvelurooli(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT), Palvelurooli(GLOBAALI_LUKU_PERUSOPETUS),Palvelurooli(GLOBAALI_LUKU_TOINEN_ASTE), Palvelurooli(GLOBAALI_LUKU_KORKEAKOULU)))))
+  val luovutuspalveluKäyttäjä = MockUser("Luovutus", "Lasse", "1.2.246.562.24.99999988888", Set(KäyttöoikeusViranomainen(OidOrganisaatio(MockOrganisaatiot.kela), List(Palvelurooli(TIEDONSIIRTO_LUOVUTUSPALVELU), Palvelurooli(GLOBAALI_LUKU_PERUSOPETUS),Palvelurooli(GLOBAALI_LUKU_TOINEN_ASTE), Palvelurooli(GLOBAALI_LUKU_KORKEAKOULU)))))
+  val luovutuspalveluKäyttäjäArkaluontoinen = MockUser("Arkaluontoinen", "Antti", "1.2.246.562.24.88888877777", Set(KäyttöoikeusViranomainen(OidOrganisaatio(MockOrganisaatiot.ruokavirasto), List(Palvelurooli(TIEDONSIIRTO_LUOVUTUSPALVELU), Palvelurooli(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT), Palvelurooli(GLOBAALI_LUKU_PERUSOPETUS),Palvelurooli(GLOBAALI_LUKU_TOINEN_ASTE), Palvelurooli(GLOBAALI_LUKU_KORKEAKOULU)))))
   val suomiFiKäyttäjä = luovutuspalveluKäyttäjä.copy(firstname = "Suomi", lastname = "Fi", oid="1.2.246.562.24.99999988889")
-  val tilastokeskusKäyttäjä = MockUser("Tilastokeskus", "Teppo", "1.2.246.562.24.78787878787", Set(KäyttöoikeusViranomainen(List(Palvelurooli(TILASTOKESKUS), Palvelurooli(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT), Palvelurooli(GLOBAALI_LUKU_PERUSOPETUS),Palvelurooli(GLOBAALI_LUKU_TOINEN_ASTE), Palvelurooli(GLOBAALI_LUKU_KORKEAKOULU)))))
+  val tilastokeskusKäyttäjä = MockUser("Tilastokeskus", "Teppo", "1.2.246.562.24.78787878787", Set(KäyttöoikeusViranomainen(OidOrganisaatio(migri), List(Palvelurooli(TILASTOKESKUS), Palvelurooli(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT), Palvelurooli(GLOBAALI_LUKU_PERUSOPETUS),Palvelurooli(GLOBAALI_LUKU_TOINEN_ASTE), Palvelurooli(GLOBAALI_LUKU_KORKEAKOULU)))))
 
   val users = List(
     kalle,
@@ -78,7 +78,7 @@ object MockUsers {
     eiOikkia,
     jyväskylänNormaalikoulunPalvelukäyttäjä,
     jyväskylänYliopistonVastuukäyttäjä,
-    evira,
+    ruokavirasto,
     kelaSuppeatOikeudet,
     kelaLaajatOikeudet,
     perusopetusViranomainen,

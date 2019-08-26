@@ -10,7 +10,7 @@ import fi.oph.koski.documentation.ExamplesEsiopetus
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.MockUsers.{evira, korkeakouluViranomainen, perusopetusViranomainen, toinenAsteViranomainen}
+import fi.oph.koski.koskiuser.MockUsers.{ruokavirasto, korkeakouluViranomainen, perusopetusViranomainen, toinenAsteViranomainen}
 import fi.oph.koski.koskiuser.{KoskiSession, MockUsers, UserWithPassword}
 import fi.oph.koski.luovutuspalvelu.{HetuRequestV1, LuovutuspalveluResponseV1}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -269,7 +269,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
 
   "viranomainen jolla oikeudet kaikkiin koulutusmuotoihin muttei arkaluontoisiin tietoihin" - {
     "ei näe luottamuksellista dataa" in {
-      authGet("api/oppija/" + MockOppijat.eero.oid, evira) {
+      authGet("api/oppija/" + MockOppijat.eero.oid, ruokavirasto) {
         verifyResponseStatusOk()
         suppeaSensitiveDataPiilotettu()
         laajaSensitiveDataPiilotettu()
@@ -278,18 +278,18 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     }
 
     "ei voi muokata opiskeluoikeuksia" in {
-      putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästäOmnia, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(evira) ++ jsonContent) {
+      putOpiskeluoikeus(opiskeluoikeusLähdejärjestelmästäOmnia, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(ruokavirasto) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon 1.2.246.562.10.51720121923"))
       }
     }
 
     "voi hakea kaikkia opiskeluoikeuksia" in {
-      searchForNames("eero", evira) should equal(List("Jouni Eerola", "Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström"))
+      searchForNames("eero", ruokavirasto) should equal(List("Jouni Eerola", "Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström"))
     }
 
     "voi hakea ja katsella kaikkia opiskeluoikeuksia" in {
-      queryOppijat(user = MockUsers.evira).length should equal(koskeenTallennetutOppijatCount)
-      authGet("api/oppija/" + MockOppijat.ammattilainen.oid, evira) {
+      queryOppijat(user = MockUsers.ruokavirasto).length should equal(koskeenTallennetutOppijatCount)
+      authGet("api/oppija/" + MockOppijat.ammattilainen.oid, ruokavirasto) {
         verifyResponseStatusOk()
       }
     }
