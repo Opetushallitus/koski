@@ -32,14 +32,13 @@ class SensitiveDataFilter(user: FilteringCriteria) {
 }
 
 object SensitiveDataFilter {
+  // TODO: tähän pitää kehittää jotain fiksua
   def apply(user: FilteringCriteria): SensitiveDataFilter = {
     val viranomaisOrgs = user.viranomaisOrganisaatiot.map(_.oid)
     if (viranomaisOrgs.contains(MockOrganisaatiot.kela)) {
       KelaFilter(user)
     } else if (viranomaisOrgs.contains(MockOrganisaatiot.migri)) {
       MigriFilter(user)
-    } else if (viranomaisOrgs.nonEmpty) {
-      throw new IllegalArgumentException(s"Väärä viranomaisorganisaatio $viranomaisOrgs")
     } else {
       new SensitiveDataFilter(user)
     }
