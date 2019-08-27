@@ -46,7 +46,7 @@ object SensitiveDataFilter {
 }
 
 case class MigriFilter(user: FilteringCriteria) extends SensitiveDataFilter(user) {
-  override def shouldFilter(p: Property): Boolean = ???
+  override def shouldFilter(p: Property): Boolean = false
 }
 
 trait FilteringCriteria {

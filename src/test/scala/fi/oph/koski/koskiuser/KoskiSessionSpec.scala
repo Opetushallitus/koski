@@ -387,7 +387,7 @@ object Responses {
     "Lasse" -> List(Map(
       "oidHenkilo" -> MockUsers.luovutuspalveluKäyttäjä.oid,
       "organisaatiot" -> List(Map(
-        "organisaatioOid" -> MockOrganisaatiot.ruokavirasto,
+        "organisaatioOid" -> MockOrganisaatiot.kela,
         "kayttooikeudet" -> List(
           Map("palvelu" -> "KOSKI", "oikeus" -> "TIEDONSIIRTO_LUOVUTUSPALVELU"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_PERUSOPETUS"),
