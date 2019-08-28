@@ -269,7 +269,7 @@ Koski-sovelluskoodissa audit-loggaus tehdään `AuditLog`-luokan kautta ja sovel
 
 Kuvaus | URL | Muuta
 --------|-----|-------
-Koski | [hallinta-ui](https://extra.koski.opintopolku.fi/koski/) [api][koski-api] [pulssi-ui](https://extra.koski.opintopolku.fi/koski/pulssi) |
+Koski | [hallinta-ui](https://opintopolku.fi/koski/) [api][koski-api] [pulssi-ui](https://opintopolku.fi/koski/pulssi) |
 CAS | [palvelukortti](https://confluence.csc.fi/display/oppija/Rajapintojen+autentikaatio) | Käyttäjän autentikointi Koskeen ja muihin OPH:n palveluihin.
 Vanha henkilöpalvelu | [palvelukortti](https://confluence.csc.fi/pages/viewpage.action?pageId=46204851) [api](https://testi.virkailija.opintopolku.fi/authentication-service/swagger/index.html) | Koski käyttää vain [henkilo](https://testi.virkailija.opintopolku.fi/authentication-service/swagger/index.html#!/henkilo)-resurssia tiedonsiirron virheen lähettämiseksi organistaatiolle.
 Oppijanumerorekisteri | [palvelukortti](https://confluence.csc.fi/display/OPHPALV/Oppijanumerorekisteri) [api](https://testi.virkailija.opintopolku.fi/oppijanumerorekisteri-service/swagger-ui.html) | Oppijan haku oid:lla tai hetulla. Uuden oppijan luonti.
@@ -417,7 +417,7 @@ Koski-järjestelmän [rajapinta-dokumentaatio][koski-api] generoidaan lähdekood
 
 JSON-scheman visualisointiin on käytetty json-schema-viewer nimistä kirjastoa, johon on tehty joitakin Koski-projektin vaatimia [muutoksia](https://github.com/Opetushallitus/json-schema-viewer).
 
-[koski-api]: https://extra.koski.opintopolku.fi/koski/documentation
+[koski-api]: https://opintopolku.fi/koski/dokumentaatio
 [koodisto-api]: https://testi.virkailija.opintopolku.fi/koodisto-service/swagger/index.html
 [eperusteet-api]: https://eperusteet.opintopolku.fi/eperusteet-service/
 [virta-description]: https://confluence.csc.fi/display/VIRTA/VIRTA-opintotietopalvelu
