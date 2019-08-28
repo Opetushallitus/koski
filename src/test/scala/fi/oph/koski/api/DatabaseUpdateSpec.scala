@@ -11,7 +11,7 @@ import org.scalatest.{FreeSpec, Matchers}
 class DatabaseUpdateSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods with LocalJettyHttpSpecification with DatabaseTestMethods {
   "Kun opiskeluoikeus päivitetään" - {
     "Oppilaitoksen muuttuessa oppilaitos_oid päivittyy" in {
-      val opiskeluoikeus = createOpiskeluoikeus(defaultHenkilö, defaultOpiskeluoikeus, user = stadinAmmattiopistoTallentaja)
+      val opiskeluoikeus = createOpiskeluoikeus(defaultHenkilö, defaultOpiskeluoikeus, user = stadinAmmattiopistoTallentaja, resetFixtures = true)
       putOpiskeluoikeus(opiskeluoikeus.copy(oppilaitos = Some(Oppilaitos(omnia)), koulutustoimija = None)) {
         verifyResponseStatusOk()
       }
