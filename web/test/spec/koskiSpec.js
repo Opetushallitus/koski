@@ -88,9 +88,9 @@ describe('Koski', function() {
   describe('Yksilöintitieto', function() {
     before(Authentication().login('pää'), page.openPage, page.oppijaHaku.searchAndSelect('1.2.246.562.24.99999999123', 'Hetuton'))
 
-    it('Oppijanumerorekisteri näytetään punaisena henkilölle jota ei ole yksilöity', function() {
+    it('näytetään ilmoitus jos oppija on yksilöimätön', function() {
       expect(isElementVisible(S('.yksilöimätön'))).to.equal(true)
-      expect(S('.yksilöimätön').attr('href')).to.equal('/henkilo-ui/oppija/1.2.246.562.24.99999999123?permissionCheckService=KOSKI')
+      expect(S('.oppijanumerorekisteri-link').attr('href')).to.equal('/henkilo-ui/oppija/1.2.246.562.24.99999999123?permissionCheckService=KOSKI')
     })
   })
 
