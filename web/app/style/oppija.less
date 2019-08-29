@@ -103,8 +103,26 @@
         color: @color-red;
       }
     }
-    .yksilöimätön {
-      background-color: @color-red;
+    .oppijanumerorekisteri-link {
+      position: relative;
+      .yksilöimätön {
+        position: absolute;
+        display: block;
+        top: 29px;
+        left: -10px;
+        background-color: @color-white;
+        color: @color-darkgray;
+        border: 2px solid @color-darkgray;
+        padding: 5px;
+        z-index: 100;
+        &:after {
+          content: "";
+          .Triangle(10px, @color-darkgray, bottom);
+          position: absolute;
+          top: -20px;
+          left: ~"calc(50% - 10px)";
+        }
+      }
     }
   }
 

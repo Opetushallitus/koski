@@ -239,9 +239,9 @@ export class Oppija extends React.Component {
 }
 
 const HenkilöUiLink = ({henkilö, yksilöity}) => {
-  const tooltip = yksilöity ? t('OppijanumerorekisteriLinkTooltip') : t('Oppijaa ei ole yksilöity. Tee yksilöinti oppijanumerorekisterissä')
-  return (<a href={`/henkilo-ui/oppija/${modelData(henkilö, 'oid')}?permissionCheckService=KOSKI`} target='_blank' title={tooltip} className={!yksilöity ? 'yksilöimätön' : ''} >
+  return (<a href={`/henkilo-ui/oppija/${modelData(henkilö, 'oid')}?permissionCheckService=KOSKI`} target='_blank' title={t('OppijanumerorekisteriLinkTooltip')} className='oppijanumerorekisteri-link'>
     <Text name='Oppijanumerorekisteri'/>
+    {!yksilöity && <Text className='yksilöimätön' name='Oppijaa ei ole yksilöity. Tee yksilöinti oppijanumerorekisterissä'/>}
   </a>)
 }
 
