@@ -43,7 +43,7 @@ describe('Lukiokoulutus', function( ){
       it('näyttää oppiaineiden ja kurssien arvosanat', function() {
         expect(extractAsText(S('.osasuoritukset'))).to.equal(
           'Oppiaine Laajuus (kurssia) Arvosana (keskiarvo)\n' +
-          'Äidinkieli ja kirjallisuus\n' +
+          'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus\n' +
           'ÄI1\n8 ÄI2\n8 ÄI3\n8 ÄI4\n8 ÄI5\n9 ÄI6\n9 ÄI8\n9 ÄI9\n9 8 9\n(8,5)\n' +
           'A1-kieli, englanti\nENA1\n10 ENA2\n10 ENA3\n9 ENA4\n9 ENA5\n9 ENA6\n8 ENA7\n8 ENA8\n9 ENA 10 *\nS 9 9\n(9,0)\n' +
           'B1-kieli, ruotsi\nRUB11\n9 RUB12\n8 RUB13\n7 RUB14\n7 RUB15\n6 5 7\n(7,4)\n' +

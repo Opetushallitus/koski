@@ -19,7 +19,7 @@ describe('Omat tiedot - lukio', function() {
           expect(extractAsText(S('table.omattiedot-suoritukset'))).to.equal(
             'Oppiaine Arvosana\n' +
             '+\n' +
-            'Äidinkieli ja kirjallisuus\n' +
+            'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus\n' +
             '(8 kurssia) 9\n' +
             '+\n' +
             'A1-kieli, englanti\n' +
@@ -120,7 +120,7 @@ describe('Omat tiedot - lukio', function() {
         it('Näytetään taulukko oppiaineista sekä kurssisuorituksista', function () {
           expect(extractAsText(S('table.omattiedot-suoritukset'))).to.equal(
             'Oppiaine Arvosana\n' +
-            'Äidinkieli ja kirjallisuus\n' +
+            'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus\n' +
             '(8 kurssia) 9\n' +
             'ÄI1\n' +
             '8 ÄI2\n' +
@@ -389,7 +389,7 @@ describe('Omat tiedot - lukio', function() {
           it('Näytetään Pre-IB -oppiaineet sekä kurssit', function () {
             expect(extractAsText(S('table.omattiedot-suoritukset'))).to.equal(
               'Oppiaine Arvosana\n' +
-              'Äidinkieli ja kirjallisuus\n' +
+              'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus\n' +
               '(3 kurssia) 8\n' +
               'ÄI1\n' +
               '8 ÄI2\n' +

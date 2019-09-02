@@ -113,7 +113,7 @@ class LukioSpec extends FreeSpec with Matchers with OpintosuoritusoteTestMethods
           |YH Yhteiskuntaoppi 2 8
           |YH1 Suomalainen yhteiskunta 1 8 4.6.2016
           |YH2 Taloustieto 1 8 4.6.2016
-          |AI Äidinkieli ja kirjallisuus 8 9
+          |AI Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 8 9
           |ÄI1 Tekstit ja vuorovaikutus 1 8 4.6.2016
           |ÄI2 Kieli, kulttuuri ja identiteetti 1 8 4.6.2016
           |ÄI3 Kirjallisuuden keinoja ja tulkintaa 1 8 4.6.2016
@@ -128,7 +128,7 @@ class LukioSpec extends FreeSpec with Matchers with OpintosuoritusoteTestMethods
       opintosuoritusote(MockOppijat.lukioKesken.oid) should equal(
         """Opintosuoritukset
           |Kurssia Arvosana Suor.pvm
-          |AI Äidinkieli ja kirjallisuus 3
+          |AI Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 3
           |ÄI1 Tekstit ja vuorovaikutus 1 8 4.6.2016
           |ÄI2 Kieli, kulttuuri ja identiteetti 1 8 4.6.2016""".stripMargin)
     }
@@ -139,7 +139,7 @@ class LukioSpec extends FreeSpec with Matchers with OpintosuoritusoteTestMethods
                                                             |Jyväskylän normaalikoulu
                                                             |Lukiolainen, Liisa 020655-2479
                                                             |
-                                                            |Äidinkieli ja kirjallisuus 8 Kiitettävä 9
+                                                            |Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 8 Kiitettävä 9
                                                             |A1-kieli, englanti 9 Kiitettävä 9
                                                             |B1-kieli, ruotsi 5 Tyydyttävä 7
                                                             |B3-kieli, latina 2 Kiitettävä 9
