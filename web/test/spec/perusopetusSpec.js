@@ -3357,7 +3357,8 @@ describe('Perusopetus', function() {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
           'Opiskeluoikeuden voimassaoloaika : 15.8.2007 — 1.6.2008\n' +
           'Tila 1.6.2008 Valmistunut\n' +
-          '15.8.2007 Läsnä')
+          '15.8.2007 Läsnä\n' +
+          'Kokonaislaajuus 11 vuosiviikkotuntia')
       })
       it('näyttää suorituksen tiedot', function() {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
@@ -3374,7 +3375,8 @@ describe('Perusopetus', function() {
           'Äidinkieli S 10 vuosiviikkotuntia\n' +
           'Sanallinen arviointi Keskustelee sujuvasti suomeksi\n' +
           'Opetuksen sisältö Suullinen ilmaisu ja kuullun ymmärtäminen\n' +
-          'Fysiikka 9 1 vuosiviikkotuntia')
+          'Fysiikka 9 1 vuosiviikkotuntia\n' +
+          'Minkä vuosiluokan mukaisesta oppiainesuorituksesta on kyse 7. vuosiluokka')
       })
     })
     describe('Tietojen muuttaminen', function() {
@@ -3436,11 +3438,12 @@ describe('Perusopetus', function() {
           before(
             editor.edit,
             uusiNuortenOppiaine.selectValue('Historia'),
-            historia.propertyBySelector('.arvosana').selectValue('8')
+            historia.propertyBySelector('.arvosana').selectValue('8'),
+            historia.propertyBySelector('.luokkaAste').selectValue('7. vuosiluokka')
           )
 
           it('Uusi oppiaine näytetään', function() {
-            expect(historia.property('yksilöllistettyOppimäärä').isVisible()).to.equal(true)
+            expect(historia.property('luokkaAste').isVisible()).to.equal(true)
           })
 
           describe('Nuorten perusopetuksen oppiaineen tallentaminen', function () {
