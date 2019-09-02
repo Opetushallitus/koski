@@ -103,6 +103,7 @@ object KoskiErrorCategory {
         val samaTutkintokoodi = subcategory("samaTutkintokoodi", "Jos tutkinnon osa kuuluu päätason suorituksen tutkintoon, ei tutkinnon osan suorituksessa tarvitse/saa olla erillistä tutkintotietoa")
         val duplikaattiOsasuoritus = subcategory("duplikaattiOsasuoritus", "Duplikaatti osasuoritus päätason suorituksella")
         val kaksiSamaaOppiainettaNumeroarvioinnilla = subcategory("kaksiSamaaOppiainettaNumeroarvioinnilla", "Kahdella saman oppiaineen suorituksella ei molemmilla voi olla numeerista arviointia")
+        val luokkaAstePuuttuu = subcategory("luokkaAstePuuttuu", "Luokka-aste vaaditaan kun viimeisin arviointi on muuta kuin 'O'")
       }
       val rakenne = new Rakenne
 

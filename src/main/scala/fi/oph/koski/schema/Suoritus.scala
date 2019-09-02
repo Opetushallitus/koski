@@ -44,7 +44,8 @@ trait Suoritus {
   def tarvitseeVahvistuksen: Boolean = false
   /** Onko suoritus valmis tai merkitty valmistuvaksi tulevaisuuden päivämäärällä. Valmius määritellään päätason suorituksissa vahvistuksen olemassaololla ja muissa suorituksissa arvioinnin olemassaololla. */
   def valmis = !vahvistusPuuttuu && !arviointiPuuttuu
-  def arviointiPuuttuu = arviointi.isEmpty
+  def arvioitu: Boolean = arviointi.exists(_.nonEmpty)
+  def arviointiPuuttuu: Boolean = !arvioitu
   def vahvistusPuuttuu = tarvitseeVahvistuksen && !vahvistus.isDefined
   def vahvistettu = vahvistus.isDefined
   def kesken = !valmis

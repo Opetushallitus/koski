@@ -547,6 +547,8 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       } else HttpStatus.ok
     case s: PerusopetuksenVuosiluokanSuoritus if s.koulutusmoduuli.luokkaAste == "9" && s.valmis && !s.jääLuokalle && s.osasuoritusLista.nonEmpty =>
       KoskiErrorCategory.badRequest.validation.tila.oppiaineitaEiSallita("9.vuosiluokan suoritukseen ei voi syöttää oppiaineita, kun sillä on vahvistus, eikä oppilas jää luokalle")
+    case s: NuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa if s.luokkaAsteVaaditaan && s.luokkaAste.isEmpty =>
+      KoskiErrorCategory.badRequest.validation.rakenne.luokkaAstePuuttuu("Luokka-aste vaaditaan kun viimeisin arviointi on muuta kuin 'O'")
     case _ =>
       HttpStatus.ok
   }

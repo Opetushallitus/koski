@@ -298,7 +298,7 @@ case class NuortenPerusopetuksenOppiaineenSuoritus(
   @KoodistoKoodiarvo("perusopetuksenoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenoppiaine", koodistoUri = "suorituksentyyppi"),
   suoritustapa: Option[Koodistokoodiviite] = None
-) extends PerusopetuksenOppiaineenSuoritus with OppiaineenTaiToiminta_AlueenSuoritus with Vahvistukseton with Yksilöllistettävä with MahdollisestiSuorituskielellinen with SuoritustapanaMahdollisestiErityinenTutkinto with PerusopetukseenValmistavanOpetuksenOsasuoritus
+) extends PerusopetuksenOppiaineenSuoritus with OppiaineenTaiToiminta_AlueenSuoritus with Vahvistukseton with Yksilöllistettävä with MahdollisestiSuorituskielellinen with SuoritustapanaMahdollisestiErityinenTutkinto
 
 trait OppiaineenOppimääränSuoritus
 

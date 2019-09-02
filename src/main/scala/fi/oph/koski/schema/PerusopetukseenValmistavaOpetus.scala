@@ -2,7 +2,8 @@ package fi.oph.koski.schema
 
 import java.time.{LocalDate, LocalDateTime}
 
-import fi.oph.koski.schema.annotation.{Hidden, KoodistoKoodiarvo, Tooltip}
+import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.schema.annotation.{Hidden, KoodistoKoodiarvo, KoodistoUri, Tooltip}
 import fi.oph.scalaschema.annotation.{Description, MaxItems, Title}
 
 @Description("Perusopetukseen valmistavan opetuksen opiskeluoikeuden tiedot")
@@ -18,6 +19,7 @@ case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
   tila: NuortenPerusopetuksenOpiskeluoikeudenTila,
   @MaxItems(1)
   suoritukset: List[PerusopetukseenValmistavanOpetuksenSuoritus],
+  kokonaislaajuus: Option[LaajuusVuosiviikkotunneissa] = None,
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.perusopetukseenvalmistavaopetus.koodiarvo)
   tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.perusopetukseenvalmistavaopetus
 ) extends KoskeenTallennettavaOpiskeluoikeus {
@@ -59,6 +61,23 @@ case class PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus(
   @KoodistoKoodiarvo("perusopetukseenvalmistavanopetuksenoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetukseenvalmistavanopetuksenoppiaine", koodistoUri = "suorituksentyyppi")
 ) extends Vahvistukseton with MahdollisestiSuorituskielellinen with PerusopetukseenValmistavanOpetuksenOsasuoritus
+
+@Description("Perusopetuksen oppiaineen suoritus osana perusopetukseen valmistavaa opetusta")
+case class NuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa(
+  koulutusmoduuli: NuortenPerusopetuksenOppiaine,
+  arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
+  suorituskieli: Option[Koodistokoodiviite] = None,
+  @Description("Luokka-asteen tunniste (1-9). Minkä vuosiluokan mukaisesta oppiainesuorituksesta on kyse.")
+  @Title("Minkä vuosiluokan mukaisesta oppiainesuorituksesta on kyse")
+  @KoodistoUri("perusopetuksenluokkaaste")
+  luokkaAste: Option[Koodistokoodiviite] = None,
+  @KoodistoKoodiarvo("perusopetuksenoppiaineperusopetukseenvalmistavassaopetuksessa")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenoppiaineperusopetukseenvalmistavassaopetuksessa", koodistoUri = "suorituksentyyppi")
+) extends PerusopetuksenOppiaineenSuoritus with Vahvistukseton with MahdollisestiSuorituskielellinen with PerusopetukseenValmistavanOpetuksenOsasuoritus {
+  private val luokkaAstettaEiVaaditaArvosana = "O"
+  def luokkaAsteVaaditaan: Boolean =
+    arvioitu && !viimeisinArviointi.map(_.arvosana.koodiarvo).contains(luokkaAstettaEiVaaditaArvosana)
+}
 
 @Description("Perusopetukseen valmistavan opetuksen tunnistetiedot")
 case class PerusopetukseenValmistavaOpetus(

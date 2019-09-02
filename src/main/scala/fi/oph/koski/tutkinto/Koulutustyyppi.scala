@@ -12,6 +12,8 @@ object Koulutustyyppi {
   val korkeakoulutus = apply(3)
   val ammatillinenPerustutkintoErityisopetuksena = apply(4)
   val telma = apply(5)
+  val perusopetuksenLisäopetus = apply(6)
+  val vieraskielistenLuva = apply(9)
   val ammattitutkinto = apply(11)
   val erikoisammattitutkinto = apply(12)
   val ammatillinenPerustutkintoNäyttötutkintona = apply(13)
@@ -21,6 +23,8 @@ object Koulutustyyppi {
   val aikuistenPerusopetus = apply(17)
   val valma = apply(18)
   val valmaErityisopetuksena = apply(19)
+  val perusopetukseenValmistava = apply(22)
+  val luva = apply(23)
 
   def apply(numero: Int) = MockKoodistoViitePalvelu.validateRequired(Koodistokoodiviite(numero.toString, "koulutustyyppi"))
   def describe(koulutustyyppi: Koulutustyyppi) = koulutustyyppi.koodiarvo + koulutustyyppi.nimi.map(nimi => s"(${nimi.get("fi")})").getOrElse("")
@@ -29,4 +33,6 @@ object Koulutustyyppi {
   val ammatillisenPerustutkinnonTyypit = List(ammatillinenPerustutkinto, ammatillinenPerustutkintoErityisopetuksena, ammatillinenPerustutkintoNäyttötutkintona)
   val perusopetuksenKoulutustyypit = List(perusopetus, aikuistenPerusopetus)
   val lukionKoulutustyypit = List(lukiokoulutus, aikuistenLukiokoulutus)
+  val luvaKoulutustyypit = List(vieraskielistenLuva, luva)
+  val valmaKoulutustyypit = List(valma, valmaErityisopetuksena)
 }
