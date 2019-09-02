@@ -158,6 +158,10 @@
           },
           "hyväksytty" : true
         } ],
+        "luokkaAste" : {
+          "koodiarvo" : "7",
+          "koodistoUri" : "perusopetuksenluokkaaste"
+        },
         "tyyppi" : {
           "koodiarvo" : "perusopetuksenoppiaineperusopetukseenvalmistavassaopetuksessa",
           "koodistoUri" : "suorituksentyyppi"
