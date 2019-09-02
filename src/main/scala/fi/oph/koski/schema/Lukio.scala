@@ -289,7 +289,9 @@ case class LukionÄidinkieliJaKirjallisuus(
   pakollinen: Boolean = true,
   override val laajuus: Option[LaajuusKursseissa] = None,
   perusteenDiaarinumero: Option[String] = None
-) extends LukionValtakunnallinenOppiaine with Äidinkieli
+) extends LukionValtakunnallinenOppiaine with Äidinkieli {
+  override def description: LocalizedString = kieliaineDescription
+}
 
 @Description("Oppiaineena vieras tai toinen kotimainen kieli")
 case class VierasTaiToinenKotimainenKieli(

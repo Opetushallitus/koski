@@ -59,7 +59,7 @@ class IBTutkintoSpec extends FreeSpec with Matchers with OpintosuoritusoteTestMe
           |UK4 Uskonto suomalaisessa yhteiskunnassa 1 10 4.6.2016
           |YH Yhteiskuntaoppi 1 8
           |YH1 Suomalainen yhteiskunta 1 8 4.6.2016
-          |AI Äidinkieli ja kirjallisuus 3 8
+          |AI Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 3 8
           |ÄI1 Tekstit ja vuorovaikutus 1 8 4.6.2016
           |ÄI2 Kieli, kulttuuri ja identiteetti 1 8 4.6.2016
           |ÄI3 Kirjallisuuden keinoja ja tulkintaa 1 8 4.6.2016
