@@ -48,6 +48,18 @@ class OppijaValidationAikuistenPerusopetusSpec extends TutkinnonPerusteetTest[Ai
     }
   }
 
+  "Alkuvaiheen suoritus" - {
+    "Kun yritetään liittää suoritus väärään koulutustyyppiin liittyvään perusteeseen -> HTTP 400" in {
+      val oo = defaultOpiskeluoikeus.copy(
+        suoritukset = List(aikuistenPerusopetuksenAlkuvaiheenSuoritus.copy(
+          koulutusmoduuli = aikuistenPerusopetuksenAlkuvaiheenSuoritus.koulutusmoduuli.copy(perusteenDiaarinumero = Some(vääräntyyppisenPerusteenDiaarinumero))
+        ))
+      )
+
+      putTodistus(oo) (verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.rakenne.vääräKoulutustyyppi, (".*ei voi käyttää perustetta " + vääräntyyppisenPerusteenDiaarinumero + ", jonka koulutustyyppi on .*. Tälle suoritukselle hyväksytyt perusteen koulutustyypit ovat.*").r)))
+    }
+  }
+
   "Vahvistetussa alkuvaiheen suorituksessa" - {
     "oppiaineen arviointia" - {
       "ei vaadita" in {

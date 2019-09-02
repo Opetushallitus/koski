@@ -11,38 +11,42 @@ import fi.oph.koski.schema._
 
 object ExamplesValma {
   lazy val valmaKoulutukseenOrientoitumine: ValmaKoulutuksenOsanSuoritus = valmaKurssinSuoritus("AKO", "Ammatilliseen koulutukseen orientoituminen ja työelämän perusvalmiuksien hankkiminen", 10f, Some(List(arviointiHyväksytty)), pakollinen = true)
+  val valmaKoulutuksenSuoritus = ValmaKoulutuksenSuoritus(
+    vahvistus = vahvistus(date(2016, 6, 4), stadinAmmattiopisto),
+    toimipiste = stadinAmmattiopisto,
+    koulutusmoduuli = ValmaKoulutus(laajuus = Some(LaajuusOsaamispisteissä(65)), perusteenDiaarinumero = Some("5/011/2015")),
+    suorituskieli = suomenKieli,
+    osasuoritukset = Some(List(
+      valmaKoulutukseenOrientoitumine,
+      valmaKurssinSuoritus("OV", "Opiskeluvalmiuksien vahvistaminen", 10f, Some(List(arviointiHyväksytty)), pakollinen = false),
+      valmaKurssinSuoritus("TOV", "Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen", 15f, Some(List(arviointiHyväksytty)), pakollinen = false),
+      valmaKurssinSuoritus("ATH", "Arjen taitojen ja hyvinvoinnin vahvistaminen", 10f, Some(List(arviointiHyväksytty)), pakollinen = false),
+      valmaKurssinSuoritus("ATK", "Tietokoneen käyttäjän AB-kortti", 5f, Some(List(arviointiHyväksytty)), pakollinen = false),
+      ValmaKoulutuksenOsanSuoritus(
+        koulutusmoduuli = autonLisävarustetyöt(false),
+        arviointi = Some(List(arviointiHyväksytty)),
+        tunnustettu = tunnustettu
+      ),
+      YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(Koodistokoodiviite("AI", "ammatillisenoppiaineet"), pakollinen = true, kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"), laajuus = Some(LaajuusOsaamispisteissä(5))), arviointi = Some(List(arviointiKiitettävä))),
+      YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(Koodistokoodiviite("AI", "ammatillisenoppiaineet"), pakollinen = false, kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"), laajuus = Some(LaajuusOsaamispisteissä(3))), arviointi = Some(List(arviointiKiitettävä))),
+      YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli(Koodistokoodiviite("TK1", "ammatillisenoppiaineet"), Koodistokoodiviite("SV", "kielivalikoima"), pakollinen = true, Some(LaajuusOsaamispisteissä(1))), arviointi = Some(List(arviointiKiitettävä))),
+      YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli(Koodistokoodiviite("VK", "ammatillisenoppiaineet"), Koodistokoodiviite("EN", "kielivalikoima"), pakollinen = true, Some(LaajuusOsaamispisteissä(2))), arviointi = Some(List(arviointiKiitettävä)))
+    ))
+  )
+
+  val valmaOpiskeluoikeus = AmmatillinenOpiskeluoikeus(
+    tila = AmmatillinenOpiskeluoikeudenTila(List(
+      AmmatillinenOpiskeluoikeusjakso(date(2009, 9, 14), opiskeluoikeusLäsnä, None),
+      AmmatillinenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut, None)
+    )),
+    oppilaitos = Some(stadinAmmattiopisto),
+    suoritukset = List(valmaKoulutuksenSuoritus)
+  )
+
   val valmaTodistus = Oppija(
     MockOppijat.asUusiOppija(MockOppijat.valma),
     List(
-      AmmatillinenOpiskeluoikeus(
-        tila = AmmatillinenOpiskeluoikeudenTila(List(
-          AmmatillinenOpiskeluoikeusjakso(date(2009, 9, 14), opiskeluoikeusLäsnä, None),
-          AmmatillinenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut, None)
-        )),
-        oppilaitos = Some(stadinAmmattiopisto),
-        suoritukset = List(ValmaKoulutuksenSuoritus(
-          vahvistus = vahvistus(date(2016, 6, 4), stadinAmmattiopisto),
-          toimipiste = stadinAmmattiopisto,
-          koulutusmoduuli = ValmaKoulutus(laajuus = Some(LaajuusOsaamispisteissä(65)), perusteenDiaarinumero = Some("5/011/2015")),
-          suorituskieli = suomenKieli,
-          osasuoritukset = Some(List(
-            valmaKoulutukseenOrientoitumine,
-            valmaKurssinSuoritus("OV", "Opiskeluvalmiuksien vahvistaminen", 10f, Some(List(arviointiHyväksytty)), pakollinen = false),
-            valmaKurssinSuoritus("TOV", "Työssäoppimiseen ja oppisopimuskoulutukseen valmentautuminen", 15f, Some(List(arviointiHyväksytty)), pakollinen = false),
-            valmaKurssinSuoritus("ATH", "Arjen taitojen ja hyvinvoinnin vahvistaminen", 10f, Some(List(arviointiHyväksytty)), pakollinen = false),
-            valmaKurssinSuoritus("ATK", "Tietokoneen käyttäjän AB-kortti", 5f, Some(List(arviointiHyväksytty)), pakollinen = false),
-            ValmaKoulutuksenOsanSuoritus(
-              koulutusmoduuli = autonLisävarustetyöt(false),
-              arviointi = Some(List(arviointiHyväksytty)),
-              tunnustettu = tunnustettu
-            ),
-            YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(Koodistokoodiviite("AI", "ammatillisenoppiaineet"), pakollinen = true, kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"), laajuus = Some(LaajuusOsaamispisteissä(5))), arviointi = Some(List(arviointiKiitettävä))),
-            YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(Koodistokoodiviite("AI", "ammatillisenoppiaineet"), pakollinen = false, kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"), laajuus = Some(LaajuusOsaamispisteissä(3))), arviointi = Some(List(arviointiKiitettävä))),
-            YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli(Koodistokoodiviite("TK1", "ammatillisenoppiaineet"), Koodistokoodiviite("SV", "kielivalikoima"), pakollinen = true, Some(LaajuusOsaamispisteissä(1))), arviointi = Some(List(arviointiKiitettävä))),
-            YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli(Koodistokoodiviite("VK", "ammatillisenoppiaineet"), Koodistokoodiviite("EN", "kielivalikoima"), pakollinen = true, Some(LaajuusOsaamispisteissä(2))), arviointi = Some(List(arviointiKiitettävä)))
-          ))
-        ))
-      )
+      valmaOpiskeluoikeus
     )
   )
 

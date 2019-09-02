@@ -8,8 +8,6 @@ import fi.oph.koski.schema._
 import scala.reflect.runtime.universe.TypeTag
 
 class OppijaValidationPerusopetukseenValmistavaSpec extends TutkinnonPerusteetTest[PerusopetukseenValmistavanOpetuksenOpiskeluoikeus] with LocalJettyHttpSpecification {
-  // Jos päätetään, että päätason suorituksen diaarinumero validoidaan, niin OppijaValidationPerusopetukseenValmistavaSpec voi pistää perimään TutkinnonPerusteetTest
-  // ja tämän "Tutkinnon perusteet" osion voi poistaa
   "Nuorten perusopetuksen oppiaineen suoritus valmistavassa opetuksessa" - {
     "Luokka-astetta ei vaadita jos arvionti on 'O'" in {
       val suoritus = perusopetukseenValmistavanOpetuksenSuoritus.copy(osasuoritukset = Option(List(NuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa(

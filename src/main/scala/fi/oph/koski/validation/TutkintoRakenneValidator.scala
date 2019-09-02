@@ -41,16 +41,26 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
           HttpStatus.justStatus(getRakenne(d, Some(List(esiopetus))))
         case d: AikuistenPerusopetus =>
           HttpStatus.justStatus(getRakenne(d, Some(List(aikuistenPerusopetus))))
+        case d: AikuistenPerusopetuksenAlkuvaihe =>
+          HttpStatus.justStatus(getRakenne(d, Some(List(aikuistenPerusopetus))))
         case d: PerusopetuksenDiaarinumerollinenKoulutus =>
           HttpStatus.justStatus(getRakenne(d, Some(List(perusopetus))))
         case d: PerusopetukseenValmistavaOpetus =>
           HttpStatus.justStatus(getRakenne(d, Some(List(perusopetukseenValmistava))))
+        case d: PerusopetuksenLisäopetus =>
+          HttpStatus.justStatus(getRakenne(d, Some(List(perusopetuksenLisäopetus))))
         case d: AikuistenPerusopetuksenOppiaine =>
           HttpStatus.justStatus(getRakenne(d, Some(List(aikuistenPerusopetus))))
         case d: NuortenPerusopetuksenOppiaine =>
           HttpStatus.justStatus(getRakenne(d, Some(List(perusopetus))))
         case d: LukionOppimäärä =>
           HttpStatus.justStatus(getRakenne(d, Some(lukionKoulutustyypit)))
+        case d: LukioonValmistavaKoulutus =>
+          HttpStatus.justStatus(getRakenne(d, Some(luvaKoulutustyypit)))
+        case d: ValmaKoulutus =>
+          HttpStatus.justStatus(getRakenne(d, Some(valmaKoulutustyypit)))
+        case d: TelmaKoulutus =>
+          HttpStatus.justStatus(getRakenne(d, Some(List(telma))))
         case d: LukionOppiaine =>
           HttpStatus.justStatus(getRakenne(d, Some(lukionKoulutustyypit)))
         case d: Diaarinumerollinen =>
