@@ -19,7 +19,14 @@ const propertyFilterForModel = model =>
     : isLukionKurssi(model) ? propertyFilterForLukio
     : undefined
 
-export default ({oppiaineenSuoritus, resultCallback, toimipiste, uusiKurssinSuoritus, customTitle, customAlternativesCompletionFn}) => {
+export default ({
+    oppiaineenSuoritus,
+    resultCallback,
+    toimipiste,
+    uusiKurssinSuoritus,
+    customTitle,
+    customAlternativesCompletionFn
+}) => {
   let oppiaine = modelLookup(oppiaineenSuoritus, 'koulutusmoduuli')
   let selectedPrototypeAtom = Atom()
   let selectedAtom = Atom()
