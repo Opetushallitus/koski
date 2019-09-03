@@ -3,24 +3,23 @@ package fi.oph.koski.raportit
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
+import fi.oph.koski.db.GlobalExecutionContext
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.raportit.LukioRaporttiKurssitOrdering.lukioRaporttiKurssitOrdering
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Futures
-import fi.oph.koski.raportit.LukioRaporttiKurssitOrdering.lukioRaporttiKurssitOrdering
 
+import scala.concurrent.Future
 import scala.concurrent.duration._
-import scala.concurrent.{ExecutionContext, ExecutionContextExecutor, Future}
 
-case class LukioRaportti(repository: LukioRaportitRepository) {
+case class LukioRaportti(repository: LukioRaportitRepository) extends GlobalExecutionContext {
 
   private lazy val lukionoppiaineenoppimaara = "lukionoppiaineenoppimaara"
   private lazy val lukionoppiaine = "lukionoppiaine"
   private lazy val lukionmuuopinto = "lukionmuuopinto"
 
   def buildRaportti(oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate): Seq[DynamicDataSheet] = {
-    implicit val executionContext = ExecutionContext.fromExecutor(new java.util.concurrent.ForkJoinPool(10))
-
     val rows = repository.suoritustiedot(oppilaitosOid, alku, loppu)
     val oppiaineetJaKurssit = lukiossaOpetettavatOppiaineetJaNiidenKurssit(rows)
 
@@ -62,20 +61,20 @@ case class LukioRaportti(repository: LukioRaportitRepository) {
   }
   private def toKurssi(row: ROsasuoritusRow) = LukioRaporttiKurssi(row.koulutusmoduuliNimi.getOrElse("ei nimeä"), row.koulutusmoduuliKoodiarvo, row.koulutusmoduuliPaikallinen)
 
-  private def oppiaineJaLisätiedotSheet(opiskeluoikeusData: Seq[LukioRaporttiRows], oppiaineetJaKurssit: Seq[LukioRaporttiOppiaineJaKurssit], alku: LocalDate, loppu: LocalDate)(implicit executionContext: ExecutionContextExecutor) = {
+  private def oppiaineJaLisätiedotSheet(opiskeluoikeusData: Seq[LukioRaporttiRows], oppiaineetJaKurssit: Seq[LukioRaporttiOppiaineJaKurssit], alku: LocalDate, loppu: LocalDate) = {
     Future {
       DynamicDataSheet(
         title = "Oppiaineet ja lisätiedot",
         rows = opiskeluoikeusData.map(kaikkiOppiaineetVälilehtiRow(_, oppiaineetJaKurssit, alku, loppu)).map(_.toSeq),
         columnSettings = oppiaineJaLisätiedotColumnSettings(oppiaineetJaKurssit)
       )
-    }(executionContext)
+    }
   }
 
-  private def oppiaineKohtaisetSheetit(rows: Seq[LukioRaporttiRows], oppiaineetJaKurssit: Seq[LukioRaporttiOppiaineJaKurssit])(implicit executionContext: ExecutionContextExecutor) = {
+  private def oppiaineKohtaisetSheetit(rows: Seq[LukioRaporttiRows], oppiaineetJaKurssit: Seq[LukioRaporttiOppiaineJaKurssit]) = {
     Future {
       oppiaineetJaKurssit.map(oppiaineKohtainenSheet(_, rows))
-    }(executionContext)
+    }
   }
 
   private def oppiaineKohtainenSheet(oppiaineJaKurssit: LukioRaporttiOppiaineJaKurssit, data: Seq[LukioRaporttiRows]) = {
