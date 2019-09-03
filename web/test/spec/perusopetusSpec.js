@@ -3121,7 +3121,7 @@ describe('Perusopetus', function() {
         })
       })
       describe('Kurssit', function() {
-        describe('Kurssin lisääminen', function() {
+        describe('Kurssin lisääminen päättövaiheen kursseista', function() {
 
           var äidinkieli = Oppiaine(findSingle('.perusopetuksenoppiaineenoppimaaransuoritus'))
 
@@ -3143,6 +3143,37 @@ describe('Perusopetus', function() {
             describe('Kun annetaan arvosana ja tallennetaan', function() {
               before(
                 äidinkieli.kurssi('S21').arvosana.setValue('8'),
+                editor.saveChanges
+              )
+
+              it('toimii', function() {
+
+              })
+            })
+          })
+        })
+
+        describe('Kurssin lisääminen alkuvaiheen kursseista', function() {
+
+          var äidinkieli = Oppiaine(findSingle('.perusopetuksenoppiaineenoppimaaransuoritus'))
+
+          before(
+            editor.edit,
+            äidinkieli.avaaAlkuvaiheenLisääKurssiDialog
+          )
+          it('Näytetään kaikki alkuvaiheen äidinkielen kurssit', function() {
+            expect(äidinkieli.lisääKurssiDialog.kurssit().length).to.equal(50)
+          })
+
+          describe('Kun lisätään kurssi', function() {
+            before(
+              äidinkieli.lisääKurssiDialog.valitseKurssi('Kehittyvä kielitaito: Asuminen'),
+              äidinkieli.lisääKurssiDialog.lisääKurssi
+            )
+
+            describe('Kun annetaan arvosana ja tallennetaan', function() {
+              before(
+                äidinkieli.kurssi('AS211').arvosana.setValue('5'),
                 editor.saveChanges
               )
 

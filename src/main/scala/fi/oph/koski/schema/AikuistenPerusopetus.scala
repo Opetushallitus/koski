@@ -188,7 +188,7 @@ case class AikuistenPerusopetuksenKurssinSuoritus(
   @Description("Jos kurssi on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot.")
   @ComplexObject
   tunnustettu: Option[OsaamisenTunnustaminen] = None
-) extends KurssinSuoritus with MahdollisestiSuorituskielellinen
+) extends MahdollisestiSuorituskielellinen with AikuistenPerusopetuksenKurssinTaiAlkuvaiheenKurssinSuoritus
 
 sealed trait AikuistenPerusopetuksenKurssi extends Koulutusmoduuli {
   def laajuus: Option[LaajuusVuosiviikkotunneissaTaiKursseissa]
@@ -224,6 +224,8 @@ case class ValtakunnallinenAikuistenPerusopetuksenPäättövaiheenKurssi2017(
   laajuus: Option[LaajuusVuosiviikkotunneissaTaiKursseissa] = None
 ) extends AikuistenPerusopetuksenKurssi with KoodistostaLöytyväKoulutusmoduuli
 
+trait AikuistenPerusopetuksenKurssinTaiAlkuvaiheenKurssinSuoritus extends KurssinSuoritus
+
 case class AikuistenPerusopetuksenOppiaineenOppimääränSuoritus(
   @Description("Päättötodistukseen liittyvät oppiaineen suoritukset.")
   @Tooltip("Päättötodistukseen liittyvät oppiaineen suoritukset.")
@@ -238,7 +240,7 @@ case class AikuistenPerusopetuksenOppiaineenOppimääränSuoritus(
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @Title("Kurssit")
-  override val osasuoritukset: Option[List[AikuistenPerusopetuksenKurssinSuoritus]] = None,
+  override val osasuoritukset: Option[List[AikuistenPerusopetuksenKurssinTaiAlkuvaiheenKurssinSuoritus]] = None,
   @KoodistoKoodiarvo("perusopetuksenoppiaineenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppiaineenoppimaara", koodistoUri = "suorituksentyyppi")
 ) extends AikuistenPerusopetuksenPäätasonSuoritus with OppiaineenSuoritus with Todistus with SuoritustavallinenPerusopetuksenSuoritus with PerusopetuksenOppiaineenOppimääränSuoritus

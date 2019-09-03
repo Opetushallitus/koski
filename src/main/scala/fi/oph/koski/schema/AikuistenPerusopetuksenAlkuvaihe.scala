@@ -58,7 +58,7 @@ case class AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus(
   @Description("Jos kurssi on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot.")
   @ComplexObject
   tunnustettu: Option[OsaamisenTunnustaminen] = None
-) extends KurssinSuoritus with MahdollisestiSuorituskielellinen
+) extends MahdollisestiSuorituskielellinen with AikuistenPerusopetuksenKurssinTaiAlkuvaiheenKurssinSuoritus
 
 @Description("Perusopetuksen oppiaineen tunnistetiedot")
 sealed trait AikuistenPerusopetuksenAlkuvaiheenOppiaine extends Koulutusmoduuli with Laajuudeton {
