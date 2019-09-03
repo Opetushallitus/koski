@@ -19,7 +19,6 @@ case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
   tila: NuortenPerusopetuksenOpiskeluoikeudenTila,
   @MaxItems(1)
   suoritukset: List[PerusopetukseenValmistavanOpetuksenSuoritus],
-  kokonaislaajuus: Option[LaajuusVuosiviikkotunneissa] = None,
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.perusopetukseenvalmistavaopetus.koodiarvo)
   tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.perusopetukseenvalmistavaopetus
 ) extends KoskeenTallennettavaOpiskeluoikeus {
@@ -44,6 +43,7 @@ case class PerusopetukseenValmistavanOpetuksenSuoritus(
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[PerusopetukseenValmistavanOpetuksenOsasuoritus]],
+  kokonaislaajuus: Option[LaajuusVuosiviikkotunneissa] = None,
   @Tooltip("Todistuksella näkyvät lisätiedot. Esimerkiksi tieto oppilaan perusopetuksen aloittamisesta (luokkataso).")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("perusopetukseenvalmistavaopetus")

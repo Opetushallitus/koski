@@ -30,7 +30,8 @@ object ExamplesPerusopetukseenValmistavaOpetus {
         arviointi = arviointi(9),
         luokkaAste = Some(Koodistokoodiviite("7", "perusopetuksenluokkaaste"))
       )
-    ))
+    )),
+    kokonaislaajuus = Some(LaajuusVuosiviikkotunneissa(11))
   )
 
   val perusopetukseenValmistavaOpiskeluoikeus = PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
@@ -41,8 +42,7 @@ object ExamplesPerusopetukseenValmistavaOpetus {
     oppilaitos = Some(jyväskylänNormaalikoulu),
     suoritukset = List(
       perusopetukseenValmistavanOpetuksenSuoritus
-    ),
-    kokonaislaajuus = Some(LaajuusVuosiviikkotunneissa(11))
+    )
   )
 
   val examples = List(Example("perusopetukseen valmistava opetus", "Oppija on suorittanut perusopetukseen valmistavan opetuksen", Oppija(asUusiOppija(MockOppijat.koululainen), List(perusopetukseenValmistavaOpiskeluoikeus))))
