@@ -2,7 +2,8 @@ package fi.oph.koski.api
 
 import fi.oph.koski.documentation.ExamplesPerusopetukseenValmistavaOpetus.{perusopetukseenValmistavaOpiskeluoikeus, perusopetukseenValmistavanOpetuksenSuoritus}
 import fi.oph.koski.documentation.PerusopetusExampleData
-import fi.oph.koski.documentation.PerusopetusExampleData.{oppiaine, vuosiviikkotuntia}
+import fi.oph.koski.documentation.PerusopetusExampleData.{arviointi, oppiaine, vuosiviikkotuntia}
+import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
 
 import scala.reflect.runtime.universe.TypeTag
@@ -17,6 +18,18 @@ class OppijaValidationPerusopetukseenValmistavaSpec extends TutkinnonPerusteetTe
 
       putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))) {
         verifyResponseStatusOk()
+      }
+    }
+
+    "Laajuus on pakollinen" in {
+      val suoritus = perusopetukseenValmistavanOpetuksenSuoritus.copy(osasuoritukset = Option(List(NuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa(
+        koulutusmoduuli = oppiaine("FY").copy(laajuus = None),
+        luokkaAste = Some(Koodistokoodiviite("7", "perusopetuksenluokkaaste")),
+        arviointi = arviointi(9)
+      ))))
+
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusPuuttuu("Oppiaineen koskioppiaineetyleissivistava/FY laajuus puuttuu"))
       }
     }
   }

@@ -3357,14 +3357,14 @@ describe('Perusopetus', function() {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
           'Opiskeluoikeuden voimassaoloaika : 15.8.2007 — 1.6.2008\n' +
           'Tila 1.6.2008 Valmistunut\n' +
-          '15.8.2007 Läsnä\n' +
-          'Kokonaislaajuus 11 vuosiviikkotuntia')
+          '15.8.2007 Läsnä')
       })
       it('näyttää suorituksen tiedot', function() {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
           'Koulutus Perusopetukseen valmistava opetus 57/011/2015\n' +
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
           'Suorituskieli suomi\n' +
+          'Kokonaislaajuus 11 vuosiviikkotuntia\n' +
           'Suoritus valmis Vahvistus : 1.6.2008 Jyväskylä Reijo Reksi , rehtori')
       })
       it('näyttää oppiaineiden arvosanat', function() {
@@ -3439,7 +3439,8 @@ describe('Perusopetus', function() {
             editor.edit,
             uusiNuortenOppiaine.selectValue('Historia'),
             historia.propertyBySelector('.arvosana').selectValue('8'),
-            historia.propertyBySelector('.luokkaAste').selectValue('7. vuosiluokka')
+            historia.propertyBySelector('.luokkaAste').selectValue('7. vuosiluokka'),
+            historia.propertyBySelector('.property.laajuus .value').setValue('1')
           )
 
           it('Uusi oppiaine näytetään', function() {

@@ -167,18 +167,18 @@
           "koodistoUri" : "suorituksentyyppi"
         }
       } ],
+      "kokonaislaajuus" : {
+        "arvo" : 11.0,
+        "yksikkö" : {
+          "koodiarvo" : "3",
+          "koodistoUri" : "opintojenlaajuusyksikko"
+        }
+      },
       "tyyppi" : {
         "koodiarvo" : "perusopetukseenvalmistavaopetus",
         "koodistoUri" : "suorituksentyyppi"
       }
     } ],
-    "kokonaislaajuus" : {
-      "arvo" : 11.0,
-      "yksikkö" : {
-        "koodiarvo" : "3",
-        "koodistoUri" : "opintojenlaajuusyksikko"
-      }
-    },
     "tyyppi" : {
       "koodiarvo" : "perusopetukseenvalmistavaopetus",
       "koodistoUri" : "opiskeluoikeudentyyppi"
