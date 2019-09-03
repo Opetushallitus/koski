@@ -1247,6 +1247,10 @@
   "Perusopetuksen oppiaineen oppimäärä": "Perusopetuksen oppiaineen oppimäärä",
   "Lukion oppiaineen oppimäärä": "Lukion oppiaineen oppimäärä",
   "Oppijaa ei ole yksilöity. Tee yksilöinti oppijanumerorekisterissä": "Oppijaa ei ole yksilöity. Tee yksilöinti oppijanumerorekisterissä",
-  "Yksilöity": "Yksilöity"
+  "Yksilöity": "Yksilöity",
+  "description:Luokka-asteen tunniste (1-9). Minkä vuosiluokan..." : "Luokka-asteen tunniste (1-9). Minkä vuosiluokan mukaisesta oppiainesuorituksesta on kyse.",
+  "description:Perusopetuksen oppiaineen suoritus osana perusopetukseen..." : "Perusopetuksen oppiaineen suoritus osana perusopetukseen valmistavaa opetusta",
+  "Minkä vuosiluokan mukaisesta oppiainesuorituksesta on kyse" : "Minkä vuosiluokan mukaisesta oppiainesuorituksesta on kyse",
+  "Kokonaislaajuus" : "Kokonaislaajuus"
 }
 

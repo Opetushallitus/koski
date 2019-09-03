@@ -11,6 +11,28 @@ import fi.oph.koski.schema.LocalizedString.finnish
 import fi.oph.koski.schema._
 
 object ExamplesPerusopetukseenValmistavaOpetus {
+  val perusopetukseenValmistavanOpetuksenSuoritus = PerusopetukseenValmistavanOpetuksenSuoritus(
+    koulutusmoduuli = PerusopetukseenValmistavaOpetus(perusteenDiaarinumero = Some("57/011/2015")),
+    toimipiste = jyväskylänNormaalikoulu,
+    vahvistus = vahvistusPaikkakunnalla(päivä = date(2008, 6, 1)),
+    suorituskieli = suomenKieli,
+    osasuoritukset = Some(List(
+      PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus(
+        koulutusmoduuli = PerusopetukseenValmistavanOpetuksenOppiaine(
+          tunniste = PaikallinenKoodi("ai", finnish("Äidinkieli")),
+          laajuus = Some(LaajuusKaikkiYksiköt(10, Koodistokoodiviite(koodiarvo = "3", nimi = Some(finnish("Vuosiviikkotuntia")), koodistoUri = "opintojenlaajuusyksikko"))),
+          opetuksenSisältö = Some(finnish("Suullinen ilmaisu ja kuullun ymmärtäminen"))
+        ),
+        arviointi = Some(List(SanallinenPerusopetuksenOppiaineenArviointi(kuvaus = Some(finnish("Keskustelee sujuvasti suomeksi")))))
+      ),
+      NuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa(
+        koulutusmoduuli = oppiaine("FY").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1)),
+        arviointi = arviointi(9),
+        luokkaAste = Some(Koodistokoodiviite("7", "perusopetuksenluokkaaste"))
+      )
+    ))
+  )
+
   val perusopetukseenValmistavaOpiskeluoikeus = PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
     tila = NuortenPerusopetuksenOpiskeluoikeudenTila(List(
       NuortenPerusopetuksenOpiskeluoikeusjakso(date(2007, 8, 15), opiskeluoikeusLäsnä),
@@ -18,24 +40,9 @@ object ExamplesPerusopetukseenValmistavaOpetus {
     )),
     oppilaitos = Some(jyväskylänNormaalikoulu),
     suoritukset = List(
-      PerusopetukseenValmistavanOpetuksenSuoritus(
-        koulutusmoduuli = PerusopetukseenValmistavaOpetus(perusteenDiaarinumero = Some("57/011/2015")),
-        toimipiste = jyväskylänNormaalikoulu,
-        vahvistus = vahvistusPaikkakunnalla(päivä = date(2008, 6, 1)),
-        suorituskieli = suomenKieli,
-        osasuoritukset = Some(List(
-          PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus(
-            koulutusmoduuli = PerusopetukseenValmistavanOpetuksenOppiaine(
-              tunniste = PaikallinenKoodi("ai", finnish("Äidinkieli")),
-              laajuus = Some(LaajuusKaikkiYksiköt(10, Koodistokoodiviite(koodiarvo = "3", nimi = Some(finnish("Vuosiviikkotuntia")), koodistoUri = "opintojenlaajuusyksikko"))),
-              opetuksenSisältö = Some(finnish("Suullinen ilmaisu ja kuullun ymmärtäminen"))
-            ),
-            arviointi = Some(List(SanallinenPerusopetuksenOppiaineenArviointi(kuvaus = Some(finnish("Keskustelee sujuvasti suomeksi")))))
-          ),
-          suoritus(oppiaine("FY").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = arviointi(9))
-        ))
-      )
-    )
+      perusopetukseenValmistavanOpetuksenSuoritus
+    ),
+    kokonaislaajuus = Some(LaajuusVuosiviikkotunneissa(11))
   )
 
   val examples = List(Example("perusopetukseen valmistava opetus", "Oppija on suorittanut perusopetukseen valmistavan opetuksen", Oppija(asUusiOppija(MockOppijat.koululainen), List(perusopetukseenValmistavaOpiskeluoikeus))))

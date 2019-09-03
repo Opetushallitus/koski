@@ -69,24 +69,26 @@ object ExamplesPerusopetuksenLisaopetus {
   }
 
 
+  val lisäopetuksenOpiskeluoikeus = PerusopetuksenLisäopetuksenOpiskeluoikeus(
+    oppilaitos = Some(jyväskylänNormaalikoulu),
+    koulutustoimija = None,
+    lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
+      pidennettyOppivelvollisuus = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4))))
+    )),
+    suoritukset = List(
+      lisäopetuksenSuoritus
+    ),
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
+      )
+    )
+  )
+
   val lisäopetuksenPäättötodistus = Oppija(
     exampleHenkilö,
-    List(PerusopetuksenLisäopetuksenOpiskeluoikeus(
-      oppilaitos = Some(jyväskylänNormaalikoulu),
-      koulutustoimija = None,
-      lisätiedot = Some(PerusopetuksenOpiskeluoikeudenLisätiedot(
-        pidennettyOppivelvollisuus = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4))))
-      )),
-      suoritukset = List(
-        lisäopetuksenSuoritus
-      ),
-      tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
-        List(
-          NuortenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
-          NuortenPerusopetuksenOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
-        )
-      )
-    ))
+    List(lisäopetuksenOpiskeluoikeus)
   )
 
   val lisäopetuksenPäättötodistusToimintaAlueittain = Oppija(

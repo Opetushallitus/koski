@@ -646,7 +646,8 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
-}, {
+},
+  {
   "koodiUri" : "suorituksentyyppi_perusopetukseenvalmistavanopetuksenoppiaine",
   "koodiArvo" : "perusopetukseenvalmistavanopetuksenoppiaine",
   "metadata" : [ {
@@ -658,6 +659,15 @@
   }, {
     "nimi" : "Instruction preparing for basic education subject",
     "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_perusopetuksenoppiaineperusopetukseenvalmistavassaopetuksessa",
+  "koodiArvo" : "perusopetuksenoppiaineperusopetukseenvalmistavassaopetuksessa",
+  "metadata" : [ {
+    "nimi" : "Perusopetuksen oppiaine perusopetukseen valmistavassa opetuksessa",
+    "kieli" : "FI"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

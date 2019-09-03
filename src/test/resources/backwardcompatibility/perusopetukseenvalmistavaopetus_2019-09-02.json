@@ -16,7 +16,6 @@
         "fi" : "Jyväskylän normaalikoulu"
       }
     },
-    "päättymispäivä" : "2008-06-01",
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
         "alku" : "2007-08-15",
@@ -152,8 +151,6 @@
             }
           }
         },
-        "yksilöllistettyOppimäärä" : false,
-        "painotettuOpetus" : false,
         "arviointi" : [ {
           "arvosana" : {
             "koodiarvo" : "9",
@@ -161,8 +158,12 @@
           },
           "hyväksytty" : true
         } ],
+        "luokkaAste" : {
+          "koodiarvo" : "7",
+          "koodistoUri" : "perusopetuksenluokkaaste"
+        },
         "tyyppi" : {
-          "koodiarvo" : "perusopetuksenoppiaine",
+          "koodiarvo" : "perusopetuksenoppiaineperusopetukseenvalmistavassaopetuksessa",
           "koodistoUri" : "suorituksentyyppi"
         }
       } ],
@@ -171,10 +172,18 @@
         "koodistoUri" : "suorituksentyyppi"
       }
     } ],
+    "kokonaislaajuus" : {
+      "arvo" : 11.0,
+      "yksikkö" : {
+        "koodiarvo" : "3",
+        "koodistoUri" : "opintojenlaajuusyksikko"
+      }
+    },
     "tyyppi" : {
       "koodiarvo" : "perusopetukseenvalmistavaopetus",
       "koodistoUri" : "opiskeluoikeudentyyppi"
     },
-    "alkamispäivä" : "2007-08-15"
+    "alkamispäivä" : "2007-08-15",
+    "päättymispäivä" : "2008-06-01"
   } ]
 }
