@@ -1,12 +1,9 @@
 import {
-  contextualizeSubModel,
   ensureArrayKey,
   modelData,
-  modelItems,
   modelSet,
-  modelSetTitle, oneOfPrototypes,
-  pushModel,
-  wrapOptional
+  modelSetTitle,
+  pushModel
 } from '../editor/EditorModel'
 import {t} from '../i18n/i18n'
 
@@ -47,15 +44,6 @@ export const lisääKurssi = (kurssi, model, showUusiKurssiAtom, kurssinSuoritus
     pushModel(suoritusUudellaKurssilla, model.context.changeBus)
   }
   showUusiKurssiAtom.set(false)
-}
-
-export const createKurssinSuoritusProto = (osasuoritukset, modelClass) => {
-  osasuoritukset = wrapOptional(osasuoritukset)
-  const newItemIndex = modelItems(osasuoritukset).length
-  const oppiaineenSuoritusProto = contextualizeSubModel(osasuoritukset.arrayPrototype, osasuoritukset, newItemIndex)
-  const options = oneOfPrototypes(oppiaineenSuoritusProto)
-  const proto = modelClass && options.find(p => p.value.classes.includes(modelClass)) || options[0]
-  return contextualizeSubModel(proto, osasuoritukset, newItemIndex)
 }
 
 export const osasuoritusCanBeAdded = (osasuoritukset) => {

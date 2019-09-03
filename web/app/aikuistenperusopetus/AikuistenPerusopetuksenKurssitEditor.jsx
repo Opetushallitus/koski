@@ -9,24 +9,22 @@ import Text from '../i18n/Text'
 import {ift} from '../util/util'
 import UusiKurssiPopup from '../kurssi/UusiKurssiPopup'
 import {KurssiEditor} from '../kurssi/KurssiEditor'
-import {createKurssinSuoritusProto, lisääKurssi, osasuoritusCanBeAdded} from '../kurssi/kurssi'
+import {lisääKurssi, osasuoritusCanBeAdded} from '../kurssi/kurssi'
 import {koodistoValues} from '../uusioppija/koodisto'
 import * as R from 'ramda'
 import * as Bacon from 'baconjs'
 import {parseLocation} from '../util/location'
 import Http from '../util/http'
-import {arvioituTaiVahvistettu} from '../suoritus/Suoritus'
+import {arvioituTaiVahvistettu, newOsasuoritusProto} from '../suoritus/Suoritus'
 
 export const AikuistenPerusopetuksenKurssitEditor = ({model}) => {
   const osasuoritukset = modelLookup(model, 'osasuoritukset')
 
   const showUusiKurssiAtom = Atom(false)
-  const kurssinSuoritusProto = createKurssinSuoritusProto(osasuoritukset, 'aikuistenperusopetuksenkurssinsuoritus')
+  const kurssinSuoritusProto = newOsasuoritusProto(model, 'aikuistenperusopetuksenkurssinsuoritus')
 
   const showUusiAlkuvaiheenKurssiAtom = Atom(false)
-  const alkuvaiheenKurssinSuoritusProto = createKurssinSuoritusProto(osasuoritukset, 'aikuistenperusopetuksenalkuvaiheenkurssinsuoritus')
-
-  const alkuvaiheenKurssejaP = oppiaineMyösAlkuvaiheessa(modelData(model, 'koulutusmoduuli.tunniste.koodiarvo'))
+  const alkuvaiheenKurssinSuoritusProto = newOsasuoritusProto(model, 'aikuistenperusopetuksenalkuvaiheenkurssinsuoritus')
 
   return (
     <div className="kurssit">

@@ -1,16 +1,15 @@
 import React from 'baret'
 import {ensureArrayKey, modelData, modelItems, modelSet, modelSetTitle, pushModel} from '../editor/EditorModel'
 import {t} from '../i18n/i18n'
-import {createOppiaineenSuoritus} from '../lukio/lukio'
 import {UusiOppiaineDropdown} from '../oppiaine/UusiOppiaineDropdown'
-import {suorituksenTyyppi} from '../suoritus/Suoritus'
+import {newOsasuoritusProto, suorituksenTyyppi} from '../suoritus/Suoritus'
 
 export const UusiInternationalSchoolOppiaineDropdown = ({model}) => {
   if (!model || !model.context.edit) return null
 
   const addOppiaine = oppiaine => {
     const suoritusUudellaOppiaineella = modelSet(
-      oppiaine.parent || createOppiaineenSuoritus(model),
+      oppiaine.parent || newOsasuoritusProto(model),
       modelSetTitle(oppiaine, t(modelData(oppiaine, 'tunniste.nimi'))),
       'koulutusmoduuli'
     )
@@ -19,8 +18,8 @@ export const UusiInternationalSchoolOppiaineDropdown = ({model}) => {
   }
 
   const suoritusProtos = suorituksenTyyppi(model) === 'internationalschooldiplomavuosiluokka'
-    ? ['diplomatoksuoritus', 'diplomaoppiaineensuoritus'].map(c => createOppiaineenSuoritus(model, c))
-    : [createOppiaineenSuoritus(model)]
+    ? ['diplomatoksuoritus', 'diplomaoppiaineensuoritus'].map(c => newOsasuoritusProto(model, c))
+    : [newOsasuoritusProto(model)]
 
   return (
     <UusiOppiaineDropdown

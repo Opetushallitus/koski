@@ -1,9 +1,4 @@
 import {
-  wrapOptional,
-  modelLookup,
-  modelItems,
-  contextualizeSubModel,
-  oneOfPrototypes,
   modelData
 } from '../editor/EditorModel'
 
@@ -18,15 +13,6 @@ const perusteenDiaarinumeroToOppimäärä = diaarinumero => {
   }
 }
 
-const createOppiaineenSuoritus = (model, suoritusClass) => {
-  const oppiaineet = wrapOptional(modelLookup(model, 'osasuoritukset'))
-  const newItemIndex = modelItems(oppiaineet).length
-  const oppiaineenSuoritusProto = contextualizeSubModel(oppiaineet.arrayPrototype, oppiaineet, newItemIndex)
-  const options = oneOfPrototypes(oppiaineenSuoritusProto)
-  const proto = suoritusClass && options.find(p => p.value.classes.includes(suoritusClass)) || options[0]
-  return contextualizeSubModel(proto, oppiaineet, newItemIndex)
-}
-
 const sallitutRahoituskoodiarvot = ['1', '6']
 
 const suoritetutKurssit = kurssit => kurssit.map(k => modelData(k)).filter(k => k.arviointi)
@@ -39,7 +25,6 @@ const laajuudet = kurssit => kurssit.map(k => {
 
 export {
   perusteenDiaarinumeroToOppimäärä,
-  createOppiaineenSuoritus,
   sallitutRahoituskoodiarvot,
   suoritetutKurssit,
   hyväksytystiSuoritetutKurssit,

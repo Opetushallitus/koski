@@ -1,6 +1,6 @@
 import {
   contextualizeSubModel, lensedModel, modelData, modelItems, modelLookup, modelSet, modelSetValues,
-  modelTitle
+  modelTitle, oneOfPrototypes, wrapOptional
 } from '../editor/EditorModel'
 import * as L from 'partial.lenses'
 import * as R from 'ramda'
@@ -67,6 +67,15 @@ export const newSuoritusProto = (opiskeluoikeus, prototypeKey) => {
   let indexForNewItem = modelItems(suoritukset).length
   let selectedProto = contextualizeSubModel(suoritukset.arrayPrototype, suoritukset, indexForNewItem).oneOfPrototypes.find(p => p.key === prototypeKey)
   return contextualizeSubModel(selectedProto, suoritukset, indexForNewItem)
+}
+
+export const newOsasuoritusProto = (suoritus, osasuoritusClass) => {
+  const _osasuoritukset = wrapOptional(modelLookup(suoritus, 'osasuoritukset'))
+  const newItemIndex = modelItems(_osasuoritukset).length
+  const osasuorituksenProto = contextualizeSubModel(_osasuoritukset.arrayPrototype, _osasuoritukset, newItemIndex)
+  const options = oneOfPrototypes(osasuorituksenProto)
+  const proto = osasuoritusClass && options.find(p => p.value.classes.includes(osasuoritusClass)) || options[0]
+  return contextualizeSubModel(proto, _osasuoritukset, newItemIndex)
 }
 
 export const copySuorituskieli = (from, to) => modelSet(to, modelLookup(from, 'suorituskieli'), 'suorituskieli')

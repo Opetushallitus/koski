@@ -9,7 +9,8 @@ import {
 import Text from '../i18n/Text'
 import {ift} from '../util/util'
 import UusiKurssiPopup from './UusiKurssiPopup'
-import {createKurssinSuoritusProto, osasuoritusCanBeAdded, lisääKurssi} from './kurssi'
+import {osasuoritusCanBeAdded, lisääKurssi} from './kurssi'
+import {newOsasuoritusProto} from '../suoritus/Suoritus'
 
 export const KurssitEditor = ({model, customTitle, customAlternativesCompletionFn, customKurssitSortFn}) => {
   const osasuoritukset = modelLookup(model, 'osasuoritukset')
@@ -18,7 +19,7 @@ export const KurssitEditor = ({model, customTitle, customAlternativesCompletionF
   if (typeof customKurssitSortFn === 'function') {
     kurssit = kurssit.sort(customKurssitSortFn)
   }
-  const kurssinSuoritusProtot = createKurssinSuoritusProto(osasuoritukset)
+  const kurssinSuoritusProtot = newOsasuoritusProto(model)
   const showUusiKurssiAtom = Atom(false)
 
   if (!kurssit.length && !model.context.edit) return null
