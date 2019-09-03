@@ -156,3 +156,5 @@ trait PakollisenTaiValinnaisenSuoritus extends Suoritus {
   def koulutusmoduuli: Koulutusmoduuli with Valinnaisuus
   override def ryhmittelytekijä = Some(if (koulutusmoduuli.pakollinen) "pakolliset" else "valinnaiset")
 }
+
+trait Laajuudellinen extends Suoritus

@@ -352,6 +352,9 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       case (_, s: DIAPäätasonSuoritus) if s.valmis && s.osasuoritusLista.exists(aine => aine.koulutusmoduuli.laajuus.isEmpty) =>
         KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusPuuttuu("Suoritus " + suorituksenTunniste(suoritus) + " on merkitty valmiiksi, mutta se sisältää oppiaineen, jolta puuttuu laajuus")
 
+      case (laajuus, s: Laajuudellinen) if laajuus.isEmpty =>
+        KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusPuuttuu(s"Oppiaineen ${suorituksenTunniste(suoritus)} laajuus puuttuu")
+
       case _ => HttpStatus.ok
     }
   }
