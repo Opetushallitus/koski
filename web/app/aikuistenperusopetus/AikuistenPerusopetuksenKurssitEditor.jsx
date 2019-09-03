@@ -40,8 +40,8 @@ export const AikuistenPerusopetuksenKurssitEditor = ({model}) => {
                 customAlternativesCompletionFn={(oppiaine, kurssiProtos) => customAlternativesFn(oppiaine, kurssiProtos, 'koskioppiaineetyleissivistava')}
               />
               {
-                fromBacon(alkuvaiheenKurssejaP.map(onOlemassa =>
-                  onOlemassa &&
+                fromBacon(oppiaineMyösAlkuvaiheessaP(model).map(myösAlkuvaiheessa =>
+                  myösAlkuvaiheessa &&
                   <UusiKurssi
                     name={'Lisää alkuvaiheen kurssi'} model={model} classname={'uusi-alkuvaiheen-kurssi'}
                     showUusiKurssiAtom={showUusiAlkuvaiheenKurssiAtom}
@@ -84,11 +84,12 @@ const UusiKurssi = ({name, model, showUusiKurssiAtom, kurssinSuoritusProto, cust
   </span>
 )
 
-const oppiaineMyösAlkuvaiheessa = (oppiaineenKoodiarvo) => (
-  koodistoValues('aikuistenperusopetuksenalkuvaiheenoppiaineet').map(mahdollisetAlkuvaiheenOppiaineet =>
+const oppiaineMyösAlkuvaiheessaP = (model) => {
+  const oppiaineenKoodiarvo = modelData(model, 'koulutusmoduuli.tunniste.koodiarvo')
+  return koodistoValues('aikuistenperusopetuksenalkuvaiheenoppiaineet').map(mahdollisetAlkuvaiheenOppiaineet =>
     mahdollisetAlkuvaiheenOppiaineet.find(o => o.koodiarvo === oppiaineenKoodiarvo)
   )
-)
+}
 
 const customAlternativesFn = (oppiaine, kurssiPrototypes, oppiaineKoodisto) => {
   const oppiaineKoodiarvo = modelData(oppiaine, 'tunniste.koodiarvo')
