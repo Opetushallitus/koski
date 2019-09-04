@@ -157,4 +157,7 @@ trait PakollisenTaiValinnaisenSuoritus extends Suoritus {
   override def ryhmittelytekijä = Some(if (koulutusmoduuli.pakollinen) "pakolliset" else "valinnaiset")
 }
 
-trait Laajuudellinen extends Suoritus
+trait Laajuudellinen extends Suoritus {
+  @Description("Tässä suorituksessa koulutusmoduulin laajuus on pakollinen")
+  def koulutusmoduuli: Koulutusmoduuli
+}

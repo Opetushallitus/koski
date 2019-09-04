@@ -43,6 +43,7 @@ case class PerusopetukseenValmistavanOpetuksenSuoritus(
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[PerusopetukseenValmistavanOpetuksenOsasuoritus]],
+  @Description("Oppiaineiden kokonaislaajuus vuosiviikkotunneissa")
   kokonaislaajuus: Option[LaajuusVuosiviikkotunneissa] = None,
   @Tooltip("Todistuksella näkyvät lisätiedot. Esimerkiksi tieto oppilaan perusopetuksen aloittamisesta (luokkataso).")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
@@ -68,7 +69,8 @@ case class NuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa(
   arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Luokka-asteen tunniste (1-9). Minkä vuosiluokan mukaisesta oppiainesuorituksesta on kyse.")
-  @Title("Minkä vuosiluokan mukaisesta oppiainesuorituksesta on kyse")
+  @Tooltip("Minkä vuosiluokan mukaisesta oppiainesuorituksesta on kyse")
+  @Title("Luokka-aste")
   @KoodistoUri("perusopetuksenluokkaaste")
   luokkaAste: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("perusopetuksenoppiaineperusopetukseenvalmistavassaopetuksessa")
