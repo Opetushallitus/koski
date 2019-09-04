@@ -23,8 +23,8 @@ case class OpiskelijavuositiedotRow(
   yksiloity: Boolean,
   oppijaOid: String,
   hetu: Option[String],
-  sukunimi: Option[String],
-  etunimet: Option[String],
+  sukunimi: String,
+  etunimet: String,
   suorituksenTyyppi: String,
   koulutusmoduulit: String,
   osaamisalat: Option[String],
@@ -153,7 +153,7 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
     |- Oppisopimus (pv): opiskeluoikeuden jollain päätason suorituksella on oppisopimusjakso, joka mahtuu kokonaan tai osittain raportin aikajaksoon
     """.stripMargin.trim.stripPrefix("\n").stripSuffix("\n")
 
-  def buildRow(alku: LocalDate, loppu: LocalDate, data: (ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow])): OpiskelijavuositiedotRow = {
+  def buildRow(alku: LocalDate, loppu: LocalDate, data: (ROpiskeluoikeusRow, RHenkilöRow, Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow])): OpiskelijavuositiedotRow = {
     val (opiskeluoikeus, henkilö, aikajaksot, päätasonSuoritukset, sisältyvätOpiskeluoikeudet) = data
     val osaamisalat = päätasonSuoritukset
       .flatMap(s => JsonSerializer.extract[Option[List[Osaamisalajakso]]](s.data \ "osaamisala"))
@@ -176,11 +176,11 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
       sisältyvätOpiskeluoikeudetOppilaitokset = sisältyvätOpiskeluoikeudet.map(_.oppilaitosNimi).mkString(","),
       aikaleima = opiskeluoikeus.aikaleima.toLocalDateTime.toLocalDate,
       toimipisteOidit = päätasonSuoritukset.map(_.toimipisteOid).sorted.distinct.mkString(","),
-      yksiloity = henkilö.exists(_.yksiloity),
+      yksiloity = henkilö.yksiloity,
       oppijaOid = opiskeluoikeus.oppijaOid,
-      hetu = henkilö.flatMap(_.hetu),
-      sukunimi = henkilö.map(_.sukunimi),
-      etunimet = henkilö.map(_.etunimet),
+      hetu = henkilö.hetu,
+      sukunimi = henkilö.sukunimi,
+      etunimet = henkilö.etunimet,
       suorituksenTyyppi = päätasonSuoritukset.map(_.suorituksenTyyppi).mkString(","),
       koulutusmoduulit = päätasonSuoritukset.map(_.koulutusmoduuliKoodiarvo).sorted.mkString(","),
       osaamisalat = if (osaamisalat.isEmpty) None else Some(osaamisalat.mkString(",")),

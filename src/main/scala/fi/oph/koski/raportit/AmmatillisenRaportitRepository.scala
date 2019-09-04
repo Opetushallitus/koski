@@ -40,14 +40,14 @@ case class AmmatillisenRaportitRepository(db: DB) extends KoskiDatabaseMethods w
     val osasuoritukset = runDbSync(ROsasuoritukset.filter(_.päätasonSuoritusId inSet päätasonSuoritusIds).result, timeout = defaultTimeout).groupBy(_.päätasonSuoritusId)
     val henkilöt = runDbSync(RHenkilöt.filter(_.oppijaOid inSet opiskeluoikeudet.map(_.oppijaOid)).result, timeout = defaultTimeout).groupBy(_.oppijaOid).mapValues(_.head)
 
-    opiskeluoikeudet.foldLeft[List[(ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])]](List.empty) {
+    opiskeluoikeudet.foldLeft[List[(ROpiskeluoikeusRow, RHenkilöRow, Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])]](List.empty) {
       combineOpiskeluoikeusWith(_, _, aikajaksot, päätasonSuoritukset, osasuoritukset, henkilöt, sisältyvätOpiskeluoikeudetGrouped)
     }
   }
 
   private def combineOpiskeluoikeusWith
   (
-    acc: List[(ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])],
+    acc: List[(ROpiskeluoikeusRow, RHenkilöRow, Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])],
     oo: ROpiskeluoikeusRow,
     aikajaksot: Map[OpiskeluoikeusOid, Seq[ROpiskeluoikeusAikajaksoRow]],
     päätasonSuoritukset: Map[OpiskeluoikeusOid, Seq[RPäätasonSuoritusRow]],
@@ -61,7 +61,7 @@ case class AmmatillisenRaportitRepository(db: DB) extends KoskiDatabaseMethods w
         pts.map(päätasonSuoritus => {
           (
             opiskeluoikeus,
-            henkilöt.get(opiskeluoikeus.oppijaOid),
+            henkilöt(opiskeluoikeus.oppijaOid),
             aikajaksot.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Seq.empty),
             päätasonSuoritukset.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Seq.empty),
             sisältyvätOpiskeluoikeudet.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Seq.empty),

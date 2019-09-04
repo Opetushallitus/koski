@@ -14,7 +14,7 @@ import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 class AmmatillinenOpiskelijavuositiedotRaporttiSpec extends FreeSpec with RaportointikantaTestMethods with OpiskeluoikeusTestMethods with Matchers with BeforeAndAfterAll {
 
-  private val raportointiDatabase = KoskiApplicationForTests.raportointiDatabase
+  private lazy val raportointiDatabase = KoskiApplicationForTests.raportointiDatabase
 
   "Opiskelijavuositiedot" - {
     val oid = "1.2.246.562.15.123456"

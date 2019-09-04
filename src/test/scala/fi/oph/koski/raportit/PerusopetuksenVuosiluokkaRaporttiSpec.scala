@@ -131,7 +131,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
           val opiskeluoikeusOid = getOpiskeluoikeudet(MockOppijat.vuosiluokkalainen.oid).find(_.tyyppi.koodiarvo == "perusopetus").get.oid.get
           val rows = result.filter(_.opiskeluoikeusOid == opiskeluoikeusOid)
           rows.length should equal(1)
-          rows.head should equal(kaisanPäättötodistusRow.copy(opiskeluoikeusOid = opiskeluoikeusOid, oppijaOid = MockOppijat.vuosiluokkalainen.oid, hetu = MockOppijat.vuosiluokkalainen.hetu, sukunimi = Some(MockOppijat.vuosiluokkalainen.sukunimi), etunimet = Some(MockOppijat.vuosiluokkalainen.etunimet), viimeisinTila = "lasna", suorituksenTila = "kesken", suorituksenVahvistuspaiva = "", luokka = Some("9A,9C")))
+          rows.head should equal(kaisanPäättötodistusRow.copy(opiskeluoikeusOid = opiskeluoikeusOid, oppijaOid = MockOppijat.vuosiluokkalainen.oid, hetu = MockOppijat.vuosiluokkalainen.hetu, sukunimi = MockOppijat.vuosiluokkalainen.sukunimi, etunimet = MockOppijat.vuosiluokkalainen.etunimet, viimeisinTila = "lasna", suorituksenTila = "kesken", suorituksenVahvistuspaiva = "", luokka = Some("9A,9C")))
         }
       }
 
@@ -193,8 +193,8 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
     yksiloity = true,
     oppijaOid = MockOppijat.ysiluokkalainen.oid,
     hetu = MockOppijat.ysiluokkalainen.hetu,
-    sukunimi = Some(MockOppijat.ysiluokkalainen.sukunimi),
-    etunimet = Some(MockOppijat.ysiluokkalainen.etunimet),
+    sukunimi = MockOppijat.ysiluokkalainen.sukunimi,
+    etunimet = MockOppijat.ysiluokkalainen.etunimet,
     sukupuoli = None,
     luokka = Some("8C"),
     opiskeluoikeudenAlkamispäivä = Some(date(2008, 8, 15)),
@@ -323,8 +323,8 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
   val yhdeksännenLuokanLuokalleJääntiRow = kahdeksannenLuokanLuokalleJääntiRow.copy(
     oppijaOid = MockOppijat.vuosiluokkalainen.oid,
     hetu = MockOppijat.vuosiluokkalainen.hetu,
-    sukunimi = Some(MockOppijat.vuosiluokkalainen.sukunimi),
-    etunimet = Some(MockOppijat.vuosiluokkalainen.etunimet),
+    sukunimi = MockOppijat.vuosiluokkalainen.sukunimi,
+    etunimet = MockOppijat.vuosiluokkalainen.etunimet,
     luokka = Some("9A"),
     viimeisinTila = "lasna",
     suorituksenTila = "valmis",
@@ -336,8 +336,8 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
   val kaisanPäättötodistusRow = defaultYnjeviExpectedKasiLuokkaRow.copy(
     oppijaOid = MockOppijat.koululainen.oid,
     hetu = MockOppijat.koululainen.hetu,
-    sukunimi = Some(MockOppijat.koululainen.sukunimi),
-    etunimet = Some(MockOppijat.koululainen.etunimet),
+    sukunimi = MockOppijat.koululainen.sukunimi,
+    etunimet = MockOppijat.koululainen.etunimet,
     sukupuoli = None,
     luokka = Some("9C"),
     viimeisinTila = "valmistunut",

@@ -54,7 +54,7 @@ case class LukioRaportitRepository(db: DB) extends KoskiDatabaseMethods with Rap
     paatasonSuoritukset.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Nil).map(paatasonsuoritus =>
       LukioRaporttiRows(
         opiskeluoikeus,
-        henkilot.get(opiskeluoikeus.oppijaOid),
+        henkilot(opiskeluoikeus.oppijaOid),
         aikajaksot.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Nil).sortBy(_.alku)(sqlDateOrdering),
         paatasonsuoritus,
         osasuoritukset.getOrElse(paatasonsuoritus.päätasonSuoritusId, Nil)
@@ -89,7 +89,7 @@ case class LukioRaportitRepository(db: DB) extends KoskiDatabaseMethods with Rap
 
 case class LukioRaporttiRows(
   opiskeluoikeus: ROpiskeluoikeusRow,
-  henkilo: Option[RHenkilöRow],
+  henkilo: RHenkilöRow,
   aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow],
   päätasonSuoritus: RPäätasonSuoritusRow,
   osasuoritukset: Seq[ROsasuoritusRow]

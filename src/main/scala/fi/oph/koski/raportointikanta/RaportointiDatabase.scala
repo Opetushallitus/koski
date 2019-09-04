@@ -139,7 +139,7 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
     runDbSync(query.result).toSet
   }
 
-  def opiskeluoikeusAikajaksot(oppilaitos: Organisaatio.Oid, koulutusmuoto: String, alku: LocalDate, loppu: LocalDate): Seq[(ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow])] = {
+  def opiskeluoikeusAikajaksot(oppilaitos: Organisaatio.Oid, koulutusmuoto: String, alku: LocalDate, loppu: LocalDate): Seq[(ROpiskeluoikeusRow, RHenkilöRow, Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow])] = {
     val alkuDate = Date.valueOf(alku)
     val loppuDate = Date.valueOf(loppu)
     val query1 = ROpiskeluoikeudet
@@ -166,7 +166,7 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
       }
       .map(t => (
         t._1,
-        henkilöt.get(t._1.oppijaOid),
+        henkilöt(t._1.oppijaOid),
         t._2.map(_.truncateToDates(alkuDate, loppuDate)).sortBy(_.alku)(sqlDateOrdering),
         päätasonSuoritukset.getOrElse(t._1.opiskeluoikeusOid, Seq.empty).sortBy(_.päätasonSuoritusId),
         sisältyvätOpiskeluoikeudet.getOrElse(t._1.opiskeluoikeusOid, Seq.empty).sortBy(_.opiskeluoikeusOid)
