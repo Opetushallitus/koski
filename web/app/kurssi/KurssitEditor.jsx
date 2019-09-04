@@ -9,7 +9,7 @@ import {
 import Text from '../i18n/Text'
 import {ift} from '../util/util'
 import UusiKurssiPopup from './UusiKurssiPopup'
-import {osasuoritusCanBeAdded, lisääKurssi} from './kurssi'
+import {osasuoritusCountOk, lisääKurssi} from './kurssi'
 import {newOsasuoritusProto} from '../suoritus/Suoritus'
 
 export const KurssitEditor = ({model, customTitle, customAlternativesCompletionFn, customKurssitSortFn}) => {
@@ -30,7 +30,7 @@ export const KurssitEditor = ({model, customTitle, customAlternativesCompletionF
         {kurssit.map((kurssi, kurssiIndex) => <KurssiEditor key={kurssiIndex} kurssi={kurssi}/>)}
       </ul>
     {
-      model.context.edit && osasuoritusCanBeAdded(osasuoritukset) && (<span className="uusi-kurssi">
+      model.context.edit && osasuoritusCountOk(osasuoritukset) && (<span className="uusi-kurssi">
         <a onClick={() => showUusiKurssiAtom.set(true)}><Text name={`Lisää ${customTitle || 'kurssi'}`}/></a>
         {
           ift(showUusiKurssiAtom,

@@ -46,7 +46,7 @@ export const lisääKurssi = (kurssi, model, showUusiKurssiAtom, kurssinSuoritus
   showUusiKurssiAtom.set(false)
 }
 
-export const osasuoritusCanBeAdded = (osasuoritukset) => {
+export const osasuoritusCountOk = (osasuoritukset) => {
   if (!osasuoritukset.value || !Array.isArray(osasuoritukset.value)) return true // Empty: can't be more than maxItems
   if (!osasuoritukset.maxItems || typeof osasuoritukset.maxItems !== 'number') return true // maxItems not specified
   return osasuoritukset.value.length < osasuoritukset.maxItems

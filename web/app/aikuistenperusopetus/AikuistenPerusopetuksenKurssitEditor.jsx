@@ -9,7 +9,7 @@ import Text from '../i18n/Text'
 import {ift} from '../util/util'
 import UusiKurssiPopup from '../kurssi/UusiKurssiPopup'
 import {KurssiEditor} from '../kurssi/KurssiEditor'
-import {lisääKurssi, osasuoritusCanBeAdded} from '../kurssi/kurssi'
+import {lisääKurssi, osasuoritusCountOk} from '../kurssi/kurssi'
 import {koodistoValues} from '../uusioppija/koodisto'
 import * as R from 'ramda'
 import * as Bacon from 'baconjs'
@@ -31,7 +31,7 @@ export const AikuistenPerusopetuksenKurssitEditor = ({model}) => {
       <KurssitOtsikko model={model}/>
       <Kurssit model={model}/>
         {
-          model.context.edit && osasuoritusCanBeAdded(osasuoritukset) && (
+          model.context.edit && osasuoritusCountOk(osasuoritukset) && (
             <React.Fragment>
               <UusiKurssi
                 name={'Lisää kurssi'} model={model} classname={'uusi-kurssi'}
