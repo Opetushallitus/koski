@@ -1,3 +1,8 @@
+## 4.9.2019
+- Perusopetukseen valmistavan koulutuksen suoritukseen lisätty kokonaislaajuus
+- Perusopetukseen valmistavan koulutuksen suorituksesta poistettu Nuorten perusopetuksen oppiaineen suoritus
+- Perusopetukseen valmistavan koulutuksen suoritukseen lisätty Nuorten perusopetuksen oppiaineen suoritus valmistavassa opetuksessa
+
 ## 9.8.2019
 - Lisätty kentät vammainen, vaikeastiVammainen ja sisäoppilaitosmainenMajoitus esiopetuksen lisätietoihin
 
