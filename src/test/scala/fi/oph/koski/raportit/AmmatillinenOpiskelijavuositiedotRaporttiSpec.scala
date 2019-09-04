@@ -39,6 +39,7 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec extends FreeSpec with Raport
       rivi.läsnäTaiValmistunutPäivät should equal(31 + 29 + 31 + 30 + 30 + 1) // Aarne graduated 31.5.2016, so count days from 1.1.2016 to 30.5.2016 + 31.5.2016
       rivi.arvioituPäättymispäivä should equal(Some(LocalDate.parse("2015-05-31")))
       rivi.ostettu should equal(false)
+      rivi.yksiloity should equal(true)
     }
 
     "ostettu" in {

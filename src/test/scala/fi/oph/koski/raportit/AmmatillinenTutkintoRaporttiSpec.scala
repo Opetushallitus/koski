@@ -30,6 +30,7 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
       rivi.viimeisinOpiskeluoikeudenTilaAikajaksonLopussa should equal("lasna")
       rivi.opintojenRahoitukset should equal("4")
       rivi.ostettu should equal(false)
+      rivi.yksiloity should equal(true)
     }
 
     "Laskenta" - {

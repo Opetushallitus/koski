@@ -44,6 +44,7 @@ class AmmatillinenOsittainenRaporttiSpec extends FreeSpec with Matchers with Rap
     linkitetynOpiskeluoikeudenOppilaitos = "",
     aikaleima = LocalDate.now,
     toimipisteOidit = MockOrganisaatiot.lehtikuusentienToimipiste,
+    yksiloity = true,
     oppijaOid = defaultTestiHenkilö.oid,
     hetu = defaultTestiHenkilö.hetu,
     sukunimi = Some(defaultTestiHenkilö.sukunimi),

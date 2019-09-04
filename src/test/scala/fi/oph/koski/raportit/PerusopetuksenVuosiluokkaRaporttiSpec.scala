@@ -190,6 +190,7 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
     oppilaitoksenNimi = "Jyväskylän normaalikoulu",
     lähdejärjestelmä = None,
     lähdejärjestelmänId = None,
+    yksiloity = true,
     oppijaOid = MockOppijat.ysiluokkalainen.oid,
     hetu = MockOppijat.ysiluokkalainen.hetu,
     sukunimi = Some(MockOppijat.ysiluokkalainen.sukunimi),
