@@ -2,7 +2,7 @@ import React from 'baret'
 import {t} from '../i18n/i18n'
 import {UusiOppiaineDropdown} from '../oppiaine/UusiOppiaineDropdown'
 import {ensureArrayKey, modelData, modelItems, modelSet, modelSetTitle, pushModel} from '../editor/EditorModel'
-import {createOppiaineenSuoritus} from './lukio'
+import {newOsasuoritusProto} from '../suoritus/Suoritus'
 
 export const UusiLukionOppiaineDropdown = ({model, oppiaineenSuoritusClasses}) => {
   if (!model || !model.context.edit) return null
@@ -11,7 +11,7 @@ export const UusiLukionOppiaineDropdown = ({model, oppiaineenSuoritusClasses}) =
     const nimi = t(modelData(oppiaine, 'tunniste.nimi'))
     const oppiaineWithTitle = modelSetTitle(oppiaine, nimi)
     const suoritusUudellaOppiaineella = modelSet(
-      oppiaine.parent || createOppiaineenSuoritus(model, oppiaineenSuoritusClasses ? oppiaineenSuoritusClasses[0] : undefined),
+      oppiaine.parent || newOsasuoritusProto(model, oppiaineenSuoritusClasses ? oppiaineenSuoritusClasses[0] : undefined),
       oppiaineWithTitle,
       'koulutusmoduuli'
     )
@@ -20,8 +20,8 @@ export const UusiLukionOppiaineDropdown = ({model, oppiaineenSuoritusClasses}) =
   }
 
   const suoritusProtos = oppiaineenSuoritusClasses
-    ? oppiaineenSuoritusClasses.map(c => createOppiaineenSuoritus(model, c))
-    : [createOppiaineenSuoritus(model)]
+    ? oppiaineenSuoritusClasses.map(c => newOsasuoritusProto(model, c))
+    : [newOsasuoritusProto(model)]
 
   return (
     <UusiOppiaineDropdown
