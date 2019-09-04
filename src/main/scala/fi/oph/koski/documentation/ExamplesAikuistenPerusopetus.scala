@@ -14,6 +14,7 @@ import fi.oph.koski.schema._
 object ExamplesAikuistenPerusopetus {
   val examples = List(
     Example("perusopetuksen oppiaineen oppimäärä - päättötodistus", "Aikuisopiskelija on suorittanut peruskoulun äidinkielen oppimäärän", aineopiskelija),
+    Example("aikuisten perusopetuksen oppiaineen oppimärä - kesken", "Aikuisopiskelija suorittaa peruskoulun matematiikan oppimäärää", aineopiskelijaKesken),
     Example("aikuisten perusopetuksen oppimäärä 2015", "Aikuisopiskelija on suorittanut aikuisten perusopetuksen oppimäärän opetussuunnitelman 2015 mukaisesti", aikuistenPerusopetuksenOppimäärä2015),
     Example("aikuisten perusopetuksen oppimäärä 2017", "Aikuisopiskelija on suorittanut aikuisten perusopetuksen oppimäärän alkuvaiheineen opetussuunnitelman 2017 mukaisesti", Oppija(exampleHenkilö, List(aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen)))
   )
@@ -21,6 +22,11 @@ object ExamplesAikuistenPerusopetus {
   lazy val aineopiskelija = Oppija(
     asUusiOppija(MockOppijat.eero),
     List(oppiaineenOppimääräOpiskeluoikeus)
+  )
+
+  lazy val aineopiskelijaKesken = Oppija(
+    asUusiOppija(MockOppijat.eero),
+    List(matematiikanAineOpiskelijaKesken)
   )
 
   lazy val oppiaineenOppimääräOpiskeluoikeus: AikuistenPerusopetuksenOpiskeluoikeus = {
@@ -44,6 +50,20 @@ object ExamplesAikuistenPerusopetus {
     suoritukset =
       oppiaineenOppimääränSuoritus(aikuistenOppiaine("YH").copy(perusteenDiaarinumero = Some("19/011/2015"))).copy(arviointi = arviointi(10)) ::
         oppiaineenOppimääräOpiskeluoikeus.suoritukset
+  )
+
+  lazy val matematiikanAineOpiskelijaKesken: AikuistenPerusopetuksenOpiskeluoikeus = oppiaineenOppimääräOpiskeluoikeus.copy(
+    tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä)
+      )
+    ),
+    suoritukset = List(
+      oppiaineenOppimääränSuoritus(aikuistenOppiaine("MA").copy(perusteenDiaarinumero = Some("OPH-1280-2017"))).copy(osasuoritukset = Some(List(
+        kurssinSuoritus2017("MA3"),
+        alkuvaiheenKurssinSuoritus("AMA1")
+      )))
+    )
   )
 
   def aikuistenPerusopetuksenOppimäärä2015 = Oppija(
