@@ -94,8 +94,8 @@ const AmmatillinenOsittainenSuoritustietojenTarkistus = ({organisaatioAtom}) => 
 
 const PerusopetuksenVuosiluokka = ({organisaatioAtom}) => {
   const titleText = <Text name='Nuorten perusopetuksen opiskeluoikeus- ja suoritustietojen tarkistusraportti'/>
-  const descriptionText = <Text name='PerusopetuksenVuosiluokka-description'/>
-  const exampleText = <Text name='PerusopetuksenVuosiluokka-example'/>
+  const descriptionText = <Text name='PerusopetuksenVuosiluokkaRaportti-description'/>
+  const exampleText = <Text name='PerusopetuksenVuosiluokkaRaportti-example'/>
 
   return (<VuosiluokkaRaporttiPaivalta
     organisaatioAtom={organisaatioAtom}
@@ -107,8 +107,8 @@ const PerusopetuksenVuosiluokka = ({organisaatioAtom}) => {
 }
 
 const Lukioraportti = ({organisaatioAtom}) => {
-  const titleText = <Text name='Lukioraportti-title'/>
-  const descriptionText = <Text name='Lukioraportti-description'/>
+  const titleText = <Text name='LukioRaportti-title'/>
+  const descriptionText = <Text name='LukioRaportti-description'/>
 
   return (<AikajaksoRaportti
     organisaatioAtom={organisaatioAtom}
