@@ -22,7 +22,7 @@ export const raportitContentP = () => {
         <Organisaatio organisaatioAtom={organisaatioAtom} />
         {mahdollisetRaportitP.map(raportit => (
           <div>
-            {raportit && raportit.length === 0 && <Text name='Tälle oppilaitokselle ei löydy raportteja. Toistaiseksi ainoa käytössä oleva raportti on tarkoitettu vain ammatillisille oppilaitoksille.'/>}
+            {raportit && raportit.length === 0 && <Text name='Tälle organisaatiolle ei löydy raportteja'/>}
             {raportit && raportit.length > 0 && <hr/>}
             {raportit && raportit.includes('ammatillinenopiskelijavuositiedot') && <Opiskelijavuositiedot organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('ammatillinentutkintosuoritustietojentarkistus') && <SuoritustietojenTarkistus organisaatioAtom={organisaatioAtom} />}
