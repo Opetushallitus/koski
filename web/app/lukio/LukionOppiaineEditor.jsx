@@ -4,12 +4,12 @@ import * as R from 'ramda'
 import {modelData, modelItems, modelLookup, pushRemoval} from '../editor/EditorModel.js'
 import {suorituksenTilaSymbol} from '../suoritus/Suoritustaulukko'
 import {KurssitEditor} from '../kurssi/KurssitEditor'
-import {tilaText} from '../suoritus/Suoritus'
+import {newOsasuoritusProto, tilaText} from '../suoritus/Suoritus'
 import {isPaikallinen} from '../suoritus/Koulutusmoduuli'
 import {saveOrganizationalPreference} from '../virkailija/organizationalPreferences'
 import {paikallinenOppiainePrototype} from '../perusopetus/PerusopetuksenOppiaineEditor'
 import {doActionWhileMounted} from '../util/util'
-import {createOppiaineenSuoritus, suoritetutKurssit, hyväksytystiSuoritetutKurssit, laajuudet} from './lukio'
+import {suoritetutKurssit, hyväksytystiSuoritetutKurssit, laajuudet} from './lukio'
 import {Arviointi, KoulutusmoduuliPropertiesEditor, Nimi} from './fragments/LukionOppiaine'
 import {numberToString} from '../util/format'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
@@ -24,7 +24,7 @@ export class LukionOppiaineEditor extends React.Component {
 
     saveOrganizationalPreference(
       organisaatioOid,
-      paikallinenOppiainePrototype(createOppiaineenSuoritus(oppiaine.context.suoritus, oppiaine.value.classes[0])).value.classes[0],
+      paikallinenOppiainePrototype(newOsasuoritusProto(oppiaine.context.suoritus, oppiaine.value.classes[0])).value.classes[0],
       key,
       data
     )

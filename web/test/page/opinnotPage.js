@@ -274,6 +274,7 @@ function Oppiaine(oppiaineElem) {
   var oppiaineApi = _.merge({
     text: function() { return extractAsText(oppiaineElem) },
     avaaLisääKurssiDialog: click(findSingle('.uusi-kurssi a', oppiaineElem)),
+    avaaAlkuvaiheenLisääKurssiDialog: click(findSingle('.uusi-alkuvaiheen-kurssi a', oppiaineElem)),
     lisääKurssi: function(kurssi, tyyppi) { return seq(
       oppiaineApi.avaaLisääKurssiDialog,
       oppiaineApi.lisääKurssiDialog.valitseKurssi(kurssi || 'Kieli ja kulttuuri'),

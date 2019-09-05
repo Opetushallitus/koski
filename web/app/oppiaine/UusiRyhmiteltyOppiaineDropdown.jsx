@@ -5,8 +5,7 @@ import {
   ensureArrayKey, modelData, modelItems, modelLookup, modelSet, modelSetData, modelSetTitle,
   pushModel
 } from '../editor/EditorModel'
-import {createOppiaineenSuoritus} from '../lukio/lukio'
-import {suorituksenTyyppi} from '../suoritus/Suoritus'
+import {newOsasuoritusProto, suorituksenTyyppi} from '../suoritus/Suoritus'
 
 const resolveRyhmäFieldName = model => ['diavalmistavavaihe', 'diatutkintovaihe'].includes(suorituksenTyyppi(model)) ? 'osaAlue' : 'ryhmä'
 
@@ -19,7 +18,7 @@ export const UusiRyhmiteltyOppiaineDropdown = ({model, aineryhmä, optionsFilter
     const oppiaineWithTitle = modelSetTitle(oppiaine, nimi)
     const oppiaineWithAineryhmä = modelLookup(oppiaineWithTitle, ryhmäFieldName) ? modelSetData(oppiaineWithTitle, aineryhmä, ryhmäFieldName) : oppiaineWithTitle
     const suoritusUudellaOppiaineella = modelSet(
-      oppiaine.parent || createOppiaineenSuoritus(model),
+      oppiaine.parent || newOsasuoritusProto(model),
       oppiaineWithAineryhmä,
       'koulutusmoduuli'
     )
@@ -30,7 +29,7 @@ export const UusiRyhmiteltyOppiaineDropdown = ({model, aineryhmä, optionsFilter
   return (
     <UusiOppiaineDropdown
       suoritukset={modelItems(model, 'osasuoritukset')}
-      oppiaineenSuoritukset={[createOppiaineenSuoritus(model)]}
+      oppiaineenSuoritukset={[newOsasuoritusProto(model)]}
       organisaatioOid={modelData(model, 'toimipiste.oid')}
       resultCallback={addOppiaine}
       placeholder={t('Lisää oppiaine')}

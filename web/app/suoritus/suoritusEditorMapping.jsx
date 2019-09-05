@@ -2,8 +2,6 @@ import React from 'react'
 import {modelData, modelLookup} from '../editor/EditorModel'
 
 import {PerusopetuksenOppiaineetEditor} from '../perusopetus/PerusopetuksenOppiaineetEditor'
-import PerusopetuksenOppiaineenOppimääränSuoritusEditor
-  from '../perusopetus/PerusopetuksenOppiaineenOppimaaranSuoritusEditor'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {Suoritustaulukko} from './Suoritustaulukko'
 import {LukionOppiaineetEditor} from '../lukio/LukionOppiaineetEditor'
@@ -24,6 +22,7 @@ import OmatTiedotPerusopetuksenOppiaineet from '../perusopetus/OmatTiedotPerusop
 import OmatTiedotRyhmiteltyOppiaineet from './OmatTiedotRyhmiteltyOppiaineet'
 import TäydentääTutkintoaEditor from '../ammatillinen/TaydentaaTutkintoaEditor'
 import InternationalSchoolOppiaineetEditor from '../internationalschool/InternationalSchoolOppiaineetEditor'
+import {AikuistenPerusopetuksenKurssitEditor} from '../aikuistenperusopetus/AikuistenPerusopetuksenKurssitEditor'
 
 export const resolveOsasuorituksetEditor = (mdl) => {
   const oneOf = (...classes) => classes.some(c => mdl.value.classes.includes(c))
@@ -42,7 +41,7 @@ export const resolveOsasuorituksetEditor = (mdl) => {
     return <PerusopetuksenOppiaineetComponent model={mdl}/>
   }
   if (firstClassOneOf('aikuistenperusopetuksenoppiaineenoppimaaransuoritus')) {
-    return <PerusopetuksenOppiaineenOppimääränSuoritusEditor model={mdl}/>
+    return <AikuistenPerusopetuksenKurssitEditor model={mdl}/>
   }
   if (firstClassOneOf('esiopetuksensuoritus')) {
     return <PropertiesEditor model={modelLookup(mdl, 'koulutusmoduuli')} propertyFilter={p => p.key === 'kuvaus'} />
