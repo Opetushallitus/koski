@@ -18,7 +18,7 @@ object AmmatillinenOsittainenRaportti extends AikajaksoRaportti {
     data.map(buildRow(oppilaitosOid, alku, loppu, _))
   }
 
-  private def buildRow(oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate, data: (ROpiskeluoikeusRow, Option[RHenkilöRow], Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])) = {
+  private def buildRow(oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate, data: (ROpiskeluoikeusRow, RHenkilöRow, Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])) = {
     val (opiskeluoikeus, henkilö, aikajaksot, päätasonSuoritukset, sisältyvätOpiskeluoikeudet, osasuoritukset) = data
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](opiskeluoikeus.data \ "lähdejärjestelmänId")
     val osaamisalat = extractOsaamisalatAikavalilta(päätasonSuoritukset, alku, loppu)
@@ -39,10 +39,11 @@ object AmmatillinenOsittainenRaportti extends AikajaksoRaportti {
       linkitetynOpiskeluoikeudenOppilaitos = if (opiskeluoikeus.oppilaitosOid != oppilaitosOid) opiskeluoikeus.oppilaitosNimi else "",
       aikaleima = opiskeluoikeus.aikaleima.toLocalDateTime.toLocalDate,
       toimipisteOidit = päätasonSuoritukset.map(_.toimipisteOid).sorted.distinct.mkString(","),
+      yksiloity = henkilö.yksiloity,
       oppijaOid = opiskeluoikeus.oppijaOid,
-      hetu = henkilö.flatMap(_.hetu),
-      sukunimi = henkilö.map(_.sukunimi),
-      etunimet = henkilö.map(_.etunimet),
+      hetu = henkilö.hetu,
+      sukunimi = henkilö.sukunimi,
+      etunimet = henkilö.etunimet,
       koulutusmoduulit = päätasonSuoritukset.map(_.koulutusmoduuliKoodiarvo).sorted.mkString(","),
       osaamisalat = if (osaamisalat.isEmpty) None else Some(osaamisalat.mkString(",")),
       tutkintonimikkeet = päätasonSuoritukset.flatMap(tutkintonimike(_)).mkString(","),
@@ -128,6 +129,7 @@ object AmmatillinenOsittainenRaportti extends AikajaksoRaportti {
     "linkitetynOpiskeluoikeudenOppilaitos" -> Column("Toisen koulutuksen järjestäjän opiskeluoikeus"),
     "aikaleima" -> Column("Päivitetty"),
     "toimipisteOidit" -> Column("Toimipisteet"),
+    "yksiloity" -> Column("Yksilöity", comment = Some("Jos tässä on arvo 'ei', tulee oppija yksilöidä oppijanumerorekisterissä")),
     "oppijaOid" -> Column("Oppijan oid"),
     "hetu" -> Column("Hetu"),
     "sukunimi" -> Column("Sukunimi"),
@@ -175,10 +177,11 @@ case class AmmatillinenOsittainRaporttiRow(
   linkitetynOpiskeluoikeudenOppilaitos: String,
   aikaleima: LocalDate,
   toimipisteOidit: String,
+  yksiloity: Boolean,
   oppijaOid: String,
   hetu: Option[String],
-  sukunimi: Option[String],
-  etunimet: Option[String],
+  sukunimi: String,
+  etunimet: String,
   koulutusmoduulit: String,
   osaamisalat: Option[String],
   tutkintonimikkeet: String,

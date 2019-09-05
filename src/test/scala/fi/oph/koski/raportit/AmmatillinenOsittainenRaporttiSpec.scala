@@ -14,8 +14,8 @@ class AmmatillinenOsittainenRaporttiSpec extends FreeSpec with Matchers with Rap
 
   override def beforeAll(): Unit = loadRaportointikantaFixtures
 
-  val database = KoskiApplicationForTests.raportointiDatabase
-  val defaultTestiHenkilö = MockOppijat.ammatillisenOsittainenRapsa
+  lazy val database = KoskiApplicationForTests.raportointiDatabase
+  lazy val defaultTestiHenkilö = MockOppijat.ammatillisenOsittainenRapsa
 
   "Ammatillisen tutkinnon osa/osia -raporti" - {
     "Raportin voi ladata" in {
@@ -44,10 +44,11 @@ class AmmatillinenOsittainenRaporttiSpec extends FreeSpec with Matchers with Rap
     linkitetynOpiskeluoikeudenOppilaitos = "",
     aikaleima = LocalDate.now,
     toimipisteOidit = MockOrganisaatiot.lehtikuusentienToimipiste,
+    yksiloity = true,
     oppijaOid = defaultTestiHenkilö.oid,
     hetu = defaultTestiHenkilö.hetu,
-    sukunimi = Some(defaultTestiHenkilö.sukunimi),
-    etunimet = Some(defaultTestiHenkilö.etunimet),
+    sukunimi = defaultTestiHenkilö.sukunimi,
+    etunimet = defaultTestiHenkilö.etunimet,
     koulutusmoduulit = "351301",
     osaamisalat = Some("1525"),
     tutkintonimikkeet = "Autokorinkorjaaja",

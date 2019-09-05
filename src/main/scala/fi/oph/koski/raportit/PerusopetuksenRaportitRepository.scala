@@ -57,7 +57,7 @@ case class PerusopetuksenRaportitRepository(db: DB) extends KoskiDatabaseMethods
       paatasonSuoritukset.getOrElse(oo.opiskeluoikeusOid, Nil).map { päätasonSuoritus =>
         PerusopetuksenRaporttiRows(
           opiskeluoikeus = oo,
-          henkilo = henkilot.get(oo.oppijaOid),
+          henkilo = henkilot(oo.oppijaOid),
           aikajaksot = aikajaksot.getOrElse(oo.opiskeluoikeusOid, Nil).sortBy(_.alku)(sqlDateOrdering),
           päätasonSuoritus = päätasonSuoritus,
           osasuoritukset.getOrElse(päätasonSuoritus.päätasonSuoritusId, Nil),
@@ -268,7 +268,7 @@ case class VuosiluokanTiedot(
 
 case class PerusopetuksenRaporttiRows(
   opiskeluoikeus: ROpiskeluoikeusRow,
-  henkilo: Option[RHenkilöRow],
+  henkilo: RHenkilöRow,
   aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow],
   päätasonSuoritus: RPäätasonSuoritusRow,
   osasuoritukset: Seq[ROsasuoritusRow],

@@ -41,6 +41,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
           "Oppilaitoksen nimi",
           "Toimipiste",
           "Opiskeluoikeuden tunniste lähdejärjestelmässä",
+          "Yksilöity",
           "Oppijan oid",
           "Hetu",
           "Sukunimi",
@@ -281,6 +282,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Opiskeluoikeuden tunniste lähdejärjestelmässä" -> None,
     "Koulutustoimija" -> "Jyväskylän yliopisto",
     "Toimipiste" -> "Jyväskylän normaalikoulu",
+    "Yksilöity" -> true,
     "Oppijan oid" -> lukiolainen.oid,
     "Opiskeluoikeuden alkamispäivä" -> Some(date(2012, 9, 1)),
     "Opiskeluoikeuden viimeisin tila" -> Some("valmistunut"),
@@ -301,8 +303,8 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Sisäoppilaitosmainen majoitus" -> Some(366),
     "Syy alle 18-vuotiaana aloitettuun opiskeluun aikuisten lukiokoulutuksessa" -> Some("Pikkuvanha yksilö"),
     "Hetu" -> lukiolainen.hetu,
-    "Sukunimi" -> Some(lukiolainen.sukunimi),
-    "Etunimet" -> Some(lukiolainen.etunimet),
+    "Sukunimi" -> lukiolainen.sukunimi,
+    "Etunimet" -> lukiolainen.etunimet,
     "Yhteislaajuus" -> 89.5,
     "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 8 kurssia",
     "XX Ei tiedossa valtakunnallinen" -> "",
@@ -331,8 +333,8 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
   lazy val expectedLukiolainenHistorianKurssitRow = Map(
     "Oppijan oid" -> lukiolainen.oid,
     "Hetu" -> lukiolainen.hetu,
-    "Sukunimi" -> Some(lukiolainen.sukunimi),
-    "Etunimet" -> Some(lukiolainen.etunimet),
+    "Sukunimi" -> lukiolainen.sukunimi,
+    "Etunimet" -> lukiolainen.etunimet,
     "Toimipiste" -> "Jyväskylän normaalikoulu",
     "Opetussuunnitelma" -> Some("Lukio suoritetaan nuorten opetussuunnitelman mukaan"),
     "Suorituksen tyyppi" -> "lukionoppimaara",
@@ -350,6 +352,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Koulutustoimija" -> "Jyväskylän yliopisto",
     "Toimipiste" -> "Jyväskylän normaalikoulu",
     "Opiskeluoikeuden tunniste lähdejärjestelmässä" -> None,
+    "Yksilöity" -> true,
     "Oppijan oid" -> lukionAineopiskelijaAktiivinen.oid,
     "Opiskeluoikeuden alkamispäivä" -> Some(date(2015, 9, 1)),
     "Opiskeluoikeuden viimeisin tila" -> Some("lasna"),
@@ -370,8 +373,8 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Sisäoppilaitosmainen majoitus" -> None,
     "Syy alle 18-vuotiaana aloitettuun opiskeluun aikuisten lukiokoulutuksessa" -> None,
     "Hetu" -> lukionAineopiskelijaAktiivinen.hetu,
-    "Sukunimi" -> Some(lukionAineopiskelijaAktiivinen.sukunimi),
-    "Etunimet" -> Some(lukionAineopiskelijaAktiivinen.etunimet),
+    "Sukunimi" -> lukionAineopiskelijaAktiivinen.sukunimi,
+    "Etunimet" -> lukionAineopiskelijaAktiivinen.etunimet,
     "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "",
     "XX Ei tiedossa valtakunnallinen" -> "",
     "A1 Englanti valtakunnallinen" -> "",
@@ -400,8 +403,8 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     private lazy val default = defaultAineopiskelijaRow + (
       "Oppijan oid" -> lukionAineopiskelijaAktiivinen.oid,
       "Hetu" -> lukionAineopiskelijaAktiivinen.hetu,
-      "Sukunimi" -> Some(lukionAineopiskelijaAktiivinen.sukunimi),
-      "Etunimet" -> Some(lukionAineopiskelijaAktiivinen.etunimet)
+      "Sukunimi" -> lukionAineopiskelijaAktiivinen.sukunimi,
+      "Etunimet" -> lukionAineopiskelijaAktiivinen.etunimet
     )
 
     lazy val englanninOppiaineenRow = default + (
@@ -438,8 +441,8 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     lazy val eiSuorituksiaKurssitRow = Map(
       "Oppijan oid" -> lukionAineopiskelijaAktiivinen.oid,
       "Hetu" -> lukionAineopiskelijaAktiivinen.hetu,
-      "Sukunimi" -> Some(lukionAineopiskelijaAktiivinen.sukunimi),
-      "Etunimet" -> Some(lukionAineopiskelijaAktiivinen.etunimet),
+      "Sukunimi" -> lukionAineopiskelijaAktiivinen.sukunimi,
+      "Etunimet" -> lukionAineopiskelijaAktiivinen.etunimet,
       "Toimipiste" -> "Jyväskylän normaalikoulu",
       "Opetussuunnitelma" -> Some("Lukio suoritetaan nuorten opetussuunnitelman mukaan"),
       "Suorituksen tyyppi" -> "lukionoppiaineenoppimaara"
@@ -476,8 +479,8 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     private lazy val default = defaultAineopiskelijaRow + (
       "Oppijan oid" -> lukionEiTiedossaAineopiskelija.oid,
       "Hetu" -> lukionEiTiedossaAineopiskelija.hetu,
-      "Sukunimi" -> Some(lukionEiTiedossaAineopiskelija.sukunimi),
-      "Etunimet" -> Some(lukionEiTiedossaAineopiskelija.etunimet)
+      "Sukunimi" -> lukionEiTiedossaAineopiskelija.sukunimi,
+      "Etunimet" -> lukionEiTiedossaAineopiskelija.etunimet
     )
 
     lazy val eiTiedossaOppiaineenRow = default + (
@@ -516,8 +519,8 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     lazy val eiTiedossaKurssitRow = Map(
       "Oppijan oid" -> lukionEiTiedossaAineopiskelija.oid,
       "Hetu" -> lukionEiTiedossaAineopiskelija.hetu,
-      "Sukunimi" -> Some(lukionEiTiedossaAineopiskelija.sukunimi),
-      "Etunimet" -> Some(lukionEiTiedossaAineopiskelija.etunimet),
+      "Sukunimi" -> lukionEiTiedossaAineopiskelija.sukunimi,
+      "Etunimet" -> lukionEiTiedossaAineopiskelija.etunimet,
       "Toimipiste" -> "Jyväskylän normaalikoulu",
       "Opetussuunnitelma" -> None,
       "Suorituksen tyyppi" -> "lukionoppiaineenoppimaara",
