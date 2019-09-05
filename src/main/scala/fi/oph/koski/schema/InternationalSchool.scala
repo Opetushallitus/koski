@@ -150,7 +150,7 @@ trait DiplomaIBOppiaineenSuoritus extends OppiaineenSuoritus with MahdollisestiS
 
 case class DiplomaOppiaineenSuoritus(
   koulutusmoduuli: InternationalSchoolIBOppiaine,
-  arviointi: Option[List[InternationalSchoolIBOppiaineenArviointi]] = None,
+  arviointi: Option[List[DiplomaArviointi]] = None,
   @DefaultValue("EN")
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("internationalschooldiplomaoppiaine")
@@ -181,6 +181,7 @@ trait InternationalSchoolKieliOppiaine extends Kieliaine with MYPOppiaine with P
 trait MYPOppiaine extends InternationalSchoolOppiaine
 trait PYPOppiaine extends InternationalSchoolOppiaine
 
+trait DiplomaArviointi extends KoodistostaLöytyväArviointi
 trait InternationalSchoolArviointi extends KoodistostaLöytyväArviointi {
   def arvosana: Koodistokoodiviite
   def päivä: Option[LocalDate]
@@ -198,7 +199,7 @@ case class SanallinenInternationalSchoolOppiaineenArviointi(
   päivä: Option[LocalDate] = None
 ) extends InternationalSchoolArviointi
 
-trait InternationalSchoolNumeerinenOppiaineenArviointi extends InternationalSchoolArviointi {
+trait InternationalSchoolNumeerinenOppiaineenArviointi extends InternationalSchoolArviointi with DiplomaArviointi{
   @KoodistoKoodiarvo("1")
   @KoodistoKoodiarvo("2")
   @KoodistoKoodiarvo("3")
@@ -225,7 +226,15 @@ case class InternationalSchoolIBOppiaineenArviointi(
   predicted: Boolean = false,
   arvosana: Koodistokoodiviite,
   päivä: Option[LocalDate] = None
-) extends InternationalSchoolNumeerinenOppiaineenArviointi with Predicted
+) extends InternationalSchoolNumeerinenOppiaineenArviointi with Predicted with DiplomaArviointi
+
+case class PassFailOppiaineenArviointi(
+  @KoodistoKoodiarvo("pass")
+  @KoodistoKoodiarvo("fail")
+  @KoodistoUri("arviointiasteikkointernationalschool")
+  arvosana: Koodistokoodiviite,
+  päivä: Option[LocalDate] = None
+) extends InternationalSchoolArviointi with DiplomaArviointi
 
 case class InternationalSchoolCoreRequirementsArviointi(
   predicted: Boolean = false,
@@ -297,9 +306,14 @@ case class PYPOppiaineMuu(
 
 trait InternationalSchoolIBOppiaine extends KoodistostaLöytyväKoulutusmoduuli with Laajuudeton
 
+case class FitnessAndWellBeing(
+  @KoodistoKoodiarvo("HAWB")
+  tunniste: Koodistokoodiviite,
+  taso: Option[Koodistokoodiviite] = None
+) extends InternationalSchoolOppiaine with InternationalSchoolIBOppiaine with IBTaso
+
 case class InternationalSchoolMuuDiplomaOppiaine(
   @KoodistoKoodiarvo("F")
-  @KoodistoKoodiarvo("HAWB")
   @KoodistoKoodiarvo("HSCM")
   @KoodistoKoodiarvo("ITGS")
   @KoodistoKoodiarvo("MAA")

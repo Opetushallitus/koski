@@ -40,6 +40,7 @@ describe('International school', function() {
           'Chemistry 4\n' +
           'Biology 5\n' +
           'Mathematics: Applications and Interpretation 4\n' +
+          'Fitness and Well-Being Fail\n' +
           'Theory of knowledge C'
         )
       })
@@ -405,9 +406,9 @@ describe('International school', function() {
             'Creativity, activity, service',
             'Extended essay',
             'Theory of knowledge',
+            'Fitness and Well-Being',
             'Film',
             'HS Consumer Math 11/12',
-            'Health and Well-Being',
             'Information Technology in a Global Society',
             'Mathematics: Analysis and Approaches',
             'Mathematics: Applications and Interpretation',
