@@ -34,12 +34,15 @@ trait VuosiluokkaRaporttiPaivalta extends Raportti {
   def buildRaportti(raportointiDatabase: PerusopetuksenRaportitRepository, oppilaitosOid: Set[Organisaatio.Oid], paiva: LocalDate, vuosiluokka: String): Seq[Product]
 }
 
-trait OppilaitosRaporttiRequest {
+trait RaporttiRequest {
   def oppilaitosOid: Organisaatio.Oid
-
   def downloadToken: Option[String]
-
   def password: String
+}
+
+trait RaporttiAikajaksoltaRequest extends RaporttiRequest {
+  def alku: LocalDate
+  def loppu: LocalDate
 }
 
 case class AikajaksoRaporttiRequest
@@ -49,7 +52,7 @@ case class AikajaksoRaporttiRequest
   password: String,
   alku: LocalDate,
   loppu: LocalDate
-) extends OppilaitosRaporttiRequest
+) extends RaporttiRequest
 
 case class PerusopetuksenVuosiluokkaRequest
 (
@@ -58,7 +61,7 @@ case class PerusopetuksenVuosiluokkaRequest
   password: String,
   paiva: LocalDate,
   vuosiluokka: String
-) extends OppilaitosRaporttiRequest
+) extends RaporttiRequest
 
 case class OppilaitosRaporttiResponse
 (
@@ -67,6 +70,16 @@ case class OppilaitosRaporttiResponse
   filename: String,
   downloadToken: Option[String]
 )
+
+case class AmmatillinenSuoritusTiedotRequest(
+  oppilaitosOid: Organisaatio.Oid,
+  downloadToken: Option[String],
+  password: String,
+  alku: LocalDate,
+  loppu: LocalDate,
+  osasuoritustenAikarajaus: Boolean
+) extends RaporttiAikajaksoltaRequest
+
 
 sealed abstract trait RaportinTyyppi {
   override def toString: String = this.getClass.getSimpleName.toLowerCase.filterNot(_ == '$')

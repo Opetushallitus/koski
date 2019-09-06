@@ -8,17 +8,34 @@ class RaportitService(application: KoskiApplication) {
   private lazy val perusopetusRepository = PerusopetuksenRaportitRepository(raportointiDatabase.db)
   private lazy val accessResolver = RaportitAccessResolver(application)
   private lazy val lukioRepository = LukioRaportitRepository(raportointiDatabase.db)
+  private lazy val ammatillisenRaportitRepository = AmmatillisenRaportitRepository(raportointiDatabase.db)
 
   def opiskelijaVuositiedot(request: AikajaksoRaporttiRequest): OppilaitosRaporttiResponse = {
     aikajaksoRaportti(request, AmmatillinenOpiskalijavuositiedotRaportti)
   }
 
-  def suoritustietojenTarkistus(request: AikajaksoRaporttiRequest): OppilaitosRaporttiResponse = {
-    aikajaksoRaportti(request, AmmatillinenTutkintoRaportti)
+  def ammatillinenTutkintoSuoritustietojenTarkistus(request: AmmatillinenSuoritusTiedotRequest): OppilaitosRaporttiResponse = {
+    OppilaitosRaporttiResponse(
+      sheets = Seq(
+        DataSheet("Opiskeluoikeudet", AmmatillinenTutkintoRaportti.buildRaportti(request, ammatillisenRaportitRepository), AmmatillinenTutkintoRaportti.columnSettings),
+        DocumentationSheet("Ohjeet", AmmatillinenTutkintoRaportti.documentation(request, raportointiDatabase.status.completionTime.get.toLocalDateTime))
+      ),
+      workbookSettings = WorkbookSettings(AmmatillinenTutkintoRaportti.title(request), Some(request.password)),
+      filename = AmmatillinenTutkintoRaportti.filename(request),
+      downloadToken = request.downloadToken
+    )
   }
 
-  def ammatillinenOsittainenSuoritustietojenTarkistus(request: AikajaksoRaporttiRequest): OppilaitosRaporttiResponse = {
-    aikajaksoRaportti(request, AmmatillinenOsittainenRaportti)
+  def ammatillinenOsittainenSuoritustietojenTarkistus(request: AmmatillinenSuoritusTiedotRequest): OppilaitosRaporttiResponse = {
+    OppilaitosRaporttiResponse(
+      sheets = Seq(
+        DataSheet("Opiskeluoikeudet", AmmatillinenOsittainenRaportti.buildRaportti(request, ammatillisenRaportitRepository), AmmatillinenOsittainenRaportti.columnSettings),
+        DocumentationSheet("Ohjeet", AmmatillinenOsittainenRaportti.documentation(request, raportointiDatabase.status.completionTime.get.toLocalDateTime))
+      ),
+      workbookSettings = WorkbookSettings(AmmatillinenOsittainenRaportti.title(request), Some(request.password)),
+      filename = AmmatillinenOsittainenRaportti.filename(request),
+      downloadToken = request.downloadToken
+    )
   }
 
   def perusopetuksenVuosiluokka(request: PerusopetuksenVuosiluokkaRequest): OppilaitosRaporttiResponse = {

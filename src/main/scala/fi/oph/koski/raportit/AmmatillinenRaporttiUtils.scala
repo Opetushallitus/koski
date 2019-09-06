@@ -9,6 +9,12 @@ import fi.oph.koski.schema._
 
 object AmmatillinenRaporttiUtils {
 
+  def arvioituAikavälillä(alku: LocalDate, loppu: LocalDate)(row: ROsasuoritusRow): Boolean =
+    row.arviointiPäivä.exists(d => arvioituAikavälillä(alku, loppu, d.toLocalDate))
+
+  private def arvioituAikavälillä(alku: LocalDate, loppu: LocalDate, arviointiPäivä: LocalDate) =
+    !alku.isAfter(arviointiPäivä) && !loppu.isBefore(arviointiPäivä)
+
   def extractOsaamisalatAikavalilta(päätasonSuoritukset: Seq[RPäätasonSuoritusRow], alku: LocalDate, loppu: LocalDate) = {
     päätasonSuoritukset
       .flatMap(s => JsonSerializer.extract[Option[List[Osaamisalajakso]]](s.data \ "osaamisala"))

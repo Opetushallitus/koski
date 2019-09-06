@@ -7,6 +7,7 @@ import Atom from 'bacon.atom'
 import Http from '../util/http'
 import {AikajaksoRaportti} from './AikajaksoRaportti'
 import {VuosiluokkaRaporttiPaivalta} from './VuosiluokkaRaporttiPaivalta'
+import {AmmatillinenSuoritusTiedotRaportti} from './AmmatillinenSuoritusTiedotRaportti'
 
 export const raportitContentP = () => {
   const organisaatioAtom = Atom()
@@ -72,7 +73,7 @@ const SuoritustietojenTarkistus = ({organisaatioAtom}) => {
   const titleText = <Text name='Suoritustiedot (ammatillinen koulutus, koko tutkinto)'/>
   const descriptionText = <Text name='SuoritustietojenTarkistus-description'/>
 
-  return (<AikajaksoRaportti
+  return (<AmmatillinenSuoritusTiedotRaportti
     organisaatioAtom={organisaatioAtom}
     apiEndpoint={'/ammatillinentutkintosuoritustietojentarkistus'}
     title={titleText}
@@ -84,7 +85,7 @@ const AmmatillinenOsittainenSuoritustietojenTarkistus = ({organisaatioAtom}) => 
   const titleText = <Text name='Suoritustiedot (ammatillinen koulutus, tutkinnon osa/osia)'/>
   const descriptionText = <Text name='AmmatillinenOsittainenSuoritustietojenTarkistus-description'/>
 
-  return (<AikajaksoRaportti
+  return (<AmmatillinenSuoritusTiedotRaportti
     organisaatioAtom={organisaatioAtom}
     apiEndpoint={'/ammatillinenosittainensuoritustietojentarkistus'}
     title={titleText}

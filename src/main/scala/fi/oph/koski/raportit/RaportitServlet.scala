@@ -37,13 +37,13 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
   }
 
   get("/ammatillinentutkintosuoritustietojentarkistus") {
-    val parsedRequest = parseAikajaksoRaporttiRequest
+    val parsedRequest = parseAmmatillinenSuoritusTiedotRequest
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=ammatillinentutkintosuoritustietojentarkistus&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
-    excelResponse(raportitService.suoritustietojenTarkistus(parsedRequest))
+    excelResponse(raportitService.ammatillinenTutkintoSuoritustietojenTarkistus(parsedRequest))
   }
 
   get("/ammatillinenosittainensuoritustietojentarkistus") {
-    val parsedRequest = parseAikajaksoRaporttiRequest
+    val parsedRequest = parseAmmatillinenSuoritusTiedotRequest
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=ammatillinenosittainensuoritustietojentarkistus&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
     excelResponse(raportitService.ammatillinenOsittainenSuoritustietojenTarkistus(parsedRequest))
   }
@@ -78,6 +78,16 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
     val downloadToken = params.get("downloadToken")
 
     AikajaksoRaporttiRequest(oppilaitosOid, downloadToken, password, alku, loppu)
+  }
+
+  private def parseAmmatillinenSuoritusTiedotRequest: AmmatillinenSuoritusTiedotRequest = {
+    val oppilaitosOid = getOppilaitosParamAndCheckAccess
+    val (alku, loppu) = getAlkuLoppuParams
+    val password = getStringParam("password")
+    val downloadToken = params.get("downloadToken")
+    val osasuoritustenAikarajaus = getBooleanParam("osasuoritustenAikarajaus")
+
+    AmmatillinenSuoritusTiedotRequest(oppilaitosOid, downloadToken, password, alku, loppu, osasuoritustenAikarajaus)
   }
 
   private def parseVuosiluokkaRequest: PerusopetuksenVuosiluokkaRequest = {

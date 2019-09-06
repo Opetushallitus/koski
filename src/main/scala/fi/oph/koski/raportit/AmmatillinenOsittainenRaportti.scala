@@ -5,23 +5,25 @@ import java.time.{LocalDate, LocalDateTime}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.raportit.AmmatillinenRaporttiUtils._
 import fi.oph.koski.raportointikanta._
-import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema.{LähdejärjestelmäId, OpiskeluoikeudenTyyppi, Organisaatio}
 import fi.oph.koski.util.FinnishDateFormat.{finnishDateFormat, finnishDateTimeFormat}
 
 // scalastyle:off method.length
 
-object AmmatillinenOsittainenRaportti extends AikajaksoRaportti {
+object AmmatillinenOsittainenRaportti {
 
-  def buildRaportti(database: RaportointiDatabase, oppilaitosOid: Oid, alku: LocalDate, loppu: LocalDate): Seq[AmmatillinenOsittainRaporttiRow] = {
-    val data = AmmatillisenRaportitRepository(database.db).suoritustiedot(oppilaitosOid, OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo, "ammatillinentutkintoosittainen", alku, loppu)
-    data.map(buildRow(oppilaitosOid, alku, loppu, _))
+  def buildRaportti(request: AmmatillinenSuoritusTiedotRequest, repository: AmmatillisenRaportitRepository): Seq[AmmatillinenOsittainRaporttiRow] = {
+    val data = repository.suoritustiedot(request.oppilaitosOid, OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo, "ammatillinentutkintoosittainen", request.alku, request.loppu)
+    data.map(buildRow(request.oppilaitosOid, request.alku, request.loppu, request.osasuoritustenAikarajaus))
   }
 
-  private def buildRow(oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate, data: (ROpiskeluoikeusRow, RHenkilöRow, Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])) = {
-    val (opiskeluoikeus, henkilö, aikajaksot, päätasonSuoritukset, sisältyvätOpiskeluoikeudet, osasuoritukset) = data
+  private def buildRow(oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate, osasuoritustenAikarajaus: Boolean)(data: (ROpiskeluoikeusRow, RHenkilöRow, Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])) = {
+    val (opiskeluoikeus, henkilö, aikajaksot, päätasonSuoritukset, sisältyvätOpiskeluoikeudet, unFilteredosasuoritukset) = data
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](opiskeluoikeus.data \ "lähdejärjestelmänId")
     val osaamisalat = extractOsaamisalatAikavalilta(päätasonSuoritukset, alku, loppu)
+
+    val osasuoritukset = if (osasuoritustenAikarajaus) unFilteredosasuoritukset.filter(arvioituAikavälillä(alku, loppu)) else unFilteredosasuoritukset
+
     val yhteistenTutkinnonOsienSuoritukset = osasuoritukset.filter(isYhteinenTutkinnonOsa)
     val yhteistenTutkinnonOsienOsaSuoritukset = osasuoritukset.filter(isAmmatillisenTutkinnonOsanOsaalue)
     val muutSuoritukset = osasuoritukset.filter(isAmmatillisenTutkinnonOsa)
@@ -76,15 +78,15 @@ object AmmatillinenOsittainenRaportti extends AikajaksoRaportti {
     )
   }
 
-  def title(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate): String = {
-    s"Ammatillinen_tutkinnon_osa_ja_osia_${oppilaitosOid}_${alku}_${loppu}"
+  def title(request: AmmatillinenSuoritusTiedotRequest): String = {
+    s"Ammatillinen_tutkinnon_osa_ja_osia_${request.oppilaitosOid}_${request.alku}_${request.loppu}"
   }
 
-  def documentation(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, loadCompleted: LocalDateTime): String =
+  def documentation(request: AmmatillinenSuoritusTiedotRequest, loadCompleted: LocalDateTime): String =
     s"""
        |Suoritustiedot (Ammatillisen tutkinnon osa/osia)
-       |Oppilaitos: $oppilaitosOid
-       |Aikajakso: ${finnishDateFormat.format(alku)} - ${finnishDateFormat.format(loppu)}
+       |Oppilaitos: ${request.oppilaitosOid}
+       |Aikajakso: ${finnishDateFormat.format(request.alku)} - ${finnishDateFormat.format(request.loppu)}
        |Raportti luotu: ${finnishDateTimeFormat.format(LocalDateTime.now)} (${finnishDateTimeFormat.format(loadCompleted)} tietojen pohjalta)
        |
        |Tarkempi kuvaus joistakin sarakkeista:
@@ -114,8 +116,8 @@ object AmmatillinenOsittainenRaportti extends AikajaksoRaportti {
        |- Valinnaisten ammatillisten tutkinnon osien yhteislaajuus: KOSKI-palveluun siirrettyjen valinnaisten ammatillisten tutkinnon osien  yhteislaajuus. Lasketaan koulutuksen järjestäjän tutkinnon osille siirtämistä laajuuksista.
      """.stripMargin.trim.stripPrefix("\n").stripSuffix("\n")
 
-  def filename(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate): String = {
-    s"Ammatillinen_tutkinnon_osa_ja_osia_${oppilaitosOid}_${alku.toString.replaceAll("-","")}-${loppu.toString.replaceAll("-","")}.xlsx"
+  def filename(request: AmmatillinenSuoritusTiedotRequest): String = {
+    s"Ammatillinen_tutkinnon_osa_ja_osia_${request.oppilaitosOid}_${request.alku.toString.replaceAll("-","")}-${request.loppu.toString.replaceAll("-","")}.xlsx"
   }
 
   val columnSettings: Seq[(String, Column)] = Seq(
