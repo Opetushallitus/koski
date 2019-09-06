@@ -44,7 +44,7 @@ object InternationalSchoolExampleData {
     arviointi = arviointi.map(a => List(a))
   )
 
-  def diplomaOppiaineenSuoritus(oppiaine: InternationalSchoolIBOppiaine , arviointi: Option[InternationalSchoolIBOppiaineenArviointi] = None): DiplomaOppiaineenSuoritus = DiplomaOppiaineenSuoritus(
+  def diplomaOppiaineenSuoritus(oppiaine: InternationalSchoolIBOppiaine , arviointi: Option[DiplomaArviointi] = None): DiplomaOppiaineenSuoritus = DiplomaOppiaineenSuoritus(
     koulutusmoduuli = oppiaine,
     arviointi = arviointi.map(a => List(a))
   )
