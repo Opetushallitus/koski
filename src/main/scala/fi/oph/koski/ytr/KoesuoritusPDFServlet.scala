@@ -10,14 +10,15 @@ class KoesuoritusPDFServlet(implicit val application: KoskiApplication) extends 
 
   get("/:copyOfExamPaper") {
     val examPaper = getStringParam("copyOfExamPaper")
-    if (hasAccessTo(examPaper)) {
+    if (koesuoritukset.koesuoritusExists(examPaper) && hasAccessTo(examPaper)) {
       contentType = "application/pdf"
       koesuoritukset.writeKoesuoritus(examPaper, response.getOutputStream)
     } else {
-      logger.warn(s"User ${koskiSession.oid} has no access to exam paper $examPaper")
+      logger.warn(s"Exam paper $examPaper not found for user ${koskiSession.oid}")
       haltWithStatus(KoskiErrorCategory.notFound.suoritustaEiLöydy())
     }
   }
+
 
   private def hasAccessTo(examPaper: String): Boolean =
     application.henkilöRepository.findByOid(koskiSession.oid)
