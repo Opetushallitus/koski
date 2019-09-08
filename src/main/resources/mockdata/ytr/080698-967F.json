@@ -15,6 +15,7 @@
     "examRoleShort" : "mother-tongue",
     "grade" : "B",
     "points" : 46,
+    "copyOfExamPaper" : "2345K_XX_12345.pdf",
     "sections" : [ {
       "sectionPoints" : 25,
       "sectionId" : "T001"
