@@ -21,6 +21,6 @@ class KoesuoritusPDFServlet(implicit val application: KoskiApplication) extends 
 
   private def hasAccessTo(examPaper: String): Boolean =
     application.henkilöRepository.findByOid(koskiSession.oid)
-      .flatMap(application.ytrRepository.find)
+      .flatMap(application.ytrRepository.findByTunnisteet)
       .exists(_.examPapers.contains(examPaper))
 }

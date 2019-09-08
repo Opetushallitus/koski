@@ -23,7 +23,7 @@ object HenkilöRepository {
     HenkilöRepository(
       opintopolku,
       TimedProxy(VirtaHenkilöRepository(application.virtaClient, application.virtaAccessChecker).asInstanceOf[HetuBasedHenkilöRepository]),
-      TimedProxy(YtrHenkilöRepository(application.ytrClient, application.ytrAccessChecker).asInstanceOf[HetuBasedHenkilöRepository]),
+      TimedProxy(YtrHenkilöRepository(application.ytrRepository, application.ytrAccessChecker).asInstanceOf[HetuBasedHenkilöRepository]),
       application.perustiedotRepository
     )
   }

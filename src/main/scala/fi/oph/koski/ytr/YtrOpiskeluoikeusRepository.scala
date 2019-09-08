@@ -14,7 +14,7 @@ import fi.oph.koski.schema.{Oppija, UusiHenkilö, YlioppilastutkinnonOpiskeluoik
 import fi.oph.koski.validation.KoskiValidator
 
 case class YtrOpiskeluoikeusRepository(
-  ytr: YtrClient,
+  ytr: YtrRepository,
   organisaatioRepository: OrganisaatioRepository,
   oppilaitosRepository: OppilaitosRepository,
   koodistoViitePalvelu: KoodistoViitePalvelu,
@@ -25,7 +25,7 @@ case class YtrOpiskeluoikeusRepository(
   private val converter = YtrOppijaConverter(oppilaitosRepository, koodistoViitePalvelu, organisaatioRepository, localizations)
 
   override protected def uncachedOpiskeluoikeudet(cacheKey: YtrCacheKey): List[YlioppilastutkinnonOpiskeluoikeus] = {
-    val opiskeluoikeudet = cacheKey.hetut.flatMap(ytr.oppijaByHetu).headOption.flatMap(converter.convert).toList
+    val opiskeluoikeudet = ytr.findByCacheKey(cacheKey).flatMap(converter.convert).toList
     opiskeluoikeudet.foreach(validate)
     opiskeluoikeudet
   }

@@ -8,10 +8,10 @@ import fi.oph.koski.schema.UusiHenkilö
 
 import scala.util.control.NonFatal
 
-case class YtrHenkilöRepository(ytr: YtrClient, accessChecker: AccessChecker) extends HetuBasedHenkilöRepository with Logging {
+case class YtrHenkilöRepository(ytr: YtrRepository, accessChecker: AccessChecker) extends HetuBasedHenkilöRepository with Logging {
   def findByHetuDontCreate(hetu: String): Either[HttpStatus, Option[UusiHenkilö]] = {
     try {
-      Right(ytr.oppijaByHetu(hetu).map { ytrOppija =>
+      Right(ytr.findByHetu(hetu).map { ytrOppija =>
         val kutsumanimi = ytrOppija.firstnames.split(" ").toList.head
         UusiHenkilö(hetu, ytrOppija.firstnames, Some(kutsumanimi), ytrOppija.lastname)
       })
