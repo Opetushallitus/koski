@@ -29,7 +29,7 @@ import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.userdirectory.DirectoryClient
 import fi.oph.koski.validation.KoskiValidator
 import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOpiskeluoikeusRepository}
-import fi.oph.koski.ytr.{YtrAccessChecker, YtrClient, YtrOpiskeluoikeusRepository}
+import fi.oph.koski.ytr.{YtrAccessChecker, YtrClient, YtrOpiskeluoikeusRepository, YtrRepository}
 
 import scala.collection.immutable
 import scala.concurrent.Future
@@ -59,6 +59,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val raportointikantaService = new RaportointikantaService(this)
   lazy val virtaClient = VirtaClient(config)
   lazy val ytrClient = YtrClient(config)
+  lazy val ytrRepository = new YtrRepository(ytrClient)
   lazy val virtaAccessChecker = new VirtaAccessChecker(käyttöoikeusRepository)
   lazy val ytrAccessChecker = new YtrAccessChecker(käyttöoikeusRepository)
   lazy val henkilöRepository = HenkilöRepository(this)

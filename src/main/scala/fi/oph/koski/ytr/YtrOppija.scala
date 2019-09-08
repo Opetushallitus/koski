@@ -9,10 +9,14 @@ case class YtrOppija(
   exams: List[YtrExam],
   certificateSchoolOphOid: Option[String],
   hasCompletedMandatoryExams: Boolean
-)
+) {
+  def examPapers: List[String] = exams.flatMap(_.copyOfExamPaper)
+}
+
 case class YtrExam(
   period: String,
   examId: String,
   grade: String,
-  points: Option[Int]
+  points: Option[Int],
+  copyOfExamPaper: Option[String] = None
 )

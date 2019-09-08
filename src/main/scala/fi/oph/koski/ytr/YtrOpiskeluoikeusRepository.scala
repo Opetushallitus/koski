@@ -41,4 +41,4 @@ case class YtrOpiskeluoikeusRepository(
   }
 }
 
-private[ytr] case class YtrCacheKey(hetut: List[String]) extends NotLoggable
+case class YtrCacheKey(hetut: List[String]) extends NotLoggable

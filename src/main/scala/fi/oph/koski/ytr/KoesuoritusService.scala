@@ -29,7 +29,7 @@ object MockKoesuoritusService extends KoesuoritusService {
     ClasspathResources.readResourceIfExists("/mockdata/ytr/" + key, writeTo(os))
 
   private def writeTo(os: OutputStream) = (is: InputStream) =>
-    Iterator.continually(is.read).takeWhile (-1 !=).foreach (os.write)
+    Iterator.continually(is.read).takeWhile(_ != -1).foreach(os.write)
 }
 
 object KoesuoritusService {

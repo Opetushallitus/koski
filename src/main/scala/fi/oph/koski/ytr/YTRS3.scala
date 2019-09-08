@@ -29,5 +29,5 @@ class YTRS3(config: Config) {
     .refreshRequest(assumeYTRRole)
     .build
 
-  lazy val client: S3Client = S3Client.builder.region(Region.EU_NORTH_1).credentialsProvider(assumeRole).build
+  val client: S3Client = S3Client.builder.region(Region.EU_NORTH_1).credentialsProvider(assumeRole).build
 }
