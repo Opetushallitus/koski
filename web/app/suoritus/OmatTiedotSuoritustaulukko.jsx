@@ -1,18 +1,25 @@
 import React from 'baret'
-import {modelItems, modelLookup, modelTitle} from '../editor/EditorModel'
+import {modelData, modelItems, modelLookup, modelTitle} from '../editor/EditorModel'
 import {flatMapArray} from '../util/util'
 import {
-  ArvosanaColumn, getLaajuusYksikkö,
-  groupSuoritukset, isNäyttötutkintoonValmistava, isYlioppilastutkinto,
+  ArvosanaColumn,
+  getLaajuusYksikkö,
+  groupSuoritukset,
+  isNäyttötutkintoonValmistava,
+  isYlioppilastutkinto,
   KoepisteetColumn,
-  LaajuusColumn, suoritusProperties,
+  LaajuusColumn,
+  suoritusProperties,
   TutkintokertaColumn
 } from './SuoritustaulukkoCommon'
 import {isYhteinenTutkinnonOsa} from '../ammatillinen/TutkinnonOsa'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {fetchLaajuudet, YhteensäSuoritettu} from './YhteensaSuoritettu'
-import {suoritusValmis} from './Suoritus'
+import {hasArvosana, suoritusValmis} from './Suoritus'
 import {t} from '../i18n/i18n'
+import {ArvosanaEditor} from './ArvosanaEditor'
+import Text from '../i18n/Text'
+import Http from '../util/http'
 
 
 const OmatTiedotSuoritustaulukko = ({suorituksetModel, nested, parentSuoritus: parentSuoritusProp}) => {
@@ -23,10 +30,9 @@ const OmatTiedotSuoritustaulukko = ({suorituksetModel, nested, parentSuoritus: p
   if (suoritukset.length === 0) return null
 
   const groupsP = groupSuoritukset(parentSuoritus, suoritukset, context)
-  const columns = [TutkintokertaColumn, SuoritusColumn, LaajuusColumn, KoepisteetColumn, ArvosanaColumn].filter(column => column.shouldShow({parentSuoritus, suorituksetModel, suoritukset, context}))
+  const columns = [TutkintokertaColumn, SuoritusColumn, LaajuusColumn, KoepisteetColumn, arvosanaColumn(parentSuoritus)].filter(column => column.shouldShow({parentSuoritus, suorituksetModel, suoritukset, context}))
 
   const laajuusYksikkö = getLaajuusYksikkö(suoritukset[0])
-
   return (
     <div className='omattiedot-suoritus-taulukko'>
       {
@@ -44,6 +50,32 @@ const OmatTiedotSuoritustaulukko = ({suorituksetModel, nested, parentSuoritus: p
     </div>
   )
 }
+
+const arvosanaColumn = parentSuoritus => isYlioppilastutkinto(parentSuoritus)
+  ? YtrArvosanaColumn()
+  : ArvosanaColumn
+
+const YtrArvosanaColumn = () => {
+  const koesuorituksetP = Http.cachedGet('/koski/api/ytrkoesuoritukset').last()
+
+  return {
+    shouldShow: ({suoritukset, context}) => context.edit || suoritukset.find(hasArvosana) !== undefined,
+    renderHeader: () => <th key='arvosana' className='arvosana' scope='col'><Text name='Arvosana'/></th>,
+    renderData: ({model}) => {
+      const examId = modelData(model, 'koulutusmoduuli.tunniste.koodiarvo')
+      const period = modelData(model, 'tutkintokerta.koodiarvo')
+      return koesuorituksetP.map(kokeet => kokeet.find(koe => koe.period === period && koe.examId === examId)).map(koe => {
+        return (<React.Fragment>
+          <td key='arvosana' className='arvosana ylioppilas'><ArvosanaEditor model={model}/></td>
+          <td key='koesuoritus' className='koesuoritus'><KoesuoritusLink copyOfExamPaper={koe && koe.copyOfExamPaper}/></td>
+        </React.Fragment>)
+      })
+    }
+  }
+}
+
+const KoesuoritusLink = ({copyOfExamPaper}) =>
+  copyOfExamPaper ? <a className='text-button-small' target='_blank' href={`/koski/koesuoritus/${copyOfExamPaper}`}><Text name='Näytä arvostelu'/></a> : null
 
 const SuoritusGroup = ({groups, groupId, columns, nested, parentSuoritus, laajuusYksikkö}) => {
   const groupItems = groups.grouped[groupId]

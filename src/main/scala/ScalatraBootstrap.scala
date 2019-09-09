@@ -33,7 +33,7 @@ import fi.oph.koski.tiedonsiirto.TiedonsiirtoServlet
 import fi.oph.koski.todistus.TodistusServlet
 import fi.oph.koski.tutkinto.TutkinnonPerusteetServlet
 import fi.oph.koski.util.Futures
-import fi.oph.koski.ytr.YtrKoesuoritusServlet
+import fi.oph.koski.ytr.{YtrKoesuoritusApiServlet, YtrKoesuoritusServlet}
 import javax.servlet.ServletContext
 import org.scalatra._
 
@@ -86,6 +86,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     mount("/api/luovutuspalvelu/haku", new TilastokeskusServlet)
     mount("/api/omadata/oppija", new ApiProxyServlet)
     mount("/api/omadata", new MyDataServlet)
+    mount("/api/ytrkoesuoritukset", new YtrKoesuoritusApiServlet)
     mount("/omadata", new MyDataReactServlet)
     mount("/koesuoritus", new YtrKoesuoritusServlet)
     mount("/healthcheck", new HealthCheckHtmlServlet)
