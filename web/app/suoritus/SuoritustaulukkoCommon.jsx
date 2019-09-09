@@ -71,7 +71,7 @@ export const suoritusProperties = suoritus => {
 
   const propertiesForSuoritustyyppi = (tyyppi, isEdit) => {
     const simplifiedArviointi = modelProperties(modelLookup(suoritus, 'arviointi.-1'),
-      p => !(['arvosana', 'päivä', 'arvioitsijat', 'pisteet']).includes(p.key)
+      p => !(['arvosana', 'arvioitsijat', 'pisteet']).includes(p.key)
     )
 
     const arviointipäivä = modelProperties(modelLookup(suoritus, 'arviointi.-1'), p => p.key === 'päivä')

@@ -32,14 +32,17 @@ describe('Telma', function() {
           'Toimintakyvyn vahvistaminen 18 Hyväksytty\n' +
           'Kuvaus Toimintakyvyn vahvistaminen\n' +
           'Pakollinen kyllä\n' +
+          'Arviointipäivä 20.3.2013\n' +
           'Sanallinen arviointi Opiskelija selviytyy arkielämään liittyvistä toimista, osaa hyödyntää apuvälineitä, palveluita ja tukea sekä on valinnut itselleen sopivan tavan viettää vapaa-aikaa.\n' +
           'Opiskeluvalmiuksien vahvistaminen 15 Hyväksytty\n' +
           'Kuvaus Opiskeluvalmiuksien vahvistaminen\n' +
           'Pakollinen kyllä\n' +
+          'Arviointipäivä 20.3.2013\n' +
           'Sanallinen arviointi Opiskelija osaa opiskella työskennellä itsenäisesti, mutta ryhmässä toimimisessa tarvitsee joskus apua. Hän viestii vuorovaikutustilanteissa hyvin, osaa käyttää tietotekniikkaa ja matematiikan perustaitoja arkielämässä.\n' +
           'Työelämään valmentautuminen 20 Hyväksytty\n' +
           'Kuvaus Työelämään valmentautuminen\n' +
           'Pakollinen kyllä\n' +
+          'Arviointipäivä 20.3.2013\n' +
           'Sanallinen arviointi Opiskelijalla on käsitys itsestä työntekijänä, mutta työyhteisön säännöt vaativat vielä harjaantumista.\n' +
           'Tieto- ja viestintätekniikka sekä sen hyödyntäminen 2 Hyväksytty\n' +
           'Kuvaus Tieto- ja viestintätekniikka sekä sen hyödyntäminen\n' +
@@ -47,15 +50,18 @@ describe('Telma', function() {
           'Tunnustettu\n' +
           'Selite Yhteisten tutkinnon osien osa-alue on suoritettu x- perustutkinnon perusteiden (2015) osaamistavoitteiden mukaisesti\n' +
           'Rahoituksen piirissä ei\n' +
+          'Arviointipäivä 20.3.2013\n' +
           'Uimaliikunta ja vesiturvallisuus 5 2\n' +
           'Kuvaus Kurssilla harjoitellaan vedessä liikkumista ja perehdytään vesiturvallisuuden perusteisiin. Kurssilla käytäviä asioita: - uinnin hengitystekniikka - perehdytystä uinnin eri tekniikoihin - allasturvallisuuden perustiedot\n' +
           'Pakollinen ei\n' +
           'Tunnustettu\n' +
           'Selite Koulutuksen osa on tunnustettu Vesikallion urheiluopiston osaamistavoitteiden mukaisesti\n' +
           'Rahoituksen piirissä ei\n' +
+          'Arviointipäivä 20.3.2013\n' +
           'Auton lisävarustetyöt 15 Hyväksytty\n' +
           'Kuvaus Tuunaus\n' +
           'Pakollinen ei\n' +
+          'Arviointipäivä 20.3.2013\n' +
           'Yhteensä 75 osp'
         )
       })
