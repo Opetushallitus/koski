@@ -19,7 +19,6 @@ class YtrKoesuoritusServlet(implicit val application: KoskiApplication) extends 
     }
   }
 
-
   private def hasAccessTo(examPaper: String): Boolean =
     application.henkilöRepository.findByOid(koskiSession.oid)
       .flatMap(application.ytrRepository.findByTunnisteet)

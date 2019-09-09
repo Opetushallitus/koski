@@ -40,7 +40,7 @@ object MockKoesuoritusService extends KoesuoritusService {
   override def writeKoesuoritus(key: String, os: OutputStream): Unit =
     ClasspathResources.readResourceIfExists("/mockdata/ytr/" + key, writeTo(os))
 
-  override def koesuoritusExists(key: String): Boolean = ClasspathResources.getResource(key).isDefined
+  override def koesuoritusExists(key: String): Boolean = ClasspathResources.getResource("/mockdata/ytr/" + key).isDefined
 
   private def writeTo(os: OutputStream) = (is: InputStream) =>
     Iterator.continually(is.read).takeWhile(_ != -1).foreach(os.write)

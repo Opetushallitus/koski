@@ -30,6 +30,7 @@
     "examRoleShort" : "optional-subject",
     "grade" : "C",
     "points" : 166,
+    "copyOfExamPaper" : "not-found-from-s3.pdf",
     "sections" : [ {
       "sectionPoints" : 33,
       "sectionId" : "HM02"

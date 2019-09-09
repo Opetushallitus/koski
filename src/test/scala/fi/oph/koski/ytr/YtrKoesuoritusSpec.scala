@@ -1,0 +1,43 @@
+package fi.oph.koski.ytr
+
+import java.io.InputStream
+
+import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethods}
+import fi.oph.koski.util.ClasspathResources.readResourceIfExists
+import org.scalatest.FreeSpec
+
+import scala.collection.Iterator.continually
+
+class YtrKoesuoritusSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods {
+  "Kansalainen" - {
+    "näkee koesuorituksensa" in {
+      get("koesuoritus/2345K_XX_12345.pdf", headers = kansalainenLoginHeaders("080698-967F")) {
+        verifyResponseStatusOk()
+        bodyBytes should equal(resourceAsByteArray(s"/mockdata/ytr/2345K_XX_12345.pdf"))
+      }
+    }
+
+    "ei näe toisten koesuoritusta" in {
+      get("koesuoritus/2345K_XX_12345.pdf", headers = kansalainenLoginHeaders("210244-374K")) {
+        verifyResponseStatus(404, Nil)
+      }
+    }
+
+    "ei näe koesuoritusta jota ei ole olemassa" in {
+      get("koesuoritus/not-found-from-s3.pdf", headers = kansalainenLoginHeaders("080698-967F")) {
+        verifyResponseStatus(404, Nil)
+      }
+    }
+  }
+
+  "Viranomainen" - {
+    "ei näe koesuoritusta" in {
+      authGet("koesuoritus/2345K_XX_12345.pdf", defaultUser) {
+        verifyResponseStatus(403, Nil)
+      }
+    }
+  }
+
+  private def resourceAsByteArray(resourceName: String): Array[Byte] =
+    readResourceIfExists(resourceName, (is: InputStream) => continually(is.read).takeWhile(_ != -1).map(_.toByte).toArray).get
+}
