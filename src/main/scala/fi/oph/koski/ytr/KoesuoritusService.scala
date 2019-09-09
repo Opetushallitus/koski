@@ -15,7 +15,7 @@ trait KoesuoritusService {
 
 class RemoteKoesuoritusService(config: Config) extends KoesuoritusService with Logging {
   private val bucket = config.getString("ytr.aws.bucket")
-  private val s3 = new YTRS3(config)
+  private val s3 = new YtrS3(config)
 
   override def writeKoesuoritus(key: String, os: OutputStream): Unit = try {
     s3.client.getObject(objectRequest(key), ResponseTransformer.toOutputStream[GetObjectResponse](os))

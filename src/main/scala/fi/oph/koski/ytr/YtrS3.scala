@@ -8,7 +8,7 @@ import software.amazon.awssdk.services.sts.StsClient
 import software.amazon.awssdk.services.sts.auth.StsAssumeRoleCredentialsProvider
 import software.amazon.awssdk.services.sts.model.AssumeRoleRequest
 
-class YTRS3(config: Config) {
+class YtrS3(config: Config) {
   private val accessKeyId = config.getString("ytr.aws.accessKeyId")
   private val secretAccessKey =   config.getString("ytr.aws.secretAccessKey")
   private val roleArn = config.getString("ytr.aws.roleArn")

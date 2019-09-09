@@ -5,7 +5,7 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.RequiresKansalainen
 import fi.oph.koski.servlet.HtmlServlet
 
-class KoesuoritusPDFServlet(implicit val application: KoskiApplication) extends HtmlServlet with RequiresKansalainen {
+class YtrKoesuoritusServlet(implicit val application: KoskiApplication) extends HtmlServlet with RequiresKansalainen {
   private val koesuoritukset: KoesuoritusService = KoesuoritusService(application.config)
 
   get("/:copyOfExamPaper") {
