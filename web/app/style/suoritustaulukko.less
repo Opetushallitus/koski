@@ -198,11 +198,15 @@
             > td.koesuoritus {
               min-width: 10rem;
               a {
+                font-weight: lighter;
                 .external-link(10px, 1px);
               }
 
               @media @media-phone {
-                min-width: 6rem;
+                min-width: 2rem;
+                a {
+                  .external-link(1px, 1px);
+                }
               }
             }
 

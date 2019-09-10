@@ -1,6 +1,7 @@
 import React from 'baret'
 import {modelData, modelItems, modelLookup, modelTitle} from '../editor/EditorModel'
-import {flatMapArray} from '../util/util'
+import {flatMapArray, ift} from '../util/util'
+import {isMobileAtom} from '../util/isMobileAtom'
 import {
   ArvosanaColumn,
   getLaajuusYksikkö,
@@ -20,7 +21,6 @@ import {t} from '../i18n/i18n'
 import {ArvosanaEditor} from './ArvosanaEditor'
 import Text from '../i18n/Text'
 import Http from '../util/http'
-
 
 const OmatTiedotSuoritustaulukko = ({suorituksetModel, nested, parentSuoritus: parentSuoritusProp}) => {
   const {context} = suorituksetModel
@@ -60,12 +60,15 @@ const YtrArvosanaColumn = () => {
 
   return {
     shouldShow: ({suoritukset, context}) => context.edit || suoritukset.find(hasArvosana) !== undefined,
-    renderHeader: () => <th key='arvosana' className='arvosana' scope='col'><Text name='Arvosana'/></th>,
+    renderHeader: () => (<React.Fragment key='head'>
+        <th key='arvosana' className='arvosana' scope='col'><Text name='Arvosana'/></th>
+        <th key='koesuoritus' className='koesuoritus' scope='col'/>
+      </React.Fragment>),
     renderData: ({model}) => {
       const examId = modelData(model, 'koulutusmoduuli.tunniste.koodiarvo')
       const period = modelData(model, 'tutkintokerta.koodiarvo')
       return koesuorituksetP.map(kokeet => kokeet.find(koe => koe.period === period && koe.examId === examId)).map(koe => {
-        return (<React.Fragment>
+        return (<React.Fragment key='data'>
           <td key='arvosana' className='arvosana ylioppilas'><ArvosanaEditor model={model}/></td>
           <td key='koesuoritus' className='koesuoritus'><KoesuoritusLink copyOfExamPaper={koe && koe.copyOfExamPaper}/></td>
         </React.Fragment>)
@@ -75,7 +78,11 @@ const YtrArvosanaColumn = () => {
 }
 
 const KoesuoritusLink = ({copyOfExamPaper}) =>
-  copyOfExamPaper ? <a className='text-button-small' target='_blank' href={`/koski/koesuoritus/${copyOfExamPaper}`}><Text name='Näytä arvostelu'/></a> : null
+  copyOfExamPaper
+    ? (<a className='text-button-small' target='_blank' href={`/koski/koesuoritus/${copyOfExamPaper}`}>
+        {ift(isMobileAtom.not(), <Text name='Näytä arvostelu'/>)}
+      </a>)
+    : null
 
 const SuoritusGroup = ({groups, groupId, columns, nested, parentSuoritus, laajuusYksikkö}) => {
   const groupItems = groups.grouped[groupId]
