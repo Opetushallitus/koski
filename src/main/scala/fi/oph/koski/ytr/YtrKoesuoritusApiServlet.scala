@@ -18,4 +18,4 @@ class YtrKoesuoritusApiServlet(implicit val application: KoskiApplication) exten
   private def toExamResponse(exam: YtrExam) = ExamResponse(period = exam.period, examId = exam.examId, copyOfExamPaper = exam.copyOfExamPaper)
 }
 
-case class ExamResponse(period: String, examId: String, copyOfExamPaper: Option[String])
+case class ExamResponse(period: String, examId: String, copyOfExamPaper: Option[String] = None)
