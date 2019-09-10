@@ -73,6 +73,30 @@ describe('Omat tiedot', function() {
         })
       })
 
+      describe('Ylioppilastutkinnon koesuoritukset', function () {
+        before(
+          authentication.logout,
+          etusivu.openPage,
+          etusivu.login(),
+          wait.until(korhopankki.isReady),
+          korhopankki.login('080698-967F'),
+          wait.until(omattiedot.isVisible),
+          opinnot.valitseOmatTiedotOpiskeluoikeus('Ylioppilastutkinto')
+        )
+
+        it('näytetään jos ne löytyy', function () {
+          expect(extractAsText(S('.ylioppilastutkinnonsuoritus .osasuoritukset'))).to.equal(
+            'Tutkintokerta Koe Pisteet Arvosana\n' +
+            '2012 kevät Äidinkielen koe, suomi 46 Lubenter approbatur Näytä arvostelu\n' +
+            '2012 kevät Ruotsi, keskipitkä oppimäärä 166 Cum laude approbatur Näytä arvostelu\n' +
+            '2012 kevät Englanti, pitkä oppimäärä 210 Cum laude approbatur\n' +
+            '2012 kevät Maantiede 26 Magna cum laude approbatur\n' +
+            '2012 kevät Matematiikan koe, lyhyt oppimäärä 59 Laudatur'
+          )
+          expect(findFirst('.koesuoritus a')().attr('href')).to.equal('/koski/koesuoritus/2345K_XX_12345.pdf')
+        })
+      })
+
       describe('Virheistä raportointi', function () {
         before(authentication.logout, etusivu.openPage)
         before(etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('180497-112F'), wait.until(omattiedot.isVisible))
