@@ -9,6 +9,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.Organisaatio
 import slick.jdbc.GetResult
+import fi.oph.koski.util.DateOrdering.sqlDateOrdering
 
 import scala.concurrent.duration._
 
@@ -40,34 +41,16 @@ case class AmmatillisenRaportitRepository(db: DB) extends KoskiDatabaseMethods w
     val osasuoritukset = runDbSync(ROsasuoritukset.filter(_.päätasonSuoritusId inSet päätasonSuoritusIds).result, timeout = defaultTimeout).groupBy(_.päätasonSuoritusId)
     val henkilöt = runDbSync(RHenkilöt.filter(_.oppijaOid inSet opiskeluoikeudet.map(_.oppijaOid)).result, timeout = defaultTimeout).groupBy(_.oppijaOid).mapValues(_.head)
 
-    opiskeluoikeudet.foldLeft[List[(ROpiskeluoikeusRow, RHenkilöRow, Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])]](List.empty) {
-      combineOpiskeluoikeusWith(_, _, aikajaksot, päätasonSuoritukset, osasuoritukset, henkilöt, sisältyvätOpiskeluoikeudetGrouped)
-    }
-  }
-
-  private def combineOpiskeluoikeusWith
-  (
-    acc: List[(ROpiskeluoikeusRow, RHenkilöRow, Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])],
-    oo: ROpiskeluoikeusRow,
-    aikajaksot: Map[OpiskeluoikeusOid, Seq[ROpiskeluoikeusAikajaksoRow]],
-    päätasonSuoritukset: Map[OpiskeluoikeusOid, Seq[RPäätasonSuoritusRow]],
-    osasuoritukset: Map[PäätasonSuoritusId, Seq[ROsasuoritusRow]],
-    henkilöt: Map[OppijaOid, RHenkilöRow],
-    sisältyvätOpiskeluoikeudet: Map[SisältyvOpiskeluoikeuteenOid, Seq[ROpiskeluoikeusRow]]
-  ) = {
-    (acc, oo) match {
-      case (head, opiskeluoikeus) => {
-        val pts = päätasonSuoritukset.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Seq.empty)
-        pts.map(päätasonSuoritus => {
-          (
-            opiskeluoikeus,
-            henkilöt(opiskeluoikeus.oppijaOid),
-            aikajaksot.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Seq.empty),
-            päätasonSuoritukset.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Seq.empty),
-            sisältyvätOpiskeluoikeudet.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Seq.empty),
-            osasuoritukset.getOrElse(päätasonSuoritus.päätasonSuoritusId, Seq.empty)
-          )
-        }).toList ::: head
+    opiskeluoikeudet.flatMap { opiskeluoikeus =>
+      päätasonSuoritukset.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Nil).map { päätasonSuoritus =>
+        (
+          opiskeluoikeus,
+          henkilöt(opiskeluoikeus.oppijaOid),
+          aikajaksot.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Seq.empty).map(_.truncateToDates(Date.valueOf(alku), Date.valueOf(loppu))).sortBy(_.alku)(sqlDateOrdering),
+          päätasonSuoritukset.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Seq.empty),
+          sisältyvätOpiskeluoikeudetGrouped.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Seq.empty),
+          osasuoritukset.getOrElse(päätasonSuoritus.päätasonSuoritusId, Seq.empty)
+        )
       }
     }
   }

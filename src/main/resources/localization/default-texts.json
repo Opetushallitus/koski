@@ -1253,6 +1253,8 @@
   "description:Tässä suorituksessa koulutusmoduulin laajuus on..." : "Tässä suorituksessa koulutusmoduulin laajuus on pakollinen",
   "description:Oppiaineiden kokonaislaajuus vuosiviikkotunneissa" : "Oppiaineiden kokonaislaajuus vuosiviikkotunneissa",
   "tooltip:Minkä vuosiluokan mukaisesta oppiainesuorituksesta on..." : "Minkä vuosiluokan mukaisesta oppiainesuorituksesta on kyse",
-  "Kokonaislaajuus" : "Kokonaislaajuus"
+  "Kokonaislaajuus" : "Kokonaislaajuus",
+  "Raportille valitaan kaikki tutkinnon osat riippumatta niiden suoritusajankohdasta": "Raportille valitaan kaikki tutkinnon osat riippumatta niiden suoritusajankohdasta",
+  "Raportille valitaan vain sellaiset tutkinnon osat, joiden arviointipäivä osuu yllä määritellylle aikajaksolle": "Raportille valitaan vain sellaiset tutkinnon osat, joiden arviointipäivä osuu yllä määritellylle aikajaksolle"
 }
 

@@ -14,7 +14,7 @@ class AmmatillinenOsittainenRaporttiSpec extends FreeSpec with Matchers with Rap
 
   override def beforeAll(): Unit = loadRaportointikantaFixtures
 
-  lazy val database = KoskiApplicationForTests.raportointiDatabase
+  lazy val repository = AmmatillisenRaportitRepository(KoskiApplicationForTests.raportointiDatabase.db)
   lazy val defaultTestiHenkilö = MockOppijat.ammatillisenOsittainenRapsa
 
   "Ammatillisen tutkinnon osa/osia -raporti" - {
@@ -26,10 +26,18 @@ class AmmatillinenOsittainenRaporttiSpec extends FreeSpec with Matchers with Rap
       )
     }
     "Raportin tiedot" in {
-      val result = makeRaporttiFilterRowsByHetu(defaultTestiHenkilö.hetu)
-      result.length should equal(1)
-      val row = result.head
-      row should equal(defaultExpectedRow)
+      val rows = testiHenkilöRaporttiRows(alku = date(2016, 1, 1), loppu = date(2016, 5, 5), osasuoritustenAikarajaus = false)
+      rows should equal(List(defaultExpectedRow))
+    }
+    "Tutkinnon osia voidaan rajata arviointipäivän perusteella" - {
+      "Tutkinnon osat jotka arvioitu ennen aikaväliä, ei oteta mukaan raportille" in {
+        val rows = testiHenkilöRaporttiRows(alku = date(2015, 1, 1), loppu = date(2015, 2, 2), osasuoritustenAikarajaus = true)
+        rows.map(_.suoritettujenOpintojenYhteislaajuus) should equal(List(20))
+      }
+      "Tutkinnon osiat jotka arvioitu jälkeen aikavälin, ei oteta mukaan raportille" in {
+        val rows = testiHenkilöRaporttiRows(alku = date(2014, 1, 1), loppu = date(2014, 12, 31), osasuoritustenAikarajaus = true)
+        rows.map(_.suoritettujenOpintojenYhteislaajuus) should equal(List(80))
+      }
     }
   }
 
@@ -80,8 +88,9 @@ class AmmatillinenOsittainenRaporttiSpec extends FreeSpec with Matchers with Rap
     valmiitTutkintoaYksilöllisestiLaajentavatTutkinnonOsatLkm = 0
   )
 
-  def makeRaporttiFilterRowsByHetu(hetu: Option[String], oppilaitosOid: String = MockOrganisaatiot.stadinAmmattiopisto, alku: LocalDate = date(2016, 1, 1), loppu: LocalDate = date(2016, 5, 5)) = {
-    val rows = AmmatillinenOsittainenRaportti.buildRaportti(database, oppilaitosOid, alku, loppu)
-    rows.filter(_.hetu == hetu)
+  private val hetu = defaultTestiHenkilö.hetu.get
+  private def testiHenkilöRaporttiRows(alku: LocalDate, loppu: LocalDate, osasuoritustenAikarajaus: Boolean) = {
+    val request = AmmatillinenSuoritusTiedotRequest(MockOrganisaatiot.stadinAmmattiopisto, None, "", alku, loppu, osasuoritustenAikarajaus)
+    AmmatillinenOsittainenRaportti.buildRaportti(request, repository).filter(_.hetu.contains(hetu)).toList
   }
 }

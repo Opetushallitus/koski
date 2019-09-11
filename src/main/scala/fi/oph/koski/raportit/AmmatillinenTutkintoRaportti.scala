@@ -11,22 +11,24 @@ import fi.oph.koski.util.FinnishDateFormat.{finnishDateFormat, finnishDateTimeFo
 
 // scalastyle:off method.length
 
-object AmmatillinenTutkintoRaportti extends AikajaksoRaportti {
+object AmmatillinenTutkintoRaportti {
 
-  def buildRaportti(database: RaportointiDatabase, oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate): Seq[SuoritustiedotTarkistusRow] = {
-    val data = AmmatillisenRaportitRepository(database.db).suoritustiedot(oppilaitosOid, OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo, "ammatillinentutkinto", alku, loppu)
-    data.map(buildRow(oppilaitosOid, alku, loppu, _))
+  def buildRaportti(request: AmmatillinenSuoritusTiedotRequest, repository: AmmatillisenRaportitRepository): Seq[SuoritustiedotTarkistusRow] = {
+    val data = repository.suoritustiedot(request.oppilaitosOid, OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo, "ammatillinentutkinto", request.alku, request.loppu)
+    data.map(buildRow(request.oppilaitosOid, request.alku, request.loppu, request.osasuoritustenAikarajaus))
   }
 
-  private def buildRow(oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate, data: (ROpiskeluoikeusRow, RHenkilöRow, Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])) = {
-    val (opiskeluoikeus, henkilö, aikajaksot, päätasonSuoritukset, sisältyvätOpiskeluoikeudet, osasuoritukset) = data
+  private def buildRow(oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate, osasuoritustenAikarajaus: Boolean)(data: (ROpiskeluoikeusRow, RHenkilöRow, Seq[ROpiskeluoikeusAikajaksoRow], Seq[RPäätasonSuoritusRow], Seq[ROpiskeluoikeusRow], Seq[ROsasuoritusRow])) = {
+    val (opiskeluoikeus, henkilö, aikajaksot, päätasonSuoritukset, sisältyvätOpiskeluoikeudet, unfilteredOsasuoritukset) = data
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](opiskeluoikeus.data \ "lähdejärjestelmänId")
     val osaamisalat = extractOsaamisalatAikavalilta(päätasonSuoritukset, alku, loppu)
+
+    val osasuoritukset = if (osasuoritustenAikarajaus) unfilteredOsasuoritukset.filter(arvioituAikavälillä(alku, loppu)) else unfilteredOsasuoritukset
 
     val ammatillisetTutkinnonOsatJaOsasuoritukset = ammatillisetTutkinnonOsatJaOsasuorituksetFrom(osasuoritukset)
     val valmiitAmmatillisetTutkinnonOsatJaOsasuoritukset = ammatillisetTutkinnonOsatJaOsasuoritukset.filter(os => isVahvistusPäivällinen(os) || isArvioinniton(os) || sisältyyVahvistettuunPäätasonSuoritukseen(os, päätasonSuoritukset))
     val yhteisetTutkinnonOsat = osasuoritukset.filter(isYhteinenTutkinnonOsa)
-    val yhteistenTutkinnonOsienOsaAlueet = osasuoritukset.filter(isYhteinenTutkinnonOsanOsaalue(_, osasuoritukset))
+    val yhteistenTutkinnonOsienOsaAlueet = osasuoritukset.filter(isYhteinenTutkinnonOsanOsaalue(_, unfilteredOsasuoritukset))
     val vapaastiValittavatTutkinnonOsat = osasuoritukset.filter(tutkinnonOsanRyhmä(_, "3"))
     val tutkintoaYksilöllisestiLaajentavatTutkinnonOsat = osasuoritukset.filter(tutkinnonOsanRyhmä(_, "4"))
 
@@ -101,17 +103,17 @@ object AmmatillinenTutkintoRaportti extends AikajaksoRaportti {
       ))
   }
 
-  def filename(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate): String =
-    s"suoritustiedot_${oppilaitosOid}_${alku.toString.replaceAll("-", "")}-${loppu.toString.replaceAll("-", "")}.xlsx"
+  def filename(request: AmmatillinenSuoritusTiedotRequest): String =
+    s"suoritustiedot_${request.oppilaitosOid}_${request.alku.toString.replaceAll("-", "")}-${request.loppu.toString.replaceAll("-", "")}.xlsx"
 
-  def title(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate): String =
-    s"Suoritustiedot $oppilaitosOid ${finnishDateFormat.format(alku)} - ${finnishDateFormat.format(loppu)}"
+  def title(request: AmmatillinenSuoritusTiedotRequest): String =
+    s"Suoritustiedot ${request.oppilaitosOid} ${finnishDateFormat.format(request.alku)} - ${finnishDateFormat.format(request.loppu)}"
 
-  def documentation(oppilaitosOid: String, alku: LocalDate, loppu: LocalDate, loadCompleted: LocalDateTime): String =
+  def documentation(request: AmmatillinenSuoritusTiedotRequest, loadCompleted: LocalDateTime): String =
     s"""
        |Suoritustiedot (ammatillinen tutkinto)
-       |Oppilaitos: $oppilaitosOid
-       |Aikajakso: ${finnishDateFormat.format(alku)} - ${finnishDateFormat.format(loppu)}
+       |Oppilaitos: ${request.oppilaitosOid}
+       |Aikajakso: ${finnishDateFormat.format(request.alku)} - ${finnishDateFormat.format(request.loppu)}
        |Raportti luotu: ${finnishDateTimeFormat.format(LocalDateTime.now)} (${finnishDateTimeFormat.format(loadCompleted)} tietojen pohjalta)
        |
        |Tarkempi kuvaus joistakin sarakkeista:

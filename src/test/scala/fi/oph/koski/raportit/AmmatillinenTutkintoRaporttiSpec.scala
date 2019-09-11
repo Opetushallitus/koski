@@ -1,6 +1,6 @@
 package fi.oph.koski.raportit
 
-import java.time.LocalDate
+import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
@@ -13,13 +13,18 @@ import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with OpiskeluoikeusTestMethodsAmmatillinen with BeforeAndAfterAll {
 
+  lazy val repository = AmmatillisenRaportitRepository(KoskiApplicationForTests.raportointiDatabase.db)
+
   "Suoritustietojen tarkistusraportti" - {
-    loadRaportointikantaFixtures
-    val rivit = loadAmmattilaisAarnenRivit()
-    val rivi = rivit.head
+    lazy val rivi = {
+      loadRaportointikantaFixtures
+      val rows = testiHenkilöRaporttiRows(defaultRequest)
+      rows.length should equal(1)
+      rows.head
+    }
 
     "Sisältää oikeat tiedot" in {
-      rivi.opiskeluoikeudenAlkamispäivä should equal(Some(LocalDate.of(2012, 9, 1)))
+      rivi.opiskeluoikeudenAlkamispäivä should equal(Some(date(2012, 9, 1)))
       rivi.koulutusmoduulit should equal("361902")
       rivi.osaamisalat should equal(Some("1590"))
       rivi.tutkintonimikkeet should equal("Ympäristönhoitaja")
@@ -108,10 +113,10 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
         rivi.valmiitTutkintoaYksilöllisestiLaajentavatTutkinnonOsatLkm should equal(1)
       }
     }
-    "Sisällytetyt opiskeluoikeudet"  - {
+    "Sisällytetyt opiskeluoikeudet" - {
       "Opiskeluoikeuteen sisältyvät opiskeluioikeudet toistesta oppilaitoksesta" in {
         withNewSisällytettyOpiskeluoikeus {
-          val aarnenRivit = loadAmmattilaisAarnenRivit(MockOrganisaatiot.omnia)
+          val aarnenRivit = testiHenkilöRaporttiRows(defaultRequest.copy(oppilaitosOid = MockOrganisaatiot.omnia))
           aarnenRivit.length should equal(2)
           val stadinLinkitettyOpiskeluoikeus = aarnenRivit.find(_.linkitetynOpiskeluoikeudenOppilaitos == "Stadin ammattiopisto")
           stadinLinkitettyOpiskeluoikeus shouldBe defined
@@ -120,10 +125,19 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
       }
       "Sisältävä opiskeluoikeus ei tule sisällytetyn opiskeluoikeuden oppilaitoksen raportille" in {
         withNewSisällytettyOpiskeluoikeus {
-          val aarnenRivit = loadAmmattilaisAarnenRivit(MockOrganisaatiot.stadinAmmattiopisto)
-          aarnenRivit.length should equal(1)
-          aarnenRivit.head.linkitetynOpiskeluoikeudenOppilaitos shouldBe empty
+          val rivi = testiHenkilöRaporttiRows(defaultRequest.copy(oppilaitosOid = MockOrganisaatiot.stadinAmmattiopisto))
+          rivi.map(_.linkitetynOpiskeluoikeudenOppilaitos) should equal(List(""))
         }
+      }
+    }
+    "Tutkinnon osia voidaan raja arviointipäivän perusteella" - {
+      "Tutkinnon osat jotka arvioitu ennen aikaväliä, ei oteta mukaan raportille" in {
+        val rows = testiHenkilöRaporttiRows(defaultRequest.copy(alku = date(2015, 1, 1), loppu = date(2015, 2, 2), osasuoritustenAikarajaus = true))
+        rows.map(_.suoritettujenOpintojenYhteislaajuus) should equal(List(40))
+      }
+      "Tutkinnon osiat jotka arvioitu jälkeen aikavälin, ei oteta mukaan raportille" in {
+        val rows = testiHenkilöRaporttiRows(defaultRequest.copy(alku = date(2014, 1, 1), loppu = date(2014, 12, 12), osasuoritustenAikarajaus = true))
+        rows.map(_.suoritettujenOpintojenYhteislaajuus) should equal(List(140))
       }
     }
 
@@ -166,15 +180,24 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
 
   override def beforeAll(): Unit = loadRaportointikantaFixtures
 
-  private def loadAmmattilaisAarnenRivit(oppilaitosOid: String = MockOrganisaatiot.stadinAmmattiopisto) = {
-    val result = AmmatillinenTutkintoRaportti.buildRaportti(KoskiApplicationForTests.raportointiDatabase, oppilaitosOid, LocalDate.parse("2016-01-01"), LocalDate.parse("2016-05-30"))
-    result.filter(_.hetu == MockOppijat.ammattilainen.hetu)
-  }
+  private val defaultHetu = MockOppijat.ammattilainen.hetu.get
+
+  private val defaultRequest = AmmatillinenSuoritusTiedotRequest(
+    oppilaitosOid = MockOrganisaatiot.stadinAmmattiopisto,
+    alku =  date(2016, 1, 1),
+    loppu = date(2016,5 , 30),
+    osasuoritustenAikarajaus = false,
+    downloadToken = None,
+    password = ""
+  )
+
+  private def testiHenkilöRaporttiRows(request: AmmatillinenSuoritusTiedotRequest): Seq[SuoritustiedotTarkistusRow] =
+    AmmatillinenTutkintoRaportti.buildRaportti(request, repository).filter(_.hetu.contains(defaultHetu)).toList
 
   private def withNewSisällytettyOpiskeluoikeus(f: => Unit) = {
     resetFixtures
     val omnia = MockOrganisaatioRepository.findByOppilaitosnumero("10054").get
-    val omnianOpiskeluoikeus = makeOpiskeluoikeus(LocalDate.of(2016, 1, 1), omnia, omnia.oid)
+    val omnianOpiskeluoikeus = makeOpiskeluoikeus(date(2016, 1, 1), omnia, omnia.oid)
     val oppija = MockOppijat.ammattilainen
 
     putOpiskeluoikeus(omnianOpiskeluoikeus, oppija){}

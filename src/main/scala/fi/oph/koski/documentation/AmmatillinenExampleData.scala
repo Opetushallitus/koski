@@ -367,7 +367,7 @@ object AmmatillinenExampleData {
       vahvistus = vahvistus(date(2016, 5, 31), stadinAmmattiopisto, Some(helsinki)),
       ryhmä = Some("YMP14SN"),
       osasuoritukset = Some(List(
-        tutkinnonOsanSuoritus("100431", "Kestävällä tavalla toimiminen", ammatillisetTutkinnonOsat, k3, 40),
+        tutkinnonOsanSuoritus("100431", "Kestävällä tavalla toimiminen", ammatillisetTutkinnonOsat, k3, 40).copy(arviointi = Some(List(arviointi(k3).copy(päivä = date(2015, 1, 1))))),
         tutkinnonOsanSuoritus("100432", "Ympäristön hoitaminen", ammatillisetTutkinnonOsat, k3, 35).copy(näyttö = Some(
           näyttö(date(2016, 2, 1), "Muksulan päiväkodin ympäristövaikutusten arvioiminen ja ympäristön kunnostustöiden\ntekeminen sekä mittauksien tekeminen ja näytteiden ottaminen", "Muksulan päiväkoti, Kaarinan kunta", Some(näytönArviointi)))
         ),
@@ -402,7 +402,7 @@ object AmmatillinenExampleData {
             YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("FK", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(3))), arviointi = Some(List(arviointiKiitettävä))),
             YhteisenTutkinnonOsanOsaAlueenSuoritus(
               koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("TVT", "ammatillisenoppiaineet"), pakollinen = true, Some(LaajuusOsaamispisteissä(3))),
-              arviointi = Some(List(arviointiKiitettävä)),
+              arviointi = Some(List(arviointiKiitettävä.copy(päivä = date(2015, 1, 1)))),
               alkamispäivä = Some(date(2014, 1, 1)),
               tunnustettu = Some(tunnustettu),
               lisätiedot = Some(List(lisätietoOsaamistavoitteet))
@@ -481,7 +481,8 @@ object AmmatillinenExampleData {
     toimipiste = stadinToimipiste,
     osasuoritukset = Some(List(
       osittaisenTutkinnonTutkinnonOsanSuoritus(h2, ammatillisetTutkinnonOsat, "100001", "Audiovisuaalisen tuotannon toteuttaminen", 20).copy(
-        tunnustettu = Some(tunnustettu)
+        tunnustettu = Some(tunnustettu),
+        arviointi = Some(List(arviointi(h2).copy(päivä = date(2015, 1, 1))))
       ),
       osittaisenTutkinnonTutkinnonOsanSuoritus(h2, ammatillisetTutkinnonOsat, "100003", "Paikallinen kurssi", 3).copy(vahvistus =  None),
       osittaisenTutkinnonTutkinnonOsanSuoritus(k3, ammatillisetTutkinnonOsat, "100002", "Televisiotuotanto", 25).copy(
