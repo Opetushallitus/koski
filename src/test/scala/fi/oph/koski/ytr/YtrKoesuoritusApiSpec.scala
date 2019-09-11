@@ -1,14 +1,9 @@
 package fi.oph.koski.ytr
 
-import java.io.InputStream
-
 import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethods}
-import fi.oph.koski.util.ClasspathResources.readResourceIfExists
 import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.json4s.jackson.JsonMethods
 import org.scalatest.FreeSpec
-
-import scala.collection.Iterator.continually
 
 class YtrKoesuoritusApiSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods {
   "Kansalainen" - {
@@ -27,9 +22,6 @@ class YtrKoesuoritusApiSpec extends FreeSpec with LocalJettyHttpSpecification wi
       }
     }
   }
-
-  private def resourceAsByteArray(resourceName: String): Array[Byte] =
-    readResourceIfExists(resourceName, (is: InputStream) => continually(is.read).takeWhile(_ != -1).map(_.toByte).toArray).get
 
   import fi.oph.koski.schema.KoskiSchema.deserializationContext
   private def readExams: List[ExamResponse] =

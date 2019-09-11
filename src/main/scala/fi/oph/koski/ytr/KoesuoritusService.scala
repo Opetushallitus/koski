@@ -4,7 +4,7 @@ import java.io.{InputStream, OutputStream}
 
 import com.typesafe.config.Config
 import fi.oph.koski.log.Logging
-import fi.oph.koski.util.ClasspathResources
+import fi.oph.koski.util._
 import software.amazon.awssdk.core.sync.ResponseTransformer
 import software.amazon.awssdk.services.s3.model._
 
@@ -36,14 +36,18 @@ class RemoteKoesuoritusService(config: Config) extends KoesuoritusService with L
   private def headRequest(key: String) = HeadObjectRequest.builder.bucket(bucket).key(key).build
 }
 
-object MockKoesuoritusService extends KoesuoritusService {
-  override def writeKoesuoritus(key: String, os: OutputStream): Unit =
-    ClasspathResources.readResourceIfExists("/mockdata/ytr/" + key, writeTo(os))
+object MockKoesuoritusService extends KoesuoritusService with EnvVariables {
+  private lazy val resource: Resource = optEnv("PDF_DIR")
+    .map(new FileResource(_))
+    .getOrElse(new ClasspathResource("/mockdata/ytr"))
 
-  override def koesuoritusExists(key: String): Boolean = ClasspathResources.getResource("/mockdata/ytr/" + key).isDefined
+  override def writeKoesuoritus(key: String, outputStream: OutputStream): Unit =
+    resource.resourceSerializer(key)(writeTo(outputStream))
+
+  override def koesuoritusExists(key: String): Boolean = resource.exists(key)
 
   private def writeTo(os: OutputStream) = (is: InputStream) =>
-    Iterator.continually(is.read).takeWhile(_ != -1).foreach(os.write)
+    Streams.pipeTo(is, os)
 }
 
 object KoesuoritusService {

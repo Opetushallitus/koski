@@ -1,9 +1,7 @@
 package fi.oph.koski.ytr
 
-import java.io.InputStream
-
 import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethods}
-import fi.oph.koski.util.ClasspathResources.readResourceIfExists
+import fi.oph.koski.util.ClasspathResource
 import org.scalatest.FreeSpec
 
 import scala.collection.Iterator.continually
@@ -39,5 +37,5 @@ class YtrKoesuoritusSpec extends FreeSpec with LocalJettyHttpSpecification with 
   }
 
   private def resourceAsByteArray(resourceName: String): Array[Byte] =
-    readResourceIfExists(resourceName, (is: InputStream) => continually(is.read).takeWhile(_ != -1).map(_.toByte).toArray).get
+    ClasspathResource.resourceSerializer(resourceName)(inputStream => continually(inputStream.read).takeWhile(_ != -1).map(_.toByte).toArray).get
 }

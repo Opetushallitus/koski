@@ -1,0 +1,29 @@
+package fi.oph.koski.perftest
+
+import java.nio.file.Paths
+
+import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.koskiuser.UserWithPassword
+
+object YtrKoesuoritusFetcher extends App {
+  // 1) Check values of "copyOfExamPaper"-fields in src/main/resources/mockdata/ytr/080698-967F.json
+  // 2) Add files to a directory that match those values
+  // 3) Run this scenario with -DPDF_DIR=/path/to/pdf-files
+  PerfTestRunner.executeTest(YtrFetchKoesuoritusScenario)
+}
+
+object YtrFetchKoesuoritusScenario extends PerfTestScenario {
+  private val pdfDir = Paths.get(requiredEnv("PDF_DIR"))
+  private val Some(hetu) = MockOppijat.ylioppilasLukiolainen.hetu
+  private lazy val kansalainenAuthHeaders = kansalainenLoginHeaders(hetu).toMap
+
+  override def operation(round: Int): List[Operation] = {
+    List(Operation(uri = s"koesuoritus/${files(round % files.length)}"))
+  }
+
+  override def authHeaders(user: UserWithPassword = defaultUser): Headers = kansalainenAuthHeaders
+  override def readBody: Boolean = true
+
+  private def files =
+    pdfDir.toFile.listFiles.filter(_.getName.toLowerCase.endsWith(".pdf")).toList.map(_.getName)
+}

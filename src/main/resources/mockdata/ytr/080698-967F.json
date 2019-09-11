@@ -60,6 +60,7 @@
     "examRoleShort" : "mandatory-subject",
     "grade" : "C",
     "points" : 210,
+    "copyOfExamPaper" : "1.pdf",
     "sections" : [ {
       "sectionPoints" : 37,
       "sectionId" : "HM02"
@@ -89,6 +90,7 @@
     "examRoleShort" : "mandatory-subject",
     "grade" : "M",
     "points" : 26,
+    "copyOfExamPaper" : "2.pdf",
     "sections" : [ {
       "sectionPoints" : 26,
       "sectionId" : "T000"
@@ -100,6 +102,7 @@
     "examRoleShort" : "mandatory-subject",
     "grade" : "L",
     "points" : 59,
+    "copyOfExamPaper" : "3.pdf",
     "sections" : [ {
       "sectionPoints" : 59,
       "sectionId" : "T000"

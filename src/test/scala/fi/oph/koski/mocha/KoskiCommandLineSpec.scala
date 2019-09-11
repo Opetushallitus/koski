@@ -3,6 +3,7 @@ package fi.oph.koski.mocha
 import java.io.{InputStream, OutputStream}
 
 import fi.oph.koski.log.Logging
+import fi.oph.koski.util.Streams
 import org.scalatest.{FreeSpec, Matchers}
 
 import scala.sys.process._
@@ -20,8 +21,5 @@ trait KoskiCommandLineSpec extends FreeSpec with Matchers with Logging {
     res.exitValue() should equal (0)
   }
 
-  private def pipeTo(dest: OutputStream)(is: InputStream): Unit = {
-    Iterator.continually (is.read).takeWhile(_ != -1).foreach(dest.write)
-    is.close()
-  }
+  private def pipeTo(dest: OutputStream)(is: InputStream): Unit = Streams.pipeTo(is, dest)
 }

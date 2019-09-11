@@ -1,5 +1,7 @@
 package fi.oph.koski.http
 
+import java.nio.file.Paths
+
 import fi.oph.koski.json.JsonSerializer
 import org.json4s.JValue
 import org.json4s.JsonAST.JString
@@ -44,6 +46,14 @@ trait HttpSpecification extends HttpTester with Assertions with Matchers {
         expectedErrorDetail.matchMessage(errorDetail.message)
       }
       errors.length should equal(dets.length)
+    }
+  }
+
+  def kansalainenLoginHeaders(hetu: String): List[(String, String)] = {
+    get("user/shibbolethlogin", headers = List("hetu" -> hetu, "security" -> "mock")) {
+      verifyResponseStatusOk(302)
+      val cookie = response.headers("Set-Cookie").find(x => x.startsWith("koskiOppija")).get
+      List("Cookie" -> cookie)
     }
   }
 
