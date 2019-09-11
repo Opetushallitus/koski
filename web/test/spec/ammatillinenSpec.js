@@ -1782,7 +1782,7 @@ describe('Ammatillinen koulutus', function() {
             'Pakollinen kyllä\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
-            'Arviointipäivä 20.10.2014\n' +
+            'Arviointipäivä 1.1.2015\n' +
             'Ympäristön hoitaminen 35 3\n' +
             'Pakollinen kyllä\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
@@ -1910,7 +1910,7 @@ describe('Ammatillinen koulutus', function() {
             'Selite Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta\nRahoituksen piirissä ei\n' +
             'Lisätiedot Osaamisen arvioinnin mukauttaminen\n' +
             'Tutkinnon osan ammattitaitovaatimuksia tai osaamistavoitteita ja osaamisen arviointia on mukautettu ammatillisesta peruskoulutuksesta annetun lain (630/1998, muutos 246/2015) 19 a tai 21 §:n perusteella\n' +
-            'Arviointipäivä 20.10.2014\n' +
+            'Arviointipäivä 1.1.2015\n' +
             'Yhteiskunnassa ja työelämässä tarvittava osaaminen 8 3\n' +
             'Pakollinen kyllä\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
