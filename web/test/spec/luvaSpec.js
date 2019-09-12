@@ -32,6 +32,7 @@ describe('Lukioon valmistava koulutus', function() {
     it('näyttää suorituksen tiedot', function() {
       expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
         'Koulutus Lukiokoulutukseen valmistava koulutus 56/011/2015\n' +
+        'Laajuus 2 kurssia\n' +
         'Opetussuunnitelma Lukio suoritetaan nuorten opetussuunnitelman mukaan\n' +
         'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
         'Suorituskieli suomi\n' +

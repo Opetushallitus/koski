@@ -15,7 +15,7 @@ object ExamplesLukioonValmistavaKoulutus {
     oppimäärä = nuortenOpetussuunnitelma,
     vahvistus = vahvistusPaikkakunnalla(),
     toimipiste = jyväskylänNormaalikoulu,
-    koulutusmoduuli = LukioonValmistavaKoulutus(perusteenDiaarinumero = Some("56/011/2015")),
+    koulutusmoduuli = LukioonValmistavaKoulutus(perusteenDiaarinumero = Some("56/011/2015"), laajuus = laajuus(2.0f)),
     suorituskieli = suomenKieli,
     osasuoritukset = Some(List(
       LukioonValmistavanKoulutuksenOppiaineenSuoritus(
