@@ -80,7 +80,7 @@ const YtrArvosanaColumn = () => {
 const KoesuoritusLink = ({copyOfExamPaper}) =>
   copyOfExamPaper
     ? (<a className='text-button-small' target='_blank' href={`/koski/koesuoritus/${copyOfExamPaper}`}>
-        {ift(isMobileAtom.not(), <Text name='Näytä arvostelu'/>)}
+        {ift(isMobileAtom.not(), <Text name='Näytä koesuoritus'/>)}
       </a>)
     : null
 

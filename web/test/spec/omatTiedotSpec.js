@@ -87,8 +87,8 @@ describe('Omat tiedot', function() {
         it('näytetään jos ne löytyy', function () {
           expect(extractAsText(S('.ylioppilastutkinnonsuoritus .osasuoritukset'))).to.equal(
             'Tutkintokerta Koe Pisteet Arvosana\n' +
-            '2012 kevät Äidinkielen koe, suomi 46 Lubenter approbatur Näytä arvostelu\n' +
-            '2012 kevät Ruotsi, keskipitkä oppimäärä 166 Cum laude approbatur Näytä arvostelu\n' +
+            '2012 kevät Äidinkielen koe, suomi 46 Lubenter approbatur Näytä koesuoritus\n' +
+            '2012 kevät Ruotsi, keskipitkä oppimäärä 166 Cum laude approbatur Näytä koesuoritus\n' +
             '2012 kevät Englanti, pitkä oppimäärä 210 Cum laude approbatur\n' +
             '2012 kevät Maantiede 26 Magna cum laude approbatur\n' +
             '2012 kevät Matematiikan koe, lyhyt oppimäärä 59 Laudatur'
