@@ -30,8 +30,8 @@ class YtrKoesuoritusApiSpec extends FreeSpec with LocalJettyHttpSpecification wi
   private val expected = List(
     ExamResponse(period = "2012K", examId = "A", copyOfExamPaper = Some("2345K_XX_12345.pdf")),
     ExamResponse(period = "2012K", examId = "BB", copyOfExamPaper = Some("not-found-from-s3.pdf")),
-    ExamResponse(period = "2012K", examId = "EA"),
-    ExamResponse(period = "2012K", examId = "GE"),
-    ExamResponse(period = "2012K", examId = "N")
+    ExamResponse(period = "2012K", examId = "EA", copyOfExamPaper = Some("1.pdf")),
+    ExamResponse(period = "2012K", examId = "GE", copyOfExamPaper = Some("2.pdf")),
+    ExamResponse(period = "2012K", examId = "N", copyOfExamPaper = Some("3.pdf"))
   )
 }

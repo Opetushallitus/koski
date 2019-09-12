@@ -89,9 +89,9 @@ describe('Omat tiedot', function() {
             'Tutkintokerta Koe Pisteet Arvosana\n' +
             '2012 kevät Äidinkielen koe, suomi 46 Lubenter approbatur Näytä koesuoritus\n' +
             '2012 kevät Ruotsi, keskipitkä oppimäärä 166 Cum laude approbatur Näytä koesuoritus\n' +
-            '2012 kevät Englanti, pitkä oppimäärä 210 Cum laude approbatur\n' +
-            '2012 kevät Maantiede 26 Magna cum laude approbatur\n' +
-            '2012 kevät Matematiikan koe, lyhyt oppimäärä 59 Laudatur'
+            '2012 kevät Englanti, pitkä oppimäärä 210 Cum laude approbatur Näytä koesuoritus\n' +
+            '2012 kevät Maantiede 26 Magna cum laude approbatur Näytä koesuoritus\n' +
+            '2012 kevät Matematiikan koe, lyhyt oppimäärä 59 Laudatur Näytä koesuoritus'
           )
           expect(findFirst('.koesuoritus a')().attr('href')).to.equal('/koski/koesuoritus/2345K_XX_12345.pdf')
         })

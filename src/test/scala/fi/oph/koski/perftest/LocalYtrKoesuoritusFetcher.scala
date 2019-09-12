@@ -5,7 +5,7 @@ import java.nio.file.Paths
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.koskiuser.UserWithPassword
 
-object YtrKoesuoritusFetcher extends App {
+object LocalYtrKoesuoritusFetcher extends App {
   // 1) Check values of "copyOfExamPaper"-fields in src/main/resources/mockdata/ytr/080698-967F.json
   // 2) Add files to a directory that match those values
   // 3) Run this scenario with -DPDF_DIR=/path/to/pdf-files
