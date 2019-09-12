@@ -9,10 +9,10 @@ object LocalYtrKoesuoritusFetcher extends App {
   // 1) Check values of "copyOfExamPaper"-fields in src/main/resources/mockdata/ytr/080698-967F.json
   // 2) Add files to a directory that match those values
   // 3) Run this scenario with -DPDF_DIR=/path/to/pdf-files
-  PerfTestRunner.executeTest(YtrFetchKoesuoritusScenario)
+  PerfTestRunner.executeTest(LocalYtrFetchKoesuoritusScenario)
 }
 
-object YtrFetchKoesuoritusScenario extends PerfTestScenario {
+object LocalYtrFetchKoesuoritusScenario extends PerfTestScenario {
   private val pdfDir = Paths.get(requiredEnv("PDF_DIR"))
   private val Some(hetu) = MockOppijat.ylioppilasLukiolainen.hetu
   private lazy val kansalainenAuthHeaders = kansalainenLoginHeaders(hetu).toMap
