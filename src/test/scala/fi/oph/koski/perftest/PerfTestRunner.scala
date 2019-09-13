@@ -100,7 +100,7 @@ object PerfTestRunner extends Logging {
   }
 
   private def toDevNull(stream: InputStream) =
-    Streams.pipeTo(new BufferedInputStream(stream), new BufferedOutputStream((b: Int) => {}))
+    Streams.pipeTo(new BufferedInputStream(stream), (b: Int) => {})
 
   private def gzip(bytes: Array[Byte]) = {
     val baos = new ByteArrayOutputStream
