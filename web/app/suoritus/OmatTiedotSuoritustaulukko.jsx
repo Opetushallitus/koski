@@ -56,7 +56,7 @@ const arvosanaColumn = parentSuoritus => isYlioppilastutkinto(parentSuoritus)
   : ArvosanaColumn
 
 const YtrArvosanaColumn = (suoritusjako) => {
-  const koesuorituksetP = suoritusjako ? Bacon.constant([]) : Http.cachedGet('/koski/api/ytrkoesuoritukset').last()
+  const koesuorituksetP = suoritusjako ? Bacon.constant([]) :  Http.cachedGet('/koski/api/ytrkoesuoritukset', { errorMapper: () => undefined })
 
   return {
     shouldShow: ({suoritukset, context}) => context.edit || suoritukset.find(hasArvosana) !== undefined,
@@ -67,7 +67,7 @@ const YtrArvosanaColumn = (suoritusjako) => {
     renderData: ({model}) => {
       const examId = modelData(model, 'koulutusmoduuli.tunniste.koodiarvo')
       const period = modelData(model, 'tutkintokerta.koodiarvo')
-      return koesuorituksetP.map(kokeet => kokeet.find(koe => koe.period === period && koe.examId === examId)).map(koe => {
+      return koesuorituksetP.map(kokeet => kokeet && kokeet.find(koe => koe.period === period && koe.examId === examId)).map(koe => {
         return (<React.Fragment key='data'>
           <td key='arvosana' className='arvosana ylioppilas'><ArvosanaEditor model={model}/></td>
           <td key='koesuoritus' className='koesuoritus'><KoesuoritusLink copyOfExamPaper={koe && koe.copyOfExamPaper}/></td>
