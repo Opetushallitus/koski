@@ -1,3 +1,9 @@
+.suoritusjako .oppija .opiskeluoikeus .omattiedot-suoritus-taulukko .suoritus-group {
+  > table > tbody > tr > .koesuoritus {
+    display: none
+  }
+}
+
 .oppija .opiskeluoikeus {
   .suoritus-taulukko {
     > table {
@@ -205,6 +211,9 @@
               @media @media-phone {
                 min-width: 2rem;
                 a {
+                  .show-koesuoritus-text {
+                    display: none;
+                  }
                   .external-link(1px, 1px);
                 }
               }

@@ -806,6 +806,41 @@ describe('Omat tiedot', function() {
         })
       })
 
+      describe('Ylioppilastutkinto suoritusjako', function () {
+        var suoritusjako = SuoritusjakoPage()
+        var form = omattiedot.suoritusjakoForm
+        before(
+          authentication.logout,
+          etusivu.openPage,
+          etusivu.login(),
+          wait.until(korhopankki.isReady),
+          korhopankki.login('080698-967F'),
+          wait.until(omattiedot.isVisible),
+          click(omattiedot.suoritusjakoButton),
+          form.selectSuoritus('', '1.2.246.562.10.14613773812', 'ylioppilastutkinto', '301000'),
+          form.createAndStoreSuoritusjako('ylioppilastutkinto'),
+          suoritusjako.openPage('ylioppilastutkinto'),
+          wait.until(suoritusjako.isVisible),
+          suoritusjako.avaaOpiskeluoikeus('Ylioppilastutkinto')
+        )
+
+        it('näytetään opiskeluoikeuden tiedot ilman koesuorituslinkkejä', function() {
+          expect(extractAsText(S('.opiskeluoikeus-content'))).to.equal(
+            'Ylioppilastutkinto\n' +
+            'Koulutus Ylioppilastutkinto\n' +
+            'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
+            'Pakolliset kokeet suoritettu kyllä\n' +
+            'Suoritus valmis Vahvistus : 2.6.2012 Helsinki\n' +
+            'Tutkintokerta Koe Pisteet Arvosana\n' +
+            '2012 kevät Äidinkielen koe, suomi 46 Lubenter approbatur\n' +
+            '2012 kevät Ruotsi, keskipitkä oppimäärä 166 Cum laude approbatur\n' +
+            '2012 kevät Englanti, pitkä oppimäärä 210 Cum laude approbatur\n' +
+            '2012 kevät Maantiede 26 Magna cum laude approbatur\n' +
+            '2012 kevät Matematiikan koe, lyhyt oppimäärä 59 Laudatur'
+          )
+        })
+      })
+
       describe('Kun tiedot löytyvät vain YTR:stä', function() {
         before(authentication.logout, etusivu.openPage)
 

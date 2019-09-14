@@ -1,7 +1,6 @@
 import React from 'baret'
 import {modelData, modelItems, modelLookup, modelTitle} from '../editor/EditorModel'
-import {flatMapArray, ift} from '../util/util'
-import {isMobileAtom} from '../util/isMobileAtom'
+import {flatMapArray} from '../util/util'
 import {
   ArvosanaColumn,
   getLaajuusYksikkö,
@@ -21,6 +20,7 @@ import {t} from '../i18n/i18n'
 import {ArvosanaEditor} from './ArvosanaEditor'
 import Text from '../i18n/Text'
 import Http from '../util/http'
+import * as Bacon from 'baconjs'
 
 const OmatTiedotSuoritustaulukko = ({suorituksetModel, nested, parentSuoritus: parentSuoritusProp}) => {
   const {context} = suorituksetModel
@@ -52,11 +52,11 @@ const OmatTiedotSuoritustaulukko = ({suorituksetModel, nested, parentSuoritus: p
 }
 
 const arvosanaColumn = parentSuoritus => isYlioppilastutkinto(parentSuoritus)
-  ? YtrArvosanaColumn()
+  ? YtrArvosanaColumn(parentSuoritus.context.suoritusjako)
   : ArvosanaColumn
 
-const YtrArvosanaColumn = () => {
-  const koesuorituksetP = Http.cachedGet('/koski/api/ytrkoesuoritukset').last()
+const YtrArvosanaColumn = (suoritusjako) => {
+  const koesuorituksetP = suoritusjako ? Bacon.constant([]) : Http.cachedGet('/koski/api/ytrkoesuoritukset').last()
 
   return {
     shouldShow: ({suoritukset, context}) => context.edit || suoritukset.find(hasArvosana) !== undefined,
@@ -80,7 +80,7 @@ const YtrArvosanaColumn = () => {
 const KoesuoritusLink = ({copyOfExamPaper}) =>
   copyOfExamPaper
     ? (<a className='text-button-small' target='_blank' href={`/koski/koesuoritus/${copyOfExamPaper}`}>
-        {ift(isMobileAtom.not(), <Text name='Näytä koesuoritus'/>)}
+        <Text className='show-koesuoritus-text' name='Näytä koesuoritus'/>
       </a>)
     : null
 
