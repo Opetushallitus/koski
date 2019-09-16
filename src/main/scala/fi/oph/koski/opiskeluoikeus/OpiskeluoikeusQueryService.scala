@@ -1,6 +1,6 @@
 package fi.oph.koski.opiskeluoikeus
 
-import java.sql.{Date, Timestamp}
+import java.sql.Timestamp
 
 import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
@@ -65,10 +65,14 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
       .map(stuff => (stuff._1._1, stuff._1._2, stuff._2))
 
     val query = filters.foldLeft(baseQuery) {
-      case (query, OpiskeluoikeusPäättynytAikaisintaan(päivä)) => query.filter(_._1.päättymispäivä >= Date.valueOf(päivä))
-      case (query, OpiskeluoikeusPäättynytViimeistään(päivä)) => query.filter(_._1.päättymispäivä <= Date.valueOf(päivä))
-      case (query, OpiskeluoikeusAlkanutAikaisintaan(päivä)) => query.filter(_._1.alkamispäivä >= Date.valueOf(päivä))
-      case (query, OpiskeluoikeusAlkanutViimeistään(päivä)) => query.filter(_._1.alkamispäivä <= Date.valueOf(päivä))
+      case (query, OpiskeluoikeusPäättynytAikaisintaan(päivä)) => query.filter { row =>
+        (row._1.data.#>>(List("tila", "opiskeluoikeusjaksot", "-1", "alku")) >= päivä.toString) && (row._1.data.#>>(List("tila", "opiskeluoikeusjaksot", "-1", "tila", "koodiarvo")) inSetBind KoskiOpiskeluoikeusjakso.päätöstilat)
+      }
+      case (query, OpiskeluoikeusPäättynytViimeistään(päivä)) => query.filter { row =>
+        (row._1.data.#>>(List("tila", "opiskeluoikeusjaksot", "-1", "alku")) <= päivä.toString) && (row._1.data.#>>(List("tila", "opiskeluoikeusjaksot", "-1", "tila", "koodiarvo")) inSetBind KoskiOpiskeluoikeusjakso.päätöstilat)
+      }
+      case (query, OpiskeluoikeusAlkanutAikaisintaan(päivä)) => query.filter(_._1.data.#>>(List("tila", "opiskeluoikeusjaksot", "0", "alku")) >= päivä.toString)
+      case (query, OpiskeluoikeusAlkanutViimeistään(päivä)) => query.filter(_._1.data.#>>(List("tila", "opiskeluoikeusjaksot", "0", "alku")) <= päivä.toString)
       case (query, OpiskeluoikeudenTyyppi(tyyppi)) => query.filter(_._1.koulutusmuoto === tyyppi.koodiarvo)
       case (query, OneOfOpiskeluoikeudenTyypit(tyypit)) => query.filter(_._1.koulutusmuoto inSet tyypit.map(_.tyyppi.koodiarvo))
       case (query, SuorituksenTyyppi(tyyppi)) => query.filter(_._1.data.+>("suoritukset").@>(parseJson(s"""[{"tyyppi":{"koodiarvo":"${tyyppi.koodiarvo}"}}]""")))

@@ -26,11 +26,9 @@ object Tables {
     val luokka = column[Option[String]]("luokka")
     val mitätöity = column[Boolean]("mitatoity")
     val koulutusmuoto = column[String]("koulutusmuoto")
-    val alkamispäivä = column[Date]("alkamispaiva")
-    val päättymispäivä = column[Option[Date]]("paattymispaiva")
 
-    def * = (id, oid, versionumero, aikaleima, oppijaOid, oppilaitosOid, koulutustoimijaOid, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, data, luokka, mitätöity, koulutusmuoto, alkamispäivä, päättymispäivä) <> (OpiskeluoikeusRow.tupled, OpiskeluoikeusRow.unapply)
-    def updateableFields = (data, versionumero, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, luokka, koulutustoimijaOid, oppilaitosOid, mitätöity, alkamispäivä, päättymispäivä)
+    def * = (id, oid, versionumero, aikaleima, oppijaOid, oppilaitosOid, koulutustoimijaOid, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, data, luokka, mitätöity, koulutusmuoto) <> (OpiskeluoikeusRow.tupled, OpiskeluoikeusRow.unapply)
+    def updateableFields = (data, versionumero, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, luokka, koulutustoimijaOid, oppilaitosOid, mitätöity)
   }
 
   object OpiskeluoikeusTable {
@@ -56,10 +54,7 @@ object Tables {
         serialize(opiskeluoikeus),
         opiskeluoikeus.luokka,
         opiskeluoikeus.mitätöity,
-        opiskeluoikeus.tyyppi.koodiarvo,
-        Date.valueOf(opiskeluoikeus.alkamispäivä.get),
-        opiskeluoikeus.päättymispäivä.map(Date.valueOf)
-      )
+        opiskeluoikeus.tyyppi.koodiarvo)
     }
 
     def readAsJValue(data: JValue, oid: String, versionumero: Int, aikaleima: Timestamp): JValue = {
@@ -75,16 +70,7 @@ object Tables {
     def updatedFieldValues(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, versionumero: Int) = {
       val data = serialize(opiskeluoikeus)
 
-      (data,
-       versionumero,
-       opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oid),
-       opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oppilaitos.oid),
-       opiskeluoikeus.luokka,
-       opiskeluoikeus.koulutustoimija.map(_.oid),
-       opiskeluoikeus.getOppilaitos.oid,
-       opiskeluoikeus.mitätöity,
-       Date.valueOf(opiskeluoikeus.alkamispäivä.get),
-       opiskeluoikeus.päättymispäivä.map(Date.valueOf))
+      (data, versionumero, opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oid), opiskeluoikeus.sisältyyOpiskeluoikeuteen.map(_.oppilaitos.oid), opiskeluoikeus.luokka, opiskeluoikeus.koulutustoimija.map(_.oid), opiskeluoikeus.getOppilaitos.oid, opiskeluoikeus.mitätöity)
     }
   }
 
@@ -225,21 +211,7 @@ object Tables {
 case class SSOSessionRow(serviceTicket: String, username: String, userOid: String, name: String, started: Timestamp, updated: Timestamp)
 
 // Note: the data json must not contain [id, versionumero] fields. This is enforced by DB constraint.
-case class OpiskeluoikeusRow(id: Int,
-  oid: String,
-  versionumero: Int,
-  aikaleima: Timestamp,
-  oppijaOid: String,
-  oppilaitosOid: String,
-  koulutustoimijaOid: Option[String],
-  sisältäväOpiskeluoikeusOid: Option[String],
-  sisältäväOpiskeluoikeusOppilaitosOid: Option[String],
-  data: JValue,
-  luokka: Option[String],
-  mitätöity: Boolean,
-  koulutusmuoto: String,
-  alkamispäivä: Date,
-  päättymispäivä: Option[Date]) {
+case class OpiskeluoikeusRow(id: Int, oid: String, versionumero: Int, aikaleima: Timestamp, oppijaOid: String, oppilaitosOid: String, koulutustoimijaOid: Option[String], sisältäväOpiskeluoikeusOid: Option[String], sisältäväOpiskeluoikeusOppilaitosOid: Option[String], data: JValue, luokka: Option[String], mitätöity: Boolean, koulutusmuoto: String) {
   import fi.oph.koski.db.Tables.OpiskeluoikeusTable
   lazy val toOpiskeluoikeusData: JValue = {
     OpiskeluoikeusTable.readAsJValue(data, oid, versionumero, aikaleima)
