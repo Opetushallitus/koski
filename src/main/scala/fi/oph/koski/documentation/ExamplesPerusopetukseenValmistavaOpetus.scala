@@ -28,7 +28,8 @@ object ExamplesPerusopetukseenValmistavaOpetus {
       NuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa(
         koulutusmoduuli = oppiaine("FY").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1)),
         arviointi = arviointi(9),
-        luokkaAste = Some(Koodistokoodiviite("7", "perusopetuksenluokkaaste"))
+        luokkaAste = Some(Koodistokoodiviite("7", "perusopetuksenluokkaaste")),
+        suoritustapa = Some(PerusopetusExampleData.suoritustapaErityinenTutkinto)
       )
     )),
     kokonaislaajuus = Some(LaajuusVuosiviikkotunneissa(11))

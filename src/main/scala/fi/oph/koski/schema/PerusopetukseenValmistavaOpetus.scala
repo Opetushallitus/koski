@@ -74,8 +74,9 @@ case class NuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa(
   @KoodistoUri("perusopetuksenluokkaaste")
   luokkaAste: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("perusopetuksenoppiaineperusopetukseenvalmistavassaopetuksessa")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenoppiaineperusopetukseenvalmistavassaopetuksessa", koodistoUri = "suorituksentyyppi")
-) extends PerusopetuksenOppiaineenSuoritus with Vahvistukseton with MahdollisestiSuorituskielellinen with PerusopetukseenValmistavanOpetuksenOsasuoritus with Laajuudellinen {
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "perusopetuksenoppiaineperusopetukseenvalmistavassaopetuksessa", koodistoUri = "suorituksentyyppi"),
+  suoritustapa: Option[Koodistokoodiviite] = None
+) extends PerusopetuksenOppiaineenSuoritus with Vahvistukseton with MahdollisestiSuorituskielellinen with PerusopetukseenValmistavanOpetuksenOsasuoritus with Laajuudellinen with SuoritustapanaMahdollisestiErityinenTutkinto{
   private val luokkaAstettaEiVaaditaArvosana = "O"
   def luokkaAsteVaaditaan: Boolean =
     arvioitu && !viimeisinArviointi.map(_.arvosana.koodiarvo).contains(luokkaAstettaEiVaaditaArvosana)
