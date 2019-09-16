@@ -43,7 +43,7 @@ export default ({ suoritus, groupId, suoritusPrototypes, setExpanded, groupTitle
 
   const osatP = diaarinumero
     ? fetchLisättävätTutkinnonOsat(diaarinumero, suoritustapa, groupId)
-    : (isYhteinenTutkinnonOsa(suoritus) || true)
+    : isYhteinenTutkinnonOsa(suoritus)
       ? koodistoValues('ammatillisenoppiaineet').map(oppiaineet => { return {osat: oppiaineet, paikallinenOsa: true, osanOsa: true} })
       : Bacon.constant({osat:[], paikallinenOsa: canAddPaikallinen(suoritus)})
 

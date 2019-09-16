@@ -49,6 +49,23 @@ object TutkinnonOsaaPienempiKokonaisuusExample {
             ),
             lisätiedot = None,
             suorituskieli = None
+          ),
+          YhteisenTutkinnonOsanOsaAlueenSuoritus(
+            koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(
+              Koodistokoodiviite("FK", "ammatillisenoppiaineet"),
+              pakollinen = true,
+              laajuus = None
+            ),
+            arviointi = Some(List(arviointiHyväksytty))
+          ),
+          YhteisenTutkinnonOsanOsaAlueenSuoritus(
+            koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(
+              Koodistokoodiviite("AI", "ammatillisenoppiaineet"),
+              pakollinen = false,
+              kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"),
+              laajuus = None
+            ),
+            arviointi = Some(List(arviointiHyväksytty))
           )
         ))
       )
@@ -100,6 +117,23 @@ object MuunAmmatillisenKoulutuksenExample {
           muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
             PaikallinenKoodi("KISI", "KISI-tentti"),
             "Valmiudet hoitaa kiinteistöalan yrityksen sihteeri-, toimisto- ja asiakaspalvelutehtäviä, vahvistaa osallistujan ammatillisia perusvalmiuksia"
+          ),
+          YhteisenTutkinnonOsanOsaAlueenSuoritus(
+            koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(
+              Koodistokoodiviite("FK", "ammatillisenoppiaineet"),
+              pakollinen = true,
+              laajuus = None
+            ),
+            arviointi = Some(List(arviointiHyväksytty))
+          ),
+          YhteisenTutkinnonOsanOsaAlueenSuoritus(
+            koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(
+              Koodistokoodiviite("AI", "ammatillisenoppiaineet"),
+              pakollinen = false,
+              kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"),
+              laajuus = None
+            ),
+            arviointi = Some(List(arviointiHyväksytty))
           )
         ))
       )

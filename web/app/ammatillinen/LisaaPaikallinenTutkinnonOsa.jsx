@@ -11,7 +11,7 @@ import {
   isTutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus
 } from '../suoritus/SuoritustaulukkoCommon'
 
-export const LisääPaikallinenTutkinnonOsa = ({lisättävätTutkinnonOsat, addTutkinnonOsa, paikallinenKoulutusmoduuli}) => {
+export const LisääPaikallinenTutkinnonOsa = ({lisättävätTutkinnonOsat, addTutkinnonOsa, paikallinenKoulutusmoduuli, preferredTexts}) => {
   let lisääPaikallinenAtom = Atom(false)
   let lisääPaikallinenTutkinnonOsa = (osa) => {
     lisääPaikallinenAtom.set(false)
@@ -28,7 +28,7 @@ export const LisääPaikallinenTutkinnonOsa = ({lisättävätTutkinnonOsat, addT
   const tutkinnonosaaPienempiKokonaisuus = isTutkinnonosaaPienempiKokonaisuus(paikallinenKoulutusmoduuli)
   const validP = tutkinnonosaaPienempiKokonaisuus ? nameAtom.and(liittyyTutkinnonOsaanAtom.map('.data')) : nameAtom
 
-  const texts = lisääTutkinnonOsaTexts(lisättävätTutkinnonOsat, paikallinenKoulutusmoduuli)
+  const texts = preferredTexts || lisääTutkinnonOsaTexts(lisättävätTutkinnonOsat, paikallinenKoulutusmoduuli)
   return (<span className="paikallinen-tutkinnon-osa">
     {
       lisättävätTutkinnonOsat.paikallinenOsa && <a className="add-link" onClick={() => lisääPaikallinenAtom.set(true)}>

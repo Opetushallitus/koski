@@ -10,8 +10,8 @@ export const YHTEISET_TUTKINNON_OSAT = '2'
 export const createTutkinnonOsanSuoritusPrototype = (osasuoritukset, groupId) =>
   selectTutkinnonOsanSuoritusPrototype(tutkinnonOsaPrototypes(osasuoritukset), groupId)
 
-export const selectTutkinnonOsanSuoritusPrototype = (prototypes, groupId) => {
-  const preferredClass = groupId === YHTEISET_TUTKINNON_OSAT ? 'yhteisenammatillisentutkinnonosansuoritus' : 'muunammatillisentutkinnonosansuoritus'
+export const selectTutkinnonOsanSuoritusPrototype = (prototypes, groupId, preferedclass) => {
+  const preferredClass = preferedclass || (groupId === YHTEISET_TUTKINNON_OSAT ? 'yhteisenammatillisentutkinnonosansuoritus' : 'muunammatillisentutkinnonosansuoritus')
   const sortValue = (oneOfProto) => oneOfProto.value.classes.includes(preferredClass) ? 0 : 1
   return prototypes.sort((a, b) => sortValue(a) - sortValue(b))[0]
 }

@@ -35,6 +35,8 @@ import {
   TutkintokertaColumn
 } from './SuoritustaulukkoCommon'
 import LiittyyTutkinnonOsaanEditor from '../ammatillinen/LiittyyTutkinnonOsaanEditor'
+import {UusiTutkinnonOsaMuuAmmatillinen} from '../muuammatillinen/UusiTutkinnonOsaMuuAmmatillinen'
+import {isMuutaAmmatillistaPäätasonSuoritus} from '../muuammatillinen/MuuAmmatillinen'
 
 const MAX_NESTED_LEVEL = 2
 
@@ -94,6 +96,9 @@ export class Suoritustaulukko extends React.Component {
     function suoritusGroup(groups, groupId, i) {
       const items = (groups.grouped[groupId] || [])
       const groupTitles = groups.groupTitles
+      const UusiTutkinnonOsaComponent = isMuutaAmmatillistaPäätasonSuoritus(parentSuoritus)
+        ? UusiTutkinnonOsaMuuAmmatillinen
+        : UusiTutkinnonOsa
 
       return [
         <tbody key={'group-' + i} className={`group-header ${groupId}`}>
@@ -105,12 +110,12 @@ export class Suoritustaulukko extends React.Component {
         context.edit && nestedLevel < MAX_NESTED_LEVEL && <tbody key={'group-' + i + '-new'} className={'uusi-tutkinnon-osa ' + groupId}>
           <tr>
             <td colSpan="4">
-              <UusiTutkinnonOsa suoritus={parentSuoritus}
-                                suoritusPrototypes={suoritusProtos}
-                                suorituksetModel={suorituksetModel}
-                                groupId={groupId}
-                                setExpanded={setExpanded}
-                                groupTitles={groupTitles}
+              <UusiTutkinnonOsaComponent suoritus={parentSuoritus}
+                                         suoritusPrototypes={suoritusProtos}
+                                         suorituksetModel={suorituksetModel}
+                                         groupId={groupId}
+                                         setExpanded={setExpanded}
+                                         groupTitles={groupTitles}
               />
             </td>
           </tr>

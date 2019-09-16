@@ -9,7 +9,6 @@ import {
 } from './TutkinnonOsa'
 import {
   createTutkinnonOsa,
-  LisääRakenteeseenKuuluvaTutkinnonOsa,
   pushSuoritus,
   valtakunnallisetKoulutusmoduuliPrototypes
 } from './UusiTutkinnonOsa'
@@ -23,6 +22,7 @@ import ModalDialog from '../editor/ModalDialog'
 import Peruste from '../uusioppija/Peruste'
 import * as R from 'ramda'
 import {t} from '../i18n/i18n'
+import {LisääRakenteeseenKuuluvaTutkinnonOsa} from './LisaaRakenteeseenKuuluvaTutkinnonOsa'
 
 export const LisääYhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus = ({parentSuoritus, suoritusPrototypes, setExpanded}) => {
   if (!isJatkoOpintovalmiuksiaTukevienOpintojenSuoritus(parentSuoritus)) {
@@ -42,9 +42,9 @@ const LisääYhteinenTutkinnonOsa = ({suoritusPrototypes, setExpanded}) => {
 
   const addTutkinnonOsa = koulutusmoduuli => addSuoritus(setExpanded, yhteisenTutkinnonOsanOsanPrototype, koulutusmoduuli)
 
-  return fromBacon(yhteisetTutkinnonOsatP.map(lisättävätTutkinnonOsat =>
+  return fromBacon(yhteisetTutkinnonOsatP.map(lisättävätTutkinnonOsat => (
     <LisääRakenteeseenKuuluvaTutkinnonOsa {...{ addTutkinnonOsa, lisättävätTutkinnonOsat, koulutusmoduuliProto: selectKoulutusModuuliProto(yhteisenTutkinnonOsanOsanPrototype), placeholder: t('Lisää yhteisen tutkinnon osan osa-alue') }} />
-  ))
+  )))
 }
 
 const LisääLukioOpinto = ({suoritusPrototypes, setExpanded}) =>
