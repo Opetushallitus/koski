@@ -70,17 +70,19 @@ const YtrArvosanaColumn = (suoritusjako) => {
       return koesuorituksetP.map(kokeet => kokeet && kokeet.find(koe => koe.period === period && koe.examId === examId)).map(koe => {
         return (<React.Fragment key='data'>
           <td key='arvosana' className='arvosana ylioppilas'><ArvosanaEditor model={model}/></td>
-          <td key='koesuoritus' className='koesuoritus'><KoesuoritusLink copyOfExamPaper={koe && koe.copyOfExamPaper}/></td>
+          <td key='koesuoritus' className='koesuoritus'>
+            <KoesuoritusLink copyOfExamPaper={koe && koe.copyOfExamPaper} kokeenNimi={modelData(model, 'koulutusmoduuli.tunniste.nimi')} />
+          </td>
         </React.Fragment>)
       })
     }
   }
 }
 
-const KoesuoritusLink = ({copyOfExamPaper}) =>
+const KoesuoritusLink = ({copyOfExamPaper, kokeenNimi}) =>
   copyOfExamPaper
     ? (<a className='text-button-small' target='_blank' href={`/koski/koesuoritus/${copyOfExamPaper}`}>
-        <Text className='show-koesuoritus-text' name='Näytä koesuoritus'/>
+        <Text className='show-koesuoritus-text' name='Näytä koesuoritus' aria-label={t(kokeenNimi) + '. ' + t('Näytä koesuoritus')}/>
       </a>)
     : null
 
