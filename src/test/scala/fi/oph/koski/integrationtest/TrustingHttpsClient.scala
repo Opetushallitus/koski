@@ -13,6 +13,6 @@ object TrustingHttpsClient {
       override def isTrusted(x509Certificates: Array[X509Certificate], s: String) = true
     })
     val sslsf = new SSLConnectionSocketFactory(builder.build(), NoopHostnameVerifier.INSTANCE)
-    HttpClients.custom().setSSLSocketFactory(sslsf).build();
+    HttpClients.custom().setSSLSocketFactory(sslsf).disableRedirectHandling.build
   }
 }

@@ -1,11 +1,12 @@
 package fi.oph.koski.perftest
 
-import java.io.ByteArrayOutputStream
+import java.io._
 import java.lang.System.currentTimeMillis
 import java.util.zip.GZIPOutputStream
 
 import fi.oph.koski.http.HttpStatusException
 import fi.oph.koski.log.{LoggerWithContext, Logging}
+import fi.oph.koski.util.Streams
 import io.prometheus.client.exporter.PushGateway
 import io.prometheus.client.{CollectorRegistry, Gauge}
 
@@ -70,6 +71,9 @@ object PerfTestRunner extends Logging {
                       scenario.logger.error(HttpStatusException(scenario.response.status, scenario.response.body, o.method, o.uri).getMessage)
                       false
                     } else {
+                      if (scenario.readBody) {
+                        toDevNull(scenario.response.inputStream)
+                      }
                       true
                     }
                   }
@@ -94,6 +98,9 @@ object PerfTestRunner extends Logging {
       stats.log(scenario.logger)
     }
   }
+
+  private def toDevNull(stream: InputStream) =
+    Streams.pipeTo(new BufferedInputStream(stream), (b: Int) => {})
 
   private def gzip(bytes: Array[Byte]) = {
     val baos = new ByteArrayOutputStream

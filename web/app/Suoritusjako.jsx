@@ -19,7 +19,7 @@ const secret = R.last(document.location.pathname.split('/'))
 const tiedotP = () => Bacon.combineWith(
   Http.post('/koski/api/suoritusjako/editor', { secret }, { errorMapper: (e) => e.httpStatus === 404 ? null : new Bacon.Error(e)}).toProperty(),
   (tiedot) => {
-    return tiedot && addContext(tiedot, {kansalainen: true})
+    return tiedot && addContext(tiedot, {kansalainen: true, suoritusjako: true})
   }
 )
 

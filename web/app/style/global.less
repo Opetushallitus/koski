@@ -158,3 +158,16 @@ th, td {
   .FontAwesomeSymbol;
   font-size: 1.142rem;
 }
+
+.external-link(@margin-left, @margin-top) {
+  position: relative;
+  &:after {
+    content: "";
+    position: absolute;
+    background: url('/koski/images/external-link-icon.svg') no-repeat;
+    margin-left: @margin-left;
+    margin-top: @margin-top;
+    width: 16px;
+    height: 16px;
+  }
+}

@@ -67,12 +67,4 @@ trait OpiskeluoikeusTestMethods extends HttpSpecification with Matchers {
   def readOpiskeluoikeus = {
     SchemaValidatingExtractor.extract[Opiskeluoikeus](JsonMethods.parse(body)).right.get
   }
-
-  def kansalainenLoginHeaders[T](hetu: String): List[(String, String)] = {
-    get("user/shibbolethlogin", headers = List("hetu" -> hetu, "security" -> "mock")) {
-      verifyResponseStatusOk(302)
-      val cookie = response.headers("Set-Cookie").find(x => x.startsWith("koskiOppija")).get
-      List("Cookie" -> cookie)
-    }
-  }
 }

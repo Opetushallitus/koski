@@ -29,7 +29,7 @@ import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.userdirectory.DirectoryClient
 import fi.oph.koski.validation.KoskiValidator
 import fi.oph.koski.virta.{VirtaAccessChecker, VirtaClient, VirtaOpiskeluoikeusRepository}
-import fi.oph.koski.ytr.{YtrAccessChecker, YtrClient, YtrOpiskeluoikeusRepository}
+import fi.oph.koski.ytr.{YtrAccessChecker, YtrClient, YtrOpiskeluoikeusRepository, YtrRepository}
 
 import scala.collection.immutable
 import scala.concurrent.Future
@@ -59,6 +59,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val raportointikantaService = new RaportointikantaService(this)
   lazy val virtaClient = VirtaClient(config)
   lazy val ytrClient = YtrClient(config)
+  lazy val ytrRepository = new YtrRepository(ytrClient)
   lazy val virtaAccessChecker = new VirtaAccessChecker(käyttöoikeusRepository)
   lazy val ytrAccessChecker = new YtrAccessChecker(käyttöoikeusRepository)
   lazy val henkilöRepository = HenkilöRepository(this)
@@ -67,7 +68,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val henkilöCache = new KoskiHenkilöCache(masterDatabase.db)
   lazy val possu = TimedProxy[KoskiOpiskeluoikeusRepository](new PostgresOpiskeluoikeusRepository(masterDatabase.db, historyRepository, henkilöCache, oidGenerator, henkilöRepository.opintopolku, perustiedotSyncRepository))
   lazy val possuV2 = TimedProxy[KoskiOpiskeluoikeusRepository](new PostgresOpiskeluoikeusRepositoryV2(masterDatabase.db, historyRepository, henkilöCache, oidGenerator, henkilöRepository.opintopolku, perustiedotSyncRepository))
-  lazy val ytr = TimedProxy[AuxiliaryOpiskeluoikeusRepository](YtrOpiskeluoikeusRepository(ytrClient, organisaatioRepository, oppilaitosRepository, koodistoViitePalvelu, ytrAccessChecker, Some(validator), localizationRepository))
+  lazy val ytr = TimedProxy[AuxiliaryOpiskeluoikeusRepository](YtrOpiskeluoikeusRepository(ytrRepository, organisaatioRepository, oppilaitosRepository, koodistoViitePalvelu, ytrAccessChecker, Some(validator), localizationRepository))
   lazy val opiskeluoikeusRepository = new CompositeOpiskeluoikeusRepository(possu, virta, ytr)
   lazy val opiskeluoikeusRepositoryV2 = new CompositeOpiskeluoikeusRepository(possuV2, virta, ytr)
   lazy val opiskeluoikeusQueryRepository = new OpiskeluoikeusQueryService(replicaDatabase.db)
