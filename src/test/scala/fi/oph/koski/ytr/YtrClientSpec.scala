@@ -94,7 +94,7 @@ class YtrClientSpec extends FreeSpec with Matchers with BeforeAndAfterAll {
   }
 
   def mockEndpoints(oppijaResponse: Map[String, Any]  = defaultOppijaResponse) =  {
-    val ytrJsonUrl = s"/api/oph-transfer/student/${hetu}"
+    val ytrJsonUrl = s"/api/oph-koski/student/$hetu"
 
     wireMockServer.stubFor(
       WireMock.get(urlPathEqualTo(ytrJsonUrl))
