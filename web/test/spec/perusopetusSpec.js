@@ -3407,7 +3407,9 @@ describe('Perusopetus', function() {
           'Sanallinen arviointi Keskustelee sujuvasti suomeksi\n' +
           'Opetuksen sisältö Suullinen ilmaisu ja kuullun ymmärtäminen\n' +
           'Fysiikka 9 1 vuosiviikkotuntia\n' +
-          'Luokka-aste 7. vuosiluokka')
+          'Luokka-aste 7. vuosiluokka\n' +
+          'Suoritustapa Erityinen tutkinto'
+        )
       })
     })
     describe('Tietojen muuttaminen', function() {
