@@ -52,9 +52,12 @@ const extractValidationErrorText = (error) => {
 
 const errorText = (error) => {
   if (error.text) return error.text
-  else if (error.httpStatus == 400 && error.jsonMessage && error.jsonMessage[0] && error.jsonMessage[0].key.startsWith('badRequest.validation')) return extractValidationErrorText(error.jsonMessage[0])
+  else if (error.httpStatus == 400 && jsonMessage(error).key.startsWith('badRequest.validation')) return extractValidationErrorText(jsonMessage(error))
+  else if (error.httpStatus == 503 && jsonMessage(error).key.startsWith('unavailable.readOnly')) return <Text name={jsonMessage(error).message} ignoreMissing={true}/>
   else if (error.httpStatus) return <Text name={'httpStatus.' + error.httpStatus} ignoreMissing={true}/>
 }
+
+const jsonMessage = error => error.jsonMessage && error.jsonMessage[0] && error.jsonMessage[0]
 
 export const Error = ({error}) => {
   let showError = errorText(error) && !isTopLevel(error)

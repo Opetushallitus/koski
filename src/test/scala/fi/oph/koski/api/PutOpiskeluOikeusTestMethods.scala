@@ -31,9 +31,22 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
     putOppija(JsonSerializer.serializeWithRoot(SchemaValidatingExtractor.extract[Oppija](makeOppija(opiskeluOikeudet = List(defaultOpiskeluoikeus))(tag)).right.get.copy(henkilö = henkilö)))(f)
   }
 
-  def putOppija[A](oppija: JValue, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
+  def putOppija[A](oppija: JValue, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A =
+    putOppijaVersioned(oppija, 1, headers)(f)
+
+  def putOppijaV2[A](oppija: JValue, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A =
+    putOppijaVersioned(oppija, 2, headers)(f)
+
+  private def putOppijaVersioned[A](oppija: JValue, versio: Int, headers: Headers = authHeaders() ++ jsonContent)(f: => A): A = {
     val jsonString = JsonMethods.pretty(oppija)
-    val result = put("api/oppija", body = jsonString, headers = headers)(f)
+    val url = if (versio == 1) {
+      "api/oppija"
+    } else if (versio == 2) {
+      "api/v2/oppija"
+    } else {
+      ???
+    }
+    val result = put(url, body = jsonString, headers = headers)(f)
     refreshElasticSearchIndex
     result
   }

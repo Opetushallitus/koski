@@ -63,7 +63,13 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
     }
   }
 
-  def createOrUpdate(oppija: Oppija, allowUpdate: Boolean, allowDeleteCompleted: Boolean = false)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = {
+  def createOrUpdate(oppija: Oppija, allowUpdate: Boolean, allowDeleteCompleted: Boolean = false)(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] = if (isReadOnly) {
+    Left(KoskiErrorCategory.unavailable.readOnly())
+  } else {
+    performCreateOrUpdate(oppija, allowUpdate, allowDeleteCompleted)
+  }
+
+  private def performCreateOrUpdate(oppija: Oppija, allowUpdate: Boolean, allowDeleteCompleted: Boolean)(implicit user: KoskiSession) = {
     val oppijaOid: Either[HttpStatus, PossiblyUnverifiedHenkilöOid] = oppija.henkilö match {
       case h: UusiHenkilö =>
         hetu.validate(h.hetu).right.flatMap { hetu =>
@@ -97,6 +103,8 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
       }
     }
   }
+
+  private def isReadOnly = config.hasPath("koski.oppija.readOnly") && config.getBoolean("koski.oppija.readOnly")
 
   private def invalidate(opiskeluoikeusOid: String, invalidationFn: Oppija => Either[HttpStatus, Oppija], updateFn: Oppija => Either[HttpStatus, HenkilönOpiskeluoikeusVersiot])(implicit user: KoskiSession): Either[HttpStatus, HenkilönOpiskeluoikeusVersiot] =
     opiskeluoikeusRepository.findByOid(opiskeluoikeusOid).flatMap { row =>
