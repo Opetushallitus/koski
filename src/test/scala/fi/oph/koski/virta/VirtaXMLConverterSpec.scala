@@ -16,7 +16,8 @@ class VirtaXMLConverterSpec extends FreeSpec with Matchers with OptionValues {
   val converter = VirtaXMLConverter(MockOppilaitosRepository, MockKoodistoViitePalvelu, MockOrganisaatioRepository)
   private def convertSuoritus(suoritus: Elem) = converter.convertSuoritus(suoritus, List(suoritus))
 
-  def baseSuoritus: Elem = <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Kul-49.3400" avain="1114935190">
+  def baseSuoritus: Elem = suoritusWithOrganisaatio(None)
+  def suoritusWithOrganisaatio(organisaatio: Option[Elem]): Elem = <virta:Opintosuoritus valtakunnallinenKoulutusmoduulitunniste="" opiskeluoikeusAvain="1114082125" opiskelijaAvain="1114082124" koulutusmoduulitunniste="Kul-49.3400" avain="1114935190">
     <virta:SuoritusPvm>2014-05-30</virta:SuoritusPvm>
     <virta:Laajuus>
       <virta:Opintopiste>5.000000</virta:Opintopiste>
@@ -25,6 +26,7 @@ class VirtaXMLConverterSpec extends FreeSpec with Matchers with OptionValues {
       <virta:Viisiportainen>5</virta:Viisiportainen>
     </virta:Arvosana>
     <virta:Myontaja>10076</virta:Myontaja>
+    {if (organisaatio.isDefined) organisaatio.get}
     <virta:Laji>2</virta:Laji>
     <virta:Nimi>Dynamics of Structures; lectures and exercises L</virta:Nimi>
     <virta:Kieli>en</virta:Kieli>
@@ -35,7 +37,9 @@ class VirtaXMLConverterSpec extends FreeSpec with Matchers with OptionValues {
     <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
   </virta:Opintosuoritus>
 
-  val virtaOpiskeluoikeudet: Elem = <virta:Opiskeluoikeudet>
+  val virtaOpiskeluoikeudet: Elem = opiskeluoikeusWithOrganisaatio(None)
+
+  def opiskeluoikeusWithOrganisaatio(organisaatio: Option[Elem]): Elem = <virta:Opiskeluoikeudet>
     <virta:Opiskeluoikeus opiskelijaAvain="avopH1" avain="avopH1O1">
       <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
       <virta:Tila>
@@ -43,7 +47,8 @@ class VirtaXMLConverterSpec extends FreeSpec with Matchers with OptionValues {
         <virta:Koodi>1</virta:Koodi>
       </virta:Tila>
       <virta:Tyyppi>1</virta:Tyyppi>
-      <virta:Myontaja>10065</virta:Myontaja>
+      <virta:Myontaja>10076</virta:Myontaja>
+      {if (organisaatio.isDefined) organisaatio.get}
       <virta:Jakso koulutusmoduulitunniste="opiskeluoikeuden_kk_tunniste">
         <virta:AlkuPvm>2008-08-01</virta:AlkuPvm>
         <virta:Koulutuskoodi>621702</virta:Koulutuskoodi>
@@ -76,9 +81,101 @@ class VirtaXMLConverterSpec extends FreeSpec with Matchers with OptionValues {
         opiskeluoikeudet.head.tyyppi.nimi.value should be (LocalizedString.sanitizeRequired(Map(("fi" -> "Korkeakoulutus"), ("sv" -> "Högskoleutbildning")), "Korkeakoulutus"))
       }
     }
+
+    "Lähdeorganisaatio" - {
+      def convertOpiskeluoikeusWithOrganisaatio(organisaatioXml: Option[Elem]) =
+        converter.convertToOpiskeluoikeudet(opiskeluoikeusWithOrganisaatio(organisaatioXml)).head
+
+      "kun opiskeluoikeudella ei ole lähdeorganisaatiota" in {
+        val opiskeluoikeus = convertOpiskeluoikeusWithOrganisaatio(None)
+         opiskeluoikeus.oppilaitos.get.nimi.get should be(Finnish("Aalto-yliopisto", Some("Aalto-universitetet"), Some("Aalto University")))
+      }
+
+      "kun opiskeluoikeudella on lähdeorganisaatio" in {
+        val opiskeluoikeus: KorkeakoulunOpiskeluoikeus = convertOpiskeluoikeusWithOrganisaatio(Some(
+          <virta:Organisaatio>
+            <virta:Rooli>3</virta:Rooli>
+            <virta:Koodi>01901</virta:Koodi>
+            <virta:Osuus>1</virta:Osuus>
+          </virta:Organisaatio>
+        ))
+
+        opiskeluoikeus.oppilaitos.get.nimi.get should be(Finnish("Helsingin yliopisto", Some("Helsingfors universitet"), Some("University of Helsinki")))
+      }
+
+      "kun opiskeluoikeuden lähdeorganisaatio on kuraa" in {
+        val opiskeluoikeus: KorkeakoulunOpiskeluoikeus = convertOpiskeluoikeusWithOrganisaatio(Some(
+          <virta:Organisaatio>
+            <virta:Rooli>3</virta:Rooli>
+            <virta:Koodi>kuraa</virta:Koodi>
+            <virta:Osuus>1</virta:Osuus>
+          </virta:Organisaatio>
+        ))
+
+        opiskeluoikeus.oppilaitos.get.nimi.get should be(Finnish("Aalto-yliopisto", Some("Aalto-universitetet"), Some("Aalto University")))
+      }
+
+      "kun opiskeluoikeudella on joku muu organisaatio kuin lähdeorganisaatio" in {
+        val opiskeluoikeus: KorkeakoulunOpiskeluoikeus = convertOpiskeluoikeusWithOrganisaatio(Some(
+          <virta:Organisaatio>
+            <virta:Rooli>8</virta:Rooli>
+            <virta:Koodi>01901</virta:Koodi>
+            <virta:Osuus>1</virta:Osuus>
+          </virta:Organisaatio>
+        ))
+
+        opiskeluoikeus.oppilaitos.get.nimi.get should be(Finnish("Aalto-yliopisto", Some("Aalto-universitetet"), Some("Aalto University")))
+      }
+    }
   }
 
   "Suoritusten konvertointi" - {
+    "Lähdeorganisaatio" - {
+      def covertSuoritusWithOrganisaatio(organisaatioXml: Option[Elem]) =
+        convertSuoritus(suoritusWithOrganisaatio(organisaatioXml)).get
+
+      "kun suorituksella ei ole lähdeorganisaatiota" in {
+        val suoritus = covertSuoritusWithOrganisaatio(None)
+        suoritus.toimipiste.nimi.get should be(Finnish("Aalto-yliopisto", Some("Aalto-universitetet"), Some("Aalto University")))
+      }
+
+      "kun suorituksella on lähdeorganisaatio" in {
+        val suoritus = covertSuoritusWithOrganisaatio(Some(
+          <virta:Organisaatio>
+            <virta:Rooli>3</virta:Rooli>
+            <virta:Koodi>01901</virta:Koodi>
+            <virta:Osuus>1</virta:Osuus>
+          </virta:Organisaatio>
+        ))
+
+        suoritus.toimipiste.nimi.get should be(Finnish("Helsingin yliopisto", Some("Helsingfors universitet"), Some("University of Helsinki")))
+      }
+
+      "kun suorituksella on joku muu organisaatio kuin lähdeorganisaatio" in {
+        val suoritus = covertSuoritusWithOrganisaatio(Some(
+          <virta:Organisaatio>
+            <virta:Rooli>9</virta:Rooli>
+            <virta:Koodi>01901</virta:Koodi>
+            <virta:Osuus>1</virta:Osuus>
+          </virta:Organisaatio>
+        ))
+
+        suoritus.toimipiste.nimi.get should be(Finnish("Aalto-yliopisto", Some("Aalto-universitetet"), Some("Aalto University")))
+      }
+
+      "kun suorituksella lähdeorganisaatio on kuraa" in {
+        val suoritus = covertSuoritusWithOrganisaatio(Some(
+          <virta:Organisaatio>
+            <virta:Rooli>3</virta:Rooli>
+            <virta:Koodi>kuraa</virta:Koodi>
+            <virta:Osuus>1</virta:Osuus>
+          </virta:Organisaatio>
+        ))
+
+        suoritus.toimipiste.nimi.get should be(Finnish("Aalto-yliopisto", Some("Aalto-universitetet"), Some("Aalto University")))
+      }
+    }
+
     "Arviointi" - {
       def convertArviointi(arvosana: Elem): Arviointi = convertSuoritus(withArvosana(arvosana)).flatMap(_.arviointi).flatMap(_.headOption).get
       "Viisiportainen" - {

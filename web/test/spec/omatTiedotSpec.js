@@ -23,6 +23,7 @@ describe('Omat tiedot', function() {
           expect(omattiedot.nimi()).to.equal('Väinö Tõnis Kansalainen')
           expect(omattiedot.oppija()).to.equal('Opintoni')
           expect(opinnot.opiskeluoikeudet.oppilaitokset()).to.deep.equal([
+            'Jyväskylän yliopisto',
             'Itä-Suomen yliopisto' ])
         })
 

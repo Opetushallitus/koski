@@ -2,6 +2,8 @@ package fi.oph.koski.virta
 
 import java.time.LocalDate
 import java.time.LocalDate.{parse => date}
+import scala.util.Try
+import scala.xml.Node
 
 import fi.oph.koski.config.Environment
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
@@ -14,7 +16,6 @@ import fi.oph.koski.util.DateOrdering
 import fi.oph.koski.util.OptionalLists.optionalList
 import fi.oph.koski.virta.VirtaXMLConverterUtils._
 
-import scala.xml.Node
 case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodistoViitePalvelu: KoodistoViitePalvelu, organisaatioRepository: OrganisaatioRepository) extends Logging {
 
   def convertToOpiskeluoikeudet(virtaXml: Node): List[KorkeakoulunOpiskeluoikeus] = {
@@ -319,16 +320,19 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   }
 
   private def oppilaitos(node: Node, vahvistusPäivä: Option[LocalDate]): Oppilaitos =
-    optionalOppilaitos(node, vahvistusPäivä).getOrElse(throw new RuntimeException(s"Oppilaitosta ei löydy: ${oppilaitosnumero(node)}"))
+    optionalOppilaitos(node, vahvistusPäivä).getOrElse(throw new RuntimeException(s"Nykyistä tai lähdeoppilaitosta ei löydy: ${oppilaitosnumero(node)}"))
 
   private def optionalOppilaitos(node: Node, vahvistusPäivä: Option[LocalDate]): Option[Oppilaitos] = {
-    val numero = oppilaitosnumero(node)
-    val oppilaitos = numero.flatMap(oppilaitosRepository.findByOppilaitosnumero)
-      .orElse(possiblyMockOppilaitos)
-      .map(oppilaitoksenNimiValmistumishetkellä(vahvistusPäivä))
+    def find(numero: Option[String]) =
+      numero.flatMap(oppilaitosRepository.findByOppilaitosnumero)
+        .orElse(numero.flatMap(possiblyMockOppilaitos))
+        .map(oppilaitoksenNimiValmistumishetkellä(vahvistusPäivä))
+
+    val numerot = oppilaitosnumero(node)
+    val oppilaitos = find(numerot.lähde).orElse(find(numerot.nykyinen))
 
     if (oppilaitos.isEmpty) {
-      logger.warn(s"Oppilaitosta ei löydy: $numero")
+      logger.warn(s"Nykyistä tai lähdeoppilaitosta ei löydy: $numerot")
     }
     oppilaitos
   }
@@ -340,9 +344,14 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
 
   // Jos ajetaan paikallista Koskea Virta-testiympäristön kanssa, useimpia oppilaitoksia ei löydy
   // MockOppilaitosRepositorystä. Käytetään Aalto-yliopistoa, jotta pystytään näyttämään edes jotain.
-  private def possiblyMockOppilaitos: Option[Oppilaitos] = {
+  // Testejä varten oppilaitoskoodilla "kuraa" saa aiheutettua virheen puuttuvasta oppilaitoksesta
+  private def possiblyMockOppilaitos(numero: String): Option[Oppilaitos] = {
     if (Environment.isLocalDevelopmentEnvironment && oppilaitosRepository == MockOppilaitosRepository) {
-      oppilaitosRepository.findByOppilaitosnumero("10076")
+      if (numero == "kuraa") {
+        oppilaitosRepository.findByOppilaitosnumero("kuraa")
+      } else {
+        oppilaitosRepository.findByOppilaitosnumero("10076")
+      }
     } else {
       None
     }
@@ -361,7 +370,7 @@ case class Ilmoittautuminen(oppilaitos: Option[Oppilaitos], tila: KorkeakoulunOp
     if (jaksonOpiskeluoikeusAvain.nonEmpty) {
       ooAvain == jaksonOpiskeluoikeusAvain
     } else {
-      oppilaitosnumero(n).exists(myöntäjä => kuuluuOpiskeluoikeuteen(LoppupäivällinenOpiskeluoikeusJakso(alkuPvm(n), loppuPvm(n)), myöntäjä))
+      oppilaitosnumero(n).asList.exists(myöntäjä => kuuluuOpiskeluoikeuteen(LoppupäivällinenOpiskeluoikeusJakso(alkuPvm(n), loppuPvm(n)), myöntäjä))
     }
   }
 
@@ -425,7 +434,42 @@ object VirtaXMLConverterUtils {
       }
     }
 
+  def oppilaitosnumero(node: Node): Oppilaitosnumerot =
+    Oppilaitosnumerot(
+      nykyinen = nykyinenOppilaitosnumero(node),
+      lähde = lähdeorganisaationOppilaitosnumero(node)
+    )
+
+  private def lähdeorganisaationOppilaitosnumero(node: Node): Option[String] = {
+    def isLähdeorganisaatio(org: Node) =
+      OrganisaationRooli.parse((org \ "Rooli").text)
+        .contains(OrganisaationRooli.Lähde)
+
+    (node \\ "Organisaatio")
+      .find(isLähdeorganisaatio)
+      .map { org => (org \ "Koodi").text }
+  }
+
   // huom, tässä kentässä voi olla oppilaitosnumeron lisäksi muitakin arvoja, esim. "UK" = "Ulkomainen korkeakoulu"
   // https://confluence.csc.fi/display/VIRTA/Tietovarannon+koodistot#Tietovarannonkoodistot-Organisaatio
-  def oppilaitosnumero(node: Node): Option[String] = (node \ "Myontaja").headOption.map(_.text)
+  private def nykyinenOppilaitosnumero(node: Node): Option[String] = (node \ "Myontaja").headOption.map(_.text)
+}
+
+case class Oppilaitosnumerot(
+  nykyinen: Option[String],
+  lähde: Option[String]
+) {
+  def asList = List(lähde, nykyinen).flatten
+}
+
+// https://confluence.csc.fi/display/VIRTA/Tietovarannon+koodistot#Tietovarannonkoodistot-Organisaationrooli,Organisationensroll
+object OrganisaationRooli extends Enumeration {
+  val Myöntävä = Value("1")
+  val Järjestävä = Value("2")
+  val Lähde = Value("3")
+  val Kohde = Value("4")
+  val FuusioitunutMyöntäjä = Value("5")
+  val Tuntematon = Value("9")
+
+  def parse(str: String) = Try(OrganisaationRooli.withName(str)).toOption
 }
