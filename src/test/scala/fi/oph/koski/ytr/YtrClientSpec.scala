@@ -38,12 +38,14 @@ class YtrClientSpec extends FreeSpec with Matchers with BeforeAndAfterAll {
         "period" -> "2016K",
         "examId" -> "N",
         "grade" -> "L",
-        "points" -> "100"
+        "points" -> "100",
+        "copyOfExamPaper" -> "1.pdf"
       ),
       Map(
         "period" -> "2015S",
         "examId" -> "BB",
-        "grade" -> "A"
+        "grade" -> "A",
+        "copyOfExamPaper" -> null
       )
     ),
     "certificateSchoolOphOid" -> "1.2.3.4.5",
@@ -59,13 +61,15 @@ class YtrClientSpec extends FreeSpec with Matchers with BeforeAndAfterAll {
         period = "2016K",
         examId = "N",
         grade = "L",
-        points = Some(100)
+        points = Some(100),
+        copyOfExamPaper = Some("1.pdf")
       ),
       YtrExam(
         period = "2015S",
         examId = "BB",
         grade = "A",
-        points = None
+        points = None,
+        copyOfExamPaper = None
     )),
     certificateSchoolOphOid = Some("1.2.3.4.5"),
     hasCompletedMandatoryExams = true
@@ -81,12 +85,11 @@ class YtrClientSpec extends FreeSpec with Matchers with BeforeAndAfterAll {
   }
 
   "YtrClient" - {
-
     "palauttaa ytr oppijan" in {
       val result = mockClient.oppijaByHetu(hetu)
       result.get should equal(expectedOppija)
     }
-    "ignoraa ylimääräiset kentät" in {
+    "ei välitä ylimääräisistä kentistä" in {
       mockEndpoints(defaultOppijaResponse + ("Foo" -> "Bar"))
       val result = mockClient.oppijaByHetu(hetu)
       result.get should equal(expectedOppija)
