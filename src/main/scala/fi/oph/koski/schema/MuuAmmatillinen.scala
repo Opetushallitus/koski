@@ -48,7 +48,8 @@ sealed trait Työssäoppimisjaksoton extends AmmatillinenPäätasonSuoritus {
 }
 
 trait MuuAmmatillinenKoulutus extends Koulutusmoduuli
-trait Kuvaus { @Description("Kuvaus koulutuksen sisällöstä osaamisena.")
+trait Kuvaus {
+  @Description("Kuvaus koulutuksen sisällöstä osaamisena.")
   @Tooltip("Kuvaus koulutuksen sisällöstä osaamisena.")
   @MultiLineString(5)
   def kuvaus: LocalizedString
