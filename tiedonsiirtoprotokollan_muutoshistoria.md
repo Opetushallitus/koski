@@ -1,3 +1,8 @@
+## 20.9.2019
+- Yhteisen tutkinnon osan osa-alueita voi lisätä osasuorituksiksi suorituksiin:
+  - Muun ammatillisen koulutuksen suoritus
+  - Tutkinnon osaa pienemmistä kokonaisuuksista koostuva suoritus
+
 ## 4.9.2019
 - Perusopetukseen valmistavan koulutuksen suoritukseen lisätty kokonaislaajuus
 - Perusopetukseen valmistavan koulutuksen suorituksesta poistettu Nuorten perusopetuksen oppiaineen suoritus

@@ -49,7 +49,9 @@ object TutkinnonOsaaPienempiKokonaisuusExample {
             ),
             lisätiedot = None,
             suorituskieli = None
-          )
+          ),
+          MuunAmmatillisenKoulutuksenExample.yhteisenTutkinnonOsanOsaAlueenSuoritusValtakunnallinen,
+          MuunAmmatillisenKoulutuksenExample.yhteisenTutkinnonOsanOsaAlueenSuoritusPaikallinen
         ))
       )
     )
@@ -100,7 +102,9 @@ object MuunAmmatillisenKoulutuksenExample {
           muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
             PaikallinenKoodi("KISI", "KISI-tentti"),
             "Valmiudet hoitaa kiinteistöalan yrityksen sihteeri-, toimisto- ja asiakaspalvelutehtäviä, vahvistaa osallistujan ammatillisia perusvalmiuksia"
-          )
+          ),
+          yhteisenTutkinnonOsanOsaAlueenSuoritusValtakunnallinen,
+          yhteisenTutkinnonOsanOsaAlueenSuoritusPaikallinen
         ))
       )
     )
@@ -247,5 +251,24 @@ object MuunAmmatillisenKoulutuksenExample {
   lazy val ammatilliseenTehtäväänValmistavaKoulutusExample = Oppija(
     exampleHenkilö,
     List(ammatilliseenTehtäväänValmistavaKoulutusOpiskeluoikeus)
+  )
+
+  lazy val yhteisenTutkinnonOsanOsaAlueenSuoritusValtakunnallinen = YhteisenTutkinnonOsanOsaAlueenSuoritus(
+    koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(
+      Koodistokoodiviite("FK", "ammatillisenoppiaineet"),
+      pakollinen = true,
+      laajuus = None
+    ),
+    arviointi = Some(List(arviointiHyväksytty))
+  )
+
+  lazy val yhteisenTutkinnonOsanOsaAlueenSuoritusPaikallinen = YhteisenTutkinnonOsanOsaAlueenSuoritus(
+    koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(
+      Koodistokoodiviite("AI", "ammatillisenoppiaineet"),
+      pakollinen = false,
+      kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"),
+      laajuus = None
+    ),
+    arviointi = Some(List(arviointiHyväksytty))
   )
 }

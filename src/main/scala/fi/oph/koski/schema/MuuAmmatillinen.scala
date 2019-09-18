@@ -36,7 +36,7 @@ case class TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(
   koulutussopimukset: Option[List[Koulutussopimusjakso]] = None,
   @Description("Tutkinnon osaa pienempään kokonaisuuteen kuuluvien osasuoritusten suoritukset")
   @MinItems(1)
-  override val osasuoritukset: Option[List[TutkinnonOsaaPienemmänKokonaisuudenSuoritus]],
+  override val osasuoritukset: Option[List[TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvanSuorituksenOsasuoritus]],
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus", "suorituksentyyppi"),
@@ -77,7 +77,9 @@ case class TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus(
   kuvaus: LocalizedString
 ) extends PaikallinenKoulutusmoduuli with Kuvaus
 
-sealed trait MuuAmmatillinenOsasuoritus extends Suoritus with MahdollisestiSuorituskielellinen
+trait TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvanSuorituksenOsasuoritus extends Vahvistukseton with Suoritus
+
+trait MuuAmmatillinenOsasuoritus extends Suoritus with MahdollisestiSuorituskielellinen
 
 case class MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
   koulutusmoduuli: MuunAmmatillisenKoulutuksenOsasuoritus,
@@ -110,6 +112,7 @@ case class MuunAmmatillisenKoulutuksenOsasuorituksenLisätieto(
   kuvaus: LocalizedString
 )
 
+
 case class TutkinnonOsaaPienemmänKokonaisuudenSuoritus(
   koulutusmoduuli: TutkinnonOsaaPienempiKokonaisuus,
   override val alkamispäivä: Option[LocalDate],
@@ -126,11 +129,10 @@ case class TutkinnonOsaaPienemmänKokonaisuudenSuoritus(
   suorituskieli: Option[Koodistokoodiviite],
   @KoodistoKoodiarvo("tutkinnonosaapienempikokonaisuus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("tutkinnonosaapienempikokonaisuus", koodistoUri = "suorituksentyyppi")
-) extends MuuAmmatillinenOsasuoritus with Vahvistukseton
+) extends MuuAmmatillinenOsasuoritus with TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvanSuorituksenOsasuoritus
 
 case class TutkinnonOsaaPienempiKokonaisuus(
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusKaikkiYksiköt],
   kuvaus: LocalizedString
 ) extends PaikallinenKoulutusmoduuli
-

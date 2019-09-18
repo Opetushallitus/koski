@@ -29,6 +29,8 @@ describe('Muu ammatillinen koulutus', function() {
           'Asunto- ja kiinteistöosakeyhtiön talous ja verotus Hyväksytty\n' +
           'Tiedottaminen ja asiakaspalvelu Hyväksytty\n' +
           'KISI-tentti Hyväksytty\n' +
+          'Fysiikka ja kemia Hyväksytty\n' +
+          'Äidinkieli, Suomen kieli ja kirjallisuus Hyväksytty\n' +
           'Yhteensä 0'
         )
       })
@@ -169,6 +171,50 @@ describe('Muu ammatillinen koulutus', function() {
           })
         })
       })
+
+      describe('Yhteisen tutkinnon osan osa-alueen lisääminen', function () {
+        describe('Koodistosta löytyvä osan osa-alue', function () {
+          before(
+            opinnot.suljeKaikki,
+            editor.edit,
+            opinnot.tutkinnonOsat().lisääTutkinnonOsa('ETK Etiikka'),
+            editor.saveChangesAndWaitForSuccess
+          )
+
+          it('onnistuu', function () {
+            expect(opinnot.tutkinnonOsat().osienTekstit()).to.include(
+              'Etiikka'
+            )
+          })
+        })
+        describe('Paikallinen osan osa-alue', function () {
+          before(
+            editor.edit,
+            opinnot.tutkinnonOsat().lisääPaikallinenTutkinnonOsa('Kotiviinin valmistaminen', ':contains(Lisää paikallinen yhteisen tutkinnon osan osa-alue)'),
+            editor.saveChangesAndWaitForSuccess
+          )
+
+          it('onnistuu', function () {
+            expect(opinnot.tutkinnonOsat().osienTekstit()).to.include(
+              'Kotiviinin valmistaminen'
+            )
+          })
+        })
+      })
+
+      describe('Tutkinnon osaa pienemmän kokonaisuuden suorituksen lisääminen', function() {
+        before(
+          editor.edit,
+          opinnot.tutkinnonOsat().lisääTutkinnonOsaaPienempiKokonaisuus('Autoalan perustutkinto', 'Auton korjaaminen', 'Auton tuunaus'),
+          editor.saveChangesAndWaitForSuccess
+        )
+
+        it('onnistuu', function() {
+          expect(opinnot.tutkinnonOsat().osienTekstit()).to.include(
+            'Auton tuunaus'
+          )
+        })
+      })
     })
   })
 
@@ -217,7 +263,13 @@ describe('Muu ammatillinen koulutus', function() {
           expect(opinnot.tutkinnonOsat().osienTekstit()).to.equal(
             'Asunto- ja kiinteistöosakeyhtiön talous ja verotus\n' +
             'Kuvaus Kurssilla opitaan hallitsemaan asunto- ja kiinteistöosakeyhtiön taloutta ja verotusta.\n' +
-            'Liittyy tutkinnon osaan Varaosatyö ja varaston hallinta'
+            'Liittyy tutkinnon osaan Varaosatyö ja varaston hallinta\n' +
+            '\nFysiikka ja kemia Hyväksytty\n' +
+            'Pakollinen kyllä\n' +
+            'Arviointipäivä 20.3.2013\n' +
+            '\nÄidinkieli, Suomen kieli ja kirjallisuus Hyväksytty\n' +
+            'Pakollinen ei\n' +
+            'Arviointipäivä 20.3.2013'
           )
         })
       })
@@ -231,11 +283,42 @@ describe('Muu ammatillinen koulutus', function() {
 
         it('onnistuu', function() {
           expect(opinnot.tutkinnonOsat().osienTekstit()).to.equal(
-            'Asunto- ja kiinteistöosakeyhtiön talous ja verotus\n\nAuton tuunaus'
+            'Asunto- ja kiinteistöosakeyhtiön talous ja verotus\n' +
+            '\nFysiikka ja kemia Hyväksytty\n' +
+            '\nÄidinkieli, Suomen kieli ja kirjallisuus Hyväksytty\n' +
+            '\nAuton tuunaus'
           )
         })
       })
 
+      describe('Yhteisen tutkinnon osan osa-alueen lisääminen', function () {
+        describe('Koodistosta löytyvä osan osa-alue', function () {
+          before(
+            editor.edit,
+            opinnot.tutkinnonOsat().lisääTutkinnonOsa('ETK Etiikka'),
+            editor.saveChangesAndWaitForSuccess
+          )
+
+          it('onnistuu', function () {
+            expect(opinnot.tutkinnonOsat().osienTekstit()).to.include(
+              'Etiikka'
+            )
+          })
+        })
+        describe('Paikallinen osan osa-alue', function () {
+          before(
+            editor.edit,
+            opinnot.tutkinnonOsat().lisääPaikallinenTutkinnonOsa('Kotiviinin valmistaminen', ':contains(Lisää paikallinen yhteisen tutkinnon osan osa-alue)'),
+            editor.saveChangesAndWaitForSuccess
+          )
+
+          it('onnistuu', function () {
+            expect(opinnot.tutkinnonOsat().osienTekstit()).to.include(
+              'Kotiviinin valmistaminen'
+            )
+          })
+        })
+      })
     })
   })
 })

@@ -179,6 +179,7 @@ function OpinnotPage() {
     tutkinnonOsat: TutkinnonOsat,
     ibYhteisetSuoritukset: IBSuoritukset(),
     avaaKaikki: click(findSingle('.expand-all')),
+    suljeKaikki: click(findSingle('.expand-all.koski-button.expanded')),
     anythingEditable: function() {
       return Editor(findSingle('.content-area') ).isEditable()
     },
@@ -530,13 +531,13 @@ function TutkinnonOsat(groupId, base) {
     lisääMuuOpintovalmiuksiaTukevaOpinto : function(nimi) {
       return lisääPaikallinenTutkinnonOsa(nimi, '.lisaa-muu-opintovalmiuksia-tukeva-opinto-modal', '.muu-opintovalmiuksia-tukeva-opinto a')
     },
-    lisääPaikallinenTutkinnonOsa: function(nimi) {
-      return lisääPaikallinenTutkinnonOsa(nimi, '.lisaa-paikallinen-tutkinnon-osa-modal', '.paikallinen-tutkinnon-osa a')
+    lisääPaikallinenTutkinnonOsa: function(nimi, tarkentavaSelector) {
+      return lisääPaikallinenTutkinnonOsa(nimi, '.lisaa-paikallinen-tutkinnon-osa-modal', '.paikallinen-tutkinnon-osa a ' + (tarkentavaSelector || ''))
     },
     lisääTutkinnonOsaaPienempiKokonaisuus: function(tutkinto, liittyyTutkinnonOsaan, nimi) {
       return function() {
         var modalElement = subElement(uusiTutkinnonOsaElement, '.lisaa-paikallinen-tutkinnon-osa-modal')
-        return click(subElement(uusiTutkinnonOsaElement, ('.paikallinen-tutkinnon-osa a')))()
+        return click(subElement(uusiTutkinnonOsaElement, ('.paikallinen-tutkinnon-osa a span:contains(Lisää tutkinnon osaa pienemmän kokonaisuuden suoritus)')))()
           .then(Page(modalElement).setInputValue('.tutkinto .autocomplete', tutkinto))
           .then(wait.until(Page(modalElement).button(findSingle('.vahvista')).isDisabled))
           .then(Page(modalElement).setInputValue('.tutkinnon-osat .dropdown', liittyyTutkinnonOsaan))
