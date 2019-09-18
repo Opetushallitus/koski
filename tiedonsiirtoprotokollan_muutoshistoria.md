@@ -1,4 +1,5 @@
-## 20.9.2019
+## 19.9.2019
+- Lisätty suoritustapa-kenttä nuorten perusopetuksen oppiaineen suoritukseen valmistavassa opetuksessa 
 - Yhteisen tutkinnon osan osa-alueita voi lisätä osasuorituksiksi suorituksiin:
   - Muun ammatillisen koulutuksen suoritus
   - Tutkinnon osaa pienemmistä kokonaisuuksista koostuva suoritus
