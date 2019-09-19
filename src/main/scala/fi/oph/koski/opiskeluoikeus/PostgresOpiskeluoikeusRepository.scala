@@ -221,7 +221,7 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
     }
   }
 
-  private def updateAction[A <: PäätasonSuoritus](oldRow: OpiskeluoikeusRow, uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowDeleteCompleted: Boolean = false)(implicit user: KoskiSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Write] = {
+  private def updateAction[A <: PäätasonSuoritus](oldRow: OpiskeluoikeusRow, uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowDeleteCompletedSuoritukset: Boolean = false)(implicit user: KoskiSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Write] = {
     val (id, oid, versionumero) = (oldRow.id, oldRow.oid, oldRow.versionumero)
     val nextVersionumero = versionumero + 1
 
@@ -231,11 +231,11 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
       case _ =>
         val vanhaOpiskeluoikeus = oldRow.toOpiskeluoikeus
 
-        val täydennettyOpiskeluoikeus = if (allowDeleteCompleted) uusiOpiskeluoikeus else OpiskeluoikeusChangeMigrator.kopioiValmiitSuorituksetUuteen(vanhaOpiskeluoikeus, uusiOpiskeluoikeus)
+        val tallennettavaOpiskeluoikeus =  OpiskeluoikeusChangeMigrator.migrate(vanhaOpiskeluoikeus, uusiOpiskeluoikeus, allowDeleteCompletedSuoritukset)
 
-        validateOpiskeluoikeusChange(vanhaOpiskeluoikeus, täydennettyOpiskeluoikeus) match {
+        validateOpiskeluoikeusChange(vanhaOpiskeluoikeus, tallennettavaOpiskeluoikeus) match {
           case HttpStatus.ok =>
-            val updatedValues@(newData, _, _, _, _, _, _, _) = Tables.OpiskeluoikeusTable.updatedFieldValues(täydennettyOpiskeluoikeus, nextVersionumero)
+            val updatedValues@(newData, _, _, _, _, _, _, _) = Tables.OpiskeluoikeusTable.updatedFieldValues(tallennettavaOpiskeluoikeus, nextVersionumero)
             val diff: JArray = jsonDiff(oldRow.data, newData)
             diff.values.length match {
               case 0 =>

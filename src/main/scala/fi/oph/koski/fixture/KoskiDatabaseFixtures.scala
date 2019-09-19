@@ -46,7 +46,12 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
     application.perustiedotIndexer.deleteByOppijaOids(henkilöOids)
 
     if (!fixtureCacheCreated) {
-      cachedPerustiedot = Some(validatedOpiskeluoikeudet.map { case (henkilö, opiskeluoikeus) =>
+      cachedPerustiedot = Some(validatedOpiskeluoikeudet.map { case (henkilö, oo) =>
+        val opiskeluoikeus = if (henkilö.hetu.contains(MockOppijat.organisaatioHistoria.hetu.get)) {
+          oo.asInstanceOf[AmmatillinenOpiskeluoikeus].copy(organisaatioHistoria = Some(AmmatillinenExampleData.opiskeluoikeudenOrganisaatioHistoria)) // organisaatioHistoria is cleared from incoming data, so we have to sneak it in
+        } else {
+          oo
+        }
         val id = application.opiskeluoikeusRepository.createOrUpdate(VerifiedHenkilöOid(henkilö), opiskeluoikeus, false).right.get.id
         OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, application.henkilöRepository.opintopolku.withMasterInfo(henkilö))
       })
@@ -135,7 +140,8 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
       (MockOppijat.slave.henkilö, ExamplesLukio.päättötodistus()),
       (MockOppijat.turvakielto, ExamplesLukio.päättötodistus()),
       (MockOppijat.erkkiEiperusteissa, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 334117, diaariNumero = "22/011/2004")),
-      (MockOppijat.internationalschool, ExamplesInternationalSchool.opiskeluoikeus)
+      (MockOppijat.internationalschool, ExamplesInternationalSchool.opiskeluoikeus),
+      (MockOppijat.organisaatioHistoria, AmmatillinenExampleData.opiskeluoikeus())
     )
   }
 }

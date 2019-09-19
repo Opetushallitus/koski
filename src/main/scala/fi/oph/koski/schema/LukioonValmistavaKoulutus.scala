@@ -22,7 +22,8 @@ case class LukioonValmistavanKoulutuksenOpiskeluoikeus(
   suoritukset: List[LukioonValmistavanKoulutuksenSuoritus],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.luva.koodiarvo)
   tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.luva,
-  lisätiedot: Option[LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot] = None
+  lisätiedot: Option[LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot] = None,
+  organisaatioHistoria: Option[List[OpiskeluoikeudenOrganisaatioHistoria]] = None
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))

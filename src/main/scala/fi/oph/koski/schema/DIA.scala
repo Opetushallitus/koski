@@ -22,7 +22,8 @@ case class DIAOpiskeluoikeus(
   suoritukset: List[DIAPäätasonSuoritus],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.diatutkinto.koodiarvo)
   tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.diatutkinto,
-  override val lisätiedot: Option[DIAOpiskeluoikeudenLisätiedot] = None
+  override val lisätiedot: Option[DIAOpiskeluoikeudenLisätiedot] = None,
+  organisaatioHistoria: Option[List[OpiskeluoikeudenOrganisaatioHistoria]] = None
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))

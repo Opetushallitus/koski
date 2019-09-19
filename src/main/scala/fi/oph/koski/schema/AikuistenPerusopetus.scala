@@ -20,7 +20,8 @@ case class AikuistenPerusopetuksenOpiskeluoikeus(
   lisätiedot: Option[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot] = None,
   suoritukset: List[AikuistenPerusopetuksenPäätasonSuoritus],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.aikuistenperusopetus.koodiarvo)
-  tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.aikuistenperusopetus
+  tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.aikuistenperusopetus,
+  organisaatioHistoria: Option[List[OpiskeluoikeudenOrganisaatioHistoria]] = None
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   @Description("Oppijan oppimäärän päättymispäivä")
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä

@@ -22,6 +22,7 @@ import {t} from '../i18n/i18n'
 import {assignTabNames, suoritusTabIndex, SuoritusTabs, urlForTab} from '../suoritus/SuoritusTabs'
 import {Korkeakoulusuoritukset} from '../virta/Korkeakoulusuoritukset'
 import {OpiskeluoikeudenTila} from '../omattiedot/fragments/OpiskeluoikeudenTila'
+import {ArrayEditor} from '../editor/ArrayEditor'
 
 export const excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot', 'synteettinen']
 
@@ -79,6 +80,7 @@ const OpiskeluoikeudenTiedot = ({opiskeluoikeus, editLink, alkuChangeBus}) => (
       getValueEditor={ (prop, getDefault) => {
         switch (prop.key) {
           case 'tila': return <OpiskeluoikeudenTilaEditor model={opiskeluoikeus} alkuChangeBus={alkuChangeBus}/>
+          case 'organisaatioHistoria': return <ArrayEditor model={addContext(prop.model, { edit: false })} reverse={true}/>
           default: return getDefault()
         }
       }}
