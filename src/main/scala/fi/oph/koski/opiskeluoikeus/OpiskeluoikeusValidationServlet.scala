@@ -31,7 +31,7 @@ class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication
     implicit val systemUser = KoskiSession.systemUser
 
     val context = ValidateContext(application.validator, application.historyRepository, application.henkilöRepository)(systemUser)
-    val validateRow: OpiskeluoikeusRow => ValidationResult = row => {
+    val validateRow: OpiskeluoikeusRow => ValidationResult = row => try {
       var result = if (extractOnly) {
         context.extractOpiskeluoikeus(row)
       } else {
@@ -40,6 +40,8 @@ class OpiskeluoikeusValidationServlet(implicit val application: KoskiApplication
       if (validateHistory) result = result + context.validateHistory(row)
       if (validateHenkilö) result = result + context.validateHenkilö(row)
       result
+    } catch {
+      case e: Exception => ValidationResult(row.oppijaOid, row.oid, List(ErrorDetail(KoskiErrorCategory.internalError.key, e.getMessage)))
     }
 
     val validationResults: Observable[ValidationResult] = validate(errorsOnly, validateRow, systemUser)
