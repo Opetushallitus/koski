@@ -873,6 +873,22 @@ describe('Omat tiedot', function() {
         })
       })
 
+      describe('Opiskeluoikeuden organisaatio historiaa', function () {
+        before(
+          authentication.logout,
+          etusivu.openPage,
+          etusivu.login(),
+          wait.until(korhopankki.isReady),
+          korhopankki.login('200994-834A'),
+          wait.until(omattiedot.isVisible),
+          SuoritusjakoPage().avaaOpiskeluoikeus('Autoalan perustutkinto (2016—, läsnä)')
+        )
+
+        it('ei näytetä', function () {
+          expect(extractAsText(S('.opiskeluoikeus-content'))).not.to.contain('Organisaatio historia')
+        })
+      })
+
       describe('Kun Virta-tietoja ei saada haettua', function() {
         before(authentication.logout, etusivu.openPage)
 

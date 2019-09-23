@@ -69,7 +69,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
 
   private def validateOpiskeluoikeus(opiskeluoikeus: Opiskeluoikeus, henkilö: Option[Henkilö])(implicit user: KoskiSession, accessType: AccessType.Value): Either[HttpStatus, Opiskeluoikeus] = opiskeluoikeus match {
     case opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus =>
-      fillMissingFields(opiskeluoikeus).right.flatMap { opiskeluoikeus =>
+      updateFields(opiskeluoikeus).right.flatMap { opiskeluoikeus =>
         (validateAccess(opiskeluoikeus.getOppilaitos)
           .onSuccess { validateLähdejärjestelmä(opiskeluoikeus) }
           .onSuccess {
@@ -93,10 +93,11 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     case _ => Right(opiskeluoikeus)
   }
 
-  private def fillMissingFields(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
+  private def updateFields(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
     fillMissingOrganisations(oo)
       .flatMap(addKoulutustyyppi)
       .map(fillPerusteenNimi)
+      .map(_.withHistoria(None))
   }
 
   private def fillPerusteenNimi(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = oo match {
@@ -194,6 +195,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       case None => Right(ooWithKoulutustyyppi)
     }
   }
+
   private def validateSisältyvyys(henkilö: Option[Henkilö], opiskeluoikeus: Opiskeluoikeus)(implicit user: KoskiSession, accessType: AccessType.Value): HttpStatus = opiskeluoikeus.sisältyyOpiskeluoikeuteen match {
     case Some(SisältäväOpiskeluoikeus(Oppilaitos(oppilaitosOid, _, _, _), oid)) if accessType == AccessType.write =>
       koskiOpiskeluoikeudet.findByOid(oid)(KoskiSession.systemUser) match {

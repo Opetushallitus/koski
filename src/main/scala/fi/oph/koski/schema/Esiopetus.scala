@@ -24,7 +24,8 @@ case class EsiopetuksenOpiskeluoikeus(
   @MaxItems(1)
   suoritukset: List[EsiopetuksenSuoritus],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.esiopetus.koodiarvo)
-  tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.esiopetus
+  tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.esiopetus,
+  organisaatioHistoria: Option[List[OpiskeluoikeudenOrganisaatioHistoria]] = None
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   @Description("Oppijan esiopetuksen lukuvuoden päättymispäivä. Esiopetuksen suoritusaika voi olla 2-vuotinen")
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä

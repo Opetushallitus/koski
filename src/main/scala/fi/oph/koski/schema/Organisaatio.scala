@@ -1,5 +1,7 @@
 package fi.oph.koski.schema
 
+import java.time.LocalDate
+
 import fi.oph.koski.schema.annotation.{Example, KoodistoUri, ReadOnly, Tooltip}
 import fi.oph.scalaschema.annotation._
 
@@ -117,3 +119,9 @@ trait DefaultDescription extends OrganisaatioWithOid {
 trait OrganisaatioonLiittyvä {
   def omistajaOrganisaatio: Option[OrganisaatioWithOid]
 }
+
+case class OpiskeluoikeudenOrganisaatioHistoria(
+  muutospäivä: LocalDate,
+  oppilaitos: Oppilaitos,
+  koulutustoimija: Koulutustoimija
+)

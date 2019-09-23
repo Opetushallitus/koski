@@ -17,7 +17,8 @@ case class InternationalSchoolOpiskeluoikeus(
   suoritukset: List[InternationalSchoolVuosiluokanSuoritus],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.internationalschool.koodiarvo)
   tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.internationalschool,
-  override val lisätiedot: Option[InternationalSchoolOpiskeluoikeudenLisätiedot] = None
+  override val lisätiedot: Option[InternationalSchoolOpiskeluoikeudenLisätiedot] = None,
+  organisaatioHistoria: Option[List[OpiskeluoikeudenOrganisaatioHistoria]] = None
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))

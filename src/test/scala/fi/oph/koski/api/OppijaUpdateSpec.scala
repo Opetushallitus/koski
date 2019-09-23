@@ -376,6 +376,46 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       }
     }
 
+    "Organisaation muutoshistoria" - {
+      lazy val uusiOrganisaatioHistoria = OpiskeluoikeudenOrganisaatioHistoria(
+        LocalDate.now(),
+        AmmatillinenExampleData.stadinAmmattiopisto,
+        Koulutustoimija(MockOrganisaatiot.helsinginKaupunki, nimi = Some(Finnish("HELSINGIN KAUPUNKI", sv = Some("Helsingfors stad"))))
+      )
+      "Oppilaitoksen oid muuttuu ja ei aikaisempaa organisaatio historiaa" in {
+        resetFixtures
+        verifyChange(change = { existing: AmmatillinenOpiskeluoikeus => existing.copy(oppilaitos = existing.oppilaitos.map(o => o.copy(oid = MockOrganisaatiot.omnia)), koulutustoimija = None)}) {
+          verifyResponseStatusOk()
+          lastOpiskeluoikeusByHetu(oppija).organisaatioHistoria should equal(Some(List(uusiOrganisaatioHistoria)))
+        }
+      }
+      "Organisaatio historiaan ei voi tuoda dataa opiskeluoikeutta luotaessa" in {
+        resetFixtures
+        putOppija(Oppija(oppija, List(defaultOpiskeluoikeus.copy(organisaatioHistoria = Some(List(uusiOrganisaatioHistoria)))))) {
+          verifyResponseStatusOk()
+          lastOpiskeluoikeusByHetu(oppija).organisaatioHistoria should equal(None)
+        }
+      }
+      "Uusi muutos lisätään vanhojen perään" in {
+        resetFixtures
+        val existing = lastOpiskeluoikeusByHetu(MockOppijat.organisaatioHistoria).asInstanceOf[AmmatillinenOpiskeluoikeus]
+        putOppija(Oppija(MockOppijat.organisaatioHistoria, List(existing.copy(oppilaitos = Some(Oppilaitos(MockOrganisaatiot.winnova)), koulutustoimija = None)))) {
+          lastOpiskeluoikeusByHetu(MockOppijat.organisaatioHistoria).organisaatioHistoria should equal(Some(
+            AmmatillinenExampleData.opiskeluoikeudenOrganisaatioHistoria :+ uusiOrganisaatioHistoria
+          ))
+        }
+      }
+      "Organisaatiot eivät ole muuttuneet, vanha historia kopioidaan uuteen versioon" in {
+        resetFixtures
+        val existing = lastOpiskeluoikeusByHetu(MockOppijat.organisaatioHistoria).asInstanceOf[AmmatillinenOpiskeluoikeus]
+        putOppija(Oppija(MockOppijat.organisaatioHistoria, List(existing.copy(ostettu = true)))) {
+          lastOpiskeluoikeusByHetu(MockOppijat.organisaatioHistoria).organisaatioHistoria should equal(Some(
+            AmmatillinenExampleData.opiskeluoikeudenOrganisaatioHistoria
+          ))
+        }
+      }
+    }
+
     def valmis(suoritus: AmmatillisenTutkinnonSuoritus) = suoritus.copy(
       vahvistus = ExampleData.vahvistus(päivä = date(2016, 10, 1), paikkakunta = Some(jyväskylä))
     )
