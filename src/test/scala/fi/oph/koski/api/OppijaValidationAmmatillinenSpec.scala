@@ -332,13 +332,26 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               vahvistus = vahvistus(LocalDate.parse("2016-10-08")),
               osasuoritukset = Some(List(tutkinnonOsaSuoritus.copy(arviointi = None)))
             )
+            val eiOsasuorituksia = suoritus.copy(osasuoritukset = Some(List()))
             val opiskeluoikeus = defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))
+            val tyhjilläOsasuorituksilla = opiskeluoikeus.copy(ostettu = false, suoritukset = List(eiOsasuorituksia))
 
             "ja tutkinnon osalta puuttuu arviointi, palautetaan HTTP 400" in (putOpiskeluoikeus(opiskeluoikeus) (
               verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella koulutus/351301 on keskeneräinen osasuoritus tutkinnonosat/100023"))))
 
             "ja tutkinnon osan suoritus puuttuu, palautetaan HTTP 400" in (putOpiskeluoikeus(opiskeluoikeus.copy(suoritukset = List(suoritus.copy(suoritustapa = tutkinnonSuoritustapaOps, osasuoritukset = Some(List(yhteisenTutkinnonOsanSuoritus("101054", "Matematiikka", arvosanaViisi, 8))))))) (
               verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia("Suoritus koulutus/351301 on merkitty valmiiksi, mutta sillä ei ole ammatillisen tutkinnon osan suoritusta tai opiskeluoikeudelta puuttuu linkitys"))))
+
+            "tutkinnolla ei osasuorituksia, palautetaan HTTP 400" in (putOpiskeluoikeus(tyhjilläOsasuorituksilla)(
+              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia("Suoritus koulutus/351301 on merkitty valmiiksi, mutta sillä ei ole ammatillisen tutkinnon osan suoritusta tai opiskeluoikeudelta puuttuu linkitys"))))
+
+            "Opiskeluoikeus ostettu" - {
+              "tutkinnolla ei osasuorituksia, palautetaan HTTP 200" in (putOpiskeluoikeus(tyhjilläOsasuorituksilla.copy(ostettu = true))(
+                verifyResponseStatusOk()))
+
+              "vahvistus vuoden 2018 jälkeen, ei osasuorituksia, palautetaan HTTP 400" in (putOpiskeluoikeus(opiskeluoikeus.copy(suoritukset = List(eiOsasuorituksia.copy(vahvistus = vahvistus(date(2019, 1, 1)))), ostettu = true))(
+                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia("Suoritus koulutus/351301 on merkitty valmiiksi, mutta sillä ei ole ammatillisen tutkinnon osan suoritusta tai opiskeluoikeudelta puuttuu linkitys"))))
+            }
           }
         }
       }
