@@ -26,7 +26,7 @@ object Tables {
     val luokka = column[Option[String]]("luokka")
     val mitätöity = column[Boolean]("mitatoity")
     val koulutusmuoto = column[String]("koulutusmuoto")
-    val alkamispäivä = column[Option[Date]]("alkamispaiva")
+    val alkamispäivä = column[Date]("alkamispaiva")
     val päättymispäivä = column[Option[Date]]("paattymispaiva")
 
     def * = (id, oid, versionumero, aikaleima, oppijaOid, oppilaitosOid, koulutustoimijaOid, sisältäväOpiskeluoikeusOid, sisältäväOpiskeluoikeusOppilaitosOid, data, luokka, mitätöity, koulutusmuoto, alkamispäivä, päättymispäivä) <> (OpiskeluoikeusRow.tupled, OpiskeluoikeusRow.unapply)
@@ -57,7 +57,7 @@ object Tables {
         opiskeluoikeus.luokka,
         opiskeluoikeus.mitätöity,
         opiskeluoikeus.tyyppi.koodiarvo,
-        opiskeluoikeus.alkamispäivä.map(Date.valueOf),
+        Date.valueOf(opiskeluoikeus.alkamispäivä.get),
         opiskeluoikeus.päättymispäivä.map(Date.valueOf)
       )
     }
@@ -83,7 +83,7 @@ object Tables {
        opiskeluoikeus.koulutustoimija.map(_.oid),
        opiskeluoikeus.getOppilaitos.oid,
        opiskeluoikeus.mitätöity,
-       opiskeluoikeus.alkamispäivä.map(Date.valueOf),
+       Date.valueOf(opiskeluoikeus.alkamispäivä.get),
        opiskeluoikeus.päättymispäivä.map(Date.valueOf))
     }
   }
@@ -238,7 +238,7 @@ case class OpiskeluoikeusRow(id: Int,
   luokka: Option[String],
   mitätöity: Boolean,
   koulutusmuoto: String,
-  alkamispäivä: Option[Date],
+  alkamispäivä: Date,
   päättymispäivä: Option[Date]) {
   import fi.oph.koski.db.Tables.OpiskeluoikeusTable
   lazy val toOpiskeluoikeusData: JValue = {
