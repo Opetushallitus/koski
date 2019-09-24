@@ -34,7 +34,11 @@ object MockEPerusteetRepository extends EPerusteetRepository {
   }
 
   def findRakenne(diaariNumero: String): Option[EPerusteRakenne] = {
-    rakenteet.find(_.diaarinumero == diaariNumero)
+    if (diaariNumero == "mock-empty-koulutukset") {
+      rakenteet.find(_.diaarinumero == "39/011/2014").map(_.copy(koulutukset = Nil))
+    } else {
+      rakenteet.find(_.diaarinumero == diaariNumero)
+    }
   }
 
   def findPerusteenYksilöintitiedot(diaariNumero: String): Option[EPerusteTunniste] = {

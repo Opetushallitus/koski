@@ -44,8 +44,9 @@ object EPerusteetTutkintoRakenneConverter extends Logging {
     }
 
     val osaamisalat: List[Koodistokoodiviite] = rakenne.osaamisalat.map(o => Koodistokoodiviite(o.arvo, LocalizedString.sanitize(o.nimi), None, "osaamisala", None))
+    val koulutukset: List[Koodistokoodiviite] = rakenne.koulutukset.map(k => Koodistokoodiviite(k.koulutuskoodiArvo, LocalizedString.sanitize(k.nimi), None, "koulutus", None))
 
-    TutkintoRakenne(rakenne.diaarinumero, parseKoulutustyyppi(rakenne.koulutustyyppi), suoritustavat, osaamisalat)
+    TutkintoRakenne(rakenne.diaarinumero, parseKoulutustyyppi(rakenne.koulutustyyppi), suoritustavat, osaamisalat, koulutukset)
   }
 
 

@@ -70,8 +70,8 @@ describe('Oppijataulukko', function() {
     describe('osaamisalalla', function() {
       before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('koulutus'), page.oppijataulukko.filterBy('tutkinto', 'ympäristöalan osaamisala'))
       it('toimii', function() {
-        expect(page.oppijataulukko.names()).to.deep.equal([ 'Amis, Antti', 'Ammattilainen, Aarne', 'Osittainen, Outi' ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('3')
+        expect(page.oppijataulukko.names()).to.deep.equal([ 'Amis, Antti', 'Ammatillinen-Osittainen, Raitsu', 'Ammattilainen, Aarne', 'Osittainen, Outi' ])
+        expect(page.opiskeluoikeudeTotal()).to.equal('4')
       })
     })
 
