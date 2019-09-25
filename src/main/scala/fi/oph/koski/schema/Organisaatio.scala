@@ -120,7 +120,7 @@ trait OrganisaatioonLiittyvä {
   def omistajaOrganisaatio: Option[OrganisaatioWithOid]
 }
 
-case class OpiskeluoikeudenOrganisaatioHistoria(
+case class OpiskeluoikeudenOrganisaatiohistoria(
   muutospäivä: LocalDate,
   oppilaitos: Oppilaitos,
   koulutustoimija: Koulutustoimija

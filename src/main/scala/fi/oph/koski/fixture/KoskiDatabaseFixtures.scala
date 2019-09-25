@@ -48,7 +48,7 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
     if (!fixtureCacheCreated) {
       cachedPerustiedot = Some(validatedOpiskeluoikeudet.map { case (henkilö, oo) =>
         val opiskeluoikeus = if (henkilö.hetu.contains(MockOppijat.organisaatioHistoria.hetu.get)) {
-          oo.asInstanceOf[AmmatillinenOpiskeluoikeus].copy(organisaatioHistoria = Some(AmmatillinenExampleData.opiskeluoikeudenOrganisaatioHistoria)) // organisaatioHistoria is cleared from incoming data, so we have to sneak it in
+          oo.asInstanceOf[AmmatillinenOpiskeluoikeus].copy(organisaatiohistoria = Some(AmmatillinenExampleData.opiskeluoikeudenOrganisaatioHistoria)) // organisaatioHistoria is cleared from incoming data, so we have to sneak it in
         } else {
           oo
         }
