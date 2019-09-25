@@ -855,7 +855,7 @@ describe('Ammatillinen koulutus', function() {
       expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
         'Opiskeluoikeuden voimassaoloaika : 1.9.2016 — 1.5.2020 (arvioitu)\n' +
         'Tila 1.9.2016 Läsnä\n' +
-        'Organisaatio historia Muutospäivä 5.5.2005\n' +
+        'Organisaatiohistoria Muutospäivä 5.5.2005\n' +
         'Oppilaitos Stadin ammattiopisto\n' +
         'Koulutustoimija Helsingin kaupunki\n' +
         'Muutospäivä 2.2.2002\n' +
