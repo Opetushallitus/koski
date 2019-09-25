@@ -265,6 +265,7 @@ trait KieliOppiaineIB extends IBOppiaine with Kieliaine {
   @KoodistoKoodiarvo("A")
   @KoodistoKoodiarvo("A2")
   @KoodistoKoodiarvo("B")
+  @KoodistoKoodiarvo("AB")
   def tunniste: Koodistokoodiviite
   @KoodistoUri("kielivalikoima")
   def kieli: Koodistokoodiviite

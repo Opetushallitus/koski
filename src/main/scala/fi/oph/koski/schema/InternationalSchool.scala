@@ -324,7 +324,6 @@ case class InternationalSchoolMuuDiplomaOppiaine(
 ) extends InternationalSchoolOppiaine with InternationalSchoolIBOppiaine with IBTaso
 
 case class MuuDiplomaOppiaine(
-  @KoodistoKoodiarvo("AB")
   @KoodistoKoodiarvo("BIO")
   @KoodistoKoodiarvo("CHE")
   @KoodistoKoodiarvo("ECO")

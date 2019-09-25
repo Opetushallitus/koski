@@ -415,6 +415,7 @@ describe('International school', function() {
             'B-language',
             'Language A: language and literature',
             'Language A: literature',
+            'ab initio',
             'Biology',
             'Chemistry',
             'Economics',
@@ -424,8 +425,7 @@ describe('International school', function() {
             'Mathematics',
             'Physics',
             'Psychology',
-            'Visual arts',
-            'ab initio'
+            'Visual arts'
           ])
         })
       })
