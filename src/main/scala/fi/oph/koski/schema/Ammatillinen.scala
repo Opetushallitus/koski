@@ -27,7 +27,7 @@ case class AmmatillinenOpiskeluoikeus(
   lisätiedot: Option[AmmatillisenOpiskeluoikeudenLisätiedot] = None,
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo)
   tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.ammatillinenkoulutus,
-  organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None
+  opiskeluoikeudenOrganisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   @Description("Opiskelijan opiskeluoikeuden päättymispäivä joko tutkintotavoitteisessa koulutuksessa tai tutkinnon osa tavoitteisessa koulutuksessa")
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä

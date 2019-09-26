@@ -48,7 +48,7 @@ export class OmatTiedotOpiskeluoikeus extends React.Component {
 const OpiskeluoikeudenTiedot = ({opiskeluoikeus}) => {
   const additionalInformation = modelLookup(opiskeluoikeus, 'lisätiedot')
   const additionalInfoPropertyFilter = prop => !!modelData(prop.model)
-  const omatTiedotExcludedProperties = excludedProperties.concat(['ostettu', 'organisaatiohistoria'])
+  const omatTiedotExcludedProperties = excludedProperties.concat(['ostettu', 'opiskeluoikeudenOrganisaatiohistoria'])
 
   return (
     <div className="opiskeluoikeuden-tiedot">

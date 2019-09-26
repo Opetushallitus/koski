@@ -80,7 +80,7 @@ const OpiskeluoikeudenTiedot = ({opiskeluoikeus, editLink, alkuChangeBus}) => (
       getValueEditor={ (prop, getDefault) => {
         switch (prop.key) {
           case 'tila': return <OpiskeluoikeudenTilaEditor model={opiskeluoikeus} alkuChangeBus={alkuChangeBus}/>
-          case 'organisaatiohistoria': return <ArrayEditor model={addContext(prop.model, { edit: false })} reverse={true}/>
+          case 'opiskeluoikeudenOrganisaatiohistoria': return <ArrayEditor model={addContext(prop.model, { edit: false })} reverse={true}/>
           default: return getDefault()
         }
       }}
