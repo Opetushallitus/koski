@@ -211,6 +211,23 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           }
         }
 
+        "Tunnisteen koodiarvon validointi" - {
+
+          "Tunnisteen koodiarvo ei löydy rakenteen koulutuksista" - {
+            val suoritus =  autoalanPerustutkinnonSuoritus().copy(koulutusmoduuli = autoalanPerustutkinto.copy(tunniste = autoalanPerustutkinto.tunniste.copy(koodiarvo = "361902")))
+            "palautetaan HTTP 400" in (putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))))(
+              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.tunnisteenKoodiarvoaEiLöydyRakenteesta("Tunnisteen koodiarvoa 361902 ei löytynyt rakenteen 39/011/2014 mahdollisista koulutuksista"))
+            )
+          }
+
+          "Löydetyssä rakenteessa ei ole yhtään koulutusta"  - {
+            val suoritus =  autoalanPerustutkinnonSuoritus().copy(koulutusmoduuli = autoalanPerustutkinto.copy(perusteenDiaarinumero = Some("mock-empty-koulutukset")))
+            "palautetaan HTTP 200" in (putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))))(
+              verifyResponseStatusOk()
+            )
+          }
+        }
+
         "Suorituksen tila" - {
           def copySuoritus(a: Option[List[AmmatillinenArviointi]], v: Option[HenkilövahvistusValinnaisellaTittelillä], ap: Option[LocalDate] = None): MuunAmmatillisenTutkinnonOsanSuoritus = {
             val alkamispäivä = ap.orElse(tutkinnonOsaSuoritus.alkamispäivä)

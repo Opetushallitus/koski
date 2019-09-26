@@ -3,7 +3,13 @@ package fi.oph.koski.tutkinto
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
 import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
 
-case class TutkintoRakenne(diaarinumero: String, koulutustyyppi: Koulutustyyppi, suoritustavat: List[SuoritustapaJaRakenne], osaamisalat: List[Koodistokoodiviite]) {
+case class TutkintoRakenne(
+  diaarinumero: String,
+  koulutustyyppi: Koulutustyyppi,
+  suoritustavat: List[SuoritustapaJaRakenne],
+  osaamisalat: List[Koodistokoodiviite],
+  koulutukset: List[Koodistokoodiviite]
+) {
   def findSuoritustapaJaRakenne(suoritustapa: Koodistokoodiviite): Option[SuoritustapaJaRakenne] = {
     suoritustavat.find(_.suoritustapa == suoritustapa)
   }

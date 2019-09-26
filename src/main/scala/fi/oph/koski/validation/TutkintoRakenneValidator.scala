@@ -9,7 +9,12 @@ import fi.oph.koski.tutkinto.Koulutustyyppi._
 import fi.oph.koski.tutkinto._
 
 case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, koodistoViitePalvelu: KoodistoViitePalvelu) {
-  def validateTutkintoRakenne(suoritus: PäätasonSuoritus, alkamispäiväLäsnä: Option[LocalDate]) = suoritus match {
+  def validate(suoritus: PäätasonSuoritus, alkamispäivä: Option[LocalDate]): HttpStatus = {
+    validateTutkintoRakenne(suoritus, alkamispäivä)
+      .onSuccess(validateDiaarinumerollinenAmmatillinen(suoritus))
+  }
+
+  private def validateTutkintoRakenne(suoritus: PäätasonSuoritus, alkamispäiväLäsnä: Option[LocalDate]) = suoritus match {
     case tutkintoSuoritus: AmmatillisenTutkinnonSuoritus =>
       getRakenne(tutkintoSuoritus.koulutusmoduuli, Some(ammatillisetKoulutustyypit), Some(tutkintoSuoritus)) match {
         case Left(status) => status
@@ -102,6 +107,19 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
             }
         }
       }
+  }
+
+  private def validateDiaarinumerollinenAmmatillinen(suoritus: PäätasonSuoritus) = suoritus.koulutusmoduuli match {
+    case koulutusmoduuli: Diaarinumerollinen if suoritus.isInstanceOf[AmmatillinenPäätasonSuoritus] =>
+      validateKoulutusmoduulinTunniste(koulutusmoduuli.tunniste, koulutusmoduuli.perusteenDiaarinumero)
+    case _ => HttpStatus.ok
+  }
+
+  private def validateKoulutusmoduulinTunniste(tunniste: KoodiViite, diaariNumero: Option[String]) = diaariNumero match {
+    case None => KoskiErrorCategory.badRequest.validation.rakenne.diaariPuuttuu()
+    case Some(diaari) =>
+      val koulutukset = tutkintoRepository.findPerusteRakenne(diaari).map(_.koulutukset.map(_.koodiarvo)).toList.flatten
+      HttpStatus.validate(koulutukset.isEmpty || koulutukset.contains(tunniste.koodiarvo))(KoskiErrorCategory.badRequest.validation.rakenne.tunnisteenKoodiarvoaEiLöydyRakenteesta(s"Tunnisteen koodiarvoa ${tunniste.koodiarvo} ei löytynyt rakenteen ${diaariNumero.get} mahdollisista koulutuksista"))
   }
 
   private def validateDiaarinumero(diaarinumero: Option[String]): Either[HttpStatus, String] = {

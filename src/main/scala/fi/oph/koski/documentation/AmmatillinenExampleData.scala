@@ -491,7 +491,7 @@ object AmmatillinenExampleData {
 
   def ammatillisenTutkinnonOsittainenAutoalanSuoritus = AmmatillisenTutkinnonOsittainenSuoritus(
     koulutusmoduuli = AmmatillinenTutkintoKoulutus(
-      Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None),
+      Koodistokoodiviite("361902", Some("Autoalan perustutkinto"), "koulutus", None),
       Some("62/011/2014")
     ),
     tutkintonimike = Some(List(Koodistokoodiviite("10024", Some("Autokorinkorjaaja"), "tutkintonimikkeet", None))),
