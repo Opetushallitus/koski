@@ -114,7 +114,7 @@ trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
   @MinItems(1)
   def suoritukset: List[KoskeenTallennettavaPäätasonSuoritus]
   @ReadOnly("Muodostetaan Koski-palvelimella tallennettaessa")
-  def organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]]
+  def opiskeluoikeudenOrganisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]]
   def withOidAndVersion(oid: Option[String], versionumero: Option[Int]): KoskeenTallennettavaOpiskeluoikeus = {
     val withOid = shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[Option[String]]("oid").set(this)(oid)
     shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[Option[Int]]("versionumero").set(withOid)(versionumero)
@@ -123,7 +123,7 @@ trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
     shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[List[PäätasonSuoritus]]("suoritukset").set(this)(suoritukset)
   }
   final def withHistoria(historia: Option[List[OpiskeluoikeudenOrganisaatiohistoria]]): KoskeenTallennettavaOpiskeluoikeus = {
-    shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[Option[List[OpiskeluoikeudenOrganisaatiohistoria]]]("organisaatiohistoria").set(this)(historia)
+    shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[Option[List[OpiskeluoikeudenOrganisaatiohistoria]]]("opiskeluoikeudenOrganisaatiohistoria").set(this)(historia)
   }
   def withKoulutustoimija(koulutustoimija: Koulutustoimija): KoskeenTallennettavaOpiskeluoikeus
   def withOppilaitos(oppilaitos: Oppilaitos): KoskeenTallennettavaOpiskeluoikeus

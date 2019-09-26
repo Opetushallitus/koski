@@ -386,21 +386,21 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         resetFixtures
         verifyChange(change = { existing: AmmatillinenOpiskeluoikeus => existing.copy(oppilaitos = existing.oppilaitos.map(o => o.copy(oid = MockOrganisaatiot.omnia)), koulutustoimija = None)}) {
           verifyResponseStatusOk()
-          lastOpiskeluoikeusByHetu(oppija).organisaatiohistoria should equal(Some(List(uusiOrganisaatioHistoria)))
+          lastOpiskeluoikeusByHetu(oppija).opiskeluoikeudenOrganisaatiohistoria should equal(Some(List(uusiOrganisaatioHistoria)))
         }
       }
       "Organisaatio historiaan ei voi tuoda dataa opiskeluoikeutta luotaessa" in {
         resetFixtures
-        putOppija(Oppija(oppija, List(defaultOpiskeluoikeus.copy(organisaatiohistoria = Some(List(uusiOrganisaatioHistoria)))))) {
+        putOppija(Oppija(oppija, List(defaultOpiskeluoikeus.copy(opiskeluoikeudenOrganisaatiohistoria = Some(List(uusiOrganisaatioHistoria)))))) {
           verifyResponseStatusOk()
-          lastOpiskeluoikeusByHetu(oppija).organisaatiohistoria should equal(None)
+          lastOpiskeluoikeusByHetu(oppija).opiskeluoikeudenOrganisaatiohistoria should equal(None)
         }
       }
       "Uusi muutos lisätään vanhojen perään" in {
         resetFixtures
         val existing = lastOpiskeluoikeusByHetu(MockOppijat.organisaatioHistoria).asInstanceOf[AmmatillinenOpiskeluoikeus]
         putOppija(Oppija(MockOppijat.organisaatioHistoria, List(existing.copy(oppilaitos = Some(Oppilaitos(MockOrganisaatiot.winnova)), koulutustoimija = None)))) {
-          lastOpiskeluoikeusByHetu(MockOppijat.organisaatioHistoria).organisaatiohistoria should equal(Some(
+          lastOpiskeluoikeusByHetu(MockOppijat.organisaatioHistoria).opiskeluoikeudenOrganisaatiohistoria should equal(Some(
             AmmatillinenExampleData.opiskeluoikeudenOrganisaatioHistoria :+ uusiOrganisaatioHistoria
           ))
         }
@@ -409,7 +409,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
         resetFixtures
         val existing = lastOpiskeluoikeusByHetu(MockOppijat.organisaatioHistoria).asInstanceOf[AmmatillinenOpiskeluoikeus]
         putOppija(Oppija(MockOppijat.organisaatioHistoria, List(existing.copy(ostettu = true)))) {
-          lastOpiskeluoikeusByHetu(MockOppijat.organisaatioHistoria).organisaatiohistoria should equal(Some(
+          lastOpiskeluoikeusByHetu(MockOppijat.organisaatioHistoria).opiskeluoikeudenOrganisaatiohistoria should equal(Some(
             AmmatillinenExampleData.opiskeluoikeudenOrganisaatioHistoria
           ))
         }

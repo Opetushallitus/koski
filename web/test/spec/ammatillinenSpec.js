@@ -845,7 +845,7 @@ describe('Ammatillinen koulutus', function() {
     })
   })
 
-  describe('Opiskeluoikeuden organisaatio historia', function () {
+  describe('Opiskeluoikeuden organisaatiohistoria', function () {
     before(
       page.openPage,
       page.oppijaHaku.searchAndSelect('200994-834A')
@@ -855,12 +855,12 @@ describe('Ammatillinen koulutus', function() {
       expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
         'Opiskeluoikeuden voimassaoloaika : 1.9.2016 — 1.5.2020 (arvioitu)\n' +
         'Tila 1.9.2016 Läsnä\n' +
-        'Organisaatiohistoria Muutospäivä 5.5.2005\n' +
-        'Oppilaitos Stadin ammattiopisto\n' +
-        'Koulutustoimija Helsingin kaupunki\n' +
+        'Opiskeluoikeuden organisaatiohistoria Muutospäivä 5.5.2005\n' +
+        'Aikaisempi oppilaitos Stadin ammattiopisto\n' +
+        'Aikaisempi koulutustoimija Helsingin kaupunki\n' +
         'Muutospäivä 2.2.2002\n' +
-        'Oppilaitos Omnian oppilaitos\n' +
-        'Koulutustoimija Helsingin kaupunki'
+        'Aikaisempi oppilaitos Omnian oppilaitos\n' +
+        'Aikaisempi koulutustoimija Helsingin kaupunki'
       )
     })
   })
