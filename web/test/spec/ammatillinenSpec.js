@@ -845,7 +845,7 @@ describe('Ammatillinen koulutus', function() {
     })
   })
 
-  describe('Opiskeluoikeuden organisaatio historia', function () {
+  describe('Opiskeluoikeuden organisaatiohistoria', function () {
     before(
       page.openPage,
       page.oppijaHaku.searchAndSelect('200994-834A')
