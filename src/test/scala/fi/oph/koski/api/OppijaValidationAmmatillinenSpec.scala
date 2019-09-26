@@ -4,7 +4,7 @@ import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.AmmatillinenExampleData._
-import fi.oph.koski.documentation.{AmmatillinenOldExamples, ExamplesValma}
+import fi.oph.koski.documentation.{AmmatillinenOldExamples, ExampleData, ExamplesValma}
 import fi.oph.koski.documentation.AmmatillinenOldExamples.muunAmmatillisenTutkinnonOsanSuoritus
 import fi.oph.koski.documentation.AmmatillinenReforminMukainenPerustutkintoExample.{jatkoOpintovalmiuksiaTukevienOpintojenSuoritus, korkeakouluopintoSuoritus}
 import fi.oph.koski.documentation.ExampleData.helsinki
@@ -346,11 +346,20 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
               verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia("Suoritus koulutus/351301 on merkitty valmiiksi, mutta sillä ei ole ammatillisen tutkinnon osan suoritusta tai opiskeluoikeudelta puuttuu linkitys"))))
 
             "Opiskeluoikeus ostettu" - {
-              "tutkinnolla ei osasuorituksia, palautetaan HTTP 200" in (putOpiskeluoikeus(tyhjilläOsasuorituksilla.copy(ostettu = true))(
-                verifyResponseStatusOk()))
 
-              "vahvistus vuoden 2018 jälkeen, ei osasuorituksia, palautetaan HTTP 400" in (putOpiskeluoikeus(opiskeluoikeus.copy(suoritukset = List(eiOsasuorituksia.copy(vahvistus = vahvistus(date(2019, 1, 1)))), ostettu = true))(
-                verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia("Suoritus koulutus/351301 on merkitty valmiiksi, mutta sillä ei ole ammatillisen tutkinnon osan suoritusta tai opiskeluoikeudelta puuttuu linkitys"))))
+              "Opiskeluoikeus valmis ennen vuotta 2019" - {
+                val valmisTila = AmmatillinenOpiskeluoikeusjakso(date(2018, 12, 31), ExampleData.opiskeluoikeusValmistunut, None)
+                val valmisOpiskeluoikeus = tyhjilläOsasuorituksilla.copy(tila = AmmatillinenOpiskeluoikeudenTila(tyhjilläOsasuorituksilla.tila.opiskeluoikeusjaksot :+ valmisTila), ostettu = true)
+                "palautetaan HTTP 200" in (putOpiskeluoikeus(valmisOpiskeluoikeus)(
+                  verifyResponseStatusOk()))
+              }
+
+              "Opiskeluoikeus valmis vuoden 2018 jälkeen" - {
+                val valmisTila = AmmatillinenOpiskeluoikeusjakso(date(2019, 1, 1), ExampleData.opiskeluoikeusValmistunut, None)
+                val valmisOpiskeluoikeus = opiskeluoikeus.copy(tila = AmmatillinenOpiskeluoikeudenTila(opiskeluoikeus.tila.opiskeluoikeusjaksot :+ valmisTila))
+                "palautetaan HTTP 400" in (putOpiskeluoikeus(valmisOpiskeluoikeus.copy(suoritukset = List(eiOsasuorituksia), ostettu = true))(
+                  verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia("Suoritus koulutus/351301 on merkitty valmiiksi, mutta sillä ei ole ammatillisen tutkinnon osan suoritusta tai opiskeluoikeudelta puuttuu linkitys"))))
+              }
             }
           }
         }
