@@ -885,7 +885,7 @@ describe('Omat tiedot', function() {
         )
 
         it('ei näytetä', function () {
-          expect(extractAsText(S('.opiskeluoikeus-content'))).not.to.contain('Opiskeluoikeuden organisaatiohistoria')
+          expect(extractAsText(S('.opiskeluoikeus-content'))).not.to.contain('Organisaatiohistoria')
         })
       })
 

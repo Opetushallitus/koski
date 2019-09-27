@@ -26,11 +26,11 @@ object OpiskeluoikeusChangeMigrator {
 
   private def organisaationMuutosHistoria(vanhaOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus = {
     if (oppilaitoksenTaiKoulutustoimijanOidMuuttunut(vanhaOpiskeluoikeus, uusiOpiskeluoikeus)) {
-      val vanhaHistoria = vanhaOpiskeluoikeus.opiskeluoikeudenOrganisaatiohistoria.toList.flatten
+      val vanhaHistoria = vanhaOpiskeluoikeus.organisaatiohistoria.toList.flatten
       val muutos = OpiskeluoikeudenOrganisaatiohistoria(LocalDate.now(), vanhaOpiskeluoikeus.oppilaitos.get, vanhaOpiskeluoikeus.koulutustoimija.get)
       uusiOpiskeluoikeus.withHistoria(Some(vanhaHistoria :+ muutos))
     } else {
-      uusiOpiskeluoikeus.withHistoria(vanhaOpiskeluoikeus.opiskeluoikeudenOrganisaatiohistoria)
+      uusiOpiskeluoikeus.withHistoria(vanhaOpiskeluoikeus.organisaatiohistoria)
     }
   }
 
