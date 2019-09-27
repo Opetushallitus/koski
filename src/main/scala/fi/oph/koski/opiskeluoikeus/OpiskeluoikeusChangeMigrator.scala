@@ -42,7 +42,7 @@ object OpiskeluoikeusChangeMigrator {
   }
 
   private def oppilaitoksenTaiKoulutustoimijanOidMuuttunut(vanhaOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
-    !(vanhaOpiskeluoikeus.oppilaitos.get.oid == uusiOpiskeluoikeus.oppilaitos.get.oid &&
-      vanhaOpiskeluoikeus.koulutustoimija.get.oid == uusiOpiskeluoikeus.koulutustoimija.get.oid)
+    !(vanhaOpiskeluoikeus.oppilaitos.map(_.oid) == uusiOpiskeluoikeus.oppilaitos.map(_.oid) &&
+      vanhaOpiskeluoikeus.koulutustoimija.map(_.oid) == uusiOpiskeluoikeus.koulutustoimija.map(_.oid))
   }
 }
