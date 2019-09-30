@@ -8,7 +8,7 @@ import org.scalatest.FreeSpec
 class YtrKoesuoritusApiSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods {
   "Kansalainen" - {
     "voi hakea koesuorituslistauksen" in {
-      get("api/ytrkoesuoritukset", headers = kansalainenLoginHeaders("080698-967F")) {
+      post("api/ytrkoesuoritukset", headers = kansalainenLoginHeaders("080698-967F")) {
         verifyResponseStatusOk()
         readExams should equal (expected)
       }
@@ -17,7 +17,7 @@ class YtrKoesuoritusApiSpec extends FreeSpec with LocalJettyHttpSpecification wi
 
   "Viranomainen" - {
     "ei voi hakea koesuorituslistausta" in {
-      authGet("api/ytrkoesuoritukset", defaultUser) {
+      post("api/ytrkoesuoritukset", headers = authHeaders()) {
         verifyResponseStatus(403, Nil)
       }
     }
