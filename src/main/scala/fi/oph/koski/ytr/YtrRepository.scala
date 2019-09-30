@@ -6,8 +6,8 @@ import fi.oph.koski.henkilo.HenkilönTunnisteet
 import scala.concurrent.duration._
 
 class YtrRepository(client: YtrClient)(implicit cacheInvalidator: CacheManager) {
-  private val oidCache: KeyValueCache[YtrCacheKey, Option[YtrOppija]] =
-    KeyValueCache(new ExpiringCache("YtrRepository", ExpiringCache.Params(1.hour, maxSize = 1000, storeValuePredicate = {
+  private val cache: KeyValueCache[YtrCacheKey, Option[YtrOppija]] =
+    KeyValueCache(new ExpiringCache("YtrRepository", ExpiringCache.Params(5.minute, maxSize = 1000, storeValuePredicate = {
       case (_, value) => value != None // Don't cache None results
     })), uncachedFind)
 
@@ -18,7 +18,7 @@ class YtrRepository(client: YtrClient)(implicit cacheInvalidator: CacheManager) 
     findByCacheKey(YtrCacheKey(List(hetu)))
 
   def findByCacheKey(key: YtrCacheKey): Option[YtrOppija] =
-    oidCache(key)
+    cache(key)
 
   private def uncachedFind(key: YtrCacheKey): Option[YtrOppija] =
     key.hetut.flatMap(client.oppijaByHetu).headOption
