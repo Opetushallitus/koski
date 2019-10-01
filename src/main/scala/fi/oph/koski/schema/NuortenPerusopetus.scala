@@ -372,6 +372,10 @@ case class SanallinenPerusopetuksenOppiaineenArviointi(
   def arviointipäivä = päivä
 }
 
+object SanallinenPerusopetuksenOppiaineenArviointi {
+  val valinnaisilleSallitutArvosanat = List("S", "O")
+}
+
 @Description("Käyttäytymisen arviointi. Koodiarvon lisäksi voidaan liittää sanallinen arviointi vapaana tekstinä kuvaus-kenttään")
 @IgnoreInAnyOfDeserialization
 case class PerusopetuksenKäyttäytymisenArviointi(

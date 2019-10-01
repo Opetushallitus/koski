@@ -1,5 +1,6 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.documentation.PerusopetusExampleData
 import fi.oph.koski.documentation.PerusopetusExampleData.{suoritus, _}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
@@ -70,6 +71,40 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           suoritus(äidinkieli("AI1").copy(pakollinen = false)).copy(arviointi = arviointi(9))
         )))))) {
           verifyResponseStatusOk()
+        }
+      }
+    }
+  }
+
+  "Arvosanat" - {
+    "S" - {
+      val valinnainenS = suoritus(kieli("B1", "SV").copy(pakollinen = false, laajuus = vuosiviikkotuntia(2))).copy(arviointi = hyväksytty)
+      val pakollinenS = äidinkielenSuoritus.copy(arviointi = hyväksytty)
+      "Kielletty pakollisilta" in {
+        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(pakollinenS)))))) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle("Arviointi S on sallittu vain valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia"))
+        }
+      }
+
+      "Kielletty valinnaisilta joiden laajuus on 2 vuosiviikkotuntia tai yli" in {
+        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(valinnainenS)))))) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle("Arviointi S on sallittu vain valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia"))
+        }
+      }
+    }
+
+    "O" - {
+      val valinnainenO = suoritus(kieli("B1", "SV").copy(pakollinen = false, laajuus = vuosiviikkotuntia(2))).copy(arviointi = osallistunut)
+      val pakollinenO = äidinkielenSuoritus.copy(arviointi = osallistunut)
+      "Kielletty pakollisilta" in {
+        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(pakollinenO)))))) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle("Arviointi O on sallittu vain valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia"))
+        }
+      }
+
+      "Kielletty valinnaisilta joiden laajuus on 2 vuosiviikkotuntia tai yli" in {
+        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(valinnainenO)))))) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle("Arviointi O on sallittu vain valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia"))
         }
       }
     }

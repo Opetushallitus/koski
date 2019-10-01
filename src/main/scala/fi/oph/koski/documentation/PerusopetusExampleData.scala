@@ -15,6 +15,7 @@ object PerusopetusExampleData {
   def arviointi(arvosana: String, kuvaus: Option[LocalizedString] = None): Some[List[PerusopetuksenOppiaineenArviointi]] = Some(List(PerusopetuksenOppiaineenArviointi(arvosana, kuvaus)))
 
   val hyväksytty = Some(List(PerusopetuksenOppiaineenArviointi("S")))
+  val osallistunut = Some(List(PerusopetuksenOppiaineenArviointi("O")))
 
   def suoritus(aine: NuortenPerusopetuksenOppiaine) = NuortenPerusopetuksenOppiaineenSuoritus(
     koulutusmoduuli = aine,
@@ -50,32 +51,34 @@ object PerusopetusExampleData {
     tunniste = Koodistokoodiviite(koodiarvo = oppiaine, koodistoUri = "koskioppiaineetyleissivistava"),
     kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima"))
 
-  val kaikkiAineet = Some(
-    List(
-      suoritus(äidinkieli("AI1")).copy(arviointi = arviointi(9)).copy(suoritustapa = Some(suoritustapaErityinenTutkinto)),
-      suoritus(kieli("B1", "SV")).copy(arviointi = arviointi(8)),
-      suoritus(kieli("B1", "SV").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = hyväksytty),
-      suoritus(kieli("A1", "EN")).copy(arviointi = arviointi(8)),
-      suoritus(uskonto(Some("OR"))).copy(arviointi = arviointi(10)),
-      suoritus(oppiaine("HI")).copy(arviointi = arviointi(8)),
-      suoritus(oppiaine("YH")).copy(arviointi = arviointi(10)),
-      suoritus(oppiaine("MA")).copy(arviointi = arviointi(9)),
-      suoritus(oppiaine("KE")).copy(arviointi = arviointi(7)),
-      suoritus(oppiaine("FY")).copy(arviointi = arviointi(9)),
-      suoritus(oppiaine("BI")).copy(arviointi = arviointi(9), yksilöllistettyOppimäärä = true),
-      suoritus(oppiaine("GE")).copy(arviointi = arviointi(9)),
-      suoritus(oppiaine("MU")).copy(arviointi = arviointi(7)),
-      suoritus(oppiaine("KU")).copy(arviointi = arviointi(8)),
-      suoritus(oppiaine("KO")).copy(arviointi = arviointi(8)),
-      suoritus(oppiaine("KO").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = hyväksytty),
-      suoritus(oppiaine("TE")).copy(arviointi = arviointi(8)),
-      suoritus(oppiaine("KS")).copy(arviointi = arviointi(9)),
-      suoritus(oppiaine("LI")).copy(arviointi = arviointi(9), painotettuOpetus = true),
-      suoritus(oppiaine("LI").copy(pakollinen = false, laajuus = vuosiviikkotuntia(0.5))).copy(arviointi = hyväksytty),
-      suoritus(kieli("B2", "DE").copy(pakollinen = false, laajuus = vuosiviikkotuntia(4))).copy(arviointi = arviointi(9)),
-      suoritus(valinnainenOppiaine("TH", "Tietokoneen hyötykäyttö", "Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.")).copy(arviointi = arviointi(9))
-    ))
+  val äidinkielenSuoritus = suoritus(äidinkieli("AI1")).copy(arviointi = arviointi(9)).copy(suoritustapa = Some(suoritustapaErityinenTutkinto))
 
+  val oppiaineSuoritukset = List(
+    äidinkielenSuoritus,
+    suoritus(kieli("B1", "SV")).copy(arviointi = arviointi(8)),
+    suoritus(kieli("B1", "SV").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = hyväksytty),
+    suoritus(kieli("A1", "EN")).copy(arviointi = arviointi(8)),
+    suoritus(uskonto(Some("OR"))).copy(arviointi = arviointi(10)),
+    suoritus(oppiaine("HI")).copy(arviointi = arviointi(8)),
+    suoritus(oppiaine("YH")).copy(arviointi = arviointi(10)),
+    suoritus(oppiaine("MA")).copy(arviointi = arviointi(9)),
+    suoritus(oppiaine("KE")).copy(arviointi = arviointi(7)),
+    suoritus(oppiaine("FY")).copy(arviointi = arviointi(9)),
+    suoritus(oppiaine("BI")).copy(arviointi = arviointi(9), yksilöllistettyOppimäärä = true),
+    suoritus(oppiaine("GE")).copy(arviointi = arviointi(9)),
+    suoritus(oppiaine("MU")).copy(arviointi = arviointi(7)),
+    suoritus(oppiaine("KU")).copy(arviointi = arviointi(8)),
+    suoritus(oppiaine("KO")).copy(arviointi = arviointi(8)),
+    suoritus(oppiaine("KO").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1))).copy(arviointi = hyväksytty),
+    suoritus(oppiaine("TE")).copy(arviointi = arviointi(8)),
+    suoritus(oppiaine("KS")).copy(arviointi = arviointi(9)),
+    suoritus(oppiaine("LI")).copy(arviointi = arviointi(9), painotettuOpetus = true),
+    suoritus(oppiaine("LI").copy(pakollinen = false, laajuus = vuosiviikkotuntia(0.5))).copy(arviointi = hyväksytty),
+    suoritus(kieli("B2", "DE").copy(pakollinen = false, laajuus = vuosiviikkotuntia(4))).copy(arviointi = arviointi(9)),
+    suoritus(valinnainenOppiaine("TH", "Tietokoneen hyötykäyttö", "Kurssilla tarjotaan yksityiskohtaisempaa tietokoneen, oheislaitteiden sekä käyttöjärjestelmän ja ohjelmien tuntemusta.")).copy(arviointi = arviointi(9))
+  )
+
+  val kaikkiAineet = Some(oppiaineSuoritukset)
 
   def oppija(henkilö: UusiHenkilö = exampleHenkilö, opiskeluoikeus: Opiskeluoikeus): Oppija = Oppija(henkilö, List(opiskeluoikeus))
 
