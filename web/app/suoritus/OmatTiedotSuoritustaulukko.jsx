@@ -56,7 +56,7 @@ const arvosanaColumn = parentSuoritus => isYlioppilastutkinto(parentSuoritus)
   : ArvosanaColumn
 
 const YtrArvosanaColumn = (suoritusjako) => {
-  const koesuorituksetP = suoritusjako ? Bacon.constant([]) :  Http.cachedGet('/koski/api/ytrkoesuoritukset', { errorMapper: () => undefined })
+  const koesuorituksetP = suoritusjako ? Bacon.constant([]) :  Http.post('/koski/api/ytrkoesuoritukset', { errorMapper: () => undefined })
 
   return {
     shouldShow: ({suoritukset, context}) => context.edit || suoritukset.find(hasArvosana) !== undefined,
