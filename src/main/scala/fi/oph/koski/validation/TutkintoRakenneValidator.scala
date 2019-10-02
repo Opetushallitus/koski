@@ -119,7 +119,7 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
     case None => KoskiErrorCategory.badRequest.validation.rakenne.diaariPuuttuu()
     case Some(diaari) =>
       val koulutukset = tutkintoRepository.findPerusteRakenne(diaari).map(_.koulutukset.map(_.koodiarvo)).toList.flatten
-      HttpStatus.validate(koulutukset.isEmpty || koulutukset.contains(tunniste.koodiarvo))(KoskiErrorCategory.badRequest.validation.rakenne.tunnisteenKoodiarvoaEiLöydyRakenteesta(s"Tunnisteen koodiarvoa ${tunniste.koodiarvo} ei löytynyt rakenteen ${diaariNumero.get} mahdollisista koulutuksista"))
+      HttpStatus.validate(koulutukset.isEmpty || koulutukset.contains(tunniste.koodiarvo))(KoskiErrorCategory.badRequest.validation.rakenne.tunnisteenKoodiarvoaEiLöydyRakenteesta(s"Tunnisteen koodiarvoa ${tunniste.koodiarvo} ei löytynyt rakenteen ${diaariNumero.get} mahdollisista koulutuksista. Tarkista tutkintokoodit ePerusteista."))
   }
 
   private def validateDiaarinumero(diaarinumero: Option[String]): Either[HttpStatus, String] = {
