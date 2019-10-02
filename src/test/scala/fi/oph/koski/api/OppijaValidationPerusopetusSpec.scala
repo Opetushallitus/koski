@@ -80,15 +80,28 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
     "S" - {
       val valinnainenS = suoritus(kieli("B1", "SV").copy(pakollinen = false, laajuus = vuosiviikkotuntia(2))).copy(arviointi = hyväksytty)
       val pakollinenS = äidinkielenSuoritus.copy(arviointi = hyväksytty)
-      "Kielletty pakollisilta" in {
+      "Kielletty pakollisten oppiaineiden suorituksilta" in {
         putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(pakollinenS)))))) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle("Arviointi S on sallittu vain valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia"))
         }
       }
 
-      "Kielletty valinnaisilta joiden laajuus on 2 vuosiviikkotuntia tai yli" in {
+      "Sallittu yksilöllistetyille pakollisille" in {
+        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(pakollinenS.copy(yksilöllistettyOppimäärä = true))))))) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Kielletty valinnaisten oppiaineiden suorituksilta joiden laajuus on 2 vuosiviikkotuntia tai yli" in {
         putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(valinnainenS)))))) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle("Arviointi S on sallittu vain valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia"))
+        }
+      }
+
+      "Sallittu valinnaisille oppiaineiden suorituksille joiden laajuus on alle 2" in {
+        val valinnainenLaajuusAlle2 = suoritus(kieli("B1", "SV").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1.9))).copy(arviointi = hyväksytty)
+        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(valinnainenLaajuusAlle2)))))) {
+          verifyResponseStatusOk()
         }
       }
     }
@@ -96,15 +109,28 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
     "O" - {
       val valinnainenO = suoritus(kieli("B1", "SV").copy(pakollinen = false, laajuus = vuosiviikkotuntia(2))).copy(arviointi = osallistunut)
       val pakollinenO = äidinkielenSuoritus.copy(arviointi = osallistunut)
-      "Kielletty pakollisilta" in {
+      "Kielletty pakollisten oppiaineiden suorituksilta" in {
         putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(pakollinenO)))))) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle("Arviointi O on sallittu vain valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia"))
         }
       }
 
-      "Kielletty valinnaisilta joiden laajuus on 2 vuosiviikkotuntia tai yli" in {
+      "Sallittu yksilöllistetyille pakollisille" in {
+        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(pakollinenO.copy(yksilöllistettyOppimäärä = true))))))) {
+          verifyResponseStatusOk()
+        }
+      }
+
+      "Kielletty valinnaisten oppiaineiden suorituksilta joiden laajuus on 2 vuosiviikkotuntia tai yli" in {
         putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(valinnainenO)))))) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle("Arviointi O on sallittu vain valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia"))
+        }
+      }
+
+      "Sallittu valinnaisille oppiaineiden suorituksille joiden laajuus on alle 2" in {
+        val valinnainenLaajuusAlle2 = suoritus(kieli("B1", "SV").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1.9))).copy(arviointi = osallistunut)
+        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(valinnainenLaajuusAlle2)))))) {
+          verifyResponseStatusOk()
         }
       }
     }

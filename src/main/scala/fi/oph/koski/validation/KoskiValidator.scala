@@ -555,7 +555,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   private def validatePäättötodistuksenArvioinnit(s: NuortenPerusopetuksenOppimääränSuoritus) =
     HttpStatus.fold(s.osasuoritusLista.collect { case o: NuortenPerusopetuksenOppiaineenSuoritus =>
       val arvioituSanallisesti = o.viimeisinArviointi.map(_.arvosana.koodiarvo).exists(SanallinenPerusopetuksenOppiaineenArviointi.valinnaisilleSallitutArvosanat.contains)
-      if (arvioituSanallisesti && (o.koulutusmoduuli.pakollinen || o.koulutusmoduuli.laajuus.exists(_.arvo >= 2))) {
+      if (arvioituSanallisesti && !o.yksilöllistettyOppimäärä && (o.koulutusmoduuli.pakollinen || o.koulutusmoduuli.laajuus.exists(_.arvo >= 2))) {
         KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle(s"Arviointi ${o.viimeisinArviointi.map(_.arvosana.koodiarvo).mkString} on sallittu vain valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia")
       } else {
         HttpStatus.ok
