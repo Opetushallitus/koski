@@ -280,7 +280,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         :: validateAlkamispäivä(suoritus)
         :: validateToimipiste(suoritus)
         :: validateStatus(suoritus, opiskeluoikeus)
-        :: validateArviointi(suoritus)
+        :: validateArvioinnit(suoritus)
         :: validateLaajuus(suoritus)
         :: validateOppiaineet(suoritus)
         :: validateTutkinnonosanRyhmä(suoritus)
@@ -440,7 +440,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     }
   }
 
-  private def validateArviointi(suoritus: Suoritus): HttpStatus = suoritus match {
+  private def validateArvioinnit(suoritus: Suoritus): HttpStatus = suoritus match {
     case a: AmmatillinenPäätasonSuoritus =>
       val käytetytArviointiasteikot = a.osasuoritusLista.flatMap(extractNumeerisetArvosanat).map(_.koodistoUri).distinct.sorted
 
@@ -458,6 +458,8 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         .collect { case (identiteetti, oppiaineet) if oppiaineet.count(viimeisinArviointiNumeerinen) > 1 => identiteetti}
         .map(identiteetti => KoskiErrorCategory.badRequest.validation.rakenne.kaksiSamaaOppiainettaNumeroarvioinnilla(s"Kahdella saman oppiaineen suorituksella $identiteetti ei molemmilla voi olla numeerista arviointia"))
       )
+    case n: NuortenPerusopetuksenOppimääränSuoritus =>
+      validatePäättötodistuksenArvioinnit(n)
     case _ => HttpStatus.ok
   }
 
@@ -549,6 +551,16 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       case _ => HttpStatus.ok
     }
   }
+
+  private def validatePäättötodistuksenArvioinnit(s: NuortenPerusopetuksenOppimääränSuoritus) =
+    HttpStatus.fold(s.osasuoritusLista.collect { case o: NuortenPerusopetuksenOppiaineenSuoritus =>
+      val arvioituSanallisesti = o.viimeisinArviointi.map(_.arvosana.koodiarvo).exists(SanallinenPerusopetuksenOppiaineenArviointi.valinnaisilleSallitutArvosanat.contains)
+      if (arvioituSanallisesti && !o.yksilöllistettyOppimäärä && (o.koulutusmoduuli.pakollinen || o.koulutusmoduuli.laajuus.exists(_.arvo >= 2))) {
+        KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle(s"Arviointi ${o.viimeisinArviointi.map(_.arvosana.koodiarvo).mkString} on sallittu vain valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia")
+      } else {
+        HttpStatus.ok
+      }
+    })
 
   private def validateOppiaineet(suoritus: Suoritus) = suoritus match {
     case _: NuortenPerusopetuksenOppiaineenOppimääränSuoritus | _: AikuistenPerusopetuksenOppiaineenOppimääränSuoritus | _: LukionOppiaineenOppimääränSuoritus =>

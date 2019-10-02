@@ -1286,9 +1286,9 @@ describe('Perusopetus', function() {
       describe('Vieraan kielen valinta', function() {
 
         describe('kielivalinnan muuttaminen', function() {
-          var b1kieli = opinnot.oppiaineet.oppiaine('pakollinen.B1')
+          var b1kieli = opinnot.oppiaineet.oppiaine('valinnainen.B1')
           var kieli = b1kieli.propertyBySelector('.oppiaine')
-          before(editor.edit, editor.property('laajuus').setValue('2'), kieli.selectValue('saksa'), editor.saveChanges)
+          before(editor.edit, editor.property('laajuus').setValue('1'), kieli.selectValue('saksa'), editor.saveChanges)
           it('muutettu kielivalinta näytetään', function() {
             expect(kieli.getValue()).to.equal('saksa')
           })
@@ -1346,9 +1346,9 @@ describe('Perusopetus', function() {
       })
 
       describe('Oppiaineen laajuuden muutos', function() {
-        before(editor.edit, editor.property('laajuus').setValue('5'), editor.saveChanges, wait.until(page.isSavedLabelShown))
+        before(editor.edit, editor.property('laajuus').setValue('1.5'), editor.saveChanges, wait.until(page.isSavedLabelShown))
         it('muutettu laajuus näytetään', function() {
-          expect(editor.property('laajuus').getValue()).to.equal('5')
+          expect(editor.property('laajuus').getValue()).to.equal('1,5')
         })
       })
       describe('Oppiaineen arvosanan muutos', function() {
@@ -2984,6 +2984,7 @@ describe('Perusopetus', function() {
             opinnot.valitseSuoritus(undefined, 'Päättötodistus'),
             wait.forAjax,
             opinnot.oppiaineet.uusiOppiaine('.pakolliset').selectValue('Matematiikka'),
+            opinnot.oppiaineet.oppiaine(0).property('yksilöllistettyOppimäärä').setValue(true),
             opinnot.oppiaineet.oppiaine(0).propertyBySelector('.arvosana').selectValue('S'),
             opinnot.oppiaineet.oppiaine(0).propertyBySelector('.sanallinen-arviointi .kuvaus').setValue('Hienoa työtä'),
             editor.saveChanges
@@ -2991,7 +2992,7 @@ describe('Perusopetus', function() {
 
           it('Ensin piilottaa oppiaineiden arvosanat (ja sanallisen arvioinnin)', function() {
             expect(extractAsText(S('.oppiaineet'))).to.equal(
-              'Oppiaineiden arvosanat\nArvostelu 4-10, S (suoritettu) tai H (hylätty)\nPakolliset oppiaineet\nOppiaine\nMatematiikka'
+              'Oppiaineiden arvosanat\nArvostelu 4-10, S (suoritettu) tai H (hylätty)\nPakolliset oppiaineet\nOppiaine\nMatematiikka *\n* = yksilöllistetty oppimäärä'
             )
           })
 
@@ -3006,7 +3007,7 @@ describe('Perusopetus', function() {
 
             it('näyttää oppiaineiden arvosanat', function() {
               expect(extractAsText(S('.oppiaineet'))).to.equal(
-                'Oppiaineiden arvosanat\nArvostelu 4-10, S (suoritettu) tai H (hylätty)\nPakolliset oppiaineet\nOppiaine Arvosana\nMatematiikka S\nSanallinen arviointi Hienoa työtä'
+                'Oppiaineiden arvosanat\nArvostelu 4-10, S (suoritettu) tai H (hylätty)\nPakolliset oppiaineet\nOppiaine Arvosana\nMatematiikka S *\nSanallinen arviointi Hienoa työtä\n* = yksilöllistetty oppimäärä'
               )
             })
 
