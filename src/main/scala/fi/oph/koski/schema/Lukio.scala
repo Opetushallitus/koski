@@ -325,7 +325,6 @@ case class LukionMatematiikka(
   perusteenDiaarinumero: Option[String] = None
 ) extends LukionValtakunnallinenOppiaine with KoodistostaLöytyväKoulutusmoduuli with Oppimäärä {
   override def description = oppimäärä.description
-  override def identiteetti: AnyRef = (super.identiteetti, oppimäärä)
 }
 
 @Description("Ks. tarkemmin lukion ja IB-tutkinnon opiskeluoikeuden tilat: [confluence](https://confluence.csc.fi/pages/viewpage.action?pageId=71953716)")
