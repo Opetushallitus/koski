@@ -14,7 +14,6 @@ case class AikuistenPerusopetuksenOpiskeluoikeus(
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
   oppilaitos: Option[Oppilaitos],
   koulutustoimija: Option[Koulutustoimija] = None,
-  @Hidden
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None,
   tila: AikuistenPerusopetuksenOpiskeluoikeudenTila,
   lisätiedot: Option[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot] = None,
