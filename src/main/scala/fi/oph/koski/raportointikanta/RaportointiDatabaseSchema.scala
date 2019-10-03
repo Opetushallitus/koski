@@ -366,6 +366,8 @@ case class ROsasuoritusRow(
       .orElse(koulutusmoduuliOppimääräNimi)
       .orElse(koulutusmoduuliNimi)
   }
+
+  def suoritettu: Boolean = arviointiHyväksytty.exists(identity)
 }
 
 case class RHenkilöRow(
