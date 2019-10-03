@@ -122,6 +122,8 @@ trait OrganisaatioonLiittyvä {
 
 case class OpiskeluoikeudenOrganisaatiohistoria(
   muutospäivä: LocalDate,
+  @Title("Aikaisempi oppilaitos")
   oppilaitos: Oppilaitos,
+  @Title("Aikaisempi koulutustoimija")
   koulutustoimija: Koulutustoimija
 )
