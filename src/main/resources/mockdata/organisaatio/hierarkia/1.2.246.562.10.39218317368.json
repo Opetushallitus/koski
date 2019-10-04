@@ -4,6 +4,9 @@
     "nimi" : {
       "fi" : "Helsingin Yliopisto"
     },
+    "kieletUris": [
+      "oppilaitoksenopetuskieli_1#1"
+    ],
     "organisaatiotyypit" : [ "KOULUTUSTOIMIJA" ],
     "children" : [ {
       "oid" : "1.2.246.562.10.39218317368",
@@ -12,6 +15,9 @@
         "sv" : "Helsingfors universitet",
         "en" : "University of Helsinki"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "01901",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_42#1",
@@ -22,6 +28,9 @@
           "sv" : "Helsingfors universitet, Juridiska fakulteten",
           "en" : "University of Helsinki, Faculty of Law"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -31,6 +40,9 @@
           "sv" : "Helsingfors universitet, Veterinärmedicinska fakulteten",
           "en" : "University of Helsinki, Faculty of Veterinary Medicine"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -40,6 +52,9 @@
           "sv" : "Helsingfors universitet, Farmaceutiska fakulteten",
           "en" : "University of Helsinki, Faculty of Pharmacy"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -49,6 +64,9 @@
           "sv" : "Helsingfors universitet, Matematisk-naturvetenskapliga fakulteten",
           "en" : "University of Helsinki, Faculty of Science"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -58,6 +76,9 @@
           "sv" : "Helsingfors universitet, Beteendevetenskapliga fakulteten",
           "en" : "University of Helsinki, Faculty of Behavioural Sciences"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -67,6 +88,9 @@
           "sv" : "Helsingfors universitet, Medicinska fakulteten",
           "en" : "University of Helsinki, Faculty of Medicine"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -76,6 +100,9 @@
           "sv" : "Svenska social- och kommunalhögskolan vid Helsingfors universitet",
           "en" : "Swedish School of Social Science"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -85,6 +112,9 @@
           "sv" : "Helsingfors universitet, Bio- och miljövetenskapliga fakulteten",
           "en" : "University of Helsinki, Faculty of Biological and Environmental Sciences"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -94,6 +124,9 @@
           "sv" : "Helsingfors universitet, Humanistiska fakulteten",
           "en" : "University of Helsinki, Faculty of Arts"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -103,6 +136,9 @@
           "sv" : "Helsingfors universitet, Teologiska fakulteten",
           "en" : "University of Helsinki, Faculty of Theology"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -112,6 +148,9 @@
           "sv" : "Helsingfors universitet, Statsvetenskapliga fakulteten",
           "en" : "University of Helsinki, Faculty of Social Sciences"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -121,6 +160,9 @@
           "sv" : "Helsingfors universitet, Agrikultur-forstvetenskapliga fakulteten",
           "en" : "University of Helsinki, Faculty of Agriculture and Forestry"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       } ]

@@ -4,12 +4,18 @@
     "nimi" : {
       "fi" : "Jyväskylän yliopisto"
     },
+    "kieletUris": [
+      "oppilaitoksenopetuskieli_1#1"
+    ],
     "organisaatiotyypit" : [ "KOULUTUSTOIMIJA" ],
     "children" : [ {
       "oid" : "1.2.246.562.10.91392558028",
       "nimi" : {
         "fi" : "Jyväskylän yliopisto"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "01906",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_42#1",
@@ -18,6 +24,9 @@
         "nimi" : {
           "fi" : "Kokkolan yliopistokeskus Chydenius (Jyväskylän yliopisto)"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -26,6 +35,9 @@
           "fi" : "Jyväskylän yliopisto, Kasvatustieteiden tiedekunta",
           "en" : "University of Jyväskylä, Faculty of Education"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -34,6 +46,9 @@
           "fi" : "Jyväskylän yliopisto, Humanistinen tiedekunta",
           "en" : "University of Jyväskylä, Faculty of Humanities"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -43,6 +58,9 @@
           "sv" : "Handelshögskolan vid Jyväskylä universitet",
           "en" : "Jyväskylä University School of Business and Economics"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -51,6 +69,9 @@
           "fi" : "Jyväskylän yliopisto, Matemaattis-luonnontieteellinen tiedekunta",
           "en" : "University of Jyväskylä, Faculty of Mathematics and Science"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -59,6 +80,9 @@
           "fi" : "Jyväskylän yliopisto, Yhteiskuntatieteellinen tiedekunta",
           "en" : "University of Jyväskylä, Faculty of Social Sciences"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -68,6 +92,9 @@
           "sv" : "Idrottsvetenskapliga fakulteten",
           "en" : "University of Jyväskylä, Faculty of Sports and Health Sciences"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -76,6 +103,9 @@
           "fi" : "Jyväskylän yliopisto, Informaatioteknologian tiedekunta",
           "en" : "University of Jyväskylä, Faculty of Information Technology"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       } ]
@@ -84,6 +114,9 @@
       "nimi" : {
         "fi" : "Jyväskylän normaalikoulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "00204",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_19#1",
@@ -93,6 +126,9 @@
         "nimi" : {
           "fi" : "Jyväskylän normaalikoulu, alakoulu"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "kotipaikkaUri":"kunta_179",
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
@@ -101,6 +137,9 @@
         "nimi" : {
           "fi" : "Jyväskylän normaalikoulu, yläkoulu ja lukio"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       } ]

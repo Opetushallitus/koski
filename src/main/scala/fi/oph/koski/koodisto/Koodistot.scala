@@ -86,6 +86,7 @@ object Koodistot {
     KoodistoAsetus("opintojenlaajuusyksikko"),
     KoodistoAsetus("oppilaitosnumero", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),
     KoodistoAsetus("oppilaitostyyppi"),
+    KoodistoAsetus("oppilaitoksenopetuskieli"),
     KoodistoAsetus("osaamisala", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false), // ks. EPerusteetLocalizationTest
     KoodistoAsetus("suorituksentila"),
     KoodistoAsetus("tutkinnonosat", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false), // ks. EPerusteetLocalizationTest

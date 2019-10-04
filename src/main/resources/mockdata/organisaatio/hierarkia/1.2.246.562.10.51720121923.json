@@ -4,12 +4,18 @@
     "nimi" : {
       "fi" : "Espoon seudun koulutuskuntayhtymä Omnia"
     },
+    "kieletUris": [
+      "oppilaitoksenopetuskieli_1#1"
+    ],
     "organisaatiotyypit" : [ "KOULUTUSTOIMIJA" ],
     "children" : [ {
       "oid" : "1.2.246.562.10.51720121923",
       "nimi" : {
         "fi" : "Omnian ammattiopisto"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "10054",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_21#1",
@@ -18,6 +24,9 @@
         "nimi" : {
           "fi" : "Omnian ammattiopisto, Espoon keskus, Kirkkokatu"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -25,6 +34,9 @@
         "nimi" : {
           "fi" : "Omnian ammattiopisto, Leppävaara"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -32,6 +44,9 @@
         "nimi" : {
           "fi" : "Omnian ammattiopisto, Kirkkonummi"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -39,6 +54,9 @@
         "nimi" : {
           "fi" : "Omnian ammattiopisto, Espoon keskus, Lehtimäentie"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -46,6 +64,9 @@
         "nimi" : {
           "fi" : "Omnian ammattiopisto, Suomenoja"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -53,6 +74,9 @@
         "nimi" : {
           "fi" : "Omnian ammattiopisto, Espoon keskus, Lakelankatu"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       } ]

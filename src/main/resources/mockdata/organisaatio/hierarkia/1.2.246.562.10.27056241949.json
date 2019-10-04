@@ -5,6 +5,9 @@
       "nimi": {
         "fi": "Helsingin Kansainvälisen Koulun Vanhempain yhdistys ry"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "organisaatiotyypit": [
         "KOULUTUSTOIMIJA"
       ],
@@ -17,6 +20,9 @@
           "nimi": {
             "en": "International School of Helsinki"
           },
+          "kieletUris": [
+            "oppilaitoksenopetuskieli_1#1"
+          ],
           "kotipaikkaUri": "kunta_091",
           "children": [
             {
@@ -24,6 +30,9 @@
               "nimi": {
                 "en": "International School of Helsinki"
               },
+              "kieletUris": [
+                "oppilaitoksenopetuskieli_1#1"
+              ],
               "kotipaikkaUri": "kunta_091",
               "children": [],
               "organisaatiotyypit": [

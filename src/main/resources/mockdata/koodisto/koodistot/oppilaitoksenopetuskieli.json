@@ -1,0 +1,59 @@
+{
+  "koodistoUri": "oppilaitoksenopetuskieli",
+  "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codes/oppilaitoksenopetuskieli",
+  "omistaja": "Opetushallitus",
+  "organisaatioOid": "1.2.246.562.10.00000000001",
+  "lukittu": null,
+  "codesGroupUri": "http://oppilaitoskoodistot",
+  "version": 4,
+  "versio": 1,
+  "paivitysPvm": 1549630299547,
+  "paivittajaOid": null,
+  "voimassaAlkuPvm": "2013-01-01",
+  "voimassaLoppuPvm": null,
+  "tila": "HYVAKSYTTY",
+  "metadata": [
+    {
+      "kieli": "SV",
+      "nimi": "oppilaitoksen opetuskieli",
+      "kuvaus": "oppilaitoksen opetuskieli",
+      "kayttoohje": "",
+      "kasite": "",
+      "kohdealue": null,
+      "sitovuustaso": "",
+      "kohdealueenOsaAlue": "",
+      "toimintaymparisto": "",
+      "tarkentaaKoodistoa": "",
+      "huomioitavaKoodisto": "",
+      "koodistonLahde": ""
+    },
+    {
+      "kieli": "FI",
+      "nimi": "oppilaitoksen opetuskieli",
+      "kuvaus": "Käytössä organisaatiopalvelussa. \n\nOrganisaation kieli on mainittu OKMn tai VMn opetuksen- tai koulutuksen järjestäjän antamassa koulutustehtäväpäätöksessä. \n\nYleisin kieli on suomi ja ruotsi tai niiden yhdistelmä.",
+      "kayttoohje": "",
+      "kasite": "",
+      "kohdealue": null,
+      "sitovuustaso": "",
+      "kohdealueenOsaAlue": "",
+      "toimintaymparisto": "",
+      "tarkentaaKoodistoa": "",
+      "huomioitavaKoodisto": "",
+      "koodistonLahde": ""
+    },
+    {
+      "kieli": "EN",
+      "nimi": "oppilaitoksen opetuskieli",
+      "kuvaus": "oppilaitoksen opetuskieli",
+      "kayttoohje": "",
+      "kasite": "",
+      "kohdealue": null,
+      "sitovuustaso": "",
+      "kohdealueenOsaAlue": "",
+      "toimintaymparisto": "",
+      "tarkentaaKoodistoa": "",
+      "huomioitavaKoodisto": "",
+      "koodistonLahde": ""
+    }
+  ]
+}

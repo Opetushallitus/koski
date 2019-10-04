@@ -4,6 +4,9 @@
     "nimi" : {
       "fi" : "Aalto-korkeakoulusäätiö"
     },
+    "kieletUris": [
+      "oppilaitoksenopetuskieli_1#1"
+    ],
     "organisaatiotyypit" : [ "KOULUTUSTOIMIJA" ],
     "children" : [ {
       "oid" : "1.2.246.562.10.56753942459",
@@ -12,6 +15,9 @@
         "sv" : "Aalto-universitetet",
         "en" : "Aalto University"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "10076",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_42#1",
@@ -22,6 +28,9 @@
           "sv" : "Aalto-universitetet, Handelshögskola",
           "en" : "Aalto University, School of Business"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ {
           "oid" : "1.2.246.562.10.62153941789",
@@ -30,6 +39,9 @@
             "sv" : "Aalto-universitetet, Handelshögskola Mikkeli kampus",
             "en" : "Aalto University, School of Business Mikkeli Campus"
           },
+          "kieletUris": [
+            "oppilaitoksenopetuskieli_1#1"
+          ],
           "organisaatiotyypit" : [ "TOIMIPISTE" ],
           "children" : [ ]
         } ]
@@ -40,6 +52,9 @@
           "sv" : "Aalto-universitetet, Högskolan för elektroteknik",
           "en" : "Aalto University, School of Electrical Engineering"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -49,6 +64,9 @@
           "sv" : "Aalto-universitetet, Högskolan för teknikvetenskaper",
           "en" : "Aalto University, School of Science"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -58,6 +76,9 @@
           "sv" : "Högskolan för konst, design och arkitektur",
           "en" : "School of Arts, Design and Architecture"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -67,6 +88,9 @@
           "sv" : "Aalto-universitetet, Högskolan för ingenjörsvetenskaper",
           "en" : "Aalto University, School of Engineering"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -76,6 +100,9 @@
           "sv" : "Aalto-universitetet, Högskolan för kemiteknik",
           "en" : "Aalto University, School of Chemical Technology"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       } ]

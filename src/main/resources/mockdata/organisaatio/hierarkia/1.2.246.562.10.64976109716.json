@@ -5,6 +5,9 @@
       "nimi": {
         "fi": "Kouluyhdistys Pestalozzi Schulverein Skolföreningen r.y."
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "organisaatiotyypit": [
         "KOULUTUSTOIMIJA"
       ],
@@ -14,6 +17,9 @@
           "nimi": {
             "fi": "Helsingin Saksalainen koulu"
           },
+          "kieletUris": [
+            "oppilaitoksenopetuskieli_1#1"
+          ],
           "oppilaitosKoodi": "00085",
           "organisaatiotyypit": [
             "OPPILAITOS"
