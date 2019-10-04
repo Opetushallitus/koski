@@ -88,12 +88,12 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
         verifyResponseStatusOk()
       }
     }
-    "Eri matematiikan oppimäärällä -> HTTP 200" in {
+    "Eri matematiikan oppimäärällä -> HTTP 400" in {
       putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(
         suoritus(matematiikka("MAA")).copy(arviointi = arviointi("9")),
         suoritus(matematiikka("MAB")).copy(arviointi = arviointi("9"))
       )))))) {
-        verifyResponseStatusOk()
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus("Osasuoritus koskioppiaineetyleissivistava/MA esiintyy useammin kuin kerran"))
       }
     }
   }
