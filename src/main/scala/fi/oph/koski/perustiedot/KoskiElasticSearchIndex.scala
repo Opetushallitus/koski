@@ -83,6 +83,10 @@ class KoskiElasticSearchIndex(val elastic: ElasticSearch) extends Logging {
             "default": {
               "tokenizer": "icu_tokenizer",
               "filter":  [ "finnish_folding", "lowercase" ]
+            },
+            "lowercase_whitespace_analyzer": {
+              "tokenizer": "whitespace",
+              "filter": [ "finnish_folding", "lowercase" ]
             }
           }
         }
