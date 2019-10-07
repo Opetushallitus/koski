@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 7.10.2019
+- Näyttötutkintoon valmistavan suorituksen voi merkitä valmiiksi vaikka sillä ei ole osasuorituksia tai opiskeluoikeus ei ole linkitetty
+
 ## 3.10.2019
 - Sallitaan lukion oppimäärän alla vain yksi matematiikan oppiainesuoritus
 
