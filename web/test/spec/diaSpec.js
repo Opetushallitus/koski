@@ -406,7 +406,16 @@ describe('DIA', function( ) {
   })
 
   describe('Deutsche Internationale Abitur', function () {
-    before(page.openPage, page.oppijaHaku.searchAndSelect('151013-2195'), opinnot.valitseSuoritus(undefined, 'Deutsche Internationale Abitur'))
+    before(
+      resetFixtures,
+      page.openPage,
+      page.oppijaHaku.searchAndSelect('151013-2195'),
+      editor.edit,
+      editor.property('tila').removeItem(0),
+      editor.saveChanges,
+      wait.until(page.isSavedLabelShown),
+      opinnot.valitseSuoritus(undefined, 'Deutsche Internationale Abitur')
+    )
 
     describe('Oppijan suorituksissa', function () {
       it('näytetään tutkinto ja oppilaitos', function () {
