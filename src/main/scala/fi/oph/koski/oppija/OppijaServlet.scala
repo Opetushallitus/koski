@@ -106,6 +106,7 @@ class OppijaServlet(implicit val application: KoskiApplication) extends ApiServl
     } catch {
       case e: Exception =>
         application.tiedonsiirtoService.storeTiedonsiirtoResult(koskiSession, None, None, None, Some(TiedonsiirtoError(JObject("unparseableJson" -> JString(request.body)), KoskiErrorCategory.internalError().errors)))
+        logger.error(e)("virhe aiheutti unparseableJson merkinnän tiedonsiirtoihin")
         throw e
     }
   }
