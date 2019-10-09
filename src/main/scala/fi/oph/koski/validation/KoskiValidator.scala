@@ -553,13 +553,16 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   private def validatePäättötodistuksenArvioinnit(s: NuortenPerusopetuksenOppimääränSuoritus) =
-    HttpStatus.fold(s.osasuoritusLista.collect { case o: NuortenPerusopetuksenOppiaineenSuoritus =>
-      val arvioituSanallisesti = o.viimeisinArviointi.map(_.arvosana.koodiarvo).exists(SanallinenPerusopetuksenOppiaineenArviointi.valinnaisilleSallitutArvosanat.contains)
-      if (arvioituSanallisesti && !o.yksilöllistettyOppimäärä && (o.koulutusmoduuli.pakollinen || o.koulutusmoduuli.laajuus.exists(_.arvo >= 2))) {
-        KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle(s"Arviointi ${o.viimeisinArviointi.map(_.arvosana.koodiarvo).mkString} on sallittu vain jos oppimäärä on yksilöllistetty tai valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia")
-      } else {
+    HttpStatus.fold(s.osasuoritusLista.collect {
+      case o: NuortenPerusopetuksenOppiaineenSuoritus if o.koulutusmoduuli.tunniste.koodiarvo == "OP" && o.viimeisinArviointi.map(_.arvosana.koodiarvo).contains("S") =>
         HttpStatus.ok
-      }
+      case o: NuortenPerusopetuksenOppiaineenSuoritus =>
+        val arvioituSanallisesti = o.viimeisinArviointi.map(_.arvosana.koodiarvo).exists(SanallinenPerusopetuksenOppiaineenArviointi.valinnaisilleSallitutArvosanat.contains)
+        if (arvioituSanallisesti && !o.yksilöllistettyOppimäärä && (o.koulutusmoduuli.pakollinen || o.koulutusmoduuli.laajuus.exists(_.arvo >= 2))) {
+          KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle(s"Arviointi ${o.viimeisinArviointi.map(_.arvosana.koodiarvo).mkString} on sallittu vain jos oppimäärä on yksilöllistetty tai valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia")
+        } else {
+          HttpStatus.ok
+        }
     })
 
   private def validateOppiaineet(suoritus: Suoritus) = suoritus match {

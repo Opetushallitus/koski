@@ -176,6 +176,15 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
           }
         }
       }
+
+      "Opinto-ohjaus (OP) oppiaineena" - {
+        "Sallitaan aina arvosana S" in {
+          val opinto_ohjaus_S = suoritus(oppiaine("OP")).copy(arviointi = hyväksytty)
+          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(opinto_ohjaus_S)))))) {
+            verifyResponseStatusOk()
+          }
+        }
+      }
     }
   }
 }
