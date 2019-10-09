@@ -458,7 +458,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         .collect { case (identiteetti, oppiaineet) if oppiaineet.count(viimeisinArviointiNumeerinen) > 1 => identiteetti}
         .map(identiteetti => KoskiErrorCategory.badRequest.validation.rakenne.kaksiSamaaOppiainettaNumeroarvioinnilla(s"Kahdella saman oppiaineen suorituksella $identiteetti ei molemmilla voi olla numeerista arviointia"))
       )
-    case n: NuortenPerusopetuksenOppimääränSuoritus =>
+    case n: NuortenPerusopetuksenOppimääränSuoritus if n.vahvistettu =>
       validatePäättötodistuksenArvioinnit(n)
     case _ => HttpStatus.ok
   }
