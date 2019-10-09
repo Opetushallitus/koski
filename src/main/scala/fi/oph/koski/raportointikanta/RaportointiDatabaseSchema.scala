@@ -56,6 +56,7 @@ object RaportointiDatabaseSchema {
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_osasuoritus CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_henkilo CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_organisaatio CASCADE",
+    sqlu"DROP TABLE IF EXISTS #${s.name}.r_organisaatio_kieli CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_koodisto_koodi CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.raportointikanta_status CASCADE"
   )
@@ -220,7 +221,16 @@ object RaportointiDatabaseSchema {
     val yTunnus = column[Option[String]]("y_tunnus", StringIdentifierType)
     def * = (organisaatioOid, nimi, organisaatiotyypit, oppilaitostyyppi, oppilaitosnumero, kotipaikka, yTunnus) <> (ROrganisaatioRow.tupled, ROrganisaatioRow.unapply)
   }
+
   class ROrganisaatioTableTemp(tag: Tag) extends ROrganisaatioTable(tag, Temp)
+
+  class ROrganisaatioKieliTable(tag: Tag, schema: Schema = Public) extends Table[ROrganisaatioKieliRow](tag, schema.nameOpt, "r_organisaatio_kieli") {
+    val organisaatioOid = column[String]("organisaatio_oid", StringIdentifierType)
+    val kielikoodi = column[String]("kielikoodi", StringIdentifierType)
+    def * = (organisaatioOid, kielikoodi) <> (ROrganisaatioKieliRow.tupled, ROrganisaatioKieliRow.unapply)
+  }
+
+  class ROrganisaatioKieliTableTemp(tag: Tag) extends ROrganisaatioKieliTable(tag, Temp)
 
   class RKoodistoKoodiTable(tag: Tag, schema: Schema = Public) extends Table[RKoodistoKoodiRow](tag, schema.nameOpt, "r_koodisto_koodi") {
     val koodistoUri = column[String]("koodisto_uri", StringIdentifierType)
@@ -393,6 +403,11 @@ case class ROrganisaatioRow(
   oppilaitosnumero: Option[String],
   kotipaikka: Option[String],
   yTunnus: Option[String]
+)
+
+case class ROrganisaatioKieliRow(
+  organisaatioOid: String,
+  kielikoodi: String
 )
 
 case class RKoodistoKoodiRow(

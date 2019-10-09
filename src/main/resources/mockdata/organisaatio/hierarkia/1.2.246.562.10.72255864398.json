@@ -4,12 +4,18 @@
     "nimi" : {
       "fi" : "Tampereen Yliopisto"
     },
+    "kieletUris": [
+      "oppilaitoksenopetuskieli_1#1"
+    ],
     "organisaatiotyypit" : [ "KOULUTUSTOIMIJA" ],
     "children" : [ {
       "oid" : "1.2.246.562.10.20465608279",
       "nimi" : {
         "fi" : "Tampereen yliopisto"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "01905",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_42#1",
@@ -19,6 +25,9 @@
           "fi" : "Tampereen yliopisto, Kieli- , käännös- ja kirjallisuustieteiden yksikkö",
           "en" : "University of Tampere, School of Language, Translation and Literary Studies"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -27,6 +36,9 @@
           "fi" : "Tampereen yliopisto, BioMediTech",
           "en" : "University of Tampere, BioMediTech"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -35,6 +47,9 @@
           "fi" : "Tampereen yliopisto, Informaatiotieteiden yksikkö",
           "en" : "University of Tampere, School of Information Sciences"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -43,6 +58,9 @@
           "fi" : "Tampereen yliopisto, Yhteiskunta- ja kulttuuritieteiden yksikkö",
           "en" : "University of Tampere, School of Social Sciences and Humanities"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -51,6 +69,9 @@
           "fi" : "Tampereen yliopisto, Johtamiskorkeakoulu",
           "en" : "University of Tampere, School of Management"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -59,6 +80,9 @@
           "fi" : "Tampereen yliopisto, Viestinnän, median ja teatterin yksikkö",
           "en" : "University of Tampere, School of Communication, Media and Theatre"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -67,6 +91,9 @@
           "fi" : "Tampereen yliopisto,  Terveystieteiden yksikkö",
           "en" : "University of Tampere, School of Health Sciences"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -75,6 +102,9 @@
           "fi" : "Tampereen yliopisto, Lääketieteen yksikkö",
           "en" : "University of Tampere, School of Medicine"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -83,6 +113,9 @@
           "fi" : "Tampereen yliopisto, Kasvatustieteiden yksikkö",
           "en" : "University of Tampere, School of Education"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       } ]
@@ -91,6 +124,9 @@
       "nimi" : {
         "fi" : "Tampereen yliopiston normaalikoulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "00817",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_19#1",
@@ -99,6 +135,9 @@
         "nimi" : {
           "fi" : "Tampereen yliopiston normaalikoulu"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       } ]

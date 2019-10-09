@@ -4,6 +4,9 @@
     "nimi" : {
       "sv" : "Högskolan Arcada Ab"
     },
+    "kieletUris": [
+      "oppilaitoksenopetuskieli_1#1"
+    ],
     "organisaatiotyypit" : [ "KOULUTUSTOIMIJA" ],
     "children" : [ {
       "oid" : "1.2.246.562.10.25619624254",
@@ -11,6 +14,9 @@
         "sv" : "Yrkeshögskolan Arcada",
         "en" : "Arcada University of Applied Sciences"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "02535",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_41#1",
@@ -20,6 +26,9 @@
           "sv" : "Yrkeshögskolan Arcada, Helsingfors",
           "en" : "Arcada University of Applied Sciences, Helsinki"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -27,6 +36,9 @@
         "nimi" : {
           "sv" : "Yrkeshögskolan Arcada, Fortbildning"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       } ]

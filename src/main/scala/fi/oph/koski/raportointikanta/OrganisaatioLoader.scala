@@ -14,9 +14,14 @@ object OrganisaatioLoader extends Logging {
     logger.info(s"Löytyi ${organisaatiot.size} organisaatioita")
     db.setStatusLoadStarted(name)
     db.deleteOrganisaatiot
+    db.deleteOrganisaatioKielet
     val count = organisaatiot.grouped(BatchSize).map(batch => {
       val batchRows = batch.map(buildROrganisaatioRow)
-      db.loadOrganisaatiot(batchRows)
+      val organisaatioRows = batchRows.map(_._1)
+      val kieletRows = batchRows.map(_._2).flatten
+
+      db.loadOrganisaatiot(organisaatioRows)
+      db.loadOrganisaatioKielet(kieletRows)
       db.setLastUpdate(name)
       batchRows.size
     }).sum
@@ -25,9 +30,10 @@ object OrganisaatioLoader extends Logging {
     count
   }
 
-  private def buildROrganisaatioRow(org: OrganisaatioPalveluOrganisaatio) =
-    ROrganisaatioRow(
-      organisaatioOid = org.oid,
+  private def buildROrganisaatioRow(org: OrganisaatioPalveluOrganisaatio): Tuple2[ROrganisaatioRow, Seq[ROrganisaatioKieliRow]] = {
+    val oid = org.oid
+    val organisaatioRow = ROrganisaatioRow(
+      organisaatioOid = oid,
       nimi = LocalizedString.sanitizeRequired(org.nimi, org.oid).get("fi"),
       organisaatiotyypit = org.organisaatiotyypit.sorted.mkString(","),
       oppilaitostyyppi = org.oppilaitostyyppi.map(_.split('#').head.split('_').last),
@@ -35,4 +41,7 @@ object OrganisaatioLoader extends Logging {
       kotipaikka = org.kotipaikkaUri.map(_.stripPrefix("kunta_")),
       yTunnus = org.ytunnus
     )
+    val organisaatioKieliRows = org.kieletUris.map(ROrganisaatioKieliRow(oid, _))
+    (organisaatioRow, organisaatioKieliRows)
+  }
 }

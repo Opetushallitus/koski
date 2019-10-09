@@ -4,6 +4,9 @@
     "nimi" : {
       "fi" : "Lahden ammattikorkeakoulu Oy"
     },
+    "kieletUris": [
+      "oppilaitoksenopetuskieli_1#1"
+    ],
     "organisaatiotyypit" : [ "KOULUTUSTOIMIJA" ],
     "children" : [ {
       "oid" : "1.2.246.562.10.27756776996",
@@ -11,6 +14,9 @@
         "fi" : "Lahden ammattikorkeakoulu",
         "en" : "Lahti University of Applied Sciences"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "02470",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_41#1",
@@ -19,6 +25,9 @@
         "nimi" : {
           "fi" : "Lahden ammattikorkeakoulu, Muotoiluinstituutti"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -26,6 +35,9 @@
         "nimi" : {
           "fi" : "Lahden ammattikorkeakoulu, Musiikki- ja draamainstituutti"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -34,6 +46,9 @@
           "fi" : "Lahden ammattikorkeakoulu, Liiketalouden ala",
           "en" : "Lahti University of Applied Sciences, Faculty of Business Studies"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -41,6 +56,9 @@
         "nimi" : {
           "fi" : "Lahden ammattikorkeakoulu, Matkailun ala"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -49,6 +67,9 @@
           "fi" : "Lahden ammattikorkeakoulu, Sosiaali- ja terveysala",
           "en" : "Lahti University of Applied Sciences, Faculty of Social and Health Care"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -56,6 +77,9 @@
         "nimi" : {
           "fi" : "Lahden ammattikorkeakoulu, Taideinstituutti"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -64,6 +88,9 @@
           "fi" : "Lahden ammattikorkeakoulu, Tekniikan ala",
           "en" : "Faculty of Technology"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       } ]

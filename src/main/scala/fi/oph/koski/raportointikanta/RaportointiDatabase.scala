@@ -28,7 +28,7 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
   logger.info(s"Instantiating RaportointiDatabase for ${schema.name}")
 
   val db: DB = config.toSlickDatabase
-  val tables = List(ROpiskeluoikeudet, ROpiskeluoikeusAikajaksot, RPäätasonSuoritukset, ROsasuoritukset, RHenkilöt, ROrganisaatiot, RKoodistoKoodit, RaportointikantaStatus)
+  val tables = List(ROpiskeluoikeudet, ROpiskeluoikeusAikajaksot, RPäätasonSuoritukset, ROsasuoritukset, RHenkilöt, ROrganisaatiot, ROrganisaatioKielet, RKoodistoKoodit, RaportointikantaStatus)
 
   def moveTo(newSchema: Schema): Unit = {
     logger.info(s"Moving ${schema.name} -> ${newSchema.name}")
@@ -98,6 +98,11 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
   def loadOrganisaatiot(organisaatiot: Seq[ROrganisaatioRow]): Unit =
     runDbSync(ROrganisaatiot ++= organisaatiot)
 
+  def deleteOrganisaatioKielet: Unit =
+    runDbSync(ROrganisaatioKielet.schema.truncate)
+  def loadOrganisaatioKielet(organisaatioKielet: Seq[ROrganisaatioKieliRow]): Unit =
+    runDbSync(ROrganisaatioKielet ++= organisaatioKielet)
+
   def deleteKoodistoKoodit(koodistoUri: String): Unit =
     runDbSync(RKoodistoKoodit.filter(_.koodistoUri === koodistoUri).delete)
   def loadKoodistoKoodit(koodit: Seq[RKoodistoKoodiRow]): Unit =
@@ -127,6 +132,20 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
     case e: PSQLException =>
       logger.debug(s"status unavailable for ${schema.name}, ${e.getMessage.replace("\n", "")}")
       Nil
+  }
+
+  def oppilaitoksenKielet(organisaatioOid: Organisaatio.Oid): Set[RKoodistoKoodiRow] = {
+    val splitPart = SimpleFunction.ternary[String, String, Int, String]("SPLIT_PART")
+
+    val query = ROrganisaatioKielet
+      .filter(_.organisaatioOid === organisaatioOid)
+      .join(RKoodistoKoodit)
+      .on((kielet, koodit) => {
+        splitPart(splitPart(kielet.kielikoodi, "#", 1), "_", 1) === koodit.koodistoUri && splitPart(splitPart(kielet.kielikoodi, "#", 1), "_", 2) === koodit.koodiarvo
+      })
+    runDbSync(query.result).map {
+      case(kielet, koodit) => koodit
+    }.toSet
   }
 
   def oppilaitoksenKoulutusmuodot(oppilaitos: Organisaatio.Oid): Set[String] = {
@@ -206,6 +225,11 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
   lazy val RKoodistoKoodit = schema match {
     case Public => TableQuery[RKoodistoKoodiTable]
     case Temp => TableQuery[RKoodistoKoodiTableTemp]
+  }
+
+  lazy val ROrganisaatioKielet = schema match {
+    case Public => TableQuery[ROrganisaatioKieliTable]
+    case Temp => TableQuery[ROrganisaatioKieliTableTemp]
   }
 
   lazy val RaportointikantaStatus = schema match {

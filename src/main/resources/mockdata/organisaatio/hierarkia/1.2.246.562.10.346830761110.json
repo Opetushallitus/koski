@@ -5,6 +5,9 @@
       "nimi": {
         "fi": "Testaa järjestys voi muuttua"
       },
+    "kieletUris": [
+      "oppilaitoksenopetuskieli_1#1"
+    ],
       "organisaatiotyypit": ["TOIMIPISTE"],
       "children": []
     }, {
@@ -13,12 +16,18 @@
       "fi" : "HELSINGIN KAUPUNKI",
       "sv" : "Helsingfors stad"
     },
+    "kieletUris": [
+      "oppilaitoksenopetuskieli_1#1"
+    ],
     "organisaatiotyypit" : [ "KOULUTUSTOIMIJA" ],
     "children" : [ {
       "oid" : "1.2.246.562.10.88831567503",
       "nimi" : {
         "sv" : "Åshöjdens grundskola"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03108",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -28,6 +37,9 @@
       "nimi" : {
         "fi" : "Etu-Töölön lukio"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "00845",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_15#1",
@@ -36,6 +48,9 @@
         "nimi" : {
           "fi" : "Etu-Töölön lukio"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       } ]
@@ -44,6 +59,9 @@
       "nimi" : {
         "fi" : "Puistolanraitin ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03036",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -53,6 +71,9 @@
       "nimi" : {
         "fi" : "Sibelius-lukio"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "00089",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_15#1",
@@ -61,6 +82,9 @@
         "nimi" : {
           "fi" : "Sibelius-lukio"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       } ]
@@ -69,6 +93,9 @@
       "nimi" : {
         "sv" : "Brändö lågstadieskola"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03059",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -78,6 +105,9 @@
       "nimi" : {
         "fi" : "Sophie Mannerheimin koulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03279",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_12#1",
@@ -87,6 +117,9 @@
       "nimi" : {
         "fi" : "Yhtenäiskoulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03056",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -96,6 +129,9 @@
       "nimi" : {
         "fi" : "Santahaminan ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03041",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -105,6 +141,9 @@
       "nimi" : {
         "fi" : "Munkkivuoren ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03025",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -114,6 +153,9 @@
       "nimi" : {
         "fi" : "Helsingin luonnontiedelukio"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "00081",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_15#1",
@@ -123,6 +165,9 @@
           "fi" : "Helsingin luonnontiedelukio",
           "en" : "Helsinki Upper Secondary School of Natural Sciences"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       } ]
@@ -131,6 +176,9 @@
       "nimi" : {
         "fi" : "Haagan peruskoulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03004",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -140,6 +188,9 @@
       "nimi" : {
         "fi" : "Herttoniemen ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03005",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -149,6 +200,9 @@
       "nimi" : {
         "fi" : "Heteniityn ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03006",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -158,6 +212,9 @@
       "nimi" : {
         "fi" : "Katajanokan ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03013",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -167,6 +224,9 @@
       "nimi" : {
         "fi" : "Meilahden ala-asteen koulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03021",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -176,6 +236,9 @@
       "nimi" : {
         "fi" : "Mellunmäen ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03022",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -185,6 +248,9 @@
       "nimi" : {
         "fi" : "Metsolan ala-asteen koulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03023",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -194,6 +260,9 @@
       "nimi" : {
         "fi" : "Myllypuron ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03027",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -203,6 +272,9 @@
       "nimi" : {
         "fi" : "Ressun lukio"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "00082",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_15#1",
@@ -211,6 +283,9 @@
         "nimi" : {
           "fi" : "Ressun lukio"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       } ]
@@ -219,6 +294,9 @@
       "nimi" : {
         "sv" : "Kottby lågstadieskola"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03064",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -228,6 +306,9 @@
       "nimi" : {
         "fi" : "Itäkeskuksen peruskoulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03039",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -237,6 +318,9 @@
       "nimi" : {
         "fi" : "Koskelan ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03480",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -246,6 +330,9 @@
       "nimi" : {
         "fi" : "Helsingin kaupungin suomenkielinen työväenopisto"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "02022",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_64#1",
@@ -255,6 +342,9 @@
       "nimi" : {
         "fi" : "Kaisaniemen ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03010",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -264,6 +354,9 @@
       "nimi" : {
         "fi" : "Mäkelänrinteen lukio"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "00518",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_15#1",
@@ -272,6 +365,9 @@
         "nimi" : {
           "fi" : "Mäkelänrinteen urheilulukio"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -279,6 +375,9 @@
         "nimi" : {
           "fi" : "Mäkelänrinteen lukio"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       } ]
@@ -287,6 +386,9 @@
       "nimi" : {
         "fi" : "Aleksis Kiven peruskoulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03002",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -296,6 +398,9 @@
       "nimi" : {
         "fi" : "Konalan ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03014",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -305,6 +410,9 @@
       "nimi" : {
         "fi" : "Kallion lukio"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "00255",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_15#1",
@@ -313,6 +421,9 @@
         "nimi" : {
           "fi" : "Kallion lukio"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       } ]
@@ -321,6 +432,9 @@
       "nimi" : {
         "fi" : "Eläintarhan ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03003",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -330,6 +444,9 @@
       "nimi" : {
         "fi" : "Maunulan ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03020",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -339,6 +456,9 @@
       "nimi" : {
         "sv" : "Zacharias Topeliusskolan"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03340",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -348,6 +468,9 @@
       "nimi" : {
         "fi" : "Alppilan lukio"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "00004",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_15#1",
@@ -356,6 +479,9 @@
         "nimi" : {
           "fi" : "Alppilan lukio"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -363,6 +489,9 @@
         "nimi" : {
           "fi" : "Yhtenäiskoulun lukio, Yhtenäiskoulun lukio. Syksyllä 2015 Alppilan lukio ja Yhtenäiskoulun lukio yhdistyvät uudeksi lukioksi. Lukiotoiminta jatkuu Alppilan rakennuksessa"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       } ]
@@ -371,6 +500,9 @@
       "nimi" : {
         "sv" : "Tölö gymnasium"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "00607",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_15#1",
@@ -379,6 +511,9 @@
         "nimi" : {
           "sv" : "Tölö gymnasium, Tölö gymnasium"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       } ]
@@ -387,6 +522,9 @@
       "nimi" : {
         "sv" : "Grundskolan Norsen"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03105",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -396,6 +534,9 @@
       "nimi" : {
         "sv" : "Minervaskolan"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03069",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -405,6 +546,9 @@
       "nimi" : {
         "fi" : "Tehtaankadun ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03048",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -414,6 +558,9 @@
       "nimi" : {
         "fi" : "Tahvonlahden ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03045",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -423,6 +570,9 @@
       "nimi" : {
         "fi" : "Pohjois-Haagan ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03049",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -432,6 +582,9 @@
       "nimi" : {
         "sv" : "Helsingfors stads svenska arbetarinstitut"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "02046",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_64#1",
@@ -441,6 +594,9 @@
       "nimi" : {
         "sv" : "Kronohagens lågstadieskola"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03065",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -450,6 +606,9 @@
       "nimi" : {
         "fi" : "Roihuvuoren ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03040",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -459,6 +618,9 @@
       "nimi" : {
         "fi" : "Oulunkylän ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03030",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -468,6 +630,9 @@
       "nimi" : {
         "fi" : "Naulakallion koulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03114",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_12#1",
@@ -477,6 +642,9 @@
       "nimi" : {
         "fi" : "Ruoholahden ala-asteen koulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03662",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -486,6 +654,9 @@
       "nimi" : {
         "sv" : "Nordsjö lågstadieskola"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03674",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -495,6 +666,9 @@
       "nimi" : {
         "fi" : "Solakallion koulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03417",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_12#1",
@@ -504,6 +678,9 @@
       "nimi" : {
         "fi" : "Maatullin ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03295",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -513,6 +690,9 @@
       "nimi" : {
         "sv" : "Gymnasiet Lärkan"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "00561",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_15#1",
@@ -521,6 +701,9 @@
         "nimi" : {
           "sv" : "Gymnasiet Lärkan"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       } ]
@@ -529,6 +712,9 @@
       "nimi" : {
         "fi" : "Pihlajiston ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03252",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -538,6 +724,9 @@
       "nimi" : {
         "fi" : "Helsingin aikuislukio"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "00551",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_15#1",
@@ -546,6 +735,9 @@
         "nimi" : {
           "fi" : "Helsingin aikuislukio, Keskustan toimipiste"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -553,6 +745,9 @@
         "nimi" : {
           "fi" : "Helsingin aikuislukio, Mäkelänrinteen toimipiste"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -560,6 +755,9 @@
         "nimi" : {
           "fi" : "Helsingin aikuislukio, Itä-Helsingin toimipiste"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       } ]
@@ -568,6 +766,9 @@
       "nimi" : {
         "fi" : "Stadin ammattiopisto"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "10105",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_21#1",
@@ -576,6 +777,9 @@
         "nimi" : {
           "fi" : "Stadin ammattiopisto, Sturenkadun toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -583,6 +787,9 @@
         "nimi" : {
           "fi" : "Stadin ammattiopisto, Prinsessantien toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -590,6 +797,9 @@
         "nimi" : {
           "fi" : "Stadin ammattiopisto, Vilppulantien toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -597,6 +807,9 @@
         "nimi" : {
           "fi" : "Stadin ammattiopisto, Kullervonkadun toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -604,6 +817,9 @@
         "nimi" : {
           "fi" : "Stadin ammattiopisto,  Latokartanontien toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -611,6 +827,9 @@
         "nimi" : {
           "fi" : "Stadin ammattiopisto, Myllypuron toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -618,6 +837,9 @@
         "nimi" : {
           "fi" : "Stadin ammattiopisto, Ilkantien toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -625,6 +847,9 @@
         "nimi" : {
           "fi" : "Stadin ammattiopisto, Onnentien toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -632,6 +857,9 @@
         "nimi" : {
           "fi" : "Stadin ammattiopisto, Savonkadun toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -639,6 +867,9 @@
         "nimi" : {
           "fi" : "Stadin ammattiopisto, Abraham Wetterin tien toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -647,6 +878,9 @@
           "fi" : "Stadin ammattiopisto, Muotoilijankadun toimipaikka",
           "en" : "Helsinki City College, Muotoilijankatu"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -654,6 +888,9 @@
         "nimi" : {
           "fi" : "Stadin ammattiopisto, Meritalon toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -661,6 +898,9 @@
         "nimi" : {
           "fi" : "Stadin ammattiopisto, Holkkitien toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -668,6 +908,9 @@
         "nimi" : {
           "fi" : "Stadin ammattiopisto, Elimäenkadun toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -675,6 +918,9 @@
         "nimi" : {
           "fi" : "Stadin ammattiopisto, Hitsaajankadun toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -682,6 +928,9 @@
         "nimi" : {
           "fi" : "Stadin ammattiopisto,  Lehtikuusentien toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       } ]
@@ -690,6 +939,9 @@
       "nimi" : {
         "fi" : "Torpparinmäen peruskoulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03705",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -699,6 +951,9 @@
       "nimi" : {
         "fi" : "Jakomäen peruskoulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03083",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -708,6 +963,9 @@
       "nimi" : {
         "fi" : "Pukinmäen peruskoulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03094",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -717,6 +975,9 @@
       "nimi" : {
         "fi" : "Kruununhaan yläaste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03085",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -726,6 +987,9 @@
       "nimi" : {
         "fi" : "Länsi-Pasilan ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03537",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -735,6 +999,9 @@
       "nimi" : {
         "fi" : "Kotinummen ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03576",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -744,6 +1011,9 @@
       "nimi" : {
         "fi" : "Töyrynummen ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03578",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -753,6 +1023,9 @@
       "nimi" : {
         "fi" : "Hietakummun ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03605",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -762,6 +1035,9 @@
       "nimi" : {
         "fi" : "Brahenpuiston koulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03710",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_12#1",
@@ -771,6 +1047,9 @@
       "nimi" : {
         "fi" : "Ylä-Malmin peruskoulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03103",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -780,6 +1059,9 @@
       "nimi" : {
         "fi" : "Aurinkolahden peruskoulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03724",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -789,6 +1071,9 @@
       "nimi" : {
         "fi" : "Sakarinmäen peruskoulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03763",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -798,6 +1083,9 @@
       "nimi" : {
         "fi" : "Soinisen koulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03663",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -807,6 +1095,9 @@
       "nimi" : {
         "sv" : "Brändö gymnasium"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "00026",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_15#1",
@@ -816,6 +1107,9 @@
       "nimi" : {
         "fi" : "Pihkapuiston ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03533",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -825,6 +1119,9 @@
       "nimi" : {
         "fi" : "Tapanilan ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03047",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -834,6 +1131,9 @@
       "nimi" : {
         "sv" : "Staffansby lågstadieskola"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03068",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -843,6 +1143,9 @@
       "nimi" : {
         "fi" : "Vartiokylän ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03053",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -852,6 +1155,9 @@
       "nimi" : {
         "fi" : "Vuosaaren ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03055",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -861,6 +1167,9 @@
       "nimi" : {
         "fi" : "Helsingin medialukio"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "00648",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_15#1",
@@ -869,6 +1178,9 @@
         "nimi" : {
           "fi" : "Helsingin medialukio"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       } ]
@@ -877,6 +1189,9 @@
       "nimi" : {
         "fi" : "Stadin aikuisopisto"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "10106",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_24#1",
@@ -885,6 +1200,9 @@
         "nimi" : {
           "fi" : "Stadin aikuisopisto, Vilppulantien toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -892,6 +1210,9 @@
         "nimi" : {
           "fi" : "Stadin aikuisopisto, Lehtikuusentien toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -899,6 +1220,9 @@
         "nimi" : {
           "fi" : "Stadin aikuisopisto, Savonkadun toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -906,6 +1230,9 @@
         "nimi" : {
           "fi" : "Stadin aikuisopisto, Pälkäneentien toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -913,6 +1240,9 @@
         "nimi" : {
           "fi" : "Stadin aikuisopisto, Teollisuuskadun toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -920,6 +1250,9 @@
         "nimi" : {
           "fi" : "Stadin aikuisopisto, Prinsessantien toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -927,6 +1260,9 @@
         "nimi" : {
           "fi" : "Stadin aikuisopisto, Abraham Wetterin tien toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -934,6 +1270,9 @@
         "nimi" : {
           "fi" : "Stadin aikuisopisto, Holkkitien toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -941,6 +1280,9 @@
         "nimi" : {
           "fi" : "Stadin aikuisopisto, Koskelantien toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -948,6 +1290,9 @@
         "nimi" : {
           "fi" : "Stadin aikuisopisto, Ilkantien toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -955,6 +1300,9 @@
         "nimi" : {
           "fi" : "Stadin aikuisopisto, Kontulantien toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -962,6 +1310,9 @@
         "nimi" : {
           "fi" : "Stadin aikuisopisto,  Latokartanontien toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -969,6 +1320,9 @@
         "nimi" : {
           "fi" : "Stadin aikuisopisto, Meritalon toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -976,6 +1330,9 @@
         "nimi" : {
           "fi" : "Stadin aikuisopisto, Hattulantien toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -983,6 +1340,9 @@
         "nimi" : {
           "fi" : "Stadin aikuisopisto, Kullervonkadun toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -990,6 +1350,9 @@
         "nimi" : {
           "fi" : "Stadin aikuisopisto, Myllypuron toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -997,6 +1360,9 @@
         "nimi" : {
           "fi" : "Stadin aikuisopisto, Muotoilijankadun toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -1004,6 +1370,9 @@
         "nimi" : {
           "fi" : "Stadin aikuisopisto, Onnentien toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       }, {
@@ -1011,6 +1380,9 @@
         "nimi" : {
           "fi" : "Stadin aikuisopisto, Sturenkadun toimipaikka"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       } ]
@@ -1019,6 +1391,9 @@
       "nimi" : {
         "fi" : "Strömbergin ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03716",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1028,6 +1403,9 @@
       "nimi" : {
         "fi" : "Lauttasaaren ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03026",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1037,6 +1415,9 @@
       "nimi" : {
         "fi" : "Stadin oppisopimuskeskus"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "organisaatiotyypit" : [ "OPPISOPIMUSTOIMIPISTE" ],
       "children" : [ ]
     }, {
@@ -1044,6 +1425,9 @@
       "nimi" : {
         "fi" : "Kannelmäen peruskoulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03080",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1053,6 +1437,9 @@
       "nimi" : {
         "fi" : "Pakilan yläaste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03091",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1062,6 +1449,9 @@
       "nimi" : {
         "fi" : "Poikkilaakson ala-asteen koulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03723",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1071,6 +1461,9 @@
       "nimi" : {
         "fi" : "Helsingin kuvataidelukio"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "00088",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_15#1",
@@ -1079,6 +1472,9 @@
         "nimi" : {
           "fi" : "Helsingin kuvataidelukio"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       } ]
@@ -1087,6 +1483,9 @@
       "nimi" : {
         "fi" : "Helsingin kielilukio"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "00670",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_15#1",
@@ -1095,6 +1494,9 @@
         "nimi" : {
           "fi" : "Helsingin kielilukio"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       } ]
@@ -1103,6 +1505,9 @@
       "nimi" : {
         "fi" : "Vallilan ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03051",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1112,6 +1517,9 @@
       "nimi" : {
         "fi" : "Töölön ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03050",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1121,6 +1529,9 @@
       "nimi" : {
         "sv" : "Degerö lågstadieskola"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03607",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1130,6 +1541,9 @@
       "nimi" : {
         "fi" : "Puistolan peruskoulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03577",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1139,6 +1553,9 @@
       "nimi" : {
         "fi" : "Pikku-Huopalahden ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03672",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1148,6 +1565,9 @@
       "nimi" : {
         "fi" : "Meri-Rastilan ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03630",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1157,6 +1577,9 @@
       "nimi" : {
         "sv" : "Östersundom skola"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "05676",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1166,6 +1589,9 @@
       "nimi" : {
         "fi" : "Malminkartanon ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03289",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1175,6 +1601,9 @@
       "nimi" : {
         "fi" : "Vuosaaren lukio"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "00915",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_15#1",
@@ -1183,6 +1612,9 @@
         "nimi" : {
           "fi" : "Vuosaaren lukio"
         },
+        "kieletUris": [
+          "oppilaitoksenopetuskieli_1#1"
+        ],
         "organisaatiotyypit" : [ "TOIMIPISTE" ],
         "children" : [ ]
       } ]
@@ -1191,6 +1623,9 @@
       "nimi" : {
         "fi" : "Keinutien ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03251",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1200,6 +1635,9 @@
       "nimi" : {
         "fi" : "Mustakiven ala-asteen koulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03668",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1209,6 +1647,9 @@
       "nimi" : {
         "fi" : "Laajasalon peruskoulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03086",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1218,6 +1659,9 @@
       "nimi" : {
         "fi" : "Suutarilan yläasteen koulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03087",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1227,6 +1671,9 @@
       "nimi" : {
         "fi" : "Meilahden yläaste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03088",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1236,6 +1683,9 @@
       "nimi" : {
         "fi" : "Pihlajamäen ala-asteen koulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03033",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1245,6 +1695,9 @@
       "nimi" : {
         "fi" : "Kulosaaren ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03016",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1254,6 +1707,9 @@
       "nimi" : {
         "fi" : "Kallion ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03011",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1263,6 +1719,9 @@
       "nimi" : {
         "fi" : "Pelimannin ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03296",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1272,6 +1731,9 @@
       "nimi" : {
         "fi" : "Myllypuron yläaste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03089",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1281,6 +1743,9 @@
       "nimi" : {
         "fi" : "Hiidenkiven peruskoulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03092",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1290,6 +1755,9 @@
       "nimi" : {
         "fi" : "Ressun peruskoulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03096",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1299,6 +1767,9 @@
       "nimi" : {
         "fi" : "Tehtaanpuiston yläaste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03098",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1308,6 +1779,9 @@
       "nimi" : {
         "fi" : "Vartiokylän yläaste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03099",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1317,6 +1791,9 @@
       "nimi" : {
         "fi" : "Vesalan yläaste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03100",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1326,6 +1803,9 @@
       "nimi" : {
         "fi" : "Vuosaaren peruskoulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03101",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1335,6 +1815,9 @@
       "nimi" : {
         "fi" : "Karviaistien koulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03111",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_12#1",
@@ -1344,6 +1827,9 @@
       "nimi" : {
         "fi" : "Toivolan koulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03112",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_12#1",
@@ -1353,6 +1839,9 @@
       "nimi" : {
         "fi" : "Alppilan yläaste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03079",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1362,6 +1851,9 @@
       "nimi" : {
         "sv" : "Cygnaeus lågstadieskola"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03060",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1371,6 +1863,9 @@
       "nimi" : {
         "fi" : "Puotilan ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03038",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1380,6 +1875,9 @@
       "nimi" : {
         "sv" : "Drumsö lågstadieskola"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03061",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1389,6 +1887,9 @@
       "nimi" : {
         "fi" : "Pakilan ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03032",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1398,6 +1899,9 @@
       "nimi" : {
         "fi" : "Kontulan ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03015",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1407,6 +1911,9 @@
       "nimi" : {
         "fi" : "Outamon koulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03115",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_12#1",
@@ -1416,6 +1923,9 @@
       "nimi" : {
         "fi" : "Arabian peruskoulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03743",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1425,6 +1935,9 @@
       "nimi" : {
         "fi" : "Latokartanon peruskoulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03769",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1434,6 +1947,9 @@
       "nimi" : {
         "fi" : "Käpylän peruskoulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03082",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1443,6 +1959,9 @@
       "nimi" : {
         "sv" : "Hoplaxskolan"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03106",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1452,6 +1971,9 @@
       "nimi" : {
         "sv" : "Månsas lågstadieskola"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03071",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1461,6 +1983,9 @@
       "nimi" : {
         "fi" : "Laakavuoren ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03579",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1470,6 +1995,9 @@
       "nimi" : {
         "fi" : "Hertsikan ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03664",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1479,6 +2007,9 @@
       "nimi" : {
         "fi" : "Porolahden peruskoulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03035",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1488,6 +2019,9 @@
       "nimi" : {
         "fi" : "Vesalan ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03054",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1497,6 +2031,9 @@
       "nimi" : {
         "fi" : "Snellmanin ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03043",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1506,6 +2043,9 @@
       "nimi" : {
         "fi" : "Suomenlinnan ala-asteen koulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03044",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1515,6 +2055,9 @@
       "nimi" : {
         "fi" : "Kallahden peruskoulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03614",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1524,6 +2067,9 @@
       "nimi" : {
         "fi" : "Suutarilan ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03311",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1533,6 +2079,9 @@
       "nimi" : {
         "fi" : "Paloheinän ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03419",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1542,6 +2091,9 @@
       "nimi" : {
         "fi" : "Siltamäen ala-aste"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03479",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1551,6 +2103,9 @@
       "nimi" : {
         "sv" : "Botby grundskola"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03104",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1560,6 +2115,9 @@
       "nimi" : {
         "fi" : "Munkkiniemen ala-asteen koulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03024",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1569,6 +2127,9 @@
       "nimi" : {
         "fi" : "Pitäjänmäen peruskoulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03034",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1578,6 +2139,9 @@
       "nimi" : {
         "fi" : "Taivallahden peruskoulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03046",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_11#1",
@@ -1587,6 +2151,9 @@
       "nimi" : {
         "fi" : "Lemmilän koulu"
       },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
       "oppilaitosKoodi" : "03113",
       "organisaatiotyypit" : [ "OPPILAITOS" ],
       "oppilaitostyyppi" : "oppilaitostyyppi_12#1",
