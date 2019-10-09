@@ -15,7 +15,7 @@ import scala.concurrent.duration._
 
 case class AmmatillisenRaportitRepository(db: DB) extends KoskiDatabaseMethods with RaportointikantaTableQueries {
 
-  private val defaultTimeout = 5.minutes
+  private val defaultTimeout = 10.minutes
 
   private type OpiskeluoikeusOid = String
   private type SisältyvOpiskeluoikeuteenOid = String
