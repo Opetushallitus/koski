@@ -31,17 +31,7 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
 
     val mappings: JValue = JObject("perustiedot" -> JObject("properties" -> JObject(
       "tilat" -> JObject("type" -> JString("nested")),
-      "suoritukset" -> JObject("type" -> JString("nested")),
-      "luokka" -> JObject(
-        "type" -> JString("text"),
-        "analyzer" -> JString("lowercase_whitespace_analyzer"),
-        "fielddata" -> JBool(true),
-        "fields" -> JObject(
-          "keyword" -> JObject(
-            "type" -> JString("keyword")
-          )
-        )
-      )
+      "suoritukset" -> JObject("type" -> JString("nested"))
     )))
 
     Http.runTask(index.http.put(uri"/koski-index/_mapping/perustiedot", mappings)(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))

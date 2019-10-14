@@ -130,24 +130,6 @@ describe('Oppijataulukko', function() {
         expect(page.opiskeluoikeudeTotal()).to.equal('7')
       })
     })
-
-    describe('luokkatiedolla', function () {
-      before(
-        page.oppijataulukko.filterBy('luokka'),
-        page.oppijataulukko.filterBy('tyyppi'),
-        page.oppijataulukko.filterBy('tila'),
-        page.oppijataulukko.filterBy('tutkinto'),
-        page.oppijataulukko.filterBy('koulutus'),
-        page.oppijataulukko.filterBy('oppilaitos'),
-        page.oppijataulukko.filterBy('alkamispäivä'),
-        page.oppijataulukko.filterBy('päättymispäivä'),
-        page.oppijataulukko.filterBy('luokka', '8C-')
-      )
-      it('toimii', function () {
-        expect(page.oppijataulukko.names()).to.deep.equal([ 'Hetuton, Heikki' ])
-      })
-      after(page.oppijataulukko.filterBy('luokka', ''))
-    })
   })
 
   describe('Sorttaus', function() {
@@ -203,12 +185,12 @@ describe('Oppijataulukko', function() {
       before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('tutkinto'), page.oppijataulukko.filterBy('nimi'), page.oppijataulukko.filterBy('luokka', '9'))
       it('Nouseva järjestys', function() {
         return page.oppijataulukko.sortBy('luokka')().then(function() {
-          expect(page.oppijataulukko.data().map(function(row) { return row[8]})).to.deep.equal([ '9B', '9C', '9C', '9C', '9C', '9C', '9C', '9D' ])
+          expect(page.oppijataulukko.data().map(function(row) { return row[8]})).to.deep.equal([ '9B', '9C', '9C', '9C', '9C', '9C', '9C', '9C', '9D' ])
         })
       })
       it('Laskeva järjestys', function() {
         return page.oppijataulukko.sortBy('luokka')().then(function() {
-          expect(page.oppijataulukko.data().map(function(row) { return row[8]})).to.deep.equal([ '9D', '9C', '9C', '9C', '9C', '9C', '9C', '9B' ])
+          expect(page.oppijataulukko.data().map(function(row) { return row[8]})).to.deep.equal([ '9D', '9C', '9C', '9C', '9C', '9C', '9C', '9C', '9B' ])
         })
       })
     })
