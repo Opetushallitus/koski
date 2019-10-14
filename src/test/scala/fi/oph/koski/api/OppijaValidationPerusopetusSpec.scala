@@ -184,6 +184,12 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
             verifyResponseStatusOk()
           }
         }
+        "Sallitaan aina arvosana O" in {
+          val opinto_ohjaus_O = suoritus(oppiaine("OP")).copy(arviointi = osallistunut)
+          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(opinto_ohjaus_O)))))) {
+            verifyResponseStatusOk()
+          }
+        }
       }
     }
   }
