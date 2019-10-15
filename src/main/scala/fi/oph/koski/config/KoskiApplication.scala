@@ -22,7 +22,7 @@ import fi.oph.koski.perustiedot.{KoskiElasticSearchIndex, OpiskeluoikeudenPerust
 import fi.oph.koski.pulssi.{KoskiPulssi, PrometheusRepository}
 import fi.oph.koski.raportointikanta.{Public, RaportointiDatabase, RaportointikantaService}
 import fi.oph.koski.schedule.{KoskiScheduledTasks, PerustiedotSyncScheduler}
-import fi.oph.koski.sso.KoskiSessionRepository
+import fi.oph.koski.sso.{HuollettavatService, KoskiSessionRepository}
 import fi.oph.koski.suoritusjako.{SuoritusjakoRepository, SuoritusjakoService}
 import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoFailureMailer, TiedonsiirtoService}
 import fi.oph.koski.tutkinto.TutkintoRepository
@@ -43,6 +43,7 @@ object KoskiApplication {
 }
 
 class KoskiApplication(val config: Config, implicit val cacheManager: CacheManager = new CacheManager) extends Logging with UserAuthenticationContext with GlobalExecutionContext {
+  lazy val huollettavatService = new HuollettavatService(this)
   lazy val organisaatioRepository = OrganisaatioRepository(config, koodistoViitePalvelu)
   lazy val directoryClient = DirectoryClient(config)
   lazy val ePerusteet = EPerusteetRepository.apply(config)

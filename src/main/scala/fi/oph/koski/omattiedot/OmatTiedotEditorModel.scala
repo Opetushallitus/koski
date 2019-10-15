@@ -7,10 +7,12 @@ import fi.oph.koski.editor.OppijaEditorModel.oppilaitoksenOpiskeluoikeudetOrderi
 import fi.oph.koski.editor._
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.PerusopetuksenOpiskeluoikeus._
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.Hidden
 import fi.oph.koski.util.{Timing, WithWarnings}
+import fi.oph.scalaschema.annotation.SyntheticProperty
 import mojave._
 
 object OmatTiedotEditorModel extends Timing {
@@ -28,8 +30,10 @@ object OmatTiedotEditorModel extends Timing {
     }.toList.sorted(oppilaitoksenOpiskeluoikeudetOrdering)
   }
 
-  private def buildView(oppija: Oppija, warnings: Seq[HttpStatus]) = {
-    OmatTiedotEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], opiskeluoikeudetOppilaitoksittain(oppija), warnings.flatMap(_.errors).map(_.key).toList)
+  private def buildView(oppija: Oppija, warnings: Seq[HttpStatus])(implicit application: KoskiApplication) = {
+    val henkilötiedot = oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot]
+    val huollettavat = application.huollettavatService.getHuollettavatWithOid(henkilötiedot.oid).map(_.oid)
+    OmatTiedotEditorView(henkilötiedot, huollettavat, opiskeluoikeudetOppilaitoksittain(oppija), warnings.flatMap(_.errors).map(_.key).toList)
   }
 
   private def buildModel(obj: AnyRef)(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = {
@@ -79,7 +83,12 @@ object OmatTiedotEditorModel extends Timing {
 case class OmatTiedotEditorView(
   @Hidden
   henkilö: TäydellisetHenkilötiedot,
+  @Hidden
+  huollettavat: List[Oid],
   opiskeluoikeudet: List[OppilaitoksenOpiskeluoikeudet],
   @Hidden
   varoitukset: List[String]
-)
+) {
+  @SyntheticProperty
+  def hasHuollettavia: Boolean = huollettavat.nonEmpty
+}
