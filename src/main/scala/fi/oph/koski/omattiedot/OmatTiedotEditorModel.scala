@@ -29,10 +29,9 @@ object OmatTiedotEditorModel extends Timing {
     }.toList.sorted(oppilaitoksenOpiskeluoikeudetOrdering)
   }
 
-  private def buildView(oppija: Oppija, warnings: Seq[HttpStatus])(implicit application: KoskiApplication) = {
-    val henkilötiedot = oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot]
-    val huollettavat = application.huollettavatService.getHuollettavatWithOid(henkilötiedot.oid).map(_.toHenkilötiedotJaOid)
-    OmatTiedotEditorView(henkilötiedot, huollettavat, opiskeluoikeudetOppilaitoksittain(oppija), warnings.flatMap(_.errors).map(_.key).toList)
+  private def buildView(oppija: Oppija, warnings: Seq[HttpStatus])(implicit application: KoskiApplication, koskiSession: KoskiSession) = {
+    val huollettavat = application.huollettavatService.getHuollettavatWithOid(koskiSession.oid).map(_.toHenkilötiedotJaOid)
+    OmatTiedotEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], huollettavat, opiskeluoikeudetOppilaitoksittain(oppija), warnings.flatMap(_.errors).map(_.key).toList)
   }
 
   private def buildModel(obj: AnyRef)(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = {

@@ -2,9 +2,9 @@ package fi.oph.koski.omattiedot
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.{EditorModel, EditorModelSerializer}
-import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.LegacyJsonSerialization
-import fi.oph.koski.koskiuser.RequiresKansalainen
+import fi.oph.koski.koskiuser.{KoskiSession, RequiresKansalainen}
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.util.WithWarnings
@@ -16,10 +16,28 @@ import org.json4s.jackson.Serialization
 class OmatTiedotServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresKansalainen with NoCache {
 
   get("/editor") {
-    val oppija: Either[HttpStatus, WithWarnings[Oppija]] = application.oppijaFacade.findUserOppija
-    renderEither[EditorModel](oppija.right.map { o =>
-      OmatTiedotEditorModel.toEditorModel(o)
-    })
+    renderOppija(application.oppijaFacade.findUserOppija)
+  }
+
+  get("/editor/:oid") {
+    val oid = params("oid")
+    if (hasAccess(oid)) {
+      renderOppija(application.oppijaFacade.findOppija(oid)(KoskiSession.systemUser))
+    } else {
+      haltWithStatus(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
+    }
+  }
+
+  private def hasAccess(oid: String) = {
+    koskiSession.oid == oid || huollettavat.contains(oid)
+  }
+
+  private def huollettavat = {
+    application.huollettavatService.getHuollettavatWithOid(koskiSession.oid).map(_.oid)
+  }
+
+  private def renderOppija(oppija: Either[HttpStatus, WithWarnings[Oppija]]): Unit = {
+    renderEither[EditorModel](oppija.map(OmatTiedotEditorModel.toEditorModel))
   }
 
   import reflect.runtime.universe.TypeTag

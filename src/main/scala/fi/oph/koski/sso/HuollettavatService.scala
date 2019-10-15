@@ -13,8 +13,9 @@ class HuollettavatService(application: KoskiApplication) {
     oppija <- application.henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(hetu, Some(huollettava.nimitiedot))
   } yield oppija
 
-  def getHuollettavatWithOid(oid: Oid): List[OppijaHenkilö] =
+  def getHuollettavatWithOid(oid: Oid): List[OppijaHenkilö] = {
     application.henkilöRepository.findByOid(oid).flatMap(_.hetu)
       .toList
       .flatMap(getHuollettavatWithHetu)
+  }
 }

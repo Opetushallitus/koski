@@ -7,6 +7,7 @@ import {HeaderButtons} from './HeaderButtons'
 import {HeaderName} from './HeaderName'
 import {HeaderVirheraportointiSection} from './HeaderVirheraportointiSection'
 import {HeaderSuoritusjakoSection} from './HeaderSuoritusjakoSection'
+import {OppijaSelector} from './OppijaSelector'
 
 export const FormState = {
   VIRHERAPORTOINTI: 'virheraportointi',
@@ -24,7 +25,7 @@ export class Header extends React.Component {
   }
 
   render() {
-    const {oppija} = this.props
+    const {oppija, onOppijaChanged} = this.props
 
     const uiMode = Atom(FormState.NONE)
 
@@ -34,6 +35,7 @@ export class Header extends React.Component {
 
     return (
       <header className='header'>
+        <OppijaSelector oppija={oppija} onOppijaChanged={onOppijaChanged} />
         <HeaderInfo varoitukset={varoitukset}/>
 
         <div className='header__bottom-row'>

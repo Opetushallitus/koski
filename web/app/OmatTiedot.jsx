@@ -1,3 +1,4 @@
+import Atom from 'bacon.atom'
 import './polyfills/polyfills.js'
 import './polyfills/omattiedot-polyfills.js'
 import './style/main.less'
@@ -18,8 +19,19 @@ import {Header} from './omattiedot/header/Header'
 import {EiSuorituksiaInfo} from './omattiedot/EiSuorituksiaInfo'
 import {patchSaavutettavuusLeima} from './saavutettavuusLeima'
 
+
+const oppijaAtom = Atom()
+const onOppijaChanged = o => {
+  oppijaAtom.set(o)
+}
+
+const getOmatTiedotP = oppijaAtom.flatMap(oppija => {
+  const url = oppija ? `/koski/api/omattiedot/editor/${oppija.oid}` : '/koski/api/omattiedot/editor'
+  return Http.cachedGet(url, { errorMapper: (e) => e.httpStatus === 404 ? null : new Bacon.Error(e)}).toProperty()
+})
+
 const omatTiedotP = () => Bacon.combineWith(
-  Http.cachedGet('/koski/api/omattiedot/editor', { errorMapper: (e) => e.httpStatus === 404 ? null : new Bacon.Error(e)}).toProperty(),
+  getOmatTiedotP,
   userP,
   (omattiedot, user) => {
     let kansalainen = user.oid === modelData(omattiedot, 'henkilö.oid')
@@ -28,6 +40,7 @@ const omatTiedotP = () => Bacon.combineWith(
 )
 
 const topBarP = userP.map(user => <OmatTiedotTopBar user={user}/>)
+
 const contentP = locationP.flatMapLatest(() => omatTiedotP().map(oppija =>
     oppija
       ? <div className="main-content oppija"><Oppija oppija={Editor.setupContext(oppija, {editorMapping})} stateP={Bacon.constant('viewing')}/></div>
@@ -64,14 +77,14 @@ domP.onError(handleError)
 const Oppija = ({oppija}) => {
   return oppija.loading
     ? <div className="loading"/>
-    : (
-      <div>
+    : (<div>
         <div className="oppija-content">
-          <Header oppija={oppija}/>
+          <Header oppija={oppija} onOppijaChanged={onOppijaChanged}/>
           <Editor key={document.location.toString()} model={oppija}/>
         </div>
-      </div>
-    )
+      </div>)
+
 }
+
 
 patchSaavutettavuusLeima()
