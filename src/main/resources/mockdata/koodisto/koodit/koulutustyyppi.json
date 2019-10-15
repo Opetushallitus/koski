@@ -1138,6 +1138,10 @@
     "codeElementVersion" : 6,
     "passive" : false
   }, {
+    "codeElementUri" : "koulutus_451741",
+    "codeElementVersion" : 1,
+    "passive" : false
+  }, {
     "codeElementUri" : "koulutus_351805",
     "codeElementVersion" : 2,
     "passive" : true
