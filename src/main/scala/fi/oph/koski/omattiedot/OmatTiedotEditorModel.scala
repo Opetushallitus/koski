@@ -7,7 +7,6 @@ import fi.oph.koski.editor.OppijaEditorModel.oppilaitoksenOpiskeluoikeudetOrderi
 import fi.oph.koski.editor._
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.PerusopetuksenOpiskeluoikeus._
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation.Hidden
@@ -32,7 +31,7 @@ object OmatTiedotEditorModel extends Timing {
 
   private def buildView(oppija: Oppija, warnings: Seq[HttpStatus])(implicit application: KoskiApplication) = {
     val henkilötiedot = oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot]
-    val huollettavat = application.huollettavatService.getHuollettavatWithOid(henkilötiedot.oid).map(_.oid)
+    val huollettavat = application.huollettavatService.getHuollettavatWithOid(henkilötiedot.oid).map(_.toHenkilötiedotJaOid)
     OmatTiedotEditorView(henkilötiedot, huollettavat, opiskeluoikeudetOppilaitoksittain(oppija), warnings.flatMap(_.errors).map(_.key).toList)
   }
 
@@ -84,7 +83,7 @@ case class OmatTiedotEditorView(
   @Hidden
   henkilö: TäydellisetHenkilötiedot,
   @Hidden
-  huollettavat: List[Oid],
+  huollettavat: List[HenkilötiedotJaOid],
   opiskeluoikeudet: List[OppilaitoksenOpiskeluoikeudet],
   @Hidden
   varoitukset: List[String]
