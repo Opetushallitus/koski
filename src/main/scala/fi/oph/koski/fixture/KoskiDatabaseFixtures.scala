@@ -46,11 +46,11 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
     application.perustiedotIndexer.deleteByOppijaOids(henkilöOids)
 
     if (!fixtureCacheCreated) {
-      cachedPerustiedot = Some(validatedOpiskeluoikeudet.map { case (henkilö, oo) =>
-        val opiskeluoikeus = if (henkilö.hetu.contains(MockOppijat.organisaatioHistoria.hetu.get)) {
-          oo.asInstanceOf[AmmatillinenOpiskeluoikeus].copy(organisaatiohistoria = Some(AmmatillinenExampleData.opiskeluoikeudenOrganisaatioHistoria)) // organisaatioHistoria is cleared from incoming data, so we have to sneak it in
-        } else {
-          oo
+      cachedPerustiedot = Some(validatedOpiskeluoikeudet.map { case (henkilö, oo: KoskeenTallennettavaOpiskeluoikeus) =>
+        val opiskeluoikeus  = henkilö.hetu match {
+          case MockOppijat.organisaatioHistoria.hetu => oo.asInstanceOf[AmmatillinenOpiskeluoikeus].copy(organisaatiohistoria = Some(AmmatillinenExampleData.opiskeluoikeudenOrganisaatioHistoria))
+          case MockOppijat.tunnisteenKoodiarvoPoistettu.hetu => oo.asInstanceOf[AmmatillinenOpiskeluoikeus].copy(suoritukset = oo.suoritukset.map(s => s.asInstanceOf[AmmatillisenTutkinnonSuoritus].copy(koulutusmoduuli = s.koulutusmoduuli.asInstanceOf[AmmatillinenTutkintoKoulutus].copy(s.koulutusmoduuli.tunniste.asInstanceOf[Koodistokoodiviite].copy(koodiarvo = "123456")))).asInstanceOf[List[AmmatillinenPäätasonSuoritus]])
+          case _ => oo
         }
         val id = application.opiskeluoikeusRepository.createOrUpdate(VerifiedHenkilöOid(henkilö), opiskeluoikeus, false).right.get.id
         OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, application.henkilöRepository.opintopolku.withMasterInfo(henkilö))
@@ -142,7 +142,8 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
       (MockOppijat.erkkiEiperusteissa, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 334117, diaariNumero = "22/011/2004")),
       (MockOppijat.internationalschool, ExamplesInternationalSchool.opiskeluoikeus),
       (MockOppijat.organisaatioHistoria, AmmatillinenExampleData.opiskeluoikeus()),
-      (MockOppijat.montaKoulutuskoodiaAmis, AmmatillinenExampleData.puuteollisuusOpiskeluoikeusKesken())
+      (MockOppijat.montaKoulutuskoodiaAmis, AmmatillinenExampleData.puuteollisuusOpiskeluoikeusKesken()),
+      (MockOppijat.tunnisteenKoodiarvoPoistettu, AmmatillinenExampleData.opiskeluoikeus())
     )
   }
 }
