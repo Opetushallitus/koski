@@ -81,7 +81,7 @@ describe('VALMA koulutus', function() {
 
         it('näyttää suorituksen tiedot', function() {
           expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
-            'Koulutus Ammatilliseen koulutukseen valmentava koulutus (VALMA) 5/011/2015\n' +
+            'Koulutus Ammatilliseen koulutukseen valmentava koulutus (VALMA) 999901 5/011/2015\n' +
             'Laajuus 65 osp\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto\n' +
             'Suorituskieli suomi\n' +
@@ -118,7 +118,7 @@ describe('VALMA koulutus', function() {
             'Pakollinen ei\n' +
             'Tunnustettu\n' +
             'Tutkinnon osa Asennuksen ja automaation perustyöt\n' +
-            'Tutkinto Kone- ja metallialan perustutkinto 39/011/2014\n' +
+            'Tutkinto Kone- ja metallialan perustutkinto 351101 39/011/2014\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 3.10.2015 Helsinki Reijo Reksi , rehtori\n' +
             'Selite Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta\n' +

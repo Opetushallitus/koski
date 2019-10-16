@@ -23,7 +23,7 @@ describe('EPerusteet', function() {
       before(page.openPage, page.oppijaHaku.searchAndSelect('160525-780Y'), opinnot.valitseSuoritus(undefined, 'Liiketalouden perustutkinto'))
       var koulutus = opinnot.opiskeluoikeusEditor().property('koulutusmoduuli')
       it('toimii', function() {
-        expect(koulutus.getText()).to.equal('Koulutus Liiketalouden perustutkinto 59/011/2014')
+        expect(koulutus.getText()).to.equal('Koulutus Liiketalouden perustutkinto 331101 59/011/2014')
       })
     })
   })

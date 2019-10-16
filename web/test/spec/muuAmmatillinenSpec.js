@@ -116,7 +116,7 @@ describe('Muu ammatillinen koulutus', function() {
         )
 
         it('tutkinnon voi valita', function() {
-          expect(editor.property('täydentääTutkintoa').getText()).to.equal('Täydentää tutkintoa Autoalan perustutkinto 39/011/2014')
+          expect(editor.property('täydentääTutkintoa').getText()).to.equal('Täydentää tutkintoa Autoalan perustutkinto 351301 39/011/2014')
         })
       })
 
