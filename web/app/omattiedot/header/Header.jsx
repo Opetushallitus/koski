@@ -25,7 +25,7 @@ export class Header extends React.Component {
   }
 
   render() {
-    const {oppija, onOppijaChanged} = this.props
+    const {oppija, onOppijaChanged, oppijaP} = this.props
 
     const uiMode = Atom(FormState.NONE)
 
@@ -36,11 +36,11 @@ export class Header extends React.Component {
     return (
       <header className='header'>
         <OppijaSelector oppija={oppija} onOppijaChanged={onOppijaChanged} />
-        <HeaderInfo varoitukset={varoitukset}/>
+        <HeaderInfo varoitukset={varoitukset} oppijaP={oppijaP}/>
 
         <div className='header__bottom-row'>
           <HeaderName henkilö={henkilö}/>
-          <HeaderButtons uiModeA={uiMode} stateType={FormState}/>
+          <HeaderButtons uiModeA={uiMode} stateType={FormState} oppijaP={oppijaP}/>
           <VirheraportointiFeature uiModeA={uiMode} henkilö={henkilö} opiskeluoikeudet={opiskeluoikeudet}/>
           <SuoritusjakoFeature uiModeA={uiMode} opiskeluoikeudet={opiskeluoikeudet}/>
         </div>

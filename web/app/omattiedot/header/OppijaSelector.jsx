@@ -3,6 +3,7 @@ import Atom from 'bacon.atom'
 import {modelData, modelItems} from '../../editor/EditorModel'
 import DropDown from '../../components/Dropdown'
 import Text from '../../i18n/Text'
+import * as R from 'ramda'
 
 export const OppijaSelector = ({oppija, onOppijaChanged}) => (
   modelData(oppija, 'hasHuollettavia')
@@ -20,7 +21,7 @@ const OppijaDropdown = ({henkilö, huollettavat, onOppijaChanged}) => {
       selected={oppijaAtom}
       keyValue={o => o.oid}
       displayValue={o => `${o.etunimet} ${o.sukunimi}`}
-      onSelectionChanged={o => oppijaAtom.set(o)}
+      onSelectionChanged={o => oppijaAtom.set(R.assoc('isHuollettava', o.oid !== henkilö.oid, o))}
     />
   </div>)
 }

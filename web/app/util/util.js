@@ -17,7 +17,8 @@ const isObs = x => x instanceof Bacon.Observable
 
 export const toObservable = (x) => isObs(x) ? x : Bacon.constant(x)
 
-export const ift = (obs, value) => toObservable(obs).map(show => show ? value : null)
+export const ift = (obs, value) => ifte(obs, value, null)
+export const ifte = (obs, value, otherwise) => toObservable(obs).map(show => show ? value : otherwise)
 
 export const scrollElementBottomVisible = elem => {
   if (elem) {

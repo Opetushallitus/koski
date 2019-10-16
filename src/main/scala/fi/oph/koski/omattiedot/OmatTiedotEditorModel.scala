@@ -31,7 +31,7 @@ object OmatTiedotEditorModel extends Timing {
 
   private def buildView(oppija: Oppija, warnings: Seq[HttpStatus])(implicit application: KoskiApplication, koskiSession: KoskiSession) = {
     val huollettavat = application.huollettavatService.getHuollettavatWithOid(koskiSession.oid).map(_.toHenkilötiedotJaOid)
-    OmatTiedotEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], huollettavat, opiskeluoikeudetOppilaitoksittain(oppija), warnings.flatMap(_.errors).map(_.key).toList)
+    OmatTiedotEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], huollettavat, opiskeluoikeudetOppilaitoksittain(oppija), koskiSession.oid, warnings.flatMap(_.errors).map(_.key).toList)
   }
 
   private def buildModel(obj: AnyRef)(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = {
@@ -85,8 +85,11 @@ case class OmatTiedotEditorView(
   huollettavat: List[HenkilötiedotJaOid],
   opiskeluoikeudet: List[OppilaitoksenOpiskeluoikeudet],
   @Hidden
+  henkilöOid: String,
+  @Hidden
   varoitukset: List[String]
 ) {
+  @Hidden
   @SyntheticProperty
   def hasHuollettavia: Boolean = huollettavat.nonEmpty
 }

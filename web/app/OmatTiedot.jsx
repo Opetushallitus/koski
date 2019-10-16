@@ -18,23 +18,20 @@ import {locationP} from './util/location'
 import {Header} from './omattiedot/header/Header'
 import {EiSuorituksiaInfo} from './omattiedot/EiSuorituksiaInfo'
 import {patchSaavutettavuusLeima} from './saavutettavuusLeima'
-
+import delays from './util/delays'
 
 const oppijaAtom = Atom()
-const onOppijaChanged = o => {
-  oppijaAtom.set(o)
-}
-
-const getOmatTiedotP = oppijaAtom.flatMap(oppija => {
+const oppijaP = oppijaAtom.throttle(delays().delay(100))
+const getOmatTiedotP = () => oppijaP.flatMap(oppija => {
   const url = oppija ? `/koski/api/omattiedot/editor/${oppija.oid}` : '/koski/api/omattiedot/editor'
   return Http.cachedGet(url, { errorMapper: (e) => e.httpStatus === 404 ? null : new Bacon.Error(e)}).toProperty()
 })
 
 const omatTiedotP = () => Bacon.combineWith(
-  getOmatTiedotP,
+  getOmatTiedotP(),
   userP,
   (omattiedot, user) => {
-    let kansalainen = user.oid === modelData(omattiedot, 'henkilö.oid')
+    const kansalainen = user.oid === modelData(omattiedot, 'henkilöOid')
     return omattiedot && user && addContext(omattiedot, {kansalainen: kansalainen})
   }
 )
@@ -79,7 +76,7 @@ const Oppija = ({oppija}) => {
     ? <div className="loading"/>
     : (<div>
         <div className="oppija-content">
-          <Header oppija={oppija} onOppijaChanged={onOppijaChanged}/>
+          <Header oppija={oppija} onOppijaChanged={o => oppijaAtom.set(o)} oppijaP={oppijaP}/>
           <Editor key={document.location.toString()} model={oppija}/>
         </div>
       </div>)
