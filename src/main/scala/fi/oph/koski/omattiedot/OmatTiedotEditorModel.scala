@@ -15,12 +15,13 @@ import fi.oph.scalaschema.annotation.SyntheticProperty
 import mojave._
 
 object OmatTiedotEditorModel extends Timing {
-  def toEditorModel(oppijaWithWarnings: WithWarnings[Oppija])(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = timed("createModel") {
+  def toEditorModel(userOppija: WithWarnings[Oppija], oppija: Option[WithWarnings[Oppija]] = None)(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = timed("createModel") {
     val piilotetuillaTiedoilla = piilotaArvosanatKeskeneräisistäSuorituksista _ andThen
       piilotaSensitiivisetHenkilötiedot andThen
       piilotaKeskeneräisetPerusopetuksenPäättötodistukset
 
-    buildModel(buildView(piilotetuillaTiedoilla(oppijaWithWarnings.getIgnoringWarnings), oppijaWithWarnings.warnings))
+    val warnings = userOppija.warnings ++ oppija.toList.flatMap(_.warnings)
+    buildModel(buildView(piilotetuillaTiedoilla(userOppija.getIgnoringWarnings), oppija.map(h => piilotetuillaTiedoilla(h.getIgnoringWarnings)), warnings))
   }
 
   def opiskeluoikeudetOppilaitoksittain(oppija: Oppija): List[OppilaitoksenOpiskeluoikeudet] = {
@@ -29,9 +30,18 @@ object OmatTiedotEditorModel extends Timing {
     }.toList.sorted(oppilaitoksenOpiskeluoikeudetOrdering)
   }
 
-  private def buildView(oppija: Oppija, warnings: Seq[HttpStatus])(implicit application: KoskiApplication, koskiSession: KoskiSession) = {
+  private def buildView(userOppija: Oppija, oppija: Option[Oppija], warnings: Seq[HttpStatus])(implicit application: KoskiApplication, koskiSession: KoskiSession) = {
     val huollettavat = application.huollettavatService.getHuollettavatWithOid(koskiSession.oid).map(_.toHenkilötiedotJaOid)
-    OmatTiedotEditorView(oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot], huollettavat, opiskeluoikeudetOppilaitoksittain(oppija), koskiSession.oid, warnings.flatMap(_.errors).map(_.key).toList)
+    val valittuOppija = oppija.getOrElse(userOppija)
+    val henkilö = valittuOppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot]
+    val userHenkilö = userOppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot]
+    OmatTiedotEditorView(
+      henkilö = valittuOppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot],
+      userHenkilö = HenkilötiedotJaOid(userHenkilö.oid, userHenkilö.hetu, userHenkilö.etunimet, userHenkilö.kutsumanimi, userHenkilö.sukunimi),
+      huollettavat = huollettavat,
+      opiskeluoikeudet = opiskeluoikeudetOppilaitoksittain(valittuOppija),
+      varoitukset = warnings.flatMap(_.errors).map(_.key).toList
+    )
   }
 
   private def buildModel(obj: AnyRef)(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = {
@@ -82,14 +92,15 @@ case class OmatTiedotEditorView(
   @Hidden
   henkilö: TäydellisetHenkilötiedot,
   @Hidden
+  userHenkilö: HenkilötiedotJaOid,
+  @Hidden
   huollettavat: List[HenkilötiedotJaOid],
   opiskeluoikeudet: List[OppilaitoksenOpiskeluoikeudet],
   @Hidden
-  henkilöOid: String,
-  @Hidden
   varoitukset: List[String]
 ) {
-  @Hidden
-  @SyntheticProperty
+  @Hidden @SyntheticProperty
+  def kaikkiHenkilöt: List[HenkilötiedotJaOid] = userHenkilö :: huollettavat
+  @Hidden @SyntheticProperty
   def hasHuollettavia: Boolean = huollettavat.nonEmpty
 }

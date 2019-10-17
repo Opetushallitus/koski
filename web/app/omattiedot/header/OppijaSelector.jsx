@@ -5,23 +5,21 @@ import DropDown from '../../components/Dropdown'
 import Text from '../../i18n/Text'
 import * as R from 'ramda'
 
-export const OppijaSelector = ({oppija, onOppijaChanged}) => (
-  modelData(oppija, 'hasHuollettavia')
-    ? <OppijaDropdown henkilö={modelData(oppija, 'henkilö')} huollettavat={modelItems(oppija, 'huollettavat').map(h => modelData(h))} onOppijaChanged={onOppijaChanged} />
-    : null
-)
+export const OppijaSelector = ({oppija, onOppijaChanged}) =>
+  modelData(oppija, 'hasHuollettavia') ? <OppijaDropdown oppija={oppija} onOppijaChanged={onOppijaChanged} /> : null
 
-const OppijaDropdown = ({henkilö, huollettavat, onOppijaChanged}) => {
-  const oppijaAtom = Atom(henkilö)
+const OppijaDropdown = ({oppija, onOppijaChanged}) => {
+  const huoltaja = modelData(oppija, 'userHenkilö')
+  const oppijaAtom = Atom(huoltaja)
   oppijaAtom.skip(1).onValue(onOppijaChanged)
   return (<div className='oppija-selector'>
     <Text className='oppija-selector__heading' name='Kenen opintoja haluat tarkastella' />
     <DropDown
-      options={[henkilö, ...huollettavat]}
+      options={modelItems(oppija, 'kaikkiHenkilöt').map(x => modelData(x))}
       selected={oppijaAtom}
       keyValue={o => o.oid}
       displayValue={o => `${o.etunimet} ${o.sukunimi}`}
-      onSelectionChanged={o => oppijaAtom.set(R.assoc('isHuollettava', o.oid !== henkilö.oid, o))}
+      onSelectionChanged={o => oppijaAtom.set(R.assoc('isHuollettava', o.oid !== huoltaja.oid, o))}
     />
   </div>)
 }

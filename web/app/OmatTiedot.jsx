@@ -31,7 +31,7 @@ const omatTiedotP = () => Bacon.combineWith(
   getOmatTiedotP(),
   userP,
   (omattiedot, user) => {
-    const kansalainen = user.oid === modelData(omattiedot, 'henkilöOid')
+    const kansalainen = user.oid === modelData(omattiedot, 'userHenkilö.oid')
     return omattiedot && user && addContext(omattiedot, {kansalainen: kansalainen})
   }
 )

@@ -16,17 +16,25 @@ import org.json4s.jackson.Serialization
 class OmatTiedotServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresKansalainen with NoCache {
 
   get("/editor") {
-    renderOppija(application.oppijaFacade.findUserOppija)
+    renderEither[EditorModel](toEditorModel(application.oppijaFacade.findUserOppija))
   }
 
   get("/editor/:oid") {
     val oid = params("oid")
     if (hasAccess(oid)) {
-      renderOppija(application.oppijaFacade.findOppija(oid)(KoskiSession.systemUser))
+      val model = toEditorModel(application.oppijaFacade.findUserOppija, application.oppijaFacade.findOppija(oid)(KoskiSession.systemUser))
+      renderEither[EditorModel](model)
     } else {
       haltWithStatus(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
     }
   }
+
+  private def toEditorModel(oppijaE: Either[HttpStatus, WithWarnings[Oppija]]) = oppijaE.map(OmatTiedotEditorModel.toEditorModel(_, None))
+
+  private def toEditorModel(userOppijaE: Either[HttpStatus, WithWarnings[Oppija]], huollettavaE: Either[HttpStatus, WithWarnings[Oppija]]): Either[HttpStatus, EditorModel] = for {
+    userOppija <- userOppijaE
+    huollettava <- huollettavaE
+  } yield OmatTiedotEditorModel.toEditorModel(userOppija, Some(huollettava))
 
   private def hasAccess(oid: String) = {
     koskiSession.oid == oid || huollettavat.contains(oid)
@@ -34,10 +42,6 @@ class OmatTiedotServlet(implicit val application: KoskiApplication) extends ApiS
 
   private def huollettavat = {
     application.huollettavatService.getHuollettavatWithOid(koskiSession.oid).map(_.oid)
-  }
-
-  private def renderOppija(oppija: Either[HttpStatus, WithWarnings[Oppija]]): Unit = {
-    renderEither[EditorModel](oppija.map(OmatTiedotEditorModel.toEditorModel))
   }
 
   import reflect.runtime.universe.TypeTag
