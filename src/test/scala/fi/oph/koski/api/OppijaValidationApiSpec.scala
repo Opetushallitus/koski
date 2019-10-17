@@ -39,7 +39,12 @@ class OppijaValidationApiSpec extends FreeSpec with LocalJettyHttpSpecification 
 
     def checkValidity(result: ValidationResult) = {
       println(result.henkilöOid)
-      result.errors should equal(Nil)
+
+      result.henkilöOid match {
+        case MockOppijat.tunnisteenKoodiarvoPoistettu.oid => result.errors.map(_.key) should equal(List("badRequest.validation.jsonSchema"))
+        case _ => result.errors should equal(Nil)
+      }
+
       println(result.henkilöOid + " ok")
     }
 
