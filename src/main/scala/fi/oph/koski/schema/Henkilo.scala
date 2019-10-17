@@ -39,7 +39,7 @@ case class TäydellisetHenkilötiedot(
   kansalaisuus: Option[List[Koodistokoodiviite]],
   @Description("Henkilöllä on turvakielto")
   turvakielto: Option[Boolean] = None
-) extends HenkilöWithOid with Henkilötiedot
+) extends NimellinenHenkilöWithOid
 
 @Title("Henkilötiedot ja henkilö-OID")
 @IgnoreInAnyOfDeserialization
@@ -49,7 +49,9 @@ case class HenkilötiedotJaOid(
   etunimet: String,
   kutsumanimi: String,
   sukunimi: String
-) extends HenkilöWithOid with Henkilötiedot
+) extends NimellinenHenkilöWithOid
+
+trait NimellinenHenkilöWithOid extends HenkilöWithOid with Henkilötiedot
 
 @Description("Henkilö, jonka oppijanumero 'oid' ei ole tiedossa. Tietoja syötettäessä luodaan mahdollisesti uusi henkilö Henkilöpalveluun, jolloin henkilölle muodostuu oppijanumero")
 case class UusiHenkilö(

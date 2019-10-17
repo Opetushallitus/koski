@@ -1,7 +1,7 @@
 import React from 'baret'
 import {MultistateToggleButton} from '../../components/ToggleButton'
 import {withFeatureFlag} from '../../components/withFeatureFlag'
-import {FormState} from './Header'
+import {FormState, isHuoltaja} from './Header'
 import FloatingActionButton from '../../components/FloatingActionButton'
 import {ift} from '../../util/util'
 
@@ -38,7 +38,7 @@ export const HeaderButtons = ({uiModeA, oppijaP}) => (
       text='Onko suorituksissasi virhe?'
       style='secondary'
     />
-    {ift(oppijaP.map(o => !o || !o.isHuollettava), <SuoritusjakoButton
+    {ift(oppijaP.map(isHuoltaja), <SuoritusjakoButton
       id={ACTION_BUTTON_ID}
       stateA={uiModeA}
       value={FormState.SUORITUSJAKO}

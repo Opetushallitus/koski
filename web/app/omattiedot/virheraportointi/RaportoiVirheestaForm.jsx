@@ -48,7 +48,7 @@ const OppilaitosPicker = ({oppilaitosAtom}) => {
   )
 }
 
-export const RaportoiVirheestäForm = ({henkilö, opiskeluoikeudet}) => {
+export const RaportoiVirheestäForm = ({henkilöP, opiskeluoikeudet}) => {
   const hasAcceptedDisclaimer = Atom(false)
   const selectedOppilaitosA = Atom()
   const isLoadingA = Atom(false)
@@ -111,7 +111,7 @@ export const RaportoiVirheestäForm = ({henkilö, opiskeluoikeudet}) => {
 
           {ift(isOtherOptionSelectedA, <OppilaitosPicker oppilaitosAtom={selectedOppilaitosA}/>)}
 
-          <Yhteystiedot henkilö={henkilö} yhteystietoP={yhteystietoP} isLoadingA={isLoadingA}/>
+          <Yhteystiedot henkilöP={henkilöP} yhteystietoP={yhteystietoP} isLoadingA={isLoadingA}/>
         </div>
       ))}
     </div>

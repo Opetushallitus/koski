@@ -34,8 +34,8 @@ const MuuVirhe = () => <Text name={'httpStatus.500'}/>
 
 const wrapAsSection = Component => Component ? <div><hr/>{Component}</div> : Component
 
-export const Yhteystiedot = ({henkilö, yhteystietoP, isLoadingA}) => {
-  const results = Bacon.combineWith(yhteystietoP.skipErrors(), isLoadingA, (yhteystieto, loading) =>
+export const Yhteystiedot = ({henkilöP, yhteystietoP, isLoadingA}) => {
+  const results = Bacon.combineWith(henkilöP, yhteystietoP.skipErrors(), isLoadingA, (henkilö, yhteystieto, loading) =>
     loading ? <div className='yhteystieto loading'><Text name='Haetaan'/></div>
       : !yhteystieto ? null
       : !yhteystieto.email ? <EiYhteystietoa/>

@@ -18,6 +18,8 @@ export const FormState = {
 const VirheraportointiFeature = withFeatureFlag(FEATURE.OMAT_TIEDOT.VIRHERAPORTOINTI, HeaderVirheraportointiSection)
 const SuoritusjakoFeature = withFeatureFlag(FEATURE.OMAT_TIEDOT.SUORITUSJAKO, HeaderSuoritusjakoSection)
 
+export const isHuoltaja = oppija => modelData(oppija, 'henkilö.oid') === modelData(oppija, 'userHenkilö.oid')
+
 export class Header extends React.Component {
   shouldComponentUpdate() {
     // The header for 'omat tiedot' is independent of other UI re-render triggers.
@@ -25,24 +27,22 @@ export class Header extends React.Component {
   }
 
   render() {
-    const {oppija, onOppijaChanged, oppijaP} = this.props
-
+    const {oppijaP, onOppijaChanged} = this.props
     const uiMode = Atom(FormState.NONE)
-
-    const henkilö = modelLookup(oppija, 'henkilö')
-    const opiskeluoikeudet = modelItems(oppija, 'opiskeluoikeudet')
-    let varoitukset = modelItems(oppija, 'varoitukset').map(modelData)
+    const henkilöP = oppijaP.map(o => modelLookup(o, 'henkilö'))
+    const opiskeluoikeudetP = oppijaP.map(o => modelItems(o, 'opiskeluoikeudet'))
+    const varoituksetP = oppijaP.map(o => modelItems(o, 'varoitukset').map(modelData))
 
     return (
       <header className='header'>
-        <OppijaSelector oppija={oppija} onOppijaChanged={onOppijaChanged} />
-        <HeaderInfo varoitukset={varoitukset} oppijaP={oppijaP}/>
+        <OppijaSelector oppijaP={oppijaP} onOppijaChanged={onOppijaChanged} />
+        <HeaderInfo varoituksetP={varoituksetP} oppijaP={oppijaP}/>
 
         <div className='header__bottom-row'>
-          <HeaderName henkilö={henkilö}/>
+          <HeaderName henkilöP={henkilöP}/>
           <HeaderButtons uiModeA={uiMode} stateType={FormState} oppijaP={oppijaP}/>
-          <VirheraportointiFeature uiModeA={uiMode} henkilö={henkilö} opiskeluoikeudet={opiskeluoikeudet}/>
-          <SuoritusjakoFeature uiModeA={uiMode} opiskeluoikeudet={opiskeluoikeudet}/>
+          <VirheraportointiFeature uiModeA={uiMode} henkilöP={henkilöP} opiskeluoikeudetP={opiskeluoikeudetP}/>
+          <SuoritusjakoFeature uiModeA={uiMode} opiskeluoikeudetP={opiskeluoikeudetP}/>
         </div>
       </header>
     )

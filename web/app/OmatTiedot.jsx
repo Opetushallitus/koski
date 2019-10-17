@@ -13,27 +13,24 @@ import {Editor} from './editor/Editor'
 import Text from './i18n/Text'
 import editorMapping from './oppija/editors'
 import {userP} from './util/user'
-import {addContext, modelData} from './editor/EditorModel'
+import {addContext, modelData, modelItems} from './editor/EditorModel'
 import {locationP} from './util/location'
 import {Header} from './omattiedot/header/Header'
 import {EiSuorituksiaInfo} from './omattiedot/EiSuorituksiaInfo'
 import {patchSaavutettavuusLeima} from './saavutettavuusLeima'
 import delays from './util/delays'
 
-const oppijaAtom = Atom()
-const oppijaP = oppijaAtom.throttle(delays().delay(100))
-const getOmatTiedotP = () => oppijaP.flatMap(oppija => {
-  const url = oppija ? `/koski/api/omattiedot/editor/${oppija.oid}` : '/koski/api/omattiedot/editor'
+const henkilöAtom = Atom()
+const henkilöP = henkilöAtom.throttle(delays().delay(100))
+const getOmatTiedotP = () => henkilöP.flatMap(oppija => {
+  const url = oppija ? `/koski/api/omattiedot/editor/${modelData(oppija, 'oid')}` : '/koski/api/omattiedot/editor'
   return Http.cachedGet(url, { errorMapper: (e) => e.httpStatus === 404 ? null : new Bacon.Error(e)}).toProperty()
 })
 
 const omatTiedotP = () => Bacon.combineWith(
   getOmatTiedotP(),
   userP,
-  (omattiedot, user) => {
-    const kansalainen = user.oid === modelData(omattiedot, 'userHenkilö.oid')
-    return omattiedot && user && addContext(omattiedot, {kansalainen: kansalainen})
-  }
+  (omattiedot, user) => omattiedot && user && addContext(omattiedot, {kansalainen: true})
 )
 
 const topBarP = userP.map(user => <OmatTiedotTopBar user={user}/>)
@@ -72,12 +69,13 @@ domP.onValue((component) => ReactDOM.render(component, document.getElementById('
 domP.onError(handleError)
 
 const Oppija = ({oppija}) => {
+  const hasOpintoja = modelItems(oppija, 'opiskeluoikeudet').length > 0
   return oppija.loading
     ? <div className="loading"/>
     : (<div>
         <div className="oppija-content">
-          <Header oppija={oppija} onOppijaChanged={o => oppijaAtom.set(o)} oppijaP={oppijaP}/>
-          <Editor key={document.location.toString()} model={oppija}/>
+          <Header oppijaP={omatTiedotP()} onOppijaChanged={o => henkilöAtom.set(o)} henkilöP={henkilöP}/>
+          {hasOpintoja ? <Editor key={document.location.toString()} model={oppija}/> : <EiSuorituksiaInfo/>}
         </div>
       </div>)
 

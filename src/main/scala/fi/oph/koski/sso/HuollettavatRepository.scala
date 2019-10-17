@@ -18,6 +18,10 @@ class MockHuollettavatRepository extends HuollettavatRepository {
   override def getHuollettavatFromVTJ(hetu: Hetu): List[Henkilötiedot] =
     if (MockOppijat.aikuisOpiskelija.hetu.contains(hetu)) {
       List(MockOppijat.ylioppilasLukiolainen.toHenkilötiedotJaOid)
+    } else if (MockOppijat.eiKoskessa.hetu.contains(hetu)) {
+      List(MockOppijat.dippainssi.toHenkilötiedotJaOid)
+    } else if (MockOppijat.dippainssi.hetu.contains(hetu)) {
+      List(MockOppijat.eiKoskessa.toHenkilötiedotJaOid)
     } else {
       Nil
     }

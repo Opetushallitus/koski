@@ -4,11 +4,11 @@ import java.net.URLEncoder.encode
 import java.nio.charset.StandardCharsets
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.henkilo.Hetu
+import fi.oph.koski.henkilo.{Hetu, OppijaHenkilö}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer.writeWithRoot
 import fi.oph.koski.koskiuser.{AuthenticationSupport, AuthenticationUser, KoskiSession}
-import fi.oph.koski.schema.Nimitiedot
+import fi.oph.koski.schema.{Nimitiedot, UusiHenkilö}
 import fi.oph.koski.servlet.{ApiServlet, LanguageSupport, NoCache}
 import org.scalatra.{Cookie, CookieOptions}
 
@@ -39,14 +39,27 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
   private def login = {
     hetu match {
       case None => eiSuorituksia
-      case Some(h) =>
-        application.henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(h, nimitiedot) match {
-          case Some(oppija) =>
-            setUser(Right(localLogin(AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true), Some(langFromCookie.getOrElse(langFromDomain)))))
-            redirect(onSuccess)
+      case Some(validHetu) =>
+        application.henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(validHetu, nimitiedot) match {
+          case Some(oppija) => createSession(oppija)
+          case _ => loginParent(validHetu, nimitiedot)
+        }
+    }
+  }
+
+  private def loginParent(hetu: String, nimitiedot: Option[Nimitiedot]) =
+    (nimitiedot, application.huollettavatService.getHuollettavatWithHetu(hetu)) match {
+      case (_, Nil) | (None, _) => eiSuorituksia
+      case (Some(n), huollettavia) =>
+        application.henkilöRepository.findOrCreate(UusiHenkilö(hetu = hetu, etunimet = n.etunimet, kutsumanimi = Some(n.kutsumanimi), sukunimi = n.sukunimi)) match {
+          case Right(o) => createSession(o)
           case _ => eiSuorituksia
         }
     }
+
+  private def createSession(o: OppijaHenkilö) = {
+    setUser(Right(localLogin(AuthenticationUser(o.oid, o.oid, s"${o.etunimet} ${o.sukunimi}", None, kansalainen = true), Some(langFromCookie.getOrElse(langFromDomain)))))
+    redirect(onSuccess)
   }
 
   private def eiSuorituksia = {

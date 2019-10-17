@@ -16,32 +16,49 @@ import org.json4s.jackson.Serialization
 class OmatTiedotServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresKansalainen with NoCache {
 
   get("/editor") {
-    renderEither[EditorModel](toEditorModel(application.oppijaFacade.findUserOppija))
+    renderOmatTiedot
   }
 
   get("/editor/:oid") {
     val oid = params("oid")
-    if (hasAccess(oid)) {
-      val model = toEditorModel(application.oppijaFacade.findUserOppija, application.oppijaFacade.findOppija(oid)(KoskiSession.systemUser))
-      renderEither[EditorModel](model)
+    if (koskiSession.oid == oid) {
+      renderOmatTiedot
+    } else if (huollettavat.exists(_.oid == oid)) {
+      renderHuollettava(oid)
     } else {
       haltWithStatus(KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia())
     }
   }
 
-  private def toEditorModel(oppijaE: Either[HttpStatus, WithWarnings[Oppija]]) = oppijaE.map(OmatTiedotEditorModel.toEditorModel(_, None))
+  private def renderHuollettava(huollettavanOid: String): Unit = {
+    renderEither[EditorModel](toEditorModel(application.oppijaFacade.findUserOppija, application.oppijaFacade.findOppija(huollettavanOid)(KoskiSession.systemUser)))
+  }
+
+  private def renderOmatTiedot: Unit = {
+    renderEither[EditorModel](toEditorModel(application.oppijaFacade.findUserOppija))
+  }
+
+  private def toEditorModel(oppijaE: Either[HttpStatus, WithWarnings[Oppija]]) =
+    allowHuoltaja(oppijaE).map(OmatTiedotEditorModel.toEditorModel(_, None, huollettavat))
 
   private def toEditorModel(userOppijaE: Either[HttpStatus, WithWarnings[Oppija]], huollettavaE: Either[HttpStatus, WithWarnings[Oppija]]): Either[HttpStatus, EditorModel] = for {
-    userOppija <- userOppijaE
+    userOppija <- allowHuoltaja(userOppijaE)
     huollettava <- huollettavaE
-  } yield OmatTiedotEditorModel.toEditorModel(userOppija, Some(huollettava))
+  } yield OmatTiedotEditorModel.toEditorModel(userOppija, Some(huollettava), huollettavat)
 
-  private def hasAccess(oid: String) = {
-    koskiSession.oid == oid || huollettavat.contains(oid)
+  private def allowHuoltaja(oppija: Either[HttpStatus, WithWarnings[Oppija]]) = oppija.left.flatMap { status =>
+    if (huollettavat.nonEmpty) {
+      application.henkilöRepository.findByOid(koskiSession.oid)
+        .map(_.toHenkilötiedotJaOid)
+        .map(henkilö => Right(WithWarnings(Oppija(henkilö, Nil), Nil)))
+        .getOrElse(Left(status))
+    } else {
+      Left(status)
+    }
   }
 
   private def huollettavat = {
-    application.huollettavatService.getHuollettavatWithOid(koskiSession.oid).map(_.oid)
+    application.huollettavatService.getHuollettavatWithOid(koskiSession.oid).map(_.toHenkilötiedotJaOid)
   }
 
   import reflect.runtime.universe.TypeTag

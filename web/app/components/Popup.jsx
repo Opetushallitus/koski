@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'baret'
 import {t} from '../i18n/i18n'
 import {focusWithoutScrolling} from '../util/util'
 
