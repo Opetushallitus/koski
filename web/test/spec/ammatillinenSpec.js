@@ -1781,7 +1781,7 @@ describe('Ammatillinen koulutus', function() {
 
         it('näyttää suorituksen tiedot', function() {
           expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equalIgnoreNewlines(
-            'Koulutus Luonto- ja ympäristöalan perustutkinto 62/011/2014\n' +
+            'Koulutus Luonto- ja ympäristöalan perustutkinto 361902 62/011/2014\n' +
             'Suoritustapa Ammatillinen perustutkinto\n' +
             'Tutkintonimike Ympäristönhoitaja\nOsaamisala Ympäristöalan osaamisala\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
@@ -1983,7 +1983,7 @@ describe('Ammatillinen koulutus', function() {
 
       it('näyttää suorituksen tiedot', function () {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
-          'Koulutus Autoalan perustutkinto 39/011/2014\n' +
+          'Koulutus Autoalan perustutkinto 351301 39/011/2014\n' +
           'Suoritustapa Näyttötutkinto\n' +
           'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
           'Alkamispäivä 1.9.2016\n' +
@@ -2059,7 +2059,7 @@ describe('Ammatillinen koulutus', function() {
 
       it('näyttää suorituksen tiedot', function() {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
-          'Koulutus Luonto- ja ympäristöalan perustutkinto 62/011/2014\n' +
+          'Koulutus Luonto- ja ympäristöalan perustutkinto 361902 62/011/2014\n' +
           'Suoritustapa Ammatillinen perustutkinto\n' +
           'Tutkintonimike Autokorinkorjaaja\n' +
           'Toinen tutkintonimike kyllä\n' +
@@ -2105,7 +2105,7 @@ describe('Ammatillinen koulutus', function() {
         it('näyttää suorituksen tiedot', function() {
           expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
             'Koulutus Näyttötutkintoon valmistava koulutus\n' +
-            'Tutkinto Autoalan työnjohdon erikoisammattitutkinto 40/011/2001\n' +
+            'Tutkinto Autoalan työnjohdon erikoisammattitutkinto 357305 40/011/2001\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Alkamispäivä 1.9.2012\n' +
             'Suorituskieli suomi\n' +
@@ -2218,7 +2218,7 @@ describe('Ammatillinen koulutus', function() {
 
         it('näyttää suorituksen tiedot', function() {
           expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
-            'Koulutus Autoalan työnjohdon erikoisammattitutkinto 40/011/2001\n' +
+            'Koulutus Autoalan työnjohdon erikoisammattitutkinto 357305 40/011/2001\n' +
             'Suoritustapa Näyttötutkinto\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Suorituskieli suomi\n' +

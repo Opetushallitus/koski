@@ -31,7 +31,7 @@ describe('Lukiokoulutus', function( ){
 
       it('näyttää suorituksen tiedot', function() {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
-          'Koulutus Lukion oppimäärä 60/011/2015\n' +
+          'Koulutus Lukion oppimäärä 309902 60/011/2015\n' +
           'Opetussuunnitelma Lukio suoritetaan nuorten opetussuunnitelman mukaan\n' +
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
           'Suorituskieli suomi\n' +
@@ -433,7 +433,7 @@ describe('Lukiokoulutus', function( ){
 
       it('näyttää suorituksen tiedot', function() {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
-          'Oppiaine Historia 60/011/2015\n' +
+          'Oppiaine Historia HI 60/011/2015\n' +
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
           'Arviointi 9\n' +
           'Suorituskieli suomi\n' +

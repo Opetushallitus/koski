@@ -28,7 +28,7 @@ describe('Perusopetus', function() {
       describe('Kaikki tiedot näkyvissä BrowserStack', function() {
         before(opinnot.expandAll)
         it('näyttää suorituksen tiedot', function() {
-          expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal('Koulutus Perusopetus 104/011/2014\n' +
+          expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal('Koulutus Perusopetus 201101 104/011/2014\n' +
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
             'Suoritustapa Koulutus\n' +
             'Suorituskieli suomi\n' +
@@ -108,7 +108,7 @@ describe('Perusopetus', function() {
         before(opinnot.expandAll)
         it('näyttää suorituksen tiedot', function() {
           expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
-            'Luokka-aste 8. vuosiluokka 104/011/2014\n' +
+            'Luokka-aste 8. vuosiluokka 8 104/011/2014\n' +
             'Luokka 8C\n' +
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
             'Alkamispäivä 15.8.2014\n' +
@@ -170,7 +170,7 @@ describe('Perusopetus', function() {
         before(opinnot.expandAll)
         it('näyttää suorituksen tiedot', function() {
           expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
-            'Luokka-aste 9. vuosiluokka 104/011/2014\n' +
+            'Luokka-aste 9. vuosiluokka 9 104/011/2014\n' +
             'Luokka 9C\n' +
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
             'Alkamispäivä 15.8.2015\n' +
@@ -191,7 +191,7 @@ describe('Perusopetus', function() {
         before(opinnot.expandAll)
         it('näyttää suorituksen tiedot', function() {
           expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
-            'Luokka-aste 7. vuosiluokka 104/011/2014\n' +
+            'Luokka-aste 7. vuosiluokka 7 104/011/2014\n' +
             'Luokka 7C\n' +
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
             'Alkamispäivä 15.8.2013\n' +
@@ -239,7 +239,7 @@ describe('Perusopetus', function() {
 
         it('näyttää suorituksen tiedot', function() {
           expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
-            'Koulutus Perusopetus 104/011/2014\n' +
+            'Koulutus Perusopetus 201101 104/011/2014\n' +
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
             'Suoritustapa Erityinen tutkinto\n' +
             'Suorituskieli suomi\n' +
@@ -355,7 +355,7 @@ describe('Perusopetus', function() {
         before(page.openPage, page.oppijaHaku.searchAndSelect('031112-020J'))
         it('näyttää suorituksen tiedot', function() {
           expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
-            'Koulutus Perusopetus 104/011/2014\n' +
+            'Koulutus Perusopetus 201101 104/011/2014\n' +
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
             'Suoritustapa Erityinen tutkinto\n' +
             'Suorituskieli suomi\n' +
@@ -401,7 +401,7 @@ describe('Perusopetus', function() {
     describe('Päättövaiheen opinnot', function() {
       before(opinnot.expandAll)
       it('näyttää suorituksen tiedot', function() {
-        expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal('Koulutus Aikuisten perusopetuksen oppimäärä OPH-1280-2017\n' +
+        expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal('Koulutus Aikuisten perusopetuksen oppimäärä 201101 OPH-1280-2017\n' +
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
           'Suoritustapa Erityinen tutkinto\n' +
           'Suorituskieli suomi\n' +
@@ -625,7 +625,7 @@ describe('Perusopetus', function() {
     describe('Alkuvaiheen opinnot', function() {
       before(opinnot.valitseSuoritus(undefined, 'Aikuisten perusopetuksen oppimäärän alkuvaihe'), opinnot.expandAll)
       it('näyttää suorituksen tiedot', function() {
-        expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal('Koulutus Aikuisten perusopetuksen oppimäärän alkuvaihe OPH-1280-2017\n' +
+        expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal('Koulutus Aikuisten perusopetuksen oppimäärän alkuvaihe aikuistenperusopetuksenoppimaaranalkuvaihe OPH-1280-2017\n' +
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
           'Suoritustapa Erityinen tutkinto\n' +
           'Suorituskieli suomi\n' +
@@ -3264,7 +3264,7 @@ describe('Perusopetus', function() {
 
       it('näyttää suorituksen tiedot', function() {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
-          'Koulutus Perusopetuksen lisäopetus 105/011/2014\n' +
+          'Koulutus Perusopetuksen lisäopetus 020075 105/011/2014\n' +
           'Luokka 10A\n' +
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
           'Suorituskieli suomi\n' +
@@ -3393,7 +3393,7 @@ describe('Perusopetus', function() {
       })
       it('näyttää suorituksen tiedot', function() {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
-          'Koulutus Perusopetukseen valmistava opetus 57/011/2015\n' +
+          'Koulutus Perusopetukseen valmistava opetus 999905 57/011/2015\n' +
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
           'Suorituskieli suomi\n' +
           'Kokonaislaajuus 11 vuosiviikkotuntia\n' +

@@ -18,6 +18,7 @@ object AmmatillinenExampleData {
   val parturikampaaja: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("381303", "koulutus"), Some("43/011/2014"))
   val puutarhuri: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("361201", "koulutus"), Some("75/011/2014"))
   val autoalanTyönjohto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("357305", "koulutus"), Some("40/011/2001"))
+  val puuteollisuudenPerustutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351741", "koulutus"), Some("OPH-2455-2017"))
 
   val tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus: TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus = TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus(
     PaikallinenKoodi("KISI", "Kiinteistösihteerin koulutus ja tutkinto (KISI)"),
@@ -38,6 +39,7 @@ object AmmatillinenExampleData {
   def autoalanPerustutkinnonSuoritus(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = ammatillinenTutkintoSuoritus(autoalanPerustutkinto, toimipiste)
   def autoalanPerustutkinnonSuoritusValma(toimipiste: OrganisaatioWithOid = stadinToimipiste): ValmaKoulutuksenSuoritus = valmaSuoritus(valmaKoulutus, toimipiste)
   def autoalanErikoisammattitutkinnonSuoritus(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = ammatillinenTutkintoSuoritus(autoalanTyönjohto, toimipiste)
+  def puuteollisuudenPerustutkinnonSuoritus(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = ammatillinenTutkintoSuoritus(puuteollisuudenPerustutkinto, toimipiste)
 
   def kiinteistösihteerinTutkinnonOsaaPienempiMuuAmmatillinenKokonaisuus(toimipiste: OrganisaatioWithOid = stadinToimipiste): TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus =
     tutkinnonOsaaPienempienKokonaisuuksienSuoritus(
@@ -355,6 +357,18 @@ object AmmatillinenExampleData {
     arvioituPäättymispäivä = Some(date(2015, 5, 31)),
     oppilaitos = Some(oppilaitos),
     suoritukset = List(ympäristöalanPerustutkintoKesken(toimipiste)),
+    tila = AmmatillinenOpiskeluoikeudenTila(
+      List(
+        AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
+      )
+    ),
+    lisätiedot = Some(opiskeluoikeudenLisätiedot)
+  )
+
+  def puuteollisuusOpiskeluoikeusKesken(oppilaitos: Oppilaitos = stadinAmmattiopisto, toimipiste: OrganisaatioWithOid = stadinToimipiste) = AmmatillinenOpiskeluoikeus(
+    arvioituPäättymispäivä = Some(date(2015, 5, 31)),
+    oppilaitos = Some(oppilaitos),
+    suoritukset = List(puuteollisuudenPerustutkinnonSuoritus(toimipiste)),
     tila = AmmatillinenOpiskeluoikeudenTila(
       List(
         AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))

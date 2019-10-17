@@ -30,6 +30,13 @@ class EditorKooditServlet(implicit val application: KoskiApplication) extends Ap
     toKoodistoEnumValues(osaamisalat)
   }
 
+  get[List[EnumValue]]("/koulutukset/koulutus/:diaari") {
+    val koulutukset = application.tutkintoRepository.findPerusteRakenne(params("diaari"))
+      .map(_.koulutukset).toList.flatten
+
+    toKoodistoEnumValues(koulutukset)
+  }
+
   get[List[EnumValue]]("/:koodistoUri/:koodiarvot") {
     val koodiarvot = params("koodiarvot").split(",").toSet
     toKoodistoEnumValues(getKooditFromRequestParams().filter(k => koodiarvot.contains(k.koodiarvo)))

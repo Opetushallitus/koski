@@ -46,12 +46,7 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
     application.perustiedotIndexer.deleteByOppijaOids(henkilöOids)
 
     if (!fixtureCacheCreated) {
-      cachedPerustiedot = Some(validatedOpiskeluoikeudet.map { case (henkilö, oo) =>
-        val opiskeluoikeus = if (henkilö.hetu.contains(MockOppijat.organisaatioHistoria.hetu.get)) {
-          oo.asInstanceOf[AmmatillinenOpiskeluoikeus].copy(organisaatiohistoria = Some(AmmatillinenExampleData.opiskeluoikeudenOrganisaatioHistoria)) // organisaatioHistoria is cleared from incoming data, so we have to sneak it in
-        } else {
-          oo
-        }
+      cachedPerustiedot = Some(opiskeluoikeudet.map { case (henkilö, opiskeluoikeus) =>
         val id = application.opiskeluoikeusRepository.createOrUpdate(VerifiedHenkilöOid(henkilö), opiskeluoikeus, false).right.get.id
         OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, application.henkilöRepository.opintopolku.withMasterInfo(henkilö))
       })
@@ -75,7 +70,12 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
     }
   }
 
-  // cached for performance boost
+  private lazy val opiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = validatedOpiskeluoikeudet.map { case (henkilö, oikeus) => henkilö.hetu match {
+    case MockOppijat.organisaatioHistoria.hetu => (henkilö, oikeus.asInstanceOf[AmmatillinenOpiskeluoikeus].copy(organisaatiohistoria = Some(AmmatillinenExampleData.opiskeluoikeudenOrganisaatioHistoria)))
+    case MockOppijat.tunnisteenKoodiarvoPoistettu.hetu => (henkilö, oikeus.asInstanceOf[AmmatillinenOpiskeluoikeus].copy(suoritukset = oikeus.suoritukset.map(s => s.asInstanceOf[AmmatillisenTutkinnonSuoritus].copy(koulutusmoduuli = s.koulutusmoduuli.asInstanceOf[AmmatillinenTutkintoKoulutus].copy(s.koulutusmoduuli.tunniste.asInstanceOf[Koodistokoodiviite].copy(koodiarvo = "123456")))).asInstanceOf[List[AmmatillinenPäätasonSuoritus]]))
+    case _ => (henkilö, oikeus)
+  }}
+
   private lazy val validatedOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = defaultOpiskeluOikeudet.map { case (henkilö, oikeus) =>
     application.validator.validateAsJson(Oppija(henkilö.toHenkilötiedotJaOid, List(oikeus))) match {
       case Right(oppija) => (henkilö, oppija.tallennettavatOpiskeluoikeudet(0))
@@ -141,7 +141,9 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
       (MockOppijat.turvakielto, ExamplesLukio.päättötodistus()),
       (MockOppijat.erkkiEiperusteissa, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 334117, diaariNumero = "22/011/2004")),
       (MockOppijat.internationalschool, ExamplesInternationalSchool.opiskeluoikeus),
-      (MockOppijat.organisaatioHistoria, AmmatillinenExampleData.opiskeluoikeus())
+      (MockOppijat.organisaatioHistoria, AmmatillinenExampleData.opiskeluoikeus()),
+      (MockOppijat.montaKoulutuskoodiaAmis, AmmatillinenExampleData.puuteollisuusOpiskeluoikeusKesken()),
+      (MockOppijat.tunnisteenKoodiarvoPoistettu, AmmatillinenExampleData.opiskeluoikeus())
     )
   }
 }

@@ -6,6 +6,7 @@ import {suorituksenTyyppi} from './Suoritus'
 import {buildClassNames} from '../components/classnames'
 import {tutkinnonNimi} from './Koulutusmoduuli'
 import {InternationalSchoolLevel} from '../internationalschool/InternationalSchoolLevel'
+import {TunnisteenKoodiarvoEditor} from './TunnisteenKoodiarvoEditor'
 
 export const KoulutusmoduuliEditor = ({model}) => {
   const propertyFilter = p => {
@@ -13,15 +14,22 @@ export const KoulutusmoduuliEditor = ({model}) => {
     const esiopetusKuvaus = suorituksenTyyppi(model.context.suoritus) === 'esiopetuksensuoritus' && p.key === 'kuvaus'
     return !excludedProperties.includes(p.key) && !esiopetusKuvaus
   }
-  return (<span className="koulutusmoduuli">
+  return (
+    <span className="koulutusmoduuli">
       <span className="tunniste">
         <TunnisteEditor model={model} />
       </span>
-      <span className="diaarinumero"><span className={buildClassNames(['value', !model.context.edit && 'label'])}>
-        <Editor model={model} path="perusteenDiaarinumero" placeholder={t('Perusteen diaarinumero')}/>
-      </span></span>
+      <span className="tunniste-koodiarvo">
+        <TunnisteenKoodiarvoEditor model={model} />
+      </span>
+      <span className="diaarinumero">
+        <span className={buildClassNames(['value', !model.context.edit && 'label'])}>
+          <Editor model={model} path="perusteenDiaarinumero" placeholder={t('Perusteen diaarinumero')}/>
+        </span>
+      </span>
       <PropertiesEditor model={model} propertyFilter={propertyFilter}/>
-    </span>)
+    </span>
+  )
 }
 
 const TunnisteEditor = ({model}) => {
