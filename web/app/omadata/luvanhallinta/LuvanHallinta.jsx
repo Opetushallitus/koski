@@ -2,7 +2,6 @@ import React from 'baret'
 import Bacon from 'baconjs'
 import Http from '../../util/http'
 import {formatFinnishDate, parseISODate} from '../../date/date'
-import {getBirthdayFromEditorRes} from '../../util/util'
 import Spinner from '../Spinner'
 import {Error as ErrorDisplay} from '../../util/Error'
 import ModalDialog from '../../editor/ModalDialog'
@@ -12,13 +11,11 @@ import NavBar from './NavBar'
 import {Kayttoluvat} from './KayttoLuvat'
 import Text from '../../i18n/Text'
 import {t} from '../../i18n/i18n'
+import {modelData, modelItems} from '../../editor/EditorModel'
 
-const getBirthDate = editorResponse => {
-  if (!editorResponse) return
-
-  return formatFinnishDate(
-    parseISODate(
-      getBirthdayFromEditorRes(editorResponse)))
+export const getBirthDate = oppija => {
+  const hasOpintoja = oppija && modelItems(oppija, 'opiskeluoikeudet').length > 0
+  return hasOpintoja && formatFinnishDate(parseISODate(modelData(oppija, 'henkilö.syntymäaika')))
 }
 
 export class LuvanHallinta extends React.Component {

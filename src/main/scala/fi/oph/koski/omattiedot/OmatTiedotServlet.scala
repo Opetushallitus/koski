@@ -49,7 +49,7 @@ class OmatTiedotServlet(implicit val application: KoskiApplication) extends ApiS
   private def allowHuoltaja(oppija: Either[HttpStatus, WithWarnings[Oppija]]) = oppija.left.flatMap { status =>
     if (huollettavat.nonEmpty) {
       application.henkilöRepository.findByOid(koskiSession.oid)
-        .map(_.toHenkilötiedotJaOid)
+        .map(application.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot)
         .map(henkilö => Right(WithWarnings(Oppija(henkilö, Nil), Nil)))
         .getOrElse(Left(status))
     } else {

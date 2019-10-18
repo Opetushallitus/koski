@@ -4,21 +4,9 @@ import Http from '../util/http'
 import Text from '../i18n/Text'
 import AnnaHyvaksynta from './AnnaHyvaksynta'
 import HyvaksyntaAnnettu from './HyvaksyntaAnnettu'
-import {formatFinnishDate, parseISODate} from '../date/date'
-import {getBirthdayFromEditorRes} from '../util/util'
+import {getBirthDate} from './luvanhallinta/LuvanHallinta'
 
 const editorP = Http.cachedGet('/koski/api/omattiedot/editor', { errorMapper: () => undefined }).toProperty()
-
-const getBirthDate = (editorResponse) => {
-  if (!editorResponse) return
-
-  return formatFinnishDate(
-    parseISODate(
-      getBirthdayFromEditorRes(editorResponse)
-    )
-  )
-}
-
 
 export default ({memberName, memberPurpose, logoutURL, onAuthorization, authorizationGiven}) => (
   <div className='acceptance-container'>

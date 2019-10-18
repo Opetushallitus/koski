@@ -33,8 +33,8 @@ object OmatTiedotEditorModel extends Timing {
   private def buildView(userOppija: Oppija, oppija: Option[Oppija], huollettavat: List[HenkilötiedotJaOid], warnings: Seq[HttpStatus])(implicit application: KoskiApplication, koskiSession: KoskiSession) = {
     val valittuOppija = oppija.getOrElse(userOppija)
     OmatTiedotEditorView(
-      henkilö = valittuOppija.henkilö.asInstanceOf[NimellinenHenkilöWithOid],
-      userHenkilö = userOppija.henkilö.asInstanceOf[NimellinenHenkilöWithOid],
+      henkilö = valittuOppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot],
+      userHenkilö = userOppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot],
       huollettavat = huollettavat,
       opiskeluoikeudet = opiskeluoikeudetOppilaitoksittain(valittuOppija),
       varoitukset = warnings.flatMap(_.errors).map(_.key).toList
@@ -87,9 +87,9 @@ object OmatTiedotEditorModel extends Timing {
 
 case class OmatTiedotEditorView(
   @Hidden
-  henkilö: NimellinenHenkilöWithOid,
+  henkilö: TäydellisetHenkilötiedot,
   @Hidden
-  userHenkilö: NimellinenHenkilöWithOid,
+  userHenkilö: TäydellisetHenkilötiedot,
   @Hidden
   huollettavat: List[NimellinenHenkilöWithOid],
   opiskeluoikeudet: List[OppilaitoksenOpiskeluoikeudet],
