@@ -30,31 +30,37 @@ class OmatTiedotServlet(implicit val application: KoskiApplication) extends ApiS
     }
   }
 
-  private def renderHuollettava(huollettavanOid: String): Unit = {
-    renderEither[EditorModel](toEditorModel(application.oppijaFacade.findUserOppija, application.oppijaFacade.findOppija(huollettavanOid)(KoskiSession.systemUser)))
+  private def renderOmatTiedot: Unit = {
+    renderEither[EditorModel](toEditorModel(findUserOppijaAllowEmpty))
   }
 
-  private def renderOmatTiedot: Unit = {
-    renderEither[EditorModel](toEditorModel(application.oppijaFacade.findUserOppija))
+  private def renderHuollettava(huollettavanOid: String): Unit = {
+    renderEither[EditorModel](toEditorModel(findUserOppijaAllowEmpty, findHuollettavaOppija(huollettavanOid)))
   }
+
+  private def findUserOppijaAllowEmpty =
+    allowEmpty(application.oppijaFacade.findUserOppija, koskiSession.oid)
+
+  private def findHuollettavaOppija(huollettavanOid: String) =
+    allowEmpty(application.oppijaFacade.findOppija(huollettavanOid)(KoskiSession.systemUser), huollettavanOid)
 
   private def toEditorModel(oppijaE: Either[HttpStatus, WithWarnings[Oppija]]) =
-    allowHuoltaja(oppijaE).map(OmatTiedotEditorModel.toEditorModel(_, None, huollettavat))
+    oppijaE.map(OmatTiedotEditorModel.toEditorModel(_, None, huollettavat))
 
   private def toEditorModel(userOppijaE: Either[HttpStatus, WithWarnings[Oppija]], huollettavaE: Either[HttpStatus, WithWarnings[Oppija]]): Either[HttpStatus, EditorModel] = for {
-    userOppija <- allowHuoltaja(userOppijaE)
+    userOppija <- userOppijaE
     huollettava <- huollettavaE
   } yield OmatTiedotEditorModel.toEditorModel(userOppija, Some(huollettava), huollettavat)
 
-  private def allowHuoltaja(oppija: Either[HttpStatus, WithWarnings[Oppija]]) = oppija.left.flatMap { status =>
-    if (huollettavat.nonEmpty) {
-      application.henkilöRepository.findByOid(koskiSession.oid)
+  private def allowEmpty(oppija: Either[HttpStatus, WithWarnings[Oppija]], oid: String) = if (huollettavat.nonEmpty) {
+    oppija.left.flatMap { status =>
+      application.henkilöRepository.findByOid(oid)
         .map(application.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot)
         .map(henkilö => Right(WithWarnings(Oppija(henkilö, Nil), Nil)))
         .getOrElse(Left(status))
-    } else {
-      Left(status)
     }
+  } else {
+    oppija
   }
 
   private def huollettavat = {

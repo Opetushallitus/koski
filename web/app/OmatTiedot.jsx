@@ -68,14 +68,15 @@ domP.onValue((component) => ReactDOM.render(component, document.getElementById('
 // Handle errors
 domP.onError(handleError)
 
+export const hasOpintoja = oppija => modelItems(oppija, 'opiskeluoikeudet').length > 0
+
 const Oppija = ({oppija}) => {
-  const hasOpintoja = modelItems(oppija, 'opiskeluoikeudet').length > 0
   return oppija.loading
     ? <div className="loading"/>
     : (<div>
         <div className="oppija-content">
-          <Header oppijaP={omatTiedotP()} onOppijaChanged={o => henkilöAtom.set(o)} henkilöP={henkilöP}/>
-          {hasOpintoja ? <Editor key={document.location.toString()} model={oppija}/> : <EiSuorituksiaInfo/>}
+          <Header oppijaP={omatTiedotP()} onOppijaChanged={o => henkilöAtom.set(o)}/>
+          {hasOpintoja(oppija) ? <Editor key={document.location.toString()} model={oppija}/> : <EiSuorituksiaInfo/>}
         </div>
       </div>)
 

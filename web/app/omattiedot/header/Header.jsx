@@ -18,7 +18,8 @@ export const FormState = {
 const VirheraportointiFeature = withFeatureFlag(FEATURE.OMAT_TIEDOT.VIRHERAPORTOINTI, HeaderVirheraportointiSection)
 const SuoritusjakoFeature = withFeatureFlag(FEATURE.OMAT_TIEDOT.SUORITUSJAKO, HeaderSuoritusjakoSection)
 
-export const isHuoltaja = oppija => modelData(oppija, 'henkilö.oid') === modelData(oppija, 'userHenkilö.oid')
+export const isHuoltaja = oppija =>
+  modelData(oppija, 'henkilö.oid') === modelData(oppija, 'userHenkilö.oid')
 
 export class Header extends React.Component {
   shouldComponentUpdate() {

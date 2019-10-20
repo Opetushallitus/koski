@@ -4,6 +4,7 @@ import {withFeatureFlag} from '../../components/withFeatureFlag'
 import {FormState, isHuoltaja} from './Header'
 import FloatingActionButton from '../../components/FloatingActionButton'
 import {ift} from '../../util/util'
+import {hasOpintoja} from '../../OmatTiedot'
 
 const VirheraportointiButton = withFeatureFlag(FEATURE.OMAT_TIEDOT.VIRHERAPORTOINTI, MultistateToggleButton)
 const SuoritusjakoButton = withFeatureFlag(FEATURE.OMAT_TIEDOT.SUORITUSJAKO, MultistateToggleButton)
@@ -38,7 +39,7 @@ export const HeaderButtons = ({uiModeA, oppijaP}) => (
       text='Onko suorituksissasi virhe?'
       style='secondary'
     />
-    {ift(oppijaP.map(isHuoltaja), <SuoritusjakoButton
+    {ift(oppijaP.map(o => isHuoltaja(o) && hasOpintoja(o)), <SuoritusjakoButton
       id={ACTION_BUTTON_ID}
       stateA={uiModeA}
       value={FormState.SUORITUSJAKO}

@@ -8,7 +8,7 @@ export const HeaderInfo = ({varoituksetP, oppijaP}) => (
   <div className='header__info'>
     {varoituksetP.map(varoitukset => <Varoitukset varoitukset={varoitukset}/>)}
     <h1 className='header__heading'>
-      {ifte(oppijaP.map(isHuoltaja), <Text name='Huollettavani opinnot'/>, <Text name='Opintoni'/>)}
+      {ifte(oppijaP.map(isHuoltaja), <Text name='Opintoni'/>, <Text name='Huollettavani opinnot'/>)}
     </h1>
     <div className='header__caption'>
       <p className='textstyle-lead'>
