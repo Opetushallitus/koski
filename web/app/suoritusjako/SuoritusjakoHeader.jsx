@@ -3,6 +3,7 @@ import Text from '../i18n/Text'
 import {modelData, modelItems, modelLookup} from '../editor/EditorModel'
 import {Varoitukset} from '../util/Varoitukset'
 import {HeaderName} from '../omattiedot/header/HeaderName'
+import * as Bacon from 'baconjs'
 
 export const SuoritusjakoHeader = ({oppija}) => {
   const henkilö = modelLookup(oppija, 'henkilö')
@@ -14,7 +15,7 @@ export const SuoritusjakoHeader = ({oppija}) => {
         <Text name='Opinnot'/>
       </h1>
       <div className='header__bottom-row'>
-        <HeaderName henkilö={henkilö}/>
+        <HeaderName henkilöP={Bacon.constant(henkilö)}/>
       </div>
     </header>
   )
