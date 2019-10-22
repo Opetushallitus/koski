@@ -1,27 +1,49 @@
 package fi.oph.koski.ytr
 
 import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethods}
+import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.json4s.jackson.JsonMethods
 import org.scalatest.FreeSpec
 
-class YtrKoesuoritusApiSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods {
+class YtrKoesuoritusApiSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods with ValtuutusTestMethods {
   "Kansalainen" - {
     "voi hakea koesuorituslistauksen" in {
-      post("api/ytrkoesuoritukset", headers = kansalainenLoginHeaders("080698-967F")) {
+      post("api/ytrkoesuoritukset", body = huoltaja, headers = kansalainenLoginHeaders("080698-967F") ++ jsonContent) {
         verifyResponseStatusOk()
         readExams should equal (expected)
+      }
+    }
+
+    "ei voi hakea huollettavan koesuorituslistausta ilman valtuutusistuntoa" in {
+      post("api/ytrkoesuoritukset", body = huoltaja, headers = kansalainenLoginHeaders(MockOppijat.aikuisOpiskelija.hetu.get) ++ jsonContent) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "voi hakea huollettavan koesuorituslistauksen luotuaan valtuutusistunnon" in {
+      val loginHeaders = kansalainenLoginHeaders(MockOppijat.aikuisOpiskelija.hetu.get)
+      get("huoltaja/valitse", headers = loginHeaders) {
+        get(s"api/omattiedot/editor/$valtuutusCode", headers = loginHeaders) {
+          post("api/ytrkoesuoritukset", body = huoltaja, headers = loginHeaders ++ jsonContent) {
+            verifyResponseStatusOk()
+          }
+        }
       }
     }
   }
 
   "Viranomainen" - {
     "ei voi hakea koesuorituslistausta" in {
-      post("api/ytrkoesuoritukset", headers = authHeaders()) {
+      post("api/ytrkoesuoritukset", body = huoltaja, headers = authHeaders() ++ jsonContent) {
         verifyResponseStatus(403, Nil)
       }
     }
   }
+
+  lazy val huoltaja = JsonSerializer.writeWithRoot(Map("huollettava" -> false))
+  lazy val huollettava = JsonSerializer.writeWithRoot(Map("huollettava" -> true))
 
   import fi.oph.koski.schema.KoskiSchema.deserializationContext
   private def readExams: List[ExamResponse] =

@@ -183,6 +183,17 @@ object Tables {
     def * = (username, ip) <> (OppilaitosIPOsoiteRow.tupled, OppilaitosIPOsoiteRow.unapply)
   }
 
+  class ValtuudetSessionTable(tag: Tag) extends Table[ValtuudetSessionRow](tag, "valtuudet_session") {
+    val oppijaOid = column[String]("oppija_oid", O.PrimaryKey)
+    val sessionId = column[String]("session_id")
+    val userId = column[String]("user_id")
+    val code = column[Option[String]]("code")
+    val accessToken = column[Option[String]]("access_token")
+    val aikaleima = column[Timestamp]("aikaleima")
+
+    def * = (oppijaOid, sessionId, userId, code, accessToken, aikaleima) <> (ValtuudetSessionRow.tupled, ValtuudetSessionRow.unapply)
+  }
+
   val Preferences = TableQuery[PreferencesTable]
 
   val SuoritusJako = TableQuery[SuoritusjakoTable]
@@ -200,6 +211,7 @@ object Tables {
   val Scheduler = TableQuery[SchedulerTable]
   val PerustiedotSync = TableQuery[PerustiedotSyncTable]
   val OppilaitosIPOsoite = TableQuery[OppilaitosIPOsoiteTable]
+  val ValtuudetSession = TableQuery[ValtuudetSessionTable]
 
   val OpiskeluoikeusHistoria = TableQuery[OpiskeluoikeusHistoryTable]
 
@@ -267,6 +279,8 @@ case class SchedulerRow(name: String, nextFireTime: Timestamp, context: Option[J
 case class PerustiedotSyncRow(id: Int = 0, opiskeluoikeusId: Int, data: JValue, upsert: Boolean, aikaleima: Timestamp = new Timestamp(System.currentTimeMillis))
 
 case class OppilaitosIPOsoiteRow(username: String, ip: String)
+
+case class ValtuudetSessionRow(oppijaOid: String, sessionId: String, userId: String, code: Option[String] = None, accessToken: Option[String] = None, aikaleima: Timestamp = new Timestamp(System.currentTimeMillis))
 
 case class PreferenceRow(organisaatioOid: String, `type`: String, key: String, value: JValue)
 

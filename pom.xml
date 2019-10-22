@@ -55,6 +55,16 @@
       <version>f324e2c5168ef4cd68d08520294300a707adb833</version>
     </dependency>
     <dependency>
+      <groupId>com.github.Opetushallitus.java-utils</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>02016a504ddd9bd0942be1c160dc79f22881ca8e</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.Opetushallitus.java-utils</groupId>
+      <artifactId>suomifi-valtuudet-client</artifactId>
+      <version>02016a504ddd9bd0942be1c160dc79f22881ca8e</version>
+    </dependency>
+    <dependency>
       <groupId>com.github.Opetushallitus</groupId>
       <artifactId>scala-schema</artifactId>
       <version>2.25.0_2.12</version>

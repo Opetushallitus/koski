@@ -85,6 +85,7 @@ export const RaportoiVirheestäForm = ({henkilö, opiskeluoikeudet}) => {
       <div className='puuttuvat-tiedot form-section' data-indent={0}>
         <PuuttuvatTiedot/>
         <Checkbox
+          key={`${modelData(henkilö, 'oid')}-virheet-checkbox`}
           id='puuttuvat-tiedot-checkbox'
           label='Asiani koskee tietoa, joka näkyy, tai kuuluisi yllämainitun perusteella näkyä Koski-palvelussa.'
           onChange={event => hasAcceptedDisclaimer.set(event.target.checked)}

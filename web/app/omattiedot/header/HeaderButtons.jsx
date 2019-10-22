@@ -3,6 +3,8 @@ import {MultistateToggleButton} from '../../components/ToggleButton'
 import {withFeatureFlag} from '../../components/withFeatureFlag'
 import {FormState} from './Header'
 import FloatingActionButton from '../../components/FloatingActionButton'
+import {virheRaportointiTitle} from './HeaderVirheraportointiSection'
+import {hasOpintoja} from '../../OmatTiedot'
 
 const VirheraportointiButton = withFeatureFlag(FEATURE.OMAT_TIEDOT.VIRHERAPORTOINTI, MultistateToggleButton)
 const SuoritusjakoButton = withFeatureFlag(FEATURE.OMAT_TIEDOT.SUORITUSJAKO, MultistateToggleButton)
@@ -28,21 +30,27 @@ const moveToSuoritusjako = (completionHandler) => {
   document.getElementById(ACTION_BUTTON_ID).scrollIntoView({behavior: 'smooth'})
 }
 
-export const HeaderButtons = ({uiModeA}) => (
+export const HeaderButtons = ({uiModeA, oppija}) => (
   <div className='header__buttons'>
-    <VirheraportointiButton
+    {hasOpintoja(oppija) && <VirheraportointiButton
       stateA={uiModeA}
       value={FormState.VIRHERAPORTOINTI}
       clearedStateValue={FormState.NONE}
-      text='Onko suorituksissasi virhe?'
+      text={virheRaportointiTitle(oppija)}
       style='secondary'
-    />
-    <SuoritusjakoButton
+    />}
+    {!oppija.context.huollettava && hasOpintoja(oppija) && <SuoritusjakoButton
       id={ACTION_BUTTON_ID}
       stateA={uiModeA}
       value={FormState.SUORITUSJAKO}
       clearedStateValue={FormState.NONE}
       text='Jaa suoritustietoja'
+    />}
+    <MultistateToggleButton
+      stateA={uiModeA}
+      value={FormState.HUOLLETTAVANTIEDOT}
+      clearedStateValue={FormState.NONE}
+      text='Huollettavien opintotiedot'
     />
 
     <FloatingSuoritusjakoButton

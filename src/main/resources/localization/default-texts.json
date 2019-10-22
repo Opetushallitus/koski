@@ -423,7 +423,9 @@
   "Vuoden 1990 jälkeen suoritetut ylioppilastutkinnot.": "Vuoden 1990 jälkeen suoritetut ylioppilastutkinnot.",
   "Korkeakoulutusuoritukset ja opiskeluoikeudet ovat näkyvissä pääsääntöisesti vuodesta 1995 eteenpäin, mutta tässä voi olla korkeakoulukohtaisia poikkeuksia.": "Korkeakoulutusuoritukset ja opiskeluoikeudet ovat näkyvissä pääsääntöisesti vuodesta 1995 eteenpäin, mutta tässä voi olla korkeakoulukohtaisia poikkeuksia.",
   "Tiedoillasi ei löydy opintosuorituksia eikä opiskeluoikeuksia.": "Tiedoillasi ei löydy opintosuorituksia eikä opiskeluoikeuksia.",
+  "Huollettavasi tiedoilla ei löydy opintosuorituksia eikä opiskeluoikeuksia.": "Huollettavasi tiedoilla ei löydy opintosuorituksia eikä opiskeluoikeuksia.",
   "Mikäli tiedoistasi puuttuu opintosuorituksia tai opiskeluoikeuksia, joiden kuuluisi ylläolevien tietojen perusteella näkyä Koski-palvelussa, voit ilmoittaa asiasta oppilaitoksellesi.": "Mikäli tiedoistasi puuttuu opintosuorituksia tai opiskeluoikeuksia, joiden kuuluisi ylläolevien tietojen perusteella näkyä Koski-palvelussa, voit ilmoittaa asiasta oppilaitoksellesi.",
+  "Mikäli huollettavasi tiedoista puuttuu opintosuorituksia tai opiskeluoikeuksia, joiden kuuluisi ylläolevien tietojen perusteella näkyä Koski-palvelussa, voit ilmoittaa asiasta oppilaitoksellesi.": "Mikäli huollettavasi tiedoista puuttuu opintosuorituksia tai opiskeluoikeuksia, joiden kuuluisi ylläolevien tietojen perusteella näkyä Koski-palvelussa, voit ilmoittaa asiasta oppilaitoksellesi.",
   "Suoritustietojen jakaminen" : "Suoritustietojen jakaminen",
   "Jaa suoritustietoja" : "Jaa suoritustietoja",
   "Valitse jaettavat suoritustiedot" : "Valitse jaettavat suoritustiedot",
@@ -1039,6 +1041,7 @@
   "Varoitukset": "Varoitukset",
   "warning:unavailable.virta": "Korkeakoulujen opintoja ei juuri nyt saada haettua. Yritä myöhemmin uudestaan.",
   "warning:unavailable.ytr": "Ylioppilastutkinnon tietoja ei juuri nyt saada haettua. Yritä myöhemmin uudestaan.",
+  "warning:unavailable.suomifivaltuudet": "Huollettavien opintotietoja ei juuri nyt saada haettua. Yritä myöhemmin uudelleen.",
   "Opiskeluoikeuksia": "Opiskeluoikeuksia",
   "Turvakielto" : "Turvakielto",
   "description:Henkilöllä on turvakielto" : "Henkilöllä on turvakielto",
@@ -1262,6 +1265,12 @@
   "Opiskeluoikeuden organisaatiohistoria": "Opiskeluoikeuden organisaatiohistoria",
   "Aikaisempi oppilaitos": "Aikaisempi oppilaitos",
   "Aikaisempi koulutustoimija": "Aikaisempi koulutustoimija",
-  "Organisaatiohistoria": "Organisaatiohistoria"
+  "Organisaatiohistoria": "Organisaatiohistoria",
+  "Jos sinulla on huollettavia, voit tarkastella myös heidän opintotietojaan...": "Jos sinulla on huollettavia, voit tarkastella myös heidän opintotietojaan. Tarkastelua varten sinut ohjataan suomi.fi-valtuudet palveluun.",
+  "Palaa omiin opintotietoihin" : "Palaa omiin opintotietoihin",
+  "Huollettavani opinnot" : "Huollettavani opinnot",
+  "Onko suorituksissa virhe" : "Onko suorituksissa virhe",
+  "Huollettavien opintotiedot" : "Huollettavien opintotiedot",
+  "Tarkastele huollettavasi tietoja" : "Tarkastele huollettavasi tietoja"
 }
 
