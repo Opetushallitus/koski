@@ -1,5 +1,7 @@
 package fi.oph.koski.mydata
 
+import java.time.LocalDate
+
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.LocalJettyHttpSpecification
 import fi.oph.koski.henkilo.MockOppijat
@@ -45,6 +47,20 @@ class MyDataAPIProxyServletTest extends FreeSpec with LocalJettyHttpSpecificatio
       }
     }
 
+    "Palauttaa luvan viimeisen voimassaolopäivän opiskelijalle" in {
+      val jsonMethods = org.json4s.jackson.JsonMethods
+      val yearFromToday = LocalDate.now().plusYears(1)
+
+      KoskiApplicationForTests.mydataRepository.create(opiskelija.oid, memberId)
+
+      requestOpintoOikeudet(opiskelija.hetu.get, memberHeaders(memberCode)){
+        status should equal(200)
+
+        val response = jsonMethods.parse(body).extract[MyDataResponse]
+        response.suostumuksenPaattymispaiva should be(yearFromToday.toString)
+      }
+    }
+
     "Palauttaa 401 mikäli luovutuspalvelukäyttäjän tunnukset ovat väärät" in {
       KoskiApplicationForTests.mydataRepository.create(opiskelija.oid, memberId)
 
@@ -69,3 +85,7 @@ class MyDataAPIProxyServletTest extends FreeSpec with LocalJettyHttpSpecificatio
     )(f)
   }
 }
+
+case class MyDataResponse(
+  suostumuksenPaattymispaiva: String
+)
