@@ -27,7 +27,8 @@ object Http extends Logging {
     logger.info(s"Creating new pooled http client with $maxHttpConnections max total connections for $name")
     blaze.PooledHttp1Client(maxTotalConnections = maxHttpConnections, config = defaultConfig.copy(
       requestTimeout = 10.minutes,
-      customExecutor = Some(Pools.httpPool)
+      customExecutor = Some(Pools.httpPool),
+      responseHeaderTimeout = 30.seconds
     ))
   }
 
