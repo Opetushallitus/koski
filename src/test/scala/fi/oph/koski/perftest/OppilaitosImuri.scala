@@ -2,7 +2,7 @@ package fi.oph.koski.perftest
 
 import java.net.URLEncoder
 
-import fi.oph.koski.organisaatio.{OrganisaatioHakuTulos, OrganisaatioPalveluOrganisaatio}
+import fi.oph.koski.organisaatio.{OrganisaatioPalveluOrganisaatioTyyppi, OrganisaatioTyyppiHakuTulos}
 import fi.oph.koski.schema.OidOrganisaatio
 
 /**
@@ -21,7 +21,7 @@ object OppilaitosImuri extends App {
 
   def haeOppilaitostyypillä(tyyppi: String) = {
     val url: String = s"$virkailijaRoot/organisaatio-service/rest/organisaatio/v2/hae/tyyppi?aktiiviset=true&suunnitellut=true&lakkautetut=false&oppilaitostyyppi=${URLEncoder.encode(tyyppi, "UTF-8")}"
-    EasyHttp.getJson[OrganisaatioHakuTulos](url).organisaatiot.map { org: OrganisaatioPalveluOrganisaatio => OidOrganisaatio(org.oid) }
+    EasyHttp.getJson[OrganisaatioTyyppiHakuTulos](url).organisaatiot.map { org: OrganisaatioPalveluOrganisaatioTyyppi => OidOrganisaatio(org.oid) }
   }
 }
 
