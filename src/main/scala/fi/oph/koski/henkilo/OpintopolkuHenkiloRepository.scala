@@ -31,6 +31,7 @@ case class LaajatOppijaHenkilöTiedot(
 ) extends OppijaHenkilö with HenkilönTunnisteet {
   @SyntheticProperty
   def preventSerialization: Nothing = ??? // ensure this class never gets serialized to JSON
+  def kaikkiOidit: List[String] = oid :: linkitetytOidit
 }
 
 case class SuppeatOppijaHenkilöTiedot(

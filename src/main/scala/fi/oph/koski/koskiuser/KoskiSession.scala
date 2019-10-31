@@ -31,6 +31,7 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
   def hasTiedonsiirronMitätöintiAccess(organisaatio: Organisaatio.Oid) = hasAccess(organisaatio, AccessType.tiedonsiirronMitätöinti)
   def hasLuovutuspalveluAccess: Boolean = globalViranomaisKäyttöoikeudet.exists(_.isLuovutusPalveluAllowed)
   def hasTilastokeskusAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).contains(Palvelurooli("KOSKI", TILASTOKESKUS))
+  def hasValviraAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).contains(Palvelurooli("KOSKI", VALVIRA))
 
   def hasAccess(organisaatio: Organisaatio.Oid, accessType: AccessType.Value) = {
     val access = globalAccess.contains(accessType) || organisationOids(accessType).contains(organisaatio)
