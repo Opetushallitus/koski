@@ -5,7 +5,6 @@ import fi.oph.koski.db.ValtuudetSessionRow
 import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.koskiuser.KoskiSession.huoltajaUser
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.Henkilö.{Hetu, Oid}
 import fi.oph.koski.schema.{Oppija, UusiHenkilö}
@@ -51,7 +50,7 @@ class HuoltajaService(application: KoskiApplication) extends Logging {
   } yield huollettava
 
   private def findOppijaAllowEmpty(huollettava: OppijaHenkilö)(implicit koskiSession: KoskiSession) =
-    application.oppijaFacade.findOppija(huollettava.oid)(huoltajaUser(koskiSession.oid))
+    application.oppijaFacade.findUserOppija(KoskiSession.huollettavaSession(koskiSession, huollettava))
       .toOption
       .orElse(opinnotonOppija(huollettava.oid))
 

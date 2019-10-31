@@ -2,6 +2,7 @@ package fi.oph.koski.koskiuser
 
 import java.net.InetAddress
 
+import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koskiuser.Rooli._
 import fi.oph.koski.log.{LogUserContext, Loggable, Logging}
@@ -21,6 +22,7 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
   lazy val globalViranomaisKäyttöoikeudet: Set[KäyttöoikeusViranomainen] = käyttöoikeudet.collect { case k: KäyttöoikeusViranomainen => k}
   lazy val allowedOpiskeluoikeusTyypit: Set[String] = käyttöoikeudet.flatMap(_.allowedOpiskeluoikeusTyypit)
   lazy val hasKoulutusmuotoRestrictions: Boolean = allowedOpiskeluoikeusTyypit != OpiskeluoikeudenTyyppi.kaikkiTyypit.map(_.koodiarvo)
+  lazy val kaikkiKäyttöoikeudet: Set[Käyttöoikeus] = käyttöoikeudet
 
   def organisationOids(accessType: AccessType.Value): Set[String] = orgKäyttöoikeudet.collect { case k: KäyttöoikeusOrg if k.organisaatioAccessType.contains(accessType) => k.organisaatio.oid }
   lazy val globalAccess = globalKäyttöoikeudet.flatMap { _.globalAccessType }
@@ -70,13 +72,17 @@ object KoskiSession {
     new KoskiSession(user, KoskiUserLanguage.getLanguageFromCookie(request), LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request), käyttöoikeudet.käyttäjänKäyttöoikeudet(user))
   }
 
+  def huollettavaSession(huoltajaSession: KoskiSession, huollettava: OppijaHenkilö): KoskiSession = {
+    val user = huoltajaSession.user.copy(oid = huollettava.oid, username = huollettava.oid, name = s"${huollettava.etunimet} ${huollettava.sukunimi}", huollettava = true)
+    new KoskiSession(user, huoltajaSession.lang, huoltajaSession.clientIp, huoltajaSession.userAgent, huoltajaSession.kaikkiKäyttöoikeudet)
+  }
+
   private val systemKäyttöoikeudet: Set[Käyttöoikeus] = Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHPAAKAYTTAJA), Palvelurooli(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))))
   private val KOSKI_SYSTEM_USER: String = "Koski system user"
   private val UNTRUSTED_SYSTEM_USER = "Koski untrusted system user"
   val SUORITUSJAKO_KATSOMINEN_USER = "Koski suoritusjako katsominen"
   // Internal user with root access
   val systemUser = new KoskiSession(AuthenticationUser(KOSKI_SYSTEM_USER, KOSKI_SYSTEM_USER, KOSKI_SYSTEM_USER, None), "fi", InetAddress.getLoopbackAddress, "", systemKäyttöoikeudet)
-  def huoltajaUser(oid: String) = new KoskiSession(systemUser.user.copy(oid = oid, kansalainen = true), systemUser.lang, systemUser.clientIp, systemUser.userAgent, systemKäyttöoikeudet)
 
   val untrustedUser = new KoskiSession(AuthenticationUser(UNTRUSTED_SYSTEM_USER, UNTRUSTED_SYSTEM_USER, UNTRUSTED_SYSTEM_USER, None), "fi", InetAddress.getLoopbackAddress, "", Set())
 

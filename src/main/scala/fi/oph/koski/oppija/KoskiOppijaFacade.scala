@@ -236,9 +236,9 @@ class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: K
 
   private def writeViewingEventToAuditLog(user: KoskiSession, oid: Henkilö.Oid): Unit = {
     if (user != KoskiSession.systemUser) { // To prevent health checks from polluting the audit log
-      val operation = if (user.user.kansalainen && user.oid == oid) {
+      val operation = if (user.user.kansalainen && !user.user.huollettava) {
         KANSALAINEN_OPISKELUOIKEUS_KATSOMINEN
-      } else if (user.user.kansalainen && user.oid != oid) {
+      } else if (user.user.kansalainen && user.user.huollettava) {
         KANSALAINEN_HUOLTAJA_OPISKELUOIKEUS_KATSOMINEN
       } else if (user.user.isSuoritusjakoKatsominen) {
         KANSALAINEN_SUORITUSJAKO_KATSOMINEN
