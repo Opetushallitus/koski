@@ -12,26 +12,30 @@ import {Editor} from './editor/Editor'
 import Text from './i18n/Text'
 import editorMapping from './oppija/editors'
 import {userP} from './util/user'
-import {addContext, modelData} from './editor/EditorModel'
+import {addContext, modelData, modelItems} from './editor/EditorModel'
 import {locationP} from './util/location'
 import {Header} from './omattiedot/header/Header'
 import {EiSuorituksiaInfo} from './omattiedot/EiSuorituksiaInfo'
 import {patchSaavutettavuusLeima} from './saavutettavuusLeima'
 
-const omatTiedotP = () => Bacon.combineWith(
-  Http.cachedGet('/koski/api/omattiedot/editor', { errorMapper: (e) => e.httpStatus === 404 ? null : new Bacon.Error(e)}).toProperty(),
-  userP,
-  (omattiedot, user) => {
-    let kansalainen = user.oid === modelData(omattiedot, 'henkilö.oid')
-    return omattiedot && user && addContext(omattiedot, {kansalainen: kansalainen})
-  }
-)
+const omatTiedotP = code => {
+  const url = code ? `/koski/api/omattiedot/editor/${code}` : '/koski/api/omattiedot/editor'
+  return Bacon.combineWith(
+    Http.cachedGet(url, { errorMapper: (e) => e.httpStatus === 404 ? null : new Bacon.Error(e)}).toProperty(),
+    userP,
+    (omattiedot, user) => {
+      const kansalainen = user.oid === modelData(omattiedot, 'userHenkilö.oid')
+      const huollettava = modelData(omattiedot, 'userHenkilö.oid') !== modelData(omattiedot, 'henkilö.oid')
+      return omattiedot && user && addContext(omattiedot, {kansalainen: kansalainen, huollettava: huollettava})
+    }
+  )
+}
 
 const topBarP = userP.map(user => <OmatTiedotTopBar user={user}/>)
-const contentP = locationP.flatMapLatest(() => omatTiedotP().map(oppija =>
+const contentP = locationP.flatMapLatest(loc => omatTiedotP(loc.params.code).map(oppija =>
     oppija
       ? <div className="main-content oppija"><Oppija oppija={Editor.setupContext(oppija, {editorMapping})} stateP={Bacon.constant('viewing')}/></div>
-      : <div className="main-content"><EiSuorituksiaInfo/></div>
+      : <div className="main-content"><EiSuorituksiaInfo oppija={oppija}/></div>
     )
 ).toProperty().startWith(<div className="main-content ajax-indicator-bg"><Text name="Ladataan..."/></div>)
 
@@ -61,6 +65,7 @@ domP.onValue((component) => ReactDOM.render(component, document.getElementById('
 // Handle errors
 domP.onError(handleError)
 
+export const hasOpintoja = oppija => modelItems(oppija, 'opiskeluoikeudet').length > 0
 const Oppija = ({oppija}) => {
   return oppija.loading
     ? <div className="loading"/>
@@ -68,7 +73,7 @@ const Oppija = ({oppija}) => {
       <div>
         <div className="oppija-content">
           <Header oppija={oppija}/>
-          <Editor key={document.location.toString()} model={oppija}/>
+          {hasOpintoja(oppija) ? <Editor key={document.location.toString()} model={oppija}/> : <EiSuorituksiaInfo oppija={oppija}/>}
         </div>
       </div>
     )

@@ -70,11 +70,13 @@ object KoskiSession {
     new KoskiSession(user, KoskiUserLanguage.getLanguageFromCookie(request), LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request), käyttöoikeudet.käyttäjänKäyttöoikeudet(user))
   }
 
+  private val systemKäyttöoikeudet: Set[Käyttöoikeus] = Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHPAAKAYTTAJA), Palvelurooli(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))))
   private val KOSKI_SYSTEM_USER: String = "Koski system user"
   private val UNTRUSTED_SYSTEM_USER = "Koski untrusted system user"
   val SUORITUSJAKO_KATSOMINEN_USER = "Koski suoritusjako katsominen"
   // Internal user with root access
-  val systemUser = new KoskiSession(AuthenticationUser(KOSKI_SYSTEM_USER, KOSKI_SYSTEM_USER, KOSKI_SYSTEM_USER, None), "fi", InetAddress.getLoopbackAddress, "", Set(KäyttöoikeusGlobal(List(Palvelurooli(OPHPAAKAYTTAJA), Palvelurooli(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)))))
+  val systemUser = new KoskiSession(AuthenticationUser(KOSKI_SYSTEM_USER, KOSKI_SYSTEM_USER, KOSKI_SYSTEM_USER, None), "fi", InetAddress.getLoopbackAddress, "", systemKäyttöoikeudet)
+  def huoltajaUser(oid: String) = new KoskiSession(systemUser.user.copy(oid = oid, kansalainen = true), systemUser.lang, systemUser.clientIp, systemUser.userAgent, systemKäyttöoikeudet)
 
   val untrustedUser = new KoskiSession(AuthenticationUser(UNTRUSTED_SYSTEM_USER, UNTRUSTED_SYSTEM_USER, UNTRUSTED_SYSTEM_USER, None), "fi", InetAddress.getLoopbackAddress, "", Set())
 

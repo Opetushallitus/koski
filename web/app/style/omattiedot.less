@@ -22,9 +22,35 @@
   }
 }
 
+.palaa-omiin-tietoihin {
+  font-weight: 400;
+  font-size: 1.34rem;
+  &:before {
+    font-family: FontAwesome;
+    content: '\f190';
+    margin-right: 6px;
+  }
+}
+
 .omattiedot {
   &.content-area {
     margin-top: 0;
+
+    header.ei-suorituksia-header {
+      .header {
+        &__info {
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    .ei-suorituksia {
+      padding: 0 16px;
+      h2 {
+        font-size: 1.3rem;
+      }
+      font-size: 1.1rem;
+    }
 
     header {
       padding: @header-padding;
@@ -114,11 +140,20 @@
       }
     }
 
-    .suoritusjako {
+    .suoritusjako, .huollettavan-tiedot {
       flex-basis: 100%;
 
       &[data-show='false'] {
         display: none;
+      }
+    }
+    .huollettavan-tiedot-info {
+      font-weight: 300;
+      padding-right: 1rem;
+      margin-bottom: 2rem;
+      width: 50%;
+      @media @media-phone {
+        width: 100%;
       }
     }
   }

@@ -4,11 +4,11 @@ import java.net.URLEncoder.encode
 import java.nio.charset.StandardCharsets
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.henkilo.Hetu
+import fi.oph.koski.henkilo.{Hetu, OppijaHenkilö}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer.writeWithRoot
-import fi.oph.koski.koskiuser.{AuthenticationSupport, AuthenticationUser, KoskiSession}
-import fi.oph.koski.schema.Nimitiedot
+import fi.oph.koski.koskiuser.{AuthenticationSupport, AuthenticationUser}
+import fi.oph.koski.schema.{Nimitiedot, UusiHenkilö}
 import fi.oph.koski.servlet.{ApiServlet, LanguageSupport, NoCache}
 import org.scalatra.{Cookie, CookieOptions}
 
@@ -39,20 +39,34 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
   private def login = {
     hetu match {
       case None => eiSuorituksia
-      case Some(h) =>
-        application.henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(h, nimitiedot) match {
-          case Some(oppija) =>
-            setUser(Right(localLogin(AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true), Some(langFromCookie.getOrElse(langFromDomain)))))
-            redirect(onSuccess)
-          case _ => eiSuorituksia
-        }
+      case Some(validHetu) => findOrCreate(validHetu) match {
+        case Some(oppija) => createSession(oppija)
+        case _ => eiSuorituksia
+      }
     }
+  }
+
+  private def findOrCreate(validHetu: String) = {
+    application.henkilöRepository.findByHetuOrCreateIfInYtrOrVirta(validHetu, nimitiedot)
+      .orElse(nimitiedot.map(toUusiHenkilö(validHetu, _)).map(application.henkilöRepository.findOrCreate(_).left.map(s => new RuntimeException(s.errorString.mkString)).toTry.get))
+  }
+
+  private def createSession(oppija: OppijaHenkilö) = {
+    setUser(Right(localLogin(AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true), Some(langFromCookie.getOrElse(langFromDomain)))))
+    redirect(onSuccess)
   }
 
   private def eiSuorituksia = {
     setNimitiedotCookie
     redirect(onUserNotFound)
   }
+
+  private def toUusiHenkilö(validHetu: String, nimitiedot: Nimitiedot) = UusiHenkilö(
+    hetu = validHetu,
+    etunimet = nimitiedot.etunimet,
+    kutsumanimi = Some(nimitiedot.kutsumanimi),
+    sukunimi = nimitiedot.sukunimi
+  )
 
   private def setNimitiedotCookie = {
     val shibbolethName = nimitiedot.map(n => ShibbolethName(name = n.etunimet + " " + n.sukunimi))

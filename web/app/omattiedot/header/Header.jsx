@@ -7,42 +7,36 @@ import {HeaderButtons} from './HeaderButtons'
 import {HeaderName} from './HeaderName'
 import {HeaderVirheraportointiSection} from './HeaderVirheraportointiSection'
 import {HeaderSuoritusjakoSection} from './HeaderSuoritusjakoSection'
+import {HeaderHuollettavanTiedotSection} from './HeaderHuollettavanTiedotSection'
 
 export const FormState = {
   VIRHERAPORTOINTI: 'virheraportointi',
   SUORITUSJAKO: 'suoritusjako',
+  HUOLLETTAVANTIEDOT: 'huollettavantiedot',
   NONE: 'none'
 }
 
 const VirheraportointiFeature = withFeatureFlag(FEATURE.OMAT_TIEDOT.VIRHERAPORTOINTI, HeaderVirheraportointiSection)
 const SuoritusjakoFeature = withFeatureFlag(FEATURE.OMAT_TIEDOT.SUORITUSJAKO, HeaderSuoritusjakoSection)
 
-export class Header extends React.Component {
-  shouldComponentUpdate() {
-    // The header for 'omat tiedot' is independent of other UI re-render triggers.
-    return false
-  }
+export const Header = ({oppija}) => {
+  const uiMode = Atom(FormState.NONE)
 
-  render() {
-    const {oppija} = this.props
+  const henkilö = modelLookup(oppija, 'henkilö')
+  const opiskeluoikeudet = modelItems(oppija, 'opiskeluoikeudet')
+  let varoitukset = modelItems(oppija, 'varoitukset').map(modelData)
 
-    const uiMode = Atom(FormState.NONE)
+  return (
+    <header className='header'>
+      <HeaderInfo oppija={oppija} varoitukset={varoitukset}/>
 
-    const henkilö = modelLookup(oppija, 'henkilö')
-    const opiskeluoikeudet = modelItems(oppija, 'opiskeluoikeudet')
-    let varoitukset = modelItems(oppija, 'varoitukset').map(modelData)
-
-    return (
-      <header className='header'>
-        <HeaderInfo varoitukset={varoitukset}/>
-
-        <div className='header__bottom-row'>
-          <HeaderName henkilö={henkilö}/>
-          <HeaderButtons uiModeA={uiMode} stateType={FormState}/>
-          <VirheraportointiFeature uiModeA={uiMode} henkilö={henkilö} opiskeluoikeudet={opiskeluoikeudet}/>
-          <SuoritusjakoFeature uiModeA={uiMode} opiskeluoikeudet={opiskeluoikeudet}/>
-        </div>
-      </header>
-    )
-  }
+      <div className='header__bottom-row'>
+        <HeaderName henkilö={henkilö}/>
+        <HeaderButtons uiModeA={uiMode} stateType={FormState} oppija={oppija}/>
+        <VirheraportointiFeature uiModeA={uiMode} oppija={oppija}/>
+        <SuoritusjakoFeature uiModeA={uiMode} opiskeluoikeudet={opiskeluoikeudet}/>
+        <HeaderHuollettavanTiedotSection uiModeA={uiMode}/>
+      </div>
+    </header>
+  )
 }

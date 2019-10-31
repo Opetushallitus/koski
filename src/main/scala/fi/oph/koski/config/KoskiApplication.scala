@@ -14,6 +14,7 @@ import fi.oph.koski.koskiuser._
 import fi.oph.koski.localization.LocalizationRepository
 import fi.oph.koski.log.{AuditLog, Logging, TimedProxy}
 import fi.oph.koski.mydata.{MyDataRepository, MyDataService}
+import fi.oph.koski.omattiedot.HuoltajaService
 import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.oppilaitos.OppilaitosRepository
@@ -63,6 +64,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val virtaAccessChecker = new VirtaAccessChecker(käyttöoikeusRepository)
   lazy val ytrAccessChecker = new YtrAccessChecker(käyttöoikeusRepository)
   lazy val henkilöRepository = HenkilöRepository(this)
+  lazy val huoltajaService = new HuoltajaService(this)
   lazy val historyRepository = OpiskeluoikeusHistoryRepository(masterDatabase.db)
   lazy val virta = TimedProxy[AuxiliaryOpiskeluoikeusRepository](VirtaOpiskeluoikeusRepository(virtaClient, oppilaitosRepository, koodistoViitePalvelu, organisaatioRepository, virtaAccessChecker, Some(validator)))
   lazy val henkilöCache = new KoskiHenkilöCache(masterDatabase.db)

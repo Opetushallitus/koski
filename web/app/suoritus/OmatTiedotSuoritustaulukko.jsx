@@ -52,11 +52,13 @@ const OmatTiedotSuoritustaulukko = ({suorituksetModel, nested, parentSuoritus: p
 }
 
 const arvosanaColumn = parentSuoritus => isYlioppilastutkinto(parentSuoritus)
-  ? YtrArvosanaColumn(parentSuoritus.context.suoritusjako)
+  ? YtrArvosanaColumn(parentSuoritus)
   : ArvosanaColumn
 
-const YtrArvosanaColumn = (suoritusjako) => {
-  const koesuorituksetP = suoritusjako ? Bacon.constant([]) :  Http.post('/koski/api/ytrkoesuoritukset', { errorMapper: () => undefined })
+const YtrArvosanaColumn = (parentSuoritus) => {
+  const suoritusjako = parentSuoritus.context.suoritusjako
+  const huollettava = parentSuoritus.context.huollettava
+  const koesuorituksetP = suoritusjako ? Bacon.constant([]) :  Http.post('/koski/api/ytrkoesuoritukset', {huollettava}, { errorMapper: () => undefined })
 
   return {
     shouldShow: ({suoritukset, context}) => context.edit || suoritukset.find(hasArvosana) !== undefined,
@@ -71,7 +73,7 @@ const YtrArvosanaColumn = (suoritusjako) => {
         return (<React.Fragment key='data'>
           <td key='arvosana' className='arvosana ylioppilas'><ArvosanaEditor model={model}/></td>
           <td key='koesuoritus' className='koesuoritus'>
-            <KoesuoritusLink copyOfExamPaper={koe && koe.copyOfExamPaper} kokeenNimi={modelData(model, 'koulutusmoduuli.tunniste.nimi')} />
+            <KoesuoritusLink copyOfExamPaper={koe && koe.copyOfExamPaper} kokeenNimi={modelData(model, 'koulutusmoduuli.tunniste.nimi')} huollettava={parentSuoritus.context.huollettava}/>
           </td>
         </React.Fragment>)
       })
@@ -79,9 +81,9 @@ const YtrArvosanaColumn = (suoritusjako) => {
   }
 }
 
-const KoesuoritusLink = ({copyOfExamPaper, kokeenNimi}) =>
+const KoesuoritusLink = ({copyOfExamPaper, kokeenNimi, huollettava}) =>
   copyOfExamPaper
-    ? (<a className='text-button-small' target='_blank' href={`/koski/koesuoritus/${copyOfExamPaper}`}>
+    ? (<a className='text-button-small' target='_blank' href={`/koski/koesuoritus/${copyOfExamPaper}${huollettava ? '?huollettava=true' : ''}`}>
         <Text className='show-koesuoritus-text' name='Näytä koesuoritus' aria-label={t(kokeenNimi) + '. ' + t('Näytä koesuoritus')}/>
       </a>)
     : null

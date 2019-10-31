@@ -5,21 +5,42 @@ import fi.oph.koski.editor.{EditorModel, EditorModelSerializer}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.LegacyJsonSerialization
 import fi.oph.koski.koskiuser.RequiresKansalainen
-import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
-import fi.oph.koski.util.WithWarnings
 import org.json4s.jackson.Serialization
 
 /**
   *  Endpoints for the Koski omattiedot UI
   */
 class OmatTiedotServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresKansalainen with NoCache {
+  private val huoltajaService = application.huoltajaService
 
   get("/editor") {
-    val oppija: Either[HttpStatus, WithWarnings[Oppija]] = application.oppijaFacade.findUserOppija
-    renderEither[EditorModel](oppija.right.map { o =>
-      OmatTiedotEditorModel.toEditorModel(o)
-    })
+    renderOmatTiedot
+  }
+
+  get("/editor/:valtuutusKoodi") {
+    renderHuollettava(params("valtuutusKoodi"))
+  }
+
+  private def renderOmatTiedot: Unit = {
+    val editorModel = huoltajaService.findUserOppijaAllowEmpty.map(OmatTiedotEditorModel.toEditorModel(_, None))
+    renderEither[EditorModel](editorModel)
+  }
+
+  private def renderHuollettava(valtuutusKoodi: String): Unit = {
+    renderEither[EditorModel](mkEditorModel(valtuutusKoodi))
+  }
+
+  private def mkEditorModel(valtuutusKoodi: String): Either[HttpStatus, EditorModel] = {
+    val (huoltajaWarnings, huollettava) = huoltajaService.findHuollettavaOppija(valtuutusKoodi, koskiRoot) match {
+      case Left(status) => (List(status), None)
+      case Right(oppija) => (Nil, oppija)
+    }
+
+    huoltajaService.findUserOppijaNoAuditLog.map { userOppija =>
+      // copy errors from huollettava to useroppija warnings
+      userOppija.copy(warnings = userOppija.warnings ++ huoltajaWarnings)
+    }.map(OmatTiedotEditorModel.toEditorModel(_, huollettava))
   }
 
   import reflect.runtime.universe.TypeTag

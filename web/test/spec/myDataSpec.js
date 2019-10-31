@@ -111,9 +111,6 @@ describe('MyData', function() {
     it('Näytetään käyttäjälle nimi', function() {
       expect(tietojenkaytto.getUserName()).equal('Eino EiKoskessa')
     })
-    it('Ei näytetä käyttäjälle syntymäaikaa', function() {
-      expect(isElementVisible(S('.oppija-nimi > .pvm'))).to.equal(false)
-    })
     it('Näytetään käyttölupien kohdalla oikea teksti', function() {
       expect(extractAsText(S('.kayttolupa-list > .no-permission'))).equal('Et ole tällä hetkellä antanut millekään palveluntarjoajalle lupaa nähdä opintotietojasi Oma Opintopolusta. Luvan myöntäminen tapahtuu kyseisen palvelutarjoajan sivun kautta.')
     })
