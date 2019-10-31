@@ -93,12 +93,12 @@ class HuoltajaService(application: KoskiApplication) extends Logging {
   private def redirectBackUrl(rootUrl: String) = s"$rootUrl/huoltaja"
 
   private def findOrCreate(huollettava: PersonDto) = {
-    val nimet = huollettava.name.split(" ")
+    val nimet = Option(huollettava.name).map(_.trim).getOrElse("").split(" ")
     application.henkilöRepository.findOrCreate(UusiHenkilö(
       hetu = huollettava.personId,
-      etunimet = nimet.init.mkString(" "),
+      etunimet = nimet.drop(1).mkString(" "),
       kutsumanimi = None,
-      sukunimi = nimet.last
+      sukunimi = nimet.head
     )).toOption
   }
 }
