@@ -50,13 +50,6 @@
       <gav regex="true">^com\.github\.fge:json-patch:.*$</gav>
       <cve>CVE-2018-14632</cve>
     </suppress>
-    <suppress>
-       <notes><![CDATA[
-       Drupal specific vulnerability
-       ]]></notes>
-       <gav regex="true">^software\.amazon\.eventstream:eventstream:.*$</gav>
-       <cve>CVE-2015-3373</cve>
-    </suppress>
     <suppress until="2020-01-01Z">
        <notes><![CDATA[
        file name: netty-nio-client-2.8.3.jar
