@@ -379,8 +379,8 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     "Organisaation muutoshistoria" - {
       lazy val uusiOrganisaatioHistoria = OpiskeluoikeudenOrganisaatiohistoria(
         LocalDate.now(),
-        AmmatillinenExampleData.stadinAmmattiopisto,
-        Koulutustoimija(MockOrganisaatiot.helsinginKaupunki, nimi = Some(Finnish("HELSINGIN KAUPUNKI", sv = Some("Helsingfors stad"))))
+        Some(AmmatillinenExampleData.stadinAmmattiopisto),
+        Some(Koulutustoimija(MockOrganisaatiot.helsinginKaupunki, nimi = Some(Finnish("HELSINGIN KAUPUNKI", sv = Some("Helsingfors stad")))))
       )
       "Oppilaitoksen oid muuttuu ja ei aikaisempaa organisaatio historiaa" in {
         resetFixtures
