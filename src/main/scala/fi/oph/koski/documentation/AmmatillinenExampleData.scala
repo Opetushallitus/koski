@@ -318,25 +318,25 @@ object AmmatillinenExampleData {
   val opiskeluoikeudenOrganisaatioHistoria = List(
     OpiskeluoikeudenOrganisaatiohistoria(
       muutospäivä = date(2002, 2, 2),
-      Oppilaitos(
+      Some(Oppilaitos(
         oid = MockOrganisaatiot.omnia,
         nimi = Some(Finnish(fi = "Omnian oppilaitos"))
-      ),
-      Koulutustoimija(
+      )),
+      Some(Koulutustoimija(
         oid = MockOrganisaatiot.helsinginKaupunki,
         nimi = Some(Finnish(fi = "Helsingin kaupunki"))
-      )
+      ))
     ),
     OpiskeluoikeudenOrganisaatiohistoria(
       muutospäivä = date(2005, 5, 5),
-      Oppilaitos(
+      Some(Oppilaitos(
         oid = MockOrganisaatiot.stadinAmmattiopisto,
         nimi = Some(Finnish(fi = "Stadin ammattiopisto"))
-      ),
-      Koulutustoimija(
+      )),
+      Some(Koulutustoimija(
         oid = MockOrganisaatiot.helsinginKaupunki,
         nimi = Some(Finnish(fi = "Helsingin kaupunki"))
-      )
+      ))
     )
   )
 
