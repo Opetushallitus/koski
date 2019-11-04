@@ -28,7 +28,7 @@ class YtrKoesuoritusServlet(implicit val application: KoskiApplication) extends 
   }
 
   private def getOppija: Option[HenkilönTunnisteet] = if (isHuollettava) {
-    application.huoltajaService.getHuollettava(koskiSession.oid)
+    application.huoltajaService.getSelectedHuollettava(koskiSession.oid)
   } else {
     application.henkilöRepository.findByOid(koskiSession.oid)
   }

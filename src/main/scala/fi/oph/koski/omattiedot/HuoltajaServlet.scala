@@ -16,7 +16,9 @@ class HuoltajaServlet(implicit val application: KoskiApplication) extends HtmlSe
   get("/valitse") {
     application.huoltajaService.getValtuudetUrl(koskiRoot) match {
       case Right(url) => redirect(url)
-      case Left(status) => redirect("/omattiedot?code=errorCreatingSession")
+      case Left(failure) =>
+        failure.log(logger)
+        redirect("/omattiedot?code=errorCreatingSession")
     }
   }
 }

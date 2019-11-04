@@ -28,7 +28,7 @@ class YtrKoesuoritusApiServlet(implicit val application: KoskiApplication) exten
 
   private def getHenkilö = {
     val henkilö: Option[HenkilönTunnisteet] = if (isHuollettava) {
-      application.huoltajaService.getHuollettava(koskiSession.oid)
+      application.huoltajaService.getSelectedHuollettava(koskiSession.oid)
     } else {
       application.henkilöRepository.findByOid(koskiSession.oid)
     }
