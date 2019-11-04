@@ -158,7 +158,7 @@
 <script type='text/javascript'>
     (function($) {
         $('body').one('pagecontainershow', function(event, ui) {
-            var schema = '/koski/api/documentation/koski-oppija-schema.json'
+            var schema = '/koski/api/documentation/' + schemaName()
             var path = window.location.hash.match(/v=([^\&]+)/);
             var selectedNode = path ? path[1] : null
 
@@ -177,6 +177,15 @@
             });
         });
     })(jQuery);
+
+    function schemaName() {
+      var nameInParams = window.location.search.match(new RegExp('(?:[\?\&]schema=)([^&]+)'))
+      var schemaName
+      if (nameInParams) {
+        schemaName = nameInParams[1]
+      }
+      return schemaName || 'koski-oppija-schema.json'
+    }
 </script>
 </body>
 </html>

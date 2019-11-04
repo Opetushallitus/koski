@@ -2,7 +2,13 @@ package fi.oph.koski.valvira
 
 import java.time.{LocalDate, LocalDateTime}
 
-import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
+import fi.oph.koski.schema.{Koodistokoodiviite, KoskiSchema, LocalizedString}
+import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
+import org.json4s.JValue
+
+object ValviraSchema {
+  lazy val schemaJson: JValue = SchemaToJson.toJsonSchema(KoskiSchema.createSchema(classOf[ValviraOppija]).asInstanceOf[ClassSchema])
+}
 
 object ValviraOppija {
   def apply(hetu: String, opiskeluoikeudet: List[ValviraOpiskeluoikeus]): ValviraOppija = {
