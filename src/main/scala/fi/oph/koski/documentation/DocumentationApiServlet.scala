@@ -6,6 +6,7 @@ import fi.oph.koski.koodisto.Koodistot
 import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.schema.KoskiSchema
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
+import fi.oph.koski.valvira.ValviraSchema
 
 import scala.reflect.runtime.{universe => ru}
 
@@ -33,9 +34,12 @@ class DocumentationApiServlet extends ApiServlet with Unauthenticated with NoCac
   get("/examples/:name.json") {
     renderOption(KoskiErrorCategory.notFound)(Examples.allExamples.find(_.name == params("name")).map(_.data))
   }
-
   get("/koski-oppija-schema.json") {
     KoskiSchema.schemaJson
+  }
+
+  get("/valvira-oppija-schema.json") {
+    ValviraSchema.schemaJson
   }
 
   get("/koodistot.json") {
