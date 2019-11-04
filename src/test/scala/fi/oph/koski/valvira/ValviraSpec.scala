@@ -38,8 +38,8 @@ class ValviraSpec extends FreeSpec with LocalJettyHttpSpecification with Opiskel
       putOpiskeluoikeus(defaultOpiskeluoikeus, MockOppijat.master) {
         putOpiskeluoikeus(AmmatillinenExampleData.puuteollisuusOpiskeluoikeusKesken(), MockOppijat.slave.henkilö) {
          getHetu(MockOppijat.master.hetu.get) {
-           parseValviraOppija.opiskeluoikeudet.flatMap(_.suoritukset.map(_.koulutusmoduuli.tunniste.nimi.get.get("fi"))) should equal(
-             List("Autoalan perustutkinto", "Puuteollisuuden perustutkinto")
+           parseValviraOppija.opiskeluoikeudet.flatMap(_.suoritukset.map(_.koulutusmoduuli.tunniste.nimi.get.get("fi"))).toSet should equal(
+             Set("Autoalan perustutkinto", "Puuteollisuuden perustutkinto")
            )
          }
        }
