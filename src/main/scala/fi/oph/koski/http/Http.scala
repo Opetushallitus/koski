@@ -120,19 +120,20 @@ object Http extends Logging {
   }
 
   def apply(root: String, name: String): Http = Http(root, newClient(name))
+
 }
 
 case class Http(root: String, client: Client) extends Logging {
   import fi.oph.koski.http.Http.UriInterpolator
   private val rootUri = Http.uriFromString(root)
 
-  def get[ResultType](uri: ParameterizedUriWrapper)(decode: Decode[ResultType]): Task[ResultType] = {
-    processRequest(Request(uri = uri.uri), uri.template)(decode)
+  def get[ResultType](uri: ParameterizedUriWrapper, headers: Headers = Headers.empty)(decode: Decode[ResultType]): Task[ResultType] = {
+    processRequest(Request(uri = uri.uri, headers = headers), uri.template)(decode)
   }
 
-  def post[I <: AnyRef, O <: Any](path: ParameterizedUriWrapper, entity: I)(encode: EntityEncoder[I])(decode: Decode[O]): Task[O] = {
-    val request: Request = Request(uri = path.uri, method = Method.POST)
-    processRequest(request.withBody(entity)(encode), path.template)(decode)
+  def post[I <: AnyRef, O <: Any](path: ParameterizedUriWrapper, entity: I, headers: Headers = Headers.empty)(encode: EntityEncoder[I])(decode: Decode[O]): Task[O] = {
+    val request: Request = Request(uri = path.uri, method = Method.POST, headers = headers)
+    processRequest(requestTask = request.withBody(entity)(encode), uriTemplate = path.template)(decode)
   }
 
   def put[I <: AnyRef, O <: Any](path: ParameterizedUriWrapper, entity: I)(encode: EntityEncoder[I])(decode: Decode[O]): Task[O] = {
