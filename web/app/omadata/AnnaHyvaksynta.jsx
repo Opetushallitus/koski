@@ -2,17 +2,17 @@ import React from 'baret'
 import Text from '../i18n/Text'
 import '../style/main.less'
 
-export default ({memberName, memberPurpose, onAcceptClick, logoutURL}) => (
+export default ({memberName, onAcceptClick, logoutURL}) => (
   <div>
     <div className='acceptance-box'>
       <div className='acceptance-title'><Text name='Antamalla suostumuksesi sallit, että Opetushallitus luovuttaa sinua koskevia...'/></div>
       <div className='acceptance-member-name'><Text name={memberName}/></div>
       <div className='acceptance-share-info'>
-        <Text name='Palveluntarjoajalle luovutetaan seuraavat henkilötiedot'/>:
+        <Text name='Palveluntarjoajalle luovutetaan seuraavat henkilötiedot'/>{':'}
         <ul>
           <li><Text name='Oppijanumerosi'/></li>
           <li>
-            <Text name='Tiedot opiskeluoikeuksistasi sisältäen'/>:
+            <Text name='Tiedot opiskeluoikeuksistasi sisältäen'/>{':'}
             <ul>
               <li><Text name='Tiedot oppilaitoksesta'/></li>
               <li><Text name='Opiskeluoikeuden alkamis- ja päättymispäivämäärät sekä läsnäolotiedot'/></li>
