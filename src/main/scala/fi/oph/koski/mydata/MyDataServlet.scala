@@ -13,8 +13,7 @@ class MyDataServlet(implicit val application: KoskiApplication) extends ApiServl
 
     renderObject(Map(
       "id" -> conf.getString("id"),
-      "name" -> conf.getString("name"),
-      "purpose" -> conf.getString("purpose")
+      "name" -> conf.getString("name")
     ))
   }
 

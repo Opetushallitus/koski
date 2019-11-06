@@ -1271,6 +1271,24 @@
   "Huollettavani opinnot" : "Huollettavani opinnot",
   "Onko suorituksissa virhe" : "Onko suorituksissa virhe",
   "Huollettavien opintotiedot" : "Huollettavien opintotiedot",
-  "Tarkastele huollettavasi tietoja" : "Tarkastele huollettavasi tietoja"
+  "Tarkastele huollettavasi tietoja" : "Tarkastele huollettavasi tietoja",
+  "Antamalla suostumuksesi sallit, että Opetushallitus luovuttaa sinua koskevia...": "Antamalla suostumuksesi sallit, että Opetushallitus luovuttaa sinua koskevia henkilötietoja seuraavalle palveluntarjoajalle",
+  "Palveluntarjoajalle luovutetaan seuraavat henkilötiedot": "Palveluntarjoajalle luovutetaan seuraavat henkilötiedot",
+  "Palveluntarjoaja käyttää tietojasi opiskelijahintaisen matkalipun myöntämisen yhteydessä tapahtuvaan...": "Palveluntarjoaja käyttää tietojasi opiskelijahintaisen matkalipun myöntämisen yhteydessä tapahtuvaan asiakkaan opiskelija-aseman todentamiseen. Tietojasi käytetään myös, kun liikkumis- tai yhdistämispalvelun tarjoajat (MaaS-operaattorit) hankkivat pyynnöstäsi alennukseen oikeuttavia lipputuotteita palveluntarjoajan lippu- ja maksujärjestelmästä.",
+  "Palveluntarjoaja suorittaa opiskelija-aseman todentamisessa automaattista päätöksentekoa.": "Palveluntarjoaja suorittaa opiskelija-aseman todentamisessa automaattista päätöksentekoa.",
+  "Palveluntarjoaja ei tämän suostumuksen perusteella luovuta henkilötietojasi eteenpäin.": "Palveluntarjoaja ei tämän suostumuksen perusteella luovuta henkilötietojasi eteenpäin.",
+  "Suostumuksesi on voimassa 12 kuukautta, minkä jälkeen voit uusia se. Voit perua suostumuksesi...": "Suostumuksesi on voimassa 12 kuukautta, minkä jälkeen voit uusia se. Voit perua suostumuksesi milloin tahansa Oma Opintopolku-palvelussa tai palveluntarjoajan palvelun kautta.",
+  "Kun suostumus on päättynyt tai peruutettu, Opetushallitus ei enää luovuta henkilötietojasi palveluntarjoajalle...": "Kun suostumus on päättynyt tai peruutettu, Opetushallitus ei enää luovuta henkilötietojasi palveluntarjoajalle. Palveluntarjoajalla voi kuitenkin olla lainmukainen peruste käsitellä ja säilyttää tietojasi myös suostumuksen peruuttamisen jälkeen.",
+  "Lisätietoja palveluntarjoajan suorittamasta tietojen käsittelystä": "Lisätietoja palveluntarjoajan suorittamasta tietojen käsittelystä",
+  "Lisätietoja Opetushallituksen suorittamasta tietojen käsittelystä": "Lisätietoja Opetushallituksen suorittamasta tietojen käsittelystä",
+  "Suostumuksen käsittelyä koskeva informointi...": "Suostumuksen käsittelyä koskeva informointi (TSA 13 artikla) ns. suostumusrekisteriin tallennettavista tiedoista lisätään myöhemmin.",
+  "Oppijanumerosi": "Oppijanumerosi",
+  "Tiedot opiskeluoikeuksistasi sisältäen": "Tiedot opiskeluoikeuksistasi sisältäen",
+  "Tiedot oppilaitoksesta": "Tiedot oppilaitoksesta",
+  "Opiskeluoikeuden alkamis- ja päättymispäivämäärät sekä läsnäolotiedot": "Opiskeluoikeuden alkamis- ja päättymispäivämäärät sekä läsnäolotiedot",
+  "Opiskeluoikeutesi koulutusaste sekä suorituksen tavoite (tutkinto vai muu)": "Opiskeluoikeutesi koulutusaste sekä suorituksen tavoite (tutkinto vai muu)",
+  "Ammatillisista opiskeluoikeuksista tiedot osa-aikaisuusjaksoista sekä oppisopimuksista ja koulutussopimuksista": "Ammatillisista opiskeluoikeuksista tiedot osa-aikaisuusjaksoista sekä oppisopimuksista ja koulutussopimuksista",
+  "Suostumuksesi päättymisajankohta": "Suostumuksesi päättymisajankohta",
+  "Tarkemmat tiedot luovutettavista henkilötiedoista": "Tarkemmat tiedot luovutettavista henkilötiedoista"
 }
 
