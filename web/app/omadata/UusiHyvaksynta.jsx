@@ -20,7 +20,7 @@ const getBirthDate = (editorResponse) => {
 }
 
 
-export default ({memberName, memberPurpose, logoutURL, onAuthorization, authorizationGiven}) => (
+export default ({memberName, logoutURL, onAuthorization, authorizationGiven}) => (
   <div className='acceptance-container'>
     <div className='heading'><h1><Text name='Henkilökohtaisten tietojen käyttö'/></h1></div>
     <div className='user'>
@@ -32,7 +32,6 @@ export default ({memberName, memberPurpose, logoutURL, onAuthorization, authoriz
       <HyvaksyntaAnnettu logoutURL={logoutURL} /> :
       <AnnaHyvaksynta
         memberName={memberName}
-        memberPurpose={memberPurpose}
         onAcceptClick={() => onAuthorization()}
         logoutURL={logoutURL} />
     }
