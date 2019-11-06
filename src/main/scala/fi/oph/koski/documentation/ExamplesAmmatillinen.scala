@@ -23,6 +23,7 @@ object ExamplesAmmatillinen {
     Example("ammatillinen - reformin mukainen erikoisammattitutkinto", "Automekaanikon erikoisammattitutkinto", ReforminMukainenErikoisammattitutkintoExample.example),
     Example("ammatillinen - erikoisammattitutkinto", "Erikoisammattitutkinnon ja näyttötutkintoon valmistavan koulutuksen suorittanut opiskelija", AmmattitutkintoExample.erikoisammattitutkinto),
     Example("ammatillinen - tutkinnonosa", "Yhden tutkinnon osan suorittanut oppija", AmmatillinenPerustutkintoExample.osittainenPerustutkinto),
+    Example("ammatillinen - reformi useita tutkinnon osia", "Useita tutkinnon osia suorittanut oppija", AmmatillinenOsittainenReformi.laaja),
     Example("ammatillinen - tunnustettu", "Tutkinnon osa tunnustettu aiemmin suoritetusta paikallisen tutkinnon osasta", AmmatillinenPerustutkintoExample.tunnustettuPaikallinenTutkinnonOsa),
     Example("ammatillinen - sisältyy toisen oppilaitoksen opiskeluoikeuteen", "Toisen oppilaitoksen opiskeluoikeuteen sisältyvä opiskeluoikeus", AmmatillinenPerustutkintoExample.sisältyvä, statusCode = 400),
     Example("ammatillinen - lisätiedot", "Opiskeluoikeus, johon liitetty kaikki mahdolliset opiskeluoikeuden lisätiedot", LisätiedotExample.example)
@@ -574,6 +575,17 @@ object AmmatillinenOldExamples {
       ))),
       vahvistus = vahvistusPaikkakunnallaJaValinnaisellaTittelillä(date(2016, 1, 9), stadinAmmattiopisto, helsinki),
       tutkinnonOsanRyhmä = ammatillisetTutkinnonOsat
+    )
+  )
+}
+
+object AmmatillinenOsittainenReformi {
+  lazy val laaja = Oppija(
+    Henkilö.withOid("1.2.246.562.24.00000000001"),
+    List(
+      AmmatillinenPerustutkintoExample.osittainenPerustutkintoOpiskeluoikeus.copy(
+        suoritukset = List(AmmatillinenExampleData.ammatillisenTutkinnonOsittainenAutoalanSuoritus)
+      )
     )
   )
 }
