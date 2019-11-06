@@ -23,7 +23,7 @@ export default ({memberName, memberPurpose, onAcceptClick, logoutURL}) => (
           <li><Text name='Suostumuksesi päättymisajankohta'/></li>
         </ul>
       </div>
-      <div className='acceptance-duration'>
+      <div className='acceptance-paragraphs'>
         <p><a href='https://confluence.csc.fi/pages/viewpage.action?pageId=76536741'><Text name='Tarkemmat tiedot luovutettavista henkilötiedoista'/></a></p>
         <p><Text name='Palveluntarjoaja käyttää tietojasi opiskelijahintaisen matkalipun myöntämisen yhteydessä tapahtuvaan...'/></p>
         <p><Text name='Palveluntarjoaja suorittaa opiskelija-aseman todentamisessa automaattista päätöksentekoa.'/></p>
