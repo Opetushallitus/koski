@@ -220,9 +220,9 @@ object AmmatillinenPerustutkintoExample {
 
 object AmmatillinenReforminMukainenPerustutkintoExample {
   lazy val tutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("OPH-2762-2017"))
-  lazy val korkeakouluopintoSuoritus = KorkeakouluopintoSuoritus(koulutusmoduuli = KorkeakouluopinnotTutkinnonOsa(), osasuoritukset = Some(List(saksa)))
+  lazy val korkeakouluopintoSuoritus = AmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus(koulutusmoduuli = KorkeakouluopinnotTutkinnonOsa(), osasuoritukset = Some(List(saksa)))
 
-  lazy val jatkoOpintovalmiuksiaTukevienOpintojenSuoritus = JatkoOpintovalmiuksiaTukevienOpintojenSuoritus(koulutusmoduuli = JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsa(), osasuoritukset = Some(List(
+  lazy val jatkoOpintovalmiuksiaTukevienOpintojenSuoritus = AmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus(koulutusmoduuli = JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsa(), osasuoritukset = Some(List(
     LukioOpintojenSuoritus(
       koulutusmoduuli = PaikallinenLukionOpinto(
         tunniste = PaikallinenKoodi("MAA", "Maantieto"),
@@ -320,8 +320,6 @@ object AmmatillinenReforminMukainenPerustutkintoExample {
     koulutusmoduuli = KorkeakouluopintojenTutkinnonOsaaPienempiKokonaisuus(PaikallinenKoodi("de", finnish("Saksa")), "Saksa", Some(LaajuusOsaamispisteissä(5))),
     arviointi = arviointiViisi
   )
-
-  lazy val arviointiViisi = Some(List(arviointi(arvosanaViisi)))
 
   lazy val example = Oppija(
     exampleHenkilö,
