@@ -7,7 +7,7 @@ export default class HyvaksyntaAnnettu extends React.Component {
     super(props)
     this.state = {
       logoutURL: this.props.logoutURL,
-      timeout: this.props.timeout || 6000
+      timeout: 4000
     }
 
     this.moveToCallbackURL = this.moveToCallbackURL.bind(this)
