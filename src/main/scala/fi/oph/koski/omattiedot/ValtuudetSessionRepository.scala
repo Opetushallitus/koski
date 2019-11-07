@@ -4,20 +4,15 @@ import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables.ValtuudetSession
 import fi.oph.koski.db.{DatabaseExecutionContext, KoskiDatabaseMethods, ValtuudetSessionRow}
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.log.Logging
-import fi.vm.sade.suomifi.valtuudet.SessionDto
 import slick.dbio.Effect
 import slick.sql.SqlAction
 
-import scala.util.Try
-
 case class ValtuudetSessionRepository(db: DB) extends DatabaseExecutionContext with KoskiDatabaseMethods with Logging {
-  def getAccessToken(oppijaOid: String, valtuutusCode: String, newToken: () => String): Either[HttpStatus, String] = runDbSync {
+  def getAccessToken[T](session: ValtuudetSessionRow, valtuutusCode: String, newToken: String => Either[T, String]): Either[T, String] = runDbSync {
     (for {
-      session <- getSessionAction(oppijaOid)
-      accessToken <- session.flatMap(_.accessToken) match {
-        case None => fetchAndStoreAccessTokenAction(oppijaOid, valtuutusCode, newToken)
+      accessToken <- session.accessToken match {
+        case None => fetchAndStoreAccessTokenAction(session.oppijaOid, valtuutusCode, newToken)
         case Some(token) => DBIO.successful(Right(token))
       }
     } yield accessToken).transactionally
@@ -25,32 +20,27 @@ case class ValtuudetSessionRepository(db: DB) extends DatabaseExecutionContext w
 
   def get(oppijaOid: String): Option[ValtuudetSessionRow] = runDbSync(getSessionAction(oppijaOid))
 
-  def store(oppijaOid: String, valtuudetSessio: SessionDto): ValtuudetSessionRow = {
+  def store(oppijaOid: String, valtuudetSessio: SessionResponse): ValtuudetSessionRow = {
     val row = mkRow(oppijaOid, valtuudetSessio)
     runDbSync(storeAction(row))
     logger.debug(s"Store $row")
     row
   }
 
-  private def fetchAndStoreAccessTokenAction(oppijaOid: String, valtuutusCode: String, newToken: () => String) = for {
-    token <- DBIO.successful(fetchAccessToken(valtuutusCode, newToken))
+  private def fetchAndStoreAccessTokenAction[T](oppijaOid: String, valtuutusCode: String, newToken: String => Either[T, String]) = for {
+    token <- DBIO.successful(newToken(valtuutusCode))
     _ <- token match {
       case Left(status) => DBIO.successful(Left(status))
-      case Right(t) => storeAccessTokenAction(oppijaOid, valtuutusCode, t)
+      case Right(t) => storeAccessTokenAndValtuutusCodeAction(oppijaOid, valtuutusCode, t)
     }
   } yield token
 
-  private def fetchAccessToken(valtuutusCode: String, newToken: () => String) =
-    Try(newToken()).toEither.left.map { e =>
-      logger.error(s"Virhe haettaessa accessTokenia koodilla $valtuutusCode: ${e.getMessage}")
-      KoskiErrorCategory.unavailable.suomifivaltuudet()
-    }
 
   private def getSessionAction(oppijaOid: String): SqlAction[Option[ValtuudetSessionRow], NoStream, Effect.Read] = {
     ValtuudetSession.filter(_.oppijaOid === oppijaOid).result.headOption
   }
 
-  private def storeAccessTokenAction(oppijaOid: String, code: String, accessToken: String): DBIOAction[Int, NoStream, Effect.Write] = {
+  private def storeAccessTokenAndValtuutusCodeAction(oppijaOid: String, code: String, accessToken: String): DBIOAction[Int, NoStream, Effect.Write] = {
     ValtuudetSession.filter(_.oppijaOid === oppijaOid).map(r => (r.code, r.accessToken)).update((Some(code), Some(accessToken)))
   }
 
@@ -58,7 +48,7 @@ case class ValtuudetSessionRepository(db: DB) extends DatabaseExecutionContext w
     _ <- ValtuudetSession.insertOrUpdate(row)
   } yield row
 
-  private def mkRow(oppijaOid: String, valtuudetSession: SessionDto) = {
+  private def mkRow(oppijaOid: String, valtuudetSession: SessionResponse) = {
     ValtuudetSessionRow(oppijaOid = oppijaOid, sessionId = valtuudetSession.sessionId, userId = valtuudetSession.userId)
   }
 }

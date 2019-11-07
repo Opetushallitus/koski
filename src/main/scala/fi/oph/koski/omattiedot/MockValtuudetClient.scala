@@ -3,23 +3,23 @@ package fi.oph.koski.omattiedot
 import java.util.UUID.randomUUID
 
 import fi.oph.koski.henkilo.MockOppijat
-import fi.vm.sade.suomifi.valtuudet.{OrganisationDto, PersonDto, SessionDto, ValtuudetType, ValtuudetClient => SuomifiValtuudetClient}
+import org.http4s.Request
 
-object MockValtuudetClient extends SuomifiValtuudetClient {
-  override def createSession(`type`: ValtuudetType, nationalIdentificationNumber: String): SessionDto = new SessionDto {
-    if (MockOppijat.markkanen.hetu.contains(nationalIdentificationNumber)) {
-      throw new RuntimeException("Unexpected response status: 403 Expected: 200 Url: https://asiointivaltuustarkastus.suomi.fi/xyz")
-    }
-    sessionId = nationalIdentificationNumber
-    userId = nationalIdentificationNumber
+object MockValtuudetClient extends ValtuudetClient {
+  override def createSession(hetu: String): Either[ValtuudetFailure, SessionResponse] = if (MockOppijat.markkanen.hetu.contains(hetu)) {
+    Left(SuomifiValtuudetFailure(403, "", Request()))
+  } else {
+    Right(SessionResponse(hetu, hetu))
   }
 
-  override def getSelectedPerson(sessionId: String, accessToken: String): PersonDto = {
+
+  override def getSelectedPerson(sessionId: String, accessToken: String): Either[ValtuudetFailure, SelectedPersonResponse] = {
     val (hetu, nimet) = findOppija(sessionId).getOrElse(???)
     if (MockOppijat.tero.hetu.contains(hetu)) {
-      throw new Exception("Unexpected response status: 400 Expected: 200 Url: https://asiointivaltuustarkastus.suomi.fi/xyz")
+      Left(SuomifiValtuudetFailure(400, "", Request()))
+    } else {
+      Right(SelectedPersonResponse(hetu, nimet))
     }
-    new PersonDto { personId = hetu; name = nimet }
   }
 
   override def getRedirectUrl(userId: String, callbackUrl: String, language: String): String = if (findOppija(userId).isDefined) {
@@ -29,17 +29,14 @@ object MockValtuudetClient extends SuomifiValtuudetClient {
   }
 
   private var codes = Set[String]()
-  override def getAccessToken(code: String, callbackUrl: String): String = synchronized {
+  def getAccessToken(code: String, callbackUrl: String): Either[ValtuudetFailure, String] = synchronized {
     if (codes.contains(code)) {
-      throw new Exception("Unexpected response status: 400 Expected: 200 Url: https://asiointivaltuustarkastus.suomi.fi/xyz")
+      Left(SuomifiValtuudetFailure(400, "", Request()))
+    } else {
+      codes = codes + code
+      Right("mock-token")
     }
-    codes = codes + code
-    "mock-token"
   }
-
-  override def destroySession(`type`: ValtuudetType, sessionId: String): Unit = ???
-  override def isAuthorizedToPerson(sessionId: String, accessToken: String, nationalIdentificationNumber: String): Boolean = ???
-  override def getSelectedOrganisation(sessionId: String, accessToken: String): OrganisationDto = ???
 
   private def findOppija(hetu: String) = {
     findOppijaFromONR(hetu).map(o => (o.hetu.get, s"${o.sukunimi} ${o.etunimet}")).orElse {

@@ -33,7 +33,7 @@ class OmatTiedotServlet(implicit val application: KoskiApplication) extends ApiS
 
   private def mkEditorModel(valtuutusKoodi: String): Either[HttpStatus, EditorModel] = {
     val (huoltajaWarnings, huollettava) = huoltajaService.findHuollettavaOppija(valtuutusKoodi, koskiRoot) match {
-      case Left(status) => (List(status), None)
+      case Left(status) => (status, None)
       case Right(oppija) => (Nil, oppija)
     }
 
