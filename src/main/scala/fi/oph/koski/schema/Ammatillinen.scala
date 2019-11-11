@@ -396,6 +396,30 @@ case class MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
 ) extends OsittaisenAmmatillisenTutkinnonOsanSuoritus with MahdollisestiToimipisteellinen
 
+@Description("Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja")
+@Title("Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja")
+@OnlyWhen("../../suoritustapa/koodiarvo", "reformi")
+case class OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus(
+  koulutusmoduuli: JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsa,
+  @Description("Tieto siitä mihin tutkinnon osan ryhmään osan suoritus (Ammatilliset tutkinnon osat, Yhteiset tutkinnon osat, Vapaavalintaiset tutkinnon osat, Tutkintoa yksilöllisesti laajentavat tutkinnon osat) kuuluu")
+  @KoodistoKoodiarvo("1") // Ammatilliset tutkinnon osat
+  tutkinnonOsanRyhmä: Option[Koodistokoodiviite] = Some(Koodistokoodiviite("1", "ammatillisentutkinnonosanryhma")),
+  override val osasuoritukset: Option[List[YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus]] = None,
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
+) extends JatkoOpintovalmiuksiaTukevienOpintojenSuoritus with OsittaisenAmmatillisenTutkinnonOsanSuoritus
+
+@Description("Korkeakouluopintoja")
+@Title("Korkeakouluopintoja")
+@OnlyWhen("../../suoritustapa/koodiarvo", "reformi")
+case class OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus(
+  koulutusmoduuli: KorkeakouluopinnotTutkinnonOsa,
+  @Description("Tieto siitä mihin tutkinnon osan ryhmään osan suoritus (Ammatilliset tutkinnon osat, Yhteiset tutkinnon osat, Vapaavalintaiset tutkinnon osat, Tutkintoa yksilöllisesti laajentavat tutkinnon osat) kuuluu")
+  @KoodistoKoodiarvo("1") // Ammatilliset tutkinnon osat
+  tutkinnonOsanRyhmä: Option[Koodistokoodiviite] = Some(Koodistokoodiviite("1", "ammatillisentutkinnonosanryhma")),
+  override val osasuoritukset: Option[List[KorkeakouluopintojenSuoritus]] = None,
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
+) extends KorkeakouluopintoSuoritus with OsittaisenAmmatillisenTutkinnonOsanSuoritus
+
 @Description("Ammatilliseen tutkintoon liittyvän yhteisen tutkinnonosan suoritus")
 @Title("Yhteisen tutkinnon osan suoritus")
 case class YhteisenAmmatillisenTutkinnonOsanSuoritus(
@@ -442,29 +466,32 @@ case class MuunAmmatillisenTutkinnonOsanSuoritus(
 @Description("Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja")
 @Title("Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja")
 @OnlyWhen("../../suoritustapa/koodiarvo", "reformi")
-case class JatkoOpintovalmiuksiaTukevienOpintojenSuoritus(
+case class AmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus(
   koulutusmoduuli: JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsa,
   @Description("Tieto siitä mihin tutkinnon osan ryhmään osan suoritus (Ammatilliset tutkinnon osat, Yhteiset tutkinnon osat, Vapaavalintaiset tutkinnon osat, Tutkintoa yksilöllisesti laajentavat tutkinnon osat) kuuluu")
   @KoodistoKoodiarvo("1") // Ammatilliset tutkinnon osat
   tutkinnonOsanRyhmä: Option[Koodistokoodiviite] = Some(Koodistokoodiviite("1", "ammatillisentutkinnonosanryhma")),
   override val osasuoritukset: Option[List[YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus]] = None,
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
-) extends ValinnanMahdollisuus
-
+) extends JatkoOpintovalmiuksiaTukevienOpintojenSuoritus with AmmatillisenTutkinnonOsanSuoritus
 
 @Description("Korkeakouluopintoja")
 @Title("Korkeakouluopintoja")
 @OnlyWhen("../../suoritustapa/koodiarvo", "reformi")
-case class KorkeakouluopintoSuoritus(
+case class AmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus(
   koulutusmoduuli: KorkeakouluopinnotTutkinnonOsa,
   @Description("Tieto siitä mihin tutkinnon osan ryhmään osan suoritus (Ammatilliset tutkinnon osat, Yhteiset tutkinnon osat, Vapaavalintaiset tutkinnon osat, Tutkintoa yksilöllisesti laajentavat tutkinnon osat) kuuluu")
   @KoodistoKoodiarvo("1") // Ammatilliset tutkinnon osat
   tutkinnonOsanRyhmä: Option[Koodistokoodiviite] = Some(Koodistokoodiviite("1", "ammatillisentutkinnonosanryhma")),
   override val osasuoritukset: Option[List[KorkeakouluopintojenSuoritus]] = None,
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosa", koodistoUri = "suorituksentyyppi")
-) extends ValinnanMahdollisuus
+) extends KorkeakouluopintoSuoritus with AmmatillisenTutkinnonOsanSuoritus
 
-trait ValinnanMahdollisuus extends AmmatillisenTutkinnonOsanSuoritus with Välisuoritus with Vahvistukseton with Toimipisteetön {
+trait JatkoOpintovalmiuksiaTukevienOpintojenSuoritus extends ValinnanMahdollisuus
+
+trait KorkeakouluopintoSuoritus extends ValinnanMahdollisuus
+
+trait ValinnanMahdollisuus extends TutkinnonOsanSuoritus with Välisuoritus with Vahvistukseton with Toimipisteetön {
   override def tutkinto: Option[AmmatillinenTutkintoKoulutus] = None
   override def näyttö: Option[Näyttö] = None
   override def toimipiste: Option[OrganisaatioWithOid] = None

@@ -149,6 +149,7 @@ object AmmatillinenExampleData {
   lazy val winnovaLähdejärjestelmäId = LähdejärjestelmäId(Some("12345"), lähdeWinnova)
   lazy val primusLähdejärjestelmäId = LähdejärjestelmäId(Some("12345"), lähdePrimus)
   lazy val arvosanaViisi = Koodistokoodiviite("5", Some("5"), "arviointiasteikkoammatillinen15", Some(1))
+  lazy val arviointiViisi = Some(List(arviointi(arvosanaViisi)))
   lazy val hyväksytty: Koodistokoodiviite = Koodistokoodiviite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1))
   lazy val tunnustettu: OsaamisenTunnustaminen = OsaamisenTunnustaminen(
     Some(MuunAmmatillisenTutkinnonOsanSuoritus(
@@ -514,7 +515,7 @@ object AmmatillinenExampleData {
     toinenTutkintonimike = true,
     osaamisala = Some(List(Osaamisalajakso(Koodistokoodiviite("1525", Some("Autokorinkorjauksen osaamisala"), "osaamisala", None)))),
     toinenOsaamisala = false,
-    suoritustapa = suoritustapaOps,
+    suoritustapa = suoritustapaReformi,
     järjestämismuodot = Some(List(Järjestämismuotojakso(date(2012, 9, 1), None, järjestämismuotoOppilaitos))),
     suorituskieli = suomenKieli,
     vahvistus = vahvistus(date(2016, 5, 31), stadinAmmattiopisto, Some(helsinki)),
@@ -562,7 +563,42 @@ object AmmatillinenExampleData {
             lisätiedot = Some(List(lisätietoOsaamistavoitteet))
           )
         ))
-      )
+      ),
+      OsittaisenAmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus(
+        koulutusmoduuli = KorkeakouluopinnotTutkinnonOsa(),
+        osasuoritukset = Some(List(AmmatillinenReforminMukainenPerustutkintoExample.saksa.copy(arviointi = Some(List(arviointiKiitettävä)))))
+      ),
+      OsittaisenAmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus(koulutusmoduuli = JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsa(), osasuoritukset = Some(List(
+        LukioOpintojenSuoritus(
+          koulutusmoduuli = PaikallinenLukionOpinto(
+            tunniste = PaikallinenKoodi("MAA", "Maantieto"),
+            kuvaus = "Lukion maantiedon oppimäärä",
+            perusteenDiaarinumero = "33/011/2003"
+          ),
+          arviointi = Some(List(arviointiKiitettävä)),
+          tyyppi = Koodistokoodiviite(koodiarvo = "ammatillinenlukionopintoja", koodistoUri = "suorituksentyyppi")
+        ),
+        LukioOpintojenSuoritus(
+          koulutusmoduuli = PaikallinenLukionOpinto(
+            tunniste = PaikallinenKoodi("EN", "Englanti"),
+            kuvaus = "Englannin kurssi",
+            laajuus = Some(LaajuusOsaamispisteissä(3)),
+            perusteenDiaarinumero = "33/011/2003"
+          ),
+          arviointi = Some(List(arviointiKiitettävä)),
+          tyyppi = Koodistokoodiviite(koodiarvo = "ammatillinenlukionopintoja", koodistoUri = "suorituksentyyppi")
+        ),
+        YhteisenTutkinnonOsanOsaAlueenSuoritus(
+          koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("TVT", "ammatillisenoppiaineet"),
+            pakollinen = true, Some(LaajuusOsaamispisteissä(3))
+          ),
+          arviointi = Some(List(arviointiKiitettävä)),
+        ),
+        MuidenOpintovalmiuksiaTukevienOpintojenSuoritus(
+          PaikallinenOpintovalmiuksiaTukevaOpinto(PaikallinenKoodi("htm", "Hoitotarpeen määrittäminen"), "Hoitotarpeen määrittäminen"),
+          arviointi = Some(List(arviointiKiitettävä)),
+        )
+      )))
     )),
     todistuksellaNäkyvätLisätiedot = Some("Suorittaa toista osaamisalaa")
   )

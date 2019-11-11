@@ -23,6 +23,7 @@ object ExamplesAmmatillinen {
     Example("ammatillinen - reformin mukainen erikoisammattitutkinto", "Automekaanikon erikoisammattitutkinto", ReforminMukainenErikoisammattitutkintoExample.example),
     Example("ammatillinen - erikoisammattitutkinto", "Erikoisammattitutkinnon ja näyttötutkintoon valmistavan koulutuksen suorittanut opiskelija", AmmattitutkintoExample.erikoisammattitutkinto),
     Example("ammatillinen - tutkinnonosa", "Yhden tutkinnon osan suorittanut oppija", AmmatillinenPerustutkintoExample.osittainenPerustutkinto),
+    Example("ammatillinen - reformi useita tutkinnon osia", "Useita tutkinnon osia suorittanut oppija", AmmatillinenOsittainenReformi.laaja),
     Example("ammatillinen - tunnustettu", "Tutkinnon osa tunnustettu aiemmin suoritetusta paikallisen tutkinnon osasta", AmmatillinenPerustutkintoExample.tunnustettuPaikallinenTutkinnonOsa),
     Example("ammatillinen - sisältyy toisen oppilaitoksen opiskeluoikeuteen", "Toisen oppilaitoksen opiskeluoikeuteen sisältyvä opiskeluoikeus", AmmatillinenPerustutkintoExample.sisältyvä, statusCode = 400),
     Example("ammatillinen - lisätiedot", "Opiskeluoikeus, johon liitetty kaikki mahdolliset opiskeluoikeuden lisätiedot", LisätiedotExample.example)
@@ -220,9 +221,9 @@ object AmmatillinenPerustutkintoExample {
 
 object AmmatillinenReforminMukainenPerustutkintoExample {
   lazy val tutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351301", Some("Autoalan perustutkinto"), "koulutus", None), Some("OPH-2762-2017"))
-  lazy val korkeakouluopintoSuoritus = KorkeakouluopintoSuoritus(koulutusmoduuli = KorkeakouluopinnotTutkinnonOsa(), osasuoritukset = Some(List(saksa)))
+  lazy val korkeakouluopintoSuoritus = AmmatillisenTutkinnonOsanKorkeakouluopintoSuoritus(koulutusmoduuli = KorkeakouluopinnotTutkinnonOsa(), osasuoritukset = Some(List(saksa)))
 
-  lazy val jatkoOpintovalmiuksiaTukevienOpintojenSuoritus = JatkoOpintovalmiuksiaTukevienOpintojenSuoritus(koulutusmoduuli = JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsa(), osasuoritukset = Some(List(
+  lazy val jatkoOpintovalmiuksiaTukevienOpintojenSuoritus = AmmatillisenTutkinnonOsanJatkoOpintovalmiuksiaTukevienOpintojenSuoritus(koulutusmoduuli = JatkoOpintovalmiuksiaTukeviaOpintojaTutkinnonOsa(), osasuoritukset = Some(List(
     LukioOpintojenSuoritus(
       koulutusmoduuli = PaikallinenLukionOpinto(
         tunniste = PaikallinenKoodi("MAA", "Maantieto"),
@@ -320,8 +321,6 @@ object AmmatillinenReforminMukainenPerustutkintoExample {
     koulutusmoduuli = KorkeakouluopintojenTutkinnonOsaaPienempiKokonaisuus(PaikallinenKoodi("de", finnish("Saksa")), "Saksa", Some(LaajuusOsaamispisteissä(5))),
     arviointi = arviointiViisi
   )
-
-  lazy val arviointiViisi = Some(List(arviointi(arvosanaViisi)))
 
   lazy val example = Oppija(
     exampleHenkilö,
@@ -576,6 +575,17 @@ object AmmatillinenOldExamples {
       ))),
       vahvistus = vahvistusPaikkakunnallaJaValinnaisellaTittelillä(date(2016, 1, 9), stadinAmmattiopisto, helsinki),
       tutkinnonOsanRyhmä = ammatillisetTutkinnonOsat
+    )
+  )
+}
+
+object AmmatillinenOsittainenReformi {
+  lazy val laaja = Oppija(
+    Henkilö.withOid("1.2.246.562.24.00000000001"),
+    List(
+      AmmatillinenPerustutkintoExample.osittainenPerustutkintoOpiskeluoikeus.copy(
+        suoritukset = List(AmmatillinenExampleData.ammatillisenTutkinnonOsittainenAutoalanSuoritus)
+      )
     )
   )
 }

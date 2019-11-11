@@ -111,4 +111,17 @@ object AmmatillinenRaporttiUtils {
       !isYhteinenTutkinnonOsa(osasuoritus) &&
       !tutkinnonOsanRyhmä(osasuoritus, "3", "4")
   }
+
+  val isAmmatillinenJatkovalmiuksiaTukeviaOpintoja: (ROsasuoritusRow, Seq[ROsasuoritusRow]) => Boolean = (osasuoritus, osasuoritukset) => {
+    isAmmatillisenLukioOpintoja(osasuoritus) ||
+    isAmmatillinenMuitaOpintoValmiuksiaTukeviaOpintoja(osasuoritus) ||
+    isAmmatillisenYhteisenTutkinnonOsienOsaalue(osasuoritus, osasuoritukset)
+  }
+
+  val isArvioinniton: ROsasuoritusRow => Boolean = osasuoritus => isAnyOf(osasuoritus,
+    isAmmatillisenLukioOpintoja,
+    isAmmatillisenKorkeakouluOpintoja,
+    isAmmatillinenMuitaOpintoValmiuksiaTukeviaOpintoja,
+    isAmmatillisenTutkinnonOsanOsaalue
+  )
 }
