@@ -35,6 +35,7 @@ trait Suoritus {
     osasuoritusLista ++ osasuoritusLista.flatMap(_.rekursiivisetOsasuoritukset)
   }
   def viimeisinArviointi = arviointi.toList.flatten.lastOption
+  def viimeisinArvosana: Option[String] = viimeisinArviointi.map(_.arvosana.koodiarvo)
   def arvosanaKirjaimin: LocalizedString = viimeisinArviointi.map(_.arvosanaKirjaimin).getOrElse(unlocalized(""))
   def arvosanaNumeroin: Option[LocalizedString] = viimeisinArviointi.flatMap(_.arvosanaNumeroin)
   def sanallinenArviointi: Option[LocalizedString] = viimeisinArviointi.flatMap {
