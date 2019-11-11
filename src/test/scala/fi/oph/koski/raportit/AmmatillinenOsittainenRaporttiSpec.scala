@@ -36,7 +36,7 @@ class AmmatillinenOsittainenRaporttiSpec extends FreeSpec with Matchers with Rap
       }
       "Tutkinnon osiat jotka arvioitu jälkeen aikavälin, ei oteta mukaan raportille" in {
         val rows = testiHenkilöRaporttiRows(alku = date(2014, 1, 1), loppu = date(2014, 12, 31), osasuoritustenAikarajaus = true)
-        rows.map(_.suoritettujenOpintojenYhteislaajuus) should equal(List(80))
+        rows.map(_.suoritettujenOpintojenYhteislaajuus) should equal(List(91))
       }
     }
   }
@@ -61,18 +61,18 @@ class AmmatillinenOsittainenRaporttiSpec extends FreeSpec with Matchers with Rap
     osaamisalat = Some("1525"),
     tutkintonimikkeet = "Autokorinkorjaaja",
     päätasonSuorituksenNimi = "Luonto- ja ympäristöalan perustutkinto",
-    päätasonSuorituksenSuoritustapa = "Ammatillinen perustutkinto",
+    päätasonSuorituksenSuoritustapa = "Reformin mukainen näyttö",
     päätasonSuoritustenTilat = Some("Valmis"),
     opiskeluoikeudenAlkamispäivä = Some(date(2012, 9, 1)),
     viimeisinOpiskeluoikeudenTila = Some("valmistunut"),
     viimeisinOpiskeluoikeudenTilaAikajaksonLopussa = "lasna",
     opintojenRahoitukset = "",
-    suoritettujenOpintojenYhteislaajuus = 100.0,
+    suoritettujenOpintojenYhteislaajuus = 111.0,
     valmiitAmmatillisetTutkinnonOsatLkm = 3,
     näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm = 1,
     tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm = 2,
     rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm = 1,
-    suoritetutAmmatillisetTutkinnonOsatYhteislaajuus = 78.0,
+    suoritetutAmmatillisetTutkinnonOsatYhteislaajuus = 89.0,
     valmiitYhteistenTutkinnonOsatLkm = 2,
     pakollisetYhteistenTutkinnonOsienOsaalueidenLkm = 8,
     valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm = 1,

@@ -24,9 +24,9 @@ object AmmatillinenOsittainenRaportti {
 
     val osasuoritukset = if (osasuoritustenAikarajaus) unFilteredosasuoritukset.filter(arvioituAikavälillä(alku, loppu)) else unFilteredosasuoritukset
 
+    val ammatillisetTutkinnonOsat = osasuoritukset.filter(os => isAmmatillisenTutkinnonOsa(os) | isAmmatillisenKorkeakouluOpintoja(os) | isAmmatillinenJatkovalmiuksiaTukeviaOpintoja(os, unFilteredosasuoritukset))
     val yhteistenTutkinnonOsienSuoritukset = osasuoritukset.filter(isYhteinenTutkinnonOsa)
-    val yhteistenTutkinnonOsienOsaSuoritukset = osasuoritukset.filter(isAmmatillisenTutkinnonOsanOsaalue)
-    val muutSuoritukset = osasuoritukset.filter(isAmmatillisenTutkinnonOsa)
+    val yhteistenTutkinnonOsienOsaSuoritukset = osasuoritukset.filter(isYhteinenTutkinnonOsanOsaalue(_, unFilteredosasuoritukset))
     val vapaastiValittavatTutkinnonOsat = osasuoritukset.filter(tutkinnonOsanRyhmä(_, "3"))
     val tutkintoaYksilöllisestiLaajentavatTutkinnonOsa = osasuoritukset.filter(tutkinnonOsanRyhmä(_, "4"))
 
@@ -56,12 +56,12 @@ object AmmatillinenOsittainenRaportti {
       viimeisinOpiskeluoikeudenTila = opiskeluoikeus.viimeisinTila,
       viimeisinOpiskeluoikeudenTilaAikajaksonLopussa = aikajaksot.last.tila,
       opintojenRahoitukset = aikajaksot.flatMap(_.opintojenRahoitus).sorted.distinct.mkString(","),
-      suoritettujenOpintojenYhteislaajuus = yhteislaajuus(muutSuoritukset.union(yhteistenTutkinnonOsienOsaSuoritukset).filter(_.suoritettu)),
-      valmiitAmmatillisetTutkinnonOsatLkm = muutSuoritukset.filter(isVahvistusPäivällinen).size,
-      näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm = näytöt(muutSuoritukset.filter(isVahvistusPäivällinen)).size,
-      tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm = tunnustetut(muutSuoritukset.filter(isVahvistusPäivällinen)).size,
-      rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm = rahoituksenPiirissä(tunnustetut(muutSuoritukset)).size,
-      suoritetutAmmatillisetTutkinnonOsatYhteislaajuus = yhteislaajuus(muutSuoritukset),
+      suoritettujenOpintojenYhteislaajuus = yhteislaajuus(ammatillisetTutkinnonOsat.union(yhteistenTutkinnonOsienOsaSuoritukset).filter(_.suoritettu)),
+      valmiitAmmatillisetTutkinnonOsatLkm = ammatillisetTutkinnonOsat.filter(isVahvistusPäivällinen).size,
+      näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm = näytöt(ammatillisetTutkinnonOsat.filter(isVahvistusPäivällinen)).size,
+      tunnustettujaAmmatillisessaValmiistaTutkinnonOsistaLkm = tunnustetut(ammatillisetTutkinnonOsat.filter(isVahvistusPäivällinen)).size,
+      rahoituksenPiirissäAmmatillisistaTunnustetuistaTutkinnonOsistaLkm = rahoituksenPiirissä(tunnustetut(ammatillisetTutkinnonOsat)).size,
+      suoritetutAmmatillisetTutkinnonOsatYhteislaajuus = yhteislaajuus(ammatillisetTutkinnonOsat),
       valmiitYhteistenTutkinnonOsatLkm = yhteistenTutkinnonOsienSuoritukset.filter(isVahvistusPäivällinen).size,
       pakollisetYhteistenTutkinnonOsienOsaalueidenLkm = pakolliset(yhteistenTutkinnonOsienOsaSuoritukset).size,
       valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm = valinnaiset(yhteistenTutkinnonOsienOsaSuoritukset).size,

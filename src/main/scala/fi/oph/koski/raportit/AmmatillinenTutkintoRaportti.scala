@@ -25,7 +25,7 @@ object AmmatillinenTutkintoRaportti {
 
     val osasuoritukset = if (osasuoritustenAikarajaus) unfilteredOsasuoritukset.filter(arvioituAikavälillä(alku, loppu)) else unfilteredOsasuoritukset
 
-    val ammatillisetTutkinnonOsatJaOsasuoritukset = ammatillisetTutkinnonOsatJaOsasuorituksetFrom(osasuoritukset)
+    val ammatillisetTutkinnonOsatJaOsasuoritukset = osasuoritukset.filter(os => isAmmatillisenTutkinnonOsa(os) | isAmmatillisenKorkeakouluOpintoja(os) | isAmmatillinenJatkovalmiuksiaTukeviaOpintoja(os, osasuoritukset))
     val valmiitAmmatillisetTutkinnonOsatJaOsasuoritukset = ammatillisetTutkinnonOsatJaOsasuoritukset.filter(os => isVahvistusPäivällinen(os) || isArvioinniton(os) || sisältyyVahvistettuunPäätasonSuoritukseen(os, päätasonSuoritukset))
     val yhteisetTutkinnonOsat = osasuoritukset.filter(isYhteinenTutkinnonOsa)
     val yhteistenTutkinnonOsienOsaAlueet = osasuoritukset.filter(isYhteinenTutkinnonOsanOsaalue(_, unfilteredOsasuoritukset))
@@ -83,24 +83,6 @@ object AmmatillinenTutkintoRaportti {
       valmiitVapaaValintaisetTutkinnonOsatLkm = vapaastiValittavatTutkinnonOsat.filter(isVahvistusPäivällinen).size,
       valmiitTutkintoaYksilöllisestiLaajentavatTutkinnonOsatLkm = tutkintoaYksilöllisestiLaajentavatTutkinnonOsat.filter(isVahvistusPäivällinen).size
     )
-  }
-
-  private val isArvioinniton: ROsasuoritusRow => Boolean = osasuoritus => isAnyOf(osasuoritus,
-    isAmmatillisenLukioOpintoja,
-    isAmmatillisenKorkeakouluOpintoja,
-    isAmmatillinenMuitaOpintoValmiuksiaTukeviaOpintoja,
-    isAmmatillisenTutkinnonOsanOsaalue
-  )
-
-  private def ammatillisetTutkinnonOsatJaOsasuorituksetFrom(osasuoritukset: Seq[ROsasuoritusRow]) = {
-    osasuoritukset.filter(os =>
-      isAnyOf(os,
-        isAmmatillisenLukioOpintoja,
-        isAmmatillisenKorkeakouluOpintoja,
-        isAmmatillinenMuitaOpintoValmiuksiaTukeviaOpintoja,
-        isAmmatillisenTutkinnonOsa,
-        isAmmatillisenYhteisenTutkinnonOsienOsaalue(_, osasuoritukset)
-      ))
   }
 
   def filename(request: AmmatillinenSuoritusTiedotRequest): String =
