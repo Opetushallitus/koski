@@ -35,7 +35,6 @@ case class TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(
   osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]] = None,
   koulutussopimukset: Option[List[Koulutussopimusjakso]] = None,
   @Description("Tutkinnon osaa pienempään kokonaisuuteen kuuluvien osasuoritusten suoritukset")
-  @MinItems(1)
   override val osasuoritukset: Option[List[TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvanSuorituksenOsasuoritus]],
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus")
