@@ -592,11 +592,11 @@ object AmmatillinenExampleData {
           koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(Koodistokoodiviite("TVT", "ammatillisenoppiaineet"),
             pakollinen = true, Some(LaajuusOsaamispisteissä(3))
           ),
-          arviointi = Some(List(arviointiKiitettävä)),
+          arviointi = Some(List(arviointiKiitettävä))
         ),
         MuidenOpintovalmiuksiaTukevienOpintojenSuoritus(
           PaikallinenOpintovalmiuksiaTukevaOpinto(PaikallinenKoodi("htm", "Hoitotarpeen määrittäminen"), "Hoitotarpeen määrittäminen"),
-          arviointi = Some(List(arviointiKiitettävä)),
+          arviointi = Some(List(arviointiKiitettävä))
         )
       )))
     )),
