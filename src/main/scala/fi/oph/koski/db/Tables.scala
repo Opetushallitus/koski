@@ -1,5 +1,6 @@
 package fi.oph.koski.db
 
+import java.lang.System.currentTimeMillis
 import java.sql.{Date, Timestamp}
 import java.time.LocalDateTime
 
@@ -151,8 +152,8 @@ object Tables {
 
   class FaileLoginAttemptTable(tag: Tag) extends Table[FailedLoginAttemptRow] (tag, "failed_login_attempt") {
     val username = column[String]("username", O.PrimaryKey)
-    val time = column[Timestamp]("time", O.PrimaryKey)
-    val count = column[Int]("count", O.PrimaryKey)
+    val time = column[Timestamp]("time")
+    val count = column[Int]("count")
 
     def * = (username, time, count) <> (FailedLoginAttemptRow.tupled, FailedLoginAttemptRow.unapply)
   }
@@ -276,11 +277,11 @@ case class SchedulerRow(name: String, nextFireTime: Timestamp, context: Option[J
   def running: Boolean = status == 1
 }
 
-case class PerustiedotSyncRow(id: Int = 0, opiskeluoikeusId: Int, data: JValue, upsert: Boolean, aikaleima: Timestamp = new Timestamp(System.currentTimeMillis))
+case class PerustiedotSyncRow(id: Int = 0, opiskeluoikeusId: Int, data: JValue, upsert: Boolean, aikaleima: Timestamp = new Timestamp(currentTimeMillis))
 
 case class OppilaitosIPOsoiteRow(username: String, ip: String)
 
-case class ValtuudetSessionRow(oppijaOid: String, sessionId: String, userId: String, code: Option[String] = None, accessToken: Option[String] = None, aikaleima: Timestamp = new Timestamp(System.currentTimeMillis))
+case class ValtuudetSessionRow(oppijaOid: String, sessionId: String, userId: String, code: Option[String] = None, accessToken: Option[String] = None, aikaleima: Timestamp = new Timestamp(currentTimeMillis))
 
 case class PreferenceRow(organisaatioOid: String, `type`: String, key: String, value: JValue)
 
@@ -288,6 +289,8 @@ case class SuoritusjakoRow(id: Long, secret: String, oppijaOid: String, suoritus
 
 case class MyDataJakoRow(asiakas: String, oppijaOid: String, voimassaAsti: Date, aikaleima: Timestamp)
 
-case class FailedLoginAttemptRow(username: String, time: Timestamp, count: Int)
+case class FailedLoginAttemptRow(username: String, time: Timestamp, count: Int) {
+  val localTime: LocalDateTime = time.toLocalDateTime
+}
 
 case class OidVersionTimestamp(oid: String, versionumero: Int, aikaleima: LocalDateTime)

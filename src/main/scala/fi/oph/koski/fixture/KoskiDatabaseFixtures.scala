@@ -41,7 +41,8 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
       Preferences.delete,
       Tables.PerustiedotSync.delete,
       Tables.SuoritusJako.delete,
-      Tables.ValtuudetSession.delete
+      Tables.ValtuudetSession.delete,
+      Tables.FailedLoginAttempt.delete
     ) ++ MockOppijat.defaultOppijat.map(application.henkilöCache.addHenkilöAction)))
 
     application.perustiedotIndexer.deleteByOppijaOids(henkilöOids)

@@ -2,41 +2,116 @@ package fi.oph.koski.koskiuser
 
 import java.sql.Timestamp
 import java.sql.Timestamp.{valueOf => timestamp}
-import java.time.LocalDateTime
 import java.time.LocalDateTime.now
+import java.time.{Clock, Duration, LocalDateTime}
 
 import com.typesafe.config.Config
 import fi.oph.koski.db.KoskiDatabase.DB
-import fi.oph.koski.db.{KoskiDatabaseMethods, Tables, _}
+import fi.oph.koski.db.Tables.FailedLoginAttempt
+import fi.oph.koski.db.{KoskiDatabaseMethods, _}
+import fi.oph.koski.koskiuser.IgnoredPostgresErrors.{duplicateKey, lockNotAvailable, transactionAborted}
+import fi.oph.koski.log.Logging
+import org.postgresql.util.PSQLException
+import slick.dbio.Effect.Write
+import slick.jdbc.GetResult
+import slick.sql.SqlAction
 
-import scala.math.pow
-
-class BasicAuthSecurity(val db: DB, config: Config) extends DatabaseExecutionContext with KoskiDatabaseMethods {
+class BasicAuthSecurity(val db: DB, config: Config, clock: Clock = Clock.systemDefaultZone) extends DatabaseExecutionContext with KoskiDatabaseMethods with Logging {
   import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 
-  private val initialDelay = config.getDuration("authenticationFailed.initialDelay")
-  private val resetPeriod = config.getDuration("authenticationFailed.resetAfter")
+  private val initialDelay: Duration = config.getDuration("authenticationFailed.initialDelay")
+  private val resetDuration: Duration = config.getDuration("authenticationFailed.resetAfter")
 
-  def getLoginBlocked(username: String): Option[LocalDateTime] = {
-    val attempt: Option[FailedLoginAttemptRow] = runDbSync(Tables.FailedLoginAttempt.filter(r => r.username === username && r.time >= resetTime).result.headOption)
-    val nextAttempt: Option[LocalDateTime] = attempt.map(a => a.time.toLocalDateTime.plus(initialDelay.multipliedBy(pow(2, a.count - 1).toInt)))
-    nextAttempt.filter(_.isAfter(now()))
+  def isBlacklisted(username: String, loginSuccessful: Boolean): Boolean = {
+    try {
+      checkAndUpdateBlacklist(username, loginSuccessful)
+    } catch {
+      case e: PSQLException if List(duplicateKey, lockNotAvailable, transactionAborted).contains(e.getSQLState) =>
+        val msg = s"Got error while trying to add login block: ${e.getMessage}: ${e.getSQLState}"
+        if (loginSuccessful) logger.error(e)(msg)
+        else logger.warn(msg)
+        // These failures occur when trying to update username's blacklist, so it's safe to assume user is blacklisted
+        true
+    }
   }
 
-  def loginFailed(username: String): Unit = {
+  private def checkAndUpdateBlacklist(username: String, loginSuccessful: Boolean) = {
     runDbSync((for {
-      row <- Tables.FailedLoginAttempt.filter(r => r.username === username).map(r => (r.time, r.count)).forUpdate.result
-      _ <- if (row.nonEmpty) {
-        val (time, count) = row.head
-        Tables.FailedLoginAttempt.filter(_.username === username).update(FailedLoginAttemptRow(username, timestamp(now()), if (time.toLocalDateTime.isBefore(now.minusHours(24))) 1 else count + 1))
-      } else {
-        Tables.FailedLoginAttempt += FailedLoginAttemptRow(username, timestamp(now()), 1)
+      alreadyBlocked <- getLoginBlockedAction(username)
+      blockedUntil <- alreadyBlocked match {
+        case existingBlock@Some(b) if isBlockActive(b) =>
+          logger.warn(s"Too many failed login attempts (${b.count}) for username $username, blocking login until ${blockedUntil(b)}")
+          DBIO.successful(true)
+        case _ =>
+          if (loginSuccessful) {
+            for {
+              _ <-  DBIO.sequenceOption(delete(alreadyBlocked))
+            } yield false
+          } else {
+            for {
+              block <- selectBlockForUpdate(username)
+              newBlock <- block match {
+                case Some(b) if isBlockActive(b) => DBIO.successful(block)
+                case _ => upsertLoginBlock(username, block)
+              }
+            } yield true
+          }
       }
-    } yield ()).transactionally)
+    } yield blockedUntil).transactionally)
   }
 
-  def loginSuccess(username: String): Unit =
-    runDbSync(Tables.FailedLoginAttempt.filter(_.username === username).delete)
+  private def delete(block: Option[FailedLoginAttemptRow]): Option[DBIOAction[Int, NoStream, Write]] =
+    block.map(b => FailedLoginAttempt.filter(_.username === b.username).delete.asTry.map(_.toOption.getOrElse(0)))
 
-  private def resetTime = Timestamp.valueOf(now().minus(resetPeriod))
+  private def upsertLoginBlock(username: String, blocked: Option[FailedLoginAttemptRow]) = {
+    for {
+      newRow <- DBIO.successful(blocked.map(updatedRow).getOrElse(failedLoginAttemptRow(username)))
+      _ <- DBIO.successful(logger.info(s"Upserting new login block row $newRow, ${blockedUntil(newRow)}"))
+      _ <- FailedLoginAttempt.insertOrUpdate(newRow)
+    } yield Some(newRow)
+  }
+
+  def getLoginBlockedAction(username: String): SqlAction[Option[FailedLoginAttemptRow], NoStream, _] =
+    FailedLoginAttempt.filter(_.username === username).result.headOption
+
+  def isBlockActive(failedLogin: FailedLoginAttemptRow): Boolean = {
+    blockedUntil(failedLogin).isAfter(now(clock))
+  }
+
+  def blockedUntil(failedLogin: FailedLoginAttemptRow): LocalDateTime = {
+    val resetTime: LocalDateTime = failedLogin.localTime.plus(resetDuration)
+    val block: LocalDateTime = failedLogin.localTime.plus(initialDelay.multipliedBy(Math.pow(2, failedLogin.count - 1).toInt))
+    if (block.isAfter(resetTime)) {
+      resetTime
+    } else {
+      block
+    }
+  }
+
+  implicit private val getResult = GetResult[FailedLoginAttemptRow](r => FailedLoginAttemptRow(r.<<,r.<<,r.<<))
+  private def selectBlockForUpdate(username: String) =
+    sql"""
+      SELECT username, time, count
+      FROM failed_login_attempt
+      WHERE username = $username
+      FOR UPDATE NOWAIT
+    """.as[FailedLoginAttemptRow].headOption
+
+  private def updatedRow(row: FailedLoginAttemptRow): FailedLoginAttemptRow =
+    if (row.localTime.isBefore(resetTime)) {
+      logger.info(s"Login blacklist reset for user ${row.username}")
+      row.copy(count = 1, time = timestamp(now(clock)))
+    } else {
+      row.copy(count = row.count + 1)
+    }
+
+  private def resetTime = now(clock).minus(resetDuration)
+  private def failedLoginAttemptRow(username: String) =
+    FailedLoginAttemptRow(username = username, time = Timestamp.valueOf(LocalDateTime.now(clock)), count = 1)
+}
+
+object IgnoredPostgresErrors {
+  val duplicateKey = "23505"
+  val lockNotAvailable = "55P03"
+  val transactionAborted = "25P02"
 }

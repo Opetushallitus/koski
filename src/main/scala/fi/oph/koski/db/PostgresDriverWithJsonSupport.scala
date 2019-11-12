@@ -3,13 +3,16 @@ package fi.oph.koski.db
 import com.github.tminglei.slickpg._
 import com.github.tminglei.slickpg.str.PgStringSupport
 import org.json4s.JValue
-import slick.jdbc.PostgresProfile
+import slick.basic.Capability
+import slick.jdbc.{JdbcCapabilities, PostgresProfile}
 
 trait PostgresDriverWithJsonSupport extends PostgresProfile with PgJson4sSupport with PgArraySupport with array.PgArrayJdbcTypes with PgSearchSupport with PgStringSupport {
   /// for json support
   override val pgjson = "jsonb"
   type DOCType = JValue
   override val jsonMethods = org.json4s.jackson.JsonMethods
+  override protected def computeCapabilities: Set[Capability] =
+    super.computeCapabilities + JdbcCapabilities.insertOrUpdate
 
   trait API extends super.API with JsonImplicits with SearchAssistants with SearchImplicits with ArrayImplicits with PgStringImplicits {
     implicit val strListTypeMapper = new SimpleArrayJdbcType[String]("text").to(_.toList)

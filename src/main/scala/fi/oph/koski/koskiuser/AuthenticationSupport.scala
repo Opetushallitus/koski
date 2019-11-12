@@ -1,13 +1,13 @@
 package fi.oph.koski.koskiuser
 
 import java.util.UUID
-import javax.servlet.http.HttpServletRequest
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.log._
 import fi.oph.koski.servlet.KoskiBaseServlet
 import fi.oph.koski.sso.SSOSupport
 import fi.oph.koski.userdirectory.{DirectoryClient, Password}
+import javax.servlet.http.HttpServletRequest
 import org.scalatra.auth.strategy.BasicAuthStrategy
 
 trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Logging {
@@ -80,35 +80,21 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
   override def koskiSessionOption: Option[KoskiSession] =
     getUser.toOption.map(createSession)
 
-  def tryLogin(username: String, password: String): Either[HttpStatus, AuthenticationUser] = {
-    // prevent brute-force login by blocking incorrect logins with progressive delay
-    lazy val loginFail = Left(KoskiErrorCategory.unauthorized.loginFail(s"Sisäänkirjautuminen epäonnistui, väärä käyttäjätunnus tai salasana."))
-    val blockedUntil = application.basicAuthSecurity.getLoginBlocked(username)
-    if (blockedUntil.isDefined) {
-      logger(LogUserContext(request)).warn(s"Too many failed login attempts for username ${username}, blocking login until ${blockedUntil.get}")
-      return loginFail
-    }
+  private lazy val loginFail = Left(KoskiErrorCategory.unauthorized.loginFail(s"Sisäänkirjautuminen epäonnistui, väärä käyttäjätunnus tai salasana."))
 
-    val loginResult: Boolean = application.directoryClient.authenticate(username, Password(password))
-    val result = if (!loginResult) {
-      logger(LogUserContext(request)).info(s"Login failed with username ${username}")
+  def tryLogin(username: String, password: String): Either[HttpStatus, AuthenticationUser] = {
+    val loginSuccesful = application.directoryClient.authenticate(username, Password(password))
+    val blocked = application.basicAuthSecurity.isBlacklisted(username, loginSuccesful)
+    if (!loginSuccesful || blocked) {
       loginFail
     } else {
       DirectoryClientLogin.findUser(application.directoryClient, request, username) match {
-        case Some(user) =>
-          Right(user)
+        case Some(user) => Right(user)
         case None =>
           logger.warn(s"User not found, after successful authentication: $username")
           loginFail
       }
     }
-
-    if (result.isLeft) {
-      application.basicAuthSecurity.loginFailed(username)
-    } else {
-      application.basicAuthSecurity.loginSuccess(username)
-    }
-    result
   }
 
   def requireVirkailijaOrPalvelukäyttäjä = {
