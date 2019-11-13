@@ -87,10 +87,7 @@
        <cve>CVE-2019-11358</cve>
     </suppress>
     <suppress>
-      <notes><![CDATA[
-      file name: poi-3.17.jar
-      ]]></notes>
-      <packageUrl regex="true">^pkg:maven/org\.apache\.poi/poi@.*$</packageUrl>
+      <cpe>cpe:/:apache:poi:3.17</cpe>
       <cve>CVE-2019-12415</cve>
     </suppress>
 </suppressions>
