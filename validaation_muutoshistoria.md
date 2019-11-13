@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 13.11.2019
+- Nuorten perusopetuksen oppimäärän valinnaisille kieli oppiaineille sallitaan arvosana S jos laajuus on 2 vuosiviikkotuntia tai yli
+
 ## 14.10.2019
 - Nuorten perusopetuksen oppimäärän oppiaineelle Opinto-ohjaus (OP) sallitaan aina arvosana O
 
