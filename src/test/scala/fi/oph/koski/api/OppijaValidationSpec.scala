@@ -2,6 +2,7 @@ package fi.oph.koski.api
 
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
+import java.util.Base64
 
 import fi.oph.koski.documentation.AmmatillinenExampleData.{stadinAmmattiopisto, _}
 import fi.oph.koski.documentation.ExampleData.{helsinki, vahvistus}
@@ -10,7 +11,7 @@ import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.opiskeluoikeudenOidKonflikti
 import fi.oph.koski.http.ErrorMatcher.exact
-import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
+import fi.oph.koski.http.{BasicAuthentication, ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -47,9 +48,18 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
       }
     }
 
+    "Epäkelpo base64-merkki käyttäjätunnuksessa" - {
+      "palautetaan HTTP 401 virhe"  in  {
+        val badAuthHeader = Map("Authorization" -> "Basic x")
+        put("api/oppija", body = JsonMethods.compact(makeOppija(defaultHenkilö, List(defaultOpiskeluoikeus))), headers = badAuthHeader ++ jsonContent) {
+          verifyResponseStatus(401, KoskiErrorCategory.unauthorized.notAuthenticated())
+        }
+      }
+    }
+
     "Epäkelpo JSON-dokumentti" - {
       "palautetaan HTTP 400 virhe"  in (request("api/oppija", "application/json", "not json", "put")
-        (verifyResponseStatus(400, KoskiErrorCategory.badRequest.format.json("Epäkelpo JSON-dokumentti"))))
+      (verifyResponseStatus(400, KoskiErrorCategory.badRequest.format.json("Epäkelpo JSON-dokumentti"))))
     }
 
     "Väärä Content-Type" - {

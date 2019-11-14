@@ -10,6 +10,8 @@ import fi.oph.koski.userdirectory.{DirectoryClient, Password}
 import javax.servlet.http.HttpServletRequest
 import org.scalatra.auth.strategy.BasicAuthStrategy
 
+import scala.util.Try
+
 trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Logging {
   val realm = "Koski"
 
@@ -36,7 +38,9 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
         def userFromBasicAuth: Either[HttpStatus, AuthenticationUser] = {
           val basicAuthRequest = new BasicAuthStrategy.BasicAuthRequest(request)
           if (basicAuthRequest.isBasicAuth && basicAuthRequest.providesAuth) {
-            tryLogin(basicAuthRequest.username, basicAuthRequest.password)
+            Try(tryLogin(basicAuthRequest.username, basicAuthRequest.password)).toEither.left.map { e =>
+              KoskiErrorCategory.unauthorized.notAuthenticated()
+            }.joinRight
           } else {
             Left(KoskiErrorCategory.unauthorized.notAuthenticated())
           }
