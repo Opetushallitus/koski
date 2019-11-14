@@ -290,7 +290,7 @@ case class SuoritusjakoRow(id: Long, secret: String, oppijaOid: String, suoritus
 case class MyDataJakoRow(asiakas: String, oppijaOid: String, voimassaAsti: Date, aikaleima: Timestamp)
 
 case class FailedLoginAttemptRow(username: String, time: Timestamp, count: Int) {
-  val localTime: LocalDateTime = time.toLocalDateTime
+  val firstFailTime: LocalDateTime = time.toLocalDateTime
 }
 
 case class OidVersionTimestamp(oid: String, versionumero: Int, aikaleima: LocalDateTime)

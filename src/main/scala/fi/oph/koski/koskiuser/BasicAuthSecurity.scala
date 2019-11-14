@@ -2,7 +2,6 @@ package fi.oph.koski.koskiuser
 
 import java.sql.Timestamp
 import java.sql.Timestamp.{valueOf => timestamp}
-import java.time.LocalDateTime.now
 import java.time.{Clock, Duration, LocalDateTime}
 
 import com.typesafe.config.Config
@@ -39,8 +38,8 @@ class BasicAuthSecurity(val db: DB, config: Config, clock: Clock = Clock.systemD
     runDbSync((for {
       alreadyBlocked <- getLoginBlockedAction(username)
       blockedUntil <- alreadyBlocked match {
-        case existingBlock@Some(b) if isBlockActive(b) =>
-          logger.warn(s"Too many failed login attempts (${b.count}) for username $username, blocking login until ${blockedUntil(b)}")
+        case Some(block) if isBlockActive(block) =>
+          logger.warn(s"Too many failed login attempts (${block.count}) for username $username, blocking login until ${blockedUntil(block)}")
           DBIO.successful(true)
         case _ =>
           if (loginSuccessful) {
@@ -75,12 +74,12 @@ class BasicAuthSecurity(val db: DB, config: Config, clock: Clock = Clock.systemD
     FailedLoginAttempt.filter(_.username === username).result.headOption
 
   def isBlockActive(failedLogin: FailedLoginAttemptRow): Boolean = {
-    blockedUntil(failedLogin).isAfter(now(clock))
+    blockedUntil(failedLogin).isAfter(LocalDateTime.now(clock))
   }
 
   def blockedUntil(failedLogin: FailedLoginAttemptRow): LocalDateTime = {
-    val resetTime: LocalDateTime = failedLogin.localTime.plus(resetDuration)
-    val block: LocalDateTime = failedLogin.localTime.plus(initialDelay.multipliedBy(Math.pow(2, failedLogin.count - 1).toInt))
+    val resetTime: LocalDateTime = failedLogin.firstFailTime.plus(resetDuration)
+    val block: LocalDateTime = failedLogin.firstFailTime.plus(initialDelay.multipliedBy(Math.pow(2, failedLogin.count - 1).toInt))
     if (block.isAfter(resetTime)) {
       resetTime
     } else {
@@ -97,17 +96,18 @@ class BasicAuthSecurity(val db: DB, config: Config, clock: Clock = Clock.systemD
       FOR UPDATE NOWAIT
     """.as[FailedLoginAttemptRow].headOption
 
-  private def updatedRow(row: FailedLoginAttemptRow): FailedLoginAttemptRow =
-    if (row.localTime.isBefore(resetTime)) {
+  private def updatedRow(row: FailedLoginAttemptRow): FailedLoginAttemptRow = {
+    val now = LocalDateTime.now(clock)
+    if (row.firstFailTime.plus(resetDuration).isBefore(now)) {
       logger.info(s"Login blacklist reset for user ${row.username}")
-      row.copy(count = 1, time = timestamp(now(clock)))
+      row.copy(count = 1, time = timestamp(now))
     } else {
       row.copy(count = row.count + 1)
     }
+  }
 
-  private def resetTime = now(clock).minus(resetDuration)
   private def failedLoginAttemptRow(username: String) =
-    FailedLoginAttemptRow(username = username, time = Timestamp.valueOf(LocalDateTime.now(clock)), count = 1)
+    FailedLoginAttemptRow(username = username, time = timestamp(LocalDateTime.now(clock)), count = 1)
 }
 
 object IgnoredPostgresErrors {

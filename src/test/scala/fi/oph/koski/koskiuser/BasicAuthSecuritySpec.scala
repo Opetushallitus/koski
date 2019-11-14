@@ -7,17 +7,16 @@ import java.time.temporal.Temporal
 
 import com.typesafe.config.ConfigFactory
 import fi.oph.koski.api.DatabaseTestMethods
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.{FailedLoginAttemptRow, Tables}
-import org.scalatest.{BeforeAndAfterEach, FreeSpec, Matchers}
+import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, FreeSpec, Matchers}
 
 import scala.collection.JavaConverters._
 
-class BasicAuthSecuritySpec extends FreeSpec with Matchers with BeforeAndAfterEach with DatabaseTestMethods {
+class BasicAuthSecuritySpec extends FreeSpec with Matchers with BeforeAndAfterAll with BeforeAndAfterEach with DatabaseTestMethods {
   private val kalle = "kalle"
-  override def afterEach = {
-    import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-    runDbSync(Tables.FailedLoginAttempt.filter(_.username === kalle).delete)
-  }
+  override def beforeEach = deleteFailedLogin
+  override def afterAll = deleteFailedLogin
 
   "BasicAuthSecurity" - {
     "blacklists failed login" in {
@@ -66,7 +65,7 @@ class BasicAuthSecuritySpec extends FreeSpec with Matchers with BeforeAndAfterEa
       val resetClock = Clock.offset(clockNow, resetDuration)
       val resetFail = failLogin(resetClock)
       resetFail.row.count should equal(1)
-      val difference = Math.abs(secondsBetween(resetFail.row.localTime, LocalDateTime.now(resetClock))).toInt
+      val difference = Math.abs(secondsBetween(resetFail.row.firstFailTime, LocalDateTime.now(resetClock))).toInt
       difference should be <= 1
     }
   }
@@ -91,6 +90,9 @@ class BasicAuthSecuritySpec extends FreeSpec with Matchers with BeforeAndAfterEa
   private def security(clock: Clock = clockNow) = new BasicAuthSecurity(db, config, clock)
   private def clockFromDateTime(blockedUntil: LocalDateTime) =
     Clock.fixed(blockedUntil.atZone(systemZone).toInstant, systemZone)
+
+  private def deleteFailedLogin =
+    runDbSync(Tables.FailedLoginAttempt.filter(_.username === kalle).delete)
 
   case class Fail(row: FailedLoginAttemptRow) {
     def blockedUntil = security().blockedUntil(row)
