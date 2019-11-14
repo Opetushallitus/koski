@@ -1,0 +1,585 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+  <SOAP-ENV:Header/>
+  <SOAP-ENV:Body>
+    <virtaluku:OpiskelijanKaikkiTiedotResponse xmlns:virtaluku="http://tietovaranto.csc.fi/luku">
+      <virta:Virta xmlns:virta="urn:mace:funet.fi:virta/2015/09/01">
+        <virta:Opiskelija avain="420666">
+          <virta:Henkilotunnus>141199-418X</virta:Henkilotunnus>
+          <virta:Opiskeluoikeudet>
+            <virta:Opiskeluoikeus opiskelijaAvain="420666" avain="199612">
+              <virta:AlkuPvm>2019-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-07-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2019-08-02</virta:AlkuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>1</virta:Tyyppi>
+              <virta:Myontaja>02473</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02535</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Jakso koulutusmoduulitunniste="AMA_AMM Matkailun koulutus">
+                <virta:AlkuPvm>2019-08-01</virta:AlkuPvm>
+                <virta:Koulutuskoodi>681102</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>205</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+                <virta:Rahoituslahde>2</virta:Rahoituslahde>
+                <virta:Luokittelu>3</virta:Luokittelu>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">12</virta:Koulutusala>
+              <virta:SiirtoOpiskelija>
+                <virta:SiirtoPvm>2017-01-02</virta:SiirtoPvm>
+                <virta:Lukukausikertyma>
+                  <virta:IlmoittautuminenTila>1</virta:IlmoittautuminenTila>
+                  <virta:Maara>4</virta:Maara>
+                </virta:Lukukausikertyma>
+                <virta:Lukukausikertyma>
+                  <virta:IlmoittautuminenTila>2</virta:IlmoittautuminenTila>
+                  <virta:Maara>1</virta:Maara>
+                </virta:Lukukausikertyma>
+              </virta:SiirtoOpiskelija>
+              <virta:Laajuus>
+                <virta:Opintopiste>210</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
+          </virta:Opiskeluoikeudet>
+          <virta:LukukausiIlmoittautumiset>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="199612" opiskelijaAvain="420666">
+              <virta:Myontaja>02473</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2019-08-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2019-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2019-12-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="199612" opiskelijaAvain="420666">
+              <virta:Myontaja>02473</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2020-01-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2020-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-07-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+          </virta:LukukausiIlmoittautumiset>
+          <virta:Opintosuoritukset>
+            <virta:Opintosuoritus opiskeluoikeusAvain="199612" opiskelijaAvain="420666" koulutusmoduulitunniste="AMM18KY AM00BK78" avain="775142">
+              <virta:SuoritusPvm>2019-03-07</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02473</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02535</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Opiskelutaidot</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">12</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2019-08-01</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="199612" opiskelijaAvain="420666" koulutusmoduulitunniste="AMM18KY AM00BK80" avain="775148">
+              <virta:SuoritusPvm>2017-12-17</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02473</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02535</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Luovuus ja heittäytyminen matkailualalla</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">12</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2019-08-01</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="199612" opiskelijaAvain="420666" koulutusmoduulitunniste="AMM18KY AM00BK81" avain="776293">
+              <virta:SuoritusPvm>2017-05-09</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02473</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02535</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Projektitoiminnan perusteet, Älykkäät ratkaisut</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">12</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2019-08-01</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="199612" opiskelijaAvain="420666" koulutusmoduulitunniste="AMM18KY AM00BK82" avain="775149">
+              <virta:SuoritusPvm>2018-03-14</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02473</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02535</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Matkailun perusteet</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">12</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2019-08-01</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="199612" opiskelijaAvain="420666" koulutusmoduulitunniste="AMM18KY AM00BK86" avain="775150">
+              <virta:SuoritusPvm>2018-01-05</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02473</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02535</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Liiketoimintaosaamisen perusteet</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">12</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2019-08-01</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="199612" opiskelijaAvain="420666" koulutusmoduulitunniste="AMM18KY AM00BK87" avain="776294">
+              <virta:SuoritusPvm>2017-04-27</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02473</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02535</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Matkailun toimintaympäristöt</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">12</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2019-08-01</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="199612" opiskelijaAvain="420666" koulutusmoduulitunniste="AMM18KY AM00BK88" avain="775151">
+              <virta:SuoritusPvm>2019-05-14</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02473</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02535</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Tourism English</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">12</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2019-08-01</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="199612" opiskelijaAvain="420666" koulutusmoduulitunniste="AMM18KY AM00BK92" avain="775152">
+              <virta:SuoritusPvm>2018-04-04</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02473</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02535</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Matkailumarkkinointi</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">12</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2019-08-01</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="199612" opiskelijaAvain="420666" koulutusmoduulitunniste="AMM18KY AM00BK93" avain="775153">
+              <virta:SuoritusPvm>2019-05-13</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02473</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02535</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Matkailuyrityksen toiminta</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">12</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2019-08-01</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="199612" opiskelijaAvain="420666" koulutusmoduulitunniste="AMM18KY AM00BK94" avain="775154">
+              <virta:SuoritusPvm>2018-06-04</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02473</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02535</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Matkailun kuljetus-, myynti- ja varauspalvelut</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">12</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2019-08-01</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="199612" opiskelijaAvain="420666" koulutusmoduulitunniste="AMM18KY AM00BK95" avain="775155">
+              <virta:SuoritusPvm>2019-05-06</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02473</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02535</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Matkailun strateginen suunnittelu ja kansainvälistäminen</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">12</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2019-08-01</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="199612" opiskelijaAvain="420666" koulutusmoduulitunniste="AMM18KY AM00BK97" avain="775156">
+              <virta:SuoritusPvm>2019-05-13</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02473</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02535</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Kannattava matkailuyritys</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">12</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2019-08-01</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="199612" opiskelijaAvain="420666" koulutusmoduulitunniste="AMM18KY AM00BK98" avain="753160">
+              <virta:SuoritusPvm>2019-03-13</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02473</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02535</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Matkailupalveluiden myyntiprosessit</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">12</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2019-08-01</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="199612" opiskelijaAvain="420666" koulutusmoduulitunniste="AMMK123" avain="77561">
+              <virta:SuoritusPvm>2017-11-08</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02473</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02535</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Matkailuyrityksen vastuullinen johtaminen</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">12</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2019-08-01</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="199612" opiskelijaAvain="420666" koulutusmoduulitunniste="AMKTI21" avain="7602">
+              <virta:SuoritusPvm>2019-10-28</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02473</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Tutkimus- ja kehittämistoiminta</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">12</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:TKILaajuusMuu>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:TKILaajuusMuu>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="199612" opiskelijaAvain="420666" koulutusmoduulitunniste="AMM18KY AM00BL01-3001 768103" avain="768103">
+              <virta:SuoritusPvm>2019-06-15</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>1.5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02473</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Opinnäytetyön analyysitehtävä</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">12</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="199612" opiskelijaAvain="420666" koulutusmoduulitunniste="AMM18KY AM00BL01-3001 768106" avain="768106">
+              <virta:SuoritusPvm>2019-10-28</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02473</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Tilasto-osuus</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">12</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="199612" opiskelijaAvain="420666" koulutusmoduulitunniste="AMM18KY I-41306-XAMK" avain="776295">
+              <virta:SuoritusPvm>2017-05-10</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02473</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02535</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Kestävyys, laatu ja turvallisuus</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">12</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2019-08-01</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="199612" opiskelijaAvain="420666" koulutusmoduulitunniste="AMM18KY AM00BL10" avain="775169">
+              <virta:SuoritusPvm>2019-01-22</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>10</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02473</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02535</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Harjoittelu 1: teema, palvelutuotanto</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">12</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2019-08-01</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+              <virta:Luokittelu>7</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="199612" opiskelijaAvain="420666" koulutusmoduulitunniste="AMM18KY I-41306-Espanja 1" avain="775166">
+              <virta:SuoritusPvm>2017-12-13</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02473</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02535</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Espanja 1</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">12</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2019-08-02</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="199612" opiskelijaAvain="420666" koulutusmoduulitunniste="AMM18KY I-41306-Espanja 2" avain="775167">
+              <virta:SuoritusPvm>2018-05-09</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02473</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02535</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Espanja 2</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">12</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2019-08-02</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="199612" opiskelijaAvain="420666" koulutusmoduulitunniste="AMM18KY I-41306-Ranska 1" avain="776296">
+              <virta:SuoritusPvm>2017-04-26</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02473</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02535</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Russian 1</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">12</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2019-08-02</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="199612" opiskelijaAvain="420666" koulutusmoduulitunniste="AMM18KY I-41306-Ruotsin tukiopinnot" avain="775168">
+              <virta:SuoritusPvm>2017-12-19</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02473</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>3</virta:Rooli>
+                <virta:Koodi>02535</virta:Koodi>
+                <virta:Osuus>1</virta:Osuus>
+              </virta:Organisaatio>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Ruotsin tukiopinnot</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">12</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:HyvaksilukuPvm>2019-08-02</virta:HyvaksilukuPvm>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+          </virta:Opintosuoritukset>
+        </virta:Opiskelija>
+      </virta:Virta>
+    </virtaluku:OpiskelijanKaikkiTiedotResponse>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
