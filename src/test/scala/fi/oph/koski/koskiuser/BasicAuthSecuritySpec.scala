@@ -14,7 +14,7 @@ import scala.collection.JavaConverters._
 
 class BasicAuthSecuritySpec extends FreeSpec with Matchers with BeforeAndAfterEach with DatabaseTestMethods {
   private val kalle = "kalle"
-  override def beforeEach = {
+  override def afterEach = {
     import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
     runDbSync(Tables.FailedLoginAttempt.filter(_.username === kalle).delete)
   }
