@@ -57,15 +57,6 @@ describe('Huollettavien tiedot', function () {
             verifyOppija('Opintoni', 'Aini Aikuisopiskelija\ns. 28.5.1998', ['Jyväskylän normaalikoulu'], ['Aikuisten perusopetuksen oppimäärä (2008—2016, valmistunut)'])
           })
         })
-
-        describe('Sivun uudelleenlataaminen ei aiheuta virhettä', function () {
-          before(click(omattiedot.huollettavantiedotButton), wait.until(huollettavantiedot.isVisible), click(huollettavantiedot.tarkasteleHuollettavasiTietojaButton), wait.until(omattiedot.huollettavanTiedotNäkyvissä))
-          before(reloadTestFrame, wait.forMilliseconds(function() { return isElementVisible(S('.oppija-content'))}))
-          it('ei aiheuta virhettä', function () {
-            expect(isElementVisible(S('.varoitus'))).to.equal(false)
-            verifyOppija('Huollettavani opinnot', 'Ynjevi Ylioppilaslukiolainen\ns. 8.6.1998', ['Jyväskylän normaalikoulu'], ['Ylioppilastutkinto', 'Lukion oppimäärä (2012—2016, valmistunut)'])
-          })
-        })
       })
     })
   })
