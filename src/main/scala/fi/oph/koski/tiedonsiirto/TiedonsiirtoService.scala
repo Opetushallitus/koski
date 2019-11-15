@@ -31,7 +31,6 @@ import org.json4s.{JValue, _}
 
 class TiedonsiirtoService(
   index: KoskiElasticSearchIndex,
-  mailer: TiedonsiirtoFailureMailer,
   organisaatioRepository: OrganisaatioRepository,
   henkilöRepository: HenkilöRepository,
   koodistoviitePalvelu: KoodistoViitePalvelu,
@@ -179,10 +178,6 @@ class TiedonsiirtoService(
 
       if (error.isDefined) {
         tiedonSiirtoVirheet.inc
-        oppilaitokset.toList.flatten match {
-          case Nil => mailer.sendMail(org, None)
-          case orgs => orgs.foreach(o => mailer.sendMail(org, Some(o)))
-        }
       }
     })
   }

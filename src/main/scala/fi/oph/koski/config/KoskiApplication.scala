@@ -25,7 +25,7 @@ import fi.oph.koski.raportointikanta.{Public, RaportointiDatabase, Raportointika
 import fi.oph.koski.schedule.{KoskiScheduledTasks, PerustiedotSyncScheduler}
 import fi.oph.koski.sso.KoskiSessionRepository
 import fi.oph.koski.suoritusjako.{SuoritusjakoRepository, SuoritusjakoService}
-import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoFailureMailer, TiedonsiirtoService}
+import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoService}
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.userdirectory.DirectoryClient
 import fi.oph.koski.validation.KoskiValidator
@@ -90,13 +90,12 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val sessionTimeout = SessionTimeout(config)
   lazy val koskiSessionRepository = new KoskiSessionRepository(masterDatabase.db, sessionTimeout)
   lazy val fixtureCreator = new FixtureCreator(this)
-  lazy val tiedonsiirtoService = new TiedonsiirtoService(koskiElasticSearchIndex, new TiedonsiirtoFailureMailer(this), organisaatioRepository, henkilöRepository, koodistoViitePalvelu, hetu)
+  lazy val tiedonsiirtoService = new TiedonsiirtoService(koskiElasticSearchIndex, organisaatioRepository, henkilöRepository, koodistoViitePalvelu, hetu)
   lazy val healthCheck = HealthCheck(this)
   lazy val scheduledTasks = new KoskiScheduledTasks(this)
   lazy val ipService = new IPService(masterDatabase.db)
   lazy val prometheusRepository = PrometheusRepository(config)
   lazy val koskiPulssi = KoskiPulssi(this)
-  lazy val basicAuthSecurity = new BasicAuthSecurity(masterDatabase.db, config)
   lazy val localizationRepository = LocalizationRepository(config)
   lazy val oidGenerator = OidGenerator(config)
   lazy val hetu = new Hetu(config.getBoolean("acceptSyntheticHetus"))

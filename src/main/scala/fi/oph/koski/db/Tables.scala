@@ -149,14 +149,6 @@ object Tables {
     def * = (asiakas, oppijaOid, voimassaAsti, aikaleima) <> (MyDataJakoRow.tupled, MyDataJakoRow.unapply)
   }
 
-  class FaileLoginAttemptTable(tag: Tag) extends Table[FailedLoginAttemptRow] (tag, "failed_login_attempt") {
-    val username = column[String]("username", O.PrimaryKey)
-    val time = column[Timestamp]("time", O.PrimaryKey)
-    val count = column[Int]("count", O.PrimaryKey)
-
-    def * = (username, time, count) <> (FailedLoginAttemptRow.tupled, FailedLoginAttemptRow.unapply)
-  }
-
   class SchedulerTable(tag: Tag) extends Table[SchedulerRow](tag, "scheduler") {
     val name = column[String]("name", O.PrimaryKey)
     val nextFireTime = column[Timestamp]("nextfiretime")
@@ -199,8 +191,6 @@ object Tables {
   val SuoritusJako = TableQuery[SuoritusjakoTable]
 
   val MyDataJako = TableQuery[MyDataJakoTable]
-
-  val FailedLoginAttempt = TableQuery[FaileLoginAttemptTable]
 
   val CasServiceTicketSessions = TableQuery[CasServiceTicketSessionTable]
 
@@ -287,7 +277,5 @@ case class PreferenceRow(organisaatioOid: String, `type`: String, key: String, v
 case class SuoritusjakoRow(id: Long, secret: String, oppijaOid: String, suoritusIds: JValue, voimassaAsti: Date, aikaleima: Timestamp)
 
 case class MyDataJakoRow(asiakas: String, oppijaOid: String, voimassaAsti: Date, aikaleima: Timestamp)
-
-case class FailedLoginAttemptRow(username: String, time: Timestamp, count: Int)
 
 case class OidVersionTimestamp(oid: String, versionumero: Int, aikaleima: LocalDateTime)

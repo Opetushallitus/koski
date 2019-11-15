@@ -278,7 +278,6 @@ Organisaatiopalvelu | [palvelukortti](https://confluence.csc.fi/display/OPHPALV/
 Koodistopalvelu | [palvelukortti](https://confluence.csc.fi/display/OPHPALV/Koodistopalvelu) [api][koodisto-api] [hallinta-ui](https://testi.virkailija.opintopolku.fi/koodisto-ui/html/index.html#/etusivu) | Koodien ja metatietojen haku ja luonti.
 Lokalisointipalvelu | [palvelukortti](https://confluence.csc.fi/display/OPHPALV/Lokalisointipalvelu) | Palveluiden käyttöliittymien käännöksien hallinta.
 ePerusteet | [palvelukortti](https://confluence.csc.fi/display/OPHPALV/ePerusteet) [api][eperusteet-api] [api-dokumentaatio](https://confluence.csc.fi/display/oppija/ePerusteet+julkiset+rajapinnat) [ui](https://eperusteet.opintopolku.fi/) | Tuotantoversio
-Viestintä / Ryhmäsähköposti | [palvelukortti](https://confluence.csc.fi/pages/viewpage.action?pageId=65923709) [api](https://testi.virkailija.opintopolku.fi/ryhmasahkoposti-service/swagger/index.html) | Ilmoituksen lähetys tiedonsiirtovirheen tapahtuessa.
 
 ### Kolmansien osapuolten palvelut
 
