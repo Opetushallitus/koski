@@ -29,7 +29,7 @@ case class ValviraOpiskeluoikeus(
   oppilaitos: Oppilaitos,
   tila: Opiskeluoikeusjaksot,
   suoritukset: List[AmmatillisenTutkinnonSuoritus],
-  alkamispäivä: Option[LocalDate],
+  alkamispäivä: LocalDate,
   päättymispäivä: Option[LocalDate]
 )
 
@@ -37,7 +37,7 @@ case class Opiskeluoikeusjaksot(opiskeluoikeusjaksot: List[Opiskeluoikeusjakso])
 
 case class Oppilaitos(
   oid: String,
-  oppilaitosNumero: Option[Koodistokoodiviite],
+  oppilaitosnumero: Option[Koodistokoodiviite],
   nimi: Option[LocalizedString]
 )
 

@@ -1,5 +1,7 @@
 package fi.oph.koski.valvira
 
+import java.time.LocalDate
+
 import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethodsAmmatillinen}
 import fi.oph.koski.documentation.AmmatillinenExampleData
 import fi.oph.koski.henkilo.MockOppijat
@@ -12,6 +14,18 @@ import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 class ValviraSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with Matchers with BeforeAndAfterAll {
 
   "ValviraSpec" - {
+    "Yhdistää datat taulun sarakkeista jsoniin" - {
+      "päättymispäivä" in {
+       getHetu(MockOppijat.ammattilainen.hetu.get) {
+          parseValviraOppija.opiskeluoikeudet.head.päättymispäivä should equal(Some(LocalDate.of(2016, 5, 31)))
+       }
+      }
+      "serialisoituu kun päättymispäivää ei ole" in {
+        getHetu(MockOppijat.amis.hetu.get) {
+          parseValviraOppija.opiskeluoikeudet.head.päättymispäivä should equal(None)
+        }
+      }
+    }
     "Kutsuminen vaatii VALVIRA-käyttöoikeuden" in {
       getHetu(MockOppijat.amis.hetu.get, user = MockUsers.luovutuspalveluKäyttäjä) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden())

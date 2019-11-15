@@ -1,6 +1,6 @@
 package fi.oph.koski.valvira
 
-import java.sql.Timestamp
+import java.sql.{Date, Timestamp}
 
 import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
@@ -23,10 +23,10 @@ class ValviraRepository(val db: DB) extends DatabaseExecutionContext with KoskiD
       OpiskeluOikeudet
         .filter(_.oppijaOid inSet oppijaOids)
         .filter(_.data.+>("suoritukset").@>(parseJson(s"""[{"tyyppi":{"koodiarvo":"ammatillinentutkinto"}}]""")))
-        .map(r => (r.data, r.aikaleima, r.versionumero))
+        .map(r => (r.data, r.aikaleima, r.versionumero, r.alkamispäivä, r.päättymispäivä))
         .result
     )
-      .map(mergeAikaleimaAndVersionumero)
+      .map(mergeJson)
       .map(onlyAmmatillisenTutkinnonSuoritukset)
       .map(JsonSerializer.extract[ValviraOpiskeluoikeus](_, ignoreExtras = true))
   } match {
@@ -35,10 +35,13 @@ class ValviraRepository(val db: DB) extends DatabaseExecutionContext with KoskiD
     case _ => Left(KoskiErrorCategory.internalError())
   }
 
-  private def mergeAikaleimaAndVersionumero(t: (JValue, Timestamp, Int)) = {
-    val (json, timestamp, versionumero) = t
-    json.merge(parseJson(s"""{"aikaleima":"${timestamp.toLocalDateTime}","versionumero":"$versionumero"}"""))
+  private def mergeJson(t: (JValue, Timestamp, Int, Date, Option[Date])) = {
+    val (json, timestamp, versionumero, alkamispäivä, päättymispäivä) = t
+    json.merge(parseJson(s"""{"aikaleima":"${timestamp.toLocalDateTime}","versionumero":"$versionumero","alkamispäivä":"${alkamispäivä.toLocalDate}"${päättymispäiväIfDefined(päättymispäivä)}}"""))
   }
+
+  private def päättymispäiväIfDefined(päättymispäivä: Option[Date]) =
+    päättymispäivä.map(d => s""","päättymispäivä":"${d.toLocalDate}"""").getOrElse("")
 
   private def onlyAmmatillisenTutkinnonSuoritukset(json: JValue): JValue = {
     json.transformField { case ("suoritukset", suoritukset) =>
