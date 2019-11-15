@@ -8,6 +8,10 @@
 
    background-color: @color-white;
 
+    a {
+      text-decoration: underline;
+    }
+
   .header {
     display: flex;
     height: @element-header-height;
@@ -29,19 +33,21 @@
     .lang {
       font-weight: 900;
       cursor: pointer;
-      margin-right: 8.1%;
+      margin: auto;
 
       @media @media-phone {
         margin-right: auto;
       }
+
+      text-decoration: underline;
     }
 
     .title {
       display: flex;
-      margin-left: 8.1%;
       align-items: center;
       font-size: 24px;
       font-weight: bold;
+      margin: auto;
       @media @media-phone {
         margin: auto;
       }
@@ -78,11 +84,16 @@
 
   }
   .acceptance-container {
-    margin-left: 8.1%;
     color: @color-black;
+    margin-bottom: 64px;
 
     @media @media-phone {
-      margin: 0 5%;
+      margin: 0 5% 64px 5%;
+    }
+
+    @media @media-full {
+      max-width: 730px;
+      margin: 0 auto 64px auto;
     }
 
     h1 {
@@ -117,15 +128,14 @@
 
     .acceptance-success-box {
       border: 1px @color-link-blue solid;
-      width: 53.7%;
-      margin-bottom: 100px;
-      padding: 35px 5% 50px 10.9%;
+      padding: 35px 10% 50px 10%;
 
       @media @media-phone {
-        width: 90%;
-        padding: 19px 6% 50px 7%;
-
         text-align: center;
+      }
+
+      @media @media-full {
+        max-width: 730px;
       }
 
       .acceptance-control-mydata {
@@ -172,9 +182,7 @@
 
     .acceptance-box {
       border: 1px @color-link-blue solid;
-      width: 50%;
-      margin-bottom: 64px;
-      padding: 20% 10%;
+      padding: 24px 5%;
 
       @media @media-phone {
         width: 100%;
@@ -183,20 +191,13 @@
       }
     }
 
-      .acceptance-title,
-      .acceptance-duration {
-        font-size: 16px;
+      .acceptance-title {
+        font-size: 14px;
         letter-spacing: 0.3px;
         text-align: left;
 
         @media @media-phone {
           font-size: 12px;
-        }
-
-        > p {
-          a {
-            text-decoration: underline;
-          }
         }
       }
 
@@ -223,7 +224,6 @@
         font-size: 15px;
         line-height: 1.38;
         text-align: left;
-        color: @color-tundora;
 
         ul {
           -webkit-padding-start: 24px;
@@ -250,11 +250,7 @@
           font-size: 14px;
           font-weight: bold;
           color: @color-link-blue;
-          margin-top: 8px;
-        }
-
-        .acceptance-return-button {
-          margin-top: 10px;;
+          margin: 16px 0;
         }
       }
 
@@ -273,6 +269,10 @@
 
         .koski-button {
           border: 2px solid @color-white;
+        }
+
+        .koski-button:focus {
+          background-color: @color-dark-blue;
         }
 
         .acceptance-button {
@@ -295,10 +295,20 @@
             font-size: 14px;
           }
 
+          @media @media-full {
+            margin: 16px 0;
+          }
+
           a {
             color: @color-white;
             line-height: 18px;
-            text-decoration: underline;
+            font-weight: bold;
+          }
+          a:focus {
+            -webkit-border-radius: 2px;
+            -moz-border-radius: 2px;
+            border-radius: 2px;
+            border: 2px @color-dark-blue solid;
           }
         }
       }
@@ -308,13 +318,12 @@
     display: flex;
     height: 112px;
     justify-content: space-between;
-    margin: 0 12% 124px 5.5%;
+    margin-bottom: 124px;
     border-top: 2px @color-link-blue solid;
     padding-top: 34px;
 
     @media @media-full {
       height: 154px;
-      width: 80%;
       justify-content: center;
     }
 

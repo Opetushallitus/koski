@@ -25,7 +25,7 @@ describe('MyData', function() {
       expect(mydata.getUserName()).equal('Dilbert Dippainssi')
     })
     it('Näytetään käyttäjälle syntymäaika', function() {
-      expect(mydata.getBirthDate()).equal('10.8.1969')
+      expect(mydata.getBirthDate()).equal('s. 10.8.1969')
     })
   })
 
