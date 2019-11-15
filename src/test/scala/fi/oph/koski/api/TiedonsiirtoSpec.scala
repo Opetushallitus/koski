@@ -2,7 +2,6 @@ package fi.oph.koski.api
 
 import fi.oph.koski.documentation.AmmatillinenExampleData.winnovaLähdejärjestelmäId
 import fi.oph.koski.documentation.ExamplesEsiopetus
-import fi.oph.koski.email.{Email, EmailContent, EmailRecipient, MockEmailSender}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.{asUusiOppija, eerola}
 import fi.oph.koski.http.KoskiErrorCategory
@@ -28,30 +27,6 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
           verifyResponseStatusOk()
         }
         verifyTiedonsiirtoLoki(helsinginKaupunkiPalvelukäyttäjä, Some(defaultHenkilö), Some(ExamplesTiedonsiirto.opiskeluoikeus), errorStored = false, dataStored = false, expectedLähdejärjestelmä = Some("winnova"))
-      }
-
-      "epäonnistuneesta tiedonsiirrosta tallennetaan kaikki tiedot ja lähetetään email" in {
-        MockEmailSender.checkMail
-        resetFixtures
-        putOpiskeluoikeus(ExamplesTiedonsiirto.opiskeluoikeus, henkilö = defaultHenkilö.copy(sukunimi = ""), headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
-          verifyResponseStatus(400, sukunimiPuuttuu)
-        }
-        verifyTiedonsiirtoLoki(helsinginKaupunkiPalvelukäyttäjä, Some(defaultHenkilö), Some(ExamplesTiedonsiirto.opiskeluoikeus), errorStored = true, dataStored = true, expectedLähdejärjestelmä = Some("winnova"))
-        val mails = MockEmailSender.checkMail
-        mails should equal(List(Email(
-          EmailContent(
-            "no-reply@opintopolku.fi",
-            "Virheellinen Koski-tiedonsiirto",
-            "<p>Automaattisessa tiedonsiirrossa tapahtui virhe.</p><p>Käykää ystävällisesti tarkistamassa tapahtuneet tiedonsiirrot osoitteessa: http://localhost:7021/koski/tiedonsiirrot/virheet</p>",
-            true),
-          List(EmailRecipient("stadinammattiopisto-admin@example.com")))))
-      }
-
-      "toisesta peräkkäisestä epäonnistuneesta tiedonsiirrosta ei lähetetä emailia" in {
-        putOpiskeluoikeus(ExamplesTiedonsiirto.opiskeluoikeus, henkilö = defaultHenkilö.copy(sukunimi = ""), headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
-          verifyResponseStatus(400, sukunimiPuuttuu)
-        }
-        MockEmailSender.checkMail.length should equal(0)
       }
 
       "epäkelvosta json viestistä tallennetaan vain virhetiedot ja data" in {

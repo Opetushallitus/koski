@@ -29,14 +29,6 @@ case class OppijanumeroRekisteriClient(config: Config) {
 
   def findKäyttäjäByOid(oid: String): Task[Option[KäyttäjäHenkilö]] = henkilöByOid(oid)(Http.parseJsonOptional[KäyttäjäHenkilö])
 
-  def findTyöSähköpostiosoitteet(organisaatioOid: String, käyttöikeusRyhmä: String): Task[List[String]] =
-    oidServiceHttp.post(uri"/oppijanumerorekisteri-service/s2s/henkilo/yhteystiedot", YhteystiedotHaku(List(organisaatioOid), List(käyttöikeusRyhmä)))(json4sEncoderOf[YhteystiedotHaku])(Http.parseJson[List[Yhteystiedot]])
-        .map(_.flatMap { yhteystiedot =>
-          yhteystiedot.yhteystiedotRyhma
-            .filter(työOsoite)
-            .flatMap(_.yhteystieto.find(_.yhteystietoTyyppi == "YHTEYSTIETO_SAHKOPOSTI").map(_.yhteystietoArvo))
-        })
-
   def findOppijatNoSlaveOids(oids: List[Oid]): Task[List[SuppeatOppijaHenkilöTiedot]] =
     findOnrOppijatByOids(oids).map(_.map(_.toSuppeaOppijaHenkilö(Nil)))
 
@@ -74,9 +66,6 @@ case class OppijanumeroRekisteriClient(config: Config) {
 
   private def complementWithSlaveOids(onrOppija: OppijaNumerorekisteriOppija): Task[LaajatOppijaHenkilöTiedot] =
     findSlaveOids(onrOppija.oidHenkilo).map(onrOppija.toOppijaHenkilö)
-
-  private def työOsoite(yhteystiedotRyhmä: YhteystiedotRyhmä): Boolean =
-    yhteystiedotRyhmä.ryhmaKuvaus == "yhteystietotyyppi2"
 }
 
 case class KäyttäjäHenkilö(oidHenkilo: String, sukunimi: String, etunimet: String, asiointiKieli: Option[Kieli])
@@ -150,11 +139,6 @@ case class OppijaNumerorekisteriOppija(
   )
 }
 case class UusiOppijaHenkilö(hetu: Option[String], sukunimi: String, etunimet: String, kutsumanimi: String, henkiloTyyppi: String = "OPPIJA")
-
-case class YhteystiedotHaku(organisaatioOids: List[String], kayttoOikeusRyhmaNimet: List[String], duplikaatti: Boolean = false, passivoitu: Boolean = false)
-case class Yhteystiedot(yhteystiedotRyhma: List[YhteystiedotRyhmä])
-case class YhteystiedotRyhmä(ryhmaKuvaus: String, yhteystieto: List[Yhteystieto])
-case class Yhteystieto(yhteystietoTyyppi: String, yhteystietoArvo: String)
 
 case class Kansalaisuus(kansalaisuusKoodi: String)
 case class Kieli(kieliKoodi: String)

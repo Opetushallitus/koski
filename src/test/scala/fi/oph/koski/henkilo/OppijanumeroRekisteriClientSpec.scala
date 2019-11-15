@@ -152,11 +152,6 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
       result.value should equal(expectedKäyttäjäHenkilö)
     }
 
-    "palauttaa sähköpostiosoitteet oid:n ja käyttöoikeusryhmän perusteella" in {
-      val result = mockClient.findTyöSähköpostiosoitteet(organisaatioOid, "KOSKI").run
-      result should contain only ("mikko.mallikas@suomi.fi")
-    }
-
     "palauttaa oppijahenkilön tiedot oid:n perusteella" in {
       val result = mockClient.findOppijaByOid(oid).run
       result.value should equal(expectedLaajatOppijaHenkilötiedot)
