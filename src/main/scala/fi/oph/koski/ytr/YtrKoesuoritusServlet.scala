@@ -28,7 +28,13 @@ class YtrKoesuoritusServlet(implicit val application: KoskiApplication) extends 
   }
 
   private def getOppija: Option[HenkilönTunnisteet] = if (isHuollettava) {
-    application.huoltajaService.getSelectedHuollettava(koskiSession.oid)
+    val huollettavaOppija = application.huoltajaService.getSelectedHuollettava(koskiSession.oid)
+    if (huollettavaOppija.isEmpty) {
+      logger.warn("Huollettavaa oppijaa ei löytynyt")
+    } else {
+      logger.debug(s"Tarkastetaan huollettavan oppijan koesuoritus access ${huollettavaOppija.get.oid}")
+    }
+    huollettavaOppija
   } else {
     application.henkilöRepository.findByOid(koskiSession.oid)
   }
