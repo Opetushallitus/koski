@@ -80,17 +80,11 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
   override def koskiSessionOption: Option[KoskiSession] =
     getUser.toOption.map(createSession)
 
-  def tryLogin(username: String, password: String): Either[HttpStatus, AuthenticationUser] = {
-    // prevent brute-force login by blocking incorrect logins with progressive delay
-    lazy val loginFail = Left(KoskiErrorCategory.unauthorized.loginFail(s"Sisäänkirjautuminen epäonnistui, väärä käyttäjätunnus tai salasana."))
-    val blockedUntil = application.basicAuthSecurity.getLoginBlocked(username)
-    if (blockedUntil.isDefined) {
-      logger(LogUserContext(request)).warn(s"Too many failed login attempts for username ${username}, blocking login until ${blockedUntil.get}")
-      return loginFail
-    }
+  private val loginFail = Left(KoskiErrorCategory.unauthorized.loginFail(s"Sisäänkirjautuminen epäonnistui, väärä käyttäjätunnus tai salasana."))
 
+  def tryLogin(username: String, password: String): Either[HttpStatus, AuthenticationUser] = {
     val loginResult: Boolean = application.directoryClient.authenticate(username, Password(password))
-    val result = if (!loginResult) {
+    if (!loginResult) {
       logger(LogUserContext(request)).info(s"Login failed with username ${username}")
       loginFail
     } else {
@@ -102,13 +96,6 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
           loginFail
       }
     }
-
-    if (result.isLeft) {
-      application.basicAuthSecurity.loginFailed(username)
-    } else {
-      application.basicAuthSecurity.loginSuccess(username)
-    }
-    result
   }
 
   def requireVirkailijaOrPalvelukäyttäjä = {
