@@ -25,7 +25,7 @@ export default ({memberName, logoutURL, onAuthorization, authorizationGiven}) =>
     <div className='heading'><h1><Text name='Henkilökohtaisten tietojen käyttö'/></h1></div>
     <div className='user'>
       <div className='username'>{userP.map(user => user && user.name)}</div>
-      <div className='dateofbirth'> {editorP.map(s => getBirthDate(s))}</div>
+      <div className='dateofbirth'> {editorP.map(s => 's. ' + getBirthDate(s))}</div>
     </div>
 
     { authorizationGiven ?
