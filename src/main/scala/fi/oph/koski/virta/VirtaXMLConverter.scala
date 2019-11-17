@@ -329,7 +329,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         .map(oppilaitoksenNimiValmistumishetkellä(vahvistusPäivä))
 
     val numerot = oppilaitosnumero(node)
-    val oppilaitos = find(numerot.lähde).orElse(find(numerot.nykyinen))
+    val oppilaitos = if (siirtoOpiskelija(node)) find(numerot.nykyinen) else find(numerot.lähde).orElse(find(numerot.nykyinen))
 
     if (oppilaitos.isEmpty) {
       logger.warn(s"Nykyistä tai lähdeoppilaitosta ei löydy: $numerot")
@@ -433,6 +433,9 @@ object VirtaXMLConverterUtils {
         )
       }
     }
+
+  def siirtoOpiskelija(node: Node): Boolean =
+    (node \\ "SiirtoOpiskelija").headOption.isDefined
 
   def oppilaitosnumero(node: Node): Oppilaitosnumerot =
     Oppilaitosnumerot(

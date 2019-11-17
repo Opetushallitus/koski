@@ -151,4 +151,11 @@ describe('Korkeakoulutus', function() {
       })
     })
   })
+
+  describe('Siirto opiskelija', function () {
+    before( page.openPage, page.oppijaHaku.searchAndSelect('141199-418X') )
+    it ('Näytetään nykyinen oppilaitos', function () {
+      expect(OpinnotPage().getOppilaitos(0)).to.equal('Aalto-yliopisto')
+    })
+  })
 })
