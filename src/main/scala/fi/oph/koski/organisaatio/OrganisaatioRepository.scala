@@ -5,9 +5,13 @@ import java.time.LocalDate
 
 import com.typesafe.config.Config
 import fi.oph.koski.cache._
-import fi.oph.koski.http.{ServiceConfig, VirkailijaHttpClient}
+import fi.oph.koski.http.Http
+import fi.oph.koski.http.Http._
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.schema._
+import fi.oph.koski.util.DateOrdering
+
+import scala.concurrent.duration._
 trait OrganisaatioRepository {
   /**
    * Organisation hierarchy containing children of requested org. Parents are not included.
@@ -54,8 +58,7 @@ object OrganisaatioRepository {
       case "mock" =>
         MockOrganisaatioRepository
       case url =>
-        val http = VirkailijaHttpClient(ServiceConfig.apply(config, "opintopolku.virkailija"), "/organisaatio-service", sessionCookieName = "SESSION")
-        new RemoteOrganisaatioRepository(http, koodisto)
+        new RemoteOrganisaatioRepository(Http(url, "organisaatiopalvelu"), koodisto)
     }
   }
 }
