@@ -5,12 +5,11 @@ import java.time.LocalDate
 import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusLäsnä}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.organisaatio.MockOrganisaatiot
-import fi.oph.koski.schema._
-import org.scalatest.FreeSpec
+import fi.oph.koski.schema.{AmmatillinenPäätasonSuoritus, _}
 
 import scala.reflect.runtime.universe.TypeTag
 
-trait MuuAmmatillinenTestMethods[T <: AmmatillinenPäätasonSuoritus] extends FreeSpec with LocalJettyHttpSpecification with PutOpiskeluoikeusTestMethods[AmmatillinenOpiskeluoikeus] {
+trait MuuAmmatillinenTestMethods[T <: AmmatillinenPäätasonSuoritus] extends PutOpiskeluoikeusTestMethods[AmmatillinenOpiskeluoikeus] {
   override def tag: TypeTag[AmmatillinenOpiskeluoikeus] = implicitly[TypeTag[AmmatillinenOpiskeluoikeus]]
   override def defaultOpiskeluoikeus: AmmatillinenOpiskeluoikeus = makeOpiskeluoikeus(alkamispäivä = longTimeAgo)
 

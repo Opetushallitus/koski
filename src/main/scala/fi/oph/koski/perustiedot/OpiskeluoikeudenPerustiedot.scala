@@ -83,7 +83,7 @@ object OpiskeluoikeudenPerustiedot {
       .map { suoritus =>
         SuorituksenPerustiedot(
           extract[Koodistokoodiviite](suoritus \ "tyyppi"),
-          KoulutusmoduulinPerustiedot(extract[KoodiViitteenPerustiedot](suoritus \ "koulutusmoduuli" \ "tunniste")),
+          KoulutusmoduulinPerustiedot.makeKoulutusmoduulinPerustiedot(extract[KoodiViitteenPerustiedot](suoritus \ "koulutusmoduuli" \ "tunniste")),
           extract[Option[List[Osaamisalajakso]]](suoritus \ "osaamisala").map(_.map(_.osaamisala)),
           extract[Option[List[Koodistokoodiviite]]](suoritus \ "tutkintonimike"),
           extract[OidOrganisaatio](suoritus \ "toimipiste", ignoreExtras = true)
@@ -131,6 +131,19 @@ case class SuorituksenPerustiedot(
   tutkintonimike: Option[List[Koodistokoodiviite]] = None,
   toimipiste: OidOrganisaatio
 )
+
+object KoulutusmoduulinPerustiedot {
+  def makeKoulutusmoduulinPerustiedot(tunniste: KoodiViitteenPerustiedot) = KoulutusmoduulinPerustiedot(tunniste.copy(
+    nimi = tunniste.nimi.flatMap(fillInMissingLanguages),
+    lyhytNimi = tunniste.lyhytNimi.flatMap(fillInMissingLanguages)
+  ))
+
+  private def fillInMissingLanguages(n: LocalizedString) = {
+    LocalizedString.sanitize(n.values).map { ls =>
+      ls.copy(sv = Some(ls.sv.getOrElse(ls.fi)))
+    }
+  }
+}
 
 case class KoulutusmoduulinPerustiedot(
   tunniste: KoodiViitteenPerustiedot
