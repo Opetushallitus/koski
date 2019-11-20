@@ -26,7 +26,7 @@ object LocalizedString {
    * 3. return None if no non-empty values available
    * 4. patch it to always contain a Finnish value
    */
-  def sanitize(values: Map[String, String]): Option[LocalizedString] = {
+  def sanitize(values: Map[String, String]): Option[Finnish] = {
     def getAny(values: Map[String, String]) = {
       //logger.warn("Finnish localization missing from " + values)
       values.toList.map(_._2).headOption.getOrElse(missingString)
@@ -34,7 +34,7 @@ object LocalizedString {
     val lowerCased = values.flatMap {
       case (key, "") => None
       case (key, value) => Some((key.toLowerCase(), value))
-    }.toMap
+    }
 
     lowerCased.isEmpty match {
       case true => None
