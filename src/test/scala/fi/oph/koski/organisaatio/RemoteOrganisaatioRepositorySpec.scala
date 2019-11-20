@@ -13,7 +13,7 @@ import org.json4s.DefaultFormats
 import org.json4s.jackson.Serialization.write
 import org.scalatest._
 
-class RemoteOrganisaatioRepositorySpec extends FreeSpec with Matchers with EitherValues with OptionValues with BeforeAndAfterAll {
+class RemoteOrganisaatioRepositorySpec extends FreeSpec with Matchers with BeforeAndAfterAll {
   implicit val jsonDefaultFormats = DefaultFormats.preservingEmptyValues
   implicit val cacheManager = GlobalCacheManager
 
