@@ -97,11 +97,15 @@ case class RemoteVirtaClient(config: VirtaConfig) extends VirtaClient {
     </OpiskelijanKaikkiTiedotRequest>
   }
 
-  def opintotiedotMassahaku(hakuehdot: List[VirtaHakuehto]): Option[Elem] = performHaku {
-    <OpiskelijanKaikkiTiedotListaRequest xmlns="http://tietovaranto.csc.fi/luku">
-      {kutsuja}
-      <Hakuehdot>{hakuehdotXml(hakuehdot)}</Hakuehdot>
-    </OpiskelijanKaikkiTiedotListaRequest>
+  def opintotiedotMassahaku(hakuehdot: List[VirtaHakuehto]): Option[Elem] = if (hakuehdot.nonEmpty) {
+    performHaku {
+      <OpiskelijanKaikkiTiedotListaRequest xmlns="http://tietovaranto.csc.fi/luku">
+        {kutsuja}
+        <Hakuehdot>{hakuehdotXml(hakuehdot)}</Hakuehdot>
+      </OpiskelijanKaikkiTiedotListaRequest>
+    }
+  } else {
+    None
   }
 
   def henkilötiedot(hakuehto: VirtaHakuehto, oppilaitosNumero: String): Option[Elem] = performHaku {
