@@ -9,7 +9,7 @@ import fi.oph.koski.schema.OidOrganisaatio
   * Hakee eri tyyppiset oppilaitokset Opintopolun organisaatiopalvelusta.
   */
 object OppilaitosImuri extends App {
-  lazy val virkailijaRoot = sys.env.getOrElse("VIRKAILIJA", "https://dev.koski.opintopolku.fi")
+  lazy val virkailijaRoot = sys.env.getOrElse("VIRKAILIJA", "https://virkailija.untuvaopintopolku.fi")
 
   lazy val lukiot: List[OidOrganisaatio] = haeOppilaitostyypillä("oppilaitostyyppi_15#1")
   lazy val ammatillisetOppilaitokset: List[OidOrganisaatio] = haeOppilaitostyypillä("oppilaitostyyppi_21#1")
