@@ -1,16 +1,15 @@
 package fi.oph.koski.koskiuser
 
 import java.util.UUID
-import javax.servlet.http.HttpServletRequest
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.log._
 import fi.oph.koski.servlet.KoskiBaseServlet
 import fi.oph.koski.sso.SSOSupport
-import fi.oph.koski.userdirectory.{DirectoryClient, Password}
+import fi.oph.koski.userdirectory.Password
 import org.scalatra.auth.strategy.BasicAuthStrategy
 
-trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Logging {
+trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport {
   val realm = "Koski"
 
   def application: UserAuthenticationContext
@@ -60,7 +59,7 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
         case Some((ticket, None)) =>
           removeUserCookie
           setUser(Left(KoskiErrorCategory.unauthorized.notAuthenticated())) // <- to prevent getLogger call from causing recursive calls here
-          logger.warn("User not found by ticket " + ticket)
+          defaultLogger.warn("User not found by ticket " + ticket)
           if (authUser.exists(_.kansalainen)) Left(SessionStatusExpiredKansalainen) else Left(SessionStatusExpiredVirkailija)
         case _ => Left(SessionStatusNoSession)
       }
@@ -92,7 +91,7 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
         case Some(user) =>
           Right(user)
         case None =>
-          logger.warn(s"User not found, after successful authentication: $username")
+          defaultLogger.warn(s"User not found, after successful authentication: $username")
           loginFail
       }
     }
@@ -129,20 +128,5 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport with Loggin
   }
 
   def createSession(user: AuthenticationUser) = KoskiSession(user, request, application.käyttöoikeusRepository)
-}
-
-object DirectoryClientLogin extends Logging {
-  def findUser(directoryClient: DirectoryClient, request: HttpServletRequest, username: String): Option[AuthenticationUser] = {
-    directoryClient.findUser(username).map { ldapUser =>
-      AuthenticationUser.fromDirectoryUser(username, ldapUser)
-    } match {
-      case Some(user) =>
-        logger(LogUserContext(request, user.oid, username)).debug("Login successful")
-        Some(user)
-      case _ =>
-        logger(LogUserContext(request)).warn(s"User $username not found")
-        None
-    }
-  }
 }
 
