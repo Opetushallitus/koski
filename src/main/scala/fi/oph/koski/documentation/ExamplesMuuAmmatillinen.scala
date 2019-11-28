@@ -77,37 +77,7 @@ object MuunAmmatillisenKoulutuksenExample {
     )),
     lisätiedot = None,
     oppilaitos = Some(stadinAmmattiopisto),
-    suoritukset = List(
-      MuunAmmatillisenKoulutuksenSuoritus(
-        koulutusmoduuli = muuAmmatillinenKoulutus,
-        None,
-        osaamisenHankkimistavat = None,
-        koulutussopimukset = None,
-        suorituskieli = suomenKieli,
-        alkamispäivä = None,
-        toimipiste = stadinToimipiste,
-        osasuoritukset = Some(List(
-          muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
-            PaikallinenKoodi("AOYL", "Asunto-osakeyhtiölain ja huoneenvuokralainsäädännön perusteet"),
-            "Asunto-osakeyhtiölain ja huoneenvuokralainsäädännön perusteet, huoneistokohtaiset korjaus- ja muutostyöt"
-          ),
-          muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
-            PaikallinenKoodi("AKOYTV", "Asunto- ja kiinteistöosakeyhtiön talous ja verotus"),
-            "Laskentatoimen ja verotuksen perusteet, lainaosuus- ja rahoituslaskelmat, kiinteistövero, arvonlisävero sekä veroilmoituslomakkeet"
-          ),
-          muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
-            PaikallinenKoodi("TAP", "Tiedottaminen ja asiakaspalvelu"),
-            "Tiedottaminen ja asiakaspalvelu, isännöitsijän ja sihteerin työparityöskentely sekä asiakaspalvelun henkilöturvallisuus"
-          ),
-          muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
-            PaikallinenKoodi("KISI", "KISI-tentti"),
-            "Valmiudet hoitaa kiinteistöalan yrityksen sihteeri-, toimisto- ja asiakaspalvelutehtäviä, vahvistaa osallistujan ammatillisia perusvalmiuksia"
-          ),
-          yhteisenTutkinnonOsanOsaAlueenSuoritusValtakunnallinen,
-          yhteisenTutkinnonOsanOsaAlueenSuoritusPaikallinen
-        ))
-      )
-    )
+    suoritukset = List(muunAmmatillisenKoulutuksenSuoritus)
   )
 
   lazy val muuAmmatillinenKoulutusKokonaisuuksillaOpiskeluoikeus = AmmatillinenOpiskeluoikeus(
@@ -236,6 +206,56 @@ object MuunAmmatillisenKoulutuksenExample {
         ))
       )
     )
+  )
+
+  lazy val muunAmmatillisenKoulutuksenSuoritus = MuunAmmatillisenKoulutuksenSuoritus(
+    koulutusmoduuli = muuAmmatillinenKoulutus,
+    None,
+    osaamisenHankkimistavat = None,
+    koulutussopimukset = None,
+    suorituskieli = suomenKieli,
+    alkamispäivä = None,
+    toimipiste = stadinToimipiste,
+    osasuoritukset = Some(List(
+      muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
+        PaikallinenKoodi("AOYL", "Asunto-osakeyhtiölain ja huoneenvuokralainsäädännön perusteet"),
+        "Asunto-osakeyhtiölain ja huoneenvuokralainsäädännön perusteet, huoneistokohtaiset korjaus- ja muutostyöt",
+        laajuus = Some(LaajuusKaikkiYksiköt(5, laajuusOpintopisteissä))
+      ),
+      muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
+        PaikallinenKoodi("AKOYTV", "Asunto- ja kiinteistöosakeyhtiön talous ja verotus"),
+        "Laskentatoimen ja verotuksen perusteet, lainaosuus- ja rahoituslaskelmat, kiinteistövero, arvonlisävero sekä veroilmoituslomakkeet",
+        laajuus = Some(LaajuusKaikkiYksiköt(15, laajuusVuosiviikkotunneissa))
+      ),
+      muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
+        PaikallinenKoodi("TAP", "Tiedottaminen ja asiakaspalvelu"),
+        "Tiedottaminen ja asiakaspalvelu, isännöitsijän ja sihteerin työparityöskentely sekä asiakaspalvelun henkilöturvallisuus",
+        laajuus = Some(LaajuusKaikkiYksiköt(20, laajuusTunneissa))
+      ),
+      muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
+        PaikallinenKoodi("KISI", "KISI-tentti"),
+        "Valmiudet hoitaa kiinteistöalan yrityksen sihteeri-, toimisto- ja asiakaspalvelutehtäviä, vahvistaa osallistujan ammatillisia perusvalmiuksia"
+      ),
+      TutkinnonOsaaPienemmänKokonaisuudenSuoritus(
+        TutkinnonOsaaPienempiKokonaisuus(
+          PaikallinenKoodi("ATK", "ATK-Ajokortti"),
+          None,
+          finnish("Tietokoneiden käyttö")
+        ),
+        alkamispäivä = None,
+        arviointi = None,
+        näyttö = None,
+        liittyyTutkinnonOsaan = Koodistokoodiviite(
+          "101481",
+          koodistoUri = "tutkinnonosat"
+        ),
+        lisätiedot = None,
+        suorituskieli = None
+      ),
+      yhteisenTutkinnonOsanOsaAlueenSuoritusValtakunnallinen,
+      yhteisenTutkinnonOsanOsaAlueenSuoritusPaikallinen,
+
+    ))
   )
 
   lazy val muuAmmatillinenKoulutusExample = Oppija(

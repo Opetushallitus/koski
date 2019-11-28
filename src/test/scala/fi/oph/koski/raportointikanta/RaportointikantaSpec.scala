@@ -378,7 +378,7 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
         val opiskeluoikeus = ammatillinenOpiskeluoikeus.copy(
           suoritukset = List(suoritus)
         )
-        val (ps, _) = OpiskeluoikeusLoader.buildSuoritusRows(oid, opiskeluoikeus.oppilaitos.get, opiskeluoikeus.suoritukset.head, JObject(), 1)
+        val (ps, _, _) = OpiskeluoikeusLoader.buildSuoritusRows(oid, opiskeluoikeus.oppilaitos.get, opiskeluoikeus.suoritukset.head, JObject(), 1)
         ps.toimipisteOid should equal(AmmatillinenExampleData.stadinToimipiste.oid)
         ps.toimipisteNimi should equal(AmmatillinenExampleData.stadinToimipiste.nimi.get.get("fi"))
       }
