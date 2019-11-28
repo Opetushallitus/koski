@@ -28,6 +28,7 @@ export const raportitContentP = () => {
             {raportit && raportit.includes('ammatillinenopiskelijavuositiedot') && <Opiskelijavuositiedot organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('ammatillinentutkintosuoritustietojentarkistus') && <SuoritustietojenTarkistus organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('ammatillinenosittainensuoritustietojentarkistus') && <AmmatillinenOsittainenSuoritustietojenTarkistus organisaatioAtom={organisaatioAtom} />}
+            {raportit && raportit.includes('muuammatillinenkoulutus') && <MuuAmmatillinenRaportti organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('perusopetuksenvuosiluokka') && <PerusopetuksenVuosiluokka organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('lukionsuoritustietojentarkistus') && <Lukioraportti organisaatioAtom={organisaatioAtom} />}
           </div>
@@ -88,6 +89,18 @@ const AmmatillinenOsittainenSuoritustietojenTarkistus = ({organisaatioAtom}) => 
   return (<AmmatillinenSuoritusTiedotRaportti
     organisaatioAtom={organisaatioAtom}
     apiEndpoint={'/ammatillinenosittainensuoritustietojentarkistus'}
+    title={titleText}
+    description={descriptionText}
+  />)
+}
+
+const MuuAmmatillinenRaportti = ({organisaatioAtom}) => {
+  const titleText = <Text name='Suoritustiedot (muu ammatillinen koulutus)'/>
+  const descriptionText = <Text name='muuammatillinenraportti-description'/>
+
+  return (<AikajaksoRaportti
+    organisaatioAtom={organisaatioAtom}
+    apiEndpoint={'/muuammatillinen'}
     title={titleText}
     description={descriptionText}
   />)
