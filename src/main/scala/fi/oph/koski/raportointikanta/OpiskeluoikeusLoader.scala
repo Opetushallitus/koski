@@ -139,6 +139,8 @@ object OpiskeluoikeusLoader extends Logging {
       lisätiedotKoulutusvienti = o.lisätiedot.collect {
         case l: AmmatillisenOpiskeluoikeudenLisätiedot => l.koulutusvienti
       }.getOrElse(false),
+      lähdejärjestelmäKoodiarvo = o.lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
+      lähdejärjestelmäId = o.lähdejärjestelmänId.flatMap(_.id),
       data = JsonManipulation.removeFields(data, fieldsToExcludeFromOpiskeluoikeusJson)
     )
 
