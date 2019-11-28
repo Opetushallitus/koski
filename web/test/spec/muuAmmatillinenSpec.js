@@ -24,14 +24,15 @@ describe('Muu ammatillinen koulutus', function() {
       it('näyttää oppiaineiden ja kurssien arvosanat', function() {
         expect(extractAsText(S('.osasuoritukset'))).to.equal(
           'Avaa kaikki\n' +
-          'Osasuoritus Arvosana\n' +
-          'Asunto-osakeyhtiölain ja huoneenvuokralainsäädännön perusteet Hyväksytty\n' +
-          'Asunto- ja kiinteistöosakeyhtiön talous ja verotus Hyväksytty\n' +
-          'Tiedottaminen ja asiakaspalvelu Hyväksytty\n' +
+          'Osasuoritus Laajuus (op) Arvosana\n' +
+          'Asunto-osakeyhtiölain ja huoneenvuokralainsäädännön perusteet 5 op Hyväksytty\n' +
+          'Asunto- ja kiinteistöosakeyhtiön talous ja verotus 15 op Hyväksytty\n' +
+          'Tiedottaminen ja asiakaspalvelu 20 op Hyväksytty\n' +
           'KISI-tentti Hyväksytty\n' +
+          'ATK-Ajokortti\n' +
           'Fysiikka ja kemia Hyväksytty\n' +
           'Äidinkieli, Suomen kieli ja kirjallisuus Hyväksytty\n' +
-          'Yhteensä 0'
+          'Yhteensä 40 op'
         )
       })
     })

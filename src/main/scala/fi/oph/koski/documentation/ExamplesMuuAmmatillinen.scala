@@ -225,12 +225,12 @@ object MuunAmmatillisenKoulutuksenExample {
       muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
         PaikallinenKoodi("AKOYTV", "Asunto- ja kiinteistöosakeyhtiön talous ja verotus"),
         "Laskentatoimen ja verotuksen perusteet, lainaosuus- ja rahoituslaskelmat, kiinteistövero, arvonlisävero sekä veroilmoituslomakkeet",
-        laajuus = Some(LaajuusKaikkiYksiköt(15, laajuusVuosiviikkotunneissa))
+        laajuus = Some(LaajuusKaikkiYksiköt(15, laajuusOpintopisteissä))
       ),
       muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
         PaikallinenKoodi("TAP", "Tiedottaminen ja asiakaspalvelu"),
         "Tiedottaminen ja asiakaspalvelu, isännöitsijän ja sihteerin työparityöskentely sekä asiakaspalvelun henkilöturvallisuus",
-        laajuus = Some(LaajuusKaikkiYksiköt(20, laajuusTunneissa))
+        laajuus = Some(LaajuusKaikkiYksiköt(20, laajuusOpintopisteissä))
       ),
       muunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
         PaikallinenKoodi("KISI", "KISI-tentti"),
