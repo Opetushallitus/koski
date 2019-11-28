@@ -253,8 +253,7 @@ object MuunAmmatillisenKoulutuksenExample {
         suorituskieli = None
       ),
       yhteisenTutkinnonOsanOsaAlueenSuoritusValtakunnallinen,
-      yhteisenTutkinnonOsanOsaAlueenSuoritusPaikallinen,
-
+      yhteisenTutkinnonOsanOsaAlueenSuoritusPaikallinen
     ))
   )
 
