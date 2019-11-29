@@ -117,7 +117,7 @@ case class MuuAmmatillinenRaporttiBuilder(db: DB) extends KoskiDatabaseMethods {
     ),
 
     kaikkien_osasuoritusten_yhteislaajuus as (
-      select paatason_suoritus_id, count(*) as laajuus from osasuoritukset group by paatason_suoritus_id
+      select paatason_suoritus_id, sum(koulutusmoduuli_laajuus_arvo) as laajuus from osasuoritukset group by paatason_suoritus_id
     ),
 
     kaikkien_osasuoritusten_laajuuden_yksiköt as (
@@ -153,7 +153,7 @@ case class MuuAmmatillinenRaporttiBuilder(db: DB) extends KoskiDatabaseMethods {
       henkilo.sukunimi,
       coalesce(suoritettujen_osasuoritusten_lukumäärä.lkm, 0),
       coalesce(keskeneräisten_osasuoritusten_lukumäärä.lkm, 0),
-      coalesce(kaikkien_osasuoritusten_yhteislaajuus.laajuus, 0),
+      coalesce(kaikkien_osasuoritusten_yhteislaajuus.laajuus, 0.0),
       kaikkien_osasuoritusten_laajuuden_yksiköt.yksiköt,
       coalesce(suoritettujen_yhteisten_tutkinnon_osien_osa_alueiden_lukumäärä.lkm, 0),
       coalesce(suoritettujen_tutkinnon_osaa_pienempien_kokonaisuuksien_lukumäärä.lkm, 0),
