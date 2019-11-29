@@ -262,14 +262,31 @@ describe('Muu ammatillinen koulutus', function() {
 
         it('onnistuu', function() {
           expect(opinnot.tutkinnonOsat().osienTekstit()).to.equal(
-            'Asunto- ja kiinteistöosakeyhtiön talous ja verotus\n' +
+            'Asunto- ja kiinteistöosakeyhtiön talous ja verotus Hyväksytty\n' +
             'Kuvaus Kurssilla opitaan hallitsemaan asunto- ja kiinteistöosakeyhtiön taloutta ja verotusta.\n' +
             'Liittyy tutkinnon osaan Varaosatyö ja varaston hallinta\n' +
+            'Arviointipäivä 20.3.2013\n' +
+            '\nTietokoneiden huolto 4 osp\n' +
+            'Kuvaus Kurssilla opitaan korjaamaan tietokoneita.\n' +
+            'Liittyy tutkinnon osaan Asunto-osakeyhtiön hallinnon hoitaminen\n' +
             '\nFysiikka ja kemia Hyväksytty\n' +
             'Pakollinen kyllä\n' +
             'Arviointipäivä 20.3.2013\n' +
             '\nÄidinkieli, Suomen kieli ja kirjallisuus Hyväksytty\n' +
             'Pakollinen ei\n' +
+            'Arviointipäivä 20.3.2013\n' +
+            '\nEtiikka\n' +
+            'Pakollinen kyllä\n' +
+            'Tunnustettu\n' +
+            'Tutkinnon osa Asennushitsaus\n' +
+            'Selite Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta\n' +
+            'Rahoituksen piirissä ei\n' +
+            '\nPsykologia 5 osp Hyväksytty\n' +
+            'Pakollinen kyllä\n' +
+            'Tunnustettu\n' +
+            'Tutkinnon osa Asennushitsaus\n' +
+            'Selite Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta\n' +
+            'Rahoituksen piirissä kyllä\n' +
             'Arviointipäivä 20.3.2013'
           )
         })
@@ -284,9 +301,12 @@ describe('Muu ammatillinen koulutus', function() {
 
         it('onnistuu', function() {
           expect(opinnot.tutkinnonOsat().osienTekstit()).to.equal(
-            'Asunto- ja kiinteistöosakeyhtiön talous ja verotus\n' +
+            'Asunto- ja kiinteistöosakeyhtiön talous ja verotus Hyväksytty\n' +
+            '\nTietokoneiden huolto 4 osp\n' +
             '\nFysiikka ja kemia Hyväksytty\n' +
             '\nÄidinkieli, Suomen kieli ja kirjallisuus Hyväksytty\n' +
+            '\nEtiikka\n' +
+            '\nPsykologia 5 osp Hyväksytty\n' +
             '\nAuton tuunaus'
           )
         })

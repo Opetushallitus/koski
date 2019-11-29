@@ -1295,6 +1295,8 @@
   "Lisätietoja Opetushallituksen suorittamasta tietojen käsittelystä saat Opintopolku-palvelusta": "Lisätietoja Opetushallituksen suorittamasta tietojen käsittelystä saat Opintopolku-palvelusta",
   "KOSKI-palvelun tietosuojaseloste Opintopolku-sivustolla": "KOSKI-palvelun tietosuojaseloste Opintopolku-sivustolla",
   "Suoritustiedot (muu ammatillinen koulutus)": "Suoritustiedot (muu ammatillinen koulutus)",
-  "muuammatillinenraportti-description": "Muu ammatillisen koulutuksen suoritustietojen tarkistusraportti"
+  "muuammatillinenraportti-description": "Muu ammatillisen koulutuksen suoritustietojen tarkistusraportti",
+  "Suoritustiedot (TOPKS ammatillinen koulutus)": "Suoritustiedot (TOPKS ammatillinen koulutus)",
+  "topksammatillinen-description": "Tutkinnon osaa pienemmistä kokonaisuuksista koostuvan suorituksen suoritustietojen tarkistusraportti"
 }
 
