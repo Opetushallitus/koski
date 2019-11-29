@@ -76,7 +76,7 @@ class MuuAmmatillinenRaporttiSpec extends FreeSpec with Matchers with Raportoint
         marjonRivi.kaikkienOsasuoritustenYhteislaajuus should equal(40.0)
       }
       "Kaikkien osasuoritusten laajuuden yksiköt" in {
-        marjonRivi.kaikkienOsasuoritustenLaajuudenYksiköt should equal(Some("2"))
+        marjonRivi.kaikkienOsasuoritustenLaajuudenYksiköt should equal(Some("opintopistettä"))
       }
       "Suoritettujen yhteisten tutkinnon osien osa-alueiden lukumäärä" in {
         marjonRivi.suoritettujenYhteistenTutkinnonOsienOsaalueidenLkm should equal(2)

@@ -120,8 +120,16 @@ case class MuuAmmatillinenRaporttiBuilder(db: DB) extends KoskiDatabaseMethods {
       select paatason_suoritus_id, sum(koulutusmoduuli_laajuus_arvo) as laajuus from osasuoritukset group by paatason_suoritus_id
     ),
 
+    opintojenlaajuus_koodisto as (
+      select * from r_koodisto_koodi where koodisto_uri = 'opintojenlaajuusyksikko'
+    ),
+
     kaikkien_osasuoritusten_laajuuden_yksiköt as (
-      select paatason_suoritus_id, string_agg(distinct koulutusmoduuli_laajuus_yksikko, ',') as yksiköt from osasuoritukset where koulutusmoduuli_laajuus_yksikko is not null group by paatason_suoritus_id
+      select paatason_suoritus_id, string_agg(distinct opintojenlaajuus_koodisto.nimi, ',') as yksiköt
+      from osasuoritukset
+      join opintojenlaajuus_koodisto on opintojenlaajuus_koodisto.koodiarvo = osasuoritukset.koulutusmoduuli_laajuus_yksikko
+      where koulutusmoduuli_laajuus_yksikko is not null
+      group by paatason_suoritus_id
     ),
 
     suoritettujen_yhteisten_tutkinnon_osien_osa_alueiden_lukumäärä as (
