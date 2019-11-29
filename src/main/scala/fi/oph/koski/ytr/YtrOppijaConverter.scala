@@ -20,7 +20,7 @@ case class YtrOppijaConverter(oppilaitosRepository: OppilaitosRepository, koodis
 
     val oppilaitos = ytrOppija.certificateSchoolOphOid.flatMap(oid => oppilaitosRepository.findByOid(oid) match  {
       case None =>
-        logger.error(s"Oppilaitosta $oid ei löydy")
+        logger.warn(s"Oppilaitosta $oid ei löydy")
         None
       case Some(oppilaitos) =>
         vahvistus
