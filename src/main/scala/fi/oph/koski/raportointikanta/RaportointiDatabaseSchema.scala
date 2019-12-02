@@ -59,7 +59,8 @@ object RaportointiDatabaseSchema {
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_organisaatio_kieli CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_koodisto_koodi CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.raportointikanta_status CASCADE",
-    sqlu"DROP TABLE IF EXISTS #${s.name}.muu_ammatillinen_raportointi CASCADE"
+    sqlu"DROP TABLE IF EXISTS #${s.name}.muu_ammatillinen_raportointi CASCADE",
+    sqlu"DROP TABLE IF EXISTS #${s.name}.topks_ammatillinen_raportointi CASCADE"
   )
 
   val createRolesIfNotExists = DBIO.seq(
@@ -196,6 +197,8 @@ object RaportointiDatabaseSchema {
       näytönArviointiPäivä, data) <> (ROsasuoritusRow.tupled, ROsasuoritusRow.unapply)
   }
 
+  class ROsasuoritusTableTemp(tag: Tag) extends ROsasuoritusTable(tag, Temp)
+
   class MuuAmmatillinenOsasuoritusRaportointiTable(tag: Tag, schema: Schema = Public) extends Table[MuuAmmatillinenOsasuoritusRaportointiRow](tag, schema.nameOpt, "muu_ammatillinen_raportointi") {
     val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
     val päätasonSuoritusId = column[Long]("paatason_suoritus_id")
@@ -208,7 +211,19 @@ object RaportointiDatabaseSchema {
 
   class MuuAmmatillinenOsasuoritusRaportointiTableTemp(tag: Tag) extends MuuAmmatillinenOsasuoritusRaportointiTable(tag, Temp)
 
-  class ROsasuoritusTableTemp(tag: Tag) extends ROsasuoritusTable(tag, Temp)
+  class TOPKSAmmatillinenOsasuoritusRaportointiTable(tag: Tag, schema: Schema = Public) extends Table[TOPKSAmmatillinenRaportointiRow](tag, schema.nameOpt, "topks_ammatillinen_raportointi") {
+    val opiskeluoikeudenOid =  column[String]("opiskeluoikeus_oid", StringIdentifierType)
+    val päätasonSuoritusId = column[Long]("paatason_suoritus_id")
+    val toteuttavanLuokanNimi = column[String]("toteuttavan_luokan_nimi")
+    val rahoituksenPiirissä = column[Boolean]("rahoituksen_piirissa")
+    val arviointiHyväksytty = column[Boolean]("arviointi_hyvaksytty")
+    val tunnustettu = column[Boolean]("tunnustettu")
+    val koulutusmoduuliLaajuusArvo = column[Option[Float]]("koulutusmoduuli_laajuus_arvo")
+    val koulutusmoduuliLaajuusYksikkö =  column[Option[String]]("koulutusmoduuli_laajuus_yksikko")
+    def * = (opiskeluoikeudenOid, päätasonSuoritusId, toteuttavanLuokanNimi, rahoituksenPiirissä, arviointiHyväksytty, tunnustettu, koulutusmoduuliLaajuusArvo, koulutusmoduuliLaajuusYksikkö) <> (TOPKSAmmatillinenRaportointiRow.tupled, TOPKSAmmatillinenRaportointiRow.unapply)
+  }
+
+  class TOPKSAmmatillinenOsasuoritusRaportointiTableTemp(tag: Tag) extends TOPKSAmmatillinenOsasuoritusRaportointiTable(tag, Temp)
 
   class RHenkilöTable(tag: Tag, schema: Schema = Public) extends Table[RHenkilöRow](tag, schema.nameOpt, "r_henkilo") {
     val oppijaOid = column[String]("oppija_oid", O.PrimaryKey, StringIdentifierType)
@@ -449,6 +464,17 @@ case class MuuAmmatillinenOsasuoritusRaportointiRow(
   koulutusmoduuliLaajuusArvo: Option[Float] = None,
   koulutusmoduuliLaajuusYksikkö: Option[String] = None,
   arviointiHyväksytty: Boolean
+)
+
+case class TOPKSAmmatillinenRaportointiRow(
+  opiskeluoikeudenOid: String,
+  päätasonSuoritusId: Long,
+  toteuttavanLuokanNimi: String,
+  rahoituksenPiirissä: Boolean,
+  arviointiHyväksytty: Boolean,
+  tunnustettu: Boolean,
+  koulutusmoduuliLaajuusArvo: Option[Float],
+  koulutusmoduuliLaajuusYksikkö: Option[String]
 )
 
 sealed trait Schema {
