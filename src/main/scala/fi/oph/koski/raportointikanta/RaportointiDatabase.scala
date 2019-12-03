@@ -28,7 +28,18 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
   logger.info(s"Instantiating RaportointiDatabase for ${schema.name}")
 
   val db: DB = config.toSlickDatabase
-  val tables = List(ROpiskeluoikeudet, ROpiskeluoikeusAikajaksot, RPäätasonSuoritukset, ROsasuoritukset, RHenkilöt, ROrganisaatiot, ROrganisaatioKielet, RKoodistoKoodit, RaportointikantaStatus)
+  val tables = List(
+    ROpiskeluoikeudet,
+    ROpiskeluoikeusAikajaksot,
+    RPäätasonSuoritukset,
+    ROsasuoritukset,
+    RHenkilöt,
+    ROrganisaatiot,
+    ROrganisaatioKielet,
+    RKoodistoKoodit,
+    RaportointikantaStatus,
+    MuuAmmatillinenOsasuoritusRaportointi
+  )
 
   def moveTo(newSchema: Schema): Unit = {
     logger.info(s"Moving ${schema.name} -> ${newSchema.name}")
@@ -87,6 +98,10 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
   def loadOsasuoritukset(suoritukset: Seq[ROsasuoritusRow]): Unit =
     runDbSync(ROsasuoritukset ++= suoritukset, timeout = 5.minutes)
 
+  def deleteMuuAmmatillinenRaportointi: Unit =
+    runDbSync(MuuAmmatillinenOsasuoritusRaportointi.schema.truncate)
+  def loadMuuAmmatillinenRaportointi(rows: Seq[MuuAmmatillinenOsasuoritusRaportointiRow]): Unit =
+    runDbSync(MuuAmmatillinenOsasuoritusRaportointi ++= rows, timeout = 5.minutes)
 
   def deleteHenkilöt: Unit =
     runDbSync(RHenkilöt.schema.truncate)
@@ -235,6 +250,11 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
   lazy val RaportointikantaStatus = schema match {
     case Public => TableQuery[RaportointikantaStatusTable]
     case Temp => TableQuery[RaportointikantaStatusTableTemp]
+  }
+
+  lazy val MuuAmmatillinenOsasuoritusRaportointi = schema match {
+    case Public => TableQuery[MuuAmmatillinenOsasuoritusRaportointiTable]
+    case Temp => TableQuery[MuuAmmatillinenOsasuoritusRaportointiTableTemp]
   }
 }
 

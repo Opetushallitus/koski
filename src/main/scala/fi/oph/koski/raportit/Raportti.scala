@@ -90,3 +90,4 @@ case object AmmatillinenOsittainenSuoritustietojenTarkistus extends RaportinTyyp
 case object AmmatillinenTutkintoSuoritustietojenTarkistus extends RaportinTyyppi
 case object PerusopetuksenVuosiluokka extends RaportinTyyppi
 case object LukionSuoritustietojenTarkistus extends RaportinTyyppi
+case object MuuAmmatillinenKoulutus extends RaportinTyyppi

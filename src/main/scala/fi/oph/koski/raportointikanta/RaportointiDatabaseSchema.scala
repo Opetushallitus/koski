@@ -58,7 +58,8 @@ object RaportointiDatabaseSchema {
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_organisaatio CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_organisaatio_kieli CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_koodisto_koodi CASCADE",
-    sqlu"DROP TABLE IF EXISTS #${s.name}.raportointikanta_status CASCADE"
+    sqlu"DROP TABLE IF EXISTS #${s.name}.raportointikanta_status CASCADE",
+    sqlu"DROP TABLE IF EXISTS #${s.name}.muu_ammatillinen_raportointi CASCADE"
   )
 
   val createRolesIfNotExists = DBIO.seq(
@@ -101,11 +102,13 @@ object RaportointiDatabaseSchema {
     val viimeisinTila = column[Option[String]]("viimeisin_tila", StringIdentifierType)
     val lisätiedotHenkilöstökoulutus = column[Boolean]("lisatiedot_henkilostokoulutus")
     val lisätiedotKoulutusvienti = column[Boolean]("lisatiedot_koulutusvienti")
+    val lähdejärjestelmäKoodiarvo = column[Option[String]]("lahdejarjestelma_koodiarvo")
+    val lähdejärjestelmäId = column[Option[String]]("lahdejarjestelma_id")
     val data = column[JValue]("data")
     def * = (opiskeluoikeusOid, versionumero, aikaleima, sisältyyOpiskeluoikeuteenOid, oppijaOid,
       oppilaitosOid, oppilaitosNimi, oppilaitosKotipaikka, oppilaitosnumero, koulutustoimijaOid, koulutustoimijaNimi,
       koulutusmuoto, alkamispäivä, päättymispäivä, viimeisinTila,
-      lisätiedotHenkilöstökoulutus, lisätiedotKoulutusvienti, data) <> (ROpiskeluoikeusRow.tupled, ROpiskeluoikeusRow.unapply)
+      lisätiedotHenkilöstökoulutus, lisätiedotKoulutusvienti, lähdejärjestelmäKoodiarvo, lähdejärjestelmäId, data) <> (ROpiskeluoikeusRow.tupled, ROpiskeluoikeusRow.unapply)
   }
   class ROpiskeluoikeusTableTemp(tag: Tag) extends ROpiskeluoikeusTable(tag, Temp)
 
@@ -192,6 +195,19 @@ object RaportointiDatabaseSchema {
       arviointiArvosanaKoodiarvo, arviointiArvosanaKoodisto, arviointiHyväksytty, arviointiPäivä,
       näytönArviointiPäivä, data) <> (ROsasuoritusRow.tupled, ROsasuoritusRow.unapply)
   }
+
+  class MuuAmmatillinenOsasuoritusRaportointiTable(tag: Tag, schema: Schema = Public) extends Table[MuuAmmatillinenOsasuoritusRaportointiRow](tag, schema.nameOpt, "muu_ammatillinen_raportointi") {
+    val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
+    val päätasonSuoritusId = column[Long]("paatason_suoritus_id")
+    val toteuttavanLuokanNimi = column[String]("toteuttavan_luokan_nimi")
+    val koulutusmoduuliLaajuusArvo = column[Option[Float]]("koulutusmoduuli_laajuus_arvo", SqlType("numeric"))
+    val koulutusmoduuliLaajuusYksikkö = column[Option[String]]("koulutusmoduuli_laajuus_yksikko", StringIdentifierType)
+    val arviointiHyväksytty = column[Boolean]("arviointi_hyvaksytty")
+    def * = (opiskeluoikeusOid, päätasonSuoritusId, toteuttavanLuokanNimi, koulutusmoduuliLaajuusArvo, koulutusmoduuliLaajuusYksikkö, arviointiHyväksytty) <> (MuuAmmatillinenOsasuoritusRaportointiRow.tupled, MuuAmmatillinenOsasuoritusRaportointiRow.unapply)
+  }
+
+  class MuuAmmatillinenOsasuoritusRaportointiTableTemp(tag: Tag) extends MuuAmmatillinenOsasuoritusRaportointiTable(tag, Temp)
+
   class ROsasuoritusTableTemp(tag: Tag) extends ROsasuoritusTable(tag, Temp)
 
   class RHenkilöTable(tag: Tag, schema: Schema = Public) extends Table[RHenkilöRow](tag, schema.nameOpt, "r_henkilo") {
@@ -269,6 +285,8 @@ case class ROpiskeluoikeusRow(
   viimeisinTila: Option[String],
   lisätiedotHenkilöstökoulutus: Boolean,
   lisätiedotKoulutusvienti: Boolean,
+  lähdejärjestelmäKoodiarvo: Option[String],
+  lähdejärjestelmäId: Option[String],
   data: JValue
 )
 
@@ -422,6 +440,15 @@ case class RaportointikantaStatusRow(
   lastUpdate: Timestamp,
   loadStarted: Option[Timestamp],
   loadCompleted: Option[Timestamp]
+)
+
+case class MuuAmmatillinenOsasuoritusRaportointiRow(
+  opiskeluoikeusOid: String,
+  päätasonSuoritusId: Long,
+  toteuttavanLuokanNimi: String,
+  koulutusmoduuliLaajuusArvo: Option[Float] = None,
+  koulutusmoduuliLaajuusYksikkö: Option[String] = None,
+  arviointiHyväksytty: Boolean
 )
 
 sealed trait Schema {

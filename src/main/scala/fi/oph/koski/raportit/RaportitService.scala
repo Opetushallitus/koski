@@ -1,5 +1,7 @@
 package fi.oph.koski.raportit
 
+import java.sql.Date
+
 import fi.oph.koski.config.KoskiApplication
 
 class RaportitService(application: KoskiApplication) {
@@ -9,6 +11,7 @@ class RaportitService(application: KoskiApplication) {
   private lazy val accessResolver = RaportitAccessResolver(application)
   private lazy val lukioRepository = LukioRaportitRepository(raportointiDatabase.db)
   private lazy val ammatillisenRaportitRepository = AmmatillisenRaportitRepository(raportointiDatabase.db)
+  private lazy val muuammatillinenRaportti = MuuAmmatillinenRaporttiBuilder(raportointiDatabase.db)
 
   def opiskelijaVuositiedot(request: AikajaksoRaporttiRequest): OppilaitosRaporttiResponse = {
     aikajaksoRaportti(request, AmmatillinenOpiskalijavuositiedotRaportti)
@@ -50,6 +53,13 @@ class RaportitService(application: KoskiApplication) {
       downloadToken = request.downloadToken
     )
   }
+
+  def muuAmmatillinen(request: AikajaksoRaporttiRequest) = OppilaitosRaporttiResponse(
+    sheets = Seq(muuammatillinenRaportti.build(request.oppilaitosOid, Date.valueOf(request.alku), Date.valueOf(request.loppu))),
+    workbookSettings = WorkbookSettings("Muu ammatillinen suoritustietojen tarkistus", Some(request.password)),
+    filename = s"muu_ammatillinen_koski_raportti_${request.oppilaitosOid}_${request.alku.toString.replaceAll("-","")}-${request.loppu.toString.replaceAll("-","")}.xlsx",
+    downloadToken = request.downloadToken
+  )
 
   private def aikajaksoRaportti(request: AikajaksoRaporttiRequest, raporttiBuilder: AikajaksoRaportti) = {
     val rows = raporttiBuilder.buildRaportti(raportointiDatabase, request.oppilaitosOid, request.alku, request.loppu)
