@@ -97,7 +97,7 @@ class SensitiveDataFilterSpec extends FreeSpec with Matchers {
     roundtrip[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot](aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) should equal(aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot.copy(vuosiluokkiinSitoutumatonOpetus = false, vammainen = None, vaikeastiVammainen = None))
     roundtrip[AmmatillisenOpiskeluoikeudenLisätiedot](ammatillisenOpiskeluoikeudenLisätiedot) should equal(ammatillisenOpiskeluoikeudenLisätiedot.copy(vaikeastiVammainen = None, vammainenJaAvustaja = None))
     roundtrip[DIAOpiskeluoikeudenLisätiedot](diaOpiskeluoikeudenLisätiedot).pidennettyPäättymispäivä should equal(false)
-    roundtrip[EsiopetuksenOpiskeluoikeudenLisätiedot](esiopetuksenOpiskeluoikeudenLisätiedot) should equal(esiopetuksenOpiskeluoikeudenLisätiedot.copy(pidennettyOppivelvollisuus = None))
+    roundtrip[EsiopetuksenOpiskeluoikeudenLisätiedot](esiopetuksenOpiskeluoikeudenLisätiedot) should equal(esiopetuksenOpiskeluoikeudenLisätiedot.copy(pidennettyOppivelvollisuus = None, majoitusetu = None, kuljetusetu = None))
     roundtrip[LukionOpiskeluoikeudenLisätiedot](lukionOpiskeluoikeudenLisätiedot) should equal(lukionOpiskeluoikeudenLisätiedot.copy(pidennettyPäättymispäivä = false))
     roundtrip[LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot](lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot) should equal(lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot.copy(pidennettyPäättymispäivä = false))
     roundtrip[PerusopetuksenOpiskeluoikeudenLisätiedot](perusopetuksenOpiskeluoikeudenLisätiedot) should equal(PerusopetuksenOpiskeluoikeudenLisätiedot(false,false,None,tukimuodot,Some(erityisenTuenPäätös),Some(List(erityisenTuenPäätös)),Some(aikajakso),aikajaksot,Some(aikajakso),None,None,None,None,false,None,None,None,None,Some(aikajakso),aikajaksot,aikajaksot))
@@ -148,7 +148,11 @@ class SensitiveDataFilterSpec extends FreeSpec with Matchers {
   private val esiopetuksenOpiskeluoikeudenLisätiedot = EsiopetuksenOpiskeluoikeudenLisätiedot(
     pidennettyOppivelvollisuus = Some(aikajakso),
     erityisenTuenPäätös = Some(erityisenTuenPäätös),
-    erityisenTuenPäätökset = Some(List(erityisenTuenPäätös))
+    erityisenTuenPäätökset = Some(List(erityisenTuenPäätös)),
+    koulukoti = Some(List(aikajakso)),
+    majoitusetu = Some(aikajakso),
+    kuljetusetu = Some(aikajakso),
+    tukimuodot = tukimuodot
   )
 
   private val lukionOpiskeluoikeudenLisätiedot = LukionOpiskeluoikeudenLisätiedot(
