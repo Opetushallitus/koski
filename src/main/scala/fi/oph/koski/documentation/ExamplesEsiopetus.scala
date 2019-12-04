@@ -11,6 +11,7 @@ import fi.oph.koski.schema._
 object ExamplesEsiopetus {
   val peruskoulunEsiopetuksenTunniste = "001101"
   val päiväkodinEsiopetuksenTunniste = "001102"
+  lazy val osaAikainenErityisopetus = Koodistokoodiviite("1", Some("Osa-aikainen erityisopetus"), "perusopetuksentukimuoto")
 
   lazy val opiskeluoikeus = EsiopetuksenOpiskeluoikeus(
     oppilaitos = Some(jyväskylänNormaalikoulu),
@@ -23,10 +24,14 @@ object ExamplesEsiopetus {
       )
     ),
     lisätiedot = Some(EsiopetuksenOpiskeluoikeudenLisätiedot(
+      tukimuodot = Some(List(osaAikainenErityisopetus)),
       pidennettyOppivelvollisuus = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
       vammainen = Some(List(Aikajakso(date(2010, 8, 14), None))),
       vaikeastiVammainen = Some(List(Aikajakso(date(2014, 6, 6), None))),
-      sisäoppilaitosmainenMajoitus = Some(List(Aikajakso(date(2012, 9, 1), Some(date(2013, 9, 1)))))
+      majoitusetu = Some(Aikajakso(date(2011, 8, 14), Some(date(2012, 8, 14)))),
+      kuljetusetu = Some(Aikajakso(date(2011, 8, 14), Some(date(2012, 8, 14)))),
+      sisäoppilaitosmainenMajoitus = Some(List(Aikajakso(date(2012, 9, 1), Some(date(2013, 9, 1))))),
+      koulukoti = Some(List(Aikajakso(date(2011, 8, 14), None)))
     ))
   )
 
