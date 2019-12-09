@@ -1,3 +1,6 @@
+## 6.11.2019
+- Lisätty mahdollisuus siirtää kokonaisuuksia "Korkeakouluopintoja" ja "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja" osasuorituksina päätason suoritukselle Ammatillisen tutkinnon osa/osia.
+
 ## 4.11.2019
 - Lisätty esiopetuksen opiskeluoikeuden lisätietoihin kentät:
     - tukimuodot
