@@ -1,3 +1,10 @@
+## 4.11.2019
+- Lisätty esiopetuksen opiskeluoikeuden lisätietoihin kentät:
+    - tukimuodot
+    - majoitusetu
+    - kuljetusetu
+    - koulukoti
+
 ## 19.9.2019
 - Lisätty suoritustapa-kenttä nuorten perusopetuksen oppiaineen suoritukseen valmistavassa opetuksessa 
 - Yhteisen tutkinnon osan osa-alueita voi lisätä osasuorituksiksi suorituksiin:
