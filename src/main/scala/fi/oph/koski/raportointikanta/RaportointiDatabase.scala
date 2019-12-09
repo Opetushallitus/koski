@@ -38,7 +38,8 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
     ROrganisaatioKielet,
     RKoodistoKoodit,
     RaportointikantaStatus,
-    MuuAmmatillinenOsasuoritusRaportointi
+    MuuAmmatillinenOsasuoritusRaportointi,
+    TOPKSAmmatillinenOsasuoritusRaportointi
   )
 
   def moveTo(newSchema: Schema): Unit = {
@@ -102,6 +103,11 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
     runDbSync(MuuAmmatillinenOsasuoritusRaportointi.schema.truncate)
   def loadMuuAmmatillinenRaportointi(rows: Seq[MuuAmmatillinenOsasuoritusRaportointiRow]): Unit =
     runDbSync(MuuAmmatillinenOsasuoritusRaportointi ++= rows, timeout = 5.minutes)
+
+  def deleteTOPKSAmmatillinenRaportointi: Unit =
+    runDbSync(TOPKSAmmatillinenOsasuoritusRaportointi.schema.truncate)
+  def loadTOPKSAmmatillinenRaportointi(rows: Seq[TOPKSAmmatillinenRaportointiRow]): Unit =
+    runDbSync(TOPKSAmmatillinenOsasuoritusRaportointi ++= rows, timeout = 5.minutes)
 
   def deleteHenkilöt: Unit =
     runDbSync(RHenkilöt.schema.truncate)
@@ -255,6 +261,11 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
   lazy val MuuAmmatillinenOsasuoritusRaportointi = schema match {
     case Public => TableQuery[MuuAmmatillinenOsasuoritusRaportointiTable]
     case Temp => TableQuery[MuuAmmatillinenOsasuoritusRaportointiTableTemp]
+  }
+
+  lazy val TOPKSAmmatillinenOsasuoritusRaportointi = schema match {
+    case Public => TableQuery[TOPKSAmmatillinenOsasuoritusRaportointiTable]
+    case Temp => TableQuery[TOPKSAmmatillinenOsasuoritusRaportointiTableTemp]
   }
 }
 

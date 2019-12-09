@@ -25,36 +25,54 @@ object TutkinnonOsaaPienempiKokonaisuusExample {
     )),
     lisätiedot = None,
     oppilaitos = Some(stadinAmmattiopisto),
-    suoritukset = List(
-      TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(
-        koulutusmoduuli = tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus,
+    suoritukset = List(tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus)
+  )
+
+  lazy val tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus = TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(
+    koulutusmoduuli = tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus,
+    alkamispäivä = None,
+    osaamisenHankkimistavat = None,
+    koulutussopimukset = None,
+    suorituskieli = suomenKieli,
+    toimipiste = stadinToimipiste,
+    osasuoritukset = Some(List(
+      TutkinnonOsaaPienemmänKokonaisuudenSuoritus(
+        TutkinnonOsaaPienempiKokonaisuus(
+          PaikallinenKoodi("AKTV", "Asunto- ja kiinteistöosakeyhtiön talous ja verotus"),
+          None,
+          finnish("Kurssilla opitaan hallitsemaan asunto- ja kiinteistöosakeyhtiön taloutta ja verotusta.")
+        ),
         alkamispäivä = None,
-        osaamisenHankkimistavat = None,
-        koulutussopimukset = None,
-        suorituskieli = suomenKieli,
-        toimipiste = stadinToimipiste,
-        osasuoritukset = Some(List(
-          TutkinnonOsaaPienemmänKokonaisuudenSuoritus(
-            TutkinnonOsaaPienempiKokonaisuus(
-              PaikallinenKoodi("AKTV", "Asunto- ja kiinteistöosakeyhtiön talous ja verotus"),
-              None,
-              finnish("Kurssilla opitaan hallitsemaan asunto- ja kiinteistöosakeyhtiön taloutta ja verotusta.")
-            ),
-            alkamispäivä = None,
-            arviointi = None,
-            näyttö = None,
-            liittyyTutkinnonOsaan = Koodistokoodiviite(
-              "101481",
-              koodistoUri = "tutkinnonosat"
-            ),
-            lisätiedot = None,
-            suorituskieli = None
-          ),
-          MuunAmmatillisenKoulutuksenExample.yhteisenTutkinnonOsanOsaAlueenSuoritusValtakunnallinen,
-          MuunAmmatillisenKoulutuksenExample.yhteisenTutkinnonOsanOsaAlueenSuoritusPaikallinen
-        ))
-      )
-    )
+        arviointi = Some(List(arviointiHyväksytty)),
+        näyttö = None,
+        liittyyTutkinnonOsaan = Koodistokoodiviite(
+          "101481",
+          koodistoUri = "tutkinnonosat"
+        ),
+        lisätiedot = None,
+        suorituskieli = None
+      ),
+      TutkinnonOsaaPienemmänKokonaisuudenSuoritus(
+        TutkinnonOsaaPienempiKokonaisuus(
+          PaikallinenKoodi("ATK", "Tietokoneiden huolto"),
+          Some(LaajuusKaikkiYksiköt(4, laajuusOsaamispisteissä)),
+          finnish("Kurssilla opitaan korjaamaan tietokoneita.")
+        ),
+        alkamispäivä = None,
+        arviointi = None,
+        näyttö = None,
+        liittyyTutkinnonOsaan = Koodistokoodiviite(
+          "101481",
+          koodistoUri = "tutkinnonosat"
+        ),
+        lisätiedot = None,
+        suorituskieli = None
+      ),
+      MuunAmmatillisenKoulutuksenExample.yhteisenTutkinnonOsanOsaAlueenSuoritusValtakunnallinen,
+      MuunAmmatillisenKoulutuksenExample.yhteisenTutkinnonOsanOsaAlueenSuoritusPaikallinen,
+      MuunAmmatillisenKoulutuksenExample.yhteisenTutkinnonOsanOsaAlueenSuoritusTunnustettuKesken,
+      MuunAmmatillisenKoulutuksenExample.yhteisenTutkinnonOsanOsaAlueenSuoritusRahoitettu
+    ))
   )
 
   lazy val example = Oppija(
@@ -288,6 +306,25 @@ object MuunAmmatillisenKoulutuksenExample {
       kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"),
       laajuus = None
     ),
+    arviointi = Some(List(arviointiHyväksytty))
+  )
+
+  lazy val yhteisenTutkinnonOsanOsaAlueenSuoritusTunnustettuKesken = YhteisenTutkinnonOsanOsaAlueenSuoritus(
+    koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(
+      Koodistokoodiviite("ETK", "ammatillisenoppiaineet"),
+      pakollinen = true,
+      laajuus = None
+    ),
+    tunnustettu = Some(AmmatillinenExampleData.tunnustettu.copy(rahoituksenPiirissä = false))
+  )
+
+  lazy val yhteisenTutkinnonOsanOsaAlueenSuoritusRahoitettu = YhteisenTutkinnonOsanOsaAlueenSuoritus(
+    koulutusmoduuli = ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(
+      Koodistokoodiviite("PS", "ammatillisenoppiaineet"),
+      pakollinen = true,
+      laajuus = Some(LaajuusOsaamispisteissä(5, laajuusOsaamispisteissä))
+    ),
+    tunnustettu = Some(AmmatillinenExampleData.tunnustettu.copy(rahoituksenPiirissä = true)),
     arviointi = Some(List(arviointiHyväksytty))
   )
 }

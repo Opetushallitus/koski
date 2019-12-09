@@ -29,6 +29,7 @@ export const raportitContentP = () => {
             {raportit && raportit.includes('ammatillinentutkintosuoritustietojentarkistus') && <SuoritustietojenTarkistus organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('ammatillinenosittainensuoritustietojentarkistus') && <AmmatillinenOsittainenSuoritustietojenTarkistus organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('muuammatillinenkoulutus') && <MuuAmmatillinenRaportti organisaatioAtom={organisaatioAtom} />}
+            {raportit && raportit.includes('topksammatillinen') && <TOPKSAmmatillinenRaportti organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('perusopetuksenvuosiluokka') && <PerusopetuksenVuosiluokka organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('lukionsuoritustietojentarkistus') && <Lukioraportti organisaatioAtom={organisaatioAtom} />}
           </div>
@@ -101,6 +102,18 @@ const MuuAmmatillinenRaportti = ({organisaatioAtom}) => {
   return (<AikajaksoRaportti
     organisaatioAtom={organisaatioAtom}
     apiEndpoint={'/muuammatillinen'}
+    title={titleText}
+    description={descriptionText}
+  />)
+}
+
+const TOPKSAmmatillinenRaportti = ({organisaatioAtom}) => {
+  const titleText = <Text name='Suoritustiedot (TOPKS ammatillinen koulutus)'/>
+  const descriptionText = <Text name='topksammatillinen-description'/>
+
+  return (<AikajaksoRaportti
+    organisaatioAtom={organisaatioAtom}
+    apiEndpoint={'/topksammatillinen'}
     title={titleText}
     description={descriptionText}
   />)

@@ -4,24 +4,20 @@ import java.sql.Date
 import java.time.LocalDate
 
 import fi.oph.koski.KoskiApplicationForTests
-import fi.oph.koski.documentation.ExampleData.{helsinki, opiskeluoikeusValmistunut}
-import fi.oph.koski.api.OpiskeluoikeusTestMethodsAmmatillinen
-import fi.oph.koski.documentation.AmmatillinenExampleData
 import fi.oph.koski.documentation.AmmatillinenExampleData.{ammatillinenTutkintoSuoritus, kiinteistösihteerinMuuAmmatillinenKoulutus, puutarhuri}
 import fi.oph.koski.documentation.MuunAmmatillisenKoulutuksenExample.muunAmmatillisenKoulutuksenSuoritus
 import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, MockOppijat}
-import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
+import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot.stadinAmmattiopisto
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
-import fi.oph.koski.schema._
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
-class MuuAmmatillinenRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll with OpiskeluoikeusTestMethodsAmmatillinen {
+class MuuAmmatillinenRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll with AmmatillinenRaporttiTestMethods {
 
   override def beforeAll: Unit = {
     resetFixtures
-    insertOpiskeluoikeusPäivämäärillä(MockOppijat.amis, alkanut = LocalDate.of(2019, 1, 2), päättynyt = LocalDate.of(2019, 12, 31))
-    insertOpiskeluoikeusPäivämäärillä(MockOppijat.lukiolainen, alkanut = LocalDate.of(2017, 1, 1), päättynyt = LocalDate.of(2020, 1, 1))
+    insertMuuAmmatillisenSuorituksenOpiskeluoikeusPäivämäärillä(MockOppijat.amis, alkanut = LocalDate.of(2019, 1, 2), päättynyt = LocalDate.of(2019, 12, 31))
+    insertMuuAmmatillisenSuorituksenOpiskeluoikeusPäivämäärillä(MockOppijat.lukiolainen, alkanut = LocalDate.of(2017, 1, 1), päättynyt = LocalDate.of(2020, 1, 1))
     insertSisällytettyOpiskeluoikeusSuorituksilla(MockOppijat.eero, innerSuoritukset = List(muunAmmatillisenKoulutuksenSuoritus, ammatillinenTutkintoSuoritus(puutarhuri)), outerSuoritukset = List(kiinteistösihteerinMuuAmmatillinenKoulutus()))
     loadRaportointikantaFixtures
   }
@@ -94,32 +90,6 @@ class MuuAmmatillinenRaporttiSpec extends FreeSpec with Matchers with Raportoint
         eeronOuterOpiskeluoikeus.suoritutettujenOsasuoritustenLkm should equal(0)
         eeronInnerOpiskeluoikeus.suoritutettujenOsasuoritustenLkm should equal(6)
       }
-    }
-  }
-
-  private def insertSisällytettyOpiskeluoikeusSuorituksilla(oppija: LaajatOppijaHenkilöTiedot, innerSuoritukset: List[AmmatillinenPäätasonSuoritus], outerSuoritukset: List[AmmatillinenPäätasonSuoritus]) = {
-    val omnia = MockOrganisaatioRepository.findByOppilaitosnumero("10054").get
-    val stadinAmmattiopisto = MockOrganisaatioRepository.findByOppilaitosnumero("10105").get
-
-    val innerOpiskeluoikeus = makeOpiskeluoikeus(LocalDate.of(2016, 1, 1), omnia, omnia.oid).copy(suoritukset = innerSuoritukset)
-    val outerOpiskeluoikeus = makeOpiskeluoikeus(LocalDate.of(2016, 1, 1), stadinAmmattiopisto, stadinAmmattiopisto.oid).copy(suoritukset = outerSuoritukset)
-
-    putOpiskeluoikeus(outerOpiskeluoikeus, oppija) {
-      verifyResponseStatusOk()
-      val outerOpiskeluoikeusOid = lastOpiskeluoikeus(oppija.oid).oid.get
-      putOpiskeluoikeus(sisällytäOpiskeluoikeus(innerOpiskeluoikeus, SisältäväOpiskeluoikeus(stadinAmmattiopisto, outerOpiskeluoikeusOid)), oppija) {
-        verifyResponseStatusOk()
-      }
-    }
-  }
-
-  private def vahvistus(päivä: LocalDate) = Some(HenkilövahvistusValinnaisellaPaikkakunnalla(päivä, Some(helsinki), AmmatillinenExampleData.stadinAmmattiopisto, List(Organisaatiohenkilö("Reijo Reksi", LocalizedString.finnish("rehtori"), AmmatillinenExampleData.stadinAmmattiopisto))))
-
-  private def insertOpiskeluoikeusPäivämäärillä(oppija: LaajatOppijaHenkilöTiedot, alkanut: LocalDate, päättynyt: LocalDate) = {
-    val valmistunutOpiskeluoikeus = lisääTila(makeOpiskeluoikeus(alkanut).copy(suoritukset = List(muunAmmatillisenKoulutuksenSuoritus.copy(vahvistus = vahvistus(päättynyt), osasuoritukset = None))), päättynyt, opiskeluoikeusValmistunut)
-
-    putOpiskeluoikeus(valmistunutOpiskeluoikeus, oppija) {
-      verifyResponseStatusOk()
     }
   }
 
