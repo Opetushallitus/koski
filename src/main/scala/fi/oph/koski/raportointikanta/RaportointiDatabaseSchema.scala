@@ -282,6 +282,15 @@ object RaportointiDatabaseSchema {
   class RaportointikantaStatusTableTemp(tag: Tag) extends RaportointikantaStatusTable(tag, Temp)
 }
 
+trait AikajaksoRow[A] {
+  def tila: String
+  def tilaAlkanut: Date
+  def alku: Date
+  def loppu: Date
+  def withTilaAlkanut(d: Date): A
+  def withLoppu(d: Date): A
+}
+
 case class ROpiskeluoikeusRow(
   opiskeluoikeusOid: String,
   versionumero: Int,
@@ -326,13 +335,15 @@ case class ROpiskeluoikeusAikajaksoRow(
   vankilaopetuksessa: Byte = 0,
   oppisopimusJossainPäätasonSuorituksessa: Byte = 0,
   id: Long = 0
-) {
+) extends AikajaksoRow[ROpiskeluoikeusAikajaksoRow] {
   def truncateToDates(start: Date, end: Date): ROpiskeluoikeusAikajaksoRow = this.copy(
     alku = if (alku.after(start)) alku else start,
     loppu = if (loppu.before(end)) loppu else end
   )
   lazy val lengthInDays: Int = ChronoUnit.DAYS.between(alku.toLocalDate, loppu.toLocalDate).toInt + 1
 
+  def withLoppu(d: Date): ROpiskeluoikeusAikajaksoRow = this.copy(loppu = d)
+  def withTilaAlkanut(d: Date): ROpiskeluoikeusAikajaksoRow = this.copy(tilaAlkanut = d)
 }
 
 sealed trait RSuoritusRow {

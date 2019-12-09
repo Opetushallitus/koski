@@ -8,13 +8,17 @@ import fi.oph.koski.util.DateOrdering
 
 object AikajaksoRowBuilder {
 
-  def buildROpiskeluoikeusAikajaksoRows(opiskeluoikeusOid: String, o: KoskeenTallennettavaOpiskeluoikeus): Seq[ROpiskeluoikeusAikajaksoRow] = {
+  def buildROpiskeluoikeusAikajaksoRows(opiskeluoikeusOid: String, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): Seq[ROpiskeluoikeusAikajaksoRow] = {
+    buildAikajaksoRows(buildROpiskeluoikeusAikajaksoRowForOneDay, opiskeluoikeusOid, opiskeluoikeus)
+  }
+
+  private def buildAikajaksoRows[A <: KoskeenTallennettavaOpiskeluoikeus, B <: AikajaksoRow[B]](buildAikajaksoRow: ((String, A, LocalDate) => B), opiskeluoikeusOid: String, opiskeluoikeus: A): Seq[B] = {
     var edellinenTila: Option[String] = None
     var edellinenTilaAlkanut: Option[Date] = None
-    for ((alku, loppu) <- aikajaksot(o)) yield {
-      val aikajakso = buildROpiskeluoikeusAikajaksoRowForOneDay(opiskeluoikeusOid, o, alku).copy(loppu = Date.valueOf(loppu))
+    for ((alku, loppu) <- aikajaksot(opiskeluoikeus)) yield {
+      val aikajakso = buildAikajaksoRow(opiskeluoikeusOid, opiskeluoikeus, alku).withLoppu(Date.valueOf(loppu))
       if (edellinenTila.isDefined && edellinenTila.get == aikajakso.tila) {
-        aikajakso.copy(tilaAlkanut = edellinenTilaAlkanut.get)
+        aikajakso.withTilaAlkanut(edellinenTilaAlkanut.get)
       } else {
         edellinenTila = Some(aikajakso.tila)
         edellinenTilaAlkanut = Some(aikajakso.alku)
