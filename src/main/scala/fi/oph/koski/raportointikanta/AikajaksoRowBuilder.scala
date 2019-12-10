@@ -12,6 +12,10 @@ object AikajaksoRowBuilder {
     buildAikajaksoRows(buildROpiskeluoikeusAikajaksoRowForOneDay, opiskeluoikeusOid, opiskeluoikeus)
   }
 
+  def buildEsiopetusOpiskeluoikeusAikajaksoRows(opiskeluoikeusOid: String, opiskeluoikeus: EsiopetuksenOpiskeluoikeus): Seq[EsiopetusOpiskeluoikeusAikajaksoRow] = {
+    buildAikajaksoRows(buildEsiopetusAikajaksoRowForOneDay, opiskeluoikeusOid, opiskeluoikeus)
+  }
+
   private def buildAikajaksoRows[A <: KoskeenTallennettavaOpiskeluoikeus, B <: AikajaksoRow[B]](buildAikajaksoRow: ((String, A, LocalDate) => B), opiskeluoikeusOid: String, opiskeluoikeus: A): Seq[B] = {
     var edellinenTila: Option[String] = None
     var edellinenTilaAlkanut: Option[Date] = None
@@ -98,6 +102,36 @@ object AikajaksoRowBuilder {
     // Note: When adding something here, remember to update aikajaksojenAlkupäivät (below), too
   }
 
+  private def buildEsiopetusAikajaksoRowForOneDay(opiskeluoikeudenOid: String, o: EsiopetuksenOpiskeluoikeus, päivä: LocalDate): EsiopetusOpiskeluoikeusAikajaksoRow = {
+    val jakso = o.tila.opiskeluoikeusjaksot
+      .filterNot(_.alku.isAfter(päivä))
+      .lastOption.getOrElse(throw new RuntimeException(s"Opiskeluoikeusjaksoa ei löydy $opiskeluoikeudenOid $päivä"))
+    val erityisenTuenPäätökset = o.lisätiedot.map(lt => (lt.erityisenTuenPäätös.toList ++ lt.erityisenTuenPäätökset.toList.flatten)).toList.flatten
+    val päivänäAktiivisetPäätökset = erityisenTuenPäätökset.filter(_.voimassaPäivänä(päivä))
+    val aktiivistenErityisenTuenPäätöksienToteutuspaikat = päivänäAktiivisetPäätökset.flatMap(_.toteutuspaikka.map(_.koodiarvo))
+
+    EsiopetusOpiskeluoikeusAikajaksoRow(
+      opiskeluoikeudenOid,
+      alku = Date.valueOf(päivä),
+      loppu = Date.valueOf(päivä),
+      tila = jakso.tila.koodiarvo,
+      tilaAlkanut = Date.valueOf(päivä),
+      opiskeluoikeusPäättynyt = jakso.opiskeluoikeusPäättynyt,
+      pidennettyOppivelvollisuus = o.lisätiedot.exists(_.pidennettyOppivelvollisuus.exists(_.contains(päivä))),
+      tukimuodot = o.lisätiedot.flatMap(_.tukimuodot.map(_.map(_.koodiarvo))).map(_.mkString(";")),
+      erityisenTuenPäätös = !päivänäAktiivisetPäätökset.isEmpty,
+      erityisenTuenPäätösOpiskeleeToimintaAlueittain = päivänäAktiivisetPäätökset.exists(_.opiskeleeToimintaAlueittain),
+      erityisenTuenPäätösErityisryhmässä = päivänäAktiivisetPäätökset.exists(_.erityisryhmässä.getOrElse(false)),
+      erityisenTuenPäätösToteutuspaikka = if (aktiivistenErityisenTuenPäätöksienToteutuspaikat.isEmpty) None else Some(aktiivistenErityisenTuenPäätöksienToteutuspaikat.mkString(";")),
+      vammainen = o.lisätiedot.exists(_.vammainen.exists(_.exists(_.contains(päivä)))),
+      vaikeastiVammainen = o.lisätiedot.exists(_.vaikeastiVammainen.exists(_.exists(_.contains(päivä)))),
+      majoitusetu = o.lisätiedot.exists(_.majoitusetu.exists(_.contains(päivä))),
+      kuljetusetu = o.lisätiedot.exists(_.kuljetusetu.exists(_.contains(päivä))),
+      sisäoppilaitosmainenMajoitus = o.lisätiedot.exists(_.sisäoppilaitosmainenMajoitus.exists(_.exists(_.contains(päivä)))),
+      koulukoti = o.lisätiedot.exists(_.koulukoti.exists(_.exists(_.contains(päivä))))
+    )
+  }
+
   val IndefiniteFuture = LocalDate.of(9999, 12, 31) // no special meaning, but must be after any possible real alkamis/päättymispäivä
 
   private def aikajaksot(o: KoskeenTallennettavaOpiskeluoikeus): Seq[(LocalDate, LocalDate)] = {
@@ -150,6 +184,17 @@ object AikajaksoRowBuilder {
         Seq(
           lvol.sisäoppilaitosmainenMajoitus
         ).flatMap(_.getOrElse(List.empty))
+      case eol: EsiopetuksenOpiskeluoikeudenLisätiedot => Seq(
+          eol.vaikeastiVammainen,
+          eol.sisäoppilaitosmainenMajoitus,
+          eol.koulukoti
+        ).flatMap(_.getOrElse(List.empty)) ++
+          List(
+            eol.pidennettyOppivelvollisuus,
+            eol.majoitusetu,
+            eol.kuljetusetu
+          ).flatten ++
+          (eol.erityisenTuenPäätös.toList ++ eol.erityisenTuenPäätökset.toList.flatten).flatMap(päätös => päätös.alku.map(Aikajakso(_, päätös.loppu)))
       case _ => Seq()
     } else Seq()
 

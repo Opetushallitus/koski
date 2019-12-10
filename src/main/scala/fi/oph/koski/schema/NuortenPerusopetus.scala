@@ -182,7 +182,9 @@ Huom: toiminta-alue arviointeineen on kuvattu oppiaineen suorituksessa.""")
   @KoodistoUri("erityisopetuksentoteutuspaikka")
   @Title("Erityisopetuksen toteutuspaikka")
   toteutuspaikka: Option[Koodistokoodiviite] = None
-)
+) {
+  def voimassaPäivänä(d: LocalDate): Boolean = (alku.isDefined && !d.isBefore(alku.get)) && (loppu.isEmpty || !d.isAfter(loppu.get))
+}
 
 trait PerusopetuksenPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with MonikielinenSuoritus with Suorituskielellinen
 

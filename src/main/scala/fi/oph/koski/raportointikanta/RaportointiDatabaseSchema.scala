@@ -346,6 +346,30 @@ case class ROpiskeluoikeusAikajaksoRow(
   def withTilaAlkanut(d: Date): ROpiskeluoikeusAikajaksoRow = this.copy(tilaAlkanut = d)
 }
 
+case class EsiopetusOpiskeluoikeusAikajaksoRow(
+  opiskeluoikeusOid: String,
+  alku: Date,
+  loppu: Date,
+  tila: String,
+  tilaAlkanut: Date,
+  opiskeluoikeusPäättynyt: Boolean = false,
+  pidennettyOppivelvollisuus: Boolean = false,
+  tukimuodot: Option[String] = None,
+  erityisenTuenPäätös: Boolean = false,
+  erityisenTuenPäätösOpiskeleeToimintaAlueittain: Boolean = false,
+  erityisenTuenPäätösErityisryhmässä: Boolean = false,
+  erityisenTuenPäätösToteutuspaikka: Option[String] = None,
+  vammainen: Boolean = false,
+  vaikeastiVammainen: Boolean = false,
+  majoitusetu: Boolean = false,
+  kuljetusetu: Boolean = false,
+  sisäoppilaitosmainenMajoitus: Boolean = false,
+  koulukoti: Boolean = false
+) extends AikajaksoRow[EsiopetusOpiskeluoikeusAikajaksoRow] {
+  def withLoppu(d: Date): EsiopetusOpiskeluoikeusAikajaksoRow = this.copy(loppu = d)
+  def withTilaAlkanut(d: Date): EsiopetusOpiskeluoikeusAikajaksoRow = this.copy(tilaAlkanut = d)
+}
+
 sealed trait RSuoritusRow {
   def arviointiArvosanaKoodiarvo: Option[String]
   def matchesWith(x: LukioRaporttiOppiaineTaiKurssi): Boolean
