@@ -31,6 +31,7 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
   val tables = List(
     ROpiskeluoikeudet,
     ROpiskeluoikeusAikajaksot,
+    EsiopetusOpiskeluoikeusAikajaksot,
     RPäätasonSuoritukset,
     ROsasuoritukset,
     RHenkilöt,
@@ -89,6 +90,11 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
 
   def loadOpiskeluoikeusAikajaksot(jaksot: Seq[ROpiskeluoikeusAikajaksoRow]): Unit =
     runDbSync(ROpiskeluoikeusAikajaksot ++= jaksot)
+
+  def deleteEsiopetusOpiskeluoikeusAikajaksot: Unit =
+    runDbSync(EsiopetusOpiskeluoikeusAikajaksot.schema.truncate)
+  def loadEsiopetusOpiskeluoikeusAikajaksot(jaksot: Seq[EsiopetusOpiskeluoikeusAikajaksoRow]): Unit =
+    runDbSync(EsiopetusOpiskeluoikeusAikajaksot ++= jaksot)
 
   def deletePäätasonSuoritukset: Unit =
     runDbSync(RPäätasonSuoritukset.schema.truncate)
@@ -221,6 +227,11 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
   lazy val ROpiskeluoikeusAikajaksot = schema match {
     case Public => TableQuery[ROpiskeluoikeusAikajaksoTable]
     case Temp => TableQuery[ROpiskeluoikeusAikajaksoTableTemp]
+  }
+
+  lazy val EsiopetusOpiskeluoikeusAikajaksot = schema match {
+    case Public => TableQuery[EsiopetusOpiskeluoikeusAikajaksoTable]
+    case Temp => TableQuery[EsiopetusOpiskeluoikeusAikajaksoTableTemp]
   }
 
   lazy val RPäätasonSuoritukset = schema match {

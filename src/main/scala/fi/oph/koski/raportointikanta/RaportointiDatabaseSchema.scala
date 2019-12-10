@@ -40,7 +40,9 @@ object RaportointiDatabaseSchema {
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(opiskeluoikeus_oid)",
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(vahvistus_paiva)",
     sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(suorituksen_tyyppi)",
-    sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(ylempi_osasuoritus_id)"
+    sqlu"CREATE INDEX ON #${s.name}.r_osasuoritus(ylempi_osasuoritus_id)",
+    sqlu"CREATE INDEX ON #${s.name}.esiopetus_opiskeluoikeus_aikajakso(opiskeluoikeus_oid)",
+    sqlu"CREATE INDEX ON #${s.name}.esiopetus_opiskeluoikeus_aikajakso(alku)"
   )
 
   def createOtherIndexes(s: Schema) = DBIO.seq(
@@ -52,6 +54,7 @@ object RaportointiDatabaseSchema {
   def dropAllIfExists(s: Schema) = DBIO.seq(
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_opiskeluoikeus CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_opiskeluoikeus_aikajakso CASCADE",
+    sqlu"DROP TABLE IF EXISTS #${s.name}.esiopetus_opiskeluoikeus_aikajakso CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_paatason_suoritus CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_osasuoritus CASCADE",
     sqlu"DROP TABLE IF EXISTS #${s.name}.r_henkilo CASCADE",
@@ -140,6 +143,32 @@ object RaportointiDatabaseSchema {
       osaAikaisuus, opiskeluvalmiuksiaTukevatOpinnot, vankilaopetuksessa, oppisopimusJossainPäätasonSuorituksessa, id) <> (ROpiskeluoikeusAikajaksoRow.tupled, ROpiskeluoikeusAikajaksoRow.unapply)
   }
   class ROpiskeluoikeusAikajaksoTableTemp(tag: Tag) extends ROpiskeluoikeusAikajaksoTable(tag, Temp)
+
+  class EsiopetusOpiskeluoikeusAikajaksoTable(tag: Tag, schema: Schema = Public) extends Table[EsiopetusOpiskeluoikeusAikajaksoRow](tag, schema.nameOpt, "esiopetus_opiskeluoikeus_aikajakso") {
+    val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
+    val alku = column[Date]("alku")
+    val loppu = column[Date]("loppu")
+    val tila = column[String]("tila", StringIdentifierType)
+    val tilaAlkanut = column[Date]("tila_alkanut")
+    val opiskeluoikeusPäättynyt = column[Boolean]("opiskeluoikeus_paattynyt")
+    val pidennettyOppivelvollisuus = column[Boolean]("pidennetty_oppivelvollisuus")
+    val tukimuodot = column[Option[String]]("tukimuodot")
+    val erityisenTuenPäätös = column[Boolean]("erityisen_tuen_paatos")
+    val erityisenTuenPäätösOpiskeleeToimintaAlueittain = column[Boolean]("erityisen_tuen_paatos_opiskelee_toiminta_alueittain")
+    val erityisenTuenPäätösErityisryhmässä = column[Boolean]("erityisen_tuen_paatos_erityisryhmassa")
+    val erityisenTuenPäätösToteutuspaikka = column[Option[String]]("erityisen_tuen_paatos_toteutuspaikka")
+    val vammainen = column[Boolean]("vammainen")
+    val vaikeastiVammainen = column[Boolean]("vaikeasti_vammainen")
+    val majoitusetu = column[Boolean]("majoitusetu")
+    val kuljetusetu = column[Boolean]("kuljetusetu")
+    val sisäoppilaitosmainenMajoitus = column[Boolean]("sisaoppilaitosmainen_majoitus")
+    val koulukoti = column[Boolean]("koulukoti")
+    def * = (opiskeluoikeusOid, alku, loppu, tila, tilaAlkanut, opiskeluoikeusPäättynyt, pidennettyOppivelvollisuus, tukimuodot,
+      erityisenTuenPäätös, erityisenTuenPäätösOpiskeleeToimintaAlueittain, erityisenTuenPäätösErityisryhmässä, erityisenTuenPäätösToteutuspaikka,
+      vammainen, vaikeastiVammainen, majoitusetu, kuljetusetu,
+      sisäoppilaitosmainenMajoitus, koulukoti) <> (EsiopetusOpiskeluoikeusAikajaksoRow.tupled, EsiopetusOpiskeluoikeusAikajaksoRow.unapply)
+  }
+  class EsiopetusOpiskeluoikeusAikajaksoTableTemp(tag: Tag) extends EsiopetusOpiskeluoikeusAikajaksoTable(tag, Temp)
 
   class RPäätasonSuoritusTable(tag: Tag, schema: Schema = Public) extends Table[RPäätasonSuoritusRow](tag, schema.nameOpt, "r_paatason_suoritus") {
     val päätasonSuoritusId = column[Long]("paatason_suoritus_id")
