@@ -8,21 +8,19 @@ import fi.oph.koski.documentation.TutkinnonOsaaPienempiKokonaisuusExample
 import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, MockOppijat}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
-import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
+import org.scalatest.{FreeSpec, Matchers}
 import fi.oph.koski.organisaatio.MockOrganisaatiot.stadinAmmattiopisto
 
-class TOPKSAmmatillinenRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll with AmmatillinenRaporttiTestMethods {
+class TOPKSAmmatillinenRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with AmmatillinenRaporttiTestMethods {
 
-  override def beforeAll: Unit = {
+  lazy val raportti = {
     resetFixtures
     insertTOPKSOpiskeluoikeusPäivämäärillä(MockOppijat.lukioKesken, alkanut = LocalDate.of(2017, 1, 2), päättynyt = LocalDate.of(2017, 12, 31))
     insertTOPKSOpiskeluoikeusPäivämäärillä(MockOppijat.amis, alkanut = LocalDate.of(2019, 1, 2), päättynyt = LocalDate.of(2019, 12, 31))
     insertTOPKSOpiskeluoikeusPäivämäärillä(MockOppijat.lukiolainen, alkanut = LocalDate.of(2017, 1, 1), päättynyt = LocalDate.of(2020, 1, 1))
     insertSisällytettyOpiskeluoikeusSuorituksilla(MockOppijat.eero, innerSuoritukset = List(TutkinnonOsaaPienempiKokonaisuusExample.tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus), outerSuoritukset = List(TutkinnonOsaaPienempiKokonaisuusExample.tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus.copy(osasuoritukset = None)))
     loadRaportointikantaFixtures
-  }
 
-  lazy val raportti = {
     val raporttiBuilder = TOPKSAmmatillinenRaporttiBuilder(KoskiApplicationForTests.raportointiDatabase.db)
     val alku = Date.valueOf(LocalDate.of(2018, 1, 1))
     val loppu = Date.valueOf(LocalDate.of(2019, 1, 1))
