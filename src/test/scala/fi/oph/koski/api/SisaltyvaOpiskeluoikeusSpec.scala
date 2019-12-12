@@ -110,6 +110,6 @@ class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with Opiskelu
 
   private def syncPerustiedotToElasticsearch(waitCondition: => Boolean): Unit = {
     KoskiApplicationForTests.perustiedotSyncScheduler.syncAndLogErrors(None)
-    Wait.until(waitCondition)
+    Wait.until(waitCondition, timeoutMs = 120000)
   }
 }
