@@ -2,7 +2,8 @@ package fi.oph.koski.koskiuser
 
 import fi.oph.koski.cache.{CacheManager, ExpiringCache, KeyValueCache}
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioRepository}
-import fi.oph.koski.userdirectory.{DirectoryClient, DirectoryUser}
+import fi.oph.koski.schema.OidOrganisaatio
+import fi.oph.koski.userdirectory.DirectoryClient
 import fi.oph.koski.util.Timing
 
 import scala.concurrent.duration._
@@ -31,7 +32,7 @@ class KäyttöoikeusRepository(organisaatioRepository: OrganisaatioRepository, d
               }
               flattened.map { org =>
                 k.copy(organisaatio = org.toOrganisaatio, juuri = org.oid == k.organisaatio.oid, oppilaitostyyppi = org.oppilaitostyyppi)
-              }
+              } ++ organisaatioHierarkia.toList.flatMap(hiearkianUlkopuolisetKäyttöoikeudet(k, _))
           }
         }
       case None =>
@@ -45,4 +46,13 @@ class KäyttöoikeusRepository(organisaatioRepository: OrganisaatioRepository, d
   private lazy val käyttöoikeusCache = new KeyValueCache[AuthenticationUser, Set[Käyttöoikeus]](
     ExpiringCache("KäyttöoikeusRepository", 5.minutes, 100), haeKäyttöoikeudet
   )
+
+  private def hiearkianUlkopuolisetKäyttöoikeudet(k: KäyttöoikeusOrg, organisaatioHierarkia: OrganisaatioHierarkia) =
+    if (organisaatioHierarkia.toKoulutustoimija.isDefined && organisaatioHierarkia.varhaiskasvatuksenJärjestäjä) {
+      organisaatioRepository.findAllVarhaiskasvatusToimipisteet.map { päiväkoti =>
+        k.copy(organisaatio = OidOrganisaatio(päiväkoti.oid), juuri = false, oppilaitostyyppi = None)
+      }
+    } else {
+      Nil
+    }
 }

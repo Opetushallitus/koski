@@ -40,6 +40,9 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(i
     fetchSearchHierarchy(query).organisaatiot.map(convertOrganisaatio)
   }
 
+  def findAllVarhaiskasvatusToimipisteet: List[OrganisaatioPalveluOrganisaatioTyyppi] =
+    runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v4/hae?aktiiviset=true&suunnitellut=true&lakkautetut=true&organisaatiotyyppi=organisaatiotyyppi_08")(Http.parseJson[OrganisaatioTyyppiHakuTulos])).organisaatiot
+
   private def search(searchTerm: String): List[OrganisaatioWithOid] = fetchSearch(searchTerm).organisaatiot.map(convertOrganisaatio).map(_.toOrganisaatio)
 
   def fetch(oid: String): OrganisaatioHakuTulos = {

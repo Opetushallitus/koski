@@ -22,11 +22,20 @@ class RemoteOrganisaatioRepositorySpec extends FreeSpec with Matchers with Befor
 
   "RemoteOrganisaatioRepository" - {
     "hakee koulutustoimijan organisaatiohierarkian" in {
-      orgRepository.getOrganisaatioHierarkia(helsinginKaupunki) should be(MockOrganisaatioRepository.getOrganisaatioHierarkia(helsinginKaupunki))
+      val hierarkia = orgRepository.getOrganisaatioHierarkia(helsinginKaupunki)
+      hierarkia should be(MockOrganisaatioRepository.getOrganisaatioHierarkia(helsinginKaupunki))
+      hierarkia.map(_.varhaiskasvatuksenJärjestäjä) should equal(Some(true))
     }
 
     "hakee oppilaitoksen organisaatiohierarkian" in {
-      orgRepository.getOrganisaatioHierarkia(MockOrganisaatiot.stadinAmmattiopisto) should be(MockOrganisaatioRepository.getOrganisaatioHierarkia(MockOrganisaatiot.stadinAmmattiopisto))
+      val hierarkia = orgRepository.getOrganisaatioHierarkia(MockOrganisaatiot.stadinAmmattiopisto)
+      hierarkia should be(MockOrganisaatioRepository.getOrganisaatioHierarkia(MockOrganisaatiot.stadinAmmattiopisto))
+      hierarkia.map(_.varhaiskasvatuksenJärjestäjä) should equal(Some(false))
+    }
+
+    "hakee kaikki päiväkodit" in {
+      val count = readResource("/mockdata/organisaatio/varhaiskasvatustoimipisteet.json").extract[Count].numHits
+      orgRepository.findAllVarhaiskasvatusToimipisteet.size should equal(count)
     }
   }
 
@@ -41,5 +50,12 @@ class RemoteOrganisaatioRepositorySpec extends FreeSpec with Matchers with Befor
     wireMockServer.stubFor(
       get(urlPathEqualTo("/organisaatio-service/rest/organisaatio/v2/hierarkia/hae"))
         .willReturn(ok(write(readResource(hierarchyResourcename(helsinginKaupunki))))))
+
+    wireMockServer.stubFor(
+      get(urlPathEqualTo("/organisaatio-service/rest/organisaatio/v4/hae"))
+        .willReturn(ok(write(readResource("/mockdata/organisaatio/varhaiskasvatustoimipisteet.json"))))
+    )
   }
 }
+
+case class Count(numHits: Int)

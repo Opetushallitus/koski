@@ -119,4 +119,9 @@ object MockOrganisaatioRepository extends JsonOrganisaatioRepository(MockKoodist
       .flatMap(oid => JsonResources.readResourceIfExists(hierarchyResourcename(oid)))
       .flatMap(json => extract[OrganisaatioHakuTulos](json, ignoreExtras = true).organisaatiot)
   }
+
+  override def findAllVarhaiskasvatusToimipisteet: List[OrganisaatioPalveluOrganisaatioTyyppi] = {
+    val json = JsonResources.readResource("/mockdata/organisaatio/varhaiskasvatustoimipisteet.json")
+    extract[OrganisaatioTyyppiHakuTulos](json, ignoreExtras = true).organisaatiot
+  }
 }
