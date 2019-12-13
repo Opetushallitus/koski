@@ -72,6 +72,12 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
     excelResponse(raportitService.topksAmmatillinen(parsedRequest))
   }
 
+  get("/esiopetus") {
+    val parsedRequest = parseRaporttiPäivältäRequest
+    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=esiopetus&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}")))
+    excelResponse(raportitService.esiopetus(parsedRequest))
+  }
+
   private def excelResponse(raportti: OppilaitosRaporttiResponse) = {
     contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     response.setHeader("Content-Disposition", s"""attachment; filename="${raportti.filename}"""")
@@ -110,6 +116,15 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
      paiva = getLocalDateParam("paiva"),
      vuosiluokka = getStringParam("vuosiluokka")
    )
+  }
+
+  private def parseRaporttiPäivältäRequest: RaporttiPäivältäRequest = {
+    RaporttiPäivältäRequest(
+      oppilaitosOid = getOppilaitosParamAndCheckAccess,
+      downloadToken = params.get("downloadToken"),
+      password = getStringParam("password"),
+      paiva = getLocalDateParam("paiva")
+    )
   }
 
   private def getOppilaitosParamAndCheckAccess: Organisaatio.Oid = {

@@ -8,6 +8,7 @@ import Http from '../util/http'
 import {AikajaksoRaportti} from './AikajaksoRaportti'
 import {VuosiluokkaRaporttiPaivalta} from './VuosiluokkaRaporttiPaivalta'
 import {AmmatillinenSuoritusTiedotRaportti} from './AmmatillinenSuoritusTiedotRaportti'
+import {RaporttiPaivalta} from './RaporttiPaivalta'
 
 export const raportitContentP = () => {
   const organisaatioAtom = Atom()
@@ -32,6 +33,7 @@ export const raportitContentP = () => {
             {raportit && raportit.includes('topksammatillinen') && <TOPKSAmmatillinenRaportti organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('perusopetuksenvuosiluokka') && <PerusopetuksenVuosiluokka organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('lukionsuoritustietojentarkistus') && <Lukioraportti organisaatioAtom={organisaatioAtom} />}
+            {raportit && raportit.includes('esiopetuksenraportti') && <EsiopetusRaportti organisaatioAtom={organisaatioAtom}/>}
           </div>
         ))}
       </div>
@@ -140,6 +142,18 @@ const Lukioraportti = ({organisaatioAtom}) => {
   return (<AikajaksoRaportti
     organisaatioAtom={organisaatioAtom}
     apiEndpoint={'/lukionsuoritustietojentarkistus'}
+    title={titleText}
+    description={descriptionText}
+  />)
+}
+
+const EsiopetusRaportti = ({organisaatioAtom}) => {
+  const titleText = <Text name='EsiopetusRaportti-title'/>
+  const descriptionText = <Text name='EsiopetusRaportti-description'/>
+
+  return (<RaporttiPaivalta
+    organisaatioAtom={organisaatioAtom}
+    apiEndpoint={'/esiopetus'}
     title={titleText}
     description={descriptionText}
   />)

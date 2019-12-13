@@ -81,6 +81,13 @@ case class AmmatillinenSuoritusTiedotRequest(
 ) extends RaporttiAikajaksoltaRequest
 
 
+case class RaporttiPäivältäRequest(
+  oppilaitosOid: Organisaatio.Oid,
+  downloadToken: Option[String],
+  password: String,
+  paiva: LocalDate
+) extends RaporttiRequest
+
 sealed abstract trait RaportinTyyppi {
   override def toString: String = this.getClass.getSimpleName.toLowerCase.filterNot(_ == '$')
 }
@@ -92,3 +99,4 @@ case object PerusopetuksenVuosiluokka extends RaportinTyyppi
 case object LukionSuoritustietojenTarkistus extends RaportinTyyppi
 case object MuuAmmatillinenKoulutus extends RaportinTyyppi
 case object TOPKSAmmatillinen extends RaportinTyyppi
+case object EsiopetuksenRaportti extends RaportinTyyppi

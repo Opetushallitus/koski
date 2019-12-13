@@ -13,6 +13,7 @@ class RaportitService(application: KoskiApplication) {
   private lazy val ammatillisenRaportitRepository = AmmatillisenRaportitRepository(raportointiDatabase.db)
   private lazy val muuammatillinenRaportti = MuuAmmatillinenRaporttiBuilder(raportointiDatabase.db)
   private lazy val topksAmmatillinenRaportti = TOPKSAmmatillinenRaporttiBuilder(raportointiDatabase.db)
+  private lazy val esiopetusRaportti = EsiopetusRaportti(raportointiDatabase.db)
 
   def opiskelijaVuositiedot(request: AikajaksoRaporttiRequest): OppilaitosRaporttiResponse = {
     aikajaksoRaportti(request, AmmatillinenOpiskalijavuositiedotRaportti)
@@ -66,6 +67,13 @@ class RaportitService(application: KoskiApplication) {
     sheets = Seq(topksAmmatillinenRaportti.build(request.oppilaitosOid, Date.valueOf(request.alku), Date.valueOf(request.loppu))),
     workbookSettings = WorkbookSettings("TOPKS ammatillinen suoritustietojen tarkistus", Some(request.password)),
     filename = s"topks_ammatillinen_koski_raportti_${request.oppilaitosOid}_${request.alku.toString.replaceAll("-","")}-${request.loppu.toString.replaceAll("-","")}.xlsx",
+    downloadToken = request.downloadToken
+  )
+
+  def esiopetus(request: RaporttiPäivältäRequest) = OppilaitosRaporttiResponse(
+    sheets = Seq(esiopetusRaportti.build(request.oppilaitosOid, Date.valueOf(request.paiva))),
+    workbookSettings = WorkbookSettings("Esiopetus", Some(request.password)),
+    filename = s"esiopetus_koski_raportti_${request.oppilaitosOid}_${request.paiva.toString.replaceAll("-","")}.xlsx",
     downloadToken = request.downloadToken
   )
 
