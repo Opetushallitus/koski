@@ -37,6 +37,8 @@ case class OrganisaatioHierarkia(oid: String, oppilaitosnumero: Option[Koodistok
   }
 
   def flatten: List[OrganisaatioWithOid] = OrganisaatioHierarkia.flatten(List(this)).map(_.toOrganisaatio)
+
+  def varhaiskasvatuksenJärjestäjä: Boolean = organisaatiotyypit.contains(VARHAISKASVATUKSEN_JARJESTAJA)
 }
 
 object OrganisaatioHierarkia {
@@ -47,6 +49,7 @@ object OrganisaatioHierarkia {
   val OPPILAITOS = "OPPILAITOS"
   val OPPISOPIMUSTOIMIPISTE = "OPPISOPIMUSTOIMIPISTE"
   val VARHAISKASVATUKSEN_TOIMIPAIKKA = "VARHAISKASVATUKSEN_TOIMIPAIKKA"
+  val VARHAISKASVATUKSEN_JARJESTAJA = "VARHAISKASVATUKSEN_JARJESTAJA"
   val KOULUTUSTOIMIJA = "KOULUTUSTOIMIJA"
   val TOIMIPISTE = "TOIMIPISTE"
   val oppilaitosTyypit = List(OPPILAITOS, OPPISOPIMUSTOIMIPISTE, VARHAISKASVATUKSEN_TOIMIPAIKKA)

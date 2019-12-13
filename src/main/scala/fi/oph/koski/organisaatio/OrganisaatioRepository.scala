@@ -46,6 +46,8 @@ trait OrganisaatioRepository {
   def findSähköpostiVirheidenRaportointiin(oid: String): Option[SähköpostiVirheidenRaportointiin]
 
   def findAllRaw: List[OrganisaatioPalveluOrganisaatio]
+
+  def findAllVarhaiskasvatusToimipisteet: List[OrganisaatioPalveluOrganisaatioTyyppi]
 }
 
 object OrganisaatioRepository {
