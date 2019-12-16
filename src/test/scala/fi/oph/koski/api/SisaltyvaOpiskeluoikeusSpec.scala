@@ -1,6 +1,5 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables.OpiskeluOikeudetWithAccessCheck
 import fi.oph.koski.documentation.AmmatillinenExampleData._
@@ -11,82 +10,71 @@ import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.koskiuser.MockUsers.stadinAmmattiopistoTallentaja
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{omnia, stadinAmmattiopisto}
 import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, OidOrganisaatio, Oppilaitos, SisältäväOpiskeluoikeus}
-import fi.oph.koski.util.Wait
 import org.scalatest.{FreeSpec, Matchers}
 
 import scala.language.reflectiveCalls
 
 class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsAmmatillinen with SearchTestMethods with LocalJettyHttpSpecification with DatabaseTestMethods {
   "Sisältyvä opiskeluoikeus" - {
-    lazy val fixture = new {
-      resetFixtures
-      val original: AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(defaultHenkilö, defaultOpiskeluoikeus, user = stadinAmmattiopistoTallentaja)
+    resetFixtures
 
-      val sisältyvä: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
-        oppilaitos = Some(Oppilaitos(omnia)),
-        sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(original.oppilaitos.get, original.oid.get)),
-        suoritukset = List(autoalanPerustutkinnonSuoritus(OidOrganisaatio(omnia)))
-      )
-    }
+    lazy val original = getOpiskeluoikeudet(MockOppijat.sisältyvä.oid).filter(_.getOppilaitos.oid == stadinAmmattiopisto).head.asInstanceOf[AmmatillinenOpiskeluoikeus]
+    lazy val sisältyvä = getOpiskeluoikeudet(MockOppijat.sisältyvä.oid).filter(_.getOppilaitos.oid == omnia).head.asInstanceOf[AmmatillinenOpiskeluoikeus]
+
+    lazy val originalId = opiskeluoikeusId(original).get
+    lazy val sisältyväId = opiskeluoikeusId(sisältyvä).get
 
     "Kun sisältävä opiskeluoikeus löytyy Koskesta" - {
-      lazy val sisältyvä = createOpiskeluoikeus(defaultHenkilö, fixture.sisältyvä, user = MockUsers.omniaTallentaja)
       "Lisäys onnistuu" in {
         sisältyvä.oid.isDefined should equal(true)
       }
 
       "Sisältävän opiskeluoikeuden organisaatiolla on katseluoikeudet sisältyvään opiskeluoikeuteen" in {
-        val oids = getOpiskeluoikeudet(MockOppijat.eero.oid, stadinAmmattiopistoTallentaja).flatMap(_.oid)
-        oids should contain(fixture.original.oid.get)
+        val oids = getOpiskeluoikeudet(MockOppijat.sisältyvä.oid, stadinAmmattiopistoTallentaja).flatMap(_.oid)
+        oids should contain(original.oid.get)
         oids should contain(sisältyvä.oid.get)
       }
 
       "Sisältyvän opiskeluoikeuden organisaatiolla ei ole oikeuksia sisältävään opiskeluoikeuteen" in {
-        val oids = getOpiskeluoikeudet(MockOppijat.eero.oid, MockUsers.omniaKatselija).flatMap(_.oid)
+        val oids = getOpiskeluoikeudet(MockOppijat.sisältyvä.oid, MockUsers.omniaKatselija).flatMap(_.oid)
         oids should contain(sisältyvä.oid.get)
-        oids should not contain(fixture.original.oid)
+        oids should not contain(original.oid)
       }
 
       "Sisältävän opiskeluoikeuden organisaatiolla ei ole kirjoitusoikeuksia sisältyvään opiskeluoikeuteen" in {
-        putOpiskeluoikeus(sisältyvä, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
+        putOpiskeluoikeus(sisältyvä, henkilö = MockOppijat.sisältyvä, headers = authHeaders(stadinAmmattiopistoTallentaja) ++ jsonContent) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon 1.2.246.562.10.51720121923"))
         }
-        putOpiskeluoikeus(sisältyvä, headers = authHeaders(MockUsers.omniaTallentaja) ++ jsonContent) {
+        putOpiskeluoikeus(sisältyvä, henkilö = MockOppijat.sisältyvä, headers = authHeaders(MockUsers.omniaTallentaja) ++ jsonContent) {
           verifyResponseStatusOk()
         }
       }
 
       "Sisältävän opiskeluoikeuden organisaatio löytää sisältyvän opiskeluoikeuden hakutoiminnolla" in {
-        val originalId = opiskeluoikeusId(fixture.original).get
-        val sisältyväId = opiskeluoikeusId(sisältyvä).get
-        syncPerustiedotToElasticsearch(searchForPerustiedot(Map("toimipiste" -> stadinAmmattiopisto), stadinAmmattiopistoTallentaja)
-          .map(_.id).contains(originalId) && searchForPerustiedot(Map("toimipiste" -> omnia), stadinAmmattiopistoTallentaja)
-          .map(_.id).contains(sisältyväId))
         searchForPerustiedot(Map("toimipiste" -> stadinAmmattiopisto), stadinAmmattiopistoTallentaja).map(_.id) should contain(originalId)
         searchForPerustiedot(Map("toimipiste" -> omnia), stadinAmmattiopistoTallentaja).map(_.id) should contain(sisältyväId)
       }
 
       "Sisältyvän opiskeluoikeuden organisaatio ei löydä sisältävää opiskeluoikeutta hakutoiminnolla" in {
-        syncPerustiedotToElasticsearch(searchForPerustiedot(Map("toimipiste" -> stadinAmmattiopisto), MockUsers.omniaKatselija).map(_.id).isEmpty && searchForPerustiedot(Map("toimipiste" -> omnia), MockUsers.omniaKatselija).map(_.id).contains(opiskeluoikeusId(sisältyvä).get))
         searchForPerustiedot(Map("toimipiste" -> stadinAmmattiopisto), MockUsers.omniaKatselija).map(_.id) should equal(Nil)
-        searchForPerustiedot(Map("toimipiste" -> omnia), MockUsers.omniaKatselija).map(_.id) should contain(opiskeluoikeusId(sisältyvä).get)
+        searchForPerustiedot(Map("toimipiste" -> omnia), MockUsers.omniaKatselija).map(_.id) should contain(sisältyväId)
       }
     }
 
     "Kun sisältävä opiskeluoikeus ei löydy Koskesta -> HTTP 400" in {
-      putOpiskeluoikeus(fixture.sisältyvä.copy( sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(fixture.original.oppilaitos.get, "66666666")))) {
+      putOpiskeluoikeus(sisältyvä.copy( sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(original.oppilaitos.get, "66666666")))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.eiLöydy("Sisältävää opiskeluoikeutta ei löydy oid-arvolla 66666666"))
       }
     }
 
     "Kun sisältävän opiskeluoikeuden organisaatio ei täsmää -> HTTP 400" in {
-      putOpiskeluoikeus(fixture.sisältyvä.copy( sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(Oppilaitos(omnia), fixture.original.oid.get)))) {
+      putOpiskeluoikeus(sisältyvä.copy( sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(Oppilaitos(omnia), original.oid.get)))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.vääräOppilaitos())
       }
      }
 
     "Kun sisältävän opiskeluoikeuden henkilötieto ei täsmää -> HTTP 400" in {
-      putOpiskeluoikeus(fixture.sisältyvä, henkilö = MockOppijat.eerola) {
+      putOpiskeluoikeus(sisältyvä, henkilö = MockOppijat.eerola) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.henkilöTiedot())
       }
     }
@@ -107,9 +95,4 @@ class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with Opiskelu
 
   def opiskeluoikeusId(oo: AmmatillinenOpiskeluoikeus): Option[Int] =
     oo.oid.flatMap(oid => runDbSync(OpiskeluOikeudetWithAccessCheck(systemUser).filter(_.oid === oid).map(_.id).result).headOption)
-
-  private def syncPerustiedotToElasticsearch(waitCondition: => Boolean): Unit = {
-    KoskiApplicationForTests.perustiedotSyncScheduler.syncAndLogErrors(None)
-    Wait.until(waitCondition, timeoutMs = 120000)
-  }
 }

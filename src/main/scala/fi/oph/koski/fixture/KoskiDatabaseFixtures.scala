@@ -8,10 +8,9 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusMitätöity, suomenKieli}
-import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.aikuistenOppiaine
 import fi.oph.koski.documentation.ExamplesPerusopetus.ysinOpiskeluoikeusKesken
 import fi.oph.koski.documentation._
-import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, MockOppijat, OppijaHenkilö, VerifiedHenkilöOid}
+import fi.oph.koski.henkilo.{MockOppijat, OppijaHenkilö, VerifiedHenkilöOid}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -47,9 +46,21 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
     application.perustiedotIndexer.deleteByOppijaOids(henkilöOids)
 
     if (!fixtureCacheCreated) {
-      cachedPerustiedot = Some(opiskeluoikeudet.map { case (henkilö, opiskeluoikeus) =>
-        val id = application.opiskeluoikeusRepository.createOrUpdate(VerifiedHenkilöOid(henkilö), opiskeluoikeus, false).right.get.id
-        OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, application.henkilöRepository.opintopolku.withMasterInfo(henkilö))
+      cachedPerustiedot = Some(opiskeluoikeudet.flatMap { case (henkilö, opiskeluoikeus) =>
+        val tunnisteet = application.opiskeluoikeusRepository.createOrUpdate(VerifiedHenkilöOid(henkilö), opiskeluoikeus, false).right.get
+
+        val perustiedot = if (henkilö.hetu.exists(MockOppijat.sisältyvä.hetu.contains)) {
+          val sisältyväOpiskeluoikeus = createSisältyväOpiskeluoikeus(henkilö, tunnisteet.oid, opiskeluoikeus)
+          val sisältyvänTunnisteet = application.opiskeluoikeusRepository.createOrUpdate(VerifiedHenkilöOid(henkilö), sisältyväOpiskeluoikeus, false).right.get
+
+          Seq(
+            OpiskeluoikeudenPerustiedot.makePerustiedot(tunnisteet.id, opiskeluoikeus, application.henkilöRepository.opintopolku.withMasterInfo(henkilö)),
+            OpiskeluoikeudenPerustiedot.makePerustiedot(sisältyvänTunnisteet.id, sisältyväOpiskeluoikeus, application.henkilöRepository.opintopolku.withMasterInfo(henkilö))
+          )
+        } else {
+          Seq(OpiskeluoikeudenPerustiedot.makePerustiedot(tunnisteet.id, opiskeluoikeus, application.henkilöRepository.opintopolku.withMasterInfo(henkilö)))
+        }
+       perustiedot
       })
       application.perustiedotIndexer.updateBulk(cachedPerustiedot.get, true)
       val henkilöOidsIn = henkilöOids.map("'" + _ + "'").mkString(",")
@@ -77,7 +88,20 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
     case _ => (henkilö, oikeus)
   }}
 
-  private lazy val validatedOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = defaultOpiskeluOikeudet.map { case (henkilö, oikeus) =>
+  private lazy val validatedOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = defaultOpiskeluOikeudet.map {
+    case (henkilö , oikeus) => validateJson(henkilö, oikeus)
+  }
+
+  private def createSisältyväOpiskeluoikeus(henkilö: OppijaHenkilö, originalOid: String, originalOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
+    val sisällytetty = AmmatillinenExampleData.opiskeluoikeus().copy(
+      oppilaitos = Some(Oppilaitos(MockOrganisaatiot.omnia)),
+      sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(originalOpiskeluoikeus.getOppilaitos, originalOid)),
+      suoritukset = List(AmmatillinenExampleData.autoalanPerustutkinnonSuoritus(OidOrganisaatio(MockOrganisaatiot.omnia)))
+    )
+    validateJson(henkilö, sisällytetty)._2
+  }
+
+  private def validateJson(henkilö: OppijaHenkilö, oikeus: KoskeenTallennettavaOpiskeluoikeus) = {
     application.validator.validateAsJson(Oppija(henkilö.toHenkilötiedotJaOid, List(oikeus))) match {
       case Right(oppija) => (henkilö, oppija.tallennettavatOpiskeluoikeudet(0))
       case Left(status) => throw new RuntimeException("Fixture insert failed for " + henkilö.etunimet + " " + henkilö.sukunimi +  " with data " + JsonSerializer.write(oikeus) + ": " + status)
@@ -144,7 +168,8 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
       (MockOppijat.internationalschool, ExamplesInternationalSchool.opiskeluoikeus),
       (MockOppijat.organisaatioHistoria, AmmatillinenExampleData.opiskeluoikeus()),
       (MockOppijat.montaKoulutuskoodiaAmis, AmmatillinenExampleData.puuteollisuusOpiskeluoikeusKesken()),
-      (MockOppijat.tunnisteenKoodiarvoPoistettu, AmmatillinenExampleData.opiskeluoikeus())
+      (MockOppijat.tunnisteenKoodiarvoPoistettu, AmmatillinenExampleData.opiskeluoikeus()),
+      (MockOppijat.sisältyvä, AmmatillinenExampleData.opiskeluoikeus())
     )
   }
 }
