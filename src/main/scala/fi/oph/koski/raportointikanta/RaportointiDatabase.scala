@@ -52,9 +52,13 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
     ))
   }
 
-  def dropSchema: Unit = {
-    logger.info(s"Dropping schema ${schema.name}")
-    runDbSync(RaportointiDatabaseSchema.dropSchema(schema))
+  def dropPublicAndMoveTempToPublic: Unit = {
+    runDbSync(DBIO.seq(
+      RaportointiDatabaseSchema.dropSchema(Public),
+      RaportointiDatabaseSchema.moveSchema(Temp, Public),
+      RaportointiDatabaseSchema.createRolesIfNotExists,
+      RaportointiDatabaseSchema.grantPermissions(Public)
+    ).transactionally)
   }
 
   def dropAndCreateObjects: Unit = {
@@ -66,7 +70,7 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
       Seq(RaportointiDatabaseSchema.createOtherIndexes(schema),
       RaportointiDatabaseSchema.createRolesIfNotExists,
       RaportointiDatabaseSchema.grantPermissions(schema))
-    ))
+    ).transactionally)
     logger.info(s"${schema.name} created")
   }
 
