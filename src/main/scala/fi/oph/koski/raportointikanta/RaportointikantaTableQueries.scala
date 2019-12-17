@@ -6,6 +6,7 @@ import slick.lifted.TableQuery
 trait RaportointikantaTableQueries {
   val ROpiskeluoikeudet = TableQuery[ROpiskeluoikeusTable]
   val ROpiskeluoikeusAikajaksot = TableQuery[ROpiskeluoikeusAikajaksoTable]
+  val EsiopetusOpiskeluoikeusAikajaksot = TableQuery[EsiopetusOpiskeluoikeusAikajaksoTable]
   val RPäätasonSuoritukset = TableQuery[RPäätasonSuoritusTable]
   val ROsasuoritukset = TableQuery[ROsasuoritusTable]
   val RHenkilöt = TableQuery[RHenkilöTable]
