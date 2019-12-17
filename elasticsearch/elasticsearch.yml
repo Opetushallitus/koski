@@ -89,3 +89,4 @@
 # Require explicit names when deleting indices:
 #
 #action.destructive_requires_name: true
+indices.query.bool.max_clause_count: 8192
