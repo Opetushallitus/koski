@@ -10,9 +10,10 @@ import com.typesafe.config.ConfigFactory
 import fi.oph.koski.cache.GlobalCacheManager
 import fi.oph.koski.log.LogUserContext
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{helsinginKaupunki, lehtikuusentienToimipiste, oppilaitokset}
-import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot, Opetushallitus, OrganisaatioHierarkia}
-import fi.oph.koski.schema.OpiskeluoikeudenTyyppi
+import fi.oph.koski.organisaatio.OrganisaatioHierarkia.{flatten => flattenHierarkia}
+import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot, Opetushallitus}
 import fi.oph.koski.schema.OpiskeluoikeudenTyyppi._
+import fi.oph.koski.schema.{OidOrganisaatio, OpiskeluoikeudenTyyppi}
 import fi.oph.koski.userdirectory.{DirectoryUser, OpintopolkuDirectoryClient}
 import org.json4s.DefaultFormats
 import org.json4s.jackson.Serialization.write
@@ -152,14 +153,20 @@ class KoskiSessionSpec extends FreeSpec with Matchers with EitherValues with Opt
   }
 
   private def expectedOrganisaatioKäyttöoikeudet(u: DirectoryUser) = {
-    def mockOrganisaatioHierarkia(k: KäyttöoikeusOrg): List[OrganisaatioHierarkia] = {
-      OrganisaatioHierarkia.flatten(MockOrganisaatioRepository.getOrganisaatioHierarkia(k.organisaatio.oid).toList)
-    }
-
     u.käyttöoikeudet.collect { case k: KäyttöoikeusOrg if k.organisaatioAccessType.contains(AccessType.read) => k }.flatMap { k =>
-      mockOrganisaatioHierarkia(k).map { org =>
+      val hierarkia = MockOrganisaatioRepository.getOrganisaatioHierarkia(k.organisaatio.oid)
+      val näkeeVarhaiskasvatusToimipisteet = hierarkia.exists(h => h.varhaiskasvatuksenJärjestäjä && h.toKoulutustoimija.isDefined)
+      val normiKäyttöoikeudet = flattenHierarkia(hierarkia.toList).map { org =>
         k.copy(organisaatio = org.toOrganisaatio, juuri = org.oid == k.organisaatio.oid, oppilaitostyyppi = org.oppilaitostyyppi)
       }
+
+      val varhaiskasvatusKäyttöoikeudet = if (näkeeVarhaiskasvatusToimipisteet) {
+        MockOrganisaatioRepository.findAllVarhaiskasvatusToimipisteet.map { t =>
+          k.copy(organisaatio = OidOrganisaatio(t.oid), juuri = false, oppilaitostyyppi = None)
+        }
+      } else Nil
+
+      normiKäyttöoikeudet ++ varhaiskasvatusKäyttöoikeudet
     }.toSet
   }
 
