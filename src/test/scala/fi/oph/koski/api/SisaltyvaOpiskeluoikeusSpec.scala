@@ -65,12 +65,6 @@ class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with Opiskelu
         searchForPerustiedot(Map("toimipiste" -> stadinAmmattiopisto), stadinAmmattiopistoTallentaja).map(_.id) should contain(originalId)
         searchForPerustiedot(Map("toimipiste" -> omnia), stadinAmmattiopistoTallentaja).map(_.id) should contain(sisältyväId)
       }
-
-      "Sisältyvän opiskeluoikeuden organisaatio ei löydä sisältävää opiskeluoikeutta hakutoiminnolla" in {
-        syncPerustiedotToElasticsearch(searchForPerustiedot(Map("toimipiste" -> stadinAmmattiopisto), MockUsers.omniaKatselija).map(_.id).isEmpty && searchForPerustiedot(Map("toimipiste" -> omnia), MockUsers.omniaKatselija).map(_.id).contains(opiskeluoikeusId(sisältyvä).get))
-        searchForPerustiedot(Map("toimipiste" -> stadinAmmattiopisto), MockUsers.omniaKatselija).map(_.id) should equal(Nil)
-        searchForPerustiedot(Map("toimipiste" -> omnia), MockUsers.omniaKatselija).map(_.id) should contain(opiskeluoikeusId(sisältyvä).get)
-      }
     }
 
     "Kun sisältävä opiskeluoikeus ei löydy Koskesta -> HTTP 400" in {
