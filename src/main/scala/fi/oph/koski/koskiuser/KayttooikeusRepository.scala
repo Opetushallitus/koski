@@ -32,7 +32,7 @@ class KäyttöoikeusRepository(organisaatioRepository: OrganisaatioRepository, d
               }
               flattened.map { org =>
                 k.copy(organisaatio = org.toOrganisaatio, juuri = org.oid == k.organisaatio.oid, oppilaitostyyppi = org.oppilaitostyyppi)
-              } ++ organisaatioHierarkia.toList.flatMap(hiearkianUlkopuolisetKäyttöoikeudet(k, _))
+              } ++ organisaatioHierarkia.toList.flatMap(hierarkianUlkopuolisetKäyttöoikeudet(k, _))
           }
         }
       case None =>
@@ -47,7 +47,7 @@ class KäyttöoikeusRepository(organisaatioRepository: OrganisaatioRepository, d
     ExpiringCache("KäyttöoikeusRepository", 5.minutes, 100), haeKäyttöoikeudet
   )
 
-  private def hiearkianUlkopuolisetKäyttöoikeudet(k: KäyttöoikeusOrg, organisaatioHierarkia: OrganisaatioHierarkia) =
+  private def hierarkianUlkopuolisetKäyttöoikeudet(k: KäyttöoikeusOrg, organisaatioHierarkia: OrganisaatioHierarkia) =
     if (organisaatioHierarkia.toKoulutustoimija.isDefined && organisaatioHierarkia.varhaiskasvatuksenJärjestäjä) {
       organisaatioRepository.findAllVarhaiskasvatusToimipisteet.map { päiväkoti =>
         k.copy(organisaatio = OidOrganisaatio(päiväkoti.oid), juuri = false, oppilaitostyyppi = None)
