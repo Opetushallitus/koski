@@ -53,7 +53,14 @@ class OppijaServlet(implicit val application: KoskiApplication) extends ApiServl
   }
 
   get("/") {
-    queryAndStreamOpiskeluoikeudet
+    val serializer = SensitiveDataFilter(koskiSession).rowSerializer
+
+    val oppijat = performOpiskeluoikeudetQueryLaajoillaHenkilötiedoilla.map(observable => observable
+      .map(x => (application.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(x._1), x._2))
+      .map(serializer)
+    )
+
+    streamResponse(oppijat, koskiSession)
   }
 
   // TODO: tarkista lokeista voiko tämän poistaa

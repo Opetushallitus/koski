@@ -51,7 +51,7 @@ object MockOppijat {
   val montaOppiaineenOppimäärääOpiskeluoikeudessa = oppijat.oppija("Mervi", "Monioppiaineinen", "131298-5248")
   val virtaKaksiPäätösonSuoritusta = oppijat.oppija("Kaksi-Päinen", "Ville", "270680-459P")
   val aikuisOpiskelija = oppijat.oppija("Aikuisopiskelija", "Aini", "280598-2415", vanhaHetu = Some("280598-326W"))
-  val kymppiluokkalainen = oppijat.oppija("Kymppiluokkalainen", "Kaisa", "131025-6573")
+  val kymppiluokkalainen = oppijat.oppija("Kymppiluokkalainen", "Kaisa", "131025-6573", sukupuoli = Some("2"), kotikunta = Some("Kontu"))
   val luva = oppijat.oppija("Lukioonvalmistautuja", "Luke", "211007-442N")
   val valma = oppijat.oppija("Amikseenvalmistautuja", "Anneli", "130404-054C")
   val ylioppilas = oppijat.oppija("Ylioppilas", "Ynjevi", "210244-374K", vanhaHetu = Some("210244-073V"))
@@ -107,7 +107,7 @@ class MockOppijat(private var oppijat: List[OppijaHenkilöWithMasterInfo] = Nil)
   private var idCounter = oppijat.length
   val äidinkieli: Some[Koodistokoodiviite] = Some(Koodistokoodiviite("FI", None, "kieli", None))
 
-  def oppija(suku: String, etu: String, hetu: String, oid: String = generateId(), kutsumanimi: Option[String] = None, turvakielto: Boolean = false, vanhaHetu: Option[String] = None): LaajatOppijaHenkilöTiedot =
+  def oppija(suku: String, etu: String, hetu: String, oid: String = generateId(), kutsumanimi: Option[String] = None, turvakielto: Boolean = false, vanhaHetu: Option[String] = None, sukupuoli: Option[String] = None, kotikunta: Option[String] = None): LaajatOppijaHenkilöTiedot =
     addOppija(henkilo.LaajatOppijaHenkilöTiedot(
       oid = oid,
       sukunimi = suku,
@@ -117,7 +117,9 @@ class MockOppijat(private var oppijat: List[OppijaHenkilöWithMasterInfo] = Nil)
       syntymäaika = None,
       äidinkieli = Some("fi"),
       turvakielto = turvakielto,
-      vanhatHetut = vanhaHetu.toList
+      vanhatHetut = vanhaHetu.toList,
+      sukupuoli = sukupuoli,
+      kotikunta = kotikunta
     ))
 
   def addOppija(oppija: LaajatOppijaHenkilöTiedot): LaajatOppijaHenkilöTiedot = addOppija(OppijaHenkilöWithMasterInfo(oppija, None)).henkilö.asInstanceOf[LaajatOppijaHenkilöTiedot]
