@@ -31,7 +31,7 @@ class KäyttöoikeusRepository(organisaatioRepository: OrganisaatioRepository, d
                 logger.warn(s"Käyttäjän $username käyttöoikeus ${k} kohdistuu organisaatioon ${k.organisaatio.oid}, jota ei löydy")
               }
               flattened.map { org =>
-                k.copy(organisaatio = org.toOrganisaatio, juuri = org.oid == k.organisaatio.oid, oppilaitostyyppi = org.oppilaitostyyppi)
+                k.copy(organisaatio = org.toOrganisaatio, oppilaitostyyppi = org.oppilaitostyyppi)
               } ++ organisaatioHierarkia.toList.flatMap(hierarkianUlkopuolisetKäyttöoikeudet(k, _))
           }
         }
@@ -50,7 +50,7 @@ class KäyttöoikeusRepository(organisaatioRepository: OrganisaatioRepository, d
   private def hierarkianUlkopuolisetKäyttöoikeudet(k: KäyttöoikeusOrg, organisaatioHierarkia: OrganisaatioHierarkia) =
     if (organisaatioHierarkia.toKoulutustoimija.isDefined && organisaatioHierarkia.varhaiskasvatuksenJärjestäjä) {
       organisaatioRepository.findAllVarhaiskasvatusToimipisteet.map { päiväkoti =>
-        k.copy(organisaatio = OidOrganisaatio(päiväkoti.oid), juuri = false, oppilaitostyyppi = None)
+        k.copy(organisaatio = OidOrganisaatio(päiväkoti.oid), oppilaitostyyppi = None)
       }
     } else {
       Nil

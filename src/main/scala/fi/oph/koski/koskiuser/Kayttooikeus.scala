@@ -45,7 +45,7 @@ case class KäyttöoikeusGlobal(globalPalveluroolit: List[Palvelurooli]) extends
   }
 }
 
-case class KäyttöoikeusOrg(organisaatio: OrganisaatioWithOid, organisaatiokohtaisetPalveluroolit: List[Palvelurooli], juuri: Boolean, oppilaitostyyppi: Option[String]) extends Käyttöoikeus {
+case class KäyttöoikeusOrg(juuriOrganisaatio: OrganisaatioWithOid, organisaatio: OrganisaatioWithOid, organisaatiokohtaisetPalveluroolit: List[Palvelurooli], oppilaitostyyppi: Option[String]) extends Käyttöoikeus {
   def organisaatioAccessType: List[AccessType.Value] = organisaatiokohtaisetPalveluroolit flatMap {
     case Palvelurooli("KOSKI", "READ") => List(AccessType.read)
     case Palvelurooli("KOSKI", "READ_UPDATE") => List(AccessType.read, AccessType.write)
@@ -63,6 +63,7 @@ case class KäyttöoikeusOrg(organisaatio: OrganisaatioWithOid, organisaatiokoht
 
   def globalAccessType: List[AccessType.Value] = Nil
   def globalPalveluroolit = Nil
+  def juuri: Boolean = juuriOrganisaatio.oid == organisaatio.oid
 }
 
 case class KäyttöoikeusViranomainen(globalPalveluroolit: List[Palvelurooli]) extends Käyttöoikeus {
