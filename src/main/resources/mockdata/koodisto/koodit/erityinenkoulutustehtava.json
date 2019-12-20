@@ -1,85 +1,308 @@
-[ {
-  "koodiUri" : "erityinenkoulutustehtava_ib",
-  "koodiArvo" : "ib",
-  "metadata" : [ {
-    "nimi" : "Erityisenä koulutustehtävänä IB",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Särskild utbildningsuppgift IB",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "erityinenkoulutustehtava_kielijakansainvalisyys",
-  "koodiArvo" : "kielijakansainvalisyys",
-  "metadata" : [ {
-    "nimi" : "Erityisenä koulutustehtävänä kieli ja kansainvälisyys",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Särskild utbildningsuppgift språk och internationalisering",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "erityinenkoulutustehtava_matematiikkaluonnontiedeymparistotekniikka",
-  "koodiArvo" : "matematiikka-luonnontiede-ymparisto-tekniikka",
-  "metadata" : [ {
-    "nimi" : "Erityisenä koulutustehtävänä matematiikka, luonnontiede, ympäristö ja tekniikka",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Särkild utbildningsuppgift matematik, naturvetenskaper, miljö och teknik",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "erityinenkoulutustehtava_muu",
-  "koodiArvo" : "muu",
-  "metadata" : [ {
-    "nimi" : "Jokin muu erityinen koulutustehtävä",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Någon annan särskild utbildningsuppgift",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "erityinenkoulutustehtava_steiner",
-  "koodiArvo" : "steiner",
-  "metadata" : [ {
-    "nimi" : "Erityisenä koulutustehtävänä steinerkoulu",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Särskild utbildningsuppgift steinerskola",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "erityinenkoulutustehtava_taide",
-  "koodiArvo" : "taide",
-  "metadata" : [ {
-    "nimi" : "Erityisenä koulutustehtävänä taide",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Särskild utbildningsuppgift konst",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "erityinenkoulutustehtava_urheilu",
-  "koodiArvo" : "urheilu",
-  "metadata" : [ {
-    "nimi" : "Erityisenä koulutustehtävänä urheilu",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "Särskild utbildningsuppgift idrott",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-} ]
+[
+  {
+    "koodiUri": "erityinenkoulutustehtava_taide",
+    "metadata": [
+      {
+        "nimi": "Erityisenä koulutustehtävänä taide (EI KÄYTÖSSÄ)",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Särskild utbildningsuppgift konst (INTE I ANDVÄNDING)",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "taide"
+  },
+  {
+    "koodiUri": "erityinenkoulutustehtava_matematiikkaluonnontiedeymparistotekniikka",
+    "metadata": [
+      {
+        "nimi": "Särkild utbildningsuppgift matematik, naturvetenskaper, miljö och teknik (INTE I ANDVÄNDING)",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Erityisenä koulutustehtävänä matematiikka, luonnontiede, ympäristö ja tekniikka (EI KÄYTÖSSÄ)",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "matematiikka-luonnontiede-ymparisto-tekniikka"
+  },
+  {
+    "koodiUri": "erityinenkoulutustehtava_kielijakansainvalisyys",
+    "metadata": [
+      {
+        "nimi": "Särskild utbildningsuppgift språk och internationalisering (INTE I ANDVÄNDING)",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Erityisenä koulutustehtävänä kieli ja kansainvälisyys (EI KÄYTÖSSÄ)",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "kielijakansainvalisyys"
+  },
+  {
+    "koodiUri": "erityinenkoulutustehtava_ib",
+    "metadata": [
+      {
+        "nimi": "Särskild utbildningsuppgift IB (INTE I ANDVÄNDING)",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Erityisenä koulutustehtävänä IB (EI KÄYTÖSSÄ)",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "ib"
+  },
+  {
+    "koodiUri": "erityinenkoulutustehtava_208",
+    "metadata": [
+      {
+        "nimi": "Undervisning med betoning på naturvetenskap, företagande och internationell fostran",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Luonnontieteisiin, yrittäjyyteen ja kansainvälisyyskasvatukseen painottuva opetus",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "208"
+  },
+  {
+    "koodiUri": "erityinenkoulutustehtava_211",
+    "metadata": [
+      {
+        "nimi": "Undervisning med betoning på miljö",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Ympäristöpainoitteinen opetus",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "211"
+  },
+  {
+    "koodiUri": "erityinenkoulutustehtava_103",
+    "metadata": [
+      {
+        "nimi": "Undervisning med betoning på språk",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Kieliin painottuva koulutus",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "103"
+  },
+  {
+    "koodiUri": "erityinenkoulutustehtava_104",
+    "metadata": [
+      {
+        "nimi": "Undervisning med betoning på bildkonst",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Kuvataiteeseen painottuva opetus",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "104"
+  },
+  {
+    "koodiUri": "erityinenkoulutustehtava_105",
+    "metadata": [
+      {
+        "nimi": "Musiikkiin ja tanssiin painottuva opetus",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Undervisning med betoning på musik och dans",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "105"
+  },
+  {
+    "koodiUri": "erityinenkoulutustehtava_101",
+    "metadata": [
+      {
+        "nimi": "IB-opetus",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "IB-undervisning",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "101"
+  },
+  {
+    "koodiUri": "erityinenkoulutustehtava_102",
+    "metadata": [
+      {
+        "nimi": "Undervisning med betoning på uttrycksförmåga",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Ilmaisutaitoon painottuva opetus",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "102"
+  },
+  {
+    "koodiUri": "erityinenkoulutustehtava_steiner",
+    "metadata": [
+      {
+        "nimi": "Särskild utbildningsuppgift steinerskola (INTE I ANDVÄNDING)",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Erityisenä koulutustehtävänä steinerkoulu (EI KÄYTÖSSÄ)",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "steiner"
+  },
+  {
+    "koodiUri": "erityinenkoulutustehtava_109",
+    "metadata": [
+      {
+        "nimi": "Steiner-pedagogiikkaan painottuva koulutus",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      },
+      {
+        "nimi": "Undervisning med betoning på Steiner-pedagogik",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "109"
+  },
+  {
+    "koodiUri": "erityinenkoulutustehtava_urheilu",
+    "metadata": [
+      {
+        "nimi": "Särskild utbildningsuppgift idrott (INTE I ANDVÄNDING)",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Erityisenä koulutustehtävänä urheilu (EI KÄYTÖSSÄ)",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "urheilu"
+  },
+  {
+    "koodiUri": "erityinenkoulutustehtava_muu",
+    "metadata": [
+      {
+        "nimi": "Någon annan särskild utbildningsuppgift (INTE I ANDVÄNDING)",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Jokin muu erityinen koulutustehtävä (EI KÄYTÖSSÄ)",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "muu"
+  },
+  {
+    "koodiUri": "erityinenkoulutustehtava_106",
+    "metadata": [
+      {
+        "nimi": "Undervisning med betoning på motion eller idrott",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Liikuntaan tai urheiluun painottuva opetus",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "106"
+  },
+  {
+    "koodiUri": "erityinenkoulutustehtava_107",
+    "metadata": [
+      {
+        "nimi": "Undervisning med betoning på matematik och naturvetenskap",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Matematiikkaan ja luonnontieteisiin painottuva opetus",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "107"
+  },
+  {
+    "koodiUri": "erityinenkoulutustehtava_108",
+    "metadata": [
+      {
+        "nimi": "Undervisning med betoning på företagande",
+        "lyhytNimi": "",
+        "kieli": "SV"
+      },
+      {
+        "nimi": "Yrittäjyyteen painottuva koulutus",
+        "lyhytNimi": "",
+        "kieli": "FI"
+      }
+    ],
+    "versio": 1,
+    "koodiArvo": "108"
+  }
+]
