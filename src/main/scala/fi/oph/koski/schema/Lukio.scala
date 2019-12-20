@@ -67,6 +67,19 @@ case class ErityisenKoulutustehtävänJakso(
   @Description("Erityinen koulutustehtävä. Koodisto")
   @KoodistoUri("erityinenkoulutustehtava")
   @OksaUri("tmpOKSAID181", "erityinen koulutustehtävä")
+  @KoodistoKoodiarvo("101")
+  @KoodistoKoodiarvo("102")
+  @KoodistoKoodiarvo("101")
+  @KoodistoKoodiarvo("102")
+  @KoodistoKoodiarvo("103")
+  @KoodistoKoodiarvo("104")
+  @KoodistoKoodiarvo("105")
+  @KoodistoKoodiarvo("106")
+  @KoodistoKoodiarvo("107")
+  @KoodistoKoodiarvo("108")
+  @KoodistoKoodiarvo("109")
+  @KoodistoKoodiarvo("208")
+  @KoodistoKoodiarvo("211")
   tehtävä: Koodistokoodiviite
 ) extends Jakso
 
