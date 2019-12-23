@@ -276,12 +276,15 @@ trait MuuOppiaineIB extends IBOppiaine {
   @KoodistoKoodiarvo("BIO")
   @KoodistoKoodiarvo("BU")
   @KoodistoKoodiarvo("CHE")
+  @KoodistoKoodiarvo("DAN")
   @KoodistoKoodiarvo("ECO")
+  @KoodistoKoodiarvo("FIL")
   @KoodistoKoodiarvo("GEO")
   @KoodistoKoodiarvo("HIS")
   @KoodistoKoodiarvo("MAT")
   @KoodistoKoodiarvo("MATFT")
   @KoodistoKoodiarvo("MATST")
+  @KoodistoKoodiarvo("MUS")
   @KoodistoKoodiarvo("PHI")
   @KoodistoKoodiarvo("PHY")
   @KoodistoKoodiarvo("POL")
@@ -289,6 +292,7 @@ trait MuuOppiaineIB extends IBOppiaine {
   @KoodistoKoodiarvo("REL")
   @KoodistoKoodiarvo("SOC")
   @KoodistoKoodiarvo("ESS")
+  @KoodistoKoodiarvo("THE")
   @KoodistoKoodiarvo("VA")
   def tunniste: Koodistokoodiviite
 }
