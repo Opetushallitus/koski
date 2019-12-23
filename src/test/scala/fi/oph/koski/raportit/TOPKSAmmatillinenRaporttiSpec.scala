@@ -26,7 +26,7 @@ class TOPKSAmmatillinenRaporttiSpec extends FreeSpec with Matchers with Raportoi
     val raporttiBuilder = TOPKSAmmatillinenRaporttiBuilder(KoskiApplicationForTests.raportointiDatabase.db)
     val alku = Date.valueOf(LocalDate.of(2018, 1, 1))
     val loppu = Date.valueOf(LocalDate.of(2019, 1, 1))
-    raporttiBuilder.build(stadinAmmattiopisto, alku, loppu).rows.map(_.asInstanceOf[TOPKSAmmatillinenRaporttiRow])
+    raporttiBuilder.build(stadinAmmattiopisto.oid, alku, loppu).rows.map(_.asInstanceOf[TOPKSAmmatillinenRaporttiRow])
   }
 
   "Tutkinnon osaa pienemmistä kokonaisuuksista koostuvan suorituksen suoritustietoraportti (TOPKS)" - {
@@ -57,7 +57,7 @@ class TOPKSAmmatillinenRaporttiSpec extends FreeSpec with Matchers with Raportoi
         pentinRivi.sisältyyOpiskeluoikeuteenOid should equal(None)
         pentinRivi.lähdejärjestelmäKoodiarvo should equal(None)
         pentinRivi.lähdejärjestelmäId should equal(None)
-        pentinRivi.toimipisteOid should equal(Some(MockOrganisaatiot.lehtikuusentienToimipiste))
+        pentinRivi.toimipisteOid should equal(Some(MockOrganisaatiot.lehtikuusentienToimipiste.oid))
         pentinRivi.suorituksenNimi should equal("Kiinteistösihteerin koulutus ja tutkinto (KISI)")
         pentinRivi.opiskeluoikeudenAlkamispäivä should equal(LocalDate.of(2018, 1, 1))
         pentinRivi.opiskeluoikeudenViimeisinTila should equal("lasna")

@@ -72,7 +72,7 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
         } else if (hasViranomaisRooli(roolit)) {
           List(KäyttöoikeusViranomainen(roolit))
         } else {
-          List(KäyttöoikeusOrg(juuriOrganisaatio = OidOrganisaatio(organisaatioOid), organisaatio = OidOrganisaatio(organisaatioOid), organisaatiokohtaisetPalveluroolit = roolit, oppilaitostyyppi = None))
+          List(KäyttöoikeusOrg(juuriOrganisaatio = organisaatioOid, organisaatioOid = organisaatioOid, organisaatiokohtaisetPalveluroolit = roolit, oppilaitostyyppi = None))
         }
     })
 

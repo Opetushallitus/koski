@@ -27,7 +27,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
   "Lukion suoritustietoraportti" - {
 
     "Raportti näyttää oikealta" - {
-      lazy val sheets = buildLukioraportti(jyväskylänNormaalikoulu, date(2012, 1, 1), date(2016, 1, 1))
+      lazy val sheets = buildLukioraportti(jyväskylänNormaalikoulu.oid, date(2012, 1, 1), date(2016, 1, 1))
       lazy val titleAndRowsWithColumns = sheets.map(s => (s.title, zipRowsWithColumTitles(s)))
       "Oppiaineita tai kursseja ei päädy duplikaattina raportille" in {
         verifyNoDuplicates(sheets.map(_.title))

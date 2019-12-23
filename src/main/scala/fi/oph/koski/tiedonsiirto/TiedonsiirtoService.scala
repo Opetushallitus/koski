@@ -100,7 +100,7 @@ class TiedonsiirtoService(
     }
 
   private def haeTiedonsiirrot(filters: List[Map[String, Any]], oppilaitosOid: Option[String], paginationSettings: Option[PaginationSettings])(implicit koskiSession: KoskiSession): Either[HttpStatus, PaginatedResponse[Tiedonsiirrot]] = {
-    koskiSession.juuriOrganisaatiot.map(_.oid).foreach { oid =>
+    koskiSession.juuriOrganisaatiot.foreach { oid =>
       AuditLog.log(AuditLogMessage(TIEDONSIIRTO_KATSOMINEN, koskiSession, Map(juuriOrganisaatio -> oid)))
     }
 
@@ -169,12 +169,12 @@ class TiedonsiirtoService(
       .flatMap(_.opiskeluoikeudet.headOption.map(_.tyyppi.koodiarvo))
       .orElse(data.flatMap(extractKoulutusmuoto))
 
-    val juuriOrganisaatiot = if (koskiSession.isRoot) koulutustoimija else koskiSession.juuriOrganisaatiot
+    val juuriOrganisaatiot = if (koskiSession.isRoot) koulutustoimija.map(_.oid) else koskiSession.juuriOrganisaatiot
 
-    juuriOrganisaatiot.foreach((org: OrganisaatioWithOid) => {
+    juuriOrganisaatiot.foreach(orgOid => {
       val (data: Option[JValue], virheet: Option[List[ErrorDetail]]) = error.map(e => (Some(e.data), Some(e.virheet))).getOrElse((None, None))
 
-      storeToElasticSearch(henkilö, org, oppilaitokset, koulutusmuoto, suoritustiedot, data, virheet, lahdejarjestelma, koskiSession.oid, Some(koskiSession.username), new Timestamp(System.currentTimeMillis))
+      storeToElasticSearch(henkilö, orgOid, oppilaitokset, koulutusmuoto, suoritustiedot, data, virheet, lahdejarjestelma, koskiSession.oid, Some(koskiSession.username), new Timestamp(System.currentTimeMillis))
 
       if (error.isDefined) {
         tiedonSiirtoVirheet.inc
@@ -182,11 +182,11 @@ class TiedonsiirtoService(
     })
   }
 
-  def storeToElasticSearch(henkilö: Option[TiedonsiirtoOppija], org: OrganisaatioWithOid,
+  def storeToElasticSearch(henkilö: Option[TiedonsiirtoOppija], orgOid: String,
                            oppilaitokset: Option[List[OidOrganisaatio]], koulutusmuoto: Option[String], suoritustiedot: Option[List[TiedonsiirtoSuoritusTiedot]],
                            data: Option[JValue], virheet: Option[List[ErrorDetail]], lahdejarjestelma: Option[String],
                            userOid: String, username: Option[String], aikaleima: Timestamp) = {
-    val tiedonsiirtoDoc = TiedonsiirtoDocument(userOid, username, org.oid, henkilö, oppilaitokset, koulutusmuoto, suoritustiedot, data, virheet.toList.flatten.isEmpty, virheet.getOrElse(Nil), lahdejarjestelma, aikaleima)
+    val tiedonsiirtoDoc = TiedonsiirtoDocument(userOid, username, orgOid, henkilö, oppilaitokset, koulutusmuoto, suoritustiedot, data, virheet.toList.flatten.isEmpty, virheet.getOrElse(Nil), lahdejarjestelma, aikaleima)
     tiedonsiirtoBuffer.append(tiedonsiirtoDoc)
   }
 

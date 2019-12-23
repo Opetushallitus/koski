@@ -8,7 +8,7 @@ import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema._
 
 object DIAExampleData {
-  lazy val saksalainenKoulu: Oppilaitos = Oppilaitos(MockOrganisaatiot.saksalainenKoulu, Some(Koodistokoodiviite("00085", None, "oppilaitosnumero", None)), Some("Helsingin Saksalainen koulu"))
+  lazy val saksalainenKoulu: Oppilaitos = MockOrganisaatiot.saksalainenKoulu.copy(oppilaitosnumero = Some(Koodistokoodiviite("00085", None, "oppilaitosnumero", None)), nimi = Some("Helsingin Saksalainen koulu"))
 
   def laajuus(laajuus: Float, yksikkö: String = "3"): Some[LaajuusVuosiviikkotunneissa] = Some(LaajuusVuosiviikkotunneissa(laajuus, Koodistokoodiviite(koodistoUri = "opintojenlaajuusyksikko", koodiarvo = yksikkö)))
 

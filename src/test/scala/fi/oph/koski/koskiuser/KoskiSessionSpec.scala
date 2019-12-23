@@ -57,7 +57,7 @@ class KoskiSessionSpec extends FreeSpec with Matchers with EitherValues with Opt
         val session = createAndVerifySession("pää", MockUsers.paakayttaja.ldapUser)
         session.hasGlobalReadAccess should be(true)
         session.isRoot should be(true)
-        session.hasTiedonsiirronMitätöintiAccess(helsinginKaupunki)
+        session.hasTiedonsiirronMitätöintiAccess(helsinginKaupunki.oid) should be(true)
       }
       "viranomainen" in {
         createAndVerifySession("viranomais", MockUsers.viranomainen.ldapUser)
@@ -142,7 +142,7 @@ class KoskiSessionSpec extends FreeSpec with Matchers with EitherValues with Opt
     session.username should be(username)
 
     val expectedKäyttöoikeudet = expected.käyttöoikeudet.toSet
-    session.orgKäyttöoikeudet should be(expectedOrganisaatioKäyttöoikeudet(expected))
+    session.orgKäyttöoikeudet.toList.sortBy(_.organisaatioOid) should be(expectedOrganisaatioKäyttöoikeudet(expected).toList.sortBy(_.organisaatioOid))
     session.globalKäyttöoikeudet should be(expectedKäyttöoikeudet.collect { case k : KäyttöoikeusGlobal if k.globalAccessType.contains(AccessType.read) => k })
     session.globalViranomaisKäyttöoikeudet should be(expectedKäyttöoikeudet.collect { case k : KäyttöoikeusViranomainen => k})
 
@@ -154,15 +154,15 @@ class KoskiSessionSpec extends FreeSpec with Matchers with EitherValues with Opt
 
   private def expectedOrganisaatioKäyttöoikeudet(u: DirectoryUser) = {
     u.käyttöoikeudet.collect { case k: KäyttöoikeusOrg if k.organisaatioAccessType.contains(AccessType.read) => k }.flatMap { k =>
-      val hierarkia = MockOrganisaatioRepository.getOrganisaatioHierarkia(k.organisaatio.oid)
+      val hierarkia = MockOrganisaatioRepository.getOrganisaatioHierarkia(k.organisaatioOid)
       val näkeeVarhaiskasvatusToimipisteet = hierarkia.exists(h => h.varhaiskasvatuksenJärjestäjä && h.toKoulutustoimija.isDefined)
       val normiKäyttöoikeudet = flattenHierarkia(hierarkia.toList).map { org =>
-        k.copy(organisaatio = org.toOrganisaatio, juuri = org.oid == k.organisaatio.oid, oppilaitostyyppi = org.oppilaitostyyppi)
+        k.copy(organisaatioOid = org.oid, oppilaitostyyppi = org.oppilaitostyyppi)
       }
 
       val varhaiskasvatusKäyttöoikeudet = if (näkeeVarhaiskasvatusToimipisteet) {
         MockOrganisaatioRepository.findAllVarhaiskasvatusToimipisteet.map { t =>
-          k.copy(organisaatio = OidOrganisaatio(t.oid), juuri = false, oppilaitostyyppi = None)
+          k.copy(organisaatioOid = t.oid, oppilaitostyyppi = None)
         }
       } else Nil
 
@@ -210,12 +210,11 @@ class KoskiSessionSpec extends FreeSpec with Matchers with EitherValues with Opt
 
 object Responses {
   implicit val jsonDefaultFormats = DefaultFormats.preservingEmptyValues
-  val kallenOppilaitokset = lehtikuusentienToimipiste :: oppilaitokset
   val käyttöoikeusResponse: Map[String, String] = Map(
     "kalle" -> List(Map(
       "oidHenkilo" -> MockUsers.kalle.oid,
-      "organisaatiot" -> kallenOppilaitokset.map(oid => Map(
-        "organisaatioOid" -> oid,
+      "organisaatiot" -> oppilaitokset.map(oppilaitos => Map(
+        "organisaatioOid" -> oppilaitos.oid,
         "kayttooikeudet" -> List(Map("palvelu" -> "KOSKI", "oikeus" -> "READ"), Map("palvelu" -> "KOSKI", "oikeus" -> "READ_UPDATE"), Map("palvelu" -> "KOSKI", "oikeus" -> "LUOTTAMUKSELLINEN_KAIKKI_TIEDOT"))
       )))),
     "pää" -> List(Map(
@@ -277,7 +276,7 @@ object Responses {
     "Otto" -> List(Map(
       "oidHenkilo" -> MockUsers.eiOikkia.oid,
       "organisaatiot" -> List(Map(
-        "organisaatioOid" -> MockOrganisaatiot.lehtikuusentienToimipiste,
+        "organisaatioOid" -> MockOrganisaatiot.lehtikuusentienToimipiste.oid,
         "kayttooikeudet" -> List(Map("palvelu" -> "OPPIJANUMEROREKISTERI", "oikeus" -> "READ"))
       ))
     )),
@@ -304,14 +303,14 @@ object Responses {
     "omnia-katselija" -> List(Map(
       "oidHenkilo" -> MockUsers.omniaKatselija.oid,
       "organisaatiot" -> List(Map(
-        "organisaatioOid" -> MockOrganisaatiot.omnia,
+        "organisaatioOid" -> MockOrganisaatiot.omnia.oid,
         "kayttooikeudet" -> List(Map("palvelu" -> "KOSKI", "oikeus" -> "READ"), Map("palvelu" -> "KOSKI", "oikeus" -> "LUOTTAMUKSELLINEN_KAIKKI_TIEDOT"))
       ))
     )),
     "omnia-tallentaja" -> List(Map(
       "oidHenkilo" -> MockUsers.omniaTallentaja.oid,
       "organisaatiot" -> List(Map(
-        "organisaatioOid" -> MockOrganisaatiot.omnia,
+        "organisaatioOid" -> MockOrganisaatiot.omnia.oid,
         "kayttooikeudet" -> List(
           Map("palvelu" -> "KOSKI", "oikeus" -> "READ"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "READ_UPDATE"),
@@ -321,7 +320,7 @@ object Responses {
     "Suppea" -> List(Map(
       "oidHenkilo" -> MockUsers.kelaSuppeatOikeudet.oid,
       "organisaatiot" -> List(Map(
-        "organisaatioOid" -> MockOrganisaatiot.kela,
+        "organisaatioOid" -> MockOrganisaatiot.kela.oid,
         "kayttooikeudet" -> List(
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_PERUSOPETUS"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_TOINEN_ASTE"),
@@ -332,7 +331,7 @@ object Responses {
     "Laaja" -> List(Map(
       "oidHenkilo" -> MockUsers.kelaLaajatOikeudet.oid,
       "organisaatiot" -> List(Map(
-        "organisaatioOid" -> MockOrganisaatiot.kela,
+        "organisaatioOid" -> MockOrganisaatiot.kela.oid,
         "kayttooikeudet" -> List(
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_PERUSOPETUS"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_TOINEN_ASTE"),
@@ -343,7 +342,7 @@ object Responses {
     "Eeva" -> List(Map(
       "oidHenkilo" -> MockUsers.evira.oid,
       "organisaatiot" -> List(Map(
-        "organisaatioOid" -> MockOrganisaatiot.evira,
+        "organisaatioOid" -> MockOrganisaatiot.evira.oid,
         "kayttooikeudet" -> List(
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_PERUSOPETUS"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_TOINEN_ASTE"),
@@ -353,14 +352,14 @@ object Responses {
     "Pertti" -> List(Map(
       "oidHenkilo" -> MockUsers.perusopetusViranomainen.oid,
       "organisaatiot" -> List(Map(
-        "organisaatioOid" -> MockOrganisaatiot.evira,
+        "organisaatioOid" -> MockOrganisaatiot.evira.oid,
         "kayttooikeudet" -> List(Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_PERUSOPETUS"))
       ))
     )),
     "Teuvo" -> List(Map(
       "oidHenkilo" -> MockUsers.toinenAsteViranomainen.oid,
       "organisaatiot" -> List(Map(
-        "organisaatioOid" -> MockOrganisaatiot.evira,
+        "organisaatioOid" -> MockOrganisaatiot.evira.oid,
         "kayttooikeudet" -> List(Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_TOINEN_ASTE"))
       ),
       Map(
@@ -371,7 +370,7 @@ object Responses {
     "Kaisa" -> List(Map(
       "oidHenkilo" -> MockUsers.korkeakouluViranomainen.oid,
       "organisaatiot" -> List(Map(
-        "organisaatioOid" -> MockOrganisaatiot.evira,
+        "organisaatioOid" -> MockOrganisaatiot.evira.oid,
         "kayttooikeudet" -> List(Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_KORKEAKOULU"))
       ),
       Map(
@@ -382,7 +381,7 @@ object Responses {
     "Antti" -> List(Map(
       "oidHenkilo" -> MockUsers.luovutuspalveluKäyttäjäArkaluontoinen.oid,
       "organisaatiot" -> List(Map(
-        "organisaatioOid" -> MockOrganisaatiot.evira,
+        "organisaatioOid" -> MockOrganisaatiot.evira.oid,
         "kayttooikeudet" -> List(
           Map("palvelu" -> "KOSKI", "oikeus" -> "TIEDONSIIRTO_LUOVUTUSPALVELU"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "LUOTTAMUKSELLINEN_KAIKKI_TIEDOT"),
@@ -394,7 +393,7 @@ object Responses {
     "Lasse" -> List(Map(
       "oidHenkilo" -> MockUsers.luovutuspalveluKäyttäjä.oid,
       "organisaatiot" -> List(Map(
-        "organisaatioOid" -> MockOrganisaatiot.evira,
+        "organisaatioOid" -> MockOrganisaatiot.evira.oid,
         "kayttooikeudet" -> List(
           Map("palvelu" -> "KOSKI", "oikeus" -> "TIEDONSIIRTO_LUOVUTUSPALVELU"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "GLOBAALI_LUKU_PERUSOPETUS"),
@@ -404,7 +403,7 @@ object Responses {
     "esiopetus" -> List(Map(
       "oidHenkilo" -> MockUsers.jyväskylänKatselijaEsiopetus.oid,
       "organisaatiot" -> List(Map(
-        "organisaatioOid" -> MockOrganisaatiot.jyväskylänNormaalikoulu,
+        "organisaatioOid" -> MockOrganisaatiot.jyväskylänNormaalikoulu.oid,
         "kayttooikeudet" -> List(
           Map("palvelu" -> "KOSKI", "oikeus" -> "READ"),
           Map("palvelu" -> "KOSKI", "oikeus" -> "LUKU_ESIOPETUS"),

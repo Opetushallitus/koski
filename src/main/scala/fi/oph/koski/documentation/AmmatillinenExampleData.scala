@@ -8,6 +8,7 @@ import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.organisaatio.MockOrganisaatiot.stadinAmmattiopisto
 import fi.oph.koski.schema._
 
 object AmmatillinenExampleData {
@@ -140,9 +141,8 @@ object AmmatillinenExampleData {
   lazy val järjestämismuotoOppilaitos = JärjestämismuotoIlmanLisätietoja(Koodistokoodiviite("10", Some("Oppilaitosmuotoinen"), "jarjestamismuoto", Some(1)))
   lazy val osaamisenHankkimistapaOppilaitos = OsaamisenHankkimistapaIlmanLisätietoja(Koodistokoodiviite("oppilaitosmuotoinenkoulutus", Some("Oppilaitosmuotoinen"), "osaamisenhankkimistapa", Some(1)))
   lazy val osaamisenHankkimistapaOppisopimus = OppisopimuksellinenOsaamisenHankkimistapa(Koodistokoodiviite("oppisopimus", Some("Oppisopimus"), "osaamisenhankkimistapa", Some(1)), Oppisopimus(Yritys("Autokorjaamo Oy", "1234567-8"), oppisopimuksenPurkaminen = Some(OppisopimuksenPurkaminen(date(2013, 3, 20), purettuKoeajalla = true))))
-  lazy val stadinAmmattiopisto: Oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto, Some(Koodistokoodiviite("10105", None, "oppilaitosnumero", None)), Some("Stadin ammattiopisto"))
-  lazy val stadinToimipiste: OidOrganisaatio = OidOrganisaatio(MockOrganisaatiot.lehtikuusentienToimipiste, Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))
-  lazy val stadinOppisopimuskeskus: OidOrganisaatio = OidOrganisaatio(MockOrganisaatiot.stadinOppisopimuskeskus, Some("Stadin oppisopimuskeskus"))
+  lazy val stadinToimipiste: OidOrganisaatio = OidOrganisaatio(MockOrganisaatiot.lehtikuusentienToimipiste.oid, nimi = Some("Stadin ammattiopisto, Lehtikuusentien toimipaikka"))
+  lazy val stadinOppisopimuskeskus: OidOrganisaatio = OidOrganisaatio(MockOrganisaatiot.stadinOppisopimuskeskus.oid, nimi = Some("Stadin oppisopimuskeskus"))
   lazy val tutkintotoimikunta: Organisaatio = Tutkintotoimikunta("Autokorjaamoalan tutkintotoimikunta", "8406")
   lazy val lähdeWinnova = Koodistokoodiviite("winnova", Some("Winnova"), "lahdejarjestelma", Some(1))
   lazy val lähdePrimus = Koodistokoodiviite("primus", Some("Primus"), "lahdejarjestelma", Some(1))
@@ -200,7 +200,7 @@ object AmmatillinenExampleData {
   lazy val vapaavalintaisetTutkinnonOsat = Some(Koodistokoodiviite("3", "ammatillisentutkinnonosanryhma"))
   lazy val yksilöllisestiLaajentavatTutkinnonOsat = Some(Koodistokoodiviite("4", "ammatillisentutkinnonosanryhma"))
 
-  def opiskeluoikeus(oppilaitos: Oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto),
+  def opiskeluoikeus(oppilaitos: Oppilaitos = stadinAmmattiopisto,
                      tutkinto: AmmatillisenTutkinnonSuoritus = autoalanPerustutkinnonSuoritus(stadinToimipiste),
                      osat: Option[List[AmmatillisenTutkinnonOsanSuoritus]] = None): AmmatillinenOpiskeluoikeus = {
     AmmatillinenOpiskeluoikeus(
@@ -320,22 +320,22 @@ object AmmatillinenExampleData {
     OpiskeluoikeudenOrganisaatiohistoria(
       muutospäivä = date(2002, 2, 2),
       Some(Oppilaitos(
-        oid = MockOrganisaatiot.omnia,
+        oid = MockOrganisaatiot.omnia.oid,
         nimi = Some(Finnish(fi = "Omnian oppilaitos"))
       )),
       Some(Koulutustoimija(
-        oid = MockOrganisaatiot.helsinginKaupunki,
+        oid = MockOrganisaatiot.helsinginKaupunki.oid,
         nimi = Some(Finnish(fi = "Helsingin kaupunki"))
       ))
     ),
     OpiskeluoikeudenOrganisaatiohistoria(
       muutospäivä = date(2005, 5, 5),
       Some(Oppilaitos(
-        oid = MockOrganisaatiot.stadinAmmattiopisto,
+        oid = stadinAmmattiopisto.oid,
         nimi = Some(Finnish(fi = "Stadin ammattiopisto"))
       )),
       Some(Koulutustoimija(
-        oid = MockOrganisaatiot.helsinginKaupunki,
+        oid = MockOrganisaatiot.helsinginKaupunki.oid,
         nimi = Some(Finnish(fi = "Helsingin kaupunki"))
       ))
     )

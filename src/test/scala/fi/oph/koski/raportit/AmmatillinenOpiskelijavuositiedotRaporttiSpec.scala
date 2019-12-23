@@ -20,7 +20,7 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec extends FreeSpec with Raport
     val oid = "1.2.246.562.15.123456"
 
     "raportti sisältää oikeat tiedot" in {
-      val result = AmmatillinenOpiskalijavuositiedotRaportti.buildRaportti(raportointiDatabase, MockOrganisaatiot.stadinAmmattiopisto, LocalDate.parse("2016-01-01"), LocalDate.parse("2016-12-31"))
+      val result = AmmatillinenOpiskalijavuositiedotRaportti.buildRaportti(raportointiDatabase, MockOrganisaatiot.stadinAmmattiopisto.oid, LocalDate.parse("2016-01-01"), LocalDate.parse("2016-12-31"))
 
       val aarnenOpiskeluoikeusOid = lastOpiskeluoikeus(MockOppijat.ammattilainen.oid).oid.get
       val aarnenRivi = result.find(_.opiskeluoikeusOid == aarnenOpiskeluoikeusOid)
@@ -44,7 +44,7 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec extends FreeSpec with Raport
 
     "ostettu" in {
       val markkasenOpiskeluoikeusOid = lastOpiskeluoikeus(MockOppijat.markkanen.oid).oid.get
-      val rivi = AmmatillinenOpiskalijavuositiedotRaportti.buildRaportti(raportointiDatabase, MockOrganisaatiot.omnia, LocalDate.parse("2000-01-01"), LocalDate.parse("2000-01-02"))
+      val rivi = AmmatillinenOpiskalijavuositiedotRaportti.buildRaportti(raportointiDatabase, MockOrganisaatiot.omnia.oid, LocalDate.parse("2000-01-01"), LocalDate.parse("2000-01-02"))
         .find(_.opiskeluoikeusOid == markkasenOpiskeluoikeusOid)
         .get
       rivi.ostettu should equal(true)
@@ -136,20 +136,20 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec extends FreeSpec with Raport
 
     "käyttöoikeudet" - {
       "raportin lataaminen vaatii käyttöoikeudet organisaatioon" in {
-        authGet(s"api/raportit/ammatillinenopiskelijavuositiedot?oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&alku=2016-01-01&loppu=2016-12-31&password=dummy", user = omniaTallentaja) {
+        authGet(s"api/raportit/ammatillinenopiskelijavuositiedot?oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto.oid}&alku=2016-01-01&loppu=2016-12-31&password=dummy", user = omniaTallentaja) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Käyttäjällä ei oikeuksia annettuun organisaatioon (esimerkiksi oppilaitokseen)."))
         }
       }
 
       "raportin lataaminen ei ole sallittu viranomais-käyttäjille (globaali-luku)" in {
-        authGet(s"api/raportit/ammatillinenopiskelijavuositiedot?oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&alku=2016-01-01&loppu=2016-12-31&password=dummy", user = evira) {
+        authGet(s"api/raportit/ammatillinenopiskelijavuositiedot?oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto.oid}&alku=2016-01-01&loppu=2016-12-31&password=dummy", user = evira) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Käyttäjällä ei oikeuksia annettuun organisaatioon (esimerkiksi oppilaitokseen)."))
         }
       }
     }
 
     "raportin lataaminen asettaa koskiDownloadToken-cookien" in {
-      authGet(s"api/raportit/ammatillinenopiskelijavuositiedot?oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&alku=2016-01-01&loppu=2016-12-31&password=dummy&downloadToken=test123") {
+      authGet(s"api/raportit/ammatillinenopiskelijavuositiedot?oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto.oid}&alku=2016-01-01&loppu=2016-12-31&password=dummy&downloadToken=test123") {
         verifyResponseStatusOk()
         val cookie = response.headers("Set-Cookie").find(x => x.startsWith("koskiDownloadToken"))
         cookie shouldBe defined

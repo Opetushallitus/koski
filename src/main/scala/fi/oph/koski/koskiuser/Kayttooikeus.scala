@@ -1,6 +1,7 @@
 package fi.oph.koski.koskiuser
 
 import fi.oph.koski.koskiuser.Rooli._
+import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema.{OpiskeluoikeudenTyyppi, OrganisaatioWithOid}
 
 object Rooli {
@@ -45,7 +46,7 @@ case class KäyttöoikeusGlobal(globalPalveluroolit: List[Palvelurooli]) extends
   }
 }
 
-case class KäyttöoikeusOrg(juuriOrganisaatio: OrganisaatioWithOid, organisaatio: OrganisaatioWithOid, organisaatiokohtaisetPalveluroolit: List[Palvelurooli], oppilaitostyyppi: Option[String]) extends Käyttöoikeus {
+case class KäyttöoikeusOrg(juuriOrganisaatio: Oid, organisaatioOid: Oid, organisaatiokohtaisetPalveluroolit: List[Palvelurooli], oppilaitostyyppi: Option[String]) extends Käyttöoikeus {
   def organisaatioAccessType: List[AccessType.Value] = organisaatiokohtaisetPalveluroolit flatMap {
     case Palvelurooli("KOSKI", "READ") => List(AccessType.read)
     case Palvelurooli("KOSKI", "READ_UPDATE") => List(AccessType.read, AccessType.write)
@@ -63,7 +64,7 @@ case class KäyttöoikeusOrg(juuriOrganisaatio: OrganisaatioWithOid, organisaati
 
   def globalAccessType: List[AccessType.Value] = Nil
   def globalPalveluroolit = Nil
-  def juuri: Boolean = juuriOrganisaatio.oid == organisaatio.oid
+  def juuri: Boolean = juuriOrganisaatio == organisaatioOid
 }
 
 case class KäyttöoikeusViranomainen(globalPalveluroolit: List[Palvelurooli]) extends Käyttöoikeus {

@@ -24,7 +24,7 @@ trait MuuAmmatillinenTestMethods[T <: AmmatillinenPäätasonSuoritus] extends Pu
 
   protected def makeOpiskeluoikeus(alkamispäivä: LocalDate = longTimeAgo) = AmmatillinenOpiskeluoikeus(
     tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, None))),
-    oppilaitos = Some(Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto)),
+    oppilaitos = Some(MockOrganisaatiot.stadinAmmattiopisto),
     suoritukset = List(defaultPäätasonSuoritus)
   )
 

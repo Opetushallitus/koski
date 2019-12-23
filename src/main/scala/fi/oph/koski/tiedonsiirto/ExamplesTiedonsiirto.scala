@@ -9,7 +9,7 @@ import fi.oph.koski.schema.{AmmatillinenOpiskeluoikeus, Oppija, Oppilaitos, Täy
 
 object ExamplesTiedonsiirto {
   val opiskeluoikeus: AmmatillinenOpiskeluoikeus = AmmatillinenExampleData.opiskeluoikeus().copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId))
-  val failingOpiskeluoikeus: AmmatillinenOpiskeluoikeus = opiskeluoikeus.copy(oppilaitos = Some(Oppilaitos(MockOrganisaatiot.aaltoYliopisto)))
+  val failingOpiskeluoikeus: AmmatillinenOpiskeluoikeus = opiskeluoikeus.copy(oppilaitos = Some(MockOrganisaatiot.aaltoYliopisto))
   val epävalidiHenkilö: LaajatOppijaHenkilöTiedot = MockOppijat.tiedonsiirto.copy(hetu = Some("epävalidiHetu"))
   val failingTutkinnonosaOpiskeluoikeus: AmmatillinenOpiskeluoikeus = AmmatillinenPerustutkintoExample.osittainenPerustutkintoOpiskeluoikeus.copy(
     lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId)

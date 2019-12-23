@@ -71,11 +71,11 @@ class RaportointikantaSpec extends FreeSpec with LocalJettyHttpSpecification wit
     }
     "Organisaatiot on ladattu" in {
       organisaatioCount should be > 10
-      val organisaatio = raportointiDatabase.runDbSync(raportointiDatabase.ROrganisaatiot.filter(_.organisaatioOid === MockOrganisaatiot.aapajoenKoulu).result)
-      organisaatio should equal(Seq(ROrganisaatioRow(MockOrganisaatiot.aapajoenKoulu, "Aapajoen koulu", "OPPILAITOS", Some("11"), Some("04044"), Some("851"), None)))
+      val organisaatio = raportointiDatabase.runDbSync(raportointiDatabase.ROrganisaatiot.filter(_.organisaatioOid === MockOrganisaatiot.aapajoenKoulu.oid).result)
+      organisaatio should equal(Seq(ROrganisaatioRow(MockOrganisaatiot.aapajoenKoulu.oid, "Aapajoen koulu", "OPPILAITOS", Some("11"), Some("04044"), Some("851"), None)))
     }
     "Oppilaitosten opetuskielet on ladattu" in {
-      val oppilaitos = raportointiDatabase.runDbSync(raportointiDatabase.ROrganisaatiot.filter(_.organisaatioOid === MockOrganisaatiot.aapajoenKoulu).result).head
+      val oppilaitos = raportointiDatabase.runDbSync(raportointiDatabase.ROrganisaatiot.filter(_.organisaatioOid === MockOrganisaatiot.aapajoenKoulu.oid).result).head
       raportointiDatabase.oppilaitoksenKielet(oppilaitos.organisaatioOid).shouldEqual(Set(RKoodistoKoodiRow("oppilaitoksenopetuskieli", "1", "suomi")))
     }
     "Koodistot on ladattu" in {

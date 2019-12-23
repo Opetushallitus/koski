@@ -5,7 +5,7 @@ import java.time.LocalDate.{of => date}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.localization.LocalizedStringImplicits._
-import fi.oph.koski.organisaatio.MockOrganisaatiot.omnia
+import fi.oph.koski.organisaatio.MockOrganisaatiot.{omnia, stadinAmmattiopisto}
 import fi.oph.koski.schema.LocalizedString.finnish
 import fi.oph.koski.schema._
 
@@ -178,8 +178,8 @@ object AmmatillinenPerustutkintoExample {
     )
   )
 
-  val sisältyvä = oppija(opiskeluoikeus = opiskeluoikeus(tutkinto = autoalanPerustutkinnonSuoritus(OidOrganisaatio(omnia))).copy(
-    sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(Oppilaitos(omnia), "1.2.246.562.15.84012103747"))
+  val sisältyvä = oppija(opiskeluoikeus = opiskeluoikeus(tutkinto = autoalanPerustutkinnonSuoritus(omnia)).copy(
+    sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(omnia, "1.2.246.562.15.84012103747"))
   ))
 
   lazy val osittainenPerustutkinto = Oppija(exampleHenkilö, List(osittainenPerustutkintoOpiskeluoikeus))

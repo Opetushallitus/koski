@@ -116,7 +116,7 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
     "Sisällytetyt opiskeluoikeudet" - {
       "Opiskeluoikeuteen sisältyvät opiskeluioikeudet toistesta oppilaitoksesta" in {
         withNewSisällytettyOpiskeluoikeus {
-          val aarnenRivit = testiHenkilöRaporttiRows(defaultRequest.copy(oppilaitosOid = MockOrganisaatiot.omnia))
+          val aarnenRivit = testiHenkilöRaporttiRows(defaultRequest.copy(oppilaitosOid = MockOrganisaatiot.omnia.oid))
           aarnenRivit.length should equal(2)
           val stadinLinkitettyOpiskeluoikeus = aarnenRivit.find(_.linkitetynOpiskeluoikeudenOppilaitos == "Stadin ammattiopisto")
           stadinLinkitettyOpiskeluoikeus shouldBe defined
@@ -125,7 +125,7 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
       }
       "Sisältävä opiskeluoikeus ei tule sisällytetyn opiskeluoikeuden oppilaitoksen raportille" in {
         withNewSisällytettyOpiskeluoikeus {
-          val rivi = testiHenkilöRaporttiRows(defaultRequest.copy(oppilaitosOid = MockOrganisaatiot.stadinAmmattiopisto))
+          val rivi = testiHenkilöRaporttiRows(defaultRequest.copy(oppilaitosOid = MockOrganisaatiot.stadinAmmattiopisto.oid))
           rivi.map(_.linkitetynOpiskeluoikeudenOppilaitos) should equal(List(""))
         }
       }
@@ -183,7 +183,7 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
   private val defaultHetu = MockOppijat.ammattilainen.hetu.get
 
   private val defaultRequest = AmmatillinenSuoritusTiedotRequest(
-    oppilaitosOid = MockOrganisaatiot.stadinAmmattiopisto,
+    oppilaitosOid = MockOrganisaatiot.stadinAmmattiopisto.oid,
     alku =  date(2016, 1, 1),
     loppu = date(2016,5 , 30),
     osasuoritustenAikarajaus = false,
@@ -197,12 +197,12 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
   private def withNewSisällytettyOpiskeluoikeus(f: => Unit) = {
     resetFixtures
     val omnia = MockOrganisaatioRepository.findByOppilaitosnumero("10054").get
-    val omnianOpiskeluoikeus = makeOpiskeluoikeus(date(2016, 1, 1), omnia, omnia.oid)
+    val omnianOpiskeluoikeus = makeOpiskeluoikeus(date(2016, 1, 1), omnia, omnia)
     val oppija = MockOppijat.ammattilainen
 
     putOpiskeluoikeus(omnianOpiskeluoikeus, oppija){}
 
-    val stadinOpiskeluoikeus = getOpiskeluoikeudet(oppija.oid).find(_.oppilaitos.map(_.oid).contains(MockOrganisaatiot.stadinAmmattiopisto)).map{case oo: AmmatillinenOpiskeluoikeus => oo}.get
+    val stadinOpiskeluoikeus = getOpiskeluoikeudet(oppija.oid).find(_.oppilaitos.map(_.oid).contains(MockOrganisaatiot.stadinAmmattiopisto.oid)).map{case oo: AmmatillinenOpiskeluoikeus => oo}.get
     val omnianOpiskeluoikeusOid = lastOpiskeluoikeus(MockOppijat.ammattilainen.oid).oid.get
 
     putOpiskeluoikeus(sisällytäOpiskeluoikeus(stadinOpiskeluoikeus, SisältäväOpiskeluoikeus(omnia, omnianOpiskeluoikeusOid)), oppija){}

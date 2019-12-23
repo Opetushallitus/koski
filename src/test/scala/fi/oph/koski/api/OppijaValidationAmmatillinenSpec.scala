@@ -262,7 +262,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
           }
 
           "Vahvistuksen myöntäjähenkilö puuttuu" - {
-            "palautetaan HTTP 400" in (put(copySuoritus(arviointiHyvä(), Some(HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla(LocalDate.parse("2016-08-08"), Some(helsinki), stadinOpisto, Nil)))) (
+            "palautetaan HTTP 400" in (put(copySuoritus(arviointiHyvä(), Some(HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla(LocalDate.parse("2016-08-08"), Some(helsinki), MockOrganisaatiot.stadinAmmattiopisto, Nil)))) (
               verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*lessThanMinimumNumberOfItems.*".r))
             ))
           }
@@ -413,7 +413,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       }
 
       "Vahvistuksen myöntäjähenkilö puuttuu" - {
-        "palautetaan HTTP 400" in (put(copySuoritus(Some(HenkilövahvistusValinnaisellaPaikkakunnalla(LocalDate.parse("2016-08-08"), Some(helsinki), stadinOpisto, Nil)))) (
+        "palautetaan HTTP 400" in (put(copySuoritus(Some(HenkilövahvistusValinnaisellaPaikkakunnalla(LocalDate.parse("2016-08-08"), Some(helsinki), MockOrganisaatiot.stadinAmmattiopisto, Nil)))) (
           verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*lessThanMinimumNumberOfItems.*".r))
         ))
       }
@@ -628,19 +628,17 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
   }
 
   def vahvistus(date: LocalDate) = {
-    Some(HenkilövahvistusValinnaisellaPaikkakunnalla(date, Some(helsinki), stadinOpisto, List(Organisaatiohenkilö("Teppo Testaaja", "rehtori", stadinOpisto))))
+    Some(HenkilövahvistusValinnaisellaPaikkakunnalla(date, Some(helsinki), MockOrganisaatiot.stadinAmmattiopisto, List(Organisaatiohenkilö("Teppo Testaaja", "rehtori", MockOrganisaatiot.stadinAmmattiopisto))))
   }
 
 
   def vahvistusValinnaisellaTittelillä(date: LocalDate) = {
-    Some(HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla(date, Some(helsinki), stadinOpisto, List(OrganisaatiohenkilöValinnaisellaTittelillä("Teppo Testaaja", Some("rehtori"), stadinOpisto))))
+    Some(HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla(date, Some(helsinki), MockOrganisaatiot.stadinAmmattiopisto, List(OrganisaatiohenkilöValinnaisellaTittelillä("Teppo Testaaja", Some("rehtori"), MockOrganisaatiot.stadinAmmattiopisto))))
   }
 
   def arviointiHyvä(päivä: LocalDate = date(2015, 1, 1), arvosana: Koodistokoodiviite = hyvä1k3): Some[List[AmmatillinenArviointi]] = Some(List(AmmatillinenArviointi(arvosana, päivä)))
 
   lazy val hyvä1k3 = Koodistokoodiviite("2", "arviointiasteikkoammatillinent1k3")
-
-  lazy val stadinOpisto: OidOrganisaatio = OidOrganisaatio(MockOrganisaatiot.stadinAmmattiopisto)
 
   lazy val laajuus = LaajuusOsaamispisteissä(11)
 

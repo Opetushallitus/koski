@@ -12,10 +12,10 @@ class DatabaseUpdateSpec extends FreeSpec with Matchers with OpiskeluoikeusTestM
   "Kun opiskeluoikeus päivitetään" - {
     "Oppilaitoksen muuttuessa oppilaitos_oid päivittyy" in {
       val opiskeluoikeus = createOpiskeluoikeus(defaultHenkilö, defaultOpiskeluoikeus, user = stadinAmmattiopistoTallentaja, resetFixtures = true)
-      putOpiskeluoikeus(opiskeluoikeus.copy(oppilaitos = Some(Oppilaitos(omnia)), koulutustoimija = None)) {
+      putOpiskeluoikeus(opiskeluoikeus.copy(oppilaitos = Some(omnia), koulutustoimija = None)) {
         verifyResponseStatusOk()
       }
-      opiskeluoikeus.oid.flatMap(oppilaitosOid) should equal(Some(omnia))
+      opiskeluoikeus.oid.flatMap(oppilaitosOid) should equal(Some(omnia.oid))
     }
   }
 

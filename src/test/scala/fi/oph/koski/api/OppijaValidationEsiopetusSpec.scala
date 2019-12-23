@@ -1,7 +1,8 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.documentation.{ExamplesEsiopetus, YleissivistavakoulutusExampleData}
+import fi.oph.koski.documentation.ExamplesEsiopetus
 import fi.oph.koski.documentation.ExamplesEsiopetus.{peruskoulunEsiopetuksenTunniste, päiväkodinEsiopetuksenTunniste, suoritus}
+import fi.oph.koski.organisaatio.MockOrganisaatiot.{jyväskylänNormaalikoulu, pkVironniemi}
 import fi.oph.koski.schema._
 
 class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenOpiskeluoikeus] with LocalJettyHttpSpecification with PutOpiskeluoikeusTestMethods[EsiopetuksenOpiskeluoikeus] {
@@ -13,7 +14,7 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
 
   "Päiväkodin esiopetus -> HTTP 200" in {
     val opiskeluoikeus = defaultOpiskeluoikeus.copy(
-      oppilaitos = Some(YleissivistavakoulutusExampleData.montessoriPäiväkoti),
+      oppilaitos = Some(pkVironniemi),
       suoritukset = List(päiväkodinEsiopetuksenSuoritus)
     )
     putOpiskeluoikeus(opiskeluoikeus) {
@@ -21,8 +22,8 @@ class OppijaValidationEsiopetusSpec extends TutkinnonPerusteetTest[EsiopetuksenO
     }
   }
 
-  val peruskoulunEsiopetuksenSuoritus = suoritus(perusteenDiaarinumero = "102/011/2014", tunniste = peruskoulunEsiopetuksenTunniste, YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu)
-  val päiväkodinEsiopetuksenSuoritus = suoritus(perusteenDiaarinumero = "102/011/2014", tunniste = päiväkodinEsiopetuksenTunniste, YleissivistavakoulutusExampleData.montessoriPäiväkoti)
+  val peruskoulunEsiopetuksenSuoritus = suoritus(perusteenDiaarinumero = "102/011/2014", tunniste = peruskoulunEsiopetuksenTunniste, jyväskylänNormaalikoulu)
+  val päiväkodinEsiopetuksenSuoritus = suoritus(perusteenDiaarinumero = "102/011/2014", tunniste = päiväkodinEsiopetuksenTunniste, pkVironniemi)
 
   override def tag = implicitly[reflect.runtime.universe.TypeTag[EsiopetuksenOpiskeluoikeus]]
   override def defaultOpiskeluoikeus: EsiopetuksenOpiskeluoikeus = ExamplesEsiopetus.opiskeluoikeus

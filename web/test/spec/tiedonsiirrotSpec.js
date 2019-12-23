@@ -37,7 +37,7 @@ describe('Tiedonsiirrot', function() {
     before(tiedonsiirrot.openYhteenveto)
 
     it('Näytetään', function() {
-      expect(tiedonsiirrot.tiedot().map(function(row) { return row[0]})).to.deep.equal(['Aalto-yliopisto', 'HELSINGIN KAUPUNKI', 'Stadin ammattiopisto'])
+      expect(tiedonsiirrot.tiedot().map(function(row) { return row[0]})).to.deep.equal(['Aalto-yliopisto', 'Helsingin kaupunki', 'Stadin ammattiopisto'])
     })
   })
 

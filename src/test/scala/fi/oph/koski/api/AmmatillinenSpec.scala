@@ -6,7 +6,7 @@ import org.scalatest.FreeSpec
 class AmmatillinenSpec extends FreeSpec with TodistusTestMethods with LocalJettyHttpSpecification {
   "Ammatillisen perustutkinnon päättötodistus" in {
     todistus(MockOppijat.ammattilainen.oid, "ammatillinentutkinto") should equal(
-      """HELSINGIN KAUPUNKI
+      """Helsingin kaupunki
         |Stadin ammattiopisto
         |Päättötodistus
         |Luonto- ja ympäristöalan perustutkinto

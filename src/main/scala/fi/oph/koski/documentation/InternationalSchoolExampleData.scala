@@ -7,13 +7,12 @@ import fi.oph.koski.schema._
 import fi.oph.koski.localization.LocalizedStringImplicits._
 
 object InternationalSchoolExampleData {
-  lazy val internationalSchoolOfHelsinki: Oppilaitos = Oppilaitos(MockOrganisaatiot.internationalSchool, Some(Koodistokoodiviite("03510", None, "oppilaitosnumero", None)), Some("International School of Helsinki"))
   lazy val internationalSchoolOfHelsinkiToimipiste: Toimipiste = Toimipiste("1.2.246.562.10.63709849283")
 
   def pypSuoritus(grade: String, aloitusPäivä: LocalDate, vahvistusPäivä: Option[LocalDate]): PYPVuosiluokanSuoritus = PYPVuosiluokanSuoritus(
     koulutusmoduuli = PYPLuokkaAste(tunniste = Koodistokoodiviite(grade, "internationalschoolluokkaaste")),
     alkamispäivä = Some(aloitusPäivä),
-    toimipiste = internationalSchoolOfHelsinki,
+    toimipiste = MockOrganisaatiot.internationalSchool,
     vahvistus = vahvistusPäivä.flatMap(vahvistus),
     suorituskieli = ExampleData.englanti
   )
@@ -21,7 +20,7 @@ object InternationalSchoolExampleData {
   def mypSuoritus(grade: Int, aloitusPäivä: LocalDate, vahvistusPäivä: Option[LocalDate]): MYPVuosiluokanSuoritus = MYPVuosiluokanSuoritus(
     koulutusmoduuli = MYPLuokkaAste(tunniste = Koodistokoodiviite(grade.toString, "internationalschoolluokkaaste")),
     alkamispäivä = Some(aloitusPäivä),
-    toimipiste = internationalSchoolOfHelsinki,
+    toimipiste = MockOrganisaatiot.internationalSchool,
     vahvistus = vahvistusPäivä.flatMap(vahvistus),
     suorituskieli = ExampleData.englanti
   )
@@ -29,7 +28,7 @@ object InternationalSchoolExampleData {
   def diplomaSuoritus(grade: Int, aloitusPäivä: LocalDate, vahvistusPäivä: Option[LocalDate]): DiplomaVuosiluokanSuoritus = DiplomaVuosiluokanSuoritus(
     koulutusmoduuli = IBDiplomaLuokkaAste(tunniste = Koodistokoodiviite(grade.toString, "internationalschoolluokkaaste")),
     alkamispäivä = Some(aloitusPäivä),
-    toimipiste = internationalSchoolOfHelsinki,
+    toimipiste = MockOrganisaatiot.internationalSchool,
     vahvistus = vahvistusPäivä.flatMap(vahvistus),
     suorituskieli = ExampleData.englanti
   )
@@ -93,5 +92,5 @@ object InternationalSchoolExampleData {
   def arviointi(arvosana: String) = Some(SanallinenInternationalSchoolOppiaineenArviointi(Koodistokoodiviite(arvosana, "arviointiasteikkointernationalschool")))
   def tokArvionti(arvosana: String) = Some(InternationalSchoolCoreRequirementsArviointi(arvosana = Koodistokoodiviite(arvosana, "arviointiasteikkocorerequirementsib")))
 
-  private def vahvistus(päivä: LocalDate) = ExampleData.vahvistusPaikkakunnalla(päivä, internationalSchoolOfHelsinki, ExampleData.helsinki)
+  private def vahvistus(päivä: LocalDate) = ExampleData.vahvistusPaikkakunnalla(päivä, MockOrganisaatiot.internationalSchool, ExampleData.helsinki)
 }

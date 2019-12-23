@@ -3,8 +3,9 @@ package fi.oph.koski.api
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.ExampleData._
-import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.localization.LocalizedStringImplicits._
+import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.schema._
 
 trait OpiskeluoikeusTestMethodsAikuistenPerusopetus extends PutOpiskeluoikeusTestMethods[AikuistenPerusopetuksenOpiskeluoikeus]{

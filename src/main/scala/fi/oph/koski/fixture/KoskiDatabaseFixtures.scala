@@ -150,8 +150,7 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
 }
 
 object AmmatillinenOpiskeluoikeusTestData {
-  def opiskeluoikeus(oppilaitosId: String, koulutusKoodi: Int = 351301, diaariNumero: String = "39/011/2014"): AmmatillinenOpiskeluoikeus = {
-    val oppilaitos: Oppilaitos = Oppilaitos(oppilaitosId, None, None)
+  def opiskeluoikeus(oppilaitos: Oppilaitos, koulutusKoodi: Int = 351301, diaariNumero: String = "39/011/2014"): AmmatillinenOpiskeluoikeus = {
     val koulutusKoodiViite = Koodistokoodiviite(koulutusKoodi.toString, None, "koulutus", None)
 
     AmmatillinenOpiskeluoikeus(
@@ -185,7 +184,7 @@ object AmmatillinenOpiskeluoikeusTestData {
 
 object PerusopetuksenOpiskeluoikeusTestData {
   lazy val lähdejärjestelmällinenOpiskeluoikeus: PerusopetuksenOpiskeluoikeus =
-    PerusopetusExampleData.päättötodistusOpiskeluoikeus(oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto, None, None)).copy(
+    PerusopetusExampleData.päättötodistusOpiskeluoikeus(oppilaitos = MockOrganisaatiot.stadinAmmattiopisto).copy(
       lähdejärjestelmänId = Some(AmmatillinenExampleData.primusLähdejärjestelmäId)
     )
 }

@@ -18,7 +18,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
   def tag = implicitly[reflect.runtime.universe.TypeTag[AmmatillinenOpiskeluoikeus]]
   override def defaultOpiskeluoikeus = makeOpiskeluoikeus(alkamispäivä = longTimeAgo)
 
-  def makeOpiskeluoikeus(alkamispäivä: LocalDate = longTimeAgo, oppilaitos: Oppilaitos = Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto)) = AmmatillinenOpiskeluoikeus(
+  def makeOpiskeluoikeus(alkamispäivä: LocalDate = longTimeAgo, oppilaitos: Oppilaitos = MockOrganisaatiot.stadinAmmattiopisto) = AmmatillinenOpiskeluoikeus(
     tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, None))),
     oppilaitos = Some(oppilaitos),
     suoritukset = List(osittainenSuoritusKesken)
@@ -161,7 +161,7 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
           }
 
           "Vahvistuksen myöntäjähenkilö puuttuu" - {
-            "palautetaan HTTP 400" in (put(copySuoritus(arviointiHyvä(), Some(HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla(LocalDate.parse("2016-08-08"), Some(helsinki), stadinOpisto, Nil)))) (
+            "palautetaan HTTP 400" in (put(copySuoritus(arviointiHyvä(), Some(HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla(LocalDate.parse("2016-08-08"), Some(helsinki), MockOrganisaatiot.stadinAmmattiopisto, Nil)))) (
               verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*lessThanMinimumNumberOfItems.*".r))
             ))
           }
@@ -226,8 +226,8 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
               "Palautetaan HTTP 200" in {
                 val stadinOpiskeluoikeus: AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(MockOppijat.eero, defaultOpiskeluoikeus, user = stadinAmmattiopistoTallentaja)
 
-                val omnianOpiskeluoikeus = makeOpiskeluoikeus(oppilaitos = Oppilaitos(MockOrganisaatiot.omnia)).copy(
-                  suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus.copy(toimipiste = OidOrganisaatio(MockOrganisaatiot.omnia))),
+                val omnianOpiskeluoikeus = makeOpiskeluoikeus(oppilaitos = MockOrganisaatiot.omnia).copy(
+                  suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus.copy(toimipiste = MockOrganisaatiot.omnia)),
                   sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(stadinOpiskeluoikeus.oppilaitos.get, stadinOpiskeluoikeus.oid.get))
                 )
 
@@ -319,17 +319,16 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
   }
 
   private def vahvistus(date: LocalDate) = {
-    Some(HenkilövahvistusValinnaisellaPaikkakunnalla(date, Some(helsinki), stadinOpisto, List(Organisaatiohenkilö("Teppo Testaaja", "rehtori", stadinOpisto))))
+    Some(HenkilövahvistusValinnaisellaPaikkakunnalla(date, Some(helsinki), MockOrganisaatiot.stadinAmmattiopisto, List(Organisaatiohenkilö("Teppo Testaaja", "rehtori", MockOrganisaatiot.stadinAmmattiopisto))))
   }
 
 
   private def vahvistusValinnaisellaTittelillä(date: LocalDate) = {
-    Some(HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla(date, Some(helsinki), stadinOpisto, List(OrganisaatiohenkilöValinnaisellaTittelillä("Teppo Testaaja", Some("rehtori"), stadinOpisto))))
+    Some(HenkilövahvistusValinnaisellaTittelilläJaValinnaisellaPaikkakunnalla(date, Some(helsinki), MockOrganisaatiot.stadinAmmattiopisto, List(OrganisaatiohenkilöValinnaisellaTittelillä("Teppo Testaaja", Some("rehtori"), MockOrganisaatiot.stadinAmmattiopisto))))
   }
 
   private def arviointiHyvä(päivä: LocalDate = date(2015, 1, 1)): Some[List[AmmatillinenArviointi]] = Some(List(AmmatillinenArviointi(Koodistokoodiviite("2", "arviointiasteikkoammatillinent1k3"), päivä)))
 
-  private lazy val stadinOpisto: OidOrganisaatio = OidOrganisaatio(MockOrganisaatiot.stadinAmmattiopisto)
 
   private lazy val laajuus = LaajuusOsaamispisteissä(11)
 

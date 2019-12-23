@@ -154,14 +154,14 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     "oppilaitos"  - {
       "luetaan datasta jos se löytyy" in {
         resetFixtures
-        val aalto = MockOrganisaatioRepository.getOrganisaatio(MockOrganisaatiot.aaltoYliopisto).flatMap(_.toOppilaitos)
+        val aalto = MockOrganisaatioRepository.getOrganisaatio(MockOrganisaatiot.aaltoYliopisto.oid).flatMap(_.toOppilaitos)
         putOpiskeluoikeus(stadinOpiskeluoikeus.copy(oppilaitos = aalto), henkilö = defaultHenkilö.copy(sukunimi = ""), headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
           verifyResponseStatus(400, sukunimiPuuttuu)
         }
 
         val tiedonsiirrot = getVirheellisetTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä)
         tiedonsiirrot.flatMap(_.rivit) should have size 1
-        tiedonsiirrot.head.rivit.head.oppilaitos.head.oid should equal(MockOrganisaatiot.aaltoYliopisto)
+        tiedonsiirrot.head.rivit.head.oppilaitos.head.oid should equal(MockOrganisaatiot.aaltoYliopisto.oid)
       }
 
       "pystytään päättelemään toimipisteestä" in {
@@ -172,7 +172,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
 
         val tiedonsiirrot = getVirheellisetTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä)
         tiedonsiirrot.flatMap(_.rivit) should have size 1
-        tiedonsiirrot.head.rivit.head.oppilaitos.head.oid should equal(MockOrganisaatiot.stadinAmmattiopisto)
+        tiedonsiirrot.head.rivit.head.oppilaitos.head.oid should equal(MockOrganisaatiot.stadinAmmattiopisto.oid)
       }
     }
 

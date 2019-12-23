@@ -43,7 +43,7 @@ class KorkeakouluSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMeth
           getOpiskeluoikeudet(MockOppijat.dippainssi.oid).flatMap(_.suoritukset).filter(_.koulutusmoduuli.isTutkinto).map(_.valmis) should equal(List(true))
         }
         "Kun useampi kuin yksi opiskeluoikeusjakso" in {
-          val opiskeluoikeus = getOpiskeluoikeudet(MockOppijat.montaJaksoaKorkeakoululainen.oid).find(_.oppilaitos.exists(_.oid == MockOrganisaatiot.aaltoYliopisto)).get
+          val opiskeluoikeus = getOpiskeluoikeudet(MockOppijat.montaJaksoaKorkeakoululainen.oid).find(_.oppilaitos.exists(_.oid == MockOrganisaatiot.aaltoYliopisto.oid)).get
           opiskeluoikeus.suoritukset.head.koulutusmoduuli.nimi.get("fi") should equal("Fil. maist., fysiikka")
         }
       }

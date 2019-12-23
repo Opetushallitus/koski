@@ -3,7 +3,7 @@ package fi.oph.koski.api
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
-import fi.oph.koski.documentation.AmmatillinenExampleData.{stadinAmmattiopisto, _}
+import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData.{helsinki, vahvistus}
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.aikuistenPerusopetuksenOpiskeluoikeusAlkuvaiheineen
 import fi.oph.koski.documentation.{AmmatillinenExampleData, ExampleData}
@@ -33,7 +33,7 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
         putOpiskeluoikeus(opiskeluoikeus = defaultOpiskeluoikeus, henkilö = opiskeluoikeudenOidKonflikti) {
           verifyResponseStatusOk()
         }
-        putOpiskeluoikeus(opiskeluoikeus = defaultOpiskeluoikeus.copy(oppilaitos = Some(Oppilaitos(MockOrganisaatiot.jyväskylänNormaalikoulu))), henkilö = opiskeluoikeudenOidKonflikti) {
+        putOpiskeluoikeus(opiskeluoikeus = defaultOpiskeluoikeus.copy(oppilaitos = Some(MockOrganisaatiot.jyväskylänNormaalikoulu)), henkilö = opiskeluoikeudenOidKonflikti) {
           verifyResponseStatusOk()
         }
       }
@@ -63,7 +63,7 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
 
     "Omien tietojen muokkaaminen" - {
       "On estetty" in {
-        putOpiskeluoikeus(opiskeluoikeus(oppilaitos = Oppilaitos(omnia), tutkinto = AmmatillinenExampleData.autoalanPerustutkinnonSuoritus(Oppilaitos(omnia))),
+        putOpiskeluoikeus(opiskeluoikeus(oppilaitos = omnia, tutkinto = AmmatillinenExampleData.autoalanPerustutkinnonSuoritus(omnia)),
                           henkilö = MockOppijat.omattiedot,
                           headers = authHeaders(MockUsers.omattiedot) ++ jsonContent) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.omienTietojenMuokkaus())
@@ -228,11 +228,11 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
     }
 
     "Suorituksen toimipiste" - {
-      def toimipisteellä(oid: String) = defaultOpiskeluoikeus.copy(suoritukset = List(autoalanPerustutkinnonSuoritus().copy(toimipiste = OidOrganisaatio(oid))))
+      def toimipisteellä(org: OrganisaatioWithOid) = defaultOpiskeluoikeus.copy(suoritukset = List(autoalanPerustutkinnonSuoritus().copy(toimipiste = OidOrganisaatio(org.oid))))
 
       "Kun yritetään käyttää toimipistettä, johon käyttäjällä ei ole oikeuksia" - {
         "palautetaan HTTP 403 virhe"  in { putOpiskeluoikeus(toimipisteellä(MockOrganisaatiot.helsinginKaupunki)) (
-          verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + MockOrganisaatiot.helsinginKaupunki)))
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + MockOrganisaatiot.helsinginKaupunki.oid)))
         }
       }
 

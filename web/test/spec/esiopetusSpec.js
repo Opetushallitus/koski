@@ -82,7 +82,7 @@ describe('Esiopetus', function() {
 
         it('lisätty oppija näytetään', function() {
           expect(opinnot.getTutkinto()).to.equal('Päiväkodin esiopetus')
-          expect(opinnot.getOppilaitos()).to.equal('Helsingin kaupunki toimipaikka 12241')
+          expect(opinnot.getOppilaitos()).to.equal('PK Vironniemi')
           expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('102/011/2014')
         })
       })

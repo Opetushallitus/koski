@@ -2,8 +2,8 @@ package fi.oph.koski.documentation
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
-import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.koski.localization.LocalizedStringImplicits._
+import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.schema._
 
 object ExampleData {

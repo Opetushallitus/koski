@@ -24,7 +24,7 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
   lazy val hasKoulutusmuotoRestrictions: Boolean = allowedOpiskeluoikeusTyypit != OpiskeluoikeudenTyyppi.kaikkiTyypit.map(_.koodiarvo)
   lazy val kaikkiKäyttöoikeudet: Set[Käyttöoikeus] = käyttöoikeudet
 
-  def organisationOids(accessType: AccessType.Value): Set[String] = orgKäyttöoikeudet.collect { case k: KäyttöoikeusOrg if k.organisaatioAccessType.contains(accessType) => k.organisaatio.oid }
+  def organisationOids(accessType: AccessType.Value): Set[String] = orgKäyttöoikeudet.collect { case k: KäyttöoikeusOrg if k.organisaatioAccessType.contains(accessType) => k.organisaatioOid }
   lazy val globalAccess = globalKäyttöoikeudet.flatMap { _.globalAccessType }
   def isRoot = globalAccess.contains(AccessType.write)
   def isPalvelukäyttäjä = orgKäyttöoikeudet.flatMap(_.organisaatiokohtaisetPalveluroolit).contains(Palvelurooli(TIEDONSIIRTO))
@@ -63,7 +63,7 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
     orgKäyttöoikeudet.exists(_.organisaatiokohtaisetPalveluroolit.contains(palveluRooli))
   }
 
-  def juuriOrganisaatiot: List[OrganisaatioWithOid] = orgKäyttöoikeudet.collect { case r: KäyttöoikeusOrg if r.juuri => r.organisaatio }.toList
+  def juuriOrganisaatiot: List[String] = orgKäyttöoikeudet.collect { case r: KäyttöoikeusOrg if r.juuri => r.organisaatioOid }.toList
 
   Future(käyttöoikeudet)(ExecutionContext.global) // haetaan käyttöoikeudet toisessa säikeessä rinnakkain
 }

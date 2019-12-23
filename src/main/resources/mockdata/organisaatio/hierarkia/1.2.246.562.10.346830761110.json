@@ -13,9 +13,10 @@
     }, {
     "oid" : "1.2.246.562.10.346830761110",
     "nimi" : {
-      "fi" : "HELSINGIN KAUPUNKI",
+      "fi" : "Helsingin kaupunki",
       "sv" : "Helsingfors stad"
     },
+    "ytunnus": "0201256-6",
     "kieletUris": [
       "oppilaitoksenopetuskieli_1#1"
     ],
@@ -2159,9 +2160,9 @@
       "oppilaitostyyppi" : "oppilaitostyyppi_12#1",
       "children" : [ ]
     }, {
-      "oid": "1.2.246.562.10.52328612800",
+      "oid": "1.2.246.562.10.95641123252",
       "nimi": {
-        "fi": "Helsingin kaupunki toimipaikka 12241"
+        "fi": "PK Vironniemi"
       },
       "kieletUris": [
         "oppilaitoksenopetuskieli_1#1"

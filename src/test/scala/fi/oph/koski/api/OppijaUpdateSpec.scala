@@ -8,7 +8,6 @@ import fi.oph.koski.documentation.AmmatillinenOldExamples.muunAmmatillisenTutkin
 import fi.oph.koski.documentation.ExampleData.{jyväskylä, longTimeAgo, opiskeluoikeusLäsnä}
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetukseOppimääränSuoritus, aikuistenPerusopetus2017, oppiaineidenSuoritukset2017}
 import fi.oph.koski.documentation.PerusopetusExampleData.perusopetuksenOppimääränSuoritus
-import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
 import fi.oph.koski.documentation._
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.koululainen
@@ -18,6 +17,7 @@ import fi.oph.koski.koskiuser.MockUsers.{helsinginKaupunkiPalvelukäyttäjä, hk
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.organisaatio.MockOrganisaatiot.{jyväskylänNormaalikoulu, stadinAmmattiopisto}
 import fi.oph.koski.schema._
 import org.scalatest.FreeSpec
 
@@ -42,26 +42,26 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
           opiskeluoikeus.getOppilaitos.oppilaitosnumero.get.koodiarvo should equal("10105")
         }
         "Väärällä nimellä -> korvataan nimi" in {
-          val opiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus.copy(oppilaitos = Some(Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto, nimi = Some(LocalizedString.finnish("Läppäkoulu"))))))
+          val opiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus.copy(oppilaitos = Some(stadinAmmattiopisto)))
           opiskeluoikeus.getOppilaitos.nimi.get.get("fi") should equal("Stadin ammattiopisto")
         }
 
         "Oppilaitos puuttuu" - {
           "Suoritukselta löytyy toimipiste -> Täytetään oppilaitos" in {
             val opiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus.copy(oppilaitos = None))
-            opiskeluoikeus.getOppilaitos.oid should equal(MockOrganisaatiot.stadinAmmattiopisto)
+            opiskeluoikeus.getOppilaitos.oid should equal(stadinAmmattiopisto.oid)
           }
           "Suorituksilta löytyy toimipisteitä, joilla sama oppilaitos -> Täytetään oppilaitos" in {
             val opiskeluoikeus = createOpiskeluoikeus(oppija, defaultOpiskeluoikeus.copy(
               oppilaitos = None,
               suoritukset = List(autoalanPerustutkinnonSuoritus(stadinToimipiste), autoalanPerustutkinnonSuoritus(stadinAmmattiopisto))
             ))
-            opiskeluoikeus.getOppilaitos.oid should equal(MockOrganisaatiot.stadinAmmattiopisto)
+            opiskeluoikeus.getOppilaitos.oid should equal(stadinAmmattiopisto.oid)
           }
           "Suorituksilta löytyy toimipisteet, joilla eri oppilaitos -> FAIL" in {
             putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
               oppilaitos = None,
-              suoritukset = List(autoalanPerustutkinnonSuoritus(stadinToimipiste), autoalanPerustutkinnonSuoritus(OidOrganisaatio(MockOrganisaatiot.omnia)))
+              suoritukset = List(autoalanPerustutkinnonSuoritus(stadinToimipiste), autoalanPerustutkinnonSuoritus(MockOrganisaatiot.omnia))
             )) {
               verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.organisaatio.oppilaitosPuuttuu("Opiskeluoikeudesta puuttuu oppilaitos, eikä sitä voi yksiselitteisesti päätellä annetuista toimipisteistä."))
             }
@@ -133,7 +133,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       "Käytetään uusinta nimeä, jos opiskeluoikeus ei ole päättynyt" in {
         val opiskeluoikeus = createOpiskeluoikeus(oppija, oo)
         nimi(opiskeluoikeus.getOppilaitos) should equal("Stadin ammattiopisto")
-        nimi(opiskeluoikeus.koulutustoimija.get) should equal("HELSINGIN KAUPUNKI")
+        nimi(opiskeluoikeus.koulutustoimija.get) should equal("Helsingin kaupunki")
         nimi(tutkinnonSuoritus(opiskeluoikeus).toimipiste) should equal("Stadin ammattiopisto,  Lehtikuusentien toimipaikka")
         nimi(osasuoritus(opiskeluoikeus).toimipiste.get) should equal("Stadin ammattiopisto,  Lehtikuusentien toimipaikka")
       }
@@ -141,7 +141,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       "Käytetään nimeä joka organisaatiolla oli opiskeluoikeuden päättymisen aikaan" in {
         val opiskeluoikeus = createOpiskeluoikeus(oppija, päättymispäivällä(oo, LocalDate.of(2010, 10, 10)))
         nimi(opiskeluoikeus.getOppilaitos) should equal("Stadin ammattiopisto -vanha")
-        nimi(opiskeluoikeus.koulutustoimija.get) should equal("HELSINGIN KAUPUNKI -vanha")
+        nimi(opiskeluoikeus.koulutustoimija.get) should equal("Helsingin kaupunki -vanha")
         nimi(tutkinnonSuoritus(opiskeluoikeus).toimipiste) should equal("Stadin ammattiopisto,  Lehtikuusentien toimipaikka -vanha")
         nimi(osasuoritus(opiskeluoikeus).toimipiste.get) should equal("Stadin ammattiopisto,  Lehtikuusentien toimipaikka -vanha")
       }
@@ -167,7 +167,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
 
       "Sallii oppilaitoksen vaihtamisen" in {
         resetFixtures
-        verifyChange(change = {existing: AmmatillinenOpiskeluoikeus => existing.copy(koulutustoimija = None, oppilaitos = Some(Oppilaitos(MockOrganisaatiot.omnia)))}) {
+        verifyChange(change = {existing: AmmatillinenOpiskeluoikeus => existing.copy(koulutustoimija = None, oppilaitos = Some(MockOrganisaatiot.omnia))}) {
           verifyResponseStatusOk()
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
           result.versionumero should equal(Some(2))
@@ -228,7 +228,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
 
       "Sallii oppilaitoksen vaihtamisen" in {
         resetFixtures
-        verifyChange(original = original, user = paakayttaja, change = {existing: AmmatillinenOpiskeluoikeus => existing.copy(oid = None, versionumero = None, koulutustoimija = None, oppilaitos = Some(Oppilaitos(MockOrganisaatiot.omnia)))}) {
+        verifyChange(original = original, user = paakayttaja, change = {existing: AmmatillinenOpiskeluoikeus => existing.copy(oid = None, versionumero = None, koulutustoimija = None, oppilaitos = Some(MockOrganisaatiot.omnia))}) {
           verifyResponseStatusOk()
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
           result.versionumero should equal(Some(2))
@@ -288,10 +288,10 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
 
       "Jos oppilaitos vaihtuu, tekee uuden opiskeluoikeuden" in {
         resetFixtures
-        verifyChange(change = {existing: AmmatillinenOpiskeluoikeus => existing.copy(oid = None, versionumero = None, koulutustoimija = None, oppilaitos = Some(Oppilaitos(MockOrganisaatiot.omnia)))}) {
+        verifyChange(change = {existing: AmmatillinenOpiskeluoikeus => existing.copy(oid = None, versionumero = None, koulutustoimija = None, oppilaitos = Some(MockOrganisaatiot.omnia))}) {
           verifyResponseStatusOk()
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
-          result.getOppilaitos.oid should equal(MockOrganisaatiot.omnia)
+          result.getOppilaitos.oid should equal(MockOrganisaatiot.omnia.oid)
           result.versionumero should equal(Some(1))
         }
       }
@@ -379,12 +379,12 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     "Organisaation muutoshistoria" - {
       lazy val uusiOrganisaatioHistoria = OpiskeluoikeudenOrganisaatiohistoria(
         LocalDate.now(),
-        Some(AmmatillinenExampleData.stadinAmmattiopisto),
-        Some(Koulutustoimija(MockOrganisaatiot.helsinginKaupunki, nimi = Some(Finnish("HELSINGIN KAUPUNKI", sv = Some("Helsingfors stad")))))
+        Some(MockOrganisaatiot.stadinAmmattiopisto),
+        Some(MockOrganisaatiot.helsinginKaupunki)
       )
       "Oppilaitoksen oid muuttuu ja ei aikaisempaa organisaatio historiaa" in {
         resetFixtures
-        verifyChange(change = { existing: AmmatillinenOpiskeluoikeus => existing.copy(oppilaitos = existing.oppilaitos.map(o => o.copy(oid = MockOrganisaatiot.omnia)), koulutustoimija = None)}) {
+        verifyChange(change = { existing: AmmatillinenOpiskeluoikeus => existing.copy(oppilaitos = existing.oppilaitos.map(o => o.copy(oid = MockOrganisaatiot.omnia.oid)), koulutustoimija = None)}) {
           verifyResponseStatusOk()
           lastOpiskeluoikeusByHetu(oppija).organisaatiohistoria should equal(Some(List(uusiOrganisaatioHistoria)))
         }
@@ -399,7 +399,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       "Uusi muutos lisätään vanhojen perään" in {
         resetFixtures
         val existing = lastOpiskeluoikeusByHetu(MockOppijat.organisaatioHistoria).asInstanceOf[AmmatillinenOpiskeluoikeus]
-        putOppija(Oppija(MockOppijat.organisaatioHistoria, List(existing.copy(oppilaitos = Some(Oppilaitos(MockOrganisaatiot.winnova)), koulutustoimija = None)))) {
+        putOppija(Oppija(MockOppijat.organisaatioHistoria, List(existing.copy(oppilaitos = Some(MockOrganisaatiot.winnova), koulutustoimija = None)))) {
           lastOpiskeluoikeusByHetu(MockOppijat.organisaatioHistoria).organisaatiohistoria should equal(Some(
             AmmatillinenExampleData.opiskeluoikeudenOrganisaatioHistoria :+ uusiOrganisaatioHistoria
           ))

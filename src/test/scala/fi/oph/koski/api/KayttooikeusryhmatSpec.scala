@@ -173,7 +173,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
     val user = MockUsers.jyväskylänKatselijaEsiopetus
     "ei voi muokata opiskeluoikeuksia omassa organisaatiossa" in {
       putOpiskeluoikeus(ExamplesEsiopetus.opiskeluoikeus, henkilö = OidHenkilö(MockOppijat.markkanen.oid), headers = authHeaders(user) ++ jsonContent) {
-        verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio(s"Ei oikeuksia organisatioon ${MockOrganisaatiot.jyväskylänNormaalikoulu}"))
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio(s"Ei oikeuksia organisatioon ${MockOrganisaatiot.jyväskylänNormaalikoulu.oid}"))
       }
     }
 
@@ -396,7 +396,7 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
       authGet("api/oppilaitos", MockUsers.luovutuspalveluKäyttäjä) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
       }
-      authGet(s"api/raportit/opiskelijavuositiedot?oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto}&alku=2016-01-01&loppu=2016-12-31&password=dummy&downloadToken=test123", MockUsers.luovutuspalveluKäyttäjä) {
+      authGet(s"api/raportit/opiskelijavuositiedot?oppilaitosOid=${MockOrganisaatiot.stadinAmmattiopisto.oid}&alku=2016-01-01&loppu=2016-12-31&password=dummy&downloadToken=test123", MockUsers.luovutuspalveluKäyttäjä) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus("Ei sallittu luovutuspalvelukäyttöoikeuksilla"))
       }
     }
@@ -412,8 +412,8 @@ class KäyttöoikeusryhmätSpec extends FreeSpec with Matchers with LocalJettyHt
   }
 
   private val opiskeluoikeusOmnia: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
-    oppilaitos = Some(Oppilaitos(MockOrganisaatiot.omnia)),
-    suoritukset = List(autoalanPerustutkinnonSuoritus().copy(toimipiste = Oppilaitos(MockOrganisaatiot.omnia)))
+    oppilaitos = Some(MockOrganisaatiot.omnia),
+    suoritukset = List(autoalanPerustutkinnonSuoritus().copy(toimipiste = MockOrganisaatiot.omnia))
   )
 
   private val opiskeluoikeusLähdejärjestelmästäOmnia = opiskeluoikeusOmnia.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId))

@@ -8,7 +8,7 @@ class ValmaSpec extends FreeSpec with Matchers with TodistusTestMethods with Opi
     "Päättötodistus" in {
       todistus(MockOppijat.valma.oid, "valma") should equal(
         """Ammatilliseen peruskoulutukseen valmentava koulutus
-          |HELSINGIN KAUPUNKI
+          |Helsingin kaupunki
           |Stadin ammattiopisto
           |Amikseenvalmistautuja, Anneli 130404-054C
           |

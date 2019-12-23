@@ -4,10 +4,10 @@ import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.PerusopetusExampleData._
-import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.localization.LocalizedStringImplicits._
+import fi.oph.koski.organisaatio.MockOrganisaatiot.{jyväskylänNormaalikoulu, kulosaarenAlaAste}
 import fi.oph.koski.schema.{Finnish, _}
 
 object ExamplesPerusopetus {
@@ -63,11 +63,11 @@ object ExamplesPerusopetus {
   )
 
   lazy val seiskaTuplattuOpiskeluoikeus: PerusopetuksenOpiskeluoikeus = ysiluokkalaisenOpiskeluoikeus.copy(
-    oppilaitos = Some(YleissivistavakoulutusExampleData.kulosaarenAlaAste),
+    oppilaitos = Some(kulosaarenAlaAste),
     suoritukset = List(
-      perusopetuksenOppimääränSuoritusKesken.copy(toimipiste = YleissivistavakoulutusExampleData.kulosaarenAlaAste),
+      perusopetuksenOppimääränSuoritusKesken.copy(toimipiste = kulosaarenAlaAste),
       kuudennenLuokanSuoritus,
-      seitsemännenLuokanLuokallejääntiSuoritus.copy(toimipiste = YleissivistavakoulutusExampleData.kulosaarenAlaAste)
+      seitsemännenLuokanLuokallejääntiSuoritus.copy(toimipiste = kulosaarenAlaAste)
     ),
     tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
       List(

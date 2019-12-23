@@ -7,7 +7,8 @@ import fi.oph.koski.koskiuser.UserWithPassword
 import fi.oph.koski.organisaatio.MockOrganisaatiot._
 import fi.oph.koski.koskiuser.MockUsers._
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
-import org.json4s.{JArray}
+import fi.oph.koski.schema.OrganisaatioWithOid
+import org.json4s.JArray
 import org.json4s.jackson.JsonMethods
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
@@ -61,17 +62,17 @@ class RaportitServletSpec extends FreeSpec with RaportointikantaTestMethods with
         }
       }
       "koulutustoimijan oidilla haettessa vaaditaan koulutustoimijan oikeudet" in {
-        authGet(s"${mahdollisetRaportitUrl}${helsinginKaupunki}") {
+        authGet(s"$mahdollisetRaportitUrl${helsinginKaupunki.oid}") {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio())
         }
       }
       "koulutustoimijan oikeuksilla voi hakea vain oman koulutustoiminta-alueen raportteja" in {
-        authGet(s"${mahdollisetRaportitUrl}${helsinginKaupunki}", user = omniaPääkäyttäjä) {
+        authGet(s"$mahdollisetRaportitUrl${helsinginKaupunki.oid}", user = omniaPääkäyttäjä) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio())
         }
       }
       "koulutustoimijan oikeuksilla ei voi hakea toisen oppilaitoksen raportteja" in {
-        authGet(s"${mahdollisetRaportitUrl}${jyväskylänNormaalikoulu}", user = helsinginKaupunkiPalvelukäyttäjä) {
+        authGet(s"$mahdollisetRaportitUrl${jyväskylänNormaalikoulu.oid}", user = helsinginKaupunkiPalvelukäyttäjä) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio())
         }
       }
@@ -80,8 +81,8 @@ class RaportitServletSpec extends FreeSpec with RaportointikantaTestMethods with
 
   private val mahdollisetRaportitUrl = "api/raportit/mahdolliset-raportit/"
 
-  private def verifyMahdollisetRaportit(organisaatio: String, user: UserWithPassword = defaultUser)(f: Seq[Any] => Unit) = {
-    authGet(s"${mahdollisetRaportitUrl}${organisaatio}", user) {
+  private def verifyMahdollisetRaportit(organisaatio: OrganisaatioWithOid, user: UserWithPassword = defaultUser)(f: Seq[Any] => Unit) = {
+    authGet(s"$mahdollisetRaportitUrl${organisaatio.oid}", user) {
       verifyResponseStatusOk()
       val parsedJson = JsonMethods.parse(body)
       parsedJson shouldBe a[JArray]

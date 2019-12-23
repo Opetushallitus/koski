@@ -23,9 +23,9 @@ class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with Opiskelu
       val original: AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(defaultHenkilö, defaultOpiskeluoikeus, user = stadinAmmattiopistoTallentaja)
 
       val sisältyvä: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
-        oppilaitos = Some(Oppilaitos(omnia)),
+        oppilaitos = Some(omnia),
         sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(original.oppilaitos.get, original.oid.get)),
-        suoritukset = List(autoalanPerustutkinnonSuoritus(OidOrganisaatio(omnia)))
+        suoritukset = List(autoalanPerustutkinnonSuoritus(omnia))
       )
     }
 
@@ -59,11 +59,11 @@ class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with Opiskelu
       "Sisältävän opiskeluoikeuden organisaatio löytää sisältyvän opiskeluoikeuden hakutoiminnolla" in {
         val originalId = opiskeluoikeusId(fixture.original).get
         val sisältyväId = opiskeluoikeusId(sisältyvä).get
-        syncPerustiedotToElasticsearch(searchForPerustiedot(Map("toimipiste" -> stadinAmmattiopisto), stadinAmmattiopistoTallentaja)
-          .map(_.id).contains(originalId) && searchForPerustiedot(Map("toimipiste" -> omnia), stadinAmmattiopistoTallentaja)
+        syncPerustiedotToElasticsearch(searchForPerustiedot(Map("toimipiste" -> stadinAmmattiopisto.oid), stadinAmmattiopistoTallentaja)
+          .map(_.id).contains(originalId) && searchForPerustiedot(Map("toimipiste" -> omnia.oid), stadinAmmattiopistoTallentaja)
           .map(_.id).contains(sisältyväId))
-        searchForPerustiedot(Map("toimipiste" -> stadinAmmattiopisto), stadinAmmattiopistoTallentaja).map(_.id) should contain(originalId)
-        searchForPerustiedot(Map("toimipiste" -> omnia), stadinAmmattiopistoTallentaja).map(_.id) should contain(sisältyväId)
+        searchForPerustiedot(Map("toimipiste" -> stadinAmmattiopisto.oid), stadinAmmattiopistoTallentaja).map(_.id) should contain(originalId)
+        searchForPerustiedot(Map("toimipiste" -> omnia.oid), stadinAmmattiopistoTallentaja).map(_.id) should contain(sisältyväId)
       }
     }
 
@@ -74,7 +74,7 @@ class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with Opiskelu
     }
 
     "Kun sisältävän opiskeluoikeuden organisaatio ei täsmää -> HTTP 400" in {
-      putOpiskeluoikeus(fixture.sisältyvä.copy( sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(Oppilaitos(omnia), fixture.original.oid.get)))) {
+      putOpiskeluoikeus(fixture.sisältyvä.copy( sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(omnia, fixture.original.oid.get)))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.sisältäväOpiskeluoikeus.vääräOppilaitos())
       }
      }
@@ -88,9 +88,9 @@ class SisältyväOpiskeluoikeusSpec extends FreeSpec with Matchers with Opiskelu
     "Kun sisältävän opiskeluoikeuden henkilötieto on linkitetty -> HTTP 200" in {
       val original = createOpiskeluoikeus(MockOppijat.master, defaultOpiskeluoikeus, user = stadinAmmattiopistoTallentaja)
       val sisältyvä: AmmatillinenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
-        oppilaitos = Some(Oppilaitos(omnia)),
+        oppilaitos = Some(omnia),
         sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(original.oppilaitos.get, original.oid.get)),
-        suoritukset = List(autoalanPerustutkinnonSuoritus(OidOrganisaatio(omnia)))
+        suoritukset = List(autoalanPerustutkinnonSuoritus(omnia))
       )
 
       putOpiskeluoikeus(sisältyvä, henkilö = MockOppijat.slave.henkilö) {

@@ -22,14 +22,14 @@ class RemoteOrganisaatioRepositorySpec extends FreeSpec with Matchers with Befor
 
   "RemoteOrganisaatioRepository" - {
     "hakee koulutustoimijan organisaatiohierarkian" in {
-      val hierarkia = orgRepository.getOrganisaatioHierarkia(helsinginKaupunki)
-      hierarkia should be(MockOrganisaatioRepository.getOrganisaatioHierarkia(helsinginKaupunki))
+      val hierarkia = orgRepository.getOrganisaatioHierarkia(helsinginKaupunki.oid)
+      hierarkia should be(MockOrganisaatioRepository.getOrganisaatioHierarkia(helsinginKaupunki.oid))
       hierarkia.map(_.varhaiskasvatuksenJärjestäjä) should equal(Some(true))
     }
 
     "hakee oppilaitoksen organisaatiohierarkian" in {
-      val hierarkia = orgRepository.getOrganisaatioHierarkia(MockOrganisaatiot.stadinAmmattiopisto)
-      hierarkia should be(MockOrganisaatioRepository.getOrganisaatioHierarkia(MockOrganisaatiot.stadinAmmattiopisto))
+      val hierarkia = orgRepository.getOrganisaatioHierarkia(MockOrganisaatiot.stadinAmmattiopisto.oid)
+      hierarkia should be(MockOrganisaatioRepository.getOrganisaatioHierarkia(MockOrganisaatiot.stadinAmmattiopisto.oid))
       hierarkia.map(_.varhaiskasvatuksenJärjestäjä) should equal(Some(false))
     }
 
@@ -49,7 +49,7 @@ class RemoteOrganisaatioRepositorySpec extends FreeSpec with Matchers with Befor
   private def mockEndpoints = {
     wireMockServer.stubFor(
       get(urlPathEqualTo("/organisaatio-service/rest/organisaatio/v2/hierarkia/hae"))
-        .willReturn(ok(write(readResource(hierarchyResourcename(helsinginKaupunki))))))
+        .willReturn(ok(write(readResource(hierarchyResourcename(helsinginKaupunki.oid))))))
 
     wireMockServer.stubFor(
       get(urlPathEqualTo("/organisaatio-service/rest/organisaatio/v4/hae"))

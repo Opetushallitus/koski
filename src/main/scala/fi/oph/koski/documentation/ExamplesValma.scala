@@ -5,8 +5,9 @@ import java.time.LocalDate.{of => date}
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.schema.LocalizedString.finnish
 import fi.oph.koski.localization.LocalizedStringImplicits._
+import fi.oph.koski.organisaatio.MockOrganisaatiot.stadinAmmattiopisto
+import fi.oph.koski.schema.LocalizedString.finnish
 import fi.oph.koski.schema._
 
 object ExamplesValma {

@@ -11,28 +11,28 @@ import org.scalatest.{FreeSpec, Matchers}
 class PermissionCheckSpec extends FreeSpec with LocalJettyHttpSpecification with Matchers {
   "Käyttöoikeustarkistus henkilo-ui:sta / kayttooikeus-service:ltä" - {
     "Käyttäjä samassa organisaatiossa kuin opiskeluoikeus" - {
-      "pääsy sallittu" in { permissionCheck(List(MockOppijat.lukioKesken.oid), List(MockOrganisaatiot.jyväskylänNormaalikoulu)) should equal(true) }
+      "pääsy sallittu" in { permissionCheck(List(MockOppijat.lukioKesken.oid), List(MockOrganisaatiot.jyväskylänNormaalikoulu.oid)) should equal(true) }
     }
     "Käyttäjä eri organisaatiossa kuin opiskeluoikeus" - {
-      "pääsy estetty" in { permissionCheck(List(MockOppijat.lukioKesken.oid), List(MockOrganisaatiot.winnova)) should equal(false) }
+      "pääsy estetty" in { permissionCheck(List(MockOppijat.lukioKesken.oid), List(MockOrganisaatiot.winnova.oid)) should equal(false) }
     }
     "Käyttäjä samassa organisaatiossa kuin opiskeluoikeus, mutta opiskeluoikeus päättynyt" - {
-      "pääsy estetty" in { permissionCheck(List(MockOppijat.lukiolainen.oid), List(MockOrganisaatiot.jyväskylänNormaalikoulu)) should equal(false) }
+      "pääsy estetty" in { permissionCheck(List(MockOppijat.lukiolainen.oid), List(MockOrganisaatiot.jyväskylänNormaalikoulu.oid)) should equal(false) }
     }
     "Käyttäjällä myös ylimääräisiä organisaatioita" - {
-      "pääsy sallittu" in { permissionCheck(List(MockOppijat.lukioKesken.oid), MockOrganisaatiot.oppilaitokset) should equal(true) }
+      "pääsy sallittu" in { permissionCheck(List(MockOppijat.lukioKesken.oid), MockOrganisaatiot.oppilaitokset.map(_.oid)) should equal(true) }
     }
     "Korkeakoulun opiskeluoikeus, sama organisaatio" - {
-      "pääsy sallittu" in { permissionCheck(List(MockOppijat.amkKesken.oid), List(MockOrganisaatiot.yrkehögskolanArcada)) should equal(true) }
+      "pääsy sallittu" in { permissionCheck(List(MockOppijat.amkKesken.oid), List(MockOrganisaatiot.yrkehögskolanArcada.oid)) should equal(true) }
     }
     "Korkeakoulun opiskeluoikeus, eri organisaatio" - {
-      "pääsy sallittu" in { permissionCheck(List(MockOppijat.amkKesken.oid), List(MockOrganisaatiot.omnia)) should equal(false) }
+      "pääsy sallittu" in { permissionCheck(List(MockOppijat.amkKesken.oid), List(MockOrganisaatiot.omnia.oid)) should equal(false) }
     }
     "Korkeakoulun opiskeluoikeus, valmistunut" - {
-      "pääsy estetty" in { permissionCheck(List(MockOppijat.amkValmistunut.oid), List(MockOrganisaatiot.aaltoYliopisto)) should equal(false) }
+      "pääsy estetty" in { permissionCheck(List(MockOppijat.amkValmistunut.oid), List(MockOrganisaatiot.aaltoYliopisto.oid)) should equal(false) }
     }
     "Käyttäjältä puuttuu tarvittavat roolit" - {
-      "pääsy estetty" in { permissionCheck(List(MockOppijat.lukioKesken.oid), List(MockOrganisaatiot.jyväskylänNormaalikoulu), List("ROLE_APP_FOOBAR")) should equal(false) }
+      "pääsy estetty" in { permissionCheck(List(MockOppijat.lukioKesken.oid), List(MockOrganisaatiot.jyväskylänNormaalikoulu.oid), List("ROLE_APP_FOOBAR")) should equal(false) }
     }
   }
 

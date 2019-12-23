@@ -25,13 +25,13 @@ class KäyttöoikeusRepository(organisaatioRepository: OrganisaatioRepository, d
             case k: KäyttöoikeusGlobal => List(k)
             case k: KäyttöoikeusViranomainen => List(k)
             case k: KäyttöoikeusOrg =>
-              val organisaatioHierarkia = organisaatioRepository.getOrganisaatioHierarkia(k.organisaatio.oid)
+              val organisaatioHierarkia = organisaatioRepository.getOrganisaatioHierarkia(k.organisaatioOid)
               val flattened = OrganisaatioHierarkia.flatten(organisaatioHierarkia.toList)
               if (flattened.isEmpty) {
-                logger.warn(s"Käyttäjän $username käyttöoikeus ${k} kohdistuu organisaatioon ${k.organisaatio.oid}, jota ei löydy")
+                logger.warn(s"Käyttäjän $username käyttöoikeus ${k} kohdistuu organisaatioon ${k.organisaatioOid}, jota ei löydy")
               }
               flattened.map { org =>
-                k.copy(organisaatio = org.toOrganisaatio, oppilaitostyyppi = org.oppilaitostyyppi)
+                k.copy(organisaatioOid = org.oid, oppilaitostyyppi = org.oppilaitostyyppi)
               } ++ organisaatioHierarkia.toList.flatMap(hierarkianUlkopuolisetKäyttöoikeudet(k, _))
           }
         }
@@ -50,7 +50,7 @@ class KäyttöoikeusRepository(organisaatioRepository: OrganisaatioRepository, d
   private def hierarkianUlkopuolisetKäyttöoikeudet(k: KäyttöoikeusOrg, organisaatioHierarkia: OrganisaatioHierarkia) =
     if (organisaatioHierarkia.toKoulutustoimija.isDefined && organisaatioHierarkia.varhaiskasvatuksenJärjestäjä) {
       organisaatioRepository.findAllVarhaiskasvatusToimipisteet.map { päiväkoti =>
-        k.copy(organisaatio = OidOrganisaatio(päiväkoti.oid), oppilaitostyyppi = None)
+        k.copy(organisaatioOid = päiväkoti.oid, oppilaitostyyppi = None)
       }
     } else {
       Nil

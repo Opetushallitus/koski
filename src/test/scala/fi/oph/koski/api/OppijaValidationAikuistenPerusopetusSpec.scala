@@ -5,7 +5,7 @@ import java.time.LocalDate.{of => date}
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.{aikuistenPerusopetuksenAlkuvaiheenSuoritus, oppiaineidenSuoritukset2015, oppiaineidenSuoritukset2017}
-import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
+import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.http._
 import fi.oph.koski.schema._
 

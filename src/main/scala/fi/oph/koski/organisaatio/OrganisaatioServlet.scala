@@ -19,7 +19,7 @@ class OrganisaatioServlet(implicit val application: KoskiApplication) extends Ap
           Nil
       }
     } else {
-      val all: Set[OrganisaatioHierarkia] = koskiSessionOption.get.orgKäyttöoikeudet.filter(_.juuri).flatMap{ko: KäyttöoikeusOrg => application.organisaatioRepository.getOrganisaatioHierarkia(ko.organisaatio.oid)}
+      val all: Set[OrganisaatioHierarkia] = koskiSessionOption.get.orgKäyttöoikeudet.filter(_.juuri).flatMap{ko: KäyttöoikeusOrg => application.organisaatioRepository.getOrganisaatioHierarkia(ko.organisaatioOid)}
       query match {
         case Some(query) =>
           OrganisaatioHierarkiaFilter(query, lang).filter(all)

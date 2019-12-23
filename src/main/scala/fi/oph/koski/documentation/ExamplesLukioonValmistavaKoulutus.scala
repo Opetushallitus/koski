@@ -4,7 +4,7 @@ import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.LukioExampleData._
-import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
+import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.asUusiOppija
 import fi.oph.koski.localization.LocalizedStringImplicits._

@@ -5,7 +5,7 @@ import java.time.LocalDate
 import fi.oph.koski.documentation.ExampleData.{suomenKieli, vahvistusPaikkakunnalla}
 import fi.oph.koski.documentation.PerusopetusExampleData
 import fi.oph.koski.documentation.PerusopetusExampleData.{arviointi, kahdeksannenLuokanSuoritus, perusopetuksenDiaarinumero, suoritustapaErityinenTutkinto}
-import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu
+import fi.oph.koski.organisaatio.MockOrganisaatiot.jyväskylänNormaalikoulu
 import fi.oph.koski.schema.NuortenPerusopetuksenOppiaineenOppimääränSuoritus
 import org.json4s.{DefaultFormats, JObject}
 import org.json4s.jackson.JsonMethods

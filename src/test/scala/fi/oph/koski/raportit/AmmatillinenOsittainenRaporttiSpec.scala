@@ -51,7 +51,7 @@ class AmmatillinenOsittainenRaporttiSpec extends FreeSpec with Matchers with Rap
     sisältyvätOpiskeluoikeudetOppilaitokset = "",
     linkitetynOpiskeluoikeudenOppilaitos = "",
     aikaleima = LocalDate.now,
-    toimipisteOidit = MockOrganisaatiot.lehtikuusentienToimipiste,
+    toimipisteOidit = MockOrganisaatiot.lehtikuusentienToimipiste.oid,
     yksiloity = true,
     oppijaOid = defaultTestiHenkilö.oid,
     hetu = defaultTestiHenkilö.hetu,
@@ -90,7 +90,7 @@ class AmmatillinenOsittainenRaporttiSpec extends FreeSpec with Matchers with Rap
 
   private val hetu = defaultTestiHenkilö.hetu.get
   private def testiHenkilöRaporttiRows(alku: LocalDate, loppu: LocalDate, osasuoritustenAikarajaus: Boolean) = {
-    val request = AmmatillinenSuoritusTiedotRequest(MockOrganisaatiot.stadinAmmattiopisto, None, "", alku, loppu, osasuoritustenAikarajaus)
+    val request = AmmatillinenSuoritusTiedotRequest(MockOrganisaatiot.stadinAmmattiopisto.oid, None, "", alku, loppu, osasuoritustenAikarajaus)
     AmmatillinenOsittainenRaportti.buildRaportti(request, repository).filter(_.hetu.contains(hetu)).toList
   }
 }

@@ -7,7 +7,7 @@ import fi.oph.koski.documentation.AmmatillinenOldExamples.muunAmmatillisenTutkin
 import fi.oph.koski.documentation.ExampleData
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.http.{JsonErrorMessage, KoskiErrorCategory}
-import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.organisaatio.MockOrganisaatiot.stadinAmmattiopisto
 import fi.oph.koski.schema.{OrganisaatioWithOid, _}
 import org.json4s.{JArray, JObject, JString}
 
@@ -16,9 +16,9 @@ trait OpiskeluoikeusTestMethodsAmmatillinen extends PutOpiskeluoikeusTestMethods
 
   override def defaultOpiskeluoikeus = makeOpiskeluoikeus(alkamispäivä = longTimeAgo)
 
-  def makeOpiskeluoikeus(alkamispäivä: LocalDate = longTimeAgo, toimpiste: OrganisaatioWithOid = stadinToimipiste, oppilaitos: Organisaatio.Oid = MockOrganisaatiot.stadinAmmattiopisto) = AmmatillinenOpiskeluoikeus(
+  def makeOpiskeluoikeus(alkamispäivä: LocalDate = longTimeAgo, toimpiste: OrganisaatioWithOid = stadinToimipiste, oppilaitos: Oppilaitos = stadinAmmattiopisto) = AmmatillinenOpiskeluoikeus(
     tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, None))),
-    oppilaitos = Some(Oppilaitos(oppilaitos)),
+    oppilaitos = Some(oppilaitos),
     suoritukset = List(autoalanPerustutkinnonSuoritus(toimpiste))
   )
 

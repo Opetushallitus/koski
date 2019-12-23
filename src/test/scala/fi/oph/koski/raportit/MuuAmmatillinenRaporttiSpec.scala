@@ -26,7 +26,7 @@ class MuuAmmatillinenRaporttiSpec extends FreeSpec with Matchers with Raportoint
     val raporttiBuilder = MuuAmmatillinenRaporttiBuilder(KoskiApplicationForTests.raportointiDatabase.db)
     val alku = Date.valueOf(LocalDate.of(2018, 1, 1))
     val loppu = Date.valueOf(LocalDate.of(2019, 1, 1))
-    raporttiBuilder.build(stadinAmmattiopisto, alku, loppu).rows.map(_.asInstanceOf[MuuAmmatillinenRaporttiRow])
+    raporttiBuilder.build(stadinAmmattiopisto.oid, alku, loppu).rows.map(_.asInstanceOf[MuuAmmatillinenRaporttiRow])
   }
 
   "Muu ammatillinen suoritustietoraportti" - {
@@ -53,7 +53,7 @@ class MuuAmmatillinenRaporttiSpec extends FreeSpec with Matchers with Raportoint
         marjonRivi.sisältyyOpiskeluoikeuteenOid should equal(None)
         marjonRivi.lähdejärjestelmäKoodiarvo should equal(None)
         marjonRivi.lähdejärjestelmäId should equal(None)
-        marjonRivi.toimipisteOid should equal(Some(MockOrganisaatiot.lehtikuusentienToimipiste))
+        marjonRivi.toimipisteOid should equal(Some(MockOrganisaatiot.lehtikuusentienToimipiste.oid))
         marjonRivi.suorituksenNimi should equal("Kiinteistösihteerin koulutus ja tutkinto (KISI)")
         marjonRivi.opiskeluoikeudenAlkamispäivä should equal(LocalDate.of(2018, 1, 1))
         marjonRivi.opiskeluoikeudenViimeisinTila should equal("lasna")
