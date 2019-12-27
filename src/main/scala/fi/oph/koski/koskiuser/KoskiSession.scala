@@ -6,7 +6,7 @@ import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koskiuser.Rooli._
 import fi.oph.koski.log.{LogUserContext, Loggable, Logging}
-import fi.oph.koski.schema.{OpiskeluoikeudenTyyppi, Organisaatio, OrganisaatioWithOid}
+import fi.oph.koski.schema._
 import org.scalatra.servlet.RichRequest
 
 import scala.concurrent.{ExecutionContext, Future}
@@ -24,29 +24,44 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
   lazy val hasKoulutusmuotoRestrictions: Boolean = allowedOpiskeluoikeusTyypit != OpiskeluoikeudenTyyppi.kaikkiTyypit.map(_.koodiarvo)
   lazy val kaikkiKäyttöoikeudet: Set[Käyttöoikeus] = käyttöoikeudet
 
-  def organisationOids(accessType: AccessType.Value): Set[String] = orgKäyttöoikeudet.collect { case k: KäyttöoikeusOrg if k.organisaatioAccessType.contains(accessType) => k.organisaatioOid }
+  def orgKäyttöoikeudetByAccessType(accessType: AccessType.Value): Set[KäyttöoikeusOrg] = orgKäyttöoikeudet.filter(_.organisaatioAccessType.contains(accessType))
   lazy val globalAccess = globalKäyttöoikeudet.flatMap { _.globalAccessType }
   def isRoot = globalAccess.contains(AccessType.write)
   def isPalvelukäyttäjä = orgKäyttöoikeudet.flatMap(_.organisaatiokohtaisetPalveluroolit).contains(Palvelurooli(TIEDONSIIRTO))
-  def hasReadAccess(organisaatio: Organisaatio.Oid) = hasAccess(organisaatio, AccessType.read)
-  def hasWriteAccess(organisaatio: Organisaatio.Oid) = hasAccess(organisaatio, AccessType.write) && hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)
-  def hasTiedonsiirronMitätöintiAccess(organisaatio: Organisaatio.Oid) = hasAccess(organisaatio, AccessType.tiedonsiirronMitätöinti)
+  def hasReadAccess(organisaatio: OrganisaatioPath): Boolean = hasAccess(organisaatio, AccessType.read)
+  def hasCreateAndUpdateAccess(organisaatio: OrganisaatioPath): Boolean = hasAccess(organisaatio, AccessType.write)
+  def hasCreateAccess(organisaatio: Organisaatio.Oid): Boolean = {
+    orgKäyttöoikeudetByAccessType(AccessType.write).exists(_.organisaatioOid == organisaatio)
+  }
+  def hasTiedonsiirronMitätöintiAccess(organisaatio: OrganisaatioPath): Boolean = hasAccess(organisaatio, AccessType.tiedonsiirronMitätöinti)
   def hasLuovutuspalveluAccess: Boolean = globalViranomaisKäyttöoikeudet.exists(_.isLuovutusPalveluAllowed)
   def hasTilastokeskusAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).contains(Palvelurooli("KOSKI", TILASTOKESKUS))
   def hasValviraAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).contains(Palvelurooli("KOSKI", VALVIRA))
 
-  def hasAccess(organisaatio: Organisaatio.Oid, accessType: AccessType.Value) = {
-    val access = globalAccess.contains(accessType) || organisationOids(accessType).contains(organisaatio)
-    access && (accessType != AccessType.write || hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  def hasAccess(orgPath: OrganisaatioPath, accessType: AccessType.Value): Boolean = {
+    def access = globalAccess.contains(accessType) || hasOrganisationAccess(orgPath, accessType)
+    if (accessType == AccessType.write) {
+      access && hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)
+    } else {
+      access
+    }
+  }
+
+  private def hasOrganisationAccess(orgPath: OrganisaatioPath, accessType: AccessType.Value) = {
+    orgKäyttöoikeudetByAccessType(accessType).exists { orgAccess =>
+      orgAccess.tuple == (orgPath.root, orgPath.leaf)       ||
+      orgAccess.tuple == (orgPath.oppilaitos, orgPath.leaf) ||
+      orgAccess.tuple == (orgPath.leaf, orgPath.leaf)
+    }
   }
 
   def hasGlobalKoulutusmuotoReadAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalAccessType).contains(AccessType.read)
 
   def hasGlobalReadAccess = globalAccess.contains(AccessType.read)
-  def hasAnyWriteAccess = (globalAccess.contains(AccessType.write) || organisationOids(AccessType.write).nonEmpty) && hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)
+  def hasAnyWriteAccess = (globalAccess.contains(AccessType.write) || orgKäyttöoikeudetByAccessType(AccessType.write).nonEmpty) && hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)
   def hasLocalizationWriteAccess = globalKäyttöoikeudet.find(_.globalPalveluroolit.contains(Palvelurooli("LOKALISOINTI", "CRUD"))).isDefined
   def hasAnyReadAccess = hasGlobalReadAccess || orgKäyttöoikeudet.exists(_.organisaatioAccessType.contains(AccessType.read)) || hasGlobalKoulutusmuotoReadAccess
-  def hasAnyTiedonsiirronMitätöintiAccess = globalAccess.contains(AccessType.tiedonsiirronMitätöinti) || organisationOids(AccessType.tiedonsiirronMitätöinti).nonEmpty
+  def hasAnyTiedonsiirronMitätöintiAccess = globalAccess.contains(AccessType.tiedonsiirronMitätöinti) || orgKäyttöoikeudetByAccessType(AccessType.tiedonsiirronMitätöinti).nonEmpty
   def hasRaportitAccess = hasAnyReadAccess && hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT) && !hasGlobalKoulutusmuotoReadAccess
   def sensitiveDataAllowed(requiredRoles: Set[Role]) = requiredRoles.exists(hasRole)
 
@@ -67,6 +82,8 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
 
   Future(käyttöoikeudet)(ExecutionContext.global) // haetaan käyttöoikeudet toisessa säikeessä rinnakkain
 }
+
+case class OrganisaatioPath(root: Organisaatio.Oid, oppilaitos: Organisaatio.Oid, leaf: Organisaatio.Oid)
 
 object KoskiSession {
   def apply(user: AuthenticationUser, request: RichRequest, käyttöoikeudet: KäyttöoikeusRepository): KoskiSession = {

@@ -5,7 +5,7 @@ import java.time.format.DateTimeParseException
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
+import fi.oph.koski.koskiuser.{OrganisaatioPath, RequiresVirkailijaOrPalvelukäyttäjä}
 import fi.oph.koski.log.KoskiMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_RAPORTTI
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
@@ -118,7 +118,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
     }
     val oppilaitosOid = OrganisaatioOid.validateOrganisaatioOid(getStringParam("oppilaitosOid")) match {
       case Left(error) => haltWithStatus(error)
-      case Right(oid) if !koskiSession.hasReadAccess(oid) => haltWithStatus(KoskiErrorCategory.forbidden.organisaatio())
+      case Right(oid) if !koskiSession.hasReadAccess(OrganisaatioPath(oid, oid, oid)) => haltWithStatus(KoskiErrorCategory.forbidden.organisaatio()) // FIXME: toimii nyt vain oppilaitostunnareilla, rikki koulutustoimijalla
       case Right(oid) => oid
     }
     oppilaitosOid

@@ -87,9 +87,10 @@ class TiedonsiirtoService(
     if (session.hasGlobalReadAccess) {
       None
     } else {
+      val orgAccesses = session.orgKäyttöoikeudetByAccessType(accessType)
       val orgFilter = anyFilter(List(
-        Map("terms" -> Map("tallentajaOrganisaatioOid" -> session.organisationOids(accessType))),
-        Map("terms" -> Map("oppilaitokset.oid" -> session.organisationOids(accessType)))
+        Map("terms" -> Map("tallentajaOrganisaatioOid" -> orgAccesses.map(_.organisaatioOid))),
+        Map("terms" -> Map("oppilaitokset.oid" -> orgAccesses.map(_.organisaatioOid)))
       ))
       val filter = if (session.hasKoulutusmuotoRestrictions) {
         allFilter(List(orgFilter, Map("terms" -> Map("koulutusmuoto" -> session.allowedOpiskeluoikeusTyypit))))

@@ -190,8 +190,8 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
       Nil
     } else {
       List(anyFilter(List(
-        Map("terms" -> Map("sisältyyOpiskeluoikeuteen.oppilaitos.oid" -> session.organisationOids(AccessType.read))),
-        Map("terms" -> Map("oppilaitos.oid" -> session.organisationOids(AccessType.read)))
+        Map("terms" -> Map("sisältyyOpiskeluoikeuteen.oppilaitos.oid" -> session.orgKäyttöoikeudetByAccessType(AccessType.read).map(_.organisaatioOid))),
+        Map("terms" -> Map("oppilaitos.oid" -> session.orgKäyttöoikeudetByAccessType(AccessType.read).map(_.organisaatioOid)))
       )))
     }
 

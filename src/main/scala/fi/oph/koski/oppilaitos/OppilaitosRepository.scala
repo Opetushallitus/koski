@@ -7,8 +7,8 @@ import fi.oph.koski.schema.{OidOrganisaatio, Oppilaitos}
 
 case class OppilaitosRepository(organisatioRepository: OrganisaatioRepository) {
   def oppilaitokset(implicit context: KoskiSession): Iterable[OidOrganisaatio] = {
-    context.organisationOids(AccessType.read)
-      .flatMap(oid => organisatioRepository.getOrganisaatioHierarkia(oid))
+    context.orgKäyttöoikeudetByAccessType(AccessType.read)
+      .flatMap(orgOikeus => organisatioRepository.getOrganisaatioHierarkia(orgOikeus.organisaatioOid))
       .filter(org => org.organisaatiotyypit.contains("OPPILAITOS"))
       .map(toOppilaitos)
       .toList

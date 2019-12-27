@@ -2,6 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.{LocalDate, LocalDateTime}
 
+import fi.oph.koski.koskiuser.OrganisaatioPath
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation._
 import mojave.Traversal
@@ -76,6 +77,10 @@ trait Opiskeluoikeus extends Lähdejärjestelmällinen with OrganisaatioonLiitty
   @Tooltip("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden tiedot. Nämä tiedot kertovat, että kyseessä on ns. ulkopuolisen sopimuskumppanin suoritustieto, joka liittyy päävastuullisen koulutuksen järjestäjän luomaan opiskeluoikeuteen. Ks. tarkemmin ohjeet ja käyttötapaukset [usein kysyttyjen kysymysten](https://confluence.csc.fi/pages/viewpage.action?pageId=72811652) kohdasta Milloin ja miten käytetään linkitystä eri organisaatioissa olevien opintosuoritusten välillä KOSKI-palvelussa?")
   def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus]
   def mitätöity: Boolean = tila.opiskeluoikeusjaksot.lastOption.exists(_.tila.koodiarvo == "mitatoity")
+
+  def oppilaitosPath: Option[OrganisaatioPath] = oppilaitos.map(o => OrganisaatioPath(koulutustoimija.getOrElse(getOppilaitos).oid, getOppilaitos.oid, o.oid))
+  def getOppilaitosPath: OrganisaatioPath = OrganisaatioPath(koulutustoimija.getOrElse(getOppilaitos).oid, getOppilaitos.oid, getOppilaitos.oid)
+  def organisaatioPath(leaf: Organisaatio.Oid) = OrganisaatioPath(koulutustoimija.getOrElse(getOppilaitos).oid, getOppilaitos.oid, leaf)
 }
 
 object OpiskeluoikeudenTyyppi {

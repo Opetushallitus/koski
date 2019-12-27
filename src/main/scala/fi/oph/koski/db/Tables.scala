@@ -5,11 +5,12 @@ import java.time.LocalDateTime
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.json.JsonManipulation.removeFields
-import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSession, KäyttöoikeusOrg}
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.extraction.ValidationError
 import fi.oph.scalaschema.{Serializer, _}
 import org.json4s._
+import slick.model.Column
 
 object Tables {
   class OpiskeluoikeusTable(tag: Tag) extends Table[OpiskeluoikeusRow](tag, "opiskeluoikeus") {
@@ -209,10 +210,12 @@ object Tables {
     val query = (if (user.hasGlobalReadAccess || user.hasGlobalKoulutusmuotoReadAccess) {
       OpiskeluOikeudet
     } else {
-      val oids = user.organisationOids(AccessType.read).toList
+      val käyttöOikeudet: List[KäyttöoikeusOrg] = user.orgKäyttöoikeudetByAccessType(AccessType.read).toList
       for {
         oo <- OpiskeluOikeudet
-        if (oo.oppilaitosOid inSet oids) || (oo.sisältäväOpiskeluoikeusOppilaitosOid inSet oids)
+        if (oo.oppilaitosOid inSet käyttöOikeudet.filter(_.juuri).map(_.organisaatioOid)) ||
+           ((oo.oppilaitosOid inSet käyttöOikeudet.map(_.organisaatioOid)) && oo.koulutustoimijaOid.map(k => k inSet käyttöOikeudet.map(_.juuriOrganisaatio)).getOrElse(false)) ||
+           (oo.sisältäväOpiskeluoikeusOppilaitosOid inSet käyttöOikeudet.map(_.organisaatioOid))
       } yield oo
     }).filterNot(_.mitätöity)
 

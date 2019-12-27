@@ -65,6 +65,7 @@ case class KäyttöoikeusOrg(juuriOrganisaatio: Oid, organisaatioOid: Oid, organ
   def globalAccessType: List[AccessType.Value] = Nil
   def globalPalveluroolit = Nil
   def juuri: Boolean = juuriOrganisaatio == organisaatioOid
+  def tuple: (Oid, Oid) = (juuriOrganisaatio, organisaatioOid)
 }
 
 case class KäyttöoikeusViranomainen(globalPalveluroolit: List[Palvelurooli]) extends Käyttöoikeus {

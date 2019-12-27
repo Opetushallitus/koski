@@ -2,7 +2,7 @@ package fi.oph.koski.opiskeluoikeus
 
 import fi.oph.koski.cache.{CacheManager, ExpiringCache, KeyValueCache}
 import fi.oph.koski.henkilo.HenkilönTunnisteet
-import fi.oph.koski.koskiuser.{AccessChecker, KoskiSession}
+import fi.oph.koski.koskiuser.{AccessChecker, KoskiSession, OrganisaatioPath}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.schema.{Opiskeluoikeus, Organisaatio}
 
@@ -48,19 +48,20 @@ abstract class AuxiliaryOpiskeluoikeusRepositoryImpl[OO <: Opiskeluoikeus, CK <:
   // tunniste -> org.oids cache for filtering only (much larger than opiskeluoikeus cache)
   // can contain special value "UnknownOrganization" to indicate that opiskeluoikeus exists, but it has oppilaitos=None
   // (this is used in filterOppijat when globalAccess is True)
-  private val organizationsCache = KeyValueCache[CK, List[Organisaatio.Oid]](ExpiringCache(getClass.getSimpleName + ".organisations", 1.hour, 100000), uncachedOrganizations)
-  private val UnknownOrganization = "1.2.246.562.10.99999999999"
+  private val organizationsCache = KeyValueCache[CK, List[OrganisaatioPath]](ExpiringCache(getClass.getSimpleName + ".organisations", 1.hour, 100000), uncachedOrganizations)
+  private val unknown = "1.2.246.562.10.99999999999"
+  private val UnknownOrganization = OrganisaatioPath(unknown, unknown, unknown)
 
-  private def uncachedOrganizations(cacheKey: CK): List[Organisaatio.Oid] = {
+  private def uncachedOrganizations(cacheKey: CK): List[OrganisaatioPath] = {
     val opiskeluoikeudet = cache(cacheKey)
-    val oppilaitokset = opiskeluoikeudet.flatMap(_.oppilaitos).map(_.oid)
+    val oppilaitokset = opiskeluoikeudet.flatMap(_.oppilaitosPath)
     if (oppilaitokset.isEmpty && opiskeluoikeudet.nonEmpty)
       List(UnknownOrganization)
     else
       oppilaitokset
   }
 
-  private def cachedOrganizations(tunnisteet: HenkilönTunnisteet): List[Organisaatio.Oid] = {
+  private def cachedOrganizations(tunnisteet: HenkilönTunnisteet): List[OrganisaatioPath] = {
     organizationsCache(buildCacheKey(tunnisteet))
   }
 
@@ -69,7 +70,7 @@ abstract class AuxiliaryOpiskeluoikeusRepositoryImpl[OO <: Opiskeluoikeus, CK <:
   private def filterByOrganisaatio(opiskeluoikeudet: List[OO])(implicit user: KoskiSession): List[OO] = {
     opiskeluoikeudet.filter { oo =>
       accessChecker.hasGlobalAccess(user) ||
-        oo.oppilaitos.exists(oppilaitos => user.hasReadAccess(oppilaitos.oid))
+      oo.oppilaitos.exists(oppilaitos => user.hasReadAccess(oo.organisaatioPath(oppilaitos.oid)))
     }
   }
 }

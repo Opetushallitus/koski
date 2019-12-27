@@ -34,7 +34,7 @@ case class PreferencesService(protected val db: DB) extends Logging with KoskiDa
 
 
   def put(organisaatioOid: String, `type`: String, key: String, value: JValue)(implicit session: KoskiSession) = {
-    if (!session.hasWriteAccess(organisaatioOid)) throw new InvalidRequestException(KoskiErrorCategory.forbidden.organisaatio())
+    if (!session.hasCreateAccess(organisaatioOid)) throw new InvalidRequestException(KoskiErrorCategory.forbidden.organisaatio())
     prefTypes.get(`type`) match {
       case Some(klass) =>
         extract[StorablePreference](value, klass) match {
@@ -49,7 +49,7 @@ case class PreferencesService(protected val db: DB) extends Logging with KoskiDa
   }
 
   def delete(organisaatioOid: String, `type`: String, key: String)(implicit session: KoskiSession): HttpStatus = {
-    if (!session.hasWriteAccess(organisaatioOid)) throw new InvalidRequestException(KoskiErrorCategory.forbidden.organisaatio())
+    if (!session.hasCreateAccess(organisaatioOid)) throw new InvalidRequestException(KoskiErrorCategory.forbidden.organisaatio())
 
     prefTypes.get(`type`) match {
       case Some(klass) =>
@@ -65,7 +65,7 @@ case class PreferencesService(protected val db: DB) extends Logging with KoskiDa
   }
 
   def get(organisaatioOid: String, `type`: String)(implicit session: KoskiSession): Either[HttpStatus, List[StorablePreference]] = {
-    if (!session.hasWriteAccess(organisaatioOid)) throw new InvalidRequestException(KoskiErrorCategory.forbidden.organisaatio())
+    if (!session.hasCreateAccess(organisaatioOid)) throw new InvalidRequestException(KoskiErrorCategory.forbidden.organisaatio())
 
     prefTypes.get(`type`) match {
       case Some(klass) =>

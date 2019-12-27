@@ -30,12 +30,12 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
   }
 
   get[List[EnumValue]]("/organisaatiot") {
-    def organisaatiot = koskiSession.organisationOids(AccessType.write).flatMap(context.organisaatioRepository.getOrganisaatio).toList
+    def organisaatiot = koskiSession.orgKäyttöoikeudetByAccessType(AccessType.write).flatMap(o => context.organisaatioRepository.getOrganisaatio(o.organisaatioOid)).toList
     organisaatiot.map(EditorModelBuilder.organisaatioEnumValue(localization)(_))
   }
 
   get[List[EnumValue]]("/oppilaitokset") {
-    def organisaatiot = koskiSession.organisationOids(AccessType.write).flatMap(context.organisaatioRepository.getOrganisaatio).toList
+    def organisaatiot = koskiSession.orgKäyttöoikeudetByAccessType(AccessType.write).flatMap(o => context.organisaatioRepository.getOrganisaatio(o.organisaatioOid)).toList
     organisaatiot.flatMap(_.toOppilaitos).map(EditorModelBuilder.organisaatioEnumValue(localization)(_))
   }
 
