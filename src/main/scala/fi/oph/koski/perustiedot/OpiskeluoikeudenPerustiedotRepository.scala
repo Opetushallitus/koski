@@ -2,7 +2,7 @@ package fi.oph.koski.perustiedot
 
 import java.time.LocalDate
 
-import fi.oph.koski.elasticsearch.ElasticSearch
+import fi.oph.koski.elasticsearch.{ElasticSearch, KoskiElasticSearchIndex}
 import fi.oph.koski.elasticsearch.ElasticSearch.anyFilter
 import fi.oph.koski.henkilo.TestingException
 import fi.oph.koski.http.Http._
@@ -219,7 +219,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
     }
 
   private def analyzeString(string: String): List[String] = {
-    val document: JValue = Http.runTask(index.http.post(uri"/koski/_analyze", JObject("analyzer" -> JString("default"), "text" -> JString(string)))(Json4sHttp4s.json4sEncoderOf[JObject])(Http.parseJson[JValue]))
+    val document: JValue = Http.runTask(index.http.post(uri"/${index.indexName}/_analyze", JObject("analyzer" -> JString("default"), "text" -> JString(string)))(Json4sHttp4s.json4sEncoderOf[JObject])(Http.parseJson[JValue]))
     val tokens: List[JValue] = extract[List[JValue]](document \ "tokens")
     tokens.map(token => extract[String](token \ "token"))
   }

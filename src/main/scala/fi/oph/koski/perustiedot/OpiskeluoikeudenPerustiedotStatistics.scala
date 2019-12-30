@@ -1,5 +1,6 @@
 package fi.oph.koski.perustiedot
 
+import fi.oph.koski.elasticsearch.KoskiElasticSearchIndex
 import fi.oph.koski.json.JsonSerializer.extract
 import org.json4s.JsonAST.JValue
 

@@ -22,8 +22,8 @@ trait KoskiPulssi {
 }
 
 class KoskiStats(application: KoskiApplication) extends KoskiPulssi {
-  private val perustiedotStats = OpiskeluoikeudenPerustiedotStatistics(application.koskiElasticSearchIndex)
-  private val tiedonsiirtoStats = TiedonsiirtoStatistics(application.koskiElasticSearchIndex)
+  private val perustiedotStats = OpiskeluoikeudenPerustiedotStatistics(application.perustiedotElasticSearchIndex)
+  private val tiedonsiirtoStats = TiedonsiirtoStatistics(application.tiedonsiirtoElasticSearchIndex)
 
   def opiskeluoikeusTilasto: OpiskeluoikeusTilasto = perustiedotStats.statistics
   def tiedonsiirtoTilasto: TiedonsiirtoTilasto = tiedonsiirtoStats.statistics

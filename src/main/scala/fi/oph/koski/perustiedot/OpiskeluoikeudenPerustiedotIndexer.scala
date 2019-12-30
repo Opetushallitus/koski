@@ -3,6 +3,7 @@ package fi.oph.koski.perustiedot
 import com.typesafe.config.Config
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.BackgroundExecutionContext
+import fi.oph.koski.elasticsearch.KoskiElasticSearchIndex
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpStatus, HttpStatusException, KoskiErrorCategory}
 import fi.oph.koski.json.Json4sHttp4s
@@ -34,7 +35,7 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
       "suoritukset" -> JObject("type" -> JString("nested"))
     )))
 
-    Http.runTask(index.http.put(uri"/koski-index/_mapping/perustiedot", mappings)(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+    Http.runTask(index.http.put(uri"/${index.indexName}/_mapping/perustiedot", mappings)(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
 
     val reindexingNeeded = index.reindexingNeededAtStartup || config.getBoolean("elasticsearch.reIndexAtStartup")
     Future {
@@ -78,7 +79,7 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
       }
 
       List(
-        JObject("update" -> JObject("_id" -> (doc \ "id"), "_index" -> JString("koski"), "_type" -> JString("perustiedot"))),
+        JObject("update" -> JObject("_id" -> (doc \ "id"), "_index" -> JString(index.indexName), "_type" -> JString("perustiedot"))),
         JObject("doc_as_upsert" -> JBool(upsert), "doc" -> doc)
       )
     })
@@ -88,9 +89,9 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
         if (item \ "error" != JNothing) List(extract[Int](item \ "_id")) else Nil
       }
       perustiedotSyncRepository.syncAgain(failedOpiskeluoikeusIds.flatMap { id =>
-        items.find{doc => docId(doc) == id}.orElse{logger.warn(s"Elasticsearch reported failed id $id that was not found in ${items.map(docId)}"); None}
+        items.find{doc => docId(doc) == id}.orElse{logger.warn(s"Elasticsearch index ${index.indexName} reported failed id $id that was not found in ${items.map(docId)}"); None}
       }, upsert)
-      val msg = s"Elasticsearch indexing failed for ids $failedOpiskeluoikeusIds: ${JsonMethods.pretty(response)}. Will retry soon."
+      val msg = s"Elasticsearch ${index.indexName} indexing failed for ids $failedOpiskeluoikeusIds: ${JsonMethods.pretty(response)}. Will retry soon."
       logger.error(msg)
       Left(KoskiErrorCategory.internalError(msg))
     } else {
@@ -105,7 +106,7 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
     import org.json4s.jackson.JsonMethods.parse
 
     val deleted = Http.runTask(index.http
-      .post(uri"/koski/perustiedot/_delete_by_query", doc)(Json4sHttp4s.json4sEncoderOf[JValue]) {
+      .post(uri"/${index.indexName}/perustiedot/_delete_by_query", doc)(Json4sHttp4s.json4sEncoderOf[JValue]) {
         case (200, text, request) => extract[Int](parse(text) \ "deleted")
         case (status, text, request) if List(404, 409).contains(status) => 0
         case (status, text, request) => throw HttpStatusException(status, text, request)
@@ -129,9 +130,9 @@ class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSear
     }.scan(UpdateStatus(0, 0))(_ + _)
 
 
-    observable.subscribe({case UpdateStatus(countSoFar, actuallyChanged) => if (countSoFar > 0) logger.info(s"Updated elasticsearch index for ${countSoFar} rows, actually changed ${actuallyChanged}")},
-      {e: Throwable => logger.error(e)("Error updating Elasticsearch index")},
-      { () => logger.info("Finished updating Elasticsearch index")})
+    observable.subscribe({case UpdateStatus(countSoFar, actuallyChanged) => if (countSoFar > 0) logger.info(s"Updated elasticsearch index ${index.indexName} for ${countSoFar} rows, actually changed ${actuallyChanged}")},
+      {e: Throwable => logger.error(e)(s"Error updating Elasticsearch index ${index.indexName}")},
+      { () => logger.info(s"Finished updating Elasticsearch index ${index.indexName}")})
     observable
   }
 

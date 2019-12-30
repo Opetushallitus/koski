@@ -4,7 +4,7 @@ import java.sql.Timestamp
 import java.time.LocalDate
 
 import fi.oph.koski.db.GlobalExecutionContext
-import fi.oph.koski.elasticsearch.ElasticSearch
+import fi.oph.koski.elasticsearch.{ElasticSearch, KoskiElasticSearchIndex}
 import fi.oph.koski.elasticsearch.ElasticSearch.{allFilter, anyFilter}
 import fi.oph.koski.henkilo.{HenkilöOid, HenkilöRepository, Hetu}
 import fi.oph.koski.http.Http._
@@ -18,7 +18,6 @@ import fi.oph.koski.log.KoskiMessageField._
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
-import fi.oph.koski.perustiedot.KoskiElasticSearchIndex
 import fi.oph.koski.schema._
 import fi.oph.koski.util.OptionalLists.optionalList
 import fi.oph.koski.util._
@@ -45,7 +44,7 @@ class TiedonsiirtoService(
     val doc: JValue = JObject("query" -> JObject("match_all" -> JObject()))
 
     val deleted = Http.runTask(index.http
-      .post(uri"/koski/tiedonsiirto/_delete_by_query", doc)(Json4sHttp4s.json4sEncoderOf[JValue]) {
+      .post(uri"/${index.indexName}/tiedonsiirto/_delete_by_query", doc)(Json4sHttp4s.json4sEncoderOf[JValue]) {
         case (200, text, request) => extract[Int](parse(text) \ "deleted")
         case (status, text, request) if List(404, 409).contains(status) => 0
         case (status, text, request) => throw HttpStatusException(status, text, request)
@@ -64,7 +63,7 @@ class TiedonsiirtoService(
 
   def delete(ids: List[String])(implicit koskiSession: KoskiSession): Unit = {
     val deleteQuery = toJValue(Map("query" -> ElasticSearch.allFilter(Map("terms" -> Map("_id" -> ids)) :: Map("exists" -> Map("field" -> "virheet.key")) :: tallentajaOrganisaatioFilters(AccessType.tiedonsiirronMitätöinti))))
-    Http.runTask(index.http.post(uri"/koski/tiedonsiirto/_delete_by_query", deleteQuery)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.unitDecoder))
+    Http.runTask(index.http.post(uri"/${index.indexName}/tiedonsiirto/_delete_by_query", deleteQuery)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.unitDecoder))
     index.refreshIndex
   }
 
@@ -135,7 +134,7 @@ class TiedonsiirtoService(
 
   private def runSearch(doc: JValue) = {
     try {
-      val response = Http.runTask(index.http.post(uri"/koski/tiedonsiirto/_search", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue]))
+      val response = Http.runTask(index.http.post(uri"/${index.indexName}/tiedonsiirto/_search", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue]))
       Some(response)
     } catch {
       case e: HttpStatusException if e.status == 400 =>
@@ -199,12 +198,12 @@ class TiedonsiirtoService(
       tiedonsiirtoChunks.map { ts =>
         index.updateBulk(ts.flatMap { tiedonsiirto =>
           List(
-            JObject("update" -> JObject("_id" -> JString(tiedonsiirto.id), "_index" -> JString("koski"), "_type" -> JString("tiedonsiirto"))),
+            JObject("update" -> JObject("_id" -> JString(tiedonsiirto.id), "_index" -> JString(index.indexName), "_type" -> JString("tiedonsiirto"))),
             JObject("doc_as_upsert" -> JBool(true), "doc" -> Serializer.serialize(tiedonsiirto, serializationContext))
           )
         })
       }.collect { case (errors, response) if errors => JsonMethods.pretty(response) }
-       .foreach(resp => logger.error(s"Elasticsearch indexing failed: $resp"))
+       .foreach(resp => logger.error(s"Elasticsearch ${index.indexName} indexing failed: $resp"))
       logger.debug(s"Done syncing ${tiedonsiirrot.length} tiedonsiirrot documents")
     }
     if (refreshIndex) {
@@ -427,7 +426,7 @@ class TiedonsiirtoService(
       )
     )))
 
-    Http.runTask(index.http.put(uri"/koski-index/_mapping/tiedonsiirto", mappings)(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+    Http.runTask(index.http.put(uri"/${index.indexName}/_mapping/tiedonsiirto", mappings)(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
   }
 }
 

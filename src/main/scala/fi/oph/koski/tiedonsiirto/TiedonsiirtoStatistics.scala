@@ -1,7 +1,7 @@
 package fi.oph.koski.tiedonsiirto
 
+import fi.oph.koski.elasticsearch.KoskiElasticSearchIndex
 import fi.oph.koski.json.JsonSerializer.extract
-import fi.oph.koski.perustiedot.KoskiElasticSearchIndex
 import org.json4s.jackson.JsonMethods.parse
 
 case class TiedonsiirtoStatistics(index: KoskiElasticSearchIndex) {

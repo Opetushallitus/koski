@@ -23,6 +23,10 @@ case class ElasticSearch(config: Config) extends Logging {
 
   def refreshIndex =
     Http.runTask(http.post(uri"/koski/_refresh", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
+
+  def refreshIndex(indexName: String) = {
+    Http.runTask(http.post(uri"/$indexName/_refresh", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
+  }
 }
 
 object ElasticSearch {
