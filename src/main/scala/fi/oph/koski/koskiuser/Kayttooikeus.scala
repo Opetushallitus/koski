@@ -1,7 +1,7 @@
 package fi.oph.koski.koskiuser
 
 import fi.oph.koski.koskiuser.Rooli._
-import fi.oph.koski.schema.{OpiskeluoikeudenTyyppi, OrganisaatioWithOid}
+import fi.oph.koski.schema.{Koulutustoimija, OidOrganisaatio, OpiskeluoikeudenTyyppi, OrganisaatioWithOid}
 
 object Rooli {
   type Role = String
@@ -45,7 +45,8 @@ case class KäyttöoikeusGlobal(globalPalveluroolit: List[Palvelurooli]) extends
   }
 }
 
-case class KäyttöoikeusOrg(organisaatio: OrganisaatioWithOid, organisaatiokohtaisetPalveluroolit: List[Palvelurooli], juuri: Boolean, oppilaitostyyppi: Option[String]) extends Käyttöoikeus {
+trait OrgKäyttöoikeus extends Käyttöoikeus {
+  def organisaatiokohtaisetPalveluroolit: List[Palvelurooli]
   def organisaatioAccessType: List[AccessType.Value] = organisaatiokohtaisetPalveluroolit flatMap {
     case Palvelurooli("KOSKI", "READ") => List(AccessType.read)
     case Palvelurooli("KOSKI", "READ_UPDATE") => List(AccessType.read, AccessType.write)
@@ -62,8 +63,11 @@ case class KäyttöoikeusOrg(organisaatio: OrganisaatioWithOid, organisaatiokoht
   }
 
   def globalAccessType: List[AccessType.Value] = Nil
-  def globalPalveluroolit = Nil
+  def globalPalveluroolit: List[Palvelurooli] = Nil
 }
+
+case class KäyttöoikeusVarhaiskasvatusToimipiste(koulutustoimija: Koulutustoimija, organisaatio: OrganisaatioWithOid, organisaatiokohtaisetPalveluroolit: List[Palvelurooli]) extends OrgKäyttöoikeus
+case class KäyttöoikeusOrg(organisaatio: OrganisaatioWithOid, organisaatiokohtaisetPalveluroolit: List[Palvelurooli], juuri: Boolean, oppilaitostyyppi: Option[String]) extends OrgKäyttöoikeus
 
 case class KäyttöoikeusViranomainen(globalPalveluroolit: List[Palvelurooli]) extends Käyttöoikeus {
   def globalAccessType: List[AccessType.Value] = if (globalPalveluroolit.exists(r => r.palveluName == "KOSKI" && Rooli.globaalitKoulutusmuotoRoolit.contains(r.rooli))) {

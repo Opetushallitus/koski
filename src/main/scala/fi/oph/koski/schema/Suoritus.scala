@@ -121,6 +121,7 @@ trait Toimipisteellinen extends Suoritus with OrganisaatioonLiittyvä {
   @Title("Oppilaitos / toimipiste")
   def toimipiste: OrganisaatioWithOid
   def omistajaOrganisaatio = Some(toimipiste)
+  def koulutustoimija: Option[Koulutustoimija] = None
 }
 
 trait Ryhmällinen {

@@ -56,7 +56,7 @@ class KoskiSessionSpec extends FreeSpec with Matchers with EitherValues with Opt
         val session = createAndVerifySession("pää", MockUsers.paakayttaja.ldapUser)
         session.hasGlobalReadAccess should be(true)
         session.isRoot should be(true)
-        session.hasTiedonsiirronMitätöintiAccess(helsinginKaupunki)
+        session.hasTiedonsiirronMitätöintiAccess(helsinginKaupunki, None)
       }
       "viranomainen" in {
         createAndVerifySession("viranomais", MockUsers.viranomainen.ldapUser)
