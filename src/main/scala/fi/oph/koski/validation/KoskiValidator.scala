@@ -4,6 +4,7 @@ import java.lang.Character.isDigit
 import java.time.LocalDate
 
 import com.typesafe.config.Config
+import fi.oph.koski.documentation.ExamplesEsiopetus.päiväkodinEsiopetuksenTunniste
 import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -17,8 +18,8 @@ import fi.oph.koski.schema.Opiskeluoikeus.{koulutustoimijaTraversal, oppilaitosT
 import fi.oph.koski.schema._
 import fi.oph.koski.tutkinto.Koulutustyyppi._
 import fi.oph.koski.tutkinto.TutkintoRepository
-import fi.oph.koski.validation.DateValidation._
 import fi.oph.koski.util.Timing
+import fi.oph.koski.validation.DateValidation._
 import mojave._
 import org.json4s.{JArray, JValue}
 
@@ -154,7 +155,9 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     oppilaitos.right.map(oo.withOppilaitos(_))
   }
 
-  private def addKoulutustoimija(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
+  private def addKoulutustoimija(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = if (oo.koulutustoimija.isDefined && päiväkodissaJärjestettyEsiopetus(oo)) {
+    Right(oo)
+  } else {
     organisaatioRepository.findKoulutustoimijaForOppilaitos(oo.getOppilaitos) match {
       case Some(löydettyKoulutustoimija) =>
         oo.koulutustoimija.map(_.oid) match {
@@ -167,6 +170,10 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         logger.warn(s"Koulutustoimijaa ei löydy oppilaitokselle ${oo.oppilaitos}")
         Right(oo)
     }
+  }
+
+  private def päiväkodissaJärjestettyEsiopetus(oo: KoskeenTallennettavaOpiskeluoikeus) = {
+    oo.suoritukset.forall(_.koulutusmoduuli.tunniste.koodiarvo == päiväkodinEsiopetuksenTunniste)
   }
 
   private def addKoulutustyyppi(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {

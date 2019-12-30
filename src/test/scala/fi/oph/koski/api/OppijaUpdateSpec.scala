@@ -14,7 +14,7 @@ import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.koululainen
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.MockUsers.{helsinginKaupunkiPalvelukäyttäjä, hkiTallentaja, kalle, paakayttaja}
+import fi.oph.koski.koskiuser.MockUsers.{helsinginKaupunkiPalvelukäyttäjä, koulutustoimija1, kalle, paakayttaja}
 import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.oppija.HenkilönOpiskeluoikeusVersiot
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -68,7 +68,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
           }
         }
         "Oppisopimustoimisto hyväksytään opiskeluoikeuden oppilaitokseksi" in {
-          putOpiskeluoikeus(makeOpiskeluoikeus(alkamispäivä = longTimeAgo, toimpiste = stadinOppisopimuskeskus).copy(oppilaitos = None), headers = authHeaders(hkiTallentaja) ++ jsonContent) {
+          putOpiskeluoikeus(makeOpiskeluoikeus(alkamispäivä = longTimeAgo, toimpiste = stadinOppisopimuskeskus).copy(oppilaitos = None), headers = authHeaders(koulutustoimija1) ++ jsonContent) {
             verifyResponseStatusOk()
           }
         }

@@ -25,6 +25,7 @@ object MockOrganisaatiot {
   val jyväskylänNormaalikoulu = "1.2.246.562.10.14613773812"
   val kulosaarenAlaAste = "1.2.246.562.10.64353470871"
   val montessoriPäiväkoti12241 = "1.2.246.562.10.52328612800"
+  val vironniemenPäiväkoti = "1.2.246.562.10.95641123252"
   val ressunLukio = "1.2.246.562.10.62858797335"
   val helsinginMedialukio = "1.2.246.562.10.70411521654"
   val ylioppilastutkintolautakunta = "1.2.246.562.10.43628088406"
