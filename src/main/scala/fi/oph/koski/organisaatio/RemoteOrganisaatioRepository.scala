@@ -32,6 +32,11 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(i
     }
   )
 
+  private val päiväkotiCache = SingleValueCache[List[OrganisaatioPalveluOrganisaatioTyyppi]](
+    RefreshingCache("OrganisaatioRepository.varhaiskasvatusToimipisteet", 1.hour, 5000),
+    () => fetchAllVarhaiskasvatusToimipisteet
+  )
+
   def getOrganisaatioHierarkiaIncludingParents(oid: String): List[OrganisaatioHierarkia] = hierarkiaCache(oid)
 
   def findByOppilaitosnumero(numero: String): Option[Oppilaitos] = oppilaitosnumeroCache(numero)
@@ -40,7 +45,9 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(i
     fetchSearchHierarchy(query).organisaatiot.map(convertOrganisaatio)
   }
 
-  def findAllVarhaiskasvatusToimipisteet: List[OrganisaatioPalveluOrganisaatioTyyppi] =
+  def findAllVarhaiskasvatusToimipisteet: List[OrganisaatioPalveluOrganisaatioTyyppi] = päiväkotiCache.apply
+
+  private def fetchAllVarhaiskasvatusToimipisteet: List[OrganisaatioPalveluOrganisaatioTyyppi] =
     runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v4/hae?aktiiviset=true&suunnitellut=true&lakkautetut=true&organisaatiotyyppi=organisaatiotyyppi_08")(Http.parseJson[OrganisaatioTyyppiHakuTulos])).organisaatiot
 
   private def search(searchTerm: String): List[OrganisaatioWithOid] = fetchSearch(searchTerm).organisaatiot.map(convertOrganisaatio).map(_.toOrganisaatio)
