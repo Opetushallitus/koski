@@ -39,26 +39,21 @@ object AikajaksoRowBuilder {
       .filterNot(_.alku.isAfter(päivä))
       .lastOption.getOrElse(throw new RuntimeException(s"Opiskeluoikeusjaksoa ei löydy $opiskeluoikeusOid $päivä"))
 
-    val ammatillisenLisätiedot: Option[AmmatillisenOpiskeluoikeudenLisätiedot] = if (o.lisätiedot.nonEmpty) o.lisätiedot.get match {
-      case a: AmmatillisenOpiskeluoikeudenLisätiedot => Some(a)
-      case _ => None
-    } else None
-    val aikuistenPerusopetuksenLisätiedot: Option[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot] = if (o.lisätiedot.nonEmpty) o.lisätiedot.get match {
-      case l: AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot => Some(l)
-      case _ => None
-    } else None
-    val perusopetuksenLisätiedot: Option[PerusopetuksenOpiskeluoikeudenLisätiedot] = if (o.lisätiedot.nonEmpty) o.lisätiedot.get match {
-      case l: PerusopetuksenOpiskeluoikeudenLisätiedot => Some(l)
-      case _ => None
-    } else None
-    val lukionLisätiedot: Option[LukionOpiskeluoikeudenLisätiedot] = if (o.lisätiedot.nonEmpty) o.lisätiedot.get match {
-      case l: LukionOpiskeluoikeudenLisätiedot => Some(l)
-      case _ => None
-    } else None
-    val lukioonValmistavanLisätiedot: Option[LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot] = if (o.lisätiedot.nonEmpty) o.lisätiedot.get match {
-      case l: LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot => Some(l)
-      case _ => None
-    } else None
+    val ammatillisenLisätiedot: Option[AmmatillisenOpiskeluoikeudenLisätiedot] = o.lisätiedot.collect {
+      case a: AmmatillisenOpiskeluoikeudenLisätiedot => a
+    }
+    val aikuistenPerusopetuksenLisätiedot: Option[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot] = o.lisätiedot.collect {
+      case l: AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot => l
+    }
+    val perusopetuksenLisätiedot: Option[PerusopetuksenOpiskeluoikeudenLisätiedot] = o.lisätiedot.collect {
+      case l: PerusopetuksenOpiskeluoikeudenLisätiedot => l
+    }
+    val lukionLisätiedot: Option[LukionOpiskeluoikeudenLisätiedot] = o.lisätiedot.collect {
+      case l: LukionOpiskeluoikeudenLisätiedot => l
+    }
+    val lukioonValmistavanLisätiedot: Option[LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot] = o.lisätiedot.collect {
+      case l: LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot => l
+    }
 
     def ammatillinenAikajakso(lisätieto: AmmatillisenOpiskeluoikeudenLisätiedot => Option[List[Aikajakso]]): Byte =
       ammatillisenLisätiedot.flatMap(lisätieto).flatMap(_.find(_.contains(päivä))).size.toByte
@@ -148,12 +143,14 @@ object AikajaksoRowBuilder {
     rajatutAlkupäivät.zip(rajatutAlkupäivät.tail.map(_.minusDays(1)) :+ päättymispäivä)
   }
 
+  def toSeq[A <: Aikajakso](xs: Option[List[A]]*): Seq[Aikajakso] = xs.flatMap(_.getOrElse(Nil))
+
   private def mahdollisetAikajaksojenAlkupäivät(o: KoskeenTallennettavaOpiskeluoikeus): Seq[LocalDate] = {
     // logiikka: uusi r_opiskeluoikeus_aikajakso-rivi pitää aloittaa, jos ko. päivänä alkaa joku jakso (erityinen tuki tms),
     // tai jos edellisenä päivänä on loppunut joku jakso.
-    val lisätiedotAikajaksot: Seq[Aikajakso] = if (o.lisätiedot.nonEmpty) o.lisätiedot.get match {
+    val lisätiedotAikajaksot: Seq[Aikajakso] = o.lisätiedot.map {
       case aol: AmmatillisenOpiskeluoikeudenLisätiedot =>
-        Seq(
+        toSeq(
           aol.majoitus,
           aol.sisäoppilaitosmainenMajoitus,
           aol.vaativanErityisenTuenYhteydessäJärjestettäväMajoitus,
@@ -162,41 +159,39 @@ object AikajaksoRowBuilder {
           aol.vaikeastiVammainen,
           aol.vammainenJaAvustaja,
           aol.vankilaopetuksessa
-        ).flatMap(_.getOrElse(List.empty)) ++
-          aol.opiskeluvalmiuksiaTukevatOpinnot.getOrElse(Seq.empty).map(j => Aikajakso(j.alku, Some(j.loppu))) ++
-          aol.osaAikaisuusjaksot.getOrElse(Seq.empty).map(j => Aikajakso(j.alku, j.loppu)) ++
+        ) ++
+          aol.opiskeluvalmiuksiaTukevatOpinnot.map(_.map(j => Aikajakso(j.alku, Some(j.loppu)))).toList.flatten ++
+          aol.osaAikaisuusjaksot.map(_.map(j => Aikajakso(j.alku, j.loppu))).toList.flatten ++
           aol.hojks.toList.map(h => Aikajakso(h.alku.getOrElse(o.alkamispäivä.getOrElse(throw new RuntimeException(s"Alkamispäivä puuttuu ${o.oid}"))), h.loppu))
       case apol: AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot =>
-        Seq(
+        toSeq(
           apol.sisäoppilaitosmainenMajoitus,
           apol.vaikeastiVammainen
-        ).flatMap(_.getOrElse(List.empty))
+        )
       case pol: PerusopetuksenOpiskeluoikeudenLisätiedot =>
-        Seq(
+        toSeq(
           pol.sisäoppilaitosmainenMajoitus,
           pol.vaikeastiVammainen
-        ).flatMap(_.getOrElse(List.empty))
+        )
       case lol: LukionOpiskeluoikeudenLisätiedot =>
-        Seq(
+        toSeq(
           lol.sisäoppilaitosmainenMajoitus
-        ).flatMap(_.getOrElse(List.empty))
+        )
       case lvol: LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot =>
-        Seq(
+        toSeq(
           lvol.sisäoppilaitosmainenMajoitus
-        ).flatMap(_.getOrElse(List.empty))
-      case eol: EsiopetuksenOpiskeluoikeudenLisätiedot => Seq(
+        )
+      case eol: EsiopetuksenOpiskeluoikeudenLisätiedot =>
+        toSeq(
           eol.vaikeastiVammainen,
           eol.sisäoppilaitosmainenMajoitus,
           eol.koulukoti
-        ).flatMap(_.getOrElse(List.empty)) ++
-          List(
-            eol.pidennettyOppivelvollisuus,
-            eol.majoitusetu,
-            eol.kuljetusetu
-          ).flatten ++
-          (eol.erityisenTuenPäätös.toList ++ eol.erityisenTuenPäätökset.toList.flatten).flatMap(päätös => päätös.alku.map(Aikajakso(_, päätös.loppu)))
-      case _ => Seq()
-    } else Seq()
+        ) ++ Seq(
+          eol.pidennettyOppivelvollisuus,
+          eol.majoitusetu,
+          eol.kuljetusetu
+        ).flatten ++ (eol.erityisenTuenPäätös.toList ++ eol.erityisenTuenPäätökset.toList.flatten).flatMap(päätös => päätös.alku.map(Aikajakso(_, päätös.loppu)))
+    }.getOrElse(Nil)
 
     val jaksot = lisätiedotAikajaksot ++ oppisopimusAikajaksot(o)
 
