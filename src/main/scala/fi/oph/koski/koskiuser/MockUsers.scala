@@ -34,8 +34,10 @@ object MockUsers {
   val stadinVastuukäyttäjä = MockUser("stadin-vastuu", "stadin-vastuu", "1.2.246.562.24.99999999996", Set(vastuukäyttäjä(helsinginKaupunki)))
   val stadinPääkäyttäjä = MockUser("stadin-pää", "stadin-pää", "1.2.246.562.24.99999999997", Set(oppilaitosPääkäyttäjä(helsinginKaupunki)), "fi", List("koski-oppilaitos-pääkäyttäjä_1494486198456"))
 
-  val koulutustoimija1 = MockUser("hki-tallentaja", "hki-tallentaja", "1.2.246.562.24.99999999977", Set(oppilaitosTallentaja(helsinginKaupunki), varhaisKasvatusTallentaja(helsinginKaupunki, vironniemenPäiväkoti)))
-  val koulutustoimija2 = MockUser("internationalschool", "internationalschool", "1.2.246.562.24.99999999977", Set(oppilaitosTallentaja(helsinginKansainvälisenKoulunVanhempainyhdistys), varhaisKasvatusTallentaja(helsinginKansainvälisenKoulunVanhempainyhdistys, vironniemenPäiväkoti)))
+  val helsinkiTallentaja = MockUser("hki-tallentaja", "hki-tallentaja", "1.2.246.562.24.99999999977", Set(oppilaitosTallentaja(helsinginKaupunki)))
+  val tornioTallentaja = MockUser("tornio-tallentaja", "tornio-tallentaja", "1.2.246.562.24.99999999988", Set(oppilaitosTallentaja(tornionKaupunki)))
+  val jyväskyläTallentaja = MockUser("jyvaskyla-tallentaja", "jyvaskyla-tallentaja", "1.2.246.562.24.99999999955", Set(oppilaitosTallentaja(jyväskylänYliopisto)))
+  val touholaKatselija = MockUser("touhola-katselija", "touhola-katselija", "1.2.246.562.24.99999999933", Set(oppilaitosKatselija(päiväkotiTouhula)))
 
   val kahdenOrganisaatioPalvelukäyttäjä = MockUser("palvelu2", "palvelu2", "1.2.246.562.24.99999999998", Set(oppilaitosPalvelukäyttäjä(helsinginKaupunki), oppilaitosPalvelukäyttäjä(MockOrganisaatiot.omnia)))
   val omattiedot = MockUser("Oppija", "Oili", "1.2.246.562.24.99999999999", Set(oppilaitosTallentaja(omnia)))
@@ -75,7 +77,10 @@ object MockUsers {
     stadinVastuukäyttäjä,
     stadinPääkäyttäjä,
     tallentajaEiLuottamuksellinen,
-    koulutustoimija1,
+    helsinkiTallentaja,
+    tornioTallentaja,
+    jyväskyläTallentaja,
+    touholaKatselija,
     eiOikkia,
     jyväskylänNormaalikoulunPalvelukäyttäjä,
     jyväskylänYliopistonVastuukäyttäjä,

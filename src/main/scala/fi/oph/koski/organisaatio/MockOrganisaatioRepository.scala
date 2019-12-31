@@ -11,6 +11,7 @@ import fi.oph.koski.schema.Oppilaitos
 // Testeissä käytetyt organisaatio-oidit
 object MockOrganisaatiot {
   val helsinginKaupunki = "1.2.246.562.10.346830761110"
+  val tornionKaupunki = "1.2.246.562.10.25412665926"
   val helsinginYliopisto = "1.2.246.562.10.39218317368"
   val aaltoYliopisto = "1.2.246.562.10.56753942459"
   val itäsuomenYliopisto = "1.2.246.562.10.38515028629"
@@ -38,6 +39,7 @@ object MockOrganisaatiot {
   val kouluyhdistysPestalozziSchulvereinSkolföreningen = "1.2.246.562.10.64976109716"
   val helsinginKansainvälisenKoulunVanhempainyhdistys = "1.2.246.562.10.27056241949"
   val internationalSchool = "1.2.246.562.10.67636414343"
+  val päiväkotiTouhula = "1.2.246.562.10.63518646078"
 
   val oppilaitokset: List[String] = List(
     stadinAmmattiopisto,
@@ -67,7 +69,8 @@ object MockOrganisaatiot {
     omnia, winnova,
     ylioppilastutkintolautakunta, aapajoenKoulu,
     kouluyhdistysPestalozziSchulvereinSkolföreningen,
-    helsinginKansainvälisenKoulunVanhempainyhdistys
+    helsinginKansainvälisenKoulunVanhempainyhdistys,
+    päiväkotiTouhula
   )
 }
 

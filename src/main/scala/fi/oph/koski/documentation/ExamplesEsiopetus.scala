@@ -13,6 +13,17 @@ object ExamplesEsiopetus {
   val päiväkodinEsiopetuksenTunniste = "001102"
   lazy val osaAikainenErityisopetus = Koodistokoodiviite("1", Some("Osa-aikainen erityisopetus"), "perusopetuksentukimuoto")
 
+  lazy val lisätiedot = EsiopetuksenOpiskeluoikeudenLisätiedot(
+    tukimuodot = Some(List(osaAikainenErityisopetus)),
+    pidennettyOppivelvollisuus = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
+    vammainen = Some(List(Aikajakso(date(2010, 8, 14), None))),
+    vaikeastiVammainen = Some(List(Aikajakso(date(2014, 6, 6), None))),
+    majoitusetu = Some(Aikajakso(date(2011, 8, 14), Some(date(2012, 8, 14)))),
+    kuljetusetu = Some(Aikajakso(date(2011, 8, 14), Some(date(2012, 8, 14)))),
+    sisäoppilaitosmainenMajoitus = Some(List(Aikajakso(date(2012, 9, 1), Some(date(2013, 9, 1))))),
+    koulukoti = Some(List(Aikajakso(date(2011, 8, 14), None)))
+  )
+
   lazy val opiskeluoikeus = EsiopetuksenOpiskeluoikeus(
     oppilaitos = Some(jyväskylänNormaalikoulu),
     koulutustoimija = None,
@@ -23,16 +34,7 @@ object ExamplesEsiopetus {
         NuortenPerusopetuksenOpiskeluoikeusjakso(date(2007, 6, 3), opiskeluoikeusValmistunut)
       )
     ),
-    lisätiedot = Some(EsiopetuksenOpiskeluoikeudenLisätiedot(
-      tukimuodot = Some(List(osaAikainenErityisopetus)),
-      pidennettyOppivelvollisuus = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
-      vammainen = Some(List(Aikajakso(date(2010, 8, 14), None))),
-      vaikeastiVammainen = Some(List(Aikajakso(date(2014, 6, 6), None))),
-      majoitusetu = Some(Aikajakso(date(2011, 8, 14), Some(date(2012, 8, 14)))),
-      kuljetusetu = Some(Aikajakso(date(2011, 8, 14), Some(date(2012, 8, 14)))),
-      sisäoppilaitosmainenMajoitus = Some(List(Aikajakso(date(2012, 9, 1), Some(date(2013, 9, 1))))),
-      koulukoti = Some(List(Aikajakso(date(2011, 8, 14), None)))
-    ))
+    lisätiedot = Some(lisätiedot)
   )
 
   lazy val opiskeluoikeusHelsingissä: EsiopetuksenOpiskeluoikeus = opiskeluoikeus.copy(
