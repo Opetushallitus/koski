@@ -10,11 +10,10 @@ import fi.oph.koski.http._
 import fi.oph.koski.json.Json4sHttp4s
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.json.LegacyJsonSerialization.toJValue
-import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
+import fi.oph.koski.koskiuser.{AccessType, KoskiSession, KäyttöoikeusVarhaiskasvatusToimipiste}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter._
 import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryFilter, OpiskeluoikeusQueryService}
-import fi.oph.koski.schema
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.servlet.InvalidRequestException
 import fi.oph.koski.util.SortOrder.{Ascending, Descending}
@@ -189,9 +188,14 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
     val filters = if (session.hasGlobalReadAccess || session.hasGlobalKoulutusmuotoReadAccess) {
       Nil
     } else {
+      val varhaiskasvatusOikeudet: Set[KäyttöoikeusVarhaiskasvatusToimipiste] = session.varhaiskasvatusKäyttöoikeudet.filter(_.organisaatioAccessType.contains(AccessType.read))
       List(anyFilter(List(
         Map("terms" -> Map("sisältyyOpiskeluoikeuteen.oppilaitos.oid" -> session.organisationOids(AccessType.read))),
-        Map("terms" -> Map("oppilaitos.oid" -> session.organisationOids(AccessType.read)))
+        Map("terms" -> Map("oppilaitos.oid" -> session.organisationOids(AccessType.read))),
+        ElasticSearch.allFilter(List(
+          Map("terms" -> Map("oppilaitos.oid" -> varhaiskasvatusOikeudet.map(_.organisaatio.oid))),
+          Map("terms" -> Map("koulutustoimija.oid" -> varhaiskasvatusOikeudet.map(_.koulutustoimija.oid)))
+        ))
       )))
     }
 
