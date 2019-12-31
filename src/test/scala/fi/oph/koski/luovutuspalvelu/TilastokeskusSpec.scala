@@ -54,10 +54,10 @@ class TilastokeskusSpec extends FreeSpec with LocalJettyHttpSpecification with O
       resetFixtures
       var results = performQuery("?v=1&pageNumber=0&pageSize=5")
       results.length should equal(5)
-      results.head.henkilö.asInstanceOf[TäydellisetHenkilötiedot].oid should equal(MockOppijat.defaultOppijat.minBy(_.henkilö.oid).henkilö.oid)
+      results.head.henkilö.oid should equal(MockOppijat.defaultOppijat.minBy(_.henkilö.oid).henkilö.oid)
       results = performQuery("?v=1&pageNumber=1&pageSize=1")
       results.length should equal(1)
-      results.head.henkilö.asInstanceOf[TäydellisetHenkilötiedot].oid should equal(MockOppijat.defaultOppijat.sortBy(_.henkilö.oid).drop(1).head.henkilö.oid)
+      results.head.henkilö.oid should equal(MockOppijat.defaultOppijat.sortBy(_.henkilö.oid).drop(1).head.henkilö.oid)
     }
 
     "Kyselyparametrit" - {
@@ -69,7 +69,7 @@ class TilastokeskusSpec extends FreeSpec with LocalJettyHttpSpecification with O
         val queryString = "opiskeluoikeusPäättynytAikaisintaan=2016-01-01&opiskeluoikeusPäättynytViimeistään=2016-12-31&v=1"
         val oppijat = performQuery("?" + queryString)
         val päättymispäivät: List[(String, LocalDate)] = oppijat.flatMap {oppija =>
-          oppija.opiskeluoikeudet.flatMap(_.päättymispäivä).map((oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot].hetu.get, _))
+          oppija.opiskeluoikeudet.flatMap(_.päättymispäivä).map((oppija.henkilö.hetu.get, _))
         }
         päättymispäivät should contain(("010101-123N", LocalDate.parse("2016-01-09")))
         päättymispäivät.map(_._2).foreach { pvm => pvm should (be >= LocalDate.parse("2016-01-01") and be <= LocalDate.parse("2016-12-31"))}
@@ -109,7 +109,7 @@ class TilastokeskusSpec extends FreeSpec with LocalJettyHttpSpecification with O
 
         val oppijat = performQuery(s"?v=1&muuttunutJälkeen=${now.format(ISO_INSTANT)}")
         oppijat.length should equal(1)
-        oppijat.head.henkilö.asInstanceOf[TäydellisetHenkilötiedot].oid should equal(MockOppijat.eero.oid)
+        oppijat.head.henkilö.oid should equal(MockOppijat.eero.oid)
       }
     }
   }
@@ -117,7 +117,7 @@ class TilastokeskusSpec extends FreeSpec with LocalJettyHttpSpecification with O
   private def performQuery(query: String = "?v=1") = {
     authGet(s"api/luovutuspalvelu/haku$query", MockUsers.tilastokeskusKäyttäjä) {
       verifyResponseStatusOk()
-      JsonSerializer.parse[List[Oppija]](body)
+      JsonSerializer.parse[List[TilastokeskusOppija]](body)
     }
   }
 

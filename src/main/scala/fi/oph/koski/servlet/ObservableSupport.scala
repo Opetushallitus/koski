@@ -2,7 +2,7 @@ package fi.oph.koski.servlet
 
 import java.io.EOFException
 
-import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSession
 import rx.lang.scala.Observable
@@ -19,6 +19,13 @@ trait ObservableSupport extends ApiServlet {
       // Client abort, ok
     case e: Exception =>
       renderInternalError(logger.error(e)("Error occurred while streaming"))
+  }
+
+  def streamResponse[T : TypeTag](x: Either[HttpStatus, Observable[T]], user: KoskiSession): Unit = x match {
+    case Right(in) =>
+      streamResponse(in, user)
+    case Left(status) =>
+      haltWithStatus(status)
   }
 
   private def isEOF(e: Exception) = e.isInstanceOf[EOFException] || e.getCause.isInstanceOf[EOFException]
