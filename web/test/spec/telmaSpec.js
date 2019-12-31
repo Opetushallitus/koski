@@ -33,17 +33,14 @@ describe('Telma', function() {
           'Kuvaus Toimintakyvyn vahvistaminen\n' +
           'Pakollinen kyllä\n' +
           'Arviointipäivä 20.3.2013\n' +
-          'Sanallinen arviointi Opiskelija selviytyy arkielämään liittyvistä toimista, osaa hyödyntää apuvälineitä, palveluita ja tukea sekä on valinnut itselleen sopivan tavan viettää vapaa-aikaa.\n' +
           'Opiskeluvalmiuksien vahvistaminen 15 Hyväksytty\n' +
           'Kuvaus Opiskeluvalmiuksien vahvistaminen\n' +
           'Pakollinen kyllä\n' +
           'Arviointipäivä 20.3.2013\n' +
-          'Sanallinen arviointi Opiskelija osaa opiskella työskennellä itsenäisesti, mutta ryhmässä toimimisessa tarvitsee joskus apua. Hän viestii vuorovaikutustilanteissa hyvin, osaa käyttää tietotekniikkaa ja matematiikan perustaitoja arkielämässä.\n' +
           'Työelämään valmentautuminen 20 Hyväksytty\n' +
           'Kuvaus Työelämään valmentautuminen\n' +
           'Pakollinen kyllä\n' +
           'Arviointipäivä 20.3.2013\n' +
-          'Sanallinen arviointi Opiskelijalla on käsitys itsestä työntekijänä, mutta työyhteisön säännöt vaativat vielä harjaantumista.\n' +
           'Tieto- ja viestintätekniikka sekä sen hyödyntäminen 2 Hyväksytty\n' +
           'Kuvaus Tieto- ja viestintätekniikka sekä sen hyödyntäminen\n' +
           'Pakollinen ei\n' +
