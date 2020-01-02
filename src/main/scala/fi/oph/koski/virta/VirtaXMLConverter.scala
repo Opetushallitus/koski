@@ -149,7 +149,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   private def päivämääräVahvistus(vahvistusPäivä: Option[LocalDate], organisaatio: Organisaatio): Option[Päivämäärävahvistus] =
     vahvistusPäivä.map(pvm => Päivämäärävahvistus(pvm, organisaatio))
 
-  def convertSuoritus(suoritus: Node, allNodes: List[Node]): Option[KorkeakouluSuoritus] = {
+  def convertSuoritus(suoritus: Node, allNodes: List[Node]): Option[KorkeakouluSuoritus] = try {
     laji(suoritus) match {
       case "1" => // tutkinto
         val tutkinnonSuoritus = koulutuskoodi(suoritus).map { koulutuskoodi =>
@@ -175,6 +175,10 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         logger.warn("Tuntematon laji: " + laji)
         None
     }
+  } catch {
+    case IllegalSuoritusException(msg) =>
+      logger.warn(msg)
+      None
   }
 
   private val tutkintoonJohtavienTyyppienKoodiarvot = List("1","2","3","4","6","7")
@@ -288,8 +292,8 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       val osasuoritusNodes = allNodes.filter(avain(_) == opintosuoritusAvain)
       osasuoritusNodes match {
         case osasuoritusNode :: Nil => osasuoritusNode
-        case osasuoritusNode :: _ => throw new IllegalArgumentException("Enemmän kuin yksi suoritus avaimella " + opintosuoritusAvain)
-        case Nil => throw new IllegalArgumentException("Opintosuoritusta " + opintosuoritusAvain + " ei löydy dokumentista")
+        case osasuoritusNode :: _ => throw IllegalSuoritusException("Enemmän kuin yksi suoritus avaimella " + opintosuoritusAvain)
+        case Nil => throw IllegalSuoritusException("Opintosuoritusta " + opintosuoritusAvain + " ei löydy dokumentista")
       }
     }
   }
@@ -476,3 +480,5 @@ object OrganisaationRooli extends Enumeration {
 
   def parse(str: String) = Try(OrganisaationRooli.withName(str)).toOption
 }
+
+case class IllegalSuoritusException(msg: String) extends IllegalArgumentException(msg)
