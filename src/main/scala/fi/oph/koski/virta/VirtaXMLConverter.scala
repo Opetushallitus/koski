@@ -302,9 +302,11 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     (virtaXml \\ "Opintosuoritukset" \\ "Opintosuoritus").toList
   }
 
-  def sisältyyOpiskeluoikeuteen(suoritus: Node, opiskeluoikeus: Node, allNodes: List[Node]): Boolean = {
+  def sisältyyOpiskeluoikeuteen(suoritus: Node, opiskeluoikeus: Node, allNodes: List[Node]): Boolean = try {
     val opiskeluoikeusAvain: String = (suoritus \ "@opiskeluoikeusAvain").text
     opiskeluoikeusAvain == avain(opiskeluoikeus) || childNodes(suoritus, allNodes).find(sisältyyOpiskeluoikeuteen(_, opiskeluoikeus, allNodes)).isDefined
+  } catch {
+    case IllegalSuoritusException(_) => false
   }
 
   private def requiredKoodi(uri: String, koodi: String) = {
