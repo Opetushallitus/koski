@@ -9,6 +9,7 @@ import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
 import {flatMapArray, parseBool} from '../util/util'
 import {parseLocation} from '../util/location'
+import delays from '../util/delays'
 
 let findSingleResult = (canSelectOrg = () => true) => (organisaatiot) => {
   let selectableOrgs = (org) => {
@@ -105,7 +106,7 @@ export default class OrganisaatioPicker extends BaconComponent {
     this.searchStringBus
       .onValue((searchString) => this.setState({searchString, loading: true}))
 
-    let searchResult = this.searchStringBus.flatMapLatest((searchString) =>
+    let searchResult = this.searchStringBus.debounce(delays().delay(500)).flatMapLatest((searchString) =>
       Http.get(parseLocation('/koski/api/organisaatio/hierarkia').addQueryParams({ query: searchString, all: showAll}))
         .map((organisaatiot) => ({ organisaatiot, searchString }))
     ).takeUntil(this.unmountE)
