@@ -8,16 +8,17 @@ import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, MockOppijat}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.{FreeSpec, Matchers, BeforeAndAfterAll}
 
-class EsiopetusRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods {
+class EsiopetusRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll {
 
   lazy val raportti = {
-    loadRaportointikantaFixtures
     val raporttiBuilder = EsiopetusRaportti(KoskiApplicationForTests.raportointiDatabase.db)
     val päivä = Date.valueOf("2007-01-01")
     raporttiBuilder.build(MockOrganisaatiot.jyväskylänNormaalikoulu, päivä).rows.map(_.asInstanceOf[EsiopetusRaporttiRow])
   }
+
+  override def beforeAll(): Unit = loadRaportointikantaFixtures
 
   "Esiopetuksen raportti" - {
     "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {
