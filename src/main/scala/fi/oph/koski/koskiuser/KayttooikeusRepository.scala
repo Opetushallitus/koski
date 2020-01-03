@@ -26,15 +26,21 @@ class KäyttöoikeusRepository(organisaatioRepository: OrganisaatioRepository, d
             case k: KäyttöoikeusViranomainen => List(k)
             case k: KäyttöoikeusOrg =>
               val organisaatioHierarkia = organisaatioRepository.getOrganisaatioHierarkia(k.organisaatio.oid)
-              val flattened: List[OrganisaatioHierarkia] = OrganisaatioHierarkia.flatten(organisaatioHierarkia.toList)
+              val flattened = OrganisaatioHierarkia.flatten(organisaatioHierarkia.toList)
 
               if (flattened.isEmpty) {
                 logger.warn(s"Käyttäjän $username käyttöoikeus $k kohdistuu organisaatioon ${k.organisaatio.oid}, jota ei löydy")
               }
 
-              flattened.map { org =>
+              val käyttöoikeudet = flattened.map { org =>
                 k.copy(organisaatio = org.toOrganisaatio, juuri = org.oid == k.organisaatio.oid, oppilaitostyyppi = org.oppilaitostyyppi)
-              } ++ organisaatioHierarkia.toList.flatMap(hierarkianUlkopuolisetKäyttöoikeudet(k, _))
+              }
+
+              val hierarkianUlkopuolisetOikeudet = organisaatioHierarkia.toList.flatMap(hierarkianUlkopuolisetKäyttöoikeudet(k, _)).filterNot { käyttöoikeus =>
+                käyttöoikeudet.exists(_.organisaatio.oid == käyttöoikeus.organisaatio.oid)
+              }
+
+              käyttöoikeudet ++ hierarkianUlkopuolisetOikeudet
           }
         }
       case None =>

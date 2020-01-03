@@ -36,6 +36,7 @@ object MockUsers {
 
   val helsinkiTallentaja = MockUser("hki-tallentaja", "hki-tallentaja", "1.2.246.562.24.99999999977", Set(oppilaitosTallentaja(helsinginKaupunki)))
   val tornioTallentaja = MockUser("tornio-tallentaja", "tornio-tallentaja", "1.2.246.562.24.99999999988", Set(oppilaitosTallentaja(tornionKaupunki)))
+  val pyhtäänTallentaja = MockUser("pyhtaa-tallentaja", "pyhtaa-tallentaja", "1.2.246.562.24.99999999966", Set(oppilaitosTallentaja(pyhtäänKunta)))
   val jyväskyläTallentaja = MockUser("jyvaskyla-tallentaja", "jyvaskyla-tallentaja", "1.2.246.562.24.99999999955", Set(oppilaitosTallentaja(jyväskylänYliopisto)))
   val touholaKatselija = MockUser("touhola-katselija", "touhola-katselija", "1.2.246.562.24.99999999933", Set(oppilaitosKatselija(päiväkotiTouhula)))
 
@@ -79,6 +80,7 @@ object MockUsers {
     tallentajaEiLuottamuksellinen,
     helsinkiTallentaja,
     tornioTallentaja,
+    pyhtäänTallentaja,
     jyväskyläTallentaja,
     touholaKatselija,
     eiOikkia,

@@ -39,6 +39,11 @@ case class OrganisaatioHierarkia(oid: String, oppilaitosnumero: Option[Koodistok
   def flatten: List[OrganisaatioWithOid] = OrganisaatioHierarkia.flatten(List(this)).map(_.toOrganisaatio)
 
   def varhaiskasvatuksenJärjestäjä: Boolean = organisaatiotyypit.contains(VARHAISKASVATUKSEN_JARJESTAJA)
+
+  def sortBy(lang: String): OrganisaatioHierarkia = {
+    assert(LocalizedString.languages.contains(lang), s"Sallitut kielivaihtoehdot: ${LocalizedString.languages.mkString(",")}")
+    this.copy(children = children.map(_.sortBy(lang)).sortBy(_.nimi.get(lang)))
+  }
 }
 
 object OrganisaatioHierarkia {

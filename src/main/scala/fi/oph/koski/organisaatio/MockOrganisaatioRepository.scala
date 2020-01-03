@@ -12,6 +12,7 @@ import fi.oph.koski.schema.Oppilaitos
 object MockOrganisaatiot {
   val helsinginKaupunki = "1.2.246.562.10.346830761110"
   val tornionKaupunki = "1.2.246.562.10.25412665926"
+  val pyhtäänKunta = "1.2.246.562.10.69417312936"
   val helsinginYliopisto = "1.2.246.562.10.39218317368"
   val aaltoYliopisto = "1.2.246.562.10.56753942459"
   val itäsuomenYliopisto = "1.2.246.562.10.38515028629"
@@ -124,8 +125,14 @@ object MockOrganisaatioRepository extends JsonOrganisaatioRepository(MockKoodist
       .flatMap(json => extract[OrganisaatioHakuTulos](json, ignoreExtras = true).organisaatiot)
   }
 
-  override def findAllVarhaiskasvatusToimipisteet: List[OrganisaatioPalveluOrganisaatioTyyppi] = {
+  override def findAllVarhaiskasvatusToimipisteet: List[OrganisaatioPalveluOrganisaatio] = {
     val json = JsonResources.readResource("/mockdata/organisaatio/varhaiskasvatustoimipisteet.json")
-    extract[OrganisaatioTyyppiHakuTulos](json, ignoreExtras = true).organisaatiot
+    extract[OrganisaatioHakuTulos](json, ignoreExtras = true).organisaatiot
   }
+
+  override def fetchByOids(oids: List[String]): List[OrganisaatioPalveluOrganisaatio] = {
+    findAllRaw.filter(o => oids.contains(o.oid))
+  }
+
+  override def findVarhaiskasvatusHierarkiat: List[OrganisaatioHierarkia] = uncachedVarhaiskasvatusHierarkiat
 }

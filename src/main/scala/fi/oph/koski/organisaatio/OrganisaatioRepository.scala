@@ -7,7 +7,12 @@ import com.typesafe.config.Config
 import fi.oph.koski.cache._
 import fi.oph.koski.http.{ServiceConfig, VirkailijaHttpClient}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
+import fi.oph.koski.log.Logging
 import fi.oph.koski.schema._
+
+import scala.collection.immutable
+import scala.concurrent.duration._
+
 trait OrganisaatioRepository {
   /**
    * Organisation hierarchy containing children of requested org. Parents are not included.
@@ -47,7 +52,9 @@ trait OrganisaatioRepository {
 
   def findAllRaw: List[OrganisaatioPalveluOrganisaatio]
 
-  def findAllVarhaiskasvatusToimipisteet: List[OrganisaatioPalveluOrganisaatioTyyppi]
+  def findVarhaiskasvatusHierarkiat: List[OrganisaatioHierarkia]
+  def findAllVarhaiskasvatusToimipisteet: List[OrganisaatioPalveluOrganisaatio]
+  def fetchByOids(list: List[String]): List[OrganisaatioPalveluOrganisaatio]
 }
 
 object OrganisaatioRepository {
@@ -71,5 +78,23 @@ abstract class JsonOrganisaatioRepository(koodisto: KoodistoViitePalvelu) extend
     }
     val oppilaitostyyppi: Option[String] = org.oppilaitostyyppi.map(_.replace("oppilaitostyyppi_", "").replaceAll("#.*", ""))
     OrganisaatioHierarkia(org.oid, oppilaitosnumero, LocalizedString.sanitizeRequired(org.nimi, org.oid), org.ytunnus, kotipaikka, org.organisaatiotyypit, oppilaitostyyppi, org.lakkautusPvm.forall(_ > currentTimeMillis), org.children.map(convertOrganisaatio))
+  }
+
+  val varhaiskasvatusToimipaikkaTyyppi = "VARHAISKASVATUKSEN_TOIMIPAIKKA"
+  private val parentOidPathRegex = ".*/(1.2.246.562.10.*)/1.2.246.562.10.00000000001".r
+  protected def uncachedVarhaiskasvatusHierarkiat: List[OrganisaatioHierarkia] = {
+    val varhaiskasvatusToimipisteet = findAllVarhaiskasvatusToimipisteet
+    val parentOids = varhaiskasvatusToimipisteet.flatMap(_.parentOidPath).flatMap(parentOidPathRegex.findFirstMatchIn(_).map(_.group(1))).distinct
+    fetchByOids(parentOids).map(convertOrganisaatio).flatMap { hierarkia =>
+      val varhaiskasvatusToimipisteet = hierarkia.children.flatMap(c => OrganisaatioHierarkiaFilter.prune(c, org => {
+        OrganisaatioHierarkia.flatten(c :: org.children).exists(_.organisaatiotyypit.contains(varhaiskasvatusToimipaikkaTyyppi))
+      }))
+
+      if (varhaiskasvatusToimipisteet.nonEmpty) {
+        List(hierarkia.copy(children = varhaiskasvatusToimipisteet))
+      } else {
+        Nil
+      }
+    }
   }
 }

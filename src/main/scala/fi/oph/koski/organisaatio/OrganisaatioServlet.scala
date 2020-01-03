@@ -2,7 +2,7 @@ package fi.oph.koski.organisaatio
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.{AuthenticationSupport, KäyttöoikeusOrg}
+import fi.oph.koski.koskiuser.{AuthenticationSupport, KäyttöoikeusOrg, KäyttöoikeusVarhaiskasvatusToimipiste}
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
 class OrganisaatioServlet(implicit val application: KoskiApplication) extends ApiServlet with AuthenticationSupport with NoCache {
@@ -19,14 +19,26 @@ class OrganisaatioServlet(implicit val application: KoskiApplication) extends Ap
           Nil
       }
     } else {
-      val all: Set[OrganisaatioHierarkia] = koskiSessionOption.get.orgKäyttöoikeudet.filter(_.juuri).flatMap{ko: KäyttöoikeusOrg => application.organisaatioRepository.getOrganisaatioHierarkia(ko.organisaatio.oid)}
+      val user = koskiSessionOption.get
+      val all: Set[OrganisaatioHierarkia] = user.orgKäyttöoikeudet.filter(_.juuri).flatMap { ko: KäyttöoikeusOrg =>
+        application.organisaatioRepository.getOrganisaatioHierarkia(ko.organisaatio.oid)
+      }
+
+      val hierarkianUlkopuolisetOrganisaatiot: List[OrganisaatioHierarkia] = if (user.hasKoulutustoimijaVarhaiskasvatuksenJärjestäjäAccess) {
+        application.organisaatioRepository.findVarhaiskasvatusHierarkiat
+      } else {
+        Nil
+      }
+
+      val orgs: Set[OrganisaatioHierarkia] = all ++ hierarkianUlkopuolisetOrganisaatiot
+
       query match {
         case Some(query) =>
-          OrganisaatioHierarkiaFilter(query, lang).filter(all)
-        case None => all
+          OrganisaatioHierarkiaFilter(query, lang).filter(orgs)
+        case None => orgs
       }
     }
-    filtered.toList.sortBy(_.nimi.get(lang))
+    filtered.toList.sortBy(_.nimi.get(lang)).map(_.sortBy(lang))
   }
 
   get("/sahkoposti-virheiden-raportointiin") {

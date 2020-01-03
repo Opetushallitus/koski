@@ -32,10 +32,11 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(i
     }
   )
 
-  private val päiväkotiCache = SingleValueCache[List[OrganisaatioPalveluOrganisaatioTyyppi]](
-    RefreshingCache("OrganisaatioRepository.varhaiskasvatusToimipisteet", 1.hour, 5000),
-    () => fetchAllVarhaiskasvatusToimipisteet
+  private val varhaiskasvatusHierarkiatCache = SingleValueCache[List[OrganisaatioHierarkia]](
+    RefreshingCache("OrganisaatioRepository.varhaiskasvatusHierarkiat", 1.hour, 5000),
+    uncachedVarhaiskasvatusHierarkiat _
   )
+
 
   def getOrganisaatioHierarkiaIncludingParents(oid: String): List[OrganisaatioHierarkia] = hierarkiaCache(oid)
 
@@ -45,10 +46,21 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(i
     fetchSearchHierarchy(query).organisaatiot.map(convertOrganisaatio)
   }
 
-  def findAllVarhaiskasvatusToimipisteet: List[OrganisaatioPalveluOrganisaatioTyyppi] = päiväkotiCache.apply
+  def findVarhaiskasvatusHierarkiat: List[OrganisaatioHierarkia] = {
+    varhaiskasvatusHierarkiatCache.apply
+  }
 
-  private def fetchAllVarhaiskasvatusToimipisteet: List[OrganisaatioPalveluOrganisaatioTyyppi] =
-    runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v4/hae?aktiiviset=true&suunnitellut=true&lakkautetut=true&organisaatiotyyppi=organisaatiotyyppi_08")(Http.parseJson[OrganisaatioTyyppiHakuTulos])).organisaatiot
+  val varhaiskasvatuksenToimipaikka = "Varhaiskasvatuksen toimipaikka"
+  def findAllVarhaiskasvatusToimipisteet: List[OrganisaatioPalveluOrganisaatio] = {
+    runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/hae?aktiiviset=true&suunnitellut=true&lakkautetut=false&organisaatiotyyppi=$varhaiskasvatuksenToimipaikka")(Http.parseJson[OrganisaatioHakuTulos])).organisaatiot
+  }
+
+  def fetchByOids(oids: List[String]): List[OrganisaatioPalveluOrganisaatio] = {
+    // organisaatio-service failed when trying with bigger batches than 100
+    oids.grouped(100).flatMap { subOids =>
+      runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&suunnitellut=true&lakkautetut=true&oidResctrictionList=${subOids.mkString("[", ",", "]")}")(Http.parseJson[OrganisaatioHakuTulos])).organisaatiot
+    }.toList
+  }
 
   private def search(searchTerm: String): List[OrganisaatioWithOid] = fetchSearch(searchTerm).organisaatiot.map(convertOrganisaatio).map(_.toOrganisaatio)
 
@@ -106,7 +118,7 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(i
 }
 
 case class OrganisaatioHakuTulos(organisaatiot: List[OrganisaatioPalveluOrganisaatio])
-case class OrganisaatioPalveluOrganisaatio(oid: String, ytunnus: Option[String], nimi: Map[String, String], oppilaitosKoodi: Option[String], organisaatiotyypit: List[String], oppilaitostyyppi: Option[String], kotipaikkaUri: Option[String], kieletUris: List[String], lakkautusPvm: Option[Long], children: List[OrganisaatioPalveluOrganisaatio])
+case class OrganisaatioPalveluOrganisaatio(oid: String, ytunnus: Option[String], nimi: Map[String, String], oppilaitosKoodi: Option[String], organisaatiotyypit: List[String], oppilaitostyyppi: Option[String], kotipaikkaUri: Option[String], kieletUris: List[String], lakkautusPvm: Option[Long], parentOidPath: Option[String], children: List[OrganisaatioPalveluOrganisaatio])
 case class OrganisaatioTyyppiHakuTulos(organisaatiot: List[OrganisaatioPalveluOrganisaatioTyyppi])
 case class OrganisaatioPalveluOrganisaatioTyyppi(oid: String, nimi: Map[String, String], organisaatiotyypit: List[String], oppilaitostyyppi: Option[String], children: List[OrganisaatioPalveluOrganisaatio])
 case class OrganisaationNimihakuTulos(nimi: Map[String, String], alkuPvm: LocalDate)
