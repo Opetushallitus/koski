@@ -68,7 +68,7 @@
        <cve>CVE-2015-2156</cve>
        <cve>CVE-2019-16869</cve>
     </suppress>
-    <suppress until="2020-01-01Z">
+    <suppress until="2020-04-01Z">
        <notes><![CDATA[
        file name: netty-reactive-streams-http-2.0.3.jar
        ]]></notes>
