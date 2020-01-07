@@ -17,7 +17,7 @@ abstract class AuxiliaryOpiskeluoikeusRepositoryImpl[OO <: Opiskeluoikeus, CK <:
       if (globalAccess) {
         oppijat.filter(oppija => cachedOrganizations(oppija).nonEmpty)
       } else {
-        quickAccessCheck(oppijat.par.filter(oppija => cachedOrganizations(oppija).exists(user.hasReadAccess(_))).toList)
+        quickAccessCheck(oppijat.par.filter(oppija => cachedOrganizations(oppija).exists(user.hasReadAccess(_, None))).toList)
       }
     } catch {
       case NonFatal(e) =>
@@ -69,7 +69,7 @@ abstract class AuxiliaryOpiskeluoikeusRepositoryImpl[OO <: Opiskeluoikeus, CK <:
   private def filterByOrganisaatio(opiskeluoikeudet: List[OO])(implicit user: KoskiSession): List[OO] = {
     opiskeluoikeudet.filter { oo =>
       accessChecker.hasGlobalAccess(user) ||
-        oo.oppilaitos.exists(oppilaitos => user.hasReadAccess(oppilaitos.oid))
+        oo.oppilaitos.exists(oppilaitos => user.hasReadAccess(oppilaitos.oid, None))
     }
   }
 }

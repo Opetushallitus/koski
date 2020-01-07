@@ -30,8 +30,8 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
   lazy val globalAccess = globalKäyttöoikeudet.flatMap { _.globalAccessType }
   def isRoot = globalAccess.contains(AccessType.write)
   def isPalvelukäyttäjä = orgKäyttöoikeudet.flatMap(_.organisaatiokohtaisetPalveluroolit).contains(Palvelurooli(TIEDONSIIRTO))
-  def hasReadAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid] = None) = hasAccess(organisaatio, koulutustoimija, AccessType.read)
-  def hasWriteAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid] = None) = hasAccess(organisaatio, koulutustoimija, AccessType.write) && hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)
+  def hasReadAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid]) = hasAccess(organisaatio, koulutustoimija, AccessType.read)
+  def hasWriteAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid]) = hasAccess(organisaatio, koulutustoimija, AccessType.write) && hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)
   def hasTiedonsiirronMitätöintiAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid]) = hasAccess(organisaatio, koulutustoimija, AccessType.tiedonsiirronMitätöinti)
   def hasLuovutuspalveluAccess: Boolean = globalViranomaisKäyttöoikeudet.exists(_.isLuovutusPalveluAllowed)
   def hasTilastokeskusAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).contains(Palvelurooli("KOSKI", TILASTOKESKUS))
