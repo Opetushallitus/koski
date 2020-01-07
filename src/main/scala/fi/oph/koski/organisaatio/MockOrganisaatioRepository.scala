@@ -122,7 +122,10 @@ object MockOrganisaatioRepository extends JsonOrganisaatioRepository(MockKoodist
   override def findAllRaw: List[OrganisaatioPalveluOrganisaatio] = {
     MockOrganisaatiot.roots
       .flatMap(oid => JsonResources.readResourceIfExists(hierarchyResourcename(oid)))
-      .flatMap(json => extract[OrganisaatioHakuTulos](json, ignoreExtras = true).organisaatiot)
+      .flatMap { json =>
+        val orgs = extract[OrganisaatioHakuTulos](json, ignoreExtras = true).organisaatiot
+        orgs.flatMap { org => org :: org.children }
+      }
   }
 
   override def findAllVarhaiskasvatusToimipisteet: List[OrganisaatioPalveluOrganisaatio] = {

@@ -7,11 +7,7 @@ import com.typesafe.config.Config
 import fi.oph.koski.cache._
 import fi.oph.koski.http.{ServiceConfig, VirkailijaHttpClient}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.log.Logging
 import fi.oph.koski.schema._
-
-import scala.collection.immutable
-import scala.concurrent.duration._
 
 trait OrganisaatioRepository {
   /**

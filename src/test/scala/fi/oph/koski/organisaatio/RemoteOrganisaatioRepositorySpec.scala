@@ -52,7 +52,7 @@ class RemoteOrganisaatioRepositorySpec extends FreeSpec with Matchers with Befor
         .willReturn(ok(write(readResource(hierarchyResourcename(helsinginKaupunki))))))
 
     wireMockServer.stubFor(
-      get(urlPathEqualTo("/organisaatio-service/rest/organisaatio/v4/hae"))
+      get(urlPathEqualTo("/organisaatio-service/rest/organisaatio/v2/hae"))
         .willReturn(ok(write(readResource("/mockdata/organisaatio/varhaiskasvatustoimipisteet.json"))))
     )
   }

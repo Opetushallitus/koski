@@ -19,13 +19,13 @@ trait EsiopetusSpecification extends LocalJettyHttpSpecification with PutOpiskel
   def peruskouluEsiopetus(toimipiste: OrganisaatioWithOid): EsiopetuksenOpiskeluoikeus =
     defaultOpiskeluoikeus.copy(oppilaitos = None, suoritukset = List(suoritus(perusteenDiaarinumero = "102/011/2014", tunniste = peruskoulunEsiopetuksenTunniste, toimipiste)))
 
-  val päiväkodinEsiopetuksenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
+  lazy val päiväkodinEsiopetuksenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
     oppilaitos = Some(YleissivistavakoulutusExampleData.montessoriPäiväkoti),
     suoritukset = List(päiväkodinEsiopetuksenSuoritus)
   )
 
-  val peruskoulunEsiopetuksenSuoritus = suoritus(perusteenDiaarinumero = "102/011/2014", tunniste = peruskoulunEsiopetuksenTunniste, YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu)
-  val päiväkodinEsiopetuksenSuoritus = suoritus(perusteenDiaarinumero = "102/011/2014", tunniste = päiväkodinEsiopetuksenTunniste, YleissivistavakoulutusExampleData.montessoriPäiväkoti)
+  lazy val peruskoulunEsiopetuksenSuoritus = suoritus(perusteenDiaarinumero = "102/011/2014", tunniste = peruskoulunEsiopetuksenTunniste, YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu)
+  lazy val päiväkodinEsiopetuksenSuoritus = suoritus(perusteenDiaarinumero = "102/011/2014", tunniste = päiväkodinEsiopetuksenTunniste, YleissivistavakoulutusExampleData.montessoriPäiväkoti)
 
   override def tag: TypeTag[EsiopetuksenOpiskeluoikeus] = implicitly[TypeTag[EsiopetuksenOpiskeluoikeus]]
   override def defaultOpiskeluoikeus: EsiopetuksenOpiskeluoikeus = ExamplesEsiopetus.opiskeluoikeus
