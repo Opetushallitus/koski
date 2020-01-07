@@ -9,6 +9,8 @@ services:
     - "POSTGRES_PASSWORD=oph"
     ports:
     - "5432:5432"
+    volumes:
+    - "./postgresql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
 
   elasticsearch:
     build: "./elasticsearch"
