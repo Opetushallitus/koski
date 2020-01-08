@@ -90,4 +90,14 @@
       <cpe>cpe:/:apache:poi:3.17</cpe>
       <cve>CVE-2019-12415</cve>
     </suppress>
+    <suppress>
+      <notes>SocketServer not used in project</notes>
+      <gav regex="true">^log4j:log4j:.*$</gav>
+      <cve>CVE-2019-17571</cve>
+    </suppress>
+    <suppress>
+      <notes>SocketServer not used in project</notes>
+      <gav regex="true">^log4j:apache-log4j-extras:.*$</gav>
+      <cve>CVE-2019-17571</cve>
+    </suppress>
 </suppressions>
