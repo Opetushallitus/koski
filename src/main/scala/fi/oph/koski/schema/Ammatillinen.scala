@@ -241,6 +241,7 @@ case class AmmatillisenTutkinnonSuoritus(
   @Title("Painotettu keskiarvo")
   @Tooltip("Ammatillisen tutkinnon osaamispistein painotettu keskiarvo.")
   @OnlyWhen("suoritustapa/koodiarvo","reformi")
+  @OnlyWhen("suoritustapa/koodiarvo","ops")
   @MinValue(1)
   @MaxValue(5)
   @Scale(2)
