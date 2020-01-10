@@ -1098,14 +1098,6 @@ describe('Ammatillinen koulutus', function() {
       after(page.openPage, page.oppijaHaku.searchAndSelect('280608-6619'))
     })
 
-    describe('Keskiarvo', function() {
-      before(editor.edit)
-      it('keskiarvo-kenttä ei ole näkyvissä', function() {
-        expect(editor.property('keskiarvo').isVisible()).to.equal(false)
-      })
-      after(editor.cancelChanges)
-    })
-
     describe('Tutkinnon osat', function() {
       var suoritustapa = editor.property('suoritustapa')
       describe('Kun suoritustapa on opetussuunnitelman mukainen', function() {
