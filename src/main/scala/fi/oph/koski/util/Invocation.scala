@@ -20,6 +20,10 @@ object Invocation {
   def apply[A <: AnyRef, B <: AnyRef](f: A => B, input: A): Invocation = {
     Invocation(AnonymousFunction(f), List(input))
   }
+
+  def apply[B <: AnyRef](f: () => B): Invocation = {
+    Invocation(NoArgsFunction(f), List())
+  }
 }
 
 trait NamedFunction {
@@ -41,6 +45,13 @@ case class ObjectMethod(method: Method, target: AnyRef) extends NamedFunction {
     if (isReflectionException(t) && t.getCause != null) skipReflectionExceptions(t.getCause) else t
   private def isReflectionException(t: Throwable): Boolean =
     t.isInstanceOf[InvocationTargetException] || t.isInstanceOf[ExecutionException] || t.isInstanceOf[UndeclaredThrowableException]
+}
+
+case class NoArgsFunction[B <: AnyRef](f: () => B) extends NamedFunction {
+  override def name: String = "noargsanonymous"
+  def apply(args: List[AnyRef]) = {
+    f.apply()
+  }
 }
 
 case class AnonymousFunction[A <: AnyRef, B <: AnyRef](f: A => B) extends NamedFunction {
