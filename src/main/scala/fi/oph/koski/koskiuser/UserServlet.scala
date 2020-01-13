@@ -1,5 +1,6 @@
 package fi.oph.koski.koskiuser
 
+import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
 class UserServlet(implicit val application: UserAuthenticationContext) extends ApiServlet with AuthenticationSupport with NoCache {
@@ -16,7 +17,8 @@ class UserServlet(implicit val application: UserAuthenticationContext) extends A
           hasHenkiloUiWriteAccess = session.hasHenkiloUiWriteAccess,
           hasAnyInvalidateAccess = session.hasAnyTiedonsiirronMitätöintiAccess,
           isViranomainen = session.hasGlobalKoulutusmuotoReadAccess,
-          hasRaportitAccess = session.hasRaportitAccess
+          hasRaportitAccess = session.hasRaportitAccess,
+          varhaiskasvatuksenJärjestäjäKoulutustoimijat = session.varhaiskasvatusKäyttöoikeudet.map(_.koulutustoimija.oid).toList
         )
       }
       }.getOrElse(UserWithAccessRights(user.name, user.oid))
@@ -34,6 +36,7 @@ case class UserWithAccessRights(
   hasHenkiloUiWriteAccess: Boolean = false,
   hasAnyInvalidateAccess: Boolean = false,
   isViranomainen: Boolean = false,
-  hasRaportitAccess: Boolean = false
+  hasRaportitAccess: Boolean = false,
+  varhaiskasvatuksenJärjestäjäKoulutustoimijat: List[String] = Nil
 )
 

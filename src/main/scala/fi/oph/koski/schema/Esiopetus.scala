@@ -12,20 +12,25 @@ case class EsiopetuksenOpiskeluoikeus(
   aikaleima: Option[LocalDateTime] = None,
   lähdejärjestelmänId: Option[LähdejärjestelmäId] = None,
   oppilaitos: Option[Oppilaitos],
-  koulutustoimija: Option[Koulutustoimija] = None,
   @Hidden
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None,
   @Description("Oppijan opinto-oikeuden arvioitu päättymispäivä esiopetuksessa")
   arvioituPäättymispäivä: Option[LocalDate] = None,
   @Description("Tila-tieto/tiedot oppijan läsnäolosta: [confluence](https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-Esiopetus)")
   tila: NuortenPerusopetuksenOpiskeluoikeudenTila,
+  koulutustoimija: Option[Koulutustoimija] = None,
   @Description("Esiopetuksen opiskeluoikeuden lisätiedot")
   lisätiedot: Option[EsiopetuksenOpiskeluoikeudenLisätiedot] = None,
   @MaxItems(1)
   suoritukset: List[EsiopetuksenSuoritus],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.esiopetus.koodiarvo)
   tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.esiopetus,
-  organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None
+  organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None,
+  @Description("Ostopalvelu tai palveluseteli")
+  @KoodistoKoodiarvo("JM02") // ostopalvelu
+  @KoodistoKoodiarvo("JM03") // palveluseteli
+  @KoodistoUri("vardajarjestamismuoto")
+  järjestämismuoto: Option[Koodistokoodiviite] = None
 ) extends KoskeenTallennettavaOpiskeluoikeus {
   @Description("Oppijan esiopetuksen lukuvuoden päättymispäivä. Esiopetuksen suoritusaika voi olla 2-vuotinen")
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä

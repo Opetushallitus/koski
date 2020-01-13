@@ -1297,6 +1297,10 @@
   "Suoritustiedot (muu ammatillinen koulutus)": "Suoritustiedot (muu ammatillinen koulutus)",
   "muuammatillinenraportti-description": "Muu ammatillisen koulutuksen suoritustietojen tarkistusraportti",
   "Suoritustiedot (TOPKS ammatillinen koulutus)": "Suoritustiedot (TOPKS ammatillinen koulutus)",
-  "topksammatillinen-description": "Tutkinnon osaa pienemmistä kokonaisuuksista koostuvan suorituksen suoritustietojen tarkistusraportti"
+  "topksammatillinen-description": "Tutkinnon osaa pienemmistä kokonaisuuksista koostuvan suorituksen suoritustietojen tarkistusraportti",
+  "Varhaiskasvatus ostopalveluna": "Varhaiskasvatus ostopalveluna",
+  "description:Ostopalvelu tai palveluseteli" : "Ostopalvelu tai palveluseteli",
+  "Päiväkodin esiopetus ostopalveluna tai palvelusetelinä": "Päiväkodin esiopetus ostopalveluna tai palvelusetelinä",
+  "Esiopetus ostetaan oman organisaation ulkopuolelta": "Esiopetus ostetaan oman organisaation ulkopuolelta"
 }
 

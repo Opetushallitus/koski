@@ -279,7 +279,13 @@ function AddOppijaPage() {
       return selectFromDropdown('.koulutusmoduuli .dropdown', koulutusmoduuli)
     },
     goBack: click(findSingle('h1 a')),
-    selectFromDropdown: selectFromDropdown
+    selectFromDropdown: selectFromDropdown,
+    selectVarhaiskasvatusOrganisaationUlkopuolelta: function(checked) {
+      return pageApi.setInputValue('#varhaiskasvatus-checkbox', checked)
+    },
+    selectJärjestämismuoto: function(järjestämismuoto) {
+      return selectFromDropdown('#varhaiskasvatus-jarjestamismuoto .dropdown', järjestämismuoto)
+    }
   }
   function selectFromDropdown(selector, value, exact) {
     return function () {

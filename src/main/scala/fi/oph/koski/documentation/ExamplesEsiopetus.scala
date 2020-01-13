@@ -4,7 +4,7 @@ import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.PerusopetusExampleData._
-import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
+import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{helsinki, _}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
 
@@ -12,6 +12,17 @@ object ExamplesEsiopetus {
   val peruskoulunEsiopetuksenTunniste = "001101"
   val päiväkodinEsiopetuksenTunniste = "001102"
   lazy val osaAikainenErityisopetus = Koodistokoodiviite("1", Some("Osa-aikainen erityisopetus"), "perusopetuksentukimuoto")
+
+  lazy val lisätiedot = EsiopetuksenOpiskeluoikeudenLisätiedot(
+    tukimuodot = Some(List(osaAikainenErityisopetus)),
+    pidennettyOppivelvollisuus = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
+    vammainen = Some(List(Aikajakso(date(2010, 8, 14), None))),
+    vaikeastiVammainen = Some(List(Aikajakso(date(2014, 6, 6), None))),
+    majoitusetu = Some(Aikajakso(date(2011, 8, 14), Some(date(2012, 8, 14)))),
+    kuljetusetu = Some(Aikajakso(date(2011, 8, 14), Some(date(2012, 8, 14)))),
+    sisäoppilaitosmainenMajoitus = Some(List(Aikajakso(date(2012, 9, 1), Some(date(2013, 9, 1))))),
+    koulukoti = Some(List(Aikajakso(date(2011, 8, 14), None)))
+  )
 
   lazy val opiskeluoikeus = EsiopetuksenOpiskeluoikeus(
     oppilaitos = Some(jyväskylänNormaalikoulu),
@@ -23,17 +34,21 @@ object ExamplesEsiopetus {
         NuortenPerusopetuksenOpiskeluoikeusjakso(date(2007, 6, 3), opiskeluoikeusValmistunut)
       )
     ),
-    lisätiedot = Some(EsiopetuksenOpiskeluoikeudenLisätiedot(
-      tukimuodot = Some(List(osaAikainenErityisopetus)),
-      pidennettyOppivelvollisuus = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
-      vammainen = Some(List(Aikajakso(date(2010, 8, 14), None))),
-      vaikeastiVammainen = Some(List(Aikajakso(date(2014, 6, 6), None))),
-      majoitusetu = Some(Aikajakso(date(2011, 8, 14), Some(date(2012, 8, 14)))),
-      kuljetusetu = Some(Aikajakso(date(2011, 8, 14), Some(date(2012, 8, 14)))),
-      sisäoppilaitosmainenMajoitus = Some(List(Aikajakso(date(2012, 9, 1), Some(date(2013, 9, 1))))),
-      koulukoti = Some(List(Aikajakso(date(2011, 8, 14), None)))
-    ))
+    lisätiedot = Some(lisätiedot)
   )
+
+  lazy val päiväkodinOpiskeluoikeus = EsiopetuksenOpiskeluoikeus(
+    oppilaitos = None,
+    suoritukset = List(suoritus(perusteenDiaarinumero = "102/011/2014", tunniste = päiväkodinEsiopetuksenTunniste, toimipiste = päiväkotiTouhula).copy(vahvistus = None, muutSuorituskielet = None)),
+    tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
+      List(
+        NuortenPerusopetuksenOpiskeluoikeusjakso(date(2006, 8, 13), opiskeluoikeusLäsnä)
+      )
+    ),
+    järjestämismuoto = ostopalvelu
+  )
+
+  lazy val ostopalvelu = Some(Koodistokoodiviite("JM02", "vardajarjestamismuoto"))
 
   lazy val opiskeluoikeusHelsingissä: EsiopetuksenOpiskeluoikeus = opiskeluoikeus.copy(
     oppilaitos = Some(kulosaarenAlaAste),
@@ -45,7 +60,10 @@ object ExamplesEsiopetus {
     List(opiskeluoikeus)
   )
 
-  val examples = List(Example("esiopetus valmis", "Oppija on suorittanut peruskoulun esiopetuksen", esioppilas))
+  val examples = List(
+    Example("esiopetus valmis", "Oppija on suorittanut peruskoulun esiopetuksen", esioppilas),
+    Example("esiopetus - ostopalvelu", "Oppija on suorittanut päiväkodin esiopetuksen ostopalveluna", esioppilas.copy(opiskeluoikeudet = List(päiväkodinOpiskeluoikeus.copy(koulutustoimija = Some(helsinki)))), statusCode = 403)
+  )
 
   def suoritus(perusteenDiaarinumero: String, tunniste: String, toimipiste: OrganisaatioWithOid) = EsiopetuksenSuoritus(
     koulutusmoduuli = Esiopetus(

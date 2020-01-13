@@ -10,7 +10,7 @@ import {flatMapArray} from '../util/util'
 export class PropertiesEditor extends React.Component {
   render() {
     let defaultValueEditor = (prop, getDefault) => getDefault()
-    let {properties, model, context, getValueEditor = defaultValueEditor, propertyFilter = () => true, propertyEditable = p => p.editable || context.editAll, className} = this.props
+    let {properties, model, context, getValueEditor = defaultValueEditor, propertyFilter = () => true, propertyEditable = p => p.editable || context.editAll, className, showAnyway = () => false} = this.props
     if (!properties) {
       if (!model) throw new Error('model or properties required')
       properties = modelProperties(model)
@@ -21,7 +21,7 @@ export class PropertiesEditor extends React.Component {
     }
     let edit = context.edit
     let contextForProperty = (property) => !propertyEditable(property) && context.edit ? { ...context, edit: false } : context
-    let shouldShow = (property) => shouldShowProperty(contextForProperty(property))(property) && propertyFilter(property)
+    let shouldShow = (property) => shouldShowProperty(contextForProperty(property))(property) && propertyFilter(property) || showAnyway(property)
 
     let munch = (prefix) => (property, i) => {
       if (property.flatten && property.model.value && property.model.value.properties) {

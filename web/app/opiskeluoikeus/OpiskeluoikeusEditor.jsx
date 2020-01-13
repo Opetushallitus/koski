@@ -77,6 +77,8 @@ const OpiskeluoikeudenTiedot = ({opiskeluoikeus, editLink, alkuChangeBus}) => (
     <PropertiesEditor
       model={opiskeluoikeus}
       propertyFilter={ p => !excludedProperties.includes(p.key) && (opiskeluoikeus.context.edit || modelData(p.model) !== false)}
+      showAnyway={showEsiopetusKoulutusmuoto(opiskeluoikeus)}
+      propertyEditable={p => p.key === 'koulutustoimija' ? false : p.editable}
       getValueEditor={ (prop, getDefault) => {
         switch (prop.key) {
           case 'tila': return <OpiskeluoikeudenTilaEditor model={opiskeluoikeus} alkuChangeBus={alkuChangeBus}/>
@@ -95,6 +97,9 @@ const OpiskeluoikeudenTiedot = ({opiskeluoikeus, editLink, alkuChangeBus}) => (
     }
   </div>
 )
+
+const showEsiopetusKoulutusmuoto = opiskeluoikeus => property =>
+  property.key === 'koulutustoimija' && modelData(opiskeluoikeus, 'järjestämismuoto')
 
 const OpiskeluoikeudenId = ({opiskeluoikeus}) => {
   let selectAllText = (e) => {

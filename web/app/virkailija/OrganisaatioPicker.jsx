@@ -9,6 +9,7 @@ import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
 import {flatMapArray, parseBool} from '../util/util'
 import {parseLocation} from '../util/location'
+import delays from '../util/delays'
 
 let findSingleResult = (canSelectOrg = () => true) => (organisaatiot) => {
   let selectableOrgs = (org) => {
@@ -100,14 +101,15 @@ export default class OrganisaatioPicker extends BaconComponent {
   }
   componentWillMount() {
     super.componentWillMount()
-    let showAll = parseBool(this.props.showAll)
+    const showAll = parseBool(this.props.showAll)
+    const orgTypesToShowP = this.props.orgTypesToShowP || Bacon.constant(undefined)
     this.searchStringBus = Bacon.Bus()
     this.searchStringBus
       .onValue((searchString) => this.setState({searchString, loading: true}))
 
-    let searchResult = this.searchStringBus.flatMapLatest((searchString) =>
-      Http.get(parseLocation('/koski/api/organisaatio/hierarkia').addQueryParams({ query: searchString, all: showAll}))
-        .map((organisaatiot) => ({ organisaatiot, searchString }))
+    let searchResult = this.searchStringBus.debounce(delays().delay(500)).flatMap(searchString => orgTypesToShowP.map(orgTypesToShow => ({searchString, orgTypesToShow}))).flatMapLatest(({searchString, orgTypesToShow}) =>
+        Http.get(parseLocation('/koski/api/organisaatio/hierarkia').addQueryParams({ query: searchString, all: showAll, orgTypesToShow }))
+          .map((organisaatiot) => ({ organisaatiot, searchString }))
     ).takeUntil(this.unmountE)
     searchResult.onValue(({ organisaatiot }) => this.setState({ organisaatiot, loading: false }))
     if (this.props.preselectSingleOption) {

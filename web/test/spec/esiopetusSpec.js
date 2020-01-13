@@ -62,6 +62,12 @@ describe('Esiopetus', function() {
   describe('Opiskeluoikeuden lisääminen päiväkotiin', function() {
     before(prepareForNewOppija('kalle', '230872-7258'))
 
+    describe('Kun kyseessä on tavallinen oppilaitostallentaja', function() {
+      it('Varhaiskasvatus organisaatiohierarkian ulkopuolelle valitsinta ei näytetä', function() {
+        expect(isElementVisible(findSingle('#varhaiskasvatus-checkbox'))).to.equal(false)
+      })
+    })
+
     describe('Kun syötetään validit tiedot', function() {
       before(addOppija.enterValidDataPäiväkodinEsiopetus())
 
@@ -85,12 +91,68 @@ describe('Esiopetus', function() {
           expect(opinnot.getOppilaitos()).to.equal('Helsingin kaupunki toimipaikka 12241')
           expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('102/011/2014')
         })
+
+        it('koulutusmoduulia ja järjestämismuotoa ei näytetä', function () {
+          expect(editor.property('koulutustoimija').isVisible()).to.equal(false)
+          expect(editor.property('järjestämismuoto').isVisible()).to.equal(false)
+        })
+      })
+    })
+
+    describe('Lisääminen organisaatiohierarkian ulkopuolelle', function () {
+      before(prepareForNewOppija('hki-tallentaja', '230872-7258'))
+
+      describe('Kun kyseessä on koulutustoimija joka on myös varhaiskasvatuksen järjestäjä', function() {
+        it('Varhaiskasvatus organisaatiohierarkian ulkopuolelle valitsin näytetään', function() {
+          expect(isElementVisible(findSingle('#varhaiskasvatus-checkbox'))).to.equal(true)
+        })
+      })
+
+      describe('Kun valitaan oman organisaatiohierarkian ulkopuolelle tallentaminen', function () {
+        before(
+          addOppija.selectVarhaiskasvatusOrganisaationUlkopuolelta(true),
+          addOppija.enterOppilaitos('')
+        )
+
+        it('vain oman organisaation ulkopuoliset varhaiskasvatustoimipisteet näytetään', function () {
+          expect(addOppija.oppilaitokset()).to.deep.equal([
+            'Pyhtään kunta Päiväkoti Touhula',
+            'Päiväkoti Touhula'
+          ])
+        })
+
+        describe('Kun syötetään loput datat', function() {
+          before(
+            addOppija.selectJärjestämismuoto('Ostopalvelu, kunnan tai kuntayhtymän järjestämä'),
+            addOppija.enterValidDataPäiväkodinEsiopetus({oppilaitos: 'Päiväkoti Touhula'})
+          )
+
+          it('lisää nappi enabloituu', function () {
+            expect(addOppija.isEnabled()).to.equal(true)
+          })
+
+          describe('Kun painetaan Lisää-nappia', function () {
+            before(addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Päiväkodin esiopetus'))
+
+            it('lisätty oppija näytetään', function () {
+              expect(opinnot.getTutkinto()).to.equal('Päiväkodin esiopetus')
+              expect(opinnot.getOppilaitos()).to.equal('Päiväkoti Touhula')
+              expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('102/011/2014')
+              expect(extractAsText(S('.tunniste-koodiarvo'))).to.equal('001102')
+            })
+
+            it('koulutusmoduuli ja järjestämismuoto näytetään', function () {
+              expect(editor.property('koulutustoimija').getValue()).to.equal('HELSINGIN KAUPUNKI')
+              expect(editor.property('järjestämismuoto').getValue()).to.equal('Ostopalvelu, kunnan tai kuntayhtymän järjestämä')
+            })
+          })
+        })
       })
     })
   })
 
   describe('Tietojen muuttaminen', function() {
-    before(page.openPage, page.oppijaHaku.searchAndSelect('300996-870E'))
+    before(Authentication().login(), page.openPage, page.oppijaHaku.searchAndSelect('300996-870E'))
 
     describe('Kurssin kuvauksen ja sanallisen arvion muuttaminen', function() {
       var kuvaus = editor.subEditor('.osasuoritukset tbody').propertyBySelector('.kuvaus')
