@@ -11,6 +11,6 @@ case class KeyValueCache[K <: AnyRef, V <: AnyRef](strategy: Cache, loader: K =>
 
 case class SingleValueCache[V <: AnyRef](strategy: Cache, loader: () => V) {
   def apply: V = {
-    strategy.apply(Invocation.apply({ s: String => loader() }, "getSingleValue")).asInstanceOf[V]
+    strategy.apply(Invocation.apply(loader)).asInstanceOf[V]
   }
 }
