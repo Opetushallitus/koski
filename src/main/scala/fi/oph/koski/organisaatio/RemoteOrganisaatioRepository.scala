@@ -33,10 +33,14 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(i
   )
 
   private val varhaiskasvatusHierarkiatCache = SingleValueCache[List[OrganisaatioHierarkia]](
-    RefreshingCache("OrganisaatioRepository.varhaiskasvatusHierarkiat", 1.hour, 5000),
+    RefreshingCache("OrganisaatioRepository.varhaiskasvatusHierarkiat", 1.hour, 3),
     uncachedVarhaiskasvatusHierarkiat _
   )
 
+  private val varhaiskasvatusToimipisteet = SingleValueCache[List[OrganisaatioPalveluOrganisaatio]](
+    RefreshingCache("OrganisaatioRepository.varhaiskasvatusToimipisteet", 1.hour, 3),
+    uncachedFindAllVarhaiskasvatusToimipisteet _
+  )
 
   def getOrganisaatioHierarkiaIncludingParents(oid: String): List[OrganisaatioHierarkia] = hierarkiaCache(oid)
 
@@ -46,12 +50,14 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(i
     fetchSearchHierarchy(query).organisaatiot.map(convertOrganisaatio)
   }
 
-  def findVarhaiskasvatusHierarkiat: List[OrganisaatioHierarkia] = {
+  def findVarhaiskasvatusHierarkiat: List[OrganisaatioHierarkia] =
     varhaiskasvatusHierarkiatCache.apply
-  }
+
+  def findAllVarhaiskasvatusToimipisteet: List[OrganisaatioPalveluOrganisaatio] =
+    varhaiskasvatusToimipisteet.apply
 
   val varhaiskasvatuksenToimipaikka = "Varhaiskasvatuksen toimipaikka"
-  def findAllVarhaiskasvatusToimipisteet: List[OrganisaatioPalveluOrganisaatio] = {
+  private def uncachedFindAllVarhaiskasvatusToimipisteet: List[OrganisaatioPalveluOrganisaatio] = {
     runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/hae?aktiiviset=true&suunnitellut=true&lakkautetut=false&organisaatiotyyppi=$varhaiskasvatuksenToimipaikka")(Http.parseJson[OrganisaatioHakuTulos])).organisaatiot
   }
 

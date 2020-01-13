@@ -1,4 +1,4 @@
-import React from 'baret'
+import React, {fromBacon} from 'baret'
 import Bacon from 'baconjs'
 import * as R from 'ramda'
 import Atom from 'bacon.atom'
@@ -25,6 +25,8 @@ import UusiDIASuoritus from './UusiDIASuoritus'
 import {VARHAISKASVATUKSEN_TOIMIPAIKKA} from './esiopetuksenSuoritus'
 import UusiInternationalSchoolSuoritus from './UusiInternationalSchoolSuoritus'
 import {filterTilatByOpiskeluoikeudenTyyppi} from '../opiskeluoikeus/opiskeluoikeus'
+import {userP} from '../util/user'
+import Checkbox from '../components/Checkbox'
 
 export default ({opiskeluoikeusAtom}) => {
   const dateAtom = Atom(new Date())
@@ -35,6 +37,8 @@ export default ({opiskeluoikeusAtom}) => {
   const tilaAtom = Atom()
   const suoritusAtom = Atom()
   const rahoitusAtom = Atom()
+  const varhaiskasvatusOrganisaationUlkopuoleltaAtom = Atom(false)
+  const varhaiskasvatusJärjestämismuotoAtom = Atom()
   tyyppiAtom.changes().onValue(() => {
     suoritusAtom.set(undefined)
     rahoitusAtom.set(undefined)
@@ -54,11 +58,12 @@ export default ({opiskeluoikeusAtom}) => {
   const opiskeluoikeudenTilatP = opiskeluoikeudentTilat(tyyppiAtom)
   opiskeluoikeudenTilatP.onValue(tilat => tilaAtom.set(tilat.find(koodiarvoMatch('lasna'))))
 
-  const opiskeluoikeusP = Bacon.combineWith(dateAtom, oppilaitosAtom, tyyppiAtom, suoritusAtom, tilaAtom, rahoitusAtom, makeOpiskeluoikeus)
+  const opiskeluoikeusP = Bacon.combineWith(dateAtom, oppilaitosAtom, tyyppiAtom, suoritusAtom, tilaAtom, rahoitusAtom, varhaiskasvatusOrganisaationUlkopuoleltaAtom, varhaiskasvatusJärjestämismuotoAtom, makeOpiskeluoikeus)
   opiskeluoikeusP.changes().onValue((oo) => opiskeluoikeusAtom.set(oo))
 
   return (<div>
-    <Oppilaitos oppilaitosAtom={oppilaitosAtom} organisaatiotyypitAtom={organisaatiotyypitAtom} />
+    <VarhaiskasvatusValitsin varhaiskasvatusAtom={varhaiskasvatusOrganisaationUlkopuoleltaAtom} järjestämismuotoAtom={varhaiskasvatusJärjestämismuotoAtom} opiskeluoikeustyypitP={opiskeluoikeustyypitP} />
+    <Oppilaitos showVarhaiskasvatusToimipisteetP={varhaiskasvatusOrganisaationUlkopuoleltaAtom} oppilaitosAtom={oppilaitosAtom} organisaatiotyypitAtom={organisaatiotyypitAtom} />
     {
       ift(oppilaitosAtom, <OpiskeluoikeudenTyyppi opiskeluoikeudenTyyppiAtom={tyyppiAtom} opiskeluoikeustyypitP={opiskeluoikeustyypitP} />)
     }
@@ -92,12 +97,39 @@ const opiskeluoikeudentTilat = tyyppiAtom => {
   return tyyppiAtom.flatMap(tyyppi => tilatP.map(filterTilatByOpiskeluoikeudenTyyppi(tyyppi))).toProperty()
 }
 
-const Oppilaitos = ({oppilaitosAtom, organisaatiotyypitAtom}) => {
+const VarhaiskasvatusValitsin = ({varhaiskasvatusAtom, järjestämismuotoAtom, opiskeluoikeustyypitP}) => {
+  const isKoulutustoimijaP = userP.map('.varhaiskasvatuksenJärjestäjäKoulutustoimijat').map(koulutustoimijat => koulutustoimijat.length > 0)
+  const varhaiskasvatusEnabledP = opiskeluoikeustyypitP.map(tyypit => tyypit.length === 0 || tyypit.some(tyyppi => tyyppi.koodiarvo === 'esiopetus'))
+  return (<React.Fragment>
+    {fromBacon(ift(isKoulutustoimijaP.and(varhaiskasvatusEnabledP), <VarhaiskasvatusCheckbox varhaiskasvatusAtom={varhaiskasvatusAtom}/>))}
+    {fromBacon(ift(varhaiskasvatusAtom, <VarhaiskasvatuksenJärjestämismuoto järjestämismuotoAtom={järjestämismuotoAtom} />))}
+  </React.Fragment>)
+}
+
+const VarhaiskasvatusCheckbox = ({varhaiskasvatusAtom}) => {
+  const varhaiskasvatusOnChange = () => varhaiskasvatusAtom.modify(v => !v)
+  return (<label className='varhaiskasvatus-checkbox'><Text name='Päiväkodin esiopetus ostopalveluna tai palvelusetelinä'/>
+    <Checkbox id='varhaiskasvatus-checkbox' onChange={varhaiskasvatusOnChange} label='Esiopetus ostetaan oman organisaation ulkopuolelta' listStylePosition='inside'/>
+  </label>)
+}
+
+const VarhaiskasvatuksenJärjestämismuoto = ({järjestämismuotoAtom}) => {
+  const järjestysMuotoP = koodistoValues('vardajarjestamismuoto/JM02,JM03')
+  return (<label id='varhaiskasvatus-jarjestamismuoto'>
+    <KoodistoDropdown
+      className='varhaiskasvatus-jarjestamismuoto'
+      title='Varhaiskasvatuksen järjestämismuoto'
+      options={järjestysMuotoP}
+      selected={järjestämismuotoAtom}/>
+  </label>)
+}
+
+const Oppilaitos = ({showVarhaiskasvatusToimipisteetP, oppilaitosAtom, organisaatiotyypitAtom}) => {
   const selectableOrgTypes = ['OPPILAITOS', 'OPPISOPIMUSTOIMIPISTE', VARHAISKASVATUKSEN_TOIMIPAIKKA]
   return (<label className='oppilaitos'><Text name="Oppilaitos"/>
     {
-      oppilaitosAtom.map(oppilaitos => (
-        <OrganisaatioPicker
+      oppilaitosAtom.map(oppilaitos =>
+        (<OrganisaatioPicker
           preselectSingleOption={true}
           selectedOrg={{ oid: oppilaitos && oppilaitos.oid, nimi: oppilaitos && oppilaitos.nimi && t(oppilaitos.nimi) }}
           onSelectionChanged={org => {
@@ -108,6 +140,7 @@ const Oppilaitos = ({oppilaitosAtom, organisaatiotyypitAtom}) => {
           canSelectOrg={(org) => org.organisaatiotyypit.some(ot => selectableOrgTypes.includes(ot))}
           clearText="tyhjennä"
           noSelectionText="Valitse..."
+          orgTypesToShowP={showVarhaiskasvatusToimipisteetP.map(showVarhaiskasvatusToimipisteet => showVarhaiskasvatusToimipisteet ? 'vainVarhaiskasvatusToimipisteet' : 'vainOmatOrganisaatiot')}
         />
       ))
     }
@@ -153,7 +186,7 @@ const OpintojenRahoitus = ({tyyppiAtom, rahoitusAtom, opintojenRahoituksetP}) =>
   )
 }
 
-var makeOpiskeluoikeus = (date, oppilaitos, tyyppi, suoritus, tila, opintojenRahoitus) => {
+var makeOpiskeluoikeus = (date, oppilaitos, tyyppi, suoritus, tila, opintojenRahoitus, varhaiskasvatusOrganisaationUlkopuolelta, varhaiskasvatusJärjestämismuoto) => {
   const makeOpiskeluoikeusjakso = () => {
     const opiskeluoikeusjakso = date && tila && {alku: formatISODate(date), tila}
     opiskeluoikeusjakso && opintojenRahoitus
@@ -163,13 +196,17 @@ var makeOpiskeluoikeus = (date, oppilaitos, tyyppi, suoritus, tila, opintojenRah
     return opiskeluoikeusjakso
   }
 
-  return date && oppilaitos && tyyppi && suoritus && tila && {
-    tyyppi: tyyppi,
-    oppilaitos: oppilaitos,
-    alkamispäivä: formatISODate(date),
-    tila: {
-      opiskeluoikeusjaksot: [makeOpiskeluoikeusjakso()]
-    },
-    suoritukset: [suoritus]
+  if (date && oppilaitos && tyyppi && suoritus && tila && (!varhaiskasvatusOrganisaationUlkopuolelta || varhaiskasvatusJärjestämismuoto)) {
+    const järjestämismuoto = tyyppi.koodiarvo === 'esiopetus' ? { järjestämismuoto: varhaiskasvatusJärjestämismuoto} : {}
+    const oo =  {
+      tyyppi: tyyppi,
+      oppilaitos: oppilaitos,
+      alkamispäivä: formatISODate(date),
+      tila: {
+        opiskeluoikeusjaksot: [makeOpiskeluoikeusjakso()]
+      },
+      suoritukset: [suoritus]
+    }
+    return R.merge(oo, järjestämismuoto)
   }
 }

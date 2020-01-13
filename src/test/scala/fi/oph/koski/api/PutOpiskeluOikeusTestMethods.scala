@@ -58,4 +58,13 @@ trait PutOpiskeluoikeusTestMethods[Oikeus <: Opiskeluoikeus] extends Opiskeluoik
     "henkilö" -> JsonSerializer.serializeWithRoot(henkilö),
     "opiskeluoikeudet" -> JsonSerializer.serializeWithRoot(opiskeluOikeudet)
   )
+
+  import fi.oph.koski.schema.KoskiSchema.deserializationContext
+  def readPutOppijaResponse: PutOppijaResponse = {
+    SchemaValidatingExtractor.extract[PutOppijaResponse](JsonMethods.parse(body)).right.get
+  }
 }
+
+case class PutOppijaResponse(henkilö: ResponseHenkilö, opiskeluoikeudet: List[ResponseOpiskeluoikeus])
+case class ResponseHenkilö(oid: String)
+case class ResponseOpiskeluoikeus(oid: String, versionumero: Int)
