@@ -12,8 +12,8 @@ describe('DIA', function( ) {
     it('näytetään oikein', function() {
       expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
         'Opiskeluoikeuden voimassaoloaika : 1.9.2012 — 4.6.2016\n' +
-        'Tila 4.6.2016 Valmistunut\n' +
-        '1.9.2012 Läsnä')
+        'Tila 4.6.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
+        '1.9.2012 Läsnä (valtionosuusrahoitteinen koulutus)')
     })
 
     describe('Opiskeluoikeuden lisätiedot', function() {

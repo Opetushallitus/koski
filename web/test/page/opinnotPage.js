@@ -880,6 +880,13 @@ function OpiskeluoikeusDialog() {
     },
     tilat: function() {
       return toArray(elem().find('.tila input[type="radio"]')).map(function(i) { return i.value })
+    },
+    opintojenRahoitus: function () {
+      var p = Property(function() {return findSingle('.lisaa-opiskeluoikeusjakso-modal')})
+      p.aseta = function(rahoituskoodi) {
+        return p.click('input[value="opintojenrahoitus_' + rahoituskoodi + '"]')
+      }
+      return p
     }
   }
 }

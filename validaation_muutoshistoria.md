@@ -1,5 +1,15 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 22.1.2019
+- Tieto opintojen rahoituksesta vaaditaan:
+    - Ammatillisilta opiskeluoikeusjaksoilta joiden tila on
+        - lasna
+        - valmistunut
+        - lomalla
+    - Lukion opiskeluoikeusjaksoilta joiden tila on
+        - lasna
+        - valmistunut
+
 ## 13.11.2019
 - Nuorten perusopetuksen oppimäärän valinnaisille kieli oppiaineille sallitaan arvosana S jos laajuus on 2 vuosiviikkotuntia tai yli
 

@@ -14,7 +14,7 @@ describe('International school', function() {
       it('näytetään', function() {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
           'Opiskeluoikeuden voimassaoloaika : 15.8.2006 — 30.6.2018\n' +
-          'Tila 30.6.2018 Valmistunut\n15.8.2006 Läsnä\nLisätiedot'
+          'Tila 30.6.2018 Valmistunut (valtionosuusrahoitteinen koulutus)\n15.8.2006 Läsnä (valtionosuusrahoitteinen koulutus)\nLisätiedot'
         )
 
         expect(opinnot.opiskeluoikeudet.valitunVälilehdenAlaotsikot()).to.deep.equal([
@@ -256,7 +256,7 @@ describe('International school', function() {
       editor.edit
     )
     describe('Kun opiskeluoikeus on tilassa VALMIS', function() {
-      before(opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().aseta('valmistunut'), opiskeluoikeus.tallenna)
+      before(opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().aseta('valmistunut'), opiskeluoikeus.opintojenRahoitus().aseta('1'), opiskeluoikeus.tallenna)
 
       it('Päätason suoritusta ei voi lisätä', function() {
         expect(lisääSuoritus.isLinkVisible('lisää vuosiluokan suoritus')).to.equal(false)

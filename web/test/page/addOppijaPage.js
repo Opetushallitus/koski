@@ -29,11 +29,12 @@ function AddOppijaPage() {
       return isElementVisible(S('.opintojenrahoitus'))
     },
     enterValidDataInternationalSchool: function(params) {
-      params = _.merge({  oppilaitos: 'International School of Helsinki', grade: 'Grade explorer' }, {}, params)
+      params = _.merge({  oppilaitos: 'International School of Helsinki', grade: 'Grade explorer', opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus'}, {}, params)
       return function() {
         return api.enterData(params)()
           .then(api.selectOpiskeluoikeudenTyyppi('International school'))
           .then(api.selectFromDropdown('.international-school-grade .dropdown', params.grade))
+          .then(api.opintojenRahoitukset(params.opintojenRahoitus))
           .then(wait.forAjax)
       }
     },
@@ -66,7 +67,7 @@ function AddOppijaPage() {
       }
     },
     enterValidDataAmmatillinen: function(params) {
-      params = _.merge({  oppilaitos: 'Stadin', tutkinto: 'Autoalan perust', suoritustapa: 'Ammatillinen perustutkinto'}, {}, params)
+      params = _.merge({  oppilaitos: 'Stadin', tutkinto: 'Autoalan perust', suoritustapa: 'Ammatillinen perustutkinto', opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus' }, {}, params)
       return function() {
         return api.enterData(params)()
           .then(api.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'))
@@ -76,7 +77,7 @@ function AddOppijaPage() {
       }
     },
     enterValidDataMuuAmmatillinen: function(params) {
-      params = _.merge({  oppilaitos: 'Stadin', oppimäärä: 'Muun ammatillisen koulutuksen suoritus'}, {}, params)
+      params = _.merge({  oppilaitos: 'Stadin', oppimäärä: 'Muun ammatillisen koulutuksen suoritus', opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus'}, {}, params)
       return function() {
         return api.enterData(params)()
           .then(api.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'))
@@ -86,47 +87,53 @@ function AddOppijaPage() {
               return api.selectKoulutusmoduuli(params.koulutusmoduuli)()
             }
           })
+          .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
       }
     },
     enterValidDataLukio: function(params) {
-      params = _.merge({ oppilaitos: 'Ressun', oppimäärä: 'Lukion oppimäärä', peruste: '60/011/2015' }, {}, params)
+      params = _.merge({ oppilaitos: 'Ressun', oppimäärä: 'Lukion oppimäärä', peruste: '60/011/2015', opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus' }, {}, params)
       return function() {
         return api.enterData(params)()
           .then(api.selectOpiskeluoikeudenTyyppi('Lukiokoulutus'))
           .then(api.selectOppimäärä(params.oppimäärä))
           .then(api.selectPeruste(params.peruste))
+          .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
       }
     },
     enterValidDataIB: function(params) {
-      params = _.merge({ oppilaitos: 'Ressun', oppimäärä: 'IB-tutkinto' }, {}, params)
+      params = _.merge({ oppilaitos: 'Ressun', oppimäärä: 'IB-tutkinto', opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus' }, {}, params)
       return function() {
         return api.enterData(params)()
           .then(api.selectOpiskeluoikeudenTyyppi('IB-tutkinto'))
           .then(api.selectOppimäärä(params.oppimäärä))
+          .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
       }
     },
     enterValidDataPreIB: function(params) {
-      params = _.merge({ oppilaitos: 'Ressun', oppimäärä: 'Pre-IB' }, {}, params)
+      params = _.merge({ oppilaitos: 'Ressun', oppimäärä: 'Pre-IB', opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus' }, {}, params)
       return function() {
         return api.enterData(params)()
           .then(api.selectOpiskeluoikeudenTyyppi('IB-tutkinto'))
           .then(api.selectOppimäärä(params.oppimäärä))
+          .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
       }
     },
     enterValidDataDIA: function(params) {
-      params = _.merge({ oppilaitos: 'Helsingin', oppimäärä: 'DIA-tutkinto' }, {}, params)
+      params = _.merge({ oppilaitos: 'Helsingin', oppimäärä: 'DIA-tutkinto', opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus' }, {}, params)
       return function() {
         return api.enterData(params)()
           .then(api.selectOpiskeluoikeudenTyyppi('DIA-tutkinto'))
           .then(api.selectOppimäärä(params.oppimäärä))
+          .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
       }
     },
     enterValidDataDIAValmistavaVaihe: function(params) {
-      params = _.merge({ oppilaitos: 'Helsingin', oppimäärä: 'Valmistava DIA-vaihe' }, {}, params)
+      params = _.merge({ oppilaitos: 'Helsingin', oppimäärä: 'Valmistava DIA-vaihe', opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus' }, {}, params)
       return function() {
         return api.enterData(params)()
           .then(api.selectOpiskeluoikeudenTyyppi('DIA-tutkinto'))
           .then(api.selectOppimäärä(params.oppimäärä))
+          .then(api.selectOpintojenRahoitus(params.opintojenRahoitus))
       }
     },
     enterPaikallinenKoulutusmoduuliData: function(params) {

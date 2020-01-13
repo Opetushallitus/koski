@@ -49,7 +49,7 @@ export default ({opiskeluoikeusAtom}) => {
   const suorituskieletP = Http.cachedGet('/koski/api/editor/koodit/kieli').map(sortLanguages).map(values => values.map(v => v.data))
   suorituskieletP.onValue(kielet => suorituskieliAtom.set(kielet[0]))
   const rahoituksetP = koodistoValues('opintojenrahoitus').map(R.sortBy(R.compose(parseInt, R.prop('koodiarvo'))))
-  const hasRahoituksetAvailable = tyyppiAtom.map(koodiarvoMatch('aikuistenperusopetus', 'ammatillinenkoulutus', 'lukiokoulutus', 'internationalschool'))
+  const hasRahoituksetAvailable = tyyppiAtom.map(koodiarvoMatch('aikuistenperusopetus', 'ammatillinenkoulutus', 'lukiokoulutus', 'luva','internationalschool', 'ibtutkinto', 'diatutkinto'))
 
   const opiskeluoikeudenTilatP = opiskeluoikeudentTilat(tyyppiAtom)
   opiskeluoikeudenTilatP.onValue(tilat => tilaAtom.set(tilat.find(koodiarvoMatch('lasna'))))

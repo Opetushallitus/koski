@@ -83,7 +83,7 @@ describe('Ammatillinen koulutus', function() {
           it('lisätty oppija näytetään', function() {})
 
           it('Lisätty opiskeluoikeus näytetään', function() {
-            expect(opinnot.getOpiskeluoikeudenTila()).to.match(/Läsnä$/)
+            expect(opinnot.getOpiskeluoikeudenTila()).to.match(/Läsnä \(valtionosuusrahoitteinen koulutus\)$/)
             expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
             expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
             expect(opinnot.getSuorituskieli()).to.equal('ruotsi')
@@ -521,6 +521,7 @@ describe('Ammatillinen koulutus', function() {
               .then(Page().setInputValue('.tutkinto input', 'Autoalan perustutkinto'))
               .then(click('.results li:last()'))
           },
+          addOppija.selectOpintojenRahoitus('1'),
           addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)'),
           editor.edit
         )
@@ -754,6 +755,7 @@ describe('Ammatillinen koulutus', function() {
         addOppija.selectOppimäärä('Ammatillisen tutkinnon osa/osia'),
         addOppija.selectTutkinto('Autoalan perust'),
         addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
+        addOppija.selectOpintojenRahoitus('1'),
         addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)')
       )
 
@@ -854,7 +856,7 @@ describe('Ammatillinen koulutus', function() {
     it('Näytetään', function () {
       expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
         'Opiskeluoikeuden voimassaoloaika : 1.9.2016 — 1.5.2020 (arvioitu)\n' +
-        'Tila 1.9.2016 Läsnä\n' +
+        'Tila 1.9.2016 Läsnä (valtionosuusrahoitteinen koulutus)\n' +
         'Opiskeluoikeuden organisaatiohistoria Muutospäivä 5.5.2005\n' +
         'Aikaisempi oppilaitos Stadin ammattiopisto\n' +
         'Aikaisempi koulutustoimija Helsingin kaupunki\n' +
@@ -1977,7 +1979,7 @@ describe('Ammatillinen koulutus', function() {
       it('näyttää opiskeluoikeuden tiedot', function () {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
           'Opiskeluoikeuden voimassaoloaika : 1.9.2016 — 1.5.2020 (arvioitu)\n' +
-          'Tila 1.9.2016 Läsnä'
+          'Tila 1.9.2016 Läsnä (valtionosuusrahoitteinen koulutus)'
         )
       })
 
@@ -2052,8 +2054,8 @@ describe('Ammatillinen koulutus', function() {
       it('näyttää opiskeluoikeuden tiedot', function() {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
           'Opiskeluoikeuden voimassaoloaika : 1.9.2012 — 4.6.2016\n' +
-          'Tila 4.6.2016 Valmistunut\n' +
-          '1.9.2012 Läsnä'
+          'Tila 4.6.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
+          '1.9.2012 Läsnä (valtionosuusrahoitteinen koulutus)'
         )
       })
 
@@ -2097,8 +2099,8 @@ describe('Ammatillinen koulutus', function() {
           ])
           expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
             'Opiskeluoikeuden voimassaoloaika : 1.9.2012 — 31.5.2016\n' +
-            'Tila 31.5.2016 Valmistunut\n' +
-            '1.9.2012 Läsnä'
+            'Tila 31.5.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
+            '1.9.2012 Läsnä (valtionosuusrahoitteinen koulutus)'
           )
         })
 
@@ -2211,8 +2213,8 @@ describe('Ammatillinen koulutus', function() {
         it('näyttää opiskeluoikeuden tiedot', function() {
           expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
             'Opiskeluoikeuden voimassaoloaika : 1.9.2012 — 31.5.2016\n' +
-            'Tila 31.5.2016 Valmistunut\n' +
-            '1.9.2012 Läsnä'
+            'Tila 31.5.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
+            '1.9.2012 Läsnä (valtionosuusrahoitteinen koulutus)'
           )
         })
 
@@ -2441,6 +2443,7 @@ describe('Ammatillinen koulutus', function() {
           addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen'),
           addOppija.selectTutkinto('Autoalan perustutkinto'),
           addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
+          addOppija.selectOpintojenRahoitus('1'),
           addOppija.submitModal,
 
           clickMuokkaaOpiskeluoikeus,

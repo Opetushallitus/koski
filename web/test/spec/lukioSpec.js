@@ -19,8 +19,8 @@ describe('Lukiokoulutus', function( ){
       before(opinnot.expandAll)
       it('näyttää opiskeluoikeuden tiedot', function() {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Opiskeluoikeuden voimassaoloaika : 1.9.2012 — 8.6.2016\n' +
-          'Tila 8.6.2016 Valmistunut\n' +
-          '1.9.2012 Läsnä\n' +
+          'Tila 8.6.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
+          '1.9.2012 Läsnä (valtionosuusrahoitteinen koulutus)\n' +
           'Lisätiedot\n' +
           'Syy alle 18-vuotiaana aloitettuun opiskeluun aikuisten lukiokoulutuksessa Pikkuvanha yksilö\n' +
           'Erityisen koulutustehtävän jaksot 1.9.2012 — 1.9.2012 Tehtävä Erityisenä koulutustehtävänä taide\n' +
@@ -423,8 +423,8 @@ describe('Lukiokoulutus', function( ){
       it('näyttää opiskeluoikeuden tiedot', function() {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
           'Opiskeluoikeuden voimassaoloaika : 1.9.2015 — 10.1.2016\n' +
-          'Tila 10.1.2016 Valmistunut\n' +
-          '1.9.2015 Läsnä')
+          'Tila 10.1.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
+          '1.9.2015 Läsnä (valtionosuusrahoitteinen koulutus)')
       })
 
       it('näyttää suorituksen tyypin opiskeluoikeuden otsikossa', function () {
@@ -557,6 +557,7 @@ describe('Lukiokoulutus', function( ){
           opinnot.tilaJaVahvistus.lisääVahvistus('01.01.2000'),
           opinnot.avaaLisaysDialogi,
           OpiskeluoikeusDialog().tila().aseta('valmistunut'),
+          OpiskeluoikeusDialog().opintojenRahoitus().aseta('1'),
           OpiskeluoikeusDialog().tallenna,
           editor.saveChanges,
         )

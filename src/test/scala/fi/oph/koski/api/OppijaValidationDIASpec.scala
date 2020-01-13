@@ -1,10 +1,13 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsDIA.tutkintoSuoritus
+import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.DIAExampleData._
-import fi.oph.koski.documentation.ExampleData.{vahvistusPaikkakunnalla, helsinki}
+import fi.oph.koski.documentation.ExampleData.{helsinki, vahvistusPaikkakunnalla}
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
+import fi.oph.koski.schema.{LukionOpiskeluoikeudenTila, LukionOpiskeluoikeusjakso}
 import org.scalatest.FreeSpec
+import java.time.LocalDate.{of => date}
 
 class OppijaValidationDIASpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsDIA {
   "Laajuudet" - {
@@ -133,6 +136,29 @@ class OppijaValidationDIASpec extends FreeSpec with LocalJettyHttpSpecification 
 
       putOpiskeluoikeus(oo) {
         verifyResponseStatusOk()
+      }
+    }
+  }
+
+  "Opintojen rahoitus" - {
+    "lasna -tilalta vaaditaan opintojen rahoitus" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä))))) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.opintojenRahoitusPuuttuu("Opiskeluoikeuden tilalta lasna puuttuu opintojen rahoitus"))
+      }
+    }
+    "valmistunut -tilalta vaaditaan opintojen rahoitus" in {
+      val tila = LukionOpiskeluoikeudenTila(List(
+        LukionOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+        LukionOpiskeluoikeusjakso(date(2016, 6, 8), opiskeluoikeusValmistunut))
+      )
+      val suoritus = tutkintoSuoritus.copy(
+        vahvistus = vahvistusPaikkakunnalla(org = saksalainenKoulu, kunta = helsinki),
+        osasuoritukset = Some(List(diaTutkintoAineSuoritus(diaOppiaineMuu("MA", osaAlue = "2", laajuus(1)), Some(List(
+          (diaTutkintoLukukausi("3", laajuus(1.0f)), "2")
+        )))))
+      )
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = tila, suoritukset = List(suoritus))) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.opintojenRahoitusPuuttuu("Opiskeluoikeuden tilalta valmistunut puuttuu opintojen rahoitus"))
       }
     }
   }

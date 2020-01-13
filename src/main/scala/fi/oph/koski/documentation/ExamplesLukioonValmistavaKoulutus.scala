@@ -74,8 +74,8 @@ object ExamplesLukioonValmistavaKoulutus {
     oppilaitos = Some(jyväskylänNormaalikoulu),
     koulutustoimija = None,
     tila = LukionOpiskeluoikeudenTila(List(
-      LukionOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä),
-      LukionOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut)
+      LukionOpiskeluoikeusjakso(date(2008, 8, 15), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+      LukionOpiskeluoikeusjakso(date(2016, 6, 4), opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen))
     )),
     suoritukset = List(lukioonValmistavanKoulutuksenSuoritus),
     lisätiedot = Some(LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot(

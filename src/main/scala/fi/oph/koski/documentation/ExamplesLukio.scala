@@ -20,8 +20,8 @@ object ExamplesLukio {
     LukionOpiskeluoikeus(
       tila = LukionOpiskeluoikeudenTila(
         List(
-          LukionOpiskeluoikeusjakso(alku = date(2012, 9, 1), tila = opiskeluoikeusAktiivinen),
-          LukionOpiskeluoikeusjakso(alku = date(2016, 6, 8), tila = opiskeluoikeusPäättynyt)
+          LukionOpiskeluoikeusjakso(alku = date(2012, 9, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
+          LukionOpiskeluoikeusjakso(alku = date(2016, 6, 8), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
         )
       ),
       oppilaitos = Some(oppilaitos),
@@ -229,8 +229,8 @@ object ExamplesLukio {
       ),
       tila = LukionOpiskeluoikeudenTila(
         List(
-          LukionOpiskeluoikeusjakso(alku = date(2015, 9, 1), tila = opiskeluoikeusAktiivinen),
-          LukionOpiskeluoikeusjakso(alku = date(2016, 1, 10), tila = opiskeluoikeusPäättynyt)
+          LukionOpiskeluoikeusjakso(alku = date(2015, 9, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
+          LukionOpiskeluoikeusjakso(alku = date(2016, 1, 10), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
         )
       )
     )
@@ -276,7 +276,7 @@ object ExamplesLukio {
       ),
       tila = LukionOpiskeluoikeudenTila(
         List(
-          LukionOpiskeluoikeusjakso(alku = date(2015, 9, 1), tila = opiskeluoikeusAktiivinen)
+          LukionOpiskeluoikeusjakso(alku = date(2015, 9, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
         )
       )
     )
@@ -301,7 +301,7 @@ object ExamplesLukio {
       lähdejärjestelmänId = None,
       tila = LukionOpiskeluoikeudenTila(
         List(
-          LukionOpiskeluoikeusjakso(alku = date(2012, 9, 1), tila = opiskeluoikeusAktiivinen)
+          LukionOpiskeluoikeusjakso(alku = date(2012, 9, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
         )
       ),
       oppilaitos = Some(jyväskylänNormaalikoulu),
@@ -330,7 +330,7 @@ object ExamplesLukio {
   )
 
   val aineOpiskelijaKesken = aineopiskelija.copy(tila = LukionOpiskeluoikeudenTila(
-        List(LukionOpiskeluoikeusjakso(alku = date(2015, 9, 1), tila = opiskeluoikeusAktiivinen)))
+        List(LukionOpiskeluoikeusjakso(alku = date(2015, 9, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))))
   )
 
   val examples = List(
@@ -488,7 +488,7 @@ object LukioExampleData {
     ),
     tila = LukionOpiskeluoikeudenTila(
       List(
-        LukionOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusAktiivinen)
+        LukionOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
       )
     )
   )
