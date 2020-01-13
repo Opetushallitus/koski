@@ -4,6 +4,7 @@ import java.lang.Character.isDigit
 import java.time.LocalDate
 
 import com.typesafe.config.Config
+import fi.oph.koski.documentation.ExamplesEsiopetus.päiväkodinEsiopetuksenTunniste
 import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -17,8 +18,8 @@ import fi.oph.koski.schema.Opiskeluoikeus.{koulutustoimijaTraversal, oppilaitosT
 import fi.oph.koski.schema._
 import fi.oph.koski.tutkinto.Koulutustyyppi._
 import fi.oph.koski.tutkinto.TutkintoRepository
-import fi.oph.koski.validation.DateValidation._
 import fi.oph.koski.util.Timing
+import fi.oph.koski.validation.DateValidation._
 import mojave._
 import org.json4s.{JArray, JValue}
 
@@ -70,7 +71,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   private def validateOpiskeluoikeus(opiskeluoikeus: Opiskeluoikeus, henkilö: Option[Henkilö])(implicit user: KoskiSession, accessType: AccessType.Value): Either[HttpStatus, Opiskeluoikeus] = opiskeluoikeus match {
     case opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus =>
       updateFields(opiskeluoikeus).right.flatMap { opiskeluoikeus =>
-        (validateAccess(opiskeluoikeus.getOppilaitos)
+        (validateAccess(opiskeluoikeus.koulutustoimija, opiskeluoikeus.getOppilaitos)
           .onSuccess { validateLähdejärjestelmä(opiskeluoikeus) }
           .onSuccess {
             HttpStatus.fold(opiskeluoikeus.suoritukset.map(TutkintoRakenneValidator(tutkintoRepository, koodistoPalvelu).validate(_,
@@ -93,7 +94,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     case _ => Right(opiskeluoikeus)
   }
 
-  private def updateFields(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
+  private def updateFields(oo: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
     fillMissingOrganisations(oo)
       .flatMap(addKoulutustyyppi)
       .map(fillPerusteenNimi)
@@ -117,7 +118,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   private def perusteenNimi(diaariNumero: String): Option[LocalizedString] =
     ePerusteet.findPerusteenYksilöintitiedot(diaariNumero).map(_.nimi).flatMap(LocalizedString.sanitize)
 
-  private def fillMissingOrganisations(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
+  private def fillMissingOrganisations(oo: KoskeenTallennettavaOpiskeluoikeus)(implicit user:KoskiSession): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
     addOppilaitos(oo).flatMap(addKoulutustoimija).map(setOrganizationNames)
   }
 
@@ -154,8 +155,9 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     oppilaitos.right.map(oo.withOppilaitos(_))
   }
 
-  private def addKoulutustoimija(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
-    organisaatioRepository.findKoulutustoimijaForOppilaitos(oo.getOppilaitos) match {
+  private def addKoulutustoimija(oo: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = oo match {
+    case e: EsiopetuksenOpiskeluoikeus if e.järjestämismuoto.isDefined => addVarhaiskasvatusKoulutustoimija(e)
+    case _ => organisaatioRepository.findKoulutustoimijaForOppilaitos(oo.getOppilaitos) match {
       case Some(löydettyKoulutustoimija) =>
         oo.koulutustoimija.map(_.oid) match {
           case Some(oid) if oid != löydettyKoulutustoimija.oid =>
@@ -167,6 +169,33 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         logger.warn(s"Koulutustoimijaa ei löydy oppilaitokselle ${oo.oppilaitos}")
         Right(oo)
     }
+  }
+
+  private def addVarhaiskasvatusKoulutustoimija(oo: EsiopetuksenOpiskeluoikeus)(implicit user: KoskiSession) = if (päiväkodissaJärjestettyEsiopetus(oo)) {
+    println("Päiväkodissa")
+    if (oo.koulutustoimija.isDefined) {
+      println("On koulutustoimija")
+      Right(oo)
+    } else {
+      println("Ei oo koulutustoimijaa")
+      user.varhaiskasvatusKäyttöoikeudet.map(_.koulutustoimija.oid).toList match {
+        case koulutustoimijaOid :: Nil =>
+          organisaatioRepository.getOrganisaatio(koulutustoimijaOid)
+            .flatMap(_.toKoulutustoimija)
+            .map(oo.withKoulutustoimija)
+            .toRight(KoskiErrorCategory.badRequest.validation.organisaatio.tuntematon(s"Koulutustoimijaa $koulutustoimijaOid ei löydy"))
+        case Nil =>
+          Left(KoskiErrorCategory.forbidden.vainVarhaiskasvatuksenJärjestäjä("Operaatio on sallittu vain käyttäjälle joka on luotu varhaiskasvtusta järjestävälle koulutustoimijalle"))
+        case _ =>
+          Left(KoskiErrorCategory.badRequest.validation.organisaatio.koulutustoimijaPakollinen("Koulutustoimijaa ei voi yksiselitteisesti päätellä käyttäjätunnuksesta. Koulutustoimija on pakollinen."))
+      }
+    }
+  } else {
+    Left(KoskiErrorCategory.badRequest.validation.koodisto.vääräkoulutustyyppi(s"Järjestämismuoto sallittu vain päiväkodissa järjestettävälle esiopetukselle ($päiväkodinEsiopetuksenTunniste)"))
+  }
+
+  private def päiväkodissaJärjestettyEsiopetus(oo: EsiopetuksenOpiskeluoikeus) = {
+    oo.suoritukset.forall(_.koulutusmoduuli.tunniste.koodiarvo == päiväkodinEsiopetuksenTunniste)
   }
 
   private def addKoulutustyyppi(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
@@ -225,8 +254,8 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     case _ => HttpStatus.ok
   }
 
-  private def validateAccess(org: OrganisaatioWithOid)(implicit user: KoskiSession, accessType: AccessType.Value): HttpStatus = {
-    HttpStatus.validate(user.hasAccess(org.oid, accessType)) { KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + org.oid) }
+  private def validateAccess(koulutustoimija: Option[Koulutustoimija], org: OrganisaatioWithOid)(implicit user: KoskiSession, accessType: AccessType.Value): HttpStatus = {
+    HttpStatus.validate(user.hasAccess(org.oid, koulutustoimija.map(_.oid), accessType)) { KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + org.oid) }
   }
 
   private def validateLähdejärjestelmä(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession): HttpStatus = {
@@ -278,7 +307,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         .onSuccess(validateDateOrder(("suoritus.arviointi.päivä", arviointipäivät), ("suoritus.vahvistus.päivä", vahvistuspäivät), KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenArviointia)
           .onSuccess(validateDateOrder(alkamispäivä, ("suoritus.vahvistus.päivä", vahvistuspäivät), KoskiErrorCategory.badRequest.validation.date.vahvistusEnnenAlkamispäivää)))
         :: validateAlkamispäivä(suoritus)
-        :: validateToimipiste(suoritus)
+        :: validateToimipiste(opiskeluoikeus, suoritus)
         :: validateStatus(suoritus, opiskeluoikeus)
         :: validateArvioinnit(suoritus)
         :: validateLaajuus(suoritus)
@@ -316,8 +345,8 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     case _ => HttpStatus.ok
   }
 
-  private def validateToimipiste(suoritus: Suoritus)(implicit user: KoskiSession, accessType: AccessType.Value): HttpStatus = suoritus match {
-    case s:Toimipisteellinen => validateAccess(s.toimipiste)
+  private def validateToimipiste(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, suoritus: Suoritus)(implicit user: KoskiSession, accessType: AccessType.Value): HttpStatus = suoritus match {
+    case s:Toimipisteellinen => validateAccess(opiskeluoikeus.koulutustoimija, s.toimipiste)
     case _ => HttpStatus.ok
   }
 

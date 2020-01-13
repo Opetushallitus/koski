@@ -50,6 +50,8 @@ object KoskiErrorCategory {
         val tuntematon = subcategory("tuntematon", "Tuntematon organisaatio: oid-tunnisteella ei löytynyt organisaatiota.")
         val eiOppilaitos = subcategory("eiOppilaitos", "Toimipisteenä käytetylle organisaatiolle ei löydy oppilaitos-tyyppistä yliorganisaatiota.")
         val vääräKoulutustoimija = subcategory("vääräKoulutustoimija", "Koulutustoimija ei vastaa organisaatiopalvelun mukaista tietoa")
+        val varhaiskasvatuksenJärjestäjäPakollinen = subcategory("koulutustoimijaPakollinen", "Koulutustoimijaa ei voi yksiselitteisesti päätellä.")
+        val koulutustoimijaPakollinen = subcategory("koulutustoimijaPakollinen", "Koulutustoimijaa ei voi yksiselitteisesti päätellä.")
         val oppilaitosPuuttuu = subcategory("oppilaitosPuuttuu", "Oppilaitos puuttuu")
       }
       val organisaatio = new Organisaatio
@@ -87,6 +89,7 @@ object KoskiErrorCategory {
       class Koodisto extends ErrorCategory(Validation.this, "koodisto", "Koodistoihin liittyvä tarkistusvirhe") {
         val tuntematonKoodi = subcategory("tuntematonKoodi", "Annettua koodia ei löydy koodistosta.")
         val koulutustyyppiPuuttuu = subcategory("koulutustyyppiPuuttuu", "Annetun koulutuksen koulutustyyppiä ei löydy koodistosta.")
+        val vääräkoulutustyyppi = subcategory("vääräkoulutustyyppi", "Koulutustyyppi on väärä")
       }
       val koodisto = new Koodisto
 
@@ -154,6 +157,7 @@ object KoskiErrorCategory {
     val juuriorganisaatioPuuttuu = subcategory("juuriorganisaatioPuuttuu", "Automaattisen tiedonsiirron palvelukäyttäjällä ei yksiselitteistä juuriorganisaatiota")
     val omienTietojenMuokkaus = subcategory("omienTietojenMuokkaus", "Omien tietojen muokkaus ei ole sallittua.")
     val oppijaOidinMuutos = subcategory("oppijaOidinMuutos", "Oppija OID ei vastaa opiskeluoikeuteen kuuluvaa oppija OID:a")
+    val vainVarhaiskasvatuksenJärjestäjä = subcategory("vainVarhaiskasvatuksenJärjestäjä", "Operaatio on sallittu vain käyttäjälle joka on luotu varhaiskasvtusta järjestävälle koulutustoimijalle")
     val vainVirkailija = subcategory("vainVirkailija", "Sallittu vain virkailija-käyttäjille")
     val vainKansalainen = subcategory("vainKansalainen", "Sallittu vain kansalainen-käyttäjille")
     val vainViranomainen = subcategory("vainViranomainen", "Sallittu vain viranomaisille")
