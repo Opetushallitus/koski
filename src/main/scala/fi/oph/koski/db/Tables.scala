@@ -209,10 +209,14 @@ object Tables {
     val query = (if (user.hasGlobalReadAccess || user.hasGlobalKoulutusmuotoReadAccess) {
       OpiskeluOikeudet
     } else {
-      val oids = user.organisationOids(AccessType.read).toList
+      val oppilaitosOidit = user.organisationOids(AccessType.read).toList
+      val varhaiskasvatusOikeudet = user.varhaiskasvatusKäyttöoikeudet.filter(_.organisaatioAccessType.contains(AccessType.read))
+
       for {
         oo <- OpiskeluOikeudet
-        if (oo.oppilaitosOid inSet oids) || (oo.sisältäväOpiskeluoikeusOppilaitosOid inSet oids)
+        if (oo.oppilaitosOid inSet oppilaitosOidit) ||
+           (oo.sisältäväOpiskeluoikeusOppilaitosOid inSet oppilaitosOidit) ||
+           (oo.oppilaitosOid inSet varhaiskasvatusOikeudet.map(_.ulkopuolinenOrganisaatio.oid)) && oo.koulutustoimijaOid.map(_ inSet varhaiskasvatusOikeudet.map(_.koulutustoimija.oid)).getOrElse(false)
       } yield oo
     }).filterNot(_.mitätöity)
 
