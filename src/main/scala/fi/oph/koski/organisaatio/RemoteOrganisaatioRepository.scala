@@ -121,7 +121,7 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(i
 }
 
 case class OrganisaatioHakuTulos(organisaatiot: List[OrganisaatioPalveluOrganisaatio])
-case class OrganisaatioPalveluOrganisaatio(oid: String, ytunnus: Option[String], nimi: Map[String, String], oppilaitosKoodi: Option[String], organisaatiotyypit: List[String], oppilaitostyyppi: Option[String], kotipaikkaUri: Option[String], kieletUris: List[String], lakkautusPvm: Option[Long], parentOidPath: Option[String], children: List[OrganisaatioPalveluOrganisaatio])
+case class OrganisaatioPalveluOrganisaatio(oid: String, ytunnus: Option[String], nimi: Map[String, String], oppilaitosKoodi: Option[String], organisaatiotyypit: List[String], oppilaitostyyppi: Option[String], kotipaikkaUri: Option[String], kieletUris: List[String], lakkautusPvm: Option[Long], children: List[OrganisaatioPalveluOrganisaatio])
 case class OrganisaatioTyyppiHakuTulos(organisaatiot: List[OrganisaatioPalveluOrganisaatioTyyppi])
 case class OrganisaatioPalveluOrganisaatioTyyppi(oid: String, nimi: Map[String, String], organisaatiotyypit: List[String], oppilaitostyyppi: Option[String], children: List[OrganisaatioPalveluOrganisaatio])
 case class OrganisaationNimihakuTulos(nimi: Map[String, String], alkuPvm: LocalDate)
