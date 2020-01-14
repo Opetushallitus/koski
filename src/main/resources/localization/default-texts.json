@@ -1297,6 +1297,9 @@
   "Suoritustiedot (muu ammatillinen koulutus)": "Suoritustiedot (muu ammatillinen koulutus)",
   "muuammatillinenraportti-description": "Muu ammatillisen koulutuksen suoritustietojen tarkistusraportti",
   "Suoritustiedot (TOPKS ammatillinen koulutus)": "Suoritustiedot (TOPKS ammatillinen koulutus)",
-  "topksammatillinen-description": "Tutkinnon osaa pienemmistä kokonaisuuksista koostuvan suorituksen suoritustietojen tarkistusraportti"
+  "topksammatillinen-description": "Tutkinnon osaa pienemmistä kokonaisuuksista koostuvan suorituksen suoritustietojen tarkistusraportti",
+  "esiopetusraportti-title": "Esiopetuksen opiskeluoikeus- ja suoritustietojen tarkistusraportti",
+  "esiopetusraportti-description": "Raportti sisältää esiopetuksen opiskeluoikeus- ja suoritustiedot tietojen oikeellisuuden tarkistamista varten yhdellä rivillä per opiskeluoikeus. Syötä ”Päivä”-kenttään se päivämäärä, jolta haluat raportin tulostettavan. ”Päivä”-parametri toimii niin, että se hakee raportille kaikki esiopetuksen opiskeluoikeudet, jotka ovat olleet aktiivisena (eli tilassa ”Läsnä”, ”Väliaikaisesti keskeytynyt” tai ”Valmistunut”) kyseisenä päivänä.",
+  "esiopetusraportti-example": "Kun halutaan tulostaa raportti, jolla voi tarkistaa, että tilastointipäivänä 20.9.2020 aktiivisena olevien esiopetuksen opiskeluoikeuksien tiedot on siirretty KOSKI-tietovarantoon oikein, valitaan ”Päivä”-kenttään päivämääräksi 20.9.2020. Raportti pohjautuu viime yön tietoihin, eli tietojen päivitys Koskeen ei näy välittömästi raportilla."
 }
 

@@ -148,13 +148,15 @@ const Lukioraportti = ({organisaatioAtom}) => {
 }
 
 const EsiopetusRaportti = ({organisaatioAtom}) => {
-  const titleText = <Text name='EsiopetusRaportti-title'/>
-  const descriptionText = <Text name='EsiopetusRaportti-description'/>
+  const titleText = <Text name='esiopetusraportti-title'/>
+  const descriptionText = <Text name='esiopetusraportti-description'/>
+  const exampleText = <Text name='esiopetusraportti-example'/>
 
   return (<RaporttiPaivalta
     organisaatioAtom={organisaatioAtom}
     apiEndpoint={'/esiopetus'}
     title={titleText}
     description={descriptionText}
+    example={exampleText}
   />)
 }
