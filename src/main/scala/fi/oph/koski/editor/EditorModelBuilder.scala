@@ -337,9 +337,9 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
 
   private def newContext(obj: AnyRef): ModelBuilderContext = {
     def orgWriteAccess = obj match {
-      case l: OrganisaatioonLiittyvä =>
-        l.omistajaOrganisaatio match {
-          case Some(o) => context.user.hasWriteAccess(o.oid, l.koulutustoimija.map(_.oid))
+      case oo: Opiskeluoikeus =>
+        oo.omistajaOrganisaatio match {
+          case Some(o) => context.user.hasWriteAccess(o.oid, oo.koulutustoimija.map(_.oid))
           case None => true
         }
       case _ => true
