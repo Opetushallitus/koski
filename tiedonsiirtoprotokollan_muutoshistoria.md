@@ -1,3 +1,6 @@
+## 14.1.2020
+- Lisätty esiopetuksen opiskeluoikeuteen kenttä järjestämismuoto
+
 ## 4.12.2019
 - Lisätty esiopetuksen opiskeluoikeuden lisätietoihin kentät:
     - tukimuodot
