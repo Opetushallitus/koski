@@ -3,6 +3,12 @@
 ## 15.1.2020
 - Ammatillisissa ops-muotoisissa tutkinnoissa voidaan antaa painotettu keskiarvosana.
 
+## 14.1.2020
+- Kun esiopetuksen opiskeluoikeuden järjrestämismuoto syötetään
+  - pitää käyttäjän olla luotu organisaatioon joka on tyyppiä KOULUTUSTOIMIJA ja VARHAISKASVATUKSEN_JARJESTAJA
+  - pitää päätason suorituksen tyypin olla päiväkodin esiopetus (001102)
+- Jos käyttäjä on luotu kahteen tai useampaan organisaatioon jotka ovat tyyppiä KOULUTUSTOIMIJA ja VARHAISKASVATUKSEN_JARJESTAJA pitää opiskeluoikeuden koulutustoimija syöttää
+
 ## 13.11.2019
 - Nuorten perusopetuksen oppimäärän valinnaisille kieli oppiaineille sallitaan arvosana S jos laajuus on 2 vuosiviikkotuntia tai yli
 
