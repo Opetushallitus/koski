@@ -117,7 +117,6 @@ trait DefaultDescription extends OrganisaatioWithOid {
 }
 
 trait OrganisaatioonLiittyvä {
-  def koulutustoimija: Option[Koulutustoimija]
   def omistajaOrganisaatio: Option[OrganisaatioWithOid]
 }
 
