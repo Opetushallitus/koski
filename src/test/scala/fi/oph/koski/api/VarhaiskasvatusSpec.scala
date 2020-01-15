@@ -125,7 +125,7 @@ class VarhaiskasvatusSpec extends FreeSpec with EsiopetusSpecification {
   "Koulutustoimija joka ei ole varhaiskasvatuksen järjestäjä" - {
     "ei voi luoda päiväkodissa järjestettävän esiopetuksen opiskeluoikeuden organisaatiohierarkiansa ulkopuolella" in {
       putOpiskeluoikeus(päiväkotiEsiopetus(päiväkotiTouhula, ostopalvelu), headers = authHeaders(MockUsers.jyväskyläTallentaja) ++ jsonContent) {
-        verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainVarhaiskasvatuksenJärjestäjä("Operaatio on sallittu vain käyttäjälle joka on luotu varhaiskasvtusta järjestävälle koulutustoimijalle"))
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainVarhaiskasvatuksenJärjestäjä("Operaatio on sallittu vain käyttäjälle joka on luotu varhaiskasvatusta järjestävälle koulutustoimijalle"))
       }
     }
   }

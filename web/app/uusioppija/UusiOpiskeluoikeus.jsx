@@ -62,7 +62,7 @@ export default ({opiskeluoikeusAtom}) => {
   opiskeluoikeusP.changes().onValue((oo) => opiskeluoikeusAtom.set(oo))
 
   return (<div>
-    <VarhaiskasvatusValitsin varhaiskasvatusAtom={varhaiskasvatusOrganisaationUlkopuoleltaAtom} järjestämismuotoAtom={varhaiskasvatusJärjestämismuotoAtom} opiskeluoikeustyypitP={opiskeluoikeustyypitP} />
+    <VarhaiskasvatuksenJärjestämismuotoPicker varhaiskasvatusAtom={varhaiskasvatusOrganisaationUlkopuoleltaAtom} järjestämismuotoAtom={varhaiskasvatusJärjestämismuotoAtom} opiskeluoikeustyypitP={opiskeluoikeustyypitP} />
     <Oppilaitos showVarhaiskasvatusToimipisteetP={varhaiskasvatusOrganisaationUlkopuoleltaAtom} oppilaitosAtom={oppilaitosAtom} organisaatiotyypitAtom={organisaatiotyypitAtom} />
     {
       ift(oppilaitosAtom, <OpiskeluoikeudenTyyppi opiskeluoikeudenTyyppiAtom={tyyppiAtom} opiskeluoikeustyypitP={opiskeluoikeustyypitP} />)
@@ -97,7 +97,7 @@ const opiskeluoikeudentTilat = tyyppiAtom => {
   return tyyppiAtom.flatMap(tyyppi => tilatP.map(filterTilatByOpiskeluoikeudenTyyppi(tyyppi))).toProperty()
 }
 
-const VarhaiskasvatusValitsin = ({varhaiskasvatusAtom, järjestämismuotoAtom, opiskeluoikeustyypitP}) => {
+const VarhaiskasvatuksenJärjestämismuotoPicker = ({varhaiskasvatusAtom, järjestämismuotoAtom, opiskeluoikeustyypitP}) => {
   const isKoulutustoimijaP = userP.map('.varhaiskasvatuksenJärjestäjäKoulutustoimijat').map(koulutustoimijat => koulutustoimijat.length > 0)
   const varhaiskasvatusEnabledP = opiskeluoikeustyypitP.map(tyypit => tyypit.length === 0 || tyypit.some(tyyppi => tyyppi.koodiarvo === 'esiopetus'))
   return (<React.Fragment>
@@ -186,7 +186,7 @@ const OpintojenRahoitus = ({tyyppiAtom, rahoitusAtom, opintojenRahoituksetP}) =>
   )
 }
 
-var makeOpiskeluoikeus = (date, oppilaitos, tyyppi, suoritus, tila, opintojenRahoitus, varhaiskasvatusOrganisaationUlkopuolelta, varhaiskasvatusJärjestämismuoto) => {
+const makeOpiskeluoikeus = (date, oppilaitos, tyyppi, suoritus, tila, opintojenRahoitus, varhaiskasvatusOrganisaationUlkopuolelta, varhaiskasvatusJärjestämismuoto) => {
   const makeOpiskeluoikeusjakso = () => {
     const opiskeluoikeusjakso = date && tila && {alku: formatISODate(date), tila}
     opiskeluoikeusjakso && opintojenRahoitus

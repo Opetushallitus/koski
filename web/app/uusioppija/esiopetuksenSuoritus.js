@@ -29,4 +29,4 @@ export const esiopetuksenSuoritus = (suoritusAtom, oppilaitosAtom, organisaatiot
 }
 
 const tunnisteenKoodiarvo = organisaatioTyypit =>
-  organisaatioTyypit && organisaatioTyypit.includes(VARHAISKASVATUKSEN_TOIMIPAIKKA) ? '001102' : '001101'
+  organisaatioTyypit.includes(VARHAISKASVATUKSEN_TOIMIPAIKKA) ? '001102' : '001101'

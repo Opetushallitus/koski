@@ -72,7 +72,7 @@ export default class OrganisaatioPicker extends BaconComponent {
         { open &&
         <div className="organisaatio-popup">
           <input className="organisaatio-haku" type="text" placeholder={t('hae')} ref="hakuboksi" defaultValue={this.state.searchString} onChange={e => {
-            if (e.target.value.length >= 3 || e.target.value.length == 0) this.searchStringBus.push(e.target.value)
+            if (e.target.value.length >= 3 || e.target.value.length == 0) this.inputBus.push(e.target.value)
           }}/>
           {
             clearText && <button className="koski-button kaikki" onClick={() => { this.searchStringBus.push(''); selectOrg(undefined)}}>{clearText}</button>
@@ -103,11 +103,13 @@ export default class OrganisaatioPicker extends BaconComponent {
     super.componentWillMount()
     const showAll = parseBool(this.props.showAll)
     const orgTypesToShowP = this.props.orgTypesToShowP || Bacon.constant(undefined)
+    this.inputBus = Bacon.Bus()
     this.searchStringBus = Bacon.Bus()
+    this.searchStringBus.plug(this.inputBus.debounce(delays().delay(200)))
     this.searchStringBus
       .onValue((searchString) => this.setState({searchString, loading: true}))
 
-    let searchResult = this.searchStringBus.debounce(delays().delay(500)).flatMap(searchString => orgTypesToShowP.map(orgTypesToShow => ({searchString, orgTypesToShow}))).flatMapLatest(({searchString, orgTypesToShow}) =>
+    let searchResult = this.searchStringBus.flatMap(searchString => orgTypesToShowP.map(orgTypesToShow => ({searchString, orgTypesToShow}))).flatMapLatest(({searchString, orgTypesToShow}) =>
         Http.get(parseLocation('/koski/api/organisaatio/hierarkia').addQueryParams({ query: searchString, all: showAll, orgTypesToShow }))
           .map((organisaatiot) => ({ organisaatiot, searchString }))
     ).takeUntil(this.unmountE)
