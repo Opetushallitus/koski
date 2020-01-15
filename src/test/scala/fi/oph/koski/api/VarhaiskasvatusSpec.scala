@@ -131,11 +131,11 @@ class VarhaiskasvatusSpec extends FreeSpec with EsiopetusSpecification {
   }
 
   "Päiväkodin virkailija" - {
+    lazy val eeroResp = putOpiskeluoikeus(päiväkotiEsiopetus(päiväkotiTouhula, ostopalvelu), henkilö = defaultHenkilö, headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
+      verifyResponseStatusOk()
+      readPutOppijaResponse
+    }
     "näkee kaikki omaan organisaatioon luodut opiskeluoikeudet" in {
-      val eeroResp = putOpiskeluoikeus(päiväkotiEsiopetus(päiväkotiTouhula, ostopalvelu), henkilö = defaultHenkilö, headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
-        verifyResponseStatusOk()
-        readPutOppijaResponse
-      }
       val ysiluokkalainenResp = putOpiskeluoikeus(päiväkotiEsiopetus(päiväkotiTouhula, ostopalvelu), henkilö = asUusiOppija(ysiluokkalainen), headers = authHeaders(MockUsers.tornioTallentaja) ++ jsonContent) {
         verifyResponseStatusOk()
         readPutOppijaResponse
@@ -152,6 +152,15 @@ class VarhaiskasvatusSpec extends FreeSpec with EsiopetusSpecification {
       eeronKoskeenTallennetutOpiskeluoikeudet.intersect(eeroResp.opiskeluoikeudet.map(_.oid)) should not be empty
       val ysiluokkalaisenKoskeenTallennetutOpiskeluoikeudet = oppija(ysiluokkalainenResp.henkilö.oid, MockUsers.touholaKatselija).opiskeluoikeudet.flatMap(_.oid)
       ysiluokkalaisenKoskeenTallennetutOpiskeluoikeudet.intersect(ysiluokkalainenResp.opiskeluoikeudet.map(_.oid)) should not be empty
+    }
+
+    "ei ylikirjoita koulutustoimijan luomia opiskeluoikeuksia" in {
+      val resp: PutOppijaResponse = putOpiskeluoikeus(päiväkotiEsiopetus(päiväkotiTouhula), henkilö = defaultHenkilö, headers = authHeaders(MockUsers.pyhtäänTallentaja) ++ jsonContent) {
+        verifyResponseStatusOk()
+        readPutOppijaResponse
+      }
+      resp.opiskeluoikeudet.length should equal(1)
+      resp.opiskeluoikeudet.head.versionumero should equal(1)
     }
   }
 }
