@@ -49,7 +49,7 @@ class VarhaiskasvatusSpec extends FreeSpec with EsiopetusSpecification {
 
       "ei voi luoda perusopetuksessa järjestettävien esiopetuksen opiskeluoikeuksia organisaatiohierarkiansa ulkopuolelle" in {
         putOpiskeluoikeus(peruskouluEsiopetus(päiväkotiTouhula, ostopalvelu), headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.koodisto.vääräkoulutustyyppi(s"Järjestämismuoto sallittu vain päiväkodissa järjestettävälle esiopetukselle ($päiväkodinEsiopetuksenTunniste)"))
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.koodisto.vääräKoulutuksenTunniste(s"Järjestämismuoto sallittu vain päiväkodissa järjestettävälle esiopetukselle ($päiväkodinEsiopetuksenTunniste)"))
         }
       }
 
@@ -170,7 +170,7 @@ class VarhaiskasvatusSpec extends FreeSpec with EsiopetusSpecification {
         verifyResponseStatusOk()
       }
       putOpiskeluoikeus(peruskouluEsiopetus(päiväkotiTouhula), headers = authHeaders(MockUsers.pyhtäänTallentaja) ++ jsonContent) {
-        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.koodisto.vääräkoulutustyyppi("Varhaiskasvatustoimipisteeseen voi tallentaa vain päiväkodin esiopetusta (koulutustyyppi 001102)"))
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.koodisto.vääräKoulutuksenTunniste("Varhaiskasvatustoimipisteeseen voi tallentaa vain päiväkodin esiopetusta (koulutus 001102)"))
       }
     }
   }
