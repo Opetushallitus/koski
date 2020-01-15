@@ -161,5 +161,14 @@ class VarhaiskasvatusSpec extends FreeSpec with EsiopetusSpecification {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainVarhaiskasvatuksenJärjestäjä("Operaatio on sallittu vain käyttäjälle joka on luotu varhaiskasvatusta järjestävälle koulutustoimijalle"))
       }
     }
+
+    "Ei ylikirjoita koulutustoimijan luomia opiskeluoikeuksia" in {
+      val resp= putOpiskeluoikeus(päiväkotiEsiopetus(päiväkotiTouhula), henkilö = defaultHenkilö, headers = authHeaders(MockUsers.pyhtäänTallentaja) ++ jsonContent) {
+        verifyResponseStatusOk()
+        readPutOppijaResponse
+      }
+      resp.opiskeluoikeudet.length should equal(1)
+      resp.opiskeluoikeudet.head.versionumero should equal(1)
+    }
   }
 }

@@ -154,7 +154,8 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
 
       case i:OppijaOidOrganisaatioJaTyyppi =>
         findOpiskeluoikeudetWithSlaves(i.oppijaOid).map(_.filter { row =>
-          OppijaOidOrganisaatioJaTyyppi(i.oppijaOid, row.toOpiskeluoikeus.getOppilaitos.oid, row.toOpiskeluoikeus.tyyppi.koodiarvo, row.toOpiskeluoikeus.lähdejärjestelmänId) == identifier
+          val opiskeluoikeus = row.toOpiskeluoikeus
+          OppijaOidOrganisaatioJaTyyppi(i.oppijaOid, opiskeluoikeus.getOppilaitos.oid, opiskeluoikeus.koulutustoimija.map(_.oid), opiskeluoikeus.tyyppi.koodiarvo, opiskeluoikeus.lähdejärjestelmänId) == identifier
         }).map(_.toList).map(Right(_))
     }
   }
