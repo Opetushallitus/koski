@@ -188,12 +188,11 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       }
     }
   } else {
-    Left(KoskiErrorCategory.badRequest.validation.koodisto.vääräkoulutustyyppi(s"Järjestämismuoto sallittu vain päiväkodissa järjestettävälle esiopetukselle ($päiväkodinEsiopetuksenTunniste)"))
+    Left(KoskiErrorCategory.badRequest.validation.koodisto.vääräKoulutuksenTunniste(s"Järjestämismuoto sallittu vain päiväkodissa järjestettävälle esiopetukselle ($päiväkodinEsiopetuksenTunniste)"))
   }
 
-  private def päiväkodissaJärjestettyEsiopetus(oo: EsiopetuksenOpiskeluoikeus) = {
-    oo.suoritukset.forall(_.koulutusmoduuli.tunniste.koodiarvo == päiväkodinEsiopetuksenTunniste)
-  }
+  private def päiväkodissaJärjestettyEsiopetus(oo: EsiopetuksenOpiskeluoikeus) =
+    oo.suoritukset.forall(päiväkodissaJärjestettyEsiopetuksenSuoritus)
 
   private def addKoulutustyyppi(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
     val t = traversal[KoskeenTallennettavaOpiskeluoikeus]
@@ -309,6 +308,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         :: validateArvioinnit(suoritus)
         :: validateLaajuus(suoritus)
         :: validateOppiaineet(suoritus)
+        :: validatePäiväkodinEsiopetus(suoritus, opiskeluoikeus)
         :: validateTutkinnonosanRyhmä(suoritus)
         :: HttpStatus.validate(!suoritus.isInstanceOf[PäätasonSuoritus])(validateDuplicates(suoritus.osasuoritukset.toList.flatten))
         :: suoritus.osasuoritusLista.map(validateSuoritus(_, opiskeluoikeus, suoritus :: parent))
@@ -605,6 +605,15 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     case _ =>
       HttpStatus.ok
   }
+
+  private def validatePäiväkodinEsiopetus(suoritus: Suoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = suoritus match {
+    case e: EsiopetuksenSuoritus if !päiväkodissaJärjestettyEsiopetuksenSuoritus(e) && organisaatioRepository.getOrganisaatioHierarkia(e.toimipiste.oid).exists(_.varhaiskasvatusToimipaikka) =>
+      KoskiErrorCategory.badRequest.validation.koodisto.vääräKoulutuksenTunniste(s"Varhaiskasvatustoimipisteeseen voi tallentaa vain päiväkodin esiopetusta (koulutus 001102)")
+    case _ => HttpStatus.ok
+  }
+
+  private def päiväkodissaJärjestettyEsiopetuksenSuoritus(suoritus: EsiopetuksenSuoritus) =
+    suoritus.koulutusmoduuli.tunniste.koodiarvo == päiväkodinEsiopetuksenTunniste
 
   private def päätasonSuoritusTyyppitEnabled(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
     val disabled = config.getStringList("features.disabledPäätasonSuoritusTyypit")

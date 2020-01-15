@@ -88,7 +88,7 @@ object KoskiErrorCategory {
       class Koodisto extends ErrorCategory(Validation.this, "koodisto", "Koodistoihin liittyvä tarkistusvirhe") {
         val tuntematonKoodi = subcategory("tuntematonKoodi", "Annettua koodia ei löydy koodistosta.")
         val koulutustyyppiPuuttuu = subcategory("koulutustyyppiPuuttuu", "Annetun koulutuksen koulutustyyppiä ei löydy koodistosta.")
-        val vääräkoulutustyyppi = subcategory("vääräkoulutustyyppi", "Koulutustyyppi on väärä")
+        val vääräKoulutuksenTunniste = subcategory("vääräKoulutuksenTunniste", "Koulutuksen tunniste on väärä")
       }
       val koodisto = new Koodisto
 

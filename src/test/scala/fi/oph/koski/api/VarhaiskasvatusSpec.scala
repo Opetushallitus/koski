@@ -49,7 +49,7 @@ class VarhaiskasvatusSpec extends FreeSpec with EsiopetusSpecification {
 
       "ei voi luoda perusopetuksessa järjestettävien esiopetuksen opiskeluoikeuksia organisaatiohierarkiansa ulkopuolelle" in {
         putOpiskeluoikeus(peruskouluEsiopetus(päiväkotiTouhula, ostopalvelu), headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.koodisto.vääräkoulutustyyppi(s"Järjestämismuoto sallittu vain päiväkodissa järjestettävälle esiopetukselle ($päiväkodinEsiopetuksenTunniste)"))
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.koodisto.vääräKoulutuksenTunniste(s"Järjestämismuoto sallittu vain päiväkodissa järjestettävälle esiopetukselle ($päiväkodinEsiopetuksenTunniste)"))
         }
       }
 
@@ -159,6 +159,26 @@ class VarhaiskasvatusSpec extends FreeSpec with EsiopetusSpecification {
     "Ei voi muokata toisen koulutustoimijan luomia opiskeluoikeuksia" in {
       putOpiskeluoikeus(eeronOpiskeluoikeus.copy(oid = Some(eeroResp.opiskeluoikeudet.head.oid), koulutustoimija = hki, lisätiedot = None), headers = authHeaders(MockUsers.touholaTallentaja) ++ jsonContent) {
         verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainVarhaiskasvatuksenJärjestäjä("Operaatio on sallittu vain käyttäjälle joka on luotu varhaiskasvatusta järjestävälle koulutustoimijalle"))
+      }
+    }
+
+    "ei ylikirjoita koulutustoimijan luomia opiskeluoikeuksia" in {
+      val resp: PutOppijaResponse = putOpiskeluoikeus(päiväkotiEsiopetus(päiväkotiTouhula), henkilö = defaultHenkilö, headers = authHeaders(MockUsers.pyhtäänTallentaja) ++ jsonContent) {
+        verifyResponseStatusOk()
+        readPutOppijaResponse
+      }
+      resp.opiskeluoikeudet.length should equal(1)
+      resp.opiskeluoikeudet.head.versionumero should equal(1)
+    }
+  }
+
+  "Varhaiskasvatustoimipisteeseen" - {
+    "ei voi tallentaa muita kuin päiväkodin esiopetuksen opiskeluoikeuksia" in {
+      putOpiskeluoikeus(päiväkotiEsiopetus(päiväkotiTouhula), headers = authHeaders(MockUsers.pyhtäänTallentaja) ++ jsonContent) {
+        verifyResponseStatusOk()
+      }
+      putOpiskeluoikeus(peruskouluEsiopetus(päiväkotiTouhula), headers = authHeaders(MockUsers.pyhtäänTallentaja) ++ jsonContent) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.koodisto.vääräKoulutuksenTunniste("Varhaiskasvatustoimipisteeseen voi tallentaa vain päiväkodin esiopetusta (koulutus 001102)"))
       }
     }
   }
