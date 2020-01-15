@@ -163,4 +163,15 @@ class VarhaiskasvatusSpec extends FreeSpec with EsiopetusSpecification {
       resp.opiskeluoikeudet.head.versionumero should equal(1)
     }
   }
+
+  "Varhaiskasvatustoimipisteeseen" - {
+    "ei voi tallentaa muita kuin päiväkodin esiopetuksen opiskeluoikeuksia" in {
+      putOpiskeluoikeus(päiväkotiEsiopetus(päiväkotiTouhula), headers = authHeaders(MockUsers.pyhtäänTallentaja) ++ jsonContent) {
+        verifyResponseStatusOk()
+      }
+      putOpiskeluoikeus(peruskouluEsiopetus(päiväkotiTouhula), headers = authHeaders(MockUsers.pyhtäänTallentaja) ++ jsonContent) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.koodisto.vääräkoulutustyyppi("Varhaiskasvatustoimipisteeseen voi tallentaa vain päiväkodin esiopetusta (koulutustyyppi 001102)"))
+      }
+    }
+  }
 }
