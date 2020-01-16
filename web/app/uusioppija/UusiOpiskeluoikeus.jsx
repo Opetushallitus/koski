@@ -62,7 +62,7 @@ export default ({opiskeluoikeusAtom}) => {
   opiskeluoikeusP.changes().onValue((oo) => opiskeluoikeusAtom.set(oo))
 
   return (<div>
-    <VarhaiskasvatuksenJärjestämismuotoPicker varhaiskasvatusAtom={varhaiskasvatusOrganisaationUlkopuoleltaAtom} järjestämismuotoAtom={varhaiskasvatusJärjestämismuotoAtom} opiskeluoikeustyypitP={opiskeluoikeustyypitP} />
+    <VarhaiskasvatuksenJärjestämismuotoPicker varhaiskasvatusAtom={varhaiskasvatusOrganisaationUlkopuoleltaAtom} järjestämismuotoAtom={varhaiskasvatusJärjestämismuotoAtom} />
     <Oppilaitos showVarhaiskasvatusToimipisteetP={varhaiskasvatusOrganisaationUlkopuoleltaAtom} oppilaitosAtom={oppilaitosAtom} organisaatiotyypitAtom={organisaatiotyypitAtom} />
     {
       ift(oppilaitosAtom, <OpiskeluoikeudenTyyppi opiskeluoikeudenTyyppiAtom={tyyppiAtom} opiskeluoikeustyypitP={opiskeluoikeustyypitP} />)
@@ -97,11 +97,10 @@ const opiskeluoikeudentTilat = tyyppiAtom => {
   return tyyppiAtom.flatMap(tyyppi => tilatP.map(filterTilatByOpiskeluoikeudenTyyppi(tyyppi))).toProperty()
 }
 
-const VarhaiskasvatuksenJärjestämismuotoPicker = ({varhaiskasvatusAtom, järjestämismuotoAtom, opiskeluoikeustyypitP}) => {
+const VarhaiskasvatuksenJärjestämismuotoPicker = ({varhaiskasvatusAtom, järjestämismuotoAtom}) => {
   const isKoulutustoimijaP = userP.map('.varhaiskasvatuksenJärjestäjäKoulutustoimijat').map(koulutustoimijat => koulutustoimijat.length > 0)
-  const varhaiskasvatusEnabledP = opiskeluoikeustyypitP.map(tyypit => tyypit.length === 0 || tyypit.some(tyyppi => tyyppi.koodiarvo === 'esiopetus'))
   return (<React.Fragment>
-    {fromBacon(ift(isKoulutustoimijaP.and(varhaiskasvatusEnabledP), <VarhaiskasvatusCheckbox varhaiskasvatusAtom={varhaiskasvatusAtom}/>))}
+    {fromBacon(ift(isKoulutustoimijaP, <VarhaiskasvatusCheckbox varhaiskasvatusAtom={varhaiskasvatusAtom}/>))}
     {fromBacon(ift(varhaiskasvatusAtom, <VarhaiskasvatuksenJärjestämismuoto järjestämismuotoAtom={järjestämismuotoAtom} />))}
   </React.Fragment>)
 }
@@ -128,21 +127,23 @@ const Oppilaitos = ({showVarhaiskasvatusToimipisteetP, oppilaitosAtom, organisaa
   const selectableOrgTypes = ['OPPILAITOS', 'OPPISOPIMUSTOIMIPISTE', VARHAISKASVATUKSEN_TOIMIPAIKKA]
   return (<label className='oppilaitos'><Text name="Oppilaitos"/>
     {
-      oppilaitosAtom.map(oppilaitos =>
+      Bacon.combineWith(oppilaitosAtom, showVarhaiskasvatusToimipisteetP, (oppilaitos, show) =>
         (<OrganisaatioPicker
-          preselectSingleOption={true}
-          selectedOrg={{ oid: oppilaitos && oppilaitos.oid, nimi: oppilaitos && oppilaitos.nimi && t(oppilaitos.nimi) }}
-          onSelectionChanged={org => {
-            oppilaitosAtom.set({oid: org && org.oid, nimi: org && org.nimi})
-            organisaatiotyypitAtom.set(org && org.organisaatiotyypit)
-          }}
-          shouldShowOrg={org => !org.organisaatiotyypit.some(tyyppi => tyyppi === 'TOIMIPISTE')}
-          canSelectOrg={(org) => org.organisaatiotyypit.some(ot => selectableOrgTypes.includes(ot))}
-          clearText="tyhjennä"
-          noSelectionText="Valitse..."
-          orgTypesToShowP={showVarhaiskasvatusToimipisteetP.map(showVarhaiskasvatusToimipisteet => showVarhaiskasvatusToimipisteet ? 'vainVarhaiskasvatusToimipisteet' : 'vainOmatOrganisaatiot')}
-        />
-      ))
+            key={'uuden-oppijan-oppilaitos-' + (show ? 'vain-varhaiskasvatus' : 'oma-organisaatio')}
+            preselectSingleOption={true}
+            selectedOrg={{oid: oppilaitos && oppilaitos.oid, nimi: oppilaitos && oppilaitos.nimi && t(oppilaitos.nimi)}}
+            onSelectionChanged={org => {
+              oppilaitosAtom.set({oid: org && org.oid, nimi: org && org.nimi})
+              organisaatiotyypitAtom.set(org && org.organisaatiotyypit)
+            }}
+            shouldShowOrg={org => !org.organisaatiotyypit.some(tyyppi => tyyppi === 'TOIMIPISTE')}
+            canSelectOrg={(org) => org.organisaatiotyypit.some(ot => selectableOrgTypes.includes(ot))}
+            clearText="tyhjennä"
+            noSelectionText="Valitse..."
+            orgTypesToShow={show ? 'vainVarhaiskasvatusToimipisteet' : 'vainOmatOrganisaatiot'}
+          />
+        )
+      )
     }
   </label>)
 }

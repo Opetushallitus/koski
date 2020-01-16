@@ -7,7 +7,7 @@ import Highlight from 'react-highlighter'
 import {buildClassNames} from '../components/classnames.js'
 import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
-import {flatMapArray, parseBool} from '../util/util'
+import {flatMapArray, parseBool, toObservable} from '../util/util'
 import {parseLocation} from '../util/location'
 import delays from '../util/delays'
 
@@ -102,7 +102,7 @@ export default class OrganisaatioPicker extends BaconComponent {
   componentWillMount() {
     super.componentWillMount()
     const showAll = parseBool(this.props.showAll)
-    const orgTypesToShowP = this.props.orgTypesToShowP || Bacon.constant(undefined)
+    const orgTypesToShowP = toObservable(this.props.orgTypesToShow)
     this.inputBus = Bacon.Bus()
     this.searchStringBus = Bacon.Bus()
     this.searchStringBus.plug(this.inputBus.debounce(delays().delay(200)))

@@ -20,12 +20,13 @@ export const OrganisaatioHenkilöEditor = ({model}) => {
 
   let myöntäjäOrganisaatio = model.context.myöntäjäOrganisaatio
   let organisaatioOid = modelData(myöntäjäOrganisaatio).oid
+  const koulutustoimijaOid = modelData(model.context.opiskeluoikeus, 'koulutustoimija.oid')
 
   let newItem = modelSetValue(L.set(newItemLens, true, model), myöntäjäOrganisaatio.value, 'organisaatio')
   let isNewItem = (o) => L.get(newItemLens, o)
 
-  let myöntäjätPreferenceListP = getOrganizationalPreferences(organisaatioOid, preferenceKey)
-    .concat(removeBus.flatMap(poistettavaNimi => deleteOrganizationalPreference(organisaatioOid, preferenceKey, poistettavaNimi)))
+  let myöntäjätPreferenceListP = getOrganizationalPreferences(organisaatioOid, preferenceKey, koulutustoimijaOid)
+    .concat(removeBus.flatMap(poistettavaNimi => deleteOrganizationalPreference(organisaatioOid, preferenceKey, poistettavaNimi, koulutustoimijaOid)))
 
   let kaikkiMyöntäjätP = myöntäjätPreferenceListP
     .map('.map', m => modelSetValue(model, m.value))

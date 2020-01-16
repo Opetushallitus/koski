@@ -145,6 +145,36 @@ describe('Esiopetus', function() {
               expect(editor.property('koulutustoimija').getValue()).to.equal('HELSINGIN KAUPUNKI')
               expect(editor.property('järjestämismuoto').getValue()).to.equal('Ostopalvelu, kunnan tai kuntayhtymän järjestämä')
             })
+
+            describe('Kun vahvistetaan suoritus', function() {
+              before(
+                editor.edit,
+                opinnot.tilaJaVahvistus.merkitseValmiiksi,
+                opinnot.tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät.itemEditor(0).setValue('Lisää henkilö'),
+                opinnot.tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät.itemEditor(0).propertyBySelector('.nimi').setValue('Pekka Päiväkoti'),
+                opinnot.tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät.itemEditor(0).propertyBySelector('.titteli').setValue('päiväkodin johtaja'),
+                opinnot.tilaJaVahvistus.merkitseValmiiksiDialog.merkitseValmiiksi,
+                editor.saveChanges
+              )
+
+              it('toimii', function() { })
+
+              describe('Toinen koulutustoimija', function() {
+                before(
+                  prepareForNewOppija('tornio-tallentaja', '230872-7258'),
+                  addOppija.selectVarhaiskasvatusOrganisaationUlkopuolelta(true),
+                  addOppija.selectJärjestämismuoto('Ostopalvelu, kunnan tai kuntayhtymän järjestämä'),
+                  addOppija.enterValidDataPäiväkodinEsiopetus({oppilaitos: 'Päiväkoti Touhula'}),
+                  addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Päiväkodin esiopetus'),
+                  editor.edit,
+                  opinnot.tilaJaVahvistus.merkitseValmiiksi
+                )
+
+                it('ei näe toisten koulutustoimijoiden myöntäjiä', function() {
+                  expect(opinnot.tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät.itemEditor(0).getOptions()).to.deep.equal(['Lisää henkilö'])
+                })
+              })
+            })
           })
         })
       })

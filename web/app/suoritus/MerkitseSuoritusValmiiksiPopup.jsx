@@ -34,7 +34,8 @@ export const MerkitseSuoritusValmiiksiPopup = ({ suoritus, resultCallback }) => 
       let data = modelData(h)
       let key = data.nimi
       let organisaatioOid = modelData(updatedSuoritus, 'toimipiste').oid
-      return saveOrganizationalPreference(organisaatioOid, 'myöntäjät', key, data)
+      const koulutustoimijaOid = modelData(suoritus.context.opiskeluoikeus, 'koulutustoimija.oid')
+      return saveOrganizationalPreference(organisaatioOid, 'myöntäjät', key, data, koulutustoimijaOid)
     })
     Bacon.combineAsArray(saveResults).onValue(() => resultCallback(updatedSuoritus))
   })

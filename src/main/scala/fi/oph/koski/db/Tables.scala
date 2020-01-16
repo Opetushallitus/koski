@@ -121,11 +121,12 @@ object Tables {
 
   class PreferencesTable(tag: Tag) extends Table[PreferenceRow] (tag, "preferences") {
     val organisaatioOid = column[String]("organisaatio_oid", O.PrimaryKey)
+    val koulutustoimijaOid = column[Option[String]]("koulutustoimija_oid")
     val `type` = column[String]("type", O.PrimaryKey)
     val key = column[String]("key", O.PrimaryKey)
     val value = column[JValue]("value")
 
-    def * = (organisaatioOid, `type`, key, value) <> (PreferenceRow.tupled, PreferenceRow.unapply)
+    def * = (organisaatioOid, koulutustoimijaOid, `type`, key, value) <> (PreferenceRow.tupled, PreferenceRow.unapply)
   }
 
   class SuoritusjakoTable(tag: Tag) extends Table[SuoritusjakoRow] (tag, "suoritusjako") {
@@ -276,7 +277,7 @@ case class OppilaitosIPOsoiteRow(username: String, ip: String)
 
 case class ValtuudetSessionRow(oppijaOid: String, sessionId: String, userId: String, code: Option[String] = None, accessToken: Option[String] = None, aikaleima: Timestamp = new Timestamp(System.currentTimeMillis))
 
-case class PreferenceRow(organisaatioOid: String, `type`: String, key: String, value: JValue)
+case class PreferenceRow(organisaatioOid: String, koulutustoimijaOid: Option[String], `type`: String, key: String, value: JValue)
 
 case class SuoritusjakoRow(id: Long, secret: String, oppijaOid: String, suoritusIds: JValue, voimassaAsti: Date, aikaleima: Timestamp)
 

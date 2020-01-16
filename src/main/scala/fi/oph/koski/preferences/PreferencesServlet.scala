@@ -12,26 +12,22 @@ class PreferencesServlet(implicit val application: KoskiApplication) extends Api
 
   put("/:organisaatioOid/:type") {
     withJsonBody({ body =>
-      val organisaatioOid = params("organisaatioOid")
       val KeyValue(key, value) = JsonSerializer.extract[KeyValue](body)
-      val `type` = params("type")
-
-      renderStatus(service.put(organisaatioOid, `type`, key, value)(koskiSession))
+      renderStatus(service.put(organisaatioOid, koulutustoimijaOid, `type`, key, value)(koskiSession))
     })()
   }
 
   delete("/:organisaatioOid/:type/:key") {
-    val organisaatioOid = params("organisaatioOid")
-    val `type` = params("type")
-    val key = params("key")
-    renderStatus(service.delete(organisaatioOid, `type`, key)(koskiSession))
+    renderStatus(service.delete(organisaatioOid, koulutustoimijaOid, `type`, params("key"))(koskiSession))
   }
 
   get("/:organisaatioOid/:type") {
-    val organisaatioOid = params("organisaatioOid")
-    val `type` = params("type")
-    renderEither[List[StorablePreference]](service.get(organisaatioOid, `type`)(koskiSession))
+    renderEither[List[StorablePreference]](service.get(organisaatioOid, koulutustoimijaOid, `type`)(koskiSession))
   }
+
+  private def organisaatioOid = params("organisaatioOid")
+  private def `type` = params("type")
+  private def koulutustoimijaOid = params.get("koulutustoimijaOid")
 }
 
 case class KeyValue(key: String, value: JValue)

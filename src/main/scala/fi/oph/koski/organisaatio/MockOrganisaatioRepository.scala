@@ -71,7 +71,7 @@ object MockOrganisaatiot {
     ylioppilastutkintolautakunta, aapajoenKoulu,
     kouluyhdistysPestalozziSchulvereinSkolföreningen,
     helsinginKansainvälisenKoulunVanhempainyhdistys,
-    päiväkotiTouhula
+    pyhtäänKunta
   )
 }
 

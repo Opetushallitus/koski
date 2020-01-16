@@ -33,13 +33,13 @@ case class PreferencesService(protected val db: DB) extends Logging with KoskiDa
   )
 
 
-  def put(organisaatioOid: String, `type`: String, key: String, value: JValue)(implicit session: KoskiSession) = {
-    if (!session.hasWriteAccess(organisaatioOid, None)) throw new InvalidRequestException(KoskiErrorCategory.forbidden.organisaatio())
+  def put(organisaatioOid: String, koulutustoimijaOid: Option[String], `type`: String, key: String, value: JValue)(implicit session: KoskiSession) = {
+    if (!session.hasWriteAccess(organisaatioOid, koulutustoimijaOid)) throw new InvalidRequestException(KoskiErrorCategory.forbidden.organisaatio())
     prefTypes.get(`type`) match {
       case Some(klass) =>
         extract[StorablePreference](value, klass) match {
           case Right(deserialized) =>
-            runDbSync(Tables.Preferences.insertOrUpdate(PreferenceRow(organisaatioOid, `type`, key, value)))
+            runDbSync(Tables.Preferences.insertOrUpdate(PreferenceRow(organisaatioOid, koulutustoimijaOid, `type`, key, value)))
             HttpStatus.ok
           case Left(errors: immutable.Seq[ValidationError]) =>
             KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(errors))
@@ -48,12 +48,13 @@ case class PreferencesService(protected val db: DB) extends Logging with KoskiDa
     }
   }
 
-  def delete(organisaatioOid: String, `type`: String, key: String)(implicit session: KoskiSession): HttpStatus = {
-    if (!session.hasWriteAccess(organisaatioOid, None)) throw new InvalidRequestException(KoskiErrorCategory.forbidden.organisaatio())
+  def delete(organisaatioOid: String, koulutustoimijaOid: Option[String], `type`: String, key: String)(implicit session: KoskiSession): HttpStatus = {
+    if (!session.hasWriteAccess(organisaatioOid, koulutustoimijaOid)) throw new InvalidRequestException(KoskiErrorCategory.forbidden.organisaatio())
 
     prefTypes.get(`type`) match {
       case Some(klass) =>
-        runDbSync(Tables.Preferences.filter(r => r.organisaatioOid === organisaatioOid && r.`type` === `type` && r.key === key).delete)
+        val koulutustoimija: String = koulutustoimijaOid.getOrElse("")
+        runDbSync(Tables.Preferences.filter(r => r.organisaatioOid === organisaatioOid && r.`type` === `type` && r.key === key && r.koulutustoimijaOid.map(_ === koulutustoimija).getOrElse(true)).delete)
         HttpStatus.ok
       case None => KoskiErrorCategory.notFound("Unknown pref type " + `type`)
     }
@@ -64,12 +65,13 @@ case class PreferencesService(protected val db: DB) extends Logging with KoskiDa
     SchemaValidatingExtractor.extract(value, klass).right.map(_.asInstanceOf[T])
   }
 
-  def get(organisaatioOid: String, `type`: String)(implicit session: KoskiSession): Either[HttpStatus, List[StorablePreference]] = {
-    if (!session.hasWriteAccess(organisaatioOid, None)) throw new InvalidRequestException(KoskiErrorCategory.forbidden.organisaatio())
+  def get(organisaatioOid: String, koulutustoimijaOid: Option[String], `type`: String)(implicit session: KoskiSession): Either[HttpStatus, List[StorablePreference]] = {
+    if (!session.hasWriteAccess(organisaatioOid, koulutustoimijaOid)) throw new InvalidRequestException(KoskiErrorCategory.forbidden.organisaatio())
 
     prefTypes.get(`type`) match {
       case Some(klass) =>
-        val jValues = runDbSync(Tables.Preferences.filter(r => r.organisaatioOid === organisaatioOid && r.`type` === `type`).map(_.value).result).toList
+        val koulutustoimija: String = koulutustoimijaOid.getOrElse("")
+        val jValues = runDbSync(Tables.Preferences.filter(r => r.organisaatioOid === organisaatioOid && r.`type` === `type` && r.koulutustoimijaOid.map(_ === koulutustoimija).getOrElse(true)).map(_.value).result).toList
         HttpStatus.foldEithers(jValues.map(value =>
           extract[StorablePreference](value, klass)
             .left.map((errors: List[ValidationError]) => KoskiErrorCategory.badRequest.validation.jsonSchema(JsonErrorMessage(errors)))
