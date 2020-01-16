@@ -39,7 +39,7 @@ function AddOppijaPage() {
       }
     },
     enterValidDataPerusopetus: function(params) {
-      params = _.merge({  oppilaitos: 'Jyväskylän normaalikoulu' }, {}, params)
+      params = _.merge({  oppilaitos: 'Jyväskylän normaalikoulu', opintojenRahoitus: 'Valtionosuusrahoitteinen koulutus' }, {}, params)
       return function() {
         return api.enterData(params)()
           .then(wait.forAjax)
@@ -159,6 +159,11 @@ function AddOppijaPage() {
           .then(function() {
             if (params.suorituskieli) {
               return api.selectSuorituskieli(params.suorituskieli)()
+            }
+          })
+          .then(function () {
+            if (params.opintojenRahoitus) {
+              return api.selectOpintojenRahoitus(params.opintojenRahoitus)
             }
           })
       }

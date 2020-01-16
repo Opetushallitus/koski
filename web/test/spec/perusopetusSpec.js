@@ -384,7 +384,7 @@ describe('Perusopetus', function() {
 
     it('näyttää opiskeluoikeuden tiedot', function() {
       expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2016\n' +
-        'Tila 4.6.2016 Valmistunut\n' +
+        'Tila 4.6.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
         '15.8.2008 Läsnä (valtionosuusrahoitteinen koulutus)')
     })
 
@@ -393,7 +393,7 @@ describe('Perusopetus', function() {
 
       it('hakee opiskeluoikeuden tiedot', function() {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2016\n' +
-          'Tila 4.6.2016 Valmistunut\n' +
+          'Tila 4.6.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
           '15.8.2008 Läsnä (valtionosuusrahoitteinen koulutus)')
       })
     })
@@ -2119,6 +2119,7 @@ describe('Perusopetus', function() {
               addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
               addOppija.selectTutkinto('Autoalan perustutkinto'),
               addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
+              addOppija.selectOpintojenRahoitus('1'),
               addOppija.submitAndExpectSuccessModal('Tyhjä, Tero (230872-7258)', 'Autoalan perustutkinto')
             )
             it('Onnistuu ja uusi ammatillinen opiskeluoikeus tulee valituksi', function( ){
@@ -2131,6 +2132,7 @@ describe('Perusopetus', function() {
                 addOppija.selectOpiskeluoikeudenTyyppi('Aikuisten perusopetus'),
                 addOppija.selectOppimäärä('Perusopetuksen oppiaineen oppimäärä'),
                 addOppija.selectOppiaine('Fysiikka'),
+                addOppija.selectOpintojenRahoitus('1'),
                 addOppija.submitAndExpectSuccessModal('Tyhjä, Tero (230872-7258)', 'Fysiikka')
               )
               it('toimii', function( ){
