@@ -25,7 +25,7 @@ const validateOpintojenRahoitus = opiskeluoikeus => {
   const tila = opiskeluoikeudenTila(opiskeluoikeus)
   const opintojenRahoitusValittu = opintojenRahoitus(opiskeluoikeus)
 
-  if (['lukiokoulutus', 'internationalschool', 'luva', 'diatutkinto', 'ibtutkinto'].includes(tyyppi)) {
+  if (['aikuistenperusopetus', 'lukiokoulutus', 'internationalschool', 'luva', 'diatutkinto', 'ibtutkinto'].includes(tyyppi)) {
     return !['lasna', 'valmistunut'].includes(tila) || opintojenRahoitusValittu
   }
   if ('ammatillinenkoulutus' === tyyppi) {

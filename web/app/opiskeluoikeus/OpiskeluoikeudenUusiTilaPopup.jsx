@@ -62,7 +62,7 @@ const validateOpintojenRahoitus = (tilaModel, rahoitusModel) => {
   const tila = modelData(tilaModel, 'koodiarvo')
   const rahoitusValittu = modelData(rahoitusModel)
 
-  if (tyyppi.includes('lukionopiskeluoikeusjakso')) {
+  if (tyyppi.includes('lukionopiskeluoikeusjakso') || tyyppi.includes('aikuistenperusopetuksenopiskeluoikeusjakso')) {
     return !(['lasna', 'valmistunut'].includes(tila)) || rahoitusValittu
   }
   if (tyyppi.includes('ammatillinenopiskeluoikeusjakso')) {
