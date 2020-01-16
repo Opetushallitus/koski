@@ -2,7 +2,7 @@ package fi.oph.koski.api
 
 import java.time.LocalDate
 
-import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusLäsnä}
+import fi.oph.koski.documentation.ExampleData.{longTimeAgo, opiskeluoikeusLäsnä, valtionosuusRahoitteinen}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.schema.{AmmatillinenPäätasonSuoritus, _}
@@ -23,7 +23,7 @@ trait MuuAmmatillinenTestMethods[T <: AmmatillinenPäätasonSuoritus] extends Pu
   }
 
   protected def makeOpiskeluoikeus(alkamispäivä: LocalDate = longTimeAgo) = AmmatillinenOpiskeluoikeus(
-    tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, None))),
+    tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)))),
     oppilaitos = Some(Oppilaitos(MockOrganisaatiot.stadinAmmattiopisto)),
     suoritukset = List(defaultPäätasonSuoritus)
   )
