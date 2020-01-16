@@ -1,178 +1,206 @@
 {
-  "henkilö" : {
-    "hetu" : "280618-402H",
-    "etunimet" : "Aarne",
-    "kutsumanimi" : "Aarne",
-    "sukunimi" : "Ammattilainen"
+  "henkilö": {
+    "hetu": "280618-402H",
+    "etunimet": "Aarne",
+    "kutsumanimi": "Aarne",
+    "sukunimi": "Ammattilainen"
   },
-  "opiskeluoikeudet" : [ {
-    "oppilaitos" : {
-      "oid" : "1.2.246.562.10.52251087186",
-      "oppilaitosnumero" : {
-        "koodiarvo" : "10105",
-        "koodistoUri" : "oppilaitosnumero"
-      },
-      "nimi" : {
-        "fi" : "Stadin ammattiopisto"
-      }
-    },
-    "arvioituPäättymispäivä" : "2020-05-31",
-    "tila" : {
-      "opiskeluoikeusjaksot" : [ {
-        "alku" : "2018-01-01",
-        "tila" : {
-          "koodiarvo" : "lasna",
-          "nimi" : {
-            "fi" : "Läsnä"
-          },
-          "koodistoUri" : "koskiopiskeluoikeudentila",
-          "koodistoVersio" : 1
-        }
-      } ]
-    },
-    "suoritukset" : [ {
-      "koulutusmoduuli" : {
-        "tunniste" : {
-          "koodiarvo" : "KISI",
-          "nimi" : {
-            "fi" : "Kiinteistösihteerin koulutus ja tutkinto (KISI)"
-          }
+  "opiskeluoikeudet": [
+    {
+      "oppilaitos": {
+        "oid": "1.2.246.562.10.52251087186",
+        "oppilaitosnumero": {
+          "koodiarvo": "10105",
+          "koodistoUri": "oppilaitosnumero"
         },
-        "kuvaus" : {
-          "fi" : "Koulutus antaa opiskelijalle valmiudet hoitaa isännöinti- ja kiinteistöpalvelualan yritysten sihteeri- ja asiakaspalvelutehtäviä."
+        "nimi": {
+          "fi": "Stadin ammattiopisto"
         }
       },
-      "toimipiste" : {
-        "oid" : "1.2.246.562.10.42456023292",
-        "nimi" : {
-          "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
-        }
+      "arvioituPäättymispäivä": "2020-05-31",
+      "tila": {
+        "opiskeluoikeusjaksot": [
+          {
+            "alku": "2018-01-01",
+            "tila": {
+              "koodiarvo": "lasna",
+              "nimi": {
+                "fi": "Läsnä"
+              },
+              "koodistoUri": "koskiopiskeluoikeudentila",
+              "koodistoVersio": 1
+            }
+          }
+        ]
       },
-      "suorituskieli" : {
-        "koodiarvo" : "FI",
-        "nimi" : {
-          "fi" : "suomi"
-        },
-        "koodistoUri" : "kieli"
+      "suoritukset": [
+        {
+          "koulutusmoduuli": {
+            "tunniste": {
+              "koodiarvo": "KISI",
+              "nimi": {
+                "fi": "Kiinteistösihteerin koulutus ja tutkinto (KISI)"
+              }
+            },
+            "kuvaus": {
+              "fi": "Koulutus antaa opiskelijalle valmiudet hoitaa isännöinti- ja kiinteistöpalvelualan yritysten sihteeri- ja asiakaspalvelutehtäviä."
+            }
+          },
+          "toimipiste": {
+            "oid": "1.2.246.562.10.42456023292",
+            "nimi": {
+              "fi": "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+            }
+          },
+          "suorituskieli": {
+            "koodiarvo": "FI",
+            "nimi": {
+              "fi": "suomi"
+            },
+            "koodistoUri": "kieli"
+          },
+          "osasuoritukset": [
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "AOYL",
+                  "nimi": {
+                    "fi": "Asunto-osakeyhtiölain ja huoneenvuokralainsäädännön perusteet"
+                  }
+                },
+                "kuvaus": {
+                  "fi": "Asunto-osakeyhtiölain ja huoneenvuokralainsäädännön perusteet, huoneistokohtaiset korjaus- ja muutostyöt"
+                }
+              },
+              "arviointi": [
+                {
+                  "arvosana": {
+                    "koodiarvo": "Hyväksytty",
+                    "koodistoUri": "arviointiasteikkoammatillinenhyvaksyttyhylatty"
+                  },
+                  "päivä": "2018-05-31",
+                  "arvioitsijat": [
+                    {
+                      "nimi": "Aarne Arvioija"
+                    }
+                  ],
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "muunammatillisenkoulutuksenosasuoritus",
+                "koodistoUri": "suorituksentyyppi"
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "AKOYTV",
+                  "nimi": {
+                    "fi": "Asunto- ja kiinteistöosakeyhtiön talous ja verotus"
+                  }
+                },
+                "kuvaus": {
+                  "fi": "Laskentatoimen ja verotuksen perusteet, lainaosuus- ja rahoituslaskelmat, kiinteistövero, arvonlisävero sekä veroilmoituslomakkeet"
+                }
+              },
+              "arviointi": [
+                {
+                  "arvosana": {
+                    "koodiarvo": "Hyväksytty",
+                    "koodistoUri": "arviointiasteikkoammatillinenhyvaksyttyhylatty"
+                  },
+                  "päivä": "2018-05-31",
+                  "arvioitsijat": [
+                    {
+                      "nimi": "Aarne Arvioija"
+                    }
+                  ],
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "muunammatillisenkoulutuksenosasuoritus",
+                "koodistoUri": "suorituksentyyppi"
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "TAP",
+                  "nimi": {
+                    "fi": "Tiedottaminen ja asiakaspalvelu"
+                  }
+                },
+                "kuvaus": {
+                  "fi": "Tiedottaminen ja asiakaspalvelu, isännöitsijän ja sihteerin työparityöskentely sekä asiakaspalvelun henkilöturvallisuus"
+                }
+              },
+              "arviointi": [
+                {
+                  "arvosana": {
+                    "koodiarvo": "Hyväksytty",
+                    "koodistoUri": "arviointiasteikkoammatillinenhyvaksyttyhylatty"
+                  },
+                  "päivä": "2018-05-31",
+                  "arvioitsijat": [
+                    {
+                      "nimi": "Aarne Arvioija"
+                    }
+                  ],
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "muunammatillisenkoulutuksenosasuoritus",
+                "koodistoUri": "suorituksentyyppi"
+              }
+            },
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "KISI",
+                  "nimi": {
+                    "fi": "KISI-tentti"
+                  }
+                },
+                "kuvaus": {
+                  "fi": "Valmiudet hoitaa kiinteistöalan yrityksen sihteeri-, toimisto- ja asiakaspalvelutehtäviä, vahvistaa osallistujan ammatillisia perusvalmiuksia"
+                }
+              },
+              "arviointi": [
+                {
+                  "arvosana": {
+                    "koodiarvo": "Hyväksytty",
+                    "koodistoUri": "arviointiasteikkoammatillinenhyvaksyttyhylatty"
+                  },
+                  "päivä": "2018-05-31",
+                  "arvioitsijat": [
+                    {
+                      "nimi": "Aarne Arvioija"
+                    }
+                  ],
+                  "hyväksytty": true
+                }
+              ],
+              "tyyppi": {
+                "koodiarvo": "muunammatillisenkoulutuksenosasuoritus",
+                "koodistoUri": "suorituksentyyppi"
+              }
+            }
+          ],
+          "tyyppi": {
+            "koodiarvo": "muuammatillinenkoulutus",
+            "koodistoUri": "suorituksentyyppi"
+          }
+        }
+      ],
+      "tyyppi": {
+        "koodiarvo": "ammatillinenkoulutus",
+        "koodistoUri": "opiskeluoikeudentyyppi"
       },
-      "osasuoritukset" : [ {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "AOYL",
-            "nimi" : {
-              "fi" : "Asunto-osakeyhtiölain ja huoneenvuokralainsäädännön perusteet"
-            }
-          },
-          "kuvaus" : {
-            "fi" : "Asunto-osakeyhtiölain ja huoneenvuokralainsäädännön perusteet, huoneistokohtaiset korjaus- ja muutostyöt"
-          }
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "Hyväksytty",
-            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty"
-          },
-          "päivä" : "2018-05-31",
-          "arvioitsijat" : [ {
-            "nimi" : "Aarne Arvioija"
-          } ],
-          "hyväksytty" : true
-        } ],
-        "tyyppi" : {
-          "koodiarvo" : "muunammatillisenkoulutuksenosasuoritus",
-          "koodistoUri" : "suorituksentyyppi"
-        }
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "AKOYTV",
-            "nimi" : {
-              "fi" : "Asunto- ja kiinteistöosakeyhtiön talous ja verotus"
-            }
-          },
-          "kuvaus" : {
-            "fi" : "Laskentatoimen ja verotuksen perusteet, lainaosuus- ja rahoituslaskelmat, kiinteistövero, arvonlisävero sekä veroilmoituslomakkeet"
-          }
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "Hyväksytty",
-            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty"
-          },
-          "päivä" : "2018-05-31",
-          "arvioitsijat" : [ {
-            "nimi" : "Aarne Arvioija"
-          } ],
-          "hyväksytty" : true
-        } ],
-        "tyyppi" : {
-          "koodiarvo" : "muunammatillisenkoulutuksenosasuoritus",
-          "koodistoUri" : "suorituksentyyppi"
-        }
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "TAP",
-            "nimi" : {
-              "fi" : "Tiedottaminen ja asiakaspalvelu"
-            }
-          },
-          "kuvaus" : {
-            "fi" : "Tiedottaminen ja asiakaspalvelu, isännöitsijän ja sihteerin työparityöskentely sekä asiakaspalvelun henkilöturvallisuus"
-          }
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "Hyväksytty",
-            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty"
-          },
-          "päivä" : "2018-05-31",
-          "arvioitsijat" : [ {
-            "nimi" : "Aarne Arvioija"
-          } ],
-          "hyväksytty" : true
-        } ],
-        "tyyppi" : {
-          "koodiarvo" : "muunammatillisenkoulutuksenosasuoritus",
-          "koodistoUri" : "suorituksentyyppi"
-        }
-      }, {
-        "koulutusmoduuli" : {
-          "tunniste" : {
-            "koodiarvo" : "KISI",
-            "nimi" : {
-              "fi" : "KISI-tentti"
-            }
-          },
-          "kuvaus" : {
-            "fi" : "Valmiudet hoitaa kiinteistöalan yrityksen sihteeri-, toimisto- ja asiakaspalvelutehtäviä, vahvistaa osallistujan ammatillisia perusvalmiuksia"
-          }
-        },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "Hyväksytty",
-            "koodistoUri" : "arviointiasteikkoammatillinenhyvaksyttyhylatty"
-          },
-          "päivä" : "2018-05-31",
-          "arvioitsijat" : [ {
-            "nimi" : "Aarne Arvioija"
-          } ],
-          "hyväksytty" : true
-        } ],
-        "tyyppi" : {
-          "koodiarvo" : "muunammatillisenkoulutuksenosasuoritus",
-          "koodistoUri" : "suorituksentyyppi"
-        }
-      } ],
-      "tyyppi" : {
-        "koodiarvo" : "muuammatillinenkoulutus",
-        "koodistoUri" : "suorituksentyyppi"
-      }
-    } ],
-    "tyyppi" : {
-      "koodiarvo" : "ammatillinenkoulutus",
-      "koodistoUri" : "opiskeluoikeudentyyppi"
-    },
-    "alkamispäivä" : "2018-01-01"
-  } ]
+      "alkamispäivä": "2018-01-01"
+    }
+  ],
+  "ignoreKoskiValidator": true
 }

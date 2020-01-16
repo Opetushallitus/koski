@@ -1,81 +1,88 @@
 {
-  "henkilö" : {
-    "oid" : "1.2.246.562.24.00000000010",
-    "hetu" : "020655-2479",
-    "etunimet" : "Liisa",
-    "kutsumanimi" : "Liisa",
-    "sukunimi" : "Lukiolainen",
-    "äidinkieli" : {
-      "koodiarvo" : "FI",
-      "koodistoUri" : "kieli"
+  "henkilö": {
+    "oid": "1.2.246.562.24.00000000010",
+    "hetu": "020655-2479",
+    "etunimet": "Liisa",
+    "kutsumanimi": "Liisa",
+    "sukunimi": "Lukiolainen",
+    "äidinkieli": {
+      "koodiarvo": "FI",
+      "koodistoUri": "kieli"
     }
   },
-  "opiskeluoikeudet" : [ {
-    "oppilaitos" : {
-      "oid" : "1.2.246.562.10.14613773812",
-      "oppilaitosnumero" : {
-        "koodiarvo" : "00204",
-        "koodistoUri" : "oppilaitosnumero"
+  "opiskeluoikeudet": [
+    {
+      "oppilaitos": {
+        "oid": "1.2.246.562.10.14613773812",
+        "oppilaitosnumero": {
+          "koodiarvo": "00204",
+          "koodistoUri": "oppilaitosnumero"
+        },
+        "nimi": {
+          "fi": "Jyväskylän normaalikoulu"
+        }
       },
-      "nimi" : {
-        "fi" : "Jyväskylän normaalikoulu"
-      }
-    },
-    "tila" : {
-      "opiskeluoikeusjaksot" : [ {
-        "alku" : "2012-09-01",
-        "tila" : {
-          "koodiarvo" : "lasna",
-          "nimi" : {
-            "fi" : "Läsnä"
+      "tila": {
+        "opiskeluoikeusjaksot": [
+          {
+            "alku": "2012-09-01",
+            "tila": {
+              "koodiarvo": "lasna",
+              "nimi": {
+                "fi": "Läsnä"
+              },
+              "koodistoUri": "koskiopiskeluoikeudentila",
+              "koodistoVersio": 1
+            }
+          }
+        ]
+      },
+      "suoritukset": [
+        {
+          "koulutusmoduuli": {
+            "tunniste": {
+              "koodiarvo": "309902",
+              "koodistoUri": "koulutus"
+            },
+            "perusteenDiaarinumero": "60/011/2015"
           },
-          "koodistoUri" : "koskiopiskeluoikeudentila",
-          "koodistoVersio" : 1
+          "oppimäärä": {
+            "koodiarvo": "nuortenops",
+            "nimi": {
+              "fi": "Nuorten ops"
+            },
+            "koodistoUri": "lukionoppimaara",
+            "koodistoVersio": 1
+          },
+          "toimipiste": {
+            "oid": "1.2.246.562.10.14613773812",
+            "oppilaitosnumero": {
+              "koodiarvo": "00204",
+              "koodistoUri": "oppilaitosnumero"
+            },
+            "nimi": {
+              "fi": "Jyväskylän normaalikoulu"
+            }
+          },
+          "suorituskieli": {
+            "koodiarvo": "FI",
+            "nimi": {
+              "fi": "suomi"
+            },
+            "koodistoUri": "kieli"
+          },
+          "tyyppi": {
+            "koodiarvo": "lukionoppimaara",
+            "koodistoUri": "suorituksentyyppi"
+          }
         }
-      } ]
-    },
-    "suoritukset" : [ {
-      "koulutusmoduuli" : {
-        "tunniste" : {
-          "koodiarvo" : "309902",
-          "koodistoUri" : "koulutus"
-        },
-        "perusteenDiaarinumero" : "60/011/2015"
+      ],
+      "tyyppi": {
+        "koodiarvo": "lukiokoulutus",
+        "koodistoUri": "opiskeluoikeudentyyppi"
       },
-      "oppimäärä" : {
-        "koodiarvo" : "nuortenops",
-        "nimi" : {
-          "fi" : "Nuorten ops"
-        },
-        "koodistoUri" : "lukionoppimaara",
-        "koodistoVersio" : 1
-      },
-      "toimipiste" : {
-        "oid" : "1.2.246.562.10.14613773812",
-        "oppilaitosnumero" : {
-          "koodiarvo" : "00204",
-          "koodistoUri" : "oppilaitosnumero"
-        },
-        "nimi" : {
-          "fi" : "Jyväskylän normaalikoulu"
-        }
-      },
-      "suorituskieli" : {
-        "koodiarvo" : "FI",
-        "nimi" : {
-          "fi" : "suomi"
-        },
-        "koodistoUri" : "kieli"
-      },
-      "tyyppi" : {
-        "koodiarvo" : "lukionoppimaara",
-        "koodistoUri" : "suorituksentyyppi"
-      }
-    } ],
-    "tyyppi" : {
-      "koodiarvo" : "lukiokoulutus",
-      "koodistoUri" : "opiskeluoikeudentyyppi"
-    },
-    "alkamispäivä" : "2012-09-01"
-  } ]
+      "alkamispäivä": "2012-09-01"
+    }
+  ],
+  "ignoreKoskiValidator": true
 }

@@ -1,0 +1,3500 @@
+{
+  "henkilö" : {
+    "hetu" : "151013-2195",
+    "etunimet" : "Dia",
+    "kutsumanimi" : "Dia",
+    "sukunimi" : "Dia"
+  },
+  "opiskeluoikeudet" : [ {
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.45093614456",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "00085",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Helsingin Saksalainen koulu"
+      }
+    },
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2012-09-01",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "opintojenrahoitus"
+        }
+      }, {
+        "alku" : "2016-06-04",
+        "tila" : {
+          "koodiarvo" : "valmistunut",
+          "nimi" : {
+            "fi" : "Valmistunut"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "opintojenrahoitus"
+        }
+      } ]
+    },
+    "suoritukset" : [ {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "diavalmistavavaihe",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.45093614456",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "00085",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "Helsingin Saksalainen koulu"
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2016-06-04",
+        "paikkakunta" : {
+          "koodiarvo" : "091",
+          "nimi" : {
+            "fi" : "Helsinki"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.45093614456",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "00085",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "Helsingin Saksalainen koulu"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.45093614456",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "00085",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Helsingin Saksalainen koulu"
+            }
+          }
+        } ]
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "EN",
+        "nimi" : {
+          "fi" : "englanti"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "AI",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 3.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kieli" : {
+            "koodiarvo" : "DE",
+            "koodistoUri" : "oppiainediaaidinkieli"
+          },
+          "osaAlue" : {
+            "koodiarvo" : "1",
+            "koodistoUri" : "diaosaalue"
+          }
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiavalmistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "arviointiasteikkodiavalmistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "AI",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 3.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kieli" : {
+            "koodiarvo" : "FI",
+            "koodistoUri" : "oppiainediaaidinkieli"
+          },
+          "osaAlue" : {
+            "koodiarvo" : "1",
+            "koodistoUri" : "diaosaalue"
+          }
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkodiavalmistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiavalmistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "A",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 3.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kieli" : {
+            "koodiarvo" : "EN",
+            "koodistoUri" : "kielivalikoima"
+          },
+          "osaAlue" : {
+            "koodiarvo" : "1",
+            "koodistoUri" : "diaosaalue"
+          },
+          "pakollinen" : true
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "dialukukausi"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiavalmistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "B1",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 3.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kieli" : {
+            "koodiarvo" : "SV",
+            "koodistoUri" : "kielivalikoima"
+          },
+          "osaAlue" : {
+            "koodiarvo" : "1",
+            "koodistoUri" : "diaosaalue"
+          },
+          "pakollinen" : true
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkodiavalmistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkodiavalmistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "B2",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 2.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kieli" : {
+            "koodiarvo" : "LA",
+            "koodistoUri" : "kielivalikoima"
+          }
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "arviointiasteikkodiavalmistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "arviointiasteikkodiavalmistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "B3",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 3.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kieli" : {
+            "koodiarvo" : "RU",
+            "koodistoUri" : "kielivalikoima"
+          },
+          "osaAlue" : {
+            "koodiarvo" : "1",
+            "koodistoUri" : "diaosaalue"
+          },
+          "pakollinen" : true
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "arviointiasteikkodiavalmistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiavalmistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "KU",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 2.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "osaAlue" : {
+            "koodiarvo" : "1",
+            "koodistoUri" : "diaosaalue"
+          },
+          "pakollinen" : true
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "arviointiasteikkodiavalmistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "arviointiasteikkodiavalmistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MA",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 4.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "osaAlue" : {
+            "koodiarvo" : "2",
+            "koodistoUri" : "diaosaalue"
+          },
+          "pakollinen" : true
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiavalmistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkodiavalmistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "FY",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 2.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "osaAlue" : {
+            "koodiarvo" : "2",
+            "koodistoUri" : "diaosaalue"
+          },
+          "pakollinen" : true
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiavalmistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkodiavalmistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "KE",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 2.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "osaAlue" : {
+            "koodiarvo" : "2",
+            "koodistoUri" : "diaosaalue"
+          },
+          "pakollinen" : true
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkodiavalmistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "arviointiasteikkodiavalmistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "TI",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 2.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "osaAlue" : {
+            "koodiarvo" : "2",
+            "koodistoUri" : "diaosaalue"
+          },
+          "pakollinen" : true
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkodiavalmistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkodiavalmistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "HI",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 2.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "osaAlue" : {
+            "koodiarvo" : "3",
+            "koodistoUri" : "diaosaalue"
+          },
+          "pakollinen" : true
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiavalmistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "arviointiasteikkodiavalmistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "TA",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 2.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "osaAlue" : {
+            "koodiarvo" : "3",
+            "koodistoUri" : "diaosaalue"
+          },
+          "pakollinen" : true
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "arviointiasteikkodiavalmistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiavalmistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MAA",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 2.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "osaAlue" : {
+            "koodiarvo" : "3",
+            "koodistoUri" : "diaosaalue"
+          },
+          "pakollinen" : true
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiavalmistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiavalmistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "FI",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 2.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "osaAlue" : {
+            "koodiarvo" : "3",
+            "koodistoUri" : "diaosaalue"
+          },
+          "pakollinen" : true
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkodiavalmistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkodiavalmistava"
+            },
+            "päivä" : "2016-06-04",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineenvalmistavanvaiheenlukukaudensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ],
+      "tyyppi" : {
+        "koodiarvo" : "diavalmistavavaihe",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    }, {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "301103",
+          "koodistoUri" : "koulutus"
+        }
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.45093614456",
+        "oppilaitosnumero" : {
+          "koodiarvo" : "00085",
+          "koodistoUri" : "oppilaitosnumero"
+        },
+        "nimi" : {
+          "fi" : "Helsingin Saksalainen koulu"
+        }
+      },
+      "kokonaispistemäärä" : 870,
+      "lukukausisuoritustenKokonaispistemäärä" : 590,
+      "tutkintoaineidenKokonaispistemäärä" : 280,
+      "kokonaispistemäärästäJohdettuKeskiarvo" : 1.2000000476837158,
+      "vahvistus" : {
+        "päivä" : "2016-06-04",
+        "paikkakunta" : {
+          "koodiarvo" : "091",
+          "nimi" : {
+            "fi" : "Helsinki"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.45093614456",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "00085",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "Helsingin Saksalainen koulu"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.45093614456",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "00085",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Helsingin Saksalainen koulu"
+            }
+          }
+        } ]
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "EN",
+        "nimi" : {
+          "fi" : "englanti"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "AI",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 10.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kieli" : {
+            "koodiarvo" : "DE",
+            "koodistoUri" : "oppiainediaaidinkieli"
+          },
+          "osaAlue" : {
+            "koodiarvo" : "1",
+            "koodistoUri" : "diaosaalue"
+          }
+        },
+        "vastaavuustodistuksenTiedot" : {
+          "keskiarvo" : 4.0,
+          "lukioOpintojenLaajuus" : {
+            "arvo" : 2.5,
+            "yksikkö" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "koetuloksenNelinkertainenPistemäärä" : 20,
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 4.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "kirjallinenkoe",
+              "koodistoUri" : "diapaattokoe"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "AI",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 8.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kieli" : {
+            "koodiarvo" : "FI",
+            "koodistoUri" : "oppiainediaaidinkieli"
+          },
+          "osaAlue" : {
+            "koodiarvo" : "1",
+            "koodistoUri" : "diaosaalue"
+          }
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "A",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 6.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kieli" : {
+            "koodiarvo" : "EN",
+            "koodistoUri" : "kielivalikoima"
+          },
+          "osaAlue" : {
+            "koodiarvo" : "1",
+            "koodistoUri" : "diaosaalue"
+          },
+          "pakollinen" : true
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "dialukukausi"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "dialukukausi"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "dialukukausi"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "B1",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 6.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kieli" : {
+            "koodiarvo" : "SV",
+            "koodistoUri" : "kielivalikoima"
+          },
+          "osaAlue" : {
+            "koodiarvo" : "1",
+            "koodistoUri" : "diaosaalue"
+          },
+          "pakollinen" : true
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 3.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "B2",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 4.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kieli" : {
+            "koodiarvo" : "LA",
+            "koodistoUri" : "kielivalikoima"
+          }
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "B3",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 6.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kieli" : {
+            "koodiarvo" : "RU",
+            "koodistoUri" : "kielivalikoima"
+          },
+          "osaAlue" : {
+            "koodiarvo" : "1",
+            "koodistoUri" : "diaosaalue"
+          },
+          "pakollinen" : true
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 3.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "KU",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 4.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "osaAlue" : {
+            "koodiarvo" : "1",
+            "koodistoUri" : "diaosaalue"
+          },
+          "pakollinen" : true
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MA",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 8.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "osaAlue" : {
+            "koodiarvo" : "2",
+            "koodistoUri" : "diaosaalue"
+          },
+          "pakollinen" : true
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "FY",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 6.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "osaAlue" : {
+            "koodiarvo" : "2",
+            "koodistoUri" : "diaosaalue"
+          },
+          "pakollinen" : true
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 3.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "KE",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 6.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "osaAlue" : {
+            "koodiarvo" : "2",
+            "koodistoUri" : "diaosaalue"
+          },
+          "pakollinen" : true
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 3.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "TI",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 4.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "osaAlue" : {
+            "koodiarvo" : "2",
+            "koodistoUri" : "diaosaalue"
+          },
+          "pakollinen" : true
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "HI",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 6.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "osaAlue" : {
+            "koodiarvo" : "3",
+            "koodistoUri" : "diaosaalue"
+          },
+          "pakollinen" : true
+        },
+        "suorituskieli" : {
+          "koodiarvo" : "FI",
+          "koodistoUri" : "kieli"
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 3.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "TA",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 6.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "osaAlue" : {
+            "koodiarvo" : "3",
+            "koodistoUri" : "diaosaalue"
+          },
+          "pakollinen" : true
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 3.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MAA",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 6.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "osaAlue" : {
+            "koodiarvo" : "3",
+            "koodistoUri" : "diaosaalue"
+          },
+          "pakollinen" : true
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 3.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "FI",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 4.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "osaAlue" : {
+            "koodiarvo" : "3",
+            "koodistoUri" : "diaosaalue"
+          },
+          "pakollinen" : true
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "CCEA",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 1.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 0.5,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 0.5,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "MASY",
+            "koodistoUri" : "oppiaineetdia"
+          },
+          "laajuus" : {
+            "arvo" : 2.0,
+            "yksikkö" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          }
+        },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "3",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 0.5,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 0.5,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "1",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "5",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 0.5,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "6",
+              "koodistoUri" : "dialukukausi"
+            },
+            "laajuus" : {
+              "arvo" : 0.5,
+              "yksikkö" : {
+                "koodiarvo" : "3",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "4",
+              "koodistoUri" : "arviointiasteikkodiatutkinto"
+            },
+            "päivä" : "2016-06-04",
+            "lasketaanKokonaispistemäärään" : true,
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "diaoppiaineentutkintovaiheenosasuorituksensuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "diaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ],
+      "tyyppi" : {
+        "koodiarvo" : "diatutkintovaihe",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    } ],
+    "tyyppi" : {
+      "koodiarvo" : "diatutkinto",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    },
+    "alkamispäivä" : "2012-09-01",
+    "päättymispäivä" : "2016-06-04"
+  } ]
+}
