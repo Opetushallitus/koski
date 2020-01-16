@@ -1,6 +1,6 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
-## 15.11.2019
+## 15.1.2019
 - Ammatillisissa ops-muotoisissa tutkinnoissa voidaan antaa painotettu keskiarvosana.
 
 ## 13.11.2019
