@@ -7,7 +7,7 @@ import fi.oph.koski.editor.EditorModelBuilder._
 import fi.oph.koski.editor.MetadataToModel.classesFromMetadata
 import fi.oph.koski.json.{JsonSerializer, SensitiveDataFilter}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.localization._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusAccessChecker
 import fi.oph.koski.schema._
@@ -337,6 +337,8 @@ case class ObjectModelBuilder(schema: ClassSchema)(implicit context: ModelBuilde
 
   private def newContext(obj: AnyRef): ModelBuilderContext = {
     def orgWriteAccess = obj match {
+      case e: EsiopetuksenOpiskeluoikeus if e.järjestämismuoto.isDefined && e.oppilaitos.isDefined && e.koulutustoimija.isDefined =>
+        context.user.hasVarhaiskasvatusAccess(e.koulutustoimija.get.oid, e.getOppilaitos.oid, AccessType.write)
       case oo: Opiskeluoikeus =>
         oo.omistajaOrganisaatio match {
           case Some(o) => context.user.hasWriteAccess(o.oid, oo.koulutustoimija.map(_.oid))

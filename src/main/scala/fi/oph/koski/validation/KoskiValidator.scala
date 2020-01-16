@@ -172,7 +172,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   private def addVarhaiskasvatusKoulutustoimija(oo: EsiopetuksenOpiskeluoikeus)(implicit user: KoskiSession) = if (päiväkodissaJärjestettyEsiopetus(oo)) {
-    if (oo.koulutustoimija.isDefined) {
+    if (oo.koulutustoimija.isDefined && user.hasVarhaiskasvatusAccess(oo.koulutustoimija.get.oid, oo.getOppilaitos.oid, AccessType.write)) {
       Right(oo)
     } else {
       user.varhaiskasvatusKäyttöoikeudet.map(_.koulutustoimija.oid).toList match {

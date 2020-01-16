@@ -6,6 +6,7 @@ import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koskiuser.Rooli._
 import fi.oph.koski.log.{LogUserContext, Loggable, Logging}
+import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema.{OpiskeluoikeudenTyyppi, Organisaatio, OrganisaatioWithOid}
 import org.scalatra.servlet.RichRequest
 
@@ -19,6 +20,7 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
 
   lazy val orgKäyttöoikeudet: Set[KäyttöoikeusOrg] = käyttöoikeudet.collect { case k : KäyttöoikeusOrg => k}
   lazy val varhaiskasvatusKäyttöoikeudet: Set[KäyttöoikeusVarhaiskasvatusToimipiste] = käyttöoikeudet.collect { case k: KäyttöoikeusVarhaiskasvatusToimipiste => k }
+  lazy val varhaiskasvatusKoulutustoimijat: Set[Oid] = varhaiskasvatusKäyttöoikeudet.map(_.koulutustoimija.oid)
   lazy val hasKoulutustoimijaVarhaiskasvatuksenJärjestäjäAccess: Boolean = varhaiskasvatusKäyttöoikeudet.nonEmpty
   lazy val globalKäyttöoikeudet: Set[KäyttöoikeusGlobal] = käyttöoikeudet.collect { case k: KäyttöoikeusGlobal => k}
   lazy val globalViranomaisKäyttöoikeudet: Set[KäyttöoikeusViranomainen] = käyttöoikeudet.collect { case k: KäyttöoikeusViranomainen => k}
@@ -37,9 +39,9 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
   def hasTilastokeskusAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).contains(Palvelurooli("KOSKI", TILASTOKESKUS))
   def hasValviraAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).contains(Palvelurooli("KOSKI", VALVIRA))
 
-  private def hasVarhaiskasvatusAccess(koulutustoimijaOid: Organisaatio.Oid, organisaatioOid: Organisaatio.Oid, accessType: AccessType.Value): Boolean = {
+  def hasVarhaiskasvatusAccess(koulutustoimijaOid: Organisaatio.Oid, organisaatioOid: Organisaatio.Oid, accessType: AccessType.Value): Boolean = {
     val oikeudet: Set[KäyttöoikeusVarhaiskasvatusToimipiste] = varhaiskasvatusKäyttöoikeudet.filter(_.organisaatioAccessType.contains(accessType))
-    oikeudet.exists { case KäyttöoikeusVarhaiskasvatusToimipiste(koulutustoimija, organisaatio, _) =>
+    globalAccess.contains(accessType)|| oikeudet.exists { case KäyttöoikeusVarhaiskasvatusToimipiste(koulutustoimija, organisaatio, _) =>
       koulutustoimijaOid == koulutustoimija.oid && organisaatioOid == organisaatio.oid
     }
   }

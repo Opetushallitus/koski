@@ -24,7 +24,7 @@ class VarhaiskasvatusPerustiedotSpec extends FreeSpec with BeforeAndAfterAll wit
 
   "Päiväkodin virkailija" - {
     "Voi hakea omaan organisaatioon luodut opiskeluoikeudet" in {
-      val perustiedot = searchForPerustiedot(Map("opiskeluoikeudenTyyppi" -> "esiopetus", "toimipiste" -> MockOrganisaatiot.päiväkotiTouhula), MockUsers.touholaKatselija)
+      val perustiedot = searchForPerustiedot(Map("opiskeluoikeudenTyyppi" -> "esiopetus", "toimipiste" -> MockOrganisaatiot.päiväkotiTouhula), MockUsers.touholaTallentaja)
       perustiedot.flatMap(_.oppilaitos.nimi).map(_.get("fi")) should equal(List("Päiväkoti Touhula", "Päiväkoti Touhula"))
       perustiedot.flatMap(_.henkilö.map(_.etunimet)).toSet should equal(Set(defaultHenkilö.etunimet, tero.etunimet))
     }

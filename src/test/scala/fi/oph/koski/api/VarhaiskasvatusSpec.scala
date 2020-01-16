@@ -131,27 +131,35 @@ class VarhaiskasvatusSpec extends FreeSpec with EsiopetusSpecification {
   }
 
   "Päiväkodin virkailija" - {
+    lazy val eeronOpiskeluoikeus = päiväkotiEsiopetus(päiväkotiTouhula, ostopalvelu)
+    lazy val eeroResp = putOpiskeluoikeus(eeronOpiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
+      verifyResponseStatusOk()
+      readPutOppijaResponse
+    }
+
     "näkee kaikki omaan organisaatioon luodut opiskeluoikeudet" in {
-      val eeroResp = putOpiskeluoikeus(päiväkotiEsiopetus(päiväkotiTouhula, ostopalvelu), henkilö = defaultHenkilö, headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
-        verifyResponseStatusOk()
-        readPutOppijaResponse
-      }
       val ysiluokkalainenResp = putOpiskeluoikeus(päiväkotiEsiopetus(päiväkotiTouhula, ostopalvelu), henkilö = asUusiOppija(ysiluokkalainen), headers = authHeaders(MockUsers.tornioTallentaja) ++ jsonContent) {
         verifyResponseStatusOk()
         readPutOppijaResponse
       }
 
-      authGet(s"api/opiskeluoikeus/${eeroResp.opiskeluoikeudet.head.oid}", user = MockUsers.touholaKatselija) {
+      authGet(s"api/opiskeluoikeus/${eeroResp.opiskeluoikeudet.head.oid}", user = MockUsers.touholaTallentaja) {
         verifyResponseStatusOk()
       }
-      authGet(s"api/opiskeluoikeus/${ysiluokkalainenResp.opiskeluoikeudet.head.oid}", user = MockUsers.touholaKatselija) {
+      authGet(s"api/opiskeluoikeus/${ysiluokkalainenResp.opiskeluoikeudet.head.oid}", user = MockUsers.touholaTallentaja) {
         verifyResponseStatusOk()
       }
 
-      val eeronKoskeenTallennetutOpiskeluoikeudet = oppija(eeroResp.henkilö.oid, MockUsers.touholaKatselija).opiskeluoikeudet.flatMap(_.oid)
+      val eeronKoskeenTallennetutOpiskeluoikeudet = oppija(eeroResp.henkilö.oid, MockUsers.touholaTallentaja).opiskeluoikeudet.flatMap(_.oid)
       eeronKoskeenTallennetutOpiskeluoikeudet.intersect(eeroResp.opiskeluoikeudet.map(_.oid)) should not be empty
-      val ysiluokkalaisenKoskeenTallennetutOpiskeluoikeudet = oppija(ysiluokkalainenResp.henkilö.oid, MockUsers.touholaKatselija).opiskeluoikeudet.flatMap(_.oid)
+      val ysiluokkalaisenKoskeenTallennetutOpiskeluoikeudet = oppija(ysiluokkalainenResp.henkilö.oid, MockUsers.touholaTallentaja).opiskeluoikeudet.flatMap(_.oid)
       ysiluokkalaisenKoskeenTallennetutOpiskeluoikeudet.intersect(ysiluokkalainenResp.opiskeluoikeudet.map(_.oid)) should not be empty
+    }
+
+    "Ei voi muokata toisen koulutustoimijan luomia opiskeluoikeuksia" in {
+      putOpiskeluoikeus(eeronOpiskeluoikeus.copy(oid = Some(eeroResp.opiskeluoikeudet.head.oid), koulutustoimija = hki, lisätiedot = None), headers = authHeaders(MockUsers.touholaTallentaja) ++ jsonContent) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainVarhaiskasvatuksenJärjestäjä("Operaatio on sallittu vain käyttäjälle joka on luotu varhaiskasvatusta järjestävälle koulutustoimijalle"))
+      }
     }
   }
 }

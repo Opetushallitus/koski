@@ -116,7 +116,8 @@ describe('Esiopetus', function() {
 
         it('vain oman organisaation ulkopuoliset varhaiskasvatustoimipisteet näytetään', function () {
           expect(addOppija.oppilaitokset()).to.deep.equal([
-            'Pyhtään kunta Päiväkoti Touhula',
+            'Pyhtään kunta Päiväkoti Majakka Päiväkoti Touhula',
+            'Päiväkoti Majakka',
             'Päiväkoti Touhula'
           ])
         })
@@ -172,6 +173,20 @@ describe('Esiopetus', function() {
 
                 it('ei näe toisten koulutustoimijoiden myöntäjiä', function() {
                   expect(opinnot.tilaJaVahvistus.merkitseValmiiksiDialog.myöntäjät.itemEditor(0).getOptions()).to.deep.equal(['Lisää henkilö'])
+                })
+                after(editor.cancelChanges)
+              })
+
+              describe('Päiväkodin virkailija', function() {
+                before(
+                  Authentication().login('touhola-tallentaja'),
+                  page.openPage,
+                  page.oppijaHaku.searchAndSelect('230872-7258')
+                )
+
+                it('ei voi muokata tai mitätöidä toisten luomaa opiskeluoikeutta', function() {
+                  expect(editor.canSave()).to.equal(false)
+                  expect(opinnot.invalidateOpiskeluoikeusIsShown()).to.equal(false)
                 })
               })
             })
