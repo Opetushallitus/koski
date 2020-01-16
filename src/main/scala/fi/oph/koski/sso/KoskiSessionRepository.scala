@@ -2,6 +2,7 @@ package fi.oph.koski.sso
 
 import java.net.InetAddress
 import java.sql.Timestamp
+import java.time.Instant
 
 import fi.oph.koski.db.KoskiDatabase.DB
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
@@ -45,5 +46,12 @@ class KoskiSessionRepository(val db: DB, sessionTimeout: SessionTimeout) extends
       case n =>
         logger.error(s"Multiple sessions deleted for ticket $ticket")
     }
+  }
+
+  def purgeOldSessions(before: Instant): Unit = {
+    val timestamp = new Timestamp(before.toEpochMilli)
+    val query = Tables.CasServiceTicketSessions.filter(_.updated < timestamp)
+    val deleted = runDbSync(query.delete)
+    logger.info(s"Purged $deleted sessions older than $before")
   }
 }
