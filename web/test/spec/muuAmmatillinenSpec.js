@@ -76,6 +76,7 @@ describe('Muu ammatillinen koulutus', function() {
             .then(addOppija.selectOppimäärä('Muun ammatillisen koulutuksen suoritus'))
             .then(addOppija.selectKoulutusmoduuli('Ammatilliseen tehtävään valmistava koulutus'))
             .then(addOppija.enterAmmatilliseenTehtäväänvalmistava('Ansio- ja liikennelentäjä'))
+            .then(addOppija.selectOpintojenRahoitus('1'))
             .then(addOppija.submitModal)
             .then(_ => expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienMäärä()).to.equal(2))
             .then(_ => done())
