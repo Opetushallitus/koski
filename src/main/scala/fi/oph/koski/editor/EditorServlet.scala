@@ -61,7 +61,7 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
   get("/preferences/:organisaatioOid/:type") {
     val organisaatioOid = params("organisaatioOid")
     val `type` = params("type")
-    renderEither[List[EditorModel]](preferencesService.get(organisaatioOid, `type`).right.map(_.map(OppijaEditorModel.buildModel(_, true))))
+    renderEither[List[EditorModel]](preferencesService.get(organisaatioOid, params.get("koulutustoimijaOid"), `type`).right.map(_.map(OppijaEditorModel.buildModel(_, true))))
   }
   import reflect.runtime.universe.TypeTag
 

@@ -1,0 +1,19 @@
+{
+  "koodistoUri" : "vardajarjestamismuoto",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Varda Järjestämismuoto",
+    "kuvaus" : "Vardan Järjestämismuoto koodisto"
+  }, {
+    "kieli" : "SV",
+    "nimi" : "Varda Form för anordnandet",
+    "kuvaus" : "Varda Form för anordnandet"
+  } ],
+  "codesGroupUri" : "http://varda",
+  "voimassaAlkuPvm" : "2019-01-01",
+  "organisaatioOid" : "1.2.246.562.10.2013112012294919827487",
+  "withinCodes" : [ ],
+  "tila" : "LUONNOS",
+  "version" : 1
+}

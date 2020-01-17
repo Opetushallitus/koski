@@ -91,6 +91,7 @@ object Koodistot {
     KoodistoAsetus("suorituksentila"),
     KoodistoAsetus("tutkinnonosat", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false), // ks. EPerusteetLocalizationTest
     KoodistoAsetus("tutkintonimikkeet", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false), // ks. EPerusteetLocalizationTest
+    KoodistoAsetus("vardajarjestamismuoto"),
     KoodistoAsetus("virtaarvosana"),
     KoodistoAsetus("virtalukukausiilmtila"),
     KoodistoAsetus("virtaopiskeluoikeudentila"),

@@ -7,8 +7,9 @@ import Highlight from 'react-highlighter'
 import {buildClassNames} from '../components/classnames.js'
 import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
-import {flatMapArray, parseBool} from '../util/util'
+import {flatMapArray, parseBool, toObservable} from '../util/util'
 import {parseLocation} from '../util/location'
+import delays from '../util/delays'
 
 let findSingleResult = (canSelectOrg = () => true) => (organisaatiot) => {
   let selectableOrgs = (org) => {
@@ -71,7 +72,7 @@ export default class OrganisaatioPicker extends BaconComponent {
         { open &&
         <div className="organisaatio-popup">
           <input className="organisaatio-haku" type="text" placeholder={t('hae')} ref="hakuboksi" defaultValue={this.state.searchString} onChange={e => {
-            if (e.target.value.length >= 3 || e.target.value.length == 0) this.searchStringBus.push(e.target.value)
+            if (e.target.value.length >= 3 || e.target.value.length == 0) this.inputBus.push(e.target.value)
           }}/>
           {
             clearText && <button className="koski-button kaikki" onClick={() => { this.searchStringBus.push(''); selectOrg(undefined)}}>{clearText}</button>
@@ -100,14 +101,17 @@ export default class OrganisaatioPicker extends BaconComponent {
   }
   componentWillMount() {
     super.componentWillMount()
-    let showAll = parseBool(this.props.showAll)
+    const showAll = parseBool(this.props.showAll)
+    const orgTypesToShowP = toObservable(this.props.orgTypesToShow)
+    this.inputBus = Bacon.Bus()
     this.searchStringBus = Bacon.Bus()
+    this.searchStringBus.plug(this.inputBus.debounce(delays().delay(200)))
     this.searchStringBus
       .onValue((searchString) => this.setState({searchString, loading: true}))
 
-    let searchResult = this.searchStringBus.flatMapLatest((searchString) =>
-      Http.get(parseLocation('/koski/api/organisaatio/hierarkia').addQueryParams({ query: searchString, all: showAll}))
-        .map((organisaatiot) => ({ organisaatiot, searchString }))
+    let searchResult = this.searchStringBus.flatMap(searchString => orgTypesToShowP.map(orgTypesToShow => ({searchString, orgTypesToShow}))).flatMapLatest(({searchString, orgTypesToShow}) =>
+        Http.get(parseLocation('/koski/api/organisaatio/hierarkia').addQueryParams({ query: searchString, all: showAll, orgTypesToShow }))
+          .map((organisaatiot) => ({ organisaatiot, searchString }))
     ).takeUntil(this.unmountE)
     searchResult.onValue(({ organisaatiot }) => this.setState({ organisaatiot, loading: false }))
     if (this.props.preselectSingleOption) {

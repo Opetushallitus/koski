@@ -2,7 +2,8 @@ package fi.oph.koski.koskiuser
 
 import fi.oph.koski.cache.{CacheManager, ExpiringCache, KeyValueCache}
 import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioRepository}
-import fi.oph.koski.userdirectory.{DirectoryClient, DirectoryUser}
+import fi.oph.koski.schema.OidOrganisaatio
+import fi.oph.koski.userdirectory.DirectoryClient
 import fi.oph.koski.util.Timing
 
 import scala.concurrent.duration._
@@ -26,12 +27,20 @@ class KäyttöoikeusRepository(organisaatioRepository: OrganisaatioRepository, d
             case k: KäyttöoikeusOrg =>
               val organisaatioHierarkia = organisaatioRepository.getOrganisaatioHierarkia(k.organisaatio.oid)
               val flattened = OrganisaatioHierarkia.flatten(organisaatioHierarkia.toList)
+
               if (flattened.isEmpty) {
-                logger.warn(s"Käyttäjän $username käyttöoikeus ${k} kohdistuu organisaatioon ${k.organisaatio.oid}, jota ei löydy")
+                logger.warn(s"Käyttäjän $username käyttöoikeus $k kohdistuu organisaatioon ${k.organisaatio.oid}, jota ei löydy")
               }
-              flattened.map { org =>
+
+              val käyttöoikeudet = flattened.map { org =>
                 k.copy(organisaatio = org.toOrganisaatio, juuri = org.oid == k.organisaatio.oid, oppilaitostyyppi = org.oppilaitostyyppi)
               }
+
+              val hierarkianUlkopuolisetOikeudet = organisaatioHierarkia.toList.flatMap(hierarkianUlkopuolisetKäyttöoikeudet(k, _)).filterNot { käyttöoikeus =>
+                käyttöoikeudet.exists(_.organisaatio.oid == käyttöoikeus.ulkopuolinenOrganisaatio.oid)
+              }
+
+              käyttöoikeudet ++ hierarkianUlkopuolisetOikeudet
           }
         }
       case None =>
@@ -41,6 +50,19 @@ class KäyttöoikeusRepository(organisaatioRepository: OrganisaatioRepository, d
         Set.empty
     }
   }
+
+  private def hierarkianUlkopuolisetKäyttöoikeudet(k: KäyttöoikeusOrg, organisaatioHierarkia: OrganisaatioHierarkia) =
+    if (organisaatioHierarkia.varhaiskasvatuksenJärjestäjä && organisaatioHierarkia.toKoulutustoimija.isDefined) {
+      organisaatioRepository.findAllVarhaiskasvatusToimipisteet.map { päiväkoti =>
+        KäyttöoikeusVarhaiskasvatusToimipiste(
+          koulutustoimija = organisaatioHierarkia.toKoulutustoimija.get,
+          ulkopuolinenOrganisaatio = OidOrganisaatio(päiväkoti.oid),
+          organisaatiokohtaisetPalveluroolit = k.organisaatiokohtaisetPalveluroolit
+        )
+      }
+    } else {
+      Nil
+    }
 
   private lazy val käyttöoikeusCache = new KeyValueCache[AuthenticationUser, Set[Käyttöoikeus]](
     ExpiringCache("KäyttöoikeusRepository", 5.minutes, 100), haeKäyttöoikeudet

@@ -7,7 +7,7 @@ import fi.oph.koski.schema.Koodistokoodiviite
 import fi.oph.koski.servlet.InvalidRequestException
 import scala.concurrent.duration._
 
-case class KoodistoViitePalvelu(val koodistoPalvelu: KoodistoPalvelu)(implicit cacheInvalidator: CacheManager) extends Logging {
+case class KoodistoViitePalvelu(koodistoPalvelu: KoodistoPalvelu)(implicit cacheInvalidator: CacheManager) extends Logging {
   private val koodiviiteCache = KeyValueCache(RefreshingCache("KoodistoViitePalvelu", 1.hour, 100), { koodisto: KoodistoViite =>
     val koodit: List[KoodistoKoodi] = koodistoPalvelu.getKoodistoKoodit(koodisto)
     koodit.map(toKoodiviite(koodisto))

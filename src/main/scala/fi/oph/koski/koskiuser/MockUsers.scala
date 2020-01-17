@@ -16,9 +16,7 @@ object MockUsers {
   }
 
   val kalle = MockUser("käyttäjä", "kalle", "1.2.246.562.24.99999999987", (lehtikuusentienToimipiste :: oppilaitokset).map(oppilaitosTallentaja).toSet)
-
   val pärre = MockUser("käyttäjä", "pärre", "1.2.246.562.24.99999999901", (lehtikuusentienToimipiste :: oppilaitokset).map(oppilaitosTallentaja).toSet, "sv")
-  val localkoski = MockUser("käyttäjä", "localkoski", "1.2.246.562.24.99999999988", oppilaitokset.map(oppilaitosTallentaja).toSet)
   val omniaPalvelukäyttäjä = MockUser("käyttäjä", "omnia-palvelukäyttäjä", "1.2.246.562.24.99999999989", Set(oppilaitosPalvelukäyttäjä(omnia)))
   val omniaKatselija = MockUser("käyttäjä", "omnia-katselija", "1.2.246.562.24.99999999990", Set(oppilaitosKatselija(omnia)))
   val omniaTallentaja = MockUser("käyttäjä", "omnia-tallentaja", "1.2.246.562.24.99999999991", Set(oppilaitosTallentaja(omnia)))
@@ -35,7 +33,14 @@ object MockUsers {
   val stadinAmmattiopistoPääkäyttäjä = MockUser("stadinammattiopisto-admin", "stadinammattiopisto-admin", "1.2.246.562.24.99999999986", Set(oppilaitosPääkäyttäjä(MockOrganisaatiot.stadinAmmattiopisto)), "fi", List("koski-oppilaitos-pääkäyttäjä_1494486198456"))
   val stadinVastuukäyttäjä = MockUser("stadin-vastuu", "stadin-vastuu", "1.2.246.562.24.99999999996", Set(vastuukäyttäjä(helsinginKaupunki)))
   val stadinPääkäyttäjä = MockUser("stadin-pää", "stadin-pää", "1.2.246.562.24.99999999997", Set(oppilaitosPääkäyttäjä(helsinginKaupunki)), "fi", List("koski-oppilaitos-pääkäyttäjä_1494486198456"))
-  val hkiTallentaja = MockUser("hki-tallentaja", "hki-tallentaja", "1.2.246.562.24.99999999977", Set(oppilaitosTallentaja(helsinginKaupunki)))
+
+  val helsinkiTallentaja = MockUser("hki-tallentaja", "hki-tallentaja", "1.2.246.562.24.99999999977", Set(oppilaitosTallentaja(helsinginKaupunki)))
+  val tornioTallentaja = MockUser("tornio-tallentaja", "tornio-tallentaja", "1.2.246.562.24.99999999988", Set(oppilaitosTallentaja(tornionKaupunki)))
+  val helsinkiSekäTornioTallentaja = MockUser("helsinki-tornio-tallentaja", "helsinki-tornio-tallentaja", "1.2.246.562.24.99999999922", Set(oppilaitosTallentaja(helsinginKaupunki), oppilaitosTallentaja(tornionKaupunki)))
+  val pyhtäänTallentaja = MockUser("pyhtaa-tallentaja", "pyhtaa-tallentaja", "1.2.246.562.24.99999999966", Set(oppilaitosTallentaja(pyhtäänKunta)))
+  val jyväskyläTallentaja = MockUser("jyvaskyla-tallentaja", "jyvaskyla-tallentaja", "1.2.246.562.24.99999999955", Set(oppilaitosTallentaja(jyväskylänYliopisto)))
+  val touholaTallentaja = MockUser("touhola-tallentaja", "touhola-tallentaja", "1.2.246.562.24.99999999933", Set(oppilaitosTallentaja(päiväkotiTouhula)))
+
   val kahdenOrganisaatioPalvelukäyttäjä = MockUser("palvelu2", "palvelu2", "1.2.246.562.24.99999999998", Set(oppilaitosPalvelukäyttäjä(helsinginKaupunki), oppilaitosPalvelukäyttäjä(MockOrganisaatiot.omnia)))
   val omattiedot = MockUser("Oppija", "Oili", "1.2.246.562.24.99999999999", Set(oppilaitosTallentaja(omnia)))
   val eiOikkia = MockUser("EiOikkia", "Otto", "1.2.246.562.24.99999999902", Set(KäyttöoikeusOrg(OidOrganisaatio(lehtikuusentienToimipiste), List(Palvelurooli("OPPIJANUMEROREKISTERI", READ)), juuri = true, oppilaitostyyppi = None)))
@@ -60,7 +65,6 @@ object MockUsers {
     omniaKatselija,
     omniaTallentaja,
     omniaPääkäyttäjä,
-    localkoski,
     paakayttaja,
     viranomainen,
     helsinginKaupunkiPalvelukäyttäjä,
@@ -75,7 +79,12 @@ object MockUsers {
     stadinVastuukäyttäjä,
     stadinPääkäyttäjä,
     tallentajaEiLuottamuksellinen,
-    hkiTallentaja,
+    helsinkiTallentaja,
+    tornioTallentaja,
+    helsinkiSekäTornioTallentaja,
+    pyhtäänTallentaja,
+    jyväskyläTallentaja,
+    touholaTallentaja,
     eiOikkia,
     jyväskylänNormaalikoulunPalvelukäyttäjä,
     jyväskylänYliopistonVastuukäyttäjä,

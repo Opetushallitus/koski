@@ -133,7 +133,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
     }
     val oppilaitosOid = OrganisaatioOid.validateOrganisaatioOid(getStringParam("oppilaitosOid")) match {
       case Left(error) => haltWithStatus(error)
-      case Right(oid) if !koskiSession.hasReadAccess(oid) => haltWithStatus(KoskiErrorCategory.forbidden.organisaatio())
+      case Right(oid) if !koskiSession.hasReadAccess(oid, None) => haltWithStatus(KoskiErrorCategory.forbidden.organisaatio())
       case Right(oid) => oid
     }
     oppilaitosOid
