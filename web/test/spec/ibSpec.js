@@ -738,11 +738,17 @@ describe('IB', function( ) {
           })
 
           describe('Creativity, action, service', function () {
+            before(editor.edit)
+
+            it('voi valita vain arvosanan S', function () {
+              expect(cas.getOptions()).to.deep.equal(['Ei valintaa', 'S' ])
+            })
+
             describe('Arvosanan muuttaminen', function () {
-              before(editor.edit, cas.selectValue('3'), editor.saveChanges, wait.until(page.isSavedLabelShown))
+              before(cas.selectValue('S'), editor.saveChanges, wait.until(page.isSavedLabelShown))
 
               it('onnistuu', function () {
-                expect(cas.getValue()).to.equal('3')
+                expect(cas.getValue()).to.equal('S')
               })
             })
           })
