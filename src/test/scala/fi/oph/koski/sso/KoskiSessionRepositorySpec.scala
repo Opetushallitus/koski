@@ -31,11 +31,11 @@ class KoskiSessionRepositorySpec extends FreeSpec with Matchers with DatabaseTes
   "Vanhentuneiden sessioiden poisto" in {
     val staleSessions = Vector(
       ZonedDateTime.now().minusMonths(22),
-      ZonedDateTime.now().minusMonths(13),
+      ZonedDateTime.now().minusMonths(13)
     )
     val currentSessions = Vector(
       ZonedDateTime.now().minusMonths(11),
-      ZonedDateTime.now().minusMonths(1),
+      ZonedDateTime.now().minusMonths(1)
     )
     (staleSessions ++ currentSessions).foreach(createDummySession)
     sessionsStarteds.length should be(4)
