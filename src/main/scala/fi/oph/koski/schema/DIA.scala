@@ -62,7 +62,7 @@ case class DIATutkinnonSuoritus(
   @MinValue(1.0)
   @MaxValue(6.0)
   @Scale(1)
-  kokonaispistemäärästäJohdettuKeskiarvo: Option[Float] = None,
+  kokonaispistemäärästäJohdettuKeskiarvo: Option[Double] = None,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
   @Description("Oppiaineiden suoritukset")
@@ -201,7 +201,7 @@ case class DIANäyttötutkinto (
 ) extends DIAOppiaineenTutkintovaiheenOsasuoritus with Laajuudeton
 
 case class DIAVastaavuustodistuksenTiedot(
-  keskiarvo: Float,
+  keskiarvo: Double,
   @Description("Valmistavan DIA-vaiheen ja DIA-tutkintovaiheen yhteenlaskettu laajuus")
   @Tooltip("Valmistavan DIA-vaiheen ja DIA-tutkintovaiheen yhteenlaskettu laajuus")
   lukioOpintojenLaajuus: LaajuusOpintopisteissäTaiKursseissa

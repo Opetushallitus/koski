@@ -106,8 +106,8 @@ class OpintosuoritusoteHtml(implicit val user: KoskiSession, val localizationRep
   }
 
   protected def laajuus(suoritus: Suoritus) = if (suoritus.osasuoritukset.isDefined) {
-    decimalFormat.format(suoritus.osasuoritusLista.foldLeft(0f) { (laajuus: Float, suoritus: Suoritus) =>
-      laajuus + suoritus.koulutusmoduuli.laajuus.map(_.arvo).getOrElse(0f)
+    decimalFormat.format(suoritus.osasuoritusLista.foldLeft(0d) { (laajuus: Double, suoritus: Suoritus) =>
+      laajuus + suoritus.koulutusmoduuli.laajuus.map(_.arvo).getOrElse(0d)
     })
   } else {
     suoritus.koulutusmoduuli.laajuus.map(l => decimalFormat.format(l.arvo)).getOrElse("")

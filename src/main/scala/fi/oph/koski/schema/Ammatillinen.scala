@@ -245,7 +245,7 @@ case class AmmatillisenTutkinnonSuoritus(
   @MinValue(1)
   @MaxValue(5)
   @Scale(2)
-  keskiarvo: Option[Float] = None
+  keskiarvo: Option[Double] = None
 ) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus with Todistus
 
 @ReadFlattened

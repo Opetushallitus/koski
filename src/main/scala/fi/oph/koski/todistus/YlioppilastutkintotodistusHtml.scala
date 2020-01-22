@@ -8,7 +8,7 @@ class YlioppilastutkintotodistusHtml(implicit val user: KoskiSession, val locali
   def render(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: Suoritus) = {
     val oppiaineet: List[Suoritus] = päättötodistus.osasuoritukset.toList.flatten
 
-    def oppiaineenKurssimäärä(oppiaine: Suoritus): Float = oppiaine.osasuoritukset.toList.flatten.map(laajuus).sum
+    def oppiaineenKurssimäärä(oppiaine: Suoritus): Double = oppiaine.osasuoritukset.toList.flatten.map(laajuus).sum
 
     <html lang={lang}>
       <head>
