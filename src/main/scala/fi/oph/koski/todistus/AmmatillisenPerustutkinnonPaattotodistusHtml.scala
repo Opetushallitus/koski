@@ -82,7 +82,7 @@ class AmmatillisenPerustutkinnonPaattotodistusHtml(implicit val user: KoskiSessi
             </tbody>
           </table>
           {
-          val työssäoppimisenOsaamispisteet = tutkintoSuoritus.työssäoppimisjaksot.map(_.map(_.laajuus.arvo).sum).getOrElse(0f)
+          val työssäoppimisenOsaamispisteet = tutkintoSuoritus.työssäoppimisjaksot.map(_.map(_.laajuus.arvo).sum).getOrElse(0d)
             if (työssäoppimisenOsaamispisteet > 0) {
               <div class="tyossa-oppiminen">
                 <h4>Tutkintoon sisältyy</h4>

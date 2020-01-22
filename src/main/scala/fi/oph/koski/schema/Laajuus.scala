@@ -8,31 +8,31 @@ trait Laajuus {
   @Description("Opintojen laajuuden arvo")
   @Tooltip("Opintojen laajuus.")
   @MinValueExclusive(0)
-  def arvo: Float
+  def arvo: Double
   @Description("Opintojen laajuuden yksikkö")
   @KoodistoUri("opintojenlaajuusyksikko")
   def yksikkö: Koodistokoodiviite
 }
 
 case class LaajuusKaikkiYksiköt(
-  arvo: Float,
+  arvo: Double,
   yksikkö: Koodistokoodiviite
 ) extends Laajuus
 
 case class LaajuusOpintopisteissä(
-  arvo: Float,
+  arvo: Double,
   @KoodistoKoodiarvo("2")
   yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "2", koodistoUri = "opintojenlaajuusyksikko")
 ) extends LaajuusOpintopisteissäTaiKursseissa
 
 case class LaajuusVuosiviikkotunneissa(
-  arvo: Float,
+  arvo: Double,
   @KoodistoKoodiarvo("3")
   yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "3", koodistoUri = "opintojenlaajuusyksikko")
 ) extends LaajuusVuosiviikkotunneissaTaiKursseissa
 
 case class LaajuusKursseissa(
-  arvo: Float,
+  arvo: Double,
   @KoodistoKoodiarvo("4")
   yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "4", koodistoUri = "opintojenlaajuusyksikko")
 ) extends LaajuusVuosiviikkotunneissaTaiKursseissa with LaajuusOpintopisteissäTaiKursseissa
@@ -43,13 +43,13 @@ trait LaajuusOpintopisteissäTaiKursseissa extends Laajuus
 trait LaajuusVuosiviikkotunneissaTaiKursseissa extends Laajuus
 
 case class LaajuusTunneissa(
-  arvo: Float,
+  arvo: Double,
   @KoodistoKoodiarvo("5")
   yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "5", koodistoUri = "opintojenlaajuusyksikko")
 ) extends Laajuus
 
 case class LaajuusOsaamispisteissä(
-  arvo: Float,
+  arvo: Double,
   @KoodistoKoodiarvo("6")
   yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "6", koodistoUri = "opintojenlaajuusyksikko")
 ) extends Laajuus

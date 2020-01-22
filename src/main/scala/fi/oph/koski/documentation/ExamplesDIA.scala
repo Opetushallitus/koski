@@ -190,7 +190,7 @@ object ExamplesDIA {
   def diaTutkintovaiheenSuoritus(kokonaispistemäärä: Option[Int] = None,
                                  lukukausisuoritustenKokonaispistemäärä: Option[Int] = None,
                                  tutkintoaineidenKokonaispistemäärä: Option[Int] = None,
-                                 kokonaispistemäärästäJohdettuKeskiarvo: Option[Float] = None) = DIATutkinnonSuoritus(
+                                 kokonaispistemäärästäJohdettuKeskiarvo: Option[Double] = None) = DIATutkinnonSuoritus(
     toimipiste = saksalainenKoulu,
     suorituskieli = englanti,
     vahvistus = ExampleData.vahvistusPaikkakunnalla(org = saksalainenKoulu, kunta = helsinki),

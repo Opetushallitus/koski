@@ -6,12 +6,12 @@ import fi.oph.koski.schema._
 
 
 class LukionPaattoTodistusHtml(implicit val user: KoskiSession, val localizationRepository: LocalizationRepository) extends TodistusHtml {
-  override def laajuus(suoritus: Suoritus): Float = suoritus.koulutusmoduuli.laajuus.map(_.arvo).getOrElse(1f)
+  override def laajuus(suoritus: Suoritus): Double = suoritus.koulutusmoduuli.laajuus.map(_.arvo).getOrElse(1d)
 
   def render(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: Suoritus) = {
     val oppiaineet: List[Suoritus] = päättötodistus.osasuoritukset.toList.flatten
 
-    def oppiaineenKurssimäärä(oppiaine: Suoritus): Float = oppiaine.osasuoritukset.toList.flatten.map(laajuus).sum
+    def oppiaineenKurssimäärä(oppiaine: Suoritus): Double = oppiaine.osasuoritukset.toList.flatten.map(laajuus).sum
 
     <html lang={lang}>
       <head>
@@ -59,7 +59,7 @@ class LukionPaattoTodistusHtml(implicit val user: KoskiSession, val localization
             }
             <tr class="kurssimaara">
               <td class="kurssimaara-title">Opiskelijan suorittama kokonaiskurssimäärä</td>
-              <td>{decimalFormat.format(oppiaineet.foldLeft(0f) { (summa, aine) => summa + oppiaineenKurssimäärä(aine)})}</td>
+              <td>{decimalFormat.format(oppiaineet.foldLeft(0d) { (summa, aine) => summa + oppiaineenKurssimäärä(aine)})}</td>
             </tr>
           </table>
           { päättötodistus.vahvistus.toList.map(vahvistusHTML)}

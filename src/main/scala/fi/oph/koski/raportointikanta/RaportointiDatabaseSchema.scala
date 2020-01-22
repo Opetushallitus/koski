@@ -177,7 +177,7 @@ object RaportointiDatabaseSchema {
     val koulutusmoduuliKoodisto = column[Option[String]]("koulutusmoduuli_koodisto", StringIdentifierType)
     val koulutusmoduuliKoodiarvo = column[String]("koulutusmoduuli_koodiarvo", StringIdentifierType)
     val koulutusmoduuliKoulutustyyppi = column[Option[String]]("koulutusmoduuli_koulutustyyppi", StringIdentifierType)
-    val koulutusmoduuliLaajuusArvo = column[Option[Float]]("koulutusmoduuli_laajuus_arvo", SqlType("numeric"))
+    val koulutusmoduuliLaajuusArvo = column[Option[Double]]("koulutusmoduuli_laajuus_arvo", SqlType("numeric"))
     val koulutusmoduuliLaajuusYksikkö = column[Option[String]]("koulutusmoduuli_laajuus_yksikko", StringIdentifierType)
     val koulutusmoduuliNimi = column[Option[String]]("koulutusmoduuli_nimi", StringIdentifierType)
     val vahvistusPäivä = column[Option[Date]]("vahvistus_paiva")
@@ -204,7 +204,7 @@ object RaportointiDatabaseSchema {
     val suorituksenTyyppi = column[String]("suorituksen_tyyppi", StringIdentifierType)
     val koulutusmoduuliKoodisto = column[Option[String]]("koulutusmoduuli_koodisto", StringIdentifierType)
     val koulutusmoduuliKoodiarvo = column[String]("koulutusmoduuli_koodiarvo", StringIdentifierType)
-    val koulutusmoduuliLaajuusArvo = column[Option[Float]]("koulutusmoduuli_laajuus_arvo", SqlType("numeric"))
+    val koulutusmoduuliLaajuusArvo = column[Option[Double]]("koulutusmoduuli_laajuus_arvo", SqlType("numeric"))
     val koulutusmoduuliLaajuusYksikkö = column[Option[String]]("koulutusmoduuli_laajuus_yksikko", StringIdentifierType)
     val koulutusmoduuliPaikallinen = column[Boolean]("koulutusmoduuli_paikallinen")
     val koulutusmoduuliPakollinen = column[Option[Boolean]]("koulutusmoduuli_pakollinen")
@@ -232,7 +232,7 @@ object RaportointiDatabaseSchema {
     val opiskeluoikeusOid = column[String]("opiskeluoikeus_oid", StringIdentifierType)
     val päätasonSuoritusId = column[Long]("paatason_suoritus_id")
     val toteuttavanLuokanNimi = column[String]("toteuttavan_luokan_nimi")
-    val koulutusmoduuliLaajuusArvo = column[Option[Float]]("koulutusmoduuli_laajuus_arvo", SqlType("numeric"))
+    val koulutusmoduuliLaajuusArvo = column[Option[Double]]("koulutusmoduuli_laajuus_arvo", SqlType("numeric"))
     val koulutusmoduuliLaajuusYksikkö = column[Option[String]]("koulutusmoduuli_laajuus_yksikko", StringIdentifierType)
     val arviointiHyväksytty = column[Boolean]("arviointi_hyvaksytty")
     def * = (opiskeluoikeusOid, päätasonSuoritusId, toteuttavanLuokanNimi, koulutusmoduuliLaajuusArvo, koulutusmoduuliLaajuusYksikkö, arviointiHyväksytty) <> (MuuAmmatillinenOsasuoritusRaportointiRow.tupled, MuuAmmatillinenOsasuoritusRaportointiRow.unapply)
@@ -247,7 +247,7 @@ object RaportointiDatabaseSchema {
     val rahoituksenPiirissä = column[Boolean]("rahoituksen_piirissa")
     val arviointiHyväksytty = column[Boolean]("arviointi_hyvaksytty")
     val tunnustettu = column[Boolean]("tunnustettu")
-    val koulutusmoduuliLaajuusArvo = column[Option[Float]]("koulutusmoduuli_laajuus_arvo")
+    val koulutusmoduuliLaajuusArvo = column[Option[Double]]("koulutusmoduuli_laajuus_arvo")
     val koulutusmoduuliLaajuusYksikkö =  column[Option[String]]("koulutusmoduuli_laajuus_yksikko")
     def * = (opiskeluoikeudenOid, päätasonSuoritusId, toteuttavanLuokanNimi, rahoituksenPiirissä, arviointiHyväksytty, tunnustettu, koulutusmoduuliLaajuusArvo, koulutusmoduuliLaajuusYksikkö) <> (TOPKSAmmatillinenRaportointiRow.tupled, TOPKSAmmatillinenRaportointiRow.unapply)
   }
@@ -411,7 +411,7 @@ case class RPäätasonSuoritusRow(
   koulutusmoduuliKoodisto: Option[String],
   koulutusmoduuliKoodiarvo: String,
   koulutusmoduuliKoulutustyyppi: Option[String],
-  koulutusmoduuliLaajuusArvo: Option[Float],
+  koulutusmoduuliLaajuusArvo: Option[Double],
   koulutusmoduuliLaajuusYksikkö: Option[String],
   koulutusmoduuliNimi: Option[String],
   vahvistusPäivä: Option[Date],
@@ -447,7 +447,7 @@ case class ROsasuoritusRow(
   suorituksenTyyppi: String,
   koulutusmoduuliKoodisto: Option[String] = None,
   koulutusmoduuliKoodiarvo: String,
-  koulutusmoduuliLaajuusArvo: Option[Float] = None,
+  koulutusmoduuliLaajuusArvo: Option[Double] = None,
   koulutusmoduuliLaajuusYksikkö: Option[String] = None,
   koulutusmoduuliPaikallinen: Boolean,
   koulutusmoduuliPakollinen: Option[Boolean] = None,
@@ -525,7 +525,7 @@ case class MuuAmmatillinenOsasuoritusRaportointiRow(
   opiskeluoikeusOid: String,
   päätasonSuoritusId: Long,
   toteuttavanLuokanNimi: String,
-  koulutusmoduuliLaajuusArvo: Option[Float] = None,
+  koulutusmoduuliLaajuusArvo: Option[Double] = None,
   koulutusmoduuliLaajuusYksikkö: Option[String] = None,
   arviointiHyväksytty: Boolean
 )
@@ -537,7 +537,7 @@ case class TOPKSAmmatillinenRaportointiRow(
   rahoituksenPiirissä: Boolean,
   arviointiHyväksytty: Boolean,
   tunnustettu: Boolean,
-  koulutusmoduuliLaajuusArvo: Option[Float],
+  koulutusmoduuliLaajuusArvo: Option[Double],
   koulutusmoduuliLaajuusYksikkö: Option[String]
 )
 

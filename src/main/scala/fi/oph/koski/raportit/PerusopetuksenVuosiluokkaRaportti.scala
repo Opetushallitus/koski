@@ -185,9 +185,9 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
 
   private val vuosiviikkotunnitKoodistoarvo = "3"
 
-  private def vuosiviikkotunteja(osasuoritus: ROsasuoritusRow, op: (Float, Float) => Boolean, threshold: Float) = {
+  private def vuosiviikkotunteja(osasuoritus: ROsasuoritusRow, op: (Double, Double) => Boolean, threshold: Double) = {
     osasuoritus.koulutusmoduuliLaajuusYksikkö.contains(vuosiviikkotunnitKoodistoarvo) &&
-      op(osasuoritus.koulutusmoduuliLaajuusArvo.getOrElse(-1), threshold)
+      op(osasuoritus.koulutusmoduuliLaajuusArvo.getOrElse(-1d), threshold)
   }
 
   private def isNumeroarviollinen(osasuoritus: ROsasuoritusRow) = {
