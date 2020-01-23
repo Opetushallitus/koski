@@ -8,15 +8,15 @@ import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.{JsonSerializer, SensitiveDataAllowed}
 import fi.oph.koski.koskiuser.RequiresTilastokeskus
-import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueries
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}
+import fi.oph.koski.util.{Pagination, PaginationSettings}
 import org.json4s.JValue
 
 import scala.collection.immutable
 
-class TilastokeskusServlet(implicit val application: KoskiApplication) extends ApiServlet with ObservableSupport with NoCache with OpiskeluoikeusQueries with RequiresTilastokeskus {
-
+class TilastokeskusServlet(implicit val application: KoskiApplication) extends ApiServlet with ObservableSupport with NoCache with RequiresTilastokeskus with Pagination {
+  private val tilastokeskusService = new TilastokeskusService(application)
   override protected val maxNumberOfItemsPerPage: Int = 1000
 
   get("/") {
@@ -24,11 +24,18 @@ class TilastokeskusServlet(implicit val application: KoskiApplication) extends A
       haltWithStatus(KoskiErrorCategory.badRequest.queryParam("Tuntematon versio"))
     }
 
-    val serializer = TilastokeskusSensitiveDataFilter(koskiSession).rowSerializer
+    val paginationSettings = Some(PaginationSettings(pageNumber.getOrElse(0), pageSize.getOrElse(maxNumberOfItemsPerPage)));
 
-    val oppijat = performOpiskeluoikeudetQueryLaajoillaHenkilötiedoilla.map(observable => observable
-      .map(x => (laajatHenkilötiedotToTilastokeskusHenkilötiedot(x._1), x._2))
-      .map(serializer)
+    val serializer = TilastokeskusSensitiveDataFilter(koskiSession).rowSerializer
+    val oppijat = tilastokeskusService.performOpiskeluoikeudetQueryLaajoillaHenkilötiedoilla(request, koskiSession, multiParams, paginationSettings)
+      .map(observable => {
+      observable
+        .map(x => {
+          (laajatHenkilötiedotToTilastokeskusHenkilötiedot(x._1), x._2)
+        }
+        )
+        .map(serializer)
+    }
     )
 
     streamResponse(oppijat, koskiSession)

@@ -2,12 +2,12 @@ package fi.oph.koski.luovutuspalvelu
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.OpiskeluoikeusRow
-import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, OppijaHenkilö, SuppeatOppijaHenkilöTiedot}
+import fi.oph.koski.henkilo.OppijaHenkilö
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, KoskiMessageField, KoskiOperation}
-import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryContext, OpiskeluoikeusQueryFilter}
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{OneOfOpiskeluoikeudenTyypit, OppijaOidHaku}
 import fi.oph.koski.schema._
 import org.json4s.JValue
