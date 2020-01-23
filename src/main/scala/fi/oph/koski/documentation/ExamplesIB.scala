@@ -150,7 +150,7 @@ object ExamplesIB {
       ibCoreArviointi("B", predicted = predicted)
     )),
     creativityActionService = Some(IBCASSuoritus(
-      IBOppiaineCAS(laajuus = Some(LaajuusTunneissa(267))), ibCASArviointi("S", predicted = predicted)
+      IBOppiaineCAS(laajuus = Some(LaajuusTunneissa(267))), ibArviointi("S", predicted = predicted)
     )),
     lisäpisteet = Some(Koodistokoodiviite(koodiarvo = "3", koodistoUri = "arviointiasteikkolisapisteetib"))
   )
@@ -197,10 +197,6 @@ object ExamplesIB {
 
   def ibArviointi(arvosana: String, päivä: LocalDate = date(2016, 6, 4), predicted: Boolean): Some[List[IBOppiaineenArviointi]] = {
     Some(List(IBOppiaineenArviointi(predicted = predicted, arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoib"), päivä = Some(päivä))))
-  }
-
-  def ibCASArviointi(arvosana: String, päivä: LocalDate = date(2016, 6, 4), predicted: Boolean): Some[List[IBCASOppiaineenArviointi]] = {
-    Some(List(IBCASOppiaineenArviointi(predicted = predicted, arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoib"), päivä = Some(päivä))))
   }
 
   def ibCoreArviointi(arvosana: String, päivä: LocalDate = date(2016, 6, 4), predicted: Boolean): Some[List[IBCoreRequirementsArviointi]] = {

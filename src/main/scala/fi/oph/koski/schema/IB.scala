@@ -121,7 +121,7 @@ case class IBTheoryOfKnowledgeSuoritus(
 case class IBCASSuoritus(
   @Title("Oppiaine")
   koulutusmoduuli: IBOppiaineCAS,
-  arviointi: Option[List[IBCASOppiaineenArviointi]] = None,
+  arviointi: Option[List[IBOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("iboppiainecas")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "iboppiainecas", koodistoUri = "suorituksentyyppi")
@@ -159,23 +159,6 @@ case class IBOppiaineenArviointi(
   @Description("Onko arvoitu arvosana vai ei, jos ei niin tarkoittaa IBOn vahvistamaa arvosanaa")
   predicted: Boolean = true,
   @KoodistoUri("arviointiasteikkoib")
-  arvosana: Koodistokoodiviite,
-  @Description("Effort-arvosana, kuvaa opiskelijan tunnollisuutta, aktiivisuutta ja yritteliäisyyttä. Arvosteluasteikko: A = very good, B = good, C = needs improvement")
-  @KoodistoUri("effortasteikkoib")
-  effort: Option[Koodistokoodiviite] = None,
-  @Description("Arviointipäivämäärä")
-  päivä: Option[LocalDate]
-) extends IBArviointi {
-  override def arviointipäivä: Option[LocalDate] = päivä
-}
-
-@Title("IB CAS -oppinaineen arviointi")
-@OnlyWhen("../tyyppi/koodiarvo","iboppiainecas")
-case class IBCASOppiaineenArviointi(
-  @Description("Onko arvoitu arvosana vai ei, jos ei niin tarkoittaa IBOn vahvistamaa arvosanaa")
-  predicted: Boolean = true,
-  @KoodistoUri("arviointiasteikkoib")
-  @KoodistoKoodiarvo("S")
   arvosana: Koodistokoodiviite,
   @Description("Effort-arvosana, kuvaa opiskelijan tunnollisuutta, aktiivisuutta ja yritteliäisyyttä. Arvosteluasteikko: A = very good, B = good, C = needs improvement")
   @KoodistoUri("effortasteikkoib")

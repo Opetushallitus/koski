@@ -1,8 +1,8 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.documentation.ExamplesIB._
-import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
-import fi.oph.koski.schema.{IBCASSuoritus, IBOpiskeluoikeus, IBOppiaineCAS, IBOppiaineenSuoritus, LaajuusTunneissa}
+import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.schema.{IBOpiskeluoikeus, IBOppiaineenSuoritus}
 import org.scalatest.FreeSpec
 
 class OppijaValidationIBSpec extends FreeSpec with LocalJettyHttpSpecification with PutOpiskeluoikeusTestMethods[IBOpiskeluoikeus] {
@@ -13,26 +13,6 @@ class OppijaValidationIBSpec extends FreeSpec with LocalJettyHttpSpecification w
   "IB validation" - {
 
     "IB tutkinnon suoritus" - {
-
-      "CAS-aine, arvosanan antaminen" - {
-        def historiaOppiaine(level: String, arvosana: String) = ibAineSuoritus(ibOppiaine("HIS", level, 3), ibArviointi(arvosana, predicted = false))
-
-        "Arvosana S" - {
-          "Palautetaan HTTP/200" in {
-            val opiskeluoikeus = opiskeluoikeusIBTutkinnollaWithCASArvosana("S")
-            putOpiskeluoikeus(opiskeluoikeus) {
-              verifyResponseStatusOk()
-          }}
-        }
-
-        "Arvosana numeerinen" - {
-          "Palautetaan HTTP/400" in {
-            val opiskeluoikeus = opiskeluoikeusIBTutkinnollaWithCASArvosana("4")
-            putOpiskeluoikeus(opiskeluoikeus) {
-              verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*enumValueMismatch.*".r))
-          }}
-        }
-      }
 
       "Kaksi samaa oppiainetta"  - {
         def historiaOppiaine(level: String, arvosana: String) = ibAineSuoritus(ibOppiaine("HIS", level, 3), ibArviointi(arvosana, predicted = false))
@@ -71,7 +51,7 @@ class OppijaValidationIBSpec extends FreeSpec with LocalJettyHttpSpecification w
             historiaOppiaine(higherLevel, "S"),
             historiaOppiaine(standardLevel, "S")
           ))
-          "Palautetaan HTTP/200" in { putOpiskeluoikeus(opiskeluoikeus) {
+          "Palautetaan HTPP/200" in { putOpiskeluoikeus(opiskeluoikeus) {
             verifyResponseStatusOk()
           }}
         }
@@ -83,16 +63,6 @@ class OppijaValidationIBSpec extends FreeSpec with LocalJettyHttpSpecification w
     defaultOpiskeluoikeus.copy(
       suoritukset = List(ibTutkinnonSuoritus(predicted = false).copy(
         osasuoritukset = Some(oppiaineet)
-      ))
-    )
-  }
-
-  private def opiskeluoikeusIBTutkinnollaWithCASArvosana(arvosana: String) = {
-    defaultOpiskeluoikeus.copy(
-      suoritukset = List(ibTutkinnonSuoritus(predicted = false).copy(
-        creativityActionService = Some(IBCASSuoritus(
-          IBOppiaineCAS(laajuus = Some(LaajuusTunneissa(267))), ibCASArviointi(arvosana, predicted = true)
-        ))
       ))
     )
   }
