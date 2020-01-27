@@ -29,7 +29,7 @@ case class InternationalSchoolOpiskeluoikeudenLisätiedot(
   erityisenKoulutustehtävänJaksot: Option[List[ErityisenKoulutustehtävänJakso]] = None,
   @Description("Rahoituksen laskennassa käytettävä tieto.")
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None
-) extends OpiskeluoikeudenLisätiedot
+) extends OpiskeluoikeudenLisätiedot with ErityisenKoulutustehtävänJaksollinen
 
 trait InternationalSchoolVuosiluokanSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Arvioinniton with Suorituskielellinen {
   @KoodistoKoodiarvo("internationalschoolvuosiluokka")

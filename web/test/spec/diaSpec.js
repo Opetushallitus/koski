@@ -31,7 +31,7 @@ describe('DIA', function( ) {
           editor.property('erityisenKoulutustehtävänJaksot').addItem,
           editor.property('erityisenKoulutustehtävänJaksot').propertyBySelector('.alku').setValue('1.9.2012'),
           editor.property('erityisenKoulutustehtävänJaksot').propertyBySelector('.loppu').setValue('4.6.2016'),
-          editor.property('erityisenKoulutustehtävänJaksot').property('tehtävä').setValue('Erityisenä koulutustehtävänä kieli ja kansainvälisyys'),
+          editor.property('erityisenKoulutustehtävänJaksot').property('tehtävä').setValue('Kieliin painottuva koulutus'),
           editor.saveChanges,
           wait.until(page.isSavedLabelShown)
         )
@@ -39,7 +39,7 @@ describe('DIA', function( ) {
           expect(extractAsText(S('.lisätiedot'))).to.equal('Lisätiedot\n' +
             'Pidennetty päättymispäivä kyllä\n' +
             'Ulkomainen vaihto-opiskelija. kyllä\n' +
-            'Erityisen koulutustehtävän jaksot 1.9.2012 — 4.6.2016 Tehtävä Erityisenä koulutustehtävänä kieli ja kansainvälisyys\n' +
+            'Erityisen koulutustehtävän jaksot 1.9.2012 — 4.6.2016 Tehtävä Kieliin painottuva koulutus\n' +
             'Ulkomaanjaksot 4.1.2013 — 16.3.2013 Maa Ahvenanmaa Kuvaus Ulkomaanjakso')
         })
       })
@@ -60,14 +60,14 @@ describe('DIA', function( ) {
           editor.property('ulkomaanjaksot').property('kuvaus:last').setValue('Ja vielä jotain'),
           editor.property('erityisenKoulutustehtävänJaksot').propertyBySelector('.alku').setValue('1.9.2012'),
           editor.property('erityisenKoulutustehtävänJaksot').propertyBySelector('.loppu').setValue('4.6.2015'),
-          editor.property('erityisenKoulutustehtävänJaksot').property('tehtävä').setValue('Erityisenä koulutustehtävänä taide'),
+          editor.property('erityisenKoulutustehtävänJaksot').property('tehtävä').setValue('Ilmaisutaitoon painottuva opetus'),
           editor.saveChanges,
           wait.until(page.isSavedLabelShown)
         )
 
         it('tallentaa muutokset ja esittää ajantasaiset lisätiedot', function() {
           expect(extractAsText(S('.lisätiedot'))).to.equal('Lisätiedot\n' +
-            'Erityisen koulutustehtävän jaksot 1.9.2012 — 4.6.2015 Tehtävä Erityisenä koulutustehtävänä taide\n' +
+            'Erityisen koulutustehtävän jaksot 1.9.2012 — 4.6.2015 Tehtävä Ilmaisutaitoon painottuva opetus\n' +
             'Ulkomaanjaksot 5.1.2013 — 14.2.2013 Maa Ruotsi Kuvaus Jotain muuta\n' +
             '15.2.2013 — 29.4.2013 Maa Norja Kuvaus Ja vielä jotain')
         })
