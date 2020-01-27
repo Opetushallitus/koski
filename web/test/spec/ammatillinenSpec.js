@@ -2392,25 +2392,6 @@ describe('Ammatillinen koulutus', function() {
         after(editor.cancelChanges)
       })
 
-      describe('Ammatillisen tutkinnon osan suoritus puuttuu', function () {
-        before(
-          editor.edit,
-          editor.property('tila').removeItem(0),
-          opinnot.valitseSuoritus(undefined, 'Luonto- ja ympäristöalan perustutkinto, osittainen'),
-          opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi,
-          opinnot.tutkinnonOsat().tutkinnonOsa(3).poistaTutkinnonOsa,
-          opinnot.tutkinnonOsat().tutkinnonOsa(2).poistaTutkinnonOsa,
-          opinnot.tutkinnonOsat().tutkinnonOsa(1).poistaTutkinnonOsa,
-          opinnot.tutkinnonOsat().tutkinnonOsa(0).poistaTutkinnonOsa
-       )
-
-        it('Ei voida asettaa valmiiksi', function () {
-          expect(opinnot.tilaJaVahvistus.merkitseValmiiksiEnabled()).to.equal(false)
-        })
-
-        after(editor.cancelChanges)
-      })
-
       describe('Ammatillisen tutkinnon osan suoritus puuttuu, mutta opiskeluoikeuteen on sisällytetty toinen opiskeluoikeus', function () {
 
         var firstEditor = opinnot.opiskeluoikeusEditor(0)
