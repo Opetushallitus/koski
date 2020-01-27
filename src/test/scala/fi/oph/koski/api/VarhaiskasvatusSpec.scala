@@ -1,7 +1,8 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.documentation.ExamplesEsiopetus.{ostopalvelu, päiväkodinEsiopetuksenTunniste}
-import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.päiväkotiTouhula
+import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.{päiväkotiTouhula, päiväkotiVironniemi}
+import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.{asUusiOppija, ysiluokkalainen}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.MockUsers
@@ -96,6 +97,24 @@ class VarhaiskasvatusSpec extends FreeSpec with EsiopetusSpecification {
 
         putOpiskeluoikeus(esiopetuksenOpiskeluoikeus.copy(oid = Some(opiskeluoikeusOid), koulutustoimija = tornio), headers = authHeaders(MockUsers.tornioTallentaja) ++ jsonContent) {
           verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia(s"Opiskeluoikeutta $opiskeluoikeusOid ei löydy tai käyttäjällä ei ole oikeutta sen katseluun"))
+        }
+      }
+    }
+  }
+
+  "Pääkäyttäjä" - {
+    "kun koulutustoimija ja järjestämismuoto on syötetty" - {
+      "ei voi tallentaa omaan hierarkiaan" in {
+        val opiskeluoikeus = päiväkotiEsiopetus(päiväkotiVironniemi, ostopalvelu).copy(koulutustoimija = hki)
+        putOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.organisaatio.järjestämismuoto())
+        }
+      }
+
+      "voi tallentaa hierarkian ulkopuolelle" in {
+        val opiskeluoikeus = päiväkotiEsiopetus(päiväkotiTouhula, ostopalvelu).copy(koulutustoimija = hki)
+        putOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
+          verifyResponseStatusOk()
         }
       }
     }
