@@ -356,9 +356,6 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             "ja tutkinnon osalta puuttuu arviointi, palautetaan HTTP 400" in (putOpiskeluoikeus(opiskeluoikeus) (
               verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.keskeneräinenOsasuoritus("Valmiiksi merkityllä suorituksella koulutus/351301 on keskeneräinen osasuoritus tutkinnonosat/100023"))))
 
-            "ja tutkinnon osan suoritus puuttuu, palautetaan HTTP 400" in (putOpiskeluoikeus(opiskeluoikeus.copy(suoritukset = List(suoritus.copy(suoritustapa = tutkinnonSuoritustapaOps, osasuoritukset = Some(List(yhteisenTutkinnonOsanSuoritus("101054", "Matematiikka", arvosanaViisi, 8))))))) (
-              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia("Suoritus koulutus/351301 on merkitty valmiiksi, mutta sillä ei ole ammatillisen tutkinnon osan suoritusta tai opiskeluoikeudelta puuttuu linkitys"))))
-
             "tutkinnolla ei osasuorituksia, palautetaan HTTP 400" in (putOpiskeluoikeus(tyhjilläOsasuorituksilla)(
               verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia("Suoritus koulutus/351301 on merkitty valmiiksi, mutta sillä ei ole ammatillisen tutkinnon osan suoritusta tai opiskeluoikeudelta puuttuu linkitys"))))
 
