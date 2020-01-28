@@ -96,6 +96,17 @@ describe('Esiopetus', function() {
           expect(editor.property('koulutustoimija').isVisible()).to.equal(false)
           expect(editor.property('järjestämismuoto').isVisible()).to.equal(false)
         })
+
+        describe('Editointitilassa', function() {
+          before(editor.edit)
+
+          it('koulutusmoduulia ja järjestämismuotoa ei näytetä', function () {
+            expect(editor.property('koulutustoimija').isVisible()).to.equal(false)
+            expect(editor.property('järjestämismuoto').isVisible()).to.equal(false)
+          })
+
+          after(editor.cancelChanges)
+        })
       })
     })
 

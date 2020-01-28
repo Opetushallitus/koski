@@ -202,7 +202,6 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     oo.suoritukset.forall(päiväkodissaJärjestettyEsiopetuksenSuoritus)
   }
 
-
   private def addKoulutustyyppi(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
     val t = traversal[KoskeenTallennettavaOpiskeluoikeus]
       .field[List[PäätasonSuoritus]]("suoritukset")
