@@ -17,7 +17,7 @@ case class DIAOpiskeluoikeus(
   koulutustoimija: Option[Koulutustoimija] = None,
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None,
   arvioituPäättymispäivä: Option[LocalDate] = None,
-  tila: LukionOpiskeluoikeudenTila,
+  tila: DIAOpiskeluoikeudenTila,
   @MaxItems(2)
   suoritukset: List[DIAPäätasonSuoritus],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.diatutkinto.koodiarvo)
@@ -28,6 +28,21 @@ case class DIAOpiskeluoikeus(
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
 }
+
+case class DIAOpiskeluoikeudenTila(
+  @MinItems(1)
+  opiskeluoikeusjaksot: List[DIAOpiskeluoikeusjakso]
+) extends OpiskeluoikeudenTila
+
+case class DIAOpiskeluoikeusjakso(
+  alku: LocalDate,
+  tila: Koodistokoodiviite,
+  @Description("Opintojen rahoitus. Mikäli kyseessä on kaksoitutkintoa suorittava opiskelija, jonka rahoituksen saa ammatillinen oppilaitos, tulee käyttää arvoa 6: Muuta kautta rahoitettu. Muussa tapauksessa käytetään arvoa 1: Valtionosuusrahoitteinen koulutus.")
+  @KoodistoUri("opintojenrahoitus")
+  @KoodistoKoodiarvo("1")
+  @KoodistoKoodiarvo("6")
+  override val opintojenRahoitus: Option[Koodistokoodiviite] = None
+) extends KoskiOpiskeluoikeusjakso
 
 @Description("DIA-opiskeluoikeuden lisätiedot")
 case class DIAOpiskeluoikeudenLisätiedot(

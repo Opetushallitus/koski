@@ -13,7 +13,7 @@ case class InternationalSchoolOpiskeluoikeus(
   oppilaitos: Option[Oppilaitos] = None,
   koulutustoimija: Option[Koulutustoimija] = None,
   arvioituPäättymispäivä: Option[LocalDate] = None,
-  tila: LukionOpiskeluoikeudenTila,
+  tila: InternationalSchoolOpiskeluoikeudenTila,
   suoritukset: List[InternationalSchoolVuosiluokanSuoritus],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.internationalschool.koodiarvo)
   tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.internationalschool,
@@ -24,6 +24,21 @@ case class InternationalSchoolOpiskeluoikeus(
   override def withKoulutustoimija(koulutustoimija: Koulutustoimija) = this.copy(koulutustoimija = Some(koulutustoimija))
   override def sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None
 }
+
+case class InternationalSchoolOpiskeluoikeudenTila(
+  @MinItems(1)
+  opiskeluoikeusjaksot: List[InternationalSchoolOpiskeluoikeusjakso]
+) extends OpiskeluoikeudenTila
+
+case class InternationalSchoolOpiskeluoikeusjakso(
+  alku: LocalDate,
+  tila: Koodistokoodiviite,
+  @Description("Opintojen rahoitus. Mikäli kyseessä on kaksoitutkintoa suorittava opiskelija, jonka rahoituksen saa ammatillinen oppilaitos, tulee käyttää arvoa 6: Muuta kautta rahoitettu. Muussa tapauksessa käytetään arvoa 1: Valtionosuusrahoitteinen koulutus.")
+  @KoodistoUri("opintojenrahoitus")
+  @KoodistoKoodiarvo("1")
+  @KoodistoKoodiarvo("6")
+  override val opintojenRahoitus: Option[Koodistokoodiviite] = None
+) extends KoskiOpiskeluoikeusjakso
 
 case class InternationalSchoolOpiskeluoikeudenLisätiedot(
   erityisenKoulutustehtävänJaksot: Option[List[ErityisenKoulutustehtävänJakso]] = None,
