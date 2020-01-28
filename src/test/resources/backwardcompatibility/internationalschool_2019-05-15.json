@@ -2825,5 +2825,6 @@
     },
     "alkamispäivä" : "2006-08-15",
     "päättymispäivä" : "2018-06-30"
-  } ]
+  } ],
+  "ignoreKoskiValidator" : true
 }
