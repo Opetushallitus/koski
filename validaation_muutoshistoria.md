@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 28.1.2020
+- Osittainen ammattitutkinto voidaan merkitä valmiiksi silloinkin kun suorituksissa on pelkkiä yleisiä aineita.
+
 ## 15.1.2020
 - Ammatillisissa ops-muotoisissa tutkinnoissa voidaan antaa painotettu keskiarvosana.
 
