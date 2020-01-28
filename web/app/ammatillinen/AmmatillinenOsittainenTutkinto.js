@@ -5,7 +5,7 @@ import {modelData} from '../editor/EditorModel'
 
 export const ammattillinenOsittainenTutkintoJaMuuAmmatillisenTutkinnonOsaPuuttuu = suoritus => (
   suorituksenTyyppi(suoritus) === 'ammatillinentutkintoosittainen'
-  && R.none(isOsittaisenAmmatillisenTutkinnonMuunTutkinnonOsanSuoritus)(osasuoritukset(suoritus))
+  && R.isEmpty(osasuoritukset(suoritus))
   && !isOstettu(suoritus)
 )
 
