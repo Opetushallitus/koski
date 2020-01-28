@@ -1,7 +1,5 @@
 package fi.oph.koski.http
 
-import java.nio.file.Paths
-
 import fi.oph.koski.json.JsonSerializer
 import org.json4s.JValue
 import org.json4s.JsonAST.JString
