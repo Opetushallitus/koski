@@ -1,6 +1,5 @@
 import * as R from 'ramda'
 import {osasuoritukset, suorituksenTyyppi} from '../suoritus/Suoritus'
-import {isOsittaisenAmmatillisenTutkinnonMuunTutkinnonOsanSuoritus} from './TutkinnonOsa'
 import {modelData} from '../editor/EditorModel'
 
 export const ammattillinenOsittainenTutkintoJaMuuAmmatillisenTutkinnonOsaPuuttuu = suoritus => (
