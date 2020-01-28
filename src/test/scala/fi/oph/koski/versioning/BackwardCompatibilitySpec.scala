@@ -19,7 +19,7 @@ import org.scalatest.{FreeSpec, Matchers}
  * Tests that examples match saved JSON files. Run with -DupdateExamples=true to update saved JSON files from current examples.
  */
 class BackwardCompatibilitySpec extends FreeSpec with Matchers {
-  lazy val validator = KoskiApplicationForTests.validator
+  lazy val koskiValidator = KoskiApplicationForTests.validator
   implicit val user = KoskiSession.systemUser
   implicit val accessType = AccessType.read
 
@@ -39,24 +39,33 @@ class BackwardCompatibilitySpec extends FreeSpec with Matchers {
           case files =>
             files.foreach { filename =>
               filename in {
+
                 var skipEqualityCheck = false
+                var skipKoskiValidator = false
+
                 val json: JValue = JsonFiles.readFile(fullName(filename)).removeField {
                   case ("ignoreJsonEquality", JBool(true)) =>
                     skipEqualityCheck = true
                     true
+                  case ("ignoreKoskiValidator", JBool(true)) =>
+                    skipKoskiValidator = true
+                    true
                   case _ => false
                 }
+
                 SchemaValidatingExtractor.extract[Oppija](json) match {
                   case Right(oppija) =>
                     val afterRoundtrip: JValue = JsonSerializer.serializeWithRoot(oppija)
-                    validator.validateAsJson(oppija) match {
-                      case Right(validated) =>
-                        // Valid, now check for JSON equality after roundtrip (not strictly necessary, but it's good to know if this breaks)
-                        if (!skipEqualityCheck) {
-                          JsonMethods.compact(mangle(afterRoundtrip)) should equal(JsonMethods.compact(mangle(json)))
-                        }
-                      case Left(err) =>
-                        throw new IllegalStateException(err.toString)
+
+                    if (!skipKoskiValidator) {
+                      koskiValidator.validateAsJson(oppija) match {
+                        case Right(_) => //ok
+                        case Left(err) => throw new IllegalStateException(err.toString)
+                      }
+                    }
+
+                    if (!skipEqualityCheck) {
+                      JsonMethods.compact(mangle(afterRoundtrip)) should equal(JsonMethods.compact(mangle(json)))
                     }
                   case Left(errors) =>
                     fail("Backward compatibility problem: " + errors)
