@@ -21,4 +21,8 @@ ignore:
     - snyk > snyk-sbt-plugin > tree-kill:
         reason: Wait for patch
         expires: '2020-01-08T16:42:44.583Z'
+  SNYK-JS-KINDOF-537849:
+    - '*':
+        reason: Devtools only
+        expires: 2020-05-27T15:53:15.834Z
 patch: {}
