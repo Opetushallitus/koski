@@ -24,19 +24,19 @@ object OpiskeluoikeusTestMethodsDIA {
 
   def opiskeluoikeus = DIAOpiskeluoikeus(
     oppilaitos = Some(saksalainenKoulu),
-    tila = LukionOpiskeluoikeudenTila(
+    tila = DIAOpiskeluoikeudenTila(
       List(
-        LukionOpiskeluoikeusjakso(date(2012, 9, 1), LukioExampleData.opiskeluoikeusAktiivinen)
+        DIAOpiskeluoikeusjakso(date(2012, 9, 1), LukioExampleData.opiskeluoikeusAktiivinen)
       )
     ),
     suoritukset = List(tutkintoSuoritus)
   )
 
   def opiskeluoikeusValmis = opiskeluoikeus.copy(
-    tila = LukionOpiskeluoikeudenTila(
+    tila = DIAOpiskeluoikeudenTila(
       List(
-        LukionOpiskeluoikeusjakso(date(2012, 9, 1), LukioExampleData.opiskeluoikeusAktiivinen),
-        LukionOpiskeluoikeusjakso(date(2016, 6, 4), LukioExampleData.opiskeluoikeusPäättynyt)
+        DIAOpiskeluoikeusjakso(date(2012, 9, 1), LukioExampleData.opiskeluoikeusAktiivinen),
+        DIAOpiskeluoikeusjakso(date(2016, 6, 4), LukioExampleData.opiskeluoikeusPäättynyt)
       )
     )
   )

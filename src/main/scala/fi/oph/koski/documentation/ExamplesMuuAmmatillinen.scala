@@ -21,7 +21,7 @@ object TutkinnonOsaaPienempiKokonaisuusExample {
   lazy val opiskeluoikeus = AmmatillinenOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2020, 5, 31)),
     tila = AmmatillinenOpiskeluoikeudenTila(List(
-      AmmatillinenOpiskeluoikeusjakso(date(2018, 1, 1), opiskeluoikeusLäsnä, None)
+      AmmatillinenOpiskeluoikeusjakso(date(2018, 1, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen))
     )),
     lisätiedot = None,
     oppilaitos = Some(stadinAmmattiopisto),
@@ -91,7 +91,7 @@ object MuunAmmatillisenKoulutuksenExample {
   lazy val muuAmmatillinenKoulutusOpiskeluoikeus = AmmatillinenOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2020, 5, 31)),
     tila = AmmatillinenOpiskeluoikeudenTila(List(
-      AmmatillinenOpiskeluoikeusjakso(date(2018, 1, 1), opiskeluoikeusLäsnä, None)
+      AmmatillinenOpiskeluoikeusjakso(date(2018, 1, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen))
     )),
     lisätiedot = None,
     oppilaitos = Some(stadinAmmattiopisto),
@@ -101,8 +101,8 @@ object MuunAmmatillisenKoulutuksenExample {
   lazy val muuAmmatillinenKoulutusKokonaisuuksillaOpiskeluoikeus = AmmatillinenOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2018, 5, 31)),
     tila = AmmatillinenOpiskeluoikeudenTila(List(
-      AmmatillinenOpiskeluoikeusjakso(date(2016, 1, 1), opiskeluoikeusLäsnä, None),
-      AmmatillinenOpiskeluoikeusjakso(date(2018, 5, 31), opiskeluoikeusValmistunut, None)
+      AmmatillinenOpiskeluoikeusjakso(date(2016, 1, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+      AmmatillinenOpiskeluoikeusjakso(date(2018, 5, 31), opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen))
     )),
     lisätiedot = None,
     oppilaitos = Some(stadinAmmattiopisto),
@@ -195,7 +195,7 @@ object MuunAmmatillisenKoulutuksenExample {
   lazy val ammatilliseenTehtäväänValmistavaKoulutusOpiskeluoikeus = AmmatillinenOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2020, 5, 31)),
     tila = AmmatillinenOpiskeluoikeudenTila(List(
-      AmmatillinenOpiskeluoikeusjakso(date(2018, 1, 1), opiskeluoikeusLäsnä, None)
+      AmmatillinenOpiskeluoikeusjakso(date(2018, 1, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen))
     )),
     lisätiedot = None,
     oppilaitos = Some(stadinAmmattiopisto),

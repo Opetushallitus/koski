@@ -12,8 +12,8 @@ describe('IB', function( ) {
     it('näytetään oikein', function() {
       expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
         'Opiskeluoikeuden voimassaoloaika : 1.9.2012 — 4.6.2016\n' +
-        'Tila 4.6.2016 Valmistunut\n' +
-        '1.9.2012 Läsnä')
+        'Tila 4.6.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
+        '1.9.2012 Läsnä (valtionosuusrahoitteinen koulutus)')
     })
   })
 
@@ -1114,7 +1114,7 @@ describe('IB', function( ) {
           var lisäysTeksti = 'lisää pre-IB-suoritus'
 
           describe('Kun opiskeluoikeus on tilassa VALMIS', function() {
-            before(editor.edit, opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().aseta('valmistunut'), opiskeluoikeus.tallenna)
+            before(editor.edit, opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().aseta('valmistunut'), opiskeluoikeus.opintojenRahoitus().aseta('1'), opiskeluoikeus.tallenna)
 
             it('Pre-IB-suoritusta ei voi lisätä', function() {
               expect(lisääSuoritus.isLinkVisible(lisäysTeksti)).to.equal(false)
@@ -1204,7 +1204,7 @@ describe('IB', function( ) {
           var lisäysTeksti = 'lisää IB-tutkinnon suoritus'
 
           describe('Kun opiskeluoikeus on tilassa VALMIS', function() {
-            before(editor.edit, opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().aseta('valmistunut'), opiskeluoikeus.tallenna)
+            before(editor.edit, opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().aseta('valmistunut'), opiskeluoikeus.opintojenRahoitus().aseta('1'), opiskeluoikeus.tallenna)
 
             it('IB-tutkinnon suoritusta ei voi lisätä', function() {
               expect(lisääSuoritus.isLinkVisible(lisäysTeksti)).to.equal(false)

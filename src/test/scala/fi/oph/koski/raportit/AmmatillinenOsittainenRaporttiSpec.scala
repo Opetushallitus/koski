@@ -66,7 +66,7 @@ class AmmatillinenOsittainenRaporttiSpec extends FreeSpec with Matchers with Rap
     opiskeluoikeudenAlkamispäivä = Some(date(2012, 9, 1)),
     viimeisinOpiskeluoikeudenTila = Some("valmistunut"),
     viimeisinOpiskeluoikeudenTilaAikajaksonLopussa = "lasna",
-    opintojenRahoitukset = "",
+    opintojenRahoitukset = "1",
     suoritettujenOpintojenYhteislaajuus = 111.0,
     valmiitAmmatillisetTutkinnonOsatLkm = 3,
     näyttöjäAmmatillisessaValmiistaTutkinnonOsistaLkm = 1,

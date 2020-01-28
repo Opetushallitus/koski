@@ -1,10 +1,12 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsLukio.päättötodistusSuoritus
-import fi.oph.koski.documentation.LukioExampleData
+import fi.oph.koski.documentation.{ExamplesLukio, LukioExampleData}
 import fi.oph.koski.documentation.LukioExampleData._
+import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.schema._
+import java.time.LocalDate.{of => date}
 
 // Lukiosuoritusten validointi perustuu tässä testattua diaarinumeroa lukuunottamatta domain-luokista generoituun JSON-schemaan.
 // Schemavalidoinnille on tehty kattavat testit ammatillisten opiskeluoikeuksien osalle. Yleissivistävän koulutuksen validoinnissa luotamme
@@ -120,6 +122,23 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
       )))
       putOpiskeluoikeus(oo) {
         verifyResponseStatusOk()
+      }
+    }
+  }
+
+  "Opintojen rahoitus" - {
+    "lasna -tilalta vaaditaan opintojen rahoitus" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä))))) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.opintojenRahoitusPuuttuu("Opiskeluoikeuden tilalta lasna puuttuu opintojen rahoitus"))
+      }
+    }
+    "valmistunut -tila vaaditaan opintojen rahoitus" in {
+      val tila = LukionOpiskeluoikeudenTila(List(
+        LukionOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+        LukionOpiskeluoikeusjakso(date(2016, 6, 8), opiskeluoikeusValmistunut))
+      )
+      putOpiskeluoikeus(ExamplesLukio.päättötodistus().copy(tila = tila)) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.opintojenRahoitusPuuttuu("Opiskeluoikeuden tilalta valmistunut puuttuu opintojen rahoitus"))
       }
     }
   }

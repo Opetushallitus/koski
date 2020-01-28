@@ -203,10 +203,10 @@ object ExamplesDIA {
 
   val opiskeluoikeus = DIAOpiskeluoikeus(
     oppilaitos = Some(saksalainenKoulu),
-    tila = LukionOpiskeluoikeudenTila(
+    tila = DIAOpiskeluoikeudenTila(
       List(
-        LukionOpiskeluoikeusjakso(date(2012, 9, 1), LukioExampleData.opiskeluoikeusAktiivinen),
-        LukionOpiskeluoikeusjakso(date(2016, 6, 4), LukioExampleData.opiskeluoikeusPäättynyt)
+        DIAOpiskeluoikeusjakso(date(2012, 9, 1), LukioExampleData.opiskeluoikeusAktiivinen),
+        DIAOpiskeluoikeusjakso(date(2016, 6, 4), LukioExampleData.opiskeluoikeusPäättynyt)
       )
     ),
     suoritukset = List(diaValmistavanVaiheenSuoritus, diaTutkintovaiheenSuoritus(Some(870), Some(590), Some(280), Some(1.2F)))

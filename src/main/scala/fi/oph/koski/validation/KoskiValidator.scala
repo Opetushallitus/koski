@@ -79,6 +79,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
           })
           .onSuccess { HttpStatus.fold(
             päätasonSuoritusTyyppitEnabled(opiskeluoikeus),
+            validateOpintojenrahoitus(opiskeluoikeus),
             validateSisältyvyys(henkilö, opiskeluoikeus),
             validatePäivämäärät(opiskeluoikeus),
             validatePäätasonSuoritustenStatus(opiskeluoikeus),
@@ -232,6 +233,20 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       case Some(koulutus) => Left(KoskiErrorCategory.badRequest.validation.koodisto.koulutustyyppiPuuttuu(s"Koulutuksen ${koulutus.tunniste.koodiarvo} koulutustyyppiä ei löydy koulutustyyppi-koodistosta."))
       case None => Right(ooWithKoulutustyyppi)
     }
+  }
+
+  private def validateOpintojenrahoitus(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
+    def valid(jakso: Opiskeluoikeusjakso) = jakso match {
+      case a: AmmatillinenOpiskeluoikeusjakso if List("lasna", "valmistunut", "loma").contains(a.tila.koodiarvo) => a.opintojenRahoitus.isDefined
+      case l: LukionOpiskeluoikeusjakso if List("lasna", "valmistunut").contains(l.tila.koodiarvo) => l.opintojenRahoitus.isDefined
+      case a: AikuistenPerusopetuksenOpiskeluoikeusjakso if List("lasna", "valmistunut").contains(a.tila.koodiarvo) => a.opintojenRahoitus.isDefined
+      case _ => true
+    }
+
+    def validate(jakso: Opiskeluoikeusjakso) =
+      HttpStatus.validate(valid(jakso))(KoskiErrorCategory.badRequest.validation.tila.opintojenRahoitusPuuttuu(s"Opiskeluoikeuden tilalta ${jakso.tila.koodiarvo} puuttuu opintojen rahoitus"))
+
+    HttpStatus.fold(opiskeluoikeus.tila.opiskeluoikeusjaksot.map(validate))
   }
 
   private def validateSisältyvyys(henkilö: Option[Henkilö], opiskeluoikeus: Opiskeluoikeus)(implicit user: KoskiSession, accessType: AccessType.Value): HttpStatus = opiskeluoikeus.sisältyyOpiskeluoikeuteen match {

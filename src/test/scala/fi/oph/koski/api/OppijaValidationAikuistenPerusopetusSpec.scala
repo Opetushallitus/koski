@@ -15,7 +15,7 @@ class OppijaValidationAikuistenPerusopetusSpec extends TutkinnonPerusteetTest[Ai
     suoritukset = List(
       aikuistenPerusopetuksenOppimääränSuoritus(diaari).copy(osasuoritukset = None, vahvistus = None)
     ),
-    tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(List(AikuistenPerusopetuksenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä)))
+    tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(List(AikuistenPerusopetuksenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))))
   )
 
   private def aikuistenPerusopetuksenOppimääränSuoritus(diaari: Option[String] = Some("19/011/2015")) = {
@@ -27,8 +27,8 @@ class OppijaValidationAikuistenPerusopetusSpec extends TutkinnonPerusteetTest[Ai
 
   private def opiskeluoikeusWithValmistunutTila = defaultOpiskeluoikeus.copy(
     tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(List(
-      AikuistenPerusopetuksenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä),
-      AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2018, 1, 1), opiskeluoikeusValmistunut)
+      AikuistenPerusopetuksenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+      AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2018, 1, 1), opiskeluoikeusValmistunut, Some(valtionosuusRahoitteinen))
     ))
   )
 
@@ -174,6 +174,23 @@ class OppijaValidationAikuistenPerusopetusSpec extends TutkinnonPerusteetTest[Ai
       )
       putOpiskeluoikeus(opiskeluoikeus) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.suoritusPuuttuu("Opiskeluoikeutta aikuistenperusopetus ei voi merkitä valmiiksi kun siitä puuttuu suoritus aikuistenperusopetuksenoppimaara tai perusopetuksenoppiaineenoppimaara"))
+      }
+    }
+  }
+
+  "Opintojen rahoitus" - {
+    "lasna -tilalta vaaditaan opintojen rahoitus" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(List(AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2008, 1, 1), opiskeluoikeusLäsnä))))) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.opintojenRahoitusPuuttuu("Opiskeluoikeuden tilalta lasna puuttuu opintojen rahoitus"))
+      }
+    }
+    "valmistunut -tilalta vaaditaan opintojen rahoitus" in {
+      val tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(List(
+        AikuistenPerusopetuksenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+        AikuistenPerusopetuksenOpiskeluoikeusjakso(date(2018, 1, 1), opiskeluoikeusValmistunut)
+      ))
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = tila, suoritukset = List(aikuistenPerusopetuksenOppimääränSuoritus()))) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.opintojenRahoitusPuuttuu("Opiskeluoikeuden tilalta valmistunut puuttuu opintojen rahoitus"))
       }
     }
   }

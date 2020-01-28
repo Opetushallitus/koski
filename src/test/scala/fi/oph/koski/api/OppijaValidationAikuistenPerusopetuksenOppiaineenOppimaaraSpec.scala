@@ -25,7 +25,7 @@ class OppijaValidationAikuistenPerusopetuksenOppiaineenOppimaaraSpec extends Tut
         suorituskieli = suomenKieli
       )
     ),
-    tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(List(AikuistenPerusopetuksenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä)))
+    tila = AikuistenPerusopetuksenOpiskeluoikeudenTila(List(AikuistenPerusopetuksenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen))))
   )
 
   def eperusteistaLöytymätönValidiDiaarinumero: String = "1/011/2004"

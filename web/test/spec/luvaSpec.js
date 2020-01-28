@@ -20,8 +20,8 @@ describe('Lukioon valmistava koulutus', function() {
     it('näyttää opiskeluoikeuden tiedot', function() {
       expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
         'Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2016\n' +
-        'Tila 4.6.2016 Valmistunut\n' +
-        '15.8.2008 Läsnä\n' +
+        'Tila 4.6.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
+        '15.8.2008 Läsnä (valtionosuusrahoitteinen koulutus)\n' +
         'Lisätiedot\n' +
         'Pidennetty päättymispäivä kyllä\n' +
         'Ulkomaanjaksot 1.9.2012 — 1.9.2013 Maa Ruotsi Kuvaus Harjoittelua ulkomailla\n' +

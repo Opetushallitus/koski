@@ -384,7 +384,7 @@ describe('Perusopetus', function() {
 
     it('näyttää opiskeluoikeuden tiedot', function() {
       expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2016\n' +
-        'Tila 4.6.2016 Valmistunut\n' +
+        'Tila 4.6.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
         '15.8.2008 Läsnä (valtionosuusrahoitteinen koulutus)')
     })
 
@@ -393,7 +393,7 @@ describe('Perusopetus', function() {
 
       it('hakee opiskeluoikeuden tiedot', function() {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2016\n' +
-          'Tila 4.6.2016 Valmistunut\n' +
+          'Tila 4.6.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
           '15.8.2008 Läsnä (valtionosuusrahoitteinen koulutus)')
       })
     })
@@ -2119,6 +2119,7 @@ describe('Perusopetus', function() {
               addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
               addOppija.selectTutkinto('Autoalan perustutkinto'),
               addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
+              addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
               addOppija.submitAndExpectSuccessModal('Tyhjä, Tero (230872-7258)', 'Autoalan perustutkinto')
             )
             it('Onnistuu ja uusi ammatillinen opiskeluoikeus tulee valituksi', function( ){
@@ -2131,6 +2132,7 @@ describe('Perusopetus', function() {
                 addOppija.selectOpiskeluoikeudenTyyppi('Aikuisten perusopetus'),
                 addOppija.selectOppimäärä('Perusopetuksen oppiaineen oppimäärä'),
                 addOppija.selectOppiaine('Fysiikka'),
+                addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
                 addOppija.submitAndExpectSuccessModal('Tyhjä, Tero (230872-7258)', 'Fysiikka')
               )
               it('toimii', function( ){
@@ -2231,6 +2233,7 @@ describe('Perusopetus', function() {
         addOppija.enterValidDataPerusopetus(),
         addOppija.selectOpiskeluoikeudenTyyppi('Aikuisten perusopetus'),
         addOppija.selectOppimäärä('Aikuisten perusopetuksen oppimäärä'),
+        addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
         addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Aikuisten perusopetuksen oppimäärä')
       )
 
@@ -2309,6 +2312,7 @@ describe('Perusopetus', function() {
         addOppija.enterValidDataPerusopetus(),
         addOppija.selectOpiskeluoikeudenTyyppi('Aikuisten perusopetus'),
         addOppija.selectOppimäärä('Aikuisten perusopetuksen oppimäärän alkuvaihe'),
+        addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
         addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Aikuisten perusopetuksen oppimäärän alkuvaihe')
       )
 
@@ -2445,8 +2449,10 @@ describe('Perusopetus', function() {
 
         describe('Kun valitaan kieli ja lisätään oppiaine', function() {
           before(
+            timeout.overrideWaitTime(20000),
             addOppija.selectKieli('englanti'),
             wait.forMilliseconds(1000),
+            addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
             addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'A1-kieli')
           )
 
@@ -3046,8 +3052,8 @@ describe('Perusopetus', function() {
         expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal(['Jyväskylän normaalikoulu, Perusopetuksen oppiaineen oppimäärä (2008—2016, valmistunut)'])
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
           'Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2016\n' +
-          'Tila 4.6.2016 Valmistunut\n' +
-          '15.8.2008 Läsnä\n' +
+          'Tila 4.6.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
+          '15.8.2008 Läsnä (valtionosuusrahoitteinen koulutus)\n' +
           'Lisätiedot\n' +
           'Vaikeimmin kehitysvammainen 6.6.2014 —')
       })
@@ -3213,6 +3219,7 @@ describe('Perusopetus', function() {
           opinnot.tilaJaVahvistus.lisääVahvistus('01.01.2000'),
           opinnot.avaaLisaysDialogi,
           OpiskeluoikeusDialog().tila().aseta('valmistunut'),
+          OpiskeluoikeusDialog().opintojenRahoitus().aseta('1'),
           OpiskeluoikeusDialog().tallenna,
           editor.saveChanges,
         )

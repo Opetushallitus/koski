@@ -1,9 +1,11 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesIB._
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
-import fi.oph.koski.schema.{IBCASSuoritus, IBOpiskeluoikeus, IBOppiaineCAS, IBOppiaineenSuoritus, LaajuusTunneissa}
+import fi.oph.koski.schema._
 import org.scalatest.FreeSpec
+import java.time.LocalDate.{of => date}
 
 class OppijaValidationIBSpec extends FreeSpec with LocalJettyHttpSpecification with PutOpiskeluoikeusTestMethods[IBOpiskeluoikeus] {
 
@@ -74,6 +76,23 @@ class OppijaValidationIBSpec extends FreeSpec with LocalJettyHttpSpecification w
           "Palautetaan HTTP/200" in { putOpiskeluoikeus(opiskeluoikeus) {
             verifyResponseStatusOk()
           }}
+        }
+      }
+    }
+
+    "Opintojen rahoitus" - {
+      "lasna -tilalta vaaditaan opintojen rahoitus" in {
+        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä))))) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.opintojenRahoitusPuuttuu("Opiskeluoikeuden tilalta lasna puuttuu opintojen rahoitus"))
+        }
+      }
+      "valmistunut -tilalta vaaditaan opintojen rahoitus" in {
+        val tila = LukionOpiskeluoikeudenTila(List(
+          LukionOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+          LukionOpiskeluoikeusjakso(date(2018, 1, 1), opiskeluoikeusValmistunut)
+        ))
+        putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = tila)) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.opintojenRahoitusPuuttuu("Opiskeluoikeuden tilalta valmistunut puuttuu opintojen rahoitus"))
         }
       }
     }

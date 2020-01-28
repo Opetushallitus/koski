@@ -182,10 +182,10 @@ object ExamplesInternationalSchool {
 
   val opiskeluoikeus = InternationalSchoolOpiskeluoikeus(
     lisätiedot = Some(lisätiedot),
-    tila = LukionOpiskeluoikeudenTila(
+    tila = InternationalSchoolOpiskeluoikeudenTila(
       List(
-        LukionOpiskeluoikeusjakso(date(2006, 8, 15), LukioExampleData.opiskeluoikeusAktiivinen),
-        LukionOpiskeluoikeusjakso(date(2018, 6, 30), LukioExampleData.opiskeluoikeusPäättynyt)
+        InternationalSchoolOpiskeluoikeusjakso(date(2006, 8, 15), LukioExampleData.opiskeluoikeusAktiivinen),
+        InternationalSchoolOpiskeluoikeusjakso(date(2018, 6, 30), LukioExampleData.opiskeluoikeusPäättynyt)
       )
     ),
     suoritukset = List(gradeExplorer, grade1, grade2, grade3, grade4, grade5, grade6, grade7, grade8, grade9, grade10, grade11, grade12)
