@@ -193,6 +193,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
 
       refreshElasticSearchIndex
 
+      Wait.until(getVirheellisetTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä).size == 1)
       getVirheellisetTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä).flatMap(_.oppija.flatMap(_.hetu)) should equal(List(eerola.hetu.get))
     }
   }
