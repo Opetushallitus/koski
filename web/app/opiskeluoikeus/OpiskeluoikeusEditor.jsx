@@ -23,6 +23,7 @@ import {assignTabNames, suoritusTabIndex, SuoritusTabs, urlForTab} from '../suor
 import {Korkeakoulusuoritukset} from '../virta/Korkeakoulusuoritukset'
 import {OpiskeluoikeudenTila} from '../omattiedot/fragments/OpiskeluoikeudenTila'
 import {ArrayEditor} from '../editor/ArrayEditor'
+import {modelEmpty} from '../editor/EditorModel'
 
 export const excludedProperties = ['suoritukset', 'alkamispäivä', 'arvioituPäättymispäivä', 'päättymispäivä', 'oppilaitos', 'lisätiedot', 'synteettinen']
 
@@ -76,8 +77,8 @@ const OpiskeluoikeudenTiedot = ({opiskeluoikeus, editLink, alkuChangeBus}) => (
     }
     <PropertiesEditor
       model={opiskeluoikeus}
-      propertyFilter={ p => !excludedProperties.includes(p.key) && (opiskeluoikeus.context.edit || modelData(p.model) !== false)}
-      showAnyway={showEsiopetusKoulutusmuoto(opiskeluoikeus)}
+      propertyFilter={p => opiskeluoikeusPropertyFilter(opiskeluoikeus, p) && tyhjäJärjestämismuotoFilter(p)}
+      showAnyway={showEsiopetusKoulutustoimija(opiskeluoikeus)}
       propertyEditable={p => p.key === 'koulutustoimija' ? false : p.editable}
       getValueEditor={ (prop, getDefault) => {
         switch (prop.key) {
@@ -98,8 +99,13 @@ const OpiskeluoikeudenTiedot = ({opiskeluoikeus, editLink, alkuChangeBus}) => (
   </div>
 )
 
-const showEsiopetusKoulutusmuoto = opiskeluoikeus => property =>
+const showEsiopetusKoulutustoimija = opiskeluoikeus => property =>
   property.key === 'koulutustoimija' && modelData(opiskeluoikeus, 'järjestämismuoto')
+
+const tyhjäJärjestämismuotoFilter = property => !(property.key === 'järjestämismuoto' && modelEmpty(property.model))
+
+const opiskeluoikeusPropertyFilter = (opiskeluoikeus, property) =>
+  !excludedProperties.includes(property.key) && (opiskeluoikeus.context.edit || modelData(property.model) !== false)
 
 const OpiskeluoikeudenId = ({opiskeluoikeus}) => {
   let selectAllText = (e) => {

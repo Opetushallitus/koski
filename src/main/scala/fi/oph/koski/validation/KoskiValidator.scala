@@ -172,28 +172,36 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     }
   }
 
-  private def addVarhaiskasvatusKoulutustoimija(oo: EsiopetuksenOpiskeluoikeus)(implicit user: KoskiSession) = if (päiväkodissaJärjestettyEsiopetus(oo)) {
-    if (oo.koulutustoimija.isDefined && user.hasVarhaiskasvatusAccess(oo.koulutustoimija.get.oid, oo.getOppilaitos.oid, AccessType.write)) {
-      Right(oo)
-    } else {
-      user.varhaiskasvatusKäyttöoikeudet.map(_.koulutustoimija.oid).toList match {
-        case koulutustoimijaOid :: Nil =>
-          organisaatioRepository.getOrganisaatio(koulutustoimijaOid)
-            .flatMap(_.toKoulutustoimija)
-            .map(oo.withKoulutustoimija)
-            .toRight(KoskiErrorCategory.badRequest.validation.organisaatio.tuntematon(s"Koulutustoimijaa $koulutustoimijaOid ei löydy"))
-        case Nil =>
-          Left(KoskiErrorCategory.forbidden.vainVarhaiskasvatuksenJärjestäjä("Operaatio on sallittu vain käyttäjälle joka on luotu varhaiskasvatusta järjestävälle koulutustoimijalle"))
-        case _ =>
-          Left(KoskiErrorCategory.badRequest.validation.organisaatio.koulutustoimijaPakollinen("Koulutustoimijaa ei voi yksiselitteisesti päätellä käyttäjätunnuksesta. Koulutustoimija on pakollinen."))
+  private def addVarhaiskasvatusKoulutustoimija(oo: EsiopetuksenOpiskeluoikeus)(implicit user: KoskiSession) = (päiväkodinEsiopetus(oo), järjestettyOmanOrganisaationUlkopuolella(oo)) match {
+    case (true, true) =>
+      if (oo.koulutustoimija.isDefined && user.hasVarhaiskasvatusAccess(oo.koulutustoimija.get.oid, oo.getOppilaitos.oid, AccessType.write)) {
+        Right(oo)
+      } else {
+        user.varhaiskasvatusKäyttöoikeudet.map(_.koulutustoimija.oid).toList match {
+          case koulutustoimijaOid :: Nil =>
+            organisaatioRepository.getOrganisaatio(koulutustoimijaOid)
+              .flatMap(_.toKoulutustoimija)
+              .map(oo.withKoulutustoimija)
+              .toRight(KoskiErrorCategory.badRequest.validation.organisaatio.tuntematon(s"Koulutustoimijaa $koulutustoimijaOid ei löydy"))
+          case Nil =>
+            Left(KoskiErrorCategory.forbidden.vainVarhaiskasvatuksenJärjestäjä("Operaatio on sallittu vain käyttäjälle joka on luotu varhaiskasvatusta järjestävälle koulutustoimijalle"))
+          case _ =>
+            Left(KoskiErrorCategory.badRequest.validation.organisaatio.koulutustoimijaPakollinen("Koulutustoimijaa ei voi yksiselitteisesti päätellä käyttäjätunnuksesta. Koulutustoimija on pakollinen."))
+        }
       }
-    }
-  } else {
-    Left(KoskiErrorCategory.badRequest.validation.koodisto.vääräKoulutuksenTunniste(s"Järjestämismuoto sallittu vain päiväkodissa järjestettävälle esiopetukselle ($päiväkodinEsiopetuksenTunniste)"))
+    case (false, true) =>
+      Left(KoskiErrorCategory.badRequest.validation.koodisto.vääräKoulutuksenTunniste(s"Järjestämismuoto sallittu vain päiväkodissa järjestettävälle esiopetukselle ($päiväkodinEsiopetuksenTunniste)"))
+    case _ =>
+      Left(KoskiErrorCategory.badRequest.validation.organisaatio.järjestämismuoto())
   }
 
-  private def päiväkodissaJärjestettyEsiopetus(oo: EsiopetuksenOpiskeluoikeus) =
+  private def järjestettyOmanOrganisaationUlkopuolella(oo: EsiopetuksenOpiskeluoikeus) = oo.oppilaitos.exists { oppilaitos =>
+    oo.koulutustoimija.forall(kt => organisaatioRepository.findKoulutustoimijaForOppilaitos(oppilaitos).exists(_.oid != kt.oid))
+  }
+
+  private def päiväkodinEsiopetus(oo: EsiopetuksenOpiskeluoikeus) = {
     oo.suoritukset.forall(päiväkodissaJärjestettyEsiopetuksenSuoritus)
+  }
 
   private def addKoulutustyyppi(oo: KoskeenTallennettavaOpiskeluoikeus): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
     val t = traversal[KoskeenTallennettavaOpiskeluoikeus]
