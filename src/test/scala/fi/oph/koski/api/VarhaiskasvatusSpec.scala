@@ -104,14 +104,14 @@ class VarhaiskasvatusSpec extends FreeSpec with EsiopetusSpecification {
 
   "Pääkäyttäjä" - {
     "kun koulutustoimija ja järjestämismuoto on syötetty" - {
-      "ei voi tallentaa omaan hierarkiaan" in {
+      "ei voi tallentaa opiskeluoikeutta jonka oppilaitoksena on päiväkoti joka on koulutustoimijan alla organisaatiohierarkiassa" in {
         val opiskeluoikeus = päiväkotiEsiopetus(päiväkotiVironniemi, ostopalvelu).copy(koulutustoimija = hki)
         putOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.organisaatio.järjestämismuoto())
         }
       }
 
-      "voi tallentaa hierarkian ulkopuolelle" in {
+      "voi tallentaa opiskeluoikeuden jonka oppilaitoksena on päiväkoti joka ei ole koulutustoimijan alla organisaatiohierarkiassa" in {
         val opiskeluoikeus = päiväkotiEsiopetus(päiväkotiTouhula, ostopalvelu).copy(koulutustoimija = hki)
         putOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.paakayttaja) ++ jsonContent) {
           verifyResponseStatusOk()
