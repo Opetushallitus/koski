@@ -77,7 +77,7 @@ const OpiskeluoikeudenTiedot = ({opiskeluoikeus, editLink, alkuChangeBus}) => (
     }
     <PropertiesEditor
       model={opiskeluoikeus}
-      propertyFilter={p => opiskeluoikeusPropertyFilter(opiskeluoikeus, p) && tyhjäJärjestämismuotoFilter(p)}
+      propertyFilter={p => opiskeluoikeusPropertyFilter(opiskeluoikeus, p) && esiopetusFilter(p)}
       showAnyway={showEsiopetusKoulutustoimija(opiskeluoikeus)}
       propertyEditable={p => p.key === 'koulutustoimija' ? false : p.editable}
       getValueEditor={ (prop, getDefault) => {
@@ -102,7 +102,7 @@ const OpiskeluoikeudenTiedot = ({opiskeluoikeus, editLink, alkuChangeBus}) => (
 const showEsiopetusKoulutustoimija = opiskeluoikeus => property =>
   property.key === 'koulutustoimija' && modelData(opiskeluoikeus, 'järjestämismuoto')
 
-const tyhjäJärjestämismuotoFilter = property => !(property.key === 'järjestämismuoto' && modelEmpty(property.model))
+const esiopetusFilter = property => !(property.key === 'järjestämismuoto' && modelEmpty(property.model))
 
 const opiskeluoikeusPropertyFilter = (opiskeluoikeus, property) =>
   !excludedProperties.includes(property.key) && (opiskeluoikeus.context.edit || modelData(property.model) !== false)
