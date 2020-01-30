@@ -50,9 +50,9 @@
         "alku" : "2012-09-01",
         "loppu" : "2012-09-01",
         "tehtävä" : {
-          "koodiarvo" : "taide",
+          "koodiarvo" : "103",
           "nimi" : {
-            "fi" : "Erityisenä koulutustehtävänä taide"
+            "fi" : "Kieliin painottuva koulutus"
           },
           "koodistoUri" : "erityinenkoulutustehtava"
         }
@@ -3464,6 +3464,5 @@
     },
     "alkamispäivä" : "2012-09-01",
     "päättymispäivä" : "2016-06-08"
-  } ],
-  "ignoreKoskiValidator" : true
+  } ]
 }

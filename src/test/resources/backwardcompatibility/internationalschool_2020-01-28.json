@@ -2543,6 +2543,24 @@
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
+            "koodiarvo" : "HAWB",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "pass",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschooldiplomaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
             "koodiarvo" : "TOK",
             "koodistoUri" : "oppiaineetib"
           }
@@ -2751,8 +2769,8 @@
       }, {
         "koulutusmoduuli" : {
           "tunniste" : {
-            "koodiarvo" : "MAT",
-            "koodistoUri" : "oppiaineetib"
+            "koodiarvo" : "MAI",
+            "koodistoUri" : "oppiaineetinternationalschool"
           },
           "taso" : {
             "koodiarvo" : "SL",
@@ -2764,6 +2782,24 @@
           "arvosana" : {
             "koodiarvo" : "4",
             "koodistoUri" : "arviointiasteikkoib"
+          },
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "internationalschooldiplomaoppiaine",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "HAWB",
+            "koodistoUri" : "oppiaineetinternationalschool"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "fail",
+            "koodistoUri" : "arviointiasteikkointernationalschool"
           },
           "hyväksytty" : true
         } ],
@@ -2801,9 +2837,9 @@
         "alku" : "2012-09-01",
         "loppu" : "2012-09-01",
         "tehtävä" : {
-          "koodiarvo" : "taide",
+          "koodiarvo" : "103",
           "nimi" : {
-            "fi" : "Erityisenä koulutustehtävänä taide"
+            "fi" : "Kieliin painottuva koulutus"
           },
           "koodistoUri" : "erityinenkoulutustehtava"
         }
@@ -2825,6 +2861,5 @@
     },
     "alkamispäivä" : "2006-08-15",
     "päättymispäivä" : "2018-06-30"
-  } ],
-  "ignoreKoskiValidator" : true
+  } ]
 }

@@ -57,18 +57,7 @@ case class LukionOpiskeluoikeudenLisätiedot(
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_SUPPEA, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   @Description("Onko opiskelija sisöoppilaitosmaisessa majoituksessa. Rahoituksen laskennassa käytettävä tieto.")
   sisäoppilaitosmainenMajoitus: Option[List[Aikajakso]] = None
-) extends OpiskeluoikeudenLisätiedot
-
-
-@Description("Opiskelija opiskelee erityisen koulutustehtävän mukaisesti (ib, musiikki, urheilu, kielet, luonnontieteet, jne.). Kentän puuttuminen tai null-arvo tulkitaan siten, ettei opiskelija opiskele erityisen koulutustehtävän mukaisesti")
-case class ErityisenKoulutustehtävänJakso(
-  alku: LocalDate,
-  loppu: Option[LocalDate],
-  @Description("Erityinen koulutustehtävä. Koodisto")
-  @KoodistoUri("erityinenkoulutustehtava")
-  @OksaUri("tmpOKSAID181", "erityinen koulutustehtävä")
-  tehtävä: Koodistokoodiviite
-) extends Jakso
+) extends OpiskeluoikeudenLisätiedot with ErityisenKoulutustehtävänJaksollinen
 
 trait LukionPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Suorituskielellinen
 

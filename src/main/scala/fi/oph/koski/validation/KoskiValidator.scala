@@ -82,6 +82,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
             validateSisältyvyys(henkilö, opiskeluoikeus),
             validatePäivämäärät(opiskeluoikeus),
             validatePäätasonSuoritustenStatus(opiskeluoikeus),
+            validateOpiskeluoikeudenLisätiedot(opiskeluoikeus),
             HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritus(_, opiskeluoikeus, Nil)))
           )} match {
             case HttpStatus.ok => Right(opiskeluoikeus)
@@ -288,6 +289,34 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       case List(päättäväJakso) => HttpStatus.validate(jaksot.last.opiskeluoikeusPäättynyt)(KoskiErrorCategory.badRequest.validation.tila.tilaMuuttunutLopullisenTilanJälkeen(s"Opiskeluoikeuden tila muuttunut lopullisen tilan (${päättäväJakso.tila.koodiarvo}) jälkeen"))
       case List(_, _) => HttpStatus.validate(jaksot.last.tila.koodiarvo == "mitatoity")(KoskiErrorCategory.badRequest.validation.tila.montaPäättävääTilaa(s"Opiskeluoikeudella voi olla vain yksi opiskeluoikeuden päättävä tila"))
       case _ => KoskiErrorCategory.badRequest.validation.tila.montaPäättävääTilaa(s"Opiskeluoikeudella voi olla vain yksi opiskeluoikeuden päättävä tila")
+    }
+  }
+
+  private def validateOpiskeluoikeudenLisätiedot(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
+    opiskeluoikeus.lisätiedot match {
+      case Some(e: ErityisenKoulutustehtävänJaksollinen) => validateErityisenKoulutustehtävänJakso(e)
+      case _ => HttpStatus.ok
+    }
+  }
+
+  private def validateErityisenKoulutustehtävänJakso(lisätiedot: ErityisenKoulutustehtävänJaksollinen) = {
+    def validateKoodiarvo(koodistokoodiviite: Koodistokoodiviite) = {
+      val vanhentuneetTehtäväKoodiarvot = Set(
+        "ib", "kielijakansainvalisyys", "matematiikka-luonnontiede-ymparisto-tekniikka", "steiner", "taide", "urheilu", "muu"
+      )
+      val koodiarvo = koodistokoodiviite.koodiarvo
+      if(vanhentuneetTehtäväKoodiarvot.contains(koodiarvo)) {
+        KoskiErrorCategory.badRequest.validation.koodisto.tuntematonKoodi(
+          s"Koodiarvo '${koodiarvo}' ei ole sallittu erityisen koulutustehtävän jaksolle"
+        )
+      } else {
+        HttpStatus.ok
+      }
+    }
+
+    lisätiedot.erityisenKoulutustehtävänJaksot match {
+      case Some(e) => HttpStatus.fold(e.map(_.tehtävä).map(validateKoodiarvo))
+      case _ => HttpStatus.ok
     }
   }
 
