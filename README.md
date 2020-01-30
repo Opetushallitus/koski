@@ -188,6 +188,15 @@ make elastic
 
 Paikallisen kannan datat tulevat hakemistoon `elastic-data`.
 
+### PostgresSQL ja Elasticsearch Dockerilla käynnistettynä
+
+PostgresSQL:n ja Elasticsearchin voi vaihtoehtoisesti asentaa ja ajaa Dockerilla. Aja komentoriviltä komento
+
+
+``` shell
+make docker-dbs
+```
+
 ### SQL-yhteys paikalliseen kantaan
 
 Jos haluat tarkastella paikallisen kehityskannan tilaa SQL-työkalulla, se onnistuu esimerkiksi Postgren omalla komentorivityökalulla `psql`:
