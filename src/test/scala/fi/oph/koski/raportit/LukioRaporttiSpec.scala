@@ -21,6 +21,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     loadRaportointikantaFixtures
   }
 
+  lazy val today = LocalDate.now
   lazy val repository = LukioRaportitRepository(KoskiApplicationForTests.raportointiDatabase.db)
   lazy val lukioRaportti = LukioRaportti(repository)
 
@@ -41,6 +42,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
           "Oppilaitoksen nimi",
           "Toimipiste",
           "Opiskeluoikeuden tunniste lähdejärjestelmässä",
+          "Päivitetty",
           "Yksilöity",
           "Oppijan oid",
           "Hetu",
@@ -280,6 +282,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Oppilaitoksen nimi" -> "Jyväskylän normaalikoulu",
     "Lähdejärjestelmä" -> None,
     "Opiskeluoikeuden tunniste lähdejärjestelmässä" -> None,
+    "Päivitetty" -> today,
     "Koulutustoimija" -> "Jyväskylän yliopisto",
     "Toimipiste" -> "Jyväskylän normaalikoulu",
     "Yksilöity" -> true,
@@ -352,6 +355,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Koulutustoimija" -> "Jyväskylän yliopisto",
     "Toimipiste" -> "Jyväskylän normaalikoulu",
     "Opiskeluoikeuden tunniste lähdejärjestelmässä" -> None,
+    "Päivitetty" -> today,
     "Yksilöity" -> true,
     "Oppijan oid" -> lukionAineopiskelijaAktiivinen.oid,
     "Opiskeluoikeuden alkamispäivä" -> Some(date(2015, 9, 1)),
