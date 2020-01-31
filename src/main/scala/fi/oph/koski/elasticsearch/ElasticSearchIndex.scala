@@ -1,15 +1,16 @@
-package fi.oph.koski.perustiedot
-import fi.oph.koski.elasticsearch.ElasticSearch
+package fi.oph.koski.elasticsearch
+
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpStatusException}
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.json.{Json4sHttp4s, JsonDiff}
 import fi.oph.koski.log.Logging
+import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotStatistics
 import org.http4s.EntityEncoder
 import org.json4s.jackson.JsonMethods
 import org.json4s.{JValue, _}
 
-class KoskiElasticSearchIndex(val elastic: ElasticSearch) extends Logging {
+class ElasticSearchIndex(val elastic: ElasticSearch) extends Logging {
   def http = elastic.http
   def refreshIndex = elastic.refreshIndex
   def reindexingNeededAtStartup = init

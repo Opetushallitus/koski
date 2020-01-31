@@ -1,10 +1,10 @@
 package fi.oph.koski.tiedonsiirto
 
+import fi.oph.koski.elasticsearch.ElasticSearchIndex
 import fi.oph.koski.json.JsonSerializer.extract
-import fi.oph.koski.perustiedot.KoskiElasticSearchIndex
 import org.json4s.jackson.JsonMethods.parse
 
-case class TiedonsiirtoStatistics(index: KoskiElasticSearchIndex) {
+case class TiedonsiirtoStatistics(index: ElasticSearchIndex) {
 
   def statistics: TiedonsiirtoTilasto = {
     val result = index.runSearch("tiedonsiirto",

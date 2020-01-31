@@ -2,7 +2,7 @@ package fi.oph.koski.perustiedot
 
 import java.time.LocalDate
 
-import fi.oph.koski.elasticsearch.ElasticSearch
+import fi.oph.koski.elasticsearch.{ElasticSearch, ElasticSearchIndex}
 import fi.oph.koski.elasticsearch.ElasticSearch.anyFilter
 import fi.oph.koski.henkilo.TestingException
 import fi.oph.koski.http.Http._
@@ -21,7 +21,7 @@ import fi.oph.koski.util._
 import org.json4s.JValue
 import org.json4s.JsonAST.{JObject, JString}
 
-class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opiskeluoikeusQueryService: OpiskeluoikeusQueryService) extends Logging {
+class OpiskeluoikeudenPerustiedotRepository(index: ElasticSearchIndex, opiskeluoikeusQueryService: OpiskeluoikeusQueryService) extends Logging {
 
   def find(filters: List[OpiskeluoikeusQueryFilter], sorting: SortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): OpiskeluoikeudenPerustiedotResponse = {
     if (filters.find(_.isInstanceOf[SuoritusJsonHaku]).isDefined) {

@@ -3,6 +3,7 @@ package fi.oph.koski.perustiedot
 import com.typesafe.config.Config
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.BackgroundExecutionContext
+import fi.oph.koski.elasticsearch.ElasticSearchIndex
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpStatus, HttpStatusException, KoskiErrorCategory}
 import fi.oph.koski.json.Json4sHttp4s
@@ -25,7 +26,7 @@ object PerustiedotIndexUpdater extends App with Timing {
   }
 }
 
-class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: KoskiElasticSearchIndex, opiskeluoikeusQueryService: OpiskeluoikeusQueryService, perustiedotSyncRepository: PerustiedotSyncRepository) extends Logging with BackgroundExecutionContext {
+class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: ElasticSearchIndex, opiskeluoikeusQueryService: OpiskeluoikeusQueryService, perustiedotSyncRepository: PerustiedotSyncRepository) extends Logging with BackgroundExecutionContext {
   lazy val init = {
     index.init
 

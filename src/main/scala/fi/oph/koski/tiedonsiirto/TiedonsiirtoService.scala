@@ -4,7 +4,7 @@ import java.sql.Timestamp
 import java.time.LocalDate
 
 import fi.oph.koski.db.GlobalExecutionContext
-import fi.oph.koski.elasticsearch.ElasticSearch
+import fi.oph.koski.elasticsearch.{ElasticSearch, ElasticSearchIndex}
 import fi.oph.koski.elasticsearch.ElasticSearch.{allFilter, anyFilter}
 import fi.oph.koski.henkilo.{HenkilöOid, HenkilöRepository, Hetu}
 import fi.oph.koski.http.Http._
@@ -18,7 +18,6 @@ import fi.oph.koski.log.KoskiMessageField._
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
-import fi.oph.koski.perustiedot.KoskiElasticSearchIndex
 import fi.oph.koski.schema._
 import fi.oph.koski.util.OptionalLists.optionalList
 import fi.oph.koski.util._
@@ -30,7 +29,7 @@ import org.json4s.jackson.JsonMethods.parse
 import org.json4s.{JValue, _}
 
 class TiedonsiirtoService(
-  index: KoskiElasticSearchIndex,
+  index: ElasticSearchIndex,
   organisaatioRepository: OrganisaatioRepository,
   henkilöRepository: HenkilöRepository,
   koodistoviitePalvelu: KoodistoViitePalvelu,
