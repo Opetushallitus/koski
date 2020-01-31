@@ -5,12 +5,15 @@ import fi.oph.koski.http.{Http, HttpStatusException}
 import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.json.{Json4sHttp4s, JsonDiff}
 import fi.oph.koski.log.Logging
-import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotStatistics
 import org.http4s.EntityEncoder
 import org.json4s.jackson.JsonMethods
 import org.json4s.{JValue, _}
 
-class ElasticSearchIndex(val elastic: ElasticSearch) extends Logging {
+class ElasticSearchIndex(
+  val elastic: ElasticSearch,
+  val name: String,
+  val settings: JValue
+) extends Logging {
   def http = elastic.http
   def refreshIndex = elastic.refreshIndex
   def reindexingNeededAtStartup = init
@@ -77,26 +80,4 @@ class ElasticSearchIndex(val elastic: ElasticSearch) extends Logging {
         throw new RuntimeException("Unexpected status code from elasticsearch: " + statusCode)
     }
   }
-
-  def indexIsLarge: Boolean = {
-    OpiskeluoikeudenPerustiedotStatistics(this).statistics.opiskeluoikeuksienMäärä > 100
-  }
-
-  private def settings = JsonMethods.parse("""
-    {
-        "analysis": {
-          "filter": {
-            "finnish_folding": {
-              "type": "icu_folding",
-              "unicodeSetFilter": "[^åäöÅÄÖ]"
-            }
-          },
-          "analyzer": {
-            "default": {
-              "tokenizer": "icu_tokenizer",
-              "filter":  [ "finnish_folding", "lowercase" ]
-            }
-          }
-        }
-    }""")
 }

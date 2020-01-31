@@ -6,7 +6,7 @@ import fi.oph.koski.tiedonsiirto.TiedonsiirtoScheduler
 class KoskiScheduledTasks(application: KoskiApplication) {
   val updateHenkilötScheduler: Option[Scheduler] = new UpdateHenkilotTask(application).scheduler
   val syncPerustiedot: Option[Scheduler] = application.perustiedotSyncScheduler.scheduler
-  val syncTiedonsiirrot = new TiedonsiirtoScheduler(application.masterDatabase.db, application.config, application.koskiElasticSearchIndex, application.tiedonsiirtoService)
+  val syncTiedonsiirrot = new TiedonsiirtoScheduler(application.masterDatabase.db, application.config, application.tiedonsiirtoIndex, application.tiedonsiirtoService)
   val purgeOldSessions: Option[Scheduler] = new PurgeOldSessionsTask(application).scheduler
   def init {}
 }
