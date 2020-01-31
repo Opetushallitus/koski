@@ -53,9 +53,6 @@ class ElasticSearchIndex(
   private def createIndex: Boolean = {
     logger.info("Creating Elasticsearch index")
     Http.runTask(http.put(uri"/${name}", JObject("settings" -> settings))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
-    logger.info("Creating Elasticsearch index alias")
-    Http.runTask(http.post(uri"/_aliases", JObject("actions" -> JArray(List(JObject("add" -> JObject("index" -> JString(name)))))))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
-    logger.info("Created index and alias.")
     true
   }
 
