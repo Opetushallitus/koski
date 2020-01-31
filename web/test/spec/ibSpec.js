@@ -330,158 +330,157 @@ describe('IB', function( ) {
                   expect(extractAsText(S('.oppiaineet'))).to.contain('Chemistry')
                 })
               })
-            })
 
-            describe('Arvosana-asteikko', function () {
-              before(editor.edit)
+              describe('Arvosana-asteikko', function () {
+                before(editor.edit)
 
-              it('on oikea', function () {
-                expect(arvosana.getOptions()).to.deep.equal([ 'Ei valintaa', '4', '5', '6', '7', '8', '9', '10', 'H', 'O', 'S' ])
-              })
-
-              after(editor.cancelChanges)
-            })
-
-            describe('Oppiaineen kurssi', function() {
-              describe('Kurssivaihtoehdot', function() {
-                before(editor.edit, aine.avaaLisääKurssiDialog)
-
-                it('sisältää valtakunnalliset lukion kurssit', function() {
-                  expect(aine.lisääKurssiDialog.kurssit()).to.include('BI2 Ekologia ja ympäristö')
+                it('on oikea', function () {
+                  expect(arvosana.getOptions()).to.deep.equal([ 'Ei valintaa', '4', '5', '6', '7', '8', '9', '10', 'H', 'O', 'S' ])
                 })
 
                 after(editor.cancelChanges)
               })
 
-              describe('Paikallisen IB-kurssin', function () {
-                describe('lisäyksessä', function () {
-                  var dialog = aine.lisääKurssiDialog
+              describe('Oppiaineen kurssi', function() {
+                describe('Kurssivaihtoehdot', function() {
+                  before(editor.edit, aine.avaaLisääKurssiDialog)
 
-                  before(
-                    editor.edit,
-                    aine.avaaLisääKurssiDialog,
-                    aine.lisääKurssiDialog.valitseKurssi('paikallinen')
-                  )
-
-                  it('tyyppiä ei kysytä', function() {
-                    expect(dialog.hasKurssinTyyppi()).to.equal(false)
+                  it('sisältää valtakunnalliset lukion kurssit', function() {
+                    expect(aine.lisääKurssiDialog.kurssit()).to.include('BI2 Ekologia ja ympäristö')
                   })
 
-                  after(
-                    dialog.sulje,
-                    editor.cancelChanges
-                  )
+                  after(editor.cancelChanges)
                 })
 
-                describe('lisääminen', function () {
-                  before(
-                    editor.edit,
-                    aine.lisääPaikallinenKurssi('PAIK'),
-                    aine.kurssi('PAIK').arvosana.selectValue('8'),
-                    editor.saveChanges,
-                    wait.until(page.isSavedLabelShown)
-                  )
+                describe('Paikallisen IB-kurssin', function () {
+                  describe('lisäyksessä', function () {
+                    var dialog = aine.lisääKurssiDialog
 
-                  it('toimii', function () {
-                    expect(extractAsText(S('.oppiaineet .CHE'))).to.contain('PAIK')
+                    before(
+                      editor.edit,
+                      aine.avaaLisääKurssiDialog,
+                      aine.lisääKurssiDialog.valitseKurssi('paikallinen')
+                    )
+
+                    it('tyyppiä ei kysytä', function() {
+                      expect(dialog.hasKurssinTyyppi()).to.equal(false)
+                    })
+
+                    after(
+                      dialog.sulje,
+                      editor.cancelChanges
+                    )
                   })
 
-                })
+                  describe('lisääminen', function () {
+                    before(
+                      editor.edit,
+                      aine.lisääPaikallinenKurssi('PAIK'),
+                      aine.kurssi('PAIK').arvosana.selectValue('8'),
+                      editor.saveChanges,
+                      wait.until(page.isSavedLabelShown)
+                    )
+
+                    it('toimii', function () {
+                      expect(extractAsText(S('.oppiaineet .CHE'))).to.contain('PAIK')
+                    })
+
+                  })
 
 
-                describe('Poistaminen', function () {
-                  before(
-                    editor.edit,
-                    aine.kurssi('PAIK').poistaKurssi,
-                    editor.saveChanges,
-                    wait.until(page.isSavedLabelShown)
-                  )
+                  describe('Poistaminen', function () {
+                    before(
+                      editor.edit,
+                      aine.kurssi('PAIK').poistaKurssi,
+                      editor.saveChanges,
+                      wait.until(page.isSavedLabelShown)
+                    )
 
-                  it('toimii', function () {
-                    expect(extractAsText(S('.oppiaineet .AI'))).to.not.contain('PAIK')
+                    it('toimii', function () {
+                      expect(extractAsText(S('.oppiaineet .AI'))).to.not.contain('PAIK')
+                    })
                   })
                 })
               })
-            })
 
-            describe('Poistaminen', function () {
-              before(
-                editor.edit,
-                aine.propertyBySelector('.remove-row').removeValue,
-                editor.saveChanges,
-                wait.until(page.isSavedLabelShown)
-              )
-
-              it('toimii', function () {
-                expect(extractAsText(S('.oppiaineet'))).to.not.contain('Chemistry')
-              })
-            })
-          })
-
-          describe('IB-kieliaine', function() {
-            before(
-              editor.edit,
-              editor.property('tila').removeItem(0),
-              opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi
-            )
-
-            var aine = opinnot.oppiaineet.oppiaine('oppiaine.B')
-            var kieli = aine.propertyBySelector('.title .properties:eq(0) > .dropdown-wrapper')
-
-            describe('Lisääminen', function () {
-              before(
-                editor.edit,
-                uusiOppiaine.selectValue('B-language'),
-                aine.propertyBySelector('.arvosana').selectValue(9)
-              )
-
-              it('lisää oppiaineen', function () {
-                expect(S('.oppiaineet .oppiaine-rivi').length).to.equal(22)
-              })
-
-              it('estää tallennuksen kunnes aineryhmä ja kieli on valittu', function () {
-                expect(editor.canSave()).to.equal(false)
-                expect(editor.getEditBarMessage()).to.equal('Korjaa virheelliset tiedot.')
-              })
-
-              describe('Kun kieli on valittu', function () {
-                before(kieli.setValue('ranska'))
-
-                it('tallennus ei vielä onnistu', function () {
-                  expect(editor.canSave()).to.equal(false)
-                  expect(editor.getEditBarMessage()).to.equal('Korjaa virheelliset tiedot.')
-                })
-              })
-
-              describe('Kun aineryhmä on valittu', function () {
+              describe('Poistaminen', function () {
                 before(
-                  aine.propertyBySelector('.ryhmä').setValue('Studies in language and literature'),
+                  editor.edit,
+                  aine.propertyBySelector('.remove-row').removeValue,
                   editor.saveChanges,
                   wait.until(page.isSavedLabelShown)
                 )
 
-                it('tallennus toimii', function () {
-                  expect(extractAsText(S('.oppiaineet'))).to.contain('B-language')
+                it('toimii', function () {
+                  expect(extractAsText(S('.oppiaineet'))).to.not.contain('Chemistry')
                 })
               })
             })
 
-            describe('Kielen muuttaminen', function() {
+            describe('IB-kieliaine', function() {
               before(
                 editor.edit,
-                kieli.selectValue('englanti')
+                editor.property('tila').removeItem(0),
+                opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi
               )
 
-              it('onnistuu', function() {
-                expect(kieli.getValue()).to.equal('englanti')
+              var aine = opinnot.oppiaineet.oppiaine('oppiaine.B')
+              var kieli = aine.propertyBySelector('.title .properties:eq(0) > .dropdown-wrapper')
+
+              describe('Lisääminen', function () {
+                before(
+                  editor.edit,
+                  uusiOppiaine.selectValue('B-language'),
+                  aine.propertyBySelector('.arvosana').selectValue(9)
+                )
+
+                it('lisää oppiaineen', function () {
+                  expect(S('.oppiaineet .oppiaine-rivi').length).to.equal(22)
+                })
+
+                it('estää tallennuksen kunnes aineryhmä ja kieli on valittu', function () {
+                  expect(editor.canSave()).to.equal(false)
+                  expect(editor.getEditBarMessage()).to.equal('Korjaa virheelliset tiedot.')
+                })
+
+                describe('Kun kieli on valittu', function () {
+                  before(kieli.setValue('ranska'))
+
+                  it('tallennus ei vielä onnistu', function () {
+                    expect(editor.canSave()).to.equal(false)
+                    expect(editor.getEditBarMessage()).to.equal('Korjaa virheelliset tiedot.')
+                  })
+                })
+
+                describe('Kun aineryhmä on valittu', function () {
+                  before(
+                    aine.propertyBySelector('.ryhmä').setValue('Studies in language and literature'),
+                    editor.saveChanges,
+                    wait.until(page.isSavedLabelShown)
+                  )
+
+                  it('tallennus toimii', function () {
+                    expect(extractAsText(S('.oppiaineet'))).to.contain('B-language')
+                  })
+                })
               })
 
-              it('tallennus on mahdollista', function() {
-                expect(editor.canSave()).to.equal(true)
+              describe('Kielen muuttaminen', function() {
+                before(
+                  editor.edit,
+                  kieli.selectValue('englanti')
+                )
+
+                it('onnistuu', function() {
+                  expect(kieli.getValue()).to.equal('englanti')
+                })
+
+                it('tallennus on mahdollista', function() {
+                  expect(editor.canSave()).to.equal(true)
+                })
               })
             })
           })
-
         })
       })
 
@@ -1106,8 +1105,8 @@ describe('IB', function( ) {
               'Mathematics\n\n' +
               'The arts'
             )
-            after(editor.cancelChanges)
           })
+          after(editor.cancelChanges)
         })
 
         describe('Pre-IB-suorituksen lisääminen', function() {
@@ -1196,8 +1195,8 @@ describe('IB', function( ) {
           before(editor.edit)
           it('näytetään uuden oppiaineen lisäys-dropdown', function () {
             expect(isElementVisible(S('.osasuoritukset .uusi-oppiaine .dropdown'))).to.equal(true)
-            after(editor.cancelChanges)
           })
+          after(editor.cancelChanges)
         })
 
         describe('IB-tutkinnon suorituksen lisääminen', function() {
