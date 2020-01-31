@@ -26,6 +26,7 @@ object PerustiedotIndex {
 class PerustiedotIndex(elastic: ElasticSearch) extends ElasticSearchIndex(
   elastic = elastic,
   name = "koski-index",
+  mappingType = "perustiedot",
   settings = PerustiedotIndex.settings
 ) {
   def indexIsLarge: Boolean = {

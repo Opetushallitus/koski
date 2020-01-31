@@ -12,6 +12,7 @@ import org.json4s.{JValue, _}
 class ElasticSearchIndex(
   val elastic: ElasticSearch,
   val name: String,
+  val mappingType: String,
   val settings: JValue
 ) extends Logging {
   def http = elastic.http
@@ -28,7 +29,7 @@ class ElasticSearchIndex(
 
   private def migrateIndex: Boolean = {
     logger.info("ElasticSearch index exists")
-    val serverSettings = (Http.runTask(http.get(uri"/koski/_settings")(Http.parseJson[JValue])) \ "koski-index" \ "settings" \ "index")
+    val serverSettings = (Http.runTask(http.get(uri"/${name}/_settings")(Http.parseJson[JValue])) \ name \ "settings" \ "index")
     val mergedSettings = serverSettings.merge(settings)
     val alreadyApplied = mergedSettings == serverSettings
     if (alreadyApplied) {
@@ -42,24 +43,24 @@ class ElasticSearchIndex(
 
   private def updateIndexSettings(newSettings: JValue) = {
     logger.info(s"Updating Elasticsearch index settings (diff: ${JsonMethods.pretty(newSettings)})")
-    Http.runTask(http.post(uri"/koski/_close", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
-    Http.runTask(http.put(uri"/koski/_settings", settings)(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
-    Http.runTask(http.post(uri"/koski/_open", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
+    Http.runTask(http.post(uri"/${name}/_close", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
+    Http.runTask(http.put(uri"/${name}/_settings", settings)(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+    Http.runTask(http.post(uri"/${name}/_open", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
     logger.info("Updated Elasticsearch index settings. Re-indexing is needed.")
     true
   }
 
   private def createIndex: Boolean = {
     logger.info("Creating Elasticsearch index")
-    Http.runTask(http.put(uri"/koski-index", JObject("settings" -> settings))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+    Http.runTask(http.put(uri"/${name}", JObject("settings" -> settings))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
     logger.info("Creating Elasticsearch index alias")
-    Http.runTask(http.post(uri"/_aliases", JObject("actions" -> JArray(List(JObject("add" -> JObject("index" -> JString("koski-index"), "alias" -> JString("koski")))))))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+    Http.runTask(http.post(uri"/_aliases", JObject("actions" -> JArray(List(JObject("add" -> JObject("index" -> JString(name)))))))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
     logger.info("Created index and alias.")
     true
   }
 
-  def runSearch(tyep: String, doc: JValue): Option[JValue] = try {
-    Some(Http.runTask(http.post(uri"/koski/${tyep}/_search", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue])))
+  def runSearch(doc: JValue): Option[JValue] = try {
+    Some(Http.runTask(http.post(uri"/${name}/${mappingType}/_search", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue])))
   } catch {
     case e: HttpStatusException if e.status == 400 =>
       logger.warn(e.getMessage)
@@ -67,13 +68,13 @@ class ElasticSearchIndex(
   }
 
   def updateBulk(jsonLines: Seq[JValue], refreshIndex: Boolean = false): (Boolean, JValue) = {
-    val url = if (refreshIndex) uri"/koski/_bulk?refresh=wait_for" else uri"/koski/_bulk"
+    val url = if (refreshIndex) uri"/${name}/_bulk?refresh=wait_for" else uri"/${name}/_bulk"
     val response: JValue = Http.runTask(http.post(url, jsonLines)(Json4sHttp4s.multiLineJson4sEncoderOf[JValue])(Http.parseJson[JValue]))
     (extract[Boolean](response \ "errors"), response)
   }
 
   private def indexExists = {
-    Http.runTask(http.get(uri"/koski")(Http.statusCode)) match {
+    Http.runTask(http.get(uri"/${name}")(Http.statusCode)) match {
       case 200 => true
       case 404 => false
       case statusCode =>

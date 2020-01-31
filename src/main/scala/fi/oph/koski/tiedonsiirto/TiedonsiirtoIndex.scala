@@ -26,5 +26,6 @@ object TiedonsiirtoIndex {
 class TiedonsiirtoIndex(elastic: ElasticSearch) extends ElasticSearchIndex(
   elastic = elastic,
   name = "koski-index",
+  mappingType = "tiedonsiirto",
   settings = TiedonsiirtoIndex.settings
 )
