@@ -26,7 +26,13 @@ object PerustiedotIndexUpdater extends App with Timing {
   }
 }
 
-class OpiskeluoikeudenPerustiedotIndexer(config: Config, index: ElasticSearchIndex, opiskeluoikeusQueryService: OpiskeluoikeusQueryService, perustiedotSyncRepository: PerustiedotSyncRepository) extends Logging with BackgroundExecutionContext {
+class OpiskeluoikeudenPerustiedotIndexer(
+  config: Config,
+  index: ElasticSearchIndex,
+  opiskeluoikeusQueryService:
+  OpiskeluoikeusQueryService,
+  perustiedotSyncRepository: PerustiedotSyncRepository
+) extends Logging with BackgroundExecutionContext {
   lazy val init = {
     index.init
 
