@@ -16,30 +16,42 @@ class KoskiElasticSearchIndex(val elastic: ElasticSearch) extends Logging {
 
   lazy val init = {
     if (indexExists) {
-      logger.info("ElasticSearch index exists")
-      val serverSettings = (Http.runTask(http.get(uri"/koski/_settings")(Http.parseJson[JValue])) \ "koski-index" \ "settings" \ "index")
-      val mergedSettings = serverSettings.merge(settings)
-      val alreadyApplied = mergedSettings == serverSettings
-      if (alreadyApplied) {
-        logger.info("Elasticsearch index settings are up to date")
-        false
-      } else {
-        val diff = JsonDiff.jsonDiff(serverSettings, mergedSettings)
-        logger.info(s"Updating Elasticsearch index settings (diff: ${JsonMethods.pretty(diff)})")
-        Http.runTask(http.post(uri"/koski/_close", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
-        Http.runTask(http.put(uri"/koski/_settings", settings)(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
-        Http.runTask(http.post(uri"/koski/_open", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
-        logger.info("Updated Elasticsearch index settings. Re-indexing is needed.")
-        true
-      }
+      migrateIndex
     } else {
-      logger.info("Creating Elasticsearch index")
-      Http.runTask(http.put(uri"/koski-index", JObject("settings" -> settings))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
-      logger.info("Creating Elasticsearch index alias")
-      Http.runTask(http.post(uri"/_aliases", JObject("actions" -> JArray(List(JObject("add" -> JObject("index" -> JString("koski-index"), "alias" -> JString("koski")))))))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
-      logger.info("Created index and alias.")
-      true
+      createIndex
     }
+  }
+
+  private def migrateIndex: Boolean = {
+    logger.info("ElasticSearch index exists")
+    val serverSettings = (Http.runTask(http.get(uri"/koski/_settings")(Http.parseJson[JValue])) \ "koski-index" \ "settings" \ "index")
+    val mergedSettings = serverSettings.merge(settings)
+    val alreadyApplied = mergedSettings == serverSettings
+    if (alreadyApplied) {
+      logger.info("Elasticsearch index settings are up to date")
+      false
+    } else {
+      val diff = JsonDiff.jsonDiff(serverSettings, mergedSettings)
+      updateIndexSettings(diff)
+    }
+  }
+
+  private def updateIndexSettings(newSettings: JValue) = {
+    logger.info(s"Updating Elasticsearch index settings (diff: ${JsonMethods.pretty(newSettings)})")
+    Http.runTask(http.post(uri"/koski/_close", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
+    Http.runTask(http.put(uri"/koski/_settings", settings)(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+    Http.runTask(http.post(uri"/koski/_open", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
+    logger.info("Updated Elasticsearch index settings. Re-indexing is needed.")
+    true
+  }
+
+  private def createIndex: Boolean = {
+    logger.info("Creating Elasticsearch index")
+    Http.runTask(http.put(uri"/koski-index", JObject("settings" -> settings))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+    logger.info("Creating Elasticsearch index alias")
+    Http.runTask(http.post(uri"/_aliases", JObject("actions" -> JArray(List(JObject("add" -> JObject("index" -> JString("koski-index"), "alias" -> JString("koski")))))))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+    logger.info("Created index and alias.")
+    true
   }
 
   def runSearch(tyep: String, doc: JValue): Option[JValue] = try {
