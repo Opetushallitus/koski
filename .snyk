@@ -1,9 +1,5 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
 version: v1.13.5
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
-ignore:
-  SNYK-JAVA-IONETTY-543490:
-    - 'software.amazon.awssdk:s3 > *':
-        reason: Vulnerability in server side, AWS SDK only uses client. No fix available yet.
-        expires: "2020-03-01T00:00:00.000Z"
+ignore: {}
 patch: {}
