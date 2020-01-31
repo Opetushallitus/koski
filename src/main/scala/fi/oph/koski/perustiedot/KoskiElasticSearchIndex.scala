@@ -81,8 +81,7 @@ class KoskiElasticSearchIndex(val elastic: ElasticSearch) extends Logging {
     OpiskeluoikeudenPerustiedotStatistics(this).statistics.opiskeluoikeuksienMäärä > 100
   }
 
-  import org.json4s.jackson.JsonMethods.parse
-  private def settings = parse("""
+  private def settings = JsonMethods.parse("""
     {
         "analysis": {
           "filter": {
