@@ -141,15 +141,14 @@ class OpiskeluoikeudenPerustiedotIndexer(
           UpdateStatus(rows.length, changed)
       }.scan(UpdateStatus(0, 0))(_ + _)
 
-
     observable.subscribe(
       {
         case UpdateStatus(countSoFar, actuallyChanged) => if (countSoFar > 0) {
           logger.info(s"Updated elasticsearch index for ${countSoFar} rows, actually changed ${actuallyChanged}")
         }
       },
-      {e: Throwable => logger.error(e)("Error updating Elasticsearch index")},
-      { () => logger.info("Finished updating Elasticsearch index")})
+      { e: Throwable => logger.error(e)("Error while indexing perustiedot documents") },
+      { () => logger.info("Indexed all perustiedot documents") })
     observable
   }
 
