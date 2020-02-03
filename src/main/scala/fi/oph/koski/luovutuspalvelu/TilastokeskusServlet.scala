@@ -9,6 +9,7 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.{JsonSerializer, SensitiveDataAllowed}
 import fi.oph.koski.koskiuser.RequiresTilastokeskus
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueries
+import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}
 import org.json4s.JValue
@@ -48,7 +49,8 @@ class TilastokeskusServlet(implicit val application: KoskiApplication) extends A
       kotikunta = laajat.kotikunta,
       äidinkieli = täydelliset.äidinkieli,
       kansalaisuus = täydelliset.kansalaisuus,
-      turvakielto = täydelliset.turvakielto
+      turvakielto = laajat.turvakielto,
+      linkitetytOidit = laajat.linkitetytOidit
     )
   }
 }
@@ -79,5 +81,6 @@ case class TilastokeskusHenkilötiedot(
   kotikunta: Option[String],
   äidinkieli: Option[Koodistokoodiviite],
   kansalaisuus: Option[List[Koodistokoodiviite]],
-  turvakielto: Option[Boolean] = None
+  turvakielto: Boolean,
+  linkitetytOidit: List[Oid]
 )

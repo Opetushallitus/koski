@@ -17,6 +17,19 @@ import org.scalatest.{FreeSpec, Matchers}
 class TilastokeskusSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with Matchers {
   import fi.oph.koski.util.DateOrdering._
   "Tilastokeskus-API" - {
+    "Hakee oppijoiden tiedot" in {
+      val kaikkiOppijat = performQuery()
+      val master = kaikkiOppijat.find(_.henkilö.hetu == MockOppijat.master.hetu)
+      master should be(defined)
+      master.get.henkilö.oid should equal(MockOppijat.master.oid)
+      master.get.henkilö.linkitetytOidit should equal(List(MockOppijat.slave.henkilö.oid))
+
+      val eero = kaikkiOppijat.find(_.henkilö.hetu == MockOppijat.eero.hetu)
+      eero should be(defined)
+      eero.get.henkilö.oid should equal(MockOppijat.eero.oid)
+      eero.get.henkilö.linkitetytOidit should be(empty)
+    }
+
     "Vaatii TILASTOKESKUS-käyttöoikeuden" in {
       val withoutTilastokeskusAccess = MockUsers.users.filterNot(_.käyttöoikeudet.collect { case k: KäyttöoikeusViranomainen => k }.exists(_.globalPalveluroolit.contains(Palvelurooli("KOSKI", "TILASTOKESKUS"))))
       withoutTilastokeskusAccess.foreach { user =>

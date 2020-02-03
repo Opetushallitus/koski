@@ -37,7 +37,7 @@ class LuovutuspalveluService(application: KoskiApplication) {
     val masterOids = henkilot.map(_.oid)
     val filters = List(OppijaOidHaku(masterOids ++ application.henkilöCache.resolveLinkedOids(masterOids)), opiskeluoikeusTyyppiQueryFilters(req.opiskeluoikeudenTyypit))
     streamingQuery(filters).map { t =>
-      JsonSerializer.serializeWithUser(user)(buildResponse(oidToHenkilo(t._1), t._2))
+      JsonSerializer.serializeWithUser(user)(buildResponse(oidToHenkilo(t._1.oid), t._2))
     }
   }
 
