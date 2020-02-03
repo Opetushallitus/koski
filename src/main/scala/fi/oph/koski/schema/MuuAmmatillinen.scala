@@ -24,6 +24,15 @@ case class MuunAmmatillisenKoulutuksenSuoritus(
   ryhmä: Option[String] = None
 ) extends AmmatillinenPäätasonSuoritus with Todistus with Toimipisteellinen with Ryhmällinen with Työssäoppimisjaksoton with Arvioinniton
 
+case class MuunAmmatillisenKoulutuksenArviointi(
+  @KoodistoUri("arviointiasteikkomuuammatillinenkoulutus")
+  arvosana: Koodistokoodiviite,
+  päivä: LocalDate,
+  @Description("Tutkinnon osan suorituksen arvioinnista päättäneen henkilön nimi")
+  arvioitsijat: Option[List[Arvioitsija]] = None,
+  kuvaus: Option[LocalizedString] = None
+) extends AmmatillinenKoodistostaLöytyväArviointi with SanallinenArviointi
+
 case class TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(
   koulutusmoduuli: TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus,
   toimipiste: OrganisaatioWithOid,
@@ -83,7 +92,7 @@ trait MuuAmmatillinenOsasuoritus extends Suoritus with MahdollisestiSuorituskiel
 case class MuunAmmatillisenKoulutuksenOsasuorituksenSuoritus(
   koulutusmoduuli: MuunAmmatillisenKoulutuksenOsasuoritus,
   override val alkamispäivä: Option[LocalDate],
-  arviointi: Option[List[AmmatillinenArviointi]],
+  arviointi: Option[List[MuunAmmatillisenKoulutuksenArviointi]],
   suorituskieli: Option[Koodistokoodiviite],
   @Description("Osasuoritukseen liittyvän näytön tiedot")
   @Tooltip("Osasuoritukseen kuuluvan ammattiosaamisen näytön tiedot.")

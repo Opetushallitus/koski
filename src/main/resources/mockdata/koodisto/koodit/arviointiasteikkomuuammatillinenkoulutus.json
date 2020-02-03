@@ -1,0 +1,10 @@
+[ {
+  "koodiUri" : "arviointiasteikkomuuammatillinenkoulutus_suoritettu",
+  "koodiArvo" : "Suoritettu",
+  "metadata" : [ {
+    "nimi" : "Suoritettu",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+} ]
