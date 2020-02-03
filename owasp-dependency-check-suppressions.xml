@@ -100,4 +100,40 @@
       <gav regex="true">^log4j:apache-log4j-extras:.*$</gav>
       <cve>CVE-2019-17571</cve>
     </suppress>
+  <suppress>
+    <notes>HttpObjectDecoder not used in project</notes>
+    <packageUrl regex="true">^pkg:maven/software\.amazon\.awssdk/netty\-nio\-client@.*$</packageUrl>
+    <cve>CVE-2019-20444</cve>
+    <cve>CVE-2019-20445</cve>
+  </suppress>
+  <suppress>
+    <notes>HttpObjectDecoder not used in project</notes>
+    <gav regex="true">^io\.netty:netty-transport-native-unix-common:.*$</gav>
+    <cve>CVE-2019-20444</cve>
+    <cve>CVE-2019-20445</cve>
+  </suppress>
+  <suppress>
+    <notes>HttpObjectDecoder not used in project</notes>
+    <gav regex="true">^io\.netty:netty-transport-native-epoll:.*$</gav>
+    <cve>CVE-2019-20444</cve>
+    <cve>CVE-2019-20445</cve>
+  </suppress>
+  <suppress>
+    <notes>HttpObjectDecoder not used in project</notes>
+    <gav regex="true">^io\.netty:netty-codec-http2:.*$</gav>
+    <cve>CVE-2019-20444</cve>
+    <cve>CVE-2019-20445</cve>
+  </suppress>
+  <suppress>
+    <notes>HttpObjectDecoder not used in project</notes>
+    <gav regex="true">^com\.typesafe\.netty:netty-reactive-streams-http:.*$</gav>
+    <cve>CVE-2019-20444</cve>
+    <cve>CVE-2019-20445</cve>
+  </suppress>
+  <suppress>
+    <notes>HttpObjectDecoder not used in project</notes>
+    <gav regex="true">^com\.typesafe\.netty:netty-reactive-streams:.*$</gav>
+    <cve>CVE-2019-20444</cve>
+    <cve>CVE-2019-20445</cve>
+  </suppress>
 </suppressions>
