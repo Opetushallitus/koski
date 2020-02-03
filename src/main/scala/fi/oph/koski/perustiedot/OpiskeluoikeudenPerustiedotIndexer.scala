@@ -111,7 +111,12 @@ class OpiskeluoikeudenPerustiedotIndexer(
   }
 
   def deleteByOppijaOids(oids: List[Oid]) = {
-    val query: JValue = Map("query" -> Map("bool" -> Map("should" -> Map("terms" -> Map("henkilö.oid" -> List(oids.map(JString)))))))
+    val query: JValue = Map(
+      "query" -> Map(
+        "bool" -> Map(
+          "should" -> Map(
+            "terms" -> Map(
+              "henkilö.oid" -> List(oids.map(JString)))))))
     deleteByQuery(query)
   }
 
