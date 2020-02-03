@@ -64,19 +64,22 @@ class OpiskeluoikeudenPerustiedotIndexer(
 ) with BackgroundExecutionContext {
 
   def updatePerustiedot(items: Seq[OpiskeluoikeudenOsittaisetTiedot], upsert: Boolean): Either[HttpStatus, Int] = {
-    val serializedItems = items.map(OpiskeluoikeudenPerustiedot.serializePerustiedot)
-    if (serializedItems.isEmpty) {
+    updatePerustiedotRaw(items.map(OpiskeluoikeudenPerustiedot.serializePerustiedot), upsert)
+  }
+
+  def updatePerustiedotRaw(items: Seq[JValue], upsert: Boolean): Either[HttpStatus, Int] = {
+    if (items.isEmpty) {
       return Right(0)
     }
-    val (errors, response) = updateBulk(generateJson(serializedItems, upsert))
+    val (errors, response) = updateBulk(generateJson(items, upsert))
     if (errors) {
       val failedOpiskeluoikeusIds: List[Int] = extract[List[JValue]](response \ "items" \ "update")
         .flatMap { item =>
           if (item \ "error" != JNothing) List(extract[Int](item \ "_id")) else Nil
         }
       perustiedotSyncRepository.syncAgain(failedOpiskeluoikeusIds.flatMap { id =>
-        serializedItems.find{doc => docId(doc) == id}.orElse{
-          logger.warn(s"Elasticsearch reported failed id $id that was not found in ${serializedItems.map(docId)}");
+        items.find{ doc => docId(doc) == id}.orElse{
+          logger.warn(s"Elasticsearch reported failed id $id that was not found in ${items.map(docId)}");
           None
         }
       }, upsert)

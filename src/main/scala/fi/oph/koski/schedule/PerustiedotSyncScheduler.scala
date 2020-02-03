@@ -25,7 +25,7 @@ case class PerustiedotSyncScheduler(app: KoskiApplication) extends Timing {
     if (rows.nonEmpty) {
       logger.debug(s"Syncing ${rows.length} rows")
       rows.groupBy(_.upsert) foreach { case (upsert, rows) =>
-        app.perustiedotIndexer.updateBulkRaw(rows.map(_.data), upsert)
+        app.perustiedotIndexer.updatePerustiedotRaw(rows.map(_.data), upsert)
       }
       app.perustiedotSyncRepository.delete(rows.map(_.id))
       logger.debug(s"Done syncing ${rows.length} rows")
