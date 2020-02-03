@@ -120,9 +120,13 @@ class TiedonsiirtoService(
     }) ++ tallentajaOrganisaatioFilters()
   }
 
-  private def tallentajaOrganisaatioFilters(accessType: AccessType.Value = AccessType.read)(implicit session: KoskiSession): List[Map[String, Any]] = tallentajaOrganisaatioFilter(accessType).toList
+  private def tallentajaOrganisaatioFilters(accessType: AccessType.Value = AccessType.read)
+                                           (implicit session: KoskiSession): List[Map[String, Any]] = {
+    tallentajaOrganisaatioFilter(accessType).toList
+  }
 
-  private def tallentajaOrganisaatioFilter(accessType: AccessType.Value = AccessType.read)(implicit session: KoskiSession): Option[Map[String, Any]] =
+  private def tallentajaOrganisaatioFilter(accessType: AccessType.Value = AccessType.read)
+                                          (implicit session: KoskiSession): Option[Map[String, Any]] = {
     if (session.hasGlobalReadAccess) {
       None
     } else {
@@ -137,6 +141,7 @@ class TiedonsiirtoService(
       }
       Some(filter)
     }
+  }
 
   private def haeTiedonsiirrot(filters: List[Map[String, Any]], oppilaitosOid: Option[String], paginationSettings: Option[PaginationSettings])(implicit koskiSession: KoskiSession): Either[HttpStatus, PaginatedResponse[Tiedonsiirrot]] = {
     koskiSession.juuriOrganisaatiot.map(_.oid).foreach { oid =>
