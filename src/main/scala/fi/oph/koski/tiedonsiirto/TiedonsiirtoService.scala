@@ -280,12 +280,7 @@ class TiedonsiirtoService(
     }
     if (sorting.descending) ordering = ordering.reverse
 
-    val query = yhteenvetoQuery
-
-    // uncomment this to see raw query for manual troubleshooting
-    // println(JsonMethods.pretty(query))
-
-    runSearch(query).map { response =>
+    runSearch(yhteenvetoQuery).map { response =>
       for {
         orgResults <- extract[List[JValue]](response \ "aggregations" \ "organisaatio" \ "buckets")
         tallentajaOrganisaatioOid = extract[String](orgResults \ "key")
