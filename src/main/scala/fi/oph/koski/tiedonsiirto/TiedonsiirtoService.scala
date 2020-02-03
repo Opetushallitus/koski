@@ -280,46 +280,7 @@ class TiedonsiirtoService(
     }
     if (sorting.descending) ordering = ordering.reverse
 
-    val query = toJValue(Map(
-      "size" -> 0,
-      "aggs" ->
-        Map(
-          "organisaatio"-> Map(
-            "terms"-> Map( "field"-> "tallentajaOrganisaatioOid.keyword", "size" -> 20000 ),
-            "aggs"-> Map(
-              "oppilaitos"-> Map(
-                "terms"-> Map( "field"-> "oppilaitokset.oid.keyword", "size" -> 20000, "missing" -> "-" ),
-                "aggs"-> Map(
-                  "käyttäjä"-> Map(
-                    "terms"-> Map( "field"-> "tallentajaKäyttäjäOid.keyword", "size" -> 20000 ),
-                    "aggs"-> Map(
-                      "lähdejärjestelmä"-> Map(
-                        "terms"-> Map( "field"-> "lähdejärjestelmä.keyword", "size" -> 20000, "missing"-> "-" ),
-                        "aggs"-> Map(
-                          "viimeisin" -> Map( "max" -> Map( "field" -> "aikaleima" ) ),
-                          "fail"-> Map( "filter"-> Map( "term"-> Map( "success"-> false )) ),
-                          "tuoreDokumentti" -> Map( "top_hits" ->
-                            Map (
-                              "sort" -> Array( Map( "aikaleima" -> Map( "order" -> "desc" ))),
-                              "_source" -> Map( "includes" -> Array(
-                                "oppilaitokset.oid",
-                                "oppilaitokset.nimi",
-                                "tallentajaKäyttäjäOid",
-                                "tallentajaKäyttäjätunnus"
-                              )),
-                              "size" -> 1
-                            )
-                          )
-                        )
-                      )
-                    )
-                  )
-                )
-              )
-            )
-          )
-        )
-    ) ++ tallentajaOrganisaatioFilter().map(filter => Map("query" -> filter)).getOrElse(Map()))
+    val query = yhteenvetoQuery
 
     // uncomment this to see raw query for manual troubleshooting
     // println(JsonMethods.pretty(query))
@@ -364,7 +325,55 @@ class TiedonsiirtoService(
     }.getOrElse(Nil).sorted(ordering)
   }
 
-  private def getOrganisaatio(oid: String) = organisaatioRepository.getOrganisaatio(oid).map(_.toOidOrganisaatio).getOrElse(OidOrganisaatio(oid, Some(LocalizedString.unlocalized(oid))))
+  private def yhteenvetoQuery(implicit koskiSession: KoskiSession): JValue = {
+    toJValue(Map(
+      "size" -> 0,
+      "aggs" ->
+        Map(
+          "organisaatio" -> Map(
+            "terms" -> Map("field" -> "tallentajaOrganisaatioOid.keyword", "size" -> 20000),
+            "aggs" -> Map(
+              "oppilaitos" -> Map(
+                "terms" -> Map("field" -> "oppilaitokset.oid.keyword", "size" -> 20000, "missing" -> "-"),
+                "aggs" -> Map(
+                  "käyttäjä" -> Map(
+                    "terms" -> Map("field" -> "tallentajaKäyttäjäOid.keyword", "size" -> 20000),
+                    "aggs" -> Map(
+                      "lähdejärjestelmä" -> Map(
+                        "terms" -> Map("field" -> "lähdejärjestelmä.keyword", "size" -> 20000, "missing" -> "-"),
+                        "aggs" -> Map(
+                          "viimeisin" -> Map("max" -> Map("field" -> "aikaleima")),
+                          "fail" -> Map("filter" -> Map("term" -> Map("success" -> false))),
+                          "tuoreDokumentti" -> Map("top_hits" ->
+                            Map(
+                              "sort" -> Array(Map("aikaleima" -> Map("order" -> "desc"))),
+                              "_source" -> Map("includes" -> Array(
+                                "oppilaitokset.oid",
+                                "oppilaitokset.nimi",
+                                "tallentajaKäyttäjäOid",
+                                "tallentajaKäyttäjätunnus"
+                              )),
+                              "size" -> 1
+                            )
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            )
+          )
+        )
+    ) ++ tallentajaOrganisaatioFilter().map(filter => Map("query" -> filter)).getOrElse(Map()))
+  }
+
+  private def getOrganisaatio(oid: String) = {
+    organisaatioRepository
+      .getOrganisaatio(oid)
+      .map(_.toOidOrganisaatio)
+      .getOrElse(OidOrganisaatio(oid, Some(LocalizedString.unlocalized(oid))))
+  }
 
   private def jsonStringList(value: JValue) = value match {
     case JArray(xs) => xs.collect { case JString(x) => x }
