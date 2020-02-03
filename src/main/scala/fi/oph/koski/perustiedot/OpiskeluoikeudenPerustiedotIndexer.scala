@@ -66,22 +66,38 @@ class OpiskeluoikeudenPerustiedotIndexer(
   mapping = OpiskeluoikeudenPerustiedotIndexer.mapping,
   settings = OpiskeluoikeudenPerustiedotIndexer.settings
 ) with BackgroundExecutionContext {
-  def updateBulk(items: Seq[OpiskeluoikeudenOsittaisetTiedot], upsert: Boolean): Either[HttpStatus, Int] = {
-    updateBulkRaw(items.map(OpiskeluoikeudenPerustiedot.serializePerustiedot), upsert)
-  }
 
-  def updateBulkRaw(items: Seq[JValue], upsert: Boolean): Either[HttpStatus, Int] = {
-    // TODO: päättele upsertti riveittäin
-
-    if (items.isEmpty) {
+  def updatePerustiedot(items: Seq[OpiskeluoikeudenOsittaisetTiedot], upsert: Boolean): Either[HttpStatus, Int] = {
+    val serializedItems = items.map(OpiskeluoikeudenPerustiedot.serializePerustiedot)
+    if (serializedItems.isEmpty) {
       return Right(0)
     }
-    val (errors, response) = index.updateBulk(items.flatMap { (perustiedot: JValue) =>
+    val (errors, response) = updateBulk(generateJson(serializedItems, upsert))
+    if (errors) {
+      val failedOpiskeluoikeusIds: List[Int] = extract[List[JValue]](response \ "items" \ "update") .flatMap { item =>
+        if (item \ "error" != JNothing) List(extract[Int](item \ "_id")) else Nil
+      }
+      perustiedotSyncRepository.syncAgain(failedOpiskeluoikeusIds.flatMap { id =>
+        serializedItems.find{doc => docId(doc) == id}.orElse{
+          logger.warn(s"Elasticsearch reported failed id $id that was not found in ${serializedItems.map(docId)}");
+          None
+        }
+      }, upsert)
+      val msg = s"Elasticsearch indexing failed for ids $failedOpiskeluoikeusIds: ${JsonMethods.pretty(response)}. Will retry soon."
+      logger.error(msg)
+      Left(KoskiErrorCategory.internalError(msg))
+    } else {
+      val itemResults = extract[List[JValue]](response \ "items").map(_ \ "update" \ "_shards" \ "successful").map(extract[Int](_))
+      Right(itemResults.sum)
+    }
+  }
 
+  private def generateJson(serializedItems: Seq[JValue], upsert: Boolean) = {
+    serializedItems.flatMap { (perustiedot: JValue) =>
       val doc = perustiedot.asInstanceOf[JObject] match {
         case JObject(fields) => JObject(
           fields.filter {
-            case ("henkilö", JNull) => false // to prevent removing these from ElasticSearch. TODO: not a nice way to do it, improve! Probably should have a separate class for Perustiedot without henkilö/henkilöOid fields, so that nulls wouldn't be there.
+            case ("henkilö", JNull) => false // to prevent removing these from ElasticSearch
             case ("henkilöOid", JNull) => false
             case _ => true
           }
@@ -92,21 +108,6 @@ class OpiskeluoikeudenPerustiedotIndexer(
         JObject("update" -> JObject("_id" -> (doc \ "id"), "_index" -> JString("koski"), "_type" -> JString("perustiedot"))),
         JObject("doc_as_upsert" -> JBool(upsert), "doc" -> doc)
       )
-    })
-
-    if (errors) {
-      val failedOpiskeluoikeusIds: List[Int] = extract[List[JValue]](response \ "items" \ "update") .flatMap { item =>
-        if (item \ "error" != JNothing) List(extract[Int](item \ "_id")) else Nil
-      }
-      perustiedotSyncRepository.syncAgain(failedOpiskeluoikeusIds.flatMap { id =>
-        items.find{doc => docId(doc) == id}.orElse{logger.warn(s"Elasticsearch reported failed id $id that was not found in ${items.map(docId)}"); None}
-      }, upsert)
-      val msg = s"Elasticsearch indexing failed for ids $failedOpiskeluoikeusIds: ${JsonMethods.pretty(response)}. Will retry soon."
-      logger.error(msg)
-      Left(KoskiErrorCategory.internalError(msg))
-    } else {
-      val itemResults = extract[List[JValue]](response \ "items").map(_ \ "update" \ "_shards" \ "successful").map(extract[Int](_))
-      Right(itemResults.sum)
     }
   }
 
@@ -132,7 +133,7 @@ class OpiskeluoikeudenPerustiedotIndexer(
         val perustiedot = rows.par.map { case (opiskeluoikeusRow, henkilöRow, masterHenkilöRow) =>
           OpiskeluoikeudenPerustiedot.makePerustiedot(opiskeluoikeusRow, henkilöRow, masterHenkilöRow)
         }.toList
-        val changed = updateBulk(perustiedot, true) match {
+        val changed = updatePerustiedot(perustiedot, upsert = true) match {
           case Right(count) => count
           case Left(_) => 0 // error already logged
         }
