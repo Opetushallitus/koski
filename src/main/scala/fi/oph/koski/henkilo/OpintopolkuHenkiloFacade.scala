@@ -2,7 +2,7 @@ package fi.oph.koski.henkilo
 
 import com.typesafe.config.Config
 import fi.oph.koski.db.KoskiDatabase.DB
-import fi.oph.koski.elasticsearch.ElasticSearch
+import fi.oph.koski.elasticsearch.ElasticSearchIndex
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotRepository
@@ -24,16 +24,16 @@ trait OpintopolkuHenkilöFacade {
 }
 
 object OpintopolkuHenkilöFacade {
-  def apply(config: Config, db: => DB, perustiedotRepository: => OpiskeluoikeudenPerustiedotRepository, elasticSearch: => ElasticSearch): OpintopolkuHenkilöFacade = config.getString("opintopolku.virkailija.url") match {
+  def apply(config: Config, db: => DB, perustiedotRepository: => OpiskeluoikeudenPerustiedotRepository, perustiedotIndexer: => ElasticSearchIndex): OpintopolkuHenkilöFacade = config.getString("opintopolku.virkailija.url") match {
     case "mock" => new MockOpintopolkuHenkilöFacadeWithDBSupport(db)
-    case _ => RemoteOpintopolkuHenkilöFacade(config, perustiedotRepository, elasticSearch)
+    case _ => RemoteOpintopolkuHenkilöFacade(config, perustiedotRepository, perustiedotIndexer)
   }
 }
 
 object RemoteOpintopolkuHenkilöFacade {
-  def apply(config: Config, perustiedotRepository: => OpiskeluoikeudenPerustiedotRepository, elasticSearch: => ElasticSearch): RemoteOpintopolkuHenkilöFacade = {
+  def apply(config: Config, perustiedotRepository: => OpiskeluoikeudenPerustiedotRepository, perustiedotIndexer: => ElasticSearchIndex): RemoteOpintopolkuHenkilöFacade = {
     if (config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid")) {
-      new RemoteOpintopolkuHenkilöFacadeWithMockOids(OppijanumeroRekisteriClient(config), perustiedotRepository, elasticSearch)
+      new RemoteOpintopolkuHenkilöFacadeWithMockOids(OppijanumeroRekisteriClient(config), perustiedotRepository, perustiedotIndexer)
     } else {
       new RemoteOpintopolkuHenkilöFacade(OppijanumeroRekisteriClient(config))
     }
@@ -68,7 +68,7 @@ class RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient: OppijanumeroR
   def findSlaveOids(masterOid: String): List[Oid] = runTask(oppijanumeroRekisteriClient.findSlaveOids(masterOid))
 }
 
-class RemoteOpintopolkuHenkilöFacadeWithMockOids(oppijanumeroRekisteriClient: OppijanumeroRekisteriClient, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository, elasticSearch: ElasticSearch) extends RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient) {
+class RemoteOpintopolkuHenkilöFacadeWithMockOids(oppijanumeroRekisteriClient: OppijanumeroRekisteriClient, perustiedotRepository: OpiskeluoikeudenPerustiedotRepository, perustiedotIndexer: ElasticSearchIndex) extends RemoteOpintopolkuHenkilöFacade(oppijanumeroRekisteriClient) {
   override def findOppijatNoSlaveOids(oids: List[String]): List[OppijaHenkilö] = {
     val found = super.findOppijatNoSlaveOids(oids).map(henkilö => (henkilö.oid, henkilö)).toMap
     oids.map { oid =>
@@ -92,7 +92,7 @@ class RemoteOpintopolkuHenkilöFacadeWithMockOids(oppijanumeroRekisteriClient: O
   }
 
   private def createMock(oid: String) = {
-    elasticSearch.refreshIndex
+    perustiedotIndexer.refreshIndex
     perustiedotRepository.findHenkilöPerustiedotByHenkilöOid(oid).map { henkilö =>
       LaajatOppijaHenkilöTiedot(henkilö.oid, henkilö.sukunimi, henkilö.etunimet, henkilö.kutsumanimi, Some("010101-123N"), None, None, None, None, 0, false)
     }.getOrElse(LaajatOppijaHenkilöTiedot(oid, oid.substring("1.2.246.562.24.".length, oid.length), "Testihenkilö", "Testihenkilö", Some("010101-123N"), None, None, None, None, 0, false))
