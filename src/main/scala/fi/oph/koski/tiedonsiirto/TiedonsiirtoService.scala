@@ -90,19 +90,6 @@ class TiedonsiirtoService(
   private val tiedonSiirtoVirheet = Counter.build().name("fi_oph_koski_tiedonsiirto_TiedonsiirtoService_virheet").help("Koski tiedonsiirto virheet").register()
   private val tiedonsiirtoBuffer = new ConcurrentBuffer[TiedonsiirtoDocument]
 
-  def deleteAll: Unit = {
-    val doc: JValue = JObject("query" -> JObject("match_all" -> JObject()))
-
-    val deleted = Http.runTask(index.http
-      .post(uri"/koski/tiedonsiirto/_delete_by_query", doc)(Json4sHttp4s.json4sEncoderOf[JValue]) {
-        case (200, text, request) => extract[Int](parse(text) \ "deleted")
-        case (status, text, request) if List(404, 409).contains(status) => 0
-        case (status, text, request) => throw HttpStatusException(status, text, request)
-      })
-
-    logger.info(s"Tyhjennetty tiedonsiirrot ($deleted)")
-  }
-
   def haeTiedonsiirrot(query: TiedonsiirtoQuery)(implicit koskiSession: KoskiSession): Either[HttpStatus, PaginatedResponse[Tiedonsiirrot]] = {
     haeTiedonsiirrot(filtersFrom(query), query.oppilaitos, query.paginationSettings)
   }
