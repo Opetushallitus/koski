@@ -6,8 +6,18 @@ import org.json4s.JValue
 
 case class PerustiedotSyncScheduler(app: KoskiApplication) extends Timing {
   def scheduler: Option[Scheduler] =
-    if (app.config.getString("schedule.perustiedotSyncInterval") == "never") None
-    else Some(new Scheduler(app.masterDatabase.db, "perustiedot-sync", new IntervalSchedule(app.config.getDuration("schedule.perustiedotSyncInterval")), None, syncAndLogErrors, intervalMillis = 1000))
+    if (app.config.getString("schedule.perustiedotSyncInterval") == "never") {
+      None
+    } else {
+      Some(new Scheduler(
+        app.masterDatabase.db,
+        "perustiedot-sync",
+        new IntervalSchedule(app.config.getDuration("schedule.perustiedotSyncInterval")),
+        None,
+        syncAndLogErrors,
+        intervalMillis = 1000)
+      )
+    }
 
   def syncAndLogErrors(ignore: Option[JValue]): Option[JValue] = timed("perustiedotSync") {
     try {
