@@ -26,31 +26,46 @@ object PerustiedotIndexUpdater extends App with Timing {
   }
 }
 
+object OpiskeluoikeudenPerustiedotIndexer {
+  private val settings = JsonMethods.parse("""
+    {
+        "analysis": {
+          "filter": {
+            "finnish_folding": {
+              "type": "icu_folding",
+              "unicodeSetFilter": "[^åäöÅÄÖ]"
+            }
+          },
+          "analyzer": {
+            "default": {
+              "tokenizer": "icu_tokenizer",
+              "filter":  [ "finnish_folding", "lowercase" ]
+            }
+          }
+        }
+    }""")
+
+  private val mapping = toJValue(Map("properties" -> Map(
+    "tilat" -> Map("type" -> "nested"),
+    "suoritukset" -> Map("type" -> "nested")
+  )))
+}
+
 class OpiskeluoikeudenPerustiedotIndexer(
   config: Config,
+  elastic: ElasticSeach,
   index: ElasticSearchIndex,
   opiskeluoikeusQueryService:
   OpiskeluoikeusQueryService,
   perustiedotSyncRepository: PerustiedotSyncRepository
-) extends Logging with BackgroundExecutionContext {
-  lazy val init = {
-    index.init
-
-    val mappings: JValue = JObject("perustiedot" -> JObject("properties" -> JObject(
-      "tilat" -> JObject("type" -> JString("nested")),
-      "suoritukset" -> JObject("type" -> JString("nested"))
-    )))
-
-    Http.runTask(index.http.put(uri"/koski-index/_mapping/perustiedot", mappings)(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
-
-    val reindexingNeeded = index.reindexingNeededAtStartup || config.getBoolean("elasticsearch.reIndexAtStartup")
-    Future {
-      if (reindexingNeeded) {
-          reIndex() // Re-index on background
-      }
-    }
-  }
-
+) extends ElasticSearchIndex(
+  config = config,
+  elastic = elastic,
+  name = "koski-index",
+  mappingType = "perustiedot",
+  mapping = OpiskeluoikeudenPerustiedotIndexer.mapping,
+  settings = OpiskeluoikeudenPerustiedotIndexer.settings
+) with BackgroundExecutionContext {
   /*
    * Update or insert info to Elasticsearch. Return error status or a boolean indicating whether data was changed.
    *
