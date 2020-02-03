@@ -17,7 +17,7 @@ import org.scalatest.{FreeSpec, Matchers}
 class TilastokeskusSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with Matchers {
   import fi.oph.koski.util.DateOrdering._
   "Tilastokeskus-API" - {
-    "Hakee hakee oppijoiden tiedot" in {
+    "Hakee oppijoiden tiedot" in {
       val kaikkiOppijat = performQuery()
       val master = kaikkiOppijat.find(_.henkilö.hetu == MockOppijat.master.hetu)
       master should be(defined)
