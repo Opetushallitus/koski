@@ -30,7 +30,9 @@ trait OpiskeluoikeusQueries extends ApiServlet with Logging with GlobalExecution
 case class OpiskeluoikeusQueryContext(request: HttpServletRequest)(implicit koskiSession: KoskiSession, application: KoskiApplication) extends Logging {
   def queryWithoutHenkilötiedotRaw(filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings], queryForAuditLog: String): Observable[(Oid, List[OpiskeluoikeusRow])] = {
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_HAKU, koskiSession, Map(hakuEhto -> queryForAuditLog)))
-    OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, filters, paginationSettings)
+    OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, filters, paginationSettings).map { case (oppijaHenkilö, opiskeluoikeudet) =>
+      (oppijaHenkilö.oid, opiskeluoikeudet)
+    }
   }
 
   def queryLaajoillaHenkilöTiedoilla(params: MultiParams, paginationSettings: Option[PaginationSettings]): Either[HttpStatus, Observable[(LaajatOppijaHenkilöTiedot, List[OpiskeluoikeusRow])]] = {
@@ -42,20 +44,19 @@ case class OpiskeluoikeusQueryContext(request: HttpServletRequest)(implicit kosk
     }
   }
 
-  private def query(filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings]) = {
-    val oikeudetPerOppijaOid: Observable[(Oid, List[OpiskeluoikeusRow])] = OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, filters, paginationSettings)
-    oikeudetPerOppijaOid.tumblingBuffer(10).flatMap {
-      oppijatJaOidit: Seq[(Oid, List[OpiskeluoikeusRow])] =>
-        val oids: List[String] = oppijatJaOidit.map(_._1).toList
+  private def query(filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings]): Observable[(LaajatOppijaHenkilöTiedot, List[OpiskeluoikeusRow])] = {
+    val oikeudetPerOppijaOid: Observable[(QueryOppijaHenkilö, List[OpiskeluoikeusRow])] = OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, filters, paginationSettings)
 
+    oikeudetPerOppijaOid.tumblingBuffer(10).flatMap { oppijatJaOidit: Seq[(QueryOppijaHenkilö, List[OpiskeluoikeusRow])] =>
+        val oids: List[String] = oppijatJaOidit.map(_._1.oid).toList
         val henkilöt: Map[Oid, LaajatOppijaHenkilöTiedot] = application.opintopolkuHenkilöFacade.findMasterOppijat(oids)
 
-        val oppijat: Iterable[(LaajatOppijaHenkilöTiedot, List[OpiskeluoikeusRow])] = oppijatJaOidit.flatMap { case (oid, opiskeluOikeudet) =>
-          henkilöt.get(oid) match {
+        val oppijat: Iterable[(LaajatOppijaHenkilöTiedot, List[OpiskeluoikeusRow])] = oppijatJaOidit.flatMap { case (oppijaHenkilö, opiskeluOikeudet) =>
+          henkilöt.get(oppijaHenkilö.oid) match {
             case Some(henkilö) =>
-              Some((henkilö, opiskeluOikeudet))
+              Some((henkilö.copy(linkitetytOidit = oppijaHenkilö.linkitetytOidit), opiskeluOikeudet))
             case None =>
-              logger(koskiSession).warn("Oppijaa " + oid + " ei löydy henkilöpalvelusta")
+              logger(koskiSession).warn("Oppijaa " + oppijaHenkilö.oid + " ei löydy henkilöpalvelusta")
               None
           }
         }
@@ -68,7 +69,7 @@ object OpiskeluoikeusQueryContext {
   def queryForAuditLog(params: MultiParams) =
     params.toList.sortBy(_._1).map { case (p,values) => values.map(v => p + "=" + v).mkString("&") }.mkString("&")
 
-  def streamingQueryGroupedByOid(application: KoskiApplication, filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings])(implicit koskiSession: KoskiSession): Observable[(Oid, List[(OpiskeluoikeusRow)])] = {
+  def streamingQueryGroupedByOid(application: KoskiApplication, filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings])(implicit koskiSession: KoskiSession): Observable[(QueryOppijaHenkilö, List[(OpiskeluoikeusRow)])] = {
     val rows = application.opiskeluoikeusQueryRepository.opiskeluoikeusQuery(filters, Some(Ascending("oppijaOid")), paginationSettings)
 
     val groupedByPerson: Observable[List[(OpiskeluoikeusRow, HenkilöRow, Option[HenkilöRow])]] = rows
@@ -79,7 +80,7 @@ object OpiskeluoikeusQueryContext {
       case oikeudet@(row :: _) =>
         val oppijanOidit = oikeudet.flatMap { case (_, h, m) => h.oid :: m.map(_.oid).toList }.toSet
         assert(oikeudet.map(_._1.oppijaOid).toSet.subsetOf(oppijanOidit), "Usean ja/tai väärien henkilöiden tietoja henkilöllä " + oppijanOidit + ": " + oikeudet.map(_._1.oppijaOid).toSet)
-        Observable.just((masterOid(row), oikeudet.map(_._1)))
+        Observable.just((QueryOppijaHenkilö(masterOid(row), oppijanOidit), oikeudet.map(_._1)))
       case _ =>
         Observable.empty
     }
@@ -90,3 +91,8 @@ object OpiskeluoikeusQueryContext {
     masterHenkilö.map(_.oid).getOrElse(henkilö.oid)
   }
 }
+
+object QueryOppijaHenkilö {
+  def apply(masterOid: Oid, kaikkiOidit: Set[Oid]): QueryOppijaHenkilö = QueryOppijaHenkilö(masterOid, kaikkiOidit.filterNot(_ == masterOid).toList.sorted)
+}
+case class QueryOppijaHenkilö(oid: Oid, linkitetytOidit: List[Oid])
