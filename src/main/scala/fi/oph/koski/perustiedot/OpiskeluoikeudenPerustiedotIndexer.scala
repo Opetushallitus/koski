@@ -125,17 +125,21 @@ class OpiskeluoikeudenPerustiedotIndexer(
   def indexAllDocuments = {
     logger.info("Indexing all perustiedot documents")
     val bufferSize = 100
-    val observable = opiskeluoikeusQueryService.opiskeluoikeusQuery(Nil, None, None)(KoskiSession.systemUser).tumblingBuffer(bufferSize).zipWithIndex.map {
-      case (rows, index) =>
-        val perustiedot = rows.par.map { case (opiskeluoikeusRow, henkilöRow, masterHenkilöRow) =>
-          OpiskeluoikeudenPerustiedot.makePerustiedot(opiskeluoikeusRow, henkilöRow, masterHenkilöRow)
-        }.toList
-        val changed = updatePerustiedot(perustiedot, upsert = true) match {
-          case Right(count) => count
-          case Left(_) => 0 // error already logged
-        }
-        UpdateStatus(rows.length, changed)
-    }.scan(UpdateStatus(0, 0))(_ + _)
+    val observable = opiskeluoikeusQueryService
+      .opiskeluoikeusQuery(Nil, None, None)(KoskiSession.systemUser)
+      .tumblingBuffer(bufferSize)
+      .zipWithIndex
+      .map {
+        case (rows, index) =>
+          val perustiedot = rows.par.map { case (opiskeluoikeusRow, henkilöRow, masterHenkilöRow) =>
+            OpiskeluoikeudenPerustiedot.makePerustiedot(opiskeluoikeusRow, henkilöRow, masterHenkilöRow)
+          }.toList
+          val changed = updatePerustiedot(perustiedot, upsert = true) match {
+            case Right(count) => count
+            case Left(_) => 0 // error already logged
+          }
+          UpdateStatus(rows.length, changed)
+      }.scan(UpdateStatus(0, 0))(_ + _)
 
 
     observable.subscribe({case UpdateStatus(countSoFar, actuallyChanged) => if (countSoFar > 0) logger.info(s"Updated elasticsearch index for ${countSoFar} rows, actually changed ${actuallyChanged}")},
