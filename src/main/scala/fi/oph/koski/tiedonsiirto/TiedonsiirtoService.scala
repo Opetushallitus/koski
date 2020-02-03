@@ -179,17 +179,6 @@ class TiedonsiirtoService(
     }
   }
 
-  private def runSearch(doc: JValue) = {
-    try {
-      val response = Http.runTask(index.http.post(uri"/koski/tiedonsiirto/_search", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue]))
-      Some(response)
-    } catch {
-      case e: HttpStatusException if e.status == 400 =>
-        logger.warn(e.getMessage)
-        None
-    }
-  }
-
   def storeTiedonsiirtoResult(implicit koskiSession: KoskiSession, oppijaOid: Option[OidHenkilö], validatedOppija: Option[Oppija], data: Option[JValue], error: Option[TiedonsiirtoError]) {
     if (!koskiSession.isPalvelukäyttäjä && !koskiSession.isRoot) {
       return
