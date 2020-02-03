@@ -99,7 +99,10 @@ class TiedonsiirtoService(
   }
 
   def delete(ids: List[String])(implicit koskiSession: KoskiSession): Unit = {
-    val deleteQuery = toJValue(Map("query" -> ElasticSearch.allFilter(Map("terms" -> Map("_id" -> ids)) :: Map("exists" -> Map("field" -> "virheet.key")) :: tallentajaOrganisaatioFilters(AccessType.tiedonsiirronMitätöinti))))
+    val deleteQuery = toJValue(Map("query" -> ElasticSearch.allFilter(
+      Map("terms" -> Map("_id" -> ids))
+        :: Map("exists" -> Map("field" -> "virheet.key"))
+        :: tallentajaOrganisaatioFilters(AccessType.tiedonsiirronMitätöinti))))
     Http.runTask(index.http.post(uri"/koski/tiedonsiirto/_delete_by_query", deleteQuery)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.unitDecoder))
     index.refreshIndex
   }
