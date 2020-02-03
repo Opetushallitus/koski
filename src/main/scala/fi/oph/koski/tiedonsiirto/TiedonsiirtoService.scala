@@ -267,10 +267,10 @@ class TiedonsiirtoService(
     }
   }
 
-  private def yhteenvetoOrdering(implicit koskiSession: KoskiSession, sorting: SortOrder) = {
+  private def yhteenvetoOrdering(sorting: SortOrder, lang: String) = {
     val ordering = sorting.field match {
       case "aika" => Ordering.by{x: TiedonsiirtoYhteenveto => x.viimeisin.getTime}
-      case "oppilaitos" => Ordering.by{x: TiedonsiirtoYhteenveto => x.oppilaitos.description.get(koskiSession.lang)}
+      case "oppilaitos" => Ordering.by{x: TiedonsiirtoYhteenveto => x.oppilaitos.description.get(lang)}
       case "siirretyt" => Ordering.by{x: TiedonsiirtoYhteenveto => x.siirretyt}
       case "virheelliset" => Ordering.by{x: TiedonsiirtoYhteenveto => x.virheelliset}
       case "onnistuneet" => Ordering.by{x: TiedonsiirtoYhteenveto => x.onnistuneet}
@@ -330,7 +330,7 @@ class TiedonsiirtoService(
         )
       }
     }.getOrElse(Nil)
-     .sorted(yhteenvetoOrdering(sorting))
+     .sorted(yhteenvetoOrdering(sorting, koskiSession.lang))
   }
 
   private def yhteenvetoQuery(implicit koskiSession: KoskiSession): JValue = {
