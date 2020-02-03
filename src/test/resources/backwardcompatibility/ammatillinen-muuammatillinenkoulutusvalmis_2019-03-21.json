@@ -538,5 +538,6 @@
     },
     "alkamispäivä" : "2016-01-01",
     "päättymispäivä" : "2018-05-31"
-  } ]
+  } ],
+  "ignoreKoskiValidator" : true
 }

@@ -162,5 +162,6 @@
       "koodiarvo" : "ammatillinenkoulutus",
       "koodistoUri" : "opiskeluoikeudentyyppi"
     }
-  } ]
+  } ],
+  "ignoreKoskiValidator" : true
 }

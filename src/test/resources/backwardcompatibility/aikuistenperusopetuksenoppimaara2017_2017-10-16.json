@@ -1358,5 +1358,6 @@
       "koodiarvo" : "aikuistenperusopetus",
       "koodistoUri" : "opiskeluoikeudentyyppi"
     }
-  } ]
+  } ],
+  "ignoreKoskiValidator" : true
 }

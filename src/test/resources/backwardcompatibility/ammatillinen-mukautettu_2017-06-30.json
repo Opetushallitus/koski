@@ -1,5 +1,5 @@
 {
-  "ignoreJsonEquality": true,
+  "ignoreJsonEquality" : true,
   "henkilö" : {
     "hetu" : "280618-402H",
     "etunimet" : "Aarne",
@@ -160,5 +160,6 @@
       "koodiarvo" : "ammatillinenkoulutus",
       "koodistoUri" : "opiskeluoikeudentyyppi"
     }
-  } ]
+  } ],
+  "ignoreKoskiValidator" : true
 }

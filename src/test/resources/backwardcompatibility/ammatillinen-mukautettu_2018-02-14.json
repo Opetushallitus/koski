@@ -151,5 +151,6 @@
       "koodistoUri" : "opiskeluoikeudentyyppi"
     },
     "alkamispäivä" : "2016-09-01"
-  } ]
+  } ],
+  "ignoreKoskiValidator" : true
 }
