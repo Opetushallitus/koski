@@ -117,7 +117,7 @@ class OpiskeluoikeudenPerustiedotIndexer(
         "bool" -> Map(
           "should" -> Map(
             "terms" -> Map(
-              "henkilö.oid" -> List(oids)))))))
+              "henkilö.oid" -> oids))))))
     deleteByQuery(query)
   }
 
