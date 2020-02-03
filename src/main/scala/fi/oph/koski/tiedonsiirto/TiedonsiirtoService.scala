@@ -3,9 +3,9 @@ package fi.oph.koski.tiedonsiirto
 import java.sql.Timestamp
 import java.time.LocalDate
 
+import com.typesafe.config.Config
 import fi.oph.koski.db.GlobalExecutionContext
 import fi.oph.koski.elasticsearch.{ElasticSearch, ElasticSearchIndex}
-import fi.oph.koski.elasticsearch.ElasticSearch.{allFilter, anyFilter}
 import fi.oph.koski.henkilo.{HenkilöOid, HenkilöRepository, Hetu}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
@@ -28,13 +28,63 @@ import org.json4s.jackson.JsonMethods
 import org.json4s.jackson.JsonMethods.parse
 import org.json4s.{JValue, _}
 
+object TiedonsiirtoService {
+  private val settings = JsonMethods.parse("""
+    {
+        "analysis": {
+          "filter": {
+            "finnish_folding": {
+              "type": "icu_folding",
+              "unicodeSetFilter": "[^åäöÅÄÖ]"
+            }
+          },
+          "analyzer": {
+            "default": {
+              "tokenizer": "icu_tokenizer",
+              "filter":  [ "finnish_folding", "lowercase" ]
+            }
+          }
+        }
+    }""")
+
+  private val mapping = toJValue(Map("properties" -> Map(
+    "virheet" -> Map(
+      "properties" -> Map(
+        "key" -> Map(
+          "type" -> "text",
+          "fields" -> Map(
+            "keyword" -> Map(
+              "ignore_above" -> 256,
+              "type" -> "keyword"
+            )
+          )
+        )
+      ),
+      "dynamic" -> false
+    ),
+    "data" -> Map(
+      "properties" -> Map(
+      ),
+      "dynamic" -> false
+    )
+  )))
+}
+
 class TiedonsiirtoService(
-  index: ElasticSearchIndex,
+  config: Config,
+  elastic: ElasticSearch,
   organisaatioRepository: OrganisaatioRepository,
   henkilöRepository: HenkilöRepository,
   koodistoviitePalvelu: KoodistoViitePalvelu,
   hetu: Hetu
-) extends Logging with Timing with GlobalExecutionContext {
+) extends ElasticSearchIndex(
+  elastic = elastic,
+  config = config,
+  name = "koski-index",
+  mappingType = "tiedonsiirto",
+  mapping = TiedonsiirtoService.mapping,
+  settings = TiedonsiirtoService.settings
+) {
 
   private val serializationContext = SerializationContext(KoskiSchema.schemaFactory, omitEmptyFields = false)
   private val tiedonSiirtoVirheet = Counter.build().name("fi_oph_koski_tiedonsiirto_TiedonsiirtoService_virheet").help("Koski tiedonsiirto virheet").register()
@@ -399,34 +449,6 @@ class TiedonsiirtoService(
       val rivi = TiedonsiirtoRivi(row.id, row.aikaleima, row.oppija, row.oppilaitokset.getOrElse(Nil), row.suoritustiedot.getOrElse(Nil), row.virheet, row.data, row.lähdejärjestelmä)
       HenkilönTiedonsiirrot(row.oppija, List(rivi))
     }.toList
-  }
-
-  lazy val init = {
-    index.init
-
-    val mappings = toJValue(Map("properties" -> Map(
-      "virheet" -> Map(
-        "properties" -> Map(
-          "key" -> Map(
-            "type" -> "text",
-            "fields" -> Map(
-              "keyword" -> Map(
-                "ignore_above" -> 256,
-                "type" -> "keyword"
-              )
-            )
-          )
-        ),
-        "dynamic" -> false
-      ),
-      "data" -> Map(
-        "properties" -> Map(
-        ),
-        "dynamic" -> false
-      )
-    )))
-
-    Http.runTask(index.http.put(uri"/koski-index/_mapping/tiedonsiirto", mappings)(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
   }
 }
 
