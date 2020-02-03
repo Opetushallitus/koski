@@ -16,7 +16,6 @@ class ElasticSearchIndex(
   val settings: JValue
 ) extends Logging {
   def http = elastic.http
-  def refreshIndex = elastic.refreshIndex
   def reindexingNeededAtStartup = init
 
   lazy val init = {
@@ -54,6 +53,10 @@ class ElasticSearchIndex(
     logger.info("Creating Elasticsearch index")
     Http.runTask(http.put(uri"/${name}", JObject("settings" -> settings))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
     true
+  }
+
+  def refreshIndex = {
+    Http.runTask(http.post(uri"/${name}/_refresh", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
   }
 
   def runSearch(doc: JValue): Option[JValue] = try {
