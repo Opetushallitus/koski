@@ -4,11 +4,9 @@ import java.sql.Timestamp
 import java.time.LocalDate
 
 import com.typesafe.config.Config
-import fi.oph.koski.db.GlobalExecutionContext
 import fi.oph.koski.elasticsearch.{ElasticSearch, ElasticSearchIndex}
 import fi.oph.koski.henkilo.{HenkilöOid, HenkilöRepository, Hetu}
-import fi.oph.koski.http.Http._
-import fi.oph.koski.http._
+import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonSerializer.{extract, validateAndExtract}
 import fi.oph.koski.json.LegacyJsonSerialization.toJValue
 import fi.oph.koski.json._
@@ -16,7 +14,7 @@ import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log.KoskiMessageField._
 import fi.oph.koski.log.KoskiOperation._
-import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
+import fi.oph.koski.log.{AuditLog, AuditLogMessage}
 import fi.oph.koski.organisaatio.OrganisaatioRepository
 import fi.oph.koski.schema._
 import fi.oph.koski.util.OptionalLists.optionalList
@@ -25,7 +23,6 @@ import fi.oph.scalaschema.{SerializationContext, Serializer}
 import io.prometheus.client.Counter
 import org.json4s.JsonAST.{JArray, JString}
 import org.json4s.jackson.JsonMethods
-import org.json4s.jackson.JsonMethods.parse
 import org.json4s.{JValue, _}
 
 object TiedonsiirtoService {
