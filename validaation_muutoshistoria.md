@@ -1,5 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 3.2.2020
+- Nuorten perusopetuksen oppimäärän paikallisille oppiaineille sallitaan aina arvosana S
+- Nuorten perusopetuksen oppimäärän paikallisille oppiaineille sallitaan arvosana O jos oppiaineen laajuus on alle kaksi vuosiviikkotuntia
+
 ## 28.1.2020
 - Osittainen ammattitutkinto voidaan merkitä valmiiksi silloinkin kun suorituksissa on pelkkiä yleisiä aineita.
 
