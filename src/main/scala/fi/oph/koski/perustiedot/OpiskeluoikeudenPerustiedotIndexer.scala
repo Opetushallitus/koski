@@ -116,10 +116,16 @@ class OpiskeluoikeudenPerustiedotIndexer(
     deleteByQuery(query)
   }
 
-  def reIndex(filters: List[OpiskeluoikeusQueryFilter] = Nil, pagination: Option[PaginationSettings] = None) = {
-    logger.info("Starting elasticsearch re-indexing")
+  override protected def reindex: Unit = {
+    Future {
+      indexAllDocuments
+    }
+  }
+
+  def indexAllDocuments = {
+    logger.info("Indexing all perustiedot documents")
     val bufferSize = 100
-    val observable = opiskeluoikeusQueryService.opiskeluoikeusQuery(filters, None, pagination)(KoskiSession.systemUser).tumblingBuffer(bufferSize).zipWithIndex.map {
+    val observable = opiskeluoikeusQueryService.opiskeluoikeusQuery(Nil, None, None)(KoskiSession.systemUser).tumblingBuffer(bufferSize).zipWithIndex.map {
       case (rows, index) =>
         val perustiedot = rows.par.map { case (opiskeluoikeusRow, henkilöRow, masterHenkilöRow) =>
           OpiskeluoikeudenPerustiedot.makePerustiedot(opiskeluoikeusRow, henkilöRow, masterHenkilöRow)
