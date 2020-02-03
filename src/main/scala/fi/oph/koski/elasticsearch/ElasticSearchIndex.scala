@@ -94,5 +94,18 @@ class ElasticSearchIndex(
     (extract[Boolean](response \ "errors"), response)
   }
 
+  def deleteAll: Unit = {
+    val query: JValue = JObject("query" -> JObject("match_all" -> JObject()))
+    val deleted = deleteByQuery(query)
+    logger.info(s"Deleted ($deleted) documents")
+  }
+
+  def deleteByQuery(query: JValue): Int = {
+    val deletedCount = Http.runTask(http.post(uri"/${name}/${mappingType}/_delete_by_query", query)(Json4sHttp4s.json4sEncoderOf[JValue]) {
+      case (200, text, request) => extract[Int](parse(text) \ "deleted")
+      case (status, text, request) if List(404, 409).contains(status) => 0
+      case (status, text, request) => throw HttpStatusException(status, text, request)
+    })
+    deletedCount
   }
 }
