@@ -66,17 +66,6 @@ class OpiskeluoikeudenPerustiedotIndexer(
   mapping = OpiskeluoikeudenPerustiedotIndexer.mapping,
   settings = OpiskeluoikeudenPerustiedotIndexer.settings
 ) with BackgroundExecutionContext {
-  /*
-   * Update or insert info to Elasticsearch. Return error status or a boolean indicating whether data was changed.
-   *
-   * if replaceDocument is true, this will replace the whole document. If false, only the supplied data fields will be updated.
-   */
-
-  /*
-   * Update or insert info to Elasticsearch. Return error status or a boolean indicating whether data was changed.
-   *
-   * if replaceDocument is true, this will replace the whole document. If false, only the supplied data fields will be updated.
-   */
   def updateBulk(items: Seq[OpiskeluoikeudenOsittaisetTiedot], upsert: Boolean): Either[HttpStatus, Int] = {
     updateBulkRaw(items.map(OpiskeluoikeudenPerustiedot.serializePerustiedot), upsert)
   }
