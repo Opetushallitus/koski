@@ -3,17 +3,15 @@ package fi.oph.koski.perustiedot
 import com.typesafe.config.Config
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.BackgroundExecutionContext
-import fi.oph.koski.elasticsearch.ElasticSearchIndex
-import fi.oph.koski.http.Http._
-import fi.oph.koski.http.{Http, HttpStatus, HttpStatusException, KoskiErrorCategory}
-import fi.oph.koski.json.Json4sHttp4s
+import fi.oph.koski.elasticsearch.{ElasticSearch, ElasticSearchIndex}
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer.extract
+import fi.oph.koski.json.LegacyJsonSerialization.toJValue
 import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.log.Logging
-import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryFilter, OpiskeluoikeusQueryService}
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryService
 import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedot.docId
 import fi.oph.koski.schema.Henkilö._
-import fi.oph.koski.util.{PaginationSettings, Timing}
+import fi.oph.koski.util.Timing
 import org.json4s._
 import org.json4s.jackson.JsonMethods
 
@@ -22,7 +20,7 @@ import scala.concurrent.Future
 object PerustiedotIndexUpdater extends App with Timing {
   val perustiedotIndexer = KoskiApplication.apply.perustiedotIndexer
   timed("Reindex") {
-    perustiedotIndexer.reIndex(filters = Nil, pagination = None).toBlocking.last
+    perustiedotIndexer.indexAllDocuments.toBlocking.last
   }
 }
 
@@ -53,10 +51,8 @@ object OpiskeluoikeudenPerustiedotIndexer {
 
 class OpiskeluoikeudenPerustiedotIndexer(
   config: Config,
-  elastic: ElasticSeach,
-  index: ElasticSearchIndex,
-  opiskeluoikeusQueryService:
-  OpiskeluoikeusQueryService,
+  elastic: ElasticSearch,
+  opiskeluoikeusQueryService: OpiskeluoikeusQueryService,
   perustiedotSyncRepository: PerustiedotSyncRepository
 ) extends ElasticSearchIndex(
   config = config,
@@ -74,9 +70,10 @@ class OpiskeluoikeudenPerustiedotIndexer(
     }
     val (errors, response) = updateBulk(generateJson(serializedItems, upsert))
     if (errors) {
-      val failedOpiskeluoikeusIds: List[Int] = extract[List[JValue]](response \ "items" \ "update") .flatMap { item =>
-        if (item \ "error" != JNothing) List(extract[Int](item \ "_id")) else Nil
-      }
+      val failedOpiskeluoikeusIds: List[Int] = extract[List[JValue]](response \ "items" \ "update")
+        .flatMap { item =>
+          if (item \ "error" != JNothing) List(extract[Int](item \ "_id")) else Nil
+        }
       perustiedotSyncRepository.syncAgain(failedOpiskeluoikeusIds.flatMap { id =>
         serializedItems.find{doc => docId(doc) == id}.orElse{
           logger.warn(s"Elasticsearch reported failed id $id that was not found in ${serializedItems.map(docId)}");
@@ -87,7 +84,9 @@ class OpiskeluoikeudenPerustiedotIndexer(
       logger.error(msg)
       Left(KoskiErrorCategory.internalError(msg))
     } else {
-      val itemResults = extract[List[JValue]](response \ "items").map(_ \ "update" \ "_shards" \ "successful").map(extract[Int](_))
+      val itemResults = extract[List[JValue]](response \ "items")
+        .map(_ \ "update" \ "_shards" \ "successful")
+        .map(extract[Int](_))
       Right(itemResults.sum)
     }
   }
@@ -153,7 +152,9 @@ class OpiskeluoikeudenPerustiedotIndexer(
   }
 
   case class UpdateStatus(updated: Int, changed: Int) {
-    def +(other: UpdateStatus) = UpdateStatus(this.updated + other.updated, this.changed + other.changed)
+    def +(other: UpdateStatus) = {
+      UpdateStatus(this.updated + other.updated, this.changed + other.changed)
+    }
   }
 
   def indexIsLarge: Boolean = {
