@@ -25,7 +25,7 @@ import fi.oph.koski.raportointikanta.{Public, RaportointiDatabase, Raportointika
 import fi.oph.koski.schedule.{KoskiScheduledTasks, PerustiedotSyncScheduler}
 import fi.oph.koski.sso.KoskiSessionRepository
 import fi.oph.koski.suoritusjako.{SuoritusjakoRepository, SuoritusjakoService}
-import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoIndex, TiedonsiirtoService}
+import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoService}
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.userdirectory.DirectoryClient
 import fi.oph.koski.validation.KoskiValidator
@@ -77,7 +77,6 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val validator: KoskiValidator = new KoskiValidator(tutkintoRepository, koodistoViitePalvelu, organisaatioRepository, possu, henkilöRepository, ePerusteet, config)
   lazy val elasticSearch = ElasticSearch(config)
   lazy val perustiedotIndexer = new OpiskeluoikeudenPerustiedotIndexer(config, elasticSearch, opiskeluoikeusQueryRepository, perustiedotSyncRepository)
-  lazy val tiedonsiirtoIndex = new TiedonsiirtoIndex(elasticSearch)
   lazy val perustiedotRepository = new OpiskeluoikeudenPerustiedotRepository(perustiedotIndexer, opiskeluoikeusQueryRepository)
   lazy val perustiedotSyncRepository = new PerustiedotSyncRepository(masterDatabase.db)
   lazy val perustiedotSyncScheduler = new PerustiedotSyncScheduler(this)
@@ -90,7 +89,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val sessionTimeout = SessionTimeout(config)
   lazy val koskiSessionRepository = new KoskiSessionRepository(masterDatabase.db, sessionTimeout)
   lazy val fixtureCreator = new FixtureCreator(this)
-  lazy val tiedonsiirtoService = new TiedonsiirtoService(tiedonsiirtoIndex, organisaatioRepository, henkilöRepository, koodistoViitePalvelu, hetu)
+  lazy val tiedonsiirtoService = new TiedonsiirtoService(config, elasticSearch, organisaatioRepository, henkilöRepository, koodistoViitePalvelu, hetu)
   lazy val healthCheck = HealthCheck(this)
   lazy val scheduledTasks = new KoskiScheduledTasks(this)
   lazy val ipService = new IPService(masterDatabase.db)
