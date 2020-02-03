@@ -112,17 +112,8 @@ class OpiskeluoikeudenPerustiedotIndexer(
   }
 
   def deleteByOppijaOids(oids: List[Oid]) = {
-    val doc: JValue = JObject("query" -> JObject("bool" -> JObject("should" -> JObject("terms" -> JObject("henkilö.oid" -> JArray(oids.map(JString)))))))
-
-    import org.json4s.jackson.JsonMethods.parse
-
-    val deleted = Http.runTask(index.http
-      .post(uri"/koski/perustiedot/_delete_by_query", doc)(Json4sHttp4s.json4sEncoderOf[JValue]) {
-        case (200, text, request) => extract[Int](parse(text) \ "deleted")
-        case (status, text, request) if List(404, 409).contains(status) => 0
-        case (status, text, request) => throw HttpStatusException(status, text, request)
-      })
-    deleted
+    val query: JValue = Map("query" -> Map("bool" -> Map("should" -> Map("terms" -> Map("henkilö.oid" -> List(oids.map(JString)))))))
+    deleteByQuery(query)
   }
 
   def reIndex(filters: List[OpiskeluoikeusQueryFilter] = Nil, pagination: Option[PaginationSettings] = None) = {
