@@ -145,7 +145,10 @@ class TiedonsiirtoService(
     }
   }
 
-  private def haeTiedonsiirrot(filters: List[Map[String, Any]], oppilaitosOid: Option[String], paginationSettings: Option[PaginationSettings])(implicit koskiSession: KoskiSession): Either[HttpStatus, PaginatedResponse[Tiedonsiirrot]] = {
+  private def haeTiedonsiirrot(filters: List[Map[String, Any]],
+                               oppilaitosOid: Option[String],
+                               paginationSettings: Option[PaginationSettings])
+                              (implicit koskiSession: KoskiSession): Either[HttpStatus, PaginatedResponse[Tiedonsiirrot]] = {
     koskiSession.juuriOrganisaatiot.map(_.oid).foreach { oid =>
       AuditLog.log(AuditLogMessage(TIEDONSIIRTO_KATSOMINEN, koskiSession, Map(juuriOrganisaatio -> oid)))
     }
