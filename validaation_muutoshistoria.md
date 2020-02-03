@@ -1,6 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
 ## 3.2.2020
+- Muun ammatillisen koulutuksen osasuorituksen arvioinnille uusi arvosanakoodisto, "arviointiasteikkomuuammatillinenkoulutus"
+
 - Nuorten perusopetuksen oppimäärän paikallisille oppiaineille sallitaan aina arvosana S
 - Nuorten perusopetuksen oppimäärän paikallisille oppiaineille sallitaan arvosana O jos oppiaineen laajuus on alle kaksi vuosiviikkotuntia
 
