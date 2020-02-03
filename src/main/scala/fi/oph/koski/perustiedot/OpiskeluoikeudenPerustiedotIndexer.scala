@@ -2,7 +2,6 @@ package fi.oph.koski.perustiedot
 
 import com.typesafe.config.Config
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.BackgroundExecutionContext
 import fi.oph.koski.elasticsearch.{ElasticSearch, ElasticSearchIndex}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer.extract
@@ -14,8 +13,7 @@ import fi.oph.koski.schema.Henkilö._
 import fi.oph.koski.util.Timing
 import org.json4s._
 import org.json4s.jackson.JsonMethods
-
-import scala.concurrent.Future
+import rx.lang.scala.Observable
 
 object PerustiedotIndexUpdater extends App with Timing {
   val perustiedotIndexer = KoskiApplication.apply.perustiedotIndexer
@@ -61,7 +59,7 @@ class OpiskeluoikeudenPerustiedotIndexer(
   mappingType = "perustiedot",
   mapping = OpiskeluoikeudenPerustiedotIndexer.mapping,
   settings = OpiskeluoikeudenPerustiedotIndexer.settings
-) with BackgroundExecutionContext {
+) {
 
   def updatePerustiedot(items: Seq[OpiskeluoikeudenOsittaisetTiedot], upsert: Boolean): Either[HttpStatus, Int] = {
     updatePerustiedotRaw(items.map(OpiskeluoikeudenPerustiedot.serializePerustiedot), upsert)
@@ -123,10 +121,8 @@ class OpiskeluoikeudenPerustiedotIndexer(
     deleteByQuery(query)
   }
 
-  override protected def reindex: Unit = {
-    Future {
-      indexAllDocuments
-    }
+  override protected def reindex: Observable[Any] = {
+    indexAllDocuments
   }
 
   def indexAllDocuments = {

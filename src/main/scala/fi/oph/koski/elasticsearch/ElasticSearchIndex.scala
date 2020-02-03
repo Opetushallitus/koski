@@ -1,6 +1,7 @@
 package fi.oph.koski.elasticsearch
 
 import com.typesafe.config.Config
+import fi.oph.koski.db.BackgroundExecutionContext
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpStatusException}
 import fi.oph.koski.json.JsonSerializer.extract
@@ -9,6 +10,8 @@ import fi.oph.koski.log.Logging
 import org.http4s.EntityEncoder
 import org.json4s.jackson.JsonMethods
 import org.json4s._
+import rx.lang.scala.Observable
+import scala.concurrent.Future
 
 class ElasticSearchIndex(
   val elastic: ElasticSearch,
@@ -17,10 +20,10 @@ class ElasticSearchIndex(
   val mappingType: String,
   val mapping: JValue,
   val settings: JValue
-) extends Logging {
-  def http = elastic.http
+) extends Logging with BackgroundExecutionContext {
+  def http: Http = elastic.http
 
-  lazy val init = {
+  lazy val init: Future[Any] = {
     val indexChanged = if (indexExists) {
       migrateIndex
     } else {
@@ -28,8 +31,10 @@ class ElasticSearchIndex(
     }
 
     val reindexingNeeded = indexChanged || config.getBoolean("elasticsearch.reIndexAtStartup")
-    if (reindexingNeeded) {
-      reindex
+    Future {
+      if (reindexingNeeded) {
+        reindex
+      }
     }
   }
 
@@ -72,7 +77,7 @@ class ElasticSearchIndex(
     true
   }
 
-  protected def reindex: Unit = {
+  protected def reindex: Observable[Any] = {
     throw new NotImplementedError("Reindexing not implemented")
   }
 
