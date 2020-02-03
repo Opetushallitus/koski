@@ -270,16 +270,22 @@ class TiedonsiirtoService(
     }
   }
 
-  def yhteenveto(implicit koskiSession: KoskiSession, sorting: SortOrder): Seq[TiedonsiirtoYhteenveto] = {
-    var ordering = sorting.field match {
+  private def yhteenvetoOrdering(sorting: SortOrder) = {
+    val ordering = sorting.field match {
       case "aika" => Ordering.by{x: TiedonsiirtoYhteenveto => x.viimeisin.getTime}
       case "oppilaitos" => Ordering.by{x: TiedonsiirtoYhteenveto => x.oppilaitos.description.get(koskiSession.lang)}
       case "siirretyt" => Ordering.by{x: TiedonsiirtoYhteenveto => x.siirretyt}
       case "virheelliset" => Ordering.by{x: TiedonsiirtoYhteenveto => x.virheelliset}
       case "onnistuneet" => Ordering.by{x: TiedonsiirtoYhteenveto => x.onnistuneet}
     }
-    if (sorting.descending) ordering = ordering.reverse
+    if (sorting.descending) {
+      ordering.reverse
+    } else {
+      ordering
+    }
+  }
 
+  def yhteenveto(implicit koskiSession: KoskiSession, sorting: SortOrder): Seq[TiedonsiirtoYhteenveto] = {
     runSearch(yhteenvetoQuery).map { response =>
       for {
         orgResults <- extract[List[JValue]](response \ "aggregations" \ "organisaatio" \ "buckets")
@@ -315,9 +321,19 @@ class TiedonsiirtoService(
           .map(username => TiedonsiirtoKäyttäjä(userOid, Some(username)))
           .getOrElse(TiedonsiirtoKäyttäjä(userOid, None))
       } yield {
-        TiedonsiirtoYhteenveto(tallentajaOrganisaatio, oppilaitos, käyttäjä, viimeisin, siirretyt, epäonnistuneet, onnistuneet, lähdejärjestelmä)
+        TiedonsiirtoYhteenveto(
+          tallentajaOrganisaatio,
+          oppilaitos,
+          käyttäjä,
+          viimeisin,
+          siirretyt,
+          epäonnistuneet,
+          onnistuneet,
+          lähdejärjestelmä
+        )
       }
-    }.getOrElse(Nil).sorted(ordering)
+    }.getOrElse(Nil)
+     .sorted(yhteenvetoOrdering(sorting))
   }
 
   private def yhteenvetoQuery(implicit koskiSession: KoskiSession): JValue = {
