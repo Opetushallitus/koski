@@ -7,7 +7,7 @@ import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.json.{Json4sHttp4s, JsonDiff}
 import fi.oph.koski.log.Logging
 import org.http4s.EntityEncoder
-import org.json4s.jackson.JsonMethods.parse
+import org.json4s.jackson.JsonMethods
 import org.json4s._
 
 class ElasticSearchIndex(
@@ -80,8 +80,8 @@ class ElasticSearchIndex(
     Http.runTask(http.post(uri"/${name}/_refresh", "")(EntityEncoder.stringEncoder)(Http.unitDecoder))
   }
 
-  def runSearch(doc: JValue): Option[JValue] = try {
-    Some(Http.runTask(http.post(uri"/${name}/${mappingType}/_search", doc)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue])))
+  def runSearch(query: JValue): Option[JValue] = try {
+    Some(Http.runTask(http.post(uri"/${name}/${mappingType}/_search", query)(Json4sHttp4s.json4sEncoderOf[JValue])(Http.parseJson[JValue])))
   } catch {
     case e: HttpStatusException if e.status == 400 =>
       logger.warn(e.getMessage)
@@ -102,7 +102,7 @@ class ElasticSearchIndex(
 
   def deleteByQuery(query: JValue): Int = {
     val deletedCount = Http.runTask(http.post(uri"/${name}/${mappingType}/_delete_by_query", query)(Json4sHttp4s.json4sEncoderOf[JValue]) {
-      case (200, text, request) => extract[Int](parse(text) \ "deleted")
+      case (200, text, request) => extract[Int](JsonMethods.parse(text) \ "deleted")
       case (status, text, request) if List(404, 409).contains(status) => 0
       case (status, text, request) => throw HttpStatusException(status, text, request)
     })
