@@ -130,12 +130,14 @@ class TiedonsiirtoService(
     if (session.hasGlobalReadAccess) {
       None
     } else {
-      val orgFilter = anyFilter(List(
+      val orgFilter = ElasticSearch.anyFilter(List(
         Map("terms" -> Map("tallentajaOrganisaatioOid" -> session.organisationOids(accessType))),
         Map("terms" -> Map("oppilaitokset.oid" -> session.organisationOids(accessType)))
       ))
       val filter = if (session.hasKoulutusmuotoRestrictions) {
-        allFilter(List(orgFilter, Map("terms" -> Map("koulutusmuoto" -> session.allowedOpiskeluoikeusTyypit))))
+        ElasticSearch.allFilter(List(orgFilter, Map(
+          "terms" -> Map("koulutusmuoto" -> session.allowedOpiskeluoikeusTyypit)
+        )))
       } else {
         orgFilter
       }
