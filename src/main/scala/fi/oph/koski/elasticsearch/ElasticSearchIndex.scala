@@ -7,14 +7,15 @@ import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.json.{Json4sHttp4s, JsonDiff}
 import fi.oph.koski.log.Logging
 import org.http4s.EntityEncoder
-import org.json4s.jackson.JsonMethods
-import org.json4s.{JValue, _}
+import org.json4s.jackson.JsonMethods.parse
+import org.json4s._
 
 class ElasticSearchIndex(
   val elastic: ElasticSearch,
   val config: Config,
   val name: String,
   val mappingType: String,
+  val mapping: JValue,
   val settings: JValue
 ) extends Logging {
   def http = elastic.http
@@ -67,6 +68,7 @@ class ElasticSearchIndex(
   private def createIndex: Boolean = {
     logger.info("Creating Elasticsearch index")
     Http.runTask(http.put(uri"/${name}", JObject("settings" -> settings))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
+    Http.runTask(http.put(uri"/${name}/_mapping/${mappingType}", mapping)(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
     true
   }
 
