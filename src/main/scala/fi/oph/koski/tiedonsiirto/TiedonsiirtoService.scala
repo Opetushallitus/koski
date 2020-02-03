@@ -158,9 +158,6 @@ class TiedonsiirtoService(
       "sort" -> List(Map("aikaleima" -> "desc"), Map("oppija.sukunimi.keyword" -> "asc"), Map("oppija.etunimet.keyword" -> "asc"))
     )))
 
-    // uncomment this to see raw query for manual troubleshooting
-    // println(JsonMethods.pretty(doc))
-
     val rows: Seq[TiedonsiirtoDocument] = runSearch(doc)
       .map(response => extract[List[JValue]](response \ "hits" \ "hits").map(j => extract[TiedonsiirtoDocument](j \ "_source", ignoreExtras = true)))
       .getOrElse(Nil)
