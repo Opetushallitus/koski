@@ -7,23 +7,23 @@ import fi.oph.koski.servlet.{ApiServlet, NoCache}
 class FixtureServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with NoCache {
   post("/reset") {
     application.fixtureCreator.resetFixtures
-    application.elasticSearch.refreshIndex
+    application.indexManager.refreshAll()
     "ok"
   }
 
   post("/refresh") {
-    application.elasticSearch.refreshIndex
+    application.indexManager.refreshAll()
     "ok"
   }
 
   post("/sync-tiedonsiirrot") {
-    application.tiedonsiirtoService.syncToElasticsearch(refreshIndex = true)
+    application.tiedonsiirtoService.syncToElasticsearch(shouldRefreshIndex = true)
     "ok"
   }
 
   post("/sync-perustiedot") {
     application.perustiedotSyncScheduler.sync
-    application.elasticSearch.refreshIndex
+    application.perustiedotIndexer.refreshIndex
     "ok"
   }
 }

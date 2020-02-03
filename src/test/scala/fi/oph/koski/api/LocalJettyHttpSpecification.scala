@@ -10,8 +10,8 @@ import fi.oph.koski.util.PortChecker
 object SharedJetty extends JettyLauncher(PortChecker.findFreeLocalPort, KoskiApplicationForTests)
 
 trait LocalJettyHttpSpecification extends HttpSpecification {
-  def refreshElasticSearchIndex = {
-    KoskiApplicationForTests.elasticSearch.refreshIndex
+  def refreshElasticSearchIndexes = {
+    KoskiApplicationForTests.indexManager.refreshAll()
   }
 
   override def baseUrl = {

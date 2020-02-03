@@ -3,7 +3,7 @@ package fi.oph.koski.config
 import com.typesafe.config.{Config, ConfigFactory}
 import fi.oph.koski.cache.CacheManager
 import fi.oph.koski.db._
-import fi.oph.koski.elasticsearch.ElasticSearch
+import fi.oph.koski.elasticsearch.{ElasticSearch, IndexManager}
 import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.healthcheck.HealthCheck
@@ -99,6 +99,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val oidGenerator = OidGenerator(config)
   lazy val hetu = new Hetu(config.getBoolean("acceptSyntheticHetus"))
   lazy val features = Features(config)
+  lazy val indexManager = new IndexManager(List(perustiedotIndexer, tiedonsiirtoService))
 
   lazy val init: Future[Unit] = {
     perustiedotIndexer.init // This one will not be awaited for; it's ok that indexing continues while application is running
