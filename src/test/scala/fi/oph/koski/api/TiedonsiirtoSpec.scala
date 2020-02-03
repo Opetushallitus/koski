@@ -55,7 +55,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
     putOpiskeluoikeus(ExamplesTiedonsiirto.opiskeluoikeus, henkilö = defaultHenkilö, headers = authHeaders(helsinginKaupunkiPalvelukäyttäjä) ++ jsonContent) {
       verifyResponseStatusOk()
     }
-    tiedonsiirtoService.syncToElasticsearch(refreshIndex = true)
+    tiedonsiirtoService.syncToElasticsearch(shouldRefreshIndex = true)
     authGet("api/tiedonsiirrot/yhteenveto", user = MockUsers.helsinginKaupunkiPalvelukäyttäjä) {
       verifyResponseStatusOk()
       val yhteenveto = JsonSerializer.parse[List[TiedonsiirtoYhteenveto]](body)
@@ -266,7 +266,7 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
   }
 
   private def getTiedonsiirrot(user: UserWithPassword, url: String = "api/tiedonsiirrot"): List[HenkilönTiedonsiirrot] = {
-    tiedonsiirtoService.syncToElasticsearch(refreshIndex = true)
+    tiedonsiirtoService.syncToElasticsearch(shouldRefreshIndex = true)
     authGet(url, user) {
       verifyResponseStatusOk()
       readPaginatedResponse[Tiedonsiirrot].henkilöt
