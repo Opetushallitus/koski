@@ -31,6 +31,14 @@ class ElasticSearchIndex(
       reindex
     }
   }
+
+  private def indexExists = {
+    Http.runTask(http.get(uri"/${name}")(Http.statusCode)) match {
+      case 200 => true
+      case 404 => false
+      case statusCode =>
+        throw new RuntimeException("Unexpected status code from elasticsearch: " + statusCode)
+    }
   }
 
   private def migrateIndex: Boolean = {
@@ -84,12 +92,5 @@ class ElasticSearchIndex(
     (extract[Boolean](response \ "errors"), response)
   }
 
-  private def indexExists = {
-    Http.runTask(http.get(uri"/${name}")(Http.statusCode)) match {
-      case 200 => true
-      case 404 => false
-      case statusCode =>
-        throw new RuntimeException("Unexpected status code from elasticsearch: " + statusCode)
-    }
   }
 }
