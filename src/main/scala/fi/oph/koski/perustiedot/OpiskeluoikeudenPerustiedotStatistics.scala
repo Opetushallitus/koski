@@ -25,7 +25,7 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: ElasticSearchIndex) {
   import org.json4s.jackson.JsonMethods.parse
 
   def henkilöCount: Option[Int] = {
-    val result = index.runSearch("perustiedot",
+    val result = index.runSearch(
       parse(
         """
           |{
@@ -46,7 +46,7 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: ElasticSearchIndex) {
   }
 
   private def rawStatistics: Option[(Int, OpiskeluoikeudetTyypeittäin)] = {
-    val result = index.runSearch("perustiedot",
+    val result = index.runSearch(
       parse(
         """
           |{

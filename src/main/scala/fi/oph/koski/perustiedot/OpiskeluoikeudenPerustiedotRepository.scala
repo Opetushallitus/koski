@@ -124,7 +124,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: ElasticSearchIndex, opiskeluo
       "sort" -> elasticSort)
     ))
 
-    index.runSearch("perustiedot", doc)
+    index.runSearch(doc)
       .map{ response =>
         OpiskeluoikeudenPerustiedotResponse(
           Some(extract[Int](response \ "hits" \ "total")),
@@ -147,7 +147,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: ElasticSearchIndex, opiskeluo
 
   def findHenkiloPerustiedotByOids(oids: List[String]): List[OpiskeluoikeudenPerustiedot] = {
     val doc = toJValue(Map("query" -> Map("terms" -> Map("henkilöOid" -> oids)), "from" -> 0, "size" -> 10000))
-    index.runSearch("perustiedot", doc)
+    index.runSearch(doc)
       .map(response => extract[List[JValue]](response \ "hits" \ "hits").map(j => extract[OpiskeluoikeudenPerustiedot](j \ "_source", ignoreExtras = true)))
       .getOrElse(Nil)
   }
@@ -159,7 +159,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: ElasticSearchIndex, opiskeluo
   private def findSingleByHenkilöOid(oid: String): Option[JValue] = {
     val doc = toJValue(Map("query" -> Map("term" -> Map("henkilöOid" -> oid))))
 
-    index.runSearch("perustiedot", doc)
+    index.runSearch(doc)
       .flatMap(response => extract[List[JValue]](response \ "hits" \ "hits").map(j => j \ "_source").headOption)
   }
 
@@ -179,7 +179,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: ElasticSearchIndex, opiskeluo
       "aggregations" -> Map("oids" -> Map("terms" -> Map("field" -> "henkilö.oid.keyword")))
     ))
 
-    index.runSearch("perustiedot", doc)
+    index.runSearch(doc)
       .map(response => extract[List[JValue]](response \ "aggregations" \ "oids" \ "buckets").map(j => extract[Oid](j \ "key")))
       .getOrElse(Nil)
   }

@@ -7,7 +7,7 @@ import org.json4s.jackson.JsonMethods.parse
 case class TiedonsiirtoStatistics(index: ElasticSearchIndex) {
 
   def statistics: TiedonsiirtoTilasto = {
-    val result = index.runSearch("tiedonsiirto",
+    val result = index.runSearch(
       parse(
         """
           |{
