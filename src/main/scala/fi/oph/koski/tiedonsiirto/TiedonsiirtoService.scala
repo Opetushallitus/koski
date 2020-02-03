@@ -217,11 +217,33 @@ class TiedonsiirtoService(
     })
   }
 
-  def storeToElasticSearch(henkilö: Option[TiedonsiirtoOppija], org: OrganisaatioWithOid,
-                           oppilaitokset: Option[List[OidOrganisaatio]], koulutusmuoto: Option[String], suoritustiedot: Option[List[TiedonsiirtoSuoritusTiedot]],
-                           data: Option[JValue], virheet: Option[List[ErrorDetail]], lahdejarjestelma: Option[String],
-                           userOid: String, username: Option[String], aikaleima: Timestamp) = {
-    val tiedonsiirtoDoc = TiedonsiirtoDocument(userOid, username, org.oid, henkilö, oppilaitokset, koulutusmuoto, suoritustiedot, data, virheet.toList.flatten.isEmpty, virheet.getOrElse(Nil), lahdejarjestelma, aikaleima)
+  def storeToElasticSearch(
+    henkilö: Option[TiedonsiirtoOppija],
+    org: OrganisaatioWithOid,
+    oppilaitokset: Option[List[OidOrganisaatio]],
+    koulutusmuoto: Option[String],
+    suoritustiedot: Option[List[TiedonsiirtoSuoritusTiedot]],
+    data: Option[JValue],
+    virheet: Option[List[ErrorDetail]],
+    lahdejarjestelma: Option[String],
+    userOid: String,
+    username: Option[String],
+    aikaleima: Timestamp
+  ) = {
+    val tiedonsiirtoDoc = TiedonsiirtoDocument(
+      userOid,
+      username,
+      org.oid,
+      henkilö,
+      oppilaitokset,
+      koulutusmuoto,
+      suoritustiedot,
+      data,
+      virheet.toList.flatten.isEmpty,
+      virheet.getOrElse(Nil),
+      lahdejarjestelma,
+      aikaleima
+    )
     tiedonsiirtoBuffer.append(tiedonsiirtoDoc)
   }
 
