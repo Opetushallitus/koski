@@ -295,5 +295,6 @@
       "koodistoUri" : "opiskeluoikeudentyyppi"
     },
     "alkamispäivä" : "2018-01-01"
-  } ]
+  } ],
+  "ignoreKoskiValidator" : true
 }

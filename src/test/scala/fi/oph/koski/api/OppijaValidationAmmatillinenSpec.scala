@@ -3,8 +3,9 @@ package fi.oph.koski.api
 import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
+import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.AmmatillinenExampleData._
-import fi.oph.koski.documentation.{AmmatillinenOldExamples, ExampleData, ExamplesValma}
+import fi.oph.koski.documentation.{AmmatillinenOldExamples, AmmattitutkintoExample, ExampleData, ExamplesValma}
 import fi.oph.koski.documentation.AmmatillinenOldExamples.muunAmmatillisenTutkinnonOsanSuoritus
 import fi.oph.koski.documentation.AmmatillinenReforminMukainenPerustutkintoExample.{jatkoOpintovalmiuksiaTukevienOpintojenSuoritus, korkeakouluopintoSuoritus}
 import fi.oph.koski.documentation.ExampleData.helsinki
@@ -362,14 +363,14 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             "Opiskeluoikeus ostettu" - {
 
               "Opiskeluoikeus valmis ennen vuotta 2019" - {
-                val valmisTila = AmmatillinenOpiskeluoikeusjakso(date(2018, 12, 31), ExampleData.opiskeluoikeusValmistunut, None)
+                val valmisTila = AmmatillinenOpiskeluoikeusjakso(date(2018, 12, 31), ExampleData.opiskeluoikeusValmistunut, Some(valtionosuusRahoitteinen))
                 val valmisOpiskeluoikeus = tyhjilläOsasuorituksilla.copy(tila = AmmatillinenOpiskeluoikeudenTila(tyhjilläOsasuorituksilla.tila.opiskeluoikeusjaksot :+ valmisTila), ostettu = true)
                 "palautetaan HTTP 200" in (putOpiskeluoikeus(valmisOpiskeluoikeus)(
                   verifyResponseStatusOk()))
               }
 
               "Opiskeluoikeus valmis vuoden 2018 jälkeen" - {
-                val valmisTila = AmmatillinenOpiskeluoikeusjakso(date(2019, 1, 1), ExampleData.opiskeluoikeusValmistunut, None)
+                val valmisTila = AmmatillinenOpiskeluoikeusjakso(date(2019, 1, 1), ExampleData.opiskeluoikeusValmistunut, Some(valtionosuusRahoitteinen))
                 val valmisOpiskeluoikeus = opiskeluoikeus.copy(tila = AmmatillinenOpiskeluoikeudenTila(opiskeluoikeus.tila.opiskeluoikeusjaksot :+ valmisTila))
                 "palautetaan HTTP 400" in (putOpiskeluoikeus(valmisOpiskeluoikeus.copy(suoritukset = List(eiOsasuorituksia), ostettu = true))(
                   verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia("Suoritus koulutus/351301 on merkitty valmiiksi, mutta sillä ei ole ammatillisen tutkinnon osan suoritusta tai opiskeluoikeudelta puuttuu linkitys"))))
@@ -629,6 +630,28 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
         "Ammatilliseen tehtävään valmistava koulutus" - {
           val suoritus = ansioJaLiikenneLentäjänMuuAmmatillinenKoulutus()
           "palautetaan HTTP 200" in putMuuAmmatillinenKoulutusSuoritus(suoritus)(verifyResponseStatusOk())
+        }
+      }
+
+      "Opintojen rahoitus" - {
+        "lasna -tilalta vaaditaan opintojen rahoitus" in {
+          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä))))) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.opintojenRahoitusPuuttuu("Opiskeluoikeuden tilalta lasna puuttuu opintojen rahoitus"))
+          }
+        }
+        "loma -tilalta vaaditaan opintojen rahoitus" in {
+          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLoma))))) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.opintojenRahoitusPuuttuu("Opiskeluoikeuden tilalta loma puuttuu opintojen rahoitus"))
+          }
+        }
+        "valmistunut -tilalta vaaditaan opintojen rahoitus" in {
+          val tila = AmmatillinenOpiskeluoikeudenTila(List(
+            AmmatillinenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)),
+            AmmatillinenOpiskeluoikeusjakso(date(2016, 1, 1), opiskeluoikeusValmistunut)
+          ))
+          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = tila, suoritukset = List(AmmattitutkintoExample.näyttötutkintoonValmistavanKoulutuksenSuoritus))) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.opintojenRahoitusPuuttuu("Opiskeluoikeuden tilalta valmistunut puuttuu opintojen rahoitus"))
+          }
         }
       }
     }

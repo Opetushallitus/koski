@@ -6,9 +6,9 @@ import UusiOpiskeluoikeus from '../uusioppija/UusiOpiskeluoikeus'
 import Text from '../i18n/Text'
 
 export const UusiOpiskeluoikeusPopup = ({resultCallback}) => {
-  let submitBus = Bacon.Bus()
-  let opiskeluoikeusAtom = Atom()
-  let validP = opiskeluoikeusAtom.not().not()
+  const submitBus = Bacon.Bus()
+  const opiskeluoikeusAtom = Atom()
+  const validP = opiskeluoikeusAtom.map(validateOpintojenRahoitus)
   opiskeluoikeusAtom.sampledBy(submitBus).onValue((oo) => {
     resultCallback(oo)
   })
@@ -19,3 +19,22 @@ export const UusiOpiskeluoikeusPopup = ({resultCallback}) => {
     </ModalDialog>
   </form>)
 }
+
+const validateOpintojenRahoitus = opiskeluoikeus => {
+  const tyyppi = opiskeluoikeudenTyyppi(opiskeluoikeus)
+  const tila = opiskeluoikeudenTila(opiskeluoikeus)
+  const opintojenRahoitusValittu = opintojenRahoitus(opiskeluoikeus)
+
+  if (['aikuistenperusopetus', 'lukiokoulutus', 'luva', 'ibtutkinto'].includes(tyyppi)) {
+    return !['lasna', 'valmistunut'].includes(tila) || opintojenRahoitusValittu
+  }
+  if ('ammatillinenkoulutus' === tyyppi) {
+    return !['lasna', 'valmistunut', 'loma'].includes(tila) || opintojenRahoitusValittu
+  }
+  return opiskeluoikeus
+}
+
+const opiskeluoikeudenTyyppi = oo => oo && oo.tyyppi && oo.tyyppi.koodiarvo
+const opiskeluoikeusjakso = oo => oo && oo.tila && oo.tila.opiskeluoikeusjaksot[0]
+const opiskeluoikeudenTila = oo => opiskeluoikeusjakso(oo) && opiskeluoikeusjakso(oo).tila.koodiarvo
+const opintojenRahoitus = oo => opiskeluoikeusjakso(oo) && opiskeluoikeusjakso(oo).opintojenRahoitus

@@ -228,5 +228,6 @@
       "koodistoUri" : "opiskeluoikeudentyyppi"
     },
     "alkamispäivä" : "2012-09-01"
-  } ]
+  } ],
+  "ignoreKoskiValidator" : true
 }

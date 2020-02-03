@@ -3157,5 +3157,6 @@
       "koodiarvo" : "ibtutkinto",
       "koodistoUri" : "opiskeluoikeudentyyppi"
     }
-  } ]
+  } ],
+  "ignoreKoskiValidator" : true
 }

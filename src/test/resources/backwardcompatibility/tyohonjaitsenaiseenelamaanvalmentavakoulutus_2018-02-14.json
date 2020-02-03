@@ -365,5 +365,6 @@
       "koodistoUri" : "opiskeluoikeudentyyppi"
     },
     "alkamispäivä" : "2009-09-14"
-  } ]
+  } ],
+  "ignoreKoskiValidator" : true
 }

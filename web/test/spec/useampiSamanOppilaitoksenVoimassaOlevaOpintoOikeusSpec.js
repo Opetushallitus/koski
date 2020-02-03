@@ -36,12 +36,14 @@ describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', functio
       addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
       addOppija.selectTutkinto('Autoalan perustutkinto'),
       addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
+      addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
       addOppija.submitModal,
       opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
       addOppija.selectOppilaitos('Stadin ammattiopisto'),
       addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
       addOppija.selectTutkinto('Autoalan perustutkinto'),
       addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
+      addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
       addOppija.submitModal
     )
     it('ei ole sallittu', function() {
@@ -56,6 +58,7 @@ describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', functio
       addOppija.selectOppimäärä('Muun ammatillisen koulutuksen suoritus'),
       addOppija.selectKoulutusmoduuli('Ammatilliseen tehtävään valmistava koulutus'),
       addOppija.enterAmmatilliseenTehtäväänvalmistava('Ansio- ja liikennelentäjä'),
+      addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
       addOppija.submitModal,
       opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
       addOppija.selectOppilaitos('Stadin ammattiopisto'),
@@ -63,6 +66,7 @@ describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', functio
       addOppija.selectOppimäärä('Muun ammatillisen koulutuksen suoritus'),
       addOppija.selectKoulutusmoduuli('Ammatilliseen tehtävään valmistava koulutus'),
       addOppija.enterAmmatilliseenTehtäväänvalmistava('Ansio- ja liikennelentäjä'),
+      addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
       addOppija.submitModal
     )
     it('on sallittu', function() {

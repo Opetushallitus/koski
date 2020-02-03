@@ -1729,5 +1729,6 @@
       "koodistoUri" : "opiskeluoikeudentyyppi"
     },
     "alkamispäivä" : "2008-08-15"
-  } ]
+  } ],
+  "ignoreKoskiValidator" : true
 }

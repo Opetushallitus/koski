@@ -41,9 +41,9 @@ class OppijaValidationInternationalSchoolSpec extends FreeSpec with LocalJettyHt
   def tutkintoSuoritus: DiplomaVuosiluokanSuoritus = InternationalSchoolExampleData.diplomaSuoritus(12, date(2019, 8, 15), None)
 
   override def defaultOpiskeluoikeus = InternationalSchoolOpiskeluoikeus(
-    tila = LukionOpiskeluoikeudenTila(
+    tila = InternationalSchoolOpiskeluoikeudenTila(
       List(
-        LukionOpiskeluoikeusjakso(date(2012, 9, 1), LukioExampleData.opiskeluoikeusAktiivinen)
+        InternationalSchoolOpiskeluoikeusjakso(date(2012, 9, 1), LukioExampleData.opiskeluoikeusAktiivinen)
       )
     ),
     suoritukset = List(tutkintoSuoritus)

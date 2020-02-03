@@ -74,8 +74,8 @@ describe('VALMA koulutus', function() {
         it('näyttää opiskeluoikeuden tiedot', function() {
           expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
             'Opiskeluoikeuden voimassaoloaika : 14.9.2009 — 4.6.2016\n' +
-            'Tila 4.6.2016 Valmistunut\n' +
-            '14.9.2009 Läsnä'
+            'Tila 4.6.2016 Valmistunut (valtionosuusrahoitteinen koulutus)\n' +
+            '14.9.2009 Läsnä (valtionosuusrahoitteinen koulutus)'
           )
         })
 

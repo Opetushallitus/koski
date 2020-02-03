@@ -240,5 +240,6 @@
       "koodiarvo" : "lukiokoulutus",
       "koodistoUri" : "opiskeluoikeudentyyppi"
     }
-  } ]
+  } ],
+  "ignoreKoskiValidator" : true
 }

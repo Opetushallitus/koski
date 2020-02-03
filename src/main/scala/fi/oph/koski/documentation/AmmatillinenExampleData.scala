@@ -205,7 +205,7 @@ object AmmatillinenExampleData {
                      osat: Option[List[AmmatillisenTutkinnonOsanSuoritus]] = None): AmmatillinenOpiskeluoikeus = {
     AmmatillinenOpiskeluoikeus(
       arvioituPäättymispäivä = Some(date(2020, 5, 1)),
-      tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(date(2016, 9, 1), opiskeluoikeusLäsnä, None))),
+      tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(date(2016, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)))),
       oppilaitos = Some(oppilaitos),
       suoritukset = List(tutkinto.copy(osasuoritukset = osat))
     )

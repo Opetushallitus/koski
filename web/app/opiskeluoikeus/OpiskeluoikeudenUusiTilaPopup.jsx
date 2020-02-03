@@ -15,21 +15,22 @@ import {ift} from '../util/util'
 import {filterTilatByOpiskeluoikeudenTyyppi} from './opiskeluoikeus'
 
 export const OpiskeluoikeudenUusiTilaPopup = ({edellisenTilanAlkupäivä, disabloiValmistunut, tilaListModel, resultCallback}) => {
-  let submitBus = Bacon.Bus()
-  let initialModel = contextualizeSubModel(tilaListModel.arrayPrototype, tilaListModel, modelItems(tilaListModel).length)
+  const submitBus = Bacon.Bus()
+  const initialModel = contextualizeSubModel(tilaListModel.arrayPrototype, tilaListModel, modelItems(tilaListModel).length)
 
-  let { modelP, errorP } = accumulateModelStateAndValidity(initialModel)
+  const { modelP, errorP } = accumulateModelStateAndValidity(initialModel)
 
-  let isAllowedDate = d => edellisenTilanAlkupäivä ? d > edellisenTilanAlkupäivä : true
+  const isAllowedDate = d => edellisenTilanAlkupäivä ? d > edellisenTilanAlkupäivä : true
 
-  let alkuPäiväModel = modelP.map(m => modelLookupRequired(m, 'alku'))
-  let tilaModel = modelP.map(m => modelLookupRequired(m, 'tila'))
-  let rahoitusModel = modelP.map(m => modelLookup(m, 'opintojenRahoitus'))
-  let tilaSelectedP = tilaModel.changes().map(true).toProperty(false)
-  let validP = tilaSelectedP.and(errorP.not())
+  const alkuPäiväModel = modelP.map(m => modelLookupRequired(m, 'alku'))
+  const tilaModel = modelP.map(m => modelLookupRequired(m, 'tila'))
+  const rahoitusModel = modelP.map(m => modelLookup(m, 'opintojenRahoitus'))
+
+  const tilaSelectedP = tilaModel.changes().map(true).toProperty(false)
+  const opintojenRahoitusValidP = Bacon.combineWith(validateOpintojenRahoitus, tilaModel, rahoitusModel)
+  const validP = tilaSelectedP.and(opintojenRahoitusValidP).and(errorP.not())
 
   modelP.sampledBy(submitBus.filter(validP)).onValue(resultCallback)
-
 
   return (<ModalDialog className="lisaa-opiskeluoikeusjakso-modal" onDismiss={resultCallback} onSubmit={() => submitBus.push()} okTextKey="Lisää" validP={validP}>
     <h2><Text name="Opiskeluoikeuden tilan lisäys"/></h2>
@@ -56,3 +57,16 @@ const fetchTilat = model => EnumEditor.fetchAlternatives(model).map(alts => {
   return filterTilatByOpiskeluoikeudenTyyppi(tyyppi, getKoodiarvo)(alts)
 })
 
+const validateOpintojenRahoitus = (tilaModel, rahoitusModel) => {
+  const tyyppi = tilaModel.parent.value.classes
+  const tila = modelData(tilaModel, 'koodiarvo')
+  const rahoitusValittu = modelData(rahoitusModel)
+
+  if (tyyppi.includes('lukionopiskeluoikeusjakso') || tyyppi.includes('aikuistenperusopetuksenopiskeluoikeusjakso')) {
+    return !(['lasna', 'valmistunut'].includes(tila)) || rahoitusValittu
+  }
+  if (tyyppi.includes('ammatillinenopiskeluoikeusjakso')) {
+    return !(['lasna', 'valmistunut', 'loma'].includes(tila)) || rahoitusValittu
+  }
+  return true
+}
