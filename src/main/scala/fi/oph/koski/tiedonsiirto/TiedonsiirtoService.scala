@@ -6,7 +6,7 @@ import java.time.LocalDate
 import com.typesafe.config.Config
 import fi.oph.koski.elasticsearch.{ElasticSearch, ElasticSearchIndex}
 import fi.oph.koski.henkilo.{HenkilöOid, HenkilöRepository, Hetu}
-import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.http.{ErrorDetail, HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer.{extract, validateAndExtract}
 import fi.oph.koski.json.LegacyJsonSerialization.toJValue
 import fi.oph.koski.json._
@@ -267,7 +267,7 @@ class TiedonsiirtoService(
     }
   }
 
-  private def yhteenvetoOrdering(sorting: SortOrder) = {
+  private def yhteenvetoOrdering(implicit koskiSession: KoskiSession, sorting: SortOrder) = {
     val ordering = sorting.field match {
       case "aika" => Ordering.by{x: TiedonsiirtoYhteenveto => x.viimeisin.getTime}
       case "oppilaitos" => Ordering.by{x: TiedonsiirtoYhteenveto => x.oppilaitos.description.get(koskiSession.lang)}
