@@ -155,4 +155,8 @@ class OpiskeluoikeudenPerustiedotIndexer(
   case class UpdateStatus(updated: Int, changed: Int) {
     def +(other: UpdateStatus) = UpdateStatus(this.updated + other.updated, this.changed + other.changed)
   }
+
+  def indexIsLarge: Boolean = {
+    OpiskeluoikeudenPerustiedotStatistics(this).statistics.opiskeluoikeuksienMäärä > 100
+  }
 }

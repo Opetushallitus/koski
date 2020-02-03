@@ -19,7 +19,7 @@ import fi.oph.koski.opiskeluoikeus._
 import fi.oph.koski.oppija.KoskiOppijaFacade
 import fi.oph.koski.oppilaitos.OppilaitosRepository
 import fi.oph.koski.organisaatio.OrganisaatioRepository
-import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedotIndexer, OpiskeluoikeudenPerustiedotRepository, PerustiedotIndex, PerustiedotSyncRepository}
+import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedotIndexer, OpiskeluoikeudenPerustiedotRepository, PerustiedotSyncRepository}
 import fi.oph.koski.pulssi.{KoskiPulssi, PrometheusRepository}
 import fi.oph.koski.raportointikanta.{Public, RaportointiDatabase, RaportointikantaService}
 import fi.oph.koski.schedule.{KoskiScheduledTasks, PerustiedotSyncScheduler}
@@ -76,11 +76,10 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val opiskeluoikeusQueryRepository = new OpiskeluoikeusQueryService(replicaDatabase.db)
   lazy val validator: KoskiValidator = new KoskiValidator(tutkintoRepository, koodistoViitePalvelu, organisaatioRepository, possu, henkilöRepository, ePerusteet, config)
   lazy val elasticSearch = ElasticSearch(config)
-  lazy val perustiedotIndex = new PerustiedotIndex(elasticSearch)
+  lazy val perustiedotIndexer = new OpiskeluoikeudenPerustiedotIndexer(config, elasticSearch, opiskeluoikeusQueryRepository, perustiedotSyncRepository)
   lazy val tiedonsiirtoIndex = new TiedonsiirtoIndex(elasticSearch)
-  lazy val perustiedotRepository = new OpiskeluoikeudenPerustiedotRepository(perustiedotIndex, opiskeluoikeusQueryRepository)
+  lazy val perustiedotRepository = new OpiskeluoikeudenPerustiedotRepository(perustiedotIndexer, opiskeluoikeusQueryRepository)
   lazy val perustiedotSyncRepository = new PerustiedotSyncRepository(masterDatabase.db)
-  lazy val perustiedotIndexer = new OpiskeluoikeudenPerustiedotIndexer(config, perustiedotIndex, opiskeluoikeusQueryRepository, perustiedotSyncRepository)
   lazy val perustiedotSyncScheduler = new PerustiedotSyncScheduler(this)
   lazy val oppijaFacade = new KoskiOppijaFacade(henkilöRepository, henkilöCache, opiskeluoikeusRepository, historyRepository, perustiedotIndexer, config, hetu)
   lazy val oppijaFacadeV2 = new KoskiOppijaFacade(henkilöRepository, henkilöCache, opiskeluoikeusRepositoryV2, historyRepository, perustiedotIndexer, config, hetu)
