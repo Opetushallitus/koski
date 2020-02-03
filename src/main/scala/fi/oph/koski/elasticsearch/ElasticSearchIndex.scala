@@ -1,5 +1,6 @@
 package fi.oph.koski.elasticsearch
 
+import com.typesafe.config.Config
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http.{Http, HttpStatusException}
 import fi.oph.koski.json.JsonSerializer.extract
@@ -11,19 +12,25 @@ import org.json4s.{JValue, _}
 
 class ElasticSearchIndex(
   val elastic: ElasticSearch,
+  val config: Config,
   val name: String,
   val mappingType: String,
   val settings: JValue
 ) extends Logging {
   def http = elastic.http
-  def reindexingNeededAtStartup = init
 
   lazy val init = {
-    if (indexExists) {
+    val indexChanged = if (indexExists) {
       migrateIndex
     } else {
       createIndex
     }
+
+    val reindexingNeeded = indexChanged || config.getBoolean("elasticsearch.reIndexAtStartup")
+    if (reindexingNeeded) {
+      reindex
+    }
+  }
   }
 
   private def migrateIndex: Boolean = {
@@ -53,6 +60,10 @@ class ElasticSearchIndex(
     logger.info("Creating Elasticsearch index")
     Http.runTask(http.put(uri"/${name}", JObject("settings" -> settings))(Json4sHttp4s.json4sEncoderOf)(Http.parseJson[JValue]))
     true
+  }
+
+  protected def reindex: Unit = {
+    throw new NotImplementedError("Reindexing not implemented")
   }
 
   def refreshIndex = {
