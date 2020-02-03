@@ -403,9 +403,13 @@ class TiedonsiirtoService(
   private def extractKoulutusmuoto(data: JValue): Option[String] =
     jsonStringList(data \ "opiskeluoikeudet" \ "tyyppi" \ "koodiarvo").headOption
 
-  private def extractHenkilö(data: JValue, oidHenkilö: Option[OidHenkilö])(implicit user: KoskiSession): Option[TiedonsiirtoOppija] = {
+  private def extractHenkilö(data: JValue,
+                             oidHenkilö: Option[OidHenkilö])
+                            (implicit user: KoskiSession): Option[TiedonsiirtoOppija] = {
     val annetutHenkilötiedot: JValue = data \ "henkilö"
-    val annettuTunniste: Option[HetuTaiOid] = validateAndExtract[HetuTaiOid](annetutHenkilötiedot, ignoreExtras = true).map { tunniste =>
+    val annettuTunniste: Option[HetuTaiOid] = validateAndExtract[HetuTaiOid](
+      annetutHenkilötiedot, ignoreExtras = true
+    ).map { tunniste =>
       tunniste.copy(
         hetu = tunniste.hetu.flatMap(hetu.validate(_).toOption),
         oid = tunniste.oid.flatMap(HenkilöOid.validateHenkilöOid(_).toOption)
@@ -425,8 +429,17 @@ class TiedonsiirtoService(
     }
 
     haetutTiedot.orElse(oidHenkilö match {
-      case Some(oidHenkilö) => validateAndExtract[TiedonsiirtoOppija](annetutHenkilötiedot.merge(JsonSerializer.serializeWithRoot(oidHenkilö)), ignoreExtras = true).toOption
-      case None => annetutHenkilötiedot.toOption.flatMap(validateAndExtract[TiedonsiirtoOppija](_, ignoreExtras = true).toOption)
+      case Some(oidHenkilö) => {
+        validateAndExtract[TiedonsiirtoOppija](
+          annetutHenkilötiedot.merge(JsonSerializer.serializeWithRoot(oidHenkilö)),
+          ignoreExtras = true
+        ).toOption
+      }
+      case None => {
+        annetutHenkilötiedot.toOption.flatMap(
+          validateAndExtract[TiedonsiirtoOppija](_, ignoreExtras = true).toOption
+        )
+      }
     })
   }
 
@@ -454,7 +467,16 @@ class TiedonsiirtoService(
 
   private def toHenkilönTiedonsiirrot(tiedonsiirrot: Seq[TiedonsiirtoDocument]): List[HenkilönTiedonsiirrot] = {
     tiedonsiirrot.map { row =>
-      val rivi = TiedonsiirtoRivi(row.id, row.aikaleima, row.oppija, row.oppilaitokset.getOrElse(Nil), row.suoritustiedot.getOrElse(Nil), row.virheet, row.data, row.lähdejärjestelmä)
+      val rivi = TiedonsiirtoRivi(
+        row.id,
+        row.aikaleima,
+        row.oppija,
+        row.oppilaitokset.getOrElse(Nil),
+        row.suoritustiedot.getOrElse(Nil),
+        row.virheet,
+        row.data,
+        row.lähdejärjestelmä
+      )
       HenkilönTiedonsiirrot(row.oppija, List(rivi))
     }.toList
   }
@@ -462,15 +484,46 @@ class TiedonsiirtoService(
 
 case class Tiedonsiirrot(henkilöt: List[HenkilönTiedonsiirrot], oppilaitos: Option[OidOrganisaatio])
 case class HenkilönTiedonsiirrot(oppija: Option[TiedonsiirtoOppija], rivit: Seq[TiedonsiirtoRivi])
-case class TiedonsiirtoRivi(id: String, aika: Timestamp, oppija: Option[TiedonsiirtoOppija], oppilaitos: List[OidOrganisaatio], suoritustiedot: List[TiedonsiirtoSuoritusTiedot], virhe: List[ErrorDetail], inputData: Option[JValue], lähdejärjestelmä: Option[String])
-case class TiedonsiirtoOppija(oid: Option[String], hetu: Option[String], syntymäaika: Option[LocalDate], etunimet: Option[String], kutsumanimi: Option[String], sukunimi: Option[String])
+case class TiedonsiirtoRivi(id: String,
+                            aika: Timestamp,
+                            oppija: Option[TiedonsiirtoOppija],
+                            oppilaitos: List[OidOrganisaatio],
+                            suoritustiedot: List[TiedonsiirtoSuoritusTiedot],
+                            virhe: List[ErrorDetail],
+                            inputData: Option[JValue],
+                            lähdejärjestelmä: Option[String])
+case class TiedonsiirtoOppija(oid: Option[String],
+                              hetu: Option[String],
+                              syntymäaika: Option[LocalDate],
+                              etunimet: Option[String],
+                              kutsumanimi: Option[String],
+                              sukunimi: Option[String])
 case class HetuTaiOid(oid: Option[String], hetu: Option[String])
-case class TiedonsiirtoYhteenveto(tallentajaOrganisaatio: OidOrganisaatio, oppilaitos: OidOrganisaatio, käyttäjä: TiedonsiirtoKäyttäjä, viimeisin: Timestamp, siirretyt: Int, virheelliset: Int, onnistuneet: Int, lähdejärjestelmä: Option[Koodistokoodiviite])
-case class TiedonsiirtoQuery(oppilaitos: Option[String], paginationSettings: Option[PaginationSettings])
+case class TiedonsiirtoYhteenveto(tallentajaOrganisaatio: OidOrganisaatio,
+                                  oppilaitos: OidOrganisaatio,
+                                  käyttäjä: TiedonsiirtoKäyttäjä,
+                                  viimeisin: Timestamp,
+                                  siirretyt: Int,
+                                  virheelliset: Int,
+                                  onnistuneet: Int,
+                                  lähdejärjestelmä: Option[Koodistokoodiviite])
+case class TiedonsiirtoQuery(oppilaitos: Option[String],
+                             paginationSettings: Option[PaginationSettings])
 case class TiedonsiirtoKäyttäjä(oid: String, käyttäjätunnus: Option[String])
 case class TiedonsiirtoError(data: JValue, virheet: List[ErrorDetail])
 
-case class TiedonsiirtoDocument(tallentajaKäyttäjäOid: String, tallentajaKäyttäjätunnus: Option[String], tallentajaOrganisaatioOid: String, oppija: Option[TiedonsiirtoOppija], oppilaitokset: Option[List[OidOrganisaatio]], koulutusmuoto: Option[String], suoritustiedot: Option[List[TiedonsiirtoSuoritusTiedot]], data: Option[JValue], success: Boolean, virheet: List[ErrorDetail], lähdejärjestelmä: Option[String], aikaleima: Timestamp) {
+case class TiedonsiirtoDocument(tallentajaKäyttäjäOid: String,
+                                tallentajaKäyttäjätunnus: Option[String],
+                                tallentajaOrganisaatioOid: String,
+                                oppija: Option[TiedonsiirtoOppija],
+                                oppilaitokset: Option[List[OidOrganisaatio]],
+                                koulutusmuoto: Option[String],
+                                suoritustiedot: Option[List[TiedonsiirtoSuoritusTiedot]],
+                                data: Option[JValue],
+                                success: Boolean,
+                                virheet: List[ErrorDetail],
+                                lähdejärjestelmä: Option[String],
+                                aikaleima: Timestamp) {
   def id: String = tallentajaOrganisaatioOid + "_" + oppijaId
   private def oppijaId: String = oppija.flatMap(h => h.hetu.orElse(h.oid)).getOrElse("")
 }
