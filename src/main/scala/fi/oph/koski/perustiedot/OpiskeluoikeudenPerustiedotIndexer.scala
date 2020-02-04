@@ -41,10 +41,11 @@ object OpiskeluoikeudenPerustiedotIndexer {
         }
     }""")
 
-  private val mapping = toJValue(Map("properties" -> Map(
-    "tilat" -> Map("type" -> "nested"),
-    "suoritukset" -> Map("type" -> "nested")
-  )))
+  private val mapping = toJValue(Map(
+    "properties" -> Map(
+      "tilat" -> Map("type" -> "nested"),
+      "suoritukset" -> Map("type" -> "nested")
+    )))
 }
 
 class OpiskeluoikeudenPerustiedotIndexer(

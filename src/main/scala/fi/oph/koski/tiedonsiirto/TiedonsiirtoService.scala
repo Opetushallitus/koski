@@ -249,9 +249,8 @@ class TiedonsiirtoService(
     if (tiedonsiirrot.nonEmpty) {
       logger.debug(s"Syncing ${tiedonsiirrot.length} tiedonsiirrot documents")
 
-      val tiedonsiirtoChunks = tiedonsiirrot.grouped(1000).toList
-      tiedonsiirtoChunks.map { ts =>
-        updateBulk(ts.flatMap { tiedonsiirto =>
+      val queries = tiedonsiirrot.grouped(1000).map { ts =>
+        ts.flatMap { tiedonsiirto =>
           List(
             JObject(
               "update" -> JObject(
@@ -265,9 +264,12 @@ class TiedonsiirtoService(
               "doc" -> Serializer.serialize(tiedonsiirto, serializationContext)
             )
           )
-        })
-      }.collect { case (errors, response) if errors => JsonMethods.pretty(response) }
-       .foreach(resp => logger.error(s"Elasticsearch indexing failed: $resp"))
+        }
+      }
+      queries
+        .map(query => updateBulk(query))
+        .collect { case (errors, response) if errors => JsonMethods.pretty(response) }
+        .foreach(resp => logger.error(s"Elasticsearch indexing failed: $resp"))
       logger.debug(s"Done syncing ${tiedonsiirrot.length} tiedonsiirrot documents")
     }
     if (shouldRefreshIndex) {
