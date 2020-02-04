@@ -58,7 +58,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: ElasticSearchIndex, opiskeluo
     val suoritusFilters = filters.flatMap {
       case SuorituksenTyyppi(tyyppi) => List(Map("term" -> Map("suoritukset.tyyppi.koodiarvo" -> tyyppi.koodiarvo)))
       case Tutkintohaku(hakusana) =>
-        analyzeString(hakusana).map { namePrefix =>
+        index.analyze(hakusana).map { namePrefix =>
           anyFilter(List(
             Map("prefix" -> Map(s"suoritukset.koulutusmoduuli.tunniste.nimi.${session.lang}" -> namePrefix)),
             Map("prefix" -> Map(s"suoritukset.osaamisala.nimi.${session.lang}" -> namePrefix)),
@@ -215,18 +215,12 @@ class OpiskeluoikeudenPerustiedotRepository(index: ElasticSearchIndex, opiskeluo
     ))))))
 
   private def nameFilter(hakusana: String) =
-    analyzeString(hakusana).map { namePrefix =>
+    index.analyze(hakusana).map { namePrefix =>
       anyFilter(List(
         Map("prefix" -> Map("henkilö.sukunimi" -> namePrefix)),
         Map("prefix" -> Map("henkilö.etunimet" -> namePrefix))
       ))
     }
-
-  private def analyzeString(string: String): List[String] = {
-    val document: JValue = Http.runTask(index.http.post(uri"/koski/_analyze", JObject("analyzer" -> JString("default"), "text" -> JString(string)))(Json4sHttp4s.json4sEncoderOf[JObject])(Http.parseJson[JValue]))
-    val tokens: List[JValue] = extract[List[JValue]](document \ "tokens")
-    tokens.map(token => extract[String](token \ "token"))
-  }
 }
 
 private object OpiskeluoikeudenPerustiedotRepository

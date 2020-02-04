@@ -113,4 +113,14 @@ class ElasticSearchIndex(
     })
     deletedCount
   }
+
+  def analyze(string: String): List[String] = {
+    val query = JObject("analyzer" -> JString("default"), "text" -> JString(string))
+    val response: JValue = Http.runTask(
+      http.post(uri"/${name}/_analyze", query)
+      (Json4sHttp4s.json4sEncoderOf[JObject])(Http.parseJson[JValue])
+    )
+    val tokens: List[JValue] = extract[List[JValue]](response \ "tokens")
+    tokens.map(token => extract[String](token \ "token"))
+  }
 }
