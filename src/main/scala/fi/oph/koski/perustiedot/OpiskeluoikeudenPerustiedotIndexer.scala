@@ -55,7 +55,7 @@ class OpiskeluoikeudenPerustiedotIndexer(
 ) extends ElasticSearchIndex(
   config = config,
   elastic = elastic,
-  name = "koski-index",
+  name = "perustiedot",
   mappingType = "perustiedot",
   mapping = OpiskeluoikeudenPerustiedotIndexer.mapping,
   settings = OpiskeluoikeudenPerustiedotIndexer.settings
