@@ -69,7 +69,7 @@ class OpiskeluoikeudenPerustiedotIndexer(
     if (items.isEmpty) {
       return Right(0)
     }
-    val (errors, response) = updateBulk(generateJson(items, upsert))
+    val (errors, response) = updateBulk(generateUpdateJson(items, upsert))
     if (errors) {
       val failedOpiskeluoikeusIds: List[Int] = extract[List[JValue]](response \ "items" \ "update")
         .flatMap { item =>
@@ -92,7 +92,7 @@ class OpiskeluoikeudenPerustiedotIndexer(
     }
   }
 
-  private def generateJson(serializedItems: Seq[JValue], upsert: Boolean) = {
+  private def generateUpdateJson(serializedItems: Seq[JValue], upsert: Boolean) = {
     serializedItems.flatMap { (perustiedot: JValue) =>
       val doc = perustiedot.asInstanceOf[JObject] match {
         case JObject(fields) => JObject(
@@ -103,10 +103,18 @@ class OpiskeluoikeudenPerustiedotIndexer(
           }
         )
       }
-
       List(
-        JObject("update" -> JObject("_id" -> (doc \ "id"), "_index" -> JString("koski"), "_type" -> JString("perustiedot"))),
-        JObject("doc_as_upsert" -> JBool(upsert), "doc" -> doc)
+        JObject(
+          "update" -> JObject(
+            "_id" -> (doc \ "id"),
+            "_index" -> JString(name),
+            "_type" -> JString(mappingType)
+          )
+        ),
+        JObject(
+          "doc_as_upsert" -> JBool(upsert),
+          "doc" -> doc
+        )
       )
     }
   }

@@ -253,8 +253,17 @@ class TiedonsiirtoService(
       tiedonsiirtoChunks.map { ts =>
         updateBulk(ts.flatMap { tiedonsiirto =>
           List(
-            JObject("update" -> JObject("_id" -> JString(tiedonsiirto.id), "_index" -> JString("koski"), "_type" -> JString("tiedonsiirto"))),
-            JObject("doc_as_upsert" -> JBool(true), "doc" -> Serializer.serialize(tiedonsiirto, serializationContext))
+            JObject(
+              "update" -> JObject(
+                "_id" -> JString(tiedonsiirto.id),
+                "_index" -> JString(name),
+                "_type" -> JString(mappingType)
+              )
+            ),
+            JObject(
+              "doc_as_upsert" -> JBool(true),
+              "doc" -> Serializer.serialize(tiedonsiirto, serializationContext)
+            )
           )
         })
       }.collect { case (errors, response) if errors => JsonMethods.pretty(response) }
