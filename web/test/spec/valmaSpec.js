@@ -133,10 +133,13 @@ describe('VALMA koulutus', function() {
             'Toinen kotimainen kieli, ruotsi, ruotsi 1 3\n' +
             'Pakollinen kyllä\n' +
             'Arviointipäivä 20.10.2014\n' +
+            'Toinen kotimainen kieli, suomi, suomi 1 3\n' +
+            'Pakollinen kyllä\n' +
+            'Arviointipäivä 20.10.2014\n' +
             'Vieraat kielet, englanti 2 3\n' +
             'Pakollinen kyllä\n' +
             'Arviointipäivä 20.10.2014\n' +
-            'Yhteensä 76 osp'
+            'Yhteensä 77 osp'
           )
         })
       })

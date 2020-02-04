@@ -779,6 +779,7 @@ case class ValtakunnallinenAmmatillisenTutkinnonOsanOsaAlue(
 case class AmmatillisenTutkinnonVierasTaiToinenKotimainenKieli(
   @KoodistoKoodiarvo("VK")
   @KoodistoKoodiarvo("TK1")
+  @KoodistoKoodiarvo("TK2")
   @KoodistoUri("ammatillisenoppiaineet")
   tunniste: Koodistokoodiviite,
   @Description("Mikä kieli on kyseessä")
