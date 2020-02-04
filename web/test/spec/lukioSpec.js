@@ -610,8 +610,8 @@ describe('Lukiokoulutus', function( ){
             before(editor.edit)
             it('ei esitäytetä', function () {
               expect(S('.oppiaineet').text()).to.equal('')
-              after(editor.cancelChanges)
             })
+            after(editor.cancelChanges)
           })
         })
       })
