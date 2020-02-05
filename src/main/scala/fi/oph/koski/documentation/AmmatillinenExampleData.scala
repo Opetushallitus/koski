@@ -151,6 +151,7 @@ object AmmatillinenExampleData {
   lazy val arvosanaViisi = Koodistokoodiviite("5", Some("5"), "arviointiasteikkoammatillinen15", Some(1))
   lazy val arviointiViisi = Some(List(arviointi(arvosanaViisi)))
   lazy val hyväksytty: Koodistokoodiviite = Koodistokoodiviite("Hyväksytty", Some("Hyväksytty"), "arviointiasteikkoammatillinenhyvaksyttyhylatty", Some(1))
+  lazy val suoritettu: Koodistokoodiviite = Koodistokoodiviite("Suoritettu", Some("Suoritettu"), "arviointiasteikkomuuammatillinenkoulutus", Some(1))
   lazy val tunnustettu: OsaamisenTunnustaminen = OsaamisenTunnustaminen(
     Some(MuunAmmatillisenTutkinnonOsanSuoritus(
       koulutusmoduuli = MuuValtakunnallinenTutkinnonOsa(Koodistokoodiviite("100238", Some("Asennushitsaus"), "tutkinnonosat", Some(1)), true, None),
@@ -164,7 +165,9 @@ object AmmatillinenExampleData {
   lazy val arviointiHyväksytty = AmmatillinenArviointi(
     arvosana = hyväksytty, date(2013, 3, 20),
     arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen"))))
-
+  lazy val arviointiSuoritettu = MuunAmmatillisenKoulutuksenArviointi(
+    arvosana = suoritettu, date(2013, 3, 20),
+    arvioitsijat = Some(List(Arvioitsija("Jaana Arstila"), Arvioitsija("Pekka Saurmann"), Arvioitsija("Juhani Mykkänen"))))
 
   lazy val paikallisenOsanSuoritus = MuunAmmatillisenTutkinnonOsanSuoritus(
     koulutusmoduuli = PaikallinenTutkinnonOsa(PaikallinenKoodi("123456789", "Pintavauriotyöt"), "Opetellaan korjaamaan pinnallisia vaurioita", false, None),
@@ -612,8 +615,8 @@ object AmmatillinenExampleData {
       ),
       alkamispäivä = None,
       arviointi = Some(List(
-        AmmatillinenArviointi(
-          arvosana = Koodistokoodiviite("Hyväksytty", "arviointiasteikkoammatillinenhyvaksyttyhylatty"),
+        MuunAmmatillisenKoulutuksenArviointi(
+          arvosana = Koodistokoodiviite("Suoritettu", "arviointiasteikkomuuammatillinenkoulutus"),
           date(2018, 5, 31),
           arvioitsijat = Some(List(Arvioitsija("Aarne Arvioija")))
         )

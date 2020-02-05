@@ -25,10 +25,10 @@ describe('Muu ammatillinen koulutus', function() {
         expect(extractAsText(S('.osasuoritukset'))).to.equal(
           'Avaa kaikki\n' +
           'Osasuoritus Laajuus (op) Arvosana\n' +
-          'Asunto-osakeyhtiölain ja huoneenvuokralainsäädännön perusteet 5 op Hyväksytty\n' +
-          'Asunto- ja kiinteistöosakeyhtiön talous ja verotus 15 op Hyväksytty\n' +
-          'Tiedottaminen ja asiakaspalvelu 20 op Hyväksytty\n' +
-          'KISI-tentti Hyväksytty\n' +
+          'Asunto-osakeyhtiölain ja huoneenvuokralainsäädännön perusteet 5 op Suoritettu\n' +
+          'Asunto- ja kiinteistöosakeyhtiön talous ja verotus 15 op Suoritettu\n' +
+          'Tiedottaminen ja asiakaspalvelu 20 op Suoritettu\n' +
+          'KISI-tentti Suoritettu\n' +
           'ATK-Ajokortti\n' +
           'Fysiikka ja kemia Hyväksytty\n' +
           'Äidinkieli, Suomen kieli ja kirjallisuus Hyväksytty\n' +
