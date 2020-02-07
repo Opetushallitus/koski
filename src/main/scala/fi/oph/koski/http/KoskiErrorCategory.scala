@@ -50,7 +50,7 @@ object KoskiErrorCategory {
         val tuntematon = subcategory("tuntematon", "Tuntematon organisaatio: oid-tunnisteella ei löytynyt organisaatiota.")
         val eiOppilaitos = subcategory("eiOppilaitos", "Toimipisteenä käytetylle organisaatiolle ei löydy oppilaitos-tyyppistä yliorganisaatiota.")
         val vääräKoulutustoimija = subcategory("vääräKoulutustoimija", "Koulutustoimija ei vastaa organisaatiopalvelun mukaista tietoa")
-        val järjestämismuoto = subcategory("järjestämismuoto", "Opiskeluoikeutta ei voi tallentaa omaan organisaatioon jos järjestämismuoto on syötetty")
+        val järjestämismuoto = subcategory("järjestämismuoto", "Opiskeluoikeutta ei voi tallentaa oman organisaation toimipaikkaan jos järjestämismuotona ostopalvelu tai palveluseteli")
         val koulutustoimijaPakollinen = subcategory("koulutustoimijaPakollinen", "Koulutustoimijaa ei voi yksiselitteisesti päätellä.")
         val oppilaitosPuuttuu = subcategory("oppilaitosPuuttuu", "Oppilaitos puuttuu")
       }
