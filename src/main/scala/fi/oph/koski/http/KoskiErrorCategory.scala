@@ -123,7 +123,7 @@ object KoskiErrorCategory {
         val montaPäättävääTilaa = subcategory("montaPäättäväätilaa", "Opiskeluoikeudella voi olla vain yksi opiskeluoikeuden päättävä tila")
         val alkamispäiväPuuttuu = subcategory("alkamispäiväPuuttuu", "Suoritukselle ei ole merkitty alkamispäivää")
         val valmiiksiMerkityltäPuuttuuOsasuorituksia = subcategory("valmiiksiMerkitylläEiOsasuorituksia", "Valmiiksi merkityllä päätason suorituksella ei voi olla tyhjä osasuorituslista tai opiskeluoikeuden pitää olla linkitetty")
-        val opintojenRahoitusPuuttuu = subcategory("tiltaPuuttuuOpintojenRahoitus", "Opiskeluoikeuden tilalta vaaditaan opintojen rahoitus")
+        val tilaltaPuuttuuRahoitusmuoto = subcategory("tilaltaPuuttuuRahoitusmuoto", "Opiskeluoikeuden tilalta vaaditaan rahoitusmuoto")
       }
       val tila = new Tila
 
