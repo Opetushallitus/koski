@@ -11,7 +11,7 @@ import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
 import fi.oph.koski.schema.Henkilö._
 import fi.oph.koski.servlet.{ApiServlet, ObservableSupport}
 import fi.oph.koski.util.SortOrder.Ascending
-import fi.oph.koski.util.{Pagination, PaginationSettings}
+import fi.oph.koski.util.{Pagination, PaginationSettings, QueryPagination}
 import javax.servlet.http.HttpServletRequest
 import org.scalatra._
 import rx.lang.scala.Observable
@@ -66,17 +66,28 @@ case class OpiskeluoikeusQueryContext(request: HttpServletRequest)(implicit kosk
 }
 
 object OpiskeluoikeusQueryContext {
+  val pagination = QueryPagination(50)
   def queryForAuditLog(params: MultiParams) =
     params.toList.sortBy(_._1).map { case (p,values) => values.map(v => p + "=" + v).mkString("&") }.mkString("&")
 
+
   def streamingQueryGroupedByOid(application: KoskiApplication, filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings])(implicit koskiSession: KoskiSession): Observable[(QueryOppijaHenkilö, List[(OpiskeluoikeusRow)])] = {
-    val rows = application.opiskeluoikeusQueryRepository.opiskeluoikeusQuery(filters, Some(Ascending("oppijaOid")), paginationSettings)
+    var streamedOpiskeluoikeusCount: Int = 0
+    def opiskeluoikeusCountWithinPageSize(row: (QueryOppijaHenkilö, List[OpiskeluoikeusRow])): Boolean = paginationSettings match {
+      case None => true
+      case Some(settings) if settings.size > streamedOpiskeluoikeusCount =>
+        streamedOpiskeluoikeusCount = streamedOpiskeluoikeusCount + row._2.length
+        true
+      case _ => false
+    }
+
+    val rows = application.opiskeluoikeusQueryRepository.opiskeluoikeusQuery(filters, Some(Ascending("oppijaOid")), paginationSettings, pagination)
 
     val groupedByPerson: Observable[List[(OpiskeluoikeusRow, HenkilöRow, Option[HenkilöRow])]] = rows
       .tumblingBuffer(rows.map(masterOid).distinctUntilChanged.drop(1))
       .map(_.toList)
 
-    groupedByPerson.flatMap {
+    val stream = groupedByPerson.flatMap {
       case oikeudet@(row :: _) =>
         val oppijanOidit = oikeudet.flatMap { case (_, h, m) => h.oid :: m.map(_.oid).toList }.toSet
         assert(oikeudet.map(_._1.oppijaOid).toSet.subsetOf(oppijanOidit), "Usean ja/tai väärien henkilöiden tietoja henkilöllä " + oppijanOidit + ": " + oikeudet.map(_._1.oppijaOid).toSet)
@@ -84,6 +95,8 @@ object OpiskeluoikeusQueryContext {
       case _ =>
         Observable.empty
     }
+
+    stream.takeWhile(opiskeluoikeusCountWithinPageSize)
   }
 
   private def masterOid(row: (OpiskeluoikeusRow, HenkilöRow, Option[HenkilöRow])): String = {
