@@ -4,7 +4,7 @@ mvn_argline =
 mvn_opts =
 
 DOCKER_COMPOSE = docker-compose
-DOCKER_COMPOSE_OPTS = --force-recreate --renew-anon-volumes
+DOCKER_COMPOSE_OPTS = --force-recreate --renew-anon-volumes --build
 
 .PHONY: help
 help:
