@@ -16,7 +16,15 @@ import fi.oph.koski.perustiedot.OpiskeluoikeudenPerustiedotIndexer
 import fi.oph.koski.schema._
 import fi.oph.koski.util.{Timing, WithWarnings}
 
-class KoskiOppijaFacade(henkilöRepository: HenkilöRepository, henkilöCache: KoskiHenkilöCache, opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository, historyRepository: OpiskeluoikeusHistoryRepository, perustiedotIndexer: OpiskeluoikeudenPerustiedotIndexer, config: Config, hetu: Hetu) extends Logging with Timing with GlobalExecutionContext {
+class KoskiOppijaFacade(
+  henkilöRepository: HenkilöRepository,
+  henkilöCache: KoskiHenkilöCache,
+  opiskeluoikeusRepository: CompositeOpiskeluoikeusRepository,
+  historyRepository: OpiskeluoikeusHistoryRepository,
+  perustiedotIndexer: OpiskeluoikeudenPerustiedotIndexer,
+  config: Config,
+  hetu: Hetu
+) extends Logging with Timing with GlobalExecutionContext {
   private lazy val mockOids = config.hasPath("authentication-service.mockOid") && config.getBoolean("authentication-service.mockOid")
 
   def findOppija(oid: String, findMasterIfSlaveOid: Boolean = false, useVirta: Boolean = true, useYtr: Boolean = true)(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {

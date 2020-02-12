@@ -5,7 +5,7 @@ import fi.oph.koski.koskiuser.UserWithPassword
 import fi.oph.koski.util.EnvVariables
 
 trait KoskidevHttpSpecification extends HttpSpecification with EnvVariables {
-  def refreshElasticSearchIndex = {
+  def refreshElasticSearchIndexes = {
 
   }
 

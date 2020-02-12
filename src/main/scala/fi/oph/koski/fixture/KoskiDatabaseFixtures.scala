@@ -51,7 +51,7 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
         val id = application.opiskeluoikeusRepository.createOrUpdate(VerifiedHenkilöOid(henkilö), opiskeluoikeus, false).right.get.id
         OpiskeluoikeudenPerustiedot.makePerustiedot(id, opiskeluoikeus, application.henkilöRepository.opintopolku.withMasterInfo(henkilö))
       })
-      application.perustiedotIndexer.updateBulk(cachedPerustiedot.get, true)
+      application.perustiedotIndexer.updatePerustiedot(cachedPerustiedot.get, true)
       val henkilöOidsIn = henkilöOids.map("'" + _ + "'").mkString(",")
       runDbSync(DBIO.seq(
         sqlu"drop table if exists opiskeluoikeus_fixture",
@@ -67,7 +67,7 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
         sqlu"insert into opiskeluoikeushistoria select * from opiskeluoikeushistoria_fixture",
         sqlu"alter table opiskeluoikeus enable trigger update_opiskeluoikeus_aikaleima"
       ))
-      application.perustiedotIndexer.updateBulk(cachedPerustiedot.get, true)
+      application.perustiedotIndexer.updatePerustiedot(cachedPerustiedot.get, true)
     }
   }
 

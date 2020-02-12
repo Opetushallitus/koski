@@ -6,8 +6,18 @@ import org.json4s.JValue
 
 case class PerustiedotSyncScheduler(app: KoskiApplication) extends Timing {
   def scheduler: Option[Scheduler] =
-    if (app.config.getString("schedule.perustiedotSyncInterval") == "never") None
-    else Some(new Scheduler(app.masterDatabase.db, "perustiedot-sync", new IntervalSchedule(app.config.getDuration("schedule.perustiedotSyncInterval")), None, syncAndLogErrors, intervalMillis = 1000))
+    if (app.config.getString("schedule.perustiedotSyncInterval") == "never") {
+      None
+    } else {
+      Some(new Scheduler(
+        app.masterDatabase.db,
+        "perustiedot-sync",
+        new IntervalSchedule(app.config.getDuration("schedule.perustiedotSyncInterval")),
+        None,
+        syncAndLogErrors,
+        intervalMillis = 1000)
+      )
+    }
 
   def syncAndLogErrors(ignore: Option[JValue]): Option[JValue] = timed("perustiedotSync") {
     try {
@@ -25,7 +35,7 @@ case class PerustiedotSyncScheduler(app: KoskiApplication) extends Timing {
     if (rows.nonEmpty) {
       logger.debug(s"Syncing ${rows.length} rows")
       rows.groupBy(_.upsert) foreach { case (upsert, rows) =>
-        app.perustiedotIndexer.updateBulkRaw(rows.map(_.data), upsert)
+        app.perustiedotIndexer.updatePerustiedotRaw(rows.map(_.data), upsert)
       }
       app.perustiedotSyncRepository.delete(rows.map(_.id))
       logger.debug(s"Done syncing ${rows.length} rows")

@@ -1,9 +1,10 @@
 package fi.oph.koski.perustiedot
 
+import fi.oph.koski.elasticsearch.ElasticSearchIndex
 import fi.oph.koski.json.JsonSerializer.extract
 import org.json4s.JsonAST.JValue
 
-case class OpiskeluoikeudenPerustiedotStatistics(index: KoskiElasticSearchIndex) {
+case class OpiskeluoikeudenPerustiedotStatistics(index: ElasticSearchIndex) {
   def statistics: OpiskeluoikeusTilasto = {
     rawStatistics.map { case (oppilaitosTotal, stats) =>
       OpiskeluoikeusTilasto(
@@ -24,7 +25,7 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: KoskiElasticSearchIndex)
   import org.json4s.jackson.JsonMethods.parse
 
   def henkilöCount: Option[Int] = {
-    val result = index.runSearch("perustiedot",
+    val result = index.runSearch(
       parse(
         """
           |{
@@ -45,7 +46,7 @@ case class OpiskeluoikeudenPerustiedotStatistics(index: KoskiElasticSearchIndex)
   }
 
   private def rawStatistics: Option[(Int, OpiskeluoikeudetTyypeittäin)] = {
-    val result = index.runSearch("perustiedot",
+    val result = index.runSearch(
       parse(
         """
           |{

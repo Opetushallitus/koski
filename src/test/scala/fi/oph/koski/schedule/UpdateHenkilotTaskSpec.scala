@@ -48,7 +48,7 @@ class UpdateHenkilotTaskSpec extends FreeSpec with Matchers with BeforeAndAfterE
   private def modify(tiedot: OppijaHenkilöWithMasterInfo): Unit = {
     henkilöFacade.modifyMock(tiedot)
     new UpdateHenkilotTask(application).updateHenkilöt(Some(parseJson(s"""{"lastRun": ${currentTimeMillis}}""")))
-    application.elasticSearch.refreshIndex
+    application.perustiedotIndexer.refreshIndex
   }
 
   override def afterEach(): Unit = henkilöFacade.resetMock()

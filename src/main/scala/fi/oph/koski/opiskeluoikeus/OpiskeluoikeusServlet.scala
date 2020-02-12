@@ -34,14 +34,14 @@ class OpiskeluoikeusServlet(implicit val application: KoskiApplication) extends 
         application.oppijaFacade.invalidatePäätasonSuoritus(getStringParam("oid"), _, getIntegerParam("versionumero"))
       )
 
-      result.foreach(_ => application.elasticSearch.refreshIndex)
+      application.perustiedotIndexer.refreshIndex
       renderEither[HenkilönOpiskeluoikeusVersiot](result)
     }(parseErrorHandler = haltWithStatus)
   }
 
   delete("/:oid") {
     val result = application.oppijaFacade.invalidateOpiskeluoikeus(getStringParam("oid"))
-    result.foreach(_ => application.elasticSearch.refreshIndex)
+    application.perustiedotIndexer.refreshIndex
     renderEither[HenkilönOpiskeluoikeusVersiot](result)
   }
 }

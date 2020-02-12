@@ -2,7 +2,7 @@ package fi.oph.koski.perustiedot
 
 import java.time.LocalDate
 
-import fi.oph.koski.elasticsearch.ElasticSearch
+import fi.oph.koski.elasticsearch.{ElasticSearch, ElasticSearchIndex}
 import fi.oph.koski.elasticsearch.ElasticSearch.anyFilter
 import fi.oph.koski.henkilo.TestingException
 import fi.oph.koski.http.Http._
@@ -21,7 +21,7 @@ import fi.oph.koski.util._
 import org.json4s.JValue
 import org.json4s.JsonAST.{JObject, JString}
 
-class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opiskeluoikeusQueryService: OpiskeluoikeusQueryService) extends Logging {
+class OpiskeluoikeudenPerustiedotRepository(index: ElasticSearchIndex, opiskeluoikeusQueryService: OpiskeluoikeusQueryService) extends Logging {
 
   def find(filters: List[OpiskeluoikeusQueryFilter], sorting: SortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): OpiskeluoikeudenPerustiedotResponse = {
     if (filters.find(_.isInstanceOf[SuoritusJsonHaku]).isDefined) {
@@ -58,7 +58,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
     val suoritusFilters = filters.flatMap {
       case SuorituksenTyyppi(tyyppi) => List(Map("term" -> Map("suoritukset.tyyppi.koodiarvo" -> tyyppi.koodiarvo)))
       case Tutkintohaku(hakusana) =>
-        analyzeString(hakusana).map { namePrefix =>
+        index.analyze(hakusana).map { namePrefix =>
           anyFilter(List(
             Map("prefix" -> Map(s"suoritukset.koulutusmoduuli.tunniste.nimi.${session.lang}" -> namePrefix)),
             Map("prefix" -> Map(s"suoritukset.osaamisala.nimi.${session.lang}" -> namePrefix)),
@@ -124,7 +124,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
       "sort" -> elasticSort)
     ))
 
-    index.runSearch("perustiedot", doc)
+    index.runSearch(doc)
       .map{ response =>
         OpiskeluoikeudenPerustiedotResponse(
           Some(extract[Int](response \ "hits" \ "total")),
@@ -147,7 +147,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
 
   def findHenkiloPerustiedotByOids(oids: List[String]): List[OpiskeluoikeudenPerustiedot] = {
     val doc = toJValue(Map("query" -> Map("terms" -> Map("henkilöOid" -> oids)), "from" -> 0, "size" -> 10000))
-    index.runSearch("perustiedot", doc)
+    index.runSearch(doc)
       .map(response => extract[List[JValue]](response \ "hits" \ "hits").map(j => extract[OpiskeluoikeudenPerustiedot](j \ "_source", ignoreExtras = true)))
       .getOrElse(Nil)
   }
@@ -159,7 +159,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
   private def findSingleByHenkilöOid(oid: String): Option[JValue] = {
     val doc = toJValue(Map("query" -> Map("term" -> Map("henkilöOid" -> oid))))
 
-    index.runSearch("perustiedot", doc)
+    index.runSearch(doc)
       .flatMap(response => extract[List[JValue]](response \ "hits" \ "hits").map(j => j \ "_source").headOption)
   }
 
@@ -179,7 +179,7 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
       "aggregations" -> Map("oids" -> Map("terms" -> Map("field" -> "henkilö.oid.keyword")))
     ))
 
-    index.runSearch("perustiedot", doc)
+    index.runSearch(doc)
       .map(response => extract[List[JValue]](response \ "aggregations" \ "oids" \ "buckets").map(j => extract[Oid](j \ "key")))
       .getOrElse(Nil)
   }
@@ -215,18 +215,12 @@ class OpiskeluoikeudenPerustiedotRepository(index: KoskiElasticSearchIndex, opis
     ))))))
 
   private def nameFilter(hakusana: String) =
-    analyzeString(hakusana).map { namePrefix =>
+    index.analyze(hakusana).map { namePrefix =>
       anyFilter(List(
         Map("prefix" -> Map("henkilö.sukunimi" -> namePrefix)),
         Map("prefix" -> Map("henkilö.etunimet" -> namePrefix))
       ))
     }
-
-  private def analyzeString(string: String): List[String] = {
-    val document: JValue = Http.runTask(index.http.post(uri"/koski/_analyze", JObject("analyzer" -> JString("default"), "text" -> JString(string)))(Json4sHttp4s.json4sEncoderOf[JObject])(Http.parseJson[JValue]))
-    val tokens: List[JValue] = extract[List[JValue]](document \ "tokens")
-    tokens.map(token => extract[String](token \ "token"))
-  }
 }
 
 private object OpiskeluoikeudenPerustiedotRepository
