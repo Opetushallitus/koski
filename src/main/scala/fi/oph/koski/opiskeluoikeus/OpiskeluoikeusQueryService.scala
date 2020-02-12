@@ -6,25 +6,25 @@ import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.jsonMethods.{parse => parseJson}
 import fi.oph.koski.db.Tables.{HenkilöTable, OpiskeluoikeusTable, _}
-import fi.oph.koski.db.{Tables, _}
+import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow, Tables, _}
 import fi.oph.koski.henkilo.KoskiHenkilöCache
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{SuoritusJsonHaku, _}
-import fi.oph.koski.schema.KoskiOpiskeluoikeusjakso
 import fi.oph.koski.servlet.InvalidRequestException
-import fi.oph.koski.util.QueryPagination.applyPagination
 import fi.oph.koski.util.SortOrder.{Ascending, Descending}
-import fi.oph.koski.util.{PaginationSettings, SortOrder}
+import fi.oph.koski.util.{PaginationSettings, QueryPagination, SortOrder}
+import rx.Observable.{create => createObservable}
 import rx.Observer
 import rx.functions.{Func0, Func2}
 import rx.lang.scala.Observable
-import rx.Observable.{create => createObservable}
 import rx.observables.SyncOnSubscribe.createStateful
 
 class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext with KoskiDatabaseMethods {
+  private val defaultPagination = QueryPagination(0)
+
   def oppijaOidsQuery(pagination: Option[PaginationSettings])(implicit user: KoskiSession): Observable[String] = {
-    streamingQuery(applyPagination(OpiskeluOikeudetWithAccessCheck.map(_.oppijaOid), pagination))
+    streamingQuery(defaultPagination.applyPagination(OpiskeluOikeudetWithAccessCheck.map(_.oppijaOid), pagination))
   }
 
   def muuttuneetOpiskeluoikeudetWithoutAccessCheck(after: Timestamp, afterId: Int, limit: Int): Seq[MuuttunutOpiskeluoikeusRow] = {
@@ -43,22 +43,29 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
     runDbSync(sql"select current_timestamp".as[Timestamp])(0)
   }
 
-  def opiskeluoikeusQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[SortOrder], pagination: Option[PaginationSettings])(implicit user: KoskiSession): Observable[(OpiskeluoikeusRow, HenkilöRow, Option[HenkilöRow])] = {
-    streamingQuery(mkQuery(filters, sorting, pagination))
+  def opiskeluoikeusQuery(
+    filters: List[OpiskeluoikeusQueryFilter],
+    sorting: Option[SortOrder],
+    paginationSettings: Option[PaginationSettings],
+    queryPagination: QueryPagination = defaultPagination
+  )(implicit user: KoskiSession): Observable[(OpiskeluoikeusRow, HenkilöRow, Option[HenkilöRow])] = {
+    val query = mkQuery(filters, sorting)
+    val paginatedQuery = queryPagination.applyPagination(query, paginationSettings)
+    streamingQuery(paginatedQuery)
   }
 
   def kaikkiOpiskeluoikeudetSivuittain(pagination: PaginationSettings)(implicit user: KoskiSession): Seq[OpiskeluoikeusRow] = {
     if (!user.hasGlobalReadAccess) throw new RuntimeException("Query does not make sense without global read access")
     // this approach to pagination ("limit 500 offset 176500") is not perfect (the query gets slower as offset
     // increases), but seems tolerable here (with join to henkilot, as in mkQuery below, it's much slower)
-    runDbSync(applyPagination(OpiskeluOikeudetWithAccessCheck.sortBy(_.id), pagination).result)
+    runDbSync(defaultPagination.applyPagination(OpiskeluOikeudetWithAccessCheck.sortBy(_.id), pagination).result)
   }
 
   def mapKaikkiOpiskeluoikeudetSivuittain[A](pageSize: Int, user: KoskiSession)(f: Seq[OpiskeluoikeusRow] => Seq[A]): Observable[A] = {
     processByPage[OpiskeluoikeusRow, A](page => kaikkiOpiskeluoikeudetSivuittain(PaginationSettings(page, pageSize))(user), f)
   }
 
-  private def mkQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[SortOrder], pagination: Option[PaginationSettings])(implicit user: KoskiSession) = {
+  private def mkQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[SortOrder])(implicit user: KoskiSession) = {
     val baseQuery = OpiskeluOikeudetWithAccessCheck
       .join(Tables.Henkilöt).on(_.oppijaOid === _.oid)
       .joinLeft(Tables.Henkilöt).on(_._2.masterOid === _.oid)
@@ -97,7 +104,7 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
     def nimi(tuple: (OpiskeluoikeusTable, HenkilöTable, Rep[Option[HenkilöTable]])) = (tuple._2.sukunimi.toLowerCase, tuple._2.etunimet.toLowerCase)
     def nimiDesc(tuple: (OpiskeluoikeusTable, HenkilöTable, Rep[Option[HenkilöTable]])) = (tuple._2.sukunimi.toLowerCase.desc, tuple._2.etunimet.toLowerCase.desc)
 
-    val sorted = sorting match {
+    sorting match {
       case None => query
       case Some(Ascending("id")) => query.sortBy(_._1.id)
       case Some(Ascending("oppijaOid")) => query.sortBy { case (oo, henkilö, masterHenkilö) => (masterHenkilö.map(_.oid).getOrElse(henkilö.oid), oo.id) } // slaves and master need to be adjacent for later grouping to work
@@ -109,8 +116,6 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
       case Some(Descending("luokka")) => query.sortBy(tuple => (luokka(tuple).desc, nimiDesc(tuple)))
       case s => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("Epäkelpo järjestyskriteeri: " + s))
     }
-
-    applyPagination(sorted, pagination)
   }
 
   private def processByPage[A, B](loadRows: Int => Seq[A], processRows: Seq[A] => Seq[B]): Observable[B] = {

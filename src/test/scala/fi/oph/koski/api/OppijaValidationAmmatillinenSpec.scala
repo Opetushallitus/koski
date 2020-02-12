@@ -636,12 +636,12 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       "Opintojen rahoitus" - {
         "lasna -tilalta vaaditaan opintojen rahoitus" in {
           putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä))))) {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.opintojenRahoitusPuuttuu("Opiskeluoikeuden tilalta lasna puuttuu opintojen rahoitus"))
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto("Opiskeluoikeuden tilalta lasna puuttuu rahoitusmuoto"))
           }
         }
         "loma -tilalta vaaditaan opintojen rahoitus" in {
           putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLoma))))) {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.opintojenRahoitusPuuttuu("Opiskeluoikeuden tilalta loma puuttuu opintojen rahoitus"))
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto("Opiskeluoikeuden tilalta loma puuttuu rahoitusmuoto"))
           }
         }
         "valmistunut -tilalta vaaditaan opintojen rahoitus" in {
@@ -650,7 +650,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
             AmmatillinenOpiskeluoikeusjakso(date(2016, 1, 1), opiskeluoikeusValmistunut)
           ))
           putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = tila, suoritukset = List(AmmattitutkintoExample.näyttötutkintoonValmistavanKoulutuksenSuoritus))) {
-            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.opintojenRahoitusPuuttuu("Opiskeluoikeuden tilalta valmistunut puuttuu opintojen rahoitus"))
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto("Opiskeluoikeuden tilalta valmistunut puuttuu rahoitusmuoto"))
           }
         }
       }

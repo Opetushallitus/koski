@@ -244,7 +244,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     }
 
     def validate(jakso: Opiskeluoikeusjakso) =
-      HttpStatus.validate(valid(jakso))(KoskiErrorCategory.badRequest.validation.tila.opintojenRahoitusPuuttuu(s"Opiskeluoikeuden tilalta ${jakso.tila.koodiarvo} puuttuu opintojen rahoitus"))
+      HttpStatus.validate(valid(jakso))(KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto(s"Opiskeluoikeuden tilalta ${jakso.tila.koodiarvo} puuttuu rahoitusmuoto"))
 
     HttpStatus.fold(opiskeluoikeus.tila.opiskeluoikeusjaksot.map(validate))
   }

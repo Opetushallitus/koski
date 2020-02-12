@@ -5,12 +5,16 @@ import java.time.format.DateTimeFormatter.ISO_INSTANT
 import java.time.{LocalDate, ZonedDateTime}
 
 import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethodsAmmatillinen}
-import fi.oph.koski.documentation.{ExamplesLukio, LukioExampleData, ExampleData}
-import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.documentation.{ExampleData, ExamplesLukio, LukioExampleData}
+import fi.oph.koski.henkilo.MockOppijat.defaultOppijat
+import fi.oph.koski.henkilo.{MockOppijat, OppijaHenkilö}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.koskiuser.MockUsers.paakayttaja
 import fi.oph.koski.koskiuser.{KäyttöoikeusViranomainen, MockUsers, Palvelurooli}
 import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
+import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import org.scalatest.{FreeSpec, Matchers}
 
@@ -64,13 +68,31 @@ class TilastokeskusSpec extends FreeSpec with LocalJettyHttpSpecification with O
     }
 
     "Sivuttaa" in {
-      resetFixtures
-      var results = performQuery("?v=1&pageNumber=0&pageSize=5")
-      results.length should equal(5)
-      results.head.henkilö.oid should equal(MockOppijat.defaultOppijat.minBy(_.henkilö.oid).henkilö.oid)
-      results = performQuery("?v=1&pageNumber=1&pageSize=1")
-      results.length should equal(1)
-      results.head.henkilö.oid should equal(MockOppijat.defaultOppijat.sortBy(_.henkilö.oid).drop(1).head.henkilö.oid)
+      val masterHenkilöt = defaultOppijat.filterNot(_.master.isDefined).map(_.henkilö).sortBy(_.oid)
+      val koskeenTallennetutOppijat: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = masterHenkilöt.flatMap { h =>
+        tryOppija(h.oid, paakayttaja) match {
+          case Right(oppija) => oppija.opiskeluoikeudet.collect {
+            case o: KoskeenTallennettavaOpiskeluoikeus => (h, o)
+          }
+          case _ => Nil
+        }
+      }
+
+      val total = koskeenTallennetutOppijat.length
+      (3 to total by 9).foreach { pageSize =>
+        var previousPage: List[(Oid, String, List[Oid], Seq[String])] = Nil
+        0 to (total / pageSize) foreach { pageNumber =>
+          val page: List[(Oid, String, List[Oid], Seq[String])] = performQuery(s"?v=1&pageNumber=$pageNumber&pageSize=$pageSize")
+            .map(h => (h.henkilö.oid, h.henkilö.etunimet, h.henkilö.linkitetytOidit, h.opiskeluoikeudet.map(_.oid.get)))
+
+          page.foreach { oppija =>
+            previousPage should not contain oppija
+          }
+
+          page should equal(expectedPage(koskeenTallennetutOppijat, pageSize, pageNumber))
+          previousPage = page
+        }
+      }
     }
 
     "Kyselyparametrit" - {
@@ -123,6 +145,27 @@ class TilastokeskusSpec extends FreeSpec with LocalJettyHttpSpecification with O
         val oppijat = performQuery(s"?v=1&muuttunutJälkeen=${now.format(ISO_INSTANT)}")
         oppijat.length should equal(1)
         oppijat.head.henkilö.oid should equal(MockOppijat.eero.oid)
+      }
+    }
+  }
+
+  private val linkitettyOid: Map[Oid, Oid] = (for {
+    oppija <- defaultOppijat
+    masterOid <- oppija.master.map(_.oid)
+  } yield masterOid -> oppija.henkilö.oid).toMap
+
+  private def expectedPage(oppijat: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)], pageSize: Int, pageNumber: Int) = {
+    var opiskeluoikeuksiaSoFar = 0
+    oppijat.slice(pageNumber * pageSize, pageNumber * pageSize + pageSize + OpiskeluoikeusQueryContext.pagination.bufferSize)
+      .groupBy(_._1).toList.sortBy(_._1.oid)
+      .map { case (oppija, opiskeluoikeudet) =>
+        (oppija.oid, oppija.etunimet, linkitettyOid.get(oppija.oid).toList, opiskeluoikeudet.map(_._2.oid.get))
+      }.takeWhile { case (_, _, _, opiskeluoikeudet) =>
+      if (pageSize > opiskeluoikeuksiaSoFar) {
+        opiskeluoikeuksiaSoFar = opiskeluoikeuksiaSoFar + opiskeluoikeudet.length
+        true
+      } else {
+        false
       }
     }
   }

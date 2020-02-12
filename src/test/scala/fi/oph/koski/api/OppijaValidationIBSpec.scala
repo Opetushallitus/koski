@@ -83,7 +83,7 @@ class OppijaValidationIBSpec extends FreeSpec with LocalJettyHttpSpecification w
     "Opintojen rahoitus" - {
       "lasna -tilalta vaaditaan opintojen rahoitus" in {
         putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = LukionOpiskeluoikeudenTila(List(LukionOpiskeluoikeusjakso(longTimeAgo, opiskeluoikeusLäsnä))))) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.opintojenRahoitusPuuttuu("Opiskeluoikeuden tilalta lasna puuttuu opintojen rahoitus"))
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto("Opiskeluoikeuden tilalta lasna puuttuu rahoitusmuoto"))
         }
       }
       "valmistunut -tilalta vaaditaan opintojen rahoitus" in {
@@ -92,7 +92,7 @@ class OppijaValidationIBSpec extends FreeSpec with LocalJettyHttpSpecification w
           LukionOpiskeluoikeusjakso(date(2018, 1, 1), opiskeluoikeusValmistunut)
         ))
         putOpiskeluoikeus(defaultOpiskeluoikeus.copy(tila = tila)) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.opintojenRahoitusPuuttuu("Opiskeluoikeuden tilalta valmistunut puuttuu opintojen rahoitus"))
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.tilaltaPuuttuuRahoitusmuoto("Opiskeluoikeuden tilalta valmistunut puuttuu rahoitusmuoto"))
         }
       }
     }

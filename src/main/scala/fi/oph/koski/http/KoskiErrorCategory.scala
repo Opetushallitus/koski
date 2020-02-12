@@ -50,7 +50,7 @@ object KoskiErrorCategory {
         val tuntematon = subcategory("tuntematon", "Tuntematon organisaatio: oid-tunnisteella ei löytynyt organisaatiota.")
         val eiOppilaitos = subcategory("eiOppilaitos", "Toimipisteenä käytetylle organisaatiolle ei löydy oppilaitos-tyyppistä yliorganisaatiota.")
         val vääräKoulutustoimija = subcategory("vääräKoulutustoimija", "Koulutustoimija ei vastaa organisaatiopalvelun mukaista tietoa")
-        val järjestämismuoto = subcategory("järjestämismuoto", "Opiskeluoikeutta ei voi tallentaa omaan organisaatioon jos järjestämismuoto on syötetty")
+        val järjestämismuoto = subcategory("järjestämismuoto", "Opiskeluoikeutta ei voi tallentaa oman organisaation toimipaikkaan jos järjestämismuotona ostopalvelu tai palveluseteli")
         val koulutustoimijaPakollinen = subcategory("koulutustoimijaPakollinen", "Koulutustoimijaa ei voi yksiselitteisesti päätellä.")
         val oppilaitosPuuttuu = subcategory("oppilaitosPuuttuu", "Oppilaitos puuttuu")
       }
@@ -123,7 +123,7 @@ object KoskiErrorCategory {
         val montaPäättävääTilaa = subcategory("montaPäättäväätilaa", "Opiskeluoikeudella voi olla vain yksi opiskeluoikeuden päättävä tila")
         val alkamispäiväPuuttuu = subcategory("alkamispäiväPuuttuu", "Suoritukselle ei ole merkitty alkamispäivää")
         val valmiiksiMerkityltäPuuttuuOsasuorituksia = subcategory("valmiiksiMerkitylläEiOsasuorituksia", "Valmiiksi merkityllä päätason suorituksella ei voi olla tyhjä osasuorituslista tai opiskeluoikeuden pitää olla linkitetty")
-        val opintojenRahoitusPuuttuu = subcategory("tiltaPuuttuuOpintojenRahoitus", "Opiskeluoikeuden tilalta vaaditaan opintojen rahoitus")
+        val tilaltaPuuttuuRahoitusmuoto = subcategory("tilaltaPuuttuuRahoitusmuoto", "Opiskeluoikeuden tilalta vaaditaan rahoitusmuoto")
       }
       val tila = new Tila
 
