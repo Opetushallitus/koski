@@ -13,6 +13,10 @@
 - International school opiskeluoikeuden opiskeluoikeusjaksoilta vaaditaan rahoitusmuoto (kenttä opintojenRahoitus), jos tila on **lasna**, **valmistunut**
 - Aikusten perusopetuksen opiskeluoikeuden opiskeluoikeusjaksoilta vaaditaan rahoitusmuoto (kenttä opintojenRahoitus), jos tila on **lasna**, **valmistunut**
 
+# 30.1.2020
+- Estetään käytöstä poistettujen lukiokoulutuksen erityisen koulutustehtävän koodiarvojen tallennus
+  - Käytöstä poistetut koodiarvot: ib, kielijakansainvalisyys, matematiikka-luonnontiede-ymparisto-tekniikka, steiner, taide, urheilu, muu
+
 ## 28.1.2020
 - Osittainen ammattitutkinto voidaan merkitä valmiiksi silloinkin kun suorituksissa on pelkkiä yleisiä aineita.
 
