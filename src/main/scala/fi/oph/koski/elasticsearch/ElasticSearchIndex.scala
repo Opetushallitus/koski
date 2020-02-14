@@ -21,7 +21,7 @@ class ElasticSearchIndex(
   val mapping: JValue,
   val settings: JValue
 ) extends Logging with BackgroundExecutionContext {
-  def http: Http = elastic.http
+  protected def http: Http = elastic.http
 
   lazy val init: Future[Any] = {
     val indexChanged = if (indexExists) {
