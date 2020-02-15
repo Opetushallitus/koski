@@ -2,29 +2,42 @@ package fi.oph.koski.opiskeluoikeus
 
 import java.sql.{Date, Timestamp}
 
-import fi.oph.koski.db.KoskiDatabase._
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
-import fi.oph.koski.db.PostgresDriverWithJsonSupport.jsonMethods.{parse => parseJson}
-import fi.oph.koski.db.Tables.{HenkilöTable, OpiskeluoikeusTable, _}
-import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow, Tables, _}
-import fi.oph.koski.henkilo.KoskiHenkilöCache
+import fi.oph.koski.db.Tables._
+import fi.oph.koski.db._
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.KoskiSession
-import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{SuoritusJsonHaku, _}
+import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter._
+import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
+import fi.oph.koski.schema.Henkilö.Oid
+import fi.oph.koski.schema.KoskeenTallennettavaOpiskeluoikeus
 import fi.oph.koski.servlet.InvalidRequestException
-import fi.oph.koski.util.SortOrder.{Ascending, Descending}
-import fi.oph.koski.util.{PaginationSettings, QueryPagination, SortOrder}
+import fi.oph.koski.util.PaginationSettings
+import fi.oph.koski.util.QueryPagination.applyPagination
+import org.json4s.JValue
 import rx.Observable.{create => createObservable}
 import rx.Observer
 import rx.functions.{Func0, Func2}
 import rx.lang.scala.Observable
 import rx.observables.SyncOnSubscribe.createStateful
+import slick.jdbc.{GetResult, PositionedParameters, SQLActionBuilder}
 
 class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext with KoskiDatabaseMethods {
-  private val defaultPagination = QueryPagination(0)
+  import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+  implicit private val getResult = GetResult(r =>
+    QueryOppija(
+      henkilö = QueryOppijaHenkilö(
+        oid = r.nextString,
+        sukunimi = r.nextString,
+        etunimet = r.nextString,
+        linkitetytOidit = r.nextArray.toList
+      ),
+      opiskeluoikeudet = parseOpiskeluoikeudet(r.nextJson)
+    )
+  )
 
   def oppijaOidsQuery(pagination: Option[PaginationSettings])(implicit user: KoskiSession): Observable[String] = {
-    streamingQuery(defaultPagination.applyPagination(OpiskeluOikeudetWithAccessCheck.map(_.oppijaOid), pagination))
+    streamQuery(applyPagination(OpiskeluOikeudetWithAccessCheck.map(_.oppijaOid), pagination))
   }
 
   def muuttuneetOpiskeluoikeudetWithoutAccessCheck(after: Timestamp, afterId: Int, limit: Int): Seq[MuuttunutOpiskeluoikeusRow] = {
@@ -43,80 +56,125 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
     runDbSync(sql"select current_timestamp".as[Timestamp])(0)
   }
 
-  def opiskeluoikeusQuery(
-    filters: List[OpiskeluoikeusQueryFilter],
-    sorting: Option[SortOrder],
-    paginationSettings: Option[PaginationSettings],
-    queryPagination: QueryPagination = defaultPagination
-  )(implicit user: KoskiSession): Observable[(OpiskeluoikeusRow, HenkilöRow, Option[HenkilöRow])] = {
-    val query = mkQuery(filters, sorting)
-    val paginatedQuery = queryPagination.applyPagination(query, paginationSettings)
-    streamingQuery(paginatedQuery)
-  }
-
-  def kaikkiOpiskeluoikeudetSivuittain(pagination: PaginationSettings)(implicit user: KoskiSession): Seq[OpiskeluoikeusRow] = {
-    if (!user.hasGlobalReadAccess) throw new RuntimeException("Query does not make sense without global read access")
-    // this approach to pagination ("limit 500 offset 176500") is not perfect (the query gets slower as offset
-    // increases), but seems tolerable here (with join to henkilot, as in mkQuery below, it's much slower)
-    runDbSync(defaultPagination.applyPagination(OpiskeluOikeudetWithAccessCheck.sortBy(_.id), pagination).result)
+  def kaikkiOppijat(implicit u: KoskiSession): Observable[(OpiskeluoikeusRow, HenkilöRow, Option[HenkilöRow])] = {
+    val query = OpiskeluOikeudetWithAccessCheck
+      .join(Tables.Henkilöt).on(_.oppijaOid === _.oid)
+      .joinLeft(Tables.Henkilöt).on(_._2.masterOid === _.oid)
+      .map { case ((oo, h), m) => (oo, h, m) }
+    streamQuery(query)
   }
 
   def mapKaikkiOpiskeluoikeudetSivuittain[A](pageSize: Int, user: KoskiSession)(f: Seq[OpiskeluoikeusRow] => Seq[A]): Observable[A] = {
     processByPage[OpiskeluoikeusRow, A](page => kaikkiOpiskeluoikeudetSivuittain(PaginationSettings(page, pageSize))(user), f)
   }
 
-  private def mkQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[SortOrder])(implicit user: KoskiSession) = {
-    val baseQuery = OpiskeluOikeudetWithAccessCheck
-      .join(Tables.Henkilöt).on(_.oppijaOid === _.oid)
-      .joinLeft(Tables.Henkilöt).on(_._2.masterOid === _.oid)
-      .map(stuff => (stuff._1._1, stuff._1._2, stuff._2))
+  private def kaikkiOpiskeluoikeudetSivuittain(pagination: PaginationSettings)(implicit user: KoskiSession): Seq[OpiskeluoikeusRow] = {
+    if (!user.hasGlobalReadAccess) throw new RuntimeException("Query does not make sense without global read access")
+    // this approach to pagination ("limit 500 offset 176500") is not perfect (the query gets slower as offset
+    // increases), but seems tolerable here (with join to henkilot, as in mkQuery below, it's much slower)
+    runDbSync(applyPagination(OpiskeluOikeudetWithAccessCheck.sortBy(_.id), pagination).result)
+  }
 
-    val query = filters.foldLeft(baseQuery) {
-      case (query, OpiskeluoikeusPäättynytAikaisintaan(päivä)) => query.filter(_._1.päättymispäivä >= Date.valueOf(päivä))
-      case (query, OpiskeluoikeusPäättynytViimeistään(päivä)) => query.filter(_._1.päättymispäivä <= Date.valueOf(päivä))
-      case (query, OpiskeluoikeusAlkanutAikaisintaan(päivä)) => query.filter(_._1.alkamispäivä >= Date.valueOf(päivä))
-      case (query, OpiskeluoikeusAlkanutViimeistään(päivä)) => query.filter(_._1.alkamispäivä <= Date.valueOf(päivä))
-      case (query, OpiskeluoikeudenTyyppi(tyyppi)) => query.filter(_._1.koulutusmuoto === tyyppi.koodiarvo)
-      case (query, OneOfOpiskeluoikeudenTyypit(tyypit)) => query.filter(_._1.koulutusmuoto inSet tyypit.map(_.tyyppi.koodiarvo))
-      case (query, SuorituksenTyyppi(tyyppi)) => query.filter(_._1.data.+>("suoritukset").@>(parseJson(s"""[{"tyyppi":{"koodiarvo":"${tyyppi.koodiarvo}"}}]""")))
-      case (query, OpiskeluoikeudenTila(tila)) => query.filter(_._1.data.#>>(List("tila", "opiskeluoikeusjaksot", "-1", "tila", "koodiarvo")) === tila.koodiarvo)
-      case (query, OpiskeluoikeusQueryFilter.Toimipiste(toimipisteet)) =>
-        val matchers = toimipisteet.map { toimipiste =>
-          parseJson(s"""[{"toimipiste":{"oid": "${toimipiste.oid}"}}]""")
-        }
-        query.filter(_._1.data.+>("suoritukset").@>(matchers.bind.any))
-      case (query, Luokkahaku(hakusana)) =>
-        query.filter({ case t: (OpiskeluoikeusTable, HenkilöTable, _) => t._1.luokka ilike (hakusana + "%") })
-      case (query, Nimihaku(hakusana)) =>
-        query.filter { case (_, henkilö, _) =>
-          KoskiHenkilöCache.filterByQuery(hakusana)(henkilö)
-        }
-      case (query, IdHaku(ids)) => query.filter(_._1.id inSetBind ids)
-      case (query, OppijaOidHaku(oids)) => query.filter { case (_, hlö, _) => hlö.oid inSetBind oids }
-      case (query, SuoritusJsonHaku(json)) => query.filter(_._1.data.+>("suoritukset").@>(json))
-      case (query, MuuttunutEnnen(aikaleima)) => query.filter(_._1.aikaleima < Timestamp.from(aikaleima))
-      case (query, MuuttunutJälkeen(aikaleima)) => query.filter(_._1.aikaleima >= Timestamp.from(aikaleima))
-      case (query, filter) => throw new InvalidRequestException(KoskiErrorCategory.internalError("Hakua ei ole toteutettu: " + filter))
+  val defaultPageSize = 1000
+
+  def opiskeluoikeusQuery(
+    filters: List[OpiskeluoikeusQueryFilter],
+    paginationSettings: Option[PaginationSettings]
+  )(implicit u: KoskiSession): Observable[QueryOppija] = {
+    val pagination = paginationSettings.getOrElse(PaginationSettings(0, defaultPageSize))
+    streamAction(query(filters, pagination).as[QueryOppija])
+  }
+
+  private def query(filters: List[OpiskeluoikeusQueryFilter], pagination: PaginationSettings)(implicit u: KoskiSession) = {
+    concat(sql"""
+    SELECT h.oid, h.sukunimi, h.etunimet, s.linkitetytOidit, oo.opiskeluoikeudet
+    FROM henkilo h
+    LEFT JOIN LATERAL (
+     SELECT array(
+       SELECT oid FROM henkilo slave WHERE slave.master_oid = h.oid
+     ) AS linkitetytOidit
+    ) s ON true
+    JOIN LATERAL (
+     SELECT to_jsonb(array(
+       SELECT json_build_object(
+         'oidVersionumeroAikaleima', row_to_json((SELECT a FROM (SELECT oo.oid, oo.aikaleima, oo.versionumero) a)) :: jsonb,
+         'data', oo.data
+       ) AS b
+       FROM opiskeluoikeus oo
+       WHERE (oo.oppija_oid = ANY (s.linkitetytOidit) OR oo.oppija_oid = h.oid)
+       AND NOT oo.mitatoity
+    """, queryFilters(filters),
+      sql"""
+      ORDER BY oo.oid
+     )) AS opiskeluoikeudet
+    ) oo ON true
+    WHERE h.master_oid IS NULL AND jsonb_array_length(oo.opiskeluoikeudet) > 0
+    ORDER BY lower(h.sukunimi), lower(h.etunimet)
+    LIMIT ${pagination.size} OFFSET ${pagination.page * pagination.size}
+    """)
+  }
+
+  private def queryFilters(filters: List[OpiskeluoikeusQueryFilter])(implicit u: KoskiSession) = filters.foldLeft(accessCheck) {
+    case (q, OpiskeluoikeusPäättynytAikaisintaan(päivä)) =>
+      concat(q, sql" AND oo.paattymispaiva >= ${Date.valueOf(päivä)}")
+    case (q, OpiskeluoikeusPäättynytViimeistään(päivä)) =>
+      concat(q, sql" AND oo.paattymispaiva <= ${Date.valueOf(päivä)}")
+    case (q, OpiskeluoikeusAlkanutAikaisintaan(päivä)) =>
+      concat(q, sql" AND oo.alkamispaiva >= ${Date.valueOf(päivä)}")
+    case (q, OpiskeluoikeusAlkanutViimeistään(päivä)) =>
+      concat(q, sql" AND oo.alkamispaiva <= ${Date.valueOf(päivä)}")
+    case (q, OpiskeluoikeudenTyyppi(tyyppi)) =>
+      concat(q, sql" AND oo.koulutusmuoto = ${tyyppi.koodiarvo}")
+    case (q, OneOfOpiskeluoikeudenTyypit(tyypit)) =>
+      concat(q, sql" AND oo.koulutusmuoto IN (#${mkString(tyypit.map(_.tyyppi.koodiarvo))})")
+    case (q, OpiskeluoikeudenTila(tila)) =>
+      concat(q, sql" AND oo.data -> 'tila' -> 'opiskeluoikeusjaksot' -> -1 -> 'tila' ->> 'koodiarvo' = ${tila.koodiarvo}")
+    case (q, OppijaOidHaku(oids)) =>
+      concat(q, sql" AND oo.oppija_oid IN (#${mkString(oids)})")
+    case (q, MuuttunutEnnen(aikaleima)) =>
+      concat(q, sql" AND oo.aikaleima < ${Timestamp.from(aikaleima)}")
+    case (q, MuuttunutJälkeen(aikaleima)) =>
+      concat(q, sql" AND oo.aikaleima >= ${Timestamp.from(aikaleima)}")
+    case (q, SuorituksenTyyppi(tyyppi)) =>
+      concat(q, sql""" AND (oo.data -> 'suoritukset') @> '[{"tyyppi":{"koodiarvo":"#${tyyppi.koodiarvo}"}}]'""")
+    case (q, filter) => throw new InvalidRequestException(KoskiErrorCategory.internalError("Hakua ei ole toteutettu: " + filter))
+  }
+
+  private def accessCheck(implicit u: KoskiSession) = {
+    val query = if (u.hasGlobalReadAccess || u.hasGlobalKoulutusmuotoReadAccess) {
+      sql""
+    } else {
+      val oppilaitosOidit = mkString(u.organisationOids(AccessType.read))
+      val varhaiskasvatusOikeudet = u.varhaiskasvatusKäyttöoikeudet.filter(_.organisaatioAccessType.contains(AccessType.read))
+      sql"""
+      AND (
+        oo.oppilaitos_oid IN (#$oppilaitosOidit) OR
+        oo.sisaltava_opiskeluoikeus_oppilaitos_oid IN (#$oppilaitosOidit) OR
+        (oo.oppilaitos_oid IN (#${mkString(varhaiskasvatusOikeudet.map(_.ulkopuolinenOrganisaatio.oid))}) AND oo.koulutustoimija_oid IN (#${mkString(varhaiskasvatusOikeudet.map(_.koulutustoimija.oid))}))
+      )
+      """
     }
 
-    def alkamispäivä(tuple: (OpiskeluoikeusTable, HenkilöTable, Rep[Option[HenkilöTable]])) = tuple._1.data.#>>(List("alkamispäivä"))
-    def luokka(tuple: (OpiskeluoikeusTable, HenkilöTable, Rep[Option[HenkilöTable]])) = tuple._1.luokka
-    def nimi(tuple: (OpiskeluoikeusTable, HenkilöTable, Rep[Option[HenkilöTable]])) = (tuple._2.sukunimi.toLowerCase, tuple._2.etunimet.toLowerCase)
-    def nimiDesc(tuple: (OpiskeluoikeusTable, HenkilöTable, Rep[Option[HenkilöTable]])) = (tuple._2.sukunimi.toLowerCase.desc, tuple._2.etunimet.toLowerCase.desc)
-
-    sorting match {
-      case None => query
-      case Some(Ascending("id")) => query.sortBy(_._1.id)
-      case Some(Ascending("oppijaOid")) => query.sortBy { case (oo, henkilö, masterHenkilö) => (masterHenkilö.map(_.oid).getOrElse(henkilö.oid), oo.id) } // slaves and master need to be adjacent for later grouping to work
-      case Some(Ascending("nimi")) => query.sortBy(nimi)
-      case Some(Descending("nimi")) => query.sortBy(nimiDesc)
-      case Some(Ascending("alkamispäivä")) => query.sortBy(tuple => (alkamispäivä(tuple), nimi(tuple)))
-      case Some(Descending("alkamispäivä")) => query.sortBy(tuple => (alkamispäivä(tuple).desc, nimiDesc(tuple)))
-      case Some(Ascending("luokka")) => query.sortBy(tuple => (luokka(tuple), nimi(tuple)))
-      case Some(Descending("luokka")) => query.sortBy(tuple => (luokka(tuple).desc, nimiDesc(tuple)))
-      case s => throw new InvalidRequestException(KoskiErrorCategory.badRequest.queryParam("Epäkelpo järjestyskriteeri: " + s))
+    if (u.hasKoulutusmuotoRestrictions) {
+      concat(query, sql" AND oo.koulutusmuoto IN (#${mkString(u.allowedOpiskeluoikeusTyypit)})")
+    } else {
+      query
     }
   }
+
+  private def concat(parts: SQLActionBuilder*) = SQLActionBuilder(
+    queryParts = parts.flatMap(_.queryParts),
+    unitPConv = (p: Unit, pp: PositionedParameters) => parts.foreach(_.unitPConv(p, pp))
+  )
+
+  private def parseOpiskeluoikeudet(json: JValue): List[KoskeenTallennettavaOpiskeluoikeus] = {
+    JsonSerializer.extract[List[QueryOpiskeluoikeus]](json)
+      .map { case QueryOpiskeluoikeus(OidVersionumeroAikaleima(oid, versionumero, aikaleima), data) =>
+        data.withOidAndVersion(Some(oid), Some(versionumero)).withAikaleima(Some(aikaleima.toLocalDateTime))
+      }
+  }
+
+  private def mkString(xs: Iterable[String]) = xs.mkString("'", "','", "'")
 
   private def processByPage[A, B](loadRows: Int => Seq[A], processRows: Seq[A] => Seq[B]): Observable[B] = {
     import rx.lang.scala.JavaConverters._
@@ -141,3 +199,7 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
 }
 
 case class MuuttunutOpiskeluoikeusRow(id: Int, aikaleima: Timestamp, oppijaOid: String)
+case class QueryOppija(henkilö: QueryOppijaHenkilö, opiskeluoikeudet: List[KoskeenTallennettavaOpiskeluoikeus])
+case class QueryOppijaHenkilö(oid: Oid, sukunimi: String, etunimet: String, linkitetytOidit: List[Oid])
+case class QueryOpiskeluoikeus(oidVersionumeroAikaleima: OidVersionumeroAikaleima, data: KoskeenTallennettavaOpiskeluoikeus)
+case class OidVersionumeroAikaleima(oid: String, versionumero: Int, aikaleima: Timestamp)

@@ -3,7 +3,6 @@ package fi.oph.koski.luovutuspalvelu
 import java.time.LocalDate
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.OpiskeluoikeusRow
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.{JsonSerializer, SensitiveDataAllowed}
@@ -14,8 +13,6 @@ import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}
 import org.json4s.JValue
 
-import scala.collection.immutable
-
 class TilastokeskusServlet(implicit val application: KoskiApplication) extends ApiServlet with ObservableSupport with NoCache with OpiskeluoikeusQueries with RequiresTilastokeskus {
 
   override protected val maxNumberOfItemsPerPage: Int = 1000
@@ -25,19 +22,22 @@ class TilastokeskusServlet(implicit val application: KoskiApplication) extends A
       haltWithStatus(KoskiErrorCategory.badRequest.queryParam("Tuntematon versio"))
     }
 
-    val serializer = TilastokeskusSensitiveDataFilter(koskiSession).rowSerializer
+    val serialize: TilastokeskusOppija => JValue = OperatingContextForStreaming(koskiSession).serialize _
+    val oppijaStream = queryOpiskeluoikeudet.map {
+      _.map { case (h, oos) => mkOppija(h, oos) }
+       .map(serialize)
+    }
 
-    val oppijat = performOpiskeluoikeudetQueryLaajoillaHenkilötiedoilla.map(observable => observable
-      .map(x => (laajatHenkilötiedotToTilastokeskusHenkilötiedot(x._1), x._2))
-      .map(serializer)
-    )
-
-    streamResponse(oppijat, koskiSession)
+    streamResponse(oppijaStream, koskiSession)
   }
 
-  private def laajatHenkilötiedotToTilastokeskusHenkilötiedot(laajat: LaajatOppijaHenkilöTiedot): TilastokeskusHenkilötiedot = {
-    val täydelliset: TäydellisetHenkilötiedot = application.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(laajat)
+  private def mkOppija(henkilö: LaajatOppijaHenkilöTiedot, opiskeluoikeudet: List[KoskeenTallennettavaOpiskeluoikeus]) = TilastokeskusOppija(
+    henkilö = mkTilastokeskusHenkilö(henkilö),
+    opiskeluoikeudet = opiskeluoikeudet
+  )
 
+  private def mkTilastokeskusHenkilö(laajat: LaajatOppijaHenkilöTiedot): TilastokeskusHenkilötiedot = {
+    val täydelliset: TäydellisetHenkilötiedot = application.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(laajat)
     TilastokeskusHenkilötiedot(
       oid = täydelliset.oid,
       hetu = täydelliset.hetu,
@@ -55,14 +55,10 @@ class TilastokeskusServlet(implicit val application: KoskiApplication) extends A
   }
 }
 
-case class TilastokeskusSensitiveDataFilter(user: SensitiveDataAllowed) {
-  private implicit val u = user
-  def rowSerializer: ((TilastokeskusHenkilötiedot, immutable.Seq[OpiskeluoikeusRow])) => JValue = {
-    def ser(tuple: (TilastokeskusHenkilötiedot, immutable.Seq[OpiskeluoikeusRow])) = {
-      JsonSerializer.serialize(TilastokeskusOppija(tuple._1, tuple._2.map(_.toOpiskeluoikeus)))
-    }
-    ser
-  }
+// To ensure that none of the  Scalatra threadlocals are used.
+case class OperatingContextForStreaming(user: SensitiveDataAllowed) {
+  private implicit val u: SensitiveDataAllowed = user
+  def serialize(oppija: TilastokeskusOppija): JValue = JsonSerializer.serialize(oppija)
 }
 
 case class TilastokeskusOppija(

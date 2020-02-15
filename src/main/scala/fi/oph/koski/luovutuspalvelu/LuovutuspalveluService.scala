@@ -7,7 +7,7 @@ import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, KoskiMessageField, KoskiOperation}
-import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryContext, OpiskeluoikeusQueryFilter}
+import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryContext, OpiskeluoikeusQueryFilter, QueryOppija}
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{OneOfOpiskeluoikeudenTyypit, OppijaOidHaku}
 import fi.oph.koski.schema._
 import org.json4s.JValue
@@ -36,8 +36,8 @@ class LuovutuspalveluService(application: KoskiApplication) {
     auditLogOpiskeluoikeusKatsominen(henkilot)
     val masterOids = henkilot.map(_.oid)
     val filters = List(OppijaOidHaku(masterOids ++ application.henkilöCache.resolveLinkedOids(masterOids)), opiskeluoikeusTyyppiQueryFilters(req.opiskeluoikeudenTyypit))
-    streamingQuery(filters).map { t =>
-      JsonSerializer.serializeWithUser(user)(buildResponse(oidToHenkilo(t._1.oid), t._2))
+    streamingQuery(filters).map { o =>
+      JsonSerializer.serializeWithUser(user)(buildResponse(oidToHenkilo(o.henkilö.oid), o.opiskeluoikeudet))
     }
   }
 
@@ -60,10 +60,8 @@ class LuovutuspalveluService(application: KoskiApplication) {
     }
   }
 
-  private def buildResponse(h: OppijaHenkilö, oo: List[OpiskeluoikeusRow]): LuovutuspalveluResponseV1 =
-    LuovutuspalveluResponseV1(
-      LuovutuspalveluHenkilöV1(h.oid, h.hetu, h.syntymäaika, h.turvakielto),
-      oo.map(_.toOpiskeluoikeus))
+  private def buildResponse(h: OppijaHenkilö, oos: List[Opiskeluoikeus]): LuovutuspalveluResponseV1 =
+    LuovutuspalveluResponseV1(LuovutuspalveluHenkilöV1(h.oid, h.hetu, h.syntymäaika, h.turvakielto), oos)
 
   private def toLuovutuspalveluHenkilöV1(henkilö: Henkilö): LuovutuspalveluHenkilöV1 = henkilö match {
     case th: TäydellisetHenkilötiedot => LuovutuspalveluHenkilöV1(th.oid, th.hetu, th.syntymäaika, th.turvakielto.getOrElse(false))

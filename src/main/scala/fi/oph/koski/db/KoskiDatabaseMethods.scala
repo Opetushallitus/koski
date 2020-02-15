@@ -5,11 +5,12 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.executors.Pools
 import fi.oph.koski.util.Futures
 import fi.oph.koski.util.ReactiveStreamsToRx.publisherToObservable
-import slick.dbio.{DBIOAction, NoStream}
+import rx.lang.scala.Observable
+import slick.dbio.{DBIOAction, Effect, NoStream}
 import slick.lifted.Query
+import slick.sql.SqlStreamingAction
 
-import scala.concurrent.duration._
-import scala.concurrent.duration.Duration
+import scala.concurrent.duration.{Duration, _}
 import scala.language.higherKinds
 
 trait KoskiDatabaseMethods {
@@ -22,8 +23,11 @@ trait KoskiDatabaseMethods {
     Futures.await(db.run(a), atMost = timeout)
   }
 
-  def streamingQuery[E, U, C[_]](query: Query[E, U, C]) = {
-    // Note: it won't actually stream unless you use both `transactionally` and `fetchSize`. It'll collect all the data into memory.
-    publisherToObservable(db.stream(query.result.transactionally.withStatementParameters(fetchSize = 1000))).publish.refCount
+  def streamQuery[E, U, C[_]](query: Query[E, U, C]): Observable[U] = {
+    streamAction(query.result)
+  }
+
+  def streamAction[E, U, C[_]](result: SqlStreamingAction[C[U], U, Effect.Read]): Observable[U] = {
+    publisherToObservable(db.stream(result.transactionally.withStatementParameters(fetchSize = 1000))).publish.refCount
   }
 }

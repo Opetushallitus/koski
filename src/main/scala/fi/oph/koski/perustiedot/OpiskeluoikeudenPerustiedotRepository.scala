@@ -22,17 +22,8 @@ import org.json4s.JValue
 import org.json4s.JsonAST.{JObject, JString}
 
 class OpiskeluoikeudenPerustiedotRepository(index: ElasticSearchIndex, opiskeluoikeusQueryService: OpiskeluoikeusQueryService) extends Logging {
-
   def find(filters: List[OpiskeluoikeusQueryFilter], sorting: SortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): OpiskeluoikeudenPerustiedotResponse = {
-    if (filters.find(_.isInstanceOf[SuoritusJsonHaku]).isDefined) {
-      // JSON queries go to PostgreSQL
-      OpiskeluoikeudenPerustiedotResponse(None, opiskeluoikeusQueryService.opiskeluoikeusQuery(filters, Some(sorting), Some(pagination)).toList.toBlocking.last.map {
-        case (opiskeluoikeusRow, henkilöRow, masterHenkilöRow) => OpiskeluoikeudenPerustiedot.makePerustiedot(opiskeluoikeusRow, henkilöRow, masterHenkilöRow)
-      })
-    } else {
-      // Other queries got to ElasticSearch
-      findFromIndex(filters, sorting, pagination)
-    }
+    findFromIndex(filters, sorting, pagination)
   }
 
   private def findFromIndex(filters: List[OpiskeluoikeusQueryFilter], sorting: SortOrder, pagination: PaginationSettings)(implicit session: KoskiSession): OpiskeluoikeudenPerustiedotResponse = {

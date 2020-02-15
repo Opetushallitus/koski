@@ -138,7 +138,7 @@ class OpiskeluoikeudenPerustiedotIndexer(
     logger.info("Indexing all perustiedot documents")
     val bufferSize = 100
     val observable = opiskeluoikeusQueryService
-      .opiskeluoikeusQuery(Nil, None, None)(KoskiSession.systemUser)
+      .kaikkiOppijat(KoskiSession.systemUser)
       .tumblingBuffer(bufferSize)
       .zipWithIndex
       .map {

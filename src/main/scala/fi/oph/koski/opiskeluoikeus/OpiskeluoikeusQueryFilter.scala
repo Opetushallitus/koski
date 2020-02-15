@@ -1,6 +1,6 @@
 package fi.oph.koski.opiskeluoikeus
-import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
 import java.time.format.DateTimeParseException
+import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
@@ -11,7 +11,7 @@ import fi.oph.koski.organisaatio.{OrganisaatioOid, OrganisaatioRepository}
 import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioWithOid}
 import org.json4s.JsonAST.JValue
 import org.json4s.jackson.JsonMethods
-import org.scalatra.{MultiParams, Params}
+import org.scalatra.MultiParams
 
 import scala.util.{Failure, Success, Try}
 
@@ -91,7 +91,6 @@ private object OpiskeluoikeusQueryFilterParser extends Logging {
       case (p, v +: _) if p == "muuttunutEnnen" => dateTimeParam((p, v)).right.map(MuuttunutEnnen)
       case (p, v +: _) if p == "muuttunutJälkeen" => dateTimeParam((p, v)).right.map(MuuttunutJälkeen)
       case (p, _) => Left(KoskiErrorCategory.badRequest.queryParam.unknown("Unsupported query parameter: " + p))
-      // IdHaku, OppijaOidHaku, OneOfOpiskeluoikeudenTyypit missing from here (intentionally)
     }.toList
 
     queryFilters.partition(_.isLeft) match {

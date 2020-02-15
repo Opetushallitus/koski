@@ -1,7 +1,7 @@
 package fi.oph.koski.opiskeluoikeus
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.{GlobalExecutionContext, HenkilöRow, OpiskeluoikeusRow}
+import fi.oph.koski.db.GlobalExecutionContext
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.{HasKoskiSession, KoskiSession}
@@ -9,9 +9,10 @@ import fi.oph.koski.log.KoskiMessageField._
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
 import fi.oph.koski.schema.Henkilö._
+import fi.oph.koski.schema.{KoskeenTallennettavaOpiskeluoikeus, Opiskeluoikeus}
 import fi.oph.koski.servlet.{ApiServlet, ObservableSupport}
 import fi.oph.koski.util.SortOrder.Ascending
-import fi.oph.koski.util.{Pagination, PaginationSettings, QueryPagination}
+import fi.oph.koski.util.{Pagination, PaginationSettings}
 import javax.servlet.http.HttpServletRequest
 import org.scalatra._
 import rx.lang.scala.Observable
@@ -19,8 +20,8 @@ import rx.lang.scala.Observable
 trait OpiskeluoikeusQueries extends ApiServlet with Logging with GlobalExecutionContext with ObservableSupport with ContentEncodingSupport with Pagination with HasKoskiSession {
   def application: KoskiApplication
 
-  def performOpiskeluoikeudetQueryLaajoillaHenkilötiedoilla: Either[HttpStatus, Observable[(LaajatOppijaHenkilöTiedot, List[OpiskeluoikeusRow])]] =
-    OpiskeluoikeusQueryContext(request)(koskiSession, application).queryLaajoillaHenkilöTiedoilla(multiParams, paginationSettings)
+  def queryOpiskeluoikeudet: Either[HttpStatus, Observable[(LaajatOppijaHenkilöTiedot, List[KoskeenTallennettavaOpiskeluoikeus])]] =
+    OpiskeluoikeusQueryContext(request)(koskiSession, application).queryOpiskeluoikeudet(multiParams, paginationSettings)
 }
 
 /**
@@ -28,14 +29,14 @@ trait OpiskeluoikeusQueries extends ApiServlet with Logging with GlobalExecution
   *  Scalatra threadlocals are used.
   */
 case class OpiskeluoikeusQueryContext(request: HttpServletRequest)(implicit koskiSession: KoskiSession, application: KoskiApplication) extends Logging {
-  def queryWithoutHenkilötiedotRaw(filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings], queryForAuditLog: String): Observable[(Oid, List[OpiskeluoikeusRow])] = {
+  def queryWithoutHenkilötiedotRaw(filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings], queryForAuditLog: String): Observable[(Oid, List[Opiskeluoikeus])] = {
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_HAKU, koskiSession, Map(hakuEhto -> queryForAuditLog)))
-    OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, filters, paginationSettings).map { case (oppijaHenkilö, opiskeluoikeudet) =>
-      (oppijaHenkilö.oid, opiskeluoikeudet)
+    OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, filters, paginationSettings).map { oppija =>
+      (oppija.henkilö.oid, oppija.opiskeluoikeudet)
     }
   }
 
-  def queryLaajoillaHenkilöTiedoilla(params: MultiParams, paginationSettings: Option[PaginationSettings]): Either[HttpStatus, Observable[(LaajatOppijaHenkilöTiedot, List[OpiskeluoikeusRow])]] = {
+  def queryOpiskeluoikeudet(params: MultiParams, paginationSettings: Option[PaginationSettings]): Either[HttpStatus, Observable[(LaajatOppijaHenkilöTiedot, List[KoskeenTallennettavaOpiskeluoikeus])]] = {
     logger(koskiSession).info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
 
     OpiskeluoikeusQueryFilter.parse(params)(application.koodistoViitePalvelu, application.organisaatioRepository, koskiSession).map { filters =>
@@ -44,68 +45,31 @@ case class OpiskeluoikeusQueryContext(request: HttpServletRequest)(implicit kosk
     }
   }
 
-  private def query(filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings]): Observable[(LaajatOppijaHenkilöTiedot, List[OpiskeluoikeusRow])] = {
-    val oikeudetPerOppijaOid: Observable[(QueryOppijaHenkilö, List[OpiskeluoikeusRow])] = OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, filters, paginationSettings)
+  private def query(filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings]): Observable[(LaajatOppijaHenkilöTiedot, List[KoskeenTallennettavaOpiskeluoikeus])] = {
+    val oikeudetPerOppijaOid: Observable[QueryOppija] = OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, filters, paginationSettings)
 
-    oikeudetPerOppijaOid.tumblingBuffer(10).flatMap { oppijatJaOidit: Seq[(QueryOppijaHenkilö, List[OpiskeluoikeusRow])] =>
-        val oids: List[String] = oppijatJaOidit.map(_._1.oid).toList
-        val henkilöt: Map[Oid, LaajatOppijaHenkilöTiedot] = application.opintopolkuHenkilöFacade.findMasterOppijat(oids)
+    oikeudetPerOppijaOid.tumblingBuffer(10).flatMap { ops =>
+      val henkilöt: Map[Oid, LaajatOppijaHenkilöTiedot] = application.opintopolkuHenkilöFacade.findMasterOppijat(ops.toList.map(_.henkilö.oid))
 
-        val oppijat: Iterable[(LaajatOppijaHenkilöTiedot, List[OpiskeluoikeusRow])] = oppijatJaOidit.flatMap { case (oppijaHenkilö, opiskeluOikeudet) =>
-          henkilöt.get(oppijaHenkilö.oid) match {
-            case Some(henkilö) =>
-              Some((henkilö.copy(linkitetytOidit = oppijaHenkilö.linkitetytOidit), opiskeluOikeudet))
-            case None =>
-              logger(koskiSession).warn("Oppijaa " + oppijaHenkilö.oid + " ei löydy henkilöpalvelusta")
-              None
-          }
+      val oppijat: List[(LaajatOppijaHenkilöTiedot, List[KoskeenTallennettavaOpiskeluoikeus])] = ops.toList.flatMap { oppija =>
+        henkilöt.get(oppija.henkilö.oid) match {
+          case Some(henkilö) =>
+            Some((henkilö.copy(linkitetytOidit = oppija.henkilö.linkitetytOidit), oppija.opiskeluoikeudet))
+          case None =>
+            logger(koskiSession).warn("Oppijaa " + oppija.henkilö.oid + " ei löydy henkilöpalvelusta")
+            None
         }
-        Observable.from(oppijat)
+      }
+      Observable.from(oppijat)
     }
   }
 }
 
 object OpiskeluoikeusQueryContext {
-  val pagination = QueryPagination(50)
   def queryForAuditLog(params: MultiParams) =
     params.toList.sortBy(_._1).map { case (p,values) => values.map(v => p + "=" + v).mkString("&") }.mkString("&")
 
-
-  def streamingQueryGroupedByOid(application: KoskiApplication, filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings])(implicit koskiSession: KoskiSession): Observable[(QueryOppijaHenkilö, List[(OpiskeluoikeusRow)])] = {
-    var streamedOpiskeluoikeusCount: Int = 0
-    def opiskeluoikeusCountWithinPageSize(row: (QueryOppijaHenkilö, List[OpiskeluoikeusRow])): Boolean = paginationSettings match {
-      case None => true
-      case Some(settings) if settings.size > streamedOpiskeluoikeusCount =>
-        streamedOpiskeluoikeusCount = streamedOpiskeluoikeusCount + row._2.length
-        true
-      case _ => false
-    }
-
-    val rows = application.opiskeluoikeusQueryRepository.opiskeluoikeusQuery(filters, Some(Ascending("oppijaOid")), paginationSettings, pagination)
-
-    val groupedByPerson: Observable[List[(OpiskeluoikeusRow, HenkilöRow, Option[HenkilöRow])]] = rows
-      .tumblingBuffer(rows.map(masterOid).distinctUntilChanged.drop(1))
-      .map(_.toList)
-
-    val stream = groupedByPerson.flatMap {
-      case oikeudet@(row :: _) =>
-        val oppijanOidit = oikeudet.flatMap { case (_, h, m) => h.oid :: m.map(_.oid).toList }.toSet
-        assert(oikeudet.map(_._1.oppijaOid).toSet.subsetOf(oppijanOidit), "Usean ja/tai väärien henkilöiden tietoja henkilöllä " + oppijanOidit + ": " + oikeudet.map(_._1.oppijaOid).toSet)
-        Observable.just((QueryOppijaHenkilö(masterOid(row), oppijanOidit), oikeudet.map(_._1)))
-      case _ =>
-        Observable.empty
-    }
-
-    stream.takeWhile(opiskeluoikeusCountWithinPageSize)
-  }
-
-  private def masterOid(row: (OpiskeluoikeusRow, HenkilöRow, Option[HenkilöRow])): String = {
-    val (_, henkilö, masterHenkilö) = row
-    masterHenkilö.map(_.oid).getOrElse(henkilö.oid)
+  def streamingQueryGroupedByOid(application: KoskiApplication, filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings])(implicit koskiSession: KoskiSession): Observable[QueryOppija] = {
+    application.opiskeluoikeusQueryRepository.opiskeluoikeusQuery(filters, paginationSettings)
   }
 }
-
-object QueryOppijaHenkilö {
-  def apply(masterOid: Oid, kaikkiOidit: Set[Oid]): QueryOppijaHenkilö = QueryOppijaHenkilö(masterOid, kaikkiOidit.filterNot(_ == masterOid).toList.sorted)
-}
-case class QueryOppijaHenkilö(oid: Oid, linkitetytOidit: List[Oid])

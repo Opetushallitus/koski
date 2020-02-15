@@ -12,7 +12,7 @@ import fi.oph.koski.schema._
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoError
-import fi.oph.koski.util.{Pagination, Timing, WithWarnings, XML}
+import fi.oph.koski.util.{Pagination, Timing, XML}
 import fi.oph.koski.virta.{VirtaHakuehtoHetu, VirtaHakuehtoKansallinenOppijanumero}
 import javax.servlet.http.HttpServletRequest
 import org.json4s.JsonAST.{JObject, JString}
@@ -53,11 +53,11 @@ class OppijaServlet(implicit val application: KoskiApplication) extends ApiServl
   }
 
   get("/") {
-    val serializer = SensitiveDataFilter(koskiSession).rowSerializer
+    val serialize = SensitiveDataFilter(koskiSession).serializeOppija _
 
-    val oppijat = performOpiskeluoikeudetQueryLaajoillaHenkilötiedoilla.map(observable => observable
+    val oppijat = queryOpiskeluoikeudet.map(observable => observable
       .map(x => (application.henkilöRepository.oppijaHenkilöToTäydellisetHenkilötiedot(x._1), x._2))
-      .map(serializer)
+      .map { case (henkilötiedot, opiskeluoikeudet) => serialize(Oppija(henkilötiedot, opiskeluoikeudet)) }
     )
 
     streamResponse(oppijat, koskiSession)

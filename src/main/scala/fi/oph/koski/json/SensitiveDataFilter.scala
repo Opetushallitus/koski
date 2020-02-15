@@ -16,12 +16,11 @@ case class SensitiveDataFilter(user: SensitiveDataAllowed) {
 
   def serializationContext = SerializationContext(KoskiSchema.schemaFactory, filterSensitiveData)
 
-  def rowSerializer: ((Henkilö, immutable.Seq[OpiskeluoikeusRow])) => JValue = {
-    def ser(tuple: (Henkilö, immutable.Seq[OpiskeluoikeusRow])) = {
-      JsonSerializer.serialize(Oppija(tuple._1, tuple._2.map(_.toOpiskeluoikeus)))
-    }
-    ser
-  }
+  def rowSerializer(row: (Henkilö, immutable.Seq[OpiskeluoikeusRow])): JValue =
+    serializeOppija(Oppija(row._1, row._2.map(_.toOpiskeluoikeus)))
+
+  def serializeOppija(oppija: Oppija): JValue =
+    JsonSerializer.serialize(oppija)
 
   def sensitiveHidden(metadata: List[Metadata]): Boolean = metadata.exists {
     case SensitiveData(allowedRoles) => !user.sensitiveDataAllowed(allowedRoles)

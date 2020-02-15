@@ -16,8 +16,8 @@ trait Pagination extends KoskiBaseServlet {
 
 case class PaginationSettings(page: Int, size: Int)
 
-case class QueryPagination(bufferSize: Int = 0) {
-  def applyPagination[E, U, C[_]](query: Query[E, U, C], pageInfo: PaginationSettings):Query[E, U, C] = query.drop(pageInfo.page * pageInfo.size).take(pageInfo.size + bufferSize)
+object QueryPagination {
+  def applyPagination[E, U, C[_]](query: Query[E, U, C], pageInfo: PaginationSettings):Query[E, U, C] = query.drop(pageInfo.page * pageInfo.size).take(pageInfo.size)
   def applyPagination[E, U, C[_]](query: Query[E, U, C], pageInfo: Option[PaginationSettings]): Query[E, U, C] = pageInfo match {
     case Some(settings) => applyPagination(query, settings)
     case None => query

@@ -1,8 +1,8 @@
 package fi.oph.koski.sure
 
 import java.sql.Timestamp
-import java.time.{Instant, OffsetDateTime}
 import java.time.format.DateTimeParseException
+import java.time.{Instant, OffsetDateTime}
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.GlobalExecutionContext
@@ -11,15 +11,14 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.{JsonSerializer, SensitiveDataFilter}
 import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.log._
+import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.OppijaOidHaku
-import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueries, OpiskeluoikeusQueryContext}
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, InvalidRequestException, NoCache, ObservableSupport}
 import fi.oph.koski.util.Timing
 import org.json4s.JValue
 import org.scalatra.ContentEncodingSupport
-
-import scala.util.Try
+import rx.lang.scala.Observable
 
 class SureServlet(implicit val application: KoskiApplication) extends ApiServlet with Logging with GlobalExecutionContext with ObservableSupport with RequiresVirkailijaOrPalvelukäyttäjä with ContentEncodingSupport with NoCache with Timing {
 
@@ -34,14 +33,17 @@ class SureServlet(implicit val application: KoskiApplication) extends ApiServlet
       }
       oids.map(HenkilöOid.validateHenkilöOid).collectFirst { case Left(status) => status } match {
         case None =>
-          val serialize = SensitiveDataFilter(koskiSession).rowSerializer
-          val observable = OpiskeluoikeusQueryContext(request)(koskiSession, application).queryWithoutHenkilötiedotRaw(
-            List(OppijaOidHaku(oids)), None, "oids=" + oids.take(2).mkString(",") + ",...(" + oids.size + ")"
-          )
-          streamResponse[JValue](observable.map(t => serialize(OidHenkilö(t._1), t._2)), koskiSession)
+          val serialize: Oppija => JValue = SensitiveDataFilter(koskiSession).serializeOppija _
+          streamResponse[JValue](queryOppijat(oids).map(serialize), koskiSession)
         case Some(status) => haltWithStatus(status)
       }
     }()
+  }
+
+  private def queryOppijat(oids: List[String]): Observable[Oppija] = {
+    OpiskeluoikeusQueryContext(request)(koskiSession, application).queryWithoutHenkilötiedotRaw(
+      List(OppijaOidHaku(oids)), None, "oids=" + oids.take(2).mkString(",") + ",...(" + oids.size + ")"
+    ).map { case (oppijaOid, opiskeluoikeudet) => Oppija(OidHenkilö(oppijaOid), opiskeluoikeudet) }
   }
 
   // Palauttaa listan oppijoista (oppija-oidit) joiden Koskeen tallennetut tiedot ovat muuttuneet.
