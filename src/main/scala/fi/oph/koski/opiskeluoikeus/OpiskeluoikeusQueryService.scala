@@ -22,17 +22,24 @@ import rx.lang.scala.Observable
 import rx.observables.SyncOnSubscribe.createStateful
 import slick.jdbc.{GetResult, PositionedParameters, SQLActionBuilder}
 
+
 class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext with KoskiDatabaseMethods {
   import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
-  implicit private val getResult = GetResult(r =>
+  implicit private val getQueryOppija = GetResult(r =>
     QueryOppija(
       henkilö = QueryOppijaHenkilö(
         oid = r.nextString,
-        sukunimi = r.nextString,
-        etunimet = r.nextString,
-        linkitetytOidit = r.nextArray.toList
+        linkitetytOidit = Nil
       ),
       opiskeluoikeudet = parseOpiskeluoikeudet(r.nextJson)
+    )
+  )
+
+  implicit private val getPreQueryResult = GetResult(r =>
+    PreQueryRow(
+      oppijaOid = r.nextString,
+      linkitetytOidit = r.nextArray.toList,
+      opiskeluoikeusOidit = r.nextArray.toList
     )
   )
 
@@ -82,36 +89,38 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
     paginationSettings: Option[PaginationSettings]
   )(implicit u: KoskiSession): Observable[QueryOppija] = {
     val pagination = paginationSettings.getOrElse(PaginationSettings(0, defaultPageSize))
-    streamAction(query(filters, pagination).as[QueryOppija])
+    val q: PreQuery = preQuery(filters, pagination)
+    streamAction(query2(q, filters)).map { row => row.copy(
+      henkilö = row.henkilö.copy(linkitetytOidit = q.linkitetytOidit(row.henkilö.oid))
+    )}
   }
 
-  private def query(filters: List[OpiskeluoikeusQueryFilter], pagination: PaginationSettings)(implicit u: KoskiSession) = {
-    concat(sql"""
-    SELECT h.oid, h.sukunimi, h.etunimet, s.linkitetytOidit, oo.opiskeluoikeudet
-    FROM henkilo h
-    LEFT JOIN LATERAL (
-     SELECT array(
-       SELECT oid FROM henkilo slave WHERE slave.master_oid = h.oid
-     ) AS linkitetytOidit
-    ) s ON true
-    JOIN LATERAL (
-     SELECT to_jsonb(array(
-       SELECT json_build_object(
-         'oidVersionumeroAikaleima', row_to_json((SELECT a FROM (SELECT oo.oid, oo.aikaleima, oo.versionumero) a)) :: jsonb,
-         'data', oo.data
-       ) AS b
-       FROM opiskeluoikeus oo
-       WHERE (oo.oppija_oid = ANY (s.linkitetytOidit) OR oo.oppija_oid = h.oid)
-       AND NOT oo.mitatoity
-    """, queryFilters(filters),
+  private def preQuery(filters: List[OpiskeluoikeusQueryFilter], pagination: PaginationSettings)(implicit u: KoskiSession) = {
+    PreQuery(runDbSync(concat(sql"""
+      SELECT h.oid, array_agg(distinct s.oid) as linkitetytOidit, array_agg(oo.oid) as opiskeluoikeusOidit
+      FROM henkilo h
+      LEFT JOIN henkilo s ON s.master_oid = h.oid
+      JOIN opiskeluoikeus oo ON oo.oppija_oid = h.oid
+      WHERE h.master_oid IS NULL AND NOT oo.mitatoity """,
+      queryFilters(filters),
       sql"""
-      ORDER BY oo.oid
-     )) AS opiskeluoikeudet
-    ) oo ON true
-    WHERE h.master_oid IS NULL AND jsonb_array_length(oo.opiskeluoikeudet) > 0
-    ORDER BY lower(h.sukunimi), lower(h.etunimet)
-    LIMIT ${pagination.size} OFFSET ${pagination.page * pagination.size}
-    """)
+      GROUP BY h.oid
+      ORDER BY lower(h.sukunimi), lower(h.etunimet)
+      LIMIT ${pagination.size} OFFSET ${pagination.page * pagination.size}
+    """).as[PreQueryRow]))
+  }
+
+  private def query2(oppijat: PreQuery, filters: List[OpiskeluoikeusQueryFilter])(implicit u: KoskiSession) = {
+    concat(sql"""
+    SELECT COALESCE(s.master_oid, oo.oppija_oid) AS oid, json_agg(json_build_object('data', oo.data, 'oidVersionumeroAikaleima', row_to_json((SELECT a FROM (SELECT oo.oid, oo.aikaleima, oo.versionumero) a)) :: jsonb)) AS opiskeluoikeudet
+    FROM opiskeluoikeus oo
+    JOIN henkilo h ON h.oid = oo.oppija_oid
+    LEFT OUTER JOIN henkilo s ON oo.oppija_oid = s.oid AND s.master_oid IS NOT NULL
+    WHERE oo.oid IN (#${mkString(oppijat.opiskeluoikeusOidit)}) OR (oo.oppija_oid IN (#${mkString(oppijat.kaikkiLinkitetytOidit)})""",
+    queryFilters(filters), sql""")
+    GROUP BY COALESCE(s.master_oid, oo.oppija_oid)
+    ORDER BY max(lower(h.sukunimi)), max(lower(h.etunimet));
+    """).as[QueryOppija]
   }
 
   private def queryFilters(filters: List[OpiskeluoikeusQueryFilter])(implicit u: KoskiSession) = filters.foldLeft(accessCheck) {
@@ -171,7 +180,7 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
     JsonSerializer.extract[List[QueryOpiskeluoikeus]](json)
       .map { case QueryOpiskeluoikeus(OidVersionumeroAikaleima(oid, versionumero, aikaleima), data) =>
         data.withOidAndVersion(Some(oid), Some(versionumero)).withAikaleima(Some(aikaleima.toLocalDateTime))
-      }
+      }.sortBy(_.oid)
   }
 
   private def mkString(xs: Iterable[String]) = xs.mkString("'", "','", "'")
@@ -198,8 +207,21 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
   }
 }
 
+case class PreQuery(rows: Seq[PreQueryRow]) {
+  private val slaveOidit: Map[String, List[String]] = rows.flatMap(o => o.linkitetytOidit.flatMap(Option(_)) match {
+    case Nil => Nil
+    case xs => List(o.oppijaOid -> xs)
+  }).toMap
+
+  val opiskeluoikeusOidit: Seq[String] = rows.flatMap(_.opiskeluoikeusOidit)
+
+  def kaikkiLinkitetytOidit: Set[String] = slaveOidit.values.flatten.toSet
+  def linkitetytOidit(oid: String): List[String] = slaveOidit.get(oid).toList.flatten
+}
+
+case class PreQueryRow(oppijaOid: String, linkitetytOidit: List[String], opiskeluoikeusOidit: List[String])
 case class MuuttunutOpiskeluoikeusRow(id: Int, aikaleima: Timestamp, oppijaOid: String)
 case class QueryOppija(henkilö: QueryOppijaHenkilö, opiskeluoikeudet: List[KoskeenTallennettavaOpiskeluoikeus])
-case class QueryOppijaHenkilö(oid: Oid, sukunimi: String, etunimet: String, linkitetytOidit: List[Oid])
+case class QueryOppijaHenkilö(oid: Oid, linkitetytOidit: List[Oid])
 case class QueryOpiskeluoikeus(oidVersionumeroAikaleima: OidVersionumeroAikaleima, data: KoskeenTallennettavaOpiskeluoikeus)
 case class OidVersionumeroAikaleima(oid: String, versionumero: Int, aikaleima: Timestamp)
