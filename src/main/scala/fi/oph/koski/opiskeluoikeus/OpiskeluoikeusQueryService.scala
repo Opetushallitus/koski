@@ -36,7 +36,7 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
   )
 
   implicit private val getPreQueryResult = GetResult(r =>
-    PreQueryRow(
+    OidQueryRow(
       oppijaOid = r.nextString,
       linkitetytOidit = r.nextArray.toList,
       opiskeluoikeusOidit = r.nextArray.toList
@@ -89,14 +89,14 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
     paginationSettings: Option[PaginationSettings]
   )(implicit u: KoskiSession): Observable[QueryOppija] = {
     val pagination = paginationSettings.getOrElse(PaginationSettings(0, defaultPageSize))
-    val q: PreQuery = preQuery(filters, pagination)
-    streamAction(query2(q, filters)).map { row => row.copy(
+    val q: OidQueryResults = queryOids(filters, pagination)
+    streamAction(queryData(q, filters)).map { row => row.copy(
       henkilö = row.henkilö.copy(linkitetytOidit = q.linkitetytOidit(row.henkilö.oid))
     )}
   }
 
-  private def preQuery(filters: List[OpiskeluoikeusQueryFilter], pagination: PaginationSettings)(implicit u: KoskiSession) = {
-    PreQuery(runDbSync(concat(sql"""
+  private def queryOids(filters: List[OpiskeluoikeusQueryFilter], pagination: PaginationSettings)(implicit u: KoskiSession) = {
+    OidQueryResults(runDbSync(concat(sql"""
       SELECT h.oid, array_agg(distinct s.oid) as linkitetytOidit, array_agg(oo.oid) as opiskeluoikeusOidit
       FROM henkilo h
       LEFT JOIN henkilo s ON s.master_oid = h.oid
@@ -107,10 +107,10 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
       GROUP BY h.oid
       ORDER BY lower(h.sukunimi), lower(h.etunimet)
       LIMIT ${pagination.size} OFFSET ${pagination.page * pagination.size}
-    """).as[PreQueryRow]))
+    """).as[OidQueryRow]))
   }
 
-  private def query2(oppijat: PreQuery, filters: List[OpiskeluoikeusQueryFilter])(implicit u: KoskiSession) = {
+  private def queryData(oppijat: OidQueryResults, filters: List[OpiskeluoikeusQueryFilter])(implicit u: KoskiSession) = {
     concat(sql"""
     SELECT COALESCE(s.master_oid, oo.oppija_oid) AS oid, json_agg(json_build_object('data', oo.data, 'oidVersionumeroAikaleima', row_to_json((SELECT a FROM (SELECT oo.oid, oo.aikaleima, oo.versionumero) a)) :: jsonb)) AS opiskeluoikeudet
     FROM opiskeluoikeus oo
@@ -207,7 +207,7 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
   }
 }
 
-case class PreQuery(rows: Seq[PreQueryRow]) {
+case class OidQueryResults(rows: Seq[OidQueryRow]) {
   private val slaveOidit: Map[String, List[String]] = rows.flatMap(o => o.linkitetytOidit.flatMap(Option(_)) match {
     case Nil => Nil
     case xs => List(o.oppijaOid -> xs)
@@ -219,7 +219,7 @@ case class PreQuery(rows: Seq[PreQueryRow]) {
   def linkitetytOidit(oid: String): List[String] = slaveOidit.get(oid).toList.flatten
 }
 
-case class PreQueryRow(oppijaOid: String, linkitetytOidit: List[String], opiskeluoikeusOidit: List[String])
+case class OidQueryRow(oppijaOid: String, linkitetytOidit: List[String], opiskeluoikeusOidit: List[String])
 case class MuuttunutOpiskeluoikeusRow(id: Int, aikaleima: Timestamp, oppijaOid: String)
 case class QueryOppija(henkilö: QueryOppijaHenkilö, opiskeluoikeudet: List[KoskeenTallennettavaOpiskeluoikeus])
 case class QueryOppijaHenkilö(oid: Oid, linkitetytOidit: List[Oid])
