@@ -3,20 +3,26 @@ package fi.oph.koski.luovutuspalvelu
 import java.time.LocalDate
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.OpiskeluoikeusRow
+import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
-import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.json.{JsonSerializer, SensitiveDataAllowed}
-import fi.oph.koski.koskiuser.RequiresTilastokeskus
-import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueries
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.koskiuser.{KoskiSession, RequiresTilastokeskus}
+import fi.oph.koski.log.KoskiMessageField.hakuEhto
+import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_HAKU
+import fi.oph.koski.log._
+import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryContext, OpiskeluoikeusQueryFilter, QueryOppijaHenkilö}
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}
+import fi.oph.koski.util.SortOrder.Ascending
+import fi.oph.koski.util.{Pagination, PaginationSettings, QueryPagination}
+import javax.servlet.http.HttpServletRequest
 import org.json4s.JValue
+import org.scalatra.MultiParams
+import rx.lang.scala.Observable
 
-import scala.collection.immutable
-
-class TilastokeskusServlet(implicit val application: KoskiApplication) extends ApiServlet with ObservableSupport with NoCache with OpiskeluoikeusQueries with RequiresTilastokeskus {
+class TilastokeskusServlet(implicit val application: KoskiApplication) extends ApiServlet with ObservableSupport with NoCache with Pagination with RequiresTilastokeskus {
 
   override protected val maxNumberOfItemsPerPage: Int = 1000
 
@@ -25,14 +31,52 @@ class TilastokeskusServlet(implicit val application: KoskiApplication) extends A
       haltWithStatus(KoskiErrorCategory.badRequest.queryParam("Tuntematon versio"))
     }
 
-    val serializer = TilastokeskusSensitiveDataFilter(koskiSession).rowSerializer
+    streamResponse(queryOppijat, koskiSession)
+  }
 
-    val oppijat = performOpiskeluoikeudetQueryLaajoillaHenkilötiedoilla.map(observable => observable
-      .map(x => (laajatHenkilötiedotToTilastokeskusHenkilötiedot(x._1), x._2))
-      .map(serializer)
-    )
+  private def queryOppijat =
+    TilastokeskusQueryContext(request)(koskiSession, application)
+      .queryLaajoillaHenkilöTiedoilla(multiParams, paginationSettings)
+}
 
-    streamResponse(oppijat, koskiSession)
+case class TilastokeskusQueryContext(request: HttpServletRequest)(implicit koskiSession: KoskiSession, application: KoskiApplication) extends Logging {
+  val pagination = QueryPagination(50)
+
+  def queryLaajoillaHenkilöTiedoilla(params: MultiParams, paginationSettings: Option[PaginationSettings]): Either[HttpStatus, Observable[JValue]] = {
+    logger(koskiSession).info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
+    OpiskeluoikeusQueryFilter.parse(params)(application.koodistoViitePalvelu, application.organisaatioRepository, koskiSession).map { filters =>
+      AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_HAKU, koskiSession, Map(hakuEhto -> OpiskeluoikeusQueryContext.queryForAuditLog(params))))
+      query(filters, paginationSettings)
+    }.map {
+      _.map(x => (laajatHenkilötiedotToTilastokeskusHenkilötiedot(x._1), x._2))
+       .map(tuple => JsonSerializer.serialize(TilastokeskusOppija(tuple._1, tuple._2.map(_.toOpiskeluoikeus))))
+    }
+  }
+
+  private def query(filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings]): Observable[(LaajatOppijaHenkilöTiedot, List[OpiskeluoikeusRow])] = {
+    val groupedByOid = OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, filters, paginationSettings).tumblingBuffer(10)
+    val oppijaStream = groupedByOid.flatMap { oppijatJaOidit: Seq[(QueryOppijaHenkilö, List[OpiskeluoikeusRow])] =>
+      val oids: List[String] = oppijatJaOidit.map(_._1.oid).toList
+      val henkilöt: Map[Oid, LaajatOppijaHenkilöTiedot] = application.opintopolkuHenkilöFacade.findMasterOppijat(oids)
+
+      val oppijat: Seq[(LaajatOppijaHenkilöTiedot, List[OpiskeluoikeusRow])] = oppijatJaOidit.flatMap { case (oppijaHenkilö, opiskeluOikeudet) =>
+        opiskeluOikeudet.flatMap { oo =>
+          henkilöt.get(oppijaHenkilö.oid) match {
+            case Some(henkilö) =>
+              List((henkilö.copy(linkitetytOidit = oppijaHenkilö.linkitetytOidit), List(oo)))
+            case None =>
+              logger(koskiSession).warn("Oppijaa " + oppijaHenkilö.oid + " ei löydy henkilöpalvelusta")
+              Nil
+          }
+        }
+      }
+      Observable.from(oppijat)
+    }
+
+    paginationSettings match {
+      case None => oppijaStream
+      case Some(PaginationSettings(_, size)) => oppijaStream.take(size)
+    }
   }
 
   private def laajatHenkilötiedotToTilastokeskusHenkilötiedot(laajat: LaajatOppijaHenkilöTiedot): TilastokeskusHenkilötiedot = {
@@ -53,16 +97,7 @@ class TilastokeskusServlet(implicit val application: KoskiApplication) extends A
       linkitetytOidit = laajat.linkitetytOidit
     )
   }
-}
 
-case class TilastokeskusSensitiveDataFilter(user: SensitiveDataAllowed) {
-  private implicit val u = user
-  def rowSerializer: ((TilastokeskusHenkilötiedot, immutable.Seq[OpiskeluoikeusRow])) => JValue = {
-    def ser(tuple: (TilastokeskusHenkilötiedot, immutable.Seq[OpiskeluoikeusRow])) = {
-      JsonSerializer.serialize(TilastokeskusOppija(tuple._1, tuple._2.map(_.toOpiskeluoikeus)))
-    }
-    ser
-  }
 }
 
 case class TilastokeskusOppija(

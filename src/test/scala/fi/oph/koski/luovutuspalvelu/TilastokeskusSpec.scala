@@ -68,28 +68,19 @@ class TilastokeskusSpec extends FreeSpec with LocalJettyHttpSpecification with O
     }
 
     "Sivuttaa" in {
-      val masterHenkilöt = defaultOppijat.filterNot(_.master.isDefined).map(_.henkilö).sortBy(_.oid)
-      val koskeenTallennetutOppijat: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = masterHenkilöt.flatMap { h =>
-        tryOppija(h.oid, paakayttaja) match {
-          case Right(oppija) => oppija.opiskeluoikeudet.collect {
-            case o: KoskeenTallennettavaOpiskeluoikeus => (h, o)
-          }
-          case _ => Nil
-        }
-      }
-
+      resetFixtures
       val total = koskeenTallennetutOppijat.length
       (3 to total by 9).foreach { pageSize =>
-        var previousPage: List[(Oid, String, List[Oid], Seq[String])] = Nil
+        var previousPage: List[(Oid, String, String, List[Oid], Seq[String])] = Nil
         0 to (total / pageSize) foreach { pageNumber =>
-          val page: List[(Oid, String, List[Oid], Seq[String])] = performQuery(s"?v=1&pageNumber=$pageNumber&pageSize=$pageSize")
-            .map(h => (h.henkilö.oid, h.henkilö.etunimet, h.henkilö.linkitetytOidit, h.opiskeluoikeudet.map(_.oid.get)))
+          val page: List[(Oid, String, String, List[Oid], Seq[String])] = performQuery(s"?v=1&pageNumber=$pageNumber&pageSize=$pageSize")
+            .map(h => (h.henkilö.oid, h.henkilö.sukunimi, h.henkilö.etunimet, h.henkilö.linkitetytOidit, h.opiskeluoikeudet.map(_.oid.get)))
 
-          page.foreach { oppija =>
-            previousPage should not contain oppija
+          page.flatMap(_._4) foreach { opiskeluoikeus =>
+            previousPage.map(_._4) should not contain opiskeluoikeus
           }
 
-          page should equal(expectedPage(koskeenTallennetutOppijat, pageSize, pageNumber))
+          page should equal(expectedPage(pageSize, pageNumber))
           previousPage = page
         }
       }
@@ -154,20 +145,19 @@ class TilastokeskusSpec extends FreeSpec with LocalJettyHttpSpecification with O
     masterOid <- oppija.master.map(_.oid)
   } yield masterOid -> oppija.henkilö.oid).toMap
 
-  private def expectedPage(oppijat: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)], pageSize: Int, pageNumber: Int) = {
-    var opiskeluoikeuksiaSoFar = 0
-    oppijat.slice(pageNumber * pageSize, pageNumber * pageSize + pageSize + OpiskeluoikeusQueryContext.pagination.bufferSize)
-      .groupBy(_._1).toList.sortBy(_._1.oid)
-      .map { case (oppija, opiskeluoikeudet) =>
-        (oppija.oid, oppija.etunimet, linkitettyOid.get(oppija.oid).toList, opiskeluoikeudet.map(_._2.oid.get))
-      }.takeWhile { case (_, _, _, opiskeluoikeudet) =>
-      if (pageSize > opiskeluoikeuksiaSoFar) {
-        opiskeluoikeuksiaSoFar = opiskeluoikeuksiaSoFar + opiskeluoikeudet.length
-        true
-      } else {
-        false
-      }
+  private val masterHenkilöt = defaultOppijat.filterNot(_.master.isDefined).map(_.henkilö).sortBy(_.oid)
+  private val koskeenTallennetutOppijat: List[(Oid, String, String, List[Oid], List[String])] = masterHenkilöt.flatMap { m =>
+    tryOppija(m.oid, paakayttaja) match {
+      case Right(Oppija(h: TäydellisetHenkilötiedot, opiskeluoikeudet)) =>
+        opiskeluoikeudet.flatMap(_.oid).map { opiskeluoikeusOid =>
+          (h.oid, h.sukunimi, h.etunimet, linkitettyOid.get(h.oid).toList, List(opiskeluoikeusOid))
+        }
+      case _ => Nil
     }
+  }
+
+  private def expectedPage(pageSize: Int, pageNumber: Int) = {
+    koskeenTallennetutOppijat.slice(pageNumber * pageSize, pageNumber * pageSize + pageSize)
   }
 
   private def performQuery(query: String = "?v=1") = {

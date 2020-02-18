@@ -66,7 +66,7 @@ case class OpiskeluoikeusQueryContext(request: HttpServletRequest)(implicit kosk
 }
 
 object OpiskeluoikeusQueryContext {
-  val pagination = QueryPagination(50)
+  val pagination = QueryPagination(lookaheadBufferSize = 50)
   def queryForAuditLog(params: MultiParams) =
     params.toList.sortBy(_._1).map { case (p,values) => values.map(v => p + "=" + v).mkString("&") }.mkString("&")
 
@@ -87,7 +87,7 @@ object OpiskeluoikeusQueryContext {
       .tumblingBuffer(rows.map(masterOid).distinctUntilChanged.drop(1))
       .map(_.toList)
 
-    val stream = groupedByPerson.flatMap {
+    val stream: Observable[(QueryOppijaHenkilö, List[OpiskeluoikeusRow])] = groupedByPerson.flatMap {
       case oikeudet@(row :: _) =>
         val oppijanOidit = oikeudet.flatMap { case (_, h, m) => h.oid :: m.map(_.oid).toList }.toSet
         assert(oikeudet.map(_._1.oppijaOid).toSet.subsetOf(oppijanOidit), "Usean ja/tai väärien henkilöiden tietoja henkilöllä " + oppijanOidit + ": " + oikeudet.map(_._1.oppijaOid).toSet)
