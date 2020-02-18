@@ -3,7 +3,7 @@ package fi.oph.koski.luovutuspalvelu
 import java.time.LocalDate
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.OpiskeluoikeusRow
+import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow}
 import fi.oph.koski.henkilo.LaajatOppijaHenkilöTiedot
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
@@ -15,7 +15,8 @@ import fi.oph.koski.opiskeluoikeus.{OpiskeluoikeusQueryContext, OpiskeluoikeusQu
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}
-import fi.oph.koski.util.{Pagination, PaginationSettings}
+import fi.oph.koski.util.SortOrder.Ascending
+import fi.oph.koski.util.{Pagination, PaginationSettings, QueryPagination}
 import javax.servlet.http.HttpServletRequest
 import org.json4s.JValue
 import org.scalatra.MultiParams
@@ -39,9 +40,10 @@ class TilastokeskusServlet(implicit val application: KoskiApplication) extends A
 }
 
 case class TilastokeskusQueryContext(request: HttpServletRequest)(implicit koskiSession: KoskiSession, application: KoskiApplication) extends Logging {
+  val pagination = QueryPagination(50)
+
   def queryLaajoillaHenkilöTiedoilla(params: MultiParams, paginationSettings: Option[PaginationSettings]): Either[HttpStatus, Observable[JValue]] = {
     logger(koskiSession).info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
-
     OpiskeluoikeusQueryFilter.parse(params)(application.koodistoViitePalvelu, application.organisaatioRepository, koskiSession).map { filters =>
       AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_HAKU, koskiSession, Map(hakuEhto -> OpiskeluoikeusQueryContext.queryForAuditLog(params))))
       query(filters, paginationSettings)
@@ -52,22 +54,28 @@ case class TilastokeskusQueryContext(request: HttpServletRequest)(implicit koski
   }
 
   private def query(filters: List[OpiskeluoikeusQueryFilter], paginationSettings: Option[PaginationSettings]): Observable[(LaajatOppijaHenkilöTiedot, List[OpiskeluoikeusRow])] = {
-    val oikeudetPerOppijaOid: Observable[(QueryOppijaHenkilö, List[OpiskeluoikeusRow])] = OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, filters, paginationSettings)
-
-    oikeudetPerOppijaOid.tumblingBuffer(10).flatMap { oppijatJaOidit: Seq[(QueryOppijaHenkilö, List[OpiskeluoikeusRow])] =>
+    val groupedByOid = OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, filters, paginationSettings).tumblingBuffer(10)
+    val oppijaStream = groupedByOid.flatMap { oppijatJaOidit: Seq[(QueryOppijaHenkilö, List[OpiskeluoikeusRow])] =>
       val oids: List[String] = oppijatJaOidit.map(_._1.oid).toList
       val henkilöt: Map[Oid, LaajatOppijaHenkilöTiedot] = application.opintopolkuHenkilöFacade.findMasterOppijat(oids)
 
-      val oppijat: Iterable[(LaajatOppijaHenkilöTiedot, List[OpiskeluoikeusRow])] = oppijatJaOidit.flatMap { case (oppijaHenkilö, opiskeluOikeudet) =>
-        henkilöt.get(oppijaHenkilö.oid) match {
-          case Some(henkilö) =>
-            Some((henkilö.copy(linkitetytOidit = oppijaHenkilö.linkitetytOidit), opiskeluOikeudet))
-          case None =>
-            logger(koskiSession).warn("Oppijaa " + oppijaHenkilö.oid + " ei löydy henkilöpalvelusta")
-            None
+      val oppijat: Seq[(LaajatOppijaHenkilöTiedot, List[OpiskeluoikeusRow])] = oppijatJaOidit.flatMap { case (oppijaHenkilö, opiskeluOikeudet) =>
+        opiskeluOikeudet.flatMap { oo =>
+          henkilöt.get(oppijaHenkilö.oid) match {
+            case Some(henkilö) =>
+              List((henkilö.copy(linkitetytOidit = oppijaHenkilö.linkitetytOidit), List(oo)))
+            case None =>
+              logger(koskiSession).warn("Oppijaa " + oppijaHenkilö.oid + " ei löydy henkilöpalvelusta")
+              Nil
+          }
         }
       }
       Observable.from(oppijat)
+    }
+
+    paginationSettings match {
+      case None => oppijaStream
+      case Some(PaginationSettings(_, size)) => oppijaStream.take(size)
     }
   }
 
