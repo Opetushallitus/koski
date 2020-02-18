@@ -116,26 +116,60 @@ class TilastokeskusSpec extends FreeSpec with LocalJettyHttpSpecification with O
         resetFixtures
         insert(makeOpiskeluoikeus(date(2100, 1, 2)), MockOppijat.eero)
         performQuery("?v=1&opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTyyppi=ammatillinenkoulutus").flatMap(_.opiskeluoikeudet).length should equal(1)
+        performCountQuery("?v=1&opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTyyppi=ammatillinenkoulutus") should equal(1)
         performQuery("?v=1&opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTyyppi=perusopetus").flatMap(_.opiskeluoikeudet).length should equal(0)
+        performCountQuery("?v=1&opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTyyppi=perusopetus") should equal(0)
         insert(makeLukioOpiskeluoikeus(date(2100, 1, 2)), MockOppijat.eero)
         performQuery("?v=1&opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTyyppi=ammatillinenkoulutus&opiskeluoikeudenTyyppi=lukiokoulutus").flatMap(_.opiskeluoikeudet).length should equal(2)
+        performCountQuery("?v=1&opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeudenTyyppi=ammatillinenkoulutus&opiskeluoikeudenTyyppi=lukiokoulutus") should equal(2)
       }
 
       "aikaleima" in {
         resetFixtures
         val now = ZonedDateTime.now
-
-        performQuery(s"?v=1&muuttunutEnnen=${now.format(ISO_INSTANT)}").length should equal(performQuery().length)
+        def kaikkiOpiskeluoikeudetCount = performQuery().length
+        performQuery(s"?v=1&muuttunutEnnen=${now.format(ISO_INSTANT)}").length should equal(kaikkiOpiskeluoikeudetCount)
+        performCountQuery(s"?v=1&muuttunutEnnen=${now.format(ISO_INSTANT)}") should equal(kaikkiOpiskeluoikeudetCount)
         performQuery(s"?v=1&muuttunutJälkeen=${now.format(ISO_INSTANT)}").length should equal(0)
+        performCountQuery(s"?v=1&muuttunutJälkeen=${now.format(ISO_INSTANT)}") should equal(0)
 
         performQuery(s"?v=1&muuttunutEnnen=${now.minusDays(1).format(ISO_INSTANT)}").length should equal(0)
-        performQuery(s"?v=1&muuttunutJälkeen=${now.minusDays(1).format(ISO_INSTANT)}").length should equal(performQuery().length)
+        performCountQuery(s"?v=1&muuttunutEnnen=${now.minusDays(1).format(ISO_INSTANT)}") should equal(0)
+        performQuery(s"?v=1&muuttunutJälkeen=${now.minusDays(1).format(ISO_INSTANT)}").length should equal(kaikkiOpiskeluoikeudetCount)
+        performCountQuery(s"?v=1&muuttunutJälkeen=${now.minusDays(1).format(ISO_INSTANT)}") should equal(kaikkiOpiskeluoikeudetCount)
 
         insert(makeOpiskeluoikeus(LocalDate.now), MockOppijat.eero)
 
         val oppijat = performQuery(s"?v=1&muuttunutJälkeen=${now.format(ISO_INSTANT)}")
+        performCountQuery(s"?v=1&muuttunutJälkeen=${now.format(ISO_INSTANT)}") should equal(1)
         oppijat.length should equal(1)
         oppijat.head.henkilö.oid should equal(MockOppijat.eero.oid)
+      }
+    }
+  }
+
+  "Count-rajapinta" - {
+    "Vaatii TILASTOKESKUS-käyttöoikeuden" in {
+      val withoutTilastokeskusAccess = MockUsers.users.filterNot(_.käyttöoikeudet.collect { case k: KäyttöoikeusViranomainen => k }.exists(_.globalPalveluroolit.contains(Palvelurooli("KOSKI", "TILASTOKESKUS"))))
+      withoutTilastokeskusAccess.foreach { user =>
+        authGet("api/luovutuspalvelu/haku/count?v=1", user) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden.vainTilastokeskus())
+        }
+      }
+      authGet("api/luovutuspalvelu/haku/count?v=1", MockUsers.tilastokeskusKäyttäjä) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Vaatii versionumeron" in {
+      authGet("api/luovutuspalvelu/haku/count", MockUsers.tilastokeskusKäyttäjä) {
+        verifyResponseStatus(400, KoskiErrorCategory.badRequest.queryParam("Tuntematon versio"))
+      }
+    }
+
+    "hakee opiskeluoikeuksien lukumäärät opiskeluoikeuden tyypin perusteella" in {
+      OpiskeluoikeudenTyyppi.kaikkiTyypit.map(_.koodiarvo).foreach { tyyppi =>
+        performCountQuery(s"?v=1&opiskeluoikeudenTyyppi=$tyyppi") should equal(koskeenTallennetutOppijat.flatMap(_.opiskeluoikeudet).count(_.tyyppi.koodiarvo == tyyppi))
       }
     }
   }
@@ -146,18 +180,30 @@ class TilastokeskusSpec extends FreeSpec with LocalJettyHttpSpecification with O
   } yield masterOid -> oppija.henkilö.oid).toMap
 
   private val masterHenkilöt = defaultOppijat.filterNot(_.master.isDefined).map(_.henkilö).sortBy(_.oid)
-  private val koskeenTallennetutOppijat: List[(Oid, String, String, List[Oid], List[String])] = masterHenkilöt.flatMap { m =>
+  private val koskeenTallennetutOppijat: List[Oppija] = masterHenkilöt.flatMap { m =>
     tryOppija(m.oid, paakayttaja) match {
-      case Right(Oppija(h: TäydellisetHenkilötiedot, opiskeluoikeudet)) =>
-        opiskeluoikeudet.flatMap(_.oid).map { opiskeluoikeusOid =>
-          (h.oid, h.sukunimi, h.etunimet, linkitettyOid.get(h.oid).toList, List(opiskeluoikeusOid))
-        }
+      case Right(o@Oppija(_: TäydellisetHenkilötiedot, opiskeluoikeudet)) => o.opiskeluoikeudet.filter(_.oid.isDefined) match {
+        case oos@(x :: _) => List(o.copy(opiskeluoikeudet = oos))
+        case _ => Nil
+      }
       case _ => Nil
     }
   }
 
-  private def expectedPage(pageSize: Int, pageNumber: Int) = {
-    koskeenTallennetutOppijat.slice(pageNumber * pageSize, pageNumber * pageSize + pageSize)
+  private def expectedPage(pageSize: Int, pageNumber: Int): List[(Oid, String, String, List[Oid], List[String])] = {
+    val oppijat = koskeenTallennetutOppijat.flatMap { case o@Oppija(_, opiskeluoikeudet) =>
+      val h = o.henkilö.asInstanceOf[TäydellisetHenkilötiedot]
+      opiskeluoikeudet.map(oo => (h.oid, h.sukunimi, h.etunimet, linkitettyOid.get(h.oid).toList, List(oo.oid.get)))
+    }
+    oppijat.slice(pageNumber * pageSize, pageNumber * pageSize + pageSize)
+  }
+
+  private def performCountQuery(query: String = "?v=1") = {
+    val resp = authGet(s"api/luovutuspalvelu/haku/count$query", MockUsers.tilastokeskusKäyttäjä) {
+      verifyResponseStatusOk()
+      JsonSerializer.parse[Map[String, Int]](body)
+    }
+    resp("opiskeluoikeuksienMäärä")
   }
 
   private def performQuery(query: String = "?v=1") = {

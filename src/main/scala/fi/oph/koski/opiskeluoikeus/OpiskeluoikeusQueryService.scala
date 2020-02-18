@@ -61,6 +61,10 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
     runDbSync(defaultPagination.applyPagination(OpiskeluOikeudetWithAccessCheck.sortBy(_.id), pagination).result)
   }
 
+  def queryCount(filters: List[OpiskeluoikeusQueryFilter])(implicit u: KoskiSession): Int = {
+    runDbSync(mkQuery(filters, None).length.result)
+  }
+
   def mapKaikkiOpiskeluoikeudetSivuittain[A](pageSize: Int, user: KoskiSession)(f: Seq[OpiskeluoikeusRow] => Seq[A]): Observable[A] = {
     processByPage[OpiskeluoikeusRow, A](page => kaikkiOpiskeluoikeudetSivuittain(PaginationSettings(page, pageSize))(user), f)
   }

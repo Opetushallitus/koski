@@ -26,13 +26,23 @@ class TilastokeskusServlet(implicit val application: KoskiApplication) extends A
 
   override protected val maxNumberOfItemsPerPage: Int = 1000
 
-  get("/") {
+  before() {
     if (!getOptionalIntegerParam("v").contains(1)) {
       haltWithStatus(KoskiErrorCategory.badRequest.queryParam("Tuntematon versio"))
     }
+  }
 
+  get("/") {
     streamResponse(queryOppijat, koskiSession)
   }
+
+  get("/count") {
+    renderEither(queryOpiskeluoikeusCount)
+  }
+
+  private def queryOpiskeluoikeusCount =
+    TilastokeskusQueryContext(request)(koskiSession, application).queryCount(multiParams)
+      .map(count => Map("opiskeluoikeuksienMäärä" -> count))
 
   private def queryOppijat =
     TilastokeskusQueryContext(request)(koskiSession, application)
@@ -44,12 +54,18 @@ case class TilastokeskusQueryContext(request: HttpServletRequest)(implicit koski
 
   def queryLaajoillaHenkilöTiedoilla(params: MultiParams, paginationSettings: Option[PaginationSettings]): Either[HttpStatus, Observable[JValue]] = {
     logger(koskiSession).info("Haetaan opiskeluoikeuksia: " + Option(request.getQueryString).getOrElse("ei hakuehtoja"))
-    OpiskeluoikeusQueryFilter.parse(params)(application.koodistoViitePalvelu, application.organisaatioRepository, koskiSession).map { filters =>
+    parseFilters(params).map { filters =>
       AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_HAKU, koskiSession, Map(hakuEhto -> OpiskeluoikeusQueryContext.queryForAuditLog(params))))
       query(filters, paginationSettings)
     }.map {
       _.map(x => (laajatHenkilötiedotToTilastokeskusHenkilötiedot(x._1), x._2))
        .map(tuple => JsonSerializer.serialize(TilastokeskusOppija(tuple._1, tuple._2.map(_.toOpiskeluoikeus))))
+    }
+  }
+
+  def queryCount(params: MultiParams): Either[HttpStatus, Int] = {
+    parseFilters(params).map { filters =>
+      application.opiskeluoikeusQueryRepository.queryCount(filters)
     }
   }
 
@@ -77,6 +93,10 @@ case class TilastokeskusQueryContext(request: HttpServletRequest)(implicit koski
       case None => oppijaStream
       case Some(PaginationSettings(_, size)) => oppijaStream.take(size)
     }
+  }
+
+  private def parseFilters(params: MultiParams) = {
+    OpiskeluoikeusQueryFilter.parse(params)(application.koodistoViitePalvelu, application.organisaatioRepository, koskiSession)
   }
 
   private def laajatHenkilötiedotToTilastokeskusHenkilötiedot(laajat: LaajatOppijaHenkilöTiedot): TilastokeskusHenkilötiedot = {
