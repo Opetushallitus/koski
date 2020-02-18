@@ -138,6 +138,7 @@ object KoskiErrorCategory {
         val vääräHyväksyttyArvo = subcategory("vääräHyväksyttyArvo", "hyväksytty-kentän arvo ristiriidassa annetun arvosanan kanssa")
         val useitaArviointiasteikoita = subcategory("useitaArviointiAsteikoita", "Ammatillinen päätason suoritus voi käyttää vain yhtä numeerista arviointiasteikkoa")
         val sallittuVainValinnaiselle = subcategory("sallittuVainValinnaiselle", "Arvioinnit 'S' ja 'O' on sallittuja vain valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia")
+        val eiSallittuSuppealleValinnaiselle = subcategory("eiSallittuSuppealleValinnaiselle", "Vain arvioinnit 'S' ja 'O' on sallittu valinnaiselle valtakunnalliselle oppiaineelle, jonka laajuus on alle kaksi vuosiviikkotuntia")
       }
       val arviointi = new Arviointi
     }

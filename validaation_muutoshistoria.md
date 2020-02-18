@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 17.2.2020
+- Nuorten perusopetuksen valinnaiseen valtakunnalliseen aineeseen sallitaan vain arvosanat S ja O, jos laajuus on alle kaksi vuosiviikkotuntia
+
 ## 3.2.2020
 - Muun ammatillisen koulutuksen osasuorituksen arvioinnille uusi arvosanakoodisto, "arviointiasteikkomuuammatillinenkoulutus"
 

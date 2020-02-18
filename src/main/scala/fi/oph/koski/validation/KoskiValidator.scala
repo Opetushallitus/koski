@@ -651,8 +651,11 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   private def validateSanallinenArviointi: PartialFunction[Suoritus, HttpStatus] = {
     case o: NuortenPerusopetuksenOppiaineenSuoritus =>
       val arvioituSanallisesti = o.viimeisinArvosana.exists(SanallinenPerusopetuksenOppiaineenArviointi.valinnaisilleSallitutArvosanat.contains)
+      val eiArvioituSanallisesti = o.viimeisinArvosana.isDefined && !arvioituSanallisesti
       if (arvioituSanallisesti && !o.yksilöllistettyOppimäärä && (o.koulutusmoduuli.pakollinen || o.koulutusmoduuli.laajuus.exists(_.arvo >= 2))) {
         KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle(s"Arviointi ${o.viimeisinArviointi.map(_.arvosana.koodiarvo).mkString} on sallittu vain jos oppimäärä on yksilöllistetty tai valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia")
+      } else if (eiArvioituSanallisesti && !o.yksilöllistettyOppimäärä && !o.koulutusmoduuli.pakollinen && o.koulutusmoduuli.laajuus.exists(_.arvo < 2)) {
+        KoskiErrorCategory.badRequest.validation.arviointi.eiSallittuSuppealleValinnaiselle()
       } else {
         HttpStatus.ok
       }
