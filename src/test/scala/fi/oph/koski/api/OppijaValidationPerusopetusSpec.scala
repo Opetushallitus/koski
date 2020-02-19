@@ -219,6 +219,30 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
         }
       }
 
+      "4-10" - {
+        "Kielletty valinnaiselle valtakunnalliselle oppiaineelle, jonka laajuus on alle kaksi vuosiviikkotuntia" in {
+          val valinnainenLaajuusAlle2 = suoritus(
+            oppiaine("BI").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1.9))
+          ).copy(arviointi = arviointi(9))
+
+          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(valinnainenLaajuusAlle2)))))) {
+            verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.arviointi.eiSallittuSuppealleValinnaiselle(
+
+            ))
+          }
+        }
+
+        "Sallittu valinnaiselle valtakunnalliselle oppiaineelle, jonka laajuus on kaksi vuosiviikkotuntia" in {
+          val valinnainenLaajuus2 = suoritus(
+            oppiaine("BI").copy(pakollinen = false, laajuus = vuosiviikkotuntia(2))
+          ).copy(arviointi = arviointi(9))
+
+          putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(valinnainenLaajuus2)))))) {
+            verifyResponseStatusOk()
+          }
+        }
+      }
+
       "Opinto-ohjaus (OP) oppiaineena" - {
         "Sallitaan aina arvosana S" in {
           val opinto_ohjaus_S = suoritus(oppiaine("OP")).copy(arviointi = hyväksytty)

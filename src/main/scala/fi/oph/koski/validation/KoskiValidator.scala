@@ -642,19 +642,23 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       opinto_ohjaus || kieliaine_arvosanalla_s || paikallinen_laajuus_alle_2_tai_arvosana_s
     }
 
-    val validateSanallinenArviointi: PartialFunction[Suoritus, HttpStatus] = { case o: NuortenPerusopetuksenOppiaineenSuoritus =>
-      val arvioituSanallisesti = o.viimeisinArvosana.exists(SanallinenPerusopetuksenOppiaineenArviointi.valinnaisilleSallitutArvosanat.contains)
-      if (arvioituSanallisesti && !o.yksilöllistettyOppimäärä && (o.koulutusmoduuli.pakollinen || o.koulutusmoduuli.laajuus.exists(_.arvo >= 2))) {
-        KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle(s"Arviointi ${o.viimeisinArviointi.map(_.arvosana.koodiarvo).mkString} on sallittu vain jos oppimäärä on yksilöllistetty tai valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia")
-      } else {
-        HttpStatus.ok
-      }
-    }
-
     HttpStatus.fold(oppimäärä.osasuoritusLista
       .filterNot(erikoistapaus)
       .collect(validateSanallinenArviointi)
     )
+  }
+
+  private def validateSanallinenArviointi: PartialFunction[Suoritus, HttpStatus] = {
+    case o: NuortenPerusopetuksenOppiaineenSuoritus =>
+      val arvioituSanallisesti = o.viimeisinArvosana.exists(SanallinenPerusopetuksenOppiaineenArviointi.valinnaisilleSallitutArvosanat.contains)
+      val eiArvioituSanallisesti = o.viimeisinArvosana.isDefined && !arvioituSanallisesti
+      if (arvioituSanallisesti && !o.yksilöllistettyOppimäärä && (o.koulutusmoduuli.pakollinen || o.koulutusmoduuli.laajuus.exists(_.arvo >= 2))) {
+        KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle(s"Arviointi ${o.viimeisinArviointi.map(_.arvosana.koodiarvo).mkString} on sallittu vain jos oppimäärä on yksilöllistetty tai valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia")
+      } else if (eiArvioituSanallisesti && !o.yksilöllistettyOppimäärä && !o.koulutusmoduuli.pakollinen && o.koulutusmoduuli.laajuus.exists(_.arvo < 2)) {
+        KoskiErrorCategory.badRequest.validation.arviointi.eiSallittuSuppealleValinnaiselle()
+      } else {
+        HttpStatus.ok
+      }
   }
 
   private def validateOppiaineet(suoritus: Suoritus) = suoritus match {
