@@ -13,7 +13,7 @@ import scala.concurrent.duration._
 
 class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(implicit cacheInvalidator: CacheManager) extends JsonOrganisaatioRepository(koodisto) {
   private val hierarkiaCache = KeyValueCache[String, List[OrganisaatioHierarkia]](
-    RefreshingCache("OrganisaatioRepository.hierarkia", 1.hour, 15000),
+    RefreshingCache("OrganisaatioRepository.hierarkia", 6.hour, 15000),
     fetch(_).organisaatiot.map(convertOrganisaatio)
   )
 
@@ -33,12 +33,12 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(i
   )
 
   private val varhaiskasvatusHierarkiatCache = SingleValueCache[List[OrganisaatioHierarkia]](
-    RefreshingCache("OrganisaatioRepository.varhaiskasvatusHierarkiat", 1.hour, 3),
+    RefreshingCache("OrganisaatioRepository.varhaiskasvatusHierarkiat", 6.hour, 3),
     uncachedVarhaiskasvatusHierarkiat _
   )
 
   private val varhaiskasvatusToimipisteet = SingleValueCache[List[OrganisaatioPalveluOrganisaatio]](
-    RefreshingCache("OrganisaatioRepository.varhaiskasvatusToimipisteet", 1.hour, 3),
+    RefreshingCache("OrganisaatioRepository.varhaiskasvatusToimipisteet", 6.hour, 3),
     uncachedFindAllVarhaiskasvatusToimipisteet _
   )
 
