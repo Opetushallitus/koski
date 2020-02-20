@@ -95,6 +95,8 @@ case class AikuistenPerusopetuksenOppimääränSuoritus(
   suorituskieli: Koodistokoodiviite,
   @Tooltip("Mahdolliset muut suorituskielet.")
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
+  @Tooltip("Osallistuminen perusopetusta täydentävän saamen/romanikielen/opiskelijan oman äidinkielen opiskeluun")
+  omanÄidinkielenOpinnot: Option[OmanÄidinkielenOpinnotLaajuusKursseina] = None,
   override val osasuoritukset: Option[List[AikuistenPerusopetuksenOppiaineenSuoritus]] = None,
   @Tooltip("Mahdolliset todistuksella näkyvät lisätiedot.")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,

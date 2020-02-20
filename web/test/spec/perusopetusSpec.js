@@ -405,6 +405,9 @@ describe('Perusopetus', function() {
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
           'Suoritustapa Erityinen tutkinto\n' +
           'Suorituskieli suomi\n' +
+          'Oman äidinkielen opinnot Arvosana 8\n' +
+          'Kieli saame, lappi\n' +
+          'Laajuus 1 kurssia\n'  +
           'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
       })
       it('näyttää oppiaineiden arvosanat', function() {
@@ -629,6 +632,9 @@ describe('Perusopetus', function() {
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
           'Suoritustapa Erityinen tutkinto\n' +
           'Suorituskieli suomi\n' +
+          'Oman äidinkielen opinnot Arvosana 8\n' +
+          'Kieli saame, lappi\n' +
+          'Laajuus 1 kurssia\n' +
           'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
       })
       it('näyttää oppiaineiden arvosanat', function() {

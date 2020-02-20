@@ -16,6 +16,8 @@ case class AikuistenPerusopetuksenAlkuvaiheenSuoritus(
   suorituskieli: Koodistokoodiviite,
   @Tooltip("Mahdolliset muut suorituskielet.")
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
+  @Tooltip("Osallistuminen perusopetusta täydentävän saamen/romanikielen/opiskelijan oman äidinkielen opiskeluun")
+  omanÄidinkielenOpinnot: Option[OmanÄidinkielenOpinnotLaajuusKursseina] = None,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[AikuistenPerusopetuksenAlkuvaiheenOppiaineenSuoritus]] = None,

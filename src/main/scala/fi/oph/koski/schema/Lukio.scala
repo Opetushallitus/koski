@@ -73,6 +73,8 @@ case class LukionOppimääränSuoritus(
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   @Description("Oppimäärän suorituksen opetuskieli/suorituskieli. Rahoituksen laskennassa käytettävä tieto.")
   suorituskieli: Koodistokoodiviite,
+  @Tooltip("Osallistuminen lukiokoulutusta täydentävän saamen/romanikielen/opiskelijan oman äidinkielen opiskeluun")
+  omanÄidinkielenOpinnot: Option[OmanÄidinkielenOpinnotLaajuusKursseina] = None,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[LukionOppimääränOsasuoritus]],
@@ -331,3 +333,12 @@ case class LukionOpiskeluoikeusjakso(
   @KoodistoKoodiarvo("6")
   override val opintojenRahoitus: Option[Koodistokoodiviite] = None
 ) extends KoskiOpiskeluoikeusjakso
+
+case class OmanÄidinkielenOpinnotLaajuusKursseina(
+  arvosana: Koodistokoodiviite,
+  arviointipäivä: Option[LocalDate],
+  @Description("Mikä kieli on kyseessä")
+  @KoodistoUri("kielivalikoima")
+  kieli: Koodistokoodiviite,
+  laajuus: Option[LaajuusKursseissa]
+) extends NumeerinenYleissivistävänKoulutuksenArviointi

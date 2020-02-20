@@ -206,6 +206,8 @@ case class PerusopetuksenVuosiluokanSuoritus(
   suorituskieli: Koodistokoodiviite,
   @Tooltip("Mahdolliset muut suorituskielet.")
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
+  @Tooltip("Osallistuminen perusopetusta täydentävän saamen kielen/romanikielen/oppilaan oman äidinkielen opiskeluun")
+  omanÄidinkielenOpinnot: Option[OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina] = None,
   @Description("Oppilaan kotimaisten kielten kielikylvyn kieli.")
   @Tooltip("Oppilaan kotimaisten kielten kielikylvyn kieli.")
   @KoodistoUri("kieli")
@@ -264,6 +266,8 @@ case class NuortenPerusopetuksenOppimääränSuoritus(
   suorituskieli: Koodistokoodiviite,
   @Tooltip("Mahdolliset muut suorituskielet.")
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
+  @Tooltip("Osallistuminen perusopetusta täydentävän saamen kielen/romanikielen/oppilaan oman äidinkielen opiskeluun")
+  omanÄidinkielenOpinnot: Option[OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina] = None,
   override val osasuoritukset: Option[List[OppiaineenTaiToiminta_AlueenSuoritus]] = None,
   @Description("Vapaamuotoinen tekstikenttä")
   @Tooltip("Todistuksella näkyvät lisätiedot. Esimerkiksi merkintä siitä, että oppilas on opiskellut tähdellä (*) merkityt oppiaineet yksilöllistetyn oppimäärän mukaan.")
@@ -392,6 +396,15 @@ case class PerusopetuksenKäyttäytymisenArviointi(
 ) extends YleissivistävänKoulutuksenArviointi with SanallinenArviointi {
   def arviointipäivä = päivä
 }
+
+case class OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina(
+  arvosana: Koodistokoodiviite,
+  arviointipäivä: Option[LocalDate],
+  @Description("Mikä kieli on kyseessä")
+  @KoodistoUri("kielivalikoima")
+  kieli: Koodistokoodiviite,
+  laajuus: Option[LaajuusVuosiviikkotunneissa]
+) extends NumeerinenYleissivistävänKoulutuksenArviointi
 
 object PerusopetuksenOppiaineenArviointi {
   def apply(arvosana: String, kuvaus: Option[LocalizedString] = None) = new SanallinenPerusopetuksenOppiaineenArviointi(

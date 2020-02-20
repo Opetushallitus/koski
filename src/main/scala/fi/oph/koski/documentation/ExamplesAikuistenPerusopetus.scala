@@ -100,6 +100,7 @@ object ExamplesAikuistenPerusopetus {
     AikuistenPerusopetuksenOppimääränSuoritus(
       koulutusmoduuli = koulutus,
       suorituskieli = suomenKieli,
+      omanÄidinkielenOpinnot = ExamplesLukio.omanÄidinkielenOpinnotSaame,
       toimipiste = jyväskylänNormaalikoulu,
       vahvistus = vahvistusPaikkakunnalla(),
       suoritustapa = suoritustapaErityinenTutkinto,
@@ -230,6 +231,7 @@ object ExamplesAikuistenPerusopetus {
   def aikuistenPerusopetuksenAlkuvaiheenSuoritus = AikuistenPerusopetuksenAlkuvaiheenSuoritus(
     aikuistenPerusopetuksenAlkuvaihe2017,
     suorituskieli = suomenKieli,
+    omanÄidinkielenOpinnot = ExamplesLukio.omanÄidinkielenOpinnotSaame,
     toimipiste = jyväskylänNormaalikoulu,
     vahvistus = vahvistusPaikkakunnalla(),
     suoritustapa = suoritustapaErityinenTutkinto,
