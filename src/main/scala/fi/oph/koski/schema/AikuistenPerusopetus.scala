@@ -177,11 +177,17 @@ case class AikuistenPerusopetuksenVierasTaiToinenKotimainenKieli(
   kuvaus: Option[LocalizedString] = None
 ) extends PerusopetuksenVierasTaiToinenKotimainenKieli with AikuistenPerusopetuksenKoodistostaLöytyväOppiaine
 
+case class AikuistenPerusopetuksenOppiaineenArviointi
+(arvosana: Koodistokoodiviite,
+ @Description("Päivämäärä, jolloin arviointi on annettu. Muoto YYYY-MM-DD")
+ @Title("Arviointipäivä")
+ arviointipäivä: Option[LocalDate] = None) extends YleissivistävänKoulutuksenArviointi
+
 case class AikuistenPerusopetuksenKurssinSuoritus(
   @Description("Aikuisten perusopetuksen kurssin tunnistetiedot")
   koulutusmoduuli: AikuistenPerusopetuksenKurssi,
   @FlattenInUI
-  arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
+  arviointi: Option[List[AikuistenPerusopetuksenOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("aikuistenperusopetuksenkurssi")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "aikuistenperusopetuksenkurssi", koodistoUri = "suorituksentyyppi"),
@@ -260,3 +266,10 @@ case class AikuistenPerusopetuksenOpiskeluoikeusjakso(
   @KoodistoKoodiarvo("6")
   override val opintojenRahoitus: Option[Koodistokoodiviite] = None
 ) extends KoskiOpiskeluoikeusjakso
+
+object AikuistenPerusopetuksenOppiaineenArviointi {
+  def apply(arvosana: Int) = new AikuistenPerusopetuksenOppiaineenArviointi(
+    arvosana = Koodistokoodiviite(koodiarvo = arvosana.toString, koodistoUri = "arviointiasteikkoyleissivistava"),
+    arviointipäivä = None
+  )
+}

@@ -51,7 +51,7 @@ case class AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus(
   @Description("Aikuisten perusopetuksen alkuvaiheen kurssin tunnistetiedot")
   koulutusmoduuli: AikuistenPerusopetuksenAlkuvaiheenKurssi,
   @FlattenInUI
-  arviointi: Option[List[PerusopetuksenOppiaineenArviointi]] = None,
+  arviointi: Option[List[AikuistenPerusopetuksenOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("aikuistenperusopetuksenalkuvaiheenkurssi")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "aikuistenperusopetuksenalkuvaiheenkurssi", koodistoUri = "suorituksentyyppi"),

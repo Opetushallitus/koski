@@ -13,6 +13,7 @@ import fi.oph.koski.schema._
 object PerusopetusExampleData {
   def arviointi(arvosana: Int): Some[List[PerusopetuksenOppiaineenArviointi]] = Some(List(PerusopetuksenOppiaineenArviointi(arvosana)))
   def arviointi(arvosana: String, kuvaus: Option[LocalizedString] = None): Some[List[PerusopetuksenOppiaineenArviointi]] = Some(List(PerusopetuksenOppiaineenArviointi(arvosana, kuvaus)))
+  def aikuistenArviointi(arvosana: Int): Some[List[AikuistenPerusopetuksenOppiaineenArviointi]] = Some(List(AikuistenPerusopetuksenOppiaineenArviointi(arvosana)))
 
   val hyväksytty = Some(List(PerusopetuksenOppiaineenArviointi("S")))
   val osallistunut = Some(List(PerusopetuksenOppiaineenArviointi("O")))

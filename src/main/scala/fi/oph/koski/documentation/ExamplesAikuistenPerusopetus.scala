@@ -197,17 +197,17 @@ object ExamplesAikuistenPerusopetus {
 
   def kurssinSuoritus2015(koodiarvo: String, laajuus: LaajuusVuosiviikkotunneissaTaiKursseissa = LaajuusKursseissa(1)) = AikuistenPerusopetuksenKurssinSuoritus(
     ValtakunnallinenAikuistenPerusopetuksenKurssi2015(Koodistokoodiviite(koodiarvo, "aikuistenperusopetuksenkurssit2015"), Some(laajuus)),
-    arviointi = arviointi(9)
+    arviointi = aikuistenArviointi(9)
   )
 
   def kurssinSuoritus2017(koodiarvo: String, laajuus: LaajuusVuosiviikkotunneissaTaiKursseissa = LaajuusKursseissa(1)) = AikuistenPerusopetuksenKurssinSuoritus(
     ValtakunnallinenAikuistenPerusopetuksenPäättövaiheenKurssi2017(Koodistokoodiviite(koodiarvo, "aikuistenperusopetuksenpaattovaiheenkurssit2017"), Some(laajuus)),
-    arviointi = arviointi(9)
+    arviointi = aikuistenArviointi(9)
   )
 
   def kurssinSuoritusPaikallinen(koodiarvo: String, kuvaus: String, laajuus: LaajuusVuosiviikkotunneissaTaiKursseissa = LaajuusKursseissa(1)) = AikuistenPerusopetuksenKurssinSuoritus(
     PaikallinenAikuistenPerusopetuksenKurssi(PaikallinenKoodi(koodiarvo, kuvaus), Some(laajuus)),
-    arviointi = arviointi(9)
+    arviointi = aikuistenArviointi(9)
   )
 
   def aikuistenPerusopetuksenAlkuvaihe = {
@@ -299,12 +299,12 @@ object ExamplesAikuistenPerusopetus {
 
   def alkuvaiheenKurssinSuoritus(koodiarvo: String, laajuus: LaajuusVuosiviikkotunneissaTaiKursseissa = LaajuusKursseissa(1)) = AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus(
     ValtakunnallinenAikuistenPerusopetuksenAlkuvaiheenKurssi2017(Koodistokoodiviite(koodiarvo, "aikuistenperusopetuksenalkuvaiheenkurssit2017"), Some(laajuus)),
-    arviointi = arviointi(9)
+    arviointi = aikuistenArviointi(9)
   )
 
   def alkuvaiheenPaikallisenKurssinSuoritus(koodiarvo: String, nimi: String, laajuus: LaajuusVuosiviikkotunneissaTaiKursseissa = LaajuusKursseissa(1)) = AikuistenPerusopetuksenAlkuvaiheenKurssinSuoritus(
     PaikallinenAikuistenPerusopetuksenAlkuvaiheenKurssi(PaikallinenKoodi(koodiarvo, nimi), Some(laajuus)),
-    arviointi = arviointi(9)
+    arviointi = aikuistenArviointi(9)
   )
 
   def äidinkieli(kieli: String, diaarinumero: Option[String] = None) = AikuistenPerusopetuksenÄidinkieliJaKirjallisuus(

@@ -12,6 +12,7 @@ import {
 } from '../suoritus/Koulutusmoduuli'
 import {FootnoteHint} from '../components/footnote'
 import {eiLasketaKokonaispistemäärään} from '../dia/DIA'
+import {DateEditor} from '../editor/DateEditor'
 
 export class KurssiEditor extends React.Component {
   constructor(props) {
