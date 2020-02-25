@@ -341,4 +341,4 @@ case class OmanÄidinkielenOpinnotLaajuusKursseina(
   @KoodistoUri("kielivalikoima")
   kieli: Koodistokoodiviite,
   laajuus: Option[LaajuusKursseissa]
-) extends NumeerinenYleissivistävänKoulutuksenArviointi
+) extends OmanÄidinkielenArviointi

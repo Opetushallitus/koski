@@ -58,3 +58,8 @@ trait SanallinenYleissivistävänKoulutuksenArviointi extends YleissivistävänK
   @KoodistoKoodiarvo("O")
   def arvosana: Koodistokoodiviite
 }
+
+trait OmanÄidinkielenArviointi extends NumeerinenYleissivistävänKoulutuksenArviointi {
+  @KoodistoKoodiarvo("O")
+  override def arvosana: Koodistokoodiviite
+}

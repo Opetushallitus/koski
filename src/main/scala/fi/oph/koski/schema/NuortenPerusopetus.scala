@@ -404,7 +404,7 @@ case class OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina(
   @KoodistoUri("kielivalikoima")
   kieli: Koodistokoodiviite,
   laajuus: Option[LaajuusVuosiviikkotunneissa]
-) extends NumeerinenYleissivistävänKoulutuksenArviointi
+) extends OmanÄidinkielenArviointi
 
 object PerusopetuksenOppiaineenArviointi {
   def apply(arvosana: String, kuvaus: Option[LocalizedString] = None) = new SanallinenPerusopetuksenOppiaineenArviointi(
