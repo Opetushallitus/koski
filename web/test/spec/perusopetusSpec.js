@@ -623,6 +623,20 @@ describe('Perusopetus', function() {
           })
         })
       })
+
+      describe('Oman äidinkielen opinnot', function() {
+        before(
+          editor.edit
+        )
+
+        it('Näyttää arvosananvalinnat oikeassa järjestyksessä', function() {
+          expect(Page(S('.omanÄidinkielenOpinnot')).getInputOptions('.arvosana .dropdown')).to.deep.equal([
+            '4', '5', '6', '7', '8', '9', '10', 'O'
+          ])
+        })
+
+        after(editor.cancelChanges)
+      })
     })
 
     describe('Alkuvaiheen opinnot', function() {
