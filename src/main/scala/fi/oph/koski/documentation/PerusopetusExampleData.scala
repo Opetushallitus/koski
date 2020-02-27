@@ -33,6 +33,13 @@ object PerusopetusExampleData {
   val suoritustapaErityinenTutkinto = Koodistokoodiviite("erityinentutkinto", "perusopetuksensuoritustapa")
   val perusopetuksenOppimäärä = Koodistokoodiviite("perusopetus", "perusopetuksenoppimaara")
 
+  val omanÄidinkielenOpinnotSaame = Some(OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina(
+    arvosana = Koodistokoodiviite(koodiarvo = "8", koodistoUri = "arviointiasteikkoyleissivistava"),
+    arviointipäivä = None,
+    kieli = Kielivalikoima.saame,
+    laajuus = Some(LaajuusVuosiviikkotunneissa(1))
+  ))
+
   def paikallinenOppiaine(aine: String, nimi: String, kuvaus: String, laajuus: Option[LaajuusVuosiviikkotunneissa] = None) =
     NuortenPerusopetuksenPaikallinenOppiaine(tunniste = PaikallinenKoodi(koodiarvo = aine, nimi = nimi), laajuus = laajuus, kuvaus = kuvaus)
   def oppiaine(aine: String, laajuus: Option[LaajuusVuosiviikkotunneissa] = None) = MuuNuortenPerusopetuksenOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), laajuus = laajuus)
@@ -193,7 +200,8 @@ object PerusopetusExampleData {
     koulutusmoduuli = perusopetus,
     toimipiste = jyväskylänNormaalikoulu,
     suoritustapa = suoritustapaKoulutus,
-    suorituskieli = suomenKieli
+    suorituskieli = suomenKieli,
+    omanÄidinkielenOpinnot = omanÄidinkielenOpinnotSaame
   )
 
   val perusopetuksenOppimääränSuoritus = NuortenPerusopetuksenOppimääränSuoritus(

@@ -41,6 +41,8 @@ case class PerusopetukseenValmistavanOpetuksenSuoritus(
   suorituskieli: Koodistokoodiviite,
   @Tooltip("Mahdolliset muut suorituskielet.")
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
+  @Tooltip("Osallistuminen perusopetusta täydentävän oppilaan oman äidinkielen opiskeluun perusopetukseen valmistavan opetuksen aikana")
+  omanÄidinkielenOpinnot: Option[OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina] = None,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[PerusopetukseenValmistavanOpetuksenOsasuoritus]],

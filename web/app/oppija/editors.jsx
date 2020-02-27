@@ -1,5 +1,6 @@
 import * as R from 'ramda'
 import {LaajuusEditor} from '../suoritus/LaajuusEditor'
+import {OmaÄidinkieliEditor} from '../suoritus/OmaAidinkieliEditor'
 import {VahvistusEditor} from '../suoritus/VahvistusEditor'
 import {KoulutusmoduuliEditor} from '../suoritus/KoulutusmoduuliEditor'
 import {PäivämääräväliEditor} from '../date/PaivamaaravaliEditor'
@@ -36,6 +37,7 @@ const oppijaEditors = {
   'organisaatiohenkilo': OrganisaatioHenkilöEditor,
   'peruste': PerusteEditor,
   'osaamisentunnustaminen': OsaaminenTunnustettuEditor,
+  'omanaidinkielenarviointi': OmaÄidinkieliEditor,
   // Perusopetus
   'perusopetuksenoppiaineensuoritus': PerusopetuksenOppiaineRowEditor,
   'perusopetuksenlisaopetuksenoppiaineensuoritus': PerusopetuksenOppiaineRowEditor,

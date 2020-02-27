@@ -207,6 +207,13 @@ object ExamplesLukio {
     )
   }
 
+  val omanÄidinkielenOpinnotSaame = Some(OmanÄidinkielenOpinnotLaajuusKursseina(
+    arvosana = Koodistokoodiviite(koodiarvo = "8", koodistoUri = "arviointiasteikkoyleissivistava"),
+    arviointipäivä = None,
+    kieli = Kielivalikoima.saame,
+    laajuus = Some(LaajuusKursseissa(1))
+  ))
+
   val aineopiskelija =
     LukionOpiskeluoikeus(
       versionumero = None,
@@ -310,6 +317,7 @@ object ExamplesLukio {
           koulutusmoduuli = lukionOppimäärä,
           oppimäärä = nuortenOpetussuunnitelma,
           suorituskieli = suomenKieli,
+          omanÄidinkielenOpinnot = omanÄidinkielenOpinnotSaame,
           vahvistus = None,
           toimipiste = jyväskylänNormaalikoulu,
           todistuksellaNäkyvätLisätiedot = None,

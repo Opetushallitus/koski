@@ -1304,6 +1304,11 @@
   "Varhaiskasvatus ostopalveluna": "Varhaiskasvatus ostopalveluna",
   "description:Ostopalvelu tai palveluseteli" : "Ostopalvelu tai palveluseteli",
   "Päiväkodin esiopetus ostopalveluna tai palvelusetelinä": "Päiväkodin esiopetus ostopalveluna tai palvelusetelinä",
-  "Esiopetus ostetaan oman organisaation ulkopuolelta": "Esiopetus ostetaan oman organisaation ulkopuolelta"
+  "Esiopetus ostetaan oman organisaation ulkopuolelta": "Esiopetus ostetaan oman organisaation ulkopuolelta",
+  "tooltip:Osallistuminen perusopetusta täydentävän saamen/romanikielen/opiskelijan oman..." : "Osallistuminen perusopetusta täydentävän saamen/romanikielen/opiskelijan oman äidinkielen opiskeluun",
+  "tooltip:Osallistuminen lukiokoulutusta täydentävän saamen/romanikielen/opiskelijan oman..." : "Osallistuminen lukiokoulutusta täydentävän saamen/romanikielen/opiskelijan oman äidinkielen opiskeluun",
+  "tooltip:Osallistuminen perusopetusta täydentävän oppilaan oman..." : "Osallistuminen perusopetusta täydentävän oppilaan oman äidinkielen opiskeluun perusopetukseen valmistavan opetuksen aikana",
+  "tooltip:Osallistuminen perusopetusta täydentävän saamen kielen/romanikielen/oppilaan..." : "Osallistuminen perusopetusta täydentävän saamen kielen/romanikielen/oppilaan oman äidinkielen opiskeluun",
+  "Oman äidinkielen opinnot" : "Oman äidinkielen opinnot"
 }
 
