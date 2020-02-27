@@ -1,5 +1,7 @@
 package fi.oph.koski.schema
 
+import java.time.LocalDate
+
 import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation.{DefaultValue, Description, Title}
@@ -62,4 +64,21 @@ trait SanallinenYleissivistävänKoulutuksenArviointi extends YleissivistävänK
 trait OmanÄidinkielenArviointi extends NumeerinenYleissivistävänKoulutuksenArviointi {
   @KoodistoKoodiarvo("O")
   override def arvosana: Koodistokoodiviite
+  @Description("Mikä kieli on kyseessä")
+  @KoodistoUri("kielivalikoima")
+  def kieli: Koodistokoodiviite
 }
+
+case class OmanÄidinkielenOpinnotLaajuusKursseina(
+  arvosana: Koodistokoodiviite,
+  arviointipäivä: Option[LocalDate],
+  kieli: Koodistokoodiviite,
+  laajuus: Option[LaajuusKursseissa]
+) extends OmanÄidinkielenArviointi
+
+case class OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina(
+  arvosana: Koodistokoodiviite,
+  arviointipäivä: Option[LocalDate],
+  kieli: Koodistokoodiviite,
+  laajuus: Option[LaajuusVuosiviikkotunneissa]
+) extends OmanÄidinkielenArviointi

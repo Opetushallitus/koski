@@ -334,11 +334,3 @@ case class LukionOpiskeluoikeusjakso(
   override val opintojenRahoitus: Option[Koodistokoodiviite] = None
 ) extends KoskiOpiskeluoikeusjakso
 
-case class OmanÄidinkielenOpinnotLaajuusKursseina(
-  arvosana: Koodistokoodiviite,
-  arviointipäivä: Option[LocalDate],
-  @Description("Mikä kieli on kyseessä")
-  @KoodistoUri("kielivalikoima")
-  kieli: Koodistokoodiviite,
-  laajuus: Option[LaajuusKursseissa]
-) extends OmanÄidinkielenArviointi

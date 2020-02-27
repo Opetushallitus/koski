@@ -397,15 +397,6 @@ case class PerusopetuksenKäyttäytymisenArviointi(
   def arviointipäivä = päivä
 }
 
-case class OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina(
-  arvosana: Koodistokoodiviite,
-  arviointipäivä: Option[LocalDate],
-  @Description("Mikä kieli on kyseessä")
-  @KoodistoUri("kielivalikoima")
-  kieli: Koodistokoodiviite,
-  laajuus: Option[LaajuusVuosiviikkotunneissa]
-) extends OmanÄidinkielenArviointi
-
 object PerusopetuksenOppiaineenArviointi {
   def apply(arvosana: String, kuvaus: Option[LocalizedString] = None) = new SanallinenPerusopetuksenOppiaineenArviointi(
     arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"),
