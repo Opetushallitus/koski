@@ -58,6 +58,7 @@
        <cve>CVE-2014-3488</cve>
        <cve>CVE-2015-2156</cve>
        <cve>CVE-2019-16869</cve>
+       <cve>CVE-2019-10797</cve>
     </suppress>
     <suppress until="2020-04-01Z">
        <notes><![CDATA[
@@ -67,6 +68,7 @@
        <cve>CVE-2014-3488</cve>
        <cve>CVE-2015-2156</cve>
        <cve>CVE-2019-16869</cve>
+       <cve>CVE-2019-10797</cve>
     </suppress>
     <suppress until="2020-04-01Z">
        <notes><![CDATA[
@@ -125,15 +127,22 @@
     <cve>CVE-2019-20445</cve>
   </suppress>
   <suppress>
-    <notes>HttpObjectDecoder not used in project</notes>
+    <notes>org.wso2.transport.http.netty not used in project</notes>
+    <gav regex="true">^io\.netty:netty.*:.*$</gav>
+    <cve>CVE-2019-10797</cve>
+  </suppress>
+  <suppress>
+    <notes>HttpObjectDecoder and org.wso2.transport.http.netty not used in project</notes>
     <gav regex="true">^com\.typesafe\.netty:netty-reactive-streams-http:.*$</gav>
     <cve>CVE-2019-20444</cve>
     <cve>CVE-2019-20445</cve>
+    <cve>CVE-2019-10797</cve>
   </suppress>
   <suppress>
-    <notes>HttpObjectDecoder not used in project</notes>
+    <notes>HttpObjectDecoder and org.wso2.transport.http.netty not used in project</notes>
     <gav regex="true">^com\.typesafe\.netty:netty-reactive-streams:.*$</gav>
     <cve>CVE-2019-20444</cve>
     <cve>CVE-2019-20445</cve>
+    <cve>CVE-2019-10797</cve>
   </suppress>
 </suppressions>
