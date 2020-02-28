@@ -4,6 +4,7 @@ import fi.oph.koski.http.{ErrorCategory, HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.{LoggerWithContext, Logging}
 import fi.oph.koski.servlet.RequestDescriber.logSafeDescription
+import org.eclipse.jetty.http.BadMessageException
 import org.scalatra._
 
 import scala.reflect.runtime.{universe => ru}
@@ -40,6 +41,8 @@ trait KoskiBaseServlet extends ScalatraServlet with Logging {
   }
 
   error {
+    case e: BadMessageException =>
+      haltWithStatus(KoskiErrorCategory.badRequest(e.getReason))
     case InvalidRequestException(detail) =>
       haltWithStatus(detail)
     case e: Throwable =>
