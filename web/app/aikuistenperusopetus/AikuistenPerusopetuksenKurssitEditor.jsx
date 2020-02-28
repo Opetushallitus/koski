@@ -111,4 +111,4 @@ const customAlternativesFn = (oppiaine, kurssiPrototypes, oppiaineKoodisto) => {
   return Bacon.combineAsArray(kurssiPrototypes.map(fetchAlternatives)).last().map(R.unnest)
 }
 
-export const isAikuistenPerusopetuksenKurssi = kurssi => kurssi.value.classes.includes('aikuistenperusopetuksenkurssinsuoritus')
+export const isAikuistenPerusopetuksenKurssi = kurssi => kurssi.value.classes.includes('aikuistenperusopetuksenkurssinsuoritus') || kurssi.value.classes.includes('aikuistenperusopetuksenalkuvaiheenkurssinsuoritus')
