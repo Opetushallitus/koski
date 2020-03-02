@@ -119,6 +119,11 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport {
     }
   }
 
+  def requireSession = getUser match {
+    case Left(error) => haltWithStatus(error)
+    case _ =>
+  }
+
   def localLogin(user: AuthenticationUser, lang: Option[String] = None): AuthenticationUser = {
     val fakeServiceTicket: String = "koski-" + UUID.randomUUID()
     application.koskiSessionRepository.store(fakeServiceTicket, user, LogUserContext.clientIpFromRequest(request), LogUserContext.userAgent(request))

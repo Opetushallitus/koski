@@ -24,23 +24,7 @@ class KäyttöoikeusRepository(organisaatioRepository: OrganisaatioRepository, d
           k match {
             case k: KäyttöoikeusGlobal => List(k)
             case k: KäyttöoikeusViranomainen => List(k)
-            case k: KäyttöoikeusOrg =>
-              val organisaatioHierarkia = organisaatioRepository.getOrganisaatioHierarkia(k.organisaatio.oid)
-              val flattened = OrganisaatioHierarkia.flatten(organisaatioHierarkia.toList)
-
-              if (flattened.isEmpty) {
-                logger.warn(s"Käyttäjän $username käyttöoikeus $k kohdistuu organisaatioon ${k.organisaatio.oid}, jota ei löydy")
-              }
-
-              val käyttöoikeudet = flattened.map { org =>
-                k.copy(organisaatio = org.toOrganisaatio, juuri = org.oid == k.organisaatio.oid, oppilaitostyyppi = org.oppilaitostyyppi)
-              }
-
-              val hierarkianUlkopuolisetOikeudet = organisaatioHierarkia.toList.flatMap(hierarkianUlkopuolisetKäyttöoikeudet(k, _)).filterNot { käyttöoikeus =>
-                käyttöoikeudet.exists(_.organisaatio.oid == käyttöoikeus.ulkopuolinenOrganisaatio.oid)
-              }
-
-              käyttöoikeudet ++ hierarkianUlkopuolisetOikeudet
+            case k: KäyttöoikeusOrg => organisaatioKäyttöoikeudet(username, k)
           }
         }
       case None =>
@@ -49,6 +33,25 @@ class KäyttöoikeusRepository(organisaatioRepository: OrganisaatioRepository, d
         }
         Set.empty
     }
+  }
+
+  private def organisaatioKäyttöoikeudet(username: String, käyttöoikeus: KäyttöoikeusOrg) = {
+    val organisaatioHierarkia = organisaatioRepository.getOrganisaatioHierarkia(käyttöoikeus.organisaatio.oid)
+    val flattened = OrganisaatioHierarkia.flatten(organisaatioHierarkia.toList)
+
+    if (flattened.isEmpty) {
+      logger.warn(s"Käyttäjän $username käyttöoikeus $käyttöoikeus kohdistuu organisaatioon ${käyttöoikeus.organisaatio.oid}, jota ei löydy")
+    }
+
+    val käyttöoikeudet = flattened.map { org =>
+      käyttöoikeus.copy(organisaatio = org.toOrganisaatio, juuri = org.oid == käyttöoikeus.organisaatio.oid, oppilaitostyyppi = org.oppilaitostyyppi)
+    }
+
+    val hierarkianUlkopuolisetOikeudet = organisaatioHierarkia.toList.flatMap(hierarkianUlkopuolisetKäyttöoikeudet(käyttöoikeus, _)).filterNot { käyttöoikeus =>
+      käyttöoikeudet.exists(_.organisaatio.oid == käyttöoikeus.ulkopuolinenOrganisaatio.oid)
+    }
+
+    käyttöoikeudet ++ hierarkianUlkopuolisetOikeudet
   }
 
   private def hierarkianUlkopuolisetKäyttöoikeudet(k: KäyttöoikeusOrg, organisaatioHierarkia: OrganisaatioHierarkia) =
