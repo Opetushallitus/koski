@@ -13,7 +13,7 @@ import fi.oph.koski.util.FinnishDateFormat.{finnishDateFormat, finnishDateTimeFo
 
 object AmmatillinenTutkintoRaportti {
 
-  def buildRaportti(request: AmmatillinenSuoritusTiedotRequest, repository: AmmatillisenRaportitRepository): Seq[SuoritustiedotTarkistusRow] = {
+  def buildRaportti(request: AikajaksoRaporttiAikarajauksellaRequest, repository: AmmatillisenRaportitRepository): Seq[SuoritustiedotTarkistusRow] = {
     val data = repository.suoritustiedot(request.oppilaitosOid, OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo, "ammatillinentutkinto", request.alku, request.loppu)
     data.map(buildRow(request.oppilaitosOid, request.alku, request.loppu, request.osasuoritustenAikarajaus))
   }
@@ -85,13 +85,13 @@ object AmmatillinenTutkintoRaportti {
     )
   }
 
-  def filename(request: AmmatillinenSuoritusTiedotRequest): String =
+  def filename(request: AikajaksoRaporttiAikarajauksellaRequest): String =
     s"suoritustiedot_${request.oppilaitosOid}_${request.alku.toString.replaceAll("-", "")}-${request.loppu.toString.replaceAll("-", "")}.xlsx"
 
-  def title(request: AmmatillinenSuoritusTiedotRequest): String =
+  def title(request: AikajaksoRaporttiAikarajauksellaRequest): String =
     s"Suoritustiedot ${request.oppilaitosOid} ${finnishDateFormat.format(request.alku)} - ${finnishDateFormat.format(request.loppu)}"
 
-  def documentation(request: AmmatillinenSuoritusTiedotRequest, loadCompleted: LocalDateTime): String =
+  def documentation(request: AikajaksoRaporttiAikarajauksellaRequest, loadCompleted: LocalDateTime): String =
     s"""
        |Suoritustiedot (ammatillinen tutkinto)
        |Oppilaitos: ${request.oppilaitosOid}

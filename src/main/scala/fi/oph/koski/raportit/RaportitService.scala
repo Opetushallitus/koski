@@ -17,7 +17,7 @@ class RaportitService(application: KoskiApplication) {
     aikajaksoRaportti(request, AmmatillinenOpiskalijavuositiedotRaportti)
   }
 
-  def ammatillinenTutkintoSuoritustietojenTarkistus(request: AmmatillinenSuoritusTiedotRequest): OppilaitosRaporttiResponse = {
+  def ammatillinenTutkintoSuoritustietojenTarkistus(request: AikajaksoRaporttiAikarajauksellaRequest): OppilaitosRaporttiResponse = {
     OppilaitosRaporttiResponse(
       sheets = Seq(
         DataSheet("Opiskeluoikeudet", AmmatillinenTutkintoRaportti.buildRaportti(request, ammatillisenRaportitRepository), AmmatillinenTutkintoRaportti.columnSettings),
@@ -29,7 +29,7 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
-  def ammatillinenOsittainenSuoritustietojenTarkistus(request: AmmatillinenSuoritusTiedotRequest): OppilaitosRaporttiResponse = {
+  def ammatillinenOsittainenSuoritustietojenTarkistus(request: AikajaksoRaporttiAikarajauksellaRequest): OppilaitosRaporttiResponse = {
     OppilaitosRaporttiResponse(
       sheets = Seq(
         DataSheet("Opiskeluoikeudet", AmmatillinenOsittainenRaportti.buildRaportti(request, ammatillisenRaportitRepository), AmmatillinenOsittainenRaportti.columnSettings),
