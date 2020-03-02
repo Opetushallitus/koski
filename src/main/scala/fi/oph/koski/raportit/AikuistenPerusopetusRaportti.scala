@@ -5,13 +5,14 @@ import java.time.temporal.ChronoUnit
 
 import fi.oph.koski.db.GlobalExecutionContext
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.raportit.LukioRaporttiKurssitOrdering.lukioRaporttiKurssitOrdering
+import fi.oph.koski.raportit.YleissivistäväKurssitOrdering.yleissivistäväKurssitOrdering
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Futures
 
 import scala.concurrent.Future
 import scala.concurrent.duration._
+
 
 case class AikuistenPerusopetusRaportti(repository: AikuistenPerusopetusRaporttiRepository) extends GlobalExecutionContext {
   def build(
@@ -44,23 +45,23 @@ case class AikuistenPerusopetusRaportti(repository: AikuistenPerusopetusRaportti
 
   private def opetettavatOppiaineetJaNiidenKurssit(rows: Seq[AikuistenPerusopetusRaporttiRows]) = {
     rows.flatMap(oppianeetJaNiidenKurssit).groupBy(_.oppiaine).map { case (oppiaine, x) =>
-      LukioRaporttiOppiaineJaKurssit(oppiaine, x.flatMap(_.kurssit).distinct.sorted(lukioRaporttiKurssitOrdering))
-    }.toSeq.sorted(LukioRaporttiOppiaineetOrdering)
+      YleissivistäväRaporttiOppiaineJaKurssit(oppiaine, x.flatMap(_.kurssit).distinct.sorted(yleissivistäväKurssitOrdering))
+    }.toSeq.sorted(YleissivistäväOppiaineetOrdering)
   }
 
-  private def oppianeetJaNiidenKurssit(row: AikuistenPerusopetusRaporttiRows): Seq[LukioRaporttiOppiaineJaKurssit] = {
+  private def oppianeetJaNiidenKurssit(row: AikuistenPerusopetusRaporttiRows): Seq[YleissivistäväRaporttiOppiaineJaKurssit] = {
     if (isOppiaineenOppimäärä(row.päätasonSuoritus)) {
-      Seq(LukioRaporttiOppiaineJaKurssit(toOppiaine(row.päätasonSuoritus), row.osasuoritukset.map(toKurssi)))
+      Seq(YleissivistäväRaporttiOppiaineJaKurssit(toOppiaine(row.päätasonSuoritus), row.osasuoritukset.map(toKurssi)))
     } else {
       oppiaineetJaNiidenKurssitOppimäärästä(row)
     }
   }
 
-  private def oppiaineetJaNiidenKurssitOppimäärästä(row: AikuistenPerusopetusRaporttiRows): Seq[LukioRaporttiOppiaineJaKurssit] = {
+  private def oppiaineetJaNiidenKurssitOppimäärästä(row: AikuistenPerusopetusRaporttiRows): Seq[YleissivistäväRaporttiOppiaineJaKurssit] = {
     val kurssit = row.osasuoritukset.filter(_.ylempiOsasuoritusId.isDefined).groupBy(_.ylempiOsasuoritusId.get)
     val oppiaineet = row.osasuoritukset.filter(isOppiaine)
     val combineOppiaineWithKurssit = (oppiaine: ROsasuoritusRow) =>
-      LukioRaporttiOppiaineJaKurssit(
+      YleissivistäväRaporttiOppiaineJaKurssit(
         toOppiaine(oppiaine),
         kurssit.getOrElse(oppiaine.osasuoritusId, Nil).map(toKurssi)
       )
@@ -69,13 +70,13 @@ case class AikuistenPerusopetusRaportti(repository: AikuistenPerusopetusRaportti
 
   private def toOppiaine(row: RSuoritusRow) = row match {
     case s: RPäätasonSuoritusRow =>
-      LukioRaporttiOppiaine(
+      YleissivistäväRaporttiOppiaine(
         s.suorituksestaKäytettäväNimi.getOrElse("ei nimeä"),
         s.koulutusmoduuliKoodiarvo,
         !s.koulutusmoduuliKoodisto.contains("koskioppiaineetyleissivistava")
       )
     case s: ROsasuoritusRow =>
-      LukioRaporttiOppiaine(
+      YleissivistäväRaporttiOppiaine(
         s.suorituksestaKäytettäväNimi.getOrElse("ei nimeä"),
         s.koulutusmoduuliKoodiarvo,
         s.koulutusmoduuliPaikallinen
@@ -83,14 +84,14 @@ case class AikuistenPerusopetusRaportti(repository: AikuistenPerusopetusRaportti
   }
 
   private def toKurssi(row: ROsasuoritusRow) = {
-    LukioRaporttiKurssi(
+    YleissivistäväRaporttiKurssi(
       row.koulutusmoduuliNimi.getOrElse("ei nimeä"),
       row.koulutusmoduuliKoodiarvo,
       row.koulutusmoduuliPaikallinen
     )
   }
 
-  private def oppiaineJaLisätiedotSheet(opiskeluoikeusData: Seq[AikuistenPerusopetusRaporttiRows], oppiaineetJaKurssit: Seq[LukioRaporttiOppiaineJaKurssit], alku: LocalDate, loppu: LocalDate) = {
+  private def oppiaineJaLisätiedotSheet(opiskeluoikeusData: Seq[AikuistenPerusopetusRaporttiRows], oppiaineetJaKurssit: Seq[YleissivistäväRaporttiOppiaineJaKurssit], alku: LocalDate, loppu: LocalDate) = {
     Future {
       DynamicDataSheet(
         title = "Oppiaineet ja lisätiedot",
@@ -100,13 +101,13 @@ case class AikuistenPerusopetusRaportti(repository: AikuistenPerusopetusRaportti
     }
   }
 
-  private def oppiaineKohtaisetSheetit(rows: Seq[AikuistenPerusopetusRaporttiRows], oppiaineetJaKurssit: Seq[LukioRaporttiOppiaineJaKurssit]) = {
+  private def oppiaineKohtaisetSheetit(rows: Seq[AikuistenPerusopetusRaporttiRows], oppiaineetJaKurssit: Seq[YleissivistäväRaporttiOppiaineJaKurssit]) = {
     Future {
       oppiaineetJaKurssit.map(oppiaineKohtainenSheet(_, rows))
     }
   }
 
-  private def oppiaineKohtainenSheet(oppiaineJaKurssit: LukioRaporttiOppiaineJaKurssit, data: Seq[AikuistenPerusopetusRaporttiRows]) = {
+  private def oppiaineKohtainenSheet(oppiaineJaKurssit: YleissivistäväRaporttiOppiaineJaKurssit, data: Seq[AikuistenPerusopetusRaporttiRows]) = {
     val oppiaine = oppiaineJaKurssit.oppiaine
     val kurssit = oppiaineJaKurssit.kurssit
     val filtered = data.filter(notOppimääränOpiskelijaFromAnotherOppiaine(oppiaine))
@@ -118,11 +119,11 @@ case class AikuistenPerusopetusRaportti(repository: AikuistenPerusopetusRaportti
     )
   }
 
-  private def notOppimääränOpiskelijaFromAnotherOppiaine(oppiaine: LukioRaporttiOppiaine)(data: AikuistenPerusopetusRaporttiRows) = {
+  private def notOppimääränOpiskelijaFromAnotherOppiaine(oppiaine: YleissivistäväRaporttiOppiaine)(data: AikuistenPerusopetusRaporttiRows) = {
     (!isOppiaineenOppimäärä(data.päätasonSuoritus) || data.päätasonSuoritus.matchesWith(oppiaine))
   }
 
-  private def kaikkiOppiaineetVälilehtiRow(row: AikuistenPerusopetusRaporttiRows, oppiaineet: Seq[LukioRaporttiOppiaineJaKurssit], alku: LocalDate, loppu: LocalDate) = {
+  private def kaikkiOppiaineetVälilehtiRow(row: AikuistenPerusopetusRaporttiRows, oppiaineet: Seq[YleissivistäväRaporttiOppiaineJaKurssit], alku: LocalDate, loppu: LocalDate) = {
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](row.opiskeluoikeus.data \ "lähdejärjestelmänId")
     val lisätiedot = JsonSerializer.extract[Option[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot]](row.opiskeluoikeus.data \ "lisätiedot")
 
@@ -163,7 +164,7 @@ case class AikuistenPerusopetusRaportti(repository: AikuistenPerusopetusRaportti
     )
   }
 
-  private def oppiaineidentiedot(paatasonsuoritus: RPäätasonSuoritusRow, osasuoritukset: Seq[ROsasuoritusRow], oppiaineet: Seq[LukioRaporttiOppiaineJaKurssit]): Seq[String] = {
+  private def oppiaineidentiedot(paatasonsuoritus: RPäätasonSuoritusRow, osasuoritukset: Seq[ROsasuoritusRow], oppiaineet: Seq[YleissivistäväRaporttiOppiaineJaKurssit]): Seq[String] = {
     val oppiaineentiedot = if (isOppiaineenOppimäärä(paatasonsuoritus)) {
       oppiaineenOppimääränOppiaineenTiedot(paatasonsuoritus, osasuoritukset, oppiaineet)
     } else {
@@ -173,20 +174,20 @@ case class AikuistenPerusopetusRaportti(repository: AikuistenPerusopetusRaportti
     oppiaineet.map(x => oppiaineentiedot(x.oppiaine).map(_.toString).mkString(", "))
   }
 
-  private def oppiaineenOppimääränOppiaineenTiedot(päätasonSuoritus: RPäätasonSuoritusRow, osasuoritukset: Seq[ROsasuoritusRow], oppiaineet: Seq[LukioRaporttiOppiaineJaKurssit]): LukioRaporttiOppiaine => Seq[LukioOppiaineenTiedot] = {
-    (oppiaine: LukioRaporttiOppiaine) => if (päätasonSuoritus.matchesWith(oppiaine)) {
+  private def oppiaineenOppimääränOppiaineenTiedot(päätasonSuoritus: RPäätasonSuoritusRow, osasuoritukset: Seq[ROsasuoritusRow], oppiaineet: Seq[YleissivistäväRaporttiOppiaineJaKurssit]): YleissivistäväRaporttiOppiaine => Seq[YleissivistäväOppiaineenTiedot] = {
+    (oppiaine: YleissivistäväRaporttiOppiaine) => if (päätasonSuoritus.matchesWith(oppiaine)) {
       Seq(toOppiaineenTiedot(päätasonSuoritus, osasuoritukset))
     } else {
       Nil
     }
   }
 
-  private def oppimääränOppiaineenTiedot(osasuoritukset: Seq[ROsasuoritusRow], oppiaineet: Seq[LukioRaporttiOppiaineJaKurssit]): LukioRaporttiOppiaine => Seq[LukioOppiaineenTiedot] = {
+  private def oppimääränOppiaineenTiedot(osasuoritukset: Seq[ROsasuoritusRow], oppiaineet: Seq[YleissivistäväRaporttiOppiaineJaKurssit]): YleissivistäväRaporttiOppiaine => Seq[YleissivistäväOppiaineenTiedot] = {
     val osasuorituksetMap = osasuoritukset.groupBy(_.koulutusmoduuliKoodiarvo)
-    val oppiaineenSuoritukset = (oppiaine: LukioRaporttiOppiaine) => osasuorituksetMap
+    val oppiaineenSuoritukset = (oppiaine: YleissivistäväRaporttiOppiaine) => osasuorituksetMap
       .getOrElse(oppiaine.koulutusmoduuliKoodiarvo, Nil).filter(_.matchesWith(oppiaine))
-    (oppiaine: LukioRaporttiOppiaine) => oppiaineenSuoritukset(oppiaine)
-      .map(s => LukioOppiaineenTiedot(
+    (oppiaine: YleissivistäväRaporttiOppiaine) => oppiaineenSuoritukset(oppiaine)
+      .map(s => YleissivistäväOppiaineenTiedot(
         s.arviointiArvosanaKoodiarvo,
         osasuoritukset.count(_.ylempiOsasuoritusId.contains(s.osasuoritusId))
       ))
@@ -197,10 +198,10 @@ case class AikuistenPerusopetusRaportti(repository: AikuistenPerusopetusRaportti
       case _: RPäätasonSuoritusRow => osasuoritukset.size
       case s: ROsasuoritusRow => osasuoritukset.count(_.ylempiOsasuoritusId.contains(s.osasuoritusId))
     }
-    LukioOppiaineenTiedot(suoritus.arviointiArvosanaKoodiarvo, laajuus)
+    YleissivistäväOppiaineenTiedot(suoritus.arviointiArvosanaKoodiarvo, laajuus)
   }
 
-  private def oppiainekohtaisetKurssitiedot(row: AikuistenPerusopetusRaporttiRows, kurssit: Seq[LukioRaporttiKurssi]) = {
+  private def oppiainekohtaisetKurssitiedot(row: AikuistenPerusopetusRaporttiRows, kurssit: Seq[YleissivistäväRaporttiKurssi]) = {
     AikuistenPerusopetusRaporttiOppiaineRow(
       staticColumns = AikuistenPerusopetusRaporttiOppiaineTabStaticColumns(
         oppijanOid = row.opiskeluoikeus.oppijaOid,
@@ -214,7 +215,7 @@ case class AikuistenPerusopetusRaportti(repository: AikuistenPerusopetusRaportti
     )
   }
 
-  private def kurssienTiedot(osasuoritukset: Seq[ROsasuoritusRow], kurssit: Seq[LukioRaporttiKurssi]) = {
+  private def kurssienTiedot(osasuoritukset: Seq[ROsasuoritusRow], kurssit: Seq[YleissivistäväRaporttiKurssi]) = {
     val osasuorituksetMap = osasuoritukset.groupBy(_.koulutusmoduuliKoodiarvo)
     kurssit.map { kurssi =>
       osasuorituksetMap.getOrElse(kurssi.koulutusmoduuliKoodiarvo, Nil).filter(_.matchesWith(kurssi)).map(kurssisuoritus =>
@@ -247,7 +248,7 @@ case class AikuistenPerusopetusRaportti(repository: AikuistenPerusopetusRaportti
     }
   }
 
-  private def oppiaineJaLisätiedotColumnSettings(oppiaineet: Seq[LukioRaporttiOppiaineJaKurssit]) = {
+  private def oppiaineJaLisätiedotColumnSettings(oppiaineet: Seq[YleissivistäväRaporttiOppiaineJaKurssit]) = {
     Seq(
       CompactColumn("Opiskeluoikeuden oid"),
       CompactColumn("Lähdejärjestelmä"),
@@ -282,7 +283,7 @@ case class AikuistenPerusopetusRaportti(repository: AikuistenPerusopetusRaportti
     ) ++ oppiaineet.map(x => CompactColumn(title = x.oppiaine.toColumnTitle, comment = Some("Otsikon nimessä näytetään ensin oppiaineen koodi, sitten oppiaineen nimi ja viimeiseksi tieto, onko kyseessä valtakunnallinen vai paikallinen oppiaine (esim. BI Biologia valtakunnallinen). Sarakkeen arvossa näytetään pilkulla erotettuna oppiaineelle siirretty arvosana ja oppiaineessa suoritettujen kurssien määrä.")))
   }
 
-  private def oppiaineKohtaisetColumnSettings(kurssit: Seq[LukioRaporttiKurssi]) = {
+  private def oppiaineKohtaisetColumnSettings(kurssit: Seq[YleissivistäväRaporttiKurssi]) = {
     Seq(
       Column("Oppijan oid"),
       Column("Hetu"),
