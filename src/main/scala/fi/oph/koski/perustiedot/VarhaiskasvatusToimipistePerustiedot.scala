@@ -42,7 +42,7 @@ case class VarhaiskasvatusToimipistePerustiedot(index: ElasticSearchIndex) {
     )
 
     result.toList.flatMap { r =>
-      extract[List[PäiväkotiBucket]](r \ "aggregations" \ "oppilaitokset" \ "buckets")
+      extract[List[PäiväkotiBucket]](r \ "aggregations" \ "oppilaitokset" \ "buckets", ignoreExtras = true)
     }.map(_.key).toSet
   }
 }
