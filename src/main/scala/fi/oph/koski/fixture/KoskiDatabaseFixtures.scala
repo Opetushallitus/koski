@@ -7,21 +7,24 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
+import fi.oph.koski.documentation.AmmatillinenExampleData.stadinToimipiste
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusMitätöity, suomenKieli}
-import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.aikuistenOppiaine
 import fi.oph.koski.documentation.ExamplesPerusopetus.ysinOpiskeluoikeusKesken
 import fi.oph.koski.documentation._
-import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, MockOppijat, OppijaHenkilö, VerifiedHenkilöOid}
+import fi.oph.koski.henkilo.{MockOppijat, OppijaHenkilö, VerifiedHenkilöOid}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
-import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.koskiuser.{AccessType, KoskiSession, MockUsers}
+import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenOsittaisetTiedot, OpiskeluoikeudenPerustiedot}
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
 import slick.dbio.DBIO
 
+import scala.reflect.runtime.universe.TypeTag
+
 class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDatabaseMethods with Timing {
   implicit val user = KoskiSession.systemUser
+  private val validator = application.validator
   val database = application.masterDatabase
   val db = database.db
   implicit val accessType = AccessType.write
@@ -71,17 +74,34 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
     }
   }
 
-  private lazy val opiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = validatedOpiskeluoikeudet.map { case (henkilö, oikeus) => henkilö.hetu match {
-    case MockOppijat.organisaatioHistoria.hetu => (henkilö, oikeus.asInstanceOf[AmmatillinenOpiskeluoikeus].copy(organisaatiohistoria = Some(AmmatillinenExampleData.opiskeluoikeudenOrganisaatioHistoria)))
-    case MockOppijat.tunnisteenKoodiarvoPoistettu.hetu => (henkilö, oikeus.asInstanceOf[AmmatillinenOpiskeluoikeus].copy(suoritukset = oikeus.suoritukset.map(s => s.asInstanceOf[AmmatillisenTutkinnonSuoritus].copy(koulutusmoduuli = s.koulutusmoduuli.asInstanceOf[AmmatillinenTutkintoKoulutus].copy(s.koulutusmoduuli.tunniste.asInstanceOf[Koodistokoodiviite].copy(koodiarvo = "123456")))).asInstanceOf[List[AmmatillinenPäätasonSuoritus]]))
-    case _ => (henkilö, oikeus)
-  }}
+  private lazy val opiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = validatedOpiskeluoikeudet ++ invalidOpiskeluoikeudet
 
   private lazy val validatedOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = defaultOpiskeluOikeudet.map { case (henkilö, oikeus) =>
-    application.validator.validateAsJson(Oppija(henkilö.toHenkilötiedotJaOid, List(oikeus))) match {
+    validator.validateAsJson(Oppija(henkilö.toHenkilötiedotJaOid, List(oikeus))) match {
       case Right(oppija) => (henkilö, oppija.tallennettavatOpiskeluoikeudet(0))
       case Left(status) => throw new RuntimeException("Fixture insert failed for " + henkilö.etunimet + " " + henkilö.sukunimi +  " with data " + JsonSerializer.write(oikeus) + ": " + status)
     }
+  }
+
+  private lazy val invalidOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
+    val validOpiskeluoikeus: AmmatillinenOpiskeluoikeus = validateOpiskeluoikeus(AmmatillinenExampleData.opiskeluoikeus())
+    val opiskeluoikeusJostaTunnisteenKoodiarvoPoistettu = validOpiskeluoikeus.copy(
+      suoritukset = validOpiskeluoikeus.suoritukset.map(s => {
+        val tutkinnonSuoritus = s.asInstanceOf[AmmatillisenTutkinnonSuoritus]
+        tutkinnonSuoritus.copy(koulutusmoduuli = tutkinnonSuoritus.koulutusmoduuli.copy(
+          tutkinnonSuoritus.koulutusmoduuli.tunniste.copy(koodiarvo = "123456")
+        ))
+      })
+    )
+    val hkiTallentaja = MockUsers.helsinkiTallentaja.toKoskiUser(application.käyttöoikeusRepository)
+    List(
+      (MockOppijat.organisaatioHistoria, validOpiskeluoikeus.copy(organisaatiohistoria = Some(AmmatillinenExampleData.opiskeluoikeudenOrganisaatioHistoria))),
+      (MockOppijat.tunnisteenKoodiarvoPoistettu, opiskeluoikeusJostaTunnisteenKoodiarvoPoistettu),
+      (MockOppijat.eskari, validateOpiskeluoikeus(ExamplesEsiopetus.ostopalveluOpiskeluoikeus, hkiTallentaja).copy(
+        koulutustoimija = Some(YleissivistavakoulutusExampleData.helsinki),
+        oppilaitos = MockOrganisaatioRepository.getOrganisaatioHierarkia(MockOrganisaatiot.päiväkotiTouhula).map(o => Oppilaitos(oid = o.oid, nimi = Some(o.nimi), kotipaikka = o.kotipaikka))
+      ))
+    )
   }
 
   private def defaultOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
@@ -142,11 +162,15 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
       (MockOppijat.turvakielto, ExamplesLukio.päättötodistus()),
       (MockOppijat.erkkiEiperusteissa, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 334117, diaariNumero = "22/011/2004")),
       (MockOppijat.internationalschool, ExamplesInternationalSchool.opiskeluoikeus),
-      (MockOppijat.organisaatioHistoria, AmmatillinenExampleData.opiskeluoikeus()),
-      (MockOppijat.montaKoulutuskoodiaAmis, AmmatillinenExampleData.puuteollisuusOpiskeluoikeusKesken()),
-      (MockOppijat.tunnisteenKoodiarvoPoistettu, AmmatillinenExampleData.opiskeluoikeus())
+      (MockOppijat.montaKoulutuskoodiaAmis, AmmatillinenExampleData.puuteollisuusOpiskeluoikeusKesken())
     )
   }
+
+  private def validateOpiskeluoikeus[T: TypeTag](oo: T, session: KoskiSession = user): T =
+    validator.extractAndValidateOpiskeluoikeus(JsonSerializer.serialize(oo))(session, AccessType.write) match {
+      case Right(opiskeluoikeus) => opiskeluoikeus.asInstanceOf[T]
+      case Left(status) => throw new RuntimeException("Fixture insert failed for " + JsonSerializer.write(oo) + ": " + status)
+    }
 }
 
 object AmmatillinenOpiskeluoikeusTestData {

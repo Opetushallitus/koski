@@ -2,7 +2,7 @@ package fi.oph.koski.organisaatio
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.{AuthenticationSupport, HasKoskiSession, KoskiSession, RequiresSession}
+import fi.oph.koski.koskiuser.{AuthenticationSupport, RequiresSession}
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
 class OrganisaatioServlet(implicit val application: KoskiApplication) extends ApiServlet with AuthenticationSupport with NoCache with RequiresSession {
