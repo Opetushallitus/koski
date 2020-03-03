@@ -99,3 +99,4 @@ case object LukionSuoritustietojenTarkistus extends RaportinTyyppi
 case object MuuAmmatillinenKoulutus extends RaportinTyyppi
 case object TOPKSAmmatillinen extends RaportinTyyppi
 case object EsiopetuksenRaportti extends RaportinTyyppi
+case object AikuistenPerusopetusSuoritustietojenTarkistus extends RaportinTyyppi
