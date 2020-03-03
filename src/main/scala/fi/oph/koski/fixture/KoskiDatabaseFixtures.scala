@@ -7,6 +7,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
+import fi.oph.koski.documentation.AmmatillinenExampleData.{autoalanPerustutkinnonSuoritus, stadinToimipiste}
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusMitätöity, suomenKieli}
 import fi.oph.koski.documentation.ExamplesAikuistenPerusopetus.aikuistenOppiaine
 import fi.oph.koski.documentation.ExamplesPerusopetus.ysinOpiskeluoikeusKesken
@@ -71,17 +72,22 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
     }
   }
 
-  private lazy val opiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = validatedOpiskeluoikeudet.map { case (henkilö, oikeus) => henkilö.hetu match {
-    case MockOppijat.organisaatioHistoria.hetu => (henkilö, oikeus.asInstanceOf[AmmatillinenOpiskeluoikeus].copy(organisaatiohistoria = Some(AmmatillinenExampleData.opiskeluoikeudenOrganisaatioHistoria)))
-    case MockOppijat.tunnisteenKoodiarvoPoistettu.hetu => (henkilö, oikeus.asInstanceOf[AmmatillinenOpiskeluoikeus].copy(suoritukset = oikeus.suoritukset.map(s => s.asInstanceOf[AmmatillisenTutkinnonSuoritus].copy(koulutusmoduuli = s.koulutusmoduuli.asInstanceOf[AmmatillinenTutkintoKoulutus].copy(s.koulutusmoduuli.tunniste.asInstanceOf[Koodistokoodiviite].copy(koodiarvo = "123456")))).asInstanceOf[List[AmmatillinenPäätasonSuoritus]]))
-    case _ => (henkilö, oikeus)
-  }}
+  private lazy val opiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = validatedOpiskeluoikeudet ++ invalidOpiskeluoikeudet
 
   private lazy val validatedOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = defaultOpiskeluOikeudet.map { case (henkilö, oikeus) =>
     application.validator.validateAsJson(Oppija(henkilö.toHenkilötiedotJaOid, List(oikeus))) match {
       case Right(oppija) => (henkilö, oppija.tallennettavatOpiskeluoikeudet(0))
       case Left(status) => throw new RuntimeException("Fixture insert failed for " + henkilö.etunimet + " " + henkilö.sukunimi +  " with data " + JsonSerializer.write(oikeus) + ": " + status)
     }
+  }
+
+  private lazy val invalidOpiskeluoikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
+    val tutkinto = AmmatillinenExampleData.autoalanPerustutkinnonSuoritus(stadinToimipiste)
+    val ammatillinenOpiskeluoikeus = AmmatillinenExampleData.opiskeluoikeus(tutkinto = tutkinto)
+    List(
+      (MockOppijat.organisaatioHistoria, ammatillinenOpiskeluoikeus.copy(organisaatiohistoria = Some(AmmatillinenExampleData.opiskeluoikeudenOrganisaatioHistoria))),
+      (MockOppijat.tunnisteenKoodiarvoPoistettu, ammatillinenOpiskeluoikeus.copy(suoritukset = ammatillinenOpiskeluoikeus.suoritukset.map(s => tutkinto.copy(koulutusmoduuli = tutkinto.koulutusmoduuli.copy(tutkinto.koulutusmoduuli.tunniste.copy(koodiarvo = "123456"))))))
+    )
   }
 
   private def defaultOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
@@ -142,9 +148,7 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
       (MockOppijat.turvakielto, ExamplesLukio.päättötodistus()),
       (MockOppijat.erkkiEiperusteissa, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 334117, diaariNumero = "22/011/2004")),
       (MockOppijat.internationalschool, ExamplesInternationalSchool.opiskeluoikeus),
-      (MockOppijat.organisaatioHistoria, AmmatillinenExampleData.opiskeluoikeus()),
-      (MockOppijat.montaKoulutuskoodiaAmis, AmmatillinenExampleData.puuteollisuusOpiskeluoikeusKesken()),
-      (MockOppijat.tunnisteenKoodiarvoPoistettu, AmmatillinenExampleData.opiskeluoikeus())
+      (MockOppijat.montaKoulutuskoodiaAmis, AmmatillinenExampleData.puuteollisuusOpiskeluoikeusKesken())
     )
   }
 }
