@@ -9,7 +9,7 @@ class OrganisaatioService(application: KoskiApplication) {
   private val perustiedot = VarhaiskasvatusToimipistePerustiedot(application.perustiedotIndexer)
   private val localizationRepository = application.localizationRepository
 
-  def searchInAllOrganizations(query: Option[String])(implicit u: KoskiSession): List[OrganisaatioHierarkia] = {
+  def searchInAllOrganizations(query: Option[String])(implicit u: KoskiSession): Iterable[OrganisaatioHierarkia] = {
     query match {
       case Some(qry) if qry.length >= 3 =>
         organisaatioRepository.findHierarkia(qry).sortBy(organisaatioNimi)
