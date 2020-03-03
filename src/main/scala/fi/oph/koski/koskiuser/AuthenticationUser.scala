@@ -1,5 +1,6 @@
 package fi.oph.koski.koskiuser
 
+import fi.oph.koski.huoltaja.HuollettavatSearchResult
 import fi.oph.koski.userdirectory.DirectoryUser
 
 case class AuthenticationUser(
@@ -8,7 +9,8 @@ case class AuthenticationUser(
   name: String,
   serviceTicket: Option[String],
   kansalainen: Boolean = false,
-  huollettava: Boolean = false
+  huollettava: Boolean = false,
+  huollettavat: Option[HuollettavatSearchResult] = None
 ) extends UserWithUsername with UserWithOid {
   def isSuoritusjakoKatsominen: Boolean = oid == KoskiSession.SUORITUSJAKO_KATSOMINEN_USER
 }

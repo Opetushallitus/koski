@@ -9,6 +9,7 @@ import fi.oph.koski.fixture.FixtureCreator
 import fi.oph.koski.healthcheck.HealthCheck
 import fi.oph.koski.henkilo.{HenkilöRepository, Hetu, KoskiHenkilöCache, OpintopolkuHenkilöFacade}
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
+import fi.oph.koski.huoltaja.HuoltajaServiceVtj
 import fi.oph.koski.koodisto.{KoodistoCreator, KoodistoPalvelu, KoodistoViitePalvelu}
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.localization.LocalizationRepository
@@ -65,6 +66,7 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val ytrAccessChecker = new YtrAccessChecker(käyttöoikeusRepository)
   lazy val henkilöRepository = HenkilöRepository(this)
   lazy val huoltajaService = new HuoltajaService(this)
+  lazy val huoltajaServiceVtj = new HuoltajaServiceVtj(config, henkilöRepository)
   lazy val historyRepository = OpiskeluoikeusHistoryRepository(masterDatabase.db)
   lazy val virta = TimedProxy[AuxiliaryOpiskeluoikeusRepository](VirtaOpiskeluoikeusRepository(virtaClient, oppilaitosRepository, koodistoViitePalvelu, organisaatioRepository, virtaAccessChecker, Some(validator)))
   lazy val henkilöCache = new KoskiHenkilöCache(masterDatabase.db)

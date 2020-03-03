@@ -40,7 +40,7 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
     hetu match {
       case None => eiSuorituksia
       case Some(validHetu) => findOrCreate(validHetu) match {
-        case Some(oppija) => createSession(oppija)
+        case Some(oppija) => createSession(oppija, validHetu)
         case _ => eiSuorituksia
       }
     }
@@ -51,8 +51,10 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
       .orElse(nimitiedot.map(toUusiHenkilö(validHetu, _)).map(application.henkilöRepository.findOrCreate(_).left.map(s => new RuntimeException(s.errorString.mkString)).toTry.get))
   }
 
-  private def createSession(oppija: OppijaHenkilö) = {
-    setUser(Right(localLogin(AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true), Some(langFromCookie.getOrElse(langFromDomain)))))
+  private def createSession(oppija: OppijaHenkilö, hetu: String) = {
+    val huollettavat = application.huoltajaServiceVtj.getHuollettavat(hetu)
+    val authUser = AuthenticationUser(oppija.oid, oppija.oid, s"${oppija.etunimet} ${oppija.sukunimi}", None, kansalainen = true, huollettavat = Some(huollettavat))
+    setUser(Right(localLogin(authUser, Some(langFromCookie.getOrElse(langFromDomain)))))
     redirect(onSuccess)
   }
 

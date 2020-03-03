@@ -20,7 +20,7 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport {
     request.setAttribute("authUser", user)
     user.right.toOption.filter(_.serviceTicket.isDefined).foreach { user =>
       if (user.kansalainen) {
-        setKansalaisCookie(user)
+        setKansalaisCookie(user.copy(huollettavat = None))
       } else {
         setUserCookie(user)
       }
