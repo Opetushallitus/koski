@@ -61,7 +61,7 @@ object OrganisaatioHierarkia {
   )
 
   def flatten(orgs: List[OrganisaatioHierarkia]): List[OrganisaatioHierarkia] = {
-    orgs ++ orgs.flatMap { org => org :: flatten(org.children) }
+    orgs.flatMap { org => org :: flatten(org.children) }
   }
 
   val OPPILAITOS = "OPPILAITOS"
