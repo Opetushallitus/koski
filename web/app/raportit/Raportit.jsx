@@ -55,6 +55,7 @@ const Organisaatio = ({organisaatioAtom}) => {
           canSelectOrg={(org) => org.organisaatiotyypit.some(ot => selectableOrgTypes.includes(ot))}
           clearText='tyhjennä'
           noSelectionText='Valitse...'
+          orgTypesToShow='vainOmatOrganisaatiot'
         />
       ))
     }
