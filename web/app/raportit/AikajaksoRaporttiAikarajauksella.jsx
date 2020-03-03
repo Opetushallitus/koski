@@ -9,7 +9,7 @@ import {generateRandomPassword} from '../util/password'
 import {downloadExcel} from './downloadExcel'
 import RaporttiDownloadButton from './RaporttiDownloadButton'
 
-export const AmmatillinenSuoritusTiedotRaportti = ({organisaatioAtom, apiEndpoint, title, description}) => {
+export const AikajaksoRaporttiAikarajauksella = ({organisaatioAtom, apiEndpoint, title, description}) => {
   const alkuAtom = Atom()
   const loppuAtom = Atom()
   const osasuoritustenAikarajausAtom = Atom(false)
