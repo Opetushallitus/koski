@@ -1,11 +1,10 @@
 package fi.oph.koski.raportit
 
 import java.time.LocalDate
-import java.time.temporal.ChronoUnit
 
 import fi.oph.koski.db.GlobalExecutionContext
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.raportit.YleissivistäväKurssitOrdering.yleissivistäväKurssitOrdering
+import fi.oph.koski.raportit.YleissivistäväUtils._
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Futures
@@ -15,13 +14,20 @@ import scala.concurrent.duration._
 
 case class LukioRaportti(repository: LukioRaportitRepository) extends GlobalExecutionContext {
 
-  private lazy val lukionoppiaineenoppimaara = "lukionoppiaineenoppimaara"
-  private lazy val lukionoppiaine = "lukionoppiaine"
-  private lazy val lukionmuuopinto = "lukionmuuopinto"
+  private def isOppiaineenOppimäärä(päätasonSuoritus: RPäätasonSuoritusRow) = {
+    päätasonSuoritus.suorituksenTyyppi == "lukionoppiaineenoppimaara"
+  }
+
+  private def isOppiaine(osasuoritus: ROsasuoritusRow) = {
+    List(
+      "lukionoppiaine",
+      "lukionmuuopinto"
+    ).contains(osasuoritus.suorituksenTyyppi)
+  }
 
   def buildRaportti(oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate): Seq[DynamicDataSheet] = {
     val rows = repository.suoritustiedot(oppilaitosOid, alku, loppu)
-    val oppiaineetJaKurssit = lukiossaOpetettavatOppiaineetJaNiidenKurssit(rows)
+    val oppiaineetJaKurssit = opetettavatOppiaineetJaNiidenKurssit(isOppiaineenOppimäärä, isOppiaine, rows)
 
     val future = for {
       oppiaineJaLisätiedot <- oppiaineJaLisätiedotSheet(rows, oppiaineetJaKurssit, alku, loppu)
@@ -30,36 +36,6 @@ case class LukioRaportti(repository: LukioRaportitRepository) extends GlobalExec
 
     Futures.await(future, atMost = 6.minutes)
   }
-
-  private def lukiossaOpetettavatOppiaineetJaNiidenKurssit(rows: Seq[LukioRaporttiRows]) = {
-    rows.flatMap(oppianeetJaNiidenKurssit).groupBy(_.oppiaine).map { case (oppiaine, x) =>
-      YleissivistäväRaporttiOppiaineJaKurssit(oppiaine, x.flatMap(_.kurssit).distinct.sorted(yleissivistäväKurssitOrdering))
-    }.toSeq.sorted(YleissivistäväOppiaineetOrdering)
-  }
-
-  private def oppianeetJaNiidenKurssit(row: LukioRaporttiRows): Seq[YleissivistäväRaporttiOppiaineJaKurssit] = {
-    if (row.päätasonSuoritus.suorituksenTyyppi == lukionoppiaineenoppimaara) {
-     Seq(YleissivistäväRaporttiOppiaineJaKurssit(toOppiaine(row.päätasonSuoritus), row.osasuoritukset.map(toKurssi)))
-    } else {
-      oppiaineetJaNiidenKurssitOppimäärästä(row)
-    }
-  }
-
-  private def oppiaineetJaNiidenKurssitOppimäärästä(row: LukioRaporttiRows): Seq[YleissivistäväRaporttiOppiaineJaKurssit] = {
-    val kurssit = row.osasuoritukset.filter(_.ylempiOsasuoritusId.isDefined).groupBy(_.ylempiOsasuoritusId.get)
-    val oppiaineet = row.osasuoritukset.filter(isLukionOppiaine)
-    val combineOppiaineWithKurssit = (oppiaine: ROsasuoritusRow) => YleissivistäväRaporttiOppiaineJaKurssit(toOppiaine(oppiaine), kurssit.getOrElse(oppiaine.osasuoritusId, Nil).map(toKurssi))
-
-    oppiaineet.map(combineOppiaineWithKurssit)
-  }
-
-  private def isLukionOppiaine(osasuoritus: ROsasuoritusRow) = osasuoritus.suorituksenTyyppi == lukionoppiaine || osasuoritus.suorituksenTyyppi == lukionmuuopinto
-
-  private def toOppiaine(row: RSuoritusRow) = row match {
-    case s: RPäätasonSuoritusRow => YleissivistäväRaporttiOppiaine(s.suorituksestaKäytettäväNimi.getOrElse("ei nimeä"), s.koulutusmoduuliKoodiarvo, !s.koulutusmoduuliKoodisto.contains("koskioppiaineetyleissivistava"))
-    case s: ROsasuoritusRow => YleissivistäväRaporttiOppiaine(s.suorituksestaKäytettäväNimi.getOrElse("ei nimeä"), s.koulutusmoduuliKoodiarvo, s.koulutusmoduuliPaikallinen)
-  }
-  private def toKurssi(row: ROsasuoritusRow) = YleissivistäväRaporttiKurssi(row.koulutusmoduuliNimi.getOrElse("ei nimeä"), row.koulutusmoduuliKoodiarvo, row.koulutusmoduuliPaikallinen)
 
   private def oppiaineJaLisätiedotSheet(opiskeluoikeusData: Seq[LukioRaporttiRows], oppiaineetJaKurssit: Seq[YleissivistäväRaporttiOppiaineJaKurssit], alku: LocalDate, loppu: LocalDate) = {
     Future {
@@ -90,7 +66,7 @@ case class LukioRaportti(repository: LukioRaportitRepository) extends GlobalExec
   }
 
   private def notOppimääränOpiskelijaFromAnotherOppiaine(oppiaine: YleissivistäväRaporttiOppiaine)(data: LukioRaporttiRows) = {
-    data.päätasonSuoritus.suorituksenTyyppi != lukionoppiaineenoppimaara || data.päätasonSuoritus.matchesWith(oppiaine)
+    !isOppiaineenOppimäärä(data.päätasonSuoritus) || data.päätasonSuoritus.matchesWith(oppiaine)
   }
 
   private def kaikkiOppiaineetVälilehtiRow(row: LukioRaporttiRows, oppiaineet: Seq[YleissivistäväRaporttiOppiaineJaKurssit], alku: LocalDate, loppu: LocalDate) = {
@@ -131,36 +107,8 @@ case class LukioRaportti(repository: LukioRaportitRepository) extends GlobalExec
        syy_alle18vuotiaana_aloitettuun_opiskeluun_aikuisten_lukiokoulutuksessa = lisätiedot.flatMap(_.alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy.map(_.get("fi"))),
        yhteislaajuus = row.osasuoritukset.filter(_.suorituksenTyyppi == "lukionkurssi").flatMap(_.koulutusmoduuliLaajuusArvo.map(_.toDouble)).sum
      ),
-      oppiaineet = oppiaineidentiedot(row.päätasonSuoritus, row.osasuoritukset, oppiaineet)
+      oppiaineet = oppiaineidentiedot(row.päätasonSuoritus, row.osasuoritukset, oppiaineet, isOppiaineenOppimäärä)
     )
-  }
-
-  private def oppiaineidentiedot(paatasonsuoritus: RPäätasonSuoritusRow, osasuoritukset: Seq[ROsasuoritusRow], oppiaineet: Seq[YleissivistäväRaporttiOppiaineJaKurssit]): Seq[String] =  {
-    val oppiaineentiedot = if (paatasonsuoritus.suorituksenTyyppi == lukionoppiaineenoppimaara) {
-      oppiaineenOppimääränOppiaineenTiedot(paatasonsuoritus, osasuoritukset, oppiaineet)
-    } else {
-      oppimääränOppiaineenTiedot(osasuoritukset, oppiaineet)
-    }
-
-    oppiaineet.map(x => oppiaineentiedot(x.oppiaine).map(_.toString).mkString(","))
-  }
-
-  private def oppiaineenOppimääränOppiaineenTiedot(päätasonSuoritus: RPäätasonSuoritusRow, osasuoritukset: Seq[ROsasuoritusRow], oppiaineet: Seq[YleissivistäväRaporttiOppiaineJaKurssit]): YleissivistäväRaporttiOppiaine => Seq[YleissivistäväOppiaineenTiedot] = {
-    (oppiaine: YleissivistäväRaporttiOppiaine) => if (päätasonSuoritus.matchesWith(oppiaine)) { Seq(toLukioOppiaineenTiedot(päätasonSuoritus, osasuoritukset)) } else { Nil }
-  }
-
-  private def oppimääränOppiaineenTiedot(osasuoritukset: Seq[ROsasuoritusRow], oppiaineet: Seq[YleissivistäväRaporttiOppiaineJaKurssit]): YleissivistäväRaporttiOppiaine => Seq[YleissivistäväOppiaineenTiedot] = {
-    val osasuorituksetMap = osasuoritukset.groupBy(_.koulutusmoduuliKoodiarvo)
-    val oppiaineenSuoritukset = (oppiaine: YleissivistäväRaporttiOppiaine) => osasuorituksetMap.getOrElse(oppiaine.koulutusmoduuliKoodiarvo, Nil).filter(_.matchesWith(oppiaine))
-    (oppiaine: YleissivistäväRaporttiOppiaine) => oppiaineenSuoritukset(oppiaine).map(s => YleissivistäväOppiaineenTiedot(s.arviointiArvosanaKoodiarvo, osasuoritukset.count(_.ylempiOsasuoritusId.contains(s.osasuoritusId))))
-  }
-
-  private def toLukioOppiaineenTiedot(suoritus: RSuoritusRow, osasuoritukset: Seq[ROsasuoritusRow]) = {
-    val laajuus = suoritus match {
-      case _: RPäätasonSuoritusRow => osasuoritukset.size
-      case s: ROsasuoritusRow => osasuoritukset.count(_.ylempiOsasuoritusId.contains(s.osasuoritusId))
-    }
-    YleissivistäväOppiaineenTiedot(suoritus.arviointiArvosanaKoodiarvo, laajuus)
   }
 
   private def oppiainekohtaisetKurssitiedot(row:LukioRaporttiRows, kurssit: Seq[YleissivistäväRaporttiKurssi]) = {
@@ -193,7 +141,7 @@ case class LukioRaportti(repository: LukioRaportitRepository) extends GlobalExec
   }
 
   private def opetussuunnitelma(suoritus: RPäätasonSuoritusRow) = {
-    if (suoritus.suorituksenTyyppi == lukionoppiaineenoppimaara) {
+    if (isOppiaineenOppimäärä(suoritus)) {
       JsonSerializer.extract[Option[String]](suoritus.data \ "koulutusmoduuli" \ "perusteenDiaarinumero").map {
         case "60/011/2015" | "33/011/2003" => "Lukio suoritetaan nuorten opetussuunnitelman mukaan"
         case "70/011/2015" | "4/011/2004" => "Lukio suoritetaan aikuisten opetussuunnitelman mukaan"
@@ -201,26 +149,6 @@ case class LukioRaportti(repository: LukioRaportitRepository) extends GlobalExec
       }
     } else {
       JsonSerializer.extract[Option[Koodistokoodiviite]](suoritus.data \ "oppimäärä").flatMap(_.nimi.map(_.get("fi")))
-    }
-  }
-
-  private[raportit] def removeContinuousSameTila(aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow]): Seq[ROpiskeluoikeusAikajaksoRow] = {
-    if (aikajaksot.size < 2) {
-      aikajaksot
-    } else {
-      val rest = aikajaksot.dropWhile(_.tila == aikajaksot.head.tila)
-      aikajaksot.head +: removeContinuousSameTila(rest)
-    }
-  }
-
-  private[raportit] def lengthInDaysInDateRange(jakso: Jakso, alku: LocalDate, loppu: LocalDate) = {
-    val hakuvali = Aikajakso(alku, Some(loppu))
-    if (jakso.overlaps(hakuvali)) {
-      val start = if (jakso.alku.isBefore(alku)) alku else jakso.alku
-      val end = if (jakso.loppu.exists(_.isBefore(loppu))) jakso.loppu.get else loppu
-      ChronoUnit.DAYS.between(start, end).toInt + 1
-    } else {
-      0
     }
   }
 
