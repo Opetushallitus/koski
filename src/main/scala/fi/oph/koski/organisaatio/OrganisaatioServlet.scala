@@ -6,7 +6,7 @@ import fi.oph.koski.koskiuser.{AuthenticationSupport, HasKoskiSession, KoskiSess
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
 class OrganisaatioServlet(implicit val application: KoskiApplication) extends ApiServlet with AuthenticationSupport with NoCache with RequiresSession {
-  private val organisaatioService = new OrganisaatioService(application.organisaatioRepository)
+  private val organisaatioService = new OrganisaatioService(application)
 
   get("/hierarkia") {
     val filtered = if (showAll) {
