@@ -87,6 +87,8 @@ object MockOppijat {
   val tunnisteenKoodiarvoPoistettu = oppijat.oppija("ePerusteidenKoulutuksen-koodi", "Poistettu", "161097-132N")
   val valtuutusOppija = oppijat.oppija("Sydänmaanlakka-Horttanainen", "Katariina Eeva Marjatta", "020190-9521", kutsumanimi = Some("Katariina"))
   val siirtoOpiskelijaVirta = oppijat.oppija("SiirtoOpiskelijaVirta", "Siiri", "141199-418X")
+  val faija = oppijat.oppija("EiOpintojaKoskessa", "Faija", "030300-5215")
+  val faijaFeilaa = oppijat.oppija("EiOpintojaKoskessaLastenHakuFailaa", "Faija", "030300-7053")
 
   val virtaOppija = oppijat.addOppija(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.57060795845", sukunimi = "Virta", etunimet = "Veikko", kutsumanimi = "Veikko", hetu = Some("270191-4208"), syntymäaika = Some(LocalDate.of(1978, 3, 25)), äidinkieli = None, kansalaisuus = None))
   val virtaOppijaHetuton = oppijat.addOppija(OppijaHenkilöWithMasterInfo(

@@ -15,7 +15,7 @@ class KoskiSessionRepositorySpec extends FreeSpec with Matchers with DatabaseTes
     val fakeServiceTicket: String = "koski-" + UUID.randomUUID()
     val sqlTimestamp = new Timestamp(dateTime.toInstant.toEpochMilli)
     runDbSync(Tables.CasServiceTicketSessions += SSOSessionRow(
-      fakeServiceTicket, "test", "test", "test", sqlTimestamp, sqlTimestamp)
+      fakeServiceTicket, "test", "test", "test", sqlTimestamp, sqlTimestamp, None)
     )
   }
 

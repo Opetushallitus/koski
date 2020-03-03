@@ -20,7 +20,7 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport {
     request.setAttribute("authUser", user)
     user.right.toOption.filter(_.serviceTicket.isDefined).foreach { user =>
       if (user.kansalainen) {
-        setKansalaisCookie(user)
+        setKansalaisCookie(user.copy(huollettavat = None))
       } else {
         setUserCookie(user)
       }
@@ -32,15 +32,6 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport {
     Option(request.getAttribute("authUser").asInstanceOf[Either[HttpStatus, AuthenticationUser]]) match {
       case Some(user) => user
       case _ =>
-        def userFromBasicAuth: Either[HttpStatus, AuthenticationUser] = {
-          val basicAuthRequest = new BasicAuthStrategy.BasicAuthRequest(request)
-          if (basicAuthRequest.isBasicAuth && basicAuthRequest.providesAuth) {
-            tryLogin(basicAuthRequest.username, basicAuthRequest.password)
-          } else {
-            Left(KoskiErrorCategory.unauthorized.notAuthenticated())
-          }
-        }
-
         val authUser: Either[HttpStatus, AuthenticationUser] = userFromCookie match {
           case Right(user) => Right(user)
           case Left(SessionStatusExpiredKansalainen) => Left(KoskiErrorCategory.unauthorized.notAuthenticated())
@@ -68,6 +59,15 @@ trait AuthenticationSupport extends KoskiBaseServlet with SSOSupport {
       case Right(user) => Right(user)
       case Left(SessionStatusNoSession) => getUser(getKansalaisCookie).map(u => u.copy(kansalainen = true))
       case Left(sessionStatus) => Left(sessionStatus)
+    }
+  }
+
+  private def userFromBasicAuth: Either[HttpStatus, AuthenticationUser] = {
+    val basicAuthRequest = new BasicAuthStrategy.BasicAuthRequest(request)
+    if (basicAuthRequest.isBasicAuth && basicAuthRequest.providesAuth) {
+      tryLogin(basicAuthRequest.username, basicAuthRequest.password)
+    } else {
+      Left(KoskiErrorCategory.unauthorized.notAuthenticated())
     }
   }
 

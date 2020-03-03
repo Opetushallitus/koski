@@ -115,8 +115,9 @@ object Tables {
     val name = column[String]("name")
     val started = column[Timestamp]("started")
     val updated = column[Timestamp]("updated")
+    val huollettavatSearchResult = column[Option[JValue]]("huollettavat_search_result")
 
-    def * = (serviceTicket, username, userOid, name, started, updated) <> (SSOSessionRow.tupled, SSOSessionRow.unapply)
+    def * = (serviceTicket, username, userOid, name, started, updated, huollettavatSearchResult) <> (SSOSessionRow.tupled, SSOSessionRow.unapply)
   }
 
   class PreferencesTable(tag: Tag) extends Table[PreferenceRow] (tag, "preferences") {
@@ -229,7 +230,7 @@ object Tables {
   }
 }
 
-case class SSOSessionRow(serviceTicket: String, username: String, userOid: String, name: String, started: Timestamp, updated: Timestamp)
+case class SSOSessionRow(serviceTicket: String, username: String, userOid: String, name: String, started: Timestamp, updated: Timestamp, huollettavatSearchResult: Option[JValue])
 
 // Note: the data json must not contain [id, versionumero] fields. This is enforced by DB constraint.
 case class OpiskeluoikeusRow(id: Int,
