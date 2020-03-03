@@ -15,10 +15,6 @@ import fi.oph.koski.util.Timing
 import org.json4s.JsonAST.JValue
 
 class KoskiSessionRepository(val db: DB, sessionTimeout: SessionTimeout) extends KoskiDatabaseMethods with GlobalExecutionContext with Timing with Logging {
-  private def now = new Timestamp(System.currentTimeMillis())
-
-  private def deserialize(huoltajaSearchResult: JValue) = JsonSerializer.extract[HuollettavatSearchResult](huoltajaSearchResult)
-  private def serialize(searchResult: HuollettavatSearchResult) = JsonSerializer.serializeWithRoot(searchResult)
 
   def store(ticket: String, user: AuthenticationUser, clientIp: InetAddress, userAgent: String) = {
     val operation = if (user.kansalainen) KoskiOperation.KANSALAINEN_LOGIN else KoskiOperation.LOGIN
@@ -60,4 +56,8 @@ class KoskiSessionRepository(val db: DB, sessionTimeout: SessionTimeout) extends
     val deleted = runDbSync(query.delete)
     logger.info(s"Purged $deleted sessions older than $before")
   }
+
+  private def now = new Timestamp(System.currentTimeMillis())
+  private def deserialize(huoltajaSearchResult: JValue) = JsonSerializer.extract[HuollettavatSearchResult](huoltajaSearchResult)
+  private def serialize(searchResult: HuollettavatSearchResult) = JsonSerializer.serializeWithRoot(searchResult)
 }
