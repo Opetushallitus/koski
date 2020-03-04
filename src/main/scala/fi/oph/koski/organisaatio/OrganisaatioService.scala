@@ -8,6 +8,7 @@ class OrganisaatioService(application: KoskiApplication) {
   private val organisaatioRepository = application.organisaatioRepository
   private val perustiedot = VarhaiskasvatusToimipistePerustiedot(application.perustiedotIndexer)
   private val localizationRepository = application.localizationRepository
+  private val ostopalveluRootOid = "ostopalvelu/palveluseteli"
 
   def searchInAllOrganizations(query: Option[String])(implicit u: KoskiSession): Iterable[OrganisaatioHierarkia] = {
     query match {
@@ -47,7 +48,7 @@ class OrganisaatioService(application: KoskiApplication) {
   private def omatOstopalveluOrganisaatioHierarkiat(implicit u: KoskiSession) = omatOstopalveluOrganisaatiot match {
     case Nil => Nil
     case children => List(OrganisaatioHierarkia(
-      oid = "ostopalvelu/palveluseteli",
+      oid = ostopalveluRootOid,
       nimi = localizationRepository.get("Ostopalvelu/palveluseteli"),
       children = children
     ))
