@@ -10,7 +10,7 @@ class OrganisaatioService(application: KoskiApplication) {
   private val localizationRepository = application.localizationRepository
   private val ostopalveluRootOid = "ostopalvelu/palveluseteli"
 
-  def searchInAllOrganizations(query: Option[String])(implicit u: KoskiSession): Iterable[OrganisaatioHierarkia] = {
+  def searchInAllOrganizations(query: Option[String])(implicit user: KoskiSession): Iterable[OrganisaatioHierarkia] = {
     query match {
       case Some(qry) if qry.length >= 3 =>
         organisaatioRepository.findHierarkia(qry).sortBy(organisaatioNimi)
@@ -18,34 +18,34 @@ class OrganisaatioService(application: KoskiApplication) {
     }
   }
 
-  def searchInEntitledOrganizations(query: Option[String], orgTypes: OrgTypesToShow)(implicit u: KoskiSession): Iterable[OrganisaatioHierarkia] = {
+  def searchInEntitledOrganizations(query: Option[String], orgTypes: OrgTypesToShow)(implicit user: KoskiSession): Iterable[OrganisaatioHierarkia] = {
     val orgs = getOrganisaatiot(orgTypes)
     query match {
-      case Some(qry) => OrganisaatioHierarkiaFilter(qry, u.lang).filter(orgs)
+      case Some(qry) => OrganisaatioHierarkiaFilter(qry, user.lang).filter(orgs)
       case None => orgs
     }
   }
 
-  private def getOrganisaatiot(orgTypes: OrgTypesToShow)(implicit u: KoskiSession) = orgTypes match {
+  private def getOrganisaatiot(orgTypes: OrgTypesToShow)(implicit user: KoskiSession) = orgTypes match {
     case OmatOrganisaatiot => omatOrganisaatioHierarkiat
     case VarhaiskasvatusToimipisteet => kaikkiOstopalveluOrganisaatioHierarkiat
     case Kaikki => omatOrganisaatioHierarkiat ++ omatOstopalveluOrganisaatioHierarkiat
   }
 
-  private def omatOrganisaatioHierarkiat(implicit u: KoskiSession): List[OrganisaatioHierarkia] =
-    u.orgKäyttöoikeudet.filter(_.juuri).toList.flatMap { ko: KäyttöoikeusOrg =>
+  private def omatOrganisaatioHierarkiat(implicit user: KoskiSession): List[OrganisaatioHierarkia] =
+    user.orgKäyttöoikeudet.filter(_.juuri).toList.flatMap { ko: KäyttöoikeusOrg =>
       organisaatioRepository.getOrganisaatioHierarkia(ko.organisaatio.oid)
     }.sortBy(organisaatioNimi)
 
-  private def kaikkiOstopalveluOrganisaatioHierarkiat(implicit u: KoskiSession) = if (u.hasKoulutustoimijaVarhaiskasvatuksenJärjestäjäAccess) {
+  private def kaikkiOstopalveluOrganisaatioHierarkiat(implicit user: KoskiSession) = if (user.hasKoulutustoimijaVarhaiskasvatuksenJärjestäjäAccess) {
     organisaatioRepository.findVarhaiskasvatusHierarkiat
-      .filterNot(h => u.varhaiskasvatusKoulutustoimijat.contains(h.oid)) // karsi oman organisaation päiväkodit pois
+      .filterNot(h => user.varhaiskasvatusKoulutustoimijat.contains(h.oid)) // karsi oman organisaation päiväkodit pois
       .sortBy(organisaatioNimi)
   } else {
     Nil
   }
 
-  private def omatOstopalveluOrganisaatioHierarkiat(implicit u: KoskiSession) = omatOstopalveluOrganisaatiot match {
+  private def omatOstopalveluOrganisaatioHierarkiat(implicit user: KoskiSession) = omatOstopalveluOrganisaatiot match {
     case Nil => Nil
     case children => List(OrganisaatioHierarkia(
       oid = ostopalveluRootOid,
@@ -54,12 +54,12 @@ class OrganisaatioService(application: KoskiApplication) {
     ))
   }
 
-  private def omatOstopalveluOrganisaatiot(implicit u: KoskiSession) =
-    perustiedot.haeVarhaiskasvatustoimipisteet(u.varhaiskasvatusKoulutustoimijat) match {
+  private def omatOstopalveluOrganisaatiot(implicit user: KoskiSession) =
+    perustiedot.haeVarhaiskasvatustoimipisteet(user.varhaiskasvatusKoulutustoimijat) match {
       case päiväkoditJoihinTallennettuOpiskeluoikeuksia if päiväkoditJoihinTallennettuOpiskeluoikeuksia.nonEmpty =>
         OrganisaatioHierarkia.flatten(kaikkiOstopalveluOrganisaatioHierarkiat).filter(o => päiväkoditJoihinTallennettuOpiskeluoikeuksia.contains(o.oid))
       case _ => Nil
     }
 
-  private def organisaatioNimi(implicit u: KoskiSession): OrganisaatioHierarkia => String = _.nimi.get(u.lang)
+  private def organisaatioNimi(implicit user: KoskiSession): OrganisaatioHierarkia => String = _.nimi.get(user.lang)
 }
