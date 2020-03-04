@@ -265,7 +265,7 @@ describe('Oppijataulukko', function() {
     describe('voi filtteröidä hakusanalla Ostopalvelu/palveluseteli', function() {
       before(organisaatiovalitsin.enter('Ostopalvelu/palveluseteli'))
 
-      it('toimii', function() {
+      it('näyttää vain oppilaitokset joihin tallennettu dataa', function() {
         expect(organisaatiovalitsin.oppilaitokset()).to.deep.equal([
           'Ostopalvelu/palveluseteli Päiväkoti Touhula',
           'Päiväkoti Touhula'
