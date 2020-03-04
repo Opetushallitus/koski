@@ -103,10 +103,7 @@ case class AikuistenPerusopetusRaportti(repository: AikuistenPerusopetusRaportti
         läsnäolopäiviä_aikajakson_aikana = row.aikajaksot.filter(_.tila == "lasna").map(j => Aikajakso(j.alku.toLocalDate, Some(j.loppu.toLocalDate))).map(lengthInDaysInDateRange(_, alku, loppu)).sum,
         rahoitukset = row.aikajaksot.flatMap(_.opintojenRahoitus).mkString(", "),
         ryhmä = JsonSerializer.extract[Option[String]](row.päätasonSuoritus.data \ "ryhmä"),
-        tehostetunTuenPäätökset = lisätiedot.flatMap(_.tehostetunTuenPäätökset.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
         ulkomaanjaksot = lisätiedot.flatMap(_.ulkomaanjaksot.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
-        vammainen = lisätiedot.flatMap(_.vammainen.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
-        vaikeastiVammainen = lisätiedot.flatMap(_.vaikeastiVammainen.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
         majoitusetu = lisätiedot.flatMap(_.majoitusetu).map(lengthInDaysInDateRange(_, alku, loppu)),
         sisäoppilaitosmainenMajoitus = lisätiedot.flatMap(_.sisäoppilaitosmainenMajoitus.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
         yhteislaajuus = row.osasuoritukset.filter(_.suorituksenTyyppi == "aikuistenperusopetuksenkurssi").flatMap(_.koulutusmoduuliLaajuusArvo.map(_.toDouble)).sum
@@ -167,10 +164,7 @@ case class AikuistenPerusopetusRaportti(repository: AikuistenPerusopetusRaportti
       CompactColumn("Läsnäolopäiviä aikajakson aikana", comment = Some("Kuinka monta kalenteripäivää oppija on ollut raportin tulostusparametreissa määriteltynä aikajaksona \"Läsnä\"-tilassa KOSKI-palvelussa.")),
       CompactColumn("Rahoitukset", comment = Some("Rahoituskoodit aikajärjestyksessä, joita opiskeluoikeuden läsnäolojaksoille on siirretty. Rahoituskoodien nimiarvot koodistossa https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/opintojenrahoitus/latest")),
       CompactColumn("Ryhmä"),
-      CompactColumn("Tehostetun tuen päätökset", comment = Some("Kuinka monta tehostetun tuen jakson päivää oppijalla on KOSKI-datan mukaan ollut raportin tulostusparametreissa määritellyllä aikajaksolla.")),
       CompactColumn("Ulkomaanjaksot", comment = Some("Kuinka monta ulkomaanjaksopäivää oppijalla on KOSKI-datan mukaan ollut raportin tulostusparametreissa määritellyllä aikajaksolla.")),
-      CompactColumn("Vammainen", comment = Some("Yhteenlasketut päivät jaksoista, joina oppija on ollut (muuten kuin vaikeimmin) kehitysvammainen. Lasketaan KOSKI-datasta raportin tulostusparametreissa määritellyltä aikajaksolta.")),
-      CompactColumn("Vaikeasti vammainen", comment = Some("Yhteenlasketut päivät jaksoista, joina oppija on ollut vaikeasti kehitysvammainen. Lasketaan KOSKI-datasta raportin tulostusparametreissa määritellyltä aikajaksolta.")),
       CompactColumn("Majoitusetu", comment = Some("Kuinka monta majoitusetupäivää oppijalla on KOSKI-datan mukaan ollut raportin tulostusparametreissa määritellyllä aikajaksolla.")),
       CompactColumn("Sisäoppilaitosmainen majoitus", comment = Some("Kuinka monta päivää oppija on ollut KOSKI-datan mukaan sisäoppilaitosmaisessa majoituksessa raportin tulostusparametreissa määritellyllä aikajaksolla.")),
       CompactColumn("Yhteislaajuus", comment = Some("Suoritettujen opintojen yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista."))
@@ -219,10 +213,7 @@ case class AikuistenPerusopetusRaporttiOppiaineetVälilehtiMuut(
   läsnäolopäiviä_aikajakson_aikana: Int,
   rahoitukset: String,
   ryhmä: Option[String],
-  tehostetunTuenPäätökset: Option[Int],
   ulkomaanjaksot: Option[Int],
-  vammainen: Option[Int],
-  vaikeastiVammainen: Option[Int],
   majoitusetu: Option[Int],
   sisäoppilaitosmainenMajoitus: Option[Int],
   yhteislaajuus: Double
