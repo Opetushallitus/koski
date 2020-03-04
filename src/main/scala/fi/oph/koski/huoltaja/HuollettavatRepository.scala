@@ -1,9 +1,10 @@
 package fi.oph.koski.huoltaja
 
 import com.typesafe.config.Config
-import fi.oph.koski.henkilo.MockOppijat.{eskari, faija, eiKoskessa, faijaFeilaa}
+import fi.oph.koski.henkilo.MockOppijat.{eiKoskessa, eskari, faija, faijaFeilaa}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
+import fi.oph.koski.log.Logging
 
 trait HuollettavatRepository {
   def getHuollettavat(huoltajaHetu: String): Either[HttpStatus, List[VtjHuollettavaHenkilö]]
@@ -21,12 +22,14 @@ object HuollettavatRepository {
   }
 }
 
-class RemoteHuollettavatRepository(val http: Http) extends HuollettavatRepository {
+class RemoteHuollettavatRepository(val http: Http) extends HuollettavatRepository with Logging {
   def getHuollettavat(huoltajanHetu: String): Either[HttpStatus, List[VtjHuollettavaHenkilö]] = {
     http.get(uri"/vtj-service/resources/vtj/$huoltajanHetu")(Http.parseJson[VtjHuoltajaHenkilöResponse])
       .map(x => Right(x.huollettavat))
       .handle {
-        case _: Exception => Left(KoskiErrorCategory.unavailable.huollettavat())
+        case e: Exception =>
+          logger.error(e.toString)
+          Left(KoskiErrorCategory.unavailable.huollettavat())
       }
       .run
   }
