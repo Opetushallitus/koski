@@ -39,7 +39,7 @@ class OrganisaatioService(application: KoskiApplication) {
 
   private def kaikkiOstopalveluOrganisaatioHierarkiat(implicit user: KoskiSession) = if (user.hasKoulutustoimijaVarhaiskasvatuksenJärjestäjäAccess) {
     organisaatioRepository.findVarhaiskasvatusHierarkiat
-      .filterNot(h => user.varhaiskasvatusKoulutustoimijat.contains(h.oid)) // karsi oman organisaation päiväkodit pois
+      .filterNot(isOmanOrganisaationPäiväkoti)
       .sortBy(organisaatioNimi)
   } else {
     Nil
@@ -62,4 +62,7 @@ class OrganisaatioService(application: KoskiApplication) {
     }
 
   private def organisaatioNimi(implicit user: KoskiSession): OrganisaatioHierarkia => String = _.nimi.get(user.lang)
+
+  private def isOmanOrganisaationPäiväkoti(org: OrganisaatioHierarkia)(implicit user: KoskiSession) =
+    user.varhaiskasvatusKoulutustoimijat.contains(org.oid)
 }
