@@ -24,7 +24,7 @@ export const listviewPath = () => {
   return sessionStorage.previousListViewPath || '/koski/'
 }
 
-const ostopalveluRootOid = "ostopalvelu/palveluseteli"
+const ostopalveluRootOid = 'ostopalvelu/palveluseteli'
 
 export class Oppijataulukko extends React.Component {
   constructor(props) {
