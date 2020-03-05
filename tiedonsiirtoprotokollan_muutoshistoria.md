@@ -1,3 +1,12 @@
+## 5.3.2020
+- Lisätty kenttä oman äidinkielen opinnot suorituksiin
+    - Aikuisten perusopetuksen oppimäärän suoritus
+    - Aikuisten perusopetuksen alkuvaiheen suoritus
+    - Lukion oppimäärän suoritus
+    - Nuorten perusopetuksen vuosiluokan suoritus
+    - Nuorten perusopetuksen oppimäärän suoritus
+    - Perusopetukseen valmistavan opetuksen suoritus
+
 ## 14.1.2020
 - Lisätty esiopetuksen opiskeluoikeuteen kenttä järjestämismuoto
 
