@@ -248,4 +248,29 @@ describe('Oppijataulukko', function() {
       expect(page.opiskeluoikeudeTotal()).to.equal('1')
     })
   })
+
+  describe('Varhaiskasvatuksen järjestäjä', function() {
+    before(Authentication().login('hki-tallentaja'), page.openPage, wait.until(page.isReady))
+
+    describe('voi hakea ostopalvelutoimipisteistä joihin on tallennettu opiskeluoikeuksia', function() {
+      before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('tila'), page.oppijataulukko.filterBy('oppilaitos', 'Päiväkoti Touhula'))
+
+      it('toimii', function() {
+        expect(page.oppijataulukko.names()).to.deep.equal(['Eskari, Essi'])
+        expect(page.opiskeluoikeudeTotal()).to.equal('1')
+      })
+    })
+
+    var organisaatiovalitsin = OrganisaatioHaku(page.oppijataulukko.tableElem)
+    describe('voi filtteröidä hakusanalla Ostopalvelu/palveluseteli', function() {
+      before(organisaatiovalitsin.enter('Ostopalvelu/palveluseteli'))
+
+      it('näyttää vain oppilaitokset joihin tallennettu dataa', function() {
+        expect(organisaatiovalitsin.oppilaitokset()).to.deep.equal([
+          'Ostopalvelu/palveluseteli Päiväkoti Touhula',
+          'Päiväkoti Touhula'
+        ])
+      })
+    })
+  })
 })
