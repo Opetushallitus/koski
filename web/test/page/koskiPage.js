@@ -80,6 +80,9 @@ function KoskiPage() {
     names: function() {
       return Oppijataulukko.data().map(function(row) { return row[0]})
     },
+    oppilaitokset: function() {
+      return Oppijataulukko.data().map(function(row) { return row[5]})
+    },
     highlights: function() {
       return textsOf(S('.highlight'))
     },

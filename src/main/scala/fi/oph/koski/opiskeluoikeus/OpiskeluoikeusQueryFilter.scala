@@ -1,17 +1,18 @@
 package fi.oph.koski.opiskeluoikeus
-import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
 import java.time.format.DateTimeParseException
+import java.time.{Instant, LocalDate, LocalDateTime, ZoneId}
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{Luokkahaku, Nimihaku, SuoritusJsonHaku, _}
-import fi.oph.koski.organisaatio.{OrganisaatioOid, OrganisaatioRepository}
+import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioOid, OrganisaatioRepository, OrganisaatioService}
+import fi.oph.koski.perustiedot.VarhaiskasvatusToimipistePerustiedot
 import fi.oph.koski.schema.{Koodistokoodiviite, OrganisaatioWithOid}
 import org.json4s.JsonAST.JValue
 import org.json4s.jackson.JsonMethods
-import org.scalatra.{MultiParams, Params}
+import org.scalatra.MultiParams
 
 import scala.util.{Failure, Success, Try}
 
@@ -36,11 +37,12 @@ object OpiskeluoikeusQueryFilter {
   case class MuuttunutEnnen(aikaleima: Instant) extends OpiskeluoikeusQueryFilter
   case class MuuttunutJälkeen(aikaleima: Instant) extends OpiskeluoikeusQueryFilter
 
-  def parse(params: MultiParams)(implicit koodisto: KoodistoViitePalvelu, organisaatiot: OrganisaatioRepository, session: KoskiSession): Either[HttpStatus, List[OpiskeluoikeusQueryFilter]] = OpiskeluoikeusQueryFilterParser.parse(params)
+  def parse(params: MultiParams)(implicit koodisto: KoodistoViitePalvelu, organisaatiot: OrganisaatioService, session: KoskiSession): Either[HttpStatus, List[OpiskeluoikeusQueryFilter]] =
+    OpiskeluoikeusQueryFilterParser.parse(params)
 }
 
 private object OpiskeluoikeusQueryFilterParser extends Logging {
-  def parse(params: MultiParams)(implicit koodisto: KoodistoViitePalvelu, organisaatiot: OrganisaatioRepository, session: KoskiSession): Either[HttpStatus, List[OpiskeluoikeusQueryFilter]] = {
+  def parse(params: MultiParams)(implicit koodisto: KoodistoViitePalvelu, organisaatiot: OrganisaatioService, session: KoskiSession): Either[HttpStatus, List[OpiskeluoikeusQueryFilter]] = {
     def dateParam(q: (String, String)): Either[HttpStatus, LocalDate] = q match {
       case (p, v) => try {
         Right(LocalDate.parse(v))
@@ -74,9 +76,13 @@ private object OpiskeluoikeusQueryFilterParser extends Logging {
       case ("suorituksenTyyppi", v +: _) => Right(SuorituksenTyyppi(koodisto.validateRequired("suorituksentyyppi", v)))
       case ("tutkintohaku", hakusana +: _) if hakusana.length < 3 => Left(KoskiErrorCategory.badRequest.queryParam.searchTermTooShort())
       case ("tutkintohaku", hakusana +: _) => Right(Tutkintohaku(hakusana))
+      case ("toimipiste", oid +: _) if oid == organisaatiot.ostopalveluRootOid => organisaatiot.omatOstopalveluOrganisaatiot match {
+        case Nil => Left(KoskiErrorCategory.notFound.oppilaitostaEiLöydy("Ostopalvelu/palveluseteli-toimipisteitä ei löydy"))
+        case hierarkia => Right(Toimipiste(hierarkia.map(_.toOrganisaatio)))
+      }
       case ("toimipiste", oid +: _) =>
         OrganisaatioOid.validateOrganisaatioOid(oid).right.flatMap { oid =>
-          organisaatiot.getOrganisaatioHierarkia(oid) match {
+          organisaatiot.organisaatioRepository.getOrganisaatioHierarkia(oid) match {
             case Some(hierarkia) => Right(Toimipiste(hierarkia.flatten))
             case None => Left(KoskiErrorCategory.notFound.oppilaitostaEiLöydy("Oppilaitosta/koulutustoimijaa/toimipistettä ei löydy: " + oid))
           }
