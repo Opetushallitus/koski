@@ -55,16 +55,19 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
-  def aikuistenPerusopetus(request: AikajaksoRaporttiAikarajauksellaRequest) = {
+  def aikuistenPerusopetus(request: AikuistenPerusopetusRaporttiRequest) = {
     OppilaitosRaporttiResponse(
-      sheets = AikuistenPerusopetusRaportti(aikuistenPerusopetusRepository).build(
+      sheets = AikuistenPerusopetusRaportti(
+        aikuistenPerusopetusRepository,
+        request.raportinTyyppi
+      ).build(
         request.oppilaitosOid,
         request.alku,
         request.loppu,
         request.osasuoritustenAikarajaus
       ),
       workbookSettings = WorkbookSettings(s"Suoritustietojen_tarkistus_${request.oppilaitosOid}", Some(request.password)),
-      filename = s"aikuisten_perusopetus_suoritustietojen_tarkistus_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
+      filename = s"aikuisten_perusopetus_suoritustietojen_tarkistus_${request.raportinTyyppi.typeName}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
       downloadToken = request.downloadToken
     )
   }

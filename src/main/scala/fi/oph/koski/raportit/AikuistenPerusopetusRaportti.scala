@@ -13,15 +13,79 @@ import scala.concurrent.Future
 import scala.concurrent.duration._
 
 
-case class AikuistenPerusopetusRaportti(repository: AikuistenPerusopetusRaporttiRepository) extends GlobalExecutionContext {
+sealed trait AikuistenPerusopetusRaporttiType {
+  def typeName: String
+  def päätasonSuoritusTyyppi: String
+  def isOppiaineenOppimäärä(päätasonSuoritus: RPäätasonSuoritusRow): Boolean
+  def isOppiaine(osasuoritus: ROsasuoritusRow): Boolean
+}
+
+
+case class AikuistenPerusopetusAlkuvaiheRaportti() extends AikuistenPerusopetusRaporttiType {
+  val typeName = "alkuvaihe"
+  val päätasonSuoritusTyyppi: String = "aikuistenperusopetuksenoppimaaranalkuvaihe"
+
+  def isOppiaineenOppimäärä(päätasonSuoritus: RPäätasonSuoritusRow): Boolean = false
+
+  def isOppiaine(osasuoritus: ROsasuoritusRow): Boolean = {
+    osasuoritus.suorituksenTyyppi == "aikuistenperusopetuksenalkuvaiheenoppiaine"
+  }
+}
+
+
+case class AikuistenPerusopetusPäättövaiheRaportti() extends AikuistenPerusopetusRaporttiType {
+  val typeName = "päättövaihe"
+  val päätasonSuoritusTyyppi: String = "aikuistenperusopetuksenoppimaara"
+
+  def isOppiaineenOppimäärä(päätasonSuoritus: RPäätasonSuoritusRow): Boolean = false
+
+  def isOppiaine(osasuoritus: ROsasuoritusRow): Boolean = {
+    osasuoritus.suorituksenTyyppi == "aikuistenperusopetuksenoppiaine"
+  }
+}
+
+
+case class AikuistenPerusopetusOppiaineenOppimääräRaportti() extends AikuistenPerusopetusRaporttiType {
+  val typeName = "oppiaineenoppimäärä"
+  val päätasonSuoritusTyyppi: String = "perusopetuksenoppiaineenoppimaara"
+
+  def isOppiaineenOppimäärä(päätasonSuoritus: RPäätasonSuoritusRow): Boolean = {
+    päätasonSuoritus.suorituksenTyyppi == päätasonSuoritusTyyppi
+  }
+
+  def isOppiaine(osasuoritus: ROsasuoritusRow): Boolean = {
+    List(
+      "aikuistenperusopetuksenalkuvaiheenoppiaine",
+      "aikuistenperusopetuksenoppiaine"
+    ).contains(osasuoritus.suorituksenTyyppi)
+  }
+}
+
+
+object AikuistenPerusopetusRaportti {
+  def makeRaporttiType(typeName: String): Either[String, AikuistenPerusopetusRaporttiType] = {
+    typeName match {
+      case "alkuvaihe" => Right(AikuistenPerusopetusAlkuvaiheRaportti())
+      case "päättövaihe" => Right(AikuistenPerusopetusPäättövaiheRaportti())
+      case "oppiaineenoppimäärä" => Right(AikuistenPerusopetusOppiaineenOppimääräRaportti())
+      case _ => Left(s"${typeName} on epäkelpo aikuisten perusopetuksen raportin tyyppi")
+    }
+  }
+}
+
+
+case class AikuistenPerusopetusRaportti(
+  repository: AikuistenPerusopetusRaporttiRepository,
+  raporttiType: AikuistenPerusopetusRaporttiType
+) extends GlobalExecutionContext {
   def build(
     oppilaitosOid: Organisaatio.Oid,
     alku: LocalDate,
     loppu: LocalDate,
     osasuoritustenAikarajaus: Boolean
   ): Seq[DynamicDataSheet] = {
-    val rows = repository.suoritustiedot(oppilaitosOid, alku, loppu, osasuoritustenAikarajaus)
-    val oppiaineetJaKurssit = opetettavatOppiaineetJaNiidenKurssit(isOppiaineenOppimäärä, isOppiaine, rows)
+    val rows = repository.suoritustiedot(oppilaitosOid, alku, loppu, osasuoritustenAikarajaus, raporttiType.päätasonSuoritusTyyppi)
+    val oppiaineetJaKurssit = opetettavatOppiaineetJaNiidenKurssit(raporttiType.isOppiaineenOppimäärä, raporttiType.isOppiaine, rows)
 
     val future = for {
       oppiaineJaLisätiedot <- oppiaineJaLisätiedotSheet(rows, oppiaineetJaKurssit, alku, loppu)
@@ -29,17 +93,6 @@ case class AikuistenPerusopetusRaportti(repository: AikuistenPerusopetusRaportti
     } yield (oppiaineJaLisätiedot +: kurssit)
 
     Futures.await(future, atMost = 6.minutes)
-  }
-
-  private def isOppiaineenOppimäärä(päätasonSuoritus: RPäätasonSuoritusRow): Boolean = {
-    päätasonSuoritus.suorituksenTyyppi == "perusopetuksenoppiaineenoppimaara"
-  }
-
-  private def isOppiaine(osasuoritus: ROsasuoritusRow): Boolean = {
-    List(
-      "aikuistenperusopetuksenoppiaine",
-      "aikuistenperusopetuksenalkuvaiheenoppiaine"
-    ).contains(osasuoritus.suorituksenTyyppi)
   }
 
   private def oppiaineJaLisätiedotSheet(opiskeluoikeusData: Seq[AikuistenPerusopetusRaporttiRows], oppiaineetJaKurssit: Seq[YleissivistäväRaporttiOppiaineJaKurssit], alku: LocalDate, loppu: LocalDate) = {
@@ -71,7 +124,7 @@ case class AikuistenPerusopetusRaportti(repository: AikuistenPerusopetusRaportti
   }
 
   private def notOppimääränOpiskelijaFromAnotherOppiaine(oppiaine: YleissivistäväRaporttiOppiaine)(data: AikuistenPerusopetusRaporttiRows) = {
-    !isOppiaineenOppimäärä(data.päätasonSuoritus) || data.päätasonSuoritus.matchesWith(oppiaine)
+    !raporttiType.isOppiaineenOppimäärä(data.päätasonSuoritus) || data.päätasonSuoritus.matchesWith(oppiaine)
   }
 
   private def kaikkiOppiaineetVälilehtiRow(row: AikuistenPerusopetusRaporttiRows, oppiaineet: Seq[YleissivistäväRaporttiOppiaineJaKurssit], alku: LocalDate, loppu: LocalDate) = {
@@ -108,7 +161,7 @@ case class AikuistenPerusopetusRaportti(repository: AikuistenPerusopetusRaportti
         sisäoppilaitosmainenMajoitus = lisätiedot.flatMap(_.sisäoppilaitosmainenMajoitus.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
         yhteislaajuus = row.osasuoritukset.filter(_.suorituksenTyyppi == "aikuistenperusopetuksenkurssi").flatMap(_.koulutusmoduuliLaajuusArvo.map(_.toDouble)).sum
       ),
-      oppiaineet = oppiaineidentiedot(row.päätasonSuoritus, row.osasuoritukset, oppiaineet, isOppiaineenOppimäärä)
+      oppiaineet = oppiaineidentiedot(row.päätasonSuoritus, row.osasuoritukset, oppiaineet, raporttiType.isOppiaineenOppimäärä)
     )
   }
 

@@ -67,7 +67,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
   }
 
   get("/aikuisten-perusopetus-suoritustietojen-tarkistus") {
-    val parsedRequest = parseAikajaksoRaporttiAikarajauksellaRequest
+    val parsedRequest = parseAikuistenPerusopetusRaporttiRequest
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=aikuistenperusopetuksensuoritustietojentarkistus&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
     writeExcel(raportitService.aikuistenPerusopetus(parsedRequest))
   }
@@ -127,6 +127,23 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
     val osasuoritustenAikarajaus = getBooleanParam("osasuoritustenAikarajaus")
 
     AikajaksoRaporttiAikarajauksellaRequest(oppilaitosOid, downloadToken, password, alku, loppu, osasuoritustenAikarajaus)
+  }
+
+  private def parseAikuistenPerusopetusRaporttiRequest: AikuistenPerusopetusRaporttiRequest = {
+    val (alku, loppu) = getAlkuLoppuParams
+    val raportinTyyppi = AikuistenPerusopetusRaportti.makeRaporttiType(params.get("raportinTyyppi").getOrElse("")) match {
+      case Right(raportinTyyppi) => raportinTyyppi
+      case Left(error) => haltWithStatus(KoskiErrorCategory.badRequest.queryParam(s"Epäkelpo raportinTyyppi: ${error}"))
+    }
+    AikuistenPerusopetusRaporttiRequest(
+      oppilaitosOid = getOppilaitosOid,
+      downloadToken = params.get("downloadToken"),
+      password = getStringParam("password"),
+      alku = alku,
+      loppu = loppu,
+      osasuoritustenAikarajaus = getBooleanParam("osasuoritustenAikarajaus"),
+      raportinTyyppi = raportinTyyppi
+    )
   }
 
   private def parseVuosiluokkaRequest: PerusopetuksenVuosiluokkaRequest = {

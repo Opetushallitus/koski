@@ -79,6 +79,15 @@ case class AikajaksoRaporttiAikarajauksellaRequest(
   osasuoritustenAikarajaus: Boolean
 ) extends RaporttiAikajaksoltaRequest
 
+case class AikuistenPerusopetusRaporttiRequest(
+  oppilaitosOid: Organisaatio.Oid,
+  downloadToken: Option[String],
+  password: String,
+  alku: LocalDate,
+  loppu: LocalDate,
+  osasuoritustenAikarajaus: Boolean,
+  raportinTyyppi: AikuistenPerusopetusRaporttiType
+) extends RaporttiAikajaksoltaRequest
 
 case class RaporttiPäivältäRequest(
   oppilaitosOid: Organisaatio.Oid,
