@@ -41,14 +41,14 @@ export const AmmatillinenSuoritusTiedotRaportti = ({organisaatioAtom, apiEndpoin
       </div>
       {osasuoritustenAikarajausAtom.map(v => (
         <React.Fragment>
-          <div className='radio-option-container'>
+          <label className='radio-option-container'>
             <input className='radio-option' type='radio' checked={!v} onChange={() => osasuoritustenAikarajausAtom.set(false)}/>
             <Text name='Raportille valitaan kaikki tutkinnon osat riippumatta niiden suoritusajankohdasta' />
-          </div>
-          <div className='radio-option-container'>
+          </label>
+          <label className='radio-option-container'>
             <input className='radio-option' type='radio' checked={v} onChange={() => osasuoritustenAikarajausAtom.set(true)}/>
             <Text name='Raportille valitaan vain sellaiset tutkinnon osat, joiden arviointipäivä osuu yllä määritellylle aikajaksolle' />
-          </div>
+          </label>
         </React.Fragment>
       ))}
       <div className='password'><Text name='Excel-tiedosto on suojattu salasanalla'/> {password}</div>
