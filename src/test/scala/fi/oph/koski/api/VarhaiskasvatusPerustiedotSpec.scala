@@ -3,7 +3,8 @@ package fi.oph.koski.api
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.documentation.ExamplesEsiopetus.ostopalvelu
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData
-import fi.oph.koski.henkilo.MockOppijat.{asUusiOppija, eero, tero}
+import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.MockOppijat.{asUusiOppija, eero, eskari, tero}
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.organisaatio.MockOrganisaatiot
 import org.scalatest.{BeforeAndAfterAll, FreeSpec}
@@ -15,9 +16,13 @@ class VarhaiskasvatusPerustiedotSpec extends FreeSpec with BeforeAndAfterAll wit
       perustiedot.flatMap(_.oppilaitos.nimi).map(_.get("fi")) should contain("Päiväkoti Majakka")
     }
 
-    "Voi hakea kaikki ostopalvelutiedot" in {
+    "Voi hakea kaikki omat ostopalvelutiedot" in {
       val perustiedot = searchForPerustiedot(Map("opiskeluoikeudenTyyppi" -> "esiopetus", "toimipiste" -> "ostopalvelu/palveluseteli"), MockUsers.helsinkiTallentaja)
-      perustiedot.flatMap(_.oppilaitos.nimi).map(_.get("fi")).sorted should equal(List("Päiväkoti Majakka", "Päiväkoti Touhula"))
+      (for {
+        perustieto <- perustiedot
+        etunimet <- perustieto.henkilö.map(_.etunimet)
+        oppilaitos <- perustieto.oppilaitos.nimi.map(_.get("fi"))
+      } yield (etunimet, oppilaitos)).sorted should equal(List((eero.etunimet, "Päiväkoti Majakka"), (eskari.etunimet, "Päiväkoti Majakka"), (eskari.etunimet, "Päiväkoti Touhula")))
     }
 
     "Ei voi hakea muiden luomia organisaatiohierarkian ulkopuolisia perustietoja" in {
