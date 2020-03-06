@@ -9,6 +9,7 @@ import {AikajaksoRaportti} from './AikajaksoRaportti'
 import {VuosiluokkaRaporttiPaivalta} from './VuosiluokkaRaporttiPaivalta'
 import {AikajaksoRaporttiAikarajauksella} from './AikajaksoRaporttiAikarajauksella'
 import {RaporttiPaivalta} from './RaporttiPaivalta'
+import {AikuistenPerusopetuksenRaportit} from './AikuistenPerusopetuksenRaportit'
 
 export const raportitContentP = () => {
   const organisaatioAtom = Atom()
@@ -166,7 +167,7 @@ const AikuistenPerusopetusRaportti = ({organisaatioAtom}) => {
   const titleText = <Text name='aikuisten-perusopetus-raportti-title'/>
   const descriptionText = <Text name='aikuisten-perusopetus-raportti-description'/>
 
-  return (<AikajaksoRaporttiAikarajauksella
+  return (<AikuistenPerusopetuksenRaportit
     organisaatioAtom={organisaatioAtom}
     apiEndpoint={'/aikuisten-perusopetus-suoritustietojen-tarkistus'}
     title={titleText}
