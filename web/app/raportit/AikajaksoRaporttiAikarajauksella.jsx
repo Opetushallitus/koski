@@ -18,7 +18,15 @@ export const AikajaksoRaporttiAikarajauksella = ({organisaatioAtom, apiEndpoint,
   const password = generateRandomPassword()
 
   const downloadExcelP = Bacon.combineWith(
-    organisaatioAtom, alkuAtom, loppuAtom, osasuoritustenAikarajausAtom, (o, a, l, r) => o && a && l && (l.valueOf() >= a.valueOf()) && {oppilaitosOid: o.oid, alku: formatISODate(a), loppu: formatISODate(l), osasuoritustenAikarajaus: r, password, baseUrl: `/koski/api/raportit${apiEndpoint}`})
+    organisaatioAtom, alkuAtom, loppuAtom, osasuoritustenAikarajausAtom,
+    (o, a, l, r) => o && a && l && (l.valueOf() >= a.valueOf()) && {
+      oppilaitosOid: o.oid,
+      alku: formatISODate(a),
+      loppu: formatISODate(l),
+      osasuoritustenAikarajaus: r,
+      password,
+      baseUrl: `/koski/api/raportit${apiEndpoint}`
+    })
 
   const downloadExcelE = submitBus.map(downloadExcelP).flatMapLatest(downloadExcel)
 
