@@ -45,6 +45,11 @@
     }],
     "react/jsx-wrap-multilines": 1
   },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
   "plugins": [
     "react"
   ],
