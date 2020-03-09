@@ -22,6 +22,8 @@ case class AikuistenPerusopetusRaporttiRepository(
   private type OppijaOid = String
   private type PäätasonSuoritusId = Long
   private type AikajaksoId = Long
+  private type HasAlkuvaihe = Boolean
+  private type HasPäättövaihe = Boolean
 
   def suoritustiedot(
     oppilaitosOid: Organisaatio.Oid,
@@ -35,6 +37,9 @@ case class AikuistenPerusopetusRaporttiRepository(
     }
 
     val opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet = opiskeluoikeusAikajaksotPaatasonSuorituksetResult(oppilaitosOid, alku, loppu, päätasonSuorituksenTyyppi)
+    val hasAlkuvaihePäättövaihe = opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet
+      .map(data => (data._1, data._4, data._5))
+      .groupBy(_._1)
 
     val opiskeluoikeusOids = opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet.map(_._1)
     val opiskeluoikeudet = runDbSync(ROpiskeluoikeudet.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).result, timeout = defaultTimeout)
@@ -52,7 +57,7 @@ case class AikuistenPerusopetusRaporttiRepository(
     val henkilot = runDbSync(RHenkilöt.filter(_.oppijaOid inSet opiskeluoikeudet.map(_.oppijaOid).distinct).result, timeout = defaultTimeout).groupBy(_.oppijaOid).mapValues(_.head)
 
     opiskeluoikeudet.foldLeft[Seq[AikuistenPerusopetusRaporttiRows]](Seq.empty) {
-      combineOpiskeluoikeusWith(_, _, aikajaksot, paatasonSuoritukset, osasuoritukset, henkilot)
+      combineOpiskeluoikeusWith(_, _, aikajaksot, paatasonSuoritukset, osasuoritukset, henkilot, hasAlkuvaihePäättövaihe)
     }
   }
 
@@ -62,7 +67,8 @@ case class AikuistenPerusopetusRaporttiRepository(
     aikajaksot: Map[OpiskeluoikeusOid, Seq[ROpiskeluoikeusAikajaksoRow]],
     paatasonSuoritukset: Map[OpiskeluoikeusOid, Seq[RPäätasonSuoritusRow]],
     osasuoritukset: Map[PäätasonSuoritusId, Seq[ROsasuoritusRow]],
-    henkilot: Map[OppijaOid, RHenkilöRow]
+    henkilot: Map[OppijaOid, RHenkilöRow],
+    hasAlkuvaihePäättövaihe: Map[OpiskeluoikeusOid, Vector[(OpiskeluoikeusOid, HasAlkuvaihe, HasPäättövaihe)]]
   ) = {
     paatasonSuoritukset.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Nil).map(paatasonsuoritus =>
       AikuistenPerusopetusRaporttiRows(
@@ -70,7 +76,9 @@ case class AikuistenPerusopetusRaporttiRepository(
         henkilot(opiskeluoikeus.oppijaOid),
         aikajaksot.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Nil).sortBy(_.alku)(sqlDateOrdering),
         paatasonsuoritus,
-        osasuoritukset.getOrElse(paatasonsuoritus.päätasonSuoritusId, Nil)
+        osasuoritukset.getOrElse(paatasonsuoritus.päätasonSuoritusId, Nil),
+        hasAlkuvaihe = hasAlkuvaihePäättövaihe(opiskeluoikeus.opiskeluoikeusOid).exists(_._2),
+        hasPäättövaihe = hasAlkuvaihePäättövaihe(opiskeluoikeus.opiskeluoikeusOid).exists(_._3)
       )
     ) ++ acc
   }
@@ -82,13 +90,18 @@ case class AikuistenPerusopetusRaporttiRepository(
     päätasonSuorituksenTyyppi: String
   ) = {
     import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
-    implicit val getResult = GetResult[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])](pr => (pr.nextString(), pr.nextArray(), pr.nextArray()))
     runDbSync(opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(
       oppilaitos,
       Date.valueOf(alku),
       Date.valueOf(loppu),
       päätasonSuorituksenTyyppi
-    ).as[(OpiskeluoikeusOid, Seq[PäätasonSuoritusId], Seq[AikajaksoId])], timeout = defaultTimeout)
+    ).as[(
+      OpiskeluoikeusOid,
+      Seq[PäätasonSuoritusId],
+      Seq[AikajaksoId],
+      HasAlkuvaihe,
+      HasPäättövaihe
+    )], timeout = defaultTimeout)
   }
 
   private def opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(
@@ -101,7 +114,19 @@ case class AikuistenPerusopetusRaporttiRepository(
      select
       oo.opiskeluoikeus_oid,
       array_agg(pts.paatason_suoritus_id),
-      array_agg(aikaj.id)
+      array_agg(aikaj.id),
+      exists(
+        select 1
+        from r_paatason_suoritus pts_alkuvaihe
+        where pts_alkuvaihe.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
+        and pts_alkuvaihe.suorituksen_tyyppi = 'aikuistenperusopetuksenoppimaaranalkuvaihe'
+      ) as alkuvaihe,
+      exists(
+        select 1
+        from r_paatason_suoritus pts_paattovaihe
+        where pts_paattovaihe.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
+        and pts_paattovaihe.suorituksen_tyyppi = 'aikuistenperusopetuksenoppimaara'
+      ) as paattovaihe
     from r_opiskeluoikeus oo
     join r_paatason_suoritus pts
       on pts.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
@@ -121,5 +146,7 @@ case class AikuistenPerusopetusRaporttiRows(
   henkilo: RHenkilöRow,
   aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow],
   päätasonSuoritus: RPäätasonSuoritusRow,
-  osasuoritukset: Seq[ROsasuoritusRow]
+  osasuoritukset: Seq[ROsasuoritusRow],
+  hasAlkuvaihe: Boolean,
+  hasPäättövaihe: Boolean
 ) extends YleissivistäväRaporttiRows
