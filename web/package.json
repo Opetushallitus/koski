@@ -60,8 +60,8 @@
     "set-value": "^3.0.1",
     "snyk": "^1.290.1",
     "style-loader": "^0.21.0",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.1.2"
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11"
   },
   "scripts": {
     "lint": "failOnWarning=true webpack --bail",
