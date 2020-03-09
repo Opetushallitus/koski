@@ -279,7 +279,7 @@ describe('Oppijataulukko', function() {
 
       it('toimii', function() {
         expect(page.oppijataulukko.names()).to.deep.equal(['Eskari, Essi', 'Eskari, Essi'])
-        expect(page.oppijataulukko.oppilaitokset()).to.deep.equal(['Päiväkoti Majakka', 'Päiväkoti Touhula'])
+        expect(page.oppijataulukko.oppilaitokset().slice().sort()).to.deep.equal(['Päiväkoti Majakka', 'Päiväkoti Touhula'])
         expect(page.opiskeluoikeudeTotal()).to.equal('2')
       })
     })

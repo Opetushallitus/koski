@@ -15,70 +15,84 @@ import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import org.scalatra.{ContentEncodingSupport, Cookie, CookieOptions}
 
 class RaportitServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with Logging with NoCache with ContentEncodingSupport {
-
-  private lazy val raportitService = new RaportitService(application)
-  private lazy val accessResolver = RaportitAccessResolver(application)
+  private val raportitService = new RaportitService(application)
+  private val esiopetusService = new EsiopetusRaporttiService(application)
+  private val accessResolver = RaportitAccessResolver(application)
 
   before() {
     if (!application.raportointikantaService.isAvailable) {
       haltWithStatus(KoskiErrorCategory.unavailable.raportit())
     }
+    if (!koskiSession.hasRaportitAccess) {
+      haltWithStatus(KoskiErrorCategory.forbidden.organisaatio())
+    }
   }
 
   get("/mahdolliset-raportit/:oppilaitosOid") {
-    val oid = getOppilaitosParamAndCheckAccess
-    accessResolver.mahdollisetRaporttienTyypitOrganisaatiolle(oid).map(_.toString)
+    getStringParam("oppilaitosOid") match {
+      case application.organisaatioService.ostopalveluRootOid => Set(EsiopetuksenRaportti.toString)
+      case oid => accessResolver.mahdollisetRaporttienTyypitOrganisaatiolle(validateOrganisaatioOid(oid)).map(_.toString)
+    }
   }
 
   get("/ammatillinenopiskelijavuositiedot") {
     val parsedRequest = parseAikajaksoRaporttiRequest
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=ammatillinenopiskelijavuositiedot&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
-    excelResponse(raportitService.opiskelijaVuositiedot(parsedRequest))
+    writeExcel(raportitService.opiskelijaVuositiedot(parsedRequest))
   }
 
   get("/ammatillinentutkintosuoritustietojentarkistus") {
     val parsedRequest = parseAmmatillinenSuoritusTiedotRequest
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=ammatillinentutkintosuoritustietojentarkistus&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
-    excelResponse(raportitService.ammatillinenTutkintoSuoritustietojenTarkistus(parsedRequest))
+    writeExcel(raportitService.ammatillinenTutkintoSuoritustietojenTarkistus(parsedRequest))
   }
 
   get("/ammatillinenosittainensuoritustietojentarkistus") {
     val parsedRequest = parseAmmatillinenSuoritusTiedotRequest
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=ammatillinenosittainensuoritustietojentarkistus&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
-    excelResponse(raportitService.ammatillinenOsittainenSuoritustietojenTarkistus(parsedRequest))
+    writeExcel(raportitService.ammatillinenOsittainenSuoritustietojenTarkistus(parsedRequest))
   }
 
   get("/perusopetuksenvuosiluokka") {
     val parsedRequest = parseVuosiluokkaRequest
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=perusopetuksenvuosiluokka&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}&vuosiluokka=${parsedRequest.vuosiluokka}")))
-    excelResponse(raportitService.perusopetuksenVuosiluokka(parsedRequest))
+    writeExcel(raportitService.perusopetuksenVuosiluokka(parsedRequest))
   }
 
   get("/lukionsuoritustietojentarkistus") {
     val parsedRequest = parseAikajaksoRaporttiRequest
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=lukionsuoritustietojentarkistus&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
-    excelResponse(raportitService.lukioraportti(parsedRequest))
+    writeExcel(raportitService.lukioraportti(parsedRequest))
   }
 
   get("/muuammatillinen") {
     val parsedRequest = parseAikajaksoRaporttiRequest
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=muuammatillinen&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
-    excelResponse(raportitService.muuAmmatillinen(parsedRequest))
+    writeExcel(raportitService.muuAmmatillinen(parsedRequest))
   }
 
   get("/topksammatillinen") {
     val parsedRequest = parseAikajaksoRaporttiRequest
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=topksammatillinen&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
-    excelResponse(raportitService.topksAmmatillinen(parsedRequest))
+    writeExcel(raportitService.topksAmmatillinen(parsedRequest))
   }
 
   get("/esiopetus") {
-    val parsedRequest = parseRaporttiPäivältäRequest
-    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=esiopetus&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}")))
-    excelResponse(raportitService.esiopetus(parsedRequest))
+    val date = getLocalDateParam("paiva")
+    val password = getStringParam("password")
+    val token = params.get("downloadToken")
+
+    val resp = getStringParam("oppilaitosOid") match {
+      case application.organisaatioService.ostopalveluRootOid =>
+        esiopetusService.buildOstopalveluRaportti(date, password, token)
+      case oid =>
+        esiopetusService.buildRaportti(validateOrganisaatioOid(oid), date, password, token)
+    }
+
+    writeExcel(resp)
   }
 
-  private def excelResponse(raportti: OppilaitosRaporttiResponse) = {
+  private def writeExcel(raportti: OppilaitosRaporttiResponse) = {
     contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     response.setHeader("Content-Disposition", s"""attachment; filename="${raportti.filename}"""")
     raportti.downloadToken.foreach { t => response.addCookie(Cookie("koskiDownloadToken", t)(CookieOptions(path = "/", maxAge = 600))) }
@@ -90,7 +104,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
   }
 
   private def parseAikajaksoRaporttiRequest: AikajaksoRaporttiRequest = {
-    val oppilaitosOid = getOppilaitosParamAndCheckAccess
+    val oppilaitosOid = getOppilaitosOid
     val (alku, loppu) = getAlkuLoppuParams
     val password = getStringParam("password")
     val downloadToken = params.get("downloadToken")
@@ -99,7 +113,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
   }
 
   private def parseAmmatillinenSuoritusTiedotRequest: AmmatillinenSuoritusTiedotRequest = {
-    val oppilaitosOid = getOppilaitosParamAndCheckAccess
+    val oppilaitosOid = getOppilaitosOid
     val (alku, loppu) = getAlkuLoppuParams
     val password = getStringParam("password")
     val downloadToken = params.get("downloadToken")
@@ -110,7 +124,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
 
   private def parseVuosiluokkaRequest: PerusopetuksenVuosiluokkaRequest = {
    PerusopetuksenVuosiluokkaRequest(
-     oppilaitosOid = getOppilaitosParamAndCheckAccess,
+     oppilaitosOid = getOppilaitosOid,
      downloadToken = params.get("downloadToken"),
      password = getStringParam("password"),
      paiva = getLocalDateParam("paiva"),
@@ -120,24 +134,23 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
 
   private def parseRaporttiPäivältäRequest: RaporttiPäivältäRequest = {
     RaporttiPäivältäRequest(
-      oppilaitosOid = getOppilaitosParamAndCheckAccess,
+      oppilaitosOid = getOppilaitosOid,
       downloadToken = params.get("downloadToken"),
       password = getStringParam("password"),
       paiva = getLocalDateParam("paiva")
     )
   }
 
-  private def getOppilaitosParamAndCheckAccess: Organisaatio.Oid = {
-    if (!koskiSession.hasRaportitAccess) {
-      haltWithStatus(KoskiErrorCategory.forbidden.organisaatio())
-    }
-    val oppilaitosOid = OrganisaatioOid.validateOrganisaatioOid(getStringParam("oppilaitosOid")) match {
+  private def getOppilaitosOid: Organisaatio.Oid = {
+    validateOrganisaatioOid(getStringParam("oppilaitosOid"))
+  }
+
+  private def validateOrganisaatioOid(oppilaitosOid: String) =
+    OrganisaatioOid.validateOrganisaatioOid(oppilaitosOid) match {
       case Left(error) => haltWithStatus(error)
-      case Right(oid) if !koskiSession.hasReadAccess(oid, None) => haltWithStatus(KoskiErrorCategory.forbidden.organisaatio())
+      case Right(oid) if !koskiSession.hasReadAccess(oid) => haltWithStatus(KoskiErrorCategory.forbidden.organisaatio())
       case Right(oid) => oid
     }
-    oppilaitosOid
-  }
 
   private def getAlkuLoppuParams: (LocalDate, LocalDate) = {
     val alku = getLocalDateParam("alku")

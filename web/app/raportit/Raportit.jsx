@@ -43,7 +43,7 @@ export const raportitContentP = () => {
 }
 
 const Organisaatio = ({organisaatioAtom}) => {
-  const selectableOrgTypes = ['OPPILAITOS', 'OPPISOPIMUSTOIMIPISTE', 'KOULUTUSTOIMIJA', 'VARHAISKASVATUKSEN_TOIMIPAIKKA']
+  const selectableOrgTypes = ['OPPILAITOS', 'OPPISOPIMUSTOIMIPISTE', 'KOULUTUSTOIMIJA', 'VARHAISKASVATUKSEN_TOIMIPAIKKA', 'OSTOPALVELUTAIPALVELUSETELI']
   return (<label className='raportit-organisaatio'><Text name='Organisaatio'/>
     {
       organisaatioAtom.map(organisaatio => (
@@ -55,7 +55,6 @@ const Organisaatio = ({organisaatioAtom}) => {
           canSelectOrg={(org) => org.organisaatiotyypit.some(ot => selectableOrgTypes.includes(ot))}
           clearText='tyhjennä'
           noSelectionText='Valitse...'
-          orgTypesToShow='vainOmatOrganisaatiot'
         />
       ))
     }

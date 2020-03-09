@@ -4,15 +4,16 @@ import java.sql.Date
 import java.time.LocalDate
 
 import fi.oph.koski.db.KoskiDatabaseMethods
-
-import scala.concurrent.duration._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
+import fi.oph.koski.organisaatio.OrganisaatioService
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
 import slick.jdbc.GetResult
 
-case class EsiopetusRaportti(db: DB) extends KoskiDatabaseMethods {
+import scala.concurrent.duration._
 
-  implicit val getResult = GetResult(r =>
+case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) extends KoskiDatabaseMethods {
+  implicit private val getResult: GetResult[EsiopetusRaporttiRow] = GetResult(r =>
     EsiopetusRaporttiRow(
       opiskeluoikeusOid = r.<<,
       lähdejärjestelmäKoodiarvo = r.<<,
@@ -43,8 +44,8 @@ case class EsiopetusRaportti(db: DB) extends KoskiDatabaseMethods {
     )
   )
 
-  def build(oppilaitosOid: String, päivä: Date) = {
-    val rows = runDbSync(query(oppilaitosOid, päivä).as[EsiopetusRaporttiRow], timeout = 5.minutes)
+  def build(oppilaitosOids: List[String], päivä: Date)(implicit u: KoskiSession): DataSheet = {
+    val rows = runDbSync(query(oppilaitosOids, päivä).as[EsiopetusRaporttiRow], timeout = 5.minutes)
     DataSheet(
       title = "Suoritukset",
       rows,
@@ -52,7 +53,8 @@ case class EsiopetusRaportti(db: DB) extends KoskiDatabaseMethods {
     )
   }
 
-  private def query(oppilaitosOid: String, päivä: Date) = sql"""
+  private def query(oppilaitosOidit: List[String], päivä: Date)(implicit u: KoskiSession) =
+    sql"""
     select
       r_opiskeluoikeus.opiskeluoikeus_oid,
       lahdejarjestelma_koodiarvo,
@@ -84,11 +86,27 @@ case class EsiopetusRaportti(db: DB) extends KoskiDatabaseMethods {
     join r_henkilo on r_henkilo.oppija_oid = r_opiskeluoikeus.oppija_oid
     join esiopetus_opiskeluoikeus_aikajakso aikajakso on aikajakso.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
     left join r_paatason_suoritus on r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-    where r_opiskeluoikeus.oppilaitos_oid = $oppilaitosOid
+    where r_opiskeluoikeus.oppilaitos_oid in (#${mkString(oppilaitosOidit)})
       and r_opiskeluoikeus.koulutusmuoto = 'esiopetus'
       and aikajakso.alku <= $päivä
       and aikajakso.loppu >= $päivä
+      and (
+        r_opiskeluoikeus.oppilaitos_oid in (#${mkString(käyttäjänOrganisaatioOidit)})
+        or
+        (r_opiskeluoikeus.koulutustoimija_oid in (#${mkString(käyttäjänKoulutustoimijaOidit)}) and r_opiskeluoikeus.oppilaitos_oid in (#${mkString(käyttäjänOstopalveluOidit)}))
+      )
   """
+
+  private def käyttäjänOrganisaatioOidit(implicit u: KoskiSession) = u.organisationOids(AccessType.read)
+
+  private def käyttäjänKoulutustoimijaOidit(implicit u: KoskiSession) = u.varhaiskasvatusKäyttöoikeudet
+    .filter(_.organisaatioAccessType.contains(AccessType.read))
+    .map(_.koulutustoimija.oid)
+
+  private def käyttäjänOstopalveluOidit(implicit u: KoskiSession) =
+    organisaatioService.omatOstopalveluOrganisaatiot.map(_.oid)
+
+  private def mkString[T](xs: Iterable[T]) = xs.mkString("'", "','","'")
 
   val columnSettings: Seq[(String, Column)] = Seq(
     "opiskeluoikeusOid" -> Column("Opiskeluoikeuden oid"),

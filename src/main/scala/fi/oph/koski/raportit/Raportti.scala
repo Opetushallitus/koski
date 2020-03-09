@@ -63,8 +63,7 @@ case class PerusopetuksenVuosiluokkaRequest
   vuosiluokka: String
 ) extends RaporttiRequest
 
-case class OppilaitosRaporttiResponse
-(
+case class OppilaitosRaporttiResponse(
   sheets: Seq[Sheet],
   workbookSettings: WorkbookSettings,
   filename: String,
