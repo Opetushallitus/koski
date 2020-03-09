@@ -1,29 +1,35 @@
 package fi.oph.koski.raportit
 
-import java.sql.Date
-import java.time.LocalDate
+import java.sql.Date.{valueOf => sqlDate}
+import java.time.LocalDate.{of => localDate}
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, MockOppijat}
+import fi.oph.koski.koskiuser.{MockUser, MockUsers}
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.organisaatio.MockOrganisaatiot.{jyväskylänNormaalikoulu, päiväkotiMajakka, päiväkotiTouhula}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
-import org.scalatest.{FreeSpec, Matchers, BeforeAndAfterAll}
+import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 class EsiopetusRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll {
-
-  lazy val raportti = {
-    val raporttiBuilder = EsiopetusRaportti(KoskiApplicationForTests.raportointiDatabase.db)
-    val päivä = Date.valueOf("2007-01-01")
-    raporttiBuilder.build(MockOrganisaatiot.jyväskylänNormaalikoulu, päivä).rows.map(_.asInstanceOf[EsiopetusRaporttiRow])
-  }
+  private val application = KoskiApplicationForTests
+  private val raporttiService = new EsiopetusRaporttiService(application)
+  private val raporttiBuilder = EsiopetusRaportti(application.raportointiDatabase.db, application.organisaatioService)
+  private lazy val raportti =
+    raporttiBuilder.build(List(jyväskylänNormaalikoulu), sqlDate("2007-01-01"))(session(defaultUser)).rows.map(_.asInstanceOf[EsiopetusRaporttiRow])
 
   override def beforeAll(): Unit = loadRaportointikantaFixtures
 
   "Esiopetuksen raportti" - {
     "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {
-      verifyRaportinLataaminen
+      authGet(s"api/raportit/esiopetus?oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2018-01-01&password=salasana") {
+        verifyResponseStatusOk()
+        response.headers("Content-Disposition").head should equal(s"""attachment; filename="esiopetus_koski_raportti_${jyväskylänNormaalikoulu}_20180101.xlsx"""")
+        response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2018-01-01")))
+      }
     }
+
     "Raportin kolumnit" - {
       lazy val r = findSingle(raportti, MockOppijat.eskari)
 
@@ -32,7 +38,7 @@ class EsiopetusRaporttiSpec extends FreeSpec with Matchers with Raportointikanta
         r.oppilaitosNimi should equal(Some("Jyväskylän normaalikoulu"))
         r.toimipisteNimi should equal(Some("Jyväskylän normaalikoulu"))
 
-        r.opiskeluoikeudenAlkamispäivä should equal(LocalDate.of(2006, 8, 13))
+        r.opiskeluoikeudenAlkamispäivä should equal(localDate(2006, 8, 13))
         r.opiskeluoikeudenViimeisinTila should equal("valmistunut")
 
         r.yksilöity should equal(true)
@@ -56,6 +62,32 @@ class EsiopetusRaporttiSpec extends FreeSpec with Matchers with Raportointikanta
         r.koulukoti should equal(false)
       }
     }
+
+    "Varhaiskasvatuksen järjestäjä" - {
+      "näkee vain omat opiskeluoikeutensa" in {
+        val tornionTouhulaExcel = raporttiService.buildOppilaitosRaportti(päiväkotiTouhula, localDate(2006, 8, 13), "", None)(session(MockUsers.tornioTallentaja)).sheets
+        tornionTouhulaExcel.collect { case d: DataSheet => d.rows }.flatten should be(empty)
+
+        val helsinginTouhulaExcel = raporttiService.buildOppilaitosRaportti(päiväkotiTouhula, localDate(2006, 8, 13), "", None)(session(MockUsers.helsinkiTallentaja)).sheets
+        val rows = helsinginTouhulaExcel.collect { case d: DataSheet => d.rows.collect { case r: EsiopetusRaporttiRow => r } }.flatten
+        rows.flatMap(_.oppilaitosNimi).toList should equal(List("Päiväkoti Touhula"))
+      }
+
+      "voi hakea kaikki ostopalvelu/palveluseteli-tiedot" in {
+        val helsinginOstopalveluExcel = raporttiService.buildOstopalveluRaportti(localDate(2006, 8, 13), "", None)(session(MockUsers.helsinkiTallentaja)).sheets
+        val rows = helsinginOstopalveluExcel.collect { case d: DataSheet => d.rows.collect { case r: EsiopetusRaporttiRow => r.oppilaitosNimi }.flatten }.flatten
+        rows.toList.sorted should equal(List("Päiväkoti Majakka", "Päiväkoti Touhula"))
+
+        val ostopalveluOrganisaatiot = s"$päiväkotiMajakka,$päiväkotiTouhula"
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$ostopalveluOrganisaatiot&paiva=2006-08-13")))
+      }
+
+      "ei näe muiden ostopalvelu/palveluseteli-tietoja" in {
+        val tornionOstopalveluExcel = raporttiService.buildOstopalveluRaportti(localDate(2006, 8, 13), "", None)(session(MockUsers.tornioTallentaja)).sheets
+        val rows = tornionOstopalveluExcel.collect { case d: DataSheet => d.rows }.flatten
+        rows should be(empty)
+      }
+    }
   }
 
   private def findSingle(rows: Seq[EsiopetusRaporttiRow], oppija: LaajatOppijaHenkilöTiedot) = {
@@ -64,16 +96,5 @@ class EsiopetusRaporttiSpec extends FreeSpec with Matchers with Raportointikanta
     found.head
   }
 
-  private def verifyRaportinLataaminen = {
-    val organisaatioOid = MockOrganisaatiot.jyväskylänNormaalikoulu
-    val paiva = "2018-01-01"
-
-    authGet(s"api/raportit/esiopetus?oppilaitosOid=${organisaatioOid}&paiva=${paiva}&password=kalasana") {
-      verifyResponseStatusOk()
-      response.headers("Content-Disposition").head should equal(s"""attachment; filename="esiopetus_koski_raportti_${organisaatioOid}_${paiva.toString.replaceAll("-","")}.xlsx"""")
-      val ENCRYPTED_XLSX_PREFIX = Array(0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1).map(_.toByte)
-      response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-      AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$organisaatioOid&paiva=$paiva")))
-    }
-  }
+  private def session(user: MockUser)= user.toKoskiUser(application.käyttöoikeusRepository)
 }

@@ -48,14 +48,14 @@ case class OrganisaatioHierarkia(oid: String, oppilaitosnumero: Option[Koodistok
 }
 
 object OrganisaatioHierarkia {
-  def apply(oid: String, nimi: LocalizedString, children: List[OrganisaatioHierarkia]): OrganisaatioHierarkia = OrganisaatioHierarkia(
+  def apply(oid: String, nimi: LocalizedString, children: List[OrganisaatioHierarkia], organisaatiotyypit: List[String]): OrganisaatioHierarkia = OrganisaatioHierarkia(
     oid = oid,
     nimi = nimi,
     children = children,
     oppilaitosnumero = None,
     yTunnus = None,
     kotipaikka = None,
-    organisaatiotyypit = Nil,
+    organisaatiotyypit = organisaatiotyypit,
     oppilaitostyyppi = None,
     aktiivinen = true
   )

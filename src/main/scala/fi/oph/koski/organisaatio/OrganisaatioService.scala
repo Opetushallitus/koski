@@ -5,7 +5,7 @@ import fi.oph.koski.koskiuser.{KoskiSession, KäyttöoikeusOrg}
 import fi.oph.koski.perustiedot.VarhaiskasvatusToimipistePerustiedot
 
 class OrganisaatioService(application: KoskiApplication) {
-  val ostopalveluRootOid = "ostopalvelu/palveluseteli"
+  val ostopalveluRootOid = "OSTOPALVELUTAIPALVELUSETELI"
   val organisaatioRepository: OrganisaatioRepository = application.organisaatioRepository
   private val perustiedot = VarhaiskasvatusToimipistePerustiedot(application.perustiedotIndexer)
   private val localizationRepository = application.localizationRepository
@@ -57,7 +57,8 @@ class OrganisaatioService(application: KoskiApplication) {
     case children => List(OrganisaatioHierarkia(
       oid = ostopalveluRootOid,
       nimi = localizationRepository.get("Ostopalvelu/palveluseteli"),
-      children = children
+      children = children,
+      organisaatiotyypit = List(ostopalveluRootOid)
     ))
   }
 
