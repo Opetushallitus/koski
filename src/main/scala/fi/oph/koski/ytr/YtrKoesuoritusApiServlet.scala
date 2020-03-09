@@ -4,34 +4,36 @@ import java.time.LocalDate
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.HenkilönTunnisteet
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.RequiresKansalainen
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
 class YtrKoesuoritusApiServlet(implicit val application: KoskiApplication) extends ApiServlet with NoCache with RequiresKansalainen {
-  post("/") {
-    examResponse
+  post("/:oid") {
+    renderEither(examResponse(params("oid")))
   }
 
-  private def examResponse: List[ExamResponse] = {
-    val (ytrHenkilö, examResponse) = getExams
-    if (shouldHaveExams(ytrHenkilö) && examResponse.forall(_.copyOfExamPaper.isEmpty)) {
-      logger.warn(s"Oppija ${koskiSession.oid} with graduadion date ${ytrHenkilö.flatMap(_.graduationDate).mkString} has an empty exam list")
+  private def examResponse(oid: String) = {
+    if (koskiSession.user.oid == oid || koskiSession.getHuollettavatListWithoutStatus.exists(_.oid.contains(oid))) {
+      val (ytrHenkilö, examResponse) = getExams(oid)
+      if (shouldHaveExams(ytrHenkilö) && examResponse.forall(_.copyOfExamPaper.isEmpty)) {
+        logger.warn(s"Oppija ${koskiSession.oid} with graduadion date ${ytrHenkilö.flatMap(_.graduationDate).mkString} has an empty exam list")
+      }
+      Right(examResponse)
     }
-    examResponse
+    else {
+      Left(KoskiErrorCategory.forbidden())
+    }
   }
 
-  private def getExams = {
-    val ytrHenkilö: List[YtrOppija] = getHenkilö
+  private def getExams(oid: String) = {
+    val ytrHenkilö: List[YtrOppija] = getHenkilö(oid)
     (ytrHenkilö, ytrHenkilö.flatMap(_.exams).map(toExamResponse))
   }
 
-  private def getHenkilö = {
-    val henkilö: Option[HenkilönTunnisteet] = if (isHuollettava) {
-      application.huoltajaService.getSelectedHuollettava(koskiSession.oid)
-    } else {
-      application.henkilöRepository.findByOid(koskiSession.oid)
-    }
+  private def getHenkilö(oid: String) = {
+    val henkilö: Option[HenkilönTunnisteet] = application.henkilöRepository.findByOid(oid)
     henkilö.flatMap(application.ytrRepository.findByTunnisteet).toList
   }
 
@@ -41,8 +43,6 @@ class YtrKoesuoritusApiServlet(implicit val application: KoskiApplication) exten
   private lazy val shouldHaveExamsDate = LocalDate.of(2019, 9, 30)
 
   private def toExamResponse(exam: YtrExam) = ExamResponse(period = exam.period, examId = exam.examId, copyOfExamPaper = exam.copyOfExamPaper)
-
-  private def isHuollettava: Boolean = withJsonBody(JsonSerializer.extract[Map[String, Boolean]](_))().getOrElse("huollettava", false)
 }
 
 case class ExamResponse(period: String, examId: String, copyOfExamPaper: Option[String] = None)

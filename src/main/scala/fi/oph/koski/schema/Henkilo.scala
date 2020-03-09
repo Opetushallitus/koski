@@ -2,6 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
+import fi.oph.koski.huoltaja.Huollettava
 import fi.oph.koski.schema.annotation.{KoodistoUri, OksaUri}
 import fi.oph.scalaschema.annotation._
 
@@ -19,7 +20,7 @@ sealed trait Henkilö
 
 object TäydellisetHenkilötiedot {
   def apply(oid: String, etunimet: String, kutsumanimi: String, sukunimi: String): TäydellisetHenkilötiedot =
-    TäydellisetHenkilötiedot(oid, None, None, etunimet, kutsumanimi, sukunimi, None, None)
+    TäydellisetHenkilötiedot(oid, None, None, etunimet, kutsumanimi, sukunimi, None, None, None)
 }
 
 @Description("Täydet henkilötiedot. Tietoja haettaessa Koskesta saadaan aina täydet henkilötiedot")

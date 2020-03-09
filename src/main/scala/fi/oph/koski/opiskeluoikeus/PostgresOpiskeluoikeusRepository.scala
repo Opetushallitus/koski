@@ -51,6 +51,17 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
     runDbSync(query.result.map(rows => rows.sortBy(_.id).map(_.toOpiskeluoikeus)))
   }
 
+  override def findHuollettavaByOppijaOids(oids: List[String])(implicit user: KoskiSession): Seq[Opiskeluoikeus] = {
+    val huollettavat = user.getHuollettavatListWithoutStatus
+    assert(huollettavat.exists(_.oid.exists(oids.contains)), "Käyttäjän oid: " + user.oid + " ei löydy etsittävän oppijan oideista: " + oids)
+
+    val query = OpiskeluOikeudet
+      .filterNot(_.mitätöity)
+      .filter(_.oppijaOid inSetBind oids)
+
+    runDbSync(query.result.map(rows => rows.sortBy(_.id).map(_.toOpiskeluoikeus)))
+  }
+
   override def findByOid(oid: String)(implicit user: KoskiSession): Either[HttpStatus, OpiskeluoikeusRow] = withOidCheck(oid) {
     withExistenceCheck(runDbSync(OpiskeluOikeudetWithAccessCheck.filter(_.oid === oid).result))
   }

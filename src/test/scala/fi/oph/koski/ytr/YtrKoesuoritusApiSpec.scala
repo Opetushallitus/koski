@@ -7,36 +7,32 @@ import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.json4s.jackson.JsonMethods
 import org.scalatest.FreeSpec
 
-class YtrKoesuoritusApiSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods with ValtuutusTestMethods {
+class YtrKoesuoritusApiSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods {
   "Kansalainen" - {
     "voi hakea koesuorituslistauksen" in {
-      post("api/ytrkoesuoritukset", body = huoltaja, headers = kansalainenLoginHeaders("080698-967F") ++ jsonContent) {
+      post("api/ytrkoesuoritukset/" + MockOppijat.ylioppilasLukiolainen.oid, headers = kansalainenLoginHeaders(MockOppijat.ylioppilasLukiolainen.hetu.get) ++ jsonContent) {
         verifyResponseStatusOk()
         readExams should equal (expected)
       }
     }
 
-    "ei voi hakea huollettavan koesuorituslistausta ilman valtuutusistuntoa" in {
-      post("api/ytrkoesuoritukset", body = huoltaja, headers = kansalainenLoginHeaders(MockOppijat.aikuisOpiskelija.hetu.get) ++ jsonContent) {
-        verifyResponseStatusOk()
+    "ei voi hakea toisen henkilön koesuorituslistausta, jos tämä ei ole huolettava" in {
+      post("api/ytrkoesuoritukset/" + MockOppijat.ylioppilasLukiolainen.oid, headers = kansalainenLoginHeaders(MockOppijat.aikuisOpiskelija.hetu.get) ++ jsonContent) {
+        verifyResponseStatus(403, Nil)
       }
     }
 
     "voi hakea huollettavan koesuorituslistauksen luotuaan valtuutusistunnon" in {
-      val loginHeaders = kansalainenLoginHeaders(MockOppijat.aikuisOpiskelija.hetu.get)
-      get("huoltaja/valitse", headers = loginHeaders) {
-        get(s"api/omattiedot/editor/$valtuutusCode", headers = loginHeaders) {
-          post("api/ytrkoesuoritukset", body = huoltaja, headers = loginHeaders ++ jsonContent) {
-            verifyResponseStatusOk()
-          }
-        }
+      post("api/ytrkoesuoritukset/" + MockOppijat.ylioppilasLukiolainen.oid, headers = kansalainenLoginHeaders(MockOppijat.faija.hetu.get) ++ jsonContent) {
+        verifyResponseStatusOk()
+        readExams should equal (expected)
       }
     }
   }
 
   "Viranomainen" - {
     "ei voi hakea koesuorituslistausta" in {
-      post("api/ytrkoesuoritukset", body = huoltaja, headers = authHeaders() ++ jsonContent) {
+      post("api/ytrkoesuoritukset/", headers = authHeaders() ++ jsonContent) {
         verifyResponseStatus(403, Nil)
       }
     }

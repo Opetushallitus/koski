@@ -15,12 +15,14 @@ trait KoskiOpiskeluoikeusRepository {
   def filterOppijat[A <: HenkilönTunnisteet](oppijat: List[A])(implicit user: KoskiSession): List[A]
   def findByOppijaOids(oids: List[String])(implicit user: KoskiSession): Seq[Opiskeluoikeus]
   def findByCurrentUserOids(oids: List[String])(implicit user: KoskiSession): Seq[Opiskeluoikeus]
+  def findHuollettavaByOppijaOids(oids: List[String])(implicit user: KoskiSession): Seq[Opiskeluoikeus]
 }
 
 trait AuxiliaryOpiskeluoikeusRepository {
   def filterOppijat[A <: HenkilönTunnisteet](oppijat: List[A])(implicit user: KoskiSession): List[A]
   def findByOppija(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSession): Seq[Opiskeluoikeus]
   def findByCurrentUser(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSession): Seq[Opiskeluoikeus]
+  def findHuollettavaByOppija(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSession): Seq[Opiskeluoikeus]
 }
 
 sealed trait CreateOrUpdateResult {

@@ -1,5 +1,52 @@
 @header-padding: 0 16px;
 
+.header__oppijanvalitsin_mixin(){
+    color: white;
+    background: @color-link-blue;
+    font-family: Source Sans Pro;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: bold;
+    background-image: url('/koski/images/opiskelija_ikoni.svg');
+    background-repeat: no-repeat;
+    background-position: 6px center;
+    padding-left: 30px;
+    stroke: black;
+}
+
+.header__oppijanvalitsin {
+  .dropdown {
+    width: 300px;
+
+    .select {
+      .header__oppijanvalitsin_mixin();
+      outline: none;
+      border: 1px solid @color-link-blue;
+      box-shadow: none;
+      display: inline-block;
+      padding-right: 30px;
+    }
+    .input-container::after{
+      border-color: @color-white;
+      border-width: 2px;
+    }
+    .options {
+       background: @color-white;
+       color: @color-black;
+       padding: 0px;
+    }
+    .options li.option {
+      .header__oppijanvalitsin_mixin();
+      background-color: @color-white;
+      color: black;
+      background-image: url('/koski/images/opiskelija_ikoni_stroke.svg');
+    }
+    .options li.option.selected {
+      .header__oppijanvalitsin_mixin();
+    }
+  }
+}
+
 .info-text() {
   max-width: 800px;
 

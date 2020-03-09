@@ -3,6 +3,8 @@ package fi.oph.koski.koskiuser
 import java.net.InetAddress
 
 import fi.oph.koski.henkilo.OppijaHenkilö
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.huoltaja.{Huollettava, HuollettavienHakuOnnistui}
 import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koskiuser.Rooli._
 import fi.oph.koski.log.{LogUserContext, Loggable, Logging}
@@ -17,6 +19,7 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
   def username = user.username
   def userOption = Some(user)
   def logString = "käyttäjä " + username + " / " + user.oid
+  def huollettavat = user.huollettavat
 
   lazy val orgKäyttöoikeudet: Set[KäyttöoikeusOrg] = käyttöoikeudet.collect { case k : KäyttöoikeusOrg => k}
   lazy val varhaiskasvatusKäyttöoikeudet: Set[KäyttöoikeusVarhaiskasvatusToimipiste] = käyttöoikeudet.collect { case k: KäyttöoikeusVarhaiskasvatusToimipiste => k }
@@ -79,6 +82,36 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
     globalKäyttöoikeudet.exists(_.globalPalveluroolit.contains(palveluRooli)) ||
     globalViranomaisKäyttöoikeudet.exists(_.globalPalveluroolit.contains(palveluRooli)) ||
     orgKäyttöoikeudet.exists(_.organisaatiokohtaisetPalveluroolit.contains(palveluRooli))
+  }
+
+  def getHuollettavatList: Either[HttpStatus, List[Huollettava]] = {
+    user.huollettavat match {
+      case Some(searchResult) => {
+        searchResult match {
+          case haku: HuollettavienHakuOnnistui => {
+            Right(haku.huollettavat)
+          }
+          case _ => Left(KoskiErrorCategory.unavailable.huollettavat())
+        }
+      }
+      // Tässä tapauksessa huoltaja-hakua ei ole suoritettu ja palautetaan tyhjä lista.
+      // Esimerkkinä tällaisesta tapauksesta esimerkiksi suoritusjakolinkin avaaminen.
+      case None => Right(List())
+    }
+  }
+
+  def getHuollettavatListWithoutStatus: List[Huollettava] = {
+    user.huollettavat match {
+      case Some(searchResult) => {
+        searchResult match {
+          case haku: HuollettavienHakuOnnistui => {
+            haku.huollettavat
+          }
+          case _ => List()
+        }
+      }
+      case None => List()
+    }
   }
 
   def juuriOrganisaatiot: List[OrganisaatioWithOid] = orgKäyttöoikeudet.collect { case r: KäyttöoikeusOrg if r.juuri => r.organisaatio }.toList

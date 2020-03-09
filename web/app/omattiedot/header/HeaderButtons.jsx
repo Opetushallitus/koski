@@ -46,12 +46,6 @@ export const HeaderButtons = ({uiModeA, oppija}) => (
       clearedStateValue={FormState.NONE}
       text='Jaa suoritustietoja'
     />}
-    <MultistateToggleButton
-      stateA={uiModeA}
-      value={FormState.HUOLLETTAVANTIEDOT}
-      clearedStateValue={FormState.NONE}
-      text='Huollettavien opintotiedot'
-    />
 
     <FloatingSuoritusjakoButton
       text='Jaa suoritustietoja'

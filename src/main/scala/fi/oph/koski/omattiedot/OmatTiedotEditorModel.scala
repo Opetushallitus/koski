@@ -6,6 +6,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.OppijaEditorModel.oppilaitoksenOpiskeluoikeudetOrdering
 import fi.oph.koski.editor._
 import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.huoltaja.{Huollettava, HuollettavatSearchResult, HuollettavienHakuOnnistui}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema.PerusopetuksenOpiskeluoikeus._
 import fi.oph.koski.schema._
@@ -32,11 +33,14 @@ object OmatTiedotEditorModel extends Timing {
 
   private def buildView(userOppija: Oppija, oppija: Option[Oppija], warnings: Seq[HttpStatus])(implicit application: KoskiApplication, koskiSession: KoskiSession) = {
     val valittuOppija = oppija.getOrElse(userOppija)
+    val huollettavat = koskiSession.getHuollettavatList
+
     OmatTiedotEditorView(
       henkilö = valittuOppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot],
       userHenkilö = userOppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot],
       opiskeluoikeudet = opiskeluoikeudetOppilaitoksittain(valittuOppija),
-      varoitukset = warnings.flatMap(_.errors).map(_.key).toList
+      huollettavat = koskiSession.getHuollettavatList.right.getOrElse(List()),
+      varoitukset = warnings.flatMap(_.errors).map(_.key).toList ++ huollettavat.left.map(_.errors.map(_.key)).left.getOrElse(List())
     )
   }
 
@@ -90,6 +94,7 @@ case class OmatTiedotEditorView(
   @Hidden
   userHenkilö: TäydellisetHenkilötiedot,
   opiskeluoikeudet: List[OppilaitoksenOpiskeluoikeudet],
+  huollettavat: List[Huollettava],
   @Hidden
   varoitukset: List[String]
 )

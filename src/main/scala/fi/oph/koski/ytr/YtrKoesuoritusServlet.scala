@@ -27,17 +27,27 @@ class YtrKoesuoritusServlet(implicit val application: KoskiApplication) extends 
       .exists(_.examPapers.contains(examPaper))
   }
 
-  private def getOppija: Option[HenkilönTunnisteet] = if (isHuollettava) {
-    val huollettavaOppija = application.huoltajaService.getSelectedHuollettava(koskiSession.oid)
-    if (huollettavaOppija.isEmpty) {
-      logger.warn("Huollettavaa oppijaa ei löytynyt")
+  private def getOppija: Option[HenkilönTunnisteet] =  {
+    if (isHuollettava) {
+      val huollettavaOid = getStringParam("huollettava")
+      val huollettavat = koskiSession.getHuollettavatListWithoutStatus
+      assert(huollettavat.exists(_.oid.exists(_ == huollettavaOid)), "Käyttäjän oid: " + koskiSession.oid + " ei löydy etsittävän oppijan oideista: " + koskiSession)
+
+      val huollettavaOppija = application.henkilöRepository.findByOid(huollettavaOid)
+      if (huollettavaOppija.isEmpty) {
+        logger.warn("Huollettavaa oppijaa ei löytynyt")
+      } else {
+        logger.debug(s"Tarkastetaan huollettavan oppijan koesuoritus access ${huollettavaOppija.get.oid}")
+      }
+      huollettavaOppija
     } else {
-      logger.debug(s"Tarkastetaan huollettavan oppijan koesuoritus access ${huollettavaOppija.get.oid}")
+      application.henkilöRepository.findByOid(koskiSession.oid)
     }
-    huollettavaOppija
-  } else {
-    application.henkilöRepository.findByOid(koskiSession.oid)
   }
 
-  private def isHuollettava = getBooleanParam("huollettava", false)
+  private def isHuollettava = try {
+    !params("huollettava").isEmpty
+  }  catch {
+    case _: Throwable => false
+  }
 }

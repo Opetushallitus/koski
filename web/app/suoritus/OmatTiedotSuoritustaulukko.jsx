@@ -58,7 +58,7 @@ const arvosanaColumn = parentSuoritus => isYlioppilastutkinto(parentSuoritus)
 const YtrArvosanaColumn = (parentSuoritus) => {
   const suoritusjako = parentSuoritus.context.suoritusjako
   const huollettava = parentSuoritus.context.huollettava
-  const koesuorituksetP = suoritusjako ? Bacon.constant([]) :  Http.post('/koski/api/ytrkoesuoritukset', {huollettava}, { errorMapper: () => undefined })
+  const koesuorituksetP = suoritusjako ? Bacon.constant([]) :  Http.post('/koski/api/ytrkoesuoritukset/' + parentSuoritus.context.oppijaOid, {huollettava}, { errorMapper: () => undefined })
 
   return {
     shouldShow: ({suoritukset, context}) => context.edit || suoritukset.find(hasArvosana) !== undefined,
@@ -73,7 +73,7 @@ const YtrArvosanaColumn = (parentSuoritus) => {
         return (<React.Fragment key='data'>
           <td key='arvosana' className='arvosana ylioppilas'><ArvosanaEditor model={model}/></td>
           <td key='koesuoritus' className='koesuoritus'>
-            <KoesuoritusLink copyOfExamPaper={koe && koe.copyOfExamPaper} kokeenNimi={modelData(model, 'koulutusmoduuli.tunniste.nimi')} huollettava={parentSuoritus.context.huollettava}/>
+            <KoesuoritusLink copyOfExamPaper={koe && koe.copyOfExamPaper} kokeenNimi={modelData(model, 'koulutusmoduuli.tunniste.nimi')} parentSuoritus={parentSuoritus}/>
           </td>
         </React.Fragment>)
       })
@@ -81,12 +81,14 @@ const YtrArvosanaColumn = (parentSuoritus) => {
   }
 }
 
-const KoesuoritusLink = ({copyOfExamPaper, kokeenNimi, huollettava}) =>
-  copyOfExamPaper
-    ? (<a className='text-button-small' target='_blank' href={`/koski/koesuoritus/${copyOfExamPaper}${huollettava ? '?huollettava=true' : ''}`}>
+const KoesuoritusLink = ({copyOfExamPaper, kokeenNimi, parentSuoritus}) =>
+{
+  return copyOfExamPaper
+    ? (<a className='text-button-small' target='_blank' href={`/koski/koesuoritus/${copyOfExamPaper}${parentSuoritus.context.huollettava ? '?huollettava=' + parentSuoritus.context.oppijaOid : ''}`}>
         <Text className='show-koesuoritus-text' name='Näytä koesuoritus' aria-label={t(kokeenNimi) + '. ' + t('Näytä koesuoritus')}/>
       </a>)
     : null
+}
 
 const SuoritusGroup = ({groups, groupId, columns, nested, parentSuoritus, laajuusYksikkö}) => {
   const groupItems = groups.grouped[groupId]

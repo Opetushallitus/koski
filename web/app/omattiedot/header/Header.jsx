@@ -8,6 +8,7 @@ import {HeaderName} from './HeaderName'
 import {HeaderVirheraportointiSection} from './HeaderVirheraportointiSection'
 import {HeaderSuoritusjakoSection} from './HeaderSuoritusjakoSection'
 import {HeaderHuollettavanTiedotSection} from './HeaderHuollettavanTiedotSection'
+import {HeaderOppijanValitsin} from './HeaderOppijanValitsin'
 
 export const FormState = {
   VIRHERAPORTOINTI: 'virheraportointi',
@@ -28,6 +29,7 @@ export const Header = ({oppija}) => {
 
   return (
     <header className='header'>
+      <HeaderOppijanValitsin oppija={oppija}/>
       <HeaderInfo oppija={oppija} varoitukset={varoitukset}/>
 
       <div className='header__bottom-row'>
