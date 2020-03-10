@@ -3,7 +3,6 @@ package fi.oph.koski.api
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.documentation.ExamplesEsiopetus.ostopalvelu
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData
-import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.henkilo.MockOppijat.{asUusiOppija, eero, eskari, tero}
 import fi.oph.koski.koskiuser.MockUsers
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -17,7 +16,7 @@ class VarhaiskasvatusPerustiedotSpec extends FreeSpec with BeforeAndAfterAll wit
     }
 
     "Voi hakea kaikki omat ostopalvelutiedot" in {
-      val perustiedot = searchForPerustiedot(Map("opiskeluoikeudenTyyppi" -> "esiopetus", "toimipiste" -> "ostopalvelu/palveluseteli"), MockUsers.helsinkiTallentaja)
+      val perustiedot = searchForPerustiedot(Map("opiskeluoikeudenTyyppi" -> "esiopetus", "toimipiste" -> KoskiApplicationForTests.organisaatioService.ostopalveluRootOid), MockUsers.helsinkiTallentaja)
       (for {
         perustieto <- perustiedot
         etunimet <- perustieto.henkilö.map(_.etunimet)
