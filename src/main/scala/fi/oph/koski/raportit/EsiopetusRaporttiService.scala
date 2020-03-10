@@ -16,18 +16,18 @@ class EsiopetusRaporttiService(application: KoskiApplication) {
   def buildOstopalveluRaportti(date: LocalDate, password: String, downloadToken: Option[String])(implicit session: KoskiSession): OppilaitosRaporttiResponse = {
     val ostopalveluOrganisaatiot = omatOstopalveluOrganisaatioOidit
     auditLog(date, session, ostopalveluOrganisaatiot)
-    buildRapsa(date, password, downloadToken, ostopalveluOrganisaatiot, filename("ostopalvelu_tai_palveluseteli", date))
+    buildRaportti(date, password, downloadToken, ostopalveluOrganisaatiot, filename("ostopalvelu_tai_palveluseteli", date))
   }
 
-  def buildRaportti(oppilaitos: Oid, date: LocalDate, password: String, downloadToken: Option[String])(implicit session: KoskiSession): OppilaitosRaporttiResponse = {
+  def buildOppilaitosRaportti(oppilaitos: Oid, date: LocalDate, password: String, downloadToken: Option[String])(implicit session: KoskiSession): OppilaitosRaporttiResponse = {
     auditLog(date, session, List(oppilaitos))
-    buildRapsa(date, password, downloadToken, List(oppilaitos), filename(oppilaitos, date))
+    buildRaportti(date, password, downloadToken, List(oppilaitos), filename(oppilaitos, date))
   }
 
   private def auditLog(date: LocalDate, session: KoskiSession, organisaatiot: List[String]) =
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=esiopetus&oppilaitosOid=${organisaatiot.mkString(",")}&paiva=$date")))
 
-  private def buildRapsa(date: LocalDate, password: String, downloadToken: Option[String], oppilaitokset: List[Oid], filename: String)(implicit session: KoskiSession): OppilaitosRaporttiResponse =
+  private def buildRaportti(date: LocalDate, password: String, downloadToken: Option[String], oppilaitokset: List[Oid], filename: String)(implicit session: KoskiSession): OppilaitosRaporttiResponse =
     OppilaitosRaporttiResponse(
       sheets = buildRaportti(date, oppilaitokset),
       workbookSettings = WorkbookSettings("Esiopetus", Some(password)),
