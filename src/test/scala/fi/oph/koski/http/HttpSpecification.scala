@@ -56,7 +56,13 @@ trait HttpSpecification extends HttpTester with Assertions with Matchers {
   }
 
   import reflect.runtime.universe.TypeTag
-  def readPaginatedResponse[T: TypeTag]: T = JsonSerializer.extract[T](parse(body) \ "result") // scala-schema doesn't support parameterized case classes like PaginatedResponse
+  def readPaginatedResponse[T: TypeTag]: T = try {
+    JsonSerializer.extract[T](parse(body) \ "result")
+  } catch {
+    case e: Exception =>
+      println(body)
+      throw e
+  }
 }
 
 object ErrorMatcher {

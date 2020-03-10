@@ -24,8 +24,6 @@ export const listviewPath = () => {
   return sessionStorage.previousListViewPath || '/koski/'
 }
 
-const ostopalveluRootOid = 'ostopalvelu/palveluseteli'
-
 export class Oppijataulukko extends React.Component {
   constructor(props) {
     super(props)
@@ -110,7 +108,6 @@ export class Oppijataulukko extends React.Component {
                 selectedOrg={{ oid: params['toimipiste'], nimi: params['toimipisteNimi']}}
                 onSelectionChanged={(org) => {this.filterBus.push(org ? { toimipiste: org.oid, toimipisteNimi: t(org.nimi) } : { toimipiste: null, toimipisteNimi: null })}}
                 noSelectionText={t('kaikki')}
-                canSelectOrg={org => org.oid !== ostopalveluRootOid}
               />
             </th>
             <SortingTableHeader field='alkamispäivä' titleKey='Aloitus pvm'>

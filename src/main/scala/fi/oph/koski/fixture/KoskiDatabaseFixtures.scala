@@ -7,14 +7,16 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
-import fi.oph.koski.documentation.AmmatillinenExampleData.stadinToimipiste
 import fi.oph.koski.documentation.ExampleData.{opiskeluoikeusMitätöity, suomenKieli}
+import fi.oph.koski.documentation.ExamplesEsiopetus.{ostopalveluOpiskeluoikeus, päiväkotisuoritus}
 import fi.oph.koski.documentation.ExamplesPerusopetus.ysinOpiskeluoikeusKesken
-import fi.oph.koski.documentation._
+import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.oppilaitos
+import fi.oph.koski.documentation.{ExamplesEsiopetus, _}
 import fi.oph.koski.henkilo.{MockOppijat, OppijaHenkilö, VerifiedHenkilöOid}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession, MockUsers}
-import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
+import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.organisaatio.MockOrganisaatiot.{päiväkotiMajakka, päiväkotiTouhula}
 import fi.oph.koski.perustiedot.{OpiskeluoikeudenOsittaisetTiedot, OpiskeluoikeudenPerustiedot}
 import fi.oph.koski.schema._
 import fi.oph.koski.util.Timing
@@ -97,10 +99,8 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
     List(
       (MockOppijat.organisaatioHistoria, validOpiskeluoikeus.copy(organisaatiohistoria = Some(AmmatillinenExampleData.opiskeluoikeudenOrganisaatioHistoria))),
       (MockOppijat.tunnisteenKoodiarvoPoistettu, opiskeluoikeusJostaTunnisteenKoodiarvoPoistettu),
-      (MockOppijat.eskari, validateOpiskeluoikeus(ExamplesEsiopetus.ostopalveluOpiskeluoikeus, hkiTallentaja).copy(
-        koulutustoimija = Some(YleissivistavakoulutusExampleData.helsinki),
-        oppilaitos = MockOrganisaatioRepository.getOrganisaatioHierarkia(MockOrganisaatiot.päiväkotiTouhula).map(o => Oppilaitos(oid = o.oid, nimi = Some(o.nimi), kotipaikka = o.kotipaikka))
-      ))
+      (MockOppijat.eskari, validateOpiskeluoikeus(ostopalveluOpiskeluoikeus, hkiTallentaja)),
+      (MockOppijat.eskari, validateOpiskeluoikeus(ostopalveluOpiskeluoikeus.copy(suoritukset = List(päiväkotisuoritus(oppilaitos(päiväkotiMajakka)))), hkiTallentaja))
     )
   }
 

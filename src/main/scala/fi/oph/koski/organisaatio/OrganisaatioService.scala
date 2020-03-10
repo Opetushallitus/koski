@@ -5,10 +5,10 @@ import fi.oph.koski.koskiuser.{KoskiSession, KäyttöoikeusOrg}
 import fi.oph.koski.perustiedot.VarhaiskasvatusToimipistePerustiedot
 
 class OrganisaatioService(application: KoskiApplication) {
-  private val organisaatioRepository = application.organisaatioRepository
+  val ostopalveluRootOid = "OSTOPALVELUTAIPALVELUSETELI"
+  val organisaatioRepository: OrganisaatioRepository = application.organisaatioRepository
   private val perustiedot = VarhaiskasvatusToimipistePerustiedot(application.perustiedotIndexer)
   private val localizationRepository = application.localizationRepository
-  private val ostopalveluRootOid = "ostopalvelu/palveluseteli"
 
   def searchInAllOrganizations(query: Option[String])(implicit user: KoskiSession): Iterable[OrganisaatioHierarkia] = {
     query match {
@@ -25,6 +25,13 @@ class OrganisaatioService(application: KoskiApplication) {
       case None => orgs
     }
   }
+
+  def omatOstopalveluOrganisaatiot(implicit user: KoskiSession): List[OrganisaatioHierarkia] =
+    perustiedot.haeVarhaiskasvatustoimipisteet(user.varhaiskasvatusKoulutustoimijat) match {
+      case päiväkoditJoihinTallennettuOpiskeluoikeuksia if päiväkoditJoihinTallennettuOpiskeluoikeuksia.nonEmpty =>
+        OrganisaatioHierarkia.flatten(kaikkiOstopalveluOrganisaatioHierarkiat).filter(o => päiväkoditJoihinTallennettuOpiskeluoikeuksia.contains(o.oid))
+      case _ => Nil
+    }
 
   private def getOrganisaatiot(orgTypes: OrgTypesToShow)(implicit user: KoskiSession) = orgTypes match {
     case OmatOrganisaatiot => omatOrganisaatioHierarkiat
@@ -50,16 +57,10 @@ class OrganisaatioService(application: KoskiApplication) {
     case children => List(OrganisaatioHierarkia(
       oid = ostopalveluRootOid,
       nimi = localizationRepository.get("Ostopalvelu/palveluseteli"),
-      children = children
+      children = children,
+      organisaatiotyypit = List(ostopalveluRootOid)
     ))
   }
-
-  private def omatOstopalveluOrganisaatiot(implicit user: KoskiSession) =
-    perustiedot.haeVarhaiskasvatustoimipisteet(user.varhaiskasvatusKoulutustoimijat) match {
-      case päiväkoditJoihinTallennettuOpiskeluoikeuksia if päiväkoditJoihinTallennettuOpiskeluoikeuksia.nonEmpty =>
-        OrganisaatioHierarkia.flatten(kaikkiOstopalveluOrganisaatioHierarkiat).filter(o => päiväkoditJoihinTallennettuOpiskeluoikeuksia.contains(o.oid))
-      case _ => Nil
-    }
 
   private def organisaatioNimi(implicit user: KoskiSession): OrganisaatioHierarkia => String = _.nimi.get(user.lang)
 

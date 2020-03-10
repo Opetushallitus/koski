@@ -267,9 +267,20 @@ describe('Oppijataulukko', function() {
 
       it('näyttää vain oppilaitokset joihin tallennettu dataa', function() {
         expect(organisaatiovalitsin.oppilaitokset()).to.deep.equal([
-          'Ostopalvelu/palveluseteli Päiväkoti Touhula',
+          'Ostopalvelu/palveluseteli Päiväkoti Majakka Päiväkoti Touhula',
+          'Päiväkoti Majakka',
           'Päiväkoti Touhula'
         ])
+      })
+    })
+
+    describe('Voi valita kaikki ostopalvelutoimipisteet', function() {
+      before(organisaatiovalitsin.select('Ostopalvelu/palveluseteli'))
+
+      it('toimii', function() {
+        expect(page.oppijataulukko.names()).to.deep.equal(['Eskari, Essi', 'Eskari, Essi'])
+        expect(page.oppijataulukko.oppilaitokset().slice().sort()).to.deep.equal(['Päiväkoti Majakka', 'Päiväkoti Touhula'])
+        expect(page.opiskeluoikeudeTotal()).to.equal('2')
       })
     })
   })

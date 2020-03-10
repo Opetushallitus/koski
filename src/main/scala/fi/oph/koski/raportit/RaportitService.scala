@@ -5,15 +5,13 @@ import java.sql.Date
 import fi.oph.koski.config.KoskiApplication
 
 class RaportitService(application: KoskiApplication) {
-
-  private lazy val raportointiDatabase = application.raportointiDatabase
-  private lazy val perusopetusRepository = PerusopetuksenRaportitRepository(raportointiDatabase.db)
-  private lazy val accessResolver = RaportitAccessResolver(application)
-  private lazy val lukioRepository = LukioRaportitRepository(raportointiDatabase.db)
-  private lazy val ammatillisenRaportitRepository = AmmatillisenRaportitRepository(raportointiDatabase.db)
-  private lazy val muuammatillinenRaportti = MuuAmmatillinenRaporttiBuilder(raportointiDatabase.db)
-  private lazy val topksAmmatillinenRaportti = TOPKSAmmatillinenRaporttiBuilder(raportointiDatabase.db)
-  private lazy val esiopetusRaportti = EsiopetusRaportti(raportointiDatabase.db)
+  private val raportointiDatabase = application.raportointiDatabase
+  private val perusopetusRepository = PerusopetuksenRaportitRepository(raportointiDatabase.db)
+  private val accessResolver = RaportitAccessResolver(application)
+  private val lukioRepository = LukioRaportitRepository(raportointiDatabase.db)
+  private val ammatillisenRaportitRepository = AmmatillisenRaportitRepository(raportointiDatabase.db)
+  private val muuammatillinenRaportti = MuuAmmatillinenRaporttiBuilder(raportointiDatabase.db)
+  private val topksAmmatillinenRaportti = TOPKSAmmatillinenRaporttiBuilder(raportointiDatabase.db)
 
   def opiskelijaVuositiedot(request: AikajaksoRaporttiRequest): OppilaitosRaporttiResponse = {
     aikajaksoRaportti(request, AmmatillinenOpiskalijavuositiedotRaportti)
@@ -67,13 +65,6 @@ class RaportitService(application: KoskiApplication) {
     sheets = Seq(topksAmmatillinenRaportti.build(request.oppilaitosOid, Date.valueOf(request.alku), Date.valueOf(request.loppu))),
     workbookSettings = WorkbookSettings("TOPKS ammatillinen suoritustietojen tarkistus", Some(request.password)),
     filename = s"topks_ammatillinen_koski_raportti_${request.oppilaitosOid}_${request.alku.toString.replaceAll("-","")}-${request.loppu.toString.replaceAll("-","")}.xlsx",
-    downloadToken = request.downloadToken
-  )
-
-  def esiopetus(request: RaporttiPäivältäRequest) = OppilaitosRaporttiResponse(
-    sheets = Seq(esiopetusRaportti.build(request.oppilaitosOid, Date.valueOf(request.paiva))),
-    workbookSettings = WorkbookSettings("Esiopetus", Some(request.password)),
-    filename = s"esiopetus_koski_raportti_${request.oppilaitosOid}_${request.paiva.toString.replaceAll("-","")}.xlsx",
     downloadToken = request.downloadToken
   )
 

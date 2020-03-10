@@ -39,7 +39,7 @@ object ExamplesEsiopetus {
 
   lazy val ostopalveluOpiskeluoikeus = EsiopetuksenOpiskeluoikeus(
     oppilaitos = None,
-    suoritukset = List(suoritus(perusteenDiaarinumero = "102/011/2014", tunniste = päiväkodinEsiopetuksenTunniste, toimipiste = päiväkotiTouhula).copy(vahvistus = None, muutSuorituskielet = None)),
+    suoritukset = List(päiväkotisuoritus(päiväkotiTouhula).copy(vahvistus = None, muutSuorituskielet = None)),
     tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
       List(
         NuortenPerusopetuksenOpiskeluoikeusjakso(date(2006, 8, 13), opiskeluoikeusLäsnä)
@@ -64,6 +64,9 @@ object ExamplesEsiopetus {
     Example("esiopetus valmis", "Oppija on suorittanut peruskoulun esiopetuksen", esioppilas),
     Example("esiopetus - ostopalvelu", "Oppija on suorittanut päiväkodin esiopetuksen ostopalveluna", esioppilas.copy(opiskeluoikeudet = List(ostopalveluOpiskeluoikeus.copy(koulutustoimija = Some(helsinki)))), statusCode = 403)
   )
+
+  def päiväkotisuoritus(toimipiste: OrganisaatioWithOid): EsiopetuksenSuoritus =
+    suoritus(perusteenDiaarinumero = "102/011/2014", tunniste = päiväkodinEsiopetuksenTunniste, toimipiste = toimipiste)
 
   def suoritus(perusteenDiaarinumero: String, tunniste: String, toimipiste: OrganisaatioWithOid) = EsiopetuksenSuoritus(
     koulutusmoduuli = Esiopetus(
