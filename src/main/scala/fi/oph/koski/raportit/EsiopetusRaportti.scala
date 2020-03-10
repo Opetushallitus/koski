@@ -8,6 +8,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.organisaatio.OrganisaatioService
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
+import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
 import slick.jdbc.GetResult
 
 import scala.concurrent.duration._
@@ -45,11 +46,11 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
   )
 
   def build(oppilaitosOids: List[String], päivä: Date)(implicit u: KoskiSession): DataSheet = {
-    val rows = runDbSync(query(oppilaitosOids, päivä).as[EsiopetusRaporttiRow], timeout = 5.minutes)
+    val raporttiQuery = query(validateOids(oppilaitosOids), päivä).as[EsiopetusRaporttiRow]
     DataSheet(
       title = "Suoritukset",
-      rows,
-      columnSettings
+      rows = runDbSync(raporttiQuery, timeout = 5.minutes),
+      columnSettings = columnSettings
     )
   }
 
@@ -86,14 +87,14 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
     join r_henkilo on r_henkilo.oppija_oid = r_opiskeluoikeus.oppija_oid
     join esiopetus_opiskeluoikeus_aikajakso aikajakso on aikajakso.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
     left join r_paatason_suoritus on r_paatason_suoritus.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
-    where r_opiskeluoikeus.oppilaitos_oid in (#${mkString(oppilaitosOidit)})
+    where r_opiskeluoikeus.oppilaitos_oid in (#${toSqlList(oppilaitosOidit)})
       and r_opiskeluoikeus.koulutusmuoto = 'esiopetus'
       and aikajakso.alku <= $päivä
       and aikajakso.loppu >= $päivä
       and (
-        r_opiskeluoikeus.oppilaitos_oid in (#${mkString(käyttäjänOrganisaatioOidit)})
+        r_opiskeluoikeus.oppilaitos_oid in (#${toSqlList(käyttäjänOrganisaatioOidit)})
         or
-        (r_opiskeluoikeus.koulutustoimija_oid in (#${mkString(käyttäjänKoulutustoimijaOidit)}) and r_opiskeluoikeus.oppilaitos_oid in (#${mkString(käyttäjänOstopalveluOidit)}))
+        (r_opiskeluoikeus.koulutustoimija_oid in (#${toSqlList(käyttäjänKoulutustoimijaOidit)}) and r_opiskeluoikeus.oppilaitos_oid in (#${toSqlList(käyttäjänOstopalveluOidit)}))
       )
   """
 
@@ -106,7 +107,15 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
   private def käyttäjänOstopalveluOidit(implicit u: KoskiSession) =
     organisaatioService.omatOstopalveluOrganisaatiot.map(_.oid)
 
-  private def mkString[T](xs: Iterable[T]) = xs.mkString("'", "','","'")
+  private def toSqlList[T](xs: Iterable[T]) = xs.mkString("'", "','","'")
+
+  private def validateOids(oppilaitosOids: List[String]) = {
+    val invalidOid = oppilaitosOids.find(oid => !isValidOrganisaatioOid(oid))
+    if (invalidOid.isDefined) {
+      throw new IllegalArgumentException(s"Invalid oppilaitos oid ${invalidOid.get}")
+    }
+    oppilaitosOids
+  }
 
   val columnSettings: Seq[(String, Column)] = Seq(
     "opiskeluoikeusOid" -> Column("Opiskeluoikeuden oid"),

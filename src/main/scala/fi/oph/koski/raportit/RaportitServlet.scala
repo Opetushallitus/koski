@@ -16,6 +16,7 @@ import org.scalatra.{ContentEncodingSupport, Cookie, CookieOptions}
 
 class RaportitServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with Logging with NoCache with ContentEncodingSupport {
   private val raportitService = new RaportitService(application)
+  private val organisaatioService = application.organisaatioService
   private val esiopetusService = new EsiopetusRaporttiService(application)
   private val accessResolver = RaportitAccessResolver(application)
 
@@ -30,7 +31,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
 
   get("/mahdolliset-raportit/:oppilaitosOid") {
     getStringParam("oppilaitosOid") match {
-      case application.organisaatioService.ostopalveluRootOid => Set(EsiopetuksenRaportti.toString)
+      case organisaatioService.ostopalveluRootOid => Set(EsiopetuksenRaportti.toString)
       case oid => accessResolver.mahdollisetRaporttienTyypitOrganisaatiolle(validateOrganisaatioOid(oid)).map(_.toString)
     }
   }
@@ -83,7 +84,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
     val token = params.get("downloadToken")
 
     val resp = getStringParam("oppilaitosOid") match {
-      case application.organisaatioService.ostopalveluRootOid =>
+      case organisaatioService.ostopalveluRootOid =>
         esiopetusService.buildOstopalveluRaportti(date, password, token)
       case oid =>
         esiopetusService.buildOppilaitosRaportti(validateOrganisaatioOid(oid), date, password, token)

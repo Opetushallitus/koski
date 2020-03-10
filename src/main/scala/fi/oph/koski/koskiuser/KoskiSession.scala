@@ -35,9 +35,9 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
   def hasReadAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid]) = hasAccess(organisaatio, koulutustoimija, AccessType.read)
 
   def hasReadAccess(organisaatio: Organisaatio.Oid): Boolean =
-    hasReadAccess(organisaatio, None) || varhaiskasvatusKoulutustoimijat.exists { koulutustoimija =>
-      hasAccess(organisaatio, Some(koulutustoimija), AccessType.read)
-    }
+    hasReadAccess(organisaatio, None) || varhaiskasvatusKoulutustoimijat.exists(koulutustoimija =>
+      hasReadAccess(organisaatio, Some(koulutustoimija))
+    )
 
   def hasWriteAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid]) = hasAccess(organisaatio, koulutustoimija, AccessType.write) && hasRole(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)
   def hasTiedonsiirronMitätöintiAccess(organisaatio: Organisaatio.Oid, koulutustoimija: Option[Organisaatio.Oid]) = hasAccess(organisaatio, koulutustoimija, AccessType.tiedonsiirronMitätöinti)
