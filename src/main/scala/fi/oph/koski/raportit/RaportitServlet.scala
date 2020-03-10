@@ -15,10 +15,10 @@ import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import org.scalatra.{ContentEncodingSupport, Cookie, CookieOptions}
 
 class RaportitServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with Logging with NoCache with ContentEncodingSupport {
-  private val raportitService = new RaportitService(application)
-  private val organisaatioService = application.organisaatioService
-  private val esiopetusService = new EsiopetusRaporttiService(application)
-  private val accessResolver = RaportitAccessResolver(application)
+  private lazy val raportitService = new RaportitService(application)
+  private lazy val organisaatioService = application.organisaatioService
+  private lazy val esiopetusService = new EsiopetusRaporttiService(application)
+  private lazy val accessResolver = RaportitAccessResolver(application)
 
   before() {
     if (!application.raportointikantaService.isAvailable) {
