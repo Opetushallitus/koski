@@ -18,8 +18,8 @@ case class AikuistenPerusopetusRaporttiRepository(
   db: DB
 ) extends KoskiDatabaseMethods with RaportointikantaTableQueries {
   private val defaultTimeout = 5.minutes
-  private type OpiskeluoikeusOid = String
   private type OppijaOid = String
+  private type OpiskeluoikeusOid = String
   private type PäätasonSuoritusId = Long
   private type AikajaksoId = Long
   private type HasAlkuvaihe = Boolean
@@ -37,17 +37,15 @@ case class AikuistenPerusopetusRaporttiRepository(
     }
 
     val opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet = opiskeluoikeusAikajaksotPaatasonSuorituksetResult(oppilaitosOid, alku, loppu, päätasonSuorituksenTyyppi)
-    val hasAlkuvaihePäättövaihe = opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet
-      .map(data => (data._1, data._4, data._5))
-      .groupBy(_._1)
+    val dataByOpiskeluoikeusOid = opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet.groupBy(_.opiskeluoikeusOid)
 
-    val opiskeluoikeusOids = opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet.map(_._1)
+    val opiskeluoikeusOids = opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet.map(_.opiskeluoikeusOid)
     val opiskeluoikeudet = runDbSync(ROpiskeluoikeudet.filter(_.opiskeluoikeusOid inSet opiskeluoikeusOids).result, timeout = defaultTimeout)
 
-    val aikajaksoIds = opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet.flatMap(_._3)
+    val aikajaksoIds = opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet.flatMap(_.aikajaksoIds)
     val aikajaksot = runDbSync(ROpiskeluoikeusAikajaksot.filter(_.id inSet aikajaksoIds).result, timeout = defaultTimeout).groupBy(_.opiskeluoikeusOid)
 
-    val paatasonSuoritusIds = opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet.flatMap(_._2)
+    val paatasonSuoritusIds = opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet.flatMap(_.päätasonSuoritusIds)
     val paatasonSuoritukset = runDbSync(RPäätasonSuoritukset.filter(_.päätasonSuoritusId inSet paatasonSuoritusIds).result, timeout = defaultTimeout).groupBy(_.opiskeluoikeusOid)
 
     val osasuoritukset = runDbSync(ROsasuoritukset.filter(_.päätasonSuoritusId inSet paatasonSuoritusIds).result, timeout = defaultTimeout)
@@ -57,7 +55,7 @@ case class AikuistenPerusopetusRaporttiRepository(
     val henkilot = runDbSync(RHenkilöt.filter(_.oppijaOid inSet opiskeluoikeudet.map(_.oppijaOid).distinct).result, timeout = defaultTimeout).groupBy(_.oppijaOid).mapValues(_.head)
 
     opiskeluoikeudet.foldLeft[Seq[AikuistenPerusopetusRaporttiRows]](Seq.empty) {
-      combineOpiskeluoikeusWith(_, _, aikajaksot, paatasonSuoritukset, osasuoritukset, henkilot, hasAlkuvaihePäättövaihe)
+      combineOpiskeluoikeusWith(_, _, aikajaksot, paatasonSuoritukset, osasuoritukset, henkilot, dataByOpiskeluoikeusOid)
     }
   }
 
@@ -68,7 +66,7 @@ case class AikuistenPerusopetusRaporttiRepository(
     paatasonSuoritukset: Map[OpiskeluoikeusOid, Seq[RPäätasonSuoritusRow]],
     osasuoritukset: Map[PäätasonSuoritusId, Seq[ROsasuoritusRow]],
     henkilot: Map[OppijaOid, RHenkilöRow],
-    hasAlkuvaihePäättövaihe: Map[OpiskeluoikeusOid, Vector[(OpiskeluoikeusOid, HasAlkuvaihe, HasPäättövaihe)]]
+    dataByOpiskeluoikeusOid: Map[OpiskeluoikeusOid, Seq[AikuistenPerusopetusRaporttiDbResultRow]]
   ) = {
     paatasonSuoritukset.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Nil).map(paatasonsuoritus =>
       AikuistenPerusopetusRaporttiRows(
@@ -77,8 +75,8 @@ case class AikuistenPerusopetusRaporttiRepository(
         aikajaksot.getOrElse(opiskeluoikeus.opiskeluoikeusOid, Nil).sortBy(_.alku)(sqlDateOrdering),
         paatasonsuoritus,
         osasuoritukset.getOrElse(paatasonsuoritus.päätasonSuoritusId, Nil),
-        hasAlkuvaihe = hasAlkuvaihePäättövaihe(opiskeluoikeus.opiskeluoikeusOid).exists(_._2),
-        hasPäättövaihe = hasAlkuvaihePäättövaihe(opiskeluoikeus.opiskeluoikeusOid).exists(_._3)
+        hasAlkuvaihe = dataByOpiskeluoikeusOid(opiskeluoikeus.opiskeluoikeusOid).exists(_.hasAlkuvaihe),
+        hasPäättövaihe = dataByOpiskeluoikeusOid(opiskeluoikeus.opiskeluoikeusOid).exists(_.hasPäättövaihe)
       )
     ) ++ acc
   }
@@ -90,18 +88,15 @@ case class AikuistenPerusopetusRaporttiRepository(
     päätasonSuorituksenTyyppi: String
   ) = {
     import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
+    implicit val getResult = GetResult[AikuistenPerusopetusRaporttiDbResultRow](r =>
+      AikuistenPerusopetusRaporttiDbResultRow(r.<<, r.<<, r.<<, r.<<, r.<<)
+    )
     runDbSync(opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(
       oppilaitos,
       Date.valueOf(alku),
       Date.valueOf(loppu),
       päätasonSuorituksenTyyppi
-    ).as[(
-      OpiskeluoikeusOid,
-      Seq[PäätasonSuoritusId],
-      Seq[AikajaksoId],
-      HasAlkuvaihe,
-      HasPäättövaihe
-    )], timeout = defaultTimeout)
+    ).as[AikuistenPerusopetusRaporttiDbResultRow], timeout = defaultTimeout)
   }
 
   private def opiskeluoikeusAikajaksotPaatasonSuorituksetQuery(
@@ -139,6 +134,14 @@ case class AikuistenPerusopetusRaporttiRepository(
       and aikaj.alku <= $loppu and (aikaj.loppu >= $alku or aikaj.loppu is null)
     group by oo.opiskeluoikeus_oid"""
   }
+
+  case class AikuistenPerusopetusRaporttiDbResultRow(
+    opiskeluoikeusOid: OpiskeluoikeusOid,
+    päätasonSuoritusIds: Seq[PäätasonSuoritusId],
+    aikajaksoIds: Seq[AikajaksoId],
+    hasAlkuvaihe: HasAlkuvaihe,
+    hasPäättövaihe: HasPäättövaihe
+  )
 }
 
 case class AikuistenPerusopetusRaporttiRows(
