@@ -7,7 +7,7 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, MockOppijat}
 import fi.oph.koski.koskiuser.{MockUser, MockUsers}
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.organisaatio.MockOrganisaatiot.{jyväskylänNormaalikoulu, päiväkotiTouhula}
+import fi.oph.koski.organisaatio.MockOrganisaatiot.{jyväskylänNormaalikoulu, päiväkotiMajakka, päiväkotiTouhula}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
@@ -77,6 +77,9 @@ class EsiopetusRaporttiSpec extends FreeSpec with Matchers with Raportointikanta
         val helsinginOstopalveluExcel = raporttiService.buildOstopalveluRaportti(localDate(2006, 8, 13), "", None)(session(MockUsers.helsinkiTallentaja)).sheets
         val rows = helsinginOstopalveluExcel.collect { case d: DataSheet => d.rows.collect { case r: EsiopetusRaporttiRow => r.oppilaitosNimi }.flatten }.flatten
         rows.toList.sorted should equal(List("Päiväkoti Majakka", "Päiväkoti Touhula"))
+
+        val ostopalveluOrganisaatiot = s"$päiväkotiMajakka,$päiväkotiTouhula"
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$ostopalveluOrganisaatiot&paiva=2006-08-13")))
       }
 
       "ei näe muiden ostopalvelu/palveluseteli-tietoja" in {
