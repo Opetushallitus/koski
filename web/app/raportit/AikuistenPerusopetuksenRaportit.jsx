@@ -48,7 +48,7 @@ export const AikuistenPerusopetuksenRaportit = ({organisaatioAtom, apiEndpoint, 
       <h2>{title}</h2>
       <p>{description}</p>
       <div className='parametri'>
-        <label><Text name='Raportin tyyppi'/></label>
+        <label><Text name='Suorituksen tyyppi'/></label>
       </div>
       {raportinTyyppiAtom.map(v => (
         <React.Fragment>
@@ -62,7 +62,7 @@ export const AikuistenPerusopetuksenRaportit = ({organisaatioAtom, apiEndpoint, 
           </label>
           <label className='radio-option-container'>
             <input className='radio-option' type='radio' checked={v === reportTypes.oppiaineenoppimäärä} onChange={() => raportinTyyppiAtom.set(reportTypes.oppiaineenoppimäärä)}/>
-            <Text name='Oppiaineen oppimäärä' />
+            <Text name='Oppiaineen oppimäärä (ns. aineopiskelijat)' />
           </label>
         </React.Fragment>
       ))}
@@ -78,11 +78,11 @@ export const AikuistenPerusopetuksenRaportit = ({organisaatioAtom, apiEndpoint, 
         <React.Fragment>
           <label className='radio-option-container'>
             <input className='radio-option' type='radio' checked={!v} onChange={() => osasuoritustenAikarajausAtom.set(false)}/>
-            <Text name='Raportille valitaan kaikki tutkinnon osat riippumatta niiden suoritusajankohdasta' />
+            <Text name='Raportille valitaan kaikki kurssisuoritukset riippumatta niiden suoritusajankohdasta' />
           </label>
           <label className='radio-option-container'>
             <input className='radio-option' type='radio' checked={v} onChange={() => osasuoritustenAikarajausAtom.set(true)}/>
-            <Text name='Raportille valitaan vain sellaiset tutkinnon osat, joiden arviointipäivä osuu yllä määritellylle aikajaksolle' />
+            <Text name='Raportille valitaan vain sellaiset kurssit, joiden arviointipäivä osuu yllä määritellylle aikajaksolle' />
           </label>
         </React.Fragment>
       ))}
