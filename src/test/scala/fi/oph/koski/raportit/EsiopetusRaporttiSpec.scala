@@ -65,10 +65,10 @@ class EsiopetusRaporttiSpec extends FreeSpec with Matchers with Raportointikanta
 
     "Varhaiskasvatuksen järjestäjä" - {
       "näkee vain omat opiskeluoikeutensa" in {
-        val tornionTouhulaExcel = raporttiService.buildOppilaitosRaportti(päiväkotiTouhula, localDate(2006, 8, 13), "", None)(session(MockUsers.tornioTallentaja)).sheets
+        val tornionTouhulaExcel = raporttiService.buildOrganisaatioRaportti(päiväkotiTouhula, localDate(2006, 8, 13), "", None)(session(MockUsers.tornioTallentaja)).sheets
         tornionTouhulaExcel.collect { case d: DataSheet => d.rows }.flatten should be(empty)
 
-        val helsinginTouhulaExcel = raporttiService.buildOppilaitosRaportti(päiväkotiTouhula, localDate(2006, 8, 13), "", None)(session(MockUsers.helsinkiTallentaja)).sheets
+        val helsinginTouhulaExcel = raporttiService.buildOrganisaatioRaportti(päiväkotiTouhula, localDate(2006, 8, 13), "", None)(session(MockUsers.helsinkiTallentaja)).sheets
         val rows = helsinginTouhulaExcel.collect { case d: DataSheet => d.rows.collect { case r: EsiopetusRaporttiRow => r } }.flatten
         rows.flatMap(_.oppilaitosNimi).toList should equal(List("Päiväkoti Touhula"))
       }

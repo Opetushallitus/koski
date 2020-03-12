@@ -87,7 +87,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
       case organisaatioService.ostopalveluRootOid =>
         esiopetusService.buildOstopalveluRaportti(date, password, token)
       case oid =>
-        esiopetusService.buildOppilaitosRaportti(validateOrganisaatioOid(oid), date, password, token)
+        esiopetusService.buildOrganisaatioRaportti(validateOrganisaatioOid(oid), date, password, token)
     }
 
     writeExcel(resp)

@@ -3,6 +3,7 @@ package fi.oph.koski.organisaatio
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.{KoskiSession, KäyttöoikeusOrg}
 import fi.oph.koski.perustiedot.VarhaiskasvatusToimipistePerustiedot
+import fi.oph.koski.schema.Organisaatio.Oid
 
 class OrganisaatioService(application: KoskiApplication) {
   val ostopalveluRootOid = "OSTOPALVELUTAIPALVELUSETELI"
@@ -23,6 +24,17 @@ class OrganisaatioService(application: KoskiApplication) {
     query match {
       case Some(qry) => OrganisaatioHierarkiaFilter(qry, user.lang).filter(orgs)
       case None => orgs
+    }
+  }
+
+  def organisaationAlaisetOrganisaatiot(organisaatioOid: Oid)(implicit user: KoskiSession): List[Oid] = {
+    organisaatioRepository.getOrganisaatio(organisaatioOid).toList.flatMap { org =>
+      val children = organisaatioRepository.getChildOids(org.oid).toList.flatten
+      if (org.toKoulutustoimija.isDefined) {
+        children ++ omatOstopalveluOrganisaatiot.map(_.oid)
+      } else {
+        children
+      }
     }
   }
 

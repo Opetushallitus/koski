@@ -19,9 +19,10 @@ class EsiopetusRaporttiService(application: KoskiApplication) {
     buildRaportti(date, password, downloadToken, ostopalveluOrganisaatiot, filename("ostopalvelu_tai_palveluseteli", date))
   }
 
-  def buildOppilaitosRaportti(oppilaitos: Oid, date: LocalDate, password: String, downloadToken: Option[String])(implicit session: KoskiSession): OppilaitosRaporttiResponse = {
-    auditLog(date, session, List(oppilaitos))
-    buildRaportti(date, password, downloadToken, List(oppilaitos), filename(oppilaitos, date))
+  def buildOrganisaatioRaportti(organisaatioOid: Oid, date: LocalDate, password: String, downloadToken: Option[String])(implicit session: KoskiSession): OppilaitosRaporttiResponse = {
+    val organisaatioOidit = organisaationAlaisetOrganisaatiot(organisaatioOid)
+    auditLog(date, session, organisaatioOidit)
+    buildRaportti(date, password, downloadToken, organisaatioOidit, filename(organisaatioOid, date))
   }
 
   private def auditLog(date: LocalDate, session: KoskiSession, organisaatiot: List[String]) =
@@ -37,6 +38,10 @@ class EsiopetusRaporttiService(application: KoskiApplication) {
 
   private def buildRaportti(date: LocalDate, oppilaitokset: List[Oid])(implicit session: KoskiSession): Seq[DataSheet] = {
     Seq(esiopetusRaportti.build(oppilaitokset, Date.valueOf(date)))
+  }
+
+  private def organisaationAlaisetOrganisaatiot(organisaatioOid: Oid)(implicit user: KoskiSession) = {
+    application.organisaatioService.organisaationAlaisetOrganisaatiot(organisaatioOid)
   }
 
   private def filename(oppilaitos: String, date: LocalDate): String = {
