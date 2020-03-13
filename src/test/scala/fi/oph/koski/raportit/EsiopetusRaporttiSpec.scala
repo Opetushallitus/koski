@@ -5,10 +5,12 @@ import java.time.LocalDate.{of => localDate}
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, MockOppijat}
-import fi.oph.koski.koskiuser.{MockUser, MockUsers}
+import fi.oph.koski.koskiuser.MockUser
+import fi.oph.koski.koskiuser.MockUsers.{helsinkiTallentaja, tornioTallentaja}
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.organisaatio.MockOrganisaatiot.{jyväskylänNormaalikoulu, päiväkotiMajakka, päiväkotiTouhula}
+import fi.oph.koski.organisaatio.MockOrganisaatiot.{helsinginKaupunki, jyväskylänNormaalikoulu, päiväkotiMajakka, päiväkotiTouhula}
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
+import fi.oph.koski.schema.Organisaatio.Oid
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 class EsiopetusRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll {
@@ -60,34 +62,58 @@ class EsiopetusRaporttiSpec extends FreeSpec with Matchers with Raportointikanta
         r.kuljetusetu should equal(false)
         r.sisäoppilaitosmainenMajoitus should equal(false)
         r.koulukoti should equal(false)
+        r.ostopalveluTaiPalveluseteli should equal(None)
       }
     }
 
     "Varhaiskasvatuksen järjestäjä" - {
       "näkee vain omat opiskeluoikeutensa" in {
-        val tornionTouhulaExcel = raporttiService.buildOppilaitosRaportti(päiväkotiTouhula, localDate(2006, 8, 13), "", None)(session(MockUsers.tornioTallentaja)).sheets
-        tornionTouhulaExcel.collect { case d: DataSheet => d.rows }.flatten should be(empty)
+        val tornionTekemäRaportti = buildOrganisaatioRaportti(tornioTallentaja, päiväkotiTouhula)
+        getOppilaitokset(tornionTekemäRaportti) should be(empty)
 
-        val helsinginTouhulaExcel = raporttiService.buildOppilaitosRaportti(päiväkotiTouhula, localDate(2006, 8, 13), "", None)(session(MockUsers.helsinkiTallentaja)).sheets
-        val rows = helsinginTouhulaExcel.collect { case d: DataSheet => d.rows.collect { case r: EsiopetusRaporttiRow => r } }.flatten
-        rows.flatMap(_.oppilaitosNimi).toList should equal(List("Päiväkoti Touhula"))
+        val helsinginTekemäRaportti = buildOrganisaatioRaportti(helsinkiTallentaja, päiväkotiTouhula)
+        getOppilaitokset(helsinginTekemäRaportti) should equal(List("Päiväkoti Touhula"))
+      }
+
+      "voi hakea kaikki koulutustoimijan alla olevat tiedot" in {
+        val raportti = buildOrganisaatioRaportti(helsinkiTallentaja, helsinginKaupunki)
+        getOppilaitokset(raportti) should equal(List("Kulosaaren ala-aste", "Päiväkoti Majakka", "Päiväkoti Touhula"))
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$helsinginKaupunki&paiva=2006-08-13")))
       }
 
       "voi hakea kaikki ostopalvelu/palveluseteli-tiedot" in {
-        val helsinginOstopalveluExcel = raporttiService.buildOstopalveluRaportti(localDate(2006, 8, 13), "", None)(session(MockUsers.helsinkiTallentaja)).sheets
-        val rows = helsinginOstopalveluExcel.collect { case d: DataSheet => d.rows.collect { case r: EsiopetusRaporttiRow => r.oppilaitosNimi }.flatten }.flatten
-        rows.toList.sorted should equal(List("Päiväkoti Majakka", "Päiväkoti Touhula"))
+        val raportti = buildOstopalveluRaportti(helsinkiTallentaja)
+        getOppilaitokset(raportti) should equal(List("Päiväkoti Majakka", "Päiväkoti Touhula"))
+        getRows(raportti).flatMap(_.ostopalveluTaiPalveluseteli) should equal(List("JM02", "JM02"))
 
         val ostopalveluOrganisaatiot = s"$päiväkotiMajakka,$päiväkotiTouhula"
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$ostopalveluOrganisaatiot&paiva=2006-08-13")))
       }
 
       "ei näe muiden ostopalvelu/palveluseteli-tietoja" in {
-        val tornionOstopalveluExcel = raporttiService.buildOstopalveluRaportti(localDate(2006, 8, 13), "", None)(session(MockUsers.tornioTallentaja)).sheets
-        val rows = tornionOstopalveluExcel.collect { case d: DataSheet => d.rows }.flatten
-        rows should be(empty)
+        val raportti = buildOstopalveluRaportti(tornioTallentaja)
+        getOppilaitokset(raportti) should be(empty)
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=&paiva=2006-08-13")))
       }
     }
+  }
+
+  private def buildOstopalveluRaportti(user: MockUser) =
+    raporttiService.buildOstopalveluRaportti(localDate(2006, 8, 13), "", None)(session(user))
+
+  private def buildOrganisaatioRaportti(user: MockUser, organisaatio: Oid) =
+    raporttiService.buildOrganisaatioRaportti(organisaatio, localDate(2006, 8, 13), "", None)(session(user))
+
+  private def getOppilaitokset(raportti: OppilaitosRaporttiResponse) = {
+    getRows(raportti).flatMap(_.oppilaitosNimi).sorted
+  }
+
+  private def getRows(raportti: OppilaitosRaporttiResponse): List[EsiopetusRaporttiRow] = {
+    raportti.sheets.collect { case d: DataSheet =>
+      d.rows.collect {
+        case r: EsiopetusRaporttiRow => r
+      }
+    }.flatten.toList
   }
 
   private def findSingle(rows: Seq[EsiopetusRaporttiRow], oppija: LaajatOppijaHenkilöTiedot) = {
