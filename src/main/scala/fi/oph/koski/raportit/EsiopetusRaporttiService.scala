@@ -15,18 +15,18 @@ class EsiopetusRaporttiService(application: KoskiApplication) {
 
   def buildOstopalveluRaportti(date: LocalDate, password: String, downloadToken: Option[String])(implicit session: KoskiSession): OppilaitosRaporttiResponse = {
     val ostopalveluOrganisaatiot = omatOstopalveluOrganisaatioOidit
-    auditLog(date, session, ostopalveluOrganisaatiot)
+    auditLog(date, session, ostopalveluOrganisaatiot.mkString(","))
     buildRaportti(date, password, downloadToken, ostopalveluOrganisaatiot, filename("ostopalvelu_tai_palveluseteli", date))
   }
 
   def buildOrganisaatioRaportti(organisaatioOid: Oid, date: LocalDate, password: String, downloadToken: Option[String])(implicit session: KoskiSession): OppilaitosRaporttiResponse = {
     val organisaatioOidit = organisaationAlaisetOrganisaatiot(organisaatioOid)
-    auditLog(date, session, organisaatioOidit)
+    auditLog(date, session, organisaatioOid)
     buildRaportti(date, password, downloadToken, organisaatioOidit, filename(organisaatioOid, date))
   }
 
-  private def auditLog(date: LocalDate, session: KoskiSession, organisaatiot: List[String]) =
-    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=esiopetus&oppilaitosOid=${organisaatiot.mkString(",")}&paiva=$date")))
+  private def auditLog(date: LocalDate, session: KoskiSession, organisaatio: String) =
+    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=esiopetus&oppilaitosOid=$organisaatio&paiva=$date")))
 
   private def buildRaportti(date: LocalDate, password: String, downloadToken: Option[String], oppilaitokset: List[Oid], filename: String)(implicit session: KoskiSession): OppilaitosRaporttiResponse =
     OppilaitosRaporttiResponse(

@@ -41,7 +41,8 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
       majoitusetu = r.<<,
       kuljetusetu = r.<<,
       sisäoppilaitosmainenMajoitus = r.<<,
-      koulukoti = r.<<
+      koulukoti = r.<<,
+      ostopalveluTaiPalveluseteli = r.<<
     )
   )
 
@@ -82,7 +83,8 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
       majoitusetu,
       kuljetusetu,
       sisaoppilaitosmainen_majoitus,
-      koulukoti
+      koulukoti,
+      r_opiskeluoikeus.data -> 'järjestämismuoto' ->> 'koodiarvo'
     from r_opiskeluoikeus
     join r_henkilo on r_henkilo.oppija_oid = r_opiskeluoikeus.oppija_oid
     join esiopetus_opiskeluoikeus_aikajakso aikajakso on aikajakso.opiskeluoikeus_oid = r_opiskeluoikeus.opiskeluoikeus_oid
@@ -143,7 +145,8 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
     "majoitusetu" -> Column("Majoitusetu"),
     "kuljetusetu" -> Column("Kuljetusetu"),
     "sisäoppilaitosmainenMajoitus" -> Column("Sisäoppilaitosmainen majoitus"),
-    "koulukoti" -> Column("Koulukoti")
+    "koulukoti" -> Column("Koulukoti"),
+    "ostopalveluTaiPalveluseteli" -> Column("Ostopalvelu/palveluseteli", comment = Some("'JM02': Ostopalvelu, 'JM03': Palveluseteli"))
   )
 }
 
@@ -173,5 +176,6 @@ case class EsiopetusRaporttiRow(
   majoitusetu: Boolean,
   kuljetusetu: Boolean,
   sisäoppilaitosmainenMajoitus: Boolean,
-  koulukoti: Boolean
+  koulukoti: Boolean,
+  ostopalveluTaiPalveluseteli: Option[String]
 )
