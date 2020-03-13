@@ -25,8 +25,9 @@ class EsiopetusRaporttiService(application: KoskiApplication) {
     buildRaportti(date, password, downloadToken, organisaatioOidit, filename(organisaatioOid, date))
   }
 
-  private def auditLog(date: LocalDate, session: KoskiSession, organisaatio: String) =
+  private def auditLog(date: LocalDate, session: KoskiSession, organisaatio: String) = {
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, session, Map(hakuEhto -> s"raportti=esiopetus&oppilaitosOid=$organisaatio&paiva=$date")))
+  }
 
   private def buildRaportti(date: LocalDate, password: String, downloadToken: Option[String], oppilaitokset: List[Oid], filename: String)(implicit session: KoskiSession): OppilaitosRaporttiResponse =
     OppilaitosRaporttiResponse(
