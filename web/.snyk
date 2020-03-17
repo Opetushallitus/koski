@@ -29,4 +29,8 @@ ignore:
     - '*':
         reason: Waiting for a month for libs to update their dependencies
         expires: 2020-04-13T15:53:15.834Z
+  SNYK-JS-YARGSPARSER-560381:
+    - '*':
+        reason: Waiting for a month for libs to update their dependencies
+        expires: 2020-04-13T15:53:15.834Z
 patch: {}
