@@ -194,6 +194,24 @@ case class AikuistenPerusopetusRaportti(
     }
   }
 
+  private def alkuvaiheenSuorituksiaColumn() = {
+    val comment = raporttiType match {
+      case AikuistenPerusopetusOppiaineenOppimääräRaportti() =>
+        Some("Opiskeluoikeudelle siirretty myös alkuvaiheen suoritus. HUOM! Alkuvaiheen suorituksia ei tulisi olla samassa opiskeluoikeudessa aineopintojen kanssa.")
+      case _ => None
+    }
+    CompactColumn("Opiskeluoikeudella alkuvaiheen suoritus", comment = comment)
+  }
+
+  private def päättövaiheenSuorituksiaColumn() = {
+    val comment = raporttiType match {
+      case AikuistenPerusopetusOppiaineenOppimääräRaportti() =>
+        Some("Opiskeluoikeudelle siirretty myös päättövaiheen suoritus. HUOM! Päättövaiheen suorituksia ei tulisi olla samassa opiskeluoikeudessa aineopintojen kanssa.")
+      case _ => None
+    }
+    CompactColumn("Opiskeluoikeudella päättövaiheen suoritus", comment = comment)
+  }
+
   private def oppiaineJaLisätiedotColumnSettings(oppiaineet: Seq[YleissivistäväRaporttiOppiaineJaKurssit]) = {
     Seq(
       CompactColumn("Opiskeluoikeuden oid"),
@@ -203,23 +221,23 @@ case class AikuistenPerusopetusRaportti(
       CompactColumn("Toimipiste"),
       CompactColumn("Opiskeluoikeuden tunniste lähdejärjestelmässä"),
       CompactColumn("Päivitetty", comment = Some("Viimeisin opiskeluoikeuden päivitys KOSKI-palveluun. HUOM. Raportilla näkyy vain edeltävän päivän tilanne.")),
-      CompactColumn("Yksilöity", comment = Some("Jos tässä on arvo 'ei', tulee oppija yksilöidä oppijanumerorekisterissä")),
+      CompactColumn("Yksilöity", comment = Some("Jos sarakkeessa on arvo 'ei' eikä oppijalla ole henkilötunnusta, koulutuksen järjestäjän KOSKI-pääkäyttäjän on suoritettava oppijan yksilöinti oppijanumerorekisterissä. Jos yksilöimättömällä oppijalla on henkilötunnus, ole yhteydessä KOSKI-palveluosoitteeseen (koski@opintopolku.fi).")),
       Column("Oppijan oid"),
       Column("Hetu"),
       Column("Sukunimi"),
       Column("Etunimet"),
       CompactColumn("Opiskeluoikeuden alkamispäivä"),
       CompactColumn("Opiskeluoikeuden viimeisin tila", comment = Some("Se opiskeluoikeuden tila, joka opiskeluoikeudella on nyt.")),
-      CompactColumn("Opiskeluoikeuden tilat aikajakson aikana", comment = Some("Kaikki opiskeluoikeuden tilat, joita opiskeluoikeudella on ollut aikajaksona aikana. Tilat näyteään pilkuilla erotettuna aikajärjestyksessä.")),
-      CompactColumn("Suorituksen tyyppi", comment = Some("Onko kyseessä koko oppimäärän suoritus vai aineopintosuoritus.")),
-      CompactColumn("Oppijalla alkuvaiheen suorituksia", comment = Some("Onko oppijalla aikuisten perusopetuksen alkuvaiheen suorituksia.")),
-      CompactColumn("Oppijalla päättövaiheen suorituksia", comment = Some("Onko oppijalla aikuisten perusopetuksen päättövaiheen suorituksia.")),
+      CompactColumn("Opiskeluoikeuden tilat aikajakson aikana", comment = Some("Kaikki opiskeluoikeuden tilat, joita opiskeluoikeudella on ollut raportin tulostusparametreissa määritellyn aikajakson aikana. Tilat näytetään pilkulla erotettuna aikajärjestyksessä.")),
+      CompactColumn("Suorituksen tyyppi", comment = Some("Onko kyseessä aikuisten perusopetuksen alkuvaiheen, päättövaiheen vai aineopintojen suoritus.")),
+      alkuvaiheenSuorituksiaColumn(),
+      päättövaiheenSuorituksiaColumn(),
       CompactColumn("Tutkintokoodi/koulutusmoduulin koodi", comment = Some("Päätason suorituksen koulutusmoduulin koodiarvo")),
       CompactColumn("Suorituksen nimi", comment = Some("Päätason suorituksen koulutusmoduulin nimi")),
       CompactColumn("Suorituksen tila", comment = Some("Onko kyseinen päätason suoritus \"kesken\" vai \"valmis\".")),
       CompactColumn("Suorituksen vahvistuspäivä", comment = Some("Päätason suorituksen vahvistuspäivä. Vain \"valmis\"-tilaisilla suorituksilla on tässä kentässä jokin päivämäärä.")),
       CompactColumn("Läsnäolopäiviä aikajakson aikana", comment = Some("Kuinka monta kalenteripäivää oppija on ollut raportin tulostusparametreissa määriteltynä aikajaksona \"Läsnä\"-tilassa KOSKI-palvelussa.")),
-      CompactColumn("Rahoitukset", comment = Some("Rahoituskoodit aikajärjestyksessä, joita opiskeluoikeuden läsnäolojaksoille on siirretty. Rahoituskoodien nimiarvot koodistossa https://koski.opintopolku.fi/koski/dokumentaatio/koodisto/opintojenrahoitus/latest")),
+      CompactColumn("Rahoitukset", comment = Some("Ne rahoituskoodit, jotka opiskeluoikeuden läsnäolojaksoille on siirretty. Rahoituskoodit erotettu pilkulla toisistaan ja järjestetty aikajärjestyksessä. 1 = Valtionosuusrahoitteinen koulutus, 6 = Muuta kautta rahoitettu.")),
       CompactColumn("Ryhmä"),
       CompactColumn("Ulkomaanjaksot", comment = Some("Kuinka monta ulkomaanjaksopäivää oppijalla on KOSKI-datan mukaan ollut raportin tulostusparametreissa määritellyllä aikajaksolla.")),
       CompactColumn("Majoitusetu", comment = Some("Kuinka monta majoitusetupäivää oppijalla on KOSKI-datan mukaan ollut raportin tulostusparametreissa määritellyllä aikajaksolla.")),
@@ -235,7 +253,7 @@ case class AikuistenPerusopetusRaportti(
       Column("Sukunimi"),
       Column("Etunimet"),
       CompactColumn("Toimipiste"),
-      CompactColumn("Suorituksen tyyppi", comment = Some("Onko kyseessä koko oppimäärän suoritus vai aineopintosuoritus."))
+      CompactColumn("Suorituksen tyyppi", comment = Some("Onko kyseessä aikuisten perusopetuksen alkuvaiheen, päättövaiheen vai aineopintojen suoritus."))
     ) ++ kurssit.map(k => CompactColumn(title = k.toColumnTitle, comment = Some("Otsikon nimessä näytetään ensin kurssin koodi, sitten kurssin nimi ja viimeiseksi tieto siitä, onko kurssi valtakunnallinen vai paikallinen. Kurssisarake sisältää aina seuraavat tiedot, jos opiskelijalla on kyseisen kurssi suoritettuna: arvosana, kurssin laajuus ja \"tunnustettu\" jos kyseinen kurssi on tunnustettu.")))
   }
 }
