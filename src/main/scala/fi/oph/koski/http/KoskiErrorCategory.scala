@@ -108,6 +108,8 @@ object KoskiErrorCategory {
         val kaksiSamaaOppiainettaNumeroarvioinnilla = subcategory("kaksiSamaaOppiainettaNumeroarvioinnilla", "Kahdella saman oppiaineen suorituksella ei molemmilla voi olla numeerista arviointia")
         val luokkaAstePuuttuu = subcategory("luokkaAstePuuttuu", "Luokka-aste vaaditaan kun viimeisin arviointi on muuta kuin 'O'")
         val tunnisteenKoodiarvoaEiLöydyRakenteesta = subcategory("eriTutkintokoodit", "Suorituksen tunnisteen koodiarvo ei löydy tutkinnon rakenteesta")
+        val deprekoituOsaamisenHankkimistapa = subcategory("virheellinenOsaamisenHankkimistapa",
+          "Ammattitutkinnon suorituksen osaamisen hankkimistavan ollessa 'osaamisen hankkimistapa ilman lisätietoja', ei koodiarvona voi olla 'oppisopimus'")
       }
       val rakenne = new Rakenne
 

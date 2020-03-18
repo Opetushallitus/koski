@@ -366,6 +366,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         :: validateOppiaineet(suoritus)
         :: validatePäiväkodinEsiopetus(suoritus, opiskeluoikeus)
         :: validateTutkinnonosanRyhmä(suoritus)
+        :: validateOsaamisenHankkimistavat(suoritus)
         :: HttpStatus.validate(!suoritus.isInstanceOf[PäätasonSuoritus])(validateDuplicates(suoritus.osasuoritukset.toList.flatten))
         :: suoritus.osasuoritusLista.map(validateSuoritus(_, opiskeluoikeus, suoritus :: parent))
     )
@@ -690,5 +691,17 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       case Some(tyyppi) => KoskiErrorCategory.notImplemented(s"Päätason suorituksen tyyppi $tyyppi ei ole käytössä tässä ympäristössä")
       case _ => HttpStatus.ok
     }
+  }
+
+
+  private def validateOsaamisenHankkimistavat(suoritus: Suoritus): HttpStatus = suoritus match {
+    case a: AmmatillisenTutkinnonSuoritus =>
+      HttpStatus.validate(
+        a.osaamisenHankkimistavat.toList.flatten
+          .map(_.osaamisenHankkimistapa)
+          .collect { case o: OsaamisenHankkimistapaIlmanLisätietoja => o }
+          .forall(hankkimistapa => List("koulutussopimus", "oppilaitosmuotoinenkoulutus").contains(hankkimistapa.tunniste.koodiarvo))
+      )(KoskiErrorCategory.badRequest.validation.rakenne.deprekoituOsaamisenHankkimistapa())
+    case _ => HttpStatus.ok
   }
 }
