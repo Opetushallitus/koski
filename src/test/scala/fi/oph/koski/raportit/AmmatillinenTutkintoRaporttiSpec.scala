@@ -182,7 +182,7 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
 
   private val defaultHetu = MockOppijat.ammattilainen.hetu.get
 
-  private val defaultRequest = AmmatillinenSuoritusTiedotRequest(
+  private val defaultRequest = AikajaksoRaporttiAikarajauksellaRequest(
     oppilaitosOid = MockOrganisaatiot.stadinAmmattiopisto,
     alku =  date(2016, 1, 1),
     loppu = date(2016,5 , 30),
@@ -191,7 +191,7 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
     password = ""
   )
 
-  private def testiHenkilöRaporttiRows(request: AmmatillinenSuoritusTiedotRequest): Seq[SuoritustiedotTarkistusRow] =
+  private def testiHenkilöRaporttiRows(request: AikajaksoRaporttiAikarajauksellaRequest): Seq[SuoritustiedotTarkistusRow] =
     AmmatillinenTutkintoRaportti.buildRaportti(request, repository).filter(_.hetu.contains(defaultHetu)).toList
 
   private def withNewSisällytettyOpiskeluoikeus(f: => Unit) = {

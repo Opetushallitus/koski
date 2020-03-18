@@ -4,6 +4,7 @@ import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.raportit.AmmatillinenRaporttiUtils._
+import fi.oph.koski.raportit.RaporttiUtils.arvioituAikavälillä
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema.{LähdejärjestelmäId, OpiskeluoikeudenTyyppi, Organisaatio}
 import fi.oph.koski.util.FinnishDateFormat.{finnishDateFormat, finnishDateTimeFormat}
@@ -12,7 +13,7 @@ import fi.oph.koski.util.FinnishDateFormat.{finnishDateFormat, finnishDateTimeFo
 
 object AmmatillinenOsittainenRaportti {
 
-  def buildRaportti(request: AmmatillinenSuoritusTiedotRequest, repository: AmmatillisenRaportitRepository): Seq[AmmatillinenOsittainRaporttiRow] = {
+  def buildRaportti(request: AikajaksoRaporttiAikarajauksellaRequest, repository: AmmatillisenRaportitRepository): Seq[AmmatillinenOsittainRaporttiRow] = {
     val data = repository.suoritustiedot(request.oppilaitosOid, OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo, "ammatillinentutkintoosittainen", request.alku, request.loppu)
     data.map(buildRow(request.oppilaitosOid, request.alku, request.loppu, request.osasuoritustenAikarajaus))
   }
@@ -78,11 +79,11 @@ object AmmatillinenOsittainenRaportti {
     )
   }
 
-  def title(request: AmmatillinenSuoritusTiedotRequest): String = {
+  def title(request: AikajaksoRaporttiAikarajauksellaRequest): String = {
     s"Ammatillinen_tutkinnon_osa_ja_osia_${request.oppilaitosOid}_${request.alku}_${request.loppu}"
   }
 
-  def documentation(request: AmmatillinenSuoritusTiedotRequest, loadCompleted: LocalDateTime): String =
+  def documentation(request: AikajaksoRaporttiAikarajauksellaRequest, loadCompleted: LocalDateTime): String =
     s"""
        |Suoritustiedot (Ammatillisen tutkinnon osa/osia)
        |Oppilaitos: ${request.oppilaitosOid}
@@ -116,7 +117,7 @@ object AmmatillinenOsittainenRaportti {
        |- Valinnaisten ammatillisten tutkinnon osien yhteislaajuus: KOSKI-palveluun siirrettyjen valinnaisten ammatillisten tutkinnon osien  yhteislaajuus. Lasketaan koulutuksen järjestäjän tutkinnon osille siirtämistä laajuuksista.
      """.stripMargin.trim.stripPrefix("\n").stripSuffix("\n")
 
-  def filename(request: AmmatillinenSuoritusTiedotRequest): String = {
+  def filename(request: AikajaksoRaporttiAikarajauksellaRequest): String = {
     s"Ammatillinen_tutkinnon_osa_ja_osia_${request.oppilaitosOid}_${request.alku.toString.replaceAll("-","")}-${request.loppu.toString.replaceAll("-","")}.xlsx"
   }
 

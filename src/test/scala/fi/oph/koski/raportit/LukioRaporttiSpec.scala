@@ -187,7 +187,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
 
     "Opiskeluoikeus aikajaksojen siivous" - {
       "Jatkuva sama tila näytetään yhtenä tilana" in {
-        lukioRaportti.removeContinuousSameTila(Seq(
+        YleissivistäväUtils.removeContinuousSameTila(Seq(
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-01"), Date.valueOf("2016-02-02"), "lasna", Date.valueOf("2016-01-01")),
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-02-01"), Date.valueOf("2016-02-02"), "loma", Date.valueOf("2016-02-01")),
           ROpiskeluoikeusAikajaksoRow(oid, Date.valueOf("2016-01-01"), Date.valueOf("2016-02-02"), "lasna", Date.valueOf("2016-01-01")),
@@ -201,22 +201,22 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
 
     "Päivien lukumäärän laskenta jaksosta" - {
       "Alkaa ja päättyy ennen hakuväliä" in {
-        lukioRaportti.lengthInDaysInDateRange(Aikajakso(date(2012, 1, 1), Some(date(2014, 1, 1))), date(2014, 1, 2), date(2018, 1, 1)) shouldEqual (0)
+        YleissivistäväUtils.lengthInDaysInDateRange(Aikajakso(date(2012, 1, 1), Some(date(2014, 1, 1))), date(2014, 1, 2), date(2018, 1, 1)) shouldEqual (0)
       }
       "Alkaa hakuvälin jälkeen" in {
-        lukioRaportti.lengthInDaysInDateRange(Aikajakso(date(2018, 1, 2), Some(date(2020, 1, 1))), date(2010, 1, 2), date(2018, 1, 1)) shouldEqual (0)
+        YleissivistäväUtils.lengthInDaysInDateRange(Aikajakso(date(2018, 1, 2), Some(date(2020, 1, 1))), date(2010, 1, 2), date(2018, 1, 1)) shouldEqual (0)
       }
       "Alkanut ennen hakuväliä ja jatkuu hakuvälin yli" in {
-        lukioRaportti.lengthInDaysInDateRange(Aikajakso(date(2012, 1, 1), Some(date(2016, 1, 1))), date(2013, 1, 1), date(2015, 1, 1)) shouldEqual (731)
+        YleissivistäväUtils.lengthInDaysInDateRange(Aikajakso(date(2012, 1, 1), Some(date(2016, 1, 1))), date(2013, 1, 1), date(2015, 1, 1)) shouldEqual (731)
       }
       "Alkanut ennen hakuväliä ja jaksolle ei ole merkattu päättymistä" in {
-        lukioRaportti.lengthInDaysInDateRange(Aikajakso(date(2012, 1, 2), None), date(2013, 1, 1), date(2014, 1, 1)) shouldEqual (366)
+        YleissivistäväUtils.lengthInDaysInDateRange(Aikajakso(date(2012, 1, 2), None), date(2013, 1, 1), date(2014, 1, 1)) shouldEqual (366)
       }
       "Alkanut ennen hakuväliä ja päättyy hakuvälillä" in {
-        lukioRaportti.lengthInDaysInDateRange(Aikajakso(date(2012, 1, 1), Some(date(2014, 1, 1))), date(2013, 1, 1), date(2018, 1, 1)) shouldEqual (366)
+        YleissivistäväUtils.lengthInDaysInDateRange(Aikajakso(date(2012, 1, 1), Some(date(2014, 1, 1))), date(2013, 1, 1), date(2018, 1, 1)) shouldEqual (366)
       }
       "Alkanut hakuvälillä ja päättyy hakuvälillä" in {
-        lukioRaportti.lengthInDaysInDateRange(Aikajakso(date(2011, 1, 1), Some(date(2012, 1, 1))), date(2010, 6, 6), date(2013, 1, 1)) shouldEqual (366)
+        YleissivistäväUtils.lengthInDaysInDateRange(Aikajakso(date(2011, 1, 1), Some(date(2012, 1, 1))), date(2010, 6, 6), date(2013, 1, 1)) shouldEqual (366)
       }
     }
   }

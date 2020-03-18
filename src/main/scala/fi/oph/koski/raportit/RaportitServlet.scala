@@ -43,13 +43,13 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
   }
 
   get("/ammatillinentutkintosuoritustietojentarkistus") {
-    val parsedRequest = parseAmmatillinenSuoritusTiedotRequest
+    val parsedRequest = parseAikajaksoRaporttiAikarajauksellaRequest
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=ammatillinentutkintosuoritustietojentarkistus&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
     writeExcel(raportitService.ammatillinenTutkintoSuoritustietojenTarkistus(parsedRequest))
   }
 
   get("/ammatillinenosittainensuoritustietojentarkistus") {
-    val parsedRequest = parseAmmatillinenSuoritusTiedotRequest
+    val parsedRequest = parseAikajaksoRaporttiAikarajauksellaRequest
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=ammatillinenosittainensuoritustietojentarkistus&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
     writeExcel(raportitService.ammatillinenOsittainenSuoritustietojenTarkistus(parsedRequest))
   }
@@ -64,6 +64,12 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
     val parsedRequest = parseAikajaksoRaporttiRequest
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=lukionsuoritustietojentarkistus&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
     writeExcel(raportitService.lukioraportti(parsedRequest))
+  }
+
+  get("/aikuisten-perusopetus-suoritustietojen-tarkistus") {
+    val parsedRequest = parseAikuistenPerusopetusRaporttiRequest
+    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=aikuistenperusopetuksensuoritustietojentarkistus&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
+    writeExcel(raportitService.aikuistenPerusopetus(parsedRequest))
   }
 
   get("/muuammatillinen") {
@@ -113,14 +119,31 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
     AikajaksoRaporttiRequest(oppilaitosOid, downloadToken, password, alku, loppu)
   }
 
-  private def parseAmmatillinenSuoritusTiedotRequest: AmmatillinenSuoritusTiedotRequest = {
+  private def parseAikajaksoRaporttiAikarajauksellaRequest: AikajaksoRaporttiAikarajauksellaRequest = {
     val oppilaitosOid = getOppilaitosOid
     val (alku, loppu) = getAlkuLoppuParams
     val password = getStringParam("password")
     val downloadToken = params.get("downloadToken")
     val osasuoritustenAikarajaus = getBooleanParam("osasuoritustenAikarajaus")
 
-    AmmatillinenSuoritusTiedotRequest(oppilaitosOid, downloadToken, password, alku, loppu, osasuoritustenAikarajaus)
+    AikajaksoRaporttiAikarajauksellaRequest(oppilaitosOid, downloadToken, password, alku, loppu, osasuoritustenAikarajaus)
+  }
+
+  private def parseAikuistenPerusopetusRaporttiRequest: AikuistenPerusopetusRaporttiRequest = {
+    val (alku, loppu) = getAlkuLoppuParams
+    val raportinTyyppi = AikuistenPerusopetusRaportti.makeRaporttiType(params.get("raportinTyyppi").getOrElse("")) match {
+      case Right(raportinTyyppi) => raportinTyyppi
+      case Left(error) => haltWithStatus(KoskiErrorCategory.badRequest.queryParam(s"Epäkelpo raportinTyyppi: ${error}"))
+    }
+    AikuistenPerusopetusRaporttiRequest(
+      oppilaitosOid = getOppilaitosOid,
+      downloadToken = params.get("downloadToken"),
+      password = getStringParam("password"),
+      alku = alku,
+      loppu = loppu,
+      osasuoritustenAikarajaus = getBooleanParam("osasuoritustenAikarajaus"),
+      raportinTyyppi = raportinTyyppi
+    )
   }
 
   private def parseVuosiluokkaRequest: PerusopetuksenVuosiluokkaRequest = {
@@ -131,15 +154,6 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
      paiva = getLocalDateParam("paiva"),
      vuosiluokka = getStringParam("vuosiluokka")
    )
-  }
-
-  private def parseRaporttiPäivältäRequest: RaporttiPäivältäRequest = {
-    RaporttiPäivältäRequest(
-      oppilaitosOid = getOppilaitosOid,
-      downloadToken = params.get("downloadToken"),
-      password = getStringParam("password"),
-      paiva = getLocalDateParam("paiva")
-    )
   }
 
   private def getOppilaitosOid: Organisaatio.Oid = {

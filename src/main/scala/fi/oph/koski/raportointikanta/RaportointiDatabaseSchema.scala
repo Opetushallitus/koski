@@ -5,7 +5,7 @@ import java.time.temporal.ChronoUnit
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.raportit.LukioRaporttiOppiaineTaiKurssi
+import fi.oph.koski.raportit.YleissivistäväRaporttiOppiaineTaiKurssi
 import fi.oph.koski.schema.LocalizedString
 import org.json4s.JValue
 import slick.dbio.DBIO
@@ -401,7 +401,7 @@ case class EsiopetusOpiskeluoikeusAikajaksoRow(
 
 sealed trait RSuoritusRow {
   def arviointiArvosanaKoodiarvo: Option[String]
-  def matchesWith(x: LukioRaporttiOppiaineTaiKurssi): Boolean
+  def matchesWith(x: YleissivistäväRaporttiOppiaineTaiKurssi): Boolean
 }
 
 case class RPäätasonSuoritusRow(
@@ -423,7 +423,7 @@ case class RPäätasonSuoritusRow(
   toimipisteNimi: String,
   data: JValue
 ) extends RSuoritusRow {
-  override def matchesWith(x: LukioRaporttiOppiaineTaiKurssi): Boolean = {
+  override def matchesWith(x: YleissivistäväRaporttiOppiaineTaiKurssi): Boolean = {
     val isPaikallinen = !koulutusmoduuliKoodisto.contains("koskioppiaineetyleissivistava")
 
     suorituksestaKäytettäväNimi.contains(x.nimi) &&
@@ -462,7 +462,7 @@ case class ROsasuoritusRow(
   näytönArviointiPäivä: Option[Date] = None,
   data: JValue
 ) extends RSuoritusRow {
-  override def matchesWith(x: LukioRaporttiOppiaineTaiKurssi): Boolean = {
+  override def matchesWith(x: YleissivistäväRaporttiOppiaineTaiKurssi): Boolean = {
     suorituksestaKäytettäväNimi.contains(x.nimi) &&
       koulutusmoduuliKoodiarvo == x.koulutusmoduuliKoodiarvo &&
       koulutusmoduuliPaikallinen == x.koulutusmoduuliPaikallinen

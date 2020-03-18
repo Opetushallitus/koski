@@ -52,7 +52,7 @@ case class AikajaksoRaporttiRequest
   password: String,
   alku: LocalDate,
   loppu: LocalDate
-) extends RaporttiRequest
+) extends RaporttiAikajaksoltaRequest
 
 case class PerusopetuksenVuosiluokkaRequest
 (
@@ -70,7 +70,7 @@ case class OppilaitosRaporttiResponse(
   downloadToken: Option[String]
 )
 
-case class AmmatillinenSuoritusTiedotRequest(
+case class AikajaksoRaporttiAikarajauksellaRequest(
   oppilaitosOid: Organisaatio.Oid,
   downloadToken: Option[String],
   password: String,
@@ -79,6 +79,15 @@ case class AmmatillinenSuoritusTiedotRequest(
   osasuoritustenAikarajaus: Boolean
 ) extends RaporttiAikajaksoltaRequest
 
+case class AikuistenPerusopetusRaporttiRequest(
+  oppilaitosOid: Organisaatio.Oid,
+  downloadToken: Option[String],
+  password: String,
+  alku: LocalDate,
+  loppu: LocalDate,
+  osasuoritustenAikarajaus: Boolean,
+  raportinTyyppi: AikuistenPerusopetusRaporttiType
+) extends RaporttiAikajaksoltaRequest
 
 case class RaporttiPäivältäRequest(
   oppilaitosOid: Organisaatio.Oid,
@@ -99,3 +108,4 @@ case object LukionSuoritustietojenTarkistus extends RaportinTyyppi
 case object MuuAmmatillinenKoulutus extends RaportinTyyppi
 case object TOPKSAmmatillinen extends RaportinTyyppi
 case object EsiopetuksenRaportti extends RaportinTyyppi
+case object AikuistenPerusopetusSuoritustietojenTarkistus extends RaportinTyyppi

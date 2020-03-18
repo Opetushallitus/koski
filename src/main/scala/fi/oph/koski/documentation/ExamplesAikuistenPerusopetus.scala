@@ -29,6 +29,17 @@ object ExamplesAikuistenPerusopetus {
     List(matematiikanAineOpiskelijaKesken)
   )
 
+  lazy val oppiaineenOppimääränSuoritusAI1 =
+    oppiaineenOppimääränSuoritus(äidinkieli("AI1", diaarinumero = Some("19/011/2015"))).copy(
+      osasuoritukset = Some(List(kurssinSuoritus2015("ÄI1")))
+    )
+
+  lazy val oppiaineenOppimääränSuoritusYH =
+    oppiaineenOppimääränSuoritus(aikuistenOppiaine("YH").copy(perusteenDiaarinumero = Some("19/011/2015"))).copy(
+      arviointi = arviointi(10),
+      osasuoritukset = Some(List(kurssinSuoritus2015("YH1")))
+    )
+
   lazy val oppiaineenOppimääräOpiskeluoikeus: AikuistenPerusopetuksenOpiskeluoikeus = {
     AikuistenPerusopetuksenOpiskeluoikeus(
       oppilaitos = Some(jyväskylänNormaalikoulu),

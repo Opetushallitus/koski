@@ -93,4 +93,4 @@ case class LukioRaporttiRows(
   aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow],
   päätasonSuoritus: RPäätasonSuoritusRow,
   osasuoritukset: Seq[ROsasuoritusRow]
-)
+) extends YleissivistäväRaporttiRows

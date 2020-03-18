@@ -7,8 +7,9 @@ import Atom from 'bacon.atom'
 import Http from '../util/http'
 import {AikajaksoRaportti} from './AikajaksoRaportti'
 import {VuosiluokkaRaporttiPaivalta} from './VuosiluokkaRaporttiPaivalta'
-import {AmmatillinenSuoritusTiedotRaportti} from './AmmatillinenSuoritusTiedotRaportti'
+import {AikajaksoRaporttiAikarajauksella} from './AikajaksoRaporttiAikarajauksella'
 import {RaporttiPaivalta} from './RaporttiPaivalta'
+import {AikuistenPerusopetuksenRaportit} from './AikuistenPerusopetuksenRaportit'
 
 export const raportitContentP = () => {
   const organisaatioAtom = Atom()
@@ -33,6 +34,7 @@ export const raportitContentP = () => {
             {raportit && raportit.includes('topksammatillinen') && <TOPKSAmmatillinenRaportti organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('perusopetuksenvuosiluokka') && <PerusopetuksenVuosiluokka organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('lukionsuoritustietojentarkistus') && <Lukioraportti organisaatioAtom={organisaatioAtom} />}
+            {raportit && raportit.includes('aikuistenperusopetussuoritustietojentarkistus') && <AikuistenPerusopetusRaportti organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('esiopetuksenraportti') && <EsiopetusRaportti organisaatioAtom={organisaatioAtom}/>}
           </div>
         ))}
@@ -77,7 +79,7 @@ const SuoritustietojenTarkistus = ({organisaatioAtom}) => {
   const titleText = <Text name='Suoritustiedot (ammatillinen koulutus, koko tutkinto)'/>
   const descriptionText = <Text name='SuoritustietojenTarkistus-description'/>
 
-  return (<AmmatillinenSuoritusTiedotRaportti
+  return (<AikajaksoRaporttiAikarajauksella
     organisaatioAtom={organisaatioAtom}
     apiEndpoint={'/ammatillinentutkintosuoritustietojentarkistus'}
     title={titleText}
@@ -89,7 +91,7 @@ const AmmatillinenOsittainenSuoritustietojenTarkistus = ({organisaatioAtom}) => 
   const titleText = <Text name='Suoritustiedot (ammatillinen koulutus, tutkinnon osa/osia)'/>
   const descriptionText = <Text name='AmmatillinenOsittainenSuoritustietojenTarkistus-description'/>
 
-  return (<AmmatillinenSuoritusTiedotRaportti
+  return (<AikajaksoRaporttiAikarajauksella
     organisaatioAtom={organisaatioAtom}
     apiEndpoint={'/ammatillinenosittainensuoritustietojentarkistus'}
     title={titleText}
@@ -158,5 +160,17 @@ const EsiopetusRaportti = ({organisaatioAtom}) => {
     title={titleText}
     description={descriptionText}
     example={exampleText}
+  />)
+}
+
+const AikuistenPerusopetusRaportti = ({organisaatioAtom}) => {
+  const titleText = <Text name='aikuisten-perusopetus-raportti-title'/>
+  const descriptionText = <Text name='aikuisten-perusopetus-raportti-description'/>
+
+  return (<AikuistenPerusopetuksenRaportit
+    organisaatioAtom={organisaatioAtom}
+    apiEndpoint={'/aikuisten-perusopetus-suoritustietojen-tarkistus'}
+    title={titleText}
+    description={descriptionText}
   />)
 }

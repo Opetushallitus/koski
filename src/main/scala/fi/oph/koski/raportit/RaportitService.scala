@@ -10,6 +10,7 @@ class RaportitService(application: KoskiApplication) {
   private val accessResolver = RaportitAccessResolver(application)
   private val lukioRepository = LukioRaportitRepository(raportointiDatabase.db)
   private val ammatillisenRaportitRepository = AmmatillisenRaportitRepository(raportointiDatabase.db)
+  private val aikuistenPerusopetusRepository = AikuistenPerusopetusRaporttiRepository(raportointiDatabase.db)
   private val muuammatillinenRaportti = MuuAmmatillinenRaporttiBuilder(raportointiDatabase.db)
   private val topksAmmatillinenRaportti = TOPKSAmmatillinenRaporttiBuilder(raportointiDatabase.db)
 
@@ -17,7 +18,7 @@ class RaportitService(application: KoskiApplication) {
     aikajaksoRaportti(request, AmmatillinenOpiskalijavuositiedotRaportti)
   }
 
-  def ammatillinenTutkintoSuoritustietojenTarkistus(request: AmmatillinenSuoritusTiedotRequest): OppilaitosRaporttiResponse = {
+  def ammatillinenTutkintoSuoritustietojenTarkistus(request: AikajaksoRaporttiAikarajauksellaRequest): OppilaitosRaporttiResponse = {
     OppilaitosRaporttiResponse(
       sheets = Seq(
         DataSheet("Opiskeluoikeudet", AmmatillinenTutkintoRaportti.buildRaportti(request, ammatillisenRaportitRepository), AmmatillinenTutkintoRaportti.columnSettings),
@@ -29,7 +30,7 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
-  def ammatillinenOsittainenSuoritustietojenTarkistus(request: AmmatillinenSuoritusTiedotRequest): OppilaitosRaporttiResponse = {
+  def ammatillinenOsittainenSuoritustietojenTarkistus(request: AikajaksoRaporttiAikarajauksellaRequest): OppilaitosRaporttiResponse = {
     OppilaitosRaporttiResponse(
       sheets = Seq(
         DataSheet("Opiskeluoikeudet", AmmatillinenOsittainenRaportti.buildRaportti(request, ammatillisenRaportitRepository), AmmatillinenOsittainenRaportti.columnSettings),
@@ -50,6 +51,23 @@ class RaportitService(application: KoskiApplication) {
       sheets = LukioRaportti(lukioRepository).buildRaportti(request.oppilaitosOid, request.alku, request.loppu),
       workbookSettings = WorkbookSettings(s"Suoritustietojen_tarkistus_${request.oppilaitosOid}", Some(request.password)),
       filename = s"lukio_suoritustietojentarkistus_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
+      downloadToken = request.downloadToken
+    )
+  }
+
+  def aikuistenPerusopetus(request: AikuistenPerusopetusRaporttiRequest) = {
+    OppilaitosRaporttiResponse(
+      sheets = AikuistenPerusopetusRaportti(
+        aikuistenPerusopetusRepository,
+        request.raportinTyyppi
+      ).build(
+        request.oppilaitosOid,
+        request.alku,
+        request.loppu,
+        request.osasuoritustenAikarajaus
+      ),
+      workbookSettings = WorkbookSettings(s"Suoritustietojen_tarkistus_${request.oppilaitosOid}", Some(request.password)),
+      filename = s"aikuisten_perusopetus_suoritustietojen_tarkistus_${request.raportinTyyppi.typeName}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
       downloadToken = request.downloadToken
     )
   }

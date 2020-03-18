@@ -47,6 +47,7 @@ case class RaportitAccessResolver(organisaatioRepository: OrganisaatioRepository
     case "perusopetus" => Seq(PerusopetuksenVuosiluokka)
     case "lukiokoulutus" if !isKoulutustoimija => Seq(LukionSuoritustietojenTarkistus)
     case "esiopetus" => Seq(EsiopetuksenRaportti)
+    case "aikuistenperusopetus" if !isKoulutustoimija => Seq(AikuistenPerusopetusSuoritustietojenTarkistus)
     case _ => Seq.empty[RaportinTyyppi]
   }
 

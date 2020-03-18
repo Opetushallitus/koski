@@ -9,7 +9,7 @@ import {generateRandomPassword} from '../util/password'
 import {downloadExcel} from './downloadExcel'
 import RaporttiDownloadButton from './RaporttiDownloadButton'
 
-export const AmmatillinenSuoritusTiedotRaportti = ({organisaatioAtom, apiEndpoint, title, description}) => {
+export const AikajaksoRaporttiAikarajauksella = ({organisaatioAtom, apiEndpoint, title, description}) => {
   const alkuAtom = Atom()
   const loppuAtom = Atom()
   const osasuoritustenAikarajausAtom = Atom(false)
@@ -18,7 +18,15 @@ export const AmmatillinenSuoritusTiedotRaportti = ({organisaatioAtom, apiEndpoin
   const password = generateRandomPassword()
 
   const downloadExcelP = Bacon.combineWith(
-    organisaatioAtom, alkuAtom, loppuAtom, osasuoritustenAikarajausAtom, (o, a, l, r) => o && a && l && (l.valueOf() >= a.valueOf()) && {oppilaitosOid: o.oid, alku: formatISODate(a), loppu: formatISODate(l), osasuoritustenAikarajaus: r, password, baseUrl: `/koski/api/raportit${apiEndpoint}`})
+    organisaatioAtom, alkuAtom, loppuAtom, osasuoritustenAikarajausAtom,
+    (o, a, l, r) => o && a && l && (l.valueOf() >= a.valueOf()) && {
+      oppilaitosOid: o.oid,
+      alku: formatISODate(a),
+      loppu: formatISODate(l),
+      osasuoritustenAikarajaus: r,
+      password,
+      baseUrl: `/koski/api/raportit${apiEndpoint}`
+    })
 
   const downloadExcelE = submitBus.map(downloadExcelP).flatMapLatest(downloadExcel)
 
@@ -41,14 +49,14 @@ export const AmmatillinenSuoritusTiedotRaportti = ({organisaatioAtom, apiEndpoin
       </div>
       {osasuoritustenAikarajausAtom.map(v => (
         <React.Fragment>
-          <div className='radio-option-container'>
+          <label className='radio-option-container'>
             <input className='radio-option' type='radio' checked={!v} onChange={() => osasuoritustenAikarajausAtom.set(false)}/>
             <Text name='Raportille valitaan kaikki tutkinnon osat riippumatta niiden suoritusajankohdasta' />
-          </div>
-          <div className='radio-option-container'>
+          </label>
+          <label className='radio-option-container'>
             <input className='radio-option' type='radio' checked={v} onChange={() => osasuoritustenAikarajausAtom.set(true)}/>
             <Text name='Raportille valitaan vain sellaiset tutkinnon osat, joiden arviointipäivä osuu yllä määritellylle aikajaksolle' />
-          </div>
+          </label>
         </React.Fragment>
       ))}
       <div className='password'><Text name='Excel-tiedosto on suojattu salasanalla'/> {password}</div>
