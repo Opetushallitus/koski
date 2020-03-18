@@ -251,6 +251,145 @@ class AikuistenPerusopetusRaporttiSpec
     }
   }
 
+  "Aikuisten perusopetuksen päättövaiheen suoritustietoraportti" - {
+    "Raportti näyttää oikealta" - {
+      lazy val sheets = buildReport(
+        jyväskylänNormaalikoulu,
+        date(2012, 1, 1),
+        date(2016, 1, 1),
+        AikuistenPerusopetusPäättövaiheRaportti()
+      )
+      lazy val titleAndRowsWithColumns = sheets.map(s => (s.title, zipRowsWithColumTitles(s)))
+
+      "Sarakkeidein järjestys oppiaine tason välilehdellä" in {
+        sheets.head.columnSettings.map(_.title) should equal(Seq(
+          "Opiskeluoikeuden oid",
+          "Lähdejärjestelmä",
+          "Koulutustoimija",
+          "Oppilaitoksen nimi",
+          "Toimipiste",
+          "Opiskeluoikeuden tunniste lähdejärjestelmässä",
+          "Päivitetty",
+          "Yksilöity",
+          "Oppijan oid",
+          "Hetu",
+          "Sukunimi",
+          "Etunimet",
+          "Opiskeluoikeuden alkamispäivä",
+          "Opiskeluoikeuden viimeisin tila",
+          "Opiskeluoikeuden tilat aikajakson aikana",
+          "Suorituksen tyyppi",
+          "Opiskeluoikeudella alkuvaiheen suoritus",
+          "Tutkintokoodi/koulutusmoduulin koodi",
+          "Suorituksen nimi",
+          "Suorituksen tila",
+          "Suorituksen vahvistuspäivä",
+          "Läsnäolopäiviä aikajakson aikana",
+          "Rahoitukset",
+          "Ryhmä",
+          "Ulkomaanjaksot",
+          "Majoitusetu",
+          "Sisäoppilaitosmainen majoitus",
+          "Yhteislaajuus",
+          "AI Suomen kieli ja kirjallisuus valtakunnallinen",
+          "A1 Englanti valtakunnallinen",
+          "B1 Ruotsi valtakunnallinen",
+          "B2 Saksa valtakunnallinen",
+          "MA Matematiikka valtakunnallinen",
+          "BI Biologia valtakunnallinen",
+          "GE Maantieto valtakunnallinen",
+          "FY Fysiikka valtakunnallinen",
+          "KE Kemia valtakunnallinen",
+          "HI Historia valtakunnallinen",
+          "YH Yhteiskuntaoppi valtakunnallinen",
+          "KT Ortodoksinen uskonto valtakunnallinen",
+          "TE Terveystieto valtakunnallinen",
+          "LI Liikunta valtakunnallinen",
+          "MU Musiikki valtakunnallinen",
+          "KU Kuvataide valtakunnallinen",
+          "KO Kotitalous valtakunnallinen",
+          "KS Käsityö valtakunnallinen",
+          "TH Tietokoneen hyötykäyttö paikallinen"
+        ))
+      }
+
+      "Sarakkeiden järjestys oppiaineen kursseja käsittelevällä välilehdellä" in {
+        val yh = sheets.find(_.title == "YH v Yhteiskuntaoppi")
+        yh shouldBe defined
+        yh.get.columnSettings.map(_.title) should equal(Seq(
+          "Oppijan oid",
+          "Hetu",
+          "Sukunimi",
+          "Etunimet",
+          "Toimipiste",
+          "Suorituksen tyyppi"
+        ))
+      }
+
+      "Oppiaine tason välilehti" - {
+        lazy val (title, oppiaineetRowsWithColumns) = titleAndRowsWithColumns.head
+
+        "On ensimmäinen" in {
+          title should equal("Oppiaineet ja lisätiedot")
+        }
+
+        "Oppimäärän suoritus" in {
+          lazy val expectedaikuisOpiskelijaRow = Map(
+            "Opiskeluoikeuden oid" -> "",
+            "Oppilaitoksen nimi" -> "Jyväskylän normaalikoulu",
+            "Lähdejärjestelmä" -> None,
+            "Opiskeluoikeuden tunniste lähdejärjestelmässä" -> None,
+            "Päivitetty" -> today,
+            "Koulutustoimija" -> "Jyväskylän yliopisto",
+            "Toimipiste" -> "Jyväskylän normaalikoulu",
+            "Yksilöity" -> true,
+            "Oppijan oid" -> aikuisOpiskelija.oid,
+            "Opiskeluoikeuden alkamispäivä" -> Some(date(2008, 8, 15)),
+            "Opiskeluoikeuden viimeisin tila" -> Some("valmistunut"),
+            "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna",
+            "Suorituksen tyyppi" -> "aikuistenperusopetuksenoppimaara",
+            "Opiskeluoikeudella alkuvaiheen suoritus" -> true,
+            "Tutkintokoodi/koulutusmoduulin koodi" -> "201101",
+            "Suorituksen nimi" -> Some("Perusopetus"),
+            "Suorituksen tila" -> "valmis",
+            "Suorituksen vahvistuspäivä" -> Some(date(2016, 6, 4)),
+            "Läsnäolopäiviä aikajakson aikana" -> 1462,
+            "Rahoitukset" -> "1",
+            "Ryhmä" -> None,
+            "Ulkomaanjaksot" -> None,
+            "Majoitusetu" -> None,
+            "Sisäoppilaitosmainen majoitus" -> None,
+            "Hetu" -> aikuisOpiskelija.hetu,
+            "Sukunimi" -> aikuisOpiskelija.sukunimi,
+            "Etunimet" -> aikuisOpiskelija.etunimet,
+            "Yhteislaajuus" -> 4.0,
+            "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 4 kurssia",
+            "A1 Englanti valtakunnallinen" -> "Arvosana 8, 0 kurssia",
+            "B1 Ruotsi valtakunnallinen" -> "Arvosana 8, 0 kurssia,Arvosana S, 0 kurssia",
+            "B2 Saksa valtakunnallinen" -> "Arvosana 9, 0 kurssia",
+            "MA Matematiikka valtakunnallinen" -> "Arvosana 9, 0 kurssia",
+            "BI Biologia valtakunnallinen" -> "Arvosana 9, 0 kurssia",
+            "GE Maantieto valtakunnallinen" -> "Arvosana 9, 0 kurssia",
+            "FY Fysiikka valtakunnallinen" -> "Arvosana 9, 0 kurssia",
+            "KE Kemia valtakunnallinen" -> "Arvosana 7, 0 kurssia",
+            "HI Historia valtakunnallinen" -> "Arvosana 8, 0 kurssia",
+            "YH Yhteiskuntaoppi valtakunnallinen" -> "Arvosana 10, 0 kurssia",
+            "KT Ortodoksinen uskonto valtakunnallinen" -> "Arvosana 10, 0 kurssia",
+            "TE Terveystieto valtakunnallinen" -> "Arvosana 8, 0 kurssia",
+            "LI Liikunta valtakunnallinen" -> "Arvosana 9, 0 kurssia,Arvosana S, 0 kurssia",
+            "MU Musiikki valtakunnallinen" -> "Arvosana 7, 0 kurssia",
+            "KU Kuvataide valtakunnallinen" -> "Arvosana 8, 0 kurssia",
+            "KO Kotitalous valtakunnallinen" -> "Arvosana 8, 0 kurssia,Arvosana S, 0 kurssia",
+            "KS Käsityö valtakunnallinen" -> "Arvosana 9, 0 kurssia",
+            "TH Tietokoneen hyötykäyttö paikallinen" -> "Arvosana 9, 0 kurssia"
+          )
+
+          verifyOppijanRow(aikuisOpiskelija, expectedaikuisOpiskelijaRow, oppiaineetRowsWithColumns)
+        }
+      }
+    }
+  }
+
   "Aikuisten perusopetuksen oppiaineen oppimäärän suoritustietoraportti" - {
     "Raportti näyttää oikealta" - {
       lazy val sheets = buildReport(
