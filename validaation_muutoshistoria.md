@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 18.3.2020
+ - Ammatillisen osaamisen hankkimistapa ilman lisätietoja ei voi olla "oppisopimus" (Tor-868)
+
 ## 17.2.2020
 - Nuorten perusopetuksen valinnaiseen valtakunnalliseen aineeseen sallitaan vain arvosanat S ja O, jos laajuus on alle kaksi vuosiviikkotuntia
 
