@@ -67,6 +67,7 @@ class AikuistenPerusopetusRaporttiSpec
         AikuistenPerusopetusAlkuvaiheRaportti()
       )
       lazy val titleAndRowsWithColumns = sheets.map(s => (s.title, zipRowsWithColumTitles(s)))
+
       "Oppiaineita tai kursseja ei päädy duplikaattina raportille" in {
         verifyNoDuplicates(sheets.map(_.title))
         sheets.map(_.columnSettings.map(_.title)).foreach(verifyNoDuplicates)
@@ -90,7 +91,6 @@ class AikuistenPerusopetusRaporttiSpec
           "Opiskeluoikeuden viimeisin tila",
           "Opiskeluoikeuden tilat aikajakson aikana",
           "Suorituksen tyyppi",
-          "Opiskeluoikeudella alkuvaiheen suoritus",
           "Opiskeluoikeudella päättövaiheen suoritus",
           "Tutkintokoodi/koulutusmoduulin koodi",
           "Suorituksen nimi",
@@ -152,7 +152,6 @@ class AikuistenPerusopetusRaporttiSpec
             "Opiskeluoikeuden viimeisin tila" -> Some("valmistunut"),
             "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna",
             "Suorituksen tyyppi" -> "aikuistenperusopetuksenoppimaaranalkuvaihe",
-            "Opiskeluoikeudella alkuvaiheen suoritus" -> true,
             "Opiskeluoikeudella päättövaiheen suoritus" -> true,
             "Tutkintokoodi/koulutusmoduulin koodi" -> "aikuistenperusopetuksenoppimaaranalkuvaihe",
             "Suorituksen nimi" -> Some("Aikuisten perusopetuksen oppimäärän alkuvaihe"),

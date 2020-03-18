@@ -78,6 +78,7 @@ case class AikuistenPerusopetusRaportti(
   repository: AikuistenPerusopetusRaporttiRepository,
   raporttiType: AikuistenPerusopetusRaporttiType
 ) extends GlobalExecutionContext {
+
   def build(
     oppilaitosOid: Organisaatio.Oid,
     alku: LocalDate,
@@ -95,12 +96,40 @@ case class AikuistenPerusopetusRaportti(
     Futures.await(future, atMost = 6.minutes)
   }
 
+  private def dropDataColumnByTitle(
+    rows: Seq[Seq[Any]], columnSettings: Seq[Column], columnTitle: String
+  ): (Seq[Seq[Any]], Seq[Column]) = {
+    val columnIndex = columnSettings.indexWhere(_.title == columnTitle)
+    if (columnIndex < 0) {
+      throw new RuntimeException(s"Column '${columnTitle}' not found in report data")
+    }
+    (
+      rows.map(_.patch(columnIndex, Nil, 1)),
+      columnSettings.patch(columnIndex, Nil, 1)
+    )
+  }
+
+  private def removeUnwantedColumns(rows: Seq[Seq[Any]], columnSettings: Seq[Column]): (Seq[Seq[Any]], Seq[Column]) = {
+    raporttiType match {
+      case AikuistenPerusopetusAlkuvaiheRaportti() =>
+        dropDataColumnByTitle(rows, columnSettings, "Opiskeluoikeudella alkuvaiheen suoritus")
+      case AikuistenPerusopetusPäättövaiheRaportti() =>
+        dropDataColumnByTitle(rows, columnSettings, "Opiskeluoikeudella päättövaiheen suoritus")
+      case AikuistenPerusopetusOppiaineenOppimääräRaportti() => (rows, columnSettings)
+    }
+  }
+
   private def oppiaineJaLisätiedotSheet(opiskeluoikeusData: Seq[AikuistenPerusopetusRaporttiRows], oppiaineetJaKurssit: Seq[YleissivistäväRaporttiOppiaineJaKurssit], alku: LocalDate, loppu: LocalDate) = {
     Future {
+      val (rows, columnSettings) = removeUnwantedColumns(
+        opiskeluoikeusData.map(kaikkiOppiaineetVälilehtiRow(_, oppiaineetJaKurssit, alku, loppu)),
+        oppiaineJaLisätiedotColumnSettings(oppiaineetJaKurssit)
+      )
+
       DynamicDataSheet(
         title = "Oppiaineet ja lisätiedot",
-        rows = opiskeluoikeusData.map(kaikkiOppiaineetVälilehtiRow(_, oppiaineetJaKurssit, alku, loppu)).map(_.toSeq),
-        columnSettings = oppiaineJaLisätiedotColumnSettings(oppiaineetJaKurssit)
+        columnSettings = columnSettings,
+        rows = rows
       )
     }
   }
@@ -130,8 +159,7 @@ case class AikuistenPerusopetusRaportti(
   private def kaikkiOppiaineetVälilehtiRow(row: AikuistenPerusopetusRaporttiRows, oppiaineet: Seq[YleissivistäväRaporttiOppiaineJaKurssit], alku: LocalDate, loppu: LocalDate) = {
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](row.opiskeluoikeus.data \ "lähdejärjestelmänId")
     val lisätiedot = JsonSerializer.extract[Option[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot]](row.opiskeluoikeus.data \ "lisätiedot")
-
-    AikuistenPerusopetusRaporttiKaikkiOppiaineetVälilehtiRow(
+    val data = AikuistenPerusopetusRaporttiKaikkiOppiaineetVälilehtiRow(
       muut = AikuistenPerusopetusRaporttiOppiaineetVälilehtiMuut(
         opiskeluoikeudenOid = row.opiskeluoikeus.opiskeluoikeusOid,
         lähdejärjestelmä = lähdejärjestelmänId.map(_.lähdejärjestelmä.koodiarvo),
@@ -149,8 +177,8 @@ case class AikuistenPerusopetusRaportti(
         opiskeluoikeuden_viimeisin_tila = row.opiskeluoikeus.viimeisinTila,
         opiskeluoikeuden_tilat_aikajakson_aikana = removeContinuousSameTila(row.aikajaksot).map(_.tila).mkString(", "),
         suorituksenTyyppi = row.päätasonSuoritus.suorituksenTyyppi,
-        opiskelijallaAlkuvaihe = row.hasAlkuvaihe,
-        opiskelijallaPäättövaihe = row.hasPäättövaihe,
+        alkuvaiheenSuorituksia = row.hasAlkuvaihe,
+        päättövaiheenSuorituksia = row.hasPäättövaihe,
         tutkintokoodi = row.päätasonSuoritus.koulutusmoduuliKoodiarvo,
         suorituksenNimi = row.päätasonSuoritus.koulutusmoduuliNimi,
         suorituksenTila = row.päätasonSuoritus.vahvistusPäivä.fold("kesken")(_ => "valmis"),
@@ -165,6 +193,7 @@ case class AikuistenPerusopetusRaportti(
       ),
       oppiaineet = oppiaineidentiedot(row.päätasonSuoritus, row.osasuoritukset, oppiaineet, raporttiType.isOppiaineenOppimäärä)
     )
+    data.toSeq
   }
 
   private def oppiainekohtaisetKurssitiedot(row: AikuistenPerusopetusRaporttiRows, kurssit: Seq[YleissivistäväRaporttiKurssi]) = {
@@ -213,7 +242,7 @@ case class AikuistenPerusopetusRaportti(
   }
 
   private def oppiaineJaLisätiedotColumnSettings(oppiaineet: Seq[YleissivistäväRaporttiOppiaineJaKurssit]) = {
-    Seq(
+    val yleisetColumns = Seq(
       CompactColumn("Opiskeluoikeuden oid"),
       CompactColumn("Lähdejärjestelmä"),
       CompactColumn("Koulutustoimija"),
@@ -243,7 +272,13 @@ case class AikuistenPerusopetusRaportti(
       CompactColumn("Majoitusetu", comment = Some("Kuinka monta majoitusetupäivää oppijalla on KOSKI-datan mukaan ollut raportin tulostusparametreissa määritellyllä aikajaksolla.")),
       CompactColumn("Sisäoppilaitosmainen majoitus", comment = Some("Kuinka monta päivää oppija on ollut KOSKI-datan mukaan sisäoppilaitosmaisessa majoituksessa raportin tulostusparametreissa määritellyllä aikajaksolla.")),
       CompactColumn("Yhteislaajuus", comment = Some("Suoritettujen opintojen yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista."))
-    ) ++ oppiaineet.map(x => CompactColumn(title = x.oppiaine.toColumnTitle, comment = Some("Otsikon nimessä näytetään ensin oppiaineen koodi, sitten oppiaineen nimi ja viimeiseksi tieto, onko kyseessä valtakunnallinen vai paikallinen oppiaine (esim. BI Biologia valtakunnallinen). Sarakkeen arvossa näytetään pilkulla erotettuna oppiaineelle siirretty arvosana ja oppiaineessa suoritettujen kurssien määrä.")))
+    )
+
+    val oppiaineColumns = oppiaineet.map(x =>
+      CompactColumn(title = x.oppiaine.toColumnTitle, comment = Some("Otsikon nimessä näytetään ensin oppiaineen koodi, sitten oppiaineen nimi ja viimeiseksi tieto, onko kyseessä valtakunnallinen vai paikallinen oppiaine (esim. BI Biologia valtakunnallinen). Sarakkeen arvossa näytetään pilkulla erotettuna oppiaineelle siirretty arvosana ja oppiaineessa suoritettujen kurssien määrä."))
+    )
+
+    yleisetColumns ++ oppiaineColumns
   }
 
   private def oppiaineKohtaisetColumnSettings(kurssit: Seq[YleissivistäväRaporttiKurssi]) = {
@@ -260,7 +295,8 @@ case class AikuistenPerusopetusRaportti(
 
 case class AikuistenPerusopetusRaporttiKaikkiOppiaineetVälilehtiRow(
   muut: AikuistenPerusopetusRaporttiOppiaineetVälilehtiMuut,
-  oppiaineet: Seq[String]) {
+  oppiaineet: Seq[String]
+) {
   def toSeq: Seq[Any] = muut.productIterator.toList ++ oppiaineet
 }
 
@@ -281,8 +317,8 @@ case class AikuistenPerusopetusRaporttiOppiaineetVälilehtiMuut(
   opiskeluoikeuden_viimeisin_tila: Option[String],
   opiskeluoikeuden_tilat_aikajakson_aikana: String,
   suorituksenTyyppi: String,
-  opiskelijallaAlkuvaihe: Boolean,
-  opiskelijallaPäättövaihe: Boolean,
+  alkuvaiheenSuorituksia: Boolean,
+  päättövaiheenSuorituksia: Boolean,
   tutkintokoodi: String,
   suorituksenNimi: Option[String],
   suorituksenTila: String,
