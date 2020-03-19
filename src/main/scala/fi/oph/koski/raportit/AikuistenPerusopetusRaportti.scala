@@ -18,6 +18,7 @@ sealed trait AikuistenPerusopetusRaporttiType {
   def päätasonSuoritusTyyppi: String
   def isOppiaineenOppimäärä(päätasonSuoritus: RPäätasonSuoritusRow): Boolean
   def isOppiaine(osasuoritus: ROsasuoritusRow): Boolean
+  def isKurssi(osasuoritus: ROsasuoritusRow): Boolean
 }
 
 
@@ -30,6 +31,10 @@ case class AikuistenPerusopetusAlkuvaiheRaportti() extends AikuistenPerusopetusR
   def isOppiaine(osasuoritus: ROsasuoritusRow): Boolean = {
     osasuoritus.suorituksenTyyppi == "aikuistenperusopetuksenalkuvaiheenoppiaine"
   }
+
+  def isKurssi(osasuoritus: ROsasuoritusRow): Boolean = {
+    osasuoritus.suorituksenTyyppi == "aikuistenperusopetuksenalkuvaiheenkurssi"
+  }
 }
 
 
@@ -41,6 +46,10 @@ case class AikuistenPerusopetusPäättövaiheRaportti() extends AikuistenPerusop
 
   def isOppiaine(osasuoritus: ROsasuoritusRow): Boolean = {
     osasuoritus.suorituksenTyyppi == "aikuistenperusopetuksenoppiaine"
+  }
+
+  def isKurssi(osasuoritus: ROsasuoritusRow): Boolean = {
+    osasuoritus.suorituksenTyyppi == "aikuistenperusopetuksenkurssi"
   }
 }
 
@@ -57,6 +66,13 @@ case class AikuistenPerusopetusOppiaineenOppimääräRaportti() extends Aikuiste
     List(
       "aikuistenperusopetuksenalkuvaiheenoppiaine",
       "aikuistenperusopetuksenoppiaine"
+    ).contains(osasuoritus.suorituksenTyyppi)
+  }
+
+  def isKurssi(osasuoritus: ROsasuoritusRow): Boolean = {
+    List(
+      "aikuistenperusopetuksenalkuvaiheenkurssi",
+      "aikuistenperusopetuksenkurssi"
     ).contains(osasuoritus.suorituksenTyyppi)
   }
 }
@@ -190,7 +206,7 @@ case class AikuistenPerusopetusRaportti(
         ulkomaanjaksot = lisätiedot.flatMap(_.ulkomaanjaksot.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
         majoitusetu = lisätiedot.flatMap(_.majoitusetu).map(lengthInDaysInDateRange(_, alku, loppu)),
         sisäoppilaitosmainenMajoitus = lisätiedot.flatMap(_.sisäoppilaitosmainenMajoitus.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
-        yhteislaajuus = row.osasuoritukset.filter(_.suorituksenTyyppi == "aikuistenperusopetuksenkurssi").flatMap(_.koulutusmoduuliLaajuusArvo.map(_.toDouble)).sum
+        yhteislaajuus = row.osasuoritukset.filter(raporttiType.isKurssi).flatMap(_.koulutusmoduuliLaajuusArvo.map(_.toDouble)).sum
       ),
       oppiaineet = oppiaineidentiedot(row.päätasonSuoritus, row.osasuoritukset, oppiaineet, raporttiType.isOppiaineenOppimäärä)
     )

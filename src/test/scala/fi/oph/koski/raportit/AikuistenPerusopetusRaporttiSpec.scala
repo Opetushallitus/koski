@@ -168,7 +168,7 @@ class AikuistenPerusopetusRaporttiSpec
             "Hetu" -> aikuisOpiskelija.hetu,
             "Sukunimi" -> aikuisOpiskelija.sukunimi,
             "Etunimet" -> aikuisOpiskelija.etunimet,
-            "Yhteislaajuus" -> 0.0,
+            "Yhteislaajuus" -> 28.0,
             "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 15 kurssia",
             "A1 Englanti valtakunnallinen" -> "Arvosana 7, 4 kurssia",
             "MA Matematiikka valtakunnallinen" -> "Arvosana 10, 3 kurssia",
