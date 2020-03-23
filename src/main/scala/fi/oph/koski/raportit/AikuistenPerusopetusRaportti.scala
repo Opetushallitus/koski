@@ -4,6 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.db.GlobalExecutionContext
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.raportit.RaporttiUtils.arvioituAikavälillä
 import fi.oph.koski.raportit.YleissivistäväUtils._
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.schema._
@@ -92,16 +93,15 @@ object AikuistenPerusopetusRaportti {
 
 case class AikuistenPerusopetusRaportti(
   repository: AikuistenPerusopetusRaporttiRepository,
-  raporttiType: AikuistenPerusopetusRaporttiType
+  raporttiType: AikuistenPerusopetusRaporttiType,
+  oppilaitosOid: Organisaatio.Oid,
+  alku: LocalDate,
+  loppu: LocalDate,
+  osasuoritustenAikarajaus: Boolean
 ) extends GlobalExecutionContext {
 
-  def build(
-    oppilaitosOid: Organisaatio.Oid,
-    alku: LocalDate,
-    loppu: LocalDate,
-    osasuoritustenAikarajaus: Boolean
-  ): Seq[DynamicDataSheet] = {
-    val rows = repository.suoritustiedot(oppilaitosOid, alku, loppu, osasuoritustenAikarajaus, raporttiType.päätasonSuoritusTyyppi)
+  def build(): Seq[DynamicDataSheet] = {
+    val rows = repository.suoritustiedot(oppilaitosOid, alku, loppu, osasuoritusMukanaAikarajauksessa, raporttiType.päätasonSuoritusTyyppi)
     val oppiaineetJaKurssit = opetettavatOppiaineetJaNiidenKurssit(raporttiType.isOppiaineenOppimäärä, raporttiType.isOppiaine, rows)
 
     val future = for {
@@ -110,6 +110,10 @@ case class AikuistenPerusopetusRaportti(
     } yield (oppiaineJaLisätiedot +: kurssit)
 
     Futures.await(future, atMost = 6.minutes)
+  }
+
+  private def osasuoritusMukanaAikarajauksessa(row: ROsasuoritusRow): Boolean = {
+    !osasuoritustenAikarajaus || !raporttiType.isKurssi(row) || arvioituAikavälillä(alku, loppu)(row)
   }
 
   private def dropDataColumnByTitle(

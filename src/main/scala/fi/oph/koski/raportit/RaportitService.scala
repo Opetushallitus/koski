@@ -59,13 +59,12 @@ class RaportitService(application: KoskiApplication) {
     OppilaitosRaporttiResponse(
       sheets = AikuistenPerusopetusRaportti(
         aikuistenPerusopetusRepository,
-        request.raportinTyyppi
-      ).build(
+        request.raportinTyyppi,
         request.oppilaitosOid,
         request.alku,
         request.loppu,
         request.osasuoritustenAikarajaus
-      ),
+      ).build(),
       workbookSettings = WorkbookSettings(s"Suoritustietojen_tarkistus_${request.oppilaitosOid}", Some(request.password)),
       filename = s"aikuisten_perusopetus_suoritustietojen_tarkistus_${request.raportinTyyppi.typeName}_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
       downloadToken = request.downloadToken

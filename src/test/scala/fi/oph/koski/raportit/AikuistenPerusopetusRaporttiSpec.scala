@@ -253,6 +253,100 @@ class AikuistenPerusopetusRaporttiSpec
     }
   }
 
+  "Aikuisten perusopetuksen alkuvaiheen suoritustietoraportti osasuoritusten aikarajauksella" - {
+    "Raportti näyttää oikealta" - {
+      lazy val sheets = buildReport(
+        jyväskylänNormaalikoulu,
+        date(2012, 1, 1),
+        date(2016, 1, 1),
+        AikuistenPerusopetusAlkuvaiheRaportti(),
+        osasuoritustenAikarajaus = true
+      )
+      lazy val titleAndRowsWithColumns = sheets.map(s => (s.title, zipRowsWithColumTitles(s)))
+
+      "Kurssit tason välilehdet" - {
+        lazy val kurssit = titleAndRowsWithColumns.tail
+        "Välilehtien nimet, sisältää oppiaineet aakkosjärjestyksessä titlen mukaan" in {
+          val kurssiVälilehtienTitlet = kurssit.map { case (title, _) => title }
+
+          kurssiVälilehtienTitlet should equal(Seq(
+            "AI v Suomen kieli ja kirjallisuus",
+            "A1 v Englanti",
+            "MA v Matematiikka",
+            "YH v Yhteiskuntatietous ja kulttuurintuntemus",
+            "TE v Terveystieto",
+            "OP v Opinto-ohjaus ja työelämän taidot",
+            "YL v Ympäristö- ja luonnontieto"
+          ))
+        }
+
+        "YH" in {
+          val expectedaikuisOpiskelijaYhKurssitRow = Map(
+            "Oppijan oid" -> aikuisOpiskelija.oid,
+            "Hetu" -> aikuisOpiskelija.hetu,
+            "Sukunimi" -> aikuisOpiskelija.sukunimi,
+            "Etunimet" -> aikuisOpiskelija.etunimet,
+            "Toimipiste" -> "Jyväskylän normaalikoulu",
+            "Suorituksen tyyppi" -> "aikuistenperusopetuksenoppimaaranalkuvaihe"
+          )
+          val (_, yh) = findRowsWithColumnsByTitle("YH v Yhteiskuntatietous ja kulttuurintuntemus", kurssit)
+          verifyOppijanRow(aikuisOpiskelija, expectedaikuisOpiskelijaYhKurssitRow, yh, addOpiskeluoikeudenOid = false)
+        }
+      }
+
+      "Oppiaine tason välilehti" - {
+        lazy val (title, oppiaineetRowsWithColumns) = titleAndRowsWithColumns.head
+
+        "On ensimmäinen" in {
+          title should equal("Oppiaineet ja lisätiedot")
+        }
+
+        "Oppimäärän suoritus" in {
+          lazy val expectedaikuisOpiskelijaRow = Map(
+            "Opiskeluoikeuden oid" -> "",
+            "Oppilaitoksen nimi" -> "Jyväskylän normaalikoulu",
+            "Lähdejärjestelmä" -> None,
+            "Opiskeluoikeuden tunniste lähdejärjestelmässä" -> None,
+            "Päivitetty" -> today,
+            "Koulutustoimija" -> "Jyväskylän yliopisto",
+            "Toimipiste" -> "Jyväskylän normaalikoulu",
+            "Yksilöity" -> true,
+            "Oppijan oid" -> aikuisOpiskelija.oid,
+            "Opiskeluoikeuden alkamispäivä" -> Some(date(2008, 8, 15)),
+            "Opiskeluoikeuden viimeisin tila" -> Some("valmistunut"),
+            "Opiskeluoikeuden tilat aikajakson aikana" -> "lasna",
+            "Suorituksen tyyppi" -> "aikuistenperusopetuksenoppimaaranalkuvaihe",
+            "Opiskeluoikeudella päättövaiheen suoritus" -> true,
+            "Tutkintokoodi/koulutusmoduulin koodi" -> "aikuistenperusopetuksenoppimaaranalkuvaihe",
+            "Suorituksen nimi" -> Some("Aikuisten perusopetuksen oppimäärän alkuvaihe"),
+            "Suorituksen tila" -> "valmis",
+            "Suorituksen vahvistuspäivä" -> Some(date(2016, 6, 4)),
+            "Läsnäolopäiviä aikajakson aikana" -> 1462,
+            "Rahoitukset" -> "1",
+            "Läsnä/valmistunut-rahoitusmuodot syötetty" -> true,
+            "Ryhmä" -> None,
+            "Ulkomaanjaksot" -> None,
+            "Majoitusetu" -> None,
+            "Sisäoppilaitosmainen majoitus" -> None,
+            "Hetu" -> aikuisOpiskelija.hetu,
+            "Sukunimi" -> aikuisOpiskelija.sukunimi,
+            "Etunimet" -> aikuisOpiskelija.etunimet,
+            "Yhteislaajuus" -> 0.0,
+            "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 0 kurssia",
+            "A1 Englanti valtakunnallinen" -> "Arvosana 7, 0 kurssia",
+            "MA Matematiikka valtakunnallinen" -> "Arvosana 10, 0 kurssia",
+            "YH Yhteiskuntatietous ja kulttuurintuntemus valtakunnallinen" -> "Arvosana 8, 0 kurssia",
+            "TE Terveystieto valtakunnallinen" -> "Arvosana 10, 0 kurssia",
+            "OP Opinto-ohjaus ja työelämän taidot valtakunnallinen" -> "Arvosana S, 0 kurssia",
+            "YL Ympäristö- ja luonnontieto valtakunnallinen" -> "Arvosana 8, 0 kurssia"
+          )
+
+          verifyOppijanRow(aikuisOpiskelija, expectedaikuisOpiskelijaRow, oppiaineetRowsWithColumns)
+        }
+      }
+    }
+  }
+
   "Aikuisten perusopetuksen päättövaiheen suoritustietoraportti" - {
     "Raportti näyttää oikealta" - {
       lazy val sheets = buildReport(
@@ -558,10 +652,17 @@ class AikuistenPerusopetusRaporttiSpec
     organisaatioOid: Organisaatio.Oid,
     alku: LocalDate,
     loppu: LocalDate,
-    raportinTyyppi: AikuistenPerusopetusRaporttiType
+    raportinTyyppi: AikuistenPerusopetusRaporttiType,
+    osasuoritustenAikarajaus: Boolean = false
   ) = {
-    AikuistenPerusopetusRaportti(repository, raportinTyyppi).build(organisaatioOid, alku, loppu, osasuoritustenAikarajaus = false)
-    // TODO: Myös osasuoritustenAikarajaus=true?
+    AikuistenPerusopetusRaportti(
+      repository,
+      raportinTyyppi,
+      organisaatioOid,
+      alku,
+      loppu,
+      osasuoritustenAikarajaus = osasuoritustenAikarajaus
+    ).build()
   }
 
   private def zipRowsWithColumTitles(sheet: DynamicDataSheet) = {

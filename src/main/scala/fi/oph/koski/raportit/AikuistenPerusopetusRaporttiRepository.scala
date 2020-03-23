@@ -3,7 +3,6 @@ package fi.oph.koski.raportit
 import java.sql.Date
 import java.time.LocalDate
 
-import fi.oph.koski.raportit.RaporttiUtils.arvioituAikavälillä
 import fi.oph.koski.raportointikanta._
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
 import fi.oph.koski.db.KoskiDatabaseMethods
@@ -29,12 +28,9 @@ case class AikuistenPerusopetusRaporttiRepository(
     oppilaitosOid: Organisaatio.Oid,
     alku: LocalDate,
     loppu: LocalDate,
-    osasuoritustenAikarajaus: Boolean,
+    osasuoritusMukanaAikarajauksessa: ROsasuoritusRow => Boolean,
     päätasonSuorituksenTyyppi: String
   ): Seq[AikuistenPerusopetusRaporttiRows] = {
-    def osasuoritusMukanaAikarajauksessa(row: ROsasuoritusRow) = {
-      !osasuoritustenAikarajaus || arvioituAikavälillä(alku, loppu)(row)
-    }
 
     val opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet = opiskeluoikeusAikajaksotPaatasonSuorituksetResult(oppilaitosOid, alku, loppu, päätasonSuorituksenTyyppi)
     val dataByOpiskeluoikeusOid = opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet.groupBy(_.opiskeluoikeusOid)
