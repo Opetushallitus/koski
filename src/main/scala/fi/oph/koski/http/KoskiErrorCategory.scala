@@ -152,6 +152,7 @@ object KoskiErrorCategory {
 
   object forbidden extends ErrorCategory("forbidden", 403, "Käyttäjällä ei ole oikeuksia annetun organisaation tietoihin.") {
     val organisaatio = subcategory("organisaatio", "Käyttäjällä ei oikeuksia annettuun organisaatioon (esimerkiksi oppilaitokseen).")
+    val opiskeluoikeudenTyyppi = subcategory("opiskeluoikeudenTyyppi", "Käyttäjälle ei ole oikeuksia annettuun opiskeluoikeuden tyyppiin")
     val kiellettyMuutos = subcategory("kiellettyMuutos", "Yritetty muuttaa opiskeluoikeuden perustietoja (oppilaitos, tyyppi...)")
     val ainoanPäätasonSuorituksenPoisto = subcategory("ainoanPäätasonSuorituksenPoisto", "Yritetty poistaa opiskeluoikeuden ainoaa päätason suoritusta")
     val lähdejärjestelmäIdPuuttuu = subcategory("lähdejärjestelmäIdPuuttuu", "Käyttäjä on palvelukäyttäjä mutta lähdejärjestelmää ei ole määritelty")
