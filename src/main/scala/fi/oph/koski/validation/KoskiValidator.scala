@@ -71,7 +71,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   private def validateOpiskeluoikeus(opiskeluoikeus: Opiskeluoikeus, henkilö: Option[Henkilö])(implicit user: KoskiSession, accessType: AccessType.Value): Either[HttpStatus, Opiskeluoikeus] = opiskeluoikeus match {
     case opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus =>
       updateFields(opiskeluoikeus).right.flatMap { opiskeluoikeus =>
-        (validateAccess(opiskeluoikeus.koulutustoimija, opiskeluoikeus.getOppilaitos)
+        (validateAccess(opiskeluoikeus.koulutustoimija, opiskeluoikeus.getOppilaitos, opiskeluoikeus.tyyppi.koodiarvo)
           .onSuccess { validateLähdejärjestelmä(opiskeluoikeus) }
           .onSuccess {
             HttpStatus.fold(opiskeluoikeus.suoritukset.map(TutkintoRakenneValidator(tutkintoRepository, koodistoPalvelu).validate(_,
@@ -278,9 +278,18 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     case _ => HttpStatus.ok
   }
 
-  private def validateAccess(koulutustoimija: Option[Koulutustoimija], org: OrganisaatioWithOid)(implicit user: KoskiSession, accessType: AccessType.Value): HttpStatus = {
-    HttpStatus.validate(user.hasAccess(org.oid, koulutustoimija.map(_.oid), accessType)) { KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + org.oid) }
+  private def validateAccess(koulutustoimija: Option[Koulutustoimija], org: OrganisaatioWithOid, opiskeluoikeudenTyyppi: String)(implicit user: KoskiSession, accessType: AccessType.Value): HttpStatus = {
+    HttpStatus.fold(
+      validateOpiskeluoikeudenTyypinAccess(opiskeluoikeudenTyyppi),
+      validateOrganisaatioAccess(koulutustoimija, org)
+    )
   }
+
+  private def validateOpiskeluoikeudenTyypinAccess(opiskeluoikeudenTyyppi: String)(implicit user: KoskiSession, accessType: AccessType.Value) =
+    HttpStatus.validate(user.allowedOpiskeluoikeusTyypit.contains(opiskeluoikeudenTyyppi)) { KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi("Ei oikeuksia opiskeluoikeuden tyyppiin " + opiskeluoikeudenTyyppi) }
+
+  private def validateOrganisaatioAccess(koulutustoimija: Option[Koulutustoimija], organisaatio: OrganisaatioWithOid)(implicit user: KoskiSession, accessType: AccessType.Value) =
+    HttpStatus.validate(user.hasAccess(organisaatio.oid, koulutustoimija.map(_.oid), accessType)) { KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + organisaatio.oid) }
 
   private def validateLähdejärjestelmä(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession): HttpStatus = {
     if (opiskeluoikeus.lähdejärjestelmänId.isDefined && !user.isPalvelukäyttäjä && !user.isRoot) {
@@ -400,7 +409,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   private def validateToimipiste(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, suoritus: Suoritus)(implicit user: KoskiSession, accessType: AccessType.Value): HttpStatus = suoritus match {
-    case s:Toimipisteellinen => validateAccess(opiskeluoikeus.koulutustoimija, s.toimipiste)
+    case s:Toimipisteellinen => validateOrganisaatioAccess(opiskeluoikeus.koulutustoimija, s.toimipiste)
     case _ => HttpStatus.ok
   }
 

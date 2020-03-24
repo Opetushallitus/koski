@@ -7,6 +7,7 @@ object Rooli {
   type Role = String
   val READ = "READ"
   val READ_UPDATE = "READ_UPDATE"
+  val READ_UPDATE_ESIOPETUS = "READ_UPDATE_ESIOPETUS"
   val TIEDONSIIRRON_MITATOINTI = "TIEDONSIIRRON_MITATOINTI"
   val OPHKATSELIJA = "OPHKATSELIJA"
   val OPHPAAKAYTTAJA = "OPHPAAKAYTTAJA"
@@ -56,7 +57,7 @@ trait OrgKäyttöoikeus extends Käyttöoikeus {
 
   override lazy val allowedOpiskeluoikeusTyypit: Set[String] = if (!organisaatioAccessType.contains(AccessType.read)) {
     Set.empty
-  } else if (organisaatiokohtaisetPalveluroolit.exists(_.rooli == LUKU_ESIOPETUS)) {
+  } else if (organisaatioKohtaisetRoolitExistsAny(LUKU_ESIOPETUS, READ_UPDATE_ESIOPETUS)) {
     Set(OpiskeluoikeudenTyyppi.esiopetus.koodiarvo)
   } else {
     OpiskeluoikeudenTyyppi.kaikkiTyypit.map(_.koodiarvo)
@@ -64,9 +65,25 @@ trait OrgKäyttöoikeus extends Käyttöoikeus {
 
   def globalAccessType: List[AccessType.Value] = Nil
   def globalPalveluroolit: List[Palvelurooli] = Nil
+
+  private def organisaatioKohtaisetRoolitExistsAny(roolit: String*) = {
+    organisaatiokohtaisetPalveluroolit.map(_.rooli).intersect(roolit).nonEmpty
+  }
 }
 
 case class KäyttöoikeusVarhaiskasvatusToimipiste(koulutustoimija: Koulutustoimija, ulkopuolinenOrganisaatio: OrganisaatioWithOid, organisaatiokohtaisetPalveluroolit: List[Palvelurooli]) extends OrgKäyttöoikeus
+
+object KäyttöoikeusOrg {
+  def apply(organisaatio: OrganisaatioWithOid, organisaatiokohtaisetPalveluroolit: List[Palvelurooli], juuri: Boolean, oppilaitostyyppi: Option[String]): KäyttöoikeusOrg = {
+    new KäyttöoikeusOrg(organisaatio, organisaatiokohtaisetPalveluroolit.flatMap(extractAccessTypeTyyppikohtaisistaRooleista), juuri, oppilaitostyyppi)
+  }
+  private def extractAccessTypeTyyppikohtaisistaRooleista(rooli: Palvelurooli) = rooli match {
+    case Palvelurooli("KOSKI", "READ_UPDATE_ESIOPETUS") => List(Palvelurooli(READ_UPDATE), rooli)
+    case Palvelurooli("KOSKI", "LUKU_ESIOPETUS") => List(Palvelurooli(READ), rooli)
+    case rooli => List(rooli)
+  }
+}
+
 case class KäyttöoikeusOrg(organisaatio: OrganisaatioWithOid, organisaatiokohtaisetPalveluroolit: List[Palvelurooli], juuri: Boolean, oppilaitostyyppi: Option[String]) extends OrgKäyttöoikeus
 
 case class KäyttöoikeusViranomainen(globalPalveluroolit: List[Palvelurooli]) extends Käyttöoikeus {
