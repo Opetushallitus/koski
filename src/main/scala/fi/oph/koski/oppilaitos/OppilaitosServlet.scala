@@ -23,7 +23,8 @@ class OppilaitosServlet(implicit val application: KoskiApplication) extends ApiS
     val organisaatiot = application.organisaatioRepository.getOrganisaatioHierarkia(params("oid")).toList
     (byOppilaitosTyyppi(organisaatiot) ++ byOrganisaatioTyyppi(organisaatiot))
       .distinct
-      .map(t => application.koodistoViitePalvelu.validate("opiskeluoikeudentyyppi", t.koodiarvo))
+      .flatMap(t => application.koodistoViitePalvelu.validate("opiskeluoikeudentyyppi", t.koodiarvo))
+      .filter(t => koskiSession.allowedOpiskeluoikeusTyypit.contains(t.koodiarvo))
   }
 
   private def byOppilaitosTyyppi(organisaatiot: List[OrganisaatioHierarkia]) =
