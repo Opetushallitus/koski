@@ -64,7 +64,7 @@ class AikuistenPerusopetusRaporttiSpec
         jyväskylänNormaalikoulu,
         date(2012, 1, 1),
         date(2016, 1, 1),
-        AikuistenPerusopetusAlkuvaiheRaportti()
+        AikuistenPerusopetusAlkuvaiheRaportti
       )
       lazy val titleAndRowsWithColumns = sheets.map(s => (s.title, zipRowsWithColumTitles(s)))
 
@@ -259,7 +259,7 @@ class AikuistenPerusopetusRaporttiSpec
         jyväskylänNormaalikoulu,
         date(2012, 1, 1),
         date(2016, 1, 1),
-        AikuistenPerusopetusAlkuvaiheRaportti(),
+        AikuistenPerusopetusAlkuvaiheRaportti,
         osasuoritustenAikarajaus = true
       )
       lazy val titleAndRowsWithColumns = sheets.map(s => (s.title, zipRowsWithColumTitles(s)))
@@ -353,7 +353,7 @@ class AikuistenPerusopetusRaporttiSpec
         jyväskylänNormaalikoulu,
         date(2012, 1, 1),
         date(2016, 1, 1),
-        AikuistenPerusopetusPäättövaiheRaportti()
+        AikuistenPerusopetusPäättövaiheRaportti
       )
       lazy val titleAndRowsWithColumns = sheets.map(s => (s.title, zipRowsWithColumTitles(s)))
 
@@ -494,7 +494,7 @@ class AikuistenPerusopetusRaporttiSpec
         jyväskylänNormaalikoulu,
         date(2012, 1, 1),
         date(2016, 1, 1),
-        AikuistenPerusopetusOppiaineenOppimääräRaportti()
+        AikuistenPerusopetusOppiaineenOppimääräRaportti
       )
       lazy val titleAndRowsWithColumns = sheets.map(s => (s.title, zipRowsWithColumTitles(s)))
 

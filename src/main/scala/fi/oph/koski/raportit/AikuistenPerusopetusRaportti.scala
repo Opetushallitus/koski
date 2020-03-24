@@ -22,8 +22,7 @@ sealed trait AikuistenPerusopetusRaporttiType {
   def isKurssi(osasuoritus: ROsasuoritusRow): Boolean
 }
 
-
-case class AikuistenPerusopetusAlkuvaiheRaportti() extends AikuistenPerusopetusRaporttiType {
+object AikuistenPerusopetusAlkuvaiheRaportti extends AikuistenPerusopetusRaporttiType {
   val typeName = "alkuvaihe"
   val päätasonSuoritusTyyppi: String = "aikuistenperusopetuksenoppimaaranalkuvaihe"
 
@@ -38,8 +37,7 @@ case class AikuistenPerusopetusAlkuvaiheRaportti() extends AikuistenPerusopetusR
   }
 }
 
-
-case class AikuistenPerusopetusPäättövaiheRaportti() extends AikuistenPerusopetusRaporttiType {
+object AikuistenPerusopetusPäättövaiheRaportti extends AikuistenPerusopetusRaporttiType {
   val typeName = "päättövaihe"
   val päätasonSuoritusTyyppi: String = "aikuistenperusopetuksenoppimaara"
 
@@ -54,8 +52,7 @@ case class AikuistenPerusopetusPäättövaiheRaportti() extends AikuistenPerusop
   }
 }
 
-
-case class AikuistenPerusopetusOppiaineenOppimääräRaportti() extends AikuistenPerusopetusRaporttiType {
+object AikuistenPerusopetusOppiaineenOppimääräRaportti extends AikuistenPerusopetusRaporttiType {
   val typeName = "oppiaineenoppimäärä"
   val päätasonSuoritusTyyppi: String = "perusopetuksenoppiaineenoppimaara"
 
@@ -78,18 +75,16 @@ case class AikuistenPerusopetusOppiaineenOppimääräRaportti() extends Aikuiste
   }
 }
 
-
 object AikuistenPerusopetusRaportti {
   def makeRaporttiType(typeName: String): Either[String, AikuistenPerusopetusRaporttiType] = {
     typeName match {
-      case "alkuvaihe" => Right(AikuistenPerusopetusAlkuvaiheRaportti())
-      case "päättövaihe" => Right(AikuistenPerusopetusPäättövaiheRaportti())
-      case "oppiaineenoppimäärä" => Right(AikuistenPerusopetusOppiaineenOppimääräRaportti())
+      case "alkuvaihe" => Right(AikuistenPerusopetusAlkuvaiheRaportti)
+      case "päättövaihe" => Right(AikuistenPerusopetusPäättövaiheRaportti)
+      case "oppiaineenoppimäärä" => Right(AikuistenPerusopetusOppiaineenOppimääräRaportti)
       case _ => Left(s"${typeName} on epäkelpo aikuisten perusopetuksen raportin tyyppi")
     }
   }
 }
-
 
 case class AikuistenPerusopetusRaportti(
   repository: AikuistenPerusopetusRaporttiRepository,
@@ -131,11 +126,12 @@ case class AikuistenPerusopetusRaportti(
 
   private def removeUnwantedColumns(rows: Seq[Seq[Any]], columnSettings: Seq[Column]): (Seq[Seq[Any]], Seq[Column]) = {
     raporttiType match {
-      case AikuistenPerusopetusAlkuvaiheRaportti() =>
+      case AikuistenPerusopetusAlkuvaiheRaportti =>
         dropDataColumnByTitle(rows, columnSettings, "Opiskeluoikeudella alkuvaiheen suoritus")
-      case AikuistenPerusopetusPäättövaiheRaportti() =>
+      case AikuistenPerusopetusPäättövaiheRaportti =>
         dropDataColumnByTitle(rows, columnSettings, "Opiskeluoikeudella päättövaiheen suoritus")
-      case AikuistenPerusopetusOppiaineenOppimääräRaportti() => (rows, columnSettings)
+      case AikuistenPerusopetusOppiaineenOppimääräRaportti =>
+        (rows, columnSettings)
     }
   }
 
@@ -246,7 +242,7 @@ case class AikuistenPerusopetusRaportti(
 
   private def alkuvaiheenSuorituksiaColumn() = {
     val comment = raporttiType match {
-      case AikuistenPerusopetusOppiaineenOppimääräRaportti() =>
+      case AikuistenPerusopetusOppiaineenOppimääräRaportti =>
         Some("Opiskeluoikeudelle siirretty myös alkuvaiheen suoritus. HUOM! Alkuvaiheen suorituksia ei tulisi olla samassa opiskeluoikeudessa aineopintojen kanssa.")
       case _ => None
     }
@@ -255,7 +251,7 @@ case class AikuistenPerusopetusRaportti(
 
   private def päättövaiheenSuorituksiaColumn() = {
     val comment = raporttiType match {
-      case AikuistenPerusopetusOppiaineenOppimääräRaportti() =>
+      case AikuistenPerusopetusOppiaineenOppimääräRaportti =>
         Some("Opiskeluoikeudelle siirretty myös päättövaiheen suoritus. HUOM! Päättövaiheen suorituksia ei tulisi olla samassa opiskeluoikeudessa aineopintojen kanssa.")
       case _ => None
     }
