@@ -34,6 +34,12 @@ class TilastokeskusSpec extends FreeSpec with LocalJettyHttpSpecification with O
       eero.get.henkilö.linkitetytOidit should be(empty)
     }
 
+    "Hakee myös mitätöidyt opiskeluoikeudet" in {
+      val kaikkiOppijat = performQuery()
+      val tilat = kaikkiOppijat.flatMap(_.opiskeluoikeudet).map(_.tila.opiskeluoikeusjaksot.last.tila.koodiarvo)
+      tilat should contain("mitatoity")
+    }
+
     "Vaatii TILASTOKESKUS-käyttöoikeuden" in {
       val withoutTilastokeskusAccess = MockUsers.users.filterNot(_.käyttöoikeudet.collect { case k: KäyttöoikeusViranomainen => k }.exists(_.globalPalveluroolit.contains(Palvelurooli("KOSKI", "TILASTOKESKUS"))))
       withoutTilastokeskusAccess.foreach { user =>

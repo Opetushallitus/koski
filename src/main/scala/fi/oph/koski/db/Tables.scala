@@ -208,7 +208,7 @@ object Tables {
   val OpiskeluoikeusHistoria = TableQuery[OpiskeluoikeusHistoryTable]
 
   def OpiskeluOikeudetWithAccessCheck(implicit user: KoskiSession): Query[OpiskeluoikeusTable, OpiskeluoikeusRow, Seq] = {
-    val query = (if (user.hasGlobalReadAccess || user.hasGlobalKoulutusmuotoReadAccess) {
+    var query = (if (user.hasGlobalReadAccess || user.hasGlobalKoulutusmuotoReadAccess) {
       OpiskeluOikeudet
     } else {
       val oppilaitosOidit = user.organisationOids(AccessType.read).toList
@@ -220,13 +220,15 @@ object Tables {
            (oo.sisältäväOpiskeluoikeusOppilaitosOid inSet oppilaitosOidit) ||
            (oo.oppilaitosOid inSet varhaiskasvatusOikeudet.map(_.ulkopuolinenOrganisaatio.oid)) && oo.koulutustoimijaOid.map(_ inSet varhaiskasvatusOikeudet.map(_.koulutustoimija.oid)).getOrElse(false)
       } yield oo
-    }).filterNot(_.mitätöity)
+    })
 
-    if (user.hasKoulutusmuotoRestrictions) {
-      query.filter(_.koulutusmuoto inSet user.allowedOpiskeluoikeusTyypit)
-    } else {
-      query
+    if (!user.hasMitätöidytOpiskeluoikeudetAccess) {
+      query = query.filterNot(_.mitätöity)
     }
+    if (user.hasKoulutusmuotoRestrictions) {
+      query = query.filter(_.koulutusmuoto inSet user.allowedOpiskeluoikeusTyypit)
+    }
+    query
   }
 }
 
