@@ -1,3 +1,6 @@
+## 26.3.2020
+- Lisätty suoritustapa-rakenne nuorten perusopetuksen vuosiluokansuoritukseen
+
 ## 5.3.2020
 - Lisätty kenttä oman äidinkielen opinnot suorituksiin
     - Aikuisten perusopetuksen oppimäärän suoritus

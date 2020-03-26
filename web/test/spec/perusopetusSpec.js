@@ -112,6 +112,7 @@ describe('Perusopetus', function() {
             'Luokka 8C\n' +
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
             'Alkamispäivä 15.8.2014\n' +
+            'Suoritustapa Koulutus\n' +
             'Suorituskieli suomi\n' +
             'Muut suorituskielet sloveeni\n' +
             'Kielikylpykieli ruotsi\n' +
