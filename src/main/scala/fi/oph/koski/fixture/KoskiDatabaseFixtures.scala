@@ -107,6 +107,7 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
   private def defaultOpiskeluOikeudet: List[(OppijaHenkilö, KoskeenTallennettavaOpiskeluoikeus)] = {
     List(
       (MockOppijat.eero, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto)),
+      (MockOppijat.eero, AmmatillinenOpiskeluoikeusTestData.mitätöityOpiskeluoikeus),
       (MockOppijat.eerola, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto)),
       (MockOppijat.teija, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto)),
       (MockOppijat.syntymäajallinen, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto)),
@@ -156,7 +157,6 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
       (MockOppijat.ibFinal, ExamplesIB.opiskeluoikeus),
       (MockOppijat.ibPredicted, ExamplesIB.opiskeluoikeusPredictedGrades),
       (MockOppijat.dia, ExamplesDIA.opiskeluoikeus),
-      (MockOppijat.eero, AmmatillinenOpiskeluoikeusTestData.mitätöityOpiskeluoikeus),
       (MockOppijat.master, ExamplesPerusopetus.päättötodistus.tallennettavatOpiskeluoikeudet.head),
       (MockOppijat.slave.henkilö, ExamplesLukio.päättötodistus()),
       (MockOppijat.turvakielto, ExamplesLukio.päättötodistus()),

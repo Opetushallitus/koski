@@ -7,13 +7,12 @@ import java.time.{LocalDate, ZonedDateTime}
 import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethodsAmmatillinen}
 import fi.oph.koski.documentation.{ExampleData, ExamplesLukio, LukioExampleData}
 import fi.oph.koski.henkilo.MockOppijat.defaultOppijat
-import fi.oph.koski.henkilo.{MockOppijat, OppijaHenkilö}
+import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.MockUsers.paakayttaja
+import fi.oph.koski.koskiuser.MockUsers.pääkäyttäjäTilastokeskusOikeuksilla
 import fi.oph.koski.koskiuser.{KäyttöoikeusViranomainen, MockUsers, Palvelurooli}
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryContext
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import org.scalatest.{FreeSpec, Matchers}
@@ -32,6 +31,12 @@ class TilastokeskusSpec extends FreeSpec with LocalJettyHttpSpecification with O
       eero should be(defined)
       eero.get.henkilö.oid should equal(MockOppijat.eero.oid)
       eero.get.henkilö.linkitetytOidit should be(empty)
+    }
+
+    "Hakee myös mitätöidyt opiskeluoikeudet" in {
+      val kaikkiOppijat = performQuery()
+      val tilat = kaikkiOppijat.flatMap(_.opiskeluoikeudet).map(_.tila.opiskeluoikeusjaksot.last.tila.koodiarvo)
+      tilat should contain("mitatoity")
     }
 
     "Vaatii TILASTOKESKUS-käyttöoikeuden" in {
@@ -147,7 +152,7 @@ class TilastokeskusSpec extends FreeSpec with LocalJettyHttpSpecification with O
 
   private val masterHenkilöt = defaultOppijat.filterNot(_.master.isDefined).map(_.henkilö).sortBy(_.oid)
   private val koskeenTallennetutOppijat: List[(Oid, String, String, List[Oid], List[String])] = masterHenkilöt.flatMap { m =>
-    tryOppija(m.oid, paakayttaja) match {
+    tryOppija(m.oid, pääkäyttäjäTilastokeskusOikeuksilla) match {
       case Right(Oppija(h: TäydellisetHenkilötiedot, opiskeluoikeudet)) =>
         opiskeluoikeudet.flatMap(_.oid).map { opiskeluoikeusOid =>
           (h.oid, h.sukunimi, h.etunimet, linkitettyOid.get(h.oid).toList, List(opiskeluoikeusOid))
