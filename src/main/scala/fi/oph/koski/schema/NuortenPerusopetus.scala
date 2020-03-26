@@ -203,6 +203,10 @@ case class PerusopetuksenVuosiluokanSuoritus(
   override val alkamispäivä: Option[LocalDate] = None,
   @Description("Varsinaisen todistuksen saantipäivämäärä")
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
+  @KoodistoUri("perusopetuksensuoritustapa")
+  @Description("Tieto siitä, suoritetaanko perusopetusta normaalina koulutuksena vai erityisenä tutkintona.")
+  @Tooltip("Tieto siitä, suoritetaanko perusopetusta normaalina koulutuksena vai erityisenä tutkintona.")
+  suoritustapa: Option[Koodistokoodiviite] = None,
   suorituskieli: Koodistokoodiviite,
   @Tooltip("Mahdolliset muut suorituskielet.")
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
