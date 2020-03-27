@@ -158,4 +158,15 @@ describe('Korkeakoulutus', function() {
       expect(OpinnotPage().getOppilaitos(0)).to.equal('Aalto-yliopisto')
     })
   })
+
+  describe('Järjestävä organisaatio', function () {
+    before(
+      page.openPage,
+      page.oppijaHaku.searchAndSelect('150113-4146'),
+      opinnot.expandAll
+    )
+    it('Näytetään lisätiedoissa', function () {
+      expect(extractAsText(S('.lisätiedot'))).to.include('Järjestävä organisaatio Yrkeshögskolan Arcada\n')
+    })
+  })
 })
