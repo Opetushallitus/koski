@@ -77,10 +77,13 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(i
   }
 
   override def getOrganisaationNimiHetkellä(oid: String, date: LocalDate) = {
-    val nimet: List[OrganisaationNimihakuTulos] = nimetCache(oid)
-    nimet.sortBy(_.alkuPvm)(DateOrdering.localDateOrdering)
+    val nimetSorted: List[OrganisaationNimihakuTulos] = nimetCache(oid).sortBy(_.alkuPvm)(DateOrdering.localDateOrdering)
+    val oldest = nimetSorted.headOption
+    nimetSorted
       .takeWhile(nimi => nimi.alkuPvm.isBefore(date) || nimi.alkuPvm.isEqual(date))
-      .lastOption.flatMap(n => LocalizedString.sanitize(n.nimi))
+      .lastOption
+      .orElse(oldest)
+      .flatMap(n => LocalizedString.sanitize(n.nimi))
   }
 
   override def findSähköpostiVirheidenRaportointiin(oid: String): Option[SähköpostiVirheidenRaportointiin] = {
