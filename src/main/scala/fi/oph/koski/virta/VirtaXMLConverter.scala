@@ -50,7 +50,8 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         lisätiedot = Some(KorkeakoulunOpiskeluoikeudenLisätiedot(
           ensisijaisuus = Some((opiskeluoikeusNode \ "Ensisijaisuus").toList.map { e => Aikajakso(alkuPvm(e), loppuPvm(e)) }).filter(_.nonEmpty),
           virtaOpiskeluoikeudenTyyppi = Some(opiskeluoikeudenTyyppi(opiskeluoikeusNode)),
-          lukukausiIlmoittautuminen = lukukausiIlmoittautuminen(oppilaitos, opiskeluoikeudenTila, avain(opiskeluoikeusNode), virtaXml)
+          lukukausiIlmoittautuminen = lukukausiIlmoittautuminen(oppilaitos, opiskeluoikeudenTila, avain(opiskeluoikeusNode), virtaXml),
+          järjestäväOrganisaatio = järjestäväOrganisaatio(opiskeluoikeusNode, vahvistus.map(_.päivä))
         ))
       )
 
@@ -200,6 +201,16 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     optionalList(ilmot).map(Lukukausi_Ilmoittautuminen)
   }
 
+  private def järjestäväOrganisaatio(node: Node, vahvistusPäivä: Option[LocalDate]): Option[Oppilaitos] = {
+    val numerot = oppilaitosnumero(node)
+
+    if (numerot.nykyinen != numerot.järjestävä) {
+      findOppilaitos(numerot.järjestävä, vahvistusPäivä)
+    } else {
+      None
+    }
+  }
+
   private def lukukausiIlmo(n: Node) = Lukukausi_Ilmoittautumisjakso(
     alku = alkuPvm(n),
     loppu = loppuPvm(n),
@@ -329,19 +340,24 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     optionalOppilaitos(node, vahvistusPäivä).getOrElse(throw new RuntimeException(s"Nykyistä tai lähdeoppilaitosta ei löydy: ${oppilaitosnumero(node)}"))
 
   private def optionalOppilaitos(node: Node, vahvistusPäivä: Option[LocalDate]): Option[Oppilaitos] = {
-    def find(numero: Option[String]) =
-      numero.flatMap(oppilaitosRepository.findByOppilaitosnumero)
-        .orElse(numero.flatMap(possiblyMockOppilaitos))
-        .map(oppilaitoksenNimiValmistumishetkellä(vahvistusPäivä))
-
     val numerot = oppilaitosnumero(node)
-    val oppilaitos = if (siirtoOpiskelija(node)) find(numerot.nykyinen) else find(numerot.lähde).orElse(find(numerot.nykyinen))
+    val oppilaitos = if (siirtoOpiskelija(node)) {
+      findOppilaitos(numerot.nykyinen, vahvistusPäivä)
+    } else {
+      findOppilaitos(numerot.lähde, vahvistusPäivä)
+        .orElse(findOppilaitos(numerot.nykyinen, vahvistusPäivä))
+    }
 
     if (oppilaitos.isEmpty) {
       logger.warn(s"Nykyistä tai lähdeoppilaitosta ei löydy: $numerot")
     }
     oppilaitos
   }
+
+  private def findOppilaitos(numero: Option[String], päivä: Option[LocalDate]): Option[Oppilaitos] =
+    numero.flatMap(oppilaitosRepository.findByOppilaitosnumero)
+      .orElse(numero.flatMap(possiblyMockOppilaitos))
+      .map(oppilaitoksenNimiValmistumishetkellä(päivä))
 
   private def oppilaitoksenNimiValmistumishetkellä(vahvistusPäivä: Option[LocalDate])(oppilaitos: Oppilaitos) =
     vahvistusPäivä.flatMap(organisaatioRepository.getOrganisaationNimiHetkellä(oppilaitos.oid, _))
@@ -446,16 +462,23 @@ object VirtaXMLConverterUtils {
   def oppilaitosnumero(node: Node): Oppilaitosnumerot =
     Oppilaitosnumerot(
       nykyinen = nykyinenOppilaitosnumero(node),
-      lähde = lähdeorganisaationOppilaitosnumero(node)
+      lähde = lähdeorganisaationOppilaitosnumero(node),
+      järjestävä = järjestävänOrganisaationOppilaitosnumero(node)
     )
 
-  private def lähdeorganisaationOppilaitosnumero(node: Node): Option[String] = {
-    def isLähdeorganisaatio(org: Node) =
+  private def lähdeorganisaationOppilaitosnumero(node: Node): Option[String] =
+    findRoolinKoodi(node, OrganisaationRooli.Lähde)
+
+  private def järjestävänOrganisaationOppilaitosnumero(node: Node): Option[String] =
+    findRoolinKoodi(node, OrganisaationRooli.Järjestävä)
+
+  private def findRoolinKoodi(node: Node, rooli: OrganisaationRooli.Value) = {
+    def isRooli(org: Node) =
       OrganisaationRooli.parse((org \ "Rooli").text)
-        .contains(OrganisaationRooli.Lähde)
+        .contains(rooli)
 
     (node \\ "Organisaatio")
-      .find(isLähdeorganisaatio)
+      .find(isRooli)
       .map { org => (org \ "Koodi").text }
   }
 
@@ -466,7 +489,8 @@ object VirtaXMLConverterUtils {
 
 case class Oppilaitosnumerot(
   nykyinen: Option[String],
-  lähde: Option[String]
+  lähde: Option[String],
+  järjestävä: Option[String]
 ) {
   def asList = List(lähde, nykyinen).flatten
 }

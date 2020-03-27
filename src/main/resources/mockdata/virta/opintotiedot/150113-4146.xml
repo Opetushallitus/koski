@@ -16,6 +16,10 @@
                             </virta:Tila>
                             <virta:Tyyppi>4</virta:Tyyppi>
                             <virta:Myontaja>10088</virta:Myontaja>
+                            <virta:Organisaatio>
+                              <virta:Rooli>2</virta:Rooli>
+                              <virta:Koodi>02535</virta:Koodi>
+                            </virta:Organisaatio>
                             <virta:Jakso koulutusmoduulitunniste="LL, Lääketieteen ko., Lääketiede">
                                 <virta:AlkuPvm>2011-08-01</virta:AlkuPvm>
                                 <virta:LoppuPvm>2019-07-31</virta:LoppuPvm>

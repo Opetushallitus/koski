@@ -1,3 +1,6 @@
+## 27.3.2020
+- Lisätty korkeakoulun opiskeluoikeuden lisätietoihin optionaalinen kenttä järjestäväOrganisaatio
+
 ## 26.3.2020
 - Lisätty suoritustapa-rakenne nuorten perusopetuksen vuosiluokansuoritukseen
 
