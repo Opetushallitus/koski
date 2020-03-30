@@ -82,8 +82,12 @@ object RaportointiDatabaseSchema {
       #${s.name}.r_koodisto_koodi,
       #${s.name}.raportointikanta_status
       TO raportointikanta_katselija, raportointikanta_henkilo_katselija""",
-    sqlu"GRANT SELECT ON #${s.name}.r_henkilo TO raportointikanta_henkilo_katselija"
-
+    sqlu"""GRANT SELECT ON
+      #${s.name}.r_henkilo,
+      #${s.name}.esiopetus_opiskeluoikeus_aikajakso,
+      #${s.name}.muu_ammatillinen_raportointi,
+      #${s.name}.topks_ammatillinen_raportointi
+      TO raportointikanta_henkilo_katselija"""
   )
 
   private val StringIdentifierType = SqlType("character varying collate \"C\"")
