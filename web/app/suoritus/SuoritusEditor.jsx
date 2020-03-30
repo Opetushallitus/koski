@@ -20,6 +20,7 @@ import {
   isVälisuoritus
 } from '../ammatillinen/TutkinnonOsa'
 import {ammattillinenOsittainenTutkintoJaMuuAmmatillisenTutkinnonOsaPuuttuu, isOstettu} from '../ammatillinen/AmmatillinenOsittainenTutkinto'
+import {AmmatillinenArviointiasteikko} from '../ammatillinen/AmmatillinenArviointiasteikko'
 
 export class SuoritusEditor extends React.Component {
   showDeleteButtonIfAllowed() {
@@ -58,6 +59,7 @@ export class SuoritusEditor extends React.Component {
           className={model.context.kansalainen ? 'kansalainen' : ''}
         />
         <TilaJaVahvistusEditor model={model} />
+        <AmmatillinenArviointiasteikko model={model}/>
         <div className="osasuoritukset">{osasuorituksetEditor}</div>
       </div>
     )
