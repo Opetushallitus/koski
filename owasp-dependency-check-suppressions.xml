@@ -50,7 +50,7 @@
       <gav regex="true">^com\.github\.fge:json-patch:.*$</gav>
       <cve>CVE-2018-14632</cve>
     </suppress>
-    <suppress until="2020-04-01Z">
+    <suppress until="2020-05-01Z">
        <notes><![CDATA[
        file name: netty-nio-client-2.8.3.jar
        ]]></notes>
@@ -60,7 +60,7 @@
        <cve>CVE-2019-16869</cve>
        <cve>CVE-2019-10797</cve>
     </suppress>
-    <suppress until="2020-04-01Z">
+    <suppress until="2020-05-01Z">
        <notes><![CDATA[
        file name: netty-reactive-streams-2.0.3.jar
        ]]></notes>
@@ -70,7 +70,7 @@
        <cve>CVE-2019-16869</cve>
        <cve>CVE-2019-10797</cve>
     </suppress>
-    <suppress until="2020-04-01Z">
+    <suppress until="2020-05-01Z">
        <notes><![CDATA[
        file name: netty-reactive-streams-http-2.0.3.jar
        ]]></notes>
