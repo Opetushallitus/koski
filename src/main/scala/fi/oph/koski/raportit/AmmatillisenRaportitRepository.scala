@@ -53,7 +53,7 @@ case class AmmatillisenRaportitRepository(db: DB) extends KoskiDatabaseMethods w
         )
       }
     }
-  }
+}
 
   private def opiskeluoikeusAikajaksotPäätasonSuorituksetQuery(oppilaitosOid: String, koulutusmuoto: String, suorituksenTyyppi: String, alku: Date, loppu: Date) = {
     import fi.oph.koski.db.PostgresDriverWithJsonSupport.plainAPI._
