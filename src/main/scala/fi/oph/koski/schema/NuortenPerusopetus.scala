@@ -278,7 +278,7 @@ case class NuortenPerusopetuksenOppimääränSuoritus(
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("perusopetuksenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenoppimaara", koodistoUri = "suorituksentyyppi")
-) extends PerusopetuksenPäätasonSuoritus with PerusopetuksenOppimääränSuoritus
+) extends PerusopetuksenPäätasonSuoritus with PerusopetuksenOppimääränSuoritus with KoulusivistyskieliKieliaineesta
 
 @Description("Vuosiluokan todistuksen liitetieto")
 case class PerusopetuksenVuosiluokanSuorituksenLiite(

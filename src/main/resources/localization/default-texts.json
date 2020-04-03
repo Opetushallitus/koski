@@ -1317,6 +1317,9 @@
   "Tutkinnon osien arviointiasteikko": "Tutkinnon osien arviointiasteikko",
   "1-5, Hylätty tai Hyväksytty": "1-5, Hylätty tai Hyväksytty",
   "1-3, Hylätty tai Hyväksytty": "1-3, Hylätty tai Hyväksytty",
-  "Hylätty tai Hyväksytty": "Hylätty tai Hyväksytty"
+  "Hylätty tai Hyväksytty": "Hylätty tai Hyväksytty",
+  "Koulusivistyskieli" : "Koulusivistyskieli",
+  "description:Koulusivistyskieli" : "Koulusivistyskieli",
+  "description:Koulusivistyskieli. Tiedon syötössä tietoa ei..." : "Koulusivistyskieli. Tiedon syötössä tietoa ei tarvita; tieto poimitaan osasuorituksista."
 }
 

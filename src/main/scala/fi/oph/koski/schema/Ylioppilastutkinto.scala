@@ -1,6 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
+import fi.oph.koski.util.OptionalLists
 import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems, Title}
 
 case class YlioppilastutkinnonOpiskeluoikeus(
@@ -34,7 +35,7 @@ case class YlioppilastutkinnonSuoritus(
   override val osasuoritukset: Option[List[YlioppilastutkinnonKokeenSuoritus]],
   @KoodistoKoodiarvo("ylioppilastutkinto")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ylioppilastutkinto", koodistoUri = "suorituksentyyppi")
-) extends PäätasonSuoritus with MahdollisestiToimipisteellinen with Arvioinniton
+) extends PäätasonSuoritus with MahdollisestiToimipisteellinen with Arvioinniton with KoulusivistyskieliYlioppilasKokeenSuorituksesta
 
 case class YlioppilastutkinnonKokeenSuoritus(
   @Title("Koe")
@@ -71,4 +72,29 @@ case class YlioppilasTutkinnonKoe(
   tunniste: Koodistokoodiviite
 ) extends KoodistostaLöytyväKoulutusmoduuli {
   def laajuus = None
+}
+
+trait KoulusivistyskieliYlioppilasKokeenSuorituksesta extends Koulusivistyskieli {
+  def osasuoritukset: Option[List[YlioppilastutkinnonKokeenSuoritus]]
+  def koulusivistyskieli: Option[List[Koodistokoodiviite]] = OptionalLists.optionalList(osasuoritukset.toList.flatten.flatMap(ylioppilaskokeesta).sortBy(_.koodiarvo).distinct)
+
+  private def ylioppilaskokeesta(koe: YlioppilastutkinnonKokeenSuoritus) = {
+    val äidinkielenKoeSuomi = koe.koulutusmoduuli.tunniste.koodiarvo == "A"
+    val äidinkielenKoeRuotsi = koe.koulutusmoduuli.tunniste.koodiarvo == "O"
+    val suomiToisenaKielenäKoe = koe.koulutusmoduuli.tunniste.koodiarvo == "A5"
+    val ruotsiToisenaKielenäKoe = koe.koulutusmoduuli.tunniste.koodiarvo == "O5"
+    val arvosanaVähintäänMagna = koe.viimeisinArvosana.exists(List("M", "E", "L").contains)
+
+    if (äidinkielenKoeSuomi && koe.viimeisinArviointi.exists(_.hyväksytty)) {
+      Koulusivistyskieli.suomi
+    } else if (äidinkielenKoeRuotsi && koe.viimeisinArviointi.exists(_.hyväksytty)) {
+      Koulusivistyskieli.ruotsi
+    } else if (suomiToisenaKielenäKoe && arvosanaVähintäänMagna) {
+      Koulusivistyskieli.suomi
+    } else if (ruotsiToisenaKielenäKoe && arvosanaVähintäänMagna) {
+      Koulusivistyskieli.ruotsi
+    } else {
+      None
+    }
+  }
 }

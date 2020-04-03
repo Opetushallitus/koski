@@ -37,6 +37,7 @@ describe('Lukiokoulutus', function( ){
           'Suorituskieli suomi\n' +
           'Todistuksella näkyvät lisätiedot Ruotsin opinnoista osa hyväksiluettu Ruotsissa suoritettujen lukio-opintojen perusteella\n' +
           'Ryhmä 12A\n' +
+          'Koulusivistyskieli suomi\n' +
           'Suoritus valmis Vahvistus : 8.6.2016 Jyväskylä Reijo Reksi , rehtori')
       })
 

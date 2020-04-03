@@ -6,7 +6,6 @@ import java.time.LocalDate.{of => date}
 import fi.oph.koski.documentation.ExampleData.valtionosuusRahoitteinen
 import fi.oph.koski.documentation.AmmatillinenExampleData._
 import fi.oph.koski.documentation.ExampleData.{helsinki, longTimeAgo, opiskeluoikeusLäsnä}
-import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.{omniaTallentaja, stadinAmmattiopistoTallentaja}
@@ -225,14 +224,14 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
             "Ammatillisen tutkinnon osan suoritus puuttuu, mutta tutkinto on ostettu ja siihen linkataan muualta" - {
 
               "Palautetaan HTTP 200" in {
-                val stadinOpiskeluoikeus: AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(MockOppijat.eero, defaultOpiskeluoikeus, user = stadinAmmattiopistoTallentaja)
+                val stadinOpiskeluoikeus: AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(defaultHenkilö, defaultOpiskeluoikeus, user = stadinAmmattiopistoTallentaja, resetFixtures = true)
 
                 val omnianOpiskeluoikeus = makeOpiskeluoikeus(oppilaitos = Oppilaitos(MockOrganisaatiot.omnia)).copy(
                   suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus.copy(toimipiste = OidOrganisaatio(MockOrganisaatiot.omnia))),
                   sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(stadinOpiskeluoikeus.oppilaitos.get, stadinOpiskeluoikeus.oid.get))
                 )
 
-                val linkittävä: AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(MockOppijat.eero, omnianOpiskeluoikeus, user = omniaTallentaja)
+                val linkittävä: AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(defaultHenkilö, omnianOpiskeluoikeus, user = omniaTallentaja)
 
                 val linkitetty = stadinOpiskeluoikeus.copy(
                   versionumero = None,

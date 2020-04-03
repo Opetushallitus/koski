@@ -831,6 +831,7 @@ describe('Omat tiedot', function() {
             'Koulutus Ylioppilastutkinto\n' +
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
             'Pakolliset kokeet suoritettu kyllä\n' +
+            'Koulusivistyskieli suomi\n' +
             'Suoritus valmis Vahvistus : 2.6.2012 Helsinki\n' +
             'Tutkintokerta Koe Pisteet Arvosana\n' +
             '2012 kevät Äidinkielen koe, suomi 46 Lubenter approbatur\n' +

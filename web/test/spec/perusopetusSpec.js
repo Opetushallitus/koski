@@ -17,7 +17,8 @@ describe('Perusopetus', function() {
     it('näyttää opiskeluoikeuden tiedot', function() {
       expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal('Opiskeluoikeuden voimassaoloaika : 15.8.2008 — 4.6.2016\n' +
         'Tila 4.6.2016 Valmistunut\n' +
-        '15.8.2008 Läsnä')
+        '15.8.2008 Läsnä'
+      )
 
       expect(opinnot.opiskeluoikeudet.valitunVälilehdenAlaotsikot()).to.deep.equal([
         'Perusopetuksen oppimäärä 2008—2016, Valmistunut'
@@ -32,6 +33,7 @@ describe('Perusopetus', function() {
             'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
             'Suoritustapa Koulutus\n' +
             'Suorituskieli suomi\n' +
+            'Koulusivistyskieli suomi\n' +
             'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
         })
         it('näyttää oppiaineiden arvosanat', function() {
