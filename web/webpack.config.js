@@ -44,7 +44,7 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             cacheDirectory: true,
-            presets: ['es2015', 'react', 'stage-3']
+            presets: ['@babel/preset-env', '@babel/preset-react']
           }
         }
       },

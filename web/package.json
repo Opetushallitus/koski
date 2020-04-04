@@ -31,13 +31,17 @@
     "whatwg-fetch": "^2.0.4"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/plugin-proposal-json-strings": "^7.0.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+    "@babel/plugin-syntax-import-meta": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/register": "^7.9.0",
     "autoprefixer": "^9.7.4",
-    "babel-core": "^6.26.3",
     "babel-eslint": "^10.1.0",
-    "babel-loader": "^7.1.4",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
-    "babel-preset-stage-3": "^6.22.0",
+    "babel-loader": "^8.0.0",
     "chai": "^4.1.2",
     "copy-webpack-plugin": "5.0.5",
     "css-loader": "^2.1.1",
@@ -67,8 +71,8 @@
     "lint": "failOnWarning=true webpack --bail",
     "postinstall": "webpack -p --bail --define process.env.NODE_ENV=\"'production'\"",
     "watch": "webpack -d --progress --colors --watch --define process.env.NODE_ENV=${NODE_ENV:=undefined}",
-    "unit-test": "mocha --require babel-core/register --reporter spec ./test/unit-test",
-    "unit-test-watch": "mocha -w --require babel-core/register --reporter spec ./test/unit-test",
+    "unit-test": "mocha --require @babel/register --reporter spec ./test/unit-test",
+    "unit-test-watch": "mocha -w --require @babel/register --reporter spec ./test/unit-test",
     "test": "node/node test/mocha-chrome-wrapper.js ${MOCHA_URL:=http://localhost:7021/koski/test/runner.html}?grep=${MOCHA_GREP} --chrome-flags '[\"--use-mock-keychain\"]'"
   }
 }
