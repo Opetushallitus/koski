@@ -16,13 +16,13 @@ import fi.oph.scalaschema.annotation.SyntheticProperty
 import mojave._
 
 object OmatTiedotEditorModel extends Timing {
-  def toEditorModel(userOppija: WithWarnings[Oppija], oppija: Option[WithWarnings[Oppija]])(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = timed("createModel") {
+  def toEditorModel(userOppija: WithWarnings[Oppija], näytettäväOppija: WithWarnings[Oppija])(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = timed("createModel") {
     val piilotetuillaTiedoilla = piilotaArvosanatKeskeneräisistäSuorituksista _ andThen
       piilotaSensitiivisetHenkilötiedot andThen
       piilotaKeskeneräisetPerusopetuksenPäättötodistukset
 
-    val warnings = userOppija.warnings ++ oppija.toList.flatMap(_.warnings)
-    buildModel(buildView(piilotetuillaTiedoilla(userOppija.getIgnoringWarnings), oppija.map(h => piilotetuillaTiedoilla(h.getIgnoringWarnings)), warnings))
+    val warnings = userOppija.warnings ++ näytettäväOppija.warnings
+    buildModel(buildView(piilotetuillaTiedoilla(userOppija.getIgnoringWarnings), piilotetuillaTiedoilla(näytettäväOppija.getIgnoringWarnings), warnings))
   }
 
   def opiskeluoikeudetOppilaitoksittain(oppija: Oppija): List[OppilaitoksenOpiskeluoikeudet] = {
@@ -31,14 +31,13 @@ object OmatTiedotEditorModel extends Timing {
     }.toList.sorted(oppilaitoksenOpiskeluoikeudetOrdering)
   }
 
-  private def buildView(userOppija: Oppija, oppija: Option[Oppija], warnings: Seq[HttpStatus])(implicit application: KoskiApplication, koskiSession: KoskiSession) = {
-    val valittuOppija = oppija.getOrElse(userOppija)
+  private def buildView(userOppija: Oppija, näytettäväOppija: Oppija, warnings: Seq[HttpStatus])(implicit application: KoskiApplication, koskiSession: KoskiSession) = {
     val huollettavat = koskiSession.huollettavat
 
     OmatTiedotEditorView(
-      henkilö = valittuOppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot],
+      henkilö = näytettäväOppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot],
       userHenkilö = userOppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot],
-      opiskeluoikeudet = opiskeluoikeudetOppilaitoksittain(valittuOppija),
+      opiskeluoikeudet = opiskeluoikeudetOppilaitoksittain(näytettäväOppija),
       huollettavat = huollettavat.getOrElse(Nil),
       varoitukset = warnings.flatMap(_.errors).map(_.key).toList ++ huollettavat.left.map(_.errors.map(_.key)).left.getOrElse(Nil)
     )

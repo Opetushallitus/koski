@@ -20,28 +20,29 @@ class OmatTiedotServlet(implicit val application: KoskiApplication) extends ApiS
     renderOmatTiedot
   }
 
-  get("/editor/:huollettavanOid") {
-    renderHuollettavanTiedot(params("huollettavanOid"))
+  get("/editor/:oid") {
+    val oid = params("oid")
+    if (oid == koskiSession.user.oid) {
+      renderOmatTiedot
+    } else {
+      renderHuollettavanTiedot(oid)
+    }
   }
 
   private def renderOmatTiedot: Unit = {
     val käyttäjäOppija = huoltajaService.findUserOppijaAllowEmpty(koskiSession)
-    val editorModel = käyttäjäOppija.map(OmatTiedotEditorModel.toEditorModel(_, None))
+    val editorModel = käyttäjäOppija.map(oppija => OmatTiedotEditorModel.toEditorModel(userOppija = oppija, näytettäväOppija = oppija))
 
     renderEither[EditorModel](editorModel)
   }
 
   private def renderHuollettavanTiedot(oid: String): Unit = {
-    val käyttäjäOppija = huoltajaService.findUserOppijaAllowEmpty(koskiSession)
-    var haluttuOppija: Option[WithWarnings[Oppija]] = None;
+    val huoltajaOppija: Either[HttpStatus, WithWarnings[Oppija]] = huoltajaService.findUserOppijaAllowEmpty(koskiSession)
+    val huollettavaOppija: Either[HttpStatus, WithWarnings[Oppija]] = huoltajaService.findHuollettavaOppija(oid)(koskiSession)
 
-    if (oid != koskiSession.oid) {
-      haluttuOppija = huoltajaService.findHuollettavaOppija(oid)(koskiSession) match {
-        case Left(status) => None
-        case Right(oppija) => Some(oppija)
-      }
+    val editorModel = huoltajaOppija.flatMap(huoltaja => huollettavaOppija.map(huollettava => (huoltaja, huollettava))).map {
+      case (huoltaja, huollettava) => OmatTiedotEditorModel.toEditorModel(userOppija = huoltaja, näytettäväOppija = huollettava)
     }
-    val editorModel = käyttäjäOppija.map(OmatTiedotEditorModel.toEditorModel(_, haluttuOppija))
     renderEither[EditorModel](editorModel)
   }
 
