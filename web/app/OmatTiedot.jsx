@@ -18,8 +18,8 @@ import {Header} from './omattiedot/header/Header'
 import {EiSuorituksiaInfo} from './omattiedot/EiSuorituksiaInfo'
 import {patchSaavutettavuusLeima} from './saavutettavuusLeima'
 
-const omatTiedotP = code => {
-  const url = code ? `/koski/api/omattiedot/editor/${code}` : '/koski/api/omattiedot/editor'
+const omatTiedotP = oid => {
+  const url = oid ? `/koski/api/omattiedot/editor/${oid}` : '/koski/api/omattiedot/editor'
   return Bacon.combineWith(
     Http.cachedGet(url, { errorMapper: (e) => e.httpStatus === 404 ? null : new Bacon.Error(e)}).toProperty(),
     userP,
@@ -32,7 +32,8 @@ const omatTiedotP = code => {
 }
 
 const topBarP = userP.map(user => <OmatTiedotTopBar user={user}/>)
-const contentP = locationP.flatMapLatest(loc => omatTiedotP(loc.params.code).map(oppija =>
+const oppijaSelectionBus = new Bacon.Bus()
+const contentP = Bacon.mergeAll(oppijaSelectionBus, locationP).flatMapLatest(loc => omatTiedotP(loc.params.oid).map(oppija =>
     oppija
       ? <div className="main-content oppija"><Oppija oppija={Editor.setupContext(oppija, {editorMapping})} stateP={Bacon.constant('viewing')}/></div>
       : <div className="main-content"><EiSuorituksiaInfo oppija={oppija}/></div>
@@ -72,7 +73,7 @@ const Oppija = ({oppija}) => {
     : (
       <div>
         <div className="oppija-content">
-          <Header oppija={oppija}/>
+          <Header oppija={oppija} oppijaSelectionBus={oppijaSelectionBus}/>
           {hasOpintoja(oppija) ? <Editor key={document.location.toString()} model={oppija}/> : <EiSuorituksiaInfo oppija={oppija}/>}
         </div>
       </div>
