@@ -255,10 +255,10 @@ class KoskiOppijaFacade(
 
   private def writeViewingEventToAuditLog(user: KoskiSession, oid: Henkilö.Oid): Unit = {
     if (user != KoskiSession.systemUser) { // To prevent health checks from polluting the audit log
-      val operation = if (user.user.kansalainen && !user.getHuollettavatListWithoutStatus.exists(_.oid.contains(oid))) {
-        KANSALAINEN_OPISKELUOIKEUS_KATSOMINEN
-      } else if (user.user.kansalainen && user.getHuollettavatListWithoutStatus.exists(_.oid.contains(oid))) {
+      val operation = if (user.user.kansalainen && user.isUsersHuollettava(oid)) {
         KANSALAINEN_HUOLTAJA_OPISKELUOIKEUS_KATSOMINEN
+      } else if (user.user.kansalainen) {
+        KANSALAINEN_OPISKELUOIKEUS_KATSOMINEN
       } else if (user.user.isSuoritusjakoKatsominen) {
         KANSALAINEN_SUORITUSJAKO_KATSOMINEN
       } else if (user.oid == config.getString("suomi-fi-user-oid")) {

@@ -33,14 +33,14 @@ object OmatTiedotEditorModel extends Timing {
 
   private def buildView(userOppija: Oppija, oppija: Option[Oppija], warnings: Seq[HttpStatus])(implicit application: KoskiApplication, koskiSession: KoskiSession) = {
     val valittuOppija = oppija.getOrElse(userOppija)
-    val huollettavat = koskiSession.getHuollettavatList
+    val huollettavat = koskiSession.huollettavat
 
     OmatTiedotEditorView(
       henkilö = valittuOppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot],
       userHenkilö = userOppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot],
       opiskeluoikeudet = opiskeluoikeudetOppilaitoksittain(valittuOppija),
-      huollettavat = koskiSession.getHuollettavatList.right.getOrElse(List()),
-      varoitukset = warnings.flatMap(_.errors).map(_.key).toList ++ huollettavat.left.map(_.errors.map(_.key)).left.getOrElse(List())
+      huollettavat = huollettavat.getOrElse(Nil),
+      varoitukset = warnings.flatMap(_.errors).map(_.key).toList ++ huollettavat.left.map(_.errors.map(_.key)).left.getOrElse(Nil)
     )
   }
 

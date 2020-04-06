@@ -36,8 +36,7 @@ abstract class AuxiliaryOpiskeluoikeusRepositoryImpl[OO <: Opiskeluoikeus, CK <:
   }
 
   override def findHuollettavaByOppija(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSession): List[OO] = {
-    val huollettavat = user.getHuollettavatListWithoutStatus
-    assert(huollettavat.exists(_.oid.exists(_ == tunnisteet.oid)), "Käyttäjän oid: " + user.oid + " poikkeaa etsittävän oppijan oidista: " + tunnisteet.oid)
+    assert(user.isUsersHuollettava(tunnisteet.oid), "Käyttäjän oid: " + user.oid + " poikkeaa etsittävän oppijan oidista: " + tunnisteet.oid)
     cachedOpiskeluoikeudet(tunnisteet)
   }
 

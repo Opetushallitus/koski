@@ -30,8 +30,7 @@ class YtrKoesuoritusServlet(implicit val application: KoskiApplication) extends 
   private def getOppija: Option[HenkilönTunnisteet] =  {
     if (isHuollettava) {
       val huollettavaOid = getStringParam("huollettava")
-      val huollettavat = koskiSession.getHuollettavatListWithoutStatus
-      assert(huollettavat.exists(_.oid.exists(_ == huollettavaOid)), "Käyttäjän oid: " + koskiSession.oid + " ei löydy etsittävän oppijan oideista: " + koskiSession)
+      assert(koskiSession.isUsersHuollettava(huollettavaOid), "Käyttäjän oid: " + koskiSession.oid + " ei löydy etsittävän oppijan oideista: " + koskiSession)
 
       val huollettavaOppija = application.henkilöRepository.findByOid(huollettavaOid)
       if (huollettavaOppija.isEmpty) {

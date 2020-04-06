@@ -19,7 +19,6 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
   def username = user.username
   def userOption = Some(user)
   def logString = "käyttäjä " + username + " / " + user.oid
-  def huollettavat = user.huollettavat
 
   lazy val orgKäyttöoikeudet: Set[KäyttöoikeusOrg] = käyttöoikeudet.collect { case k : KäyttöoikeusOrg => k}
   lazy val varhaiskasvatusKäyttöoikeudet: Set[KäyttöoikeusVarhaiskasvatusToimipiste] = käyttöoikeudet.collect { case k: KäyttöoikeusVarhaiskasvatusToimipiste => k }
@@ -84,35 +83,11 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
     orgKäyttöoikeudet.exists(_.organisaatiokohtaisetPalveluroolit.contains(palveluRooli))
   }
 
-  def getHuollettavatList: Either[HttpStatus, List[Huollettava]] = {
-    user.huollettavat match {
-      case Some(searchResult) => {
-        searchResult match {
-          case haku: HuollettavienHakuOnnistui => {
-            Right(haku.huollettavat)
-          }
-          case _ => Left(KoskiErrorCategory.unavailable.huollettavat())
-        }
-      }
-      // Tässä tapauksessa huoltaja-hakua ei ole suoritettu ja palautetaan tyhjä lista.
-      // Esimerkkinä tällaisesta tapauksesta esimerkiksi suoritusjakolinkin avaaminen.
-      case None => Right(List())
-    }
-  }
+  def huollettavat: Either[HttpStatus, List[Huollettava]] = user.huollettavat.collect {
+    case haku: HuollettavienHakuOnnistui => Right(haku.huollettavat)
+  }.getOrElse(Left(KoskiErrorCategory.unavailable.huollettavat()))
 
-  def getHuollettavatListWithoutStatus: List[Huollettava] = {
-    user.huollettavat match {
-      case Some(searchResult) => {
-        searchResult match {
-          case haku: HuollettavienHakuOnnistui => {
-            haku.huollettavat
-          }
-          case _ => List()
-        }
-      }
-      case None => List()
-    }
-  }
+  def isUsersHuollettava(oid: String): Boolean = huollettavat.exists(_.exists(huollettava => huollettava.oid.contains(oid)))
 
   def juuriOrganisaatiot: List[OrganisaatioWithOid] = orgKäyttöoikeudet.collect { case r: KäyttöoikeusOrg if r.juuri => r.organisaatio }.toList
 
