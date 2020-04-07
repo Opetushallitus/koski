@@ -3,7 +3,10 @@ package fi.oph.koski.ytr
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.HenkilönTunnisteet
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.koskiuser.RequiresKansalainen
+import fi.oph.koski.koskiuser.{KoskiSession, RequiresKansalainen}
+import fi.oph.koski.log.KoskiOperation.KoskiOperation
+import fi.oph.koski.log.{AuditLog, AuditLogMessage, KoskiMessageField}
+import fi.oph.koski.log.KoskiOperation.{KANSALAINEN_YLIOPPILASKOE_HAKU, KANSALAINEN_HUOLTAJA_YLIOPPILASKOE_HAKU}
 import fi.oph.koski.servlet.HtmlServlet
 
 class YtrKoesuoritusServlet(implicit val application: KoskiApplication) extends HtmlServlet with RequiresKansalainen {
@@ -31,17 +34,22 @@ class YtrKoesuoritusServlet(implicit val application: KoskiApplication) extends 
     if (isHuollettava) {
       getHuollettavaOppija
     } else {
+      mkAuditLog(koskiSession, KANSALAINEN_YLIOPPILASKOE_HAKU)
       application.henkilöRepository.findByOid(koskiSession.oid)
    }
 
   private def getHuollettavaOppija: Option[HenkilönTunnisteet] = {
     val oid = getStringParam("huollettava")
     if (koskiSession.isUsersHuollettava(oid)) {
+      mkAuditLog(oid, KANSALAINEN_HUOLTAJA_YLIOPPILASKOE_HAKU)
       application.henkilöRepository.findByOid(oid)
     } else {
       None
     }
   }
 
-  private def isHuollettava = getBooleanParam("huollettava")
+  private def mkAuditLog(session: KoskiSession, operation: KoskiOperation): Unit = mkAuditLog(session.oid, operation)
+  private def mkAuditLog(oid: String, operation: KoskiOperation): Unit = AuditLog.log(AuditLogMessage(operation, koskiSession, Map(KoskiMessageField.oppijaHenkiloOid -> oid)))
+
+  private def isHuollettava = getOptionalStringParam("huollettava").isDefined
 }
