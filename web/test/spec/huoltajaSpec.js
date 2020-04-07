@@ -69,7 +69,10 @@ describe('Huollettavien tiedot', function () {
               '2012 kevät Maantiede 26 Magna cum laude approbatur Näytä koesuoritus\n' +
               '2012 kevät Matematiikan koe, lyhyt oppimäärä 59 Laudatur Näytä koesuoritus'
             )
-            expect(findFirst('.koesuoritus a')().attr('href')).to.equal('/koski/koesuoritus/2345K_XX_12345.pdf?huollettava=1.2.246.562.24.00000000041')
+          })
+
+          it('koesuoritus linkissä on huollettavan oid', function () {
+            expect(findFirst('.koesuoritus a')().attr('href')).to.includes('/koski/koesuoritus/2345K_XX_12345.pdf?huollettava=1.2.246.562.24.')
           })
         })
       })

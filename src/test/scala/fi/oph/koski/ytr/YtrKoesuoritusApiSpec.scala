@@ -22,7 +22,7 @@ class YtrKoesuoritusApiSpec extends FreeSpec with LocalJettyHttpSpecification wi
       }
     }
 
-    "voi hakea huollettavan koesuorituslistauksen luotuaan valtuutusistunnon" in {
+    "voi hakea huollettavan koesuorituslistauksen" in {
       post("api/ytrkoesuoritukset/" + MockOppijat.ylioppilasLukiolainen.oid, headers = kansalainenLoginHeaders(MockOppijat.faija.hetu.get) ++ jsonContent) {
         verifyResponseStatusOk()
         readExams should equal (expected)

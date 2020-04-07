@@ -27,26 +27,21 @@ class YtrKoesuoritusServlet(implicit val application: KoskiApplication) extends 
       .exists(_.examPapers.contains(examPaper))
   }
 
-  private def getOppija: Option[HenkilönTunnisteet] =  {
+  private def getOppija: Option[HenkilönTunnisteet] =
     if (isHuollettava) {
-      val huollettavaOid = getStringParam("huollettava")
-      assert(koskiSession.isUsersHuollettava(huollettavaOid), "Käyttäjän oid: " + koskiSession.oid + " ei löydy etsittävän oppijan oideista: " + koskiSession)
-
-      val huollettavaOppija = application.henkilöRepository.findByOid(huollettavaOid)
-      if (huollettavaOppija.isEmpty) {
-        logger.warn("Huollettavaa oppijaa ei löytynyt")
-      } else {
-        logger.debug(s"Tarkastetaan huollettavan oppijan koesuoritus access ${huollettavaOppija.get.oid}")
-      }
-      huollettavaOppija
+      getHuollettavaOppija
     } else {
       application.henkilöRepository.findByOid(koskiSession.oid)
+   }
+
+  private def getHuollettavaOppija: Option[HenkilönTunnisteet] = {
+    val oid = getStringParam("huollettava")
+    if (koskiSession.isUsersHuollettava(oid)) {
+      application.henkilöRepository.findByOid(oid)
+    } else {
+      None
     }
   }
 
-  private def isHuollettava = try {
-    !params("huollettava").isEmpty
-  }  catch {
-    case _: Throwable => false
-  }
+  private def isHuollettava = getBooleanParam("huollettava")
 }

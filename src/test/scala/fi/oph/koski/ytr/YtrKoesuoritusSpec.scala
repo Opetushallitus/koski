@@ -16,8 +16,22 @@ class YtrKoesuoritusSpec extends FreeSpec with LocalJettyHttpSpecification with 
       }
     }
 
+    "näkee huolletavansa koesuorituksen" in {
+      get(s"koesuoritus/2345K_XX_12345.pdf?huollettava=${MockOppijat.ylioppilasLukiolainen.oid}", headers = kansalainenLoginHeaders(MockOppijat.faija.hetu.get)) {
+        verifyResponseStatusOk()
+        bodyBytes should equal(resourceAsByteArray(s"/mockdata/ytr/2345K_XX_12345.pdf"))
+      }
+    }
+
+
     "ei näe toisten koesuoritusta" in {
       get("koesuoritus/2345K_XX_12345.pdf", headers = kansalainenLoginHeaders("210244-374K")) {
+        verifyResponseStatus(404, Nil)
+      }
+    }
+
+    "ei näe toisen huollettavan koesuoritusta" in {
+      get(s"koesuoritus/2345K_XX_12345.pdf?huollettava=${MockOppijat.ylioppilasLukiolainen.oid}", headers = kansalainenLoginHeaders(MockOppijat.amis.hetu.get)) {
         verifyResponseStatus(404, Nil)
       }
     }
