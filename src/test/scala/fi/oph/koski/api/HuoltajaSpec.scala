@@ -1,6 +1,7 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.AuditLogTester
 import org.json4s.jackson.JsonMethods
 import org.json4s.{DefaultFormats, JObject}
@@ -30,6 +31,14 @@ class HuoltajaSpec extends FreeSpec with LocalJettyHttpSpecification with Opiske
         verifyResponseStatusOk()
         val nimet = nimitiedot
         nimet("etunimet") should equal("Essi")
+      }
+    }
+
+    "Muiden kuin huollettavien tietojen katselu on estetty" in {
+      val loginHeaders = kansalainenLoginHeaders(MockOppijat.faija.hetu.get)
+
+      get(s"api/omattiedot/editor/" + MockOppijat.amis.oid, headers = loginHeaders) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
       }
     }
 

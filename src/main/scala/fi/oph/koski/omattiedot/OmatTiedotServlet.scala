@@ -2,7 +2,7 @@ package fi.oph.koski.omattiedot
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.{EditorModel, EditorModelSerializer}
-import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.LegacyJsonSerialization
 import fi.oph.koski.koskiuser.RequiresKansalainen
 import fi.oph.koski.schema.Oppija
@@ -37,6 +37,10 @@ class OmatTiedotServlet(implicit val application: KoskiApplication) extends ApiS
   }
 
   private def renderHuollettavanTiedot(oid: String): Unit = {
+    if (!koskiSession.isUsersHuollettava(oid)) {
+      haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
+    }
+
     val huoltajaOppija: Either[HttpStatus, WithWarnings[Oppija]] = huoltajaService.findUserOppijaAllowEmpty(koskiSession)
     val huollettavaOppija: Either[HttpStatus, WithWarnings[Oppija]] = huoltajaService.findHuollettavaOppija(oid)(koskiSession)
 
