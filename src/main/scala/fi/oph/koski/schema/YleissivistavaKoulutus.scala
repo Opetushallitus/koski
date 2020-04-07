@@ -4,6 +4,7 @@ import java.time.LocalDate
 
 import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema.annotation._
+import fi.oph.koski.util.OptionalLists
 import fi.oph.scalaschema.annotation.{DefaultValue, Description, Title}
 
 trait OppiaineenSuoritus extends Suoritus {
@@ -82,3 +83,25 @@ case class OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina(
   kieli: Koodistokoodiviite,
   laajuus: Option[LaajuusVuosiviikkotunneissa]
 ) extends OmanÄidinkielenArviointi
+
+trait KoulusivistyskieliKieliaineesta extends Koulusivistyskieli with PäätasonSuoritus {
+  def koulusivistyskieli: Option[List[Koodistokoodiviite]] = OptionalLists.optionalList(osasuoritukset.toList.flatten
+    .filter(_.viimeisinArviointi.exists(_.hyväksytty))
+    .map(_.koulutusmoduuli)
+    .collect {
+      case o: NuortenPerusopetuksenÄidinkieliJaKirjallisuus if o.pakollinen => kieliaineesta(o)
+      case l: LukionÄidinkieliJaKirjallisuus if l.pakollinen => kieliaineesta(l)
+    }.flatten
+    .sortBy(_.koodiarvo)
+    .distinct
+  )
+
+  private def kieliaineesta(kieliaine: Kieliaine): Option[Koodistokoodiviite] =
+    if (kieliaine.kieli.koodiarvo == "AI1") {
+      Koulusivistyskieli.suomi
+    } else if (kieliaine.kieli.koodiarvo == "AI2") {
+      Koulusivistyskieli.ruotsi
+    } else {
+      None
+    }
+}

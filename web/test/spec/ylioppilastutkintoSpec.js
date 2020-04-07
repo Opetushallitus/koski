@@ -17,7 +17,9 @@ describe('Ylioppilastutkinto', function( ){
         expect(extractAsText(S('.opiskeluoikeuden-tiedot, .suoritus > .properties'))).to.equal(
           'Koulutus Ylioppilastutkinto 301000\n' +
           'Oppilaitos / toimipiste Helsingin medialukio\n' +
-          'Pakolliset kokeet suoritettu kyllä')
+          'Pakolliset kokeet suoritettu kyllä\n' +
+          'Koulusivistyskieli suomi'
+        )
       })
 
       it('tila ja vahvistus', function() {

@@ -1,0 +1,30 @@
+{
+  "certificateSchoolOphOid": "1.2.246.562.10.62858797335",
+  "ssn": "280171-2730",
+  "lastname": "MontaKoulu",
+  "firstnames": "SivistysKieltä",
+  "graduationDate": "1995-05-31",
+  "graduationPeriod": "2012K",
+  "hasCompletedMandatoryExams": true,
+  "exams": [
+    {
+      "period": "2012K",
+      "examId": "A",
+      "examRoleLegacy": "11",
+      "examRoleShort": "mother-tongue",
+      "grade": "A",
+      "points": 53,
+      "sections": []
+    },
+    {
+      "period": "2012K",
+      "examId": "O5",
+      "examRoleLegacy": "61",
+      "examRoleShort": "optional-subject",
+      "grade": "L",
+      "points": 196,
+      "sections": []
+    }
+  ],
+  "language": "fi"
+}

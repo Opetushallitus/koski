@@ -1,0 +1,48 @@
+{
+  "certificateSchoolOphOid": "1.2.246.562.10.62858797335",
+  "ssn": "280171-2730",
+  "lastname": "Koulu",
+  "firstnames": "Sivistys",
+  "graduationDate": "1995-05-31",
+  "graduationPeriod": "2012K",
+  "hasCompletedMandatoryExams": true,
+  "exams": [
+    {
+      "period": "2012K",
+      "examId": "A",
+      "examRoleLegacy": "11",
+      "examRoleShort": "mother-tongue",
+      "grade": "I",
+      "points": 53,
+      "sections": []
+    },
+    {
+      "period": "2011K",
+      "examId": "A",
+      "examRoleLegacy": "31",
+      "examRoleShort": "mandatory-subject",
+      "grade": "I-",
+      "points": 252,
+      "sections": []
+    },
+    {
+      "period": "2012K",
+      "examId": "A5",
+      "examRoleLegacy": "31",
+      "examRoleShort": "mandatory-subject",
+      "grade": "I",
+      "points": 252,
+      "sections": []
+    },
+    {
+      "period": "2012K",
+      "examId": "O5",
+      "examRoleLegacy": "61",
+      "examRoleShort": "optional-subject",
+      "grade": "M",
+      "points": 196,
+      "sections": []
+    }
+  ],
+  "language": "fi"
+}

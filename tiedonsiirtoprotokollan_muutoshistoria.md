@@ -1,3 +1,6 @@
+## 7.4.2020
+- Lisätty koulusivistyskieli-kenttä ylioppilastutkinnon, nuorten perusopetuksen oppimäärän ja lukion oppimäärän suoritukseen
+
 ## 27.3.2020
 - Lisätty korkeakoulun opiskeluoikeuden lisätietoihin optionaalinen kenttä järjestäväOrganisaatio
 
