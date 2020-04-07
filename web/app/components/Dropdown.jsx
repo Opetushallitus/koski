@@ -21,11 +21,19 @@ import {buildClassNames} from './classnames'
   selectionText: shown when no option is selected
   inline: hide borders until hovered upon
  */
-export default ({ options, keyValue = o => o.key, displayValue = o => o.value,
-                  selected, onSelectionChanged, selectionText = t('Valitse...'),
+export default ({ options,
+                  keyValue = o => o.key,
+                  displayValue = o => o.value,
+                  selected,
+                  onSelectionChanged,
+                  selectionText = t('Valitse...'),
                   inline = false,
                   enableFilter = false,
-                  newItem, isRemovable = () => false, onRemoval, removeText}) => {
+                  newItem,
+                  isRemovable = () => false,
+                  onRemoval,
+                  removeText,
+                  isOptionEnabled = () => true }) => {
   options = toObservable(options)
   let selectedP = toObservable(selected)
   inline = parseBool(inline)
@@ -105,8 +113,10 @@ export default ({ options, keyValue = o => o.key, displayValue = o => o.value,
   let selectOption = (e, option) => {
     e.preventDefault()
     e.stopPropagation()
-    onSelectionChanged(option)
-    openAtom.set(false)
+    if (isOptionEnabled(option)) {
+      onSelectionChanged(option)
+      openAtom.set(false)
+    }
   }
   let selectRemoval = (e, option) => {
     e.preventDefault()
@@ -145,9 +155,11 @@ export default ({ options, keyValue = o => o.key, displayValue = o => o.value,
                   let isNew = isNewItem(allOptions, o, i)
                   let isZeroValue = keyValue(o) == 'eivalintaa'
                   let itemClassName = Bacon.combineWith(
-                    (s, r) => s + r,
-                    selectionIndexAtom.map(selectionIndex => buildClassNames(['option', i === selectionIndex && 'selected', isNew && 'new-item', isZeroValue && 'zero-value'])),
-                    removeIndexAtom.map(removeIndex => removeIndex === i ? ' removing' : ''))
+                    (s, r, a) => s + r + a,
+                    selectionIndexAtom.map(selectionIndex => buildClassNames(['option', i === selectionIndex && isOptionEnabled(o) && 'selected', isNew && 'new-item', isZeroValue && 'zero-value'])),
+                    removeIndexAtom.map(removeIndex => removeIndex === i ? ' removing' : ''),
+                    isOptionEnabled(o) ? '' : ' option-disabled'
+                  )
                   let itemElement = (<li key={keyValue(o) || displayValue(o)}
                                          className={itemClassName}
                                          onMouseDown={(e) => {selectOption(e, o)}}
