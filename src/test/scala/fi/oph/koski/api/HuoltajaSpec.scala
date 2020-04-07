@@ -73,9 +73,4 @@ class HuoltajaSpec extends FreeSpec with LocalJettyHttpSpecification with Opiske
       .map { nimiJson =>
         (nimiJson \ "key").extract[String] -> (nimiJson \ "model" \ "value" \ "data").extract[String]
       }.toMap
-
-  def päätasonSuoritukset = JsonMethods.parse(body)
-    .filter(json => (json \ "key").extractOpt[String].contains("suoritukset") && (json \ "model" \ "value").toOption.isDefined)
-    .map(json => json \ "model" \ "value")
-    .flatMap(json => json.extract[List[JObject]])
 }
