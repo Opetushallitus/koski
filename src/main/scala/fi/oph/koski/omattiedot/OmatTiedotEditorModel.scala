@@ -21,8 +21,7 @@ object OmatTiedotEditorModel extends Timing {
       piilotaSensitiivisetHenkilötiedot andThen
       piilotaKeskeneräisetPerusopetuksenPäättötodistukset
 
-    val warnings = userOppija.warnings ++ näytettäväOppija.warnings
-    buildModel(buildView(piilotetuillaTiedoilla(userOppija.getIgnoringWarnings), piilotetuillaTiedoilla(näytettäväOppija.getIgnoringWarnings), warnings))
+    buildModel(buildView(piilotetuillaTiedoilla(userOppija.getIgnoringWarnings), piilotetuillaTiedoilla(näytettäväOppija.getIgnoringWarnings), näytettäväOppija.warnings))
   }
 
   def opiskeluoikeudetOppilaitoksittain(oppija: Oppija): List[OppilaitoksenOpiskeluoikeudet] = {
