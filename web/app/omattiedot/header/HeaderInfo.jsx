@@ -3,10 +3,7 @@ import Text from '../../i18n/Text'
 import {Varoitukset} from '../../util/Varoitukset'
 import {hasOpintoja} from '../../OmatTiedot'
 
-export const HeaderInfo = ({oppija, varoitukset}) =>
-{
-return (
-
+export const HeaderInfo = ({oppija, varoitukset}) => (
   <div className='header__info'>
     <Varoitukset varoitukset={varoitukset}/>
     <h1 className='header__heading'>
@@ -19,4 +16,3 @@ return (
     </div>)}
   </div>
 )
-}

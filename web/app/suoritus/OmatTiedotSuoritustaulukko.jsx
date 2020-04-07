@@ -82,13 +82,11 @@ const YtrArvosanaColumn = (parentSuoritus) => {
 }
 
 const KoesuoritusLink = ({copyOfExamPaper, kokeenNimi, parentSuoritus}) =>
-{
-  return copyOfExamPaper
+  copyOfExamPaper
     ? (<a className='text-button-small' target='_blank' href={`/koski/koesuoritus/${copyOfExamPaper}${parentSuoritus.context.huollettava ? '?huollettava=' + parentSuoritus.context.oppijaOid : ''}`}>
         <Text className='show-koesuoritus-text' name='Näytä koesuoritus' aria-label={t(kokeenNimi) + '. ' + t('Näytä koesuoritus')}/>
       </a>)
     : null
-}
 
 const SuoritusGroup = ({groups, groupId, columns, nested, parentSuoritus, laajuusYksikkö}) => {
   const groupItems = groups.grouped[groupId]
