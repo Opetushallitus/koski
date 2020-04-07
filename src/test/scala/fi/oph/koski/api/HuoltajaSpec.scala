@@ -15,12 +15,11 @@ class HuoltajaSpec extends FreeSpec with LocalJettyHttpSpecification with Opiske
 
       get(s"api/omattiedot/editor", headers = loginHeaders) {
         verifyResponseStatusOk()
-        val nimet = nimitiedot
         val huollettavat = huollettavienTiedot
         val etunimet = huollettavat.map(huollettava => {
           huollettava("etunimet")
         }).sorted
-        etunimet should equal (List("Eino", "Essi", "Ynjevi"))
+        etunimet should equal (List("Essi", "Olli", "Ynjevi"))
       }
     }
 
@@ -49,7 +48,7 @@ class HuoltajaSpec extends FreeSpec with LocalJettyHttpSpecification with Opiske
       .filter(json => (json \ "key").extractOpt[String].contains("huollettavat"))
       .map(json => json \ "model" \ "value")
       .flatMap(json => json.extract[List[JObject]])
-      .map(json => json.filter(json => (json \ "key").extractOpt[String].exists(k => k == "etunimet" || k == "sukunimi" || k == "oid")))
+      .map(json => json.filter(json => (json \ "key").extractOpt[String].exists(k => k == "etunimet" || k == "sukunimi" )))
       .map(json => json
         .map { huollettavaJson =>
           (huollettavaJson \ "key").extract[String] -> (huollettavaJson \ "model" \ "value" \ "data").extract[String]

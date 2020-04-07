@@ -29,32 +29,22 @@ function OmatTiedotPage() {
       return S('header button:contains(Jaa suoritustietoja)')
     },
     selectOpiskelija: function() {
-      var elem = findSingle('.header__oppijanvalitsin input')();
+      var elem = findSingle('.header__oppijanvalitsin')();
       return findFirstNotThrowing(elem)
     },
     selectOpiskelijaNäkyvissä: function() {
-      return isElementVisible(S('.header__oppijanvalitsin input'))
+      return isElementVisible(S('.header__oppijanvalitsin'))
     },
     opiskelijanValintaNimet: function() {
       var elem = findSingle('.header__oppijanvalitsin')
       var result = toArray(elem().find('.option')).map(function(i) { return i.innerHTML })
       return result
     },
-    opiskelijanValinta: function() {
+    opiskelijanValinta: function(name) { return function() {
       var elem = findSingle('.header__oppijanvalitsin')
-      var result = toArray(elem().find('.option:nth-child(2)'))
+      var result = toArray(elem().find(`.option:contains("${name}")`))
       return result
-    },
-    opiskelijanValinta2: function() {
-      var elem = findSingle('.header__oppijanvalitsin')
-      var result = toArray(elem().find('.option:nth-child(3)'))
-      return result
-    },
-    opiskelijanValinta3: function() {
-      var elem = findSingle('.header__oppijanvalitsin')
-      var result = toArray(elem().find('.option:nth-child(4)'))
-      return result
-    },
+    }},
     virheraportointiForm: VirheraportointiForm(),
     suoritusjakoForm: SuoritusjakoForm(),
     headerNimi: function() {

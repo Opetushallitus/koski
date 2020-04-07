@@ -4,7 +4,6 @@ describe('Huollettavien tiedot', function () {
   var authentication = Authentication()
   var etusivu = LandingPage()
   var korhopankki = KorhoPankki()
-  var huollettavantiedot = omattiedot.huollettavientiedotForm
 
   // Ks. huoltaja -> huollettava mäppäys metodista fi.oph.koski.omattiedot.MockValtuudetClient.findOppija
 
@@ -24,16 +23,23 @@ describe('Huollettavien tiedot', function () {
       before(click(omattiedot.selectOpiskelija))
 
       it('näytetään opiskelijan valinta', function () {
-        expect(omattiedot.opiskelijanValintaNimet()).to.deep.equal(
-          ["Faija EiOpintojaKoskessa",
+        expect(omattiedot.opiskelijanValintaNimet()).to.deep.equal([
           "Essi Eskari",
-          "Eino EiKoskessa",
-          "Ynjevi Ylioppilaslukiolainen"]
+          "Olli Oiditon (Ei opintoja)",
+          "Ynjevi Ylioppilaslukiolainen"
+          ]
         )
       })
 
+      describe('Huollettavan jolla ei ole oidia', function () {
+        before(click(omattiedot.opiskelijanValinta('Olli')))
+        it('valitsemisesta ei tapahdu mitään', function () {
+          verifyOppijaEmpty('Opintoni', 'Faija EiOpintojaKoskessa\ns. 3.3.1900')
+        })
+      })
+
       describe('Kun valitaan huollettava', function () {
-        before(click(omattiedot.opiskelijanValinta ))
+        before(click(omattiedot.opiskelijanValinta("Essi") ))
         before(wait.until(function() { return omattiedot.oppija() === "Huollettavani opinnot" }))
 
         it('näytetään huollettavan tiedot', function () {
@@ -42,8 +48,7 @@ describe('Huollettavien tiedot', function () {
       })
 
       describe('Kun valitaan yliopistotutkinnon suorittanut huollettava', function () {
-        before(click(omattiedot.selectOpiskelija))
-        before(click(omattiedot.opiskelijanValinta3 ))
+        before(click(omattiedot.opiskelijanValinta("Ynjevi") ))
         before(wait.until(function() { return omattiedot.headerNimi() === "Ynjevi Ylioppilaslukiolainen\ns. 8.6.1998" }))
 
         it('näytetään huollettavan tiedot', function () {
@@ -66,24 +71,6 @@ describe('Huollettavien tiedot', function () {
             )
             expect(findFirst('.koesuoritus a')().attr('href')).to.equal('/koski/koesuoritus/2345K_XX_12345.pdf?huollettava=1.2.246.562.24.00000000041')
           })
-        })
-      })
-    })
-  })
-
-  describe('Kun huollettavalla ei ole opintoja Koskessa', function() {
-    before(authentication.logout, etusivu.openPage, etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('030300-5215'), wait.until(omattiedot.isVisible))
-
-    describe('Kun painetaan Huollettavien opintotiedot-nappia', function() {
-      before(wait.until(omattiedot.omatTiedotNäkyvissä))
-      before(click(omattiedot.selectOpiskelija))
-
-      describe('Kun valitaan huollettava', function () {
-        before(click(omattiedot.opiskelijanValinta2 ))
-        before(wait.until(function() { return omattiedot.oppija() === "Huollettavani opinnot" }))
-
-        it('näytetään huollettavan tiedot', function () {
-          verifyOppijaEmpty('Huollettavani opinnot', 'Eino EiKoskessa\ns. 27.1.1981')
         })
       })
     })

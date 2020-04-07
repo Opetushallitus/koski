@@ -40,8 +40,8 @@ class MockHuollettavatRepository extends HuollettavatRepository {
     if (faija.hetu.contains(huoltajaHetu)) {
       Right(List(
         VtjHuollettavaHenkilö(eskari.etunimet, eskari.sukunimi, eskari.hetu.get),
-        VtjHuollettavaHenkilö(eiKoskessa.etunimet, eiKoskessa.sukunimi, eiKoskessa.hetu.get),
-        VtjHuollettavaHenkilö(ylioppilasLukiolainen.etunimet, ylioppilasLukiolainen.sukunimi, ylioppilasLukiolainen.hetu.get)
+        VtjHuollettavaHenkilö(ylioppilasLukiolainen.etunimet, ylioppilasLukiolainen.sukunimi, ylioppilasLukiolainen.hetu.get),
+        VtjHuollettavaHenkilö("Olli", "Oiditon", "060488-681S")
       ))
     } else if (faijaFeilaa.hetu.contains(huoltajaHetu)) {
       Left(KoskiErrorCategory.unavailable.huollettavat())
