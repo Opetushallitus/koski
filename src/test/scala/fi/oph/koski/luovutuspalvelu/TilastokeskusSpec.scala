@@ -10,7 +10,7 @@ import fi.oph.koski.henkilo.MockOppijat.defaultOppijat
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.MockUsers.paakayttaja
+import fi.oph.koski.koskiuser.MockUsers.paakayttajaMitatoidytOpiskeluoikeudet
 import fi.oph.koski.koskiuser.{KäyttöoikeusViranomainen, MockUsers, Palvelurooli}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema.Henkilö.Oid
@@ -33,13 +33,11 @@ class TilastokeskusSpec extends FreeSpec with LocalJettyHttpSpecification with O
       eero.get.henkilö.linkitetytOidit should be(empty)
     }
 
-    /*
     "Hakee myös mitätöidyt opiskeluoikeudet" in {
       val kaikkiOppijat = performQuery()
       val tilat = kaikkiOppijat.flatMap(_.opiskeluoikeudet).map(_.tila.opiskeluoikeusjaksot.last.tila.koodiarvo)
       tilat should contain("mitatoity")
     }
-    */
 
     "Vaatii TILASTOKESKUS-käyttöoikeuden" in {
       val withoutTilastokeskusAccess = MockUsers.users.filterNot(_.käyttöoikeudet.collect { case k: KäyttöoikeusViranomainen => k }.exists(_.globalPalveluroolit.contains(Palvelurooli("KOSKI", "TILASTOKESKUS"))))
@@ -155,7 +153,7 @@ class TilastokeskusSpec extends FreeSpec with LocalJettyHttpSpecification with O
 
   private val masterHenkilöt = defaultOppijat.filterNot(_.master.isDefined).map(_.henkilö).sortBy(_.oid)
   private val koskeenTallennetutOppijat: List[(Oid, String, String, List[Oid], List[String])] = masterHenkilöt.flatMap { m =>
-    tryOppija(m.oid, paakayttaja) match {
+    tryOppija(m.oid, paakayttajaMitatoidytOpiskeluoikeudet) match {
       case Right(Oppija(h: TäydellisetHenkilötiedot, opiskeluoikeudet)) =>
         opiskeluoikeudet.flatMap(_.oid).map { opiskeluoikeusOid =>
           (h.oid, h.sukunimi, h.etunimet, linkitettyOid.get(h.oid).toList, List(opiskeluoikeusOid))
