@@ -15,7 +15,6 @@ object MockUsers {
     oppilaitosTallentaja(orgOid).copy(organisaatiokohtaisetPalveluroolit = oppilaitosTallentaja(orgOid).organisaatiokohtaisetPalveluroolit.filterNot(_.rooli == Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   }
 
-  val pääkäyttäjäTilastokeskusOikeuksilla = MockUser("käyttäjä", "mikko", "1.2.246.562.24.99999999987", Set(ophPääkäyttäjä, KäyttöoikeusViranomainen(List(Palvelurooli(TILASTOKESKUS)))))
   val kalle = MockUser("käyttäjä", "kalle", "1.2.246.562.24.99999999987", (lehtikuusentienToimipiste :: oppilaitokset).map(oppilaitosTallentaja).toSet)
   val pärre = MockUser("käyttäjä", "pärre", "1.2.246.562.24.99999999901", (lehtikuusentienToimipiste :: oppilaitokset).map(oppilaitosTallentaja).toSet, "sv")
   val omniaPalvelukäyttäjä = MockUser("käyttäjä", "omnia-palvelukäyttäjä", "1.2.246.562.24.99999999989", Set(oppilaitosPalvelukäyttäjä(omnia)))
@@ -23,6 +22,7 @@ object MockUsers {
   val omniaTallentaja = MockUser("käyttäjä", "omnia-tallentaja", "1.2.246.562.24.99999999991", Set(oppilaitosTallentaja(omnia)))
   val omniaPääkäyttäjä = MockUser("omnia-pää", "omnia-pää", "1.2.246.562.24.99999977777", Set(oppilaitosPääkäyttäjä(MockOrganisaatiot.omnia)))
   val tallentajaEiLuottamuksellinen = MockUser("epäluotettava-tallentaja", "epäluotettava-tallentaja", "1.2.246.562.24.99999999997", Set(ilmanLuottamuksellisiaTietoja(omnia), ilmanLuottamuksellisiaTietoja(jyväskylänNormaalikoulu)))
+  val paakayttajaMitatoidytOpiskeluoikeudet = MockUser("käyttäjä", "mikko", "1.2.246.562.24.99999999987", Set(ophPääkäyttäjä, KäyttöoikeusGlobal(List(Palvelurooli(MITATOIDYT_OPISKELUOIKEUDET)))))
   val paakayttaja = MockUser("käyttäjä", "pää", "1.2.246.562.24.99999999992", Set(ophPääkäyttäjä, localizationAdmin, KäyttöoikeusGlobal(List(Palvelurooli("OPPIJANUMEROREKISTERI", "REKISTERINPITAJA")))))
   val viranomainen = MockUser("käyttäjä", "viranomais", "1.2.246.562.24.99999999993", Set(viranomaisKatselija))
   val helsinginKaupunkiPalvelukäyttäjä = MockUser("stadin-palvelu", "stadin-palvelu", "1.2.246.562.24.99999999994", Set(oppilaitosPalvelukäyttäjä(helsinginKaupunki)))
@@ -69,6 +69,7 @@ object MockUsers {
     omniaTallentaja,
     omniaPääkäyttäjä,
     paakayttaja,
+    paakayttajaMitatoidytOpiskeluoikeudet,
     viranomainen,
     helsinginKaupunkiPalvelukäyttäjä,
     helsinginKaupunkiEsiopetus,
