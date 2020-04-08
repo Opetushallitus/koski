@@ -4,17 +4,17 @@ import java.nio.charset.StandardCharsets
 import java.sql.Timestamp
 import java.time.{Instant, LocalDate}
 
+import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
 import fi.oph.koski.schema.PerusopetuksenVuosiluokanSuoritus
 import fi.oph.koski.suoritusjako.{SuoritusIdentifier, Suoritusjako}
-import org.scalatest.{FreeSpec, Matchers}
+import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 import scala.collection.mutable
 
-class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matchers {
-  resetFixtures
+class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matchers with OpiskeluoikeusTestMethodsAmmatillinen {
   val secrets: mutable.Map[String, String] = mutable.Map()
 
   "Suoritusjaon lisääminen" - {
@@ -77,6 +77,24 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
         createSuoritusjako(json, hetu = "270303-281N"){
           verifyResponseStatusOk()
           secrets += ("lähdejärjestelmällinen" -> JsonSerializer.parse[Suoritusjako](response.body).secret)
+        }
+      }
+
+      "vaikka virtakysely epäonnistuisikin" in {
+        putOpiskeluoikeus(makeOpiskeluoikeus(), MockOppijat.virtaEiVastaa)(verifyResponseStatusOk())
+        val json = """[{
+          "oppilaitosOid": "1.2.246.562.10.52251087186",
+          "suorituksenTyyppi": "ammatillinentutkinto",
+          "koulutusmoduulinTunniste": "351301"
+        }]"""
+
+        val secret = createSuoritusjako(json, hetu = MockOppijat.virtaEiVastaa.hetu.get){
+          verifyResponseStatusOk()
+          JsonSerializer.parse[Suoritusjako](response.body).secret
+        }
+
+        getSuoritusjako(secret) {
+          verifyResponseStatusOk()
         }
       }
     }
