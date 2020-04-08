@@ -35,6 +35,11 @@ abstract class AuxiliaryOpiskeluoikeusRepositoryImpl[OO <: Opiskeluoikeus, CK <:
     cachedOpiskeluoikeudet(tunnisteet)
   }
 
+  override def findHuollettavaByOppija(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSession): List[OO] = {
+    assert(user.isUsersHuollettava(tunnisteet.oid), "Käyttäjän oid: " + user.oid + " poikkeaa etsittävän oppijan oidista: " + tunnisteet.oid)
+    cachedOpiskeluoikeudet(tunnisteet)
+  }
+
   protected def buildCacheKey(tunnisteet: HenkilönTunnisteet): CK
 
   protected def uncachedOpiskeluoikeudet(cacheKey: CK): List[OO]

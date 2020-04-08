@@ -4,32 +4,55 @@ describe('Huollettavien tiedot', function () {
   var authentication = Authentication()
   var etusivu = LandingPage()
   var korhopankki = KorhoPankki()
-  var huollettavantiedot = omattiedot.huollettavientiedotForm
 
   // Ks. huoltaja -> huollettava mäppäys metodista fi.oph.koski.omattiedot.MockValtuudetClient.findOppija
 
-  describe('Aluksi', function () {
-    before(authentication.logout, etusivu.openPage, etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('280598-2415'), wait.until(omattiedot.isVisible))
+  describe('Kun huollettavalla on opintoja Koskessa', function () {
+    before(authentication.logout, etusivu.openPage, etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('030300-5215'), wait.until(omattiedot.isVisible))
 
     it('näytetään omat tiedot', function () {
-      verifyOppija('Opintoni', 'Aini Aikuisopiskelija\ns. 28.5.1998', ['Jyväskylän normaalikoulu'], ['Aikuisten perusopetuksen oppimäärä (2008—2016, valmistunut)'])
+      verifyOppijaEmpty('Opintoni', 'Faija EiOpintojaKoskessa\ns. 3.3.1900')
+    })
+
+    it('on näkyvissä opiskelijan valinnan dropdown', function () {
+      expect(omattiedot.selectOpiskelijaNäkyvissä()).to.equal(true)
     })
 
     describe('Kun painetaan Huollettavien opintotiedot-nappia', function () {
-      before(click(omattiedot.huollettavantiedotButton))
+      before(wait.until(omattiedot.omatTiedotNäkyvissä))
+      before(click(omattiedot.selectOpiskelija))
 
-      it('näytetään lomake', function () {
-        expect(huollettavantiedot.contentsAsText()).to.equal(
-          'Jos sinulla on huollettavia, voit tarkastella myös heidän opintotietojaan. Tarkastelua varten sinut ohjataan suomi.fi-valtuudet palveluun.\n' +
-          'Tarkastele huollettavasi tietoja'
+      it('näytetään opiskelijan valinta', function () {
+        expect(omattiedot.opiskelijanValintaNimet()).to.deep.equal([
+          "Essi Eskari",
+          "Olli Oiditon (Ei opintoja)",
+          "Ynjevi Ylioppilaslukiolainen"
+          ]
         )
       })
 
-      describe('Kun painetaan Tarkastele huollettavasi tietoja-nappia ja palataan suomifi-valtuudet palvelusta', function () {
-        before(wait.until(huollettavantiedot.isVisible), click(huollettavantiedot.tarkasteleHuollettavasiTietojaButton), wait.until(omattiedot.huollettavanTiedotNäkyvissä))
+      describe('Huollettavan jolla ei ole oidia', function () {
+        before(click(omattiedot.opiskelijanValinta('Olli')))
+        it('valitsemisesta ei tapahdu mitään', function () {
+          verifyOppijaEmpty('Opintoni', 'Faija EiOpintojaKoskessa\ns. 3.3.1900')
+        })
+      })
+
+      describe('Kun valitaan huollettava', function () {
+        before(click(omattiedot.opiskelijanValinta("Essi") ))
+        before(wait.until(function() { return omattiedot.oppija() === "Huollettavani opinnot" }))
 
         it('näytetään huollettavan tiedot', function () {
-          verifyOppija('Huollettavani opinnot', 'Ynjevi Ylioppilaslukiolainen\ns. 8.6.1998', ['Jyväskylän normaalikoulu'], ['Ylioppilastutkinto', 'Lukion oppimäärä (2012—2016, valmistunut)'])
+          verifyOppija('Huollettavani opinnot', 'Essi Eskari\ns. 30.9.1996', ['Päiväkoti Touhula', 'Päiväkoti Majakka', 'Jyväskylän normaalikoulu'], [ 'Päiväkodin esiopetus (2006—, läsnä)', 'Päiväkodin esiopetus (2006—, läsnä)', 'Peruskoulun esiopetus (2006—2007, valmistunut)' ])
+        })
+      })
+
+      describe('Kun valitaan yliopistotutkinnon suorittanut huollettava', function () {
+        before(click(omattiedot.opiskelijanValinta("Ynjevi") ))
+        before(wait.until(function() { return omattiedot.headerNimi() === "Ynjevi Ylioppilaslukiolainen\ns. 8.6.1998" }))
+
+        it('näytetään huollettavan tiedot', function () {
+          verifyOppija('Huollettavani opinnot', 'Ynjevi Ylioppilaslukiolainen\ns. 8.6.1998', ['Jyväskylän normaalikoulu'], [ 'Ylioppilastutkinto', 'Lukion oppimäärä (2012—2016, valmistunut)' ])
         })
 
         describe('Ylioppilastutkinnon koesuoritukset', function () {
@@ -46,144 +69,30 @@ describe('Huollettavien tiedot', function () {
               '2012 kevät Maantiede 26 Magna cum laude approbatur Näytä koesuoritus\n' +
               '2012 kevät Matematiikan koe, lyhyt oppimäärä 59 Laudatur Näytä koesuoritus'
             )
-            expect(findFirst('.koesuoritus a')().attr('href')).to.equal('/koski/koesuoritus/2345K_XX_12345.pdf?huollettava=true')
           })
-        })
 
-        describe('Kun painetaan "Palaa omiin opintotietoihin"-linkkiä', function () {
-          before(click(omattiedot.palaaOmiinTietoihin), wait.until(omattiedot.omatTiedotNäkyvissä))
-
-          it('näytetään omat tiedot', function () {
-            verifyOppija('Opintoni', 'Aini Aikuisopiskelija\ns. 28.5.1998', ['Jyväskylän normaalikoulu'], ['Aikuisten perusopetuksen oppimäärä (2008—2016, valmistunut)'])
+          it('koesuoritus linkissä on huollettavan oid', function () {
+            expect(findFirst('.koesuoritus a')().attr('href')).to.includes('/koski/koesuoritus/2345K_XX_12345.pdf?huollettava=1.2.246.562.24.')
           })
-        })
-      })
-    })
-  })
-
-  describe('Kun huollettavalla ei ole opintoja Koskessa', function() {
-    before(authentication.logout, etusivu.openPage, etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('100869-192W'), wait.until(omattiedot.isVisible))
-    it('näytetään omat tiedot', function () {
-      verifyOppija('Opintoni', 'Dilbert Dippainssi\ns. 10.8.1969', ['Aalto-yliopisto'], ['Dipl.ins., konetekniikka (2013—2016, päättynyt)', '8 opintojaksoa'])
-    })
-
-    describe('Kun tarkastellaan huollettavan tietoja', function() {
-      before(
-        click(omattiedot.huollettavantiedotButton),
-        wait.until(huollettavantiedot.isVisible),
-        click(huollettavantiedot.tarkasteleHuollettavasiTietojaButton),
-        wait.until(omattiedot.huollettavanTiedotNäkyvissä)
-      )
-
-      it('näytetään huollettavan tiedot', function () {
-        verifyOppijaEmpty('Huollettavani opinnot', 'Eino EiKoskessa\ns. 27.1.1981')
-      })
-
-      describe('Kun painetaan "Palaa omiin opintotietoihin"-linkkiä', function() {
-        before(click(omattiedot.palaaOmiinTietoihin), wait.until(omattiedot.omatTiedotNäkyvissä))
-
-        it('näytetään omat tiedot', function () {
-          verifyOppija('Opintoni', 'Dilbert Dippainssi\ns. 10.8.1969', ['Aalto-yliopisto'], ['Dipl.ins., konetekniikka (2013—2016, päättynyt)', '8 opintojaksoa'])
-        })
-      })
-    })
-  })
-
-  describe('Kun itsellä ei ole opintoja Koskessa', function() {
-    before(authentication.logout, etusivu.openPage, etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('270181-5263'), wait.until(omattiedot.isVisible))
-    it('näytetään omat tiedot', function () {
-      verifyOppijaEmpty('Opintoni', 'Eino EiKoskessa\ns. 27.1.1981')
-    })
-
-    describe('Kun tarkastellaan huollettavan tietoja', function() {
-      before(
-        click(omattiedot.huollettavantiedotButton),
-        wait.until(huollettavantiedot.isVisible),
-        click(huollettavantiedot.tarkasteleHuollettavasiTietojaButton),
-        wait.until(omattiedot.huollettavanTiedotNäkyvissä)
-      )
-
-      it('näytetään huollettavan tiedot', function () {
-        verifyOppija('Huollettavani opinnot', 'Dilbert Dippainssi\ns. 10.8.1969', ['Aalto-yliopisto'], ['Dipl.ins., konetekniikka (2013—2016, päättynyt)', '8 opintojaksoa'])
-      })
-
-      describe('Kun painetaan "Palaa omiin opintotietoihin"-linkkiä', function() {
-        before(click(omattiedot.palaaOmiinTietoihin), wait.until(omattiedot.omatTiedotNäkyvissä))
-
-        it('näytetään omat tiedot', function () {
-          verifyOppijaEmpty('Opintoni', 'Eino EiKoskessa\ns. 27.1.1981')
         })
       })
     })
   })
 
   describe('Kun huollettavan Koski-tietoja haettaessa tulee ongelmia', function() {
-    before(
-      authentication.logout,
-      etusivu.openPage,
-      etusivu.login(),
-      wait.until(korhopankki.isReady),
-      korhopankki.login('251019-039B'),
-      wait.until(omattiedot.isVisible),
-      click(omattiedot.huollettavantiedotButton),
-      wait.until(huollettavantiedot.isVisible),
-      click(huollettavantiedot.tarkasteleHuollettavasiTietojaButton),
-      wait.until(omattiedot.huollettavanTiedotNäkyvissä)
-    )
+    before(authentication.logout, etusivu.openPage, etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('030300-7053'), wait.until(omattiedot.isVisible))
 
     it('näytetään huollettavan tiedot ja varoitus', function () {
-      verifyOppijaEmpty('Huollettavani opinnot', 'Eivastaa Virtanen\ns. 25.3.1990')
-      expect(extractAsText(S('.varoitus'))).to.equal('Korkeakoulujen opintoja ei juuri nyt saada haettua. Yritä myöhemmin uudestaan.')
-    })
-
-    describe('Kun painetaan "Palaa omiin opintotietoihin"-linkkiä', function() {
-      before(click(omattiedot.palaaOmiinTietoihin), wait.until(omattiedot.omatTiedotNäkyvissä))
-
-      it('näytetään omat tiedot', function () {
-        verifyOppija('Opintoni', 'Teija Tekijä\ns. 25.10.1919', ['Stadin ammattiopisto'], ['Autoalan perustutkinto (2000—, läsnä)'])
-      })
+      expect(extractAsText(S('.varoitus'))).to.equal('Huollettavan opintoja ei voida tällä hetkellä näyttää.')
     })
   })
 
-  describe('Kun suomifivaltuudet-sessiota luotaessa tulee ongelmia', function() {
-    before(
-      authentication.logout,
-      etusivu.openPage,
-      etusivu.login(),
-      wait.until(korhopankki.isReady),
-      korhopankki.login('080154-770R'),
-      wait.until(omattiedot.isVisible),
-      click(omattiedot.huollettavantiedotButton),
-      wait.until(huollettavantiedot.isVisible),
-      click(huollettavantiedot.tarkasteleHuollettavasiTietojaButton),
-      wait.until(omattiedot.varoitusNäkyvissä)
-    )
+  describe('Kun huollettavia ei ole Koskessa', function() {
+    before(authentication.logout, etusivu.openPage, etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('080698-967F'), wait.until(omattiedot.isVisible))
+    before(wait.until(omattiedot.omatTiedotNäkyvissä))
 
-    it('näytetään omat tiedot ja varoitus', function () {
-      verifyOppija('Opintoni', 'Eéro Jorma-Petteri Markkanen-Fagerström\ns. 8.1.1954', ['Omnian ammattiopisto'], ['Autoalan perustutkinto (2000—, läsnä)'])
-      expect(omattiedot.omatTiedotNäkyvissä()).to.equal(true)
-      expect(extractAsText(S('.varoitus'))).to.equal('Huollettavien opintotietoja ei juuri nyt saada haettua. Yritä myöhemmin uudelleen.')
-    })
-  })
-
-  describe('Kun valitun huollettavan hetun hakeminen suomifivaltuudet-palvelusta epäonnistuu', function() {
-    before(
-      authentication.logout,
-      etusivu.openPage,
-      etusivu.login(),
-      wait.until(korhopankki.isReady),
-      korhopankki.login('280608-6619'),
-      wait.until(omattiedot.isVisible),
-      click(omattiedot.huollettavantiedotButton),
-      wait.until(huollettavantiedot.isVisible),
-      click(huollettavantiedot.tarkasteleHuollettavasiTietojaButton),
-      wait.until(omattiedot.varoitusNäkyvissä)
-    )
-
-    it('näytetään omat tiedot ja varoitus', function () {
-      verifyOppijaEmpty('Opintoni', 'Tero Petteri Gustaf Tunkkila-Fagerlund\ns. 28.6.1908')
-      expect(omattiedot.omatTiedotNäkyvissä()).to.equal(true)
-      expect(extractAsText(S('.varoitus'))).to.equal('Huollettavien opintotietoja ei juuri nyt saada haettua. Yritä myöhemmin uudelleen.')
+    it('ei ole näkyvissä opiskelijan valinnan dropdownia', function () {
+      expect(omattiedot.selectOpiskelijaNäkyvissä()).to.equal(false)
     })
   })
 
@@ -204,6 +113,5 @@ describe('Huollettavien tiedot', function () {
     expect(extractAsText(S('.oppija-content .ei-suorituksia h2'))).to.equal(expectedHeader)
     expect(isElementVisible(omattiedot.suoritusjakoButton())).to.equal(false)
     expect(isElementVisible(omattiedot.virheraportointiButton())).to.equal(false)
-    expect(isElementVisible(omattiedot.huollettavantiedotButton())).to.equal(true)
   }
 })

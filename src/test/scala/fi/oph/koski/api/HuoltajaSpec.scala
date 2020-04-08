@@ -1,41 +1,67 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.ytr.ValtuutusTestMethods
 import org.json4s.jackson.JsonMethods
 import org.json4s.{DefaultFormats, JObject}
 import org.scalatest.FreeSpec
 
-class HuoltajaSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsPerusopetus with ValtuutusTestMethods {
+class HuoltajaSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsPerusopetus {
   implicit val formats = DefaultFormats
 
   "Huollettavan tietojen katselu" - {
-    "aiheutttaa auditlog merkinnän" in {
-      val loginHeaders = kansalainenLoginHeaders(MockOppijat.aikuisOpiskelija.hetu.get)
-      get("huoltaja/valitse", headers = loginHeaders) {
-        get(s"api/omattiedot/editor/$valtuutusCode", headers = loginHeaders) {
-          verifyResponseStatusOk()
-          päätasonSuoritukset.length should equal(2)
-          (päätasonSuoritukset.head \ "value" \ "classes").extract[List[String]] should contain("ylioppilastutkinnonsuoritus")
-          AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_HUOLTAJA_OPISKELUOIKEUS_KATSOMINEN"))
-        }
+    "Tarkistaa, että huollettavat tulevat login-datan mukana" in {
+      val loginHeaders = kansalainenLoginHeaders(MockOppijat.faija.hetu.get)
+
+      get(s"api/omattiedot/editor", headers = loginHeaders) {
+        verifyResponseStatusOk()
+        val huollettavat = huollettavienTiedot
+        val etunimet = huollettavat.map(huollettava => {
+          huollettava("etunimet")
+        }).sorted
+        etunimet should equal (List("Essi", "Olli", "Ynjevi"))
       }
     }
 
-    "oidittaa huollettavan jos ei löydy oppijanumerorekisteristä" in {
-      val loginHeaders = kansalainenLoginHeaders(MockOppijat.eerola.hetu.get)
-      get("huoltaja/valitse", headers = loginHeaders) {
-        get(s"api/omattiedot/editor/$valtuutusCode", headers = loginHeaders) {
-          verifyResponseStatusOk()
-          val nimet = nimitiedot
-          nimet("etunimet") should equal("Erkki Einari")
-          nimet("kutsumanimi") should equal("Erkki")
-          nimet("sukunimi") should equal("Eioppijanumerorekisterissä")
-        }
+    "Kysytään huollettavan opintotiedot" in {
+      val loginHeaders = kansalainenLoginHeaders(MockOppijat.faija.hetu.get)
+
+      get(s"api/omattiedot/editor/" + MockOppijat.eskari.oid, headers = loginHeaders) {
+        verifyResponseStatusOk()
+        val nimet = nimitiedot
+        nimet("etunimet") should equal("Essi")
       }
     }
+
+    "Muiden kuin huollettavien tietojen katselu on estetty" in {
+      val loginHeaders = kansalainenLoginHeaders(MockOppijat.faija.hetu.get)
+
+      get(s"api/omattiedot/editor/" + MockOppijat.amis.oid, headers = loginHeaders) {
+        verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
+      }
+    }
+
+    "Aiheuttaa auditlog-merkinnän" in {
+      val loginHeaders = kansalainenLoginHeaders(MockOppijat.faija.hetu.get)
+
+      get(s"api/omattiedot/editor/" + MockOppijat.ylioppilasLukiolainen.oid, headers = loginHeaders) {
+        verifyResponseStatusOk()
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_HUOLTAJA_OPISKELUOIKEUS_KATSOMINEN"))
+        }
+    }
   }
+
+  def huollettavienTiedot =
+    JsonMethods.parse(body)
+      .filter(json => (json \ "key").extractOpt[String].contains("huollettavat"))
+      .map(json => json \ "model" \ "value")
+      .flatMap(json => json.extract[List[JObject]])
+      .map(json => json.filter(json => (json \ "key").extractOpt[String].exists(k => k == "etunimet" || k == "sukunimi" )))
+      .map(json => json
+        .map { huollettavaJson =>
+          (huollettavaJson \ "key").extract[String] -> (huollettavaJson \ "model" \ "value" \ "data").extract[String]
+        }.toMap)
 
   def nimitiedot =
     JsonMethods.parse(body)
@@ -47,9 +73,4 @@ class HuoltajaSpec extends FreeSpec with LocalJettyHttpSpecification with Opiske
       .map { nimiJson =>
         (nimiJson \ "key").extract[String] -> (nimiJson \ "model" \ "value" \ "data").extract[String]
       }.toMap
-
-  def päätasonSuoritukset = JsonMethods.parse(body)
-    .filter(json => (json \ "key").extractOpt[String].contains("suoritukset") && (json \ "model" \ "value").toOption.isDefined)
-    .map(json => json \ "model" \ "value")
-    .flatMap(json => json.extract[List[JObject]])
 }

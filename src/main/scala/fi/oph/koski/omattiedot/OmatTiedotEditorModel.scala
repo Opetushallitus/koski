@@ -6,6 +6,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.OppijaEditorModel.oppilaitoksenOpiskeluoikeudetOrdering
 import fi.oph.koski.editor._
 import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.huoltaja.{Huollettava, HuollettavatSearchResult, HuollettavienHakuOnnistui}
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.schema.PerusopetuksenOpiskeluoikeus._
 import fi.oph.koski.schema._
@@ -15,13 +16,12 @@ import fi.oph.scalaschema.annotation.SyntheticProperty
 import mojave._
 
 object OmatTiedotEditorModel extends Timing {
-  def toEditorModel(userOppija: WithWarnings[Oppija], oppija: Option[WithWarnings[Oppija]])(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = timed("createModel") {
+  def toEditorModel(userOppija: WithWarnings[Oppija], näytettäväOppija: WithWarnings[Oppija])(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = timed("createModel") {
     val piilotetuillaTiedoilla = piilotaArvosanatKeskeneräisistäSuorituksista _ andThen
       piilotaSensitiivisetHenkilötiedot andThen
       piilotaKeskeneräisetPerusopetuksenPäättötodistukset
 
-    val warnings = userOppija.warnings ++ oppija.toList.flatMap(_.warnings)
-    buildModel(buildView(piilotetuillaTiedoilla(userOppija.getIgnoringWarnings), oppija.map(h => piilotetuillaTiedoilla(h.getIgnoringWarnings)), warnings))
+    buildModel(buildView(piilotetuillaTiedoilla(userOppija.getIgnoringWarnings), piilotetuillaTiedoilla(näytettäväOppija.getIgnoringWarnings), näytettäväOppija.warnings))
   }
 
   def opiskeluoikeudetOppilaitoksittain(oppija: Oppija): List[OppilaitoksenOpiskeluoikeudet] = {
@@ -30,13 +30,15 @@ object OmatTiedotEditorModel extends Timing {
     }.toList.sorted(oppilaitoksenOpiskeluoikeudetOrdering)
   }
 
-  private def buildView(userOppija: Oppija, oppija: Option[Oppija], warnings: Seq[HttpStatus])(implicit application: KoskiApplication, koskiSession: KoskiSession) = {
-    val valittuOppija = oppija.getOrElse(userOppija)
+  private def buildView(userOppija: Oppija, näytettäväOppija: Oppija, warnings: Seq[HttpStatus])(implicit application: KoskiApplication, koskiSession: KoskiSession) = {
+    val huollettavat = koskiSession.huollettavat
+
     OmatTiedotEditorView(
-      henkilö = valittuOppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot],
+      henkilö = näytettäväOppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot],
       userHenkilö = userOppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot],
-      opiskeluoikeudet = opiskeluoikeudetOppilaitoksittain(valittuOppija),
-      varoitukset = warnings.flatMap(_.errors).map(_.key).toList
+      opiskeluoikeudet = opiskeluoikeudetOppilaitoksittain(näytettäväOppija),
+      huollettavat = huollettavat.getOrElse(Nil),
+      varoitukset = warnings.flatMap(_.errors).map(_.key).toList ++ huollettavat.left.map(_.errors.map(_.key)).left.getOrElse(Nil)
     )
   }
 
@@ -90,6 +92,7 @@ case class OmatTiedotEditorView(
   @Hidden
   userHenkilö: TäydellisetHenkilötiedot,
   opiskeluoikeudet: List[OppilaitoksenOpiskeluoikeudet],
+  huollettavat: List[Huollettava],
   @Hidden
   varoitukset: List[String]
 )

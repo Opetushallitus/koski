@@ -43,7 +43,15 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
 
   override def findByCurrentUserOids(oids: List[String])(implicit user: KoskiSession): Seq[Opiskeluoikeus] = {
     assert(oids.contains(user.oid), "Käyttäjän oid: " + user.oid + " ei löydy etsittävän oppijan oideista: " + oids)
+    findKansalaisenOpiskeluoikeudet(oids)
+  }
 
+  override def findHuollettavaByOppijaOids(oids: List[String])(implicit user: KoskiSession): Seq[Opiskeluoikeus] = {
+    assert(oids.exists(user.isUsersHuollettava), "Käyttäjän oid: " + user.oid + " ei löydy etsittävän oppijan oideista: " + oids)
+    findKansalaisenOpiskeluoikeudet(oids)
+  }
+
+  private def findKansalaisenOpiskeluoikeudet(oids: List[String]) = {
     val query = OpiskeluOikeudet
       .filterNot(_.mitätöity)
       .filter(_.oppijaOid inSetBind oids)

@@ -8,6 +8,7 @@ import {HeaderName} from './HeaderName'
 import {HeaderVirheraportointiSection} from './HeaderVirheraportointiSection'
 import {HeaderSuoritusjakoSection} from './HeaderSuoritusjakoSection'
 import {HeaderHuollettavanTiedotSection} from './HeaderHuollettavanTiedotSection'
+import {HuollettavaDropdown} from './HuollettavaDropdown'
 
 export const FormState = {
   VIRHERAPORTOINTI: 'virheraportointi',
@@ -19,7 +20,7 @@ export const FormState = {
 const VirheraportointiFeature = withFeatureFlag(FEATURE.OMAT_TIEDOT.VIRHERAPORTOINTI, HeaderVirheraportointiSection)
 const SuoritusjakoFeature = withFeatureFlag(FEATURE.OMAT_TIEDOT.SUORITUSJAKO, HeaderSuoritusjakoSection)
 
-export const Header = ({oppija}) => {
+export const Header = ({oppija, oppijaSelectionBus}) => {
   const uiMode = Atom(FormState.NONE)
 
   const henkilö = modelLookup(oppija, 'henkilö')
@@ -28,6 +29,7 @@ export const Header = ({oppija}) => {
 
   return (
     <header className='header'>
+      <HuollettavaDropdown oppija={oppija} oppijaSelectionBus={oppijaSelectionBus}/>
       <HeaderInfo oppija={oppija} varoitukset={varoitukset}/>
 
       <div className='header__bottom-row'>

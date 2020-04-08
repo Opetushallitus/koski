@@ -7,7 +7,8 @@ import fi.oph.koski.db.GlobalExecutionContext
 import fi.oph.koski.henkilo._
 import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.koskiuser.KoskiSession
+import fi.oph.koski.huoltaja.HuollettavienHakuOnnistui
+import fi.oph.koski.koskiuser.{AuthenticationUser, KoskiSession}
 import fi.oph.koski.log.KoskiMessageField.{opiskeluoikeusId, opiskeluoikeusVersio, oppijaHenkiloOid}
 import fi.oph.koski.log.KoskiOperation._
 import fi.oph.koski.log.{AuditLog, _}
@@ -43,6 +44,12 @@ class KoskiOppijaFacade(
     henkilöRepository.findByOid(user.oid)
       .toRight(notFound(user.oid))
       .flatMap(henkilö => toOppija(henkilö, opiskeluoikeusRepository.findByCurrentUser(henkilö)))
+  }
+
+  def findHuollettavaOppija(oid: String)(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
+    henkilöRepository.findByOid(oid)
+      .toRight(notFound(oid))
+      .flatMap(henkilö => toOppija(henkilö, opiskeluoikeusRepository.findHuollettavaByOppija(henkilö)))
   }
 
   def findOppijaByHetuOrCreateIfInYtrOrVirta(hetu: String, useVirta: Boolean = true, useYtr: Boolean = true)(implicit user: KoskiSession): Either[HttpStatus, WithWarnings[Oppija]] = {
@@ -248,10 +255,10 @@ class KoskiOppijaFacade(
 
   private def writeViewingEventToAuditLog(user: KoskiSession, oid: Henkilö.Oid): Unit = {
     if (user != KoskiSession.systemUser) { // To prevent health checks from polluting the audit log
-      val operation = if (user.user.kansalainen && !user.user.huollettava) {
-        KANSALAINEN_OPISKELUOIKEUS_KATSOMINEN
-      } else if (user.user.kansalainen && user.user.huollettava) {
+      val operation = if (user.user.kansalainen && user.isUsersHuollettava(oid)) {
         KANSALAINEN_HUOLTAJA_OPISKELUOIKEUS_KATSOMINEN
+      } else if (user.user.kansalainen) {
+        KANSALAINEN_OPISKELUOIKEUS_KATSOMINEN
       } else if (user.user.isSuoritusjakoKatsominen) {
         KANSALAINEN_SUORITUSJAKO_KATSOMINEN
       } else if (user.oid == config.getString("suomi-fi-user-oid")) {

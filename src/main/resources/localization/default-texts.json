@@ -1320,6 +1320,9 @@
   "Hylätty tai Hyväksytty": "Hylätty tai Hyväksytty",
   "Koulusivistyskieli" : "Koulusivistyskieli",
   "description:Koulusivistyskieli" : "Koulusivistyskieli",
-  "description:Koulusivistyskieli. Tiedon syötössä tietoa ei..." : "Koulusivistyskieli. Tiedon syötössä tietoa ei tarvita; tieto poimitaan osasuorituksista."
+  "description:Koulusivistyskieli. Tiedon syötössä tietoa ei..." : "Koulusivistyskieli. Tiedon syötössä tietoa ei tarvita; tieto poimitaan osasuorituksista.",
+  "warning:Huollettavan opintoja ei voida tällä hetkellä näyttää.": "Huollettavan opintoja ei voida tällä hetkellä näyttää.",
+  "warning:unavailable.huollettavat": "Huollettavan opintoja ei voida tällä hetkellä näyttää.",
+  "Kenen opintoja haluat tarkastella?": "Kenen opintoja haluat tarkastella?",
+  "Ei opintoja": "Ei opintoja"
 }
-

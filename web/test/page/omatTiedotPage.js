@@ -28,27 +28,34 @@ function OmatTiedotPage() {
     suoritusjakoButton: function() {
       return S('header button:contains(Jaa suoritustietoja)')
     },
-    huollettavantiedotButton: function() {
-      return S('header button:contains(Huollettavien opintotiedot)')
+    selectOpiskelija: function() {
+      var elem = findSingle('.header__oppijanvalitsin')();
+      return findFirstNotThrowing(elem)
     },
+    selectOpiskelijaNäkyvissä: function() {
+      return isElementVisible(S('.header__oppijanvalitsin'))
+    },
+    opiskelijanValintaNimet: function() {
+      var elem = findSingle('.header__oppijanvalitsin')
+      var result = toArray(elem().find('.option')).map(function(i) { return i.innerHTML })
+      return result
+    },
+    opiskelijanValinta: function(name) { return function() {
+      var elem = findSingle('.header__oppijanvalitsin')
+      var result = toArray(elem().find(`.option:contains("${name}")`))
+      return result
+    }},
     virheraportointiForm: VirheraportointiForm(),
     suoritusjakoForm: SuoritusjakoForm(),
-    huollettavientiedotForm: HuollettavientiedotForm(),
     headerNimi: function() {
       var el = findFirstNotThrowing('header .header__name')
       return el ? extractAsText(el) : ''
-    },
-    huollettavanTiedotNäkyvissä: function() {
-      return isElementVisible(S('.palaa-omiin-tietoihin'))
     },
     omatTiedotNäkyvissä: function() {
       return !isElementVisible(S('.palaa-omiin-tietoihin'))
     },
     varoitusNäkyvissä: function() {
       return isElementVisible(S('.varoitus'))
-    },
-    palaaOmiinTietoihin: function() {
-      return S('.palaa-omiin-tietoihin')
     }
   }
   return api
@@ -111,22 +118,6 @@ function VirheraportointiForm() {
     }
   }
 
-  return api
-}
-
-function HuollettavientiedotForm() {
-  var elem = findSingle('.huollettavan-tiedot')
-  var api = {
-    contentsAsText: function () {
-      return extractAsText(elem)
-    },
-    tarkasteleHuollettavasiTietojaButton: function() {
-      return findSingle('#valitse-huollettava')
-    },
-    isVisible: function() {
-      return isElementVisible(elem)
-    }
-  }
   return api
 }
 

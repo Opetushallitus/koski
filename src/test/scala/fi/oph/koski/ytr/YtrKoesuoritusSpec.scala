@@ -2,12 +2,13 @@ package fi.oph.koski.ytr
 
 import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethods}
 import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.util.ClasspathResource
 import org.scalatest.FreeSpec
 
 import scala.collection.Iterator.continually
 
-class YtrKoesuoritusSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods with ValtuutusTestMethods {
+class YtrKoesuoritusSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods {
   "Kansalainen" - {
     "näkee koesuorituksensa" in {
       get("koesuoritus/2345K_XX_12345.pdf", headers = kansalainenLoginHeaders("080698-967F")) {
@@ -16,22 +17,10 @@ class YtrKoesuoritusSpec extends FreeSpec with LocalJettyHttpSpecification with 
       }
     }
 
-
-    "ei näe huollettavansa koesuoritusta ilman valtuutusistuntoa" in {
-      get("koesuoritus/2345K_XX_12345.pdf?huollettava=true", headers = kansalainenLoginHeaders(MockOppijat.aikuisOpiskelija.hetu.get)) {
-        verifyResponseStatus(404, Nil)
-      }
-    }
-
-    "näkee huollettavansa koesuorituksen luotuaan valtuutusistunnon" in {
-      val loginHeaders = kansalainenLoginHeaders(MockOppijat.aikuisOpiskelija.hetu.get)
-      get("huoltaja/valitse", headers = loginHeaders) {
-        get(s"api/omattiedot/editor/$valtuutusCode", headers = loginHeaders) {
-          get("koesuoritus/2345K_XX_12345.pdf?huollettava=true", headers = loginHeaders) {
-            verifyResponseStatusOk()
-            bodyBytes should equal(resourceAsByteArray(s"/mockdata/ytr/2345K_XX_12345.pdf"))
-          }
-        }
+    "näkee huolletavansa koesuorituksen" in {
+      get(s"koesuoritus/2345K_XX_12345.pdf?huollettava=${MockOppijat.ylioppilasLukiolainen.oid}", headers = kansalainenLoginHeaders(MockOppijat.faija.hetu.get)) {
+        verifyResponseStatusOk()
+        bodyBytes should equal(resourceAsByteArray(s"/mockdata/ytr/2345K_XX_12345.pdf"))
       }
     }
 
@@ -41,10 +30,34 @@ class YtrKoesuoritusSpec extends FreeSpec with LocalJettyHttpSpecification with 
       }
     }
 
+    "ei näe toisen huollettavan koesuoritusta" in {
+      get(s"koesuoritus/2345K_XX_12345.pdf?huollettava=${MockOppijat.ylioppilasLukiolainen.oid}", headers = kansalainenLoginHeaders(MockOppijat.amis.hetu.get)) {
+        verifyResponseStatus(404, Nil)
+      }
+    }
+
     "ei näe koesuoritusta jota ei ole olemassa" in {
       get("koesuoritus/not-found-from-s3.pdf", headers = kansalainenLoginHeaders("080698-967F")) {
         verifyResponseStatus(404, Nil)
       }
+    }
+
+    "oman koesuorituksen haku aiheuttaa auditlogin" in {
+      AuditLogTester.clearMessages
+      get("koesuoritus/2345K_XX_12345.pdf", headers = kansalainenLoginHeaders("080698-967F")) {
+        verifyResponseStatusOk()
+        bodyBytes should equal(resourceAsByteArray(s"/mockdata/ytr/2345K_XX_12345.pdf"))
+      }
+      AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_YLIOPPILASKOE_HAKU"))
+    }
+
+    "huollettavan koesuorituksen haku aiheuttaa auditlogin" in {
+      AuditLogTester.clearMessages
+      get(s"koesuoritus/2345K_XX_12345.pdf?huollettava=${MockOppijat.ylioppilasLukiolainen.oid}", headers = kansalainenLoginHeaders(MockOppijat.faija.hetu.get)) {
+        verifyResponseStatusOk()
+        bodyBytes should equal(resourceAsByteArray(s"/mockdata/ytr/2345K_XX_12345.pdf"))
+      }
+      AuditLogTester.verifyAuditLogMessage(Map("operation" -> "KANSALAINEN_HUOLTAJA_YLIOPPILASKOE_HAKU"))
     }
   }
 

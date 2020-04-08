@@ -1,7 +1,7 @@
 package fi.oph.koski.huoltaja
 
 import com.typesafe.config.Config
-import fi.oph.koski.henkilo.MockOppijat.{eiKoskessa, eskari, faija, faijaFeilaa}
+import fi.oph.koski.henkilo.MockOppijat.{eiKoskessa, eskari, faija, faijaFeilaa, ylioppilasLukiolainen}
 import fi.oph.koski.http.Http._
 import fi.oph.koski.http._
 import fi.oph.koski.log.Logging
@@ -40,7 +40,8 @@ class MockHuollettavatRepository extends HuollettavatRepository {
     if (faija.hetu.contains(huoltajaHetu)) {
       Right(List(
         VtjHuollettavaHenkilö(eskari.etunimet, eskari.sukunimi, eskari.hetu.get),
-        VtjHuollettavaHenkilö(eiKoskessa.etunimet, eiKoskessa.sukunimi, eiKoskessa.hetu.get)
+        VtjHuollettavaHenkilö(ylioppilasLukiolainen.etunimet, ylioppilasLukiolainen.sukunimi, ylioppilasLukiolainen.hetu.get),
+        VtjHuollettavaHenkilö("Olli", "Oiditon", "060488-681S")
       ))
     } else if (faijaFeilaa.hetu.contains(huoltajaHetu)) {
       Left(KoskiErrorCategory.unavailable.huollettavat())

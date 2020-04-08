@@ -2,10 +2,12 @@ package fi.oph.koski.omattiedot
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.{EditorModel, EditorModelSerializer}
-import fi.oph.koski.http.HttpStatus
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.LegacyJsonSerialization
 import fi.oph.koski.koskiuser.RequiresKansalainen
+import fi.oph.koski.schema.Oppija
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
+import fi.oph.koski.util.WithWarnings
 import org.json4s.jackson.Serialization
 
 /**
@@ -18,32 +20,36 @@ class OmatTiedotServlet(implicit val application: KoskiApplication) extends ApiS
     renderOmatTiedot
   }
 
-  get("/editor/:valtuutusKoodi") {
-    renderHuollettava(params("valtuutusKoodi"))
+  get("/editor/:oid") {
+    val oid = params("oid")
+    if (oid == koskiSession.user.oid) {
+      renderOmatTiedot
+    } else {
+      renderHuollettavanTiedot(oid)
+    }
   }
 
   private def renderOmatTiedot: Unit = {
-    val editorModel = huoltajaService.findUserOppijaAllowEmpty.map(OmatTiedotEditorModel.toEditorModel(_, None))
+    val käyttäjäOppija = huoltajaService.findUserOppijaAllowEmpty(koskiSession)
+    val editorModel = käyttäjäOppija.map(oppija => OmatTiedotEditorModel.toEditorModel(userOppija = oppija, näytettäväOppija = oppija))
+
     renderEither[EditorModel](editorModel)
   }
 
-  private def renderHuollettava(valtuutusKoodi: String): Unit = {
-    renderEither[EditorModel](mkEditorModel(valtuutusKoodi))
-  }
-
-  private def mkEditorModel(valtuutusKoodi: String): Either[HttpStatus, EditorModel] = {
-    val (huoltajaWarnings, huollettava) = huoltajaService.findHuollettavaOppija(valtuutusKoodi, koskiRoot) match {
-      case Left(status) => (status, None)
-      case Right(oppija) => (Nil, oppija)
+  private def renderHuollettavanTiedot(oid: String): Unit = {
+    if (!koskiSession.isUsersHuollettava(oid)) {
+      haltWithStatus(KoskiErrorCategory.forbidden.kiellettyKäyttöoikeus())
     }
 
-    huoltajaService.findUserOppijaNoAuditLog.map { userOppija =>
-      // copy errors from huollettava to useroppija warnings
-      userOppija.copy(warnings = userOppija.warnings ++ huoltajaWarnings)
-    }.map(OmatTiedotEditorModel.toEditorModel(_, huollettava))
+    val huoltajaOppija: Either[HttpStatus, WithWarnings[Oppija]] = huoltajaService.findUserOppijaAllowEmpty(koskiSession)
+    val huollettavaOppija: Either[HttpStatus, WithWarnings[Oppija]] = huoltajaService.findHuollettavaOppija(oid)(koskiSession)
+
+    val editorModel = huoltajaOppija.flatMap(huoltaja => huollettavaOppija.map(huollettava => (huoltaja, huollettava))).map {
+      case (huoltaja, huollettava) => OmatTiedotEditorModel.toEditorModel(userOppija = huoltaja, näytettäväOppija = huollettava)
+    }
+    renderEither[EditorModel](editorModel)
   }
 
   import reflect.runtime.universe.TypeTag
   override def toJsonString[T: TypeTag](x: T): String = Serialization.write(x.asInstanceOf[AnyRef])(LegacyJsonSerialization.jsonFormats + EditorModelSerializer)
 }
-

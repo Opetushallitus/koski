@@ -65,6 +65,16 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
     WithWarnings(mainResult ++ virtaResult.getIgnoringWarnings ++ ytrResult.getIgnoringWarnings, virtaResult.warnings ++ ytrResult.warnings)
   }
 
+  def findHuollettavaByOppija(tunnisteet: HenkilönTunnisteet)(implicit user: KoskiSession): WithWarnings[Seq[Opiskeluoikeus]] = {
+    val oid = tunnisteet.oid
+    val virtaResultFuture = Future { virta.findHuollettavaByOppija(tunnisteet) }.transform(mapFailureToVirtaUnavailable(_, oid))
+    val ytrResultFuture = Future { ytr.findHuollettavaByOppija(tunnisteet) }.transform(mapFailureToYtrUnavailable(_, oid))
+    val mainResult = main.findHuollettavaByOppijaOids(tunnisteet.oid :: tunnisteet.linkitetytOidit)
+    val virtaResult = Futures.await(virtaResultFuture)
+    val ytrResult = Futures.await(ytrResultFuture)
+    WithWarnings(mainResult ++ virtaResult.getIgnoringWarnings ++ ytrResult.getIgnoringWarnings, virtaResult.warnings ++ ytrResult.warnings)
+  }
+
   def getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid: String)(implicit user: KoskiSession): Either[HttpStatus, List[Oid]] =
     main.getOppijaOidsForOpiskeluoikeus(opiskeluoikeusOid)
 }

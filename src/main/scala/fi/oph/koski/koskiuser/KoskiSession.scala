@@ -3,6 +3,8 @@ package fi.oph.koski.koskiuser
 import java.net.InetAddress
 
 import fi.oph.koski.henkilo.OppijaHenkilö
+import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.huoltaja.{Huollettava, HuollettavienHakuOnnistui}
 import fi.oph.koski.json.SensitiveDataAllowed
 import fi.oph.koski.koskiuser.Rooli._
 import fi.oph.koski.log.{LogUserContext, Loggable, Logging}
@@ -80,6 +82,18 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
     globalViranomaisKäyttöoikeudet.exists(_.globalPalveluroolit.contains(palveluRooli)) ||
     orgKäyttöoikeudet.exists(_.organisaatiokohtaisetPalveluroolit.contains(palveluRooli))
   }
+
+  def huollettavat: Either[HttpStatus, List[Huollettava]] = {
+    if (user.isSuoritusjakoKatsominen) {
+      Right(Nil)
+    } else {
+      user.huollettavat.collect {
+        case haku: HuollettavienHakuOnnistui => Right(haku.huollettavat)
+      }.getOrElse(Left(KoskiErrorCategory.unavailable.huollettavat()))
+    }
+  }
+
+  def isUsersHuollettava(oid: String): Boolean = huollettavat.exists(_.exists(huollettava => huollettava.oid.contains(oid)))
 
   def juuriOrganisaatiot: List[OrganisaatioWithOid] = orgKäyttöoikeudet.collect { case r: KäyttöoikeusOrg if r.juuri => r.organisaatio }.toList
 
