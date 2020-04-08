@@ -76,15 +76,17 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
   }
 
   private def assertSuorituksetExist(oppijaOid: String, suoritusIds: List[SuoritusIdentifier]): Either[HttpStatus, Boolean] = {
-    oppijaFacade.findOppija(oppijaOid)(KoskiSession.systemUser).flatMap(_.warningsToLeft).map { oppija =>
-      suoritusIds.map(suoritusId =>
-        oppija.opiskeluoikeudet.exists(oo =>
-          oo.suoritukset.exists(isMatchingSuoritus(oo, _, suoritusId))
+    oppijaFacade.findOppija(oppijaOid)(KoskiSession.systemUser).map { oppijaWithWarnings =>
+      oppijaWithWarnings.map { oppija =>
+        suoritusIds.map(suoritusId =>
+          oppija.opiskeluoikeudet.exists(oo =>
+            oo.suoritukset.exists(isMatchingSuoritus(oo, _, suoritusId))
+          )
         )
-      )
+      }
     } match {
-      case Right(matches) if matches.isEmpty => Left(KoskiErrorCategory.badRequest.format())
-      case Right(matches) if matches.exists(!_) => Left(KoskiErrorCategory.notFound.suoritustaEiLöydy())
+      case Right(WithWarnings(matches, _)) if matches.isEmpty => Left(KoskiErrorCategory.badRequest.format())
+      case Right(WithWarnings(matches, _)) if matches.exists(!_) => Left(KoskiErrorCategory.notFound.suoritustaEiLöydy())
       case Right(_) => Right(true)
       case Left(status) => Left(status)
     }
