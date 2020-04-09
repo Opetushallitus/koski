@@ -1,12 +1,10 @@
 package fi.oph.koski.omattiedot
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.db.ValtuudetSessionRow
-import fi.oph.koski.henkilo.OppijaHenkilö
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
-import fi.oph.koski.schema.{Oppija, UusiHenkilö}
+import fi.oph.koski.schema.Oppija
 import fi.oph.koski.util.WithWarnings
 
 class HuoltajaService(application: KoskiApplication) extends Logging {
