@@ -5,10 +5,10 @@ import java.sql.Timestamp
 import java.time.{Instant, LocalDate}
 
 import fi.oph.koski.henkilo.MockOppijat
-import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.log.{AccessLogTester, AuditLogTester}
-import fi.oph.koski.schema.PerusopetuksenVuosiluokanSuoritus
+import fi.oph.koski.schema.{PerusopetuksenVuosiluokanSuoritus, TäydellisetHenkilötiedot, YlioppilastutkinnonOpiskeluoikeus}
 import fi.oph.koski.suoritusjako.{SuoritusIdentifier, Suoritusjako}
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
@@ -97,6 +97,23 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
           verifyResponseStatusOk()
         }
       }
+
+      "vaikka oppilaitos puuttuisikin YTR-opinnoista" in {
+        val json = """[{
+          "suorituksenTyyppi": "ylioppilastutkinto",
+          "koulutusmoduulinTunniste": "301000"
+        }]"""
+
+        val secret = createSuoritusjako(json, hetu = "280171-2730"){
+          verifyResponseStatusOk()
+          JsonSerializer.parse[Suoritusjako](response.body).secret
+        }
+
+        val oppija = getSuoritusjakoOppija(secret)
+        val vahvistusPäivä = oppija.opiskeluoikeudet.head.asInstanceOf[YlioppilastutkinnonOpiskeluoikeus].suoritukset.head.vahvistus.get.päivä
+        oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot].hetu.get should equal("280171-2730")
+        vahvistusPäivä should equal(LocalDate.of(1995, 5, 31))
+      }
     }
 
     "epäonnistuu" - {
@@ -138,7 +155,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
         }]"""
 
         createSuoritusjako(json) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.format())
+          verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*missingProperty.*".r))
         }
       }
 
@@ -152,7 +169,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
         }]"""
 
         createSuoritusjako(json) {
-          verifyResponseStatus(400, KoskiErrorCategory.badRequest.format())
+          verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, ".*unexpectedProperty.*".r))
         }
       }
 
@@ -226,7 +243,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
         val oppija = getSuoritusjakoOppija(secrets("yksi suoritus"))
         verifySuoritusIds(oppija, List(SuoritusIdentifier(
           lähdejärjestelmänId = None,
-          oppilaitosOid = "1.2.246.562.10.64353470871",
+          oppilaitosOid = Some("1.2.246.562.10.64353470871"),
           suorituksenTyyppi = "perusopetuksenvuosiluokka",
           koulutusmoduulinTunniste = "7"
         )))
@@ -237,13 +254,13 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
         verifySuoritusIds(oppija, List(
           SuoritusIdentifier(
             lähdejärjestelmänId = None,
-            oppilaitosOid = "1.2.246.562.10.64353470871",
+            oppilaitosOid = Some("1.2.246.562.10.64353470871"),
             suorituksenTyyppi = "perusopetuksenvuosiluokka",
             koulutusmoduulinTunniste = "7"
           ),
           SuoritusIdentifier(
             lähdejärjestelmänId = None,
-            oppilaitosOid = "1.2.246.562.10.64353470871",
+            oppilaitosOid = Some("1.2.246.562.10.64353470871"),
             suorituksenTyyppi = "perusopetuksenvuosiluokka",
             koulutusmoduulinTunniste = "6"
           )
@@ -256,7 +273,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
         // Palautetaan vain yksi suoritus
         verifySuoritusIds(oppija, List(SuoritusIdentifier(
           lähdejärjestelmänId = None,
-          oppilaitosOid = "1.2.246.562.10.14613773812",
+          oppilaitosOid = Some("1.2.246.562.10.14613773812"),
           suorituksenTyyppi = "perusopetuksenvuosiluokka",
           koulutusmoduulinTunniste = "7"
         )))
@@ -272,7 +289,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
         val oppija = getSuoritusjakoOppija(secrets("lähdejärjestelmällinen"))
         verifySuoritusIds(oppija, List(SuoritusIdentifier(
           lähdejärjestelmänId = Some("12345"),
-          oppilaitosOid = "1.2.246.562.10.52251087186",
+          oppilaitosOid = Some("1.2.246.562.10.52251087186"),
           suorituksenTyyppi = "ammatillinentutkinto",
           koulutusmoduulinTunniste = "351301"
         )))
