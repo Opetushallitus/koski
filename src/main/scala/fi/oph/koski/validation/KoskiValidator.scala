@@ -305,8 +305,6 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
 
   private def validatePäivämäärät(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
     val ensimmäisenJaksonPäivä: Option[LocalDate] = opiskeluoikeus.tila.opiskeluoikeusjaksot.headOption.map(_.alku)
-    val päättäväJakso: Option[Opiskeluoikeusjakso] = opiskeluoikeus.tila.opiskeluoikeusjaksot.filter(_.opiskeluoikeusPäättynyt).lastOption
-    val päättävänJaksonPäivä: Option[LocalDate] = päättäväJakso.map(_.alku)
     def formatOptionalDate(date: Option[LocalDate]) = date match {
       case Some(d) => d.toString
       case None => "null"
