@@ -302,18 +302,35 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   private def validatePäivämäärät(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
-    val ensimmäisenJaksonPäivä: Option[LocalDate] = opiskeluoikeus.tila.opiskeluoikeusjaksot.headOption.map(_.alku)
     def formatOptionalDate(date: Option[LocalDate]) = date match {
       case Some(d) => d.toString
       case None => "null"
     }
 
+    val ensimmäisenJaksonPäivä: Option[LocalDate] = opiskeluoikeus.tila.opiskeluoikeusjaksot.headOption.map(_.alku)
+
     HttpStatus.fold(
-      validateDateOrder(("alkamispäivä", opiskeluoikeus.alkamispäivä), ("päättymispäivä", opiskeluoikeus.päättymispäivä), KoskiErrorCategory.badRequest.validation.date.päättymisPäiväEnnenAlkamispäivää),
-      validateDateOrder(("alkamispäivä", opiskeluoikeus.alkamispäivä), ("arvioituPäättymispäivä", opiskeluoikeus.arvioituPäättymispäivä), KoskiErrorCategory.badRequest.validation.date.arvioituPäättymisPäiväEnnenAlkamispäivää),
+      validateDateOrder(
+        ("alkamispäivä", opiskeluoikeus.alkamispäivä),
+        ("päättymispäivä", opiskeluoikeus.päättymispäivä),
+        KoskiErrorCategory.badRequest.validation.date.päättymisPäiväEnnenAlkamispäivää
+      ),
+      validateDateOrder(
+        ("alkamispäivä", opiskeluoikeus.alkamispäivä),
+        ("arvioituPäättymispäivä", opiskeluoikeus.arvioituPäättymispäivä),
+        KoskiErrorCategory.badRequest.validation.date.arvioituPäättymisPäiväEnnenAlkamispäivää
+      ),
       validateJaksotPäättyminen(opiskeluoikeus.tila.opiskeluoikeusjaksot),
-      DateValidation.validateJaksotDateOrder("tila.opiskeluoikeusjaksot", opiskeluoikeus.tila.opiskeluoikeusjaksot, KoskiErrorCategory.badRequest.validation.date.opiskeluoikeusjaksojenPäivämäärät),
-      HttpStatus.validate(opiskeluoikeus.alkamispäivä == ensimmäisenJaksonPäivä)(KoskiErrorCategory.badRequest.validation.date.alkamispäivä(s"Opiskeluoikeuden alkamispäivä (${formatOptionalDate(opiskeluoikeus.alkamispäivä)}) ei vastaa ensimmäisen opiskeluoikeusjakson alkupäivää (${formatOptionalDate(ensimmäisenJaksonPäivä)})"))
+      DateValidation.validateJaksotDateOrder(
+        "tila.opiskeluoikeusjaksot",
+        opiskeluoikeus.tila.opiskeluoikeusjaksot,
+        KoskiErrorCategory.badRequest.validation.date.opiskeluoikeusjaksojenPäivämäärät
+      ),
+      HttpStatus.validate(
+        opiskeluoikeus.alkamispäivä == ensimmäisenJaksonPäivä
+      )(
+        KoskiErrorCategory.badRequest.validation.date.alkamispäivä(s"Opiskeluoikeuden alkamispäivä (${formatOptionalDate(opiskeluoikeus.alkamispäivä)}) ei vastaa ensimmäisen opiskeluoikeusjakson alkupäivää (${formatOptionalDate(ensimmäisenJaksonPäivä)})")
+      )
     )
   }
 
