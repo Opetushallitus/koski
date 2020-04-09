@@ -196,7 +196,7 @@ case class NäyttötutkintoonValmistavanKoulutuksenSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("nayttotutkintoonvalmistavakoulutus", "suorituksentyyppi"),
   @Tooltip("Oppijan opetusryhmä")
   ryhmä: Option[String] = None
-) extends AmmatillinenPäätasonSuoritus with Toimipisteellinen with Todistus with Arvioinniton with Ryhmällinen with Tutkintonimikkeellinen with Osaamisalallinen
+) extends AmmatillinenPäätasonSuoritus with Toimipisteellinen with Todistus with Arvioinniton with Ryhmällinen with Tutkintonimikkeellinen with Osaamisalallinen with Järjestämismuodollinen with OsaamisenHankkimistavallinen
 
 @Description("Näyttötutkintoon valmistavan koulutuksen tunnistetiedot")
 case class NäyttötutkintoonValmistavaKoulutus(
@@ -246,7 +246,7 @@ case class AmmatillisenTutkinnonSuoritus(
   @MaxValue(5)
   @Scale(2)
   keskiarvo: Option[Double] = None
-) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus with Todistus
+) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus with Todistus with Järjestämismuodollinen with OsaamisenHankkimistavallinen
 
 @ReadFlattened
 case class Osaamisalajakso(
@@ -300,7 +300,7 @@ case class AmmatillisenTutkinnonOsittainenSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinentutkintoosittainen", "suorituksentyyppi"),
   @Tooltip("Oppijan opetusryhmä")
   ryhmä: Option[String] = None
-) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus
+) extends AmmatillisenTutkinnonOsittainenTaiKokoSuoritus with Järjestämismuodollinen with OsaamisenHankkimistavallinen
 
 trait AmmatillisenTutkinnonOsittainenTaiKokoSuoritus extends  AmmatillinenPäätasonSuoritus with Toimipisteellinen with Arvioinniton with Ryhmällinen with Tutkintonimikkeellinen with Osaamisalallinen {
   def koulutusmoduuli: AmmatillinenTutkintoKoulutus
@@ -1187,4 +1187,13 @@ trait Osaamisalallinen {
   @Description("Tieto siitä mihin osaamisalaan/osaamisaloihin oppijan tutkinto liittyy")
   @OksaUri(tunnus = "tmpOKSAID299", käsite = "osaamisala")
   def osaamisala: Option[List[Osaamisalajakso]] = None
+}
+
+
+trait Järjestämismuodollinen {
+  def järjestämismuodot: Option[List[Järjestämismuotojakso]]
+}
+
+trait OsaamisenHankkimistavallinen {
+  def osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]]
 }

@@ -210,9 +210,9 @@ object AikajaksoRowBuilder {
         osaamisenHankkimistavat.getOrElse(List.empty).filter(_.osaamisenHankkimistapa.tunniste == OsaamisenhankkimistapaOppisopimus)
     }
     o.suoritukset.flatMap {
-      case s: NäyttötutkintoonValmistavanKoulutuksenSuoritus => convert(s.järjestämismuodot, s.osaamisenHankkimistavat)
-      case s: AmmatillisenTutkinnonSuoritus => convert(s.järjestämismuodot, s.osaamisenHankkimistavat)
-      case s: AmmatillisenTutkinnonOsittainenSuoritus => convert(s.järjestämismuodot, s.osaamisenHankkimistavat)
+      case s: Järjestämismuodollinen with OsaamisenHankkimistavallinen => convert(s.järjestämismuodot, s.osaamisenHankkimistavat)
+      case s: Järjestämismuodollinen => convert(s.järjestämismuodot, None)
+      case s: OsaamisenHankkimistavallinen => convert(None, s.osaamisenHankkimistavat)
       case _ => Seq.empty
     }
   }

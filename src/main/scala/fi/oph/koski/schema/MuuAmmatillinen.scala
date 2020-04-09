@@ -22,7 +22,7 @@ case class MuunAmmatillisenKoulutuksenSuoritus(
   @KoodistoKoodiarvo("muuammatillinenkoulutus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("muuammatillinenkoulutus", "suorituksentyyppi"),
   ryhmä: Option[String] = None
-) extends AmmatillinenPäätasonSuoritus with Todistus with Toimipisteellinen with Ryhmällinen with Työssäoppimisjaksoton with Arvioinniton
+) extends AmmatillinenPäätasonSuoritus with Todistus with Toimipisteellinen with Ryhmällinen with Työssäoppimisjaksoton with Arvioinniton with OsaamisenHankkimistavallinen
 
 case class MuunAmmatillisenKoulutuksenArviointi(
   @KoodistoUri("arviointiasteikkomuuammatillinenkoulutus")
@@ -49,7 +49,7 @@ case class TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaSuoritus(
   @KoodistoKoodiarvo("tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus", "suorituksentyyppi"),
   ryhmä: Option[String] = None
-) extends AmmatillinenPäätasonSuoritus with Todistus with Toimipisteellinen with Ryhmällinen with Työssäoppimisjaksoton with Arvioinniton
+) extends AmmatillinenPäätasonSuoritus with Todistus with Toimipisteellinen with Ryhmällinen with Työssäoppimisjaksoton with Arvioinniton with OsaamisenHankkimistavallinen
 
 sealed trait Työssäoppimisjaksoton extends AmmatillinenPäätasonSuoritus {
   override def työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None
