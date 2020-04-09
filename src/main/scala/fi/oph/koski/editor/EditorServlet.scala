@@ -17,7 +17,7 @@ import org.json4s.jackson.Serialization
 /**
   *  Endpoints for the Koski UI
   */
-class EditorServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with NoCache {
+class EditorServlet(implicit val application: KoskiApplication) extends EditorApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with NoCache {
   private val preferencesService = PreferencesService(application.masterDatabase.db)
   private def localization = LocalizedHtml.get(koskiSession, application.localizationRepository)
   get("/:oid") {
@@ -63,9 +63,6 @@ class EditorServlet(implicit val application: KoskiApplication) extends ApiServl
     val `type` = params("type")
     renderEither[List[EditorModel]](preferencesService.get(organisaatioOid, params.get("koulutustoimijaOid"), `type`).right.map(_.map(OppijaEditorModel.buildModel(_, true))))
   }
-  import reflect.runtime.universe.TypeTag
-
-  override def toJsonString[T: TypeTag](x: T): String = Serialization.write(x.asInstanceOf[AnyRef])(LegacyJsonSerialization.jsonFormats + EditorModelSerializer)
 
   private val context: ValidationAndResolvingContext = ValidationAndResolvingContext(application.koodistoViitePalvelu, application.organisaatioRepository)
 

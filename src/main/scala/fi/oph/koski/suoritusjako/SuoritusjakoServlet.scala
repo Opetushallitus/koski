@@ -1,23 +1,24 @@
 package fi.oph.koski.suoritusjako
 
+
 import java.time.LocalDate
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.editor.{EditorModel, EditorModelSerializer}
-import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.json.{JsonSerializer, LegacyJsonSerialization}
+import fi.oph.koski.editor.{EditorApiServlet, EditorModel}
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{AuthenticationSupport, KoskiSession}
 import fi.oph.koski.log.Logging
 import fi.oph.koski.omattiedot.OmatTiedotEditorModel
-import fi.oph.koski.servlet.{ApiServlet, NoCache}
-import org.json4s.jackson.Serialization
+import fi.oph.koski.schema.KoskiSchema.deserializationContext
+import fi.oph.koski.servlet.NoCache
+import fi.oph.koski.validation.ValidatingAndResolvingExtractor
+import org.json4s.JValue
+import scala.reflect.runtime.universe.TypeTag
 
-import scala.util.Try
-
-class SuoritusjakoServlet(implicit val application: KoskiApplication) extends ApiServlet with AuthenticationSupport with Logging with NoCache {
+class SuoritusjakoServlet(implicit val application: KoskiApplication) extends EditorApiServlet with AuthenticationSupport with Logging with NoCache {
 
   post("/editor") {
-    val koskiSession = KoskiSession.suoritusjakoKatsominenUser(request)
+    implicit val koskiSession = KoskiSession.suoritusjakoKatsominenUser(request)
     withJsonBody({ body =>
       val request = JsonSerializer.extract[SuoritusjakoRequest](body)
       renderEither[EditorModel](
@@ -31,11 +32,13 @@ class SuoritusjakoServlet(implicit val application: KoskiApplication) extends Ap
   post("/") {
     requireKansalainen
     withJsonBody({ body =>
-      Try(JsonSerializer.extract[List[SuoritusIdentifier]](body)).toOption match {
-        case Some(suoritusIds) =>
-          renderEither[Suoritusjako](application.suoritusjakoService.put(koskiSessionOption.get.oid, suoritusIds)(koskiSessionOption.get))
-        case None =>
-          haltWithStatus(KoskiErrorCategory.badRequest.format())
+      val suoritusIds = extract[List[SuoritusIdentifier]](body)
+      suoritusIds.flatMap(application.suoritusjakoService.put(user.oid, _)(user)) match {
+        case Right(suoritusjako) =>
+          renderObject(suoritusjako)
+        case Left(status) =>
+          logger.warn(s"Suoritusjaon luonti epäonnistui: oppija: ${user.oid}, suoritukset: ${suoritusIds.getOrElse(Nil).mkString}: ${status.errorString.mkString}")
+          renderStatus(status)
       }
     })()
   }
@@ -44,7 +47,7 @@ class SuoritusjakoServlet(implicit val application: KoskiApplication) extends Ap
     requireKansalainen
     withJsonBody({ body =>
       val request = JsonSerializer.extract[SuoritusjakoRequest](body)
-      render(application.suoritusjakoService.delete(koskiSessionOption.get.oid, request.secret))
+      renderStatus(application.suoritusjakoService.delete(user.oid, request.secret))
     })()
   }
 
@@ -53,18 +56,25 @@ class SuoritusjakoServlet(implicit val application: KoskiApplication) extends Ap
     withJsonBody({ body =>
       val request = JsonSerializer.extract[SuoritusjakoUpdateRequest](body)
       val expirationDate = request.expirationDate
-      val status = application.suoritusjakoService.update(koskiSessionOption.get.oid, request.secret, expirationDate)
-      render(if (status.isOk) SuoritusjakoUpdateResponse(expirationDate) else status)
+      application.suoritusjakoService.update(user.oid, request.secret, expirationDate) match {
+        case status if status.isOk =>
+          renderObject(SuoritusjakoUpdateResponse(expirationDate))
+        case status =>
+          renderStatus(status)
+      }
     })()
   }
 
   get("/") {
     requireKansalainen
-    render(application.suoritusjakoService.getAll(koskiSessionOption.get.oid))
+    renderObject(application.suoritusjakoService.getAll(user.oid))
   }
 
-  import reflect.runtime.universe.TypeTag
-  override def toJsonString[T: TypeTag](x: T): String = Serialization.write(x.asInstanceOf[AnyRef])(LegacyJsonSerialization.jsonFormats + EditorModelSerializer)
+  private def user = koskiSessionOption.get
+
+  private def extract[T: TypeTag](body: JValue) = {
+    ValidatingAndResolvingExtractor.extract[T](body, deserializationContext.copy(allowEmptyStrings = true))
+  }
 }
 
 case class SuoritusjakoRequest(secret: String)

@@ -14,7 +14,7 @@ import org.json4s.jackson.Serialization
 /**
   *  Endpoints for the Koski UI, related to koodistot/koodit, returns editor models
   */
-class EditorKooditServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with NoCache {
+class EditorKooditServlet(implicit val application: KoskiApplication) extends EditorApiServlet with RequiresVirkailijaOrPalvelukäyttäjä with NoCache {
 
   private def localization = LocalizedHtml.get(koskiSession, application.localizationRepository)
 
@@ -118,10 +118,6 @@ class EditorKooditServlet(implicit val application: KoskiApplication) extends Ap
       case _ => oppiaineeseenJaKieleenSisältyvätKurssit
     })
   }
-
-  import reflect.runtime.universe.TypeTag
-
-  override def toJsonString[T: TypeTag](x: T): String = Serialization.write(x.asInstanceOf[AnyRef])(LegacyJsonSerialization.jsonFormats + EditorModelSerializer)
 
   private def getKooditFromRequestParams() = koodistojenKoodit(koodistotByString(params("koodistoUri")))
 
