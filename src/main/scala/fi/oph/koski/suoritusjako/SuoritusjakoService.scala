@@ -16,16 +16,12 @@ import fi.oph.koski.util.WithWarnings
 
 class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppijaFacade: KoskiOppijaFacade) extends Logging {
   def put(oppijaOid: String, suoritusIds: List[SuoritusIdentifier])(implicit koskiSession: KoskiSession): Either[HttpStatus, Suoritusjako] = {
-    assertSuorituksetExist(oppijaOid, suoritusIds) match {
-      case Right(_) =>
-        val secret = generateNewSecret()
+    assertSuorituksetExist(oppijaOid, suoritusIds).toLeft(generateNewSecret)
+      .flatMap { secret =>
         val suoritusjako = suoritusjakoRepository.create(secret, oppijaOid, suoritusIds)
         AuditLog.log(AuditLogMessage(KANSALAINEN_SUORITUSJAKO_LISAYS, koskiSession, Map(oppijaHenkiloOid -> oppijaOid)))
         suoritusjako
-      case Left(status) =>
-        logger.warn(s"Suoritusjaon luonti epäonnistui: oppija: $oppijaOid, suoritukset: ${suoritusIds.mkString}: ${status.errorString.mkString}")
-        Left(status)
-    }
+      }
   }
 
   def delete(oppijaOid: String, secret: String): HttpStatus = {
@@ -62,7 +58,7 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
     }
   }
 
-  private def generateNewSecret(): String = {
+  private def generateNewSecret: String = {
     randomUUID.toString.replaceAll("-", "")
   }
 
@@ -75,7 +71,7 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
     }
   }
 
-  private def assertSuorituksetExist(oppijaOid: String, suoritusIds: List[SuoritusIdentifier]): Either[HttpStatus, Boolean] = {
+  private def assertSuorituksetExist(oppijaOid: String, suoritusIds: List[SuoritusIdentifier]): Option[HttpStatus] = {
     oppijaFacade.findOppija(oppijaOid)(KoskiSession.systemUser).map { oppijaWithWarnings =>
       oppijaWithWarnings.map { oppija =>
         suoritusIds.map(suoritusId =>
@@ -85,10 +81,10 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
         )
       }
     } match {
-      case Right(WithWarnings(matches, _)) if matches.isEmpty => Left(KoskiErrorCategory.badRequest.format())
-      case Right(WithWarnings(matches, _)) if matches.exists(!_) => Left(KoskiErrorCategory.notFound.suoritustaEiLöydy())
-      case Right(_) => Right(true)
-      case Left(status) => Left(status)
+      case Right(WithWarnings(matches, _)) if matches.isEmpty => Some(KoskiErrorCategory.badRequest.format())
+      case Right(WithWarnings(matches, _)) if matches.exists(!_) => Some(KoskiErrorCategory.notFound.suoritustaEiLöydy())
+      case Right(_) => None
+      case Left(status) => Some(status)
     }
   }
 
@@ -141,7 +137,7 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
     }
 
     opiskeluoikeus.lähdejärjestelmänId.flatMap(_.id) == suoritusId.lähdejärjestelmänId &&
-      opiskeluoikeus.oppilaitos.exists(_.oid == suoritusId.oppilaitosOid) &&
+      opiskeluoikeus.oppilaitos.map(_.oid) == suoritusId.oppilaitosOid &&
       suoritus.tyyppi.koodiarvo == suoritusId.suorituksenTyyppi &&
       checkKoulutusmoduulinTunniste(suoritusId)
   }

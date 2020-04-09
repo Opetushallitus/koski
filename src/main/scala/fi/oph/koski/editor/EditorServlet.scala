@@ -4,15 +4,13 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.editor.OppijaEditorModel.toEditorModel
 import fi.oph.koski.henkilo.HenkilöOid
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
-import fi.oph.koski.json.LegacyJsonSerialization
 import fi.oph.koski.koskiuser.{AccessType, RequiresVirkailijaOrPalvelukäyttäjä}
 import fi.oph.koski.organisaatio.OrganisaatioOid
 import fi.oph.koski.preferences.PreferencesService
-import fi.oph.koski.servlet.{ApiServlet, NoCache}
+import fi.oph.koski.servlet.NoCache
 import fi.oph.koski.todistus.LocalizedHtml
 import fi.oph.koski.util.WithWarnings
 import fi.oph.koski.validation.ValidationAndResolvingContext
-import org.json4s.jackson.Serialization
 
 /**
   *  Endpoints for the Koski UI
