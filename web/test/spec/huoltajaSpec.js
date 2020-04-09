@@ -5,8 +5,6 @@ describe('Huollettavien tiedot', function () {
   var etusivu = LandingPage()
   var korhopankki = KorhoPankki()
 
-  // Ks. huoltaja -> huollettava mäppäys metodista fi.oph.koski.omattiedot.MockValtuudetClient.findOppija
-
   describe('Kun huollettavalla on opintoja Koskessa', function () {
     before(authentication.logout, etusivu.openPage, etusivu.login(), wait.until(korhopankki.isReady), korhopankki.login('030300-5215'), wait.until(omattiedot.isVisible))
 
