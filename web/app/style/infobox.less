@@ -1,0 +1,64 @@
+@import "colors.less";
+
+
+.infobox {
+
+  .info-icon:before {
+    font-family: FontAwesome;
+    content: '\f05a';
+    color: @color-blue;
+    margin: 0 1rem;
+  }
+
+  .info-icon:hover {
+    cursor: pointer;
+  }
+
+  .info-content-shield {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .info-content {
+    z-index: 1;
+    position: absolute;
+    white-space: initial;
+    max-width: 600px;
+    padding: 30px;
+    font-size: 1rem;
+    background: @color-white;
+    box-shadow: 0 1px 5px 0 rgba(0,0,0,0.30);
+    border-radius: 2px;
+
+    @media @media-phone {
+      left: 2%;
+      right: 2%;
+    }
+
+    .bold {
+      font-weight: 900;
+      margin-bottom: 1rem;
+    }
+
+     ol {
+      padding: 0 0 0 16px;
+
+       li {
+         margin: 0.5rem 0;
+       }
+    }
+  }
+
+  .info-content-close {
+    .CloseSymbol;
+    .BorderlessButton;
+    cursor: pointer;
+    position: absolute;
+    size: 1rem;
+    top: 8px;
+    right: 16px;
+  }
+}
