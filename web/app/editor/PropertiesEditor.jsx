@@ -6,6 +6,7 @@ import {checkOnlyWhen, modelErrorMessages, modelProperties} from './EditorModel'
 import Text from '../i18n/Text'
 import {buildClassNames} from '../components/classnames'
 import {flatMapArray} from '../util/util'
+import {KoulusivistyskieliPropertyTitle} from '../suoritus/Koulusivistyskieli'
 
 export class PropertiesEditor extends React.Component {
   render() {
@@ -70,7 +71,9 @@ const ErrorDecorator = ({editor, model, parentKey}) => {
 
 export const PropertyTitle = ({property}) => {
   let description = property.description && property.description.join(' ')
-  if (description) {
+  if (property.title === 'Koulusivistyskieli') {
+    return <KoulusivistyskieliPropertyTitle/>
+  } else if (description) {
     return <Text name={property.title} title={description} className="with-description"/>
   } else {
     return <Text name={property.title}/>
