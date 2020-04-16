@@ -1,3 +1,5 @@
+SHELL := /bin/bash
+
 env = cloud
 cleandist = true
 mvn_argline =
@@ -5,6 +7,9 @@ mvn_opts =
 
 DOCKER_COMPOSE = docker-compose
 DOCKER_COMPOSE_OPTS = --force-recreate --renew-anon-volumes --build
+
+NODE_PATH = $(shell ./scripts/find-node-or-install)
+PATH := $(NODE_PATH):$(shell echo $$PATH)
 
 .PHONY: help
 help:
