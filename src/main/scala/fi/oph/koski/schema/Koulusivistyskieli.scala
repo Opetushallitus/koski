@@ -1,10 +1,11 @@
 package fi.oph.koski.schema
 
-import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri}
+import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, ReadOnly}
 import fi.oph.scalaschema.annotation.{Description, SyntheticProperty}
 
 trait Koulusivistyskieli {
   @SyntheticProperty
+  @ReadOnly("Koulusivistyskieli päätellään automaattisesti suorituksista.")
   @Description("Koulusivistyskieli. Tiedon syötössä tietoa ei tarvita; tieto poimitaan osasuorituksista.")
   @KoodistoUri("kieli")
   @KoodistoKoodiarvo("FI")
