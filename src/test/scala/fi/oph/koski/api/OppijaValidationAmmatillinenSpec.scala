@@ -522,7 +522,10 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
       }
 
       "Osasuoritukset vanhojen perusteiden mukaan (siirtymäaika 2018)" - {
-        def suoritus(osasuoritus: AmmatillisenTutkinnonOsanSuoritus = tutkinnonOsaSuoritus) = reformiSuoritus.copy(osasuoritukset = Some(List(osasuoritus)))
+        def suoritus(osasuoritus: AmmatillisenTutkinnonOsanSuoritus = tutkinnonOsaSuoritus) = reformiSuoritus.copy(
+          osasuoritukset = Some(List(osasuoritus)),
+          alkamispäivä = Some(date(2020, 1, 1))
+        )
         def oppija(alkamispäivä: LocalDate, suoritus: AmmatillisenTutkinnonSuoritus) = {
           val opiskeluoikeus = makeOpiskeluoikeus(alkamispäivä).copy(suoritukset = List(suoritus))
           makeOppija(defaultHenkilö, List(JsonSerializer.serializeWithRoot(opiskeluoikeus)))

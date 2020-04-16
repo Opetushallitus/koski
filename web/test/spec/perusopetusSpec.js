@@ -7,7 +7,9 @@ describe('Perusopetus', function() {
   var addOppija = AddOppijaPage()
   var opiskeluoikeus = OpiskeluoikeusDialog()
   var editor = opinnot.opiskeluoikeusEditor()
-  var currentDate = new Date().getDate() + '.' + (1 + new Date().getMonth()) + '.' + new Date().getFullYear()
+  var currentDate = new Date()
+  function currentDatePlusYears(years) {return currentDate.getDate() + '.' + (1 + currentDate.getMonth()) + '.' + (currentDate.getFullYear() + years)}
+  var currentDateStr = currentDatePlusYears(0)
 
   before(Authentication().login(), resetFixtures)
 
@@ -297,7 +299,7 @@ describe('Perusopetus', function() {
             lisääSuoritus.open('lisää vuosiluokan suoritus'),
             lisääSuoritus.property('luokka').setValue('1a'),
             lisääSuoritus.toimipiste.select('Jyväskylän normaalikoulu, alakoulu'),
-            lisääSuoritus.property('alkamispäivä').setValue('1.1.2012'),
+            lisääSuoritus.property('alkamispäivä').setValue(currentDateStr),
             lisääSuoritus.lisääSuoritus
           )
           it('Esitäyttää toiminta-alueet', function() {
@@ -828,7 +830,7 @@ describe('Perusopetus', function() {
           describe('Kun lisätään', function() {
             before(editor.edit, opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().aseta('eronnut'), opiskeluoikeus.tallenna, editor.saveChanges)
             it('Opiskeluoikeuden päättymispäivä asetetaan', function() {
-              expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal(currentDate)
+              expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal(currentDateStr)
             })
 
             it('Opiskeluoikeuden tilaa ei voi lisätä kun opiskeluoikeus on päättynyt', function() {
@@ -863,7 +865,7 @@ describe('Perusopetus', function() {
             before(editor.edit, opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().aseta('valmistunut'), opiskeluoikeus.tallenna, editor.saveChanges)
 
             it('Opiskeluoikeuden päättymispäivä asetetaan', function() {
-              expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal(currentDate)
+              expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal(currentDateStr)
             })
 
 
@@ -929,7 +931,7 @@ describe('Perusopetus', function() {
             before(opinnot.avaaLisaysDialogi, opiskeluoikeus.tila().aseta('peruutettu'), opiskeluoikeus.tallenna, editor.saveChanges, wait.until(page.isSavedLabelShown))
 
             it('Opiskeluoikeuden päättymispäivä asetetaan', function() {
-              expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal(currentDate)
+              expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal(currentDateStr)
             })
 
             it('Opiskeluoikeuden tilaa ei voi lisätä kun opiskeluoikeus on päättynyt', function() {
@@ -1011,7 +1013,7 @@ describe('Perusopetus', function() {
           })
 
           describe('Virheellinen päivämäärä korjattu oikeelliseksi', function() {
-            before(opiskeluoikeus.tila().aseta('eronnut'), opiskeluoikeus.alkuPaiva().setValue('11.1.200'), opiskeluoikeus.alkuPaiva().setValue(currentDate))
+            before(opiskeluoikeus.tila().aseta('eronnut'), opiskeluoikeus.alkuPaiva().setValue('11.1.200'), opiskeluoikeus.alkuPaiva().setValue(currentDateStr))
             it('Tallennus on sallittu', function() {
               expect(opiskeluoikeus.isEnabled()).to.equal(true)
             })
@@ -1161,9 +1163,9 @@ describe('Perusopetus', function() {
             })
           })
           describe('Oikeellinen päivämäärä', function() {
-            before(pidennettyOppivelvollisuus.setAlku(currentDate), editor.saveChanges, wait.until(page.isSavedLabelShown))
+            before(pidennettyOppivelvollisuus.setAlku(currentDateStr), editor.saveChanges, wait.until(page.isSavedLabelShown))
             it('Tallennus onnistuu', function() {
-              expect(pidennettyOppivelvollisuus.getAlku()).to.equal(currentDate)
+              expect(pidennettyOppivelvollisuus.getAlku()).to.equal(currentDateStr)
             })
           })
 
@@ -1178,7 +1180,7 @@ describe('Perusopetus', function() {
             editor.edit,
             opinnot.expandAll,
             pidennettyOppivelvollisuusProperty.addValue,
-            pidennettyOppivelvollisuus.setAlku(currentDate),
+            pidennettyOppivelvollisuus.setAlku(currentDateStr),
             pidennettyOppivelvollisuus.setLoppu('1.2.2008')
           )
 
@@ -1186,7 +1188,7 @@ describe('Perusopetus', function() {
             expect(pidennettyOppivelvollisuus.isValid()).to.equal(false)
             expect(opinnot.onTallennettavissa()).to.equal(false)
           })
-          after(pidennettyOppivelvollisuus.setLoppu(currentDate), editor.saveChanges, wait.until(page.isSavedLabelShown))
+          after(pidennettyOppivelvollisuus.setLoppu(currentDateStr), editor.saveChanges, wait.until(page.isSavedLabelShown))
         })
 
         describe('Tukimuodot', function() {
@@ -2604,7 +2606,7 @@ describe('Perusopetus', function() {
           })
 
           describe('Kun syötetään vielä alkamispäivä', function () {
-            before(lisääSuoritus.property('alkamispäivä').setValue('12.12.2012'))
+            before(lisääSuoritus.property('alkamispäivä').setValue(currentDateStr))
             it('Lisää nappi on enabloitu', function () {
               expect(lisääSuoritus.isEnabled()).to.equal(true)
             })
@@ -2672,7 +2674,7 @@ describe('Perusopetus', function() {
                   describe('Kun merkitään valmiksi', function() {
                     before(
                       tilaJaVahvistus.merkitseValmiiksi,
-                      dialog.editor.property('päivä').setValue('11.4.2017'),
+                      dialog.editor.property('päivä').setValue(currentDateStr),
                       dialog.myöntäjät.itemEditor(0).setValue('Lisää henkilö'),
                       dialog.myöntäjät.itemEditor(0).propertyBySelector('.nimi').setValue('Reijo Reksi'),
                       dialog.myöntäjät.itemEditor(0).propertyBySelector('.titteli').setValue('rehtori')
@@ -2693,7 +2695,7 @@ describe('Perusopetus', function() {
 
                       describe('Käyttöliittymän tila', function() {
                         it('Tila on "valmis" ja vahvistus näytetään', function() {
-                          expect(tilaJaVahvistus.text()).to.equal('Suoritus valmis Vahvistus : 11.4.2017 Jyväskylä mlk Reijo Reksi , rehtori\nSiirretään seuraavalle luokalle')
+                          expect(tilaJaVahvistus.text()).to.equal('Suoritus valmis Vahvistus : ' + currentDateStr + ' Jyväskylä mlk Reijo Reksi , rehtori\nSiirretään seuraavalle luokalle')
                         })
 
                         it('Merkitse valmiiksi -nappia ei näytetä', function() {
@@ -2724,7 +2726,7 @@ describe('Perusopetus', function() {
                         describe('Lisäyksen jälkeen', function() {
                           before(
                             lisääSuoritus.property('luokka').setValue('2a'),
-                            lisääSuoritus.property('alkamispäivä').setValue('1.1.2012'),
+                            lisääSuoritus.property('alkamispäivä').setValue(currentDateStr),
                             lisääSuoritus.lisääSuoritus
                           )
 
@@ -2746,7 +2748,7 @@ describe('Perusopetus', function() {
                               opinnot.oppiaineet.merkitseOppiaineetValmiiksi(),
                               tilaJaVahvistus.merkitseValmiiksi,
                               dialogEditor.propertyBySelector('.jaa-tai-siirretaan').setValue(false),
-                              dialogEditor.property('päivä').setValue('11.4.2017'),
+                              dialogEditor.property('päivä').setValue(currentDateStr),
                               dialogEditor.property('paikkakunta').setValue('Jyväskylä mlk')
                             )
 
@@ -2763,7 +2765,7 @@ describe('Perusopetus', function() {
                               )
 
                               it('Tila on "valmis" ja vahvistus näytetään', function() {
-                                expect(tilaJaVahvistus.text()).to.equal('Suoritus valmis Vahvistus : 11.4.2017 Jyväskylä mlk Reijo Reksi , rehtori\nEi siirretä seuraavalle luokalle')
+                                expect(tilaJaVahvistus.text()).to.equal('Suoritus valmis Vahvistus : ' + currentDateStr + ' Jyväskylä mlk Reijo Reksi , rehtori\nEi siirretä seuraavalle luokalle')
                               })
 
                               describe('Seuraavan luokka-asteen lisäyksessä', function() {
@@ -2775,7 +2777,7 @@ describe('Perusopetus', function() {
                                 describe('Lisättäessä toinen 2. luokan suoritus', function() {
                                   before(
                                     lisääSuoritus.property('luokka').setValue('2x'),
-                                    lisääSuoritus.property('alkamispäivä').setValue('12.12.2012'),
+                                    lisääSuoritus.property('alkamispäivä').setValue(currentDateStr),
                                     lisääSuoritus.lisääSuoritus
                                   )
 
@@ -2796,7 +2798,7 @@ describe('Perusopetus', function() {
                                     describe('Kun kaikki luokka-asteet on lisätty', function() {
                                       before(editor.edit)
                                       for (var i = 3; i <= 9; i++) {
-                                        before(lisääSuoritus.open('lisää vuosiluokan suoritus'), lisääSuoritus.property('luokka').setValue(i + 'a'), lisääSuoritus.property('alkamispäivä').setValue('1.1.201' + i), lisääSuoritus.lisääSuoritus)
+                                        before(lisääSuoritus.open('lisää vuosiluokan suoritus'), lisääSuoritus.property('luokka').setValue(i + 'a'), lisääSuoritus.property('alkamispäivä').setValue(currentDatePlusYears(i)), lisääSuoritus.lisääSuoritus)
                                       }
 
                                       it('Suorituksia ei voi enää lisätä', function() {
@@ -2859,7 +2861,7 @@ describe('Perusopetus', function() {
             lisääSuoritus.property('tunniste').setValue(luokkaAste + '. vuosiluokka'),
             lisääSuoritus.property('luokka').setValue(luokkaAste + 'a'),
             lisääSuoritus.toimipiste.select('Jyväskylän normaalikoulu, alakoulu'),
-            lisääSuoritus.property('alkamispäivä').setValue('12.12.2012'),
+            lisääSuoritus.property('alkamispäivä').setValue(currentDateStr),
             lisääSuoritus.lisääSuoritus
           )
         }
