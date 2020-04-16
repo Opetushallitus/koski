@@ -301,6 +301,20 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
               verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.päättymispäiväEnnenVahvistusta("suoritus.vahvistus.päivä (2017-06-30) oltava sama tai aiempi kuin päättymispäivä (2017-05-31)"))
             }
           }
+
+          "suoritus.alkamispäivä < opiskeluoikeus.alkamispäivä" in {
+            val oo = alkamispäivällä(defaultOpiskeluoikeus, date(2020, 4, 20))
+            val tutkinto: AmmatillinenPäätasonSuoritus = oo.suoritukset.collect {
+              case s: AmmatillisenTutkinnonSuoritus => s.copy(alkamispäivä = Some(date(2020, 4, 16)))
+            }.head
+            val ooSuorituksilla = oo.copy(suoritukset = List(tutkinto))
+
+            putOpiskeluoikeus(ooSuorituksilla) {
+              verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.suorituksenAlkamispäiväEnnenOpiskeluoikeudenAlkamispäivää(
+                "opiskeluoikeus.alkamispäivä (2020-04-20) oltava sama tai aiempi kuin päätasonSuoritus.alkamispäivä (2020-04-16)"
+              ))
+            }
+          }
         }
 
         "Opiskeluoikeuden tila muuttunut vielä valmistumisen jälkeen -> HTTP 400" in (putOpiskeluoikeus(
