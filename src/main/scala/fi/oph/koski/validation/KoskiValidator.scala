@@ -310,6 +310,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     }
 
     val ensimmäisenJaksonPäivä: Option[LocalDate] = opiskeluoikeus.tila.opiskeluoikeusjaksot.headOption.map(_.alku)
+    val päätasonSuorituksenAlkamispäivät = opiskeluoikeus.suoritukset.flatMap(_.alkamispäivä)
 
     HttpStatus.fold(
       validateDateOrder(
@@ -321,6 +322,11 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         ("alkamispäivä", opiskeluoikeus.alkamispäivä),
         ("arvioituPäättymispäivä", opiskeluoikeus.arvioituPäättymispäivä),
         KoskiErrorCategory.badRequest.validation.date.arvioituPäättymisPäiväEnnenAlkamispäivää
+      ),
+      validateDateOrder(
+        ("opiskeluoikeus.alkamispäivä", opiskeluoikeus.alkamispäivä),
+        ("päätasonSuoritus.alkamispäivä", päätasonSuorituksenAlkamispäivät),
+        KoskiErrorCategory.badRequest.validation.date.suorituksenAlkamispäiväEnnenOpiskeluoikeudenAlkamispäivää
       ),
       validateJaksotPäättyminen(opiskeluoikeus.tila.opiskeluoikeusjaksot),
       DateValidation.validateJaksotDateOrder(

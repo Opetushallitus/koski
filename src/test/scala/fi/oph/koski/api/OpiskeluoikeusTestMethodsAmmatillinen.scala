@@ -34,6 +34,21 @@ trait OpiskeluoikeusTestMethodsAmmatillinen extends PutOpiskeluoikeusTestMethods
       }
     )
 
+  def alkamispäivällä(oo: AmmatillinenOpiskeluoikeus, alkamispäivä: LocalDate) =
+    lisääTila(
+      oo.copy(tila = new AmmatillinenOpiskeluoikeudenTila(opiskeluoikeusjaksot = List())),
+      alkamispäivä,
+      ExampleData.opiskeluoikeusLäsnä
+    ).copy(
+      suoritukset = oo.suoritukset.map {
+        case s: AmmatillisenTutkinnonSuoritus => s.copy(
+          alkamispäivä = Some(alkamispäivä),
+          osasuoritukset = Some(List(muunAmmatillisenTutkinnonOsanSuoritus.copy(vahvistus = None)))
+        )
+        case _ => ???
+      }
+    )
+
   def lisääTila(oo: AmmatillinenOpiskeluoikeus, päivä: LocalDate, tila: Koodistokoodiviite) = oo.copy(
     tila = AmmatillinenOpiskeluoikeudenTila(oo.tila.opiskeluoikeusjaksot ++ List(AmmatillinenOpiskeluoikeusjakso(päivä, tila, Some(valtionosuusRahoitteinen))))
   )
