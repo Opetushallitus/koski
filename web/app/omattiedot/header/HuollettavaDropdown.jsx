@@ -2,6 +2,8 @@ import React from 'baret'
 import Dropdown from '../../components/Dropdown'
 import {modelData} from '../../editor/EditorModel'
 import {t} from '../../i18n/i18n'
+import {Infobox} from '../../components/Infobox'
+import Text from '../../i18n/Text'
 
 export const HuollettavaDropdown = ({oppija, oppijaSelectionBus}) => {
   const kirjautunutHenkilo = modelData(oppija, 'userHenkilö')
@@ -15,7 +17,9 @@ export const HuollettavaDropdown = ({oppija, oppijaSelectionBus}) => {
   return (
     options.length > 1 &&
     <div className='header__oppijanvalitsin'>
-      <h2 className='header__heading'> {t('Kenen opintoja haluat tarkastella?')}
+      <h2 className='header__heading'>
+        {t('Kenen opintoja haluat tarkastella?')}
+        <HuoltajaInfo/>
       </h2>
       <Dropdown
         options={options}
@@ -29,5 +33,12 @@ export const HuollettavaDropdown = ({oppija, oppijaSelectionBus}) => {
     </div>
   )
 }
+
+const HuoltajaInfo = ({}) => (
+  <Infobox>
+    <Text name='Alaikäisten huollettavien tiedot haetaan väestörekisterikeskuksesta.'/><br/>
+    <a href='https://www.suomi.fi/ohjeet-ja-tuki/tietoa-valtuuksista/toisen-henkilon-puolesta-asiointi' target='_blank'>{t('Lisätietoa')}</a>
+  </Infobox>
+)
 
 const aakkosjarjestys = (a, b) => a.etunimet.localeCompare(b.etunimet)
