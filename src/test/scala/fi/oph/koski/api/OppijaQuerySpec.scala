@@ -20,26 +20,6 @@ class OppijaQuerySpec extends FreeSpec with LocalJettyHttpSpecification with Opi
 
   "Kyselyrajapinta" - {
     "kun haku osuu" - {
-      "nimihaku" - {
-        "sukunimellä tai etunimellä" in {
-          resetFixtures
-          queryOppijat("?nimihaku=eerola").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi) should equal(List("Jouni Eerola"))
-          queryOppijat("?nimihaku=eero").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi).sorted should equal(List("Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström", "Jouni Eerola"))
-        }
-        "sukunimen tai etunimen osalla" in {
-          queryOppijat("?nimihaku=eerol").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi) should equal(List("Jouni Eerola"))
-          queryOppijat("?nimihaku=eer").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi).sorted should equal(List("Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström", "Jouni Eerola"))
-        }
-        "etunimi-sukunimiyhdistelmällä" in {
-          queryOppijat("?nimihaku=jouni%20eerola").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi) should equal(List("Jouni Eerola"))
-        }
-        "osittaisten nimien yhdistelmällä" in {
-          queryOppijat("?nimihaku=jou%20eer").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi) should equal(List("Jouni Eerola"))
-        }
-        "aksentit & moniosaiset nimet" in {
-          queryOppijat("?nimihaku=eero%20fager").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi) should equal(List("Eéro Jorma-Petteri Markkanen-Fagerström"))
-        }
-      }
       "päättymispäivämäärä" in {
         resetFixtures
         insert(päättymispäivällä(defaultOpiskeluoikeus, date(2016,1,9)), eero)
