@@ -7,10 +7,9 @@ import fi.oph.koski.documentation.{ExampleData, PerusopetusExampleData}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.MockUsers.{stadinAmmattiopistoKatselija, stadinVastuukäyttäjä}
+import fi.oph.koski.koskiuser.UserWithPassword
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema._
-import org.json4s.JsonAST.{JArray, JBool}
-import org.json4s.jackson.JsonMethods
 import org.scalatest.{FreeSpec, Matchers}
 
 class OppijaQuerySpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with QueryTestMethods with Matchers {
@@ -20,38 +19,18 @@ class OppijaQuerySpec extends FreeSpec with LocalJettyHttpSpecification with Opi
 
   "Kyselyrajapinta" - {
     "kun haku osuu" - {
-      "nimihaku" - {
-        "sukunimellä tai etunimellä" in {
-          resetFixtures
-          queryOppijat("?nimihaku=eerola").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi) should equal(List("Jouni Eerola"))
-          queryOppijat("?nimihaku=eero").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi).sorted should equal(List("Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström", "Jouni Eerola"))
-        }
-        "sukunimen tai etunimen osalla" in {
-          queryOppijat("?nimihaku=eerol").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi) should equal(List("Jouni Eerola"))
-          queryOppijat("?nimihaku=eer").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi).sorted should equal(List("Eero Esimerkki", "Eéro Jorma-Petteri Markkanen-Fagerström", "Jouni Eerola"))
-        }
-        "etunimi-sukunimiyhdistelmällä" in {
-          queryOppijat("?nimihaku=jouni%20eerola").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi) should equal(List("Jouni Eerola"))
-        }
-        "osittaisten nimien yhdistelmällä" in {
-          queryOppijat("?nimihaku=jou%20eer").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi) should equal(List("Jouni Eerola"))
-        }
-        "aksentit & moniosaiset nimet" in {
-          queryOppijat("?nimihaku=eero%20fager").map(_.henkilö.asInstanceOf[TäydellisetHenkilötiedot].kokonimi) should equal(List("Eéro Jorma-Petteri Markkanen-Fagerström"))
-        }
-      }
       "päättymispäivämäärä" in {
         resetFixtures
-        insert(päättymispäivällä(defaultOpiskeluoikeus, date(2016,1,9)), eero)
-        insert(päättymispäivällä(defaultOpiskeluoikeus, date(2013,1,9)), teija)
+        insert(päättymispäivällä(defaultOpiskeluoikeus, date(2016, 1, 9)), eero)
+        insert(päättymispäivällä(defaultOpiskeluoikeus, date(2013, 1, 9)), teija)
 
         val queryString: String = "opiskeluoikeusPäättynytAikaisintaan=2016-01-01&opiskeluoikeusPäättynytViimeistään=2016-12-31"
         val oppijat = queryOppijat("?" + queryString)
-        val päättymispäivät: List[(String, LocalDate)] = oppijat.flatMap {oppija =>
+        val päättymispäivät: List[(String, LocalDate)] = oppijat.flatMap { oppija =>
           oppija.opiskeluoikeudet.flatMap(_.päättymispäivä).map((oppija.henkilö.asInstanceOf[TäydellisetHenkilötiedot].hetu.get, _))
         }
         päättymispäivät should contain(("010101-123N", LocalDate.parse("2016-01-09")))
-        päättymispäivät.map(_._2).foreach { pvm => pvm should (be >= LocalDate.parse("2016-01-01") and be <= LocalDate.parse("2016-12-31"))}
+        päättymispäivät.map(_._2).foreach { pvm => pvm should (be >= LocalDate.parse("2016-01-01") and be <= LocalDate.parse("2016-12-31")) }
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_HAKU", "target" -> Map("hakuEhto" -> queryString)))
       }
       "alkamispäivämäärä" in {
@@ -59,7 +38,7 @@ class OppijaQuerySpec extends FreeSpec with LocalJettyHttpSpecification with Opi
         insert(makeOpiskeluoikeus(date(2100, 1, 2)), eero)
         insert(makeOpiskeluoikeus(date(2110, 1, 1)), teija)
         val alkamispäivät = queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&opiskeluoikeusAlkanutViimeistään=2100-01-02")
-            .flatMap(_.opiskeluoikeudet.flatMap(_.alkamispäivä))
+          .flatMap(_.opiskeluoikeudet.flatMap(_.alkamispäivä))
         alkamispäivät should equal(List(date(2100, 1, 2)))
       }
       "opiskeluoikeuden tyyppi" in {
@@ -112,6 +91,31 @@ class OppijaQuerySpec extends FreeSpec with LocalJettyHttpSpecification with Opi
       }
     }
 
+    "Luottamuksellinen data" - {
+      "Näytetään käyttäjälle jolla on LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-rooli" in {
+        resetFixtures
+        vankilaopetuksessa(haeOpiskeluoikeudetOppijanNimellä("Eero", "Esimerkki", stadinAmmattiopistoKatselija)) should equal(Some(List(Aikajakso(date(2001, 1, 1), None))))
+      }
+
+      "Piilotetaan käyttäjältä jolta puuttuu LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-rooli" in {
+        vankilaopetuksessa(haeOpiskeluoikeudetOppijanNimellä("Eero", "Esimerkki", user = stadinVastuukäyttäjä)) should equal(None)
+      }
+    }
+
+    "Lasketut kentät" - {
+      "Palautetaan käyttäjälle jolla on LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-rooli " in {
+        val ensimmäisenOsasuorituksetArviointi: Arviointi = haeOpiskeluoikeudetOppijanNimellä("Anneli", "Amikseenvalmistautuja", user = stadinAmmattiopistoKatselija)
+          .head.suoritukset.head.osasuoritusLista.head.viimeisinArviointi.get
+        ensimmäisenOsasuorituksetArviointi.hyväksytty should be(true)
+      }
+
+      "Palautetaan käyttäjälle jolta puuttuu LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-rooli " in {
+        val ensimmäisenOsasuorituksetArviointi: Arviointi = haeOpiskeluoikeudetOppijanNimellä("Anneli", "Amikseenvalmistautuja", user = stadinVastuukäyttäjä)
+          .head.suoritukset.head.osasuoritusLista.head.viimeisinArviointi.get
+        ensimmäisenOsasuorituksetArviointi.hyväksytty should be(true)
+      }
+    }
+
     "luokkahaku" - {
       "luokan osittaisella tai koko nimellä" in {
         resetFixtures
@@ -154,48 +158,19 @@ class OppijaQuerySpec extends FreeSpec with LocalJettyHttpSpecification with Opi
       }
     }
 
-    "Luottamuksellinen data" - {
-      "Näytetään käyttäjälle jolla on LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-rooli" in {
-        resetFixtures
-        vankilaopetuksessa(queryOppijat("?nimihaku=eero%20esimerkki", user = stadinAmmattiopistoKatselija)) should equal(Some(List(Aikajakso(date(2001,1,1), None))))
-      }
-
-      "Piilotetaan käyttäjältä jolta puuttuu LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-rooli" in {
-        vankilaopetuksessa(queryOppijat("?nimihaku=eero%20esimerkki", user = stadinVastuukäyttäjä)) should equal(None)
-      }
-
-      def vankilaopetuksessa(queryResult: Seq[Oppija]): Option[List[Aikajakso]] = queryResult.toList match {
-        case List(oppija) =>
-          oppija.opiskeluoikeudet(0).asInstanceOf[AmmatillinenOpiskeluoikeus].lisätiedot.flatMap(_.vankilaopetuksessa)
-        case oppijat =>
-          fail("Unexpected number of results: " + oppijat.length)
-      }
-    }
-
-    "Lasketut kentät" - {
-      "Palautetaan käyttäjälle jolla on LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-rooli " in {
-        authGet("api/oppija?nimihaku=anneli%20amikseenvalmistautuja", user = stadinAmmattiopistoKatselija) {
-          verifyResponseStatusOk()
-          val parsedJson = JsonMethods.parse(body)
-          val ensimmäisenOsasuorituksetArviointi = ((((parsedJson \ "opiskeluoikeudet")(0) \ "suoritukset")(0) \ "osasuoritukset")(0) \ "arviointi")(0)
-          (ensimmäisenOsasuorituksetArviointi \ "hyväksytty") should equal(JArray(List(JBool(true))))
-        }
-      }
-      "Palautetaan käyttäjälle jolta puuttuu LUOTTAMUKSELLINEN_KAIKKI_TIEDOT-rooli " in {
-        authGet("api/oppija?nimihaku=anneli%20amikseenvalmistautuja", user = stadinVastuukäyttäjä) {
-          verifyResponseStatusOk()
-          val parsedJson = JsonMethods.parse(body)
-          val ensimmäisenOsasuorituksetArviointi = ((((parsedJson \ "opiskeluoikeudet")(0) \ "suoritukset")(0) \ "osasuoritukset")(0) \ "arviointi")(0)
-          (ensimmäisenOsasuorituksetArviointi \ "hyväksytty") should equal(JArray(List(JBool(true))))
-        }
-      }
-    }
-
     def insert(opiskeluoikeus: Opiskeluoikeus, henkilö: Henkilö) = {
       putOpiskeluoikeus(opiskeluoikeus, henkilö) {
         verifyResponseStatusOk()
       }
     }
   }
+
+  private def haeOpiskeluoikeudetOppijanNimellä(etunimet: String, sukunimi: String, user: UserWithPassword) = {
+    queryOppijat(s"?opiskeluoikeudenTyyppi=ammatillinenkoulutus", user).collectFirst { case Oppija(h: TäydellisetHenkilötiedot, oos) if h.etunimet == etunimet && h.sukunimi == sukunimi =>
+     oos.collect { case oo: AmmatillinenOpiskeluoikeus => oo }
+    }.toList.flatten
+  }
+
+  def vankilaopetuksessa(oos: List[AmmatillinenOpiskeluoikeus]): Option[List[Aikajakso]] = oos.head.lisätiedot.flatMap(_.vankilaopetuksessa)
 }
 
