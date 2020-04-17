@@ -73,17 +73,13 @@ domP.onValue((component) => ReactDOM.render(component, document.getElementById('
 domP.onError(handleError)
 
 export const hasOpintoja = oppija => modelItems(oppija, 'opiskeluoikeudet').length > 0
-const Oppija = ({oppija}) => {
-  return oppija.loading
-    ? <div className="loading"/>
-    : (
-      <div>
-        <div className="oppija-content">
-          <Header oppija={oppija} oppijaSelectionBus={oppijaSelectionBus}/>
-          {hasOpintoja(oppija) ? <Editor key={document.location.toString()} model={oppija}/> : <EiSuorituksiaInfo oppija={oppija}/>}
-        </div>
+const Oppija = ({oppija}) => (
+  <div>
+    <div className="oppija-content">
+      <Header oppija={oppija} oppijaSelectionBus={oppijaSelectionBus}/>
+      {hasOpintoja(oppija) ? <Editor key={document.location.toString()} model={oppija}/> : <EiSuorituksiaInfo oppija={oppija}/>}
       </div>
-    )
-}
+  </div>
+)
 
 patchSaavutettavuusLeima()
