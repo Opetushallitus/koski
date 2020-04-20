@@ -206,7 +206,7 @@ case class AikuistenPerusopetusRaportti(
         ulkomaanjaksot = lisätiedot.flatMap(_.ulkomaanjaksot.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
         majoitusetu = lisätiedot.flatMap(_.majoitusetu).map(lengthInDaysInDateRange(_, alku, loppu)),
         sisäoppilaitosmainenMajoitus = lisätiedot.flatMap(_.sisäoppilaitosmainenMajoitus.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
-        yhteislaajuus = row.osasuoritukset.filter(raporttiType.isKurssi).flatMap(_.koulutusmoduuliLaajuusArvo.map(_.toDouble)).sum
+        yhteislaajuus = row.osasuoritukset.filter(raporttiType.isKurssi).flatMap(_.koulutusmoduuliLaajuusArvo).sum
       ),
       oppiaineet = oppiaineidentiedot(row.päätasonSuoritus, row.osasuoritukset, oppiaineet, raporttiType.isOppiaineenOppimäärä)
     )
