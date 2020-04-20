@@ -65,7 +65,7 @@ Lähdekoodissa [MockUsers](src/main/scala/fi/oph/koski/koskiuser/MockUsers.scala
 Nämä ovat keskeiset Koski-järjestelmässä käytettävät teknologiat. Lista kuvaa järjestelmän nykytilaa ja muuttuu matkan varrella
 tarpeen mukaan.
 
-- PostgreSQL 9.6 -tietokanta
+- PostgreSQL 12.2 -tietokanta
 - Elasticsearch 5.6 -hakuindeksi
 - Palvelinteknologiat
   - Scala 2.12 -ohjelmointikieli ja -kääntäjä
@@ -92,9 +92,9 @@ Minimissään tarvitset nämä:
 - GNU Make (osx, linux sisältää tämän, komentorivillä `make`)
 - Java 8 (osx: `brew cask install java`)
 - Maven 3 (osx: `brew install maven`)
-- Postgres 9.6
-  - osx: `brew install postgresql@9.6` 
-  - then ensure necessary binaries are in your PATH, e.g. `ln -s ../opt/postgresql@9.6/bin/{createdb,createuser,postgres,initdb} /usr/local/bin`
+- Postgres 12.2
+  - osx: `brew install postgresql@12`
+  - then ensure necessary binaries are in your PATH, e.g. `ln -s ../opt/postgresql@12/bin/{createdb,createuser,postgres,initdb} /usr/local/bin`
   - initialize the data folder `initdb ./postgresql/data/`
 - Elasticsearch 5.6
   - osx: `brew install elasticsearch@5.6`

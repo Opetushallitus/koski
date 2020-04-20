@@ -217,7 +217,6 @@ object KoskiApiOperations extends ApiGroup {
     QueryParameter("suorituksenTyyppi","Juurisuorituksen tyyppi (ks. suorituksentyyppi-koodisto)", List("ammatillinentutkinto")),
     QueryParameter("tutkintohaku","Tekstihaku kohdistuen tutkinnon nimeen, osaamisalaan ja tutkintonimikkeeseen", List("autoalan perustutkinto")),
     QueryParameter("luokkahaku", "Tekstihaku kohdistuen oppilaan nykyiseen/viimeisimpään luokkaan", List("9C")),
-    QueryParameter("nimihaku", "Tekstihaku kohdistuen oppilan etunimiin ja sukunimeen", List("virtanen")),
     QueryParameter("muuttunutEnnen", "Palautetaan vain opiskeluoikeudet, jotka ovat muuttuneet ennen annettua aikaleimaa", List("2017-11-01T21:00")),
     QueryParameter("muuttunutJälkeen", "Palautetaan vain opiskeluoikeudet, jotka ovat muuttuneet annetun aikaleiman jälkeen", List("2017-11-01T21:00"))
   )
