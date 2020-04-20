@@ -115,10 +115,18 @@ class OppijaQuerySpec extends FreeSpec with LocalJettyHttpSpecification with Opi
     "luokkahaku" - {
       "luokan osittaisella tai koko nimellä" in {
         resetFixtures
-        insert(PerusopetusExampleData.opiskeluoikeus(alkamispäivä = date(2100, 1, 2), päättymispäivä = None, suoritukset = List(PerusopetusExampleData.kahdeksannenLuokanSuoritus.copy(luokka = "8C"))), eero)
-        insert(PerusopetusExampleData.opiskeluoikeus(alkamispäivä = date(2100, 1, 2), päättymispäivä = None, suoritukset = List(PerusopetusExampleData.kahdeksannenLuokanSuoritus.copy(luokka = "8D"))), teija)
-        queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&luokkahaku=8").length should equal(2)
-        queryOppijat("?opiskeluoikeusAlkanutAikaisintaan=2100-01-02&luokkahaku=8c").length should equal(1)
+        insert(PerusopetusExampleData.opiskeluoikeus(
+          alkamispäivä = date(2000, 1, 2),
+          päättymispäivä = None,
+          suoritukset = List(PerusopetusExampleData.kahdeksannenLuokanSuoritus.copy(luokka = "8C"))
+        ), eero)
+        insert(PerusopetusExampleData.opiskeluoikeus(
+          alkamispäivä = date(2000, 1, 2),
+          päättymispäivä = None,
+          suoritukset = List(PerusopetusExampleData.kahdeksannenLuokanSuoritus.copy(luokka = "8D"))
+        ), teija)
+        queryOppijat("?opiskeluoikeusAlkanutViimeistään=2000-01-02&luokkahaku=8").length should equal(2)
+        queryOppijat("?opiskeluoikeusAlkanutViimeistään=2000-01-02&luokkahaku=8c").length should equal(1)
       }
     }
 

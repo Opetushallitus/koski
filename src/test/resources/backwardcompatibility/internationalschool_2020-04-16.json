@@ -8,7 +8,7 @@
   "opiskeluoikeudet" : [ {
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
-        "alku" : "2006-08-15",
+        "alku" : "2004-08-15",
         "tila" : {
           "koodiarvo" : "lasna",
           "nimi" : {
@@ -2859,8 +2859,7 @@
         }
       } ]
     },
-    "alkamispäivä" : "2006-08-15",
+    "alkamispäivä" : "2004-08-15",
     "päättymispäivä" : "2018-06-30"
-  } ],
-  "ignoreKoskiValidator" : true
+  } ]
 }
