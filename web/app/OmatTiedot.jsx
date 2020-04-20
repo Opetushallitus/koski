@@ -33,12 +33,18 @@ const omatTiedotP = oid => {
 
 const topBarP = userP.map(user => <OmatTiedotTopBar user={user}/>)
 const oppijaSelectionBus = new Bacon.Bus()
-const contentP = Bacon.mergeAll(oppijaSelectionBus, locationP).flatMapLatest(loc => omatTiedotP(loc.params.oid).map(oppija =>
-    oppija
-      ? <div className="main-content oppija"><Oppija oppija={Editor.setupContext(oppija, {editorMapping})} stateP={Bacon.constant('viewing')}/></div>
-      : <div className="main-content"><EiSuorituksiaInfo oppija={oppija}/></div>
+const loadingOppijaStream = Bacon.mergeAll(oppijaSelectionBus, locationP).flatMapLatest(loc =>
+  Bacon.fromArray([
+    Bacon.constant(<div className="main-content ajax-indicator-bg"><Text name="Ladataan..."/></div>),
+    omatTiedotP(loc.params.oid).map(oppija =>
+      oppija
+        ? <div className="main-content oppija"><Oppija oppija={Editor.setupContext(oppija, {editorMapping})} stateP={Bacon.constant('viewing')}/></div>
+        : <div className="main-content"><EiSuorituksiaInfo oppija={oppija}/></div>
     )
-).toProperty().startWith(<div className="main-content ajax-indicator-bg"><Text name="Ladataan..."/></div>)
+  ])
+).flatMapLatest(x => x)
+
+const contentP = loadingOppijaStream.toProperty().startWith(<div className="main-content ajax-indicator-bg"><Text name="Ladataan..."/></div>)
 
 const allErrorsP = errorP(contentP)
 
@@ -67,17 +73,13 @@ domP.onValue((component) => ReactDOM.render(component, document.getElementById('
 domP.onError(handleError)
 
 export const hasOpintoja = oppija => modelItems(oppija, 'opiskeluoikeudet').length > 0
-const Oppija = ({oppija}) => {
-  return oppija.loading
-    ? <div className="loading"/>
-    : (
-      <div>
-        <div className="oppija-content">
-          <Header oppija={oppija} oppijaSelectionBus={oppijaSelectionBus}/>
-          {hasOpintoja(oppija) ? <Editor key={document.location.toString()} model={oppija}/> : <EiSuorituksiaInfo oppija={oppija}/>}
-        </div>
+const Oppija = ({oppija}) => (
+  <div>
+    <div className="oppija-content">
+      <Header oppija={oppija} oppijaSelectionBus={oppijaSelectionBus}/>
+      {hasOpintoja(oppija) ? <Editor key={document.location.toString()} model={oppija}/> : <EiSuorituksiaInfo oppija={oppija}/>}
       </div>
-    )
-}
+  </div>
+)
 
 patchSaavutettavuusLeima()
