@@ -206,7 +206,17 @@ case class AikuistenPerusopetusRaportti(
         ulkomaanjaksot = lisätiedot.flatMap(_.ulkomaanjaksot.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
         majoitusetu = lisätiedot.flatMap(_.majoitusetu).map(lengthInDaysInDateRange(_, alku, loppu)),
         sisäoppilaitosmainenMajoitus = lisätiedot.flatMap(_.sisäoppilaitosmainenMajoitus.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
-        yhteislaajuus = row.osasuoritukset.filter(raporttiType.isKurssi).flatMap(_.koulutusmoduuliLaajuusArvo).sum
+        yhteislaajuus = row.osasuoritukset
+          .filter(raporttiType.isKurssi)
+          .flatMap(_.koulutusmoduuliLaajuusArvo).sum,
+        yhteislaajuusSuoritetut = row.osasuoritukset
+          .filter(raporttiType.isKurssi)
+          .filter(_.suoritettu)
+          .flatMap(_.koulutusmoduuliLaajuusArvo).sum,
+        yhteislaajuusTunnustetut = row.osasuoritukset
+          .filter(raporttiType.isKurssi)
+          .filter(isTunnustettu)
+          .flatMap(_.koulutusmoduuliLaajuusArvo).sum
       ),
       oppiaineet = oppiaineidentiedot(row.päätasonSuoritus, row.osasuoritukset, oppiaineet, raporttiType.isOppiaineenOppimäärä)
     )
@@ -234,10 +244,14 @@ case class AikuistenPerusopetusRaportti(
         AikuistenPerusopetusKurssinTiedot(
           arvosana = kurssisuoritus.arviointiArvosanaKoodiarvo,
           laajuus = kurssisuoritus.koulutusmoduuliLaajuusArvo,
-          tunnustettu = JsonSerializer.extract[Option[OsaamisenTunnustaminen]](kurssisuoritus.data \ "tunnustettu").isDefined
+          tunnustettu = isTunnustettu(kurssisuoritus)
         ).toString
       ).mkString(", ")
     }
+  }
+
+  private def isTunnustettu(kurssisuoritus: ROsasuoritusRow) = {
+    JsonSerializer.extract[Option[OsaamisenTunnustaminen]](kurssisuoritus.data \ "tunnustettu").isDefined
   }
 
   private def alkuvaiheenSuorituksiaColumn() = {
@@ -289,7 +303,9 @@ case class AikuistenPerusopetusRaportti(
       CompactColumn("Ulkomaanjaksot", comment = Some("Kuinka monta ulkomaanjaksopäivää oppijalla on KOSKI-datan mukaan ollut raportin tulostusparametreissa määritellyllä aikajaksolla.")),
       CompactColumn("Majoitusetu", comment = Some("Kuinka monta majoitusetupäivää oppijalla on KOSKI-datan mukaan ollut raportin tulostusparametreissa määritellyllä aikajaksolla.")),
       CompactColumn("Sisäoppilaitosmainen majoitus", comment = Some("Kuinka monta päivää oppija on ollut KOSKI-datan mukaan sisäoppilaitosmaisessa majoituksessa raportin tulostusparametreissa määritellyllä aikajaksolla.")),
-      CompactColumn("Yhteislaajuus", comment = Some("Suoritettujen opintojen yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista."))
+      CompactColumn("Yhteislaajuus (kaikki kurssit)", comment = Some("Opintojen yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista. Sarake näyttää joko kaikkien opiskeluoikeudelta löytyvien kurssien määrän tai tulostusparametreissa määriteltynä aikajaksona arvioiduiksi merkittyjen kurssien määrän riippuen siitä, mitä tulostusparametreissa on valittu.")),
+      CompactColumn("Yhteislaajuus (suoritetut kurssit)", comment = Some("Suoritettujen kurssien (eli sellaisten kurssien, jotka eivät ole tunnustettuja aikaisemman osaamisen pohjalta) yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista. Sarake näyttää joko kaikkien opiskeluoikeudelta löytyvien suoritettujen kurssien yhteislaajuuden tai tulostusparametreissa määriteltynä aikajaksona suoritettujen kurssien yhteislaajuuden riippuen siitä, mitä tulostusparametreissa on valittu.")),
+      CompactColumn("Yhteislaajuus (tunnustetut kurssit)", comment = Some("Tunnustettuje kurssien yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista. Sarake näyttää joko kaikkien opiskeluoikeudelta löytyvien tunnustettujen kurssien yhteislaajuuden tai tulostusparametreissa määriteltynä aikajaksona arvioiduiksi merkittyjen kurssien yhteislaajuuden riippuen siitä, mitä tulostusparametreissa on valittu."))
     )
 
     val oppiaineColumns = oppiaineet.map(x =>
@@ -348,7 +364,9 @@ case class AikuistenPerusopetusRaporttiOppiaineetVälilehtiMuut(
   ulkomaanjaksot: Option[Int],
   majoitusetu: Option[Int],
   sisäoppilaitosmainenMajoitus: Option[Int],
-  yhteislaajuus: Double
+  yhteislaajuus: Double,
+  yhteislaajuusSuoritetut: Double,
+  yhteislaajuusTunnustetut: Double
 )
 
 case class AikuistenPerusopetusRaporttiOppiaineRow(
