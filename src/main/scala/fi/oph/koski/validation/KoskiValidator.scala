@@ -376,6 +376,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         :: validatePäiväkodinEsiopetus(suoritus, opiskeluoikeus)
         :: validateTutkinnonosanRyhmä(suoritus)
         :: validateOsaamisenHankkimistavat(suoritus)
+        :: validateYhteisetOsat(suoritus)
         :: HttpStatus.validate(!suoritus.isInstanceOf[PäätasonSuoritus])(validateDuplicates(suoritus.osasuoritukset.toList.flatten))
         :: suoritus.osasuoritusLista.map(validateSuoritus(_, opiskeluoikeus, suoritus :: parent))
     )
@@ -707,6 +708,60 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     }
   }
 
+  private val yhteiset = List("101053", "101054", "101055", "400012", "400013", "400014")
+  private def validateYhteisetOsat(suoritus: Suoritus): HttpStatus = {
+    def validateOnOsaAlueita(suoritus: Suoritus): HttpStatus = suoritus match {
+      case a: AmmatillinenPäätasonSuoritus => {
+        val yhteisetOsaSuoritukset = a.osasuoritukset.toList.flatten.filter(o => o.arvioitu && yhteiset.contains(o.koulutusmoduuli.tunniste.koodiarvo))
+
+        val missingOsaalueita = yhteisetOsaSuoritukset.filter(yht => {
+          yht.osasuoritukset.getOrElse(List()).isEmpty
+        })
+
+        val errorKuvaus = missingOsaalueita.foldLeft("")((a, b) => {
+          a + b.koulutusmoduuli.tunniste.koodiarvo
+        })
+
+        HttpStatus.validate(
+          missingOsaalueita.isEmpty
+        )(KoskiErrorCategory.badRequest.validation.laajuudet.epäyhteensopivaYhteisenLaajuus(
+          s"Tutkinnon yhteisillä osuuksilla $errorKuvaus ei ole osasuorituksia."))
+      }
+      case _ => HttpStatus.ok
+    }
+
+    def validateYhteistenOsienLaajuus(suoritus: Suoritus): HttpStatus = suoritus match {
+      case a: AmmatillinenPäätasonSuoritus => {
+          val yhteisetOsaSuoritukset = a.osasuoritukset.toList.flatten.filter(o => o.arvioitu && yhteiset.contains(o.koulutusmoduuli.tunniste.koodiarvo))
+
+          val mismatchingLaajuudet = yhteisetOsaSuoritukset.filter(yht => {
+            val yläsuorituksenLaajuus = yht.koulutusmoduuli.laajuus match {
+              case Some(a) => a.arvo
+              case None => 0.0
+            }
+            val alasuoritustenLaajuus = yht.osasuoritukset.toList.flatten.foldLeft(0.0) { (a, b) =>
+              a + (b.koulutusmoduuli.laajuus match {
+                case Some(a) => a.arvo
+                case None => 0.0
+              })
+            }
+            yläsuorituksenLaajuus != alasuoritustenLaajuus
+          })
+
+          val errorKuvaus = mismatchingLaajuudet.foldLeft("")((a, b) => {
+            a + b.koulutusmoduuli.tunniste.koodiarvo
+          })
+
+          HttpStatus.validate(
+            mismatchingLaajuudet.isEmpty
+          )(KoskiErrorCategory.badRequest.validation.laajuudet.epäyhteensopivaYhteisenLaajuus(
+            s"Tutkinnon yhteisillä osuuksilla $errorKuvaus on eri laajuus kuin osuuksien osasuorituksilla yhteenlaskettuna."))
+        }
+      case _ => HttpStatus.ok
+    }
+
+    HttpStatus.fold(List(validateOnOsaAlueita(suoritus), validateYhteistenOsienLaajuus(suoritus)))
+  }
 
   private def validateOsaamisenHankkimistavat(suoritus: Suoritus): HttpStatus = suoritus match {
     case a: AmmatillisenTutkinnonSuoritus =>
