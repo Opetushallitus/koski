@@ -1,7 +1,7 @@
 package fi.oph.koski.koskiuser
 
 import fi.oph.koski.koskiuser.Rooli._
-import fi.oph.koski.schema.{Koulutustoimija, OidOrganisaatio, OpiskeluoikeudenTyyppi, OrganisaatioWithOid}
+import fi.oph.koski.schema.{Koulutustoimija, OpiskeluoikeudenTyyppi, OrganisaatioWithOid}
 
 object Rooli {
   type Role = String
@@ -25,7 +25,64 @@ object Rooli {
   val VALVIRA = "VALVIRA"
   val MITATOIDYT_OPISKELUOIKEUDET = "MITATOIDYT_OPISKELUOIKEUDET"
 
+  val KAIKKI_OPISKELUOIKEUS_TYYPIT = "KAIKKI_OPISKELUOIKEUS_TYYPIT"
+  val AIKUISTENPERUSOPETUS = "AIKUISTENPERUSOPETUS"
+  val AMMATILLINENKOULUTUS = "AMMATILLINENKOULUTUS"
+  val DIATUTKINTO = "DIATUTKINTO"
+  val ESIOPETUS = "ESIOPETUS"
+  val IBTUTKINTO = "IBTUTKINTO"
+  val INTERNATIONALSCHOOL = "INTERNATIONALSCHOOL"
+  val KORKEAKOULUTUS = "KORKEAKOULUTUS"
+  val LUKIOKOULUTUS = "LUKIOKOULUTUS"
+  val LUVA = "LUVA"
+  val PERUSOPETUKSEENVALMISTAVAOPETUS = "PERUSOPETUKSEENVALMISTAVAOPETUS"
+  val PERUSOPETUKSENLISAOPETUS = "PERUSOPETUKSENLISAOPETUS"
+  val PERUSOPETUS = "PERUSOPETUS"
+  val YLIOPPILASTUTKINTO = "YLIOPPILASTUTKINTO"
+
   def globaalitKoulutusmuotoRoolit = List(GLOBAALI_LUKU_PERUSOPETUS, GLOBAALI_LUKU_TOINEN_ASTE, GLOBAALI_LUKU_KORKEAKOULU)
+}
+
+object Käyttöoikeus {
+  def parseAllowedOpiskeluoikeudenTyypit(roolit: List[Palvelurooli], accessTypes: List[AccessType.Value]): Set[String] = {
+    val kaikkiOpiskeluoikeusTyypit = OpiskeluoikeudenTyyppi.kaikkiTyypit.map(_.koodiarvo)
+    val kayttajanRoolit = unifyRoolit(roolit).filter(_.palveluName == "KOSKI").map(_.rooli.toLowerCase).toSet
+    val opiskeluoikeudenTyyppiRajoituksia = kayttajanRoolit.intersect(kaikkiOpiskeluoikeusTyypit).nonEmpty
+
+    if (!accessTypes.contains(AccessType.read)) {
+      Set.empty
+    } else if (kayttajanRoolit.contains(KAIKKI_OPISKELUOIKEUS_TYYPIT.toLowerCase)) {
+      kaikkiOpiskeluoikeusTyypit
+    } else if (opiskeluoikeudenTyyppiRajoituksia) {
+      kayttajanRoolit.intersect(kaikkiOpiskeluoikeusTyypit)
+    } else {
+      kaikkiOpiskeluoikeusTyypit
+    }
+  }
+
+  private def unifyRoolit(roolit: List[Palvelurooli]) = roolit flatMap {
+    case Palvelurooli("KOSKI", GLOBAALI_LUKU_PERUSOPETUS) => List(
+      ESIOPETUS,
+      PERUSOPETUS,
+      AIKUISTENPERUSOPETUS,
+      PERUSOPETUKSENLISAOPETUS,
+      PERUSOPETUKSEENVALMISTAVAOPETUS,
+      INTERNATIONALSCHOOL
+    ).map(Palvelurooli(_))
+    case Palvelurooli("KOSKI", GLOBAALI_LUKU_TOINEN_ASTE) => List(
+      AMMATILLINENKOULUTUS,
+      IBTUTKINTO,
+      DIATUTKINTO,
+      LUKIOKOULUTUS,
+      LUVA,
+      YLIOPPILASTUTKINTO,
+      INTERNATIONALSCHOOL
+    ).map(Palvelurooli(_))
+    case Palvelurooli("KOSKI", READ_UPDATE_ESIOPETUS) => List(Palvelurooli(ESIOPETUS))
+    case Palvelurooli("KOSKI", LUKU_ESIOPETUS) => List(Palvelurooli(ESIOPETUS))
+    case Palvelurooli("KOSKI", GLOBAALI_LUKU_KORKEAKOULU) => List(Palvelurooli(KORKEAKOULUTUS))
+    case rooli => List(rooli)
+  }
 }
 
 // this trait is intentionally left mostly blank to make it harder to accidentally mix global and organization-specific rights
@@ -40,11 +97,7 @@ case class KäyttöoikeusGlobal(globalPalveluroolit: List[Palvelurooli]) extends
     case _ => Nil
   }
 
-  override lazy val allowedOpiskeluoikeusTyypit: Set[String] = if (globalAccessType.contains(AccessType.read)) {
-    OpiskeluoikeudenTyyppi.kaikkiTyypit.map(_.koodiarvo)
-  } else {
-    Set.empty
-  }
+  override lazy val allowedOpiskeluoikeusTyypit: Set[String] = Käyttöoikeus.parseAllowedOpiskeluoikeudenTyypit(globalPalveluroolit, globalAccessType)
 }
 
 trait OrgKäyttöoikeus extends Käyttöoikeus {
@@ -53,37 +106,18 @@ trait OrgKäyttöoikeus extends Käyttöoikeus {
     case Palvelurooli("KOSKI", "READ") => List(AccessType.read)
     case Palvelurooli("KOSKI", "READ_UPDATE") => List(AccessType.read, AccessType.write)
     case Palvelurooli("KOSKI", "TIEDONSIIRRON_MITATOINTI") => List(AccessType.tiedonsiirronMitätöinti)
+    case Palvelurooli("KOSKI", "READ_UPDATE_ESIOPETUS") => List(AccessType.read, AccessType.write)
+    case Palvelurooli("KOSKI", "LUKU_ESIOPETUS") => List(AccessType.read)
     case _ => Nil
   }
 
-  override lazy val allowedOpiskeluoikeusTyypit: Set[String] = if (!organisaatioAccessType.contains(AccessType.read)) {
-    Set.empty
-  } else if (organisaatioKohtaisetRoolitExistsAny(LUKU_ESIOPETUS, READ_UPDATE_ESIOPETUS)) {
-    Set(OpiskeluoikeudenTyyppi.esiopetus.koodiarvo)
-  } else {
-    OpiskeluoikeudenTyyppi.kaikkiTyypit.map(_.koodiarvo)
-  }
+  override lazy val allowedOpiskeluoikeusTyypit: Set[String] = Käyttöoikeus.parseAllowedOpiskeluoikeudenTyypit(organisaatiokohtaisetPalveluroolit, organisaatioAccessType)
 
   def globalAccessType: List[AccessType.Value] = Nil
   def globalPalveluroolit: List[Palvelurooli] = Nil
-
-  private def organisaatioKohtaisetRoolitExistsAny(roolit: String*) = {
-    organisaatiokohtaisetPalveluroolit.map(_.rooli).intersect(roolit).nonEmpty
-  }
 }
 
 case class KäyttöoikeusVarhaiskasvatusToimipiste(koulutustoimija: Koulutustoimija, ulkopuolinenOrganisaatio: OrganisaatioWithOid, organisaatiokohtaisetPalveluroolit: List[Palvelurooli]) extends OrgKäyttöoikeus
-
-object KäyttöoikeusOrg {
-  def apply(organisaatio: OrganisaatioWithOid, organisaatiokohtaisetPalveluroolit: List[Palvelurooli], juuri: Boolean, oppilaitostyyppi: Option[String]): KäyttöoikeusOrg = {
-    new KäyttöoikeusOrg(organisaatio, organisaatiokohtaisetPalveluroolit.flatMap(extractAccessTypeTyyppikohtaisistaRooleista), juuri, oppilaitostyyppi)
-  }
-  private def extractAccessTypeTyyppikohtaisistaRooleista(rooli: Palvelurooli) = rooli match {
-    case Palvelurooli("KOSKI", "READ_UPDATE_ESIOPETUS") => List(Palvelurooli(READ_UPDATE), rooli)
-    case Palvelurooli("KOSKI", "LUKU_ESIOPETUS") => List(Palvelurooli(READ), rooli)
-    case rooli => List(rooli)
-  }
-}
 
 case class KäyttöoikeusOrg(organisaatio: OrganisaatioWithOid, organisaatiokohtaisetPalveluroolit: List[Palvelurooli], juuri: Boolean, oppilaitostyyppi: Option[String]) extends OrgKäyttöoikeus
 
@@ -94,29 +128,7 @@ case class KäyttöoikeusViranomainen(globalPalveluroolit: List[Palvelurooli]) e
     Nil
   }
 
-  override lazy val allowedOpiskeluoikeusTyypit: Set[String] = globalPalveluroolit.flatMap {
-    case Palvelurooli("KOSKI", GLOBAALI_LUKU_PERUSOPETUS) => List(
-      OpiskeluoikeudenTyyppi.esiopetus,
-      OpiskeluoikeudenTyyppi.perusopetus,
-      OpiskeluoikeudenTyyppi.aikuistenperusopetus,
-      OpiskeluoikeudenTyyppi.perusopetuksenlisaopetus,
-      OpiskeluoikeudenTyyppi.perusopetukseenvalmistavaopetus,
-      OpiskeluoikeudenTyyppi.internationalschool
-    )
-    case Palvelurooli("KOSKI", GLOBAALI_LUKU_TOINEN_ASTE) => List(
-      OpiskeluoikeudenTyyppi.ammatillinenkoulutus,
-      OpiskeluoikeudenTyyppi.ibtutkinto,
-      OpiskeluoikeudenTyyppi.diatutkinto,
-      OpiskeluoikeudenTyyppi.lukiokoulutus,
-      OpiskeluoikeudenTyyppi.luva,
-      OpiskeluoikeudenTyyppi.ylioppilastutkinto,
-      OpiskeluoikeudenTyyppi.internationalschool
-    )
-    case Palvelurooli("KOSKI", GLOBAALI_LUKU_KORKEAKOULU) => List(
-      OpiskeluoikeudenTyyppi.korkeakoulutus
-    )
-    case _ => Nil
-  }.map(_.koodiarvo).toSet
+  override lazy val allowedOpiskeluoikeusTyypit: Set[String] = Käyttöoikeus.parseAllowedOpiskeluoikeudenTyypit(globalPalveluroolit, globalAccessType)
 
   def isLuovutusPalveluAllowed: Boolean = globalPalveluroolit.contains(Palvelurooli("KOSKI", TIEDONSIIRTO_LUOVUTUSPALVELU))
 }
