@@ -109,6 +109,7 @@ object KoskiErrorCategory {
         val luokkaAstePuuttuu = subcategory("luokkaAstePuuttuu", "Luokka-aste vaaditaan kun viimeisin arviointi on muuta kuin 'O'")
         val tunnisteenKoodiarvoaEiLöydyRakenteesta = subcategory("eriTutkintokoodit", "Suorituksen tunnisteen koodiarvo ei löydy tutkinnon rakenteesta")
         val deprekoituOsaamisenHankkimistapa = subcategory("deprekoituOsaamisenHankkimistapa", "Osaamisenhankkimistapaa oppisopimus ei voi tallentaa ilman y-tunnusta")
+        val yhteiselläOsuudellaEiOsasuorituksia = subcategory("yhteiselläOsuudellaEiOsasuorituksia", "Tutkinnon yhteisellä osalla tulee olla osasuorituksia")
       }
       val rakenne = new Rakenne
 
@@ -132,7 +133,6 @@ object KoskiErrorCategory {
         val osasuorituksellaEriLaajuusyksikkö = subcategory("osasuorituksellaEriLaajuusyksikkö", "Osasuorituksella on eri laajuusyksikkö kuin ylemmän tason suorituksella")
         val osasuoritustenLaajuuksienSumma = subcategory("osasuoritustenLaajuuksienSumma", "Osasuoritusten laajuuksien summa ei täsmää")
         val oppiaineenLaajuusPuuttuu = subcategory("oppiaineenLaajuusPuuttuu", "Oppiaineen laajuus puuttuu")
-        val epäyhteensopivaYhteisenLaajuus = subcategory("epäyhteensopivaYhteisenLaajuus", "Yhteisellä osasuorituksella on eri laajuus kuin osasuorituksen alaisilla suorituksilla yhteensä")
       }
       val laajuudet = new Laajuudet
 
