@@ -70,7 +70,7 @@ object AmmatillinenTutkintoRaportti {
       suoritetutAmmatillisetTutkinnonOsatYhteislaajuus = yhteislaajuus(ammatillisetTutkinnonOsatJaOsasuoritukset),
       pakollisetAmmatillisetTutkinnonOsatYhteislaajuus = yhteislaajuus(pakolliset(ammatillisetTutkinnonOsatJaOsasuoritukset)),
       valinnaisetAmmatillisetTutkinnonOsatYhteislaajuus = yhteislaajuus(valinnaiset(ammatillisetTutkinnonOsatJaOsasuoritukset)),
-      valmiitYhteistenTutkinnonOsatLkm = yhteisetTutkinnonOsat.size,
+      valmiitYhteistenTutkinnonOsatLkm = yhteisetTutkinnonOsat.count(isVahvistusPäivällinen),
       pakollisetYhteistenTutkinnonOsienOsaalueidenLkm = pakolliset(yhteistenTutkinnonOsienOsaAlueet).size,
       valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm = valinnaiset(yhteistenTutkinnonOsienOsaAlueet).size,
       tunnustettujaTukinnonOsanOsaalueitaValmiissaTutkinnonOsanOsalueissaLkm = tunnustetut(yhteistenTutkinnonOsienOsaAlueet).size,
