@@ -795,14 +795,14 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
           case "reformi" => {
             HttpStatus.validate(
               !a.osasuoritukset.toList.flatten.exists(o => List("101053", "101054", "101055").contains(o.koulutusmoduuli.tunniste.koodiarvo))
-            )(KoskiErrorCategory.badRequest.validation.rakenne.yhteiselläOsuudellaEiOsasuorituksia(
-              s"väärii koodei."))
+            )(KoskiErrorCategory.badRequest.validation.rakenne.vääränKoodinYhteinenOsasuoritus(
+              s"Suorituksella ${suorituksenTunniste(suoritus)} on Ops-muotoiselle tutkinnolle tarkoitettu yhteinen osasuoritus"))
           }
           case "ops" => {
             HttpStatus.validate(
               !a.osasuoritukset.toList.flatten.exists(o => List("400012", "400013", "400014").contains(o.koulutusmoduuli.tunniste.koodiarvo))
-            )(KoskiErrorCategory.badRequest.validation.rakenne.yhteiselläOsuudellaEiOsasuorituksia(
-              s"väärii koodei."))
+            )(KoskiErrorCategory.badRequest.validation.rakenne.vääränKoodinYhteinenOsasuoritus(
+              s"Suorituksella ${suorituksenTunniste(suoritus)} on reformi-muotoiselle tutkinnolle tarkoitettu yhteinen osasuoritus"))
           }
           case _ => HttpStatus.ok
         }
