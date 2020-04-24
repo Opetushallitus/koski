@@ -1247,40 +1247,6 @@
             "koodiarvo" : "ammatillisentutkinnonosanosaalue",
             "koodistoUri" : "suorituksentyyppi"
           }
-        }, {
-          "koulutusmoduuli" : {
-            "tunniste" : {
-              "koodiarvo" : "VVTK",
-              "koodistoUri" : "ammatillisenoppiaineet"
-            },
-            "kieli" : {
-              "koodiarvo" : "EN",
-              "koodistoUri" : "kielivalikoima"
-            },
-            "pakollinen" : true,
-            "laajuus" : {
-              "arvo" : 2.0,
-              "yksikkö" : {
-                "koodiarvo" : "6",
-                "koodistoUri" : "opintojenlaajuusyksikko"
-              }
-            }
-          },
-          "arviointi" : [ {
-            "arvosana" : {
-              "koodiarvo" : "3",
-              "nimi" : {
-                "fi" : "K3"
-              },
-              "koodistoUri" : "arviointiasteikkoammatillinent1k3"
-            },
-            "päivä" : "2014-10-20",
-            "hyväksytty" : true
-          } ],
-          "tyyppi" : {
-            "koodiarvo" : "ammatillisentutkinnonosanosaalue",
-            "koodistoUri" : "suorituksentyyppi"
-          }
         } ],
         "tyyppi" : {
           "koodiarvo" : "ammatillisentutkinnonosa",
@@ -1566,6 +1532,42 @@
             }
           } ]
         },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "YTT",
+              "nimi" : {
+                "fi" : "Yhteiskuntatieto"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Yhteiskuntaopin opinnot"
+            },
+            "pakollinen" : true,
+            "laajuus" : {
+              "arvo" : 8.0,
+              "yksikkö" : {
+                "koodiarvo" : "6",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "K3"
+              },
+              "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+            },
+            "päivä" : "2014-10-20",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ammatillisentutkinnonosanosaalue",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
         "tyyppi" : {
           "koodiarvo" : "ammatillisentutkinnonosa",
           "koodistoUri" : "suorituksentyyppi"
@@ -1639,6 +1641,42 @@
             }
           } ]
         },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "SKO",
+              "nimi" : {
+                "fi" : "Sosiaalitaito"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Vuorotaitovaikutuksen kurssi"
+            },
+            "pakollinen" : true,
+            "laajuus" : {
+              "arvo" : 7.0,
+              "yksikkö" : {
+                "koodiarvo" : "6",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "K3"
+              },
+              "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+            },
+            "päivä" : "2014-10-20",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ammatillisentutkinnonosanosaalue",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
         "tyyppi" : {
           "koodiarvo" : "ammatillisentutkinnonosa",
           "koodistoUri" : "suorituksentyyppi"
@@ -1804,6 +1842,5 @@
     },
     "alkamispäivä" : "2012-09-01",
     "päättymispäivä" : "2016-05-31"
-  } ],
-  "ignoreKoskiValidator" : true
+  } ]
 }

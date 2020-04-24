@@ -708,6 +708,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     }
   }
 
+  // TOR-982 - Ammatillisen koulutuksen yhteisten osien laajuuksien yms validaatioita
   private val yhteiset = List("101053", "101054", "101055", "400012", "400013", "400014")
   private def validateYhteisetOsat(suoritus: Suoritus): HttpStatus = {
     def validateEiSamojaKoodeja(suoritus: Suoritus): HttpStatus = suoritus match {

@@ -627,7 +627,7 @@
           },
           "pakollinen" : true,
           "laajuus" : {
-            "arvo" : 1.0,
+            "arvo" : 14.0,
             "yksikkö" : {
               "koodiarvo" : "6",
               "koodistoUri" : "opintojenlaajuusyksikko"
@@ -901,7 +901,7 @@
           },
           "pakollinen" : true,
           "laajuus" : {
-            "arvo" : 8.0,
+            "arvo" : 9.0,
             "yksikkö" : {
               "koodiarvo" : "6",
               "koodistoUri" : "opintojenlaajuusyksikko"
@@ -1324,6 +1324,5 @@
     },
     "alkamispäivä" : "2012-09-01",
     "päättymispäivä" : "2016-06-04"
-  } ],
-  "ignoreKoskiValidator" : true
+  } ]
 }

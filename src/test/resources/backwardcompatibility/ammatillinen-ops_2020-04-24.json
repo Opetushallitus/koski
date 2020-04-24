@@ -14,7 +14,7 @@
       }
     },
     "arvioituPäättymispäivä" : "2015-05-31",
-    "päättymispäivä" : "2016-01-09",
+    "ostettu" : false,
     "tila" : {
       "opiskeluoikeusjaksot" : [ {
         "alku" : "2012-09-01",
@@ -120,9 +120,6 @@
             "arvo" : 11.0,
             "yksikkö" : {
               "koodiarvo" : "6",
-              "nimi" : {
-                "fi" : "Osaamispistettä"
-              },
               "koodistoUri" : "opintojenlaajuusyksikko"
             }
           }
@@ -187,6 +184,41 @@
             }
           } ]
         },
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "AI",
+              "koodistoUri" : "ammatillisenoppiaineet"
+            },
+            "kieli" : {
+              "koodiarvo" : "AI1",
+              "koodistoUri" : "oppiaineaidinkielijakirjallisuus"
+            },
+            "pakollinen" : true,
+            "laajuus" : {
+              "arvo" : 11.0,
+              "yksikkö" : {
+                "koodiarvo" : "6",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "3",
+              "nimi" : {
+                "fi" : "K3"
+              },
+              "koodistoUri" : "arviointiasteikkoammatillinent1k3"
+            },
+            "päivä" : "2014-10-20",
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "ammatillisentutkinnonosanosaalue",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
         "tyyppi" : {
           "koodiarvo" : "ammatillisentutkinnonosa",
           "koodistoUri" : "suorituksentyyppi"
@@ -217,7 +249,7 @@
       "koodiarvo" : "ammatillinenkoulutus",
       "koodistoUri" : "opiskeluoikeudentyyppi"
     },
-    "alkamispäivä" : "2012-09-01"
-  } ],
-  "ignoreKoskiValidator" : true
+    "alkamispäivä" : "2012-09-01",
+    "päättymispäivä" : "2016-01-09"
+  } ]
 }
