@@ -49,8 +49,9 @@ class ElaketurvakeskusQueryService(val db: DB) extends KoskiDatabaseMethods {
       where
         oo.koulutusmuoto = 'ammatillinenkoulutus'
         and oo.sisaltyy_opiskeluoikeuteen_oid is null
+        and oo.viimeisin_tila = 'valmistunut'
+        and ${alku} <= oo.paattymispaiva and oo.paattymispaiva <= ${loppu}
         and ps.suorituksen_tyyppi = 'ammatillinentutkinto'
-        and ps.vahvistus_paiva >= ${alku} and ps.vahvistus_paiva <= ${loppu}
         and (ps.koulutusmoduuli_koulutustyyppi in ('1', '4', '13', '26') or ps.koulutusmoduuli_koodisto = 'koulutus' and ps.koulutusmoduuli_koodiarvo in ('381101', '381108'))"""
   }
 }
