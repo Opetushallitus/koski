@@ -376,7 +376,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         :: validatePäiväkodinEsiopetus(suoritus, opiskeluoikeus)
         :: validateTutkinnonosanRyhmä(suoritus)
         :: validateOsaamisenHankkimistavat(suoritus)
-        :: validateYhteisetOsat(suoritus)
+        :: validateYhteisetTutkinnonOsat(suoritus)
         :: HttpStatus.validate(!suoritus.isInstanceOf[PäätasonSuoritus])(validateDuplicates(suoritus.osasuoritukset.toList.flatten))
         :: suoritus.osasuoritusLista.map(validateSuoritus(_, opiskeluoikeus, suoritus :: parent))
     )
@@ -708,12 +708,10 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     }
   }
 
-  // TOR-982 - Ammatillisen koulutuksen yhteisten osien laajuuksien yms validaatioita
-  private val yhteiset = List("101053", "101054", "101055", "400012", "400013", "400014")
-  private def validateYhteisetOsat(suoritus: Suoritus): HttpStatus = {
+  private def validateYhteisetTutkinnonOsat(suoritus: Suoritus): HttpStatus = {
     def validateEiSamojaKoodeja(suoritus: Suoritus): HttpStatus = suoritus match {
       case a: AmmatillisenTutkinnonSuoritus if a.valmis => {
-        val yhteistenOsasuoritustenKoodit = a.osasuoritukset.toList.flatten.filter(o => o.arvioitu && yhteiset.contains(o.koulutusmoduuli.tunniste.koodiarvo)).map(_.koulutusmoduuli.tunniste.koodiarvo)
+        val yhteistenOsasuoritustenKoodit = a.osasuoritusLista.filter(o => o.arvioitu && AmmatillisenTutkinnonOsa.yhteisetTutkinnonOsat.contains(o.koulutusmoduuli.tunniste)).map(_.koulutusmoduuli.tunniste.koodiarvo)
         HttpStatus.validate(
           yhteistenOsasuoritustenKoodit.distinct.size == yhteistenOsasuoritustenKoodit.size
         )(KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus(
@@ -722,70 +720,54 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       case _ => HttpStatus.ok
     }
 
+    val yhteistenOsienLaajuudenSumma = 35
     def validateYhteislaajuus(suoritus: Suoritus): HttpStatus = suoritus match {
       case a: AmmatillisenTutkinnonSuoritus if a.valmis && a.suoritustapa.koodiarvo == "reformi" => {
-
-        val yhteislaajuus = a.osasuoritukset.toList.flatten.filter(o => o.arvioitu && yhteiset.contains(o.koulutusmoduuli.tunniste.koodiarvo))
-          .foldLeft(0.0) { (a, b) => a + (b.koulutusmoduuli.laajuus match {
-            case Some(a) => a.arvo
-            case None => 0.0
-          })
-        }
+        val yhteislaajuus = a.osasuoritusLista.filter(o => o.arvioitu && AmmatillisenTutkinnonOsa.yhteisetTutkinnonOsat.contains(o.koulutusmoduuli.tunniste))
+          .map(_.koulutusmoduuli.laajuus.map(_.arvo).getOrElse(0.0))
+          .sum
         HttpStatus.validate(
-          yhteislaajuus.round == 35
+          yhteislaajuus.round == yhteistenOsienLaajuudenSumma
         )(KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma(
-          s"Tutkinnon yhteisen osuuden suoritusten yhteenlasketun laajuuden tulee olla 35"))
+          s"Tutkinnon yhteisen osuuden suoritusten yhteenlasketun laajuuden tulee olla ${yhteistenOsienLaajuudenSumma}"))
       }
       case _ => HttpStatus.ok
     }
 
-
     def validateOnOsaAlueita(suoritus: Suoritus): HttpStatus = suoritus match {
-      case a: AmmatillinenPäätasonSuoritus => {
-        val yhteisetOsaSuoritukset = a.osasuoritukset.toList.flatten.filter(o => o.arvioitu && yhteiset.contains(o.koulutusmoduuli.tunniste.koodiarvo))
+      case a: AmmatillisenTutkinnonSuoritus => {
+        val yhteisetOsaSuoritukset = a.osasuoritusLista.filter(o => o.arvioitu && AmmatillisenTutkinnonOsa.yhteisetTutkinnonOsat.contains(o.koulutusmoduuli.tunniste))
 
-        val missingOsaalueita = yhteisetOsaSuoritukset.filter(yht => {
+        val osasuorituksettomatYhteisetSuoritukset = yhteisetOsaSuoritukset.filter(yht => {
           yht.osasuoritukset.getOrElse(List()).isEmpty
         })
 
-        val errorKuvaus = missingOsaalueita.foldLeft("")((a, b) => {
-          a + b.koulutusmoduuli.tunniste.koodiarvo
-        })
+        val osasuorituksettomienTunnisteet = osasuorituksettomatYhteisetSuoritukset.map(_.koulutusmoduuli.tunniste.koodiarvo)
 
         HttpStatus.validate(
-          missingOsaalueita.isEmpty
+          osasuorituksettomatYhteisetSuoritukset.isEmpty
         )(KoskiErrorCategory.badRequest.validation.rakenne.yhteiselläOsuudellaEiOsasuorituksia(
-          s"Tutkinnon yhteisillä osuuksilla $errorKuvaus ei ole osasuorituksia."))
+          s"Tutkinnon yhteisillä osuuksilla ${osasuorituksettomienTunnisteet.mkString(", ")} ei ole osasuorituksia."))
       }
       case _ => HttpStatus.ok
     }
 
     def validateYhteistenOsienLaajuus(suoritus: Suoritus): HttpStatus = suoritus match {
-      case a: AmmatillinenPäätasonSuoritus => {
-          val yhteisetOsaSuoritukset = a.osasuoritukset.toList.flatten.filter(o => o.arvioitu && yhteiset.contains(o.koulutusmoduuli.tunniste.koodiarvo))
+      case a: AmmatillisenTutkinnonSuoritus => {
+          val yhteisetOsaSuoritukset = a.osasuoritusLista.filter(o => o.arvioitu && AmmatillisenTutkinnonOsa.yhteisetTutkinnonOsat.contains(o.koulutusmoduuli.tunniste))
 
           val mismatchingLaajuudet = yhteisetOsaSuoritukset.filter(yht => {
-            val yläsuorituksenLaajuus = yht.koulutusmoduuli.laajuus match {
-              case Some(a) => a.arvo
-              case None => 0.0
-            }
-            val alasuoritustenLaajuus = yht.osasuoritukset.toList.flatten.foldLeft(0.0) { (a, b) =>
-              a + (b.koulutusmoduuli.laajuus match {
-                case Some(a) => a.arvo
-                case None => 0.0
-              })
-            }
+            val yläsuorituksenLaajuus = yht.koulutusmoduuli.laajuus.map(_.arvo).getOrElse(0.0)
+            val alasuoritustenLaajuus = yht.osasuoritusLista.map(_.koulutusmoduuli.laajuus.getOrElse(LaajuusOsaamispisteissä(0.0)).arvo).sum
             yläsuorituksenLaajuus != alasuoritustenLaajuus
           })
 
-          val errorKuvaus = mismatchingLaajuudet.foldLeft("")((a, b) => {
-            a + b.koulutusmoduuli.tunniste.koodiarvo
-          })
+          val yhteistenKooditJoillaVääräOsasuoritustenYhteisLaajuus = mismatchingLaajuudet.map(_.koulutusmoduuli.tunniste.koodiarvo)
 
           HttpStatus.validate(
             mismatchingLaajuudet.isEmpty
           )(KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma(
-            s"Tutkinnon yhteisillä osuuksilla $errorKuvaus on eri laajuus kuin osuuksien osasuorituksilla yhteenlaskettuna."))
+            s"Tutkinnon yhteisillä osuuksilla ${yhteistenKooditJoillaVääräOsasuoritustenYhteisLaajuus.mkString(", ")} on eri laajuus kuin osuuksien osasuorituksilla yhteenlaskettuna."))
       }
       case _ => HttpStatus.ok
     }
@@ -795,13 +777,13 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         a.suoritustapa.koodiarvo match {
           case "reformi" => {
             HttpStatus.validate(
-              !a.osasuoritukset.toList.flatten.exists(o => List("101053", "101054", "101055").contains(o.koulutusmoduuli.tunniste.koodiarvo))
+              !a.osasuoritusLista.exists(o => AmmatillisenTutkinnonOsa.opsMuotoisenTutkinnonYhteisetOsat.contains(o.koulutusmoduuli.tunniste))
             )(KoskiErrorCategory.badRequest.validation.rakenne.vääränKoodinYhteinenOsasuoritus(
               s"Suorituksella ${suorituksenTunniste(suoritus)} on Ops-muotoiselle tutkinnolle tarkoitettu yhteinen osasuoritus"))
           }
           case "ops" => {
             HttpStatus.validate(
-              !a.osasuoritukset.toList.flatten.exists(o => List("400012", "400013", "400014").contains(o.koulutusmoduuli.tunniste.koodiarvo))
+              !a.osasuoritusLista.exists(o => AmmatillisenTutkinnonOsa.reformiMuotoisenTutkinnonYhteisetOsat.contains(o.koulutusmoduuli.tunniste))
             )(KoskiErrorCategory.badRequest.validation.rakenne.vääränKoodinYhteinenOsasuoritus(
               s"Suorituksella ${suorituksenTunniste(suoritus)} on reformi-muotoiselle tutkinnolle tarkoitettu yhteinen osasuoritus"))
           }
