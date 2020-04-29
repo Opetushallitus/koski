@@ -16,12 +16,19 @@ import fi.oph.scalaschema.annotation.SyntheticProperty
 import mojave._
 
 object OmatTiedotEditorModel extends Timing {
-  def toEditorModel(userOppija: WithWarnings[Oppija], näytettäväOppija: WithWarnings[Oppija])(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = timed("createModel") {
+
+  def toEditorModel(oppija: Oppija)(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel =
+    toEditorModel(userOppija = oppija, näytettäväOppija = oppija, warnings = Nil)
+
+  def toEditorModel(userOppija: WithWarnings[Oppija], näytettäväOppija: WithWarnings[Oppija])(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel =
+    toEditorModel(userOppija.getIgnoringWarnings, näytettäväOppija.getIgnoringWarnings, warnings = näytettäväOppija.warnings)
+
+  def toEditorModel(userOppija: Oppija, näytettäväOppija: Oppija, warnings: Seq[HttpStatus])(implicit application: KoskiApplication, koskiSession: KoskiSession): EditorModel = timed("createModel") {
     val piilotetuillaTiedoilla = piilotaArvosanatKeskeneräisistäSuorituksista _ andThen
       piilotaSensitiivisetHenkilötiedot andThen
       piilotaKeskeneräisetPerusopetuksenPäättötodistukset
 
-    buildModel(buildView(piilotetuillaTiedoilla(userOppija.getIgnoringWarnings), piilotetuillaTiedoilla(näytettäväOppija.getIgnoringWarnings), näytettäväOppija.warnings))
+    buildModel(buildView(piilotetuillaTiedoilla(userOppija), piilotetuillaTiedoilla(näytettäväOppija), warnings))
   }
 
   def opiskeluoikeudetOppilaitoksittain(oppija: Oppija): List[OppilaitoksenOpiskeluoikeudet] = {

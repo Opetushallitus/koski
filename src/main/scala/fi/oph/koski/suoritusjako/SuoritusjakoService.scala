@@ -2,7 +2,6 @@ package fi.oph.koski.suoritusjako
 
 
 import java.time.LocalDate
-import java.util.UUID.randomUUID
 
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
@@ -16,7 +15,7 @@ import fi.oph.koski.util.WithWarnings
 
 class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppijaFacade: KoskiOppijaFacade) extends Logging {
   def put(oppijaOid: String, suoritusIds: List[SuoritusIdentifier])(implicit koskiSession: KoskiSession): Either[HttpStatus, Suoritusjako] = {
-    assertSuorituksetExist(oppijaOid, suoritusIds).toLeft(generateNewSecret)
+    assertSuorituksetExist(oppijaOid, suoritusIds).toLeft(SuoritusjakoSecret.generateNew)
       .flatMap { secret =>
         val suoritusjako = suoritusjakoRepository.create(secret, oppijaOid, suoritusIds)
         AuditLog.log(AuditLogMessage(KANSALAINEN_SUORITUSJAKO_LISAYS, koskiSession, Map(oppijaHenkiloOid -> oppijaOid)))
@@ -48,18 +47,6 @@ class SuoritusjakoService(suoritusjakoRepository: SuoritusjakoRepository, oppija
 
   def getAll(oppijaOid: String): Seq[Suoritusjako] = {
     suoritusjakoRepository.getAll(oppijaOid).map(jako => Suoritusjako(jako.secret, jako.voimassaAsti.toLocalDate, jako.aikaleima))
-  }
-
-  def validateSuoritusjakoSecret(secret: String): Either[HttpStatus, String] = {
-    if (secret.matches("^[0-9a-f]{32}$")) {
-      Right(secret)
-    } else {
-      Left(KoskiErrorCategory.notFound())
-    }
-  }
-
-  private def generateNewSecret: String = {
-    randomUUID.toString.replaceAll("-", "")
   }
 
   private def filterOpiskeluoikeudet(opiskeluoikeudet: Seq[Opiskeluoikeus], suoritusIds: List[SuoritusIdentifier]): Seq[Opiskeluoikeus] = {
