@@ -7,6 +7,7 @@ import fi.oph.koski.db.KoskiDatabaseMethods
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
 import slick.jdbc.GetResult
+import scala.concurrent.duration._
 
 class ElaketurvakeskusQueryService(val db: DB) extends KoskiDatabaseMethods {
 
@@ -26,7 +27,7 @@ class ElaketurvakeskusQueryService(val db: DB) extends KoskiDatabaseMethods {
     val alkuDate = Date.valueOf(alku)
     val loppuDate = Date.valueOf(loppu)
     implicit val getResult = GetResult[EtkTutkintotietoRow](r => EtkTutkintotietoRow(r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<,r.<<))
-    runDbSync(ammatillisetPerustutkinnotAikajaksolta(alkuDate, loppuDate).as[EtkTutkintotietoRow])
+    runDbSync(ammatillisetPerustutkinnotAikajaksolta(alkuDate, loppuDate).as[EtkTutkintotietoRow], timeout = 10.minutes)
   }
 
   private def ammatillisetPerustutkinnotAikajaksolta(alku: Date, loppu: Date) = {
