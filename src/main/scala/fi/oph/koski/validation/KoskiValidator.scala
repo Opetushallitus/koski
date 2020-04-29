@@ -646,10 +646,10 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
 
   private def validatePäättötodistuksenSanallinenArviointi(oppimäärä: NuortenPerusopetuksenOppimääränSuoritus) = {
     def erikoistapaus(s: Suoritus) = {
-      val opinto_ohjaus = s.koulutusmoduuli.tunniste.koodiarvo == "OP"
-      val kieliaine_arvosanalla_s = s.koulutusmoduuli.isInstanceOf[NuortenPerusopetuksenVierasTaiToinenKotimainenKieli] && s.viimeisinArvosana.contains("S")
-      val paikallinen_laajuus_alle_2_tai_arvosana_s = s.koulutusmoduuli.isInstanceOf[NuortenPerusopetuksenPaikallinenOppiaine] && (s.koulutusmoduuli.laajuus.exists(_.arvo < 2) || s.viimeisinArvosana.contains("S"))
-      opinto_ohjaus || kieliaine_arvosanalla_s || paikallinen_laajuus_alle_2_tai_arvosana_s
+      val opintoOhjaus = s.koulutusmoduuli.tunniste.koodiarvo == "OP"
+      val kieliaineArvosanallaS = s.koulutusmoduuli.isInstanceOf[NuortenPerusopetuksenVierasTaiToinenKotimainenKieli] && s.viimeisinArvosana.contains("S")
+      val paikallinenLaajuusAlle2TaiArvosanaS = s.koulutusmoduuli.isInstanceOf[NuortenPerusopetuksenPaikallinenOppiaine] && (s.koulutusmoduuli.laajuus.exists(_.arvo < 2) || s.viimeisinArvosana.contains("S"))
+      opintoOhjaus || kieliaineArvosanallaS || paikallinenLaajuusAlle2TaiArvosanaS
     }
 
     HttpStatus.fold(oppimäärä.osasuoritusLista
