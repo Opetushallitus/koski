@@ -4,12 +4,7 @@ import {ArvosanaEditor} from '../suoritus/ArvosanaEditor'
 import {pushRemoval} from '../editor/EditorModel'
 import {buildClassNames} from '../components/classnames'
 import {KurssiPopup} from './KurssiPopup'
-import {
-  isLukionKurssi,
-  isLukioonValmistavanKoulutuksenKurssi,
-  isPaikallinen,
-  isPreIBKurssi
-} from '../suoritus/Koulutusmoduuli'
+import {isLukionKurssimainen, isPaikallinen} from '../suoritus/Koulutusmoduuli'
 import {FootnoteHint} from '../components/footnote'
 import {eiLasketaKokonaispistemäärään} from '../dia/DIA'
 
@@ -38,11 +33,13 @@ export class KurssiEditor extends React.Component {
     }
     let kurssinTyyppi = koulutusmoduuli.kurssinTyyppi ? koulutusmoduuli.kurssinTyyppi.koodiarvo : ''
     let edit = kurssi.context.edit
+    const paikallinenLukionKurssimainen = isLukionKurssimainen(koulutusmoduuliModel) && isPaikallinen(koulutusmoduuliModel)
     let className = buildClassNames([
       'tunniste',
       kurssinTyyppi,
       !edit && 'hoverable',
-      eiLasketaKokonaispistemäärään(kurssi) && 'ei-lasketa-kokonaispistemäärään'
+      eiLasketaKokonaispistemäärään(kurssi) && 'ei-lasketa-kokonaispistemäärään',
+      isPaikallinen(koulutusmoduuliModel) && !paikallinenLukionKurssimainen && 'paikallinen'
     ])
     const title = kurssi.value.classes.includes('diasuoritus') ? modelTitle(kurssi, 'koulutusmoduuli') : koulutusmoduuli.tunniste.koodiarvo
     return (
@@ -52,13 +49,7 @@ export class KurssiEditor extends React.Component {
           edit && <a className="remove-value" onClick={() => pushRemoval(kurssi)}/>
         }
         {
-          (
-            isLukionKurssi(koulutusmoduuliModel) ||
-            isPreIBKurssi(koulutusmoduuliModel) ||
-            isLukioonValmistavanKoulutuksenKurssi(koulutusmoduuliModel)
-          ) &&
-          isPaikallinen(koulutusmoduuliModel) &&
-          <FootnoteHint title={'Paikallinen kurssi'} />
+          paikallinenLukionKurssimainen && <FootnoteHint title={'Paikallinen kurssi'} />
         }
         {
           eiLasketaKokonaispistemäärään(kurssi) &&

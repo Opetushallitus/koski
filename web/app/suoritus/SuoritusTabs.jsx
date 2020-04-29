@@ -4,11 +4,13 @@ import {modelData, modelTitle} from '../editor/EditorModel.js'
 import Link from '../components/Link'
 import {currentLocation} from '../util/location.js'
 import {navigateTo} from '../util/location'
-import {pushModel} from '../editor/EditorModel'
+import {modelLookup, pushModel} from '../editor/EditorModel'
 import {suorituksenTyyppi, suoritusTitle, suoritusValmis} from './Suoritus'
 import Text from '../i18n/Text'
 import {isPerusopetuksenOppimäärä, luokkaAste} from '../perusopetus/Perusopetus'
 import UusiSuoritusLink from '../uusisuoritus/UusiSuoritusLink'
+import {isPaikallinen} from './Koulutusmoduuli'
+import {buildClassNames} from '../components/classnames'
 
 export const SuoritusTabs = ({ model, suoritukset }) => {
   let uusiSuoritusCallback = (suoritus) => {
@@ -30,8 +32,13 @@ export const SuoritusTabs = ({ model, suoritukset }) => {
         suoritukset.map((suoritusModel, i) => {
           let selected = i === suoritusTabIndex(suoritukset)
           let titleEditor = tabTitle(suoritusModel)
-          return (<li className={selected ? 'tab selected': 'tab'} key={i}>
-            { selected ? titleEditor : <Link href={ urlForTab(suoritukset, i) } exitHook={false}> {titleEditor} </Link>}
+          const classNames = buildClassNames([
+            'tab',
+            selected && 'selected',
+            isPaikallinen(modelLookup(suoritusModel, 'koulutusmoduuli')) && 'paikallinen'
+          ])
+          return (<li className={classNames} key={i}>
+            { selected ? titleEditor : <Link href={ urlForTab(suoritukset, i) } exitHook={false}> {titleEditor} </Link> }
           </li>)
         })
       }
