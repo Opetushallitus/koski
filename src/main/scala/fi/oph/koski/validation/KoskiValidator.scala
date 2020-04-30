@@ -646,10 +646,10 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
 
   private def validatePäättötodistuksenSanallinenArviointi(oppimäärä: NuortenPerusopetuksenOppimääränSuoritus) = {
     def erikoistapaus(s: Suoritus) = {
-      val opinto_ohjaus = s.koulutusmoduuli.tunniste.koodiarvo == "OP"
-      val kieliaine_arvosanalla_s = s.koulutusmoduuli.isInstanceOf[NuortenPerusopetuksenVierasTaiToinenKotimainenKieli] && s.viimeisinArvosana.contains("S")
-      val paikallinen_laajuus_alle_2_tai_arvosana_s = s.koulutusmoduuli.isInstanceOf[NuortenPerusopetuksenPaikallinenOppiaine] && (s.koulutusmoduuli.laajuus.exists(_.arvo < 2) || s.viimeisinArvosana.contains("S"))
-      opinto_ohjaus || kieliaine_arvosanalla_s || paikallinen_laajuus_alle_2_tai_arvosana_s
+      val opintoOhjaus = s.koulutusmoduuli.tunniste.koodiarvo == "OP"
+      val kieliaineArvosanallaS = s.koulutusmoduuli.isInstanceOf[NuortenPerusopetuksenVierasTaiToinenKotimainenKieli] && s.viimeisinArvosana.contains("S")
+      val paikallinenLaajuusAlle2TaiArvosanaS = s.koulutusmoduuli.isInstanceOf[NuortenPerusopetuksenPaikallinenOppiaine] && (s.koulutusmoduuli.laajuus.exists(_.arvo < 2) || s.viimeisinArvosana.contains("S"))
+      opintoOhjaus || kieliaineArvosanallaS || paikallinenLaajuusAlle2TaiArvosanaS
     }
 
     HttpStatus.fold(oppimäärä.osasuoritusLista
@@ -663,7 +663,12 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       val arvioituSanallisesti = o.viimeisinArvosana.exists(SanallinenPerusopetuksenOppiaineenArviointi.valinnaisilleSallitutArvosanat.contains)
       val eiArvioituSanallisesti = o.viimeisinArvosana.isDefined && !arvioituSanallisesti
       if (arvioituSanallisesti && !o.yksilöllistettyOppimäärä && (o.koulutusmoduuli.pakollinen || o.koulutusmoduuli.laajuus.exists(_.arvo >= 2))) {
-        KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle(s"Arviointi ${o.viimeisinArviointi.map(_.arvosana.koodiarvo).mkString} on sallittu vain jos oppimäärä on yksilöllistetty tai valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia")
+        val väliaikainenValidaationLöystyttämienPoistettavaSyksyllä2020 = o.viimeisinArvosana.contains("S") && !o.koulutusmoduuli.pakollinen
+        if (väliaikainenValidaationLöystyttämienPoistettavaSyksyllä2020) {
+          HttpStatus.ok
+        } else {
+          KoskiErrorCategory.badRequest.validation.arviointi.sallittuVainValinnaiselle(s"Arviointi ${o.viimeisinArviointi.map(_.arvosana.koodiarvo).mkString} on sallittu vain jos oppimäärä on yksilöllistetty tai valinnaisille oppiaineille joiden laajuus on alle kaksi vuosiviikkotuntia")
+        }
       } else if (eiArvioituSanallisesti && !o.yksilöllistettyOppimäärä && !o.koulutusmoduuli.pakollinen && o.koulutusmoduuli.laajuus.exists(_.arvo < 2)) {
         KoskiErrorCategory.badRequest.validation.arviointi.eiSallittuSuppealleValinnaiselle()
       } else {
