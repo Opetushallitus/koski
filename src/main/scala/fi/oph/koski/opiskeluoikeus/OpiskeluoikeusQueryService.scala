@@ -7,7 +7,6 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.jsonMethods.{parse => parseJson}
 import fi.oph.koski.db.Tables.{HenkilöTable, OpiskeluoikeusTable, _}
 import fi.oph.koski.db.{HenkilöRow, OpiskeluoikeusRow, Tables, _}
-import fi.oph.koski.henkilo.KoskiHenkilöCache
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryFilter.{SuoritusJsonHaku, _}
@@ -19,6 +18,8 @@ import rx.Observer
 import rx.functions.{Func0, Func2}
 import rx.lang.scala.Observable
 import rx.observables.SyncOnSubscribe.createStateful
+
+import scala.concurrent.duration._
 
 class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext with KoskiDatabaseMethods {
   private val defaultPagination = QueryPagination(0)
@@ -54,15 +55,15 @@ class OpiskeluoikeusQueryService(val db: DB) extends DatabaseExecutionContext wi
     streamingQuery(paginatedQuery)
   }
 
-  def kaikkiOpiskeluoikeudetSivuittain(pagination: PaginationSettings)(implicit user: KoskiSession): Seq[OpiskeluoikeusRow] = {
+  def mapKaikkiOpiskeluoikeudetSivuittain[A](pageSize: Int, user: KoskiSession)(f: Seq[OpiskeluoikeusRow] => Seq[A]): Observable[A] = {
+    processByPage[OpiskeluoikeusRow, A](page => kaikkiOpiskeluoikeudetSivuittain(PaginationSettings(page, pageSize))(user), f)
+  }
+
+  private def kaikkiOpiskeluoikeudetSivuittain(pagination: PaginationSettings)(implicit user: KoskiSession): Seq[OpiskeluoikeusRow] = {
     if (!user.hasGlobalReadAccess) throw new RuntimeException("Query does not make sense without global read access")
     // this approach to pagination ("limit 500 offset 176500") is not perfect (the query gets slower as offset
     // increases), but seems tolerable here (with join to henkilot, as in mkQuery below, it's much slower)
-    runDbSync(defaultPagination.applyPagination(OpiskeluOikeudetWithAccessCheck.sortBy(_.id), pagination).result)
-  }
-
-  def mapKaikkiOpiskeluoikeudetSivuittain[A](pageSize: Int, user: KoskiSession)(f: Seq[OpiskeluoikeusRow] => Seq[A]): Observable[A] = {
-    processByPage[OpiskeluoikeusRow, A](page => kaikkiOpiskeluoikeudetSivuittain(PaginationSettings(page, pageSize))(user), f)
+    runDbSync(defaultPagination.applyPagination(OpiskeluOikeudetWithAccessCheck.sortBy(_.id), pagination).result, timeout = 5.minutes)
   }
 
   private def mkQuery(filters: List[OpiskeluoikeusQueryFilter], sorting: Option[SortOrder])(implicit user: KoskiSession) = {
