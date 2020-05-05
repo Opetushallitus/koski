@@ -88,7 +88,7 @@ describe('Esiopetus', function() {
 
         it('lisätty oppija näytetään', function() {
           expect(opinnot.getTutkinto()).to.equal('Päiväkodin esiopetus')
-          expect(opinnot.getOppilaitos()).to.equal('Helsingin kaupunki toimipaikka 12241')
+          expect(opinnot.getOppilaitos()).to.equal('PK Vironniemi')
           expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('102/011/2014')
         })
 
@@ -128,8 +128,30 @@ describe('Esiopetus', function() {
         it('vain oman organisaation ulkopuoliset varhaiskasvatustoimipisteet näytetään', function () {
           expect(addOppija.toimipisteet()).to.deep.equal([
             'Tarina',
+            'Ip-Huutjärvi',
+            'Ip-Suur-Ahvenkoski',
             'Päiväkoti Majakka',
-            'Päiväkoti Touhula'
+            'Päiväkoti Måsarna',
+            'Päiväkoti Touhula',
+            'ARPELAN ESIOPETUS',
+            'ARPELAN PÄIVÄKOTI',
+            'HANNULAN KOULUN ESKARI',
+            'ISOPALON PÄIVÄKOTI',
+            'JUHANNUSSAAREN PÄIVÄKOTI',
+            'KAAKAMON PÄIVÄKOTI',
+            'KALLIOPUTAAN PÄIVÄKOTI',
+            'KARUNGIN PÄIVÄKOTI',
+            'KIVIRANNAN ESKARI',
+            'KIVIRANNAN PÄIVÄKOTI',
+            'KOIVUJEN PÄIVÄKOTI',
+            'KOKKOKANKAAN ESKRI',
+            'KOKKOKANKAAN PÄIVÄKOTI',
+            'KYLÄJOEN ESIOPETUS POIKKIKAIRA',
+            'NÄÄTSAAREN ESKARI',
+            'PIRKKIÖN ESKARI',
+            'PIRKKIÖN PÄIVÄKOTI',
+            'PUTAAN VUOROPÄIVÄKOTI',
+            'SEMINAARIN ESKARI'
           ])
         })
 
@@ -154,7 +176,7 @@ describe('Esiopetus', function() {
             })
 
             it('koulutusmoduuli ja järjestämismuoto näytetään', function () {
-              expect(editor.property('koulutustoimija').getValue()).to.equal('HELSINGIN KAUPUNKI')
+              expect(editor.property('koulutustoimija').getValue()).to.equal('Helsingin kaupunki')
               expect(editor.property('järjestämismuoto').getValue()).to.equal('Ostopalvelu, kunnan tai kuntayhtymän järjestämä')
             })
 

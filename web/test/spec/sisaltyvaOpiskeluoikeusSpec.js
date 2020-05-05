@@ -18,11 +18,11 @@ describe('Opiskeluoikeuden sisältyvyys', function() {
       page.openPage,
       page.oppijaHaku.search('280618-402H', page.oppijaHaku.canAddNewOppija),
       page.oppijaHaku.addNewOppija,
-      addOppija.enterValidDataAmmatillinen({ oppilaitos: 'Omnian ammattiopisto'}),
+      addOppija.enterValidDataAmmatillinen({ oppilaitos: 'Omnia'}),
       addOppija.submitAndExpectSuccess('280618-402H', 'Autoalan perustutkinto'),
       editor.edit,
       editor.property('sisältyyOpiskeluoikeuteen').addValue,
-      editor.property('oppilaitos').organisaatioValitsin().select('Stadin ammattiopisto')
+      editor.property('oppilaitos').organisaatioValitsin().select('Stadin ammatti- ja aikuisopisto')
     )
 
     describe('Kun oppilaitos on tyyppiä oppisopimustoimisto', function () {
@@ -30,7 +30,7 @@ describe('Opiskeluoikeuden sisältyvyys', function() {
 
       it('se voidaan voidaan valita', function() {})
 
-      after(editor.property('oppilaitos').organisaatioValitsin().select('Stadin ammattiopisto'))
+      after(editor.property('oppilaitos').organisaatioValitsin().select('Stadin ammatti- ja aikuisopisto'))
     })
 
     describe('Kun sisältävää opiskeluoikeutta ei löydy id:llä', function() {
@@ -66,14 +66,14 @@ describe('Opiskeluoikeuden sisältyvyys', function() {
         it('Lukuoikeudet on', function() {
           var year = new Date().getFullYear()
           expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.have.members([
-            'Stadin ammattiopisto, Luonto- ja ympäristöalan perustutkinto (2012—2016, valmistunut)',
-            'Omnian ammattiopisto, Autoalan perustutkinto (' + year + '—, läsnä)'
+            'Stadin ammatti- ja aikuisopisto, Luonto- ja ympäristöalan perustutkinto (2012—2016, valmistunut)',
+            'Omnia, Autoalan perustutkinto (' + year + '—, läsnä)'
           ])
         })
 
         it('Kirjoitusoikeuksia ei ole', function() {
           expect(opinnot.opiskeluoikeusEditor('Stadin').isEditable()).to.equal(true)
-          expect(opinnot.opiskeluoikeusEditor('Omnian').isEditable()).to.equal(false)
+          expect(opinnot.opiskeluoikeusEditor('Omnia').isEditable()).to.equal(false)
         })
       })
     })

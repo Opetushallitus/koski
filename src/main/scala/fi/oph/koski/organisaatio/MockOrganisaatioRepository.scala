@@ -7,6 +7,7 @@ import fi.oph.koski.json.JsonSerializer.extract
 import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
 import fi.oph.koski.schema.LocalizedString.finnish
 import fi.oph.koski.schema.Oppilaitos
+import org.json4s.JValue
 
 // Testeissä käytetyt organisaatio-oidit
 object MockOrganisaatiot {
@@ -50,7 +51,7 @@ object MockOrganisaatiot {
     omnia,
     winnova,
     jyväskylänNormaalikoulu,
-    montessoriPäiväkoti12241,
+    vironniemenPäiväkoti,
     kulosaarenAlaAste,
     helsinginMedialukio,
     helsinginYliopisto,
@@ -80,10 +81,10 @@ object MockOrganisaatiot {
 }
 
 object MockOrganisaatioRepository extends JsonOrganisaatioRepository(MockKoodistoViitePalvelu) {
-  val rootOrgs: List[OrganisaatioHierarkia] = MockOrganisaatiot.roots
-    .flatMap(oid => JsonResources.readResourceIfExists(hierarchyResourcename(oid)))
-    .flatMap(json => extract[OrganisaatioHakuTulos](json, ignoreExtras = true).organisaatiot)
-    .map(convertOrganisaatio(_))
+  private val hierarkiaJson: JValue = JsonResources.readResource(hierarchyResourcename(Opetushallitus.organisaatioOid))
+
+  val rootOrgs: List[OrganisaatioHierarkia] =
+    extract[OrganisaatioHakuTulos](hierarkiaJson, ignoreExtras = true).organisaatiot.map(convertOrganisaatio)
 
   val oppilaitokset: List[Oppilaitos] = {
     def flatten(hierarkia: OrganisaatioHierarkia): List[OrganisaatioHierarkia] = hierarkia :: hierarkia.children.flatMap(flatten)
@@ -124,19 +125,14 @@ object MockOrganisaatioRepository extends JsonOrganisaatioRepository(MockKoodist
   }
 
   override def findAllRaw: List[OrganisaatioPalveluOrganisaatio] =
-    findAllHierarkiatRaw.flatMap(org => org :: org.children)
+    uncachedFindAllHierarkiatRaw.flatMap(org => org :: org.children)
 
-  override def findAllHierarkiatRaw: List[OrganisaatioPalveluOrganisaatio] = {
-    MockOrganisaatiot.roots
-      .flatMap(oid => JsonResources.readResourceIfExists(hierarchyResourcename(oid)))
-      .flatMap { json =>
-        extract[OrganisaatioHakuTulos](json, ignoreExtras = true).organisaatiot
-      }
+  override def findAllHierarkiat: List[OrganisaatioHierarkia] = {
+    uncachedFindAllHierarkiatRaw.map(convertOrganisaatio)
   }
 
-  override def findAllVarhaiskasvatusToimipisteet: List[OrganisaatioPalveluOrganisaatio] = {
-    val json = JsonResources.readResource("/mockdata/organisaatio/varhaiskasvatustoimipisteet.json")
+  private def uncachedFindAllHierarkiatRaw: List[OrganisaatioPalveluOrganisaatio] = {
+    val json = JsonResources.readResource(hierarchyResourcename(Opetushallitus.organisaatioOid))
     extract[OrganisaatioHakuTulos](json, ignoreExtras = true).organisaatiot
   }
-  override def findVarhaiskasvatusHierarkiat: List[OrganisaatioHierarkia] = uncachedVarhaiskasvatusHierarkiat
 }

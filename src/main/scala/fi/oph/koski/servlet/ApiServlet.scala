@@ -50,7 +50,7 @@ trait ApiServlet extends KoskiBaseServlet with Logging with TimedServlet with Co
     }
   }
 
-  private def writeJson(str: String): Unit = {
+  protected def writeJson(str: String): Unit = {
     contentType = "application/json;charset=utf-8"
     response.writer.print(str)
   }

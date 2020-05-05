@@ -1,7 +1,8 @@
 package fi.oph.koski.organisaatio
 
-import fi.oph.koski.organisaatio.OrganisaatioHierarkia._
 import fi.oph.koski.schema._
+import OrganisaatioHierarkia._
+import Organisaatiotyyppi._
 
 case class OrganisaatioHierarkia(oid: String, oppilaitosnumero: Option[Koodistokoodiviite], nimi: LocalizedString, yTunnus: Option[String], kotipaikka: Option[Koodistokoodiviite], organisaatiotyypit: List[String], oppilaitostyyppi: Option[String], aktiivinen: Boolean, children: List[OrganisaatioHierarkia]) {
   def find(oid: String): Option[OrganisaatioHierarkia] = {
@@ -64,11 +65,5 @@ object OrganisaatioHierarkia {
     orgs.flatMap { org => org :: flatten(org.children) }
   }
 
-  val OPPILAITOS = "OPPILAITOS"
-  val OPPISOPIMUSTOIMIPISTE = "OPPISOPIMUSTOIMIPISTE"
-  val VARHAISKASVATUKSEN_TOIMIPAIKKA = "VARHAISKASVATUKSEN_TOIMIPAIKKA"
-  val VARHAISKASVATUKSEN_JARJESTAJA = "VARHAISKASVATUKSEN_JARJESTAJA"
-  val KOULUTUSTOIMIJA = "KOULUTUSTOIMIJA"
-  val TOIMIPISTE = "TOIMIPISTE"
   val oppilaitosTyypit = List(OPPILAITOS, OPPISOPIMUSTOIMIPISTE, VARHAISKASVATUKSEN_TOIMIPAIKKA)
 }

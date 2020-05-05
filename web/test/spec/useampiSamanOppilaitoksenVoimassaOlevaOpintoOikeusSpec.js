@@ -32,14 +32,14 @@ describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', functio
   describe('ammatillisessa koulutuksessa', function() {
     before(
       opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
-      addOppija.selectOppilaitos('Stadin ammattiopisto'),
+      addOppija.selectOppilaitos('Stadin ammatti- ja aikuisopisto'),
       addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
       addOppija.selectTutkinto('Autoalan perustutkinto'),
       addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
       addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
       addOppija.submitModal,
       opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
-      addOppija.selectOppilaitos('Stadin ammattiopisto'),
+      addOppija.selectOppilaitos('Stadin ammatti- ja aikuisopisto'),
       addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
       addOppija.selectTutkinto('Autoalan perustutkinto'),
       addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
@@ -53,7 +53,7 @@ describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', functio
   describe('muussa ammatillisessa koulutuksessa', function() {
     before(
       opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
-      addOppija.selectOppilaitos('Stadin ammattiopisto'),
+      addOppija.selectOppilaitos('Stadin ammatti- ja aikuisopisto'),
       addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
       addOppija.selectOppimäärä('Muun ammatillisen koulutuksen suoritus'),
       addOppija.selectKoulutusmoduuli('Ammatilliseen tehtävään valmistava koulutus'),
@@ -61,7 +61,7 @@ describe('Useampi voimassa oleva opinto oikeus samassa oppilaitoksessa', functio
       addOppija.selectOpintojenRahoitus('Valtionosuusrahoitteinen koulutus'),
       addOppija.submitModal,
       opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
-      addOppija.selectOppilaitos('Stadin ammattiopisto'),
+      addOppija.selectOppilaitos('Stadin ammatti- ja aikuisopisto'),
       addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
       addOppija.selectOppimäärä('Muun ammatillisen koulutuksen suoritus'),
       addOppija.selectKoulutusmoduuli('Ammatilliseen tehtävään valmistava koulutus'),

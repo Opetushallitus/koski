@@ -2155,7 +2155,7 @@ describe('Perusopetus', function() {
           describe('Toisen opiskeluoikeuden lisääminen (ammatillinen tutkinto)', function() {
             before(
               opinnot.opiskeluoikeudet.lisääOpiskeluoikeus,
-              addOppija.selectOppilaitos('Omnian ammattiopisto'),
+              addOppija.selectOppilaitos('Omnia'),
               addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'),
               addOppija.selectTutkinto('Autoalan perustutkinto'),
               addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),

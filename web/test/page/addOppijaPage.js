@@ -53,7 +53,7 @@ function AddOppijaPage() {
       }
     },
     enterValidDataPäiväkodinEsiopetus: function(params) {
-      params = _.merge({  oppilaitos: 'Helsingin kaupunki toimipaikka 12241' }, {}, params)
+      params = _.merge({  oppilaitos: 'PK Vironniemi' }, {}, params)
       return function() {
         return api.enterData(params)()
       }

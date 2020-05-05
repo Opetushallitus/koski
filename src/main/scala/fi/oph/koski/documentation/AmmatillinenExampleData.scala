@@ -338,7 +338,7 @@ object AmmatillinenExampleData {
       muutospäivä = date(2005, 5, 5),
       Some(Oppilaitos(
         oid = MockOrganisaatiot.stadinAmmattiopisto,
-        nimi = Some(Finnish(fi = "Stadin ammattiopisto"))
+        nimi = Some(Finnish(fi = "Stadin ammatti- ja aikuisopisto"))
       )),
       Some(Koulutustoimija(
         oid = MockOrganisaatiot.helsinginKaupunki,

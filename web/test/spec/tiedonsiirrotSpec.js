@@ -24,10 +24,10 @@ describe('Tiedonsiirrot', function() {
 
     it('Näytetään', function() {
       expect(tiedonsiirrot.tiedot().sort(sortByName)).to.deep.equal([
-        ['epävalidiHetu', 'Tiedonsiirto, Tiina', 'Stadin ammattiopisto', 'Luonto- ja ympäristöalan perustutkintoAutokorinkorjauksen osaamisalaAutokorinkorjaaja', 'virhe', 'tiedot'],
+        ['epävalidiHetu', 'Tiedonsiirto, Tiina', 'Stadin ammatti- ja aikuisopisto', 'Luonto- ja ympäristöalan perustutkintoAutokorinkorjauksen osaamisalaAutokorinkorjaaja', 'virhe', 'tiedot'],
         ['280618-402H', 'Ammattilainen, Aarne', 'Aalto-yliopisto', '', 'virhe', 'tiedot'],
-        ['24.2.1977', 'Hetuton, Heikki', 'Stadin ammattiopisto', 'Autoalan perustutkinto', '', ''],
-        ['270303-281N', 'Tiedonsiirto, Tiina', 'Stadin ammattiopisto', 'Autoalan perustutkinto', '', ''],
+        ['24.2.1977', 'Hetuton, Heikki', 'Stadin ammatti- ja aikuisopisto', 'Autoalan perustutkinto', '', ''],
+        ['270303-281N', 'Tiedonsiirto, Tiina', 'Stadin ammatti- ja aikuisopisto', 'Autoalan perustutkinto', '', ''],
         ['', '', '', '', 'virhe', 'tiedot']
       ].sort(sortByName))
     })
@@ -37,7 +37,7 @@ describe('Tiedonsiirrot', function() {
     before(tiedonsiirrot.openYhteenveto)
 
     it('Näytetään', function() {
-      expect(tiedonsiirrot.tiedot().map(function(row) { return row[0]})).to.deep.equal(['Aalto-yliopisto', 'HELSINGIN KAUPUNKI', 'Stadin ammattiopisto'])
+      expect(tiedonsiirrot.tiedot().map(function(row) { return row[0]})).to.deep.equal(['Aalto-yliopisto', 'Helsingin kaupunki', 'Stadin ammatti- ja aikuisopisto'])
     })
   })
 
@@ -46,7 +46,7 @@ describe('Tiedonsiirrot', function() {
 
     it('Näytetään', function() {
       expect(tiedonsiirrot.tiedot()).to.deep.equal([
-        ['epävalidiHetu', 'Tiedonsiirto, Tiina', 'Stadin ammattiopisto', 'Luonto- ja ympäristöalan perustutkintoAutokorinkorjauksen osaamisalaAutokorinkorjaaja', 'Virheellinen muoto hetulla: epävalidiHetuvirhe', 'tiedot'],
+        ['epävalidiHetu', 'Tiedonsiirto, Tiina', 'Stadin ammatti- ja aikuisopisto', 'Luonto- ja ympäristöalan perustutkintoAutokorinkorjauksen osaamisalaAutokorinkorjaaja', 'Virheellinen muoto hetulla: epävalidiHetuvirhe', 'tiedot'],
         ['280618-402H', 'Ammattilainen, Aarne', 'Aalto-yliopisto', '', 'Ei oikeuksia organisatioon 1.2.246.562.10.56753942459virhe', 'tiedot'],
         ['', '', '', '', 'Viesti ei ole skeeman mukainen (notAnyOf henkilö)virhe', 'tiedot']
       ])
@@ -102,7 +102,7 @@ describe('Tiedonsiirrot', function() {
         )
         it('Se poistuu listauksesta', function() {
           expect(tiedonsiirrot.tiedot()).to.deep.equal([
-            ['epävalidiHetu', 'Tiedonsiirto, Tiina', 'Stadin ammattiopisto', 'Luonto- ja ympäristöalan perustutkintoAutokorinkorjauksen osaamisalaAutokorinkorjaaja', 'Virheellinen muoto hetulla: epävalidiHetuvirhe', 'tiedot'],
+            ['epävalidiHetu', 'Tiedonsiirto, Tiina', 'Stadin ammatti- ja aikuisopisto', 'Luonto- ja ympäristöalan perustutkintoAutokorinkorjauksen osaamisalaAutokorinkorjaaja', 'Virheellinen muoto hetulla: epävalidiHetuvirhe', 'tiedot'],
             ['280618-402H', 'Ammattilainen, Aarne', 'Aalto-yliopisto', '', 'Ei oikeuksia organisatioon 1.2.246.562.10.56753942459virhe', 'tiedot']
           ])
         })

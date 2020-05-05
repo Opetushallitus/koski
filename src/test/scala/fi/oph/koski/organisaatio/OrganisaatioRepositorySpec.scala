@@ -4,8 +4,7 @@ import org.scalatest.{FreeSpec, Matchers}
 
 class OrganisaatioRepositorySpec extends FreeSpec with Matchers {
   "Hakee varhaiskasvatushierarkian" in {
-    val hierarkias = OrganisaatioHierarkia.flatten(MockOrganisaatioRepository.findVarhaiskasvatusHierarkiat)
-    val leafs = hierarkias.filter(o => o.children.isEmpty)
-    leafs.flatMap(_.organisaatiotyypit).distinct should be(List(MockOrganisaatioRepository.varhaiskasvatusToimipaikkaTyyppi))
+    val varhaiskasvatustoimipisteet = OrganisaatioHierarkia.flatten(MockOrganisaatioRepository.findVarhaiskasvatusHierarkiat).filter(_.children.isEmpty)
+    varhaiskasvatustoimipisteet.flatMap(_.organisaatiotyypit).distinct should be(List("VARHAISKASVATUKSEN_TOIMIPAIKKA"))
   }
 }

@@ -8,8 +8,8 @@ class TelmaSpec extends FreeSpec with Matchers with TodistusTestMethods with Opi
     "Päättötodistus" in {
       todistus(MockOppijat.telma.oid, "telma") should equal(
         """Työhön ja itsenäiseen elämään valmentava koulutus
-          |HELSINGIN KAUPUNKI
-          |Stadin ammattiopisto
+          |Helsingin kaupunki
+          |Stadin ammatti- ja aikuisopisto
           |Telmanen, Tuula 021080-725C
           |
           |Pakolliset koulutuksen osat 53 osp

@@ -17,7 +17,7 @@ describe('VALMA koulutus', function() {
 
     it('Lisätty opiskeluoikeus näytetään', function () {
       expect(opinnot.getTutkinto()).to.equal('Ammatilliseen koulutukseen valmentava koulutus (VALMA)')
-      expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+      expect(opinnot.getOppilaitos()).to.equal('Stadin ammatti- ja aikuisopisto')
       expect(editor.propertyBySelector('.koulutusmoduuli .diaarinumero').getValue()).to.equal('5/011/2015')
     })
   })
@@ -33,7 +33,7 @@ describe('VALMA koulutus', function() {
 
     it('Lisätty opiskeluoikeus näytetään', function () {
       expect(opinnot.getTutkinto()).to.equal('Ammatilliseen koulutukseen valmentava koulutus (VALMA)')
-      expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+      expect(opinnot.getOppilaitos()).to.equal('Stadin ammatti- ja aikuisopisto')
       expect(editor.propertyBySelector('.koulutusmoduuli .diaarinumero').getValue()).to.equal('OPH-2658-2017')
     })
 
@@ -83,7 +83,7 @@ describe('VALMA koulutus', function() {
           expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
             'Koulutus Ammatilliseen koulutukseen valmentava koulutus (VALMA) 999901 5/011/2015\n' +
             'Laajuus 65 osp\n' +
-            'Oppilaitos / toimipiste Stadin ammattiopisto\n' +
+            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto\n' +
             'Suorituskieli suomi\n' +
             'Suoritus valmis Vahvistus : 4.6.2016 Reijo Reksi , rehtori'
           )
@@ -119,7 +119,7 @@ describe('VALMA koulutus', function() {
             'Tunnustettu\n' +
             'Tutkinnon osa Asennuksen ja automaation perustyöt\n' +
             'Tutkinto Kone- ja metallialan perustutkinto 351101 39/011/2014\n' +
-            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 3.10.2015 Helsinki Reijo Reksi , rehtori\n' +
             'Selite Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta\n' +
             'Rahoituksen piirissä ei\n' +
