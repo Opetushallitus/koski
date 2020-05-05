@@ -64,7 +64,7 @@ trait HealthCheck extends Logging {
   private def organisaatioPalveluCheck: HttpStatus =
     application.organisaatioRepository match {
       case remote: RemoteOrganisaatioRepository =>
-        get("organisaatiopalvelu", remote.fetch(MockOrganisaatiot.helsinginYliopisto)).filterOrElse(_.organisaatiot.nonEmpty, KoskiErrorCategory.notFound.oppilaitostaEiLöydy())
+        get("organisaatiopalvelu", remote.fetchV3(MockOrganisaatiot.helsinginYliopisto)).filterOrElse(_.isDefined, KoskiErrorCategory.notFound.oppilaitostaEiLöydy())
           .left.getOrElse(HttpStatus.ok)
       case _ => HttpStatus.ok
     }

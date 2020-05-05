@@ -59,7 +59,7 @@ class KäyttöoikeusRepository(organisaatioRepository: OrganisaatioRepository, d
       organisaatioRepository.findAllVarhaiskasvatusToimipisteet.map { päiväkoti =>
         KäyttöoikeusVarhaiskasvatusToimipiste(
           koulutustoimija = organisaatioHierarkia.toKoulutustoimija.get,
-          ulkopuolinenOrganisaatio = OidOrganisaatio(päiväkoti.oid),
+          ulkopuolinenOrganisaatio = päiväkoti.toOidOrganisaatio,
           organisaatiokohtaisetPalveluroolit = k.organisaatiokohtaisetPalveluroolit
         )
       }

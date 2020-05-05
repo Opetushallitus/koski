@@ -85,7 +85,7 @@ describe('Ammatillinen koulutus', function() {
           it('Lisätty opiskeluoikeus näytetään', function() {
             expect(opinnot.getOpiskeluoikeudenTila()).to.match(/Läsnä \(valtionosuusrahoitteinen koulutus\)$/)
             expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
-            expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+            expect(opinnot.getOppilaitos()).to.equal('Stadin ammatti- ja aikuisopisto')
             expect(opinnot.getSuorituskieli()).to.equal('ruotsi')
           })
         })
@@ -121,7 +121,7 @@ describe('Ammatillinen koulutus', function() {
 
         it('Lisätty opiskeluoikeus näytetään', function() {
           expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
-          expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+          expect(opinnot.getOppilaitos()).to.equal('Stadin ammatti- ja aikuisopisto')
           expect(opinnot.getSuorituskieli()).to.equal('suomi')
         })
       })
@@ -148,7 +148,7 @@ describe('Ammatillinen koulutus', function() {
 
         it('Lisätty opiskeluoikeus näytetään', function() {
           expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
-          expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+          expect(opinnot.getOppilaitos()).to.equal('Stadin ammatti- ja aikuisopisto')
           expect(opinnot.getSuorituskieli()).to.equal('suomi')
         })
       })
@@ -170,7 +170,7 @@ describe('Ammatillinen koulutus', function() {
 
         it('Lisätty opiskeluoikeus näytetään', function() {
           expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
-          expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+          expect(opinnot.getOppilaitos()).to.equal('Stadin ammatti- ja aikuisopisto')
           expect(opinnot.getSuorituskieli()).to.equal('suomi')
         })
       })
@@ -240,7 +240,7 @@ describe('Ammatillinen koulutus', function() {
               addOppija.selectSuoritustapa('Ammatillinen perustutkinto')
             )
             it('Vaihtoehto on valmiiksi valittu', function() {
-              expect(addOppija.oppilaitos()).to.deep.equal('Omnian ammattiopisto')
+              expect(addOppija.oppilaitos()).to.deep.equal('Omnia')
             })
             it('Lisää-nappi on enabloitu', function() {
               expect(addOppija.isEnabled()).to.equal(true)
@@ -254,7 +254,10 @@ describe('Ammatillinen koulutus', function() {
               wait.forMilliseconds(500)
             )
             it('Mahdollistetaan valinta', function() {
-              expect(addOppija.oppilaitokset()).to.deep.equal(['Lahden ammattikorkeakoulu', 'Omnian ammattiopisto', 'Stadin ammattiopisto'])
+              expect(addOppija.oppilaitokset()).to.deep.equal([
+                'Lahden ammattikorkeakoulu  (lakkautettu)',
+                'Stadin ammatti- ja aikuisopisto'
+              ])
             })
           })
         })
@@ -351,7 +354,7 @@ describe('Ammatillinen koulutus', function() {
         describe('Lisäyksen jälkeen', function() {
           it('Lisätty opiskeluoikeus näytetään', function() {
             expect(opinnot.getTutkinto()).to.equal('Näyttötutkintoon valmistava koulutus')
-            expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+            expect(opinnot.getOppilaitos()).to.equal('Stadin ammatti- ja aikuisopisto')
             expect(opinnot.getSuorituskieli()).to.equal('ruotsi')
           })
         })
@@ -395,7 +398,7 @@ describe('Ammatillinen koulutus', function() {
           })
 
           it('Esitäyttää oppilaitoksen', function() {
-            expect(lisääSuoritus.toimipiste.oppilaitos()).to.equal('Stadin ammattiopisto')
+            expect(lisääSuoritus.toimipiste.oppilaitos()).to.equal('Stadin ammatti- ja aikuisopisto')
           })
 
           it('Esitäyttää tutkinnon tutkintokoulutuksen suorituksesta', function() {
@@ -447,7 +450,7 @@ describe('Ammatillinen koulutus', function() {
             'Ammatilliset tutkinnon osat Laajuus (osp) Arvosana\n' +
             'Huolto- ja korjaustyöt 5\n' +
             'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Näyttö\n' +
             'Kuvaus Vuosihuoltojen suorittaminen\n' +
@@ -467,7 +470,7 @@ describe('Ammatillinen koulutus', function() {
             'Arviointipäivä 20.10.2014\n' +
             'Maalauksen esikäsittelytyöt 5\n' +
             'Pakollinen ei\n' +
-            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Näyttö\n' +
             'Kuvaus Pieniä pohja- ja hiomamaalauksia\n' +
@@ -500,7 +503,7 @@ describe('Ammatillinen koulutus', function() {
             'Yhteiset tutkinnon osat Laajuus (osp) Arvosana\n' +
             'Viestintä- ja vuorovaikutusosaaminen 8 osp\n' +
             'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
             'Avaa kaikki\n' +
             'Osa-alue Laajuus (osp) Arvosana\n' +
             'Äidinkieli, Suomen kieli ja kirjallisuus 5 5\n' +
@@ -760,9 +763,9 @@ describe('Ammatillinen koulutus', function() {
       )
 
       it('Lisätty opiskeluoikeus näytetään', function () {
-        expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()[0]).to.match(/^Stadin ammattiopisto, Autoalan perustutkinto, osittainen.*/)
+        expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()[0]).to.match(/^Stadin ammatti- ja aikuisopisto, Autoalan perustutkinto, osittainen.*/)
         expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
-        expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+        expect(opinnot.getOppilaitos()).to.equal('Stadin ammatti- ja aikuisopisto')
       })
 
       describe('Tutkinnon osan lisääminen', function () {
@@ -790,7 +793,7 @@ describe('Ammatillinen koulutus', function() {
 
       it('Lisätty opiskeluoikeus näytetään', function () {
         expect(opinnot.getTutkinto()).to.equal('Työhön ja itsenäiseen elämään valmentava koulutus (TELMA)')
-        expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+        expect(opinnot.getOppilaitos()).to.equal('Stadin ammatti- ja aikuisopisto')
       })
 
       var suoritustapa = editor.property('suoritustapa')
@@ -858,7 +861,7 @@ describe('Ammatillinen koulutus', function() {
         'Opiskeluoikeuden voimassaoloaika : 1.9.2016 — 1.5.2020 (arvioitu)\n' +
         'Tila 1.9.2016 Läsnä (valtionosuusrahoitteinen koulutus)\n' +
         'Opiskeluoikeuden organisaatiohistoria Muutospäivä 5.5.2005\n' +
-        'Aikaisempi oppilaitos Stadin ammattiopisto\n' +
+        'Aikaisempi oppilaitos Stadin ammatti- ja aikuisopisto\n' +
         'Aikaisempi koulutustoimija Helsingin kaupunki\n' +
         'Muutospäivä 2.2.2002\n' +
         'Aikaisempi oppilaitos Omnian oppilaitos\n' +
@@ -1760,11 +1763,11 @@ describe('Ammatillinen koulutus', function() {
         it('näyttää ammatillisenopiskeluoikeudentyypin tiedot', function() {
           expect(extractAsText(S('.ammatillinenkoulutus'))).to.equal(
               'Ammatillinen koulutus\n' +
-              'Stadin ammattiopisto\n' +
+              'Stadin ammatti- ja aikuisopisto\n' +
               'Ammatillinen tutkinto 2012 — 2016 , Valmistunut')
         })
         it('näyttää opiskeluoikeuden otsikkotiedot', function() {
-          expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal(['Stadin ammattiopisto, Luonto- ja ympäristöalan perustutkinto (2012—2016, valmistunut)'])
+          expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal(['Stadin ammatti- ja aikuisopisto, Luonto- ja ympäristöalan perustutkinto (2012—2016, valmistunut)'])
         })
         it('näyttää opiskeluoikeuden tiedot', function() {
           expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
@@ -1778,7 +1781,7 @@ describe('Ammatillinen koulutus', function() {
             'Koulutus Luonto- ja ympäristöalan perustutkinto 361902 62/011/2014\n' +
             'Suoritustapa Ammatillinen perustutkinto\n' +
             'Tutkintonimike Ympäristönhoitaja\nOsaamisala Ympäristöalan osaamisala\n' +
-            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
             'Suorituskieli suomi\n' +
             'Järjestämismuodot 1.9.2013 — , Koulutuksen järjestäminen oppilaitosmuotoisena\n' +
             'Työssäoppimisjaksot 1.1.2014 — 15.3.2014 Jyväskylä , Suomi\n' +
@@ -1794,12 +1797,12 @@ describe('Ammatillinen koulutus', function() {
             'Ammatilliset tutkinnon osat Laajuus (osp) Arvosana\n' +
             'Kestävällä tavalla toimiminen 40 3\n' +
             'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Arviointipäivä 1.1.2015\n' +
             'Ympäristön hoitaminen 35 3\n' +
             'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Näyttö\n' +
             'Kuvaus Muksulan päiväkodin ympäristövaikutusten arvioiminen ja ympäristön kunnostustöiden tekeminen sekä mittauksien tekeminen ja näytteiden ottaminen\n' +
@@ -1819,17 +1822,17 @@ describe('Ammatillinen koulutus', function() {
             'Arviointipäivä 20.10.2014\n' +
             'Uusiutuvien energialähteiden hyödyntäminen 15 3\n' +
             'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Arviointipäivä 20.10.2014\n' +
             'Ulkoilureittien rakentaminen ja hoitaminen 15 3\n' +
             'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Arviointipäivä 20.10.2014\n' +
             'Kulttuuriympäristöjen kunnostaminen ja hoitaminen 15 3\n' +
             'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Näyttö\n' +
             'Kuvaus Sastamalan kunnan kulttuuriympäristöohjelmaan liittyvän Wanhan myllyn lähiympäristön kasvillisuuden kartoittamisen sekä ennallistamisen suunnittelu ja toteutus\n' +
@@ -1849,7 +1852,7 @@ describe('Ammatillinen koulutus', function() {
             'Arviointipäivä 20.10.2014\n' +
             'Vesistöjen kunnostaminen ja hoitaminen 15 Hyväksytty\n' +
             'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Lisätiedot\n' +
             'Muutos arviointiasteikossa\n' +
@@ -1879,7 +1882,7 @@ describe('Ammatillinen koulutus', function() {
             'Yhteiset tutkinnon osat Laajuus (osp) Arvosana\n' +
             'Viestintä- ja vuorovaikutusosaaminen 11 3\n' +
             'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Arviointipäivä 20.10.2014\n' +
             'Sulje kaikki\n' +
@@ -1898,7 +1901,7 @@ describe('Ammatillinen koulutus', function() {
             'Arviointipäivä 20.10.2014\n' +
             'Matemaattis-luonnontieteellinen osaaminen 9 3\n' +
             'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Lisätiedot\n' +
             'Osaamisen arvioinnin mukauttaminen\n' +
@@ -1924,7 +1927,7 @@ describe('Ammatillinen koulutus', function() {
             'Arviointipäivä 1.1.2015\n' +
             'Yhteiskunnassa ja työelämässä tarvittava osaaminen 8 3\n' +
             'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Arviointipäivä 20.10.2014\n' +
             'Sulje kaikki\n' +
@@ -1935,7 +1938,7 @@ describe('Ammatillinen koulutus', function() {
             'Arviointipäivä 20.10.2014\n' +
             'Sosiaalinen ja kulttuurinen osaaminen 7 3\n' +
             'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Arviointipäivä 20.10.2014\n' +
             'Sulje kaikki\n' +
@@ -1949,7 +1952,7 @@ describe('Ammatillinen koulutus', function() {
             'Sosiaalinen ja kulttuurinen osaaminen 5 3\n' +
             'Kuvaus Sosiaalinen ja kulttuurinen osaaminen\n' +
             'Pakollinen ei\n' +
-            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Arviointipäivä 20.10.2014\n' +
             'Yhteensä 5 / 10 osp\n' +
@@ -1957,7 +1960,7 @@ describe('Ammatillinen koulutus', function() {
             'Matkailuenglanti 5 3\n' +
             'Kuvaus Matkailuenglanti\n' +
             'Pakollinen ei\n' +
-            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Arviointipäivä 20.10.2014\n' +
             'Yhteensä 5 osp')
@@ -1967,7 +1970,7 @@ describe('Ammatillinen koulutus', function() {
       describe('Tulostettava todistus', function() {
         before(OpinnotPage().avaaTodistus())
         it('näytetään', function() {
-          expect(TodistusPage().headings()).to.equal('HELSINGIN KAUPUNKIStadin ammattiopistoPäättötodistusLuonto- ja ympäristöalan perustutkintoYmpäristöalan osaamisala, Ympäristönhoitaja Ammattilainen, Aarne (280618-402H)')
+          expect(TodistusPage().headings()).to.equal('Helsingin kaupunkiStadin ammatti- ja aikuisopistoPäättötodistusLuonto- ja ympäristöalan perustutkintoYmpäristöalan osaamisala, Ympäristönhoitaja Ammattilainen, Aarne (280618-402H)')
           expect(TodistusPage().arvosanarivi('.tutkinnon-osa.100431')).to.equal('Kestävällä tavalla toimiminen 40 Kiitettävä 3')
           expect(TodistusPage().arvosanarivi('.opintojen-laajuus')).to.equal('Opiskelijan suorittamien tutkinnon osien laajuus osaamispisteinä 180')
           expect(TodistusPage().vahvistus()).to.equal('Helsinki 31.5.2016 Reijo Reksi rehtori')
@@ -1988,7 +1991,7 @@ describe('Ammatillinen koulutus', function() {
         expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
           'Koulutus Autoalan perustutkinto 351301 39/011/2014\n' +
           'Suoritustapa Näyttötutkinto\n' +
-          'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+          'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
           'Alkamispäivä 1.9.2016\n' +
           'Suorituskieli suomi\n' +
           'Suoritus kesken'
@@ -2001,7 +2004,7 @@ describe('Ammatillinen koulutus', function() {
           'Tutkinnon osa Laajuus (osp) Arvosana\n' +
           'Moottorin ja voimansiirron huolto ja korjaus 15 Hyväksytty\n' +
           'Pakollinen ei\n' +
-          'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+          'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
           'Vahvistus 31.5.2013 Reijo Reksi , rehtori\n' +
           'Tunnustettu\n' +
           'Tutkinnon osa Tunniste 11-22-33\n' +
@@ -2048,7 +2051,7 @@ describe('Ammatillinen koulutus', function() {
       before(opinnot.expandAll)
 
       it('näyttää opiskeluoikeuden otsikkotiedot', function() {
-        expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal(['Stadin ammattiopisto, Luonto- ja ympäristöalan perustutkinto, osittainen (2012—2016, valmistunut)'])
+        expect(opinnot.opiskeluoikeudet.opiskeluoikeuksienOtsikot()).to.deep.equal(['Stadin ammatti- ja aikuisopisto, Luonto- ja ympäristöalan perustutkinto, osittainen (2012—2016, valmistunut)'])
         expect(extractAsText(S('.suoritus-tabs .selected'))).to.equal('Luonto- ja ympäristöalan perustutkinto, osittainen')
       })
 
@@ -2067,7 +2070,7 @@ describe('Ammatillinen koulutus', function() {
           'Tutkintonimike Autokorinkorjaaja\n' +
           'Toinen tutkintonimike kyllä\n' +
           'Osaamisala Autokorinkorjauksen osaamisala\n' +
-          'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+          'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
           'Suorituskieli suomi\n' +
           'Järjestämismuodot 1.9.2012 — , Koulutuksen järjestäminen oppilaitosmuotoisena\n' +
           'Todistuksella näkyvät lisätiedot Suorittaa toista osaamisalaa\n' +
@@ -2080,7 +2083,7 @@ describe('Ammatillinen koulutus', function() {
           'Sulje kaikki Tutkinnon osa Laajuus (osp) Arvosana\n' +
           'Ympäristön hoitaminen 35 3\n' +
           'Pakollinen kyllä\n' +
-          'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+          'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
           'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
           'Arviointipäivä 20.10.2014\n' +
           'Yhteensä 35 osp'
@@ -2109,7 +2112,7 @@ describe('Ammatillinen koulutus', function() {
           expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
             'Koulutus Näyttötutkintoon valmistava koulutus\n' +
             'Tutkinto Autoalan työnjohdon erikoisammattitutkinto 357305 40/011/2001\n' +
-            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
             'Alkamispäivä 1.9.2012\n' +
             'Suorituskieli suomi\n' +
             'Suoritus valmis Vahvistus : 31.5.2015 Helsinki Reijo Reksi , rehtori'
@@ -2223,7 +2226,7 @@ describe('Ammatillinen koulutus', function() {
           expect(extractAsText(S('.suoritus > .properties, .suoritus > .tila-vahvistus'))).to.equal(
             'Koulutus Autoalan työnjohdon erikoisammattitutkinto 357305 40/011/2001\n' +
             'Suoritustapa Näyttötutkinto\n' +
-            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
             'Suorituskieli suomi\n' +
             'Järjestämismuodot 1.8.2014 — , Koulutuksen järjestäminen oppilaitosmuotoisena\n' +
             '31.5.2015 — , Koulutuksen järjestäminen oppisopimuskoulutuksena\n' +
@@ -2238,27 +2241,27 @@ describe('Ammatillinen koulutus', function() {
             'Sulje kaikki Tutkinnon osa Arvosana\n' +
             'Johtaminen ja henkilöstön kehittäminen Hyväksytty\n' +
             'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Arviointipäivä 20.10.2014\n' +
             'Asiakaspalvelu ja korjaamopalvelujen markkinointi Hyväksytty\n' +
             'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Arviointipäivä 20.10.2014\n' +
             'Työnsuunnittelu ja organisointi Hyväksytty\n' +
             'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Arviointipäivä 20.10.2014\n' +
             'Taloudellinen toiminta Hyväksytty\n' +
             'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Arviointipäivä 20.10.2014\n' +
             'Yrittäjyys Hyväksytty\n' +
             'Pakollinen kyllä\n' +
-            'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+            'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Arviointipäivä 20.10.2014\n' +
             'Yhteensä 0 osp'
@@ -2421,7 +2424,7 @@ describe('Ammatillinen koulutus', function() {
         before(
           clickLisääOpiskeluoikeus,
           clickValitseOppilaitosDropdown,
-          addOppija.selectOppilaitos('Omnian ammattiopisto'),
+          addOppija.selectOppilaitos('Omnia'),
           addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen'),
           addOppija.selectTutkinto('Autoalan perustutkinto'),
           addOppija.selectSuoritustapa('Ammatillinen perustutkinto'),
@@ -2430,7 +2433,7 @@ describe('Ammatillinen koulutus', function() {
 
           clickMuokkaaOpiskeluoikeus,
           firstEditor.property('sisältyyOpiskeluoikeuteen').addValue,
-          firstEditor.property('oppilaitos').organisaatioValitsin().select('Stadin ammattiopisto'),
+          firstEditor.property('oppilaitos').organisaatioValitsin().select('Stadin ammatti- ja aikuisopisto'),
 
           täydennäSisältyvänOpiskeluoikeudenOid,
           tallenna,

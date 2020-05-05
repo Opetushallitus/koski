@@ -3,7 +3,7 @@ package fi.oph.koski.oppilaitos
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.organisaatio.Oppilaitostyyppi._
-import fi.oph.koski.organisaatio.OrganisaatioHierarkia
+import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, Organisaatiotyyppi}
 import fi.oph.koski.schema.{Koodistokoodiviite, OpiskeluoikeudenTyyppi}
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 
@@ -37,7 +37,7 @@ class OppilaitosServlet(implicit val application: KoskiApplication) extends ApiS
     }
 
   private def byOrganisaatioTyyppi(organisaatiot: List[OrganisaatioHierarkia]) =
-    if (organisaatiot.flatMap(_.organisaatiotyypit).contains(OrganisaatioHierarkia.VARHAISKASVATUKSEN_TOIMIPAIKKA)) {
+    if (organisaatiot.flatMap(_.organisaatiotyypit).contains(Organisaatiotyyppi.VARHAISKASVATUKSEN_TOIMIPAIKKA)) {
       esiopetuksenTyypit
     } else {
       Nil

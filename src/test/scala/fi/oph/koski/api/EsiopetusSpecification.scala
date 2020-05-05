@@ -1,7 +1,9 @@
 package fi.oph.koski.api
 
 import fi.oph.koski.documentation.ExamplesEsiopetus.{peruskoulunEsiopetuksenTunniste, päiväkodinEsiopetuksenTunniste, suoritus}
+import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.oppilaitos
 import fi.oph.koski.documentation.{ExamplesEsiopetus, YleissivistavakoulutusExampleData}
+import fi.oph.koski.organisaatio.MockOrganisaatiot.vironniemenPäiväkoti
 import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
 import fi.oph.koski.schema._
 
@@ -19,12 +21,12 @@ trait EsiopetusSpecification extends LocalJettyHttpSpecification with PutOpiskel
     defaultOpiskeluoikeus.copy(oppilaitos = None, järjestämismuoto = järjestämismuoto, suoritukset = List(suoritus(perusteenDiaarinumero = "102/011/2014", tunniste = peruskoulunEsiopetuksenTunniste, toimipiste)))
 
   lazy val päiväkodinEsiopetuksenOpiskeluoikeus = defaultOpiskeluoikeus.copy(
-    oppilaitos = Some(YleissivistavakoulutusExampleData.montessoriPäiväkoti),
+    oppilaitos = Some(oppilaitos(vironniemenPäiväkoti)),
     suoritukset = List(päiväkodinEsiopetuksenSuoritus)
   )
 
   lazy val peruskoulunEsiopetuksenSuoritus = suoritus(perusteenDiaarinumero = "102/011/2014", tunniste = peruskoulunEsiopetuksenTunniste, YleissivistavakoulutusExampleData.jyväskylänNormaalikoulu)
-  lazy val päiväkodinEsiopetuksenSuoritus = suoritus(perusteenDiaarinumero = "102/011/2014", tunniste = päiväkodinEsiopetuksenTunniste, YleissivistavakoulutusExampleData.montessoriPäiväkoti)
+  lazy val päiväkodinEsiopetuksenSuoritus = suoritus(perusteenDiaarinumero = "102/011/2014", tunniste = päiväkodinEsiopetuksenTunniste, oppilaitos(vironniemenPäiväkoti))
 
   override def tag: TypeTag[EsiopetuksenOpiskeluoikeus] = implicitly[TypeTag[EsiopetuksenOpiskeluoikeus]]
   override def defaultOpiskeluoikeus: EsiopetuksenOpiskeluoikeus = ExamplesEsiopetus.opiskeluoikeus

@@ -6,8 +6,8 @@ import org.scalatest.FreeSpec
 class AmmatillinenSpec extends FreeSpec with TodistusTestMethods with LocalJettyHttpSpecification {
   "Ammatillisen perustutkinnon päättötodistus" in {
     todistus(MockOppijat.ammattilainen.oid, "ammatillinentutkinto") should equal(
-      """HELSINGIN KAUPUNKI
-        |Stadin ammattiopisto
+      """Helsingin kaupunki
+        |Stadin ammatti- ja aikuisopisto
         |Päättötodistus
         |Luonto- ja ympäristöalan perustutkinto
         |Ympäristöalan osaamisala, Ympäristönhoitaja
@@ -39,7 +39,7 @@ class AmmatillinenSpec extends FreeSpec with TodistusTestMethods with LocalJetty
   "Näyttötutkintoon valmistava koulutus" in {
     resetFixtures
     todistus(MockOppijat.erikoisammattitutkinto.oid, "nayttotutkintoonvalmistavakoulutus") should equal(
-      """Stadin ammattiopisto
+      """Stadin ammatti- ja aikuisopisto
         |Näyttötutkintoon valmistavan koulutuksen osallistumistodistus
         |Erikoinen, Erja 250989-419V
         |on osallistunut Autoalan työnjohdon erikoisammattitutkinto, valmistavaan koulutukseen 1.9.2012 seuraavilta osin:

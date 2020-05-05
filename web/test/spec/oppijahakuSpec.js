@@ -142,7 +142,7 @@ describe('Oppijahaku', function() {
 
     it('Oppijan tutkinto ja oppilaitos näytetään', function() {
       expect(opinnot.getTutkinto()).to.equal('Autoalan perustutkinto')
-      expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+      expect(opinnot.getOppilaitos()).to.equal('Stadin ammatti- ja aikuisopisto')
     })
   })
 

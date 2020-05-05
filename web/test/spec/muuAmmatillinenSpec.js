@@ -15,7 +15,7 @@ describe('Muu ammatillinen koulutus', function() {
           'Koulutusmoduuli Tunniste KISI\n' +
           'Nimi Kiinteistösihteerin koulutus ja tutkinto (KISI)\n' +
           'Kuvaus Koulutus antaa opiskelijalle valmiudet hoitaa isännöinti- ja kiinteistöpalvelualan yritysten sihteeri- ja asiakaspalvelutehtäviä.\n' +
-          'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
+          'Oppilaitos / toimipiste Stadin ammatti- ja aikuisopisto, Lehtikuusentien toimipaikka\n' +
           'Suorituskieli suomi\n' +
           'Suoritus kesken'
         )
@@ -51,7 +51,7 @@ describe('Muu ammatillinen koulutus', function() {
           expect(opinnot.getKoulutusModuuli().nimi).to.equal('Varaston täyttäminen')
           expect(opinnot.getKoulutusModuuli().koodi).to.equal('vrs-t-2019-k')
           expect(opinnot.getKoulutusModuuli().kuvaus).to.equal('Opiskelija osaa tehdä tilauksen vakiotoimittajilta sekä menettelytavat palavien ja vaarallisten aineiden varastoinnissa')
-          expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+          expect(opinnot.getOppilaitos()).to.equal('Stadin ammatti- ja aikuisopisto')
         })
       })
 
@@ -66,12 +66,12 @@ describe('Muu ammatillinen koulutus', function() {
         it('Lisätty opiskeluoikeus näytetään', function() {
           expect(opinnot.opiskeluoikeudet.valitunVälilehdenAlaotsikot()[0]).to.match(/^Muun ammatillisen koulutuksen suoritus*/)
           expect(opinnot.getTutkinto()).to.equal('Lennonjohtaja')
-          expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+          expect(opinnot.getOppilaitos()).to.equal('Stadin ammatti- ja aikuisopisto')
         })
 
         it('Sallii kahden voimassaolevan opiskeluoikeuden lisäämisen samassa oppilaitoksessa', function(done) {
           opinnot.opiskeluoikeudet.lisääOpiskeluoikeus()
-            .then(addOppija.selectOppilaitos('Stadin ammattiopisto'))
+            .then(addOppija.selectOppilaitos('Stadin ammatti- ja aikuisopisto'))
             .then(addOppija.selectOpiskeluoikeudenTyyppi('Ammatillinen koulutus'))
             .then(addOppija.selectOppimäärä('Muun ammatillisen koulutuksen suoritus'))
             .then(addOppija.selectKoulutusmoduuli('Ammatilliseen tehtävään valmistava koulutus'))
@@ -235,7 +235,7 @@ describe('Muu ammatillinen koulutus', function() {
         expect(opinnot.getKoulutusModuuli().nimi).to.equal('Varaston täyttäminen')
         expect(opinnot.getKoulutusModuuli().koodi).to.equal('vrs-t-2019-k')
         expect(opinnot.getKoulutusModuuli().kuvaus).to.equal('Opiskelija osaa tehdä tilauksen vakiotoimittajilta sekä menettelytavat palavien ja vaarallisten aineiden varastoinnissa')
-        expect(opinnot.getOppilaitos()).to.equal('Stadin ammattiopisto')
+        expect(opinnot.getOppilaitos()).to.equal('Stadin ammatti- ja aikuisopisto')
       })
 
       describe('Muiden ammatillisen päätason suoritusten lisäyspainikkeet', function() {

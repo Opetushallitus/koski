@@ -41,6 +41,8 @@ class PalveluvaylaSpec extends FreeSpec with LocalJettyHttpSpecification with Op
             <oppilaitos>
               <nimi>
                 <fi>Helsingin medialukio</fi>
+                <sv>Helsingin medialukio</sv>
+                <en>Helsingin medialukio</en>
               </nimi>
               <opiskeluoikeudet>
                 <opiskeluoikeus>
@@ -66,7 +68,9 @@ class PalveluvaylaSpec extends FreeSpec with LocalJettyHttpSpecification with Op
           <oppilaitokset>
             <oppilaitos>
               <nimi>
-                <fi>Stadin ammattiopisto</fi>
+                <fi>Stadin ammatti- ja aikuisopisto</fi>
+                <sv>Stadin ammatti- ja aikuisopisto</sv>
+                <en>Stadin ammatti- ja aikuisopisto</en>
               </nimi>
               <opiskeluoikeudet>
                 <opiskeluoikeus>

@@ -1,8 +1,9 @@
 package fi.oph.koski.raportointikanta
 
 import fi.oph.koski.log.Logging
-import fi.oph.koski.organisaatio.{OrganisaatioPalveluOrganisaatio, OrganisaatioRepository}
-import fi.oph.koski.schema.LocalizedString
+import fi.oph.koski.organisaatio.{OrganisaatioHierarkia, OrganisaatioPalveluOrganisaatio, OrganisaatioRepository}
+import fi.oph.koski.schema.LocalizedString.unlocalized
+import fi.oph.koski.schema.{LocalizedString, OrganisaatioWithOid}
 
 object OrganisaatioLoader extends Logging {
   private val BatchSize = 1000
@@ -10,7 +11,7 @@ object OrganisaatioLoader extends Logging {
 
   def loadOrganisaatiot(organisaatioRepository: OrganisaatioRepository, db: RaportointiDatabase): Int = {
     logger.info("Ladataan organisaatioita...")
-    val organisaatiot = organisaatioRepository.findAllRaw
+    val organisaatiot = organisaatioRepository.findAllFlattened
     logger.info(s"Löytyi ${organisaatiot.size} organisaatioita")
     db.setStatusLoadStarted(name)
     db.deleteOrganisaatiot
@@ -30,18 +31,18 @@ object OrganisaatioLoader extends Logging {
     count
   }
 
-  private def buildROrganisaatioRow(org: OrganisaatioPalveluOrganisaatio): Tuple2[ROrganisaatioRow, Seq[ROrganisaatioKieliRow]] = {
+  private def buildROrganisaatioRow(org: OrganisaatioHierarkia): Tuple2[ROrganisaatioRow, Seq[ROrganisaatioKieliRow]] = {
     val oid = org.oid
     val organisaatioRow = ROrganisaatioRow(
       organisaatioOid = oid,
-      nimi = LocalizedString.sanitizeRequired(org.nimi, org.oid).get("fi"),
+      nimi = org.nimi.get("fi"),
       organisaatiotyypit = org.organisaatiotyypit.sorted.mkString(","),
       oppilaitostyyppi = org.oppilaitostyyppi.map(_.split('#').head.split('_').last),
-      oppilaitosnumero = org.oppilaitosKoodi,
-      kotipaikka = org.kotipaikkaUri.map(_.stripPrefix("kunta_")),
-      yTunnus = org.ytunnus
+      oppilaitosnumero = org.oppilaitosnumero.map(_.koodiarvo),
+      kotipaikka = org.kotipaikka.map(_.koodiarvo),
+      yTunnus = org.yTunnus
     )
-    val organisaatioKieliRows = org.kieletUris.map(ROrganisaatioKieliRow(oid, _))
+    val organisaatioKieliRows = org.kielikoodit.map(ROrganisaatioKieliRow(oid, _))
     (organisaatioRow, organisaatioKieliRows)
   }
 }

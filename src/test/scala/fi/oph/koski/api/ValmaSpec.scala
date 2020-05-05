@@ -8,8 +8,8 @@ class ValmaSpec extends FreeSpec with Matchers with TodistusTestMethods with Opi
     "Päättötodistus" in {
       todistus(MockOppijat.valma.oid, "valma") should equal(
         """Ammatilliseen peruskoulutukseen valmentava koulutus
-          |HELSINGIN KAUPUNKI
-          |Stadin ammattiopisto
+          |Helsingin kaupunki
+          |Stadin ammatti- ja aikuisopisto
           |Amikseenvalmistautuja, Anneli 130404-054C
           |
           |Pakolliset koulutuksen osat 19 osp
@@ -27,7 +27,7 @@ class ValmaSpec extends FreeSpec with Matchers with TodistusTestMethods with Opi
           |Äidinkieli, Suomen kieli ja kirjallisuus 3 Kiitettävä 3
           |Opiskelijan suorittamien koulutuksen osien laajuus osaamispisteinä 77
           |Lisätietoja:
-          |1)Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta (3.10.2015, 39/011/2014), Stadin ammattiopisto""".stripMargin)
+          |1)Tutkinnon osa on tunnustettu Kone- ja metallialan perustutkinnosta (3.10.2015, 39/011/2014), Stadin ammatti- ja aikuisopisto""".stripMargin)
     }
   }
 }

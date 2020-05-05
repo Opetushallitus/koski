@@ -11,10 +11,10 @@ import fi.oph.koski.util.DateOrdering
 
 import scala.concurrent.duration._
 
-class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(implicit cacheInvalidator: CacheManager) extends JsonOrganisaatioRepository(koodisto) {
-  private val hierarkiaCache = KeyValueCache[String, List[OrganisaatioHierarkia]](
-    RefreshingCache("OrganisaatioRepository.hierarkia", 6.hour, 15000),
-    fetch(_).organisaatiot.map(convertOrganisaatio)
+class RemoteOrganisaatioRepository(http: Http, val koodisto: KoodistoViitePalvelu)(implicit cacheInvalidator: CacheManager) extends OrganisaatioRepository {
+  private val fullHierarchyCache = SingleValueCache[List[OrganisaatioHierarkia]](
+    RefreshingCache(name = "OrganisaatioRepository.fullHierarkia", duration = 6.hours, maxSize = 2), // maxSize needs to be minimum 2 for the refreshing to work
+    () => uncachedFindAllHierarkiatRaw.map(convertOrganisaatio)
   )
 
   private val nimetCache = KeyValueCache[String, List[OrganisaationNimihakuTulos]](
@@ -32,40 +32,14 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(i
     }
   )
 
-  private val varhaiskasvatusHierarkiatCache = SingleValueCache[List[OrganisaatioHierarkia]](
-    RefreshingCache("OrganisaatioRepository.varhaiskasvatusHierarkiat", 6.hour, 3),
-    uncachedVarhaiskasvatusHierarkiat _
-  )
-
-  private val varhaiskasvatusToimipisteet = SingleValueCache[List[OrganisaatioPalveluOrganisaatio]](
-    RefreshingCache("OrganisaatioRepository.varhaiskasvatusToimipisteet", 6.hour, 3),
-    uncachedFindAllVarhaiskasvatusToimipisteet _
-  )
-
-  def getOrganisaatioHierarkiaIncludingParents(oid: String): List[OrganisaatioHierarkia] = hierarkiaCache(oid)
-
   def findByOppilaitosnumero(numero: String): Option[Oppilaitos] = oppilaitosnumeroCache(numero)
 
   override def findHierarkia(query: String) = {
     fetchSearchHierarchy(query).organisaatiot.map(convertOrganisaatio)
   }
 
-  def findVarhaiskasvatusHierarkiat: List[OrganisaatioHierarkia] =
-    varhaiskasvatusHierarkiatCache.apply
-
-  def findAllVarhaiskasvatusToimipisteet: List[OrganisaatioPalveluOrganisaatio] =
-    varhaiskasvatusToimipisteet.apply
-
-  val varhaiskasvatuksenToimipaikka = "Varhaiskasvatuksen toimipaikka"
-  private def uncachedFindAllVarhaiskasvatusToimipisteet: List[OrganisaatioPalveluOrganisaatio] = {
-    runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/hae?aktiiviset=true&suunnitellut=true&lakkautetut=false&organisaatiotyyppi=$varhaiskasvatuksenToimipaikka")(Http.parseJson[OrganisaatioHakuTulos])).organisaatiot
-  }
-
   private def search(searchTerm: String): List[OrganisaatioWithOid] = fetchSearch(searchTerm).organisaatiot.map(convertOrganisaatio).map(_.toOrganisaatio)
 
-  def fetch(oid: String): OrganisaatioHakuTulos = {
-    runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&lakkautetut=true&oid=${oid}")(Http.parseJson[OrganisaatioHakuTulos]))
-  }
   private def fetchSearch(searchTerm: String): OrganisaatioHakuTulos = {
     // Only for oppilaitosnumero search
     runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/hae?aktiiviset=true&lakkautetut=true&searchStr=${searchTerm}")(Http.parseJson[OrganisaatioHakuTulos]))
@@ -93,7 +67,7 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(i
     })
   }
 
-  private def fetchV3(oid: String): Option[OrganisaatioPalveluOrganisaatioV3] =
+  def fetchV3(oid: String): Option[OrganisaatioPalveluOrganisaatioV3] =
     runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v3/${oid}")(Http.parseJsonOptional[OrganisaatioPalveluOrganisaatioV3]))
 
   private def extractSähköpostiVirheidenRaportointiin(org: OrganisaatioPalveluOrganisaatioV3): Option[SähköpostiVirheidenRaportointiin] = {
@@ -114,12 +88,11 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(i
     }
   }
 
-  override def findAllRaw: List[OrganisaatioPalveluOrganisaatio] = {
-    runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/hae?aktiiviset=true&lakkautetut=true&suunnitellut=true&searchStr=")(Http.parseJson[OrganisaatioHakuTulos])).organisaatiot
-  }
+  override def findAllHierarkiat: List[OrganisaatioHierarkia] = fullHierarchyCache.apply
 
-  override def findAllHierarkiatRaw: List[OrganisaatioPalveluOrganisaatio] = {
-    runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&lakkautetut=true&suunnitellut=true&searchStr=")(Http.parseJson[OrganisaatioHakuTulos])).organisaatiot
+  private def uncachedFindAllHierarkiatRaw: List[OrganisaatioPalveluOrganisaatio] = {
+    logger.info("Fetching organisaatiohierarkia")
+    runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v4/${Opetushallitus.organisaatioOid}/jalkelaiset")(Http.parseJson[OrganisaatioHakuTulos])).organisaatiot
   }
 }
 
