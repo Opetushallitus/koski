@@ -611,7 +611,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
           // OPS- tai reformi -suoritustapa => vaaditaan ryhmittely
           suoritus.tutkinnonOsanRyhmä
             .map(_ => HttpStatus.ok)
-            .getOrElse(KoskiErrorCategory.badRequest.validation.rakenne.tutkinnonOsanRyhmäPuuttuu("Tutkinnonosalta " + suoritus.koulutusmoduuli.tunniste + " puuttuu tutkinnonosan ryhmä, joka on pakollinen ammatillisen perustutkinnon tutkinnonosille, kun suoritustapa on opetussuunnitelman mukainen." ))
+            .getOrElse(KoskiErrorCategory.badRequest.validation.rakenne.tutkinnonOsanRyhmäPuuttuu("Tutkinnonosalta " + suoritus.koulutusmoduuli.tunniste + " puuttuu tutkinnonosan ryhmä, joka on pakollinen ammatillisen perustutkinnon tutkinnonosille." ))
         } else {
           // Näyttö-suoritustapa => ei vaadita ryhmittelyä
           HttpStatus.ok
@@ -727,9 +727,9 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
           .map(_.koulutusmoduuli.laajuus.map(_.arvo).getOrElse(0.0))
           .sum
         HttpStatus.validate(
-          yhteislaajuus.round == yhteistenOsienLaajuudenSumma
+          yhteislaajuus.round >= yhteistenOsienLaajuudenSumma
         )(KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma(
-          s"Tutkinnon yhteisen osuuden suoritusten yhteenlasketun laajuuden tulee olla ${yhteistenOsienLaajuudenSumma}"))
+          s"Suorituksen ${suorituksenTunniste(suoritus)} yhteisen osuuden suoritusten yhteenlasketun laajuuden tulee olla vähintään ${yhteistenOsienLaajuudenSumma}"))
       }
       case _ => HttpStatus.ok
     }
@@ -742,12 +742,14 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
           yht.osasuoritukset.getOrElse(List()).isEmpty
         })
 
-        val osasuorituksettomienTunnisteet = osasuorituksettomatYhteisetSuoritukset.map(_.koulutusmoduuli.tunniste.koodiarvo)
+        val osasuorituksettomienTunnisteet = osasuorituksettomatYhteisetSuoritukset.map(osa => {
+          s"'${osa.koulutusmoduuli.tunniste.getNimi.map(_.get("Finnish")).getOrElse(osa.koulutusmoduuli.tunniste.koodiarvo)}'"
+        })
 
         HttpStatus.validate(
           osasuorituksettomatYhteisetSuoritukset.isEmpty
         )(KoskiErrorCategory.badRequest.validation.rakenne.yhteiselläOsuudellaEiOsasuorituksia(
-          s"Tutkinnon yhteisillä osuuksilla ${osasuorituksettomienTunnisteet.mkString(", ")} ei ole osasuorituksia."))
+          s"Arvioidulla yhteisellä tutkinnon osalla ${osasuorituksettomienTunnisteet.mkString(", ")} ei ole osa-alueita"))
       }
       case _ => HttpStatus.ok
     }
@@ -762,12 +764,14 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
             yläsuorituksenLaajuus != alasuoritustenLaajuus
           })
 
-          val yhteistenKooditJoillaVääräOsasuoritustenYhteisLaajuus = mismatchingLaajuudet.map(_.koulutusmoduuli.tunniste.koodiarvo)
+          val yhteistenKooditJoillaVääräOsasuoritustenYhteisLaajuus = mismatchingLaajuudet.map(osa => {
+            s"'${osa.koulutusmoduuli.tunniste.getNimi.map(_.get("Finnish")).getOrElse(osa.koulutusmoduuli.tunniste.koodiarvo)}'"
+          })
 
           HttpStatus.validate(
             mismatchingLaajuudet.isEmpty
           )(KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma(
-            s"Tutkinnon yhteisillä osuuksilla ${yhteistenKooditJoillaVääräOsasuoritustenYhteisLaajuus.mkString(", ")} on eri laajuus kuin osuuksien osasuorituksilla yhteenlaskettuna."))
+            s"Yhteisillä tutkinnon osilla ${yhteistenKooditJoillaVääräOsasuoritustenYhteisLaajuus.mkString(", ")} on eri laajuus kun tutkinnon osien osa-alueiden yhteenlaskettu summa"))
       }
       case _ => HttpStatus.ok
     }
