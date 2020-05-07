@@ -376,7 +376,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         :: validatePäiväkodinEsiopetus(suoritus, opiskeluoikeus)
         :: validateTutkinnonosanRyhmä(suoritus)
         :: validateOsaamisenHankkimistavat(suoritus)
-        :: validateYhteisetTutkinnonOsat(suoritus)
+        :: validateYhteisetTutkinnonOsat(suoritus, opiskeluoikeus)
         :: HttpStatus.validate(!suoritus.isInstanceOf[PäätasonSuoritus])(validateDuplicates(suoritus.osasuoritukset.toList.flatten))
         :: suoritus.osasuoritusLista.map(validateSuoritus(_, opiskeluoikeus, suoritus :: parent))
     )
@@ -708,7 +708,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     }
   }
 
-  private def validateYhteisetTutkinnonOsat(suoritus: Suoritus): HttpStatus = {
+  private def validateYhteisetTutkinnonOsat(suoritus: Suoritus, opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
     def validateEiSamojaKoodeja(suoritus: Suoritus): HttpStatus = suoritus match {
       case a: AmmatillisenTutkinnonSuoritus if a.valmis => {
         val yhteistenOsasuoritustenKoodit = a.osasuoritusLista.filter(o => o.arvioitu && AmmatillisenTutkinnonOsa.yhteisetTutkinnonOsat.contains(o.koulutusmoduuli.tunniste)).map(_.koulutusmoduuli.tunniste.koodiarvo)
@@ -797,11 +797,25 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       case _ => HttpStatus.ok
     }
 
-    HttpStatus.fold(List(validateOnOsaAlueita(suoritus),
-      validateYhteistenOsienLaajuus(suoritus),
-      validateYhteislaajuus(suoritus),
-      validateEiSamojaKoodeja(suoritus),
-      validateYhteistenOsienKoodit(suoritus)))
+    def yhteistenValidaatiot(suoritus: Suoritus): HttpStatus = {
+      HttpStatus.fold(List(validateOnOsaAlueita(suoritus),
+        validateYhteistenOsienLaajuus(suoritus),
+        validateYhteislaajuus(suoritus),
+        validateEiSamojaKoodeja(suoritus),
+        validateYhteistenOsienKoodit(suoritus)))
+    }
+
+    // Ei validoida, jos kyseessä kuoriopiskeluoikeus eli linkitetty opiskeluoikeus
+    if (opiskeluoikeus.oid.isDefined && opiskeluoikeus.oppilaitos.isDefined) {
+      val oids = koskiOpiskeluoikeudet.getOppijaOidsForOpiskeluoikeus(opiskeluoikeus.oid.get)(KoskiSession.systemUser).right.getOrElse(List())
+      if (linkitysTehty(opiskeluoikeus.oid.get, opiskeluoikeus.oppilaitos.get.oid, oids)) {
+        HttpStatus.ok
+      } else {
+        yhteistenValidaatiot(suoritus)
+      }
+    } else {
+      yhteistenValidaatiot(suoritus)
+    }
   }
 
   private def validateOsaamisenHankkimistavat(suoritus: Suoritus): HttpStatus = suoritus match {
