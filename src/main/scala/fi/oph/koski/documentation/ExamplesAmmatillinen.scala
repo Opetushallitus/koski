@@ -369,7 +369,10 @@ object AmmatillinenOldExamples {
         toimipiste = Some(stadinToimipiste),
         arviointi = Some(List(arviointiKiitettävä.copy(kuvaus=Some("Erinomaista kehitystä")))),
         vahvistus = vahvistusValinnaisellaTittelillä(date(2014, 11, 8), stadinAmmattiopisto),
-        tutkinnonOsanRyhmä = yhteisetTutkinnonOsat
+        tutkinnonOsanRyhmä = yhteisetTutkinnonOsat,
+        osasuoritukset = Some(List(
+          YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(Koodistokoodiviite("AI", "ammatillisenoppiaineet"), pakollinen = true, kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"), laajuus = Some(LaajuusOsaamispisteissä(11))), arviointi = Some(List(arviointiKiitettävä))),
+        ))
       )
     ))
   ))
@@ -434,7 +437,10 @@ object AmmatillinenOldExamples {
                 )
               ),
               vahvistus = vahvistusValinnaisellaTittelillä(date(2014, 11, 8), stadinAmmattiopisto),
-              tutkinnonOsanRyhmä = yhteisetTutkinnonOsat
+              tutkinnonOsanRyhmä = yhteisetTutkinnonOsat,
+              osasuoritukset = Some(List(
+                YhteisenTutkinnonOsanOsaAlueenSuoritus(koulutusmoduuli = AmmatillisenTutkinnonÄidinkieli(Koodistokoodiviite("AI", "ammatillisenoppiaineet"), pakollinen = true, kieli = Koodistokoodiviite("AI1", "oppiaineaidinkielijakirjallisuus"), laajuus = Some(LaajuusOsaamispisteissä(11))), arviointi = Some(List(arviointiKiitettävä))),
+              ))
             )
           ))
         )),

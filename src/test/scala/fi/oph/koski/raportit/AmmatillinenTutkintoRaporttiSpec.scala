@@ -76,7 +76,7 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
           rivi.valmiitYhteistenTutkinnonOsatLkm should equal(4)
         }
         "Pakollisten yhteisten tutkinnon osien osa-alueiden lukumäärä" in {
-          rivi.pakollisetYhteistenTutkinnonOsienOsaalueidenLkm should equal(7)
+          rivi.pakollisetYhteistenTutkinnonOsienOsaalueidenLkm should equal(8)
         }
         "Valinnaisten yhteisten tutkinnon osien osa-alueiden lukumäärä" in {
           rivi.valinnaistenYhteistenTutkinnonOsienOsaalueidenLKm should equal(1)
@@ -97,10 +97,10 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
           rivi.suoritettujenYhteistenTutkinnonOsienYhteislaajuus should equal(35.0)
         }
         "Suoritettujen yhteisten tutkinnon osien osa-alueiden yhteislaajuus" in {
-          rivi.suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal(22)
+          rivi.suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal(35)
         }
         "Pakollisten yhteisten tutkinnon osioen osa-alueiden yhteislaajuus" in {
-          rivi.pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal(19)
+          rivi.pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus should equal(32)
         }
         "Valinnaisten yhteisten tutkinnon osien osa-alueiden yhteislaajuus" in {
           rivi.valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus should equal(3)

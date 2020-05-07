@@ -109,6 +109,8 @@ object KoskiErrorCategory {
         val luokkaAstePuuttuu = subcategory("luokkaAstePuuttuu", "Luokka-aste vaaditaan kun viimeisin arviointi on muuta kuin 'O'")
         val tunnisteenKoodiarvoaEiLöydyRakenteesta = subcategory("eriTutkintokoodit", "Suorituksen tunnisteen koodiarvo ei löydy tutkinnon rakenteesta")
         val deprekoituOsaamisenHankkimistapa = subcategory("deprekoituOsaamisenHankkimistapa", "Osaamisenhankkimistapaa oppisopimus ei voi tallentaa ilman y-tunnusta")
+        val yhteiselläOsuudellaEiOsasuorituksia = subcategory("yhteiselläOsuudellaEiOsasuorituksia", "Tutkinnon yhteisellä osalla tulee olla osasuorituksia")
+        val vääränKoodinYhteinenOsasuoritus = subcategory("vääränKoodinYhteinenOsasuoritus", "Tutkinnon yhteisellä osalla on epäsopivan suoritustyypin alaisen suorituksen koodi")
       }
       val rakenne = new Rakenne
 

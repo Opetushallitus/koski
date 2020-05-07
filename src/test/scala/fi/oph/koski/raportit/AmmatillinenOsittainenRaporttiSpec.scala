@@ -80,7 +80,7 @@ class AmmatillinenOsittainenRaporttiSpec extends FreeSpec with Matchers with Rap
     rahoituksenPiirissäTutkinnonOsanOsaalueitaValmiissaTutkinnonOsanOsaalueissaLkm = 0,
     tunnustettujaYhteistenTutkinnonOsienValmiistaOsistaLkm = 1,
     rahoituksenPiirissäTunnustetuistaYhteisenTutkinnonOsistaLkm = 1,
-    suoritettujenYhteistenTutkinnonOsienYhteislaajuus = 9.0,
+    suoritettujenYhteistenTutkinnonOsienYhteislaajuus = 23.0,
     suoritettujenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus = 22.0,
     pakollistenYhteistenTutkinnonOsienOsaalueidenYhteislaajuus = 20.0,
     valinnaistenYhteistenTutkinnonOsienOsaalueidenYhteisLaajuus = 3.0,

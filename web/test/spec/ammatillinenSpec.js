@@ -1896,9 +1896,6 @@ describe('Ammatillinen koulutus', function() {
             'Vieraat kielet, englanti 2 3\n' +
             'Pakollinen kyllä\n' +
             'Arviointipäivä 20.10.2014\n' +
-            'Viestintä ja vuorovaikutus toisella kotimaisella kielellä, englanti 2 3\n' +
-            'Pakollinen kyllä\n' +
-            'Arviointipäivä 20.10.2014\n' +
             'Matemaattis-luonnontieteellinen osaaminen 9 3\n' +
             'Pakollinen kyllä\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
@@ -1930,10 +1927,22 @@ describe('Ammatillinen koulutus', function() {
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
             'Arviointipäivä 20.10.2014\n' +
+            'Sulje kaikki\n' +
+            'Osa-alue Laajuus (osp) Arvosana\n' +
+            'Yhteiskuntatieto 8 3\n' +
+            'Kuvaus Yhteiskuntaopin opinnot\n' +
+            'Pakollinen kyllä\n' +
+            'Arviointipäivä 20.10.2014\n' +
             'Sosiaalinen ja kulttuurinen osaaminen 7 3\n' +
             'Pakollinen kyllä\n' +
             'Oppilaitos / toimipiste Stadin ammattiopisto, Lehtikuusentien toimipaikka\n' +
             'Vahvistus 31.5.2016 Reijo Reksi , rehtori\n' +
+            'Arviointipäivä 20.10.2014\n' +
+            'Sulje kaikki\n' +
+            'Osa-alue Laajuus (osp) Arvosana\n' +
+            'Sosiaalitaito 7 3\n' +
+            'Kuvaus Vuorotaitovaikutuksen kurssi\n' +
+            'Pakollinen kyllä\n' +
             'Arviointipäivä 20.10.2014\n' +
             'Yhteensä 35 / 35 osp\n' +
             'Vapaasti valittavat tutkinnon osat Laajuus (osp) Arvosana\n' +
