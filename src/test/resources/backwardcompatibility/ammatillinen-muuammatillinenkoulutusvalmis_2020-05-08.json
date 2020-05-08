@@ -1,0 +1,550 @@
+{
+  "henkilö" : {
+    "hetu" : "280618-402H",
+    "etunimet" : "Aarne",
+    "kutsumanimi" : "Aarne",
+    "sukunimi" : "Ammattilainen"
+  },
+  "opiskeluoikeudet" : [ {
+    "oppilaitos" : {
+      "oid" : "1.2.246.562.10.52251087186",
+      "oppilaitosnumero" : {
+        "koodiarvo" : "10105",
+        "koodistoUri" : "oppilaitosnumero"
+      },
+      "nimi" : {
+        "fi" : "Stadin ammattiopisto"
+      }
+    },
+    "arvioituPäättymispäivä" : "2018-05-31",
+    "ostettu" : false,
+    "tila" : {
+      "opiskeluoikeusjaksot" : [ {
+        "alku" : "2016-01-01",
+        "tila" : {
+          "koodiarvo" : "lasna",
+          "nimi" : {
+            "fi" : "Läsnä"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "opintojenrahoitus"
+        }
+      }, {
+        "alku" : "2018-05-31",
+        "tila" : {
+          "koodiarvo" : "valmistunut",
+          "nimi" : {
+            "fi" : "Valmistunut"
+          },
+          "koodistoUri" : "koskiopiskeluoikeudentila",
+          "koodistoVersio" : 1
+        },
+        "opintojenRahoitus" : {
+          "koodiarvo" : "1",
+          "koodistoUri" : "opintojenrahoitus"
+        }
+      } ]
+    },
+    "suoritukset" : [ {
+      "koulutusmoduuli" : {
+        "tunniste" : {
+          "koodiarvo" : "RTA",
+          "nimi" : {
+            "fi" : "Rakennusterveysasiantuntija-koulutus (RTA)"
+          }
+        },
+        "kuvaus" : {
+          "fi" : "Koulutus antaa valmiudet rakennusterveysasiantuntijana toimimiseen"
+        }
+      },
+      "toimipiste" : {
+        "oid" : "1.2.246.562.10.42456023292",
+        "nimi" : {
+          "fi" : "Stadin ammattiopisto, Lehtikuusentien toimipaikka"
+        }
+      },
+      "vahvistus" : {
+        "päivä" : "2018-05-31",
+        "paikkakunta" : {
+          "koodiarvo" : "091",
+          "nimi" : {
+            "fi" : "Helsinki"
+          },
+          "koodistoUri" : "kunta"
+        },
+        "myöntäjäOrganisaatio" : {
+          "oid" : "1.2.246.562.10.52251087186",
+          "oppilaitosnumero" : {
+            "koodiarvo" : "10105",
+            "koodistoUri" : "oppilaitosnumero"
+          },
+          "nimi" : {
+            "fi" : "Stadin ammattiopisto"
+          }
+        },
+        "myöntäjäHenkilöt" : [ {
+          "nimi" : "Reijo Reksi",
+          "titteli" : {
+            "fi" : "rehtori"
+          },
+          "organisaatio" : {
+            "oid" : "1.2.246.562.10.52251087186",
+            "oppilaitosnumero" : {
+              "koodiarvo" : "10105",
+              "koodistoUri" : "oppilaitosnumero"
+            },
+            "nimi" : {
+              "fi" : "Stadin ammattiopisto"
+            }
+          }
+        } ]
+      },
+      "suorituskieli" : {
+        "koodiarvo" : "FI",
+        "nimi" : {
+          "fi" : "suomi"
+        },
+        "koodistoUri" : "kieli"
+      },
+      "osasuoritukset" : [ {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "RTT",
+            "nimi" : {
+              "fi" : "Rakenne- ja tuotantotekniikka"
+            }
+          },
+          "kuvaus" : {
+            "fi" : "Rakennusfysiikka, fysikaaliset olosuhteet, kuntotutkimusmenetelmät, rakenne- ja tuotantotekniikka ja juridiikka"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Suoritettu",
+            "koodistoUri" : "arviointiasteikkomuuammatillinenkoulutus"
+          },
+          "päivä" : "2018-05-31",
+          "arvioitsijat" : [ {
+            "nimi" : "Aarne Arvioija"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "RF",
+              "nimi" : {
+                "fi" : "Rakennusfysiikka"
+              }
+            },
+            "laajuus" : {
+              "arvo" : 5.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Rakennusfysiikka ja fysikaaliset olosuhteet"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "Suoritettu",
+              "koodistoUri" : "arviointiasteikkomuuammatillinenkoulutus"
+            },
+            "päivä" : "2018-05-31",
+            "arvioitsijat" : [ {
+              "nimi" : "Aarne Arvioija"
+            } ],
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "muunammatillisenkoulutuksenosasuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "KT",
+              "nimi" : {
+                "fi" : "Kuntotutkimusmenetelmät"
+              }
+            },
+            "laajuus" : {
+              "arvo" : 4.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Kuntotutkimuksen menetelmät"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "Suoritettu",
+              "koodistoUri" : "arviointiasteikkomuuammatillinenkoulutus"
+            },
+            "päivä" : "2018-05-31",
+            "arvioitsijat" : [ {
+              "nimi" : "Aarne Arvioija"
+            } ],
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "muunammatillisenkoulutuksenosasuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "RT",
+              "nimi" : {
+                "fi" : "Rakenne- ja tuotantotekniikka"
+              }
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Rakennetekniikka"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "Suoritettu",
+              "koodistoUri" : "arviointiasteikkomuuammatillinenkoulutus"
+            },
+            "päivä" : "2018-05-31",
+            "arvioitsijat" : [ {
+              "nimi" : "Aarne Arvioija"
+            } ],
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "muunammatillisenkoulutuksenosasuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "JR",
+              "nimi" : {
+                "fi" : "Juridiikka"
+              }
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Rakennuksiin liittyvä juridiikka"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "Suoritettu",
+              "koodistoUri" : "arviointiasteikkomuuammatillinenkoulutus"
+            },
+            "päivä" : "2018-05-31",
+            "arvioitsijat" : [ {
+              "nimi" : "Aarne Arvioija"
+            } ],
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "muunammatillisenkoulutuksenosasuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "muunammatillisenkoulutuksenosasuoritus",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "IIT",
+            "nimi" : {
+              "fi" : "Ilmanvaihto ja ilmastointitekniikka"
+            }
+          },
+          "kuvaus" : {
+            "fi" : "Ilmanvaihdon ja ilmastoinnin tekniikka"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Suoritettu",
+            "koodistoUri" : "arviointiasteikkomuuammatillinenkoulutus"
+          },
+          "päivä" : "2018-05-31",
+          "arvioitsijat" : [ {
+            "nimi" : "Aarne Arvioija"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "IITT",
+              "nimi" : {
+                "fi" : "Teoria"
+              }
+            },
+            "laajuus" : {
+              "arvo" : 1.5,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Ilmanvaihdon ja ilmastointitekniikan teoria"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "Suoritettu",
+              "koodistoUri" : "arviointiasteikkomuuammatillinenkoulutus"
+            },
+            "päivä" : "2018-05-31",
+            "arvioitsijat" : [ {
+              "nimi" : "Aarne Arvioija"
+            } ],
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "muunammatillisenkoulutuksenosasuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "TM",
+              "nimi" : {
+                "fi" : "Tutkimusmenetelmät"
+              }
+            },
+            "laajuus" : {
+              "arvo" : 1.5,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Ilmanvaihdon ja ilmastointitekniikan tutkimusmenetelmät"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "Suoritettu",
+              "koodistoUri" : "arviointiasteikkomuuammatillinenkoulutus"
+            },
+            "päivä" : "2018-05-31",
+            "arvioitsijat" : [ {
+              "nimi" : "Aarne Arvioija"
+            } ],
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "muunammatillisenkoulutuksenosasuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "muunammatillisenkoulutuksenosasuoritus",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "SETTT",
+            "nimi" : {
+              "fi" : "Sisäympäristön epäpuhtaudet"
+            }
+          },
+          "kuvaus" : {
+            "fi" : "Sisäympäristön epäpuhtaudet, terveysvaikutukset, tutkiminen, torjunta"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Suoritettu",
+            "koodistoUri" : "arviointiasteikkomuuammatillinenkoulutus"
+          },
+          "päivä" : "2018-05-31",
+          "arvioitsijat" : [ {
+            "nimi" : "Aarne Arvioija"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "osasuoritukset" : [ {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "KS",
+              "nimi" : {
+                "fi" : "Sisäympäristön epäpuhtaudet"
+              }
+            },
+            "laajuus" : {
+              "arvo" : 3.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Kemiallinen sisäympäristö"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "Suoritettu",
+              "koodistoUri" : "arviointiasteikkomuuammatillinenkoulutus"
+            },
+            "päivä" : "2018-05-31",
+            "arvioitsijat" : [ {
+              "nimi" : "Aarne Arvioija"
+            } ],
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "muunammatillisenkoulutuksenosasuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "STM",
+              "nimi" : {
+                "fi" : "Sisäympäristön tutkimusmenetelmät"
+              }
+            },
+            "laajuus" : {
+              "arvo" : 1.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Kemiallinen sisäympäristö"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "Suoritettu",
+              "koodistoUri" : "arviointiasteikkomuuammatillinenkoulutus"
+            },
+            "päivä" : "2018-05-31",
+            "arvioitsijat" : [ {
+              "nimi" : "Aarne Arvioija"
+            } ],
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "muunammatillisenkoulutuksenosasuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        }, {
+          "koulutusmoduuli" : {
+            "tunniste" : {
+              "koodiarvo" : "TV",
+              "nimi" : {
+                "fi" : "Terveysvaikutukset"
+              }
+            },
+            "laajuus" : {
+              "arvo" : 2.0,
+              "yksikkö" : {
+                "koodiarvo" : "2",
+                "koodistoUri" : "opintojenlaajuusyksikko"
+              }
+            },
+            "kuvaus" : {
+              "fi" : "Vaikutukset terveydelle"
+            }
+          },
+          "arviointi" : [ {
+            "arvosana" : {
+              "koodiarvo" : "Suoritettu",
+              "koodistoUri" : "arviointiasteikkomuuammatillinenkoulutus"
+            },
+            "päivä" : "2018-05-31",
+            "arvioitsijat" : [ {
+              "nimi" : "Aarne Arvioija"
+            } ],
+            "hyväksytty" : true
+          } ],
+          "tyyppi" : {
+            "koodiarvo" : "muunammatillisenkoulutuksenosasuoritus",
+            "koodistoUri" : "suorituksentyyppi"
+          }
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "muunammatillisenkoulutuksenosasuoritus",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      }, {
+        "koulutusmoduuli" : {
+          "tunniste" : {
+            "koodiarvo" : "OT",
+            "nimi" : {
+              "fi" : "Opinnäyte"
+            }
+          },
+          "laajuus" : {
+            "arvo" : 15.0,
+            "yksikkö" : {
+              "koodiarvo" : "2",
+              "koodistoUri" : "opintojenlaajuusyksikko"
+            }
+          },
+          "kuvaus" : {
+            "fi" : "Opinnäytetyö"
+          }
+        },
+        "arviointi" : [ {
+          "arvosana" : {
+            "koodiarvo" : "Suoritettu",
+            "koodistoUri" : "arviointiasteikkomuuammatillinenkoulutus"
+          },
+          "päivä" : "2018-05-31",
+          "arvioitsijat" : [ {
+            "nimi" : "Aarne Arvioija"
+          } ],
+          "hyväksytty" : true
+        } ],
+        "tyyppi" : {
+          "koodiarvo" : "muunammatillisenkoulutuksenosasuoritus",
+          "koodistoUri" : "suorituksentyyppi"
+        }
+      } ],
+      "tyyppi" : {
+        "koodiarvo" : "muuammatillinenkoulutus",
+        "koodistoUri" : "suorituksentyyppi"
+      }
+    } ],
+    "tyyppi" : {
+      "koodiarvo" : "ammatillinenkoulutus",
+      "koodistoUri" : "opiskeluoikeudentyyppi"
+    },
+    "alkamispäivä" : "2016-01-01",
+    "päättymispäivä" : "2018-05-31"
+  } ]
+}

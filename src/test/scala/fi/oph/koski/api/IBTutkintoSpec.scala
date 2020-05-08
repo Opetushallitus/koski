@@ -135,7 +135,7 @@ class IBTutkintoSpec extends FreeSpec with Matchers with OpintosuoritusoteTestMe
       todistus(MockOppijat.ibPredicted.oid, "ibtutkinto") should equal(
         """International Baccalaureate
           |Predicted Grades
-          |HELSINGIN KAUPUNKI
+          |Helsingin kaupunki
           |Ressun lukio
           |IB-predicted, Petteri 071096-317K
           |
@@ -153,7 +153,7 @@ class IBTutkintoSpec extends FreeSpec with Matchers with OpintosuoritusoteTestMe
       todistus(MockOppijat.ibFinal.oid, "ibtutkinto") should equal(
         """International Baccalaureate
           |Final Grades
-          |HELSINGIN KAUPUNKI
+          |Helsingin kaupunki
           |Ressun lukio
           |IB-final, Iina 040701-432D
           |

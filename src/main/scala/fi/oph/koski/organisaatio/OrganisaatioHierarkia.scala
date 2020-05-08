@@ -4,7 +4,7 @@ import fi.oph.koski.schema._
 import OrganisaatioHierarkia._
 import Organisaatiotyyppi._
 
-case class OrganisaatioHierarkia(oid: String, oppilaitosnumero: Option[Koodistokoodiviite], nimi: LocalizedString, yTunnus: Option[String], kotipaikka: Option[Koodistokoodiviite], organisaatiotyypit: List[String], oppilaitostyyppi: Option[String], aktiivinen: Boolean, children: List[OrganisaatioHierarkia]) {
+case class OrganisaatioHierarkia(oid: String, oppilaitosnumero: Option[Koodistokoodiviite], nimi: LocalizedString, yTunnus: Option[String], kotipaikka: Option[Koodistokoodiviite], organisaatiotyypit: List[String], oppilaitostyyppi: Option[String], aktiivinen: Boolean, kielikoodit: List[String], children: List[OrganisaatioHierarkia]) {
   def find(oid: String): Option[OrganisaatioHierarkia] = {
     if (oid == this.oid) {
       Some(this)
@@ -58,7 +58,8 @@ object OrganisaatioHierarkia {
     kotipaikka = None,
     organisaatiotyypit = organisaatiotyypit,
     oppilaitostyyppi = None,
-    aktiivinen = true
+    aktiivinen = true,
+    kielikoodit = Nil
   )
 
   def flatten(orgs: List[OrganisaatioHierarkia]): List[OrganisaatioHierarkia] = {

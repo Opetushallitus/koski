@@ -24,10 +24,7 @@ trait OrganisaatioRepository extends Logging {
   def getOrganisaatioHierarkiaIncludingParents(oid: String): List[OrganisaatioHierarkia] = findWithOid(oid).toList
   def getOrganisaatio(oid: String): Option[OrganisaatioWithOid] = getOrganisaatioHierarkia(oid).map(_.toOrganisaatio)
   def getChildOids(oid: String): Option[Set[String]] = getOrganisaatioHierarkia(oid).map { hierarkia =>
-    def flatten(orgs: List[OrganisaatioHierarkia]): List[OrganisaatioHierarkia] = {
-      orgs.flatMap { org => org :: flatten(org.children) }
-    }
-    flatten(List(hierarkia)).map(_.oid).toSet
+    OrganisaatioHierarkia.flatten(List(hierarkia)).map(_.oid).toSet
   }
   def getOrganisaationNimiHetkellä(oid: String, localDate: LocalDate): Option[LocalizedString]
   def findByOppilaitosnumero(numero: String): Option[Oppilaitos]
@@ -65,7 +62,7 @@ trait OrganisaatioRepository extends Logging {
 
   def findSähköpostiVirheidenRaportointiin(oid: String): Option[SähköpostiVirheidenRaportointiin]
 
-  def findAllRaw: List[OrganisaatioPalveluOrganisaatio]
+  def findAllFlattened: List[OrganisaatioHierarkia] = OrganisaatioHierarkia.flatten(findAllHierarkiat)
   def findAllHierarkiat: List[OrganisaatioHierarkia]
 
   def findAllVarhaiskasvatusToimipisteet: List[OrganisaatioWithOid] = {
@@ -77,6 +74,30 @@ trait OrganisaatioRepository extends Logging {
   def findVarhaiskasvatusHierarkiat: List[OrganisaatioHierarkia] = {
     filter(_.organisaatiotyypit.contains(Organisaatiotyyppi.VARHAISKASVATUKSEN_TOIMIPAIKKA))
   }
+
+  def convertOrganisaatio(org: OrganisaatioPalveluOrganisaatio): OrganisaatioHierarkia = {
+    val oppilaitosnumero = org.oppilaitosKoodi.flatMap(oppilaitosnumero => koodisto.validate("oppilaitosnumero", oppilaitosnumero))
+    val kotipaikka = org.kotipaikkaUri.map(str => str.split("_")).flatMap {
+      case Array(koodistoUri, koodi) => koodisto.validate(koodistoUri, koodi)
+      case _ => None
+    }
+    val oppilaitostyyppi: Option[String] = org.oppilaitostyyppi.map(_.replace("oppilaitostyyppi_", "").replaceAll("#.*", ""))
+    val organisaatiotyypit = org.organisaatiotyypit.map(orgType => Organisaatiotyyppi.convertFromNew(orgType))
+    OrganisaatioHierarkia(
+      oid = org.oid,
+      oppilaitosnumero = oppilaitosnumero,
+      nimi = LocalizedString.sanitizeRequired(org.nimi, org.oid),
+      yTunnus = org.ytunnus,
+      kotipaikka = kotipaikka,
+      organisaatiotyypit = organisaatiotyypit,
+      oppilaitostyyppi = oppilaitostyyppi,
+      aktiivinen = org.lakkautusPvm.forall(_ > currentTimeMillis),
+      kielikoodit = org.kieletUris,
+      children = org.children.map(convertOrganisaatio)
+    )
+  }
+
+  def koodisto: KoodistoViitePalvelu
 }
 
 object OrganisaatioRepository {
@@ -112,15 +133,3 @@ object Organisaatiotyyppi {
     fromNew.getOrElse(newOrgType, newOrgType)
 }
 
-abstract class JsonOrganisaatioRepository(koodisto: KoodistoViitePalvelu) extends OrganisaatioRepository {
-  protected def convertOrganisaatio(org: OrganisaatioPalveluOrganisaatio): OrganisaatioHierarkia = {
-    val oppilaitosnumero = org.oppilaitosKoodi.flatMap(oppilaitosnumero => koodisto.validate("oppilaitosnumero", oppilaitosnumero))
-    val kotipaikka = org.kotipaikkaUri.map(str => str.split("_")).flatMap {
-      case Array(koodistoUri, koodi) => koodisto.validate(koodistoUri, koodi)
-      case _ => None
-    }
-    val oppilaitostyyppi: Option[String] = org.oppilaitostyyppi.map(_.replace("oppilaitostyyppi_", "").replaceAll("#.*", ""))
-    val organisaatiotyypit = org.organisaatiotyypit.map(orgType => Organisaatiotyyppi.convertFromNew(orgType))
-    OrganisaatioHierarkia(org.oid, oppilaitosnumero, LocalizedString.sanitizeRequired(org.nimi, org.oid), org.ytunnus, kotipaikka, organisaatiotyypit, oppilaitostyyppi, org.lakkautusPvm.forall(_ > currentTimeMillis), org.children.map(convertOrganisaatio))
-  }
-}

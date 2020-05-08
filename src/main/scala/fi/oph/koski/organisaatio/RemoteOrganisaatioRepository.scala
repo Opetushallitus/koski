@@ -11,7 +11,7 @@ import fi.oph.koski.util.DateOrdering
 
 import scala.concurrent.duration._
 
-class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(implicit cacheInvalidator: CacheManager) extends JsonOrganisaatioRepository(koodisto) {
+class RemoteOrganisaatioRepository(http: Http, val koodisto: KoodistoViitePalvelu)(implicit cacheInvalidator: CacheManager) extends OrganisaatioRepository {
   private val fullHierarchyCache = SingleValueCache[List[OrganisaatioHierarkia]](
     RefreshingCache("OrganisaatioRepository.fullHierarkia", 6.hour, 3),
     () => uncachedFindAllHierarkiatRaw.map(convertOrganisaatio)
@@ -40,9 +40,6 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(i
 
   private def search(searchTerm: String): List[OrganisaatioWithOid] = fetchSearch(searchTerm).organisaatiot.map(convertOrganisaatio).map(_.toOrganisaatio)
 
-  def fetch(oid: String): OrganisaatioHakuTulos = {
-    runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?aktiiviset=true&lakkautetut=true&oid=${oid}")(Http.parseJson[OrganisaatioHakuTulos]))
-  }
   private def fetchSearch(searchTerm: String): OrganisaatioHakuTulos = {
     // Only for oppilaitosnumero search
     runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/hae?aktiiviset=true&lakkautetut=true&searchStr=${searchTerm}")(Http.parseJson[OrganisaatioHakuTulos]))
@@ -70,7 +67,7 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(i
     })
   }
 
-  private def fetchV3(oid: String): Option[OrganisaatioPalveluOrganisaatioV3] =
+  def fetchV3(oid: String): Option[OrganisaatioPalveluOrganisaatioV3] =
     runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v3/${oid}")(Http.parseJsonOptional[OrganisaatioPalveluOrganisaatioV3]))
 
   private def extractSähköpostiVirheidenRaportointiin(org: OrganisaatioPalveluOrganisaatioV3): Option[SähköpostiVirheidenRaportointiin] = {
@@ -89,10 +86,6 @@ class RemoteOrganisaatioRepository(http: Http, koodisto: KoodistoViitePalvelu)(i
         .flatMap(_.email)
       koskiEmail.orElse(defaultEmail).map(email => SähköpostiVirheidenRaportointiin(org.oid, LocalizedString.sanitizeRequired(org.nimi, org.oid), email))
     }
-  }
-
-  override def findAllRaw: List[OrganisaatioPalveluOrganisaatio] = {
-    runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/hae?aktiiviset=true&lakkautetut=true&suunnitellut=true&searchStr=")(Http.parseJson[OrganisaatioHakuTulos])).organisaatiot
   }
 
   override def findAllHierarkiat: List[OrganisaatioHierarkia] = fullHierarchyCache.apply

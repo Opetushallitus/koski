@@ -1,7 +1,7 @@
 package fi.oph.koski.organisaatio
 
 import com.github.tomakehurst.wiremock.WireMockServer
-import com.github.tomakehurst.wiremock.client.WireMock.{equalTo, get, ok, urlPathEqualTo}
+import com.github.tomakehurst.wiremock.client.WireMock.{get, ok, urlPathEqualTo}
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.cache.GlobalCacheManager
@@ -9,6 +9,7 @@ import fi.oph.koski.http.Http
 import fi.oph.koski.json.JsonResources.readResource
 import fi.oph.koski.organisaatio.MockOrganisaatioRepository.hierarchyResourcename
 import fi.oph.koski.organisaatio.MockOrganisaatiot.helsinginKaupunki
+import fi.oph.koski.organisaatio.Organisaatiotyyppi.VARHAISKASVATUKSEN_TOIMIPAIKKA
 import org.json4s.DefaultFormats
 import org.json4s.jackson.Serialization.write
 import org.scalatest._
@@ -19,6 +20,7 @@ class RemoteOrganisaatioRepositorySpec extends FreeSpec with Matchers with Befor
 
   private val wireMockServer = new WireMockServer(wireMockConfig().port(9877))
   private val orgRepository = new RemoteOrganisaatioRepository(Http("http://localhost:9877", "organisaatiopalvelu"), KoskiApplicationForTests.koodistoViitePalvelu)
+  private val organisaatioHierarkiaJson  = readResource(hierarchyResourcename(Opetushallitus.organisaatioOid))
 
   "RemoteOrganisaatioRepository" - {
     "hakee koulutustoimijan organisaatiohierarkian" in {
@@ -34,8 +36,9 @@ class RemoteOrganisaatioRepositorySpec extends FreeSpec with Matchers with Befor
     }
 
     "hakee kaikki päiväkodit" in {
-      val count = readResource("/mockdata/organisaatio/varhaiskasvatustoimipisteet.json").extract[Count].numHits
-      orgRepository.findAllVarhaiskasvatusToimipisteet.size should equal(count)
+      val organisaatioHierarkia = organisaatioHierarkiaJson.extract[OrganisaatioHakuTulos].organisaatiot.map(MockOrganisaatioRepository.convertOrganisaatio)
+      val päiväkotiCount = OrganisaatioHierarkia.flatten(organisaatioHierarkia).count(_.organisaatiotyypit.contains(VARHAISKASVATUKSEN_TOIMIPAIKKA))
+      orgRepository.findAllVarhaiskasvatusToimipisteet.length should equal(päiväkotiCount)
     }
   }
 
@@ -48,14 +51,7 @@ class RemoteOrganisaatioRepositorySpec extends FreeSpec with Matchers with Befor
 
   private def mockEndpoints = {
     wireMockServer.stubFor(
-      get(urlPathEqualTo("/organisaatio-service/rest/organisaatio/v2/hierarkia/hae"))
-        .willReturn(ok(write(readResource(hierarchyResourcename(helsinginKaupunki))))))
-
-    wireMockServer.stubFor(
-      get(urlPathEqualTo("/organisaatio-service/rest/organisaatio/v2/hae"))
-        .willReturn(ok(write(readResource("/mockdata/organisaatio/varhaiskasvatustoimipisteet.json"))))
-    )
+      get(urlPathEqualTo(s"/organisaatio-service/rest/organisaatio/v4/${Opetushallitus.organisaatioOid}/jalkelaiset"))
+        .willReturn(ok(write(organisaatioHierarkiaJson))))
   }
 }
-
-case class Count(numHits: Int)
