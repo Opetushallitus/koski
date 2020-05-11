@@ -15,9 +15,10 @@ const Checkbox = ({id, onChange, checked, label, LabelComponent, listStylePositi
     <label htmlFor={id}>
       <span className='koski-checkbox__checkmark' aria-hidden={true}/>
       {
-        LabelComponent
-          ? <LabelComponent/>
-          : <Text name={label}/>
+        LabelComponent && <LabelComponent/>
+      }
+      {
+        label && <Text name={label}/>
       }
     </label>
   </div>
