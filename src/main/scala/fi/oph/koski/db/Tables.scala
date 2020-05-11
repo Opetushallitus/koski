@@ -4,6 +4,7 @@ import java.sql.{Date, Timestamp}
 import java.time.LocalDateTime
 
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.db.Tables.SuoritusjakoTableV2
 import fi.oph.koski.json.JsonManipulation.removeFields
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.schema._
@@ -141,6 +142,16 @@ object Tables {
     def * = (id, secret, oppijaOid, suoritusIds, voimassaAsti, aikaleima) <> (SuoritusjakoRow.tupled, SuoritusjakoRow.unapply)
   }
 
+  class SuoritusjakoTableV2(tag: Tag) extends Table[SuoritusjakoRowV2] (tag, "suoritusjako_v2") {
+    val secret = column[String]("secret", O.Unique)
+    val oppijaOid = column[String]("oppija_oid")
+    val data = column[JValue]("data")
+    val voimassaAsti = column[Date]("voimassa_asti")
+    val aikaleima = column[Timestamp]("aikaleima")
+
+    def * = (secret, oppijaOid, data, voimassaAsti, aikaleima) <> (SuoritusjakoRowV2.tupled, SuoritusjakoRowV2.unapply)
+  }
+
   class MyDataJakoTable(tag: Tag) extends Table[MyDataJakoRow] (tag, "mydata_jako") {
     val asiakas = column[String]("asiakas")
     val oppijaOid = column[String]("oppija_oid")
@@ -180,6 +191,8 @@ object Tables {
   val Preferences = TableQuery[PreferencesTable]
 
   val SuoritusJako = TableQuery[SuoritusjakoTable]
+
+  val SuoritusJakoV2 = TableQuery[SuoritusjakoTableV2]
 
   val MyDataJako = TableQuery[MyDataJakoTable]
 
@@ -265,6 +278,8 @@ case class OppilaitosIPOsoiteRow(username: String, ip: String)
 case class PreferenceRow(organisaatioOid: String, koulutustoimijaOid: Option[String], `type`: String, key: String, value: JValue)
 
 case class SuoritusjakoRow(id: Long, secret: String, oppijaOid: String, suoritusIds: JValue, voimassaAsti: Date, aikaleima: Timestamp)
+
+case class SuoritusjakoRowV2(secret: String, oppijaOid: String, data: JValue, voimassaAsti: Date, aikaleima: Timestamp)
 
 case class MyDataJakoRow(asiakas: String, oppijaOid: String, voimassaAsti: Date, aikaleima: Timestamp)
 

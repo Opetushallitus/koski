@@ -26,7 +26,7 @@ import fi.oph.koski.raportit.RaportitServlet
 import fi.oph.koski.raportointikanta.RaportointikantaServlet
 import fi.oph.koski.servlet._
 import fi.oph.koski.sso.{CasServlet, LocalLoginServlet, SSOConfig, ShibbolethLoginServlet}
-import fi.oph.koski.suoritusjako.SuoritusjakoServlet
+import fi.oph.koski.suoritusjako.{SuoritusjakoServlet, SuoritusjakoServletV2}
 import fi.oph.koski.suoritusote.SuoritusServlet
 import fi.oph.koski.sure.SureServlet
 import fi.oph.koski.tiedonsiirto.TiedonsiirtoServlet
@@ -65,6 +65,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     mount("/api/koodisto", new KoodistoServlet)
     mount("/api/omattiedot", new OmatTiedotServlet)
     mount("/api/suoritusjako", new SuoritusjakoServlet)
+    mount("/api/suoritusjakoV2", new SuoritusjakoServletV2)
     mount("/api/opiskeluoikeus", new OpiskeluoikeusServlet)
     mount("/api/opiskeluoikeus/perustiedot", new OpiskeluoikeudenPerustiedotServlet)
     mount("/api/opiskeluoikeus/validate", new OpiskeluoikeusValidationServlet)

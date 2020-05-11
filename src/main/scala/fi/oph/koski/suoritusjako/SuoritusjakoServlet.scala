@@ -22,7 +22,7 @@ class SuoritusjakoServlet(implicit val application: KoskiApplication) extends Ed
     withJsonBody({ body =>
       val request = JsonSerializer.extract[SuoritusjakoRequest](body)
       renderEither[EditorModel](
-        application.suoritusjakoService.validateSuoritusjakoSecret(request.secret)
+        SuoritusjakoSecret.validate(request.secret)
           .flatMap(secret => application.suoritusjakoService.get(secret)(koskiSession))
           .map(oppija => OmatTiedotEditorModel.toEditorModel(userOppija = oppija, näytettäväOppija = oppija)(application, koskiSession))
       )

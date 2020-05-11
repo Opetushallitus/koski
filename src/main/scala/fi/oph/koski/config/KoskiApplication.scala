@@ -25,7 +25,7 @@ import fi.oph.koski.pulssi.{KoskiPulssi, PrometheusRepository}
 import fi.oph.koski.raportointikanta.{Public, RaportointiDatabase, RaportointikantaService}
 import fi.oph.koski.schedule.{KoskiScheduledTasks, PerustiedotSyncScheduler}
 import fi.oph.koski.sso.KoskiSessionRepository
-import fi.oph.koski.suoritusjako.{SuoritusjakoRepository, SuoritusjakoService}
+import fi.oph.koski.suoritusjako.{SuoritusjakoRepository, SuoritusjakoRepositoryV2, SuoritusjakoService, SuoritusjakoServiceV2}
 import fi.oph.koski.tiedonsiirto.{IPService, TiedonsiirtoService}
 import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.userdirectory.DirectoryClient
@@ -87,6 +87,8 @@ class KoskiApplication(val config: Config, implicit val cacheManager: CacheManag
   lazy val oppijaFacadeV2 = new KoskiOppijaFacade(henkilöRepository, henkilöCache, opiskeluoikeusRepositoryV2, historyRepository, perustiedotIndexer, config, hetu)
   lazy val suoritusjakoRepository = new SuoritusjakoRepository(masterDatabase.db)
   lazy val suoritusjakoService = new SuoritusjakoService(suoritusjakoRepository, oppijaFacade)
+  lazy val suoritusjakoRepositoryV2 = new SuoritusjakoRepositoryV2(masterDatabase.db)
+  lazy val suoritusjakoServiceV2 = new SuoritusjakoServiceV2(suoritusjakoRepositoryV2, henkilöRepository, opiskeluoikeusRepositoryV2, this)
   lazy val mydataRepository = new MyDataRepository(masterDatabase.db)
   lazy val mydataService = new MyDataService(mydataRepository, this)
   lazy val sessionTimeout = SessionTimeout(config)
