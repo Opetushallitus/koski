@@ -155,7 +155,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                 )
                 "Palautetaan HTTP 400" in (
                   putTutkintoSuoritus(suoritus)(
-                    verifyResponseStatus(400, HttpStatus.fold(KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma("Suorituksen koulutus/351741 yhteisen osuuden suoritusten yhteenlasketun laajuuden tulee olla vähintään 35"))))
+                    verifyResponseStatus(400, HttpStatus.fold(KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma("Valmiiksi merkityn suorituksen koulutus/351741 yhteisten tutkinnon osien laajuuden tulee olla vähintään 35"))))
                   )
               }
               "On 35" - {
