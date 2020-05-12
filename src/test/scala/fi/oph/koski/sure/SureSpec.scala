@@ -1,18 +1,19 @@
 package fi.oph.koski.sure
 
+import fi.oph.koski.api.{DatabaseTestMethods, LocalJettyHttpSpecification, OpiskeluoikeusTestMethodsAmmatillinen}
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables.OpiskeluOikeudet
-import fi.oph.koski.api.{DatabaseTestMethods, LocalJettyHttpSpecification, OpiskeluoikeusTestMethodsAmmatillinen}
 import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.{stadinAmmattiopistoKatselija, stadinVastuukäyttäjä}
-import fi.oph.koski.koskiuser.{MockUser, MockUsers, UserWithPassword}
+import fi.oph.koski.koskiuser.{MockUsers, UserWithPassword}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.SchemaValidatingExtractor
-import org.json4s.{DefaultFormats, JString}
 import org.json4s.JsonAST.{JArray, JBool}
 import org.json4s.jackson.JsonMethods
+import org.json4s.{DefaultFormats, JString, JValue}
 import org.scalatest.{FreeSpec, Matchers}
 
 class SureSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with DatabaseTestMethods with Matchers {
@@ -76,6 +77,14 @@ class SureSpec extends FreeSpec with LocalJettyHttpSpecification with Opiskeluoi
           val ensimmäisenOsasuorituksetArviointi = ((((parsedJson \ "opiskeluoikeudet") (0) \ "suoritukset") (0) \ "osasuoritukset") (0) \ "arviointi") (0)
           (ensimmäisenOsasuorituksetArviointi \ "hyväksytty") should equal(JArray(List(JBool(true))))
         }
+      }
+
+      "Hakee myös slave-oidille tallennetut opiskeluoikeudet" in {
+        val oppijat = postOids(List(MockOppijat.master.oid)) {
+          verifyResponseStatusOk()
+          JsonSerializer.parse[List[JValue]](body).map(JsonSerializer.extract[Oppija](_))
+        }
+        oppijat.flatMap(_.opiskeluoikeudet).length should equal(2)
       }
     }
 
