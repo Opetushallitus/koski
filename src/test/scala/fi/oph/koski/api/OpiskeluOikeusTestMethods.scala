@@ -1,8 +1,11 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.henkilo.MockOppijat.defaultOppijat
 import fi.oph.koski.http.{HttpSpecification, HttpStatus}
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.koskiuser.MockUsers.paakayttajaMitatoidytOpiskeluoikeudet
 import fi.oph.koski.koskiuser.UserWithPassword
+import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema._
 import fi.oph.scalaschema.SchemaValidatingExtractor
 import org.json4s.jackson.JsonMethods
@@ -67,4 +70,19 @@ trait OpiskeluoikeusTestMethods extends HttpSpecification with Matchers {
   def readOpiskeluoikeus = {
     SchemaValidatingExtractor.extract[Opiskeluoikeus](JsonMethods.parse(body)).right.get
   }
+
+  lazy val linkitettyOid: Map[Oid, Oid] = (for {
+    oppija <- defaultOppijat
+    masterOid <- oppija.master.map(_.oid)
+  } yield masterOid -> oppija.henkilö.oid).toMap
+
+  lazy val masterHenkilöt = defaultOppijat.filterNot(_.master.isDefined).map(_.henkilö).sortBy(_.oid)
+
+  lazy val koskeenTallennetutOppijat: List[Oppija] = masterHenkilöt.flatMap { m =>
+    tryOppija(m.oid, paakayttajaMitatoidytOpiskeluoikeudet) match {
+      case Right(o@Oppija(h: TäydellisetHenkilötiedot, opiskeluoikeudet)) => List(o)
+      case _ => Nil
+    }
+  }
+
 }
