@@ -211,10 +211,28 @@ class AmmatillinenTutkintoRaporttiSpec extends FreeSpec with Matchers with Rapor
   }
 
   private def osasuoritusRow(suorituksenTyyppi: String, koulutusmoduulikoodiarvo: String, tutkinnonOsanRyhmä: Option[String]) = {
-    ROsasuoritusRow(osasuoritusId = 1L, päätasonSuoritusId = 1L, opiskeluoikeusOid = "1",
+    ROsasuoritusRow(
+      osasuoritusId = 1L,
+      ylempiOsasuoritusId = None,
+      päätasonSuoritusId = 1L,
+      opiskeluoikeusOid = "1",
       suorituksenTyyppi = suorituksenTyyppi,
       koulutusmoduuliKoodiarvo = koulutusmoduulikoodiarvo,
       koulutusmoduuliPaikallinen = false,
+      koulutusmoduuliKoodisto = None,
+      koulutusmoduuliLaajuusArvo = None,
+      koulutusmoduuliLaajuusYksikkö = None,
+      koulutusmoduuliPakollinen = None,
+      koulutusmoduuliNimi = None,
+      koulutusmoduuliOppimääräNimi = None,
+      koulutusmoduuliKieliaineNimi = None,
+      vahvistusPäivä = None,
+      arviointiArvosanaKoodiarvo = None,
+      arviointiArvosanaKoodisto = None,
+      arviointiHyväksytty = None,
+      arviointiPäivä = None,
+      näytönArviointiPäivä = None,
+      tunnustettu = false,
       data = mockJValueData(tutkinnonOsanRyhmä)
     )
   }
