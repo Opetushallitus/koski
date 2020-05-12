@@ -221,13 +221,14 @@ object RaportointiDatabaseSchema {
     val arviointiHyväksytty = column[Option[Boolean]]("arviointi_hyvaksytty")
     val arviointiPäivä = column[Option[Date]]("arviointi_paiva")
     val näytönArviointiPäivä = column[Option[Date]]("nayton_arviointi_paiva")
+    val tunnustettu = column[Boolean]("tunnustettu")
     val data = column[JValue]("data")
     def * = (osasuoritusId, ylempiOsasuoritusId, päätasonSuoritusId, opiskeluoikeusOid, suorituksenTyyppi,
       koulutusmoduuliKoodisto, koulutusmoduuliKoodiarvo, koulutusmoduuliLaajuusArvo, koulutusmoduuliLaajuusYksikkö,
       koulutusmoduuliPaikallinen, koulutusmoduuliPakollinen, koulutusmoduuliNimi,
       koulutusmoduuliOppimääräNimi, koulutusmoduuliKieliaineNimi, vahvistusPäivä,
       arviointiArvosanaKoodiarvo, arviointiArvosanaKoodisto, arviointiHyväksytty, arviointiPäivä,
-      näytönArviointiPäivä, data) <> (ROsasuoritusRow.tupled, ROsasuoritusRow.unapply)
+      näytönArviointiPäivä, tunnustettu, data) <> (ROsasuoritusRow.tupled, ROsasuoritusRow.unapply)
   }
 
   class ROsasuoritusTableTemp(tag: Tag) extends ROsasuoritusTable(tag, Temp)
@@ -444,7 +445,6 @@ case class RPäätasonSuoritusRow(
 }
 
 case class ROsasuoritusRow(
-
   osasuoritusId: Long,
   ylempiOsasuoritusId: Option[Long],
   päätasonSuoritusId: Long,

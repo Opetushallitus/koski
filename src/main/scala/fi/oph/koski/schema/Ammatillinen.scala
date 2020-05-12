@@ -311,7 +311,7 @@ trait AmmatillisenTutkinnonOsittainenTaiKokoSuoritus extends  AmmatillinenPäät
   def suoritustapa: Koodistokoodiviite
 }
 
-trait TutkinnonOsanSuoritus extends Suoritus with MahdollisestiSuorituskielellinen with MahdollisestiToimipisteellinen with DuplikaatitSallittu {
+trait TutkinnonOsanSuoritus extends Suoritus with MahdollisestiSuorituskielellinen with MahdollisestiToimipisteellinen with MahdollisestiTunnustettu with DuplikaatitSallittu {
   @Description("Suoritettavan tutkinnon osan tunnistetiedot")
   @Title("Tutkinnon osa")
   @Discriminator
@@ -658,7 +658,7 @@ case class AmmatillisenTutkinnonOsaaPienemmänKokonaisuudenSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("ammatillisentutkinnonosaapienempikokonaisuus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillisentutkinnonosaapienempikokonaisuus", "suorituksentyyppi")
-) extends Suoritus with Vahvistukseton with MahdollisestiSuorituskielellinen
+) extends Suoritus with Vahvistukseton with MahdollisestiSuorituskielellinen with MahdollisestiTunnustettu
 
 case class MuidenOpintovalmiuksiaTukevienOpintojenSuoritus(
   koulutusmoduuli: PaikallinenOpintovalmiuksiaTukevaOpinto,
@@ -685,7 +685,7 @@ case class LukioOpintojenSuoritus(
   tyyppi: Koodistokoodiviite
 ) extends Suoritus with Vahvistukseton with MahdollisestiSuorituskielellinen with YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus
 
-trait YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus extends Suoritus
+trait YhteistenTutkinnonOsienOsaAlueidenTaiLukioOpintojenTaiMuidenOpintovalmiuksiaTukevienOpintojenOsasuoritus extends Suoritus with MahdollisestiTunnustettu
 
 case class PaikallinenOpintovalmiuksiaTukevaOpinto(
   tunniste: PaikallinenKoodi,
@@ -715,7 +715,7 @@ case class KorkeakouluopintojenSuoritus(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("ammatillinenkorkeakouluopintoja")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("ammatillinenkorkeakouluopintoja", "suorituksentyyppi")
-) extends Suoritus with Vahvistukseton with MahdollisestiSuorituskielellinen
+) extends Suoritus with Vahvistukseton with MahdollisestiSuorituskielellinen with MahdollisestiTunnustettu
 
 @Title("Yhteisen tutkinnon osan osa-alueen suoritus")
 @Description("Yhteisen tutkinnon osan osa-alueen suorituksen tiedot")

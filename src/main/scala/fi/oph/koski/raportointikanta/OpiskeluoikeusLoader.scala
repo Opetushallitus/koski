@@ -260,6 +260,10 @@ object OpiskeluoikeusLoader extends Logging {
         case tkos: TelmaKoulutuksenOsanSuoritus => tkos.näyttö.flatMap(_.arviointi).map(v => Date.valueOf(v.päivä))
         case _ => None
       },
+      tunnustettu = os match {
+        case m: MahdollisestiTunnustettu => m.tunnustettu.isDefined
+        case _ => false
+      },
       data = JsonManipulation.removeFields(data, fieldsToExcludeFromOsasuoritusJson)
     ) +: os.osasuoritukset.getOrElse(List.empty).zipWithIndex.flatMap {
       case (os2, i) => buildROsasuoritusRow(päätasonSuoritusId, Some(osasuoritusId), opiskeluoikeusOid, os2, (data \ "osasuoritukset")(i), idGenerator)

@@ -20,3 +20,7 @@ case class OsaamisenTunnustaminen(
   @DefaultValue(false)
   rahoituksenPiirissä: Boolean = false
 )
+
+trait MahdollisestiTunnustettu {
+  def tunnustettu: Option[OsaamisenTunnustaminen]
+}

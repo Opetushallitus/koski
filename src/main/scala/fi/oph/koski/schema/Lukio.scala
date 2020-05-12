@@ -161,7 +161,7 @@ case class LukionKurssinSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionkurssi", koodistoUri = "suorituksentyyppi"),
   suoritettuLukiodiplomina: Option[Boolean] = None,
   suoritettuSuullisenaKielikokeena: Option[Boolean] = None
-) extends KurssinSuoritus with MahdollisestiSuorituskielellinen
+) extends KurssinSuoritus with MahdollisestiSuorituskielellinen with MahdollisestiTunnustettu
 
 case class LukionOppiaineenArviointi(
   @Description("Oppiaineen suorituksen arvosana on kokonaisarvosana oppiaineelle")
