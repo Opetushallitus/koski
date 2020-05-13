@@ -41,6 +41,12 @@ class VarhaiskasvatusSpec extends FreeSpec with EsiopetusSpecification {
         }
       }
 
+      "ei voi tallentaa opiskeluoikeutta jonka oppilaitos on päiväkoti joka on omassa organisaatiohierarkiassa" in {
+        val opiskeluoikeus = päiväkotiEsiopetus(päiväkotiVironniemi, ostopalvelu)
+        putOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
+          verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.organisaatio.järjestämismuoto())
+        }
+      }
 
       "voi tallentaa opiskeluoikeuden jonka oppilaitoksena on yksityinen päiväkoti joka ei ole koulutustoimijan alla organisaatiohierarkiassa" in {
         val opiskeluoikeus = päiväkotiEsiopetus(oidOrganisaatio(päiväkotiTarina), ostopalvelu).copy(koulutustoimija = hki)
