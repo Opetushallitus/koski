@@ -42,6 +42,8 @@ object MockOrganisaatiot {
   val internationalSchool = "1.2.246.562.10.67636414343"
   val päiväkotiTouhula = "1.2.246.562.10.63518646078"
   val päiväkotiMajakka = "1.2.246.562.10.90219092054"
+  val norlandiaPäiväkodit = "1.2.246.562.10.15679231819"
+  val päiväkotiTarina = "1.2.246.562.10.21747360762"
 
   val oppilaitokset: List[String] = List(
     stadinAmmattiopisto,
@@ -72,7 +74,8 @@ object MockOrganisaatiot {
     ylioppilastutkintolautakunta, aapajoenKoulu,
     kouluyhdistysPestalozziSchulvereinSkolföreningen,
     helsinginKansainvälisenKoulunVanhempainyhdistys,
-    pyhtäänKunta
+    pyhtäänKunta,
+    norlandiaPäiväkodit
   )
 }
 
