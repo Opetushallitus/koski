@@ -327,7 +327,7 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
 
             putOpiskeluoikeus(ooSuorituksilla) {
               verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.date.suorituksenAlkamispäiväEnnenOpiskeluoikeudenAlkamispäivää(
-                "opiskeluoikeus.alkamispäivä (2020-04-20) oltava sama tai aiempi kuin päätasonSuoritus.alkamispäivä (2020-04-16)"
+                "opiskeluoikeuden ensimmäisen tilan alkamispäivä (2020-04-20) oltava sama tai aiempi kuin päätason suorituksen alkamispäivä (2020-04-16)"
               ))
             }
           }

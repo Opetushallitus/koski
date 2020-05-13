@@ -324,8 +324,8 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         KoskiErrorCategory.badRequest.validation.date.arvioituPäättymisPäiväEnnenAlkamispäivää
       ),
       validateDateOrder(
-        ("opiskeluoikeus.alkamispäivä", opiskeluoikeus.alkamispäivä),
-        ("päätasonSuoritus.alkamispäivä", päätasonSuorituksenAlkamispäivät),
+        ("opiskeluoikeuden ensimmäisen tilan alkamispäivä", opiskeluoikeus.alkamispäivä),
+        ("päätason suorituksen alkamispäivä", päätasonSuorituksenAlkamispäivät),
         KoskiErrorCategory.badRequest.validation.date.suorituksenAlkamispäiväEnnenOpiskeluoikeudenAlkamispäivää
       ),
       validateJaksotPäättyminen(opiskeluoikeus.tila.opiskeluoikeusjaksot),
