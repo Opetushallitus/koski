@@ -1,6 +1,5 @@
 package fi.oph.koski.documentation
 
-import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.{MockOrganisaatioRepository, MockOrganisaatiot}
 import fi.oph.koski.schema._
 

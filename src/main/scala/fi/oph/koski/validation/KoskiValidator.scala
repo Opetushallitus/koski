@@ -187,7 +187,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   private def järjestettyOmanOrganisaationUlkopuolella(oo: EsiopetuksenOpiskeluoikeus) = oo.oppilaitos.exists { oppilaitos =>
-    oo.koulutustoimija.forall(kt => organisaatioRepository.findKoulutustoimijaForOppilaitos(oppilaitos).exists(_.oid != kt.oid))
+    oo.koulutustoimija.forall(kt => organisaatioRepository.findKoulutustoimijaForOppilaitos(oppilaitos).forall(_.oid != kt.oid))
   }
 
   private def päiväkodinEsiopetus(oo: EsiopetuksenOpiskeluoikeus) = {
