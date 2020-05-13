@@ -226,7 +226,7 @@ case class ValtakunnallinenAikuistenPerusopetuksenPäättövaiheenKurssi2017(
   laajuus: Option[LaajuusVuosiviikkotunneissaTaiKursseissa] = None
 ) extends AikuistenPerusopetuksenKurssi with KoodistostaLöytyväKoulutusmoduuli
 
-trait AikuistenPerusopetuksenKurssinTaiAlkuvaiheenKurssinSuoritus extends KurssinSuoritus
+trait AikuistenPerusopetuksenKurssinTaiAlkuvaiheenKurssinSuoritus extends KurssinSuoritus with MahdollisestiTunnustettu
 
 case class AikuistenPerusopetuksenOppiaineenOppimääränSuoritus(
   @Description("Päättötodistukseen liittyvät oppiaineen suoritukset.")

@@ -116,8 +116,16 @@ object OpiskeluoikeusLoader extends Logging {
       val oo = inputRow.toOpiskeluoikeus
       val ooRow = buildROpiskeluoikeusRow(inputRow.oppijaOid, inputRow.aikaleima, oo, inputRow.data)
       val aikajaksoRows = buildAikajaksoRows(inputRow.oid, oo)
-      val suoritusRows = oo.suoritukset.zipWithIndex.map { case (ps, i) => buildSuoritusRows(inputRow.oid, oo.getOppilaitos, ps, (inputRow.data \ "suoritukset")(i), suoritusIds.incrementAndGet) }
-      OutputRows(ooRow, aikajaksoRows._1, aikajaksoRows._2, suoritusRows.map(_._1), suoritusRows.flatMap(_._2), suoritusRows.flatMap(_._3), suoritusRows.flatMap(_._4))
+      val suoritusRows: List[(RPäätasonSuoritusRow, List[ROsasuoritusRow], List[MuuAmmatillinenOsasuoritusRaportointiRow], List[TOPKSAmmatillinenRaportointiRow])] = oo.suoritukset.zipWithIndex.map { case (ps, i) => buildSuoritusRows(inputRow.oid, oo.getOppilaitos, ps, (inputRow.data \ "suoritukset")(i), suoritusIds.incrementAndGet) }
+      OutputRows(
+        rOpiskeluoikeusRow = ooRow,
+        rOpiskeluoikeusAikajaksoRows = aikajaksoRows._1,
+        esiopetusOpiskeluoikeusAikajaksoRows = aikajaksoRows._2,
+        rPäätasonSuoritusRows = suoritusRows.map(_._1),
+        rOsasuoritusRows = suoritusRows.flatMap(_._2),
+        muuAmmatillinenOsasuoritusRaportointiRows = suoritusRows.flatMap(_._3),
+        topksAmmatillinenRaportointiRows = suoritusRows.flatMap(_._4)
+      )
     }.toEither.left.map(t => LoadErrorResult(inputRow.oid, t.toString))
   }
 
@@ -251,6 +259,10 @@ object OpiskeluoikeusLoader extends Logging {
         case vkos: ValmaKoulutuksenOsanSuoritus => vkos.näyttö.flatMap(_.arviointi).map(v => Date.valueOf(v.päivä))
         case tkos: TelmaKoulutuksenOsanSuoritus => tkos.näyttö.flatMap(_.arviointi).map(v => Date.valueOf(v.päivä))
         case _ => None
+      },
+      tunnustettu = os match {
+        case m: MahdollisestiTunnustettu => m.tunnustettu.isDefined
+        case _ => false
       },
       data = JsonManipulation.removeFields(data, fieldsToExcludeFromOsasuoritusJson)
     ) +: os.osasuoritukset.getOrElse(List.empty).zipWithIndex.flatMap {

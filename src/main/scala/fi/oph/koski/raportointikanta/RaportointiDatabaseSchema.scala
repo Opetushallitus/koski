@@ -221,13 +221,14 @@ object RaportointiDatabaseSchema {
     val arviointiHyväksytty = column[Option[Boolean]]("arviointi_hyvaksytty")
     val arviointiPäivä = column[Option[Date]]("arviointi_paiva")
     val näytönArviointiPäivä = column[Option[Date]]("nayton_arviointi_paiva")
+    val tunnustettu = column[Boolean]("tunnustettu")
     val data = column[JValue]("data")
     def * = (osasuoritusId, ylempiOsasuoritusId, päätasonSuoritusId, opiskeluoikeusOid, suorituksenTyyppi,
       koulutusmoduuliKoodisto, koulutusmoduuliKoodiarvo, koulutusmoduuliLaajuusArvo, koulutusmoduuliLaajuusYksikkö,
       koulutusmoduuliPaikallinen, koulutusmoduuliPakollinen, koulutusmoduuliNimi,
       koulutusmoduuliOppimääräNimi, koulutusmoduuliKieliaineNimi, vahvistusPäivä,
       arviointiArvosanaKoodiarvo, arviointiArvosanaKoodisto, arviointiHyväksytty, arviointiPäivä,
-      näytönArviointiPäivä, data) <> (ROsasuoritusRow.tupled, ROsasuoritusRow.unapply)
+      näytönArviointiPäivä, tunnustettu, data) <> (ROsasuoritusRow.tupled, ROsasuoritusRow.unapply)
   }
 
   class ROsasuoritusTableTemp(tag: Tag) extends ROsasuoritusTable(tag, Temp)
@@ -445,25 +446,26 @@ case class RPäätasonSuoritusRow(
 
 case class ROsasuoritusRow(
   osasuoritusId: Long,
-  ylempiOsasuoritusId: Option[Long] = None,
+  ylempiOsasuoritusId: Option[Long],
   päätasonSuoritusId: Long,
   opiskeluoikeusOid: String,
   suorituksenTyyppi: String,
-  koulutusmoduuliKoodisto: Option[String] = None,
+  koulutusmoduuliKoodisto: Option[String],
   koulutusmoduuliKoodiarvo: String,
-  koulutusmoduuliLaajuusArvo: Option[Double] = None,
-  koulutusmoduuliLaajuusYksikkö: Option[String] = None,
+  koulutusmoduuliLaajuusArvo: Option[Double],
+  koulutusmoduuliLaajuusYksikkö: Option[String],
   koulutusmoduuliPaikallinen: Boolean,
-  koulutusmoduuliPakollinen: Option[Boolean] = None,
-  koulutusmoduuliNimi: Option[String] = None,
-  koulutusmoduuliOppimääräNimi: Option[String] = None,
-  koulutusmoduuliKieliaineNimi: Option[String] = None,
-  vahvistusPäivä: Option[Date] = None,
-  arviointiArvosanaKoodiarvo: Option[String] = None,
-  arviointiArvosanaKoodisto: Option[String] = None,
-  arviointiHyväksytty: Option[Boolean] = None,
-  arviointiPäivä: Option[Date] = None,
-  näytönArviointiPäivä: Option[Date] = None,
+  koulutusmoduuliPakollinen: Option[Boolean],
+  koulutusmoduuliNimi: Option[String],
+  koulutusmoduuliOppimääräNimi: Option[String],
+  koulutusmoduuliKieliaineNimi: Option[String],
+  vahvistusPäivä: Option[Date],
+  arviointiArvosanaKoodiarvo: Option[String],
+  arviointiArvosanaKoodisto: Option[String],
+  arviointiHyväksytty: Option[Boolean],
+  arviointiPäivä: Option[Date],
+  näytönArviointiPäivä: Option[Date],
+  tunnustettu: Boolean,
   data: JValue
 ) extends RSuoritusRow {
   override def matchesWith(x: YleissivistäväRaporttiOppiaineTaiKurssi): Boolean = {
