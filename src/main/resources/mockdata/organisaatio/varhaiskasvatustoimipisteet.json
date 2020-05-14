@@ -1,5 +1,5 @@
 {
-  "numHits": 2952,
+  "numHits": 2953,
   "organisaatiot": [
     {
       "oid": "1.2.246.562.10.25398219250",
@@ -67664,6 +67664,29 @@
         "oppilaitoksenopetuskieli_1#1"
       ],
       "kotipaikkaUri": "kunta_500",
+      "children": [],
+      "aliOrganisaatioMaara": 0,
+      "organisaatiotyypit": [
+        "organisaatiotyyppi_08"
+      ],
+      "status": "AKTIIVINEN"
+    },
+    {
+      "oid": "1.2.246.562.10.21747360762",
+      "alkuPvm": 1325368800000,
+      "parentOid": "1.2.246.562.10.15679231819",
+      "parentOidPath": "1.2.246.562.10.21747360762/1.2.246.562.10.15679231819/1.2.246.562.10.00000000001",
+      "toimipistekoodi": "",
+      "match": false,
+      "nimi": {
+        "sv": "Tarina",
+        "fi": "Tarina",
+        "en": "Tarina"
+      },
+      "kieletUris": [
+        "oppilaitoksenopetuskieli_1#1"
+      ],
+      "kotipaikkaUri": "kunta_179",
       "children": [],
       "aliOrganisaatioMaara": 0,
       "organisaatiotyypit": [
