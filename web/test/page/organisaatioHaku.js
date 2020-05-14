@@ -34,6 +34,9 @@ function OrganisaatioHaku(elem) {
     oppilaitokset: function() {
       return textsOf(elem().find('.organisaatiot li'))
     },
+    toimipisteet: function() {
+      return textsOf(elem().find('.organisaatiot .aliorganisaatiot li'))
+    },
     oppilaitos: function() {
       return elem().find('.organisaatio-selection').text()
     }

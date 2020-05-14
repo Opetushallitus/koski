@@ -126,8 +126,8 @@ describe('Esiopetus', function() {
         )
 
         it('vain oman organisaation ulkopuoliset varhaiskasvatustoimipisteet näytetään', function () {
-          expect(addOppija.oppilaitokset()).to.deep.equal([
-            'Pyhtään kunta Päiväkoti Majakka Päiväkoti Touhula',
+          expect(addOppija.toimipisteet()).to.deep.equal([
+            'Tarina',
             'Päiväkoti Majakka',
             'Päiväkoti Touhula'
           ])

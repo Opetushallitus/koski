@@ -180,6 +180,7 @@ function AddOppijaPage() {
       return OrganisaatioHaku(form).select(name)
     },
     oppilaitokset: OrganisaatioHaku(form).oppilaitokset,
+    toimipisteet: OrganisaatioHaku(form).toimipisteet,
     oppilaitos: OrganisaatioHaku(form).oppilaitos,
     selectTutkinto: function(name) {
       if (!name) { return wait.forAjax }
