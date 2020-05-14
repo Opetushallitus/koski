@@ -90,4 +90,4 @@
 #
 #action.destructive_requires_name: true
 
-indices.query.bool.max_clause_count: 8192
+indices.query.bool.max_clause_count: 16384

@@ -1,4 +1,4 @@
 # Required for ES to be accessible outside the container:
 http.host: 0.0.0.0
 
-indices.query.bool.max_clause_count: 8192
+indices.query.bool.max_clause_count: 16384
