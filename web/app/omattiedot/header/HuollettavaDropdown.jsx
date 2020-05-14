@@ -15,7 +15,7 @@ export const HuollettavaDropdown = ({oppija, oppijaSelectionBus}) => {
     .sort(aakkosjarjestys)
 
   return (
-    options.length > 1 &&
+    options.length > 0 &&
     <div className='header__oppijanvalitsin'>
       <h2 className='header__heading'>
         {t('Kenen opintoja haluat tarkastella?')}
