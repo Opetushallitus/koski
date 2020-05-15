@@ -22,7 +22,7 @@
     "prop-types": "^15.6.1",
     "ramda": "^0.25.0",
     "react": "^16.3.2",
-    "react-day-picker": "^7.1.8",
+    "react-day-picker": "^7.4.8",
     "react-dom": "^16.3.3",
     "react-focus-lock": "^1.11.1",
     "react-highlight": "^0.12.0",
