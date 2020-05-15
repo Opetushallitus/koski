@@ -72794,4 +72794,16 @@
     "kieli" : "FI"
   } ],
   "versio" : 1
+}, {
+  "koodiUri" : "oppilaitosnumero_10126",
+  "koodiArvo" : "10126",
+  "metadata" : [ {
+    "nimi" : "Lahden ammattikorkeakoulu",
+    "lyhytNimi" : "Lahden amk",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Lahti University of Applied Sciences",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
 } ]

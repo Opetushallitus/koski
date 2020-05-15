@@ -59,11 +59,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         ))
       )
 
-      //if (opiskeluOikeudet.exists(_.lähdejärjestelmänId.toString == opiskeluoikeus.lähdejärjestelmänId.toString)) {
-      //  (muutSuoritukset, opiskeluOikeudet)
-      //} else {
-        (muutSuoritukset, opiskeluoikeus :: opiskeluOikeudet)
-      //}
+      (muutSuoritukset, opiskeluoikeus :: opiskeluOikeudet)
     }
 
     val orphanSuoritukset = orphans.flatMap(convertSuoritus(_, suoritusNodeList))
@@ -89,26 +85,33 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     poistaDuplikaatitSuorituksetJaOpiskeluoikeudet(opiskeluoikeudet).filter(_.suoritukset.nonEmpty) ++ orphanages
   }
 
+  private val LABAmmattikorkeaNumero = "10126"
+  private val vanhaLahdenAmmattiKorkeaNumero = "02470"
+  private val duplikaattiKorjattavatOppilaitokset = List(LABAmmattikorkeaNumero, vanhaLahdenAmmattiKorkeaNumero)
   private def poistaDuplikaatitSuorituksetJaOpiskeluoikeudet(opiskeluoikeudet: List[KorkeakoulunOpiskeluoikeus]) : List[KorkeakoulunOpiskeluoikeus] = {
-    val puhdistetutOpiskeluoikeudet = opiskeluoikeudet.map(o => o.copy(suoritukset = poistaDuplikaattiSuoritukset(o.suoritukset)))
 
-    val löydetyt: HashMap[String, KorkeakoulunOpiskeluoikeus] = HashMap()
-    puhdistetutOpiskeluoikeudet.foreach(o => {
-      o.lähdejärjestelmänId match {
-        case Some(id) => {
-          if (löydetyt.contains(id.toString)) {
-            val uusi = löydetyt.get(id.toString).get.copy(
-              suoritukset = löydetyt.get(id.toString).get.suoritukset ::: o.suoritukset
-            )
-            löydetyt.update(id.toString, uusi)
-          } else {
-            löydetyt.update(id.toString, o)
+    if (opiskeluoikeudet.exists(o => duplikaattiKorjattavatOppilaitokset.contains(o.getOppilaitos.oppilaitosnumero.get.koodiarvo))) {
+      val ilmanDuplikaattejaOpiskeluoikeuksia: HashMap[String, KorkeakoulunOpiskeluoikeus] = HashMap()
+      opiskeluoikeudet.foreach(o => {
+        val ilmanDuplikaattiSuorituksia = o.copy(suoritukset = poistaDuplikaattiSuoritukset(o.suoritukset))
+        ilmanDuplikaattiSuorituksia.lähdejärjestelmänId match {
+          case Some(id) => {
+            if (ilmanDuplikaattejaOpiskeluoikeuksia.contains(id.toString)) {
+              val uusi = ilmanDuplikaattejaOpiskeluoikeuksia.get(id.toString).get.copy(
+                suoritukset = ilmanDuplikaattejaOpiskeluoikeuksia.get(id.toString).get.suoritukset ::: ilmanDuplikaattiSuorituksia.suoritukset
+              )
+              ilmanDuplikaattejaOpiskeluoikeuksia.update(id.toString, uusi)
+            } else {
+              ilmanDuplikaattejaOpiskeluoikeuksia.update(id.toString, ilmanDuplikaattiSuorituksia)
+            }
           }
+          case _ => {}
         }
-        case _ => {}
-      }
-    })
-    löydetyt.values.toList
+      })
+      ilmanDuplikaattejaOpiskeluoikeuksia.values.toList
+    } else {
+      opiskeluoikeudet
+    }
   }
 
   private def poistaDuplikaattiSuoritukset(suoritukset: List[KorkeakouluSuoritus]): List[KorkeakouluSuoritus] = {
