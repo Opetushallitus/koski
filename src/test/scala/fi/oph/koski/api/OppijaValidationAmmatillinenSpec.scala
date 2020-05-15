@@ -131,12 +131,29 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                 )
             }
 
-            "Osa-alueella ei osasuorituksia" - {
+            "Osa-alueella ei osasuorituksia, suoritustapa reformi" - {
+              val yhtSuoritus = yhteisenTutkinnonOsanSuoritus("400012", "Viestintä- ja vuorovaikutusosaaminen", k3, 35).copy(
+                osasuoritukset = Some(List())
+              )
+              val reformiSuoritus = puuteollisuudenPerustutkinnonSuoritus().copy(suoritustapa = suoritustapaReformi,
+                osasuoritukset = Some(List(yhtSuoritus)))
+              val suoritus = reformiSuoritus.copy(
+                osaamisenHankkimistavat = Some(List(OsaamisenHankkimistapajakso(date(2018, 1, 1), None, osaamisenHankkimistapaOppilaitos))),
+                vahvistus = vahvistus(date(2018, 1, 1))
+              )
+
               "Palautetaan HTTP 400" in (
-                putTutkinnonOsaSuoritus(yhtTutkinnonOsanSuoritus.copy(osasuoritukset = Some(List())), tutkinnonSuoritustapaOps) (
+                putTutkintoSuoritus(suoritus)(
                   verifyResponseStatus(400, HttpStatus.fold(KoskiErrorCategory.badRequest.validation.rakenne.yhteiselläOsuudellaEiOsasuorituksia("Arvioidulla yhteisellä tutkinnon osalla 'Viestintä- ja vuorovaikutusosaaminen' ei ole osa-alueita"),
-                    KoskiErrorCategory.badRequest.validation.laajuudet.osasuoritustenLaajuuksienSumma("Yhteisillä tutkinnon osilla 'Viestintä- ja vuorovaikutusosaaminen' on eri laajuus kun tutkinnon osien osa-alueiden yhteenlaskettu summa"))))
+                  )))
                 )
+            }
+
+            "Osa-alueella ei osasuorituksia, suoritustapa ops" - {
+              "Palautetaan HTTP 200" in (
+                putTutkinnonOsaSuoritus(yhtTutkinnonOsanSuoritus.copy(osasuoritukset = Some(List())), tutkinnonSuoritustapaOps) (
+                  verifyResponseStatusOk()
+                ))
             }
 
             "Osa-alueiden yhteenlaskettu laajuus" - {
@@ -193,7 +210,7 @@ class OppijaValidationAmmatillinenSpec extends TutkinnonPerusteetTest[Ammatillin
                 )
             }
 
-            "Ops-muotoisella tutkinnolla väärän koodin yhteisiä osuuksia" - {
+            "Reformi-muotoisella tutkinnolla väärän koodin yhteisiä osuuksia" - {
               val yhtSuoritukset = List(
                 yhteisenTutkinnonOsanSuoritus("101053", "Viestintä- ja vuorovaikutusosaaminen", k3, 35).copy(
                   osasuoritukset = Some(List(
