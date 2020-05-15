@@ -3419,6 +3419,8 @@ describe('Perusopetus', function() {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
           'Opiskeluoikeuden voimassaoloaika : 15.8.2007 — 1.6.2008\n' +
           'Tila 1.6.2008 Valmistunut\n' +
+          '6.1.2008 Läsnä\n' +
+          '20.12.2007 Loma\n' +
           '15.8.2007 Läsnä')
       })
       it('näyttää suorituksen tiedot', function() {

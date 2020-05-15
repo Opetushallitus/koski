@@ -1,3 +1,6 @@
+## 15.5.2020
+- Lisätty perusopetukseen valmistavan opiskeluoikeuden tila "Loma"
+
 ## 7.4.2020
 - Lisätty koulusivistyskieli-kenttä ylioppilastutkinnon, nuorten perusopetuksen oppimäärän ja lukion oppimäärän suoritukseen
 
