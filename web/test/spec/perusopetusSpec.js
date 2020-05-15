@@ -3531,14 +3531,33 @@ describe('Perusopetus', function() {
       })
     })
     describe('Opiskeluoikeuden lisääminen', function() {
-      before(prepareForNewOppija('kalle', '230872-7258'))
-      before(addOppija.enterValidDataPerusopetus({suorituskieli: 'englanti'}), addOppija.selectOpiskeluoikeudenTyyppi('Perusopetukseen valmistava opetus'))
-      before(addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Perusopetukseen valmistava opetus'))
-      it('Lisätty opiskeluoikeus näytetään', function() {
-        expect(opinnot.getTutkinto()).to.equal('Perusopetukseen valmistava opetus')
-        expect(opinnot.getOppilaitos()).to.equal('Jyväskylän normaalikoulu')
-        expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('57/011/2015')
-        expect(opinnot.getSuorituskieli()).to.equal('englanti')
+      before(
+        prepareForNewOppija('kalle', '230872-7258'),
+        addOppija.enterValidDataPerusopetus({suorituskieli: 'englanti'}),
+        addOppija.selectOpiskeluoikeudenTyyppi('Perusopetukseen valmistava opetus')
+      )
+      describe('Tietojen näyttäminen', function() {
+        it('Näytetään tilavaihtoehdoissa kaikki tilat paitsi mitätöity', function() {
+          expect(addOppija.opiskeluoikeudenTilat()).to.deep.equal([
+            'Eronnut',
+            'Katsotaan eronneeksi',
+            'Loma',
+            'Läsnä',
+            'Peruutettu',
+            'Valmistunut',
+            'Väliaikaisesti keskeytynyt'
+          ])
+        })
+
+        describe('Kun lisätään oppija', function() {
+          before(addOppija.submitAndExpectSuccess('Tyhjä, Tero (230872-7258)', 'Perusopetukseen valmistava opetus'))
+          it('Lisätty opiskeluoikeus näytetään', function() {
+            expect(opinnot.getTutkinto()).to.equal('Perusopetukseen valmistava opetus')
+            expect(opinnot.getOppilaitos()).to.equal('Jyväskylän normaalikoulu')
+            expect(editor.propertyBySelector('.diaarinumero').getValue()).to.equal('57/011/2015')
+            expect(opinnot.getSuorituskieli()).to.equal('englanti')
+          })
+        })
       })
     })
   })
