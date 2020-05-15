@@ -2,9 +2,8 @@ package fi.oph.koski.schema
 
 import java.time.{LocalDate, LocalDateTime}
 
-import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.schema.annotation.{Hidden, KoodistoKoodiarvo, KoodistoUri, Tooltip}
-import fi.oph.scalaschema.annotation.{Description, MaxItems, Title}
+import fi.oph.scalaschema.annotation.{Description, MaxItems, MinItems, Title}
 
 @Description("Perusopetukseen valmistavan opetuksen opiskeluoikeuden tiedot")
 case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
@@ -16,7 +15,7 @@ case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeus(
   koulutustoimija: Option[Koulutustoimija] = None,
   @Hidden
   sisältyyOpiskeluoikeuteen: Option[SisältäväOpiskeluoikeus] = None,
-  tila: NuortenPerusopetuksenOpiskeluoikeudenTila,
+  tila: PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila,
   @MaxItems(1)
   suoritukset: List[PerusopetukseenValmistavanOpetuksenSuoritus],
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.perusopetukseenvalmistavaopetus.koodiarvo)
@@ -104,3 +103,22 @@ case class PerusopetukseenValmistavanOpetuksenOppiaine(
 ) extends PaikallinenKoulutusmoduuli with StorablePreference {
   def kuvaus: LocalizedString = opetuksenSisältö.getOrElse(LocalizedString.empty)
 }
+
+@Description("Ks. tarkemmin perusopetuksen opiskeluoikeuden tilat: [confluence](https://confluence.csc.fi/display/OPHPALV/KOSKI+opiskeluoikeuden+tilojen+selitteet+koulutusmuodoittain#KOSKIopiskeluoikeudentilojenselitteetkoulutusmuodoittain-Perusopetus)")
+case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila(
+  @MinItems(1)
+  opiskeluoikeusjaksot: List[PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso]
+) extends OpiskeluoikeudenTila
+
+case class PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso(
+  alku: LocalDate,
+  @KoodistoKoodiarvo("eronnut")
+  @KoodistoKoodiarvo("katsotaaneronneeksi")
+  @KoodistoKoodiarvo("lasna")
+  @KoodistoKoodiarvo("loma")
+  @KoodistoKoodiarvo("mitatoity")
+  @KoodistoKoodiarvo("peruutettu")
+  @KoodistoKoodiarvo("valiaikaisestikeskeytynyt")
+  @KoodistoKoodiarvo("valmistunut")
+  tila: Koodistokoodiviite
+) extends KoskiOpiskeluoikeusjakso
