@@ -198,6 +198,8 @@ class KoskiOppijaFacade(
         Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ AmmatillinenOpiskeluoikeusjakso(now, mitätöity)))
       case t: NuortenPerusopetuksenOpiskeluoikeudenTila =>
         Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ NuortenPerusopetuksenOpiskeluoikeusjakso(now, mitätöity)))
+      case t: PerusopetukseenValmistavanOpetuksenOpiskeluoikeudenTila =>
+        Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ PerusopetukseenValmistavanOpetuksenOpiskeluoikeusJakso(now, mitätöity)))
       case t: AikuistenPerusopetuksenOpiskeluoikeudenTila =>
         Right(t.copy(opiskeluoikeusjaksot = t.opiskeluoikeusjaksot :+ AikuistenPerusopetuksenOpiskeluoikeusjakso(now, mitätöity)))
       case t: LukionOpiskeluoikeudenTila =>
