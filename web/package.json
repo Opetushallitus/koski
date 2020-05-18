@@ -63,7 +63,7 @@
     "mocha": "^7.1.1",
     "mocha-chrome": "^2.2.0",
     "postcss-loader": "^3.0.0",
-    "puppeteer": "^1.20.0",
+    "puppeteer": "^3.1.0",
     "q": "^1.5.1",
     "set-value": "^3.0.1",
     "snyk": "^1.290.1",
