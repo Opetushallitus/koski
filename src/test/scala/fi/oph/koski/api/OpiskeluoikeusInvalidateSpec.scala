@@ -7,12 +7,15 @@ import org.scalatest.{FreeSpec, Matchers}
 
 class OpiskeluoikeusInvalidateSpec extends FreeSpec with Matchers with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods with HttpTester {
   "Opiskeluoikeuksien mitätöiminen" in {
-    val opiskeluoikeusOid = oppija(MockOppijat.eero.oid).tallennettavatOpiskeluoikeudet.flatMap(_.oid).head
-    delete(s"api/opiskeluoikeus/$opiskeluoikeusOid", headers = authHeaders(paakayttaja)) {
-      verifyResponseStatusOk()
-    }
-    delete(s"api/opiskeluoikeus/$opiskeluoikeusOid", headers = authHeaders(paakayttaja)) {
-      verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta ei löydy annetulla oid:llä tai käyttäjällä ei ole siihen oikeuksia"))
+    val kaikkiOpiskeluoikeudet = koskeenTallennetutOpiskeluoikeudet.flatMap(_.oid)
+    kaikkiOpiskeluoikeudet should not be empty
+    kaikkiOpiskeluoikeudet.foreach { oid =>
+      delete(s"api/opiskeluoikeus/$oid", headers = authHeaders(paakayttaja)) {
+        verifyResponseStatusOk()
+      }
+      delete(s"api/opiskeluoikeus/$oid", headers = authHeaders(paakayttaja)) {
+        verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia("Opiskeluoikeutta ei löydy annetulla oid:llä tai käyttäjällä ei ole siihen oikeuksia"))
+      }
     }
   }
 }

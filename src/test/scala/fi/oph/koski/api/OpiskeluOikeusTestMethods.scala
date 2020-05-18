@@ -85,4 +85,8 @@ trait OpiskeluoikeusTestMethods extends HttpSpecification with Matchers {
     }
   }
 
+  lazy val koskeenTallennetutOpiskeluoikeudet: List[Opiskeluoikeus] = for {
+    opiskeluoikeus <- koskeenTallennetutOppijat.flatMap(_.opiskeluoikeudet)
+    if !opiskeluoikeus.mitätöity && opiskeluoikeus.oid.isDefined
+  } yield opiskeluoikeus
 }
