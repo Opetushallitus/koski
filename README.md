@@ -29,7 +29,7 @@ Koski sallii käytön, jos
 A CAS-palvelu sallii kirjautumisen käyttäjän syöttämällä käyttäjätunnuksella ja salasanalla, tai
 B Kosken REST-rajapintoja käytettäessä HTTP-pyynnössä on HTTP Basic Authentication -käyttäjätunnus ja salasana, jotka ovat validit Opintopolun käyttöoikeuspalvelussa.
 
-Käyttäjä kuuluu käyttöoikeusryhmiin, joiden kautta hänelle määräytyvät hänen käyttöoikeutensa (roolit) Koskessa. 
+Käyttäjä kuuluu käyttöoikeusryhmiin, joiden kautta hänelle määräytyvät hänen käyttöoikeutensa (roolit) Koskessa.
 Käyttäjän käyttöoikeudet haetaan Opintopolun käyttöoikeuspalvelusta. Käyttöoikeudet muodostuvat kolmesta osasta:
 
 * Sovellus: joko KOSKI tai LOKALISOINTI,
@@ -145,6 +145,12 @@ hakemistosta [`web/`](web/) ja sen alihakemistoista.
 
 Staattisista tiedostoista palvellaan vain `web.xml` -tiedostossa erikseen määritellyt polut.
 Tietyt polut ohjataan palvelemaan etusivun sisältö, ks. [ScalatraBootstrap](src/main/scala/ScalatraBootstrap.scala) ja [IndexServlet](src/main/scala/fi/oph/koski/servlet/IndexServlet.scala).
+
+Raporttien käyttö paikallisesti tarvitsee raportointikannan. Sen saa luotua komentoriviltä
+
+``` shell
+make reset-raportointikanta
+```
 
 ### Ajaminen paikallisesti käyttäen ulkoisia palveluja
 
