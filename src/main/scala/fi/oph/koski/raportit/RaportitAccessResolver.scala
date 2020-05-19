@@ -33,6 +33,7 @@ case class RaportitAccessResolver(organisaatioRepository: OrganisaatioRepository
       .map(raportointiDatabase.oppilaitostenKoulutusmuodot)
       .map(_.flatMap(raportinTyypitKoulutusmuodolle(_, isKoulutustoimija)))
       .map(_.filter(checkRaporttiAccessIfAccessIsLimited(_)))
+      .map(_.filter(raportti => session.allowedOpiskeluoikeusTyypit.contains(raportti.opiskeluoikeudenTyyppi)))
       .getOrElse(Set.empty[RaportinTyyppi])
   }
 

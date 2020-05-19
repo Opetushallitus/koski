@@ -3,7 +3,7 @@ package fi.oph.koski.raportit
 import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.raportointikanta.RaportointiDatabase
-import fi.oph.koski.schema.Organisaatio
+import fi.oph.koski.schema.{OpiskeluoikeudenTyyppi, Organisaatio}
 
 trait Raportti {
 
@@ -96,16 +96,33 @@ case class RaporttiPäivältäRequest(
   paiva: LocalDate
 ) extends RaporttiRequest
 
-sealed abstract trait RaportinTyyppi {
+sealed trait RaportinTyyppi {
+  val opiskeluoikeudenTyyppi: String
   override def toString: String = this.getClass.getSimpleName.toLowerCase.filterNot(_ == '$')
 }
 
-case object AmmatillinenOpiskelijavuositiedot extends RaportinTyyppi
-case object AmmatillinenOsittainenSuoritustietojenTarkistus extends RaportinTyyppi
-case object AmmatillinenTutkintoSuoritustietojenTarkistus extends RaportinTyyppi
-case object PerusopetuksenVuosiluokka extends RaportinTyyppi
-case object LukionSuoritustietojenTarkistus extends RaportinTyyppi
-case object MuuAmmatillinenKoulutus extends RaportinTyyppi
-case object TOPKSAmmatillinen extends RaportinTyyppi
-case object EsiopetuksenRaportti extends RaportinTyyppi
-case object AikuistenPerusopetusSuoritustietojenTarkistus extends RaportinTyyppi
+sealed trait AmmatillinenRaportti extends RaportinTyyppi {
+  val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.ammatillinenkoulutus.koodiarvo
+}
+
+case object AmmatillinenOpiskelijavuositiedot extends AmmatillinenRaportti
+case object AmmatillinenOsittainenSuoritustietojenTarkistus extends  AmmatillinenRaportti
+case object AmmatillinenTutkintoSuoritustietojenTarkistus extends AmmatillinenRaportti
+case object MuuAmmatillinenKoulutus extends AmmatillinenRaportti
+case object TOPKSAmmatillinen extends AmmatillinenRaportti
+
+case object PerusopetuksenVuosiluokka extends RaportinTyyppi {
+  val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.perusopetus.koodiarvo
+}
+
+case object LukionSuoritustietojenTarkistus extends RaportinTyyppi {
+  val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.lukiokoulutus.koodiarvo
+}
+
+case object EsiopetuksenRaportti extends RaportinTyyppi {
+  val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.esiopetus.koodiarvo
+}
+
+case object AikuistenPerusopetusSuoritustietojenTarkistus extends RaportinTyyppi {
+  val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.aikuistenperusopetus.koodiarvo
+}
