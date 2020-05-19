@@ -105,7 +105,7 @@ object AmmatillinenOpiskalijavuositiedotRaportti extends AikajaksoRaportti {
     "erityinenTukiPäivät" -> Column("Erityinen tuki (pv)", width = Some(2000)),
     "vaativanErityisenTuenErityinenTehtäväPäivät" -> Column("Vaativat erityisen tuen tehtävä (pv)", width = Some(2000)),
     "hojksPäivät" -> Column("Hojks (pv)", width = Some(2000)),
-    "vaikeastiVammainenPäivät" -> Column("Vaikeasti vammainen (pv)", width = Some(2000)),
+    "vaikeastiVammainenPäivät" -> Column("Vaikeasti vaimmaisten opetus (pv)", width = Some(2000)),
     "vammainenJaAvustajaPäivät" -> Column("Vammainen ja avustaja (pv)", width = Some(2000)),
     "osaAikaisuusProsentit" -> Column("Osa-aikaisuusjaksot (prosentit)", width = Some(2000)),
     "osaAikaisuusKeskimäärin" -> Column("Osa-aikaisuus keskimäärin (%)", width = Some(2000)),

@@ -141,7 +141,7 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
     "erityisenTuenPäätösErityisryhmässä" -> Column("Erityisen tuen päätös: Erityisryhmässä"),
     "erityisenTuenPäätösToteutuspaikka" -> Column("Erityisen tuen päätös: Toteutuspaikka"),
     "vammainen" -> Column("Vammainen"),
-    "vaikeastiVammainen" -> Column("Vaikeasti vammainen"),
+    "vaikeastiVammainen" -> Column("Vaikeimmin kehitysvammainen"),
     "majoitusetu" -> Column("Majoitusetu"),
     "kuljetusetu" -> Column("Kuljetusetu"),
     "sisäoppilaitosmainenMajoitus" -> Column("Sisäoppilaitosmainen majoitus"),
