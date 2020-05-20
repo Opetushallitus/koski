@@ -10,7 +10,7 @@ import fi.oph.koski.log.KoskiMessageField.hakuEhto
 import fi.oph.koski.log.KoskiOperation.OPISKELUOIKEUS_RAPORTTI
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, Logging}
 import fi.oph.koski.organisaatio.OrganisaatioOid
-import fi.oph.koski.schema.Organisaatio
+import fi.oph.koski.schema.{Koodistokoodiviite, OpiskeluoikeudenTyyppi, Organisaatio}
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import org.scalatra.{ContentEncodingSupport, Cookie, CookieOptions}
 
@@ -37,54 +37,63 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
   }
 
   get("/ammatillinenopiskelijavuositiedot") {
+    requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.ammatillinenkoulutus)
     val parsedRequest = parseAikajaksoRaporttiRequest
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=ammatillinenopiskelijavuositiedot&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
     writeExcel(raportitService.opiskelijaVuositiedot(parsedRequest))
   }
 
   get("/ammatillinentutkintosuoritustietojentarkistus") {
+    requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.ammatillinenkoulutus)
     val parsedRequest = parseAikajaksoRaporttiAikarajauksellaRequest
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=ammatillinentutkintosuoritustietojentarkistus&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
     writeExcel(raportitService.ammatillinenTutkintoSuoritustietojenTarkistus(parsedRequest))
   }
 
   get("/ammatillinenosittainensuoritustietojentarkistus") {
+    requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.ammatillinenkoulutus)
     val parsedRequest = parseAikajaksoRaporttiAikarajauksellaRequest
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=ammatillinenosittainensuoritustietojentarkistus&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
     writeExcel(raportitService.ammatillinenOsittainenSuoritustietojenTarkistus(parsedRequest))
   }
 
   get("/perusopetuksenvuosiluokka") {
+    requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.perusopetus)
     val parsedRequest = parseVuosiluokkaRequest
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=perusopetuksenvuosiluokka&oppilaitosOid=${parsedRequest.oppilaitosOid}&paiva=${parsedRequest.paiva}&vuosiluokka=${parsedRequest.vuosiluokka}")))
     writeExcel(raportitService.perusopetuksenVuosiluokka(parsedRequest))
   }
 
   get("/lukionsuoritustietojentarkistus") {
+    requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.lukiokoulutus)
     val parsedRequest = parseAikajaksoRaporttiRequest
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=lukionsuoritustietojentarkistus&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
     writeExcel(raportitService.lukioraportti(parsedRequest))
   }
 
   get("/aikuisten-perusopetus-suoritustietojen-tarkistus") {
+    requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.aikuistenperusopetus)
     val parsedRequest = parseAikuistenPerusopetusRaporttiRequest
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=aikuistenperusopetuksensuoritustietojentarkistus&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
     writeExcel(raportitService.aikuistenPerusopetus(parsedRequest))
   }
 
   get("/muuammatillinen") {
+    requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.ammatillinenkoulutus)
     val parsedRequest = parseAikajaksoRaporttiRequest
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=muuammatillinen&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
     writeExcel(raportitService.muuAmmatillinen(parsedRequest))
   }
 
   get("/topksammatillinen") {
+    requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.ammatillinenkoulutus)
     val parsedRequest = parseAikajaksoRaporttiRequest
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=topksammatillinen&oppilaitosOid=${parsedRequest.oppilaitosOid}&alku=${parsedRequest.alku}&loppu=${parsedRequest.loppu}")))
     writeExcel(raportitService.topksAmmatillinen(parsedRequest))
   }
 
   get("/esiopetus") {
+    requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.esiopetus)
     val date = getLocalDateParam("paiva")
     val password = getStringParam("password")
     val token = params.get("downloadToken")
@@ -97,6 +106,12 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
     }
 
     writeExcel(resp)
+  }
+
+  private def requireOpiskeluoikeudenKayttooikeudet(opiskeluoikeudenTyyppiViite: Koodistokoodiviite) = {
+    if (!koskiSession.allowedOpiskeluoikeusTyypit.contains(opiskeluoikeudenTyyppiViite.koodiarvo)) {
+      haltWithStatus(KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi())
+    }
   }
 
   private def writeExcel(raportti: OppilaitosRaporttiResponse) = {

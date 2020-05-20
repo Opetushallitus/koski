@@ -6,6 +6,7 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.UserWithPassword
 import fi.oph.koski.organisaatio.MockOrganisaatiot._
 import fi.oph.koski.koskiuser.MockUsers._
+import fi.oph.koski.organisaatio.MockOrganisaatiot
 import fi.oph.koski.raportointikanta.RaportointikantaTestMethods
 import org.json4s.JArray
 import org.json4s.jackson.JsonMethods
@@ -89,6 +90,11 @@ class RaportitServletSpec extends FreeSpec with RaportointikantaTestMethods with
       "koulutustoimijan oikeuksilla ei voi hakea toisen oppilaitoksen raportteja" in {
         authGet(s"${mahdollisetRaportitUrl}${jyväskylänNormaalikoulu}", user = helsinginKaupunkiPalvelukäyttäjä) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio())
+        }
+      }
+      "ei voi ladata raporttia jos raportin opiskeluoikeuden tyyppiin ei ole oikeuksia" in {
+        authGet(s"api/raportit/lukionsuoritustietojentarkistus?oppilaitosOid=${MockOrganisaatiot.jyväskylänNormaalikoulu}&alku=2016-01-01&loppu=2016-12-31&password=dummy", user = perusopetusTallentaja) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi())
         }
       }
     }
