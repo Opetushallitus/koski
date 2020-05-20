@@ -1,0 +1,1366 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+  <SOAP-ENV:Header/>
+  <SOAP-ENV:Body>
+    <virtaluku:OpiskelijanKaikkiTiedotResponse xmlns:virtaluku="http://tietovaranto.csc.fi/luku">
+      <virta:Virta xmlns:virta="urn:mace:funet.fi:virta/2015/09/01">
+        <virta:Opiskelija avain="129999">
+          <virta:Henkilotunnus>260308-361W</virta:Henkilotunnus>
+          <virta:KansallinenOppijanumero>1.2.246.562.24.77777777777</virta:KansallinenOppijanumero>
+          <virta:Opiskeluoikeudet>
+            <virta:Opiskeluoikeus opiskelijaAvain="129999" avain="1904999">
+              <virta:AlkuPvm>2019-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2019-12-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2019-01-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2019-12-31</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2020-01-01</virta:AlkuPvm>
+                <virta:Koodi>3</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>8</virta:Tyyppi>
+              <virta:Myontaja>10065</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="TXK Tieto- ja viestintätekniikan tutkinto-ohjelma">
+                <virta:AlkuPvm>2019-01-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2019-12-31</virta:LoppuPvm>
+                <virta:Koulutuskunta>049</virta:Koulutuskunta>
+                <virta:Koulutuskieli>en</virta:Koulutuskieli>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">7</virta:Koulutusala>
+              <virta:Laajuus>
+                <virta:Opintopiste>0</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
+          </virta:Opiskeluoikeudet>
+        </virta:Opiskelija>
+
+        <virta:Opiskelija avain="11999">
+          <virta:Henkilotunnus>260308-361W</virta:Henkilotunnus>
+          <virta:KansallinenOppijanumero>1.2.246.562.24.77777777777</virta:KansallinenOppijanumero>
+          <virta:Opiskeluoikeudet>
+            <virta:Opiskeluoikeus opiskelijaAvain="11999" avain="1809999">
+              <virta:AlkuPvm>2018-08-27</virta:AlkuPvm>
+              <virta:LoppuPvm>2022-07-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2018-08-27</virta:AlkuPvm>
+                <virta:LoppuPvm>2018-12-31</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2019-01-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2019-07-31</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2019-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2019-12-31</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2020-01-01</virta:AlkuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>1</virta:Tyyppi>
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="KONE Konetekniikan koulutus">
+                <virta:AlkuPvm>2018-08-27</virta:AlkuPvm>
+                <virta:Koulutuskoodi>651101</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>398</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">8</virta:Koulutusala>
+              <virta:Laajuus>
+                <virta:Opintopiste>240</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus opiskelijaAvain="11999" avain="0401288">
+              <virta:AlkuPvm>2004-08-23</virta:AlkuPvm>
+              <virta:LoppuPvm>2005-09-14</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2004-08-23</virta:AlkuPvm>
+                <virta:LoppuPvm>2004-08-26</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2004-08-27</virta:AlkuPvm>
+                <virta:LoppuPvm>2004-12-31</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2005-01-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2005-09-14</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2005-09-15</virta:AlkuPvm>
+                <virta:Koodi>5</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>1</virta:Tyyppi>
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Organisaatio>
+                <virta:Rooli>5</virta:Rooli>
+                <virta:Koodi>02470</virta:Koodi>
+              </virta:Organisaatio>
+              <virta:Jakso koulutusmoduulitunniste="07KONTEK Kone- ja tuotantotekniikan koulutusohjelma">
+                <virta:AlkuPvm>2004-08-23</virta:AlkuPvm>
+                <virta:LoppuPvm>2005-09-14</virta:LoppuPvm>
+                <virta:Koulutuskoodi>651101</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>398</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                <virta:Luokittelu>3</virta:Luokittelu>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">8</virta:Koulutusala>
+              <virta:Laajuus>
+                <virta:Opintopiste>240</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
+          </virta:Opiskeluoikeudet>
+          <virta:LukukausiIlmoittautumiset>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="0401288" opiskelijaAvain="11999">
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2005-01-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2005-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2005-07-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="1809999" opiskelijaAvain="11999">
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2019-01-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2019-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2019-07-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="0401288" opiskelijaAvain="11999">
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2004-08-27</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2004-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2004-12-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="1809999" opiskelijaAvain="11999">
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2020-01-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2020-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-07-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="1809999" opiskelijaAvain="11999">
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2018-08-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2018-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2018-12-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="1809999" opiskelijaAvain="11999">
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2019-08-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2019-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2019-12-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+          </virta:LukukausiIlmoittautumiset>
+
+          <virta:Opintosuoritukset>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 LA00BQ87-3032" avain="1924573">
+              <virta:SuoritusPvm>2019-12-05</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Ammatillisen osaamisen kehittyminen 2</virta:Nimi>
+              <virta:Nimi kieli="en">Developing professional competence 2</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BH12-3005" avain="1843503">
+              <virta:SuoritusPvm>2019-01-08</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Mekaniikan sovellukset</virta:Nimi>
+              <virta:Nimi kieli="en">Mechanical Applications</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BF63-3003" avain="1857692">
+              <virta:SuoritusPvm>2019-01-31</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Pajatyöskentely</virta:Nimi>
+              <virta:Nimi kieli="en">Workshop</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BG60-3002" avain="1935763">
+              <virta:SuoritusPvm>2019-12-20</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Pneumatiikka ja hydrauliikka</virta:Nimi>
+              <virta:Nimi kieli="en">Pneumatics and Hydraulics</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 LA00BH89-3004" avain="1808107">
+              <virta:SuoritusPvm>2018-10-29</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Tekniikan matematiikan perusteet</virta:Nimi>
+              <virta:Nimi kieli="en">Preparatory studies in mathematics, Faculty of Technology</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 LA00BE77-3018" avain="1842230">
+              <virta:SuoritusPvm>2019-04-25</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Ammatillisen osaamisen kehittyminen</virta:Nimi>
+              <virta:Nimi kieli="en">Developing professional competence</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BH11-3005" avain="1823080">
+              <virta:SuoritusPvm>2018-11-14</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Matemaattiset työvälineet</virta:Nimi>
+              <virta:Nimi kieli="en">Mathematical tools</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BF62-3003" avain="1833159">
+              <virta:SuoritusPvm>2018-12-11</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Automaation perusteet</virta:Nimi>
+              <virta:Nimi kieli="en">Basics of Automation</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BG59-3002" avain="1908373">
+              <virta:SuoritusPvm>2020-01-08</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>7</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Mitoitus ja mallinnus</virta:Nimi>
+              <virta:Nimi kieli="en">Design and Modelling</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 LA00BI95-3004" avain="1822420">
+              <virta:SuoritusPvm>2018-11-12</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Suomen perusteet</virta:Nimi>
+              <virta:Nimi kieli="en">Preparatory studies in Finnish</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BR89-3003" avain="1963402">
+              <virta:SuoritusPvm>2020-04-23</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">CAM/CAE</virta:Nimi>
+              <virta:Nimi kieli="en">CAM/CAE</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 LA00BE76-3050" avain="1854926">
+              <virta:SuoritusPvm>2019-05-04</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Asiantuntijaviestintä</virta:Nimi>
+              <virta:Nimi kieli="en">Professional communication</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BH10-3012" avain="1861528">
+              <virta:SuoritusPvm>2019-03-08</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Digitaaliset työkalut</virta:Nimi>
+              <virta:Nimi kieli="en">Digital Tools</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BF61-3003" avain="1842039">
+              <virta:SuoritusPvm>2019-01-03</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Mekaniikan perusteet</virta:Nimi>
+              <virta:Nimi kieli="en">Basics of Mechanics</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BG58-3003" avain="1879116">
+              <virta:SuoritusPvm>2019-05-15</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Projekti 1</virta:Nimi>
+              <virta:Nimi kieli="en">Project 1</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 LA00BQ27-3002" avain="1828902">
+              <virta:SuoritusPvm>2018-12-04</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Sähkötekniikan perusteet</virta:Nimi>
+              <virta:Nimi kieli="en">Basics of Electrical Engineering</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BM23-3001" avain="1932985">
+              <virta:SuoritusPvm>2019-12-16</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>9</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Ohjausjärjestelmät</virta:Nimi>
+              <virta:Nimi kieli="en">Control Systems</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BH08-3012" avain="1876951">
+              <virta:SuoritusPvm>2019-05-09</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>1</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Tulevaisuuden digitaalisuus</virta:Nimi>
+              <virta:Nimi kieli="en">Digitalisation of the Future</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BH13-3007" avain="1917810">
+              <virta:SuoritusPvm>2019-11-20</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Sähkö</virta:Nimi>
+              <virta:Nimi kieli="en">Electricity</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BG56-3002" avain="1854772">
+              <virta:SuoritusPvm>2020-01-22</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>7</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Koneenosat ja mitoitus</virta:Nimi>
+              <virta:Nimi kieli="en">Mechanical Parts and Design</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BG64-3004" avain="1969173">
+              <virta:SuoritusPvm>2020-05-06</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Project 2.2</virta:Nimi>
+              <virta:Nimi kieli="en">Project 2.2</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00AX78-3002" avain="1827942">
+              <virta:SuoritusPvm>2018-12-03</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Sähkösuunnittelun erikoiskurssi</virta:Nimi>
+              <virta:Nimi kieli="en">Electrical Design Special Course</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 LA00BE73-3063" avain="1918108">
+              <virta:SuoritusPvm>2019-11-20</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">English for Work</virta:Nimi>
+              <virta:Nimi kieli="en">English for Work</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BH09-3012" avain="1867498">
+              <virta:SuoritusPvm>2019-04-05</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Verkot, tietoturva ja pilvipalvelut</virta:Nimi>
+              <virta:Nimi kieli="en">Networks, Data Security and Cloud Services</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BH14-3007" avain="1955679">
+              <virta:SuoritusPvm>2020-03-21</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>2</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Lämpö ja energia</virta:Nimi>
+              <virta:Nimi kieli="en">Heat and Energy</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BG57-3002" avain="1869120">
+              <virta:SuoritusPvm>2019-04-11</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Sähkömoottorikäytöt</virta:Nimi>
+              <virta:Nimi kieli="en">Electric Motor Drives</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 LA00BO03" avain="1909297">
+              <virta:SuoritusPvm>2019-10-03</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>20</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Harjoittelu</virta:Nimi>
+              <virta:Nimi kieli="en">Practical Training</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+              <virta:Luokittelu>7</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 0730SJ302-3003" avain="1867737">
+              <virta:SuoritusPvm>2019-04-08</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>10126</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Sähkösuunnittelun jatkokurssi</virta:Nimi>
+              <virta:Nimi kieli="en">Electrical Design Advanced Course</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+          </virta:Opintosuoritukset>
+
+        </virta:Opiskelija>
+        <virta:Opiskelija avain="02504M0999">
+          <virta:Henkilotunnus>260308-361W</virta:Henkilotunnus>
+          <virta:Opiskeluoikeudet>
+            <virta:Opiskeluoikeus opiskelijaAvain="02504M0999" avain="02504M0999">
+              <virta:AlkuPvm>2019-04-26</virta:AlkuPvm>
+              <virta:LoppuPvm>2019-12-30</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2019-04-26</virta:AlkuPvm>
+                <virta:LoppuPvm>2019-12-30</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>8</virta:Tyyppi>
+              <virta:Myontaja>02504</virta:Myontaja>
+              <virta:Koulutusala versio="ohjausala">8</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+          </virta:Opiskeluoikeudet>
+          <virta:LukukausiIlmoittautumiset>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="02504M0999" opiskelijaAvain="02504M0999">
+              <virta:Myontaja>02504</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2019-04-26</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2019-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2019-07-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+          </virta:LukukausiIlmoittautumiset>
+        </virta:Opiskelija>
+
+        <virta:Opiskelija avain="11999">
+          <virta:Henkilotunnus>260308-361W</virta:Henkilotunnus>
+          <virta:KansallinenOppijanumero>1.2.246.562.24.77777777777</virta:KansallinenOppijanumero>
+          <virta:Opiskeluoikeudet>
+            <virta:Opiskeluoikeus opiskelijaAvain="11999" avain="0401288">
+              <virta:AlkuPvm>2004-08-23</virta:AlkuPvm>
+              <virta:LoppuPvm>2005-09-14</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2004-08-23</virta:AlkuPvm>
+                <virta:LoppuPvm>2004-08-26</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2004-08-27</virta:AlkuPvm>
+                <virta:LoppuPvm>2004-12-31</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2005-01-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2005-09-14</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2005-09-15</virta:AlkuPvm>
+                <virta:Koodi>5</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>1</virta:Tyyppi>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="07KONTEK Kone- ja tuotantotekniikan koulutusohjelma">
+                <virta:AlkuPvm>2004-08-23</virta:AlkuPvm>
+                <virta:LoppuPvm>2005-09-14</virta:LoppuPvm>
+                <virta:Koulutuskoodi>651101</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>398</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+                <virta:Luokittelu>3</virta:Luokittelu>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">8</virta:Koulutusala>
+              <virta:Laajuus>
+                <virta:Opintopiste>240</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
+            <virta:Opiskeluoikeus opiskelijaAvain="11999" avain="1809999">
+              <virta:AlkuPvm>2018-08-27</virta:AlkuPvm>
+              <virta:LoppuPvm>2022-07-31</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2018-08-27</virta:AlkuPvm>
+                <virta:LoppuPvm>2018-12-31</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2019-01-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2019-07-31</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2019-08-01</virta:AlkuPvm>
+                <virta:LoppuPvm>2019-12-31</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2020-01-01</virta:AlkuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>1</virta:Tyyppi>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="KONE Konetekniikan koulutus">
+                <virta:AlkuPvm>2018-08-27</virta:AlkuPvm>
+                <virta:Koulutuskoodi>651101</virta:Koulutuskoodi>
+                <virta:Koulutuskunta>398</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">8</virta:Koulutusala>
+              <virta:Laajuus>
+                <virta:Opintopiste>240</virta:Opintopiste>
+              </virta:Laajuus>
+            </virta:Opiskeluoikeus>
+          </virta:Opiskeluoikeudet>
+          <virta:LukukausiIlmoittautumiset>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="0401288" opiskelijaAvain="11999">
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2004-08-27</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2004-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2004-12-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="0401288" opiskelijaAvain="11999">
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2005-01-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2005-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2005-07-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="1809999" opiskelijaAvain="11999">
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2018-08-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2018-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2018-12-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="1809999" opiskelijaAvain="11999">
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2019-01-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2019-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2019-07-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="1809999" opiskelijaAvain="11999">
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2019-08-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2019-08-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2019-12-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+            <virta:LukukausiIlmoittautuminen opiskeluoikeusAvain="1809999" opiskelijaAvain="11999">
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Tila>1</virta:Tila>
+              <virta:IlmoittautumisPvm>2020-01-01</virta:IlmoittautumisPvm>
+              <virta:AlkuPvm>2020-01-01</virta:AlkuPvm>
+              <virta:LoppuPvm>2020-07-31</virta:LoppuPvm>
+            </virta:LukukausiIlmoittautuminen>
+          </virta:LukukausiIlmoittautumiset>
+
+          <virta:Opintosuoritukset>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 LA00BE73-3063" avain="1918108">
+              <virta:SuoritusPvm>2019-11-20</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">English for Work</virta:Nimi>
+              <virta:Nimi kieli="en">English for Work</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 LA00BE76-3050" avain="1854926">
+              <virta:SuoritusPvm>2019-05-04</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Asiantuntijaviestintä</virta:Nimi>
+              <virta:Nimi kieli="en">Professional communication</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 LA00BE77-3018" avain="1842230">
+              <virta:SuoritusPvm>2019-04-25</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Ammatillisen osaamisen kehittyminen</virta:Nimi>
+              <virta:Nimi kieli="en">Developing professional competence</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 LA00BQ87-3032" avain="1924573">
+              <virta:SuoritusPvm>2019-12-05</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Ammatillisen osaamisen kehittyminen 2</virta:Nimi>
+              <virta:Nimi kieli="en">Developing professional competence 2</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BH08-3012" avain="1876951">
+              <virta:SuoritusPvm>2019-05-09</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>1</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Tulevaisuuden digitaalisuus</virta:Nimi>
+              <virta:Nimi kieli="en">Digitalisation of the Future</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BH09-3012" avain="1867498">
+              <virta:SuoritusPvm>2019-04-05</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Verkot, tietoturva ja pilvipalvelut</virta:Nimi>
+              <virta:Nimi kieli="en">Networks, Data Security and Cloud Services</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BH10-3012" avain="1861528">
+              <virta:SuoritusPvm>2019-03-08</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>4</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Digitaaliset työkalut</virta:Nimi>
+              <virta:Nimi kieli="en">Digital Tools</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BH11-3005" avain="1823080">
+              <virta:SuoritusPvm>2018-11-14</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Matemaattiset työvälineet</virta:Nimi>
+              <virta:Nimi kieli="en">Mathematical tools</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BH12-3005" avain="1843503">
+              <virta:SuoritusPvm>2019-01-08</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Mekaniikan sovellukset</virta:Nimi>
+              <virta:Nimi kieli="en">Mechanical Applications</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BH13-3007" avain="1917810">
+              <virta:SuoritusPvm>2019-11-20</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Sähkö</virta:Nimi>
+              <virta:Nimi kieli="en">Electricity</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BH14-3007" avain="1955679">
+              <virta:SuoritusPvm>2020-03-21</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>2</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Lämpö ja energia</virta:Nimi>
+              <virta:Nimi kieli="en">Heat and Energy</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BF61-3003" avain="1842039">
+              <virta:SuoritusPvm>2019-01-03</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Mekaniikan perusteet</virta:Nimi>
+              <virta:Nimi kieli="en">Basics of Mechanics</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BF62-3003" avain="1833159">
+              <virta:SuoritusPvm>2018-12-11</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Automaation perusteet</virta:Nimi>
+              <virta:Nimi kieli="en">Basics of Automation</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BF63-3003" avain="1857692">
+              <virta:SuoritusPvm>2019-01-31</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Pajatyöskentely</virta:Nimi>
+              <virta:Nimi kieli="en">Workshop</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BG56-3002" avain="1854772">
+              <virta:SuoritusPvm>2020-01-22</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>7</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Koneenosat ja mitoitus</virta:Nimi>
+              <virta:Nimi kieli="en">Mechanical Parts and Design</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BG57-3002" avain="1869120">
+              <virta:SuoritusPvm>2019-04-11</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Sähkömoottorikäytöt</virta:Nimi>
+              <virta:Nimi kieli="en">Electric Motor Drives</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BG58-3003" avain="1879116">
+              <virta:SuoritusPvm>2019-05-15</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Projekti 1</virta:Nimi>
+              <virta:Nimi kieli="en">Project 1</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BG59-3002" avain="1908373">
+              <virta:SuoritusPvm>2020-01-08</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>7</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Mitoitus ja mallinnus</virta:Nimi>
+              <virta:Nimi kieli="en">Design and Modelling</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BG60-3002" avain="1935763">
+              <virta:SuoritusPvm>2019-12-20</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>6</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Pneumatiikka ja hydrauliikka</virta:Nimi>
+              <virta:Nimi kieli="en">Pneumatics and Hydraulics</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BG64-3004" avain="1969173">
+              <virta:SuoritusPvm>2020-05-06</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Project 2.2</virta:Nimi>
+              <virta:Nimi kieli="en">Project 2.2</virta:Nimi>
+              <virta:Kieli>en</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 LA00BO03" avain="1909297">
+              <virta:SuoritusPvm>2019-10-03</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>20</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Harjoittelu</virta:Nimi>
+              <virta:Nimi kieli="en">Practical Training</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+              <virta:Luokittelu>7</virta:Luokittelu>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 LA00BQ27-3002" avain="1828902">
+              <virta:SuoritusPvm>2018-12-04</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Sähkötekniikan perusteet</virta:Nimi>
+              <virta:Nimi kieli="en">Basics of Electrical Engineering</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 LA00BI95-3004" avain="1822420">
+              <virta:SuoritusPvm>2018-11-12</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>3</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Suomen perusteet</virta:Nimi>
+              <virta:Nimi kieli="en">Preparatory studies in Finnish</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 LA00BH89-3004" avain="1808107">
+              <virta:SuoritusPvm>2018-10-29</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Tekniikan matematiikan perusteet</virta:Nimi>
+              <virta:Nimi kieli="en">Preparatory studies in mathematics, Faculty of Technology</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00AX78-3002" avain="1827942">
+              <virta:SuoritusPvm>2018-12-03</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>3</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Sähkösuunnittelun erikoiskurssi</virta:Nimi>
+              <virta:Nimi kieli="en">Electrical Design Special Course</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 0730SJ302-3003" avain="1867737">
+              <virta:SuoritusPvm>2019-04-08</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>2</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>HYV</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Sähkösuunnittelun jatkokurssi</virta:Nimi>
+              <virta:Nimi kieli="en">Electrical Design Advanced Course</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BM23-3001" avain="1932985">
+              <virta:SuoritusPvm>2019-12-16</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>9</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>5</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">Ohjausjärjestelmät</virta:Nimi>
+              <virta:Nimi kieli="en">Control Systems</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+            <virta:Opintosuoritus opiskeluoikeusAvain="1809999" opiskelijaAvain="11999" koulutusmoduulitunniste="TEKTT18 TE00BR89-3003" avain="1963402">
+              <virta:SuoritusPvm>2020-04-23</virta:SuoritusPvm>
+              <virta:Laajuus>
+                <virta:Opintopiste>5</virta:Opintopiste>
+              </virta:Laajuus>
+              <virta:Arvosana>
+                <virta:Viisiportainen>4</virta:Viisiportainen>
+              </virta:Arvosana>
+              <virta:Myontaja>02470</virta:Myontaja>
+              <virta:Laji>2</virta:Laji>
+              <virta:Nimi kieli="fi">CAM/CAE</virta:Nimi>
+              <virta:Nimi kieli="en">CAM/CAE</virta:Nimi>
+              <virta:Kieli>fi</virta:Kieli>
+              <virta:Koulutusala>
+                <virta:Koodi versio="ohjausala">8</virta:Koodi>
+              </virta:Koulutusala>
+              <virta:Opinnaytetyo>0</virta:Opinnaytetyo>
+            </virta:Opintosuoritus>
+          </virta:Opintosuoritukset>
+
+        </virta:Opiskelija>
+        <virta:Opiskelija avain="78999">
+          <virta:Henkilotunnus>260308-361W</virta:Henkilotunnus>
+          <virta:Opiskeluoikeudet>
+            <virta:Opiskeluoikeus opiskelijaAvain="78999" avain="723916">
+              <virta:AlkuPvm>2019-05-15</virta:AlkuPvm>
+              <virta:LoppuPvm>2019-09-30</virta:LoppuPvm>
+              <virta:Tila>
+                <virta:AlkuPvm>2019-05-15</virta:AlkuPvm>
+                <virta:LoppuPvm>2019-09-30</virta:LoppuPvm>
+                <virta:Koodi>1</virta:Koodi>
+              </virta:Tila>
+              <virta:Tila>
+                <virta:AlkuPvm>2019-10-01</virta:AlkuPvm>
+                <virta:Koodi>5</virta:Koodi>
+              </virta:Tila>
+              <virta:Tyyppi>8</virta:Tyyppi>
+              <virta:Myontaja>02537</virta:Myontaja>
+              <virta:Jakso koulutusmoduulitunniste="9999">
+                <virta:AlkuPvm>2019-05-15</virta:AlkuPvm>
+                <virta:LoppuPvm>2019-09-30</virta:LoppuPvm>
+                <virta:Koulutuskunta>297</virta:Koulutuskunta>
+                <virta:Koulutuskieli>fi</virta:Koulutuskieli>
+                <virta:Rahoituslahde>1</virta:Rahoituslahde>
+              </virta:Jakso>
+              <virta:Koulutusala versio="ohjausala">5</virta:Koulutusala>
+            </virta:Opiskeluoikeus>
+          </virta:Opiskeluoikeudet>
+        </virta:Opiskelija>
+      </virta:Virta>
+    </virtaluku:OpiskelijanKaikkiTiedotResponse>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

@@ -169,4 +169,18 @@ describe('Korkeakoulutus', function() {
       expect(extractAsText(S('.lisätiedot'))).to.include('Järjestävä organisaatio Yrkeshögskolan Arcada\n')
     })
   })
+
+  describe('LAB ammattikorkean suoritustiedot', function() {
+    before(
+      page.openPage,
+      page.oppijaHaku.searchAndSelect('260308-361W')
+    )
+
+    describe('Kaikki tiedot näkyvissä', function() {
+      before(opinnot.expandAll)
+      it('toimii', function() {
+        expect(S('.korkeakoulututkinnonsuoritus .tutkinnon-osa:eq(0) .suoritus:eq(0) .nimi').text()).to.equal('Ammatillisen osaamisen kehittyminen 2')
+      })
+    })
+  })
 })
