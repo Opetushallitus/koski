@@ -370,8 +370,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   }
 
   private def suoritusNodes(virtaXml: Node) = {
-    val suorituksii = (virtaXml \\ "Opintosuoritukset" \\ "Opintosuoritus").toList
-    suorituksii
+    (virtaXml \\ "Opintosuoritukset" \\ "Opintosuoritus").toList
   }
 
   def sisältyyOpiskeluoikeuteen(suoritus: Node, opiskeluoikeus: Node, allNodes: List[Node]): Boolean = try {
