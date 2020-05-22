@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 22.5.2020
+- Kaikkien aikajaksojen alkupäivämäärän pitää olla ennen tai sama kuin loppupäivämäärä
+
 ## 28.4.2020
 - Jos suorituksen tyyppi on "ammatillinen perustutkinto" jonka suoritustapa ops tai reformi, rakenteessa tulee olla "tutkinnonosanryhmä" määriteltynä (Tor-982).
 - Ammatillisen tutkinnon yhteisiin osa-alueisiin (koodit '101053', '101054', '101055', '101056', '400012', '400013', '400014') liittyviä validaatioita Tor-982
