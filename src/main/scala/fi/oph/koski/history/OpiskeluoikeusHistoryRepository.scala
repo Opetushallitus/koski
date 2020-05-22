@@ -34,14 +34,21 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends KoskiDatabaseMethods 
   }
 
   def findVersion(oid: String, version: Int)(implicit user: KoskiSession): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
+    def patch(current: JsonNode, diff: OpiskeluoikeusHistory) = try {
+      val patch = JsonPatch.fromJson(asJsonNode(diff.muutos))
+      patch.apply(current)
+    } catch {
+      case e: Exception =>
+        throw new JsonPatchException(s"Opiskeluoikeuden $oid historiaversion patch ${diff.versionumero} epäonnistui", e)
+    }
+
     findByOpiskeluoikeusOid(oid, version) match {
       case Some(diffs) =>
         if (diffs.length < version) {
           Left(KoskiErrorCategory.notFound.versiotaEiLöydy("Versiota " + version + " ei löydy opiskeluoikeuden " + oid + " historiasta."))
         } else {
           val oikeusVersion: JsonNode = diffs.foldLeft(JsonNodeFactory.instance.objectNode(): JsonNode) { (current, diff) =>
-            val patch = JsonPatch.fromJson(asJsonNode(diff.muutos))
-            patch.apply(current)
+            patch(current, diff)
           }
 
           Tables.OpiskeluoikeusTable.readAsOpiskeluoikeus(fromJsonNode(oikeusVersion), oid, version, diffs.last.aikaleima).left.map { errors =>
@@ -64,3 +71,4 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends KoskiDatabaseMethods 
 
 // TODO: use LocalDateTime instead of Timestamp for consistency with KoskeenTallennettavaOpiskeluoikeus
 case class OpiskeluoikeusHistory(opiskeluoikeusOid: String, versionumero: Int, aikaleima: Timestamp, kayttajaOid: String, @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)) muutos: JValue)
+class JsonPatchException(msg: String, cause: Throwable) extends Exception(msg, cause)
