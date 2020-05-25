@@ -79,7 +79,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
 
     // TOR-984 !!!!!!!! VÄLIAIKAINEN RATKAISU LAB-AMMATTIKOULUJEN DATAN NÄYTTÖÄ VARTEN.
     // Heiltä tulee duplikaatteja suorituksia (=> suoritusten avain on sama). Tulloo myös
-    // duplikaatteja opiskeluoikeuksia. Eli poistetaan nämä.
+    // duplikaatteja opiskeluoikeuksia. Eli poistetaan nämä. Katso myös MyöntäjänäLABAmmattiKorkeakoulu
 
     // huom, tämä suodattaa pois myös tapaukset jossa oppilaitos = None (esim. ulkomaiset)
     poistaDuplikaatitSuorituksetJaOpiskeluoikeudet(opiskeluoikeudet).filter(_.suoritukset.nonEmpty) ++ orphanages
@@ -358,13 +358,23 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
     (node \ "Sisaltyvyys").toList.map(sisaltyvyysNode => (sisaltyvyysNode \ "@sisaltyvaOpintosuoritusAvain").text)
   }
 
+  // TOR-984. Poistetaan, kun VIRTA on korjannut duplikaatit.
+  private def MyöntäjänäLABAmmattiKorkeakoulu(osasuoritusNodes: List[Node]) = {
+    osasuoritusNodes.find(osasuoritus => (osasuoritus \ "Myontaja").text == LABAmmattikorkeaNumero)
+  }
+
   private def childNodes(node: Node, allNodes: List[Node]) = {
     sisaltyvatAvaimet(node).map { opintosuoritusAvain =>
       val osasuoritusNodes = allNodes.filter(avain(_) == opintosuoritusAvain)
       osasuoritusNodes match {
         case osasuoritusNode :: Nil => osasuoritusNode
-        case osasuoritusNode :: _ => throw IllegalSuoritusException("Enemmän kuin yksi suoritus avaimella " + opintosuoritusAvain)
         case Nil => throw IllegalSuoritusException("Opintosuoritusta " + opintosuoritusAvain + " ei löydy dokumentista")
+        case osasuoritusNodes => {
+          MyöntäjänäLABAmmattiKorkeakoulu(osasuoritusNodes) match {
+            case Some(node) => node
+            case None => throw IllegalSuoritusException("Enemmän kuin yksi suoritus avaimella " + opintosuoritusAvain)
+          }
+        }
       }
     }
   }
