@@ -36,6 +36,51 @@ object LisätiedotExample {
 
 object ReforminMukainenErikoisammattitutkintoExample {
   lazy val tutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("357304", Some("Automekaanikon erikoisammattitutkinto"), "koulutus", None), Some("OPH-1886-2017"))
+
+  lazy val osasuoritukset = List(
+    tutkinnonOsanSuoritus("300054", "Korjauksen haltuunotto", None, arvosanaViisi).copy(
+      näyttö = Some(
+        näyttö(
+          date(2018, 2, 2),
+          "Vuosihuoltojen suorittaminen",
+          "Volkswagen Center",
+          Some(näytönArviointi.copy(
+            arvioinnistaPäättäneet = Some(List(Koodistokoodiviite("5", Some("Muu koulutuksen järjestäjän edustaja"), "ammatillisennaytonarvioinnistapaattaneet", None))),
+            arvosana = arvosanaViisi,
+            arviointikohteet = arviointikohteet15
+          ))
+        )
+      )
+    ),
+    tutkinnonOsanSuoritus("300051", "Ajoneuvon vianmääritys", None, arvosanaViisi),
+    tutkinnonOsanSuoritus("300057", "Teknisenä asiantuntijana toiminen", None, arvosanaViisi),
+    tutkinnonOsanSuoritus("300058", "Testaus ja kilpailutoiminta", None, arvosanaViisi)
+  )
+
+  lazy val tutkinnonSuoritus = AmmatillisenTutkinnonSuoritus(
+    koulutusmoduuli = tutkinto,
+    suoritustapa = suoritustapaReformi,
+    osaamisenHankkimistavat = Some(List(
+      OsaamisenHankkimistapajakso(date(2018, 1, 1), None, osaamisenHankkimistapaOppilaitos),
+      OsaamisenHankkimistapajakso(date(2018, 8, 1), None, osaamisenHankkimistapaOppisopimus)
+    )),
+    koulutussopimukset = Some(List(
+      Koulutussopimusjakso(
+        alku = date(2018, 8, 1),
+        loppu = None,
+        työssäoppimispaikka = Some("Volkswagen Center"),
+        työssäoppimispaikanYTunnus = Some("1572860-0"),
+        paikkakunta = jyväskylä,
+        maa = suomi,
+        työtehtävät = Some(finnish("Autojen vuosihuollot"))
+      )
+    )),
+    suorituskieli = suomenKieli,
+    alkamispäivä = None,
+    toimipiste = stadinToimipiste,
+    osasuoritukset = Some(osasuoritukset)
+  )
+
   lazy val opiskeluoikeus = AmmatillinenOpiskeluoikeus(
     arvioituPäättymispäivä = Some(date(2020, 5, 31)),
     tila = AmmatillinenOpiskeluoikeudenTila(List(
@@ -48,47 +93,7 @@ object ReforminMukainenErikoisammattitutkintoExample {
     )),
     oppilaitos = Some(stadinAmmattiopisto),
     suoritukset = List(
-      AmmatillisenTutkinnonSuoritus(
-        koulutusmoduuli = tutkinto,
-        suoritustapa = suoritustapaReformi,
-        osaamisenHankkimistavat = Some(List(
-          OsaamisenHankkimistapajakso(date(2018, 1, 1), None, osaamisenHankkimistapaOppilaitos),
-          OsaamisenHankkimistapajakso(date(2018, 8, 1), None, osaamisenHankkimistapaOppisopimus)
-        )),
-        koulutussopimukset = Some(List(
-          Koulutussopimusjakso(
-            alku = date(2018, 8, 1),
-            loppu = None,
-            työssäoppimispaikka = Some("Volkswagen Center"),
-            työssäoppimispaikanYTunnus = Some("1572860-0"),
-            paikkakunta = jyväskylä,
-            maa = suomi,
-            työtehtävät = Some(finnish("Autojen vuosihuollot"))
-          )
-        )),
-        suorituskieli = suomenKieli,
-        alkamispäivä = None,
-        toimipiste = stadinToimipiste,
-        osasuoritukset = Some(List(
-          tutkinnonOsanSuoritus("300054", "Korjauksen haltuunotto", None, arvosanaViisi).copy(
-            näyttö = Some(
-              näyttö(
-                date(2018, 2, 2),
-                "Vuosihuoltojen suorittaminen",
-                "Volkswagen Center",
-                Some(näytönArviointi.copy(
-                  arvioinnistaPäättäneet = Some(List(Koodistokoodiviite("5", Some("Muu koulutuksen järjestäjän edustaja"), "ammatillisennaytonarvioinnistapaattaneet", None))),
-                  arvosana = arvosanaViisi,
-                  arviointikohteet = arviointikohteet15
-                ))
-              )
-            )
-          ),
-          tutkinnonOsanSuoritus("300051", "Ajoneuvon vianmääritys", None, arvosanaViisi),
-          tutkinnonOsanSuoritus("300057", "Teknisenä asiantuntijana toiminen", None, arvosanaViisi),
-          tutkinnonOsanSuoritus("300058", "Testaus ja kilpailutoiminta", None, arvosanaViisi)
-        ))
-      )
+      tutkinnonSuoritus
     )
   )
 
