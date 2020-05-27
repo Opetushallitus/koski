@@ -193,6 +193,22 @@ class OppijaValidationSpec extends FreeSpec with LocalJettyHttpSpecification wit
       }
     }
 
+    "Jakso" - {
+      "Jos lähetetään jakso jonka loppupäivämäärä on ennen alkupäivämäärää" - {
+        "palautetaan HTTP 400" in {
+          val oo = defaultOpiskeluoikeus.copy(lisätiedot = Some(opiskeluoikeudenLisätiedot.copy(
+            majoitus = Some(List(Aikajakso(
+              alku = date(2020, 5, 31),
+              loppu = Some(date(2019, 5, 31))
+            ))
+          ))))
+          putOpiskeluoikeus(oo) {
+            verifyResponseStatus(400, ErrorMatcher.regex(KoskiErrorCategory.badRequest.validation.jsonSchema, """.*"Jakson alku 2020-05-31 on jakson lopun 2019-05-31 jälkeen","errorType":"jaksonLoppuEnnenAlkua".*""".r))
+          }
+        }
+      }
+    }
+
     "Oppilaitos" - {
       def oppilaitoksella(oid: String) = defaultOpiskeluoikeus.copy(oppilaitos = Some(Oppilaitos(oid)))
 
