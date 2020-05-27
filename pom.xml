@@ -601,7 +601,14 @@
           <plugin>
             <groupId>org.scalastyle</groupId>
             <artifactId>scalastyle-maven-plugin</artifactId>
-            <version>0.8.0</version>
+            <version>1.0.0</version>
+            <dependencies>
+              <dependency>
+                <groupId>com.beautiful-scala</groupId>
+                <artifactId>scalastyle_2.12</artifactId>
+                <version>1.4.0</version>
+              </dependency>
+            </dependencies>
             <configuration>
               <verbose>false</verbose>
               <failOnViolation>true</failOnViolation>
