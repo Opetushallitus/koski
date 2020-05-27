@@ -333,7 +333,7 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
     "joustavaPerusopetus" -> compactLisätiedotColumn("Joustava perusopetus"),
     "vuosiluokkiinSitoutumatonOpetus" -> compactLisätiedotColumn("Vuosiluokkiin sitomaton opetus"),
     "vammainen" -> compactLisätiedotColumn("Vammainen"),
-    "vaikeastiVammainen" -> compactLisätiedotColumn("Vaikeasti vammainen"),
+    "vaikeastiVammainen" -> compactLisätiedotColumn("Vaikeimmin kehitysvammainen"),
     "oikeusMaksuttomaanAsuntolapaikkaan" -> compactLisätiedotColumn("Oikeus maksuttomaan asuntolapaikkaan"),
     "sisaoppilaitosmainenMaijoitus" -> compactLisätiedotColumn("Sisäoppilaitosmainen majoitus"),
     "koulukoti" -> compactLisätiedotColumn("Koulukoti"),

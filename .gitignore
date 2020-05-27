@@ -10,6 +10,7 @@ target/
 .project
 .settings
 .cache
+.java-version
 postgres
 postgresql/data
 node_modules
