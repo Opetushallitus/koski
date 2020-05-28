@@ -179,6 +179,13 @@ trait Alkupäivällinen {
   def alku: LocalDate
 }
 
+trait MahdollisestiAlkupäivällinenJakso {
+  @Description("Jakson alkamispäivämäärä. Muoto YYYY-MM-DD")
+  def alku: Option[LocalDate]
+  @Description("Jakson loppupäivämäärä. Muoto YYYY-MM-DD")
+  def loppu: Option[LocalDate]
+}
+
 trait Jakso extends Alkupäivällinen {
   @Description("Jakson loppupäivämäärä. Muoto YYYY-MM-DD")
   def loppu: Option[LocalDate]
