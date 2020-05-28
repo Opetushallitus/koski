@@ -98,12 +98,12 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
   @Deprecated("Käytä korvaavaa kenttää Tehostetun tuen päätökset")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  tehostetunTuenPäätös: Option[Aikajakso] = None,
+  tehostetunTuenPäätös: Option[TehostetunTuenPäätös] = None,
   @Description("Tehostetun tuen päätös. Lista alku-loppu päivämääräpareja.")
   @Tooltip("Mahdollisen tehostetun tuen päätösten alkamis- ja päättymispäivät. Voi olla useita erillisiä jaksoja.")
   @OksaUri("tmpOKSAID511", "tehostettu tuki")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
-  tehostetunTuenPäätökset: Option[List[Aikajakso]] = None,
+  tehostetunTuenPäätökset: Option[List[TehostetunTuenPäätös]] = None,
   @Description("Opiskelu joustavassa perusopetuksessa (JOPO) alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, ettei oppilas ole joustavassa perusopetuksessa. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Mahdollisen joustavan perusopetuksen (JOPO) alkamis- ja päättymispäivät. Rahoituksen laskennassa käytettävä tieto.")
   @OksaUri("tmpOKSAID453", "joustava perusopetus")
@@ -159,6 +159,14 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   koulukoti: Option[List[Aikajakso]] = None
 ) extends OpiskeluoikeudenLisätiedot
 
+trait Tukimuodollinen {
+  @KoodistoUri("perusopetuksentukimuoto")
+  @Description("Oppilaan saamat laissa säädetyt tukimuodot.")
+  @Tooltip("Oppilaan saamat laissa säädetyt tukimuodot. Voi olla useita.")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  def tukimuodot: Option[List[Koodistokoodiviite]]
+}
+
 @Description("Oppivelvollisen erityisen tuen päätöstiedot")
 case class ErityisenTuenPäätös(
   @Description("Jakson alkamispäivämäärä. Muoto YYYY-MM-DD")
@@ -183,10 +191,17 @@ Huom: toiminta-alue arviointeineen on kuvattu oppiaineen suorituksessa.""")
   @KoodistoUri("erityisopetuksentoteutuspaikka")
   @Title("Erityisopetuksen toteutuspaikka")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
-  toteutuspaikka: Option[Koodistokoodiviite] = None
-) {
+  toteutuspaikka: Option[Koodistokoodiviite] = None,
+  tukimuodot: Option[List[Koodistokoodiviite]] = None
+) extends MahdollisestiAlkupäivällinenJakso with Tukimuodollinen {
   def voimassaPäivänä(d: LocalDate): Boolean = (alku.isDefined && !d.isBefore(alku.get)) && (loppu.isEmpty || !d.isAfter(loppu.get))
 }
+
+case class TehostetunTuenPäätös(
+  alku: LocalDate,
+  loppu: Option[LocalDate],
+  tukimuodot: Option[List[Koodistokoodiviite]] = None
+) extends Jakso with Tukimuodollinen
 
 trait PerusopetuksenPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with MonikielinenSuoritus with Suorituskielellinen
 
