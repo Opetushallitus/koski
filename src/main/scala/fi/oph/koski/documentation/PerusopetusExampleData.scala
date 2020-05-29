@@ -173,11 +173,12 @@ object PerusopetusExampleData {
     vahvistus = vahvistusPaikkakunnalla(date(2014, 5, 30))
   )
 
-  val kuudennenLuokanSuoritus = PerusopetuksenVuosiluokanSuoritus(
+  val kuudennenLuokanOsaAikainenErityisopetusSuoritus = PerusopetuksenVuosiluokanSuoritus(
     koulutusmoduuli = PerusopetuksenLuokkaAste(6, perusopetuksenDiaarinumero), luokka = "6A", alkamispäivä = Some(date(2012, 6, 15)),
     toimipiste = kulosaarenAlaAste,
     suorituskieli = suomenKieli,
     osasuoritukset = kaikkiAineet,
+    osaAikainenErityisopetus = true,
     vahvistus = vahvistusPaikkakunnalla(date(2013, 5, 30))
   )
 

@@ -234,6 +234,12 @@ case class PerusopetuksenVuosiluokanSuoritus(
   @KoodistoUri("kieli")
   @OksaUri("tmpOKSAID439", "kielikylpy")
   kielikylpykieli: Option[Koodistokoodiviite] = None,
+  @Description("Tieto siitä, osallistuuko oppilas osa-aikaiseen erityisopetukseen lukuvuoden aikana")
+  @Tooltip("Osallistuuko oppilas osa-aikaiseen erityisopetukseen lukuvuoden aikana")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @DefaultValue(false)
+  @Title("Osa-aikainen erityisopetus lukuvuoden aikana")
+  osaAikainenErityisopetus: Boolean = false,
   @Description("Tieto siitä, että oppilas jää luokalle")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @DefaultValue(false)
