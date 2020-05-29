@@ -45,6 +45,12 @@ case class PerusopetuksenLisäopetuksenSuoritus(
   suorituskieli: Koodistokoodiviite,
   @Tooltip("Mahdolliset muut suorituskielet.")
   muutSuorituskielet: Option[List[Koodistokoodiviite]] = None,
+  @Description("Tieto siitä, osallistuuko oppilas osa-aikaiseen erityisopetukseen perusopetuksen lisäopetuksen aikana")
+  @Tooltip("Osallistuuko oppilas osa-aikaiseen erityisopetukseen perusopetuksen lisäopetuksen aikana")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @DefaultValue(false)
+  @Title("Osa-aikainen erityisopetus perusopetuksen lisäopetuksen aikana")
+  osaAikainenErityisopetus: Boolean = false,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[PerusopetuksenLisäopetuksenAlisuoritus]],
