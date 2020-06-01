@@ -168,7 +168,7 @@ class KoskiSessionSpec extends FreeSpec with Matchers with EitherValues with Opt
   override def beforeAll {
     when(req.header("User-Agent")).thenReturn(Some("MockUserAgent/1.0"))
     when(req.header("HTTP_X_FORWARDED_FOR")).thenReturn(Some("10.1.2.3"))
-    when(req.cookies).thenReturn(Map[String, String]())
+    when(req.cookies.toMap).thenReturn(Map[String, String]())
     wireMockServer.start()
     mockEndpoints
   }

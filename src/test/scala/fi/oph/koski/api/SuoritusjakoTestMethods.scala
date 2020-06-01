@@ -18,7 +18,7 @@ trait SuoritusjakoTestMethods extends LocalJettyHttpSpecification with Opiskeluo
     val request = mock(classOf[RichRequest])
     when(request.header("User-Agent")).thenReturn(Some("MockUserAgent/1.0"))
     when(request.header("HTTP_X_FORWARDED_FOR")).thenReturn(Some("10.1.2.3"))
-    when(request.cookies).thenReturn(Map[String, String]())
+    when(request.cookies.toMap).thenReturn(Map[String, String]())
     KoskiSession.suoritusjakoKatsominenUser(request)
   }
 

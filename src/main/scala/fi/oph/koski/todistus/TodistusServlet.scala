@@ -14,13 +14,13 @@ class TodistusServlet(implicit val application: KoskiApplication) extends HtmlSe
     val oppijaOid = params("oppijaOid")
     implicit val localizations = application.localizationRepository
 
-    val filters: List[(Suoritus => Boolean)] = params.toList.flatMap {
+    val filters: List[(Suoritus => Boolean)] = params.toMap.toList.flatMap {
       case ("koulutusmoduuli", koulutusmoduuli: String) => Some({ s: Suoritus => s.koulutusmoduuli.tunniste.toString == koulutusmoduuli })
       case ("suoritustyyppi", suoritustyyppi: String) => Some({ s: Suoritus => s.tyyppi.koodiarvo == suoritustyyppi })
       case (_, _) => None
     }
 
-    renderEither[Elem](OpiskeluoikeusFinder(application.oppijaFacade).opiskeluoikeudet(oppijaOid, params).flatMap(_.warningsToLeft).right.flatMap {
+    renderEither[Elem](OpiskeluoikeusFinder(application.oppijaFacade).opiskeluoikeudet(oppijaOid, params.toMap).flatMap(_.warningsToLeft).right.flatMap {
       case Oppija(henkilötiedot: TäydellisetHenkilötiedot, opiskeluoikeudet) =>
         val suoritukset: Seq[(Opiskeluoikeus, Suoritus)] = opiskeluoikeudet.flatMap {
           opiskeluoikeus => opiskeluoikeus.suoritukset.filter(suoritus => suoritus.valmis && filters.forall(f => f(suoritus)))

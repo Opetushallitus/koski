@@ -14,7 +14,7 @@ class SuoritusServlet(implicit val application: KoskiApplication) extends HtmlSe
     val oppijaOid = params("oppijaOid")
     implicit val localizations = application.localizationRepository
 
-    renderEither[Elem](OpiskeluoikeusFinder(application.oppijaFacade).opiskeluoikeudet(oppijaOid, params).flatMap(_.warningsToLeft).right.flatMap {
+    renderEither[Elem](OpiskeluoikeusFinder(application.oppijaFacade).opiskeluoikeudet(oppijaOid, params.toMap).flatMap(_.warningsToLeft).right.flatMap {
       case Oppija(henkilö: TäydellisetHenkilötiedot, opiskeluoikeudet) => {
         val tyypit = opiskeluoikeudet.map(_.tyyppi.koodiarvo).toSet.toList
         tyypit match {

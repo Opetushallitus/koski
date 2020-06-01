@@ -13,5 +13,5 @@ trait OmaOpintopolkuSupport extends AuthenticationSupport with LanguageSupport {
 }
 
 object OmaOpintopolkuSupport {
-  def shibbolethCookieFound(request: RichRequest): Boolean = request.cookies.keys.exists(_.startsWith("_shibsession_"))
+  def shibbolethCookieFound(request: RichRequest): Boolean = request.cookies.toMap.keys.exists(_.startsWith("_shibsession_"))
 }

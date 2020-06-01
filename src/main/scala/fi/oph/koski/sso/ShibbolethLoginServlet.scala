@@ -116,14 +116,18 @@ case class ShibbolethLoginServlet(application: KoskiApplication) extends ApiServ
 
   private val sensitiveHeaders = List("security", "hetu")
   private val headersWhiteList = List("FirstName", "cn", "givenName", "hetu", "oid", "security", "sn")
+
   private def headers: String = {
-    request.headers.toList.collect { case (name, value) if headersWhiteList.contains(name) =>
-      if (sensitiveHeaders.contains(name)) {
-        (name, "*********")
-      } else {
-        (name, value)
-      }
-    }.sortBy(_._1).mkString("\n")
+    request.headers.names
+      .map(name => (name, request.headers.get(name)))
+      .toList
+      .collect { case (name, value) if headersWhiteList.contains(name) =>
+        if (sensitiveHeaders.contains(name)) {
+          (name, "*********")
+        } else {
+          (name, value)
+        }
+      }.sortBy(_._1).mkString("\n")
   }
 }
 
