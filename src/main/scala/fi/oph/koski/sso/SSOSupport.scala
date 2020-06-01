@@ -20,10 +20,12 @@ trait SSOSupport extends ScalatraBase with Logging {
   def protocol = if (isHttps) { "https" } else { "http" }
 
   def koskiRoot: String = {
-    val hostRegex = "https?://([^/]*)/.*".r
-    request.getRequestURL match {
-      case hostRegex(host) => protocol + "://" + host + "/koski"
+    val host = request.getServerName()
+    val portStr = request.getServerPort match {
+      case 80 | 443 => ""
+      case port: Int => ":" + port
     }
+    protocol + "://" + host + portStr + "/koski"
   }
 
   private def currentUrl: String = try {
