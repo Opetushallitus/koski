@@ -7,6 +7,7 @@ import fi.oph.koski.suoritusjako.{SuoritusIdentifier, Suoritusjako, Suoritusjako
 import fi.oph.koski.{KoskiApplicationForTests, KoskiHttpSpec}
 import org.mockito.Mockito.{mock, when}
 import org.scalatra.servlet.RichRequest
+import org.scalatra.util.MultiMapHeadView
 
 import java.sql.Timestamp
 import java.time.LocalDate
@@ -18,7 +19,7 @@ trait SuoritusjakoTestMethods extends KoskiHttpSpec with OpiskeluoikeusTestMetho
     val request = mock(classOf[RichRequest])
     when(request.header("User-Agent")).thenReturn(Some("MockUserAgent/1.0"))
     when(request.header("HTTP_X_FORWARDED_FOR")).thenReturn(Some("10.1.2.3"))
-    when(request.cookies).thenReturn(Map[String, String]())
+    when(request.cookies).thenReturn(MultiMapHeadView.empty[String, String])
     KoskiSpecificSession.suoritusjakoKatsominenUser(request)
   }
 
