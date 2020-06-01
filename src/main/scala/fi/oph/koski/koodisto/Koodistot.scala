@@ -60,6 +60,7 @@ object Koodistot {
     KoodistoAsetus("oppiaineetib", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),
     KoodistoAsetus("oppiaineetinternationalschool", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),
     KoodistoAsetus("oppiaineetluva"),
+    KoodistoAsetus("osaaikainenerityisopetuslukuvuodenaikana"),
     KoodistoAsetus("osaamisenhankkimistapa"),
     KoodistoAsetus("perusopetuksenluokkaaste"),
     KoodistoAsetus("perusopetuksentodistuksenliitetieto"),

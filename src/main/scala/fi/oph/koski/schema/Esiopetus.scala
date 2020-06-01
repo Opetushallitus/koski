@@ -100,6 +100,12 @@ case class EsiopetuksenSuoritus(
   @OksaUri("tmpOKSAID439", "kielikylpy")
   @Tooltip("Oppilaan kotimaisten kielten kielikylvyn kieli.")
   kielikylpykieli: Option[Koodistokoodiviite] = None,
+  @Title("Osa-aikainen erityisopetus lukuvuoden aikana")
+  @Description("Tieto oppilaan osallistumisesta osa-aikaiseen erityisopetukseen lukuvuoden aikana")
+  @Tooltip("Oppilaan osallistuminen osa-aikaiseen erityisopetukseen lukuvuoden aikana")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @KoodistoUri("osaaikainenerityisopetuslukuvuodenaikana")
+  osaAikainenErityisopetus: Option[List[Koodistokoodiviite]] = None,
   @KoodistoKoodiarvo("esiopetuksensuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("esiopetuksensuoritus", koodistoUri = "suorituksentyyppi"),
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None
