@@ -14,7 +14,7 @@
     <scala.version>2.12.4</scala.version>
     <slick.version>3.3.0</slick.version>
     <scalatra.version>2.6.3</scalatra.version>
-    <json4s.version>3.6.2</json4s.version>
+    <json4s.version>3.6.8</json4s.version>
     <awssdk.version>2.13.11</awssdk.version>
     <jetty.version>9.4.17.v20190418</jetty.version>
     <prometheus.client.version>0.0.17</prometheus.client.version>
