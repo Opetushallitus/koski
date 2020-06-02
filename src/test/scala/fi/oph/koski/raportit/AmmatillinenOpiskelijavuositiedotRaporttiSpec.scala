@@ -153,7 +153,7 @@ class AmmatillinenOpiskelijavuositiedotRaporttiSpec extends FreeSpec with Raport
         verifyResponseStatusOk()
         val cookie = response.headers("Set-Cookie").find(x => x.startsWith("koskiDownloadToken"))
         cookie shouldBe defined
-        cookie.get should include("koskiDownloadToken=test123;Path=/")
+        cookie.get should include("koskiDownloadToken=test123; Path=/")
       }
     }
   }
