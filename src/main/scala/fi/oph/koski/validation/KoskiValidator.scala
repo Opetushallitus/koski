@@ -525,9 +525,8 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   private def linkitysTehty(opiskeluoikeusOid: String, oppilaitosOid: Oid, oppijaOids: List[Oid]) =
-    koskiOpiskeluoikeudet.findByOppijaOids(oppijaOids)(KoskiSession.systemUser).exists(_.sisältyyOpiskeluoikeuteen.exists(s =>
-      s.oid == opiskeluoikeusOid && s.oppilaitos.oid == oppilaitosOid
-    ))
+    koskiOpiskeluoikeudet.findByOppijaOids(oppijaOids)(KoskiSession.systemUser)
+      .exists(_.sisältyyOpiskeluoikeuteen.exists(_.oid == opiskeluoikeusOid))
 
   private def validateValmiinSuorituksenStatus(suoritus: Suoritus) = {
     suoritus.rekursiivisetOsasuoritukset.find(_.kesken).fold(HttpStatus.ok) { keskeneräinenOsasuoritus =>

@@ -11,6 +11,7 @@ import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.MockUsers.{omniaTallentaja, stadinAmmattiopistoTallentaja}
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.organisaatio.MockOrganisaatiot
+import fi.oph.koski.schema.Organisaatio.Oid
 import fi.oph.koski.schema._
 
 class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends TutkinnonPerusteetTest[AmmatillinenOpiskeluoikeus] with LocalJettyHttpSpecification with PutOpiskeluoikeusTestMethods[AmmatillinenOpiskeluoikeus] {
@@ -221,27 +222,28 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
                 verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.valmiiksiMerkityltäPuuttuuOsasuorituksia("Suoritus koulutus/361902 on merkitty valmiiksi, mutta sillä ei ole ammatillisen tutkinnon osan suoritusta tai opiskeluoikeudelta puuttuu linkitys"))))
             }
 
-            "Ammatillisen tutkinnon osan suoritus puuttuu, mutta tutkinto on ostettu ja siihen linkataan muualta" - {
-
-              "Palautetaan HTTP 200" in {
+            "Ammatillisen tutkinnon osan suoritus puuttuu, linkitys tehty" - {
+              "Samaan oppilaitokseen, palautetaan HTTP 200" in {
                 val stadinOpiskeluoikeus: AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(defaultHenkilö, defaultOpiskeluoikeus, user = stadinAmmattiopistoTallentaja, resetFixtures = true)
-
-                val omnianOpiskeluoikeus = makeOpiskeluoikeus(oppilaitos = Oppilaitos(MockOrganisaatiot.omnia)).copy(
-                  suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus.copy(toimipiste = OidOrganisaatio(MockOrganisaatiot.omnia))),
-                  sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(stadinOpiskeluoikeus.oppilaitos.get, stadinOpiskeluoikeus.oid.get))
-                )
-
-                val linkittävä: AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(defaultHenkilö, omnianOpiskeluoikeus, user = omniaTallentaja)
-
-                val linkitetty = stadinOpiskeluoikeus.copy(
-                  versionumero = None,
-                  ostettu = true,
+                val kuoriOpiskeluoikeus = createLinkitetytOpiskeluoikeudet(stadinOpiskeluoikeus, MockOrganisaatiot.omnia).copy(
                   suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus.copy(
                     osasuoritukset = ammatillisenTutkinnonOsittainenSuoritus.osasuoritukset.map(_.filterNot(_.isInstanceOf[MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus]))
                   ))
                 )
 
-                putOpiskeluoikeus(linkitetty)(verifyResponseStatusOk())
+                putOpiskeluoikeus(kuoriOpiskeluoikeus)(verifyResponseStatusOk())
+              }
+
+              "Eri oppilaitokseen, palautetaan HTTP 200" in {
+                val stadinOpiskeluoikeus: AmmatillinenOpiskeluoikeus = createOpiskeluoikeus(defaultHenkilö, defaultOpiskeluoikeus, user = stadinAmmattiopistoTallentaja, resetFixtures = true)
+                val kuoriOpiskeluoikeus = createLinkitetytOpiskeluoikeudet(stadinOpiskeluoikeus, MockOrganisaatiot.omnia).copy(
+                  suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus.copy(
+                    toimipiste = OidOrganisaatio(MockOrganisaatiot.jyväskylänNormaalikoulu),
+                    osasuoritukset = ammatillisenTutkinnonOsittainenSuoritus.osasuoritukset.map(_.filterNot(_.isInstanceOf[MuunOsittaisenAmmatillisenTutkinnonTutkinnonosanSuoritus]))
+                  ))
+                )
+
+                putOpiskeluoikeus(kuoriOpiskeluoikeus)(verifyResponseStatusOk())
               }
             }
 
@@ -316,6 +318,20 @@ class OppijaValidationAmmatillisenTutkinnonOsittainenSuoritusSpec extends Tutkin
         }
       }
     }
+  }
+
+  private def createLinkitetytOpiskeluoikeudet(kuoriOpiskeluoikeus: AmmatillinenOpiskeluoikeus, pihviOppilaitos: Oid) = {
+    val pihviOpiskeluoikeus = makeOpiskeluoikeus(oppilaitos = Oppilaitos(pihviOppilaitos)).copy(
+      suoritukset = List(ammatillisenTutkinnonOsittainenSuoritus.copy(toimipiste = OidOrganisaatio(pihviOppilaitos))),
+      sisältyyOpiskeluoikeuteen = Some(SisältäväOpiskeluoikeus(kuoriOpiskeluoikeus.oppilaitos.get, kuoriOpiskeluoikeus.oid.get))
+    )
+    createOpiskeluoikeus(defaultHenkilö, pihviOpiskeluoikeus, user = omniaTallentaja)
+    kuoriOpiskeluoikeus.copy(
+      versionumero = None,
+      ostettu = true,
+      oppilaitos = None,
+      koulutustoimija = None
+    )
   }
 
   private def vahvistus(date: LocalDate) = {
