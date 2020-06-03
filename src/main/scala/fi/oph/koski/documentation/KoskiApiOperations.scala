@@ -3,7 +3,7 @@ package fi.oph.koski.documentation
 import java.sql.Timestamp
 
 import fi.oph.koski.henkilo.{HenkilötiedotSearchResponse, MockOppijat}
-import fi.oph.koski.history.OpiskeluoikeusHistory
+import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer.serializeWithRoot
 import fi.oph.koski.koodisto.{KoodistoKoodi, Koodistot, MockKoodistoPalvelu}
@@ -182,7 +182,7 @@ object KoskiApiOperations extends ApiGroup {
       Nil,
       List(PathParameter("opiskeluoikeus_oid", "Opiskeluoikeuden tunniste", List("1.2.246.562.15.82898400641"))),
       List(
-        KoskiErrorCategory.ok.searchOk.copy(exampleResponse = serializeWithRoot[List[OpiskeluoikeusHistory]](List(OpiskeluoikeusHistory("1.2.246.562.15.82898400641", 1, new Timestamp(System.currentTimeMillis()), MockUsers.kalle.oid, JObject())))),
+        KoskiErrorCategory.ok.searchOk.copy(exampleResponse = serializeWithRoot[List[OpiskeluoikeusHistoryPatch]](List(OpiskeluoikeusHistoryPatch("1.2.246.562.15.82898400641", 1, new Timestamp(System.currentTimeMillis()), MockUsers.kalle.oid, JObject())))),
         KoskiErrorCategory.unauthorized,
         KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia
       )
