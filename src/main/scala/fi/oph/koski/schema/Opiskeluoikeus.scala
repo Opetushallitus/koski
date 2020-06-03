@@ -2,6 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.{LocalDate, LocalDateTime}
 
+import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation._
 import mojave.Traversal
@@ -106,6 +107,20 @@ object OpiskeluoikeudenTyyppi {
 
 trait OpiskeluoikeudenLisätiedot
 
+trait TukimuodollisetLisätiedot extends OpiskeluoikeudenLisätiedot {
+  def sisältääOsaAikaisenErityisopetuksen: Boolean
+}
+
+object TukimuodollisetLisätiedot {
+  def tukimuodoissaOsaAikainenErityisopetus(t: Option[List[Tukimuodollinen]]) = {
+    val tukimuodot = t.getOrElse(List()).flatMap(_.tukimuotoLista)
+    tukimuodot.contains(osaAikainenErityisopetusKoodistokoodiviite)
+  }
+
+  private lazy val osaAikainenErityisopetusKoodistokoodiviite =
+    MockKoodistoViitePalvelu.validateRequired(Koodistokoodiviite("1", "perusopetuksentukimuoto"))
+}
+
 trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
   import mojave._
   @Hidden
@@ -131,6 +146,14 @@ trait KoskeenTallennettavaOpiskeluoikeus extends Opiskeluoikeus {
   final def withTila(tila: OpiskeluoikeudenTila): KoskeenTallennettavaOpiskeluoikeus =
     shapeless.lens[KoskeenTallennettavaOpiskeluoikeus].field[OpiskeluoikeudenTila]("tila").set(this)(tila)
 }
+
+trait TukimuodollinenOpiskeluoikeus extends Opiskeluoikeus {
+  def lisätiedot: Option[TukimuodollisetLisätiedot]
+  def lisätiedotSisältääOsaAikaisenErityisopetuksen: Boolean = lisätiedot.exists(_.sisältääOsaAikaisenErityisopetuksen)
+  def suoritusSisältääOsaAikaisenErityisopetuksen: Boolean =
+    suoritukset.collect { case s: ErityisopetuksellinenPäätasonSuoritus => s }.exists(_.sisältääOsaAikaisenErityisopetuksen)
+}
+
 
 @Description("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden tiedot. Nämä tiedot kertovat, että kyseessä on ns. ulkopuolisen sopimuskumppanin suoritustieto, joka liittyy päävastuullisen koulutuksen järjestäjän luomaan opiskeluoikeuteen. Ks. tarkemmin https://confluence.csc.fi/pages/viewpage.action?pageId=70627182")
 @Tooltip("Päävastuullisen koulutuksen järjestäjän luoman opiskeluoikeuden tiedot. Nämä tiedot kertovat, että kyseessä on ns. ulkopuolisen sopimuskumppanin suoritustieto, joka liittyy päävastuullisen koulutuksen järjestäjän luomaan opiskeluoikeuteen. Ks. tarkemmin ohjeet ja käyttötapaukset [usein kysyttyjen kysymysten](https://confluence.csc.fi/pages/viewpage.action?pageId=72811652) kohdasta Milloin ja miten käytetään linkitystä eri organisaatioissa olevien opintosuoritusten välillä KOSKI-palvelussa?")

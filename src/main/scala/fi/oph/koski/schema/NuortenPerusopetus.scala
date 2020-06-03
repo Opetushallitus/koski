@@ -4,6 +4,7 @@ import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema.annotation._
+import fi.oph.koski.schema.TukimuodollisetLisätiedot.tukimuodoissaOsaAikainenErityisopetus
 import fi.oph.scalaschema.annotation._
 import mojave.{Traversal, traversal}
 
@@ -23,7 +24,7 @@ case class PerusopetuksenOpiskeluoikeus(
   @KoodistoKoodiarvo(OpiskeluoikeudenTyyppi.perusopetus.koodiarvo)
   tyyppi: Koodistokoodiviite = OpiskeluoikeudenTyyppi.perusopetus,
   organisaatiohistoria: Option[List[OpiskeluoikeudenOrganisaatiohistoria]] = None
-) extends KoskeenTallennettavaOpiskeluoikeus {
+) extends KoskeenTallennettavaOpiskeluoikeus with TukimuodollinenOpiskeluoikeus {
   @Description("Oppijan oppimäärän päättymispäivä")
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
@@ -157,7 +158,11 @@ case class PerusopetuksenOpiskeluoikeudenLisätiedot(
   @Tooltip("Tieto siitä, jos oppija on koulukotikorotuksen piirissä (aloituspäivä ja loppupäivä). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   koulukoti: Option[List[Aikajakso]] = None
-) extends OpiskeluoikeudenLisätiedot
+) extends TukimuodollisetLisätiedot {
+  override def sisältääOsaAikaisenErityisopetuksen: Boolean =
+    tukimuodoissaOsaAikainenErityisopetus(tehostetunTuenPäätökset) ||
+      tukimuodoissaOsaAikainenErityisopetus(erityisenTuenPäätökset)
+}
 
 trait Tukimuodollinen {
   @KoodistoUri("perusopetuksentukimuoto")
@@ -165,6 +170,8 @@ trait Tukimuodollinen {
   @Tooltip("Oppilaan saamat laissa säädetyt tukimuodot. Voi olla useita.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   def tukimuodot: Option[List[Koodistokoodiviite]]
+
+  def tukimuotoLista: List[Koodistokoodiviite] = tukimuodot.getOrElse(List())
 }
 
 @Description("Oppivelvollisen erityisen tuen päätöstiedot")
@@ -255,7 +262,9 @@ case class PerusopetuksenVuosiluokanSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("perusopetuksenvuosiluokka", koodistoUri = "suorituksentyyppi"),
   @Tooltip("Perusopetuksen vuosiluokkatodistuksen liitetieto (liitteenä annettu arvio käyttäytymisestä tai työskentelystä).")
   liitetiedot: Option[List[PerusopetuksenVuosiluokanSuorituksenLiite]] = None
-) extends PerusopetuksenPäätasonSuoritus with Todistus with Arvioinniton
+) extends PerusopetuksenPäätasonSuoritus with Todistus with Arvioinniton with ErityisopetuksellinenPäätasonSuoritus {
+  def sisältääOsaAikaisenErityisopetuksen: Boolean = osaAikainenErityisopetus
+}
 
 trait PerusopetuksenOppimääränSuoritus extends Suoritus with Todistus with Arvioinniton with SuoritustavallinenPerusopetuksenSuoritus {
   @Title("Koulutus")
