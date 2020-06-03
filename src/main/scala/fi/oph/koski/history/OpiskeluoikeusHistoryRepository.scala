@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.github.fge.jsonpatch.JsonPatch
 import fi.oph.koski.db.KoskiDatabase._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.db.Tables.OpiskeluoikeusTable.readAsOpiskeluoikeus
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
@@ -25,7 +26,7 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends DatabaseExecutionCont
     runDbSync(findByOpiskeluoikeusOidAction(oid, maxVersion).map(_.map(_.patches)))
   }
 
-  def findByOpiskeluoikeusOidAction(oid: String, maxVersion: Int)(implicit user: KoskiSession) = {
+  def findByOpiskeluoikeusOidAction(oid: String, maxVersion: Int)(implicit user: KoskiSession): DBIOAction[Option[OpiskeluoikeusHistory], NoStream, Effect.Read] = {
     OpiskeluOikeudetWithAccessCheck.filter(_.oid === oid)
       .join(OpiskeluoikeusHistoria.filter(_.versionumero <= maxVersion))
       .on(_.id === _.opiskeluoikeusId)
@@ -65,28 +66,30 @@ case class OpiskeluoikeusHistoryRepository(db: DB) extends DatabaseExecutionCont
 
 // TODO: use LocalDateTime instead of Timestamp for consistency with KoskeenTallennettavaOpiskeluoikeus
 case class OpiskeluoikeusHistoryPatch(opiskeluoikeusOid: String, versionumero: Int, aikaleima: Timestamp, kayttajaOid: String, @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)) muutos: JValue)
+
 case class OpiskeluoikeusHistory(oid: String, version: Int, patches: List[OpiskeluoikeusHistoryPatch]) extends Logging {
   def toOpiskeluoikeus: Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] =
     if (patches.length < version) {
       Left(KoskiErrorCategory.notFound.versiotaEiLöydy("Versiota " + version + " ei löydy opiskeluoikeuden " + oid + " historiasta."))
     } else {
-      Tables.OpiskeluoikeusTable.readAsOpiskeluoikeus(opiskeluoikeusJson, oid, version, patches.last.aikaleima).left.map { errors =>
+      readAsOpiskeluoikeus(asOpiskeluoikeusJson, oid, version, patches.last.aikaleima).left.map { errors =>
         logger.error(s"Opiskeluoikeuden $oid version $version deserialisointi epäonnistui: $errors")
         KoskiErrorCategory.internalError("Historiaversion deserialisointi epäonnistui")
       }
     }
 
-  lazy val opiskeluoikeusJson: JValue = {
+  lazy val asOpiskeluoikeusJson: JValue = {
     JsonMethods.fromJsonNode(patches.foldLeft(JsonNodeFactory.instance.objectNode(): JsonNode) { (current, diff) =>
       patch(current, diff)
     })
   }
 
-  private def patch(current: JsonNode, diff: OpiskeluoikeusHistoryPatch) = try {
+  private def patch(current: JsonNode, diff: OpiskeluoikeusHistoryPatch): JsonNode = try {
     JsonPatch.fromJson(JsonMethods.asJsonNode(diff.muutos)).apply(current)
   } catch {
     case e: Exception =>
       throw new JsonPatchException(s"Opiskeluoikeuden $oid historiaversion patch ${diff.versionumero} epäonnistui", e)
   }
 }
+
 class JsonPatchException(msg: String, cause: Throwable) extends Exception(msg, cause)

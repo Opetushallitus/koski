@@ -270,8 +270,8 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
     }
   }
 
-  private def verifyHistoria(newData: JValue, hist: Option[OpiskeluoikeusHistory]): Unit = hist.foreach { historia =>
-    val opiskeluoikeusDiffHistoria = jsonDiff(newData, historia.opiskeluoikeusJson)
+  private def verifyHistoria(opiskeluoikeusJson: JValue, hist: Option[OpiskeluoikeusHistory]): Unit = hist.foreach { historia =>
+    val opiskeluoikeusDiffHistoria = jsonDiff(opiskeluoikeusJson, historia.asOpiskeluoikeusJson)
     val historyCorrupted = opiskeluoikeusDiffHistoria.values.nonEmpty
     if (historyCorrupted) {
       logger.error(s"Virhe opiskeluoikeushistoriarivin tuottamisessa opiskeluoikeudelle ${historia.oid}/${historia.version}: ${JsonMethods.pretty(opiskeluoikeusDiffHistoria)}")
