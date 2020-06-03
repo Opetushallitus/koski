@@ -7,7 +7,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
 import fi.oph.koski.henkilo._
-import fi.oph.koski.history.OpiskeluoikeusHistoryRepository
+import fi.oph.koski.history.{OpiskeluoikeusHistory, OpiskeluoikeusHistoryRepository}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonDiff.jsonDiff
 import fi.oph.koski.koskiuser.KoskiSession
@@ -17,7 +17,8 @@ import fi.oph.koski.perustiedot.{OpiskeluoikeudenPerustiedot, PerustiedotSyncRep
 import fi.oph.koski.schema.Henkilö.Oid
 import fi.oph.koski.schema.Opiskeluoikeus.VERSIO_1
 import fi.oph.koski.schema._
-import org.json4s.{JArray, JObject, JString}
+import org.json4s.jackson.JsonMethods
+import org.json4s.{JArray, JObject, JString, JValue}
 import slick.dbio
 import slick.dbio.DBIOAction.sequence
 import slick.dbio.Effect.{Read, Transactional, Write}
@@ -230,12 +231,12 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
     }
   }
 
-  private def updateAction[A <: PäätasonSuoritus](oldRow: OpiskeluoikeusRow, uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowDeleteCompletedSuoritukset: Boolean = false)(implicit user: KoskiSession): dbio.DBIOAction[Either[HttpStatus, CreateOrUpdateResult], NoStream, Write] = {
+  private def updateAction[A <: PäätasonSuoritus](oldRow: OpiskeluoikeusRow, uusiOpiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus, allowDeleteCompletedSuoritukset: Boolean = false)(implicit user: KoskiSession) = {
     val (id, oid, versionumero) = (oldRow.id, oldRow.oid, oldRow.versionumero)
     val nextVersionumero = versionumero + 1
 
     uusiOpiskeluoikeus.versionumero match {
-      case Some(requestedVersionumero) if (requestedVersionumero != versionumero) =>
+      case Some(requestedVersionumero) if requestedVersionumero != versionumero =>
         DBIO.successful(Left(KoskiErrorCategory.conflict.versionumero("Annettu versionumero " + requestedVersionumero + " <> " + versionumero)))
       case _ =>
         val vanhaOpiskeluoikeus = oldRow.toOpiskeluoikeus
@@ -253,9 +254,12 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
                 for {
                   rowsUpdated <- OpiskeluOikeudetWithAccessCheck.filter(_.id === id).map(_.updateableFields).update(updatedValues)
                   _ <- historyRepository.createAction(id, nextVersionumero, user.oid, diff)
+                  hist <- historyRepository.findByOpiskeluoikeusOidAction(oid, nextVersionumero)
                 } yield {
                   rowsUpdated match {
-                    case 1 => Right(Updated(id, oid, uusiOpiskeluoikeus.lähdejärjestelmänId, oldRow.oppijaOid, nextVersionumero, diff, newData, vanhaOpiskeluoikeus))
+                    case 1 =>
+                      verifyHistoria(newData, hist)
+                      Right(Updated(id, oid, uusiOpiskeluoikeus.lähdejärjestelmänId, oldRow.oppijaOid, nextVersionumero, diff, newData, vanhaOpiskeluoikeus))
                     case x: Int =>
                       throw new RuntimeException("Unexpected number of updated rows: " + x) // throw exception to cause rollback!
                   }
@@ -263,6 +267,14 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
             }
           case nonOk => DBIO.successful(Left(nonOk))
         }
+    }
+  }
+
+  private def verifyHistoria(newData: JValue, hist: Option[OpiskeluoikeusHistory]): Unit = hist.foreach { historia =>
+    val opiskeluoikeusDiffHistoria = jsonDiff(newData, historia.opiskeluoikeusJson)
+    val historyCorrupted = opiskeluoikeusDiffHistoria.values.nonEmpty
+    if (historyCorrupted) {
+      logger.error(s"Virhe opiskeluoikeushistoriarivin tuottamisessa opiskeluoikeudelle ${historia.oid}/${historia.version}: ${JsonMethods.pretty(opiskeluoikeusDiffHistoria)}")
     }
   }
 }
