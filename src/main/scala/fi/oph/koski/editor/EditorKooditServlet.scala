@@ -19,18 +19,18 @@ class EditorKooditServlet(implicit val application: KoskiApplication) extends Ed
     toKoodistoEnumValues(getKooditFromRequestParams())
   }
 
-  get[List[EnumValue]]("/osaamisalat/osaamisala/:diaari") {
-    val osaamisalat = application.tutkintoRepository.findPerusteRakenne(params("diaari"))
+  get[List[EnumValue]]("/osaamisalat/osaamisala/*") {
+    val diaari = params("splat")
+    val osaamisalat = application.tutkintoRepository.findPerusteRakenne(diaari)
       .map(_.osaamisalat)
       .getOrElse(koodistojenKoodit(koodistotByString("osaamisala")))
-
     toKoodistoEnumValues(osaamisalat)
   }
 
-  get[List[EnumValue]]("/koulutukset/koulutus/:diaari") {
-    val koulutukset = application.tutkintoRepository.findPerusteRakenne(params("diaari"))
+  get[List[EnumValue]]("/koulutukset/koulutus/*") {
+    val diaari = params("splat")
+    val koulutukset = application.tutkintoRepository.findPerusteRakenne(diaari)
       .map(_.koulutukset).toList.flatten
-
     toKoodistoEnumValues(koulutukset)
   }
 
