@@ -2,17 +2,21 @@ package fi.oph.koski.api
 
 import java.time.{LocalDate, LocalDateTime}
 
-import fi.oph.koski.documentation.AmmatillinenOldExamples
+import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.db.Tables.{OpiskeluOikeudet, OpiskeluoikeusHistoria}
+import fi.oph.koski.documentation.{AmmatillinenOldExamples, ReforminMukainenErikoisammattitutkintoExample => Reformi}
 import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.henkilo.MockOppijat.reformitutkinto
 import fi.oph.koski.http.KoskiErrorCategory.notFound
 import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.MockUsers
-import fi.oph.koski.log.AuditLogTester
+import fi.oph.koski.log.{AuditLogTester, RootLogTester}
 import fi.oph.koski.schema.Opiskeluoikeus
 import org.json4s.JsonAST.{JArray, JNothing}
+import org.json4s.jackson.JsonMethods
 import org.scalatest.FreeSpec
 
-class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with HistoryTestMethods {
+class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with HistoryTestMethods with DatabaseTestMethods {
   val uusiOpiskeluoikeus = defaultOpiskeluoikeus
   val oppija = MockOppijat.tyhjä
 
@@ -121,5 +125,38 @@ class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecificatio
         }
       }
     }
+
+    "Virheentarkistus" - {
+      "Virhe historiatiedoissa lokitetaan" in {
+        val suoritus = Reformi.tutkinnonSuoritus.copy(osasuoritukset = Some(Reformi.osasuoritukset.drop(1)))
+        val resp = putOpiskeluoikeus(Reformi.opiskeluoikeus.copy(suoritukset = List(suoritus)), henkilö = reformitutkinto) {
+          verifyResponseStatusOk()
+          val response@ResponseOpiskeluoikeus(oid, version) = readPutOppijaResponse.opiskeluoikeudet.head
+          updateOpiskeluoikeusHistory(oid, version, "[]")
+          response
+        }
+
+        putOpiskeluoikeus(Reformi.opiskeluoikeus.copy(suoritukset = List(Reformi.tutkinnonSuoritus)), henkilö = reformitutkinto) {
+          verifyResponseStatusOk()
+        }
+
+        RootLogTester.getLogMessages.map(_.getMessage.toString).find(_.startsWith("Virhe")).get should equal(s"""
+           |Virhe opiskeluoikeushistoriarivin tuottamisessa opiskeluoikeudelle ${resp.oid}/${resp.versionumero + 1}: [ {
+           |  "op" : "copy",
+           |  "path" : "/suoritukset/0/osasuoritukset/-",
+           |  "from" : "/suoritukset/0/osasuoritukset/3"
+           |} ]
+          """.stripMargin.trim)
+      }
+    }
+  }
+
+  private def updateOpiskeluoikeusHistory(oid: String, version: Int, muutos: String) = {
+    val id = runDbSync(OpiskeluOikeudet.filter(_.oid === oid).map(_.id).result.head)
+    runDbSync(
+      OpiskeluoikeusHistoria.filter(row => row.opiskeluoikeusId === id && row.versionumero === version)
+      .map(_.muutos)
+      .update(JsonMethods.parse(muutos))
+    )
   }
 }
