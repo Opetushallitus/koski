@@ -24,7 +24,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   def convertToOpiskeluoikeudet(virtaXml: Node): List[KorkeakoulunOpiskeluoikeus] = {
     import fi.oph.koski.util.DateOrdering._
 
-    val suoritusNodeList: List[Node] = suoritusNodes(virtaXml)
+    val suoritusNodeList: List[Node] = filtteröiLABDuplikaatit(suoritusNodes(virtaXml))
     val suoritusRoots: List[Node] = suoritusNodeList.filter(isRoot(suoritusNodeList)(_))
     val opiskeluoikeusNodes: List[Node] = (virtaXml \\ "Opiskeluoikeus").toList
     val ooTyyppi: Koodistokoodiviite = koodistoViitePalvelu.validateRequired(OpiskeluoikeudenTyyppi.korkeakoulutus)
@@ -215,7 +215,6 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
       case "1" => // tutkinto
         val tutkinnonSuoritus = koulutuskoodi(suoritus).map { koulutuskoodi =>
           val osasuoritukset = childNodes(suoritus, allNodes).map(convertOpintojaksonSuoritus(_, allNodes))
-
           val päivämääräVahvistus = vahvistus(suoritus)
           KorkeakoulututkinnonSuoritus(
             koulutusmoduuli = tutkinto(koulutuskoodi),
@@ -362,6 +361,16 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   private def MyöntäjänäLABAmmattiKorkeakoulu(osasuoritusNodes: List[Node]) = {
     osasuoritusNodes.find(osasuoritus => (osasuoritus \ "Myontaja").text == LABAmmattikorkeaNumero)
   }
+  private def filtteröiLABDuplikaatit(osasuoritusNodes: List[Node]): List[Node] = {
+    val avaimet = osasuoritusNodes.filter(o => (o \ "Myontaja").text != LABAmmattikorkeaNumero).map(o => (o \ "@avain").text)
+    osasuoritusNodes.filter(o => {
+      if ((o \ "Myontaja").text == LABAmmattikorkeaNumero) {
+        if (avaimet.contains((o \ "@avain").text)) {
+          false
+        } else { true }
+      } else { true }
+    })
+  }
 
   private def childNodes(node: Node, allNodes: List[Node]) = {
     sisaltyvatAvaimet(node).map { opintosuoritusAvain =>
@@ -372,7 +381,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         case osasuoritusNodes => {
           MyöntäjänäLABAmmattiKorkeakoulu(osasuoritusNodes) match {
             case Some(node) => node
-            case None => throw IllegalSuoritusException("Enemmän kuin yksi suoritus avaimella " + opintosuoritusAvain)
+            case _ => throw IllegalSuoritusException("Enemmän kuin yksi suoritus avaimella " + opintosuoritusAvain)
           }
         }
       }
