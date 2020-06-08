@@ -60,7 +60,7 @@ object MockUsers {
   val tilastokeskusKäyttäjä = MockUser("Tilastokeskus", "Teppo", "1.2.246.562.24.78787878787", Set(KäyttöoikeusViranomainen(List(Palvelurooli(TILASTOKESKUS), Palvelurooli(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT), Palvelurooli(GLOBAALI_LUKU_PERUSOPETUS),Palvelurooli(GLOBAALI_LUKU_TOINEN_ASTE), Palvelurooli(GLOBAALI_LUKU_KORKEAKOULU)))))
   val valviraKäyttäjä = MockUser("Valvira", "Ville", "1.2.246.562.24.42042042040", Set(KäyttöoikeusViranomainen(List(Palvelurooli(VALVIRA)))))
   val esiopetusTallentaja = MockUser("esiopetus-tallentaja", "esiopetus-tallentaja", "1.2.246.562.24.42042042041", Set(KäyttöoikeusOrg(OidOrganisaatio(helsinginKaupunki), List(Palvelurooli(READ_UPDATE_ESIOPETUS), Palvelurooli(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)), true, None)))
-  val perusopetusTallentaja =  MockUser("esiopetus-tallentaja", "esiopetus-tallentaja", "1.2.246.562.24.42042042042", Set(KäyttöoikeusOrg(OidOrganisaatio(jyväskylänNormaalikoulu), List(Palvelurooli(PERUSOPETUS), Palvelurooli(READ_UPDATE), Palvelurooli(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)), true, None)))
+  val perusopetusTallentaja =  MockUser("perusopetus-tallentaja", "perusopetus-tallentaja", "1.2.246.562.24.42042042042", Set(KäyttöoikeusOrg(OidOrganisaatio(jyväskylänNormaalikoulu), List(Palvelurooli(PERUSOPETUS), Palvelurooli(READ_UPDATE), Palvelurooli(LUOTTAMUKSELLINEN_KAIKKI_TIEDOT)), true, None)))
 
   val users = List(
     kalle,
