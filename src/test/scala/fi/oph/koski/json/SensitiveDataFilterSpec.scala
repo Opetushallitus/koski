@@ -94,13 +94,13 @@ class SensitiveDataFilterSpec extends FreeSpec with Matchers {
 
   "Käyttäjä jolla on laajat luottamuksellisten tietojen oikeudet näkee laajojen oikeuksien mukaiset arkaluontoiset tiedot" in {
     implicit val laajatOikeudet = MockUsers.kelaLaajatOikeudet.toKoskiUser(käyttöoikeusRepository)
-    roundtrip[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot](aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) should equal(aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot.copy(vuosiluokkiinSitoutumatonOpetus = false, vammainen = None, vaikeastiVammainen = None))
+    roundtrip[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot](aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot) should equal(aikuistenPerusopetuksenOpiskeluoikeudenLisätiedot.copy(vuosiluokkiinSitoutumatonOpetus = false, vammainen = None, vaikeastiVammainen = None, tukimuodot = None))
     roundtrip[AmmatillisenOpiskeluoikeudenLisätiedot](ammatillisenOpiskeluoikeudenLisätiedot) should equal(ammatillisenOpiskeluoikeudenLisätiedot.copy(vaikeastiVammainen = None, vammainenJaAvustaja = None))
     roundtrip[DIAOpiskeluoikeudenLisätiedot](diaOpiskeluoikeudenLisätiedot).pidennettyPäättymispäivä should equal(false)
-    roundtrip[EsiopetuksenOpiskeluoikeudenLisätiedot](esiopetuksenOpiskeluoikeudenLisätiedot) should equal(esiopetuksenOpiskeluoikeudenLisätiedot.copy(pidennettyOppivelvollisuus = None, majoitusetu = None, kuljetusetu = None))
+    roundtrip[EsiopetuksenOpiskeluoikeudenLisätiedot](esiopetuksenOpiskeluoikeudenLisätiedot) should equal(esiopetuksenOpiskeluoikeudenLisätiedot.copy(pidennettyOppivelvollisuus = None, majoitusetu = None, kuljetusetu = None, tukimuodot = None))
     roundtrip[LukionOpiskeluoikeudenLisätiedot](lukionOpiskeluoikeudenLisätiedot) should equal(lukionOpiskeluoikeudenLisätiedot.copy(pidennettyPäättymispäivä = false))
     roundtrip[LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot](lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot) should equal(lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot.copy(pidennettyPäättymispäivä = false))
-    roundtrip[PerusopetuksenOpiskeluoikeudenLisätiedot](perusopetuksenOpiskeluoikeudenLisätiedot) should equal(PerusopetuksenOpiskeluoikeudenLisätiedot(false,false,None,tukimuodot,Some(erityisenTuenPäätös),Some(List(erityisenTuenPäätös)),Some(aikajakso),aikajaksot,Some(aikajakso),None,None,None,None,false,None,None,None,None,Some(aikajakso),aikajaksot,aikajaksot))
+    roundtrip[PerusopetuksenOpiskeluoikeudenLisätiedot](perusopetuksenOpiskeluoikeudenLisätiedot) should equal(PerusopetuksenOpiskeluoikeudenLisätiedot(false,false,None,None,Some(erityisenTuenPäätös),Some(List(erityisenTuenPäätös)),Some(aikajakso),aikajaksot,Some(aikajakso),None,None,None,None,false,None,None,None,None,Some(aikajakso),aikajaksot,aikajaksot))
     roundtrip[PerusopetuksenVuosiluokanSuoritus](perusopetuksenVuosiluokanSuoritus).jääLuokalle should equal(false)
     roundtrip[SanallinenPerusopetuksenOppiaineenArviointi](sanallinenPerusopetuksenOppiaineenArviointi).kuvaus should equal(None)
     roundtrip[PerusopetuksenKäyttäytymisenArviointi](perusopetuksenKäyttäytymisenArviointi).kuvaus should equal(None)

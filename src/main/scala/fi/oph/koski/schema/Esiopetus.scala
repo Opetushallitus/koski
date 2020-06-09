@@ -47,7 +47,7 @@ case class EsiopetuksenOpiskeluoikeudenLisätiedot(
   @KoodistoUri("perusopetuksentukimuoto")
   @Description("Oppilaan saamat laissa säädetyt tukimuodot.")
   @Tooltip("Oppilaan saamat laissa säädetyt tukimuodot. Voi olla useita.")
-  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   tukimuodot: Option[List[Koodistokoodiviite]] = None,
   @Description("Erityisen tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty. Rahoituksen laskennassa käytettävä tieto.")
   @Tooltip("Mahdollisen erityisen tuen päätöksen alkamis- ja päättymispäivät. Rahoituksen laskennassa käytettävä tieto.")
