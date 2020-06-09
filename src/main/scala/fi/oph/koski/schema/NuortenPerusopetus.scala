@@ -181,6 +181,7 @@ Huom: toiminta-alue arviointeineen on kuvattu oppiaineen suorituksessa.""")
   @Tooltip("Tieto erityisopetuksen toteutuspaikasta.")
   @KoodistoUri("erityisopetuksentoteutuspaikka")
   @Title("Erityisopetuksen toteutuspaikka")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   toteutuspaikka: Option[Koodistokoodiviite] = None
 ) {
   def voimassaPäivänä(d: LocalDate): Boolean = (alku.isDefined && !d.isBefore(alku.get)) && (loppu.isEmpty || !d.isAfter(loppu.get))
