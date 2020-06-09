@@ -381,7 +381,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
         case osasuoritusNodes => {
           MyöntäjänäLABAmmattiKorkeakoulu(osasuoritusNodes) match {
             case Some(node) => node
-            case _ => throw IllegalSuoritusException("Enemmän kuin yksi suoritus avaimella " + opintosuoritusAvain)
+            case None => throw IllegalSuoritusException("Enemmän kuin yksi suoritus avaimella " + opintosuoritusAvain)
           }
         }
       }
