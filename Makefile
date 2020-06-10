@@ -174,6 +174,10 @@ dist: check-version
 deploy: check-version
 	./scripts/deploy.sh $(env) $(version)
 
+.PHONY: deployaws
+deployaws: check-version
+	./scripts/deploy-aws.sh $(env) $(version)
+
 .PHONY: check-version
 check-version:
 ifndef version
