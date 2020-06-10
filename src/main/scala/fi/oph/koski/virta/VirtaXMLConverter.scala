@@ -24,7 +24,7 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   def convertToOpiskeluoikeudet(virtaXml: Node): List[KorkeakoulunOpiskeluoikeus] = {
     import fi.oph.koski.util.DateOrdering._
 
-    val suoritusNodeList: List[Node] = filtteröiLABDuplikaatit(suoritusNodes(virtaXml))
+    val suoritusNodeList: List[Node] = filterLABDuplikaatit(suoritusNodes(virtaXml))
     val suoritusRoots: List[Node] = suoritusNodeList.filter(isRoot(suoritusNodeList)(_))
     val opiskeluoikeusNodes: List[Node] = (virtaXml \\ "Opiskeluoikeus").toList
     val ooTyyppi: Koodistokoodiviite = koodistoViitePalvelu.validateRequired(OpiskeluoikeudenTyyppi.korkeakoulutus)
@@ -361,8 +361,8 @@ case class VirtaXMLConverter(oppilaitosRepository: OppilaitosRepository, koodist
   private def MyöntäjänäLABAmmattiKorkeakoulu(osasuoritusNodes: List[Node]) = {
     osasuoritusNodes.find(osasuoritus => (osasuoritus \ "Myontaja").text == LABAmmattikorkeaNumero)
   }
-  private def filtteröiLABDuplikaatit(osasuoritusNodes: List[Node]): List[Node] = {
-    val avaimet = osasuoritusNodes.filter(o => (o \ "Myontaja").text != LABAmmattikorkeaNumero).map(o => (o \ "@avain").text)
+  private def filterLABDuplikaatit(osasuoritusNodes: List[Node]): List[Node] = {
+    lazy val avaimet = osasuoritusNodes.filter(o => (o \ "Myontaja").text != LABAmmattikorkeaNumero).map(o => (o \ "@avain").text)
     osasuoritusNodes.filter(o => {
       if ((o \ "Myontaja").text == LABAmmattikorkeaNumero) {
         if (avaimet.contains((o \ "@avain").text)) {
