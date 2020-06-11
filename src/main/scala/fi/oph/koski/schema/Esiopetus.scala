@@ -109,6 +109,7 @@ case class EsiopetuksenSuoritus(
   @Tooltip("Oppilaan osallistuminen osa-aikaiseen erityisopetukseen lukuvuoden aikana")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @KoodistoUri("osaaikainenerityisopetuslukuvuodenaikana")
+  @Deprecated("Tätä kenttää ei toistaiseksi käytetä.")
   osaAikainenErityisopetus: Option[List[Koodistokoodiviite]] = None,
   @KoodistoKoodiarvo("esiopetuksensuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("esiopetuksensuoritus", koodistoUri = "suorituksentyyppi"),
