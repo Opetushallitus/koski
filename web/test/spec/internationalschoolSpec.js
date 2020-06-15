@@ -13,12 +13,12 @@ describe('International school', function() {
     describe('Opiskeluoikeuden tiedot', function() {
       it('näytetään', function() {
         expect(extractAsText(S('.opiskeluoikeuden-tiedot'))).to.equal(
-          'Opiskeluoikeuden voimassaoloaika : 15.8.2006 — 30.6.2018\n' +
-          'Tila 30.6.2018 Valmistunut\n15.8.2006 Läsnä\nLisätiedot'
+          'Opiskeluoikeuden voimassaoloaika : 15.8.2004 — 30.6.2018\n' +
+          'Tila 30.6.2018 Valmistunut\n15.8.2004 Läsnä\nLisätiedot'
         )
 
         expect(opinnot.opiskeluoikeudet.valitunVälilehdenAlaotsikot()).to.deep.equal([
-          'International school diploma vuosiluokka 2006—2018, Valmistunut'
+          'International school diploma vuosiluokka 2004—2018, Valmistunut'
         ])
       })
 

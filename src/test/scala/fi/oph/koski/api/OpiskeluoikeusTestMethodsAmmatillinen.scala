@@ -19,16 +19,35 @@ trait OpiskeluoikeusTestMethodsAmmatillinen extends PutOpiskeluoikeusTestMethods
   def makeOpiskeluoikeus(alkamispäivä: LocalDate = longTimeAgo, toimpiste: OrganisaatioWithOid = stadinToimipiste, oppilaitos: Organisaatio.Oid = MockOrganisaatiot.stadinAmmattiopisto) = AmmatillinenOpiskeluoikeus(
     tila = AmmatillinenOpiskeluoikeudenTila(List(AmmatillinenOpiskeluoikeusjakso(alkamispäivä, opiskeluoikeusLäsnä, Some(valtionosuusRahoitteinen)))),
     oppilaitos = Some(Oppilaitos(oppilaitos)),
-    suoritukset = List(autoalanPerustutkinnonSuoritus(toimpiste))
+    suoritukset = List(autoalanPerustutkinnonSuoritus(toimpiste).copy(alkamispäivä = Some(alkamispäivä.plusDays(1))))
   )
 
-  def päättymispäivällä(oo: AmmatillinenOpiskeluoikeus, päättymispäivä: LocalDate) = lisääTila(oo, päättymispäivä, ExampleData.opiskeluoikeusValmistunut).copy(
-    suoritukset = oo.suoritukset.map {
-      case s: AmmatillisenTutkinnonSuoritus =>
-        s.copy(alkamispäivä = oo.alkamispäivä, vahvistus = vahvistus(päättymispäivä, stadinAmmattiopisto, Some(helsinki)), osasuoritukset = Some(List(muunAmmatillisenTutkinnonOsanSuoritus.copy(vahvistus = None))))
-      case _ => ???
-    }
-  )
+  def päättymispäivällä(oo: AmmatillinenOpiskeluoikeus, päättymispäivä: LocalDate) =
+    lisääTila(oo, päättymispäivä, ExampleData.opiskeluoikeusValmistunut).copy(
+      suoritukset = oo.suoritukset.map {
+        case s: AmmatillisenTutkinnonSuoritus => s.copy(
+          alkamispäivä = oo.alkamispäivä,
+          vahvistus = vahvistus(päättymispäivä, stadinAmmattiopisto, Some(helsinki)),
+          osasuoritukset = Some(List(muunAmmatillisenTutkinnonOsanSuoritus.copy(vahvistus = None)))
+        )
+        case _ => ???
+      }
+    )
+
+  def alkamispäivällä(oo: AmmatillinenOpiskeluoikeus, alkamispäivä: LocalDate) =
+    lisääTila(
+      oo.copy(tila = new AmmatillinenOpiskeluoikeudenTila(opiskeluoikeusjaksot = List())),
+      alkamispäivä,
+      ExampleData.opiskeluoikeusLäsnä
+    ).copy(
+      suoritukset = oo.suoritukset.map {
+        case s: AmmatillisenTutkinnonSuoritus => s.copy(
+          alkamispäivä = Some(alkamispäivä),
+          osasuoritukset = Some(List(muunAmmatillisenTutkinnonOsanSuoritus.copy(vahvistus = None)))
+        )
+        case _ => ???
+      }
+    )
 
   def lisääTila(oo: AmmatillinenOpiskeluoikeus, päivä: LocalDate, tila: Koodistokoodiviite) = oo.copy(
     tila = AmmatillinenOpiskeluoikeudenTila(oo.tila.opiskeluoikeusjaksot ++ List(AmmatillinenOpiskeluoikeusjakso(päivä, tila, Some(valtionosuusRahoitteinen))))
