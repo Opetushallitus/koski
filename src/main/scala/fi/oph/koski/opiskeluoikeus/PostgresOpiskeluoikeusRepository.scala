@@ -7,7 +7,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.db.Tables._
 import fi.oph.koski.db._
 import fi.oph.koski.henkilo._
-import fi.oph.koski.history.{OpiskeluoikeusHistory, OpiskeluoikeusHistoryRepository}
+import fi.oph.koski.history.{JsonPatchException, OpiskeluoikeusHistory, OpiskeluoikeusHistoryRepository}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonDiff.jsonDiff
 import fi.oph.koski.koskiuser.KoskiSession
@@ -270,11 +270,18 @@ class PostgresOpiskeluoikeusRepository(val db: DB, historyRepository: Opiskeluoi
     }
   }
 
-  private def verifyHistoria(opiskeluoikeusJson: JValue, hist: Option[OpiskeluoikeusHistory]): Unit = hist.foreach { historia =>
+  private def verifyHistoria(opiskeluoikeusJson: JValue, hist: Option[OpiskeluoikeusHistory]): Unit =
+    hist.flatMap(validateHistoria(opiskeluoikeusJson, _))
+        .foreach(logger.warn(_))
+
+  private def validateHistoria(opiskeluoikeusJson: JValue, historia: OpiskeluoikeusHistory): Option[String] = try {
     val opiskeluoikeusDiffHistoria = jsonDiff(opiskeluoikeusJson, historia.asOpiskeluoikeusJson)
-    val historyCorrupted = opiskeluoikeusDiffHistoria.values.nonEmpty
-    if (historyCorrupted) {
-      logger.error(s"Virhe opiskeluoikeushistoriarivin tuottamisessa opiskeluoikeudelle ${historia.oid}/${historia.version}: ${JsonMethods.pretty(opiskeluoikeusDiffHistoria)}")
+    if (opiskeluoikeusDiffHistoria.values.nonEmpty) {
+      Some(s"Virhe opiskeluoikeushistoriarivin tuottamisessa opiskeluoikeudelle ${historia.oid}/${historia.version}: ${JsonMethods.pretty(opiskeluoikeusDiffHistoria)}")
+    } else {
+      None
     }
+  } catch {
+    case e: JsonPatchException => Some(s"Virhe opiskeluoikeushistorian validoinnissa: ${e.getMessage}")
   }
 }

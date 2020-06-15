@@ -127,13 +127,12 @@ class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecificatio
     }
 
     "Virheentarkistus" - {
-      "Virhe historiatiedoissa lokitetaan" in {
+      "Virhe historiatietojen tuottamisesta lokitetaan" in {
         val suoritus = Reformi.tutkinnonSuoritus.copy(osasuoritukset = Some(Reformi.osasuoritukset.drop(1)))
-        val resp = putOpiskeluoikeus(Reformi.opiskeluoikeus.copy(suoritukset = List(suoritus)), henkilö = reformitutkinto) {
-          verifyResponseStatusOk()
-          val response = readPutOppijaResponse.opiskeluoikeudet.head
-          updateOpiskeluoikeusHistory(response.oid, response.versionumero, "[]")
-          response
+        val opiskeluoikeus = putOpiskeluoikeus(Reformi.opiskeluoikeus.copy(suoritukset = List(suoritus)), henkilö = reformitutkinto) {
+          val oo = readPutOppijaResponse.opiskeluoikeudet.head
+          updateOpiskeluoikeusHistory(oo.oid, oo.versionumero, "[]")
+          oo
         }
 
         putOpiskeluoikeus(Reformi.opiskeluoikeus.copy(suoritukset = List(Reformi.tutkinnonSuoritus)), henkilö = reformitutkinto) {
@@ -141,12 +140,34 @@ class OpiskeluoikeusHistorySpec extends FreeSpec with LocalJettyHttpSpecificatio
         }
 
         RootLogTester.getLogMessages.map(_.getMessage.toString).find(_.startsWith("Virhe")).get should equal(s"""
-           |Virhe opiskeluoikeushistoriarivin tuottamisessa opiskeluoikeudelle ${resp.oid}/${resp.versionumero + 1}: [ {
+           |Virhe opiskeluoikeushistoriarivin tuottamisessa opiskeluoikeudelle ${opiskeluoikeus.oid}/${opiskeluoikeus.versionumero + 1}: [ {
            |  "op" : "copy",
            |  "path" : "/suoritukset/0/osasuoritukset/-",
            |  "from" : "/suoritukset/0/osasuoritukset/3"
            |} ]
           """.stripMargin.trim)
+      }
+
+      "Virhe historiatiedoissa lokitetaan" in {
+        resetFixtures
+        val suoritus = Reformi.tutkinnonSuoritus.copy(osasuoritukset = Some(Reformi.osasuoritukset.drop(1)))
+        putOpiskeluoikeus(Reformi.opiskeluoikeus.copy(suoritukset = List(suoritus)), henkilö = reformitutkinto) {
+          val oo = readPutOppijaResponse.opiskeluoikeudet.head
+          updateOpiskeluoikeusHistory(oo.oid, oo.versionumero, " [{\"op\": \"remove\", \"path\": \"/suoritukset/0/osasuoritukset/0/näyttö\"}]")
+        }
+
+        val opiskeluoikeus = putOpiskeluoikeus(Reformi.opiskeluoikeus.copy(suoritukset = List(Reformi.tutkinnonSuoritus)), henkilö = reformitutkinto) {
+          val oo = readPutOppijaResponse.opiskeluoikeudet.head
+          updateOpiskeluoikeusHistory(oo.oid, oo.versionumero, "[]")
+          oo
+        }
+
+        putOpiskeluoikeus(Reformi.opiskeluoikeus.copy(suoritukset = List(suoritus)), henkilö = reformitutkinto) {
+          verifyResponseStatusOk()
+        }
+
+        val logString = RootLogTester.getLogMessages.map(_.getMessage.toString).find(_.startsWith("Virhe opiskeluoikeushistorian validoinnissa")).get
+        logString should equal(s"Virhe opiskeluoikeushistorian validoinnissa: Opiskeluoikeuden ${opiskeluoikeus.oid} historiaversion patch 4 epäonnistui")
       }
     }
   }
