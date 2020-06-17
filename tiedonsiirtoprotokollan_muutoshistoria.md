@@ -1,9 +1,9 @@
-## xx.6.2020
+## 17.6.2020
 - Deprekoitu esiopetuksen, perusopetuksen ja perusopetuksen lisäopetuksen opiskeluoikeuden lisätiedoista kenttä "tukimuodot"
-- Lisätty perusopetuksen ja perusopetuksen lisäopetuksen opiskeluoikeuden erityisen tuen ja tehostetun tuen päätöksiin kenttä tukimuodoista
-- Lisätty esiopetuksen suoritustietoihin osaAikainenErityisopetus, joka käyttää koodistoa osaaikainenerityisopetuslukuvuodenaikana
-- Lisätty perusopetuksen vuosiluokan suoritukseen kenttä osaAikainenErityisopetus
-- Lisätty perusopetuksen lisäopetuksen suoritukseen kenttä osaAikainenErityisopetus
+- Lisätty perusopetuksen ja perusopetuksen lisäopetuksen opiskeluoikeuden erityisen tuen ja tehostetun tuen päätöksiin (toistaiseksi deprekoinnilla piilotettu) kenttä tukimuodoista
+- Lisätty esiopetuksen suoritustietoihin (toistaiseksi deprekoinnilla piilotettu) osaAikainenErityisopetus, joka käyttää koodistoa osaaikainenerityisopetuslukuvuodenaikana
+- Lisätty perusopetuksen vuosiluokan suoritukseen (toistaiseksi deprekoinnilla piilotettu) kenttä osaAikainenErityisopetus
+- Lisätty perusopetuksen lisäopetuksen suoritukseen (toistaiseksi deprekoinnilla piilotettu) kenttä osaAikainenErityisopetus
 
 ## 15.5.2020
 - Lisätty perusopetukseen valmistavan opiskeluoikeuden tila "Loma"
