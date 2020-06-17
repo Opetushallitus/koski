@@ -1,6 +1,6 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.documentation.PerusopetusExampleData
+import fi.oph.koski.documentation.OsaAikainenErityisopetusExampleData._
 import fi.oph.koski.documentation.PerusopetusExampleData.{suoritus, _}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
@@ -256,6 +256,74 @@ class OppijaValidationPerusopetusSpec extends TutkinnonPerusteetTest[Perusopetuk
             verifyResponseStatusOk()
           }
         }
+      }
+    }
+  }
+
+  "Osa-aikainen erityisopetus" - {
+    "Opiskeluoikeudella on erityisen tuen päätös muusta kuin osa-aikaisesta erityisopetuksesta, muttei tietoa suorituksessa -> HTTP 200" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+        lisätiedot = perusopetuksenOpiskeluoikeudenLisätiedotJoissaErityisenTuenPäätösIlmanOsaAikaistaErityisopetusta,
+        suoritukset = List(vuosiluokkasuoritus.copy(osaAikainenErityisopetus = false))
+      )) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Opiskeluoikeudella on tehostetun tuen päätös muusta kuin osa-aikaisesta erityisopetuksesta, muttei tietoa suorituksessa -> HTTP 200" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+        lisätiedot = perusopetuksenOpiskeluoikeudenLisätiedotJoissaTehostetunTuenPäätösIlmanOsaAikaistaErityisopetusta,
+        suoritukset = List(vuosiluokkasuoritus.copy(osaAikainenErityisopetus = false))
+      )) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Opiskeluoikeudella on erityisen tuen päätös osa-aikaisesta erityisopetuksesta ja tieto suorituksessa -> HTTP 200" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+        lisätiedot = perusopetuksenOpiskeluoikeudenLisätiedotJoissaOsaAikainenErityisopetusErityisenTuenPäätöksessä,
+        suoritukset = List(
+          yhdeksännenLuokanSuoritus.copy(osaAikainenErityisopetus = false),
+          kahdeksannenLuokanSuoritus.copy(osaAikainenErityisopetus = false),
+          seitsemännenLuokanSuoritus.copy(osaAikainenErityisopetus = true)
+        )
+      )) {
+        verifyResponseStatusOk()
+      }
+    }
+
+    "Opiskeluoikeudella on erityisen tuen päätös osa-aikaisesta erityisopetuksesta, mutta suorituksissa ei yhtään vuosiluokan suoritusta -> HTTP 400" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+        lisätiedot = perusopetuksenOpiskeluoikeudenLisätiedotJoissaOsaAikainenErityisopetusErityisenTuenPäätöksessä,
+        suoritukset = List(päättötodistusSuoritus)
+      )) {
+        verifyResponseStatus(400,
+          KoskiErrorCategory.badRequest.validation.osaAikainenErityisopetus.kirjausPuuttuuSuorituksesta(
+            "Jos osa-aikaisesta erityisopetuksesta on päätös opiskeluoikeuden lisätiedoissa, se pitää kirjata myös vuosiluokan suoritukseen")
+        )
+      }
+    }
+
+    "Opiskeluoikeudella on erityisen tuen päätös osa-aikaisesta erityisopetuksesta, muttei tietoa suorituksessa -> HTTP 400" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(
+        lisätiedot = perusopetuksenOpiskeluoikeudenLisätiedotJoissaOsaAikainenErityisopetusErityisenTuenPäätöksessä,
+        suoritukset = List(yhdeksännenLuokanSuoritus.copy(osaAikainenErityisopetus = false), kahdeksannenLuokanSuoritus.copy(osaAikainenErityisopetus = false))
+      )) {
+        verifyResponseStatus(400,
+          KoskiErrorCategory.badRequest.validation.osaAikainenErityisopetus.kirjausPuuttuuSuorituksesta(
+            "Jos osa-aikaisesta erityisopetuksesta on päätös opiskeluoikeuden lisätiedoissa, se pitää kirjata myös vuosiluokan suoritukseen")
+        )
+      }
+    }
+
+    "Opiskeluoikeudella on tehostetun tuen päätös osa-aikaisesta erityisopetuksesta, muttei tietoa suorituksessa -> HTTP 400" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(lisätiedot = perusopetuksenOpiskeluoikeudenLisätiedotJoissaOsaAikainenErityisopetusTehostetunTuenPäätöksessä,
+        suoritukset = List(yhdeksännenLuokanSuoritus.copy(osaAikainenErityisopetus = false), kahdeksannenLuokanSuoritus.copy(osaAikainenErityisopetus = false))
+      )) {
+        verifyResponseStatus(400,
+          KoskiErrorCategory.badRequest.validation.osaAikainenErityisopetus.kirjausPuuttuuSuorituksesta(
+            "Jos osa-aikaisesta erityisopetuksesta on päätös opiskeluoikeuden lisätiedoissa, se pitää kirjata myös vuosiluokan suoritukseen")
+        )
       }
     }
   }

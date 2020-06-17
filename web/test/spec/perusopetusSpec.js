@@ -227,6 +227,7 @@ describe('Perusopetus', function() {
             'Opiskelee toiminta-alueittain kyllä\n' +
             'Opiskelee erityisryhmässä kyllä\n' +
             'Tehostetun tuen päätökset 15.8.2008 — 4.6.2016\n' +
+            'Tukimuodot Tukiopetus\n' +
             'Joustava perusopetus 15.8.2008 — 4.6.2016\n' +
             'Kotiopetusjaksot 15.8.2008 — 4.6.2016\n' +
             '14.7.2017 — 18.10.2017\n' +
@@ -1193,7 +1194,12 @@ describe('Perusopetus', function() {
 
         describe('Tukimuodot', function() {
           describe('Lisättäessä ensimmäinen', function() {
-            before(editor.edit, editor.propertyBySelector('.tukimuodot .add-item').setValue('Erityiset apuvälineet'), editor.saveChanges)
+            before(
+              editor.edit,
+              editor.propertyBySelector('.erityisenTuenPäätökset').addItem,
+              editor.propertyBySelector('.erityisenTuenPäätökset .tukimuodot .add-item').setValue('Erityiset apuvälineet'),
+              editor.saveChanges
+            )
             it('Toimii', function() {
               expect(editor.property('tukimuodot').getValue()).to.equal('Erityiset apuvälineet')
             })

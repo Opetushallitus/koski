@@ -100,7 +100,7 @@ class SensitiveDataFilterSpec extends FreeSpec with Matchers {
     roundtrip[EsiopetuksenOpiskeluoikeudenLisätiedot](esiopetuksenOpiskeluoikeudenLisätiedot) should equal(esiopetuksenOpiskeluoikeudenLisätiedot.copy(pidennettyOppivelvollisuus = None, majoitusetu = None, kuljetusetu = None, tukimuodot = None, erityisenTuenPäätös = Some(erityisenTuenPäätös.copy(toteutuspaikka = None)), erityisenTuenPäätökset = Some(List(erityisenTuenPäätös.copy(toteutuspaikka = None)))))
     roundtrip[LukionOpiskeluoikeudenLisätiedot](lukionOpiskeluoikeudenLisätiedot) should equal(lukionOpiskeluoikeudenLisätiedot.copy(pidennettyPäättymispäivä = false))
     roundtrip[LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot](lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot) should equal(lukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot.copy(pidennettyPäättymispäivä = false))
-    roundtrip[PerusopetuksenOpiskeluoikeudenLisätiedot](perusopetuksenOpiskeluoikeudenLisätiedot) should equal(PerusopetuksenOpiskeluoikeudenLisätiedot(false,false,None,None,Some(erityisenTuenPäätös.copy(toteutuspaikka = None)),Some(List(erityisenTuenPäätös.copy(toteutuspaikka = None))),Some(aikajakso),aikajaksot,Some(aikajakso),None,None,None,None,false,None,None,None,None,Some(aikajakso),aikajaksot,aikajaksot))
+    roundtrip[PerusopetuksenOpiskeluoikeudenLisätiedot](perusopetuksenOpiskeluoikeudenLisätiedot) should equal(PerusopetuksenOpiskeluoikeudenLisätiedot(false,false,None,None,Some(erityisenTuenPäätös.copy(toteutuspaikka = None)),Some(List(erityisenTuenPäätös.copy(toteutuspaikka = None))),Some(tehostetunTuenPäätös),Some(List(tehostetunTuenPäätös)),Some(aikajakso),None,None,None,None,false,None,None,None,None,Some(aikajakso),aikajaksot,aikajaksot))
     roundtrip[PerusopetuksenVuosiluokanSuoritus](perusopetuksenVuosiluokanSuoritus).jääLuokalle should equal(false)
     roundtrip[SanallinenPerusopetuksenOppiaineenArviointi](sanallinenPerusopetuksenOppiaineenArviointi).kuvaus should equal(None)
     roundtrip[PerusopetuksenKäyttäytymisenArviointi](perusopetuksenKäyttäytymisenArviointi).kuvaus should equal(None)
@@ -145,6 +145,7 @@ class SensitiveDataFilterSpec extends FreeSpec with Matchers {
   )
 
   private val erityisenTuenPäätös = ErityisenTuenPäätös(alku = Some(pvm), loppu = None, opiskeleeToimintaAlueittain = true, erityisryhmässä = None, toteutuspaikka = Some(Koodistokoodiviite("1", "erityisopetuksentoteutuspaikka")))
+  private val tehostetunTuenPäätös = TehostetunTuenPäätös(alku = pvm, loppu = None, None)
   private val esiopetuksenOpiskeluoikeudenLisätiedot = EsiopetuksenOpiskeluoikeudenLisätiedot(
     pidennettyOppivelvollisuus = Some(aikajakso),
     erityisenTuenPäätös = Some(erityisenTuenPäätös),
@@ -174,8 +175,8 @@ class SensitiveDataFilterSpec extends FreeSpec with Matchers {
     tukimuodot = tukimuodot,
     erityisenTuenPäätös = Some(erityisenTuenPäätös),
     erityisenTuenPäätökset = Some(List(erityisenTuenPäätös)),
-    tehostetunTuenPäätös = Some(aikajakso),
-    tehostetunTuenPäätökset = aikajaksot,
+    tehostetunTuenPäätös = Some(tehostetunTuenPäätös),
+    tehostetunTuenPäätökset = Some(List(tehostetunTuenPäätös)),
     joustavaPerusopetus = Some(aikajakso),
     vuosiluokkiinSitoutumatonOpetus = true,
     vammainen = aikajaksot,

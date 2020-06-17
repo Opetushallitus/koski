@@ -3,6 +3,7 @@ package fi.oph.koski.schema
 import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.koskiuser.Rooli
+import fi.oph.koski.schema.TukimuodollisetLisätiedot.tukimuodoissaOsaAikainenErityisopetus
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation.{Description, MaxItems, Title}
 
@@ -31,7 +32,7 @@ case class EsiopetuksenOpiskeluoikeus(
   @KoodistoKoodiarvo("JM03") // palveluseteli
   @KoodistoUri("vardajarjestamismuoto")
   järjestämismuoto: Option[Koodistokoodiviite] = None
-) extends KoskeenTallennettavaOpiskeluoikeus {
+) extends KoskeenTallennettavaOpiskeluoikeus with TukimuodollinenOpiskeluoikeus {
   @Description("Oppijan esiopetuksen lukuvuoden päättymispäivä. Esiopetuksen suoritusaika voi olla 2-vuotinen")
   override def päättymispäivä: Option[LocalDate] = super.päättymispäivä
   override def withOppilaitos(oppilaitos: Oppilaitos) = this.copy(oppilaitos = Some(oppilaitos))
@@ -47,6 +48,7 @@ case class EsiopetuksenOpiskeluoikeudenLisätiedot(
   @KoodistoUri("perusopetuksentukimuoto")
   @Description("Oppilaan saamat laissa säädetyt tukimuodot.")
   @Tooltip("Oppilaan saamat laissa säädetyt tukimuodot. Voi olla useita.")
+  @Deprecated("Käytä korvaavia kenttiä Erityisen tuen päätökset ja Osa-aikainen erityisopetus lukuvuoden aikana")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   tukimuodot: Option[List[Koodistokoodiviite]] = None,
   @Description("Erityisen tuen päätös alkamis- ja päättymispäivineen. Kentän puuttuminen tai null-arvo tulkitaan siten, että päätöstä ei ole tehty. Rahoituksen laskennassa käytettävä tieto.")
@@ -84,7 +86,10 @@ case class EsiopetuksenOpiskeluoikeudenLisätiedot(
   @Tooltip("Tieto siitä, jos oppija on koulukotikorotuksen piirissä (aloituspäivä ja loppupäivä). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT, Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   koulukoti: Option[List[Aikajakso]] = None
-) extends OpiskeluoikeudenLisätiedot
+) extends OpiskeluoikeudenLisätiedot with TukimuodollisetLisätiedot {
+  override def sisältääOsaAikaisenErityisopetuksen: Boolean =
+    tukimuodoissaOsaAikainenErityisopetus(erityisenTuenPäätökset)
+}
 
 case class EsiopetuksenSuoritus(
   @Title("Koulutus")
@@ -99,10 +104,18 @@ case class EsiopetuksenSuoritus(
   @OksaUri("tmpOKSAID439", "kielikylpy")
   @Tooltip("Oppilaan kotimaisten kielten kielikylvyn kieli.")
   kielikylpykieli: Option[Koodistokoodiviite] = None,
+  @Title("Osa-aikainen erityisopetus lukuvuoden aikana")
+  @Description("Tieto oppilaan osallistumisesta osa-aikaiseen erityisopetukseen lukuvuoden aikana")
+  @Tooltip("Oppilaan osallistuminen osa-aikaiseen erityisopetukseen lukuvuoden aikana")
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @KoodistoUri("osaaikainenerityisopetuslukuvuodenaikana")
+  osaAikainenErityisopetus: Option[List[Koodistokoodiviite]] = None,
   @KoodistoKoodiarvo("esiopetuksensuoritus")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("esiopetuksensuoritus", koodistoUri = "suorituksentyyppi"),
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None
-) extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Arvioinniton with MonikielinenSuoritus with Suorituskielellinen
+) extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Arvioinniton with MonikielinenSuoritus with Suorituskielellinen with ErityisopetuksellinenPäätasonSuoritus {
+  def sisältääOsaAikaisenErityisopetuksen: Boolean = osaAikainenErityisopetus.map(_.nonEmpty).getOrElse(false)
+}
 
 @Description("Esiopetuksen tunnistetiedot")
 case class Esiopetus(

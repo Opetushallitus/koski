@@ -68,6 +68,9 @@ object ExamplesEsiopetus {
   def päiväkotisuoritus(toimipiste: OrganisaatioWithOid): EsiopetuksenSuoritus =
     suoritus(perusteenDiaarinumero = "102/011/2014", tunniste = päiväkodinEsiopetuksenTunniste, toimipiste = toimipiste)
 
+  lazy val osaAikainenErityisopetusLukuvuodenAikanaLV1 =
+    Koodistokoodiviite("LV1", Some("Osa-aikainen erityisopetus lukuvuoden aikana"), "osaaikainenerityisopetuslukuvuodenaikana")
+
   def suoritus(perusteenDiaarinumero: String, tunniste: String, toimipiste: OrganisaatioWithOid) = EsiopetuksenSuoritus(
     koulutusmoduuli = Esiopetus(
       kuvaus = Some("Kaksikielinen esiopetus (suomi-portugali)"),
@@ -77,7 +80,8 @@ object ExamplesEsiopetus {
     toimipiste = toimipiste,
     suorituskieli = suomenKieli,
     muutSuorituskielet = Some(List(ruotsinKieli)),
-    vahvistus = vahvistusPaikkakunnalla(date(2007, 6, 3))
+    vahvistus = vahvistusPaikkakunnalla(date(2007, 6, 3)),
+    osaAikainenErityisopetus = Some(List(osaAikainenErityisopetusLukuvuodenAikanaLV1))
   )
 }
 

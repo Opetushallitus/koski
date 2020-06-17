@@ -194,12 +194,12 @@ object PerusopetuksenVuosiluokkaRaportti extends VuosiluokkaRaporttiPaivalta {
     osasuoritus.arviointiArvosanaKoodiarvo.exists(_.matches("\\d+"))
   }
 
-  private def oneOfAikajaksoistaVoimassaHakuPaivalla(aikajakso: Option[Aikajakso], aikajaksot: Option[List[Aikajakso]], hakupaiva: LocalDate) = {
+  private def oneOfAikajaksoistaVoimassaHakuPaivalla(aikajakso: Option[Jakso], aikajaksot: Option[List[Jakso]], hakupaiva: LocalDate) = {
    aikajakso.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)) ||
      aikajaksot.exists(_.exists(aikajaksoVoimassaHakuPaivalla(_, hakupaiva)))
   }
 
-  private def aikajaksoVoimassaHakuPaivalla(aikajakso: Aikajakso, paiva: LocalDate) = {
+  private def aikajaksoVoimassaHakuPaivalla(aikajakso: Jakso, paiva: LocalDate) = {
     (aikajakso.alku, aikajakso.loppu) match {
       case (alku, Some(loppu)) => !alku.isAfter(paiva) && !loppu.isBefore(paiva)
       case (alku, _) => !alku.isAfter(paiva)

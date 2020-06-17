@@ -1,3 +1,10 @@
+## xx.6.2020
+- Deprekoitu esiopetuksen, perusopetuksen ja perusopetuksen lisäopetuksen opiskeluoikeuden lisätiedoista kenttä "tukimuodot"
+- Lisätty perusopetuksen ja perusopetuksen lisäopetuksen opiskeluoikeuden erityisen tuen ja tehostetun tuen päätöksiin kenttä tukimuodoista
+- Lisätty esiopetuksen suoritustietoihin osaAikainenErityisopetus, joka käyttää koodistoa osaaikainenerityisopetuslukuvuodenaikana
+- Lisätty perusopetuksen vuosiluokan suoritukseen kenttä osaAikainenErityisopetus
+- Lisätty perusopetuksen lisäopetuksen suoritukseen kenttä osaAikainenErityisopetus
+
 ## 15.5.2020
 - Lisätty perusopetukseen valmistavan opiskeluoikeuden tila "Loma"
 
@@ -33,7 +40,7 @@
 - Lisätty mahdollisuus siirtää kokonaisuuksia "Korkeakouluopintoja" ja "Yhteisten tutkinnon osien osa-alueita, lukio-opintoja tai muita jatko-opintovalmiuksia tukevia opintoja" osasuorituksina päätason suoritukselle Ammatillisen tutkinnon osa/osia.
 
 ## 19.9.2019
-- Lisätty suoritustapa-kenttä nuorten perusopetuksen oppiaineen suoritukseen valmistavassa opetuksessa 
+- Lisätty suoritustapa-kenttä nuorten perusopetuksen oppiaineen suoritukseen valmistavassa opetuksessa
 - Yhteisen tutkinnon osan osa-alueita voi lisätä osasuorituksiksi suorituksiin:
   - Muun ammatillisen koulutuksen suoritus
   - Tutkinnon osaa pienemmistä kokonaisuuksista koostuva suoritus
@@ -157,7 +164,7 @@
 
 - Muutettu ammatillisen opiskeluoikeuden lisätiedon kenttä `vaikeastiVammainen` boolean-tyyppisestä listaksi alku-loppu päivämääräpareja
 - Muutettu ammatillisen opiskeluoikeuden lisätiedon kenttä `vammainenJaAvustaja` boolean-tyyppisestä listaksi alku-loppu päivämääräpareja
- 
+
 ## 8.12.2017
 
 - Erotettu uskonto ja elämänkatsomustieto omiksi oppiaineikseen perusopetuksessa ja lukiossa
@@ -276,7 +283,7 @@ Validointimuutoksia:
 
 Luetellaan muutoksia, jotka on toteutettu aiemmin, mutta joita ei ole merkitty muutoshistoriaan.
 
-- Lisätty ammatillisen opiskeluoikeuden lisätietoja: vaikeastiVammainen, vammainenJaAvustaja, majoitus, 
+- Lisätty ammatillisen opiskeluoikeuden lisätietoja: vaikeastiVammainen, vammainenJaAvustaja, majoitus,
 sisäoppilaitosmainenMajoitus, vaativanErityisentuenYhteydessäJärjestettäväMajoitus, vankilaopetuksessa, osaAikaisuus,
  poissaolojaksot, henkilöstökoulutus
 - Lisätty perusopetuksen opiskeluoikeuden lisätietoja: vaikeastiKehitysvammainen, majoitusetu, kuljetusetu,
@@ -431,26 +438,26 @@ Validointimuutoksia:
 - Oppilaitos ei pakollinen, jos se on pääteltävissä päätason suoritusten toimipisteiden perusteella
 - Osasuoritusten laajuuksien summa validoidaan pääsuorituksen laajuutta vasten vain, mikäli pääsuoritus on VALMIS
   (vaikuttaa esimerkiksi ammatillisten opintojen tutkinnon osiin ja lukion kursseihin)
-  
+
 ## 27.1.2017
 
 Muutoksia ammatillisen näytön tietoihin.
 
-Lisätty: 
+Lisätty:
 
 ```
-näyttö.arviointi.arvioitsijat._.ntm : Boolean 
-näyttö.suoritusaika.alku : Date 
-näyttö.suoritusaika.loppu : Date 
-näyttö.haluaaTodistuksen : Boolean 
+näyttö.arviointi.arvioitsijat._.ntm : Boolean
+näyttö.suoritusaika.alku : Date
+näyttö.suoritusaika.loppu : Date
+näyttö.haluaaTodistuksen : Boolean
 ```
 
-Muutettu: 
+Muutettu:
 
 ```
-tutkintotoimikunnanNumero: String (oli Int) 
-arvioinnistaPäättäneet: List[Koodistokoodiviite] (oli Koodistokoodiviite) 
-arviointikeskusteluunOsallistuneet: List[Koodistokoodiviite] (oli Koodistokoodiviite) 
+tutkintotoimikunnanNumero: String (oli Int)
+arvioinnistaPäättäneet: List[Koodistokoodiviite] (oli Koodistokoodiviite)
+arviointikeskusteluunOsallistuneet: List[Koodistokoodiviite] (oli Koodistokoodiviite)
 ```
 
 Koodisto `ammatillisennaytonarvioinnistapaattaneet` ja `ammatillisennaytonarviointikeskusteluunosallistuneet` uudistettu.
@@ -490,7 +497,7 @@ Koodisto `ammatillisennaytonarvioinnistapaattaneet` ja `ammatillisennaytonarvioi
 
 - Poistettu ammatillisen erityisopetuksen peruste -kenttä
 
-## 3.11.2016 
+## 3.11.2016
 
 - Suoritettavien koulutusmoduulien laajuus oltava > 0
 

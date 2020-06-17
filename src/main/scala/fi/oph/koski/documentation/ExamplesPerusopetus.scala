@@ -66,7 +66,7 @@ object ExamplesPerusopetus {
     oppilaitos = Some(YleissivistavakoulutusExampleData.kulosaarenAlaAste),
     suoritukset = List(
       perusopetuksenOppimääränSuoritusKesken.copy(toimipiste = YleissivistavakoulutusExampleData.kulosaarenAlaAste),
-      kuudennenLuokanSuoritus,
+      kuudennenLuokanOsaAikainenErityisopetusSuoritus,
       seitsemännenLuokanLuokallejääntiSuoritus.copy(toimipiste = YleissivistavakoulutusExampleData.kulosaarenAlaAste)
     ),
     tila = NuortenPerusopetuksenOpiskeluoikeudenTila(
@@ -86,7 +86,9 @@ object ExamplesPerusopetus {
     erityisryhmässä = Some(true)
   )
 
-  lazy val osaAikainenEritysopetus = Koodistokoodiviite("1", Some("Osa-aikainen erityisopetus"), "perusopetuksentukimuoto")
+  lazy val osaAikainenErityisopetus = Koodistokoodiviite("1", Some("Osa-aikainen erityisopetus"), "perusopetuksentukimuoto")
+  lazy val tukiopetus = Koodistokoodiviite("2", Some("Tukiopetus"), "perusopetuksentukimuoto")
+  lazy val tehostetunTuenPäätös = TehostetunTuenPäätös(date(2008, 8, 15), Some(date(2016, 6, 4)), Some(List(tukiopetus)))
   lazy val toimintaAlueittainOpiskelija = Oppija(
     exampleHenkilö,
     List(PerusopetuksenOpiskeluoikeus(
@@ -119,8 +121,8 @@ object ExamplesPerusopetus {
         perusopetuksenAloittamistaLykätty = true,
         aloittanutEnnenOppivelvollisuutta = false,
         pidennettyOppivelvollisuus = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
-        tukimuodot = Some(List(osaAikainenEritysopetus)),
-        tehostetunTuenPäätökset = Some(List(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4))))),
+        tukimuodot = Some(List(osaAikainenErityisopetus)),
+        tehostetunTuenPäätökset = Some(List(tehostetunTuenPäätös)),
         joustavaPerusopetus = Some(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4)))),
         kotiopetusjaksot = Some(List(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4))), Aikajakso(date(2017, 7, 14), Some(date(2017, 10, 18))))),
         ulkomaanjaksot = Some(List(Aikajakso(date(2008, 8, 15), Some(date(2016, 6, 4))), Aikajakso(date(2018, 9, 16), Some(date(2019, 10, 2))))),

@@ -133,8 +133,7 @@ trait PäätasonSuoritus extends Suoritus {
   def mutuallyExclusivePäätasoVahvistukseton = {}
 }
 
-trait KoskeenTallennettavaPäätasonSuoritus extends PäätasonSuoritus with Toimipisteellinen {
-}
+trait KoskeenTallennettavaPäätasonSuoritus extends PäätasonSuoritus with Toimipisteellinen
 
 trait Todistus extends PäätasonSuoritus with Suorituskielellinen {
   @MultiLineString(3)
@@ -161,4 +160,8 @@ trait PakollisenTaiValinnaisenSuoritus extends Suoritus {
 trait Laajuudellinen extends Suoritus {
   @Description("Tässä suorituksessa koulutusmoduulin laajuus on pakollinen")
   def koulutusmoduuli: Koulutusmoduuli
+}
+
+trait ErityisopetuksellinenPäätasonSuoritus extends PäätasonSuoritus {
+  def sisältääOsaAikaisenErityisopetuksen: Boolean
 }

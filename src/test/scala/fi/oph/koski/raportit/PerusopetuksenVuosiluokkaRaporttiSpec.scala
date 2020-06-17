@@ -7,7 +7,7 @@ import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.api.OpiskeluoikeusTestMethodsPerusopetus
 import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.documentation.ExamplesPerusopetus._
-import fi.oph.koski.documentation.PerusopetusExampleData
+import fi.oph.koski.documentation.{ExamplesPerusopetus, PerusopetusExampleData}
 import fi.oph.koski.documentation.PerusopetusExampleData._
 import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, MockOppijat}
 import fi.oph.koski.organisaatio.MockOrganisaatiot
@@ -428,8 +428,8 @@ class PerusopetuksenVuosiluokkaRaporttiSpec extends FreeSpec with Matchers with 
       erityisenTuenPäätös.copy(alku = Some(date(2016, 1, 1)), toteutuspaikka = Some(Koodistokoodiviite("2", "erityisopetuksentoteutuspaikka"))),
       erityisenTuenPäätös.copy(toteutuspaikka = Some(Koodistokoodiviite("3", "erityisopetuksentoteutuspaikka")))
     )),
-    tehostetunTuenPäätös = Some(voimassaolevaAikajakso),
-    tehostetunTuenPäätökset = aikajaksot,
+    tehostetunTuenPäätös = Some(tehostetunTuenPäätös.copy(alku = voimassaolevaAikajakso.alku, loppu = voimassaolevaAikajakso.loppu)),
+    tehostetunTuenPäätökset = Some(List(tehostetunTuenPäätös.copy(alku = aikajakso.alku, loppu = aikajakso.loppu))),
     joustavaPerusopetus = Some(voimassaolevaAikajakso),
     vuosiluokkiinSitoutumatonOpetus = true,
     vammainen = aikajaksot,

@@ -145,6 +145,18 @@ object KoskiErrorCategory {
         val eiSallittuSuppealleValinnaiselle = subcategory("eiSallittuSuppealleValinnaiselle", "Vain arvioinnit 'S' ja 'O' on sallittu valinnaiselle valtakunnalliselle oppiaineelle, jonka laajuus on alle kaksi vuosiviikkotuntia")
       }
       val arviointi = new Arviointi
+
+      class OsaAikainenErityisopetus extends ErrorCategory(
+        Validation.this,
+        "osaaikainenerityisopetus",
+        "Osa-aikaisen erityisopetuksen kirjauksiin liittyvä validointivirhe"
+      ) {
+        val kirjausPuuttuuSuorituksesta = subcategory(
+          "kirjausPuuttuuSuorituksesta",
+          "Jos osa-aikaisesta erityisopetuksesta on päätös opiskeluoikeuden lisätiedoissa, se pitää kirjata myös suoritukseen"
+        )
+      }
+      val osaAikainenErityisopetus = new OsaAikainenErityisopetus
     }
     val validation = new Validation
   }

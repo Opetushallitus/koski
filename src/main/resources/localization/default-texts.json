@@ -1332,5 +1332,13 @@
   "Lisätietoa": "Lisätietoa",
   "Vaikeasti vammaisille järjestetty opetus": "Vaikeasti vammaisille järjestetty opetus",
   "description:Osallistuuko oppija vaikeasti vammaisille järjestettyyn..." : "Osallistuuko oppija vaikeasti vammaisille järjestettyyn opetukseen. Lista alku-loppu päivämääräpareja. Rahoituksen laskennassa käytettävä tieto.",
-  "tooltip:Tieto siitä, osallistuuko oppija vaikeasti..." : "Tieto siitä, osallistuuko oppija vaikeasti vammaisille järjestettyyn opetukseen (alku- ja loppupäivä). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto."
+  "tooltip:Tieto siitä, osallistuuko oppija vaikeasti..." : "Tieto siitä, osallistuuko oppija vaikeasti vammaisille järjestettyyn opetukseen (alku- ja loppupäivä). Voi olla useita erillisiä jaksoja. Rahoituksen laskennassa käytettävä tieto.",
+  "Osa-aikainen erityisopetus lukuvuoden aikana" : "Osa-aikainen erityisopetus lukuvuoden aikana",
+  "description:Tieto siitä, osallistuuko oppilas osa-aikaiseen..." : "Tieto siitä, osallistuuko oppilas osa-aikaiseen erityisopetukseen lukuvuoden aikana",
+  "description:Tieto oppilaan osallistumisesta osa-aikaiseen erityisopetukseen..." : "Tieto oppilaan osallistumisesta osa-aikaiseen erityisopetukseen lukuvuoden aikana",
+  "tooltip:Osallistuuko oppilas osa-aikaiseen erityisopetukseen perusopetuksen..." : "Osallistuuko oppilas osa-aikaiseen erityisopetukseen perusopetuksen lisäopetuksen aikana",
+  "tooltip:Osallistuuko oppilas osa-aikaiseen erityisopetukseen lukuvuoden..." : "Osallistuuko oppilas osa-aikaiseen erityisopetukseen lukuvuoden aikana",
+  "tooltip:Oppilaan osallistuminen osa-aikaiseen erityisopetukseen lukuvuoden..." : "Oppilaan osallistuminen osa-aikaiseen erityisopetukseen lukuvuoden aikana",
+  "deprecated:Käytä korvaavia kenttiä Erityisen tuen..." : "Käytä korvaavia kenttiä Erityisen tuen päätökset, Osa-aikainen erityisopetus lukuvuoden aikana ja Osa-aikainen erityisopetus perusopetuksen lisäopetuksen aikana",
+  "Osa-aikainen erityisopetus perusopetuksen lisäopetuksen aikana" : "Osa-aikainen erityisopetus perusopetuksen lisäopetuksen aikana"
 }
