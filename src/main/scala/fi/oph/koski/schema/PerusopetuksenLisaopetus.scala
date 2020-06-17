@@ -3,7 +3,7 @@ package fi.oph.koski.schema
 import java.time.{LocalDate, LocalDateTime}
 
 import fi.oph.koski.koskiuser.Rooli
-import fi.oph.koski.schema.annotation.{Hidden, KoodistoKoodiarvo, SensitiveData, Tooltip}
+import fi.oph.koski.schema.annotation.{Deprecated, Hidden, KoodistoKoodiarvo, SensitiveData, Tooltip}
 import fi.oph.scalaschema.annotation._
 
 @Description("Perusopetuksen lisäopetuksen opiskeluoikeus")
@@ -50,6 +50,7 @@ case class PerusopetuksenLisäopetuksenSuoritus(
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @DefaultValue(false)
   @Title("Osa-aikainen erityisopetus perusopetuksen lisäopetuksen aikana")
+  @Deprecated("Tätä kenttää ei toistaiseksi käytetä.")
   osaAikainenErityisopetus: Boolean = false,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")

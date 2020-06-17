@@ -1192,7 +1192,8 @@ describe('Perusopetus', function() {
           after(pidennettyOppivelvollisuus.setLoppu(currentDateStr), editor.saveChanges, wait.until(page.isSavedLabelShown))
         })
 
-        describe('Tukimuodot', function() {
+        // Ks. https://github.com/Opetushallitus/koski/pull/876 : väliaikaisesti disabloitu
+        describe.skip('Tukimuodot', function() {
           describe('Lisättäessä ensimmäinen', function() {
             before(
               editor.edit,

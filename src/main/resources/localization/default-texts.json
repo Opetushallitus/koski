@@ -1340,5 +1340,6 @@
   "tooltip:Osallistuuko oppilas osa-aikaiseen erityisopetukseen lukuvuoden..." : "Osallistuuko oppilas osa-aikaiseen erityisopetukseen lukuvuoden aikana",
   "tooltip:Oppilaan osallistuminen osa-aikaiseen erityisopetukseen lukuvuoden..." : "Oppilaan osallistuminen osa-aikaiseen erityisopetukseen lukuvuoden aikana",
   "deprecated:Käytä korvaavia kenttiä Erityisen tuen..." : "Käytä korvaavia kenttiä Erityisen tuen päätökset, Osa-aikainen erityisopetus lukuvuoden aikana ja Osa-aikainen erityisopetus perusopetuksen lisäopetuksen aikana",
-  "Osa-aikainen erityisopetus perusopetuksen lisäopetuksen aikana" : "Osa-aikainen erityisopetus perusopetuksen lisäopetuksen aikana"
+  "Osa-aikainen erityisopetus perusopetuksen lisäopetuksen aikana" : "Osa-aikainen erityisopetus perusopetuksen lisäopetuksen aikana",
+  "deprecated:Tätä kenttää ei toistaiseksi käytetä." : "Tätä kenttää ei toistaiseksi käytetä."
 }

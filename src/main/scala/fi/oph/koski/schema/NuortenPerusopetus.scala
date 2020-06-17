@@ -169,6 +169,7 @@ trait Tukimuodollinen {
   @Description("Oppilaan saamat laissa säädetyt tukimuodot.")
   @Tooltip("Oppilaan saamat laissa säädetyt tukimuodot. Voi olla useita.")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @Deprecated("Tätä kenttää ei toistaiseksi käytetä.")
   def tukimuodot: Option[List[Koodistokoodiviite]]
 
   def tukimuotoLista: List[Koodistokoodiviite] = tukimuodot.getOrElse(List())
@@ -198,6 +199,7 @@ Huom: toiminta-alue arviointeineen on kuvattu oppiaineen suorituksessa.""")
   @KoodistoUri("erityisopetuksentoteutuspaikka")
   @Title("Erityisopetuksen toteutuspaikka")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
+  @Deprecated("Tätä kenttää ei toistaiseksi käytetä.")
   toteutuspaikka: Option[Koodistokoodiviite] = None,
   tukimuodot: Option[List[Koodistokoodiviite]] = None
 ) extends MahdollisestiAlkupäivällinenJakso with Tukimuodollinen {
@@ -246,6 +248,7 @@ case class PerusopetuksenVuosiluokanSuoritus(
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
   @DefaultValue(false)
   @Title("Osa-aikainen erityisopetus lukuvuoden aikana")
+  @Deprecated("Tätä kenttää ei toistaiseksi käytetä.")
   osaAikainenErityisopetus: Boolean = false,
   @Description("Tieto siitä, että oppilas jää luokalle")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
