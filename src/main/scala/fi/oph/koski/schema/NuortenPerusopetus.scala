@@ -249,6 +249,7 @@ case class PerusopetuksenVuosiluokanSuoritus(
   @DefaultValue(false)
   @Title("Osa-aikainen erityisopetus lukuvuoden aikana")
   @Deprecated("Tätä kenttää ei toistaiseksi käytetä.")
+  @Hidden
   osaAikainenErityisopetus: Boolean = false,
   @Description("Tieto siitä, että oppilas jää luokalle")
   @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KAIKKI_TIEDOT))
