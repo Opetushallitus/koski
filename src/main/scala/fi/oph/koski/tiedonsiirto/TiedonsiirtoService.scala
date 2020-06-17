@@ -159,18 +159,18 @@ class TiedonsiirtoService(
       .map(response => extract[List[JValue]](response \ "hits" \ "hits").map(j => extract[TiedonsiirtoDocument](j \ "_source", ignoreExtras = true)))
       .getOrElse(Nil)
 
-    val oppilaitosResult: Either[HttpStatus, Option[Oppilaitos]] = oppilaitosOid match {
-      case Some(oppilaitosOid) =>
-        val oppilaitos: Option[Oppilaitos] = organisaatioRepository.getOrganisaatioHierarkia(oppilaitosOid).flatMap(_.toOppilaitos)
-        oppilaitos match {
-          case Some(oppilaitos) => Right(Some(oppilaitos))
+    val oppilaitosResult: Either[HttpStatus, Option[OrganisaatioWithOid]] = oppilaitosOid match {
+      case Some(organisaatioOid) =>
+        val org: Option[OrganisaatioWithOid] = organisaatioRepository.getOrganisaatioHierarkia(organisaatioOid).map(_.toOrganisaatio)
+        org match {
+          case Some(organisaatio) => Right(Some(organisaatio))
           case None => Left(KoskiErrorCategory.notFound.oppilaitostaEiLöydy(s"Oppilaitosta $oppilaitosOid ei löydy"))
         }
       case None =>
         Right(None)
     }
 
-    oppilaitosResult.right.map { oppilaitos =>
+    oppilaitosResult.map { oppilaitos =>
       val converted: Tiedonsiirrot = Tiedonsiirrot(toHenkilönTiedonsiirrot(rows), oppilaitos = oppilaitos.map(_.toOidOrganisaatio))
       PaginatedResponse(paginationSettings, converted, rows.length)
     }
