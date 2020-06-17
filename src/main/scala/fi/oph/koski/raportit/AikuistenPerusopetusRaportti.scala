@@ -208,7 +208,6 @@ case class AikuistenPerusopetusRaportti(
         sisäoppilaitosmainenMajoitus = lisätiedot.flatMap(_.sisäoppilaitosmainenMajoitus.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
         yhteislaajuus = row.osasuoritukset
           .filter(raporttiType.isKurssi)
-          .filter(_.suoritettu)
           .flatMap(_.koulutusmoduuliLaajuusArvo).sum,
         yhteislaajuusSuoritetut = row.osasuoritukset
           .filter(raporttiType.isKurssi)

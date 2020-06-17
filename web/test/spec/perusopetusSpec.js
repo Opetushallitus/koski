@@ -422,7 +422,7 @@ describe('Perusopetus', function() {
           'Arvostelu 4-10, S (suoritettu) tai H (hylätty)\n' +
           'Pakolliset oppiaineet\n' +
           'Oppiaine Arvosana\n' +
-          'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nÄI1\n9 ÄI2\n9 ÄI3\n9 ÄI10\n9\n' +
+          'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nÄI1\n9 ÄI2\n9 ÄI3\n9 ÄI4\n4 ÄI10\n9\n' +
           'B1-kieli, ruotsi 8\n' +
           'A1-kieli, englanti 8\n' +
           'Uskonto/Elämänkatsomustieto 10\n' +
@@ -462,13 +462,13 @@ describe('Perusopetus', function() {
             )
             describe('Ennen kurssin lisäämistä', function() {
               it('Voidaan lisätä vain ne kurssit, joita ei vielä ole lisätty', function() {
-                expect(äidinkieli.lisääKurssiDialog.kurssit()).to.include('ÄI4 Kieli ja kulttuuri')
+                expect(äidinkieli.lisääKurssiDialog.kurssit()).to.include('ÄI5 Puhe- ja vuorovaikutustaidot')
                 expect(äidinkieli.lisääKurssiDialog.kurssit()).not.to.include('ÄI1 Suomen kielen ja kirjallisuuden perusteet')
               })
             })
             describe('Kun lisätään kurssi', function() {
               before(
-                äidinkieli.lisääKurssiDialog.valitseKurssi('Kieli ja kulttuuri'),
+                äidinkieli.lisääKurssiDialog.valitseKurssi('Puhe- ja vuorovaikutustaidot'),
                 äidinkieli.lisääKurssiDialog.lisääKurssi
               )
 
@@ -481,23 +481,23 @@ describe('Perusopetus', function() {
 
               describe('Kun annetaan arvosana ja tallennetaan', function() {
                 before(
-                  äidinkieli.kurssi('ÄI4').arvosana.setValue('8'),
+                  äidinkieli.kurssi('ÄI5').arvosana.setValue('8'),
                   editor.saveChanges
                 )
 
                 it('Kurssin tiedot näytetään oikein', function() {
-                  expect(äidinkieli.text()).to.equal('Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nÄI1\n9 ÄI2\n9 ÄI3\n9 ÄI10\n9 ÄI4\n8')
+                  expect(äidinkieli.text()).to.equal('Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nÄI1\n9 ÄI2\n9 ÄI3\n9 ÄI4\n4 ÄI10\n9 ÄI5\n8')
                 })
 
                 describe('Kurssin poistaminen', function() {
                   before(
                     editor.edit,
-                    äidinkieli.kurssi('ÄI4').poistaKurssi,
+                    äidinkieli.kurssi('ÄI5').poistaKurssi,
                     editor.saveChanges
                   )
 
                   it('Toimii', function() {
-                    expect(äidinkieli.text()).to.equal('Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nÄI1\n9 ÄI2\n9 ÄI3\n9 ÄI10\n9')
+                    expect(äidinkieli.text()).to.equal('Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus 9\nÄI1\n9 ÄI2\n9 ÄI3\n9 ÄI4\n4 ÄI10\n9')
                   })
                 })
               })
@@ -505,7 +505,7 @@ describe('Perusopetus', function() {
               describe('Kun päätason suoritus on KESKEN-tilassa', function() {
                 before(
                   editor.edit,
-                  äidinkieli.lisääKurssi('Kieli ja kulttuuri'),
+                  äidinkieli.lisääKurssi('Puhe- ja vuorovaikutustaidot'),
                   editor.property('tila').removeItem(0),
                   opinnot.tilaJaVahvistus.merkitseKeskeneräiseksi
                 )
@@ -553,7 +553,6 @@ describe('Perusopetus', function() {
               'ÄI10 Nykykulttuurin ilmiöitä ja kirjallisuutta',
               'ÄI2 Monimuotoiset tekstit',
               'ÄI3 Tekstien tuottaminen ja tulkitseminen',
-              'ÄI4 Kieli ja kulttuuri',
               'ÄI5 Puhe- ja vuorovaikutustaidot',
               'ÄI6 Median maailma',
               'ÄI7 Kauno- ja tietokirjallisuuden lukeminen',

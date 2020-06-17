@@ -468,10 +468,10 @@ class AikuistenPerusopetusRaporttiSpec
             "Hetu" -> aikuisOpiskelija.hetu,
             "Sukunimi" -> aikuisOpiskelija.sukunimi,
             "Etunimet" -> aikuisOpiskelija.etunimet,
-            "Yhteislaajuus (kaikki kurssit)" -> 4.0,
+            "Yhteislaajuus (kaikki kurssit)" -> 5.0,
             "Yhteislaajuus (suoritetut kurssit)" -> 3.0,
             "Yhteislaajuus (tunnustetut kurssit)" -> 1.0,
-            "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 4 kurssia",
+            "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 5 kurssia",
             "A1 Englanti valtakunnallinen" -> "Arvosana 8, 0 kurssia",
             "B1 Ruotsi valtakunnallinen" -> "Arvosana 8, 0 kurssia,Arvosana S, 0 kurssia",
             "B2 Saksa valtakunnallinen" -> "Arvosana 9, 0 kurssia",
@@ -727,7 +727,6 @@ class AikuistenPerusopetusRaporttiSpec
     val oo = getOpiskeluoikeus(oppija.oid, OpiskeluoikeudenTyyppi.aikuistenperusopetus.koodiarvo).asInstanceOf[AikuistenPerusopetuksenOpiskeluoikeus]
     putOppija(Oppija(oppija, List(oo.copy(suoritukset = päätasonSuoritukset ::: oo.suoritukset)))) {
       verifyResponseStatusOk()
-      loadRaportointikantaFixtures
     }
   }
 
