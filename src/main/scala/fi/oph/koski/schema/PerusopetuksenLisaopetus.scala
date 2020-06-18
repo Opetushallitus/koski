@@ -51,6 +51,7 @@ case class PerusopetuksenLisäopetuksenSuoritus(
   @DefaultValue(false)
   @Title("Osa-aikainen erityisopetus perusopetuksen lisäopetuksen aikana")
   @Deprecated("Tätä kenttää ei toistaiseksi käytetä.")
+  @Hidden
   osaAikainenErityisopetus: Boolean = false,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
