@@ -97,7 +97,8 @@ object Koodistot {
     KoodistoAsetus("virtaarvosana"),
     KoodistoAsetus("virtalukukausiilmtila"),
     KoodistoAsetus("virtaopiskeluoikeudentila"),
-    KoodistoAsetus("virtaopiskeluoikeudentyyppi")
+    KoodistoAsetus("virtaopiskeluoikeudentyyppi"),
+    KoodistoAsetus("moduulikoodistolops2021")
   )
   val muutKoodistot = muutKoodistoAsetukset.map(_.koodisto)
 
