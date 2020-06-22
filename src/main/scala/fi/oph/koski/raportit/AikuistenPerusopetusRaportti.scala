@@ -211,13 +211,14 @@ case class AikuistenPerusopetusRaportti(
           .flatMap(_.koulutusmoduuliLaajuusArvo).sum,
         yhteislaajuusSuoritetut = row.osasuoritukset
           .filter(raporttiType.isKurssi)
-          .filter(_.suoritettu)
           .filterNot(isTunnustettu)
           .flatMap(_.koulutusmoduuliLaajuusArvo).sum,
-        yhteislaajuusTunnustetut = row.osasuoritukset
+        yhteislaajuusHylätyt = row.osasuoritukset
           .filter(raporttiType.isKurssi)
-          .filter(_.suoritettu)
-          .filter(isTunnustettu)
+          .filterNot(k => isTunnustettu(k) || k.suoritettu)
+          .flatMap(_.koulutusmoduuliLaajuusArvo).sum,
+        yhteislaajuusTunnustetut = row.osasuoritukset
+          .filter(k => raporttiType.isKurssi(k) && k.suoritettu && isTunnustettu(k))
           .flatMap(_.koulutusmoduuliLaajuusArvo).sum
       ),
       oppiaineet = oppiaineidentiedot(row.päätasonSuoritus, row.osasuoritukset, oppiaineet, raporttiType.isOppiaineenOppimäärä)
@@ -307,6 +308,7 @@ case class AikuistenPerusopetusRaportti(
       CompactColumn("Sisäoppilaitosmainen majoitus", comment = Some("Kuinka monta päivää oppija on ollut KOSKI-datan mukaan sisäoppilaitosmaisessa majoituksessa raportin tulostusparametreissa määritellyllä aikajaksolla.")),
       CompactColumn("Yhteislaajuus (kaikki kurssit)", comment = Some("Opintojen yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista. Sarake näyttää joko kaikkien opiskeluoikeudelta löytyvien kurssien määrän tai tulostusparametreissa määriteltynä aikajaksona arvioiduiksi merkittyjen kurssien määrän riippuen siitä, mitä tulostusparametreissa on valittu.")),
       CompactColumn("Yhteislaajuus (suoritetut kurssit)", comment = Some("Suoritettujen kurssien (eli sellaisten kurssien, jotka eivät ole tunnustettuja aikaisemman osaamisen pohjalta) yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista. Sarake näyttää joko kaikkien opiskeluoikeudelta löytyvien suoritettujen kurssien yhteislaajuuden tai tulostusparametreissa määriteltynä aikajaksona suoritettujen kurssien yhteislaajuuden riippuen siitä, mitä tulostusparametreissa on valittu.")),
+      CompactColumn("Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)", comment = Some("Hylätyllä arvosanalla suoritettujen kurssien yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista. Sarake näyttää joko kaikkien opiskeluoikeudelta löytyvien suoritettujen kurssien yhteislaajuuden tai tulostusparametreissa määriteltynä aikajaksona suoritettujen kurssien yhteislaajuuden riippuen siitä, mitä tulostusparametreissa on valittu.")),
       CompactColumn("Yhteislaajuus (tunnustetut kurssit)", comment = Some("Tunnustettujen kurssien yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista. Sarake näyttää joko kaikkien opiskeluoikeudelta löytyvien tunnustettujen kurssien yhteislaajuuden tai tulostusparametreissa määriteltynä aikajaksona arvioiduiksi merkittyjen kurssien yhteislaajuuden riippuen siitä, mitä tulostusparametreissa on valittu."))
     )
 
@@ -368,6 +370,7 @@ case class AikuistenPerusopetusRaporttiOppiaineetVälilehtiMuut(
   sisäoppilaitosmainenMajoitus: Option[Int],
   yhteislaajuus: Double,
   yhteislaajuusSuoritetut: Double,
+  yhteislaajuusHylätyt: Double,
   yhteislaajuusTunnustetut: Double
 )
 

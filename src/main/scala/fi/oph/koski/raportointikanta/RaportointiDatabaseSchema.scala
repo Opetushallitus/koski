@@ -407,6 +407,8 @@ case class EsiopetusOpiskeluoikeusAikajaksoRow(
 sealed trait RSuoritusRow {
   def arviointiArvosanaKoodiarvo: Option[String]
   def matchesWith(x: YleissivistäväRaporttiOppiaineTaiKurssi): Boolean
+  def arviointiHyväksytty: Option[Boolean]
+  def suoritettu: Boolean = arviointiHyväksytty.getOrElse(false)
 }
 
 case class RPäätasonSuoritusRow(
@@ -479,8 +481,6 @@ case class ROsasuoritusRow(
       .orElse(koulutusmoduuliOppimääräNimi)
       .orElse(koulutusmoduuliNimi)
   }
-
-  def suoritettu: Boolean = arviointiHyväksytty.exists(identity)
 }
 
 case class RHenkilöRow(

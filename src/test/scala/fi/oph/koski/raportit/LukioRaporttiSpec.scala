@@ -316,7 +316,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "A1 Englanti valtakunnallinen" -> "Arvosana 9, 9 kurssia",
     "B1 Ruotsi valtakunnallinen" -> "Arvosana 7, 5 kurssia",
     "B3 Latina valtakunnallinen" -> "Arvosana 9, 2 kurssia",
-    "MA Matematiikka, pitkä oppimäärä valtakunnallinen" -> "Arvosana 9, 15 kurssia",
+    "MA Matematiikka, pitkä oppimäärä valtakunnallinen" -> "Arvosana 9, 15 kurssia (joista 1 hylättyjä)",
     "BI Biologia valtakunnallinen" -> "Arvosana 9, 8 kurssia",
     "GE Maantieto valtakunnallinen" -> "Arvosana 8, 2 kurssia",
     "FY Fysiikka valtakunnallinen" -> "Arvosana 8, 13 kurssia",
