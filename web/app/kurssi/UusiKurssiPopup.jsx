@@ -6,7 +6,7 @@ import Text from '../i18n/Text'
 import ModalDialog from '../editor/ModalDialog'
 import {UusiKurssiDropdown} from './UusiKurssiDropdown'
 import {
-  isIBKurssi, isIBOppiaine, isLukionKurssi, isPaikallinen,
+  isIBKurssi, isIBOppiaine, isLukio2019ModuuliTaiOpintojakso, isLukionKurssi, isPaikallinen,
   koulutusModuuliprototypes
 } from '../suoritus/Koulutusmoduuli'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
@@ -32,7 +32,8 @@ export default ({
   let selectedAtom = Atom()
   let validP = selectedAtom
   let valtakunnallisetKurssiProtot = koulutusModuuliprototypes(uusiKurssinSuoritus).filter(R.complement(isPaikallinen))
-  let paikallinenKurssiProto = koulutusModuuliprototypes(uusiKurssinSuoritus).find(isIBOppiaine(oppiaine) ? isIBKurssi : isPaikallinen)
+  // TODO: Lisää editori myös lops2021:n paikallisille opintojaksoille tai moduuleille, nyt ne filtteröidään tässä pois
+  let paikallinenKurssiProto = koulutusModuuliprototypes(uusiKurssinSuoritus).find(R.both(isIBOppiaine(oppiaine) ? isIBKurssi : isPaikallinen, R.complement(isLukio2019ModuuliTaiOpintojakso)))
   let kurssiSuoritukset = modelItems(oppiaineenSuoritus, 'osasuoritukset')
   selectedPrototypeAtom.map(proto => isPaikallinen(proto) ? undefined : proto).forEach(proto => selectedAtom.set(proto))
 
