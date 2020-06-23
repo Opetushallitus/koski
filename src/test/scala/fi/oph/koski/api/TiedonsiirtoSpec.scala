@@ -250,6 +250,10 @@ class TiedonsiirtoSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       deleteVirheelliset(virheelliset.map(_.id), helsinginKaupunkiPalvelukäyttäjä)
       virheelliset should equal(getTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä).flatMap(_.rivit))
     }
+
+    "tiedonsiirtovirheitä voi hakea myös koulutustoimijan oidilla" in {
+      getTiedonsiirrot(helsinginKaupunkiPalvelukäyttäjä, s"api/tiedonsiirrot/virheet?oppilaitos=${MockOrganisaatiot.helsinginKaupunki}")
+    }
   }
 
   private def verifyTiedonsiirtoLoki(user: UserWithPassword, expectedHenkilö: Option[UusiHenkilö], expectedOpiskeluoikeus: Option[Opiskeluoikeus], errorStored: Boolean, dataStored: Boolean, expectedLähdejärjestelmä: Option[String]) {
