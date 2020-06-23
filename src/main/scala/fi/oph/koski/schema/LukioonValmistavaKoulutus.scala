@@ -151,7 +151,7 @@ case class LukioonValmistavanKurssinSuoritus(
   koulutusmoduuli: LukioonValmistavanKoulutuksenKurssi,
   @Description("Kurssit arvioidaan suoritettu/hylätty-asteikolla")
   @FlattenInUI
-  arviointi: Option[List[LukionKurssinArviointi]],
+  arviointi: Option[List[LukionArviointi]],
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("luvakurssi")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("luvakurssi", koodistoUri = "suorituksentyyppi")

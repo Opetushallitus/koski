@@ -471,13 +471,13 @@ object LukioExampleData {
     tunniste = Koodistokoodiviite(koodiarvo = oppiaine, koodistoUri = "koskioppiaineetyleissivistava"),
     kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima"))
 
-  def numeerinenArviointi(arvosana: Int, päivä: LocalDate = date(2016, 6, 4)): Some[List[LukionKurssinArviointi]] = {
-    Some(List(new NumeerinenLukionKurssinArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana.toString, koodistoUri = "arviointiasteikkoyleissivistava"), päivä)))
+  def numeerinenArviointi(arvosana: Int, päivä: LocalDate = date(2016, 6, 4)): Some[List[LukionArviointi]] = {
+    Some(List(new NumeerinenLukionArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana.toString, koodistoUri = "arviointiasteikkoyleissivistava"), päivä)))
   }
 
-  def sanallinenArviointi(arvosana: String, kuvaus: Option[String] = None, päivä: LocalDate = date(2016, 6, 4)): Some[List[LukionKurssinArviointi]] = (Arviointi.numeerinen(arvosana), kuvaus) match {
+  def sanallinenArviointi(arvosana: String, kuvaus: Option[String] = None, päivä: LocalDate = date(2016, 6, 4)): Some[List[LukionArviointi]] = (Arviointi.numeerinen(arvosana), kuvaus) match {
     case (Some(numero), None) => numeerinenArviointi(numero, päivä)
-    case _ => Some(List(new SanallinenLukionKurssinArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), kuvaus.map(LocalizedString.finnish), päivä)))
+    case _ => Some(List(new SanallinenLukionArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), kuvaus.map(LocalizedString.finnish), päivä)))
   }
 
 
