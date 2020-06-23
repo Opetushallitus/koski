@@ -6,6 +6,7 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.{HenkilöOid, Hetu}
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
 import fi.oph.koski.koskiuser.RequiresLuovutuspalvelu
 import fi.oph.koski.schema.{Henkilö, Opiskeluoikeus}
 import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}
@@ -78,7 +79,7 @@ class LuovutuspalveluServlet(implicit val application: KoskiApplication) extends
     val virtaYtrTyypit = List("korkeakoulutus", "ylioppilastutkinto")
     if (req.opiskeluoikeudenTyypit.isEmpty) {
       Left(KoskiErrorCategory.badRequest.queryParam("Opiskeluoikeuden tyypit puuttuvat"))
-    } else if (!req.opiskeluoikeudenTyypit.forall(application.koodistoViitePalvelu.validate("opiskeluoikeudentyyppi", _).isDefined)) {
+    } else if (!req.opiskeluoikeudenTyypit.forall(MockKoodistoViitePalvelu.validate("opiskeluoikeudentyyppi", _).isDefined)) {
       Left(KoskiErrorCategory.badRequest.queryParam("Tuntematon opiskeluoikeudentyyppi"))
     } else if (!allowVirtaOrYtr && req.opiskeluoikeudenTyypit.exists(virtaYtrTyypit.contains(_))) {
       Left(KoskiErrorCategory.badRequest.queryParam("Korkeakoulutus tai ylioppilastutkinto ei sallittu"))
