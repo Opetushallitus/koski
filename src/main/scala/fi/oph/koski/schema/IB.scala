@@ -190,7 +190,7 @@ case class IBCASOppiaineenArviointi(
 case class PreIBKurssinSuoritus(
   @Description("Pre-IB kurssin tunnistetiedot")
   koulutusmoduuli: PreIBKurssi,
-  arviointi: Option[List[LukionKurssinArviointi]] = None,
+  arviointi: Option[List[LukionArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("preibkurssi")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "preibkurssi", koodistoUri = "suorituksentyyppi")

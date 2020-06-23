@@ -61,48 +61,26 @@ case class LukionOpiskeluoikeudenLisätiedot(
 
 trait LukionPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Suorituskielellinen
 
-@Description("Lukion oppimäärän suoritustiedot")
-case class LukionOppimääränSuoritus(
+// TODO: Tarvitaanko tätä väli-traittia johonkin, vai olisiko parempi duplikoida ominaisuudet sekä 2015 että 2019 -luokkiin?
+trait LukionOppimääränPäätasonSuoritus extends LukionPäätasonSuoritus with Todistus with Arvioinniton with Ryhmällinen with KoulusivistyskieliKieliaineesta {
   @Title("Koulutus")
-  koulutusmoduuli: LukionOppimäärä,
+  val koulutusmoduuli: LukionOppimäärä
   @KoodistoUri("lukionoppimaara")
   @Description("Tieto siitä, suoritetaanko lukiota nuorten vai aikuisten oppimäärän mukaisesti")
   @Title("Opetussuunnitelma")
-  oppimäärä: Koodistokoodiviite,
-  toimipiste: OrganisaatioWithOid,
-  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
+  def oppimäärä: Koodistokoodiviite
+  def toimipiste: OrganisaatioWithOid
+  def vahvistus: Option[HenkilövahvistusPaikkakunnalla]
   @Description("Oppimäärän suorituksen opetuskieli/suorituskieli. Rahoituksen laskennassa käytettävä tieto.")
-  suorituskieli: Koodistokoodiviite,
-  @Tooltip("Osallistuminen lukiokoulutusta täydentävän saamen/romanikielen/opiskelijan oman äidinkielen opiskeluun")
-  omanÄidinkielenOpinnot: Option[OmanÄidinkielenOpinnotLaajuusKursseina] = None,
+  def suorituskieli: Koodistokoodiviite
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
-  override val osasuoritukset: Option[List[LukionOppimääränOsasuoritus]],
+  override def osasuoritukset: Option[List[LukionOppimääränPäätasonOsasuoritus]] = None
   @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
-  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
-  @KoodistoKoodiarvo("lukionoppimaara")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"),
-  ryhmä: Option[String] = None
-) extends LukionPäätasonSuoritus with Todistus with Arvioinniton with Ryhmällinen with KoulusivistyskieliKieliaineesta
-
-@Description("Lukion oppiaineen oppimäärän suoritustiedot")
-case class LukionOppiaineenOppimääränSuoritus(
-  @Title("Oppiaine")
-  koulutusmoduuli: LukionOppiaineTaiEiTiedossaOppiaine,
-  toimipiste: OrganisaatioWithOid,
-  @Description("Lukion oppiaineen oppimäärän arviointi")
-  arviointi: Option[List[LukionOppiaineenArviointi]] = None,
-  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
-  suorituskieli: Koodistokoodiviite,
-  @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
-  @Title("Kurssit")
-  override val osasuoritukset: Option[List[LukionKurssinSuoritus]],
-  @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
-  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
-  @KoodistoKoodiarvo("lukionoppiaineenoppimaara")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppiaineenoppimaara", koodistoUri = "suorituksentyyppi"),
-  ryhmä: Option[String] = None
-) extends LukionPäätasonSuoritus with Todistus with Ryhmällinen with OppiaineenOppimääränSuoritus
+  def todistuksellaNäkyvätLisätiedot: Option[LocalizedString]
+  def tyyppi: Koodistokoodiviite
+  def ryhmä: Option[String]
+}
 
 @Description("Lukiokoulutuksen tunnistetiedot")
 case class LukionOppimäärä(
@@ -112,56 +90,7 @@ case class LukionOppimäärä(
  koulutustyyppi: Option[Koodistokoodiviite] = None
 ) extends DiaarinumerollinenKoulutus with Tutkinto with Laajuudeton
 
-trait LukionOppimääränOsasuoritus extends Suoritus
-
-@Title("Muiden lukio-opintojen suoritus")
-@Description("Kategoria kursseille, jotka eivät liity suoraan mihinkään yksittäiseen oppiaineeseen. Esimerkiksi lukiodiplomi, taiteiden väliset opinnot, teemaopinnot")
-case class MuidenLukioOpintojenSuoritus(
-  @KoodistoKoodiarvo("lukionmuuopinto")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionmuuopinto", "suorituksentyyppi"),
-  arviointi: Option[List[LukionOppiaineenArviointi]] = None,
-  koulutusmoduuli: MuuLukioOpinto,
-  @MinItems(1)
-  @Description("Kurssien suoritukset")
-  @Title("Kurssit")
-  override val osasuoritukset: Option[List[LukionKurssinSuoritus]]
-) extends LukionOppimääränOsasuoritus with PreIBSuorituksenOsasuoritus with Vahvistukseton
-
-@Title("Muu lukio-opinto")
-@Description("Kategoria kursseille, jotka eivät liity suoraan mihinkään yksittäiseen oppiaineeseen. Esimerkiksi lukiodiplomi, taiteiden väliset opinnot, teemaopinnot")
-case class MuuLukioOpinto(
-  @KoodistoUri("lukionmuutopinnot")
-  tunniste: Koodistokoodiviite,
-  laajuus: Option[LaajuusKursseissa] = None
-) extends KoodistostaLöytyväKoulutusmoduuli
-
-@Description("Lukion oppiaineen suoritustiedot")
-case class LukionOppiaineenSuoritus(
-  koulutusmoduuli: LukionOppiaine,
-  arviointi: Option[List[LukionOppiaineenArviointi]] = None,
-  suorituskieli: Option[Koodistokoodiviite],
-  @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
-  @Title("Kurssit")
-  override val osasuoritukset: Option[List[LukionKurssinSuoritus]],
-  @KoodistoKoodiarvo("lukionoppiaine")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionoppiaine", koodistoUri = "suorituksentyyppi")
-) extends OppiaineenSuoritus with Vahvistukseton with LukionOppimääränOsasuoritus with MahdollisestiSuorituskielellinen
-
-@Description("Lukion kurssin suoritustiedot")
-case class LukionKurssinSuoritus(
-  @Description("Lukion kurssin tunnistetiedot")
-  koulutusmoduuli: LukionKurssi,
-  @FlattenInUI
-  arviointi: Option[List[LukionKurssinArviointi]] = None,
-  @Description("Jos kurssi on suoritettu osaamisen tunnustamisena, syötetään tänne osaamisen tunnustamiseen liittyvät lisätiedot. Osaamisen tunnustamisella voidaan opiskelijalle lukea hyväksi ja korvata lukion oppimäärään kuuluvia pakollisia, syventäviä tai soveltavia opintoja. Opiskelijan osaamisen tunnustamisessa noudatetaan, mitä 17 ja 17 a §:ssä säädetään opiskelijan arvioinnista ja siitä päättämisestä. Mikäli opinnot tai muutoin hankittu osaaminen luetaan hyväksi opetussuunnitelman perusteiden mukaan numerolla arvioitavaan kurssiin, tulee kurssista antaa numeroarvosana")
-  @ComplexObject
-  tunnustettu: Option[OsaamisenTunnustaminen] = None,
-  suorituskieli: Option[Koodistokoodiviite],
-  @KoodistoKoodiarvo("lukionkurssi")
-  tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionkurssi", koodistoUri = "suorituksentyyppi"),
-  suoritettuLukiodiplomina: Option[Boolean] = None,
-  suoritettuSuullisenaKielikokeena: Option[Boolean] = None
-) extends KurssinSuoritus with MahdollisestiSuorituskielellinen with MahdollisestiTunnustettu
+trait LukionOppimääränPäätasonOsasuoritus extends Suoritus
 
 case class LukionOppiaineenArviointi(
   @Description("Oppiaineen suorituksen arvosana on kokonaisarvosana oppiaineelle")
@@ -176,147 +105,20 @@ object LukionOppiaineenArviointi {
   def apply(arvosana: String) = new LukionOppiaineenArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), None)
 }
 
-trait LukionKurssinArviointi extends ArviointiPäivämäärällä
+// TODO: nimeäminen? "LukionArviointi" on vähän huono, kun on myös ylemmän tason
+// "LukionOppiaineenArvointi". Sitten taas "LukionKurssinModuulinTaiPaikallisenOppiaineenArviointi" on aika kankea nimi...
+trait LukionArviointi extends ArviointiPäivämäärällä
 
-case class NumeerinenLukionKurssinArviointi(
+case class NumeerinenLukionArviointi(
   arvosana: Koodistokoodiviite,
   päivä: LocalDate
-) extends LukionKurssinArviointi with NumeerinenYleissivistävänKoulutuksenArviointi
+) extends LukionArviointi with NumeerinenYleissivistävänKoulutuksenArviointi
 
-case class SanallinenLukionKurssinArviointi(
+case class SanallinenLukionArviointi(
   arvosana: Koodistokoodiviite = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
   kuvaus: Option[LocalizedString],
   päivä: LocalDate
-) extends LukionKurssinArviointi with SanallinenYleissivistävänKoulutuksenArviointi
-
-sealed trait LukionKurssi extends Koulutusmoduuli with PreIBKurssi {
-  def laajuus: Option[LaajuusKursseissa]
-  @KoodistoUri("lukionkurssintyyppi")
-  @Description("Kurssin tyyppi voi olla joko syventävä, soveltava tai pakollinen")
-  def kurssinTyyppi: Koodistokoodiviite
-}
-
-@Description("Valtakunnallisen lukion/IB-lukion kurssin tunnistetiedot")
-case class ValtakunnallinenLukionKurssi(
-  @Description("Lukion/IB-lukion kurssi")
-  @KoodistoUri("lukionkurssit")
-  @KoodistoUri("lukionkurssitops2004aikuiset")
-  @KoodistoUri("lukionkurssitops2003nuoret")
-  @OksaUri("tmpOKSAID873", "kurssi")
-  @Title("Nimi")
-  tunniste: Koodistokoodiviite,
-  override val laajuus: Option[LaajuusKursseissa],
-  kurssinTyyppi: Koodistokoodiviite
-) extends LukionKurssi with KoodistostaLöytyväKoulutusmoduuli
-
-@Description("Paikallisen lukion/IB-lukion kurssin tunnistetiedot")
-case class PaikallinenLukionKurssi(
-  @FlattenInUI
-  tunniste: PaikallinenKoodi,
-  override val laajuus: Option[LaajuusKursseissa],
-  kuvaus: LocalizedString,
-  kurssinTyyppi: Koodistokoodiviite
-) extends LukionKurssi with PaikallinenKoulutusmoduuli with StorablePreference
-
-trait LukionOppiaineTaiEiTiedossaOppiaine extends Koulutusmoduuli
-
-@Description("Lukion/IB-lukion oppiaineen tunnistetiedot")
-trait LukionOppiaine extends Koulutusmoduuli with Valinnaisuus with PreIBOppiaine with Diaarinumerollinen with LukionOppiaineTaiEiTiedossaOppiaine {
-  def laajuus: Option[LaajuusKursseissa]
-  @Title("Oppiaine")
-  def tunniste: KoodiViite
-}
-
-@Title("Paikallinen oppiaine")
-case class PaikallinenLukionOppiaine(
-  tunniste: PaikallinenKoodi,
-  kuvaus: LocalizedString,
-  pakollinen: Boolean = true,
-  laajuus: Option[LaajuusKursseissa] = None,
-  perusteenDiaarinumero: Option[String] = None
-) extends LukionOppiaine with PaikallinenKoulutusmoduuli with StorablePreference
-
-trait LukionValtakunnallinenOppiaine extends LukionOppiaine with YleissivistavaOppiaine
-
-@Title("Muu valtakunnallinen oppiaine")
-case class LukionMuuValtakunnallinenOppiaine(
-  @KoodistoKoodiarvo("HI")
-  @KoodistoKoodiarvo("MU")
-  @KoodistoKoodiarvo("BI")
-  @KoodistoKoodiarvo("PS")
-  @KoodistoKoodiarvo("ET")
-  @KoodistoKoodiarvo("KO")
-  @KoodistoKoodiarvo("FI")
-  @KoodistoKoodiarvo("KE")
-  @KoodistoKoodiarvo("YH")
-  @KoodistoKoodiarvo("TE")
-  @KoodistoKoodiarvo("KS")
-  @KoodistoKoodiarvo("FY")
-  @KoodistoKoodiarvo("GE")
-  @KoodistoKoodiarvo("LI")
-  @KoodistoKoodiarvo("KU")
-  @KoodistoKoodiarvo("OP")
-  tunniste: Koodistokoodiviite,
-  pakollinen: Boolean = true,
-  override val laajuus: Option[LaajuusKursseissa] = None,
-  perusteenDiaarinumero: Option[String] = None
-) extends LukionValtakunnallinenOppiaine
-
-case class LukionUskonto(
-  tunniste: Koodistokoodiviite,
-  pakollinen: Boolean = true,
-  perusteenDiaarinumero: Option[String] = None,
-  override val laajuus: Option[LaajuusKursseissa] = None,
-  uskonnonOppimäärä: Option[Koodistokoodiviite] = None
-) extends LukionValtakunnallinenOppiaine with Uskonto
-
-@Title("Äidinkieli ja kirjallisuus")
-@Description("Oppiaineena äidinkieli ja kirjallisuus")
-case class LukionÄidinkieliJaKirjallisuus(
-  @KoodistoKoodiarvo("AI")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "AI", koodistoUri = "koskioppiaineetyleissivistava"),
-  @Description("Mikä kieli on kyseessä")
-  @KoodistoUri("oppiaineaidinkielijakirjallisuus")
-  kieli: Koodistokoodiviite,
-  pakollinen: Boolean = true,
-  override val laajuus: Option[LaajuusKursseissa] = None,
-  perusteenDiaarinumero: Option[String] = None
-) extends LukionValtakunnallinenOppiaine with Äidinkieli {
-  override def description: LocalizedString = kieliaineDescription
-}
-
-@Description("Oppiaineena vieras tai toinen kotimainen kieli")
-case class VierasTaiToinenKotimainenKieli(
-  @KoodistoKoodiarvo("A1")
-  @KoodistoKoodiarvo("A2")
-  @KoodistoKoodiarvo("B1")
-  @KoodistoKoodiarvo("B2")
-  @KoodistoKoodiarvo("B3")
-  tunniste: Koodistokoodiviite,
-  @Description("Mikä kieli on kyseessä")
-  @KoodistoUri("kielivalikoima")
-  kieli: Koodistokoodiviite,
-  pakollinen: Boolean = true,
-  override val laajuus: Option[LaajuusKursseissa] = None,
-  perusteenDiaarinumero: Option[String] = None
-) extends LukionValtakunnallinenOppiaine with Kieliaine {
-  override def description = kieliaineDescription
-}
-
-@Title("Matematiikka")
-@Description("Oppiaineena matematiikka")
-case class LukionMatematiikka(
-  @KoodistoKoodiarvo("MA")
-  tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "MA", koodistoUri = "koskioppiaineetyleissivistava"),
-  @Description("Onko kyseessä laaja vai lyhyt oppimäärä")
-  @KoodistoUri("oppiainematematiikka")
-  oppimäärä: Koodistokoodiviite,
-  pakollinen: Boolean = true,
-  override val laajuus: Option[LaajuusKursseissa] = None,
-  perusteenDiaarinumero: Option[String] = None
-) extends LukionValtakunnallinenOppiaine with KoodistostaLöytyväKoulutusmoduuli with Oppimäärä {
-  override def description = oppimäärä.description
-}
+) extends LukionArviointi with SanallinenYleissivistävänKoulutuksenArviointi
 
 @Description("Ks. tarkemmin lukion ja IB-tutkinnon opiskeluoikeuden tilat: [confluence](https://confluence.csc.fi/pages/viewpage.action?pageId=71953716)")
 case class LukionOpiskeluoikeudenTila(
