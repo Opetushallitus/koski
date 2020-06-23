@@ -1,4 +1,32 @@
 [ {
+  "koodiUri" : "koskioppiaineetyleissivistava_a",
+  "koodiArvo" : "A",
+  "metadata" : [ {
+    "nimi" : "A-kieli",
+    "lyhytNimi" : "A-kieli",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "A-språk",
+    "lyhytNimi" : "A-språk",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "koskioppiaineetyleissivistava_aom",
+  "koodiArvo" : "AOM",
+  "metadata" : [ {
+    "nimi" : "Äidinkielenomainen kieli",
+    "lyhytNimi" : "Äidinkielenomainen kieli",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Äidinkielenomainen kieli",
+    "lyhytNimi" : "Äidinkielenomainen kieli",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "koskioppiaineetyleissivistava_a1",
   "koodiArvo" : "A1",
   "metadata" : [ {

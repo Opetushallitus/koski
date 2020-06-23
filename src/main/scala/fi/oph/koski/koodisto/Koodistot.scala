@@ -28,6 +28,7 @@ object Koodistot {
     KoodistoAsetus("arviointiasteikkolisapisteetib", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),
     KoodistoAsetus("arviointiasteikkomuuammatillinenkoulutus"),
     KoodistoAsetus("arviointiasteikkoyleissivistava"),
+    KoodistoAsetus("arviointiasteikkosuullisenkielitaidonkoetaitotaso"),
     KoodistoAsetus("dialukukausi", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),
     KoodistoAsetus("diaosaalue", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),
     KoodistoAsetus("diapaattokoe", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),

@@ -268,6 +268,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
 
   lazy val oid = "123"
 
+  // TODO: Lukion oppiaineiden oppimäärien ryhmittelevä suoritus ei ole LukionPäätasonSuoritus: ota huomioon
   private def lisääPäätasonSuorituksia(oppija: LaajatOppijaHenkilöTiedot, päätasonSuoritukset: List[LukionPäätasonSuoritus]) = {
     val oo = getOpiskeluoikeus(oppija.oid, OpiskeluoikeudenTyyppi.lukiokoulutus.koodiarvo).asInstanceOf[LukionOpiskeluoikeus]
     putOppija(Oppija(oppija, List(oo.copy(suoritukset = päätasonSuoritukset ::: oo.suoritukset)))) {

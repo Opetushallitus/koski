@@ -1,0 +1,110 @@
+[ {
+  "koodiUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso_allea11",
+  "koodiArvo" : "alle_A1.1",
+  "metadata" : [ {
+    "nimi" : "Alle A1.1",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso_a11",
+  "koodiArvo" : "A1.1",
+  "metadata" : [ {
+    "nimi" : "A1.1",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso_a12",
+  "koodiArvo" : "A1.2",
+  "metadata" : [ {
+    "nimi" : "A1.2",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso_a13",
+  "koodiArvo" : "A1.3",
+  "metadata" : [ {
+    "nimi" : "A1.3",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso_a21",
+  "koodiArvo" : "A2.1",
+  "metadata" : [ {
+    "nimi" : "A2.1",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso_a22",
+  "koodiArvo" : "A2.2",
+  "metadata" : [ {
+    "nimi" : "A2.2",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso_b11",
+  "koodiArvo" : "B1.1",
+  "metadata" : [ {
+    "nimi" : "B1.1",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso_b12",
+  "koodiArvo" : "B1.2",
+  "metadata" : [ {
+    "nimi" : "B1.2",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso_b21",
+  "koodiArvo" : "B2.1",
+  "metadata" : [ {
+    "nimi" : "B2.1",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso_b22",
+  "koodiArvo" : "B2.2",
+  "metadata" : [ {
+    "nimi" : "B2.2",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso_c11",
+  "koodiArvo" : "C1.1",
+  "metadata" : [ {
+    "nimi" : "C1.1",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso_ylic11",
+  "koodiArvo" : "yli_C1.1",
+  "metadata" : [ {
+    "nimi" : "Yli C1.1",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}
+]

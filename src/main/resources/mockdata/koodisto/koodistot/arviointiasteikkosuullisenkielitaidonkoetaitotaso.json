@@ -1,0 +1,20 @@
+{
+  "koodistoUri" : "arviointiasteikkosuullisenkielitaidonkoetaitotaso",
+  "versio" : 1,
+  "metadata" : [ {
+    "kieli" : "FI",
+    "nimi" : "Arviointiasteikko suullisen kielitaidon koe taitotaso"
+  }, {
+    "kieli" : "SV",
+    "nimi" : "Arviointiasteikko suullisen kielitaidon koe taitotaso"
+  }, {
+    "kieli" : "EN",
+    "nimi" : "Arviointiasteikko suullisen kielitaidon koe taitotaso"
+  } ],
+  "codesGroupUri" : "http://koski",
+  "voimassaAlkuPvm" : "2020-07-29",
+  "organisaatioOid" : "1.2.246.562.10.00000000001",
+  "withinCodes" : [ ],
+  "tila" : "LUONNOS",
+  "version" : 0
+}
