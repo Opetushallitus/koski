@@ -46,4 +46,28 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "uskonnonoppimaara_ka",
+  "koodiArvo" : "KA",
+  "metadata" : [ {
+    "nimi" : "Katolinen uskonto",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Katolinen uskonto",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "uskonnonoppimaara_ju",
+  "koodiArvo" : "JU",
+  "metadata" : [ {
+    "nimi" : "Juutalainen uskonto",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Juutalainen uskonto",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]
