@@ -11,6 +11,7 @@ import {OmatTiedotOpiskeluoikeus} from './OmatTiedotOpiskeluoikeus'
 import Checkbox from '../components/Checkbox'
 import Text from '../i18n/Text'
 import Http from '../util/http'
+import {showError} from '../util/location'
 
 
 export const selectedModelsAtom = Atom([])
@@ -42,8 +43,13 @@ const SuoritusjakoButton = ({selectedModels}) => {
     isPending.set(false)
   }
 
-  const onError = () => {
+  const onError = (res) => {
     isPending.set(false)
+    res?.jsonMessage
+      ?.filter(m => m.key === 'unprocessableEntity.liianMontaSuoritusjakoa')
+      .map(e => {
+        showError(e) // TODO: Näytä virhe käyttäjälle tms
+      })
   }
 
   const jaettavaSuoritus = (model) => {
@@ -52,7 +58,7 @@ const SuoritusjakoButton = ({selectedModels}) => {
       // Malli on kokonainen opiskeluoikeus: palautetaan sellaisenaan
       return data
     } else {
-      throw new Error('Tämäntyyppisen suorituksen jako ei tuettu')
+      throw new Error('Tämäntyyppisen suorituksen jako ei tuettu') // TODO
     }
   }
 
