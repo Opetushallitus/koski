@@ -29,12 +29,44 @@ export const OmatTiedotEditor = ({model}) => {
         />))}
       {selectedModelsAtom.map(selectedModels => (
         <SuoritusjakoButton
+          opiskeluoikeudet={modelItems(oppilaitokset, 'opiskeluoikeudet')}
           selectedModels={selectedModels}
         />))}
     </div>
   )
 }
 
+const jaettavat = (models) => {
+  const modelsById = new Map(models.map(model => [model.modelId, model]))
+  const grouper = R.pipe(
+    R.groupBy(model => model.context?.opiskeluoikeus?.modelId || null),
+    R.map(R.groupBy(model => model.context?.suoritus?.modelId || null))
+  )
+  const grouped = grouper(models)
+  console.log(grouped)
+  return models.map(model => jaettavaSuoritus(model))
+}
+
+const selectedIds = () => selectedModels.map(model => model.modelId)
+
+const modelsById = (opiskeluoikeudet) => new Map(opiskeluoikeudet.map(model => [model.modelId, model]))
+
+const handleModel = (model) => {
+  console.log(model.context.suoritus)
+  if (model.value.classes.includes('osasuoritus')) {
+    console.log('osasuoritus')
+    // On osasuoritus
+  } else if (model.value.classes.includes('paatasonsuoritus')) {
+    console.log('päätason suoritus')
+    // On päätason suoritus
+  } else if (model.value.classes.includes('opiskeluoikeus')) {
+    console.log('opiskeluoikeus')
+    // On opiskeluoikeus
+  } else {
+    console.log('Tuntematon tyyppi!')
+    throw new Error('Tuntematon tyyppi!')
+  }
+}
 
 const SuoritusjakoButton = ({selectedModels}) => {
   const isPending = Atom(false)
@@ -108,8 +140,8 @@ const Oppilaitokset = ({oppilaitos, oppijaOid}) => {
                 ))}
               </div>
               <Opiskeluoikeus opiskeluoikeus={opiskeluoikeus} oppijaOid={oppijaOid}/>
-          </li>
-        ))}
+            </li>
+          ))}
       </ul>
     </div>
   )
