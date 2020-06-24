@@ -1,4 +1,6 @@
 import React from 'baret'
+import * as R from 'ramda'
+import Atom from 'bacon.atom'
 import {addContext, modelData} from '../editor/EditorModel.js'
 import {näytettäväPäätasonSuoritusTitle} from '../opiskeluoikeus/OpiskeluoikeusEditor'
 import {modelItems, modelTitle} from '../editor/EditorModel'
@@ -6,7 +8,12 @@ import {OpiskeluoikeudenTila} from './fragments/OpiskeluoikeudenTila'
 import ChevronUpIcon from '../icons/ChevronUpIcon'
 import ChevronDownIcon from '../icons/ChevronDownIcon'
 import {OmatTiedotOpiskeluoikeus} from './OmatTiedotOpiskeluoikeus'
+import Checkbox from '../components/Checkbox'
+import Text from '../i18n/Text'
+import Http from '../util/http'
 
+
+export const selectedModelsAtom = Atom([])
 
 export const OmatTiedotEditor = ({model}) => {
   const oppijaOid = modelData(model, 'henkilö.oid')
@@ -19,10 +26,61 @@ export const OmatTiedotEditor = ({model}) => {
           oppilaitos={oppilaitos}
           oppijaOid={oppijaOid}
         />))}
+      {selectedModelsAtom.map(selectedModels => (
+        <SuoritusjakoButton
+          selectedModels={selectedModels}
+        />))}
     </div>
   )
 }
 
+
+const SuoritusjakoButton = ({selectedModels}) => {
+  const isPending = Atom(false)
+
+  const onSuccess = () => {
+    isPending.set(false)
+  }
+
+  const onError = () => {
+    isPending.set(false)
+  }
+
+  const jaettavaSuoritus = (model) => {
+    const data = modelData(model)
+    if (model.value.classes.includes('opiskeluoikeus')) {
+      // Malli on kokonainen opiskeluoikeus: palautetaan sellaisenaan
+      return data
+    } else {
+      throw new Error('Tämäntyyppisen suorituksen jako ei tuettu')
+    }
+  }
+
+  const jaettavatSuoritukset = (models) => {
+    return models.map(model => jaettavaSuoritus(model))
+  }
+
+  const createSuoritusjako = () => {
+    isPending.set(true)
+    const url = '/koski/api/suoritusjakoV2/create'
+    const request = jaettavatSuoritukset(selectedModels)
+    const response = Http.post(url, request)
+    response.onValue(onSuccess)
+    response.onError(onError)
+  }
+
+  return (
+    <div className='create-suoritusjako__button'>
+      <button
+        className='koski-button'
+        disabled={R.isEmpty(selectedModels) || isPending}
+        onClick={createSuoritusjako}
+      >
+        <Text name='Jaa valitsemasi opinnot'/>
+      </button>
+    </div>
+  )
+}
 
 const Oppilaitokset = ({oppilaitos, oppijaOid}) => {
   return (
@@ -30,8 +88,24 @@ const Oppilaitokset = ({oppilaitos, oppijaOid}) => {
       <h2 className='oppilaitos-title'>{modelTitle(oppilaitos, 'oppilaitos')}</h2>
       <ul className='opiskeluoikeudet-list'>
         {modelItems(oppilaitos, 'opiskeluoikeudet').map((opiskeluoikeus, opiskeluoikeusIndex) => (
-          <li key={opiskeluoikeusIndex}>
-            <Opiskeluoikeus opiskeluoikeus={opiskeluoikeus} oppijaOid={oppijaOid} />
+            <li className='opiskeluoikeus-row' key={opiskeluoikeusIndex}>
+              <div className='opiskeluoikeus-checkbox-container'>
+                {selectedModelsAtom.map(selectedModels => (
+                  <Checkbox
+                    id={`opiskeluoikeus-check-${opiskeluoikeus.modelId}`}
+                    checked={R.contains(opiskeluoikeus, selectedModels)}
+                    onChange={
+                      e => selectedModelsAtom.modify(atom =>
+                        e.target.checked
+                          ? R.append(opiskeluoikeus, atom)
+                          : R.without([opiskeluoikeus], atom)
+                      )
+                    }
+                    listStylePosition='inside'
+                  />
+                ))}
+              </div>
+              <Opiskeluoikeus opiskeluoikeus={opiskeluoikeus} oppijaOid={oppijaOid}/>
           </li>
         ))}
       </ul>
@@ -59,7 +133,11 @@ class Opiskeluoikeus extends React.Component {
 
     return (
       <div className='opiskeluoikeus-container'>
-        <button className={`opiskeluoikeus-button ${expanded ? 'opiskeluoikeus-button--selected' : ''}`} aria-pressed={expanded} onClick={this.toggleExpand}>
+        <button
+          className={`opiskeluoikeus-button ${expanded ? 'opiskeluoikeus-button--selected' : ''}`}
+          aria-pressed={expanded}
+          onClick={this.toggleExpand}
+        >
           <div className='opiskeluoikeus-button-content'>
             <div className='opiskeluoikeus-title'>
               <h3>

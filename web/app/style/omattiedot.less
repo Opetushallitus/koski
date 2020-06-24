@@ -1,4 +1,5 @@
 @header-padding: 0 16px;
+@suoritusjako-left-column-width: 36px;
 
 .header__oppijanvalitsin_mixin(){
     color: white;
@@ -221,7 +222,7 @@
       text-transform: uppercase;
       padding-bottom: 8px;
       border-bottom: 2px solid @color-link-blue;
-      margin: 0 0 8px 0;
+      margin: 0 0 8px @suoritusjako-left-column-width;
     }
 
     .opiskeluoikeudet-list {
@@ -230,7 +231,16 @@
       padding: 0;
     }
 
+    .opiskeluoikeus-row {
+      display: flex;
+    }
+
+    .opiskeluoikeus-checkbox-container {
+      width: @suoritusjako-left-column-width;
+    }
+
     .opiskeluoikeus-container {
+      flex-grow: 1;
       border: 1px solid #F5F5F5;
       margin: 0 0 8px;
 
