@@ -208,18 +208,18 @@ case class AikuistenPerusopetusRaportti(
         sisäoppilaitosmainenMajoitus = lisätiedot.flatMap(_.sisäoppilaitosmainenMajoitus.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
         yhteislaajuus = row.osasuoritukset
           .filter(raporttiType.isKurssi)
-          .flatMap(_.koulutusmoduuliLaajuusArvo).sum,
+          .map(_.laajuus).sum,
         yhteislaajuusSuoritetut = row.osasuoritukset
           .filter(raporttiType.isKurssi)
           .filterNot(isTunnustettu)
-          .flatMap(_.koulutusmoduuliLaajuusArvo).sum,
+          .map(_.laajuus).sum,
         yhteislaajuusHylätyt = row.osasuoritukset
           .filter(raporttiType.isKurssi)
           .filterNot(k => isTunnustettu(k) || k.suoritettu)
-          .flatMap(_.koulutusmoduuliLaajuusArvo).sum,
+          .map(_.laajuus).sum,
         yhteislaajuusTunnustetut = row.osasuoritukset
           .filter(k => raporttiType.isKurssi(k) && k.suoritettu && isTunnustettu(k))
-          .flatMap(_.koulutusmoduuliLaajuusArvo).sum
+          .map(_.laajuus).sum
       ),
       oppiaineet = oppiaineidentiedot(row.päätasonSuoritus, row.osasuoritukset, oppiaineet, raporttiType.isOppiaineenOppimäärä)
     )
@@ -368,10 +368,10 @@ case class AikuistenPerusopetusRaporttiOppiaineetVälilehtiMuut(
   ulkomaanjaksot: Option[Int],
   majoitusetu: Option[Int],
   sisäoppilaitosmainenMajoitus: Option[Int],
-  yhteislaajuus: Double,
-  yhteislaajuusSuoritetut: Double,
-  yhteislaajuusHylätyt: Double,
-  yhteislaajuusTunnustetut: Double
+  yhteislaajuus: BigDecimal,
+  yhteislaajuusSuoritetut: BigDecimal,
+  yhteislaajuusHylätyt: BigDecimal,
+  yhteislaajuusTunnustetut: BigDecimal
 )
 
 case class AikuistenPerusopetusRaporttiOppiaineRow(

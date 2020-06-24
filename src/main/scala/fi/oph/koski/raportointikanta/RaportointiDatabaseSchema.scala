@@ -11,6 +11,8 @@ import org.json4s.JValue
 import slick.dbio.DBIO
 import slick.sql.SqlProfile.ColumnOption.SqlType
 
+import scala.math.BigDecimal.decimal
+
 object RaportointiDatabaseSchema {
   def moveSchema(oldSchema: Schema, newSchema: Schema) = DBIO.seq(
     sqlu"DROP SCHEMA IF EXISTS #${newSchema.name} CASCADE",
@@ -481,6 +483,8 @@ case class ROsasuoritusRow(
       .orElse(koulutusmoduuliOppimääräNimi)
       .orElse(koulutusmoduuliNimi)
   }
+
+  def laajuus: BigDecimal = koulutusmoduuliLaajuusArvo.map(decimal).getOrElse(decimal(1.0))
 }
 
 case class RHenkilöRow(

@@ -13,17 +13,14 @@ case class YleissivistäväOppiaineenTiedot(suoritus: RSuoritusRow, osasuorituks
     case _: RPäätasonSuoritusRow => osasuoritukset
     case s: ROsasuoritusRow => osasuoritukset.filter(_.ylempiOsasuoritusId.contains(s.osasuoritusId))
   }
-
   private val hylätytOsasuoritukset = suorituksenOsasuoritukset.filterNot(_.suoritettu)
 
-  // TODO: pitäisikö olla laajuuksien summa?
-  val laajuus: Int = suorituksenOsasuoritukset.size
-  val hylättyjenLaajuus: Int = hylätytOsasuoritukset.size
+  private val laajuus = suorituksenOsasuoritukset.map(_.laajuus).sum
+  private val hylättyjenLaajuus = hylätytOsasuoritukset.map(_.laajuus).sum
 
-  override def toString: String = suoritus.arviointiArvosanaKoodiarvo.map(a => s"Arvosana $a, $laajuus $kurssia$hylätytKurssitStr").getOrElse("Ei arvosanaa")
+  private val hylätytKurssitStr = if (hylättyjenLaajuus > 0) f" (joista $hylättyjenLaajuus%.1f hylättyjä)" else ""
 
-  private val hylätytKurssitStr = if (hylättyjenLaajuus > 0) s" (joista $hylättyjenLaajuus hylättyjä)" else ""
-  private val kurssia = if (laajuus == 1) "kurssi" else "kurssia"
+  override def toString: String = suoritus.arviointiArvosanaKoodiarvo.map(a => f"Arvosana $a, $laajuus%.1f kurssia$hylätytKurssitStr").getOrElse("Ei arvosanaa")
 }
 
 sealed trait YleissivistäväRaporttiOppiaineTaiKurssi {

@@ -311,28 +311,28 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Sukunimi" -> lukiolainen.sukunimi,
     "Etunimet" -> lukiolainen.etunimet,
     "Yhteislaajuus" -> 89.5,
-    "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 8 kurssia",
+    "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 8.0 kurssia",
     "XX Ei tiedossa valtakunnallinen" -> "",
-    "A1 Englanti valtakunnallinen" -> "Arvosana 9, 9 kurssia",
-    "B1 Ruotsi valtakunnallinen" -> "Arvosana 7, 5 kurssia",
-    "B3 Latina valtakunnallinen" -> "Arvosana 9, 2 kurssia",
-    "MA Matematiikka, pitkä oppimäärä valtakunnallinen" -> "Arvosana 9, 15 kurssia (joista 1 hylättyjä)",
-    "BI Biologia valtakunnallinen" -> "Arvosana 9, 8 kurssia",
-    "GE Maantieto valtakunnallinen" -> "Arvosana 8, 2 kurssia",
-    "FY Fysiikka valtakunnallinen" -> "Arvosana 8, 13 kurssia",
-    "KE Kemia valtakunnallinen" -> "Arvosana 8, 8 kurssia",
-    "KT Islam valtakunnallinen" -> "Arvosana 8, 3 kurssia",
-    "FI Filosofia valtakunnallinen" -> "Arvosana 8, 1 kurssi",
-    "PS Psykologia valtakunnallinen" -> "Arvosana 9, 1 kurssi",
-    "HI Historia valtakunnallinen" -> "Arvosana 7, 4 kurssia",
-    "YH Yhteiskuntaoppi valtakunnallinen" -> "Arvosana 8, 2 kurssia",
-    "LI Liikunta valtakunnallinen" -> "Arvosana 9, 3 kurssia",
-    "MU Musiikki valtakunnallinen" -> "Arvosana 8, 1 kurssi",
-    "KU Kuvataide valtakunnallinen" -> "Arvosana 9, 2 kurssia",
-    "TE Terveystieto valtakunnallinen" -> "Arvosana 9, 1 kurssi",
-    "ITT Tanssi ja liike paikallinen" -> "Arvosana 10, 1 kurssi",
-    "TO Teemaopinnot valtakunnallinen" -> "Arvosana S, 1 kurssi",
-    "OA Oman äidinkielen opinnot valtakunnallinen" -> "Arvosana S, 1 kurssi"
+    "A1 Englanti valtakunnallinen" -> "Arvosana 9, 9.0 kurssia",
+    "B1 Ruotsi valtakunnallinen" -> "Arvosana 7, 5.0 kurssia",
+    "B3 Latina valtakunnallinen" -> "Arvosana 9, 2.0 kurssia",
+    "MA Matematiikka, pitkä oppimäärä valtakunnallinen" -> "Arvosana 9, 15.0 kurssia (joista 1.0 hylättyjä)",
+    "BI Biologia valtakunnallinen" -> "Arvosana 9, 7.5 kurssia",
+    "GE Maantieto valtakunnallinen" -> "Arvosana 8, 2.0 kurssia",
+    "FY Fysiikka valtakunnallinen" -> "Arvosana 8, 13.0 kurssia",
+    "KE Kemia valtakunnallinen" -> "Arvosana 8, 8.0 kurssia",
+    "KT Islam valtakunnallinen" -> "Arvosana 8, 3.0 kurssia",
+    "FI Filosofia valtakunnallinen" -> "Arvosana 8, 1.0 kurssia",
+    "PS Psykologia valtakunnallinen" -> "Arvosana 9, 1.0 kurssia",
+    "HI Historia valtakunnallinen" -> "Arvosana 7, 4.0 kurssia",
+    "YH Yhteiskuntaoppi valtakunnallinen" -> "Arvosana 8, 2.0 kurssia",
+    "LI Liikunta valtakunnallinen" -> "Arvosana 9, 3.0 kurssia",
+    "MU Musiikki valtakunnallinen" -> "Arvosana 8, 1.0 kurssia",
+    "KU Kuvataide valtakunnallinen" -> "Arvosana 9, 2.0 kurssia",
+    "TE Terveystieto valtakunnallinen" -> "Arvosana 9, 1.0 kurssia",
+    "ITT Tanssi ja liike paikallinen" -> "Arvosana 10, 1.0 kurssia",
+    "TO Teemaopinnot valtakunnallinen" -> "Arvosana S, 1.0 kurssia",
+    "OA Oman äidinkielen opinnot valtakunnallinen" -> "Arvosana S, 1.0 kurssia"
   )
 
   lazy val expectedLukiolainenHistorianKurssitRow = Map(
@@ -417,32 +417,32 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     lazy val englanninOppiaineenRow = default + (
       "Suorituksen vahvistuspäivä" -> Some(date(2016, 1, 10)),
       "Yhteislaajuus" -> 3.0,
-      "A1 Englanti valtakunnallinen" -> "Arvosana 7, 3 kurssia"
+      "A1 Englanti valtakunnallinen" -> "Arvosana 7, 3.0 kurssia"
     )
 
     lazy val matematiikanOppiaineRow = default + (
       "Suorituksen vahvistuspäivä" -> Some(date(2016, 1, 10)),
       "Yhteislaajuus" -> 5.0,
-      "MA Matematiikka, pitkä oppimäärä valtakunnallinen" -> "Arvosana 8, 5 kurssia"
+      "MA Matematiikka, pitkä oppimäärä valtakunnallinen" -> "Arvosana 8, 5.0 kurssia"
     )
 
     lazy val historiaOppiaineenRow = default + (
       "Suorituksen vahvistuspäivä" -> Some(date(2016, 1, 10)),
       "Yhteislaajuus" -> 4.0,
-      "HI Historia valtakunnallinen" -> "Arvosana 9, 4 kurssia"
+      "HI Historia valtakunnallinen" -> "Arvosana 9, 4.0 kurssia"
     )
 
     lazy val kemiaOppiaineenRow = default + (
       "Suorituksen vahvistuspäivä" -> Some(date(2015, 1, 10)),
       "Yhteislaajuus" -> 1.0,
-      "KE Kemia valtakunnallinen" -> "Arvosana 8, 1 kurssi"
+      "KE Kemia valtakunnallinen" -> "Arvosana 8, 1.0 kurssia"
     )
 
     lazy val filosofiaOppiaineenRow = default + (
       "Suorituksen tila" -> "kesken",
       "Suorituksen vahvistuspäivä" -> None,
       "Yhteislaajuus" -> 1.0,
-      "FI Filosofia valtakunnallinen" -> "Arvosana 9, 1 kurssi"
+      "FI Filosofia valtakunnallinen" -> "Arvosana 9, 1.0 kurssia"
     )
 
     lazy val eiSuorituksiaKurssitRow = Map(
@@ -491,7 +491,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     )
 
     lazy val eiTiedossaOppiaineenRow = default + (
-      "XX Ei tiedossa valtakunnallinen" -> "Arvosana 9, 1 kurssi",
+      "XX Ei tiedossa valtakunnallinen" -> "Arvosana 9, 1.0 kurssia",
       "Suorituksen tila" -> "kesken",
       "Yhteislaajuus" -> 1.0,
       "Opetussuunnitelma" -> None
@@ -500,27 +500,27 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     lazy val historiaOppiaineenRow = default + (
       "Suorituksen vahvistuspäivä" -> Some(date(2016, 1, 10)),
       "Yhteislaajuus" -> 4.0,
-      "HI Historia valtakunnallinen" -> "Arvosana 9, 4 kurssia"
+      "HI Historia valtakunnallinen" -> "Arvosana 9, 4.0 kurssia"
     )
 
     lazy val kemiaOppiaineenRow = default + (
       "Suorituksen vahvistuspäivä" -> Some(date(2015, 1, 10)),
       "Yhteislaajuus" -> 1.0,
-      "KE Kemia valtakunnallinen" -> "Arvosana 8, 1 kurssi"
+      "KE Kemia valtakunnallinen" -> "Arvosana 8, 1.0 kurssia"
     )
 
     lazy val filosofiaOppiaineenRow = default + (
       "Suorituksen tila" -> "kesken",
       "Suorituksen vahvistuspäivä" -> None,
       "Yhteislaajuus" -> 1.0,
-      "FI Filosofia valtakunnallinen" -> "Arvosana 9, 1 kurssi"
+      "FI Filosofia valtakunnallinen" -> "Arvosana 9, 1.0 kurssia"
     )
 
     lazy val EiTiedossaOppiaineenRow = default + (
       "Suorituksen tila" -> "kesken",
       "Suorituksen vahvistuspäivä" -> None,
       "Yhteislaajuus" -> 1.0,
-      "FI Filosofia valtakunnallinen" -> "Arvosana 9, 1 kurssi"
+      "FI Filosofia valtakunnallinen" -> "Arvosana 9, 1.0 kurssia"
     )
 
     lazy val eiTiedossaKurssitRow = Map(
