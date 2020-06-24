@@ -550,7 +550,7 @@ class SuoritusjakoSpec extends FreeSpec with SuoritusjakoTestMethods with Matche
         }]"""
 
       createSuoritusjako(json){
-        verifyResponseStatus(403, KoskiErrorCategory.forbidden.liianMontaSuoritusjakoa())
+        verifyResponseStatus(422, KoskiErrorCategory.unprocessableEntity.liianMontaSuoritusjakoa())
       }
     }
   }

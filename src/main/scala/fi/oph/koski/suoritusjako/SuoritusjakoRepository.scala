@@ -41,7 +41,7 @@ class SuoritusjakoRepository(val db: DB) extends Logging with DatabaseExecutionC
 
       Right(Suoritusjako(secret, expirationDate, timestamp))
     } else {
-      Left(KoskiErrorCategory.forbidden.liianMontaSuoritusjakoa())
+      Left(KoskiErrorCategory.unprocessableEntity.liianMontaSuoritusjakoa())
     }
   }
 

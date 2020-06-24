@@ -156,7 +156,7 @@ class SuoritusjakoV2Spec extends FreeSpec with Matchers with OpiskeluoikeusTestM
     (1 to 20).foreach(_ => createSuoritusjako(MockOppijat.koululainen))
 
     postSuoritusjakoV2(getOpiskeluoikeudet(MockOppijat.koululainen.oid).toList, MockOppijat.koululainen) {
-      verifyResponseStatus(403, KoskiErrorCategory.forbidden.liianMontaSuoritusjakoa())
+      verifyResponseStatus(422, KoskiErrorCategory.unprocessableEntity.liianMontaSuoritusjakoa())
     }
   }
 

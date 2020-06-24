@@ -193,7 +193,6 @@ object KoskiErrorCategory {
     val vainViranomainen = subcategory("vainViranomainen", "Sallittu vain viranomaisille")
     val vainTilastokeskus = subcategory("vainTilastokeskus", "Sallittu vain tilastokeskuskäyttäjälle")
     val kiellettyKäyttöoikeus = subcategory("kiellettyKäyttöoikeus", "Ei sallittu näillä käyttöoikeuksilla")
-    val liianMontaSuoritusjakoa = subcategory("liianMontaSuoritusjakoa", "Käyttäjällä on jo maksimimäärä suoritusjakoja")
     val forbiddenXRoadHeader = subcategory("vainSallittuKumppani", "X-ROAD-MEMBER:llä ei ole lupaa hakea opiskelijan tietoja")
   }
 
@@ -223,6 +222,10 @@ object KoskiErrorCategory {
 
   object unsupportedMediaType extends ErrorCategory("unsupportedMediaType", 415, "Unsupported media type") {
     val jsonOnly = subcategory("jsonOnly", "Wrong content type: only application/json content type with UTF-8 encoding allowed")
+  }
+
+  object unprocessableEntity extends ErrorCategory("unprocessableEntity", 422, "Unprocessable Entity") {
+    val liianMontaSuoritusjakoa = subcategory("liianMontaSuoritusjakoa", "Käyttäjällä on jo maksimimäärä suoritusjakoja")
   }
 
   object internalError extends ErrorCategory("internalError", 500, "Internal server error")

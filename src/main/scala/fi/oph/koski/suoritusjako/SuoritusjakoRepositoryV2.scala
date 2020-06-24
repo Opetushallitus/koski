@@ -30,7 +30,7 @@ class SuoritusjakoRepositoryV2(val db: DB) extends Logging with DatabaseExecutio
         voimassaAsti = SUORITUSJAON_DEFAULT_VOIMASSAOLOAIKA,
         aikaleima = Timestamp.from(Instant.now))))
     } else {
-      KoskiErrorCategory.forbidden.liianMontaSuoritusjakoa()
+      KoskiErrorCategory.unprocessableEntity.liianMontaSuoritusjakoa()
     }
   }
 
