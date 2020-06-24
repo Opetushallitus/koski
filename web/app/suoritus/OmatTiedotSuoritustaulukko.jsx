@@ -21,6 +21,9 @@ import {ArvosanaEditor} from './ArvosanaEditor'
 import Text from '../i18n/Text'
 import Http from '../util/http'
 import * as Bacon from 'baconjs'
+import * as R from 'ramda'
+import Checkbox from '../components/Checkbox'
+import {selectedModelsAtom} from '../omattiedot/OmatTiedotEditor'
 
 const OmatTiedotSuoritustaulukko = ({suorituksetModel, nested, parentSuoritus: parentSuoritusProp}) => {
   const {context} = suorituksetModel
@@ -98,6 +101,7 @@ const SuoritusGroup = ({groups, groupId, columns, nested, parentSuoritus, laajuu
       <table className={nested ? 'nested' : ''}>
         <thead>
           <tr className={nested ? 'nested-header' : ''}>
+            <td className='checkbox-cell' />
             {columns.map(column => column.renderHeader({groupTitles, groupId}))}
           </tr>
         </thead>
@@ -151,6 +155,22 @@ class Suoritus extends React.Component {
 
     return [
       <tr key='suoritus' className={className} onClick={expandable ? this.toggleExpand : undefined}>
+        <td className='checkbox-cell'>
+          {selectedModelsAtom.map(selectedModels => (
+            <Checkbox
+              id={`suoritus-check-${model.modelId}`}
+              checked={R.contains(model, selectedModels)}
+              onChange={
+                e => selectedModelsAtom.modify(atom =>
+                  e.target.checked
+                    ? R.append(model, atom)
+                    : R.without([model], atom)
+                )
+              }
+              listStylePosition='inside'
+            />
+          ))}
+        </td>
         {columns.map(column => column.renderData({model, onExpand: this.toggleExpand, expandable, expanded, ylioppilastutkinto}))}
       </tr>,
       expanded && hasProperties && <tr key='properties' className='details'>
