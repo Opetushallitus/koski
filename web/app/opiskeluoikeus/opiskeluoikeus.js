@@ -11,4 +11,3 @@ export const filterTilatByOpiskeluoikeudenTyyppi = (tyyppi, koodiarvo = defaultG
     default: return prefilteredTilat.filter(t => koodiarvo(t) !== 'loma')
   }
 }
-
