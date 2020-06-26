@@ -454,9 +454,7 @@ case class PerusopetuksenToiminta_Alue(
   @Description("Toiminta-alueen tunniste")
   @KoodistoUri("perusopetuksentoimintaalue")
   tunniste: Koodistokoodiviite
-) extends KoodistostaLöytyväKoulutusmoduuli {
-  def laajuus = None
-}
+) extends KoodistostaLöytyväKoulutusmoduuli with Laajuudeton
 
 @Description("Nuorten perusopetuksen tunnistetiedot")
 case class NuortenPerusopetus(
@@ -489,7 +487,7 @@ object PerusopetuksenLuokkaAste {
 }
 
 @Description("Perusopetuksen oppiaineen tunnistetiedot")
-trait PerusopetuksenOppiaine extends Koulutusmoduuli with Valinnaisuus with Diaarinumerollinen {
+trait PerusopetuksenOppiaine extends KoulutusmoduuliValinnainenLaajuus with Valinnaisuus with Diaarinumerollinen {
   @Description("Oppiaineen tunnistetiedot")
   @Title("Oppiaine")
   def tunniste: KoodiViite
@@ -549,7 +547,7 @@ trait PerusopetuksenPaikallinenOppiaine extends PerusopetuksenOppiaine with Paik
   def kuvaus: LocalizedString
 }
 
-trait NuortenPerusopetuksenOppiainenTaiEiTiedossaOppiaine extends Koulutusmoduuli
+trait NuortenPerusopetuksenOppiainenTaiEiTiedossaOppiaine extends KoulutusmoduuliValinnainenLaajuus
 
 trait NuortenPerusopetuksenOppiaine extends PerusopetuksenOppiaine with NuortenPerusopetuksenOppiainenTaiEiTiedossaOppiaine {
   @Tooltip("Oppiaineen laajuus vuosiviikkotunteina.")

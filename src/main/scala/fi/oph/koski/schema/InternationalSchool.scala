@@ -182,10 +182,9 @@ case class DiplomaCoreRequirementsOppiaineenSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "internationalschoolcorerequirements", koodistoUri = "suorituksentyyppi")
 ) extends DiplomaIBOppiaineenSuoritus
 
-trait InternationalSchoolOppiaine extends KoodistostaLöytyväKoulutusmoduuli {
+trait InternationalSchoolOppiaine extends KoodistostaLöytyväKoulutusmoduuli with Laajuudeton {
   @KoodistoUri("oppiaineetinternationalschool")
   def tunniste: Koodistokoodiviite
-  override def laajuus: Option[Laajuus] = None
 }
 
 trait InternationalSchoolKieliOppiaine extends Kieliaine with MYPOppiaine with PYPOppiaine {

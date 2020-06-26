@@ -171,7 +171,7 @@ case class DIAOppiaineenTutkintovaiheenOsasuorituksenSuoritus(
 
 trait DIAOppiaineenOsasuoritus extends KoodistostaLöytyväKoulutusmoduuli
 
-trait DIAOppiaineenLukukausi extends DIAOppiaineenOsasuoritus {
+trait DIAOppiaineenLukukausi extends DIAOppiaineenOsasuoritus with KoodistostaLöytyväKoulutusmoduuliValinnainenLaajuus {
   @KoodistoUri("dialukukausi")
   def tunniste: Koodistokoodiviite
 }
@@ -277,7 +277,7 @@ case class DIAOppiaineenTutkintovaiheenSuoritusmerkintäArviointi(
 ) extends DIATutkintovaiheenArviointi
 
 @Description("DIA-oppiaineen tunnistetiedot")
-trait DIAOppiaine extends KoodistostaLöytyväKoulutusmoduuli {
+trait DIAOppiaine extends KoodistostaLöytyväKoulutusmoduuliValinnainenLaajuus {
   @KoodistoUri("oppiaineetdia")
   @OksaUri("tmpOKSAID256", "oppiaine")
   def tunniste: Koodistokoodiviite

@@ -17,8 +17,8 @@ object TOPKSAmmatillinenRaporttiRowBuilder {
         case s: YhteisenTutkinnonOsanOsaAlueenSuoritus => s.tunnustettu.isDefined
         case _ => false
       },
-      koulutusmoduuliLaajuusArvo = os.koulutusmoduuli.laajuus.map(_.arvo),
-      koulutusmoduuliLaajuusYksikkö = os.koulutusmoduuli.laajuus.map(_.yksikkö.koodiarvo)
+      koulutusmoduuliLaajuusArvo = os.koulutusmoduuli.getLaajuus.map(_.arvo),
+      koulutusmoduuliLaajuusYksikkö = os.koulutusmoduuli.getLaajuus.map(_.yksikkö.koodiarvo)
     )
   }
 }

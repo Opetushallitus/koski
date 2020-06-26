@@ -55,7 +55,7 @@ sealed trait Työssäoppimisjaksoton extends AmmatillinenPäätasonSuoritus {
   override def työssäoppimisjaksot: Option[List[Työssäoppimisjakso]] = None
 }
 
-trait MuuAmmatillinenKoulutus extends Koulutusmoduuli
+trait MuuAmmatillinenKoulutus extends KoulutusmoduuliValinnainenLaajuus
 trait Kuvaus {
   @Description("Kuvaus koulutuksen sisällöstä osaamisena.")
   @Tooltip("Kuvaus koulutuksen sisällöstä osaamisena.")
@@ -83,7 +83,7 @@ case class TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus(
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusKaikkiYksiköt],
   kuvaus: LocalizedString
-) extends PaikallinenKoulutusmoduuli with Kuvaus
+) extends PaikallinenKoulutusmoduuliValinnainenLaajuus with Kuvaus
 
 trait TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvanSuorituksenOsasuoritus extends Vahvistukseton with Suoritus
 
@@ -109,7 +109,7 @@ case class MuunAmmatillisenKoulutuksenOsasuoritus(
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusKaikkiYksiköt],
   kuvaus: LocalizedString
-) extends PaikallinenKoulutusmoduuli
+) extends PaikallinenKoulutusmoduuliValinnainenLaajuus
 
 @Description("Suoritukseen liittyvät lisätiedot, kuten esimerkiksi mukautettu arviointi tai poikkeus arvioinnissa.")
 case class MuunAmmatillisenKoulutuksenOsasuorituksenLisätieto(
@@ -143,4 +143,4 @@ case class TutkinnonOsaaPienempiKokonaisuus(
   tunniste: PaikallinenKoodi,
   laajuus: Option[LaajuusKaikkiYksiköt],
   kuvaus: LocalizedString
-) extends PaikallinenKoulutusmoduuli
+) extends PaikallinenKoulutusmoduuliValinnainenLaajuus
