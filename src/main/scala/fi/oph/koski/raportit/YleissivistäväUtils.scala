@@ -8,8 +8,19 @@ import fi.oph.koski.schema.{Aikajakso, Jakso}
 import fi.oph.koski.suoritusote.KoulutusModuuliOrdering.järjestäSuffiksinMukaan
 
 
-case class YleissivistäväOppiaineenTiedot(arvosana: Option[String], laajuus: Int) {
-  override def toString: String = s"${arvosana.fold("Ei arvosanaa")("Arvosana " + _)}, $laajuus ${if (laajuus == 1) "kurssi" else "kurssia"}"
+case class YleissivistäväOppiaineenTiedot(suoritus: RSuoritusRow, osasuoritukset: Seq[ROsasuoritusRow]) {
+  private val suorituksenOsasuoritukset = suoritus match {
+    case _: RPäätasonSuoritusRow => osasuoritukset
+    case s: ROsasuoritusRow => osasuoritukset.filter(_.ylempiOsasuoritusId.contains(s.osasuoritusId))
+  }
+  private val hylätytOsasuoritukset = suorituksenOsasuoritukset.filterNot(_.suoritettu)
+
+  private val laajuus = suorituksenOsasuoritukset.map(_.laajuus).sum
+  private val hylättyjenLaajuus = hylätytOsasuoritukset.map(_.laajuus).sum
+
+  private val hylätytKurssitStr = if (hylättyjenLaajuus > 0) f" (joista $hylättyjenLaajuus%.1f hylättyjä)" else ""
+
+  override def toString: String = suoritus.arviointiArvosanaKoodiarvo.map(a => f"Arvosana $a, $laajuus%.1f kurssia$hylätytKurssitStr").getOrElse("Ei arvosanaa")
 }
 
 sealed trait YleissivistäväRaporttiOppiaineTaiKurssi {
@@ -194,47 +205,22 @@ object YleissivistäväUtils {
     oppiaineet: Seq[YleissivistäväRaporttiOppiaineJaKurssit],
     isOppiaineenOppimäärä: RPäätasonSuoritusRow => Boolean
   ): Seq[String] = {
-    val oppiaineentiedot = if (isOppiaineenOppimäärä(paatasonsuoritus)) {
-      oppiaineenOppimääränOppiaineenTiedot(paatasonsuoritus, osasuoritukset, oppiaineet)
+
+    def oppiaineenTiedot(oppiaine: YleissivistäväRaporttiOppiaine) = if (isOppiaineenOppimäärä(paatasonsuoritus)) {
+      if (paatasonsuoritus.matchesWith(oppiaine)) {
+        List(YleissivistäväOppiaineenTiedot(paatasonsuoritus, osasuoritukset))
+      } else {
+        Nil
+      }
     } else {
-      oppimääränOppiaineenTiedot(osasuoritukset, oppiaineet)
+      val osasuorituksetMap = osasuoritukset.groupBy(_.koulutusmoduuliKoodiarvo)
+      val oppiaineenSuoritukset = osasuorituksetMap.getOrElse(oppiaine.koulutusmoduuliKoodiarvo, Nil).filter(_.matchesWith(oppiaine))
+      oppiaineenSuoritukset.map(suoritus => YleissivistäväOppiaineenTiedot(suoritus, osasuoritukset))
     }
 
-    oppiaineet.map(x => oppiaineentiedot(x.oppiaine).map(_.toString).mkString(","))
-  }
-
-  private def oppiaineenOppimääränOppiaineenTiedot(
-    päätasonSuoritus: RPäätasonSuoritusRow,
-    osasuoritukset: Seq[ROsasuoritusRow],
-    oppiaineet: Seq[YleissivistäväRaporttiOppiaineJaKurssit]
-  ): YleissivistäväRaporttiOppiaine => Seq[YleissivistäväOppiaineenTiedot] = {
-    (oppiaine: YleissivistäväRaporttiOppiaine) => if (päätasonSuoritus.matchesWith(oppiaine)) {
-      Seq(toOppiaineenTiedot(päätasonSuoritus, osasuoritukset))
-    } else {
-      Nil
-    }
-  }
-
-  private def oppimääränOppiaineenTiedot(
-    osasuoritukset: Seq[ROsasuoritusRow],
-    oppiaineet: Seq[YleissivistäväRaporttiOppiaineJaKurssit]
-  ): YleissivistäväRaporttiOppiaine => Seq[YleissivistäväOppiaineenTiedot] = {
-    val osasuorituksetMap = osasuoritukset.groupBy(_.koulutusmoduuliKoodiarvo)
-    val oppiaineenSuoritukset = (oppiaine: YleissivistäväRaporttiOppiaine) => osasuorituksetMap
-      .getOrElse(oppiaine.koulutusmoduuliKoodiarvo, Nil).filter(_.matchesWith(oppiaine))
-    (oppiaine: YleissivistäväRaporttiOppiaine) => oppiaineenSuoritukset(oppiaine)
-      .map(s => YleissivistäväOppiaineenTiedot(
-        s.arviointiArvosanaKoodiarvo,
-        osasuoritukset.count(_.ylempiOsasuoritusId.contains(s.osasuoritusId))
-      ))
-  }
-
-  private def toOppiaineenTiedot(suoritus: RSuoritusRow, osasuoritukset: Seq[ROsasuoritusRow]): YleissivistäväOppiaineenTiedot = {
-    val laajuus = suoritus match {
-      case _: RPäätasonSuoritusRow => osasuoritukset.size
-      case s: ROsasuoritusRow => osasuoritukset.count(_.ylempiOsasuoritusId.contains(s.osasuoritusId))
-    }
-    YleissivistäväOppiaineenTiedot(suoritus.arviointiArvosanaKoodiarvo, laajuus)
+    oppiaineet
+      .map(_.oppiaine)
+      .map(oppiaineenTiedot(_).map(_.toString).mkString(","))
   }
 
   def removeContinuousSameTila(aikajaksot: Seq[ROpiskeluoikeusAikajaksoRow]): Seq[ROpiskeluoikeusAikajaksoRow] = {

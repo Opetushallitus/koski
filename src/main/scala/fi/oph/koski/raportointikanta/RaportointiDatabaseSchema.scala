@@ -11,6 +11,8 @@ import org.json4s.JValue
 import slick.dbio.DBIO
 import slick.sql.SqlProfile.ColumnOption.SqlType
 
+import scala.math.BigDecimal.decimal
+
 object RaportointiDatabaseSchema {
   def moveSchema(oldSchema: Schema, newSchema: Schema) = DBIO.seq(
     sqlu"DROP SCHEMA IF EXISTS #${newSchema.name} CASCADE",
@@ -407,6 +409,8 @@ case class EsiopetusOpiskeluoikeusAikajaksoRow(
 sealed trait RSuoritusRow {
   def arviointiArvosanaKoodiarvo: Option[String]
   def matchesWith(x: YleissivistäväRaporttiOppiaineTaiKurssi): Boolean
+  def arviointiHyväksytty: Option[Boolean]
+  def suoritettu: Boolean = arviointiHyväksytty.getOrElse(false)
 }
 
 case class RPäätasonSuoritusRow(
@@ -480,7 +484,7 @@ case class ROsasuoritusRow(
       .orElse(koulutusmoduuliNimi)
   }
 
-  def suoritettu: Boolean = arviointiHyväksytty.exists(identity)
+  def laajuus: BigDecimal = koulutusmoduuliLaajuusArvo.map(decimal).getOrElse(decimal(1.0))
 }
 
 case class RHenkilöRow(

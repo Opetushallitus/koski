@@ -148,7 +148,7 @@ object AikajaksoRowBuilder {
   private def mahdollisetAikajaksojenAlkupäivät(o: KoskeenTallennettavaOpiskeluoikeus): Seq[LocalDate] = {
     // logiikka: uusi r_opiskeluoikeus_aikajakso-rivi pitää aloittaa, jos ko. päivänä alkaa joku jakso (erityinen tuki tms),
     // tai jos edellisenä päivänä on loppunut joku jakso.
-    val lisätiedotAikajaksot: Seq[Aikajakso] = o.lisätiedot.map {
+    val lisätiedotAikajaksot: Seq[Aikajakso] = o.lisätiedot.collect {
       case aol: AmmatillisenOpiskeluoikeudenLisätiedot =>
         toSeq(
           aol.majoitus,

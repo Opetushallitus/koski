@@ -181,6 +181,7 @@ object ExamplesAikuistenPerusopetus {
           kurssinSuoritus2017("ÄI1").copy(tunnustettu = Some(OsaamisenTunnustaminen(None, "Osoittanut osaamisen käytännössä."))),
           kurssinSuoritus2017("ÄI2"),
           kurssinSuoritus2017("ÄI3", laajuus = LaajuusVuosiviikkotunneissa(1)),
+          kurssinSuoritus2017("ÄI4").copy(arviointi = arviointi(4)),
           kurssinSuoritusPaikallinen("ÄI10", "Paikallinen äidinkielen kurssi")
         ))
       ),

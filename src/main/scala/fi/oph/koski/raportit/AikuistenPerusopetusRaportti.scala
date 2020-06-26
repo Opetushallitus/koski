@@ -208,18 +208,18 @@ case class AikuistenPerusopetusRaportti(
         sisäoppilaitosmainenMajoitus = lisätiedot.flatMap(_.sisäoppilaitosmainenMajoitus.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
         yhteislaajuus = row.osasuoritukset
           .filter(raporttiType.isKurssi)
-          .filter(_.suoritettu)
-          .flatMap(_.koulutusmoduuliLaajuusArvo).sum,
+          .map(_.laajuus).sum,
         yhteislaajuusSuoritetut = row.osasuoritukset
           .filter(raporttiType.isKurssi)
-          .filter(_.suoritettu)
           .filterNot(isTunnustettu)
-          .flatMap(_.koulutusmoduuliLaajuusArvo).sum,
-        yhteislaajuusTunnustetut = row.osasuoritukset
+          .map(_.laajuus).sum,
+        yhteislaajuusHylätyt = row.osasuoritukset
           .filter(raporttiType.isKurssi)
-          .filter(_.suoritettu)
-          .filter(isTunnustettu)
-          .flatMap(_.koulutusmoduuliLaajuusArvo).sum
+          .filterNot(k => isTunnustettu(k) || k.suoritettu)
+          .map(_.laajuus).sum,
+        yhteislaajuusTunnustetut = row.osasuoritukset
+          .filter(k => raporttiType.isKurssi(k) && k.suoritettu && isTunnustettu(k))
+          .map(_.laajuus).sum
       ),
       oppiaineet = oppiaineidentiedot(row.päätasonSuoritus, row.osasuoritukset, oppiaineet, raporttiType.isOppiaineenOppimäärä)
     )
@@ -308,7 +308,8 @@ case class AikuistenPerusopetusRaportti(
       CompactColumn("Sisäoppilaitosmainen majoitus", comment = Some("Kuinka monta päivää oppija on ollut KOSKI-datan mukaan sisäoppilaitosmaisessa majoituksessa raportin tulostusparametreissa määritellyllä aikajaksolla.")),
       CompactColumn("Yhteislaajuus (kaikki kurssit)", comment = Some("Opintojen yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista. Sarake näyttää joko kaikkien opiskeluoikeudelta löytyvien kurssien määrän tai tulostusparametreissa määriteltynä aikajaksona arvioiduiksi merkittyjen kurssien määrän riippuen siitä, mitä tulostusparametreissa on valittu.")),
       CompactColumn("Yhteislaajuus (suoritetut kurssit)", comment = Some("Suoritettujen kurssien (eli sellaisten kurssien, jotka eivät ole tunnustettuja aikaisemman osaamisen pohjalta) yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista. Sarake näyttää joko kaikkien opiskeluoikeudelta löytyvien suoritettujen kurssien yhteislaajuuden tai tulostusparametreissa määriteltynä aikajaksona suoritettujen kurssien yhteislaajuuden riippuen siitä, mitä tulostusparametreissa on valittu.")),
-      CompactColumn("Yhteislaajuus (tunnustetut kurssit)", comment = Some("Tunnustettuje kurssien yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista. Sarake näyttää joko kaikkien opiskeluoikeudelta löytyvien tunnustettujen kurssien yhteislaajuuden tai tulostusparametreissa määriteltynä aikajaksona arvioiduiksi merkittyjen kurssien yhteislaajuuden riippuen siitä, mitä tulostusparametreissa on valittu."))
+      CompactColumn("Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)", comment = Some("Hylätyllä arvosanalla suoritettujen kurssien yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista. Sarake näyttää joko kaikkien opiskeluoikeudelta löytyvien suoritettujen kurssien yhteislaajuuden tai tulostusparametreissa määriteltynä aikajaksona suoritettujen kurssien yhteislaajuuden riippuen siitä, mitä tulostusparametreissa on valittu.")),
+      CompactColumn("Yhteislaajuus (tunnustetut kurssit)", comment = Some("Tunnustettujen kurssien yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista. Sarake näyttää joko kaikkien opiskeluoikeudelta löytyvien tunnustettujen kurssien yhteislaajuuden tai tulostusparametreissa määriteltynä aikajaksona arvioiduiksi merkittyjen kurssien yhteislaajuuden riippuen siitä, mitä tulostusparametreissa on valittu."))
     )
 
     val oppiaineColumns = oppiaineet.map(x =>
@@ -367,9 +368,10 @@ case class AikuistenPerusopetusRaporttiOppiaineetVälilehtiMuut(
   ulkomaanjaksot: Option[Int],
   majoitusetu: Option[Int],
   sisäoppilaitosmainenMajoitus: Option[Int],
-  yhteislaajuus: Double,
-  yhteislaajuusSuoritetut: Double,
-  yhteislaajuusTunnustetut: Double
+  yhteislaajuus: BigDecimal,
+  yhteislaajuusSuoritetut: BigDecimal,
+  yhteislaajuusHylätyt: BigDecimal,
+  yhteislaajuusTunnustetut: BigDecimal
 )
 
 case class AikuistenPerusopetusRaporttiOppiaineRow(

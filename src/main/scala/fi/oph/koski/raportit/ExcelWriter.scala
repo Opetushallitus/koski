@@ -197,6 +197,7 @@ object ExcelWriter {
     case d: LocalDate => setCellStyleAndValue(cell, d, dateStyle)
     case i: Int => cell.setCellValue(i)
     case f: Double => setCellStyleAndValue(cell, f, floatStyle)
+    case b: BigDecimal => setCellStyleAndValue(cell, b.toDouble, floatStyle)
     case b: Boolean => cell.setCellStyle(booleanStyle); cell.setCellValue(if (b) 1 else 0)
     case x: Any => throw new IllegalStateException("Not handled yet? " + x.toString)
   }
