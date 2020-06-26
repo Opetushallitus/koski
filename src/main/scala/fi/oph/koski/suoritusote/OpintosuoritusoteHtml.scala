@@ -36,7 +36,7 @@ class OpintosuoritusoteHtml(implicit val user: KoskiSession, val localizationRep
       <tr>
         <td>{t.koulutusmoduuli.tunniste.koodiarvo}</td>
         <td>{i(t.koulutusmoduuli)}</td>
-        <td class="laajuus">{t.koulutusmoduuli.laajuus.map(l => decimalFormat.format(0)).getOrElse("")}</td>
+        <td class="laajuus">{t.koulutusmoduuli.getLaajuus.map(l => decimalFormat.format(0)).getOrElse("")}</td>
         <td class="suoritus-pvm">{t.arviointi.flatMap(_.lastOption.flatMap(_.arviointipäivä.map(dateFormatter.format(_)))).getOrElse("")}</td>
       </tr>
     }
@@ -87,7 +87,7 @@ class OpintosuoritusoteHtml(implicit val user: KoskiSession, val localizationRep
       }
     }
 
-    val laajuudet: List[LocalizedString] = suoritukset.map(_._2).flatMap(_.koulutusmoduuli.laajuus.flatMap(laajuus => laajuus.yksikkö.lyhytNimi.orElse(laajuus.yksikkö.nimi)))
+    val laajuudet: List[LocalizedString] = suoritukset.map(_._2).map(_.koulutusmoduuli).flatMap(_.getLaajuus.flatMap(l => l.yksikkö.lyhytNimi.orElse(l.yksikkö.nimi)))
     val laajuusYksikkö = laajuudet.headOption
 
     <section class="opintosuoritukset">
@@ -107,10 +107,10 @@ class OpintosuoritusoteHtml(implicit val user: KoskiSession, val localizationRep
 
   protected def laajuus(suoritus: Suoritus) = if (suoritus.osasuoritukset.isDefined) {
     decimalFormat.format(suoritus.osasuoritusLista.foldLeft(0d) { (laajuus: Double, suoritus: Suoritus) =>
-      laajuus + suoritus.koulutusmoduuli.laajuus.map(_.arvo).getOrElse(0d)
+      laajuus + suoritus.koulutusmoduuli.getLaajuus.map(_.arvo).getOrElse(0d)
     })
   } else {
-    suoritus.koulutusmoduuli.laajuus.map(l => decimalFormat.format(l.arvo)).getOrElse("")
+    suoritus.koulutusmoduuli.getLaajuus.map(l => decimalFormat.format(l.arvo)).getOrElse("")
   }
 
   protected def arvosana(suoritus: Suoritus) = i(suoritus.arvosanaNumeroin.getOrElse(suoritus.arvosanaKirjaimin))

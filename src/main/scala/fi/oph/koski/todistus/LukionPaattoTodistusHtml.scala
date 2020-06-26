@@ -6,7 +6,7 @@ import fi.oph.koski.schema._
 
 
 class LukionPaattoTodistusHtml(implicit val user: KoskiSession, val localizationRepository: LocalizationRepository) extends TodistusHtml {
-  override def laajuus(suoritus: Suoritus): Double = suoritus.koulutusmoduuli.laajuus.map(_.arvo).getOrElse(1d)
+  override def laajuus(suoritus: Suoritus): Double = suoritus.koulutusmoduuli.getLaajuus.map(_.arvo).getOrElse(1d)
 
   def render(koulutustoimija: Option[OrganisaatioWithOid], oppilaitos: Oppilaitos, oppijaHenkilö: Henkilötiedot, päättötodistus: Suoritus) = {
     val oppiaineet: List[Suoritus] = päättötodistus.osasuoritukset.toList.flatten

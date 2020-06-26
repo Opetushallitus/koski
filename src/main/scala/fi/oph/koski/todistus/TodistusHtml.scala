@@ -6,7 +6,7 @@ import fi.oph.koski.localization.Locale._
 import fi.oph.koski.schema._
 
 trait TodistusHtml extends LocalizedHtml {
-  def laajuus(suoritus: Suoritus): Double = suoritus.koulutusmoduuli.laajuus.map(_.arvo)
+  def laajuus(suoritus: Suoritus): Double = suoritus.koulutusmoduuli.getLaajuus.map(_.arvo)
     .getOrElse(suoritus.osasuoritusLista.map(laajuus).sum)
   val decimalFormat = NumberFormat.getInstance(finnish)
 

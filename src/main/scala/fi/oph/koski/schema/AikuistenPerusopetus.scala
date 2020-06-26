@@ -124,7 +124,7 @@ case class AikuistenPerusopetuksenOppiaineenSuoritus(
   suoritustapa: Option[Koodistokoodiviite] = None
 ) extends PerusopetuksenOppiaineenSuoritus with Vahvistukseton with MahdollisestiSuorituskielellinen with SuoritustapanaMahdollisestiErityinenTutkinto
 
-trait AikuistenPerusopetuksenOppiainenTaiEiTiedossaOppiaine extends Koulutusmoduuli
+trait AikuistenPerusopetuksenOppiainenTaiEiTiedossaOppiaine extends KoulutusmoduuliValinnainenLaajuus
 trait AikuistenPerusopetuksenOppiaine extends PerusopetuksenOppiaine with AikuistenPerusopetuksenOppiainenTaiEiTiedossaOppiaine {
   @Tooltip("Oppiaineen laajuus kursseina.")
   def laajuus: Option[LaajuusVuosiviikkotunneissaTaiKursseissa]
@@ -192,7 +192,7 @@ case class AikuistenPerusopetuksenKurssinSuoritus(
   tunnustettu: Option[OsaamisenTunnustaminen] = None
 ) extends MahdollisestiSuorituskielellinen with AikuistenPerusopetuksenKurssinTaiAlkuvaiheenKurssinSuoritus
 
-sealed trait AikuistenPerusopetuksenKurssi extends Koulutusmoduuli {
+sealed trait AikuistenPerusopetuksenKurssi extends KoulutusmoduuliValinnainenLaajuus {
   def laajuus: Option[LaajuusVuosiviikkotunneissaTaiKursseissa]
 }
 

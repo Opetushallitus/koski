@@ -1,9 +1,6 @@
 package fi.oph.koski.raportointikanta
 
-import java.sql.Date
-
 import fi.oph.koski.schema._
-import java.sql.Date
 
 
 object MuuAmmatillinenRaporttiRowBuilder {
@@ -12,8 +9,8 @@ object MuuAmmatillinenRaporttiRowBuilder {
       opiskeluoikeusOid = opiskeluoikeudenOid,
       päätasonSuoritusId = päätasonSuoritusId,
       toteuttavanLuokanNimi = os.getClass.getSimpleName.toLowerCase,
-      koulutusmoduuliLaajuusArvo = os.koulutusmoduuli.laajuus.map(_.arvo),
-      koulutusmoduuliLaajuusYksikkö = os.koulutusmoduuli.laajuus.map(_.yksikkö.koodiarvo),
+      koulutusmoduuliLaajuusArvo = os.koulutusmoduuli.getLaajuus.map(_.arvo),
+      koulutusmoduuliLaajuusYksikkö = os.koulutusmoduuli.getLaajuus.map(_.yksikkö.koodiarvo),
       arviointiHyväksytty = os.viimeisinArviointi.exists(_.hyväksytty)
     )
   }

@@ -71,7 +71,7 @@ case class YlioppilasTutkinnonKoe(
   @KoodistoUri("koskiyokokeet")
   tunniste: Koodistokoodiviite
 ) extends KoodistostaLöytyväKoulutusmoduuli {
-  def laajuus = None
+  override def getLaajuus: Option[Laajuus] = None
 }
 
 trait KoulusivistyskieliYlioppilasKokeenSuorituksesta extends Koulusivistyskieli {
