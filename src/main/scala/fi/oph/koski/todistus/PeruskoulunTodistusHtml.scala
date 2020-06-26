@@ -108,7 +108,7 @@ trait PeruskoulunTodistusHtml[T <: Suoritus] extends TodistusHtml {
         {nimi}
       </td>
       <td class="laajuus">
-        {oppiaine.suoritus.koulutusmoduuli.laajuus.map(_.arvo).getOrElse("")}
+        {oppiaine.suoritus.koulutusmoduuli.getLaajuus.map(_.arvo).getOrElse("")}
       </td>
       <td class="arvosana-kirjaimin">
         {

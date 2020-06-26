@@ -153,7 +153,7 @@ trait MonikielinenSuoritus {
 }
 
 trait PakollisenTaiValinnaisenSuoritus extends Suoritus {
-  def koulutusmoduuli: Koulutusmoduuli with Valinnaisuus
+  def koulutusmoduuli: KoulutusmoduuliValinnainenLaajuus with Valinnaisuus
   override def ryhmittelytekijä = Some(if (koulutusmoduuli.pakollinen) "pakolliset" else "valinnaiset")
 }
 

@@ -90,9 +90,7 @@ case class PerusopetukseenValmistavaOpetus(
   tunniste: Koodistokoodiviite = Koodistokoodiviite("999905", koodistoUri = "koulutus"),
   perusteenDiaarinumero: Option[String],
   koulutustyyppi: Option[Koodistokoodiviite] = None
-) extends DiaarinumerollinenKoulutus {
-  def laajuus = None
-}
+) extends DiaarinumerollinenKoulutus with Laajuudeton
 
 @Description("Perusopetukseen valmistavan opetuksen oppiaineen tunnistetiedot")
 case class PerusopetukseenValmistavanOpetuksenOppiaine(
@@ -100,7 +98,7 @@ case class PerusopetukseenValmistavanOpetuksenOppiaine(
   laajuus: Option[LaajuusKaikkiYksiköt],
   @Tooltip("Oppiaineen opetuksen sisältö.")
   opetuksenSisältö: Option[LocalizedString]
-) extends PaikallinenKoulutusmoduuli with StorablePreference {
+) extends PaikallinenKoulutusmoduuliValinnainenLaajuus with StorablePreference {
   def kuvaus: LocalizedString = opetuksenSisältö.getOrElse(LocalizedString.empty)
 }
 

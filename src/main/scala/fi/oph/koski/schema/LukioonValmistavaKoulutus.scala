@@ -55,7 +55,7 @@ case class LukioonValmistavaKoulutus(
   perusteenDiaarinumero: Option[String],
   laajuus: Option[LaajuusKursseissa] = None,
   koulutustyyppi: Option[Koodistokoodiviite] = None
-) extends DiaarinumerollinenKoulutus
+) extends DiaarinumerollinenKoulutus with KoulutusmoduuliValinnainenLaajuus
 
 trait LukioonValmistavanKoulutuksenOsasuoritus extends Suoritus with MahdollisestiSuorituskielellinen
 
@@ -90,7 +90,7 @@ case class LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa(
 ) extends LukioonValmistavanKoulutuksenOsasuoritus with Vahvistukseton
 
 
-trait LukioonValmistavanKoulutuksenOppiaine extends Koulutusmoduuli with Valinnaisuus {
+trait LukioonValmistavanKoulutuksenOppiaine extends KoulutusmoduuliValinnainenLaajuus with Valinnaisuus {
   @Title("Oppiaine")
   def tunniste: KoodiViite
 }
@@ -157,7 +157,7 @@ case class LukioonValmistavanKurssinSuoritus(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("luvakurssi", koodistoUri = "suorituksentyyppi")
 ) extends KurssinSuoritus with MahdollisestiSuorituskielellinen
 
-sealed trait LukioonValmistavanKoulutuksenKurssi extends Koulutusmoduuli {
+sealed trait LukioonValmistavanKoulutuksenKurssi extends KoulutusmoduuliValinnainenLaajuus {
   def laajuus: Option[LaajuusKursseissa]
 }
 

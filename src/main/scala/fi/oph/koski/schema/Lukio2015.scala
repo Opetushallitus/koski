@@ -67,7 +67,7 @@ case class MuuLukioOpinto(
   @KoodistoUri("lukionmuutopinnot")
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusKursseissa] = None
-) extends KoodistostaLöytyväKoulutusmoduuli
+) extends KoodistostaLöytyväKoulutusmoduuliValinnainenLaajuus
 
 @Description("Lukion oppiaineen suoritustiedot")
 case class LukionOppiaineenSuoritus(
@@ -97,7 +97,7 @@ case class LukionKurssinSuoritus(
   suoritettuSuullisenaKielikokeena: Option[Boolean] = None
 ) extends KurssinSuoritus with MahdollisestiSuorituskielellinen with MahdollisestiTunnustettu
 
-sealed trait LukionKurssi extends Koulutusmoduuli with PreIBKurssi {
+sealed trait LukionKurssi extends KoulutusmoduuliValinnainenLaajuus with PreIBKurssi {
   def laajuus: Option[LaajuusKursseissa]
   @KoodistoUri("lukionkurssintyyppi")
   @Description("Kurssin tyyppi voi olla joko syventävä, soveltava tai pakollinen")
@@ -126,10 +126,10 @@ case class PaikallinenLukionKurssi(
   kurssinTyyppi: Koodistokoodiviite
 ) extends LukionKurssi with PaikallinenKoulutusmoduuli with StorablePreference
 
-trait LukionOppiaineTaiEiTiedossaOppiaine extends Koulutusmoduuli
+trait LukionOppiaineTaiEiTiedossaOppiaine extends KoulutusmoduuliValinnainenLaajuus
 
 @Description("Lukion/IB-lukion oppiaineen tunnistetiedot")
-trait LukionOppiaine extends Koulutusmoduuli with Valinnaisuus with PreIBOppiaine with Diaarinumerollinen with LukionOppiaineTaiEiTiedossaOppiaine {
+trait LukionOppiaine extends KoulutusmoduuliValinnainenLaajuus with Valinnaisuus with PreIBOppiaine with Diaarinumerollinen with LukionOppiaineTaiEiTiedossaOppiaine {
   def laajuus: Option[LaajuusKursseissa]
   @Title("Oppiaine")
   def tunniste: KoodiViite

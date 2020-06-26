@@ -9,11 +9,11 @@ import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log.Logging
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusQueryService
 import fi.oph.koski.schema._
-import fi.oph.koski.raportointikanta.LoaderUtils.{convertLocalizedString, convertKoodisto}
+import fi.oph.koski.raportointikanta.LoaderUtils.{convertKoodisto, convertLocalizedString}
 import org.json4s.JValue
 import rx.lang.scala.{Observable, Subscriber}
-import scala.concurrent.duration._
 
+import scala.concurrent.duration._
 import scala.util.Try
 
 object OpiskeluoikeusLoader extends Logging {
@@ -204,8 +204,8 @@ object OpiskeluoikeusLoader extends Logging {
         case k: Koulutus => k.koulutustyyppi.map(_.koodiarvo)
         case _ => None
       },
-      koulutusmoduuliLaajuusArvo = ps.koulutusmoduuli.laajuus.map(_.arvo),
-      koulutusmoduuliLaajuusYksikkö = ps.koulutusmoduuli.laajuus.map(_.yksikkö.koodiarvo),
+      koulutusmoduuliLaajuusArvo = ps.koulutusmoduuli.getLaajuus.map(_.arvo),
+      koulutusmoduuliLaajuusYksikkö = ps.koulutusmoduuli.getLaajuus.map(_.yksikkö.koodiarvo),
       koulutusmoduuliNimi = ps.koulutusmoduuli.tunniste.getNimi.map(_.get("fi")),
       vahvistusPäivä = ps.vahvistus.map(v => Date.valueOf(v.päivä)),
       arviointiArvosanaKoodiarvo = ps.viimeisinArviointi.map(_.arvosana.koodiarvo),
@@ -229,8 +229,8 @@ object OpiskeluoikeusLoader extends Logging {
       suorituksenTyyppi = os.tyyppi.koodiarvo,
       koulutusmoduuliKoodisto = convertKoodisto(os.koulutusmoduuli.tunniste),
       koulutusmoduuliKoodiarvo = os.koulutusmoduuli.tunniste.koodiarvo,
-      koulutusmoduuliLaajuusArvo = os.koulutusmoduuli.laajuus.map(_.arvo),
-      koulutusmoduuliLaajuusYksikkö = os.koulutusmoduuli.laajuus.map(_.yksikkö.koodiarvo),
+      koulutusmoduuliLaajuusArvo = os.koulutusmoduuli.getLaajuus.map(_.arvo),
+      koulutusmoduuliLaajuusYksikkö = os.koulutusmoduuli.getLaajuus.map(_.yksikkö.koodiarvo),
       koulutusmoduuliPaikallinen = os.koulutusmoduuli.tunniste match {
         case k: Koodistokoodiviite => false
         case k: PaikallinenKoodi => true

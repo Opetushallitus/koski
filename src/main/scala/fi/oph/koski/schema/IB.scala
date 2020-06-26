@@ -153,6 +153,8 @@ case class PreIBOppiaineenSuoritus(
 ) extends IBSuoritus with PreIBSuorituksenOsasuoritus
 
 trait PreIBOppiaine extends Koulutusmoduuli
+trait PreIBOppiainePakollinenLaajuus extends KoulutusmoduuliPakollinenLaajuus with PreIBOppiaine
+trait PreIBOppiaineValinnainenLaajuus extends KoulutusmoduuliValinnainenLaajuus with PreIBOppiaine
 
 @Title("IB -oppinaineen arviointi")
 case class IBOppiaineenArviointi(
@@ -206,6 +208,8 @@ case class IBKurssinSuoritus(
 ) extends IBSuoritus with KurssinSuoritus
 
 trait PreIBKurssi extends Koulutusmoduuli
+trait PreIBKurssiPakollinenLaajuus extends KoulutusmoduuliPakollinenLaajuus with PreIBKurssi
+trait PreIBKurssiValinnainenLaajuus extends KoulutusmoduuliValinnainenLaajuus with PreIBKurssi
 
 @Title("IB-kurssi")
 @Description("IB-lukion kurssin tunnistetiedot")
@@ -217,7 +221,7 @@ case class IBKurssi(
   @Discriminator
   pakollinen: Boolean = true,
   override val laajuus: Option[LaajuusKursseissa]
-) extends Koulutusmoduuli with Valinnaisuus with PreIBKurssi with StorablePreference {
+) extends KoulutusmoduuliValinnainenLaajuus with Valinnaisuus with PreIBKurssi with StorablePreference {
   def nimi: LocalizedString = tunniste.nimi
 }
 
@@ -262,7 +266,7 @@ case class IBCoreRequirementsArviointi(
 ) extends CoreRequirementsArvionti
 
 @Description("IB-lukion oppiaineen tunnistetiedot")
-trait IBOppiaine extends KoodistostaLöytyväKoulutusmoduuli {
+trait IBOppiaine extends KoodistostaLöytyväKoulutusmoduuliValinnainenLaajuus {
   @KoodistoUri("oppiaineetib")
   @OksaUri("tmpOKSAID256", "oppiaine")
   def tunniste: Koodistokoodiviite
