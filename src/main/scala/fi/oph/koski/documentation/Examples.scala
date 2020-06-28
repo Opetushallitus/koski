@@ -6,7 +6,7 @@ object Examples {
   val examples: List[Example] = ExamplesAmmatillinen.examples ++ ExamplesMuuAmmatillinen.examples ++ ExamplesValma.examples ++ ExamplesTelma.examples ++
     ExamplesPerusopetukseenValmistavaOpetus.examples ++ ExamplesEsiopetus.examples ++ ExamplesPerusopetus.examples ++ ExamplesAikuistenPerusopetus.examples ++
     ExamplesPerusopetuksenLisaopetus.examples ++ ExamplesLukioonValmistavaKoulutus.examples ++
-    ExamplesLukio.examples ++ ExamplesYlioppilastutkinto.examples ++
+    ExamplesLukio.examples ++ ExamplesLukio2019.examples ++ ExamplesYlioppilastutkinto.examples ++
     ExamplesKorkeakoulu.examples ++ ExamplesTiedonsiirto.examples ++ ExamplesIB.examples ++ ExamplesDIA.examples ++ ExamplesInternationalSchool.examples
 
   val allExamples = examples
