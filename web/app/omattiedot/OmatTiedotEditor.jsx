@@ -28,13 +28,39 @@ export const OmatTiedotEditor = ({model}) => {
           oppijaOid={oppijaOid}
         />))}
       {selectedModelsAtom.map(selectedModels => (
-        <SuoritusjakoButton
+        selectedModels.length > 0 && <Suoritusjako
           selectedModels={selectedModels}
         />))}
     </div>
   )
 }
 
+const JakoonValitutSuoritukset = ({selectedModels}) => (
+  <ul>
+    {selectedModels.map(model => {
+      const oppilaitos = modelTitle(model, 'oppilaitos')
+      const suoritusTitle = näytettäväPäätasonSuoritusTitle(model)
+      return <li key={model.modelId}>{`${oppilaitos}: ${suoritusTitle}`}</li>
+    })}
+  </ul>
+)
+
+const Suoritusjako = ({selectedModels}) => (
+  <>
+    <div className='suoritusjako-valitut-placeholder' />
+    <div className='suoritusjako-valitut-container'>
+      <div className='suoritusjako-valitut-content content-area'>
+    <div className='suoritusjako-valitut-list'>
+          <h2><Text name='Valittu jaettavaksi'/></h2>
+          <JakoonValitutSuoritukset selectedModels={selectedModels} />
+        </div>
+      <SuoritusjakoButton
+        selectedModels={selectedModels}
+      />
+    </div>
+    </div>
+  </>
+)
 
 const SuoritusjakoButton = ({selectedModels}) => {
   const isPending = Atom(false)
@@ -76,15 +102,15 @@ const SuoritusjakoButton = ({selectedModels}) => {
   }
 
   return (
-    <div className='create-suoritusjako__button'>
+    <span className='create-suoritusjako-button'>
       <button
         className='koski-button'
         disabled={R.isEmpty(selectedModels) || isPending}
         onClick={createSuoritusjako}
       >
-        <Text name='Jaa valitsemasi opinnot'/>
+        <Text name='Jaa opinnot'/>
       </button>
-    </div>
+    </span>
   )
 }
 

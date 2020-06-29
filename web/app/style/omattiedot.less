@@ -1,4 +1,4 @@
-@header-padding: 0 16px;
+@right-padding: 16px;
 @suoritusjako-left-column-width: 36px;
 
 .header__oppijanvalitsin_mixin(){
@@ -93,7 +93,7 @@
     }
 
     .ei-suorituksia {
-      padding: 0 16px;
+      padding: 0 @right-padding;
       h2 {
         font-size: 1.3rem;
       }
@@ -101,7 +101,7 @@
     }
 
     header {
-      padding: @header-padding;
+      padding: 0 @right-padding;
       margin: 4rem 0 1rem 0;
       display: flex;
       flex-direction: column;
@@ -212,7 +212,7 @@
 }
 
 .oppilaitos-list {
-  padding: 0 16px;
+  padding: 0 @right-padding;
   margin: 2rem 0;
 
   .oppilaitos-container {
@@ -316,5 +316,52 @@
         }
       }
     }
+  }
+
+  @suoritusjako-valitut-height: 160px;
+
+  .suoritusjako-valitut-placeholder {
+    // Varataan tilaa viewportista jotta kelluva (fixed) elementti ei peitä
+    // alleen sisältöä.
+    // TODO: ei kasva korkeutta kelluvan elementin mukana...
+    height: @suoritusjako-valitut-height;
+  }
+
+  .suoritusjako-valitut-container {
+    position: fixed;
+    z-index: @z-index-popup;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    min-height: @suoritusjako-valitut-height;
+    background-color: #e8f5fa;
+    border-left: solid 10px #0285af;
+    padding-left: @suoritusjako-left-column-width;
+  }
+
+  .suoritusjako-valitut-content {
+    display: flex;
+    justify-content: space-between;
+
+    &.content-area {
+      margin: 2rem 0 1rem;
+      padding-right: @right-padding;
+    }
+  }
+
+  .suoritusjako-valitut-list {
+    font-size: 1.714rem; // Sama kuin h2 globaalisti
+
+    h2 {
+      margin-top: 0;
+      text-transform: uppercase;
+    }
+
+    li {
+      list-style-image: url('/koski/images/graduate-hat.svg');
+    }
+  }
+
+  .create-suoritusjako-button {
   }
 }
