@@ -97,10 +97,12 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     case _ => Right(opiskeluoikeus)
   }
 
+
   private def updateFields(oo: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
     fillMissingOrganisations(oo)
       .flatMap(addKoulutustyyppi)
       .map(fillPerusteenNimi)
+      .map(fillLaajuudet)
       .map(_.withHistoria(None))
   }
 
@@ -116,6 +118,21 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         case o => o
       })
     case x => x
+  }
+
+  private def fillLaajuudet(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus =
+    oo.withSuoritukset(oo.suoritukset.map(fillOppiaineidenLaajuudet))
+
+  private def fillOppiaineidenLaajuudet(suoritus: PäätasonSuoritus): PäätasonSuoritus = suoritus match {
+    case l: LukionPäätasonSuoritus2019 =>
+      l.withOsasuoritukset(l.osasuoritukset.map(_.map { os =>
+        val yhteislaajuus = os.osasuoritusLista.map(_.koulutusmoduuli.laajuusArvo(1.0)).map(BigDecimal.decimal).sum.toDouble
+        os.withKoulutusmoduuli(os.koulutusmoduuli match {
+          case k: KoulutusmoduuliPakollinenLaajuus if yhteislaajuus > 0 => k.withLaajuus(LaajuusOpintopisteissä(yhteislaajuus))
+          case k => k
+        })
+      }))
+    case _ => suoritus
   }
 
   private def perusteenNimi(diaariNumero: String): Option[LocalizedString] =
