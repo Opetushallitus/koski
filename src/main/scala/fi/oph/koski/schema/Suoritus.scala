@@ -52,6 +52,11 @@ trait Suoritus {
   def kesken = !valmis
   def ryhmittelytekijä: Option[String] = None
   def salliDuplikaatit = false
+
+  final def withKoulutusmoduuli(km: Koulutusmoduuli): Suoritus = {
+    import mojave._
+    shapeless.lens[Suoritus].field[Koulutusmoduuli]("koulutusmoduuli").set(this)(km)
+  }
 }
 
 object Suoritus {
@@ -131,6 +136,11 @@ trait Ryhmällinen {
 trait PäätasonSuoritus extends Suoritus {
   override def tarvitseeVahvistuksen = true
   def mutuallyExclusivePäätasoVahvistukseton = {}
+
+  final def withOsasuoritukset(oss: Option[List[Suoritus]]): PäätasonSuoritus = {
+    import mojave._
+    shapeless.lens[PäätasonSuoritus].field[Option[List[Suoritus]]]("osasuoritukset").set(this)(oss)
+  }
 }
 
 trait KoskeenTallennettavaPäätasonSuoritus extends PäätasonSuoritus with Toimipisteellinen
