@@ -205,7 +205,7 @@ case class LukionPaikallinenOpintojakso2019(
 ) extends LukionModuuliTaiPaikallinenOpintojakso2019 with PaikallinenKoulutusmoduuli with StorablePreference
 
 @Description("Lukion/IB-lukion oppiaineen tunnistetiedot 2019")
-trait LukionOppiaine2019 extends KoulutusmoduuliValinnainenLaajuus with Valinnaisuus with PreIBOppiaine with Diaarinumerollinen {
+trait LukionOppiaine2019 extends KoulutusmoduuliValinnainenLaajuus with Valinnaisuus with PreIBOppiaine {
   def laajuus: Option[LaajuusOpintopisteissä]
   @Title("Oppiaine")
   def tunniste: KoodiViite
@@ -217,8 +217,7 @@ case class PaikallinenLukionOppiaine2019(
   kuvaus: LocalizedString,
   pakollinen: Boolean = false,
   @Discriminator
-  laajuus: Option[LaajuusOpintopisteissä],
-  perusteenDiaarinumero: Option[String] = None
+  laajuus: Option[LaajuusOpintopisteissä]
 ) extends LukionOppiaine2019 with PaikallinenKoulutusmoduuli with StorablePreference
 
 trait LukionValtakunnallinenOppiaine2019 extends LukionOppiaine2019 with YleissivistavaOppiaine
@@ -242,15 +241,13 @@ case class LukionMuuValtakunnallinenOppiaine2019(
   tunniste: Koodistokoodiviite,
   pakollinen: Boolean = true,
   @Discriminator
-  laajuus: Option[LaajuusOpintopisteissä],
-  perusteenDiaarinumero: Option[String] = None
+  laajuus: Option[LaajuusOpintopisteissä]
 ) extends LukionValtakunnallinenOppiaine2019
 
 @Title("Uskonto 2019")
 case class LukionUskonto2019(
   tunniste: Koodistokoodiviite,
   pakollinen: Boolean = true,
-  perusteenDiaarinumero: Option[String] = None,
   @Discriminator
   laajuus: Option[LaajuusOpintopisteissä],
   uskonnonOppimäärä: Option[Koodistokoodiviite] = None
@@ -266,8 +263,7 @@ case class LukionÄidinkieliJaKirjallisuus2019(
   kieli: Koodistokoodiviite,
   pakollinen: Boolean = true,
   @Discriminator
-  laajuus: Option[LaajuusOpintopisteissä],
-  perusteenDiaarinumero: Option[String] = None
+  laajuus: Option[LaajuusOpintopisteissä]
 ) extends LukionValtakunnallinenOppiaine2019 with Äidinkieli {
   override def description: LocalizedString = kieliaineDescription
 }
@@ -286,8 +282,7 @@ case class VierasTaiToinenKotimainenKieli2019(
   kieli: Koodistokoodiviite,
   pakollinen: Boolean = true,
   @Discriminator
-  laajuus: Option[LaajuusOpintopisteissä],
-  perusteenDiaarinumero: Option[String] = None
+  laajuus: Option[LaajuusOpintopisteissä]
 ) extends LukionValtakunnallinenOppiaine2019 with Kieliaine {
   override def description = kieliaineDescription
 }
@@ -302,8 +297,7 @@ case class LukionMatematiikka2019(
   oppimäärä: Koodistokoodiviite,
   pakollinen: Boolean = true,
   @Discriminator
-  laajuus: Option[LaajuusOpintopisteissä],
-  perusteenDiaarinumero: Option[String] = None
+  laajuus: Option[LaajuusOpintopisteissä]
 ) extends LukionValtakunnallinenOppiaine2019 with KoodistostaLöytyväKoulutusmoduuliValinnainenLaajuus with Oppimäärä {
   override def description = oppimäärä.description
 }
