@@ -175,7 +175,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       }
 
       "Estää tyypin vaihtamisen" in {
-        verifyChange(change = {existing: AmmatillinenOpiskeluoikeus => OpiskeluoikeusTestMethodsLukio.lukionOpiskeluoikeus.copy(oid = existing.oid, oppilaitos = existing.oppilaitos)}) {
+        verifyChange(change = {existing: AmmatillinenOpiskeluoikeus => TestMethodsLukio.lukionOpiskeluoikeus.copy(oid = existing.oid, oppilaitos = existing.oppilaitos)}) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyMuutos("Opiskeluoikeuden tyyppiä ei voi vaihtaa. Vanha tyyppi ammatillinenkoulutus. Uusi tyyppi lukiokoulutus."))
         }
       }
@@ -236,7 +236,7 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
       }
 
       "Estää tyypin vaihtamisen" in {
-        verifyChange(original = original, user = paakayttaja, change = {existing: AmmatillinenOpiskeluoikeus => OpiskeluoikeusTestMethodsLukio.lukionOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId), oppilaitos = existing.oppilaitos)}) {
+        verifyChange(original = original, user = paakayttaja, change = {existing: AmmatillinenOpiskeluoikeus => TestMethodsLukio.lukionOpiskeluoikeus.copy(lähdejärjestelmänId = Some(winnovaLähdejärjestelmäId), oppilaitos = existing.oppilaitos)}) {
           verifyResponseStatus(403, KoskiErrorCategory.forbidden.kiellettyMuutos("Opiskeluoikeuden tyyppiä ei voi vaihtaa. Vanha tyyppi ammatillinenkoulutus. Uusi tyyppi lukiokoulutus."))
         }
       }
@@ -298,10 +298,10 @@ class OppijaUpdateSpec extends FreeSpec with LocalJettyHttpSpecification with Op
 
       "Jos tyyppi vaihtuu, tekee uuden opiskeluoikeuden" in {
         resetFixtures
-        verifyChange(change = {existing: AmmatillinenOpiskeluoikeus => OpiskeluoikeusTestMethodsLukio.lukionOpiskeluoikeus.copy(oppilaitos = existing.oppilaitos)}) {
+        verifyChange(change = {existing: AmmatillinenOpiskeluoikeus => TestMethodsLukio.lukionOpiskeluoikeus.copy(oppilaitos = existing.oppilaitos)}) {
           verifyResponseStatusOk()
           val result: KoskeenTallennettavaOpiskeluoikeus = lastOpiskeluoikeusByHetu(oppija)
-          result.tyyppi.koodiarvo should equal(OpiskeluoikeusTestMethodsLukio.lukionOpiskeluoikeus.tyyppi.koodiarvo)
+          result.tyyppi.koodiarvo should equal(TestMethodsLukio.lukionOpiskeluoikeus.tyyppi.koodiarvo)
           result.versionumero should equal(Some(1))
         }
       }

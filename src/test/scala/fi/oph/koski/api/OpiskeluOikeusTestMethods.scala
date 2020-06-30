@@ -39,6 +39,13 @@ trait OpiskeluoikeusTestMethods extends HttpSpecification with Matchers {
     getOpiskeluoikeudet(oppijaOid).find(_.tyyppi.koodiarvo == tyyppi).get
   }
 
+  def getOpiskeluoikeus(opiskeluoikeusOid: String, user: UserWithPassword = defaultUser): Opiskeluoikeus = {
+    authGet("api/opiskeluoikeus/" + opiskeluoikeusOid, user) {
+      verifyResponseStatusOk()
+      readOpiskeluoikeus
+    }
+  }
+
   def oppija(oppijaOid: String, user: UserWithPassword = defaultUser): Oppija = {
     authGet("api/oppija/" + oppijaOid, user) {
       verifyResponseStatusOk()
