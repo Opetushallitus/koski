@@ -58,6 +58,14 @@ export const resolveOsasuorituksetEditor = (mdl) => {
       />
     )
   }
+  if (oneOf('lukionoppimaaransuoritus2019')) {
+    return (
+      <LukionOppiaineetComponent
+        suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
+        classesForUusiOppiaineenSuoritus={['lukionoppiaineensuoritus2019', 'muidenlukioopintojensuoritus2019']}
+      />
+    )
+  }
   if (oneOf('preibsuoritus')) {
     return (
       <LukionOppiaineetComponent

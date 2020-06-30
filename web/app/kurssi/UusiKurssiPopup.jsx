@@ -57,7 +57,7 @@ export default ({
         </span>
         { // TODO: check placeholders from i18n
           selectedPrototypeAtom.flatMap(selectedProto => {
-            if (!isPaikallinen(selectedProto) && !isLukionKurssi(selectedProto) && !isIBKurssi(selectedProto)) return null
+            if (!validKurssi(selectedProto)) return null
             let modelP = accumulateModelState(selectedProto)
             modelP.map(model => modelValid(model) ? model : undefined).forEach(model => selectedAtom.set(model)) // set selected atom to non-empty only when valid data
             return modelP.map(model => <PropertiesEditor key="kurssi-props" model={model} propertyFilter={propertyFilterForModel(model)}/>)
@@ -66,3 +66,9 @@ export default ({
       </ModalDialog>
   )
 }
+
+const validKurssi = proto =>
+  isPaikallinen(proto) ||
+  isLukionKurssi(proto) ||
+  isIBKurssi(proto) ||
+  isLukio2019ModuuliTaiOpintojakso(proto)
