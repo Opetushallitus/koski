@@ -6380,6 +6380,23 @@
   } ],
   "versio" : 7
 }, {
+  "koodiUri" : "koulutus_451741",
+  "koodiArvo" : "451741",
+  "metadata" : [ {
+    "nimi" : "Puuteollisuuden perustutkinto",
+    "lyhytNimi" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Grundexamen inom träindustrin",
+    "lyhytNimi" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vocational Qualification in the Wood Industry",
+    "lyhytNimi" : "Vocational Qualification in the Wood Industry",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "koulutus_351751",
   "koodiArvo" : "351751",
   "metadata" : [ {

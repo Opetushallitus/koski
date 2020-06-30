@@ -51,7 +51,9 @@ class KoodistotTest extends FreeSpec with Matchers {
       "arviointiasteikkodiavalmistava_2-1",
       "koskiyoarvosanat_i-1",
       "koskiyoarvosanat_i-2",
-      "koskiyoarvosanat_i-3"
+      "koskiyoarvosanat_i-3",
+      "erityinenkoulutustehtava_ib-1",
+      "lahdejarjestelma_espoovarda"
     )
     // Tässä koodistossa on niin monta poikkeusta ettei erikseen luetella niitä tässä.
     val PoikkeavatKoodistot = Seq(
