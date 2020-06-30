@@ -1,11 +1,12 @@
 import './polyfills/polyfills.js'
 import './polyfills/omattiedot-polyfills.js'
 import './style/main.less'
-import React from 'react'
+import React from 'baret'
 import ReactDOM from 'react-dom'
 import Bacon from 'baconjs'
 import {Error, errorP, handleError, isTopLevel, TopLevelError} from './util/Error'
 import OmatTiedotTopBar from './topbar/OmatTiedotTopBar'
+import {OmatTiedotTabs} from './OmatTiedotTabs'
 import {t} from './i18n/i18n'
 import Http from './util/http'
 import {Editor} from './editor/Editor'
@@ -14,9 +15,10 @@ import editorMapping from './oppija/editors'
 import {userP} from './util/user'
 import {addContext, modelData, modelItems} from './editor/EditorModel'
 import {locationP} from './util/location'
-import {Header} from './omattiedot/header/Header'
 import {EiSuorituksiaInfo} from './omattiedot/EiSuorituksiaInfo'
 import {patchSaavutettavuusLeima} from './saavutettavuusLeima'
+import {HuollettavaDropdown} from './omattiedot/header/HuollettavaDropdown'
+import {Varoitukset} from './util/Varoitukset'
 
 const omatTiedotP = oid => {
   const url = oid ? `/koski/api/omattiedot/editor/${oid}` : '/koski/api/omattiedot/editor'
@@ -72,14 +74,14 @@ domP.onValue((component) => ReactDOM.render(component, document.getElementById('
 // Handle errors
 domP.onError(handleError)
 
-export const hasOpintoja = oppija => modelItems(oppija, 'opiskeluoikeudet').length > 0
-const Oppija = ({oppija}) => (
-  <div>
+const Oppija = ({ oppija }) => {
+  const varoitukset = modelItems(oppija, 'varoitukset').map(modelData)
+  return (
     <div className="oppija-content">
-      <Header oppija={oppija} oppijaSelectionBus={oppijaSelectionBus}/>
-      {hasOpintoja(oppija) ? <Editor key={document.location.toString()} model={oppija}/> : <EiSuorituksiaInfo oppija={oppija}/>}
-      </div>
-  </div>
-)
-
+      <HuollettavaDropdown oppija={oppija} oppijaSelectionBus={oppijaSelectionBus}/>
+      <Varoitukset varoitukset={varoitukset}/> {/* TODO: Tsekkaa varoitusten tyylit (HeaderInfo komponentti poistettu välistä) */}
+      <OmatTiedotTabs oppija={oppija}/>
+    </div>
+  )
+}
 patchSaavutettavuusLeima()

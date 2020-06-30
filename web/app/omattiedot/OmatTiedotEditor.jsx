@@ -13,7 +13,6 @@ import Text from '../i18n/Text'
 import Http from '../util/http'
 import {showError} from '../util/location'
 
-
 export const selectedModelsAtom = Atom([])
 
 export const OmatTiedotEditor = ({model}) => {
@@ -50,14 +49,14 @@ const Suoritusjako = ({selectedModels}) => (
     <div className='suoritusjako-valitut-placeholder' />
     <div className='suoritusjako-valitut-container'>
       <div className='suoritusjako-valitut-content content-area'>
-    <div className='suoritusjako-valitut-list'>
+        <div className='suoritusjako-valitut-list'>
           <h2><Text name='Valittu jaettavaksi'/></h2>
           <JakoonValitutSuoritukset selectedModels={selectedModels} />
         </div>
-      <SuoritusjakoButton
-        selectedModels={selectedModels}
-      />
-    </div>
+        <SuoritusjakoButton
+          selectedModels={selectedModels}
+        />
+      </div>
     </div>
   </>
 )

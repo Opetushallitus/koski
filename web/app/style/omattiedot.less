@@ -1,4 +1,4 @@
-@right-padding: 16px;
+@side-padding: 16px;
 @suoritusjako-left-column-width: 36px;
 
 .header__oppijanvalitsin_mixin(){
@@ -84,6 +84,10 @@
   &.content-area {
     margin-top: 0;
 
+    .main-content {
+      padding: 4rem @side-padding;
+    }
+
     header.ei-suorituksia-header {
       .header {
         &__info {
@@ -93,7 +97,6 @@
     }
 
     .ei-suorituksia {
-      padding: 0 @right-padding;
       h2 {
         font-size: 1.3rem;
       }
@@ -101,8 +104,7 @@
     }
 
     header {
-      padding: 0 @right-padding;
-      margin: 4rem 0 1rem 0;
+      margin: 1rem 0;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -209,10 +211,46 @@
   .sidebar.omattiedot-navi {
     width: ~"calc(50px + (100vw - 1200px) / 2)";
   }
+
+  .omat-tiedot-tab-selectors {
+    margin: 2rem 0;
+    border-bottom: 2px solid #159ECB;
+  }
+
+  .omat-tiedot-tab-selector {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    margin-right: 1rem;
+    font-size: 2.5rem;
+    font-weight: bold;
+
+    border: 2px solid #159ECB;
+    border-bottom: none;
+    background-color: white;
+    color: #159ECB;
+
+    &.active {
+      background-color: #159ECB;
+      color: white;
+      position: relative;
+
+      &:after {
+        content: '';
+        border-right: solid 20px transparent;
+        border-left: solid 20px transparent;
+        border-top: solid 20px #159ECB;
+        transform: translateX(-50%);
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        height: 0;
+        width: 0;
+      }
+    }
+  }
 }
 
 .oppilaitos-list {
-  padding: 0 @right-padding;
   margin: 2rem 0;
 
   .oppilaitos-container {
@@ -237,6 +275,11 @@
 
     .opiskeluoikeus-checkbox-container {
       width: @suoritusjako-left-column-width;
+      padding: 24px 0;
+
+      .koski-checkbox {
+        margin: 0;
+      }
     }
 
     .opiskeluoikeus-container {
@@ -335,7 +378,6 @@
     right: 0;
     min-height: @suoritusjako-valitut-height;
     background-color: #e8f5fa;
-    border-left: solid 10px #0285af;
     padding-left: @suoritusjako-left-column-width;
   }
 
@@ -345,7 +387,7 @@
 
     &.content-area {
       margin: 2rem 0 1rem;
-      padding-right: @right-padding;
+      padding: 0 @side-padding;
     }
   }
 
@@ -360,8 +402,5 @@
     li {
       list-style-image: url('/koski/images/graduate-hat.svg');
     }
-  }
-
-  .create-suoritusjako-button {
   }
 }
