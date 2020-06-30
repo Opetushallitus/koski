@@ -8,13 +8,15 @@ import fi.oph.koski.documentation.YleissivistavakoulutusExampleData.jyväskylän
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
 
-trait OpiskeluoikeusTestMethodsLukio extends PutOpiskeluoikeusTestMethods[LukionOpiskeluoikeus]{
+trait OpiskeluoikeusTestMethodsLukio extends PutOpiskeluoikeusTestMethods[LukionOpiskeluoikeus] {
   def tag = implicitly[reflect.runtime.universe.TypeTag[LukionOpiskeluoikeus]]
-
-  override def defaultOpiskeluoikeus = OpiskeluoikeusTestMethodsLukio.lukionOpiskeluoikeus
 }
 
-object OpiskeluoikeusTestMethodsLukio {
+trait OpiskeluoikeusTestMethodsLukio2015 extends OpiskeluoikeusTestMethodsLukio {
+  override def defaultOpiskeluoikeus = TestMethodsLukio.lukionOpiskeluoikeus
+}
+
+object TestMethodsLukio {
   val vahvistus = Some(HenkilövahvistusPaikkakunnalla(päivä = date(2016, 6, 4), jyväskylä, myöntäjäOrganisaatio = jyväskylänNormaalikoulu, myöntäjäHenkilöt = List(Organisaatiohenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu))))
 
   val päättötodistusSuoritus = LukionOppimääränSuoritus(
