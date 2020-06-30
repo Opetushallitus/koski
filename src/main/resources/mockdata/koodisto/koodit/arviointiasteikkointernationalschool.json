@@ -1,66 +1,49 @@
-[
-  {
-    "koodiUri": "arviointiasteikkointernationalschool_learningtoward",
-    "koodiArvo": "learningtoward",
-    "metadata": [
-      {
-        "nimi": "Learning Toward",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Learning Toward",
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "arviointiasteikkointernationalschool_achievedoutcomes",
-    "koodiArvo": "achievedoutcomes",
-    "metadata": [
-      {
-        "nimi": "Achieved Outcomes",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Achieved Outcomes",
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "arviointiasteikkointernationalschool_pass",
-    "koodiArvo": "pass",
-    "metadata": [
-      {
-        "nimi": "Pass",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Pass",
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  },
-  {
-    "koodiUri": "arviointiasteikkointernationalschool_fail",
-    "koodiArvo": "fail",
-    "metadata": [
-      {
-        "nimi": "Fail",
-        "kieli": "FI"
-      },
-      {
-        "nimi": "Fail",
-        "kieli": "EN"
-      }
-    ],
-    "versio": 1,
-    "withinCodeElements": []
-  }
-]
+[ {
+  "koodiUri" : "arviointiasteikkointernationalschool_achievedoutcomes",
+  "koodiArvo" : "achievedoutcomes",
+  "metadata" : [ {
+    "nimi" : "Achieved Outcomes",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Achieved Outcomes",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkointernationalschool_fail",
+  "koodiArvo" : "fail",
+  "metadata" : [ {
+    "nimi" : "Fail",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Fail",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkointernationalschool_learningtoward",
+  "koodiArvo" : "learningtoward",
+  "metadata" : [ {
+    "nimi" : "Learning Toward",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Learning Toward",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkointernationalschool_pass",
+  "koodiArvo" : "pass",
+  "metadata" : [ {
+    "nimi" : "Pass",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Pass",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+} ]

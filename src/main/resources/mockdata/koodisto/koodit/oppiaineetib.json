@@ -167,6 +167,21 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "oppiaineetib_dan",
+  "koodiArvo" : "DAN",
+  "metadata" : [ {
+    "nimi" : "Dance",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Dance",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Dance",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "oppiaineetib_eco",
   "koodiArvo" : "ECO",
   "metadata" : [ {
@@ -220,6 +235,21 @@
     "nimi" : "Environmental systems and societies",
     "lyhytNimi" : "",
     "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetib_fil",
+  "koodiArvo" : "FIL",
+  "metadata" : [ {
+    "nimi" : "Film",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Film",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Film",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -325,6 +355,21 @@
     "nimi" : "Mathematical studies",
     "lyhytNimi" : "",
     "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetib_mus",
+  "koodiArvo" : "MUS",
+  "metadata" : [ {
+    "nimi" : "Music",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Music",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Music",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -451,6 +496,21 @@
     "nimi" : "Social and cultural anthropology",
     "lyhytNimi" : "",
     "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "oppiaineetib_the",
+  "koodiArvo" : "THE",
+  "metadata" : [ {
+    "nimi" : "Theatre",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Theatre",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Theatre",
     "kieli" : "EN"
   } ],
   "versio" : 1,

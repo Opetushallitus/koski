@@ -47,22 +47,6 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "opiskeluoikeudentyyppi_internationalschool",
-  "koodiArvo" : "internationalschool",
-  "metadata" : [ {
-    "nimi" : "International school",
-    "lyhytNimi" : "International school",
-    "kuvaus" : "",
-    "kieli" : "FI"
-  }, {
-    "nimi" : "International school",
-    "lyhytNimi" : "International school",
-    "kuvaus" : "",
-    "kieli" : "SV"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
   "koodiUri" : "opiskeluoikeudentyyppi_esiopetus",
   "koodiArvo" : "esiopetus",
   "metadata" : [ {
@@ -89,6 +73,22 @@
   }, {
     "nimi" : "IB-examen",
     "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "opiskeluoikeudentyyppi_internationalschool",
+  "koodiArvo" : "internationalschool",
+  "metadata" : [ {
+    "nimi" : "International school",
+    "lyhytNimi" : "International school",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "International school",
+    "lyhytNimi" : "International school",
     "kuvaus" : "",
     "kieli" : "SV"
   } ],

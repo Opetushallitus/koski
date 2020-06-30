@@ -63,15 +63,27 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "lukionmuutopinnot_tvk",
+  "koodiArvo" : "TVK",
+  "metadata" : [ {
+    "nimi" : "Taiteiden väliset kurssit",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Ämnesövergripande kurser i konststudier",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "lukionmuutopinnot_tvo",
   "koodiArvo" : "TVO",
   "metadata" : [ {
-    "nimi" : "Taiteiden väliset opinnot",
+    "nimi" : "Taiteiden väliset kurssit",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Ämnesövergripande konststudier",
+    "nimi" : "Ämnesövergripande kurser i konststudier",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"

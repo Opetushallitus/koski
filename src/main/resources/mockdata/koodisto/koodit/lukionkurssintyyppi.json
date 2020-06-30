@@ -3,9 +3,13 @@
   "koodiArvo" : "pakollinen",
   "metadata" : [ {
     "nimi" : "Pakollinen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Obligatorisk",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -15,9 +19,13 @@
   "koodiArvo" : "soveltava",
   "metadata" : [ {
     "nimi" : "Soveltava",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Tillämpad",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
@@ -27,9 +35,13 @@
   "koodiArvo" : "syventava",
   "metadata" : [ {
     "nimi" : "Syventävä",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Fördjupad",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
