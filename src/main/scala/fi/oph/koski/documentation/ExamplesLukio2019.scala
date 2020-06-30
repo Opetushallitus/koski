@@ -30,7 +30,7 @@ object ExamplesLukio2019 {
         moduulinSuoritus(moduuli("MAB4")).copy(arviointi = numeerinenArviointi(8))
       ))),
       oppiaineenSuoritus(uskonto(Some("MU"))).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
-        moduulinSuoritus(moduuli("UE1")).copy(arviointi = numeerinenArviointi(7))
+        moduulinSuoritus(moduuli("UE1").copy(laajuus = laajuus(1.5))).copy(arviointi = numeerinenArviointi(7))
       ))),
       oppiaineenSuoritus(muuOppiaine("FY")).copy(arviointi = arviointi("10")).copy(osasuoritukset = Some(List(
         moduulinSuoritus(moduuli("FY1")).copy(arviointi = numeerinenArviointi(10)),
