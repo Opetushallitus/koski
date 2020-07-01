@@ -3,42 +3,49 @@ package fi.oph.koski.documentation
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.ExampleData._
-import fi.oph.koski.documentation.LukioExampleData.{opiskeluoikeusAktiivinen, lukionOppimäärä, nuortenOpetussuunnitelma, arviointi, numeerinenArviointi, pakollinen}
+import fi.oph.koski.documentation.Lukio2019ExampleData._
+import fi.oph.koski.documentation.LukioExampleData.{laajuus => _, _}
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
-import fi.oph.koski.henkilo.MockOppijat.{asUusiOppija, uusiLukio}
-import fi.oph.koski.schema._
-import Lukio2019ExampleData._
+import fi.oph.koski.henkilo.MockOppijat.{asUusiOppija, uusiLukio, uusiLukionAineopiskelija}
 import fi.oph.koski.localization.LocalizedStringImplicits.str2localized
+import fi.oph.koski.schema._
 
 object ExamplesLukio2019 {
-  lazy val oppija = Oppija(asUusiOppija(uusiLukio), List(opiskeluoikeus))
+  val lukionOppimäärä2019: LukionOppimäärä = LukionOppimäärä(perusteenDiaarinumero = Some("OPH-2263-2019"))
+  val oppiainesuoritukset = List(
+    oppiaineenSuoritus(äidinkieli("AI1")).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
+      moduulinSuoritus(moduuli("OÄI1")).copy(arviointi = numeerinenArviointi(8)),
+      moduulinSuoritus(moduuli("OÄI2")).copy(arviointi = numeerinenArviointi(8)),
+      moduulinSuoritus(moduuli("OÄI3")).copy(arviointi = numeerinenArviointi(8))
+    ))),
+    oppiaineenSuoritus(pitkäMatematiikka).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
+      moduulinSuoritus(moduuli("MAB2")).copy(arviointi = numeerinenArviointi(8)),
+      moduulinSuoritus(moduuli("MAB3")).copy(arviointi = numeerinenArviointi(8)),
+      moduulinSuoritus(moduuli("MAB4")).copy(arviointi = numeerinenArviointi(8))
+    ))),
+    oppiaineenSuoritus(uskonto(Some("MU"))).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
+      moduulinSuoritus(moduuli("UE1").copy(laajuus = laajuus(1.5))).copy(arviointi = numeerinenArviointi(7))
+    ))),
+    oppiaineenSuoritus(muuOppiaine("FY")).copy(arviointi = arviointi("10")).copy(osasuoritukset = Some(List(
+      moduulinSuoritus(moduuli("FY1")).copy(arviointi = numeerinenArviointi(10)),
+      moduulinSuoritus(moduuli("FY2")).copy(arviointi = numeerinenArviointi(10)),
+      moduulinSuoritus(moduuli("FY3")).copy(arviointi = numeerinenArviointi(10)),
+      paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("FY123", "Keittiöfysiikka")).copy(arviointi = numeerinenArviointi(10))
+    )))
+  )
 
   lazy val oppimääränSuoritus = LukionOppimääränSuoritus2019(
-    koulutusmoduuli = lukionOppimäärä,
+    koulutusmoduuli = lukionOppimäärä2019,
     oppimäärä = nuortenOpetussuunnitelma,
     suorituskieli = suomenKieli,
     toimipiste = jyväskylänNormaalikoulu,
-    osasuoritukset = Some(List(
-      oppiaineenSuoritus(äidinkieli("AI1")).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
-        moduulinSuoritus(moduuli("OÄI1")).copy(arviointi = numeerinenArviointi(8)),
-        moduulinSuoritus(moduuli("OÄI2")).copy(arviointi = numeerinenArviointi(8)),
-        moduulinSuoritus(moduuli("OÄI3")).copy(arviointi = numeerinenArviointi(8))
-      ))),
-      oppiaineenSuoritus(pitkäMatematiikka).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
-        moduulinSuoritus(moduuli("MAB2")).copy(arviointi = numeerinenArviointi(8)),
-        moduulinSuoritus(moduuli("MAB3")).copy(arviointi = numeerinenArviointi(8)),
-        moduulinSuoritus(moduuli("MAB4")).copy(arviointi = numeerinenArviointi(8))
-      ))),
-      oppiaineenSuoritus(uskonto(Some("MU"))).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
-        moduulinSuoritus(moduuli("UE1").copy(laajuus = laajuus(1.5))).copy(arviointi = numeerinenArviointi(7))
-      ))),
-      oppiaineenSuoritus(muuOppiaine("FY")).copy(arviointi = arviointi("10")).copy(osasuoritukset = Some(List(
-        moduulinSuoritus(moduuli("FY1")).copy(arviointi = numeerinenArviointi(10)),
-        moduulinSuoritus(moduuli("FY2")).copy(arviointi = numeerinenArviointi(10)),
-        moduulinSuoritus(moduuli("FY3")).copy(arviointi = numeerinenArviointi(10)),
-        paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("FY123", "Keittiöfysiikka")).copy(arviointi = numeerinenArviointi(10))
-      )))
-    ))
+    osasuoritukset = Some(oppiainesuoritukset)
+  )
+
+  lazy val oppiaineidenOppimäärienSuoritus = LukionOppiaineidenOppimäärienSuoritus2019(
+    suorituskieli = suomenKieli,
+    toimipiste = jyväskylänNormaalikoulu,
+    osasuoritukset = Some(oppiainesuoritukset)
   )
 
   lazy val opiskeluoikeus: LukionOpiskeluoikeus =
@@ -52,8 +59,14 @@ object ExamplesLukio2019 {
       suoritukset = List(oppimääränSuoritus)
     )
 
+  lazy val oppiaineenOppimääräOpiskeluoikeus: LukionOpiskeluoikeus = opiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus))
+
+  lazy val oppija = Oppija(asUusiOppija(uusiLukio), List(opiskeluoikeus))
+  lazy val oppiaineidenOppimäärienOppija = Oppija(asUusiOppija(uusiLukionAineopiskelija), List(oppiaineenOppimääräOpiskeluoikeus))
+
   val examples = List(
-    Example("lukio - ops 2019", "Uuden 2019 opetussuunnitelman mukainen oppija", oppija)
+    Example("lukio ops 2019 - oppimäärä", "Uuden 2019 opetussuunnitelman mukainen oppija, lukion oppimäärä", oppija),
+    Example("lukio ops 2019 - oppiaineiden oppimäärä", "Uuden 2019 opetussuunnitelman mukainen oppija, lukion oppiaineiden oppimäärä", oppiaineidenOppimäärienOppija)
   )
 }
 
@@ -105,7 +118,5 @@ object Lukio2019ExampleData {
   )
 
   def laajuus(arvo: Double) = LaajuusOpintopisteissä(arvo = arvo, yksikkö = laajuusOpintopisteissä)
-
-  def valinnainenLaajuus(arvo: Double) = Some(laajuus(arvo))
 }
 

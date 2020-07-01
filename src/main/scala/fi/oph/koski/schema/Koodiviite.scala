@@ -43,12 +43,21 @@ case class Koodistokoodiviite(
   }
   override def hashCode(): Int = this.koodiarvo.hashCode
 
-  override def toString = koodistoUri + "/" + koodiarvo
+  override def toString: String = koodistoUri + "/" + koodiarvo
   def description: LocalizedString = koodistoUri match {
     case "arviointiasteikkoyleissivistava" | "arviointiasteikkoib" | "arviointiasteikkocorerequirementsib" => unlocalized(koodiarvo)
     case _ => nimi.getOrElse(unlocalized(koodiarvo))
   }
-  def getNimi = nimi
+  override def getNimi: Option[LocalizedString] = nimi
+}
+
+trait PaikallinenKoodiviite extends KoodiViite {
+  @Representative
+  @Discriminator
+  def nimi: LocalizedString
+  def description: LocalizedString = nimi
+  override def getNimi = Some(nimi)
+  override def toString = s"$koodiarvo (${nimi.get("fi")})"
 }
 
 @Description("Paikallinen, koulutustoimijan oma kooditus. Käytetään kansallisen koodiston puuttuessa")
@@ -58,14 +67,8 @@ case class PaikallinenKoodi(
   @Discriminator
   koodiarvo: String,
   @Description("Koodin selväkielinen nimi")
-  @Representative
-  @Discriminator
   nimi: LocalizedString,
   @Description("Koodiston tunniste. Esimerkiksi Virta-järjestelmästä saatavissa arvioinneissa käytetään virta/x, missä x on arviointiasteikon tunniste. Jos koodistolla ei ole tunnistetta, voidaan kenttä jättää tyhjäksi")
   @Title("Koodisto-URI")
   koodistoUri: Option[String] = None
-) extends KoodiViite {
-  override def toString = s"$koodiarvo (${nimi.get("fi")})"
-  def getNimi = Some(nimi)
-  def description: LocalizedString = nimi
-}
+) extends PaikallinenKoodiviite
