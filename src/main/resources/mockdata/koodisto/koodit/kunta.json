@@ -1434,8 +1434,8 @@
     "lyhytNimi" : "ei kotikuntaa Suomessa",
     "kieli" : "FI"
   }, {
-    "nimi" : "Ingen hemkommun",
-    "lyhytNimi" : "Ingen hemkommun",
+    "nimi" : "ingen hemkommun i Finland",
+    "lyhytNimi" : "ingen hemkommun i Finland",
     "kieli" : "SV"
   }, {
     "nimi" : "ei kotikuntaa Suomessa",
@@ -1472,7 +1472,7 @@
     "lyhytNimi" : "",
     "kieli" : "SV"
   }, {
-    "nimi" : "Ulkomaa",
+    "nimi" : "Other than Finland",
     "lyhytNimi" : "",
     "kieli" : "EN"
   } ],
@@ -6595,9 +6595,11 @@
   "koodiArvo" : "911",
   "metadata" : [ {
     "nimi" : "Valtimo",
+    "lyhytNimi" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Valtimo",
+    "lyhytNimi" : "",
     "kieli" : "SV"
   } ],
   "versio" : 2
@@ -7252,6 +7254,10 @@
     "nimi" : "Okänd kommun",
     "lyhytNimi" : "Okänd kommun",
     "kieli" : "SV"
+  }, {
+    "nimi" : "Not known",
+    "lyhytNimi" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 2
 } ]

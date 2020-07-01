@@ -210,12 +210,12 @@
   "koodiUri" : "virtaopiskeluoikeudentyyppi_5",
   "koodiArvo" : "5",
   "metadata" : [ {
-    "nimi" : "Lääkärien erikoistumiskoulutus",
+    "nimi" : "Erikoislääkäri- ja erikoishammaslääkärikoulutus",
     "lyhytNimi" : "",
-    "kuvaus" : "",
+    "kuvaus" : "Aiempi muoto ollut Lääkärien erikoistumiskoulutus. Päätetty muutoksesta Oppijan tietovirtojen ja VIRTA-opintotietopalvelun ohjausryhmässä 29.11.2018",
     "kieli" : "FI"
   }, {
-    "nimi" : "Specialiseringsutbildning för läkare",
+    "nimi" : "Specialistläkarutbildning och specialisttandläkarutbildning",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "SV"

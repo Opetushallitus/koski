@@ -1057,10 +1057,10 @@ describe('Ammatillinen koulutus', function() {
 
             expect(osaamisalat.slice(0, 5)).to.deep.equal([
               'Ei valintaa',
+              'Agroautomaation hyödyntämisen osaamisala (3169)',
+              'Agrologistiikan osaamisala (2413)',
               'Aikuisliikunnan osaamisala (2065)',
-              'Aikuisten perusopetus (0009)',
-              'Ajoneuvo- ja/tai konemyynnin osaamisala (3010)',
-              'Alkoholijuomien valmistuksen osaamisala (2327)'
+              'Aikuisten perusopetus (0009)'
             ])
 
             expect(osaamisalat.slice(-5)).to.deep.equal([

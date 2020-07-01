@@ -83,7 +83,14 @@
   "koodiArvo" : "6",
   "metadata" : [ {
     "nimi" : "Arviointikeskustelua ei pidetty",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Arviointikeskustelua ei pidetty",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

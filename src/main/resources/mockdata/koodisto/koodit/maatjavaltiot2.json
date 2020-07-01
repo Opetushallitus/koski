@@ -14,7 +14,7 @@
     "lyhytNimi" : "AF",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_008",
   "koodiArvo" : "008",
@@ -31,7 +31,7 @@
     "lyhytNimi" : "AL",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_010",
   "koodiArvo" : "010",
@@ -48,7 +48,7 @@
     "lyhytNimi" : "AQ",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_012",
   "koodiArvo" : "012",
@@ -65,7 +65,7 @@
     "lyhytNimi" : "DZ",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_016",
   "koodiArvo" : "016",
@@ -82,7 +82,7 @@
     "lyhytNimi" : "AS",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_020",
   "koodiArvo" : "020",
@@ -99,7 +99,7 @@
     "lyhytNimi" : "AD",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_024",
   "koodiArvo" : "024",
@@ -116,7 +116,7 @@
     "lyhytNimi" : "AO",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_028",
   "koodiArvo" : "028",
@@ -133,12 +133,12 @@
     "lyhytNimi" : "AG",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_031",
   "koodiArvo" : "031",
   "metadata" : [ {
-    "nimi" : "Azerbaidzan",
+    "nimi" : "Azerbaidžan",
     "lyhytNimi" : "AZ",
     "kieli" : "FI"
   }, {
@@ -150,7 +150,7 @@
     "lyhytNimi" : "AZ",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_032",
   "koodiArvo" : "032",
@@ -167,7 +167,7 @@
     "lyhytNimi" : "AR",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_036",
   "koodiArvo" : "036",
@@ -184,7 +184,7 @@
     "lyhytNimi" : "AU",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_040",
   "koodiArvo" : "040",
@@ -201,7 +201,7 @@
     "lyhytNimi" : "AT",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_044",
   "koodiArvo" : "044",
@@ -218,7 +218,7 @@
     "lyhytNimi" : "BS",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_048",
   "koodiArvo" : "048",
@@ -235,7 +235,7 @@
     "lyhytNimi" : "BH",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_050",
   "koodiArvo" : "050",
@@ -252,7 +252,7 @@
     "lyhytNimi" : "BD",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_051",
   "koodiArvo" : "051",
@@ -269,7 +269,7 @@
     "lyhytNimi" : "AM",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_052",
   "koodiArvo" : "052",
@@ -286,7 +286,7 @@
     "lyhytNimi" : "BB",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_056",
   "koodiArvo" : "056",
@@ -303,7 +303,7 @@
     "lyhytNimi" : "BE",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_060",
   "koodiArvo" : "060",
@@ -320,7 +320,7 @@
     "lyhytNimi" : "BM",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_064",
   "koodiArvo" : "064",
@@ -337,7 +337,7 @@
     "lyhytNimi" : "BT",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_068",
   "koodiArvo" : "068",
@@ -354,7 +354,7 @@
     "lyhytNimi" : "BO",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_070",
   "koodiArvo" : "070",
@@ -371,7 +371,7 @@
     "lyhytNimi" : "BA",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_072",
   "koodiArvo" : "072",
@@ -388,7 +388,7 @@
     "lyhytNimi" : "BW",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_074",
   "koodiArvo" : "074",
@@ -405,7 +405,7 @@
     "lyhytNimi" : "BV",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_076",
   "koodiArvo" : "076",
@@ -422,7 +422,7 @@
     "lyhytNimi" : "BR",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_084",
   "koodiArvo" : "084",
@@ -439,7 +439,7 @@
     "lyhytNimi" : "BZ",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_086",
   "koodiArvo" : "086",
@@ -456,7 +456,7 @@
     "lyhytNimi" : "IO",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_090",
   "koodiArvo" : "090",
@@ -473,7 +473,7 @@
     "lyhytNimi" : "SB",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_092",
   "koodiArvo" : "092",
@@ -490,7 +490,7 @@
     "lyhytNimi" : "VG",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_096",
   "koodiArvo" : "096",
@@ -507,7 +507,7 @@
     "lyhytNimi" : "BN",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_100",
   "koodiArvo" : "100",
@@ -524,7 +524,7 @@
     "lyhytNimi" : "BG",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_104",
   "koodiArvo" : "104",
@@ -541,7 +541,7 @@
     "lyhytNimi" : "MM",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_108",
   "koodiArvo" : "108",
@@ -558,7 +558,7 @@
     "lyhytNimi" : "BI",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_112",
   "koodiArvo" : "112",
@@ -575,12 +575,12 @@
     "lyhytNimi" : "BY",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_116",
   "koodiArvo" : "116",
   "metadata" : [ {
-    "nimi" : "Kambodza",
+    "nimi" : "Kambodža",
     "lyhytNimi" : "KH",
     "kieli" : "FI"
   }, {
@@ -592,7 +592,7 @@
     "lyhytNimi" : "KH",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_120",
   "koodiArvo" : "120",
@@ -609,7 +609,7 @@
     "lyhytNimi" : "CM",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_124",
   "koodiArvo" : "124",
@@ -626,7 +626,7 @@
     "lyhytNimi" : "CA",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_132",
   "koodiArvo" : "132",
@@ -643,7 +643,7 @@
     "lyhytNimi" : "CV",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_136",
   "koodiArvo" : "136",
@@ -660,12 +660,12 @@
     "lyhytNimi" : "KY",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_140",
   "koodiArvo" : "140",
   "metadata" : [ {
-    "nimi" : "Keski-Afrikkan tasavalta",
+    "nimi" : "Keski-Afrikan tasavalta",
     "lyhytNimi" : "CF",
     "kieli" : "FI"
   }, {
@@ -677,7 +677,7 @@
     "lyhytNimi" : "CF",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_144",
   "koodiArvo" : "144",
@@ -694,7 +694,7 @@
     "lyhytNimi" : "LK",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_148",
   "koodiArvo" : "148",
@@ -711,7 +711,7 @@
     "lyhytNimi" : "TD",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_152",
   "koodiArvo" : "152",
@@ -728,7 +728,7 @@
     "lyhytNimi" : "CL",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_156",
   "koodiArvo" : "156",
@@ -745,7 +745,7 @@
     "lyhytNimi" : "CN",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_158",
   "koodiArvo" : "158",
@@ -762,7 +762,7 @@
     "lyhytNimi" : "TW",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_162",
   "koodiArvo" : "162",
@@ -779,7 +779,7 @@
     "lyhytNimi" : "CX",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_166",
   "koodiArvo" : "166",
@@ -796,7 +796,7 @@
     "lyhytNimi" : "CC",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_170",
   "koodiArvo" : "170",
@@ -813,7 +813,7 @@
     "lyhytNimi" : "CO",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_174",
   "koodiArvo" : "174",
@@ -830,7 +830,7 @@
     "lyhytNimi" : "KM",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_175",
   "koodiArvo" : "175",
@@ -847,7 +847,7 @@
     "lyhytNimi" : "YT",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_178",
   "koodiArvo" : "178",
@@ -864,7 +864,7 @@
     "lyhytNimi" : "CG",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_180",
   "koodiArvo" : "180",
@@ -881,7 +881,7 @@
     "lyhytNimi" : "ZR",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_184",
   "koodiArvo" : "184",
@@ -898,7 +898,7 @@
     "lyhytNimi" : "CK",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_188",
   "koodiArvo" : "188",
@@ -915,7 +915,7 @@
     "lyhytNimi" : "CR",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_191",
   "koodiArvo" : "191",
@@ -932,7 +932,7 @@
     "lyhytNimi" : "HR",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_192",
   "koodiArvo" : "192",
@@ -949,7 +949,7 @@
     "lyhytNimi" : "CU",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_196",
   "koodiArvo" : "196",
@@ -966,7 +966,7 @@
     "lyhytNimi" : "CY",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_203",
   "koodiArvo" : "203",
@@ -983,7 +983,7 @@
     "lyhytNimi" : "CZ",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_204",
   "koodiArvo" : "204",
@@ -1000,7 +1000,7 @@
     "lyhytNimi" : "BJ",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_208",
   "koodiArvo" : "208",
@@ -1017,7 +1017,7 @@
     "lyhytNimi" : "DK",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_212",
   "koodiArvo" : "212",
@@ -1034,7 +1034,7 @@
     "lyhytNimi" : "DM",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_214",
   "koodiArvo" : "214",
@@ -1051,7 +1051,7 @@
     "lyhytNimi" : "DO",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_218",
   "koodiArvo" : "218",
@@ -1068,7 +1068,7 @@
     "lyhytNimi" : "EC",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_222",
   "koodiArvo" : "222",
@@ -1085,7 +1085,7 @@
     "lyhytNimi" : "SV",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_226",
   "koodiArvo" : "226",
@@ -1102,7 +1102,7 @@
     "lyhytNimi" : "GQ",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_231",
   "koodiArvo" : "231",
@@ -1119,7 +1119,7 @@
     "lyhytNimi" : "ET",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_232",
   "koodiArvo" : "232",
@@ -1136,7 +1136,7 @@
     "lyhytNimi" : "ER",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_233",
   "koodiArvo" : "233",
@@ -1153,7 +1153,7 @@
     "lyhytNimi" : "EE",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_234",
   "koodiArvo" : "234",
@@ -1170,7 +1170,7 @@
     "lyhytNimi" : "FO",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_238",
   "koodiArvo" : "238",
@@ -1187,7 +1187,7 @@
     "lyhytNimi" : "FK",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_239",
   "koodiArvo" : "239",
@@ -1204,12 +1204,12 @@
     "lyhytNimi" : "GS",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_242",
   "koodiArvo" : "242",
   "metadata" : [ {
-    "nimi" : "Fidzi",
+    "nimi" : "Fidži",
     "lyhytNimi" : "FJ",
     "kieli" : "FI"
   }, {
@@ -1221,7 +1221,7 @@
     "lyhytNimi" : "FJ",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_246",
   "koodiArvo" : "246",
@@ -1238,7 +1238,7 @@
     "lyhytNimi" : "FI",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_248",
   "koodiArvo" : "248",
@@ -1255,7 +1255,7 @@
     "lyhytNimi" : "AX",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_250",
   "koodiArvo" : "250",
@@ -1272,7 +1272,7 @@
     "lyhytNimi" : "FR",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_254",
   "koodiArvo" : "254",
@@ -1289,7 +1289,7 @@
     "lyhytNimi" : "GF",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_258",
   "koodiArvo" : "258",
@@ -1306,7 +1306,7 @@
     "lyhytNimi" : "PF",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_260",
   "koodiArvo" : "260",
@@ -1323,7 +1323,7 @@
     "lyhytNimi" : "TF",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_262",
   "koodiArvo" : "262",
@@ -1340,7 +1340,7 @@
     "lyhytNimi" : "DJ",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_266",
   "koodiArvo" : "266",
@@ -1357,7 +1357,7 @@
     "lyhytNimi" : "GA",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_268",
   "koodiArvo" : "268",
@@ -1374,7 +1374,7 @@
     "lyhytNimi" : "GE",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_270",
   "koodiArvo" : "270",
@@ -1391,7 +1391,7 @@
     "lyhytNimi" : "GM",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_275",
   "koodiArvo" : "275",
@@ -1408,7 +1408,7 @@
     "lyhytNimi" : "PS",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_276",
   "koodiArvo" : "276",
@@ -1425,7 +1425,7 @@
     "lyhytNimi" : "DE",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_288",
   "koodiArvo" : "288",
@@ -1442,7 +1442,7 @@
     "lyhytNimi" : "GH",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_292",
   "koodiArvo" : "292",
@@ -1459,7 +1459,7 @@
     "lyhytNimi" : "GI",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_296",
   "koodiArvo" : "296",
@@ -1476,7 +1476,7 @@
     "lyhytNimi" : "KI",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_300",
   "koodiArvo" : "300",
@@ -1493,7 +1493,7 @@
     "lyhytNimi" : "GR",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_304",
   "koodiArvo" : "304",
@@ -1510,7 +1510,7 @@
     "lyhytNimi" : "GL",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_308",
   "koodiArvo" : "308",
@@ -1527,7 +1527,7 @@
     "lyhytNimi" : "GD",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_312",
   "koodiArvo" : "312",
@@ -1544,7 +1544,7 @@
     "lyhytNimi" : "GP",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_316",
   "koodiArvo" : "316",
@@ -1561,7 +1561,7 @@
     "lyhytNimi" : "GU",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_320",
   "koodiArvo" : "320",
@@ -1578,7 +1578,7 @@
     "lyhytNimi" : "GT",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_324",
   "koodiArvo" : "324",
@@ -1595,7 +1595,7 @@
     "lyhytNimi" : "GN",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_328",
   "koodiArvo" : "328",
@@ -1612,7 +1612,7 @@
     "lyhytNimi" : "GY",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_332",
   "koodiArvo" : "332",
@@ -1629,7 +1629,7 @@
     "lyhytNimi" : "HT",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_334",
   "koodiArvo" : "334",
@@ -1646,7 +1646,7 @@
     "lyhytNimi" : "HM",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_336",
   "koodiArvo" : "336",
@@ -1663,7 +1663,7 @@
     "lyhytNimi" : "VA",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_340",
   "koodiArvo" : "340",
@@ -1680,7 +1680,7 @@
     "lyhytNimi" : "HN",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_344",
   "koodiArvo" : "344",
@@ -1697,7 +1697,7 @@
     "lyhytNimi" : "HK",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_348",
   "koodiArvo" : "348",
@@ -1714,7 +1714,7 @@
     "lyhytNimi" : "HU",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_352",
   "koodiArvo" : "352",
@@ -1731,7 +1731,7 @@
     "lyhytNimi" : "IS",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_356",
   "koodiArvo" : "356",
@@ -1748,7 +1748,7 @@
     "lyhytNimi" : "IN",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_360",
   "koodiArvo" : "360",
@@ -1765,7 +1765,7 @@
     "lyhytNimi" : "ID",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_364",
   "koodiArvo" : "364",
@@ -1782,7 +1782,7 @@
     "lyhytNimi" : "IR",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_368",
   "koodiArvo" : "368",
@@ -1799,7 +1799,7 @@
     "lyhytNimi" : "IQ",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_372",
   "koodiArvo" : "372",
@@ -1816,7 +1816,7 @@
     "lyhytNimi" : "IE",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_376",
   "koodiArvo" : "376",
@@ -1833,7 +1833,7 @@
     "lyhytNimi" : "IL",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_380",
   "koodiArvo" : "380",
@@ -1850,7 +1850,7 @@
     "lyhytNimi" : "IT",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_384",
   "koodiArvo" : "384",
@@ -1867,7 +1867,7 @@
     "lyhytNimi" : "CI",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_388",
   "koodiArvo" : "388",
@@ -1884,7 +1884,7 @@
     "lyhytNimi" : "JM",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_392",
   "koodiArvo" : "392",
@@ -1901,7 +1901,7 @@
     "lyhytNimi" : "JP",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_398",
   "koodiArvo" : "398",
@@ -1918,7 +1918,7 @@
     "lyhytNimi" : "KZ",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_400",
   "koodiArvo" : "400",
@@ -1935,7 +1935,7 @@
     "lyhytNimi" : "JO",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_404",
   "koodiArvo" : "404",
@@ -1952,7 +1952,7 @@
     "lyhytNimi" : "KE",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_408",
   "koodiArvo" : "408",
@@ -1969,7 +1969,7 @@
     "lyhytNimi" : "KP",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_410",
   "koodiArvo" : "410",
@@ -1986,7 +1986,7 @@
     "lyhytNimi" : "KR",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_414",
   "koodiArvo" : "414",
@@ -2003,7 +2003,7 @@
     "lyhytNimi" : "KW",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_417",
   "koodiArvo" : "417",
@@ -2020,7 +2020,7 @@
     "lyhytNimi" : "KG",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_418",
   "koodiArvo" : "418",
@@ -2037,7 +2037,7 @@
     "lyhytNimi" : "LA",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_422",
   "koodiArvo" : "422",
@@ -2054,7 +2054,7 @@
     "lyhytNimi" : "LB",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_426",
   "koodiArvo" : "426",
@@ -2071,7 +2071,7 @@
     "lyhytNimi" : "LS",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_428",
   "koodiArvo" : "428",
@@ -2088,7 +2088,7 @@
     "lyhytNimi" : "LV",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_430",
   "koodiArvo" : "430",
@@ -2105,7 +2105,7 @@
     "lyhytNimi" : "LR",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_434",
   "koodiArvo" : "434",
@@ -2122,7 +2122,7 @@
     "lyhytNimi" : "LY",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_438",
   "koodiArvo" : "438",
@@ -2139,7 +2139,7 @@
     "lyhytNimi" : "LI",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_440",
   "koodiArvo" : "440",
@@ -2156,7 +2156,7 @@
     "lyhytNimi" : "LT",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_442",
   "koodiArvo" : "442",
@@ -2173,7 +2173,7 @@
     "lyhytNimi" : "LU",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_446",
   "koodiArvo" : "446",
@@ -2190,7 +2190,7 @@
     "lyhytNimi" : "MO",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_450",
   "koodiArvo" : "450",
@@ -2207,7 +2207,7 @@
     "lyhytNimi" : "MG",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_454",
   "koodiArvo" : "454",
@@ -2224,7 +2224,7 @@
     "lyhytNimi" : "MW",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_458",
   "koodiArvo" : "458",
@@ -2241,7 +2241,7 @@
     "lyhytNimi" : "MY",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_462",
   "koodiArvo" : "462",
@@ -2258,7 +2258,7 @@
     "lyhytNimi" : "MV",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_466",
   "koodiArvo" : "466",
@@ -2275,7 +2275,7 @@
     "lyhytNimi" : "ML",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_470",
   "koodiArvo" : "470",
@@ -2292,7 +2292,7 @@
     "lyhytNimi" : "MT",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_474",
   "koodiArvo" : "474",
@@ -2309,7 +2309,7 @@
     "lyhytNimi" : "MQ",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_478",
   "koodiArvo" : "478",
@@ -2326,7 +2326,7 @@
     "lyhytNimi" : "MR",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_480",
   "koodiArvo" : "480",
@@ -2343,7 +2343,7 @@
     "lyhytNimi" : "MU",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_484",
   "koodiArvo" : "484",
@@ -2360,7 +2360,7 @@
     "lyhytNimi" : "MX",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_492",
   "koodiArvo" : "492",
@@ -2377,7 +2377,7 @@
     "lyhytNimi" : "MC",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_496",
   "koodiArvo" : "496",
@@ -2394,7 +2394,7 @@
     "lyhytNimi" : "MN",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_498",
   "koodiArvo" : "498",
@@ -2411,7 +2411,7 @@
     "lyhytNimi" : "MD",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_499",
   "koodiArvo" : "499",
@@ -2428,7 +2428,7 @@
     "lyhytNimi" : "ME",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_500",
   "koodiArvo" : "500",
@@ -2445,7 +2445,7 @@
     "lyhytNimi" : "MS",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_504",
   "koodiArvo" : "504",
@@ -2462,7 +2462,7 @@
     "lyhytNimi" : "MA",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_508",
   "koodiArvo" : "508",
@@ -2479,7 +2479,7 @@
     "lyhytNimi" : "MZ",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_512",
   "koodiArvo" : "512",
@@ -2496,7 +2496,7 @@
     "lyhytNimi" : "OM",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_516",
   "koodiArvo" : "516",
@@ -2513,7 +2513,7 @@
     "lyhytNimi" : "NA",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_520",
   "koodiArvo" : "520",
@@ -2530,7 +2530,7 @@
     "lyhytNimi" : "NR",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_524",
   "koodiArvo" : "524",
@@ -2547,7 +2547,7 @@
     "lyhytNimi" : "NP",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_528",
   "koodiArvo" : "528",
@@ -2564,7 +2564,7 @@
     "lyhytNimi" : "NL",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_530",
   "koodiArvo" : "530",
@@ -2581,12 +2581,12 @@
     "lyhytNimi" : "",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_531",
   "koodiArvo" : "531",
   "metadata" : [ {
-    "nimi" : "Curacao",
+    "nimi" : "Curaçao",
     "lyhytNimi" : "CW",
     "kieli" : "FI"
   }, {
@@ -2598,7 +2598,7 @@
     "lyhytNimi" : "CW",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_533",
   "koodiArvo" : "533",
@@ -2615,16 +2615,16 @@
     "lyhytNimi" : "AW",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_534",
   "koodiArvo" : "534",
   "metadata" : [ {
-    "nimi" : "Sint Maarten(Alankomaat)",
+    "nimi" : "Sint Maarten (Alankomaiden osa)",
     "lyhytNimi" : "SX",
     "kieli" : "FI"
   }, {
-    "nimi" : "Sint Maarten(Alankomaat)",
+    "nimi" : "Saint Martin (Nederländsk del)",
     "lyhytNimi" : "SX",
     "kieli" : "SV"
   }, {
@@ -2632,16 +2632,16 @@
     "lyhytNimi" : "SX",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_535",
   "koodiArvo" : "535",
   "metadata" : [ {
-    "nimi" : "Bonaire,Sint Eustatius ja Saba",
+    "nimi" : "Bonaire, Sint Eustatius ja Saba",
     "lyhytNimi" : "BQ",
     "kieli" : "FI"
   }, {
-    "nimi" : "Bonaire,Sint Eustatius ja Saba",
+    "nimi" : "Bonaire, Sint Eustatius ja Saba",
     "lyhytNimi" : "BQ",
     "kieli" : "SV"
   }, {
@@ -2649,7 +2649,7 @@
     "lyhytNimi" : "BQ",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_540",
   "koodiArvo" : "540",
@@ -2666,7 +2666,7 @@
     "lyhytNimi" : "NC",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_548",
   "koodiArvo" : "548",
@@ -2683,7 +2683,7 @@
     "lyhytNimi" : "VU",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_554",
   "koodiArvo" : "554",
@@ -2700,7 +2700,7 @@
     "lyhytNimi" : "NZ",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_558",
   "koodiArvo" : "558",
@@ -2717,7 +2717,7 @@
     "lyhytNimi" : "NI",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_562",
   "koodiArvo" : "562",
@@ -2734,7 +2734,7 @@
     "lyhytNimi" : "NE",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_566",
   "koodiArvo" : "566",
@@ -2751,7 +2751,7 @@
     "lyhytNimi" : "NG",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_570",
   "koodiArvo" : "570",
@@ -2768,7 +2768,7 @@
     "lyhytNimi" : "NU",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_574",
   "koodiArvo" : "574",
@@ -2785,7 +2785,7 @@
     "lyhytNimi" : "NF",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_578",
   "koodiArvo" : "578",
@@ -2802,7 +2802,7 @@
     "lyhytNimi" : "NO",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_580",
   "koodiArvo" : "580",
@@ -2819,7 +2819,7 @@
     "lyhytNimi" : "MP",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_581",
   "koodiArvo" : "581",
@@ -2836,7 +2836,7 @@
     "lyhytNimi" : "UM",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_583",
   "koodiArvo" : "583",
@@ -2853,7 +2853,7 @@
     "lyhytNimi" : "FM",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_584",
   "koodiArvo" : "584",
@@ -2870,7 +2870,7 @@
     "lyhytNimi" : "MH",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_585",
   "koodiArvo" : "585",
@@ -2887,7 +2887,7 @@
     "lyhytNimi" : "PW",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_586",
   "koodiArvo" : "586",
@@ -2904,7 +2904,7 @@
     "lyhytNimi" : "PK",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_591",
   "koodiArvo" : "591",
@@ -2921,7 +2921,7 @@
     "lyhytNimi" : "PA",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_598",
   "koodiArvo" : "598",
@@ -2938,7 +2938,7 @@
     "lyhytNimi" : "PG",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_600",
   "koodiArvo" : "600",
@@ -2955,7 +2955,7 @@
     "lyhytNimi" : "PY",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_604",
   "koodiArvo" : "604",
@@ -2972,7 +2972,7 @@
     "lyhytNimi" : "PE",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_608",
   "koodiArvo" : "608",
@@ -2989,7 +2989,7 @@
     "lyhytNimi" : "PH",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_612",
   "koodiArvo" : "612",
@@ -3006,7 +3006,7 @@
     "lyhytNimi" : "PN",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_616",
   "koodiArvo" : "616",
@@ -3023,7 +3023,7 @@
     "lyhytNimi" : "PL",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_620",
   "koodiArvo" : "620",
@@ -3040,7 +3040,7 @@
     "lyhytNimi" : "PT",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_624",
   "koodiArvo" : "624",
@@ -3057,7 +3057,7 @@
     "lyhytNimi" : "GW",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_626",
   "koodiArvo" : "626",
@@ -3074,7 +3074,7 @@
     "lyhytNimi" : "TP",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_630",
   "koodiArvo" : "630",
@@ -3091,7 +3091,7 @@
     "lyhytNimi" : "PR",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_634",
   "koodiArvo" : "634",
@@ -3108,7 +3108,7 @@
     "lyhytNimi" : "QA",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_638",
   "koodiArvo" : "638",
@@ -3125,7 +3125,7 @@
     "lyhytNimi" : "RE",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_642",
   "koodiArvo" : "642",
@@ -3142,7 +3142,7 @@
     "lyhytNimi" : "RO",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_643",
   "koodiArvo" : "643",
@@ -3159,7 +3159,7 @@
     "lyhytNimi" : "RU",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_646",
   "koodiArvo" : "646",
@@ -3176,7 +3176,7 @@
     "lyhytNimi" : "RW",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_652",
   "koodiArvo" : "652",
@@ -3193,24 +3193,24 @@
     "lyhytNimi" : "BL",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_654",
   "koodiArvo" : "654",
   "metadata" : [ {
-    "nimi" : "Saint Helena",
+    "nimi" : "Saint Helena, Ascension ja Tristan da Cunha",
     "lyhytNimi" : "SH",
     "kieli" : "FI"
   }, {
-    "nimi" : "Saint Helena",
+    "nimi" : "Saint Helena, Ascension ja Tristan da Cunha",
     "lyhytNimi" : "SH",
     "kieli" : "SV"
   }, {
-    "nimi" : "Saint Helena",
+    "nimi" : "Saint Helena, Ascension ja Tristan da Cunha",
     "lyhytNimi" : "SH",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_659",
   "koodiArvo" : "659",
@@ -3227,7 +3227,7 @@
     "lyhytNimi" : "KN",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_660",
   "koodiArvo" : "660",
@@ -3244,7 +3244,7 @@
     "lyhytNimi" : "AI",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_662",
   "koodiArvo" : "662",
@@ -3261,24 +3261,24 @@
     "lyhytNimi" : "LC",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_663",
   "koodiArvo" : "663",
   "metadata" : [ {
-    "nimi" : "Saint Martin (Ranska)",
+    "nimi" : "Saint Martin",
     "lyhytNimi" : "MF",
     "kieli" : "FI"
   }, {
-    "nimi" : "Saint Martin (Ranska)",
+    "nimi" : "Saint Martin",
     "lyhytNimi" : "MF",
     "kieli" : "SV"
   }, {
-    "nimi" : "Saint Martin (French Part)",
+    "nimi" : "Saint Martin",
     "lyhytNimi" : "MF",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_666",
   "koodiArvo" : "666",
@@ -3295,7 +3295,7 @@
     "lyhytNimi" : "PM",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_670",
   "koodiArvo" : "670",
@@ -3312,7 +3312,7 @@
     "lyhytNimi" : "VC",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_674",
   "koodiArvo" : "674",
@@ -3329,7 +3329,7 @@
     "lyhytNimi" : "SM",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_678",
   "koodiArvo" : "678",
@@ -3346,7 +3346,7 @@
     "lyhytNimi" : "ST",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_682",
   "koodiArvo" : "682",
@@ -3363,7 +3363,7 @@
     "lyhytNimi" : "SA",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_686",
   "koodiArvo" : "686",
@@ -3380,7 +3380,7 @@
     "lyhytNimi" : "SN",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_688",
   "koodiArvo" : "688",
@@ -3397,7 +3397,7 @@
     "lyhytNimi" : "RS",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_690",
   "koodiArvo" : "690",
@@ -3414,7 +3414,7 @@
     "lyhytNimi" : "SC",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_694",
   "koodiArvo" : "694",
@@ -3431,7 +3431,7 @@
     "lyhytNimi" : "SL",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_702",
   "koodiArvo" : "702",
@@ -3448,7 +3448,7 @@
     "lyhytNimi" : "SG",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_703",
   "koodiArvo" : "703",
@@ -3465,7 +3465,7 @@
     "lyhytNimi" : "SK",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_704",
   "koodiArvo" : "704",
@@ -3482,7 +3482,7 @@
     "lyhytNimi" : "VN",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_705",
   "koodiArvo" : "705",
@@ -3499,7 +3499,7 @@
     "lyhytNimi" : "SI",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_706",
   "koodiArvo" : "706",
@@ -3516,7 +3516,7 @@
     "lyhytNimi" : "SO",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_710",
   "koodiArvo" : "710",
@@ -3533,7 +3533,7 @@
     "lyhytNimi" : "ZA",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_716",
   "koodiArvo" : "716",
@@ -3550,7 +3550,7 @@
     "lyhytNimi" : "ZW",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_724",
   "koodiArvo" : "724",
@@ -3567,7 +3567,7 @@
     "lyhytNimi" : "ES",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_728",
   "koodiArvo" : "728",
@@ -3576,7 +3576,7 @@
     "lyhytNimi" : "SS",
     "kieli" : "FI"
   }, {
-    "nimi" : "Etelä-Sudan",
+    "nimi" : "Sydsudan",
     "lyhytNimi" : "SS",
     "kieli" : "SV"
   }, {
@@ -3584,7 +3584,7 @@
     "lyhytNimi" : "SS",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_729",
   "koodiArvo" : "729",
@@ -3601,7 +3601,7 @@
     "lyhytNimi" : "SD",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_732",
   "koodiArvo" : "732",
@@ -3618,7 +3618,7 @@
     "lyhytNimi" : "EH",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_736",
   "koodiArvo" : "736",
@@ -3632,7 +3632,7 @@
     "nimi" : "Former Sudan",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_740",
   "koodiArvo" : "740",
@@ -3649,7 +3649,7 @@
     "lyhytNimi" : "SR",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_744",
   "koodiArvo" : "744",
@@ -3666,7 +3666,7 @@
     "lyhytNimi" : "SJ",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_748",
   "koodiArvo" : "748",
@@ -3683,7 +3683,7 @@
     "lyhytNimi" : "SZ",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_752",
   "koodiArvo" : "752",
@@ -3700,7 +3700,7 @@
     "lyhytNimi" : "SE",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_756",
   "koodiArvo" : "756",
@@ -3717,7 +3717,7 @@
     "lyhytNimi" : "CH",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_760",
   "koodiArvo" : "760",
@@ -3734,7 +3734,7 @@
     "lyhytNimi" : "SY",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_762",
   "koodiArvo" : "762",
@@ -3751,7 +3751,7 @@
     "lyhytNimi" : "TJ",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_764",
   "koodiArvo" : "764",
@@ -3768,7 +3768,7 @@
     "lyhytNimi" : "TH",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_768",
   "koodiArvo" : "768",
@@ -3785,7 +3785,7 @@
     "lyhytNimi" : "TG",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_772",
   "koodiArvo" : "772",
@@ -3802,7 +3802,7 @@
     "lyhytNimi" : "TK",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_776",
   "koodiArvo" : "776",
@@ -3819,7 +3819,7 @@
     "lyhytNimi" : "TO",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_780",
   "koodiArvo" : "780",
@@ -3836,7 +3836,7 @@
     "lyhytNimi" : "TT",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_784",
   "koodiArvo" : "784",
@@ -3853,7 +3853,7 @@
     "lyhytNimi" : "AE",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_788",
   "koodiArvo" : "788",
@@ -3870,7 +3870,7 @@
     "lyhytNimi" : "TN",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_792",
   "koodiArvo" : "792",
@@ -3887,7 +3887,7 @@
     "lyhytNimi" : "TR",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_795",
   "koodiArvo" : "795",
@@ -3904,7 +3904,7 @@
     "lyhytNimi" : "TM",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_796",
   "koodiArvo" : "796",
@@ -3921,7 +3921,7 @@
     "lyhytNimi" : "TC",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_798",
   "koodiArvo" : "798",
@@ -3938,7 +3938,7 @@
     "lyhytNimi" : "TV",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_800",
   "koodiArvo" : "800",
@@ -3955,7 +3955,7 @@
     "lyhytNimi" : "UG",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_804",
   "koodiArvo" : "804",
@@ -3972,24 +3972,24 @@
     "lyhytNimi" : "UA",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_807",
   "koodiArvo" : "807",
   "metadata" : [ {
-    "nimi" : "Makedonia",
+    "nimi" : "Pohjois-Makedonia",
     "lyhytNimi" : "MK",
     "kieli" : "FI"
   }, {
-    "nimi" : "Makedonien",
+    "nimi" : "Nordmakedonien",
     "lyhytNimi" : "MK",
     "kieli" : "SV"
   }, {
-    "nimi" : "Macedonia",
+    "nimi" : "North Macedonia",
     "lyhytNimi" : "MK",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_810",
   "koodiArvo" : "810",
@@ -4003,7 +4003,7 @@
     "nimi" : "Former Soviet Union",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_818",
   "koodiArvo" : "818",
@@ -4020,7 +4020,7 @@
     "lyhytNimi" : "EG",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_826",
   "koodiArvo" : "826",
@@ -4037,7 +4037,7 @@
     "lyhytNimi" : "GB",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_831",
   "koodiArvo" : "831",
@@ -4054,7 +4054,7 @@
     "lyhytNimi" : "GG",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_832",
   "koodiArvo" : "832",
@@ -4071,7 +4071,7 @@
     "lyhytNimi" : "JE",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_833",
   "koodiArvo" : "833",
@@ -4080,7 +4080,7 @@
     "lyhytNimi" : "IM",
     "kieli" : "FI"
   }, {
-    "nimi" : "Mansaari",
+    "nimi" : "Isle of Man",
     "lyhytNimi" : "IM",
     "kieli" : "SV"
   }, {
@@ -4088,7 +4088,7 @@
     "lyhytNimi" : "IM",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_834",
   "koodiArvo" : "834",
@@ -4105,7 +4105,7 @@
     "lyhytNimi" : "TZ",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_840",
   "koodiArvo" : "840",
@@ -4122,7 +4122,7 @@
     "lyhytNimi" : "US",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_850",
   "koodiArvo" : "850",
@@ -4139,7 +4139,7 @@
     "lyhytNimi" : "VI",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_854",
   "koodiArvo" : "854",
@@ -4156,7 +4156,7 @@
     "lyhytNimi" : "BF",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_858",
   "koodiArvo" : "858",
@@ -4173,7 +4173,7 @@
     "lyhytNimi" : "UY",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_860",
   "koodiArvo" : "860",
@@ -4190,7 +4190,7 @@
     "lyhytNimi" : "UZ",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_862",
   "koodiArvo" : "862",
@@ -4207,7 +4207,7 @@
     "lyhytNimi" : "VE",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_876",
   "koodiArvo" : "876",
@@ -4224,7 +4224,7 @@
     "lyhytNimi" : "WF",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_882",
   "koodiArvo" : "882",
@@ -4241,7 +4241,7 @@
     "lyhytNimi" : "WS",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_887",
   "koodiArvo" : "887",
@@ -4258,7 +4258,7 @@
     "lyhytNimi" : "YE",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_891",
   "koodiArvo" : "891",
@@ -4272,7 +4272,7 @@
     "nimi" : "Former Serbia and Montenegro",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_894",
   "koodiArvo" : "894",
@@ -4289,7 +4289,7 @@
     "lyhytNimi" : "ZM",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_907",
   "koodiArvo" : "907",
@@ -4306,7 +4306,7 @@
     "lyhytNimi" : "Kosovo",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_990",
   "koodiArvo" : "990",
@@ -4323,7 +4323,7 @@
     "lyhytNimi" : "Other dependent country",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_991",
   "koodiArvo" : "991",
@@ -4340,7 +4340,7 @@
     "lyhytNimi" : "Without nationality",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_997",
   "koodiArvo" : "997",
@@ -4357,24 +4357,24 @@
     "lyhytNimi" : "XK",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_998",
   "koodiArvo" : "998",
   "metadata" : [ {
-    "nimi" : "Ilman kansalaisuutta",
+    "nimi" : "Ulkomaa tuntematon",
     "lyhytNimi" : "YY",
     "kieli" : "FI"
   }, {
-    "nimi" : "Utan nationalitet",
+    "nimi" : "Okänd till utländska",
     "lyhytNimi" : "YY",
     "kieli" : "SV"
   }, {
-    "nimi" : "Without Citizenship",
+    "nimi" : "Unknown to foreign",
     "lyhytNimi" : "YY",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 }, {
   "koodiUri" : "maatjavaltiot2_999",
   "koodiArvo" : "999",
@@ -4391,5 +4391,5 @@
     "lyhytNimi" : "XX",
     "kieli" : "EN"
   } ],
-  "versio" : 1
+  "versio" : 2
 } ]

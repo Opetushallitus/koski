@@ -62,4 +62,25 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "arviointiasteikkoammatillinent1k3_hyvaksytty",
+  "koodiArvo" : "Hyväksytty",
+  "metadata" : [ {
+    "nimi" : "Hyväksytty",
+    "lyhytNimi" : "Hyväksytty",
+    "kuvaus" : "Hyväksytty",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Godkänd",
+    "lyhytNimi" : "Godkänd",
+    "kuvaus" : "Godkänd",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Pass",
+    "lyhytNimi" : "Pass",
+    "kuvaus" : "Pass",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
 } ]

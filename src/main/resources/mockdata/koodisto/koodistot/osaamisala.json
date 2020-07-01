@@ -24,8 +24,32 @@
   }, {
     "codesUri" : "koulutus",
     "codesVersion" : 6,
+    "passive" : true
+  }, {
+    "codesUri" : "koulutus",
+    "codesVersion" : 7,
+    "passive" : true
+  }, {
+    "codesUri" : "koulutus",
+    "codesVersion" : 8,
+    "passive" : true
+  }, {
+    "codesUri" : "koulutus",
+    "codesVersion" : 9,
+    "passive" : true
+  }, {
+    "codesUri" : "koulutus",
+    "codesVersion" : 10,
+    "passive" : true
+  }, {
+    "codesUri" : "koulutus",
+    "codesVersion" : 11,
+    "passive" : true
+  }, {
+    "codesUri" : "koulutus",
+    "codesVersion" : 12,
     "passive" : false
   } ],
   "tila" : "LUONNOS",
-  "version" : 7
+  "version" : 18
 }

@@ -41,12 +41,18 @@
   "koodiArvo" : "LVKA1",
   "metadata" : [ {
     "nimi" : "Kielitaito osana opiskelua ja muita elämänalueita",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Språkfärdighet som en del av studierna och andra livsområden",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Language skills as part of studying and other areas of life",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -60,12 +66,18 @@
   "koodiArvo" : "LVKA2",
   "metadata" : [ {
     "nimi" : "Arkipäivän tilanteet",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Vardagssituationer",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Everyday situations",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -79,12 +91,18 @@
   "koodiArvo" : "LVKA3",
   "metadata" : [ {
     "nimi" : "Mediat",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Medier",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Media",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -98,12 +116,18 @@
   "koodiArvo" : "LVKB1",
   "metadata" : [ {
     "nimi" : "Kieleen tutustuminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Introduktion i språket",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Introduction to the language",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -117,12 +141,18 @@
   "koodiArvo" : "LVKB2",
   "metadata" : [ {
     "nimi" : "Asioiminen ja harrastukset",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Vardagsärenden och fritid",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Errands and hobbies",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -136,12 +166,18 @@
   "koodiArvo" : "LVKB3",
   "metadata" : [ {
     "nimi" : "Elinympäristö ja sosiaaliset verkostot",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Livsmiljö och sociala nätverk",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Living environment and social networks",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -193,12 +229,18 @@
   "koodiArvo" : "LVMAI1",
   "metadata" : [ {
     "nimi" : "Kieli ja identiteetti",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Språk och identitet",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Language and identity",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -212,12 +254,18 @@
   "koodiArvo" : "LVMAI2",
   "metadata" : [ {
     "nimi" : "Kirjoittaminen ja nykykulttuuri",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Skrivande och modern kultur",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Writing and contemporary culture",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -231,12 +279,18 @@
   "koodiArvo" : "LVMAI3",
   "metadata" : [ {
     "nimi" : "Puheviestinnän taitojen syventäminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Fördjupade färdigheter i muntlig kommunikation",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Deepening oral communication skills",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,

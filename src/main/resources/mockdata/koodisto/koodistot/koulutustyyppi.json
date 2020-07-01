@@ -60,6 +60,10 @@
   }, {
     "codesUri" : "koulutus",
     "codesVersion" : 11,
+    "passive" : true
+  }, {
+    "codesUri" : "koulutus",
+    "codesVersion" : 12,
     "passive" : false
   }, {
     "codesUri" : "koulutustyyppifasetti",

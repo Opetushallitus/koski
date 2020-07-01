@@ -1,5 +1,8 @@
 describe('Koulutuksen koodi poistettu ePerusteista', function () {
-  before(resetFixtures)
+  before(
+    Authentication().login(),
+    resetFixtures
+  )
 
   function suorituksenKoulutusKenttä() {
     return extractAsText(S('.suoritus > .properties > table > tbody > .koulutusmoduuli'))

@@ -12,7 +12,7 @@
     "kuvaus" : "",
     "kieli" : "SV"
   } ],
-  "versio" : 1,
+  "versio" : 2,
   "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "erityinenkoulutustehtava_102",
@@ -28,7 +28,7 @@
     "kuvaus" : "",
     "kieli" : "SV"
   } ],
-  "versio" : 1,
+  "versio" : 2,
   "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "erityinenkoulutustehtava_103",
@@ -44,7 +44,7 @@
     "kuvaus" : "",
     "kieli" : "SV"
   } ],
-  "versio" : 1,
+  "versio" : 2,
   "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "erityinenkoulutustehtava_104",
@@ -60,7 +60,7 @@
     "kuvaus" : "",
     "kieli" : "SV"
   } ],
-  "versio" : 1,
+  "versio" : 2,
   "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "erityinenkoulutustehtava_105",
@@ -76,7 +76,7 @@
     "kuvaus" : "",
     "kieli" : "SV"
   } ],
-  "versio" : 1,
+  "versio" : 2,
   "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "erityinenkoulutustehtava_106",
@@ -92,7 +92,7 @@
     "kuvaus" : "",
     "kieli" : "SV"
   } ],
-  "versio" : 1,
+  "versio" : 2,
   "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "erityinenkoulutustehtava_107",
@@ -108,7 +108,7 @@
     "kuvaus" : "",
     "kieli" : "SV"
   } ],
-  "versio" : 1,
+  "versio" : 2,
   "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "erityinenkoulutustehtava_108",
@@ -124,7 +124,7 @@
     "kuvaus" : "",
     "kieli" : "SV"
   } ],
-  "versio" : 1,
+  "versio" : 2,
   "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "erityinenkoulutustehtava_109",
@@ -140,7 +140,7 @@
     "kuvaus" : "",
     "kieli" : "SV"
   } ],
-  "versio" : 1,
+  "versio" : 2,
   "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "erityinenkoulutustehtava_208",
@@ -156,7 +156,7 @@
     "kuvaus" : "",
     "kieli" : "SV"
   } ],
-  "versio" : 1,
+  "versio" : 2,
   "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "erityinenkoulutustehtava_211",
@@ -172,21 +172,14 @@
     "kuvaus" : "",
     "kieli" : "SV"
   } ],
-  "versio" : 1,
+  "versio" : 2,
   "withinCodeElements" : [ ]
 }, {
-  "koodiUri" : "erityinenkoulutustehtava_ib",
+  "koodiUri" : "erityinenkoulutustehtava_ib-1",
   "koodiArvo" : "ib",
   "metadata" : [ {
     "nimi" : "Erityisenä koulutustehtävänä IB (EI KÄYTÖSSÄ)",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
     "kieli" : "FI"
-  }, {
-    "nimi" : "Särskild utbildningsuppgift IB (INTE I ANDVÄNDING)",
-    "lyhytNimi" : "",
-    "kuvaus" : "",
-    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -204,7 +197,7 @@
     "kuvaus" : "",
     "kieli" : "SV"
   } ],
-  "versio" : 1,
+  "versio" : 2,
   "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "erityinenkoulutustehtava_matematiikkaluonnontiedeymparistotekniikka",
@@ -220,7 +213,7 @@
     "kuvaus" : "",
     "kieli" : "SV"
   } ],
-  "versio" : 1,
+  "versio" : 2,
   "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "erityinenkoulutustehtava_muu",
@@ -236,7 +229,7 @@
     "kuvaus" : "",
     "kieli" : "SV"
   } ],
-  "versio" : 1,
+  "versio" : 2,
   "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "erityinenkoulutustehtava_steiner",
@@ -252,7 +245,7 @@
     "kuvaus" : "",
     "kieli" : "SV"
   } ],
-  "versio" : 1,
+  "versio" : 2,
   "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "erityinenkoulutustehtava_taide",
@@ -268,7 +261,7 @@
     "kuvaus" : "",
     "kieli" : "SV"
   } ],
-  "versio" : 1,
+  "versio" : 2,
   "withinCodeElements" : [ ]
 }, {
   "koodiUri" : "erityinenkoulutustehtava_urheilu",
@@ -284,6 +277,6 @@
     "kuvaus" : "",
     "kieli" : "SV"
   } ],
-  "versio" : 1,
+  "versio" : 2,
   "withinCodeElements" : [ ]
 } ]

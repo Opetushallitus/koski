@@ -21,6 +21,8 @@
   "koodiArvo" : "C",
   "metadata" : [ {
     "nimi" : "needs improvement",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,

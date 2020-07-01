@@ -1,8 +1,107 @@
 [ {
+  "koodiUri" : "lahdejarjestelma_finnairio",
+  "koodiArvo" : "FinnairIO",
+  "metadata" : [ {
+    "nimi" : "Finnairin Ilmailuopisto",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Finnairin Ilmailuopisto",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Finnairin Ilmailuopisto",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lahdejarjestelma_futuraledu",
+  "koodiArvo" : "Futural EDU",
+  "metadata" : [ {
+    "nimi" : "Futural EDU",
+    "lyhytNimi" : "Futural EDU",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Futural EDU",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Futural EDU",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lahdejarjestelma_tietoeducation",
+  "koodiArvo" : "Tieto Education",
+  "metadata" : [ {
+    "nimi" : "Tieto Education",
+    "lyhytNimi" : "Tieto Education",
+    "kuvaus" : "Tieto Education",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Tieto Education",
+    "lyhytNimi" : "Tieto Education",
+    "kuvaus" : "Tieto Education",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Tieto Education",
+    "lyhytNimi" : "Tieto Education",
+    "kuvaus" : "Tieto Education",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lahdejarjestelma_upmowd",
+  "koodiArvo" : "UPMOWD",
+  "metadata" : [ {
+    "nimi" : "UPM Teollisuusoppilaitos",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lahdejarjestelma_wilma",
+  "koodiArvo" : "Wilma",
+  "metadata" : [ {
+    "nimi" : "Wilma",
+    "lyhytNimi" : "Wilma",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Wilma",
+    "lyhytNimi" : "Wilma",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Wilma",
+    "lyhytNimi" : "Wilma",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "lahdejarjestelma_abilita",
   "koodiArvo" : "abilita",
   "metadata" : [ {
     "nimi" : "Abilita Päivähoito",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lahdejarjestelma_ankkalampi",
+  "koodiArvo" : "ankkalampi",
+  "metadata" : [ {
+    "nimi" : "Ankkalampi",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lahdejarjestelma_cgivesa",
+  "koodiArvo" : "cgi-vesa",
+  "metadata" : [ {
+    "nimi" : "Vesa Varhaiskasvatus",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -22,6 +121,27 @@
   "metadata" : [ {
     "nimi" : "e-Kurs",
     "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lahdejarjestelma_espoovarda",
+  "koodiArvo" : "evakaespoo",
+  "metadata" : [ {
+    "nimi" : "EvakaEspoo",
+    "lyhytNimi" : "EvakaEspoo",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "EvakaEspoo",
+    "lyhytNimi" : "EvakaEspoo",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "EvakaEspoo",
+    "lyhytNimi" : "EvakaEspoo",
+    "kuvaus" : "",
+    "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -71,6 +191,21 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "lahdejarjestelma_nokiaedunldh",
+  "koodiArvo" : "nokiaedu-nldh",
+  "metadata" : [ {
+    "nimi" : "NokiaEDU NLDH",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "NokiaEDU NLDH",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "NokiaEDU NLDH",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "lahdejarjestelma_peppi",
   "koodiArvo" : "peppi",
   "metadata" : [ {
@@ -84,6 +219,15 @@
   "koodiArvo" : "primus",
   "metadata" : [ {
     "nimi" : "primus",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "lahdejarjestelma_proconsona",
+  "koodiArvo" : "proconsona",
+  "metadata" : [ {
+    "nimi" : "Pro Consona Varhaiskasvatus",
     "kieli" : "FI"
   } ],
   "versio" : 1,

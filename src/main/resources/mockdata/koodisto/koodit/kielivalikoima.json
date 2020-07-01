@@ -162,6 +162,23 @@
   } ],
   "versio" : 1
 }, {
+  "koodiUri" : "kielivalikoima_hu",
+  "koodiArvo" : "HU",
+  "metadata" : [ {
+    "nimi" : "unkari",
+    "lyhytNimi" : "unkari",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "ungerska",
+    "lyhytNimi" : "ungerska",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Hungarian",
+    "lyhytNimi" : "Hungarian",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
   "koodiUri" : "kielivalikoima_it",
   "koodiArvo" : "IT",
   "metadata" : [ {
@@ -192,6 +209,40 @@
   }, {
     "nimi" : "Japanese",
     "lyhytNimi" : "Japanese",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "kielivalikoima_ko",
+  "koodiArvo" : "KO",
+  "metadata" : [ {
+    "nimi" : "korea",
+    "lyhytNimi" : "korea",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "koreanska",
+    "lyhytNimi" : "koreanska",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Korean",
+    "lyhytNimi" : "Korean",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "kielivalikoima_ku",
+  "koodiArvo" : "KU",
+  "metadata" : [ {
+    "nimi" : "kurdi",
+    "lyhytNimi" : "kurdi",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "kurdiska",
+    "lyhytNimi" : "kurdiska",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Kurdish",
+    "lyhytNimi" : "Kurdish",
     "kieli" : "EN"
   } ],
   "versio" : 1
@@ -243,6 +294,40 @@
   }, {
     "nimi" : "Latvian",
     "lyhytNimi" : "Latvian",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "kielivalikoima_ne",
+  "koodiArvo" : "NE",
+  "metadata" : [ {
+    "nimi" : "nepali",
+    "lyhytNimi" : "nepali",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "nepali",
+    "lyhytNimi" : "nepali",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Nepali",
+    "lyhytNimi" : "Nepali",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "kielivalikoima_pl",
+  "koodiArvo" : "PL",
+  "metadata" : [ {
+    "nimi" : "puola",
+    "lyhytNimi" : "puola",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "polska",
+    "lyhytNimi" : "polska",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Polish",
+    "lyhytNimi" : "Polish",
     "kieli" : "EN"
   } ],
   "versio" : 1
@@ -311,6 +396,68 @@
   }, {
     "nimi" : "Swedish",
     "lyhytNimi" : "Swedish",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "kielivalikoima_th",
+  "koodiArvo" : "TH",
+  "metadata" : [ {
+    "nimi" : "thai",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "thai",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "kielivalikoima_tr",
+  "koodiArvo" : "TR",
+  "metadata" : [ {
+    "nimi" : "turkki",
+    "lyhytNimi" : "turkki",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "turkiska",
+    "lyhytNimi" : "turkiska",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Turkish",
+    "lyhytNimi" : "Turkish",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "kielivalikoima_uk",
+  "koodiArvo" : "UK",
+  "metadata" : [ {
+    "nimi" : "ukraina",
+    "lyhytNimi" : "ukraina",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "ukrainska",
+    "lyhytNimi" : "ukrainska",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Ukrainian",
+    "lyhytNimi" : "Ukrainian",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "kielivalikoima_vi",
+  "koodiArvo" : "VI",
+  "metadata" : [ {
+    "nimi" : "vietnam",
+    "lyhytNimi" : "vietnam",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "vietnamesiska",
+    "lyhytNimi" : "vietnamesiska",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Vietnamese",
+    "lyhytNimi" : "Vietnamese",
     "kieli" : "EN"
   } ],
   "versio" : 1

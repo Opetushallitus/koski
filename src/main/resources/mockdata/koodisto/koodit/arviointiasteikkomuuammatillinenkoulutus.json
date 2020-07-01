@@ -1,4 +1,13 @@
 [ {
+  "koodiUri" : "arviointiasteikkomuuammatillinenkoulutus_osallistunut",
+  "koodiArvo" : "Osallistunut",
+  "metadata" : [ {
+    "nimi" : "Osallistunut",
+    "kieli" : "FI"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "arviointiasteikkomuuammatillinenkoulutus_suoritettu",
   "koodiArvo" : "Suoritettu",
   "metadata" : [ {

@@ -50,4 +50,17 @@
     "kieli" : "SV"
   } ],
   "versio" : 1
+}, {
+  "koodiUri" : "vardajarjestamismuoto_jm05",
+  "koodiArvo" : "JM05",
+  "metadata" : [ {
+    "nimi" : "Yksityinen varhaiskasvatus ilman yksityisen hoidon tukea",
+    "lyhytNimi" : "Yksityinen varhaiskasvatus ilman yksityisen hoidon tukea",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Privat småbarnspedagogik utan stöd för privat vård av barn",
+    "lyhytNimi" : "Privat småbarnspedagogik utan stöd för privat vård av barn",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
 } ]

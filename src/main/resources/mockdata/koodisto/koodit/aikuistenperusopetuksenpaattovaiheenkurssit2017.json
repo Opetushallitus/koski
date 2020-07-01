@@ -1183,18 +1183,22 @@
   "koodiArvo" : "MO1",
   "metadata" : [ {
     "nimi" : "Ruotsin kielen ja kirjallisuuden perusteet",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Grunderna i svenska och litteratur",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai2",
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
   }, {
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai2",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -1203,18 +1207,22 @@
   "koodiArvo" : "MO10",
   "metadata" : [ {
     "nimi" : "Nykykulttuurin ilmiöitä ja kirjallisuutta",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Samtidskulturella fenomen och modern litteratur",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai2",
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
   }, {
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai2",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -1223,18 +1231,22 @@
   "koodiArvo" : "MO2",
   "metadata" : [ {
     "nimi" : "Monimuotoiset tekstit",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Olika slag av texter",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai2",
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
   }, {
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai2",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -1243,18 +1255,22 @@
   "koodiArvo" : "MO3",
   "metadata" : [ {
     "nimi" : "Tekstien tuottaminen ja tulkitseminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Att tolka och producera texter",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai2",
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
   }, {
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai2",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -1263,18 +1279,22 @@
   "koodiArvo" : "MO4",
   "metadata" : [ {
     "nimi" : "Kieli ja kulttuuri",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Språk och kultur",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai2",
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
   }, {
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai2",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -1283,18 +1303,22 @@
   "koodiArvo" : "MO5",
   "metadata" : [ {
     "nimi" : "Puhe- ja vuorovaikutustaidot",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Muntliga och kommunikativa färdigheter",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai2",
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
   }, {
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai2",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -1303,18 +1327,22 @@
   "koodiArvo" : "MO6",
   "metadata" : [ {
     "nimi" : "Median maailma",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Mediernas värld",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai2",
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
   }, {
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai2",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -1323,18 +1351,22 @@
   "koodiArvo" : "MO7",
   "metadata" : [ {
     "nimi" : "Kauno- ja tietokirjallisuuden lukeminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Att läsa skön- och facklitteratur",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai2",
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
   }, {
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai2",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -1343,18 +1375,22 @@
   "koodiArvo" : "MO8",
   "metadata" : [ {
     "nimi" : "Tekstien tulkinta",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Att tolka texter",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai2",
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
   }, {
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai2",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -1363,18 +1399,22 @@
   "koodiArvo" : "MO9",
   "metadata" : [ {
     "nimi" : "Tekstien tuottaminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Att producera texter",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai2",
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
   }, {
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai2",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -1927,18 +1967,22 @@
   "koodiArvo" : "S21",
   "metadata" : [ {
     "nimi" : "Opiskelutaitojen vahvistaminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Utveckling av studiefärdigheterna",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai7",
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
   }, {
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai7",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -1947,18 +1991,22 @@
   "koodiArvo" : "S210",
   "metadata" : [ {
     "nimi" : "Ajankohtaiset ilmiöt Suomessa ja maailmalla",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Aktuella fenomen i Finland och i världen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai7",
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
   }, {
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai7",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -1967,18 +2015,22 @@
   "koodiArvo" : "S22",
   "metadata" : [ {
     "nimi" : "Luonnontieteen tekstit tutummiksi",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Analys av naturvetenskapliga texter",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai7",
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
   }, {
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai7",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -1987,18 +2039,22 @@
   "koodiArvo" : "S23",
   "metadata" : [ {
     "nimi" : "Yhteiskunnallisten aineiden tekstit tutummiksi",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Analys av samhällsvetenskapliga texter",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai7",
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
   }, {
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai7",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -2007,18 +2063,22 @@
   "koodiArvo" : "S24",
   "metadata" : [ {
     "nimi" : "Median tekstejä ja kuvia",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Medietexter och mediebilder",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai7",
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
   }, {
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai7",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -2027,18 +2087,22 @@
   "koodiArvo" : "S25",
   "metadata" : [ {
     "nimi" : "Tiedonhankintataitojen syventäminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Utveckling av färdigheterna att söka information ",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai7",
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
   }, {
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai7",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -2047,18 +2111,22 @@
   "koodiArvo" : "S26",
   "metadata" : [ {
     "nimi" : "Uutistekstit",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Nyhetstexter",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai7",
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
   }, {
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai7",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -2067,18 +2135,22 @@
   "koodiArvo" : "S27",
   "metadata" : [ {
     "nimi" : "Mielipiteen ilmaiseminen ja perusteleminen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Att uttrycka och motivera sin åsikt",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai7",
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
   }, {
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai7",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -2087,18 +2159,22 @@
   "koodiArvo" : "S28",
   "metadata" : [ {
     "nimi" : "Kaunokirjalliset tekstit tutuiksi",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Analys av skönlitterära texter",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai7",
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
   }, {
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai7",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -2107,18 +2183,22 @@
   "koodiArvo" : "S29",
   "metadata" : [ {
     "nimi" : "Kulttuurinen moninaisuus - moninainen kulttuuri",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Kulturell mångfald – mångfacetterad kultur",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai7",
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
   }, {
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai7",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -2682,11 +2762,11 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai1",
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
   }, {
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai1",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -2706,11 +2786,11 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai1",
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
   }, {
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai1",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -2730,11 +2810,11 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai1",
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
   }, {
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai1",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -2754,11 +2834,11 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai1",
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
   }, {
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai1",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -2778,11 +2858,11 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai1",
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
   }, {
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai1",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -2802,11 +2882,11 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai1",
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
   }, {
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai1",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -2826,11 +2906,11 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai1",
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
   }, {
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai1",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -2850,11 +2930,11 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai1",
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
   }, {
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai1",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -2874,11 +2954,11 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai1",
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
   }, {
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai1",
     "codeElementVersion" : 1,
     "passive" : false
   } ]
@@ -2898,11 +2978,11 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ {
-    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai1",
+    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
     "codeElementVersion" : 1,
     "passive" : false
   }, {
-    "codeElementUri" : "koskioppiaineetyleissivistava_ai",
+    "codeElementUri" : "oppiaineaidinkielijakirjallisuus_ai1",
     "codeElementVersion" : 1,
     "passive" : false
   } ]

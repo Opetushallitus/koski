@@ -1,6 +1,6 @@
 {
   "koodistoUri" : "tutkinnonosat",
-  "versio" : 1,
+  "versio" : 2,
   "metadata" : [ {
     "kieli" : "FI",
     "nimi" : "tutkinnon osat",
@@ -15,9 +15,17 @@
     "kuvaus" : "tutkinnon osat"
   } ],
   "codesGroupUri" : "http://koulutuskoodistot",
-  "voimassaAlkuPvm" : "2013-01-01",
+  "voimassaAlkuPvm" : "2018-03-02",
   "organisaatioOid" : "1.2.246.562.10.00000000001",
-  "withinCodes" : [ ],
+  "withinCodes" : [ {
+    "codesUri" : "koulutus",
+    "codesVersion" : 12,
+    "passive" : false
+  }, {
+    "codesUri" : "tutkintonimikkeet",
+    "codesVersion" : 2,
+    "passive" : false
+  } ],
   "tila" : "LUONNOS",
-  "version" : 307
+  "version" : 61
 }

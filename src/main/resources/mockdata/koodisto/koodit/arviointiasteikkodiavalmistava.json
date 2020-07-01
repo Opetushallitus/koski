@@ -4,6 +4,7 @@
   "metadata" : [ {
     "nimi" : "1",
     "lyhytNimi" : "1",
+    "kuvaus" : "Paras arvosana",
     "kieli" : "FI"
   } ],
   "versio" : 1,
@@ -64,6 +65,7 @@
   "metadata" : [ {
     "nimi" : "6",
     "lyhytNimi" : "6",
+    "kuvaus" : "Hylätty",
     "kieli" : "FI"
   } ],
   "versio" : 1,

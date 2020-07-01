@@ -3,9 +3,18 @@
   "koodiArvo" : "aikuistenperusopetuksenalkuvaiheenkurssi",
   "metadata" : [ {
     "nimi" : "Aikuisten perusopetuksen alkuvaiheen kurssi",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
+    "nimi" : "Kurs i inledningsskedet av grundläggande utbildning för vuxna",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Introductory phase to basic education for adults course",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -45,9 +54,18 @@
   "koodiArvo" : "aikuistenperusopetuksenoppiaine",
   "metadata" : [ {
     "nimi" : "Aikuisten perusopetuksen oppiaine",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
+    "nimi" : "Läroämne inom grundläggande utbildning för vuxna",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Basic education for adults subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -87,9 +105,18 @@
   "koodiArvo" : "ammatillinenkorkeakouluopintoja",
   "metadata" : [ {
     "nimi" : "Korkeakouluopintoja",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
+    "nimi" : "Högskolestudier",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Studies in higher education institution",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -99,9 +126,18 @@
   "koodiArvo" : "ammatillinenlukionopintoja",
   "metadata" : [ {
     "nimi" : "Lukionopintoja",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
+    "nimi" : "Läroämne eller kurs i gymnasiet",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Studies in general upper secondary education",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -111,9 +147,18 @@
   "koodiArvo" : "ammatillinenmuitaopintovalmiuksiatukeviaopintoja",
   "metadata" : [ {
     "nimi" : "Muita opintovalmiuksia tukevia opintoja",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
+    "nimi" : "Andra studier som stödjer studiefärdigheter",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Other studies supporting learning skills",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -183,9 +228,18 @@
   "koodiArvo" : "ammatillisentutkinnonosanosaalue",
   "metadata" : [ {
     "nimi" : "Ammatillisen tutkinnon osan osa-alue",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
+    "nimi" : "Delområde av en gemensam examendel",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Section of vocational qualification unit",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -220,6 +274,11 @@
     "kuvaus" : "",
     "kieli" : "FI"
   }, {
+    "nimi" : "Termin i examensstudier i DIA-läroämne",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
     "nimi" : "DIA subject  qualification phase term",
     "lyhytNimi" : "",
     "kuvaus" : "",
@@ -235,6 +294,11 @@
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Termin som förbereder för DIA-läroämne",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   }, {
     "nimi" : "DIA subject preparatory phase term",
     "lyhytNimi" : "",
@@ -252,7 +316,12 @@
     "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "DIA subject final test",
+    "nimi" : "Slutexamensprov i DIA-läroämne",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "Final test in DIA subject",
     "lyhytNimi" : "",
     "kuvaus" : "",
     "kieli" : "EN"
@@ -264,9 +333,18 @@
   "koodiArvo" : "diatutkintovaihe",
   "metadata" : [ {
     "nimi" : "DIA-tutkintovaihe",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
+    "nimi" : "DIA-examen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Deutsches Internationales Abitur qualification phase ",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -276,9 +354,18 @@
   "koodiArvo" : "diavalmistavavaihe",
   "metadata" : [ {
     "nimi" : "Valmistava DIA-vaihe",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
+    "nimi" : "Förberedande DIA-studier",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
     "nimi" : "Deutsches Internationales Abitur preparatory phase ",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -384,6 +471,164 @@
     "kieli" : "SV"
   }, {
     "nimi" : "International Baccalaureate Diploma",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_internationalschoolcorerequirements",
+  "koodiArvo" : "internationalschoolcorerequirements",
+  "metadata" : [ {
+    "nimi" : "International school core requirements oppiaine",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "International school core requirements läroämne",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "International school core requirements subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_internationalschooldiplomaoppiaine",
+  "koodiArvo" : "internationalschooldiplomaoppiaine",
+  "metadata" : [ {
+    "nimi" : "International school diploma oppiaine",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "International school diploma läroämne",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "International school diploma subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_internationalschooldiplomavuosiluokka",
+  "koodiArvo" : "internationalschooldiplomavuosiluokka",
+  "metadata" : [ {
+    "nimi" : "International school diploma vuosiluokka",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "International school diploma årskurs",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "International school diploma class",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_internationalschoolmypoppiaine",
+  "koodiArvo" : "internationalschoolmypoppiaine",
+  "metadata" : [ {
+    "nimi" : "International school MYP oppiaine",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "International school MYP läroämne",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_internationalschoolmypvuosiluokka",
+  "koodiArvo" : "internationalschoolmypvuosiluokka",
+  "metadata" : [ {
+    "nimi" : "International school MYP vuosiluokka",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "International school MYP årskurs",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "International school MYP class",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_internationalschooloppiaine",
+  "koodiArvo" : "internationalschooloppiaine",
+  "metadata" : [ {
+    "nimi" : "International school oppiaine",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "International school läroämne",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "International school subject",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "EN"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_internationalschoolpypoppiaine",
+  "koodiArvo" : "internationalschoolpypoppiaine",
+  "metadata" : [ {
+    "nimi" : "International school PYP oppiaine",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "International school PYP läroämne",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
+  "koodiUri" : "suorituksentyyppi_internationalschoolpypvuosiluokka",
+  "koodiArvo" : "internationalschoolpypvuosiluokka",
+  "metadata" : [ {
+    "nimi" : "International school PYP vuosiluokka",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "International school PYP årskurs",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  }, {
+    "nimi" : "International school PYP class",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -528,12 +773,18 @@
   "koodiArvo" : "luvalukionoppiaine",
   "metadata" : [ {
     "nimi" : "Lukion oppiaineen opinnnot osana lukioon valmistavaa koulutusta",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
-    "nimi" : "Studier i ett läroämne i gymnasiet som en del av förberedande utbildning för gymnasieutbildning?",
+    "nimi" : "Studier i ett läroämne i gymnasiet som en del av förberedande utbildning för gymnasieutbildning",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   }, {
     "nimi" : "Upper secondary school subject as part of instruction preparing for general upper secondary education ",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
@@ -558,7 +809,14 @@
   "koodiArvo" : "muuammatillinenkoulutus",
   "metadata" : [ {
     "nimi" : "Muun ammatillisen koulutuksen suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Avläggande av övrig yrkesutbildning",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -582,7 +840,14 @@
   "koodiArvo" : "muunammatillisenkoulutuksenosasuoritus",
   "metadata" : [ {
     "nimi" : "Muun ammatillisen koulutuksen osasuoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Avläggande av delprestation inom övrig yrkesutbildning",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -646,8 +911,7 @@
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
-},
-  {
+}, {
   "koodiUri" : "suorituksentyyppi_perusopetukseenvalmistavanopetuksenoppiaine",
   "koodiArvo" : "perusopetukseenvalmistavanopetuksenoppiaine",
   "metadata" : [ {
@@ -659,15 +923,6 @@
   }, {
     "nimi" : "Instruction preparing for basic education subject",
     "kieli" : "EN"
-  } ],
-  "versio" : 1,
-  "withinCodeElements" : [ ]
-}, {
-  "koodiUri" : "suorituksentyyppi_perusopetuksenoppiaineperusopetukseenvalmistavassaopetuksessa",
-  "koodiArvo" : "perusopetuksenoppiaineperusopetukseenvalmistavassaopetuksessa",
-  "metadata" : [ {
-    "nimi" : "Perusopetuksen oppiaine perusopetukseen valmistavassa opetuksessa",
-    "kieli" : "FI"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -762,6 +1017,22 @@
   "versio" : 1,
   "withinCodeElements" : [ ]
 }, {
+  "koodiUri" : "suorituksentyyppi_perusopetuksenoppiaineperusopetukseenvalmistavassaopetuksessa",
+  "koodiArvo" : "perusopetuksenoppiaineperusopetukseenvalmistavassaopetuksessa",
+  "metadata" : [ {
+    "nimi" : "Perusopetuksen oppiaine perusopetukseen valmistavassa opetuksessa",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "Studier i ett läroämne i grundläggande utbildning som är del av förberedande undervisning för grundläggande utbildning",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1,
+  "withinCodeElements" : [ ]
+}, {
   "koodiUri" : "suorituksentyyppi_perusopetuksenoppimaara",
   "koodiArvo" : "perusopetuksenoppimaara",
   "metadata" : [ {
@@ -796,88 +1067,23 @@
   "koodiArvo" : "perusopetuksenvuosiluokka",
   "metadata" : [ {
     "nimi" : "Perusopetuksen vuosiluokka",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
   }, {
     "nimi" : "Årskurs i grundläggande utbildning",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "SV"
   }, {
-    "nimi" : "Basic education grade",
+    "nimi" : "Basic education class",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "EN"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
-},
-  {
-    "koodiUri" : "suorituksentyyppi_internationalschoolpypvuosiluokka",
-    "koodiArvo" : "internationalschoolpypvuosiluokka",
-    "metadata" : [ {
-      "nimi" : "International school PYP vuosiluokka",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1,
-    "withinCodeElements" : [ ]
-  },
-  {
-    "koodiUri" : "suorituksentyyppi_internationalschoolmypvuosiluokka",
-    "koodiArvo" : "internationalschoolmypvuosiluokka",
-    "metadata" : [ {
-      "nimi" : "International school MYP vuosiluokka",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1,
-    "withinCodeElements" : [ ]
-  },
-  {
-    "koodiUri" : "suorituksentyyppi_internationalschooldiplomavuosiluokka",
-    "koodiArvo" : "internationalschooldiplomavuosiluokka",
-    "metadata" : [ {
-      "nimi" : "International school diploma vuosiluokka",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1,
-    "withinCodeElements" : [ ]
-  },
-  {
-    "koodiUri" : "suorituksentyyppi_internationalschoolmypoppiaine",
-    "koodiArvo" : "internationalschoolmypoppiaine",
-    "metadata" : [ {
-      "nimi" : "International school MYP oppiaine",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1,
-    "withinCodeElements" : [ ]
-  },
-  {
-    "koodiUri" : "suorituksentyyppi_internationalschoolpypoppiaine",
-    "koodiArvo" : "internationalschoolpypoppiaine",
-    "metadata" : [ {
-      "nimi" : "International school PYP oppiaine",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1,
-    "withinCodeElements" : [ ]
-  },
-  {
-    "koodiUri" : "suorituksentyyppi_internationalschooldiplomaoppiaine",
-    "koodiArvo" : "internationalschooldiplomaoppiaine",
-    "metadata" : [ {
-      "nimi" : "International school diploma oppiaine",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1,
-    "withinCodeElements" : [ ]
-  },
-  {
-    "koodiUri" : "suorituksentyyppi_internationalschoolcorerequirements",
-    "koodiArvo" : "internationalschoolcorerequirements",
-    "metadata" : [ {
-      "nimi" : "International school core requirements oppiaine",
-      "kieli" : "FI"
-    } ],
-    "versio" : 1,
-    "withinCodeElements" : [ ]
-  },
-  {
+}, {
   "koodiUri" : "suorituksentyyppi_preibkurssi",
   "koodiArvo" : "preibkurssi",
   "metadata" : [ {
@@ -957,7 +1163,14 @@
   "koodiArvo" : "tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus",
   "metadata" : [ {
     "nimi" : "Tutkinnon osaa pienemmistä kokonaisuuksista koostuva suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Prestation som består av helheter som är mindre än en examensdel",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]
@@ -966,7 +1179,14 @@
   "koodiArvo" : "tutkinnonosaapienempikokonaisuus",
   "metadata" : [ {
     "nimi" : "Tutkinnon osaa pienemmän kokonaisuuden suoritus",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
     "kieli" : "FI"
+  }, {
+    "nimi" : "Helhet som är mindre än en del av yrkesexamen",
+    "lyhytNimi" : "",
+    "kuvaus" : "",
+    "kieli" : "SV"
   } ],
   "versio" : 1,
   "withinCodeElements" : [ ]

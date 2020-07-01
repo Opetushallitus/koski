@@ -1,272 +1,79 @@
-[
-  {
-    "koodiUri": "oppilaitoksenopetuskieli_1",
-    "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codeelement/oppilaitoksenopetuskieli_1",
-    "version": 1,
-    "versio": 1,
-    "koodisto": {
-      "koodistoUri": "oppilaitoksenopetuskieli",
-      "organisaatioOid": "1.2.246.562.10.00000000001",
-      "koodistoVersios": [
-        1
-      ]
-    },
-    "koodiArvo": "1",
-    "paivitysPvm": 1517915529475,
-    "paivittajaOid": null,
-    "voimassaAlkuPvm": "1990-01-01",
-    "voimassaLoppuPvm": null,
-    "tila": "HYVAKSYTTY",
-    "metadata": [
-      {
-        "nimi": "finska",
-        "kuvaus": "finska",
-        "lyhytNimi": "finska",
-        "kayttoohje": null,
-        "kasite": null,
-        "sisaltaaMerkityksen": null,
-        "eiSisallaMerkitysta": null,
-        "huomioitavaKoodi": null,
-        "sisaltaaKoodiston": null,
-        "kieli": "SV"
-      },
-      {
-        "nimi": "suomi",
-        "kuvaus": "suomi",
-        "lyhytNimi": "suomi",
-        "kayttoohje": null,
-        "kasite": null,
-        "sisaltaaMerkityksen": null,
-        "eiSisallaMerkitysta": null,
-        "huomioitavaKoodi": null,
-        "sisaltaaKoodiston": null,
-        "kieli": "FI"
-      }
-    ]
-  },
-  {
-    "koodiUri": "oppilaitoksenopetuskieli_5",
-    "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codeelement/oppilaitoksenopetuskieli_5",
-    "version": 1,
-    "versio": 1,
-    "koodisto": {
-      "koodistoUri": "oppilaitoksenopetuskieli",
-      "organisaatioOid": "1.2.246.562.10.00000000001",
-      "koodistoVersios": [
-        1
-      ]
-    },
-    "koodiArvo": "5",
-    "paivitysPvm": 1517915529475,
-    "paivittajaOid": null,
-    "voimassaAlkuPvm": "1990-01-05",
-    "voimassaLoppuPvm": null,
-    "tila": "HYVAKSYTTY",
-    "metadata": [
-      {
-        "nimi": "samiska",
-        "kuvaus": "samiska",
-        "lyhytNimi": "samiska",
-        "kayttoohje": null,
-        "kasite": null,
-        "sisaltaaMerkityksen": null,
-        "eiSisallaMerkitysta": null,
-        "huomioitavaKoodi": null,
-        "sisaltaaKoodiston": null,
-        "kieli": "SV"
-      },
-      {
-        "nimi": "saame",
-        "kuvaus": "saame",
-        "lyhytNimi": "saame",
-        "kayttoohje": null,
-        "kasite": null,
-        "sisaltaaMerkityksen": null,
-        "eiSisallaMerkitysta": null,
-        "huomioitavaKoodi": null,
-        "sisaltaaKoodiston": null,
-        "kieli": "FI"
-      }
-    ]
-  },
-  {
-    "koodiUri": "oppilaitoksenopetuskieli_2",
-    "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codeelement/oppilaitoksenopetuskieli_2",
-    "version": 1,
-    "versio": 1,
-    "koodisto": {
-      "koodistoUri": "oppilaitoksenopetuskieli",
-      "organisaatioOid": "1.2.246.562.10.00000000001",
-      "koodistoVersios": [
-        1
-      ]
-    },
-    "koodiArvo": "2",
-    "paivitysPvm": 1517915529475,
-    "paivittajaOid": null,
-    "voimassaAlkuPvm": "1990-01-02",
-    "voimassaLoppuPvm": null,
-    "tila": "HYVAKSYTTY",
-    "metadata": [
-      {
-        "nimi": "svenska",
-        "kuvaus": "svenska",
-        "lyhytNimi": "svenska",
-        "kayttoohje": null,
-        "kasite": null,
-        "sisaltaaMerkityksen": null,
-        "eiSisallaMerkitysta": null,
-        "huomioitavaKoodi": null,
-        "sisaltaaKoodiston": null,
-        "kieli": "SV"
-      },
-      {
-        "nimi": "ruotsi",
-        "kuvaus": "ruotsi",
-        "lyhytNimi": "ruotsi",
-        "kayttoohje": null,
-        "kasite": null,
-        "sisaltaaMerkityksen": null,
-        "eiSisallaMerkitysta": null,
-        "huomioitavaKoodi": null,
-        "sisaltaaKoodiston": null,
-        "kieli": "FI"
-      }
-    ]
-  },
-  {
-    "koodiUri": "oppilaitoksenopetuskieli_9",
-    "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codeelement/oppilaitoksenopetuskieli_9",
-    "version": 1,
-    "versio": 1,
-    "koodisto": {
-      "koodistoUri": "oppilaitoksenopetuskieli",
-      "organisaatioOid": "1.2.246.562.10.00000000001",
-      "koodistoVersios": [
-        1
-      ]
-    },
-    "koodiArvo": "9",
-    "paivitysPvm": 1517915529475,
-    "paivittajaOid": null,
-    "voimassaAlkuPvm": "1990-01-06",
-    "voimassaLoppuPvm": null,
-    "tila": "HYVAKSYTTY",
-    "metadata": [
-      {
-        "nimi": "muu",
-        "kuvaus": "muu",
-        "lyhytNimi": "muu",
-        "kayttoohje": null,
-        "kasite": null,
-        "sisaltaaMerkityksen": null,
-        "eiSisallaMerkitysta": null,
-        "huomioitavaKoodi": null,
-        "sisaltaaKoodiston": null,
-        "kieli": "FI"
-      },
-      {
-        "nimi": "annat",
-        "kuvaus": "annat",
-        "lyhytNimi": "annat",
-        "kayttoohje": null,
-        "kasite": null,
-        "sisaltaaMerkityksen": null,
-        "eiSisallaMerkitysta": null,
-        "huomioitavaKoodi": null,
-        "sisaltaaKoodiston": null,
-        "kieli": "SV"
-      }
-    ]
-  },
-  {
-    "koodiUri": "oppilaitoksenopetuskieli_4",
-    "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codeelement/oppilaitoksenopetuskieli_4",
-    "version": 1,
-    "versio": 1,
-    "koodisto": {
-      "koodistoUri": "oppilaitoksenopetuskieli",
-      "organisaatioOid": "1.2.246.562.10.00000000001",
-      "koodistoVersios": [
-        1
-      ]
-    },
-    "koodiArvo": "4",
-    "paivitysPvm": 1517915529475,
-    "paivittajaOid": null,
-    "voimassaAlkuPvm": "1990-01-04",
-    "voimassaLoppuPvm": null,
-    "tila": "HYVAKSYTTY",
-    "metadata": [
-      {
-        "nimi": "englanti",
-        "kuvaus": "englanti",
-        "lyhytNimi": "englanti",
-        "kayttoohje": null,
-        "kasite": null,
-        "sisaltaaMerkityksen": null,
-        "eiSisallaMerkitysta": null,
-        "huomioitavaKoodi": null,
-        "sisaltaaKoodiston": null,
-        "kieli": "FI"
-      },
-      {
-        "nimi": "engelska",
-        "kuvaus": "engelska",
-        "lyhytNimi": "engelska",
-        "kayttoohje": null,
-        "kasite": null,
-        "sisaltaaMerkityksen": null,
-        "eiSisallaMerkitysta": null,
-        "huomioitavaKoodi": null,
-        "sisaltaaKoodiston": null,
-        "kieli": "SV"
-      }
-    ]
-  },
-  {
-    "koodiUri": "oppilaitoksenopetuskieli_3",
-    "resourceUri": "https://virkailija.opintopolku.fi/koodisto-service/rest/codeelement/oppilaitoksenopetuskieli_3",
-    "version": 1,
-    "versio": 1,
-    "koodisto": {
-      "koodistoUri": "oppilaitoksenopetuskieli",
-      "organisaatioOid": "1.2.246.562.10.00000000001",
-      "koodistoVersios": [
-        1
-      ]
-    },
-    "koodiArvo": "3",
-    "paivitysPvm": 1517915529475,
-    "paivittajaOid": null,
-    "voimassaAlkuPvm": "1990-01-03",
-    "voimassaLoppuPvm": null,
-    "tila": "HYVAKSYTTY",
-    "metadata": [
-      {
-        "nimi": "suomi/ruotsi",
-        "kuvaus": "suomi/ruotsi",
-        "lyhytNimi": "suomi/ruotsi",
-        "kayttoohje": null,
-        "kasite": null,
-        "sisaltaaMerkityksen": null,
-        "eiSisallaMerkitysta": null,
-        "huomioitavaKoodi": null,
-        "sisaltaaKoodiston": null,
-        "kieli": "FI"
-      },
-      {
-        "nimi": "finska/svenska",
-        "kuvaus": "finska/svenska",
-        "lyhytNimi": "finska/svenska",
-        "kayttoohje": null,
-        "kasite": null,
-        "sisaltaaMerkityksen": null,
-        "eiSisallaMerkitysta": null,
-        "huomioitavaKoodi": null,
-        "sisaltaaKoodiston": null,
-        "kieli": "SV"
-      }
-    ]
-  }
-]
+[ {
+  "koodiUri" : "oppilaitoksenopetuskieli_1",
+  "koodiArvo" : "1",
+  "metadata" : [ {
+    "nimi" : "suomi",
+    "lyhytNimi" : "suomi",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "finska",
+    "lyhytNimi" : "finska",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitoksenopetuskieli_2",
+  "koodiArvo" : "2",
+  "metadata" : [ {
+    "nimi" : "ruotsi",
+    "lyhytNimi" : "ruotsi",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "svenska",
+    "lyhytNimi" : "svenska",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitoksenopetuskieli_3",
+  "koodiArvo" : "3",
+  "metadata" : [ {
+    "nimi" : "suomi/ruotsi",
+    "lyhytNimi" : "suomi/ruotsi",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "finska/svenska",
+    "lyhytNimi" : "finska/svenska",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitoksenopetuskieli_4",
+  "koodiArvo" : "4",
+  "metadata" : [ {
+    "nimi" : "englanti",
+    "lyhytNimi" : "englanti",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "engelska",
+    "lyhytNimi" : "engelska",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitoksenopetuskieli_5",
+  "koodiArvo" : "5",
+  "metadata" : [ {
+    "nimi" : "saame",
+    "lyhytNimi" : "saame",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "samiska",
+    "lyhytNimi" : "samiska",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+}, {
+  "koodiUri" : "oppilaitoksenopetuskieli_9",
+  "koodiArvo" : "9",
+  "metadata" : [ {
+    "nimi" : "muu",
+    "lyhytNimi" : "muu",
+    "kieli" : "FI"
+  }, {
+    "nimi" : "annat",
+    "lyhytNimi" : "annat",
+    "kieli" : "SV"
+  } ],
+  "versio" : 1
+} ]
