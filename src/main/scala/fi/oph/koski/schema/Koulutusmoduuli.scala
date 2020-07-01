@@ -13,14 +13,14 @@ trait Koulutusmoduuli extends Localized {
   def isTutkinto = false
   // Vertailutekijä tarkistettaessa duplikaatteja
   def identiteetti: AnyRef = tunniste
-  def getLaajuus: Option[Laajuus]
+  def getLaajuus: Option[Laajuus] = None
   def laajuusArvo(default: Double): Double =
     getLaajuus.map(_.arvo).getOrElse(default)
 }
 
 trait KoulutusmoduuliPakollinenLaajuus extends Koulutusmoduuli {
   def laajuus: Laajuus
-  def getLaajuus: Option[Laajuus] = Some(laajuus)
+  override def getLaajuus: Option[Laajuus] = Some(laajuus)
 
   final def withLaajuus(laajuus: Laajuus): KoulutusmoduuliPakollinenLaajuus = {
     import mojave._
@@ -30,7 +30,7 @@ trait KoulutusmoduuliPakollinenLaajuus extends Koulutusmoduuli {
 
 trait KoulutusmoduuliValinnainenLaajuus extends Koulutusmoduuli {
   def laajuus: Option[Laajuus]
-  def getLaajuus: Option[Laajuus] = laajuus
+  override def getLaajuus: Option[Laajuus] = laajuus
 }
 
 trait KoodistostaLöytyväKoulutusmoduuli extends Koulutusmoduuli {
