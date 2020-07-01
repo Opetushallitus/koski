@@ -39,7 +39,7 @@ case class LukionOppimääränSuoritus2019(
 @Description("Lukion oppiaineiden oppimäärien suoritustiedot 2019")
 case class LukionOppiaineidenOppimäärienSuoritus2019(
   @Title("Oppiaine")
-  koulutusmoduuli: LukionOppiaineidenOppimäärät2019,
+  koulutusmoduuli: LukionOppiaineidenOppimäärät2019 = LukionOppiaineidenOppimäärät2019(),
   toimipiste: OrganisaatioWithOid,
   suorituskieli: Koodistokoodiviite,
   @Description("Merkitään, jos lukion oppimäärä on tullut suoritetuksi aineopintoina.")
@@ -64,31 +64,20 @@ case class LukionOppiaineidenOppimäärienSuoritus2019(
 // TODO: Mitä tämän pitäisi sisältää oppiaineiden oppimäärien suoritukset ryhmittelevässä päätason suorituksessa?
 @Title("Lukion oppiaineiden oppimäärät 2019")
 case class LukionOppiaineidenOppimäärät2019(
-  tunniste: LukionOppiaineidenOppimäärätKoodi2019,
-  laajuus: Option[Laajuus] = None,
-  nimi: LocalizedString
-) extends KoulutusmoduuliValinnainenLaajuus
+  tunniste: LukionOppiaineidenOppimäärätKoodi2019 = LukionOppiaineidenOppimäärätKoodi2019(),
+  nimi: LocalizedString =  LocalizedString.finnish("Oppiaineiden oppimäärät")
+) extends Koulutusmoduuli
 
 @Title("Lukion oppiaineiden oppimäärät -koodi 2019")
-@Description("Koodi, jota käytetään sisäisesti lukion oppiaineiden oppimäärien ryhmittelyssä 2019")
+@Description("Koodi, jota käytetään lukion oppiaineiden oppimäärien ryhmittelyssä 2019")
 case class LukionOppiaineidenOppimäärätKoodi2019(
-  @Description("Merkkijono sisällöllä \"Oppiaineiden oppimäärät\"")
+  @Description("Merkkijono sisällöllä \"lukionoppiaineidenoppimaarat2019\"")
   @Title("Tunniste")
-  @DefaultValue("Oppiaineiden oppimäärät")
-  koodiarvo: String = "Oppiaineiden oppimäärät",
+  koodiarvo: String = "lukionoppiaineidenoppimaarat2019",
   @Description("Merkkijono sisällöllä \"Oppiaineiden oppimäärät\"")
   @DefaultValue("Oppiaineiden oppimäärät")
-  @Representative
   nimi: LocalizedString = LocalizedString.finnish("Oppiaineiden oppimäärät"),
-  @Description("Tyhjä")
-  @Title("Koodisto-URI")
-  @DefaultValue(None)
-  koodistoUri: Option[String] = None
-) extends KoodiViite {
-  override def toString = s"$koodiarvo (${nimi.get("fi")})"
-  def getNimi = Some(nimi)
-  def description: LocalizedString = nimi
-}
+) extends PaikallinenKoodiviite
 
 trait LukionOppimääränOsasuoritus2019 extends LukionOppimääränPäätasonOsasuoritus
 
