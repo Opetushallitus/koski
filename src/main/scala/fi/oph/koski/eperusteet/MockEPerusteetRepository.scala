@@ -12,6 +12,8 @@ object MockEPerusteetRepository extends EPerusteetRepository {
     "rakenne-perusopetus",
     "rakenne-aikuisten-perusopetus2017",
     "rakenne-lukio",
+    "rakenne-lukio-2019",
+    "rakenne-aikuisten-lukio-2019",
     "rakenne-hiusalan-perustutkinto",
     "rakenne-puutarhatalouden-perustutkinto",
     "rakenne-automekaanikon-erikoisammattitutkinto",
