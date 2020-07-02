@@ -30,6 +30,7 @@ const SelectedTab = ({ selectedTabAtom, oppija }) => (
     }
   }))
 )
+
 const TabLink = ({ text, type, selectedTabAtom }) => {
   return fromBacon(selectedTabAtom.map(selectedTab => {
     const classNames = buildClassNames([
@@ -46,7 +47,7 @@ const TabLink = ({ text, type, selectedTabAtom }) => {
 }
 
 const TabsContainer = ({ oppija }) => {
-  const selectedTabAtom = Atom(TabTypes.JAKOLINKIT)
+  const selectedTabAtom = Atom(TabTypes.OPINTONI)
   return (
     <>
       <div className='omat-tiedot-tab-selectors'>
