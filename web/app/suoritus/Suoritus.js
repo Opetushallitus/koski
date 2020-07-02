@@ -57,6 +57,7 @@ export const suoritusTitle = (suoritus) => {
   let title = modelTitle(tutkinnonNimi(modelLookup(suoritus, 'koulutusmoduuli')))
   switch(suorituksenTyyppi(suoritus)) {
     case 'ammatillinentutkintoosittainen': return title + t(', osittainen')
+    case 'lukionoppiaineidenoppimaarat2019':
     case 'aikuistenperusopetuksenoppimaara': return modelTitle(suoritus, 'tyyppi')
     default: return title
   }
