@@ -12,19 +12,19 @@ case class LukionOppimääränSuoritus(
   @Title("Opetussuunnitelma")
   oppimäärä: Koodistokoodiviite,
   toimipiste: OrganisaatioWithOid,
-  val vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
+  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   @Description("Oppimäärän suorituksen opetuskieli/suorituskieli. Rahoituksen laskennassa käytettävä tieto.")
   suorituskieli: Koodistokoodiviite,
   @Tooltip("Osallistuminen lukiokoulutusta täydentävän saamen/romanikielen/opiskelijan oman äidinkielen opiskeluun")
-  val omanÄidinkielenOpinnot: Option[OmanÄidinkielenOpinnotLaajuusKursseina] = None,
+  omanÄidinkielenOpinnot: Option[OmanÄidinkielenOpinnotLaajuusKursseina] = None,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
   override val osasuoritukset: Option[List[LukionOppimääränOsasuoritus]],
   @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("lukionoppimaara")
-  val tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"),
-  val ryhmä: Option[String] = None
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"),
+  ryhmä: Option[String] = None
 ) extends LukionPäätasonSuoritus with Todistus with Arvioinniton with Ryhmällinen with KoulusivistyskieliKieliaineesta
 
 @Description("Lukion oppiaineen oppimäärän suoritustiedot")
