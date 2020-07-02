@@ -23,7 +23,7 @@ case class LukionOppimääränSuoritus2019(
   suorituskieli: Koodistokoodiviite,
   @Tooltip("Osallistuminen lukiokoulutusta täydentävän saamen/romanikielen/opiskelijan oman äidinkielen opiskeluun")
   omanÄidinkielenOpinnot: Option[OmanÄidinkielenOpinnotLaajuusOpintopisteinä] = None,
-  puhviKoe: Option[PuhviKoe2019] = None,
+  puhviKoe: Option[LukionArviointi] = None,
   suullisenKielitaidonKokeet: Option[List[SuullisenKielitaidonKoe2019]] = None,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
@@ -45,7 +45,7 @@ case class LukionOppiaineidenOppimäärienSuoritus2019(
   @Description("Merkitään, jos lukion oppimäärä on tullut suoritetuksi aineopintoina.")
   @DefaultValue(false)
   lukionOppimääräSuoritettu: Boolean = false,
-  puhviKoe: Option[PuhviKoe2019] = None,
+  puhviKoe: Option[LukionArviointi] = None,
   suullisenKielitaidonKokeet: Option[List[SuullisenKielitaidonKoe2019]] = None,
   @Description("Oppiaineiden suoritukset")
   @Title("Oppiaineet")
@@ -316,43 +316,35 @@ trait SuoritettavissaErityisenäTutkintona2019 {
 trait PuhviKokeellinen2019 {
   @DefaultValue(None)
   @Title("Puhvi-koe")
-  def puhviKoe: Option[PuhviKoe2019]
+  @Description("Toisen asteen puheviestintätaitojen päättökoe")
+  def puhviKoe: Option[LukionArviointi]
 }
-
-@Title("Puhvi-koe")
-@Description("Toisen asteen puheviestintätaitojen päättökoe")
-case class PuhviKoe2019(
-  arviointi: LukionArviointi
-)
 
 trait SuullisenKielitaidonKokeellinen2019 {
   @DefaultValue(None)
   def suullisenKielitaidonKokeet: Option[List[SuullisenKielitaidonKoe2019]]
 }
 
-@Title("Suullisen kielitaidon koe")
-case class SuullisenKielitaidonKoe2019(
+trait SuullisenKielitaidonKoe2019 extends ArviointiPäivämäärällä {
   @KoodistoUri("kieli")
-  kieli: Koodistokoodiviite,
-  arviointi: SuullisenKielitaidonKokeenArviointi2019
-)
-
-trait SuullisenKielitaidonKokeenArviointi2019 extends ArviointiPäivämäärällä {
+  def kieli: Koodistokoodiviite
   @KoodistoUri("arviointiasteikkosuullisenkielitaidonkoetaitotaso")
   def taitotaso: Koodistokoodiviite
 }
 
-@Title("Numeerinen suullisen kielitaidon kokeen arviointi")
-case class NumeerinenSuullisenKielitaidonKokeenArviointi2019(
+@Title("Numeerisesti arvioitu suullisen kielitaidon koe")
+case class NumeerinenSuullisenKielitaidonKoe2019(
+  kieli: Koodistokoodiviite,
   arvosana: Koodistokoodiviite,
   taitotaso: Koodistokoodiviite,
   päivä: LocalDate
-) extends SuullisenKielitaidonKokeenArviointi2019 with NumeerinenYleissivistävänKoulutuksenArviointi
+) extends SuullisenKielitaidonKoe2019 with NumeerinenYleissivistävänKoulutuksenArviointi
 
-@Title("Sanallinen suullisen kielitaidon kokeen arviointi")
-case class SanallinenSuullisenKielitaidonKokeenArviointi2019(
+@Title("Sanallisesti arvioitu suullisen kielitaidon koe")
+case class SanallinenSuullisenKielitaidonKoe2019(
+  kieli: Koodistokoodiviite,
   arvosana: Koodistokoodiviite = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
   taitotaso: Koodistokoodiviite,
   kuvaus: Option[LocalizedString],
   päivä: LocalDate
-) extends SuullisenKielitaidonKokeenArviointi2019 with SanallinenYleissivistävänKoulutuksenArviointi
+) extends SuullisenKielitaidonKoe2019 with SanallinenYleissivistävänKoulutuksenArviointi
