@@ -35,7 +35,7 @@ export const KoulutusmoduuliEditor = ({model}) => {
 const TunnisteEditor = ({model}) => {
   const overrideEdit = model.context.editAll ? true : false
   const tyyppi = suorituksenTyyppi(model.context.suoritus)
-  return ['aikuistenperusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaaranalkuvaihe'].includes(tyyppi)
+  return ['aikuistenperusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaaranalkuvaihe', 'lukionoppiaineidenoppimaarat2019'].includes(tyyppi)
     ? <Editor model={model.context.suoritus} path="tyyppi" edit={false}/>
     : <React.Fragment><Editor model={tutkinnonNimi(model)} edit={overrideEdit}/><InternationalSchoolLevel model={model} /></React.Fragment>
 }

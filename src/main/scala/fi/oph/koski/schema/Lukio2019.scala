@@ -3,7 +3,7 @@ package fi.oph.koski.schema
 import java.time.LocalDate
 
 import fi.oph.koski.schema.annotation._
-import fi.oph.scalaschema.annotation.{DefaultValue, Description, Discriminator, MinItems, Title}
+import fi.oph.scalaschema.annotation._
 
 trait LukionPäätasonSuoritus2019 extends LukionPäätasonSuoritus with Todistus with Arvioinniton with PuhviKokeellinen2019 with SuullisenKielitaidonKokeellinen2019
 
@@ -38,9 +38,10 @@ case class LukionOppimääränSuoritus2019(
 @Title("Lukion oppiaineiden oppimäärien suoritus 2019")
 @Description("Lukion oppiaineiden oppimäärien suoritustiedot 2019")
 case class LukionOppiaineidenOppimäärienSuoritus2019(
-  @Title("Oppiaine")
-  koulutusmoduuli: LukionOppiaineidenOppimäärät2019 = LukionOppiaineidenOppimäärät2019(),
+  @Title("Koulutus")
+  koulutusmoduuli: LukionOppiaineidenOppimäärät2019,
   toimipiste: OrganisaatioWithOid,
+  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
   @Description("Merkitään, jos lukion oppimäärä on tullut suoritetuksi aineopintoina.")
   @DefaultValue(false)
@@ -54,30 +55,23 @@ case class LukionOppiaineidenOppimäärienSuoritus2019(
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("lukionoppiaineidenoppimaarat2019")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppiaineidenoppimaarat2019", koodistoUri = "suorituksentyyppi"),
-) extends LukionPäätasonSuoritus2019 {
-  // TODO: Päätason suorituksesta ei voi tehdä Vahvistukseton:ta, siksi korvattu tässä. Tämä voi aiheuttaa
-  // ongelmia todistusten luonnissa tms., ratkaise ne sitten. Voi olla, että tämän pitäisi päätellä arvonsa
-  // osasuorituksista.
-  override def vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None
-}
+) extends LukionPäätasonSuoritus2019
 
-// TODO: Mitä tämän pitäisi sisältää oppiaineiden oppimäärien suoritukset ryhmittelevässä päätason suorituksessa?
 @Title("Lukion oppiaineiden oppimäärät 2019")
 case class LukionOppiaineidenOppimäärät2019(
+  @Hidden
   tunniste: LukionOppiaineidenOppimäärätKoodi2019 = LukionOppiaineidenOppimäärätKoodi2019(),
-  nimi: LocalizedString =  LocalizedString.finnish("Oppiaineiden oppimäärät")
-) extends Koulutusmoduuli
+  perusteenDiaarinumero: Option[String]
+) extends Koulutusmoduuli {
+  override def nimi: LocalizedString = LocalizedString.empty
+}
 
-@Title("Lukion oppiaineiden oppimäärät -koodi 2019")
-@Description("Koodi, jota käytetään lukion oppiaineiden oppimäärien ryhmittelyssä 2019")
+@Description("Koodi, jota käytetään lukion oppiaineiden oppimäärien ryhmittelyssä 2019.")
 case class LukionOppiaineidenOppimäärätKoodi2019(
-  @Description("Merkkijono sisällöllä \"lukionoppiaineidenoppimaarat2019\"")
-  @Title("Tunniste")
-  koodiarvo: String = "lukionoppiaineidenoppimaarat2019",
-  @Description("Merkkijono sisällöllä \"Oppiaineiden oppimäärät\"")
-  @DefaultValue("Oppiaineiden oppimäärät")
-  nimi: LocalizedString = LocalizedString.finnish("Oppiaineiden oppimäärät"),
-) extends PaikallinenKoodiviite
+  koodiarvo: String = "lukionoppiaineidenoppimaarat2019"
+) extends PaikallinenKoodiviite {
+  override def nimi: LocalizedString = LocalizedString.empty
+}
 
 trait LukionOppimääränOsasuoritus2019 extends LukionOppimääränPäätasonOsasuoritus
 

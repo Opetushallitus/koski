@@ -5,7 +5,7 @@ import Dropdown from '../components/Dropdown'
 
 
 export const TunnisteenKoodiarvoEditor = ({model}) => {
-  if (model.context.kansalainen || !diaarinumerollinen(model)) return null
+  if (hideTunnisteenKoodiarvo(model)) return null
 
   const koulutuksetDiaarinumerolleP = fetchKoulutuksetDiaarille(modelData(model, 'perusteenDiaarinumero')).map(obs => obs.map(k => k.data))
   const tunnisteModel = modelLookup(model, 'tunniste')
@@ -32,6 +32,10 @@ const TutkintoKoodiDropdown = ({options, onSelectionChanged, selected}) => (
             keyValue={k => k.koodiarvo}
             displayValue={k => k.koodiarvo}/>
 )
+
+const hideTunnisteenKoodiarvo = model => {
+  return model.context.kansalainen || !diaarinumerollinen(model) || model.value.classes.includes('lukionoppiaineidenoppimaarat2019')
+}
 
 const Koodiarvo = ({model}) => <span>{modelData(model, 'koodiarvo')}</span>
 
