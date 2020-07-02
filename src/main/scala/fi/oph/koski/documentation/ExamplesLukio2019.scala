@@ -11,7 +11,8 @@ import fi.oph.koski.localization.LocalizedStringImplicits.str2localized
 import fi.oph.koski.schema._
 
 object ExamplesLukio2019 {
-  val lukionOppimäärä2019: LukionOppimäärä = LukionOppimäärä(perusteenDiaarinumero = Some("OPH-2263-2019"))
+  val lops2019perusteenDiaarinumero = Some("OPH-2263-2019")
+  val lukionOppimäärä2019: LukionOppimäärä = LukionOppimäärä(perusteenDiaarinumero = lops2019perusteenDiaarinumero)
   val oppiainesuoritukset = List(
     oppiaineenSuoritus(äidinkieli("AI1")).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
       moduulinSuoritus(moduuli("OÄI1")).copy(arviointi = numeerinenArviointi(8)),
@@ -43,6 +44,7 @@ object ExamplesLukio2019 {
   )
 
   lazy val oppiaineidenOppimäärienSuoritus = LukionOppiaineidenOppimäärienSuoritus2019(
+    koulutusmoduuli = LukionOppiaineidenOppimäärät2019(perusteenDiaarinumero = lops2019perusteenDiaarinumero),
     suorituskieli = suomenKieli,
     toimipiste = jyväskylänNormaalikoulu,
     osasuoritukset = Some(oppiainesuoritukset)
