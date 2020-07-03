@@ -4,7 +4,7 @@ import {LukionOppiaineEditor} from './LukionOppiaineEditor'
 import {LukionOppiaineetTableHead, OmatTiedotLukionOppiaineetTableHead} from './fragments/LukionOppiaineetTableHead'
 import {isMobileAtom} from '../util/isMobileAtom'
 import {OmatTiedotLukionOppiaine} from './OmatTiedotLukionOppiaineet'
-import {paikallisiaKursseja} from './LukionOppiaineetEditor'
+import {paikallisiaOsasuorituksia} from './LukionOppiaineetEditor'
 import {FootnoteDescriptions} from '../components/footnote'
 
 export const LukionOppiaineenOppimaaranSuoritus = ({model}) => (
@@ -20,7 +20,7 @@ export const LukionOppiaineenOppimaaranSuoritus = ({model}) => (
       }
       </tbody>
     </table>
-    {paikallisiaKursseja(model) && <FootnoteDescriptions data={[{title: 'Paikallinen kurssi tai oppiaine', hint: '*'}]}/>}
+    {paikallisiaOsasuorituksia(model) && <FootnoteDescriptions data={[{title: 'Paikallinen kurssi tai oppiaine', hint: '*'}]}/>}
   </section>
 )
 
@@ -32,6 +32,6 @@ export const OmatTiedotLukionOppiaineenOppimaaranSuoritus = ({model}) => (
         <OmatTiedotLukionOppiaine baret-lift oppiaine={model} isMobile={isMobileAtom}/>
       </tbody>
     </table>
-    {paikallisiaKursseja(model) && <FootnoteDescriptions data={[{title: 'Paikallinen kurssi tai oppiaine', hint: '*'}]}/>}
+    {paikallisiaOsasuorituksia(model) && <FootnoteDescriptions data={[{title: 'Paikallinen kurssi tai oppiaine', hint: '*'}]}/>}
   </section>
 )
