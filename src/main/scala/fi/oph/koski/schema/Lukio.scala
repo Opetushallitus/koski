@@ -61,27 +61,6 @@ case class LukionOpiskeluoikeudenLisätiedot(
 
 trait LukionPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Suorituskielellinen
 
-// TODO: Tarvitaanko tätä väli-traittia johonkin, vai olisiko parempi duplikoida ominaisuudet sekä 2015 että 2019 -luokkiin?
-trait LukionOppimääränPäätasonSuoritus extends LukionPäätasonSuoritus with Todistus with Arvioinniton with Ryhmällinen with KoulusivistyskieliKieliaineesta {
-  @Title("Koulutus")
-  val koulutusmoduuli: LukionOppimäärä
-  @KoodistoUri("lukionoppimaara")
-  @Description("Tieto siitä, suoritetaanko lukiota nuorten vai aikuisten oppimäärän mukaisesti")
-  @Title("Opetussuunnitelma")
-  def oppimäärä: Koodistokoodiviite
-  def toimipiste: OrganisaatioWithOid
-  def vahvistus: Option[HenkilövahvistusPaikkakunnalla]
-  @Description("Oppimäärän suorituksen opetuskieli/suorituskieli. Rahoituksen laskennassa käytettävä tieto.")
-  def suorituskieli: Koodistokoodiviite
-  @Description("Oppiaineiden suoritukset")
-  @Title("Oppiaineet")
-  override def osasuoritukset: Option[List[LukionOppimääränPäätasonOsasuoritus]] = None
-  @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
-  def todistuksellaNäkyvätLisätiedot: Option[LocalizedString]
-  def tyyppi: Koodistokoodiviite
-  def ryhmä: Option[String]
-}
-
 @Description("Lukiokoulutuksen tunnistetiedot")
 case class LukionOppimäärä(
  @KoodistoKoodiarvo("309902")
