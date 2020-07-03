@@ -9,7 +9,7 @@ import {isPaikallinen} from '../suoritus/Koulutusmoduuli'
 import {saveOrganizationalPreference} from '../virkailija/organizationalPreferences'
 import {paikallinenOppiainePrototype} from '../perusopetus/PerusopetuksenOppiaineEditor'
 import {doActionWhileMounted} from '../util/util'
-import {suoritetutKurssit, hyväksytystiSuoritetutKurssit, laajuudet} from './lukio'
+import {suoritetutKurssit, hyväksytystiSuoritetutOsasuoritukset, laajuudet} from './lukio'
 import {Arviointi, KoulutusmoduuliPropertiesEditor, Nimi} from './fragments/LukionOppiaine'
 import {numberToString} from '../util/format'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
@@ -76,7 +76,7 @@ export class LukionOppiaineEditor extends React.Component {
           (<td className='laajuus'>{
             useOppiaineLaajuus
               ? modelData(oppiaine, 'koulutusmoduuli.laajuus.arvo')
-              : numberToString(laajuudet(hyväksytystiSuoritetutKurssit(kurssit)))
+              : numberToString(laajuudet(hyväksytystiSuoritetutOsasuoritukset(kurssit)))
           }</td>)
         }
         {

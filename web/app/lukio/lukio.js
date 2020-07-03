@@ -1,6 +1,7 @@
 import {
   modelData
 } from '../editor/EditorModel'
+import {suorituksenTyyppi} from '../suoritus/Suoritus'
 
 const perusteenDiaarinumeroToOppimäärä = diaarinumero => {
   switch (diaarinumero) {
@@ -16,17 +17,22 @@ const perusteenDiaarinumeroToOppimäärä = diaarinumero => {
 const sallitutRahoituskoodiarvot = ['1', '6']
 
 const suoritetutKurssit = kurssit => kurssit.map(k => modelData(k)).filter(k => k.arviointi)
-const hyväksytystiSuoritetutKurssit = kurssit => kurssit.filter(k => modelData(k, 'arviointi.-1.arvosana.koodiarvo') !== 'H')
+const hyväksytystiSuoritetutOsasuoritukset = kurssit => kurssit.filter(k => modelData(k, 'arviointi.-1.arvosana.koodiarvo') !== 'H')
 
-const laajuudet = kurssit => kurssit.map(k => {
+const laajuudet = osasuoritukset => osasuoritukset.map(k => {
   const laajuus = modelData(k, 'koulutusmoduuli.laajuus.arvo')
   return laajuus ? laajuus : 1
 }).reduce((x, y) => x + y, 0)
+
+
+const isLukioOps2019 = suoritusModel =>
+  [ 'lukionoppimaara2019', 'lukionoppiaineidenoppimaarat2019' ].includes(suorituksenTyyppi(suoritusModel))
 
 export {
   perusteenDiaarinumeroToOppimäärä,
   sallitutRahoituskoodiarvot,
   suoritetutKurssit,
-  hyväksytystiSuoritetutKurssit,
-  laajuudet
+  hyväksytystiSuoritetutOsasuoritukset,
+  laajuudet,
+  isLukioOps2019
 }
