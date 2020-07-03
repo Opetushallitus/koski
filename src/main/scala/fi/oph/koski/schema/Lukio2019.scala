@@ -55,6 +55,7 @@ case class LukionOppiaineidenOppimäärienSuoritus2019(
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("lukionoppiaineidenoppimaarat2019")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppiaineidenoppimaarat2019", koodistoUri = "suorituksentyyppi"),
+  ryhmä: Option[String] = None
 ) extends LukionPäätasonSuoritus2019
 
 @Title("Lukion oppiaineiden oppimäärät 2019")
