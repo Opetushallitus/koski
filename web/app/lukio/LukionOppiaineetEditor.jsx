@@ -6,7 +6,7 @@ import {modelData, modelErrorMessages, modelItems, modelLookup} from '../editor/
 import {LukionOppiaineetTableHead} from './fragments/LukionOppiaineetTableHead'
 import {t} from '../i18n/i18n'
 import {flatMapArray} from '../util/util'
-import {hyväksytystiSuoritetutKurssit, laajuudet} from './lukio'
+import {hyväksytystiSuoritetutOsasuoritukset, isLukioOps2019, laajuudet} from './lukio'
 import {numberToString} from '../util/format.js'
 import {isPaikallinen} from '../suoritus/Koulutusmoduuli'
 import {FootnoteDescriptions} from '../components/footnote'
@@ -39,8 +39,8 @@ export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaine
         {oppiaineetWithErrorRows}
         </tbody>
       </table>
-      <div className="kurssit-yhteensä">{t('Suoritettujen kurssien laajuus yhteensä') + ': ' + numberToString(laajuudet(arvioidutKurssit(oppiaineet)))}</div>
-      {paikallisiaLukionOppiaineitaTaiKursseja(oppiaineet) && <FootnoteDescriptions data={[{title: 'Paikallinen kurssi tai oppiaine', hint: '*'}]}/>}
+      <div className="kurssit-yhteensä">{t(osasuoritustenLaajuusYhteensäText(suorituksetModel.context.suoritus)) + ': ' + numberToString(laajuudet(arvioidutOsasuoritukset(oppiaineet)))}</div>
+      {paikallisiaLukionOppiaineitaTaiOsasuorituksia(oppiaineet) && <FootnoteDescriptions data={[{title: paikallinenOsasuoritusTaiOppiaineText(suorituksetModel.context.suoritus), hint: '*'}]}/>}
       <UusiLukionOppiaineDropdown
         model={päätasonSuoritusModel}
         oppiaineenSuoritusClasses={classesForUusiOppiaineenSuoritus}
@@ -49,12 +49,18 @@ export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaine
   )
 }
 
-export const paikallisiaLukionOppiaineitaTaiKursseja = oppiaineet => oppiaineet.some(aine => isPaikallinen(modelLookup(aine, 'koulutusmoduuli')) || paikallisiaKursseja(aine))
-export const paikallisiaKursseja = oppiaine => modelItems(oppiaine, 'osasuoritukset').some(kurssi => isPaikallinen(modelLookup(kurssi, 'koulutusmoduuli')))
+export const paikallisiaLukionOppiaineitaTaiOsasuorituksia = oppiaineet => oppiaineet.some(aine => isPaikallinen(modelLookup(aine, 'koulutusmoduuli')) || paikallisiaOsasuorituksia(aine))
+export const paikallisiaOsasuorituksia = oppiaine => modelItems(oppiaine, 'osasuoritukset').some(osasuoritus => isPaikallinen(modelLookup(osasuoritus, 'koulutusmoduuli')))
 
-export const arvioidutKurssit = oppiaineet => flatMapArray(oppiaineet, oppiaine => hyväksytystiSuoritetutKurssit(modelItems(oppiaine, 'osasuoritukset')))
+export const arvioidutOsasuoritukset = oppiaineet => flatMapArray(oppiaineet, oppiaine => hyväksytystiSuoritetutOsasuoritukset(modelItems(oppiaine, 'osasuoritukset')))
 
 export const laajuusYksikköP = suoritus => {
   const laajuusYksikkö = modelData(suoritus, 'koulutusmoduuli.laajuus.yksikkö.koodiarvo')
   return koodistoValues('opintojenlaajuusyksikko').map(yksiköt => yksiköt.find(y => y.koodiarvo === laajuusYksikkö)).map(y => y && y.nimi && y.nimi.fi)
 }
+
+export const osasuoritustenLaajuusYhteensäText = päätasonSuoritus => isLukioOps2019(päätasonSuoritus) ?
+  'Suoritettujen osasuoritusten laajuus yhteensä' : 'Suoritettujen kurssien laajuus yhteensä'
+
+export const paikallinenOsasuoritusTaiOppiaineText = päätasonSuoritus => isLukioOps2019(päätasonSuoritus) ?
+  'Paikallinen opintojakso tai oppiaine' : 'Paikallinen kurssi tai oppiaine'

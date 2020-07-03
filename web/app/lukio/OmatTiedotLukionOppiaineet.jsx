@@ -2,11 +2,15 @@ import React from 'baret'
 import * as R from 'ramda'
 import {modelData, modelItems, modelTitle} from '../editor/EditorModel'
 import {t} from '../i18n/i18n'
-import {arvioidutKurssit, paikallisiaLukionOppiaineitaTaiKursseja} from './LukionOppiaineetEditor'
+import {
+  arvioidutOsasuoritukset,
+  osasuoritustenLaajuusYhteensäText, paikallinenOsasuoritusTaiOppiaineText,
+  paikallisiaLukionOppiaineitaTaiOsasuorituksia
+} from './LukionOppiaineetEditor'
 import {FootnoteDescriptions, FootnoteHint} from '../components/footnote'
 import {kurssienKeskiarvo, Nimi} from './fragments/LukionOppiaine'
 import {numberToString} from '../util/format'
-import {hyväksytystiSuoritetutKurssit, laajuudet, suoritetutKurssit} from './lukio'
+import {hyväksytystiSuoritetutOsasuoritukset, laajuudet, suoritetutKurssit} from './lukio'
 import {KurssitEditor} from '../kurssi/KurssitEditor'
 import {isMobileAtom} from '../util/isMobileAtom'
 import {ArvosanaEditor} from '../suoritus/ArvosanaEditor'
@@ -34,8 +38,8 @@ export default ({suorituksetModel, suoritusFilter}) => {
           ))}
         </tbody>
       </table>
-      <div className='kurssit-yhteensä'>{t('Suoritettujen kurssien laajuus yhteensä') + ': ' + numberToString(laajuudet(arvioidutKurssit(oppiaineet)))}</div>
-      {paikallisiaLukionOppiaineitaTaiKursseja(oppiaineet) && <FootnoteDescriptions data={[{title: 'Paikallinen kurssi tai oppiaine', hint: '*'}]}/>}
+      <div className='kurssit-yhteensä'>{t(osasuoritustenLaajuusYhteensäText(suorituksetModel.context.suoritus)) + ': ' + numberToString(laajuudet(arvioidutOsasuoritukset(oppiaineet)))}</div>
+      {paikallisiaLukionOppiaineitaTaiOsasuorituksia(oppiaineet) && <FootnoteDescriptions data={[{title: paikallinenOsasuoritusTaiOppiaineText(suorituksetModel.context.suoritus), hint: '*'}]}/>}
     </section>
   )
 }
@@ -63,7 +67,7 @@ export class OmatTiedotLukionOppiaine extends React.Component {
     const oppiaineenKeskiarvo = kurssienKeskiarvo(suoritetutKurssit(kurssit))
     const laajuusYhteensä = useOppiaineLaajuus
       ? modelData(oppiaine, 'koulutusmoduuli.laajuus.arvo')
-      : numberToString(laajuudet(hyväksytystiSuoritetutKurssit(kurssit)))
+      : numberToString(laajuudet(hyväksytystiSuoritetutOsasuoritukset(kurssit)))
     const laajuusYksikkö = useOppiaineLaajuus
       ? modelTitle(oppiaine, 'koulutusmoduuli.laajuus.yksikkö')
       : t('kurssia')
