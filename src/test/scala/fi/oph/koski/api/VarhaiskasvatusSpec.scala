@@ -113,6 +113,13 @@ class VarhaiskasvatusSpec extends FreeSpec with EsiopetusSpecification {
           verifyResponseStatus(404, KoskiErrorCategory.notFound.opiskeluoikeuttaEiLöydyTaiEiOikeuksia(s"Opiskeluoikeutta $opiskeluoikeusOid ei löydy tai käyttäjällä ei ole oikeutta sen katseluun"))
         }
       }
+
+      "ei voi tallentaa opiskeluoikeutta jonka oppilaitoksena on yksityinen päiväkoti joka ei ole koulutustoimijan alla organisaatiohierarkiassa" in {
+        val opiskeluoikeus = päiväkotiEsiopetus(oidOrganisaatio(päiväkotiTarina)).copy(koulutustoimija = hki)
+        putOpiskeluoikeus(opiskeluoikeus, headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {
+          verifyResponseStatus(403, KoskiErrorCategory.forbidden.organisaatio("Ei oikeuksia organisatioon " + päiväkotiTarina))
+        }
+      }
     }
   }
 
