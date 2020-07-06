@@ -1,14 +1,12 @@
-import Bacon from 'baconjs'
 import React from 'baret'
 import Text from '../../i18n/Text'
-import {toObservable} from '../../util/util'
 
-export const LukionOppiaineetTableHead = ({laajuusyksikkö = Bacon.constant('kurssia'), showArviointi = true, arvosanaHeader = <Text name='Arvosana (keskiarvo)'/>}) => (
+export const LukionOppiaineetTableHead = ({laajuusyksikkö = 'kurssia', showArviointi = true, arvosanaHeader = <Text name='Arvosana (keskiarvo)'/>}) => (
   <thead>
   <tr>
     <th className='suorituksentila'></th>
     <th className='oppiaine'><Text name='Oppiaine'/></th>
-    {toObservable(laajuusyksikkö).map(yksikkö => yksikkö && <th className='laajuus'><Text name={`Laajuus (${yksikkö})`}/></th>)}
+    {<th className='laajuus'><Text name={`Laajuus (${laajuusyksikkö})`}/></th>}
     {showArviointi && <th className='arvosana'>{arvosanaHeader}</th>}
   </tr>
   <tr>

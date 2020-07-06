@@ -2,7 +2,7 @@ import React from 'react'
 import * as R from 'ramda'
 import {LukionOppiaineEditor} from './LukionOppiaineEditor'
 import {UusiLukionOppiaineDropdown} from './UusiLukionOppiaineDropdown'
-import {modelData, modelErrorMessages, modelItems, modelLookup} from '../editor/EditorModel'
+import {modelErrorMessages, modelItems, modelLookup, modelTitle} from '../editor/EditorModel'
 import {LukionOppiaineetTableHead} from './fragments/LukionOppiaineetTableHead'
 import {t} from '../i18n/i18n'
 import {flatMapArray} from '../util/util'
@@ -10,7 +10,6 @@ import {hyväksytystiSuoritetutOsasuoritukset, isLukioOps2019, laajuudet} from '
 import {numberToString} from '../util/format.js'
 import {isPaikallinen} from '../suoritus/Koulutusmoduuli'
 import {FootnoteDescriptions} from '../components/footnote'
-import {koodistoValues} from '../uusioppija/koodisto'
 
 export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaineenSuoritus, suoritusFilter, additionalEditableKoulutusmoduuliProperties}) => {
   const {edit, suoritus: päätasonSuoritusModel} = suorituksetModel.context
@@ -34,7 +33,7 @@ export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaine
   return (
     <section>
       <table className="suoritukset oppiaineet">
-        {!R.isEmpty(oppiaineet) && <LukionOppiaineetTableHead laajuusyksikkö={laajuusYksikköP(oppiaineet[0])} />}
+        {!R.isEmpty(oppiaineet) && <LukionOppiaineetTableHead laajuusyksikkö={modelTitle(oppiaineet[0], 'koulutusmoduuli.laajuus.yksikkö')} />}
         <tbody>
         {oppiaineetWithErrorRows}
         </tbody>
@@ -53,11 +52,6 @@ export const paikallisiaLukionOppiaineitaTaiOsasuorituksia = oppiaineet => oppia
 export const paikallisiaOsasuorituksia = oppiaine => modelItems(oppiaine, 'osasuoritukset').some(osasuoritus => isPaikallinen(modelLookup(osasuoritus, 'koulutusmoduuli')))
 
 export const arvioidutOsasuoritukset = oppiaineet => flatMapArray(oppiaineet, oppiaine => hyväksytystiSuoritetutOsasuoritukset(modelItems(oppiaine, 'osasuoritukset')))
-
-export const laajuusYksikköP = suoritus => {
-  const laajuusYksikkö = modelData(suoritus, 'koulutusmoduuli.laajuus.yksikkö.koodiarvo')
-  return koodistoValues('opintojenlaajuusyksikko').map(yksiköt => yksiköt.find(y => y.koodiarvo === laajuusYksikkö)).map(y => y && y.nimi && y.nimi.fi)
-}
 
 export const osasuoritustenLaajuusYhteensäText = päätasonSuoritus => isLukioOps2019(päätasonSuoritus) ?
   'Suoritettujen osasuoritusten laajuus yhteensä' : 'Suoritettujen kurssien laajuus yhteensä'
