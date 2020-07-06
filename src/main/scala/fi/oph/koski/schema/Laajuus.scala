@@ -1,5 +1,6 @@
 package fi.oph.koski.schema
 
+import fi.oph.koski.documentation.ExampleData._
 import fi.oph.koski.schema.annotation.{KoodistoKoodiarvo, KoodistoUri, Tooltip}
 import fi.oph.scalaschema.annotation.{Description, MinValueExclusive}
 
@@ -27,19 +28,19 @@ case class LaajuusKaikkiYksiköt(
 case class LaajuusOpintopisteissä(
   arvo: Double,
   @KoodistoKoodiarvo("2")
-  yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "2", koodistoUri = "opintojenlaajuusyksikko")
+  yksikkö: Koodistokoodiviite = laajuusOpintopisteissä
 ) extends LaajuusOpintopisteissäTaiKursseissa
 
 case class LaajuusVuosiviikkotunneissa(
   arvo: Double,
   @KoodistoKoodiarvo("3")
-  yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "3", koodistoUri = "opintojenlaajuusyksikko")
+  yksikkö: Koodistokoodiviite = laajuusVuosiviikkotunneissa
 ) extends LaajuusVuosiviikkotunneissaTaiKursseissa
 
 case class LaajuusKursseissa(
   arvo: Double,
   @KoodistoKoodiarvo("4")
-  yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "4", koodistoUri = "opintojenlaajuusyksikko")
+  yksikkö: Koodistokoodiviite = laajuusKursseissa
 ) extends LaajuusVuosiviikkotunneissaTaiKursseissa with LaajuusOpintopisteissäTaiKursseissa
 
 trait LaajuusOpintopisteissäTaiKursseissa extends Laajuus
@@ -50,11 +51,11 @@ trait LaajuusVuosiviikkotunneissaTaiKursseissa extends Laajuus
 case class LaajuusTunneissa(
   arvo: Double,
   @KoodistoKoodiarvo("5")
-  yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "5", koodistoUri = "opintojenlaajuusyksikko")
+  yksikkö: Koodistokoodiviite = laajuusTunneissa
 ) extends Laajuus
 
 case class LaajuusOsaamispisteissä(
   arvo: Double,
   @KoodistoKoodiarvo("6")
-  yksikkö: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "6", koodistoUri = "opintojenlaajuusyksikko")
+  yksikkö: Koodistokoodiviite = laajuusOsaamispisteissä
 ) extends Laajuus

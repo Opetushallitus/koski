@@ -4,7 +4,8 @@ import {modelData, modelItems, modelTitle} from '../editor/EditorModel'
 import {t} from '../i18n/i18n'
 import {
   arvioidutOsasuoritukset,
-  osasuoritustenLaajuusYhteensäText, paikallinenOsasuoritusTaiOppiaineText,
+  osasuoritustenLaajuusYhteensäText,
+  paikallinenOsasuoritusTaiOppiaineText,
   paikallisiaLukionOppiaineitaTaiOsasuorituksia
 } from './LukionOppiaineetEditor'
 import {FootnoteDescriptions, FootnoteHint} from '../components/footnote'
@@ -18,7 +19,7 @@ import {OmatTiedotLukionOppiaineetTableHead} from './fragments/LukionOppiaineetT
 import {KurssitListMobile} from '../kurssi/OmatTiedotKurssit'
 
 
-export default ({suorituksetModel, suoritusFilter}) => {
+export default ({suorituksetModel, suoritusFilter, useOppiaineLaajuus = false}) => {
   const oppiaineet = modelItems(suorituksetModel).filter(suoritusFilter || R.identity)
 
   if (R.isEmpty(oppiaineet)) return null
@@ -34,6 +35,7 @@ export default ({suorituksetModel, suoritusFilter}) => {
               key={oppiaineIndex}
               oppiaine={oppiaine}
               isMobile={isMobileAtom}
+              useOppiaineLaajuus={useOppiaineLaajuus}
             />
           ))}
         </tbody>
