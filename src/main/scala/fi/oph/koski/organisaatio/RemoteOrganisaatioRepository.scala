@@ -13,7 +13,7 @@ import scala.concurrent.duration._
 
 class RemoteOrganisaatioRepository(http: Http, val koodisto: KoodistoViitePalvelu)(implicit cacheInvalidator: CacheManager) extends OrganisaatioRepository {
   private val fullHierarchyCache = SingleValueCache[List[OrganisaatioHierarkia]](
-    RefreshingCache("OrganisaatioRepository.fullHierarkia", 6.hour, 3),
+    RefreshingCache(name = "OrganisaatioRepository.fullHierarkia", duration = 6.hours, maxSize = 2), // maxSize needs to be minimum 2 for the refreshing to work
     () => uncachedFindAllHierarkiatRaw.map(convertOrganisaatio)
   )
 
@@ -91,6 +91,7 @@ class RemoteOrganisaatioRepository(http: Http, val koodisto: KoodistoViitePalvel
   override def findAllHierarkiat: List[OrganisaatioHierarkia] = fullHierarchyCache.apply
 
   private def uncachedFindAllHierarkiatRaw: List[OrganisaatioPalveluOrganisaatio] = {
+    logger.info("Fetching organisaatiohierarkia")
     runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v4/${Opetushallitus.organisaatioOid}/jalkelaiset")(Http.parseJson[OrganisaatioHakuTulos])).organisaatiot
   }
 }
