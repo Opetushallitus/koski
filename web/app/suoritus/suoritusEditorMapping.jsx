@@ -63,6 +63,7 @@ export const resolveOsasuorituksetEditor = (mdl) => {
       <LukionOppiaineetComponent
         suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
         classesForUusiOppiaineenSuoritus={['lukionoppiaineensuoritus2019', 'muidenlukioopintojensuoritus2019']}
+        useOppiaineLaajuus={true}
       />
     )
   }
