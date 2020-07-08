@@ -1,7 +1,8 @@
 package fi.oph.koski.tutkinto
 
 import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
-import fi.oph.koski.schema.Koodistokoodiviite
+import fi.oph.koski.schema.SuorituksenTyyppi.SuorituksenTyyppi
+import fi.oph.koski.schema.{Koodistokoodiviite, SuorituksenTyyppi}
 
 object Koulutustyyppi {
   type Koulutustyyppi = Koodistokoodiviite
@@ -35,4 +36,26 @@ object Koulutustyyppi {
   val lukionKoulutustyypit = List(lukiokoulutus, aikuistenLukiokoulutus)
   val luvaKoulutustyypit = List(vieraskielistenLuva, luva)
   val valmaKoulutustyypit = List(valma, valmaErityisopetuksena)
+
+  def fromSuorituksenTyyppi(suorituksentyyppi: SuorituksenTyyppi) : Set[Koulutustyyppi] = {
+    suorituksentyyppi match{
+      case SuorituksenTyyppi.perusopetuksenoppimaara | SuorituksenTyyppi.perusopetuksenvuosiluokka | SuorituksenTyyppi.nuortenperusopetuksenoppiaineenoppimaara =>
+        Set(perusopetus)
+      case SuorituksenTyyppi.aikuistenperusopetuksenoppimaara | SuorituksenTyyppi.perusopetuksenoppiaineenoppimaara | SuorituksenTyyppi.aikuistenperusopetuksenoppimaaranalkuvaihe =>
+        Set(aikuistenPerusopetus)
+      case SuorituksenTyyppi.perusopetuksenlisaopetus =>
+        Set(perusopetuksenLisäopetus)
+      case SuorituksenTyyppi.perusopetukseenvalmistavaopetus =>
+        Set(perusopetukseenValmistava)
+      case SuorituksenTyyppi.esiopetuksensuoritus =>
+        Set(esiopetus)
+      case SuorituksenTyyppi.valma =>
+        Set(valma)
+      case SuorituksenTyyppi.telma =>
+        Set(telma)
+      case SuorituksenTyyppi.lukionoppimaara | SuorituksenTyyppi.lukionoppiaineenoppimaara | SuorituksenTyyppi.lukionoppimaara2019 | SuorituksenTyyppi.lukionoppiaineidenoppimaarat2019 =>
+        lukionKoulutustyypit.toSet
+      case _ => Set.empty[Koulutustyyppi]
+    }
+  }
 }
