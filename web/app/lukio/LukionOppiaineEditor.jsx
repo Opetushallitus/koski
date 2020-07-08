@@ -105,7 +105,7 @@ export class LukionOppiaineEditor extends React.Component {
     )
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const currentData = modelData(this.props.oppiaine)
     const newData = modelData(nextProps.oppiaine)
 

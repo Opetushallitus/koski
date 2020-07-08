@@ -44,8 +44,8 @@ export default class Versiohistoria extends BaconComponent {
       </div> : null
     )
   }
-  componentWillMount() {
-    super.componentWillMount()
+  UNSAFE_componentWillMount() {
+    super.UNSAFE_componentWillMount()
     this.propsE.map('.opiskeluoikeusOid').skipDuplicates().onValue((opiskeluoikeusOid) => {
       this.setState(this.initialState())
       if (this.state.showHistory) this.fetchHistory(opiskeluoikeusOid)
