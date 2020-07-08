@@ -13,17 +13,17 @@ import scala.concurrent.duration._
 
 class RemoteOrganisaatioRepository(http: Http, val koodisto: KoodistoViitePalvelu)(implicit cacheInvalidator: CacheManager) extends OrganisaatioRepository {
   private val fullHierarchyCache = SingleValueCache[List[OrganisaatioHierarkia]](
-    RefreshingCache(name = "OrganisaatioRepository.fullHierarkia", duration = 6.hours, maxSize = 2), // maxSize needs to be minimum 2 for the refreshing to work
+    RefreshingCache(name = "OrganisaatioRepository.fullHierarkia", duration = 12.hours, maxSize = 2), // maxSize needs to be minimum 2 for the refreshing to work
     () => uncachedFindAllHierarkiatRaw.map(convertOrganisaatio)
   )
 
   private val nimetCache = KeyValueCache[String, List[OrganisaationNimihakuTulos]](
-    RefreshingCache("OrganisaatioRepository.nimet", 1.hour, 15000),
+    RefreshingCache("OrganisaatioRepository.nimet", 12.hour, 15000),
     oid => runTask(http.get(uri"/organisaatio-service/rest/organisaatio/v2/${oid}/nimet")(Http.parseJson[List[OrganisaationNimihakuTulos]]))
   )
 
   private val oppilaitosnumeroCache = KeyValueCache[String, Option[Oppilaitos]](
-    ExpiringCache("OrganisaatioRepository.oppilaitos", 1.hour, maxSize = 1000),
+    ExpiringCache("OrganisaatioRepository.oppilaitos", 12.hour, maxSize = 1000),
     { numero: String =>
       search(numero).flatMap {
         case o@Oppilaitos(_, Some(Koodistokoodiviite(koodiarvo, _, _, _, _)), _, _) if koodiarvo == numero => Some(o)
