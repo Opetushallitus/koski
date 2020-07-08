@@ -6,10 +6,11 @@ import fi.oph.koski.koskiuser.{KoskiUserLanguage, Unauthenticated}
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
 import fi.oph.koski.servlet.{ApiServlet, Cached, LanguageSupport}
 
-import scala.concurrent.duration._
-import scala.concurrent.duration.Duration
+import scala.concurrent.duration.{Duration, _}
 
 class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) extends ApiServlet with Unauthenticated with Cached with LanguageSupport {
+  private val perusteetService = new TutkinnonPerusteetService(application)
+
   get("/oppilaitos/:oppilaitosId") {
    renderEither[List[TutkintoPeruste]]((params.get("query"), params.get("oppilaitosId")) match {
      case (Some(query), Some(oppilaitosId)) if (query.length >= 3) => Right(application.tutkintoRepository.findTutkinnot(oppilaitosId, query))
@@ -19,16 +20,12 @@ class TutkinnonPerusteetServlet(implicit val application: KoskiApplication) exte
 
   get("/diaarinumerot/koulutustyyppi/:koulutustyypit") {
     val koulutustyypit: Set[Koodistokoodiviite] = params("koulutustyypit").split(",").map(t => Koodistokoodiviite(t, "koulutustyyppi")).toSet
+    perusteetService.diaarinumerotByKoulutustyypit(koulutustyypit)
+  }
 
-    val diaaritEperusteista = application.ePerusteet.findPerusteetByKoulutustyyppi(koulutustyypit)
-      .sortBy(p => -p.id)
-      .map(p => Koodistokoodiviite(koodiarvo = p.diaarinumero, nimi = LocalizedString.sanitize(p.nimi), koodistoUri = "koskikoulutustendiaarinumerot"))
-
-    val diaaritKoskesta = koulutustyypit.flatMap(koulutusTyyppi =>
-      application.koodistoViitePalvelu.getSisältyvätKoodiViitteet(application.koodistoViitePalvelu.getLatestVersionRequired("koskikoulutustendiaarinumerot"), koulutusTyyppi)
-    ).flatten.toList
-
-    (diaaritEperusteista ++ diaaritKoskesta).distinct
+  get("/diaarinumerot/suorituksentyyppi/:suorituksenTyyppi") {
+    val koodistokoodiviite = Koodistokoodiviite(params("suorituksenTyyppi"), "suorituksentyyppi")
+    perusteetService.diaarinumerotBySuorituksenTyyppi(koodistokoodiviite)
   }
 
   get("/tutkinnonosat/:diaari") {
