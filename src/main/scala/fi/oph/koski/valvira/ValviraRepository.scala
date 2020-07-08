@@ -10,13 +10,14 @@ import fi.oph.koski.db.{DatabaseExecutionContext, KoskiDatabaseMethods}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.schema.Henkilö
+import fi.oph.koski.log.Logging
 import org.json4s.JValue
 import org.json4s.JsonAST.{JArray, JString}
 
-import scala.util.{Success, Try}
+import scala.util.{Failure, Success, Try}
 
 
-class ValviraRepository(val db: DB) extends DatabaseExecutionContext with KoskiDatabaseMethods {
+class ValviraRepository(val db: DB) extends DatabaseExecutionContext with KoskiDatabaseMethods with Logging {
 
   def opiskeluoikeudetByOppijaOids(oppijaOids: Seq[Henkilö.Oid]): Either[HttpStatus, List[ValviraOpiskeluoikeus]] = Try {
     runDbSync(
@@ -32,7 +33,10 @@ class ValviraRepository(val db: DB) extends DatabaseExecutionContext with KoskiD
   } match {
     case Success(opiskeluoikeudet) if opiskeluoikeudet.nonEmpty => Right(opiskeluoikeudet.toList)
     case Success(_) => Left(KoskiErrorCategory.notFound())
-    case _ => Left(KoskiErrorCategory.internalError())
+    case Failure(exception) => {
+      logger.error(exception)(s"Valvira-datan luonti epäonnistui oppijoille ${oppijaOids.mkString(",")}")
+      Left(KoskiErrorCategory.internalError())
+    }
   }
 
   private def mergeJson(t: (JValue, Timestamp, Int, Date, Option[Date])) = {
