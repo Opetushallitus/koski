@@ -99,8 +99,8 @@ export default class OrganisaatioPicker extends BaconComponent {
       }
     }
   }
-  componentWillMount() {
-    super.componentWillMount()
+  UNSAFE_componentWillMount() {
+    super.UNSAFE_componentWillMount()
     const showAll = parseBool(this.props.showAll)
     const orgTypesToShowP = toObservable(this.props.orgTypesToShow)
     this.inputBus = Bacon.Bus()

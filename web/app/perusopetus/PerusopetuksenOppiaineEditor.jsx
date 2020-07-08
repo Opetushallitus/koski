@@ -38,7 +38,7 @@ export class PerusopetuksenOppiaineEditor extends React.Component {
   </span>)
   }
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     let currentData = modelData(this.props.oppiaine)
     let newData = modelData(newProps.oppiaine)
     if (!R.equals(currentData, newData)) {
