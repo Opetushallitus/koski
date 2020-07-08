@@ -64,6 +64,8 @@ case class LukionOppiaineidenOppimäärienSuoritus2019(
 case class LukionOppiaineidenOppimäärät2019(
   @Hidden
   tunniste: LukionOppiaineidenOppimäärätKoodi2019 = LukionOppiaineidenOppimäärätKoodi2019(),
+  @AllowedValue("OPH-2263-2019")
+  @AllowedValue("OPH-2267-2019")
   perusteenDiaarinumero: Option[String]
 ) extends Koulutusmoduuli {
   override def nimi: LocalizedString = LocalizedString.empty
