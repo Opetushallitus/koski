@@ -4,7 +4,6 @@ import Bacon from 'baconjs'
 import Dropdown from '../components/Dropdown'
 import {elementWithLoadingIndicator} from '../components/AjaxLoadingIndicator'
 import {t} from '../i18n/i18n'
-import {koulutustyyppiKoodit} from './Suoritus'
 
 const preferred = ['OPH-1280-2017', '104/011/2014']
 
@@ -35,12 +34,10 @@ export const PerusteDropdown = ({suoritusTyyppiP, perusteAtom}) => {
   </span>)
 }
 
-export const diaarinumerot = suoritusTyyppi => {
-  const koulutustyypit = suoritusTyyppi && koulutustyyppiKoodit(suoritusTyyppi.koodiarvo)
-  return koulutustyypit
-    ? Http.cachedGet(`/koski/api/tutkinnonperusteet/diaarinumerot/koulutustyyppi/${koulutustyypit.join()}`)
+export const diaarinumerot = suoritusTyyppi =>
+  suoritusTyyppi
+    ? Http.cachedGet(`/koski/api/tutkinnonperusteet/diaarinumerot/suorituksentyyppi/${suoritusTyyppi.koodiarvo}`)
     : []
-}
 
 export const setPeruste = (perusteAtom, suoritusTyyppi) => {
   diaarinumerot(suoritusTyyppi).map(options => options[0]).map('.koodiarvo').onValue(peruste => {

@@ -2,6 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
+import fi.oph.koski.koodisto.{KoodistoViite, MockKoodistoViitePalvelu}
 import fi.oph.koski.schema.LocalizedString.unlocalized
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation._
@@ -73,7 +74,35 @@ object Suoritus {
       }
     }
   }
+}
 
+object SuorituksenTyyppi {
+  type SuorituksenTyyppi = Koodistokoodiviite
+
+  val lukionoppiaineidenoppimaarat2019 = apply("lukionoppiaineidenoppimaarat2019")
+  val lukionoppimaara2019 = apply("lukionoppimaara2019")
+  val perusopetuksenoppimaara = apply("perusopetuksenoppimaara")
+  val perusopetuksenvuosiluokka = apply("perusopetuksenvuosiluokka")
+  val nuortenperusopetuksenoppiaineenoppimaara = apply("nuortenperusopetuksenoppiaineenoppimaara")
+  val aikuistenperusopetuksenoppimaara = apply("aikuistenperusopetuksenoppimaara")
+  val perusopetuksenoppiaineenoppimaara = apply("perusopetuksenoppiaineenoppimaara")
+  val aikuistenperusopetuksenoppimaaranalkuvaihe = apply("aikuistenperusopetuksenoppimaaranalkuvaihe")
+  val perusopetuksenlisaopetus = apply("perusopetuksenlisaopetus")
+  val perusopetukseenvalmistavaopetus = apply("perusopetukseenvalmistavaopetus")
+  val esiopetuksensuoritus = apply("esiopetuksensuoritus")
+  val valma = apply("valma")
+  val telma = apply("telma")
+  val lukionoppimaara = apply("lukionoppimaara")
+  val lukionoppiaineenoppimaara = apply("lukionoppiaineenoppimaara")
+
+  private def apply(koodiarvo: String): SuorituksenTyyppi =
+    kaikkiTyypit.find(_.koodiarvo == koodiarvo)
+      .getOrElse(throw new IllegalArgumentException("Väärä suorituksen tyyppi " + koodiarvo))
+
+  lazy val kaikkiTyypit: List[SuorituksenTyyppi] = {
+    val suorituksenTyyppiKoodisto: KoodistoViite = MockKoodistoViitePalvelu.getLatestVersionRequired("suorituksentyyppi")
+    MockKoodistoViitePalvelu.getKoodistoKoodiViitteet(suorituksenTyyppiKoodisto)
+  }
 }
 
 trait MahdollisestiToimipisteellinen extends Suoritus {
