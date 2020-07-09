@@ -3,6 +3,8 @@ package fi.oph.koski.schema
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation.{Description, MinItems, Title}
 
+trait LukionPäätasonSuoritus2015 extends LukionPäätasonSuoritus with Todistus with Ryhmällinen
+
 @Description("Lukion oppimäärän suoritustiedot")
 case class LukionOppimääränSuoritus(
   @Title("Koulutus")
@@ -25,7 +27,7 @@ case class LukionOppimääränSuoritus(
   @KoodistoKoodiarvo("lukionoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"),
   ryhmä: Option[String] = None
-) extends LukionPäätasonSuoritus with Todistus with Arvioinniton with Ryhmällinen with KoulusivistyskieliKieliaineesta
+) extends LukionPäätasonSuoritus2015 with Arvioinniton with KoulusivistyskieliKieliaineesta
 
 @Description("Lukion oppiaineen oppimäärän suoritustiedot")
 case class LukionOppiaineenOppimääränSuoritus(
@@ -44,7 +46,7 @@ case class LukionOppiaineenOppimääränSuoritus(
   @KoodistoKoodiarvo("lukionoppiaineenoppimaara")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppiaineenoppimaara", koodistoUri = "suorituksentyyppi"),
   ryhmä: Option[String] = None
-) extends LukionPäätasonSuoritus with Todistus with Ryhmällinen with OppiaineenOppimääränSuoritus
+) extends LukionPäätasonSuoritus2015 with OppiaineenOppimääränSuoritus
 
 trait LukionOppimääränOsasuoritus extends LukionOppimääränPäätasonOsasuoritus
 
