@@ -34,7 +34,7 @@ class ValviraRepository(val db: DB) extends DatabaseExecutionContext with KoskiD
     case Success(opiskeluoikeudet) if opiskeluoikeudet.nonEmpty => Right(opiskeluoikeudet.toList)
     case Success(_) => Left(KoskiErrorCategory.notFound())
     case Failure(exception) => {
-      logger.error(exception)(s"Valvira-datan luonti epäonnistui oppijoille ${oppijaOids.mkString(",")}")
+      logger.error(exception)(s"Valvira-datan luonti epäonnistui oppijoille ${oppijaOids.mkString(",")}: ${exception.toString}")
       Left(KoskiErrorCategory.internalError())
     }
   }
