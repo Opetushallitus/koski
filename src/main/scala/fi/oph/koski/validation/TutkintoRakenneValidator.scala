@@ -40,6 +40,8 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
     case suoritus: AmmatillisenTutkinnonOsittainenSuoritus =>
       HttpStatus.justStatus(getRakenne(suoritus.koulutusmoduuli, Some(ammatillisetKoulutustyypit), Some(suoritus)))
         .onSuccess(HttpStatus.fold(suoritus.osasuoritukset.toList.flatten.map(validateTutkinnonOsanTutkinto)))
+    case s: LukionPäätasonSuoritus2019 =>
+      HttpStatus.justStatus(getRakenne(s.koulutusmoduuli, Some(lukionKoulutustyypit))).onSuccess(validateLukio2019Diaarinumero(s))
     case _ =>
       suoritus.koulutusmoduuli match {
         case d: Esiopetus =>
@@ -198,4 +200,21 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
   }
 
   private def findOsaamisala(rakenne: TutkintoRakenne, osaamisAlaKoodi: String) = rakenne.osaamisalat.find(_.koodiarvo == osaamisAlaKoodi)
+
+  private def validateLukio2019Diaarinumero(s: LukionPäätasonSuoritus2019) = {
+    val diaarinumerorajaus = s.getOppimäärä match {
+      case Some(o: Koodistokoodiviite) if o.koodiarvo == "aikuistenops" =>
+        Perusteet.AikuistenLukiokoulutuksenOpetussuunnitelmanPerusteet2019
+      case Some(o: Koodistokoodiviite) if o.koodiarvo == "nuortenops" =>
+        Perusteet.LukionOpetussuunnitelmanPerusteet2019
+      case _ => Perusteet.lops2019
+    }
+    val diaarinumero = s.koulutusmoduuli.perusteenDiaarinumero.getOrElse("")
+
+    if (diaarinumerorajaus.matches(diaarinumero)) {
+      HttpStatus.ok
+    } else {
+      KoskiErrorCategory.badRequest.validation.rakenne.vääräDiaari(s"""Väärä diaarinumero "$diaarinumero" suorituksella ${s.tyyppi.koodiarvo}, sallitut arvot: $diaarinumerorajaus""")
+    }
+  }
 }

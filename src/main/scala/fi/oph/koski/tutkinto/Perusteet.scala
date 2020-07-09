@@ -28,8 +28,10 @@ case object Kaikki extends Diaarinumerorajaus {
 
 case class Diaarinumero(diaari: String) extends Diaarinumerorajaus {
   override def matches(str: String): Boolean = diaari == str
+  override def toString: String = diaari
 }
 
 case class Diaarinumerot(diaarit: List[Diaarinumerorajaus]) extends Diaarinumerorajaus {
   override def matches(str: String): Boolean = diaarit.exists(_.matches(str))
+  override def toString: String = diaarit.map(_.toString).mkString(", ")
 }

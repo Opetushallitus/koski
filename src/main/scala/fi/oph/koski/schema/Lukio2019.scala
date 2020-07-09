@@ -5,7 +5,10 @@ import java.time.LocalDate
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation._
 
-trait LukionPäätasonSuoritus2019 extends LukionPäätasonSuoritus with Todistus with Arvioinniton with PuhviKokeellinen2019 with SuullisenKielitaidonKokeellinen2019
+trait LukionPäätasonSuoritus2019 extends LukionPäätasonSuoritus with Todistus with Arvioinniton with PuhviKokeellinen2019 with SuullisenKielitaidonKokeellinen2019 {
+  def koulutusmoduuli: Koulutusmoduuli with Diaarinumerollinen
+  def getOppimäärä: Option[Koodistokoodiviite]
+}
 
 @Title("Lukion oppimäärän suoritus 2019")
 @Description("Lukion oppimäärän opetussuunnitelman 2019 mukaiset suoritustiedot")
@@ -33,7 +36,9 @@ case class LukionOppimääränSuoritus2019(
   @KoodistoKoodiarvo("lukionoppimaara2019")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara2019", koodistoUri = "suorituksentyyppi"),
   ryhmä: Option[String] = None
-) extends LukionPäätasonSuoritus2019 with Ryhmällinen with KoulusivistyskieliKieliaineesta with SuoritettavissaErityisenäTutkintona2019
+) extends LukionPäätasonSuoritus2019 with Ryhmällinen with KoulusivistyskieliKieliaineesta with SuoritettavissaErityisenäTutkintona2019 {
+  override def getOppimäärä: Option[Koodistokoodiviite] = Some(oppimäärä)
+}
 
 @Title("Lukion oppiaineiden oppimäärien suoritus 2019")
 @Description("Lukion oppiaineiden oppimäärien suoritustiedot 2019")
@@ -58,6 +63,7 @@ case class LukionOppiaineidenOppimäärienSuoritus2019(
   ryhmä: Option[String] = None
 ) extends LukionPäätasonSuoritus2019 {
   override def tarvitseeVahvistuksen: Boolean = false
+  override def getOppimäärä: Option[Koodistokoodiviite] = None
 }
 
 @Title("Lukion oppiaineiden oppimäärät 2019")
@@ -65,7 +71,7 @@ case class LukionOppiaineidenOppimäärät2019(
   @Hidden
   tunniste: LukionOppiaineidenOppimäärätKoodi2019 = LukionOppiaineidenOppimäärätKoodi2019(),
   perusteenDiaarinumero: Option[String]
-) extends Koulutusmoduuli {
+) extends Koulutusmoduuli with Diaarinumerollinen {
   override def nimi: LocalizedString = LocalizedString.empty
 }
 
