@@ -29,11 +29,11 @@ export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaine
     )
   )
   const oppiaineetWithErrorRows = R.zip(oppiaineRows, errorRows)
-
+  const laajuusyksikkö = modelTitle(oppiaineet[0], 'koulutusmoduuli.laajuus.yksikkö') || 'kurssia'
   return (
     <section>
       <table className="suoritukset oppiaineet">
-        {!R.isEmpty(oppiaineet) && <LukionOppiaineetTableHead laajuusyksikkö={modelTitle(oppiaineet[0], 'koulutusmoduuli.laajuus.yksikkö')} />}
+        {!R.isEmpty(oppiaineet) && <LukionOppiaineetTableHead laajuusyksikkö={laajuusyksikkö} />}
         <tbody>
         {oppiaineetWithErrorRows}
         </tbody>
