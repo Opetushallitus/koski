@@ -3,6 +3,8 @@ package fi.oph.koski.schema
 import java.time.LocalDate
 
 import fi.oph.koski.schema.annotation._
+import fi.oph.koski.tutkinto.Perusteet
+import fi.oph.koski.tutkinto.Perusteet.{AikuistenLukiokoulutuksenOpetussuunnitelmanPerusteet2019, LukionOpetussuunnitelmanPerusteet2019}
 import fi.oph.scalaschema.annotation._
 
 trait LukionPäätasonSuoritus2019 extends LukionPäätasonSuoritus with Todistus with Arvioinniton with PuhviKokeellinen2019 with SuullisenKielitaidonKokeellinen2019
@@ -64,8 +66,8 @@ case class LukionOppiaineidenOppimäärienSuoritus2019(
 case class LukionOppiaineidenOppimäärät2019(
   @Hidden
   tunniste: LukionOppiaineidenOppimäärätKoodi2019 = LukionOppiaineidenOppimäärätKoodi2019(),
-  @AllowedValue("OPH-2263-2019")
-  @AllowedValue("OPH-2267-2019")
+  @AllowedValue(LukionOpetussuunnitelmanPerusteet2019.diaari)
+  @AllowedValue(AikuistenLukiokoulutuksenOpetussuunnitelmanPerusteet2019.diaari)
   perusteenDiaarinumero: Option[String]
 ) extends Koulutusmoduuli {
   override def nimi: LocalizedString = LocalizedString.empty

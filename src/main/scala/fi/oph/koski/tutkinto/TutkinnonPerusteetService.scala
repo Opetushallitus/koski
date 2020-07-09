@@ -4,15 +4,13 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.schema.SuorituksenTyyppi.SuorituksenTyyppi
 import fi.oph.koski.schema.{Koodistokoodiviite, LocalizedString}
 import fi.oph.koski.tutkinto.Koulutustyyppi.Koulutustyyppi
+import fi.oph.koski.tutkinto.Perusteet.sallitutPerusteet
 
 class TutkinnonPerusteetService(application: KoskiApplication) {
   def diaarinumerotBySuorituksenTyyppi(suorituksenTyyppi: SuorituksenTyyppi): List[Koodistokoodiviite] = {
     val koulutustyypit: Set[Koulutustyyppi] = Koulutustyyppi.fromSuorituksenTyyppi(suorituksenTyyppi)
     val diaarinumerot: List[Koodistokoodiviite] = diaarinumerotByKoulutustyypit(koulutustyypit)
-    val sallitutPerusteet: Koodistokoodiviite => Boolean = diaarinumero =>
-      Perusteet.sallitutPerusteet(suorituksenTyyppi).exists(_.matches(diaarinumero.koodiarvo))
-
-    diaarinumerot.filter(sallitutPerusteet)
+    diaarinumerot.filter(diaarinumero => sallitutPerusteet(suorituksenTyyppi).matches(diaarinumero.koodiarvo))
   }
 
   def diaarinumerotByKoulutustyypit(koulutustyypit: Set[Koulutustyyppi]): List[Koodistokoodiviite] = {
