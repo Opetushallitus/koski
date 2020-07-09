@@ -7,12 +7,14 @@ object Perusteet {
   val LukionOpetussuunnitelmanPerusteet2019 = Diaarinumero("OPH-2263-2019")
   val AikuistenLukiokoulutuksenOpetussuunnitelmanPerusteet2019 = Diaarinumero("OPH-2267-2019")
 
-  def sallitutPerusteet(suorituksenTyyppi: SuorituksenTyyppi): List[Diaarinumerorajaus] =
-    sallitutPerusteet.getOrElse(suorituksenTyyppi, List(Kaikki))
+  val lops2019 = Diaarinumerot(List(LukionOpetussuunnitelmanPerusteet2019, AikuistenLukiokoulutuksenOpetussuunnitelmanPerusteet2019))
 
-  private lazy val sallitutPerusteet = Map(
-    SuorituksenTyyppi.lukionoppimaara2019 -> List(LukionOpetussuunnitelmanPerusteet2019, AikuistenLukiokoulutuksenOpetussuunnitelmanPerusteet2019),
-    SuorituksenTyyppi.lukionoppiaineidenoppimaarat2019 -> List(LukionOpetussuunnitelmanPerusteet2019, AikuistenLukiokoulutuksenOpetussuunnitelmanPerusteet2019)
+  def sallitutPerusteet(suorituksenTyyppi: SuorituksenTyyppi): Diaarinumerorajaus =
+    perusteetBySuoritus.getOrElse(suorituksenTyyppi, Kaikki)
+
+  private lazy val perusteetBySuoritus = Map(
+    SuorituksenTyyppi.lukionoppimaara2019 -> lops2019,
+    SuorituksenTyyppi.lukionoppiaineidenoppimaarat2019 -> lops2019
   )
 }
 
@@ -26,4 +28,8 @@ case object Kaikki extends Diaarinumerorajaus {
 
 case class Diaarinumero(diaari: String) extends Diaarinumerorajaus {
   override def matches(str: String): Boolean = diaari == str
+}
+
+case class Diaarinumerot(diaarit: List[Diaarinumerorajaus]) extends Diaarinumerorajaus {
+  override def matches(str: String): Boolean = diaarit.exists(_.matches(str))
 }
