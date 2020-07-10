@@ -23,6 +23,7 @@ class ValviraRepository(val db: DB) extends DatabaseExecutionContext with KoskiD
     runDbSync(
       OpiskeluOikeudet
         .filter(_.oppijaOid inSet oppijaOids)
+        .filterNot(_.mitätöity)
         .filter(_.data.+>("suoritukset").@>(parseJson(s"""[{"tyyppi":{"koodiarvo":"ammatillinentutkinto"}}]""")))
         .map(r => (r.data, r.aikaleima, r.versionumero, r.alkamispäivä, r.päättymispäivä))
         .result
