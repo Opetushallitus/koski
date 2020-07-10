@@ -78,8 +78,8 @@ describe('Oppijataulukko', function() {
     describe('tilalla', function() {
       before(page.oppijataulukko.filterBy('tyyppi', 'Ammatillinen koulutus'), page.oppijataulukko.filterBy('tutkinto'), page.oppijataulukko.filterBy('tila', 'Valmistunut'))
       it('toimii', function() {
-        expect(page.oppijataulukko.names()).to.deep.equal([ 'Amikseenvalmistautuja, Anneli', 'Ammatillinen-Osittainen, Raitsu', 'Ammattilainen, Aarne', 'Erikoinen, Erja', 'Kokonaisuuksilla, Keijo', 'Osittainen, Outi', 'Telmanen, Tuula' ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('7')
+        expect(page.oppijataulukko.names()).to.deep.equal([ 'Amikseenvalmistautuja, Anneli', 'Ammatillinen-Osittainen, Raitsu', 'Ammattilainen, Aarne', 'Erikoinen, Erja', 'Kokonaisuuksilla, Keijo', 'Osittainen, Outi', 'Telmanen, Tuula', 'Valviralle, Veera' ])
+        expect(page.opiskeluoikeudeTotal()).to.equal('8')
       })
     })
 
@@ -125,9 +125,10 @@ describe('Oppijataulukko', function() {
           'Koululainen, Kaisa',
           'Koululainen, Kaisa',
           'Lukioaineopiskelija, Aino',
-          'Monikoululainen, Miia'
+          'Monikoululainen, Miia',
+          'Valviralle, Veera'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('7')
+        expect(page.opiskeluoikeudeTotal()).to.equal('8')
       })
     })
   })

@@ -335,6 +335,10 @@ Esimerkkivastaus
 Palautettavan JSON-rakenteen tietomallin dokumentaatio on
 <a href="/koski/json-schema-viewer/?schema=valvira-oppija-schema.json">täällä</a>.
 
+Rajapinta palauttaa tiedot vain, jos oppijalla on Valviraa kiinnostavien ammattitutkintojen suorituksia.
+Tällä hetkellä niitä ovat sosiaali- ja terveysalan perustutkinto (371101), hieroja (371171) ja
+hieronnan ammattitutkinto (374111).
+
 Mikäli oppijaa tai suorituksia ei löydy, palauttaa rajapinta
 
     HTTP/1.1 404 Not Found

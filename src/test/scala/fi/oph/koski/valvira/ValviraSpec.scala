@@ -16,12 +16,12 @@ class ValviraSpec extends FreeSpec with LocalJettyHttpSpecification with Opiskel
   "ValviraSpec" - {
     "Yhdistää datat taulun sarakkeista jsoniin" - {
       "päättymispäivä" in {
-       getHetu(MockOppijat.ammattilainen.hetu.get) {
+       getHetu(MockOppijat.valviraaKiinnostavaTutkinto.hetu.get) {
           parseValviraOppija.opiskeluoikeudet.head.päättymispäivä should equal(Some(LocalDate.of(2016, 5, 31)))
        }
       }
       "serialisoituu kun päättymispäivää ei ole" in {
-        getHetu(MockOppijat.amis.hetu.get) {
+        getHetu(MockOppijat.valviraaKiinnostavaTutkintoKesken.hetu.get) {
           parseValviraOppija.opiskeluoikeudet.head.päättymispäivä should equal(None)
         }
       }
@@ -41,19 +41,24 @@ class ValviraSpec extends FreeSpec with LocalJettyHttpSpecification with Opiskel
         verifyResponseStatus(404, KoskiErrorCategory.notFound())
       }
     }
-    "Palauttaa opiskeluoikeudesta vain ammatilliset tutkinnot" in {
+    "Palauttaa 404 jos opiskeluoikeus sisältää vain ammatillisen tutkinnon suorituksia muilta kuin Valviran tutkintokoodeilta" in {
       getHetu(MockOppijat.erikoisammattitutkinto.hetu.get) {
+        verifyResponseStatus(404, KoskiErrorCategory.notFound())
+      }
+    }
+    "Palauttaa opiskeluoikeudesta vain ammatilliset Valviraa kiinnostavat tutkinnot" in {
+      getHetu(MockOppijat.valviraaKiinnostavaTutkinto.hetu.get) {
         parseValviraOppija.opiskeluoikeudet.flatMap(_.suoritukset.map(_.koulutusmoduuli.tunniste.nimi.get.get("fi"))) should equal(
-          List("Autoalan työnjohdon erikoisammattitutkinto")
+          List("Sosiaali- ja terveysalan perustutkinto")
         )
       }
     }
     "Palauttaa linkitettyjen oidien opinnot" in {
-      putOpiskeluoikeus(defaultOpiskeluoikeus, MockOppijat.master) {
-        putOpiskeluoikeus(AmmatillinenExampleData.puuteollisuusOpiskeluoikeusKesken(), MockOppijat.slave.henkilö) {
+      putOpiskeluoikeus(AmmatillinenExampleData.sosiaaliJaTerveysalaOpiskeluoikeus(), MockOppijat.master) {
+        putOpiskeluoikeus(AmmatillinenExampleData.sosiaaliJaTerveysalaOpiskeluoikeusKesken(), MockOppijat.slave.henkilö) {
          getHetu(MockOppijat.master.hetu.get) {
-           parseValviraOppija.opiskeluoikeudet.flatMap(_.suoritukset.map(_.koulutusmoduuli.tunniste.nimi.get.get("fi"))).toSet should equal(
-             Set("Autoalan perustutkinto", "Puuteollisuuden perustutkinto")
+           parseValviraOppija.opiskeluoikeudet.flatMap(_.suoritukset.map(_.koulutusmoduuli.tunniste.nimi.get.get("fi"))) should equal(
+             List("Sosiaali- ja terveysalan perustutkinto", "Sosiaali- ja terveysalan perustutkinto")
            )
          }
        }
@@ -61,14 +66,14 @@ class ValviraSpec extends FreeSpec with LocalJettyHttpSpecification with Opiskel
     }
     "Tuottaa oikean auditlogin" in {
       AuditLogTester.clearMessages
-      getHetu(MockOppijat.amis.hetu.get) {
+      getHetu(MockOppijat.valviraaKiinnostavaTutkinto.hetu.get) {
         verifyResponseStatusOk()
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> MockOppijat.amis.oid)))
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> MockOppijat.valviraaKiinnostavaTutkinto.oid)))
       }
     }
     "Hetu ei päädy lokiin" in {
       val maskedHetu = "******-****"
-      getHetu(MockOppijat.amis.hetu.get) {
+      getHetu(MockOppijat.valviraaKiinnostavaTutkinto.hetu.get) {
         verifyResponseStatusOk()
         Thread.sleep(200) // wait for logging to catch up (there seems to be a slight delay)
         AccessLogTester.getLogMessages.lastOption.get.getMessage.toString should include(maskedHetu)

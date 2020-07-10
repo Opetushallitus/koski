@@ -162,7 +162,9 @@ class KoskiDatabaseFixtureCreator(application: KoskiApplication) extends KoskiDa
       (MockOppijat.turvakielto, ExamplesLukio.päättötodistus()),
       (MockOppijat.erkkiEiperusteissa, AmmatillinenOpiskeluoikeusTestData.opiskeluoikeus(MockOrganisaatiot.stadinAmmattiopisto, koulutusKoodi = 334117, diaariNumero = "22/011/2004")),
       (MockOppijat.internationalschool, ExamplesInternationalSchool.opiskeluoikeus),
-      (MockOppijat.montaKoulutuskoodiaAmis, AmmatillinenExampleData.puuteollisuusOpiskeluoikeusKesken())
+      (MockOppijat.montaKoulutuskoodiaAmis, AmmatillinenExampleData.puuteollisuusOpiskeluoikeusKesken()),
+      (MockOppijat.valviraaKiinnostavaTutkinto, AmmatillinenExampleData.sosiaaliJaTerveysalaOpiskeluoikeus()),
+      (MockOppijat.valviraaKiinnostavaTutkintoKesken, AmmatillinenExampleData.sosiaaliJaTerveysalaOpiskeluoikeusKesken())
     )
   }
 

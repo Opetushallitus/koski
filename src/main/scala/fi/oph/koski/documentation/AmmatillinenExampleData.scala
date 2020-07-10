@@ -19,6 +19,7 @@ object AmmatillinenExampleData {
   val puutarhuri: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("361201", "koulutus"), Some("75/011/2014"))
   val autoalanTyönjohto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("357305", "koulutus"), Some("40/011/2001"))
   val puuteollisuudenPerustutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351741", "koulutus"), Some("OPH-2455-2017"))
+  val sosiaaliJaTerveysalanPerustutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("371101", "koulutus"), Some("79/011/2014"))
   val virheellinenPuuteollisuudenPerustutkinto: AmmatillinenTutkintoKoulutus = AmmatillinenTutkintoKoulutus(Koodistokoodiviite("351741", "koulutus"), Some("OPH-992455-2017"))
 
   val tutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus: TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus = TutkinnonOsaaPienemmistäKokonaisuuksistaKoostuvaKoulutus(
@@ -384,6 +385,48 @@ object AmmatillinenExampleData {
     lisätiedot = Some(opiskeluoikeudenLisätiedot)
   )
 
+  def sosiaaliJaTerveysalaOpiskeluoikeus(oppilaitos: Oppilaitos = stadinAmmattiopisto, toimipiste: OrganisaatioWithOid = stadinToimipiste) = AmmatillinenOpiskeluoikeus(
+    arvioituPäättymispäivä = Some(date(2015, 5, 31)),
+    tila = AmmatillinenOpiskeluoikeudenTila(List(
+      AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(ExampleData.valtionosuusRahoitteinen)),
+      AmmatillinenOpiskeluoikeusjakso(date(2016, 5, 31), opiskeluoikeusValmistunut, Some(ExampleData.valtionosuusRahoitteinen))
+    )),
+    oppilaitos = Some(stadinAmmattiopisto),
+    suoritukset = List(
+      AmmatillisenTutkinnonSuoritus(
+        koulutusmoduuli = sosiaaliJaTerveysalanPerustutkinto,
+        suoritustapa = suoritustapaNäyttö,
+        järjestämismuodot = Some(List(
+          Järjestämismuotojakso(date(2014, 8, 1), None, järjestämismuotoOppilaitos),
+          Järjestämismuotojakso(date(2015, 5, 31), None, järjestämismuotoOppisopimus),
+          Järjestämismuotojakso(date(2016, 3, 31), None, järjestämismuotoOppilaitos)
+        )),
+        suorituskieli = suomenKieli,
+        alkamispäivä = None,
+        toimipiste = stadinToimipiste,
+        vahvistus = vahvistus(date(2016, 5, 31), stadinAmmattiopisto, Some(helsinki)),
+        osasuoritukset = Some(List(
+          tutkinnonOsanSuoritus("100832", "Kasvun tukeminen ja ohjaus", ammatillisetTutkinnonOsat, hyväksytty),
+          tutkinnonOsanSuoritus("100833", "Hoito ja huolenpito", ammatillisetTutkinnonOsat, hyväksytty),
+          tutkinnonOsanSuoritus("100834", "Kuntoutumisen tukeminen", ammatillisetTutkinnonOsat, hyväksytty),
+          tutkinnonOsanSuoritus("100840", "Lasten ja nuorten hoito ja kasvatus", ammatillisetTutkinnonOsat, hyväksytty)
+        ))
+      )
+    )
+  )
+
+  def sosiaaliJaTerveysalaOpiskeluoikeusKesken(oppilaitos: Oppilaitos = stadinAmmattiopisto, toimipiste: OrganisaatioWithOid = stadinToimipiste) = AmmatillinenOpiskeluoikeus(
+    arvioituPäättymispäivä = Some(date(2015, 5, 31)),
+    oppilaitos = Some(oppilaitos),
+    suoritukset = List(sosiaaliJaTerveysalanPerustutkinnonSuoritusKesken(toimipiste)),
+    tila = AmmatillinenOpiskeluoikeudenTila(
+      List(
+        AmmatillinenOpiskeluoikeusjakso(date(2012, 9, 1), opiskeluoikeusLäsnä, Some(Koodistokoodiviite("4", Some("Työnantajan kokonaan rahoittama"), "opintojenrahoitus", None)))
+      )
+    ),
+    lisätiedot = Some(opiskeluoikeudenLisätiedot)
+  )
+
   val lisätietoMuutosArviointiasteikossa = AmmatillisenTutkinnonOsanLisätieto(Koodistokoodiviite("muutosarviointiasteikossa", "ammatillisentutkinnonosanlisatieto"),
     "Tutkinnon osa on koulutuksen järjestäjän päätöksellä arvioitu asteikolla hyväksytty/hylätty.")
 
@@ -494,6 +537,25 @@ object AmmatillinenExampleData {
         tutkinnonOsanSuoritus("100442", "Ulkoilureittien rakentaminen ja hoitaminen", ammatillisetTutkinnonOsat, None),
         tutkinnonOsanSuoritus("100443", "Kulttuuriympäristöjen kunnostaminen ja hoitaminen", ammatillisetTutkinnonOsat, None),
         paikallisenTutkinnonOsanSuoritus("enkku3", "Matkailuenglanti", vapaavalintaisetTutkinnonOsat, k3, 5)
+      ).map(_.toimipisteellä(toimipiste)))
+    )
+  }
+
+  def sosiaaliJaTerveysalanPerustutkinnonSuoritusKesken(toimipiste: OrganisaatioWithOid = stadinToimipiste): AmmatillisenTutkinnonSuoritus = {
+    AmmatillisenTutkinnonSuoritus(
+      koulutusmoduuli = sosiaaliJaTerveysalanPerustutkinto,
+      tutkintonimike = Some(List(Koodistokoodiviite("10008", Some("Lähihoitaja"), "tutkintonimikkeet", None))),
+      osaamisala = Some(List(Osaamisalajakso(Koodistokoodiviite("1509", Some("Lasten ja nuorten hoidon ja kasvatuksen osaamisala"), "osaamisala", None)))),
+      suoritustapa = suoritustapaOps,
+      järjestämismuodot = Some(List(Järjestämismuotojakso(date(2012, 9, 1), None, järjestämismuotoOppilaitos))),
+      suorituskieli = suomenKieli,
+      alkamispäivä = None,
+      toimipiste = toimipiste,
+      työssäoppimisjaksot = työssäoppiminenSorttiAsemalla,
+      osasuoritukset = Some(List(
+        tutkinnonOsanSuoritus("100832", "Kasvun tukeminen ja ohjaus", ammatillisetTutkinnonOsat, hyväksytty),
+        tutkinnonOsanSuoritus("100833", "Hoito ja huolenpito", ammatillisetTutkinnonOsat, None),
+        tutkinnonOsanSuoritus("100834", "Kuntoutumisen tukeminen", ammatillisetTutkinnonOsat, None)
       ).map(_.toimipisteellä(toimipiste)))
     )
   }
