@@ -563,7 +563,13 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   private def osasuorituksetKunnossa(suoritus: PäätasonSuoritus) = suoritus match {
-    case _:EsiopetuksenSuoritus | _:MuunAmmatillisenKoulutuksenSuoritus | _:OppiaineenSuoritus | _:OppiaineenOppimääränSuoritus | _:NäyttötutkintoonValmistavanKoulutuksenSuoritus => true
+    case _:EsiopetuksenSuoritus |
+         _:MuunAmmatillisenKoulutuksenSuoritus |
+         _:OppiaineenSuoritus |
+         _:OppiaineenOppimääränSuoritus |
+         _:NäyttötutkintoonValmistavanKoulutuksenSuoritus |
+         _:LukionOppiaineidenOppimäärienSuoritus2019
+      => true
     case s: PerusopetuksenVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "9" => true
     case s => s.osasuoritusLista.nonEmpty
   }
