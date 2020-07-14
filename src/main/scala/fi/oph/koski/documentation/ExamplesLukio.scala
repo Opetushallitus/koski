@@ -147,7 +147,7 @@ object ExamplesLukio {
               kurssisuoritus(syventäväKurssi("KE8", "Kemia 8", "Kemia 8"))
                 .copy(arviointi = sanallinenArviointi("S"))
             ))),
-            suoritus(lukionUskonto(uskonto = Some("IS"))).copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
+            suoritus(lukionUskonto(uskonto = Some("IS"), diaarinumero = None)).copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("UE1")).copy(arviointi = numeerinenArviointi(8)),
               kurssisuoritus(valtakunnallinenKurssi("UE2")).copy(arviointi = numeerinenArviointi(7)),
               kurssisuoritus(valtakunnallinenKurssi("UE3")).copy(arviointi = numeerinenArviointi(8))
@@ -402,7 +402,7 @@ object LukioExampleData {
   )
 
   val lukionOppiaineenOppimääränSuoritusPitkäMatematiikka: LukionOppiaineenOppimääränSuoritus = LukionOppiaineenOppimääränSuoritus(
-    koulutusmoduuli = matematiikka("MAA").copy(perusteenDiaarinumero = Some("60/011/2015")),
+    koulutusmoduuli = matematiikka("MAA", perusteenDiaarinumero = Some("60/011/2015")),
     suorituskieli = suomenKieli,
     vahvistus = vahvistusPaikkakunnalla(päivä = date(2016, 1, 10)),
     toimipiste = jyväskylänNormaalikoulu,
@@ -422,7 +422,7 @@ object LukioExampleData {
   val aikuistenOpetussuunnitelma = Koodistokoodiviite("aikuistenops", Some("Aikuisten ops"), "lukionoppimaara", Some(1))
   val nuortenOpetussuunnitelma = Koodistokoodiviite("nuortenops", Some("Nuorten ops"), "lukionoppimaara", Some(1))
 
-  def suoritus(aine: LukionOppiaine): LukionOppiaineenSuoritus = LukionOppiaineenSuoritus(
+  def suoritus(aine: LukionOppiaine2015): LukionOppiaineenSuoritus = LukionOppiaineenSuoritus(
     koulutusmoduuli = aine,
     suorituskieli = None,
     arviointi = None,
@@ -452,22 +452,42 @@ object LukioExampleData {
   def soveltavaKurssi(koodi: String, nimi: String, kuvaus: String) =
     PaikallinenLukionKurssi(PaikallinenKoodi(koodiarvo = koodi, nimi = nimi), laajuus(1.0f), kuvaus, kurssinTyyppi = soveltava)
 
-  def matematiikka(matematiikka: String) = LukionMatematiikka(oppimäärä = Koodistokoodiviite(koodiarvo = matematiikka, koodistoUri = "oppiainematematiikka"))
+  def matematiikka(matematiikka: String, laajuus: Option[LaajuusKursseissa] = None, perusteenDiaarinumero: Option[String] = None) = laajuus.map(l =>
+    LukionMatematiikka2015(oppimäärä = Koodistokoodiviite(koodiarvo = matematiikka, koodistoUri = "oppiainematematiikka"), perusteenDiaarinumero = perusteenDiaarinumero, laajuus = l)
+  ).getOrElse(
+    LukionLaajuudetonMatematiikka(oppimäärä = Koodistokoodiviite(koodiarvo = matematiikka, koodistoUri = "oppiainematematiikka"), perusteenDiaarinumero = perusteenDiaarinumero)
+  )
 
   def laajuus(laajuus: Float, yksikkö: String = "4"): Some[LaajuusKursseissa] = Some(LaajuusKursseissa(laajuus, Koodistokoodiviite(koodistoUri = "opintojenlaajuusyksikko", koodiarvo = yksikkö)))
 
-  def lukionOppiaine(aine: String, laajuus: Option[LaajuusKursseissa] = None, diaarinumero: Option[String] = None) =
-    LukionMuuValtakunnallinenOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), perusteenDiaarinumero = diaarinumero, laajuus = laajuus)
-
-  def lukionUskonto(uskonto: Option[String] = None, laajuus: Option[LaajuusKursseissa] = None, diaarinumero: Option[String] = None) = LukionUskonto(
-    tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = "KT"),
-    uskonnonOppimäärä = uskonto.map(u => Koodistokoodiviite(koodistoUri = "uskonnonoppimaara", koodiarvo = u)),
-    perusteenDiaarinumero = diaarinumero,
-    laajuus = laajuus
+  def lukionOppiaine(aine: String, laajuus: Option[LaajuusKursseissa] = None, diaarinumero: Option[String] = None) = laajuus.map(l =>
+    LukionMuuValtakunnallinenOppiaine2015(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), perusteenDiaarinumero = diaarinumero, laajuus = l)
+  ).getOrElse(
+    LukionLaajuudetonMuuValtakunnallinenOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), perusteenDiaarinumero = diaarinumero)
   )
 
-  def lukionÄidinkieli(kieli: String) = LukionÄidinkieliJaKirjallisuus(kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus"))
-  def lukionKieli(oppiaine: String, kieli: String) = VierasTaiToinenKotimainenKieli(
+  def lukionUskonto(uskonto: Option[String], laajuus: LaajuusKursseissa, diaarinumero: Option[String]): LukionUskonto2015 =
+    LukionUskonto2015(
+      tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = "KT"),
+      uskonnonOppimäärä = uskonto.map(u => Koodistokoodiviite(koodistoUri = "uskonnonoppimaara", koodiarvo = u)),
+      perusteenDiaarinumero = diaarinumero,
+      laajuus = laajuus
+    )
+
+  def lukionUskonto(uskonto: Option[String], diaarinumero: Option[String]): LukionLaajuudetonUskonto =
+    LukionLaajuudetonUskonto(
+      tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = "KT"),
+      uskonnonOppimäärä = uskonto.map(u => Koodistokoodiviite(koodistoUri = "uskonnonoppimaara", koodiarvo = u)),
+      perusteenDiaarinumero = diaarinumero
+    )
+
+  def lukionÄidinkieli(kieli: String, laajuus: Option[LaajuusKursseissa] = None, pakollinen: Boolean = true) = laajuus.map(l =>
+    LukionÄidinkieliJaKirjallisuus2015(kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus"), laajuus = l, pakollinen = pakollinen)
+  ).getOrElse(
+    LukionLaajuudetonÄidinkieliJaKirjallisuus(kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus"), pakollinen = pakollinen)
+  )
+
+  def lukionKieli(oppiaine: String, kieli: String) = LaajuudetonVierasTaiToinenKotimainenKieli(
     tunniste = Koodistokoodiviite(koodiarvo = oppiaine, koodistoUri = "koskioppiaineetyleissivistava"),
     kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima"))
 

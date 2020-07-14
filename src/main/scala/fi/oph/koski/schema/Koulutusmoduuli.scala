@@ -21,11 +21,6 @@ trait Koulutusmoduuli extends Localized {
 trait KoulutusmoduuliPakollinenLaajuus extends Koulutusmoduuli {
   def laajuus: Laajuus
   override def getLaajuus: Option[Laajuus] = Some(laajuus)
-
-  final def withLaajuus(laajuus: Laajuus): KoulutusmoduuliPakollinenLaajuus = {
-    import mojave._
-    shapeless.lens[KoulutusmoduuliPakollinenLaajuus].field[Laajuus]("laajuus").set(this)(laajuus)
-  }
 }
 
 trait KoulutusmoduuliValinnainenLaajuus extends Koulutusmoduuli {

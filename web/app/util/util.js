@@ -19,6 +19,11 @@ export const toObservable = (x) => isObs(x) ? x : Bacon.constant(x)
 
 export const ift = (obs, value) => toObservable(obs).map(show => show ? value : null)
 
+export const is = model => {
+ const instanceOf = className => model && model.value && model.value.classes && model.value.classes.includes(className) || false
+ return {instanceOf}
+}
+
 export const scrollElementBottomVisible = elem => {
   if (elem) {
     let elementTopPositionOnScreen = elem.getBoundingClientRect().y

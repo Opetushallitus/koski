@@ -2,6 +2,8 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
+import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.json.JsonSerializer.serializeWithRoot
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation._
 
@@ -196,12 +198,18 @@ case class LukionPaikallinenOpintojakso2019(
   pakollinen: Boolean
 ) extends LukionModuuliTaiPaikallinenOpintojakso2019 with PaikallinenKoulutusmoduuli with StorablePreference
 
+trait LukionOppiaine2019 extends LukionOppiaine {
+  def withLaajuus(laajuusArvo: Double): LukionLaajuudellinenOppiaine2019 = {
+    val laajuudellinen = serializeWithRoot(this).merge(serializeWithRoot(Map("laajuus" -> LaajuusOpintopisteissä(laajuusArvo))))
+    JsonSerializer.extract[LukionLaajuudellinenOppiaine2019](laajuudellinen )
+  }
+}
+
 @Description("Lukion/IB-lukion oppiaineen tunnistetiedot 2019")
-trait LukionOppiaine2019 extends KoulutusmoduuliPakollinenLaajuus with Valinnaisuus with PreIBOppiaine {
-  @DefaultValue(LaajuusOpintopisteissä(1))
+trait LukionLaajuudellinenOppiaine2019 extends KoulutusmoduuliPakollinenLaajuus with LukionOppiaine2019 {
+  @Discriminator
   def laajuus: LaajuusOpintopisteissä
-  @Title("Oppiaine")
-  def tunniste: KoodiViite
+  override def perusteenDiaarinumero: Option[String] = None
 }
 
 @Title("Paikallinen oppiaine 2019")
@@ -211,9 +219,9 @@ case class PaikallinenLukionOppiaine2019(
   pakollinen: Boolean = false,
   @Discriminator
   laajuus: LaajuusOpintopisteissä
-) extends LukionOppiaine2019 with PaikallinenKoulutusmoduuli with StorablePreference
+) extends LukionLaajuudellinenOppiaine2019 with PaikallinenKoulutusmoduuli with StorablePreference
 
-trait LukionValtakunnallinenOppiaine2019 extends LukionOppiaine2019 with YleissivistavaOppiaine
+trait LukionValtakunnallinenOppiaine2019 extends LukionLaajuudellinenOppiaine2019 with YleissivistavaOppiaine
 
 @Title("Muu valtakunnallinen oppiaine 2019")
 case class LukionMuuValtakunnallinenOppiaine2019(
@@ -257,7 +265,7 @@ case class LukionÄidinkieliJaKirjallisuus2019(
   pakollinen: Boolean = true,
   @Discriminator
   laajuus: LaajuusOpintopisteissä = LaajuusOpintopisteissä(1)
-) extends LukionValtakunnallinenOppiaine2019 with Äidinkieli {
+) extends LukionValtakunnallinenOppiaine2019 with LukionÄidinkieliJaKirjallisuus {
   override def description: LocalizedString = kieliaineDescription
 }
 

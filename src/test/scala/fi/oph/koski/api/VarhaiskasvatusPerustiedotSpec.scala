@@ -40,7 +40,10 @@ class VarhaiskasvatusPerustiedotSpec extends FreeSpec with BeforeAndAfterAll wit
     }
   }
 
-  override protected def beforeAll(): Unit = tallennaOpiskeluoikeuksiaMajakkaan
+  override protected def beforeAll(): Unit = {
+    resetFixtures
+    tallennaOpiskeluoikeuksiaMajakkaan
+  }
 
   private def tallennaOpiskeluoikeuksiaMajakkaan = {
     putOpiskeluoikeus(päiväkotiEsiopetus(YleissivistavakoulutusExampleData.päiväkotiMajakka, ostopalvelu), henkilö = asUusiOppija(eero), headers = authHeaders(MockUsers.helsinkiTallentaja) ++ jsonContent) {

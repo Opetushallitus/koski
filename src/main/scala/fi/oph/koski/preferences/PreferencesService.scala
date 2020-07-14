@@ -27,7 +27,6 @@ case class PreferencesService(protected val db: DB) extends Logging with KoskiDa
     "paikallinenaikuistenperusopetuksenalkuvaiheenkurssi" -> classOf[PaikallinenAikuistenPerusopetuksenAlkuvaiheenKurssi],
     "paikallinenlukionkurssi" -> classOf[PaikallinenLukionKurssi],
     "paikallinenlukionoppiaine" -> classOf[PaikallinenLukionOppiaine],
-    "paikallinenlukionoppiaine2019" -> classOf[PaikallinenLukionOppiaine2019],
     "paikallinenlukioonvalmistavankoulutuksenkurssi" -> classOf[PaikallinenLukioonValmistavanKoulutuksenKurssi],
     "paikallinenlukioonvalmistavankoulutuksenoppiaine" -> classOf[PaikallinenLukioonValmistavanKoulutuksenOppiaine],
     "ibkurssi" -> classOf[IBKurssi],
