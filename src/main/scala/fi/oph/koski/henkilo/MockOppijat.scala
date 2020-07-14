@@ -92,6 +92,8 @@ object MockOppijat {
   val koulusivistyskieliYlioppilas = oppijat.oppija("Koulu", "SivistysKieli", "020401-368M")
   val montaKoulusivityskieltäYlioppilas = oppijat.oppija("MontaKoulu", "SivistysKieltä", "020401-746U")
   val labammattikoulu = oppijat.oppija("Lahti", "LAB", "260308-361W")
+  val valviraaKiinnostavaTutkinto = oppijat.oppija("Valviralle", "Veera", "120100A2365")
+  val valviraaKiinnostavaTutkintoKesken = oppijat.oppija("Valviralle-Kesken", "Ville", "131099-633D")
 
   val virtaOppija = oppijat.addOppija(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.57060795845", sukunimi = "Virta", etunimet = "Veikko", kutsumanimi = "Veikko", hetu = Some("270191-4208"), syntymäaika = Some(LocalDate.of(1978, 3, 25)), äidinkieli = None, kansalaisuus = None))
   val virtaOppijaHetuton = oppijat.addOppija(OppijaHenkilöWithMasterInfo(

@@ -56,7 +56,7 @@ case class AmmatillisenTutkinnonSuoritus(
 case class Koulutusmoduuli(
   tunniste: Koodistokoodiviite,
   perusteenDiaarinumero: String,
-  perusteenNimi: LocalizedString,
+  perusteenNimi: Option[LocalizedString],
   koulutustyyppi: Koodistokoodiviite
 )
 

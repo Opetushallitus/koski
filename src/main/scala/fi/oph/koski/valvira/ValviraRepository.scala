@@ -23,12 +23,14 @@ class ValviraRepository(val db: DB) extends DatabaseExecutionContext with KoskiD
     runDbSync(
       OpiskeluOikeudet
         .filter(_.oppijaOid inSet oppijaOids)
+        .filterNot(_.mitätöity)
         .filter(_.data.+>("suoritukset").@>(parseJson(s"""[{"tyyppi":{"koodiarvo":"ammatillinentutkinto"}}]""")))
         .map(r => (r.data, r.aikaleima, r.versionumero, r.alkamispäivä, r.päättymispäivä))
         .result
     )
       .map(mergeJson)
-      .map(onlyAmmatillisenTutkinnonSuoritukset)
+      .map(onlyValviraTutkinnonSuoritukset)
+      .filter(sisältääSuorituksia)
       .map(JsonSerializer.extract[ValviraOpiskeluoikeus](_, ignoreExtras = true))
   } match {
     case Success(opiskeluoikeudet) if opiskeluoikeudet.nonEmpty => Right(opiskeluoikeudet.toList)
@@ -47,9 +49,20 @@ class ValviraRepository(val db: DB) extends DatabaseExecutionContext with KoskiD
   private def päättymispäiväIfDefined(päättymispäivä: Option[Date]) =
     päättymispäivä.map(d => s""","päättymispäivä":"${d.toLocalDate}"""").getOrElse("")
 
-  private def onlyAmmatillisenTutkinnonSuoritukset(json: JValue): JValue = {
+  private def onlyValviraTutkinnonSuoritukset(json: JValue): JValue = {
     json.transformField { case ("suoritukset", suoritukset) =>
-      ("suoritukset", JArray(suoritukset.filter(_ \ "tyyppi" \ "koodiarvo" == JString("ammatillinentutkinto"))))
+      ("suoritukset", JArray(suoritukset.filter(onValviraSuoritus)))
     }
+  }
+
+  private def onValviraSuoritus(suoritus:JValue): Boolean = {
+    suoritus \ "tyyppi" \ "koodiarvo" == JString("ammatillinentutkinto") &&
+      valviranTutkinnot.contains(suoritus \ "koulutusmoduuli" \ "tunniste" \ "koodiarvo")
+  }
+
+  private lazy val valviranTutkinnot = List(JString("371101"), JString("374111"), JString("371171"))
+
+  private def sisältääSuorituksia(json: JValue): Boolean = {
+    json \ "suoritukset" != JArray(Nil)
   }
 }

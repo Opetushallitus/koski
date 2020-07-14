@@ -290,3 +290,58 @@ Vastaus, kun pyyntö suoritetaan onnistuneesti:
       },
       ...
     ]
+
+## /koski/api/luovutuspalvelu/valvira/
+
+Tällä kutsulla Valvira voi hakea suoritustietoja.
+
+Esimerkkipyyntö
+
+    GET /koski/api/luovutuspalvelu/valvira/010326-953H' HTTP/1.1
+
+Esimerkkivastaus
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+
+    {
+      "henkilö": {
+        "hetu": "010326-953H"
+      },
+      "opiskeluoikeudet": [
+        {
+          ...
+          "suoritukset": [
+            {
+              "koulutusmoduuli": {
+                "tunniste": {
+                  "koodiarvo": "371101",
+                  "nimi": {
+                    "fi": "Sosiaali- ja terveysalan perustutkinto",
+                    ...
+                  },
+                  ...
+                },
+                ...
+              },
+              ...
+            }
+          ],
+          ...
+        }
+      ]
+    }
+
+Palautettavan JSON-rakenteen tietomallin dokumentaatio on
+<a href="/koski/json-schema-viewer/?schema=valvira-oppija-schema.json">täällä</a>.
+
+Rajapinta palauttaa tiedot vain, jos oppijalla on Valviraa kiinnostavien ammattitutkintojen suorituksia.
+Tällä hetkellä niitä ovat sosiaali- ja terveysalan perustutkinto (371101), hieroja (371171) ja
+hieronnan ammattitutkinto (374111).
+
+Mikäli oppijaa tai suorituksia ei löydy, palauttaa rajapinta
+
+    HTTP/1.1 404 Not Found
+    Content-Type: application/json
+
+    ...
