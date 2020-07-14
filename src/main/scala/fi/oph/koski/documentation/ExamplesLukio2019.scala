@@ -14,20 +14,23 @@ object ExamplesLukio2019 {
   val lops2019perusteenDiaarinumero = Some("OPH-2263-2019")
   val lukionOppimäärä2019: LukionOppimäärä = LukionOppimäärä(perusteenDiaarinumero = lops2019perusteenDiaarinumero)
   val oppiainesuoritukset = List(
-    oppiaineenSuoritus(äidinkieli("AI1")).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
+    oppiaineenSuoritus(LukioExampleData.lukionÄidinkieli("AI1", true)).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
       moduulinSuoritus(moduuli("OÄI1")).copy(arviointi = numeerinenArviointi(8)),
       moduulinSuoritus(moduuli("OÄI2")).copy(arviointi = numeerinenArviointi(8)),
       moduulinSuoritus(moduuli("OÄI3")).copy(arviointi = numeerinenArviointi(8))
     ))),
-    oppiaineenSuoritus(pitkäMatematiikka).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
+    oppiaineenSuoritus(LukioExampleData.matematiikka("MAA", None)).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
       moduulinSuoritus(moduuli("MAB2")).copy(arviointi = numeerinenArviointi(8)),
       moduulinSuoritus(moduuli("MAB3")).copy(arviointi = numeerinenArviointi(8)),
       moduulinSuoritus(moduuli("MAB4")).copy(arviointi = numeerinenArviointi(8))
     ))),
-    oppiaineenSuoritus(uskonto(Some("MU"))).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
+    oppiaineenSuoritus(LukioExampleData.lukionUskonto(Some("MU"), None)).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
       moduulinSuoritus(moduuli("UE1").copy(laajuus = laajuus(1.5))).copy(arviointi = numeerinenArviointi(7))
     ))),
-    oppiaineenSuoritus(muuOppiaine("FY")).copy(arviointi = arviointi("10")).copy(osasuoritukset = Some(List(
+    oppiaineenSuoritus(lukionKieli2019("AOM", "SV")).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
+      moduulinSuoritus(moduuli("RUA4").copy(laajuus = laajuus(1))).copy(arviointi = numeerinenArviointi(7))
+    ))),
+    oppiaineenSuoritus(LukioExampleData.lukionOppiaine("FY", None)).copy(arviointi = arviointi("10")).copy(osasuoritukset = Some(List(
       moduulinSuoritus(moduuli("FY1")).copy(arviointi = numeerinenArviointi(10)),
       moduulinSuoritus(moduuli("FY2")).copy(arviointi = numeerinenArviointi(10)),
       moduulinSuoritus(moduuli("FY3")).copy(arviointi = numeerinenArviointi(10)),
@@ -79,22 +82,9 @@ object Lukio2019ExampleData {
     osasuoritukset = None
   )
 
-  def äidinkieli(kieli: String) = LukionÄidinkieliJaKirjallisuus2019(
-    kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus")
-  )
-
-  lazy val pitkäMatematiikka = LukionMatematiikka2019(
-    oppimäärä = Koodistokoodiviite(koodiarvo = "MAA", koodistoUri = "oppiainematematiikka")
-  )
-
-  def uskonto(oppimäärä: Option[String] = None) = LukionUskonto2019(
-    tunniste = Koodistokoodiviite(koodiarvo = "KT", koodistoUri = "koskioppiaineetyleissivistava"),
-    uskonnonOppimäärä = oppimäärä.map(opp => Koodistokoodiviite(koodiarvo = opp, koodistoUri = "uskonnonoppimaara"))
-  )
-
-  def muuOppiaine(tunniste: String) = LukionMuuValtakunnallinenOppiaine2019(
-    tunniste = Koodistokoodiviite(koodiarvo = tunniste, koodistoUri = "koskioppiaineetyleissivistava")
-  )
+  def lukionKieli2019(oppiaine: String, kieli: String) = LaajuudetonVierasTaiToinenKotimainenKieli2019(
+    tunniste = Koodistokoodiviite(koodiarvo = oppiaine, koodistoUri = "koskioppiaineetyleissivistava"),
+    kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima"))
 
   def moduulinSuoritus(moduuli: LukionModuuli2019) = LukionModuulinSuoritus2019(
     koulutusmoduuli = moduuli,
