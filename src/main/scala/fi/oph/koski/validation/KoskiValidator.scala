@@ -9,6 +9,7 @@ import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.json.JsonSerializer.serializeWithRoot
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.opiskeluoikeus.KoskiOpiskeluoikeusRepository
@@ -21,6 +22,7 @@ import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.util.Timing
 import fi.oph.koski.validation.DateValidation._
 import mojave._
+import org.json4s.jackson.JsonMethods
 import org.json4s.{JArray, JValue}
 
 // scalastyle:off line.size.limit
@@ -126,9 +128,9 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   private def fillOppiaineidenLaajuudet(suoritus: PäätasonSuoritus): PäätasonSuoritus = suoritus match {
     case l: LukionPäätasonSuoritus2019 =>
       l.withOsasuoritukset(l.osasuoritukset.map(_.map { os =>
-        val yhteislaajuus = os.osasuoritusLista.map(_.koulutusmoduuli.laajuusArvo(1.0)).map(BigDecimal.decimal).sum.toDouble
+        lazy val yhteislaajuus = os.osasuoritusLista.map(_.koulutusmoduuli.laajuusArvo(1.0)).map(BigDecimal.decimal).sum.toDouble
         os.withKoulutusmoduuli(os.koulutusmoduuli match {
-          case k: KoulutusmoduuliPakollinenLaajuus if yhteislaajuus > 0 => k.withLaajuus(LaajuusOpintopisteissä(yhteislaajuus))
+          case k: LukionOppiaine2019 if yhteislaajuus > 0 => k.withLaajuus(yhteislaajuus)
           case k => k
         })
       }))

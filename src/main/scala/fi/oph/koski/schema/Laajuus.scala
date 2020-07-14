@@ -13,11 +13,6 @@ trait Laajuus {
   @Description("Opintojen laajuuden yksikkö")
   @KoodistoUri("opintojenlaajuusyksikko")
   def yksikkö: Koodistokoodiviite
-
-  final def withArvo(uusiArvo: BigDecimal): Laajuus = {
-    import mojave._
-    shapeless.lens[Laajuus].field[Double]("arvo").set(this)(uusiArvo.toDouble)
-  }
 }
 
 case class LaajuusKaikkiYksiköt(
