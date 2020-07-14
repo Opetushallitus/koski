@@ -2,7 +2,7 @@ package fi.oph.koski.userdirectory
 
 import com.typesafe.config.Config
 import fi.oph.koski.henkilo.{KäyttäjäHenkilö, OppijanumeroRekisteriClient}
-import fi.oph.koski.http.Http
+import fi.oph.koski.http.{Http, OpintopolkuCallerId}
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.log.Logging
 import fi.oph.koski.organisaatio.Opetushallitus
@@ -34,7 +34,10 @@ class OpintopolkuDirectoryClient(virkailijaUrl: String, config: Config) extends 
 
   override def authenticate(userid: String, wrappedPassword: Password): Boolean = {
     val tgtUri: TGTUrl = resolve(Uri.fromString(virkailijaUrl).toOption.get, uri("/cas/v1/tickets"))
-    Http.runTask(http.client.fetch(POST(tgtUri, UrlForm("username" -> userid, "password" -> wrappedPassword.password))) {
+
+    Http.runTask(http.client.fetch(
+      POST(tgtUri, UrlForm("username" -> userid, "password" -> wrappedPassword.password))
+        .putHeaders(Header("Caller-Id", OpintopolkuCallerId.koski))) {
       case Created(resp) =>
         val found: TGTUrl = resp.headers.get(Location).map(_.value) match {
           case Some(tgtPattern(tgtUrl)) =>
