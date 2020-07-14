@@ -28,7 +28,8 @@ export const UusiOppiaineDropdown = (
     enableFilter = true,
     allowPaikallinen = true,
     allowSelectingDuplicates = false,
-    optionsFilter = R.identity
+    optionsFilter = R.identity,
+    oppiainePrototypes = undefined
   }) => {
   if (!oppiaineenSuoritukset || R.any(s => !s.context.edit, oppiaineenSuoritukset)) return null
 
@@ -38,7 +39,7 @@ export const UusiOppiaineDropdown = (
     ? modelSetData(oppiaineModel, pakollinen, 'pakollinen')
     : oppiaineModel
 
-  const prototypes = R.flatten(oppiaineenSuoritukset.map(koulutusModuuliprototypes))
+  const prototypes = oppiainePrototypes || R.flatten(oppiaineenSuoritukset.map(koulutusModuuliprototypes))
   const oppiaineModels = prototypes.map(setPakollisuus)
   const valtakunnallisetOppiaineet = fetchAlternativesBasedOnPrototypes(oppiaineModels.filter(R.complement(isPaikallinen)), 'tunniste')
   const paikallinenProto = oppiaineModels.find(isPaikallinen)

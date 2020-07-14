@@ -3,6 +3,7 @@ import java.time.LocalDate
 import java.time.LocalDate.{of => date}
 
 import fi.oph.koski.documentation.YleissivistavakoulutusExampleData._
+import fi.oph.koski.koodisto.MockKoodistoViitePalvelu
 import fi.oph.koski.localization.LocalizedStringImplicits._
 import fi.oph.koski.schema._
 
@@ -26,11 +27,11 @@ object ExampleData {
   def vahvistusPaikkakunnalla(päivä: LocalDate = date(2016, 6, 4), org: OrganisaatioWithOid = jyväskylänNormaalikoulu, kunta: Koodistokoodiviite = jyväskylä) =
     Some(HenkilövahvistusPaikkakunnalla(päivä = päivä, kunta, myöntäjäOrganisaatio = org, myöntäjäHenkilöt = List(Organisaatiohenkilö("Reijo Reksi", "rehtori", org))))
 
-  lazy val laajuusOpintopisteissä: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "2", koodistoUri = "opintojenlaajuusyksikko", nimi = Some("opintopistettä"))
-  lazy val laajuusVuosiviikkotunneissa: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "3", koodistoUri = "opintojenlaajuusyksikko", nimi = Some("vuosiviikkotuntia"))
-  lazy val laajuusKursseissa: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "4", koodistoUri = "opintojenlaajuusyksikko", nimi = Some("kurssia"))
-  lazy val laajuusTunneissa: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "5", koodistoUri = "opintojenlaajuusyksikko", nimi = Some("tuntia"))
-  lazy val laajuusOsaamispisteissä: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "6", koodistoUri = "opintojenlaajuusyksikko", nimi = Some("osaamispistettä"))
+  lazy val laajuusOpintopisteissä: Koodistokoodiviite = MockKoodistoViitePalvelu.validateRequired(Koodistokoodiviite(koodiarvo = "2", koodistoUri = "opintojenlaajuusyksikko", nimi = Some("opintopistettä")))
+  lazy val laajuusVuosiviikkotunneissa: Koodistokoodiviite = MockKoodistoViitePalvelu.validateRequired(Koodistokoodiviite(koodiarvo = "3", koodistoUri = "opintojenlaajuusyksikko", nimi = Some("vuosiviikkotuntia")))
+  lazy val laajuusKursseissa: Koodistokoodiviite = MockKoodistoViitePalvelu.validateRequired(Koodistokoodiviite(koodiarvo = "4", koodistoUri = "opintojenlaajuusyksikko", nimi = Some("kurssia")))
+  lazy val laajuusTunneissa: Koodistokoodiviite = MockKoodistoViitePalvelu.validateRequired(Koodistokoodiviite(koodiarvo = "5", koodistoUri = "opintojenlaajuusyksikko", nimi = Some("tuntia")))
+  lazy val laajuusOsaamispisteissä: Koodistokoodiviite = MockKoodistoViitePalvelu.validateRequired(Koodistokoodiviite(koodiarvo = "6", koodistoUri = "opintojenlaajuusyksikko", nimi = Some("osaamispistettä")))
 
   lazy val valtionosuusRahoitteinen: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "1", koodistoUri = "opintojenrahoitus")
 
