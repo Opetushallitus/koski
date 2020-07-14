@@ -78,7 +78,7 @@ case class LukioonValmistavanKoulutuksenOppiaineenSuoritus(
 @Description("Lukion oppiaineen opintojen suoritustiedot LUVA-koulutuksessa")
 case class LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa(
   @Title("Oppiaine")
-  koulutusmoduuli: LukionOppiaine,
+  koulutusmoduuli: LukionOppiaine2015,
   @Description("Lukiokoulutuksen valmistavan koulutuksen todistukseen merkitään opiskelijan opiskelemat oppiaineet, niissä suoritettujen kurssien määrä tai merkintä aineryhmän tai oppiaineen hyväksytystä suorittamisesta (hyväksytty)")
   arviointi: Option[List[LukionOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,

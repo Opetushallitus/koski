@@ -32,7 +32,7 @@ class SensitiveDataFilterSpec extends FreeSpec with Matchers {
     roundtrip[NuortenPerusopetuksenOppiaineenSuoritus](nuortenPerusopetuksenOppiaineenSuoritus).yksilöllistettyOppimäärä should equal(false)
     roundtrip[NuortenPerusopetuksenUskonto](nuortenUskonto).uskonnonOppimäärä should equal(None)
     roundtrip[AikuistenPerusopetuksenUskonto](aikuistenUskonto).uskonnonOppimäärä should equal(None)
-    roundtrip[LukionLaajuudetonUskonto](lukionUskonto).uskonnonOppimäärä should equal(None)
+    roundtrip[LaajuudetonUskonto](lukionUskonto).uskonnonOppimäärä should equal(None)
   }
 
   "Käyttäjä jolla on kaikki luottamuksellisten tietojen oikeudet näkee kaikki arkaluontoiset tiedot" in {
@@ -51,7 +51,7 @@ class SensitiveDataFilterSpec extends FreeSpec with Matchers {
     roundtrip[NuortenPerusopetuksenOppiaineenSuoritus](nuortenPerusopetuksenOppiaineenSuoritus) should equal(nuortenPerusopetuksenOppiaineenSuoritus)
     roundtrip[NuortenPerusopetuksenUskonto](nuortenUskonto) should equal(nuortenUskonto)
     roundtrip[AikuistenPerusopetuksenUskonto](aikuistenUskonto) should equal(aikuistenUskonto)
-    roundtrip[LukionLaajuudetonUskonto](lukionUskonto) should equal(lukionUskonto)
+    roundtrip[LaajuudetonUskonto](lukionUskonto) should equal(lukionUskonto)
   }
 
   "Käyttäjä jolla on uusi kaikkiin luottamuksellisiin tietoihin oikeuttava käyttöoikeus näkee kaikki arkaluontoiset tiedot" in {
@@ -70,7 +70,7 @@ class SensitiveDataFilterSpec extends FreeSpec with Matchers {
     roundtrip[NuortenPerusopetuksenOppiaineenSuoritus](nuortenPerusopetuksenOppiaineenSuoritus) should equal(nuortenPerusopetuksenOppiaineenSuoritus)
     roundtrip[NuortenPerusopetuksenUskonto](nuortenUskonto) should equal(nuortenUskonto)
     roundtrip[AikuistenPerusopetuksenUskonto](aikuistenUskonto) should equal(aikuistenUskonto)
-    roundtrip[LukionLaajuudetonUskonto](lukionUskonto) should equal(lukionUskonto)
+    roundtrip[LaajuudetonUskonto](lukionUskonto) should equal(lukionUskonto)
   }
 
   "Käyttäjä jolla on suppeat luottamuksellisten tietojen oikeudet näkee suppeiden oikeuksien mukaiset arkaluontoiset tiedot" in {
@@ -89,7 +89,7 @@ class SensitiveDataFilterSpec extends FreeSpec with Matchers {
     roundtrip[NuortenPerusopetuksenOppiaineenSuoritus](nuortenPerusopetuksenOppiaineenSuoritus).yksilöllistettyOppimäärä should equal(false)
     roundtrip[NuortenPerusopetuksenUskonto](nuortenUskonto).uskonnonOppimäärä should equal(None)
     roundtrip[AikuistenPerusopetuksenUskonto](aikuistenUskonto).uskonnonOppimäärä should equal(None)
-    roundtrip[LukionLaajuudetonUskonto](lukionUskonto).uskonnonOppimäärä should equal(None)
+    roundtrip[LaajuudetonUskonto](lukionUskonto).uskonnonOppimäärä should equal(None)
   }
 
   "Käyttäjä jolla on laajat luottamuksellisten tietojen oikeudet näkee laajojen oikeuksien mukaiset arkaluontoiset tiedot" in {
@@ -108,7 +108,7 @@ class SensitiveDataFilterSpec extends FreeSpec with Matchers {
     roundtrip[NuortenPerusopetuksenOppiaineenSuoritus](nuortenPerusopetuksenOppiaineenSuoritus).yksilöllistettyOppimäärä should equal(false)
     roundtrip[NuortenPerusopetuksenUskonto](nuortenUskonto).uskonnonOppimäärä should equal(None)
     roundtrip[AikuistenPerusopetuksenUskonto](aikuistenUskonto).uskonnonOppimäärä should equal(None)
-    roundtrip[LukionLaajuudetonUskonto](lukionUskonto).uskonnonOppimäärä should equal(None)
+    roundtrip[LaajuudetonUskonto](lukionUskonto).uskonnonOppimäärä should equal(None)
   }
 
   private val pvm = LocalDate.of(2001, 1, 1)
@@ -202,7 +202,7 @@ class SensitiveDataFilterSpec extends FreeSpec with Matchers {
   private val nuortenPerusopetuksenOppiaineenSuoritus = suoritus(oppiaine("MA")).copy(yksilöllistettyOppimäärä = true)
   private val nuortenUskonto = PerusopetusExampleData.uskonto(Some("EV"))
   private val aikuistenUskonto = ExamplesAikuistenPerusopetus.aikuistenUskonto(Some("OR"))
-  private val lukionUskonto: LukionLaajuudetonUskonto = LukioExampleData.lukionUskonto(uskonto = Some("IS"), diaarinumero = None)
+  private val lukionUskonto: LaajuudetonUskonto = LukioExampleData.lukionUskonto(uskonto = Some("IS"), diaarinumero = None)
 
   private def roundtrip[T: TypeTag](input: T)(implicit user: SensitiveDataAllowed): T =
     JsonSerializer.extract[T](JsonSerializer.serialize(input))

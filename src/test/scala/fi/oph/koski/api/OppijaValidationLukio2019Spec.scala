@@ -12,7 +12,7 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
       "Oppiaineen laajuus lasketaan moduleiden laajuuksista" in {
         val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(
           osasuoritukset = Some(List(
-            oppiaineenSuoritus(äidinkieli("AI1")).copy(osasuoritukset = Some(List(
+            oppiaineenSuoritus(LukioExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(osasuoritukset = Some(List(
               moduulinSuoritus(moduuli("OÄI1").copy(laajuus = laajuus(2.5))),
               moduulinSuoritus(moduuli("OÄI2").copy(laajuus = laajuus(1.5))),
               moduulinSuoritus(moduuli("OÄI3").copy(laajuus = laajuus(0.5)))
@@ -26,7 +26,7 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
 
       "Modulin oletuslaajuus on 1" in {
         val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(
-          osasuoritukset = Some(List(oppiaineenSuoritus(äidinkieli("AI1")).copy(osasuoritukset = Some(List(
+          osasuoritukset = Some(List(oppiaineenSuoritus(LukioExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(osasuoritukset = Some(List(
             moduulinSuoritus(moduuli("OÄI1")),
             moduulinSuoritus(moduuli("OÄI2")),
             moduulinSuoritus(moduuli("OÄI3"))
@@ -39,7 +39,7 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
 
       "Jos oppiaineella ei ole osasuorituksia käytetään oletuslaajuutta 1" in {
         val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(
-          osasuoritukset = Some(List(oppiaineenSuoritus(äidinkieli("AI1")).copy(osasuoritukset = None)
+          osasuoritukset = Some(List(oppiaineenSuoritus(LukioExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(osasuoritukset = None)
         )))))
 
         val opiskeluoikeus: Opiskeluoikeus = putAndGetOpiskeluoikeus(oo)

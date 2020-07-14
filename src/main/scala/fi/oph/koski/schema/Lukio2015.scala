@@ -129,7 +129,7 @@ case class PaikallinenLukionKurssi(
 ) extends LukionKurssi with PaikallinenKoulutusmoduuli with StorablePreference
 
 trait LukionOppiaineTaiEiTiedossaOppiaine extends Koulutusmoduuli
-trait LukionOppiaine2015 extends LukionOppiaine
+trait LukionOppiaine2015 extends LukionOppiaine with LukionOppiaineTaiEiTiedossaOppiaine
 
 trait LukionLaajuudellinenOppiaine2015 extends LukionOppiaine2015 with KoulutusmoduuliPakollinenLaajuus {
   @Discriminator
@@ -148,7 +148,7 @@ case class PaikallinenLukionOppiaine2015(
 trait LukionValtakunnallinenOppiaine2015 extends LukionLaajuudellinenOppiaine2015 with YleissivistavaOppiaine
 
 @Title("Muu valtakunnallinen oppiaine")
-case class LukionMuuValtakunnallinenOppiaine2015(
+case class LukionMuuValtakunnallinenOppiaine(
   @KoodistoKoodiarvo("HI")
   @KoodistoKoodiarvo("MU")
   @KoodistoKoodiarvo("BI")
@@ -171,7 +171,8 @@ case class LukionMuuValtakunnallinenOppiaine2015(
   perusteenDiaarinumero: Option[String] = None
 ) extends LukionValtakunnallinenOppiaine2015
 
-case class LukionUskonto2015(
+@Title("Uskonto")
+case class LukionUskonto(
   tunniste: Koodistokoodiviite,
   pakollinen: Boolean = true,
   perusteenDiaarinumero: Option[String] = None,
@@ -195,7 +196,7 @@ case class LukionÄidinkieliJaKirjallisuus2015(
 }
 
 @Description("Oppiaineena vieras tai toinen kotimainen kieli")
-case class VierasTaiToinenKotimainenKieli2015(
+case class VierasTaiToinenKotimainenKieli(
   @KoodistoKoodiarvo("A1")
   @KoodistoKoodiarvo("A2")
   @KoodistoKoodiarvo("B1")
@@ -214,7 +215,7 @@ case class VierasTaiToinenKotimainenKieli2015(
 
 @Title("Matematiikka")
 @Description("Oppiaineena matematiikka")
-case class LukionMatematiikka2015(
+case class LukionMatematiikka(
   @KoodistoKoodiarvo("MA")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "MA", koodistoUri = "koskioppiaineetyleissivistava"),
   @Description("Onko kyseessä laaja vai lyhyt oppimäärä")
