@@ -116,7 +116,7 @@ case class LukionOpiskeluoikeusjakso(
 ) extends KoskiOpiskeluoikeusjakso
 
 @Description("Lukion/IB-lukion oppiaineen tunnistetiedot")
-trait LukionOppiaine extends Koulutusmoduuli with Valinnaisuus with PreIBOppiaine with Diaarinumerollinen with LukionOppiaineTaiEiTiedossaOppiaine {
+trait LukionOppiaine extends Koulutusmoduuli with Valinnaisuus with PreIBOppiaine with Diaarinumerollinen {
   @Title("Oppiaine")
   def tunniste: KoodiViite
 }
@@ -124,7 +124,7 @@ trait LukionOppiaine extends Koulutusmoduuli with Valinnaisuus with PreIBOppiain
 trait LukionOppiaine2015Ja2019 extends LukionOppiaine with LukionOppiaine2015 with LukionOppiaine2019
 trait LukionÄidinkieliJaKirjallisuus extends LukionOppiaine with Äidinkieli
 
-@Title("Paikallinen oppiaine")
+@Title("Laajuudeton paikallinen oppiaine")
 case class PaikallinenLukionOppiaine(
   tunniste: PaikallinenKoodi,
   kuvaus: LocalizedString,
@@ -134,8 +134,7 @@ case class PaikallinenLukionOppiaine(
 
 trait LukionValtakunnallinenOppiaine extends LukionOppiaine2015Ja2019 with YleissivistavaOppiaine with Laajuudeton
 
-@Title("Muu valtakunnallinen oppiaine")
-case class LukionLaajuudetonMuuValtakunnallinenOppiaine(
+case class LaajuudetonMuuValtakunnallinenOppiaine(
   @KoodistoKoodiarvo("HI")
   @KoodistoKoodiarvo("MU")
   @KoodistoKoodiarvo("BI")
@@ -157,16 +156,15 @@ case class LukionLaajuudetonMuuValtakunnallinenOppiaine(
   perusteenDiaarinumero: Option[String] = None
 ) extends LukionValtakunnallinenOppiaine
 
-case class LukionLaajuudetonUskonto(
+case class LaajuudetonUskonto(
   tunniste: Koodistokoodiviite,
   pakollinen: Boolean = true,
   perusteenDiaarinumero: Option[String] = None,
   uskonnonOppimäärä: Option[Koodistokoodiviite] = None
 ) extends LukionValtakunnallinenOppiaine with Uskonto
 
-@Title("Äidinkieli ja kirjallisuus")
 @Description("Oppiaineena äidinkieli ja kirjallisuus")
-case class LukionLaajuudetonÄidinkieliJaKirjallisuus(
+case class LaajuudetonÄidinkieliJaKirjallisuus(
   @KoodistoKoodiarvo("AI")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "AI", koodistoUri = "koskioppiaineetyleissivistava"),
   @Description("Mikä kieli on kyseessä")
@@ -180,13 +178,11 @@ case class LukionLaajuudetonÄidinkieliJaKirjallisuus(
 
 @Description("Oppiaineena vieras tai toinen kotimainen kieli")
 case class LaajuudetonVierasTaiToinenKotimainenKieli(
-  @KoodistoKoodiarvo("A")
   @KoodistoKoodiarvo("A1")
   @KoodistoKoodiarvo("A2")
   @KoodistoKoodiarvo("B1")
   @KoodistoKoodiarvo("B2")
   @KoodistoKoodiarvo("B3")
-  @KoodistoKoodiarvo("AOM") // TODO: rajoita kielivaihtoehdot suomi+ruotsi? Miksei tätä ole tehty myös perinteisessä 2. kotimaisessa?
   tunniste: Koodistokoodiviite,
   @Description("Mikä kieli on kyseessä")
   @KoodistoUri("kielivalikoima")
@@ -197,9 +193,8 @@ case class LaajuudetonVierasTaiToinenKotimainenKieli(
   override def description = kieliaineDescription
 }
 
-@Title("Matematiikka")
 @Description("Oppiaineena matematiikka")
-case class LukionLaajuudetonMatematiikka(
+case class LaajuudetonMatematiikka(
   @KoodistoKoodiarvo("MA")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "MA", koodistoUri = "koskioppiaineetyleissivistava"),
   @Description("Onko kyseessä laaja vai lyhyt oppimäärä")

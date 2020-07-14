@@ -221,7 +221,8 @@ case class PaikallinenLukionOppiaine2019(
   laajuus: LaajuusOpintopisteissä
 ) extends LukionLaajuudellinenOppiaine2019 with PaikallinenKoulutusmoduuli with StorablePreference
 
-trait LukionValtakunnallinenOppiaine2019 extends LukionLaajuudellinenOppiaine2019 with YleissivistavaOppiaine
+trait LukionValtakunnallinenOppiaine2019 extends LukionOppiaine2019 with YleissivistavaOppiaine
+trait LukionValtakunnallinenLaajuudellinenOppiaine2019 extends LukionLaajuudellinenOppiaine2019 with LukionValtakunnallinenOppiaine2019
 
 @Title("Muu valtakunnallinen oppiaine 2019")
 case class LukionMuuValtakunnallinenOppiaine2019(
@@ -242,17 +243,17 @@ case class LukionMuuValtakunnallinenOppiaine2019(
   tunniste: Koodistokoodiviite,
   pakollinen: Boolean = true,
   @Discriminator
-  laajuus: LaajuusOpintopisteissä = LaajuusOpintopisteissä(1)
-) extends LukionValtakunnallinenOppiaine2019
+  laajuus: LaajuusOpintopisteissä
+) extends LukionValtakunnallinenLaajuudellinenOppiaine2019
 
 @Title("Uskonto 2019")
 case class LukionUskonto2019(
   tunniste: Koodistokoodiviite,
   pakollinen: Boolean = true,
   @Discriminator
-  laajuus: LaajuusOpintopisteissä = LaajuusOpintopisteissä(1),
+  laajuus: LaajuusOpintopisteissä,
   uskonnonOppimäärä: Option[Koodistokoodiviite] = None
-) extends LukionValtakunnallinenOppiaine2019 with Uskonto
+) extends LukionValtakunnallinenLaajuudellinenOppiaine2019 with Uskonto
 
 @Title("Äidinkieli ja kirjallisuus 2019")
 @Description("Oppiaineena äidinkieli ja kirjallisuus")
@@ -264,8 +265,8 @@ case class LukionÄidinkieliJaKirjallisuus2019(
   kieli: Koodistokoodiviite,
   pakollinen: Boolean = true,
   @Discriminator
-  laajuus: LaajuusOpintopisteissä = LaajuusOpintopisteissä(1)
-) extends LukionValtakunnallinenOppiaine2019 with LukionÄidinkieliJaKirjallisuus {
+  laajuus: LaajuusOpintopisteissä
+) extends LukionValtakunnallinenLaajuudellinenOppiaine2019 with LukionÄidinkieliJaKirjallisuus {
   override def description: LocalizedString = kieliaineDescription
 }
 
@@ -283,9 +284,23 @@ case class VierasTaiToinenKotimainenKieli2019(
   kieli: Koodistokoodiviite,
   pakollinen: Boolean = true,
   @Discriminator
-  laajuus: LaajuusOpintopisteissä = LaajuusOpintopisteissä(1)
-) extends LukionValtakunnallinenOppiaine2019 with Kieliaine {
+  laajuus: LaajuusOpintopisteissä
+) extends LukionValtakunnallinenLaajuudellinenOppiaine2019 with Kieliaine {
   override def description = kieliaineDescription
+}
+
+@Description("Oppiaineena vieras tai toinen kotimainen kieli")
+case class LaajuudetonVierasTaiToinenKotimainenKieli2019(
+  @KoodistoKoodiarvo("A")
+  @KoodistoKoodiarvo("AOM")
+  tunniste: Koodistokoodiviite,
+  @Description("Mikä kieli on kyseessä")
+  @KoodistoUri("kielivalikoima")
+  kieli: Koodistokoodiviite,
+  pakollinen: Boolean = true
+) extends LukionValtakunnallinenOppiaine2019 with Kieliaine {
+  override def description: LocalizedString = kieliaineDescription
+  override def perusteenDiaarinumero: Option[String] = None
 }
 
 @Title("Matematiikka 2019")
@@ -299,7 +314,7 @@ case class LukionMatematiikka2019(
   pakollinen: Boolean = true,
   @Discriminator
   laajuus: LaajuusOpintopisteissä = LaajuusOpintopisteissä(1)
-) extends LukionValtakunnallinenOppiaine2019 with KoodistostaLöytyväKoulutusmoduuliPakollinenLaajuus with Oppimäärä {
+) extends LukionValtakunnallinenLaajuudellinenOppiaine2019 with KoodistostaLöytyväKoulutusmoduuliPakollinenLaajuus with Oppimäärä {
   override def description = oppimäärä.description
 }
 

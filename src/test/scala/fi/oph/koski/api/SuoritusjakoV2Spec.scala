@@ -2,7 +2,7 @@ package fi.oph.koski.api
 
 import java.time.LocalDate
 
-import fi.oph.koski.documentation.AmmatillinenExampleData
+import fi.oph.koski.documentation.{AmmatillinenExampleData, LukioExampleData}
 import fi.oph.koski.henkilo.{MockOppijat, OppijaHenkilö}
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.schema._
@@ -81,7 +81,7 @@ class SuoritusjakoV2Spec extends FreeSpec with Matchers with OpiskeluoikeusTestM
 
   "Ei voi jakaa opiskeluoikeutta johon on lisätty suorituksia" in {
     import fi.oph.koski.documentation.LukioExampleData.{suoritus, lukionOppiaine, arviointi, valtakunnallinenKurssi, kurssisuoritus, numeerinenArviointi}
-    val ylimääräinenSuoritus = suoritus(lukionOppiaine("FOO")).copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
+    val ylimääräinenSuoritus = suoritus(LukioExampleData.lukionOppiaine("FOO", None)).copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
       kurssisuoritus(valtakunnallinenKurssi("BAR")).copy(arviointi = numeerinenArviointi(8), tunnustettu = Some(AmmatillinenExampleData.tunnustettu))
     )))
     val oppija = MockOppijat.lukiolainen
