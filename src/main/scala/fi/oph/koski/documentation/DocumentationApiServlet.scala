@@ -2,6 +2,7 @@ package fi.oph.koski.documentation
 
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.kela.KelaSchema
 import fi.oph.koski.koodisto.Koodistot
 import fi.oph.koski.koskiuser.Unauthenticated
 import fi.oph.koski.schema.KoskiSchema
@@ -40,6 +41,10 @@ class DocumentationApiServlet extends ApiServlet with Unauthenticated with NoCac
 
   get("/valvira-oppija-schema.json") {
     ValviraSchema.schemaJson
+  }
+
+  get("/kela-oppija-schema.json") {
+    KelaSchema.schemaJson
   }
 
   get("/koodistot.json") {
