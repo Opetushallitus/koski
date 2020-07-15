@@ -324,14 +324,12 @@ trait SuoritettavissaErityisenäTutkintona2019 {
 }
 
 trait PuhviKokeellinen2019 {
-  @DefaultValue(None)
   @Title("Puhvi-koe")
   @Description("Toisen asteen puheviestintätaitojen päättökoe")
   def puhviKoe: Option[PuhviKoe2019]
 }
 
 trait SuullisenKielitaidonKokeellinen2019 {
-  @DefaultValue(None)
   def suullisenKielitaidonKokeet: Option[List[SuullisenKielitaidonKoe2019]]
 }
 
