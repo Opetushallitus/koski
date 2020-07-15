@@ -75,6 +75,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       updateFields(opiskeluoikeus).right.flatMap { opiskeluoikeus =>
         (validateAccess(opiskeluoikeus)
           .onSuccess { validateLähdejärjestelmä(opiskeluoikeus) }
+          .onSuccess { validatePäätasonSuoritustenLukumäärä(opiskeluoikeus) }
           .onSuccess {
             HttpStatus.fold(opiskeluoikeus.suoritukset.map(TutkintoRakenneValidator(tutkintoRepository, koodistoPalvelu).validate(_,
               opiskeluoikeus.tila.opiskeluoikeusjaksot.find(_.tila.koodiarvo == "lasna").map(_.alku))))
@@ -327,6 +328,14 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       KoskiErrorCategory.forbidden.lähdejärjestelmäIdPuuttuu("Käyttäjä on palvelukäyttäjä mutta lähdejärjestelmää ei ole määritelty")
     } else {
       HttpStatus.ok
+    }
+  }
+
+  private def validatePäätasonSuoritustenLukumäärä(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
+    opiskeluoikeus match {
+      case l: LukionOpiskeluoikeus if l.suoritukset.count(_.tyyppi.koodiarvo == "lukionoppiaineidenoppimaarat2019") > 1 =>
+        KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaSuorituksia("Opiskeluoikeudella on enemmän kuin yksi oppiaineiden oppimäärät ryhmittelevä lukionoppiaineidenoppimaarat2019-tyyppinen suoritus")
+      case _ => HttpStatus.ok
     }
   }
 
