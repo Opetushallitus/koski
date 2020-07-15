@@ -24,6 +24,18 @@ class OppijaValidationLukionOppiaineidenOppimaarat2019Spec extends TutkinnonPeru
     }
   }
 
+  "Suoritukset" - {
+    "Useampi ryhmittelevä lukionoppiaineidenoppimaarat2019-suoritus aiheuttaa virheen" in {
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus, oppiaineidenOppimäärienSuoritus))) {
+        verifyResponseStatus(400,
+          KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaSuorituksia(
+          """Opiskeluoikeudella on enemmän kuin yksi oppiaineiden oppimäärät ryhmittelevä lukionoppiaineidenoppimaarat2019-tyyppinen suoritus"""
+          )
+        )
+      }
+    }
+  }
+
   override def defaultOpiskeluoikeus: LukionOpiskeluoikeus = oppiaineenOppimääräOpiskeluoikeus
   override def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]): LukionOpiskeluoikeus =
     defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(koulutusmoduuli = oppiaineidenOppimäärienSuoritus.koulutusmoduuli.copy(perusteenDiaarinumero = diaari))))
