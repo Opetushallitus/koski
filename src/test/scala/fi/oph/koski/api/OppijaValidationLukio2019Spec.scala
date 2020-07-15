@@ -37,13 +37,13 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
         opiskeluoikeus.suoritukset.head.osasuoritusLista.head.koulutusmoduuli.laajuusArvo(0) should equal(3.0)
       }
 
-      "Jos oppiaineella ei ole osasuorituksia käytetään oletuslaajuutta 1" in {
+      "Jos oppiaineella ei ole osasuorituksia laajuus on 0" in {
         val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(
           osasuoritukset = Some(List(oppiaineenSuoritus(LukioExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(osasuoritukset = None)
         )))))
 
         val opiskeluoikeus: Opiskeluoikeus = putAndGetOpiskeluoikeus(oo)
-        opiskeluoikeus.suoritukset.head.osasuoritusLista.head.koulutusmoduuli.laajuusArvo(0) should equal(1)
+        opiskeluoikeus.suoritukset.head.osasuoritusLista.head.koulutusmoduuli.laajuusArvo(0) should equal(0)
       }
     }
   }
