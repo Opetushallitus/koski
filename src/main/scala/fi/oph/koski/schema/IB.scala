@@ -208,8 +208,6 @@ case class IBKurssinSuoritus(
 ) extends IBSuoritus with KurssinSuoritus
 
 trait PreIBKurssi extends Koulutusmoduuli
-trait PreIBKurssiPakollinenLaajuus extends KoulutusmoduuliPakollinenLaajuus with PreIBKurssi
-trait PreIBKurssiValinnainenLaajuus extends KoulutusmoduuliValinnainenLaajuus with PreIBKurssi
 
 @Title("IB-kurssi")
 @Description("IB-lukion kurssin tunnistetiedot")
