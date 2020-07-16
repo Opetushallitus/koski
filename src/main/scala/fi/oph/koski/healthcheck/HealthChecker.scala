@@ -137,7 +137,7 @@ trait HealthCheck extends Logging {
   }
 
   private def get[T](key: String, f: => T, timeout: Duration = 5 seconds): Either[HttpStatus, T] = try {
-    Right(Task(f).runFor(timeout))
+    Right(Task(f).unsafePerformSyncFor(timeout))
   } catch {
     case e: HttpStatusException =>
       Left(HttpStatus(e.status, List(ErrorDetail(key, e.text))))

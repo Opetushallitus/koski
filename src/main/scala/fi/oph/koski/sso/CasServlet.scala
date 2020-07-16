@@ -60,6 +60,6 @@ class CasServlet(implicit val application: KoskiApplication) extends HtmlServlet
   }
 
   def validateServiceTicket(service: String, ticket: String): Username =
-    casClient.validateServiceTicket(service)(ticket).run
+    casClient.validateServiceTicket(service)(ticket).unsafePerformSync
 }
 

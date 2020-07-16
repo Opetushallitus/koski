@@ -138,101 +138,101 @@ class OppijanumeroRekisteriClientSpec extends FreeSpec with Matchers with Either
   "OppijanumeroRekisteriClient" - {
 
     "perustaa uuden oppijahenkilön" in {
-      val result = mockClient.findOrCreate(UusiOppijaHenkilö(Some(hetu), "Mallikas", "Mikko Alfons", "Mikko")).run
+      val result = mockClient.findOrCreate(UusiOppijaHenkilö(Some(hetu), "Mallikas", "Mikko Alfons", "Mikko")).unsafePerformSync
       result.right.value should equal(expectedSuppeatOppijaHenkilötiedot)
     }
 
     "tunnistaa 400-vastauksen uutta oppijahenkilöä perustaessa" in {
-      val result = mockClient.findOrCreate(UusiOppijaHenkilö(Some(hetu), "", "Mikko Alfons", "Mikko")).run
+      val result = mockClient.findOrCreate(UusiOppijaHenkilö(Some(hetu), "", "Mikko Alfons", "Mikko")).unsafePerformSync
       result.left.value.statusCode should equal(400)
     }
 
     "palauttaa käyttäjähenkilön tiedot oid:n perusteella" in {
-      val result = mockClient.findKäyttäjäByOid(oid).run
+      val result = mockClient.findKäyttäjäByOid(oid).unsafePerformSync
       result.value should equal(expectedKäyttäjäHenkilö)
     }
 
     "palauttaa oppijahenkilön tiedot oid:n perusteella" in {
-      val result = mockClient.findOppijaByOid(oid).run
+      val result = mockClient.findOppijaByOid(oid).unsafePerformSync
       result.value should equal(expectedLaajatOppijaHenkilötiedot)
     }
 
     "palauttaa oppijahenkilön master-tiedot oid:n perusteella" in {
-      val result = mockClient.findMasterOppija(oid).run
+      val result = mockClient.findMasterOppija(oid).unsafePerformSync
       result.value should equal(expectedLaajatOppijaHenkilötiedot)
     }
 
     "palauttaa oppijahenkilön tiedot oid-listan perusteella" in {
-      val result = mockClient.findOppijatNoSlaveOids(List(oid)).run
+      val result = mockClient.findOppijatNoSlaveOids(List(oid)).unsafePerformSync
       result should contain only expectedSuppeatOppijaHenkilötiedot
     }
 
     "palauttaa muuttuneiden oppijahenkilön oid:t" in {
-      val result = mockClient.findChangedOppijaOids(1541163791, 0, 1).run
+      val result = mockClient.findChangedOppijaOids(1541163791, 0, 1).unsafePerformSync
       result should contain only (oid)
     }
 
     "palauttaa oppijahenkilön tiedot hetun perusteella" in {
-      val result = mockClient.findOppijaByHetu(hetu).run
+      val result = mockClient.findOppijaByHetu(hetu).unsafePerformSync
       result.value should equal(expectedLaajatOppijaHenkilötiedot)
     }
 
     "palauttaa oppijahenkilön tiedot hetu-listan perusteella" in {
-      val result = mockClient.findOppijatByHetusNoSlaveOids(List(hetu)).run
+      val result = mockClient.findOppijatByHetusNoSlaveOids(List(hetu)).unsafePerformSync
       result should contain only expectedSuppeatOppijaHenkilötiedot
     }
 
     "kutsumanimen puuttuessa käyttää ensimmäistä etunimeä kutsumanimenä" in {
       mockEndpoints(defaultHenkilöResponse + ("kutsumanimi" -> None))
-      val result = mockClient.findOppijaByHetu(hetu).run
+      val result = mockClient.findOppijaByHetu(hetu).unsafePerformSync
       result.value should equal(expectedLaajatOppijaHenkilötiedot)
     }
 
     "palauttaa listan slave oideista" in {
       mockEndpoints(slaveOidsResponseData = List(Map("oidHenkilo" -> slaveOid, "etunimet" -> "Paavo", "sukunimi" -> "Pesusieni", "modified" -> 1541163791)))
-      val result = mockClient.findSlaveOids(oid).run
+      val result = mockClient.findSlaveOids(oid).unsafePerformSync
       result should contain only slaveOid
     }
 
     "palauttaa listan slave oideista vaikka datasta puuttuu etunimet ja sukunimi" in {
       mockEndpoints(slaveOidsResponseData = List(Map("oidHenkilo" -> slaveOid, "etunimet" -> None, "sukunimi" -> None, "modified" -> 1541163791)))
-      val result = mockClient.findSlaveOids(oid).run
+      val result = mockClient.findSlaveOids(oid).unsafePerformSync
       result should contain only slaveOid
     }
 
     "palauttaa annetun kotikunnan jos kotikunta on asetettu" in {
       mockEndpoints(defaultHenkilöResponse + ("kotikunta" -> "091"))
-      val result = mockClient.findMasterOppija(oid).run
+      val result = mockClient.findMasterOppija(oid).unsafePerformSync
       result.value.kotikunta should equal(Some("091"))
     }
 
     "palauttaa kotikuntana None jos kotikunta on null" in {
       mockEndpoints(defaultHenkilöResponse + ("kotikunta" -> None))
-      val result = mockClient.findMasterOppija(oid).run
+      val result = mockClient.findMasterOppija(oid).unsafePerformSync
       result.value.kotikunta should equal(None)
     }
 
     "palauttaa kotikuntana None jos kotikunta ei ole määritelty" in {
       mockEndpoints(defaultHenkilöResponse - "kotikunta")
-      val result = mockClient.findMasterOppija(oid).run
+      val result = mockClient.findMasterOppija(oid).unsafePerformSync
       result.value.kotikunta should equal(None)
     }
 
     "palauttaa yksilöintitiedon mikäli asetettu" in {
       mockEndpoints(defaultHenkilöResponse + ("yksiloity" -> true, "yksiloityVTJ" -> true))
-      val result = mockClient.findMasterOppija(oid).run
+      val result = mockClient.findMasterOppija(oid).unsafePerformSync
       result.value.yksilöity should equal(true)
     }
 
     "palauttaa yksilöity false jos yksilöintitieto on null" in {
       mockEndpoints(defaultHenkilöResponse + ("yksiloity" -> None, "yksiloityVTJ" -> None))
-      val result = mockClient.findMasterOppija(oid).run
+      val result = mockClient.findMasterOppija(oid).unsafePerformSync
       result.value.yksilöity should equal(false)
     }
 
     "palauttaa yksilöity false jos yksilöintitietoa ei ole määritelty" in {
       mockEndpoints(defaultHenkilöResponse - ("yksiloity", "yksiloityVTJ"))
-      val result = mockClient.findMasterOppija(oid).run
+      val result = mockClient.findMasterOppija(oid).unsafePerformSync
       result.value.yksilöity should equal(false)
     }
   }
