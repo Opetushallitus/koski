@@ -6,8 +6,11 @@ import Text from '../i18n/Text'
 import ModalDialog from '../editor/ModalDialog'
 import {UusiKurssiDropdown} from './UusiKurssiDropdown'
 import {
-  isIBKurssi, isIBOppiaine, isLukio2019ModuuliTaiOpintojakso, isLukionKurssi, isPaikallinen,
-  koulutusModuuliprototypes
+  isIBKurssi,
+  isIBOppiaine,
+  isLukio2019ModuuliTaiOpintojakso,
+  isLukionKurssi,
+  isPaikallinen
 } from '../suoritus/Koulutusmoduuli'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
 import {t} from '../i18n/i18n'
@@ -16,14 +19,14 @@ const propertyFilterForPaikallinen = p => !['koodistoUri'].includes(p.key)
 const propertyFilterForLukio = p => !['tunniste'].includes(p.key)
 const propertyFilterForModel = model =>
   isPaikallinen(model) || isIBKurssi(model) ? propertyFilterForPaikallinen
-    : isLukionKurssi(model) ? propertyFilterForLukio
+    : isLukionKurssi(model) || isLukio2019ModuuliTaiOpintojakso(model) ? propertyFilterForLukio
     : undefined
 
 export default ({
     oppiaineenSuoritus,
     resultCallback,
     toimipiste,
-    uusiKurssinSuoritus,
+    kurssiPrototypes,
     customTitle,
     customAlternativesCompletionFn
 }) => {
@@ -31,9 +34,9 @@ export default ({
   let selectedPrototypeAtom = Atom()
   let selectedAtom = Atom()
   let validP = selectedAtom
-  let valtakunnallisetKurssiProtot = koulutusModuuliprototypes(uusiKurssinSuoritus).filter(R.complement(isPaikallinen))
+  const valtakunnallisetKurssiProtot = kurssiPrototypes.filter(R.complement(isPaikallinen))
   // TODO: Lisää editori myös lops2021:n paikallisille opintojaksoille tai moduuleille, nyt ne filtteröidään tässä pois
-  let paikallinenKurssiProto = koulutusModuuliprototypes(uusiKurssinSuoritus).find(R.both(isIBOppiaine(oppiaine) ? isIBKurssi : isPaikallinen, R.complement(isLukio2019ModuuliTaiOpintojakso)))
+  const paikallinenKurssiProto = kurssiPrototypes.find(R.both(isIBOppiaine(oppiaine) ? isIBKurssi : isPaikallinen, R.complement(isLukio2019ModuuliTaiOpintojakso)))
   let kurssiSuoritukset = modelItems(oppiaineenSuoritus, 'osasuoritukset')
   selectedPrototypeAtom.map(proto => isPaikallinen(proto) ? undefined : proto).forEach(proto => selectedAtom.set(proto))
 
@@ -45,7 +48,6 @@ export default ({
           <UusiKurssiDropdown
             suoritukset={kurssiSuoritukset}
             oppiaine={oppiaine}
-            kurssinSuoritus={uusiKurssinSuoritus}
             valtakunnallisetKurssiProtot={valtakunnallisetKurssiProtot}
             paikallinenKurssiProto={paikallinenKurssiProto}
             selected={selectedPrototypeAtom}

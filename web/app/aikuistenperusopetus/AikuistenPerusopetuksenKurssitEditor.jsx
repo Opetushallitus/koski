@@ -16,6 +16,7 @@ import * as Bacon from 'baconjs'
 import {parseLocation} from '../util/location'
 import Http from '../util/http'
 import {arvioituTaiVahvistettu, newOsasuoritusProto} from '../suoritus/Suoritus'
+import {koulutusModuuliprototypes} from '../suoritus/Koulutusmoduuli'
 
 export const AikuistenPerusopetuksenKurssitEditor = ({model}) => {
   const osasuoritukset = modelLookup(model, 'osasuoritukset')
@@ -77,7 +78,7 @@ const UusiKurssi = ({name, model, showUusiKurssiAtom, kurssinSuoritusProto, cust
           oppiaineenSuoritus={model}
           resultCallback={(kurssi) => lisääKurssi(kurssi, model, showUusiKurssiAtom, kurssinSuoritusProto)}
           toimipiste={modelData(model.context.toimipiste).oid}
-          uusiKurssinSuoritus={kurssinSuoritusProto}
+          kurssiPrototypes={koulutusModuuliprototypes(kurssinSuoritusProto)}
           customAlternativesCompletionFn={customAlternativesCompletionFn}
         />)
     }
