@@ -22,6 +22,9 @@ export const findKoodistoByDiaarinumero = (kurssiKoodistot, oppimaaranDiaarinume
             return 'lukionkurssitops2003nuoret'
           case '4/011/2004':
             return 'lukionkurssitops2004aikuiset'
+          case 'OPH-2263-2019':
+          case 'OPH-2267-2019':
+            return 'moduulikoodistolops2021'
         }
       }
 
