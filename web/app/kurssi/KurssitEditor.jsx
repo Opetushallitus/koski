@@ -1,16 +1,13 @@
 import React from 'baret'
 import Atom from 'bacon.atom'
 import {KurssiEditor} from './KurssiEditor'
-import {
-  modelData,
-  modelItems,
-  modelLookup
-} from '../editor/EditorModel'
+import {modelData, modelItems, modelLookup} from '../editor/EditorModel'
 import Text from '../i18n/Text'
 import {ift} from '../util/util'
 import UusiKurssiPopup from './UusiKurssiPopup'
-import {osasuoritusCountOk, lisääKurssi} from './kurssi'
-import {newOsasuoritusProto} from '../suoritus/Suoritus'
+import {lisääKurssi, osasuoritusCountOk} from './kurssi'
+import {newOsasuoritusProto, suorituksenTyyppi} from '../suoritus/Suoritus'
+import {isLukio2019ModuuliTaiOpintojakso, koulutusModuuliprototypes} from '../suoritus/Koulutusmoduuli'
 
 export const KurssitEditor = ({model, customTitle, customAlternativesCompletionFn, customKurssitSortFn}) => {
   const osasuoritukset = modelLookup(model, 'osasuoritukset')
@@ -19,10 +16,13 @@ export const KurssitEditor = ({model, customTitle, customAlternativesCompletionF
   if (typeof customKurssitSortFn === 'function') {
     kurssit = kurssit.sort(customKurssitSortFn)
   }
-  const kurssinSuoritusProtot = newOsasuoritusProto(model)
-  const showUusiKurssiAtom = Atom(false)
 
   if (!kurssit.length && !model.context.edit) return null
+
+  const showUusiKurssiAtom = Atom(false)
+  const isPreIb = suorituksenTyyppi(model.context.suoritus) === 'preiboppimaara'
+  const kurssinSuoritusProto = newOsasuoritusProto(model)
+  const kurssiPrototypes = koulutusModuuliprototypes(kurssinSuoritusProto)
 
   return (
     <span className="kurssit">
@@ -36,9 +36,9 @@ export const KurssitEditor = ({model, customTitle, customAlternativesCompletionF
           ift(showUusiKurssiAtom,
             <UusiKurssiPopup
               oppiaineenSuoritus={model}
-              resultCallback={(k) => lisääKurssi(k, model, showUusiKurssiAtom, kurssinSuoritusProtot)}
+              resultCallback={(k) => lisääKurssi(k, model, showUusiKurssiAtom, kurssinSuoritusProto)}
               toimipiste={modelData(model.context.toimipiste).oid}
-              uusiKurssinSuoritus={kurssinSuoritusProtot}
+              kurssiPrototypes={isPreIb ? kurssiPrototypes.filter(kurssi => !isLukio2019ModuuliTaiOpintojakso(kurssi)) : kurssiPrototypes}
               customTitle={customTitle}
               customAlternativesCompletionFn={customAlternativesCompletionFn}
             />
