@@ -133,6 +133,10 @@ trait MahdollisestiSuorituskielellinen {
   def suorituskieli: Option[Koodistokoodiviite]
 }
 
+trait Oppimäärällinen extends Suoritus {
+  def oppimäärä: Koodistokoodiviite
+}
+
 trait Arvioinniton extends Suoritus {
   def arviointi = None
   override def arviointiPuuttuu = false

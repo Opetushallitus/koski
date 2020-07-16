@@ -61,6 +61,49 @@ case class LukionOpiskeluoikeudenLisätiedot(
 
 trait LukionPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Suorituskielellinen
 
+@Description("Lukion oppimäärän suoritustiedot")
+case class LukionOppimääränSuoritus(
+  @Title("Koulutus")
+  koulutusmoduuli: LukionOppimäärä,
+  @KoodistoUri("lukionoppimaara")
+  @Description("Tieto siitä, suoritetaanko lukiota nuorten vai aikuisten oppimäärän mukaisesti")
+  @Title("Opetussuunnitelma")
+  oppimäärä: Koodistokoodiviite,
+  toimipiste: OrganisaatioWithOid,
+  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
+  @Description("Oppimäärän suorituksen opetuskieli/suorituskieli. Rahoituksen laskennassa käytettävä tieto.")
+  suorituskieli: Koodistokoodiviite,
+  @Tooltip("Osallistuminen lukiokoulutusta täydentävän saamen/romanikielen/opiskelijan oman äidinkielen opiskeluun")
+  omanÄidinkielenOpinnot: Option[OmanÄidinkielenOpinnotLaajuusKursseina] = None,
+  @Description("Oppiaineiden suoritukset")
+  @Title("Oppiaineet")
+  override val osasuoritukset: Option[List[LukionOppimääränOsasuoritus]],
+  @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
+  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
+  @KoodistoKoodiarvo("lukionoppimaara")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara", koodistoUri = "suorituksentyyppi"),
+  ryhmä: Option[String] = None
+) extends LukionPäätasonSuoritus with Todistus with Arvioinniton with Ryhmällinen with KoulusivistyskieliKieliaineesta with Oppimäärällinen
+
+@Description("Lukion oppiaineen oppimäärän suoritustiedot")
+case class LukionOppiaineenOppimääränSuoritus(
+  @Title("Oppiaine")
+  koulutusmoduuli: LukionOppiaineTaiEiTiedossaOppiaine,
+  toimipiste: OrganisaatioWithOid,
+  @Description("Lukion oppiaineen oppimäärän arviointi")
+  arviointi: Option[List[LukionOppiaineenArviointi]] = None,
+  vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
+  suorituskieli: Koodistokoodiviite,
+  @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
+  @Title("Kurssit")
+  override val osasuoritukset: Option[List[LukionKurssinSuoritus]],
+  @Description("Todistuksella näytettävä lisätieto, vapaamuotoinen tekstikenttä")
+  todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
+  @KoodistoKoodiarvo("lukionoppiaineenoppimaara")
+  tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppiaineenoppimaara", koodistoUri = "suorituksentyyppi"),
+  ryhmä: Option[String] = None
+) extends LukionPäätasonSuoritus with Todistus with Ryhmällinen with OppiaineenOppimääränSuoritus
+
 @Description("Lukiokoulutuksen tunnistetiedot")
 case class LukionOppimäärä(
  @KoodistoKoodiarvo("309902")

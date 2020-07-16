@@ -46,7 +46,7 @@ case class LukioonValmistavanKoulutuksenSuoritus(
   todistuksellaNäkyvätLisätiedot: Option[LocalizedString] = None,
   @KoodistoKoodiarvo("luva")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("luva", koodistoUri = "suorituksentyyppi")
-) extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Todistus with Arvioinniton with Suorituskielellinen
+) extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Todistus with Arvioinniton with Suorituskielellinen with Oppimäärällinen
 
 @Description("Lukioon valmistavan koulutuksen (LUVA) tunnistetiedot")
 case class LukioonValmistavaKoulutus(
