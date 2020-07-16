@@ -41,8 +41,9 @@ export const UusiKurssiDropdown = (
       return modelData(kurssi, 'tunniste.koodiarvo') + ' ' + modelTitle(kurssi, 'tunniste')
     }
   }
-  let kurssit = Bacon.combineWith(paikallisetKurssit, valtakunnallisetKurssit, (x,y) => x.concat(y))
-    .map(aineet => aineet.filter(kurssi => !käytössäolevatKoodiarvot.includes(modelData(kurssi, 'tunniste').koodiarvo)))
+  const kaikkiKurssit = Bacon.combineWith(paikallisetKurssit, valtakunnallisetKurssit, (x,y) => x.concat(y))
+    .map(kurssit => R.uniqBy(kurssi => modelData(kurssi, 'tunniste.koodiarvo'), kurssit))
+    .map(kurssit => kurssit.filter(kurssi => !käytössäolevatKoodiarvot.includes(modelData(kurssi, 'tunniste').koodiarvo)))
     .map(R.sortBy(displayValue))
 
   let poistaPaikallinenKurssi = kurssi => {
@@ -53,9 +54,9 @@ export const UusiKurssiDropdown = (
 
   return (<div className={'uusi-kurssi'}>
     {
-      elementWithLoadingIndicator(kurssit.map('.length').map(length => length || paikallinenKurssiProto
+      elementWithLoadingIndicator(kaikkiKurssit.map('.length').map(length => length || paikallinenKurssiProto
         ? <DropDown
-          options={kurssit}
+          options={kaikkiKurssit}
           keyValue={kurssi => isUusi(kurssi) ? 'uusi' : modelData(kurssi, 'tunniste').koodiarvo}
           displayValue={kurssi => isUusi(kurssi) ? t('Lisää paikallinen kurssi...') : displayValue(kurssi) }
           onSelectionChanged={resultCallback}
