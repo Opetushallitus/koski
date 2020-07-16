@@ -210,11 +210,6 @@ describe('Oppijataulukko', function() {
       page.oppijataulukko.clickFirstOppija,
       page.waitUntilOppijaSelected('220109-784L')
     )
-    describe('Klikattaessa oppijan nimeä', function() {
-      it('Siirrytään oppijan tietoihin', function() {
-
-      })
-    })
     describe('Klikattaessa paluulinkkiä', function() {
       before(
         editor.edit,
