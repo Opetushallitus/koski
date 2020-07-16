@@ -31,7 +31,7 @@ class RemoteHuollettavatRepository(val http: Http) extends HuollettavatRepositor
           logger.error(e.toString)
           Left(KoskiErrorCategory.unavailable.huollettavat())
       }
-      .run
+      .unsafePerformSync
   }
 }
 

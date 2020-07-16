@@ -109,7 +109,7 @@ object Http extends Logging {
   }
 
   // Http task runner: runs at most 2 minutes. We must avoid using the timeout-less run method, that may block forever.
-  def runTask[A](task: Task[A]): A = task.runFor(2.minutes)
+  def runTask[A](task: Task[A]): A = task.unsafePerformSyncFor(2.minutes)
 
   type Decode[ResultType] = (Int, String, Request) => ResultType
 
