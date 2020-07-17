@@ -35,15 +35,29 @@ object ExamplesLukio2019 {
       moduulinSuoritus(moduuli("FY2")).copy(arviointi = numeerinenArviointi(10)),
       moduulinSuoritus(moduuli("FY3")).copy(arviointi = numeerinenArviointi(10)),
       paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("FY123", "Keittiöfysiikka")).copy(arviointi = numeerinenArviointi(10))
+    ))),
+    oppiaineenSuoritus(PaikallinenLukionOppiaine(PaikallinenKoodi("ITT", "Tanssi ja liike"), "Tanssi ja liike", pakollinen = false)).copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
+      moduulinSuoritus(moduuli("LI5")).copy(arviointi = numeerinenArviointi(7)),
+      paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("ITT234", "Tanssin taito")).copy(arviointi = numeerinenArviointi(10))
     )))
   )
+
+  val oppiaineSuorituksetJoissaMuitaSuorituksiaJaLukioDiplomeita =
+    oppiainesuoritukset ::: List(lukioDiplomienSuoritus().copy(arviointi = arviointi("6")).copy(osasuoritukset = Some(List(
+      moduulinSuoritus(moduuli("MELD5", pakollinen, 2.0f)).copy(arviointi = numeerinenArviointi(7)),
+      moduulinSuoritus(moduuli("KÄLD3", pakollinen, 2.0f)).copy(arviointi = numeerinenArviointi(9))
+    ))),
+    muidenLukioOpintojenSuoritus().copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
+      moduulinSuoritus(moduuli("KE3")).copy(arviointi = numeerinenArviointi(10)),
+      paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("HAI765", "Kansanmusiikki haitarilla")).copy(arviointi = sanallinenArviointi("S"))
+    ))))
 
   lazy val oppimääränSuoritus = LukionOppimääränSuoritus2019(
     koulutusmoduuli = lukionOppimäärä2019,
     oppimäärä = nuortenOpetussuunnitelma,
     suorituskieli = suomenKieli,
     toimipiste = jyväskylänNormaalikoulu,
-    osasuoritukset = Some(oppiainesuoritukset)
+    osasuoritukset = Some(oppiaineSuorituksetJoissaMuitaSuorituksiaJaLukioDiplomeita)
   )
 
   lazy val oppiaineidenOppimäärienSuoritus = LukionOppiaineidenOppimäärienSuoritus2019(
@@ -96,9 +110,9 @@ object Lukio2019ExampleData {
     suorituskieli = None
   )
 
-  def moduuli(moduuli: String, kurssinTyyppi: Koodistokoodiviite = pakollinen) = LukionModuuli2019(
+  def moduuli(moduuli: String, kurssinTyyppi: Koodistokoodiviite = pakollinen, laajuusOpintopisteinä: Double = 1.0f) = LukionModuuli2019(
     tunniste = Koodistokoodiviite(koodistoUri = "moduulikoodistolops2021", koodiarvo = moduuli),
-    laajuus = laajuus(1),
+    laajuus = laajuus(laajuusOpintopisteinä),
     pakollinen = true
   )
 
@@ -107,6 +121,15 @@ object Lukio2019ExampleData {
     laajuus = laajuus(1),
     kuvaus = kuvaus,
     pakollinen = true
+  )
+
+  def muidenLukioOpintojenSuoritus(): MuidenLukioOpintojenSuoritus2019 = muidenLukioOpintojenSuoritus(MuutLukionSuoritukset2019(Koodistokoodiviite(koodistoUri = "lukionmuutopinnot", koodiarvo= "MS"), None))
+
+  def lukioDiplomienSuoritus(): MuidenLukioOpintojenSuoritus2019 = muidenLukioOpintojenSuoritus(Lukiodiplomit2019(Koodistokoodiviite(koodistoUri = "lukionmuutopinnot", koodiarvo= "LD"), None))
+
+  private def muidenLukioOpintojenSuoritus(koulutusmoduuli: MuutSuorituksetTaiLukiodiplomit2019): MuidenLukioOpintojenSuoritus2019 = MuidenLukioOpintojenSuoritus2019(
+    koulutusmoduuli = koulutusmoduuli,
+    osasuoritukset = None
   )
 
   def laajuus(arvo: Double) = LaajuusOpintopisteissä(arvo = arvo, yksikkö = laajuusOpintopisteissä)
