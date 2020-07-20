@@ -99,7 +99,7 @@ js-unit-test-watch:
 
 .PHONY: fronttest
 fronttest:
-	cd web && npm run test
+	cd web && npm install && npm run test
 
 .PHONY: screenshot
 screenshot:
