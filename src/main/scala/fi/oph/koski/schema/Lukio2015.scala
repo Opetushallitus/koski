@@ -157,6 +157,20 @@ case class LaajuudetonMuuValtakunnallinenOppiaine2015(
   perusteenDiaarinumero: Option[String] = None
 ) extends LukionValtakunnallinenOppiaine2015 with Laajuudeton
 
+@Description("Oppiaineena vieras tai toinen kotimainen kieli")
+case class LaajuudetonVierasTaiToinenKotimainenKieli2015(
+  @KoodistoKoodiarvo("A1")
+  @KoodistoKoodiarvo("A2")
+  tunniste: Koodistokoodiviite,
+  @Description("Mikä kieli on kyseessä")
+  @KoodistoUri("kielivalikoima")
+  kieli: Koodistokoodiviite,
+  pakollinen: Boolean = true,
+  perusteenDiaarinumero: Option[String] = None
+) extends LukionValtakunnallinenOppiaine2015 with Kieliaine with Laajuudeton {
+  override def description = kieliaineDescription
+}
+
 @Title("Muu valtakunnallinen oppiaine")
 case class LukionMuuValtakunnallinenOppiaine(
   @KoodistoKoodiarvo("HI")

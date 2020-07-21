@@ -176,8 +176,6 @@ case class LaajuudetonÄidinkieliJaKirjallisuus(
 
 @Description("Oppiaineena vieras tai toinen kotimainen kieli")
 case class LaajuudetonVierasTaiToinenKotimainenKieli(
-  @KoodistoKoodiarvo("A1")
-  @KoodistoKoodiarvo("A2")
   @KoodistoKoodiarvo("B1")
   @KoodistoKoodiarvo("B2")
   @KoodistoKoodiarvo("B3")

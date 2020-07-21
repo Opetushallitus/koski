@@ -55,7 +55,7 @@ object ExamplesLukio {
               kurssisuoritus(valtakunnallinenKurssi("ÄI8")).copy(arviointi = numeerinenArviointi(9)),
               kurssisuoritus(valtakunnallinenKurssi("ÄI9").copy(laajuus = None)).copy(arviointi = numeerinenArviointi(9))
             ))),
-            suoritus(lukionKieli("A1", "EN")).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
+            suoritus(lukionKieli2015("A1", "EN")).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("ENA1")).copy(arviointi = numeerinenArviointi(10)),
               kurssisuoritus(valtakunnallinenKurssi("ENA2")).copy(arviointi = numeerinenArviointi(10)),
               kurssisuoritus(valtakunnallinenKurssi("ENA3")).copy(arviointi = numeerinenArviointi(9)),
@@ -389,7 +389,7 @@ object LukioExampleData {
   )
 
   val lukionOppiaineenOppimääränSuoritusA1Englanti: LukionOppiaineenOppimääränSuoritus = LukionOppiaineenOppimääränSuoritus(
-    koulutusmoduuli = lukionKieli("A1","EN").copy(perusteenDiaarinumero = Some("60/011/2015")),
+    koulutusmoduuli = lukionKieli2015("A1","EN").copy(perusteenDiaarinumero = Some("60/011/2015")),
     suorituskieli = suomenKieli,
     vahvistus = vahvistusPaikkakunnalla(päivä = date(2016, 1, 10)),
     toimipiste = jyväskylänNormaalikoulu,
@@ -487,9 +487,21 @@ object LukioExampleData {
   def lukionÄidinkieli(kieli: String, pakollinen: Boolean) =
     LaajuudetonÄidinkieliJaKirjallisuus(kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus"), pakollinen = pakollinen)
 
-  def lukionKieli(oppiaine: String, kieli: String) = LaajuudetonVierasTaiToinenKotimainenKieli(
-    tunniste = Koodistokoodiviite(koodiarvo = oppiaine, koodistoUri = "koskioppiaineetyleissivistava"),
-    kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima"))
+  // uuden ja vanhan opsin jakamille oppiaineille B1, B2 ja B3
+  def lukionKieli(oppiaine: String, kieli: String) = {
+    assert(List("B1", "B2", "B3").contains(oppiaine), s"allowed values: [B1, B2, B3], got $oppiaine")
+    LaajuudetonVierasTaiToinenKotimainenKieli(
+      tunniste = Koodistokoodiviite(koodiarvo = oppiaine, koodistoUri = "koskioppiaineetyleissivistava"),
+      kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima"))
+  }
+
+  // vanhan opsin oppiaineille A1 ja A2
+  def lukionKieli2015(oppiaine: String, kieli: String) = {
+    assert(List("A1", "A2").contains(oppiaine), s"allowed values: [A1, A2], got $oppiaine")
+    LaajuudetonVierasTaiToinenKotimainenKieli2015(
+      tunniste = Koodistokoodiviite(koodiarvo = oppiaine, koodistoUri = "koskioppiaineetyleissivistava"),
+      kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima"))
+  }
 
   def numeerinenArviointi(arvosana: Int, päivä: LocalDate = date(2016, 6, 4)): Some[List[LukionArviointi]] = {
     Some(List(new NumeerinenLukionArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana.toString, koodistoUri = "arviointiasteikkoyleissivistava"), päivä)))
