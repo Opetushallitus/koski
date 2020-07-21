@@ -145,7 +145,17 @@ case class PaikallinenLukionOppiaine2015(
   perusteenDiaarinumero: Option[String] = None
 ) extends LukionLaajuudellinenOppiaine2015 with PaikallinenKoulutusmoduuli with StorablePreference
 
-trait LukionValtakunnallinenOppiaine2015 extends LukionLaajuudellinenOppiaine2015 with YleissivistavaOppiaine
+trait LukionValtakunnallinenOppiaine2015 extends LukionOppiaine2015 with YleissivistavaOppiaine
+trait LukionValtakunnallinenLaajuudellinenOppiaine2015 extends LukionLaajuudellinenOppiaine2015 with LukionValtakunnallinenOppiaine2015
+
+@Title("Muu valtakunnallinen oppiaine, vuoden 2015 ops")
+case class LaajuudetonMuuValtakunnallinenOppiaine2015(
+  @KoodistoKoodiarvo("KO")
+  @KoodistoKoodiarvo("KS")
+  tunniste: Koodistokoodiviite,
+  pakollinen: Boolean = true,
+  perusteenDiaarinumero: Option[String] = None
+) extends LukionValtakunnallinenOppiaine2015 with Laajuudeton
 
 @Title("Muu valtakunnallinen oppiaine")
 case class LukionMuuValtakunnallinenOppiaine(
@@ -169,7 +179,7 @@ case class LukionMuuValtakunnallinenOppiaine(
   pakollinen: Boolean = true,
   laajuus: LaajuusKursseissa,
   perusteenDiaarinumero: Option[String] = None
-) extends LukionValtakunnallinenOppiaine2015
+) extends LukionValtakunnallinenLaajuudellinenOppiaine2015
 
 @Title("Uskonto")
 case class LukionUskonto(
@@ -178,7 +188,7 @@ case class LukionUskonto(
   perusteenDiaarinumero: Option[String] = None,
   laajuus: LaajuusKursseissa,
   uskonnonOppimäärä: Option[Koodistokoodiviite] = None
-) extends LukionValtakunnallinenOppiaine2015 with Uskonto
+) extends LukionValtakunnallinenLaajuudellinenOppiaine2015 with Uskonto
 
 @Title("Äidinkieli ja kirjallisuus")
 @Description("Oppiaineena äidinkieli ja kirjallisuus")
@@ -191,7 +201,7 @@ case class LukionÄidinkieliJaKirjallisuus2015(
   pakollinen: Boolean = true,
   laajuus: LaajuusKursseissa,
   perusteenDiaarinumero: Option[String] = None
-) extends LukionValtakunnallinenOppiaine2015 with LukionÄidinkieliJaKirjallisuus {
+) extends LukionValtakunnallinenLaajuudellinenOppiaine2015 with LukionÄidinkieliJaKirjallisuus {
   override def description: LocalizedString = kieliaineDescription
 }
 
@@ -209,7 +219,7 @@ case class VierasTaiToinenKotimainenKieli(
   pakollinen: Boolean = true,
   laajuus: LaajuusKursseissa,
   perusteenDiaarinumero: Option[String] = None
-) extends LukionValtakunnallinenOppiaine2015 with Kieliaine {
+) extends LukionValtakunnallinenLaajuudellinenOppiaine2015 with Kieliaine {
   override def description = kieliaineDescription
 }
 
@@ -224,6 +234,6 @@ case class LukionMatematiikka(
   pakollinen: Boolean = true,
   laajuus: LaajuusKursseissa,
   perusteenDiaarinumero: Option[String] = None
-) extends LukionValtakunnallinenOppiaine2015 with KoodistostaLöytyväKoulutusmoduuli with Oppimäärä {
+) extends LukionValtakunnallinenLaajuudellinenOppiaine2015 with KoodistostaLöytyväKoulutusmoduuli with Oppimäärä {
   override def description = oppimäärä.description
 }
