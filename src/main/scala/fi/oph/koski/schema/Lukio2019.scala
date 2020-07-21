@@ -298,7 +298,7 @@ case class LaajuudetonVierasTaiToinenKotimainenKieli2019(
   @KoodistoUri("kielivalikoima")
   kieli: Koodistokoodiviite,
   pakollinen: Boolean = true
-) extends LukionValtakunnallinenOppiaine2019 with Kieliaine {
+) extends LukionValtakunnallinenOppiaine2019 with Kieliaine with Laajuudeton {
   override def description: LocalizedString = kieliaineDescription
   override def perusteenDiaarinumero: Option[String] = None
 }

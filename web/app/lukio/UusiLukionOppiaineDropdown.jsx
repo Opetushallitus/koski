@@ -26,7 +26,7 @@ export const UusiLukionOppiaineDropdown = ({model, oppiaineenSuoritusClasses}) =
     ? oppiaineenSuoritusClasses.map(c => newOsasuoritusProto(model, c))
     : [newOsasuoritusProto(model)]
 
-  const oppiainePrototypes = R.flatten(suoritusProtos.map(koulutusModuuliprototypes)).filter(laajuudetonLukionOppiaine)
+  const koulutusmoduuliProtos = R.flatten(suoritusProtos.map(koulutusModuuliprototypes))
 
   return (
     <UusiOppiaineDropdown
@@ -36,7 +36,7 @@ export const UusiLukionOppiaineDropdown = ({model, oppiaineenSuoritusClasses}) =
       resultCallback={addOppiaine}
       placeholder={t('Lisää oppiaine')}
       pakollinen={true}
-      oppiainePrototypes={oppiainePrototypes}
+      oppiainePrototypes={koulutusmoduuliProtos.filter(laajuudetonLukionOppiaine)}
     />
   )
 }
