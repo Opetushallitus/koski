@@ -4,12 +4,13 @@ import java.net.URLEncoder
 
 import fi.oph.koski.organisaatio.{OrganisaatioPalveluOrganisaatioTyyppi, OrganisaatioTyyppiHakuTulos}
 import fi.oph.koski.schema.OidOrganisaatio
+import fi.oph.koski.util.EnvVariables
 
 /**
   * Hakee eri tyyppiset oppilaitokset Opintopolun organisaatiopalvelusta.
   */
-object OppilaitosImuri extends App {
-  lazy val virkailijaRoot = sys.env.getOrElse("VIRKAILIJA", "https://virkailija.untuvaopintopolku.fi")
+object OppilaitosImuri extends App with EnvVariables {
+  lazy val virkailijaRoot = env("VIRKAILIJA", "https://virkailija.untuvaopintopolku.fi")
 
   lazy val lukiot: List[OidOrganisaatio] = haeOppilaitostyypillä("oppilaitostyyppi_15#1")
   lazy val ammatillisetOppilaitokset: List[OidOrganisaatio] = haeOppilaitostyypillä("oppilaitostyyppi_21#1")
