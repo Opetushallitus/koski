@@ -20,7 +20,7 @@ object ExamplesIB {
       preIBAineSuoritus(LukioExampleData.lukionÄidinkieli("AI1", pakollinen = true),List(
         (valtakunnallinenKurssi("ÄI1"), "8"), (valtakunnallinenKurssi("ÄI2"), "8"), (valtakunnallinenKurssi("ÄI3"), "8")
       )).copy(arviointi = arviointi("8")),
-      preIBAineSuoritus(lukionKieli("A1", "EN"), List(
+      preIBAineSuoritus(lukionKieli2015("A1", "EN"), List(
         (valtakunnallinenKurssi("ENA1"), "10"), (valtakunnallinenKurssi("ENA2"), "10"), (valtakunnallinenKurssi("ENA5"), "10")
       )).copy(arviointi = arviointi("10")),
       preIBAineSuoritus(lukionKieli("B1", "SV"), List(

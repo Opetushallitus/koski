@@ -96,9 +96,13 @@ object Lukio2019ExampleData {
     osasuoritukset = None
   )
 
-  def lukionKieli2019(oppiaine: String, kieli: String) = LaajuudetonVierasTaiToinenKotimainenKieli2019(
-    tunniste = Koodistokoodiviite(koodiarvo = oppiaine, koodistoUri = "koskioppiaineetyleissivistava"),
-    kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima"))
+  // oppiaineille B1, B2 ja B3 käytä LukioExampleData.lukionKieli
+  def lukionKieli2019(oppiaine: String, kieli: String) = {
+    assert(List("A", "AOM").contains(oppiaine), s"allowed values: [A, AOM], got $oppiaine")
+    LaajuudetonVierasTaiToinenKotimainenKieli2019(
+      tunniste = Koodistokoodiviite(koodiarvo = oppiaine, koodistoUri = "koskioppiaineetyleissivistava"),
+      kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima"))
+  }
 
   def moduulinSuoritus(moduuli: LukionModuuli2019) = LukionModuulinSuoritus2019(
     koulutusmoduuli = moduuli,
