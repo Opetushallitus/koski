@@ -18,6 +18,12 @@ trait KurssinSuoritus extends Suoritus with Vahvistukseton{
   def koulutusmoduuli: Koulutusmoduuli
 }
 
+trait ValtakunnallisenModuulinSuoritus extends Suoritus with Vahvistukseton{
+  @Title("Moduuli")
+  @FlattenInUI
+  def koulutusmoduuli: Koulutusmoduuli
+}
+
 trait Yksilöllistettävä {
   @DefaultValue(false)
   @Description("Tieto siitä, onko oppiaineen oppimäärä yksilöllistetty (true/false). Jos oppilas opiskelee yhdessä yksilöllistetyn oppimäärän mukaan, myös päättöarviointi voi näissä aineissa olla sanallinen.")
@@ -84,6 +90,14 @@ case class OmanÄidinkielenOpinnotLaajuusVuosiviikkotunteina(
   laajuus: Option[LaajuusVuosiviikkotunneissa]
 ) extends OmanÄidinkielenArviointi
 
+case class OmanÄidinkielenOpinnotLaajuusOpintopisteinä(
+  arvosana: Koodistokoodiviite,
+  arviointipäivä: Option[LocalDate],
+  kieli: Koodistokoodiviite,
+  laajuus: LaajuusOpintopisteissä
+) extends OmanÄidinkielenArviointi
+
+// TODO: Huolehdi lops 2019 täällä myös
 trait KoulusivistyskieliKieliaineesta extends Koulusivistyskieli with PäätasonSuoritus {
   def koulusivistyskieli: Option[List[Koodistokoodiviite]] = OptionalLists.optionalList(osasuoritukset.toList.flatten
     .filter(_.viimeisinArviointi.exists(_.hyväksytty))

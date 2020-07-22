@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'baret'
 import Text from '../../i18n/Text'
 
 export const LukionOppiaineetTableHead = ({laajuusyksikkö = 'kurssia', showArviointi = true, arvosanaHeader = <Text name='Arvosana (keskiarvo)'/>}) => (

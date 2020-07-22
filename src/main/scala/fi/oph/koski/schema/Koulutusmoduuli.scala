@@ -8,18 +8,33 @@ trait Koulutusmoduuli extends Localized {
   @Representative
   @Discriminator
   def tunniste: KoodiViite
-  def laajuus: Option[Laajuus]
   def nimi: LocalizedString
-  def description = nimi
+  def description: LocalizedString = nimi
   def isTutkinto = false
   // Vertailutekijä tarkistettaessa duplikaatteja
   def identiteetti: AnyRef = tunniste
+  def getLaajuus: Option[Laajuus] = None
+  def laajuusArvo(default: Double): Double =
+    getLaajuus.map(_.arvo).getOrElse(default)
+}
+
+trait KoulutusmoduuliPakollinenLaajuus extends Koulutusmoduuli {
+  def laajuus: Laajuus
+  override def getLaajuus: Option[Laajuus] = Some(laajuus)
+}
+
+trait KoulutusmoduuliValinnainenLaajuus extends Koulutusmoduuli {
+  def laajuus: Option[Laajuus]
+  override def getLaajuus: Option[Laajuus] = laajuus
 }
 
 trait KoodistostaLöytyväKoulutusmoduuli extends Koulutusmoduuli {
   def tunniste: Koodistokoodiviite
   def nimi: LocalizedString = tunniste.nimi.getOrElse(unlocalized(tunniste.koodiarvo))
 }
+
+trait KoodistostaLöytyväKoulutusmoduuliValinnainenLaajuus extends KoodistostaLöytyväKoulutusmoduuli with KoulutusmoduuliValinnainenLaajuus
+trait KoodistostaLöytyväKoulutusmoduuliPakollinenLaajuus extends KoodistostaLöytyväKoulutusmoduuli with KoulutusmoduuliPakollinenLaajuus
 
 trait Koulutus extends KoodistostaLöytyväKoulutusmoduuli {
   @Description("Tutkinnon 6-numeroinen tutkintokoodi. Sama kuin tilastokeskuksen koulutuskoodi")
@@ -40,13 +55,13 @@ trait Diaarinumerollinen {
   def perusteenDiaarinumero: Option[String]
 }
 
-trait Laajuudeton extends Koulutusmoduuli {
+trait Laajuudeton extends KoulutusmoduuliValinnainenLaajuus {
   override def laajuus: Option[Laajuus] = None
 }
 
-trait LaajuuttaEiValidoida extends Koulutusmoduuli
+trait LaajuuttaEiValidoida extends KoulutusmoduuliValinnainenLaajuus
 
-trait Tutkinto extends Koulutusmoduuli {
+trait Tutkinto extends KoulutusmoduuliValinnainenLaajuus {
   override def isTutkinto = true
 }
 
@@ -58,6 +73,8 @@ trait PaikallinenKoulutusmoduuli extends Koulutusmoduuli {
   @MultiLineString(5)
   def kuvaus: LocalizedString
 }
+
+trait PaikallinenKoulutusmoduuliValinnainenLaajuus extends PaikallinenKoulutusmoduuli with KoulutusmoduuliValinnainenLaajuus
 
 trait Valinnaisuus {
   @Description("Onko pakollinen osa tutkinnossa (true/false)")

@@ -2344,7 +2344,7 @@ describe('Perusopetus', function() {
     })
 
     describe('Aikuisten perusopetuksen alkuvaihe', function() {
-      this.timeout(15000)
+      this.timeout(20000)
 
       before(
         timeout.overrideWaitTime(20000),

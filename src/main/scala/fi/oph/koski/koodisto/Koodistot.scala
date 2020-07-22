@@ -28,6 +28,7 @@ object Koodistot {
     KoodistoAsetus("arviointiasteikkolisapisteetib", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),
     KoodistoAsetus("arviointiasteikkomuuammatillinenkoulutus"),
     KoodistoAsetus("arviointiasteikkoyleissivistava"),
+    KoodistoAsetus("arviointiasteikkosuullisenkielitaidonkoetaitotaso"),
     KoodistoAsetus("dialukukausi", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),
     KoodistoAsetus("diaosaalue", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),
     KoodistoAsetus("diapaattokoe", vaadiSuomenkielinenNimi = false, vaadiRuotsinkielinenNimi = false),
@@ -97,7 +98,8 @@ object Koodistot {
     KoodistoAsetus("virtaarvosana"),
     KoodistoAsetus("virtalukukausiilmtila"),
     KoodistoAsetus("virtaopiskeluoikeudentila"),
-    KoodistoAsetus("virtaopiskeluoikeudentyyppi")
+    KoodistoAsetus("virtaopiskeluoikeudentyyppi"),
+    KoodistoAsetus("moduulikoodistolops2021")
   )
   val muutKoodistot = muutKoodistoAsetukset.map(_.koodisto)
 

@@ -1,6 +1,6 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.api.OpiskeluoikeusTestMethodsLukio.päättötodistusSuoritus
+import fi.oph.koski.api.TestMethodsLukio.päättötodistusSuoritus
 import fi.oph.koski.documentation.{ExamplesLukio, LukioExampleData}
 import fi.oph.koski.documentation.LukioExampleData._
 import fi.oph.koski.documentation.ExampleData._
@@ -12,16 +12,16 @@ import java.time.LocalDate.{of => date}
 // Schemavalidoinnille on tehty kattavat testit ammatillisten opiskeluoikeuksien osalle. Yleissivistävän koulutuksen validoinnissa luotamme
 // toistaiseksi siihen, että schema itsessään on katselmoitu, ja että geneerinen mekanismi toimii.
 
-class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsLukio {
+class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsLukio2015 {
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(koulutusmoduuli = päättötodistusSuoritus.koulutusmoduuli.copy(perusteenDiaarinumero = diaari))))
   def eperusteistaLöytymätönValidiDiaarinumero: String = "33/011/2003"
 
   "Laajuudet" - {
     """Kurssin laajuusyksikkö muu kuin "kurssia" -> HTTP 400""" in {
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
-        osasuoritukset = Some(List(suoritus(lukionOppiaine("GE", laajuus(1.0f, "4"))).copy(
+        osasuoritukset = Some(List(suoritus(lukionOppiaine("GE", laajuus(1.0f, "4"), None)).copy(
           arviointi = arviointi("9"),
-          osasuoritukset = Some(List( kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1").copy(laajuus = laajuus(1.0f, "5"))) ))
+          osasuoritukset = Some(List( kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1").copy(laajuus = Some(laajuus(1.0f, "5")))) ))
         )))
       )))
       putOpiskeluoikeus(oo) {
@@ -30,10 +30,10 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
     }
     "Suoritus valmis, kurssien laajuuksien summa ei täsmää -> HTTP 400" in {
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
-        osasuoritukset = Some(List(suoritus(lukionOppiaine("GE", laajuus(2.0f, "4"))).copy(
+        osasuoritukset = Some(List(suoritus(lukionOppiaine("GE", laajuus(2.0f, "4"), None)).copy(
           arviointi = arviointi("9"),
           osasuoritukset = Some(List(
-            kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1").copy(laajuus = laajuus(1.0f, "4"))).copy(arviointi = numeerinenArviointi(9))
+            kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1").copy(laajuus = Some(laajuus(1.0f, "4")))).copy(arviointi = numeerinenArviointi(9))
           ))
         )))
       )))
@@ -43,13 +43,14 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
     }
 
     "Suoritus valmis, laajuudet täsmää pyöristyksillä -> HTTP 200" in {
+      val laajuusKursseissa = Some(laajuus(0.33333f, "4"))
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
-        osasuoritukset = Some(List(suoritus(lukionOppiaine("GE", laajuus(1.0f, "4"))).copy(
+        osasuoritukset = Some(List(suoritus(lukionOppiaine("GE", laajuus(1.0f, "4"), None)).copy(
           arviointi = arviointi("9"),
           osasuoritukset = Some(List(
-            kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1").copy(laajuus = laajuus(0.33333f, "4"))).copy(arviointi = numeerinenArviointi(9)),
-            kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE2").copy(laajuus = laajuus(0.33333f, "4"))).copy(arviointi = numeerinenArviointi(9)),
-            kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE3").copy(laajuus = laajuus(0.33333f, "4"))).copy(arviointi = numeerinenArviointi(9))
+            kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1").copy(laajuus = laajuusKursseissa)).copy(arviointi = numeerinenArviointi(9)),
+            kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE2").copy(laajuus = laajuusKursseissa)).copy(arviointi = numeerinenArviointi(9)),
+            kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE3").copy(laajuus = laajuusKursseissa)).copy(arviointi = numeerinenArviointi(9))
           ))
         )))
       )))
@@ -61,9 +62,9 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
     "Suoritus kesken, kurssien laajuuksien summa ei täsmää -> HTTP 200" in {
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
         vahvistus = None,
-        osasuoritukset = Some(List(suoritus(lukionOppiaine("GE", laajuus(2.0f, "4"))).copy(
+        osasuoritukset = Some(List(suoritus(lukionOppiaine("GE", laajuus(2.0f, "4"), None)).copy(
           osasuoritukset = Some(List(
-            kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1").copy(laajuus = laajuus(1.0f, "4"))).copy(arviointi = numeerinenArviointi(9))
+            kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1").copy(laajuus = Some(laajuus(1.0f, "4")))).copy(arviointi = numeerinenArviointi(9))
           ))
         )))
       )))
@@ -76,24 +77,24 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
   "Kaksi samaa oppiainetta" - {
     "Identtisillä tiedoilla -> HTTP 400" in {
       putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(
-        suoritus(lukionÄidinkieli("AI1")).copy(arviointi = arviointi("9")),
-        suoritus(lukionÄidinkieli("AI1")).copy(arviointi = arviointi("9"))
+        suoritus(LukioExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = arviointi("9")),
+        suoritus(LukioExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = arviointi("9"))
       )))))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus("Osasuoritus (koskioppiaineetyleissivistava/AI,oppiaineaidinkielijakirjallisuus/AI1) esiintyy useammin kuin kerran"))
       }
     }
     "Eri kielivalinnalla -> HTTP 200" in {
       putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(
-        suoritus(lukionÄidinkieli("AI1")).copy(arviointi = arviointi("9")),
-        suoritus(lukionÄidinkieli("AI2")).copy(arviointi = arviointi("9"))
+        suoritus(LukioExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = arviointi("9")),
+        suoritus(LukioExampleData.lukionÄidinkieli("AI2", pakollinen = true)).copy(arviointi = arviointi("9"))
       )))))) {
         verifyResponseStatusOk()
       }
     }
     "Eri matematiikan oppimäärällä -> HTTP 400" in {
       putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(osasuoritukset = Some(List(
-        suoritus(matematiikka("MAA")).copy(arviointi = arviointi("9")),
-        suoritus(matematiikka("MAB")).copy(arviointi = arviointi("9"))
+        suoritus(LukioExampleData.matematiikka("MAA", None)).copy(arviointi = arviointi("9")),
+        suoritus(LukioExampleData.matematiikka("MAB", None)).copy(arviointi = arviointi("9"))
       )))))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.duplikaattiOsasuoritus("Osasuoritus koskioppiaineetyleissivistava/MA esiintyy useammin kuin kerran"))
       }
@@ -104,7 +105,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
     "Valmis oppiainesuoritus ei vaadi vahvistusta." in {
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
         vahvistus = None,
-        osasuoritukset = Some(List(suoritus(lukionOppiaine("GE")).copy(arviointi = arviointi("9"))))
+        osasuoritukset = Some(List(suoritus(LukioExampleData.lukionOppiaine("GE", None)).copy(arviointi = arviointi("9"))))
       )))
       putOpiskeluoikeus(oo) {
         verifyResponseStatusOk()
@@ -114,7 +115,7 @@ class OppijaValidationLukioSpec extends TutkinnonPerusteetTest[LukionOpiskeluoik
       val oo = defaultOpiskeluoikeus.copy(suoritukset = List(päättötodistusSuoritus.copy(
         vahvistus = None,
         osasuoritukset = Some(List(
-          suoritus(lukionOppiaine("GE")).copy(arviointi = arviointi("9")).copy(
+          suoritus(LukioExampleData.lukionOppiaine("GE", None)).copy(arviointi = arviointi("9")).copy(
             osasuoritukset = Some(List(
               kurssisuoritus(LukioExampleData.valtakunnallinenKurssi("GE1")).copy(arviointi = numeerinenArviointi(9))
             ))

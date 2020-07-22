@@ -25,8 +25,8 @@ export const UusiKurssiDropdown = (
     customAlternativesCompletionFn=false
   }) => {
   let käytössäolevatKoodiarvot = suoritukset.map(s => modelData(s, 'koulutusmoduuli.tunniste').koodiarvo)
-  let alternativesFn = customAlternativesCompletionFn || completeWithFieldAlternatives
-  let valtakunnallisetKurssit = alternativesFn(oppiaine, valtakunnallisetKurssiProtot)
+  let kurssiKoodit = customAlternativesCompletionFn || fetchKurssiKoodit
+  let valtakunnallisetKurssit = kurssiKoodit(oppiaine, valtakunnallisetKurssiProtot)
   let paikallisetKurssit = Atom([])
   let setPaikallisetKurssit = kurssit => paikallisetKurssit.set(kurssit)
 
@@ -41,8 +41,8 @@ export const UusiKurssiDropdown = (
       return modelData(kurssi, 'tunniste.koodiarvo') + ' ' + modelTitle(kurssi, 'tunniste')
     }
   }
-  let kurssit = Bacon.combineWith(paikallisetKurssit, valtakunnallisetKurssit, (x,y) => x.concat(y))
-    .map(aineet => aineet.filter(kurssi => !käytössäolevatKoodiarvot.includes(modelData(kurssi, 'tunniste').koodiarvo)))
+  const kaikkiKurssit = Bacon.combineWith(paikallisetKurssit, valtakunnallisetKurssit, (x,y) => x.concat(y))
+    .map(kurssit => kurssit.filter(kurssi => !käytössäolevatKoodiarvot.includes(modelData(kurssi, 'tunniste').koodiarvo)))
     .map(R.sortBy(displayValue))
 
   let poistaPaikallinenKurssi = kurssi => {
@@ -53,9 +53,9 @@ export const UusiKurssiDropdown = (
 
   return (<div className={'uusi-kurssi'}>
     {
-      elementWithLoadingIndicator(kurssit.map('.length').map(length => length || paikallinenKurssiProto
+      elementWithLoadingIndicator(kaikkiKurssit.map('.length').map(length => length || paikallinenKurssiProto
         ? <DropDown
-          options={kurssit}
+          options={kaikkiKurssit}
           keyValue={kurssi => isUusi(kurssi) ? 'uusi' : modelData(kurssi, 'tunniste').koodiarvo}
           displayValue={kurssi => isUusi(kurssi) ? t('Lisää paikallinen kurssi...') : displayValue(kurssi) }
           onSelectionChanged={resultCallback}
@@ -73,7 +73,7 @@ export const UusiKurssiDropdown = (
   </div>)
 }
 
-const completeWithFieldAlternatives = (oppiaine, kurssiPrototypes) => {
+const fetchKurssiKoodit = (oppiaine, kurssiPrototypes) => {
   const oppiaineKoodisto = modelData(oppiaine, 'tunniste.koodistoUri')
   const oppiaineKoodiarvo = modelData(oppiaine, 'tunniste.koodiarvo')
   const oppimaaraKoodisto = modelData(oppiaine, 'kieli.koodistoUri') || modelData(oppiaine, 'oppimäärä.koodistoUri')

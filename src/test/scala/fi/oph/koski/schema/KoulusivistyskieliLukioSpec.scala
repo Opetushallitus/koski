@@ -1,11 +1,11 @@
 package fi.oph.koski.schema
 
-import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethodsLukio}
+import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethodsLukio2015}
 import fi.oph.koski.documentation.{ExampleData, YleissivistavakoulutusExampleData}
 import fi.oph.koski.documentation.LukioExampleData._
 import org.scalatest.FreeSpec
 
-class KoulusivistyskieliLukioSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsLukio {
+class KoulusivistyskieliLukioSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsLukio2015 {
 
   "Koulusivistyskieli - Lukion oppimäärän suoritus" - {
 
@@ -53,7 +53,7 @@ class KoulusivistyskieliLukioSpec extends FreeSpec with LocalJettyHttpSpecificat
     }
   }
 
-  def äidinkieli(kieli: String, arvosana: String, pakollinen: Boolean = true) = suoritus(lukionÄidinkieli(kieli).copy(pakollinen = pakollinen)).copy(arviointi = arviointi(arvosana))
+  def äidinkieli(kieli: String, arvosana: String, pakollinen: Boolean = true) = suoritus(lukionÄidinkieli(kieli, pakollinen = pakollinen)).copy(arviointi = arviointi(arvosana))
 
   def oppimääränOpiskeluoikeusOppiaineilla(oppiaineet: LukionOppimääränOsasuoritus*) = lukionOpiskeluoikeus().copy(
     suoritukset = List(LukionOppimääränSuoritus(

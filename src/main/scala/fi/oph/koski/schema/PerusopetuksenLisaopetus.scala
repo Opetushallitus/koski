@@ -114,7 +114,7 @@ case class MuuPerusopetuksenLisäopetuksenKoulutusmoduuli(
   @Tooltip("Paikallisen oppiaineen vapaamuotoinen kuvaus.")
   kuvaus: LocalizedString,
   laajuus: Option[LaajuusVuosiviikkotunneissa] = None
-) extends PaikallinenKoulutusmoduuli
+) extends PaikallinenKoulutusmoduuliValinnainenLaajuus
 
 @Description("Perusopetuksen lisäopetuksen tunnistetiedot")
 case class PerusopetuksenLisäopetus(
@@ -122,6 +122,4 @@ case class PerusopetuksenLisäopetus(
   tunniste: Koodistokoodiviite = Koodistokoodiviite("020075", koodistoUri = "koulutus"),
   perusteenDiaarinumero: Option[String],
   koulutustyyppi: Option[Koodistokoodiviite] = None
-) extends DiaarinumerollinenKoulutus {
-  def laajuus = None
-}
+) extends DiaarinumerollinenKoulutus with Laajuudeton

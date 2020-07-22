@@ -2,6 +2,7 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
+import fi.oph.koski.koodisto.{KoodistoViite, MockKoodistoViitePalvelu}
 import fi.oph.koski.schema.LocalizedString.unlocalized
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation._
@@ -52,6 +53,11 @@ trait Suoritus {
   def kesken = !valmis
   def ryhmittelytekijä: Option[String] = None
   def salliDuplikaatit = false
+
+  final def withKoulutusmoduuli(km: Koulutusmoduuli): Suoritus = {
+    import mojave._
+    shapeless.lens[Suoritus].field[Koulutusmoduuli]("koulutusmoduuli").set(this)(km)
+  }
 }
 
 object Suoritus {
@@ -68,7 +74,35 @@ object Suoritus {
       }
     }
   }
+}
 
+object SuorituksenTyyppi {
+  type SuorituksenTyyppi = Koodistokoodiviite
+
+  val lukionoppiaineidenoppimaarat2019 = apply("lukionoppiaineidenoppimaarat2019")
+  val lukionoppimaara2019 = apply("lukionoppimaara2019")
+  val perusopetuksenoppimaara = apply("perusopetuksenoppimaara")
+  val perusopetuksenvuosiluokka = apply("perusopetuksenvuosiluokka")
+  val nuortenperusopetuksenoppiaineenoppimaara = apply("nuortenperusopetuksenoppiaineenoppimaara")
+  val aikuistenperusopetuksenoppimaara = apply("aikuistenperusopetuksenoppimaara")
+  val perusopetuksenoppiaineenoppimaara = apply("perusopetuksenoppiaineenoppimaara")
+  val aikuistenperusopetuksenoppimaaranalkuvaihe = apply("aikuistenperusopetuksenoppimaaranalkuvaihe")
+  val perusopetuksenlisaopetus = apply("perusopetuksenlisaopetus")
+  val perusopetukseenvalmistavaopetus = apply("perusopetukseenvalmistavaopetus")
+  val esiopetuksensuoritus = apply("esiopetuksensuoritus")
+  val valma = apply("valma")
+  val telma = apply("telma")
+  val lukionoppimaara = apply("lukionoppimaara")
+  val lukionoppiaineenoppimaara = apply("lukionoppiaineenoppimaara")
+
+  private def apply(koodiarvo: String): SuorituksenTyyppi =
+    kaikkiTyypit.find(_.koodiarvo == koodiarvo)
+      .getOrElse(throw new IllegalArgumentException("Väärä suorituksen tyyppi " + koodiarvo))
+
+  lazy val kaikkiTyypit: List[SuorituksenTyyppi] = {
+    val suorituksenTyyppiKoodisto: KoodistoViite = MockKoodistoViitePalvelu.getLatestVersionRequired("suorituksentyyppi")
+    MockKoodistoViitePalvelu.getKoodistoKoodiViitteet(suorituksenTyyppiKoodisto)
+  }
 }
 
 trait MahdollisestiToimipisteellinen extends Suoritus {
@@ -131,6 +165,11 @@ trait Ryhmällinen {
 trait PäätasonSuoritus extends Suoritus {
   override def tarvitseeVahvistuksen = true
   def mutuallyExclusivePäätasoVahvistukseton = {}
+
+  final def withOsasuoritukset(oss: Option[List[Suoritus]]): PäätasonSuoritus = {
+    import mojave._
+    shapeless.lens[PäätasonSuoritus].field[Option[List[Suoritus]]]("osasuoritukset").set(this)(oss)
+  }
 }
 
 trait KoskeenTallennettavaPäätasonSuoritus extends PäätasonSuoritus with Toimipisteellinen
@@ -153,7 +192,7 @@ trait MonikielinenSuoritus {
 }
 
 trait PakollisenTaiValinnaisenSuoritus extends Suoritus {
-  def koulutusmoduuli: Koulutusmoduuli with Valinnaisuus
+  def koulutusmoduuli: KoulutusmoduuliValinnainenLaajuus with Valinnaisuus
   override def ryhmittelytekijä = Some(if (koulutusmoduuli.pakollinen) "pakolliset" else "valinnaiset")
 }
 

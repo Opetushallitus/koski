@@ -57,6 +57,7 @@ export const suoritusTitle = (suoritus) => {
   let title = modelTitle(tutkinnonNimi(modelLookup(suoritus, 'koulutusmoduuli')))
   switch(suorituksenTyyppi(suoritus)) {
     case 'ammatillinentutkintoosittainen': return title + t(', osittainen')
+    case 'lukionoppiaineidenoppimaarat2019':
     case 'aikuistenperusopetuksenoppimaara': return modelTitle(suoritus, 'tyyppi')
     default: return title
   }
@@ -93,33 +94,6 @@ export const preIBSuoritus = opiskeluoikeudenSuoritusByTyyppi('preiboppimaara')
 export const ibTutkinnonSuoritus = opiskeluoikeudenSuoritusByTyyppi('ibtutkinto')
 export const valmistavanDIAVaiheenSuoritus = opiskeluoikeudenSuoritusByTyyppi('diavalmistavavaihe')
 export const diaTutkinnonSuoritus = opiskeluoikeudenSuoritusByTyyppi('diatutkintovaihe')
-
-export const koulutustyyppiKoodit = suoritustyyppiKoodi => {
-  if (suoritustyyppiKoodi == 'perusopetuksenoppimaara' || suoritustyyppiKoodi == 'perusopetuksenvuosiluokka' || suoritustyyppiKoodi == 'nuortenperusopetuksenoppiaineenoppimaara') {
-    return ['16']
-  }
-  if (suoritustyyppiKoodi == 'aikuistenperusopetuksenoppimaara' || suoritustyyppiKoodi == 'perusopetuksenoppiaineenoppimaara' || suoritustyyppiKoodi == 'aikuistenperusopetuksenoppimaaranalkuvaihe'){
-    return ['17']
-  }
-  if (suoritustyyppiKoodi == 'perusopetuksenlisaopetus') {
-    return ['6']
-  }
-  if (suoritustyyppiKoodi == 'perusopetukseenvalmistavaopetus') {
-    return ['22']
-  }
-  if (suoritustyyppiKoodi == 'esiopetuksensuoritus') {
-    return ['15']
-  }
-  if (suoritustyyppiKoodi == 'valma') {
-    return ['18']
-  }
-  if (suoritustyyppiKoodi == 'telma') {
-    return ['5']
-  }
-  if (suoritustyyppiKoodi == 'lukionoppimaara' || suoritustyyppiKoodi == 'lukionoppiaineenoppimaara') {
-    return ['2', '14']
-  }
-}
 
 export const fixArviointi = (model) => {
   return lensedModel(model, L.rewrite(m => {

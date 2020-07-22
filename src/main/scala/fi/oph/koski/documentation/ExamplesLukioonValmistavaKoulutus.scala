@@ -15,14 +15,14 @@ object ExamplesLukioonValmistavaKoulutus {
     oppimäärä = nuortenOpetussuunnitelma,
     vahvistus = vahvistusPaikkakunnalla(),
     toimipiste = jyväskylänNormaalikoulu,
-    koulutusmoduuli = LukioonValmistavaKoulutus(perusteenDiaarinumero = Some("56/011/2015"), laajuus = laajuus(2.0f)),
+    koulutusmoduuli = LukioonValmistavaKoulutus(perusteenDiaarinumero = Some("56/011/2015"), laajuus = Some(laajuus(2.0f))),
     suorituskieli = suomenKieli,
     osasuoritukset = Some(List(
       LukioonValmistavanKoulutuksenOppiaineenSuoritus(
         LukioonValmistavaÄidinkieliJaKirjallisuus(Koodistokoodiviite("LVAIK", "oppiaineetluva"), kieli = Koodistokoodiviite(koodiarvo = "AI7", koodistoUri = "oppiaineaidinkielijakirjallisuus")),
         arviointi = arviointi("S"),
         osasuoritukset = Some(List(
-          luvaKurssinSuoritus(valtakunnallinenLuvaKurssi("LVS1").copy(laajuus = laajuus(2.0f)))
+          luvaKurssinSuoritus(valtakunnallinenLuvaKurssi("LVS1").copy(laajuus = Some(laajuus(2.0f))))
         ))
       ),
       LukioonValmistavanKoulutuksenOppiaineenSuoritus(
@@ -61,7 +61,7 @@ object ExamplesLukioonValmistavaKoulutus {
         ))
       ),
       LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa(
-        lukionKieli("A1", "EN"),
+        lukionKieli2015("A1", "EN"),
         arviointi = arviointi("S"),
         osasuoritukset = Some(List(
           kurssisuoritus(valtakunnallinenKurssi("ENA1")).copy(arviointi = numeerinenArviointi(8))
@@ -101,8 +101,8 @@ object ExamplesLukioonValmistavaKoulutus {
   )
 
   private def valtakunnallinenLuvaKurssi(kurssi: String) =
-    ValtakunnallinenLukioonValmistavanKoulutuksenKurssi(Koodistokoodiviite(koodistoUri = "lukioonvalmistavankoulutuksenkurssit2015", koodiarvo = kurssi), laajuus(1.0f))
+    ValtakunnallinenLukioonValmistavanKoulutuksenKurssi(Koodistokoodiviite(koodistoUri = "lukioonvalmistavankoulutuksenkurssit2015", koodiarvo = kurssi), Some(laajuus(1.0f)))
 
   private def paikallinenLuvaKurssi(koodi: String, nimi: String, kuvaus: String) =
-    PaikallinenLukioonValmistavanKoulutuksenKurssi(PaikallinenKoodi(koodi, LocalizedString.finnish(nimi)), laajuus(1.0f), LocalizedString.finnish(kuvaus))
+    PaikallinenLukioonValmistavanKoulutuksenKurssi(PaikallinenKoodi(koodi, LocalizedString.finnish(nimi)), Some(laajuus(1.0f)), LocalizedString.finnish(kuvaus))
 }

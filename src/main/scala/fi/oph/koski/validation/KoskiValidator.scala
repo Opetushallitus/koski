@@ -9,6 +9,7 @@ import fi.oph.koski.eperusteet.EPerusteetRepository
 import fi.oph.koski.henkilo.HenkilöRepository
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
+import fi.oph.koski.json.JsonSerializer.serializeWithRoot
 import fi.oph.koski.koodisto.KoodistoViitePalvelu
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.opiskeluoikeus.KoskiOpiskeluoikeusRepository
@@ -21,6 +22,7 @@ import fi.oph.koski.tutkinto.TutkintoRepository
 import fi.oph.koski.util.Timing
 import fi.oph.koski.validation.DateValidation._
 import mojave._
+import org.json4s.jackson.JsonMethods
 import org.json4s.{JArray, JValue}
 
 // scalastyle:off line.size.limit
@@ -73,6 +75,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       updateFields(opiskeluoikeus).right.flatMap { opiskeluoikeus =>
         (validateAccess(opiskeluoikeus)
           .onSuccess { validateLähdejärjestelmä(opiskeluoikeus) }
+          .onSuccess { validatePäätasonSuoritustenLukumäärä(opiskeluoikeus) }
           .onSuccess {
             HttpStatus.fold(opiskeluoikeus.suoritukset.map(TutkintoRakenneValidator(tutkintoRepository, koodistoPalvelu).validate(_,
               opiskeluoikeus.tila.opiskeluoikeusjaksot.find(_.tila.koodiarvo == "lasna").map(_.alku))))
@@ -97,10 +100,12 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     case _ => Right(opiskeluoikeus)
   }
 
+
   private def updateFields(oo: KoskeenTallennettavaOpiskeluoikeus)(implicit user: KoskiSession): Either[HttpStatus, KoskeenTallennettavaOpiskeluoikeus] = {
     fillMissingOrganisations(oo)
       .flatMap(addKoulutustyyppi)
       .map(fillPerusteenNimi)
+      .map(fillLaajuudet)
       .map(_.withHistoria(None))
   }
 
@@ -116,6 +121,21 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
         case o => o
       })
     case x => x
+  }
+
+  private def fillLaajuudet(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus =
+    oo.withSuoritukset(oo.suoritukset.map(fillOppiaineidenLaajuudet))
+
+  private def fillOppiaineidenLaajuudet(suoritus: PäätasonSuoritus): PäätasonSuoritus = suoritus match {
+    case l: LukionPäätasonSuoritus2019 =>
+      l.withOsasuoritukset(l.osasuoritukset.map(_.map { os =>
+        lazy val yhteislaajuus = os.osasuoritusLista.map(_.koulutusmoduuli.laajuusArvo(1.0)).map(BigDecimal.decimal).sum.toDouble
+        os.withKoulutusmoduuli(os.koulutusmoduuli match {
+          case k: LukionOppiaine2019 if yhteislaajuus > 0 => k.withLaajuus(yhteislaajuus)
+          case k => k
+        })
+      }))
+    case _ => suoritus
   }
 
   private def perusteenNimi(diaariNumero: String): Option[LocalizedString] =
@@ -311,6 +331,14 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     }
   }
 
+  private def validatePäätasonSuoritustenLukumäärä(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
+    opiskeluoikeus match {
+      case l: LukionOpiskeluoikeus if l.suoritukset.count(_.tyyppi.koodiarvo == "lukionoppiaineidenoppimaarat2019") > 1 =>
+        KoskiErrorCategory.badRequest.validation.rakenne.epäsopiviaSuorituksia("Opiskeluoikeudella on enemmän kuin yksi oppiaineiden oppimäärät ryhmittelevä lukionoppiaineidenoppimaarat2019-tyyppinen suoritus")
+      case _ => HttpStatus.ok
+    }
+  }
+
   private def validatePäivämäärät(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus): HttpStatus = {
     def formatOptionalDate(date: Option[LocalDate]) = date match {
       case Some(d) => d.toString
@@ -467,10 +495,10 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   private def validateLaajuus(suoritus: Suoritus): HttpStatus = {
-    (suoritus.koulutusmoduuli.laajuus, suoritus) match {
+    (suoritus.koulutusmoduuli.getLaajuus, suoritus) match {
       case (Some(laajuus: Laajuus), _) =>
         val yksikköValidaatio = HttpStatus.fold(suoritus.osasuoritusLista.map { case osasuoritus =>
-          osasuoritus.koulutusmoduuli.laajuus match {
+          osasuoritus.koulutusmoduuli.getLaajuus match {
             case Some(osasuorituksenLaajuus: Laajuus) if laajuus.yksikkö != osasuorituksenLaajuus.yksikkö =>
               KoskiErrorCategory.badRequest.validation.laajuudet.osasuorituksellaEriLaajuusyksikkö("Osasuorituksella " + suorituksenTunniste(osasuoritus) + " eri laajuuden yksikkö kuin suorituksella " + suorituksenTunniste(suoritus))
             case _ => HttpStatus.ok
@@ -481,7 +509,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
           suoritus.koulutusmoduuli match {
             case _: LaajuuttaEiValidoida => HttpStatus.ok
             case _ =>
-              val osasuoritustenLaajuudet: List[Laajuus] = suoritus.osasuoritusLista.flatMap(_.koulutusmoduuli.laajuus)
+              val osasuoritustenLaajuudet: List[Laajuus] = suoritus.osasuoritusLista.map(_.koulutusmoduuli).flatMap(_.getLaajuus)
               (osasuoritustenLaajuudet, suoritus.valmis) match {
                 case (_, false) => HttpStatus.ok
                 case (Nil, _) => HttpStatus.ok
@@ -496,7 +524,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
           }
         })
 
-      case (_, s: DIAPäätasonSuoritus) if s.valmis && s.osasuoritusLista.exists(aine => aine.koulutusmoduuli.laajuus.isEmpty) =>
+      case (_, s: DIAPäätasonSuoritus) if s.valmis && s.osasuoritusLista.map(_.koulutusmoduuli).exists(_.getLaajuus.isEmpty) =>
         KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusPuuttuu("Suoritus " + suorituksenTunniste(suoritus) + " on merkitty valmiiksi, mutta se sisältää oppiaineen, jolta puuttuu laajuus")
 
       case (laajuus, s: Laajuudellinen) if laajuus.isEmpty =>
@@ -546,7 +574,13 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
   }
 
   private def osasuorituksetKunnossa(suoritus: PäätasonSuoritus) = suoritus match {
-    case _:EsiopetuksenSuoritus | _:MuunAmmatillisenKoulutuksenSuoritus | _:OppiaineenSuoritus | _:OppiaineenOppimääränSuoritus | _:NäyttötutkintoonValmistavanKoulutuksenSuoritus => true
+    case _:EsiopetuksenSuoritus |
+         _:MuunAmmatillisenKoulutuksenSuoritus |
+         _:OppiaineenSuoritus |
+         _:OppiaineenOppimääränSuoritus |
+         _:NäyttötutkintoonValmistavanKoulutuksenSuoritus |
+         _:LukionOppiaineidenOppimäärienSuoritus2019
+      => true
     case s: PerusopetuksenVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "9" => true
     case s => s.osasuoritusLista.nonEmpty
   }
@@ -702,7 +736,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     def erikoistapaus(s: Suoritus) = {
       val opintoOhjaus = s.koulutusmoduuli.tunniste.koodiarvo == "OP"
       val kieliaineArvosanallaS = s.koulutusmoduuli.isInstanceOf[NuortenPerusopetuksenVierasTaiToinenKotimainenKieli] && s.viimeisinArvosana.contains("S")
-      val paikallinenLaajuusAlle2TaiArvosanaS = s.koulutusmoduuli.isInstanceOf[NuortenPerusopetuksenPaikallinenOppiaine] && (s.koulutusmoduuli.laajuus.exists(_.arvo < 2) || s.viimeisinArvosana.contains("S"))
+      val paikallinenLaajuusAlle2TaiArvosanaS = s.koulutusmoduuli.isInstanceOf[NuortenPerusopetuksenPaikallinenOppiaine] && (s.koulutusmoduuli.getLaajuus.exists(_.arvo < 2) || s.viimeisinArvosana.contains("S"))
       opintoOhjaus || kieliaineArvosanallaS || paikallinenLaajuusAlle2TaiArvosanaS
     }
 
@@ -776,7 +810,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
     def validateYhteislaajuus(s: AmmatillisenTutkinnonSuoritus): HttpStatus =  {
       if (s.valmis && s.suoritustapa.koodiarvo == "reformi") {
         val yhteislaajuus = s.osasuoritusLista.filter(o => o.arvioitu && AmmatillisenTutkinnonOsa.yhteisetTutkinnonOsat.contains(o.koulutusmoduuli.tunniste))
-          .map(_.koulutusmoduuli.laajuus.map(_.arvo).getOrElse(0.0))
+          .map(_.koulutusmoduuli).map(_.getLaajuus.map(_.arvo).getOrElse(0.0))
           .sum
         HttpStatus.validate(
           yhteislaajuus.round >= yhteistenOsienLaajuudenSumma
@@ -808,8 +842,8 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       val yhteisetOsaSuoritukset = s.osasuoritusLista.filter(o => o.arvioitu && AmmatillisenTutkinnonOsa.yhteisetTutkinnonOsat.contains(o.koulutusmoduuli.tunniste))
 
       val mismatchingLaajuudet = yhteisetOsaSuoritukset.filter(yht => {
-        val yläsuorituksenLaajuus = yht.koulutusmoduuli.laajuus.map(_.arvo).getOrElse(0.0)
-        val alasuoritustenLaajuus = yht.osasuoritusLista.map(_.koulutusmoduuli.laajuus.getOrElse(LaajuusOsaamispisteissä(0.0)).arvo).sum
+        val yläsuorituksenLaajuus = yht.koulutusmoduuli.getLaajuus.map(_.arvo).getOrElse(0.0)
+        val alasuoritustenLaajuus = yht.osasuoritusLista.map(_.koulutusmoduuli).map(_.getLaajuus.getOrElse(LaajuusOsaamispisteissä(0.0)).arvo).sum
         yläsuorituksenLaajuus != alasuoritustenLaajuus && alasuoritustenLaajuus != 0.0
       })
 

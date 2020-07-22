@@ -45,7 +45,7 @@ object ExamplesLukio {
           todistuksellaNäkyvätLisätiedot = Some("Ruotsin opinnoista osa hyväksiluettu Ruotsissa suoritettujen lukio-opintojen perusteella"),
           ryhmä = Some("12A"),
           osasuoritukset = Some(List(
-            suoritus(lukionÄidinkieli("AI1")).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
+            suoritus(lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("ÄI1")).copy(arviointi = numeerinenArviointi(8)),
               kurssisuoritus(valtakunnallinenKurssi("ÄI2")).copy(arviointi = numeerinenArviointi(8)),
               kurssisuoritus(valtakunnallinenKurssi("ÄI3")).copy(arviointi = numeerinenArviointi(8)),
@@ -55,7 +55,7 @@ object ExamplesLukio {
               kurssisuoritus(valtakunnallinenKurssi("ÄI8")).copy(arviointi = numeerinenArviointi(9)),
               kurssisuoritus(valtakunnallinenKurssi("ÄI9").copy(laajuus = None)).copy(arviointi = numeerinenArviointi(9))
             ))),
-            suoritus(lukionKieli("A1", "EN")).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
+            suoritus(lukionKieli2015("A1", "EN")).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("ENA1")).copy(arviointi = numeerinenArviointi(10)),
               kurssisuoritus(valtakunnallinenKurssi("ENA2")).copy(arviointi = numeerinenArviointi(10)),
               kurssisuoritus(valtakunnallinenKurssi("ENA3")).copy(arviointi = numeerinenArviointi(9)),
@@ -78,7 +78,7 @@ object ExamplesLukio {
               kurssisuoritus(valtakunnallinenKurssi("LAB31")).copy(arviointi = numeerinenArviointi(9)),
               kurssisuoritus(valtakunnallinenKurssi("LAB32")).copy(arviointi = numeerinenArviointi(8))
             ))),
-            suoritus(matematiikka("MAA")).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
+            suoritus(matematiikka("MAA", None)).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
               kurssisuoritus(syventäväKurssi("MAA1", "Funktiot ja yhtälöt, pa, vuositaso 1",
                 "Vahvistetaan yhtälön ratkaisemisen ja prosenttilaskennan taitoja. Syvennetään verrannollisuuden, neliöjuuren ja potenssin käsitteiden ymmärtämistä. Harjaannutaan käyttämään neliöjuuren ja potenssin laskusääntöjä. Syvennetään funktiokäsitteen ymmärtämistä tutkimalla potenssi- ja eksponenttifunktioita. Opetellaan ratkaisemaan potenssiyhtälöitä."))
                 .copy(arviointi = numeerinenArviointi(9)),
@@ -99,24 +99,24 @@ object ExamplesLukio {
               kurssisuoritus(syventäväKurssi("MAA16", "Analyyttisten menetelmien lisäkurssi, ksy, vuositaso 2", "Kurssilla syvennetään kurssien MAA4, MAA5 ja MAA7 sisältöjä."))
                 .copy(arviointi = numeerinenArviointi(9))
             ))),
-            suoritus(lukionOppiaine("BI")).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
+            suoritus(lukionOppiaine("BI", None)).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("BI1")).copy(arviointi = numeerinenArviointi(8)),
               kurssisuoritus(valtakunnallinenKurssi("BI2")).copy(arviointi = numeerinenArviointi(9)),
               kurssisuoritus(valtakunnallinenKurssi("BI3")).copy(arviointi = numeerinenArviointi(8)),
               kurssisuoritus(valtakunnallinenKurssi("BI4")).copy(arviointi = numeerinenArviointi(9)),
               kurssisuoritus(valtakunnallinenKurssi("BI5")).copy(arviointi = numeerinenArviointi(10)),
               kurssisuoritus(syventäväKurssi("BI6", "Cell Biology (½ kurssia), so, vuositaso 3", "Biology in English, including the structure of procaryotic and eucaryotic cells, cellular control, growth regulation, application of genetics and problemsolving. The course will familiarise students with English terminology, analytical techniques and laboratory work. Students should aim to improve their spoken English skills and vocabulary as well as learn about practical cell biology.")
-                .copy(laajuus = laajuus(0.5f))).copy(arviointi = sanallinenArviointi("S")),
+                .copy(laajuus = Some(laajuus(0.5f)))).copy(arviointi = sanallinenArviointi("S")),
               kurssisuoritus(syventäväKurssi("BI7", "Biologia nova - ympäristö tutuksi (1-3 kurssia), so, vuositasot 1-2", "Kurssiin ei sisälly tuntiopetusta, ainoastaan suunnittelu-, opastus- ja kontrollituokioita. Opiskelija laatii yksilöllisen kurssikokonaisuuden, jonka päätarkoitus on perehtyä valitun (pirkanmaalaisen) ekosysteemin lajistoon. Opiskelija voi erikoistua esim. kasvilajistoon, sieniin, perhosiin, kaloihin, nisäkkäisiin jne. Suunnitelman laajuudesta ja laadusta riippuen opiskelija voi saada 1-3 kurssisuoritusmerkintää. Opiskeluaika voi olla enintään kaksi vuotta."))
                 .copy(arviointi = sanallinenArviointi("S")),
               kurssisuoritus(syventäväKurssi("BI8", "Biologian kertauskurssi (½ kurssia), so, vuositaso 3", "Kurssilla kerrataan biologian keskeisiä asioita ainereaaliin valmistauduttaessa."))
                 .copy(arviointi = sanallinenArviointi("S"))
             ))),
-            suoritus(lukionOppiaine("GE")).copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
+            suoritus(lukionOppiaine("GE", None)).copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("GE1")).copy(arviointi = numeerinenArviointi(9)),
               kurssisuoritus(valtakunnallinenKurssi("GE2")).copy(arviointi = numeerinenArviointi(7))
             ))),
-            suoritus(lukionOppiaine("FY")).copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
+            suoritus(lukionOppiaine("FY", None)).copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("FY1")).copy(arviointi = numeerinenArviointi(8)),
               kurssisuoritus(valtakunnallinenKurssi("FY2")).copy(arviointi = numeerinenArviointi(9)),
               kurssisuoritus(valtakunnallinenKurssi("FY3")).copy(arviointi = numeerinenArviointi(9)),
@@ -134,7 +134,7 @@ object ExamplesLukio {
               kurssisuoritus(syventäväKurssi("FY12", "Fysiikka 12", "Fysiikka 12")).copy(arviointi = sanallinenArviointi("S")),
               kurssisuoritus(syventäväKurssi("FY13", "Fysiikka 13", "Fysiikka 13")).copy(arviointi = sanallinenArviointi("S"))
             ))),
-            suoritus(lukionOppiaine("KE")).copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
+            suoritus(lukionOppiaine("KE", None)).copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("KE1")).copy(arviointi = numeerinenArviointi(8)),
               kurssisuoritus(valtakunnallinenKurssi("KE2")).copy(arviointi = numeerinenArviointi(9)),
               kurssisuoritus(valtakunnallinenKurssi("KE3")).copy(arviointi = numeerinenArviointi(9)),
@@ -147,41 +147,41 @@ object ExamplesLukio {
               kurssisuoritus(syventäväKurssi("KE8", "Kemia 8", "Kemia 8"))
                 .copy(arviointi = sanallinenArviointi("S"))
             ))),
-            suoritus(lukionUskonto(uskonto = Some("IS"))).copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
+            suoritus(lukionUskonto(uskonto = Some("IS"), diaarinumero = None)).copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("UE1")).copy(arviointi = numeerinenArviointi(8)),
               kurssisuoritus(valtakunnallinenKurssi("UE2")).copy(arviointi = numeerinenArviointi(7)),
               kurssisuoritus(valtakunnallinenKurssi("UE3")).copy(arviointi = numeerinenArviointi(8))
             ))),
-            suoritus(lukionOppiaine("FI")).copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
+            suoritus(lukionOppiaine("FI", None)).copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("FI1")).copy(arviointi = numeerinenArviointi(8))
             ))),
-            suoritus(lukionOppiaine("PS")).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
+            suoritus(lukionOppiaine("PS", None)).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("PS1")).copy(arviointi = numeerinenArviointi(9))
             ))),
-            suoritus(lukionOppiaine("HI")).copy(arviointi = arviointi("7")).copy(osasuoritukset = Some(List(
+            suoritus(lukionOppiaine("HI", None)).copy(arviointi = arviointi("7")).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("HI1")).copy(arviointi = numeerinenArviointi(7)),
               kurssisuoritus(valtakunnallinenKurssi("HI2")).copy(arviointi = numeerinenArviointi(8)),
               kurssisuoritus(valtakunnallinenKurssi("HI3")).copy(arviointi = numeerinenArviointi(7)),
               kurssisuoritus(valtakunnallinenKurssi("HI4")).copy(arviointi = numeerinenArviointi(6))
             ))),
-            suoritus(lukionOppiaine("YH")).copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
+            suoritus(lukionOppiaine("YH", None)).copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("YH1")).copy(arviointi = numeerinenArviointi(8)),
               kurssisuoritus(valtakunnallinenKurssi("YH2")).copy(arviointi = numeerinenArviointi(8))
             ))),
-            suoritus(lukionOppiaine("LI")).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
+            suoritus(lukionOppiaine("LI", None)).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("LI1")).copy(arviointi = numeerinenArviointi(8)),
               kurssisuoritus(valtakunnallinenKurssi("LI2")).copy(arviointi = numeerinenArviointi(9)),
               kurssisuoritus(soveltavaKurssi("LI12", "Vanhat tanssit, kso", "Kurssin tavoitteena on kehittää sosiaalista vuorovaikutusta tanssin avulla. Tähän liittyy kiinteästi myös tapakasvatus. Kurssilla harjoitellaan ensisijaisesti ns. ”Vanhojen päivän” ohjelmistoa – vanhoja tansseja ja salonkitansseja, mutta myös tavallisia paritansseja. Kurssin käyminen ei velvoita osallistumaan juhlapäivän esityksiin. Kurssi arvioidaan suoritusmerkinnällä."))
                 .copy(arviointi = sanallinenArviointi("S"))
             ))),
-            suoritus(lukionOppiaine("MU")).copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
+            suoritus(lukionOppiaine("MU", None)).copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("MU1")).copy(arviointi = numeerinenArviointi(8), tunnustettu = Some(AmmatillinenExampleData.tunnustettu))
             ))),
-            suoritus(lukionOppiaine("KU")).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
+            suoritus(lukionOppiaine("KU", None)).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("KU1")).copy(arviointi = numeerinenArviointi(8)),
               kurssisuoritus(soveltavaKurssi("KU2", "Elävän mallin piirustus, lukiodiplomi", "Elävän mallin piirustus"), Some(true)).copy(arviointi = numeerinenArviointi(9))
             ))),
-            suoritus(lukionOppiaine("TE")).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
+            suoritus(lukionOppiaine("TE", None)).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("TE1")).copy(arviointi = numeerinenArviointi(8))
             ))),
             suoritus(PaikallinenLukionOppiaine(PaikallinenKoodi("ITT", "Tanssi ja liike"), "Tanssi ja liike", pakollinen = false)).copy(arviointi = arviointi("10"), osasuoritukset = Some(List(
@@ -322,7 +322,7 @@ object ExamplesLukio {
           toimipiste = jyväskylänNormaalikoulu,
           todistuksellaNäkyvätLisätiedot = None,
           osasuoritukset = Some(List(
-            suoritus(lukionÄidinkieli("AI1")).copy(arviointi = None).copy(osasuoritukset = Some(List(
+            suoritus(lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = None).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("ÄI1")).copy(arviointi = numeerinenArviointi(8)),
               kurssisuoritus(valtakunnallinenKurssi("ÄI2")).copy(arviointi = numeerinenArviointi(8)),
               kurssisuoritus(valtakunnallinenKurssi("ÄI3")).copy(arviointi = None)
@@ -389,7 +389,7 @@ object LukioExampleData {
   )
 
   val lukionOppiaineenOppimääränSuoritusA1Englanti: LukionOppiaineenOppimääränSuoritus = LukionOppiaineenOppimääränSuoritus(
-    koulutusmoduuli = lukionKieli("A1","EN").copy(perusteenDiaarinumero = Some("60/011/2015")),
+    koulutusmoduuli = lukionKieli2015("A1","EN").copy(perusteenDiaarinumero = Some("60/011/2015")),
     suorituskieli = suomenKieli,
     vahvistus = vahvistusPaikkakunnalla(päivä = date(2016, 1, 10)),
     toimipiste = jyväskylänNormaalikoulu,
@@ -402,7 +402,7 @@ object LukioExampleData {
   )
 
   val lukionOppiaineenOppimääränSuoritusPitkäMatematiikka: LukionOppiaineenOppimääränSuoritus = LukionOppiaineenOppimääränSuoritus(
-    koulutusmoduuli = matematiikka("MAA").copy(perusteenDiaarinumero = Some("60/011/2015")),
+    koulutusmoduuli = matematiikka("MAA", perusteenDiaarinumero = Some("60/011/2015")),
     suorituskieli = suomenKieli,
     vahvistus = vahvistusPaikkakunnalla(päivä = date(2016, 1, 10)),
     toimipiste = jyväskylänNormaalikoulu,
@@ -422,7 +422,7 @@ object LukioExampleData {
   val aikuistenOpetussuunnitelma = Koodistokoodiviite("aikuistenops", Some("Aikuisten ops"), "lukionoppimaara", Some(1))
   val nuortenOpetussuunnitelma = Koodistokoodiviite("nuortenops", Some("Nuorten ops"), "lukionoppimaara", Some(1))
 
-  def suoritus(aine: LukionOppiaine): LukionOppiaineenSuoritus = LukionOppiaineenSuoritus(
+  def suoritus(aine: LukionOppiaine2015): LukionOppiaineenSuoritus = LukionOppiaineenSuoritus(
     koulutusmoduuli = aine,
     suorituskieli = None,
     arviointi = None,
@@ -441,43 +441,75 @@ object LukioExampleData {
   lazy val soveltava = Koodistokoodiviite("soveltava", "lukionkurssintyyppi")
 
   def valtakunnallinenKurssi(kurssi: String, kurssinTyyppi: Koodistokoodiviite = pakollinen) =
-    ValtakunnallinenLukionKurssi(Koodistokoodiviite(koodistoUri = "lukionkurssit", koodiarvo = kurssi), laajuus(1.0f), kurssinTyyppi = kurssinTyyppi)
+    ValtakunnallinenLukionKurssi(Koodistokoodiviite(koodistoUri = "lukionkurssit", koodiarvo = kurssi), Some(laajuus(1.0f)), kurssinTyyppi = kurssinTyyppi)
 
   def valtakunnallinenVanhanOpsinKurssi(kurssi: String, kurssinTyyppi: Koodistokoodiviite = pakollinen) =
-    ValtakunnallinenLukionKurssi(Koodistokoodiviite(koodistoUri = "lukionkurssitops2003nuoret", koodiarvo = kurssi), laajuus(1.0f), kurssinTyyppi = kurssinTyyppi)
+    ValtakunnallinenLukionKurssi(Koodistokoodiviite(koodistoUri = "lukionkurssitops2003nuoret", koodiarvo = kurssi), Some(laajuus(1.0f)), kurssinTyyppi = kurssinTyyppi)
 
   def syventäväKurssi(koodi: String, nimi: String, kuvaus: String) =
-    PaikallinenLukionKurssi(PaikallinenKoodi(koodiarvo = koodi, nimi = nimi), laajuus(1.0f), kuvaus, kurssinTyyppi = syventävä)
+    PaikallinenLukionKurssi(PaikallinenKoodi(koodiarvo = koodi, nimi = nimi), Some(laajuus(1.0f)), kuvaus, kurssinTyyppi = syventävä)
 
   def soveltavaKurssi(koodi: String, nimi: String, kuvaus: String) =
-    PaikallinenLukionKurssi(PaikallinenKoodi(koodiarvo = koodi, nimi = nimi), laajuus(1.0f), kuvaus, kurssinTyyppi = soveltava)
+    PaikallinenLukionKurssi(PaikallinenKoodi(koodiarvo = koodi, nimi = nimi), Some(laajuus(1.0f)), kuvaus, kurssinTyyppi = soveltava)
 
-  def matematiikka(matematiikka: String) = LukionMatematiikka(oppimäärä = Koodistokoodiviite(koodiarvo = matematiikka, koodistoUri = "oppiainematematiikka"))
+  def matematiikka(matematiikka: String, laajuus: LaajuusKursseissa, perusteenDiaarinumero: Option[String]) =
+    LukionMatematiikka(oppimäärä = Koodistokoodiviite(koodiarvo = matematiikka, koodistoUri = "oppiainematematiikka"), perusteenDiaarinumero = perusteenDiaarinumero, laajuus = laajuus)
 
-  def laajuus(laajuus: Float, yksikkö: String = "4"): Some[LaajuusKursseissa] = Some(LaajuusKursseissa(laajuus, Koodistokoodiviite(koodistoUri = "opintojenlaajuusyksikko", koodiarvo = yksikkö)))
+  def matematiikka(matematiikka: String, perusteenDiaarinumero: Option[String]) =
+    LaajuudetonMatematiikka(oppimäärä = Koodistokoodiviite(koodiarvo = matematiikka, koodistoUri = "oppiainematematiikka"), perusteenDiaarinumero = perusteenDiaarinumero)
 
-  def lukionOppiaine(aine: String, laajuus: Option[LaajuusKursseissa] = None, diaarinumero: Option[String] = None) =
+  def laajuus(laajuus: Float, yksikkö: String = "4"): LaajuusKursseissa = LaajuusKursseissa(laajuus, Koodistokoodiviite(koodistoUri = "opintojenlaajuusyksikko", koodiarvo = yksikkö))
+
+  def lukionOppiaine(aine: String, laajuus: LaajuusKursseissa, diaarinumero: Option[String]) =
     LukionMuuValtakunnallinenOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), perusteenDiaarinumero = diaarinumero, laajuus = laajuus)
 
-  def lukionUskonto(uskonto: Option[String] = None, laajuus: Option[LaajuusKursseissa] = None, diaarinumero: Option[String] = None) = LukionUskonto(
-    tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = "KT"),
-    uskonnonOppimäärä = uskonto.map(u => Koodistokoodiviite(koodistoUri = "uskonnonoppimaara", koodiarvo = u)),
-    perusteenDiaarinumero = diaarinumero,
-    laajuus = laajuus
-  )
+  def lukionOppiaine(aine: String, diaarinumero: Option[String]) =
+    LaajuudetonMuuValtakunnallinenOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), perusteenDiaarinumero = diaarinumero)
 
-  def lukionÄidinkieli(kieli: String) = LukionÄidinkieliJaKirjallisuus(kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus"))
-  def lukionKieli(oppiaine: String, kieli: String) = VierasTaiToinenKotimainenKieli(
-    tunniste = Koodistokoodiviite(koodiarvo = oppiaine, koodistoUri = "koskioppiaineetyleissivistava"),
-    kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima"))
+  def lukionUskonto(uskonto: Option[String], laajuus: LaajuusKursseissa, diaarinumero: Option[String]): LukionUskonto =
+    LukionUskonto(
+      tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = "KT"),
+      uskonnonOppimäärä = uskonto.map(u => Koodistokoodiviite(koodistoUri = "uskonnonoppimaara", koodiarvo = u)),
+      perusteenDiaarinumero = diaarinumero,
+      laajuus = laajuus
+    )
 
-  def numeerinenArviointi(arvosana: Int, päivä: LocalDate = date(2016, 6, 4)): Some[List[LukionKurssinArviointi]] = {
-    Some(List(new NumeerinenLukionKurssinArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana.toString, koodistoUri = "arviointiasteikkoyleissivistava"), päivä)))
+  def lukionUskonto(uskonto: Option[String], diaarinumero: Option[String]): LaajuudetonUskonto =
+    LaajuudetonUskonto(
+      tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = "KT"),
+      uskonnonOppimäärä = uskonto.map(u => Koodistokoodiviite(koodistoUri = "uskonnonoppimaara", koodiarvo = u)),
+      perusteenDiaarinumero = diaarinumero
+    )
+
+  def lukionÄidinkieli(kieli: String, laajuus: LaajuusKursseissa, pakollinen: Boolean) =
+    LukionÄidinkieliJaKirjallisuus2015(kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus"), laajuus = laajuus, pakollinen = pakollinen)
+
+  def lukionÄidinkieli(kieli: String, pakollinen: Boolean) =
+    LaajuudetonÄidinkieliJaKirjallisuus(kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus"), pakollinen = pakollinen)
+
+  // uuden ja vanhan opsin jakamille oppiaineille B1, B2 ja B3
+  def lukionKieli(oppiaine: String, kieli: String) = {
+    assert(List("B1", "B2", "B3").contains(oppiaine), s"allowed values: [B1, B2, B3], got $oppiaine")
+    LaajuudetonVierasTaiToinenKotimainenKieli(
+      tunniste = Koodistokoodiviite(koodiarvo = oppiaine, koodistoUri = "koskioppiaineetyleissivistava"),
+      kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima"))
   }
 
-  def sanallinenArviointi(arvosana: String, kuvaus: Option[String] = None, päivä: LocalDate = date(2016, 6, 4)): Some[List[LukionKurssinArviointi]] = (Arviointi.numeerinen(arvosana), kuvaus) match {
+  // vanhan opsin oppiaineille A1 ja A2
+  def lukionKieli2015(oppiaine: String, kieli: String) = {
+    assert(List("A1", "A2").contains(oppiaine), s"allowed values: [A1, A2], got $oppiaine")
+    LaajuudetonVierasTaiToinenKotimainenKieli2015(
+      tunniste = Koodistokoodiviite(koodiarvo = oppiaine, koodistoUri = "koskioppiaineetyleissivistava"),
+      kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima"))
+  }
+
+  def numeerinenArviointi(arvosana: Int, päivä: LocalDate = date(2016, 6, 4)): Some[List[LukionArviointi]] = {
+    Some(List(new NumeerinenLukionArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana.toString, koodistoUri = "arviointiasteikkoyleissivistava"), päivä)))
+  }
+
+  def sanallinenArviointi(arvosana: String, kuvaus: Option[String] = None, päivä: LocalDate = date(2016, 6, 4)): Some[List[LukionArviointi]] = (Arviointi.numeerinen(arvosana), kuvaus) match {
     case (Some(numero), None) => numeerinenArviointi(numero, päivä)
-    case _ => Some(List(new SanallinenLukionKurssinArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), kuvaus.map(LocalizedString.finnish), päivä)))
+    case _ => Some(List(new SanallinenLukionArviointi(arvosana = Koodistokoodiviite(koodiarvo = arvosana, koodistoUri = "arviointiasteikkoyleissivistava"), kuvaus.map(LocalizedString.finnish), päivä)))
   }
 
 

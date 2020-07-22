@@ -55,7 +55,7 @@ case class LukioonValmistavaKoulutus(
   perusteenDiaarinumero: Option[String],
   laajuus: Option[LaajuusKursseissa] = None,
   koulutustyyppi: Option[Koodistokoodiviite] = None
-) extends DiaarinumerollinenKoulutus
+) extends DiaarinumerollinenKoulutus with KoulutusmoduuliValinnainenLaajuus
 
 trait LukioonValmistavanKoulutuksenOsasuoritus extends Suoritus with MahdollisestiSuorituskielellinen
 
@@ -78,7 +78,7 @@ case class LukioonValmistavanKoulutuksenOppiaineenSuoritus(
 @Description("Lukion oppiaineen opintojen suoritustiedot LUVA-koulutuksessa")
 case class LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa(
   @Title("Oppiaine")
-  koulutusmoduuli: LukionOppiaine,
+  koulutusmoduuli: LukionOppiaine2015,
   @Description("Lukiokoulutuksen valmistavan koulutuksen todistukseen merkitään opiskelijan opiskelemat oppiaineet, niissä suoritettujen kurssien määrä tai merkintä aineryhmän tai oppiaineen hyväksytystä suorittamisesta (hyväksytty)")
   arviointi: Option[List[LukionOppiaineenArviointi]] = None,
   suorituskieli: Option[Koodistokoodiviite] = None,
@@ -90,7 +90,7 @@ case class LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa(
 ) extends LukioonValmistavanKoulutuksenOsasuoritus with Vahvistukseton
 
 
-trait LukioonValmistavanKoulutuksenOppiaine extends Koulutusmoduuli with Valinnaisuus {
+trait LukioonValmistavanKoulutuksenOppiaine extends KoulutusmoduuliValinnainenLaajuus with Valinnaisuus {
   @Title("Oppiaine")
   def tunniste: KoodiViite
 }
@@ -151,13 +151,13 @@ case class LukioonValmistavanKurssinSuoritus(
   koulutusmoduuli: LukioonValmistavanKoulutuksenKurssi,
   @Description("Kurssit arvioidaan suoritettu/hylätty-asteikolla")
   @FlattenInUI
-  arviointi: Option[List[LukionKurssinArviointi]],
+  arviointi: Option[List[LukionArviointi]],
   suorituskieli: Option[Koodistokoodiviite] = None,
   @KoodistoKoodiarvo("luvakurssi")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("luvakurssi", koodistoUri = "suorituksentyyppi")
 ) extends KurssinSuoritus with MahdollisestiSuorituskielellinen
 
-sealed trait LukioonValmistavanKoulutuksenKurssi extends Koulutusmoduuli {
+sealed trait LukioonValmistavanKoulutuksenKurssi extends KoulutusmoduuliValinnainenLaajuus {
   def laajuus: Option[LaajuusKursseissa]
 }
 
