@@ -51,7 +51,7 @@ export const UusiOppiaineDropdown = (
   }
 
   const oppiaineet = Bacon.combineWith(paikallisetOppiaineet, valtakunnallisetOppiaineet, (x,y) => x.concat(y))
-    .map(aineet => aineet
+    .map(aineet => R.uniqBy(aine => modelData(aine, 'tunniste.koodiarvo'), aineet)
       .filter(oppiaine => (pakollinen && !allowSelectingDuplicates) ? !käytössäolevatKoodiarvot.includes(modelData(oppiaine, 'tunniste').koodiarvo) : true)
       .filter(optionsFilter)
     )
