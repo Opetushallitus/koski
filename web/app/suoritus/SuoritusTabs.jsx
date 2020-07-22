@@ -59,13 +59,20 @@ export const assignTabNames = (suoritukset) => {
   for (var i in suoritukset) {
     let suoritus = suoritukset[i]
     if (!suoritus.tabName) {
-      let tabName = modelTitle(suoritus, 'koulutusmoduuli.tunniste')
+      let tabName = resolveTabName(suoritus)
       while (tabNamesInUse[tabName]) {
         tabName += '-2'
       }
       tabNamesInUse[tabName] = true
       suoritus.tabName = tabName
     }
+  }
+}
+
+const resolveTabName = suoritus => {
+  switch (suorituksenTyyppi(suoritus)) {
+    case 'lukionoppiaineidenoppimaarat2019': return modelTitle(suoritus, 'tyyppi')
+    default: return modelTitle(suoritus, 'koulutusmoduuli.tunniste')
   }
 }
 
