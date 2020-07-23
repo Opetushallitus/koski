@@ -112,7 +112,6 @@ object KelaOppijaConverter extends Logging {
         case x: schema.AmmatillisenOpiskeluoikeudenLisätiedot => Some(x.oikeusMaksuttomaanAsuntolapaikkaan)
         case x: schema.LukionOpiskeluoikeudenLisätiedot => Some(x.oikeusMaksuttomaanAsuntolapaikkaan)
         case x: schema.LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot => Some(x.oikeusMaksuttomaanAsuntolapaikkaan)
-        case x: schema.LukionOpiskeluoikeudenLisätiedot => Some(x.oikeusMaksuttomaanAsuntolapaikkaan)
         case _ => None
       },
       majoitus = lisatiedot match {
@@ -123,7 +122,6 @@ object KelaOppijaConverter extends Logging {
         case x: schema.AmmatillisenOpiskeluoikeudenLisätiedot => x.sisäoppilaitosmainenMajoitus
         case x: schema.LukionOpiskeluoikeudenLisätiedot => x.sisäoppilaitosmainenMajoitus
         case x: schema.LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot => x.sisäoppilaitosmainenMajoitus
-        case x: schema.LukionOpiskeluoikeudenLisätiedot => x.sisäoppilaitosmainenMajoitus
         case x: schema.PerusopetuksenOpiskeluoikeudenLisätiedot => x.sisäoppilaitosmainenMajoitus
         case x: schema.AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot => x.sisäoppilaitosmainenMajoitus
         case _ => None
