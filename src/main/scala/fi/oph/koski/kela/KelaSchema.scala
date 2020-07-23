@@ -71,7 +71,7 @@ case class OpiskeluoikeudenLisätiedot(
   vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[schema.Aikajakso]],
   erityinenTuki: Option[List[schema.Aikajakso]],
   vaativanErityisenTuenErityinenTehtävä: Option[List[schema.Aikajakso]],
-  ulkomaanjaksot: Option[Any],
+  ulkomaanjaksot: Option[List[Ulkomaanjakso]],
   hojks: Option[Hojks],
   osaAikaisuusjaksot: Option[List[schema.OsaAikaisuusJakso]],
   opiskeluvalmiuksiaTukevatOpinnot: Option[List[schema.OpiskeluvalmiuksiaTukevienOpintojenJakso]],
@@ -163,6 +163,12 @@ case class OsasuorituksenKoulutusmoduuli(
   oppimäärä: Option[schema.Koodistokoodiviite]
 )
 
+case class Ulkomaanjakso(
+  alku: LocalDate,
+  loppu: Option[LocalDate],
+  maa: Option[schema.Koodistokoodiviite],
+  kuvaus: Option[schema.LocalizedString]
+)
 
 case class Koulutussopimusjakso(
   alku: LocalDate,

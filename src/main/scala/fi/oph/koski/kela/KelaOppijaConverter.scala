@@ -139,13 +139,13 @@ object KelaOppijaConverter extends Logging {
         case _ => None
       },
       ulkomaanjaksot = lisatiedot match {
-        case x: schema.AmmatillisenOpiskeluoikeudenLisätiedot => x.ulkomaanjaksot
-        case x: schema.LukionOpiskeluoikeudenLisätiedot => x.ulkomaanjaksot
-        case x: schema.LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot => x.ulkomaanjaksot
-        case x: schema.DIAOpiskeluoikeudenLisätiedot => x.ulkomaanjaksot
-        case x: schema.InternationalSchoolOpiskeluoikeudenLisätiedot => x.ulkomaanjaksot
-        case x: schema.PerusopetuksenOpiskeluoikeudenLisätiedot => x.ulkomaanjaksot
-        case x: schema.AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot => x.ulkomaanjaksot
+        case x: schema.AmmatillisenOpiskeluoikeudenLisätiedot => x.ulkomaanjaksot.map(_.map(convertUlkomaanjaksot))
+        case x: schema.LukionOpiskeluoikeudenLisätiedot => x.ulkomaanjaksot.map(_.map(convertUlkomaanjaksot))
+        case x: schema.LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot => x.ulkomaanjaksot.map(_.map(convertUlkomaanjaksot))
+        case x: schema.DIAOpiskeluoikeudenLisätiedot => x.ulkomaanjaksot.map(_.map(convertUlkomaanjaksot))
+        case x: schema.InternationalSchoolOpiskeluoikeudenLisätiedot => x.ulkomaanjaksot.map(_.map(convertUlkomaanjaksot))
+        case x: schema.PerusopetuksenOpiskeluoikeudenLisätiedot => x.ulkomaanjaksot.map(_.map(convertPerusopetuksenUlkomaanjakso))
+        case x: schema.AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot => x.ulkomaanjaksot.map(_.map(convertPerusopetuksenUlkomaanjakso))
         case _ => None
       },
       hojks = lisatiedot match {
@@ -202,32 +202,6 @@ object KelaOppijaConverter extends Logging {
         case x: schema.PerusopetuksenOpiskeluoikeudenLisätiedot => x.joustavaPerusopetus
         case _ => None
       }
-    )
-  }
-
-  private def convertOppilaitos(oppilaitos: schema.Oppilaitos): Oppilaitos = {
-    Oppilaitos(
-      oid = oppilaitos.oid,
-      oppilaitosnumero = oppilaitos.oppilaitosnumero,
-      nimi = oppilaitos.nimi,
-      kotipaikka = oppilaitos.kotipaikka
-    )
-  }
-
-  private def convertKoulutustoimija(koulutustoimija: schema.Koulutustoimija): Koulutustoimija = {
-    Koulutustoimija(
-      oid = koulutustoimija.oid,
-      nimi = koulutustoimija.nimi,
-      yTunnus = koulutustoimija.yTunnus,
-      kotipaikka = koulutustoimija.kotipaikka
-    )
-  }
-
-  private def convertToimipiste(organisaatio: schema.OrganisaatioWithOid) = {
-    Toimipiste(
-      oid = organisaatio.oid,
-      nimi = organisaatio.nimi,
-      kotipaikka = organisaatio.kotipaikka
     )
   }
 
@@ -472,6 +446,51 @@ object KelaOppijaConverter extends Logging {
         case o: schema.Oppimäärä => Some(o.oppimäärä)
         case _ => None
       }
+    )
+  }
+
+  private def convertOppilaitos(oppilaitos: schema.Oppilaitos): Oppilaitos = {
+    Oppilaitos(
+      oid = oppilaitos.oid,
+      oppilaitosnumero = oppilaitos.oppilaitosnumero,
+      nimi = oppilaitos.nimi,
+      kotipaikka = oppilaitos.kotipaikka
+    )
+  }
+
+  private def convertKoulutustoimija(koulutustoimija: schema.Koulutustoimija): Koulutustoimija = {
+    Koulutustoimija(
+      oid = koulutustoimija.oid,
+      nimi = koulutustoimija.nimi,
+      yTunnus = koulutustoimija.yTunnus,
+      kotipaikka = koulutustoimija.kotipaikka
+    )
+  }
+
+  private def convertToimipiste(organisaatio: schema.OrganisaatioWithOid) = {
+    Toimipiste(
+      oid = organisaatio.oid,
+      nimi = organisaatio.nimi,
+      kotipaikka = organisaatio.kotipaikka
+    )
+  }
+
+
+  private def convertUlkomaanjaksot(jakso: schema.Ulkomaanjakso) = {
+    Ulkomaanjakso(
+      alku = jakso.alku,
+      loppu = jakso.loppu,
+      maa = Some(jakso.maa),
+      kuvaus = Some(jakso.kuvaus)
+    )
+  }
+
+  private def convertPerusopetuksenUlkomaanjakso(jakso: schema.Aikajakso) = {
+    Ulkomaanjakso(
+      alku = jakso.alku,
+      loppu = jakso.loppu,
+      maa = None,
+      kuvaus = None
     )
   }
 
