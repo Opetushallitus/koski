@@ -38,7 +38,7 @@ case class LukionOppimääränSuoritus2019(
   @KoodistoKoodiarvo("lukionoppimaara2019")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara2019", koodistoUri = "suorituksentyyppi"),
   ryhmä: Option[String] = None
-) extends LukionPäätasonSuoritus2019 with Ryhmällinen with KoulusivistyskieliKieliaineesta with SuoritettavissaErityisenäTutkintona2019 {
+) extends LukionPäätasonSuoritus2019 with Ryhmällinen with KoulusivistyskieliKieliaineesta with SuoritettavissaErityisenäTutkintona2019 with Oppimäärällinen {
   override def getOppimäärä: Option[Koodistokoodiviite] = Some(oppimäärä)
 }
 

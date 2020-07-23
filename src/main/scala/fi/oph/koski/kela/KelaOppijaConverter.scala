@@ -289,7 +289,7 @@ object KelaOppijaConverter extends Logging {
   private def convertSuorituksenKoulutusmoduuli(koulutusmoduuli: schema.Koulutusmoduuli) = {
     SuorituksenKoulutusmoduuli(
       tunniste = koulutusmoduuli.tunniste,
-      laajuus = koulutusmoduuli.laajuus,
+      laajuus = koulutusmoduuli.getLaajuus,
       perusteenDiaarinumero = koulutusmoduuli match {
         case d: schema.Diaarinumerollinen => d.perusteenDiaarinumero
         case _ => None
@@ -409,7 +409,7 @@ object KelaOppijaConverter extends Logging {
   private def convertOsasuorituksenKoulutusmoduuli(koulutusmoduuli: schema.Koulutusmoduuli) = {
     OsasuorituksenKoulutusmoduuli(
       tunniste = koulutusmoduuli.tunniste,
-      laajuus = koulutusmoduuli.laajuus,
+      laajuus = koulutusmoduuli.getLaajuus,
       perusteenNimi = koulutusmoduuli match {
         case a: schema.AmmatillinenTutkintoKoulutus => a.perusteenNimi
         case _ => None
