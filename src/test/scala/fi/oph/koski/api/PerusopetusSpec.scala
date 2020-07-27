@@ -130,7 +130,7 @@ class PerusopetusSpec extends FreeSpec with Matchers with TodistusTestMethods wi
           |Koululainen, Kaisa 220109-784L
           |
           |Äidinkieli Suullinen ilmaisu ja kuullun ymmärtäminen 10 Keskustelee sujuvasti suomeksi
-          |Fysiikka 1""".stripMargin
+          |Fysiikka""".stripMargin
       )
     }
   }
