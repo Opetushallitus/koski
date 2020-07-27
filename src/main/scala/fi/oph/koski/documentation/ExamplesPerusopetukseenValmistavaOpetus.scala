@@ -26,7 +26,7 @@ object ExamplesPerusopetukseenValmistavaOpetus {
         arviointi = Some(List(SanallinenPerusopetuksenOppiaineenArviointi(kuvaus = Some(finnish("Keskustelee sujuvasti suomeksi")))))
       ),
       NuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa(
-        koulutusmoduuli = oppiaine("FY").copy(pakollinen = false, laajuus = vuosiviikkotuntia(1)),
+        koulutusmoduuli = oppiaine("FY").copy(pakollinen = false),
         arviointi = arviointi(9),
         luokkaAste = Some(Koodistokoodiviite("7", "perusopetuksenluokkaaste")),
         suoritustapa = Some(PerusopetusExampleData.suoritustapaErityinenTutkinto)
