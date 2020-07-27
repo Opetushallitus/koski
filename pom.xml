@@ -500,7 +500,7 @@
             <groupId>org.scalatest</groupId>
             <artifactId>scalatest-maven-plugin</artifactId>
             <configuration>
-              <tagsToExclude>koskidev,browserstack,localization</tagsToExclude>
+              <tagsToExclude>koskidev,browserstack,localization,mocha</tagsToExclude>
             </configuration>
           </plugin>
         </plugins>
@@ -543,6 +543,20 @@
             <artifactId>scalatest-maven-plugin</artifactId>
             <configuration>
               <wildcardSuites>fi.oph.koski.browserstack</wildcardSuites>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>fronttest</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.scalatest</groupId>
+            <artifactId>scalatest-maven-plugin</artifactId>
+            <configuration>
+              <wildcardSuites>fi.oph.koski.mocha</wildcardSuites>
             </configuration>
           </plugin>
         </plugins>

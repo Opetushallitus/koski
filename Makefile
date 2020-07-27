@@ -99,7 +99,7 @@ js-unit-test-watch:
 
 .PHONY: fronttest
 fronttest:
-	cd web && npm run test
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pfronttest
 
 .PHONY: screenshot
 screenshot:
