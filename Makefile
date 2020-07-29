@@ -73,9 +73,6 @@ source-to-image: clean build
 
 ### Running tests
 
-.PHONY: test
-test:
-	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test
 
 .PHONY: browserstack
 browserstack:
@@ -97,6 +94,10 @@ js-unit-test:
 js-unit-test-watch:
 	cd web && npm run unit-test-watch
 
+.PHONY: backtest
+backtest:
+	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test
+
 .PHONY: fronttest
 fronttest:
 	mvn $(mvn_opts) -DargLine="$(mvn_argline)" test -Pfronttest
@@ -104,6 +105,9 @@ fronttest:
 .PHONY: screenshot
 screenshot:
 	ls -t web/target/screenshots|head -1|xargs -I{} open web/target/screenshots/{}
+
+.PHONY: test
+test: backtest fronttest
 
 ### Running application and database
 
