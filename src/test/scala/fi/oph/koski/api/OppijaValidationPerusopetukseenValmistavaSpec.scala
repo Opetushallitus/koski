@@ -32,6 +32,19 @@ class OppijaValidationPerusopetukseenValmistavaSpec extends TutkinnonPerusteetTe
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusPuuttuu("Oppiaineen koskioppiaineetyleissivistava/FY laajuus puuttuu"))
       }
     }
+
+    "Laajuus ei pakollinen kun suoritustapa 'erityinentutkinto'" in {
+      val suoritus = perusopetukseenValmistavanOpetuksenSuoritus.copy(osasuoritukset = Option(List(NuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa(
+        koulutusmoduuli = oppiaine("FY").copy(laajuus = None),
+        luokkaAste = Some(Koodistokoodiviite("7", "perusopetuksenluokkaaste")),
+        arviointi = arviointi(9),
+        suoritustapa = Some(PerusopetusExampleData.suoritustapaErityinenTutkinto)
+      ))))
+
+      putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(suoritus))) {
+        verifyResponseStatusOk()
+      }
+    }
   }
 
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = List(
