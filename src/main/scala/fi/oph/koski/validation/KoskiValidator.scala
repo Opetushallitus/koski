@@ -527,6 +527,9 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       case (_, s: DIAPäätasonSuoritus) if s.valmis && s.osasuoritusLista.map(_.koulutusmoduuli).exists(_.getLaajuus.isEmpty) =>
         KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusPuuttuu("Suoritus " + suorituksenTunniste(suoritus) + " on merkitty valmiiksi, mutta se sisältää oppiaineen, jolta puuttuu laajuus")
 
+      case (_, s: NuortenPerusopetuksenOppiaineenSuoritusValmistavassaOpetuksessa) if s.suoritustapa.exists(kviite => kviite.koodiarvo == "erityinentutkinto") =>
+        HttpStatus.ok
+
       case (laajuus, s: Laajuudellinen) if laajuus.isEmpty =>
         KoskiErrorCategory.badRequest.validation.laajuudet.oppiaineenLaajuusPuuttuu(s"Oppiaineen ${suorituksenTunniste(suoritus)} laajuus puuttuu")
 

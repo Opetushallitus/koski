@@ -32,7 +32,7 @@ class PerusopetukseenValmistavanOpetuksenTodistusHtml(val koulutustoimija: Optio
                   <span class="nimi">{i(oppiaine.koulutusmoduuli.nimi)}</span>
                   <span class="kuvaus">{opetuksenSisältö(oppiaine)}</span>
                 </td>
-                <td class="laajuus">{decimalFormat.format(laajuus(oppiaine))}</td>
+                <td class="laajuus">{laajuusFormatted(oppiaine)}</td>
                 <td class="arvosana">{i(oppiaine.sanallinenArviointi)}</td>
               </tr>
             }
@@ -47,4 +47,14 @@ class PerusopetukseenValmistavanOpetuksenTodistusHtml(val koulutustoimija: Optio
     case v: PerusopetukseenValmistavanOpetuksenOppiaineenSuoritus => v.koulutusmoduuli.opetuksenSisältö
     case _ => None
   })
+
+  private def laajuusFormatted(oppiaine: PerusopetukseenValmistavanOpetuksenOsasuoritus) = {
+    // TOR-1076 - tarkistetaan Kristiinalta, miten halutaan toimia todistuksen formatoinnin kanssa kun osasuorituksen laajuus 0
+    /*if (laajuus(oppiaine) > 0) {
+      decimalFormat.format(laajuus(oppiaine))
+    } else {
+      ""
+    }*/
+    decimalFormat.format(laajuus(oppiaine))
+  }
 }
