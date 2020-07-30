@@ -1,5 +1,8 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
+## 30.7.2020
+- Perusopetukseen valmistavissa suorituksissa ei edellytetä koulutusmoduulissa laajuutta, jos suoritustapa on 'erityinentutkinto'
+
 ## 22.5.2020
 - Kaikkien aikajaksojen alkupäivämäärän pitää olla ennen tai sama kuin loppupäivämäärä
 
