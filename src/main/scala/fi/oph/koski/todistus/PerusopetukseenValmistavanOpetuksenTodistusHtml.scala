@@ -49,10 +49,12 @@ class PerusopetukseenValmistavanOpetuksenTodistusHtml(val koulutustoimija: Optio
   })
 
   private def laajuusFormatted(oppiaine: PerusopetukseenValmistavanOpetuksenOsasuoritus) = {
-    if (laajuus(oppiaine) > 0) {
+    // TOR-1076 - tarkistetaan Kristiinalta, miten halutaan toimia todistuksen formatoinnin kanssa kun osasuorituksen laajuus 0
+    /*if (laajuus(oppiaine) > 0) {
       decimalFormat.format(laajuus(oppiaine))
     } else {
       ""
-    }
+    }*/
+    decimalFormat.format(laajuus(oppiaine))
   }
 }
