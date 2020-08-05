@@ -4,12 +4,12 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.Hetu
 import fi.oph.koski.http.{HttpStatus, JsonErrorMessage, KoskiErrorCategory}
 import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.koskiuser.RequiresLuovutuspalvelu
+import fi.oph.koski.koskiuser._
 import fi.oph.koski.schema.Henkilö
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
 import org.json4s.JsonAST.JValue
 
-class KelaServlet(implicit val application: KoskiApplication) extends ApiServlet  with  RequiresLuovutuspalvelu with NoCache {
+class KelaServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresKelaLaaja with NoCache {
   val kelaService = new KelaService(application)
 
   post("/hetu") {

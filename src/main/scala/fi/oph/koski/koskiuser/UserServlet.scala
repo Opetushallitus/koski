@@ -18,6 +18,7 @@ class UserServlet(implicit val application: UserAuthenticationContext) extends A
           hasAnyInvalidateAccess = session.hasAnyTiedonsiirronMitätöintiAccess,
           isViranomainen = session.hasGlobalKoulutusmuotoReadAccess,
           hasRaportitAccess = session.hasRaportitAccess,
+          hasKelaUiAccess = session.hasKelaLaajatAccess,
           varhaiskasvatuksenJärjestäjäKoulutustoimijat = session.varhaiskasvatusKoulutustoimijat.toList
         )
       }
@@ -37,6 +38,7 @@ case class UserWithAccessRights(
   hasAnyInvalidateAccess: Boolean = false,
   isViranomainen: Boolean = false,
   hasRaportitAccess: Boolean = false,
+  hasKelaUiAccess: Boolean = false,
   varhaiskasvatuksenJärjestäjäKoulutustoimijat: List[String] = Nil
 )
 

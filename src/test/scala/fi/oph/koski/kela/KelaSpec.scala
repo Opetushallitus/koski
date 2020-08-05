@@ -9,7 +9,7 @@ import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 class KelaSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with Matchers with BeforeAndAfterAll {
 
   "KelaSpec" - {
-    "Luovutuspalvelukäyttöoikeuksilla voi kutsua yksittäishakua" in {
+    "KelaLaaja käyttöoikeuksilla voi kutsua yksittäishakua" in {
       postHetu(MockOppijat.amis.hetu.get) {
         verifyResponseStatusOk()
       }
@@ -20,7 +20,7 @@ class KelaSpec extends FreeSpec with LocalJettyHttpSpecification with Opiskeluoi
     post(
       "api/luovutuspalvelu/kela/hetu",
       JsonSerializer.writeWithRoot(KelaRequest(hetu)),
-      headers = authHeaders(MockUsers.luovutuspalveluKäyttäjä) ++ jsonContent
+      headers = authHeaders(MockUsers.kelaLaajatOikeudet) ++ jsonContent
     )(f)
   }
 }
