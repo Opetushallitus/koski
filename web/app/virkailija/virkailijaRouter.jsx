@@ -9,6 +9,7 @@ import {oppijataulukkoContentP} from './Oppijataulukko'
 import {dokumentaatioYleistäP, dokumentaatioTietomalliP, dokumentaatioKoodistotP, dokumentaatioOppilashallintojärjestelmätP, dokumentaatioLuovutuspalveluP, dokumentaatioPalveluväyläOmadataP} from '../dokumentaatio/Dokumentaatio'
 import {onlyIfHasReadAccess} from './accessCheck'
 import {raportitContentP} from '../raportit/Raportit'
+import {kelaVirkailijaP} from '../kela/KelaVirkailija'
 
 export const routeP = locationP.flatMapLatest(({path, queryString, params, hash}) => {
   let oppijaId = (path.match(new RegExp('/koski/oppija/(.*)')) || [])[1]
@@ -39,8 +40,11 @@ export const routeP = locationP.flatMapLatest(({path, queryString, params, hash}
   } else if (path === '/koski/dokumentaatio/rajapinnat/luovutuspalvelu') {
     return dokumentaatioLuovutuspalveluP()
   } else if (path === '/koski/dokumentaatio/rajapinnat/palveluvayla-omadata') {
-  return dokumentaatioPalveluväyläOmadataP()
-}
+    return dokumentaatioPalveluväyläOmadataP()
+  } else if (path.includes('koski/kela')) {
+    const hetu = (path.match(new RegExp('/koski/kela/(.*)')) || [])[1]
+    return kelaVirkailijaP(hetu)
+  }
 }).toProperty()
 
 export const contentP = routeP.map('.content')

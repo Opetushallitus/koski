@@ -1,0 +1,203 @@
+.kela {
+
+  .kela-oppija-haku {
+    margin-top: 32px;
+    background: @color-white;
+    border: 1px solid #D5D5D5;
+    padding: 8px;
+    display: inline-block;
+
+    label > h3 {
+      display: inline-block;
+      margin: 0 8px;
+    }
+
+    .invalid {
+      border: 2px solid @color-red;
+    }
+  }
+
+  .virheellinen-hetu {
+    margin: 0 16px;
+    font-weight: 600;
+  }
+
+  .henkilo {
+    margin-bottom: 32px;
+
+    .henkilotiedot {
+      font-weight: 600;
+      font-size: 1.714rem;
+      color: #2A2A2A;
+      letter-spacing: 0;
+      margin-bottom: 0px;
+    }
+
+    .oppijanumero {
+      font-size: 14px;
+      color: @color-darkgray;
+    }
+  }
+
+  .opiskeluoikeus-tabs {
+    > ul {
+      padding: 0px;
+      display: flex;
+      > li {
+        display: inline-block;
+        margin: 16px 16px 16px 0px;
+        padding: 16px;
+        border: 1px solid #D5D5D5;
+        color: #159ECB;
+        font-size: 1.25rem;
+
+        .opiskeluoikeuden-tyyppi {
+          font-size: 1.5rem;
+          display: table;
+        }
+
+        &.selected {
+          background-color: @color-dark-blue;
+          color: @color-white;
+        }
+      }
+    }
+  }
+
+  .opiskeluoikeus {
+
+    font-size: 1em;
+
+    ul {
+      list-style-type: none;
+    }
+
+    td {
+      padding-bottom: 4px;
+    }
+
+    &.content {
+      background-color: @color-white;
+      padding: 2%;
+    }
+
+    .expand-button {
+      font-family: FontAwesome;
+      color: @color-blue;
+    }
+
+    .label {
+      color: #888;
+      padding-right: 18px;
+      text-align: left;
+    }
+
+    .value {
+      text-align: left;
+    }
+
+    h3.otsikko {
+      white-space: nowrap;
+      margin: 0;
+      width: 100%;
+      padding: 17px 27px 17px 17px;
+      background: @color-dark-blue 100%;
+      color: @color-white;
+      letter-spacing: 0;
+      font-weight: normal;
+      border-top-left-radius: 2px;
+      border-top-right-radius: 2px;
+
+      .oid {
+        float: right;
+      }
+    }
+
+    .opiskeluoikeuden-voimassaoloaika {
+      margin-bottom: 8px;
+    }
+
+    .key-value-table {
+      ul {
+        margin: 0;
+        padding: 0;
+      }
+
+      li {
+        display: inline;
+      }
+    }
+
+    .suoritus.vahvistus {
+      margin: 16px 0 8px 0;
+      padding: 16px;
+      display: inline-block;
+      width: 100%;
+
+      &.valmis {
+        background-color: #D3E9B4;
+      }
+      &.kesken {
+        background-color: @color-neutral-gray;
+      }
+      .status {
+        font-weight: 600;
+      }
+    }
+
+    &.suoritukset {
+      .tabs {
+
+        > ul {
+          padding: 0px;
+          border-bottom: 1px solid #AEAEAF;
+
+          .tab {
+            display: inline-block;
+            padding: 5px 40px;
+            &.selected {
+              border-left: 1px solid #AEAEAE;
+              border-right: 1px solid #AEAEAE;
+              border-top: 2px solid @color-link-blue;
+              box-shadow: 0 2px @color-white;
+            }
+          }
+        }
+      }
+
+      &.osasuoritukset {
+        width: 100%;
+        table-layout: fixed;
+
+        &.pointer {
+          cursor: pointer;
+        }
+
+        &.nested {
+          width: initial;
+        }
+
+        .osasuoritukset-title {
+          font-weight: 600;
+          width: 60%;
+        }
+
+        th {
+          padding: 4px 16px;
+          text-align: left;
+          font-style: italic;
+          background-color: @color-neutral-gray;
+        }
+
+        td.arviointi {
+          padding: 0px 24px;
+          text-align: right;
+        }
+
+        .expanded {
+          padding-left: 16px;
+        }
+      }
+    }
+  }
+}
