@@ -107,7 +107,7 @@ case class AmmatillisenOpiskeluoikeudenLisätiedot(
   @Tooltip("Valitse valintaruutu, jos kyseessä on koulutusvientikoulutus.")
   @DefaultValue(false)
   koulutusvienti: Boolean = false
-) extends OpiskeluoikeudenLisätiedot
+) extends OpiskeluoikeudenLisätiedot with Ulkomaajaksollinen with SisäoppilaitosmainenMajoitus
 
 @Description("Aikajakson pituus (alku- ja loppupäivämäärä)")
 case class Aikajakso (

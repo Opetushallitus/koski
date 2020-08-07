@@ -119,11 +119,7 @@ object KelaOppijaConverter extends Logging {
         case _ => None
       },
       sisäoppilaitosmainenMajoitus = lisatiedot match {
-        case x: schema.AmmatillisenOpiskeluoikeudenLisätiedot => x.sisäoppilaitosmainenMajoitus
-        case x: schema.LukionOpiskeluoikeudenLisätiedot => x.sisäoppilaitosmainenMajoitus
-        case x: schema.LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot => x.sisäoppilaitosmainenMajoitus
-        case x: schema.PerusopetuksenOpiskeluoikeudenLisätiedot => x.sisäoppilaitosmainenMajoitus
-        case x: schema.AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot => x.sisäoppilaitosmainenMajoitus
+        case x: schema.SisäoppilaitosmainenMajoitus => x.sisäoppilaitosmainenMajoitus
         case _ => None
       },
       vaativanErityisenTuenYhteydessäJärjestettäväMajoitus = lisatiedot match {
@@ -139,13 +135,9 @@ object KelaOppijaConverter extends Logging {
         case _ => None
       },
       ulkomaanjaksot = lisatiedot match {
-        case x: schema.AmmatillisenOpiskeluoikeudenLisätiedot => x.ulkomaanjaksot.map(_.map(convertUlkomaanjaksot))
-        case x: schema.LukionOpiskeluoikeudenLisätiedot => x.ulkomaanjaksot.map(_.map(convertUlkomaanjaksot))
-        case x: schema.LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot => x.ulkomaanjaksot.map(_.map(convertUlkomaanjaksot))
-        case x: schema.DIAOpiskeluoikeudenLisätiedot => x.ulkomaanjaksot.map(_.map(convertUlkomaanjaksot))
-        case x: schema.InternationalSchoolOpiskeluoikeudenLisätiedot => x.ulkomaanjaksot.map(_.map(convertUlkomaanjaksot))
-        case x: schema.PerusopetuksenOpiskeluoikeudenLisätiedot => x.ulkomaanjaksot.map(_.map(convertPerusopetuksenUlkomaanjakso))
-        case x: schema.AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot => x.ulkomaanjaksot.map(_.map(convertPerusopetuksenUlkomaanjakso))
+        case x: schema.Ulkomaajaksollinen => x.ulkomaanjaksot.map(_.map(convertUlkomaanjaksot))
+        case n: schema.PerusopetuksenOpiskeluoikeudenLisätiedot => n.ulkomaanjaksot.map(_.map(convertPerusopetuksenUlkomaanjakso))
+        case a: schema.AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot => a.ulkomaanjaksot.map(_.map(convertPerusopetuksenUlkomaanjakso))
         case _ => None
       },
       hojks = lisatiedot match {
@@ -547,14 +539,6 @@ object KelaOppijaConverter extends Logging {
       arviointi = suoritus.arviointi.map(_.map(a => Arviointi(a.hyväksytty, a.päivä))),
       tyyppi = suoritus.tyyppi,
       tila = suoritus.tila
-    )
-  }
-
-  private def convertYlioppilastutkinnonTutkintokerta(suoritus: schema.YlioppilastutkinnonKokeenSuoritus) = {
-    YlioppilastutkinnonTutkintokerta(
-      koodiarvo = suoritus.tutkintokerta.koodiarvo,
-      vuosi = suoritus.tutkintokerta.vuosi,
-      vuodenaika = suoritus.tutkintokerta.vuodenaika
     )
   }
 
