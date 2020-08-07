@@ -345,3 +345,10 @@ Mikäli oppijaa tai suorituksia ei löydy, palauttaa rajapinta
     Content-Type: application/json
 
     ...
+
+## /koski/api/luovutuspalvelu/kela
+
+Rajapinta ja tietomalli on työn alla.
+
+Palautettavan JSON-rakenteen tietomallin dokumentaatio on
+<a href="/koski/json-schema-viewer/?schema=kela-oppija-schema.json">täällä</a>.

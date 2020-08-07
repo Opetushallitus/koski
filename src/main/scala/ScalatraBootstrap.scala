@@ -8,6 +8,7 @@ import fi.oph.koski.fixture.FixtureServlet
 import fi.oph.koski.healthcheck.{HealthCheckApiServlet, HealthCheckHtmlServlet}
 import fi.oph.koski.henkilo.HenkilötiedotServlet
 import fi.oph.koski.history.KoskiHistoryServlet
+import fi.oph.koski.kela.KelaServlet
 import fi.oph.koski.koskiuser._
 import fi.oph.koski.localization.LocalizationServlet
 import fi.oph.koski.log.Logging
@@ -85,6 +86,7 @@ class ScalatraBootstrap extends LifeCycle with Logging with GlobalExecutionConte
     mount("/api/sure", new SureServlet)
     mount("/api/luovutuspalvelu", new LuovutuspalveluServlet)
     mount("/api/luovutuspalvelu/valvira", new ValviraServlet)
+    mount("/api/luovutuspalvelu/kela", new KelaServlet)
     mount("/api/palveluvayla", new PalveluvaylaServlet)
     mount("/api/luovutuspalvelu/haku", new TilastokeskusServlet)
     mount("/api/omadata/oppija", new ApiProxyServlet)

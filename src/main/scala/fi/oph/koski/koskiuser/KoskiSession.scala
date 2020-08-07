@@ -47,6 +47,7 @@ class KoskiSession(val user: AuthenticationUser, val lang: String, val clientIp:
   def hasTilastokeskusAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).contains(Palvelurooli("KOSKI", TILASTOKESKUS))
   def hasMitätöidytOpiskeluoikeudetAccess: Boolean = hasTilastokeskusAccess || globalKäyttöoikeudet.exists(_.globalPalveluroolit.exists(_.rooli == MITATOIDYT_OPISKELUOIKEUDET))
   def hasValviraAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).contains(Palvelurooli("KOSKI", VALVIRA))
+  def hasKelaLaajatAccess: Boolean = globalViranomaisKäyttöoikeudet.flatMap(_.globalPalveluroolit).contains(Palvelurooli("KOSKI", LUOTTAMUKSELLINEN_KELA_LAAJA))
 
   def hasVarhaiskasvatusAccess(koulutustoimijaOid: Organisaatio.Oid, organisaatioOid: Organisaatio.Oid, accessType: AccessType.Value): Boolean = {
     val oikeudet: Set[KäyttöoikeusVarhaiskasvatusToimipiste] = varhaiskasvatusKäyttöoikeudet.filter(_.organisaatioAccessType.contains(accessType))

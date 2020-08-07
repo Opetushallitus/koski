@@ -56,7 +56,7 @@ case class DIAOpiskeluoikeudenLisätiedot(
   ulkomainenVaihtoopiskelija: Boolean = false,
   erityisenKoulutustehtävänJaksot: Option[List[ErityisenKoulutustehtävänJakso]] = None,
   ulkomaanjaksot: Option[List[Ulkomaanjakso]] = None
-) extends OpiskeluoikeudenLisätiedot with ErityisenKoulutustehtävänJaksollinen
+) extends OpiskeluoikeudenLisätiedot with ErityisenKoulutustehtävänJaksollinen with Ulkomaajaksollinen
 
 trait DIAPäätasonSuoritus extends KoskeenTallennettavaPäätasonSuoritus with Toimipisteellinen with Arvioinniton with Suorituskielellinen
 
