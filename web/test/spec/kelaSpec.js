@@ -54,7 +54,7 @@ describe('Kela', function () {
       kela.searchAndSelect('280618-402H', 'Aarne')
     )
 
-    var osasuorituksenSisältö = 'Osasuoritukset Arviointi päivä Hyväksytty\n' +
+    var osasuorituksenSisältö = 'Osasuoritukset Arviointipäivä Hyväksytty\n' +
       'Matematiikka 20.10.2014 kyllä\n' +
       'Fysiikka ja kemia 20.10.2014 kyllä'
 
