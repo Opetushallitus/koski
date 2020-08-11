@@ -50,35 +50,6 @@
       <gav regex="true">^com\.github\.fge:json-patch:.*$</gav>
       <cve>CVE-2018-14632</cve>
     </suppress>
-    <suppress until="2020-05-01Z">
-       <notes><![CDATA[
-       file name: netty-nio-client-2.8.3.jar
-       ]]></notes>
-       <gav regex="true">^software\.amazon\.awssdk:netty-nio-client:.*$</gav>
-       <cve>CVE-2014-3488</cve>
-       <cve>CVE-2015-2156</cve>
-       <cve>CVE-2019-16869</cve>
-       <cve>CVE-2019-10797</cve>
-    </suppress>
-    <suppress until="2020-05-01Z">
-       <notes><![CDATA[
-       file name: netty-reactive-streams-2.0.3.jar
-       ]]></notes>
-       <gav regex="true">^com\.typesafe\.netty:netty-reactive-streams:.*$</gav>
-       <cve>CVE-2014-3488</cve>
-       <cve>CVE-2015-2156</cve>
-       <cve>CVE-2019-16869</cve>
-       <cve>CVE-2019-10797</cve>
-    </suppress>
-    <suppress until="2020-05-01Z">
-       <notes><![CDATA[
-       file name: netty-reactive-streams-http-2.0.3.jar
-       ]]></notes>
-       <gav regex="true">^com\.typesafe\.netty:netty-reactive-streams-http:.*$</gav>
-       <cve>CVE-2014-3488</cve>
-       <cve>CVE-2015-2156</cve>
-       <cve>CVE-2019-16869</cve>
-    </suppress>
     <suppress>
        <notes><![CDATA[
        file name: scala-compiler-2.12.4.jar: jquery.js
@@ -145,5 +116,32 @@
     <cve>CVE-2019-20444</cve>
     <cve>CVE-2019-20445</cve>
     <cve>CVE-2019-10797</cve>
+  </suppress>
+  <suppress until="2020-11-01Z">
+     <notes><![CDATA[
+     file name: netty-nio-client-2.13.71.jar
+     ]]></notes>
+     <gav regex="true">^software\.amazon\.awssdk:netty-nio-client:.*$</gav>
+     <cve>CVE-2014-3488</cve>
+     <cve>CVE-2015-2156</cve>
+     <cve>CVE-2019-16869</cve>
+  </suppress>
+  <suppress until="2020-11-01Z">
+     <notes><![CDATA[
+     file name: netty-reactive-streams-2.0.4.jar
+     ]]></notes>
+     <gav regex="true">^com\.typesafe\.netty:netty-reactive-streams:.*$</gav>
+     <cve>CVE-2014-3488</cve>
+     <cve>CVE-2015-2156</cve>
+     <cve>CVE-2019-16869</cve>
+  </suppress>
+  <suppress until="2020-11-01Z">
+     <notes><![CDATA[
+     file name: netty-reactive-streams-http-2.0.4.jar
+     ]]></notes>
+     <gav regex="true">^com\.typesafe\.netty:netty-reactive-streams-http:.*$</gav>
+     <cve>CVE-2014-3488</cve>
+     <cve>CVE-2015-2156</cve>
+     <cve>CVE-2019-16869</cve>
   </suppress>
 </suppressions>
