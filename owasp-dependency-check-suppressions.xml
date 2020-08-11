@@ -144,4 +144,9 @@
      <cve>CVE-2015-2156</cve>
      <cve>CVE-2019-16869</cve>
   </suppress>
+  <suppress>
+    <notes>SMTP appender not used in project</notes>
+    <packageUrl regex="true">^pkg:maven/log4j/log4j@.*$</packageUrl>
+    <cve>CVE-2020-9488</cve>
+  </suppress>
 </suppressions>
