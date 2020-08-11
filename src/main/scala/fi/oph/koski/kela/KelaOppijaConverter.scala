@@ -17,21 +17,22 @@ object KelaOppijaConverter extends Logging {
     })
   }
 
-  private def convertHenkilo(oppija: schema.Henkilö): Either[HttpStatus, Henkilo] = {
-    oppija match {
-      case h: schema.TäydellisetHenkilötiedot =>
-        Right(Henkilo(
-          oid = h.oid,
-          hetu = h.hetu,
-          syntymäaika = h.syntymäaika,
-          etunimet = h.etunimet,
-          sukunimi = h.sukunimi,
-          kutsumanimi = h.kutsumanimi
-        ))
-      case _ => {
-        logger.error("KelaOppija:n konversio epäonnistui. Konversio tarvitsee täydelliset henkilötiedot")
-        Left(KoskiErrorCategory.internalError())
-      }
+  private def convertHenkilo(oppija: schema.Henkilö): Either[HttpStatus, Henkilo] = oppija match {
+    case henkilotiedot: schema.Henkilötiedot=>
+      Right(Henkilo(
+        oid = henkilotiedot.oid,
+        hetu = henkilotiedot.hetu,
+        syntymäaika = henkilotiedot match {
+          case t: schema.TäydellisetHenkilötiedot => t.syntymäaika
+          case _ => None
+        },
+        etunimet = henkilotiedot.etunimet,
+        sukunimi = henkilotiedot.sukunimi,
+        kutsumanimi = henkilotiedot.kutsumanimi
+      ))
+    case x => {
+      logger.error("KelaOppijaConverter: Unreachable match arm, expected Henkilötiedot, got " + x.toString)
+      Left(KoskiErrorCategory.internalError())
     }
   }
 
@@ -201,8 +202,8 @@ object KelaOppijaConverter extends Logging {
     Suoritus(
       koulutusmoduuli = convertSuorituksenKoulutusmoduuli(suoritus.koulutusmoduuli),
       suoritustapa = suoritus match {
-        case x: schema.AmmatillisenTutkinnonOsittainenTaiKokoSuoritus => Some(x.suoritustapa).map(convertKoodiviite)
-        case x: schema.SuoritustavallinenPerusopetuksenSuoritus => Some(x.suoritustapa).map(convertKoodiviite)
+        case x: schema.AmmatillisenTutkinnonOsittainenTaiKokoSuoritus => Some(convertKoodiviite(x.suoritustapa))
+        case x: schema.SuoritustavallinenPerusopetuksenSuoritus => Some(convertKoodiviite(x.suoritustapa))
         case x: schema.SuoritustapanaMahdollisestiErityinenTutkinto => x.suoritustapa.map(convertKoodiviite)
         case _ => None
       },
@@ -212,7 +213,7 @@ object KelaOppijaConverter extends Logging {
         case _ => None
       },
       oppimäärä = suoritus match {
-        case x: schema.Oppimäärällinen => Some(x.oppimäärä).map(convertKoodiviite)
+        case x: schema.Oppimäärällinen => Some(convertKoodiviite(x.oppimäärä))
         case _ => None
       },
       vahvistus = suoritus.vahvistus.map(v => Vahvistus(v.päivä)),
@@ -304,11 +305,11 @@ object KelaOppijaConverter extends Logging {
         case _ => None
       },
       kieli = koulutusmoduuli match {
-        case k: schema.Kieliaine => Some(k.kieli).map(convertKoodiviite)
+        case k: schema.Kieliaine => Some(convertKoodiviite(k.kieli))
         case _ => None
       },
       diplomaType = koulutusmoduuli match {
-        case d: schema.DiplomaLuokkaAste => Some(d.diplomaType).map(convertKoodiviite)
+        case d: schema.DiplomaLuokkaAste => Some(convertKoodiviite(d.diplomaType))
         case _ => None
       },
       oppimäärä = koulutusmoduuli match {
@@ -416,11 +417,11 @@ object KelaOppijaConverter extends Logging {
         case _ => None
       },
       kieli = koulutusmoduuli match {
-        case k: schema.Kieliaine => Some(k.kieli).map(convertKoodiviite)
+        case k: schema.Kieliaine => Some(convertKoodiviite(k.kieli))
         case _ => None
       },
       osaAlue = koulutusmoduuli match {
-        case d: schema.DIAOsaAlueOppiaine => Some(d.osaAlue).map(convertKoodiviite)
+        case d: schema.DIAOsaAlueOppiaine => Some(convertKoodiviite(d.osaAlue))
         case _ => None
       },
       taso = koulutusmoduuli match {
@@ -428,15 +429,15 @@ object KelaOppijaConverter extends Logging {
         case _ => None
       },
       ryhmä = koulutusmoduuli match {
-        case ib: schema.IBAineRyhmäOppiaine => Some(ib.ryhmä).map(convertKoodiviite)
+        case ib: schema.IBAineRyhmäOppiaine => Some(convertKoodiviite(ib.ryhmä))
         case _ => None
       },
       kurssinTyyppi = koulutusmoduuli match {
-        case l: schema.LukionKurssi => Some(l.kurssinTyyppi).map(convertKoodiviite)
+        case l: schema.LukionKurssi => Some(convertKoodiviite(l.kurssinTyyppi))
         case _ => None
       },
       oppimäärä = koulutusmoduuli match {
-        case o: schema.Oppimäärä => Some(o.oppimäärä).map(convertKoodiviite)
+        case o: schema.Oppimäärä => Some(convertKoodiviite(o.oppimäärä))
         case _ => None
       }
     )
