@@ -36,7 +36,7 @@ case class KelaOpiskeluoikeus(
   tila: OpiskeluoikeudenTila,
   suoritukset: List[Suoritus],
   lisätiedot: Option[OpiskeluoikeudenLisätiedot],
-  tyyppi: schema.Koodistokoodiviite,
+  tyyppi: Koodistokoodiviite,
   alkamispäivä: Option[LocalDate],
   päättymispäivä: Option[LocalDate],
   organisaatioHistoria: Option[List[OrganisaatioHistoria]]
@@ -53,8 +53,8 @@ case class OpiskeluoikeudenTila(
 
 case class Opiskeluoikeusjakso(
   alku: LocalDate,
-  tila: schema.Koodistokoodiviite,
-  opintojenRahoitus: Option[schema.Koodistokoodiviite]
+  tila: Koodistokoodiviite,
+  opintojenRahoitus: Option[Koodistokoodiviite]
 )
 
 case class OrganisaatioHistoria(
@@ -88,13 +88,13 @@ case class OpiskeluoikeudenLisätiedot(
 
 case class Suoritus(
   koulutusmoduuli: SuorituksenKoulutusmoduuli,
-  suoritustapa: Option[schema.Koodistokoodiviite],
+  suoritustapa: Option[Koodistokoodiviite],
   toimipiste: Option[Toimipiste],
-  oppimäärä: Option[schema.Koodistokoodiviite],
+  oppimäärä: Option[Koodistokoodiviite],
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[Osasuoritus]],
-  tyyppi: schema.Koodistokoodiviite,
-  tila: Option[schema.Koodistokoodiviite],
+  tyyppi: Koodistokoodiviite,
+  tila: Option[Koodistokoodiviite],
   osaamisala: Option[List[schema.Osaamisalajakso]],
   toinenOsaamisala: Option[Boolean],
   alkamispäivä: Option[LocalDate],
@@ -102,7 +102,7 @@ case class Suoritus(
   osaamisenHankkimistavat: Option[List[OsaamisenHankkimistapajakso]],
   työssäoppimisjaksot: Option[List[Työssäoppimisjakso]],
   koulutussopimukset: Option[List[Koulutussopimusjakso]],
-  tutkintonimike: Option[List[schema.Koodistokoodiviite]],
+  tutkintonimike: Option[List[Koodistokoodiviite]],
   toinenTutkintonimike: Option[Boolean],
   theoryOfKnowledge: Option[IBTheoryOfKnowledgeSuoritus],
   extendedEssay: Option[IBExtendedEssaySuoritus],
@@ -114,15 +114,15 @@ case class Suoritus(
 
 case class Osasuoritus(
   koulutusmoduuli: OsasuorituksenKoulutusmoduuli,
-  liittyyTutkinnonOsaan: Option[schema.Koodistokoodiviite],
+  liittyyTutkinnonOsaan: Option[Koodistokoodiviite],
   arviointi: Option[List[Arviointi]],
   toimipiste: Option[Toimipiste],
   vahvistus: Option[Vahvistus],
   osasuoritukset: Option[List[Osasuoritus]],
-  tyyppi: schema.Koodistokoodiviite,
-  tila: Option[schema.Koodistokoodiviite],
+  tyyppi: Koodistokoodiviite,
+  tila: Option[Koodistokoodiviite],
   tutkinto: Option[Tutkinto],
-  tutkinnonOsanRyhmä: Option[schema.Koodistokoodiviite],
+  tutkinnonOsanRyhmä: Option[Koodistokoodiviite],
   osaamisala: Option[List[schema.Osaamisalajakso]],
   alkamispäivä: Option[LocalDate],
   tunnustettu: Option[schema.OsaamisenTunnustaminen],
@@ -132,41 +132,49 @@ case class Osasuoritus(
   vastaavuusTodistuksenTiedot: Option[VastaavuusTodistuksenTiedot],
   suoritettuLukiodiplomina: Option[Boolean],
   suoritettuSuullisenaKielikokeena: Option[Boolean],
-  luokkaAste: Option[schema.Koodistokoodiviite],
+  luokkaAste: Option[Koodistokoodiviite],
   tutkintokerta: Option[YlioppilastutkinnonTutkintokerta]
 )
 
 case class SuorituksenKoulutusmoduuli(
-  tunniste: schema.KoodiViite,
+  tunniste: Koodistokoodiviite,
   laajuus: Option[schema.Laajuus],
   perusteenDiaarinumero: Option[String],
   perusteenNimi: Option[schema.LocalizedString],
-  koulutustyyppi: Option[schema.Koodistokoodiviite],
+  koulutustyyppi: Option[Koodistokoodiviite],
   pakollinen: Option[Boolean],
   kuvaus: Option[schema.LocalizedString],
-  kieli: Option[schema.Koodistokoodiviite],
-  diplomaType: Option[schema.Koodistokoodiviite],
-  oppimäärä: Option[schema.Koodistokoodiviite]
+  kieli: Option[Koodistokoodiviite],
+  diplomaType: Option[Koodistokoodiviite],
+  oppimäärä: Option[Koodistokoodiviite]
 )
 
 case class OsasuorituksenKoulutusmoduuli(
-  tunniste: schema.KoodiViite,
+  tunniste: Koodistokoodiviite,
   laajuus: Option[schema.Laajuus],
   perusteenNimi: Option[schema.LocalizedString],
   pakollinen: Option[Boolean],
   kuvaus: Option[schema.LocalizedString],
-  kieli: Option[schema.Koodistokoodiviite],
-  osaAlue: Option[schema.Koodistokoodiviite],
-  taso: Option[schema.Koodistokoodiviite],
-  ryhmä: Option[schema.Koodistokoodiviite],
-  kurssinTyyppi: Option[schema.Koodistokoodiviite],
-  oppimäärä: Option[schema.Koodistokoodiviite]
+  kieli: Option[Koodistokoodiviite],
+  osaAlue: Option[Koodistokoodiviite],
+  taso: Option[Koodistokoodiviite],
+  ryhmä: Option[Koodistokoodiviite],
+  kurssinTyyppi: Option[Koodistokoodiviite],
+  oppimäärä: Option[Koodistokoodiviite]
+)
+
+case class Koodistokoodiviite(
+  koodiarvo: String,
+  nimi: Option[schema.LocalizedString],
+  lyhytNimi: Option[schema.LocalizedString],
+  koodistoUri: Option[String],
+  koodistoVersio: Option[Int]
 )
 
 case class Ulkomaanjakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
-  maa: Option[schema.Koodistokoodiviite],
+  maa: Option[Koodistokoodiviite],
   kuvaus: Option[schema.LocalizedString]
 )
 
@@ -174,29 +182,29 @@ case class Koulutussopimusjakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
   työssäoppimispaikka: Option[schema.LocalizedString],
-  paikkakunta: schema.Koodistokoodiviite,
-  maa: schema.Koodistokoodiviite
+  paikkakunta: Koodistokoodiviite,
+  maa: Koodistokoodiviite
 )
 
 case class Työssäoppimisjakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
   työssäoppimispaikka: Option[schema.LocalizedString],
-  paikkakunta: schema.Koodistokoodiviite,
-  maa: schema.Koodistokoodiviite,
+  paikkakunta: Koodistokoodiviite,
+  maa: Koodistokoodiviite,
   laajuus: schema.Laajuus
 )
 
 case class Järjestämismuotojakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
-  tunniste: schema.Koodistokoodiviite
+  tunniste: Koodistokoodiviite
 )
 
 case class OsaamisenHankkimistapajakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
-  tunniste: schema.Koodistokoodiviite
+  tunniste: Koodistokoodiviite
 )
 
 case class Vahvistus(
@@ -210,26 +218,26 @@ case class Arviointi(
 
 case class Oppilaitos(
   oid: String,
-  oppilaitosnumero: Option[schema.Koodistokoodiviite],
+  oppilaitosnumero: Option[Koodistokoodiviite],
   nimi: Option[schema.LocalizedString],
-  kotipaikka: Option[schema.Koodistokoodiviite]
+  kotipaikka: Option[Koodistokoodiviite]
 )
 
 case class Koulutustoimija(
   oid: String,
   nimi: Option[schema.LocalizedString],
   yTunnus: Option[String],
-  kotipaikka: Option[schema.Koodistokoodiviite]
+  kotipaikka: Option[Koodistokoodiviite]
 )
 
 case class Toimipiste(
   oid: String,
   nimi: Option[schema.LocalizedString] = None,
-  kotipaikka: Option[schema.Koodistokoodiviite] = None
+  kotipaikka: Option[Koodistokoodiviite] = None
 )
 
 case class Hojks(
-  opetusryhmä: schema.Koodistokoodiviite,
+  opetusryhmä: Koodistokoodiviite,
   alku: Option[LocalDate],
   loppu: Option[LocalDate]
 )
@@ -242,7 +250,7 @@ case class Näyttö(
 )
 
 case class NäytönSuorituspaikka(
-  tunniste: schema.Koodistokoodiviite,
+  tunniste: Koodistokoodiviite,
   kuvaus: schema.LocalizedString
 )
 
@@ -251,42 +259,42 @@ case class NäytönArviointi(
 )
 
 case class Tutkinto(
-  tunniste: schema.Koodistokoodiviite,
+  tunniste: Koodistokoodiviite,
   perusteenDiaarinumero: Option[String],
   perusteenNimi: Option[schema.LocalizedString],
-  koulutustyyppi: Option[schema.Koodistokoodiviite]
+  koulutustyyppi: Option[Koodistokoodiviite]
 )
 
 case class IBTheoryOfKnowledgeSuoritus(
   koulutusmoduuli: IBTheoryOfKnowledgeSuoritusKoulutusmoduuli,
-  tila: Option[schema.Koodistokoodiviite],
+  tila: Option[Koodistokoodiviite],
   arviointi: Option[List[Arviointi]] = None,
   osasuoritukset: Option[List[Osasuoritus]],
-  tyyppi: schema.Koodistokoodiviite
+  tyyppi: Koodistokoodiviite
 )
 
 case class IBTheoryOfKnowledgeSuoritusKoulutusmoduuli(
-  tunniste: schema.Koodistokoodiviite,
+  tunniste: Koodistokoodiviite,
   pakollinen: Boolean
 )
 
 case class IBExtendedEssaySuoritus(
   koulutusmoduuli: IBExtendedEssaySuoritusKoulutusmoduuli,
-  tila: Option[schema.Koodistokoodiviite],
+  tila: Option[Koodistokoodiviite],
   arviointi: Option[List[Arviointi]] = None,
-  tyyppi: schema.Koodistokoodiviite
+  tyyppi: Koodistokoodiviite
 )
 
 case class IBExtendedEssaySuoritusKoulutusmoduuli(
-  tunniste: schema.Koodistokoodiviite,
+  tunniste: Koodistokoodiviite,
   pakollinen: Boolean
 )
 
 case class IBCASSuoritus(
   koulutusmoduuli: SuorituksenKoulutusmoduuli,
   arviointi: Option[List[Arviointi]] = None,
-  tyyppi: schema.Koodistokoodiviite,
-  tila: Option[schema.Koodistokoodiviite]
+  tyyppi: Koodistokoodiviite,
+  tila: Option[Koodistokoodiviite]
 )
 
 case class YlioppilastutkinnonTutkintokerta(
@@ -298,7 +306,3 @@ case class YlioppilastutkinnonTutkintokerta(
 case class VastaavuusTodistuksenTiedot(
   lukioOpintojenLaajuus: schema.Laajuus
 )
-
-
-
-
