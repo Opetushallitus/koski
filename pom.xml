@@ -11,13 +11,13 @@
     <name>fi.vm.sade</name>
   </organization>
   <properties>
-    <scala.version>2.12.4</scala.version>
+    <scala.version>2.12.12</scala.version>
     <slick.version>3.3.0</slick.version>
     <scalatra.version>2.6.5</scalatra.version>
     <json4s.version>3.6.8</json4s.version>
-    <awssdk.version>2.13.11</awssdk.version>
-    <jetty.version>9.4.29.v20200521</jetty.version>
-    <prometheus.client.version>0.0.17</prometheus.client.version>
+    <awssdk.version>2.13.71</awssdk.version>
+    <jetty.version>9.4.31.v20200723</jetty.version>
+    <prometheus.client.version>0.9.0</prometheus.client.version>
     <scoverage.plugin.version>1.1.1</scoverage.plugin.version>
     <finalName>${project.artifactId}-${project.version}</finalName>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -57,7 +57,7 @@
     <dependency>
       <groupId>com.github.Opetushallitus</groupId>
       <artifactId>scala-schema</artifactId>
-      <version>2.25.0_2.12</version>
+      <version>2.25.2_2.12</version>
       <exclusions>
         <exclusion>
           <groupId>org.json4s</groupId>
@@ -150,7 +150,7 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.2.5</version>
+      <version>42.2.14</version>
     </dependency>
     <dependency>
       <groupId>io.reactivex</groupId>
@@ -165,7 +165,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
-      <version>1.7.25</version>
+      <version>1.7.30</version>
     </dependency>
     <dependency>
       <groupId>org.log4s</groupId>
