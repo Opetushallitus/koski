@@ -9,7 +9,10 @@ import fi.oph.scalaschema.annotation._
 
 trait LukionPäätasonSuoritus2019 extends LukionPäätasonSuoritus with Todistus with Arvioinniton with PuhviKokeellinen2019 with SuullisenKielitaidonKokeellinen2019 {
   def koulutusmoduuli: Koulutusmoduuli with Diaarinumerollinen
-  def getOppimäärä: Option[Koodistokoodiviite]
+  @KoodistoUri("lukionoppimaara")
+  @Title("Opetussuunnitelma")
+  @Description("Tieto siitä, suoritetaanko lukiota nuorten vai aikuisten oppimäärän mukaisesti")
+  def oppimäärä: Koodistokoodiviite
 }
 
 @Title("Lukion oppimäärän suoritus 2019")
@@ -17,9 +20,6 @@ trait LukionPäätasonSuoritus2019 extends LukionPäätasonSuoritus with Todistu
 case class LukionOppimääränSuoritus2019(
   @Title("Koulutus")
   koulutusmoduuli: LukionOppimäärä,
-  @KoodistoUri("lukionoppimaara")
-  @Description("Tieto siitä, suoritetaanko lukiota nuorten vai aikuisten oppimäärän mukaisesti")
-  @Title("Opetussuunnitelma")
   oppimäärä: Koodistokoodiviite,
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
@@ -38,15 +38,14 @@ case class LukionOppimääränSuoritus2019(
   @KoodistoKoodiarvo("lukionoppimaara2019")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppimaara2019", koodistoUri = "suorituksentyyppi"),
   ryhmä: Option[String] = None
-) extends LukionPäätasonSuoritus2019 with Ryhmällinen with KoulusivistyskieliKieliaineesta with SuoritettavissaErityisenäTutkintona2019 with Oppimäärällinen {
-  override def getOppimäärä: Option[Koodistokoodiviite] = Some(oppimäärä)
-}
+) extends LukionPäätasonSuoritus2019 with Ryhmällinen with KoulusivistyskieliKieliaineesta with SuoritettavissaErityisenäTutkintona2019 with Oppimäärällinen
 
 @Title("Lukion oppiaineiden oppimäärien suoritus 2019")
 @Description("Lukion oppiaineiden oppimäärien suoritustiedot 2019")
 case class LukionOppiaineidenOppimäärienSuoritus2019(
   @Title("Koulutus")
   koulutusmoduuli: LukionOppiaineidenOppimäärät2019,
+  oppimäärä: Koodistokoodiviite,
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suorituskieli: Koodistokoodiviite,
@@ -63,9 +62,8 @@ case class LukionOppiaineidenOppimäärienSuoritus2019(
   @KoodistoKoodiarvo("lukionoppiaineidenoppimaarat2019")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionoppiaineidenoppimaarat2019", koodistoUri = "suorituksentyyppi"),
   ryhmä: Option[String] = None
-) extends LukionPäätasonSuoritus2019 with Välisuoritus {
+) extends LukionPäätasonSuoritus2019 with Välisuoritus with Oppimäärällinen {
   override def tarvitseeVahvistuksen: Boolean = false
-  override def getOppimäärä: Option[Koodistokoodiviite] = None
 }
 
 @Title("Lukion oppiaineiden oppimäärät 2019")

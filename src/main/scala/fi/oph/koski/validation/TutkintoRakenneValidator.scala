@@ -202,10 +202,10 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
   private def findOsaamisala(rakenne: TutkintoRakenne, osaamisAlaKoodi: String) = rakenne.osaamisalat.find(_.koodiarvo == osaamisAlaKoodi)
 
   private def validateLukio2019Diaarinumero(s: LukionPäätasonSuoritus2019) = {
-    val diaarinumerorajaus = s.getOppimäärä match {
-      case Some(o: Koodistokoodiviite) if o.koodiarvo == "aikuistenops" =>
+    val diaarinumerorajaus = s.oppimäärä.koodiarvo match {
+      case "aikuistenops" =>
         Perusteet.AikuistenLukiokoulutuksenOpetussuunnitelmanPerusteet2019
-      case Some(o: Koodistokoodiviite) if o.koodiarvo == "nuortenops" =>
+      case "nuortenops" =>
         Perusteet.LukionOpetussuunnitelmanPerusteet2019
       case _ => Perusteet.lops2019
     }
