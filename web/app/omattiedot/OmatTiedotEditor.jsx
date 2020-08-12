@@ -53,19 +53,18 @@ const Suoritusjako = ({selectedModels}) => (
           <h2><Text name='Valittu jaettavaksi'/></h2>
           <JakoonValitutSuoritukset selectedModels={selectedModels} />
         </div>
-        <SuoritusjakoButton
-          selectedModels={selectedModels}
-        />
+        <SuoritusjakoButton/>
       </div>
     </div>
   </>
 )
 
-const SuoritusjakoButton = ({selectedModels}) => {
+const SuoritusjakoButton = () => {
   const isPending = Atom(false)
 
   const onSuccess = () => {
     isPending.set(false)
+    selectedModelsAtom.set([])
   }
 
   const onError = (res) => {
@@ -91,7 +90,7 @@ const SuoritusjakoButton = ({selectedModels}) => {
     return models.map(model => jaettavaSuoritus(model))
   }
 
-  const createSuoritusjako = () => {
+  const createSuoritusjako = (selectedModels) => {
     isPending.set(true)
     const url = '/koski/api/suoritusjakoV2/create'
     const request = jaettavatSuoritukset(selectedModels)
@@ -102,13 +101,15 @@ const SuoritusjakoButton = ({selectedModels}) => {
 
   return (
     <span className='create-suoritusjako-button'>
-      <button
-        className='koski-button'
-        disabled={R.isEmpty(selectedModels) || isPending}
-        onClick={createSuoritusjako}
-      >
-        <Text name='Jaa opinnot'/>
-      </button>
+      {selectedModelsAtom.map(selectedModels => (
+        <button
+          className='koski-button'
+          disabled={R.isEmpty(selectedModels) || isPending}
+          onClick={() => createSuoritusjako(selectedModels)}
+        >
+          <Text name='Jaa opinnot'/>
+        </button>
+      ))}
     </span>
   )
 }
