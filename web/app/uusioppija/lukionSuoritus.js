@@ -32,6 +32,10 @@ export const makeSuoritus = (oppilaitos, suoritustyyppi, peruste, suorituskieli,
           },
           perusteenDiaarinumero: peruste
         },
+        oppimäärä: {
+          koodiarvo: perusteenDiaarinumeroToOppimäärä(peruste),
+          koodistoUri: 'lukionoppimaara'
+        },
         toimipiste: oppilaitos,
         tyyppi: suoritustyyppi
       }

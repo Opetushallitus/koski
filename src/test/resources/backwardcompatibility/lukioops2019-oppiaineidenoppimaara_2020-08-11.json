@@ -60,6 +60,14 @@
         },
         "perusteenDiaarinumero" : "OPH-2263-2019"
       },
+      "oppimäärä" : {
+        "koodiarvo" : "nuortenops",
+        "nimi" : {
+          "fi" : "Nuorten ops"
+        },
+        "koodistoUri" : "lukionoppimaara",
+        "koodistoVersio" : 1
+      },
       "toimipiste" : {
         "oid" : "1.2.246.562.10.14613773812",
         "oppilaitosnumero" : {
