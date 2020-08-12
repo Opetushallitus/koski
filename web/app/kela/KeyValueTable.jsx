@@ -78,7 +78,7 @@ const spesificComponent = (key, value) => {
     return OrganisaationNimi
   }
   if (key === 'tunniste' || isKoodistoviite(value)) {
-    return ShowNameFromKoodistoviite
+    return Koodistoviite
   }
   if (isLocalizedString(value)) {
     return TextView
@@ -105,8 +105,8 @@ const OrganisaationNimi = ({value}) => {
   return <span>{nimi}</span>
 }
 
-const ShowNameFromKoodistoviite = ({value}) => {
-  const nimi = t(value.nimi || {}) || ''
+const Koodistoviite = ({value}) => {
+  const nimi = t(value.nimi || {}) || value.koodiarvo || ''
   return (
     <span>
       {nimi}
@@ -118,7 +118,7 @@ const Laajuus = ({value}) => (
   <>
     <span>{value.arvo}</span>
     {' '}
-    <ShowNameFromKoodistoviite value={value.yksikkö}/>
+    <Koodistoviite value={value.yksikkö}/>
   </>
 )
 
@@ -129,7 +129,7 @@ const OsaamisalaJaksotInline = ({value}) => {
       {osaamisalaJaksot.map((jakso, index) => (
         <li key={index}>
           <AikajaksoInline value={value}/>
-          <ShowNameFromKoodistoviite value={jakso.osaamisala}/>
+          <Koodistoviite value={jakso.osaamisala}/>
         </li>
       ))}
     </ul>
