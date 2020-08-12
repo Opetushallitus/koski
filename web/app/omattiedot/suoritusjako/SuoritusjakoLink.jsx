@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'baret'
 import Bacon from 'baconjs'
 import {CopyableText} from '../../components/CopyableText'
 import Text from '../../i18n/Text'
@@ -9,7 +9,7 @@ import ModalDialog from '../../editor/ModalDialog'
 import {DateInputFeedback} from './DateInputFeedback'
 import ModalMount from '../../components/ModalMount'
 
-const ApiBaseUrl = '/koski/api/suoritusjako'
+const ApiBaseUrl = '/koski/api/suoritusjakoV2'
 
 const doDelete = secret => Http.post(`${ApiBaseUrl}/delete`, {secret})
 const doUpdate = (secret, expirationDate) => Http.post(`${ApiBaseUrl}/update`, {secret, expirationDate})

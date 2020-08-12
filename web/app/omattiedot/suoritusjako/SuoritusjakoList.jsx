@@ -10,16 +10,22 @@ const url = '/koski/api/suoritusjakoV2/available'
 class SuoritusjakoList extends React.Component {
   constructor(props) {
     super(props)
+    this.updateSuoritusjaot = this.updateSuoritusjaot.bind(this)
+
     this.suoritusjaot = Atom([])
   }
 
-  componentDidMount() {
+  updateSuoritusjaot() {
     Http.get(
       url,
       {
         errorMapper: (e) => e.httpStatus === 404 ? null : new Bacon.Error(e)
       }
     ).onValue(suoritusjaot => this.suoritusjaot.set(suoritusjaot))
+  }
+
+  componentDidMount() {
+    this.updateSuoritusjaot()
   }
 
   render() {
@@ -30,9 +36,14 @@ class SuoritusjakoList extends React.Component {
         <p><Text name=''/></p>
         <div>
           {suoritusjaot.length > 0
-            ? suoritusjaot.map((suoritusjako, i) =>
-              <SuoritusjakoLink baret-lift key={i} suoritusjako={suoritusjako}/>
-            )
+            ? suoritusjaot.map(suoritusjako => (
+              <SuoritusjakoLink
+                baret-lift
+                key={suoritusjako.secret}
+                suoritusjako={suoritusjako}
+                onRemove={this.updateSuoritusjaot}
+              />
+            ))
             : <Text name='Ei jakolinkkejä'/>}
         </div>
       </>
