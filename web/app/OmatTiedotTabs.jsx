@@ -8,19 +8,29 @@ import {hasOpintoja} from './oppija/oppija'
 import {buildClassNames} from './components/classnames'
 import SuoritusjakoList from './omattiedot/suoritusjako/SuoritusjakoList'
 
-const OpintoniTab = ({ oppija }) => (
-  <>
-    <Header oppija={oppija}/>
-    <Editor key={document.location.toString()} model={oppija}/>
-  </>
-)
-
 const TabTypes = Object.freeze({
   OPINTONI: 'opintoni',
   JAKOLINKIT: 'luodut jakolinkit'
 })
 
-const SelectedTab = ({ selectedTabAtom, oppija }) => (
+const selectedTabAtom = Atom(TabTypes.OPINTONI)
+
+const onNewSuoritusjako = () => {
+  selectedTabAtom.set(TabTypes.JAKOLINKIT)
+}
+
+const OpintoniTab = ({ oppija }) => (
+  <>
+    <Header oppija={oppija}/>
+    <Editor
+      key={document.location.toString()}
+      model={oppija}
+      onNewSuoritusjako={onNewSuoritusjako}
+    />
+  </>
+)
+
+const SelectedTab = ({ oppija }) => (
   fromBacon(selectedTabAtom.map(selectedTab => {
     switch (selectedTab) {
       case TabTypes.OPINTONI:
@@ -31,7 +41,7 @@ const SelectedTab = ({ selectedTabAtom, oppija }) => (
   }))
 )
 
-const TabLink = ({ text, type, selectedTabAtom }) => {
+const TabLink = ({ text, type }) => {
   return fromBacon(selectedTabAtom.map(selectedTab => {
     const classNames = buildClassNames([
       'omat-tiedot-tab-selector',
@@ -47,7 +57,6 @@ const TabLink = ({ text, type, selectedTabAtom }) => {
 }
 
 const TabsContainer = ({ oppija }) => {
-  const selectedTabAtom = Atom(TabTypes.OPINTONI)
   return (
     <>
       <div className='omat-tiedot-tab-selectors'>

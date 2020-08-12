@@ -15,7 +15,7 @@ import {showError} from '../util/location'
 
 export const selectedModelsAtom = Atom([])
 
-export const OmatTiedotEditor = ({model}) => {
+export const OmatTiedotEditor = ({model, onNewSuoritusjako}) => {
   const oppijaOid = modelData(model, 'henkilö.oid')
   const oppilaitokset = modelItems(model, 'opiskeluoikeudet')
   return (
@@ -29,6 +29,7 @@ export const OmatTiedotEditor = ({model}) => {
       {selectedModelsAtom.map(selectedModels => (
         selectedModels.length > 0 && <Suoritusjako
           selectedModels={selectedModels}
+          onNewSuoritusjako={onNewSuoritusjako}
         />))}
     </div>
   )
@@ -44,7 +45,7 @@ const JakoonValitutSuoritukset = ({selectedModels}) => (
   </ul>
 )
 
-const Suoritusjako = ({selectedModels}) => (
+const Suoritusjako = ({selectedModels, onNewSuoritusjako}) => (
   <>
     <div className='suoritusjako-valitut-placeholder' />
     <div className='suoritusjako-valitut-container'>
@@ -53,18 +54,19 @@ const Suoritusjako = ({selectedModels}) => (
           <h2><Text name='Valittu jaettavaksi'/></h2>
           <JakoonValitutSuoritukset selectedModels={selectedModels} />
         </div>
-        <SuoritusjakoButton/>
+        <SuoritusjakoButton onNewSuoritusjako={onNewSuoritusjako}/>
       </div>
     </div>
   </>
 )
 
-const SuoritusjakoButton = () => {
+const SuoritusjakoButton = ({ onNewSuoritusjako }) => {
   const isPending = Atom(false)
 
   const onSuccess = () => {
     isPending.set(false)
     selectedModelsAtom.set([])
+    onNewSuoritusjako()
   }
 
   const onError = (res) => {
