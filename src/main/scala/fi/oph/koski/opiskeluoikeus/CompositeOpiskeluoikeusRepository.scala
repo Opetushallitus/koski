@@ -31,7 +31,7 @@ class CompositeOpiskeluoikeusRepository(main: KoskiOpiskeluoikeusRepository, vir
 
   def mapFailureToVirtaUnavailable(result: Try[Seq[Opiskeluoikeus]], oid: String): Try[WithWarnings[Seq[Opiskeluoikeus]]] = {
     result match {
-      case Failure(exception) => logger.error(exception)(s"Failed to fetch Virta data for $oid")
+      case Failure(exception) => logger.warn(exception)(s"Failed to fetch Virta data for $oid")
       case Success(_) =>
     }
     Success(WithWarnings.fromTry(result, KoskiErrorCategory.unavailable.virta(), Nil))
