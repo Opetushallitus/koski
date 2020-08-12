@@ -31,7 +31,8 @@ class OrganisaatioService(application: KoskiApplication) {
     organisaatioRepository.getOrganisaatio(organisaatioOid).toList.flatMap { org =>
       val children = organisaatioRepository.getChildOids(org.oid).toList.flatten
       if (org.toKoulutustoimija.isDefined) {
-        children ++ omatOstopalveluOrganisaatiot.map(_.oid)
+        val koulutustoimijat = user.varhaiskasvatusKoulutustoimijat + org.toKoulutustoimija.get.oid
+        children ++ koulutustoimijoidenOstopalveluOrganisaatiot(koulutustoimijat).map(_.oid)
       } else {
         children
       }
@@ -39,15 +40,19 @@ class OrganisaatioService(application: KoskiApplication) {
   }
 
   def omatOstopalveluOrganisaatiot(implicit user: KoskiSession): List[OrganisaatioHierarkia] =
-    perustiedot.haeVarhaiskasvatustoimipisteet(user.varhaiskasvatusKoulutustoimijat) match {
+    koulutustoimijoidenOstopalveluOrganisaatiot(user.varhaiskasvatusKoulutustoimijat)
+
+  private def koulutustoimijoidenOstopalveluOrganisaatiot(koulutustoimijat: Set[Oid])(implicit user: KoskiSession): List[OrganisaatioHierarkia] =
+    perustiedot.haeVarhaiskasvatustoimipisteet(koulutustoimijat) match {
       case päiväkoditJoihinTallennettuOpiskeluoikeuksia if päiväkoditJoihinTallennettuOpiskeluoikeuksia.nonEmpty =>
-        OrganisaatioHierarkia.flatten(kaikkiOstopalveluOrganisaatioHierarkiat).filter(o => päiväkoditJoihinTallennettuOpiskeluoikeuksia.contains(o.oid))
+        val ostopalveluHierarkiat = kaikkiOstopalveluOrganisaatiohierarkiat(excludedKoulutustoimijaOidit = koulutustoimijat)
+        OrganisaatioHierarkia.flatten(ostopalveluHierarkiat).filter(o => päiväkoditJoihinTallennettuOpiskeluoikeuksia.contains(o.oid))
       case _ => Nil
     }
 
   private def getOrganisaatiot(orgTypes: OrgTypesToShow)(implicit user: KoskiSession) = orgTypes match {
     case OmatOrganisaatiot => omatOrganisaatioHierarkiat
-    case VarhaiskasvatusToimipisteet => kaikkiOstopalveluOrganisaatioHierarkiat
+    case VarhaiskasvatusToimipisteet => kaikkiOstopalveluOrganisaatiohierarkiat(excludedKoulutustoimijaOidit = user.varhaiskasvatusKoulutustoimijat)
     case Kaikki => omatOrganisaatioHierarkiat ++ omatOstopalveluOrganisaatioHierarkiat
   }
 
@@ -56,9 +61,9 @@ class OrganisaatioService(application: KoskiApplication) {
       organisaatioRepository.getOrganisaatioHierarkia(ko.organisaatio.oid)
     }.sortBy(organisaatioNimi)
 
-  private def kaikkiOstopalveluOrganisaatioHierarkiat(implicit user: KoskiSession) = if (user.hasKoulutustoimijaVarhaiskasvatuksenJärjestäjäAccess) {
+  private def kaikkiOstopalveluOrganisaatiohierarkiat(excludedKoulutustoimijaOidit: Set[Oid])(implicit user: KoskiSession) = if (user.hasGlobalReadAccess || user.hasKoulutustoimijaVarhaiskasvatuksenJärjestäjäAccess) {
     organisaatioRepository.findVarhaiskasvatusHierarkiat
-      .filterNot(isOmanOrganisaationPäiväkoti)
+      .filterNot(o => excludedKoulutustoimijaOidit.contains(o.oid))
       .sortBy(organisaatioNimi)
   } else {
     Nil
@@ -75,7 +80,4 @@ class OrganisaatioService(application: KoskiApplication) {
   }
 
   private def organisaatioNimi(implicit user: KoskiSession): OrganisaatioHierarkia => String = _.nimi.get(user.lang)
-
-  private def isOmanOrganisaationPäiväkoti(org: OrganisaatioHierarkia)(implicit user: KoskiSession) =
-    user.varhaiskasvatusKoulutustoimijat.contains(org.oid)
 }

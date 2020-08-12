@@ -5,7 +5,7 @@ import java.time.LocalDate.{of => localDate}
 
 import fi.oph.koski.KoskiApplicationForTests
 import fi.oph.koski.henkilo.{LaajatOppijaHenkilöTiedot, MockOppijat}
-import fi.oph.koski.koskiuser.MockUser
+import fi.oph.koski.koskiuser.{MockUser, MockUsers}
 import fi.oph.koski.koskiuser.MockUsers.{helsinkiTallentaja, tornioTallentaja}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.organisaatio.MockOrganisaatiot.{helsinginKaupunki, jyväskylänNormaalikoulu, päiväkotiMajakka, päiväkotiTouhula}
@@ -94,6 +94,12 @@ class EsiopetusRaporttiSpec extends FreeSpec with Matchers with Raportointikanta
         val raportti = buildOstopalveluRaportti(tornioTallentaja)
         getOppilaitokset(raportti) should be(empty)
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=&paiva=2006-08-13")))
+      }
+
+      "globaaleilla käyttöoikeuksilla voi tehdä raportin" in {
+        val raportti = buildOrganisaatioRaportti(MockUsers.paakayttaja, helsinginKaupunki)
+        getOppilaitokset(raportti) should equal(List("Kulosaaren ala-aste", "Päiväkoti Majakka", "Päiväkoti Touhula"))
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetus&oppilaitosOid=$helsinginKaupunki&paiva=2006-08-13")))
       }
     }
   }

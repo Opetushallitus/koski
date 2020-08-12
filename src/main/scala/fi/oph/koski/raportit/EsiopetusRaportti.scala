@@ -8,7 +8,7 @@ import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
 import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
 import fi.oph.koski.organisaatio.OrganisaatioService
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
-import fi.oph.koski.schema.Organisaatio.isValidOrganisaatioOid
+import fi.oph.koski.schema.Organisaatio.{Oid, isValidOrganisaatioOid}
 import slick.jdbc.GetResult
 
 import scala.concurrent.duration._
@@ -93,7 +93,10 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
       and r_opiskeluoikeus.koulutusmuoto = 'esiopetus'
       and aikajakso.alku <= $päivä
       and aikajakso.loppu >= $päivä
+      -- access check
       and (
+        #${(if (u.hasGlobalReadAccess) "true" else "false")}
+        or
         r_opiskeluoikeus.oppilaitos_oid in (#${toSqlList(käyttäjänOrganisaatioOidit)})
         or
         (r_opiskeluoikeus.koulutustoimija_oid in (#${toSqlList(käyttäjänKoulutustoimijaOidit)}) and r_opiskeluoikeus.oppilaitos_oid in (#${toSqlList(käyttäjänOstopalveluOidit)}))
