@@ -207,7 +207,8 @@ case class TutkintoRakenneValidator(tutkintoRepository: TutkintoRepository, kood
         Perusteet.AikuistenLukiokoulutuksenOpetussuunnitelmanPerusteet2019
       case "nuortenops" =>
         Perusteet.LukionOpetussuunnitelmanPerusteet2019
-      case _ => Perusteet.lops2019
+      case _ =>
+        Diaarinumerot(List())
     }
     val diaarinumero = s.koulutusmoduuli.perusteenDiaarinumero.getOrElse("")
 
