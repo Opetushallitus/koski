@@ -31,7 +31,7 @@ const rowInTable = ({key, value, path}, index) => {
   )
 }
 
-export const NumberView = ({value}) => <span>{value}</span>
+export const NumberView = ({value}) => <span>{value == 0 ? '' : value}</span>
 export const BooleanView = ({value}) => <Text name={value ? 'kyllä' : 'ei'}/>
 export const DateView = ({value}) => <span>{ value && formatFinnishDate(parseISODate(value)) || ''}</span>
 
@@ -57,13 +57,13 @@ const ArrayView = ({value}) => {
 }
 
 const ObjectView = ({value, path}) => {
-  const inlinedKeys = ['alku', 'loppu']
+  const hideKeys = ['alku', 'loppu', 'koodistoVersio', 'koodistoUri', 'lyhytNimi']
   const optionalAikajaksoInline = isAikajakso(value) && <AikajaksoInline value={value}/>
   return (
     <table>
       <tbody>
         {optionalAikajaksoInline}
-        {iterator(R.omit(inlinedKeys, value), path).map(rowInTable)}
+        {iterator(R.omit(hideKeys, value), path).map(rowInTable)}
       </tbody>
     </table>
   )

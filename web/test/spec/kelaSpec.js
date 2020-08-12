@@ -54,9 +54,9 @@ describe('Kela', function () {
       kela.searchAndSelect('280618-402H', 'Aarne')
     )
 
-    var osasuorituksenSisältö = 'Osasuoritukset Arviointipäivä Hyväksytty\n' +
-      'Matematiikka 20.10.2014 kyllä\n' +
-      'Fysiikka ja kemia 20.10.2014 kyllä'
+    var osasuorituksenSisältö = 'Osasuoritukset Laajuus (osaamispistettä) Arviointipäivä Hyväksytty\n' +
+      'Matematiikka 3 20.10.2014 kyllä\n' +
+      'Fysiikka ja kemia 3 20.10.2014 kyllä'
 
     describe('Ennen avaamista', function () {
       it('Ei näy osasuorituksen sisältämiä tietoja', function () {
