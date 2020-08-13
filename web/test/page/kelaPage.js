@@ -6,6 +6,12 @@ function KelaPage() {
     openPage: function() {
       return openPage("/koski/kela", api.isReady)()
     },
+    openVirkailijaPage: function () {
+      return openPage("/koski/virkailija")
+    },
+    getCurrentUrl: function() {
+      return testFrame().location.href
+    },
     isVisible: function() {
       return isElementVisible(S('#content .kela'))
     },

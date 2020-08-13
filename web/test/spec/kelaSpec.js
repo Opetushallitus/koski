@@ -85,4 +85,15 @@ describe('Kela', function () {
       expect(kela.getValittuOpiskeluoikeusOtsikko()).to.include('Jyväskylän normaalikoulu (2008 - 2016, Valmistunut)')
     })
   })
+
+  describe('Kela käyttöoikeuksilla henkilö ohjataan Kelan käyttölittymään', function () {
+    before(
+      Authentication().login('Suppea'),
+      kela.openVirkailijaPage(),
+    )
+
+    it('Uudelleen ohjaus toimii', function () {
+      expect(kela.getCurrentUrl().endsWith('/koski/kela')).to.equal(true)
+    })
+  })
 })
