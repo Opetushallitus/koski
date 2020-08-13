@@ -31,7 +31,7 @@ const rowInTable = ({key, value, path}, index) => {
   )
 }
 
-export const NumberView = ({value}) => <span>{value}</span>
+export const NumberView = ({value}) => <span>{value == 0 ? '' : value}</span>
 export const BooleanView = ({value}) => <Text name={value ? 'kyllä' : 'ei'}/>
 export const DateView = ({value}) => <span>{ value && formatFinnishDate(parseISODate(value)) || ''}</span>
 
@@ -57,13 +57,13 @@ const ArrayView = ({value}) => {
 }
 
 const ObjectView = ({value, path}) => {
-  const inlinedKeys = ['alku', 'loppu']
+  const hideKeys = ['alku', 'loppu', 'koodistoVersio', 'koodistoUri', 'lyhytNimi']
   const optionalAikajaksoInline = isAikajakso(value) && <AikajaksoInline value={value}/>
   return (
     <table>
       <tbody>
         {optionalAikajaksoInline}
-        {iterator(R.omit(inlinedKeys, value), path).map(rowInTable)}
+        {iterator(R.omit(hideKeys, value), path).map(rowInTable)}
       </tbody>
     </table>
   )
@@ -78,7 +78,7 @@ const spesificComponent = (key, value) => {
     return OrganisaationNimi
   }
   if (key === 'tunniste' || isKoodistoviite(value)) {
-    return ShowNameFromKoodistoviite
+    return Koodistoviite
   }
   if (isLocalizedString(value)) {
     return TextView
@@ -105,8 +105,8 @@ const OrganisaationNimi = ({value}) => {
   return <span>{nimi}</span>
 }
 
-const ShowNameFromKoodistoviite = ({value}) => {
-  const nimi = t(value.nimi || {}) || ''
+const Koodistoviite = ({value}) => {
+  const nimi = t(value.nimi || {}) || value.koodiarvo || ''
   return (
     <span>
       {nimi}
@@ -118,7 +118,7 @@ const Laajuus = ({value}) => (
   <>
     <span>{value.arvo}</span>
     {' '}
-    <ShowNameFromKoodistoviite value={value.yksikkö}/>
+    <Koodistoviite value={value.yksikkö}/>
   </>
 )
 
@@ -129,7 +129,7 @@ const OsaamisalaJaksotInline = ({value}) => {
       {osaamisalaJaksot.map((jakso, index) => (
         <li key={index}>
           <AikajaksoInline value={value}/>
-          <ShowNameFromKoodistoviite value={jakso.osaamisala}/>
+          <Koodistoviite value={jakso.osaamisala}/>
         </li>
       ))}
     </ul>

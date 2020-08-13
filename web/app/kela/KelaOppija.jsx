@@ -53,8 +53,9 @@ export const OpiskeluoikeusOtsikko = ({opiskeluoikeus}) => {
 export const opiskeluoikeudenTilaString = opiskeluoikeus => {
   const alkamispaiva =  opiskeluoikeus.alkamispäivä && yearFromIsoDateString(opiskeluoikeus.alkamispäivä) || ''
   const paattymispaiva =  opiskeluoikeus.päättymispäivä && yearFromIsoDateString(opiskeluoikeus.päättymispäivä) || ''
-  const viimeisinTila = t(R.last(opiskeluoikeus.tila.opiskeluoikeusjaksot).tila.nimi) || ''
-  return `(${alkamispaiva} - ${paattymispaiva}, ${viimeisinTila})`
+  const viimeisinTila = R.last(opiskeluoikeus.tila.opiskeluoikeusjaksot || [])
+  const viimeisimmänTilanNimi = (viimeisinTila && t(viimeisinTila.tila.nimi)) || ''
+  return `(${alkamispaiva} - ${paattymispaiva}, ${viimeisimmänTilanNimi})`
 }
 
 const Voimassaoloaika = ({opiskeluoikeus}) => {
