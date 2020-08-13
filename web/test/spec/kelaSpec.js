@@ -72,4 +72,17 @@ describe('Kela', function () {
       })
     })
   })
+
+  describe('Kelan suppeilla käyttöoikeuksilla voi käyttää Kelan käyttöliittymää', function () {
+    before(
+      Authentication().login('Suppea'),
+      kela.openPage,
+      kela.searchAndSelect('220109-784L', 'Kaisa')
+    )
+
+    it('Näytetään valitun henkilon opinnot', function () {
+      expect(kela.getOppijanNimi()).to.equal('Koululainen, Kaisa (220109-784L)')
+      expect(kela.getValittuOpiskeluoikeusOtsikko()).to.include('Jyväskylän normaalikoulu (2008 - 2016, Valmistunut)')
+    })
+  })
 })
