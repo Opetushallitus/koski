@@ -122,13 +122,14 @@ describe('Oppijataulukko', function() {
           'Ammattilainen, Aarne',
           'Erikoinen, Erja',
           'Eskari, Essi',
+          'Kelalle, Useita',
           'Koululainen, Kaisa',
           'Koululainen, Kaisa',
           'Lukioaineopiskelija, Aino',
           'Monikoululainen, Miia',
           'Valviralle, Veera'
         ])
-        expect(page.opiskeluoikeudeTotal()).to.equal('8')
+        expect(page.opiskeluoikeudeTotal()).to.equal('9')
       })
     })
   })
@@ -145,11 +146,11 @@ describe('Oppijataulukko', function() {
       )
 
       it('Oletusjärjestys nouseva nimen mukaan', function() {
-        expect(page.oppijataulukko.names()).to.deep.equal([ 'Hetuton, Heikki', 'Koululainen, Kaisa', 'Lukiolainen, Liisa', 'Luokallejäänyt, Lasse', 'Monikoululainen, Miia', 'Monikoululainen, Miia', 'Oppija, Oili', 'Perusopetuksensiirto, Pertti', 'Toiminta, Tommi', 'Vuosiluokkalainen, Ville', 'Ysiluokkalainen, Ylermi', 'of Puppets, Master' ])
+        expect(page.oppijataulukko.names()).to.deep.equal([ 'Hetuton, Heikki', 'Kelalle, Useita', 'Koululainen, Kaisa', 'Lukiolainen, Liisa', 'Luokallejäänyt, Lasse', 'Monikoululainen, Miia', 'Monikoululainen, Miia', 'Oppija, Oili', 'Perusopetuksensiirto, Pertti', 'Toiminta, Tommi', 'Vuosiluokkalainen, Ville', 'Ysiluokkalainen, Ylermi', 'of Puppets, Master' ])
       })
       it('Laskeva järjestys klikkaamalla', function() {
         return page.oppijataulukko.sortBy('nimi')().then(function() {
-          expect(page.oppijataulukko.names()).to.deep.equal([ 'of Puppets, Master', 'Ysiluokkalainen, Ylermi', 'Vuosiluokkalainen, Ville', 'Toiminta, Tommi', 'Perusopetuksensiirto, Pertti', 'Oppija, Oili', 'Monikoululainen, Miia', 'Monikoululainen, Miia', 'Luokallejäänyt, Lasse', 'Lukiolainen, Liisa', 'Koululainen, Kaisa', 'Hetuton, Heikki' ])
+          expect(page.oppijataulukko.names()).to.deep.equal([ 'of Puppets, Master', 'Ysiluokkalainen, Ylermi', 'Vuosiluokkalainen, Ville', 'Toiminta, Tommi', 'Perusopetuksensiirto, Pertti', 'Oppija, Oili', 'Monikoululainen, Miia', 'Monikoululainen, Miia', 'Luokallejäänyt, Lasse', 'Lukiolainen, Liisa', 'Koululainen, Kaisa', 'Kelalle, Useita', 'Hetuton, Heikki' ])
         })
       })
     })
@@ -186,12 +187,12 @@ describe('Oppijataulukko', function() {
       before(page.oppijataulukko.filterBy('tyyppi'), page.oppijataulukko.filterBy('tutkinto'), page.oppijataulukko.filterBy('nimi'), page.oppijataulukko.filterBy('luokka', '9'))
       it('Nouseva järjestys', function() {
         return page.oppijataulukko.sortBy('luokka')().then(function() {
-          expect(page.oppijataulukko.data().map(function(row) { return row[8]})).to.deep.equal([ '9B', '9C', '9C', '9C', '9C', '9C', '9C', '9C', '9D' ])
+          expect(page.oppijataulukko.data().map(function(row) { return row[8]})).to.deep.equal([ '9B', '9C', '9C', '9C', '9C', '9C', '9C', '9C', '9C', '9D' ])
         })
       })
       it('Laskeva järjestys', function() {
         return page.oppijataulukko.sortBy('luokka')().then(function() {
-          expect(page.oppijataulukko.data().map(function(row) { return row[8]})).to.deep.equal([ '9D', '9C', '9C', '9C', '9C', '9C', '9C', '9C', '9B' ])
+          expect(page.oppijataulukko.data().map(function(row) { return row[8]})).to.deep.equal([ '9D', '9C', '9C', '9C', '9C', '9C', '9C', '9C', '9C', '9B' ])
         })
       })
     })
@@ -240,8 +241,8 @@ describe('Oppijataulukko', function() {
     before(Authentication().login('esiopetus'), page.openPage, wait.until(page.isReady))
 
     it('ei näytetä kuin oman koulun esiopetusoppijat', function() {
-      expect(page.oppijataulukko.data().map(function(row) { return row[0]})).to.deep.equal([ 'Eskari, Essi' ])
-      expect(page.opiskeluoikeudeTotal()).to.equal('1')
+      expect(page.oppijataulukko.data().map(function(row) { return row[0]})).to.deep.equal([ 'Eskari, Essi', 'Kelalle, Useita' ])
+      expect(page.opiskeluoikeudeTotal()).to.equal('2')
     })
   })
 
