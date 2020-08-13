@@ -5,8 +5,8 @@ import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{MockUser, MockUsers}
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
-import fi.oph.koski.schema.OpiskeluoikeudenTyyppi
+import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.schema.{NuortenPerusopetuksenOppiaineenOppimääränSuoritus, OpiskeluoikeudenTyyppi}
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 class KelaSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with Matchers with BeforeAndAfterAll {
@@ -75,6 +75,44 @@ class KelaSpec extends FreeSpec with LocalJettyHttpSpecification with Opiskeluoi
       postHetut(hetut) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest("Liian monta hetua, enintään 1000 sallittu"))
       }
+    }
+  }
+
+  "Kelan käyttöoikeudet" - {
+    "Suppeilla Kelan käyttöoikeuksilla ei nää kaikkia lisätietoja" in {
+      postHetu(MockOppijat.amis.hetu.get, user = MockUsers.kelaSuppeatOikeudet) {
+        verifyResponseStatusOk()
+        val opiskeluoikeudet = JsonSerializer.parse[KelaOppija](body).opiskeluoikeudet
+        val lisatiedot = opiskeluoikeudet.head.lisätiedot.get
+
+        lisatiedot.hojks should equal(None)
+        lisatiedot.opiskeluvalmiuksiaTukevatOpinnot should equal(None)
+
+        opiskeluoikeudet.length should be(1)
+      }
+    }
+    "Laajoilla Kelan käyttöoikeuksilla näkee kaikki KelaSchema:n lisätiedot" in {
+      postHetu(MockOppijat.amis.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+        verifyResponseStatusOk()
+        val opiskeluoikeudet = JsonSerializer.parse[KelaOppija](body).opiskeluoikeudet
+        val lisatiedot = opiskeluoikeudet.head.lisätiedot.get
+
+        lisatiedot.hojks shouldBe(defined)
+        lisatiedot.opiskeluvalmiuksiaTukevatOpinnot shouldBe(defined)
+
+        opiskeluoikeudet.length should be(1)
+      }
+    }
+  }
+
+  "Perusopetuksen oppiaineen oppimäärän suorituksesta ei välitetä suoritustapaa Kelalle" in {
+    postHetu(MockOppijat.montaOppiaineenOppimäärääOpiskeluoikeudessa.hetu.get) {
+      verifyResponseStatusOk()
+      val opiskeluoikeudet = JsonSerializer.parse[KelaOppija](body).opiskeluoikeudet
+
+      opiskeluoikeudet.foreach(_.suoritukset.foreach(suoritus => {
+        suoritus.suoritustapa should equal(None)
+      }))
     }
   }
 

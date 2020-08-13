@@ -202,6 +202,8 @@ object KelaOppijaConverter extends Logging {
     Suoritus(
       koulutusmoduuli = convertSuorituksenKoulutusmoduuli(suoritus.koulutusmoduuli),
       suoritustapa = suoritus match {
+        case _: schema.NuortenPerusopetuksenOppiaineenOppimääränSuoritus => None
+        case _: schema.AikuistenPerusopetuksenOppiaineenOppimääränSuoritus => None
         case x: schema.AmmatillisenTutkinnonOsittainenTaiKokoSuoritus => Some(convertKoodiviite(x.suoritustapa))
         case x: schema.SuoritustavallinenPerusopetuksenSuoritus => Some(convertKoodiviite(x.suoritustapa))
         case x: schema.SuoritustapanaMahdollisestiErityinenTutkinto => x.suoritustapa.map(convertKoodiviite)
