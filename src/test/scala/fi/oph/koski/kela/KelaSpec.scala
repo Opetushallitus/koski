@@ -5,8 +5,8 @@ import fi.oph.koski.henkilo.MockOppijat
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{MockUser, MockUsers}
 import fi.oph.koski.log.AuditLogTester
-import fi.oph.koski.http.{ErrorMatcher, KoskiErrorCategory}
-import fi.oph.koski.schema.OpiskeluoikeudenTyyppi
+import fi.oph.koski.http.KoskiErrorCategory
+import fi.oph.koski.schema.{NuortenPerusopetuksenOppiaineenOppimääränSuoritus, OpiskeluoikeudenTyyppi}
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 class KelaSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with Matchers with BeforeAndAfterAll {
@@ -105,6 +105,16 @@ class KelaSpec extends FreeSpec with LocalJettyHttpSpecification with Opiskeluoi
     }
   }
 
+  "Perusopetuksen oppiaineen oppimäärän suorituksesta ei välitetä suoritustapaa Kelalle" in {
+    postHetu(MockOppijat.montaOppiaineenOppimäärääOpiskeluoikeudessa.hetu.get) {
+      verifyResponseStatusOk()
+      val opiskeluoikeudet = JsonSerializer.parse[KelaOppija](body).opiskeluoikeudet
+
+      opiskeluoikeudet.foreach(_.suoritukset.foreach(suoritus => {
+        suoritus.suoritustapa should equal(None)
+      }))
+    }
+  }
 
   private def postHetu[A](hetu: String, user: MockUser = MockUsers.kelaLaajatOikeudet)(f: => A): A = {
     post(
