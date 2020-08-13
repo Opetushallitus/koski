@@ -87,7 +87,7 @@ export const expandableProperties = (model) => {
   let oppiaine = modelLookup(model, 'koulutusmoduuli')
 
   let extraPropertiesFilter = p => {
-    if (!edit && ['yksilöllistettyOppimäärä', 'painotettuOpetus', 'suorituskieli', 'korotus'].includes(p.key)) return false // these are only shown when editing
+    if (!edit && ['yksilöllistettyOppimäärä', 'painotettuOpetus', 'korotus'].includes(p.key)) return false // these are only shown when editing
     if (['koulutusmoduuli', 'arviointi', 'tunniste', 'kieli', 'laajuus', 'pakollinen', 'arvosana', 'päivä', 'perusteenDiaarinumero', 'osasuoritukset'].includes(p.key)) return false // these are never shown
     if (isToimintaAlueittain(model) && p.key === 'korotus') return false
     return shouldShowProperty(model.context)(p)
