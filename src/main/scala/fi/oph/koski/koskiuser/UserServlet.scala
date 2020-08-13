@@ -18,7 +18,7 @@ class UserServlet(implicit val application: UserAuthenticationContext) extends A
           hasAnyInvalidateAccess = session.hasAnyTiedonsiirronMitätöintiAccess,
           isViranomainen = session.hasGlobalKoulutusmuotoReadAccess,
           hasRaportitAccess = session.hasRaportitAccess,
-          hasKelaUiAccess = session.hasKelaLaajatAccess,
+          hasKelaUiAccess = session.hasKelaAccess,
           varhaiskasvatuksenJärjestäjäKoulutustoimijat = session.varhaiskasvatusKoulutustoimijat.toList
         )
       }

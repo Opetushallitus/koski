@@ -78,6 +78,34 @@ class KelaSpec extends FreeSpec with LocalJettyHttpSpecification with Opiskeluoi
     }
   }
 
+  "Kelan käyttöoikeudet" - {
+    "Suppeilla Kelan käyttöoikeuksilla ei nää kaikkia lisätietoja" in {
+      postHetu(MockOppijat.amis.hetu.get, user = MockUsers.kelaSuppeatOikeudet) {
+        verifyResponseStatusOk()
+        val opiskeluoikeudet = JsonSerializer.parse[KelaOppija](body).opiskeluoikeudet
+        val lisatiedot = opiskeluoikeudet.head.lisätiedot.get
+
+        lisatiedot.hojks should equal(None)
+        lisatiedot.opiskeluvalmiuksiaTukevatOpinnot should equal(None)
+
+        opiskeluoikeudet.length should be(1)
+      }
+    }
+    "Laajoilla Kelan käyttöoikeuksilla näkee kaikki KelaSchema:n lisätiedot" in {
+      postHetu(MockOppijat.amis.hetu.get, user = MockUsers.kelaLaajatOikeudet) {
+        verifyResponseStatusOk()
+        val opiskeluoikeudet = JsonSerializer.parse[KelaOppija](body).opiskeluoikeudet
+        val lisatiedot = opiskeluoikeudet.head.lisätiedot.get
+
+        lisatiedot.hojks shouldBe(defined)
+        lisatiedot.opiskeluvalmiuksiaTukevatOpinnot shouldBe(defined)
+
+        opiskeluoikeudet.length should be(1)
+      }
+    }
+  }
+
+
   private def postHetu[A](hetu: String, user: MockUser = MockUsers.kelaLaajatOikeudet)(f: => A): A = {
     post(
       "api/luovutuspalvelu/kela/hetu",

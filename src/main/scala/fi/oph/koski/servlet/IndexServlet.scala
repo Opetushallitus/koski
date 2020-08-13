@@ -28,7 +28,7 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
     } else {
       val url = if (koskiSessionOption.exists(_.user.kansalainen)) {
         "/omattiedot"
-      } else if (application.features.kelaui && koskiSessionOption.exists(_.hasKelaLaajatAccess)) {
+      } else if (application.features.kelaui && koskiSessionOption.exists(_.hasKelaAccess)) {
         "/kela"
       } else {
         "/virkailija"

@@ -2,7 +2,9 @@ package fi.oph.koski.kela
 
 import java.time.{LocalDate, LocalDateTime}
 
+import fi.oph.koski.koskiuser.Rooli
 import fi.oph.koski.schema
+import fi.oph.koski.schema.annotation.SensitiveData
 import fi.oph.scalaschema.{ClassSchema, SchemaToJson}
 import org.json4s.JValue
 
@@ -69,20 +71,28 @@ case class OpiskeluoikeudenLisätiedot(
   majoitus: Option[List[schema.Aikajakso]],
   sisäoppilaitosmainenMajoitus: Option[List[schema.Aikajakso]],
   vaativanErityisenTuenYhteydessäJärjestettäväMajoitus: Option[List[schema.Aikajakso]],
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   erityinenTuki: Option[List[schema.Aikajakso]],
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   vaativanErityisenTuenErityinenTehtävä: Option[List[schema.Aikajakso]],
   ulkomaanjaksot: Option[List[Ulkomaanjakso]],
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   hojks: Option[Hojks],
   osaAikaisuusjaksot: Option[List[schema.OsaAikaisuusJakso]],
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   opiskeluvalmiuksiaTukevatOpinnot: Option[List[schema.OpiskeluvalmiuksiaTukevienOpintojenJakso]],
   vankilaopetuksessa: Option[List[schema.Aikajakso]],
   ulkomainenVaihtoopiskelija: Option[Boolean],
   yksityisopiskelija: Option[Boolean],
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   koulukoti: Option[List[schema.Aikajakso]],
   majoitusetu: Option[schema.Aikajakso],
   ulkomailla: Option[schema.Aikajakso],
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   tehostetunTuenPäätös: Option[schema.TehostetunTuenPäätös],
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   tehostetunTuenPäätökset: Option[List[schema.TehostetunTuenPäätös]],
+  @SensitiveData(Set(Rooli.LUOTTAMUKSELLINEN_KELA_LAAJA))
   joustavaPerusopetus: Option[schema.Aikajakso]
 )
 

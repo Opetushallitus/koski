@@ -9,7 +9,7 @@ import fi.oph.koski.schema.Henkilö
 import fi.oph.koski.servlet.{ApiServlet, NoCache, ObservableSupport}
 import org.json4s.JsonAST.JValue
 
-class KelaServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresKelaLaaja with NoCache with ObservableSupport {
+class KelaServlet(implicit val application: KoskiApplication) extends ApiServlet with RequiresKela with NoCache with ObservableSupport {
   val kelaService = new KelaService(application)
 
   post("/hetu") {
