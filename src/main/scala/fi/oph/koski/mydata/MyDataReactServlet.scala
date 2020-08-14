@@ -2,14 +2,14 @@ package fi.oph.koski.mydata
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.koskiuser.AuthenticationSupport
-import fi.oph.koski.servlet.{HtmlServlet, OmaOpintopolkuSupport}
+import fi.oph.koski.servlet.{OmaOpintopolkuSupport, OppijaHtmlServlet}
 import org.scalatra.ScalatraServlet
 
 import scala.util.matching.Regex
 
 
 class MyDataReactServlet(implicit val application: KoskiApplication) extends ScalatraServlet
-  with HtmlServlet with AuthenticationSupport with OmaOpintopolkuSupport with MyDataSupport {
+  with OppijaHtmlServlet with AuthenticationSupport with OmaOpintopolkuSupport with MyDataSupport {
 
   val nonErrorPage: Regex = "^(?!/error)\\S+$".r
 

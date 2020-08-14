@@ -6,18 +6,18 @@ import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koodisto.{Koodisto, KoodistoKoodiMetadata}
 import fi.oph.koski.koskiuser.AuthenticationSupport
 import fi.oph.koski.schema.{Henkilö, LocalizedString, OsaamisenTunnustaminen}
-import fi.oph.koski.servlet.HtmlServlet
+import fi.oph.koski.servlet.VirkailijaHtmlServlet
 import fi.oph.scalaschema.ClassSchema
 import org.scalatra.ScalatraServlet
 
 import scala.Function.const
 import scala.xml.NodeSeq
 
-class DocumentationServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with AuthenticationSupport with KoodistoFinder {
+class DocumentationServlet(implicit val application: KoskiApplication) extends ScalatraServlet with VirkailijaHtmlServlet with AuthenticationSupport with KoodistoFinder {
   val koodistoPalvelu = application.koodistoPalvelu
 
   get("^/(|tietomalli|koodistot|rajapinnat/oppilashallintojarjestelmat|rajapinnat/luovutuspalvelu|rajapinnat/palveluvayla-omadata)$".r){
-    htmlIndex("koski-main.js", raamit = if (raamitHeaderSet && isAuthenticated) Virkailija else EiRaameja, allowIndexing = true)
+    htmlIndex("koski-main.js", raamit = if (virkailijaRaamitSet && isAuthenticated) Virkailija else EiRaameja, allowIndexing = true)
   }
 
   get("/koski-oppija-schema.html") {

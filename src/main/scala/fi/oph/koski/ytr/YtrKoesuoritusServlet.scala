@@ -7,9 +7,9 @@ import fi.oph.koski.koskiuser.{KoskiSession, RequiresKansalainen}
 import fi.oph.koski.log.KoskiOperation.KoskiOperation
 import fi.oph.koski.log.{AuditLog, AuditLogMessage, KoskiMessageField}
 import fi.oph.koski.log.KoskiOperation.{KANSALAINEN_YLIOPPILASKOE_HAKU, KANSALAINEN_HUOLTAJA_YLIOPPILASKOE_HAKU}
-import fi.oph.koski.servlet.HtmlServlet
+import fi.oph.koski.servlet.OppijaHtmlServlet
 
-class YtrKoesuoritusServlet(implicit val application: KoskiApplication) extends HtmlServlet with RequiresKansalainen {
+class YtrKoesuoritusServlet(implicit val application: KoskiApplication) extends OppijaHtmlServlet with RequiresKansalainen {
   private val koesuoritukset: KoesuoritusService = KoesuoritusService(application.config)
 
   get("/:copyOfExamPaper") {

@@ -8,16 +8,8 @@ import org.scalatra.ScalatraServlet
 
 import scala.xml.Unparsed
 
-class LoginPageServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with SSOSupport {
+class OppijaLoginPageServlet(implicit val application: KoskiApplication) extends ScalatraServlet with OppijaHtmlServlet with SSOSupport {
   get("/") {
-    if (ssoConfig.isCasSsoUsed) {
-      redirect("/")
-    } else {
-      htmlIndex("koski-login.js")
-    }
-  }
-
-  get("/shibboleth") {
     if (application.features.shibboleth && application.config.getString("shibboleth.security") == "mock") {
       htmlIndex(
         scriptBundleName = "koski-korhopankki.js",

@@ -5,16 +5,9 @@ import org.scalatra.ScalatraServlet
 
 import scala.xml.Unparsed
 
-class IndexServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with OmaOpintopolkuSupport {
-  before("/omattiedot") {
-    setLangCookieFromDomainIfNecessary
-    sessionOrStatus match {
-      case Right(_) if shibbolethCookieFound =>
-      case Left(_) if shibbolethCookieFound => redirect("/user/shibbolethlogin")
-      case _ => redirect(shibbolethUrl)
-    }
-  }
 
+
+class IndexServlet(implicit val application: KoskiApplication) extends ScalatraServlet with VirkailijaHtmlServlet with OmaOpintopolkuSupport {
   before("/.+".r) {
     if (!isAuthenticated) {
       redirectToLogin
@@ -53,14 +46,6 @@ class IndexServlet(implicit val application: KoskiApplication) extends ScalatraS
 
   get("/oppija/:oid") {
     indexHtml
-  }
-
-  get("/omattiedot") {
-    htmlIndex(
-      scriptBundleName = "koski-omattiedot.js",
-      raamit = oppijaRaamit,
-      responsive = true
-    )
   }
 
   get("/tiedonsiirrot*") {

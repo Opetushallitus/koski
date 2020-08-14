@@ -4,12 +4,12 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.schema._
-import fi.oph.koski.servlet.HtmlServlet
+import fi.oph.koski.servlet.VirkailijaHtmlServlet
 import fi.oph.koski.suoritusote.OpiskeluoikeusFinder
 
 import scala.xml.Elem
 
-class TodistusServlet(implicit val application: KoskiApplication) extends HtmlServlet with RequiresVirkailijaOrPalvelukäyttäjä {
+class TodistusServlet(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet with RequiresVirkailijaOrPalvelukäyttäjä {
   get("/:oppijaOid") {
     val oppijaOid = params("oppijaOid")
     implicit val localizations = application.localizationRepository

@@ -2,6 +2,7 @@ package fi.oph.koski.servlet
 
 import java.util.Properties
 
+import fi.oph.koski.config.Environment
 import fi.oph.koski.html.{EiRaameja, HtmlNodes, Raamit, Virkailija}
 import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
 import fi.oph.koski.koskiuser.AuthenticationSupport
@@ -46,7 +47,6 @@ trait HtmlServlet extends KoskiBaseServlet with AuthenticationSupport with HtmlN
       renderStatus(KoskiErrorCategory.internalError())
   }
 
-  def raamitHeaderSet: Boolean = Option(request.getHeader("X-Raamit")).exists(r => Try(r.toBoolean).getOrElse(false))
-  def virkailijaRaamit: Raamit = if (raamitHeaderSet || useVirkailijaRaamitProxy) Virkailija else EiRaameja
-  private val useVirkailijaRaamitProxy = application.config.hasPath("virkailijaRaamitProxy")
+  def virkailijaRaamitSet: Boolean
+  def virkailijaRaamit: Raamit
 }
