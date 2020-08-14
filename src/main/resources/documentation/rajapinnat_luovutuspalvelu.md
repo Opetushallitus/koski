@@ -346,9 +346,86 @@ Mikäli oppijaa tai suorituksia ei löydy, palauttaa rajapinta
 
     ...
 
-## /koski/api/luovutuspalvelu/kela
+## /koski/api/luovutuspalvelu/kela/hetu
 
-Rajapinta ja tietomalli on työn alla.
+Esimerkkipyyntö
+
+    POST /koski/api/luovutuspalvelu/kela/hetu HTTP/1.1
+    Content-Type: application/json
+
+    {
+      "hetu": "180859-914S"
+    }
+Esimerkkivastaus
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+
+    {
+      "henkilö": {
+        "oid": "1.2.246.562.24.123456789",
+        "hetu": "180859-914S",
+        "syntymäaika": "1959-08-18",
+        "etunimi": "Matti",
+        "sukunimi": "Mallikas",
+        "kutsumanimi": "Matti"
+      },
+      "opiskeluoikeudet": [
+        {
+          "oid": "1.2.246.562.15.31643973527",
+          "versionumero": 1,
+          "aikaleima": "2018-09-25T14:03:58.700770",
+          ...
+        },
+        ...
+      ]
+    }
+    
+
+## /koski/api/luovutuspalvelu/kela/hetut
+
+Tällä kutsulla haetaan usean (max. 1000 kpl) henkilön tiedot henkilötunnusten perusteella.
+
+Tällä kutsulla ei voi hakea `ylioppilastutkinto`-tyyppisiä opiskeluoikeuksia,
+koska ne vaatisivat erilliset taustajärjestelmäkutsut (Ylioppilastutkintorekisteri) jokaiselle 
+henkilötunnukselle. 
+
+Esimerkkipyyntö
+
+    POST /koski/api/luovutuspalvelu/kela/hetut HTTP/1.1
+    Content-Type: application/json
+
+    {
+      "hetut": ["180859-914S", "020654-9025", "010326-953H"]
+    }
+
+Esimerkkivastaus
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json
+
+    [
+      {
+        "henkilö": {
+          "oid": "1.2.246.562.24.123456789",
+          "hetu": "180859-914S",
+          "syntymäaika": "1959-08-18",
+          "etunimi": "Matti",
+          "sukunimi": "Mallikas",
+          "kutsumanimi": "Matti"
+        },
+        "opiskeluoikeudet": [
+          {
+            "oid": "1.2.246.562.15.31643973527",
+            "versionumero": 1,
+            "aikaleima": "2018-09-25T14:03:58.700770",
+            ...
+          },
+          ...
+        ]
+      },
+      ...
+    ]
 
 Palautettavan JSON-rakenteen tietomallin dokumentaatio on
 <a href="/koski/json-schema-viewer/?schema=kela-oppija-schema.json">täällä</a>.
