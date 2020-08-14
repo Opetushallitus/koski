@@ -61,7 +61,7 @@ object ExamplesLukioonValmistavaKoulutus {
         ))
       ),
       LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa(
-        lukionKieli2015("A1", "EN"),
+        lukionKieli("A1", "EN"),
         arviointi = arviointi("S"),
         osasuoritukset = Some(List(
           kurssisuoritus(valtakunnallinenKurssi("ENA1")).copy(arviointi = numeerinenArviointi(8))

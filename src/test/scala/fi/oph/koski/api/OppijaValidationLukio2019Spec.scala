@@ -2,7 +2,7 @@ package fi.oph.koski.api
 
 import fi.oph.koski.documentation.ExamplesLukio2019.oppimääränSuoritus
 import fi.oph.koski.documentation.Lukio2019ExampleData._
-import fi.oph.koski.documentation.{ExamplesLukio2019, LukioExampleData}
+import fi.oph.koski.documentation.{ExamplesLukio2019, Lukio2019ExampleData, LukioExampleData}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
 
@@ -12,7 +12,7 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
       "Oppiaineen laajuus lasketaan moduleiden laajuuksista" in {
         val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(
           osasuoritukset = Some(List(
-            oppiaineenSuoritus(LukioExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(osasuoritukset = Some(List(
+            oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(osasuoritukset = Some(List(
               moduulinSuoritus(moduuli("OÄI1").copy(laajuus = laajuus(2.5))),
               moduulinSuoritus(moduuli("OÄI2").copy(laajuus = laajuus(1.5))),
               moduulinSuoritus(moduuli("OÄI3").copy(laajuus = laajuus(0.5)))
@@ -26,7 +26,7 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
 
       "Modulin oletuslaajuus on 1" in {
         val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(
-          osasuoritukset = Some(List(oppiaineenSuoritus(LukioExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(osasuoritukset = Some(List(
+          osasuoritukset = Some(List(oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(osasuoritukset = Some(List(
             moduulinSuoritus(moduuli("OÄI1")),
             moduulinSuoritus(moduuli("OÄI2")),
             moduulinSuoritus(moduuli("OÄI3"))
@@ -39,7 +39,7 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
 
       "Jos oppiaineella ei ole osasuorituksia laajuus on 0" in {
         val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(
-          osasuoritukset = Some(List(oppiaineenSuoritus(LukioExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(osasuoritukset = None)
+          osasuoritukset = Some(List(oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(osasuoritukset = None)
         )))))
 
         val opiskeluoikeus: Opiskeluoikeus = putAndGetOpiskeluoikeus(oo)
