@@ -128,8 +128,8 @@ case class EsiopetusRaportti(db: DB, organisaatioService: OrganisaatioService) e
 
   val columnSettings: Seq[(String, Column)] = Seq(
     "opiskeluoikeusOid" -> Column("Opiskeluoikeuden oid"),
-    "lähdejärjestelmäKoodiarvo" -> Column("Opiskeluoikeuden tunniste lähdejärjestelmässä"),
-    "lähdejärjestelmäId" -> Column("Lähdejärjestelmä"),
+    "lähdejärjestelmäKoodiarvo" -> Column("Lähdejärjestelmä"),
+    "lähdejärjestelmäId" -> Column("Opiskeluoikeuden tunniste lähdejärjestelmässä"),
     "aikaleima" -> Column("Opiskeluoikeus päivitetty"),
     "koulutustoimijaNimi" -> Column("Koulutustoimijan nimi"),
     "oppilaitosNimi" -> Column("Oppilaitoksen nimi"),
