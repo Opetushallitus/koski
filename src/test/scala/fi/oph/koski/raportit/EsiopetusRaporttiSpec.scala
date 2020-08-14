@@ -42,6 +42,7 @@ class EsiopetusRaporttiSpec extends FreeSpec with Matchers with Raportointikanta
 
         r.opiskeluoikeudenAlkamispäivä should equal(localDate(2006, 8, 13))
         r.opiskeluoikeudenViimeisinTila should equal("valmistunut")
+        r.opiskeluoikeudenTilaRaportinTarkasteluajankohtana should equal("lasna")
         r.suorituksenVahvistuspäivä should equal(Some(localDate(2007, 6, 3)))
 
         r.yksilöity should equal(true)
