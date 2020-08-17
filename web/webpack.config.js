@@ -8,11 +8,7 @@ const featureFlags = Object.keys(flags).reduce((obj, k) => {
   return obj
 }, {})
 
-const globals = new webpack.DefinePlugin(Object.assign({}, {
-    PRODUCTION_DOMAIN: JSON.stringify('koski.opintopolku.fi')
-  },
-  featureFlags
-))
+const globals = new webpack.DefinePlugin(Object.assign({}, featureFlags))
 
 module.exports = {
   entry: {
