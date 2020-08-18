@@ -55,6 +55,15 @@ class RaportitService(application: KoskiApplication) {
     )
   }
 
+  def lukionopiskelijamäärätraportti(request: AikajaksoRaporttiRequest) = {
+    OppilaitosRaporttiResponse(
+      sheets = LukionOpiskelijamäärätRaportti(lukioRepository).buildRaportti(request.oppilaitosOid, request.alku, request.loppu),
+      workbookSettings = WorkbookSettings(s"Lukion_opiskelijamäärät_raportti_${request.oppilaitosOid}", Some(request.password)),
+      filename = s"lukion_opiskelijamäärät_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
+      downloadToken = request.downloadToken
+    )
+  }
+
   def aikuistenPerusopetus(request: AikuistenPerusopetusRaporttiRequest) = {
     OppilaitosRaporttiResponse(
       sheets = AikuistenPerusopetusRaportti(

@@ -36,7 +36,7 @@ export const raportitContentP = () => {
             {raportit && raportit.includes('lukionsuoritustietojentarkistus') && <Lukioraportti organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('aikuistenperusopetussuoritustietojentarkistus') && <AikuistenPerusopetusRaportti organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('esiopetuksenraportti') && <EsiopetusRaportti organisaatioAtom={organisaatioAtom}/>}
-            {raportit && raportit.includes('lukionopiskelijamäärätraportti') && <LukionOpiskelijamäärätRaportti organisaatioAtom={organisaatioAtom} />}
+            {raportit && raportit.includes('lukionopiskelijamäärienraportti') && <LukionOpiskelijamäärätRaportti organisaatioAtom={organisaatioAtom} />}
             {console.log(raportit)}
           </div>
         ))}

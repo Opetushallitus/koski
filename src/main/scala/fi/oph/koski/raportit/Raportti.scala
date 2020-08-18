@@ -119,7 +119,7 @@ case object LukionSuoritustietojenTarkistus extends RaportinTyyppi {
   val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.lukiokoulutus.koodiarvo
 }
 
-case object LukionOpiskelijaMäärätRaportti extends RaportinTyyppi {
+case object LukionOpiskelijaMäärienRaportti extends RaportinTyyppi {
   val opiskeluoikeudenTyyppi = OpiskeluoikeudenTyyppi.lukiokoulutus.koodiarvo
 }
 
