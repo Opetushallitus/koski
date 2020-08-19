@@ -1,14 +1,5 @@
-const webpack = require('webpack')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const autoprefixer = require('autoprefixer')
-const flags = require('./featureFlags.json')
-
-const featureFlags = Object.keys(flags).reduce((obj, k) => {
-  obj[k] = JSON.stringify(flags[k])
-  return obj
-}, {})
-
-const globals = new webpack.DefinePlugin(Object.assign({}, featureFlags))
 
 module.exports = {
   entry: {
@@ -94,7 +85,6 @@ module.exports = {
         {from: 'node_modules/codemirror/mode/javascript/javascript.js', to: 'js/codemirror'},
         {from: 'node_modules/codemirror/lib/codemirror.css', to: 'css/codemirror'}
       ]
-    ),
-    globals
+    )
   ]
 }
