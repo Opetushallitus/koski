@@ -1,9 +1,5 @@
 {
   "FEATURE": {
-    "OMAT_TIEDOT": {
-      "VIRHERAPORTOINTI": true,
-      "SUORITUSJAKO": true
-    },
     "KELA_UI": false
   }
 }

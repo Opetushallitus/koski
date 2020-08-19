@@ -2,7 +2,6 @@ import React from 'baret'
 import Atom from 'bacon.atom'
 import {modelData, modelItems, modelLookup} from '../../editor/EditorModel'
 import {HeaderInfo} from './HeaderInfo'
-import {withFeatureFlag} from '../../components/withFeatureFlag'
 import {HeaderButtons} from './HeaderButtons'
 import {HeaderName} from './HeaderName'
 import {HeaderVirheraportointiSection} from './HeaderVirheraportointiSection'
@@ -16,9 +15,6 @@ export const FormState = {
   HUOLLETTAVANTIEDOT: 'huollettavantiedot',
   NONE: 'none'
 }
-
-const VirheraportointiFeature = withFeatureFlag(FEATURE.OMAT_TIEDOT.VIRHERAPORTOINTI, HeaderVirheraportointiSection)
-const SuoritusjakoFeature = withFeatureFlag(FEATURE.OMAT_TIEDOT.SUORITUSJAKO, HeaderSuoritusjakoSection)
 
 export const Header = ({oppija, oppijaSelectionBus}) => {
   const uiMode = Atom(FormState.NONE)
@@ -35,8 +31,8 @@ export const Header = ({oppija, oppijaSelectionBus}) => {
       <div className='header__bottom-row'>
         <HeaderName henkilö={henkilö}/>
         <HeaderButtons uiModeA={uiMode} stateType={FormState} oppija={oppija}/>
-        <VirheraportointiFeature uiModeA={uiMode} oppija={oppija}/>
-        <SuoritusjakoFeature uiModeA={uiMode} opiskeluoikeudet={opiskeluoikeudet}/>
+        <HeaderVirheraportointiSection uiModeA={uiMode} oppija={oppija}/>
+        <HeaderSuoritusjakoSection uiModeA={uiMode} opiskeluoikeudet={opiskeluoikeudet}/>
         <HeaderHuollettavanTiedotSection uiModeA={uiMode}/>
       </div>
     </header>
