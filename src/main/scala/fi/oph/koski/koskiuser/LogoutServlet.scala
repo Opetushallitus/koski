@@ -3,10 +3,10 @@ package fi.oph.koski.koskiuser
 import java.net.URLEncoder
 
 import fi.oph.koski.config.KoskiApplication
-import fi.oph.koski.servlet.HtmlServlet
+import fi.oph.koski.servlet.{VirkailijaHtmlServlet}
 import fi.oph.koski.sso.SSOSupport
 
-class LogoutServlet(implicit val application: KoskiApplication) extends HtmlServlet with SSOSupport {
+class LogoutServlet(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet with SSOSupport {
   get("/") {
     logger.info("Logged out")
 

@@ -3,7 +3,7 @@ package fi.oph.koski.servlet
 import fi.oph.koski.config.KoskiApplication
 import org.scalatra.ScalatraServlet
 
-class VirhesivuServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet with OmaOpintopolkuSupport {
+class VirhesivuServlet(implicit val application: KoskiApplication) extends ScalatraServlet with OppijaHtmlServlet with OmaOpintopolkuSupport {
   get("/") {
     response.setHeader("X-Virhesivu", "1") // for korhopankki/HetuLogin.jsx
     <html lang={lang}>

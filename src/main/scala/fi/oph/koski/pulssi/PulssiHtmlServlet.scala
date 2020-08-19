@@ -5,11 +5,11 @@ import java.time.LocalDateTime.now
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.html.EiRaameja
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.servlet.HtmlServlet
+import fi.oph.koski.servlet.VirkailijaHtmlServlet
 import fi.oph.koski.util.FinnishDateFormat.finnishDateTimeFormat
 import org.scalatra.ScalatraServlet
 
-class PulssiHtmlServlet(implicit val application: KoskiApplication) extends ScalatraServlet with HtmlServlet {
+class PulssiHtmlServlet(implicit val application: KoskiApplication) extends ScalatraServlet with VirkailijaHtmlServlet {
   get("/") {
     htmlIndex("koski-pulssi.js", raamit = EiRaameja, responsive = true)
   }

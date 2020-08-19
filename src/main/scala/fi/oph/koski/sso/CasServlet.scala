@@ -4,14 +4,14 @@ import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.http.{Http, KoskiErrorCategory, OpintopolkuCallerId}
 import fi.oph.koski.koskiuser.{AuthenticationSupport, DirectoryClientLogin, KoskiUserLanguage}
 import fi.oph.koski.log.LogUserContext
-import fi.oph.koski.servlet.{HtmlServlet, NoCache}
+import fi.oph.koski.servlet.{NoCache, VirkailijaHtmlServlet}
 import fi.vm.sade.utils.cas.CasClient.Username
 import fi.vm.sade.utils.cas.{CasClient, CasLogout}
 
 /**
   *  This is where the user lands after a CAS login / logout
   */
-class CasServlet(implicit val application: KoskiApplication) extends HtmlServlet with AuthenticationSupport with NoCache {
+class CasServlet(implicit val application: KoskiApplication) extends VirkailijaHtmlServlet with AuthenticationSupport with NoCache {
   private val casClient = new CasClient(application.config.getString("opintopolku.virkailija.url"), Http.newClient("cas.serviceticketvalidation"), OpintopolkuCallerId.koski)
   private val koskiSessions = application.koskiSessionRepository
 
