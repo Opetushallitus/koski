@@ -36,6 +36,7 @@ export const raportitContentP = () => {
             {raportit && raportit.includes('lukionsuoritustietojentarkistus') && <Lukioraportti organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('aikuistenperusopetussuoritustietojentarkistus') && <AikuistenPerusopetusRaportti organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('esiopetuksenraportti') && <EsiopetusRaportti organisaatioAtom={organisaatioAtom}/>}
+            {raportit && raportit.includes('esiopetuksenoppijamäärienraportti') && <EsiopetuksenOppijamäärätRaportti organisaatioAtom={organisaatioAtom}/>}
           </div>
         ))}
       </div>
@@ -160,6 +161,18 @@ const EsiopetusRaportti = ({organisaatioAtom}) => {
     title={titleText}
     description={descriptionText}
     example={exampleText}
+  />)
+}
+
+const EsiopetuksenOppijamäärätRaportti = ({organisaatioAtom}) => {
+  const titleText = <Text name='Esiopetus-oppilasmäärät-raportti-title'/>
+  const descriptionText = <Text name='Esiopetus-oppilasmäärät-raportti-description'/>
+
+  return (<RaporttiPaivalta
+    organisaatioAtom={organisaatioAtom}
+    apiEndpoint={'/esiopetuksenoppijamäärätraportti'}
+    title={titleText}
+    description={descriptionText}
   />)
 }
 
