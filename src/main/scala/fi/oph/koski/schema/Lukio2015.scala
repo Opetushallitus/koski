@@ -131,7 +131,7 @@ case class PaikallinenLukionKurssi(
 trait LukionOppiaineTaiEiTiedossaOppiaine extends Koulutusmoduuli
 trait LukionOppiaine2015 extends LukionOppiaine with LukionOppiaineTaiEiTiedossaOppiaine
 
-trait LukionLaajuudellinenOppiaine2015 extends LukionOppiaine2015 with KoulutusmoduuliPakollinenLaajuus {
+trait LukionLaajuudellinenOppiaine2015 extends LukionOppiaine2015 with KoulutusmoduuliPakollinenLaajuus with PreIBOppiaine {
   @Discriminator
   def laajuus: LaajuusKursseissa
 }
@@ -155,7 +155,7 @@ case class LaajuudetonMuuValtakunnallinenOppiaine2015(
   tunniste: Koodistokoodiviite,
   pakollinen: Boolean = true,
   perusteenDiaarinumero: Option[String] = None
-) extends LukionValtakunnallinenOppiaine2015 with Laajuudeton
+) extends LukionValtakunnallinenOppiaine2015 with Laajuudeton with PreIBOppiaine
 
 @Description("Oppiaineena vieras tai toinen kotimainen kieli")
 case class LaajuudetonVierasTaiToinenKotimainenKieli2015(
@@ -167,7 +167,7 @@ case class LaajuudetonVierasTaiToinenKotimainenKieli2015(
   kieli: Koodistokoodiviite,
   pakollinen: Boolean = true,
   perusteenDiaarinumero: Option[String] = None
-) extends LukionValtakunnallinenOppiaine2015 with Kieliaine with Laajuudeton {
+) extends LukionValtakunnallinenOppiaine2015 with Kieliaine with Laajuudeton with PreIBOppiaine {
   override def description = kieliaineDescription
 }
 
