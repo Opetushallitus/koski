@@ -35,6 +35,8 @@ class OpiskeluoikeusValidationSpec extends FreeSpec with Matchers with Opiskeluo
             ]
             disabledPäätasonSuoritusLuokat = [
             ]
+            disabledOsasuoritusTyypit = [
+            ]
           }
         """.stripMargin)
       val opiskelija = oppija(KoskiSpecificMockOppijat.valma.oid)
@@ -51,10 +53,30 @@ class OpiskeluoikeusValidationSpec extends FreeSpec with Matchers with Opiskeluo
             disabledPäätasonSuoritusLuokat = [
               ValmaKoulutuksenSuoritus
             ]
+            disabledOsasuoritusTyypit = [
+            ]
           }
         """.stripMargin)
       val opiskelija = oppija(KoskiSpecificMockOppijat.valma.oid)
       mockKoskiValidator(mockConfig).validateAsJson(opiskelija).left.get should equal (KoskiErrorCategory.notImplemented("Päätason suorituksen luokka ValmaKoulutuksenSuoritus ei ole käytössä tässä ympäristössä"))
+    }
+
+    "Osasuorituksen tyyppi jonka käyttö on estetty" in {
+      implicit val accessType = AccessType.read
+      val mockConfig = ConfigFactory.parseString(
+        """
+          features = {
+            disabledPäätasonSuoritusTyypit = [
+            ]
+            disabledPäätasonSuoritusLuokat = [
+            ]
+            disabledOsasuoritusTyypit = [
+              valmakoulutuksenosa
+            ]
+          }
+        """.stripMargin)
+      val opiskelija = oppija(KoskiSpecificMockOppijat.valma.oid)
+      mockKoskiValidator(mockConfig).validateAsJson(opiskelija).left.get should equal (KoskiErrorCategory.notImplemented("Osasuorituksen tyyppi valmakoulutuksenosa ei ole käytössä tässä ympäristössä"))
     }
   }
 
