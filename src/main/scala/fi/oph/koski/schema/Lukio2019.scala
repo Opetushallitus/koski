@@ -95,7 +95,7 @@ case class MuidenLukioOpintojenSuoritus2019(
   @Description("Moduulien ja paikallisten opintojaksojen suoritukset")
   @Title("Moduulit ja paikalliset opintojaksot")
   override val osasuoritukset: Option[List[LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019]]
-) extends LukionOppimääränOsasuoritus2019 with PreIBSuorituksenOsasuoritus with Vahvistukseton
+) extends LukionOppimääränOsasuoritus2019 with Vahvistukseton
 
 @Title("Lukion oppiaineen suoritus 2019")
 @Description("Lukion oppiaineen suoritustiedot 2019")
@@ -171,7 +171,7 @@ case class LukionPaikallisenOpintojaksonSuoritus2019(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionpaikallinenopintojakso2019", koodistoUri = "suorituksentyyppi")
 ) extends LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019 with MahdollisestiSuorituskielellinen with MahdollisestiTunnustettu with Vahvistukseton
 
-trait LukionModuuliTaiPaikallinenOpintojakso2019 extends KoulutusmoduuliPakollinenLaajuus with PreIBKurssi with Valinnaisuus {
+trait LukionModuuliTaiPaikallinenOpintojakso2019 extends KoulutusmoduuliPakollinenLaajuus with Valinnaisuus {
   def laajuus: LaajuusOpintopisteissä
 }
 

@@ -787,13 +787,13 @@
   "koodiUri" : "suorituksentyyppi_lukionoppiaineidenoppimaarat2019",
   "koodiArvo" : "lukionoppiaineidenoppimaarat2019",
   "metadata" : [ {
-    "nimi" : "Lukion oppiaineiden oppimäärät 2019",
+    "nimi" : "Lukion oppiaineet",
     "kieli" : "FI"
   }, {
-    "nimi" : "Lukion oppiaineiden oppimäärät 2019",
+    "nimi" : "Lukion oppiaineet",
     "kieli" : "SV"
   }, {
-    "nimi" : "Lukion oppiaineiden oppimäärät 2019",
+    "nimi" : "Lukion oppiaineet",
     "kieli" : "EN"
   } ],
   "versio" : 1,
