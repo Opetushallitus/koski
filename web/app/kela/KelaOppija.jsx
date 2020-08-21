@@ -23,7 +23,7 @@ export const KelaHenkilo = ({henkilo}) => {
 }
 
 export const KelaOpiskeluoikeus = ({opiskeluoikeus}) => {
-  const removeFromTableView = ['suoritukset', 'alkamispäivä', 'päättymispäivä', 'tila', 'oid', 'versionumero', 'arvioituPäättymispäivä', 'oppilaitos', 'koulutustoimija', 'tyyppi', 'aikaleima']
+  const removeFromTableView = ['suoritukset', 'alkamispäivä', 'päättymispäivä', 'oid', 'versionumero', 'arvioituPäättymispäivä', 'oppilaitos', 'koulutustoimija', 'tyyppi', 'aikaleima']
   return (
     <div className='kela opiskeluoikeus'>
       <OpiskeluoikeusOtsikko opiskeluoikeus={opiskeluoikeus}/>
