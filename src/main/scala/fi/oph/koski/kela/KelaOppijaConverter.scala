@@ -82,7 +82,7 @@ object KelaOppijaConverter extends Logging {
               case _ => None
             }
           )
-        )
+        ).sortWith((s, t) => s.alku.isBefore(t.alku))
       ),
       suoritukset = opiskeluoikeus.suoritukset.map(convertSuoritus),
       lisätiedot = opiskeluoikeus.lisätiedot.map(convertLisatiedot),

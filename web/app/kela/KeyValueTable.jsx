@@ -126,7 +126,7 @@ const Laajuus = ({value}) => (
 )
 
 const Tilat = ({ value }) => {
-  const jaksot = value.opiskeluoikeusjaksot
+  const jaksot = value.opiskeluoikeusjaksot.reverse()
   const today = new Date()
   const activeIndex = jaksot.findIndex(j => parseISODate(j.alku) <= today)
   return (
