@@ -90,7 +90,7 @@ case class MuidenLukioOpintojenSuoritus2019(
   @KoodistoKoodiarvo("lukionmuuopinto2019")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionmuuopinto2019", "suorituksentyyppi"),
   arviointi: Option[List[LukionOppiaineenArviointi]] = None,
-  koulutusmoduuli: MuutSuorituksetTaiLukiodiplomit2019,
+  koulutusmoduuli: MuutSuorituksetTaiVastaavat2019,
   @MinItems(1)
   @Description("Moduulien ja paikallisten opintojaksojen suoritukset")
   @Title("Moduulit ja paikalliset opintojaksot")
@@ -134,7 +134,7 @@ case class LukionModuulinSuoritus2019(
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "lukionvaltakunnallinenmoduuli2019", koodistoUri = "suorituksentyyppi")
 ) extends LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019 with ValtakunnallisenModuulinSuoritus with MahdollisestiSuorituskielellinen with MahdollisestiTunnustettu
 
-trait MuutSuorituksetTaiLukiodiplomit2019 extends KoodistostaLöytyväKoulutusmoduuliValinnainenLaajuus {
+trait MuutSuorituksetTaiVastaavat2019 extends KoodistostaLöytyväKoulutusmoduuliValinnainenLaajuus {
   @KoodistoUri("lukionmuutopinnot")
   def tunniste: Koodistokoodiviite
 }
@@ -145,7 +145,7 @@ case class MuutLukionSuoritukset2019(
   @KoodistoKoodiarvo("MS")
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusOpintopisteissä]
-) extends MuutSuorituksetTaiLukiodiplomit2019
+) extends MuutSuorituksetTaiVastaavat2019
 
 @Title("Lukiodiplomit 2019")
 @Description("Kategoria lukiodiplomeille 2019.")
@@ -153,7 +153,15 @@ case class Lukiodiplomit2019(
   @KoodistoKoodiarvo("LD")
   tunniste: Koodistokoodiviite,
   laajuus: Option[LaajuusOpintopisteissä]
-) extends MuutSuorituksetTaiLukiodiplomit2019
+) extends MuutSuorituksetTaiVastaavat2019
+
+@Title("Temaattiset opinnot 2019")
+@Description("Kategoria temaattisille opinnoille 2019.")
+case class TemaattisetOpinnot2019(
+  @KoodistoKoodiarvo("TO")
+  tunniste: Koodistokoodiviite,
+  laajuus: Option[LaajuusOpintopisteissä]
+) extends MuutSuorituksetTaiVastaavat2019
 
 @Title("Lukion paikallisen opintojakson suoritus 2019")
 @Description("Lukion paikallisen opintojakson suoritustiedot 2019")
