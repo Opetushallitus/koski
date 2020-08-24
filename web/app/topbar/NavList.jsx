@@ -25,4 +25,4 @@ const KelaNavLink = ({location}) => (
   <li>{naviLink('/koski/kela', 'Kela', location.path, '', (path, loc) => loc.startsWith(path))}</li>
 )
 
-const KelaNavLinkWithFeatureFlag = withFeatureFlag(FEATURE.KELA_UI, KelaNavLink)
+const KelaNavLinkWithFeatureFlag = withFeatureFlag('kelaUi', KelaNavLink)

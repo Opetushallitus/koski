@@ -128,6 +128,48 @@
       }
     }
 
+    .opiskeluoikeus.tila {
+      li {
+        display: block;
+      }
+
+      .label {
+        min-width: 100px;
+      }
+    }
+
+    .opiskeluoikeusjakso {
+      margin-bottom: 8px;
+
+      label {
+        display: inline-block;
+      }
+
+      label.date {
+        min-width: 75px;
+      }
+
+      label.tila {
+        margin-left: 20px;
+      }
+
+      &.active {
+        font-weight: 600;
+        position: relative; // For child pseudoelement positioning
+
+        &:before {
+          font-family: FontAwesome, serif;
+          color: @color-link-blue;
+          font-weight: lighter;
+          content: "\F061";
+          font-size: 12px;
+          position: absolute;
+          left: -16px;
+          top: 4px;
+        }
+      }
+    }
+
     .suoritus.vahvistus {
       margin: 16px 0 8px 0;
       padding: 16px;

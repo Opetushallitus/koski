@@ -89,6 +89,9 @@ const spesificComponent = (key, value) => {
   if (key === 'osaamisala') {
     return OsaamisalaJaksotInline
   }
+  if (key === 'tila') {
+    return Tilat
+  }
   return undefined
 }
 
@@ -121,6 +124,33 @@ const Laajuus = ({value}) => (
     <Koodistoviite value={value.yksikkö}/>
   </>
 )
+
+const Tilat = ({ value }) => {
+  const jaksot = value.opiskeluoikeusjaksot.reverse()
+  const today = new Date()
+  const activeIndex = jaksot.findIndex(j => parseISODate(j.alku) <= today)
+  return (
+    <ul className="array">
+      {
+        jaksot.map((item, i) => {
+          return (
+            <li key={i}>
+              <div
+                className={'opiskeluoikeusjakso' + (i === activeIndex ? ' active' : '')}>
+                <label className="date">
+                  <DateView value={item.alku}/>
+                </label>
+                <label className="tila">
+                  <TextView value={item.tila.nimi}/>
+                </label>
+              </div>
+            </li>
+          )
+        })
+      }
+    </ul>
+  )
+}
 
 const OsaamisalaJaksotInline = ({value}) => {
   const osaamisalaJaksot = value

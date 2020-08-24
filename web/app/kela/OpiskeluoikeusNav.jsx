@@ -19,8 +19,7 @@ export const OpiskeluoikeusTabs = ({opiskeluoikeudet}) => {
               return (
                 <li onClick={() => selectedIndexAtom.set(index)} className={index === selectedIndex ? 'selected' : ''} key={index}>
                   <span className='opiskeluoikeuden-tyyppi'>{t(opiskeluoikeus.tyyppi.nimi || {})}</span>
-                  <span>{oppilaitoksenNimi}</span>
-                  <span>{opiskeluoikeudenTilaString(opiskeluoikeus)}</span>
+                  <span>{oppilaitoksenNimi} {opiskeluoikeudenTilaString(opiskeluoikeus)}</span>
                   <ul>
                     {opiskeluoikeus.suoritukset.map((suoritus, idx) => {
                       const suorituksenTyyppi = t(suoritus.tyyppi.nimi || {})

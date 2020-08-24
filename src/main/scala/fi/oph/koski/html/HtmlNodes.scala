@@ -3,7 +3,7 @@ package fi.oph.koski.html
 import java.io.File
 import java.net.URLDecoder
 
-import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.config.{Environment, KoskiApplication}
 import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSession
@@ -34,6 +34,7 @@ trait HtmlNodes extends KoskiBaseServlet with PiwikNodes with LanguageSupport {
         <script id="localization">
           {Unparsed("window.koskiLocalizationMap="+JsonSerializer.writeWithRoot(localizations.localizations))}
         </script>
+        <script>{Unparsed("window.environment='" + Environment.currentEnvironment(application.config) + "'")}</script>
         {scripts}
         <script id="bundle" src={"/koski/js/" + scriptBundleName + "?" + buildVersion.getOrElse(scriptTimestamp(scriptBundleName))}></script>
         <!-- oppija-raamit footer is inserted here -->
