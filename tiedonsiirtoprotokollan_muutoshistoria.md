@@ -1,3 +1,11 @@
+## 24.8.2020
+- poistettu toistaiseksi lukion 2019 opetussuunnitelman integraatio osana Pre IB -opintojen suorituksia.
+
+## 13.8.2020
+- Lisätty uusi Kela-rajapinta. Ei ole vielä käytössä tuotantoympäristössä.
+- Lisätty ensimmäinen versio lukion 2019 opetussuunnitelman mukaisista suorituksista. Uusien suoritustyyppien tallennus
+ei ole vielä mahdollista tuotantoympäristössä.
+
 ## 17.6.2020
 - Deprekoitu esiopetuksen, perusopetuksen ja perusopetuksen lisäopetuksen opiskeluoikeuden lisätiedoista kenttä "tukimuodot"
 - Lisätty perusopetuksen ja perusopetuksen lisäopetuksen opiskeluoikeuden erityisen tuen ja tehostetun tuen päätöksiin (toistaiseksi deprekoinnilla piilotettu) kenttä tukimuodoista
