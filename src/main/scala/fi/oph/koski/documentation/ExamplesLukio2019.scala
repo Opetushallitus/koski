@@ -43,15 +43,15 @@ object ExamplesLukio2019 {
   )
 
   val oppiaineSuorituksetJoissaMuitaSuorituksiaJaVastaavia =
-    oppiainesuoritukset ::: List(lukioDiplomienSuoritus().copy(arviointi = arviointi("6")).copy(osasuoritukset = Some(List(
+    oppiainesuoritukset ::: List(lukioDiplomienSuoritus().copy(osasuoritukset = Some(List(
       moduulinSuoritus(moduuli("MELD5", pakollinen, 2.0f)).copy(arviointi = numeerinenArviointi(7)),
       moduulinSuoritus(moduuli("KÄLD3", pakollinen, 2.0f)).copy(arviointi = numeerinenArviointi(9))
     ))),
-    muidenLukioOpintojenSuoritus().copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
+    muidenLukioOpintojenSuoritus().copy(osasuoritukset = Some(List(
       moduulinSuoritus(moduuli("KE3")).copy(arviointi = numeerinenArviointi(10)),
       paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("HAI765", "Kansanmusiikki haitarilla")).copy(arviointi = sanallinenArviointi("S"))
     ))),
-    temaattistenOpintojenSuoritus().copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
+    temaattistenOpintojenSuoritus().copy(osasuoritukset = Some(List(
       paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("KAN200", "Kanteleensoiton perusteet")).copy(arviointi = sanallinenArviointi("S"))
     ))))
 

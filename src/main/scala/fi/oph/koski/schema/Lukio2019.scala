@@ -89,13 +89,12 @@ trait LukionOppimääränOsasuoritus2019 extends LukionOppimääränPäätasonOs
 case class MuidenLukioOpintojenSuoritus2019(
   @KoodistoKoodiarvo("lukionmuuopinto2019")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite("lukionmuuopinto2019", "suorituksentyyppi"),
-  arviointi: Option[List[LukionOppiaineenArviointi]] = None,
   koulutusmoduuli: MuutSuorituksetTaiVastaavat2019,
   @MinItems(1)
   @Description("Moduulien ja paikallisten opintojaksojen suoritukset")
   @Title("Moduulit ja paikalliset opintojaksot")
   override val osasuoritukset: Option[List[LukionModuulinTaiPaikallisenOpintojaksonSuoritus2019]]
-) extends LukionOppimääränOsasuoritus2019 with Vahvistukseton
+) extends LukionOppimääränOsasuoritus2019 with Vahvistukseton with Arvioinniton
 
 @Title("Lukion oppiaineen suoritus 2019")
 @Description("Lukion oppiaineen suoritustiedot 2019")

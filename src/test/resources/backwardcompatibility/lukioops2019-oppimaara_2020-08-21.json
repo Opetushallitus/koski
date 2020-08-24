@@ -787,13 +787,6 @@
           "koodiarvo" : "lukionmuuopinto2019",
           "koodistoUri" : "suorituksentyyppi"
         },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "6",
-            "koodistoUri" : "arviointiasteikkoyleissivistava"
-          },
-          "hyväksytty" : true
-        } ],
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "LD",
@@ -880,13 +873,6 @@
           "koodiarvo" : "lukionmuuopinto2019",
           "koodistoUri" : "suorituksentyyppi"
         },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "9",
-            "koodistoUri" : "arviointiasteikkoyleissivistava"
-          },
-          "hyväksytty" : true
-        } ],
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "MS",
@@ -978,13 +964,6 @@
           "koodiarvo" : "lukionmuuopinto2019",
           "koodistoUri" : "suorituksentyyppi"
         },
-        "arviointi" : [ {
-          "arvosana" : {
-            "koodiarvo" : "8",
-            "koodistoUri" : "arviointiasteikkoyleissivistava"
-          },
-          "hyväksytty" : true
-        } ],
         "koulutusmoduuli" : {
           "tunniste" : {
             "koodiarvo" : "TO",
