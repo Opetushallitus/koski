@@ -40,6 +40,7 @@ export class LukionOppiaineEditor extends React.Component {
       showLaajuus = true,
       useOppiaineLaajuus = false,
       showArviointi = true,
+      showArviointiEditor = true,
       customOsasuoritusTitle,
       customOsasuoritusAlternativesCompletionFn,
       customKurssitSortFn
@@ -82,11 +83,13 @@ export class LukionOppiaineEditor extends React.Component {
         {
           showArviointi && (
             <td className='arvosana'>
-              <Arviointi
-                oppiaine={oppiaine}
-                suoritetutKurssit={suoritetutKurssit(kurssit)}
-                footnote={footnote}
-              />
+              {showArviointiEditor && (
+                <Arviointi
+                  oppiaine={oppiaine}
+                  suoritetutKurssit={suoritetutKurssit(kurssit)}
+                  footnote={footnote}
+                />
+              )}
             </td>
           )
         }
