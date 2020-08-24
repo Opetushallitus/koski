@@ -6,7 +6,7 @@ export default {
     'kelaUi': true
   },
   'OPHKoskiOpintopolku-QA': {
-    'kelaUi': false
+    'kelaUi': true
   },
   'OPHKoskiProd': {
     'kelaUi': false
