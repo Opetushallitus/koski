@@ -211,10 +211,14 @@ case class Järjestämismuotojakso(
   tunniste: Koodistokoodiviite
 )
 
+case class OsaamisenHankkimistapa (
+  tunniste: Koodistokoodiviite
+)
+
 case class OsaamisenHankkimistapajakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
-  tunniste: Koodistokoodiviite
+  osaamisenHankkimistapa: OsaamisenHankkimistapa
 )
 
 case class Vahvistus(

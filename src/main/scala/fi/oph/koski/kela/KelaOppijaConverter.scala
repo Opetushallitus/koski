@@ -236,7 +236,13 @@ object KelaOppijaConverter extends Logging {
         case _ => None
       },
       osaamisenHankkimistavat = suoritus match {
-        case o: schema.OsaamisenHankkimistavallinen => o.osaamisenHankkimistavat.map(_.map(j => OsaamisenHankkimistapajakso(alku = j.alku, loppu = j.loppu, tunniste = convertKoodiviite(j.osaamisenHankkimistapa.tunniste))))
+        case o: schema.OsaamisenHankkimistavallinen => o.osaamisenHankkimistavat.map(_.map(j =>
+          OsaamisenHankkimistapajakso(
+            alku = j.alku,
+            loppu = j.loppu,
+            osaamisenHankkimistapa = OsaamisenHankkimistapa(tunniste = convertKoodiviite(j.osaamisenHankkimistapa.tunniste))
+          )
+        ))
         case _ => None
       },
       työssäoppimisjaksot = suoritus match {
