@@ -22,6 +22,7 @@ export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaine
       oppiaine={oppiaine}
       additionalEditableKoulutusmoduuliProperties={additionalEditableKoulutusmoduuliProperties}
       customOsasuoritusTitle='osasuoritus'
+      showArviointiEditor={!oppiaine.value.classes.includes('arvioinniton')}
     />
   ))
   const errorRows = oppiaineet.map(oppiaine =>

@@ -42,14 +42,17 @@ object ExamplesLukio2019 {
     )))
   )
 
-  val oppiaineSuorituksetJoissaMuitaSuorituksiaJaLukioDiplomeita =
-    oppiainesuoritukset ::: List(lukioDiplomienSuoritus().copy(arviointi = arviointi("6")).copy(osasuoritukset = Some(List(
+  val oppiaineSuorituksetJoissaMuitaSuorituksiaJaVastaavia =
+    oppiainesuoritukset ::: List(lukioDiplomienSuoritus().copy(osasuoritukset = Some(List(
       moduulinSuoritus(moduuli("MELD5", pakollinen, 2.0f)).copy(arviointi = numeerinenArviointi(7)),
       moduulinSuoritus(moduuli("KÄLD3", pakollinen, 2.0f)).copy(arviointi = numeerinenArviointi(9))
     ))),
-    muidenLukioOpintojenSuoritus().copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
+    muidenLukioOpintojenSuoritus().copy(osasuoritukset = Some(List(
       moduulinSuoritus(moduuli("KE3")).copy(arviointi = numeerinenArviointi(10)),
       paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("HAI765", "Kansanmusiikki haitarilla")).copy(arviointi = sanallinenArviointi("S"))
+    ))),
+    temaattistenOpintojenSuoritus().copy(osasuoritukset = Some(List(
+      paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("KAN200", "Kanteleensoiton perusteet")).copy(arviointi = sanallinenArviointi("S"))
     ))))
 
   lazy val oppimääränSuoritus = LukionOppimääränSuoritus2019(
@@ -57,7 +60,7 @@ object ExamplesLukio2019 {
     oppimäärä = nuortenOpetussuunnitelma,
     suorituskieli = suomenKieli,
     toimipiste = jyväskylänNormaalikoulu,
-    osasuoritukset = Some(oppiaineSuorituksetJoissaMuitaSuorituksiaJaLukioDiplomeita)
+    osasuoritukset = Some(oppiaineSuorituksetJoissaMuitaSuorituksiaJaVastaavia)
   )
 
   lazy val oppiaineidenOppimäärienSuoritus = LukionOppiaineidenOppimäärienSuoritus2019(
@@ -132,7 +135,9 @@ object Lukio2019ExampleData {
 
   def lukioDiplomienSuoritus(): MuidenLukioOpintojenSuoritus2019 = muidenLukioOpintojenSuoritus(Lukiodiplomit2019(Koodistokoodiviite(koodistoUri = "lukionmuutopinnot", koodiarvo= "LD"), None))
 
-  private def muidenLukioOpintojenSuoritus(koulutusmoduuli: MuutSuorituksetTaiLukiodiplomit2019): MuidenLukioOpintojenSuoritus2019 = MuidenLukioOpintojenSuoritus2019(
+  def temaattistenOpintojenSuoritus(): MuidenLukioOpintojenSuoritus2019 = muidenLukioOpintojenSuoritus(TemaattisetOpinnot2019(Koodistokoodiviite(koodistoUri = "lukionmuutopinnot", koodiarvo= "TO"), None))
+
+  private def muidenLukioOpintojenSuoritus(koulutusmoduuli: MuutSuorituksetTaiVastaavat2019): MuidenLukioOpintojenSuoritus2019 = MuidenLukioOpintojenSuoritus2019(
     koulutusmoduuli = koulutusmoduuli,
     osasuoritukset = None
   )
