@@ -307,7 +307,7 @@ case class LukionMatematiikka2019(
   oppimäärä: Koodistokoodiviite,
   pakollinen: Boolean = true,
   @DefaultValue(None)
-  laajuus: Option[LaajuusOpintopisteissä] = Some(LaajuusOpintopisteissä(1))
+  laajuus: Option[LaajuusOpintopisteissä] = None
 ) extends LukionValtakunnallinenOppiaine2019 with KoodistostaLöytyväKoulutusmoduuliValinnainenLaajuus with Oppimäärä {
   override def description = oppimäärä.description
   def withLaajuus(laajuusArvo: Double): LukionOppiaine2019 = this.copy(laajuus = Some(LaajuusOpintopisteissä(laajuusArvo)))
