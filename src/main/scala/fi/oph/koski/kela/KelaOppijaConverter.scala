@@ -232,7 +232,13 @@ object KelaOppijaConverter extends Logging {
       },
       alkamispäivä = suoritus.alkamispäivä,
       järjestämismuodot = suoritus match {
-        case j: schema.Järjestämismuodollinen => j.järjestämismuodot.map(_.map(j => Järjestämismuotojakso(alku = j.alku, loppu = j.loppu, tunniste = convertKoodiviite(j.järjestämismuoto.tunniste))))
+        case j: schema.Järjestämismuodollinen => j.järjestämismuodot.map(_.map(j =>
+          Järjestämismuotojakso(
+            alku = j.alku,
+            loppu = j.loppu,
+            järjestämismuoto = Järjestämismuoto(tunniste = convertKoodiviite(j.järjestämismuoto.tunniste))
+          )
+        ))
         case _ => None
       },
       osaamisenHankkimistavat = suoritus match {

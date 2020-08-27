@@ -205,10 +205,14 @@ case class Työssäoppimisjakso(
   laajuus: schema.Laajuus
 )
 
+case class Järjestämismuoto (
+  tunniste: Koodistokoodiviite
+)
+
 case class Järjestämismuotojakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
-  tunniste: Koodistokoodiviite
+  järjestämismuoto: Järjestämismuoto
 )
 
 case class OsaamisenHankkimistapa (
