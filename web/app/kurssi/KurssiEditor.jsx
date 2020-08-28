@@ -4,7 +4,7 @@ import {ArvosanaEditor} from '../suoritus/ArvosanaEditor'
 import {pushRemoval} from '../editor/EditorModel'
 import {buildClassNames} from '../components/classnames'
 import {KurssiPopup} from './KurssiPopup'
-import {isLukionKurssimainen, isPaikallinen} from '../suoritus/Koulutusmoduuli'
+import {isLukio2019ModuuliTaiOpintojakso, isLukionKurssimainen, isPaikallinen} from '../suoritus/Koulutusmoduuli'
 import {FootnoteHint} from '../components/footnote'
 import {eiLasketaKokonaispistemäärään} from '../dia/DIA'
 
@@ -34,6 +34,7 @@ export class KurssiEditor extends React.Component {
     let kurssinTyyppi = koulutusmoduuli.kurssinTyyppi ? koulutusmoduuli.kurssinTyyppi.koodiarvo : ''
     let edit = kurssi.context.edit
     const paikallinenLukionKurssimainen = isLukionKurssimainen(koulutusmoduuliModel) && isPaikallinen(koulutusmoduuliModel)
+    const paikallinenLukionOpintojakso = isLukio2019ModuuliTaiOpintojakso(koulutusmoduuliModel) && isPaikallinen(koulutusmoduuliModel)
     let className = buildClassNames([
       'tunniste',
       kurssinTyyppi,
@@ -50,6 +51,9 @@ export class KurssiEditor extends React.Component {
         }
         {
           paikallinenLukionKurssimainen && <FootnoteHint title={'Paikallinen kurssi'} />
+        }
+        {
+          paikallinenLukionOpintojakso && <FootnoteHint title={'Paikallinen opintojakso'} />
         }
         {
           eiLasketaKokonaispistemäärään(kurssi) &&
