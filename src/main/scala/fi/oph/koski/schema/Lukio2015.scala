@@ -140,7 +140,7 @@ trait LukionOppiaine2015 extends LukionOppiaine with LukionOppiaineTaiEiTiedossa
 @OnlyWhen("../tyyppi/koodiarvo", "lukionoppiaineenoppimaara")
 @OnlyWhen("../tyyppi/koodiarvo", "luvalukionoppiaine")
 @OnlyWhen("../tyyppi/koodiarvo", "preiboppiaine")
-case class PaikallinenLukionOppiaine2015(
+case class PaikallinenLukionOppiaine(
   tunniste: PaikallinenKoodi,
   kuvaus: LocalizedString,
   pakollinen: Boolean = true,
