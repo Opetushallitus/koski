@@ -120,6 +120,10 @@ function OpinnotPage() {
         wait.until(TodistusPage().isVisible)
       )
     },
+    sisältääTodistuslinkin: function(indexOrName) {
+      var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
+      return typeof findFirstNotThrowing('a.todistus', opiskeluoikeus) !== 'undefined'
+    },
     avaaLisaysDialogi: function() {
       if (!S('.lisaa-opiskeluoikeusjakso-modal .modal-content').is(':visible')) {
         return click(S('.opiskeluoikeuden-tiedot .add-item a'))()
