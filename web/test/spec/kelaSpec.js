@@ -96,4 +96,26 @@ describe('Kela', function () {
       expect(kela.getCurrentUrl().endsWith('/koski/kela')).to.equal(true)
     })
   })
+
+  describe('DIA:n ensimmäisen tason osasuorituksilta piilotetaan arviointi-sarakkeet, koska näillä ei ole arviointia', function () {
+    before(
+      Authentication().login('Laaja'),
+      kela.openPage,
+      kela.searchAndSelect('151013-2195', 'Dia')
+    )
+
+    var sarakkeetSisältääArvioinnin = 'Osasuoritukset Laajuus (vuosiviikkotuntia) Arviointipäivä Hyväksytty\n'
+
+    it('Taulukosta on piilotettu arviointi-sarakkeet', function () {
+      expect(extractAsText(S('table.osasuoritukset'))).to.not.include(sarakkeetSisältääArvioinnin)
+    })
+
+    describe('Osasuorituksen osasuorituksille näytetään arviointi-sarakkeet', function () {
+      before(kela.selectOsasuoritus('Matematiikka'))
+
+      it('Toimii', function () {
+        expect(extractAsText(S('table.osasuoritukset'))).to.include(sarakkeetSisältääArvioinnin)
+      })
+    })
+  })
 })

@@ -4,7 +4,7 @@ import Atom from 'bacon.atom'
 import {BooleanView, DateView, KeyValueTable, NumberView} from './KeyValueTable'
 import {t} from '../i18n/i18n'
 
-export const KelaOsasuorituksetTable = ({osasuoritukset, path, nested}) => {
+export const KelaOsasuorituksetTable = ({osasuoritukset, path, nested, piilotaArviointiSarakkeet}) => {
   const currentPath = path + '.osasuoritukset'
   const laajuudenYksikko = R.head(R.uniq(osasuoritukset.map(findLaajuudenYksikko).filter(R.identity)))
   return (
@@ -14,21 +14,24 @@ export const KelaOsasuorituksetTable = ({osasuoritukset, path, nested}) => {
       <tr>
         <th className='osasuoritukset-title'>{'Osasuoritukset'}</th>
         <th className='arviointi'>{t('Laajuus' + ((laajuudenYksikko && ` (${laajuudenYksikko})`) || ''))}</th>
+      {!piilotaArviointiSarakkeet && <>
         <th className='arviointi'>{t('Arviointipäivä')}</th>
         <th className='arviointi'>{t('Hyväksytty')}</th>
+      </>}
       </tr>
       </tbody>
     {osasuoritukset.map((osasuoritus, index) => (
       <ExpandableOsasuoritus key={index}
                              osasuoritus={osasuoritus}
                              path={currentPath}
+                             piilotaArviointiSarakkeet={piilotaArviointiSarakkeet}
       />
     ))}
     </table>
   )
 }
 
-const ExpandableOsasuoritus = ({osasuoritus, path}) => {
+const ExpandableOsasuoritus = ({osasuoritus, path, piilotaArviointiSarakkeet}) => {
   const expandedAtom = Atom(false)
   const mahdollinenSuorituksenLaajuus = osasuoritus.koulutusmoduuli.laajuus || {}
   const laajuus = mahdollinenSuorituksenLaajuus.arvo || osasuoritustenYhteislaajuus(osasuoritus)
@@ -49,12 +52,14 @@ const ExpandableOsasuoritus = ({osasuoritus, path}) => {
       <td className='laajuus'>
         <NumberView value={laajuus} />
       </td>
+    {!piilotaArviointiSarakkeet && <>
       <td className='arviointi'>
         <DateView value={mahdollinenArviointi.päivä} />
       </td>
       <td className='arviointi'>
         <BooleanView value={mahdollinenArviointi.hyväksytty} />
       </td>
+    </>}
     </tr>
       { (expanded && isExpandable) && (
         <tr>
