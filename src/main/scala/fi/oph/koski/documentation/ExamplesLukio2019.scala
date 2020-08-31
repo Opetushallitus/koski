@@ -37,7 +37,7 @@ object ExamplesLukio2019 {
       paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("FY123", "Keittiöfysiikka")).copy(arviointi = numeerinenArviointi(10)),
       paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("FY124", "Keittiöfysiikka 2").copy(pakollinen = false)).copy(arviointi = numeerinenArviointi(9))
     ))),
-    oppiaineenSuoritus(Lukio2019ExampleData.lukionOppiaine("KE")),
+    oppiaineenSuoritus(Lukio2019ExampleData.lukionOppiaine("KE")).copy(arviointi = arviointi("4")),
     oppiaineenSuoritus(PaikallinenLukionOppiaine2019(PaikallinenKoodi("ITT", "Tanssi ja liike"), "Tanssi ja liike", pakollinen = false)).copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
       moduulinSuoritus(moduuli("LI5")).copy(arviointi = numeerinenArviointi(7)),
       paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("ITT234", "Tanssin taito")).copy(arviointi = numeerinenArviointi(10))
@@ -66,7 +66,7 @@ object ExamplesLukio2019 {
 
   val puhviKoe = Some(PuhviKoe2019(
     arvosana = Koodistokoodiviite(koodiarvo = "7", koodistoUri = "arviointiasteikkoyleissivistava"),
-    päivä = date(2021, 8, 30),
+    päivä = date(2019, 8, 30),
     kuvaus = None
   ))
 
@@ -75,7 +75,7 @@ object ExamplesLukio2019 {
     arvosana = Koodistokoodiviite("6", "arviointiasteikkoyleissivistava"),
     taitotaso = Koodistokoodiviite(koodiarvo = "B1.1", koodistoUri = "arviointiasteikkosuullisenkielitaidonkoetaitotaso"),
     kuvaus = None,
-    päivä = date(2021, 9, 3)
+    päivä = date(2019, 9, 3)
   )
 
   val suullisenKielitaidonKoeEspanja = SuullisenKielitaidonKoe2019(
@@ -83,13 +83,14 @@ object ExamplesLukio2019 {
     arvosana = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
     taitotaso = Koodistokoodiviite(koodiarvo = "yli_C1.1", koodistoUri = "arviointiasteikkosuullisenkielitaidonkoetaitotaso"),
     kuvaus = Some("Puhetaito äidinkielen tasolla"),
-    päivä = date(2021, 9, 3)
+    päivä = date(2019, 9, 3)
   )
 
   lazy val oppimääränSuoritus = LukionOppimääränSuoritus2019(
     koulutusmoduuli = lukionOppimäärä2019,
     oppimäärä = nuortenOpetussuunnitelma,
     suorituskieli = suomenKieli,
+    vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 5, 15)),
     toimipiste = jyväskylänNormaalikoulu,
     suoritettuErityisenäTutkintona = true,
     omanÄidinkielenOpinnot = omanÄidinkielenOpinnotSaame,
@@ -112,7 +113,8 @@ object ExamplesLukio2019 {
     LukionOpiskeluoikeus(
       tila = LukionOpiskeluoikeudenTila(
         List(
-          LukionOpiskeluoikeusjakso(alku = date(2021, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+          LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
+          LukionOpiskeluoikeusjakso(alku = date(2020, 5, 15), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
         )
       ),
       oppilaitos = Some(jyväskylänNormaalikoulu),
