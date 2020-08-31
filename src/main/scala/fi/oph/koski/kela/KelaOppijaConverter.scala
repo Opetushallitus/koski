@@ -371,7 +371,11 @@ object KelaOppijaConverter extends Logging {
       },
       alkamispäivä = suoritus.alkamispäivä,
       tunnustettu = suoritus match {
-        case x: schema.MahdollisestiTunnustettu => x.tunnustettu
+        case x: schema.MahdollisestiTunnustettu => x.tunnustettu.map(osaamisenTunnustaminen => OsaamisenTunnustaminen(
+          osaaminen = osaamisenTunnustaminen.osaaminen.map(convertOsasuoritus),
+          selite = osaamisenTunnustaminen.selite,
+          rahoituksenPiirissä = osaamisenTunnustaminen.rahoituksenPiirissä
+        ))
         case _ => None
       },
       toinenOsaamisala = suoritus match {
