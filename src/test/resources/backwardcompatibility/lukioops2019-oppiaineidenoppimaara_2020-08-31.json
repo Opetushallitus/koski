@@ -648,7 +648,7 @@
             "tunniste" : {
               "koodiarvo" : "FY123",
               "nimi" : {
-                "fi" : "FY123"
+                "fi" : "Keittiöfysiikka"
               }
             },
             "laajuus" : {
@@ -669,7 +669,7 @@
               }
             },
             "kuvaus" : {
-              "fi" : "Keittiöfysiikka"
+              "fi" : "Keittiöfysiikan kokeelliset perusteet, kiehumisreaktiot"
             },
             "pakollinen" : true
           },
@@ -690,7 +690,7 @@
             "tunniste" : {
               "koodiarvo" : "FY124",
               "nimi" : {
-                "fi" : "FY124"
+                "fi" : "Keittiöfysiikka 2"
               }
             },
             "laajuus" : {
@@ -711,7 +711,7 @@
               }
             },
             "kuvaus" : {
-              "fi" : "Keittiöfysiikka 2"
+              "fi" : "Haastava kokeellinen keittiöfysiikka, liekitys ja lämpöreaktiot"
             },
             "pakollinen" : false
           },
@@ -815,7 +815,7 @@
             "tunniste" : {
               "koodiarvo" : "ITT234",
               "nimi" : {
-                "fi" : "ITT234"
+                "fi" : "Tanssin taito"
               }
             },
             "laajuus" : {
@@ -836,7 +836,7 @@
               }
             },
             "kuvaus" : {
-              "fi" : "Tanssin taito"
+              "fi" : "Perinteiset suomalaiset tanssit, valssi jne"
             },
             "pakollinen" : true
           },

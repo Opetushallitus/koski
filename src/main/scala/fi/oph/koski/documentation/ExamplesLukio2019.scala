@@ -34,13 +34,13 @@ object ExamplesLukio2019 {
       moduulinSuoritus(moduuli("FY1")).copy(arviointi = numeerinenArviointi(10)),
       moduulinSuoritus(moduuli("FY2")).copy(arviointi = numeerinenArviointi(10)),
       moduulinSuoritus(moduuli("FY3")).copy(arviointi = numeerinenArviointi(10)),
-      paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("FY123", "Keittiöfysiikka")).copy(arviointi = numeerinenArviointi(10)),
-      paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("FY124", "Keittiöfysiikka 2").copy(pakollinen = false)).copy(arviointi = numeerinenArviointi(9))
+      paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("FY123", "Keittiöfysiikka", "Keittiöfysiikan kokeelliset perusteet, kiehumisreaktiot")).copy(arviointi = numeerinenArviointi(10)),
+      paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("FY124", "Keittiöfysiikka 2", "Haastava kokeellinen keittiöfysiikka, liekitys ja lämpöreaktiot").copy(pakollinen = false)).copy(arviointi = numeerinenArviointi(9))
     ))),
     oppiaineenSuoritus(Lukio2019ExampleData.lukionOppiaine("KE")).copy(arviointi = arviointi("4")),
     oppiaineenSuoritus(PaikallinenLukionOppiaine2019(PaikallinenKoodi("ITT", "Tanssi ja liike"), "Tanssi ja liike", pakollinen = false)).copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
       moduulinSuoritus(moduuli("LI5")).copy(arviointi = numeerinenArviointi(7)),
-      paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("ITT234", "Tanssin taito")).copy(arviointi = numeerinenArviointi(10))
+      paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("ITT234", "Tanssin taito", "Perinteiset suomalaiset tanssit, valssi jne")).copy(arviointi = numeerinenArviointi(10))
     )))
   )
 
@@ -51,10 +51,10 @@ object ExamplesLukio2019 {
     ))),
     muidenLukioOpintojenSuoritus().copy(osasuoritukset = Some(List(
       moduulinSuoritus(moduuli("KE3")).copy(arviointi = numeerinenArviointi(10)),
-      paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("HAI765", "Kansanmusiikki haitarilla")).copy(arviointi = sanallinenArviointi("S"))
+      paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("HAI765", "Kansanmusiikki haitarilla", "Kansamusiikkia 2-rivisellä haitarilla")).copy(arviointi = sanallinenArviointi("S"))
     ))),
     temaattistenOpintojenSuoritus().copy(osasuoritukset = Some(List(
-      paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("KAN200", "Kanteleensoiton perusteet")).copy(arviointi = sanallinenArviointi("S"))
+      paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("KAN200", "Kanteleensoiton perusteet", "Itäsuomalaisen kanteleensoiton perusteet")).copy(arviointi = sanallinenArviointi("S"))
     ))))
 
   val omanÄidinkielenOpinnotSaame = Some(OmanÄidinkielenOpinnotLaajuusOpintopisteinä(
@@ -192,8 +192,8 @@ object Lukio2019ExampleData {
     pakollinen = true
   )
 
-  def paikallinenOpintojakso(koodi: String, kuvaus: String) = LukionPaikallinenOpintojakso2019(
-    tunniste = PaikallinenKoodi(koodi, koodi),
+  def paikallinenOpintojakso(koodi: String, nimi: String, kuvaus: String) = LukionPaikallinenOpintojakso2019(
+    tunniste = PaikallinenKoodi(koodi, nimi),
     laajuus = laajuus(1),
     kuvaus = kuvaus,
     pakollinen = true
