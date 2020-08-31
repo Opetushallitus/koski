@@ -286,6 +286,12 @@ function Oppiaine(oppiaineElem) {
       oppiaineApi.lisääKurssiDialog.valitseKurssinTyyppi(tyyppi || 'Pakollinen'),
       oppiaineApi.lisääKurssiDialog.lisääKurssi
     )},
+    lisääLaajuudellinenOpintojakso: function(opintojakso, laajuus) { return seq(
+      oppiaineApi.avaaLisääKurssiDialog,
+      oppiaineApi.lisääKurssiDialog.valitseKurssi(opintojakso || 'Kieli ja kulttuuri'),
+      oppiaineApi.lisääKurssiDialog.asetaLaajuus(laajuus || '2'),
+      oppiaineApi.lisääKurssiDialog.lisääKurssi
+      )},
     lisääPaikallinenKurssi: function(tunniste, nimi, kuvaus) { return seq(
       oppiaineApi.avaaLisääKurssiDialog,
       oppiaineApi.lisääKurssiDialog.valitseKurssi('paikallinen'),
@@ -327,6 +333,9 @@ function Oppiaine(oppiaineElem) {
     function nimi() { return api.propertyBySelector('.nimi') }
     function kuvaus() { return api.propertyBySelector('.kuvaus') }
 
+    /* Laajuudellinen opintojakso */
+    function laajuus() { return api.propertyBySelector('.laajuus .arvo') }
+
     var api = _.merge({
       valitseKurssi: function(kurssi) {
         return kurssiDropdown().setValue(kurssi)
@@ -348,6 +357,9 @@ function Oppiaine(oppiaineElem) {
       },
       asetaNimi: function(arvo) {
         return nimi().setValue(arvo || 'Paikallinen kurssi')
+      },
+      asetaLaajuus: function(arvo) {
+        return laajuus().setValue(arvo || '2')
       },
       asetaKuvaus: function(arvo) {
         return kuvaus().setValue(arvo || 'Paikallisen kurssin kuvaus')
