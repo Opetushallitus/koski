@@ -80,8 +80,8 @@ const ExpandableOsasuoritus = ({osasuoritus, path, piilotaArviointiSarakkeet}) =
 
 const suorituksenNimi = koulutusmoduuli => {
   const koodiarvo = t(koulutusmoduuli.tunniste.nimi)
-  const kieli = t(koulutusmoduuli.nimi || {})
-  const oppimaara = t(koulutusmoduuli.oppimäärä || {})
+  const kieli = t((koulutusmoduuli.kieli && koulutusmoduuli.kieli.nimi) || {})
+  const oppimaara = t((koulutusmoduuli.oppimäärä && koulutusmoduuli.oppimäärä.nimi) || {})
 
   return [koodiarvo, kieli, oppimaara].filter(R.identity).join(', ')
 }

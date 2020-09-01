@@ -22,6 +22,8 @@ describe('Kela', function () {
     it('Näytetään valitun henkilon opinnot', function () {
       expect(kela.getOppijanNimi()).to.equal('Koululainen, Kaisa (220109-784L)')
       expect(kela.getValittuOpiskeluoikeusOtsikko()).to.include('Jyväskylän normaalikoulu (2008 - 2016, Valmistunut)')
+      expect(extractAsText(S('table.osasuoritukset'))).to.include('Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus')
+      expect(extractAsText(S('table.osasuoritukset'))).to.include('B1-kieli, ruotsi')
     })
 
     describe('Valitaan toinen päätason suoritus', function () {
