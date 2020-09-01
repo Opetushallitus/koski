@@ -135,7 +135,7 @@ case class Osasuoritus(
   tutkinnonOsanRyhmä: Option[Koodistokoodiviite],
   osaamisala: Option[List[schema.Osaamisalajakso]],
   alkamispäivä: Option[LocalDate],
-  tunnustettu: Option[schema.OsaamisenTunnustaminen],
+  tunnustettu: Option[OsaamisenTunnustaminen],
   toinenOsaamisala: Option[Boolean],
   toinenTutkintonimike: Option[Boolean],
   näyttö: Option[Näyttö],
@@ -223,6 +223,12 @@ case class OsaamisenHankkimistapajakso(
   alku: LocalDate,
   loppu: Option[LocalDate],
   osaamisenHankkimistapa: OsaamisenHankkimistapa
+)
+
+case class OsaamisenTunnustaminen(
+  osaaminen: Option[Osasuoritus],
+  selite: schema.LocalizedString,
+  rahoituksenPiirissä: Boolean
 )
 
 case class Vahvistus(
