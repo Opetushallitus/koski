@@ -44,11 +44,15 @@ const SuoritusTabs = ({suoritukset, selectedIndex, setCurrentIndex}) => {
 const SuoritusView = ({suoritus, path}) => {
   const properties = R.omit(['osasuoritukset', 'vahvistus', 'koulutusmoduuli'], suoritus)
   const osasuoritukset = suoritus.osasuoritukset
+  const piilotaArviointiSarakkeet = ['diatutkintovaihe', 'diavalmistavavaihe'].includes(suoritus.tyyppi.koodiarvo)
   return (
     <>
       <KeyValueTable object={properties} path={path}/>
       <SuorituksenVahvistus vahvistus={suoritus.vahvistus}/>
-      {osasuoritukset && <KelaOsasuorituksetTable osasuoritukset={osasuoritukset} path={path}/>}
+      {osasuoritukset && <KelaOsasuorituksetTable osasuoritukset={osasuoritukset}
+                                                  piilotaArviointiSarakkeet={piilotaArviointiSarakkeet}
+                                                  path={path}
+      />}
     </>
   )
 }
