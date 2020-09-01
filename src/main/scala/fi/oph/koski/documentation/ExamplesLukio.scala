@@ -55,7 +55,7 @@ object ExamplesLukio {
               kurssisuoritus(valtakunnallinenKurssi("ÄI8")).copy(arviointi = numeerinenArviointi(9)),
               kurssisuoritus(valtakunnallinenKurssi("ÄI9").copy(laajuus = None)).copy(arviointi = numeerinenArviointi(9))
             ))),
-            suoritus(lukionKieli2015("A1", "EN")).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
+            suoritus(lukionKieli("A1", "EN")).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("ENA1")).copy(arviointi = numeerinenArviointi(10)),
               kurssisuoritus(valtakunnallinenKurssi("ENA2")).copy(arviointi = numeerinenArviointi(10)),
               kurssisuoritus(valtakunnallinenKurssi("ENA3")).copy(arviointi = numeerinenArviointi(9)),
@@ -389,7 +389,7 @@ object LukioExampleData {
   )
 
   val lukionOppiaineenOppimääränSuoritusA1Englanti: LukionOppiaineenOppimääränSuoritus = LukionOppiaineenOppimääränSuoritus(
-    koulutusmoduuli = lukionKieli2015("A1","EN").copy(perusteenDiaarinumero = Some("60/011/2015")),
+    koulutusmoduuli = lukionKieli("A1","EN").copy(perusteenDiaarinumero = Some("60/011/2015")),
     suorituskieli = suomenKieli,
     vahvistus = vahvistusPaikkakunnalla(päivä = date(2016, 1, 10)),
     toimipiste = jyväskylänNormaalikoulu,
@@ -453,52 +453,42 @@ object LukioExampleData {
     PaikallinenLukionKurssi(PaikallinenKoodi(koodiarvo = koodi, nimi = nimi), Some(laajuus(1.0f)), kuvaus, kurssinTyyppi = soveltava)
 
   def matematiikka(matematiikka: String, laajuus: LaajuusKursseissa, perusteenDiaarinumero: Option[String]) =
-    LukionMatematiikka(oppimäärä = Koodistokoodiviite(koodiarvo = matematiikka, koodistoUri = "oppiainematematiikka"), perusteenDiaarinumero = perusteenDiaarinumero, laajuus = laajuus)
+    LukionMatematiikka(oppimäärä = Koodistokoodiviite(koodiarvo = matematiikka, koodistoUri = "oppiainematematiikka"), perusteenDiaarinumero = perusteenDiaarinumero, laajuus = Some(laajuus))
 
   def matematiikka(matematiikka: String, perusteenDiaarinumero: Option[String]) =
-    LaajuudetonMatematiikka(oppimäärä = Koodistokoodiviite(koodiarvo = matematiikka, koodistoUri = "oppiainematematiikka"), perusteenDiaarinumero = perusteenDiaarinumero)
+    LukionMatematiikka(oppimäärä = Koodistokoodiviite(koodiarvo = matematiikka, koodistoUri = "oppiainematematiikka"), perusteenDiaarinumero = perusteenDiaarinumero)
 
   def laajuus(laajuus: Float, yksikkö: String = "4"): LaajuusKursseissa = LaajuusKursseissa(laajuus, Koodistokoodiviite(koodistoUri = "opintojenlaajuusyksikko", koodiarvo = yksikkö))
 
   def lukionOppiaine(aine: String, laajuus: LaajuusKursseissa, diaarinumero: Option[String]) =
-    LukionMuuValtakunnallinenOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), perusteenDiaarinumero = diaarinumero, laajuus = laajuus)
+    LukionMuuValtakunnallinenOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), perusteenDiaarinumero = diaarinumero, laajuus = Some(laajuus))
 
   def lukionOppiaine(aine: String, diaarinumero: Option[String]) =
-    LaajuudetonMuuValtakunnallinenOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), perusteenDiaarinumero = diaarinumero)
+    LukionMuuValtakunnallinenOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), perusteenDiaarinumero = diaarinumero)
 
   def lukionUskonto(uskonto: Option[String], laajuus: LaajuusKursseissa, diaarinumero: Option[String]): LukionUskonto =
     LukionUskonto(
       tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = "KT"),
       uskonnonOppimäärä = uskonto.map(u => Koodistokoodiviite(koodistoUri = "uskonnonoppimaara", koodiarvo = u)),
       perusteenDiaarinumero = diaarinumero,
-      laajuus = laajuus
+      laajuus = Some(laajuus)
     )
 
-  def lukionUskonto(uskonto: Option[String], diaarinumero: Option[String]): LaajuudetonUskonto =
-    LaajuudetonUskonto(
+  def lukionUskonto(uskonto: Option[String], diaarinumero: Option[String]): LukionUskonto =
+    LukionUskonto(
       tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = "KT"),
       uskonnonOppimäärä = uskonto.map(u => Koodistokoodiviite(koodistoUri = "uskonnonoppimaara", koodiarvo = u)),
       perusteenDiaarinumero = diaarinumero
     )
 
   def lukionÄidinkieli(kieli: String, laajuus: LaajuusKursseissa, pakollinen: Boolean) =
-    LukionÄidinkieliJaKirjallisuus2015(kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus"), laajuus = laajuus, pakollinen = pakollinen)
+    LukionÄidinkieliJaKirjallisuus2015(kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus"), laajuus = Some(laajuus), pakollinen = pakollinen)
 
   def lukionÄidinkieli(kieli: String, pakollinen: Boolean) =
-    LaajuudetonÄidinkieliJaKirjallisuus(kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus"), pakollinen = pakollinen)
+    LukionÄidinkieliJaKirjallisuus2015(kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus"), pakollinen = pakollinen)
 
-  // uuden ja vanhan opsin jakamille oppiaineille B1, B2 ja B3
   def lukionKieli(oppiaine: String, kieli: String) = {
-    assert(List("B1", "B2", "B3").contains(oppiaine), s"allowed values: [B1, B2, B3], got $oppiaine")
-    LaajuudetonVierasTaiToinenKotimainenKieli(
-      tunniste = Koodistokoodiviite(koodiarvo = oppiaine, koodistoUri = "koskioppiaineetyleissivistava"),
-      kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima"))
-  }
-
-  // vanhan opsin oppiaineille A1 ja A2
-  def lukionKieli2015(oppiaine: String, kieli: String) = {
-    assert(List("A1", "A2").contains(oppiaine), s"allowed values: [A1, A2], got $oppiaine")
-    LaajuudetonVierasTaiToinenKotimainenKieli2015(
+    VierasTaiToinenKotimainenKieli(
       tunniste = Koodistokoodiviite(koodiarvo = oppiaine, koodistoUri = "koskioppiaineetyleissivistava"),
       kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima"))
   }

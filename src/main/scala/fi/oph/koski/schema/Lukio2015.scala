@@ -1,7 +1,7 @@
 package fi.oph.koski.schema
 
 import fi.oph.koski.schema.annotation._
-import fi.oph.scalaschema.annotation.{Description, Discriminator, MinItems, Title}
+import fi.oph.scalaschema.annotation.{DefaultValue, Description, MinItems, OnlyWhen, Title}
 
 trait LukionPäätasonSuoritus2015 extends LukionPäätasonSuoritus with Todistus with Ryhmällinen
 
@@ -68,6 +68,7 @@ case class MuidenLukioOpintojenSuoritus(
 case class MuuLukioOpinto(
   @KoodistoUri("lukionmuutopinnot")
   tunniste: Koodistokoodiviite,
+  @DefaultValue(None)
   laajuus: Option[LaajuusKursseissa] = None
 ) extends KoodistostaLöytyväKoulutusmoduuliValinnainenLaajuus
 
@@ -129,49 +130,31 @@ case class PaikallinenLukionKurssi(
 ) extends LukionKurssi with PaikallinenKoulutusmoduuli with StorablePreference
 
 trait LukionOppiaineTaiEiTiedossaOppiaine extends Koulutusmoduuli
-trait LukionOppiaine2015 extends LukionOppiaine with LukionOppiaineTaiEiTiedossaOppiaine
 
-trait LukionLaajuudellinenOppiaine2015 extends LukionOppiaine2015 with KoulutusmoduuliPakollinenLaajuus with PreIBOppiaine {
-  @Discriminator
-  def laajuus: LaajuusKursseissa
+trait LukionOppiaine2015 extends LukionOppiaine with LukionOppiaineTaiEiTiedossaOppiaine with KoulutusmoduuliValinnainenLaajuus with PreIBOppiaine {
+  def laajuus: Option[LaajuusKursseissa]
 }
 
 @Title("Paikallinen oppiaine")
-case class PaikallinenLukionOppiaine2015(
+@OnlyWhen("../tyyppi/koodiarvo", "lukionoppiaine")
+@OnlyWhen("../tyyppi/koodiarvo", "lukionoppiaineenoppimaara")
+@OnlyWhen("../tyyppi/koodiarvo", "luvalukionoppiaine")
+@OnlyWhen("../tyyppi/koodiarvo", "preiboppiaine")
+case class PaikallinenLukionOppiaine(
   tunniste: PaikallinenKoodi,
   kuvaus: LocalizedString,
   pakollinen: Boolean = true,
-  laajuus: LaajuusKursseissa,
+  laajuus: Option[LaajuusKursseissa] = None,
   perusteenDiaarinumero: Option[String] = None
-) extends LukionLaajuudellinenOppiaine2015 with PaikallinenKoulutusmoduuli with StorablePreference
+) extends LukionOppiaine2015 with PaikallinenKoulutusmoduuli with StorablePreference
 
 trait LukionValtakunnallinenOppiaine2015 extends LukionOppiaine2015 with YleissivistavaOppiaine
-trait LukionValtakunnallinenLaajuudellinenOppiaine2015 extends LukionLaajuudellinenOppiaine2015 with LukionValtakunnallinenOppiaine2015
-
-@Title("Muu valtakunnallinen oppiaine, vuoden 2015 ops")
-case class LaajuudetonMuuValtakunnallinenOppiaine2015(
-  @KoodistoKoodiarvo("KO")
-  @KoodistoKoodiarvo("KS")
-  tunniste: Koodistokoodiviite,
-  pakollinen: Boolean = true,
-  perusteenDiaarinumero: Option[String] = None
-) extends LukionValtakunnallinenOppiaine2015 with Laajuudeton with PreIBOppiaine
-
-@Description("Oppiaineena vieras tai toinen kotimainen kieli")
-case class LaajuudetonVierasTaiToinenKotimainenKieli2015(
-  @KoodistoKoodiarvo("A1")
-  @KoodistoKoodiarvo("A2")
-  tunniste: Koodistokoodiviite,
-  @Description("Mikä kieli on kyseessä")
-  @KoodistoUri("kielivalikoima")
-  kieli: Koodistokoodiviite,
-  pakollinen: Boolean = true,
-  perusteenDiaarinumero: Option[String] = None
-) extends LukionValtakunnallinenOppiaine2015 with Kieliaine with Laajuudeton with PreIBOppiaine {
-  override def description = kieliaineDescription
-}
 
 @Title("Muu valtakunnallinen oppiaine")
+@OnlyWhen("../tyyppi/koodiarvo", "lukionoppiaine")
+@OnlyWhen("../tyyppi/koodiarvo", "lukionoppiaineenoppimaara")
+@OnlyWhen("../tyyppi/koodiarvo", "luvalukionoppiaine")
+@OnlyWhen("../tyyppi/koodiarvo", "preiboppiaine")
 case class LukionMuuValtakunnallinenOppiaine(
   @KoodistoKoodiarvo("HI")
   @KoodistoKoodiarvo("MU")
@@ -191,21 +174,31 @@ case class LukionMuuValtakunnallinenOppiaine(
   @KoodistoKoodiarvo("OP")
   tunniste: Koodistokoodiviite,
   pakollinen: Boolean = true,
-  laajuus: LaajuusKursseissa,
+  @DefaultValue(None)
+  laajuus: Option[LaajuusKursseissa] = None,
   perusteenDiaarinumero: Option[String] = None
-) extends LukionValtakunnallinenLaajuudellinenOppiaine2015
+) extends LukionValtakunnallinenOppiaine2015
 
 @Title("Uskonto")
+@OnlyWhen("../tyyppi/koodiarvo", "lukionoppiaine")
+@OnlyWhen("../tyyppi/koodiarvo", "lukionoppiaineenoppimaara")
+@OnlyWhen("../tyyppi/koodiarvo", "luvalukionoppiaine")
+@OnlyWhen("../tyyppi/koodiarvo", "preiboppiaine")
 case class LukionUskonto(
   tunniste: Koodistokoodiviite,
   pakollinen: Boolean = true,
   perusteenDiaarinumero: Option[String] = None,
-  laajuus: LaajuusKursseissa,
+  @DefaultValue(None)
+  laajuus: Option[LaajuusKursseissa] = None,
   uskonnonOppimäärä: Option[Koodistokoodiviite] = None
-) extends LukionValtakunnallinenLaajuudellinenOppiaine2015 with Uskonto
+) extends LukionValtakunnallinenOppiaine2015 with Uskonto
 
 @Title("Äidinkieli ja kirjallisuus")
 @Description("Oppiaineena äidinkieli ja kirjallisuus")
+@OnlyWhen("../tyyppi/koodiarvo", "lukionoppiaine")
+@OnlyWhen("../tyyppi/koodiarvo", "lukionoppiaineenoppimaara")
+@OnlyWhen("../tyyppi/koodiarvo", "luvalukionoppiaine")
+@OnlyWhen("../tyyppi/koodiarvo", "preiboppiaine")
 case class LukionÄidinkieliJaKirjallisuus2015(
   @KoodistoKoodiarvo("AI")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "AI", koodistoUri = "koskioppiaineetyleissivistava"),
@@ -213,13 +206,18 @@ case class LukionÄidinkieliJaKirjallisuus2015(
   @KoodistoUri("oppiaineaidinkielijakirjallisuus")
   kieli: Koodistokoodiviite,
   pakollinen: Boolean = true,
-  laajuus: LaajuusKursseissa,
+  @DefaultValue(None)
+  laajuus: Option[LaajuusKursseissa] = None,
   perusteenDiaarinumero: Option[String] = None
-) extends LukionValtakunnallinenLaajuudellinenOppiaine2015 with LukionÄidinkieliJaKirjallisuus {
+) extends LukionValtakunnallinenOppiaine2015 with LukionÄidinkieliJaKirjallisuus {
   override def description: LocalizedString = kieliaineDescription
 }
 
 @Description("Oppiaineena vieras tai toinen kotimainen kieli")
+@OnlyWhen("../tyyppi/koodiarvo", "lukionoppiaine")
+@OnlyWhen("../tyyppi/koodiarvo", "lukionoppiaineenoppimaara")
+@OnlyWhen("../tyyppi/koodiarvo", "luvalukionoppiaine")
+@OnlyWhen("../tyyppi/koodiarvo", "preiboppiaine")
 case class VierasTaiToinenKotimainenKieli(
   @KoodistoKoodiarvo("A1")
   @KoodistoKoodiarvo("A2")
@@ -231,14 +229,19 @@ case class VierasTaiToinenKotimainenKieli(
   @KoodistoUri("kielivalikoima")
   kieli: Koodistokoodiviite,
   pakollinen: Boolean = true,
-  laajuus: LaajuusKursseissa,
+  @DefaultValue(None)
+  laajuus: Option[LaajuusKursseissa] = None,
   perusteenDiaarinumero: Option[String] = None
-) extends LukionValtakunnallinenLaajuudellinenOppiaine2015 with Kieliaine {
+) extends LukionValtakunnallinenOppiaine2015 with Kieliaine {
   override def description = kieliaineDescription
 }
 
 @Title("Matematiikka")
 @Description("Oppiaineena matematiikka")
+@OnlyWhen("../tyyppi/koodiarvo", "lukionoppiaine")
+@OnlyWhen("../tyyppi/koodiarvo", "lukionoppiaineenoppimaara")
+@OnlyWhen("../tyyppi/koodiarvo", "luvalukionoppiaine")
+@OnlyWhen("../tyyppi/koodiarvo", "preiboppiaine")
 case class LukionMatematiikka(
   @KoodistoKoodiarvo("MA")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "MA", koodistoUri = "koskioppiaineetyleissivistava"),
@@ -246,8 +249,9 @@ case class LukionMatematiikka(
   @KoodistoUri("oppiainematematiikka")
   oppimäärä: Koodistokoodiviite,
   pakollinen: Boolean = true,
-  laajuus: LaajuusKursseissa,
+  @DefaultValue(None)
+  laajuus: Option[LaajuusKursseissa] = None,
   perusteenDiaarinumero: Option[String] = None
-) extends LukionValtakunnallinenLaajuudellinenOppiaine2015 with KoodistostaLöytyväKoulutusmoduuli with Oppimäärä {
+) extends LukionValtakunnallinenOppiaine2015 with KoodistostaLöytyväKoulutusmoduuli with Oppimäärä {
   override def description = oppimäärä.description
 }

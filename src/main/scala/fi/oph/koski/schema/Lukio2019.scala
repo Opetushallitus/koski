@@ -2,8 +2,6 @@ package fi.oph.koski.schema
 
 import java.time.LocalDate
 
-import fi.oph.koski.json.JsonSerializer
-import fi.oph.koski.json.JsonSerializer.serializeWithRoot
 import fi.oph.koski.schema.annotation._
 import fi.oph.scalaschema.annotation._
 
@@ -197,39 +195,34 @@ case class LukionModuuli2019(
 @Description("Paikallisen lukion/IB-lukion opintojakson tunnistetiedot 2019")
 case class LukionPaikallinenOpintojakso2019(
   tunniste: PaikallinenKoodi,
-  @Discriminator
   laajuus: LaajuusOpintopisteissä,
   kuvaus: LocalizedString,
   pakollinen: Boolean
 ) extends LukionModuuliTaiPaikallinenOpintojakso2019 with PaikallinenKoulutusmoduuli with StorablePreference
 
-trait LukionOppiaine2019 extends LukionOppiaine {
-  def withLaajuus(laajuusArvo: Double): LukionLaajuudellinenOppiaine2019 = {
-    val laajuudellinen = serializeWithRoot(this).merge(serializeWithRoot(Map("laajuus" -> LaajuusOpintopisteissä(laajuusArvo))))
-    JsonSerializer.extract[LukionLaajuudellinenOppiaine2019](laajuudellinen )
-  }
-}
-
 @Description("Lukion/IB-lukion oppiaineen tunnistetiedot 2019")
-trait LukionLaajuudellinenOppiaine2019 extends KoulutusmoduuliPakollinenLaajuus with LukionOppiaine2019 {
-  @Discriminator
-  def laajuus: LaajuusOpintopisteissä
+trait LukionOppiaine2019 extends LukionOppiaine with KoulutusmoduuliValinnainenLaajuus {
+  def laajuus: Option[LaajuusOpintopisteissä]
   override def perusteenDiaarinumero: Option[String] = None
+  def withLaajuus(laajuusArvo: Double): LukionOppiaine2019
 }
 
 @Title("Paikallinen oppiaine 2019")
+@OnlyWhen("../tyyppi/koodiarvo", "lukionoppiaine2019")
 case class PaikallinenLukionOppiaine2019(
   tunniste: PaikallinenKoodi,
   kuvaus: LocalizedString,
   pakollinen: Boolean = false,
-  @Discriminator
-  laajuus: LaajuusOpintopisteissä
-) extends LukionLaajuudellinenOppiaine2019 with PaikallinenKoulutusmoduuli with StorablePreference
+  @DefaultValue(None)
+  laajuus: Option[LaajuusOpintopisteissä] = None
+) extends LukionOppiaine2019 with PaikallinenKoulutusmoduuli with StorablePreference {
+  def withLaajuus(laajuusArvo: Double): LukionOppiaine2019 = this.copy(laajuus = Some(LaajuusOpintopisteissä(laajuusArvo)))
+}
 
 trait LukionValtakunnallinenOppiaine2019 extends LukionOppiaine2019 with YleissivistavaOppiaine
-trait LukionValtakunnallinenLaajuudellinenOppiaine2019 extends LukionLaajuudellinenOppiaine2019 with LukionValtakunnallinenOppiaine2019
 
 @Title("Muu valtakunnallinen oppiaine 2019")
+@OnlyWhen("../tyyppi/koodiarvo", "lukionoppiaine2019")
 case class LukionMuuValtakunnallinenOppiaine2019(
   @KoodistoKoodiarvo("BI")
   @KoodistoKoodiarvo("ET")
@@ -247,21 +240,27 @@ case class LukionMuuValtakunnallinenOppiaine2019(
   @KoodistoKoodiarvo("YH")
   tunniste: Koodistokoodiviite,
   pakollinen: Boolean = true,
-  @Discriminator
-  laajuus: LaajuusOpintopisteissä
-) extends LukionValtakunnallinenLaajuudellinenOppiaine2019
+  @DefaultValue(None)
+  laajuus: Option[LaajuusOpintopisteissä] = None
+) extends LukionValtakunnallinenOppiaine2019 {
+  def withLaajuus(laajuusArvo: Double): LukionOppiaine2019 = this.copy(laajuus = Some(LaajuusOpintopisteissä(laajuusArvo)))
+}
 
 @Title("Uskonto 2019")
+@OnlyWhen("../tyyppi/koodiarvo", "lukionoppiaine2019")
 case class LukionUskonto2019(
   tunniste: Koodistokoodiviite,
   pakollinen: Boolean = true,
-  @Discriminator
-  laajuus: LaajuusOpintopisteissä,
+  @DefaultValue(None)
+  laajuus: Option[LaajuusOpintopisteissä] = None,
   uskonnonOppimäärä: Option[Koodistokoodiviite] = None
-) extends LukionValtakunnallinenLaajuudellinenOppiaine2019 with Uskonto
+) extends LukionValtakunnallinenOppiaine2019 with Uskonto {
+  def withLaajuus(laajuusArvo: Double): LukionOppiaine2019 = this.copy(laajuus = Some(LaajuusOpintopisteissä(laajuusArvo)))
+}
 
 @Title("Äidinkieli ja kirjallisuus 2019")
 @Description("Oppiaineena äidinkieli ja kirjallisuus")
+@OnlyWhen("../tyyppi/koodiarvo", "lukionoppiaine2019")
 case class LukionÄidinkieliJaKirjallisuus2019(
   @KoodistoKoodiarvo("AI")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "AI", koodistoUri = "koskioppiaineetyleissivistava"),
@@ -269,14 +268,16 @@ case class LukionÄidinkieliJaKirjallisuus2019(
   @KoodistoUri("oppiaineaidinkielijakirjallisuus")
   kieli: Koodistokoodiviite,
   pakollinen: Boolean = true,
-  @Discriminator
-  laajuus: LaajuusOpintopisteissä
-) extends LukionValtakunnallinenLaajuudellinenOppiaine2019 with LukionÄidinkieliJaKirjallisuus {
+  @DefaultValue(None)
+  laajuus: Option[LaajuusOpintopisteissä] = None
+) extends LukionValtakunnallinenOppiaine2019 with LukionÄidinkieliJaKirjallisuus {
   override def description: LocalizedString = kieliaineDescription
+  def withLaajuus(laajuusArvo: Double): LukionOppiaine2019 = this.copy(laajuus = Some(LaajuusOpintopisteissä(laajuusArvo)))
 }
 
 @Title("Vieras tai toinen kotimainen kieli 2019")
 @Description("Oppiaineena vieras tai toinen kotimainen kieli 2019")
+@OnlyWhen("../tyyppi/koodiarvo", "lukionoppiaine2019")
 case class VierasTaiToinenKotimainenKieli2019(
   @KoodistoKoodiarvo("A")
   @KoodistoKoodiarvo("B1")
@@ -288,28 +289,16 @@ case class VierasTaiToinenKotimainenKieli2019(
   @KoodistoUri("kielivalikoima")
   kieli: Koodistokoodiviite,
   pakollinen: Boolean = true,
-  @Discriminator
-  laajuus: LaajuusOpintopisteissä
-) extends LukionValtakunnallinenLaajuudellinenOppiaine2019 with Kieliaine {
+  @DefaultValue(None)
+  laajuus: Option[LaajuusOpintopisteissä] = None
+) extends LukionValtakunnallinenOppiaine2019 with Kieliaine {
   override def description = kieliaineDescription
-}
-
-@Description("Oppiaineena vieras tai toinen kotimainen kieli")
-case class LaajuudetonVierasTaiToinenKotimainenKieli2019(
-  @KoodistoKoodiarvo("A")
-  @KoodistoKoodiarvo("AOM")
-  tunniste: Koodistokoodiviite,
-  @Description("Mikä kieli on kyseessä")
-  @KoodistoUri("kielivalikoima")
-  kieli: Koodistokoodiviite,
-  pakollinen: Boolean = true
-) extends LukionValtakunnallinenOppiaine2019 with Kieliaine with Laajuudeton {
-  override def description: LocalizedString = kieliaineDescription
-  override def perusteenDiaarinumero: Option[String] = None
+  def withLaajuus(laajuusArvo: Double): LukionOppiaine2019 = this.copy(laajuus = Some(LaajuusOpintopisteissä(laajuusArvo)))
 }
 
 @Title("Matematiikka 2019")
 @Description("Oppiaineena matematiikka")
+@OnlyWhen("../tyyppi/koodiarvo", "lukionoppiaine2019")
 case class LukionMatematiikka2019(
   @KoodistoKoodiarvo("MA")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "MA", koodistoUri = "koskioppiaineetyleissivistava"),
@@ -317,10 +306,11 @@ case class LukionMatematiikka2019(
   @KoodistoUri("oppiainematematiikka")
   oppimäärä: Koodistokoodiviite,
   pakollinen: Boolean = true,
-  @Discriminator
-  laajuus: LaajuusOpintopisteissä = LaajuusOpintopisteissä(1)
-) extends LukionValtakunnallinenLaajuudellinenOppiaine2019 with KoodistostaLöytyväKoulutusmoduuliPakollinenLaajuus with Oppimäärä {
+  @DefaultValue(None)
+  laajuus: Option[LaajuusOpintopisteissä] = None
+) extends LukionValtakunnallinenOppiaine2019 with KoodistostaLöytyväKoulutusmoduuliValinnainenLaajuus with Oppimäärä {
   override def description = oppimäärä.description
+  def withLaajuus(laajuusArvo: Double): LukionOppiaine2019 = this.copy(laajuus = Some(LaajuusOpintopisteissä(laajuusArvo)))
 }
 
 trait SuoritettavissaErityisenäTutkintona2019 {

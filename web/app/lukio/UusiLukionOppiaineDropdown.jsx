@@ -1,6 +1,5 @@
 import React from 'baret'
 import {t} from '../i18n/i18n'
-import {is} from '../util/util'
 import {UusiOppiaineDropdown} from '../oppiaine/UusiOppiaineDropdown'
 import {ensureArrayKey, modelData, modelItems, modelSet, modelSetTitle, pushModel} from '../editor/EditorModel'
 import {newOsasuoritusProto} from '../suoritus/Suoritus'
@@ -36,12 +35,7 @@ export const UusiLukionOppiaineDropdown = ({model, oppiaineenSuoritusClasses}) =
       resultCallback={addOppiaine}
       placeholder={t('Lisää oppiaine')}
       pakollinen={true}
-      oppiainePrototypes={koulutusmoduuliProtos.filter(laajuudetonLukionOppiaine)}
+      oppiainePrototypes={koulutusmoduuliProtos}
     />
   )
-}
-
-// Lukion oppiaineet toteuttaa kaksi versiota koulutusmoduuleja, karsitaan laajuudelliset pois
-const laajuudetonLukionOppiaine = proto => {
-  return !is(proto).instanceOf('lukionoppiaine') || is(proto).instanceOf('laajuudeton')
 }
