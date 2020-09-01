@@ -110,18 +110,9 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
 
   get("/esiopetuksenoppijamäärätraportti") {
     requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.esiopetus)
-    val date = getLocalDateParam("paiva")
-    val password = getStringParam("password")
-    val token = params.get("downloadToken")
-
-    val resp = getStringParam("oppilaitosOid") match {
-      case organisaatioService.ostopalveluRootOid =>
-        esiopetusService.buildOstopalveluRaportti(date, password, token)
-      case oid =>
-        esiopetusService.buildOrganisaatioRaportti(validateOrganisaatioOid(oid), date, password, token)
-    }
-
-    writeExcel(resp)
+    val parsedRequest = parseTilastoraporttiPäivältäRequest
+    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=esiopetuksenoppijamäärätraportti&paiva=${parsedRequest.paiva}")))
+    writeExcel(raportitService.esiopetuksenOppijamäärät(parsedRequest))
   }
 
   private def requireOpiskeluoikeudenKayttooikeudet(opiskeluoikeudenTyyppiViite: Koodistokoodiviite) = {
@@ -148,6 +139,23 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
     val downloadToken = params.get("downloadToken")
 
     AikajaksoRaporttiRequest(oppilaitosOid, downloadToken, password, alku, loppu)
+  }
+
+  private def parseRaporttiPäivältäRequest: RaporttiPäivältäRequest = {
+    val oppilaitosOid = getOppilaitosOid
+    val paiva = getLocalDateParam("paiva")
+    val password = getStringParam("password")
+    val downloadToken = params.get("downloadToken")
+
+    RaporttiPäivältäRequest(oppilaitosOid, downloadToken, password, paiva)
+  }
+
+  private def parseTilastoraporttiPäivältäRequest: RaporttiPäivältäRequest = {
+    val paiva = getLocalDateParam("paiva")
+    val password = getStringParam("password")
+    val downloadToken = params.get("downloadToken")
+
+    RaporttiPäivältäRequest("", downloadToken, password, paiva)
   }
 
   private def parseAikajaksoRaporttiAikarajauksellaRequest: AikajaksoRaporttiAikarajauksellaRequest = {

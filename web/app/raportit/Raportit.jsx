@@ -21,7 +21,7 @@ export const raportitContentP = () => {
   return Bacon.constant({
     content: (<div className='content-area raportit'>
       <div className='main-content'>
-        <h2><Text name='Raportit'/></h2>
+        <h2><Text name='Organisaatioraportit'/></h2>
         <Organisaatio organisaatioAtom={organisaatioAtom} />
         {mahdollisetRaportitP.map(raportit => (
           <div>
@@ -36,10 +36,15 @@ export const raportitContentP = () => {
             {raportit && raportit.includes('lukionsuoritustietojentarkistus') && <Lukioraportti organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('aikuistenperusopetussuoritustietojentarkistus') && <AikuistenPerusopetusRaportti organisaatioAtom={organisaatioAtom} />}
             {raportit && raportit.includes('esiopetuksenraportti') && <EsiopetusRaportti organisaatioAtom={organisaatioAtom}/>}
-            {raportit && raportit.includes('esiopetuksenoppijamäärienraportti') && <EsiopetuksenOppijamäärätRaportti organisaatioAtom={organisaatioAtom}/>}
           </div>
         ))}
       </div>
+      {document.location.search.includes("tilastoraportit=true") ?
+      <div>
+        <h2><Text name='Tilastoraportit'/></h2>
+        <EsiopetuksenOppijamäärätRaportti organisaatioAtom={"1"}/>
+      </div>: ""
+      }
     </div>),
     title: 'Raportit'
   })

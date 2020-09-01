@@ -3,6 +3,8 @@ package fi.oph.koski.raportit
 import java.sql.Date
 
 import fi.oph.koski.config.KoskiApplication
+import fi.oph.koski.koskiuser.{AccessType, KoskiSession}
+import fi.oph.koski.schema.Organisaatio.Oid
 
 class RaportitService(application: KoskiApplication) {
   private val raportointiDatabase = application.raportointiDatabase
@@ -13,6 +15,7 @@ class RaportitService(application: KoskiApplication) {
   private val aikuistenPerusopetusRepository = AikuistenPerusopetusRaporttiRepository(raportointiDatabase.db)
   private val muuammatillinenRaportti = MuuAmmatillinenRaporttiBuilder(raportointiDatabase.db)
   private val topksAmmatillinenRaportti = TOPKSAmmatillinenRaporttiBuilder(raportointiDatabase.db)
+  private val esiopetuksenOppijamäärätRaportti = EsiopetuksenOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
 
   def opiskelijaVuositiedot(request: AikajaksoRaporttiRequest): OppilaitosRaporttiResponse = {
     aikajaksoRaportti(request, AmmatillinenOpiskalijavuositiedotRaportti)
@@ -84,6 +87,16 @@ class RaportitService(application: KoskiApplication) {
     filename = s"topks_ammatillinen_koski_raportti_${request.oppilaitosOid}_${request.alku.toString.replaceAll("-","")}-${request.loppu.toString.replaceAll("-","")}.xlsx",
     downloadToken = request.downloadToken
   )
+
+  def esiopetuksenOppijamäärät(request: RaporttiPäivältäRequest)(implicit u: KoskiSession) = {
+    val oppilaitosOids = u.organisationOids(AccessType.read).toList
+    OppilaitosRaporttiResponse(
+      sheets = Seq(esiopetuksenOppijamäärätRaportti.build(oppilaitosOids, Date.valueOf(request.paiva))),
+      workbookSettings = WorkbookSettings("TOPKS ammatillinen suoritustietojen tarkistus", Some(request.password)),
+      filename = s"esiopetuksen_oppijamäärät_raportti-${request.paiva}.xlsx",
+      downloadToken = request.downloadToken
+    )
+  }
 
   private def aikajaksoRaportti(request: AikajaksoRaporttiRequest, raporttiBuilder: AikajaksoRaportti) = {
     val rows = raporttiBuilder.buildRaportti(raportointiDatabase, request.oppilaitosOid, request.alku, request.loppu)
