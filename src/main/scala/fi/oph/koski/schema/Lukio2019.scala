@@ -194,6 +194,7 @@ case class LukionModuuli2019(
 @Title("Lukion paikallinen opintojakso 2019")
 @Description("Paikallisen lukion/IB-lukion opintojakson tunnistetiedot 2019")
 case class LukionPaikallinenOpintojakso2019(
+  @FlattenInUI
   tunniste: PaikallinenKoodi,
   laajuus: LaajuusOpintopisteissä,
   kuvaus: LocalizedString,

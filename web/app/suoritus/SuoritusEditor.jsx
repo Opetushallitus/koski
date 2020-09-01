@@ -123,6 +123,7 @@ class TodistusLink extends React.Component {
            && suoritustyyppi !== 'korkeakoulututkinto'
            && suoritustyyppi !== 'preiboppimaara'
            && suoritustyyppi !== 'esiopetuksensuoritus'
+           && suoritustyyppi !== 'lukionoppimaara2019'
            && !(koulutusmoduuliKoodistoUri === 'perusopetuksenluokkaaste' && koulutusmoduuliKoodiarvo === '9')
            && !kansalainen
         ? <a className="todistus" href={href}><Text name="näytä todistus"/></a>

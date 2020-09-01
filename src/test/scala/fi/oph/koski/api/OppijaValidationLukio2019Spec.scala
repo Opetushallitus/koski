@@ -2,6 +2,7 @@ package fi.oph.koski.api
 
 import fi.oph.koski.documentation.ExamplesLukio2019.oppimääränSuoritus
 import fi.oph.koski.documentation.Lukio2019ExampleData._
+import fi.oph.koski.documentation.LukioExampleData.numeerinenArviointi
 import fi.oph.koski.documentation.{ExamplesLukio2019, Lukio2019ExampleData, LukioExampleData}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
@@ -12,10 +13,10 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
       "Oppiaineen laajuus lasketaan moduleiden laajuuksista" in {
         val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(
           osasuoritukset = Some(List(
-            oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(osasuoritukset = Some(List(
-              moduulinSuoritus(moduuli("OÄI1").copy(laajuus = laajuus(2.5))),
-              moduulinSuoritus(moduuli("OÄI2").copy(laajuus = laajuus(1.5))),
-              moduulinSuoritus(moduuli("OÄI3").copy(laajuus = laajuus(0.5)))
+            oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = LukioExampleData.arviointi("9")).copy(osasuoritukset = Some(List(
+              moduulinSuoritus(moduuli("OÄI1").copy(laajuus = laajuus(2.5))).copy(arviointi = numeerinenArviointi(8)),
+              moduulinSuoritus(moduuli("OÄI2").copy(laajuus = laajuus(1.5))).copy(arviointi = numeerinenArviointi(8)),
+              moduulinSuoritus(moduuli("OÄI3").copy(laajuus = laajuus(0.5))).copy(arviointi = numeerinenArviointi(8))
             )))
           ))
         )))
@@ -24,22 +25,22 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
         opiskeluoikeus.suoritukset.head.osasuoritusLista.head.koulutusmoduuli.laajuusArvo(0) should equal(4.5)
       }
 
-      "Modulin oletuslaajuus on 1" in {
+      "Modulin oletuslaajuus on 2" in {
         val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(
-          osasuoritukset = Some(List(oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(osasuoritukset = Some(List(
-            moduulinSuoritus(moduuli("OÄI1")),
-            moduulinSuoritus(moduuli("OÄI2")),
-            moduulinSuoritus(moduuli("OÄI3"))
+          osasuoritukset = Some(List(oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = LukioExampleData.arviointi("9")).copy(osasuoritukset = Some(List(
+            moduulinSuoritus(moduuli("OÄI1")).copy(arviointi = numeerinenArviointi(8)),
+            moduulinSuoritus(moduuli("OÄI2")).copy(arviointi = numeerinenArviointi(8)),
+            moduulinSuoritus(moduuli("OÄI3")).copy(arviointi = numeerinenArviointi(8))
           )))))
         )))
 
         val opiskeluoikeus: Opiskeluoikeus = putAndGetOpiskeluoikeus(oo)
-        opiskeluoikeus.suoritukset.head.osasuoritusLista.head.koulutusmoduuli.laajuusArvo(0) should equal(3.0)
+        opiskeluoikeus.suoritukset.head.osasuoritusLista.head.koulutusmoduuli.laajuusArvo(0) should equal(6.0)
       }
 
       "Jos oppiaineella ei ole osasuorituksia laajuus on 0" in {
         val oo = defaultOpiskeluoikeus.copy(suoritukset = List(oppimääränSuoritus.copy(
-          osasuoritukset = Some(List(oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(osasuoritukset = None)
+          osasuoritukset = Some(List(oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", pakollinen = true)).copy(arviointi = LukioExampleData.arviointi("4")).copy(osasuoritukset = None)
         )))))
 
         val opiskeluoikeus: Opiskeluoikeus = putAndGetOpiskeluoikeus(oo)

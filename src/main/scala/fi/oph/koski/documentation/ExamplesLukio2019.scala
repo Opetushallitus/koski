@@ -17,7 +17,7 @@ object ExamplesLukio2019 {
     oppiaineenSuoritus(Lukio2019ExampleData.lukionÄidinkieli("AI1", true)).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
       moduulinSuoritus(moduuli("OÄI1")).copy(arviointi = numeerinenArviointi(8)),
       moduulinSuoritus(moduuli("OÄI2")).copy(arviointi = numeerinenArviointi(8)),
-      moduulinSuoritus(moduuli("OÄI3")).copy(arviointi = numeerinenArviointi(8))
+      moduulinSuoritus(moduuli("OÄI3").copy(pakollinen = false)).copy(arviointi = numeerinenArviointi(8))
     ))),
     oppiaineenSuoritus(Lukio2019ExampleData.matematiikka("MAA")).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
       moduulinSuoritus(moduuli("MAB2")).copy(arviointi = numeerinenArviointi(8)),
@@ -34,33 +34,71 @@ object ExamplesLukio2019 {
       moduulinSuoritus(moduuli("FY1")).copy(arviointi = numeerinenArviointi(10)),
       moduulinSuoritus(moduuli("FY2")).copy(arviointi = numeerinenArviointi(10)),
       moduulinSuoritus(moduuli("FY3")).copy(arviointi = numeerinenArviointi(10)),
-      paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("FY123", "Keittiöfysiikka")).copy(arviointi = numeerinenArviointi(10))
+      paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("FY123", "Keittiöfysiikka", "Keittiöfysiikan kokeelliset perusteet, kiehumisreaktiot")).copy(arviointi = numeerinenArviointi(10)),
+      paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("FY124", "Keittiöfysiikka 2", "Haastava kokeellinen keittiöfysiikka, liekitys ja lämpöreaktiot").copy(pakollinen = false)).copy(arviointi = numeerinenArviointi(9))
     ))),
+    oppiaineenSuoritus(Lukio2019ExampleData.lukionOppiaine("KE")).copy(arviointi = arviointi("4")),
     oppiaineenSuoritus(PaikallinenLukionOppiaine2019(PaikallinenKoodi("ITT", "Tanssi ja liike"), "Tanssi ja liike", pakollinen = false)).copy(arviointi = arviointi("8")).copy(osasuoritukset = Some(List(
       moduulinSuoritus(moduuli("LI5")).copy(arviointi = numeerinenArviointi(7)),
-      paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("ITT234", "Tanssin taito")).copy(arviointi = numeerinenArviointi(10))
+      paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("ITT234", "Tanssin taito", "Perinteiset suomalaiset tanssit, valssi jne")).copy(arviointi = numeerinenArviointi(10))
     )))
   )
 
   val oppiaineSuorituksetJoissaMuitaSuorituksiaJaVastaavia =
     oppiainesuoritukset ::: List(lukioDiplomienSuoritus().copy(osasuoritukset = Some(List(
-      moduulinSuoritus(moduuli("MELD5", pakollinen, 2.0f)).copy(arviointi = numeerinenArviointi(7)),
-      moduulinSuoritus(moduuli("KÄLD3", pakollinen, 2.0f)).copy(arviointi = numeerinenArviointi(9))
+      moduulinSuoritus(moduuli("MELD5", 2.0f)).copy(arviointi = numeerinenArviointi(7)),
+      moduulinSuoritus(moduuli("KÄLD3", 2.0f)).copy(arviointi = numeerinenArviointi(9))
     ))),
     muidenLukioOpintojenSuoritus().copy(osasuoritukset = Some(List(
       moduulinSuoritus(moduuli("KE3")).copy(arviointi = numeerinenArviointi(10)),
-      paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("HAI765", "Kansanmusiikki haitarilla")).copy(arviointi = sanallinenArviointi("S"))
+      paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("HAI765", "Kansanmusiikki haitarilla", "Kansamusiikkia 2-rivisellä haitarilla")).copy(arviointi = sanallinenArviointi("S"))
     ))),
     temaattistenOpintojenSuoritus().copy(osasuoritukset = Some(List(
-      paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("KAN200", "Kanteleensoiton perusteet")).copy(arviointi = sanallinenArviointi("S"))
+      paikallisenOpintojaksonSuoritus(paikallinenOpintojakso("KAN200", "Kanteleensoiton perusteet", "Itäsuomalaisen kanteleensoiton perusteet")).copy(arviointi = sanallinenArviointi("S"))
     ))))
+
+  val omanÄidinkielenOpinnotSaame = Some(OmanÄidinkielenOpinnotLaajuusOpintopisteinä(
+    arvosana = Koodistokoodiviite(koodiarvo = "8", koodistoUri = "arviointiasteikkoyleissivistava"),
+    arviointipäivä = None,
+    kieli = Kielivalikoima.saame,
+    laajuus = LaajuusOpintopisteissä(3)
+  ))
+
+  val puhviKoe = Some(PuhviKoe2019(
+    arvosana = Koodistokoodiviite(koodiarvo = "7", koodistoUri = "arviointiasteikkoyleissivistava"),
+    päivä = date(2019, 8, 30),
+    kuvaus = None
+  ))
+
+  val suullisenKielitaidonKoeEnglanti = SuullisenKielitaidonKoe2019(
+    kieli = Koodistokoodiviite("EN", Some("englanti"), "kieli", None),
+    arvosana = Koodistokoodiviite("6", "arviointiasteikkoyleissivistava"),
+    taitotaso = Koodistokoodiviite(koodiarvo = "B1.1", koodistoUri = "arviointiasteikkosuullisenkielitaidonkoetaitotaso"),
+    kuvaus = None,
+    päivä = date(2019, 9, 3)
+  )
+
+  val suullisenKielitaidonKoeEspanja = SuullisenKielitaidonKoe2019(
+    kieli = Koodistokoodiviite("ES", Some("espanja"), "kieli", None),
+    arvosana = Koodistokoodiviite("S", "arviointiasteikkoyleissivistava"),
+    taitotaso = Koodistokoodiviite(koodiarvo = "yli_C1.1", koodistoUri = "arviointiasteikkosuullisenkielitaidonkoetaitotaso"),
+    kuvaus = Some("Puhetaito äidinkielen tasolla"),
+    päivä = date(2019, 9, 3)
+  )
 
   lazy val oppimääränSuoritus = LukionOppimääränSuoritus2019(
     koulutusmoduuli = lukionOppimäärä2019,
     oppimäärä = nuortenOpetussuunnitelma,
     suorituskieli = suomenKieli,
+    vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 5, 15)),
     toimipiste = jyväskylänNormaalikoulu,
-    osasuoritukset = Some(oppiaineSuorituksetJoissaMuitaSuorituksiaJaVastaavia)
+    suoritettuErityisenäTutkintona = true,
+    omanÄidinkielenOpinnot = omanÄidinkielenOpinnotSaame,
+    puhviKoe = puhviKoe,
+    suullisenKielitaidonKokeet = Some(List(suullisenKielitaidonKoeEnglanti, suullisenKielitaidonKoeEspanja)),
+    todistuksellaNäkyvätLisätiedot = Some("Osallistunut kansalliseen etäopetuskokeiluun"),
+    osasuoritukset = Some(oppiaineSuorituksetJoissaMuitaSuorituksiaJaVastaavia),
+    ryhmä = Some("AH")
   )
 
   lazy val oppiaineidenOppimäärienSuoritus = LukionOppiaineidenOppimäärienSuoritus2019(
@@ -75,7 +113,8 @@ object ExamplesLukio2019 {
     LukionOpiskeluoikeus(
       tila = LukionOpiskeluoikeudenTila(
         List(
-          LukionOpiskeluoikeusjakso(alku = date(2021, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
+          LukionOpiskeluoikeusjakso(alku = date(2019, 8, 1), tila = opiskeluoikeusAktiivinen, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen)),
+          LukionOpiskeluoikeusjakso(alku = date(2020, 5, 15), tila = opiskeluoikeusPäättynyt, opintojenRahoitus = Some(ExampleData.valtionosuusRahoitteinen))
         )
       ),
       oppilaitos = Some(jyväskylänNormaalikoulu),
@@ -147,14 +186,14 @@ object Lukio2019ExampleData {
     suorituskieli = None
   )
 
-  def moduuli(moduuli: String, kurssinTyyppi: Koodistokoodiviite = pakollinen, laajuusOpintopisteinä: Double = 1.0f) = LukionModuuli2019(
+  def moduuli(moduuli: String, laajuusOpintopisteinä: Double = 2.0f) = LukionModuuli2019(
     tunniste = Koodistokoodiviite(koodistoUri = "moduulikoodistolops2021", koodiarvo = moduuli),
     laajuus = laajuus(laajuusOpintopisteinä),
     pakollinen = true
   )
 
-  def paikallinenOpintojakso(koodi: String, kuvaus: String) = LukionPaikallinenOpintojakso2019(
-    tunniste = PaikallinenKoodi(koodi, koodi),
+  def paikallinenOpintojakso(koodi: String, nimi: String, kuvaus: String) = LukionPaikallinenOpintojakso2019(
+    tunniste = PaikallinenKoodi(koodi, nimi),
     laajuus = laajuus(1),
     kuvaus = kuvaus,
     pakollinen = true
