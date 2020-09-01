@@ -1,7 +1,6 @@
 describe('Lukiokoulutus2019', function( ){
 
   var page = KoskiPage()
-  var todistus = TodistusPage()
   var opinnot = OpinnotPage()
   var editor = opinnot.opiskeluoikeusEditor()
   var addOppija = AddOppijaPage()
@@ -68,12 +67,6 @@ describe('Lukiokoulutus2019', function( ){
           'Teemaopinnot\nKAN200 *\nS 1\n' +
           'Suoritettujen osasuoritusten laajuus yhteensä: 33,5\n' +
           '* = paikallinen opintojakso tai oppiaine')
-      })
-    })
-
-    describe('Tulostettava todistus', function() {
-      it('ei näytetä', function() {
-        expect(opinnot.sisältääTodistuslinkin()).to.be.false
       })
     })
 

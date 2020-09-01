@@ -1,11 +1,11 @@
 package fi.oph.koski.raportit
 
+import java.lang.Character.isDigit
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
 import fi.oph.koski.raportointikanta._
-import fi.oph.koski.schema.{Aikajakso, Jakso}
-import fi.oph.koski.suoritusote.KoulutusModuuliOrdering.järjestäSuffiksinMukaan
+import fi.oph.koski.schema.{Aikajakso, Jakso, Koulutusmoduuli}
 
 
 case class YleissivistäväOppiaineenTiedot(suoritus: RSuoritusRow, osasuoritukset: Seq[ROsasuoritusRow]) {
@@ -114,7 +114,7 @@ object YleissivistäväKurssitOrdering {
   lazy val yleissivistäväKurssitOrdering: Ordering[YleissivistäväRaporttiKurssi] = Ordering.by(orderByPaikallisuusAndSuffix)
 
   private def orderByPaikallisuusAndSuffix(kurssi: YleissivistäväRaporttiKurssi) = {
-    val (koodiarvoCharacters, koodiarvoDigits) = järjestäSuffiksinMukaan(kurssi.koulutusmoduuliKoodiarvo)
+    val (koodiarvoCharacters, koodiarvoDigits) = KoulutusModuuliOrdering.järjestäSuffiksinMukaan(kurssi.koulutusmoduuliKoodiarvo)
 
     (kurssi.koulutusmoduuliPaikallinen, koodiarvoCharacters, koodiarvoDigits)
   }
@@ -241,5 +241,24 @@ object YleissivistäväUtils {
     } else {
       0
     }
+  }
+}
+
+object KoulutusModuuliOrdering {
+  // Käsittelee tunnisteen numeerisen suffiksin lukuna
+  lazy val orderByTunniste: Ordering[Koulutusmoduuli] = Ordering.by(järjestäKoulutusmoduuliSuffiksinMukaan)
+
+  def järjestäSuffiksinMukaan(koodiarvo: String) = {
+    val numericSuffix = koodiarvo.reverse.takeWhile(isDigit).reverse
+    if (numericSuffix.isEmpty) {
+      (koodiarvo, None)
+    } else {
+      (koodiarvo.substring(0, koodiarvo.length - numericSuffix.length), Some(numericSuffix.toInt))
+    }
+  }
+
+  private def järjestäKoulutusmoduuliSuffiksinMukaan(koulutusmoduuli: Koulutusmoduuli) = {
+    val koodiarvo: String = koulutusmoduuli.tunniste.koodiarvo
+    järjestäSuffiksinMukaan(koodiarvo)
   }
 }

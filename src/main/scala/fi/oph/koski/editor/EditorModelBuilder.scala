@@ -12,7 +12,6 @@ import fi.oph.koski.localization._
 import fi.oph.koski.opiskeluoikeus.OpiskeluoikeusAccessChecker
 import fi.oph.koski.schema._
 import fi.oph.koski.schema.annotation._
-import fi.oph.koski.todistus.LocalizedHtml
 import fi.oph.koski.util.OptionalLists
 import fi.oph.scalaschema._
 import fi.oph.scalaschema.annotation._

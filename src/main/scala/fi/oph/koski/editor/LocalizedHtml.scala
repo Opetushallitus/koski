@@ -1,4 +1,4 @@
-package fi.oph.koski.todistus
+package fi.oph.koski.editor
 
 import java.time.format.DateTimeFormatter
 

@@ -1,6 +1,5 @@
 describe('Ylioppilastutkinto', function( ){
   var page = KoskiPage()
-  var todistus = TodistusPage()
   var opinnot = OpinnotPage()
 
   before(Authentication().login('pää'), resetFixtures, page.openPage)
@@ -41,15 +40,7 @@ describe('Ylioppilastutkinto', function( ){
         )
       })
     })
-
-    describe('Tulostettava todistus', function() {
-      before(opinnot.avaaTodistus())
-      it('näytetään', function() {
-        // See more detailed content specification in YlioppilastutkintoSpec.scala
-      })
-      after(page.openPage)
-    })
-  })
+ })
 
   describe('Kun tutkinto on kesken', function() {
     before(page.oppijaHaku.searchAndSelect('200695-889X'))

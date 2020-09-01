@@ -8,7 +8,6 @@ import fi.oph.koski.koodisto.KoodistoViite
 import fi.oph.koski.koskiuser.RequiresVirkailijaOrPalvelukäyttäjä
 import fi.oph.koski.schema._
 import fi.oph.koski.servlet.{ApiServlet, NoCache}
-import fi.oph.koski.todistus.LocalizedHtml
 import org.json4s.jackson.Serialization
 
 /**

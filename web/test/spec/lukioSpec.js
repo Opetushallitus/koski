@@ -1,7 +1,6 @@
 describe('Lukiokoulutus', function( ){
 
   var page = KoskiPage()
-  var todistus = TodistusPage()
   var opinnot = OpinnotPage()
   var editor = opinnot.opiskeluoikeusEditor()
   var addOppija = AddOppijaPage()
@@ -66,14 +65,6 @@ describe('Lukiokoulutus', function( ){
           'Oman äidinkielen opinnot\nOA1 *\nS 1 S\n' +
           'Suoritettujen kurssien laajuus yhteensä: 89,5\n' +
           '* = paikallinen kurssi tai oppiaine')
-      })
-    })
-
-    describe('Tulostettava todistus', function() {
-      before(opinnot.avaaTodistus())
-      it('näytetään', function() {
-        // See more detailed content specification in LukioSpec.scala
-        expect(todistus.vahvistus()).to.equal('Jyväskylä 8.6.2016 Reijo Reksi rehtori')
       })
     })
 
@@ -396,16 +387,6 @@ describe('Lukiokoulutus', function( ){
             expect(opinnot.deletePäätasonSuoritusIsShown()).to.equal(false)
           })
         })
-      })
-    })
-  })
-
-  describe('Opintosuoritusote', function() {
-    before(page.openPage, page.oppijaHaku.searchAndSelect('020655-2479'), opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('lukiokoulutus'))
-    before(opinnot.avaaOpintosuoritusote())
-
-    describe('Kun klikataan linkkiä', function() {
-      it('näytetään', function() {
       })
     })
   })

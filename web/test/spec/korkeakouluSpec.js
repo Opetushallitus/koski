@@ -1,5 +1,4 @@
 describe('Korkeakoulutus', function() {
-  var opintosuoritusote = OpintosuoritusotePage()
   var page = KoskiPage()
   var login = LoginPage()
   var opinnot = OpinnotPage()
@@ -27,21 +26,6 @@ describe('Korkeakoulutus', function() {
         expect(S('.korkeakoulututkinnonsuoritus .tutkinnon-osa:eq(0) .suoritus:eq(0) .nimi').text()).to.equal('Vapaasti valittavat opinnot (KON)')
       })
     })
-    describe('Opintosuoritusote', function() {
-      before(opinnot.avaaOpintosuoritusote('konetekniikka'))
-
-      describe('Kun klikataan linkkiä', function() {
-        it('näytetään', function() {
-        })
-      })
-
-      describe('Opintosuoritusotteen avaaminen, kun käyttäjä ei ole kirjautunut', function() {
-        before(Authentication().logout,  reloadTestFrame, wait.until(login.isVisible))
-        it('Näytetään login-sivu', function() {
-          expect(login.isVisible()).to.equal(true)
-        })
-      })
-    })
   })
   describe('Maisteri, jolla ensisijainen opiskeluoikeus', function() {
     before(
@@ -53,12 +37,6 @@ describe('Korkeakoulutus', function() {
       it('näytetään', function() {
         expect(opinnot.getTutkinto('Dipl.ins., kemian tekniikka')).to.equal('Dipl.ins., kemian tekniikka')
         expect(opinnot.getOppilaitos('Dipl.ins., kemian tekniikka')).to.equal('Aalto-yliopisto')
-      })
-    })
-    describe('Opiskeluoikeus', function() {
-      before(opinnot.avaaOpintosuoritusote('Dipl.ins., kemian tekniikka'))
-      it('näytetään', function() {
-        expect(S('section.opiskeluoikeus h3').text()).to.equal('Ensisijainen opinto-oikeus')
       })
     })
   })
@@ -74,13 +52,6 @@ describe('Korkeakoulutus', function() {
         'korkeakoulututkinto 2011—2019, aktiivinen',
         'muukorkeakoulunsuoritus 2004—2004, aktiivinen'
       ])
-    })
-
-    describe('opintosuoritusote', function() {
-      before(opinnot.avaaOpintosuoritusote('Lääketieteen'))
-      it('näytetään', function() {
-        expect(S('section.opiskeluoikeus h3').text()).to.equal('Ensisijainen opinto-oikeus')
-      })
     })
   })
   describe('AMK, keskeyttänyt', function() {

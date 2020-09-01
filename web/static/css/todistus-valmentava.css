@@ -1,9 +1,0 @@
-.lisatieto-otsikko td, .rakennemoduuli td, .opintojen-laajuus td {
-    padding: 10px 0 10px;
-    font-weight: bold;
-}
-
-.lisatieto td span {
-    font-weight: bold;
-    margin-right: 5px;
-}

@@ -102,28 +102,6 @@ function OpinnotPage() {
     isDirty: function() {
       return S('.oppija-content.dirty').is(':visible')
     },
-    avaaOpintosuoritusote: function(indexOrName) {
-      return seq(
-        click(function() {
-          var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
-          return findSingle('a.opintosuoritusote', opiskeluoikeus)
-        }),
-        wait.until(OpintosuoritusotePage().isVisible)
-      )
-    },
-    avaaTodistus: function(indexOrName) {
-      return seq(
-        click(function() {
-          var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
-          return findSingle('a.todistus', opiskeluoikeus)
-        }),
-        wait.until(TodistusPage().isVisible)
-      )
-    },
-    sisältääTodistuslinkin: function(indexOrName) {
-      var opiskeluoikeus = resolveOpiskeluoikeus(indexOrName)
-      return typeof findFirstNotThrowing('a.todistus', opiskeluoikeus) !== 'undefined'
-    },
     avaaLisaysDialogi: function() {
       if (!S('.lisaa-opiskeluoikeusjakso-modal .modal-content').is(':visible')) {
         return click(S('.opiskeluoikeuden-tiedot .add-item a'))()
