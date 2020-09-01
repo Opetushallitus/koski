@@ -118,4 +118,18 @@ describe('Kela', function () {
       })
     })
   })
+
+  describe('Jos käännös on vain englanniksi, suomenkielinen virkailija näkee käännöksen englanniksi', function () {
+    before(
+      Authentication().login('Laaja'),
+      kela.openPage,
+      kela.searchAndSelect('040701-432D', 'Iina'),
+      kela.selectSuoritus('IB-tutkinto (International Baccalaureate)'),
+      kela.selectOsasuoritus('Language A: literature')
+    )
+
+    it('Näytetään englanninkielinen käännös', function () {
+      expect(extractAsText(S('table.osasuoritukset.nested'))).to.include('FIN_S1')
+    })
+  })
 })

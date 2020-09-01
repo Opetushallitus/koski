@@ -15,7 +15,7 @@ export const t = (s, ignoreMissing, languageOverride) => {
   if (!s) return ''
   if (typeof s == 'object') {
     // assume it's a localized string
-    return s[usedLanguage] || s['fi'] || s['sv']
+    return s[usedLanguage] || s['fi'] || s['sv'] || s['en']
   }
   if (typeof s == 'string') {
     // try to find a localization from the bundle
