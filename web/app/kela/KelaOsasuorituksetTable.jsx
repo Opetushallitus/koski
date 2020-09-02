@@ -32,7 +32,7 @@ export const KelaOsasuorituksetTable = ({osasuoritukset, path, nested, piilotaAr
 }
 
 const ExpandableOsasuoritus = ({osasuoritus, path, piilotaArviointiSarakkeet}) => {
-  const expandedAtom = Atom(false)
+  const expandedAtom = Atom(R.length(osasuoritus.osasuoritukset || []) > 0)
   const mahdollinenSuorituksenLaajuus = osasuoritus.koulutusmoduuli.laajuus || {}
   const laajuus = mahdollinenSuorituksenLaajuus.arvo || osasuoritustenYhteislaajuus(osasuoritus)
   const mahdollinenArviointi = R.last(osasuoritus.arviointi || []) || {}
