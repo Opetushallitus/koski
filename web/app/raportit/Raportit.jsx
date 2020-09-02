@@ -39,11 +39,11 @@ export const raportitContentP = () => {
           </div>
         ))}
       </div>
-      {document.location.search.includes("tilastoraportit=true") ?
+      {document.location.search.includes('tilastoraportit=true') ?
       <div>
         <h2><Text name='Tilastoraportit'/></h2>
-        <EsiopetuksenOppijamäärätRaportti organisaatioAtom={"1"}/>
-      </div>: ""
+        <EsiopetuksenOppijamäärätRaportti organisaatioAtom={'1'}/>
+      </div>: ''
       }
     </div>),
     title: 'Raportit'
