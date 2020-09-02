@@ -9,6 +9,7 @@ import {AikajaksoRaportti} from './AikajaksoRaportti'
 import {VuosiluokkaRaporttiPaivalta} from './VuosiluokkaRaporttiPaivalta'
 import {AikajaksoRaporttiAikarajauksella} from './AikajaksoRaporttiAikarajauksella'
 import {RaporttiPaivalta} from './RaporttiPaivalta'
+import {TilastoRaporttiPaivalta} from './TilastoRaporttiPaivalta'
 import {AikuistenPerusopetuksenRaportit} from './AikuistenPerusopetuksenRaportit'
 
 export const raportitContentP = () => {
@@ -39,11 +40,11 @@ export const raportitContentP = () => {
           </div>
         ))}
       </div>
-      {document.location.search.includes('tilastoraportit=true') ?
+      {document.location.search.includes('tilastoraportit=true') &&
       <div>
         <h2><Text name='Tilastoraportit'/></h2>
         <EsiopetuksenOppijamäärätRaportti organisaatioAtom={'1'}/>
-      </div>: ''
+      </div>
       }
     </div>),
     title: 'Raportit'
@@ -173,7 +174,7 @@ const EsiopetuksenOppijamäärätRaportti = ({organisaatioAtom}) => {
   const titleText = <Text name='Esiopetus-oppilasmäärät-raportti-title'/>
   const descriptionText = <Text name='Esiopetus-oppilasmäärät-raportti-description'/>
 
-  return (<RaporttiPaivalta
+  return (<TilastoRaporttiPaivalta
     organisaatioAtom={organisaatioAtom}
     apiEndpoint={'/esiopetuksenoppijamäärätraportti'}
     title={titleText}

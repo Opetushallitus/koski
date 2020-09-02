@@ -15,7 +15,7 @@ import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 class EsiopetuksenOppijamäärätRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll {
   private val application = KoskiApplicationForTests
-  private val raporttiBuilder = EsiopetuksenOppijamäärätRaportti(application.raportointiDatabase.db, application.organisaatioService)
+  private val raporttiBuilder = EsiopetuksenOppijamäärätRaportti(application.raportointiDatabase.db)
   private lazy val raportti =
     raporttiBuilder.build(List(jyväskylänNormaalikoulu), sqlDate("2007-01-01")).rows.map(_.asInstanceOf[EsiopetuksenOppijamäärätRaporttiRow])
 

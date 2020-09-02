@@ -15,7 +15,7 @@ import java.util.GregorianCalendar
 
 import scala.concurrent.duration._
 
-case class EsiopetuksenOppijamäärätRaportti(db: DB, organisaatioService: OrganisaatioService) extends KoskiDatabaseMethods {
+case class EsiopetuksenOppijamäärätRaportti(db: DB) extends KoskiDatabaseMethods {
   implicit private val getResult: GetResult[EsiopetuksenOppijamäärätRaporttiRow] = GetResult(r =>
     EsiopetuksenOppijamäärätRaporttiRow(
       oppilaitosNimi = r.<<,

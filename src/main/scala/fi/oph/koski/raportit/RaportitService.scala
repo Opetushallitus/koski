@@ -15,7 +15,7 @@ class RaportitService(application: KoskiApplication) {
   private val aikuistenPerusopetusRepository = AikuistenPerusopetusRaporttiRepository(raportointiDatabase.db)
   private val muuammatillinenRaportti = MuuAmmatillinenRaporttiBuilder(raportointiDatabase.db)
   private val topksAmmatillinenRaportti = TOPKSAmmatillinenRaporttiBuilder(raportointiDatabase.db)
-  private val esiopetuksenOppijamäärätRaportti = EsiopetuksenOppijamäärätRaportti(raportointiDatabase.db, application.organisaatioService)
+  private val esiopetuksenOppijamäärätRaportti = EsiopetuksenOppijamäärätRaportti(raportointiDatabase.db)
 
   def opiskelijaVuositiedot(request: AikajaksoRaporttiRequest): OppilaitosRaporttiResponse = {
     aikajaksoRaportti(request, AmmatillinenOpiskalijavuositiedotRaportti)
@@ -89,10 +89,10 @@ class RaportitService(application: KoskiApplication) {
   )
 
   def esiopetuksenOppijamäärät(request: RaporttiPäivältäRequest)(implicit u: KoskiSession) = {
-    val oppilaitosOids = u.organisationOids(AccessType.read).toList
+    val oppilaitosOids = (u.organisationOids(AccessType.read).toList ++ u.varhaiskasvatusKoulutustoimijat).distinct
     OppilaitosRaporttiResponse(
       sheets = Seq(esiopetuksenOppijamäärätRaportti.build(oppilaitosOids, Date.valueOf(request.paiva))),
-      workbookSettings = WorkbookSettings("TOPKS ammatillinen suoritustietojen tarkistus", Some(request.password)),
+      workbookSettings = WorkbookSettings("Esiopetuksen oppijamäärien raportti", Some(request.password)),
       filename = s"esiopetuksen_oppijamäärät_raportti-${request.paiva}.xlsx",
       downloadToken = request.downloadToken
     )
