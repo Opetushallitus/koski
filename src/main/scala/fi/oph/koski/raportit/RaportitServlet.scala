@@ -141,15 +141,6 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
     AikajaksoRaporttiRequest(oppilaitosOid, downloadToken, password, alku, loppu)
   }
 
-  private def parseRaporttiPäivältäRequest: RaporttiPäivältäRequest = {
-    val oppilaitosOid = getOppilaitosOid
-    val paiva = getLocalDateParam("paiva")
-    val password = getStringParam("password")
-    val downloadToken = params.get("downloadToken")
-
-    RaporttiPäivältäRequest(oppilaitosOid, downloadToken, password, paiva)
-  }
-
   private def parseTilastoraporttiPäivältäRequest: RaporttiPäivältäRequest = {
     val paiva = getLocalDateParam("paiva")
     val password = getStringParam("password")
