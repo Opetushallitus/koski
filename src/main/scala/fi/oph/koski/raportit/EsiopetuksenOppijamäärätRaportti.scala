@@ -10,6 +10,8 @@ import fi.oph.koski.organisaatio.OrganisaatioService
 import fi.oph.koski.raportointikanta.RaportointiDatabase.DB
 import fi.oph.koski.schema.Organisaatio.{Oid, isValidOrganisaatioOid}
 import slick.jdbc.GetResult
+import java.util.Calendar
+import java.util.GregorianCalendar
 
 import scala.concurrent.duration._
 
@@ -46,6 +48,9 @@ case class EsiopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Orga
   }
 
   private def query(oppilaitosOidit: List[String], päivä: Date) = {
+    val calendar = new GregorianCalendar
+    calendar.setTime(päivä);
+    val year = calendar.get(Calendar.YEAR)
     sql"""
     select
       r_opiskeluoikeus.oppilaitos_nimi,
@@ -54,8 +59,8 @@ case class EsiopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Orga
       count(case when aidinkieli != 'fi' and aidinkieli != 'sv' and aidinkieli != 'se' and aidinkieli != 'ri' and aidinkieli != 'vk' then 1 end) as vieraskielisiä,
       count(case when koulutusmoduuli_koodiarvo = '001101' then 1 end) as koulunesiopetuksessa,
       count(case when koulutusmoduuli_koodiarvo = '001102' then 1 end) as päiväkodinesiopetuksessa,
-      count(case when extract(year from syntymaaika) = 5 then 1 end) as viisivuotiaita,
-      count(case when extract(year from syntymaaika) = 5 and pidennetty_oppivelvollisuus = true then 1 end) as viisivuotiaitaEiPidennettyäOppivelvollisuutta,
+      count(case when ${year} - extract(year from syntymaaika) = 5 then 1 end) as viisivuotiaita,
+      count(case when ${year} - extract(year from syntymaaika) = 5 and pidennetty_oppivelvollisuus = true then 1 end) as viisivuotiaitaEiPidennettyäOppivelvollisuutta,
       count(case when pidennetty_oppivelvollisuus = true and vaikeasti_vammainen = true then 1 end) as pidennettyOppivelvollisuusJaVaikeastiVammainen,
       count(case when pidennetty_oppivelvollisuus = true and vaikeasti_vammainen = false and vammainen = true then 1 end) as pidennettyOppivelvollisuusJaMuuKuinVaikeimminVammainen,
       count(case when pidennetty_oppivelvollisuus = false and vaikeasti_vammainen = true then 1 end) as virheellisestiSiirretytVaikeastiVammaiset,
