@@ -90,17 +90,12 @@ Minimissään tarvitset nämä:
 
 - Git (osx, linux sisältää tämän, komentorivillä `git`)
 - GNU Make (osx, linux sisältää tämän, komentorivillä `make`)
-- Java 8 (osx: `brew cask install java`)
+- Java 8 (osx: `brew tap adoptopenjdk/openjdk`
+               `brew cask install adoptopenjdk8`)
 - Maven 3 (osx: `brew install maven`)
-- Postgres 12.2
-  - osx: `brew install postgresql@12`
-  - then ensure necessary binaries are in your PATH, e.g. `ln -s ../opt/postgresql@12/bin/{createdb,createuser,postgres,initdb} /usr/local/bin`
-  - initialize the data folder `initdb ./postgresql/data/`
-- Elasticsearch 5.6
-  - osx: `brew install elasticsearch@5.6`
-  - then ensure the binary is in your PATH, e.g. `ln -s ../opt/elasticsearch@5.6/bin/elasticsearch /usr/local/bin`
-- Elasticsearch analysis-icu plugin (`elasticsearch-plugin install analysis-icu`)
-- Node.js uusin 8.x ja sen mukana tuleva NPM-versio (osx: `brew install nvm` + `nvm install`)
+- NVM vanhan node version asentamiseen: (osx: `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash`)
+- Node.js uusin 8.x ja sen mukana tuleva NPM-versio (osx: `nvm install 8`)
+- Dockerin Postgres 12.2 ja Elasticsearch 5.6 ajamiseen kontissa
 - Tekstieditori (kehitystiimi käyttää IntelliJ IDEA)
 
 ## Buildi ja ajaminen
