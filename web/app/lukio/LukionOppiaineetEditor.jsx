@@ -12,7 +12,7 @@ import {isPaikallinen} from '../suoritus/Koulutusmoduuli'
 import {FootnoteDescriptions} from '../components/footnote'
 import Text from '../i18n/Text'
 
-export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaineenSuoritus, suoritusFilter, additionalEditableKoulutusmoduuliProperties, showKeskiarvo = true}) => {
+export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaineenSuoritus, suoritusFilter, additionalOnlyEditableProperties, additionalEditableKoulutusmoduuliProperties, showKeskiarvo = true}) => {
   const {edit, suoritus: päätasonSuoritusModel} = suorituksetModel.context
   const oppiaineet = modelItems(suorituksetModel).filter(suoritusFilter || R.identity)
   if (!edit && R.isEmpty(oppiaineet)) return null
@@ -21,6 +21,7 @@ export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaine
     <LukionOppiaineEditor
       key={oppiaineIndex}
       oppiaine={oppiaine}
+      additionalOnlyEditableProperties={additionalOnlyEditableProperties}
       additionalEditableKoulutusmoduuliProperties={additionalEditableKoulutusmoduuliProperties}
       customOsasuoritusTitle='osasuoritus'
       showArviointiEditor={!oppiaine.value.classes.includes('arvioinniton')}

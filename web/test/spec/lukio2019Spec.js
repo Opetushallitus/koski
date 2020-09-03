@@ -1,5 +1,4 @@
 describe('Lukiokoulutus2019', function( ){
-
   var page = KoskiPage()
   var opinnot = OpinnotPage()
   var editor = opinnot.opiskeluoikeusEditor()
@@ -109,12 +108,16 @@ describe('Lukiokoulutus2019', function( ){
           var ai = opinnot.oppiaineet.oppiaine('oppiaine.AI')
           var kieli = ai.propertyBySelector('.title .properties')
           var arvosana = ai.propertyBySelector('td.arvosana')
+          var suoritettuErityisenäTutkintona = ai.propertyBySelector('.properties .suoritettuErityisenäTutkintona')
+          var suorituskieli = ai.propertyBySelector('.properties .suorituskieli')
 
           describe('Alkutila', function () {
             it('on oikein', function() {
               expect(editor.canSave()).to.equal(false)
               expect(kieli.getValue()).to.equal('Suomen kieli ja kirjallisuus')
               expect(arvosana.getValue()).to.equal('9')
+              expect(suoritettuErityisenäTutkintona.getText()).to.equal('Suoritettu erityisenä tutkintona')
+              expect(suorituskieli.getValue()).to.equal('Ei valintaa')
             })
           })
 
@@ -123,6 +126,18 @@ describe('Lukiokoulutus2019', function( ){
 
             it('onnistuu', function() {
               expect(kieli.getValue()).to.equal('Ruotsin kieli ja kirjallisuus')
+            })
+
+            it('tallennus on mahdollista', function() {
+              expect(editor.canSave()).to.equal(true)
+            })
+          })
+
+          describe('Suorituskielen muuttaminen', function() {
+            before(suorituskieli.selectValue('arabia'))
+
+            it('onnistuu', function() {
+              expect(suorituskieli.getValue()).to.equal('arabia')
             })
 
             it('tallennus on mahdollista', function() {

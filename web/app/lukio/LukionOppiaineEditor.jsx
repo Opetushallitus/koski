@@ -35,6 +35,7 @@ export class LukionOppiaineEditor extends React.Component {
       oppiaine,
       footnote,
       additionalEditableProperties,
+      additionalOnlyEditableProperties,
       additionalEditableKoulutusmoduuliProperties,
       allowOppiaineRemoval = true,
       showLaajuus = true,
@@ -65,6 +66,13 @@ export class LukionOppiaineEditor extends React.Component {
           </div>
           {
             additionalEditableProperties && <PropertiesEditor model={oppiaine} propertyFilter={p => additionalEditableProperties.includes(p.key)}/>
+          }
+          {
+            edit && additionalOnlyEditableProperties &&
+            <PropertiesEditor
+              model={oppiaine}
+              propertyFilter={p => additionalOnlyEditableProperties.includes(p.key)}
+            />
           }
           <KurssitEditor
             model={oppiaine}

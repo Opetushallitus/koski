@@ -65,6 +65,7 @@ export const resolveOsasuorituksetEditor = (mdl) => {
         classesForUusiOppiaineenSuoritus={['lukionoppiaineensuoritus2019', 'muidenlukioopintojensuoritus2019']}
         useOppiaineLaajuus={true}
         showKeskiarvo={false}
+        additionalOnlyEditableProperties={['suorituskieli', 'suoritettuErityisenäTutkintona']}
       />
     )
   }
