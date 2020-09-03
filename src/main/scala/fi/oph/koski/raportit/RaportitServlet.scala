@@ -108,6 +108,13 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
     writeExcel(resp)
   }
 
+  get("/esiopetuksenoppijamäärätraportti") {
+    requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.esiopetus)
+    val parsedRequest = parseTilastoraporttiPäivältäRequest
+    AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=esiopetuksenoppijamäärätraportti&paiva=${parsedRequest.paiva}")))
+    writeExcel(raportitService.esiopetuksenOppijamäärät(parsedRequest))
+  }
+
   private def requireOpiskeluoikeudenKayttooikeudet(opiskeluoikeudenTyyppiViite: Koodistokoodiviite) = {
     if (!koskiSession.allowedOpiskeluoikeusTyypit.contains(opiskeluoikeudenTyyppiViite.koodiarvo)) {
       haltWithStatus(KoskiErrorCategory.forbidden.opiskeluoikeudenTyyppi())
@@ -132,6 +139,14 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
     val downloadToken = params.get("downloadToken")
 
     AikajaksoRaporttiRequest(oppilaitosOid, downloadToken, password, alku, loppu)
+  }
+
+  private def parseTilastoraporttiPäivältäRequest: RaporttiPäivältäRequest = {
+    val paiva = getLocalDateParam("paiva")
+    val password = getStringParam("password")
+    val downloadToken = params.get("downloadToken")
+
+    RaporttiPäivältäRequest("", downloadToken, password, paiva)
   }
 
   private def parseAikajaksoRaporttiAikarajauksellaRequest: AikajaksoRaporttiAikarajauksellaRequest = {
