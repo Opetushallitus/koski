@@ -26,6 +26,10 @@ describe('Kela', function () {
       expect(extractAsText(S('table.osasuoritukset'))).to.include('B1-kieli, ruotsi')
     })
 
+    it('Kaikkien osasuoritusten yhteislaajuus', function () {
+      expect(extractAsText(S('.yhteislaajuus'))).to.include('Yhteislaajuus 6.5 vuosiviikkotuntia')
+    })
+
     describe('Valitaan toinen päätason suoritus', function () {
       before(
         kela.selectSuoritus('9. vuosiluokka')
@@ -58,19 +62,19 @@ describe('Kela', function () {
 
     var osasuorituksenSisältö = 'Osasuoritukset Laajuus (osaamispistettä) Arviointipäivä Hyväksytty\n' +
       'Matematiikka 3 20.10.2014 kyllä\n' +
-      'Fysiikka ja kemia 3 20.10.2014 kyllä'
+      'Fysiikka ja kemia 3 20.10.2014 kyllä\n'
 
-    describe('Ennen avaamista', function () {
-      it('Ei näy osasuorituksen sisältämiä tietoja', function () {
-        expect(extractAsText(S('table.osasuoritukset'))).to.not.include(osasuorituksenSisältö)
+    describe('Osasuorituksen osasuoritukset on valmiiksi auki', function () {
+      it('Toimii', function () {
+        expect(extractAsText(S('table.osasuoritukset'))).to.include(osasuorituksenSisältö)
       })
     })
 
-    describe('Avataan osasuoritus', function () {
+    describe('Osasuoritus voidaan sulkea', function () {
       before(kela.selectOsasuoritus('Matemaattis-luonnontieteellinen osaaminen'))
 
-      it('Osasuoritus avautuu', function () {
-        expect(extractAsText(S('table.osasuoritukset'))).to.include(osasuorituksenSisältö)
+      it('Ei näy sulkemisen jälkeen', function () {
+        expect(extractAsText(S('table.osasuoritukset'))).to.not.include(osasuorituksenSisältö)
       })
     })
   })
@@ -106,19 +110,20 @@ describe('Kela', function () {
       kela.searchAndSelect('151013-2195', 'Dia')
     )
 
-    var sarakkeetSisältääArvioinnin = 'Osasuoritukset Laajuus (vuosiviikkotuntia) Arviointipäivä Hyväksytty\n'
+    var ensimmäisenTasonOsasuoritus = 'Osasuoritukset Laajuus (vuosiviikkotuntia)\n' +
+      'Äidinkieli, saksa 3'
 
-    it('Taulukosta on piilotettu arviointi-sarakkeet', function () {
-      expect(extractAsText(S('table.osasuoritukset'))).to.not.include(sarakkeetSisältääArvioinnin)
+    var toisenTasonOsasuoritus = 'Osasuoritukset Laajuus (vuosiviikkotuntia) Arviointipäivä Hyväksytty\n' +
+      '10/I 1 4.6.2016 kyllä'
+
+    it('Ensimmäisen tason osasuorituksella ei ole arviointi-sarakkeita', function () {
+      expect(extractAsText(S('table.osasuoritukset'))).to.include(ensimmäisenTasonOsasuoritus)
     })
 
-    describe('Osasuorituksen osasuorituksille näytetään arviointi-sarakkeet', function () {
-      before(kela.selectOsasuoritus('Matematiikka'))
-
-      it('Toimii', function () {
-        expect(extractAsText(S('table.osasuoritukset'))).to.include(sarakkeetSisältääArvioinnin)
-      })
+    it('Toisen tason osasuorituksella on arviointi-sarakkeet', function () {
+      expect(extractAsText(S('table.osasuoritukset'))).to.include(toisenTasonOsasuoritus)
     })
+
   })
 
   describe('Jos käännös on vain englanniksi, suomenkielinen virkailija näkee käännöksen englanniksi', function () {
@@ -126,8 +131,7 @@ describe('Kela', function () {
       Authentication().login('Laaja'),
       kela.openPage,
       kela.searchAndSelect('040701-432D', 'Iina'),
-      kela.selectSuoritus('IB-tutkinto (International Baccalaureate)'),
-      kela.selectOsasuoritus('Language A: literature')
+      kela.selectSuoritus('IB-tutkinto (International Baccalaureate)')
     )
 
     it('Näytetään englanninkielinen käännös', function () {
