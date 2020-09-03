@@ -29,7 +29,7 @@ describe('Lukiokoulutus2019', function( ){
           'Opetussuunnitelma Lukio suoritetaan nuorten opetussuunnitelman mukaan\n' +
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
           'Suoritettu erityisenä tutkintona kyllä\n' +
-          'Suorituskieli suomi\n' +
+          'Opetuskieli suomi\n' +
           'Oman äidinkielen opinnot Arvosana 8\n' +
           'Kieli saame, lappi\n' +
           'Laajuus 3 op\n' +
@@ -420,7 +420,7 @@ describe('Lukiokoulutus2019', function( ){
           'Koulutus Lukion oppiaineet OPH-2263-2019\n' +
           'Opetussuunnitelma Lukio suoritetaan nuorten opetussuunnitelman mukaan\n' +
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
-          'Suorituskieli suomi\n' +
+          'Opetuskieli suomi\n' +
           'Suoritus kesken')
       })
 
