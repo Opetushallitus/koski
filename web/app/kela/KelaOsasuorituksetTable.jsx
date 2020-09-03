@@ -33,8 +33,7 @@ export const KelaOsasuorituksetTable = ({osasuoritukset, path, nested, piilotaAr
 
 const ExpandableOsasuoritus = ({osasuoritus, path, piilotaArviointiSarakkeet}) => {
   const expandedAtom = Atom(R.length(osasuoritus.osasuoritukset || []) > 0)
-  const mahdollinenSuorituksenLaajuus = osasuoritus.koulutusmoduuli.laajuus || {}
-  const laajuus = mahdollinenSuorituksenLaajuus.arvo || laskeLaajuusOsasuorituksista(osasuoritus)
+  const laajuus = osasuoritus.koulutusmoduuli.laajuus?.arvo || laskeLaajuusOsasuorituksista(osasuoritus)
   const mahdollinenArviointi = R.last(osasuoritus.arviointi || []) || {}
   const properties = R.omit(['osasuoritukset', 'arviointi', 'koulutusmoduuli'], osasuoritus)
   const isExpandable = !R.isEmpty(properties) || osasuoritus.osasuoritukset
@@ -80,8 +79,8 @@ const ExpandableOsasuoritus = ({osasuoritus, path, piilotaArviointiSarakkeet}) =
 
 const suorituksenNimi = koulutusmoduuli => {
   const koodiarvo = t(koulutusmoduuli.tunniste.nimi)
-  const kieli = t((koulutusmoduuli.kieli && koulutusmoduuli.kieli.nimi) || {})
-  const oppimaara = t((koulutusmoduuli.oppimäärä && koulutusmoduuli.oppimäärä.nimi) || {})
+  const kieli = t(koulutusmoduuli.kieli?.nimi || {})
+  const oppimaara = t(koulutusmoduuli.oppimäärä?.nimi || {})
 
   return [koodiarvo, kieli, oppimaara].filter(R.identity).join(', ')
 }

@@ -76,8 +76,7 @@ const SuorituksenVahvistus = ({vahvistus}) => (
 const OsasuoritustenYhteislaajuus = ({osasuoritukset}) => {
   const laajuudenYksikko = findLaajuudenYksikkoTakeFirst(osasuoritukset)
   const yhteislaajuus = R.sum(osasuoritukset.map(osasuoritus => {
-    const mahdollinenSuorituksenLaajuus = osasuoritus.koulutusmoduuli.laajuus || {}
-    return mahdollinenSuorituksenLaajuus.arvo || laskeLaajuusOsasuorituksista(osasuoritus)
+    return osasuoritus.koulutusmoduuli.laajuus?.arvo || laskeLaajuusOsasuorituksista(osasuoritus)
   }))
 
   return (
