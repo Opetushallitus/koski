@@ -186,7 +186,7 @@ case class LukioRaportti(repository: LukioRaportitRepository) extends GlobalExec
       CompactColumn("Erityisen koulutustehtävän jaksot", comment = Some("Kuinka monta erityisen koulutustehtävän jaksopäivää opiskelijalla on KOSKI-datan mukaan ollut raportin tulostusparametreissa määritellyllä aikajaksolla.")),
       CompactColumn("Sisäoppilaitosmainen majoitus", comment = Some("Kuinka monta päivää opiskelija on ollut KOSKI-datan mukaan sisäoppilaitosmaisessa majoituksessa raportin tulostusparametreissa määritellyllä aikajaksolla.")),
       CompactColumn("Syy alle 18-vuotiaana aloitettuun opiskeluun aikuisten lukiokoulutuksessa"),
-      CompactColumn("Yhteislaajuus", comment = Some("Suoritettujen opintojen yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista."))
+      CompactColumn("Yhteislaajuus (kaikki kurssit)", comment = Some("Opintojen yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista. Sarake näyttää joko kaikkien opiskeluoikeudelta löytyvien kurssien määrän tai tulostusparametreissa määriteltynä aikajaksona arvioiduiksi merkittyjen kurssien määrän riippuen siitä, mitä tulostusparametreissa on valittu."))
     ) ++ oppiaineet.map(x => CompactColumn(title = x.oppiaine.toColumnTitle, comment = Some("Otsikon nimessä näytetään ensin oppiaineen koodi, sitten oppiaineen nimi ja viimeiseksi tieto, onko kyseessä valtakunnallinen vai paikallinen oppiaine (esim. BI Biologia valtakunnallinen). Sarakkeen arvossa näytetään pilkulla erotettuna oppiaineelle siirretty arvosana ja oppiaineessa suoritettujen kurssien määrä.")))
   }
 
