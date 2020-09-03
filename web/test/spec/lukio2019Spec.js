@@ -30,7 +30,7 @@ describe('Lukiokoulutus2019', function( ){
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
           'Suoritettu erityisenä tutkintona kyllä\n' +
           'Opetuskieli suomi\n' +
-          'Oman äidinkielen opinnot Arvosana 8\n' +
+          'Lukion oppimäärää täydentävät oman äidinkielen opinnot Arvosana 8\n' +
           'Kieli saame, lappi\n' +
           'Laajuus 3 op\n' +
           'Puhvi-koe Arvosana 7\n' +

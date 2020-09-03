@@ -26,6 +26,7 @@ case class LukionOppimääränSuoritus2019(
   @Title("Opetuskieli")
   suorituskieli: Koodistokoodiviite,
   @Tooltip("Osallistuminen lukiokoulutusta täydentävän saamen/romanikielen/opiskelijan oman äidinkielen opiskeluun")
+  @Title("Lukion oppimäärää täydentävät oman äidinkielen opinnot")
   omanÄidinkielenOpinnot: Option[OmanÄidinkielenOpinnotLaajuusOpintopisteinä] = None,
   puhviKoe: Option[PuhviKoe2019] = None,
   suullisenKielitaidonKokeet: Option[List[SuullisenKielitaidonKoe2019]] = None,
