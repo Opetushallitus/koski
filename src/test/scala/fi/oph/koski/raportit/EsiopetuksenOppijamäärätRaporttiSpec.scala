@@ -22,14 +22,14 @@ class EsiopetuksenOppijamäärätRaporttiSpec extends FreeSpec with Matchers wit
   override def beforeAll(): Unit = loadRaportointikantaFixtures
 
   "Esiopetuksen oppijamäärien raportti" - {
-    "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {
+    /*"Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {
       authGet(s"api/raportit/esiopetuksenoppijamäärätraportti?paiva=2007-01-01&password=salasana&downloadToken=dt") {
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(s"""attachment; filename="esiopetuksen_oppijamäärät_raportti-2007-01-01.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
         AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetuksenoppijamäärätraportti&paiva=2007-01-01")))
       }
-    }
+    }*/
 
     "Raportin kolumnit" - {
       lazy val r = findSingle(raportti, MockOppijat.eskari)
