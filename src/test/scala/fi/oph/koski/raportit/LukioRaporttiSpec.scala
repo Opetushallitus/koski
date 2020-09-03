@@ -67,7 +67,10 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
           "Erityisen koulutustehtävän jaksot",
           "Sisäoppilaitosmainen majoitus",
           "Syy alle 18-vuotiaana aloitettuun opiskeluun aikuisten lukiokoulutuksessa",
-          "Yhteislaajuus",
+          "Yhteislaajuus (kaikki kurssit)",
+          "Yhteislaajuus (suoritetut kurssit)",
+          "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)",
+          "Yhteislaajuus (tunnustetut kurssit)",
           "AI Suomen kieli ja kirjallisuus valtakunnallinen",
           "A1 Englanti valtakunnallinen",
           "B1 Ruotsi valtakunnallinen",
@@ -311,7 +314,10 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Hetu" -> lukiolainen.hetu,
     "Sukunimi" -> lukiolainen.sukunimi,
     "Etunimet" -> lukiolainen.etunimet,
-    "Yhteislaajuus" -> 90.5,
+    "Yhteislaajuus (kaikki kurssit)" -> 90.5,
+    "Yhteislaajuus (suoritetut kurssit)" -> 89.5,
+    "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 1.0,
+    "Yhteislaajuus (tunnustetut kurssit)" -> 1.0,
     "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 8.0 kurssia",
     "XX Ei tiedossa valtakunnallinen" -> "",
     "A1 Englanti valtakunnallinen" -> "Arvosana 9, 9.0 kurssia",
@@ -417,32 +423,47 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
 
     lazy val englanninOppiaineenRow = default + (
       "Suorituksen vahvistuspäivä" -> Some(date(2016, 1, 10)),
-      "Yhteislaajuus" -> 3.0,
+      "Yhteislaajuus (kaikki kurssit)" -> 3.0,
+      "Yhteislaajuus (suoritetut kurssit)" -> 3.0,
+      "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
+      "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
       "A1 Englanti valtakunnallinen" -> "Arvosana 7, 3.0 kurssia"
     )
 
     lazy val matematiikanOppiaineRow = default + (
       "Suorituksen vahvistuspäivä" -> Some(date(2016, 1, 10)),
-      "Yhteislaajuus" -> 5.0,
+      "Yhteislaajuus (kaikki kurssit)" -> 5.0,
+      "Yhteislaajuus (suoritetut kurssit)" -> 5.0,
+      "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
+      "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
       "MA Matematiikka, pitkä oppimäärä valtakunnallinen" -> "Arvosana 8, 5.0 kurssia"
     )
 
     lazy val historiaOppiaineenRow = default + (
       "Suorituksen vahvistuspäivä" -> Some(date(2016, 1, 10)),
-      "Yhteislaajuus" -> 4.0,
+      "Yhteislaajuus (kaikki kurssit)" -> 4.0,
+      "Yhteislaajuus (suoritetut kurssit)" -> 4.0,
+      "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
+      "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
       "HI Historia valtakunnallinen" -> "Arvosana 9, 4.0 kurssia"
     )
 
     lazy val kemiaOppiaineenRow = default + (
       "Suorituksen vahvistuspäivä" -> Some(date(2015, 1, 10)),
-      "Yhteislaajuus" -> 1.0,
+      "Yhteislaajuus (kaikki kurssit)" -> 1.0,
+      "Yhteislaajuus (suoritetut kurssit)" -> 1.0,
+      "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
+      "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
       "KE Kemia valtakunnallinen" -> "Arvosana 8, 1.0 kurssia"
     )
 
     lazy val filosofiaOppiaineenRow = default + (
       "Suorituksen tila" -> "kesken",
       "Suorituksen vahvistuspäivä" -> None,
-      "Yhteislaajuus" -> 1.0,
+      "Yhteislaajuus (kaikki kurssit)" -> 1.0,
+      "Yhteislaajuus (suoritetut kurssit)" -> 1.0,
+      "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
+      "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
       "FI Filosofia valtakunnallinen" -> "Arvosana 9, 1.0 kurssia"
     )
 
@@ -494,33 +515,48 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     lazy val eiTiedossaOppiaineenRow = default + (
       "XX Ei tiedossa valtakunnallinen" -> "Arvosana 9, 1.0 kurssia",
       "Suorituksen tila" -> "kesken",
-      "Yhteislaajuus" -> 1.0,
+      "Yhteislaajuus (kaikki kurssit)" -> 1.0,
+      "Yhteislaajuus (suoritetut kurssit)" -> 1.0,
+      "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
+      "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
       "Opetussuunnitelma" -> None
     )
 
     lazy val historiaOppiaineenRow = default + (
       "Suorituksen vahvistuspäivä" -> Some(date(2016, 1, 10)),
-      "Yhteislaajuus" -> 4.0,
+      "Yhteislaajuus (kaikki kurssit)" -> 4.0,
+      "Yhteislaajuus (suoritetut kurssit)" -> 4.0,
+      "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
+      "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
       "HI Historia valtakunnallinen" -> "Arvosana 9, 4.0 kurssia"
     )
 
     lazy val kemiaOppiaineenRow = default + (
       "Suorituksen vahvistuspäivä" -> Some(date(2015, 1, 10)),
-      "Yhteislaajuus" -> 1.0,
+      "Yhteislaajuus (kaikki kurssit)" -> 1.0,
+      "Yhteislaajuus (suoritetut kurssit)" -> 1.0,
+      "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
+      "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
       "KE Kemia valtakunnallinen" -> "Arvosana 8, 1.0 kurssia"
     )
 
     lazy val filosofiaOppiaineenRow = default + (
       "Suorituksen tila" -> "kesken",
       "Suorituksen vahvistuspäivä" -> None,
-      "Yhteislaajuus" -> 1.0,
+      "Yhteislaajuus (kaikki kurssit)" -> 1.0,
+      "Yhteislaajuus (suoritetut kurssit)" -> 1.0,
+      "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
+      "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
       "FI Filosofia valtakunnallinen" -> "Arvosana 9, 1.0 kurssia"
     )
 
     lazy val EiTiedossaOppiaineenRow = default + (
       "Suorituksen tila" -> "kesken",
       "Suorituksen vahvistuspäivä" -> None,
-      "Yhteislaajuus" -> 1.0,
+      "Yhteislaajuus (kaikki kurssit)" -> 1.0,
+      "Yhteislaajuus (suoritetut kurssit)" -> 1.0,
+      "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
+      "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
       "FI Filosofia valtakunnallinen" -> "Arvosana 9, 1.0 kurssia"
     )
 

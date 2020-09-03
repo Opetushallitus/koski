@@ -69,9 +69,14 @@ case class LukioRaportti(repository: LukioRaportitRepository) extends GlobalExec
     !isOppiaineenOppimäärä(data.päätasonSuoritus) || data.päätasonSuoritus.matchesWith(oppiaine)
   }
 
+  private def isTunnustettu(kurssisuoritus: ROsasuoritusRow) = {
+    JsonSerializer.extract[Option[OsaamisenTunnustaminen]](kurssisuoritus.data \ "tunnustettu").isDefined
+  }
+
   private def kaikkiOppiaineetVälilehtiRow(row: LukioRaporttiRows, oppiaineet: Seq[YleissivistäväRaporttiOppiaineJaKurssit], alku: LocalDate, loppu: LocalDate) = {
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](row.opiskeluoikeus.data \ "lähdejärjestelmänId")
     val lisätiedot = JsonSerializer.extract[Option[LukionOpiskeluoikeudenLisätiedot]](row.opiskeluoikeus.data \ "lisätiedot")
+    val lukionKurssit = row.osasuoritukset.filter(_.suorituksenTyyppi == "lukionkurssi")
 
     LukioRaporttiKaikkiOppiaineetVälilehtiRow(
      muut = LukioRaporttiOppiaineetVälilehtiMuut(
@@ -106,7 +111,16 @@ case class LukioRaportti(repository: LukioRaportitRepository) extends GlobalExec
        erityisen_koulutustehtävän_jaksot = lisätiedot.flatMap(_.erityisenKoulutustehtävänJaksot.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
        sisäoppilaitosmainenMajoitus = lisätiedot.flatMap(_.sisäoppilaitosmainenMajoitus.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
        syy_alle18vuotiaana_aloitettuun_opiskeluun_aikuisten_lukiokoulutuksessa = lisätiedot.flatMap(_.alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy.map(_.get("fi"))),
-       yhteislaajuus = row.osasuoritukset.filter(_.suorituksenTyyppi == "lukionkurssi").map(_.laajuus).sum
+       yhteislaajuus = lukionKurssit.map(_.laajuus).sum,
+       yhteislaajuusSuoritetut = lukionKurssit
+         .filterNot(isTunnustettu)
+         .map(_.laajuus).sum,
+       yhteislaajuusHylätyt = lukionKurssit
+         .filterNot(k => isTunnustettu(k) || k.suoritettu)
+         .map(_.laajuus).sum,
+       yhteislaajuusTunnustetut = lukionKurssit
+         .filter(k => k.suoritettu && isTunnustettu(k))
+         .map(_.laajuus).sum
      ),
       oppiaineet = oppiaineidentiedot(row.päätasonSuoritus, row.osasuoritukset, oppiaineet, isOppiaineenOppimäärä)
     )
@@ -186,7 +200,10 @@ case class LukioRaportti(repository: LukioRaportitRepository) extends GlobalExec
       CompactColumn("Erityisen koulutustehtävän jaksot", comment = Some("Kuinka monta erityisen koulutustehtävän jaksopäivää opiskelijalla on KOSKI-datan mukaan ollut raportin tulostusparametreissa määritellyllä aikajaksolla.")),
       CompactColumn("Sisäoppilaitosmainen majoitus", comment = Some("Kuinka monta päivää opiskelija on ollut KOSKI-datan mukaan sisäoppilaitosmaisessa majoituksessa raportin tulostusparametreissa määritellyllä aikajaksolla.")),
       CompactColumn("Syy alle 18-vuotiaana aloitettuun opiskeluun aikuisten lukiokoulutuksessa"),
-      CompactColumn("Yhteislaajuus (kaikki kurssit)", comment = Some("Opintojen yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista. Sarake näyttää joko kaikkien opiskeluoikeudelta löytyvien kurssien määrän tai tulostusparametreissa määriteltynä aikajaksona arvioiduiksi merkittyjen kurssien määrän riippuen siitä, mitä tulostusparametreissa on valittu."))
+      CompactColumn("Yhteislaajuus (kaikki kurssit)", comment = Some("Opintojen yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista. Sarake näyttää joko kaikkien opiskeluoikeudelta löytyvien kurssien määrän tai tulostusparametreissa määriteltynä aikajaksona arvioiduiksi merkittyjen kurssien määrän riippuen siitä, mitä tulostusparametreissa on valittu.")),
+      CompactColumn("Yhteislaajuus (suoritetut kurssit)", comment = Some("Suoritettujen kurssien (eli sellaisten kurssien, jotka eivät ole tunnustettuja aikaisemman osaamisen pohjalta) yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista. Sarake näyttää joko kaikkien opiskeluoikeudelta löytyvien suoritettujen kurssien yhteislaajuuden tai tulostusparametreissa määriteltynä aikajaksona suoritettujen kurssien yhteislaajuuden riippuen siitä, mitä tulostusparametreissa on valittu.")),
+      CompactColumn("Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)", comment = Some("Hylätyllä arvosanalla suoritettujen kurssien yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista. Sarake näyttää joko kaikkien opiskeluoikeudelta löytyvien suoritettujen kurssien yhteislaajuuden tai tulostusparametreissa määriteltynä aikajaksona suoritettujen kurssien yhteislaajuuden riippuen siitä, mitä tulostusparametreissa on valittu.")),
+      CompactColumn("Yhteislaajuus (tunnustetut kurssit)", comment = Some("Tunnustettujen kurssien yhteislaajuus. Lasketaan yksittäisille kurssisuorituksille siirretyistä laajuuksista. Sarake näyttää joko kaikkien opiskeluoikeudelta löytyvien tunnustettujen kurssien yhteislaajuuden tai tulostusparametreissa määriteltynä aikajaksona arvioiduiksi merkittyjen kurssien yhteislaajuuden riippuen siitä, mitä tulostusparametreissa on valittu."))
     ) ++ oppiaineet.map(x => CompactColumn(title = x.oppiaine.toColumnTitle, comment = Some("Otsikon nimessä näytetään ensin oppiaineen koodi, sitten oppiaineen nimi ja viimeiseksi tieto, onko kyseessä valtakunnallinen vai paikallinen oppiaine (esim. BI Biologia valtakunnallinen). Sarakkeen arvossa näytetään pilkulla erotettuna oppiaineelle siirretty arvosana ja oppiaineessa suoritettujen kurssien määrä.")))
   }
 
@@ -235,7 +252,10 @@ case class LukioRaporttiOppiaineetVälilehtiMuut(
   erityisen_koulutustehtävän_jaksot: Option[Int],
   sisäoppilaitosmainenMajoitus: Option[Int],
   syy_alle18vuotiaana_aloitettuun_opiskeluun_aikuisten_lukiokoulutuksessa: Option[String],
-  yhteislaajuus: Double
+  yhteislaajuus: BigDecimal,
+  yhteislaajuusSuoritetut: BigDecimal,
+  yhteislaajuusHylätyt: BigDecimal,
+  yhteislaajuusTunnustetut: BigDecimal
 )
 
 case class LukioRaporttiKaikkiOppiaineetVälilehtiRow(muut: LukioRaporttiOppiaineetVälilehtiMuut, oppiaineet: Seq[String]) {
