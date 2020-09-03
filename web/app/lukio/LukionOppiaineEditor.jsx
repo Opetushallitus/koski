@@ -43,7 +43,8 @@ export class LukionOppiaineEditor extends React.Component {
       showArviointiEditor = true,
       customOsasuoritusTitle,
       customOsasuoritusAlternativesCompletionFn,
-      customKurssitSortFn
+      customKurssitSortFn,
+      showKeskiarvo = true
     } = this.props
 
     const kurssit = modelItems(oppiaine, 'osasuoritukset')
@@ -88,6 +89,7 @@ export class LukionOppiaineEditor extends React.Component {
                   oppiaine={oppiaine}
                   suoritetutKurssit={suoritetutKurssit(kurssit)}
                   footnote={footnote}
+                  showKeskiarvo={showKeskiarvo}
                 />
               )}
             </td>

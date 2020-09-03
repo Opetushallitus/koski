@@ -53,15 +53,15 @@ describe('Lukiokoulutus2019', function( ){
 
       it('näyttää oppiaineiden ja kurssien arvosanat', function() {
         expect(extractAsText(S('.osasuoritukset'))).to.equal(
-          'Oppiaine Laajuus (opintopistettä) Arvosana (keskiarvo)\n' +
+          'Oppiaine Laajuus (opintopistettä) Arvosana\n' +
           'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus\n' +
-          'OÄI1\n8 OÄI2\n8 OÄI3\n8 6 9\n(8,0)\n' +
-          'Matematiikka, pitkä oppimäärä\nMAB2\n8 MAB3\n8 MAB4\n8 6 9\n(8,0)\n' +
-          'Uskonto/Elämänkatsomustieto\nUE1\n7 1,5 9\n(7,0)\n' +
-          'Äidinkielenomainen kieli, ruotsi\nRUA4\n7 1 9\n(7,0)\n' +
-          'Fysiikka\nFY1\n10 FY2\n10 FY3\n10 FY123 *\n10 FY124 *\n9 8 10\n(9,8)\n' +
+          'OÄI1\n8 OÄI2\n8 OÄI3\n8 6 9\n' +
+          'Matematiikka, pitkä oppimäärä\nMAB2\n8 MAB3\n8 MAB4\n8 6 9\n' +
+          'Uskonto/Elämänkatsomustieto\nUE1\n7 1,5 9\n' +
+          'Äidinkielenomainen kieli, ruotsi\nRUA4\n7 1 9\n' +
+          'Fysiikka\nFY1\n10 FY2\n10 FY3\n10 FY123 *\n10 FY124 *\n9 8 10\n' +
           'Kemia 0 4\n' +
-          'Tanssi ja liike *\nLI5\n7 ITT234 *\n10 3 8\n(8,5)\n' +
+          'Tanssi ja liike *\nLI5\n7 ITT234 *\n10 3 8\n' +
           'Lukiodiplomit\nMELD5\n7 KÄLD3\n9 4\n' +
           'Muut suoritukset\nKE3\n10 HAI765 *\nS 3\n' +
           'Teemaopinnot\nKAN200 *\nS 1\n' +
@@ -426,14 +426,14 @@ describe('Lukiokoulutus2019', function( ){
 
       it('näyttää oppiaineiden ja kurssien arvosanat', function() {
         expect(extractAsText(S('.osasuoritukset'))).to.equal(
-          'Oppiaine Laajuus (opintopistettä) Arvosana (keskiarvo)\n' +
-          'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus\nOÄI1\n8 OÄI2\n8 OÄI3\n8 6 9\n(8,0)\n' +
-          'Matematiikka, pitkä oppimäärä\nMAB2\n8 MAB3\n8 MAB4\n8 6 9\n(8,0)\n' +
-          'Uskonto/Elämänkatsomustieto\nUE1\n7 1,5 9\n(7,0)\n' +
-          'Äidinkielenomainen kieli, ruotsi\nRUA4\n7 1 9\n(7,0)\n' +
-          'Fysiikka\nFY1\n10 FY2\n10 FY3\n10 FY123 *\n10 FY124 *\n9 8 10\n(9,8)\n' +
+          'Oppiaine Laajuus (opintopistettä) Arvosana\n' +
+          'Äidinkieli ja kirjallisuus, Suomen kieli ja kirjallisuus\nOÄI1\n8 OÄI2\n8 OÄI3\n8 6 9\n' +
+          'Matematiikka, pitkä oppimäärä\nMAB2\n8 MAB3\n8 MAB4\n8 6 9\n' +
+          'Uskonto/Elämänkatsomustieto\nUE1\n7 1,5 9\n' +
+          'Äidinkielenomainen kieli, ruotsi\nRUA4\n7 1 9\n' +
+          'Fysiikka\nFY1\n10 FY2\n10 FY3\n10 FY123 *\n10 FY124 *\n9 8 10\n' +
           'Kemia 0 4\n' +
-          'Tanssi ja liike *\nLI5\n7 ITT234 *\n10 3 8\n(8,5)\n' +
+          'Tanssi ja liike *\nLI5\n7 ITT234 *\n10 3 8\n' +
           'Suoritettujen osasuoritusten laajuus yhteensä: 25,5\n' +
           '* = paikallinen opintojakso tai oppiaine')
       })

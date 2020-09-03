@@ -64,7 +64,7 @@ const kurssienKeskiarvo = suoritetutKurssit => {
   }
 }
 
-const Arviointi = ({oppiaine, suoritetutKurssit, footnote}) => {
+const Arviointi = ({oppiaine, suoritetutKurssit, footnote, showKeskiarvo = true}) => {
   const {edit, suoritus} = oppiaine.context
   const ishDiploma = edit && modelData(suoritus, 'koulutusmoduuli.diplomaType.koodiarvo') === 'ish'
 
@@ -74,7 +74,7 @@ const Arviointi = ({oppiaine, suoritetutKurssit, footnote}) => {
   }
 
   const arviointi = modelData(oppiaine, 'arviointi')
-  const keskiarvo = kurssienKeskiarvo(suoritetutKurssit)
+  const keskiarvo = showKeskiarvo ? kurssienKeskiarvo(suoritetutKurssit) : undefined
 
   return (
     <div>
