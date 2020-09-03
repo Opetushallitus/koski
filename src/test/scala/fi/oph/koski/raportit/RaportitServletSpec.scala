@@ -65,7 +65,7 @@ class RaportitServletSpec extends FreeSpec with RaportointikantaTestMethods with
           raportit.length should be > 1
         }
         verifyMahdollisetRaportit(helsinginKaupunki, user = esiopetusTallentaja) { raportit =>
-          raportit should equal(List(EsiopetuksenRaportti.toString))
+          raportit should equal(List(EsiopetuksenRaportti.toString, EsiopetuksenOppijaMäärienRaportti.toString()))
         }
       }
     }
@@ -73,7 +73,7 @@ class RaportitServletSpec extends FreeSpec with RaportointikantaTestMethods with
     "Käyttäjä oikeuksien tarkistus" - {
       "sallii koulutustoimijan oikeuksilla hakiessa koulutustoimijan alla olevien oppilaitosten raportit perusopetukselle" in {
         verifyMahdollisetRaportit(helsinginKaupunki, user = helsinginKaupunkiPalvelukäyttäjä) { raportit => {
-           raportit.toSet should equal(Set(EsiopetuksenRaportti.toString, PerusopetuksenVuosiluokka.toString))
+           raportit.toSet should equal(Set(EsiopetuksenRaportti.toString, EsiopetuksenOppijaMäärienRaportti.toString, PerusopetuksenVuosiluokka.toString))
           }
         }
       }
