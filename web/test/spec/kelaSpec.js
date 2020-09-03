@@ -26,6 +26,10 @@ describe('Kela', function () {
       expect(extractAsText(S('table.osasuoritukset'))).to.include('B1-kieli, ruotsi')
     })
 
+    it('Kaikkien osasuoritusten yhteislaajuus', function () {
+      expect(extractAsText(S('.yhteislaajuus'))).to.include('Yhteislaajuus 6.5 vuosiviikkotuntia')
+    })
+
     describe('Valitaan toinen päätason suoritus', function () {
       before(
         kela.selectSuoritus('9. vuosiluokka')

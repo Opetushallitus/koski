@@ -2,7 +2,7 @@ import React from 'baret'
 import * as R from 'ramda'
 import Atom from 'bacon.atom'
 import {DateView, KeyValueTable} from './KeyValueTable'
-import {KelaOsasuorituksetTable} from './KelaOsasuorituksetTable'
+import {findLaajuudenYksikkoTakeFirst, KelaOsasuorituksetTable, laskeLaajuusOsasuorituksista} from './KelaOsasuorituksetTable'
 import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
 
@@ -49,10 +49,12 @@ const SuoritusView = ({suoritus, path}) => {
     <>
       <KeyValueTable object={properties} path={path}/>
       <SuorituksenVahvistus vahvistus={suoritus.vahvistus}/>
-      {osasuoritukset && <KelaOsasuorituksetTable osasuoritukset={osasuoritukset}
+      {osasuoritukset && <>
+        <OsasuoritustenYhteislaajuus osasuoritukset={osasuoritukset} />
+        <KelaOsasuorituksetTable osasuoritukset={osasuoritukset}
                                                   piilotaArviointiSarakkeet={piilotaArviointiSarakkeet}
-                                                  path={path}
-      />}
+                                                  path={path}/>
+      </>}
     </>
   )
 }
@@ -70,6 +72,21 @@ const SuorituksenVahvistus = ({vahvistus}) => (
     )}
   </div>
 )
+
+const OsasuoritustenYhteislaajuus = ({osasuoritukset}) => {
+  const laajuudenYksikko = findLaajuudenYksikkoTakeFirst(osasuoritukset)
+  const yhteislaajuus = R.sum(osasuoritukset.map(osasuoritus => {
+    const mahdollinenSuorituksenLaajuus = osasuoritus.koulutusmoduuli.laajuus || {}
+    return mahdollinenSuorituksenLaajuus.arvo || laskeLaajuusOsasuorituksista(osasuoritus)
+  }))
+
+  return (
+    <div className='suoritus yhteislaajuus'>
+      <span className='yhteislaajuus'>{t('Yhteislaajuus')}</span>
+      <span>{`${yhteislaajuus} ${laajuudenYksikko ? laajuudenYksikko : ''}`}</span>
+    </div>
+  )
+}
 
 const suorituksenNimi = koulutusmoduuli => {
   return koulutusmoduuli && koulutusmoduuli.tunniste && t(koulutusmoduuli.tunniste.nimi) || null

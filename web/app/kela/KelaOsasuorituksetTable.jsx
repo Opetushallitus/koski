@@ -6,7 +6,7 @@ import {t} from '../i18n/i18n'
 
 export const KelaOsasuorituksetTable = ({osasuoritukset, path, nested, piilotaArviointiSarakkeet}) => {
   const currentPath = path + '.osasuoritukset'
-  const laajuudenYksikko = R.head(R.uniq(osasuoritukset.map(findLaajuudenYksikko).filter(R.identity)))
+  const laajuudenYksikko = findLaajuudenYksikkoTakeFirst(osasuoritukset)
   return (
     <table className={pathToClassnames(currentPath) + (nested ? ' nested' : '')}>
       <thead></thead>
@@ -34,7 +34,7 @@ export const KelaOsasuorituksetTable = ({osasuoritukset, path, nested, piilotaAr
 const ExpandableOsasuoritus = ({osasuoritus, path, piilotaArviointiSarakkeet}) => {
   const expandedAtom = Atom(R.length(osasuoritus.osasuoritukset || []) > 0)
   const mahdollinenSuorituksenLaajuus = osasuoritus.koulutusmoduuli.laajuus || {}
-  const laajuus = mahdollinenSuorituksenLaajuus.arvo || osasuoritustenYhteislaajuus(osasuoritus)
+  const laajuus = mahdollinenSuorituksenLaajuus.arvo || laskeLaajuusOsasuorituksista(osasuoritus)
   const mahdollinenArviointi = R.last(osasuoritus.arviointi || []) || {}
   const properties = R.omit(['osasuoritukset', 'arviointi', 'koulutusmoduuli'], osasuoritus)
   const isExpandable = !R.isEmpty(properties) || osasuoritus.osasuoritukset
@@ -86,6 +86,10 @@ const suorituksenNimi = koulutusmoduuli => {
   return [koodiarvo, kieli, oppimaara].filter(R.identity).join(', ')
 }
 
+export const findLaajuudenYksikkoTakeFirst = osasuoritukset => {
+  return R.head(R.uniq(osasuoritukset.map(findLaajuudenYksikko).filter(R.identity)))
+}
+
 const findLaajuudenYksikko = osasuoritus => {
   const laajuus = osasuoritus.koulutusmoduuli.laajuus || {}
   const laajuudenYksikkoOsasuorituksista = R.head((osasuoritus.osasuoritukset || [])
@@ -99,7 +103,7 @@ const findLaajuudenYksikko = osasuoritus => {
   }
 }
 
-const osasuoritustenYhteislaajuus = osasuoritus => {
+export const laskeLaajuusOsasuorituksista = osasuoritus => {
   const osasuoritukset = osasuoritus.osasuoritukset || []
   const hyvaksytytOsasuoritukset = osasuoritukset.filter(isHyvaksytty)
   return R.sum(hyvaksytytOsasuoritukset.map(osasuorituksenLaajuus))
@@ -111,8 +115,8 @@ const isHyvaksytty = osasuoritus => {
 }
 
 const osasuorituksenLaajuus = osasuoritus => {
-  const mahdollinenLaajuus = osasuoritus.laajuus || {}
-  return mahdollinenLaajuus.arvo || 1
+  const mahdollinenLaajuus = osasuoritus.koulutusmoduuli.laajuus || {}
+  return mahdollinenLaajuus.arvo || 0
 }
 
 export const pathToClassnames = path => path.split('.').join(' ')
