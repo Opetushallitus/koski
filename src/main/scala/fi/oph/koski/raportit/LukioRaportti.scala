@@ -106,7 +106,7 @@ case class LukioRaportti(repository: LukioRaportitRepository) extends GlobalExec
        erityisen_koulutustehtävän_jaksot = lisätiedot.flatMap(_.erityisenKoulutustehtävänJaksot.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
        sisäoppilaitosmainenMajoitus = lisätiedot.flatMap(_.sisäoppilaitosmainenMajoitus.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
        syy_alle18vuotiaana_aloitettuun_opiskeluun_aikuisten_lukiokoulutuksessa = lisätiedot.flatMap(_.alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy.map(_.get("fi"))),
-       yhteislaajuus = row.osasuoritukset.filter(_.suorituksenTyyppi == "lukionkurssi").flatMap(_.koulutusmoduuliLaajuusArvo.map(_.toDouble)).sum
+       yhteislaajuus = row.osasuoritukset.filter(_.suorituksenTyyppi == "lukionkurssi").map(_.laajuus).sum
      ),
       oppiaineet = oppiaineidentiedot(row.päätasonSuoritus, row.osasuoritukset, oppiaineet, isOppiaineenOppimäärä)
     )

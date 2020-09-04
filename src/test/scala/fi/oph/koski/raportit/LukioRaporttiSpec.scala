@@ -311,7 +311,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Hetu" -> lukiolainen.hetu,
     "Sukunimi" -> lukiolainen.sukunimi,
     "Etunimet" -> lukiolainen.etunimet,
-    "Yhteislaajuus" -> 89.5,
+    "Yhteislaajuus" -> 90.5,
     "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 8.0 kurssia",
     "XX Ei tiedossa valtakunnallinen" -> "",
     "A1 Englanti valtakunnallinen" -> "Arvosana 9, 9.0 kurssia",
