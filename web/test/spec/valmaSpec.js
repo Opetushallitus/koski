@@ -143,14 +143,6 @@ describe('VALMA koulutus', function() {
           )
         })
       })
-
-      describe('Tulostettava todistus', function() {
-        before(OpinnotPage().avaaTodistus())
-        it('näytetään', function() {
-          // See more detailed content specification in ValmaSpec.scala
-          expect(TodistusPage().vahvistus()).to.equal('4.6.2016 Reijo Reksi rehtori')
-        })
-      })
     })
   })
 })

@@ -1966,16 +1966,6 @@ describe('Ammatillinen koulutus', function() {
             'Yhteensä 5 osp')
         })
       })
-
-      describe('Tulostettava todistus', function() {
-        before(OpinnotPage().avaaTodistus())
-        it('näytetään', function() {
-          expect(TodistusPage().headings()).to.equal('Helsingin kaupunkiStadin ammatti- ja aikuisopistoPäättötodistusLuonto- ja ympäristöalan perustutkintoYmpäristöalan osaamisala, Ympäristönhoitaja Ammattilainen, Aarne (280618-402H)')
-          expect(TodistusPage().arvosanarivi('.tutkinnon-osa.100431')).to.equal('Kestävällä tavalla toimiminen 40 Kiitettävä 3')
-          expect(TodistusPage().arvosanarivi('.opintojen-laajuus')).to.equal('Opiskelijan suorittamien tutkinnon osien laajuus osaamispisteinä 180')
-          expect(TodistusPage().vahvistus()).to.equal('Helsinki 31.5.2016 Reijo Reksi rehtori')
-        })
-      })
     })
 
     describe('Suoritus kesken, vanhan perusteen suoritus tunnustettu', function () {
@@ -2133,15 +2123,7 @@ describe('Ammatillinen koulutus', function() {
         })
       })
 
-      describe('Tulostettava todistus', function() {
-        before(OpinnotPage().avaaTodistus())
-        it('näytetään', function() {
-          expect(TodistusPage().vahvistus()).to.equal('Helsinki 31.5.2015 Reijo Reksi rehtori')
-        })
-      })
-
       describe('Tietojen muokkaus', function() {
-        before(TodistusPage().close)
         describe('Tutkinnon osan lisääminen', function() {
           before(
             editor.edit
@@ -2211,7 +2193,7 @@ describe('Ammatillinen koulutus', function() {
     })
 
     describe('Erikoisammattitutkinto', function() {
-      before(TodistusPage().close, wait.until(page.isOppijaSelected('Erja')), OpinnotPage().valitseSuoritus(undefined, 'Autoalan työnjohdon erikoisammattitutkinto'))
+      before(wait.until(page.isOppijaSelected('Erja')), OpinnotPage().valitseSuoritus(undefined, 'Autoalan työnjohdon erikoisammattitutkinto'))
       describe('Kaikki tiedot näkyvissä', function() {
         before(opinnot.expandAll)
         it('näyttää opiskeluoikeuden tiedot', function() {
@@ -2269,15 +2251,8 @@ describe('Ammatillinen koulutus', function() {
         })
       })
 
-      describe('Tulostettava todistus', function() {
-        before(OpinnotPage().avaaTodistus())
-        it('näytetään', function() {
-          expect(TodistusPage().vahvistus()).to.equal('Helsinki 31.5.2016 Reijo Reksi rehtori')
-        })
-      })
-
       describe('Tutkinnon osat', function() {
-        before(TodistusPage().close, editor.edit)
+        before(editor.edit)
         it('Tutkinnon osia ei ryhmitellä', function() {
           expect(opinnot.tutkinnonOsat('1').isGroupHeaderVisible()).to.equal(false)
         })

@@ -51,7 +51,6 @@ export class SuoritusEditor extends React.Component {
     return (
       <div className={className}>
         {this.showDeleteButtonIfAllowed()}
-        <TodistusLink suoritus={model} />
         <PropertiesEditor
           model={model}
           propertyFilter={p => !excludedProperties.includes(p.key) && (model.context.edit || modelData(p.model) !== false)}
@@ -108,25 +107,4 @@ SuoritusEditor.validateModel = model => {
   }
 
   return validateSuoritus(model).concat(validateValmisOsittaisenAmmatillisenTutkinnonSuoritus(model))
-}
-
-class TodistusLink extends React.Component {
-  render() {
-    let {suoritus} = this.props
-    const {kansalainen} = suoritus.context
-    let oppijaOid = suoritus.context.oppijaOid
-    let suoritustyyppi = modelData(suoritus, 'tyyppi').koodiarvo
-    let koulutusmoduuliKoodistoUri = modelData(suoritus, 'koulutusmoduuli').tunniste.koodistoUri
-    let koulutusmoduuliKoodiarvo = modelData(suoritus, 'koulutusmoduuli').tunniste.koodiarvo
-    let href = '/koski/todistus/' + oppijaOid + '?suoritustyyppi=' + suoritustyyppi + '&koulutusmoduuli=' + koulutusmoduuliKoodistoUri + '/' + koulutusmoduuliKoodiarvo
-    return suoritusValmis(suoritus)
-           && suoritustyyppi !== 'korkeakoulututkinto'
-           && suoritustyyppi !== 'preiboppimaara'
-           && suoritustyyppi !== 'esiopetuksensuoritus'
-           && suoritustyyppi !== 'lukionoppimaara2019'
-           && !(koulutusmoduuliKoodistoUri === 'perusopetuksenluokkaaste' && koulutusmoduuliKoodiarvo === '9')
-           && !kansalainen
-        ? <a className="todistus" href={href}><Text name="näytä todistus"/></a>
-        : null
-  }
 }

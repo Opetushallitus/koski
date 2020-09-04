@@ -8,7 +8,6 @@ import {
 } from '../editor/EditorModel'
 import {
   excludedProperties,
-  OpiskeluoikeudenOpintosuoritusoteLink,
   OpiskeluoikeudenVoimassaoloaika
 } from '../opiskeluoikeus/OpiskeluoikeusEditor'
 import {PropertiesEditor} from '../editor/PropertiesEditor'
@@ -52,7 +51,6 @@ const OpiskeluoikeudenTiedot = ({opiskeluoikeus}) => {
 
   return (
     <div className="opiskeluoikeuden-tiedot">
-      <OpiskeluoikeudenOpintosuoritusoteLink opiskeluoikeus={opiskeluoikeus}/>
       {modelData(opiskeluoikeus, 'alkamispäivä') && <OpiskeluoikeudenVoimassaoloaika opiskeluoikeus={opiskeluoikeus}/>}
       <PropertiesEditor
         model={opiskeluoikeus}

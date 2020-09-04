@@ -71,7 +71,6 @@ export const OpiskeluoikeusEditor = ({model}) => {
 const OpiskeluoikeudenTiedot = ({opiskeluoikeus, editLink, alkuChangeBus}) => (
   <div className="opiskeluoikeuden-tiedot">
     {editLink}
-    <OpiskeluoikeudenOpintosuoritusoteLink opiskeluoikeus={opiskeluoikeus}/>
     {
       modelData(opiskeluoikeus, 'alkamispäivä') && <OpiskeluoikeudenVoimassaoloaika opiskeluoikeus={opiskeluoikeus}/>
     }
@@ -163,23 +162,6 @@ const TabulatedSuoritukset = ({model}) => {
       <Editor key={valittuSuoritus.tabName} model={valittuSuoritus} alwaysUpdate="true" />
     </div>
   )
-}
-
-export class OpiskeluoikeudenOpintosuoritusoteLink extends React.Component {
-  render() {
-    let {opiskeluoikeus} = this.props
-    let oppijaOid = opiskeluoikeus.context.oppijaOid
-    var opiskeluoikeusTyyppi = modelData(opiskeluoikeus, 'tyyppi').koodiarvo
-    if (opiskeluoikeusTyyppi === 'lukiokoulutus' || opiskeluoikeusTyyppi === 'ibtutkinto') { // lukio/ib näytetään opiskeluoikeuskohtainen suoritusote
-      let href = '/koski/opintosuoritusote/' + oppijaOid + '?opiskeluoikeus=' + modelData(opiskeluoikeus, 'oid')
-      return <a className="opintosuoritusote" href={href}><Text name="näytä opintosuoritusote"/></a>
-    } else if (opiskeluoikeusTyyppi === 'korkeakoulutus') { // korkeakoulutukselle näytetään oppilaitoskohtainen suoritusote
-      let href = '/koski/opintosuoritusote/' + oppijaOid + '?oppilaitos=' + modelData(opiskeluoikeus, 'oppilaitos').oid
-      return <a className="opintosuoritusote" href={href}><Text name="näytä opintosuoritusote"/></a>
-    } else {
-      return null
-    }
-  }
 }
 
 const isPerusopetuksenOppiaineenOppimäärä = suoritus =>

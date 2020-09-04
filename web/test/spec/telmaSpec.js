@@ -1,6 +1,5 @@
 describe('Telma', function() {
   var page = KoskiPage()
-  var todistus = TodistusPage()
   var opinnot = OpinnotPage()
   before(Authentication().login(), resetFixtures)
 
@@ -61,14 +60,6 @@ describe('Telma', function() {
           'Arviointipäivä 20.3.2013\n' +
           'Yhteensä 75 osp'
         )
-      })
-    })
-
-    describe('Tulostettava todistus', function() {
-      before(opinnot.avaaTodistus())
-      it('näytetään', function() {
-        // See more detailed content specification in TelmaSpec.scala
-        expect(todistus.vahvistus()).to.equal('Helsinki 4.6.2016 Reijo Reksi rehtori')
       })
     })
   })

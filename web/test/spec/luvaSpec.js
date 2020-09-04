@@ -1,7 +1,6 @@
 describe('Lukioon valmistava koulutus', function() {
 
   var page = KoskiPage()
-  var todistus = TodistusPage()
   var opinnot = OpinnotPage()
   var editor = opinnot.opiskeluoikeusEditor()
 
@@ -84,14 +83,6 @@ describe('Lukioon valmistava koulutus', function() {
           'Laajuus 1 kurssia'
         )
       })
-    })
-  })
-
-  describe('Tulostettava todistus', function() {
-    before(opinnot.avaaTodistus())
-    it('näytetään', function() {
-      // See more detailed content specification in LukioSpec.scala
-      expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
     })
   })
 

@@ -1,6 +1,5 @@
 describe('IB', function( ) {
   var page = KoskiPage()
-  var todistus = TodistusPage()
   var opinnot = OpinnotPage()
   var editor = opinnot.opiskeluoikeusEditor()
   var opiskeluoikeus = OpiskeluoikeusDialog()
@@ -596,15 +595,6 @@ describe('IB', function( ) {
           })
         })
       })
-
-    })
-
-    describe('Tulostettava todistus', function () {
-      before(opinnot.avaaTodistus())
-      it('näytetään', function () {
-        // See more detailed content specification in IBTutkintoSpec.scala
-        expect(todistus.vahvistus()).to.equal('Helsinki 4.6.2016 Reijo Reksi rehtori')
-      })
     })
 
     describe('Tietojen muuttaminen', function() {
@@ -1049,15 +1039,6 @@ describe('IB', function( ) {
             expect(opinnot.deletePäätasonSuoritusIsShown()).to.equal(false)
           })
         })
-      })
-    })
-  })
-
-  describe('Opintosuoritusote', function () {
-    before(page.openPage, page.oppijaHaku.searchAndSelect('040701-432D'))
-    before(opinnot.avaaOpintosuoritusote())
-    describe('Kun klikataan linkkiä', function () {
-      it('näytetään', function () {
       })
     })
   })

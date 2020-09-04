@@ -6,7 +6,7 @@ import fi.oph.koski.schema.{YlioppilastutkinnonOpiskeluoikeus, Ylioppilastutkinn
 import fi.oph.koski.koskiuser.MockUsers.{paakayttaja}
 import org.scalatest.{FreeSpec, Matchers}
 
-class YlioppilastutkintoSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsYlioppilastutkinto with OpintosuoritusoteTestMethods with SearchTestMethods with TodistusTestMethods with LocalJettyHttpSpecification {
+class YlioppilastutkintoSpec extends FreeSpec with Matchers with OpiskeluoikeusTestMethodsYlioppilastutkinto with LocalJettyHttpSpecification with SearchTestMethods {
   "Ylioppilastutkinnot" - {
     "Lisättäessä/päivitettäessä" - {
       "palautetaan HTTP 501" in {
@@ -53,19 +53,5 @@ class YlioppilastutkintoSpec extends FreeSpec with Matchers with OpiskeluoikeusT
       }
     }
 
-    "Todistus" - {
-      "Näytetään" in {
-        todistus(MockOppijat.ylioppilas.oid, "ylioppilastutkinto") should equal("""Ylioppilastutkintotodistus
-                                                                                  |Ylioppilastutkintolautakunta
-                                                                                  |Helsingin medialukio
-                                                                                  |Ylioppilas, Ynjevi 210244-374K
-                                                                                  |
-                                                                                  |Äidinkielen koe, suomi Lubenter approbatur
-                                                                                  |Ruotsi, keskipitkä oppimäärä Cum laude approbatur
-                                                                                  |Englanti, pitkä oppimäärä Cum laude approbatur
-                                                                                  |Maantiede Magna cum laude approbatur
-                                                                                  |Matematiikan koe, lyhyt oppimäärä Laudatur""".stripMargin)
-      }
-    }
   }
 }

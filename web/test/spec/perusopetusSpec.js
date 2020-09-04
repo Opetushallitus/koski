@@ -1,7 +1,6 @@
 describe('Perusopetus', function() {
   var page = KoskiPage()
   var login = LoginPage()
-  var todistus = TodistusPage()
   var opinnot = OpinnotPage()
   var tilaJaVahvistus = opinnot.tilaJaVahvistus
   var addOppija = AddOppijaPage()
@@ -93,21 +92,10 @@ describe('Perusopetus', function() {
           after(resetFixtures, page.openPage, page.oppijaHaku.searchAndSelect('220109-784L'), opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetus'))
         })
       })
-
-      describe('Päättötodistus', function() {
-        before(opinnot.avaaTodistus())
-        describe('Klikattaessa linkkiä', function() {
-          it('näytetään', function() {
-            // See more detailed content specification in PerusopetusSpec.scala
-            expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
-            expect(todistus.arvosanarivi('.muut-opinnot')).to.equal('Muut valinnaiset opinnot')
-          })
-        })
-      })
     })
 
     describe('Lukuvuosisuoritus 8. luokka', function() {
-      before(TodistusPage().close, wait.until(page.isOppijaSelected('Kaisa')), opinnot.valitseSuoritus(undefined, '8. vuosiluokka'))
+      before(wait.until(page.isOppijaSelected('Kaisa')), opinnot.valitseSuoritus(undefined, '8. vuosiluokka'))
       describe('Kaikki tiedot näkyvissä', function() {
         before(opinnot.expandAll)
         it('näyttää suorituksen tiedot', function() {
@@ -163,14 +151,10 @@ describe('Perusopetus', function() {
           )
         })
       })
-      describe('Lukuvuositodistus', function() {
-        before(opinnot.avaaTodistus())
-        it('näytetään', function() {})
-      })
     })
 
     describe('Lukuvuosisuoritus 9. luokka', function() {
-      before(TodistusPage().close, wait.until(page.isOppijaSelected('Kaisa')), opinnot.valitseSuoritus(undefined, '9. vuosiluokka'))
+      before(wait.until(page.isOppijaSelected('Kaisa')), opinnot.valitseSuoritus(undefined, '9. vuosiluokka'))
       describe('Kaikki tiedot näkyvissä', function() {
         before(opinnot.expandAll)
         it('näyttää suorituksen tiedot', function() {
@@ -191,7 +175,7 @@ describe('Perusopetus', function() {
     })
 
     describe('Luokalle jäänyt 7-luokkalainen', function() {
-      before(TodistusPage().close, wait.until(page.isOppijaSelected('Kaisa')), opinnot.valitseSuoritus(undefined, '7. vuosiluokka'))
+      before(wait.until(page.isOppijaSelected('Kaisa')), opinnot.valitseSuoritus(undefined, '7. vuosiluokka'))
       describe('Kaikki tiedot näkyvissä', function() {
         before(opinnot.expandAll)
         it('näyttää suorituksen tiedot', function() {
@@ -347,14 +331,6 @@ describe('Perusopetus', function() {
         })
       })
       */
-
-      describe('Tulostettava todistus', function() {
-        before(opinnot.valitseSuoritus(undefined, 'Päättötodistus'), opinnot.avaaTodistus())
-        it('näytetään', function() {
-          // See more detailed content specification in PerusopetusSpec.scala
-          expect(todistus.vahvistus()).to.equal('Jyväskylä 4.6.2016 Reijo Reksi rehtori')
-        })
-      })
 
       describe('Ilman luottamuksellinen-roolia', function() {
         before(Authentication().logout, Authentication().login('epäluotettava-tallentaja'))
@@ -3110,14 +3086,6 @@ describe('Perusopetus', function() {
           'Suoritus valmis Vahvistus : 4.6.2016 Jyväskylä Reijo Reksi , rehtori')
       })
     })
-    describe('Tulostettava todistus', function() {
-      before(opinnot.avaaTodistus())
-      it('näytetään', function() {
-        expect(todistus.headings()).to.equal('Jyväskylän yliopisto Todistus perusopetuksen oppiaineen oppimäärän suorittamisesta Jyväskylän normaalikoulu Oppiaineenkorottaja, Olli 110738-839L')
-        expect(todistus.arvosanarivi('.oppiaine.AI')).to.equal('Äidinkieli ja kirjallisuus Kiitettävä 9')
-        expect(todistus.arvosanarivi('.muut-opinnot')).to.equal('')
-      })
-    })
 
     describe('Monta oppiainetta', function() {
       before(page.openPage, page.oppijaHaku.searchAndSelect('131298-5248'))
@@ -3342,13 +3310,6 @@ describe('Perusopetus', function() {
           '* = yksilöllistetty oppimäärä, † = perusopetuksen päättötodistuksen arvosanan korotus')
       })
     })
-    describe('Tulostettava todistus', function() {
-      before(opinnot.avaaTodistus())
-      it('näytetään', function() {
-        expect(todistus.headings()).to.equal('Jyväskylän yliopisto Todistus lisäopetuksen suorittamisesta Jyväskylän normaalikoulu Kymppiluokkalainen, Kaisa 131025-6573')
-        // See more detailed content specification in PerusopetusSpec.scala
-      })
-    })
     describe('Tietojen muuttaminen', function() {
       before(page.openPage, page.oppijaHaku.searchAndSelect('131025-6573'))
       describe('Oppiaineen arvosanan muutos', function() {
@@ -3539,13 +3500,6 @@ describe('Perusopetus', function() {
             it('toimii', function() {})
           })
         })
-      })
-    })
-    describe('Tulostettava todistus', function() {
-      before(opinnot.avaaTodistus())
-      it('näytetään', function() {
-        expect(todistus.vahvistus()).to.equal('Jyväskylä 1.6.2008 Reijo Reksi rehtori')
-        // See more detailed content specification in PerusopetusSpec.scala
       })
     })
     describe('Opiskeluoikeuden lisääminen', function() {

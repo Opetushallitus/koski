@@ -8,7 +8,6 @@ import fi.oph.koski.koskiuser.{AccessType, RequiresVirkailijaOrPalvelukäyttäj�
 import fi.oph.koski.organisaatio.OrganisaatioOid
 import fi.oph.koski.preferences.PreferencesService
 import fi.oph.koski.servlet.NoCache
-import fi.oph.koski.todistus.LocalizedHtml
 import fi.oph.koski.util.WithWarnings
 import fi.oph.koski.validation.ValidationAndResolvingContext
 
