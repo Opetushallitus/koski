@@ -25,8 +25,13 @@ case class LukioRaportti(repository: LukioRaportitRepository) extends GlobalExec
     ).contains(osasuoritus.suorituksenTyyppi)
   }
 
-  def buildRaportti(oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate): Seq[DynamicDataSheet] = {
-    val rows = repository.suoritustiedot(oppilaitosOid, alku, loppu)
+  def buildRaportti(
+    oppilaitosOid: Organisaatio.Oid,
+    alku: LocalDate,
+    loppu: LocalDate,
+    osasuoritustenAikarajaus: Boolean
+  ): Seq[DynamicDataSheet] = {
+    val rows = repository.suoritustiedot(oppilaitosOid, alku, loppu, osasuoritustenAikarajaus)
     val oppiaineetJaKurssit = opetettavatOppiaineetJaNiidenKurssit(isOppiaineenOppimäärä, isOppiaine, rows)
 
     val future = for {
