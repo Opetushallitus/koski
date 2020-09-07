@@ -69,10 +69,6 @@ case class LukioRaportti(repository: LukioRaportitRepository) extends GlobalExec
     !isOppiaineenOppimäärä(data.päätasonSuoritus) || data.päätasonSuoritus.matchesWith(oppiaine)
   }
 
-  private def isTunnustettu(kurssisuoritus: ROsasuoritusRow) = {
-    JsonSerializer.extract[Option[OsaamisenTunnustaminen]](kurssisuoritus.data \ "tunnustettu").isDefined
-  }
-
   private def kaikkiOppiaineetVälilehtiRow(row: LukioRaporttiRows, oppiaineet: Seq[YleissivistäväRaporttiOppiaineJaKurssit], alku: LocalDate, loppu: LocalDate) = {
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](row.opiskeluoikeus.data \ "lähdejärjestelmänId")
     val lisätiedot = JsonSerializer.extract[Option[LukionOpiskeluoikeudenLisätiedot]](row.opiskeluoikeus.data \ "lisätiedot")
@@ -113,13 +109,13 @@ case class LukioRaportti(repository: LukioRaportitRepository) extends GlobalExec
        syy_alle18vuotiaana_aloitettuun_opiskeluun_aikuisten_lukiokoulutuksessa = lisätiedot.flatMap(_.alle18vuotiaanAikuistenLukiokoulutuksenAloittamisenSyy.map(_.get("fi"))),
        yhteislaajuus = lukionKurssit.map(_.laajuus).sum,
        yhteislaajuusSuoritetut = lukionKurssit
-         .filterNot(isTunnustettu)
+         .filterNot(k => k.tunnustettu)
          .map(_.laajuus).sum,
        yhteislaajuusHylätyt = lukionKurssit
-         .filterNot(k => isTunnustettu(k) || k.suoritettu)
+         .filterNot(k => k.tunnustettu || k.suoritettu)
          .map(_.laajuus).sum,
        yhteislaajuusTunnustetut = lukionKurssit
-         .filter(k => k.suoritettu && isTunnustettu(k))
+         .filter(k => k.suoritettu && k.tunnustettu)
          .map(_.laajuus).sum
      ),
       oppiaineet = oppiaineidentiedot(row.päätasonSuoritus, row.osasuoritukset, oppiaineet, isOppiaineenOppimäärä)
@@ -149,7 +145,7 @@ case class LukioRaportti(repository: LukioRaportitRepository) extends GlobalExec
           kurssintyyppi = JsonSerializer.extract[Option[Koodistokoodiviite]](kurssisuoritus.data \ "koulutusmoduuli" \ "kurssinTyyppi").map(_.koodiarvo),
           arvosana = kurssisuoritus.arviointiArvosanaKoodiarvo,
           laajuus = kurssisuoritus.koulutusmoduuliLaajuusArvo,
-          tunnustettu = JsonSerializer.extract[Option[OsaamisenTunnustaminen]](kurssisuoritus.data \ "tunnustettu").isDefined
+          tunnustettu = kurssisuoritus.tunnustettu
         ).toString
       ).mkString(",")
     }

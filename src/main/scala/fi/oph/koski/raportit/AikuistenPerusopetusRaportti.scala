@@ -210,13 +210,13 @@ case class AikuistenPerusopetusRaportti(
         sisäoppilaitosmainenMajoitus = lisätiedot.flatMap(_.sisäoppilaitosmainenMajoitus.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
         yhteislaajuus = kurssit.map(_.laajuus).sum,
         yhteislaajuusSuoritetut = kurssit
-          .filterNot(isTunnustettu)
+          .filterNot(k => k.tunnustettu)
           .map(_.laajuus).sum,
         yhteislaajuusHylätyt = kurssit
-          .filterNot(k => isTunnustettu(k) || k.suoritettu)
+          .filterNot(k => k.tunnustettu || k.suoritettu)
           .map(_.laajuus).sum,
         yhteislaajuusTunnustetut = kurssit
-          .filter(k => k.suoritettu && isTunnustettu(k))
+          .filter(k => k.suoritettu && k.tunnustettu)
           .map(_.laajuus).sum
       ),
       oppiaineet = oppiaineidentiedot(row.päätasonSuoritus, row.osasuoritukset, oppiaineet, raporttiType.isOppiaineenOppimäärä)
@@ -245,14 +245,10 @@ case class AikuistenPerusopetusRaportti(
         AikuistenPerusopetusKurssinTiedot(
           arvosana = kurssisuoritus.arviointiArvosanaKoodiarvo,
           laajuus = kurssisuoritus.koulutusmoduuliLaajuusArvo,
-          tunnustettu = isTunnustettu(kurssisuoritus)
+          tunnustettu = kurssisuoritus.tunnustettu
         ).toString
       ).mkString(", ")
     }
-  }
-
-  private def isTunnustettu(kurssisuoritus: ROsasuoritusRow) = {
-    JsonSerializer.extract[Option[OsaamisenTunnustaminen]](kurssisuoritus.data \ "tunnustettu").isDefined
   }
 
   private def alkuvaiheenSuorituksiaColumn() = {

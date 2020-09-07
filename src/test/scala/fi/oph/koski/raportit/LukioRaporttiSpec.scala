@@ -182,6 +182,20 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
           val (_, matematiikka) = findRowsWithColumnsByTitle("MA v Matematiikka, pitkä oppimäärä", kurssit)
           verifyOppijanRow(lukionAineopiskelijaAktiivinen, AktiivinenAineopiskelija.matematiikanKurssitRow, matematiikka, addOpiskeluoikeudenOid = false)
         }
+        "Musiikki (tunnustettu)" in {
+          val (_, musiikki) = findRowsWithColumnsByTitle("MU v Musiikki", kurssit)
+          val musiikinKurssitRow = Map(
+            "Oppijan oid" -> "1.2.246.562.24.00000000012",
+            "Sukunimi" -> "Lukiolainen",
+            "Etunimet" -> "Liisa",
+            "Hetu" -> Some("020655-2479"),
+            "Suorituksen tyyppi" -> "lukionoppimaara",
+            "Toimipiste" -> "Jyväskylän normaalikoulu",
+            "Opetussuunnitelma" -> Some("Lukio suoritetaan nuorten opetussuunnitelman mukaan"),
+            "MU1 Musiikki ja minä valtakunnallinen" -> "pakollinen,Arvosana 8,Laajuus 1.0,tunnustettu}"
+          )
+          verifyOppijanRow(lukiolainen, musiikinKurssitRow, musiikki, addOpiskeluoikeudenOid = false)
+        }
         "Ei tiedossa oppiaine" in {
           val (_, eiTiedossa) = findRowsWithColumnsByTitle("XX v Ei tiedossa", kurssit)
           verifyOppijanRow(lukionEiTiedossaAineopiskelija, EiTiedossaOppiaineenOpiskelija.eiTiedossaKurssitRow, eiTiedossa, addOpiskeluoikeudenOid = false)
