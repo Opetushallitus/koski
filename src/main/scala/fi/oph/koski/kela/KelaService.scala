@@ -2,7 +2,8 @@ package fi.oph.koski.kela
 
 import fi.oph.koski.config.KoskiApplication
 import fi.oph.koski.henkilo.OppijaHenkilö
-import fi.oph.koski.http.{HttpStatus, KoskiErrorCategory}
+import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
+import fi.oph.koski.http.HttpStatus
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.KoskiSession
 import fi.oph.koski.log._
@@ -37,10 +38,25 @@ class KelaService(application: KoskiApplication) extends Logging {
       .map(JsonSerializer.serializeWithUser(user))
   }
 
+  def opiskeluoikeudenHistoria(opiskeluoikeusOid: String)(implicit koskiSession: KoskiSession): Option[List[OpiskeluoikeusHistoryPatch]] = {
+    val history: Option[List[OpiskeluoikeusHistoryPatch]] = application.historyRepository.findByOpiskeluoikeusOid(opiskeluoikeusOid)(koskiSession)
+    history.foreach { _ => auditLogHistoryView(opiskeluoikeusOid)(koskiSession)}
+    history
+  }
+
+  def findKelaOppijaVersion(oppijaOid: String, opiskeluoikeusOid: String, version: Int)(implicit koskiSession: KoskiSession): Either[HttpStatus, KelaOppija] = {
+   application.oppijaFacade.findVersion(oppijaOid, opiskeluoikeusOid, version)
+      .map(t => Oppija(t._1.toHenkilötiedotJaOid, t._2))
+      .flatMap(KelaOppijaConverter.convertOppijaToKelaOppija)
+  }
+
   private def streamingQuery(filters: List[OpiskeluoikeusQueryFilter])(implicit koskiSession: KoskiSession) =
     OpiskeluoikeusQueryContext.streamingQueryGroupedByOid(application, filters, None)
 
 
   private def auditLogOpiskeluoikeusKatsominen(oppija: KelaOppija)(koskiSession: KoskiSession): Unit =
     AuditLog.log(AuditLogMessage(KoskiOperation.OPISKELUOIKEUS_KATSOMINEN, koskiSession, Map(KoskiMessageField.oppijaHenkiloOid -> oppija.henkilö.oid)))
+
+  private def auditLogHistoryView(opiskeluoikeusOid: String)(koskiSession: KoskiSession): Unit =
+    AuditLog.log(AuditLogMessage(KoskiOperation.MUUTOSHISTORIA_KATSOMINEN, koskiSession, Map(KoskiMessageField.opiskeluoikeusOid -> opiskeluoikeusOid)))
 }

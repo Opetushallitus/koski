@@ -1,12 +1,15 @@
 package fi.oph.koski.kela
 
+import java.time.LocalDate
+
 import fi.oph.koski.api.{LocalJettyHttpSpecification, OpiskeluoikeusTestMethodsAmmatillinen}
 import fi.oph.koski.henkilo.MockOppijat
+import fi.oph.koski.history.OpiskeluoikeusHistoryPatch
 import fi.oph.koski.json.JsonSerializer
 import fi.oph.koski.koskiuser.{MockUser, MockUsers}
 import fi.oph.koski.log.AuditLogTester
 import fi.oph.koski.http.KoskiErrorCategory
-import fi.oph.koski.schema.{NuortenPerusopetuksenOppiaineenOppimääränSuoritus, OpiskeluoikeudenTyyppi}
+import fi.oph.koski.schema._
 import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 class KelaSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsAmmatillinen with Matchers with BeforeAndAfterAll {
@@ -116,6 +119,41 @@ class KelaSpec extends FreeSpec with LocalJettyHttpSpecification with Opiskeluoi
     }
   }
 
+  "Opiskeluoikeuden versiohistorian haku tuottaa AuditLogin" in {
+    resetFixtures
+    val opiskeluoikeus = lastOpiskeluoikeusByHetu(MockOppijat.amis)
+
+    luoVersiohistoriaanRivi(MockOppijat.amis, opiskeluoikeus.asInstanceOf[AmmatillinenOpiskeluoikeus])
+
+    AuditLogTester.clearMessages
+
+    getVersiohistoria(opiskeluoikeus.oid.get) {
+      verifyResponseStatusOk()
+      val history = JsonSerializer.parse[List[OpiskeluoikeusHistoryPatch]](body)
+
+      history.length should equal(2)
+      AuditLogTester.verifyAuditLogMessage(Map("operation" -> "MUUTOSHISTORIA_KATSOMINEN", "target" -> Map("opiskeluoikeusOid" -> opiskeluoikeus.oid.get)))
+    }
+  }
+
+  "Tietyn version haku opiskeluoikeudesta tuottaa AuditLogin" in {
+    resetFixtures
+
+    val opiskeluoikeus = lastOpiskeluoikeusByHetu(MockOppijat.amis)
+
+    luoVersiohistoriaanRivi(MockOppijat.amis, opiskeluoikeus.asInstanceOf[AmmatillinenOpiskeluoikeus])
+
+    AuditLogTester.clearMessages
+
+    getOpiskeluoikeudenVersio(MockOppijat.amis.oid, opiskeluoikeus.oid.get, 1) {
+      verifyResponseStatusOk()
+      val response = JsonSerializer.parse[KelaOppija](body)
+
+      response.opiskeluoikeudet.headOption.flatMap(_.versionumero) should equal(Some(1))
+      AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_KATSOMINEN", "target" -> Map("oppijaHenkiloOid" -> MockOppijat.amis.oid)))
+    }
+  }
+
   private def postHetu[A](hetu: String, user: MockUser = MockUsers.kelaLaajatOikeudet)(f: => A): A = {
     post(
       "api/luovutuspalvelu/kela/hetu",
@@ -130,5 +168,22 @@ class KelaSpec extends FreeSpec with LocalJettyHttpSpecification with Opiskeluoi
       JsonSerializer.writeWithRoot(KelaBulkRequest(hetut)),
       headers = authHeaders(user) ++ jsonContent
     )(f)
+  }
+
+  private def getVersiohistoria[A](opiskeluoikeudenOid: String, user: MockUser = MockUsers.kelaLaajatOikeudet)(f: => A): A = {
+    authGet(s"api/luovutuspalvelu/kela/versiohistoria/$opiskeluoikeudenOid", user)(f)
+  }
+
+  private def getOpiskeluoikeudenVersio[A](
+    oppijaOid: String,
+    opiskeluoikeudenOid: String,
+    versio: Int,
+    user: MockUser = MockUsers.kelaLaajatOikeudet
+  )(f: => A): A = {
+    authGet(s"api/luovutuspalvelu/kela/versiohistoria/$oppijaOid/$opiskeluoikeudenOid/$versio", user)(f)
+  }
+
+  private def luoVersiohistoriaanRivi(oppija: Henkilö, opiskeluoikeus: AmmatillinenOpiskeluoikeus): Unit = {
+    createOrUpdate(oppija, opiskeluoikeus.copy(arvioituPäättymispäivä = Some(LocalDate.now)))
   }
 }
