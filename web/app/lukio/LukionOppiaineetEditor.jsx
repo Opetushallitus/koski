@@ -10,8 +10,9 @@ import {hyväksytystiSuoritetutOsasuoritukset, isLukioOps2019, laajuudet} from '
 import {numberToString} from '../util/format.js'
 import {isPaikallinen} from '../suoritus/Koulutusmoduuli'
 import {FootnoteDescriptions} from '../components/footnote'
+import Text from '../i18n/Text'
 
-export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaineenSuoritus, suoritusFilter, additionalEditableKoulutusmoduuliProperties}) => {
+export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaineenSuoritus, suoritusFilter, additionalOnlyEditableProperties, additionalEditableKoulutusmoduuliProperties, showKeskiarvo = true}) => {
   const {edit, suoritus: päätasonSuoritusModel} = suorituksetModel.context
   const oppiaineet = modelItems(suorituksetModel).filter(suoritusFilter || R.identity)
   if (!edit && R.isEmpty(oppiaineet)) return null
@@ -20,9 +21,11 @@ export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaine
     <LukionOppiaineEditor
       key={oppiaineIndex}
       oppiaine={oppiaine}
+      additionalOnlyEditableProperties={additionalOnlyEditableProperties}
       additionalEditableKoulutusmoduuliProperties={additionalEditableKoulutusmoduuliProperties}
       customOsasuoritusTitle='osasuoritus'
       showArviointiEditor={!oppiaine.value.classes.includes('arvioinniton')}
+      showKeskiarvo={showKeskiarvo}
     />
   ))
   const errorRows = oppiaineet.map(oppiaine =>
@@ -32,10 +35,15 @@ export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaine
   )
   const oppiaineetWithErrorRows = R.zip(oppiaineRows, errorRows)
   const laajuusyksikkö = modelTitle(oppiaineet[0], 'koulutusmoduuli.laajuus.yksikkö') || 'kurssia'
+
+  const arvosanaHeaderText = showKeskiarvo ? 'Arvosana (keskiarvo)' : 'Arvosana'
+
+  const arvosanaHeader = <Text name={arvosanaHeaderText}/>
+
   return (
     <section>
       <table className="suoritukset oppiaineet">
-        {!R.isEmpty(oppiaineet) && <LukionOppiaineetTableHead laajuusyksikkö={laajuusyksikkö} />}
+        {!R.isEmpty(oppiaineet) && <LukionOppiaineetTableHead laajuusyksikkö={laajuusyksikkö} arvosanaHeader={arvosanaHeader} />}
         <tbody>
         {oppiaineetWithErrorRows}
         </tbody>

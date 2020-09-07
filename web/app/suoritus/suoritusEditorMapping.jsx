@@ -64,6 +64,8 @@ export const resolveOsasuorituksetEditor = (mdl) => {
         suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
         classesForUusiOppiaineenSuoritus={['lukionoppiaineensuoritus2019', 'muidenlukioopintojensuoritus2019']}
         useOppiaineLaajuus={true}
+        showKeskiarvo={false}
+        additionalOnlyEditableProperties={['suorituskieli', 'suoritettuErityisenäTutkintona']}
       />
     )
   }

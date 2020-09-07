@@ -23,8 +23,10 @@ case class LukionOppimääränSuoritus2019(
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
   suoritettuErityisenäTutkintona: Boolean = false,
   @Description("Oppimäärän suorituksen opetuskieli/suorituskieli. Rahoituksen laskennassa käytettävä tieto.")
+  @Title("Opetuskieli")
   suorituskieli: Koodistokoodiviite,
   @Tooltip("Osallistuminen lukiokoulutusta täydentävän saamen/romanikielen/opiskelijan oman äidinkielen opiskeluun")
+  @Title("Lukion oppimäärää täydentävät oman äidinkielen opinnot")
   omanÄidinkielenOpinnot: Option[OmanÄidinkielenOpinnotLaajuusOpintopisteinä] = None,
   puhviKoe: Option[PuhviKoe2019] = None,
   suullisenKielitaidonKokeet: Option[List[SuullisenKielitaidonKoe2019]] = None,
@@ -46,6 +48,7 @@ case class LukionOppiaineidenOppimäärienSuoritus2019(
   oppimäärä: Koodistokoodiviite,
   toimipiste: OrganisaatioWithOid,
   vahvistus: Option[HenkilövahvistusPaikkakunnalla] = None,
+  @Title("Opetuskieli")
   suorituskieli: Koodistokoodiviite,
   @Description("Merkitään, jos lukion oppimäärä on tullut suoritetuksi aineopintoina.")
   @DefaultValue(false)

@@ -35,6 +35,7 @@ export class LukionOppiaineEditor extends React.Component {
       oppiaine,
       footnote,
       additionalEditableProperties,
+      additionalOnlyEditableProperties,
       additionalEditableKoulutusmoduuliProperties,
       allowOppiaineRemoval = true,
       showLaajuus = true,
@@ -43,7 +44,8 @@ export class LukionOppiaineEditor extends React.Component {
       showArviointiEditor = true,
       customOsasuoritusTitle,
       customOsasuoritusAlternativesCompletionFn,
-      customKurssitSortFn
+      customKurssitSortFn,
+      showKeskiarvo = true
     } = this.props
 
     const kurssit = modelItems(oppiaine, 'osasuoritukset')
@@ -64,6 +66,13 @@ export class LukionOppiaineEditor extends React.Component {
           </div>
           {
             additionalEditableProperties && <PropertiesEditor model={oppiaine} propertyFilter={p => additionalEditableProperties.includes(p.key)}/>
+          }
+          {
+            edit && additionalOnlyEditableProperties &&
+            <PropertiesEditor
+              model={oppiaine}
+              propertyFilter={p => additionalOnlyEditableProperties.includes(p.key)}
+            />
           }
           <KurssitEditor
             model={oppiaine}
@@ -88,6 +97,7 @@ export class LukionOppiaineEditor extends React.Component {
                   oppiaine={oppiaine}
                   suoritetutKurssit={suoritetutKurssit(kurssit)}
                   footnote={footnote}
+                  showKeskiarvo={showKeskiarvo}
                 />
               )}
             </td>
