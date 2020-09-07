@@ -111,6 +111,7 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
   get("/esiopetuksenoppijamäärätraportti") {
     requireOpiskeluoikeudenKayttooikeudet(OpiskeluoikeudenTyyppi.esiopetus)
     val parsedRequest = parseTilastoraporttiPäivältäRequest
+
     AuditLog.log(AuditLogMessage(OPISKELUOIKEUS_RAPORTTI, koskiSession, Map(hakuEhto -> s"raportti=esiopetuksenoppijamäärätraportti&paiva=${parsedRequest.paiva}")))
     writeExcel(raportitService.esiopetuksenOppijamäärät(parsedRequest))
   }
@@ -145,8 +146,9 @@ class RaportitServlet(implicit val application: KoskiApplication) extends ApiSer
     val paiva = getLocalDateParam("paiva")
     val password = getStringParam("password")
     val downloadToken = params.get("downloadToken")
+    val oppilaitosOid = getStringParam("oppilaitosOid")
 
-    RaporttiPäivältäRequest("", downloadToken, password, paiva)
+    RaporttiPäivältäRequest(oppilaitosOid, downloadToken, password, paiva)
   }
 
   private def parseAikajaksoRaporttiAikarajauksellaRequest: AikajaksoRaporttiAikarajauksellaRequest = {
