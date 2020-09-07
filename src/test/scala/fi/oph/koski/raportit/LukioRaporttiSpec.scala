@@ -192,7 +192,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
             "Suorituksen tyyppi" -> "lukionoppimaara",
             "Toimipiste" -> "Jyväskylän normaalikoulu",
             "Opetussuunnitelma" -> Some("Lukio suoritetaan nuorten opetussuunnitelman mukaan"),
-            "MU1 Musiikki ja minä valtakunnallinen" -> "pakollinen,Arvosana 8,Laajuus 1.0,tunnustettu}"
+            "MU1 Musiikki ja minä valtakunnallinen" -> "Pakollinen, Arvosana 8, Laajuus 1.0, Tunnustettu"
           )
           verifyOppijanRow(lukiolainen, musiikinKurssitRow, musiikki, addOpiskeluoikeudenOid = false)
         }
@@ -294,7 +294,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     }
   }
 
-  private def kurssintiedot(arvosana: String, laajuus: String = "1.0", tyyppi: String) = s"$tyyppi,Arvosana $arvosana,Laajuus $laajuus"
+  private def kurssintiedot(arvosana: String, laajuus: String = "1.0", tyyppi: String) = s"$tyyppi, Arvosana $arvosana, Laajuus $laajuus"
 
   lazy val expectedLukiolainenRow = Map(
     "Opiskeluoikeuden oid" -> "",
@@ -364,11 +364,11 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Toimipiste" -> "Jyväskylän normaalikoulu",
     "Opetussuunnitelma" -> Some("Lukio suoritetaan nuorten opetussuunnitelman mukaan"),
     "Suorituksen tyyppi" -> "lukionoppimaara",
-    "HI1 Ihminen ympäristön ja yhteiskuntien muutoksessa valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
+    "HI1 Ihminen ympäristön ja yhteiskuntien muutoksessa valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "Pakollinen"),
     "HI1 Ihminen, ympäristö ja kulttuuri valtakunnallinen" -> "",
-    "HI2 Kansainväliset suhteet valtakunnallinen" -> kurssintiedot(arvosana = "8", tyyppi = "pakollinen"),
-    "HI3 Itsenäisen Suomen historia valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
-    "HI4 Eurooppalaisen maailmankuvan kehitys valtakunnallinen" -> kurssintiedot(arvosana = "6", tyyppi = "pakollinen")
+    "HI2 Kansainväliset suhteet valtakunnallinen" -> kurssintiedot(arvosana = "8", tyyppi = "Pakollinen"),
+    "HI3 Itsenäisen Suomen historia valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "Pakollinen"),
+    "HI4 Eurooppalaisen maailmankuvan kehitys valtakunnallinen" -> kurssintiedot(arvosana = "6", tyyppi = "Pakollinen")
   )
 
   lazy val defaultAineopiskelijaRow = Map(
@@ -493,19 +493,19 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
 
     lazy val historiaKurssitRow = eiSuorituksiaKurssitRow + (
       "HI1 Ihminen ympäristön ja yhteiskuntien muutoksessa valtakunnallinen" -> "",
-      "HI1 Ihminen, ympäristö ja kulttuuri valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
-      "HI2 Kansainväliset suhteet valtakunnallinen" -> kurssintiedot(arvosana = "8", tyyppi = "pakollinen"),
-      "HI3 Itsenäisen Suomen historia valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
-      "HI4 Eurooppalaisen maailmankuvan kehitys valtakunnallinen" -> kurssintiedot(arvosana = "6", tyyppi = "pakollinen")
+      "HI1 Ihminen, ympäristö ja kulttuuri valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "Pakollinen"),
+      "HI2 Kansainväliset suhteet valtakunnallinen" -> kurssintiedot(arvosana = "8", tyyppi = "Pakollinen"),
+      "HI3 Itsenäisen Suomen historia valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "Pakollinen"),
+      "HI4 Eurooppalaisen maailmankuvan kehitys valtakunnallinen" -> kurssintiedot(arvosana = "6", tyyppi = "Pakollinen")
     )
 
     lazy val matematiikanKurssitRow = eiSuorituksiaKurssitRow + (
       "MAA1 Funktiot ja yhtälöt, pa, vuositaso 1 paikallinen" -> "",
-      "MAA2 Polynomifunktiot ja -yhtälöt valtakunnallinen"  -> kurssintiedot(arvosana = "6", tyyppi = "pakollinen"),
-      "MAA3 Geometria valtakunnallinen" -> "pakollinen,Arvosana 7,Laajuus 1.0",
-      "MAA4 Vektorit valtakunnallinen" -> "pakollinen,Arvosana 8,Laajuus 1.0",
-      "MAA5 Analyyttinen geometria valtakunnallinen" -> "pakollinen,Arvosana 9,Laajuus 1.0",
-      "MAA6 Derivaatta valtakunnallinen" -> "pakollinen,Arvosana 10,Laajuus 1.0",
+      "MAA2 Polynomifunktiot ja -yhtälöt valtakunnallinen"  -> kurssintiedot(arvosana = "6", tyyppi = "Pakollinen"),
+      "MAA3 Geometria valtakunnallinen" -> "Pakollinen, Arvosana 7, Laajuus 1.0",
+      "MAA4 Vektorit valtakunnallinen" -> "Pakollinen, Arvosana 8, Laajuus 1.0",
+      "MAA5 Analyyttinen geometria valtakunnallinen" -> "Pakollinen, Arvosana 9, Laajuus 1.0",
+      "MAA6 Derivaatta valtakunnallinen" -> "Pakollinen, Arvosana 10, Laajuus 1.0",
       "MAA7 Trigonometriset funktiot valtakunnallinen" -> "",
       "MAA8 Juuri- ja logaritmifunktiot valtakunnallinen" -> "",
       "MAA9 Integraalilaskenta valtakunnallinen" -> "",
@@ -582,7 +582,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
       "Toimipiste" -> "Jyväskylän normaalikoulu",
       "Opetussuunnitelma" -> None,
       "Suorituksen tyyppi" -> "lukionoppiaineenoppimaara",
-      "FI1 Johdatus filosofiseen ajatteluun valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen")
+      "FI1 Johdatus filosofiseen ajatteluun valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "Pakollinen")
     )
   }
 }

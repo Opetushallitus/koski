@@ -269,7 +269,14 @@ case class LukioOppiaineenKurssienVälilehtiStaattisetKolumnit(
 )
 
 case class LukioKurssinTiedot(kurssintyyppi: Option[String], arvosana: Option[String], laajuus: Option[Double], tunnustettu: Boolean) {
-  override def toString: String = s"${kurssintyyppi.getOrElse("Ei tyyppiä")},${arvosana.map("Arvosana " + _).getOrElse("Ei arvosanaa")},${laajuus.map("Laajuus " + _).getOrElse("Ei laajuutta")}${if (tunnustettu) ",tunnustettu}" else ""}"
+  override def toString: String = {
+    List(
+      Some(kurssintyyppi.getOrElse("Ei tyyppiä").capitalize),
+      Some(arvosana.map("Arvosana " + _).getOrElse("Ei arvosanaa")),
+      Some(laajuus.map("Laajuus " + _).getOrElse("Ei laajuutta")),
+      if (tunnustettu) Some("Tunnustettu") else None
+    ).flatten.mkString(", ")
+  }
 }
 
 case class LukioRaportinOppiaineenKurssitRow(stattisetKolumnit: LukioOppiaineenKurssienVälilehtiStaattisetKolumnit, kurssit: Seq[String]) {
