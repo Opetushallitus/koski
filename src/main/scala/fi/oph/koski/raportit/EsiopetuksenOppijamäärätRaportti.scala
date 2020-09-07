@@ -97,20 +97,20 @@ case class EsiopetuksenOppijamäärätRaportti(db: DB) extends KoskiDatabaseMeth
   val columnSettings: Seq[(String, Column)] = Seq(
     "oppilaitosNimi" -> Column("Oppilaitos"),
     "opetuskieli" -> Column("Opetuskieli"),
-    "esiopetusoppilaidenMäärä" -> Column("Esiopetusoppilaiden määrä"),
-    "vieraskielisiä" -> Column("Vieraskielisiä"),
-    "koulunesiopetuksessa" -> Column("Koulun esiopetuksessa"),
+    "esiopetusoppilaidenMäärä" -> Column("Esiopetusoppilaiden määrä", comment = Some("\"Läsnä\"-tilaiset esiopetuksen opiskeluoikeudet raportin tulostusparametreissa määriteltynä päivänä.")),
+    "vieraskielisiä" -> Column("Esiopetusoppilaista vieraskielisiä"),
+    "koulunesiopetuksessa" -> Column("Peruskoulun esiopetuksessa"),
     "päiväkodinesiopetuksessa" -> Column("Päiväkodin esiopetuksessa"),
-    "viisivuotiaita" -> Column("Viisivuotiaita"),
+    "viisivuotiaita" -> Column("Viisivuotiaita", comment = Some("Esiopetuksen oppilaat, jotka ovat raportin \"Päivä\"-parametrissa määriteltynä vuotena täyttäneet viisi vuotta mutta joilla ei löydy opiskeluoikeuden lisätiedoista tietoa pidennetystä oppivelvollisuudesta.")),
     "viisivuotiaitaEiPidennettyäOppivelvollisuutta" -> Column("Viisivuotiaita, ei pidennettyä oppivelvollisuutta"),
     "pidennettyOppivelvollisuusJaVaikeastiVammainen" -> Column("Pidennetty oppivelvollisuus ja vaikeasti vammainen"),
     "pidennettyOppivelvollisuusJaMuuKuinVaikeimminVammainen" -> Column("Pidennetty oppivelvollisuus ja muu kuin vaikeimmin vammainen"),
-    "virheellisestiSiirretytVaikeastiVammaiset" -> Column("Virheellisesti siirretyt vaikeasti vammaiset"),
-    "virheellisestiSiirretytMuutKuinVaikeimminVammaiset" -> Column("Virheellisesti siirretyt muut kuin vaikeimmin vammaiset"),
-    "erityiselläTuella" -> Column("Erityisellä tuella"),
-    "majoitusetu" -> Column("Majoitusetu"),
-    "kuljetusetu" -> Column("Kuljetusetu"),
-    "sisäoppilaitosmainenMajoitus" -> Column("Sisäoppilaitosmainen majoitus")
+    "virheellisestiSiirretytVaikeastiVammaiset" -> Column("Virheellisesti siirretyt vaikeasti vammaiset", comment = Some("Esiopetuksen oppilaat, joille löytyy opiskeluoikeuden lisätiedoista raportin tulostusparametreissa määritellylle päivälle osuva \"Vaikeasti vammainen\"-jakso, mutta joille ei löydy kyseiselle päivälle osuvaa pidennetyn oppivelvollisuuden ja erityisen tuen jaksoja.")),
+    "virheellisestiSiirretytMuutKuinVaikeimminVammaiset" -> Column("Virheellisesti siirretyt muut kuin vaikeimmin vammaiset", comment = Some("Esiopetuksen oppilaat, joille löytyy opiskeluoikeuden lisätiedoista raportin tulostusparametreissa määritellylle päivälle osuva \"Muu kuin vaikeasti vammainen\"-jakso, mutta joille ei löydy kyseiselle päivälle osuvaa pidennetyn oppivelvollisuuden ja erityisen tuen jaksoja.")),
+    "erityiselläTuella" -> Column("Esiopetusoppilaat, joilla erityinen tuki", comment = Some("Esiopetuksen oppilaat, joille löytyy opiskeluoikeuden lisätiedoista raportin tulostusparametreissa määritellylle päivälle osuva erityisen tuen jakso.")),
+    "majoitusetu" -> Column("Majoitusetu", comment = Some("Esiopetuksen oppilaat, joille löytyy opiskeluoikeuden lisätiedoista raportin tulostusparametreissa määritellylle päivälle osuva majoitusetujakso. ")),
+    "kuljetusetu" -> Column("Kuljetusetu", comment = Some("Esiopetuksen oppilaat, joille löytyy opiskeluoikeuden lisätiedoista raportin tulostusparametreissa määritellylle päivälle osuva kuljetusetujakso.")),
+    "sisäoppilaitosmainenMajoitus" -> Column("Sisäoppilaitosmainen majoitus", comment = Some("Esiopetuksen oppilaat, joille löytyy opiskeluoikeuden lisätiedoista raportin tulostusparametreissa määritellylle päivälle osuva sisäoppilaitosmaisen majoituksen jakso."))
   )
 }
 
