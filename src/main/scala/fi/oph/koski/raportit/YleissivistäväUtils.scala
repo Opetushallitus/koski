@@ -13,7 +13,7 @@ case class YleissivistäväOppiaineenTiedot(suoritus: RSuoritusRow, osasuorituks
     case _: RPäätasonSuoritusRow => osasuoritukset
     case s: ROsasuoritusRow => osasuoritukset.filter(_.ylempiOsasuoritusId.contains(s.osasuoritusId))
   }
-  private val hylätytOsasuoritukset = suorituksenOsasuoritukset.filterNot(_.suoritettu)
+  private val hylätytOsasuoritukset = suorituksenOsasuoritukset.filterNot(_.arvioituJaHyväksytty)
 
   private val laajuus = suorituksenOsasuoritukset.map(_.laajuus).sum
   private val hylättyjenLaajuus = hylätytOsasuoritukset.map(_.laajuus).sum

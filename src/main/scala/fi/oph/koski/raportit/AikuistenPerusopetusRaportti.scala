@@ -213,10 +213,10 @@ case class AikuistenPerusopetusRaportti(
           .filterNot(k => k.tunnustettu)
           .map(_.laajuus).sum,
         yhteislaajuusHylätyt = kurssit
-          .filterNot(k => k.tunnustettu || k.suoritettu)
+          .filterNot(k => k.tunnustettu || k.arvioituJaHyväksytty)
           .map(_.laajuus).sum,
         yhteislaajuusTunnustetut = kurssit
-          .filter(k => k.suoritettu && k.tunnustettu)
+          .filter(k => k.arvioituJaHyväksytty && k.tunnustettu)
           .map(_.laajuus).sum
       ),
       oppiaineet = oppiaineidentiedot(row.päätasonSuoritus, row.osasuoritukset, oppiaineet, raporttiType.isOppiaineenOppimäärä)

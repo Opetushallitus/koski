@@ -410,7 +410,7 @@ sealed trait RSuoritusRow {
   def arviointiArvosanaKoodiarvo: Option[String]
   def matchesWith(x: YleissivistäväRaporttiOppiaineTaiKurssi): Boolean
   def arviointiHyväksytty: Option[Boolean]
-  def suoritettu: Boolean = arviointiHyväksytty.getOrElse(false)
+  def arvioituJaHyväksytty: Boolean = arviointiHyväksytty.getOrElse(false)
 }
 
 case class RPäätasonSuoritusRow(
