@@ -9,7 +9,6 @@ import {AikajaksoRaportti} from './AikajaksoRaportti'
 import {VuosiluokkaRaporttiPaivalta} from './VuosiluokkaRaporttiPaivalta'
 import {AikajaksoRaporttiAikarajauksella} from './AikajaksoRaporttiAikarajauksella'
 import {RaporttiPaivalta} from './RaporttiPaivalta'
-import {TilastoRaporttiPaivalta} from './TilastoRaporttiPaivalta'
 import {AikuistenPerusopetuksenRaportit} from './AikuistenPerusopetuksenRaportit'
 
 export const raportitContentP = () => {
