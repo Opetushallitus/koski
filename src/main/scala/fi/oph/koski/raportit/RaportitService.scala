@@ -49,9 +49,9 @@ class RaportitService(application: KoskiApplication) {
     perusopetuksenVuosiluokka(request, PerusopetuksenVuosiluokkaRaportti)
   }
 
-  def lukioraportti(request: AikajaksoRaporttiRequest) = {
+  def lukioraportti(request: AikajaksoRaporttiAikarajauksellaRequest) = {
     OppilaitosRaporttiResponse(
-      sheets = LukioRaportti(lukioRepository).buildRaportti(request.oppilaitosOid, request.alku, request.loppu),
+      sheets = LukioRaportti(lukioRepository).buildRaportti(request.oppilaitosOid, request.alku, request.loppu, request.osasuoritustenAikarajaus),
       workbookSettings = WorkbookSettings(s"Suoritustietojen_tarkistus_${request.oppilaitosOid}", Some(request.password)),
       filename = s"lukio_suoritustietojentarkistus_${request.oppilaitosOid}_${request.alku}_${request.loppu}.xlsx",
       downloadToken = request.downloadToken

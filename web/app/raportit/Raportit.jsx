@@ -148,7 +148,7 @@ const Lukioraportti = ({organisaatioAtom}) => {
   const titleText = <Text name='Lukioraportti-title'/>
   const descriptionText = <Text name='Lukioraportti-description'/>
 
-  return (<AikajaksoRaportti
+  return (<AikajaksoRaporttiAikarajauksella
     organisaatioAtom={organisaatioAtom}
     apiEndpoint={'/lukionsuoritustietojentarkistus'}
     title={titleText}

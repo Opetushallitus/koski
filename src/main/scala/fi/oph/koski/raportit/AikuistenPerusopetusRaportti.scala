@@ -175,6 +175,8 @@ case class AikuistenPerusopetusRaportti(
   private def kaikkiOppiaineetVälilehtiRow(row: AikuistenPerusopetusRaporttiRows, oppiaineet: Seq[YleissivistäväRaporttiOppiaineJaKurssit], alku: LocalDate, loppu: LocalDate) = {
     val lähdejärjestelmänId = JsonSerializer.extract[Option[LähdejärjestelmäId]](row.opiskeluoikeus.data \ "lähdejärjestelmänId")
     val lisätiedot = JsonSerializer.extract[Option[AikuistenPerusopetuksenOpiskeluoikeudenLisätiedot]](row.opiskeluoikeus.data \ "lisätiedot")
+    val kurssit = row.osasuoritukset.filter(raporttiType.isKurssi)
+
     val data = AikuistenPerusopetusRaporttiKaikkiOppiaineetVälilehtiRow(
       muut = AikuistenPerusopetusRaporttiOppiaineetVälilehtiMuut(
         opiskeluoikeudenOid = row.opiskeluoikeus.opiskeluoikeusOid,
@@ -206,19 +208,15 @@ case class AikuistenPerusopetusRaportti(
         ulkomaanjaksot = lisätiedot.flatMap(_.ulkomaanjaksot.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
         majoitusetu = lisätiedot.flatMap(_.majoitusetu).map(lengthInDaysInDateRange(_, alku, loppu)),
         sisäoppilaitosmainenMajoitus = lisätiedot.flatMap(_.sisäoppilaitosmainenMajoitus.map(_.map(lengthInDaysInDateRange(_, alku, loppu)).sum)),
-        yhteislaajuus = row.osasuoritukset
-          .filter(raporttiType.isKurssi)
+        yhteislaajuus = kurssit.map(_.laajuus).sum,
+        yhteislaajuusSuoritetut = kurssit
+          .filterNot(k => k.tunnustettu)
           .map(_.laajuus).sum,
-        yhteislaajuusSuoritetut = row.osasuoritukset
-          .filter(raporttiType.isKurssi)
-          .filterNot(isTunnustettu)
+        yhteislaajuusHylätyt = kurssit
+          .filterNot(k => k.tunnustettu || k.arvioituJaHyväksytty)
           .map(_.laajuus).sum,
-        yhteislaajuusHylätyt = row.osasuoritukset
-          .filter(raporttiType.isKurssi)
-          .filterNot(k => isTunnustettu(k) || k.suoritettu)
-          .map(_.laajuus).sum,
-        yhteislaajuusTunnustetut = row.osasuoritukset
-          .filter(k => raporttiType.isKurssi(k) && k.suoritettu && isTunnustettu(k))
+        yhteislaajuusTunnustetut = kurssit
+          .filter(k => k.arvioituJaHyväksytty && k.tunnustettu)
           .map(_.laajuus).sum
       ),
       oppiaineet = oppiaineidentiedot(row.päätasonSuoritus, row.osasuoritukset, oppiaineet, raporttiType.isOppiaineenOppimäärä)
@@ -247,14 +245,10 @@ case class AikuistenPerusopetusRaportti(
         AikuistenPerusopetusKurssinTiedot(
           arvosana = kurssisuoritus.arviointiArvosanaKoodiarvo,
           laajuus = kurssisuoritus.koulutusmoduuliLaajuusArvo,
-          tunnustettu = isTunnustettu(kurssisuoritus)
+          tunnustettu = kurssisuoritus.tunnustettu
         ).toString
       ).mkString(", ")
     }
-  }
-
-  private def isTunnustettu(kurssisuoritus: ROsasuoritusRow) = {
-    JsonSerializer.extract[Option[OsaamisenTunnustaminen]](kurssisuoritus.data \ "tunnustettu").isDefined
   }
 
   private def alkuvaiheenSuorituksiaColumn() = {

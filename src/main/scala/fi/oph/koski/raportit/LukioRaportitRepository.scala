@@ -10,6 +10,7 @@ import fi.oph.koski.util.DateOrdering.sqlDateOrdering
 
 import scala.concurrent.duration._
 import fi.oph.koski.db.PostgresDriverWithJsonSupport.api._
+import fi.oph.koski.raportit.RaporttiUtils.arvioituAikavälillä
 import fi.oph.koski.schema.Organisaatio
 import slick.jdbc.GetResult
 
@@ -24,7 +25,12 @@ case class LukioRaportitRepository(db: DB) extends KoskiDatabaseMethods with Rap
   private type OppiaineenNimi = String
   private type Koulutusmoduuli_Paikallinen = Boolean
 
-  def suoritustiedot(oppilaitosOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate): Seq[LukioRaporttiRows] = {
+  def suoritustiedot(
+    oppilaitosOid: Organisaatio.Oid,
+    alku: LocalDate,
+    loppu: LocalDate,
+    osasuoritustenAikarajaus: Boolean
+  ): Seq[LukioRaporttiRows] = {
     val opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet = opiskeluoikeusAikajaksotPaatasonSuorituksetResult(oppilaitosOid, alku, loppu)
 
     val opiskeluoikeusOids = opiskeluoikeusAikajaksotPaatasonsuorituksetTunnisteet.map(_._1)
@@ -35,7 +41,10 @@ case class LukioRaportitRepository(db: DB) extends KoskiDatabaseMethods with Rap
     val aikajaksot = runDbSync(ROpiskeluoikeusAikajaksot.filter(_.id inSet aikajaksoIds).result, timeout = defaultTimeout).groupBy(_.opiskeluoikeusOid)
     val paatasonSuoritukset = runDbSync(RPäätasonSuoritukset.filter(_.päätasonSuoritusId inSet paatasonSuoritusIds).result, timeout = defaultTimeout).groupBy(_.opiskeluoikeusOid)
 
-    val osasuoritukset = runDbSync(ROsasuoritukset.filter(_.päätasonSuoritusId inSet paatasonSuoritusIds).result, timeout = defaultTimeout).groupBy(_.päätasonSuoritusId)
+    val osasuoritukset = runDbSync(ROsasuoritukset.filter(_.päätasonSuoritusId inSet paatasonSuoritusIds).result, timeout = defaultTimeout)
+      .filter(osasuoritus => !osasuoritustenAikarajaus || arvioituAikavälillä(alku, loppu)(osasuoritus))
+      .groupBy(_.päätasonSuoritusId)
+
     val henkilot = runDbSync(RHenkilöt.filter(_.oppijaOid inSet opiskeluoikeudet.map(_.oppijaOid).distinct).result, timeout = defaultTimeout).groupBy(_.oppijaOid).mapValues(_.head)
 
     opiskeluoikeudet.foldLeft[Seq[LukioRaporttiRows]](Seq.empty) {

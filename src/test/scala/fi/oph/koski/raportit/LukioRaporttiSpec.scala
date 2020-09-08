@@ -28,7 +28,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
   "Lukion suoritustietoraportti" - {
 
     "Raportti näyttää oikealta" - {
-      lazy val sheets = buildLukioraportti(jyväskylänNormaalikoulu, date(2012, 1, 1), date(2016, 1, 1))
+      lazy val sheets = buildLukioraportti(jyväskylänNormaalikoulu, date(2012, 1, 1), date(2016, 1, 1), osasuoritustenAikarajaus = false)
       lazy val titleAndRowsWithColumns = sheets.map(s => (s.title, zipRowsWithColumTitles(s)))
       "Oppiaineita tai kursseja ei päädy duplikaattina raportille" in {
         verifyNoDuplicates(sheets.map(_.title))
@@ -67,7 +67,10 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
           "Erityisen koulutustehtävän jaksot",
           "Sisäoppilaitosmainen majoitus",
           "Syy alle 18-vuotiaana aloitettuun opiskeluun aikuisten lukiokoulutuksessa",
-          "Yhteislaajuus",
+          "Yhteislaajuus (kaikki kurssit)",
+          "Yhteislaajuus (suoritetut kurssit)",
+          "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)",
+          "Yhteislaajuus (tunnustetut kurssit)",
           "AI Suomen kieli ja kirjallisuus valtakunnallinen",
           "A1 Englanti valtakunnallinen",
           "B1 Ruotsi valtakunnallinen",
@@ -179,6 +182,20 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
           val (_, matematiikka) = findRowsWithColumnsByTitle("MA v Matematiikka, pitkä oppimäärä", kurssit)
           verifyOppijanRow(lukionAineopiskelijaAktiivinen, AktiivinenAineopiskelija.matematiikanKurssitRow, matematiikka, addOpiskeluoikeudenOid = false)
         }
+        "Musiikki (tunnustettu)" in {
+          val (_, musiikki) = findRowsWithColumnsByTitle("MU v Musiikki", kurssit)
+          val musiikinKurssitRow = Map(
+            "Oppijan oid" -> "1.2.246.562.24.00000000012",
+            "Sukunimi" -> "Lukiolainen",
+            "Etunimet" -> "Liisa",
+            "Hetu" -> Some("020655-2479"),
+            "Suorituksen tyyppi" -> "lukionoppimaara",
+            "Toimipiste" -> "Jyväskylän normaalikoulu",
+            "Opetussuunnitelma" -> Some("Lukio suoritetaan nuorten opetussuunnitelman mukaan"),
+            "MU1 Musiikki ja minä valtakunnallinen" -> "Pakollinen, Arvosana 8, Laajuus 1.0, Tunnustettu"
+          )
+          verifyOppijanRow(lukiolainen, musiikinKurssitRow, musiikki, addOpiskeluoikeudenOid = false)
+        }
         "Ei tiedossa oppiaine" in {
           val (_, eiTiedossa) = findRowsWithColumnsByTitle("XX v Ei tiedossa", kurssit)
           verifyOppijanRow(lukionEiTiedossaAineopiskelija, EiTiedossaOppiaineenOpiskelija.eiTiedossaKurssitRow, eiTiedossa, addOpiskeluoikeudenOid = false)
@@ -222,8 +239,8 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     }
   }
 
-  private def buildLukioraportti(organisaatioOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate) = {
-    lukioRaportti.buildRaportti(organisaatioOid, alku, loppu)
+  private def buildLukioraportti(organisaatioOid: Organisaatio.Oid, alku: LocalDate, loppu: LocalDate, osasuoritustenAikarajaus: Boolean) = {
+    lukioRaportti.buildRaportti(organisaatioOid, alku, loppu, osasuoritustenAikarajaus)
   }
 
   private def zipRowsWithColumTitles(sheet: DynamicDataSheet) = {
@@ -277,7 +294,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     }
   }
 
-  private def kurssintiedot(arvosana: String, laajuus: String = "1.0", tyyppi: String) = s"$tyyppi,Arvosana $arvosana,Laajuus $laajuus"
+  private def kurssintiedot(arvosana: String, laajuus: String = "1.0", tyyppi: String) = s"$tyyppi, Arvosana $arvosana, Laajuus $laajuus"
 
   lazy val expectedLukiolainenRow = Map(
     "Opiskeluoikeuden oid" -> "",
@@ -311,7 +328,10 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Hetu" -> lukiolainen.hetu,
     "Sukunimi" -> lukiolainen.sukunimi,
     "Etunimet" -> lukiolainen.etunimet,
-    "Yhteislaajuus" -> 89.5,
+    "Yhteislaajuus (kaikki kurssit)" -> 90.5,
+    "Yhteislaajuus (suoritetut kurssit)" -> 89.5,
+    "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 1.0,
+    "Yhteislaajuus (tunnustetut kurssit)" -> 1.0,
     "AI Suomen kieli ja kirjallisuus valtakunnallinen" -> "Arvosana 9, 8.0 kurssia",
     "XX Ei tiedossa valtakunnallinen" -> "",
     "A1 Englanti valtakunnallinen" -> "Arvosana 9, 9.0 kurssia",
@@ -344,11 +364,11 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Toimipiste" -> "Jyväskylän normaalikoulu",
     "Opetussuunnitelma" -> Some("Lukio suoritetaan nuorten opetussuunnitelman mukaan"),
     "Suorituksen tyyppi" -> "lukionoppimaara",
-    "HI1 Ihminen ympäristön ja yhteiskuntien muutoksessa valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
+    "HI1 Ihminen ympäristön ja yhteiskuntien muutoksessa valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "Pakollinen"),
     "HI1 Ihminen, ympäristö ja kulttuuri valtakunnallinen" -> "",
-    "HI2 Kansainväliset suhteet valtakunnallinen" -> kurssintiedot(arvosana = "8", tyyppi = "pakollinen"),
-    "HI3 Itsenäisen Suomen historia valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
-    "HI4 Eurooppalaisen maailmankuvan kehitys valtakunnallinen" -> kurssintiedot(arvosana = "6", tyyppi = "pakollinen")
+    "HI2 Kansainväliset suhteet valtakunnallinen" -> kurssintiedot(arvosana = "8", tyyppi = "Pakollinen"),
+    "HI3 Itsenäisen Suomen historia valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "Pakollinen"),
+    "HI4 Eurooppalaisen maailmankuvan kehitys valtakunnallinen" -> kurssintiedot(arvosana = "6", tyyppi = "Pakollinen")
   )
 
   lazy val defaultAineopiskelijaRow = Map(
@@ -417,32 +437,47 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
 
     lazy val englanninOppiaineenRow = default + (
       "Suorituksen vahvistuspäivä" -> Some(date(2016, 1, 10)),
-      "Yhteislaajuus" -> 3.0,
+      "Yhteislaajuus (kaikki kurssit)" -> 3.0,
+      "Yhteislaajuus (suoritetut kurssit)" -> 3.0,
+      "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
+      "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
       "A1 Englanti valtakunnallinen" -> "Arvosana 7, 3.0 kurssia"
     )
 
     lazy val matematiikanOppiaineRow = default + (
       "Suorituksen vahvistuspäivä" -> Some(date(2016, 1, 10)),
-      "Yhteislaajuus" -> 5.0,
+      "Yhteislaajuus (kaikki kurssit)" -> 5.0,
+      "Yhteislaajuus (suoritetut kurssit)" -> 5.0,
+      "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
+      "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
       "MA Matematiikka, pitkä oppimäärä valtakunnallinen" -> "Arvosana 8, 5.0 kurssia"
     )
 
     lazy val historiaOppiaineenRow = default + (
       "Suorituksen vahvistuspäivä" -> Some(date(2016, 1, 10)),
-      "Yhteislaajuus" -> 4.0,
+      "Yhteislaajuus (kaikki kurssit)" -> 4.0,
+      "Yhteislaajuus (suoritetut kurssit)" -> 4.0,
+      "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
+      "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
       "HI Historia valtakunnallinen" -> "Arvosana 9, 4.0 kurssia"
     )
 
     lazy val kemiaOppiaineenRow = default + (
       "Suorituksen vahvistuspäivä" -> Some(date(2015, 1, 10)),
-      "Yhteislaajuus" -> 1.0,
+      "Yhteislaajuus (kaikki kurssit)" -> 1.0,
+      "Yhteislaajuus (suoritetut kurssit)" -> 1.0,
+      "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
+      "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
       "KE Kemia valtakunnallinen" -> "Arvosana 8, 1.0 kurssia"
     )
 
     lazy val filosofiaOppiaineenRow = default + (
       "Suorituksen tila" -> "kesken",
       "Suorituksen vahvistuspäivä" -> None,
-      "Yhteislaajuus" -> 1.0,
+      "Yhteislaajuus (kaikki kurssit)" -> 1.0,
+      "Yhteislaajuus (suoritetut kurssit)" -> 1.0,
+      "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
+      "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
       "FI Filosofia valtakunnallinen" -> "Arvosana 9, 1.0 kurssia"
     )
 
@@ -458,19 +493,19 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
 
     lazy val historiaKurssitRow = eiSuorituksiaKurssitRow + (
       "HI1 Ihminen ympäristön ja yhteiskuntien muutoksessa valtakunnallinen" -> "",
-      "HI1 Ihminen, ympäristö ja kulttuuri valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
-      "HI2 Kansainväliset suhteet valtakunnallinen" -> kurssintiedot(arvosana = "8", tyyppi = "pakollinen"),
-      "HI3 Itsenäisen Suomen historia valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen"),
-      "HI4 Eurooppalaisen maailmankuvan kehitys valtakunnallinen" -> kurssintiedot(arvosana = "6", tyyppi = "pakollinen")
+      "HI1 Ihminen, ympäristö ja kulttuuri valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "Pakollinen"),
+      "HI2 Kansainväliset suhteet valtakunnallinen" -> kurssintiedot(arvosana = "8", tyyppi = "Pakollinen"),
+      "HI3 Itsenäisen Suomen historia valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "Pakollinen"),
+      "HI4 Eurooppalaisen maailmankuvan kehitys valtakunnallinen" -> kurssintiedot(arvosana = "6", tyyppi = "Pakollinen")
     )
 
     lazy val matematiikanKurssitRow = eiSuorituksiaKurssitRow + (
       "MAA1 Funktiot ja yhtälöt, pa, vuositaso 1 paikallinen" -> "",
-      "MAA2 Polynomifunktiot ja -yhtälöt valtakunnallinen"  -> kurssintiedot(arvosana = "6", tyyppi = "pakollinen"),
-      "MAA3 Geometria valtakunnallinen" -> "pakollinen,Arvosana 7,Laajuus 1.0",
-      "MAA4 Vektorit valtakunnallinen" -> "pakollinen,Arvosana 8,Laajuus 1.0",
-      "MAA5 Analyyttinen geometria valtakunnallinen" -> "pakollinen,Arvosana 9,Laajuus 1.0",
-      "MAA6 Derivaatta valtakunnallinen" -> "pakollinen,Arvosana 10,Laajuus 1.0",
+      "MAA2 Polynomifunktiot ja -yhtälöt valtakunnallinen"  -> kurssintiedot(arvosana = "6", tyyppi = "Pakollinen"),
+      "MAA3 Geometria valtakunnallinen" -> "Pakollinen, Arvosana 7, Laajuus 1.0",
+      "MAA4 Vektorit valtakunnallinen" -> "Pakollinen, Arvosana 8, Laajuus 1.0",
+      "MAA5 Analyyttinen geometria valtakunnallinen" -> "Pakollinen, Arvosana 9, Laajuus 1.0",
+      "MAA6 Derivaatta valtakunnallinen" -> "Pakollinen, Arvosana 10, Laajuus 1.0",
       "MAA7 Trigonometriset funktiot valtakunnallinen" -> "",
       "MAA8 Juuri- ja logaritmifunktiot valtakunnallinen" -> "",
       "MAA9 Integraalilaskenta valtakunnallinen" -> "",
@@ -494,33 +529,48 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     lazy val eiTiedossaOppiaineenRow = default + (
       "XX Ei tiedossa valtakunnallinen" -> "Arvosana 9, 1.0 kurssia",
       "Suorituksen tila" -> "kesken",
-      "Yhteislaajuus" -> 1.0,
+      "Yhteislaajuus (kaikki kurssit)" -> 1.0,
+      "Yhteislaajuus (suoritetut kurssit)" -> 1.0,
+      "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
+      "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
       "Opetussuunnitelma" -> None
     )
 
     lazy val historiaOppiaineenRow = default + (
       "Suorituksen vahvistuspäivä" -> Some(date(2016, 1, 10)),
-      "Yhteislaajuus" -> 4.0,
+      "Yhteislaajuus (kaikki kurssit)" -> 4.0,
+      "Yhteislaajuus (suoritetut kurssit)" -> 4.0,
+      "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
+      "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
       "HI Historia valtakunnallinen" -> "Arvosana 9, 4.0 kurssia"
     )
 
     lazy val kemiaOppiaineenRow = default + (
       "Suorituksen vahvistuspäivä" -> Some(date(2015, 1, 10)),
-      "Yhteislaajuus" -> 1.0,
+      "Yhteislaajuus (kaikki kurssit)" -> 1.0,
+      "Yhteislaajuus (suoritetut kurssit)" -> 1.0,
+      "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
+      "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
       "KE Kemia valtakunnallinen" -> "Arvosana 8, 1.0 kurssia"
     )
 
     lazy val filosofiaOppiaineenRow = default + (
       "Suorituksen tila" -> "kesken",
       "Suorituksen vahvistuspäivä" -> None,
-      "Yhteislaajuus" -> 1.0,
+      "Yhteislaajuus (kaikki kurssit)" -> 1.0,
+      "Yhteislaajuus (suoritetut kurssit)" -> 1.0,
+      "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
+      "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
       "FI Filosofia valtakunnallinen" -> "Arvosana 9, 1.0 kurssia"
     )
 
     lazy val EiTiedossaOppiaineenRow = default + (
       "Suorituksen tila" -> "kesken",
       "Suorituksen vahvistuspäivä" -> None,
-      "Yhteislaajuus" -> 1.0,
+      "Yhteislaajuus (kaikki kurssit)" -> 1.0,
+      "Yhteislaajuus (suoritetut kurssit)" -> 1.0,
+      "Yhteislaajuus (hylätyllä arvosanalla suoritetut kurssit)" -> 0.0,
+      "Yhteislaajuus (tunnustetut kurssit)" -> 0.0,
       "FI Filosofia valtakunnallinen" -> "Arvosana 9, 1.0 kurssia"
     )
 
@@ -532,7 +582,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
       "Toimipiste" -> "Jyväskylän normaalikoulu",
       "Opetussuunnitelma" -> None,
       "Suorituksen tyyppi" -> "lukionoppiaineenoppimaara",
-      "FI1 Johdatus filosofiseen ajatteluun valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "pakollinen")
+      "FI1 Johdatus filosofiseen ajatteluun valtakunnallinen" -> kurssintiedot(arvosana = "7", tyyppi = "Pakollinen")
     )
   }
 }
