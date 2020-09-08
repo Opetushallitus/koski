@@ -15,7 +15,7 @@ import java.util.GregorianCalendar
 
 import scala.concurrent.duration._
 
-case class EsiopetuksenOppijamäärätRaportti(db: DB) extends KoskiDatabaseMethods {
+case class EsiopetuksenOppijamäärätRaportti(db: DB, organisaatioService: OrganisaatioService) extends KoskiDatabaseMethods {
   implicit private val getResult: GetResult[EsiopetuksenOppijamäärätRaporttiRow] = GetResult(r =>
     EsiopetuksenOppijamäärätRaporttiRow(
       oppilaitosNimi = r.<<,
@@ -37,7 +37,7 @@ case class EsiopetuksenOppijamäärätRaportti(db: DB) extends KoskiDatabaseMeth
     )
   )
 
-  def build(oppilaitosOids: List[String], päivä: Date): DataSheet = {
+  def build(oppilaitosOids: List[String], päivä: Date)(implicit u: KoskiSession): DataSheet = {
     val raporttiQuery = query(validateOids(oppilaitosOids), päivä).as[EsiopetuksenOppijamäärätRaporttiRow]
     val rows = runDbSync(raporttiQuery, timeout = 5.minutes)
     DataSheet(
@@ -47,7 +47,7 @@ case class EsiopetuksenOppijamäärätRaportti(db: DB) extends KoskiDatabaseMeth
     )
   }
 
-  private def query(oppilaitosOidit: List[String], päivä: Date) = {
+  private def query(oppilaitosOidit: List[String], päivä: Date)(implicit u: KoskiSession) = {
     val calendar = new GregorianCalendar
     calendar.setTime(päivä);
     val year = calendar.get(Calendar.YEAR)
@@ -80,9 +80,26 @@ case class EsiopetuksenOppijamäärätRaportti(db: DB) extends KoskiDatabaseMeth
       and r_opiskeluoikeus.koulutusmuoto = 'esiopetus'
       and aikajakso.alku <= $päivä
       and aikajakso.loppu >= $päivä
+    -- access check
+      and (
+        #${(if (u.hasGlobalReadAccess) "true" else "false")}
+        or
+        r_opiskeluoikeus.oppilaitos_oid in (#${toSqlList(käyttäjänOrganisaatioOidit)})
+        or
+        (r_opiskeluoikeus.koulutustoimija_oid in (#${toSqlList(käyttäjänKoulutustoimijaOidit)}) and r_opiskeluoikeus.oppilaitos_oid in (#${toSqlList(käyttäjänOstopalveluOidit)}))
+      )
     group by r_opiskeluoikeus.oppilaitos_nimi, r_koodisto_koodi.nimi
   """
   }
+
+  private def käyttäjänOrganisaatioOidit(implicit u: KoskiSession) = u.organisationOids(AccessType.read)
+
+  private def käyttäjänKoulutustoimijaOidit(implicit u: KoskiSession) = u.varhaiskasvatusKäyttöoikeudet
+    .filter(_.organisaatioAccessType.contains(AccessType.read))
+    .map(_.koulutustoimija.oid)
+
+  private def käyttäjänOstopalveluOidit(implicit u: KoskiSession) =
+    organisaatioService.omatOstopalveluOrganisaatiot.map(_.oid)
 
   private def toSqlList[T](xs: Iterable[T]) = xs.mkString("'", "','","'")
 
