@@ -25,8 +25,8 @@ case class PreferencesService(protected val db: DB) extends Logging with KoskiDa
     "aikuistenperusopetuksenalkuvaiheenpaikallinenoppiaine" -> classOf[AikuistenPerusopetuksenAlkuvaiheenPaikallinenOppiaine],
     "paikallinenaikuistenperusopetuksenkurssi" -> classOf[PaikallinenAikuistenPerusopetuksenKurssi],
     "paikallinenaikuistenperusopetuksenalkuvaiheenkurssi" -> classOf[PaikallinenAikuistenPerusopetuksenAlkuvaiheenKurssi],
-    "paikallinenlukionkurssi" -> classOf[PaikallinenLukionKurssi],
-    "paikallinenlukionoppiaine" -> classOf[PaikallinenLukionOppiaine],
+    "paikallinenlukionkurssi" -> classOf[PaikallinenLukionKurssi2015],
+    "paikallinenlukionoppiaine" -> classOf[PaikallinenLukionOppiaine2015],
     "paikallinenlukionoppiaine2019" -> classOf[PaikallinenLukionOppiaine2019],
     "paikallinenlukioonvalmistavankoulutuksenkurssi" -> classOf[PaikallinenLukioonValmistavanKoulutuksenKurssi],
     "paikallinenlukioonvalmistavankoulutuksenoppiaine" -> classOf[PaikallinenLukioonValmistavanKoulutuksenOppiaine],
@@ -34,8 +34,9 @@ case class PreferencesService(protected val db: DB) extends Logging with KoskiDa
     "lukionpaikallinenopintojakso2019" -> classOf[LukionPaikallinenOpintojakso2019]
   )
 
+  def put(organisaatioOid: String, koulutustoimijaOid: Option[String], `rawType`: String, key: String, value: JValue)(implicit session: KoskiSession) = {
+    val `type` = migrateTypeName(rawType)
 
-  def put(organisaatioOid: String, koulutustoimijaOid: Option[String], `type`: String, key: String, value: JValue)(implicit session: KoskiSession) = {
     if (!session.hasWriteAccess(organisaatioOid, koulutustoimijaOid)) throw new InvalidRequestException(KoskiErrorCategory.forbidden.organisaatio())
     prefTypes.get(`type`) match {
       case Some(klass) =>
@@ -50,7 +51,9 @@ case class PreferencesService(protected val db: DB) extends Logging with KoskiDa
     }
   }
 
-  def delete(organisaatioOid: String, koulutustoimijaOid: Option[String], `type`: String, key: String)(implicit session: KoskiSession): HttpStatus = {
+  def delete(organisaatioOid: String, koulutustoimijaOid: Option[String], `rawType`: String, key: String)(implicit session: KoskiSession): HttpStatus = {
+    val `type` = migrateTypeName(rawType)
+
     if (!session.hasWriteAccess(organisaatioOid, koulutustoimijaOid)) throw new InvalidRequestException(KoskiErrorCategory.forbidden.organisaatio())
 
     prefTypes.get(`type`) match {
@@ -67,7 +70,9 @@ case class PreferencesService(protected val db: DB) extends Logging with KoskiDa
     SchemaValidatingExtractor.extract(value, klass).right.map(_.asInstanceOf[T])
   }
 
-  def get(organisaatioOid: String, koulutustoimijaOid: Option[String], `type`: String)(implicit session: KoskiSession): Either[HttpStatus, List[StorablePreference]] = {
+  def get(organisaatioOid: String, koulutustoimijaOid: Option[String], `rawType`: String)(implicit session: KoskiSession): Either[HttpStatus, List[StorablePreference]] = {
+    val `type` = migrateTypeName(rawType)
+
     if (!session.hasWriteAccess(organisaatioOid, koulutustoimijaOid)) throw new InvalidRequestException(KoskiErrorCategory.forbidden.organisaatio())
 
     prefTypes.get(`type`) match {
@@ -81,4 +86,11 @@ case class PreferencesService(protected val db: DB) extends Logging with KoskiDa
       case None => Left(KoskiErrorCategory.notFound("Unknown pref type " + `type`))
     }
   }
+
+  private def migrateTypeName(rawType: String): String = typeNameMigrations.getOrElse(rawType, rawType)
+
+  private val typeNameMigrations: Map[String, String] = Map(
+    "paikallinenlukionoppiaine2015" -> "paikallinenlukionoppiaine",
+    "paikallinenlukionkurssi2015" -> "paikallinenlukionkurssi"
+  )
 }

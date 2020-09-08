@@ -50,11 +50,11 @@ export const resolveOsasuorituksetEditor = (mdl) => {
     const SuoritustaulukkoComponent = kansalainen ? OmatTiedotSuoritustaulukko : Suoritustaulukko
     return <SuoritustaulukkoComponent suorituksetModel={modelLookup(mdl, 'osasuoritukset')} />
   }
-  if (oneOf('lukionoppimaaransuoritus')) {
+  if (oneOf('lukionoppimaaransuoritus2015')) {
     return (
       <LukionOppiaineetComponent
         suorituksetModel={modelLookup(mdl, 'osasuoritukset')}
-        classesForUusiOppiaineenSuoritus={['lukionoppiaineensuoritus', 'muidenlukioopintojensuoritus']}
+        classesForUusiOppiaineenSuoritus={['lukionoppiaineensuoritus2015', 'muidenlukioopintojensuoritus2015']}
       />
     )
   }
@@ -78,7 +78,7 @@ export const resolveOsasuorituksetEditor = (mdl) => {
       />
     )
   }
-  if (oneOf('lukionoppiaineenoppimaaransuoritus')) {
+  if (oneOf('lukionoppiaineenoppimaaransuoritus2015')) {
     const LukionOppiaineenOppimaaranSuoritusComponent = kansalainen
       ? OmatTiedotLukionOppiaineenOppimaaranSuoritus
       : LukionOppiaineenOppimaaranSuoritus

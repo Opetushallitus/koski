@@ -84,7 +84,7 @@ case class LukionOppiaineenOpintojenSuoritusLukioonValmistavassaKoulutuksessa(
   suorituskieli: Option[Koodistokoodiviite] = None,
   @Description("Oppiaineeseen kuuluvien kurssien suoritukset")
   @Title("Kurssit")
-  override val osasuoritukset: Option[List[LukionKurssinSuoritus]],
+  override val osasuoritukset: Option[List[LukionKurssinSuoritus2015]],
   @KoodistoKoodiarvo("luvalukionoppiaine")
   tyyppi: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "luvalukionoppiaine", koodistoUri = "suorituksentyyppi")
 ) extends LukioonValmistavanKoulutuksenOsasuoritus with Vahvistukseton
