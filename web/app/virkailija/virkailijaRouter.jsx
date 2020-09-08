@@ -42,8 +42,7 @@ export const routeP = locationP.flatMapLatest(({path, queryString, params, hash}
   } else if (path === '/koski/dokumentaatio/rajapinnat/palveluvayla-omadata') {
     return dokumentaatioPalveluväyläOmadataP()
   } else if (path.includes('koski/kela')) {
-    const hetu = (path.match(new RegExp('/koski/kela/(.*)')) || [])[1]
-    return kelaVirkailijaP(hetu)
+    return kelaVirkailijaP(path)
   }
 }).toProperty()
 

@@ -1,5 +1,8 @@
 describe('Kela', function () {
   var kela = KelaPage()
+  var opinnot = OpinnotPage()
+  var editor = opinnot.opiskeluoikeusEditor()
+  var page = KoskiPage()
 
   describe('Jos oppijahakuun syötetään epävalidi hetu', function () {
     before(
@@ -136,6 +139,55 @@ describe('Kela', function () {
 
     it('Näytetään englanninkielinen käännös', function () {
       expect(extractAsText(S('table.osasuoritukset.nested'))).to.include('FIN_S1')
+    })
+  })
+
+  describe('Versiohistoria', function () {
+    var oppijanHetu = '220109-784L'
+
+    describe('Luodaan versiohistoriaa oppijalle', function () {
+      before(
+        Authentication().login(),
+        resetFixtures,
+        page.openPage,
+        page.oppijaHaku.searchAndSelect(oppijanHetu),
+        opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetus'),
+        opinnot.valitseSuoritus(undefined, 'Päättötodistus'),
+        editor.edit,
+        editor.property('suoritustapa').setValue('Erityinen tutkinto'),
+        editor.saveChanges
+      )
+
+      describe('Versiohistorian tarkastelu kelan virkailijana', function () {
+        var openVersiohistoria = function() {
+          return click(S('.versiohistoria > span'))()
+        }
+
+        before(
+          Authentication().login('Laaja'),
+          kela.openPage,
+          kela.searchAndSelect(oppijanHetu),
+          openVersiohistoria
+        )
+
+        it('Näytetään uusin versio (2) ja tämän hetkinen versio näytetään valittuna versiohistoria listassa', function () {
+          expect(extractAsText(S('.suoritustapa'))).to.equal('Suoritustapa Erityinen tutkinto')
+          expect(extractAsText(S('.kela-modal-content > ol > li.selected'))).to.be.a('string').and.satisfy(str => str.startsWith('2 '))
+        })
+
+        describe('Kun valitaan versio', function () {
+          before(
+            kela.selectFromVersiohistoria('1'),
+            wait.until(kela.isReady),
+            openVersiohistoria
+          )
+
+          it('Näytetään valitun version opiskeluoikeus ja valittu versio on valittuna versiohistoria listassa', function () {
+            expect(extractAsText(S('.suoritustapa'))).to.equal('Suoritustapa Koulutus')
+            expect(extractAsText(S('.kela-modal-content > ol > li.selected'))).to.be.a('string').and.satisfy(str => str.startsWith('1 '))
+          })
+        })
+      })
     })
   })
 })

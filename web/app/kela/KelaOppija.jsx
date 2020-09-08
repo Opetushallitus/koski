@@ -5,6 +5,7 @@ import {yearFromIsoDateString} from '../date/date'
 import {t} from '../i18n/i18n'
 import Text from '../i18n/Text'
 import {DateView, KeyValueTable} from './KeyValueTable'
+import {KelaVersiohistoria} from './KelaVersiohistoria'
 
 
 export const KelaHenkilo = ({henkilo}) => {
@@ -22,11 +23,11 @@ export const KelaHenkilo = ({henkilo}) => {
   )
 }
 
-export const KelaOpiskeluoikeus = ({opiskeluoikeus}) => {
+export const KelaOpiskeluoikeus = ({opiskeluoikeus, oppijaOid}) => {
   const removeFromTableView = ['suoritukset', 'alkamispäivä', 'päättymispäivä', 'oid', 'versionumero', 'arvioituPäättymispäivä', 'oppilaitos', 'koulutustoimija', 'tyyppi', 'aikaleima']
   return (
     <div className='kela opiskeluoikeus'>
-      <OpiskeluoikeusOtsikko opiskeluoikeus={opiskeluoikeus}/>
+      <OpiskeluoikeusOtsikko opiskeluoikeus={opiskeluoikeus} oppijaOid={oppijaOid}/>
       <div className='kela opiskeluoikeus content'>
         <Voimassaoloaika opiskeluoikeus={opiskeluoikeus}/>
         <KeyValueTable object={R.omit(removeFromTableView, opiskeluoikeus)} path={'opiskeluoikeus'}/>
@@ -36,16 +37,17 @@ export const KelaOpiskeluoikeus = ({opiskeluoikeus}) => {
   )
 }
 
-export const OpiskeluoikeusOtsikko = ({opiskeluoikeus}) => {
+export const OpiskeluoikeusOtsikko = ({opiskeluoikeus, oppijaOid}) => {
   const oppilaitoksenNimi = opiskeluoikeus.oppilaitos && t(opiskeluoikeus.oppilaitos.nimi || {})
   return (
     <h3 className='otsikko'>
       <span>
         {oppilaitoksenNimi + ' ' + opiskeluoikeudenTilaString(opiskeluoikeus)}
       </span>
-      <span className='oid'>
+      <span>
         <Text name={'Opiskeluoikeuden oid'} />{': '}{opiskeluoikeus.oid}
       </span>
+      <KelaVersiohistoria opiskeluoikeus={opiskeluoikeus} oppijaOid={oppijaOid}/>
     </h3>
   )
 }
