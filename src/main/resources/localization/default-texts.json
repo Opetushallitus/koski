@@ -1389,8 +1389,8 @@
   "Toimipiste": "Toimipiste",
   "Jää luokalle": "Jää luokalle",
   "description:Kategoria temaattisille opinnoille 2019." : "Kategoria temaattisille opinnoille 2019.",
-  "Esiopetus-oppilasmäärät-raportti-title": "Esiopetuksen opiskelijamäärät raportti",
-  "Esiopetus-oppilasmäärät-raportti-description": "Esiopetuksen opiskelijamäärät raportti.",
   "Lukion oppimäärää täydentävät oman äidinkielen opinnot" : "Lukion oppimäärää täydentävät oman äidinkielen opinnot",
-  "Opetuskieli" : "Opetuskieli"
+  "Opetuskieli" : "Opetuskieli",
+  "Esiopetus-oppilasmäärät-raportti-title": "Esiopetuksen valtionosuusrahoituslaskennan tunnusluvut",
+  "Esiopetus-oppilasmäärät-raportti-description": "Raportilla saa tulostettua kaikki esiopetuksen valtionosuusrahoituksen laskennassa käytettävät tunnusluvut per koulutustoimija ja/tai oppilaitos sen hetkisen KOSKI-datan mukaan laskettuna. Syötä ”Päivä”-kenttään se päivämäärä, jolta haluat raportin tulostettavan. ”Päivä”-parametri toimii niin, että se hakee raportille kaikki esiopetuksen opiskeluoikeudet, jotka ovat olleet \"Läsnä\"-tilaisena kyseisenä päivänä. Esimerkiksi, kun halutaan tulostaa raportti, joka laskee tilastointipäivän 20.9.2020 mukaiset esiopetuksen valtionosuusrahoituksen tunnusluvut, valitaan ”Päivä”-kenttään päivämääräksi 20.9.2020. Raportti pohjautuu viime yön tietoihin, eli tietojen päivitys Koskeen ei näy välittömästi raportilla."
 }

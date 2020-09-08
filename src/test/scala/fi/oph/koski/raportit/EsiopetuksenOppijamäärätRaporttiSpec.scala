@@ -15,9 +15,9 @@ import org.scalatest.{BeforeAndAfterAll, FreeSpec, Matchers}
 
 class EsiopetuksenOppijamäärätRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTestMethods with BeforeAndAfterAll {
   private val application = KoskiApplicationForTests
-  private val raporttiBuilder = EsiopetuksenOppijamäärätRaportti(application.raportointiDatabase.db)
+  private val raporttiBuilder = EsiopetuksenOppijamäärätRaportti(application.raportointiDatabase.db, application.organisaatioService)
   private lazy val raportti =
-    raporttiBuilder.build(List(jyväskylänNormaalikoulu), sqlDate("2007-01-01")).rows.map(_.asInstanceOf[EsiopetuksenOppijamäärätRaporttiRow])
+    raporttiBuilder.build(List(jyväskylänNormaalikoulu), sqlDate("2007-01-01"))(session(defaultUser)).rows.map(_.asInstanceOf[EsiopetuksenOppijamäärätRaporttiRow])
 
   override def beforeAll(): Unit = loadRaportointikantaFixtures
 
@@ -44,4 +44,6 @@ class EsiopetuksenOppijamäärätRaporttiSpec extends FreeSpec with Matchers wit
     found.length should be(1)
     found.head
   }
+
+  private def session(user: MockUser)= user.toKoskiUser(application.käyttöoikeusRepository)
 }
