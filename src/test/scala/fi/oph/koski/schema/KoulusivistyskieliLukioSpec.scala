@@ -46,7 +46,7 @@ class KoulusivistyskieliLukioSpec extends FreeSpec with LocalJettyHttpSpecificat
     putOpiskeluoikeus(opiskeluoikeus) {
       verifyResponseStatusOk()
       val koulusivistyskielet = lastOpiskeluoikeusByHetu(defaultHenkilö).suoritukset.collect {
-        case x: LukionOppimääränSuoritus => x.koulusivistyskieli
+        case x: LukionOppimääränSuoritus2015 => x.koulusivistyskieli
       }
       koulusivistyskielet.length should equal(1)
       koulusivistyskielet.head should equal(expected)
@@ -55,8 +55,8 @@ class KoulusivistyskieliLukioSpec extends FreeSpec with LocalJettyHttpSpecificat
 
   def äidinkieli(kieli: String, arvosana: String, pakollinen: Boolean = true) = suoritus(lukionÄidinkieli(kieli, pakollinen = pakollinen)).copy(arviointi = arviointi(arvosana))
 
-  def oppimääränOpiskeluoikeusOppiaineilla(oppiaineet: LukionOppimääränOsasuoritus*) = lukionOpiskeluoikeus().copy(
-    suoritukset = List(LukionOppimääränSuoritus(
+  def oppimääränOpiskeluoikeusOppiaineilla(oppiaineet: LukionOppimääränOsasuoritus2015*) = lukionOpiskeluoikeus().copy(
+    suoritukset = List(LukionOppimääränSuoritus2015(
       koulutusmoduuli = lukionOppimäärä,
       oppimäärä = nuortenOpetussuunnitelma,
       suorituskieli = ExampleData.suomenKieli,

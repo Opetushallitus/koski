@@ -563,7 +563,7 @@ case class EiTiedossaOppiaine(
   @KoodistoKoodiarvo("XX")
   tunniste: Koodistokoodiviite = Koodistokoodiviite(koodiarvo = "XX", koodistoUri = "koskioppiaineetyleissivistava"),
   perusteenDiaarinumero: Option[String] = None
-) extends KoodistostaLöytyväKoulutusmoduuli with NuortenPerusopetuksenOppiainenTaiEiTiedossaOppiaine with AikuistenPerusopetuksenOppiainenTaiEiTiedossaOppiaine with LukionOppiaineTaiEiTiedossaOppiaine {
+) extends KoodistostaLöytyväKoulutusmoduuli with NuortenPerusopetuksenOppiainenTaiEiTiedossaOppiaine with AikuistenPerusopetuksenOppiainenTaiEiTiedossaOppiaine with LukionOppiaineTaiEiTiedossaOppiaine2015 {
   override def laajuus: Option[Laajuus] = None
 }
 

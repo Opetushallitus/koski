@@ -19,7 +19,7 @@ trait OpiskeluoikeusTestMethodsLukio2015 extends OpiskeluoikeusTestMethodsLukio 
 object TestMethodsLukio {
   val vahvistus = Some(HenkilövahvistusPaikkakunnalla(päivä = date(2016, 6, 4), jyväskylä, myöntäjäOrganisaatio = jyväskylänNormaalikoulu, myöntäjäHenkilöt = List(Organisaatiohenkilö("Reijo Reksi", "rehtori", jyväskylänNormaalikoulu))))
 
-  val päättötodistusSuoritus = LukionOppimääränSuoritus(
+  val päättötodistusSuoritus = LukionOppimääränSuoritus2015(
     koulutusmoduuli = LukionOppimäärä(perusteenDiaarinumero = Some("60/011/2015")),
     oppimäärä = nuortenOpetussuunnitelma,
     suorituskieli = suomenKieli,

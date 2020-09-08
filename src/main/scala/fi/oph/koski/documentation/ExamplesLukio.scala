@@ -36,7 +36,7 @@ object ExamplesLukio {
         sisäoppilaitosmainenMajoitus = Some(List(Aikajakso(date(2012, 9, 1), Some(date(2013, 9, 1)))))
       )),
       suoritukset = List(
-        LukionOppimääränSuoritus(
+        LukionOppimääränSuoritus2015(
           koulutusmoduuli = lukionOppimäärä,
           oppimäärä = nuortenOpetussuunnitelma,
           suorituskieli = suomenKieli,
@@ -184,18 +184,18 @@ object ExamplesLukio {
             suoritus(lukionOppiaine("TE", None)).copy(arviointi = arviointi("9")).copy(osasuoritukset = Some(List(
               kurssisuoritus(valtakunnallinenKurssi("TE1")).copy(arviointi = numeerinenArviointi(8))
             ))),
-            suoritus(PaikallinenLukionOppiaine(PaikallinenKoodi("ITT", "Tanssi ja liike"), "Tanssi ja liike", pakollinen = false)).copy(arviointi = arviointi("10"), osasuoritukset = Some(List(
+            suoritus(PaikallinenLukionOppiaine2015(PaikallinenKoodi("ITT", "Tanssi ja liike"), "Tanssi ja liike", pakollinen = false)).copy(arviointi = arviointi("10"), osasuoritukset = Some(List(
               kurssisuoritus(soveltavaKurssi("ITT1", "Tanssin introkurssi", "Opiskelija oppii tuntemaan omaa kehoansa monipuolisesti. Hän osaa käyttää liikkeen peruselementtejä liikkumisessaan\nja kykenee improvisoimaan liikkeellisesti annetun aiheen mukaan.")).copy(arviointi = numeerinenArviointi(10))
             ))),
-            MuidenLukioOpintojenSuoritus(
-              koulutusmoduuli = MuuLukioOpinto(Koodistokoodiviite("TO", "lukionmuutopinnot")),
+            MuidenLukioOpintojenSuoritus2015(
+              koulutusmoduuli = MuuLukioOpinto2015(Koodistokoodiviite("TO", "lukionmuutopinnot")),
               osasuoritukset = Some(List(
                 kurssisuoritus(soveltavaKurssi("MTA", "Monitieteinen ajattelu", "Monitieteisen ajattelun kurssi")).copy(arviointi = sanallinenArviointi("S", päivä = date(2016, 6, 8)))
               )),
               arviointi = arviointi("S")
             ),
-            MuidenLukioOpintojenSuoritus(
-              koulutusmoduuli = MuuLukioOpinto(Koodistokoodiviite("OA", "lukionmuutopinnot")),
+            MuidenLukioOpintojenSuoritus2015(
+              koulutusmoduuli = MuuLukioOpinto2015(Koodistokoodiviite("OA", "lukionmuutopinnot")),
               osasuoritukset = Some(List(
                 kurssisuoritus(soveltavaKurssi("OA1", "Oman äidinkielen keskustelukurssi", "Keskustellaan omalla äidinkielellä keskitetyissä opetusryhmissä")).copy(arviointi = sanallinenArviointi("S", kuvaus = Some("Sujuvaa keskustelua"), päivä = date(2016, 6, 8)))
               )),
@@ -220,7 +220,7 @@ object ExamplesLukio {
       lähdejärjestelmänId = None,
       oppilaitos = Some(jyväskylänNormaalikoulu),
       suoritukset = List(
-        LukionOppiaineenOppimääränSuoritus(
+        LukionOppiaineenOppimääränSuoritus2015(
           koulutusmoduuli = lukionOppiaine("HI", diaarinumero = Some("60/011/2015")),
           suorituskieli = suomenKieli,
           vahvistus = vahvistusPaikkakunnalla(päivä = date(2016, 1, 10)),
@@ -248,7 +248,7 @@ object ExamplesLukio {
       lähdejärjestelmänId = None,
       oppilaitos = Some(jyväskylänNormaalikoulu),
       suoritukset = List(
-        LukionOppiaineenOppimääränSuoritus(
+        LukionOppiaineenOppimääränSuoritus2015(
           koulutusmoduuli = lukionOppiaine("HI", diaarinumero = Some("60/011/2015")),
           suorituskieli = suomenKieli,
           vahvistus = vahvistusPaikkakunnalla(päivä = date(2016, 1, 10)),
@@ -261,7 +261,7 @@ object ExamplesLukio {
             kurssisuoritus(valtakunnallinenKurssi("HI4")).copy(arviointi = numeerinenArviointi(6, päivä = date(2016, 1, 10)))
           ))
         ),
-        LukionOppiaineenOppimääränSuoritus(
+        LukionOppiaineenOppimääränSuoritus2015(
           koulutusmoduuli = lukionOppiaine("KE", diaarinumero = Some("60/011/2015")),
           suorituskieli = suomenKieli,
           vahvistus = vahvistusPaikkakunnalla(päivä = date(2015, 1, 10)),
@@ -271,7 +271,7 @@ object ExamplesLukio {
             kurssisuoritus(valtakunnallinenVanhanOpsinKurssi("KE1")).copy(arviointi = numeerinenArviointi(7, päivä = date(2016, 1, 10)))
           ))
         ),
-        LukionOppiaineenOppimääränSuoritus(
+        LukionOppiaineenOppimääränSuoritus2015(
           koulutusmoduuli = lukionOppiaine("FI", diaarinumero = Some("60/011/2015")),
           suorituskieli = suomenKieli,
           toimipiste = jyväskylänNormaalikoulu,
@@ -291,7 +291,7 @@ object ExamplesLukio {
 
   val aineOpiskelijaEiTiedossaOppiaineella = aineOpiskelijaAktiivinen.copy(
     suoritukset = aineOpiskelijaAktiivinen.suoritukset ::: List(
-      LukionOppiaineenOppimääränSuoritus(
+      LukionOppiaineenOppimääränSuoritus2015(
         koulutusmoduuli = EiTiedossaOppiaine(),
         suorituskieli = suomenKieli,
         toimipiste = jyväskylänNormaalikoulu,
@@ -313,7 +313,7 @@ object ExamplesLukio {
       ),
       oppilaitos = Some(jyväskylänNormaalikoulu),
       suoritukset = List(
-        LukionOppimääränSuoritus(
+        LukionOppimääränSuoritus2015(
           koulutusmoduuli = lukionOppimäärä,
           oppimäärä = nuortenOpetussuunnitelma,
           suorituskieli = suomenKieli,
@@ -363,7 +363,7 @@ object LukioExampleData {
 
   val lukionOppimäärä: LukionOppimäärä = LukionOppimäärä(perusteenDiaarinumero = Some("60/011/2015"))
 
-  val lukionOppiaineenOppimääränSuoritusYhteiskuntaoppi: LukionOppiaineenOppimääränSuoritus = LukionOppiaineenOppimääränSuoritus(
+  val lukionOppiaineenOppimääränSuoritusYhteiskuntaoppi: LukionOppiaineenOppimääränSuoritus2015 = LukionOppiaineenOppimääränSuoritus2015(
     koulutusmoduuli = lukionOppiaine("YH", diaarinumero = Some("60/011/2015")),
     suorituskieli = suomenKieli,
     vahvistus = vahvistusPaikkakunnalla(päivä = date(2016, 1, 10)),
@@ -375,7 +375,7 @@ object LukioExampleData {
     ))
   )
 
-  val lukionOppiaineenOppimääränSuoritusFilosofia: LukionOppiaineenOppimääränSuoritus = LukionOppiaineenOppimääränSuoritus(
+  val lukionOppiaineenOppimääränSuoritusFilosofia: LukionOppiaineenOppimääränSuoritus2015 = LukionOppiaineenOppimääränSuoritus2015(
     koulutusmoduuli = lukionOppiaine("FI", diaarinumero = Some("60/011/2015")),
     suorituskieli = suomenKieli,
     vahvistus = vahvistusPaikkakunnalla(päivä = date(2016, 1, 10)),
@@ -388,7 +388,7 @@ object LukioExampleData {
     ))
   )
 
-  val lukionOppiaineenOppimääränSuoritusA1Englanti: LukionOppiaineenOppimääränSuoritus = LukionOppiaineenOppimääränSuoritus(
+  val lukionOppiaineenOppimääränSuoritusA1Englanti: LukionOppiaineenOppimääränSuoritus2015 = LukionOppiaineenOppimääränSuoritus2015(
     koulutusmoduuli = lukionKieli("A1","EN").copy(perusteenDiaarinumero = Some("60/011/2015")),
     suorituskieli = suomenKieli,
     vahvistus = vahvistusPaikkakunnalla(päivä = date(2016, 1, 10)),
@@ -401,7 +401,7 @@ object LukioExampleData {
     ))
   )
 
-  val lukionOppiaineenOppimääränSuoritusPitkäMatematiikka: LukionOppiaineenOppimääränSuoritus = LukionOppiaineenOppimääränSuoritus(
+  val lukionOppiaineenOppimääränSuoritusPitkäMatematiikka: LukionOppiaineenOppimääränSuoritus2015 = LukionOppiaineenOppimääränSuoritus2015(
     koulutusmoduuli = matematiikka("MAA", perusteenDiaarinumero = Some("60/011/2015")),
     suorituskieli = suomenKieli,
     vahvistus = vahvistusPaikkakunnalla(päivä = date(2016, 1, 10)),
@@ -422,14 +422,14 @@ object LukioExampleData {
   val aikuistenOpetussuunnitelma = Koodistokoodiviite("aikuistenops", Some("Aikuisten ops"), "lukionoppimaara", Some(1))
   val nuortenOpetussuunnitelma = Koodistokoodiviite("nuortenops", Some("Nuorten ops"), "lukionoppimaara", Some(1))
 
-  def suoritus(aine: LukionOppiaine2015): LukionOppiaineenSuoritus = LukionOppiaineenSuoritus(
+  def suoritus(aine: LukionOppiaine2015): LukionOppiaineenSuoritus2015 = LukionOppiaineenSuoritus2015(
     koulutusmoduuli = aine,
     suorituskieli = None,
     arviointi = None,
     osasuoritukset = None
   )
 
-  def kurssisuoritus(kurssi: LukionKurssi, suoritettuLukiodiplomina: Option[Boolean] = None) = LukionKurssinSuoritus(
+  def kurssisuoritus(kurssi: LukionKurssi2015, suoritettuLukiodiplomina: Option[Boolean] = None) = LukionKurssinSuoritus2015(
     koulutusmoduuli = kurssi,
     suorituskieli = None,
     arviointi = None,
@@ -441,41 +441,41 @@ object LukioExampleData {
   lazy val soveltava = Koodistokoodiviite("soveltava", "lukionkurssintyyppi")
 
   def valtakunnallinenKurssi(kurssi: String, kurssinTyyppi: Koodistokoodiviite = pakollinen) =
-    ValtakunnallinenLukionKurssi(Koodistokoodiviite(koodistoUri = "lukionkurssit", koodiarvo = kurssi), Some(laajuus(1.0f)), kurssinTyyppi = kurssinTyyppi)
+    ValtakunnallinenLukionKurssi2015(Koodistokoodiviite(koodistoUri = "lukionkurssit", koodiarvo = kurssi), Some(laajuus(1.0f)), kurssinTyyppi = kurssinTyyppi)
 
   def valtakunnallinenVanhanOpsinKurssi(kurssi: String, kurssinTyyppi: Koodistokoodiviite = pakollinen) =
-    ValtakunnallinenLukionKurssi(Koodistokoodiviite(koodistoUri = "lukionkurssitops2003nuoret", koodiarvo = kurssi), Some(laajuus(1.0f)), kurssinTyyppi = kurssinTyyppi)
+    ValtakunnallinenLukionKurssi2015(Koodistokoodiviite(koodistoUri = "lukionkurssitops2003nuoret", koodiarvo = kurssi), Some(laajuus(1.0f)), kurssinTyyppi = kurssinTyyppi)
 
   def syventäväKurssi(koodi: String, nimi: String, kuvaus: String) =
-    PaikallinenLukionKurssi(PaikallinenKoodi(koodiarvo = koodi, nimi = nimi), Some(laajuus(1.0f)), kuvaus, kurssinTyyppi = syventävä)
+    PaikallinenLukionKurssi2015(PaikallinenKoodi(koodiarvo = koodi, nimi = nimi), Some(laajuus(1.0f)), kuvaus, kurssinTyyppi = syventävä)
 
   def soveltavaKurssi(koodi: String, nimi: String, kuvaus: String) =
-    PaikallinenLukionKurssi(PaikallinenKoodi(koodiarvo = koodi, nimi = nimi), Some(laajuus(1.0f)), kuvaus, kurssinTyyppi = soveltava)
+    PaikallinenLukionKurssi2015(PaikallinenKoodi(koodiarvo = koodi, nimi = nimi), Some(laajuus(1.0f)), kuvaus, kurssinTyyppi = soveltava)
 
   def matematiikka(matematiikka: String, laajuus: LaajuusKursseissa, perusteenDiaarinumero: Option[String]) =
-    LukionMatematiikka(oppimäärä = Koodistokoodiviite(koodiarvo = matematiikka, koodistoUri = "oppiainematematiikka"), perusteenDiaarinumero = perusteenDiaarinumero, laajuus = Some(laajuus))
+    LukionMatematiikka2015(oppimäärä = Koodistokoodiviite(koodiarvo = matematiikka, koodistoUri = "oppiainematematiikka"), perusteenDiaarinumero = perusteenDiaarinumero, laajuus = Some(laajuus))
 
   def matematiikka(matematiikka: String, perusteenDiaarinumero: Option[String]) =
-    LukionMatematiikka(oppimäärä = Koodistokoodiviite(koodiarvo = matematiikka, koodistoUri = "oppiainematematiikka"), perusteenDiaarinumero = perusteenDiaarinumero)
+    LukionMatematiikka2015(oppimäärä = Koodistokoodiviite(koodiarvo = matematiikka, koodistoUri = "oppiainematematiikka"), perusteenDiaarinumero = perusteenDiaarinumero)
 
   def laajuus(laajuus: Float, yksikkö: String = "4"): LaajuusKursseissa = LaajuusKursseissa(laajuus, Koodistokoodiviite(koodistoUri = "opintojenlaajuusyksikko", koodiarvo = yksikkö))
 
   def lukionOppiaine(aine: String, laajuus: LaajuusKursseissa, diaarinumero: Option[String]) =
-    LukionMuuValtakunnallinenOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), perusteenDiaarinumero = diaarinumero, laajuus = Some(laajuus))
+    LukionMuuValtakunnallinenOppiaine2015(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), perusteenDiaarinumero = diaarinumero, laajuus = Some(laajuus))
 
   def lukionOppiaine(aine: String, diaarinumero: Option[String]) =
-    LukionMuuValtakunnallinenOppiaine(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), perusteenDiaarinumero = diaarinumero)
+    LukionMuuValtakunnallinenOppiaine2015(tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = aine), perusteenDiaarinumero = diaarinumero)
 
-  def lukionUskonto(uskonto: Option[String], laajuus: LaajuusKursseissa, diaarinumero: Option[String]): LukionUskonto =
-    LukionUskonto(
+  def lukionUskonto(uskonto: Option[String], laajuus: LaajuusKursseissa, diaarinumero: Option[String]): LukionUskonto2015 =
+    LukionUskonto2015(
       tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = "KT"),
       uskonnonOppimäärä = uskonto.map(u => Koodistokoodiviite(koodistoUri = "uskonnonoppimaara", koodiarvo = u)),
       perusteenDiaarinumero = diaarinumero,
       laajuus = Some(laajuus)
     )
 
-  def lukionUskonto(uskonto: Option[String], diaarinumero: Option[String]): LukionUskonto =
-    LukionUskonto(
+  def lukionUskonto(uskonto: Option[String], diaarinumero: Option[String]): LukionUskonto2015 =
+    LukionUskonto2015(
       tunniste = Koodistokoodiviite(koodistoUri = "koskioppiaineetyleissivistava", koodiarvo = "KT"),
       uskonnonOppimäärä = uskonto.map(u => Koodistokoodiviite(koodistoUri = "uskonnonoppimaara", koodiarvo = u)),
       perusteenDiaarinumero = diaarinumero
@@ -488,7 +488,7 @@ object LukioExampleData {
     LukionÄidinkieliJaKirjallisuus2015(kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "oppiaineaidinkielijakirjallisuus"), pakollinen = pakollinen)
 
   def lukionKieli(oppiaine: String, kieli: String) = {
-    VierasTaiToinenKotimainenKieli(
+    VierasTaiToinenKotimainenKieli2015(
       tunniste = Koodistokoodiviite(koodiarvo = oppiaine, koodistoUri = "koskioppiaineetyleissivistava"),
       kieli = Koodistokoodiviite(koodiarvo = kieli, koodistoUri = "kielivalikoima"))
   }
@@ -508,7 +508,7 @@ object LukioExampleData {
     lähdejärjestelmänId = None,
     oppilaitos = Some(oppilaitos),
     suoritukset = List(
-      LukionOppimääränSuoritus(
+      LukionOppimääränSuoritus2015(
         koulutusmoduuli = lukionOppimäärä,
         oppimäärä = nuortenOpetussuunnitelma,
         suorituskieli = suomenKieli,

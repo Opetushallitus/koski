@@ -18,7 +18,7 @@ export default ({suoritusAtom, oppilaitosAtom, suorituskieliAtom}) => {
 
   const suoritusPrototypeP = suoritustyyppiAtom.map('.koodiarvo').flatMap(suorituksenTyyppi => {
     if (suorituksenTyyppi == 'lukionoppiaineenoppimaara') {
-      return Http.cachedGet('/koski/api/editor/prototype/fi.oph.koski.schema.LukionOppiaineenOppimääränSuoritus')
+      return Http.cachedGet('/koski/api/editor/prototype/fi.oph.koski.schema.LukionOppiaineenOppimääränSuoritus2015')
     }
   }).toProperty()
 

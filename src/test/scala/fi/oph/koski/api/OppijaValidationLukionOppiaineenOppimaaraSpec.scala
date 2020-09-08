@@ -15,8 +15,8 @@ import fi.oph.koski.schema._
 
 class OppijaValidationLukionOppiaineenOppimaaraSpec extends TutkinnonPerusteetTest[LukionOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsLukio2015 {
   def opiskeluoikeusWithPerusteenDiaarinumero(diaari: Option[String]) = defaultOpiskeluoikeus.copy(suoritukset = List(
-    LukionOppiaineenOppimääränSuoritus(
-      koulutusmoduuli = LukionMuuValtakunnallinenOppiaine(Koodistokoodiviite("HI", "koskioppiaineetyleissivistava"), perusteenDiaarinumero = diaari),
+    LukionOppiaineenOppimääränSuoritus2015(
+      koulutusmoduuli = LukionMuuValtakunnallinenOppiaine2015(Koodistokoodiviite("HI", "koskioppiaineetyleissivistava"), perusteenDiaarinumero = diaari),
       suorituskieli = suomenKieli,
       toimipiste = jyväskylänNormaalikoulu,
       osasuoritukset = None
@@ -28,7 +28,7 @@ class OppijaValidationLukionOppiaineenOppimaaraSpec extends TutkinnonPerusteetTe
   "Ei tiedossa oppiainetta" - {
     "ei voi vahvistaa" in {
       val eitiedossa = defaultOpiskeluoikeus.copy(suoritukset = List(
-        LukionOppiaineenOppimääränSuoritus(
+        LukionOppiaineenOppimääränSuoritus2015(
           koulutusmoduuli = EiTiedossaOppiaine(),
           toimipiste = jyväskylänNormaalikoulu,
           suorituskieli = suomenKieli,

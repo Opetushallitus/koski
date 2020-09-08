@@ -395,11 +395,11 @@ object KelaOppijaConverter extends Logging {
         case _ => None
       },
       suoritettuLukiodiplomina = suoritus match {
-        case l: schema.LukionKurssinSuoritus => l.suoritettuLukiodiplomina
+        case l: schema.LukionKurssinSuoritus2015 => l.suoritettuLukiodiplomina
         case _ => None
       },
       suoritettuSuullisenaKielikokeena = suoritus match {
-        case l: schema.LukionKurssinSuoritus => l.suoritettuSuullisenaKielikokeena
+        case l: schema.LukionKurssinSuoritus2015 => l.suoritettuSuullisenaKielikokeena
         case _ => None
       },
       luokkaAste = suoritus  match {
@@ -451,7 +451,7 @@ object KelaOppijaConverter extends Logging {
         case _ => None
       },
       kurssinTyyppi = koulutusmoduuli match {
-        case l: schema.LukionKurssi => Some(convertKoodiviite(l.kurssinTyyppi))
+        case l: schema.LukionKurssi2015 => Some(convertKoodiviite(l.kurssinTyyppi))
         case _ => None
       },
       oppimäärä = koulutusmoduuli match {

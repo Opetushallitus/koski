@@ -21,7 +21,7 @@ class SuoritusjakoV2Spec extends FreeSpec with Matchers with OpiskeluoikeusTestM
   "Voi jakaa koko opiskeluoikeuden" in {
     val oppija = MockOppijat.lukiolainen
     val oppimääränOpiskeluoikeus = getOpiskeluoikeudet(oppija.oid).collectFirst {
-      case o: LukionOpiskeluoikeus if o.suoritukset.exists { case _: LukionOppimääränSuoritus => true } => o
+      case o: LukionOpiskeluoikeus if o.suoritukset.exists { case _: LukionOppimääränSuoritus2015 => true } => o
     }
     oppimääränOpiskeluoikeus shouldBe (defined)
     postSuoritusjakoV2(List(oppimääränOpiskeluoikeus.get), oppija) {
@@ -32,7 +32,7 @@ class SuoritusjakoV2Spec extends FreeSpec with Matchers with OpiskeluoikeusTestM
   "Voi jakaa koko opiskeluoikeuden, josta on piilotettu kenttiä" in {
     val oppija = MockOppijat.lukiolainen
     val oppimääränOpiskeluoikeus = getOpiskeluoikeudet(oppija.oid).collectFirst {
-      case o: LukionOpiskeluoikeus if o.suoritukset.exists { case _: LukionOppimääränSuoritus => true } => o
+      case o: LukionOpiskeluoikeus if o.suoritukset.exists { case _: LukionOppimääränSuoritus2015 => true } => o
     }
     oppimääränOpiskeluoikeus shouldBe (defined)
     postSuoritusjakoV2(List(oppimääränOpiskeluoikeus.get.copy(lisätiedot = None)), oppija) {
@@ -87,7 +87,7 @@ class SuoritusjakoV2Spec extends FreeSpec with Matchers with OpiskeluoikeusTestM
     val oppija = MockOppijat.lukiolainen
     val opiskeluoikeus = getOpiskeluoikeudet(oppija.oid).collectFirst {
       case o: LukionOpiskeluoikeus => o.copy(suoritukset = o.suoritukset.map {
-        case oppimääränSuoritus: LukionOppimääränSuoritus => oppimääränSuoritus.copy(osasuoritukset = oppimääränSuoritus.osasuoritukset.map(_ ++ List(ylimääräinenSuoritus)))
+        case oppimääränSuoritus: LukionOppimääränSuoritus2015 => oppimääränSuoritus.copy(osasuoritukset = oppimääränSuoritus.osasuoritukset.map(_ ++ List(ylimääräinenSuoritus)))
         case s => s
       })
     }
