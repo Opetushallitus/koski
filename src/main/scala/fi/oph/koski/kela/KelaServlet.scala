@@ -40,12 +40,12 @@ class KelaServlet(implicit val application: KoskiApplication) extends ApiServlet
   }
 
   get("/versiohistoria/:oppijaOid/:opiskeluoikeusOid/:version") {
-    val oppijaOid = HenkilöOid.validateHenkilöOid(getStringParam("oppijaOid"))
-    val opiskeluoikeusOid = OpiskeluoikeusOid.validateOpiskeluoikeusOid(getStringParam("opiskeluoikeusOid"))
-    val oppija = oppijaOid.flatMap(oppija => opiskeluoikeusOid.map(opiskeluoikeus => (oppija, opiskeluoikeus)))
-        .flatMap { case (oppijaOid, opiskeluoikeusOid) =>
-          kelaService.findKelaOppijaVersion(oppijaOid, opiskeluoikeusOid, getIntegerParam("version"))
-        }
+    val oppija = for {
+      oppijaOid <- HenkilöOid.validateHenkilöOid(getStringParam("oppijaOid"))
+      opiskeluoikeusOid <- OpiskeluoikeusOid.validateOpiskeluoikeusOid(getStringParam("opiskeluoikeusOid"))
+      oppija <- kelaService.findKelaOppijaVersion(oppijaOid, opiskeluoikeusOid, getIntegerParam("version"))
+    } yield oppija
+
     renderEither(oppija)
   }
 }
