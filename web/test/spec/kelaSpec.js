@@ -145,10 +145,34 @@ describe('Kela', function () {
   describe('Versiohistoria', function () {
     var oppijanHetu = '220109-784L'
 
+    var openVersiohistoria = function() {
+      return click(S('.versiohistoria > span'))()
+    }
+
+    var getValittuVersioVersiohistoriasta = function() {
+     return extractAsText(S('.kela-modal-content > ol > li.selected'))
+    }
+
+    describe('Jos opiskeluoikeudesta on vain yksi versio', function () {
+      before(
+        Authentication().login('Laaja'),
+        resetFixtures,
+        kela.openPage,
+        kela.searchAndSelect(oppijanHetu),
+        openVersiohistoria,
+        kela.selectFromVersiohistoria('1'),
+        wait.until(kela.isReady),
+        openVersiohistoria
+      )
+
+      it('Toimii versiohistoria oikein', function () {
+        expect(getValittuVersioVersiohistoriasta()).to.be.a('string').and.satisfy(str => str.startsWith('1 '))
+      })
+    })
+
     describe('Luodaan versiohistoriaa oppijalle', function () {
       before(
         Authentication().login(),
-        resetFixtures,
         page.openPage,
         page.oppijaHaku.searchAndSelect(oppijanHetu),
         opinnot.opiskeluoikeudet.valitseOpiskeluoikeudenTyyppi('perusopetus'),
@@ -159,10 +183,6 @@ describe('Kela', function () {
       )
 
       describe('Versiohistorian tarkastelu kelan virkailijana', function () {
-        var openVersiohistoria = function() {
-          return click(S('.versiohistoria > span'))()
-        }
-
         before(
           Authentication().login('Laaja'),
           kela.openPage,
@@ -170,9 +190,9 @@ describe('Kela', function () {
           openVersiohistoria
         )
 
-        it('Näytetään uusin versio (2) ja tämän hetkinen versio näytetään valittuna versiohistoria listassa', function () {
+        it('Näytetään uusin versio (2) ja tämän hetkinen versio näytetään valittuna versiohistorian listassa', function () {
           expect(extractAsText(S('.suoritustapa'))).to.equal('Suoritustapa Erityinen tutkinto')
-          expect(extractAsText(S('.kela-modal-content > ol > li.selected'))).to.be.a('string').and.satisfy(str => str.startsWith('2 '))
+          expect(getValittuVersioVersiohistoriasta()).to.be.a('string').and.satisfy(str => str.startsWith('2 '))
         })
 
         describe('Kun valitaan versio', function () {
@@ -182,9 +202,9 @@ describe('Kela', function () {
             openVersiohistoria
           )
 
-          it('Näytetään valitun version opiskeluoikeus ja valittu versio on valittuna versiohistoria listassa', function () {
+          it('Näytetään valitun version opiskeluoikeus ja valittu versio on valittuna versiohistorian listassa', function () {
             expect(extractAsText(S('.suoritustapa'))).to.equal('Suoritustapa Koulutus')
-            expect(extractAsText(S('.kela-modal-content > ol > li.selected'))).to.be.a('string').and.satisfy(str => str.startsWith('1 '))
+            expect(getValittuVersioVersiohistoriasta()).to.be.a('string').and.satisfy(str => str.startsWith('1 '))
           })
         })
       })
