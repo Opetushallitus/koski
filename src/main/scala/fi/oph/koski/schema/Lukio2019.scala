@@ -78,6 +78,8 @@ case class LukionOppiaineidenOppimäärät2019(
 
 @Description("Koodi, jota käytetään lukion oppiaineiden oppimäärien ryhmittelyssä 2019.")
 case class LukionOppiaineidenOppimäärätKoodi2019(
+  @Description("Käytä aina merkkijonoa lukionoppiaineidenoppimaarat2019")
+  @DefaultValue("lukionoppiaineidenoppimaarat2019")
   koodiarvo: String = "lukionoppiaineidenoppimaarat2019"
 ) extends PaikallinenKoodiviite {
   override def nimi: LocalizedString = LocalizedString.empty
