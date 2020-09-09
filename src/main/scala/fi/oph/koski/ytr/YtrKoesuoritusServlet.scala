@@ -16,7 +16,7 @@ class YtrKoesuoritusServlet(implicit val application: KoskiApplication) extends 
     val examPaper = getStringParam("copyOfExamPaper")
     val hasAccess = hasAccessTo(examPaper)
     if (koesuoritukset.koesuoritusExists(examPaper) && hasAccess) {
-      contentType = "application/pdf"
+      contentType = if (examPaper.endsWith(".pdf")) "application/pdf" else "text/html"
       koesuoritukset.writeKoesuoritus(examPaper, response.getOutputStream)
     } else {
       logger.warn(s"Exam paper $examPaper not found, hasAccess: $hasAccess")

@@ -50,6 +50,6 @@ class YtrKoesuoritusApiSpec extends FreeSpec with LocalJettyHttpSpecification wi
     ExamResponse(period = "2012K", examId = "BB", copyOfExamPaper = Some("not-found-from-s3.pdf")),
     ExamResponse(period = "2012K", examId = "EA", copyOfExamPaper = Some("1.pdf")),
     ExamResponse(period = "2012K", examId = "GE", copyOfExamPaper = Some("2.pdf")),
-    ExamResponse(period = "2012K", examId = "N", copyOfExamPaper = Some("3.pdf"))
+    ExamResponse(period = "2012K", examId = "N", copyOfExamPaper = Some("1234S_YY_420.html"))
   )
 }
