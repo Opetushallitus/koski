@@ -10,10 +10,19 @@ import scala.collection.Iterator.continually
 
 class YtrKoesuoritusSpec extends FreeSpec with LocalJettyHttpSpecification with OpiskeluoikeusTestMethods {
   "Kansalainen" - {
-    "näkee koesuorituksensa" in {
+    "näkee koesuorituksensa (PDF)" in {
       get("koesuoritus/2345K_XX_12345.pdf", headers = kansalainenLoginHeaders("080698-967F")) {
         verifyResponseStatusOk()
+        response.getHeader("Content-Type") should equal("application/pdf;charset=utf-8")
         bodyBytes should equal(resourceAsByteArray(s"/mockdata/ytr/2345K_XX_12345.pdf"))
+      }
+    }
+
+    "näkee koesuorituksensa (HTML)" in {
+      get("koesuoritus/1234S_YY_420.html", headers = kansalainenLoginHeaders("080698-967F")) {
+        verifyResponseStatusOk()
+        response.getHeader("Content-Type") should equal("text/html;charset=utf-8")
+        bodyBytes should equal(resourceAsByteArray(s"/mockdata/ytr/1234S_YY_420.html"))
       }
     }
 
