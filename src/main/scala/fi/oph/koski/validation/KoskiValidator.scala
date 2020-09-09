@@ -584,7 +584,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
          _:NäyttötutkintoonValmistavanKoulutuksenSuoritus |
          _:LukionOppiaineidenOppimäärienSuoritus2019
       => true
-    case s: PerusopetuksenVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "9" => true
+    case s: PerusopetuksenVuosiluokanSuoritus if s.koulutusmoduuli.tunniste.koodiarvo == "9" || s.jääLuokalle => true
     case s => s.osasuoritusLista.nonEmpty
   }
 
