@@ -4,7 +4,7 @@ import {t} from '../i18n/i18n'
 import {KelaOpiskeluoikeus, opiskeluoikeudenTilaString} from './KelaOppija'
 
 
-export const OpiskeluoikeusTabs = ({opiskeluoikeudet}) => {
+export const OpiskeluoikeusTabs = ({opiskeluoikeudet, oppijaOid}) => {
   const selectedIndexAtom = Atom(0)
 
   return (
@@ -33,7 +33,7 @@ export const OpiskeluoikeusTabs = ({opiskeluoikeudet}) => {
             })
           }
         </ul>
-        <KelaOpiskeluoikeus opiskeluoikeus={opiskeluoikeudet[selectedIndex]}/>
+        <KelaOpiskeluoikeus opiskeluoikeus={opiskeluoikeudet[selectedIndex]} oppijaOid={oppijaOid}/>
         </>
       ))}
     </div>

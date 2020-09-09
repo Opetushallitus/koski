@@ -107,9 +107,64 @@
       font-weight: normal;
       border-top-left-radius: 2px;
       border-top-right-radius: 2px;
+      display: flex;
+      justify-content: space-between;
 
       .oid {
-        float: right;
+        margin-left: 300px;
+      }
+
+      .versiohistoria {
+        cursor: pointer;
+
+        > span {
+          text-decoration: underline;
+        }
+
+        .kela-modal {
+          position: fixed;
+
+
+          .kela-modal-content {
+            position: absolute;
+            z-index: 1;
+            left: -80px;
+            white-space: initial;
+            padding: 16px;
+            background: @color-white;
+            box-shadow: 0 1px 5px 0 rgba(0,0,0,0.30);
+            border-radius: 2px;
+            min-width: 260px;
+
+            .kela-content-close {
+              .CloseSymbol;
+              .BorderlessButton;
+              cursor: pointer;
+              size: 1rem;
+              color: @color-black;
+              margin: 8px 8px 8px 90%;
+              display: block;
+            }
+
+            > ol {
+              list-style-type: none;
+              margin: 0px;
+              padding: 8px 0px;
+              text-align: center;
+
+              li {
+                margin: 4px;
+              }
+
+              .selected {
+                background-color: @color-blue;
+                > a {
+                  color: @color-white;
+                }
+              }
+            }
+          }
+        }
       }
     }
 

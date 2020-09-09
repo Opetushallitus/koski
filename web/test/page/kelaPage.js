@@ -57,6 +57,14 @@ function KelaPage() {
         return click(osasuoritus)()
       }
     },
+    selectFromVersiohistoria: function (versionumero) {
+      return function () {
+        var versiot = S('.versiohistoria > .kela-modal > .kela-modal-content > ol > li > a').toArray()
+        var versio = versiot.find(function (li) { return $(li).text().startsWith(versionumero)})
+        return click(versio)()
+      }
+    }
+
   }
   return api
 }
