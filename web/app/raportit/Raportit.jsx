@@ -7,7 +7,7 @@ import Atom from 'bacon.atom'
 import Http from '../util/http'
 import {AikajaksoRaportti} from './AikajaksoRaportti'
 import {VuosiluokkaRaporttiPaivalta} from './VuosiluokkaRaporttiPaivalta'
-import {AikajaksoRaporttiAikarajauksella} from './AikajaksoRaporttiAikarajauksella'
+import {AikajaksoRaporttiAikarajauksella, osasuoritusTypes} from './AikajaksoRaporttiAikarajauksella'
 import {RaporttiPaivalta} from './RaporttiPaivalta'
 import {AikuistenPerusopetuksenRaportit} from './AikuistenPerusopetuksenRaportit'
 
@@ -147,6 +147,7 @@ const Lukioraportti = ({organisaatioAtom}) => {
     apiEndpoint={'/lukionsuoritustietojentarkistus'}
     title={titleText}
     description={descriptionText}
+    osasuoritusType={osasuoritusTypes.KURSSI}
   />)
 }
 

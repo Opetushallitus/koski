@@ -9,7 +9,36 @@ import {generateRandomPassword} from '../util/password'
 import {downloadExcel} from './downloadExcel'
 import RaporttiDownloadButton from './RaporttiDownloadButton'
 
-export const AikajaksoRaporttiAikarajauksella = ({organisaatioAtom, apiEndpoint, title, description}) => {
+export const osasuoritusTypes = {
+  TUTKINNON_OSA: 'tutkinnon osat',
+  KURSSI: 'kurssisuoritukset'
+}
+
+const KaikkiSuorituksetLabel = ({ osasuoritusType }) => {
+  switch (osasuoritusType) {
+    case osasuoritusTypes.TUTKINNON_OSA:
+      return <Text name='Raportille valitaan kaikki tutkinnon osat riippumatta niiden suoritusajankohdasta' />
+    case osasuoritusTypes.KURSSI:
+      return <Text name='Raportille valitaan kaikki kurssisuoritukset riippumatta niiden suoritusajankohdasta' />
+  }
+}
+
+const AikarajatutSuorituksetLabel = ({ osasuoritusType }) => {
+  switch (osasuoritusType) {
+    case osasuoritusTypes.TUTKINNON_OSA:
+      return <Text name='Raportille valitaan vain sellaiset tutkinnon osat, joiden arviointipäivä osuu yllä määritellylle aikajaksolle' />
+    case osasuoritusTypes.KURSSI:
+      return <Text name='Raportille valitaan vain sellaiset kurssisuoritukset, joiden arviointipäivä osuu yllä määritellylle aikajaksolle' />
+  }
+}
+
+export const AikajaksoRaporttiAikarajauksella = ({
+  organisaatioAtom,
+  apiEndpoint,
+  title,
+  description,
+  osasuoritusType = osasuoritusTypes.TUTKINNON_OSA
+}) => {
   const alkuAtom = Atom()
   const loppuAtom = Atom()
   const osasuoritustenAikarajausAtom = Atom(false)
@@ -51,11 +80,11 @@ export const AikajaksoRaporttiAikarajauksella = ({organisaatioAtom, apiEndpoint,
         <React.Fragment>
           <label className='radio-option-container'>
             <input className='radio-option' type='radio' checked={!v} onChange={() => osasuoritustenAikarajausAtom.set(false)}/>
-            <Text name='Raportille valitaan kaikki tutkinnon osat riippumatta niiden suoritusajankohdasta' />
+            <KaikkiSuorituksetLabel osasuoritusType={osasuoritusType}/>
           </label>
           <label className='radio-option-container'>
             <input className='radio-option' type='radio' checked={v} onChange={() => osasuoritustenAikarajausAtom.set(true)}/>
-            <Text name='Raportille valitaan vain sellaiset tutkinnon osat, joiden arviointipäivä osuu yllä määritellylle aikajaksolle' />
+            <AikarajatutSuorituksetLabel osasuoritusType={osasuoritusType}/>
           </label>
         </React.Fragment>
       ))}
