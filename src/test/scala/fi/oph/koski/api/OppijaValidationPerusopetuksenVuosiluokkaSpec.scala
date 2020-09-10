@@ -1,5 +1,6 @@
 package fi.oph.koski.api
 
+import fi.oph.koski.documentation.PerusopetusExampleData
 import fi.oph.koski.documentation.PerusopetusExampleData.kaikkiAineet
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
@@ -33,6 +34,12 @@ class OppijaValidationPerusopetuksenVuosiluokkaSpec extends TutkinnonPerusteetTe
       putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(vuosiluokkasuoritus.copy(alkamispäivä = None)))) {
         verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.tila.alkamispäiväPuuttuu("Suoritukselle perusopetuksenluokkaaste/9 ei ole merkitty alkamispäivää"))
       }
+    }
+  }
+
+  "Jos oppilas jää luokalle, vahvistetulta vuosiluokan suoritukselta ei vaadita osasuorituksia" in {
+    putOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(PerusopetusExampleData.seitsemännenLuokanLuokallejääntiSuoritus.copy(osasuoritukset = None)))) {
+      verifyResponseStatusOk()
     }
   }
 }
