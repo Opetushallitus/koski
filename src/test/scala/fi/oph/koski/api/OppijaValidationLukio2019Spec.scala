@@ -1,11 +1,13 @@
 package fi.oph.koski.api
 
-import fi.oph.koski.documentation.ExamplesLukio2019.oppimääränSuoritus
+import fi.oph.koski.documentation.ExampleData.vahvistusPaikkakunnalla
+import fi.oph.koski.documentation.ExamplesLukio2019.{oppiaineidenOppimäärienSuoritus, oppimääränSuoritus}
 import fi.oph.koski.documentation.Lukio2019ExampleData._
 import fi.oph.koski.documentation.LukioExampleData.numeerinenArviointi
 import fi.oph.koski.documentation.{ExamplesLukio2019, Lukio2019ExampleData, LukioExampleData}
 import fi.oph.koski.http.KoskiErrorCategory
 import fi.oph.koski.schema._
+import java.time.LocalDate.{of => date}
 
 class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskeluoikeus] with LocalJettyHttpSpecification with OpiskeluoikeusTestMethodsLukio {
   "Laajuudet" - {
@@ -65,6 +67,14 @@ class OppijaValidationLukio2019Spec extends TutkinnonPerusteetTest[LukionOpiskel
           verifyResponseStatus(400, KoskiErrorCategory.badRequest.validation.rakenne.vääräDiaari("""Väärä diaarinumero "OPH-2263-2019" suorituksella lukionoppimaara2019, sallitut arvot: OPH-2267-2019"""))
         }
       }
+    }
+  }
+
+  "Vahvistus ja valmistuminen lukion oppimäärien suorituksessa" - {
+    "Suorituksen vahvistus tyhjennetään tietojen siirrossa" in {
+      val opiskeluoikeus: Opiskeluoikeus = putAndGetOpiskeluoikeus(defaultOpiskeluoikeus.copy(suoritukset = List(oppiaineidenOppimäärienSuoritus.copy(vahvistus = vahvistusPaikkakunnalla(päivä = date(2020, 5, 15))))))
+
+      opiskeluoikeus.suoritukset.head.vahvistus should equal(None)
     }
   }
 

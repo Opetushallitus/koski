@@ -106,6 +106,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       .flatMap(addKoulutustyyppi)
       .map(fillPerusteenNimi)
       .map(fillLaajuudet)
+      .map(clearVahvistukset)
       .map(_.withHistoria(None))
   }
 
@@ -137,6 +138,12 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       }))
     case _ => suoritus
   }
+
+  private def clearVahvistukset(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus =
+    oo.withSuoritukset(oo.suoritukset.map({
+      case l: LukionOppiaineidenOppimäärienSuoritus2019 => l.copy(vahvistus = None)
+      case l => l
+    }))
 
   private def perusteenNimi(diaariNumero: String): Option[LocalizedString] =
     ePerusteet.findPerusteenYksilöintitiedot(diaariNumero).map(_.nimi).flatMap(LocalizedString.sanitize)
