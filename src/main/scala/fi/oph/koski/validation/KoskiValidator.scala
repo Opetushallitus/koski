@@ -675,6 +675,8 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       HttpStatus.ok
     } else if (opiskeluoikeus.tyyppi.koodiarvo == "aikuistenperusopetus") {
       validateAikuistenPerusopetuksenSuoritustenStatus(opiskeluoikeus)
+    } else if (opiskeluoikeus.tyyppi.koodiarvo == "lukiokoulutus" && opiskeluoikeus.suoritukset.exists(_.isInstanceOf[LukionOppiaineidenOppimäärienSuoritus2019])) {
+      validateLukionOppiaineidenOppimäärienSuoritus2019Status(opiskeluoikeus)
     } else {
       HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritusVahvistettu))
     }
@@ -686,6 +688,18 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       KoskiErrorCategory.badRequest.validation.tila.suoritusPuuttuu("Opiskeluoikeutta aikuistenperusopetus ei voi merkitä valmiiksi kun siitä puuttuu suoritus aikuistenperusopetuksenoppimaara tai perusopetuksenoppiaineenoppimaara")
     } else {
       HttpStatus.fold(muutKuinAlkuvaihe.map(validateSuoritusVahvistettu))
+    }
+  }
+
+  private def validateLukionOppiaineidenOppimäärienSuoritus2019Status(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
+    val osasuoritukset = opiskeluoikeus.suoritukset.collect {
+      case l: LukionOppiaineidenOppimäärienSuoritus2019 => l.osasuoritusLista
+    }.flatten
+
+    if (!osasuoritukset.exists(!_.arviointiPuuttuu)) {
+      KoskiErrorCategory.badRequest.validation.tila.osasuoritusPuuttuu("Lukion oppiaineiden oppimäärien suorituksen 2019 sisältävää opiskeluoikeutta ei voi merkitä valmiiksi ilman arvioitua oppiaineen osasuoritusta")
+    } else  {
+      HttpStatus.ok
     }
   }
 
