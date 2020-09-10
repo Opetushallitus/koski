@@ -322,7 +322,7 @@ class LukioRaporttiSpec extends FreeSpec with Matchers with RaportointikantaTest
     "Yksityisopiskelija" -> false,
     "Ulkomaanjaksot" -> Some(366),
     "Erityisen koulutustehtävän tehtävät" -> Some("Kieliin painottuva koulutus"),
-    "Erityisen koulutustehtävän jaksot" -> Some(1),
+    "Erityisen koulutustehtävän jaksot" -> Some(366),
     "Sisäoppilaitosmainen majoitus" -> Some(366),
     "Syy alle 18-vuotiaana aloitettuun opiskeluun aikuisten lukiokoulutuksessa" -> Some("Pikkuvanha yksilö"),
     "Hetu" -> lukiolainen.hetu,

@@ -71,6 +71,10 @@ object AikajaksoRowBuilder {
         case k: KoskiOpiskeluoikeusjakso => k.opintojenRahoitus.map(_.koodiarvo)
         case _ => None
       },
+      erityisenKoulutusTehtävänJaksoTehtäväKoodiarvo = o.lisätiedot flatMap {
+        case l: ErityisenKoulutustehtävänJaksollinen => l.erityisenKoulutustehtävänJaksot.toList.flatten.find(_.contains(päivä)).map(_.tehtävä.koodiarvo)
+        case _ => None
+      },
       majoitus = ammatillinenAikajakso(_.majoitus),
       sisäoppilaitosmainenMajoitus = (
         ammatillinenAikajakso(_.sisäoppilaitosmainenMajoitus) +
@@ -143,12 +147,12 @@ object AikajaksoRowBuilder {
     rajatutAlkupäivät.zip(rajatutAlkupäivät.tail.map(_.minusDays(1)) :+ päättymispäivä)
   }
 
-  def toSeq[A <: Aikajakso](xs: Option[List[A]]*): Seq[Aikajakso] = xs.flatMap(_.getOrElse(Nil))
+  def toSeq[A <: Jakso](xs: Option[List[A]]*): Seq[Jakso] = xs.flatMap(_.getOrElse(Nil))
 
   private def mahdollisetAikajaksojenAlkupäivät(o: KoskeenTallennettavaOpiskeluoikeus): Seq[LocalDate] = {
     // logiikka: uusi r_opiskeluoikeus_aikajakso-rivi pitää aloittaa, jos ko. päivänä alkaa joku jakso (erityinen tuki tms),
     // tai jos edellisenä päivänä on loppunut joku jakso.
-    val lisätiedotAikajaksot: Seq[Aikajakso] = o.lisätiedot.collect {
+    val lisätiedotAikajaksot: Seq[Jakso] = o.lisätiedot.collect {
       case aol: AmmatillisenOpiskeluoikeudenLisätiedot =>
         toSeq(
           aol.majoitus,
@@ -175,7 +179,16 @@ object AikajaksoRowBuilder {
         )
       case lol: LukionOpiskeluoikeudenLisätiedot =>
         toSeq(
-          lol.sisäoppilaitosmainenMajoitus
+          lol.sisäoppilaitosmainenMajoitus,
+          lol.erityisenKoulutustehtävänJaksot
+        )
+      case isol: InternationalSchoolOpiskeluoikeudenLisätiedot =>
+        toSeq(
+          isol.erityisenKoulutustehtävänJaksot
+        )
+      case dol: DIAOpiskeluoikeudenLisätiedot =>
+        toSeq(
+          dol.erityisenKoulutustehtävänJaksot
         )
       case lvol: LukioonValmistavanKoulutuksenOpiskeluoikeudenLisätiedot =>
         toSeq(
