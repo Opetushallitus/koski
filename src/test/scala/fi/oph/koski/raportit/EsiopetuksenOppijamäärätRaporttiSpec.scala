@@ -22,20 +22,34 @@ class EsiopetuksenOppijamäärätRaporttiSpec extends FreeSpec with Matchers wit
   override def beforeAll(): Unit = loadRaportointikantaFixtures
 
   "Esiopetuksen oppijamäärien raportti" - {
-    /*"Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {
-      authGet(s"api/raportit/esiopetuksenoppijamäärätraportti?paiva=2007-01-01&password=salasana&downloadToken=dt") {
+    "Raportti voidaan ladata ja lataaminen tuottaa auditlogin" in {
+      authGet(s"api/raportit/esiopetuksenoppijamäärätraportti?oppilaitosOid=$jyväskylänNormaalikoulu&paiva=2018-01-01&password=salasana") {
         verifyResponseStatusOk()
         response.headers("Content-Disposition").head should equal(s"""attachment; filename="esiopetuksen_oppijamäärät_raportti-2007-01-01.xlsx"""")
         response.bodyBytes.take(ENCRYPTED_XLSX_PREFIX.length) should equal(ENCRYPTED_XLSX_PREFIX)
-        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetuksenoppijamäärätraportti&paiva=2007-01-01")))
+        AuditLogTester.verifyAuditLogMessage(Map("operation" -> "OPISKELUOIKEUS_RAPORTTI", "target" -> Map("hakuEhto" -> s"raportti=esiopetuksenoppijamäärätraporttioppilaitosOid=$jyväskylänNormaalikoulu&paiva=2007-01-01")))
       }
-    }*/
+    }
 
-    "Raportin kolumnit" - {
+    "Raportin kolumnit" in {
       lazy val r = findSingle(raportti, MockOppijat.eskari)
-      "Perustiedot" in {
-        r.oppilaitosNimi should equal("Jyväskylän normaalikoulu")
-      }
+
+      r.oppilaitosNimi should equal("Jyväskylän normaalikoulu")
+      r.opetuskieli should equal("suomi")
+      r.esiopetusoppilaidenMäärä should equal(2)
+      r.vieraskielisiä should equal(0)
+      r.koulunesiopetuksessa should equal(2)
+      r.päiväkodinesiopetuksessa should equal(0)
+      r.viisivuotiaita should equal(0)
+      r.viisivuotiaitaEiPidennettyäOppivelvollisuutta should equal(0)
+      r.pidennettyOppivelvollisuusJaVaikeastiVammainen should equal(0)
+      r.pidennettyOppivelvollisuusJaMuuKuinVaikeimminVammainen should equal(0)
+      r.virheellisestiSiirretytVaikeastiVammaiset should equal(0)
+      r.virheellisestiSiirretytMuutKuinVaikeimminVammaiset should equal(0)
+      r.erityiselläTuella should equal(0)
+      r.majoitusetu should equal(0)
+      r.kuljetusetu should equal(0)
+      r.sisäoppilaitosmainenMajoitus should equal(0)
     }
   }
 

@@ -46,7 +46,7 @@ case class EsiopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Orga
       columnSettings = columnSettings
     )
   }
-
+//tila
   private def query(oppilaitosOidit: List[String], päivä: Date)(implicit u: KoskiSession) = {
     val calendar = new GregorianCalendar
     calendar.setTime(päivä);
@@ -60,7 +60,7 @@ case class EsiopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Orga
       count(case when koulutusmoduuli_koodiarvo = '001101' then 1 end) as koulunesiopetuksessa,
       count(case when koulutusmoduuli_koodiarvo = '001102' then 1 end) as päiväkodinesiopetuksessa,
       count(case when ${year} - extract(year from syntymaaika) = 5 then 1 end) as viisivuotiaita,
-      count(case when ${year} - extract(year from syntymaaika) = 5 and pidennetty_oppivelvollisuus = true then 1 end) as viisivuotiaitaEiPidennettyäOppivelvollisuutta,
+      count(case when ${year} - extract(year from syntymaaika) = 5 and pidennetty_oppivelvollisuus = false then 1 end) as viisivuotiaitaEiPidennettyäOppivelvollisuutta,
       count(case when pidennetty_oppivelvollisuus = true and vaikeasti_vammainen = true then 1 end) as pidennettyOppivelvollisuusJaVaikeastiVammainen,
       count(case when pidennetty_oppivelvollisuus = true and vaikeasti_vammainen = false and vammainen = true then 1 end) as pidennettyOppivelvollisuusJaMuuKuinVaikeimminVammainen,
       count(case when pidennetty_oppivelvollisuus = false and vaikeasti_vammainen = true then 1 end) as virheellisestiSiirretytVaikeastiVammaiset,
@@ -79,7 +79,8 @@ case class EsiopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Orga
     where r_opiskeluoikeus.oppilaitos_oid in (#${toSqlList(oppilaitosOidit)})
       and r_opiskeluoikeus.koulutusmuoto = 'esiopetus'
       and aikajakso.alku <= $päivä
-      and aikajakso.loppu >= $päivä
+      and (aikajakso.loppu is null or aikajakso.loppu >= $päivä)
+      and aikajakso.tila = 'lasna'
     -- access check
       and (
         #${(if (u.hasGlobalReadAccess) "true" else "false")}
