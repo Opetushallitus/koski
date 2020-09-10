@@ -3,6 +3,7 @@ describe('Lukiokoulutus2019', function( ){
   var opinnot = OpinnotPage()
   var editor = opinnot.opiskeluoikeusEditor()
   var addOppija = AddOppijaPage()
+  var opiskeluoikeus = OpiskeluoikeusDialog()
   before(Authentication().login(), resetFixtures)
 
   describe('Lukion päättötodistus', function() {
@@ -450,6 +451,30 @@ describe('Lukiokoulutus2019', function( ){
           'Tanssi ja liike *\nLI5\n7 ITT234 *\n10 3 8\n' +
           'Suoritettujen osasuoritusten laajuus yhteensä: 25,5\n' +
           '* = paikallinen opintojakso tai oppiaine')
+      })
+
+      describe('valmistumistieto poistettaessa', function() {
+        const currentDate = new Date()
+        function currentDatePlusYears(years) {return currentDate.getDate() + '.' + (1 + currentDate.getMonth()) + '.' + (currentDate.getFullYear() + years)}
+        const currentDateStr = currentDatePlusYears(0)
+
+        before(
+          editor.edit,
+          editor.property('tila').removeItem(0)
+        )
+
+        describe('valmistumistiedon lisääminen', function() {
+          before(
+            opinnot.avaaLisaysDialogi,
+            opiskeluoikeus.tila().aseta('valmistunut'),
+            opiskeluoikeus.opintojenRahoitus().aseta('1'),
+            opiskeluoikeus.tallenna,
+            editor.saveChanges
+          )
+          it('onnistuu vaikka suoritusta ei ole merkitty vahvistetuksi', function() {
+            expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal(currentDateStr)
+          })
+        })
       })
     })
   })
