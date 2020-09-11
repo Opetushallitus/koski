@@ -212,6 +212,10 @@ object OpiskeluoikeusLoader extends Logging {
         case m: MahdollisestiSuorituskielellinen => m.suorituskieli.map(_.koodiarvo)
         case _ => None
       },
+      oppimääräKoodiarvo = ps match {
+        case o: Oppimäärällinen => Some(o.oppimäärä.koodiarvo)
+        case _ => None
+      },
       vahvistusPäivä = ps.vahvistus.map(v => Date.valueOf(v.päivä)),
       arviointiArvosanaKoodiarvo = ps.viimeisinArviointi.map(_.arvosana.koodiarvo),
       arviointiArvosanaKoodisto = ps.viimeisinArviointi.flatMap(a => convertKoodisto(a.arvosana)),
