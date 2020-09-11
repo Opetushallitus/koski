@@ -46,7 +46,7 @@ case class EsiopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Orga
       columnSettings = columnSettings
     )
   }
-//tila
+
   private def query(oppilaitosOidit: List[String], päivä: Date)(implicit u: KoskiSession) = {
     val calendar = new GregorianCalendar
     calendar.setTime(päivä);
@@ -79,7 +79,7 @@ case class EsiopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Orga
     where r_opiskeluoikeus.oppilaitos_oid in (#${toSqlList(oppilaitosOidit)})
       and r_opiskeluoikeus.koulutusmuoto = 'esiopetus'
       and aikajakso.alku <= $päivä
-      and (aikajakso.loppu is null or aikajakso.loppu >= $päivä)
+      and aikajakso.loppu >= $päivä
       and aikajakso.tila = 'lasna'
     -- access check
       and (

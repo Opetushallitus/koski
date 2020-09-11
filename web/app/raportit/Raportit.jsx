@@ -170,7 +170,7 @@ const EsiopetuksenOppijamäärätRaportti = ({organisaatioAtom}) => {
 
   return (<RaporttiPaivalta
     organisaatioAtom={organisaatioAtom}
-    apiEndpoint={'/esiopetuksenoppijamäärätraportti'}
+    apiEndpoint={'/esiopetuksenoppijamaaratraportti'}
     title={titleText}
     description={descriptionText}
   />)
