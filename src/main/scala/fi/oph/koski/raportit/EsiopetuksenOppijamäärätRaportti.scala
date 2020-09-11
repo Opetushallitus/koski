@@ -60,11 +60,11 @@ case class EsiopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Orga
       count(case when koulutusmoduuli_koodiarvo = '001101' then 1 end) as koulunesiopetuksessa,
       count(case when koulutusmoduuli_koodiarvo = '001102' then 1 end) as päiväkodinesiopetuksessa,
       count(case when ${year} - extract(year from syntymaaika) = 5 then 1 end) as viisivuotiaita,
-      count(case when ${year} - extract(year from syntymaaika) = 5 and pidennetty_oppivelvollisuus = true then 1 end) as viisivuotiaitaEiPidennettyäOppivelvollisuutta,
+      count(case when ${year} - extract(year from syntymaaika) = 5 and pidennetty_oppivelvollisuus = false then 1 end) as viisivuotiaitaEiPidennettyäOppivelvollisuutta,
       count(case when pidennetty_oppivelvollisuus = true and vaikeasti_vammainen = true then 1 end) as pidennettyOppivelvollisuusJaVaikeastiVammainen,
       count(case when pidennetty_oppivelvollisuus = true and vaikeasti_vammainen = false and vammainen = true then 1 end) as pidennettyOppivelvollisuusJaMuuKuinVaikeimminVammainen,
-      count(case when pidennetty_oppivelvollisuus = false and vaikeasti_vammainen = true then 1 end) as virheellisestiSiirretytVaikeastiVammaiset,
-      count(case when pidennetty_oppivelvollisuus = false and vaikeasti_vammainen = false and vammainen = true then 1 end) as virheellisestiSiirretytMuutKuinVaikeimminVammaiset,
+      count(case when pidennetty_oppivelvollisuus = false and vaikeasti_vammainen = true and erityisen_tuen_paatos = true then 1 end) as virheellisestiSiirretytVaikeastiVammaiset,
+      count(case when pidennetty_oppivelvollisuus = false and vaikeasti_vammainen = false and vammainen = true and erityisen_tuen_paatos = true then 1 end) as virheellisestiSiirretytMuutKuinVaikeimminVammaiset,
       count(case when erityisen_tuen_paatos = true then 1 end) as erityiselläTuella,
       count(case when majoitusetu = true then 1 end) as majoitusetu,
       count(case when kuljetusetu = true then 1 end) as kuljetusetu,
@@ -80,6 +80,7 @@ case class EsiopetuksenOppijamäärätRaportti(db: DB, organisaatioService: Orga
       and r_opiskeluoikeus.koulutusmuoto = 'esiopetus'
       and aikajakso.alku <= $päivä
       and aikajakso.loppu >= $päivä
+      and aikajakso.tila = 'lasna'
     -- access check
       and (
         #${(if (u.hasGlobalReadAccess) "true" else "false")}
