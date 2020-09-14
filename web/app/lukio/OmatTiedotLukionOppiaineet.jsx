@@ -11,7 +11,7 @@ import {
 import {FootnoteDescriptions, FootnoteHint} from '../components/footnote'
 import {kurssienKeskiarvo, Nimi} from './fragments/LukionOppiaine'
 import {numberToString} from '../util/format'
-import {hyväksytystiSuoritetutOsasuoritukset, laajuudet, suoritetutKurssit} from './lukio'
+import {hylkäämättömätOsasuoritukset, laajuudet, suoritetutKurssit} from './lukio'
 import {KurssitEditor} from '../kurssi/KurssitEditor'
 import {isMobileAtom} from '../util/isMobileAtom'
 import {ArvosanaEditor} from '../suoritus/ArvosanaEditor'
@@ -69,7 +69,7 @@ export class OmatTiedotLukionOppiaine extends React.Component {
     const oppiaineenKeskiarvo = kurssienKeskiarvo(suoritetutKurssit(kurssit))
     const laajuusYhteensä = useOppiaineLaajuus
       ? modelData(oppiaine, 'koulutusmoduuli.laajuus.arvo')
-      : numberToString(laajuudet(hyväksytystiSuoritetutOsasuoritukset(kurssit)))
+      : numberToString(laajuudet(hylkäämättömätOsasuoritukset(kurssit)))
     const laajuusYksikkö = useOppiaineLaajuus
       ? modelTitle(oppiaine, 'koulutusmoduuli.laajuus.yksikkö')
       : t('kurssia')

@@ -6,7 +6,7 @@ import {modelErrorMessages, modelItems, modelLookup, modelTitle} from '../editor
 import {LukionOppiaineetTableHead} from './fragments/LukionOppiaineetTableHead'
 import {t} from '../i18n/i18n'
 import {flatMapArray} from '../util/util'
-import {hyväksytystiSuoritetutOsasuoritukset, isLukioOps2019, laajuudet} from './lukio'
+import {hylkäämättömätOsasuoritukset, isLukioOps2019, laajuudet} from './lukio'
 import {numberToString} from '../util/format.js'
 import {isPaikallinen} from '../suoritus/Koulutusmoduuli'
 import {FootnoteDescriptions} from '../components/footnote'
@@ -61,7 +61,7 @@ export const LukionOppiaineetEditor = ({suorituksetModel, classesForUusiOppiaine
 export const paikallisiaLukionOppiaineitaTaiOsasuorituksia = oppiaineet => oppiaineet.some(aine => isPaikallinen(modelLookup(aine, 'koulutusmoduuli')) || paikallisiaOsasuorituksia(aine))
 export const paikallisiaOsasuorituksia = oppiaine => modelItems(oppiaine, 'osasuoritukset').some(osasuoritus => isPaikallinen(modelLookup(osasuoritus, 'koulutusmoduuli')))
 
-export const arvioidutOsasuoritukset = oppiaineet => flatMapArray(oppiaineet, oppiaine => hyväksytystiSuoritetutOsasuoritukset(modelItems(oppiaine, 'osasuoritukset')))
+export const arvioidutOsasuoritukset = oppiaineet => flatMapArray(oppiaineet, oppiaine => hylkäämättömätOsasuoritukset(modelItems(oppiaine, 'osasuoritukset')))
 
 export const osasuoritustenLaajuusYhteensäText = päätasonSuoritus => isLukioOps2019(päätasonSuoritus) ?
   'Suoritettujen osasuoritusten laajuus yhteensä' : 'Suoritettujen kurssien laajuus yhteensä'
