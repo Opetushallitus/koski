@@ -18,6 +18,11 @@ class EsiopetuksenOppijamäärätRaporttiSpec extends FreeSpec with Matchers wit
   private val raporttiBuilder = EsiopetuksenOppijamäärätRaportti(application.raportointiDatabase.db, application.organisaatioService)
   private lazy val raportti =
     raporttiBuilder.build(List(jyväskylänNormaalikoulu), sqlDate("2007-01-01"))(session(defaultUser)).rows.map(_.asInstanceOf[EsiopetuksenOppijamäärätRaporttiRow])
+  private lazy val ilmanOikeuksiaRaportti =
+    raporttiBuilder.build(List(jyväskylänNormaalikoulu), sqlDate("2007-01-01"))(session(tornioTallentaja)).rows.map(_.asInstanceOf[EsiopetuksenOppijamäärätRaporttiRow])
+  private lazy val tyhjäVuosiRaportti =
+    raporttiBuilder.build(List(jyväskylänNormaalikoulu), sqlDate("2012-01-01"))(session(defaultUser)).rows.map(_.asInstanceOf[EsiopetuksenOppijamäärätRaporttiRow])
+
 
   override def beforeAll(): Unit = loadRaportointikantaFixtures
 
@@ -32,28 +37,36 @@ class EsiopetuksenOppijamäärätRaporttiSpec extends FreeSpec with Matchers wit
     }
 
     "Raportin kolumnit" in {
-      lazy val r = findSingle(raportti, MockOppijat.eskari)
+      lazy val r = findSingle(raportti)
 
       r.oppilaitosNimi should equal("Jyväskylän normaalikoulu")
       r.opetuskieli should equal("suomi")
-      r.esiopetusoppilaidenMäärä should equal(2)
+      r.esiopetusoppilaidenMäärä should equal(3)
       r.vieraskielisiä should equal(0)
-      r.koulunesiopetuksessa should equal(2)
+      r.koulunesiopetuksessa should equal(3)
       r.päiväkodinesiopetuksessa should equal(0)
       r.viisivuotiaita should equal(0)
       r.viisivuotiaitaEiPidennettyäOppivelvollisuutta should equal(0)
-      r.pidennettyOppivelvollisuusJaVaikeastiVammainen should equal(0)
+      r.pidennettyOppivelvollisuusJaVaikeastiVammainen should equal(1)
       r.pidennettyOppivelvollisuusJaMuuKuinVaikeimminVammainen should equal(0)
       r.virheellisestiSiirretytVaikeastiVammaiset should equal(0)
       r.virheellisestiSiirretytMuutKuinVaikeimminVammaiset should equal(0)
       r.erityiselläTuella should equal(0)
-      r.majoitusetu should equal(0)
-      r.kuljetusetu should equal(0)
-      r.sisäoppilaitosmainenMajoitus should equal(0)
+      r.majoitusetu should equal(1)
+      r.kuljetusetu should equal(1)
+      r.sisäoppilaitosmainenMajoitus should equal(1)
+    }
+
+    "Haettu vuodelle, jona ei oppilaita" in {
+      tyhjäVuosiRaportti.length should be(0)
+    }
+
+    "Ei näe muiden organisaatioiden raporttia" in {
+      ilmanOikeuksiaRaportti.length should be(0)
     }
   }
 
-  private def findSingle(rows: Seq[EsiopetuksenOppijamäärätRaporttiRow], oppija: LaajatOppijaHenkilöTiedot) = {
+  private def findSingle(rows: Seq[EsiopetuksenOppijamäärätRaporttiRow]) = {
     val found = rows.filter(_.oppilaitosNimi.equals("Jyväskylän normaalikoulu"))
     found.length should be(1)
     found.head

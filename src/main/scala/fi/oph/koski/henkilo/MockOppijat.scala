@@ -74,6 +74,7 @@ object MockOppijat {
   val dia = oppijat.oppija("Dia", "Dia", "151013-2195")
   val internationalschool = oppijat.oppija("International", "Ida", "170186-854H")
   val eskari = oppijat.oppija("Eskari", "Essi", "300996-870E")
+  val eskariLisätiedoilla = oppijat.oppija("Lisä-Eskari", "Essiina", "300996-872E")
   val master = oppijat.oppija("of Puppets", "Master", "101097-6107")
   val slave = oppijat.addOppija(OppijaHenkilöWithMasterInfo(LaajatOppijaHenkilöTiedot(oid = "1.2.246.562.24.00000051473", sukunimi = "of Puppets", etunimet = "Slave", kutsumanimi = "Slave", hetu = Some("101097-6107"), syntymäaika = None), Some(master)))
   val masterEiKoskessa = oppijat.addOppija(LaajatOppijaHenkilöTiedot(oid = oppijat.generateId(), sukunimi = "Master", etunimet = "Master", kutsumanimi = "Master", hetu = Some("270366-697B"), syntymäaika = None))
