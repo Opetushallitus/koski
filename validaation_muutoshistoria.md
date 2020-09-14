@@ -1,7 +1,9 @@
 # Koskeen tallennettavien tietojen validaatiosäännöt
 
 ## 11.9.2020
-- Vahvisteulta perusopetuksen vuosiluokan suoritukselta ei vaadita osasuorituksia, jos oppilas on merkitty jäävän luokalle
+- Vahvistetulta perusopetuksen vuosiluokan suoritukselta ei vaadita osasuorituksia, jos oppilas on merkitty jäävän luokalle
+- Lukion opetussuunnitelman 2019 oppiaineiden oppimäärien suorituksen sisältävän opiskeluoikeuden voi merkitä
+valmistuneeksi, jos ja vain jos suoritus sisältää vähintään yhden arvioidun oppiaineen.
 
 ## 30.7.2020
 - Perusopetukseen valmistavissa suorituksissa ei edellytetä koulutusmoduulissa laajuutta, jos suoritustapa on 'erityinentutkinto'

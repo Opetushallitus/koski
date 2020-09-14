@@ -36,6 +36,8 @@ object OpiskeluoikeusChangeMigrator {
 
   private def kopioitavaPäätasonSuoritus(suoritus: KoskeenTallennettavaPäätasonSuoritus) = suoritus match {
     case _: LukionOppiaineenOppimääränSuoritus2015 |
+         _: LukionOppiaineidenOppimäärienSuoritus2019 |
+         _: LukionOppimääränSuoritus2019 |
          _: NuortenPerusopetuksenOppiaineenOppimääränSuoritus |
          _: AikuistenPerusopetuksenOppiaineenOppimääränSuoritus => false
     case _ => true

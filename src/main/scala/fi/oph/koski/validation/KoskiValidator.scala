@@ -106,6 +106,7 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       .flatMap(addKoulutustyyppi)
       .map(fillPerusteenNimi)
       .map(fillLaajuudet)
+      .map(clearVahvistukset)
       .map(_.withHistoria(None))
   }
 
@@ -137,6 +138,12 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       }))
     case _ => suoritus
   }
+
+  private def clearVahvistukset(oo: KoskeenTallennettavaOpiskeluoikeus): KoskeenTallennettavaOpiskeluoikeus =
+    oo.withSuoritukset(oo.suoritukset.map({
+      case l: LukionOppiaineidenOppimäärienSuoritus2019 => l.copy(vahvistus = None)
+      case l => l
+    }))
 
   private def perusteenNimi(diaariNumero: String): Option[LocalizedString] =
     ePerusteet.findPerusteenYksilöintitiedot(diaariNumero).map(_.nimi).flatMap(LocalizedString.sanitize)
@@ -668,6 +675,8 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       HttpStatus.ok
     } else if (opiskeluoikeus.tyyppi.koodiarvo == "aikuistenperusopetus") {
       validateAikuistenPerusopetuksenSuoritustenStatus(opiskeluoikeus)
+    } else if (opiskeluoikeus.tyyppi.koodiarvo == "lukiokoulutus" && opiskeluoikeus.suoritukset.exists(_.isInstanceOf[LukionOppiaineidenOppimäärienSuoritus2019])) {
+      validateLukionOppiaineidenOppimäärienSuoritus2019Status(opiskeluoikeus)
     } else {
       HttpStatus.fold(opiskeluoikeus.suoritukset.map(validateSuoritusVahvistettu))
     }
@@ -679,6 +688,18 @@ class KoskiValidator(tutkintoRepository: TutkintoRepository, val koodistoPalvelu
       KoskiErrorCategory.badRequest.validation.tila.suoritusPuuttuu("Opiskeluoikeutta aikuistenperusopetus ei voi merkitä valmiiksi kun siitä puuttuu suoritus aikuistenperusopetuksenoppimaara tai perusopetuksenoppiaineenoppimaara")
     } else {
       HttpStatus.fold(muutKuinAlkuvaihe.map(validateSuoritusVahvistettu))
+    }
+  }
+
+  private def validateLukionOppiaineidenOppimäärienSuoritus2019Status(opiskeluoikeus: KoskeenTallennettavaOpiskeluoikeus) = {
+    val osasuoritukset = opiskeluoikeus.suoritukset.collect {
+      case l: LukionOppiaineidenOppimäärienSuoritus2019 => l.osasuoritusLista
+    }.flatten
+
+    if (!osasuoritukset.exists(!_.arviointiPuuttuu)) {
+      KoskiErrorCategory.badRequest.validation.tila.osasuoritusPuuttuu("Lukion oppiaineiden oppimäärien suorituksen 2019 sisältävää opiskeluoikeutta ei voi merkitä valmiiksi ilman arvioitua oppiaineen osasuoritusta")
+    } else  {
+      HttpStatus.ok
     }
   }
 

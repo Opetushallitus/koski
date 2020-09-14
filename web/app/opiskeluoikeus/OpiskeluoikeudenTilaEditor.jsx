@@ -14,11 +14,12 @@ import {
   recursivelyEmpty
 } from '../editor/EditorModel'
 import {OpiskeluoikeudenUusiTilaPopup} from './OpiskeluoikeudenUusiTilaPopup'
-import {arvioituTaiVahvistettu} from '../suoritus/Suoritus'
+import {arvioituTaiVahvistettu, osasuoritukset} from '../suoritus/Suoritus'
 import {eiTiedossaOppiaine} from '../suoritus/TilaJaVahvistusEditor'
 import {parseISODate} from '../date/date.js'
 import {Editor} from '../editor/Editor'
 import Text from '../i18n/Text'
+import {isLukionOppiaineidenOppimaarienSuoritus2019} from '../lukio/lukio.js'
 
 export class OpiskeluoikeudenTilaEditor extends React.Component {
   constructor(props) {
@@ -34,7 +35,9 @@ export class OpiskeluoikeudenTilaEditor extends React.Component {
     const suoritukset = modelItems(model, 'suoritukset')
     const suorituksiaKesken = suoritukset.some(s => !arvioituTaiVahvistettu(s))
     const suoritettuAineopintoTaiAikuistenPerusopetuksenOppimäärä = suoritukset.some(s => arvioituTaiVahvistettu(s) && (isAineopinto(s) || isAikuistenPerusopetuksenOppimäärä(s)))
-    const disabloiValmistunut = suoritukset.some(eiTiedossaOppiaine) || (suorituksiaKesken && !suoritettuAineopintoTaiAikuistenPerusopetuksenOppimäärä)
+    const suorituksissaValmistumiskelpoinenLukionOppiaineidenOppimaarienSuoritus2019 = suoritukset.some( s => isLukionOppiaineidenOppimaarienSuoritus2019(s) && osasuoritukset(s).some(arvioituTaiVahvistettu) )
+    const disabloiValmistunut = suoritukset.some(eiTiedossaOppiaine) ||
+      (suorituksiaKesken && !suoritettuAineopintoTaiAikuistenPerusopetuksenOppimäärä && !suorituksissaValmistumiskelpoinenLukionOppiaineidenOppimaarienSuoritus2019)
 
     let showAddDialog = () => this.showOpiskeluoikeudenTilaDialog.modify(x => !x)
 

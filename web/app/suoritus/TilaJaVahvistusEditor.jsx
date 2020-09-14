@@ -18,9 +18,11 @@ import {isPerusopetuksenOppimäärä, isYsiluokka, jääLuokalle} from '../perus
 import {t} from '../i18n/i18n'
 import * as ytr from '../ytr/ytr'
 import {ammattillinenOsittainenTutkintoJaMuuAmmatillisenTutkinnonOsaPuuttuu} from '../ammatillinen/AmmatillinenOsittainenTutkinto'
+import {isLukionOppiaineidenOppimaarienSuoritus2019} from '../lukio/lukio.js'
 
 export const TilaJaVahvistusEditor = ({model}) => {
   if (ytr.pakollisetKokeetSuoritettuEnnen1990(model)) return null
+  if (isLukionOppiaineidenOppimaarienSuoritus2019(model)) return null
 
   return (<div className={ suoritusValmis(model) ? 'tila-vahvistus valmis' : 'tila-vahvistus' }>
       <span className="tiedot">

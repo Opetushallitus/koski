@@ -3,6 +3,7 @@ describe('Lukiokoulutus2019', function( ){
   var opinnot = OpinnotPage()
   var editor = opinnot.opiskeluoikeusEditor()
   var addOppija = AddOppijaPage()
+  var opiskeluoikeus = OpiskeluoikeusDialog()
   before(Authentication().login(), resetFixtures)
 
   describe('Lukion päättötodistus', function() {
@@ -435,8 +436,7 @@ describe('Lukiokoulutus2019', function( ){
           'Koulutus Lukion oppiaineet OPH-2263-2019\n' +
           'Opetussuunnitelma Lukio suoritetaan nuorten opetussuunnitelman mukaan\n' +
           'Oppilaitos / toimipiste Jyväskylän normaalikoulu\n' +
-          'Opetuskieli suomi\n' +
-          'Suoritus kesken')
+          'Opetuskieli suomi')
       })
 
       it('näyttää oppiaineiden ja kurssien arvosanat', function() {
@@ -451,6 +451,30 @@ describe('Lukiokoulutus2019', function( ){
           'Tanssi ja liike *\nLI5\n7 ITT234 *\n10 3 8\n' +
           'Suoritettujen osasuoritusten laajuus yhteensä: 25,5\n' +
           '* = paikallinen opintojakso tai oppiaine')
+      })
+
+      describe('valmistumistieto poistettaessa', function() {
+        const currentDate = new Date()
+        function currentDatePlusYears(years) {return currentDate.getDate() + '.' + (1 + currentDate.getMonth()) + '.' + (currentDate.getFullYear() + years)}
+        const currentDateStr = currentDatePlusYears(0)
+
+        before(
+          editor.edit,
+          editor.property('tila').removeItem(0)
+        )
+
+        describe('valmistumistiedon lisääminen', function() {
+          before(
+            opinnot.avaaLisaysDialogi,
+            opiskeluoikeus.tila().aseta('valmistunut'),
+            opiskeluoikeus.opintojenRahoitus().aseta('1'),
+            opiskeluoikeus.tallenna,
+            editor.saveChanges
+          )
+          it('onnistuu vaikka suoritusta ei ole merkitty vahvistetuksi', function() {
+            expect(opinnot.opiskeluoikeusEditor().päättymispäivä()).to.equal(currentDateStr)
+          })
+        })
       })
     })
   })
