@@ -82,7 +82,7 @@ case class RaportointiDatabase(config: KoskiDatabaseConfig) extends Logging with
     runDbSync(ROpiskeluoikeudet.schema.truncate)
 
   def loadOpiskeluoikeudet(opiskeluoikeudet: Seq[ROpiskeluoikeusRow]): Unit = {
-    runDbSync(ROpiskeluoikeudet ++= opiskeluoikeudet)
+    runDbSync(ROpiskeluoikeudet ++= opiskeluoikeudet, timeout = 5.minutes)
   }
 
   def oppijaOidsFromOpiskeluoikeudet: Seq[String] = {
